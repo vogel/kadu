@@ -99,7 +99,6 @@
 #include "about.h"
 #include "ignore.h"
 #include "history.h"
-//#include "message.h"
 #include "pending_msgs.h"
 #include "dock_widget.h"
 #include "updates.h"
@@ -124,9 +123,9 @@ int userlist_count = 0;
 int last_ping;
 int last_read_event = -1;
 int server_nr = 0;
+int muteitem;
 bool timeout_connected = true;
 bool i_wanna_be_invisible = true;
-
 struct gg_event *e;
 
 QTime closestatusppmtime;
@@ -155,42 +154,6 @@ QValueList<QHostAddress> gg_servers;
 const char *gg_servers_ip[7] = {"217.17.41.82", "217.17.41.83", "217.17.41.84", "217.17.41.85",
 	"217.17.41.86", "217.17.41.87", "217.17.41.88"};
 
-enum {
-	KADU_CMD_SEND_MESSAGE,
-	KADU_CMD_OPEN_CHAT,
-	KADU_CMD_REMOVE_USER,
-	KADU_CMD_DELETE_HISTORY,
-	KADU_CMD_SHOW_HISTORY,
-	KADU_CMD_USERINFO,
-	KADU_CMD_SEARCH,
-	KADU_CMD_MUTE,
-	KADU_CMD_ADD_USER,
-	KADU_CMD_MANAGE_IGNORED,
-	KADU_CMD_HELP,
-	KADU_CMD_ABOUT,
-	KADU_CMD_SEND_USERLIST,
-	KADU_CMD_SMS,
-	KADU_CMD_MAINMENU_SMS,
-	KADU_CMD_REMIND_PASSWORD,
-	KADU_CMD_CHANGE_PASSWORD,
-	KADU_CMD_REGISTER_USER,
-	KADU_CMD_UNREGISTER_USER,
-	KADU_CMD_QUIT,
-	KADU_CMD_SEARCH_USER,
-	KADU_CMD_EXPORT_USERLIST,
-	KADU_CMD_CONFIG,
-	KADU_CMD_IMPORT_USERLIST,
-	KADU_CMD_HIDE,
-	KADU_CMD_SEND_FILE,
-	KADU_CMD_PERSONAL_INFO,
-#ifdef HAVE_OPENSSL
-	KADU_CMD_SEND_KEY,
-#endif
-	KADU_CMD_IGNORE_USER,
-	KADU_CMD_BLOCK_USER,
-	KADU_CMD_NOTIFY_USER,
-	KADU_CMD_OFFLINE_TO_USER		     
-};
 
 QHostAddress getMyIP(void) {
 	unsigned long dest, gw;
@@ -293,19 +256,47 @@ void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 }
 
 void Kadu::keyPressEvent(QKeyEvent *e) {
+	config_file.setGroup("ShortCuts");
 	if (e->key() == Key_Escape && trayicon) {
 		kdebug("Kadu::keyPressEvent(Key_Escape): Kadu hide\n");
 		hide();
 	}
-	else if (e->key()== Key_Delete)
+	else if (HotKey::shortCut(e,"kadu_deleteuser"))
 	{
-	 commandParser(KADU_CMD_REMOVE_USER);
+	if (userbox->isSelected(userbox->currentItem()))
+		deleteUsers();
 	}
-	else if (e->key()== Key_Insert)
+	else if (HotKey::shortCut(e,"kadu_persinfo"))
 	{
-	 commandParser(KADU_CMD_USERINFO);
+	if (userbox->isSelected(userbox->currentItem()))
+	        showUserInfo();
+	}	
+	else if (HotKey::shortCut(e,"kadu_sendsms"))
+	{
+		sendSmsToUser();
+	}
+	else if (HotKey::shortCut(e,"kadu_viewhistory"))
+	{
+		viewHistory();
+	}	
+	else if (HotKey::shortCut(e,"kadu_searchuser"))
+	{
+		lookupInDirectory();
+	}	
+	else if (HotKey::shortCut(e,"kadu_showinactive"))
+	{
+		showHideInactive();
+	}	
+	else if (HotKey::shortCut(e,"kadu_sendfile"))
+	{
+		sendFile();
+	}		
+	else if (HotKey::shortCut(e,"kadu_configure"))
+	{
+		configure();
 	}	
 
+	
 	QWidget::keyPressEvent(e);
 }
 
@@ -314,6 +305,16 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 {
 	UserBox::initModule();
 	Chat::initModule();
+	
+	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("Remove from userlist"),  "ShortCuts","kadu_deleteuser","Del");
+	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("View/edit user info"),"ShortCuts","kadu_persinfo","Ins");
+	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("Send SMS"),"ShortCuts","kadu_sendsms","Ctrl+S");
+	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("View history"),"ShortCuts","kadu_viewhistory","F11");
+	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("Lookup in directory"),"ShortCuts","kadu_searchuser","F10");
+	ConfigDialog::registerHotKeyEdit(i18n("Define keys"), i18n("Show / hide inactive users"),"ShortCuts","kadu_showinactive","F9");
+	ConfigDialog::registerHotKeyEdit(i18n("Define keys"), i18n("Send file"),"ShortCuts","kadu_sendfile","F8");
+	ConfigDialog::registerHotKeyEdit(i18n("Define keys"), i18n("Configuration"),"ShortCuts","kadu_configure","F2");
+	ConfigDialog::registerHotKeyEdit(i18n("Define keys"), i18n("Add user"),"ShortCuts","kadu_adduser","F3");
 	Sms::initModule();
 	closestatusppmtime.start();
 	lastsoundtime.start();
@@ -574,29 +575,302 @@ userbox->showHideInactive();
 
 void Kadu::muteUnmuteSounds()
 {
-	commandParser(KADU_CMD_MUTE);
-
+			mute = !mute;
+			if (mute) {
+				mutebtn->setIconSet(loadIcon("mute.png"));
+				mutebtn->setTextLabel(i18n("Unmute sounds"));
+				mmb->changeItem(muteitem, loadIcon("mute.png"), i18n("Unmute sounds"));
+				}
+			else {
+				mmb->changeItem(muteitem, loadIcon("unmute.png"), i18n("Mute sounds"));
+				mutebtn->setTextLabel(i18n("Mute sounds"));
+				mutebtn->setIconSet(loadIcon("unmute.png"));
+				}
 }
 
-void Kadu::configure() {
-
-	commandParser(KADU_CMD_CONFIG);
+void Kadu::configure() 
+{
+			ConfigDialog::showConfigDialog();	
 }
+
+void Kadu::sendSms()
+{
+			Sms *sms = new Sms("", 0);
+			sms->show();
+}
+
+void Kadu::sendSmsToUser()
+{
+	if ((userbox->isSelected(userbox->currentItem())) &&
+	(userlist.byAltNick(kadu->userbox->currentText()).mobile.length()!=0))
+		    {
+			Sms *sms = new Sms(userbox->currentText(), 0);
+			sms->show();
+		    }
+	
+}
+
 
 void Kadu::viewHistory() {
-	commandParser(KADU_CMD_SHOW_HISTORY);
+			UinsList uins;
+			for (int i = 0; i < userbox->count(); i++)
+				if (userbox->isSelected(i))
+					uins.append(userlist.byAltNick(userbox->text(i)).uin);
+			if (uins.count()) {
+				History *hb = new History(uins);
+				hb->show();
+				}
 }
 
+void Kadu::sendFile()
+{
+			struct gg_dcc *dcc_new;
+			UserListElement user = userlist.byAltNick(userbox->currentText());
+			if (user.port >= 10) {
+				if ((dcc_new = gg_dcc_send_file(htonl(user.ip.ip4Addr()), user.port, config.uin, user.uin)) != NULL) {
+					dccSocketClass *dcc = new dccSocketClass(dcc_new);
+					connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));
+					dcc->initializeNotifiers();
+					}
+				}
+			else {
+				acks.resize(acks.size() + 1);
+				int i = acks.size() - 1;
+				acks[i].ack = 0;
+				acks[i].seq = gg_dcc_request(sess, user.uin);
+				acks[i].type = 0;
+				acks[i].ptr = NULL;
+				}
+}
+
+
 void Kadu::lookupInDirectory() {
-	commandParser(KADU_CMD_SEARCH_USER);
+			if (userbox->currentItem() != -1) {
+				SearchDialog *sd = new SearchDialog(0, i18n("User info"),
+					userlist.byAltNick(userbox->currentText()).uin);
+				sd->init();
+				sd->show();
+				sd->firstSearch();
+				}
 }
 
 void Kadu::showUserInfo() {
-	commandParser(KADU_CMD_USERINFO);
+			if (userbox->currentItem() != -1) 
+				{
+				UserInfo *ui = new UserInfo("user info", 0, userbox->currentText());
+				ui->show();
+				}
+}
+
+void Kadu::deleteUsers() 
+{
+			QStringList users;
+			for (int i = 0; i < userbox->count(); i++)
+				if (userbox->isSelected(i))
+					users.append(userbox->text(i));
+			removeUser(users,false);
+}
+
+void Kadu::personalInfo()
+{
+			PersonalInfoDialog *pid = new PersonalInfoDialog();
+			pid->show();
 }
 
 void Kadu::addUserAction() {
-	commandParser(KADU_CMD_ADD_USER);
+			Adduser *au = new Adduser(0, "add_user");
+			au->show();
+}
+
+void Kadu::sendKey()
+{
+#ifdef HAVE_OPENSSL
+			UserListElement user = userlist.byAltNick(userbox->currentText());
+			QString keyfile_path;
+			QString mykey;
+			QFile keyfile;
+
+			keyfile_path.append(ggPath("keys/"));
+			keyfile_path.append(QString::number(config.uin));
+			keyfile_path.append(".pem");
+
+			keyfile.setName(keyfile_path);
+
+			if(keyfile.open(IO_ReadOnly)) {
+				QTextStream t(&keyfile);
+				mykey = t.read();
+				keyfile.close();
+				QCString tmp(mykey.local8Bit());
+				gg_send_message(sess, GG_CLASS_MSG, user.uin, (unsigned char *)tmp.data());
+				QMessageBox::information(this, "Kadu",
+					i18n("Your public key has been sent"), i18n("OK"), QString::null, 0);
+			}
+#endif
+}
+
+void Kadu::deleteHistory()
+{
+			UinsList uins;
+			for (int i = 0; i < userbox->count(); i++)
+				if (userbox->isSelected(i))
+					uins.append(userlist.byAltNick(userbox->text(i)).uin);
+			history.removeHistory(uins);
+}
+
+void Kadu::manageIgnored()
+{
+			Ignored *ign = new Ignored(0, "ignored");
+			ign->show();
+}
+
+void Kadu::openChat()
+{
+			PendingMsgs::Element elem;
+			int l,k;
+			bool stop = false;
+			UinsList uins = getSelectedUins();
+			QString toadd;
+			for (int i = 0; i < pending.count(); i++) {
+				elem = pending[i];
+				if (elem.uins.equals(uins))
+					if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT
+						|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
+						|| !elem.msgclass) {
+						l = chats.count();
+						k = openChat(elem.uins);
+						QValueList<UinsList>::iterator it = wasFirstMsgs.begin();
+						while (it != wasFirstMsgs.end() && !elem.uins.equals(*it))
+							it++;
+						if (it != wasFirstMsgs.end())
+							wasFirstMsgs.remove(*it);
+						if (l < chats.count())
+							chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
+						chats[k].ptr->formatMessage(false,
+							userlist.byUin(elem.uins[0]).altnick, elem.msg,
+							timestamp(elem.time), toadd);
+						pending.deleteMsg(i);
+						i--;
+						stop = true;
+						}
+				}
+			if (!stop) {
+				k = openChat(uins);
+				chats[k].ptr->writeMessagesFromHistory(uins, 0);
+				}
+}
+
+void Kadu::searchInDirectory()
+{
+			SearchDialog *sd = new SearchDialog();
+			sd->init();
+			sd->show();
+}
+
+void Kadu::help()
+{
+			QProcess *help = new QProcess();
+			help->addArgument("konqueror");
+			if (QFile::exists(QString(DOCDIR)+"/index_doc.html"))
+				help->addArgument(QString(DOCDIR)+"/index_doc.html");
+			else
+				help->addArgument("http://kadu.net/index_doc.html");
+			help->start();
+			delete help;
+}
+
+void Kadu::about()
+{
+			About *about = new About;
+			about->show();
+}
+
+void Kadu::remindPassword1()
+{
+			remindPassword *rp = new remindPassword();
+			rp->start();
+}
+
+void Kadu::changePassword1()
+{
+			changePassword *cp = new changePassword();
+			cp->show();
+}
+
+void Kadu::registerUser()
+{
+			Register *reg = new Register;
+			reg->show();
+}
+void Kadu::unregisterUser()
+{
+			Unregister *ureg = new Unregister;
+			ureg->show();
+}
+
+void Kadu::quit()
+{
+			close(true);
+}
+
+void Kadu::exportUserlist()
+{
+			UserlistExport *ule = new UserlistExport();
+			ule->init();
+			ule->show();
+}
+
+void Kadu::importUserlist()
+{
+			UserlistImport *uli = new UserlistImport();
+			uli->init();
+			uli->show();
+}
+
+
+void Kadu::hideKadu()
+{
+			if (trayicon)
+				close();
+}
+
+void Kadu::sendUserlist1()
+{
+			sendUserlist();
+}
+
+void Kadu::ignoreUser()
+{
+			UinsList uins = getSelectedUins();
+			if (isIgnored(uins))
+				delIgnored(uins);
+			else
+				addIgnored(uins);
+			writeIgnored();
+}
+
+void Kadu::blockUser()
+{
+			UserListElement *puser = &userlist.byAltNick(userbox->currentText());
+			puser->blocking = !puser->blocking;
+			gg_remove_notify_ex(sess, puser->uin, puser->blocking ? GG_USER_NORMAL : GG_USER_BLOCKED);
+			gg_add_notify_ex(sess, puser->uin, puser->blocking ? GG_USER_BLOCKED : GG_USER_NORMAL);
+			userlist.writeToFile();
+}
+
+void Kadu::notifyUser()
+{
+			UserListElement *puser = &userlist.byAltNick(userbox->currentText());
+			puser->notify = !puser->notify;
+			userlist.writeToFile();
+}
+
+void Kadu::offlineToUser()
+{
+			UserListElement *puser = &userlist.byAltNick(userbox->currentText());
+			puser->offline_to_user = !puser->offline_to_user;
+			gg_remove_notify_ex(sess, puser->uin, puser->offline_to_user ? GG_USER_NORMAL : GG_USER_OFFLINE);
+			gg_add_notify_ex(sess, puser->uin, puser->offline_to_user ? GG_USER_OFFLINE : GG_USER_NORMAL);
+			userlist.writeToFile();
 }
 
 void Kadu::resizeEvent(QResizeEvent *e) {
@@ -896,283 +1170,6 @@ UinsList Kadu::getSelectedUins() {
 	return uins;
 }
 
-/* menu and popup menu parser */
-void Kadu::commandParser (int command) {
-	switch (command) {
-/*		case KADU_CMD_SEND_MESSAGE:
-			Message *msg;
-			msg = new Message(userbox->currentText());
-			msg->init();
-			msg->show();
-			break;*/
-		case KADU_CMD_OPEN_CHAT: {
-			PendingMsgs::Element elem;
-			int l,k;
-			bool stop = false;
-			UinsList uins = getSelectedUins();
-			QString toadd;
-			for (int i = 0; i < pending.count(); i++) {
-				elem = pending[i];
-				if (elem.uins.equals(uins))
-					if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT
-						|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
-						|| !elem.msgclass) {
-						l = chats.count();
-						k = openChat(elem.uins);
-						QValueList<UinsList>::iterator it = wasFirstMsgs.begin();
-						while (it != wasFirstMsgs.end() && !elem.uins.equals(*it))
-							it++;
-						if (it != wasFirstMsgs.end())
-							wasFirstMsgs.remove(*it);
-						if (l < chats.count())
-							chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
-						chats[k].ptr->formatMessage(false,
-							userlist.byUin(elem.uins[0]).altnick, elem.msg,
-							timestamp(elem.time), toadd);
-						pending.deleteMsg(i);
-						i--;
-						stop = true;
-						}
-				}
-			if (!stop) {
-				k = openChat(uins);
-				chats[k].ptr->writeMessagesFromHistory(uins, 0);
-				}
-			break;
-		}
-		case KADU_CMD_REMOVE_USER: {
-			QStringList users;
-			for (int i = 0; i < userbox->count(); i++)
-				if (userbox->isSelected(i))
-					users.append(userbox->text(i));
-			removeUser(users);
-			break;
-		}
-		case KADU_CMD_DELETE_HISTORY: {
-			UinsList uins;
-			for (int i = 0; i < userbox->count(); i++)
-				if (userbox->isSelected(i))
-					uins.append(userlist.byAltNick(userbox->text(i)).uin);
-			history.removeHistory(uins);
-			break;
-		}
-		case KADU_CMD_SHOW_HISTORY: {
-			UinsList uins;
-			for (int i = 0; i < userbox->count(); i++)
-				if (userbox->isSelected(i))
-					uins.append(userlist.byAltNick(userbox->text(i)).uin);
-			if (uins.count()) {
-				History *hb = new History(uins);
-				hb->show();
-				}
-			break;
-		}
-		case KADU_CMD_USERINFO: {
-			if (userbox->currentItem() != -1) {
-				UserInfo *ui = new UserInfo("user info", 0, userbox->currentText());
-				ui->show();
-				}
-			break;
-		}
-		case KADU_CMD_SEARCH: {
-			SearchDialog *sd = new SearchDialog();
-			sd->init();
-			sd->show();
-			break;
-		}
-		case KADU_CMD_MUTE: {
-			mute = !mute;
-			if (mute) {
-				mutebtn->setIconSet(loadIcon("mute.png"));
-				mutebtn->setTextLabel(i18n("Unmute sounds"));
-				mmb->changeItem(KADU_CMD_MUTE, loadIcon("mute.png"), i18n("Unmute sounds"));
-				}
-			else {
-				mmb->changeItem(KADU_CMD_MUTE, loadIcon("unmute.png"), i18n("Mute sounds"));
-				mutebtn->setTextLabel(i18n("Mute sounds"));
-				mutebtn->setIconSet(loadIcon("unmute.png"));
-				}
-			break;
-		}
-		case KADU_CMD_ADD_USER: {
-			Adduser *au = new Adduser(0, "add_user");
-			au->show();
-			break;
-		}
-		case KADU_CMD_MANAGE_IGNORED: {
-			Ignored *ign = new Ignored(0, "ignored");
-			ign->show();
-			break;
-		}
-		case KADU_CMD_HELP: {
-			QProcess *help = new QProcess();
-			help->addArgument("konqueror");
-			if (QFile::exists(QString(DOCDIR)+"/index_doc.html"))
-				help->addArgument(QString(DOCDIR)+"/index_doc.html");
-			else
-				help->addArgument("http://kadu.net/index_doc.html");
-			help->start();
-			delete help;
-			break;
-		}
-		case KADU_CMD_ABOUT: {
-			About *about = new About;
-			about->show();
-			break;
-		}
-		case KADU_CMD_SEND_USERLIST: {
-			sendUserlist();
-			break;
-		}
-		case KADU_CMD_SMS: {
-			Sms *sms = new Sms(userbox->currentText(), 0);
-			sms->show();
-			break;
-		}
-		case KADU_CMD_MAINMENU_SMS: {
-			Sms *sms = new Sms("", 0);
-			sms->show();
-			break;
-		}
-		case KADU_CMD_REMIND_PASSWORD: {
-			remindPassword *rp = new remindPassword();
-			rp->start();
-			break;
-		}
-		case KADU_CMD_CHANGE_PASSWORD: {
-			changePassword *cp = new changePassword();
-			cp->show();
-			break;
-		}
-		case KADU_CMD_REGISTER_USER: {
-			Register *reg = new Register;
-			reg->show();
-			break;
-		}
-		case KADU_CMD_UNREGISTER_USER: {
-			Unregister *ureg = new Unregister;
-			ureg->show();
-			break;
-		}
-		case KADU_CMD_QUIT: {
-			close(true);
-			break;
-		}
-		case KADU_CMD_SEARCH_USER: {
-			if (userbox->currentItem() != -1) {
-				SearchDialog *sd = new SearchDialog(0, i18n("User info"),
-					userlist.byAltNick(userbox->currentText()).uin);
-				sd->init();
-				sd->show();
-				sd->firstSearch();
-				}
-			break;
-		}
-		case KADU_CMD_IMPORT_USERLIST: {
-			UserlistImport *uli = new UserlistImport();
-			uli->init();
-			uli->show();
-			break;
-		}
-		case KADU_CMD_CONFIG: {
-			ConfigDialog::showConfigDialog();
-			break;
-		}
-		case KADU_CMD_EXPORT_USERLIST: {
-			UserlistExport *ule = new UserlistExport();
-			ule->init();
-			ule->show();
-			break;
-		}
-		case KADU_CMD_HIDE: {
-			if (trayicon)
-				close();
-			break;
-		}
-		case KADU_CMD_SEND_FILE: {
-			struct gg_dcc *dcc_new;
-			UserListElement user = userlist.byAltNick(userbox->currentText());
-			if (user.port >= 10) {
-				if ((dcc_new = gg_dcc_send_file(htonl(user.ip.ip4Addr()), user.port, config.uin, user.uin)) != NULL) {
-					dccSocketClass *dcc = new dccSocketClass(dcc_new);
-					connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));
-					dcc->initializeNotifiers();
-					}
-				}
-			else {
-				acks.resize(acks.size() + 1);
-				int i = acks.size() - 1;
-				acks[i].ack = 0;
-				acks[i].seq = gg_dcc_request(sess, user.uin);
-				acks[i].type = 0;
-				acks[i].ptr = NULL;
-				}
-			break;
-		}
-		case KADU_CMD_PERSONAL_INFO: {
-			PersonalInfoDialog *pid = new PersonalInfoDialog();
-			pid->show();
-			break;
-		}
-#ifdef HAVE_OPENSSL
-		case KADU_CMD_SEND_KEY: {
-			UserListElement user = userlist.byAltNick(userbox->currentText());
-			QString keyfile_path;
-			QString mykey;
-			QFile keyfile;
-
-			keyfile_path.append(ggPath("keys/"));
-			keyfile_path.append(QString::number(config.uin));
-			keyfile_path.append(".pem");
-
-			keyfile.setName(keyfile_path);
-
-			if(keyfile.open(IO_ReadOnly)) {
-				QTextStream t(&keyfile);
-				mykey = t.read();
-				keyfile.close();
-				QCString tmp(mykey.local8Bit());
-				gg_send_message(sess, GG_CLASS_MSG, user.uin, (unsigned char *)tmp.data());
-				QMessageBox::information(this, "Kadu",
-					i18n("Your public key has been sent"), i18n("OK"), QString::null, 0);
-			}
-			break;
-		}
-#endif
-		case KADU_CMD_IGNORE_USER: {
-			UinsList uins = getSelectedUins();
-			if (isIgnored(uins))
-				delIgnored(uins);
-			else
-				addIgnored(uins);
-			writeIgnored();
-			break;
-		}
-		case KADU_CMD_BLOCK_USER: {
-			UserListElement *puser = &userlist.byAltNick(userbox->currentText());
-			puser->blocking = !puser->blocking;
-			gg_remove_notify_ex(sess, puser->uin, puser->blocking ? GG_USER_NORMAL : GG_USER_BLOCKED);
-			gg_add_notify_ex(sess, puser->uin, puser->blocking ? GG_USER_BLOCKED : GG_USER_NORMAL);
-			userlist.writeToFile();
-			break;
-		}
-		case KADU_CMD_NOTIFY_USER: {
-			UserListElement *puser = &userlist.byAltNick(userbox->currentText());
-			puser->notify = !puser->notify;
-			userlist.writeToFile();
-			break;
-		}
-		case KADU_CMD_OFFLINE_TO_USER: {
-			UserListElement *puser = &userlist.byAltNick(userbox->currentText());
-			puser->offline_to_user = !puser->offline_to_user;
-			gg_remove_notify_ex(sess, puser->uin, puser->offline_to_user ? GG_USER_NORMAL : GG_USER_OFFLINE);
-			gg_add_notify_ex(sess, puser->uin, puser->offline_to_user ? GG_USER_OFFLINE : GG_USER_NORMAL);
-			userlist.writeToFile();
-			break;
-		}
-	}
-}
-
 /* changes the active group */
 void Kadu::changeGroup(int group) {
 	activegrpno = group;
@@ -1189,7 +1186,7 @@ void Kadu::mouseButtonClicked(int button, QListBoxItem *item) {
 	UserListElement user;
 	user = userlist.byAltNick(item->text());
 	if (user.mobile.length())	
-		commandParser(KADU_CMD_SMS);
+	    sendSmsToUser();
 }
 
 /* the list that pops up if we right-click one someone */
@@ -1202,26 +1199,37 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 
 	QPixmap msg;
 	msg = loadIcon("mail_generic.png");
-
+	int smsitem;
+	int sendfile;
+	int deletehistoryitem;
+	int historyitem;
+	int searchuser;
+	int openchatitem;
+	int ignoreuseritem;
+	int blockuseritem;
+	int notifyuseritem;
+	int offlinetouseritem;
 	UserListElement user;
 	user = userlist.byAltNick(item->text());
 
 //	pm->insertItem(msg, i18n("Send message"), KADU_CMD_SEND_MESSAGE);
-	pm->insertItem(i18n("Open chat window"), KADU_CMD_OPEN_CHAT);
-	pm->insertItem(i18n("Send SMS"), KADU_CMD_SMS);
+	openchatitem= pm->insertItem(i18n("Open chat window") ,this, SLOT(openChat()));
+	smsitem= pm->insertItem(i18n("Send SMS"),this,SLOT(sendSmsToUser()),HotKey::shortCutFromFile("kadu_sendsms"));
 	if (!user.mobile.length())
-		pm->setItemEnabled(KADU_CMD_SMS,false);
-	pm->insertItem(loadIcon("filesave.png"), i18n("Send file"), KADU_CMD_SEND_FILE);
+		pm->setItemEnabled(smsitem,false);
+
+	sendfile= pm->insertItem(loadIcon("filesave.png"), i18n("Send file"), this, SLOT(sendFile()),HotKey::shortCutFromFile("kadu_sendfile"));
 	if (dccSocketClass::count >= 8)
-		pm->setItemEnabled(KADU_CMD_SEND_FILE, false);
+		pm->setItemEnabled(sendfile, false);
 	if (user.status == GG_STATUS_AVAIL || user.status == GG_STATUS_AVAIL_DESCR ||
 		user.status == GG_STATUS_BUSY || user.status == GG_STATUS_BUSY_DESCR)
-		pm->setItemEnabled(KADU_CMD_SEND_FILE, true);
+		pm->setItemEnabled(sendfile, true);
 	else
-		pm->setItemEnabled(KADU_CMD_SEND_FILE, false);
+		pm->setItemEnabled(sendfile, false);
 
 #ifdef HAVE_OPENSSL
-	pm->insertItem(loadIcon("encrypted.png"), i18n("Send my public key"), KADU_CMD_SEND_KEY);
+	int sendkeyitem;
+	sendkeyitem= pm->insertItem(loadIcon("encrypted.png"), i18n("Send my public key"), this, SLOT(sendKey()));
 
 	QString keyfile_path;
 
@@ -1231,58 +1239,56 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 
 	QFileInfo keyfile(keyfile_path);
 	if (keyfile.permission(QFileInfo::ReadUser) && user.uin)
-		pm->setItemEnabled(KADU_CMD_SEND_KEY, true);
+		pm->setItemEnabled(sendkeyitem, true);
 	else
-		pm->setItemEnabled(KADU_CMD_SEND_KEY, false);
+		pm->setItemEnabled(sendkeyitem, false);
 
 #endif
 
 	pm->insertSeparator();
-	pm->insertItem(i18n("Ignore user"), KADU_CMD_IGNORE_USER);
-	pm->insertItem(i18n("Block user"), KADU_CMD_BLOCK_USER);
-	pm->insertItem(i18n("Notify about user"), KADU_CMD_NOTIFY_USER);
-	pm->insertItem(i18n("Offline to user"), KADU_CMD_OFFLINE_TO_USER);
+	ignoreuseritem= pm->insertItem(i18n("Ignore user"), this, SLOT(ignoreUser()));
+	blockuseritem= pm->insertItem(i18n("Block user"), this, SLOT(blockUser()));
+	notifyuseritem= pm->insertItem(i18n("Notify about user"), this, SLOT(notifyUser()));
+	offlinetouseritem= pm->insertItem(i18n("Offline to user"), this, SLOT(offlineToUser()));
 	if (!user.uin) {
-		pm->setItemEnabled(KADU_CMD_IGNORE_USER, false);
-		pm->setItemEnabled(KADU_CMD_BLOCK_USER, false);
-		pm->setItemEnabled(KADU_CMD_NOTIFY_USER, false);
-		pm->setItemEnabled(KADU_CMD_OFFLINE_TO_USER, false);
+		pm->setItemEnabled(ignoreuseritem, false);
+		pm->setItemEnabled(blockuseritem, false);
+		pm->setItemEnabled(notifyuseritem, false);
+		pm->setItemEnabled(offlinetouseritem, false);
 		}
 	else {
 		UinsList uins;
 		uins = getSelectedUins();
 		if (isIgnored(uins))
-			pm->setItemChecked(KADU_CMD_IGNORE_USER, true);
+			pm->setItemChecked(ignoreuseritem, true);
 		if (user.blocking)
-			pm->setItemChecked(KADU_CMD_BLOCK_USER, true);
-		pm->setItemEnabled(KADU_CMD_OFFLINE_TO_USER, config.privatestatus);
+			pm->setItemChecked(blockuseritem, true);
+		pm->setItemEnabled(offlinetouseritem, config.privatestatus);
 		if (user.offline_to_user)
-			pm->setItemChecked(KADU_CMD_OFFLINE_TO_USER, true);
-		pm->setItemEnabled(KADU_CMD_NOTIFY_USER, config.notifyglobal && !config.notifyall);
+			pm->setItemChecked(offlinetouseritem, true);
+		pm->setItemEnabled(notifyuseritem, config.notifyglobal && !config.notifyall);
 		if (user.notify)
-			pm->setItemChecked(KADU_CMD_NOTIFY_USER, true);
+			pm->setItemChecked(notifyuseritem, true);
 		}
 
 	pm->insertSeparator();
-	
-	pm->insertItem(loadIcon("remove.png"), i18n("Remove from userlist"), KADU_CMD_REMOVE_USER);
-	pm->insertItem(loadIcon("eraser.png"), i18n("Clear history"), KADU_CMD_DELETE_HISTORY);
+	pm->insertItem(loadIcon("remove.png"), i18n("Remove from userlist"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("kadu_deleteuser"));
+	deletehistoryitem= pm->insertItem(loadIcon("eraser.png"), i18n("Clear history"));
 	QPixmap history;
 	history = loadIcon("history.png");
-	pm->insertItem(history, i18n("View history"), KADU_CMD_SHOW_HISTORY);
-	pm->insertItem(loadIcon("identity.png"), i18n("View/edit user info"), KADU_CMD_USERINFO);
-	pm->insertItem(loadIcon("viewmag.png"), i18n("Lookup in directory"), KADU_CMD_SEARCH_USER);
+	historyitem= pm->insertItem(history, i18n("View history"),this,SLOT(viewHistory()),HotKey::shortCutFromFile("kadu_viewhistory"));
+	pm->insertItem(loadIcon("identity.png"), i18n("View/edit user info"), this, SLOT(showUserInfo()),HotKey::shortCutFromFile("kadu_persinfo"));
+	searchuser= pm->insertItem(loadIcon("viewmag.png"), i18n("Lookup in directory"), this, SLOT(lookupInDirectory()),HotKey::shortCutFromFile("kadu_searchuser"));
 	if (!user.uin) {
-		pm->setItemEnabled(KADU_CMD_DELETE_HISTORY, false);
-		pm->setItemEnabled(KADU_CMD_SHOW_HISTORY, false);
-		pm->setItemEnabled(KADU_CMD_SEARCH_USER, false);
+		pm->setItemEnabled(deletehistoryitem, false);
+		pm->setItemEnabled(historyitem, false);
+		pm->setItemEnabled(searchuser, false);
 //		pm->setItemEnabled(KADU_CMD_SEND_MESSAGE, false);
-		pm->setItemEnabled(KADU_CMD_OPEN_CHAT, false);
+		pm->setItemEnabled(openchatitem, false);
 		}
 	pm->insertSeparator();
-	pm->insertItem(i18n("About..."), KADU_CMD_ABOUT);
+	pm->insertItem(i18n("About..."), this, SLOT(about()));
 
-	connect(pm, SIGNAL(activated(int)), this, SLOT(commandParser(int)));	
 	pm->exec(QCursor::pos());    	
 }
 
@@ -1302,9 +1308,7 @@ void Kadu::sendMessage(QListBoxItem *item) {
 	uin = userlist.byAltNick(item->text()).uin;
 
 	if (!uin) {
-		Sms *sms;
-		sms = new Sms(userbox->currentText(), 0);
-		sms->show();
+		sendSmsToUser();
 		return;
 		}
 
@@ -1870,14 +1874,14 @@ void Kadu::createMenu() {
 	mmb = new QMenuBar(this, "mmb");
 
 	QPopupMenu *ppm = new QPopupMenu(this, "ppm");
-	ppm->insertItem(i18n("Manage &ignored"), KADU_CMD_MANAGE_IGNORED);
-	ppm->insertItem(loadIcon("configure.png"), i18n("&Configuration"), KADU_CMD_CONFIG);
-	ppm->insertItem(loadIcon("reload.png"), i18n("Resend &userlist"), KADU_CMD_SEND_USERLIST);
+	ppm->insertItem(i18n("Manage &ignored"), this, SLOT(manageIgnored()));
+	ppm->insertItem(loadIcon("configure.png"), i18n("&Configuration"), this, SLOT(configure()),HotKey::shortCutFromFile("kadu_configure"));
+	ppm->insertItem(loadIcon("reload.png"), i18n("Resend &userlist"), this, SLOT(sendUserlist1()));
 	if (mute) {
-		ppm->insertItem(loadIcon("mute.png"), i18n("Unmute sounds"), KADU_CMD_MUTE);
+		muteitem= ppm->insertItem(loadIcon("mute.png"), i18n("Unmute sounds"), this, SLOT(muteUnmuteSounds()));
 		}
 	else {
-		ppm->insertItem(loadIcon("unmute.png"), i18n("Mute sounds"), KADU_CMD_MUTE);		
+		muteitem= ppm->insertItem(loadIcon("unmute.png"), i18n("Mute sounds"), this, SLOT(muteUnmuteSounds()));
 		}
 	ppm->insertSeparator();
 
@@ -1885,30 +1889,28 @@ void Kadu::createMenu() {
 	grpmenu->insertItem(i18n("All"), 600);
 	grpmenu->insertSeparator();
 
-	ppm->insertItem(i18n("Remind &password"), KADU_CMD_REMIND_PASSWORD);
-	ppm->insertItem(i18n("&Change password"), KADU_CMD_CHANGE_PASSWORD);
-	ppm->insertItem(loadIcon("newuser.png"),i18n("Register &new user"), KADU_CMD_REGISTER_USER);
-	ppm->insertItem(i18n("Unregister user"), KADU_CMD_UNREGISTER_USER);
-	ppm->insertItem(i18n("Personal information"), KADU_CMD_PERSONAL_INFO);
+	ppm->insertItem(i18n("Remind &password"), this, SLOT(remindPassword1()));
+	ppm->insertItem(i18n("&Change password"), this, SLOT(changePassword1()));
+	ppm->insertItem(loadIcon("newuser.png"),i18n("Register &new user"), this, SLOT(registerUser()));
+	ppm->insertItem(i18n("Unregister user"), this, SLOT(unregisterUser()));
+	ppm->insertItem(i18n("Personal information"), this,SLOT(personalInfo()));
 	ppm->insertSeparator();
 	QPixmap find;
 	find = loadIcon("viewmag.png");
-	ppm->insertItem(find, i18n("&Search for users"), KADU_CMD_SEARCH);
-	ppm->insertItem(i18n("I&mport userlist"), KADU_CMD_IMPORT_USERLIST);
-	ppm->insertItem(i18n("E&xport userlist"), KADU_CMD_EXPORT_USERLIST);
-	ppm->insertItem(*icons->loadIcon("online"), i18n("&Add user"), KADU_CMD_ADD_USER);
-	ppm->insertItem(i18n("Send SMS"), KADU_CMD_MAINMENU_SMS);
+	ppm->insertItem(find, i18n("&Search for users"), this, SLOT(searchInDirectory()));
+	ppm->insertItem(i18n("I&mport userlist"), this, SLOT(importUserlist()));
+	ppm->insertItem(i18n("E&xport userlist"), this, SLOT(exportUserlist()));
+	ppm->insertItem(*icons->loadIcon("online"), i18n("&Add user"), this, SLOT(addUserAction()),HotKey::shortCutFromFile("kadu_adduser"));
+	ppm->insertItem(i18n("Send SMS"), this,SLOT(sendSms()));
 	ppm->insertSeparator();	
-	ppm->insertItem(i18n("H&elp"), KADU_CMD_HELP);	
-	ppm->insertItem(i18n("A&bout..."), KADU_CMD_ABOUT);
+	ppm->insertItem(i18n("H&elp"), this, SLOT(help()));	
+	ppm->insertItem(i18n("A&bout..."), this, SLOT(about()));
 	ppm->insertSeparator();
-	ppm->insertItem(i18n("&Hide Kadu"), KADU_CMD_HIDE);
-	ppm->insertItem(loadIcon("exit.png"), i18n("&Exit Kadu"), KADU_CMD_QUIT);
+	ppm->insertItem(i18n("&Hide Kadu"), this, SLOT(hideKadu()));
+	ppm->insertItem(loadIcon("exit.png"), i18n("&Exit Kadu"), this, SLOT(quit()));
 
 	mmb->insertItem(i18n("&Kadu"), ppm);
 //	mmb->polish();
-
-	connect(ppm, SIGNAL(activated(int)), this, SLOT(commandParser(int)));
 }
 
 void Kadu::statusMenuAboutToHide() {

@@ -21,7 +21,6 @@
  ! dopracowaæ wysy³anie SMS'ów do ERY (prêdko¶æ)
  + po³±czenia ssl z serwerami gadu
  + ca³kowite przej¶cie na nowy mechanizm budowania okna konfiguracji i uporz±dkowanie go
- + konfigurowanie klawiszologii kadu - narazie jest tylko okno chat
  + zapamiêtywanie wymiarów okien
  - sprawdzanie pisowni w oknie chat
  - dokoñczyæ rozmowy g³osowe

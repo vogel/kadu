@@ -59,7 +59,7 @@ CustomInput::CustomInput(QWidget *parent, const char *name) : QMultiLineEdit(par
 
 void CustomInput::keyPressEvent(QKeyEvent * e) {
 	kdebug("CustomInput::keyPressEvent()\n");
-	if (autosend_enabled && (HotKey::shortCut(e,"chat_newline")) && !(e->state() & ShiftButton)) {
+	if (autosend_enabled && ((HotKey::shortCut(e,"chat_newline")) || e->key()==Key_Enter)&& !(e->state() & ShiftButton)) {
 		kdebug("CustomInput::keyPressEvent(): emit enterPressed()\n");
 		emit sendMessage();
 		}
@@ -494,6 +494,12 @@ void Chat::keyPressEvent(QKeyEvent *e) {
 	else
 	if (HotKey::shortCut(e,"chat_close"))
 		close();
+	else
+	if (HotKey::shortCut(e,"kadu_viewhistory"))
+		HistoryBox();
+	else
+	if (HotKey::shortCut(e,"kadu_searchuser"))
+		userWhois();
 	QWidget::keyPressEvent(e);
 }
 

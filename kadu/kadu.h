@@ -73,7 +73,6 @@ class Kadu : public QMainWindow
 		void setCurrentStatus(int status);
 		void sendMessage(QListBoxItem *);
 		void listPopupMenu(QListBoxItem *);
-		void commandParser(int);
 		void dataReceived();
 		void dataSent();
 		void dccReceived();
@@ -90,16 +89,43 @@ class Kadu : public QMainWindow
 		void showdesc(bool show = true);
 		void statusMenuAboutToHide(void);
 		void mouseButtonClicked(int, QListBoxItem *);
-		void showHideInactive();
-		void muteUnmuteSounds();
-		void configure();
-		void viewHistory();
-		void lookupInDirectory();
-		void showUserInfo();
-		void addUserAction();
 		void infopanelUpdate(uin_t);
 		virtual bool close(bool quit = false);
 		void quitApplication();
+
+		void about();
+		void addUserAction();
+		void blockUser();
+		void configure();
+		void changePassword1();
+		void deleteHistory();
+		void deleteUsers();
+		void exportUserlist();
+		void help();
+		void hideKadu();
+		void ignoreUser();
+		void importUserlist();
+		void lookupInDirectory();
+		void manageIgnored();
+		void muteUnmuteSounds();
+		void notifyUser();
+		void openChat();
+		void offlineToUser();
+		void personalInfo();
+		void quit();
+		void registerUser();
+		void remindPassword1();
+		void searchInDirectory();
+		void sendFile();
+		void sendKey();
+		void sendSms();
+		void sendSmsToUser();
+		void sendUserlist1();
+		void showHideInactive();		
+		void showUserInfo();
+		void unregisterUser();
+		void viewHistory();
+
 
 	private:
 		QFrame *centralFrame;
@@ -108,7 +134,7 @@ class Kadu : public QMainWindow
 		QTextBrowser *descrtb;
 		QToolButton *mutebtn;
 		int commencing_startup;
-
+		
 		void createMenu();
 		void createStatusPopupMenu();
 		void setActiveGroup(const QString& group);

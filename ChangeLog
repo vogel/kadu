@@ -7,6 +7,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
   (klasa HtmlDocument) i wy³awiania emotów i url-i. Naprawione
   problemy z emotikonami w url-ach i w napisach takich jak "<<" (adrian)
+* przej¶cie na sygna³y w obs³udze menu g³ównego i podrêcznego.
+  pozbycie siê wielkiej brzydkiej funkcji Kadu::commandParser (pawel_p/adrian)
+* konfiguracja pozosta³ej klawiszologii Kadu (pawel_p/adrian)
 
 +++ wersja 0.3.4-rc4
 * kadu nie pokazuje fa³szywych statusów ukrytych w userboksie (chilek)
