@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
 	// ladowanie tlumaczenia
 	QTranslator kadu_qm(0);
 	QString qmname = QString(DATADIR) + QString("locale/kadu_") + QTextCodec::locale();
-	kdebug("Localization file: %s\n", qmname.latin1());
+	fprintf(stderr, "Localization file: %s\n", qmname.latin1());
 	kadu_qm.load(qmname, ".");
 	a->installTranslator(&kadu_qm);
 
