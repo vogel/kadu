@@ -277,6 +277,7 @@ void SocketNotifiers::deleteSocketNotifiers()
 
 	if (Snr)
 	{
+//		disconnect(Snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
 		Snr->setEnabled(false);
 		Snr->deleteLater();
 		Snr = NULL;
@@ -284,6 +285,7 @@ void SocketNotifiers::deleteSocketNotifiers()
 
 	if (Snw)
 	{
+//		disconnect(Snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
 		Snw->setEnabled(false);
 		Snw->deleteLater();
 		Snw = NULL;
@@ -531,6 +533,8 @@ GaduSocketNotifiers::GaduSocketNotifiers(QObject *parent, const char *name) : So
 {
 	kdebugf();
 	Sess = 0;
+	socketEventCalls = 0;
+	eagainCount = 0;
 	kdebugf2();
 }
 
@@ -588,10 +592,9 @@ void GaduSocketNotifiers::dataSent()
 void GaduSocketNotifiers::socketEvent()
 {
 	kdebugf();
-	static int calls = 0;
 
-	++calls;
-	if (calls > 1)
+	++socketEventCalls;
+	if (socketEventCalls > 1)
 		kdebugm(KDEBUG_WARNING, "************* GaduSocketNotifiers::socketEvent(): Recursive socketEvent calls detected!\n");
 
 	gg_event* e;
@@ -599,7 +602,7 @@ void GaduSocketNotifiers::socketEvent()
 	{
 		emit error(ConnectionUnknow);
 //		gg_free_event(e);//nulla nie zwalniamy, bo i po co?
-		--calls;
+		--socketEventCalls;
 		return;
 	}
 
@@ -641,6 +644,7 @@ void GaduSocketNotifiers::socketEvent()
 		case GG_STATE_CONNECTED:
 			break;
 		default:
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_WARNING, "unknown state! state=%d\n", Sess->state);
 			break;
 	}
 
@@ -692,9 +696,7 @@ void GaduSocketNotifiers::socketEvent()
 		emit userStatusChanged(e);
 
 	else if (e->type == GG_EVENT_ACK)
-	{
 		emit ackReceived(e->event.ack.seq, e->event.ack.recipient, e->event.ack.status);
-	}
 
 	else if (e->type == GG_EVENT_NOTIFY60)
 		emit userlistReceived(e);
@@ -718,8 +720,25 @@ void GaduSocketNotifiers::socketEvent()
 	else if (e->type == GG_EVENT_NONE)
 		kdebugm (KDEBUG_NETWORK, "GG_EVENT_NONE\n");
 
+	if (e->type == GG_EVENT_NONE)
+		++eagainCount;
+	else
+		eagainCount = 0;
+	if (eagainCount > 50)
+	{
+		kdebugm(KDEBUG_ERROR, "ehhh\n");
+		eagainCount = 0;
+		//trzeba jako¶ ³adnie siê tu roz³±czyæ...
+
+//		MessageBox::wrn(tr("Disconnecting network!"));
+//		deleteSocketNotifiers();
+//		emit disconnected();
+//		close(Sess->fd);
+//		Sess->fd = -1;
+	}
+
 	gg_free_event(e);
-	--calls;
+	--socketEventCalls;
 	kdebugf2();
 }
 

@@ -220,6 +220,8 @@ class GaduSocketNotifiers : public SocketNotifiers
 
 	private:
 		gg_session *Sess;
+		int socketEventCalls;
+		int eagainCount;
 
 		void connectionFailed(int);
 
@@ -286,7 +288,7 @@ class GaduProtocol : public QObject
 			@see changePassword
 			@see doChangePassword
 
-			Kilka operacja w protokole Gadu-Gadu wymaga od klienta wys³ania do serwera, oprócz
+			Kilka operacji w protokole Gadu-Gadu wymaga od klienta wys³ania do serwera, oprócz
 			standardowych pakietów, tak zwanego 'tokena'. Najpierw pobierany jest z serwera identyfikator
 			tokena oraz obrazek. Nastêpnie z obrazka odczytywana jest warto¶c tokena (w za³o¿eniach
 			mia³o to zapobiegaæ rejestrowaniu nowych u¿ytkowników przez automaty.
@@ -294,7 +296,7 @@ class GaduProtocol : public QObject
 			Sloty register, unregister, remindPassword i changePassword inicjuj± pobieranie tokena
 			i ustalaj± warto¶æ pola Mode. Pobieranie obrazka realizowane jest przez klasê
 			TokenSocketNotifiers. Po pobraniu wywo³ywany jest slot gotToken, który na podstawie warto¶ci
-			pola Mode wywo³uje jedn± z funkjci doRegister, doUnregister, doRemindPassword i doChangePassword.
+			pola Mode wywo³uje jedn± z funkcji doRegister, doUnregister, doRemindPassword i doChangePassword.
 		**/
 		enum
 		{
@@ -336,7 +338,7 @@ class GaduProtocol : public QObject
 		QHostAddress DccExternalIP;
 
 		/**
-			Bie¿acy status. Zmieniany po po³±czeniu, oraz w przypadku zmiany statusu kiedy po³±czenie
+			Bie¿±cy status. Zmieniany po po³±czeniu, oraz w przypadku zmiany statusu kiedy po³±czenie
 			jest ju¿ zainicjowane.
 
 			@see login
@@ -400,7 +402,7 @@ class GaduProtocol : public QObject
 		bool UserListClear;
 
 		/**
-			Lista u¿ytkowników pobrana z serwera w postaci ³añcucha. Warto¶c ustalana w slocie
+			Lista u¿ytkowników pobrana z serwera w postaci ³añcucha. Warto¶æ ustalana w slocie
 			userListReplyReceived.
 
 			@see userListReplyReceived
@@ -753,7 +755,7 @@ class GaduProtocol : public QObject
 
 		/**
 			Rzeczywisty aktualny status. Mo¿na go wykorzystaæ tylko w trybie do odczytu (pobranie
-			ikony, nazwy, sprawdzenie rzeczywistego stanu po³aczenia).
+			ikony, nazwy, sprawdzenie rzeczywistego stanu po³±czenia).
 
 			@see status
 		**/
@@ -781,7 +783,7 @@ class GaduProtocol : public QObject
 				firstName;lastName;nickName;altNick;mobile;grupy;uin;email;0;;0;
 			</code>
 
-			grup maj± postaæ:
+			grupy maj± postaæ:
 			<code>
 				grupa_1,grupa_2,grupa_3
 			</code>
@@ -845,7 +847,7 @@ class GaduProtocol : public QObject
 
 			@param uins lista u¿ytkowników, do których wysy³amy wiadomo¶æ
 			@param msg wiadomo¶æ, któr± wysy³amy - musi byæ podana w postaci cp1250
-			@toto zmieniæ na sendMessage(const UinsList &, QString &) z wewnêtrzn± konwersj± na cp1250
+			@todo zmieniæ na sendMessage(const UinsList &, QString &) z wewnêtrzn± konwersj± na cp1250
 		**/
 		int sendMessage(const UinsList &uins, const char *msg);
 
@@ -859,7 +861,7 @@ class GaduProtocol : public QObject
 			@param myLastFormats formatowanie tekstu
 			@param myLastFormatsLength ilo¶c znaczników formatuj±cych
 
-			@toto zmieniæ na sendMessageRichText(const UinsList &, QString &, ...)
+			@todo zmieniæ na sendMessageRichText(const UinsList &, QString &, ...)
 				z wewnêtrzn± konwersj± na cp1250 oraz z jakim¶ lepszym sposobem formatowania tekstu
 		**/
 		int sendMessageRichText(const UinsList &uins, const char *msg, unsigned char *myLastFormats,
@@ -881,7 +883,7 @@ class GaduProtocol : public QObject
 			@param file_name nazwa pliku obrazka
 			@param size rozmiar obrazka w bajtach
 			@param data zawarto¶æ pliku
-			@toto usun±æ parametry size i data - mo¿emy to chyba sami wyznaczyæ
+			@todo usun±æ parametry size i data - mo¿emy to chyba sami wyznaczyæ
 		**/
 		bool sendImage(UinType uin, const QString &file_name, uint32_t size, char *data);
 
@@ -902,7 +904,7 @@ class GaduProtocol : public QObject
 
 			@param uin nasz uin
 			@param password nasze has³o
-			@toto parametr uin naprawdê potrzebny?
+			@todo parametr uin naprawdê potrzebny?
 		**/
 		void unregisterAccount(UinType uin, const QString &password);
 		/**
@@ -910,7 +912,7 @@ class GaduProtocol : public QObject
 			zostaæ tak¿e wywo³any sygna³ needTokenValue.
 
 			@param uin nasz uin
-			@toto parametr uin naprawdê potrzebny?
+			@todo parametr uin naprawdê potrzebny?
 		**/
 		void remindPassword(UinType uin);
 		/**
@@ -921,7 +923,7 @@ class GaduProtocol : public QObject
 			@param mail nasz email, jaki podali¶my przy rejestracji
 			@param password stare has³o
 			@param newPassword nowe has³o
-			@toto parametr uin naprawdê potrzebny?
+			@todo parametr uin naprawdê potrzebny?
 		**/
 		void changePassword(UinType uin, const QString &mail, const QString &password,
 			const QString &newPassword);
@@ -977,7 +979,7 @@ class GaduProtocol : public QObject
 		void searchNextInPubdir(SearchRecord& searchRecord);
 
 		/**
-			Pobiera informacje o danych odobowych z katalogu publicznego.
+			Pobiera informacje o danych osobowych z katalogu publicznego.
 
 			@todo jak to w ogóle dzia³a, bo zapomnia³em??
 		**/
@@ -1127,14 +1129,14 @@ class GaduProtocol : public QObject
 		void userListImported(bool ok, UserList&);
 
 		/**
-			Sygnal daje mozliwosc operowania na wiadomoci
-			ktora przyszla z serwera jeszcze w jej oryginalnej
-			formie przed konwersja na unicode i innymi zabiegami.
-			Tresc wiadomosci mozna zmienic grzebiac w buforze msg,
-			ale uwaga: mona zepsuï¿½formatowanie tekstu zapisane
-			w formats. Oczywicie je rï¿½nie mona zmieniaï¿½ wedug
-			opisu protokou GG ;)
-			Mozna tez przerwac dalsza obrobke wiadomoci ustawiajac
+			Sygna³ daje mozliwo¶æ operowania na wiadomo¶ci
+			która przysz³a z serwera jeszcze w jej oryginalnej
+			formie przed konwersj± na unicode i innymi zabiegami.
+			Tre¶æ wiadomo¶ci mo¿na zmieniæ grzebi±c w buforze msg,
+			ale uwaga: mo¿na zepsuæ formatowanie tekstu zapisane
+			w formats. Oczywi¶cie je równie¿ mo¿na zmieniaæ wed³ug
+			opisu protoko³u GG ;)
+			Mo¿na te¿ przerwaæ dalsz± obróbkê wiadomo¶ci ustawiaj±c
 			stop na true.
 		**/
 		void messageFiltering(const UinsList& senders,QCString& msg,
@@ -1151,14 +1153,14 @@ class GaduProtocol : public QObject
 			w oknie, dodanie jej do historii, etc.), poza przekonwertowaniem
 			kodowania wiadomo¶ci z CP1250 na Unicode.
 		**/
-		void chatMsgReceived0(UinsList senders,const QString& msg,time_t time,bool& grab);
-		void chatMsgReceived1(UinsList senders,const QString& msg,time_t time,bool& grab);
-		void chatMsgReceived2(UinsList senders,const QString& msg,time_t time);
+		void chatMsgReceived0(UinsList senders, const QString& msg, time_t time, bool& grab);
+		void chatMsgReceived1(UinsList senders, const QString& msg, time_t time, bool& grab);
+		void chatMsgReceived2(UinsList senders, const QString& msg, time_t time);
 
 		/**
 			Wywo³ywane, gdy chcemy odczytaæ token z obrazka
 		**/
-		void needTokenValue(QPixmap, QString &);
+		void needTokenValue(QPixmap in, QString &out);
 
 };
 
