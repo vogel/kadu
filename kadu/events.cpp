@@ -117,7 +117,7 @@ void SavePublicKey::yesClicked() {
 	fprintf(stderr, "KK SavePublicKey::yesClicked(): finished\n");
 }
 
-void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t time,int formats_count=0,struct gg_msg_format * formats=NULL)
+void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t time,int formats_count,struct gg_msg_format * formats)
 {
 	int i;
 
