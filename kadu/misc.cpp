@@ -533,6 +533,9 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 //	mesg.replace(QRegExp("^<html><head><meta\\sname=\"qrichtext\"\\s*\\s/></head>"), "");
 	mesg.replace(QRegExp("^<html><head>.*<body\\s.*\">\\r\\n"), "");
 	mesg.replace(QRegExp("\\r\\n</body></html>\\r\\n$"), "");
+	mesg.replace(QRegExp("<wsp>"), "");
+	mesg.replace(QRegExp("</wsp>"), "");
+
 	mesg.replace(QRegExp("<p>"), "");
 	mesg.replace(QRegExp("<p dir=\"ltr\">"), "");
 //	mesg.replace(QRegExp("<p dir=\"rtl\">"), "");
