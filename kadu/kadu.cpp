@@ -154,47 +154,6 @@ QValueList<QHostAddress> gg_servers;
 const char *gg_servers_ip[7] = {"217.17.41.82", "217.17.41.83", "217.17.41.84", "217.17.41.85",
 	"217.17.41.86", "217.17.41.87", "217.17.41.88"};
 
-
-QHostAddress getMyIP(void) {
-	unsigned long dest, gw;
-	int flags, fd;
-	FILE *file;
-	char buf[256],name[32];
-	bool stopped = false;
-	struct ifreq ifr;
-	QHostAddress ip;
-
-	file = fopen("/proc/net/route", "r");
-	if (!file)
-		return ip;
-
-	fgets(buf, 256, file);
-	while (!feof(file))
-		if (fgets(buf, 256, file)) {
-			sscanf(buf, "%s %x %x %x", name, &dest, &gw, &flags);
-			if (!dest && gw &&(flags & RTF_GATEWAY)) {
-				stopped = true;
-				break;
-				}	    
-	    		}
-	fclose(file);
-
-	if (!stopped)
-		return ip;
-
-	if ((fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
-		return ip;
-
-	strcpy(ifr.ifr_name, name);
-	if (ioctl(fd, SIOCGIFADDR, &ifr) < 0 || ioctl(fd, SIOCGIFFLAGS, &ifr) <0 ) {
-		close(fd);
-		return ip;
-		}
-
-	ip.setAddress(ntohl(((struct sockaddr_in *)&ifr.ifr_addr)->sin_addr.s_addr));
-	return ip;
-}
-
 /* sends the userlist. ripped off EKG, actually, but works */
 void sendUserlist() {
 	uin_t *uins;
@@ -1063,21 +1022,15 @@ void Kadu::blink() {
 void Kadu::prepareDcc(void) {
 	QHostAddress dccip;
 
-	if (!config.dccip.ip4Addr()) {
-		dccip = getMyIP();
-		if (!dccip.ip4Addr()) {
-			kdebug("Cannot determine IP address!\n");
-			return;
-			}
-		kdebug("My IP address: %s\n", dccip.toString().latin1());
-		}
+	if (!config.dccip.ip4Addr())
+		dccip.setAddress("255.255.255.255");
 	else
 		dccip = config.dccip;
 
 	dccsock = gg_dcc_socket_create(config.uin, 0);
 
 	if (!dccsock) {
-		perror("DCC");
+		kdebug("Kadu::prepareDcc(): Couldn't bind DCC socket.\n");
 		gg_dcc_free(dccsock);
 		QMessageBox::warning(kadu, "",
 			i18n("Couldn't create DCC socket.\nDirect connections disabled."));
@@ -1603,6 +1556,8 @@ void Kadu::setStatus(int status) {
 			server_nr = 0;
 		}
 	loginparams.tls = config.tls;
+	loginparams.protocol_version = 0x21;
+	loginparams.client_version = strdup("6, 0, 0, 135");
 	if (config.tls) {
 		loginparams.server_port = 0;
 		if (config.default_servers)
@@ -1612,6 +1567,7 @@ void Kadu::setStatus(int status) {
 	else
 		loginparams.server_port = config.default_port;
 	sess = gg_login(&loginparams);
+	free(loginparams.client_version);
 //	if (descr)
 //		free(descr);
 

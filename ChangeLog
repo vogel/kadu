@@ -19,6 +19,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * obs³uga zmian statusów zgodna z GG6 (chilek)
 * poprawne wy¶wietlanie wersji protoko³u, ip u¿ytkownika
   i jego portu (chilek)
+* getMyIP() zbêdne. dzia³a mechanizm systemowy przydzia³u gniazdek dcc
+  wykorzystywany w libgadu (wcze¶niej te¿ dzia³a³ tyle, ¿e nie ustawia³em 
+  gg_dcc_ip na 255.255.255.255) (chilek)
 
 +++ wersja 0.3.4-rc4
 * kadu nie pokazuje fa³szywych statusów ukrytych w userboksie (chilek)
