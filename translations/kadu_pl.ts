@@ -669,12 +669,48 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <source>Syntax the same as in information panel.</source>
         <translation>Składnia taka sama jak w panelu info.</translation>
     </message>
+    <message>
+        <source>%1 - Url clicked in chat window</source>
+        <translation>%1 - URL przekazywany z okna rozmowy</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
     <message>
         <source>About</source>
         <translation>O programie</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation>&amp;Zamknij</translation>
+    </message>
+    <message>
+        <source>&lt;br&gt;(c) 2001-2003 Kadu Team&lt;/span&gt;</source>
+        <translation>&lt;br&gt;(c) 2001-2003 Kadu Team&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <source>&amp;About</source>
+        <translation>&amp;O programie</translation>
+    </message>
+    <message>
+        <source>A&amp;uthors</source>
+        <translation>A&amp;utorzy</translation>
+    </message>
+    <message>
+        <source>&amp;Thanks</source>
+        <translation>&amp;Podziękowania</translation>
+    </message>
+    <message>
+        <source>&amp;History</source>
+        <translation>&amp;Historia</translation>
+    </message>
+    <message>
+        <source>&amp;ChangeLog</source>
+        <translation>&amp;Lista zmian</translation>
+    </message>
+    <message>
+        <source>&amp;License</source>
+        <translation>L&amp;icencja</translation>
     </message>
 </context>
 <context>

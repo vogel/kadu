@@ -669,12 +669,48 @@ Se lasciate lo spazio in bianco, le regolazioni di difetto saranno usate.</trans
         <source>Syntax the same as in information panel.</source>
         <translation>Sintassi lo stessi di nel pannello di informazioni.</translation>
     </message>
+    <message>
+        <source>%1 - Url clicked in chat window</source>
+        <translation>%1 Url scatto in chiacchierarata finestra</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
     <message>
         <source>About</source>
         <translation>Informazioni su</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation>&amp;Fine</translation>
+    </message>
+    <message>
+        <source>&lt;br&gt;(c) 2001-2003 Kadu Team&lt;/span&gt;</source>
+        <translation>&lt;br&gt;(c) 2001-2003 Kadu Team&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <source>&amp;About</source>
+        <translation>&amp;Informazioni su</translation>
+    </message>
+    <message>
+        <source>A&amp;uthors</source>
+        <translation>A&amp;utori</translation>
+    </message>
+    <message>
+        <source>&amp;Thanks</source>
+        <translation>&amp;Grazie</translation>
+    </message>
+    <message>
+        <source>&amp;History</source>
+        <translation>&amp;Storia</translation>
+    </message>
+    <message>
+        <source>&amp;ChangeLog</source>
+        <translation>&amp;Conto cambiamento</translation>
+    </message>
+    <message>
+        <source>&amp;License</source>
+        <translation>&amp;Licenza</translation>
     </message>
 </context>
 <context>

@@ -665,12 +665,48 @@ If you leave blank, default settings will be used.</source>
         <source>Syntax the same as in information panel.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>%1 - Url clicked in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
     <message>
         <source>About</source>
         <translation>About</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;br&gt;(c) 2001-2003 Kadu Team&lt;/span&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;About</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A&amp;uthors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Thanks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;History</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;ChangeLog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;License</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
