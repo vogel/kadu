@@ -111,6 +111,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * wy³±czenie ikonki w panelu dokuj±cym nie powoduje wywalenia
   Kadu poprzez dymki (mast3r)
 * poprawiono zapamietywanie wybranego jezyka (pawel_p)
+* dokumentacja opu¶ci³a ¼ród³a kadu i przenios³a siê do repozytorium kadu-doc.
+  opcja Pomoc zawsze otwiera dokumentacjê z kadu.net (adrian)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
