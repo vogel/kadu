@@ -951,7 +951,7 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 		pm->setItemEnabled(KADU_CMD_SEND_FILE, true);
 	else
 		pm->setItemEnabled(KADU_CMD_SEND_FILE, false);
-    
+
 	pm->insertSeparator();
 	
 	pm->insertItem(loader->loadIcon("remove", KIcon::Small), i18n("Remove from userlist"), KADU_CMD_REMOVE_USER);
@@ -961,6 +961,13 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 	pm->insertItem(history, i18n("View history"), KADU_CMD_SHOW_HISTORY);
 	pm->insertItem(loader->loadIcon("identity", KIcon::Small), i18n("View/edit user info"), KADU_CMD_USERINFO);
 	pm->insertItem(loader->loadIcon("viewmag", KIcon::Small), i18n("Lookup in directory"), KADU_CMD_SEARCH_USER);
+	if (!user.uin) {
+		pm->setItemEnabled(KADU_CMD_DELETE_HISTORY, false);
+		pm->setItemEnabled(KADU_CMD_SHOW_HISTORY, false);
+		pm->setItemEnabled(KADU_CMD_SEARCH_USER, false);
+		pm->setItemEnabled(KADU_CMD_SEND_MESSAGE, false);
+		pm->setItemEnabled(KADU_CMD_OPEN_CHAT, false);
+		}
 	pm->insertSeparator();
 	pm->insertItem(i18n("About..."), KADU_CMD_ABOUT);
 
@@ -980,6 +987,9 @@ void Kadu::sendMessage(QListBoxItem *item) {
 	uin_t uin;
 	
 	uin = userlist.byAltNick(item->text()).uin;
+
+	if (!uin)
+		return;
 
 	for (i = 0; i < pending.count(); i++) {
 		elem = pending[i];
