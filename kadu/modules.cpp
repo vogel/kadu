@@ -213,6 +213,7 @@ ModulesManager::ModulesManager() : QObject()
 	//
 	Dialog=NULL;
 	//
+	registerStaticModules();
 	loadStaticModulesTranslations();
 	initStaticModules();
 	//
@@ -286,6 +287,27 @@ void ModulesManager::incDependenciesUsageCount(const ModuleInfo& module_info)
 	for (QStringList::ConstIterator it = module_info.depends.begin(); it != module_info.depends.end(); ++it)
 		if(!moduleIsStatic(*it))
 			moduleIncUsageCount(*it);
+}
+
+void ModulesManager::registerStaticModule(const QString& module_name,
+	InitModuleFunc* init,CloseModuleFunc* close)
+{
+	StaticModule m;
+	m.init=init;
+	m.close=close;
+	StaticModules.insert(module_name,m);
+}
+
+void ModulesManager::initStaticModules()
+{
+	for (QMap<QString,StaticModule>::const_iterator i=StaticModules.begin(); i!=StaticModules.end(); i++)
+		(*i).init();
+}
+
+void ModulesManager::closeStaticModules()
+{
+	for (QMap<QString,StaticModule>::const_iterator i=StaticModules.begin(); i!=StaticModules.end(); i++)
+		(*i).close();
 }
 
 QStringList ModulesManager::staticModules()

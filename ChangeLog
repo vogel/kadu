@@ -215,6 +215,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * porzadki w config-dialogu (michal)
 * je¶li ³adowanie/inicjalizacja modu³u zawiedzie to nie zwiêkszamy licznika
   u¿ycia modu³ów wystêpuj±cych w zale¿no¶ciach (adrian)
+* configure nie generuje bezpo¶rednio kodu wywo³añ funkcji init i close modu³ów
+  statycznych, tylko kod wype³niaj±cy tablicê StaticModules (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

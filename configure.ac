@@ -188,12 +188,10 @@ AC_DEFUN(GENERATE_STATIC_MODULES_CODE,[
 	echo ">>> Generating kernel code for static modules ..."
 	echo
 	STATIC_MODULES_DECLS=
-	STATIC_MODULES_INITS=
-	STATIC_MODULES_CLOSES=
+	STATIC_MODULES_REGRS=
 	for mod in $static_modules; do \
 		STATIC_MODULES_DECLS="$STATIC_MODULES_DECLS extern \"C\" int ${mod}_init(); extern \"C\" void ${mod}_close();"; \
-		STATIC_MODULES_INITS="$STATIC_MODULES_INITS ${mod}_init();"; \
-		STATIC_MODULES_CLOSES="$STATIC_MODULES_CLOSES ${mod}_close();"; \
+		STATIC_MODULES_REGRS="$STATIC_MODULES_REGRS registerStaticModule(\"${mod}\",${mod}_init,${mod}_close);"; \
 	done	
 ])
 
@@ -419,8 +417,7 @@ AC_SUBST(shared_modules)
 AC_SUBST(static_modules)
 AC_SUBST(static_modules_ldflags)
 AC_SUBST(STATIC_MODULES_DECLS)
-AC_SUBST(STATIC_MODULES_INITS)
-AC_SUBST(STATIC_MODULES_CLOSES)
+AC_SUBST(STATIC_MODULES_REGRS)
 
 MY_SUBDIRS="$MY_SUBDIRS kadu translations varia"
 AC_SUBST(MY_SUBDIRS)

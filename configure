@@ -314,7 +314,7 @@ ac_includes_default="\
 #endif"
 
 ac_subdirs_all="$ac_subdirs_all libgadu"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CXXDEPMODE CC CFLAGS ac_ct_CC CCDEPMODE PTHREAD_CPPFLAGS PTHREAD_LDFLAGS PTHREAD_LIBS PNG_LIBS XFREE_INCLUDES QT_INCLUDES QT_LIBS QT_MOC_DIR CPP EGREP LIBOBJS GADU_LIBS GADU_INCLUDES VOICE_TRUE VOICE_FALSE GSM_LIBS GSM_INCLUDES OPENSSL_LIBS OPENSSL_INCLUDES PKGCONFIG OPENSSL_TRUE OPENSSL_FALSE MODULES_TRUE MODULES_FALSE MODULES_LDFLAGS shared_modules static_modules static_modules_ldflags STATIC_MODULES_DECLS STATIC_MODULES_INITS STATIC_MODULES_CLOSES MY_SUBDIRS subdirs LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CXXDEPMODE CC CFLAGS ac_ct_CC CCDEPMODE PTHREAD_CPPFLAGS PTHREAD_LDFLAGS PTHREAD_LIBS PNG_LIBS XFREE_INCLUDES QT_INCLUDES QT_LIBS QT_MOC_DIR CPP EGREP LIBOBJS GADU_LIBS GADU_INCLUDES VOICE_TRUE VOICE_FALSE GSM_LIBS GSM_INCLUDES OPENSSL_LIBS OPENSSL_INCLUDES PKGCONFIG OPENSSL_TRUE OPENSSL_FALSE MODULES_TRUE MODULES_FALSE MODULES_LDFLAGS shared_modules static_modules static_modules_ldflags STATIC_MODULES_DECLS STATIC_MODULES_REGRS MY_SUBDIRS subdirs LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -6776,12 +6776,10 @@ rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
 	echo ">>> Generating kernel code for static modules ..."
 	echo
 	STATIC_MODULES_DECLS=
-	STATIC_MODULES_INITS=
-	STATIC_MODULES_CLOSES=
+	STATIC_MODULES_REGRS=
 	for mod in $static_modules; do \
 		STATIC_MODULES_DECLS="$STATIC_MODULES_DECLS extern \"C\" int ${mod}_init(); extern \"C\" void ${mod}_close();"; \
-		STATIC_MODULES_INITS="$STATIC_MODULES_INITS ${mod}_init();"; \
-		STATIC_MODULES_CLOSES="$STATIC_MODULES_CLOSES ${mod}_close();"; \
+		STATIC_MODULES_REGRS="$STATIC_MODULES_REGRS registerStaticModule(\"${mod}\",${mod}_init,${mod}_close);"; \
 	done
 
 fi
@@ -6794,7 +6792,6 @@ else
   MODULES_TRUE='#'
   MODULES_FALSE=
 fi
-
 
 
 
@@ -7579,8 +7576,7 @@ s,@shared_modules@,$shared_modules,;t t
 s,@static_modules@,$static_modules,;t t
 s,@static_modules_ldflags@,$static_modules_ldflags,;t t
 s,@STATIC_MODULES_DECLS@,$STATIC_MODULES_DECLS,;t t
-s,@STATIC_MODULES_INITS@,$STATIC_MODULES_INITS,;t t
-s,@STATIC_MODULES_CLOSES@,$STATIC_MODULES_CLOSES,;t t
+s,@STATIC_MODULES_REGRS@,$STATIC_MODULES_REGRS,;t t
 s,@MY_SUBDIRS@,$MY_SUBDIRS,;t t
 s,@subdirs@,$subdirs,;t t
 s,@LTLIBOBJS@,$LTLIBOBJS,;t t

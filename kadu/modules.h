@@ -69,7 +69,25 @@ class ModulesManager : public QObject
 	Q_OBJECT
 
 	private:
+		typedef int InitModuleFunc();
 		typedef void CloseModuleFunc();
+		/**
+			Informacje o statycznym module.
+		**/
+		struct StaticModule
+		{
+			InitModuleFunc* init;
+			CloseModuleFunc* close;
+		};
+		/**
+			Lista statycznych modu³ów wype³niania
+			przez kod generowany przez configure.
+		**/
+		QMap<QString,StaticModule> StaticModules;
+		/**
+			Informacje o aktywnym module
+			statycznym b±d¼ zewnêtrznym.
+		**/
 		struct Module
 		{
 			Library* lib;
@@ -78,10 +96,12 @@ class ModulesManager : public QObject
 			ModuleInfo info;
 			int usage_counter;
 		};
+		/**
+			Lista aktywnych modu³ów
+			statycznych b±d¼ zewnêtrznych.
+		**/
 		QMap<QString,Module> Modules;	
 		ModulesDialog* Dialog;
-		void initStaticModules();
-		void closeStaticModules();
 		/**
 			£aduje plik z t³umaczeniem. Zwraca NULL je¶li wyst±pi³
 			b³±d.
@@ -105,6 +125,22 @@ class ModulesManager : public QObject
 			@param module_info informacje o module
 		**/
 		void incDependenciesUsageCount(const ModuleInfo& module_info);
+		/**
+			Rejestruje modu³ statyczny. Funcja wywo³ywana
+			dla wszystkich modu³ów statycznych przez kod
+			wygenerowany przez configure.
+		**/
+		void registerStaticModule(const QString& module_name,
+			InitModuleFunc* init,CloseModuleFunc* close);
+		/**
+			Rejestruje modu³y statyczne. Kod funkcji jest
+			generowany przez configure.
+		**/
+		void registerStaticModules();
+		
+		//
+		void initStaticModules();
+		void closeStaticModules();
 
 	private slots:
 		void dialogDestroyed();
