@@ -1041,11 +1041,13 @@ ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * na
 	kdebugf();
 	setCaption(tr("Select description"));
 
-  	desc = new QComboBox(TRUE,this,gadu->status().description());
+	while (defaultdescriptions.count()>config_file.readUnsignedNumEntry("General", "NumberOfDescriptions"))
+		defaultdescriptions.pop_back();
 
+  	desc = new QComboBox(TRUE,this,gadu->status().description());
 	desc->insertStringList(defaultdescriptions);
-	QLineEdit *ss;
-	ss= new QLineEdit(this,"LineEdit");
+
+	QLineEdit *ss = new QLineEdit(this, "LineEdit");
 	desc->setLineEdit(ss);
 	ss->setMaxLength(GG_STATUS_DESCR_MAXSIZE);
 
@@ -1098,15 +1100,15 @@ void ChooseDescription::getDescription(QString &dest)
 	dest = desc->currentText();
 }
 
-void ChooseDescription::okbtnPressed() {
-	if (defaultdescriptions.contains(desc->currentText())==0)
-	{
-		if (defaultdescriptions.count()==4)
-			defaultdescriptions.remove(defaultdescriptions.last());
-	}
-	else
-		defaultdescriptions.remove(desc->currentText());
+void ChooseDescription::okbtnPressed()
+{
+	//je¿eli ju¿ by³ taki opis, to go usuwamy
+	defaultdescriptions.remove(desc->currentText());
+	//i dodajemy na pocz±tek
 	defaultdescriptions.prepend(desc->currentText());
+	
+	while (defaultdescriptions.count()>config_file.readUnsignedNumEntry("General", "NumberOfDescriptions"))
+		defaultdescriptions.pop_back();
 	accept();
 }
 

@@ -106,6 +106,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * mo¿liwo¶æ wy³±czenia dymka nad list± kontaktów (joi)
 * rozwi±zanie problemów z krzakami zamiast polskich znaków
   w smsach wys³anych przez bramkê idei (joi)
+* konfigurowalna ilo¶æ ostatnich opisów (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
