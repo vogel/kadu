@@ -17,6 +17,7 @@ class PendingMsgs
 
 	private:
 		QValueList<Element> msgs;
+		void saveToFile();
 		
 	public:
 		PendingMsgs();
@@ -29,6 +30,7 @@ class PendingMsgs
 		void deleteNextMsg();
 		void addMsg(uin_t sender,QString msg,int msgclass,time_t time);
 		void addUin(uin_t uin);
+		bool loadFromFile();
 };
 
 #endif
