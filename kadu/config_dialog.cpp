@@ -1205,7 +1205,7 @@ void ConfigDialog::setupTab6(void) {
 	if (config.grouptabs)
 		b_grptabs->setChecked(true);
 
-	b_multicoluserbox = new QCheckBox(i18n("Multi column userbox"), grid);
+	b_multicoluserbox = new QCheckBox(i18n("Multicolumn userbox"), grid);
 	if (config.multicoluserbox)
 		b_multicoluserbox->setChecked(true);
 
