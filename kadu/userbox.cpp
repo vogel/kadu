@@ -228,6 +228,12 @@ void UserBox::removeUser(const QString &altnick)
 	Users.remove(altnick);
 };
 
+void UserBox::renameUser(const QString &oldaltnick, const QString &newaltnick)
+{
+	QStringList::iterator it = Users.find(oldaltnick);
+	(*it) = newaltnick;
+};
+
 /*void ChangeUserStatus (unsigned int uin, int new_status) {
     int num = mylist->numItemsVisible();
     QString tmpstr;
@@ -298,6 +304,12 @@ void UserBox::all_changeAllToInactive()
 {
 	for(int i=0; i<UserBoxes.size(); i++)
 		UserBoxes[i]->changeAllToInactive();	
+};
+
+void UserBox::all_renameUser(const QString &oldaltnick, const QString &newaltnick)
+{
+	for(int i = 0; i < UserBoxes.size(); i++)
+		UserBoxes[i]->renameUser(oldaltnick, newaltnick);	
 };
 
 QValueList<UserBox *> UserBox::UserBoxes;

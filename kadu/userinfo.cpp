@@ -164,6 +164,8 @@ void UserInfo::writeUserlist() {
 			userlist[this_index].last_name = e_lastname->text();
 			userlist[this_index].nickname = e_nickname->text();			
 			userlist[this_index].group = e_group->text();
+			if (e_altnick->text() != userlist[this_index].altnick)
+				UserBox::all_renameUser(userlist[this_index].altnick, e_altnick->text());
 			if (e_altnick->text().length())
 				userlist[this_index].altnick = e_altnick->text();
 			else
