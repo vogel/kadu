@@ -6,10 +6,16 @@ AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT \
 
 CLEANFILES = *.so *.o *_moc.cpp
 
-all: autoresponder.so echo.so
+modules = $(patsubst %.cpp,%.so,$(wildcard *.cpp))
+
+all: $(modules)
 
 %.so: %.o %_moc.o
-	gcc -shared -o $@ $^
+	if test -f $@.flags; then \
+		source $@.flags; \
+		echo MODULE_LDFLAGS=$$MODULE_LDFLAGS; \
+	fi; \
+	gcc -shared -o $@ $^ $$MODULE_LDFLAGS
 
 %_moc.o: %_moc.cpp
 	gcc -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS)

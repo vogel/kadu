@@ -41,6 +41,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * Chat::uins() zwracajacy liste rozmowcow, ChatManager::chats() zwracajacy
   liste okien Chat, skutkiem tego Chat::ChatsItem przestalo byc potrzebne,
   wiec porzadki w kodzie (adrian)
+* make kompiluje wszystkie moduly z katalogu modules, a nie tylko te znajdujace
+  sie standardowo w kadu. modul x.cpp moze miec odpowiadajacy mu plik
+  x.so.flags z wyrazeniem np. MODULE_LDFLAGS=-lxyz (adrian)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶

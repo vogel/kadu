@@ -106,6 +106,8 @@ AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT \
 
 
 CLEANFILES = *.so *.o *_moc.cpp
+
+modules = $(patsubst %.cpp,%.so,$(wildcard *.cpp))
 subdir = modules
 mkinstalldirs = $(SHELL) $(top_srcdir)/admin/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
@@ -227,10 +229,14 @@ uninstall-am: uninstall-info-am uninstall-local
 	uninstall-info-am uninstall-local
 
 
-all: autoresponder.so echo.so
+all: $(modules)
 
 %.so: %.o %_moc.o
-	gcc -shared -o $@ $^
+	if test -f $@.flags; then \
+		source $@.flags; \
+		echo MODULE_LDFLAGS=$$MODULE_LDFLAGS; \
+	fi; \
+	gcc -shared -o $@ $^ $$MODULE_LDFLAGS
 
 %_moc.o: %_moc.cpp
 	gcc -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS)
