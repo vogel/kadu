@@ -684,10 +684,6 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show userbox-desc.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Display group tabs</source>
         <translation type="unfinished"></translation>
     </message>
@@ -711,6 +707,18 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <source>Sound theme</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Show info-panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show description in userbox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show avaliable in bold</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -720,10 +728,6 @@ Arguments should be separated with spaces. %n argument is converted to number, %
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;br&gt;(c) 2001-2003 Kadu Team&lt;/span&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -748,6 +752,10 @@ Arguments should be separated with spaces. %n argument is converted to number, %
     </message>
     <message>
         <source>&amp;License</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;br&gt;(c) 2001-2004 Kadu Team&lt;/span&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1646,17 +1654,21 @@ Check your internet connection.</source>
 <context>
     <name>ModulesManager</name>
     <message>
-        <source>Cannot find init_module() or close_module().
-Maybe it&apos;s not Kadu-compatible Module.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cannot load module library.
 Maybe it&apos;s incorrecty compiled.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Manage Modules</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Module initialization routine failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot find required functions.
+Maybe it&apos;s not Kadu-compatible Module.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

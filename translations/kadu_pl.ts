@@ -638,10 +638,6 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <translation>Podgląd opisu</translation>
     </message>
     <message>
-        <source>Show userbox-desc.</source>
-        <translation>Pokaż panel informacyjny</translation>
-    </message>
-    <message>
         <source>Display group tabs</source>
         <translation>Wyświetl zakładki grup</translation>
     </message>
@@ -717,6 +713,18 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <source>Sound theme</source>
         <translation>Zestaw dźwięków</translation>
     </message>
+    <message>
+        <source>Show info-panel</source>
+        <translation>Pokaż panel info</translation>
+    </message>
+    <message>
+        <source>Show description in userbox</source>
+        <translation>Pokaż opis w liście kontaktów</translation>
+    </message>
+    <message>
+        <source>Show avaliable in bold</source>
+        <translation>Dostępni pogrubioną czcionką</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -727,10 +735,6 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     <message>
         <source>&amp;Close</source>
         <translation>&amp;Zamknij</translation>
-    </message>
-    <message>
-        <source>&lt;br&gt;(c) 2001-2003 Kadu Team&lt;/span&gt;</source>
-        <translation>&lt;br&gt;(c) 2001-2003 Kadu Team&lt;/span&gt;</translation>
     </message>
     <message>
         <source>&amp;About</source>
@@ -755,6 +759,10 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     <message>
         <source>&amp;License</source>
         <translation>L&amp;icencja</translation>
+    </message>
+    <message>
+        <source>&lt;br&gt;(c) 2001-2004 Kadu Team&lt;/span&gt;</source>
+        <translation>&lt;br&gt;(c) 2001-2004 Kadu Team&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -1655,12 +1663,6 @@ Sprawdź swoje połączenie internetowe.</translation>
 <context>
     <name>ModulesManager</name>
     <message>
-        <source>Cannot find init_module() or close_module().
-Maybe it&apos;s not Kadu-compatible Module.</source>
-        <translation>Nie mogę znaleźć init_module() lub close_module().
-Być może nie jest to moduł kompatybilny z Kadu.</translation>
-    </message>
-    <message>
         <source>Cannot load module library.
 Maybe it&apos;s incorrecty compiled.</source>
         <translation>Nie mogę załadować bibloteki modułów.
@@ -1669,6 +1671,16 @@ Być może jest nieprawidłowo skompilowana.</translation>
     <message>
         <source>&amp;Manage Modules</source>
         <translation>Z&amp;arządca Modułów</translation>
+    </message>
+    <message>
+        <source>Module initialization routine failed.</source>
+        <translation>Inicjalizacja modulu nie powiodła się.</translation>
+    </message>
+    <message>
+        <source>Cannot find required functions.
+Maybe it&apos;s not Kadu-compatible Module.</source>
+        <translation>Nie znaleziono wymaganej funkcji.
+Być może nie jest to moduł kompatybilny z Kadu</translation>
     </message>
 </context>
 <context>
@@ -1954,10 +1966,6 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
     <message>
         <source>Select user first</source>
         <translation>Zaznacz użytkownika</translation>
-    </message>
-    <message>
-        <source> </source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -630,10 +630,6 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <translation>Anteprima desc.</translation>
     </message>
     <message>
-        <source>Show userbox-desc.</source>
-        <translation>Mostra il pannello di informazioni.</translation>
-    </message>
-    <message>
         <source>Display group tabs</source>
         <translation>Visualizza gruppi</translation>
     </message>
@@ -717,6 +713,18 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <source>Sound theme</source>
         <translation>Tema suoni</translation>
     </message>
+    <message>
+        <source>Show info-panel</source>
+        <translation>Mostra panello-info</translation>
+    </message>
+    <message>
+        <source>Show description in userbox</source>
+        <translation>Mostar descrizione in panello contatti</translation>
+    </message>
+    <message>
+        <source>Show avaliable in bold</source>
+        <translation>Mostra disponibile in grassetto</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -727,10 +735,6 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     <message>
         <source>&amp;Close</source>
         <translation>&amp;Chiudi</translation>
-    </message>
-    <message>
-        <source>&lt;br&gt;(c) 2001-2003 Kadu Team&lt;/span&gt;</source>
-        <translation>&lt;br&gt;(c) 2001-2003 Kadu Team&lt;/span&gt;</translation>
     </message>
     <message>
         <source>&amp;About</source>
@@ -755,6 +759,10 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     <message>
         <source>&amp;License</source>
         <translation>&amp;Licenza</translation>
+    </message>
+    <message>
+        <source>&lt;br&gt;(c) 2001-2004 Kadu Team&lt;/span&gt;</source>
+        <translation>&lt;br&gt;(c) 2001-2004 Kadu Team&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -1655,12 +1663,6 @@ Controllare connessione a Internet.</translation>
 <context>
     <name>ModulesManager</name>
     <message>
-        <source>Cannot find init_module() or close_module().
-Maybe it&apos;s not Kadu-compatible Module.</source>
-        <translation>init_module() o close_module() non è stato trovato.
-Probabilmente il modulo non è conmpatibile con Kadu.</translation>
-    </message>
-    <message>
         <source>Cannot load module library.
 Maybe it&apos;s incorrecty compiled.</source>
         <translation>Impossibile caricare libreria del modulo.
@@ -1669,6 +1671,16 @@ Propbabilmente è stata compilata male.</translation>
     <message>
         <source>&amp;Manage Modules</source>
         <translation>Gestione &amp;Moduli</translation>
+    </message>
+    <message>
+        <source>Module initialization routine failed.</source>
+        <translation>Inizializzazione modulo fallita.</translation>
+    </message>
+    <message>
+        <source>Cannot find required functions.
+Maybe it&apos;s not Kadu-compatible Module.</source>
+        <translation>Le funzioni richieste non si trovano
+Probabilmente Modulo non è compatibile.</translation>
     </message>
 </context>
 <context>
@@ -1954,10 +1966,6 @@ Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation
     <message>
         <source>Select user first</source>
         <translation>Prima scegli l&apos;utente</translation>
-    </message>
-    <message>
-        <source> </source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
