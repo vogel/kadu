@@ -448,8 +448,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	/* initialize and configure userbox */
 	userbox = new UserBox(split, "userbox");
-	userbox->setPaletteBackgroundColor(QColor(config.colors.userboxBgColor));
-	userbox->setPaletteForegroundColor(QColor(config.colors.userboxFgColor));
+	userbox->setPaletteBackgroundColor(config.colors.userbox.background());
+	userbox->setPaletteForegroundColor(config.colors.userbox.foreground());
 	userbox->QListBox::setFont(config.fonts.userbox);
 
 	/* add all users to userbox */
