@@ -3,11 +3,116 @@
 /* Define to 1 if you have the `gethostbyname_r' function. */
 #undef HAVE_GETHOSTBYNAME_R
 
+/* Define to 1 if you have the <gsm/gsm.h> header file. */
+#undef HAVE_GSM_GSM_H
+
+/* Define to 1 if you have the <gsm.h> header file. */
+#undef HAVE_GSM_H
+
+/* Define to 1 if you have the <inttypes.h> header file. */
+#undef HAVE_INTTYPES_H
+
+/* Define to 1 if you have the <jpeglib.h> header file. */
+#undef HAVE_JPEGLIB_H
+
+/* Define to 1 if you have the <libgen.h> header file. */
+#undef HAVE_LIBGEN_H
+
+/* define if you have libjpeg */
+#undef HAVE_LIBJPEG
+
+/* Define to 1 if you have the <linux/kd.h> header file. */
+#undef HAVE_LINUX_KD_H
+
+/* Define to 1 if you have the <linux/soundcard.h> header file. */
+#undef HAVE_LINUX_SOUNDCARD_H
+
+/* Define to 1 if you have the <memory.h> header file. */
+#undef HAVE_MEMORY_H
+
+/* Define to 1 if you have the `mkstemp' function. */
+#undef HAVE_MKSTEMP
+
+/* define if ncurses is installed */
+#undef HAVE_NCURSES
+
+/* Define to 1 if you have the <ncurses.h> header file. */
+#undef HAVE_NCURSES_H
+
+/* Define to 1 if you have the <ncurses/ncurses.h> header file. */
+#undef HAVE_NCURSES_NCURSES_H
+
 /* define if you have OpenSSL */
 #undef HAVE_OPENSSL
 
 /* Define if you have POSIX threads libraries and header files. */
 #undef HAVE_PTHREAD
+
+/* define if You want readline */
+#undef HAVE_READLINE
+
+/* Define to 1 if you have the `rl_bind_key_in_map' function. */
+#undef HAVE_RL_BIND_KEY_IN_MAP
+
+/* Define to 1 if you have the `rl_filename_completion_function' function. */
+#undef HAVE_RL_FILENAME_COMPLETION_FUNCTION
+
+/* Define to 1 if you have the `rl_get_screen_size' function. */
+#undef HAVE_RL_GET_SCREEN_SIZE
+
+/* Define to 1 if you have the `rl_set_key' function. */
+#undef HAVE_RL_SET_KEY
+
+/* Define to 1 if you have the `rl_set_prompt' function. */
+#undef HAVE_RL_SET_PROMPT
+
+/* Define to 1 if you have the `scandir' function. */
+#undef HAVE_SCANDIR
+
+/* Define to 1 if you have the `setenv' function. */
+#undef HAVE_SETENV
+
+/* Define to 1 if you have the <stdint.h> header file. */
+#undef HAVE_STDINT_H
+
+/* Define to 1 if you have the <stdlib.h> header file. */
+#undef HAVE_STDLIB_H
+
+/* Define to 1 if you have the <strings.h> header file. */
+#undef HAVE_STRINGS_H
+
+/* Define to 1 if you have the <string.h> header file. */
+#undef HAVE_STRING_H
+
+/* Define to 1 if you have the `strlcat' function. */
+#undef HAVE_STRLCAT
+
+/* Define to 1 if you have the `strlcpy' function. */
+#undef HAVE_STRLCPY
+
+/* Define to 1 if you have the <sys/kbio.h> header file. */
+#undef HAVE_SYS_KBIO_H
+
+/* Define to 1 if you have the <sys/stat.h> header file. */
+#undef HAVE_SYS_STAT_H
+
+/* Define to 1 if you have the <sys/types.h> header file. */
+#undef HAVE_SYS_TYPES_H
+
+/* Define to 1 if you have the <unistd.h> header file. */
+#undef HAVE_UNISTD_H
+
+/* Define to 1 if you have the `utimes' function. */
+#undef HAVE_UTIMES
+
+/* define if you want VOIP support */
+#undef HAVE_VOIP
+
+/* define if you want compressed logs */
+#undef HAVE_ZLIB
+
+/* Define to 1 if you have the <zlib.h> header file. */
+#undef HAVE_ZLIB_H
 
 /* Define to the address where bug reports for this package should be sent. */
 #undef PACKAGE_BUGREPORT
@@ -27,6 +132,24 @@
 /* Define to the necessary symbol if this constant uses a non-standard name on
    your system. */
 #undef PTHREAD_CREATE_JOINABLE
+
+/* Define to 1 if you have the ANSI C header files. */
+#undef STDC_HEADERS
+
+/* define if you want ui-ncurses as default */
+#undef WITH_FORCE_NCURSES
+
+/* define if You want python */
+#undef WITH_PYTHON
+
+/* define if you want ui-ncurses */
+#undef WITH_UI_NCURSES
+
+/* define if you want ui-readline */
+#undef WITH_UI_READLINE
+
+/* define if you want WAP support */
+#undef WITH_WAP
 
 /* Define to 1 if your processor stores words with the most significant byte
    first (like Motorola and SPARC, unlike Intel and VAX). */

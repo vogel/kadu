@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.25 2003/07/03 19:54:14 adrian Exp $
+# $Id: Makefile.in,v 1.26 2003/10/09 16:07:16 chilek Exp $
 
 prefix = @prefix@
 datadir = @datadir@
@@ -14,7 +14,7 @@ INSTALL = @INSTALL@
 
 #
 
-all:	libgadu @ekg@ @make_ekgwap@
+all:	configure libgadu @ekg@ @make_ekgwap@
 
 libgadu:
 	cd lib && $(MAKE) all
