@@ -183,7 +183,7 @@
     </message>
     <message>
         <source>Custom Web browser</source>
-        <translation>Ścieżka do programu + paramaetry: </translation>
+        <translation>Ścieżka do programu + parametry: </translation>
     </message>
     <message>
         <source>Automatically prune chat messages</source>
