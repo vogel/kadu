@@ -1426,6 +1426,14 @@ void Kadu::show()
 	emit shown();
 }
 
+QString Kadu::currentGroup() const
+{
+	if (GroupBar->isVisible())
+		return GroupBar->tab(GroupBar->currentTab())->text();
+	else
+		return tr("All");
+}
+
 void KaduSlots::onCreateConfigDialog()
 {
 	kdebugf();

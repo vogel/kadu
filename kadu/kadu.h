@@ -144,7 +144,18 @@ class Kadu : public QMainWindow
 			Zwraca true je¶li kadu jest zadokowane.
 		**/
 		bool docked() const;
+
+		/**
+			zwraca nazwê aktualnie wybranej grupy
+		**/
+		QString currentGroup() const;
+
+		/**
+		**/
 		void startupProcedure();
+
+		/**
+		**/
 		int personalInfoMenuId;//potrzebne dla modu³u account_management
 
 		/**

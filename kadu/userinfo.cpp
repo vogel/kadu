@@ -396,7 +396,8 @@ void UserInfo::keyPressEvent(QKeyEvent *ke_event)
 		close();
 }
 
-void UserInfo::resultsReady() {
+void UserInfo::resultsReady()
+{
 	e_dnsname->setText(dns->hostNames()[0]);
 }
 
@@ -410,11 +411,15 @@ void UserInfo::addNewUser(UserListElement& e)
 		if (puser->isAnonymous())
 		{
 			changeUserData(e);
-			if (!config_file.readBoolEntry("Look", "DisplayGroupTabs"))
+
+			QString currentGroup = kadu->currentGroup();
+			QStringList groups = QStringList::split(",", e.group());
+			if (currentGroup == tr("All") || groups.contains(currentGroup))
 			{
 				kadu->userbox()->addUser(e.altNick());
 				kadu->userbox()->refresh();
 			}
+
 			kdebugf2();
 			return;
 		}
@@ -437,7 +442,9 @@ void UserInfo::addNewUser(UserListElement& e)
 	userlist.writeToFile();
 	close(true);
 
-	if (!config_file.readBoolEntry("Look", "DisplayGroupTabs"))
+	QString currentGroup = kadu->currentGroup();
+	QStringList groups = QStringList::split(",", e.group());
+	if (currentGroup == tr("All") || groups.contains(currentGroup))
 	{
 		kadu->userbox()->addUser(e.altNick());
 		kadu->userbox()->refresh();
