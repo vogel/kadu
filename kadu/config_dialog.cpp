@@ -23,6 +23,8 @@
 #include <qtextstream.h>
 #include <qtextcodec.h>
 #include <qhostaddress.h>
+#include <qspinbox.h>
+#include <qslider.h>
 
 #include <netinet/in.h>
 #include <math.h>
@@ -133,6 +135,8 @@ void loadKaduConfig(void) {
 	config.chatprune = konf->readBoolEntry("ChatPrune",false);
 	config.chatprunelen = konf->readNumEntry("ChatPruneLen",20);
 	config.chathistorycitation = konf->readNumEntry("ChatHistoryCitation", 10);
+	config.chathistorycitation = konf->readNumEntry("ChatHistoryQuotation", 10);
+	config.chathistorycitationtime = konf->readNumEntry("ChatHistoryQuotationTime", 336);
 	config.msgacks = konf->readBoolEntry("MessageAcks", true);
 	config.blinkchattitle = konf->readBoolEntry("BlinkChatTitle", true);
 	config.hintalert = konf->readBoolEntry("HintAlert", false);
@@ -285,7 +289,8 @@ void saveKaduConfig(void) {
 	konf->writeEntry("ScrollDown",config.scrolldown);
 	konf->writeEntry("ChatPrune",config.chatprune);
 	konf->writeEntry("ChatPruneLen",config.chatprunelen);
-	konf->writeEntry("ChatHistoryCitation", config.chathistorycitation);
+	konf->writeEntry("ChatHistoryQuotation", config.chathistorycitation);
+	konf->writeEntry("ChatHistoryQuotationTime", config.chathistorycitationtime);
 	konf->writeEntry("MessageAcks", config.msgacks);
 	konf->writeEntry("BlinkChatTitle", config.blinkchattitle);
 	konf->writeEntry("HintAlert", config.hintalert);
@@ -346,6 +351,7 @@ ConfigDialog::ConfigDialog(QWidget *parent, const char *name) : QTabDialog(paren
 	setupTab4();
 	setupTab5();
 	setupTab6();
+	setupTab7();
 
 	connect(this, SIGNAL(applyButtonPressed()), this, SLOT(updateConfig()));
 	setCancelButton(i18n("Cancel"));
@@ -918,6 +924,44 @@ void ConfigDialog::setupTab5(void) {
 	addTab(box5, i18n("Network"));
 }
 
+void ConfigDialog::ifDccEnabled(bool toggled) {
+	b_dccip->setEnabled(toggled);
+	b_dccfwd->setEnabled(toggled);
+	if (!toggled) {
+		g_dccip->setEnabled(false);
+		g_fwdprop->setEnabled(false);
+		}
+	else	{
+		if (!b_dccip->isChecked())
+			g_dccip->setEnabled(toggled);
+		if (b_dccfwd->isChecked())
+			g_fwdprop->setEnabled(toggled);
+		}
+}
+
+void ConfigDialog::ifNotifyGlobal(bool toggled) {
+	b_notifyall->setEnabled(toggled);
+	panebox->setEnabled(toggled && !b_notifyall->isChecked());
+	notifybox->setEnabled(toggled);
+}
+
+void ConfigDialog::ifNotifyAll(bool toggled) {
+	panebox->setEnabled(!toggled);
+}
+
+void ConfigDialog::ifDccIpEnabled(bool toggled) {
+	g_dccip->setEnabled(!toggled);
+}
+
+void ConfigDialog::ifDefServerEnabled(bool toggled) {
+	serverbox->setEnabled(!toggled);
+}
+
+void ConfigDialog::ifUseProxyEnabled(bool toggled) {
+	g_proxy->setEnabled(toggled);
+}
+
+
 void ConfigDialog::setupTab6(void) {
 
 	QPixmap pm_buttoncolor(35,10);
@@ -1128,6 +1172,33 @@ void ConfigDialog::setupTab6(void) {
 	addTab(box6, i18n("Look"));
 };
 
+void ConfigDialog::setupTab7() {
+	QVBox *box7 = new QVBox(this);
+	box7->setMargin(2);
+
+	QVGroupBox *vbox1 = new QVGroupBox(i18n("Quoted phrases during chat open"), box7); 
+
+	QHBox *hbox1 = new QHBox(vbox1);
+	QLabel *l_qcount = new QLabel(i18n("Count:"), hbox1);
+	s_qcount = new QSpinBox(0, 50, 1, hbox1);
+	s_qcount->setValue(config.chathistorycitation);
+
+	QLabel *l_qtime = new QLabel(i18n("Don't quote phrases older than:"), vbox1);
+	s_qtime = new QSlider(1, 744, 24, 336, Qt::Horizontal, vbox1);
+	s_qtime->setValue(config.chathistorycitationtime);
+	s_qtime->setTickmarks(QSlider::Below);
+	l_qtimeinfo = new QLabel(vbox1);
+	l_qtimeinfo->setAlignment(Qt::AlignHCenter);
+	updateQuoteTimeLabel(config.chathistorycitationtime);
+	connect(s_qtime, SIGNAL(valueChanged(int)), this, SLOT(updateQuoteTimeLabel(int)));
+
+	addTab(box7, i18n("History"));
+}
+
+void ConfigDialog::updateQuoteTimeLabel(int value) {
+	l_qtimeinfo->setText(QString(i18n("%1 day(s) %2 hour(s)")).arg(value / 24).arg(value % 24));
+}
+
 void ConfigDialog::onSmsBuildInCheckToogle(bool toggled)
 {
 	smshbox1->setEnabled(!toggled);
@@ -1150,43 +1221,6 @@ void ConfigDialog::ifDockEnabled(bool toggled) {
 	else
 		b_trayhint->setEnabled(true);
 		b_notifyhint->setEnabled(true);
-}
-
-void ConfigDialog::ifDccEnabled(bool toggled) {
-	b_dccip->setEnabled(toggled);
-	b_dccfwd->setEnabled(toggled);
-	if (!toggled) {
-		g_dccip->setEnabled(false);
-		g_fwdprop->setEnabled(false);
-		}
-	else	{
-		if (!b_dccip->isChecked())
-			g_dccip->setEnabled(toggled);
-		if (b_dccfwd->isChecked())
-			g_fwdprop->setEnabled(toggled);
-		}
-}
-
-void ConfigDialog::ifNotifyGlobal(bool toggled) {
-	b_notifyall->setEnabled(toggled);
-	panebox->setEnabled(toggled && !b_notifyall->isChecked());
-	notifybox->setEnabled(toggled);
-}
-
-void ConfigDialog::ifNotifyAll(bool toggled) {
-	panebox->setEnabled(!toggled);
-}
-
-void ConfigDialog::ifDccIpEnabled(bool toggled) {
-	g_dccip->setEnabled(!toggled);
-}
-
-void ConfigDialog::ifDefServerEnabled(bool toggled) {
-	serverbox->setEnabled(!toggled);
-}
-
-void ConfigDialog::ifUseProxyEnabled(bool toggled) {
-	g_proxy->setEnabled(toggled);
 }
 
 void ConfigDialog::_Left(void) {
@@ -1666,6 +1700,9 @@ void ConfigDialog::updateConfig(void) {
 		config.proxyuser.truncate(0);
 		config.proxypassword.truncate(0);
 		}
+
+	config.chathistorycitation = s_qcount->value();
+	config.chathistorycitationtime = s_qtime->value();
 
 	/* and now, save it */
 	saveKaduConfig();

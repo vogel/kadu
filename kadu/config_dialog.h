@@ -20,6 +20,9 @@
 #include <qvaluelist.h>
 #include <qstringlist.h>
 #include <qhostaddress.h>
+#include <qspinbox.h>
+#include <qslider.h>
+#include <qlabel.h>
 
 #include "libgadu.h"
 #include "../config.h"
@@ -40,6 +43,7 @@ class ConfigDialog : public QTabDialog	{
 		void setupTab4();
 		void setupTab5();
 		void setupTab6();
+		void setupTab7();
 
 		QComboBox *cb_defstatus;
 		QCheckBox *b_geometry;
@@ -151,6 +155,9 @@ class ConfigDialog : public QTabDialog	{
 		QValueList<QColor> vl_othercolor;
 		QValueList<QFont> vl_otherfont;
 		
+		QSpinBox *s_qcount;
+		QSlider *s_qtime;
+		QLabel *l_qtimeinfo;
 
 #ifdef HAVE_OPENSSL
 		QCheckBox *b_encryption;
@@ -197,6 +204,7 @@ class ConfigDialog : public QTabDialog	{
 		void ifUseProxyEnabled(bool);
 		void onSmsBuildInCheckToogle(bool);
 		void onDefWebBrowserToogle(bool);
+		void updateQuoteTimeLabel(int);
 };
 
 struct colors {
@@ -286,6 +294,7 @@ struct config {
 	bool scrolldown;
 	int chatprunelen;
 	int chathistorycitation;
+	int chathistorycitationtime;
 	bool chatprune;
 	bool msgacks;
 	bool blinkchattitle;
