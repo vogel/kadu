@@ -294,7 +294,6 @@ void playSound(char *);
 void readConfig(void);
 QString pwHash(const QString);
 void confirmHistoryDeletion(const char *);
-void remindPassword();
 extern KPopupMenu *dockppm;
 
 #endif

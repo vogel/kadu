@@ -117,6 +117,7 @@
 #include "pending_msgs.h"
 #include "dock_widget.h"
 #include "updates.h"
+#include "password.h"
 #ifdef HAVE_OPENSSL
 #include "sim.h"
 #endif
@@ -303,20 +304,6 @@ void confirmHistoryDeletion(UinsList &uins) {
 		case 1: // Nope?
 			return;
 		}
-}
-
-void remindPassword() {
-    struct gg_http *h = gg_remind_passwd(config.uin, 0);
-    struct gg_pubdir *dupa;
-
-    dupa = (gg_pubdir *) h->data;
-
-    if (h && dupa->success)
-	fprintf(stderr,"KK remindPassword(): Done\n");
-    else
-	fprintf(stderr,"KK remindPassword(): Problem!\n");
-
-    gg_free_remind_passwd(h);
 }
 
 /* sends the userlist. ripped off EKG, actually, but works */
