@@ -11,6 +11,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zmiana internacjonalizacji z gettext na zgodn± z Qt (chilek)
 * configure: zmiana z gettext na internacjonalizacjê z QT (adrian)
 * dostêpno¶æ w hincie wy¶wietla siê w jêzyku ojczystym (chilek)
+* Qt internationale kadu_it.ts (Ron_K)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
