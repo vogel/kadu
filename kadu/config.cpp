@@ -335,7 +335,7 @@ void ConfigDialog::setupTab1(void) {
 		b_private->setChecked(true);
 
 	b_rdocked = new QCheckBox(grid);
-	b_rdocked->setText(i18n("Run docked"));
+	b_rdocked->setText(i18n("Start docked"));
 	if (config.rundocked)
 		b_rdocked->setChecked(true);
 
@@ -489,7 +489,7 @@ void ConfigDialog::setupTab3(void) {
 		b_autosend->setChecked(true);
 	
 	b_msgacks = new QCheckBox(box3);
-	b_msgacks->setText(i18n("Message acknowledgements"));
+	b_msgacks->setText(i18n("Message acknowledgements (wait for delivery)"));
 	b_msgacks->setChecked(config.msgacks);
 	
 	addTab(box3, i18n("Chat"));
