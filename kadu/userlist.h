@@ -53,7 +53,7 @@ class UserList : public QValueList<UserListElement>
 			const QString NickName,const QString AltNick,
 			const QString Mobile,const QString Uin,
 			const int Status=GG_STATUS_NOT_AVAIL,
-			const QString Group="",const QString Description="");
+			const QString Group="",const QString Description="", const bool Foreign = false);
 		void removeUser(uin_t uin);
 		bool writeToFile(char *filename = NULL);
 		bool readFromFile();

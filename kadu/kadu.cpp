@@ -660,9 +660,9 @@ void Kadu::prepareDcc(void) {
 void Kadu::addUser(const QString& FirstName, const QString& LastName,
 	const QString& NickName, const QString& AltNick,
 	const QString& Mobile, const QString& Uin, const int Status,
-	const QString& Group, const QString& Description)
+	const QString& Group, const QString& Description, const bool Foreign)
 {
-	userlist.addUser(FirstName, LastName, NickName, AltNick, Mobile, Uin, Status, Group, Description);
+	userlist.addUser(FirstName, LastName, NickName, AltNick, Mobile, Uin, Status, Group, Description, Foreign);
 	userlist.writeToFile();
 
 	userbox->addUin(Uin.toInt());

@@ -58,13 +58,14 @@ bool UserList::containsUin(uin_t uin)
 	for(iterator i=begin(); i!=end(); i++)
 		if((*i).uin==uin)
 			return true;
+	fprintf(stderr, "KK UserList::containsUin(): userlist doesnt contain %d\n", uin);
 	return false;
 };
 
 void UserList::addUser(const QString FirstName,const QString LastName,
 	const QString NickName,const QString AltNick,
 	const QString Mobile,const QString Uin,const int Status,
-	const QString Group,const QString Description)
+	const QString Group,const QString Description, const bool Foreign)
 {
 	UserListElement e;
 	e.first_name = FirstName;
@@ -77,6 +78,7 @@ void UserList::addUser(const QString FirstName,const QString LastName,
 	e.group = Group;
 	e.description = Description;
 	e.anonymous = false;
+	e.foreign = Foreign;
 	e.ip = 0;
 	e.port = 0;
 	append(e);
@@ -133,8 +135,10 @@ bool UserList::writeToFile(char *filename)
 		s.append(QString(";"));
 		s.append(QString::number((*i).uin));
 		s.append(QString("\r\n"));
-		fprintf(stderr,s.local8Bit());
-		f.writeBlock(s.local8Bit(),s.length());
+		if (!(*i).foreign) {
+			fprintf(stderr,s.local8Bit());
+			f.writeBlock(s.local8Bit(),s.length());
+			}
 	}	    
 	f.close();
 	return true;

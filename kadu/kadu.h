@@ -139,7 +139,7 @@ class Kadu : public QWidget
 		void addUser(const QString& FirstName,const QString& LastName,
 			const QString& NickName,const QString& AltNick,
 			const QString& Mobile,const QString& Uin,const int Status,
-			const QString& Group,const QString& Description);
+			const QString& Group,const QString& Description, const bool Foreign = false);
 		void removeUser(QString &, bool);
 		
 		UserBox *userbox;

@@ -112,7 +112,10 @@ void appendHistory(unsigned int uin, unsigned char * msg, bool own, time_t time)
 	char nick[255];
 	
 	if (!own) {
-		strncpy(nick, userlist.byUin(uin).altnick, 255);
+		if (userlist.containsUin(uin))
+			strncpy(nick, userlist.byUin(uin).altnick, 255);
+		else
+			snprintf(nick, 255, "%d", uin); 
 		fputs(nick,f);
 		}
 	else
