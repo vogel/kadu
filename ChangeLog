@@ -24,6 +24,7 @@
 * dane osobiste: obs³uga FamilyName i FamilyCity
 * szyfrowanie: gruntowna poprawka - przejscie na simlite z ekg. dziala juz
   kadu<=>kadu, ale kod wymaga jeszcze troszke pracy
+* przypominanie has³a nie blokuje kadu
 
 +++ wersja 0.3.3-pre3
 * CTRL + klik dowolnego przycisku myszki na ikonce w tray'u powoduje
