@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 	gg_debug_level = 255;
 
 	setlocale(LC_ALL, "");
-	bindtextdomain("kadu", "/usr/share/locale");
+	bindtextdomain("kadu", (QString(DATADIR)+"/locale").local8Bit().data());
 //	bind_textdomain_codeset("kadu", "ISO-8859-2");
 	textdomain("kadu");
 
