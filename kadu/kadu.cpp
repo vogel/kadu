@@ -1455,8 +1455,7 @@ void Kadu::disconnectNetwork() {
 		}
 
 	if (sess) {
-		if (sess->state == GG_STATE_CONNECTED)
-			gg_logoff(sess);
+		gg_logoff(sess);
 		gg_free_session(sess);
 		sess = NULL;
 		}

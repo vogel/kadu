@@ -113,6 +113,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * mo¿liwo¶æ wy¶wietlania statusów opisowych przy nazwach kontaktów ala GG6 (wojtekka/chilek)
 * klikniêcie przycisku wyszukiwania w katalogu publicznym w momencie, gdy ¿aden kontakt
   nie zosta³ wybrany otwiera okno przeszukiwania katalogu publicznego (chilek)
+* w Kadu::disconnectNetwork() zawsze wywo³ujemy gg_logoff() (wojtekka/chilek)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶
