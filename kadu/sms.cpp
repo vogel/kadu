@@ -23,6 +23,7 @@
 SmsImageWidget::SmsImageWidget(QWidget* parent,const QByteArray& image)
 	: QWidget(parent, "SmsImageWidget"), Image(image)
 {
+	setCaption(i18n("Send SMS"));
 	setMinimumSize(Image.width(),Image.height());
 };
 
@@ -200,6 +201,7 @@ SmsSender::SmsSender(QObject* parent)
 	: QObject(parent,"SmsSender")
 {
 	QObject::connect(&Http,SIGNAL(finished()),this,SLOT(onFinished()));
+	QObject::connect(&Http,SIGNAL(error()),this,SLOT(onError()));
 };
 
 void SmsSender::onFinished()
@@ -239,11 +241,24 @@ void SmsSender::onFinished()
 			QMessageBox::critical((QWidget*)parent(),"SMS",i18n("You exceeded your daily limit"));
 			emit finished(false);
 		}
-		else
+		else if(Page.find("wiadomo¶æ tekstowa zosta³a wys³ana")>=0)
+		{
 			emit finished(true);
+		}
+		else
+		{
+			QMessageBox::critical((QWidget*)parent(),"SMS",i18n("Provider gateway results page looks strange. SMS was probably NOT sent."));
+			emit finished(false);
+		};		
 	}
 	else
 		fprintf(stderr,"SMS Panic! Unknown state\n");	
+};
+
+void SmsSender::onError()
+{
+	QMessageBox::critical((QWidget*)parent(),"SMS",i18n("Network error. Provider gateway page is probably unavailable"));
+	emit finished(false);
 };
 
 void SmsSender::onCodeEntered(const QString& code)
@@ -448,7 +463,7 @@ void Sms::sendSmsInternal()
 void Sms::onSmsSenderFinished(bool success)
 {
 	if(success)
-		QMessageBox::information(this, i18n("SMS sent"), i18n("The SMS should be on its way"));
+		QMessageBox::information(this, i18n("SMS sent"), i18n("The SMS was sent and should be on its way"));
 	b_send->setEnabled(true);
 	b_send_int->setEnabled(true);
 	body->setEnabled(true);

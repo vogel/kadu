@@ -109,6 +109,7 @@ class SmsSender : public QObject
 
 	private slots:
 		void onFinished();
+		void onError();
 		void onCodeEntered(const QString& code);
 
 	public:
