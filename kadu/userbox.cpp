@@ -117,7 +117,7 @@ void UserBox::sortUsersByAltNick(QStringList &users) {
 		stop = true;
 		for (i = 0; i < count - 1; i++)
 //			fprintf(stderr, "KK UserBox::sortUsersByAltNick() i = %d / %d\n", i, users.count());
-			if (users[i].compare(users[i+1]) > 0) {
+			if (users[i].localeAwareCompare(users[i+1]) > 0) {
 				tmp = users[i];
 				users[i] = users[i+1];
 				users[i+1] = tmp;

@@ -16,6 +16,7 @@
   w oknie rozmowy hyperlink
 * okno rozmowy: chmurki z opisem emotikonek w oknie wyboru emotikonki
 * playSound(): fork() -> QProcess
+* u¿ytkownicy na li¶cie s± sortowani z uwglêdnieniem polskich literek
 
 +++ wersja 0.3.3-pre1
 * automatyczna kompilacja programu sms
