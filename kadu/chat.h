@@ -111,9 +111,26 @@ class ChatManager : public QObject
 		void setChatProperty(const UinsList &uins, const QString &name, const QVariant &value);
 		
 	signals:
+		/**
+		 	Sygna³ ten jest wysy³any po utworzeniu nowego okna chat
+			@param senders lista uin-ów z którymi tworzymy nowy chat
+		**/
 		void chatCreated(const UinsList& senders);
+		/**
+		 	Sygna³ ten jest wysy³any przed zamnkniêciem okna chat
+			@param senders lista uin-ów z które wystêpuj± w tym chacie
+		**/
 		void chatDestroying(const UinsList& senders);
+		/**
+		 	Sygna³ ten jest wysy³any po zamnkniêciem okna chat
+			@param senders lista uin-ów z które wystêpowa³y w tym chacie
+		**/
 		void chatDestroyed(const UinsList& senders);
+		/**
+			Sygna³ ten jest wysy³aniy podczas ka¿dej próby otwarcia nowego okna chcat
+			nawet je¶li ju¿ taki istnieje
+			@param senders lista uin-ów
+		**/
 		void chatOpen(const UinsList& senders);
 };
 
