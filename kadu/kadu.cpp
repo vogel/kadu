@@ -590,7 +590,7 @@ void Kadu::setActiveGroup(const QString& group)
 				if(user_group==group)
 					belongsToGroup=true;
 		};
-		if(belongsToGroup)
+		if(belongsToGroup && !userlist[i].foreign)
 			userbox->addUser(userlist[i].altnick);
 	};
 	UserBox::all_refresh();
