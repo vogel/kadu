@@ -284,7 +284,7 @@ void EncryptionManager::userBoxMenuPopup()
 	const UinsList& uins = activeUserBox->getSelectedUins();
 	UinType uin = uins.first();
 
-	if ((keyfile.permission(QFileInfo::ReadUser) && uin) && (uins.count() == 1))
+	if ((keyfile.permission(QFileInfo::ReadUser) && uin) && (uins.count() == 1) && !gadu->currentStatus().isOffline())
 		UserBox::userboxmenu->setItemEnabled(sendkeyitem, true);
 	else
 		UserBox::userboxmenu->setItemEnabled(sendkeyitem, false);
