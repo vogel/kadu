@@ -1,0 +1,161 @@
+#!/bin/bash
+
+#################################################################
+#    Application Setup Script v0.1.0   (c) 2002 A.Smarzewski    #
+# This program is free software. You can redistribute it and/or #
+#  modify it under the terms of the GNU General Public License  #
+# Polish vesion (c) 2002 R. Krzystyniak #
+#################################################################
+
+
+#################################################################
+
+APP_NAME=KADU
+APP_VER=0.3.3
+APP_DEF_DIR=/usr/local/kadu
+
+#################################################################
+
+
+# $1 - directory name, $2 - default val
+# Response is stored in $REPLY
+function AskForPath()
+{
+	echo -n "Proszê, podaæ ¶cie¿kê do $1 : "
+	read -e
+	if [ "$REPLY" == "" ]; then
+		REPLY="$2"
+	fi;
+}
+
+# $1 - path, $2 - file to check, $3 - correct string, $4 - incorrect string
+function CheckPath()
+{
+	if [ -e $1/$2 ]; then
+		CORRECT="$3"
+	else
+		CORRECT="$4"
+	fi;
+}
+
+function ConfigureAndMake()
+{
+	QTDIR="$QT_DIR"
+	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
+	KDEDIR="$KDE_DIR"
+	./configure "--prefix=$APP_DIR"
+	make
+}
+
+function gratulacje()
+{
+	clear
+	echo "==============================================================================="
+	echo "               Gratulacje $APP_NAME zosta³o zainstalowane do katalogu $APP_DIR"
+	echo "==============================================================================="
+}
+
+function deinstal()
+{
+	clear
+	echo "==============================================================================="
+	echo "                $APP_NAME zosta³o pomy¶lnie usuniête z  katalogu $APP_DIR"
+	echo "==============================================================================="
+}
+
+function error()
+{
+	echo "==============================================================================="
+	echo "                                  Wyst±pi³ b³±d operacja nie powiod³a siê"
+	echo "==============================================================================="
+}
+function ShowInfo()
+{
+ 	clear
+	echo
+	echo "==============================================================================="
+	echo "            Witaj w $APP_NAME wersja $APP_VER Skrypt instalacyjny v0.1.0"
+	echo "  Skrypt ten konfiguruje, kompiluje, instaluje lub odinstalowywuje $APP_NAME ."
+	echo "==============================================================================="
+	echo
+	echo " Ten program jest wolnym oprogramowniem. Mo¿na go rozprowadzaæ i modyfikowaæ"
+	echo " zgodnie z licencj± GNU General Public License opublikowan± przez Free Software"
+	echo " Foundation w wersji 2 z pó¼niejszymi zmianami"
+	echo
+	echo "==============================================================================="
+	echo
+	CheckPath "$QT_DIR" include/qapplication.h ZNALEZIONA. "NIE ZNALEZIONA!"
+	echo "     * Biblioteka QT wersja >=3.0.1, w katalogu: [$QT_DIR], $CORRECT"
+	CheckPath "$KDE_DIR" include/kapp.h ZNALEZIONE. "NIE ZNALEZIONE!"
+	echo "     * KDE Desktop wersja >=3.0.0, w katalogu: [$KDE_DIR], $CORRECT"
+	CheckPath "$APP_DIR" bin/kadu "ZAINSTALOWANE" "NIE ZAINSTALOWANE"
+	echo "     * Lokalizacja $APP_NAME w katalogu: [$APP_DIR], $CORRECT"
+	echo
+	echo "==============================================================================="
+	echo "  Naci¶nij   L	aby zobaczyæ licencje GNU."
+	echo "  Naci¶nij   Q	aby zmieniæ ¶cie¿kê do biblioteki QT."
+	echo "  Naci¶nij   K	aby zmieniæ ¶cie¿kê do KDE Desktop."
+	echo "  Naci¶nij   D	aby zmieniæ lokalizacje $APP_NAME ."
+	echo "  Naci¶nij   I	aby rozpocz±æ instalacjê."
+	echo "		UWAGA!!! Je¿eli instalujesz do innego katalogu ni¿ domowego"
+	echo "		musisz mieæ uprawnienia do zapisu w tym katalogu."
+	echo "  Naci¶nij   U	aby odinstalowaæ $APP_NAME."
+	echo "		UWAGA!!! Je¿eli chcesz odinstalowaæ z innego katalogu ni¿"
+	echo "		domowogo musisz mieæ uprawnienia do zapisu w tym katalogu."
+	echo "  Naci¶nij   E	aby zakoñczyæ program instalacyjny."
+	echo "==============================================================================="
+}
+clear
+echo
+echo "Konfigurujê program instalacyjny to mo¿e chwilê potrwaæ b±d¼ cierpliwy"
+echo
+echo "Szukam  $APP_NAME..."
+APP_DIR=`find / -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
+if [ "$APP_DIR" == "" ]; then
+	APP_DIR="$APP_DEF_DIR"
+fi;
+
+echo "Szukam  QT..."
+QT_DIR=`find / -path */include/qapplication.h -type f | sed -e 's/\/include\/qapplication.h$//' -e q`
+
+echo "Szukam KDE..."
+KDE_DIR=`find / -path */include/kapp.h -type f | sed -e 's/\/include\/kapp.h$//' -e q`
+
+while [ 1 ]; do
+	ShowInfo
+	while [ 1 ]; do
+		read -n 1 -s
+		if [[ ("$REPLY" == "L") || ("$REPLY" == "l") ]]; then
+			cat COPYING | more
+			break
+		fi;
+		if [[ ("$REPLY" == "Q") || ("$REPLY" == "q") ]]; then
+			AskForPath "biblioteki QT"
+			QT_DIR="$REPLY"
+			break
+		fi;
+		if [[ ("$REPLY" == "K") || ("$REPLY" == "k") ]]; then
+			AskForPath "KDE Desktop"
+			KDE_DIR="$REPLY"
+			break
+		fi;
+		if [[ ("$REPLY" == "D") || ("$REPLY" == "d") ]]; then
+			AskForPath "$APP_NAME"
+			APP_DIR="$REPLY"
+			break
+		fi;
+		if [[ ("$REPLY" == "I") || ("$REPLY" == "i") ]]; then
+			ConfigureAndMake
+			make install
+			break
+		fi;
+		if [[ ("$REPLY" == "U") || ("$REPLY" == "u") ]]; then
+			ConfigureAndMake
+			make uninstall
+			break
+		fi;
+		if [[ ("$REPLY" == "E") || ("$REPLY" == "e") ]]; then
+			exit
+		fi;
+	done
+done
