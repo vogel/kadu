@@ -24,19 +24,7 @@ RemindPassword::~RemindPassword() {
 
 void RemindPassword::start() {
 	kdebugf();
-
-	TokenDialog *tokendialog = new TokenDialog();
-	if (tokendialog->exec() != QDialog::Accepted)
-	{
-		delete tokendialog;
-		return;
-	}
-
-	QString Tokenid, Tokenval;
-	tokendialog->getToken(Tokenid, Tokenval);
-	delete tokendialog;
-
-	gadu->doRemind(config_file.readNumEntry("General", "UIN"), Tokenid, Tokenval);
+	gadu->remindPassword(config_file.readNumEntry("General", "UIN"));
 	kdebugf2();
 }
 

@@ -193,6 +193,9 @@ class Kadu : public QMainWindow
 /*		void showMinimized();
 		void hide();*/
 
+		// odczytuje z obrazka tekst i zapisuje go w drugim parametrze
+		void readTokenValue(QPixmap, QString &);
+
 	signals:
 		void disconnectingNetwork();
 		void disconnectedNetwork();

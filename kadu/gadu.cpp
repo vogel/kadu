@@ -398,42 +398,131 @@ void PubdirSocketNotifiers::socketEvent()
 	kdebugf2();
 }
 
-/* DccSocketNotifier */
+/* TokenSocketNotifier */
 
-DccSocketNotifiers::DccSocketNotifiers(struct gg_dcc *d)
-	: SocketNotifiers(d->fd)
+TokenSocketNotifiers::TokenSocketNotifiers()
+	: SocketNotifiers(0)
 {
 	kdebugf();
-	D = d;
 	kdebugf2();
 }
 
-DccSocketNotifiers::~DccSocketNotifiers()
-{
-}
-
-void DccSocketNotifiers::dataReceived()
+TokenSocketNotifiers::~TokenSocketNotifiers()
 {
 	kdebugf();
-
-	socketEvent();
+	deleteSocketNotifiers();
 	kdebugf2();
 }
 
-void DccSocketNotifiers::dataSent()
+void TokenSocketNotifiers::start()
+{
+	kdebugf();
+
+	if (!(H = gg_token(1)))
+	{
+		emit tokenError();
+		return;
+	}
+
+	Fd = H->fd;
+	createSocketNotifiers();
+	kdebugf2();
+}
+
+void TokenSocketNotifiers::dataReceived()
+{
+	kdebugf();
+
+	if (H->check & GG_CHECK_READ)
+		socketEvent();
+
+	kdebugf2();
+}
+
+void TokenSocketNotifiers::dataSent()
 {
 	kdebugf();
 
 	Snw->setEnabled(false);
-	if (D->check & GG_CHECK_WRITE)
+	if (H->check & GG_CHECK_WRITE)
 		socketEvent();
+
 	kdebugf2();
 }
 
-void DccSocketNotifiers::socketEvent()
+void TokenSocketNotifiers::socketEvent()
 {
 	kdebugf();
-	kdebugm(KDEBUG_NETWORK|KDEBUG_WARNING, "FIXME: DccSocketNotifiers::socketEvent(): add some code here\n");
+
+	if (gg_token_watch_fd(H) == -1)
+	{
+		deleteSocketNotifiers();
+		emit tokenError();
+		gg_token_free(H);
+		H = NULL;
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "token::socketEvent(): getting token error\n");
+		deleteLater();
+		return;
+	}
+
+	struct gg_pubdir *p = (struct gg_pubdir *)H->data;
+
+	switch (H->state)
+	{
+
+		case GG_STATE_CONNECTING:
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Register::socketEvent(): changing QSocketNotifiers.\n");
+			deleteSocketNotifiers();
+			createSocketNotifiers();
+			if (H->check & GG_CHECK_WRITE)
+				Snw->setEnabled(true);
+			break;
+
+		case GG_STATE_ERROR:
+			deleteSocketNotifiers();
+			emit tokenError();
+			gg_token_free(H);
+			H = NULL;
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "token::socketEvent(): getting token error\n");
+			deleteLater();
+			break;
+
+		case GG_STATE_DONE:
+			deleteSocketNotifiers();
+			if (p->success)
+			{
+				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "token::socketEvent(): success\n");
+
+				struct gg_token *t = (struct gg_token *)H->data;
+				QString tokenId = cp2unicode((unsigned char *)t->tokenid);
+
+				//nie optymalizowac!!!
+				QByteArray buf(H->body_size);
+				for (unsigned int i = 0; i < H->body_size; i++)
+					buf[i] = H->body[i];
+
+				QPixmap tokenImage(buf);
+
+				emit gotToken(tokenId, tokenImage);
+			}
+
+			else
+			{
+				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "token::socketEvent(): getting token error\n");
+				emit tokenError();
+			}
+
+			gg_token_free(H);
+			H = NULL;
+			deleteLater();
+			break;
+
+		default:
+			if (H->check & GG_CHECK_WRITE)
+				Snw->setEnabled(true);
+	}
+
+	kdebugf2();
 }
 
 /* GaduSocketNotifiers */
@@ -1562,12 +1651,73 @@ void GaduProtocol::setPersonalInfo(SearchRecord& searchRecord, SearchResult& new
 	kdebugf2();
 }
 
-/* rejestrowanie uytkownika */
+// -----------------------------
+//      Zarz±dzanie kontem
+// -----------------------------
 
-bool GaduProtocol::doRegister(QString& mail, QString& password, QString& token_id, QString& token_value)
+void GaduProtocol::getToken()
+{
+	TokenSocketNotifiers *sn = new TokenSocketNotifiers();
+	connect(sn, SIGNAL(tokenError()), this, SLOT(tokenError()));
+	connect(sn, SIGNAL(gotToken(QString, QPixmap)), this, SLOT(gotToken(QString, QPixmap)));
+	sn->start();
+}
+
+void GaduProtocol::registerAccount(const QString &mail, const QString &password)
 {
 	kdebugf();
-	struct gg_http *h = gg_register3(unicode2cp(mail).data(), unicode2cp(password).data(), unicode2cp(token_id).data(), unicode2cp(token_value).data(), 1);
+
+	Mode = Register;
+	DataEmail = mail;
+	DataPassword = password;
+	getToken();
+
+	kdebugf2();
+}
+
+void GaduProtocol::unregisterAccount(UinType uin, const QString &password)
+{
+	kdebugf();
+
+	Mode = Unregister;
+	DataUin = uin;
+	DataPassword = password;
+	getToken();
+
+	kdebugf2();
+}
+
+void GaduProtocol::remindPassword(UinType uin)
+{
+	kdebugf();
+
+	Mode = RemindPassword;
+	DataUin = uin;
+	getToken();
+
+	kdebugf2();
+}
+
+void GaduProtocol::changePassword(UinType uin, const QString &mail, const QString &password,
+	const QString &newPassword)
+{
+	kdebugf();
+
+	Mode = ChangePassword;
+	DataUin = uin;
+	DataEmail = mail;
+	DataPassword = password;
+	DataNewPassword = newPassword;
+	getToken();
+
+	kdebugf2();
+}
+
+void GaduProtocol::doRegisterAccount()
+{
+	kdebugf();
+	struct gg_http *h = gg_register3(unicode2cp(DataEmail).data(), unicode2cp(DataPassword).data(),
+		unicode2cp(TokenId).data(), unicode2cp(TokenValue).data(), 1);
 	if (h)
 	{
 		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h);
@@ -1577,35 +1727,30 @@ bool GaduProtocol::doRegister(QString& mail, QString& password, QString& token_i
 	else
 		emit registered(false, 0);
 	kdebugf2();
-	return (h!=NULL);
 }
 
 void GaduProtocol::registerDone(bool ok, struct gg_http *h)
 {
 	kdebugf();
-	if (ok)
-		emit registered(true, ((struct gg_pubdir *)h->data)->uin);
-	else
-		emit registered(false, 0);
+	emit registered(ok, ok ? (((struct gg_pubdir *)h->data)->uin) : 0);
 	kdebugf2();
 }
 
-/* wyrejestrowywanie uytkownika */
-
-bool GaduProtocol::doUnregister(UinType uin, QString &password, QString& token_id, QString& token_value)
+void GaduProtocol::doUnregisterAccount()
 {
 	kdebugf();
-	struct gg_http* h = gg_unregister3(uin, unicode2cp(password).data(), unicode2cp(token_id).data(), unicode2cp(token_value).data(), 1);
+	struct gg_http* h = gg_unregister3(DataUin, unicode2cp(DataPassword).data(), unicode2cp(TokenId).data(),
+		unicode2cp(TokenValue).data(), 1);
 	if (h)
 	{
 		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h);
-		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(unregisterDone(bool, struct gg_http *)));
+		connect(sn, SIGNAL(done(bool, struct gg_http *)),
+			this, SLOT(unregisterDone(bool, struct gg_http *)));
 		sn->start();
 	}
 	else
 		emit unregistered(false);
 	kdebugf2();
-	return (h!=NULL);
 }
 
 void GaduProtocol::unregisterDone(bool ok, struct gg_http *)
@@ -1615,13 +1760,12 @@ void GaduProtocol::unregisterDone(bool ok, struct gg_http *)
 	kdebugf2();
 }
 
-/* przypomnienie hasla */
-
-bool GaduProtocol::doRemind(UinType uin, QString& token_id, QString& token_value)
+void GaduProtocol::doRemindPassword()
 {
 	kdebugf();
 
-	struct gg_http *h = gg_remind_passwd2(uin, unicode2cp(token_id).data(), unicode2cp(token_value).data(), 1);
+	struct gg_http *h = gg_remind_passwd2(DataUin, unicode2cp(TokenId).data(),
+		unicode2cp(TokenValue).data(), 1);
 	if (h)
 	{
 		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h);
@@ -1631,7 +1775,6 @@ bool GaduProtocol::doRemind(UinType uin, QString& token_id, QString& token_value
 	else
 		emit reminded(false);
 	kdebugf2();
-	return (h!=NULL);
 }
 
 void GaduProtocol::remindDone(bool ok, struct gg_http *)
@@ -1641,24 +1784,23 @@ void GaduProtocol::remindDone(bool ok, struct gg_http *)
 	kdebugf2();
 }
 
-/* zmiana hasa */
-
-bool GaduProtocol::doChangePassword(UinType uin, QString& mail, QString& password, QString& new_password, QString& token_id, QString& token_val)
+void GaduProtocol::doChangePassword()
 {
 	kdebugf();
 
-	struct gg_http *h = gg_change_passwd4(uin, unicode2cp(mail).data(), unicode2cp(password).data(),
-			unicode2cp(new_password).data(), unicode2cp(token_id).data(), unicode2cp(token_val).data(), 1);
+	struct gg_http *h = gg_change_passwd4(DataUin, unicode2cp(DataEmail).data(),
+		unicode2cp(DataPassword).data(), unicode2cp(DataNewPassword).data(),
+		unicode2cp(TokenId).data(), unicode2cp(TokenValue).data(), 1);
 	if (h)
 	{
 		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h);
-		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(changePasswordDone(bool, struct gg_http *)));
+		connect(sn, SIGNAL(done(bool, struct gg_http *)), this,
+			SLOT(changePasswordDone(bool, struct gg_http *)));
 		sn->start();
 	}
 	else
 		emit passwordChanged(false);
 	kdebugf2();
-	return (h!=NULL);
 }
 
 void GaduProtocol::changePasswordDone(bool ok, struct gg_http *)
@@ -1668,7 +1810,59 @@ void GaduProtocol::changePasswordDone(bool ok, struct gg_http *)
 	kdebugf2();
 }
 
-/* lista uytkownikï¿½ */
+/* tokeny */
+
+void GaduProtocol::tokenError()
+{
+	kdebugf();
+	switch (Mode)
+	{
+		case Register:
+			emit registered(false, 0);
+			break;
+		case Unregister:
+			emit unregistered(false);
+			break;
+		case RemindPassword:
+			emit reminded(false);
+			break;
+		case ChangePassword:
+			emit passwordChanged(false);
+			break;
+	}
+	kdebugf2();
+}
+
+void GaduProtocol::gotToken(QString tokenId, QPixmap tokenImage)
+{
+	kdebugf();
+
+	QString tokenValue;
+	emit needTokenValue(tokenImage, tokenValue);
+
+	TokenId = tokenId;
+	TokenValue = tokenValue;
+
+	switch (Mode)
+	{
+		case Register:
+			doRegisterAccount();
+			break;
+		case Unregister:
+			doUnregisterAccount();
+			break;
+		case RemindPassword:
+			doRemindPassword();
+			break;
+		case ChangePassword:
+			doChangePassword();
+			break;
+	}
+
+	kdebugf2();
+}
+
+/* lista uytkowników */
 
 QString GaduProtocol::userListToString(const UserList& userList) const
 {
@@ -2005,7 +2199,6 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 	if (user.description)
 		user.description.truncate(0);
 
-//	if (ifStatusWithDescription(e->event.status.status)) {
 	if (descr)
 		user.description.append(cp2unicode((unsigned char *)descr));
 	userlist.changeUserStatus(uin, status);
@@ -2324,252 +2517,6 @@ QPixmap Status::pixmap(eStatus stat, bool desc) const
 {
 	static QPixmap result;
 	return result;
-}
-
-eStatus Status::status() const
-{
-	return Stat;
-}
-
-bool Status::isOnline() const
-{
-	return Stat == Online;
-}
-
-bool Status::isBusy() const
-{
-	return Stat == Busy;
-}
-
-bool Status::isInvisible() const
-{
-	return Stat == Invisible;
-}
-
-bool Status::isOffline() const
-{
-	return Stat == Offline;
-}
-
-bool Status::isOffline(int index)
-{
-	return (index == 6) || (index == 7);
-}
-
-bool Status::hasDescription() const
-{
-	return !Description.isEmpty();
-}
-
-bool Status::isFriendsOnly() const
-{
-	return FriendsOnly;
-}
-
-QString Status::description() const
-{
-	return Description;
-}
-
-int Status::index(eStatus stat, bool desc)
-{
-	return (static_cast<int>(stat) << 1) + (desc ? 1 : 0);
-}
-
-int Status::index() const
-{
-	return (static_cast<int>(Stat) << 1) + (Description.isEmpty() ? 0 : 1);
-}
-
-void Status::setOnline(const QString& desc)
-{
-	if (Stat == Online && Description == desc && !Changed)
-		return;
-
-	Stat = Online;
-	Description = desc;
-	Changed = false;
-
-	emit goOnline(Description);
-	emit changed(*this);
-}
-
-void Status::setBusy(const QString& desc)
-{
-	if (Stat == Busy && Description == desc && !Changed)
-		return;
-
-	Stat = Busy;
-	Description = desc;
-	Changed = false;
-
-	emit goBusy(Description);
-	emit changed(*this);
-}
-
-void Status::setInvisible(const QString& desc)
-{
-	if (Stat == Invisible && Description == desc && !Changed)
-		return;
-
-	Stat = Invisible;
-	Description = desc;
-	Changed = false;
-
-	emit goInvisible(Description);
-	emit changed(*this);
-}
-
-void Status::setOffline(const QString& desc)
-{
-	if (Stat == Offline && Description == desc)
-		return;
-
-	Stat = Offline;
-	Description = desc;
-	Changed = false;
-
-	emit goOffline(Description);
-	emit changed(*this);
-}
-
-void Status::setDescription(const QString& desc)
-{
-	if (Description == desc)
-		return;
-
-	Description = desc;
-
-	switch (Stat)
-	{
-		case Online:
-			emit goOnline(Description);
-			emit changed(*this);
-			break;
-
-		case Busy:
-			emit goBusy(Description);
-			emit changed(*this);
-			break;
-
-		case Invisible:
-			emit goInvisible(Description);
-			emit changed(*this);
-			break;
-
-		case Offline:
-			emit goOffline(Description);
-			emit changed(*this);
-			break;
-	}
-}
-
-void Status::setFriendsOnly(bool f)
-{
-	if (FriendsOnly == f)
-		return;
-
-	FriendsOnly = f;
-	Changed = true;
-
-	switch (Stat)
-	{
-		case Online: setOnline(Description); break;
-		case Busy: setBusy(Description); break;
-		case Invisible: setInvisible(Description); break;
-		case Offline: break;
-	}
-}
-
-void Status::setStatus(const Status& stat)
-{
-	setFriendsOnly(stat.FriendsOnly);
-
-	switch (stat.Stat)
-	{
-		case Online: setOnline(stat.Description); break;
-		case Busy: setBusy(stat.Description); break;
-		case Invisible: setInvisible(stat.Description); break;
-		case Offline: setOffline(stat.Description); break;
-	}
-}
-
-void Status::setIndex(int index, const QString& desc)
-{
-	if (index % 2 == 0)
-		setStatus(static_cast<eStatus>(index >> 1), "");
-	else
-		setStatus(static_cast<eStatus>(index >> 1), desc);
-}
-
-void Status::setStatus(eStatus stat, const QString& desc)
-{
-	switch (stat)
-	{
-		case Online: setOnline(desc); break;
-		case Busy: setBusy(desc); break;
-		case Invisible: setInvisible(desc); break;
-		case Offline: setOffline(desc); break;
-	}
-}
-
-void Status::refresh()
-{
-	Changed = true;
-	setStatus(*this);
-}
-
-eStatus Status::fromString(const QString& stat)
-{
-	if (stat.contains("Online"))
-		return Online;
-	if (stat.contains("Busy"))
-		return Busy;
-	if (stat.contains("Invisible"))
-		return Invisible;
-	return Offline;
-}
-
-QString Status::toString(eStatus stat, bool desc)
-{
-	QString res;
-	switch (stat)
-	{
-		case Online: res.append("Online"); break;
-		case Busy: res.append("Busy"); break;
-		case Invisible: res.append("Invisible"); break;
-		case Offline: res.append("Offline"); break;
-	}
-	if (desc)
-		res.append("WithDescription");
-	return res;
-}
-
-int Status::count()
-{
-	return 9;
-}
-
-int Status::initCount()
-{
-	return 7;
-}
-
-QString Status::name(int nr)
-{
-	static const char * names[] = {
-		QT_TR_NOOP("Online"),
-		QT_TR_NOOP("Online (d.)"),
-		QT_TR_NOOP("Busy"),
-		QT_TR_NOOP("Busy (d.)"),
-		QT_TR_NOOP("Invisible"),
-		QT_TR_NOOP("Invisible (d.)"),
-		QT_TR_NOOP("Offline"),
-		QT_TR_NOOP("Offline (d.)"),
-		QT_TR_NOOP("Blocking")
-	};
-
-	return names[nr];
 }
 
 GaduStatus::GaduStatus()

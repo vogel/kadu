@@ -1811,6 +1811,12 @@ void ImageWidget::setImage(const QByteArray &image)
 	setMinimumSize(Image.width(), Image.height());
 }
 
+void ImageWidget::setImage(const QPixmap &image)
+{
+	Image = image;
+	setMinimumSize(Image.width(), Image.height());
+}
+
 void ImageWidget::paintEvent(QPaintEvent *e)
 {
 	if (!Image.isNull()) {
@@ -1819,124 +1825,18 @@ void ImageWidget::paintEvent(QPaintEvent *e)
 	}
 }
 
-token::token() : QObject() {
-	h = NULL;
-	snr = snw = NULL;
-}
+// -----------------------
+//      TokenDialog
+// -----------------------
 
-token::~token() {
-	deleteSocketNotifiers();
-	if (h) {
-		gg_token_free(h);
-		h = NULL;
-	}
-}
-
-void token::getToken() {
-	kdebugf();
-	if (!(h = gg_token(1))) {
-		emit tokenError();
-		return;
-	}
-	createSocketNotifiers();
-	kdebugf2();
-}
-
-void token::createSocketNotifiers() {
-	kdebugf();
-
-	snr = new QSocketNotifier(h->fd, QSocketNotifier::Read, qApp->mainWidget());
-	QObject::connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
-
-	snw = new QSocketNotifier(h->fd, QSocketNotifier::Write, qApp->mainWidget());
-	QObject::connect(snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
-	kdebugf2();
-}
-
-void token::deleteSocketNotifiers() {
-	kdebugf();
-	if (snr) {
-		snr->setEnabled(false);
-		snr->deleteLater();
-		snr = NULL;
-	}
-	if (snw) {
-		snw->setEnabled(false);
-		snw->deleteLater();
-		snw = NULL;
-	}
-	kdebugf2();
-}
-
-void token::dataReceived() {
-	kdebugf();
-	if (h->check && GG_CHECK_READ)
-		socketEvent();
-	kdebugf2();
-}
-
-void token::dataSent() {
-	kdebugf();
-	snw->setEnabled(false);
-	if (h->check && GG_CHECK_WRITE)
-		socketEvent();
-	kdebugf2();
-}
-
-void token::socketEvent() {
-	kdebugf();
-	if (gg_token_watch_fd(h) == -1) {
-		deleteSocketNotifiers();
-		emit tokenError();
-		gg_token_free(h);
-		h = NULL;
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "token::socketEvent(): getting token error\n");
-		return;
-	}
-
-	struct gg_pubdir *p = (struct gg_pubdir *)h->data;
-	switch (h->state) {
-		case GG_STATE_CONNECTING:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Register::socketEvent(): changing QSocketNotifiers.\n");
-			deleteSocketNotifiers();
-			createSocketNotifiers();
-			if (h->check & GG_CHECK_WRITE)
-				snw->setEnabled(true);
-			break;
-		case GG_STATE_ERROR:
-			deleteSocketNotifiers();
-			emit tokenError();
-			gg_token_free(h);
-			h = NULL;
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "token::socketEvent(): getting token error\n");
-			break;
-		case GG_STATE_DONE:
-			deleteSocketNotifiers();
-			if (p->success) {
-				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "token::socketEvent(): success\n");
-				emit gotToken(h);
-			}
-			else {
-				kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "token::socketEvent(): getting token error\n");
-				emit tokenError();
-			}
-			gg_token_free(h);
-			h = NULL;
-			break;
-		default:
-			if (h->check & GG_CHECK_WRITE)
-				snw->setEnabled(true);
-	}
-	kdebugf2();
-}
-
-TokenDialog::TokenDialog(QDialog *parent, const char *name)
-	: QDialog(parent, name) {
+TokenDialog::TokenDialog(QPixmap tokenImage, QDialog *parent, const char *name)
+	: QDialog(parent, name)
+{
 	kdebugf();
 	QGridLayout *grid = new QGridLayout(this, 3, 2, 6, 5);
 
 	QLabel *l_tokenimage = new QLabel(tr("Read this code ..."), this);
-	tokenimage = new ImageWidget(this);
+	ImageWidget *tokenimage = new ImageWidget(this);
 
 	QLabel *l_tokenedit = new QLabel(tr("and type here"), this);
 	tokenedit = new QLineEdit(this);
@@ -1953,43 +1853,18 @@ TokenDialog::TokenDialog(QDialog *parent, const char *name)
 	grid->addWidget(b_ok, 2, 0);
 	grid->addWidget(b_cancel, 2, 1);
 
-	connect(&Token, SIGNAL(gotToken(struct gg_http *)), this, SLOT(gotTokenReceived(struct gg_http *)));
-	connect(&Token, SIGNAL(tokenError()), this, SLOT(tokenErrorReceived()));
-	Token.getToken();
+	tokenimage->setImage(tokenImage);
+
 	show();
 	b_cancel->setDefault(false);
 	b_ok->setDefault(true);
-	setEnabled(false);
 	kdebugf2();
 }
 
-void TokenDialog::getToken(QString &Tokenid, QString &Tokenval) {
-	Tokenid = tokenid;
-	Tokenval = tokenedit->text();
+void TokenDialog::getValue(QString &tokenValue) {
+	tokenValue = tokenedit->text();
 }
 
-void TokenDialog::gotTokenReceived(struct gg_http *h) {
-	kdebugf();
-	struct gg_token *t = (struct gg_token *)h->data;
-	tokenid = cp2unicode((unsigned char *)t->tokenid);
-
-	//nie optymalizowac!!!
-	QByteArray buf(h->body_size);
-	for (unsigned int i = 0; i < h->body_size; i++)
-		buf[i] = h->body[i];
-
-	tokenimage->setImage(buf);
-	setEnabled(true);
-	tokenedit->setFocus();
-	kdebugf2();
-}
-
-void TokenDialog::tokenErrorReceived() {
-	kdebugf();
-	setEnabled(true);
-	done(-1);
-	kdebugf2();
-}
 
 Themes::Themes(const QString& themename, const QString& configname, const char *name) : QObject(NULL, name)
 {

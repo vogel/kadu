@@ -12,6 +12,7 @@
 #include <qlistbox.h>
 
 #include "libgadu.h"
+#include "status.h"
 
 typedef uin_t UinType;
 
@@ -131,8 +132,8 @@ class SocketNotifiers : public QObject
 	public:
 		SocketNotifiers(int);
 		virtual ~SocketNotifiers();
-		void start();
-		void stop();
+		virtual void start();
+		virtual void stop();
 };
 
 class PubdirSocketNotifiers : public SocketNotifiers
@@ -157,12 +158,12 @@ class PubdirSocketNotifiers : public SocketNotifiers
 		void done(bool ok, struct gg_http *);
 };
 
-class DccSocketNotifiers : public SocketNotifiers
+class TokenSocketNotifiers : public SocketNotifiers
 {
 	Q_OBJECT
 
 	private:
-		struct gg_dcc *D;
+		struct gg_http *H;
 
 	protected:
 		virtual void socketEvent();
@@ -172,9 +173,14 @@ class DccSocketNotifiers : public SocketNotifiers
 		virtual void dataSent();
 
 	public:
-		DccSocketNotifiers(struct gg_dcc *);
-		virtual ~DccSocketNotifiers();
+		TokenSocketNotifiers();
+		virtual ~TokenSocketNotifiers();
 
+		virtual void start();
+
+	signals:
+		void gotToken(QString, QPixmap);
+		void tokenError();
 };
 
 typedef enum
@@ -234,75 +240,6 @@ class GaduSocketNotifiers : public SocketNotifiers
 //             Status
 // ------------------------------------
 
-enum eStatus
-{
-	Online,
-	Busy,
-	Invisible,
-	Offline
-};
-
-class Status : public QObject
-{
-	Q_OBJECT
-
-	private:
-		bool Changed;
-
-	protected:
-		eStatus Stat;
-		QString Description;
-		bool FriendsOnly;
-
-	public:
-		Status();
-		virtual ~Status();
-
-		bool isOnline() const;
-		bool isBusy() const;
-		bool isInvisible() const;
-		bool isOffline() const;
-		static bool isOffline(int index);
-		bool hasDescription() const;
-		bool isFriendsOnly() const;
-		QString description() const;
-		eStatus status() const;
-
-		int index() const;
-		static int index(eStatus stat, bool has_desc);
-
-		virtual QPixmap pixmap() const;
-		virtual QPixmap pixmap(const Status &) const;
-		virtual QPixmap pixmap(eStatus stat, bool has_desc) const;
-
-		static eStatus fromString(const QString& stat);
-		static QString toString(eStatus stat, bool has_desc);
-
-		static int count();
-		static int initCount();
-		static QString name(int nr);
-
-		void refresh();
-
-	public slots:
-		void setOnline(const QString& desc = "");
-		void setBusy(const QString& desc = "");
-		void setInvisible(const QString& desc = "");
-		void setOffline(const QString& desc = "");
-		void setDescription(const QString& desc = "");
-		void setStatus(const Status& stat);
-		void setStatus(eStatus stat, const QString& desc = "");
-		void setIndex(int index, const QString& desc = "");
-		void setFriendsOnly(bool f);
-
-	signals:
-		void goOnline(const QString& desc);
-		void goBusy(const QString& desc);
-		void goInvisible(const QString& desc);
-		void goOffline(const QString& desc);
-		void changed(const Status& status);
-};
-
 class GaduStatus : public Status
 {
 	Q_OBJECT
@@ -324,6 +261,21 @@ class GaduProtocol : public QObject
 	Q_OBJECT
 
 	private:
+
+		enum {
+			Register,
+			Unregister,
+			RemindPassword,
+			ChangePassword
+		} Mode;
+
+		UinType DataUin;
+		QString DataEmail;
+		QString DataPassword;
+		QString DataNewPassword;
+		QString TokenId;
+		QString TokenValue;
+
 		static QValueList<QHostAddress> ConfigServers;
 
 		struct gg_login_params LoginParams;
@@ -356,11 +308,21 @@ class GaduProtocol : public QObject
 		void login();
 		void logout();
 
+		void getToken();
+
+		void doRegisterAccount();
+		void doUnregisterAccount();
+		void doRemindPassword();
+		void doChangePassword();
+
 	private slots:
 		void registerDone(bool ok, struct gg_http *);
 		void unregisterDone(bool ok, struct gg_http *);
 		void remindDone(bool ok, struct gg_http *);
 		void changePasswordDone(bool ok, struct gg_http *);
+
+		void tokenError();
+		void gotToken(QString, QPixmap);
 
 		void connectedSlot();
 		void disconnectedSlot();
@@ -405,7 +367,6 @@ class GaduProtocol : public QObject
 		void enableAutoConnection();
 		void disableAutoConnection();
 
-//		StatusType getCurrentStatus();
 		void blockUser(const UinType&, bool);
 		void offlineToUser(const UinType&, bool);
 		void addNotify(const UinType&);
@@ -438,26 +399,14 @@ class GaduProtocol : public QObject
 		bool sendImageRequest(UinType uin,int size,uint32_t crc32);
 		bool sendImage(UinType uin,const QString& file_name,uint32_t size,char* data);
 
-
 		/**
-		 	Rejestruje nowego uytkownika
+			Zarz±dzanie kontem
 		**/
-		bool doRegister(QString& mail, QString& password, QString& token_id, QString& token_val);
-
-		/**
-		 	Wyrejestrowuje uytkownika
-		**/
-		bool doUnregister(UinType uin, QString& password, QString& token_id, QString& token_val);
-
-		/**
-		  	Przypomina haso
-		**/
-		bool doRemind(UinType uin, QString& token_id, QString& token_val);
-
-		/**
-		  	Zmienia haso
-		**/
-		bool doChangePassword(UinType uin, QString& mail, QString& password, QString& new_password, QString& token_id, QString& token_val);
+		void registerAccount(const QString &mail, const QString &password);
+		void unregisterAccount(UinType uin, const QString &password);
+		void remindPassword(UinType uin);
+		void changePassword(UinType uin, const QString &mail, const QString &password,
+			const QString &newPassword);
 
 		/**
 			Wysya userlist na serwer
@@ -475,11 +424,6 @@ class GaduProtocol : public QObject
 		bool doImportUserList();
 
 		void sendUserList();
-
-		/**
-			Zmieniamy sobie status
-		**/
-		//void setStatus(StatusType status);
 
 		/**
 		  	Szuka ludzi w katalogu publicznym
@@ -586,6 +530,11 @@ class GaduProtocol : public QObject
 		void chatMsgReceived0(UinsList senders,const QString& msg,time_t time,bool& grab);
 		void chatMsgReceived1(UinsList senders,const QString& msg,time_t time,bool& grab);
 		void chatMsgReceived2(UinsList senders,const QString& msg,time_t time);
+
+		/**
+			Wywo³ywane, gdy chcemy odczytaæ token z obrazka
+		**/
+		void needTokenValue(QPixmap, QString &);
 
 };
 

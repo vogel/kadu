@@ -242,50 +242,18 @@ class ImageWidget : public QWidget
 		ImageWidget(QWidget *parent);
 		ImageWidget(QWidget *parent,const QByteArray &image);
 		void setImage(const QByteArray &image);
-};
-
-class token : public QObject {
-	Q_OBJECT
-
-	public:
-		token();
-		~token();
-		void getToken();
-
-	private:
-		struct gg_http *h;
-		QSocketNotifier *snr;
-		QSocketNotifier *snw;
-
-		void deleteSocketNotifiers();
-		void createSocketNotifiers();
-
-	private slots:
-		void socketEvent();
-		void dataReceived();
-		void dataSent();
-
-	signals:
-		void gotToken(struct gg_http *h);
-		void tokenError();
+		void setImage(const QPixmap &image);
 };
 
 class TokenDialog : public QDialog {
 	Q_OBJECT
 
 	public:
-		TokenDialog(QDialog *parent = 0, const char *name = 0);
-		void getToken(QString &Tokenid, QString &Tokenval);
-
-	private slots:
-		void gotTokenReceived(struct gg_http *h);
-		void tokenErrorReceived();
+		TokenDialog(QPixmap tokenImage, QDialog *parent = 0, const char *name = 0);
+		void getValue(QString &tokenValue);
 
 	private:
-		token Token;
-		ImageWidget *tokenimage;
 		QLineEdit *tokenedit;
-		QString tokenid;
 };
 
 class Themes : public QObject

@@ -37,7 +37,7 @@ void Register::createConfig() {
 		home = pw->pw_dir;
 		}
 
-	struct stat buf;	
+	struct stat buf;
 	QString ggpath = ggPath("");
 	stat(ggpath.local8Bit(), &buf);
 	if (S_ISDIR(buf.st_mode))
@@ -51,7 +51,7 @@ void Register::createConfig() {
 		}
 
 	kdebugm(KDEBUG_INFO, "Register::createConfig(): Writing config files...\n");
-//	hmm wydaje mi sie ze przy obecnym config_file nie potrzebne jest to 
+//	hmm wydaje mi sie ze przy obecnym config_file nie potrzebne jest to
 //	config_file.setGroup("General");
 //	config_file.writeEntry("UIN", int(config.uin));
 //	config_file.writeEntry("Password", pwHash(config.password));
@@ -67,26 +67,26 @@ Register::Register(QDialog *parent, const char *name)
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Register user"));
-	
+
 	// create main QLabel widgets (icon and app info)
 	QVBox *left=new QVBox(this);
 	left->setMargin(10);
 	left->setSpacing(10);
-	
+
 	QLabel *l_icon = new QLabel(left);
 	QWidget *blank=new QWidget(left);
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
-	
+
 	QVBox *center=new QVBox(this);
 	center->setMargin(10);
 	center->setSpacing(10);
-	
+
 	QLabel *l_info = new QLabel(center);
 	l_icon->setPixmap(icons_manager.loadIcon("RegisterWindowIcon"));
 	l_info->setText(tr("This dialog box allows you to register a new account."));
 	l_info->setAlignment(Qt::WordBreak);
 	// end create main QLabel widgets (icon and app info)
-	
+
 	//our QVGroupBox
 	QVGroupBox *vgb_email = new QVGroupBox(center);
 	vgb_email->setTitle(tr("Email"));
@@ -94,16 +94,16 @@ Register::Register(QDialog *parent, const char *name)
 	vgb_password->setTitle(tr("Password"));
 	center->setStretchFactor(vgb_password, 1);
 	//end our QGroupBox
-	
+
 	// create needed fields
-	
+
 	new QLabel(tr("New email:"), vgb_email);
 	mailedit = new QLineEdit(vgb_email);
-	
+
 	new QLabel(tr("New password:"), vgb_password);
 	pwd = new QLineEdit(vgb_password);
 	pwd->setEchoMode(QLineEdit::Password);
-	
+
 	new QLabel(tr("Retype new password:"), vgb_password);
 	pwd2 = new QLineEdit(vgb_password);
 	pwd2->setEchoMode(QLineEdit::Password);
@@ -113,7 +113,7 @@ Register::Register(QDialog *parent, const char *name)
 	cb_updateconfig->setChecked(center);
 	cb_updateconfig->setText(tr("Create config file"));
 	QToolTip::add(cb_updateconfig, tr("Write the newly obtained UIN and password into a clean configuration file\nThis will erase your current config file contents if you have one"));
-	
+
 	// buttons
 	QHBox *bottom = new QHBox(center);
 	QWidget *blank2 = new QWidget(bottom);
@@ -122,11 +122,11 @@ Register::Register(QDialog *parent, const char *name)
 	QPushButton *pb_register = new QPushButton(icons_manager.loadIcon("RegisterAccountButton"), tr("Register"), bottom, "register");
 	QPushButton *pb_close = new QPushButton(icons_manager.loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	// end buttons
-	
+
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 	connect(pb_register, SIGNAL(clicked()), this, SLOT(doRegister()));
 	connect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registered(bool, UinType)));
-	
+
  	loadGeometry(this, "General", "RegisterDialogGeometry", 0, 0, 400, 400);
 	kdebugf2();
 }
@@ -146,8 +146,8 @@ void Register::keyPressEvent(QKeyEvent *ke_event)
 
 void Register::doRegister() {
 	kdebugf();
-	
-	if (pwd->text() != pwd2->text()) 
+
+	if (pwd->text() != pwd2->text())
 	{
 		QMessageBox::information(0, tr("Register user"),
 				tr("Error data typed in required fields.\n\nPasswords typed in "
@@ -156,28 +156,19 @@ void Register::doRegister() {
 		return;
 	}
 
-	if (!pwd->text().length()) 
+	if (!pwd->text().length())
 	{
 		QMessageBox::warning(this, "Kadu", tr("Please fill out all fields"), tr("OK"), 0, 0, 1);
 		return;
 	}
 
-	TokenDialog *tokendialog = new TokenDialog();
-	if (tokendialog->exec() != QDialog::Accepted) 
-	{
-		delete tokendialog;
-		return;
-	}
-	
-	QString Password, Email, Tokenid, Tokenval;
-	tokendialog->getToken(Tokenid, Tokenval);
-	delete tokendialog;
+	QString Password, Email;
 
 	Password = pwd->text();
 	Email = mailedit->text();
 
-	if (gadu->doRegister(Password, Email, Tokenid, Tokenval))
-		setEnabled(false);
+	setEnabled(false);
+	gadu->registerAccount(Email, Password);
 	kdebugf2();
 }
 
@@ -185,7 +176,7 @@ void Register::registered(bool ok, UinType uin)
 {
 	kdebugf();
 	if (ok)
-	{	
+	{
 		this->uin = uin;
 		QMessageBox::information(this, "Kadu", tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(uin), tr("OK"), 0, 0, 1);
 		ask();

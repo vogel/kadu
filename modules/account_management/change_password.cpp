@@ -24,26 +24,26 @@ ChangePassword::ChangePassword(QDialog *parent, const char *name)
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Change password/email"));
-	
+
 	// create main QLabel widgets (icon and app info)
 	QVBox *left=new QVBox(this);
 	left->setMargin(10);
 	left->setSpacing(10);
-	
+
 	QLabel *l_icon = new QLabel(left);
 	QWidget *blank=new QWidget(left);
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
-	
+
 	QVBox *center=new QVBox(this);
 	center->setMargin(10);
 	center->setSpacing(10);
-	
+
 	QLabel *l_info = new QLabel(center);
 	l_icon->setPixmap(icons_manager.loadIcon("ChangePasswordWindowIcon"));
 	l_info->setText(tr("This dialog box allows you to change your current password or e-mail."));
 	l_info->setAlignment(Qt::WordBreak);
 	// end create main QLabel widgets (icon and app info)
-	
+
 	//our QVGroupBox
 	QVGroupBox *vgb_email = new QVGroupBox(center);
 	vgb_email->setTitle(tr("Email"));
@@ -51,16 +51,16 @@ ChangePassword::ChangePassword(QDialog *parent, const char *name)
 	vgb_password->setTitle(tr("Password"));
 	center->setStretchFactor(vgb_password, 1);
 	//end our QGroupBox
-	
+
 	// create needed fields
-	
+
 	new QLabel(tr("New email:"), vgb_email);
 	emailedit = new QLineEdit(vgb_email);
-	
+
 	new QLabel(tr("New password:"), vgb_password);
 	newpwd = new QLineEdit(vgb_password);
 	newpwd->setEchoMode(QLineEdit::Password);
-	
+
 	new QLabel(tr("Retype new password:"), vgb_password);
 	newpwd2 = new QLineEdit(vgb_password);
 	newpwd2->setEchoMode(QLineEdit::Password);
@@ -75,10 +75,10 @@ ChangePassword::ChangePassword(QDialog *parent, const char *name)
 	QPushButton *pb_ok = new QPushButton(icons_manager.loadIcon("ChangePasswordEmailButton"), tr("OK"), bottom, "ok");
 	QPushButton *pb_close = new QPushButton(icons_manager.loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	// end buttons
-	
+
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 	connect(pb_ok, SIGNAL(clicked()), this, SLOT(start()));
-	
+
  	loadGeometry(this, "General", "ChangePasswordDialogGeometry", 0, 0, 355, 300);
 	connect(gadu, SIGNAL(passwordChanged(bool)), this, SLOT(passwordChanged(bool)));
 	kdebugf2();
@@ -97,7 +97,7 @@ void ChangePassword::keyPressEvent(QKeyEvent *ke_event)
 		close();
 }
 
-void ChangePassword::start() 
+void ChangePassword::start()
 {
 	kdebugf();
 
@@ -110,23 +110,12 @@ void ChangePassword::start()
 		return;
 	}
 
-	TokenDialog *tokendialog = new TokenDialog();
-	if (tokendialog->exec() != QDialog::Accepted)
-	{
-		delete tokendialog;
-		return;
-	}
-
-	QString Tokenid, Tokenval;
-	tokendialog->getToken(Tokenid, Tokenval);
-	delete tokendialog;
-
 	QString mail = emailedit->text();
 	QString password = QString(pwHash(config_file.readEntry("General", "Password")));
 	QString newpassword = (newpwd->text().length() ? newpwd->text() : password);
-	
-	if (gadu->doChangePassword(config_file.readNumEntry("General", "UIN"), mail, password, newpassword, Tokenid, Tokenval))
-		setEnabled(false);
+
+	setEnabled(false);
+	gadu->changePassword(config_file.readNumEntry("General", "UIN"), mail, password, newpassword);
 	kdebugf2();
 }
 

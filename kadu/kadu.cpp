@@ -493,6 +493,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(gadu, SIGNAL(goOffline(const QString &)), this, SLOT(wentOffline(const QString &)));
 	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
 		this, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
+	connect(gadu, SIGNAL(needTokenValue(QPixmap, QString &)),
+		this, SLOT(readTokenValue(QPixmap, QString &)));
 	connect(gadu, SIGNAL(systemMessageReceived(QString &)), this, SLOT(systemMessageReceived(QString &)));
 	connect(gadu, SIGNAL(userListChanged()), this, SLOT(userListChanged()));
 	connect(gadu, SIGNAL(userStatusChanged(UserListElement&, int)),
@@ -1782,14 +1784,18 @@ void Kadu::startupProcedure()
 				statusIndex = -1;
 		}
 	}
-	if (statusIndex == -1)
-		statusIndex = Status::index(Offline, false);
 	// END: wsteczna kombatybilno¶æ, do wywalenia w 0.5.x
 
-	if (!Status::isOffline(statusIndex))
+	if (statusIndex == -1)
+		status.setOffline(descr);
+	else
+		status.setIndex(statusIndex, descr);
+	status.setFriendsOnly(config_file.readBoolEntry("General", "PrivateStatus") == 1);
+
+	if (!status.isOffline())
 	{
 		Autohammer = true;
-		gadu->status().setIndex(statusIndex, descr);
+		gadu->status().setStatus(status);
 	}
 	kdebugf2();
 }
@@ -1848,4 +1854,16 @@ void Kadu::showStatusOnMenu(int statusNr)
 	UserBox::all_refresh();
 
 	emit statusPixmapChanged(pix);
+}
+
+void Kadu::readTokenValue(QPixmap tokenImage, QString &tokenValue)
+{
+	TokenDialog *td = new TokenDialog(tokenImage);
+
+	if (td->exec() == QDialog::Accepted)
+		td->getValue(tokenValue);
+	else
+		tokenValue = "";
+
+	delete td;
 }
