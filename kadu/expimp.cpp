@@ -114,7 +114,8 @@ void UserlistImport::updateUserlist() {
 	
 	i = 0;
 	while (i < userlist.count()) {
-		gg_remove_notify(&sess, userlist[i].uin);
+		if (userlist[i].uin)
+			gg_remove_notify(&sess, userlist[i].uin);
 		i++;
 		}
 
@@ -129,7 +130,8 @@ void UserlistImport::updateUserlist() {
 	UserBox::all_refresh();
 
 	for (i = 0; i < userlist.count(); i++)
-		gg_add_notify(&sess, userlist[i].uin);
+		if (userlist[i].uin)
+			gg_add_notify(&sess, userlist[i].uin);
 
 	uin_t *uins;
 	uins = (uin_t *) malloc(userlist.count() * sizeof(uin_t));
@@ -220,6 +222,8 @@ void UserlistImport::socketEvent() {
 				tmparray[3], tmparray[4], tmparray[6], GG_STATUS_NOT_AVAIL,
 				tmparray[5]);
 
+			if (tmparray[6] == "0")
+				tmparray[6].truncate(0);	
 			qlv = new QListViewItem(results, tmparray[6], tmparray[2], tmparray[3],
 				tmparray[0], tmparray[1], tmparray[4], tmparray[5]);
 
