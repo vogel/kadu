@@ -6,6 +6,7 @@
  */
 #include <qbitmap.h>
 #include <qtooltip.h>
+#include <qcheckbox.h>
 
 #include "desktopdock.h"
 #include "config_file.h"
@@ -167,7 +168,7 @@ void DesktopDockWindow::onCreateConfigDialog()
 		->setEnabled(!config_file.readBoolEntry("Desktop Dock", "DockingTransparency"));
 
 	QCheckBox *b_transparent=ConfigDialog::getCheckBox("Desktop Dock", "Transparent");	/* podpiecie pod zmiane CheckBoxa */
-	connect(b_transparent, SIGNAL(toggled(bool)), this, SLOT(enableColorButton(bool)));	
+	connect(b_transparent, SIGNAL(toggled(bool)), this, SLOT(enableColorButton(bool)));
 	kdebugf2();
 }
 
