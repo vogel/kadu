@@ -811,6 +811,7 @@ void EventConfigSlots::initModule()
 	ConfigDialog::addVGroupBox("Network", "Network", "DCC forwarding properties");
 	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", "External IP address:", "ExternalIP");
 	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", "External TCP port:", "ExternalPort", "0");
+	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", "Local TCP port:", "LocalPort", "1550");
 
 	ConfigDialog::addVGroupBox("Network", "Network", "Servers properties");
 	ConfigDialog::addGrid("Network", "Servers properties", "servergrid", 2);

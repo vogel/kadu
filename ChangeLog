@@ -8,6 +8,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   moze powinnismy zmienic nazwe projektu na FastKadu? ;) (adrian)
 * zaaplikowany patch nazgula powodujacy zapamietywanie przez Kadu
   ostatnio wybranej grupy kontaktow po restarcie (adrian)
+* zaaplikowany patch michala umozliwiajacy zmiane numeru portu
+  nasluchujacego polaczen bezposrednich DCC (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

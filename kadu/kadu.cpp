@@ -1089,7 +1089,7 @@ void Kadu::prepareDcc(void) {
 	else
 		dccip = config_dccip;
 
-	dccsock = gg_dcc_socket_create(config_file.readNumEntry("General", "UIN"), 0);
+	dccsock = gg_dcc_socket_create(config_file.readNumEntry("General", "UIN"), config_file.readNumEntry("Network", "LocalPort", 1550));
 
 	if (!dccsock) {
 		kdebug("Kadu::prepareDcc(): Couldn't bind DCC socket.\n");
