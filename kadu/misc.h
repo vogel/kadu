@@ -13,6 +13,7 @@
 #include <qlineedit.h>
 #include <qimage.h>
 #include <qstringlist.h>
+#include <qsocket.h>
 
 #include "libgadu.h"
 #include "userlist.h"
@@ -66,6 +67,42 @@ class ChooseDescription : public QDialog {
 
 };
 
+class HttpClient : public QObject
+{
+	Q_OBJECT
+	
+	private:
+		QSocket Socket;
+		QString Host;
+		QString Referer;
+		QString Path;
+		QByteArray Data;
+		QByteArray PostData;
+		int Status;
+		bool HeaderParsed;
+		int ContentLength;
+		QMap<QString,QString> Cookies;
+		
+	private slots:
+		void onConnected();
+		void onReadyRead();
+		void onConnectionClosed();
+		
+	public:
+		HttpClient();
+		void setHost(QString host);
+		void get(QString path);
+		void post(QString path,const QByteArray& data);
+		void post(QString path,const QString& data);
+		int status();
+		const QByteArray& data();
+		QString encode(const QString& text);
+		
+	signals:
+		void finished();
+		void redirected(QString link);
+		void error();
+};
 
 /**
 	Klasa reprezentuj±ca dokument html. Przechowuje

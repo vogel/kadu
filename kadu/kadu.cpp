@@ -47,7 +47,6 @@
 #include "userinfo.h"
 #include "personal_info.h"
 #include "register.h"
-#include "sms.h"
 #include "about.h"
 #include "ignore.h"
 #include "hints.h"
@@ -230,8 +229,6 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 		if (Userbox->getSelectedAltNicks().count() == 1)
 			showUserInfo();
 	}
-	else if (HotKey::shortCut(e,"ShortCuts", "kadu_sendsms"))
-		sendSmsToUser();
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_viewhistory"))
 		viewHistory();
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
@@ -306,7 +303,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Add user", "kadu_adduser", "Ctrl+N");
 
 
-	Sms::initModule();
 	Chat::initModule();
 	UserBox::initModule();
 	History::initModule();
@@ -423,9 +419,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	// popupmenu
 	UserBox::userboxmenu->addItem(tr("Open chat window") ,this, SLOT(openChat()));
-	UserBox::userboxmenu->addItem("SendSms", tr("Send SMS"), this, SLOT(sendSmsToUser()),
-		HotKey::shortCutFromFile("ShortCuts", "kadu_sendsms"));
-
 
 	UserBox::userboxmenu->addItem("SendFile", tr("Send file"), this,
 		SLOT(sendFile()), HotKey::shortCutFromFile("ShortCuts", "kadu_sendfile"));
@@ -623,29 +616,6 @@ void Kadu::configure()
 {
 	ConfigDialog::showConfigDialog(qApp);
 }
-
-void Kadu::sendSms()
-{
-	Sms *sms = new Sms("", 0);
-	sms->show();
-}
-
-void Kadu::sendSmsToUser()
-{
-	UserList users;
-	UserBox *activeUserBox=UserBox::getActiveUserBox();
-	if (activeUserBox==NULL)
-		return;
-	users= activeUserBox->getSelectedUsers();
-	if (users.count() != 1)
-		return;
-	if (users.first().mobile.length())
-	{
-		Sms *sms = new Sms(users.first().altnick, 0);
-		sms->show();
-	}
-}
-
 
 void Kadu::viewHistory() {
 	UserBox *activeUserBox=UserBox::getActiveUserBox();
@@ -1133,10 +1103,6 @@ void Kadu::mouseButtonClicked(int button, QListBoxItem *item) {
 
 	if (button !=4 || !item)
 		return;
-	UserListElement user;
-	user = userlist.byAltNick(item->text());
-	if (user.mobile.length())
-		sendSmsToUser();
 }
 
 
@@ -1152,8 +1118,8 @@ void Kadu::sendMessage(QListBoxItem *item)
 		if (uins.findIndex(config_file.readNumEntry("General", "UIN")) == -1)
 			chat_manager->sendMessage(uin, uins);
 	}
-	else
-		sendSmsToUser();
+
+	emit userDblClicked(userlist.byAltNick(item->text()));
 }
 
 /* when we want to change the status */
@@ -1688,7 +1654,6 @@ void Kadu::createMenu() {
 	MainMenu->insertItem(tr("I&mport userlist"), this, SLOT(importUserlist()));
 	MainMenu->insertItem(tr("E&xport userlist"), this, SLOT(exportUserlist()));
 	MainMenu->insertItem(icons_manager.loadIcon("AddUser"), tr("&Add user"), this, SLOT(addUserAction()),HotKey::shortCutFromFile("ShortCuts", "kadu_adduser"));
-	MainMenu->insertItem(tr("Send SMS"), this,SLOT(sendSms()));
 	MainMenu->insertSeparator();
 	MainMenu->insertItem(tr("H&elp"), this, SLOT(help()));
 	MainMenu->insertItem(tr("A&bout..."), this, SLOT(about()));

@@ -204,6 +204,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * przy sprawdzaniu zale¿no¶ci i blokady powtórnego uruchamiania modu³u
   uwzglêdniane s± modu³y wkompilowane statycznie w kadu (adrian)
 * problem z kompilacj± modu³u powoduje przerwanie procesu budowania kadu (adrian)
+* bramki SMS sa wydzielowe do modulow (michal)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

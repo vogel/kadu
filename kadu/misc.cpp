@@ -11,6 +11,7 @@
 #include <qpainter.h>
 #include <qaccel.h>
 #include <qprocess.h>
+#include <qurl.h>
 
 #include <pwd.h>
 #include <unistd.h>
@@ -895,7 +896,6 @@ void IconsManager::initModule()
 
 	ConfigDialog::addTab("General");
 	ConfigDialog::addTab("ShortCuts");
-	ConfigDialog::addTab("SMS");
 	ConfigDialog::addTab("Chat");
 	ConfigDialog::addTab("Look");
 	ConfigDialog::addHBox("Look", "Look", "icon_theme");
@@ -929,6 +929,223 @@ void IconsManager::changed(const QString& theme)
 }
 
 IconsManager icons_manager("icons", "icons.conf");
+/********** HttpClient **********/
+
+HttpClient::HttpClient()
+{
+	connect(&Socket,SIGNAL(connected()),this,SLOT(onConnected()));
+	connect(&Socket,SIGNAL(readyRead()),this,SLOT(onReadyRead()));
+	connect(&Socket,SIGNAL(connectionClosed()),this,SLOT(onConnectionClosed()));
+};
+
+void HttpClient::onConnected()
+{
+	QString query = (PostData.size() > 0 ? "POST" : "GET");
+	query += " ";
+	if ((Path == "" || Path[0] != '/')&&Path.left(7)!="http://")
+		query += '/';
+	query += Path;
+	query += " HTTP/1.1\r\n";
+	query += "Host: " + Host + "\r\n";
+	query += "User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4) Gecko/20030617\r\n";
+//	query += "Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8\r\n";
+//	query += "Connection: keep-alive\r\n";
+	if(Referer!="")
+		query += "Referer: "+Referer+"\r\n";
+	if (Cookies.size() > 0) {
+		query += "Cookie: ";
+
+		QValueList<QString> keys;
+		for (QMap<QString, QString>::const_iterator it = Cookies.begin(); it != Cookies.end(); ++it)
+			keys.append(it.key());
+		
+//		wywolanie Cookies.keys() zostaje na lepsze czasu jak juz
+//		wszyscy beda mieli Qt >= 3.0.5		
+//    		for(int i=0; i<Cookies.keys().size(); i++)
+		for (int i = 0; i < keys.size(); i++) {
+			if (i > 0)
+				query+="; ";
+//			query+=Cookies.keys()[i]+"="+Cookies[Cookies.keys()[i]];
+			query += keys[i] + "=" + Cookies[keys[i]];
+			}
+		query+="\r\n";
+		}
+	if (PostData.size() > 0) {
+		query += "Content-Type: application/x-www-form-urlencoded\r\n";
+		query += "Content-Length: " + QString::number(PostData.size()) + "\r\n";
+		}
+	query+="\r\n";
+	if (PostData.size() > 0)
+		query += QString(PostData);
+	kdebug("HttpClient: Sending query:\n%s\n", query.local8Bit().data());
+	Socket.writeBlock(query.local8Bit().data(), query.length());
+};
+
+void HttpClient::onReadyRead()
+{
+	int size=Socket.bytesAvailable();
+	kdebug("HttpClient: Data Block Retreived: %i bytes\n",size);
+	// Dodaj nowe dane do starych
+	char buf[size];
+	Socket.readBlock(buf,size);
+	//
+//	kdebug("%s\n",buf);
+	//
+	int old_size=Data.size();
+	Data.resize(old_size+size);
+	for(int i=0; i<size; i++)
+		Data[old_size+i]=buf[i];
+	// Jesli nie mamy jeszcze naglowka
+	if(!HeaderParsed)
+	{	
+		kdebug("HttpClient: Trying to parse header\n");
+		// Kontynuuj odczyt jesli naglowek niekompletny
+		QString s=QString(Data);
+		int p=s.find("\r\n\r\n");
+		if(p<0)
+			return;
+		// Dostalismy naglowek, 
+		kdebug("HttpClient: Http header found:\n%s\n",s.local8Bit().data());		
+		HeaderParsed=true;
+		// Wyci±gamy status
+		QRegExp status_regexp("HTTP/1\\.[01] (\\d+)");
+		if(status_regexp.search(s)<0)
+		{
+			Socket.close();
+			emit error();
+			return;
+		};
+		Status=status_regexp.cap(1).toInt();
+		kdebug("HttpClient: Status: %i\n",Status);
+		// Status 302 oznacza przekierowanie.
+		if(Status==302)
+		{
+			QRegExp location_regexp("Location: ([^\\r\\n]+)");
+			if(location_regexp.search(s)<0)
+			{
+				Socket.close();
+				emit error();
+				return;
+			};
+			QString location=location_regexp.cap(1);
+			kdebug("Jumping to %s\n",location.local8Bit().data());
+			// czekamy. zbyt szybkie przekierowanie konczy sie
+			// czasem petla. nie wiem dlaczego.
+			QTime* t=new QTime();
+			t->start();
+			while (t->elapsed()<500) {};
+			delete t;
+			//
+			emit redirected(location);
+			get(location);
+			return;
+		};
+		// Wyci±gamy Content-Length
+		QRegExp cl_regexp("Content-Length: (\\d+)");
+		if(cl_regexp.search(s)<0)
+		{
+			ContentLength=-1;
+			kdebug("HttpClient: Content-Length not found. We will wait for connection to close.");
+		}
+		else
+		{
+			ContentLength=cl_regexp.cap(1).toInt();
+			kdebug("HttpClient: Content-Length: %i bytes\n",ContentLength);			
+		};
+		
+		// Wyciagamy ewentualne cookie (dla uproszczenia tylko jedno)
+		QRegExp cookie_regexp("Set-Cookie: ([^=]+)=([^;]+);");
+		if(cookie_regexp.search(s)>=0)
+		{
+			QString cookie_name=cookie_regexp.cap(1);
+			QString cookie_val=cookie_regexp.cap(2);
+			Cookies.insert(cookie_name,cookie_val);
+			kdebug("HttpClient: Cookie retreived: %s=%s\n",cookie_name.local8Bit().data(),cookie_val.local8Bit().data());
+		};
+		// Wytnij naglowek z Data
+		int header_size=p+4;
+		int new_data_size=Data.size()-header_size;
+		for(int i=0; i<new_data_size; i++)
+			Data[i]=Data[header_size+i];
+		Data.resize(new_data_size);
+		kdebug("HttpClient: Header parsed and cutted off from data\n");
+		kdebug("HttpClient: Header size: %i bytes\n",header_size);
+		kdebug("HttpClient: New data block size: %i bytes\n",new_data_size);
+		// Je¶li status jest 100 - Continue to czekamy na dalsze dane
+		// (uniewa¿niamy ten nag³owek i czekamy na nastêpny)
+		if(Status==100)
+		{
+			HeaderParsed=false;
+			return;
+		};
+	};
+	// Kontynuuj odczyt jesli dane niekompletne
+	// lub je¶li mamy czekaæ na connection close
+	if(ContentLength>Data.size()||ContentLength<0)
+		return;
+	// Mamy cale dane
+	kdebug("HttpClient: All Data Retreived: %i bytes\n",Data.size());
+	Socket.close();
+	emit finished();
+};
+
+void HttpClient::onConnectionClosed()
+{
+	if(HeaderParsed&&ContentLength<0)
+		emit finished();
+	else
+		emit error();
+};
+
+void HttpClient::setHost(QString host)
+{
+	Host=host;
+	Cookies.clear();
+};
+
+void HttpClient::get(QString path)
+{
+	Referer=Path;
+	Path=path;
+	Data.resize(0);
+	PostData.resize(0);
+	HeaderParsed=false;
+	Socket.connectToHost(Host,80);
+};
+
+void HttpClient::post(QString path,const QByteArray& data)
+{
+	Referer=Path;
+	Path=path;
+	Data.resize(0);
+	PostData.duplicate(data);
+	HeaderParsed=false;
+	Socket.connectToHost(Host,80);
+};
+
+void HttpClient::post(QString path,const QString& data)
+{
+	QByteArray PostData;
+	PostData.duplicate(data.local8Bit().data(),data.length());
+	post(path,PostData);
+};
+
+int HttpClient::status()
+{
+	return Status;
+};
+
+const QByteArray& HttpClient::data()
+{
+	return Data;
+};
+
+QString HttpClient::encode(const QString& text)
+{
+	QString encoded=text;
+	QUrl::encode(encoded);
+	return encoded;
+};
 
 void HtmlDocument::escapeText(QString& text)
 {

@@ -71,7 +71,7 @@ class Kadu : public QMainWindow
 		UserBox* Userbox;
 
 		int commencing_startup;
-
+	
 		void createMenu();
 		void createToolBar();
 		void createStatusPopupMenu();
@@ -169,12 +169,16 @@ class Kadu : public QMainWindow
 		void searchInDirectory();
 		void sendFile();
 		void makeVoiceChat();
-		void sendSms();
-		void sendSmsToUser();
 		void showUserInfo();
 		void unregisterUser();
 		void viewHistory();
 		void popupMenu();
+
+	signals:
+		/**
+		 	Jest emitowany gdy kontakt zostal podwojnie klikniety w userboxie
+		**/ 
+		void userDblClicked(UserListElement user);
 };
 
 class KaduSlots : public QObject

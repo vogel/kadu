@@ -1,0 +1,4 @@
+[Module]
+Description=SMS Gateway for idea, plus and eragsm module
+Author=Kadu Team
+Dependencies=sms
