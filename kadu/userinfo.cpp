@@ -28,7 +28,13 @@ UserInfo::UserInfo (const QString &name, QDialog *parent , const QString &altnic
 	setCaption(i18n("User info on %1").arg(altnick));
 	setWFlags(Qt::WDestructiveClose);
 
-	setupTab1(altnick);
+	int i = 0;
+ 	while (i < userlist.size() && userlist[i].altnick != altnick)
+		i++;
+	this_index = i;
+
+	setupTab1();
+	setupTab2();
 
 	setOkButton(i18n("Write userlist"));
 	setCancelButton(i18n("Close"));
@@ -38,7 +44,7 @@ UserInfo::UserInfo (const QString &name, QDialog *parent , const QString &altnic
 
 }
 
-void UserInfo::setupTab1(const QString &altnick) {
+void UserInfo::setupTab1() {
 	QVBox *box = new QVBox(this);
 	box->setMargin(10);
 
@@ -88,29 +94,24 @@ void UserInfo::setupTab1(const QString &altnick) {
 	e_addr = new QLineEdit(box);
 	e_addr->setReadOnly(true);
 
-	int i = 0;
- 	while (i < userlist.size() && userlist[i].altnick != altnick)
-		i++;
-	this_index = i;
-
-	e_nickname->setText(userlist[i].nickname);
-	e_altnick->setText(userlist[i].altnick);
-	e_firstname->setText(userlist[i].first_name);
-	e_lastname->setText(userlist[i].last_name);
- 	e_mobile->setText(userlist[i].mobile);	
-	e_group->setText(userlist[i].group);
+	e_nickname->setText(userlist[this_index].nickname);
+	e_altnick->setText(userlist[this_index].altnick);
+	e_firstname->setText(userlist[this_index].first_name);
+	e_lastname->setText(userlist[this_index].last_name);
+ 	e_mobile->setText(userlist[this_index].mobile);	
+	e_group->setText(userlist[this_index].group);
 	
-	if (userlist[i].ip) {
+	if (userlist[this_index].ip) {
 		struct in_addr in;
-		in.s_addr = userlist[i].ip;
+		in.s_addr = userlist[this_index].ip;
 		char address[128];
-		snprintf(address, sizeof(address), "%s:%d", inet_ntoa(in), userlist[i].port);
+		snprintf(address, sizeof(address), "%s:%d", inet_ntoa(in), userlist[this_index].port);
 		e_addr->setText(i18n(address));
 		}
 	else
 		e_addr->setText(i18n("(Unknown)"));
 
-	switch (userlist[i].status) {
+	switch (userlist[this_index].status) {
 		case GG_STATUS_AVAIL:
 			e_status->setText(i18n("Online")); break;
 		case GG_STATUS_AVAIL_DESCR:
@@ -134,8 +135,8 @@ void UserInfo::setupTab1(const QString &altnick) {
 
 	e_status->setReadOnly(true);
 
-	if (userlist[i].uin)
-		e_uin->setText(QString::number(userlist[i].uin));
+	if (userlist[this_index].uin)
+		e_uin->setText(QString::number(userlist[this_index].uin));
 	e_uin->setReadOnly(true);
 
 /*	QGridLayout * grid = new QGridLayout(box, 10, 2, 10, 3);
@@ -162,6 +163,22 @@ void UserInfo::setupTab1(const QString &altnick) {
 	addTab(box, i18n("General"));
 }
 
+void UserInfo::setupTab2() {
+	QVBox *box = new QVBox(this);
+	box->setMargin(10);
+
+	c_blocking = new QCheckBox(i18n("Block user"), box);
+	c_blocking->setChecked(userlist[this_index].blocking);
+
+	c_offtouser = new QCheckBox(i18n("Offline to user"), box);
+	c_offtouser->setChecked(userlist[this_index].offline_to_user);
+
+	c_notify = new QCheckBox(i18n("Notify about status changes"), box);
+	c_notify->setChecked(userlist[this_index].notify);
+
+	addTab(box, i18n("Others"));
+}
+
 void UserInfo::writeUserlist() {
 	bool yes = false;
 	switch (QMessageBox::information(kadu, "Kadu", i18n("This will write current userlist"), i18n("OK"), i18n("Cancel"), QString::null, 0, 1)) {
@@ -170,7 +187,8 @@ void UserInfo::writeUserlist() {
 			userlist.changeUserInfo(userlist[this_index].altnick,
 				e_firstname->text(),e_lastname->text(),
 				e_nickname->text(),e_altnick->text(),
-				e_mobile->text(), false, false, true, e_group->text());
+				e_mobile->text(), c_blocking->isChecked(),
+				c_offtouser->isChecked(), c_notify->isChecked(), e_group->text());
 			userlist.writeToFile();
 			close();
 			break;

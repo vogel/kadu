@@ -29,9 +29,13 @@ class UserInfo : public QTabDialog {
 		QLineEdit *e_uin;
 		QLineEdit *e_addr;
 		QLineEdit *e_group;		
+		QCheckBox *c_blocking;
+		QCheckBox *c_offtouser;
+		QCheckBox *c_notify;
 
 	protected:
-		void setupTab1(const QString &altnick);
+		void setupTab1();
+		void setupTab2();
 
 	private slots:
 		void writeUserlist();

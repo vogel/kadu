@@ -67,7 +67,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 			cp_to_iso(msg);	
 
 	QString nick;
-	if(userlist.containsUin(senders[0]))
+	if (userlist.containsUin(senders[0]))
 		nick = userlist.byUin(senders[0]).altnick;
 	else if (senders[0] != config.uin) {
 		nick = QString::number(senders[0]);
@@ -208,8 +208,16 @@ void ChangeUserStatus(uin_t uin, unsigned int new_status) {
 
 void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 {
-	if (config.notifyglobal && (config.notifies.contains(QString::number(uin))
-		|| config.notifyall) && (status == GG_STATUS_AVAIL ||
+	if (userlist.containsUin(uin)) {
+		UserListElement ule = userlist.byUin(uin);
+		if (!ule.notify && !config.notifyall)
+			return;
+		}
+	else
+		if (!config.notifyall)
+			return;
+
+	if (config.notifyglobal && (status == GG_STATUS_AVAIL ||
 		status == GG_STATUS_AVAIL_DESCR || status == GG_STATUS_BUSY || status == GG_STATUS_BUSY_DESCR
 		|| status == GG_STATUS_BLOCKED) &&
 		(oldstatus == GG_STATUS_NOT_AVAIL || oldstatus == GG_STATUS_NOT_AVAIL_DESCR || oldstatus == GG_STATUS_INVISIBLE ||
