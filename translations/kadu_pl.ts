@@ -1923,7 +1923,7 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
     <name>SelectPaths</name>
     <message>
         <source>Select paths</source>
-        <translation>Wybierz Ścierzki</translation>
+        <translation>Wybierz ścieżki</translation>
     </message>
     <message>
         <source>Add</source>
