@@ -128,7 +128,6 @@ class Kadu : public QMainWindow
 		void sendKey();
 		void sendSms();
 		void sendSmsToUser();
-		void sendUserlist1();
 		void showUserInfo();
 		void unregisterUser();
 		void viewHistory();
@@ -153,11 +152,6 @@ class KaduSlots : public QObject
 	    void onCreateConfigDialog();
 	    void onDestroyConfigDialog();
 };
-
-void sendUserlist(void);
-void* watch_socket(void *);
-QString pwHash(const QString);
-
 
 extern QApplication *a;
 extern Kadu *kadu;

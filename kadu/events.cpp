@@ -37,6 +37,7 @@
 #include "dcc.h"
 #include "config_dialog.h"
 #include "config_file.h"
+#include "gadu.h"
 #include "../config.h"
 #ifdef HAVE_OPENSSL
 extern "C"
@@ -171,7 +172,7 @@ EventManager::EventManager()
 void EventManager::connectedSlot()
 {
 	kadu->doBlink = false;
-	sendUserlist();
+	gadu->sendUserList();
 	kadu->setCurrentStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 	userlist_sent = true;
 	if (ifStatusWithDescription(loginparams.status))

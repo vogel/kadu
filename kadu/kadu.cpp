@@ -58,6 +58,7 @@
 #include "tabbar.h"
 #include "debug.h"
 #include "sound.h"
+#include "gadu.h"
 #include "../config.h"
 
 
@@ -101,48 +102,6 @@ UpdatesClass *uc;
 QValueList<QHostAddress> gg_servers;
 const char *gg_servers_ip[7] = {"217.17.41.82", "217.17.41.83", "217.17.41.84", "217.17.41.85",
 	"217.17.41.86", "217.17.41.87", "217.17.41.88"};
-
-/* sends the userlist. ripped off EKG, actually, but works */
-void sendUserlist() {
-	uin_t *uins;
-	char *types;
-	int i, j;
-
-	for (i = 0, j = 0; i < userlist.count(); i++)
-		if (userlist[i].uin)
-			j++;
-
-	if (!j) {
-		gg_notify_ex(sess, NULL, NULL, 0);
-		kdebug("send_userlist(): Userlist is empty\n");
-		return;
-		}
-
-	uins = (uin_t *) malloc(j * sizeof(uin_t));
-	types = (char *) malloc(j * sizeof(char));
-
-	for (i = 0, j = 0; i < userlist.count(); i++)
-		if (userlist[i].uin && !userlist[i].anonymous) {
-			uins[j] = userlist[i].uin;
-			if (userlist[i].offline_to_user)
-				types[j] = GG_USER_OFFLINE;
-			else
-				if (userlist[i].blocking)
-					types[j] = GG_USER_BLOCKED;
-				else
-					types[j] = GG_USER_NORMAL;
-			j++;
-			}
-
-	/* we were popping up sometimes, so let's keep the server informed */
-	if (i_wanna_be_invisible)
-		gg_change_status(sess, GG_STATUS_INVISIBLE);
-
-	gg_notify_ex(sess, uins, types, j);
-	kdebug("send_userlist(): Userlist sent\n");
-
-	free(uins);
-}
 
 void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 	char buf[32];
@@ -340,6 +299,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ConfigDialog::addCheckBox("General", "grid", "Restore window geometry", "SaveGeometry", true);
 	ConfigDialog::addCheckBox("General", "grid", "Check for updates", "CheckUpdates", true);
 
+	GaduProtocol::initModule();
 	Sms::initModule();
 	Chat::initModule();
 	UserBox::initModule();
@@ -996,11 +956,6 @@ void Kadu::hideKadu()
 {
 	if (trayicon)
 		close();
-}
-
-void Kadu::sendUserlist1()
-{
-	sendUserlist();
 }
 
 void Kadu::ignoreUser()
@@ -1840,7 +1795,7 @@ void Kadu::createMenu() {
 	QPopupMenu *ppm = new QPopupMenu(this, "ppm");
 	ppm->insertItem(tr("Manage &ignored"), this, SLOT(manageIgnored()));
 	ppm->insertItem(loadIcon("configure.png"), tr("&Configuration"), this, SLOT(configure()),HotKey::shortCutFromFile("kadu_configure"));
-	ppm->insertItem(loadIcon("reload.png"), tr("Resend &userlist"), this, SLOT(sendUserlist1()));
+	ppm->insertItem(loadIcon("reload.png"), tr("Resend &userlist"), gadu, SLOT(sendUserList()));
 	if (mute) {
 		muteitem= ppm->insertItem(loadIcon("mute.png"), tr("Unmute sounds"), this, SLOT(muteUnmuteSounds()));
 		}
