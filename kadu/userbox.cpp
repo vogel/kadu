@@ -12,9 +12,10 @@
 
 //
 #include "kadu.h"
+//
 #include "userbox.h"
 #include "pixmaps.h"
-//
+#include "debug.h"
 
 UserBox::UserBox(QWidget* parent,const char* name,WFlags f)
 	: QListBox(parent,name),QToolTip(viewport())
@@ -118,7 +119,6 @@ void UserBox::sortUsersByAltNick(QStringList &users) {
 	do {
 		stop = true;
 		for (i = 0; i < count - 1; i++)
-//			fprintf(stderr, "KK UserBox::sortUsersByAltNick() i = %d / %d\n", i, users.count());
 			if (users[i].localeAwareCompare(users[i+1]) > 0) {
 				tmp = users[i];
 				users[i] = users[i+1];
@@ -137,7 +137,7 @@ void UserBox::refresh()
 	char **gg_xpm;
 	int i;
 
-	fprintf(stderr, "KK UserBox::refresh()\n");
+	kdebug("UserBox::refresh()\n");
 
 	// Zapamietujemy zaznaczonych uzytkownikow
 	QStringList s_users;
@@ -259,7 +259,7 @@ void UserBox::refresh()
 		setSelected(findItem(s_users[i]), true);
 	setCurrentItem(findItem(s_user));
 
-	fprintf(stderr, "KK UserBox::refresh() exit\n");
+	kdebug("UserBox::refresh() exit\n");
 };
 
 void UserBox::addUser(const QString &altnick)

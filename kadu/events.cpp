@@ -46,6 +46,7 @@
 #include "vuser.h"
 #include "pending_msgs.h"
 #include "dock_widget.h"
+#include "debug.h"
 #include "../config.h"
 #ifdef HAVE_OPENSSL
 extern "C"
@@ -59,7 +60,7 @@ QTime lastsoundtime;
 SavePublicKey::SavePublicKey(uin_t uin, QString keyData, QWidget *parent, const char *name) :
 	QDialog(parent, name, Qt::WDestructiveClose), uin(uin), keyData(keyData) {
 	
-	fprintf(stderr, "KK SavePublicKey::SavePublicKey()\n");
+	kdebug("SavePublicKey::SavePublicKey()\n");
 
 	setCaption(i18n("Save public key"));
 	resize(200, 80);
@@ -79,14 +80,14 @@ SavePublicKey::SavePublicKey(uin_t uin, QString keyData, QWidget *parent, const 
 	grid->addWidget(yesbtn, 1, 0);
 	grid->addWidget(nobtn, 1, 1);
 
-	fprintf(stderr, "KK SavePublicKey::SavePublicKey(): finished\n");
+	kdebug("SavePublicKey::SavePublicKey(): finished\n");
 }
 
 void SavePublicKey::yesClicked() {
 	QFile keyfile;
 	QString keyfile_path;
 
-	fprintf(stderr, "KK SavePublicKey::yesClicked()\n");
+	kdebug("SavePublicKey::yesClicked()\n");
 
 	keyfile_path.append(ggPath("keys/"));
 	keyfile_path.append(QString::number(uin));
@@ -96,7 +97,7 @@ void SavePublicKey::yesClicked() {
 
 	if (!(keyfile.open(IO_WriteOnly))) {
 		QMessageBox::critical(this, i18n("Error"), i18n("Error writting the key"), i18n("OK"), QString::null, 0);
-		fprintf(stderr, "eventRecvMsg(): Error opening key file %s\n", (const char *)keyfile_path.local8Bit());
+		kdebug("eventRecvMsg(): Error opening key file %s\n", (const char *)keyfile_path.local8Bit());
 		return;
 		}
 	else {
@@ -112,14 +113,14 @@ void SavePublicKey::yesClicked() {
 		}
 	accept();
 
-	fprintf(stderr, "KK SavePublicKey::yesClicked(): finished\n");
+	kdebug("SavePublicKey::yesClicked(): finished\n");
 }
 
 void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t time,int formats_count,struct gg_msg_format * formats)
 {
 	int i;
 
-	fprintf(stderr, "KK eventRecvMsg()\n");
+	kdebug("eventRecvMsg()\n");
 
 	// ignorujemy, jesli nick na liscie ignorowanych
 	// PYTANIE CZY IGNORUJEMY CALA KONFERENCJE
@@ -132,11 +133,11 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 	{
 		if (msgclass <= config.sysmsgidx)
 		{
-			fprintf(stderr, "KK Already had this message, ignoring\n");
+			kdebug("Already had this message, ignoring\n");
 			return;
 		}
 		config.sysmsgidx = msgclass;
-		fprintf(stderr, "KK System message index %d\n", msgclass);
+		kdebug("System message index %d\n", msgclass);
 		return;
 		//senders[0] = config.uin;
 	}
@@ -166,9 +167,9 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 
 	if(msg != NULL)
 	{
-		fprintf(stderr,"KK Decrypting encrypted message...\n");
+		kdebug("Decrypting encrypted message...\n");
 		char* decoded = sim_message_decrypt(msg, senders[0]);
-		fprintf(stderr,"KK Decrypted message is: %s\n",decoded);
+		kdebug("Decrypted message is: %s\n",decoded);
 		if (decoded != NULL)
 			strcpy((char *)msg, decoded);
 	};
@@ -218,13 +219,11 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 
 	playSound(config.soundmsg);
 
-//	fprintf(stderr, "KK eventRecvMsg(): New buffer size: %d\n",pending.size());
-
 	if (senders[0] != config.uin)
 		pending.addMsg(senders, __c2q((const char*)msg), msgclass, time);
 
-	fprintf(stderr, "KK eventRecvMsg(): Message allocated to slot %d\n", i);
-	fprintf(stderr, "KK eventRecvMsg(): Got message from %d (%s) saying \"%s\"\n",
+	kdebug("eventRecvMsg(): Message allocated to slot %d\n", i);
+	kdebug("eventRecvMsg(): Got message from %d (%s) saying \"%s\"\n",
 			senders[0], (const char *)nick.local8Bit(), msg);
 											  
 	UserBox::all_refresh();
@@ -257,7 +256,7 @@ void playSound(const QString &sound, const QString player) {
 
 	QStringList args;
 	if ((QString::compare(sound, NULL) == 0) || (QString::compare(sound, "") == 0)) {
-		fprintf(stderr,"KK No sound file specified?\n");
+		kdebug("No sound file specified?\n");
 		return;
 		}
 	if (config.playartsdsp)
@@ -270,7 +269,7 @@ void playSound(const QString &sound, const QString player) {
 		args.append(QString("-v %1").arg(config.soundvol));
 	args.append(sound);
 	for (QStringList::Iterator it = args.begin(); it != args.end(); ++it ) {
-       		fprintf(stderr, "KK playSound(): %s\n", (const char *)(*it).local8Bit());
+       		kdebug("playSound(): %s\n", (const char *)(*it).local8Bit());
 		}
 	QProcess *sndprocess = new QProcess(args, kadu);
 	sndprocess->start();
@@ -293,7 +292,7 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 		|| status == GG_STATUS_BLOCKED) &&
 		(oldstatus == GG_STATUS_NOT_AVAIL || oldstatus == GG_STATUS_NOT_AVAIL_DESCR || oldstatus == GG_STATUS_INVISIBLE ||
 		oldstatus == GG_STATUS_INVISIBLE_DESCR || oldstatus == GG_STATUS_INVISIBLE2)) {
-		fprintf(stderr, "KK Notify about user\n");
+		kdebug("Notify about user\n");
 
 		if (config.notifydialog) {		
 			// FIXME convert into a regular QMessageBox
@@ -331,7 +330,7 @@ void eventGotUserlist(struct gg_event *e) {
 		UserListElement &user = userlist.byUin(n->uin);
 
 		if (!userlist.containsUin(n->uin)) {
-			fprintf(stderr, "KK eventGotUserlist(): buddy %d not in list. Damned server!\n", n->uin);
+			kdebug("eventGotUserlist(): buddy %d not in list. Damned server!\n", n->uin);
 			gg_remove_notify(sess, n->uin);
 			n++;
 			continue;
@@ -352,38 +351,38 @@ void eventGotUserlist(struct gg_event *e) {
 
 		switch (n->status) {
 			case GG_STATUS_AVAIL:
-				fprintf(stderr, "KK eventGotUserlist(): User %d went online\n", n->uin);
+				kdebug("eventGotUserlist(): User %d went online\n", n->uin);
 				break;
 			case GG_STATUS_BUSY:
-				fprintf(stderr, "KK eventGotUserlist(): User %d went busy\n", n->uin);
+				kdebug("eventGotUserlist(): User %d went busy\n", n->uin);
 				break;
 			case GG_STATUS_NOT_AVAIL:
 				if (user.status == GG_STATUS_NOT_AVAIL
 					|| user.status == GG_STATUS_INVISIBLE2) {
-		    			fprintf(stderr, "KK eventGotUserlist(): User %d went offline (probably invisible ;))\n", n->uin);
+		    			kdebug("eventGotUserlist(): User %d went offline (probably invisible ;))\n", n->uin);
 					user.time_to_death = 300;
 					}
 				else
 					if (userlist.byUin(n->uin).status != GG_STATUS_NOT_AVAIL)
-						fprintf(stderr, "KK eventGotUserlist(): User %d went offline\n", n->uin);
+						kdebug("eventGotUserlist(): User %d went offline\n", n->uin);
 				break;
 			case GG_STATUS_BLOCKED:
-				fprintf(stderr, "KK eventGotUserlist(): User %d has blocked us\n", n->uin);
+				kdebug("eventGotUserlist(): User %d has blocked us\n", n->uin);
 				break;
 			case GG_STATUS_BUSY_DESCR:
-				fprintf(stderr, "KK eventGotUserlist(): User %d went busy with descr.\n", n->uin);
+				kdebug("eventGotUserlist(): User %d went busy with descr.\n", n->uin);
 				break;
 			case GG_STATUS_NOT_AVAIL_DESCR:
-				fprintf(stderr, "KK eventGotUserlist(): User %d went offline with descr.\n", n->uin);
+				kdebug("eventGotUserlist(): User %d went offline with descr.\n", n->uin);
 				break;
 			case GG_STATUS_AVAIL_DESCR:
-				fprintf(stderr, "KK eventGotUserlist(): User %d went online with descr.\n", n->uin);
+				kdebug("eventGotUserlist(): User %d went online with descr.\n", n->uin);
 				break;
 			case GG_STATUS_INVISIBLE_DESCR:
-				fprintf(stderr, "KK eventGotUserlist(): User %d went invisible with descr.\n", n->uin);
+				kdebug("eventGotUserlist(): User %d went invisible with descr.\n", n->uin);
 				break;
 			default:
-				fprintf(stderr, "KK eventGotUserlist(): Unknown status for user %d: %d\n", n->uin, n->status);
+				kdebug("eventGotUserlist(): Unknown status for user %d: %d\n", n->uin, n->status);
 				break;
 			}
 		if (n->status != GG_STATUS_NOT_AVAIL)
@@ -410,7 +409,7 @@ void eventGotUserlist(struct gg_event *e) {
 }
 
 void eventStatusChange(struct gg_event * e) {
-	fprintf(stderr, "KK eventStatusChange(): User %d went %d\n", e->event.status.uin,  e->event.status.status);
+	kdebug("eventStatusChange(): User %d went %d\n", e->event.status.uin,  e->event.status.status);
 
 	unsigned int oldstatus;
 	int i;
@@ -419,7 +418,7 @@ void eventStatusChange(struct gg_event * e) {
 
 	if (!userlist.containsUin(e->event.status.uin)) {
 		// ignore!
-		fprintf(stderr, "KK eventStatusChange(): buddy %d not in list. Damned server!\n", e->event.status.uin);
+		kdebug("eventStatusChange(): buddy %d not in list. Damned server!\n", e->event.status.uin);
 		gg_remove_notify(sess, e->event.status.uin);
 		return;
 		}
@@ -444,10 +443,6 @@ void eventStatusChange(struct gg_event * e) {
 			chats[i].ptr->setTitle();
 
 	ifNotify(e->event.status.uin, e->event.status.status, oldstatus);
-}
-
-void kadu_debug(int debuglevel, char * message) {
-//		fprintf(stderr, "Debug type %i: %s\n", debuglevel, message);
 }
 
 void ackHandler(int seq) {

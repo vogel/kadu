@@ -16,7 +16,7 @@ static QMutex debug_mutex;
 void _kdebug(const char* file,const int line,const char* format,...)
 {
 	debug_mutex.lock();
-	fprintf(stderr,"%s:%i:  ",file,line);
+	fprintf(stderr,"KK <%s:%i>\t",file,line);
 	va_list args;
 	va_start(args,format);
 	vfprintf(stderr,format,args);

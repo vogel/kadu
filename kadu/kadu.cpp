@@ -110,6 +110,7 @@
 #include "updates.h"
 #include "password.h"
 #include "tabbar.h"
+#include "debug.h"
 #ifdef HAVE_OPENSSL
 #include "simlite.h"
 #endif
@@ -249,11 +250,11 @@ unsigned long getMyIP(void) {
 }
 
 void deletePendingMessage(int nr) {
-	fprintf(stderr, "KK predeletePendingMessage(), counts: %d\n",pending.count());
+	kdebug("predeletePendingMessage(), counts: %d\n",pending.count());
 	pending.deleteMsg(nr);
-	fprintf(stderr, "KK deletePendingMessage(%d), counts: %d\n",nr,pending.count());
+	kdebug("deletePendingMessage(%d), counts: %d\n",nr,pending.count());
 	if (!pending.pendingMsgs()) {
-		fprintf(stderr, "KK pendingMessage is false\n");
+		kdebug("pendingMessage is false\n");
 		if (trayicon)
 			trayicon->setType((char **)gg_xpm[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);
 		}
@@ -267,7 +268,7 @@ void readIgnore(void)
 
 	if(!(f=fopen(ggPath("ignore"),"r")))
 	{
-		fprintf(stderr,"readIgnore(): Failed to open ignore file. Ignore list empty. Need to read manual?\n");
+		kdebug("readIgnore(): Failed to open ignore file. Ignore list empty. Need to read manual?\n");
 		return;
 	};
 
@@ -298,7 +299,7 @@ void confirmHistoryDeletion(UinsList &uins) {
 				if (i < uins.count() - 1)
 					fname.append("_");
 				}
-			fprintf(stderr, "KK confirmHistoryDeletion(): deleting %s\n", (const char *)fname.local8Bit());
+			kdebug("confirmHistoryDeletion(): deleting %s\n", (const char *)fname.local8Bit());
 			unlink((const char *)fname.local8Bit());
 			break;
 		case 1: // Nope?
@@ -337,7 +338,7 @@ void sendUserlist() {
 		gg_change_status(sess, GG_STATUS_INVISIBLE);
 
 	gg_notify_ex(sess, uins, types, j);
-	fprintf(stderr, "KK send_userlist(): Userlist sent\n");
+	kdebug("send_userlist(): Userlist sent\n");
 
 	free(uins);
 }
@@ -348,7 +349,7 @@ void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 	QString newestversion;
 
 	if (data.size() > 31) {
-		fprintf(stderr, "KK Kadu::gotUpdatesInfo(): cannot obtain update info\n");		
+		kdebug("Kadu::gotUpdatesInfo(): cannot obtain update info\n");		
 		delete uc;
 		return;
 		}
@@ -357,7 +358,7 @@ void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 	buf[data.size()] = 0;
 	newestversion = buf;
 
-	fprintf(stderr, "KK Kadu::gotUpdatesInfo(): %s\n", buf);
+	kdebug("Kadu::gotUpdatesInfo(): %s\n", buf);
 
 	if (uc->ifNewerVersion(newestversion)) {
 		QMessageBox::information(this, i18n("Update information"),
@@ -405,7 +406,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	loadKaduConfig();
         
-	fprintf(stderr,"KK Setting geometry to %d %d %d %d\n",
+	kdebug("Setting geometry to %d %d %d %d\n",
 			config.geometry.x(), config.geometry.y(),
 			config.geometry.width(), config.geometry.height());
 	setGeometry(config.geometry);
@@ -575,7 +576,7 @@ void Kadu::resizeEvent(QResizeEvent *e) {
 }
 
 void Kadu::changeAppearance() {
-	fprintf(stderr, "KK kadu::changeAppearance()\n");
+	kdebug("kadu::changeAppearance()\n");
 
 	userbox->setPaletteBackgroundColor(config.colors.userboxBg);
 	userbox->setPaletteForegroundColor(config.colors.userboxFg);
@@ -591,7 +592,7 @@ void Kadu::changeAppearance() {
 void Kadu::currentChanged(QListBoxItem *item) {
 	if (!item || !item->isSelected())
 		return;
-	fprintf(stderr, "KK Kadu::currentChanged(): %s\n", (const char *)item->text().local8Bit());
+	kdebug("Kadu::currentChanged(): %s\n", (const char *)item->text().local8Bit());
 	UserListElement &ule = userlist.byAltNick(item->text());
 	QString s;
 	// uin
@@ -692,7 +693,7 @@ void Kadu::userListModified()
 
 void Kadu::userListStatusModified(UserListElement *user)
 {
-	fprintf(stderr, "KK Kadu::userListStatusModified(): %d\n", user->uin);
+	kdebug("Kadu::userListStatusModified(): %d\n", user->uin);
 
 //	int index = userbox->currentItem();
 //	if (index >= 0) {
@@ -770,11 +771,11 @@ void Kadu::prepareDcc(void) {
 	if (config.dccip == "0.0.0.0") {
 		in.s_addr = getMyIP();
 		if (!in.s_addr) {
-			fprintf(stderr, "KK Cannot determine IP address!\n");
+			kdebug("Cannot determine IP address!\n");
 			return;
 			}
 		dccip = inet_ntoa(in);
-		fprintf(stderr, "KK My IP address: %s\n", inet_ntoa(in));
+		kdebug("My IP address: %s\n", inet_ntoa(in));
 		}
 	else
 		dccip = config.dccip;
@@ -792,7 +793,7 @@ void Kadu::prepareDcc(void) {
 	gg_dcc_ip = inet_addr(dccip.latin1());
 	gg_dcc_port = dccsock->port;
 
-	fprintf(stderr, "KK Kadu::prepareDcc() DCC_IP=%s DCC_PORT=%d\n", dccip.latin1(), dccsock->port);
+	kdebug("Kadu::prepareDcc() DCC_IP=%s DCC_PORT=%d\n", dccip.latin1(), dccsock->port);
 
 	dccsnr = new QSocketNotifier(dccsock->fd, QSocketNotifier::Read, kadu);
 	QObject::connect(dccsnr, SIGNAL(activated(int)), kadu, SLOT(dccReceived()));
@@ -856,7 +857,7 @@ int Kadu::openChat(UinsList senders) {
 	while (i < chats.count() && !chats[i].uins.equals(senders))
 		i++;
 
-	fprintf(stderr, "KK Kadu::openChat(): return %d\n", i);
+	kdebug("Kadu::openChat(): return %d\n", i);
 
 	return i;
 }
@@ -1108,7 +1109,7 @@ void Kadu::changeGroup(int group) {
 	grpmenu->setItemChecked(true, group - 600);
 	grpmenu->updateItem(group - 600);
 	grpmenu->repaint();
-	fprintf(stderr, "KK Kadu::changeGroup(): group = %d\n", group - 600);
+	kdebug("Kadu::changeGroup(): group = %d\n", group - 600);
 }
 
 /* the list that pops up if we right-click one someone */
@@ -1241,7 +1242,7 @@ void Kadu::sendMessage(QListBoxItem *item) {
 					userlist.byUin(elem.uins[0]).altnick, elem.msg,
 					timestamp(elem.time), toadd);	    
 				deletePendingMessage(i);
-				fprintf(stderr, "KK Kadu::sendMessage(): k=%d\n", k);
+				kdebug("Kadu::sendMessage(): k=%d\n", k);
 				i--;
 				stop = true;
 				}
@@ -1375,7 +1376,7 @@ void Kadu::slotShowStatusMenu() {
 
 void Kadu::setStatus(int status) {
 
-	fprintf(stderr, "KK Kadu::setStatus(): setting status: %d\n",
+	kdebug("Kadu::setStatus(): setting status: %d\n",
 		status | (GG_STATUS_FRIENDS_MASK * config.privatestatus));
 
 	bool with_description;
@@ -1417,7 +1418,7 @@ void Kadu::setStatus(int status) {
 	
 		setCurrentStatus(status);
 
-		fprintf(stderr, "KK Kadu::setStatus(): actual status: %d\n", sess->status);
+		kdebug("Kadu::setStatus(): actual status: %d\n", sess->status);
 
 		return;
 		}
@@ -1510,7 +1511,7 @@ void Kadu::checkConnection(void) {
 }
 
 void Kadu::dccFinished(dccSocketClass *dcc) {
-	fprintf(stderr, "KK dccFinished\n");
+	kdebug("dccFinished\n");
 	delete dcc;
 }
 
@@ -1520,7 +1521,7 @@ bool Kadu::event(QEvent *e) {
 	dccSocketClass **data;
 
 	if (e->type() == QEvent::User) {
-		fprintf(stderr, "KK Kadu::event()\n");
+		kdebug("Kadu::event()\n");
 		ce = (QCustomEvent *)e;
 		data = (dccSocketClass **)ce->data();
 		dcc = *data;
@@ -1554,21 +1555,21 @@ bool Kadu::event(QEvent *e) {
 }
 
 void Kadu::dccReceived(void) {
-	fprintf(stderr, "KK Kadu::dccReceived()\n");
+	kdebug("Kadu::dccReceived()\n");
 	watchDcc();
 }
 
 void Kadu::dccSent(void) {
-	fprintf(stderr, "KK Kadu::dccSent()\n");
+	kdebug("Kadu::dccSent()\n");
 	dccsnw->setEnabled(false);
 	if (dccsock->check & GG_CHECK_WRITE)
 		watchDcc();
 }
 
 void Kadu::watchDcc(void) {
-	fprintf(stderr, "KK Kadu::watchDcc(): data on socket\n");			
+	kdebug("Kadu::watchDcc(): data on socket\n");			
 	if (!(dcc_e = gg_dcc_watch_fd(dccsock))) {
-		fprintf(stderr, "KK Kadu::watchDcc(): Connection broken unexpectedly!\n");
+		kdebug("Kadu::watchDcc(): Connection broken unexpectedly!\n");
 		config.allowdcc = false;
 		delete dccsnr;
 		dccsnr = NULL;
@@ -1581,14 +1582,14 @@ void Kadu::watchDcc(void) {
 		case GG_EVENT_NONE:
 			break;
 		case GG_EVENT_DCC_ERROR:
-			fprintf(stderr, "KK GG_EVENT_DCC_ERROR\n");
+			kdebug("GG_EVENT_DCC_ERROR\n");
 			break;
 		case GG_EVENT_DCC_NEW:
 			dccSocketClass *dcc;    
 			dcc = new dccSocketClass(dcc_e->event.dcc_new);
 			connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));
 			dcc->initializeNotifiers();
-			fprintf(stderr, "KK GG_EVENT_DCC_NEW: spawning object\n");
+			kdebug("GG_EVENT_DCC_NEW: spawning object\n");
 			break;
 		default:
 			break;
@@ -1601,13 +1602,13 @@ void Kadu::watchDcc(void) {
 }
 
 void Kadu::dataReceived(void) {
-	fprintf(stderr, "KK Kadu::dataReceived()\n");
+	kdebug("Kadu::dataReceived()\n");
 	if (sess->check && GG_CHECK_READ)
 		eventHandler(GG_CHECK_READ);
 }
 
 void Kadu::dataSent(void) {
-	fprintf(stderr, "KK Kadu::dataSent()\n");
+	kdebug("Kadu::dataSent()\n");
 	kadusnw->setEnabled(false);
 	if (sess->check & GG_CHECK_WRITE)
 		eventHandler(GG_CHECK_WRITE);
@@ -1618,16 +1619,16 @@ void Kadu::eventHandler(int state) {
 	int i;
 	static int calls = 0;
 
-	fprintf(stderr, "KK Kadu::eventHandler()\n");
+	kdebug("Kadu::eventHandler()\n");
 	calls++;
 	if (calls > 1)
-		fprintf(stderr, "************* KK Kadu::eventHandler(): Recursive eventHandler calls detected!\n");
+		kdebug("************* Kadu::eventHandler(): Recursive eventHandler calls detected!\n");
 	if (!(e = gg_watch_fd(sess))) {
-		fprintf(stderr,"KK Kadu::eventHandler(): Connection broken unexpectedly!\n");
+		kdebug("Kadu::eventHandler(): Connection broken unexpectedly!\n");
 		char error[512];
 		disconnectNetwork();
-		snprintf(error, sizeof(error), "KK Kadu::eventHandler(): Unscheduled connection termination\n");
-		fprintf(stderr, error);
+		snprintf(error, sizeof(error), "Kadu::eventHandler(): Unscheduled connection termination\n");
+		kdebug(error);
 		setCurrentStatus(GG_STATUS_NOT_AVAIL);
 		//QMessageBox::warning(kadu, "Connect error", error );
 		gg_free_event(e);
@@ -1637,7 +1638,7 @@ void Kadu::eventHandler(int state) {
 		return;	
 		}
 	if (sess->state == GG_STATE_CONNECTING_HUB || sess->state == GG_STATE_CONNECTING_GG) {
-		fprintf(stderr, "KK Kadu::eventHandler(): changing QSocketNotifiers.\n");
+		kdebug("Kadu::eventHandler(): changing QSocketNotifiers.\n");
 
 		kadusnw->setEnabled(false);
 		delete kadusnw;
@@ -1654,22 +1655,22 @@ void Kadu::eventHandler(int state) {
 
 	switch (sess->state) {
 		case GG_STATE_RESOLVING:
-			fprintf(stderr, "KK Kadu::eventHandler(): Resolving address\n");
+			kdebug("Kadu::eventHandler(): Resolving address\n");
 			break;
 		case GG_STATE_CONNECTING_HUB:
-			fprintf(stderr, "KK Kadu::eventHandler(): Connecting to hub\n");
+			kdebug("Kadu::eventHandler(): Connecting to hub\n");
 			break;
 		case GG_STATE_READING_DATA:
-			fprintf(stderr, "KK Kadu::eventHandler(): Fetching data from hub\n");
+			kdebug("Kadu::eventHandler(): Fetching data from hub\n");
 			break;
 		case GG_STATE_CONNECTING_GG:
-			fprintf(stderr, "KK Kadu::eventHandler(): Connecting to server\n");
+			kdebug("Kadu::eventHandler(): Connecting to server\n");
 			break;
 		case GG_STATE_READING_KEY:
-			fprintf(stderr, "KK Kadu::eventHandler(): Waiting for hash key\n");
+			kdebug("Kadu::eventHandler(): Waiting for hash key\n");
 			break;
 		case GG_STATE_READING_REPLY:
-			fprintf(stderr, "KK Kadu::eventHandler(): Sending key\n");
+			kdebug("Kadu::eventHandler(): Sending key\n");
 			break;
 		case GG_STATE_CONNECTED:
 			break;
@@ -1698,7 +1699,7 @@ void Kadu::eventHandler(int state) {
 			}
 		else {
 			UinsList uins;
-			fprintf(stderr, "KK eventHandler(): %d\n", e->event.msg.recipients_count);
+			kdebug("eventHandler(): %d\n", e->event.msg.recipients_count);
 			if (e->event.msg.msgclass == GG_CLASS_CHAT) {
 				uins.append(e->event.msg.sender);	
 				for (i = 0; i < e->event.msg.recipients_count; i++)
@@ -1739,7 +1740,7 @@ void Kadu::eventHandler(int state) {
 		}
 
 	if (e->type == GG_EVENT_ACK) {
-		fprintf(stderr, "KK Kadu::eventHandler(): message reached %d (seq %d)\n", e->event.ack.recipient, e->event.ack.seq);
+		kdebug("Kadu::eventHandler(): message reached %d (seq %d)\n", e->event.ack.recipient, e->event.ack.seq);
 		ackHandler(e->event.ack.seq);
 		}
 
@@ -1770,12 +1771,12 @@ void Kadu::eventHandler(int state) {
 
 	if (e->type == GG_EVENT_CONN_FAILED) {
 		char error[512];
-		snprintf(error, sizeof(error), "KK Kadu::eventHandler(): Unable to connect, the following error has occured:\n%s\nKK Kadu::eventHandler(): Keep trying to connect?\n", strerror(errno));
+		snprintf(error, sizeof(error), "Kadu::eventHandler(): Unable to connect, the following error has occured:\n%s\nKadu::eventHandler(): Keep trying to connect?\n", strerror(errno));
 		trayicon->showErrorHint(i18n("Connection failed"));
 		disconnectNetwork();	
 		setCurrentStatus(GG_STATUS_NOT_AVAIL);
-		fprintf(stderr, "KK Kadu::eventHandler(): Connection failed\n");
-		fprintf(stderr, error);
+		kdebug("Kadu::eventHandler(): Connection failed\n");
+		kdebug(error);
 
 		if (autohammer)
 			setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
@@ -1786,8 +1787,8 @@ void Kadu::eventHandler(int state) {
 			char error[512];
 			socket_active = false;
 			UserBox::all_changeAllToInactive();
-			snprintf(error, sizeof(error), "KK Kadu::eventHandler(): Unscheduled connection termination\n");
-			fprintf(stderr, error);
+			snprintf(error, sizeof(error), "Kadu::eventHandler(): Unscheduled connection termination\n");
+			kdebug(error);
 			disconnectNetwork();			
 			setCurrentStatus(GG_STATUS_NOT_AVAIL);
 			if (autohammer)
@@ -1804,7 +1805,7 @@ void Kadu::eventHandler(int state) {
 }
 
 void Kadu::pingNetwork(void) {
-	fprintf(stderr, "KK Kadu::pingNetwork()\n");
+	kdebug("Kadu::pingNetwork()\n");
 	gg_ping(sess);
 	pingtimer->start(60000, TRUE);
 }
@@ -1813,7 +1814,7 @@ void Kadu::disconnectNetwork() {
 	int i;
 
 	doBlink = false;
-	fprintf(stderr, "KK Kadu::disconnectNetwork(): calling offline routines\n");
+	kdebug("Kadu::disconnectNetwork(): calling offline routines\n");
 
 	if (config.autoaway)
 		AutoAwayTimer::off();
@@ -1995,7 +1996,7 @@ void Kadu::closeEvent(QCloseEvent *e) {
 		config.splitsize.setHeight(descrtb->size().height());
 		config.geometry = geometry();
 		saveKaduConfig();
-		fprintf(stderr,"KK closeEvent(): Graceful shutdown...\n");
+		kdebug("closeEvent(): Graceful shutdown...\n");
 		e->accept();
 		}
 }
