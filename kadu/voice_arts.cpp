@@ -31,6 +31,7 @@ void VoiceArts::setup() {
 	arts_init();
 	playstream = arts_play_stream(8000, 16, 1, "kaduplayvoice");
 	arts_stream_set(playstream, ARTS_P_BLOCKING, 0);
+	arts_stream_set(playstream, ARTS_P_BUFFER_SIZE, 1600);
 	kdebug("VoiceArts::setup(): playstream=%d\n", playstream);
 	recstream = arts_record_stream(8000, 16, 1, "kadurecordvoice");
 	arts_stream_set(recstream, ARTS_P_BLOCKING, 0);
