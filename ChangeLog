@@ -3,6 +3,19 @@
 * dodanie obs³ugi w³asnego opisowego (Chilek)
 * mo¿liwo¶æ wyboru statusu (tylko dla znajomych) (Chilek)
 
++++ wersja 0.3.3
+* automatyczna kompilacja programu sms
+
++++ wersja 0.3.2
+* dalsze porz±dki w kodzie
+* rozmowy konferencyjne
+* masa drobiazgów
+
++++ wersja 0.3.1
+* czê¶ciowe uporz±dkowanie kodu
+* przesy³anie plików (DCC)
+* sporo drobiazgów
+
 +++ wersja 0.3.0 :: 05/06/2002
 * domy¶lnie status tylko-dla-znajomych
 * poprawka w SearchDialog (Xlib)
