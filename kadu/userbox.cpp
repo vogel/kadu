@@ -579,7 +579,8 @@ void UserBoxMenu::restoreLook()
 	{
 		setItemEnabled(idAt(i),true);
 		setItemChecked(idAt(i),false);
-		setItemVisible(idAt(i),true);
+//		setItemVisible(idAt(i),true);
+// nie ma takiej funkcji w qt 3.0.*
 	}
 }
 
