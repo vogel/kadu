@@ -445,7 +445,10 @@ void UserBox::refresh()
 		if (user.uin())
 		{
 			if (user.uin() == myUin)
+			{
 				user.status().setStatus(gadu->status());
+				user.setMaxImageSize(config_file.readNumEntry("Chat", "MaxImageSize"));
+			}
 			switch (user.status().status())
 			{
 				case Offline:

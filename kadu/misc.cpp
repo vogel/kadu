@@ -888,9 +888,10 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 					if(escape)
 						HtmlDocument::escapeText(pe.str);
 					break;
-				case 'm': ++i; pe.str=ule.mobile();		break;
-				case 'g': ++i; pe.str=ule.group();		break;
-				case 'e': ++i; pe.str=ule.email();		break;
+				case 'm': ++i; pe.str=ule.mobile();	break;
+				case 'g': ++i; pe.str=ule.group();	break;
+				case 'e': ++i; pe.str=ule.email();	break;
+				case 'x': ++i; pe.str=QString::number(ule.maxImageSize());	break;
 				case '%': ++i;
 				default:
 					pe.str="%";
