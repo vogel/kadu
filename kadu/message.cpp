@@ -317,10 +317,10 @@ Message::~Message() {
 /* KGB informs: the message was delivered. let's close the window */
 /* this function is called back from the network events handler */
 void Message::gotAck(void) {
-	close(true);
+	accept();
 }
 
-/* for sanity's sake */
+/* for sanity's sake 
 void Message::accept() {
 	close(true);
 }
@@ -328,6 +328,7 @@ void Message::accept() {
 void Message::reject() {
 	close(true);
 }
+*/
 
 void Message::HistoryBox (void) {
 	History *hb;

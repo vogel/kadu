@@ -36,10 +36,10 @@ class Message : public QDialog {
 		void gotAck(void);
 		void commitSend(void);
 		void HistoryBox(void);		
-
+/*
 	protected slots:
 		void accept();
-		void reject();
+		void reject();*/
 };
 
 class rMessage : public QDialog {
