@@ -170,45 +170,51 @@ void EventManager::connectedSlot()
 void EventManager::connectionFailedSlot(int failure)
 {
 	kadu->disconnectNetwork(); /* FIXME 1/2 */
-	switch (failure)
-	{
+	switch (failure) {
 		case GG_FAILURE_RESOLVING:
-			kdebug(tr("Unable to connect, server has not been found")+"\n");
+			kdebug("%s\n",
+				unicode2latin(QString(tr("Unable to connect, server has not been found"))).data());
 			if (hintmanager != NULL)
 				hintmanager->addHintError(tr("Unable to connect, server has not been found"));
 			break;
 		case GG_FAILURE_CONNECTING:
-			kdebug(tr("Unable to connect"));
+			kdebug("%s\n",
+				unicode2latin(QString(tr("Unable to connect"))).data());
 			if (hintmanager != NULL)
 				hintmanager->addHintError(tr("Unable to connect"));
 			break;
 		case GG_FAILURE_INVALID:
-			kdebug(tr("Unable to connect, server has returned unknown data"));
-		if (hintmanager != NULL)
+			kdebug("%s\n",
+				unicode2latin(QString(tr("Unable to connect, server has returned unknown data"))).data());;
+			if (hintmanager != NULL)
 				hintmanager->addHintError(tr("Unable to connect, server has returned unknown data"));
 			break;
 		case GG_FAILURE_READING:
-			kdebug(tr("Unable to connect, connection break during reading"));
-		if (hintmanager != NULL)
+			kdebug("%s\n",
+				unicode2latin(QString(tr("Unable to connect, connection break during reading"))).data());
+			if (hintmanager != NULL)
 				hintmanager->addHintError(tr("Unable to connect, connection break during reading"));
 			break;
 		case GG_FAILURE_WRITING:
-			kdebug(tr("Unable to connect, connection break during writing"));
-		if (hintmanager != NULL)
+			kdebug("%s\n",
+				unicode2latin(QString(tr("Unable to connect, connection break during writing"))).data());
+			if (hintmanager != NULL)
 				hintmanager->addHintError(tr("Unable to connect, connection break during writing"));
 			break;
 		case GG_FAILURE_PASSWORD:
-			kdebug(tr("Unable to connect, incorrect password"));
-		kadu->autohammer = false; /* FIXME 2/2*/
-		AutoConnectionTimer::off();
-		if (hintmanager != NULL)
+			kdebug("%s\n",
+				unicode2latin(QString(tr("Unable to connect, incorrect password"))).data());
+			kadu->autohammer = false; /* FIXME 2/2*/
+			AutoConnectionTimer::off();
+			if (hintmanager != NULL)
 				hintmanager->addHintError(tr("Unable to connect, incorrect password"));
-		QMessageBox::critical(0, tr("Incorrect password"), tr("Connection will be stoped\nYour password is incorrect !!!"), QMessageBox::Ok, 0);
-		return;
+			QMessageBox::critical(0, tr("Incorrect password"), tr("Connection will be stoped\nYour password is incorrect !!!"), QMessageBox::Ok, 0);
+			return;
 			break;
 		case GG_FAILURE_TLS:
-			kdebug(tr("Unable to connect, error of negotiation TLS"));
-		if (hintmanager != NULL)
+			kdebug("%s\n",
+				unicode2latin(QString(tr("Unable to connect, error of negotiation TLS"))).data());
+			if (hintmanager != NULL)
 				hintmanager->addHintError(tr("Unable to connect, error of negotiation TLS"));
 			break;
 	}
