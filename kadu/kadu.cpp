@@ -320,6 +320,8 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 /* a monstrous constructor so Kadu would take longer to start up */
 Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 {
+	ConfigDialog::registerCheckbox(i18n("Chat")+" [2]",i18n("Open chat window on new message"),"Other","OpenChatOnMessage");
+
 	closestatusppmtime.start();
 	lastsoundtime.start();
 
