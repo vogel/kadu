@@ -184,6 +184,18 @@ QString ConfigFile::readEntry(const QString &group,const QString &name, const QS
 	return string;
 }
 
+unsigned int ConfigFile::readUnsignedNumEntry(const QString &group,const QString &name, unsigned int def) const
+{
+	bool ok;
+	QString string = getEntry(group, name);
+	if (string == QString::null)
+		return def;
+	unsigned int num = string.toUInt(&ok);
+	if (!ok)
+		return def;
+	return num;
+}
+
 int ConfigFile::readNumEntry(const QString &group,const QString &name, int def) const
 {
 	bool ok;

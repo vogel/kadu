@@ -945,7 +945,7 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time) {
 	QValueList<HistoryEntry> entries;
 	QValueList<HistoryEntry> entriestmp;
 	QDateTime date;
-	int from, end, count;
+	unsigned int from, end, count;
 	
 	kdebugf();
 
@@ -953,8 +953,9 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time) {
 	count = history.getHistoryEntriesCount(senders);
 	end = count - 1;
 	
-	while (end >= 0 && entries.count() < config_file.readNumEntry("History","ChatHistoryCitation")) {
-		from = (end < config_file.readNumEntry("History", "ChatHistoryCitation")) ? 0 : end - config_file.readNumEntry("History","ChatHistoryCitation") + 1;
+	from = count;
+	while (from >= 1 && entries.count() < config_file.readUnsignedNumEntry("History","ChatHistoryCitation")) {
+		from = (end < config_file.readUnsignedNumEntry("History", "ChatHistoryCitation")) ? 0 : end - config_file.readUnsignedNumEntry("History","ChatHistoryCitation") + 1;
 		entriestmp = history.getHistoryEntries(senders, from, end - from + 1, HISTORYMANAGER_ENTRY_CHATSEND
 			| HISTORYMANAGER_ENTRY_MSGSEND | HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV);
 		kdebug("Chat::writeMessageFromHistory(): temp entries = %d\n", entriestmp.count());
@@ -980,7 +981,7 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time) {
 		kdebug("Chat::writeMessageFromHistory(): entries = %d\n", entries.count());
 		end = from - 1;
 		}
-	from = (entries.count() < config_file.readNumEntry("History","ChatHistoryCitation")) ? 0 : entries.count() - config_file.readNumEntry("History","ChatHistoryCitation");
+	from = (entries.count() < config_file.readUnsignedNumEntry("History","ChatHistoryCitation")) ? 0 : entries.count() - config_file.readUnsignedNumEntry("History","ChatHistoryCitation");
 	for (unsigned int i = from; i < entries.count(); i++)
 		if (entries[i].date.secsTo(QDateTime::currentDateTime()) <= -config_file.readNumEntry("History","ChatHistoryQuotationTime") * 3600)
 			if (entries[i].type == HISTORYMANAGER_ENTRY_MSGSEND

@@ -346,7 +346,7 @@ void HintManager::addHintNewMsg(const QString &nick, const QString &msg)
 
 	if (config_file.readBoolEntry("Hints","ShowContentMessage"))
 	{
-		unsigned int citeSign=config_file.readNumEntry("Hints","CiteSign");
+		unsigned int citeSign=config_file.readUnsignedNumEntry("Hints","CiteSign");
 		QString cite;
 		if (msg.length() <= citeSign)
 			cite = msg;
@@ -367,7 +367,7 @@ void HintManager::addHintNewChat(UinsList& senders, const QString &msg)
 	
 	if (config_file.readBoolEntry("Hints","ShowContentMessage"))
 	{
-		unsigned int citeSign=config_file.readNumEntry("Hints","CiteSign");
+		unsigned int citeSign=config_file.readUnsignedNumEntry("Hints","CiteSign");
 		QString cite;
 		if (msg.length() <= citeSign)
 			cite = msg;

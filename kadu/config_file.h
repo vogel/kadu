@@ -45,6 +45,7 @@ class ConfigFile {
 
 		QString readEntry(const QString &group,const QString &name, const QString &def = QString::null) const;
 		int readNumEntry(const QString &group,const QString &name, int def = 0) const;
+		unsigned int readUnsignedNumEntry(const QString &group,const QString &name, unsigned int def = 0) const;
 		double readDoubleNumEntry(const QString &group,const QString &name, double def = 0.0) const;
 		bool readBoolEntry(const QString &group,const QString &name, bool def = false) const;
 		QRect readRectEntry(const QString &group,const QString &name, const QRect *def = 0L) const;

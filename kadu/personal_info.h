@@ -25,7 +25,7 @@ class PersonalInfoDialog : public QDialog
 		QLineEdit* FamilyCityEdit;
 		enum DialogState {READY, READING, WRITTING};
 		DialogState State;
-		int seq;
+		uint32_t seq;
 
 	private slots:
 		void OkButtonClicked();

@@ -98,7 +98,10 @@ class HttpClient : public QObject
 		QByteArray PostData;
 		int Status;
 		bool HeaderParsed;
-		int ContentLength;
+		
+		unsigned int ContentLength;
+		bool ContentLengthNotFound;
+		
 		QMap<QString,QString> Cookies;
 		
 	private slots:

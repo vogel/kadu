@@ -195,6 +195,8 @@ void PersonalInfoDialog::fillFields(gg_pubdir50_t res)
 			kdebug("PersonalInfoDialog::fillFields(): Done writing info.\n");
 			accept();
 			break;
+		case READY:
+			break;
 		}
 
 	setEnabled(true);

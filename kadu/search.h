@@ -38,7 +38,7 @@ class SearchDialog : public QDialog {
 		QPushButton *b_nextbtn;
 		QPushButton *b_addbtn;
 		uin_t _whoisSearchUin;
-		int seq;
+		uint32_t seq;
 
 		QLineEdit *e_uin;
 

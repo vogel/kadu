@@ -346,7 +346,7 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, u
 
 	kdebug("formatGGMessage()\n");
 	bold = italic = underline = color = inspan = false;
-	int pos = 0;
+	unsigned int pos = 0;
 	if (formats_length)
 	{
 		while (formats_length)
@@ -1220,14 +1220,15 @@ void HttpClient::onReadyRead()
 		}
 		// Wyci±gamy Content-Length
 		QRegExp cl_regexp("Content-Length: (\\d+)");
-		if(cl_regexp.search(s)<0)
+		ContentLengthNotFound=cl_regexp.search(s)<0;
+		if(ContentLengthNotFound)
 		{
-			ContentLength=-1;
+			ContentLength=0;
 			kdebug("HttpClient: Content-Length not found. We will wait for connection to close.");
 		}
 		else
 		{
-			ContentLength=cl_regexp.cap(1).toInt();
+			ContentLength=cl_regexp.cap(1).toUInt();
 			kdebug("HttpClient: Content-Length: %i bytes\n",ContentLength);			
 		}
 		
@@ -1259,7 +1260,7 @@ void HttpClient::onReadyRead()
 	}
 	// Kontynuuj odczyt jesli dane niekompletne
 	// lub je¶li mamy czekaæ na connection close
-	if(ContentLength>Data.size()||ContentLength<0)
+	if(ContentLength>Data.size()||ContentLengthNotFound)
 		return;
 	// Mamy cale dane
 	kdebug("HttpClient: All Data Retreived: %i bytes\n",Data.size());
@@ -1269,7 +1270,7 @@ void HttpClient::onReadyRead()
 
 void HttpClient::onConnectionClosed()
 {
-	if(HeaderParsed&&ContentLength<0)
+	if(HeaderParsed&&ContentLengthNotFound)
 		emit finished();
 	else
 		emit error();

@@ -57,7 +57,7 @@ void createConfig() {
 //	config_file.writeEntry("Password", pwHash(config.password));
 	config_file.sync();
 
-	qApp->mainWidget()->setCaption(QString("Kadu: %1").arg(config_file.readNumEntry("General","UIN")));
+	qApp->mainWidget()->setCaption(QString("Kadu: %1").arg((uin_t)config_file.readNumEntry("General","UIN")));
 
 	kdebug("createConfig(): Config file created\n");
 }

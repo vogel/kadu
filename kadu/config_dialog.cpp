@@ -847,7 +847,7 @@ int ConfigDialog::findPreviousTab(int pos)
 		return -1;
 	if (pos<0)
 		pos=0;
-	if (pos>RegisteredControls.count()-1)
+	if ((uint)(pos+1)>RegisteredControls.count())
 		pos=RegisteredControls.count()-1;
 	for(; pos>=0; pos--)
 		if (RegisteredControls[pos].type == CONFIG_TAB)

@@ -128,7 +128,7 @@ void ToolBar::registerSeparator(int position)
 	ToolButton RToolButton;
 	RToolButton.caption="--separator--";
 
-	if (((RegisteredToolButtons.count()-1)<position) || (position == -1))
+	if ((RegisteredToolButtons.count()<(uint)(position+1)) || (position == -1))
 		RegisteredToolButtons.append(RToolButton);
 	else
 		RegisteredToolButtons.insert(RegisteredToolButtons.at(position), RToolButton);
@@ -152,7 +152,7 @@ void ToolBar::registerButton(const QIconSet& iconfile, const QString& caption,
 	RToolButton.position= position;
 	RToolButton.name= name;
 
-	if (((RegisteredToolButtons.count()-1)<position) || (position == -1))
+	if ((RegisteredToolButtons.count()<(uint)(position+1)) || (position == -1))
 		RegisteredToolButtons.append(RToolButton);
 	else
 		RegisteredToolButtons.insert(RegisteredToolButtons.at(position), RToolButton);
@@ -253,7 +253,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	Docked=false;
 
 	KaduSlots *kaduslots=new KaduSlots();
-	int myUin=config_file.readNumEntry("General", "UIN");
+	uin_t myUin=config_file.readNumEntry("General", "UIN");
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "General"));
 	ConfigDialog::addHGroupBox("General", "General", QT_TRANSLATE_NOOP("@default", "User data"));
@@ -1141,7 +1141,7 @@ void Kadu::setStatus(int status) {
 
 	if (!updateChecked)
 	{
-		int myUin=config_file.readNumEntry("General", "UIN");
+		uin_t myUin=(uin_t)config_file.readNumEntry("General", "UIN");
 		if (myUin) {
 			uc = new UpdatesClass(myUin);
 			QObject::connect(uc->op, SIGNAL(data(const QByteArray &, QNetworkOperation *)),
@@ -1239,7 +1239,7 @@ void Kadu::setStatus(int status) {
 	char *tmp = strdup((const char *)unicode2latin(pwHash(config_file.readEntry("General", "Password"))));
 	kdebug("Kadu::setStatus(): password = %s\n", tmp);
 	free(tmp);
-	loginparams.uin = config_file.readNumEntry("General", "UIN");
+	loginparams.uin = (uin_t)config_file.readNumEntry("General", "UIN");
 	loginparams.has_audio = config_file.readBoolEntry("Network", "AllowDCC");
 	loginparams.last_sysmsg = config_file.readNumEntry("Global", "SystemMsgIndex");
 
@@ -1766,7 +1766,7 @@ void KaduSlots::onDestroyConfigDialog()
 	kadu->changeAppearance();
 	chat_manager->changeAppearance();
 	kadu->refreshGroupTabBar();
-	kadu->setCaption(tr("Kadu: %1").arg(config_file.readNumEntry("General", "UIN")));
+	kadu->setCaption(tr("Kadu: %1").arg((uin_t)config_file.readNumEntry("General", "UIN")));
 
 	QComboBox *cb_language= ConfigDialog::getComboBox("General", "Set language:");
 	config_file.writeEntry("General", "Language", translateLanguage(qApp, cb_language->currentText(),false));
