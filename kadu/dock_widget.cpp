@@ -287,8 +287,9 @@ void TrayHint::set_hint(void) {
 }
 
 void TrayHint::show_hint(const QString &str, const QString &nick, int index) {
-	fprintf(stderr,"KK TrayHint::show_hint(%s,%s,%d)\n",str.latin1(),nick.latin1(),index);
-	if (hint_list.last() == str+nick || hint_list.last() == "\n"+str+nick)
+	fprintf(stderr, "KK TrayHint::show_hint(%s,%s,%d)\n", 
+		 (const char *)str.local8Bit(), (const char *)nick.local8Bit(), index);
+	if (hint_list.last() == str + nick || hint_list.last() == "\n" + str + nick)
 		return;
 	QString text;
 	text.append("<CENTER>");
