@@ -963,10 +963,7 @@ void GaduProtocol::iWantGoOffline(const QString &desc)
 	kdebugf();
 
 	if (CurrentStatus->isOffline())
-	{
-		login();
 		return;
-	}
 
 	if (!desc.isEmpty())
 	{
