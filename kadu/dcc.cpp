@@ -19,8 +19,9 @@
 #include <sys/un.h>
 //
 #include "kadu.h"
-#include "dcc.h"
 //
+#include "dcc.h"
+#include "debug.h"
 
 dccSocketClass::dccSocketClass(struct gg_dcc *dcc_sock) : QObject() {
 	dccsock = dcc_sock;
@@ -33,7 +34,7 @@ dccSocketClass::dccSocketClass(struct gg_dcc *dcc_sock) : QObject() {
 }
 
 dccSocketClass::~dccSocketClass() {
-	fprintf(stderr, "KK dccSocketClass::~dccSocketClass\n");
+	kdebug("dccSocketClass::~dccSocketClass\n");
 	if (dialog) {
 		if (dialog->dccFinished) {
 			if (dialog->isVisible())
@@ -88,13 +89,13 @@ void dccSocketClass::initializeNotifiers() {
 
 void dccSocketClass::dccDataReceived() {
 	if (!in_watchDcc) {
-		fprintf(stderr, "KK dccSocketClass::dccDataReceived\n");
+		kdebug("dccSocketClass::dccDataReceived\n");
 		watchDcc(GG_CHECK_READ);
 		}
 }
 
 void dccSocketClass::dccDataSent() {
-	fprintf(stderr, "KK dccSocketClass::dccDataSent\n");
+	kdebug("dccSocketClass::dccDataSent\n");
 	snw->setEnabled(false);
 	if (dccsock->check & GG_CHECK_WRITE)
 		watchDcc(GG_CHECK_WRITE);
@@ -109,9 +110,9 @@ void dccSocketClass::watchDcc(int check) {
 
 	in_watchDcc = true;
 
-	fprintf(stderr, "KK dccSocketClass::watchDcc()\n");			
+	kdebug("dccSocketClass::watchDcc()\n");			
 	if (!(dccevent = gg_dcc_watch_fd(dccsock))) {
-		fprintf(stderr, "KK dccSocketClass::watchDcc: Connection broken unexpectedly!\n");
+		kdebug("dccSocketClass::watchDcc: Connection broken unexpectedly!\n");
 		setState(DCC_SOCKET_CONNECTION_BROKEN);
     		return;
 		}
@@ -125,16 +126,16 @@ void dccSocketClass::watchDcc(int check) {
 			gg_dcc_set_type(dccsock, GG_SESSION_DCC_SEND);
 			break;
 		case GG_EVENT_DCC_NEED_FILE_ACK:
-			fprintf(stderr,"KK dccSocketClass::watchDcc:  GG_EVENT_DCC_NEED_FILE_ACK! %d %d\n",
+			kdebug("dccSocketClass::watchDcc:  GG_EVENT_DCC_NEED_FILE_ACK! %d %d\n",
 				dccsock->uin, dccsock->peer_uin);
 			askAccept();
 			break;
 		case GG_EVENT_DCC_NEED_FILE_INFO:
-			fprintf(stderr,"KK dccSocketClass::watchDcc:  GG_EVENT_DCC_NEED_FILE_INFO! %d %d\n",
+			kdebug("dccSocketClass::watchDcc:  GG_EVENT_DCC_NEED_FILE_INFO! %d %d\n",
 				dccsock->uin, dccsock->peer_uin);
 			f = selectFile();
 			if (f == NULL) {
-				fprintf(stderr, "KK dccSocketClass::watchDcc: Abort transfer\n");
+				kdebug("dccSocketClass::watchDcc: Abort transfer\n");
 				setState(DCC_SOCKET_TRANSFER_ERROR);
 				return;
 				}
@@ -146,7 +147,7 @@ void dccSocketClass::watchDcc(int check) {
 			unlink("/home/chilek/.gg/kaduplayvoice");			
 			playprocess = new QProcess(QString("kaduplayvoice"));
 			playprocess->start();
-			fprintf(stderr, "KK accept playsocket\n");
+			kdebug("accept playsocket\n");
 			sock = socket(PF_UNIX, SOCK_STREAM, 0);
 			addr.sun_family = AF_UNIX;
 			strcpy(addr.sun_path, "/home/chilek/.gg/kaduplayvoice");
@@ -157,7 +158,7 @@ void dccSocketClass::watchDcc(int check) {
 			unlink("/home/chilek/.gg/kadurecordvoice");			
 			recordprocess = new QProcess(QString("kadurecordvoice"));
 			recordprocess->start();
-			fprintf(stderr, "KK accept recordsocket\n");
+			kdebug("accept recordsocket\n");
 			sock = socket(PF_UNIX, SOCK_STREAM, 0);
 			addr.sun_family = AF_UNIX;
 			strcpy(addr.sun_path, "/home/chilek/.gg/kadurecordvoice");
@@ -176,11 +177,11 @@ void dccSocketClass::watchDcc(int check) {
 			gg_dcc_voice_send(dccsock, buf, len);
 			break;
 		case GG_EVENT_DCC_ERROR:
-			fprintf(stderr, "KK dccSocketClass::watchDcc: GG_EVENT_DCC_ERROR\n");
+			kdebug("dccSocketClass::watchDcc: GG_EVENT_DCC_ERROR\n");
 			setState(DCC_SOCKET_TRANSFER_ERROR);
 			return;
 		case GG_EVENT_DCC_DONE:
-			fprintf(stderr, "KK dccSocketClass::watchDcc: GG_EVENT_DCC_DONE\n");
+			kdebug("dccSocketClass::watchDcc: GG_EVENT_DCC_DONE\n");
 			if (dialog && dialog->isVisible())
 				dialog->updateFileInfo(dccsock);
 			setState(DCC_SOCKET_TRANSFER_FINISHED);
@@ -203,7 +204,7 @@ void dccSocketClass::watchDcc(int check) {
 void dccSocketClass::askAccept(void) {
 	QString str,f;
 
-	fprintf(stderr,"KK dccSocketClass::askAccept\n");
+	kdebug("dccSocketClass::askAccept\n");
 	str.append(i18n("User "));
 	str.append(userlist.byUin(dccsock->peer_uin).altnick);
 	str.append(i18n(" wants to send us a file "));
@@ -218,16 +219,16 @@ void dccSocketClass::askAccept(void) {
 	switch (QMessageBox::information( 0, i18n("Incoming transfer"),str, i18n("Yes"), i18n("No"),
 		QString::null, 0, 1) ) {
 		case 0: // Yes?
-			fprintf(stderr, "KK dccSocketClass::askAccept: accepted\n");
+			kdebug("dccSocketClass::askAccept: accepted\n");
 			f = QFileDialog::getSaveFileName((char *)dccsock->file_info.filename,
 				QString::null, 0, i18n("save file"), i18n("Select file location"));
 			if (f.isEmpty()) {
-				fprintf(stderr, "KK dccSocketClass::askAccept: discarded\n");
+				kdebug("dccSocketClass::askAccept: discarded\n");
 				setState(DCC_SOCKET_TRANSFER_DISCARDED);
 				break;
 				}
 
-			fprintf(stderr, "KK dccSocketClass::askAccept: opening file %s\n", f.latin1());
+			kdebug("dccSocketClass::askAccept: opening file %s\n", f.latin1());
 
 			if ((dccsock->file_fd = open(f.latin1(), O_WRONLY | O_CREAT, 0600)) == -1) {
 				QMessageBox::warning(kadu, i18n("Connect error"), i18n("Could not open file"));
@@ -238,7 +239,7 @@ void dccSocketClass::askAccept(void) {
 			dialog->printFileInfo(dccsock);
 			break;
 		case 1:
-			fprintf(stderr, "KK dccSocketClass::askAccept: discarded\n");
+			kdebug("dccSocketClass::askAccept: discarded\n");
 			setState(DCC_SOCKET_TRANSFER_DISCARDED);
 			break;
 		}
@@ -262,7 +263,7 @@ void dccSocketClass::setState(int pstate) {
 	dccSocketClass **me = new (dccSocketClass *);
 	*me = this;
 	a->postEvent((QObject *)kadu, new QCustomEvent(QEvent::User, me));
-	fprintf(stderr, "KK dccSocketClass::setState\n");
+	kdebug("dccSocketClass::setState\n");
 }
 
 DccGet::DccGet(dccSocketClass *dccsocket, int type, QDialog *parent, const char *name)
@@ -282,7 +283,7 @@ DccGet::~DccGet() {
 void DccGet::closeEvent(QCloseEvent *e) {
 	QWidget::closeEvent(e);
 	if (!dccFinished) {
-		fprintf(stderr, "KK DccGet::closeEvent: DCC transfer has not finished yet!\n");
+		kdebug("DccGet::closeEvent: DCC transfer has not finished yet!\n");
 		delete dccsocket;
 		}
 }

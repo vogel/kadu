@@ -17,6 +17,7 @@
 #include "pixmaps.h"
 #include "message.h"
 #include "chat.h"
+#include "debug.h"
 
 //
 #include "kadu.h"
@@ -24,6 +25,43 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/Xatom.h>
+
+void send_manager_message (	Display* d,
+				    long         message,
+				    Window       window,
+				    long         data1,
+				    long         data2,
+				    long         data3)
+{
+  XClientMessageEvent ev;
+  
+  ev.type = ClientMessage;
+  ev.window = window;
+  ev.message_type = XInternAtom(d,"_NET_SYSTEM_TRAY_OPCODE",False); //icon->system_tray_opcode_atom;
+  ev.format = 32;
+  ev.data.l[0] = CurrentTime; //time(NULL); //gdk_x11_get_server_time (GTK_WIDGET (icon)->window);
+  ev.data.l[1] = message;
+  ev.data.l[2] = data1;
+  ev.data.l[3] = data2;
+  ev.data.l[4] = data3;
+
+  
+  //gdk_error_trap_push ();
+  XSendEvent (d,window
+	      /*icon->manager_window*/, False, NoEventMask, (XEvent *)&ev);
+  XSync (d, False);
+  //gdk_error_trap_pop ();
+}
+
+void send_dock_request (Display* d,QWidget *widget)
+{
+  send_manager_message (/*icon,*/d,
+				      /*SYSTEM_TRAY_REQUEST_DOCK*/0,
+				      widget->winId()/*icon->manager_window*/,
+				      widget->winId()/*gtk_plug_get_id (GTK_PLUG (icon))*/,
+				      0, 0);
+}
+
 
 TrayIcon::TrayIcon(QWidget *parent, const char *name)
 	: QLabel(0,"TrayIcon",WMouseNoMask)
@@ -58,13 +96,14 @@ TrayIcon::TrayIcon(QWidget *parent, const char *name)
 		setWFlags(WRepaintNoErase);
 		resize(22,22);
 		update();
-
+//		send_dock_request(x11Display(),this);
 		Display *dsp = x11Display();
 		WId win = winId();
 		int r;
 		int data = 1;
 		r = XInternAtom(dsp, "KWM_DOCKWINDOW", false);
 		XChangeProperty(dsp, win, r, r, 32, 0, (uchar *)&data, 1);
+		data = 0;
 		r = XInternAtom(dsp, "_KDE_NET_WM_SYSTEM_TRAY_WINDOW_FOR", false);
 		XChangeProperty(dsp, win, r, XA_WINDOW, 32, 0, (uchar *)&data, 1);
 	};
@@ -84,7 +123,7 @@ TrayIcon::~TrayIcon()
 	
 	delete hint;
 	
-	fprintf(stderr, "KK TrayIcon::~TrayIcon()\n");
+	kdebug("TrayIcon::~TrayIcon()\n");
 }
 
 void TrayIcon::setPixmap(const QPixmap& pixmap)
@@ -117,7 +156,7 @@ void TrayIcon::changeIcon() {
 			}
 	}
 	else {
-		fprintf(stderr, "KK DockWidget::changeIcon() OFF\n");
+		kdebug("DockWidget::changeIcon() OFF\n");
 		}
 }
 
@@ -229,26 +268,26 @@ void TrayIcon::showHint(const QString &str, const QString &nick, int index) {
 	if (!config.trayhint || !config.dock)
 		return;
 
-	fprintf(stderr,"KK TrayIcon::showHint()\n");
+	kdebug("TrayIcon::showHint()\n");
 	hint->show_hint(str,nick,index);
 }
 
 void TrayIcon::reconfigHint() {
-	fprintf(stderr,"KK TrayIcon::reconfigHint()\n");
+	kdebug("TrayIcon::reconfigHint()\n");
 	hint->restart();
 }
 
 void TrayIcon::showErrorHint(const QString &str) {
 	if (!config.hinterror)
 		return;
-	fprintf(stderr,"KK TrayIcon::showErrorHint()\n");
+	kdebug("TrayIcon::showErrorHint()\n");
 	hint->show_hint(str, i18n("Error: "), 1);
 }
 
 TrayHint::TrayHint(QWidget *parent, const char *name)
 	: QWidget(parent,"TrayHint",WStyle_NoBorder | WStyle_StaysOnTop | WStyle_Tool | WX11BypassWM | WWinOwnDC)
 {
-	fprintf(stderr,"KK TrayHint::TrayHint\n");
+	kdebug("TrayHint::TrayHint\n");
 	
 	hint = new QTextBrowser(this);
 	hint->setVScrollBarMode(QScrollView::AlwaysOff);
@@ -283,11 +322,11 @@ void TrayHint::set_hint(void) {
 	else
 		pos_hint.setY(pos_tray.y()-size_hint.height());
 	move(pos_hint);
-	fprintf(stderr,"KK TrayHint::set_hint()\n");
+	kdebug("TrayHint::set_hint()\n");
 }
 
 void TrayHint::show_hint(const QString &str, const QString &nick, int index) {
-	fprintf(stderr, "KK TrayHint::show_hint(%s,%s,%d)\n", 
+	kdebug("TrayHint::show_hint(%s,%s,%d)\n", 
 		 (const char *)str.local8Bit(), (const char *)nick.local8Bit(), index);
 	if (hint_list.last() == str + nick || hint_list.last() == "\n" + str + nick)
 		return;
@@ -330,14 +369,14 @@ void TrayHint::remove_hint() {
 	if ( len > 0) {
 		hint->setText(hint->text().remove(0, len + 1));
 		hint_list.erase(hint_list.fromLast());
-		fprintf(stderr, "KK TrayHint::remove_hint() hint_list counts=%d\n",hint_list.count());
+		kdebug("TrayHint::remove_hint() hint_list counts=%d\n",hint_list.count());
 		}
 	else {
 		hide();
 		hint->clear();
 		hint_timer->stop();
 		hint_list.clear();
-		fprintf(stderr, "KK TrayHint::remove_hint() hint and hint_list is cleared\n");
+		kdebug("TrayHint::remove_hint() hint and hint_list is cleared\n");
 		return;
 	}
 	set_hint();
@@ -351,7 +390,7 @@ void TrayHint::restart() {
 	hint->setFont(config.fonts.trayhint);
 	hint->setPaletteBackgroundColor(config.colors.trayhintBg);
 	hint->setPaletteForegroundColor(config.colors.trayhintText);
-	fprintf(stderr, "KK TrayHint::restart()\n");
+	kdebug("TrayHint::restart()\n");
 }
 
 TrayIcon *trayicon = NULL;

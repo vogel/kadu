@@ -35,6 +35,7 @@
 #include "config.h"
 #include "dock_widget.h"
 #include "config_file.h"
+#include "debug.h"
 #ifdef HAVE_OPENSSL
 extern "C"
 {
@@ -45,14 +46,14 @@ extern "C"
 
 void loadKaduConfig(void) {  	
 	/* first read our own config file... */
-	fprintf(stderr,"KK loadKaduConfig(): Reading config file...\n");
+	kdebug("loadKaduConfig(): Reading config file...\n");
 	ConfigFile * konf;
 	konf = new ConfigFile(ggPath(QString("kadu.conf")));
 
 	konf->setGroup("Global");
 	config.uin = konf->readNumEntry("UIN",0);
 	config.password = pwHash(konf->readEntry("Password",""));
-	fprintf(stderr,"KK Read user data: uin %d password :-P\n", config.uin);
+	kdebug("Read user data: uin %d password :-P\n", config.uin);
 	config.soundprog = konf->readEntry("SoundPlayer","");
 	config.soundmsg = konf->readEntry("Message_sound","");
 	config.soundvolctrl = konf->readBoolEntry("VolumeControl",false);
@@ -187,7 +188,7 @@ void loadKaduConfig(void) {
 }
 
 void saveKaduConfig(void) {
-	fprintf(stderr,"KK saveKaduConfig(): Writing config files...\n");
+	kdebug("saveKaduConfig(): Writing config files...\n");
 	ConfigFile * konf;
 	konf = new ConfigFile(ggPath(QString("kadu.conf")));
 
@@ -1440,7 +1441,7 @@ void ConfigDialog::generateMyKeys(void) {
 	QCString tmp=ggPath("keys").local8Bit();
 	mkdir(tmp.data(), 0700);
 
-	fprintf(stderr,"KK Generating my keys, len: %d\n", atoi(cb_keyslen->currentText()));
+	kdebug("Generating my keys, len: %d\n", atoi(cb_keyslen->currentText()));
 	if (sim_key_generate(config.uin) < 0) {
 		QMessageBox::critical(this, "Kadu", i18n("Error generating keys"), i18n("OK"), QString::null, 0);
 		return;
