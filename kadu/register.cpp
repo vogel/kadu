@@ -214,6 +214,8 @@ Register::Register(QDialog *parent, const char *name) : QDialog (parent, name, F
 
 	snr = snw = NULL;
 	h = NULL;
+
+	doGetToken();
 }
 
 void Register::doGetToken() {
@@ -231,9 +233,10 @@ void Register::gotTokenReceived(struct gg_http *h) {
 	struct gg_token *t = (struct gg_token *)h->data;
 	tokenid = cp2unicode((unsigned char *)t->tokenid);
 
-	QByteArray buf;
-	buf.assign(h->body, h->body_size);
-	buf.detach();
+	// nie optymalizowac !!!
+	QByteArray buf(h->body_size);
+	for (int i = 0; i < h->body_size; i++)
+		buf[i] = h->body[i];
 
 	tokenimage->setImage(buf);
 	setEnabled(true);

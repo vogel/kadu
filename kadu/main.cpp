@@ -70,7 +70,6 @@ int main(int argc, char *argv[])
 				Register *reg;
 				reg = new Register;
 				reg->show();
-				reg->doGetToken();
 				break;
 			case 2: // Nothing
 				break;
