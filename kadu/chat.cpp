@@ -74,6 +74,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 		}
 	else 
 		body = new KaduTextBrowser(split1);
+	body->setMinimumSize(QSize(1,1));
 	body->setFont(config.fonts.chat);
 	QObject::connect(body, SIGNAL(linkClicked(const QString &)), this, SLOT(hyperlinkClicked(const QString &)));
 
@@ -82,6 +83,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	if (uins.count() > 1) {
 		setGeometry((pos.x() + 550) / 2, (pos.y() + 400) / 2, 550, 400);
 		userbox = new UserBox(split2);
+		userbox->setMinimumSize(QSize(1,1));
 		userbox->setPaletteBackgroundColor(config.colors.userboxBg);
 		userbox->setPaletteForegroundColor(config.colors.userboxFg);
 		userbox->QListBox::setFont(config.fonts.userbox);
@@ -165,7 +167,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	edtbuttontray->setStretchFactor(buttontray, 1);
 
 	edit = new CustomInput(downpart, this);
-	edit->setMinimumHeight(100);
+	edit->setMinimumHeight(1);
 	edit->setWordWrap(QMultiLineEdit::WidgetWidth);
 	edit->setFont(config.fonts.chat);
 
@@ -198,23 +200,12 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	btnpart->setStretchFactor(sendbtn, 1);
 
 	sizes.clear();
-	sizes.append(50);
-	sizes.append(1);
+	sizes.append(3);
+	sizes.append(2);
 	split1->setSizes(sizes);
 
 	QGridLayout *grid = new QGridLayout (this, 5, 4, 3, 3);
 	grid->addMultiCellWidget(split1, 0, 4, 0, 3);
-//	QHBoxLayout *subgrid = new QHBoxLayout();
-//	subgrid->addWidget(edt, 50);
-//	subgrid->addWidget(buttontray, 1);
-//	if (userbox)
-//		grid->addMultiCellWidget(split2, 0, 0, 0, 3);
-//	else
-//		grid->addMultiCellWidget(body, 0, 0, 0, 3);
-//	grid->addMultiCellLayout(subgrid, 2, 2, 0, 3);
-//	grid->addMultiCellWidget(edit, 3, 3, 0, 3);
-//	grid->addWidget(cancelbtn, 4, 2);
-//	grid->addWidget(sendbtn, 4, 3);
 	grid->addRowSpacing(1, 5);
 	grid->setRowStretch(0, 2);
 

@@ -7,6 +7,8 @@
   to nie s± wysy³ane bezsensowne powiadomienia do serwera GG (chilek)
 * menu podrêczne u¿ytkownika: je¶li u¿ytkownik nie ma UINu nie wy¶wietlamy ¿adnych
   haczyków (chilek)
+* poprawiony mechanizm zmiany wielko¶ci komponentów w oknie chat. Teraz mo¿na
+  ju¿ naprawdê dowolnie, co do pixela ustawiaæ wielko¶æ (adrian)
 
 +++ wersja 0.3.3-rc3
 * sensowne potwierdzenie usuniêcia kontaktu (adrian)
