@@ -5,8 +5,9 @@ EXTRA_DIST = admin kadu.kdevprj AUTHORS COPYING ChangeLog INSTALL README TODO ka
 
 AUTOMAKE_OPTIONS = foreign 
 
-mostlyclean-local:
-	cd libgadu && $(MAKE) mostlyclean
+# libgadu nie obsluguje mostlyclean
+#mostlyclean-local:
+#	cd libgadu && $(MAKE) mostlyclean
 
 clean-local:
 	cd libgadu && $(MAKE) clean
@@ -14,5 +15,6 @@ clean-local:
 distclean-local:
 	cd libgadu && $(MAKE) distclean
 
-maintainer-clean-local:
-	cd libgadu && $(MAKE) maintainer-clean
+# libgady nie obsluguje maintainer-clean
+#maintainer-clean-local:
+#	cd libgadu && $(MAKE) maintainer-clean
