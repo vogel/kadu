@@ -29,7 +29,9 @@ class UserBox : public QListBox , QToolTip
 	private:
 		static QValueList<UserBox*> UserBoxes;
 		QValueList<uin_t> Uins;
-	
+
+		void sortUinsByAltNick(QValueList<uin_t> &);
+			
 	protected:
 		virtual void maybeTip(const QPoint&);
 		

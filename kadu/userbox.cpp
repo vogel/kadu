@@ -83,6 +83,26 @@ void UserBox::maybeTip(const QPoint &c)
 	};
 }
 
+void UserBox::sortUinsByAltNick(QValueList<uin_t> &uins) {
+	int i, j;
+	uin_t uin;
+	bool stop;
+
+	if (uins.count() < 2)
+		return;
+
+	do {
+		stop = true;
+		for (i = 0; i < uins.count() - 1; i++)
+			if (userlist.byUin(uins[i]).altnick > userlist.byUin(uins[i+1]).altnick) {
+				uin = uins[i];
+				uins[i] = uins[i+1];
+				uins[i+1] = uin;
+				stop = false;
+				}	
+	} while (!stop);
+}
+
 void UserBox::refresh()
 {
 	fprintf(stderr, "KK UserBox::refresh()\n");
@@ -109,6 +129,9 @@ void UserBox::refresh()
 				n_users.append(Uins[i]);			
 		};
 	};
+	sortUinsByAltNick(a_users);
+	sortUinsByAltNick(i_users);
+	sortUinsByAltNick(n_users);
 	// Czyscimy liste
 	clear();
 	// Dodajemy aktywnych
