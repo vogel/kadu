@@ -27,6 +27,7 @@
 #include "misc.h"
 #include "message_box.h"
 #include "../notify/notify.h"
+#include "sound_file.h"
 
 SoundManager* sound_manager=NULL;
 SoundSlots* sound_slots;
@@ -35,6 +36,10 @@ extern "C" int sound_init()
 {
 	kdebugf();
 	new SoundManager("sounds", "sound.conf");
+	
+	//tymczasowo, ¿eby linker nie usun±³ nieu¿ywanych symboli (ca³ej klasy SoundFile)
+	SoundFile::setVolume(NULL,0,0);
+	
 	kdebugf2();
 	return 0;
 }
