@@ -33,6 +33,10 @@
         <source>Status available</source>
         <translation>Status &quot;Online&quot;</translation>
     </message>
+    <message>
+        <source>Only for the first time</source>
+        <translation>Antworte einmal</translation>
+    </message>
 </context>
 <context>
     <name>AutoResponder</name>

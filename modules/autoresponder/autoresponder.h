@@ -14,9 +14,11 @@ class AutoResponder : public QObject
 	public:	
 		AutoResponder();
 		~AutoResponder();
-		
 	public slots:
 		void chatReceived(UinsList senders,const QString& msg,time_t time);
+		void chatOpened(const UinsList& senders);
+	public:
+		UinsList UserList;		/* tu beda przechowywane uiny tych ktorzy sie odezwali do nas */
 };
 
 extern AutoResponder* autoresponder;
