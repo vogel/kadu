@@ -33,7 +33,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * okno rozmowy: wstawienie znaku "-" nie powinno powodowaæ wstawiania nadinteligentnych
   znaków wyliczania (chilek)
 * je¶li nast±pi b³±d po³±czenia to kadu kolejny raz bêdzie próbowaæ siê po³±czyæ
-  po 2 sekundach (chilek)
+  po 1 sekundzie (chilek)
 
 +++ wersja 0.3.4-pre3
 * dodane przeszukiwanie historii (chilek)

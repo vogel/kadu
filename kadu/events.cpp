@@ -69,7 +69,7 @@ QTime lastsoundtime;
 
 AutoConnectionTimer::AutoConnectionTimer(QObject *parent) : QTimer(parent, "AutoConnectionTimer") {
 	connect(this, SIGNAL(timeout()), SLOT(doConnect()));
-	start(2000, TRUE);
+	start(1000, TRUE);
 }
 
 void AutoConnectionTimer::doConnect() {
