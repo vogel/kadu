@@ -27,116 +27,115 @@
 //
 
 Ignored::Ignored(QDialog *parent, const char *name) : QDialog (parent, name) {
-    resize(180,260);
-    setCaption(i18n("Manage ignored users"));
-    QLabel *descr = new QLabel(this);
-    descr->setText(i18n("Ignored Uins:"));
+	resize(180,260);
+	setCaption(i18n("Manage ignored users"));
+	QLabel *descr = new QLabel(this);
+	descr->setText(i18n("Ignored Uins:"));
 
-    list = new QListBox(this);
+	list = new QListBox(this);
 
-    getList();
+	getList();
 
-    QPushButton *b_del = new QPushButton(this);
-    b_del->setText(i18n("Delete"));
-    QObject::connect(b_del, SIGNAL( clicked() ), this, SLOT( remove() ));
+	QPushButton *b_del = new QPushButton(this);
+	b_del->setText(i18n("Delete"));
+	QObject::connect(b_del, SIGNAL(clicked()), this, SLOT(remove()));
 
-    QPushButton *b_add = new QPushButton(this);
-    b_add->setText(i18n("Add"));
-    QObject::connect(b_add, SIGNAL( clicked() ), this, SLOT( add() ));
+	QPushButton *b_add = new QPushButton(this);
+	b_add->setText(i18n("Add"));
+	QObject::connect(b_add, SIGNAL(clicked()), this, SLOT(add()));
 
-    e_uin = new QLineEdit(this);
-    QToolTip::add(e_uin, "Type here the UIN of the person you want to ignore");
-    QLabel *l_uin = new QLabel(this);
-    l_uin->setText(i18n("Uin"));
+	e_uin = new QLineEdit(this);
+	QToolTip::add(e_uin, "Type here the UIN of the person you want to ignore");
+	QLabel *l_uin = new QLabel(this);
+	l_uin->setText(i18n("Uin"));
 
-    QGridLayout *grid = new QGridLayout(this, 4,2,6,6);
-    grid->addWidget(descr,0,0);
-    grid->addMultiCellWidget(list,1,1,0,1);
-    grid->addWidget(l_uin,2,0, Qt::AlignRight);
-    grid->addWidget(e_uin,2,1);
-    grid->addWidget(b_del,3,0);
-    grid->addWidget(b_add,3,1);
+	QGridLayout *grid = new QGridLayout(this, 4,2,6,6);
+	grid->addWidget(descr,0,0);
+	grid->addMultiCellWidget(list,1,1,0,1);
+	grid->addWidget(l_uin,2,0, Qt::AlignRight);
+	grid->addWidget(e_uin,2,1);
+	grid->addWidget(b_del,3,0);
+	grid->addWidget(b_add,3,1);
 }
 
 bool isIgnored(uin_t uin) {
-    int i;
-    for (i = 0; i < ignored.size(); i++)
-	if (ignored[i] == uin)
-	    return true;
-
-    return false;
+	int i;
+	for (i = 0; i < ignored.size(); i++)
+		if (ignored[i] == uin)
+			return true;
+	return false;
 }
 
 void Ignored::add() {
-    addIgnored(atoi(e_uin->text().latin1()));
-    e_uin->clear();
-    writeIgnored(NULL);
-    getList();
+	addIgnored(atoi(e_uin->text().latin1()));
+	e_uin->clear();
+	writeIgnored(NULL);
+	getList();
 }
 
 void Ignored::getList() {
-    int i,j,k;
-    char buf[50];
-    bool userlist_entry = false;
-    list->clear();
-    for (i = 0; i < ignored.size(); i++) 
-	if (ignored[i]) {
-	    for (j = 0; j < userlist.size(); j++) {
-		if (ignored[i] == userlist[j].uin) {
-		    userlist_entry = true;
-		    k = j;
-		    }
-		}
-	    if (userlist_entry)
-		snprintf(buf, sizeof(buf), "%d (%s)", userlist[k].uin, userlist[k].nickname);	
-	    else
-		snprintf(buf, sizeof(buf), "%d (?)", ignored[i]);			
-	    userlist_entry = false;
+	int i,j,k;
+	char buf[50];
+	bool userlist_entry = false;
+	list->clear();
+	for (i = 0; i < ignored.size(); i++) 
+		if (ignored[i]) {
+			for (j = 0; j < userlist.size(); j++) {
+				if (ignored[i] == userlist[j].uin) {
+					userlist_entry = true;
+					k = j;
+					}
+				}
+			if (userlist_entry)
+				snprintf(buf, sizeof(buf), "%d (%s)", userlist[k].uin, (const char *)userlist[k].comment.local8Bit());	
+			else
+				snprintf(buf, sizeof(buf), "%d (?)", ignored[i]);			
+			userlist_entry = false;
 
-	    list->insertItem(buf);
-	    }
+			list->insertItem(buf);
+			}
 }
 
 void Ignored::remove() {
-    if (list->currentText().latin1() == NULL)
-	return;
+	if (list->currentText().latin1() == NULL)
+		return;
 
-    delIgnored(atoi(list->currentText().latin1()));
-    getList();
-    writeIgnored(NULL);
+	delIgnored(atoi(list->currentText().latin1()));
+	getList();
+	writeIgnored(NULL);
 }
 
 void addIgnored(uin_t uin) {
-    uint size=ignored.size();
-    ignored.resize(size+1);
-    ignored[size] = uin;
+	uint size = ignored.size();
+	ignored.resize(size+1);
+	ignored[size] = uin;
 }
 
 void delIgnored(uin_t uin) {
-    int i;
-    for (i = 0; i < ignored.size(); i++)
-	if (ignored[i] == uin) break;
+	int i;
+	for (i = 0; i < ignored.size(); i++)
+		if (ignored[i] == uin)
+			break;
 
-    ignored[i] = 0;
-    for (int j = i; j < ignored.size() -1; j++) {
-	ignored[j] = ignored[j+1];
-	}
-    ignored.resize(ignored.size() - 1);
+	ignored[i] = 0;
+	for (int j = i; j < ignored.size() -1; j++)
+		ignored[j] = ignored[j+1];
+	ignored.resize(ignored.size() - 1);
 }
 
 int writeIgnored(char *filename = NULL)
 {
-    char *tmp;
-    FILE *f;
+	char *tmp;
+	FILE *f;
 
-    if (!(tmp = preparePath("")))
-	return -1;
-    mkdir(tmp, 0700);
+	if (!(tmp = preparePath("")))
+		return -1;
+	mkdir(tmp, 0700);
 
-    if (filename == NULL) {
-	if (!(filename = preparePath("ignore")))
+	if (filename == NULL) {
+		if (!(filename = preparePath("ignore")))
 			return -1;
-	}
+		}
 
 	if (!(f = fopen(filename, "w")))
 		return -2;
