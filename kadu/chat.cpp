@@ -540,7 +540,8 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	else
 		body->setStyleSheet(new StaticStyleSheet(body,emoticons->themePath()));
 
-	body->setMargin(ParagraphSeparator);
+	if (config_file.readBoolEntry("General", "UseParagraphs"))
+		body->setMargin(ParagraphSeparator);
 	body->setMinimumSize(QSize(100,100));
 	body->setFont(config_file.readFontEntry("Look","ChatFont"));
 
@@ -1028,7 +1029,7 @@ void Chat::formatMessage(ChatMessage &msg)
 {
 	QString formatString;
 	if (config_file.readBoolEntry("General", "UseParagraphs"))
-		formatString="<p style=\"background-color: %1\"><img title=\"\" height=\"%2\" width=\"10000\" align=\"right\"><font color=\"%3\"><b>%4 :: %5</b><br/>%6</font></p>";
+		formatString="<p style=\"background-color: %1\"><img title=\"\" height=\"%6\" width=\"10000\" align=\"right\"><font color=\"%2\"><b>%3 :: %4</b><br/>%5</font></p>";
 	else
 		formatString="<table width=\"100%\"><tr><td bgcolor=\"%1\"><font color=\"%2\"><b>%3 :: %4</b><br/>%5</font></td></tr></table>";
 
@@ -1050,11 +1051,12 @@ void Chat::formatMessage(ChatMessage &msg)
 
 	msg.message=formatString
 			.arg(msg.backgroundColor.name())
-			.arg(ParagraphSeparator)
 			.arg(msg.textColor.name())
 			.arg(nick)
 			.arg(date)
 			.arg(convertCharacters(msg.unformattedMessage, msg.isMyMessage));
+	if (config_file.readBoolEntry("General", "UseParagraphs"))
+		msg.message=msg.message.arg(ParagraphSeparator);
 
 	msg.needsToBeFormatted=false;
 }
