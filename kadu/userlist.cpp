@@ -67,6 +67,7 @@ UserListElement::UserListElement(UserList* parent)
 	Anonymous = false;
 	// TODO: zuniwersalizowaæ
 	Stat = new GaduStatus();
+	kdebugf2();
 }
 
 UserListElement::UserListElement(const UserListElement &copyMe)
@@ -75,6 +76,7 @@ UserListElement::UserListElement(const UserListElement &copyMe)
 	// TODO: zuniwersalizowaæ
 	Stat = new GaduStatus();
 	*this = copyMe;
+	kdebugf2();
 }
 
 UserListElement::UserListElement()
@@ -90,6 +92,7 @@ UserListElement::UserListElement()
 	Anonymous = false;
 	// TODO: zuniwersalizowaæ
 	Stat = new GaduStatus();
+	kdebugf2();
 }
 
 UserListElement::~UserListElement()
@@ -793,6 +796,7 @@ bool UserList::readFromFile()
 // co z tym zrobiæ ??
 UserList& UserList::operator=(const UserList& userlist)
 {
+	kdebugf();
 	for (const_iterator i = begin(); i != end(); ++i)
 		emit userDataChanged(&(i.data()), NULL);
 
@@ -804,6 +808,7 @@ UserList& UserList::operator=(const UserList& userlist)
 		emit userDataChanged(NULL, &(i.data()));
 
 	emit modified();
+	kdebugf2();
 	return *this;
 }
 
@@ -826,12 +831,10 @@ void UserList::merge(UserList &userlist)
 				++j;
 
 		if (j != end())
-			*j = *i;
-		else
-		{
-			e = *i; // to jest na pewno potrzebne ??
-			insert(e.altNick().lower(), e);
-		}
+			remove((*j).altNick().lower());
+
+		e = *i; // to jest na pewno potrzebne ?? //j:wydaje siê ¿e tak, ¿eby pole Parent dobrze wskazywa³o
+		insert(e.altNick().lower(), e);
 	}
 
 	for (const_iterator i = begin(); i != end(); ++i)
