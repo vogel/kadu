@@ -3,7 +3,7 @@ INCLUDES = -I.. -I../kadu $(XFREE_INCLUDES) $(QT_INCLUDES) $(OPENSSL_INCLUDES) $
 
 AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT
 
-CLEANFILES = */*.so */*.a */*.o */*_moc.cpp
+CLEANFILES = */*.so */*.a */*.o */*_moc.cpp */*.d
 
 all:
 	@for dir in $(static_modules) $(shared_modules); do \
@@ -45,23 +45,41 @@ all:
 			"module_cxxflags=$$MODULE_CXXFLAGS" \
 			"module_ldflags=$$MODULE_LDFLAGS" \
 			$$dir/$$file_name; \
-	done
+	done; \
 	echo; \
 	echo -e "\033[32m>>>\033[0m Modules successfully compiled."; \
-	echo;
+	echo
 
-.SECONDARY: $(module_o_files) $(module_moc_cpp_files)
+module_d_files = $(addsuffix .d,$(basename $(module_o_files)))
+
+# dirty hack - leading space required becouse od automake "if" support
+# time to say automake goodbye?
+ ifneq (,$(module_d_files))
+-include $(module_d_files)
+ endif
+
+# this empty targets are specified to mark these files are not-intermediate
+$(module_o_files):
+$(module_moc_cpp_files):
 
 %.so: $(module_o_files)
 	$(CC) -shared -o $@ $(module_o_files) $(module_ldflags)
 
 %.a: $(module_o_files)
-	$(AR) r $@ $(module_o_files)
+	$(AR) rs $@ $(module_o_files)
 
-.cpp.o: $(module_h_files) ../kadu-config.h ../kadu/*.h
+%.d: %.cpp
+	$(CC) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $< | \
+	sed "s,\(.*\):,$(basename $@).o $@:," > $@
+
+%.d: %.c
+	$(CC) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $< | \
+	sed "s,\(.*\):,$(basename $@).o $@:," > $@
+
+%.o: %.cpp
 	$(CC) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)
 
-.c.o: $(module_h_files) ../kadu-config.h ../kadu/*.h
+%.o: %.c
 	$(CC) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)
 
 %_moc.cpp: %.h

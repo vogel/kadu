@@ -165,6 +165,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * opcja niezapisywania zmian statusow do historii (Ron_K/joi)
 * male porzadki w config dialog-u (michal)
 * emotikony l±duj± tam gdzie trzeba przy przesuwaniu splittera (joi)
+* indeksowane pliki ".a" statycznych modu³ów (adrian)
+* sprawdzanie zale¿no¶ci od plików nag³ówkowych przy kompilacji modu³ów (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
