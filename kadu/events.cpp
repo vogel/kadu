@@ -123,45 +123,40 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 }
 
 void playSound(char *sound) {
-	if (!config.playsound)
+	if (!config.playsound || mute)
 		return;
 
-	if (!mute) {
-		QStringList args;
-		if ((QString::compare(sound,NULL) == 0) || (QString::compare(sound, "") == 0)) {
-			fprintf(stderr,"KK No sound file specified?\n");
-			return;
-			}
-//		char path[511];
-//		pid_t nasz_pid;
-//		nasz_pid = fork();
-		if (config.playartsdsp) {
-			args.append("artsdsp");
-			if (config.soundvolctrl) {
-//				args.append(QString("artsdsp %1 -v %.2f %3").arg(config.soundprog).arg(config.soundvol).arg(sound));
-				args.append(config.soundprog);
-				args.append(QString("-v %1").arg(config.soundvol));
-				}
-			else
-				args.append(config.soundprog);
-			}
-		else {
-			if (config.soundvolctrl) {
-//				args.append(QString("%s -v %.2f %s", config.soundprog, config.soundvol, sound);
-				args.append(config.soundprog);
-				args.append(QString("-v %1").arg(config.soundvol));
-				}
-			else
-				args.append(config.soundprog);
-			}
-		args.append(sound);
-		for (QStringList::Iterator it = args.begin(); it != args.end(); ++it ) {
-        		fprintf(stderr, "KK playSound(): %s\n", (*it).latin1());
-    			}
-		QProcess *sndprocess = new QProcess(args, kadu);
-		sndprocess->start();
-		delete sndprocess;
+	QStringList args;
+	if ((QString::compare(sound,NULL) == 0) || (QString::compare(sound, "") == 0)) {
+		fprintf(stderr,"KK No sound file specified?\n");
+		return;
 		}
+	if (config.playartsdsp) {
+		args.append("artsdsp");
+		if (config.soundvolctrl) {
+//			args.append(QString("artsdsp %1 -v %.2f %3").arg(config.soundprog).arg(config.soundvol).arg(sound));
+			args.append(config.soundprog);
+			args.append(QString("-v %1").arg(config.soundvol));
+			}
+		else
+			args.append(config.soundprog);
+		}
+	else {
+		if (config.soundvolctrl) {
+//			args.append(QString("%s -v %.2f %s", config.soundprog, config.soundvol, sound);
+			args.append(config.soundprog);
+			args.append(QString("-v %1").arg(config.soundvol));
+			}
+		else
+			args.append(config.soundprog);
+		}
+	args.append(sound);
+	for (QStringList::Iterator it = args.begin(); it != args.end(); ++it ) {
+       		fprintf(stderr, "KK playSound(): %s\n", (*it).latin1());
+		}
+	QProcess *sndprocess = new QProcess(args, kadu);
+	sndprocess->start();
+	delete sndprocess;
 }
 
 void ChangeUserStatus(uin_t uin, unsigned int new_status) {
