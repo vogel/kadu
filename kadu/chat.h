@@ -289,6 +289,7 @@ class ChatSlots :public QObject
 		void chooseEmoticonsStyle(int index);
 		void onDefWebBrowser(bool toggled);
 		void onPruneChat(bool toggled);
+		void onFoldLink(bool toggled);
 		void chooseColor(const char *name, const QColor &color);
 		void chooseFont(const char *name, const QFont &font);
 };

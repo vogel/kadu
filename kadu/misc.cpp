@@ -1557,7 +1557,12 @@ void HtmlDocument::convertUrlsToHtml()
 		if (p < 0)
 			continue;
 		int l=url_regexp.matchedLength();
-		QString link="<a href=\""+text.mid(p,l)+"\">"+text.mid(p,l)+"</a>";
+		QString link;
+		int lft = config_file.readNumEntry("Chat","LinkFoldTreshold");
+		if (l-p > lft && config_file.readBoolEntry("Chat","FoldLink"))
+			link="<a href=\""+text.mid(p,l)+"\">"+text.mid(p,p+(lft/2))+"..."+text.mid(l-(lft/2),l)+"</a>";
+		else
+			link="<a href=\""+text.mid(p,l)+"\">"+text.mid(p,l)+"</a>";
 		splitElement(i,p,l);
 		setElementValue(i,link,true);
 	}

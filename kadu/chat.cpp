@@ -1213,6 +1213,9 @@ void Chat::initModule()
 	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Automatically prune chat messages"), "ChatPrune", true);
 	ConfigDialog::addHGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Message pruning"));
 	ConfigDialog::addLineEdit("Chat", "Message pruning", QT_TRANSLATE_NOOP("@default", "Reduce the number of visible messages to"), "ChatPruneLen", "20");
+	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Automatically fold links"), "FoldLink", true);
+	ConfigDialog::addHGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Link folding"));
+	ConfigDialog::addLineEdit("Chat", "Link folding", QT_TRANSLATE_NOOP("@default", "Automatically fold links longer than"), "LinkFoldTreshold", "50");
 	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Open chat window on new message"), "OpenChatOnMessage");
 	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Scroll chat window downward, not upward"), "ScrollDown", true);
 	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "\"Enter\" key in chat sends message by default"), "AutoSend", true);
@@ -1282,6 +1285,7 @@ void Chat::initModule()
 	ConfigDialog::connectSlot("Chat", "Emoticons:", SIGNAL(activated(int)), chatslots, SLOT(chooseEmoticonsStyle(int)));
 	ConfigDialog::connectSlot("Chat", "Use default Web browser", SIGNAL(toggled(bool)), chatslots, SLOT(onDefWebBrowser(bool)));
 	ConfigDialog::connectSlot("Chat", "Automatically prune chat messages", SIGNAL(toggled(bool)), chatslots, SLOT(onPruneChat(bool)));
+	ConfigDialog::connectSlot("Chat", "Automatically fold links", SIGNAL(toggled(bool)), chatslots, SLOT(onFoldLink(bool)));
 	
 	ConfigDialog::connectSlot("Look", "", SIGNAL(changed(const char *, const QColor&)), chatslots, SLOT(chooseColor(const char *, const QColor&)), "own_bg_color");
 	ConfigDialog::connectSlot("Look", "", SIGNAL(changed(const char *, const QColor&)), chatslots, SLOT(chooseColor(const char *, const QColor&)), "his_bg_color");
@@ -1408,6 +1412,13 @@ void ChatSlots::onCreateConfigDialog()
 	
 	h_prune->setEnabled(c_prunechat->isChecked());
 
+	QCheckBox *c_foldlink= ConfigDialog::getCheckBox("Chat", "Automatically fold links");
+	QHGroupBox *h_fold= ConfigDialog::getHGroupBox("Chat", "Link folding");
+	QToolTip::add(h_fold, tr("URLs longer than this value will be shown truncated to this length"));
+	QToolTip::add(c_foldlink, tr("This will show a long URL as http://www.start...end.com/\nto protect the chat window from a mess"));
+	
+	h_fold->setEnabled(c_foldlink->isChecked());
+
 	updatePreview();
 }
 
@@ -1415,6 +1426,12 @@ void ChatSlots::onPruneChat(bool toggled)
 {
 	QHGroupBox *h_prune= ConfigDialog::getHGroupBox("Chat", "Message pruning");
 	h_prune->setEnabled(toggled);
+}
+
+void ChatSlots::onFoldLink(bool toggled)
+{
+	QHGroupBox *h_fold= ConfigDialog::getHGroupBox("Chat", "Link folding");
+	h_fold->setEnabled(toggled);
 }
 
 void ChatSlots::onDefWebBrowser(bool toggled)
