@@ -16,7 +16,6 @@
 #include <sys/stat.h>
 
 #include "userlist.h"
-#include "misc.h"
 #include "userbox.h"
 #include "debug.h"
 

@@ -12,7 +12,6 @@
 #include "config_dialog.h"
 #include "config_file.h"
 #include "pending_msgs.h"
-#include "misc.h"
 #include "status.h"
 #include "chat.h"
 

@@ -19,6 +19,7 @@
 #include "status.h"
 #include "search.h"
 #include "events.h"
+#include "userlist.h"
 #include "userinfo.h"
 #include "chat.h"
 #include "debug.h"

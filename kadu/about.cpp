@@ -22,7 +22,6 @@
 #include "about.h"
 #include "misc.h"
 #include "kadu-config.h"
-#include "config_file.h"
 #include "debug.h"
 
 About::About() {

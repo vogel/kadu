@@ -8,15 +8,15 @@
  ***************************************************************************/
 
 #include <qmessagebox.h>
+#include <qpushbutton.h>
 #include <qvbox.h>
 
 //
-#include "gadu.h"
 #include "kadu.h"
 #include "userinfo.h"
 #include "chat.h"
 #include "debug.h"
-#include "tabbar.h"
+#include "userbox.h"
 //
 
 CreateNotifier UserInfo::createNotifier;

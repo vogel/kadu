@@ -5,7 +5,7 @@
 #include "pending_events.h"
 #include "debug.h"
 #include "kadu.h"
-#include "config_file.h"
+//#include "config_file.h"
 #include "chat.h"
 
 

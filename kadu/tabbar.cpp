@@ -19,7 +19,6 @@
 #include "debug.h"
 #include "userbox.h"
 #include "userlist.h"
-#include "misc.h"
 
 struct QTabPrivate;
 

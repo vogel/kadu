@@ -16,12 +16,11 @@
 #include <qtextcodec.h>
 #include <stdlib.h>
 #include <qvbox.h>
+#include <qvgroupbox.h>
 
 #include "gadu.h"
 #include "kadu.h"
-#include "config_dialog.h"
 #include "debug.h"
-#include "events.h"
 #include "message_box.h"
 #include "ignore.h"
 #include "expimp.h"
