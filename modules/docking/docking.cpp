@@ -41,8 +41,8 @@ DockingManager::DockingManager()
 	blink = false;
 	QObject::connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
 	changeIcon();
-	emit trayTooltipChanged(tr("Left click - hide/show window\nMiddle click or Left click- next message"));
-
+	
+	//emit trayTooltipChanged(tr("Left click - hide/show window\nMiddle click or Left click- next message"));
 	
 	ConfigDialog::addCheckBox("General", "grid", 
 			QT_TRANSLATE_NOOP("@default", "Start docked"), "RunDocked", false);
@@ -139,6 +139,11 @@ void DockingManager::showCurrentStatus(int status)
 	QPixmap pix = icons_manager.loadIcon(gg_icons[statusnr]);
 	if (!pending.pendingMsgs())
 		emit trayPixmapChanged(pix);
+
+	if(ifStatusWithDescription(status))
+		emit trayTooltipChanged(tr("Current status:\n%1\nDescrition:\n%2").arg(tr(statustext[statusnr])).arg(own_description));
+	else
+		emit trayTooltipChanged(tr("Current status:\n%1").arg(tr(statustext[statusnr])));
 }
 
 void DockingManager::findTrayPosition(QPoint& pos)
