@@ -447,7 +447,7 @@ void SearchDialog::updateInfoClicked()
 	e.notify = ule.notify;
 	e.setGroup(ule.group());
 	e.email = ule.email;
-	UserInfo *ui = new UserInfo("user info", 0, QString::null);
+	UserInfo *ui = new UserInfo("user info", 0, ule.altnick);
 	ui->setUserInfo(e);
 	ui->show();
 }
