@@ -1,7 +1,5 @@
 
 +++ wersja 0.3.3
-* doklejanie ~/.gg/description do statusu jesli chcemy (por.
-  XMMS - libsongchange.so)
 * automatyczna kompilacja programu sms
 * porz±dki w opcji wysy³ania sms: brak opcji, je¶li osoba nie ma
   numeru, osobna opcja w menu g³ównym do wysy³ania sms'a pod wpisany z
@@ -45,6 +43,9 @@
 * sprawdzanie dostêpnych aktualizacji
 * F9 - czy¶ci zawarto¶æ okna rozmowy
 * ikonka okna rozmowy jest aktualnym stanem rozmowcy
+* doklejanie ~/.gg/description do statusu jesli chcemy (por.
+  XMMS - libsongchange.so)
+* kompilowanie libgadu jako .so i linkowanie dynamiczne
 
 +++ wersja 0.3.2
 * dalsze porz±dki w kodzie
