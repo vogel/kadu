@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.13 2002/11/16 17:37:27 chilek Exp $ */
+/* $Id: libgadu.h,v 1.14 2002/11/19 00:58:49 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
@@ -35,6 +35,13 @@ extern "C" {
 #include <sys/types.h>
 #include <stdint.h>
 
+#ifdef HAVE_PTHREAD
+#  include <pthread.h>
+#  define gg_common_head_pthread pthread_t resolver;
+#else
+#  define gg_common_head_pthread /* foobar */
+#endif
+
 /*
  * uin_t
  *
@@ -54,7 +61,8 @@ typedef uint32_t uin_t;
 	int id;			/* identyfikator */ \
 	int timeout;		/* sugerowany timeout w sekundach */ \
 	int (*callback)(x*); 	/* callback przy zmianach */ \
-	void (*destroy)(x*); 	/* funkcja niszczenia */
+	void (*destroy)(x*); 	/* funkcja niszczenia */ \
+	gg_common_head_pthread
 
 struct gg_common {
 	gg_common_head(struct gg_common)
@@ -218,6 +226,7 @@ enum gg_state_enum {
 	GG_STATE_CONNECTED,             /* po³±czy³ siê */
 
         /* gg_http */
+	GG_STATE_SENDING_QUERY,		/* wysy³a zapytanie http */
 	GG_STATE_READING_HEADER,	/* czeka na nag³ówek http */
 	GG_STATE_PARSING,               /* przetwarza dane */
 	GG_STATE_DONE,                  /* skoñczy³ */
@@ -530,6 +539,7 @@ struct gg_http *gg_remind_passwd(uin_t uin, int async);
 
 /* zmiana has³a */
 struct gg_http *gg_change_passwd(uin_t uin, const char *passwd, const char *newpasswd, const char *newemail, int async);
+struct gg_http *gg_change_passwd2(uin_t uin, const char *passwd, const char *newpasswd, const char *email, const char *newemail, int async);
 #define gg_change_passwd_free gg_pubdir_free
 #define gg_free_change_passwd gg_pubdir_free
 
@@ -630,13 +640,21 @@ extern int gg_proxy_http_only;
  * -------------------------------------------------------------------------
  */
 
-int gg_resolve(int *fd, int *pid, const char *hostname);
-char *gg_saprintf(const char *format, ...);
-#define gg_alloc_sprintf gg_saprintf
-char *gg_get_line(char **ptr);
+#ifdef HAVE_PTHREAD
+int gg_resolve_pthread(struct gg_common *c, const char *hostname);
+#endif
+
 #ifdef _WIN32
 int gg_thread_socket(int thread_id, int socket);
 #endif
+
+int gg_resolve(int *fd, int *pid, const char *hostname);
+
+char *gg_saprintf(const char *format, ...);
+#define gg_alloc_sprintf gg_saprintf
+
+char *gg_get_line(char **ptr);
+
 int gg_connect(void *addr, int port, int async);
 struct hostent *gg_gethostbyname(const char *hostname);
 char *gg_read_line(int sock, char *buf, int length);
@@ -671,7 +689,7 @@ char *gg_base64_decode(const char *buf);
 #define GG_DEFAULT_PROTOCOL_VERSION 0x18
 #define GG_DEFAULT_TIMEOUT 30
 #define GG_HAS_AUDIO_MASK 0x40000000
-#define GG_LIBGADU_VERSION "CVS"
+#define GG_LIBGADU_VERSION "20021118"
 
 #define GG_DEFAULT_DCC_PORT 1550
 

@@ -2,7 +2,7 @@ dnl Based on AC_NEED_STDINT_H by Guido Draheim <guidod@gmx.de> that can be
 dnl found at http://www.gnu.org/software/ac-archive/. Do not complain him
 dnl about this macro.
 dnl
-dnl $Id: stdint.m4,v 1.5 2002/10/24 11:03:58 adrian Exp $
+dnl $Id: stdint.m4,v 1.6 2002/11/19 00:58:49 chilek Exp $
 
 AC_DEFUN([AC_NEED_STDINT_H],
  [AC_MSG_CHECKING([for uintXX_t types])
@@ -30,9 +30,12 @@ AC_DEFUN([AC_NEED_STDINT_H],
   else
     AC_MSG_RESULT([not found, using reasonable defaults])
     
+    dnl let's make newer autoconf versions happy.
+    stdint_h_foobar=define
+    
     cat > $ac_stdint_h << EOF
 #ifndef __AC_STDINT_H
-#define __AC_STDINT_H 1
+#$stdint_h_foobar __AC_STDINT_H 1
 
 /* ISO C 9X: 7.18 Integer types <stdint.h> */
 

@@ -1,4 +1,4 @@
-/* $Id: events.c,v 1.10 2002/11/16 17:37:26 chilek Exp $ */
+/* $Id: events.c,v 1.11 2002/11/19 00:58:48 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
@@ -419,8 +419,13 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 			}
 			
 			close(sess->fd);
+
+#ifndef HAVE_PTHREAD
 			waitpid(sess->pid, NULL, 0);
-			
+#else
+			pthread_cancel(sess->resolver);
+#endif
+
 			/* je¶li jeste¶my w resolverze i mamy ustawiony port
 			 * proxy, znaczy, ¿e resolvowali¶my proxy. zatem
 			 * wpiszmy jego adres. */

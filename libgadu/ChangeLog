@@ -5,14 +5,61 @@ pierwsz± liter± nicka jest ,,x'' (w - wojtekka, s - speedy, a - arekm,
 d - drg). ,,p/nick'' oznacza patch lub ¼ród³o podes³ane przez ,,nick'',
 ,,i/nick'' oznacza czyj¶ pomys³, ,,b/nick'' mówi, kto zg³osi³ b³±d.
 
+// 2002-11-18
+
+- poprawka reakcji F3 (kostoo/w)
+- libgadu: poprawka wysy³ania du¿ych zapytañ http (Chilek/w)
+- libgadu: nieznaczna zmiana ABI -- dodano GG_STATE_SENDING_QUERY, ale
+  z tego wzglêdu, ¿e jest to sta³a wewnêtrzna biblioteki, nie podbijam
+  ABI biblioteki (w)
+- libgadu: w±tkowany resolver. w³±czany przez #define HAVE_PTHREAD lub
+  ./configure --with-pthread (adrians/w)
+- kosmetyka wygl±du w³asnego stanu (szalik/w)
+- poprawki dokumentacji (mati/w)
+- libgadu: gg_change_passwd2() jest dostosowane do zmian w protokole (w)
+- dodana zmienna ,,email'' przechowuj±ca adres e-mail u¿ytkownia, w celu
+  pó¼niejszej zmiany has³a. drugi parametr nie jest ju¿ obowi±zkowy
+  w /passwd (w)
+
+// 2002-11-17
+
+- klawisz F3 toggluje listê kontaktów (w)
+- tryb debugowania jest odnotowywany na pasku stanu (w)
+- usuniêcie leaka przy debugowaniu (w)
+- poprawka zapisywania szyfrowanych wiadomo¶ci do /last (szalik/w)
+- wczytywanie z konfiga niepoprawnych zdarzeñ ,,on'' jako nieaktywne (d)
+- poprawka polskich liter w li¶cie kontaktów (kostoo/w)
+
+// 2002-11-16
+
+- libgadu: poprawki w configure (adrians/w)
+- kosmetyka (szalik/w)
+- libgadu: dodanie funkcji gg_base64_encode() i gg_base64_decode() (w)
+- libgadu: obs³uga autoryzacji proxy (adrians,leszek/w)
+- usuniêcie leaka przy debugowaniu (w)
+- poprawka zawijania wiadomo¶ci przy oknie kontaktów (Zwierz/w)
+- uaktualnienie dokumentacji (w)
+- ³adne, dresiarskie kolorki w li¶cie kontaktów, zajêci (Zwierz/w)
+- ³adne, dresiarskie ,,i'' przy ludziach z opisem (w)
+- poprawka zapêtlenia siê przy utracie terminala (Mati/w)
+
+// 2002-11-15
+
+- ctxwindow - okienko z dostepnymi osobami (wojboj/s)
+- dodanie opcji --clear do ,,last'' (d)
+- configure nie wyrzuca informacji o interfejsie w libgadu (adrians/w)
+- poprawki okienka z osobami (w)
+
 // 2002-11-14
 
 - poprawka obs³ugi proxy http (Chilek/w)
 - poprawka segfaulta przy szukaniu (*/w)
+- poprawka themów czasu po³±czenia (FIG,szalik/w)
+- dodanie zmiennej ,,server_save'' (*/w)
 
 // 2002-11-13
 
-- dodany eileen.theme (d)
+- dodany eileen.theme (en/d)
 - poprawki wykrywania openssl (Arim/w)
 
 // 2002-11-12
@@ -2114,4 +2161,4 @@ i BUGS.
 - eleet niebieskie t³o mesgów (wiem, dalekie od idea³u).
 
 
-$Id: ChangeLog,v 1.7 2002/11/14 17:13:15 chilek Exp $
+$Id: ChangeLog,v 1.8 2002/11/19 00:58:48 chilek Exp $

@@ -1,4 +1,4 @@
-/* $Id: http.c,v 1.12 2002/11/18 10:33:17 chilek Exp $ */
+/* $Id: http.c,v 1.13 2002/11/19 00:58:48 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -95,12 +95,16 @@ struct gg_http *gg_http_connect(const char *hostname, int port, int async, const
 	gg_debug(GG_DEBUG_MISC, "=> -----BEGIN-HTTP-QUERY-----\n%s\n=> -----END-HTTP-QUERY-----\n", h->query);
 
 	if (async) {
-/*		if (gg_resolve(&h->fd, &h->pid, hostname)) {
+#ifndef HAVE_PTHREAD
+		if (gg_resolve(&h->fd, &h->pid, hostname)) {
+#else
+		if (gg_resolve_pthread((struct gg_common*) h, hostname)) {
+#endif
                         gg_debug(GG_DEBUG_MISC, "// gg_http_connect() resolver failed\n");
 			gg_http_free(h);
                         errno = ENOENT;
 			return NULL;
-		}*/
+		}
 
 		h->state = GG_STATE_RESOLVING;
 		h->check = GG_CHECK_READ;
@@ -166,6 +170,8 @@ struct gg_http *gg_http_connect(const char *hostname, int port, int async, const
  */
 int gg_http_watch_fd(struct gg_http *h)
 {
+	gg_debug(GG_DEBUG_FUNCTION, "** gg_http_watch_fd(%p);\n", h);
+
 	if (!h) {
 		gg_debug(GG_DEBUG_MISC, "// gg_http_watch_fd() invalid arguments\n");
 		errno = EINVAL;
@@ -177,17 +183,15 @@ int gg_http_watch_fd(struct gg_http *h)
 
 		gg_debug(GG_DEBUG_MISC, "=> http, resolving done\n");
 
-/*		if (read(h->fd, &a, sizeof(a)) < sizeof(a) || a.s_addr == INADDR_NONE) {
+		if (read(h->fd, &a, sizeof(a)) < sizeof(a) || a.s_addr == INADDR_NONE) {
 			gg_debug(GG_DEBUG_MISC, "=> http, resolver thread failed\n");
 			gg_http_error(GG_ERROR_RESOLVING);
 		}
 
 		close(h->fd);
 
-		waitpid(h->pid, NULL, 0);*/
-		
-		a.s_addr = inet_addr("217.17.41.82");
-		
+		waitpid(h->pid, NULL, 0);
+
 		gg_debug(GG_DEBUG_MISC, "=> http, connecting to %s:%d\n", inet_ntoa(a), h->port);
 
 		if ((h->fd = gg_connect(&a, h->port, h->async)) == -1) {
@@ -217,18 +221,33 @@ int gg_http_watch_fd(struct gg_http *h)
 
 		gg_debug(GG_DEBUG_MISC, "=> http, connected, sending request\n");
 
-		if ((res = write(h->fd, h->query, strlen(h->query))) < strlen(h->query)) {
+		h->state = GG_STATE_SENDING_QUERY;
+	}
+
+	if (h->state == GG_STATE_SENDING_QUERY) {
+		int res;
+
+		if ((res = write(h->fd, h->query, strlen(h->query))) < 1) {
 			gg_debug(GG_DEBUG_MISC, "=> http, write() failed (len=%d, res=%d, errno=%d)\n", strlen(h->query), res, errno);
 			gg_http_error(GG_ERROR_WRITING);
 		}
 
-		gg_debug(GG_DEBUG_MISC, "=> http, request sent (len=%d)\n", strlen(h->query));
-		free(h->query);
-		h->query = NULL;
+		if (res < strlen(h->query)) {
+			gg_debug(GG_DEBUG_MISC, "=> http, partial header sent (led=%d, sent=%d)\n", strlen(h->query), res);
 
-		h->state = GG_STATE_READING_HEADER;
-		h->check = GG_CHECK_READ;
-		h->timeout = GG_DEFAULT_TIMEOUT;
+			memmove(h->query, h->query + res, strlen(h->query) - res + 1);
+			h->state = GG_STATE_SENDING_QUERY;
+			h->check = GG_CHECK_WRITE;
+			h->timeout = GG_DEFAULT_TIMEOUT;
+		} else {
+			gg_debug(GG_DEBUG_MISC, "=> http, request sent (len=%d)\n", strlen(h->query));
+			free(h->query);
+			h->query = NULL;
+
+			h->state = GG_STATE_READING_HEADER;
+			h->check = GG_CHECK_READ;
+			h->timeout = GG_DEFAULT_TIMEOUT;
+		}
 
 		return 0;
 	}

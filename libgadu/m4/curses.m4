@@ -1,5 +1,5 @@
 dnl Rewritten from scratch. --wojtekka
-dnl $Id: curses.m4,v 1.6 2002/10/24 11:03:58 adrian Exp $
+dnl $Id: curses.m4,v 1.7 2002/11/19 00:58:49 chilek Exp $
 
 AC_DEFUN(AC_CHECK_NCURSES,[
   AC_SUBST(CURSES_LIBS)

@@ -1,4 +1,4 @@
-/* $Id: compat.h,v 1.10 2002/11/16 17:37:27 chilek Exp $ */
+/* $Id: compat.h,v 1.11 2002/11/19 00:58:48 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
