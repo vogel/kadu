@@ -39,6 +39,7 @@ updates.cpp updates.h
 if PHEADERS_ENABLED
 PHEADERS_INCLUDES = -I.. -include kadu-headers.h
 PHEADERS_CLEANFILES = *.h.gch
+AM_CXXFLAGS = -fPIC
 endif
 
 # dirty hack - leading space required because od automake "if" support
@@ -52,9 +53,7 @@ kadu-headers.d: kadu-headers.h
 	sed "s,\(.*\):,$(basename $@).h.gch $@:," > $@
 
 %.h.gch: %.h
-	$(CXX) -o $@ -c $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)  $(CXXFLAGS)
-
-$(kadu_OBJECTS): kadu-headers.h.gch
+	$(CXX) -o $@ -c $< $(INCLUDES) $(AM_CPPFLAGS) $(AM_CXXFLAGS) $(module_cxxflags)  $(CXXFLAGS)
 
  endif
 

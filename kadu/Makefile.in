@@ -138,6 +138,7 @@ updates.cpp updates.h
 ###########################################################################
 @PHEADERS_ENABLED_TRUE@PHEADERS_INCLUDES = -I.. -include kadu-headers.h
 @PHEADERS_ENABLED_TRUE@PHEADERS_CLEANFILES = *.h.gch
+@PHEADERS_ENABLED_TRUE@AM_CXXFLAGS = -fPIC
 
 
 ###########################################################################
@@ -512,9 +513,7 @@ kadu-headers.d: kadu-headers.h
 	sed "s,\(.*\):,$(basename $@).h.gch $@:," > $@
 
 %.h.gch: %.h
-	$(CXX) -o $@ -c $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)  $(CXXFLAGS)
-
-$(kadu_OBJECTS): kadu-headers.h.gch
+	$(CXX) -o $@ -c $< $(INCLUDES) $(AM_CPPFLAGS) $(AM_CXXFLAGS) $(module_cxxflags)  $(CXXFLAGS)
 
  endif
 

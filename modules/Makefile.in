@@ -13,6 +13,10 @@
 # PARTICULAR PURPOSE.
 
 @SET_MAKE@
+
+###########################################################################
+# Precompiled headers support
+###########################################################################
 SHELL = @SHELL@
 
 srcdir = @srcdir@
@@ -98,7 +102,12 @@ shared_modules = @shared_modules@
 static_modules = @static_modules@
 static_modules_ldflags = @static_modules_ldflags@
 
-INCLUDES = -I.. -I../kadu $(XFREE_INCLUDES) $(QT_INCLUDES) $(OPENSSL_INCLUDES) $(GSM_INCLUDES) $(GADU_INCLUDES)
+@PHEADERS_ENABLED_TRUE@PHEADERS_INCLUDES = -include kadu-headers.h
+
+
+###########################################################################
+CONFIGURE_INCLUDES = $(XFREE_INCLUDES) $(QT_INCLUDES) $(OPENSSL_INCLUDES) $(GSM_INCLUDES) $(GADU_INCLUDES)
+INCLUDES = $(PHEADERS_INCLUDES) -I.. -I../kadu $(CONFIGURE_INCLUDES)
 
 AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT
 
@@ -309,7 +318,7 @@ $(module_moc_cpp_files):
 	$(CXX) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)  $(CXXFLAGS)
 
 %.o: %.c
-	$(CC) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS)
+	$(CC) -o $@ -c -fPIC $< $(CONFIGURE_INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS)
 
 %_moc.cpp: %.h
 	$(QT_MOC_DIR)/moc -o $@ $<

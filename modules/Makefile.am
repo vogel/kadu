@@ -1,5 +1,16 @@
 
-INCLUDES = -I.. -I../kadu $(XFREE_INCLUDES) $(QT_INCLUDES) $(OPENSSL_INCLUDES) $(GSM_INCLUDES) $(GADU_INCLUDES)
+###########################################################################
+# Precompiled headers support
+###########################################################################
+
+if PHEADERS_ENABLED
+PHEADERS_INCLUDES = -include kadu-headers.h
+endif
+
+###########################################################################
+
+CONFIGURE_INCLUDES = $(XFREE_INCLUDES) $(QT_INCLUDES) $(OPENSSL_INCLUDES) $(GSM_INCLUDES) $(GADU_INCLUDES)
+INCLUDES = $(PHEADERS_INCLUDES) -I.. -I../kadu $(CONFIGURE_INCLUDES)
 
 AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT
 
@@ -90,7 +101,7 @@ $(module_moc_cpp_files):
 	$(CXX) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)  $(CXXFLAGS)
 
 %.o: %.c
-	$(CC) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS)
+	$(CC) -o $@ -c -fPIC $< $(CONFIGURE_INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS)
 
 %_moc.cpp: %.h
 	$(QT_MOC_DIR)/moc -o $@ $<

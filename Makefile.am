@@ -7,6 +7,30 @@ EXTRA_DIST = admin kadu.kdevprj AUTHORS COPYING ChangeLog INSTALL README TODO ka
 
 AUTOMAKE_OPTIONS = foreign 
 
+
+###########################################################################
+# Precompiled headers support
+###########################################################################
+
+# dirty hack - leading space required because od automake "if" support
+# time to say automake goodbye?
+ ifeq ($(enable_pheaders),yes)
+
+all: kadu/kadu-headers.h.gch
+
+kadu/kadu-headers.h.gch:
+	@echo
+	@echo -e "\033[32m>>>\033[0m Precompiling headers ..."
+	@echo
+	$(MAKE) -C kadu kadu-headers.h.gch
+	@echo
+	@echo -e "\033[32m>>>\033[0m Precompiled headers ready."
+	@echo
+
+ endif
+
+###########################################################################
+
 install-data-local:
 	$(mkinstalldirs) "$(DESTDIR)/$(includedir)/kadu/"
 	$(INSTALL_DATA) kadu-config.h "$(DESTDIR)/$(includedir)/kadu/"
