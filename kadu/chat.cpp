@@ -1403,18 +1403,15 @@ void Chat::sendMessage()
 
 	emit messageSendRequested(this);
 
-	QString mesg;
-
-	if (gadu->status().isOffline()) {
+	if (gadu->status().isOffline())
+	{
 		QMessageBox::critical(this, tr("Send message error"),
 			tr("Application encountered network error."));
 		kdebugmf(KDEBUG_FUNCTION_END, "not connected!\n");
 		return;
 	}
 
-	myLastMessage = edit->text();
-
-	mesg = myLastMessage;
+	QString mesg = edit->text();
 	mesg.replace(QRegExp("\n"), "\r\n");
 	mesg = unformatGGMessage(mesg, myLastFormatsLength, myLastFormats);
 	myLastMessage = mesg;
@@ -1436,22 +1433,23 @@ void Chat::sendMessage()
 
 	QCString msg = unicode2cp(mesg);
 
-	bool stop=false;
-	emit messageFiltering(Uins,msg,stop);
-	if(stop)
+	bool stop = false;
+	emit messageFiltering(Uins, msg, stop);
+	if (stop)
 	{
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filter stopped processing\n");
 		return;
 	}
 
-	if (mesg.length() >= 2000)
+	if (msg.length() >= 2000)
 	{
-		MessageBox::wrn(tr("Filtered message too long (%1>=%2)").arg(mesg.length()).arg(2000));
+		MessageBox::wrn(tr("Filtered message too long (%1>=%2)").arg(msg.length()).arg(2000));
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filtered message too long\n");
 		return;
 	}
 
-	if (config_file.readBoolEntry("Chat","MessageAcks")) {
+	if (config_file.readBoolEntry("Chat","MessageAcks"))
+	{
 		edit->setReadOnly(true);
 		edit->setEnabled(false);
 		disconnect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
