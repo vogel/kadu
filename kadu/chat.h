@@ -77,6 +77,7 @@ class Chat : public QWidget {
 		QString myLastMessage;
 		int myLastFormatsLength;
 		void *myLastFormats;
+		int seq, acks;
 
 		void pruneWindow(void);
 
@@ -118,6 +119,7 @@ class Chat : public QWidget {
 		void specialKeyPressed(int key);
 		void colorChanged(const QColor& color);
 		void aboutToClose();
+		void ackReceivedSlot(int seq);
 
 	protected:
 		void closeEvent(QCloseEvent *);

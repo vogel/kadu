@@ -140,7 +140,6 @@ QPopupMenu *grpmenu;
 QValueList<struct chats> chats;
 struct gg_session *sess = NULL;
 
-QArray<struct acks> acks(0);
 struct gg_dcc * dccsock;
 struct gg_login_params loginparams;
 QSocketNotifier *kadusnr = NULL;
@@ -296,9 +295,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	activegrpno = 600;
 
 	int g;
-
-	for (g = 0; g < acks.size(); g++)
-		acks[g].seq = 0;
 
 	loadKaduConfig();
         
@@ -591,14 +587,8 @@ void Kadu::sendFile()
 			dcc->initializeNotifiers();
 			}
 		}
-	else {
-		acks.resize(acks.size() + 1);
-		int i = acks.size() - 1;
-		acks[i].ack = 0;
-		acks[i].seq = gg_dcc_request(sess, user.uin);
-		acks[i].type = 0;
-		acks[i].ptr = NULL;
-		}
+	else
+		gg_dcc_request(sess, user.uin);
 }
 
 

@@ -147,13 +147,6 @@ class Kadu : public QMainWindow
 		void userListStatusModified(UserListElement *);
 };
 
-struct acks {
-    int ack;
-    int seq;
-    int type;
-    QWidget *ptr;
-};
-
 class MyLabel : public QLabel {
 	Q_OBJECT
 	public:
@@ -185,10 +178,6 @@ static QValueList<chats> chats_gcc32_bug;
 extern QValueList<chats> chats;
 extern bool userlist_sent;
 extern int server_nr;
-// Ominiecie bledu w gcc 3.2
-static QArray<acks> acks_gcc32_bug;
-////////////////////////////
-extern QArray<acks> acks;
 
 extern QPopupMenu *statusppm;
 extern QSocketNotifier *kadusnr;

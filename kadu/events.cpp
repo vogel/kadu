@@ -566,7 +566,8 @@ void EventManager::userStatusChangedSlot(struct gg_event * e) {
 
 void EventManager::ackReceivedSlot(int seq)
 {
-	int i,j,k;
+	kdebug("EventManager::ackReceivedSlot(): got msg ack.\n");
+/*	int i,j,k;
 	for (i = 0; i < acks.size(); i++)
 		if (acks[i].seq == seq && acks[i].ptr) {
 //			if (acks[i].type < 2)
@@ -587,7 +588,7 @@ void EventManager::ackReceivedSlot(int seq)
 					acks.resize(acks.size() - 1);
 				}
 			}
-		}
+		}*/
 };
 
 void EventManager::dccConnectionReceivedSlot(const UserListElement& sender)
@@ -704,7 +705,8 @@ void EventManager::eventHandler(gg_session* sess)
 		emit event_manager.userStatusChanged(e);
 
 	if (e->type == GG_EVENT_ACK) {
-		kdebug("EventManager::eventHandler(): message reached %d (seq %d)\n", e->event.ack.recipient, e->event.ack.seq);
+		kdebug("EventManager::eventHandler(): message reached %d (seq %d)\n",
+			e->event.ack.recipient, e->event.ack.seq);
 		emit ackReceived(e->event.ack.seq);
 		}
 

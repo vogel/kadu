@@ -27,6 +27,7 @@
 //
 #include "config_dialog.h"
 #include "kadu.h"
+#include "events.h"
 #include "chat.h"
 #include "search.h"
 #include "history.h"
@@ -322,7 +323,10 @@ Chat::~Chat() {
 		i++;
 	chats.remove(chats.at(i));
 
-	i = 0;
+	disconnect(&event_manager, SIGNAL(ackReceived(int)),
+		this, SLOT(ackReceivedSlot(int)));
+
+/*	i = 0;
 	while (i < acks.size() && acks[i].ptr != this)
 		i++;
 	if (i < acks.size()) {
@@ -333,7 +337,7 @@ Chat::~Chat() {
 			acks[j-1].type = acks[j].type;
 			}
 		acks.resize(acks.size() - 1);
-		}
+		}*/
 	if (userbox)
 		delete userbox;
 		
@@ -750,11 +754,28 @@ void Chat::clearChatWindow(void) {
 }
 
 void Chat::cancelMessage(void) {
+	seq = 0;
+	disconnect(&event_manager, SIGNAL(ackReceived(int)),
+		this, SLOT(ackReceivedSlot(int)));
 	edit->setReadOnly(false);
 	edit->setEnabled(true);
 	edit->setFocus();
 	sendbtn->setEnabled(true);
 	cancelbtn->hide();
+}
+
+void Chat::ackReceivedSlot(int Seq) {
+	kdebug("Chat::ackReceivedSlot()\n");
+	if (seq != Seq)
+		return;
+	acks--;
+	if (acks)
+		return;
+	kdebug("Chat::ackReceivedSlot(): This is my ack.\n");
+	writeMyMessage();
+	seq = 0;
+	disconnect(&event_manager, SIGNAL(ackReceived(int)),
+		this, SLOT(ackReceivedSlot(int)));
 }
 
 /* sends the message typed */
@@ -807,19 +828,19 @@ void Chat::sendMessage(void) {
 		}
 	online = uins.count();
 	if (config.msgacks && online) {
-		acks.resize(acks.size() + 1);
-		i = acks.size() - 1;
+//		acks.resize(acks.size() + 1);
+//		i = acks.size() - 1;
 		if (uins.count() > 1) {
 			for (j = 0; j < uins.count(); j++)
 				users[j] = uins[j];
 			if (myLastFormatsLength)
-				acks[i].seq = gg_send_message_confer_richtext(sess, GG_CLASS_CHAT,
+				seq = gg_send_message_confer_richtext(sess, GG_CLASS_CHAT,
 					uins.count(), users, (unsigned char *)utmp,
 					(unsigned char *)myLastFormats, myLastFormatsLength);
 			else
-				acks[i].seq = gg_send_message_confer(sess, GG_CLASS_CHAT,
+				seq = gg_send_message_confer(sess, GG_CLASS_CHAT,
 					uins.count(), users, (unsigned char *)utmp);
-			acks[i].ack = online;
+			acks = online;
 			}
 		else {
 #ifdef HAVE_OPENSSL
@@ -827,32 +848,33 @@ void Chat::sendMessage(void) {
 				char* encrypted = sim_message_encrypt((unsigned char *)utmp, uins[0]);
 				if (encrypted != NULL) {
 					if (myLastFormatsLength)
-						acks[i].seq = gg_send_message_richtext(sess, GG_CLASS_CHAT,
+						seq = gg_send_message_richtext(sess, GG_CLASS_CHAT,
 							uins[0], (unsigned char *)encrypted,
 							(unsigned char *)myLastFormats, myLastFormatsLength);
 					else
-						acks[i].seq = gg_send_message(sess, GG_CLASS_CHAT,
+						seq = gg_send_message(sess, GG_CLASS_CHAT,
 							uins[0], (unsigned char *)encrypted);
-					acks[i].ack = 1;
+					acks = 1;
 					free(encrypted);
 				}
 			} else {
 #endif
 				if (myLastFormatsLength)
-					acks[i].seq = gg_send_message_richtext(sess, GG_CLASS_CHAT, uins[0],
+					seq = gg_send_message_richtext(sess, GG_CLASS_CHAT, uins[0],
 						(unsigned char *)utmp,
 						(unsigned char *)myLastFormats, myLastFormatsLength);
 				else
-					acks[i].seq = gg_send_message(sess, GG_CLASS_CHAT, uins[0],
+					seq = gg_send_message(sess, GG_CLASS_CHAT, uins[0],
 						(unsigned char *)utmp);
-				acks[i].ack = 1;
+				acks = 1;
 #ifdef HAVE_OPENSSL
-			}
+				}
 #endif
-		}
-
-		acks[i].type = 2;
-		acks[i].ptr = this;
+			}
+//		acks[i].type = 2;
+//		acks[i].ptr = this;
+		connect(&event_manager, SIGNAL(ackReceived(int)),
+			this, SLOT(ackReceivedSlot(int)));
 		}
 	else {
 		if (uins.count() > 1) {
