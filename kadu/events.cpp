@@ -359,7 +359,7 @@ void eventStatusChange(struct gg_event * e) {
 
 	if (!userlist.containsUin(e->event.status.uin)) {
 		// ignore!
-		fprintf(stderr, "KK eventGotUserlist(): buddy %d not in list. Damned server!\n", e->event.status.uin);
+		fprintf(stderr, "KK eventStatusChange(): buddy %d not in list. Damned server!\n", e->event.status.uin);
 		gg_remove_notify(sess, e->event.status.uin);
 		return;
 		}
