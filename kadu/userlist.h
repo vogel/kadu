@@ -31,6 +31,9 @@ struct UserListElement
 	int ip;
 	short port;
 	int time_to_death;
+	bool blocking;
+	bool offline_to_user;
+	bool notify;
 };
 
 class UserList : public QObject, public QValueList<UserListElement>
@@ -48,11 +51,13 @@ class UserList : public QObject, public QValueList<UserListElement>
 			const QString NickName, const QString AltNick,
 			const QString Mobile, const QString Uin,
 			const int Status = GG_STATUS_NOT_AVAIL,
-			const QString Group = "", const QString Description = "", const bool Foreign = false);
+			const bool Blocking = false, const bool Offline_to_user = false,
+			const bool Notify = true, const QString Group = "", const QString Description = "", const bool Foreign = false);
 		void changeUserInfo(const QString OldAltNick,
 			const QString &FirstName, const QString &LastName,
 			const QString &NickName, const QString &AltNick,
-			const QString &Mobile, const QString &Group);
+			const QString &Mobile, const bool Blocking,
+			const bool Offline_to_user, const bool Notify, const QString &Group);
 		void changeUserStatus(const uin_t uin, const unsigned int status);
 		void removeUser(const QString &altnick);
 		bool writeToFile(char *filename = NULL);

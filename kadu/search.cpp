@@ -554,7 +554,7 @@ void SearchDialog::updateInfoClicked()
 		return;
 
 	userlist.changeUserInfo(ule.altnick, firstname, lastname, nickname, ule.altnick,
-		ule.mobile, ule.group);
+		ule.mobile, ule.blocking, ule.offline_to_user, ule.notify, ule.group);
 	userlist.writeToFile();
 }
 

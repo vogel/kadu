@@ -84,6 +84,7 @@ bool UserList::containsUin(uin_t uin)
 void UserList::addUser(const QString FirstName,const QString LastName,
 	const QString NickName,const QString AltNick,
 	const QString Mobile,const QString Uin,const int Status,
+	const bool Blocking, const bool Offline_to_user, const bool Notify,
 	const QString Group,const QString Description, const bool Foreign)
 {
 	UserListElement e;
@@ -94,6 +95,9 @@ void UserList::addUser(const QString FirstName,const QString LastName,
 	e.mobile = Mobile;
 	e.uin = atoi(Uin.local8Bit());
 	e.status = Status;
+	e.blocking = Blocking;
+	e.offline_to_user = Offline_to_user;
+	e.notify = Notify;
 	e.group = Group;
 	e.description = Description;
 	e.anonymous = false;
@@ -108,21 +112,24 @@ void UserList::addUser(const QString FirstName,const QString LastName,
 void UserList::changeUserInfo(const QString OldAltNick,
 	const QString& FirstName, const QString& LastName,
 	const QString& NickName, const QString& AltNick,
-	const QString& Mobile, const QString& Group)
+	const QString& Mobile, const bool Blocking,
+	const bool Offline_to_user, const bool Notify, const QString& Group)
 {
-	UserListElement& e=byAltNick(OldAltNick);
+	UserListElement &e = byAltNick(OldAltNick);
 	e.first_name = FirstName;
 	e.last_name = LastName;
 	e.nickname = NickName;
 	e.altnick = AltNick;
 	e.mobile = Mobile;
 	e.foreign = false;
+	e.blocking = Blocking;
+	e.offline_to_user = Offline_to_user;
+	e.notify = Notify;
 	e.group = Group;
-	if (AltNick != OldAltNick)
-	{
+	if (AltNick != OldAltNick) {
 		UserBox::all_renameUser(OldAltNick,AltNick);
 		UserBox::all_refresh();			
-	};	
+		}
 	emit modified();
 };
 
@@ -149,31 +156,31 @@ void UserList::removeUser(const QString &altnick)
 
 bool UserList::writeToFile(char *filename)
 {
+	QString faname;
 	char *tmp;
 
 	if (!(tmp = preparePath("")))
-		return FALSE;
+		return false;
 	mkdir(tmp, 0700);
 
-	if (!filename)
-	{
+	if (!filename) {
 		if (!(filename = preparePath("userlist")))
-			FALSE;
-	};
+			return false;
+		}
+
+	if (!(faname = preparePath("userattribs")))
+		return false;
 
 	QFile f(filename);
 
-	if (!f.open(IO_WriteOnly))
-	{
+	if (!f.open(IO_WriteOnly)) {
 		fprintf(stderr,"KK UserList::writeToFile(): Error opening file :(\n");
 		return false;
-	};
+		}
 
-//	fchmod(fileno(f), 0600);
-
-	for (Iterator i=begin(); i!=end(); i++)
-	{
-		QString s="";
+	QString s;
+	for (Iterator i = begin(); i != end(); i++) {
+		s.truncate(0);
 		s.append((*i).first_name);
 		s.append(QString(";"));
 		s.append((*i).last_name);
@@ -188,74 +195,128 @@ bool UserList::writeToFile(char *filename)
 		s.append(QString(";"));
 		s.append(QString::number((*i).uin));
 		s.append(QString("\r\n"));
+		
 		if (!(*i).foreign) {
-			fprintf(stderr,s.local8Bit());
-			f.writeBlock(s.local8Bit(),s.length());
+			fprintf(stderr, s.local8Bit());
+			f.writeBlock(s.local8Bit(), s.length());
 			}
-	}	    
+		}
 	f.close();
+
+	QFile fa(faname);
+
+	if (!fa.open(IO_WriteOnly)) {
+		fprintf(stderr,"KK UserList::writeToFile(): Error opening file :(\n");
+		return false;
+		}
+
+	for (Iterator i = begin(); i != end(); i++) {
+		s.truncate(0);
+		s.append(QString::number((*i).uin));
+		s.append(QString(";"));
+		s.append((*i).blocking ? QString("true") : QString("false"));
+		s.append(QString(";"));
+		s.append((*i).offline_to_user ? QString("true") : QString("false"));
+		s.append(QString(";"));
+		s.append((*i).notify ? QString("true") : QString("false"));
+		s.append(QString("\r\n"));
+		
+		if (!(*i).foreign && (*i).uin) {
+			fprintf(stderr, s.local8Bit());
+			fa.writeBlock(s.local8Bit(), s.length());
+			}
+		}
+	fa.close();
+		
 	return true;
 }
 
 bool UserList::readFromFile()
 {
-	char * path = preparePath("userlist");
-	fprintf(stderr, "KK UserList::readFromFile(): Opening userlist file: %s\n",path);
+	char *path;
+	QValueList<QStringList> ualist;
 
+	path = preparePath("userattribs");
+	fprintf(stderr, "KK UserList::readFromFile(): Opening userattribs file: %s\n", path);
+	QFile fa(path);
+	if (!fa.open(IO_ReadOnly)) {
+		fprintf(stderr, "KK UserList::readFromFile(): Error opening userattribs file");
+		}
+	QTextStream s(&fa);
+	QString line;
+	while ((line = s.readLine()).length()) {
+		QStringList slist;
+		slist = QStringList::split(';', line);
+		if (slist.count() == 4)
+			ualist.append(slist);
+		}
+	fa.close();
+
+	path = preparePath("userlist");
+	fprintf(stderr, "KK UserList::readFromFile(): Opening userlist file: %s\n", path);
 	QFile f(path);
-	if(!f.open(IO_ReadOnly))
-	{
+	if (!f.open(IO_ReadOnly)) {
 		fprintf(stderr, "KK UserList::readFromFile(): Error opening userlist file");
 		return false;
-	}
+		}
 
 	fprintf(stderr, "KK UserList::readFromFile(): File opened successfuly\n");
-	    
+
 	clear();
 
 	QTextStream t(&f);
-	QString line;
-	while ((line = t.readLine()).length())
-	{
+	while ((line = t.readLine()).length()) {
 		if (line[0] == '#')
 			continue;
 
-		if (line.find(';')<0)
-		{
-			QString nickname=line.section(' ',0,0);
-			QString uin=line.section(' ',1,1);
-			if(uin=="")
+		if (line.find(';') < 0) {
+			QString nickname = line.section(' ',0,0);
+			QString uin = line.section(' ',1,1);
+			if (uin == "")
 				continue;
-			addUser("","",nickname,nickname,
-				"",uin,GG_STATUS_NOT_AVAIL,"","");
-		}
-		else
-		{	    
-			QString first_name = line.section(';',0,0);
-			QString last_name = line.section(';',1,1);
-			QString nickname = line.section(';',2,2);
-			QString altnick = line.section(';',3,3);
-			QString mobile = line.section(';',4,4);
-			QString group = line.section(';',5,5);
-			QString uin = line.section(';',6,6);
+			addUser("" , "", nickname, nickname,
+				"", uin, GG_STATUS_NOT_AVAIL,"","");
+			}
+		else {	    
+			QString first_name = line.section(';', 0, 0);
+			QString last_name = line.section(';', 1, 1);
+			QString nickname = line.section(';', 2, 2);
+			QString altnick = line.section(';', 3, 3);
+			QString mobile = line.section(';', 4, 4);
+			QString group = line.section(';', 5, 5);
+			QString uin = line.section(';', 6, 6);
 
-			if(uin=="")
+			if (uin == "")
 				continue;
 				
-			if(altnick=="")
-			{
-				if(nickname=="")
-					altnick=first_name;
+			if (altnick == "") {
+				if (nickname == "")
+					altnick = first_name;
 				else
-					altnick=nickname;
-			};
+					altnick = nickname;
+				}
 
-			addUser(first_name,last_name,nickname,altnick,
-				mobile,uin,GG_STATUS_NOT_AVAIL,group,"");
+			bool blocking, offline_to_user, notify;
 
-		};
+			QValueList<QStringList>::Iterator i = ualist.begin();
+			while ((*i)[0] != uin && i != ualist.end())
+				i++;
+			if (i != ualist.end()) {
+				blocking = ((*i)[1] == "true" ? true : false);
+				offline_to_user = ((*i)[2] == "true" ? true : false);
+				notify = ((*i)[3] == "true" ? true : false);
+				}
+			else {
+				blocking = false;
+				offline_to_user = false;
+				notify = true;
+				}
 
-	};
+			addUser(first_name, last_name, nickname, altnick,
+				mobile, uin, GG_STATUS_NOT_AVAIL, blocking, offline_to_user,
+				notify, group, "");
+			}
+		}
 
 	f.close();
 	emit modified();

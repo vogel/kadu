@@ -692,7 +692,8 @@ void Kadu::addUser(const QString& FirstName, const QString& LastName,
 	const QString& Mobile, const QString& Uin, const int Status,
 	const QString& Group, const QString& Description, const bool Foreign)
 {
-	userlist.addUser(FirstName, LastName, NickName, AltNick, Mobile, Uin, Status, Group, Description, Foreign);
+	userlist.addUser(FirstName, LastName, NickName, AltNick, Mobile, Uin, Status, 
+		false, false, true, Group, Description, Foreign);
 	userlist.writeToFile();
 
 	userbox->addUser(AltNick);

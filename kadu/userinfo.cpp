@@ -158,7 +158,7 @@ void UserInfo::writeUserlist() {
 			userlist.changeUserInfo(userlist[this_index].altnick,
 				e_firstname->text(),e_lastname->text(),
 				e_nickname->text(),e_altnick->text(),
-				e_mobile->text(),e_group->text());
+				e_mobile->text(), false, false, true, e_group->text());
 			userlist.writeToFile();
 			close();
 			break;
