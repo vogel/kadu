@@ -8,6 +8,7 @@
 #include <qpixmap.h>
 #include <qlabel.h>
 #include <qcstring.h>
+#include <qdatetime.h>
 #include <libintl.h>
 
 #include "libgadu.h"
@@ -26,7 +27,8 @@ QString ggPath(QString subpath);
 QString cp2unicode(unsigned char *);
 QCString unicode2cp(const QString &);
 QPixmap loadIcon(const QString &filename);
-char *timestamp(time_t = 0);
+QString timestamp(time_t = 0);
+QDateTime currentDateTime();
 QString pwHash(const QString tekst);
 void deleteSearchIdStruct(QDialog *ptr);
 

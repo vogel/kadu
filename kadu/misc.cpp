@@ -12,6 +12,7 @@
 #include <qstring.h>
 #include <qtextcodec.h>
 #include <qcstring.h>
+#include <qdatetime.h>
 
 #include "misc.h"
 #include "pixmaps.h"
@@ -59,41 +60,34 @@ QPixmap loadIcon(const QString &filename) {
 	return icon;
 }
 
-char *timestamp(time_t customtime)
+QString timestamp(time_t customtime)
 {
-	static char buf[100];
-
+	QString buf;
+	QDateTime date;
 	time_t t;
-	struct tm *tm;
+	
+	t = time(NULL);
 
-	time(&t);
-
-	tm = localtime(&t);
-	strftime(buf, sizeof(buf), ":: %d %m %Y, (%T", tm);
+	date.setTime_t(t);
+	buf.append(date.toString(":: dd.MM.yyyy (hh:mm:ss"));
 
 	if (customtime) {
-		char buf2[20];
-		struct tm *tm2;
-		tm2 = localtime(&customtime);
-		strftime(buf2, sizeof(buf2), " / S %T)", tm2);
-		strncat(buf, buf2, sizeof(buf2));
-		
-/*		int j = 0;
-		while(buf[j++] != "\0");
-		
-		int i = -1;
-		while(buf2[++i] != "\0") {
-       buf[j+i] = buf2[i];
-			}
-		buf[j + ++i] = "\0"; */
-	
-		return buf;
-
+		date.setTime_t(customtime);
+		buf.append(QString(" / S ") + date.toString("hh:mm:ss)"));
 		}
-
-	strftime(buf, sizeof(buf), ":: %d %m %Y, (%T)", tm);
+	else
+		buf.append(")");
 
 	return buf;
+}
+
+QDateTime currentDateTime(void) {
+	time_t t;
+	QDateTime date;
+
+	t = time(NULL);
+	date.setTime_t(t);
+	return date;
 }
 
 QString pwHash(const QString tekst) {

@@ -100,7 +100,7 @@ int HistoryManager::typeOfLine(const QString &line) {
 	return HISTORYMANAGER_ORDINARY_LINE;
 }
 
-void HistoryManager::appendMessage(UinsList uins, uin_t uin, const QString &msg, bool own, time_t time, bool chat) {
+void HistoryManager::appendMessage(UinsList uins, uin_t uin, const QString &msg, bool own, time_t czas, bool chat) {
 	QFile f;
 	QString fname = ggPath("history/");
 	QString line, nick;
@@ -126,10 +126,9 @@ void HistoryManager::appendMessage(UinsList uins, uin_t uin, const QString &msg,
 	else
 		nick = QString::number(uin);
 	linelist.append(text2csv(nick));
-	linelist.append(QString::number(-QDateTime::currentDateTime().secsTo(
-		QDateTime(QDate(1970, 1, 1), QTime(0 ,0)))));
+	linelist.append(QString::number(time(NULL)));
 	if (!own)
-		linelist.append(QString::number(time));
+		linelist.append(QString::number(czas));
 	linelist.append(text2csv(msg));
 	line = linelist.join(",");
 
@@ -160,8 +159,7 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 
 	linelist.append("smssend");
 	linelist.append(mobile);
-	linelist.append(QString::number(-QDateTime::currentDateTime().secsTo(
-		QDateTime(QDate(1970, 1, 1), QTime(0 ,0)))));
+	linelist.append(QString::number(time(NULL)));
 	linelist.append(text2csv(msg));
 
 	for (int i = 0; i < userlist.count(); i++)
@@ -238,8 +236,7 @@ void HistoryManager::appendStatus(uin_t uin, unsigned int status, QString descri
 	if (port)
 		addr = addr + QString(":") + QString::number(port);
 	linelist.append(addr);
-	linelist.append(QString::number(-QDateTime::currentDateTime().secsTo(
-		QDateTime(QDate(1970, 1, 1), QTime(0 ,0)))));
+	linelist.append(QString::number(time(NULL)));
 	switch (status) {
 		case GG_STATUS_AVAIL:
 		case GG_STATUS_AVAIL_DESCR:
