@@ -103,7 +103,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * mo¿liwo¶æ z³±czenia posiadanej listy kontaktów z importowan± list±
   kontaktów (demsik/chilek)
 * import: przy zapisie listy kontaktów lista ignorowanych jest czyszczona,
-  a przy³±czeniu nie jest czyszczona (chilek)
+  a przy ³±czeniu nie jest czyszczona (chilek)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
