@@ -1247,10 +1247,13 @@ void Chat::addMyMessageToHistory()
 void Chat::clearChatWindow()
 {
 	kdebugf();
-	for(QValueList<ChatMessage *>::iterator it=ChatMessages.begin(); it!=ChatMessages.end(); ++it)
-		delete *it;
-	ChatMessages.clear();
-	body->clear();
+	if (MessageBox::ask(tr("Chat window will be cleared. Continue?")))
+	{		
+		for(QValueList<ChatMessage *>::iterator it=ChatMessages.begin(); it!=ChatMessages.end(); ++it)
+			delete *it;
+		ChatMessages.clear();
+		body->clear();
+	}
 	kdebugf2();
 }
 

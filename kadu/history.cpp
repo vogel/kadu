@@ -1366,7 +1366,7 @@ History::History(UinsList uins) : QDialog(NULL, "HistoryDialog"), uins(uins), cl
 	{
 		uinslvt = new UinsListViewText(uinslv, uinsentries[i]);
 		uinslvt->setExpandable(TRUE);
-		if (uinsentries[i].equals(uins))
+		if (uinsentries[i].equals(uins) && uins.count())
 			selecteduinslvt = uinslvt;
 	}
 	uinslv->sort();

@@ -595,14 +595,14 @@ void Kadu::viewHistory()
 {
 	kdebugf();
 	UserBox *activeUserBox=UserBox::getActiveUserBox();
+
 	if (activeUserBox==NULL)
-	{
+	{	
 		kdebugf2();
 		return;
 	}
-	UinsList uins= activeUserBox->getSelectedUins();
-	if (uins.count())
-		(new History(uins))->show();
+	UinsList uins = activeUserBox->getSelectedUins();
+	(new History(uins))->show();
 	kdebugf2();
 }
 
