@@ -123,10 +123,25 @@ bool UinsList::equals(const UinsList &uins) const
 	return true;
 }
 
-UinsList::UinsList() {
+UinsList::UinsList()
+{
 }
 
-void UinsList::sort() {
+UinsList::UinsList (QString uins)
+{
+	QStringList list = QStringList::split (",", uins);
+	for (QStringList::const_iterator it = list.begin (); it != list.end (); it++)
+		append ((*it).toUInt ());
+}
+
+UinsList::UinsList (QStringList list)
+{
+	for (QStringList::const_iterator it = list.begin (); it != list.end (); it++)
+		append ((*it).toUInt ());
+}
+
+void UinsList::sort()
+{
 	qHeapSort(*this);
 }
 

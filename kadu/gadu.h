@@ -48,7 +48,23 @@ class AutoConnectionTimer : private QTimer {
 class UinsList : public QValueList<UinType>
 {
 	public:
+		/**
+			konstruuje obiekt UinsList
+		**/
 		UinsList();
+		
+		/**
+			konstruuje obiekt UinsList na podstawie ³añcucha "uins" sk³adaj±cego
+			siê z oddzielonych przecinkami Uinów
+		**/
+		UinsList(QString uins);
+
+		/**
+			konstruuje obiekt UinsList na podstawie "list"
+			przekszta³acaj±c ka¿dy element do typy UinType
+		**/
+		UinsList(QStringList list);
+
 		bool equals(const UinsList &uins) const;
 		void sort();
 		QStringList toStringList() const;
