@@ -219,6 +219,11 @@ void EventManager::disconnectedSlot()
 void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned char* msg, time_t time,
 	int formats_length, void *formats)
 {
+
+/* Moim zdaniem t± ca³a funkcje trzeba przepisaæ od nowa,
+	a przynajmniej poprawiæ i rozbiæ na mniejsze.
+*/
+
 	// ignorujemy, jesli nick na liscie ignorowanych
 	// PYTANIE CZY IGNORUJEMY CALA KONFERENCJE
 	// JESLI PIERWSZY SENDER JEST IGNOROWANY????
@@ -277,23 +282,24 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 
 	mesg = formatGGMessage(mesg, formats_length, formats);
 
-	QString nick;
+	UserListElement ule;
+
 	if (userlist.containsUin(senders[0])) {
-		UserListElement &ule = userlist.byUin(senders[0]);
+		ule = userlist.byUin(senders[0]);
 		if (ule.anonymous && config.ignoreanonusers)
 			return;
-		nick = ule.altnick;
 		}
 	else
 		if (senders[0] != config.uin) {
 			if (config.ignoreanonusers)
 				return;
-			nick = QString::number(senders[0]);
+			ule.uin = senders[0];
+			ule.altnick = QString::number(senders[0]);
 			if (trayicon)
-				userlist.addUser("", "", nick, nick, "", nick, GG_STATUS_NOT_AVAIL,
+				userlist.addUser("", "", ule.altnick, ule.altnick, "", ule.altnick, GG_STATUS_NOT_AVAIL,
 					false, false, true, "", "", true);
 			else
-				kadu->addUser("", "", nick, nick, "", nick, GG_STATUS_NOT_AVAIL,
+				kadu->addUser("", "", ule.altnick, ule.altnick, "", ule.altnick, GG_STATUS_NOT_AVAIL,
 					"", "", true);
 			}
 	if (config.logmessages && senders[0] != config.uin)
@@ -311,18 +317,18 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 		chats[i].ptr->checkPresence(senders, mesg, time, toadd);
 		chats[i].ptr->alertNewMessage();
 		if (!chats[i].ptr->isActiveWindow() && config.hintalert)
-			trayicon->showHint(i18n("New message from: "), nick,0);
+			trayicon->showHint(i18n("New message from: "), ule.altnick,0);
 		return;
 		}
-
-	playSound(config.soundmsg);
+	
+	playSound(parse(config.soundmsg, ule));
 
 	if (senders[0] != config.uin)
 		pending.addMsg(senders, mesg, msgclass, time);
 	
 	kdebug("eventRecvMsg(): Message allocated to slot %d\n", i);
 	kdebug("eventRecvMsg(): Got message from %d (%s) saying \"%s\"\n",
-			senders[0], (const char *)nick.local8Bit(), (const char *)mesg.local8Bit());
+			senders[0], (const char *)ule.altnick.local8Bit(), (const char *)mesg.local8Bit());
 											  
 	UserBox::all_refresh();
 	trayicon->changeIcon();
@@ -333,9 +339,9 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 		}
 
 	if (msgclass == GG_CLASS_CHAT)
-		trayicon->showHint(i18n("Chat with: "), nick,0);
+		trayicon->showHint(i18n("Chat with: "), ule.altnick,0);
 	if (msgclass == GG_CLASS_MSG)
-		trayicon->showHint(i18n("Message from: "), nick,0);
+		trayicon->showHint(i18n("Message from: "), ule.altnick,0);
 
 	emit chatReceived(senders,mesg,time);
 
