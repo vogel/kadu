@@ -487,8 +487,10 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(&userlist, SIGNAL(modified()), this, SLOT(userListModified()));
 	connect(&userlist, SIGNAL(statusModified(UserListElement *)), this, SLOT(userListStatusModified(UserListElement *)));
 
+	QSplitter *split = new QSplitter(Qt::Vertical, centralFrame);
+
 	/* initialize and configure userbox */
-	userbox = new UserBox(centralFrame, "userbox");
+	userbox = new UserBox(split, "userbox");
 	userbox->setPaletteBackgroundColor(QColor(config.colors.userboxBgColor));
 	userbox->setPaletteForegroundColor(QColor(config.colors.userboxFgColor));
 	userbox->QListBox::setFont(QFont(config.fonts.userboxFont, config.fonts.userboxFontSize));
@@ -529,23 +531,31 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	if (config.dock)
 		connect(dockppm, SIGNAL(activated(int)), dw, SLOT(dockletChange(int)));
 
-	descrtb = new QTextBrowser(centralFrame, "descrtb");
+	descrtb = new QTextBrowser(split, "descrtb");
 	descrtb->setFrameStyle(QFrame::NoFrame);
-	descrtb->setFixedHeight(int(1.5*QFontMetrics(descrtb->font()).height()));
+	descrtb->setMinimumHeight(int(1.5 * QFontMetrics(descrtb->font()).height()));
+//	descrtb->resize(descrtb->size().width(), int(1.5 * QFontMetrics(descrtb->font()).height()));
 	descrtb->setTextFormat(Qt::RichText);
 	descrtb->setAlignment(Qt::AlignVCenter | Qt::WordBreak | Qt::DontClip);
 	descrtb->setVScrollBarMode(QScrollView::AlwaysOff);
 	descrtb->setPaper(QBrush(lightGray));
 
-	QGridLayout * grid = new QGridLayout(centralFrame, 4, 3);
+	QValueList<int> splitsizes;
+	splitsizes.append(100);
+	splitsizes.append(1);
+	split->setSizes(splitsizes);
+
+	QGridLayout * grid = new QGridLayout(centralFrame, 3, 3);
 	grid->addMultiCellWidget(group_bar, 0, 0, 0, 2);
-	grid->addMultiCellWidget(userbox, 1, 1, 0, 2);
-	grid->addMultiCellWidget(descrtb, 2, 2, 0, 2);
-	grid->addWidget(statuslabeltxt, 3, 0, Qt::AlignLeft);
-	grid->addWidget(statuslabel, 3, 2, Qt::AlignCenter);
+	grid->addMultiCellWidget(split, 1, 1, 0, 2);
+	grid->addWidget(statuslabeltxt, 2, 0, Qt::AlignLeft);
+	grid->addWidget(statuslabel, 2, 2, Qt::AlignCenter);
 	grid->setColStretch(0, 3);
-	grid->setColStretch(1, 1);
+	grid->setColStretch(1, 3);
 	grid->setColStretch(2, 1);
+	grid->setRowStretch(0, 1);
+	grid->setRowStretch(1, 40);
+	grid->setRowStretch(2, 1);
 	grid->activate();
 
 	dccsock = NULL;
