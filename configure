@@ -873,10 +873,9 @@ Optional Features:
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
-  --with-qt-dir=DIR       qt-dir in DIR
-  --with-qt-includes=DIR  qt-includes in DIR
-  --with-qt-libs=DIR      qt-libs in DIR
-  --with-qt-moc=DIR       qt-moc in DIR
+  --with-includes="DIRS"  search for includes in DIRS
+  --with-libs="DIRS"      search for libs in DIRS
+  --with-apps="DIRS"      search for apps in DIRS
   --with-existing-libgadu do not compile libgadu, link with existing one
   --without-pthread       do not use pthread in libgadu resolver
 
@@ -3438,6 +3437,29 @@ fi
 done
 
 
+###################
+# Additional paths
+###################
+
+
+# Check whether --with-includes or --without-includes was given.
+if test "${with_includes+set}" = set; then
+  withval="$with_includes"
+
+fi;
+
+# Check whether --with-libs or --without-libs was given.
+if test "${with_libs+set}" = set; then
+  withval="$with_libs"
+
+fi;
+
+# Check whether --with-apps or --without-apps was given.
+if test "${with_apps+set}" = set; then
+  withval="$with_apps"
+
+fi;
+
 ##################
 # ExecInfo
 ##################
@@ -4447,8 +4469,9 @@ echo "${ECHO_T}no" >&6
 
 	echo "$as_me:$LINENO: checking for libpng.so in specified directiories" >&5
 echo $ECHO_N "checking for libpng.so in specified directiories... $ECHO_C" >&6
+	echo "DIRS: $with_libs /usr/lib /usr/local/lib"
 	FILE_DIR=
-	for dir in /usr/lib /usr/local/lib
+	for dir in $with_libs /usr/lib /usr/local/lib
 	do
 		if test -f $dir/libpng.so; then
 			FILE_DIR=$dir
@@ -4468,8 +4491,9 @@ echo "${ECHO_T}not found" >&6
 
 	echo "$as_me:$LINENO: checking for libpng.dylib in specified directiories" >&5
 echo $ECHO_N "checking for libpng.dylib in specified directiories... $ECHO_C" >&6
+	echo "DIRS: $with_libs /usr/lib /usr/local/lib"
 	FILE_DIR=
-	for dir in /usr/lib /usr/local/lib
+	for dir in $with_libs /usr/lib /usr/local/lib
 	do
 		if test -f $dir/libpng.dylib; then
 			FILE_DIR=$dir
@@ -4503,19 +4527,6 @@ rm -f conftest.err conftest.$ac_objext \
 #################
 # QT Headers
 #################
-
-
-# Check whether --with-qt-dir or --without-qt-dir was given.
-if test "${with_qt_dir+set}" = set; then
-  withval="$with_qt_dir"
-
-fi;
-
-# Check whether --with-qt-includes or --without-qt-includes was given.
-if test "${with_qt_includes+set}" = set; then
-  withval="$with_qt_includes"
-
-fi;
 
 
 	echo "$as_me:$LINENO: checking if qwidget.h header is in system directories" >&5
@@ -4575,8 +4586,9 @@ echo "${ECHO_T}no" >&6
 
 	echo "$as_me:$LINENO: checking for qwidget.h in specified directiories" >&5
 echo $ECHO_N "checking for qwidget.h in specified directiories... $ECHO_C" >&6
+	echo "DIRS: $with_includes $QTDIR/include /usr/lib/qt/include /usr/lib/qt3/include /usr/local/qt/include /usr/include /usr/include/qt /usr/include/qt3 /usr/local/include /usr/X11R6/include /usr/X11R6/include/qt /usr/X11R6/include/qt3 /sw/include/qt"
 	FILE_DIR=
-	for dir in $with_qt_includes $with_qt_dir/include $QTDIR/include /usr/lib/qt/include /usr/lib/qt3/include /usr/local/qt/include /usr/include /usr/include/qt /usr/include/qt3 /usr/local/include /usr/X11R6/include /usr/X11R6/include/qt /usr/X11R6/include/qt3 /sw/include/qt
+	for dir in $with_includes $QTDIR/include /usr/lib/qt/include /usr/lib/qt3/include /usr/local/qt/include /usr/include /usr/include/qt /usr/include/qt3 /usr/local/include /usr/X11R6/include /usr/X11R6/include/qt /usr/X11R6/include/qt3 /sw/include/qt
 	do
 		if test -f $dir/qwidget.h; then
 			FILE_DIR=$dir
@@ -4607,12 +4619,6 @@ rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
 # QT Library
 #################
 
-
-# Check whether --with-qt-libs or --without-qt-libs was given.
-if test "${with_qt_libs+set}" = set; then
-  withval="$with_qt_libs"
-
-fi;
 
 QT_LIBS="-lqt-mt"
 
@@ -4675,8 +4681,9 @@ echo "${ECHO_T}no" >&6
 
 	echo "$as_me:$LINENO: checking for libqt-mt.so in specified directiories" >&5
 echo $ECHO_N "checking for libqt-mt.so in specified directiories... $ECHO_C" >&6
+	echo "DIRS: $with_libs $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib"
 	FILE_DIR=
-	for dir in $with_qt_libs $with_qt_dir/lib $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib
+	for dir in $with_libs $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib
 	do
 		if test -f $dir/libqt-mt.so; then
 			FILE_DIR=$dir
@@ -4696,8 +4703,9 @@ echo "${ECHO_T}not found" >&6
 
 	echo "$as_me:$LINENO: checking for libqt-mt.dylib in specified directiories" >&5
 echo $ECHO_N "checking for libqt-mt.dylib in specified directiories... $ECHO_C" >&6
+	echo "DIRS: $with_libs $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib"
 	FILE_DIR=
-	for dir in $with_qt_libs $with_qt_dir/lib $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib
+	for dir in $with_libs $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib
 	do
 		if test -f $dir/libqt-mt.dylib; then
 			FILE_DIR=$dir
@@ -4733,17 +4741,11 @@ rm -f conftest.err conftest.$ac_objext \
 #################
 
 
-# Check whether --with-qt-moc or --without-qt-moc was given.
-if test "${with_qt_moc+set}" = set; then
-  withval="$with_qt_moc"
-
-fi;
-
-
 	echo "$as_me:$LINENO: checking for moc in specified directiories" >&5
 echo $ECHO_N "checking for moc in specified directiories... $ECHO_C" >&6
+	echo "DIRS: $with_apps $QTDIR/bin /usr/lib/qt3/bin /usr/local/qt/bin /usr/lib/qt/bin /usr/bin /bin /usr/local/bin /usr/X11R6/bin"
 	FILE_DIR=
-	for dir in $with_qt_moc $with_qt_dir/bin $QTDIR/bin /usr/lib/qt3/bin /usr/local/qt/bin /usr/lib/qt/bin /usr/bin /bin /usr/local/bin /usr/X11R6/bin
+	for dir in $with_apps $QTDIR/bin /usr/lib/qt3/bin /usr/local/qt/bin /usr/lib/qt/bin /usr/bin /bin /usr/local/bin /usr/X11R6/bin
 	do
 		if test -f $dir/moc; then
 			FILE_DIR=$dir
@@ -6238,8 +6240,9 @@ echo "${ECHO_T}no" >&6
 
 	echo "$as_me:$LINENO: checking for libgadu.h in specified directiories" >&5
 echo $ECHO_N "checking for libgadu.h in specified directiories... $ECHO_C" >&6
+	echo "DIRS: $with_includes $with_existing_libgadu $with_existing_libgadu/include"
 	FILE_DIR=
-	for dir in $with_existing_libgadu $with_existing_libgadu/include
+	for dir in $with_includes $with_existing_libgadu $with_existing_libgadu/include
 	do
 		if test -f $dir/libgadu.h; then
 			FILE_DIR=$dir
@@ -6325,8 +6328,9 @@ echo "${ECHO_T}no" >&6
 
 	echo "$as_me:$LINENO: checking for libgadu.so in specified directiories" >&5
 echo $ECHO_N "checking for libgadu.so in specified directiories... $ECHO_C" >&6
+	echo "DIRS: $with_libs $with_existing_libgadu $with_existing_libgadu/lib"
 	FILE_DIR=
-	for dir in $with_existing_libgadu $with_existing_libgadu/lib
+	for dir in $with_libs $with_existing_libgadu $with_existing_libgadu/lib
 	do
 		if test -f $dir/libgadu.so; then
 			FILE_DIR=$dir
@@ -6346,8 +6350,9 @@ echo "${ECHO_T}not found" >&6
 
 	echo "$as_me:$LINENO: checking for libgadu.dylib in specified directiories" >&5
 echo $ECHO_N "checking for libgadu.dylib in specified directiories... $ECHO_C" >&6
+	echo "DIRS: $with_libs $with_existing_libgadu $with_existing_libgadu/lib"
 	FILE_DIR=
-	for dir in $with_existing_libgadu $with_existing_libgadu/lib
+	for dir in $with_libs $with_existing_libgadu $with_existing_libgadu/lib
 	do
 		if test -f $dir/libgadu.dylib; then
 			FILE_DIR=$dir
@@ -6619,8 +6624,9 @@ echo "${ECHO_T}no" >&6
 
 	echo "$as_me:$LINENO: checking for lib$lib.so in specified directiories" >&5
 echo $ECHO_N "checking for lib$lib.so in specified directiories... $ECHO_C" >&6
+	echo "DIRS: $with_libs $MODULE_LIBS_PATH"
 	FILE_DIR=
-	for dir in $MODULE_LIBS_PATH
+	for dir in $with_libs $MODULE_LIBS_PATH
 	do
 		if test -f $dir/lib$lib.so; then
 			FILE_DIR=$dir
@@ -6640,8 +6646,9 @@ echo "${ECHO_T}not found" >&6
 
 	echo "$as_me:$LINENO: checking for lib$lib.dylib in specified directiories" >&5
 echo $ECHO_N "checking for lib$lib.dylib in specified directiories... $ECHO_C" >&6
+	echo "DIRS: $with_libs $MODULE_LIBS_PATH"
 	FILE_DIR=
-	for dir in $MODULE_LIBS_PATH
+	for dir in $with_libs $MODULE_LIBS_PATH
 	do
 		if test -f $dir/lib$lib.dylib; then
 			FILE_DIR=$dir
@@ -6731,8 +6738,9 @@ echo "${ECHO_T}no" >&6
 
 	echo "$as_me:$LINENO: checking for $hdr in specified directiories" >&5
 echo $ECHO_N "checking for $hdr in specified directiories... $ECHO_C" >&6
+	echo "DIRS: $with_includes $MODULE_INCLUDES_PATH"
 	FILE_DIR=
-	for dir in $MODULE_INCLUDES_PATH
+	for dir in $with_includes $MODULE_INCLUDES_PATH
 	do
 		if test -f $dir/$hdr; then
 			FILE_DIR=$dir
@@ -6763,7 +6771,7 @@ rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
 	echo "$as_me:$LINENO: checking if $tool tool is available" >&5
 echo $ECHO_N "checking if $tool tool is available... $ECHO_C" >&6
 	FILE_DIR=
-	for dir in `echo $PATH | sed "s/:/ /g"`
+	for dir in $with_apps `echo $PATH | sed "s/:/ /g"`
 	do
 		if test -x $dir/$tool; then
 			FILE_DIR=$dir

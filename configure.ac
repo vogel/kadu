@@ -59,6 +59,7 @@ AC_DEFUN(TRY_LINK_EXECINFO,[
 # $4 - action if not found (default is error message)
 AC_DEFUN(FIND_FILE,[
 	AC_MSG_CHECKING([for $1 in specified directiories])
+	echo "DIRS: $2"
 	FILE_DIR=
 	for dir in $2
 	do
@@ -91,7 +92,7 @@ AC_DEFUN(FIND_HEADER,[
 		AC_MSG_RESULT([yes])
 	],[
 		AC_MSG_RESULT([no])
-		FIND_FILE([$1],[$2],[$3],[$4])
+		FIND_FILE([$1],[$with_includes $2],[$3],[$4])
 	])
 ])
 
@@ -113,9 +114,9 @@ AC_DEFUN(FIND_LIBRARY,[
 	],[
 		CFLAGS="$save_CFLAGS"
 		AC_MSG_RESULT([no])
-		FIND_FILE([lib$1.so],[$2],[$3],
+		FIND_FILE([lib$1.so],[$with_libs $2],[$3],
 		[
-			FIND_FILE([lib$1.dylib],[$2],[$3],[$4])
+			FIND_FILE([lib$1.dylib],[$with_libs $2],[$3],[$4])
 		])
 	])
 ])
@@ -125,7 +126,7 @@ AC_DEFUN(FIND_LIBRARY,[
 AC_DEFUN(FIND_TOOL,[
 	AC_MSG_CHECKING([if $1 tool is available])
 	FILE_DIR=
-	for dir in `echo $PATH | sed "s/:/ /g"` 
+	for dir in $with_apps `echo $PATH | sed "s/:/ /g"` 
 	do
 		if test -x $dir/$1; then
 			FILE_DIR=$dir
@@ -346,6 +347,14 @@ AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_AWK
 
+###################
+# Additional paths
+###################
+
+AC_ARG_WITH(includes,   [  --with-includes="DIRS"  search for includes in DIRS])
+AC_ARG_WITH(libs,       [  --with-libs="DIRS"      search for libs in DIRS])
+AC_ARG_WITH(apps,       [  --with-apps="DIRS"      search for apps in DIRS])
+
 ##################
 # ExecInfo
 ##################
@@ -397,10 +406,7 @@ AC_SUBST(PNG_LIBS)
 # QT Headers
 #################
 
-AC_ARG_WITH(qt-dir,        [  --with-qt-dir=DIR       qt-dir in DIR])
-AC_ARG_WITH(qt-includes,   [  --with-qt-includes=DIR  qt-includes in DIR])
-
-FIND_HEADER([qwidget.h],[$with_qt_includes $with_qt_dir/include $QTDIR/include /usr/lib/qt/include /usr/lib/qt3/include /usr/local/qt/include /usr/include /usr/include/qt /usr/include/qt3 /usr/local/include /usr/X11R6/include /usr/X11R6/include/qt /usr/X11R6/include/qt3 /sw/include/qt],
+FIND_HEADER([qwidget.h],[$QTDIR/include /usr/lib/qt/include /usr/lib/qt3/include /usr/local/qt/include /usr/include /usr/include/qt /usr/include/qt3 /usr/local/include /usr/X11R6/include /usr/X11R6/include/qt /usr/X11R6/include/qt3 /sw/include/qt],
 [
 	QT_INCLUDES="-I$FILE_DIR"
 ])
@@ -410,10 +416,9 @@ AC_SUBST(QT_INCLUDES)
 # QT Library
 #################
 
-AC_ARG_WITH(qt-libs,       [  --with-qt-libs=DIR      qt-libs in DIR])
 
 QT_LIBS="-lqt-mt"
-FIND_LIBRARY([qt-mt],[$with_qt_libs $with_qt_dir/lib $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib],
+FIND_LIBRARY([qt-mt],[$QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib],
 [
 	QT_LIBS="$QT_LIBS -L$FILE_DIR"
 ])
@@ -423,9 +428,7 @@ AC_SUBST(QT_LIBS)
 # QT MOC
 #################
 
-AC_ARG_WITH(qt-moc,        [  --with-qt-moc=DIR       qt-moc in DIR])
-
-FIND_FILE([moc],[$with_qt_moc $with_qt_dir/bin $QTDIR/bin /usr/lib/qt3/bin /usr/local/qt/bin /usr/lib/qt/bin /usr/bin /bin /usr/local/bin /usr/X11R6/bin],
+FIND_FILE([moc],[$with_apps $QTDIR/bin /usr/lib/qt3/bin /usr/local/qt/bin /usr/lib/qt/bin /usr/bin /bin /usr/local/bin /usr/X11R6/bin],
 [
 	QT_MOC_DIR="$FILE_DIR"
 ])
