@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.9 2002/09/28 00:13:01 chilek Exp $ */
+/* $Id: libgadu.h,v 1.10 2002/10/01 10:24:50 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
@@ -650,7 +650,7 @@ uint16_t gg_fix16(uint16_t x);
 #define GG_DEFAULT_PROTOCOL_VERSION 0x18
 #define GG_DEFAULT_TIMEOUT 30
 #define GG_HAS_AUDIO_MASK 0x40000000
-#define GG_LIBGADU_VERSION "20020927"
+#define GG_LIBGADU_VERSION "20020930"
 
 #define GG_DEFAULT_DCC_PORT 1550
 
