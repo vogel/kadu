@@ -189,7 +189,7 @@ void OSSPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chann
 	}
 	else
 	{
-#ifndef __FreeBSD__
+#if defined(DSP_CAP_MULTI) && defined(DSP_CAP_MULTI)
 		kdebugm(KDEBUG_INFO, "soundcard capabilities: rev=%d, duplex=%d, "
 						"realtime=%d, batch=%d, coproc=%d, trigger=%d, "
 						"mmap=%d, multi=%d, bind=%d\n",
