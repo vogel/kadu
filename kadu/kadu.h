@@ -142,7 +142,11 @@ class Kadu : public QMainWindow
 		bool docked();
 		void startupProcedure();
 		int personalInfoMenuId;//potrzebne dla modu³u account_management
-
+		/**
+			w zwi±zku z tym, ¿e opis sk³adni dla parsera jest u¿ywany w kilku miejscach
+			dodane zosta³o to pole, ¿eby nie trzeba by³o zmieniaæ tekstu w kilku miejscach
+		**/
+		static const QString SyntaxText;
 	public slots:
 		void slotHandleState(int command);
 		void changeAppearance();

@@ -253,7 +253,8 @@ class ImageWidget : public QWidget
 		void setImage(const QPixmap &image);
 };
 
-class TokenDialog : public QDialog {
+class TokenDialog : public QDialog
+{
 	Q_OBJECT
 
 	public:
@@ -443,12 +444,19 @@ class KaduTextBrowser : public QTextBrowser, QToolTip
 		QPopupMenu *createPopupMenu(const QPoint &point);
 		void drawContents(QPainter * p, int clipx, int clipy, int clipw, int cliph);
 		virtual void maybeTip(const QPoint&);
+		virtual void contentsMouseReleaseEvent(QMouseEvent * e);
 
 	public:
 		KaduTextBrowser(QWidget *parent = 0, const char *name = 0);
 		void setSource(const QString &name);
 	public slots:
 		virtual void copy();
+	signals:
+		/**
+			Dowolny przycisk myszy zosta³ zwolniony
+			Przekazany zostaje tak¿e obiekt, który wywo³a³ akcjê - czyli this.
+		**/
+		void mouseReleased(QMouseEvent *e, KaduTextBrowser *sender);
 };
 
 QValueList<int> toIntList(const QValueList<QVariant> &in);

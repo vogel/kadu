@@ -607,6 +607,7 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	edit->setMinimumHeight(1);
 	edit->setWordWrap(QMultiLineEdit::WidgetWidth);
 	edit->setFont(config_file.readFontEntry("Look","ChatFont"));
+	connect(body, SIGNAL(mouseReleased(QMouseEvent *, KaduTextBrowser *)), edit, SLOT(setFocus()));
 
 	if (config_file.readBoolEntry("Chat","AutoSend"))
 		autosend->setOn(true);
@@ -937,6 +938,13 @@ void Chat::keyPressEvent(QKeyEvent* e)
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
 		userWhois();
 	QWidget::keyPressEvent(e);
+}
+
+void Chat::mouseReleaseEvent(QMouseEvent *e)
+{
+	kdebugf();
+	edit->setFocus();
+	QWidget::mouseReleaseEvent(e);
 }
 
 /* convert special characters into emoticons, HTML into plain text and so forth */
@@ -1476,10 +1484,10 @@ void Chat::initModule()
 				ConfigDialog::addLabel("Look", "chat_prvw", QT_TRANSLATE_NOOP("@default", "<b>Other party</b> 00:00:02"), "chat_other");
 
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Other"));
-		ConfigDialog::addLineEdit("Look", "Other", QT_TRANSLATE_NOOP("@default", "Chat window title syntax:"), "ChatContents", "", "Syntax the same as in information panel.");
+		ConfigDialog::addLineEdit("Look", "Other", QT_TRANSLATE_NOOP("@default", "Chat window title syntax:"), "ChatContents", "", Kadu::SyntaxText);
 		ConfigDialog::addHBox("Look", "Other", "conference");
 			ConfigDialog::addLineEdit("Look", "conference", QT_TRANSLATE_NOOP("@default", "Conference window title prefix:"), "ConferencePrefix", "", QT_TRANSLATE_NOOP("@default", "This text will be before syntax.\nIf you leave blank, default settings will be used."));
-			ConfigDialog::addLineEdit("Look", "conference", QT_TRANSLATE_NOOP("@default", "syntax:"), "ConferenceContents", "%a (%s[: %d])", QT_TRANSLATE_NOOP("@default", "Syntax the same as in information panel."));
+			ConfigDialog::addLineEdit("Look", "conference", QT_TRANSLATE_NOOP("@default", "syntax:"), "ConferenceContents", "%a (%s[: %d])", Kadu::SyntaxText);
 
 	config_file.addVariable("Chat", "EmoticonsStyle", EMOTS_ANIMATED);
 	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
@@ -1929,7 +1937,7 @@ void ChatSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo, QCombo
 					path.replace(QRegExp("kfmclient"), testPath);
 				else
 				{
-					path="ok=0;for i in `dcop|grep konqueror`; do shown=`dcop $i konqueror-mainwindow#1 shown`; if [ \"$shown\" == \"true\" ];then dcop $i KonquerorIface openBrowserWindow %1 && ok=1; fi; if [ \"$ok\" == \"1\" ]; then break; fi done; if [ \"$ok\" != \"1\" ]; then kfmclient openURL %1; fi;";
+					path="ok=0;for i in `dcop|grep konqueror`; do shown=`dcop $i konqueror-mainwindow#1 shown`; if [ \"$shown\" == \"true\" ];then dcop $i KonquerorIface openBrowserWindow \"%1\" && ok=1; fi; if [ \"$ok\" == \"1\" ]; then break; fi done; if [ \"$ok\" != \"1\" ]; then kfmclient openURL \"%1\"; fi;";
 					path.replace(QRegExp("dcop"), testPath);
 					browserName="kfmclient";
 					dir=searchPath.begin();
@@ -1939,7 +1947,7 @@ void ChatSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo, QCombo
 			else if (selectedBrowser==3) //mozilla
 			{
 				if (browserName=="mozilla")
-					path=path+testPath+" %1";
+					path=path+testPath+" \"%1\"";
 				else
 				{
 					path=testPath+" -a mozilla \"openURL(%1,new-window)\" || ";
@@ -1951,7 +1959,7 @@ void ChatSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo, QCombo
 			else if (selectedBrowser==4) //firefox
 			{
 				if (browserName=="firefox")
-					path=path+testPath+" %1";
+					path=path+testPath+" \"%1\"";
 				else
 				{
 					path=testPath+" \"openURL(%1,new-window)\" || ";

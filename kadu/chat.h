@@ -123,8 +123,8 @@ class CustomInput : public QMultiLineEdit
 
 	protected:
 		bool autosend_enabled;
-		void keyPressEvent(QKeyEvent *e);
-		void keyReleaseEvent(QKeyEvent* e);
+		virtual void keyPressEvent(QKeyEvent *e);
+		virtual void keyReleaseEvent(QKeyEvent* e);
 
 	public:
 		enum
@@ -143,12 +143,12 @@ class CustomInput : public QMultiLineEdit
 		void sendMessage();
 		void specialKeyPressed(int key);
 		/**
-			Dowolny przycisk klawiatury zostal nacisniety.
+			Dowolny przycisk klawiatury zosta³ naci¶niêty.
 			Przekazany zostaje tak¿e obiekt, który wywo³a³ akcjê - czyli this.
 		**/
 		void keyPressed(QKeyEvent* e, CustomInput* sender);
 		/**
-			Dowolny przycisk klawiatury zostal zwolniony.
+			Dowolny przycisk klawiatury zosta³ zwolniony.
 			Przekazany zostaje tak¿e obiekt, który wywo³a³ akcjê - czyli this.
 		**/
 		void keyReleased(QKeyEvent* e, CustomInput* sender);
@@ -224,10 +224,11 @@ class Chat : public QWidget
 		void imageReceivedAndSaved(UinType sender,uint32_t size,uint32_t crc32,const QString& path);
 
 	protected:
-		void closeEvent(QCloseEvent*);
+		virtual void closeEvent(QCloseEvent*);
 		QString convertCharacters(QString,bool me);
 		virtual void windowActivationChange(bool oldActive);
-		void keyPressEvent(QKeyEvent* e);
+		virtual void keyPressEvent(QKeyEvent* e);
+		virtual void mouseReleaseEvent(QMouseEvent *e);
 
 	public:
 		// FIXME - nie powinno byc publicznych zmiennych

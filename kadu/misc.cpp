@@ -418,7 +418,7 @@ void openWebBrowser(const QString &link)
 		return;
 	}
 	if (!webBrowser.contains("%1"))
-		webBrowser.append(" %1");
+		webBrowser.append(" \"%1\"");
 	while (webBrowser.contains("%1"))
 		webBrowser=webBrowser.arg(link);
 
@@ -2440,6 +2440,13 @@ void KaduTextBrowser::copy()
 	else
 		QTextBrowser::copy();
 	kdebugf2();
+}
+
+void KaduTextBrowser::contentsMouseReleaseEvent(QMouseEvent *e)
+{
+	kdebugf();
+	emit mouseReleased(e, this);
+	QTextBrowser::contentsMouseReleaseEvent(e);
 }
 
 QValueList<int> toIntList(const QValueList<QVariant> &in)
