@@ -25,7 +25,6 @@ pending_msgs.cpp pending_msgs.h pending_msgs_moc.cpp \
 personal_info.cpp personal_info.h personal_info_moc.cpp \
 register.cpp register.h register_moc.cpp \
 search.cpp search.h search_moc.cpp \
-sms.cpp sms.h sms_moc.cpp \
 status.cpp status.h status_moc.cpp \
 tabbar.cpp tabbar.h tabbar_moc.cpp \
 userbox.cpp userbox.h userbox_moc.cpp \

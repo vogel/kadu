@@ -131,7 +131,6 @@ pending_msgs.cpp pending_msgs.h pending_msgs_moc.cpp \
 personal_info.cpp personal_info.h personal_info_moc.cpp \
 register.cpp register.h register_moc.cpp \
 search.cpp search.h search_moc.cpp \
-sms.cpp sms.h sms_moc.cpp \
 status.cpp status.h status_moc.cpp \
 tabbar.cpp tabbar.h tabbar_moc.cpp \
 userbox.cpp userbox.h userbox_moc.cpp \
@@ -199,10 +198,9 @@ am_kadu_OBJECTS = about.$(OBJEXT) about_moc.$(OBJEXT) chat.$(OBJEXT) \
 	pending_msgs_moc.$(OBJEXT) personal_info.$(OBJEXT) \
 	personal_info_moc.$(OBJEXT) register.$(OBJEXT) \
 	register_moc.$(OBJEXT) search.$(OBJEXT) search_moc.$(OBJEXT) \
-	sms.$(OBJEXT) sms_moc.$(OBJEXT) status.$(OBJEXT) \
-	status_moc.$(OBJEXT) tabbar.$(OBJEXT) tabbar_moc.$(OBJEXT) \
-	userbox.$(OBJEXT) userbox_moc.$(OBJEXT) userinfo.$(OBJEXT) \
-	userinfo_moc.$(OBJEXT) userlist.$(OBJEXT) \
+	status.$(OBJEXT) status_moc.$(OBJEXT) tabbar.$(OBJEXT) \
+	tabbar_moc.$(OBJEXT) userbox.$(OBJEXT) userbox_moc.$(OBJEXT) \
+	userinfo.$(OBJEXT) userinfo_moc.$(OBJEXT) userlist.$(OBJEXT) \
 	userlist_moc.$(OBJEXT) updates.$(OBJEXT)
 kadu_OBJECTS = $(am_kadu_OBJECTS)
 
@@ -241,7 +239,6 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/personal_info_moc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/register.Po ./$(DEPDIR)/register_moc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/search.Po ./$(DEPDIR)/search_moc.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/sms.Po ./$(DEPDIR)/sms_moc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/status.Po ./$(DEPDIR)/status_moc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/tabbar.Po ./$(DEPDIR)/tabbar_moc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/updates.Po ./$(DEPDIR)/userbox.Po \
@@ -356,8 +353,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/register_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/search.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/search_moc.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sms.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sms_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/status.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/status_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tabbar.Po@am__quote@
