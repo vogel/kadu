@@ -14,7 +14,11 @@ install-data-local:
 	$(INSTALL_DATA) themes/emoticons/gadu-gadu/2/*.GIF "$(DESTDIR)/$(datadir)/kadu/themes/emoticons/gadu-gadu/2/"
 	$(INSTALL_DATA) themes/emoticons/gadu-gadu/2/emots.txt "$(DESTDIR)/$(datadir)/kadu/themes/emoticons/gadu-gadu/2/"
 
+	$(mkinstalldirs) "$(DESTDIR)/$(bindir)/"	
+	$(INSTALL_SCRIPT) scripts/kadu-mozilla "$(DESTDIR)/$(bindir)/"
+
 uninstall-local:
 	rm -f "$(DESTDIR)/$(datadir)/kadu/msg.wav"
 	rm -f "$(DESTDIR)/$(datadir)/kadu/themes/emoticons/gadu-gadu/1"/*
 	rm -f "$(DESTDIR)/$(datadir)/kadu/themes/emoticons/gadu-gadu/2"/*
+	rm -f "$(DESTDIR)/$(bindir)/kadu-mozilla"

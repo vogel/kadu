@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# KADU-MOZILLA v1.0
+# Copyleft (C) 2003 Kadu Team
+
+# Skrypt ten umo¿liwia bezproblemowe otwieranie url-i z
+# okna Chat Kadu w Mozilli. Url podany jako argument jest
+# otwierany w istniej±cej instancji Mozilli lub je¶li
+# istnieje taka konieczno¶æ uruchamiana jest nowa.
+
+ret=`mozilla -remote "openUrl($1, new-tab)" 2>&1`
+if [ "$ret" == "No running window found." ]; then
+	artsdsp mozilla $1
+fi;
