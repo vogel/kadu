@@ -166,7 +166,6 @@ class Kadu : public QWidget
 		void sendMessage(QListBoxItem *);
 		void listPopupMenu(QListBoxItem *);
 		void commandParser(int);
-		void sortUsers(void);
 		void dataReceived();
 		void dataSent();
 		void dccReceived();
