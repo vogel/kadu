@@ -25,6 +25,12 @@ class IconSelector;
 
 class CustomInput;
 
+class KaduTextBrowser : public QTextBrowser {
+	public:
+		KaduTextBrowser(QWidget *parent = 0, const char *name = 0);
+		void setSource(const QString &name);
+};
+
 class Chat : public QWidget {
 	Q_OBJECT
 		int index;
@@ -62,6 +68,7 @@ class Chat : public QWidget {
 		void cancelMessage(void);
 		void writeMyMessage(void);
 		void changeTitle(void);
+		void hyperlinkClicked(const QString &link);
 
 	protected:
 		void closeEvent(QCloseEvent *);

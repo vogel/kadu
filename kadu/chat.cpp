@@ -27,6 +27,14 @@
 #include "emoticons.h"
 //
 
+KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
+	: QTextBrowser(parent, name) {
+
+}
+
+void KaduTextBrowser::setSource(const QString &name) {
+}
+
 Chat::Chat(UinsList uins, QWidget *parent, const char *name)
  : QWidget(parent, name, Qt::WDestructiveClose), uins(uins) {
 	int i;
@@ -44,8 +52,9 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	chats.append(chat);
 	index = chats.count() - 1;
 
-	body = new QTextBrowser(this);
+	body = new KaduTextBrowser(this);
 	body->setFont(QFont(config.fonts.chatFont, config.fonts.chatFontSize));
+	QObject::connect(body, SIGNAL(linkClicked(const QString &)), this, SLOT(hyperlinkClicked(const QString &)));
 
 	QPoint pos = QCursor::pos();
 	
@@ -341,6 +350,10 @@ void Chat::userWhois(void) {
 	sd->init();
 	sd->show();
 	sd->doSearch();
+}
+
+void Chat::hyperlinkClicked(const QString &link) {
+	fprintf(stderr, "KK Chat::hyperlinkClicked()\n");
 }
 
 void Chat::formatMessage(bool me, QString &altnick, QString &msg, const char *time, QString &toadd) {
