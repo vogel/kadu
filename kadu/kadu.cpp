@@ -865,7 +865,7 @@ int Kadu::openChat(UinsList senders) {
 
 /* menu and popup menu parser */
 void Kadu::commandParser (int command) {
-	int i = 0;
+	int i = 0, l, k;
 	SearchDialog *sd;
 	UinsList uins;
 	UserListElement user;
@@ -873,7 +873,10 @@ void Kadu::commandParser (int command) {
 	QStringList users;
 	QString keyfile_path;
 	QString mykey;
+	QString toadd;
 	QFile keyfile;
+	PendingMsgs::Element elem;
+	bool stop = false;
 
 	switch (command) {
 		case KADU_CMD_SEND_MESSAGE:
@@ -889,7 +892,27 @@ void Kadu::commandParser (int command) {
 					if (user.uin)
 						uins.append(user.uin);
 					}
-			openChat(uins);
+			for (i = 0; i < pending.count(); i++) {
+				elem = pending[i];
+				if (elem.uins.equals(uins))
+					if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT
+						|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG) {
+						l = chats.count();
+						k = openChat(elem.uins);
+						if (l < chats.count())
+							chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
+						chats[k].ptr->formatMessage(false,
+							userlist.byUin(elem.uins[0]).altnick, elem.msg,
+							timestamp(elem.time), toadd);
+						deletePendingMessage(i);
+						i--;
+						stop = true;
+						}
+				}
+			if (!stop) {
+				k = openChat(uins);
+				chats[k].ptr->writeMessagesFromHistory(uins, 0);
+				}
 			break;
 		case KADU_CMD_REMOVE_USER:
 			for (i = 0; i < userbox->count(); i++)

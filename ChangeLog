@@ -56,6 +56,9 @@
   bl±d na standardowe wyj¶cie (mast3r)
 * okno rozmowy: nie czekamy na potwierdzenie dostarczenia wiadomo¶ci
   do osoby niedostêpnej lub ukrytej (chilek)
+* gdy wybierzemy "rozpocznij rozmowê" w menu podrêcznym listy u¿ytkowników,
+  otwiera siê okno rozmowy wraz z wiadomo¶ciami z historii rozmowy oraz
+  wiadomo¶ciami, które otrzymali¶my, a jeszcze nie przeczytali¶my (chilek)
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem
