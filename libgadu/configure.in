@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 1.15 2003/01/15 22:10:32 chilek Exp $
+dnl $Id: configure.in,v 1.16 2003/02/02 01:07:34 adrian Exp $
 
 AC_INIT(lib/libgadu.h)
 AC_PREREQ(2.50)
@@ -80,6 +80,14 @@ AC_TRY_RUN([
   mv -f lib/libgadu-config.h- lib/libgadu-config.h
 ])
 
+if test "x$STDINT_H" = "x"; then
+  cp stdint.h lib/libgadu-stdint.h
+  STDINT_H=libgadu-stdint.h 
+fi
+
+sed "s/#include <stdint.h>/#include <$STDINT_H>/" < lib/libgadu-config.h > lib/libgadu-config.h-
+mv -f lib/libgadu-config.h- lib/libgadu-config.h
+
 # najpierw sprawdzamy te opcje, które s± wspólne dla libgadu i ekg.
 
 AC_ARG_ENABLE(debug, 
@@ -98,6 +106,7 @@ fi
 dnl sparc libs...
 AC_CHECK_LIB(nsl, t_accept, LIBS="$LIBS -lnsl")
 AC_CHECK_LIB(socket, socket, LIBS="$LIBS -lsocket")
+AC_CHECK_LIB(bind, __inet_addr, LIBS="$LIBS -lbind")
 
 AC_CHECK_FUNCS([gethostbyname_r])
 

@@ -1,4 +1,4 @@
-/* $Id: events.c,v 1.16 2003/01/15 22:10:32 chilek Exp $ */
+/* $Id: events.c,v 1.17 2003/02/02 01:07:35 adrian Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -72,8 +72,8 @@ void gg_event_free(struct gg_event *e)
 	if (e->type == GG_EVENT_DCC_VOICE_DATA)
 		free(e->event.dcc_voice_data.data);
 
-	if (e->type == GG_EVENT_SEARCH50_REPLY)
-		gg_search50_free(e->event.search50);
+	if (e->type == GG_EVENT_PUBDIR50_SEARCH_REPLY || e->type == GG_EVENT_PUBDIR50_READ || e->type == GG_EVENT_PUBDIR50_WRITE)
+		gg_pubdir50_free(e->event.pubdir50);
 	
 	free(e);
 }
@@ -162,7 +162,7 @@ static int gg_handle_recv_msg(struct gg_header *h, struct gg_event *e)
 			}
 
 			len = (unsigned short*) (p + 1);
-			*len = fix16(*len);
+			*len = gg_fix16(*len);
 			gg_debug(GG_DEBUG_MISC, "// gg_handle_recv_msg() p = %p, packetend = %p, len = %d\n", p, packet_end, *len);
 
 			if (!(tmp = malloc(*len))) {

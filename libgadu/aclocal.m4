@@ -15,7 +15,7 @@ dnl Based on AC_NEED_STDINT_H by Guido Draheim <guidod@gmx.de> that can be
 dnl found at http://www.gnu.org/software/ac-archive/. Do not complain him
 dnl about this macro.
 dnl
-dnl $Id: aclocal.m4,v 1.8 2003/01/12 23:12:59 adrian Exp $
+dnl $Id: aclocal.m4,v 1.9 2003/02/02 01:10:55 adrian Exp $
 
 AC_DEFUN([AC_NEED_STDINT_H],
  [AC_MSG_CHECKING([for uintXX_t types])
@@ -37,11 +37,14 @@ AC_DEFUN([AC_NEED_STDINT_H],
 
   if test "x$ac_header_stdint" != "x" ; then
     AC_MSG_RESULT([found in <$ac_header_stdint>])
+    STDINT_H="$ac_header_stdint"
     if test "x$ac_header_stdint" != "xstdint.h" ; then
       echo "#include <$ac_header_stdint>" > $ac_stdint_h
     fi
   else
     AC_MSG_RESULT([not found, using reasonable defaults])
+
+    STDINT_H=""
     
     dnl let's make newer autoconf versions happy.
     stdint_h_foobar=define

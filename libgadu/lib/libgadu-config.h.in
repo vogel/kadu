@@ -18,4 +18,7 @@
 /* Defined if this machine has __va_copy(). */
 #undef __GG_LIBGADU_HAVE___VA_COPY
 
+/* Include file containing uintXX_t declarations. */
+#include <stdint.h>
+
 #endif /* __GG_LIBGADU_CONFIG_H */

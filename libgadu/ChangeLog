@@ -6,6 +6,212 @@ d - drg, sz - szalik). ,,p/nick'' oznacza patch lub ¼ród³o podes³ane
 przez ,,nick'', ,,i/nick'' oznacza czyj¶ pomys³, ,,b/nick'' mówi, kto
 zg³osi³ b³±d.
 
+// 2002-02-01
+
+- poprawka Alt-9 (krzyk/w)
+- uaktualnienie leon.theme (leon/w)
+- dodana zmienna ,,proxy_forwarding'', która pozwala podaæ adres i port
+  przekierowania na serwerze po¶rednicz±cym (proxy, router, nat, cokolwiek)
+  i mieæ dzia³aj±ce dcc. przyznajê, ¿e nazwa nie jest najlepsza. (fidor/w)
+- libgadu: brakuj±cy include w search.c (sCoOtY/w)
+- konwersja has³a na CP1250 podczas ³±czenia (Mati/w)
+- dodanie zmiennej ,,password_cp1250'', któr± nale¿y w³±czyæ, je¶li serwer
+  odrzuca has³o z polskimi literami (w)
+- plik /etc/ekg.conf jest ³adowany _przed_ konfiguracj± u¿ytkownika, plik
+  /etc/ekg-override.conf _po_ konfiguracji u¿ytkownika (porridge/w)
+- dodanie do dokumentacji informacji o kolejno¶ci ³adowania konfiguracji (w)
+- spore zmiany w kodzie dope³niania Tabem. prosimy zapi±æ pasy i w przypadku
+  b³êdów pokazaæ _dok³adn±_ liniê i opis tego, co powinno siê staæ (w)
+- poprawka segfaulta przy wczytywaniu b³êdnego .gg/emoticons (*/sz)
+- w oknie rozmowy z nieznan± osob± wystarczy /add alias (krzyk/sz)
+- komenda reload (stforek/sz)
+- poprawka kodowania eksportowanej listy kontaktów (Sero/sz)
+- poprawka wy¶wietlania tabów (w)
+- dodanie parametru do /save, który mówi, gdzie zapisaæ konfiguracjê (w)
+- po uruchomieniu drugiej sesji ekg nie bêdzie próbowa³o siê ³±czyæ
+  ponownie (fidor/w)
+
+// 2002-01-31
+
+- drobna reorganizacja kolorów w ui-ncurses (w)
+- zmienna ,,display_color = 2'' wy¶wietla kolory wszêdzie oprócz pasku
+  stanu i nag³ówka okna (Charvel/w)
+- nowy rodzaj okna ,,w->doodle = 1'' przeznaczony dla skryptów pythonowy.
+  mog± rysowaæ po nim co tylko chc±, gdzie tylko chc± i jak tylko chc±.
+  wszystko dziêki funkcjom ekg.window_printat() i ekg.window_commit().
+  nie ma przewijania, nie ma bajerów. po dodaniu kilku mi³ych funkcji do
+  obs³ugi okien z pythona bêdzie mo¿na tworzyæ okna dialogowe. a z tego
+  wzglêdu, ¿e skrypty pythona maj± dostêp do zmiennych... hmm, kto napisze
+  Kreator Konfiguracji EKG? :> (w)
+
+// 2003-01-30
+
+- bardziej precyzyjny opis zmiennej ,,auto_back'' (pmb/sz)
+- ekg nie pozwala na niebezpiecznie ma³e warto¶ci ,,backlog_size'' (sz)
+- /list pokazuje nasz przyciêty opis, a nie taki, który wpisali¶my (sz)
+- /on pozwala na wykonanie ka¿dej komendy ekg. akcje (beep, play) s±
+  teraz dostêpne jako zwyk³e komendy (sz)
+- parametr /exec % zamieniony na $, ¿eby unikn±æ ew. konfliktów z
+  formatami (sz)
+- nie dodawajmy do listy dope³nieñ przy b³êdnym nicku w chat/msg (sz)
+- taby w stderr, tyczy siê to wiêc m.in. wyników /exec (sz)
+- poprawka niedzia³aj±cego string_insert_n() (sz)
+- poprawienie make_window = 1 (salvador/sz)
+- poprawka kombinacji Ctrl-<kursor> na terminalach BSD (sz/w)
+- ignorowanie SIGQUIT, przez co Ctrl-4 i Ctrl-\ nie bêd± wychodziæ (sz/w)
+- libgadu: usuniêcie kodu gg_search50() (w)
+- libgadu: usuniêcie kodu gg_search() i zast±pienie go funkcjami
+  zwracaj±cymi b³±d (w)
+- poprawka klawisza End (Brzezi/w)
+- rewrite kodu parsowania zdarzeñ dla ioctld (w)
+- poprawki helpów nowych komend (w)
+- poprawka przenoszenia atrybutów do nowej linii wiadomo¶ci (*/w)
+- poprawka zachowania zmiennej ,,random_reason''. teraz losuje nowy
+  opis przy ka¿dym po³±czeniu (w)
+
+// 2003-01-29
+
+- dodanie klawisza Ctrl-K (bies/w)
+- poprawienie docs/protocol.html. jest zgodne z XHTML 1.0 Transitional (w)
+- zmienna ,,sound_mail_file'' (sz)
+- wzmianka o statusie ,,tylko dla znajomych'' w search50 w docs/api.txt (sz)
+- kosmetyka konferencji. nie tworzy kolejnych nazw #confX przy b³êdach.
+  /find w oknie z konferencj± wyszuka wszystkich uczestników (sz)
+- /bind mo¿e ju¿ przypisywaæ domy¶lne akcje klienta innym klawiszom,
+  szczegó³y w ,,/bind -L'' (w)
+- libgadu: dodanie funkcji gg_pubdir50_seq_set() (mmazur/w)
+- libgadu: podbicie wersji API (w)
+- reakcja na zmianê rozmiaru terminala (w)
+- poprawka Alt-G i zapisywania bindów (sz/w)
+
+// 2003-01-28
+
+- uaktualnienie opisu protoko³u (rano/w)
+- poprawka zapisywania p³ywaj±cych okienek (wojboj/w)
+- dosyæ du¿e uproszczenie komendy ,,on'', dziêki czemu
+  obs³uguje siê j± bardziej intuicyjnie (sz)
+- dope³nianie w /python i /on (zdarzenia) (sz)
+- ,,dcc list'' zamiast ,,dcc show'' (sz)
+- kosmetyka opisów niektórych komend w /help (sz)
+- mo¿na wyciszyæ za pomoc± ^ komendê ,,exec'' (sz)
+- poprawki komendy ,,exec'', ¿eby nie psu³a escapowania (w)
+- libgadu: zapisywanie wykrytych includów z uintXX_t do libgadu-config.h
+  (adrians/w)
+- dodanie klawisza Ctrl-V (w)
+- poprawka kombinacji z Altem (sz/w)
+- dodanie klawiszy Alt-B, Alt-D i Alt-F (bies/w)
+
+// 2003-01-27
+
+- wyciszenie aliasu spowoduje wyciszenie komend w nim zawartych (sz)
+- brakuj±cy opis warto¶ci 4 zmiennej ,,completion_notify'' (sz)
+- usuwanie u¿ytkownika z dope³nieñ TABem po usuniêciu go z listy (sz)
+- poprawki w dope³nianiu utworzonej konferencji (bies/sz)
+- irc.theme pokazuje ircopodobnie równie¿ konferencje (sz)
+- ekg znów pokazuje status osób w /find, które maj± w³±czony tryb
+  ,,tylko dla znajomych'' (sz)
+- zmiana ignorowania z Alt-I na Alt-G (perry/w)
+- poprawne wy¶wietlanie wysy³anych wiadomo¶ci z atrybutami (Murphy/w)
+
+// 2003-01-26
+
+- list alias -o/-O dzia³aj± wy³±cznie w trybie ,,tylko dla znajomych''.
+  ,,help list'' o tym wspomina (sz)
+
+// 2003-01-25
+
+- przy w³±czonym auto_back nie wraca ze stanu ,,zajêty'', je¶li
+  nie by³ on ustawiony automagicznie (Tohver/sz)
+- dope³nianie blokowanych w /unblock (sz)
+- poprawki dope³niania uinów nieznanych osób (perry/sz)
+- poprawki readline (sz)
+- ma³y g³upi bajer: version pokazuje czas kompilacji (sz)
+- usuniêcie pewnego niejasnego zachowania. przy ,,private on''
+  ignorowanie powodowa³o, ¿e ignorowana osoba przestawa³a widzieæ
+  nasz status - od tego jest jednak funkcja blokowania (pmb/sz)
+- drobne poprawki helpa i tematów /list (sz)
+
+// 2003-01-24
+
+- wykoñczenie wyciszania niektórych komend (sz)
+- ignorowanie znaków nowej linii w opisie, niektóre klienty jabbera
+  pozwalaj± na to i psuje nam to wy¶wietlanie m.in. /list (sz)
+- w zmiennej systemowej ,,EKG_DEBUG'' mo¿na umie¶ciæ nazwê pliku, do
+  którego poleci debug (sz)
+- naprawienie /bind nie wczytuj±cego konfiguracji z pliku (pmb/sz)
+- mo¿na wysy³aæ wynik exec do rozmówcy z aktualnego okna (pmb/sz)
+- klawisze Alt-Q do Alt-P prze³±czaj± do okienek 11..20 (gozda/w)
+
+// 2003-01-23
+
+- dodanie ukrytej zmiennej ,,interface'' przechowuj±cej nazwê u¿ywanego
+  interfejsu (a.latanski/w)
+- mo¿liwo¶æ wys³ania komu¶ wyniku /exec. szczegó³y: help exec (sz)
+- dodanie komendy _debug_dump (sz)
+- przywrócenie dawnego zachowania przy zmianie rozmiaru terminala.
+  wci±¿ nie dzia³a, ale przynajmniej rzadziej siê wszystko
+  wysypuje (spaceman/sz)
+- kosmetyka (sz)
+- poprawki zwi±zane z strncpy() i strncat() (sz)
+- poprawka kodowania argumentów /find (zuko_wski/w)
+- j.w. dla /change (sz)
+- nowe formaty /list (w)
+- dodanie ^ przed nazw± komendy ukryje jej wynik (w)
+
+// 2003-01-22
+
+- poprawka zachowania przy segfault'cie (sz)
+- j.w. w przypadku braku pamieci (sz)
+
+// 2003-01-21
+
+- poprawki /list (fig/sz)
+- uaktualnienie leon.theme (leon/sz)
+- window next/prev omija okno z debugiem (sz)
+- userlist, config, debug po wywrotce zapisywane s± w odpowiednim
+  katalogu, je¶li u¿ywamy ró¿nych profili (sz)
+- je¶li ekg siê wywróci, to ostatnie 50 linii z debug zapisywane
+  jest do ~/.gg/debug.PID (sz)
+
+// 2003-01-20
+
+- poprawki wczytywania zmiennych w wersji skompilowanej z ncurses
+  i readline jednocze¶nie (sz)
+- debug jest w³±czony na sta³e (sz)
+- F12 lub Alt-` prze³±czaj± do okna z debug (sz)
+- debug pisze do okna o numerze 0 zamiast do statusowego (*/sz)
+- poprawka display_crap przy make_window == 1 (pmb/sz)
+- dodanie zdarzenia ,,on query'' (kameleon/w)
+
+// 2003-01-19
+
+- poprawki kompilacji na BeOSie (w)
+- libgadu: poprawki kompilacji na BeOSie (w)
+- dodanie formatu ,,sms_conf'' przy wiadomo¶ci konferencyjnej (rmrmg/sz)
+- ,,on nasz_nick descr'' te¿ zadzia³a (krzyk/sz)
+- dodanie parametru ,,*'' do del, unignore, unblock (sz)
+
+// 2003-01-18
+
+- poprawki wygl±du ui-ncurses przy display_color 0 (w)
+
+// 2003-01-17
+
+- make uninstall nie usuwa³ manuali (wysek)
+- poprawki /dcc get (w)
+- drobne sprz±tanie kodu (w,sz)
+
+// 2003-01-16
+
+- drobne poprawki dokumentacji (sz)
+- czasami, po zerwaniu po³±czenia, ekg nadal nie czy¶ci³ userlisty (sz)
+- kolejne drobne kroki ku unifikacji komend (sz)
+- nie dope³niajmy ukrytych zmiennych (sz)
+- dodane opcje --clear i --clear-config dla /list (fig/wysek)
+- dodatkowe testy przy %4 w zdarzeniach, bardziej szczegó³owy opis
+  u¿ycia %4 w dokumentacji (jelo/w)
+- libgadu: poprawka konfiguracji pkgconfig (jajcus/w)
+
 // 2003-01-15
 
 - automatyczny away zachowuje ,,tylko dla przyjació³'' (pmb/sz)
@@ -2664,4 +2870,4 @@ i BUGS.
 - eleet niebieskie t³o mesgów (wiem, dalekie od idea³u).
 
 
-$Id: ChangeLog,v 1.13 2003/01/15 22:10:31 chilek Exp $
+$Id: ChangeLog,v 1.14 2003/02/02 01:07:34 adrian Exp $

@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.16 2003/01/15 22:10:32 chilek Exp $
+# $Id: Makefile.in,v 1.17 2003/02/02 01:07:35 adrian Exp $
 
 prefix = @prefix@
 exec_prefix = @exec_prefix@
@@ -8,7 +8,7 @@ includedir = @includedir@
 # increased with ABI changes
 VERSION_MAJOR=2
 # increased with API changes
-VERSION_MINOR=10
+VERSION_MINOR=11
 
 CC = @CC@ 
 CFLAGS = @CFLAGS_LIBGADU@ -I. -I.. -Wall
@@ -21,8 +21,8 @@ RANLIB = @RANLIB@
 STRIP = @STRIP@
 LN_S = @LN_S@
 
-OBJS = common.o libgadu.o search.o pubdir.o http.o dcc.o userlist.o events.o search50.o pubdir50.o
-LOBJS = common.lo libgadu.lo search.lo pubdir.lo http.lo dcc.lo userlist.lo events.lo search50.lo pubdir50.lo
+OBJS = common.o libgadu.o search.o pubdir.o http.o dcc.o userlist.o events.o pubdir50.o
+LOBJS = common.lo libgadu.lo search.lo pubdir.lo http.lo dcc.lo userlist.lo events.lo pubdir50.lo
 SRCS = $(OBJS:.o=.c)
 
 SHAREDMM = libgadu.so
@@ -38,7 +38,7 @@ clean:
 	rm -f *.o *.lo *.a *.so *.so.* *~ core .depend
 
 distclean:	clean
-	rm -f Makefile libgadu-config.h libgadu.pc
+	rm -f Makefile libgadu-config.h libgadu-stdint.h libgadu.pc
 
 #
 
@@ -75,6 +75,7 @@ install-common:
 	$(INSTALL) -d $(DESTDIR)$(includedir)
 	$(INSTALL) -m 644 libgadu.h $(DESTDIR)$(includedir)
 	$(INSTALL) -m 644 libgadu-config.h $(DESTDIR)$(includedir)
+	if test -f libgadu-stdint.h; then $(INSTALL) -m 644 libgadu-stdint.h $(DESTDIR)$(includedir); fi
 	$(INSTALL) -d $(DESTDIR)$(libdir)
 	$(INSTALL) -d $(DESTDIR)$(libdir)/pkgconfig
 	$(INSTALL) -m 644 libgadu.pc $(DESTDIR)$(libdir)/pkgconfig

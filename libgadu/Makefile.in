@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.13 2003/01/15 00:15:44 adrian Exp $
+# $Id: Makefile.in,v 1.14 2003/02/02 01:07:34 adrian Exp $
 
 prefix = @prefix@
 datadir = @datadir@
@@ -14,7 +14,7 @@ INSTALL = @INSTALL@
 
 #
 
-all:	libgadu @ekg@ @make_ekgwap@
+all:	configure libgadu @ekg@ @make_ekgwap@
 
 libgadu:
 	cd lib && $(MAKE) all
@@ -78,13 +78,13 @@ install-ekgwap:
 
 uninstall:	@uninstall_ekg@
 	rm -f $(DESTDIR)$(libdir)/libgadu.{a,so*}
-	rm -f $(DESTDIR)$(includedir)/libgadu.h
+	rm -f $(DESTDIR)$(includedir)/libgadu{,-config,-stdint}.h
 
 uninstall-ekg:
 	rm -f $(DESTDIR)$(bindir)/{ekg,ekgsearch,ekgwapd}
 	rm -f $(DESTDIR)$(libexecdir)/ioctld
 	rm -rf $(DESTDIR)$(datadir)/ekg
-	rm -f $(DESTDIR)$(mandir){/pl,}/man1/ekg{,search}
+	rm -f $(DESTDIR)$(mandir){/pl,}/man1/ekg{,search}.1
 
 #
 

@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.24 2003/01/15 22:10:32 chilek Exp $ */
+/* $Id: libgadu.h,v 1.25 2003/02/02 01:07:35 adrian Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -34,7 +34,6 @@ extern "C" {
 
 #include <libgadu-config.h>
 #include <sys/types.h>
-#include <stdint.h>
 
 /*
  * uin_t
@@ -400,8 +399,6 @@ struct gg_pubdir50_s {
 
 typedef struct gg_pubdir50_s *gg_pubdir50_t;
 
-typedef struct gg_pubdir50_s *gg_search50_t;	/* XXX legacy */
-
 /*
  * struktura opisuj±ca rodzaj zdarzenia. wychodzi z gg_watch_fd() lub
  * z gg_dcc_watch_fd()
@@ -447,8 +444,6 @@ struct gg_event {
 			int length;
 		} dcc_voice_data;
 
-		gg_search50_t search50;		/* XXX legacy */
-		
 		gg_pubdir50_t pubdir50;
         } event;
 };
@@ -553,6 +548,7 @@ void gg_search_request_free(struct gg_search_request *r);
 uint32_t gg_pubdir50(struct gg_session *sess, gg_pubdir50_t req);
 gg_pubdir50_t gg_pubdir50_new(int type);
 int gg_pubdir50_add(gg_pubdir50_t req, const char *field, const char *value);
+int gg_pubdir50_seq_set(gg_pubdir50_t req, uint32_t seq);
 const char *gg_pubdir50_get(gg_pubdir50_t res, int num, const char *field);
 int gg_pubdir50_type(gg_pubdir50_t res);
 int gg_pubdir50_count(gg_pubdir50_t res);
@@ -577,36 +573,6 @@ void gg_pubdir50_free(gg_pubdir50_t res);
 #define GG_PUBDIR50_FAMILYCITY "familycity"
 
 int gg_pubdir50_handle_reply(struct gg_event *e, const char *packet, int length);
-
-/*
- * poni¿sze zostaj± dla kompatybilno¶ci ABI z aplikacjami, które u¿ywaj±
- * proponowanego interfejsu. za jaki¶ czas zniknie.
- */
-uint32_t gg_search50(struct gg_session *sess, gg_search50_t req);
-gg_search50_t gg_search50_new();
-int gg_search50_add(gg_search50_t req, const char *field, const char *value);
-const char *gg_search50_get(gg_search50_t res, int num, const char *field);
-int gg_search50_count(gg_search50_t res);
-uin_t gg_search50_next(gg_search50_t res);
-uint32_t gg_search50_seq(gg_search50_t res);
-void gg_search50_free(gg_search50_t res);
-
-#define GG_SEARCH50_UIN "FmNumber"
-#define GG_SEARCH50_STATUS "FmStatus"
-#define GG_SEARCH50_FIRSTNAME "firstname"
-#define GG_SEARCH50_LASTNAME "lastname"
-#define GG_SEARCH50_NICKNAME "nickname"
-#define GG_SEARCH50_BIRTHYEAR "birthyear"
-#define GG_SEARCH50_CITY "city"
-#define GG_SEARCH50_GENDER "gender"
-#define GG_SEARCH50_GENDER_FEMALE "1"
-#define GG_SEARCH50_GENDER_MALE "2"
-#define GG_SEARCH50_ACTIVE "ActiveOnly"
-#define GG_SEARCH50_ACTIVE_TRUE "1"
-#define GG_SEARCH50_ACTIVE_FALSE "0"
-#define GG_SEARCH50_START "fmstart"
-#define GG_SEARCH50_FAMILYNAME "familyname"
-#define GG_SEARCH50_FAMILYCITY "familycity"
 
 /*
  * operacje na katalogu publicznym.
@@ -763,8 +729,8 @@ int gg_send_packet(int sock, int type, ...);
 unsigned int gg_login_hash(const unsigned char *password, unsigned int seed);
 uint32_t gg_fix32(uint32_t x);
 uint16_t gg_fix16(uint16_t x);
-#define fix32 gg_fix32
 #define fix16 gg_fix16
+#define fix32 gg_fix32
 char *gg_proxy_auth(void);
 char *gg_base64_encode(const char *buf);
 char *gg_base64_decode(const char *buf);
@@ -786,7 +752,7 @@ char *gg_base64_decode(const char *buf);
 #define GG_DEFAULT_PROTOCOL_VERSION 0x18
 #define GG_DEFAULT_TIMEOUT 30
 #define GG_HAS_AUDIO_MASK 0x40000000
-#define GG_LIBGADU_VERSION "20030115"
+#define GG_LIBGADU_VERSION "20030201"
 
 #define GG_DEFAULT_DCC_PORT 1550
 

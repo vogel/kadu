@@ -1,5 +1,5 @@
 dnl Rewritten from scratch. --wojtekka
-dnl $Id: readline.m4,v 1.11 2003/01/12 22:56:43 chilek Exp $
+dnl $Id: readline.m4,v 1.12 2003/02/02 01:07:35 adrian Exp $
 
 AC_DEFUN(AC_CHECK_READLINE,[
   AC_SUBST(READLINE_LIBS)
@@ -23,7 +23,8 @@ AC_DEFUN(AC_CHECK_READLINE,[
 	     /usr/pkg/include:-L/usr/pkg/lib \
 	     /sw/include:-L/sw/lib \
 	     /cw/include:-L/cw/lib \
-	     /net/caladium/usr/people/piotr.nba/temp/pkg/include:-L/net/caladium/usr/people/piotr.nba/temp/pkg/lib; do
+	     /net/caladium/usr/people/piotr.nba/temp/pkg/include:-L/net/caladium/usr/people/piotr.nba/temp/pkg/lib \
+	     /boot/home/config/include:-L/boot/home/config/lib; do
     
       incl=`echo "$i" | sed 's/:.*//'`
       lib=`echo "$i" | sed 's/.*://'`

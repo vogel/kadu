@@ -1,4 +1,4 @@
-/* $Id: common.c,v 1.16 2003/01/12 22:56:42 chilek Exp $ */
+/* $Id: common.c,v 1.17 2003/02/02 01:07:35 adrian Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -114,7 +114,7 @@ char *gg_vsaprintf(const char *format, va_list ap)
 	}
 #else
 	{
-		char tmp[1];
+		char tmp[2];
 		
 		/* libce Solarisa przy buforze NULL zawsze zwracaj± -1, wiêc
 		 * musimy podaæ co¶ istniej±cego jako cel printf()owania. */
