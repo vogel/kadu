@@ -187,14 +187,15 @@ HintManager::HintManager()
 
 void HintManager::setHint(void) {
 	kdebug("HintManager::setHint()\n");
-
-	if (useposition || DetectedPosition.isNull())
+	QPoint detected_pos;
+	emit searchingForPosition(detected_pos);
+	if (useposition || detected_pos.isNull())
 		move(position);
 	else
 	{
 		QPoint pos_hint;
 		QSize size_hint = sizeHint();
-		QPoint pos_tray = DetectedPosition;
+		QPoint pos_tray = detected_pos;
 		QSize size_desk = QApplication::desktop()->size();
 		if (pos_tray.x() < size_desk.width()/2)
 			pos_hint.setX(pos_tray.x()+32);
@@ -313,6 +314,7 @@ void HintManager::addHint(const QString& text, const QPixmap& pixmap,  const QFo
 	kdebug("HintManager::addHint()\n");
 	hints.append(new Hint(this, text, pixmap, timeout));
 	int i = hints.count()-1;
+	setGridOrigin();
 	grid->addLayout(hints.at(i), i, 0);
 	hints.at(i)->set(font, color, bgcolor, i);
 	if(senders)
@@ -440,24 +442,28 @@ void HintManager::loadConfig(void)
 	config.append(QStringList::split(",",config_file.readEntry("Hints","HintError")));
 	useposition = config_file.readBoolEntry("Hints","UseUserPosition");
 	position = config_file.readPointEntry("Hints","HintsPosition");
+}
 
+void HintManager::setGridOrigin()
+{
+	QPoint detected_pos;
+	emit searchingForPosition(detected_pos);
 	switch(config_file.readNumEntry("Hints","NewHintUnder"))
 	{
 		case 0:
-			if (DetectedPosition.isNull() && !useposition)
-			{
-				if (DetectedPosition.y() < QApplication::desktop()->size().height()/2)
-					grid->setOrigin(QGridLayout::TopLeft);
-				else
-					grid->setOrigin(QGridLayout::BottomLeft);
-			}
-			else
+			if (detected_pos.isNull() || useposition)
 			{
 				if (position.y() < QApplication::desktop()->size().height()/2)
 					grid->setOrigin(QGridLayout::TopLeft);
 				else
 					grid->setOrigin(QGridLayout::BottomLeft);
-				useposition = true;
+			}
+			else			
+			{
+				if (detected_pos.y() < QApplication::desktop()->size().height()/2)
+					grid->setOrigin(QGridLayout::TopLeft);
+				else
+					grid->setOrigin(QGridLayout::BottomLeft);
 			}
 			break;
 		case 1:
@@ -467,11 +473,6 @@ void HintManager::loadConfig(void)
 			grid->setOrigin(QGridLayout::TopLeft);
 			break;
 	}
-}
-
-void HintManager::setDetectedPosition(const QPoint& pos)
-{
-	DetectedPosition = pos;
 }
 
 void HintManager::initModule(void)

@@ -52,12 +52,10 @@ DockingManager::DockingManager()
 	connect(kadu, SIGNAL(currentStatusChanged(int)), this, SLOT(showCurrentStatus(int)));
 	connect(&pending, SIGNAL(messageAdded()), this, SLOT(pendingMessageAdded()));
 	connect(&pending, SIGNAL(messageDeleted()), this, SLOT(pendingMessageDeleted()));
+	connect(hintmanager, SIGNAL(searchingForPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 	connect(dockppm, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
 	connect(this, SIGNAL(mousePressMidButton()), &pending, SLOT(openMessages()));
 
-	QPoint tray_pos;
-	emit searchingForTrayPosition(tray_pos);
-	hintmanager->setDetectedPosition(tray_pos);
 	kadu->setDocked(true);	
 }
 
@@ -70,6 +68,7 @@ DockingManager::~DockingManager()
 	disconnect(kadu, SIGNAL(currentStatusChanged(int)), this, SLOT(showCurrentStatus(int)));
 	disconnect(&pending, SIGNAL(messageAdded()), this, SLOT(pendingMessageAdded()));
 	disconnect(&pending, SIGNAL(messageDeleted()), this, SLOT(pendingMessageDeleted()));
+	disconnect(hintmanager, SIGNAL(searchingForPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 	disconnect(dockppm, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
 
 	kadu->setDocked(false);
@@ -135,6 +134,11 @@ void DockingManager::showCurrentStatus(int status)
 	QPixmap pix = icons_manager.loadIcon(gg_icons[statusnr]);
 	if (!pending.pendingMsgs())
 		emit trayPixmapChanged(pix);
+}
+
+void DockingManager::findTrayPosition(QPoint& pos)
+{
+	emit searchingForTrayPosition(pos);
 }
 
 void DockingManager::trayMousePressEvent(QMouseEvent * e)

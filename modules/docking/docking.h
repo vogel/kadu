@@ -20,6 +20,7 @@ class DockingManager : public QObject
 		void showOffline();
 		void showStatus(int status);
 		void showCurrentStatus(int status);
+		void findTrayPosition(QPoint& pos);
 
 	public:
 		DockingManager();
