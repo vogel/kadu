@@ -78,7 +78,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   musi istniec plik "spec". ustawiamy tam nastepujace zmienne:
   MODULE_SOURCES - lista plikow ".cpp", MODULE_MOC_HEADERS - naglowki dla moc'a,
   MODULE_HEADERS - pozostale, MODULE_CXXFLAGS oraz MODULE_LDFLAGS - wiadomo.
-  generowany plik ".so" ma nazwe zgodna z nazwa katalogu modulu.
+  generowany plik ".so" ma nazwe zgodna z nazwa katalogu modulu (adrian)
+* w katalogu $PREFIX/share/kadu/themes/sounds/default instalowany jest
+  domyslny zestaw dzwiekow skladajacy sie tylko z msg.wav (adrian)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶
