@@ -1,4 +1,4 @@
-+++ wersja 0.3.3-final
++++ wersja 0.3.3-rc1
 * sms.cpp ma szansê kompilowaæ siê na Qt < 3.0.5
 * przy odebraniu b³êdnej wiadomo¶ci dcc ctcp nie powinno wywalaæ siê
 * czeski b³±d powodowa³, ¿e mesgi mog³y nie wpadaæ do okna rozmowy
