@@ -118,6 +118,8 @@ class Chat : public QWidget {
 		void toggledUnderline(bool on);
 		void curPosChanged(int para, int pos);
 		void specialKeyPressed(int key);
+		void colorChanged(QColor color);
+		void aboutToClose();
 
 	protected:
 		void closeEvent(QCloseEvent *);
@@ -168,7 +170,11 @@ class ColorSelector : public QWidget
 		ColorSelector(QWidget* parent = 0, const char *name = 0);
 		void alignTo(QWidget* w);
 
+	protected:
+		void closeEvent(QCloseEvent *);
+
 	signals:
+		void aboutToClose();
 		void colorSelect(QColor);
 };
 

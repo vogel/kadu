@@ -43,8 +43,8 @@ extern "C"
 //
 
 QValueList<UinsList> wasFirstMsgs;
-const char *colors[10] = {"#000000","#111111","#222222","#333333","#444444",
-	"#555555","#666666","#777777","#888888","#999999"};
+const char *colors[16] = {"#FF0000", "#A00000", "#00FF00", "#00A000", "#0000FF", "#0000A0", "#FFFF00",
+	"#A0A000", "#FF00FF", "#A000A0", "#00FFFF", "#00A0A0", "#FFFFFF", "#A0A0A0", "#808080", "#000000"};
 
 KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 	: QTextBrowser(parent, name) {
@@ -238,8 +238,11 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	afont.setItalic(false);
 	afont.setUnderline(true);
 	underlinebtn->setFont(afont);
-	colorbtn = new QPushButton("C", btnpart);
-	colorbtn->hide();
+	colorbtn = new QPushButton(btnpart);
+//	colorbtn->setMinimumSize(boldbtn->width(), boldbtn->height());
+	QPixmap p(16, 16);
+	p.fill(colors[15]);
+	colorbtn->setPixmap(p);
 
 	QHBox *fillerbox = new QHBox(btnpart);
 
@@ -302,9 +305,6 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	totaloccurences = 0;
 
 	edit->setFocus();
-//	edit->setColor(QColor(255, 0, 0));
-	ColorSelector *selector = new ColorSelector();
-	selector->show();
 }
 
 Chat::~Chat() {
@@ -949,17 +949,28 @@ void Chat::insertEmoticon(void)
 
 void Chat::changeColor(void)
 {
-	if (color_selector == NULL)
-	{
+	if (color_selector == NULL) {
 		color_selector = new ColorSelector(this);
 		color_selector->alignTo(colorbtn);
 		color_selector->show();
-	}
+		connect(color_selector, SIGNAL(colorSelect(QColor)), this, SLOT(colorChanged(QColor)));
+		connect(color_selector, SIGNAL(aboutToClose()), this, SLOT(aboutToClose()));
+		}
 	else
-	{
-		color_selector->close();
 		color_selector = NULL;
-	}
+}
+
+void Chat::aboutToClose() {
+	kdebug("Chat::aboutToClose()\n");
+	color_selector = NULL;
+}
+
+void Chat::colorChanged(QColor color) {
+	color_selector = NULL;
+	QPixmap p(16, 16);
+	p.fill(color);
+	colorbtn->setPixmap(p);
+	edit->setColor(color);
 }
 
 /* adds an emoticon code to the edit window */
@@ -999,7 +1010,7 @@ ColorSelector::ColorSelector(QWidget *parent, const char *name) : QWidget (paren
 	QValueList<QColor> qcolors;
 	int i;
 
-	for(i=0; i<10; i++)
+	for (i = 0; i < 16; i++)
 		qcolors.append(colors[i]);
 
 	int selector_count=qcolors.count();
@@ -1021,6 +1032,12 @@ void ColorSelector::iconClicked(const QColor& color)
 	emit colorSelect(color);
 	close();
 };
+
+void ColorSelector::closeEvent(QCloseEvent *e) {
+	kdebug("ColorSelector::closeEvent()\n");
+	emit aboutToClose();
+	QWidget::closeEvent(e);
+}
 
 void ColorSelector::alignTo(QWidget* w)
 {
