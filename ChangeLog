@@ -85,6 +85,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   hubem GG (chilek)
 * dodany modu³ speech joi-a wraz z moimi poprawkami (chilek)
 * kompilacja modulow autoresponder, echo i speech domyslnie wylaczona (adrian)
+* poprawki kiemlo dla MacOS X (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

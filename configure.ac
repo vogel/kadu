@@ -241,7 +241,7 @@ AC_SUBST(XFREE_INCLUDES)
 AC_ARG_WITH(qt-dir,        [  --with-qt-dir=DIR       qt-dir in DIR])
 AC_ARG_WITH(qt-includes,   [  --with-qt-includes=DIR  qt-includes in DIR])
 
-FIND_HEADER([qwidget.h],[$with_qt_includes $with_qt_dir/include $QTDIR/include /usr/lib/qt/include /usr/lib/qt3/include /usr/local/qt/include /usr/include /usr/include/qt /usr/include/qt3 /usr/local/include /usr/X11R6/include /usr/X11R6/include/qt /usr/X11R6/include/qt3],
+FIND_HEADER([qwidget.h],[$with_qt_includes $with_qt_dir/include $QTDIR/include /usr/lib/qt/include /usr/lib/qt3/include /usr/local/qt/include /usr/include /usr/include/qt /usr/include/qt3 /usr/local/include /usr/X11R6/include /usr/X11R6/include/qt /usr/X11R6/include/qt3 /sw/include/qt],
 [
 	QT_INCLUDES="-I$FILE_DIR"
 ])
@@ -254,7 +254,7 @@ AC_SUBST(QT_INCLUDES)
 AC_ARG_WITH(qt-libs,       [  --with-qt-libs=DIR      qt-libs in DIR])
 
 QT_LIBS="-lqt-mt"
-FIND_LIBRARY([qt-mt],[$with_qt_libs $with_qt_dir/lib $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib],
+FIND_LIBRARY([qt-mt],[$with_qt_libs $with_qt_dir/lib $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /sw/lib],
 [
 	QT_LIBS="$QT_LIBS -L$FILE_DIR"
 ])

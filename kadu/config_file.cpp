@@ -31,7 +31,9 @@ void ConfigFile::read() {
 	if (file.open(IO_ReadOnly)) {
 		QTextStream stream(&file);
 		stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
-		while ((line = stream.readLine()) != QString::null) {
+		while (!stream.atEnd())
+		{
+			line = stream.readLine();
 			line.stripWhiteSpace();
 			if (line.startsWith("[") && line.endsWith("]")) {
 				if (activegroup.name != line.mid(1, line.length() - 2)) {
