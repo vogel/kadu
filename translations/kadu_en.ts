@@ -2178,10 +2178,6 @@ or has beed changed too much to parse it correctly.</source>
         <source>default</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Default</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>TokenDialog</name>

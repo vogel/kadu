@@ -1955,6 +1955,10 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
         <source>Select user first</source>
         <translation>Zaznacz użytkownika</translation>
     </message>
+    <message>
+        <source> </source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SelectPaths</name>
@@ -2189,10 +2193,6 @@ czasowo wyłączona lub zmieniła zasady dostępu.</translation>
     <message>
         <source>default</source>
         <translation>domyślny</translation>
-    </message>
-    <message>
-        <source>Default</source>
-        <translation>Domyślny</translation>
     </message>
 </context>
 <context>

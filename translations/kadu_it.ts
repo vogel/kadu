@@ -703,19 +703,19 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     </message>
     <message>
         <source>Choose</source>
-        <translation type="unfinished"></translation>
+        <translation>Sciegli</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancella</translation>
     </message>
     <message>
         <source>Sound paths</source>
-        <translation type="unfinished"></translation>
+        <translation>Percorso suoni</translation>
     </message>
     <message>
         <source>Sound theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Tema suoni</translation>
     </message>
 </context>
 <context>
@@ -761,31 +761,31 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     <name>ChangePassword</name>
     <message>
         <source>New email</source>
-        <translation type="unfinished">Nuova E-mail</translation>
+        <translation>Nuova E-mail</translation>
     </message>
     <message>
         <source>New password</source>
-        <translation type="unfinished">Nuova password</translation>
+        <translation>Nuova password</translation>
     </message>
     <message>
         <source>Retype new password</source>
-        <translation type="unfinished">Riscrivi la nuova password</translation>
+        <translation>Riscrivi la nuova password</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <source>Change password/email</source>
-        <translation type="unfinished">Cambia la password/email</translation>
+        <translation>Cambia la password/email</translation>
     </message>
     <message>
         <source>Bad data</source>
-        <translation type="unfinished">Dati non corretti</translation>
+        <translation>Dati non corretti</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Errore</translation>
+        <translation>Errore</translation>
     </message>
 </context>
 <context>
@@ -960,7 +960,7 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>Ok</translation>
     </message>
 </context>
 <context>
@@ -1069,7 +1069,7 @@ La password è errata!!!</translation>
     <name>GaduProtocol</name>
     <message>
         <source>Resend &amp;userlist</source>
-        <translation type="unfinished">&amp;Reinvia la lista dei contatti</translation>
+        <translation>&amp;Reinvia la lista dei contatti</translation>
     </message>
 </context>
 <context>
@@ -1668,7 +1668,7 @@ Propbabilmente è stata compilata male.</translation>
     </message>
     <message>
         <source>&amp;Manage Modules</source>
-        <translation type="unfinished">Gestione &amp;Moduli</translation>
+        <translation>Gestione &amp;Moduli</translation>
     </message>
 </context>
 <context>
@@ -1795,15 +1795,15 @@ Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation
     <name>RemindPassword</name>
     <message>
         <source>Remind password</source>
-        <translation type="unfinished">Ricorda password</translation>
+        <translation>Ricorda password</translation>
     </message>
     <message>
         <source>Error during remind password</source>
-        <translation type="unfinished">L&apos;errore durante ricorda  password</translation>
+        <translation>L&apos;errore durante ricorda  password</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -1955,44 +1955,40 @@ Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation
         <source>Select user first</source>
         <translation>Prima scegli l&apos;utente</translation>
     </message>
-    <message>
-        <source> </source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>SelectPaths</name>
     <message>
         <source>Select paths</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleziona percorsi</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished">Aggiungi</translation>
+        <translation>Aggiungi</translation>
     </message>
     <message>
         <source>Replace</source>
-        <translation type="unfinished"></translation>
+        <translation>Rimpiazza</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Rimuovi</translation>
     </message>
     <message>
         <source>Choose</source>
-        <translation type="unfinished"></translation>
+        <translation>Sciegli</translation>
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>Ok</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Annulla</translation>
+        <translation>Annulla</translation>
     </message>
     <message>
         <source>Choose a directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleziona cartella</translation>
     </message>
 </context>
 <context>
@@ -2160,43 +2156,39 @@ Probabilmente è temporaneamente disattivata, o sono state cambiate le reole acc
     <name>SoundSlots</name>
     <message>
         <source>Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>Personalizzato</translation>
     </message>
     <message>
         <source>Event</source>
-        <translation type="unfinished"></translation>
+        <translation>Evento</translation>
     </message>
     <message>
         <source>Sound file</source>
-        <translation type="unfinished"></translation>
+        <translation>Suono di file</translation>
     </message>
     <message>
         <source>Chat sound</source>
-        <translation type="unfinished">Suono di chat</translation>
+        <translation>Suono di chat</translation>
     </message>
     <message>
         <source>Message sound</source>
-        <translation type="unfinished">Suono messaggio</translation>
+        <translation>Suono messaggio</translation>
     </message>
     <message>
         <source>Notify sound</source>
-        <translation type="unfinished">Suono di notifica</translation>
+        <translation>Suono di notifica</translation>
     </message>
     <message>
         <source>Unmute sounds</source>
-        <translation type="unfinished">Attiva Suoni</translation>
+        <translation>Attiva Suoni</translation>
     </message>
     <message>
         <source>Mute sounds</source>
-        <translation type="unfinished">Disattiva Suoni</translation>
+        <translation>Disattiva Suoni</translation>
     </message>
     <message>
         <source>default</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>predefinito</translation>
     </message>
 </context>
 <context>

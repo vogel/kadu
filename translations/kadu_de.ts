@@ -2192,10 +2192,6 @@ oder änderte die Zugangserlaubnis.</translation>
         <source>default</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Default</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>TokenDialog</name>
