@@ -233,7 +233,7 @@ void UserlistImport::socketEvent() {
 				}
 			importedUserlist.addUser(tmparray[0], tmparray[1], tmparray[2],
 				tmparray[3], tmparray[4], tmparray[6], GG_STATUS_NOT_AVAIL,
-				tmparray[5]);
+				false, false, true, tmparray[5]);
 
 			if (tmparray[6] == "0")
 				tmparray[6].truncate(0);	

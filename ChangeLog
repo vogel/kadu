@@ -1,3 +1,6 @@
++++ wersja 0.3.3-pre4
+* przy imporcie listy u¿ytkowników ustawiamy domy¶lne atrybuty u¿ytkowników
+
 +++ wersja 0.3.3-pre3
 * CTRL + klik dowolnego przycisku myszki na ikonce w tray'u powoduje
   wy¶wietlenie wiadomo¶ci/rozmowy
