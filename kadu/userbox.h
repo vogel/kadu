@@ -21,7 +21,6 @@ class KaduListBoxPixmap : public QListBoxItem {
 		int height(const QListBox *lb) const;
 		int width(const QListBox *lb) const;
 		static void setFont(const QFont &f);
-		static void setVerticalScrollWidth(int);
 
 	protected:
 		void paint(QPainter *painter);
