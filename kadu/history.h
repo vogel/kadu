@@ -68,6 +68,7 @@ class History : public QDialog {
 		void nextBtnClicked();
 		void searchBtnClicked();
 		void searchNextBtnClicked();
+		void searchPrevBtnClicked();
 
 	protected:
 		void formatHistoryEntry(QString &text, const HistoryEntry &entry);
