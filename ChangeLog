@@ -9,7 +9,7 @@
   ni¿ 0.3.3-rc1 (chilek)
 * okno rozmowy: poprawione podpowiedzi (hinty) do guzika
   w³±czaj±cego/wy³±czaj±cego szyfrowanie (chilek)
-* byæ mo¿e rozwi±zanie problemu z t³em ikonki w tray'u
+* byæ mo¿e rozwi±zanie problemu z t³em ikonki w tray'u (mast3r)
 * ESC w glownym oknie je minimalizuje
 * Wsparcie dla Window Maker'a (dokowanie).
   Trzeba ustawic UseWMakerStyleDocking w kadu.conf (sekcja [Global]).
@@ -19,9 +19,9 @@
 * poprawiony b³±d wystêpuj±cy gdy ustawiony jest nieistniej±cy ju¿
   zestaw emotów (adrian)
 * dockhint->trayhint(poprawki, ulepszenia i przygotowania do dodania powiadomieñ
-  o dostêpnych osobach i ew. b³êdach podczas ³±czenia siê z serwerem GG.
+  o dostêpnych osobach i ew. b³êdach podczas ³±czenia siê z serwerem GG. (mast3r)
 * informacja o dostêpno¶ci przez hinta w tray'u i wy¶wietlanie niektórych
-  b³êdów podczas próby ³±czenia siê + poprawki
+  b³êdów podczas próby ³±czenia siê + poprawki (mast3r)
 * kadu nie wywala siê, gdy s± problemy z odczytaniem informacji o dostêpno¶ci
   nowych wersji (chilek)
 * drobne porz±dki z polem statusu (powinno zmniejszaæ siê przy zmianie rozmiaru
@@ -118,7 +118,7 @@
   geometrii okna i warto¶ci domy¶lnych (chilek)
 * udoskonalenie zak³adki wygl±d i dodanie mo¿liwo¶ci ustawienia wygl±du widgetu
   w userboxie, który pokazuje dane u¼ytkownika + zmiany w sposobie zapisu
-  konfiguracji kolorów i czcionek.
+  konfiguracji kolorów i czcionek. (mast3r)
 * dodane okno wyrejestrowania u¿ytkownika GG (chilek)
 * dane osobiste: kosmetyka wygl±du okna (chilek)
 * konfiguracja: testowanie d¼wiêków uwzglêdnia zmiany dokonane w polach
@@ -132,11 +132,11 @@
 * szyfrowanie: poprawki kosmetyczne interfejsu u¿ytkownika
   i samego kodu (adrian)
 * dodanie opcji usuwania userlisty z serwera, import/export userlisty z 
-  pliku
+  pliku (pawel/canter)
 
 +++ wersja 0.3.3-pre3
 * CTRL + klik dowolnego przycisku myszki na ikonce w tray'u powoduje
-  wy¶wietlenie wiadomo¶ci/rozmowy
+  wy¶wietlenie wiadomo¶ci/rozmowy (mast3r)
 * szyfrowanie wiadomo¶ci przy u¿yciu OpenSSL (scooty) +
   configure: opcja --with-openssl (ca³o¶æ eksperymentalna) (adrian)
 * dodanie do kodu domy¶lnych serwerów GG. Kadu ³±czy siê najpierw
@@ -146,6 +146,7 @@
   Natomiast gdy uda siê po³±czyæ i z jakiej¶ przyczyny po³±czenie zostanie 
   zerwane lub po prostu osoba sama siê roz³±czy (status: niedostêpny)
   - cykl ³±czenia siê z serwerami GG zaczyna siê od pocz±tku czyli jw.
+  (mast3r)
 * informacja o b³êdzie sieciowym podczas próby wys³ania wiadomo¶ci
   przy braku po³±czenia z serwerem GG (chilek)
 * ikonka w tray'u powinna sygnalizowaæ wiadomo¶æ do odczytania
@@ -173,7 +174,7 @@
   dostarczenia wiadomosci (chilek)
 * okno rozmowy: KTextBrowser -> QTextBrowser (chilek)
 * przycisk "Testuj" w oknie konfiguracji powoduj±cy przetestowanie ustawieñ
-  dzwiêkowych
+  dzwiêkowych (mast3r)
 * mo¿liwo¶æ wyboru przegl±darki www w jakiej ma pokazywaæ siê wybrany
   w oknie rozmowy hyperlink (chilek)
 * okno rozmowy: chmurki z opisem emotikonek w oknie wyboru emotikonki
@@ -187,7 +188,7 @@
   przy statusie "tylko dla znajomych" (chilek)
 * poprawione wysy³anie smsów (przez bramka.org) - znowu dzia³a idea,
   oraz lepsza obsluga argumentów u¿ytkownika do programu sms (adrian)
-* wy¶wietlanie hintów przy ikonce w docku - experimental
+* wy¶wietlanie hintów przy ikonce w docku - experimental (mast3r)
 * mo¿liwo¶æ ignorowania wiadomo¶ci od u¿ytkowników
   spoza listy kontaktów (chilek)
 * obs³uga zmiennej CONFIG_DIR - funkcja ggPath ogólnego zastosowania do
@@ -244,9 +245,9 @@
 * status zmienia siê prawid³owo
 * Instalator w jezyku polskim - Instaluj
 * Dodano funkcje warunkowe do skryptu Instaluj
-* mrugaj±ca koperta nowej wiadomo¶ci
+* mrugaj±ca koperta nowej wiadomo¶ci (mast3r)
 * sprawdzanie dostêpnych aktualizacji (chilek)
-* F9 - czy¶ci zawarto¶æ okna rozmowy
+* F9 - czy¶ci zawarto¶æ okna rozmowy (mast3r)
 * ikonka okna rozmowy jest aktualnym stanem rozmowcy
 * doklejanie ~/.gg/description do statusu jesli chcemy (por.
   XMMS - libsongchange.so)
