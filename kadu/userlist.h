@@ -55,6 +55,7 @@ struct UserListElement
 		QString altnick;
 		QString mobile;
 		QString description;
+		QString email;
 		uin_t uin;
 		unsigned int status;
 		bool anonymous;
@@ -83,18 +84,19 @@ class UserList : public QObject, public QValueList<UserListElement>
 		UserListElement byUinValue(uin_t uin);
 		bool containsUin(uin_t uin);
 		bool containsAltNick(const QString& altnick);
-		void addUser(const QString& FirstName, const QString& LastName,
-			const QString& NickName, const QString& AltNick,
-			const QString& Mobile, const QString& Uin,
+		void addUser(const QString &FirstName, const QString &LastName,
+			const QString &NickName, const QString &AltNick,
+			const QString &Mobile, const QString &Uin,
 			const int Status = GG_STATUS_NOT_AVAIL,
 			const bool Blocking = false, const bool Offline_to_user = false,
-			const bool Notify = true, const QString& Group = "", const QString& Description = "", const bool anonymous = false);
-		void changeUserInfo(const QString& OldAltNick,
+			const bool Notify = true, const QString &Group = "", const QString &Description = "",
+			const QString &Email = "", const bool anonymous = false);
+		void changeUserInfo(const QString &OldAltNick,
 			const QString &FirstName, const QString &LastName,
 			const QString &NickName, const QString &AltNick,
 			const QString &Mobile, const QString &Uin, int Status,
 			const bool Blocking, const bool Offline_to_user, const bool Notify,
-			const QString &Group);
+			const QString &Group, const QString &Email);
 		void changeUserStatus(const uin_t uin, const unsigned int status);
 		void removeUser(const QString &altnick);
 		bool writeToFile(QString filename = "");

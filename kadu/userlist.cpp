@@ -176,11 +176,12 @@ bool UserList::containsAltNick(const QString &altnick) {
 	return false;
 }
 
-void UserList::addUser(const QString& FirstName,const QString& LastName,
-	const QString& NickName,const QString& AltNick,
-	const QString& Mobile,const QString& Uin,const int Status,
+void UserList::addUser(const QString &FirstName,const QString &LastName,
+	const QString &NickName,const QString &AltNick,
+	const QString &Mobile,const QString &Uin,const int Status,
 	const bool Blocking, const bool Offline_to_user, const bool Notify,
-	const QString& Group,const QString& Description, const bool Anonymous)
+	const QString &Group,const QString &Description, const QString &Email,
+	const bool Anonymous)
 {
 	UserListElement e(this);
 	e.first_name = FirstName;
@@ -195,17 +196,19 @@ void UserList::addUser(const QString& FirstName,const QString& LastName,
 	e.notify = Notify;
 	e.Group = Group;
 	e.description = Description;
+	e.email = Email;
 	e.anonymous = Anonymous;
 	e.port = 0;
 	append(e);
 	emit modified();
 };
 
-void UserList::changeUserInfo(const QString& OldAltNick,
-	const QString& FirstName, const QString& LastName,
-	const QString& NickName, const QString& AltNick,
-	const QString& Mobile, const QString &Uin, int Status,
-	const bool Blocking, const bool Offline_to_user, const bool Notify, const QString& Group)
+void UserList::changeUserInfo(const QString &OldAltNick,
+	const QString &FirstName, const QString &LastName,
+	const QString &NickName, const QString &AltNick,
+	const QString &Mobile, const QString &Uin, int Status,
+	const bool Blocking, const bool Offline_to_user, const bool Notify,
+	const QString &Group, const QString &Email)
 {
 	UserListElement &e = byAltNick(OldAltNick);
 	e.first_name = FirstName;
@@ -213,6 +216,7 @@ void UserList::changeUserInfo(const QString& OldAltNick,
 	e.nickname = NickName;
 	e.altnick = AltNick;
 	e.mobile = Mobile;
+	e.email = Email;
 	bool ok;
 	uin_t uin;
 	uin = Uin.toUInt(&ok);
@@ -291,7 +295,10 @@ bool UserList::writeToFile(QString filename)
 		s.append(QString(";"));
 		s.append((*i).group());
 		s.append(QString(";"));
-		s.append(QString::number((*i).uin));
+		if ((*i).uin)
+			s.append(QString::number((*i).uin));
+		s.append(QString(";"));
+		s.append((*i).email);
 		s.append(QString("\r\n"));
 		
 		if (!(*i).anonymous) {
@@ -390,9 +397,10 @@ bool UserList::readFromFile()
 			QString mobile = line.section(';', 4, 4);
 			QString group = line.section(';', 5, 5);
 			QString uin = line.section(';', 6, 6);
+			QString email = line.section(';', 7, 7);
 
 			if (uin == "")
-				continue;
+				uin = "0";
 				
 			if (altnick == "") {
 				if (nickname == "")
@@ -419,7 +427,7 @@ bool UserList::readFromFile()
 
 			addUser(first_name, last_name, nickname, altnick,
 				mobile, uin, GG_STATUS_NOT_AVAIL, blocking, offline_to_user,
-				notify, group, "");
+				notify, group, "", email);
 			}
 		}
 

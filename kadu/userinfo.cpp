@@ -239,7 +239,7 @@ void UserInfo::writeUserlist() {
 				e_mobile->text(), e_uin->text().length() ? e_uin->text() : QString("0"),
 				uin != puser->uin ? GG_STATUS_NOT_AVAIL : puser->status,
 				c_blocking->isChecked(), c_offtouser->isChecked(),
-				c_notify->isChecked(), e_group->text());
+				c_notify->isChecked(), e_group->text(), "");
 			puser->anonymous = false;
 			userlist.writeToFile();
 			UserBox::all_refresh();

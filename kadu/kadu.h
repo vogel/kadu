@@ -37,10 +37,11 @@ class Kadu : public QMainWindow
 		void changeAppearance();
 		~Kadu();
 		bool userInActiveGroup(uin_t uin);
-		void addUser(const QString& FirstName,const QString& LastName,
-			const QString& NickName,const QString& AltNick,
-			const QString& Mobile,const QString& Uin,const int Status,
-			const QString& Group,const QString& Description, const bool Anonymous = false);
+		void addUser(const QString &FirstName,const QString &LastName,
+			const QString &NickName,const QString &AltNick,
+			const QString &Mobile,const QString &Uin,const int Status,
+			const QString &Group,const QString &Description, const QString &Email,
+			const bool Anonymous = false);
 		void removeUser(QStringList &, bool);
 		void refreshGroupTabBar();
     

@@ -308,10 +308,10 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 	if (!userlist.containsUin(senders[0]))
 		if (config.dock)
 			userlist.addUser("", "", ule.altnick, ule.altnick, "", ule.altnick, GG_STATUS_NOT_AVAIL,
-				false, false, true, "", "", true);
+				false, false, true, "", "", "", true);
 		else
 			kadu->addUser("", "", ule.altnick, ule.altnick, "", ule.altnick, GG_STATUS_NOT_AVAIL,
-				"", "", true);
+				"", "", "", true);
 
 	if (config.logmessages)
 		history.appendMessage(senders, senders[0], mesg, FALSE, time);
