@@ -8,6 +8,7 @@
 * mo¿liwo¶æ ustawienia wygl±du tray hinta w oknie konfiguracji 
   i kilka poprawek (mast3r)
 * pozbycie siê snprintf - zamiast tego jest QString::number (mast3r)
+* make clean kasuje pliki *_moc.cpp (adrian)
  
 +++ wersja 0.3.3-rc2
 * sporo poprawek dla FreeBSD (adrian)
