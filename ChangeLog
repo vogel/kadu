@@ -1,3 +1,6 @@
++++ wersja 0.3.3-rc2
+* sporo poprawek dla FreeBSD
+
 +++ wersja 0.3.3-rc1
 * sms.cpp ma szansê kompilowaæ siê na Qt < 3.0.5
 * przy odebraniu b³êdnej wiadomo¶ci dcc ctcp nie powinno wywalaæ siê
