@@ -717,7 +717,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 				case 'd':
 					i++;
 					if(myUin == ule.uin &&
-							! ifStatusWithDescription(getActualStatus()))
+							! ifStatusWithDescription(getCurrentStatus()))
 						pe.str=QString::null;
 					else
 						pe.str=ule.description;

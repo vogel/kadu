@@ -257,7 +257,7 @@ void SearchDialog::firstSearch(void) {
 }
 
 void SearchDialog::nextSearch(void) {
-	if (getActualStatus() == GG_STATUS_NOT_AVAIL)
+	if (getCurrentStatus() == GG_STATUS_NOT_AVAIL)
 		return;
 
 	b_sendbtn->setEnabled(false);

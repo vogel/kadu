@@ -14,6 +14,7 @@ extern QStringList defaultdescriptions;
 bool ifStatusWithDescription(int status);
 bool isAvailableStatus(unsigned int);
 int getActualStatus();
+int getCurrentStatus();
 int statusGGToStatusNr(int);
 
 #endif

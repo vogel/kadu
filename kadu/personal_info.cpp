@@ -83,7 +83,7 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 	GridLayout->addWidget(CancelButton, 7, 2);	
 	connect(CancelButton, SIGNAL(clicked()), this, SLOT(reject()));
 
-	if (getActualStatus() != GG_STATUS_NOT_AVAIL) {
+	if (getCurrentStatus() != GG_STATUS_NOT_AVAIL) {
 		gg_pubdir50_t req;
 		req = gg_pubdir50_new(GG_PUBDIR50_READ);
 		seq = gg_pubdir50(sess, req);
@@ -96,7 +96,7 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 
 void PersonalInfoDialog::OkButtonClicked()
 {
-	if (getActualStatus() == GG_STATUS_NOT_AVAIL)
+	if (getCurrentStatus() == GG_STATUS_NOT_AVAIL)
 		return;
 
 	char *nick, *first, *last, *city, *born, *family_name, *family_city;

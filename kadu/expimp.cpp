@@ -126,7 +126,7 @@ void UserlistImport::fromfile() {
 
 void UserlistImport::startTransfer() {
 	kdebugf();
-	if (getActualStatus() == GG_STATUS_NOT_AVAIL)
+	if (getCurrentStatus() == GG_STATUS_NOT_AVAIL)
 		return;
 
 	if (gg_userlist_request(sess, GG_USERLIST_GET, NULL) == -1) {
@@ -302,7 +302,7 @@ QString UserlistExport::saveContacts(){
 
 void UserlistExport::startTransfer() {
 	kdebugf();
-	if (getActualStatus() == GG_STATUS_NOT_AVAIL)
+	if (getCurrentStatus() == GG_STATUS_NOT_AVAIL)
 		return;
 
 	QString contacts;
@@ -362,7 +362,7 @@ void UserlistExport::ExportToFile(void) {
 
 void UserlistExport::clean() {
 	kdebugf();
-	if (getActualStatus() == GG_STATUS_NOT_AVAIL)
+	if (getCurrentStatus() == GG_STATUS_NOT_AVAIL)
 		return;
 
 	const char *con2 = "";

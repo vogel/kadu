@@ -1081,7 +1081,7 @@ void Chat::sendMessage(void) {
 
 	QString mesg;
 
-	if (getActualStatus() == GG_STATUS_NOT_AVAIL) {
+	if (getCurrentStatus() == GG_STATUS_NOT_AVAIL) {
 		QMessageBox::critical(this, tr("Send message error"),
 			tr("Application encountered network error."));
 		return;

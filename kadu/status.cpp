@@ -35,7 +35,7 @@ QString own_description;
 QStringList defaultdescriptions;
 
 /* sprawdza czy nasz status jest opisowy
- odporne na podanie status'u z maska dla przyjaciol */
+ odporne na podanie statusu z mask± dla przyjació³ */
 bool ifStatusWithDescription(int status) {
 	status = status & (~GG_STATUS_FRIENDS_MASK);
 
@@ -49,13 +49,21 @@ bool isAvailableStatus(unsigned int status)
 }
 
 /* zwraca nasz aktualny status 
- jesli stan sesji jest inny niz polaczone to znaczy
- ze jestesmy niedostepni */
-int getActualStatus() {
+ je¿eli stan sesji jest inny ni¿ po³±czony to znaczy
+ ¿e jeste¶my niedostêpni */
+int getCurrentStatus()
+{
 	if (sess && sess->state == GG_STATE_CONNECTED)
 		return sess->status;
 
 	return GG_STATUS_NOT_AVAIL;
+}
+
+// b³êdna nazwa funkcji, u¿yj getCurrentStatus()
+int getActualStatus()
+{
+	qWarning("getActualStatus() DEPRACATED - use getCurrentStatus");
+	return getCurrentStatus();
 }
 
 int statusGGToStatusNr(int status) {

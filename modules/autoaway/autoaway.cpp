@@ -140,7 +140,7 @@ void AutoAwayTimer::checkIdleTime()
 
 //	czy mamy stac sie "zajeci" po config.autoawaytime sekund nieaktywnosci
 	if (idletime >= autoAwayTime && !autoawayed) {
-		beforeAutoAway = getActualStatus() & (~GG_STATUS_FRIENDS_MASK);;
+		beforeAutoAway = getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK);;
 		kdebug("AutoAwayTimer::checkIdleTime(): checking whether to go auto away, beforeAutoAway = %d\n", beforeAutoAway);
 		switch (beforeAutoAway) {
 			case GG_STATUS_AVAIL_DESCR:

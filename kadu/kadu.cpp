@@ -1549,7 +1549,7 @@ bool Kadu::close(bool quit) {
 		
 		pending.writeToFile();
 		writeIgnored();
-		if (config_file.readBoolEntry("General", "DisconnectWithDescription") && getActualStatus() != GG_STATUS_NOT_AVAIL) {
+		if (config_file.readBoolEntry("General", "DisconnectWithDescription") && getCurrentStatus() != GG_STATUS_NOT_AVAIL) {
 			kdebug("Kadu::close(): Set status NOT_AVAIL_DESCR with disconnect description(%s)\n",(const char *)config_file.readEntry("General", "DisconnectDescription").local8Bit());
 			own_description = config_file.readEntry("General", "DisconnectDescription");
 			setStatus(GG_STATUS_NOT_AVAIL_DESCR);
@@ -1760,7 +1760,7 @@ void KaduSlots::onDestroyConfigDialog()
 	QComboBox* cb_defstatus= ConfigDialog::getComboBox("General", "Default status", "cb_defstatus");
 	config_file.writeEntry("General", "DefaultStatus", gg_statuses[cb_defstatus->currentItem()]);
 
-	int status = getActualStatus();
+	int status = getCurrentStatus();
 
 	bool privateStatus=config_file.readBoolEntry("General", "PrivateStatus");
 	

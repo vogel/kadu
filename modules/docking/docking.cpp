@@ -91,7 +91,7 @@ void DockingManager::changeIcon()
 		}
 		else
 		{
-			emit trayPixmapChanged(icons_manager.loadIcon(gg_icons[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]));
+			emit trayPixmapChanged(icons_manager.loadIcon(gg_icons[statusGGToStatusNr(getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK))]));
 			icon_timer->start(500,TRUE);
 			blink = false;
 		}
@@ -117,7 +117,7 @@ void DockingManager::pendingMessageDeleted()
 {
 	if (!pending.pendingMsgs())
 	{
-		QPixmap pix = icons_manager.loadIcon(gg_icons[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);
+		QPixmap pix = icons_manager.loadIcon(gg_icons[statusGGToStatusNr(getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK))]);
 		emit trayPixmapChanged(pix);
 	}
 }
@@ -181,7 +181,7 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 QPixmap DockingManager::defaultPixmap()
 {
 	return icons_manager.loadIcon(gg_icons[
-		statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);
+		statusGGToStatusNr(getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK))]);
 }
 
 DockingManager* docking_manager = NULL;

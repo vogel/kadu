@@ -68,7 +68,7 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 	int itemHeight = height(listBox());
 	int yPos;
 	QString descr=isOurUin ? own_description : description();
-	bool hasDescription=isOurUin ? ifStatusWithDescription(getActualStatus()) : !descr.isEmpty();
+	bool hasDescription=isOurUin ? ifStatusWithDescription(getCurrentStatus()) : !descr.isEmpty();
 
 	if (!pm.isNull()) {
 		yPos = (itemHeight - pm.height()) / 2;
@@ -127,7 +127,7 @@ int KaduListBoxPixmap::height(const QListBox* lb) const
 	UserListElement &user = userlist.byAltNick(text());
 	bool isOurUin=((UinType)config_file.readNumEntry("General", "UIN") == user.uin);
 	QString descr=isOurUin ? own_description : description();
-	bool hasDescription=isOurUin ? ifStatusWithDescription(getActualStatus()) : !descr.isEmpty();
+	bool hasDescription=isOurUin ? ifStatusWithDescription(getCurrentStatus()) : !descr.isEmpty();
 	int h, lh;
 
 	if (!hasDescription || !config_file.readBoolEntry("Look", "ShowDesc"))
@@ -314,7 +314,7 @@ void UserBox::refresh()
 		UserListElement &user = userlist.byAltNick(Users[i]);
 		if (user.uin) {
 			if (user.uin == myUin) {
-				user.status = getActualStatus() & (~GG_STATUS_FRIENDS_MASK);
+				user.status = getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK);
 				user.description = own_description;
 				}
 			switch (user.status) {
