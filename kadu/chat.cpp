@@ -1032,7 +1032,7 @@ void Chat::initModule()
 	QT_TRANSLATE_NOOP("@default", "Flash chat title on new message");
 	QT_TRANSLATE_NOOP("@default", "Ignore messages from anonymous users");
 	QT_TRANSLATE_NOOP("@default", "Syntax the same as in information panel.");
-
+	QT_TRANSLATE_NOOP("@default", "%1 - Url clicked in chat window");
 
 	ConfigDialog::registerTab("ShortCuts");
 	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", "Define keys");
@@ -1050,7 +1050,7 @@ void Chat::initModule()
 	ConfigDialog::addComboBox("Chat", "Emoticons", "Emoticons theme");
 	ConfigDialog::addVGroupBox("Chat", "Chat", "WWW options");
 	ConfigDialog::addCheckBox("Chat", "WWW options", "Use default Web browser", "DefaultWebBrowser", true);
-	ConfigDialog::addLineEdit("Chat", "WWW options", "Custom Web browser", "WebBrowser");
+	ConfigDialog::addLineEdit("Chat", "WWW options", "Custom Web browser", "WebBrowser", "", "%1 - Url clicked in chat window");
 	ConfigDialog::addCheckBox("Chat", "Chat", "Automatically prune chat messages", "ChatPrune", false);
 	ConfigDialog::addHGroupBox("Chat", "Chat", "Message pruning");
 	ConfigDialog::addLineEdit("Chat", "Message pruning", "Reduce the number of visible messages to", "ChatPruneLen", "20");
