@@ -2070,13 +2070,6 @@ void Kadu::disconnectNetwork() {
 		delete blinktimer;
 		blinktimer = NULL;
 		}
-/* patrz events.cpp
-	if (readevent) {
-		readevent->stop();
-		delete readevent;
-		readevent = NULL;
-		}
-*/	
 	if (kadusnw) {
 		kadusnw->setEnabled(false);
 		delete kadusnw;
@@ -2104,7 +2097,8 @@ void Kadu::disconnectNetwork() {
 
 	disconnect_planned = true;
 	if (sess) {
-		gg_logoff(sess);
+		if (sess->state == GG_STATE_CONNECTED)
+			gg_logoff(sess);
 		gg_free_session(sess);
 		sess = NULL;
 		}
