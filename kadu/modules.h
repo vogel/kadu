@@ -159,6 +159,16 @@ class ModulesManager : public QObject
 		**/
 		bool moduleIsActive(const QString& module_name);
 		/**
+		 	Zwiêksza licznik u¿ycia modu³u o 1
+			@param module_name nazwa modulu
+		**/
+		void moduleIncUsageCount(const QString& module_name);
+		/**
+		 	Zmniejsza licznik u¿ycia modu³u o 1
+			@param module_name nazwa modulu
+		**/
+		void moduleDecUsageCount(const QString& module_name);
+		/**
 			Zapisuje do pliku konfiguracyjnego listê za³adowanych
 			modu³ów.
 		**/

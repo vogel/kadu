@@ -207,6 +207,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * bramki SMS sa wydzielowe do modulow (michal)
 * ³apanie do linków w chacie tak¿e: sftp:// smb:// file:/ rsync:// mailto: (joi)
 * Nowy instalator kaduinstaller.sh Sad Mephisto (Ron_K)
+* opisy modulow w plikach .desc moga byc wielojezyczne (michal)
+* metody moduleIncUsageCount i moduleDecUsageCount w ModulesManager (michal)
+* bramka ery obsuguje siec hejah (owczi/michal)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

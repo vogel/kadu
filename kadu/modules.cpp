@@ -309,10 +309,16 @@ bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info)
 
 	ConfigFile desc_file(QString(DATADIR)+"/kadu/modules/"+module_name+".desc");
 
-	info.description = desc_file.readEntry("Module","Description");
-	info.author = desc_file.readEntry("Module","Author");
+	QString lang=config_file.readEntry("General", "Language", "en");
+
+	info.description = desc_file.readEntry("Module", "Description["+lang+"]");
+	if(info.description.isEmpty())
+		info.description = desc_file.readEntry("Module", "Description");
+
+	info.author = desc_file.readEntry("Module", "Author");
+
 	info.depends = QStringList::split(" ",
-		desc_file.readEntry("Module","Dependencies"));
+		desc_file.readEntry("Module", "Dependencies"));
 
 	return true;
 }
@@ -339,7 +345,7 @@ bool ModulesManager::loadModule(const QString& module_name)
 				if(moduleIsInstalled(*it))
 				{
 					if(loadModule(*it))
-						Modules[*it].usage_counter++;
+						moduleIncUsageCount(*it);
 					else
 					{
 						delete m.lib;
@@ -354,7 +360,7 @@ bool ModulesManager::loadModule(const QString& module_name)
 				}
 			}
 			else if(!moduleIsStatic(*it))
-				Modules[*it].usage_counter++;
+				moduleIncUsageCount(*it);
 		}
 		m.info=modinfo;
 	}
@@ -403,7 +409,7 @@ bool ModulesManager::unloadModule(const QString& module_name, bool force)
 	}
 	
 	for (QStringList::Iterator it = m.info.depends.begin(); it != m.info.depends.end(); ++it)
-		Modules[*it].usage_counter--;
+		moduleDecUsageCount(*it);
 	
 	m.close();
 	if(m.translator!=NULL)
@@ -458,6 +464,15 @@ void ModulesManager::dialogDestroyed()
 	Dialog=NULL;
 }
 
+void ModulesManager::moduleIncUsageCount(const QString& module_name)
+{
+	Modules[module_name].usage_counter++;	
+}
+
+void ModulesManager::moduleDecUsageCount(const QString& module_name)
+{
+	Modules[module_name].usage_counter--;
+}
 
 ModulesManager* modules_manager;
 
