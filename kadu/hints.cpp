@@ -696,7 +696,7 @@ void HintManagerSlots::onDestroyConfigDialog()
 	QComboBox* cb_right = ConfigDialog::getComboBox("Hints", "Right button");
 	QComboBox* cb_middle = ConfigDialog::getComboBox("Hints", "Middle button");
 	
-	config_file.writeEntry("Hints", "LeftButon", cb_left->currentItem());
+	config_file.writeEntry("Hints", "LeftButton", cb_left->currentItem());
 	config_file.writeEntry("Hints", "RightButton", cb_right->currentItem());
 	config_file.writeEntry("Hints", "MiddleButton", cb_middle->currentItem());
 
