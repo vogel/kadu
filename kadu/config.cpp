@@ -78,7 +78,8 @@ void loadKaduConfig(void) {
 	config.raise = konf->readBoolEntry("AutoRaise",false);
 	config.privatestatus = konf->readBoolEntry("PrivateStatus", false);
 	config.rundocked = konf->readBoolEntry("RunDocked", false);
-	config.grouptabs = konf->readBoolEntry("DisplayGroupTabs",true);
+	config.grouptabs = konf->readBoolEntry("DisplayGroupTabs", true);
+	config.checkupdates = konf->readBoolEntry("CheckUpdates", true);
 
 	if (config.savegeometry)
 		config.geometry = konf->readRectEntry("Geometry");
@@ -112,7 +113,7 @@ void loadKaduConfig(void) {
 	config.proxyport = konf->readNumEntry("ProxyPort", 0);
 	config.proxyuser = pwHash(konf->readEntry("ProxyUser", ""));
 	config.proxypassword = pwHash(konf->readEntry("ProxyPassword", ""));
-	
+
 	konf->setGroup("Colors");
 	config.colors.userboxBgColor = konf->readEntry("UserboxBgColor","#FFFFFF");
 	config.colors.userboxFgColor = konf->readEntry("UserboxFgColor","#000000");
@@ -120,14 +121,14 @@ void loadKaduConfig(void) {
 	config.colors.chatUsrBgColor = konf->readEntry("ChatUsrBgColor", "#F0F0F0");
 	config.colors.chatMyFontColor = konf->readEntry("ChatMyFontColor", "#000000");
 	config.colors.chatUsrFontColor = konf->readEntry("ChatUsrFontColor", "#000000");
-  
-  QFontInfo info(a->font());
-  
+
+	QFontInfo info(a->font());
+
 	config.userboxFont = konf->readEntry("UserboxFont", info.family());
 	config.userboxFontSize = konf->readNumEntry("UserboxFontSize", info.pointSize());
 	config.chatFont = konf->readEntry("ChatFont", info.family());
 	config.chatFontSize = konf->readNumEntry("ChatFontSize", info.pointSize());
-  
+
 	/* no need for it anymore */
 	delete konf;
 }
@@ -167,6 +168,7 @@ void saveKaduConfig(void) {
 	konf->writeEntry("AutoRaise",config.raise);
 	konf->writeEntry("PrivateStatus",config.privatestatus);
 	konf->writeEntry("RunDocked",config.rundocked);
+	konf->writeEntry("CheckUpdates", config.checkupdates);
 	konf->writeEntry("DisplayGroupTabs",config.grouptabs);
 
 	konf->setGroup("SMS");
@@ -334,7 +336,7 @@ void ConfigDialog::setupTab1(void) {
 		i++;
 	cb_defstatus->setCurrentItem(i);
 
-	QGrid* grid=new QGrid(2,box);
+	QGrid* grid = new QGrid(3, box);
 
 	b_logging = new QCheckBox(grid);
 	b_logging->setText(i18n("Log messages"));
@@ -365,6 +367,11 @@ void ConfigDialog::setupTab1(void) {
 	b_grptabs->setText(i18n("Display group tabs"));
 	if (config.grouptabs)
 		b_grptabs->setChecked(true);
+
+	b_checkupdates = new QCheckBox(grid);
+	b_checkupdates->setText(i18n("Check updates"));
+	if (config.checkupdates)
+		b_checkupdates->setChecked(true);
 
 	addTab(box, i18n("General"));
 }
@@ -1078,8 +1085,8 @@ void ConfigDialog::updateConfig(void) {
 	config.soundvolctrl = b_soundvolctrl->isChecked();
 	config.autoaway = b_autoaway->isChecked();
 	config.autoawaytime = atoi(e_autoawaytime->text().latin1());
-	kadu->autoaway->stop();
-	kadu->autoaway->start(config.autoawaytime * 1000, TRUE);
+//	kadu->autoaway_timer->stop();
+//	kadu->autoaway_timer->start(config.autoawaytime * 1000, TRUE);
 	config.dock = b_dock->isChecked();
 	config.defaultstatus = gg_statuses[cb_defstatus->currentItem()];
 
@@ -1090,8 +1097,9 @@ void ConfigDialog::updateConfig(void) {
 		statusppm->setItemChecked(8, config.privatestatus);
 		kadu->setStatus(sess->status & (~GG_STATUS_FRIENDS_MASK));
 		}
-	config.rundocked=b_rdocked->isChecked();
-	config.grouptabs=b_grptabs->isChecked();
+	config.rundocked = b_rdocked->isChecked();
+	config.grouptabs = b_grptabs->isChecked();
+	config.checkupdates = b_checkupdates->isChecked();
 
 	config.smsbuildin = b_smsbuildin->isChecked();
 	config.smsapp = strdup(e_smsapp->text().latin1());

@@ -387,7 +387,11 @@ void SearchDialog::socketEvent(void) {
 
 	res = (struct gg_search *) foo->data;
 
-	if (foo->state == GG_STATE_DONE && (foo->data == NULL || (res && res->results == NULL))) {
+	fprintf(stderr,"KK SearchDialog::socketEvent(): res = %p\n", foo->data);
+	if (foo->state == GG_STATE_DONE && res)
+		fprintf(stderr,"KK SearchDialog::socketEvent(): res->results = %p\n", res->results);
+
+	if (foo->state == GG_STATE_DONE && (res == NULL || (res && res->results == NULL))) {
 		fprintf(stderr, "KK SearchDialog::socketEvent(): No results. Exit.\n");
 		QMessageBox::information(this, i18n("No results"), i18n("There were no results of your search") );
 		deleteSocketNotifiers();

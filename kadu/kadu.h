@@ -69,6 +69,7 @@ struct config {
 	bool privatestatus;
 	bool rundocked;
 	bool grouptabs;
+	bool checkupdates;
 	QRect geometry;
 
 	bool smsbuildin;
@@ -121,7 +122,7 @@ class Kadu : public QMainWindow
 	Q_OBJECT
 	 
 	public:
-		QTimer * autoaway;
+//		QTimer * autoaway;
 		Kadu(QWidget* parent=0, const char *name=0);
 		~Kadu();
 		bool autohammer;

@@ -350,6 +350,7 @@ void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 		QMessageBox::information(this, "Update information",
 			QString("The newest Kadu version is %1").arg(newestversion), QMessageBox::Ok);
 		}
+	delete ut;
 }
   
 /* a monstrous constructor so Kadu would take longer to start up */
@@ -517,10 +518,11 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	autostatus_timer = new AutoStatusTimer(this);
 	if (config.autoaway)
 		autoaway_timer = new AutoAwayTimer(this);
-
+	
 	ut = new UpdatesThread(config.uin, actversion);
-	QObject::connect(ut->op, SIGNAL(data(const QByteArray &, QNetworkOperation *)),
-		this, SLOT(gotUpdatesInfo(const QByteArray &, QNetworkOperation *)));
+	if (config.checkupdates)
+		QObject::connect(ut->op, SIGNAL(data(const QByteArray &, QNetworkOperation *)),
+			this, SLOT(gotUpdatesInfo(const QByteArray &, QNetworkOperation *)));
 	ut->start();
 }
 
