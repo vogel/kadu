@@ -129,10 +129,10 @@ void loadKaduConfig(void) {
 	config.encryption = konf->readBoolEntry("Encryption", false);
 //	config.keyslen = konf->readNumEntry("KeysLength", 1024);
 #endif
-	config.panelsyntax = konf->readEntry("PanelContents", "");
+	config.panelsyntax = konf->readEntry("PanelContents", "[#%u][, %f] %r [- %d] [ (%i)]");
 	config.chatsyntax = konf->readEntry("ChatContents", "");
 	config.conferenceprefix = konf->readEntry("ConferencePrefix", "");
-	config.conferencesyntax = konf->readEntry("ConferenceContents", "");
+	config.conferencesyntax = konf->readEntry("ConferenceContents", "%a (%s[: %d])");
 
 	konf->setGroup("Notify");
 	config.soundnotify = strdup(konf->readEntry("NotifySound", ""));
@@ -1065,11 +1065,7 @@ void ConfigDialog::setupTab6(void) {
 	panelbox->setSpacing(5);
 	
 	QLabel *l_panel = new QLabel(i18n("Information panel syntax:"), panelbox);
-	e_panelsyntax = new QLineEdit(panelbox);
-	if (config.panelsyntax.isEmpty())
-		e_panelsyntax->setText("[#%u][, %f] %r [- %d] [ (%i)]");
-	else
-		e_panelsyntax->setText(config.panelsyntax);
+	e_panelsyntax = new QLineEdit(config.panelsyntax, panelbox);
 
 	QToolTip::add(e_panelsyntax,i18n("Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name\n%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\nIf you leave blank, default settings will be used"));
 
@@ -1098,11 +1094,7 @@ void ConfigDialog::setupTab6(void) {
 	QToolTip::add(e_conferenceprefix,i18n("This text will be before syntax.\nIf you leave blank, default settings will be used."));
 
 	QLabel *l_confsyntax = new QLabel(i18n("syntax:"), confsyntaxbox);
-	e_conferencesyntax = new QLineEdit(confsyntaxbox);
-	if (config.conferencesyntax.isEmpty())
-		e_conferencesyntax->setText("%a (%s[: %d])");
-	else
-		e_conferencesyntax->setText(config.conferencesyntax);
+	e_conferencesyntax = new QLineEdit(config.conferencesyntax, confsyntaxbox);
 
 	QToolTip::add(e_conferencesyntax,i18n("Syntax the same as in information panel."));
 
