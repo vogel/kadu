@@ -37,13 +37,13 @@ class aRtsPlayerRecorder : public QObject
 		bool finalizing;
 	public:
 		friend class aRtsDevice;
-		aRtsPlayerRecorder(QObject *parent=0, const char *name=0);
+		aRtsPlayerRecorder(QObject *parent = 0, const char *name = 0);
 		~aRtsPlayerRecorder();
 	public slots:
 		void openDevice(SoundDeviceType type, int sample_rate, int channels, SoundDevice& device);
 		void closeDevice(SoundDevice device);
-		void playSample(SoundDevice device, const int16_t* data, int length, bool& result);
-		void recordSample(SoundDevice device, int16_t* data, int length, bool& result);
+		void playSample(SoundDevice device, const int16_t *data, int length, bool& result);
+		void recordSample(SoundDevice device, int16_t *data, int length, bool& result);
 		void setFlushingEnabled(SoundDevice device, bool enabled);
 };
 

@@ -35,6 +35,7 @@
 #define kdebugmf(mask,format,args...)
 #endif
 
+#ifdef DEBUG_ENABLED
 void _kdebug_with_mask(const char* file, const int line, const char* format,...)
 {
 	if (0)
@@ -46,6 +47,7 @@ void _kdebug_with_mask(const char* file, const int line, const char* format,...)
 		va_end(args);
 	}
 }
+#endif
 
 #include "common.c"
 
@@ -61,8 +63,8 @@ int openDevice(int rate, int channels, int type)
 {
 	int i;
 	kdebugf();
-	for(i=0; i<MAXDEV; ++i)
-		if (devices[i]==NULL)
+	for(i = 0; i < MAXDEV; ++i)
+		if (devices[i] == NULL)
 		{
 			devices[i] = (struct aRtsSoundDevice *) calloc(1, sizeof(struct aRtsSoundDevice));
 			if (type == 1 || type == 3)
@@ -77,7 +79,7 @@ int openDevice(int rate, int channels, int type)
 void closeDevice(int i)
 {
 	kdebugf();
-	if (i<0 || i>=MAXDEV)
+	if (i < 0 || i >= MAXDEV)
 		return;
 	if (devices[i])
 	{
@@ -94,7 +96,7 @@ void setFlushing(int devno, int enabled)
 {
 	struct aRtsSoundDevice *dev;
 	kdebugf();
-	if (devno<0 || devno>=MAXDEV)
+	if (devno < 0 || devno >= MAXDEV)
 		return;
 	
 	dev = devices[devno];
@@ -121,7 +123,7 @@ void freeRes(int fd)
 {
 	int i;
 	kdebugf();
-	for (i=0; i<MAXDEV; ++i)
+	for (i = 0; i < MAXDEV; ++i)
 		closeDevice(i);
 	close(fd);
 	arts_free();
@@ -139,7 +141,7 @@ static void sigHandler(int s)
 {
 	kdebugf();
 	unlink(name);
-	if (s==SIGALRM)
+	if (s == SIGALRM)
 		exit(0);
 	else
 		abort();
@@ -223,12 +225,12 @@ int main()
 	signal(SIGINT,  SIG_DFL);
 	signal(SIGTERM, SIG_DFL);
 
-	end = (read_line(sock, buffer, BUFSIZE)==-1 || memcmp(buffer,"PASS ", 5)!=0);
+	end = (read_line(sock, buffer, BUFSIZE) == -1 || memcmp(buffer,"PASS ", 5) != 0);
 	
 	if (!end)
 	{
-		sscanf(buffer+5, "%llu", &p);
-		end = (p!=pass);
+		sscanf(buffer + 5, "%llu", &p);
+		end = (p != pass);
 	}
 
 	if (end)
@@ -241,7 +243,7 @@ int main()
 
 //	raise(SIGALRM);
 	err = arts_init();
-	if (err!=0)
+	if (err != 0)
 	{
 		snprintf(buffer, BUFSIZE-1, "cannot initialize artsc: errorcode=%d description:%s\n", err, arts_error_text(err));
 		buffer[BUFSIZE-1] = 0;
@@ -253,19 +255,19 @@ int main()
 	while (!end)
 	{
 		struct aRtsSoundDevice *tmpdev; int devno;
-		alarm(60*60);//po godzinie siê wy³±czamy
+		alarm(60*60); //po godzinie siê wy³±czamy
 		buflen = read_line(sock, buffer, BUFSIZE);
-		end = (buflen==-1);
+		end = (buflen == -1);
 		if (!end)
 		{
 			switch(buffer[0])
 			{
-				case 'O': //OPEN RATE CHANNELS
+				case 'O': //OPEN RATE CHANNELS TYPE
 //					printf(">>>%d\n", sscanf(buffer, "OPEN %d %d", &rate, &channels));fflush(stdout);
-					if (sscanf(buffer, "OPEN %d %d %d", &rate, &channels, &type)!=3)
+					if (sscanf(buffer, "OPEN %d %d %d", &rate, &channels, &type) != 3)
 						endApp(sock);
 					sprintf(buffer, "OPENED %d\n", openDevice(rate, channels, type));
-					if (write_all(sock, buffer, strlen(buffer), 32)==-1)
+					if (write_all(sock, buffer, strlen(buffer), 32) == -1)
 						endApp(sock);
 					break;
 				case 'C': //CLOSE DEVNUMBER
@@ -273,19 +275,19 @@ int main()
 						endApp(sock);
 					closeDevice(devno);
 					sprintf(buffer, "CLOSED %d\n", devno);
-					if (write_all(sock, buffer, strlen(buffer), 32)==-1)
+					if (write_all(sock, buffer, strlen(buffer), 32) == -1)
 						endApp(sock);
 					break;
 				case 'S': //SETFLUSHING DEVNUMBER 0/1
-					if (sscanf(buffer, "SETFLUSHING %d %d", &devno, &enabled)!=2)
+					if (sscanf(buffer, "SETFLUSHING %d %d", &devno, &enabled) != 2)
 						endApp(sock);
 					setFlushing(devno, enabled);
 					sprintf(buffer, "FLUSHING FOR %d SET TO %d\n", devno, enabled);
-					if (write_all(sock, buffer, strlen(buffer), 32)==-1)
+					if (write_all(sock, buffer, strlen(buffer), 32) == -1)
 						endApp(sock);
 					break;
 				case 'P': //PLAY DEVNUMBER LENGTH
-					if (sscanf(buffer, "PLAY %d %d", &devno, &length)!=2)
+					if (sscanf(buffer, "PLAY %d %d", &devno, &length) != 2)
 						endApp(sock);
 					offset = 0;
 					err = 0;
@@ -295,24 +297,24 @@ int main()
 						if (c == -1)
 							endApp(sock);
 						offset += c;
-						if (devno>=0 && devno<=MAXDEV && devices[devno] && devices[devno]->player)
+						if (devno >= 0 && devno <= MAXDEV && devices[devno] && devices[devno]->player)
 							arts_write(devices[devno]->player, buffer, c);
 						else
 							err = 1;
 					}
 					sprintf(buffer, "PLAY SUCCESS: %d\n", !err);
-					if (write_all(sock, buffer, strlen(buffer), BUFSIZE)==-1)
+					if (write_all(sock, buffer, strlen(buffer), BUFSIZE) == -1)
 						endApp(sock);
 					break;
 				case 'R': //RECORD DEVNUMBER LENGTH
-					if (sscanf(buffer, "RECORD %d %d", &devno, &length)!=2)
+					if (sscanf(buffer, "RECORD %d %d", &devno, &length) != 2)
 						endApp(sock);
 					offset = 0;
 					err = 0;
 					while (offset < length)
 					{
 						int c;
-						if (devno>=0 && devno<=MAXDEV && devices[devno] && devices[devno]->recorder)
+						if (devno >= 0 && devno <= MAXDEV && devices[devno] && devices[devno]->recorder)
 							c = arts_read(devices[devno]->recorder, buffer, min(BUFSIZE, length - offset));
 						else
 						{
@@ -324,11 +326,11 @@ int main()
 						if (c == -1)
 							endApp(sock);
 						offset += c;
-						if (write_all(sock, buffer, c, BUFSIZE)==-1)
+						if (write_all(sock, buffer, c, BUFSIZE) == -1)
 							endApp(sock);
 					}
 					sprintf(buffer, "RECORD SUCCESS: %d\n", !err);
-					if (write_all(sock, buffer, strlen(buffer), BUFSIZE)==-1)
+					if (write_all(sock, buffer, strlen(buffer), BUFSIZE) == -1)
 						endApp(sock);
 					break;
 				case 'Q': //QUIT

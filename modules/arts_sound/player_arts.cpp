@@ -33,7 +33,7 @@ void aRtsDevice::processExited()
 	kdebugf();
 	mutex.lock();
 	kdebugmf(KDEBUG_INFO, "locked\n");
-	if (sock!=-1)
+	if (sock != -1)
 	{
 		close(sock);
 		sock = -1;
@@ -52,7 +52,7 @@ aRtsDevice::~aRtsDevice()
 void aRtsDevice::deleteLater2()
 {
 	kdebugf();
-	if (sock!=-1)
+	if (sock != -1)
 	{
 		close(sock);
 		sock = -1;
@@ -113,7 +113,7 @@ aRtsPlayerRecorder::~aRtsPlayerRecorder()
 
 	// mordujemy wszystkie procesy, które zawis³y
 	busymutex.lock();
-	while(!busy.empty())
+	while (!busy.empty())
 	{
 		dev = busy.last();
 		busy.pop_back();
@@ -141,7 +141,7 @@ aRtsPlayerRecorder::~aRtsPlayerRecorder()
 
 	// a teraz te które s± w puli wolnych urz±dzeñ
 	poolmutex.lock();
-	while(!pool.empty())
+	while (!pool.empty())
 	{
 		dev = pool.last();
 		pool.pop_back();
@@ -152,7 +152,7 @@ aRtsPlayerRecorder::~aRtsPlayerRecorder()
 	kdebugf2();
 }
 
-void aRtsPlayerRecorder::openDevice(SoundDeviceType type, int sample_rate, int channels, SoundDevice& device)
+void aRtsPlayerRecorder::openDevice(SoundDeviceType type, int sample_rate, int channels, SoundDevice &device)
 {
 	int itype;
 	if (type == PLAY_ONLY)
@@ -181,7 +181,7 @@ void aRtsPlayerRecorder::openDevice(SoundDeviceType type, int sample_rate, int c
 	if (pool.empty())
 	{
 		poolmutex.unlock();
-		num++;
+		++num;
 		dev = new aRtsDevice();
 		dev->mutex.lock();
 		long pass = random();
@@ -224,7 +224,7 @@ void aRtsPlayerRecorder::openDevice(SoundDeviceType type, int sample_rate, int c
 
 		if (dev->valid && dev->process->canReadLineStderr())
 			kdebugm(KDEBUG_WARNING, "process written on stderr: %s\n", dev->process->readLineStderr().local8Bit().data());
-		if (out!="OK" || !dev->valid)
+		if (out != "OK" || !dev->valid)
 		{
 			dev->mutex.unlock();
 			dev->deleteLater2();
@@ -252,7 +252,7 @@ void aRtsPlayerRecorder::openDevice(SoundDeviceType type, int sample_rate, int c
 		dev->sock = sock;
 		sprintf(tmp, "PASS %ld\n", pass);
 		kdebugm(KDEBUG_INFO, "%d, sending: '%s'\n", dev->valid, tmp);
-		dev->valid = dev->valid && write_all(dev->sock, tmp, strlen(tmp), 100)!=-1;
+		dev->valid = dev->valid && write_all(dev->sock, tmp, strlen(tmp), 100) != -1;
 	}
 	else
 	{
@@ -266,14 +266,14 @@ void aRtsPlayerRecorder::openDevice(SoundDeviceType type, int sample_rate, int c
 
 	sprintf(tmp, "OPEN %d %d %d\n", sample_rate, channels, itype);
 	kdebugm(KDEBUG_INFO, "%d, sending: '%s'\n", dev->valid, tmp);
-	dev->valid = dev->valid && write_all(dev->sock, tmp, strlen(tmp), 100)!=-1;
-	dev->valid = dev->valid && read_line(dev->sock, tmp, 100)!=-1;
-	kdebugm(KDEBUG_INFO, "%d, ret: '%s'\n", dev->valid, dev->valid?tmp:"");
-	if (!dev->valid || sscanf(tmp, "OPENED %d", &dev->no)!=1 || dev->no<0)
+	dev->valid = dev->valid && write_all(dev->sock, tmp, strlen(tmp), 100) != -1;
+	dev->valid = dev->valid && read_line(dev->sock, tmp, 100) != -1;
+	kdebugm(KDEBUG_INFO, "%d, ret: '%s'\n", dev->valid, dev->valid ? tmp : "");
+	if (!dev->valid || sscanf(tmp, "OPENED %d", &dev->no) != 1 || dev->no < 0)
 	{
 		sprintf(tmp, "QUIT\n");
 		kdebugm(KDEBUG_INFO, "%d, sending: '%s'\n", dev->valid, tmp);
-		dev->valid = dev->valid && write_all(dev->sock, tmp, strlen(tmp), 100)!=-1;
+		dev->valid = dev->valid && write_all(dev->sock, tmp, strlen(tmp), 100) != -1;
 		dev->mutex.unlock();
 		dev->deleteLater2();
 		device = NULL;
@@ -303,11 +303,11 @@ void aRtsPlayerRecorder::closeDevice(SoundDevice device)
 	char tmp[50];
 	sprintf(tmp, "CLOSE %d\n", dev->no);
 	kdebugm(KDEBUG_INFO, "%d, sending: '%s'\n", dev->valid, tmp);
-	dev->valid = dev->valid && write_all(dev->sock, tmp, strlen(tmp), 50)!=-1;
-	dev->valid = dev->valid && read_line(dev->sock, tmp, 50)!=-1;
+	dev->valid = dev->valid && write_all(dev->sock, tmp, strlen(tmp), 50) != -1;
+	dev->valid = dev->valid && read_line(dev->sock, tmp, 50) != -1;
 
 	poolmutex.lock();
-	if (!finalizing && (!dev->valid || pool.size()>2))
+	if (!finalizing && (!dev->valid || pool.size() > 2))
 	{
 		poolmutex.unlock();
 		dev->mutex.unlock();
@@ -346,11 +346,11 @@ void aRtsPlayerRecorder::playSample(SoundDevice device, const int16_t* data, int
 	int success;
 	sprintf(tmp, "PLAY %d %d\n", dev->no, length);
 	kdebugm(KDEBUG_INFO, "%d, sending: '%s'\n", dev->valid, tmp);
-	dev->valid = dev->valid && write_all(dev->sock, tmp, strlen(tmp), 50)!=-1;
-	dev->valid = dev->valid && write_all(dev->sock, (const char *)data, length, 65536)!=-1;
-	dev->valid = dev->valid && read_line(dev->sock, tmp, 50)!=-1;
-	kdebugm(KDEBUG_INFO, "%d, ret: '%s'\n", dev->valid, dev->valid?tmp:"");
-	if (!dev->valid || sscanf(tmp, "PLAY SUCCESS: %d", &success)!=1)
+	dev->valid = dev->valid && write_all(dev->sock, tmp, strlen(tmp), 50) != -1;
+	dev->valid = dev->valid && write_all(dev->sock, (const char *)data, length, 65536) != -1;
+	dev->valid = dev->valid && read_line(dev->sock, tmp, 50) != -1;
+	kdebugm(KDEBUG_INFO, "%d, ret: '%s'\n", dev->valid, dev->valid ? tmp : "");
+	if (!dev->valid || sscanf(tmp, "PLAY SUCCESS: %d", &success) != 1)
 		result = false;
 	else
 		result = success;
@@ -373,11 +373,11 @@ void aRtsPlayerRecorder::recordSample(SoundDevice device, int16_t* data, int len
 	int success;
 	sprintf(tmp, "RECORD %d %d\n", dev->no, length);
 	kdebugm(KDEBUG_INFO, "%d, sending: '%s'\n", dev->valid, tmp);
-	dev->valid = dev->valid && write_all(dev->sock, tmp, strlen(tmp), 50)!=-1;
-	dev->valid = dev->valid && read_all(dev->sock, (char *)data, length)!=-1;
-	dev->valid = dev->valid && read_line(dev->sock, tmp, 50)!=-1;
-	kdebugm(KDEBUG_INFO, "%d, ret: '%s'\n", dev->valid, dev->valid?tmp:"");
-	if (!dev->valid || sscanf(tmp, "RECORD SUCCESS: %d", &success)!=1)
+	dev->valid = dev->valid && write_all(dev->sock, tmp, strlen(tmp), 50) != -1;
+	dev->valid = dev->valid && read_all(dev->sock, (char *)data, length) != -1;
+	dev->valid = dev->valid && read_line(dev->sock, tmp, 50) != -1;
+	kdebugm(KDEBUG_INFO, "%d, ret: '%s'\n", dev->valid, dev->valid ? tmp : "");
+	if (!dev->valid || sscanf(tmp, "RECORD SUCCESS: %d", &success) != 1)
 		result = false;
 	else
 		result = success;
@@ -398,9 +398,9 @@ void aRtsPlayerRecorder::setFlushingEnabled(SoundDevice device, bool enabled)
 	dev->mutex.lock();
 	sprintf(tmp, "SETFLUSHING %d %d\n", dev->no, (int)enabled);
 	kdebugm(KDEBUG_INFO, "%d, sending: '%s'\n", dev->valid, tmp);
-	dev->valid = dev->valid && write_all(dev->sock, tmp, strlen(tmp), 50)!=-1;
-	dev->valid = dev->valid && read_line(dev->sock, tmp, 50)!=-1;
-	kdebugm(KDEBUG_INFO, "%d, ret: '%s'\n", dev->valid, dev->valid?tmp:"");
+	dev->valid = dev->valid && write_all(dev->sock, tmp, strlen(tmp), 50) != -1;
+	dev->valid = dev->valid && read_line(dev->sock, tmp, 50) != -1;
+	kdebugm(KDEBUG_INFO, "%d, ret: '%s'\n", dev->valid, dev->valid ? tmp : "");
 	dev->mutex.unlock();
 	kdebugf2();
 }
