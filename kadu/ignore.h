@@ -7,7 +7,6 @@
 #include <qvaluelist.h>
 
 #include "misc.h"
-#include "libgadu.h"
 
 /**
 	Dialog umo¿liwiaj±cy zarz±dzanie list± ignorowanych

@@ -5,7 +5,6 @@
 #include <qlistview.h>
 #include <qstring.h>
 #include <qsocketnotifier.h>
-#include "libgadu.h"
 #include "userlist.h"
 
 /**

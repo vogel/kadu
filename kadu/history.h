@@ -17,7 +17,6 @@
 #include <qlistbox.h>
 #include <qlistview.h>
 
-#include "libgadu.h"
 #include "misc.h"
 
 #define	HISTORYMANAGER_ENTRY_CHATSEND	0x00000001

@@ -74,6 +74,37 @@ struct SearchRecord
 
 };
 
+class SocketNotifiers : public QObject
+{
+	Q_OBJECT
+
+	private:
+		struct gg_http *h;
+		QSocketNotifier *snr;
+		QSocketNotifier *snw;
+
+	private slots:
+		void dataReceived();
+		void dataSent();
+
+	public:
+		SocketNotifiers();
+		~SocketNotifiers();
+
+		void setGGHttp(struct gg_http *);
+		struct gg_http *getGGHttp();
+
+		void createSocketNotifiers(struct gg_http *);
+		void deleteSocketNotifiers();
+		void recreateSocketNotifiers();
+
+		void checkWrite();
+		
+	signals:
+		void socketEvent();
+
+};
+
 typedef uin_t UinType;
 
 class GaduProtocol : public QObject
@@ -81,30 +112,16 @@ class GaduProtocol : public QObject
 	Q_OBJECT
 
 	private:
-		struct gg_http *registerHttp;
-		QSocketNotifier *registerSNR;
-		QSocketNotifier *registerSNW;
+		SocketNotifiers *registerSN;
+		SocketNotifiers *unregisterSN;
+		SocketNotifiers *remindSN;
+		SocketNotifiers *changePasswordSN;
 
-		void createRegisterSocketNotifiers();
-		void deleteRegisterSocketNotifiers();
-
-		void registerSocketEvent();
-
-		struct gg_http *unregisterHttp;
-		QSocketNotifier *unregisterSNR;
-		QSocketNotifier *unregisterSNW;
-
-		void createUnregisterSocketNotifiers();
-		void deleteUnregisterSocketNotifiers();
-
-		void unregisterSocketEvent();
-		
 	private slots:
-		void registerDataReceived();
-		void registerDataSent();
-
-		void unregisterDataReceived();
-		void unregisterDataSent();
+		void registerSocketEvent();
+		void unregisterSocketEvent();
+		void remindSocketEvent();
+		void changePasswordSocketEvent();
 
 	public:	
 		static void initModule();
@@ -147,6 +164,16 @@ class GaduProtocol : public QObject
 		 	Wyrejestrowuje u¿ytkownika
 		**/
 		bool doUnregister(UinType uin, QString& password, QString& token_id, QString& token_val);
+
+		/**
+		  	Przypomina has³o
+		**/
+		bool doRemind(UinType uin, QString& token_id, QString& token_val);
+
+		/**
+		  	Zmienia has³o
+		**/
+		bool doChangePassword(UinType uin, QString& mail, QString& password, QString& new_password, QString& token_id, QString& token_val);
 	
 	private slots:
 		void newResults(gg_pubdir50_t res);
@@ -158,6 +185,8 @@ class GaduProtocol : public QObject
 		void newSearchResults(SearchResults& searchResults, int seq, int lastUin);
 		void registered(bool ok, UinType uin);
 		void unregistered(bool ok);
+		void reminded(bool ok);
+		void passwordChanged(bool ok);
 };
 
 extern GaduProtocol* gadu;

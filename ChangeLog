@@ -104,6 +104,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   historiê (michal)
 * kadu (gdy jest zadokowane) nie pojawia siê na pasku zadañ (joi)
 * poprawka szukania g³ównej binarki (akceptowanie pocz±tkowego ../) (joi)
+* trzeci patch porz±dkuj±cy vogela: przypomnienie i zmiana has³a (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

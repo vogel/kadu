@@ -19,7 +19,6 @@
 #include <qvaluelist.h>
 #include <qfile.h>
 
-#include "libgadu.h"
 #include "misc.h"
 #include "userbox.h"
 #include "userlist.h"

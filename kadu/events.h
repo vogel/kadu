@@ -7,7 +7,6 @@
 #include <qlistbox.h>
 #include <qdatetime.h>
 
-#include "libgadu.h"
 #include "misc.h"
 
 class AutoConnectionTimer : private QTimer {
