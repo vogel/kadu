@@ -20,15 +20,17 @@ class Hint : public QHBoxLayout
 	private:
 		QLabel *icon;
 		QLabel *label;
+		QColor bcolor;
 		unsigned int secs;
 		unsigned int ident;
+		void enter();
+		void leave();
 
 	public:
 		Hint(QWidget *parent, const QString &text, const QPixmap &pixmap, unsigned int timeout);
 		~Hint();
 		void setId(unsigned int id) {ident = id;}
 		unsigned int id() const {return ident;}
-
 
 	protected:
 		bool eventFilter(QObject *obj, QEvent *ev);
@@ -39,7 +41,9 @@ class Hint : public QHBoxLayout
 		void set(const QFont &, const QColor &, const QColor &, unsigned int, bool show = true);
 
 	signals:
-		void clicked(unsigned int);
+		void leftButtonClicked(unsigned int);
+		void rightButtonClicked();
+		void midButtonClicked(unsigned int);
 };
 
 class HintManager : public QFrame
@@ -70,6 +74,9 @@ class HintManager : public QFrame
 	private slots:
 		void oneSecond();
 		void setHint();
+		void leftButtonSlot(unsigned int);
+		void rightButtonSlot();
+		void midButtonSlot(unsigned int);
 };
 
 class HintManagerSlots: public QObject

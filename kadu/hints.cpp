@@ -60,9 +60,12 @@ void Hint::setShown(bool show)
 {
 	kdebug("Hint::setShown() show=%d\n", show);
 
-	if (icon != NULL)
-		icon->setShown(show);
-	label->setShown(show);
+	if (show)
+	{
+		if (icon != NULL)
+			icon->show();
+		label->show();
+	}
 }
 
 void Hint::set(const QFont &font, const QColor &color, const QColor &bgcolor, unsigned int id, bool show)
@@ -74,32 +77,74 @@ void Hint::set(const QFont &font, const QColor &color, const QColor &bgcolor, un
 	if (icon != NULL)
 	{
 		icon->setPaletteBackgroundColor(bgcolor);
-		icon->setShown(show);
+		if (show)
+			icon->show();
 	}
 	label->setPaletteForegroundColor(color);
-	label->setPaletteBackgroundColor(bgcolor);
-	label->setShown(show);
+	bcolor = bgcolor;
+	label->setPaletteBackgroundColor(bcolor);
+	if (show)
+		label->show();
 }
 
 bool Hint::eventFilter(QObject *obj, QEvent *ev)
 {
-//	if (obj == icon || obj == label)
-//	{
-		if (ev->type() == QEvent::MouseButtonPress)
+	if (obj == label || (icon != NULL && obj == icon))
+	{
+		switch (ev->type())
 		{
-			emit clicked(ident);
-			return true;
+			case QEvent::Enter:
+				enter();
+				break;
+			case QEvent::Leave:
+				leave();
+				break;
+			case QEvent::MouseButtonPress:
+			{
+				QMouseEvent *mev = (QMouseEvent*)ev;
+				switch (mev->button())
+				{
+					case Qt::LeftButton:
+						emit leftButtonClicked(ident);
+						break;
+					case Qt::RightButton:
+						emit rightButtonClicked();
+						break;
+					case Qt::MidButton:
+						emit midButtonClicked(ident);
+						break;
+					default:
+						return false;
+				}
+				break;
+			}
+			default:
+				return false;
 		}
-		else
-			return false;
-//	}
-//	else
-//		return QHBoxLayout::eventFilter(obj, ev);
+		return true;
+	}
+	else
+		return false;
+}
+
+void Hint::enter(void)
+{
+	if (icon != NULL)
+		icon->setPaletteBackgroundColor(bcolor.light());
+	label->setPaletteBackgroundColor(bcolor.light());
+}
+
+void Hint::leave(void)
+{
+	if (icon != NULL)
+		icon->setPaletteBackgroundColor(bcolor);
+	label->setPaletteBackgroundColor(bcolor);
 }
 
 Hint::~Hint(void)
 {
-	kdebug("Hint::~Hint()\n");
+	kdebug("Hint::~Hint() id=%d\n", ident);
+
 	if (icon != NULL)
 		delete icon;
 	delete label;
@@ -154,9 +199,15 @@ void HintManager::deleteHint(unsigned int id)
 	hints.remove(id);
 	if (!hints.count())
 	{
+	//	grid->setRows(0);
+	//	grid->setCols(0);
+//		grid->invalidate();
 		hint_timer->stop();
 		hide();
-		kdebug("HintManager::deleteHint hints is empty !!\n");
+		kdebug("HintManager::deleteHint hints is empty, grid->isEmpty() %d ,grid rows=%d, grid cols=%d!!\n",grid->isEmpty(),grid->numRows(),grid->numCols());
+//		QLayoutIterator it = grid->iterator();
+//		Hint *item = (Hint*)it.current();
+//		kdebug("cos smiesznego %s \n", item->name());
 		return;
 	}
 	for (int i = id; i < hints.count(); i++)
@@ -175,6 +226,30 @@ void HintManager::oneSecond(void)
 		}
 }
 
+void HintManager::leftButtonSlot(unsigned int id)
+{
+	kdebug("HintManager::leftButtonSlot() %d\n", id);
+
+	deleteHint(id);
+}
+
+void HintManager::rightButtonSlot(void)
+{
+	kdebug("HintManager::rightButtonSlot() hints.count()=%d\n", hints.count());
+
+//	for (int i = 0; i < hints.count(); i++)
+//		grid->removeItem(hints.at(i));
+
+	hint_timer->stop();
+	hide();
+	hints.clear();
+}
+
+void HintManager::midButtonSlot(unsigned int id)
+{
+	kdebug("HintManager::midButtonSlot() %d\n", id);
+}
+
 void HintManager::addHint(const QString& text, const QPixmap& pixmap,  const QFont &font, const QColor &color, const QColor &bgcolor, unsigned int timeout)
 {
 	kdebug("HintManager::addHint()\n");
@@ -182,7 +257,9 @@ void HintManager::addHint(const QString& text, const QPixmap& pixmap,  const QFo
 	int i = hints.count()-1;
 	grid->addLayout(hints.at(i), i, 0);
 	hints.at(i)->set(font, color, bgcolor, i);
-	connect(hints.at(i), SIGNAL(clicked(unsigned int)), this, SLOT(deleteHint(unsigned int)));
+	connect(hints.at(i), SIGNAL(leftButtonClicked(unsigned int)), this, SLOT(leftButtonSlot(unsigned int)));
+	connect(hints.at(i), SIGNAL(rightButtonClicked()), this, SLOT(rightButtonSlot()));
+	connect(hints.at(i), SIGNAL(midButtonClicked(unsigned int)), this, SLOT(midButtonSlot(unsigned int)));
 	setHint();
 	if (!hint_timer->isActive())
 		hint_timer->start(1000);
@@ -348,18 +425,18 @@ void HintManager::initModule(void)
 	ConfigDialog::addGrid("Hints", "Hints options", "grid-options", 2);
 	ConfigDialog::addCheckBox("Hints", "grid-options", "Enable icons in hints", "Icons", true);
 	ConfigDialog::addCheckBox("Hints", "grid-options", "Show connection errors in hints" ,"Errors", true);
-	ConfigDialog::addCheckBox("Hints", "grid-options", "Notify of new chat", "NotifyNewChat", true);
-	ConfigDialog::addCheckBox("Hints", "grid-options", "Notify of new message", "NotifyNewMessage", false);
+	ConfigDialog::addCheckBox("Hints", "grid-options", "Notify about new chat", "NotifyNewChat", true);
+	ConfigDialog::addCheckBox("Hints", "grid-options", "Notify about new message", "NotifyNewMessage", false);
 	ConfigDialog::addCheckBox("Hints", "grid-options", "Show in notify content message", "ShowContentMessage", false);
 	ConfigDialog::addVGroupBox("Hints", "Hints options", "Content message in hint");
 	ConfigDialog::addCheckBox("Hints", "Hints options", "Enable status notification by hint", "NotifyHint", true);
 	ConfigDialog::addVGroupBox("Hints", "Hints options", "Notification options");
 	ConfigDialog::addGrid("Hints", "Notification options", "grid-notify-status", 2);
-	ConfigDialog::addCheckBox("Hints", "grid-notify-status", "Notify of user status change", "NotifyHintChange", false);
-	ConfigDialog::addCheckBox("Hints", "grid-notify-status", "Notify of user become available", "NotifyHintAvailable", true);
-	ConfigDialog::addCheckBox("Hints", "grid-notify-status", "Notify of user become unavailable", "NotifyHintUnavailable", false);
+	ConfigDialog::addCheckBox("Hints", "grid-notify-status", "Notify about user status change", "NotifyHintChange", false);
+	ConfigDialog::addCheckBox("Hints", "grid-notify-status", "Notify about user become available", "NotifyHintAvailable", true);
+	ConfigDialog::addCheckBox("Hints", "grid-notify-status", "Notify about user become unavailable", "NotifyHintUnavailable", false);
 	//ConfigDialog::addCheckBox("grid-notify-status", "Prevent autoaway notify",  "NotifyHintPreventAutoaway", true);
-	ConfigDialog::addCheckBox("Hints", "grid-notify-status", "Add description to hint if exist", "NotifyHintDescription", false);
+	ConfigDialog::addCheckBox("Hints", "grid-notify-status", "Add description to hint if exists", "NotifyHintDescription", false);
 	ConfigDialog::addCheckBox("Hints", "grid-notify-status", "Use custom syntax", "NotifyHintUseSyntax", false);
 	ConfigDialog::addLineEdit("Hints",  "Notification options", "Hint syntax", "NotifyHintSyntax", "");
 	config_file.addVariable("Hints","NewHintUnder",0);
