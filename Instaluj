@@ -18,7 +18,7 @@
 #    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             #
 ############################################################################
 #!/bin/bash
-# $Id: Instaluj,v 1.28 2004/04/11 10:31:15 romek Exp $
+# $Id: Instaluj,v 1.29 2004/04/21 16:28:59 romek Exp $
 # KaduInstaller - Copyright (C) 2004 Sad Mephisto <sad@antisocial.com>
 
 # ./configure, make, make install....  tylko ¿eby ³adnie wygl±da³o
@@ -81,8 +81,7 @@ statyczne()
 		autoaway "Obs³uga automatycznej zmiany statusu" on \
     		autoresponder "Przyk³adowy modu³ Autoresponder" 0 2>log_selectedmodule
 
-	rm -fr .config
-	
+		rm -f .config
 	MODULY="encryption speech sound ext_sound dsp_sound arts_sound esd_sound nas_sound echo autoresponder sms default_sms autoaway"
 	for MODUL in $MODULY; do
 		if [[ `cat log_selectedmodule |grep $MODUL` != "" ]]; then
@@ -109,9 +108,7 @@ dynamiczne()
     		"echo" "Przyk³adowy modu³ Echo" 0 \
 		autoaway "Obs³uga automatycznej zmiany statusu" on \
     		autoresponder "Przyk³adowy modu³ Autoresponder" 0 2>log_selectedmodule
-
-	rm -fr .config
-	
+	rm -f .config
 	MODULY="encryption speech sound ext_sound dsp_sound arts_sound esd_sound nas_sound echo autoresponder sms default_sms autoaway"
 	for MODUL in $MODULY; do
 		if [[ `cat log_selectedmodule |grep $MODUL` != "" ]]; then
@@ -126,12 +123,13 @@ dynamiczne()
 dodatkoweopcje()
 {
 	rm -fr log_configureoptions
-	dialog --checklist "Wybierz modu³y do zainstalowania" 0 75 0 \
-    		"--enable-debug" 	"W³±cza tryb debug" 0 \
-    		"--disable-modules"	"Wy³±cza obs³ugê modu³ów" 0 \
-		"--disable-voice"	"Wy³±cza obs³ugê rozmów g³osowych" 0 \
-		"--with-existing-libgadu" "Linkuje z istniej±cym libgadu" 0 \
+	dialog --separate-output --checklist "Wybierz modu³y do zainstalowania" 0 75 0 \
+    		--enable-debug 	"W³±cza tryb debug" 0 \
+    		--disable-modules	"Wy³±cza obs³ugê modu³ów" 0 \
+		--disable-voice		"Wy³±cza obs³ugê rozmów g³osowych" 0 \
+		--with-existing-libgadu "Linkuje z istniej±cym libgadu" 0 \
     		 2>log_configureoptions
+
 }
 
 # Szuka mo¿liwych przyczyn nieudanej kompilacji (jeszcze zanim wszystko zaczniemy)
@@ -163,9 +161,13 @@ hello()
 
 pathmenu()
 {
-	PREFIXPATH=`dialog --stdout --backtitle "Instalator Kadu" --inputbox  "Podaj ¶cie¿kê instalacji Kadu" 7 50 "/usr/local/"`
-	#grunt to dobre escape'owanie backslashy :P
-	echo -e -n "--prefix=\\\"$PREFIXPATH\\\"" > log_prefix
+	PREF_BAK=$PREFIXPATH
+	PREFIXPATH=`dialog --stdout --backtitle "Instalator Kadu" --inputbox  "Podaj ¶cie¿kê instalacji Kadu" 7 50 "$PREFIXPATH"`
+	if [[ $PREFIXPATH != "" ]]; then
+		echo -e -n "--prefix=$PREFIXPATH" > log_prefix
+	else
+	PREFIXPATH=$PREF_BAK
+	fi;
 }
 
 configmenu()
@@ -209,7 +211,9 @@ mainmenu(){
 		cd kadu
 		dialog --beep --backtitle "Instalator Kadu" --msgbox "¬ród³a Kadu zosta³y zaktualizowane!" 0 0
 	elif [ $MENUCHOICE == "Konfiguracja" ]; then
+		while [ 1 ]; do
 		configmenu
+		done;
 	elif [ $MENUCHOICE == "Koniec" ]; then
 		goodbye
 	elif [ $MENUCHOICE == "Deinstalacja" ]; then
@@ -253,6 +257,8 @@ gotowe()
 }
 
 # URUCHOM PROGRAM
+PREFIXPATH=/usr
+echo -e -n "--prefix=$PREFIXPATH" > log_prefix
 hello
 szukajproblemow
 while [ 1 ]; do

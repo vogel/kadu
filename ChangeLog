@@ -6,7 +6,11 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 +++ wersja 0.3.9
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
   gdy tak rzeczywi¶cie jest (joi)
-
+* Skrypt Instaluj -> naprawiony b³±d cudzys³owów w prefix i opcjach 
+  kompilacji, dodana pêtla na okno konfiguracji, prefix domy¶lny to /usr,
+  <cancel> nie powoduje pustego prefixu zachowana jest opcja wy¶wietlana,
+  przy ponownej próbie edycji prefixu pamiêtana jest wersja wcze¶niej
+  wybrana (Ron_K)
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
   moze powinnismy zmienic nazwe projektu na FastKadu? ;) (adrian)
