@@ -278,26 +278,26 @@ int EmoticonsManager::selectorCount() const
 
 QString EmoticonsManager::selectorString(int emot_num) const
 {
-    if ((emot_num>=0) && (emot_num<Selector.count()))
-	return Selector[emot_num].alias;
-    else
-	return "";
+	if ((emot_num>=0) && (emot_num<Selector.count()))
+		return Selector[emot_num].alias;
+	else
+		return "";
 }
 
 QString EmoticonsManager::selectorAnimPath(int emot_num) const
 {
-    if ((emot_num>=0) && (emot_num<Selector.count()))
-	return themePath()+"/"+Selector[emot_num].anim;
-    else
-	return "";
+	if ((emot_num>=0) && (emot_num<Selector.count()))
+		return themePath()+"/"+Selector[emot_num].anim;
+	else
+		return "";
 }
 
 QString EmoticonsManager::selectorStaticPath(int emot_num) const
 {
-    if ((emot_num>=0) && (emot_num<Selector.count()))
-	return themePath()+"/"+Selector[emot_num].stat;
-    else
-	return "";
+	if ((emot_num>=0) && (emot_num<Selector.count()))
+		return themePath()+"/"+Selector[emot_num].stat;
+	else
+		return "";
 }
 				
 EmoticonsManager *emoticons;
@@ -725,20 +725,25 @@ void AnimTextItem::draw(
 	int cw, int ch, const QColorGroup& /*cg*/,
 	bool /*selected*/ )
 {
-	if(EditSize==Edit->size())
+//	kdebugm(KDEBUG_WARNING, "%s x:%d y:%d cx:%d cy:%d cw:%d ch:%d\n", text.local8Bit().data(), x, y, cx, cy, cw, ch);
+//	kdebugm(KDEBUG_WARNING, "contX:%d contY:%d contW:%d contH:%d visW:%d visH:%d\n", Edit->contentsX(), Edit->contentsY(), Edit->contentsWidth(), Edit->contentsHeight(), Edit->visibleWidth(), Edit->visibleHeight());
+//	if(EditSize==Edit->size())
+	if(EditSize==Edit->size() && ch!=Edit->visibleHeight())
+	{
+//		kdebugm(KDEBUG_WARNING, "back\n\n");
 		return;
+	}
+//	else
+//		kdebugm(KDEBUG_WARNING, "\n");
 //	if(Label->isVisible()&&EditSize==Edit->size())
 //		return;
-//	kdebugm(KDEBUG_WARNING, "x:%d y:%d cx:%d cy:%d cw:%d ch:%d\n", x, y, cx, cy, cw, ch);
-//	kdebugm(KDEBUG_WARNING, "contX:%d contY:%d contW:%d contH:%d visW:%d visH:%d\n", Edit->contentsX(), Edit->contentsY(), Edit->contentsWidth(), Edit->contentsHeight(), Edit->visibleWidth(), Edit->visibleHeight());
-
 
 	EditSize=Edit->size();
 
 	QPoint u(x, y - cy);
 	//trzeba ustaliæ warto¶æ prawej strony tej nierówno¶ci, na pewno jest to warto¶æ dodatnia
 	//nie jest to 0,10,ch,height,visibleHeight/2
-	if (u.y()>=10) 
+	if (u.y()>=10)
 		u += QPoint(0, Edit->visibleHeight()-ch);
 	
 //	Edit->moveChild(Label, u.x(), u.y());
@@ -818,7 +823,7 @@ EmotsWalker::~EmotsWalker()
     edge marked by given character
     return NULL if there is none
 */
-PrefixNode* EmotsWalker::findChild( PrefixNode* node, const QChar& c ) 
+PrefixNode* EmotsWalker::findChild( PrefixNode* node, const QChar& c )
 {
 	myPair.first = c;
 	// create variable 'position' with result of binary search in childs
