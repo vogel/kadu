@@ -395,7 +395,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 
 		for(QValueList<ElementConnections>::iterator k=(*i).ConnectedSlots.begin(); k!=(*i).ConnectedSlots.end(); ++k)
 			if (!connect((*i).widget, (*k).signal, (*k).receiver, (*k).slot))
-				kdebugm(KDEBUG_ERROR, "unable to connect signal: "+(*k).signal+" slot: "+(*k).slot+"\n");
+				kdebugm(KDEBUG_ERROR, "unable to connect signal: %s to slot: %s\n",(*k).signal.local8Bit().data(),(*k).slot.local8Bit().data());
 	}
 
 	for(QValueList<ElementConnections>::iterator a=SlotsOnCreate.begin(); a!=SlotsOnCreate.end(); ++a)
