@@ -55,12 +55,14 @@ bool DnsHandler::isCompleted() {
 
 UserListElement::UserListElement(UserList* parent)
 {
-	Parent=parent;
+	Parent = parent;
+	version = 0;
 };
 
 UserListElement::UserListElement()
 {
-	Parent=NULL;
+	Parent = NULL;
+	version = 0;
 };
 
 QString UserListElement::group()
