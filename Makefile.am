@@ -16,9 +16,9 @@ AUTOMAKE_OPTIONS = foreign
 # time to say automake goodbye?
  ifeq ($(enable_pheaders),yes)
 
-all: kadu/kadu-headers.h.gch
+all: kadu-headers
 
-kadu/kadu-headers.h.gch:
+kadu-headers:
 	@echo
 	@echo -e "\033[32m>>>\033[0m Precompiling headers ..."
 	@echo
