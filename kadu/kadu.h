@@ -166,11 +166,10 @@ class Kadu : public QMainWindow
 		void changePassword();
 		void deleteHistory();
 		void deleteUsers();
-		void exportUserlist();
 		void help();
 		void hideKadu();
 		void ignoreUser();
-		void importUserlist();
+		void importExportUserlist();
 		void lookupInDirectory();
 		void manageIgnored();
 		void notifyUser();

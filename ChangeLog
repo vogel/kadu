@@ -145,6 +145,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   nalezy skasowac sobie wszystkie wpisy z "sciezki do ikon" 
   oraz "sciezki do dzwiekow" - od tej pory sa to tylko dodatkowe sciezki 
   a nie wszystkie (pawel_p)
+* ³atka KID-a poprawiaj±ce wygl±d okna importu/exportu listy 
+  kontaków  (KID/michal)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

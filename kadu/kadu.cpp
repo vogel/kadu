@@ -725,14 +725,9 @@ void Kadu::quit()
 	close(true);
 }
 
-void Kadu::exportUserlist()
+void Kadu::importExportUserlist()
 {
-	(new UserlistExport())->show();
-}
-
-void Kadu::importUserlist()
-{
-	(new UserlistImport())->show();
+	(new UserlistImportExport())->show();
 }
 
 
@@ -1601,8 +1596,7 @@ void Kadu::createMenu() {
 	MainMenu->insertItem(tr("Personal information"), this,SLOT(personalInfo()));
 	MainMenu->insertSeparator();
 	MainMenu->insertItem(icons_manager.loadIcon("LookupUserInfo"), tr("&Search for users"), this, SLOT(searchInDirectory()));
-	MainMenu->insertItem(tr("I&mport userlist"), this, SLOT(importUserlist()));
-	MainMenu->insertItem(tr("E&xport userlist"), this, SLOT(exportUserlist()));
+	MainMenu->insertItem(tr("I&mport / Export userlist"), this, SLOT(importExportUserlist()));
 	MainMenu->insertItem(icons_manager.loadIcon("AddUser"), tr("&Add user"), this, SLOT(addUserAction()),HotKey::shortCutFromFile("ShortCuts", "kadu_adduser"));
 	MainMenu->insertSeparator();
 	MainMenu->insertItem(tr("H&elp"), this, SLOT(help()));

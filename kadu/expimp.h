@@ -5,54 +5,40 @@
 #include <qlistview.h>
 #include <qstring.h>
 #include <qsocketnotifier.h>
+#include <qhbox.h>
 
 #include "userlist.h"
 
 /**
-	Dialog umo¿liwiaj±cy import listy kontaktów z serwera GG
+	Dialog umo¿liwiaj±cy import / export listy kontaktów z serwera GG
 **/
-class UserlistImport : public QDialog {
+class UserlistImportExport : public QHBox {
 	Q_OBJECT
 	public:
-		UserlistImport(QWidget *parent=0, const char *name=0);
-		
+		UserlistImportExport();
+		~UserlistImportExport();
 	private:
-		QPushButton *fetchbtn;
+		int ret;
+		QPushButton *pb_fetch;
 		UserList importedUserlist;
+		QPushButton *pb_send;
+		QPushButton *pb_delete;
+		QPushButton *pb_tofile;
 
 	protected:
-		QListView *results;
+		QListView *lv_userlist;
 
 	private slots:
-		void startTransfer(void);
+		void startImportTransfer(void);
 		void makeUserlist(void);
 		void updateUserlist(void);
 		void fromfile();
 		void userListImported(bool ok, UserList& userList);
-
-};
-
-/**
-	Dialog umo¿liwiaj±cy eksport listy kontaktów na serwer GG
-**/
-class UserlistExport : public QDialog {
-	Q_OBJECT
-	public:
-		UserlistExport(QWidget *parent=0, const char *name=0);
-
-	private:
-		int ret;
-		QPushButton * sendbtn;
-		QPushButton * deletebtn;
-		QPushButton * tofilebtn;
-
-	private slots:
-		void startTransfer(void);
+		void startExportTransfer(void);
 		void clean(void);
 		void ExportToFile(void);
 		void userListExported(bool ok);
 		void userListCleared(bool ok);
-
 };
 
 #endif

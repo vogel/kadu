@@ -15,6 +15,7 @@
 #include <qregexp.h>
 #include <qtextcodec.h>
 #include <stdlib.h>
+#include <qvbox.h>
 
 #include "gadu.h"
 #include "kadu.h"
@@ -26,46 +27,113 @@
 #include "expimp.h"
 #include "status.h"
 
-UserlistImport::UserlistImport(QWidget *parent, const char *name)
- : QDialog(parent, name, FALSE, Qt::WDestructiveClose) {
-	results = new QListView(this);
+UserlistImportExport::UserlistImportExport() 
+{
+	kdebugf();
+	setWFlags(Qt::WDestructiveClose);
+	setCaption(tr("Import / export userlist"));
+	
+	// create main QLabel widgets (icon and app info)
+	QVBox *left=new QVBox(this);
+	left->setMargin(10);
+	left->setSpacing(10);
+	
+	QLabel *l_icon = new QLabel(left);
+	QWidget *w_blank = new QWidget(left);
+	w_blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
+	
+	QVBox *center=new QVBox(this);
+	center->setMargin(10);
+	center->setSpacing(10);
+	
+	QLabel *l_info = new QLabel(center);
+	l_icon->setPixmap(icons_manager.loadIcon("ImportExportWindowIcon"));
+	l_info->setText(tr("This dialog box allows you to import and export your buddy list to a server or a file."));
+	l_info->setAlignment(Qt::WordBreak);
+	// end create main QLabel widgets (icon and app info)
+	
+	// our QListView
+	// our QVGroupBox
+	QVGroupBox *vgb_import = new QVGroupBox(center);
+	vgb_import->setTitle(tr("Import userlist"));
+	// end our QGroupBox
+	lv_userlist = new QListView(vgb_import);
+	lv_userlist->addColumn(tr("UIN"));
+	lv_userlist->addColumn(tr("Nickname"));
+	lv_userlist->addColumn(tr("Disp. nick"));
+	lv_userlist->addColumn(tr("Name"));
+	lv_userlist->addColumn(tr("Surname"));
+	lv_userlist->addColumn(tr("Mobile no."));
+	lv_userlist->addColumn(tr("Group"));
+	lv_userlist->addColumn(tr("Email"));
+	lv_userlist->setAllColumnsShowFocus(true);
+	// end our QListView
 
-	fetchbtn = new QPushButton(QIconSet(icons_manager.loadIcon("FetchUserlist")),tr("&Fetch userlist"), this);
-	QObject::connect(fetchbtn, SIGNAL(clicked()), this, SLOT(startTransfer()));
+	// buttons
+	QHBox *hb_importbuttons = new QHBox(vgb_import);
+	QWidget *w_blank2 = new QWidget(hb_importbuttons);
+	hb_importbuttons->setSpacing(5);
+	w_blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
+	
+	pb_fetch = new QPushButton(icons_manager.loadIcon("FetchUserList"), tr("&Fetch userlist"), hb_importbuttons, "fetch");
+	QPushButton *pb_file = new QPushButton(icons_manager.loadIcon("ImportFromFile"), tr("&Import from file"), hb_importbuttons, "file");
+	QPushButton *pb_save = new QPushButton(icons_manager.loadIcon("SaveUserlist"), tr("&Save results"), hb_importbuttons, "save");
+	QPushButton *pb_merge = new QPushButton(icons_manager.loadIcon("MergeUserlist"), tr("&Merge results"), hb_importbuttons, "merge");
+	// end buttons
+	
+	// our QVGroupBox
+	QVGroupBox *vgb_export = new QVGroupBox(center);
+	vgb_export->setTitle(tr("Export userlist"));
+	// end our QGroupBox
 
-	QPushButton *filebtn = new QPushButton(QIconSet(icons_manager.loadIcon("ImportFromFile")),tr("&Import from file"), this);
-	QObject::connect(filebtn, SIGNAL(clicked()), this, SLOT(fromfile()));
+	QLabel *l_itemscount = new QLabel(vgb_export);
+	l_itemscount->setText(tr("%1 entries will be exported").arg(userlist.count()));
+	
+	// export buttons
+	QHBox *hb_exportbuttons = new QHBox(vgb_export);
+	QWidget *w_blank3 = new QWidget(hb_exportbuttons);
+	hb_exportbuttons->setSpacing(5);
+	w_blank3->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
+	
+	pb_send = new QPushButton(icons_manager.loadIcon("SendUserlist"),tr("Se&nd userlist"), hb_exportbuttons, "send");
+	pb_delete = new QPushButton(icons_manager.loadIcon("DeleteUserlist"),tr("&Delete userlist"), hb_exportbuttons, "delete");
+	pb_tofile = new QPushButton(icons_manager.loadIcon("ExportUserlist"),tr("&Export to file"), hb_exportbuttons, "tofile");
+	// end export buttons
+	
+	// buttons
+	QHBox *bottom = new QHBox(center);
+	QWidget *w_blank4 = new QWidget(bottom);
+	bottom->setSpacing(5);
+	w_blank4->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
+	
+	QPushButton *pb_close = new QPushButton(icons_manager.loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	// end buttons
+	
+	// connect
+	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
+	connect(pb_fetch, SIGNAL(clicked()), this, SLOT(startImportTransfer()));
+	connect(pb_file, SIGNAL(clicked()), this, SLOT(fromfile()));
+	connect(pb_save, SIGNAL(clicked()), this, SLOT(makeUserlist()));
+	connect(pb_merge, SIGNAL(clicked()), this, SLOT(updateUserlist()));
+	connect(pb_send, SIGNAL(clicked()), this, SLOT(startExportTransfer()));	
+	connect(pb_tofile, SIGNAL(clicked()), this, SLOT(ExportToFile()));
+	connect(pb_delete, SIGNAL(clicked()), this, SLOT(clean()));
 
-	QPushButton *savebtn = new QPushButton(QIconSet(icons_manager.loadIcon("SaveUserlist")),tr("&Save results"), this);
-	QObject::connect(savebtn, SIGNAL(clicked()), this, SLOT(makeUserlist()));
-
-	QPushButton *mergebtn = new QPushButton(QIconSet(icons_manager.loadIcon("MergeUserlist")),tr("&Merge results"), this);
-	QObject::connect(mergebtn, SIGNAL(clicked()), this, SLOT(updateUserlist()));
-
-	results->addColumn(tr("UIN"));
-	results->addColumn(tr("Nickname"));
-	results->addColumn(tr("Disp. nick"));
-	results->addColumn(tr("Name"));
-	results->addColumn(tr("Surname"));
-	results->addColumn(tr("Mobile no."));
-	results->addColumn(tr("Group"));
-	results->addColumn(tr("Email"));
-	results->setAllColumnsShowFocus(true);
-
-	QGridLayout * grid = new QGridLayout(this, 2, 3, 3, 3);
-	grid->addMultiCellWidget(results, 0, 0, 0, 3);
-	grid->addWidget(filebtn, 1, 0);
-	grid->addWidget(fetchbtn, 1, 1);
-	grid->addWidget(savebtn, 1, 2);
-	grid->addWidget(mergebtn, 1, 3);
-
-	resize(450, 330);
-	setCaption(tr("Import userlist"));
-
+	connect(gadu, SIGNAL(userListExported(bool)), this, SLOT(userListExported(bool)));
+	connect(gadu, SIGNAL(userListCleared(bool)), this, SLOT(userListCleared(bool)));
 	connect(gadu, SIGNAL(userListImported(bool, UserList&)), this, SLOT(userListImported(bool, UserList&)));
+	// end connect
+	
+ 	loadGeometry(this, "General", "ImportExportDialogGeometry", 0, 0, 450, 400);
 }
 
-void UserlistImport::fromfile() {
+UserlistImportExport::~UserlistImportExport() 
+{
+	kdebugf();
+	saveGeometry(this, "General", "ImportExportDialogGeometry");
+}
+
+void UserlistImportExport::fromfile() {
 	kdebugf();
 	QString fname = QFileDialog::getOpenFileName("/", QString::null, this);
 	if (fname.length()) {
@@ -81,16 +149,16 @@ void UserlistImport::fromfile() {
 		}
 }
 
-void UserlistImport::startTransfer() {
+void UserlistImportExport::startImportTransfer() {
 	kdebugf();
 	if (getCurrentStatus() == GG_STATUS_NOT_AVAIL)
 		return;
 
 	if (gadu->doImportUserList())
-		fetchbtn->setEnabled(false);
+		pb_fetch->setEnabled(false);
 }
 
-void UserlistImport::makeUserlist() {
+void UserlistImportExport::makeUserlist() {
 	unsigned int i;
 	
 	kdebugf();
@@ -117,7 +185,7 @@ void UserlistImport::makeUserlist() {
 	kdebug("UserlistImport::makeUserlist(): Wrote userlist\n");
 }
 
-void UserlistImport::updateUserlist() {
+void UserlistImportExport::updateUserlist() {
 	unsigned int i;
 	
 	kdebugf();
@@ -143,62 +211,22 @@ void UserlistImport::updateUserlist() {
 	kdebug("UserlistImport::updateUserlist(): Wrote userlist\n");
 }
 
-void UserlistImport::userListImported(bool ok, UserList& userList)
+void UserlistImportExport::userListImported(bool ok, UserList& userList)
 {
 	kdebug("UserlistImport::userListImported()\n");
 
 	importedUserlist = userList;
-	results->clear();
+	lv_userlist->clear();
 
-	fetchbtn->setEnabled(true);
+	pb_fetch->setEnabled(true);
 
 	if (ok)
 		for (unsigned int i = 0; i < userList.count(); i++)
-			new QListViewItem(results, QString::number(userList[i].uin), userList[i].nickname, userList[i].altnick, userList[i].first_name,
+			new QListViewItem(lv_userlist, QString::number(userList[i].uin), userList[i].nickname, userList[i].altnick, userList[i].first_name,
 				userList[i].last_name, userList[i].mobile, userList[i].group(), userList[i].email);
 }
 
-UserlistExport::UserlistExport(QWidget *parent, const char *name)
- : QDialog (parent, name, FALSE, Qt::WDestructiveClose) {
-
-	QGridLayout *grid = new QGridLayout(this,3,1,3,3);
-
-	int i = 0;
-	for (UserList::iterator it = userlist.begin(); it != userlist.end(); it++)
-		if (!(*it).anonymous)
-			i++;
-
-	QString message(tr("%1 entries will be exported").arg(userlist.count()));
-
-	QLabel *clabel = new QLabel(message,this);
-
-	sendbtn = new QPushButton(QIconSet(icons_manager.loadIcon("SendUserlist")),tr("&Send userlist"),this);
-	
-	deletebtn = new QPushButton(QIconSet(icons_manager.loadIcon("DeleteUserlist")),tr("&Delete userlist"),this);
-	
-	tofilebtn = new QPushButton(QIconSet(icons_manager.loadIcon("ExportUserlist")),tr("&Export to file"),this);
-
-	QPushButton * closebtn = new QPushButton(QIconSet(icons_manager.loadIcon("CloseWindow")),tr("&Close window"),this);
-
-	QObject::connect(closebtn, SIGNAL(clicked()), this, SLOT(close()));
-
-	grid->addWidget(clabel,0,0);
-	grid->addWidget(sendbtn,1,0);
-	grid->addWidget(deletebtn,2,0);	
-	grid->addWidget(tofilebtn,3,0);		
-	grid->addWidget(closebtn,4,0);
-
-	QObject::connect(sendbtn, SIGNAL(clicked()), this, SLOT(startTransfer()));	
-	QObject::connect(tofilebtn, SIGNAL(clicked()), this, SLOT(ExportToFile()));
-	QObject::connect(deletebtn, SIGNAL(clicked()), this, SLOT(clean()));
-
-	connect(gadu, SIGNAL(userListExported(bool)), this, SLOT(userListExported(bool)));
-	connect(gadu, SIGNAL(userListCleared(bool)), this, SLOT(userListCleared(bool)));
-
-	setCaption(tr("Export userlist"));	
-}
-
-void UserlistExport::startTransfer()
+void UserlistImportExport::startExportTransfer()
 {
 	kdebugf();
 
@@ -207,19 +235,19 @@ void UserlistExport::startTransfer()
 
 	if (gadu->doExportUserList(userlist))
 	{
-		sendbtn->setEnabled(false);
-		deletebtn->setEnabled(false);
-		tofilebtn->setEnabled(false);	
+		pb_send->setEnabled(false);
+		pb_delete->setEnabled(false);
+		pb_tofile->setEnabled(false);	
 	}
 }
 
-void UserlistExport::ExportToFile(void)
+void UserlistImportExport::ExportToFile(void)
 {
 	kdebugf();
 	QString contacts;
-	sendbtn->setEnabled(false);
-	deletebtn->setEnabled(false);
-	tofilebtn->setEnabled(false);	
+	pb_send->setEnabled(false);
+	pb_delete->setEnabled(false);
+	pb_tofile->setEnabled(false);	
 
 	QString fname = QFileDialog::getSaveFileName("/", QString::null,this);
 	if (fname.length()) {
@@ -239,12 +267,12 @@ void UserlistExport::ExportToFile(void)
 				tr("The application encountered an internal error\nThe export userlist to file was unsuccessful"));
 		}
 
-	sendbtn->setEnabled(true);
-	deletebtn->setEnabled(true);
-	tofilebtn->setEnabled(true);
+	pb_send->setEnabled(true);
+	pb_delete->setEnabled(true);
+	pb_tofile->setEnabled(true);
 }
 
-void UserlistExport::clean() {
+void UserlistImportExport::clean() {
 	kdebugf();
 
 	if (getCurrentStatus() == GG_STATUS_NOT_AVAIL)
@@ -252,13 +280,13 @@ void UserlistExport::clean() {
 
 	if (gadu->doClearUserList())
 	{
-		deletebtn->setEnabled(false);
-		sendbtn->setEnabled(false);
-		tofilebtn->setEnabled(false);
+		pb_send->setEnabled(false);
+		pb_delete->setEnabled(false);
+		pb_tofile->setEnabled(false);
 	}
 }
 
-void UserlistExport::userListExported(bool ok)
+void UserlistImportExport::userListExported(bool ok)
 {
 	if (ok)
 		MessageBox::msg(tr("Your userlist has been successfully exported to server"));
@@ -266,12 +294,12 @@ void UserlistExport::userListExported(bool ok)
 		QMessageBox::critical(this, tr("Export error"),
 			tr("The application encountered an internal error\nThe export was unsuccessful"));
 
-	sendbtn->setEnabled(true);
-	tofilebtn->setEnabled(true);
-	deletebtn->setEnabled(true);
+	pb_send->setEnabled(true);
+	pb_delete->setEnabled(true);
+	pb_tofile->setEnabled(true);
 }
 
-void UserlistExport::userListCleared(bool ok)
+void UserlistImportExport::userListCleared(bool ok)
 {
 	if (ok)
 		MessageBox::msg(tr("Your userlist has been successfully deleted on server"));
@@ -279,8 +307,8 @@ void UserlistExport::userListCleared(bool ok)
 		QMessageBox::critical(this, tr("Export error"),
 			tr("The application encountered an internal error\nThe delete userlist on server was unsuccessful"));
 
-	sendbtn->setEnabled(true);
-	tofilebtn->setEnabled(true);
-	deletebtn->setEnabled(true);
+	pb_send->setEnabled(true);
+	pb_delete->setEnabled(true);
+	pb_tofile->setEnabled(true);
 }
 
