@@ -1060,7 +1060,7 @@ void ConfigDialog::setupTab6(void) {
 	otherselectfont->hide();
 
 	QVGroupBox *contentsprop = new QVGroupBox(box6);
-	QToolTip::add(contentsprop,i18n("%s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name\n%r = surname, %m - mobile, %u - uin, %g - group, %o - if user doesn't have us in userlist\nIf you leave it empty - default settings will be used"));
+	QToolTip::add(contentsprop,i18n("%s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name\n%r = surname, %m - mobile, %u - uin, %g - group, %o - if user doesn't have us in userlist\nIf you leave blank, default settings will be used"));
 
 	QHBox *panelbox = new QHBox(contentsprop);
 	panelbox->setSpacing(5);
