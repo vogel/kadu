@@ -442,7 +442,7 @@ QString parse_symbols(QString s, int i, UserListElement &ule, bool escape) {
 					if (escape)
 						escapeSpecialCharacters(d);
 					d=d.replace(QRegExp("\n"), QString("<br>"));
-					d=d.replace(QRegExp(" "), QString("&nbsp;"));
+					d=d.replace(QRegExp("\\s\\s"), QString(" &nbsp;"));
 					r+=d;
 				} else {
 				 	if (!escape)

@@ -68,6 +68,8 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 
 	int itemHeight = height(listBox());
 	int yPos;
+	QString descr=isOurUin ? own_description : description();
+	bool hasDescription=isOurUin ? ifStatusWithDescription(getActualStatus()) : !descr.isEmpty();
 
 	if (!pm.isNull()) {
 		yPos = (itemHeight - pm.height()) / 2;
@@ -85,8 +87,7 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 
 		QFontMetrics fm = painter->fontMetrics();
 
-		if (config_file.readBoolEntry("Look", "ShowDesc") && (!description().isEmpty()
-			|| (!own_description.isEmpty() && isOurUin)))
+		if (config_file.readBoolEntry("Look", "ShowDesc") && hasDescription)
 			yPos = fm.ascent() + 1;
 		else
 			yPos = ((itemHeight - fm.height()) / 2) + fm.ascent();
@@ -98,8 +99,7 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 
 //		kdebug("KaduListBoxPixmap::paint(): isOurUin = %d, own_description = %s\n",
 //			isOurUin, (const char *)unicode2latin(own_description));
-		if (config_file.readBoolEntry("Look", "ShowDesc") && (!description().isEmpty()
-			|| (!own_description.isEmpty() && isOurUin))) {
+		if (config_file.readBoolEntry("Look", "ShowDesc") && hasDescription) {
 			yPos += fm.height() - fm.descent();
 
 			QFont newFont = QFont(oldFont);
@@ -107,7 +107,7 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 			painter->setFont(newFont);
 
 			if(config_file.readBoolEntry("Look", "ShowMultilineDecs")) {
-				QStringList lines=QStringList::split("\n", isOurUin ? own_description : description());
+				QStringList lines=QStringList::split("\n", descr);
 				
 				for(QStringList::Iterator it = lines.begin(); it != lines.end(); ++it ){
 					painter->drawText(pm.width() + 5, yPos, *it);
@@ -115,7 +115,7 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 				}
 			}
 				else
-					painter->drawText(pm.width() + 5, yPos, isOurUin ? own_description : description());
+					painter->drawText(pm.width() + 5, yPos, descr);
 
 			painter->setFont(oldFont);
 		}
@@ -124,13 +124,17 @@ void KaduListBoxPixmap::paint(QPainter *painter) {
 
 int KaduListBoxPixmap::height(const QListBox* lb) const
 {
+	UserListElement &user = userlist.byAltNick(text());
+	bool isOurUin=(config_file.readNumEntry("General", "UIN") == user.uin);
+	QString descr=isOurUin ? own_description : description();
+	bool hasDescription=isOurUin ? ifStatusWithDescription(getActualStatus()) : !descr.isEmpty();
 	int h, lh;
 
-	if (description().isEmpty() || !config_file.readBoolEntry("Look", "ShowDesc"))
+	if (!hasDescription || !config_file.readBoolEntry("Look", "ShowDesc"))
 		lh = lb->fontMetrics().lineSpacing() + 2;
 	else{
 		if(config_file.readBoolEntry("Look", "ShowMultilineDecs"))
-			lh = lb->fontMetrics().lineSpacing() * (2 + description().contains('\n')) -2;
+			lh = lb->fontMetrics().lineSpacing() * (2 + descr.contains('\n')) -2;
 		else
 			lh = lb->fontMetrics().lineSpacing() * 2 - 2;
 	}
