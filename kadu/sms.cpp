@@ -295,7 +295,7 @@ void SmsSender::onFinished()
 				emit finished(false);
 			};
 		}
-		else
+		else if(Provider==SMS_ERA)
 		{
 			if(Page.find("zosta³a wys³ana")>=0)
 			{
@@ -306,6 +306,18 @@ void SmsSender::onFinished()
 				QMessageBox::critical((QWidget*)parent(),"SMS",i18n("Provider gateway results page looks strange. SMS was probably NOT sent."));
 				emit finished(false);
 			};		
+		}
+		else // SMS_PLUS
+		{
+			if(Page.find("SMS zosta³ wys³any")>=0)
+			{
+				emit finished(true);
+			}
+			else
+			{
+				QMessageBox::critical((QWidget*)parent(),"SMS",i18n("Provider gateway results page looks strange. SMS was probably NOT sent."));
+				emit finished(false);
+			};				
 		};
 	}
 	else
@@ -330,6 +342,8 @@ void SmsSender::send(const QString& number,const QString& message)
 {
 	Number=number;
 	Message=message;
+	if(Number.length()==12&&Number.left(3)=="+48")
+		Number=Number.right(9);
 	if(Number.length()!=9)
 	{
 		QMessageBox::critical((QWidget*)parent(),"SMS",i18n("Mobile number is incorrect"));
@@ -353,21 +367,24 @@ void SmsSender::send(const QString& number,const QString& message)
 		return;
 	};	
 	// Wyslij
-	State=SMS_LOADING_PAGE;
 	if(Provider==SMS_IDEA)
 	{
+		State=SMS_LOADING_PAGE;
 		Http.setHost("213.218.116.131");
 		Http.get("/");
 	}
 	else if(Provider==SMS_ERA)
 	{
+		State=SMS_LOADING_PAGE;
 		Http.setHost("213.158.194.32");
 		Http.post("sms/sendsms.asp","sms=1");
 	}
 	else
 	{
-		QMessageBox::critical((QWidget*)parent(),"SMS",i18n("Routines for this provider not implemented yet"));
-		emit finished(false);
+		State=SMS_LOADING_RESULTS;
+		Http.setHost("212.2.96.57");
+		QString post_data="tprefix="+Number.left(3)+"&numer="+Number.right(6)+"&odkogo=Kadu&tekst="+Message;
+		Http.post("sms/sendsms.php",post_data);
 	};
 };
 
@@ -409,11 +426,6 @@ Sms::Sms(const QString& altnick, QDialog* parent) : QDialog (parent, "Sms")
 	grid->addWidget(b_send, 3, 3);
 	QObject::connect(b_send, SIGNAL(clicked()), this, SLOT(sendSms()));
 
-	b_send_int = new QPushButton(this);
-	b_send_int->setText(i18n("Send (internal)"));
-	grid->addWidget(b_send_int, 3, 1);
-	QObject::connect(b_send_int, SIGNAL(clicked()), this, SLOT(sendSmsInternal()));
-
 	smslen = new QLabel(this);
 	smslen->setText("0");
 	grid->addWidget(smslen, 3, 0);
@@ -452,14 +464,14 @@ void Sms::updateList(const QString &newnumber)
 
 void Sms::sendSms(void) {
 	b_send->setEnabled(false);
-	b_send_int->setEnabled(false);
 	body->setEnabled(false);
 
 	appendSMSHistory(recipient->text(),body->text());
 
-	QString SmsAppPath;
 	if(config.smsbuildin)
-		SmsAppPath=QString(BINDIR)+"/kadusms";
+	{
+		Sender.send(recipient->text(),body->text());
+	}
 	else
 	{
 		if(config.smsapp=="")
@@ -468,30 +480,30 @@ void Sms::sendSms(void) {
 			fprintf(stderr,"KK SMS application NOT specified. Exit.\n");
 			return;
 		};
-		SmsAppPath=config.smsapp;
-	};
+		QString SmsAppPath=config.smsapp;
 		
-	smsProcess = new QProcess(this);
-	if(config.smscustomconf&&(!config.smsbuildin))
-	{
-		QStringList args=QStringList::split(' ',config.smsconf);
-		if(args.find("%n")!=args.end())
-			*args.find("%n")=recipient->text();
-		if(args.find("%m")!=args.end())
-			*args.find("%m")=body->text();
-		args.prepend(SmsAppPath);
-		smsProcess->setArguments(args);
-	}
-	else
-	{
-		smsProcess->addArgument(SmsAppPath);
-		smsProcess->addArgument(recipient->text());
-		smsProcess->addArgument(body->text());
-	};
+		smsProcess = new QProcess(this);
+		if(config.smscustomconf&&(!config.smsbuildin))
+		{
+			QStringList args=QStringList::split(' ',config.smsconf);
+			if(args.find("%n")!=args.end())
+				*args.find("%n")=recipient->text();
+			if(args.find("%m")!=args.end())
+				*args.find("%m")=body->text();
+			args.prepend(SmsAppPath);
+			smsProcess->setArguments(args);
+		}
+		else
+		{
+			smsProcess->addArgument(SmsAppPath);
+			smsProcess->addArgument(recipient->text());
+			smsProcess->addArgument(body->text());
+		};
 
-	if (!smsProcess->start())
-		QMessageBox::critical(this, i18n("SMS error"), i18n("Could not spawn child process. Check if the program is functional") );
-	QObject::connect(smsProcess, SIGNAL(processExited()), this, SLOT(smsSigHandler()));
+		if (!smsProcess->start())
+			QMessageBox::critical(this, i18n("SMS error"), i18n("Could not spawn child process. Check if the program is functional") );
+		QObject::connect(smsProcess, SIGNAL(processExited()), this, SLOT(smsSigHandler()));
+	};
 }
 
 void Sms::smsSigHandler() {
@@ -500,7 +512,6 @@ void Sms::smsSigHandler() {
 	else
 		QMessageBox::warning(this, i18n("SMS not sent"), i18n("The process exited abnormally. The SMS may not be sent"));
 	b_send->setEnabled(true);
-	b_send_int->setEnabled(true);
 	body->setEnabled(true);
 	body->clear();
 }
@@ -511,20 +522,11 @@ void Sms::updateCounter() {
 	smslen->setText(len);
 }
 
-void Sms::sendSmsInternal()
-{
-	b_send->setEnabled(false);
-	b_send_int->setEnabled(false);
-	body->setEnabled(false);
-	Sender.send(recipient->text(),body->text());
-};
-
 void Sms::onSmsSenderFinished(bool success)
 {
 	if(success)
 		QMessageBox::information(this, i18n("SMS sent"), i18n("The SMS was sent and should be on its way"));
 	b_send->setEnabled(true);
-	b_send_int->setEnabled(true);
 	body->setEnabled(true);
 	if(success)
 		body->clear();

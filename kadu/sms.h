@@ -133,7 +133,6 @@ class Sms : public QDialog {
 		QComboBox* list;
 		QLabel *smslen;
 		QPushButton *b_send;
-		QPushButton* b_send_int;
 		QProcess *smsProcess;
 		SmsSender Sender;
 
@@ -143,7 +142,6 @@ class Sms : public QDialog {
 		void sendSms();
 		void updateCounter();
 		void smsSigHandler();
-		void sendSmsInternal();
 		void onSmsSenderFinished(bool success);
 };
 
