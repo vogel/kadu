@@ -12,7 +12,6 @@
 #include <qcolordialog.h>
 #include <qfontdatabase.h>
 #include <qfiledialog.h>
-#include <math.h>
 #include <qvbox.h>
 #include <qhgroupbox.h>
 #include <qpushbutton.h>
@@ -20,13 +19,17 @@
 #include <qfileinfo.h>
 #include <qtimer.h>
 #include <qgrid.h>
+#include <qrect.h>
+#include <qtextstream.h>
+#include <qtextcodec.h>
+
+#include <math.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <stdlib.h>
-#include <qrect.h>
 //
 #include "kadu.h"
 #include "misc.h"
@@ -97,9 +100,10 @@ void loadKaduConfig(void) {
 	config.trayhint = konf->readBoolEntry("TrayHint",true);
 	config.hinterror = konf->readBoolEntry("HintError",true);
 	config.hinttime = konf->readNumEntry("TimeoutHint",5);
-	QRect def_rect(0,0,145,465);
+	QRect def_rect(0, 0, 145, 465);
 	config.geometry = konf->readRectEntry("Geometry",&def_rect);
-	QSize def_size(340,60);
+	config.dockwindows = konf->readEntry("DockWindows", QString::null);
+	QSize def_size(340, 60);
 	config.splitsize = konf->readSizeEntry("SplitSize",&def_size);
 	config.showdesc = konf->readBoolEntry("ShowDesc",true);
 	
@@ -245,6 +249,12 @@ void saveKaduConfig(void) {
 		konf->writeEntry("SplitSize",config.splitsize);
 		konf->writeEntry("Geometry",config.geometry);
 	}
+
+	QTextStream stream(&config.dockwindows, IO_WriteOnly);
+	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
+	stream << *kadu;
+	config.dockwindows.replace(QRegExp("\\n"), "\\n");
+	konf->writeEntry("DockWindows", config.dockwindows);
 
 	konf->setGroup("WWW");
 	konf->writeEntry("DefaultWebBrowser", config.defaultwebbrowser);	

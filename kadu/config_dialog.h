@@ -267,6 +267,7 @@ struct config {
 	QString conferencesyntax;
 
 	QRect geometry;
+	QString dockwindows;
 	QSize splitsize;
 	
 	bool defaultwebbrowser;
