@@ -11,16 +11,19 @@
 #define DOCKAPP_H
 
 #include <qlabel.h>
+#include <qtextbrowser.h>
+#include <qstringlist.h>
 
 class TrayIcon : protected QLabel
 {
 	Q_OBJECT
 
 	private:
+		friend class TrayHint;
+		TrayHint *hint;
 		QWidget* WMakerMasterWidget;
 		QTimer *icon_timer;
 		bool blink;
-		friend class DockHint;
 
 	protected:
 		void setPixmap(const QPixmap& pixmap);
@@ -32,6 +35,7 @@ class TrayIcon : protected QLabel
 		void setType(char **gg_xpm);
 		void show();
 		void connectSignals();
+		void showHint(const QString&, const QString&, int index);
 
 	public slots:
 		// Status change slots
@@ -40,20 +44,26 @@ class TrayIcon : protected QLabel
 		void changeIcon();
 };
 
-class DockHint : public QLabel
+class TrayHint : public QWidget
 {
 	Q_OBJECT
 	
 	private:
-		QTimer *remove_timer;
+		QTimer *hint_timer;
+		QTextBrowser *hint;
+		QStringList hint_list;
+
 	public:
-		DockHint(QWidget *parent=0);
-		void Show(QString Text);
+		TrayHint(QWidget *parent=0, const char *name = 0);
+		void show_hint(const QString&, const QString&, int index);
+		
 	public slots:
 		void remove_hint();
+
+	private slots:
+		void set_hint();
 };
 
-extern DockHint* tip;
 extern TrayIcon *trayicon;
 
 #endif

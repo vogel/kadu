@@ -417,6 +417,7 @@ void ConfigDialog::setupTab1(void) {
 	b_dock->setText(i18n("Enable dock icon"));
 	if (config.dock)
 		b_dock->setChecked(true);
+	QObject::connect(b_dock, SIGNAL(toggled(bool)), this, SLOT(ifDockEnabled(bool)));
 
 	b_private = new QCheckBox(grid);
 	b_private->setText(i18n("Private status"));
@@ -446,7 +447,12 @@ void ConfigDialog::setupTab1(void) {
 
 	b_showhint = new QCheckBox(grid);
 	b_showhint->setText(i18n("Dock hint(experimental)"));
-	b_showhint->setChecked(config.showhint);
+	if (config.dock)
+		b_showhint->setChecked(config.showhint);
+	else {
+		b_showhint->setChecked(false);
+		b_showhint->setEnabled(false);
+		}
 	
 	b_showdesc = new QCheckBox(grid);
 	b_showdesc->setText(i18n("Show userbox-desc."));
@@ -1025,6 +1031,15 @@ void ConfigDialog::onDefWebBrowserToogle(bool toggled)
 	webhbox1->setEnabled(!toggled);
 };
 
+void ConfigDialog::ifDockEnabled(bool toggled) {
+	if (!toggled) {
+		b_showhint->setChecked(false);
+		b_showhint->setEnabled(false);
+		}
+	else
+		b_showhint->setEnabled(true);
+}
+
 void ConfigDialog::ifDccEnabled(bool toggled) {
 	b_dccip->setEnabled(toggled);
 	b_dccfwd->setEnabled(toggled);
@@ -1326,11 +1341,9 @@ void ConfigDialog::updateConfig(void) {
 	config.addtodescription = b_addtodescription->isChecked();
 	if (!config.addtodescription)
 		kadu->autostatus_timer->stop();
-		
-//	if (!b_showhint->isChecked() && config.showhint)
-//		tip = NULL;
+
 	config.showhint = b_showhint->isChecked();
-	
+
 	if (!b_showdesc->isChecked() && config.showdesc) {
 		kadu->hidedesc();
 		config.showdesc = b_showdesc->isChecked();

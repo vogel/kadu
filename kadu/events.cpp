@@ -235,12 +235,10 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 		}
 
 	if (config.showhint) {
-//		if (!tip)
-//			tip = new DockHint(0);
-//		if (msgclass == GG_CLASS_CHAT)
-//			tip->Show(i18n("Chat with: ")+nick.latin1());
-//		if (msgclass == GG_CLASS_MSG)
-//			tip->Show(i18n("Message from: ")+nick.latin1());
+		if (msgclass == GG_CLASS_CHAT)
+			trayicon->showHint(i18n("Chat with: "), (const char *)nick.local8Bit(),0);
+		if (msgclass == GG_CLASS_MSG)
+			trayicon->showHint(i18n("Message from: "), (const char *)nick.local8Bit(),0);
 	}
 
 	PendingMsgs::Element elem;

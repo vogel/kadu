@@ -73,12 +73,18 @@ TrayIcon::TrayIcon(QWidget *parent, const char *name)
 	icon_timer = new QTimer(this);
 	blink = FALSE;
 	QObject::connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
+
+	hint = new TrayHint(0);
 }
 
 TrayIcon::~TrayIcon()
 {
 	if(config.dock_wmaker)
 		delete WMakerMasterWidget;
+	
+	delete hint;
+	
+	fprintf(stderr, "KK TrayIcon::~TrayIcon()\n");
 }
 
 void TrayIcon::setPixmap(const QPixmap& pixmap)
@@ -219,99 +225,103 @@ void TrayIcon::mousePressEvent(QMouseEvent * e)
 		}
 }
 
-DockHint::DockHint(QWidget *parent) : QLabel(parent,"docktip",WStyle_NoBorder|WStyle_StaysOnTop|WStyle_Tool|WX11BypassWM|WWinOwnDC)
+void TrayIcon::showHint(const QString &str, const QString &nick, int index) {
+	fprintf(stderr,"KK TrayIcon::showHint()\n");
+	hint->show_hint(str,nick,index);
+}
+
+TrayHint::TrayHint(QWidget *parent, const char *name)
+	: QWidget(parent,"TrayHint",WStyle_NoBorder | WStyle_StaysOnTop | WStyle_Tool | WX11BypassWM | WWinOwnDC)
 {
-	fprintf(stderr,"KK DockHint::DockHint\n");
-	remove_timer = new QTimer(this);
-	setAlignment(Qt::AlignCenter);
-	setPaletteBackgroundColor(QColor(255,255,230));
-	setFrameStyle(QFrame::Box|QFrame::Plain);
-	setLineWidth(1);	
-	connect(remove_timer,SIGNAL(timeout()),this,SLOT(remove_hint()));
+	fprintf(stderr,"KK TrayHint::TrayHint\n");
+	
+	hint = new QTextBrowser(this);
+	hint->setVScrollBarMode(QScrollView::AlwaysOff);
+	hint->setHScrollBarMode(QScrollView::AlwaysOff);
+	hint->setFont(config.fonts.userbox);
+//	hint->setPaletteBackgroundColor("#FF00AA");
+
+	hint_timer = new QTimer();
+	
+	QObject::connect(hint_timer,SIGNAL(timeout()),this,SLOT(remove_hint()));
 }
 
-void DockHint::Show(QString Text) {
-	fprintf(stderr,"KK DockHint::Show(%s)\n",Text.latin1());
-	if (text()=="")
-		setText(Text);
+void TrayHint::set_hint(void) {
+	QPoint pos_hint;
+	QSize size_hint;
+	QPoint pos_tray = trayicon->mapToGlobal(QPoint(0, 0));
+	QString text_hint; 
+	for (QStringList::Iterator points = hint_list.begin(); points != hint_list.end(); ++points)
+		text_hint.append(*points);
+	size_hint = QFontMetrics(config.fonts.userbox).size(Qt::ExpandTabs, text_hint);
+	size_hint = QSize(size_hint.width()+20,size_hint.height()+10);
+	resize(size_hint);
+	hint->resize(size_hint);
+	QSize size_desk = QApplication::desktop()->size();
+	if (pos_tray.x() < size_desk.width()/2)
+		pos_hint.setX(pos_tray.x()+32);
 	else
-		setText(text()+"\n"+Text);
-	
-//Zamotany kod, nie probowac nawet go zrozumiec ;)
-	QPoint p = trayicon->mapToGlobal(QPoint(0, 0));
-	QSize size = QFontMetrics(config.fonts.userbox).size(Qt::ExpandTabs, text());
-//trzeba dodac kilka pixeli bo to gowno wyzej nie dziala jak trzeba, na przyszlosc trzeba bedzie cos lepszego wymyslec
-	size = QSize(size.width() + 5, size.height() + 5);
-	fprintf(stderr, "w:%d,h:%d\n", size.width(), size.height());
-	resize(size.width(), size.height());
-	QSize desksize = QApplication::desktop()->size();
+		pos_hint.setX(pos_tray.x()-size_hint.width());
+	if (pos_tray.y() < size_desk.height()/2)
+		pos_hint.setY(pos_tray.y()+32);
+	else
+		pos_hint.setY(pos_tray.y()-size_hint.height());
+	move(pos_hint);
+	fprintf(stderr,"KK TrayHint::set_hint()\n");
+}
 
-	if (p.x() + size.width() > desksize.width()) {
-		if (p.x() - size.width() <0)
-			p.setX(p.x() + trayicon->rect().width());
-		else
-			p.setX(p.x() - size.width());
-	}
+void TrayHint::show_hint(const QString &str, const QString &nick, int index) {
+	fprintf(stderr,"KK TrayHint::show_hint(%s,%s,%d)\n",str.latin1(),nick.latin1(),index);
+	
+	QString text;
+	text.append("<FONT color=\"");
+	text.append(config.colors.mychatText.name());
+	text.append("\">");
+	text.append("<CENTER>");
+	if (index == 0) {
+		text.append(str);
+		text.append("<B>");
+		text.append(nick);
+		text.append("</B>");
+		}
 	else {
-		if (p.x() - size.width() < 0)
-			p.setX(p.x() + trayicon->rect().width());
-		else
-			p.setX(p.x() - size.width());
-	}
-	if (p.y() - size.height() - trayicon->rect().height() < 0)
-		p.setY(p.y() + trayicon->rect().height() / 2 + size.height());
-	else
-		p.setY(p.y() - trayicon->rect().height() / 2 - size.height());
-//Koniec zamotanego kodu, otrzymalismy calkiem dobre wspolrzedne na docktip
+		text.append("<B>");
+		text.append(nick);
+		text.append("</B>");
+		text.append(str);
+		}
+	text.append("</CENTER></FONT>");
 	
-	move(p);
+	if (hint->text()=="") {
+		hint->setText(text);
+		hint_list.append(str+nick);
+		}
+	else {
+		hint->setText(hint->text()+"\n"+text);
+		hint_list.append("\n"+str+nick);
+		}
+	set_hint();
 	show();
-	if (!remove_timer->isActive())
-		remove_timer->start(5000);
+	if (!hint_timer->isActive())
+		hint_timer->start(5000);
 }
 
-void DockHint::remove_hint() {
-	fprintf(stderr, "DockWidget::remove_hint()\n");
-	int len = text().find('\n');
-	fprintf(stderr, "len=%d\n", len);
-	if (len > 0)
-		setText(text().remove(0, len + 1));
+void TrayHint::remove_hint() {
+	int len = hint->text().find("\n");
+	if ( len > 0) {
+		hint->setText(hint->text().remove(0, len + 1));
+		hint_list.erase(hint_list.fromLast());
+		fprintf(stderr, "KK TrayHint::remove_hint() hint_list counts=%d\n",hint_list.count());
+		}
 	else {
 		hide();
-		clear();
-		remove_timer->stop();
+		hint->clear();
+		hint_timer->stop();
+		hint_list.clear();
+		fprintf(stderr, "KK TRayHint::remove_hint() hint and hint_list is cleared\n");
 		return;
 	}
-//zamotany kod
-	QPoint p = trayicon->mapToGlobal(QPoint(0, 0));
-	QSize size = QFontMetrics(config.fonts.userbox).size(Qt::ExpandTabs,text());
-//trzeba dodac kilka pixeli bo to gowno wyzej nie dziala jak trzeba, na przyszlosc trzeba bedzie cos lepszego wymyslec
-	size = QSize(size.width() + 5, size.height() + 5);
-	fprintf(stderr, "w:%d,h:%d\n", size.width(), size.height());
-	resize(size.width(), size.height());
-	QSize desksize = QApplication::desktop()->size();
-
-	if (p.x() + size.width() > desksize.width()) {
-		if (p.x() - size.width() <0)
-			p.setX(p.x() + trayicon->rect().width());
-		else
-			p.setX(p.x() - size.width());
-	}
-	else {
-		if (p.x() - size.width() < 0)
-			p.setX(p.x() + trayicon->rect().width());
-		else
-			p.setX(p.x() - size.width());
-	}
-	if (p.y() - size.height() - trayicon->rect().height() < 0)
-		p.setY(p.y() + trayicon->rect().height() / 2 + size.height());
-	else
-		p.setY(p.y() - trayicon->rect().height() / 2 - size.height());
-//Koniec zamotanego kodu, otrzymalismy calkiem dobre wspolrzedne na docktip
-	
-	move(p);
+	set_hint();
 }
 
 TrayIcon *trayicon = NULL;
-DockHint *tip;
-

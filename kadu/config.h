@@ -159,6 +159,7 @@ class ConfigDialog : public QTabDialog	{
 		void chooseMsgTest();
 		void chooseChatTest();
 		void chooseNotifyTest();
+		void ifDockEnabled(bool);
 		void ifNotifyGlobal(bool);
 		void ifNotifyAll(bool);
 		void ifDccEnabled(bool);
