@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.45 2003/10/05 22:12:57 chilek Exp $ */
+/* $Id: libgadu.h,v 1.46 2003/10/09 15:53:48 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -66,6 +66,8 @@ struct gg_common {
 	gg_common_head(struct gg_common)
 };
 
+struct gg_image_queue;
+
 /*
  * struct gg_session
  *
@@ -130,6 +132,8 @@ struct gg_session {
 	char *userlist_reply;	/* fragment odpowiedzi listy kontaktów */
 
 	int userlist_blocks;	/* na ile kawa³ków podzielono listê kontaktów */
+
+	struct gg_image_queue *images;	/* aktualnie wczytywane obrazki */
 };
 
 /*
@@ -361,6 +365,19 @@ int gg_send_message_ctcp(struct gg_session *sess, int msgclass, uin_t recipient,
 int gg_ping(struct gg_session *sess);
 int gg_userlist_request(struct gg_session *sess, char type, const char *request);
 
+uint32_t gg_crc32(uint32_t crc, const unsigned char *buf, int len);
+
+struct gg_image_queue {
+	uin_t sender;			/* nadawca obrazka */
+	uint32_t size;			/* rozmiar */
+	uint32_t crc32;			/* suma kontrolna */
+	char *filename;			/* nazwa pliku */
+	char *image;			/* bufor z obrazem */
+	uint32_t done;			/* ile ju¿ wczytano */
+
+	struct gg_image_queue *next;	/* nastêpny na li¶cie */
+};
+
 /*
  * enum gg_event_t
  *
@@ -394,7 +411,9 @@ enum gg_event_t {
 
 	GG_EVENT_STATUS60,		/* kto¶ zmieni³ stan w GG 6.0 */
 	GG_EVENT_NOTIFY60,		/* kto¶ siê pojawi³ w GG 6.0 */
-	GG_EVENT_USERLIST		/* odpowied¼ listy kontaktów w GG 6.0 */
+	GG_EVENT_USERLIST,		/* odpowied¼ listy kontaktów w GG 6.0 */
+	GG_EVENT_IMAGE_REQUEST,		/* pro¶ba o wys³anie obrazka GG 6.0 */
+	GG_EVENT_IMAGE_REPLY		/* podes³any obrazek GG 6.0 */
 };
 
 #define GG_EVENT_SEARCH50_REPLY GG_EVENT_PUBDIR50_SEARCH_REPLY
@@ -477,7 +496,7 @@ struct gg_event {
         union {		/* @event */
                 struct gg_notify_reply *notify;	/* informacje o li¶cie kontaktów -- GG_EVENT_NOTIFY */
 
-		int failure;			/* b³±d po³±czenia -- GG_EVENT_FAILURE */
+		enum gg_failure_t failure;	/* b³±d po³±czenia -- GG_EVENT_FAILURE */
 
 		struct gg_dcc *dcc_new;		/* nowe po³±czenie bezpo¶rednie -- GG_EVENT_DCC_NEW */
 		
@@ -546,6 +565,20 @@ struct gg_event {
 			char type;		/* rodzaj odpowiedzi */
 			char *reply;		/* tre¶æ odpowiedzi */
 		} userlist;
+
+		struct {			/* @image_request pro¶ba o obrazek */
+			uin_t sender;		/* nadawca pro¶by */
+			uint32_t size;		/* rozmiar obrazka */
+			uint32_t crc32;		/* suma kontrolna */
+		} image_request;
+
+		struct {			/* @image_reply odpowied¼ z obrazkiem */
+			uin_t sender;		/* nadawca odpowiedzi */
+			uint32_t size;		/* rozmiar obrazka */
+			uint32_t crc32;		/* suma kontrolna */
+			char *filename;		/* nazwa pliku */
+			char *image;		/* bufor z obrazkiem */
+		} image_reply;
 	} event;
 };
 
@@ -757,6 +790,8 @@ void gg_userlist_put_free(struct gg_http *f);
 struct gg_http *gg_userlist_remove(uin_t uin, const char *password, int async);
 int gg_userlist_remove_watch_fd(struct gg_http *f);
 void gg_userlist_remove_free(struct gg_http *f);
+
+
 
 /*
  * funkcje dotycz±ce komunikacji miêdzy klientami.
@@ -1111,6 +1146,12 @@ struct gg_msg_richtext_format {
 	uint8_t font;	  
 } GG_PACKED;
 
+struct gg_msg_richtext_image {
+	uint16_t unknown1;
+	uint32_t size;
+	uint32_t crc32;
+} GG_PACKED;
+
 #define GG_FONT_BOLD 0x01
 #define GG_FONT_ITALIC 0x02
 #define GG_FONT_UNDERLINE 0x04
@@ -1125,6 +1166,20 @@ struct gg_msg_richtext_color {
 struct gg_msg_recipients {
 	uint8_t flag;
 	uint32_t count;
+} GG_PACKED;
+
+struct gg_msg_image_request {
+	uint8_t flag;
+	uint32_t size;
+	uint32_t crc32;
+} GG_PACKED;
+
+struct gg_msg_image_reply {
+	uint8_t flag;
+	uint32_t size;
+	uint32_t crc32;
+	/* char filename[]; */
+	/* char image[]; */
 } GG_PACKED;
 
 #define GG_SEND_MSG_ACK 0x0005

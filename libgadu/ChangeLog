@@ -4,6 +4,24 @@ oznacza, ¿e ,,nick'' jest pomys³odawc± lub podes³a³ patcha, a zrobi³
 to kto¶ oznaczony przez ,,x'' (w - wojtekka, s - speedy, a - arekm,
 d - drg, sz - szalik).
 
+// 2003-10-09
+
+- poprawka segfaultu w gg_free_session() z w±tkami (Chilek/w)
+// 2003-10-08
+
+- poprawka zapisu tokenu na dysku (porridge/w)
+
+// 2003-10-06
+
+- przywrócenie opisu pakietów GG_STATUS i GG_NOTIFY_REPLY (trzcionkowski/w)
+- libgadu: poprawka segfaulta przy pobieraniu listy kontaktów (Chilek/w)
+- uaktualnienie opisu protoko³u o obrazki w wiadomo¶ciach (w)
+- dodanie testowej komendy /_hexmsg, która wysy³a wiadomo¶æ o tre¶ci podanej
+  w kodzie heksadecymalnym (w)
+- libgadu: dodanie do pliku nag³ówkowego struktur dotycz±cych obrazków (w)
+- libgadu: dodanie zdarzenia GG_EVENT_IMAGE_REQUEST, gdy rozmówca prosi
+  o przes³anie obrazka (w)
+
 // 2003-10-05
 
 - libgadu: poprawka wysy³ania listy kontaktów na serwer (Chilek/w)
@@ -343,4 +361,4 @@ d - drg, sz - szalik).
 - poprawka zachowania trybu wielolinijkowego (theKnight/w)
 
 
-$Id: ChangeLog,v 1.25 2003/10/05 22:12:57 chilek Exp $
+$Id: ChangeLog,v 1.26 2003/10/09 15:53:47 chilek Exp $

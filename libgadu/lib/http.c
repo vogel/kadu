@@ -1,4 +1,4 @@
-/* $Id: http.c,v 1.25 2003/10/02 15:33:40 chilek Exp $ */
+/* $Id: http.c,v 1.26 2003/10/09 15:53:48 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
