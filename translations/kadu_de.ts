@@ -935,16 +935,16 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
         <translation>Geschwindigkeit: 0KB/s (nicht gestartet)</translation>
     </message>
     <message>
-        <source>File transfer</source>
-        <translation>Datei-Transfer</translation>
-    </message>
-    <message>
         <source>Speed: </source>
         <translation>Geschwindigkeit: </translation>
     </message>
     <message>
         <source>(stalled)</source>
         <translation>(gestoppt)</translation>
+    </message>
+    <message>
+        <source>File transfered %1%</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1589,6 +1589,42 @@ Check your internet connection.</source>
     <message>
         <source>&amp;Cancel</source>
         <translation>&amp;Abbrechen</translation>
+    </message>
+</context>
+<context>
+    <name>ModulesDialog</name>
+    <message>
+        <source>Manage Modules</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Installed modules</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Load</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loaded modules</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unload</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ModulesManager</name>
+    <message>
+        <source>Cannot find init_module() or close_module().
+Maybe it&apos;s not Kadu-compatible Module.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot load module library.
+Maybe it&apos;s incorrecty compiled.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

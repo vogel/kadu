@@ -95,6 +95,29 @@ if test ! -f libgadu/Makefile; then
  fi;
 }
 
+function Konfiguruj_Modules()
+{
+	QTDIR="$QT_DIR"
+	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
+	export QTDIR
+	KDEDIR="$KDE_DIR"
+	export KDEDIR
+	OPER="Configure"
+	echo "==============================================================================="
+	echo "                Uruchamiam plik configure z modulami"
+	echo "==============================================================================="
+	./configure "--prefix=$APP_DIR" "--enable-voice" "--enable-modules"
+if test ! -f libgadu/Makefile; then
+        Error
+	exit
+ fi;
+  if test ! -f Makefile; then
+        Error
+	exit
+ fi;
+}
+
+
 function Konfiguruj_bez_libgadu()
 {
 	QTDIR="$QT_DIR"
@@ -146,7 +169,7 @@ function Konfiguruj_z_debug()
 	echo "==============================================================================="
 	echo "                Uruchamiam plik configure z opcjÄ… Debug"
 	echo "==============================================================================="
-	./configure "--prefix=$APP_DIR" "--with-debug"
+	./configure "--prefix=$APP_DIR" "--enable-debug" "--enable-voice" "--enable-modules"
 if test ! -f libgadu/Makefile; then
         Error
 	exit
@@ -268,6 +291,7 @@ function ShowInfo()
 	echo " |          NaciÅ›nij   B  aby rozpoczÄ…Ä‡ instalacjÄ™ bez libgadu.               |"
 	echo " |          NaciÅ›nij   V  aby rozpoczÄ…Ä‡ instalacjÄ™ z rozmowami glosowymi.     |"
 	echo " |          NaciÅ›nij   S  aby rozpoczÄ…Ä‡ instalacjÄ™ bez szyfrowania w SSL.     |"
+	echo " |          NaciÅ›nij   M  aby rozpoczÄ…Ä‡ instalacjÄ™ z modulami.                |"
 	echo " |          NaciÅ›nij   G  rozpoczÄ…Ä‡ instalacjÄ™ z debug.                      |"
 	echo " |          NaciÅ›nij   P  aby uzyskaÄ‡ Pomoc za pomocÄ… programu Mozilla.       |"
 	echo " |          NaciÅ›nij   E  aby zakoÅ„czyÄ‡ program instalacyjny.                 |"
@@ -413,7 +437,12 @@ while [ 1 ]; do
 			Zainstaluj
 			Aktualizuj_ldsoconf
 		fi;
-
+		if [[ ("$REPLY" == "M") || ("$REPLY" == "m") ]]; then
+			Konfiguruj_Modules
+			Kompiluj
+			Zainstaluj
+			Aktualizuj_ldsoconf
+		fi;
 		if [[ ("$REPLY" == "B") || ("$REPLY" == "b") ]]; then
 			Konfiguruj_bez_libgadu
 			Kompiluj
@@ -536,6 +565,28 @@ if test ! -f libgadu/Makefile; then
  fi;
 }
 
+function Konfiguruj_Modules()
+{
+	QTDIR="$QT_DIR"
+	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
+	export QTDIR
+	KDEDIR="$KDE_DIR"
+	export KDEDIR
+	OPER="Configure"
+	echo "==============================================================================="
+	echo "                Uruchamiam plik configure z modulami"
+	echo "==============================================================================="
+	./configure "--prefix=$APP_DIR" "--enable-voice" "--enable-modules"
+if test ! -f libgadu/Makefile; then
+        Error
+	exit
+ fi;
+  if test ! -f Makefile; then
+        Error
+	exit
+ fi;
+}
+
 
 function Konfiguruj_bez_ssl()
 {
@@ -570,7 +621,7 @@ function Konfiguruj_z_debug()
 	echo "==============================================================================="
 	echo "                Uruchamiam plik configure z opcj± Debug"
 	echo "==============================================================================="
-	./configure "--prefix=$APP_DIR" "--with-debug"
+	./configure "--prefix=$APP_DIR" "--enable-debug" "--enable-voice" "--enable-modules"
 
 if test ! -f libgadu/Makefile; then
         Error
@@ -693,6 +744,7 @@ function ShowInfo()
 	echo " |          Naci¶nij   B  aby rozpocz±æ instalacjê bez libgadu.               |"
 	echo " |          Naci¶nij   V  aby rozpocz±æ instalacjê z rozmowami glosowymi.          |"
 	echo " |          Naci¶nij   S  aby rozpocz±æ instalacjê bez szyfrowania w SSL.     |"
+	echo " |          Naci¶nij   M  aby rozpocz±æ instalacjê z modulami.                |"
 	echo " |          Naci¶nij   G  aby rozpocz±æ instalacjê z debug.                   |"
 	echo " |          Naci¶nij   P  aby uzyskaæ Pomoc za pomoc± programu Mozilla.       |"
 	echo " |          Naci¶nij   E  aby zakoñczyæ program instalacyjny.                 |"
@@ -834,7 +886,12 @@ while [ 1 ]; do
 			Zainstaluj
 			Aktualizuj_ldsoconf
 		fi;
-
+		if [[ ("$REPLY" == "M") || ("$REPLY" == "m") ]]; then
+			Konfiguruj_Modules
+			Kompiluj
+			Zainstaluj
+			Aktualizuj_ldsoconf
+		fi;
 		if [[ ("$REPLY" == "B") || ("$REPLY" == "b") ]]; then
 			Konfiguruj_bez_libgadu
 			Kompiluj

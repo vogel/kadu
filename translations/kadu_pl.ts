@@ -935,16 +935,16 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <translation>Prędkość: 0KB/s (nie rozpoczęto)</translation>
     </message>
     <message>
-        <source>File transfer</source>
-        <translation>Transmisja pliku</translation>
-    </message>
-    <message>
         <source>Speed: </source>
         <translation>Prędkość: </translation>
     </message>
     <message>
         <source>(stalled)</source>
         <translation>(zatrzymana)</translation>
+    </message>
+    <message>
+        <source>File transfered %1%</source>
+        <translation>Transmisja pliku %1%</translation>
     </message>
 </context>
 <context>
@@ -1589,6 +1589,44 @@ Sprawdź swoje połączenie internetowe.</translation>
     <message>
         <source>&amp;Cancel</source>
         <translation>&amp;Anuluj</translation>
+    </message>
+</context>
+<context>
+    <name>ModulesDialog</name>
+    <message>
+        <source>Manage Modules</source>
+        <translation>Menadżer Modułów</translation>
+    </message>
+    <message>
+        <source>Installed modules</source>
+        <translation>Zainstalowane moduły</translation>
+    </message>
+    <message>
+        <source>Load</source>
+        <translation>Ładuj</translation>
+    </message>
+    <message>
+        <source>Loaded modules</source>
+        <translation>Moduły załadowane</translation>
+    </message>
+    <message>
+        <source>Unload</source>
+        <translation>Wyładuj</translation>
+    </message>
+</context>
+<context>
+    <name>ModulesManager</name>
+    <message>
+        <source>Cannot find init_module() or close_module().
+Maybe it&apos;s not Kadu-compatible Module.</source>
+        <translation>Nie mogę znaleźć init_module() lub close_module().
+Być może nie jest to moduł kompatybilny z Kadu.</translation>
+    </message>
+    <message>
+        <source>Cannot load module library.
+Maybe it&apos;s incorrecty compiled.</source>
+        <translation>Nie mogę załadować bibloteki modułów.
+Być może jest nieprawidłowo skompilowana.</translation>
     </message>
 </context>
 <context>
