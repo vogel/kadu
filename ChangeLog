@@ -13,6 +13,8 @@
 * ograniczenie statusu opisowego do 40 znaków i przejscie na QLineEdit
 * mo¿liwo¶æ konfiguracji serwera proxy w oknie konfiguracji
 * w strukturze config: char *password -> QString password
+* autoryzacja proxy
+* ENTER/RETURN w li¶cie u¿ytkowników dzia³a tak jak podwójne klikniêcie myszk±
 
 +++ wersja 0.3.2
 * dalsze porz±dki w kodzie
