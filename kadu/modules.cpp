@@ -40,6 +40,7 @@ Library::~Library()
 	kdebugf();
 	if (Handle != NULL)
 		dlclose(Handle);
+	kdebugf2();
 }
 
 bool Library::load()
@@ -118,12 +119,14 @@ ModulesDialog::ModulesDialog()
 	
  	loadGeometry(this, "General", "ModulesDialogGeometry", 0, 0, 450, 400);
 	refreshList();
+	kdebugf2();
 }
 
 ModulesDialog::~ModulesDialog()
 {
 	kdebugf();
 	saveGeometry(this, "General", "ModulesDialogGeometry");
+	kdebugf2();
 }
 
 void ModulesDialog::itemsChanging()
@@ -134,6 +137,7 @@ void ModulesDialog::itemsChanging()
 
 void ModulesDialog::moduleAction(QListViewItem *)
 {
+	kdebugf();
 	if (lv_modules->selectedItem() != NULL)
 		if ((lv_modules->selectedItem()->text(1) == tr("Dynamic")) && 
 			(lv_modules->selectedItem()->text(2) == tr("Loaded")))
@@ -142,20 +146,25 @@ void ModulesDialog::moduleAction(QListViewItem *)
 		if ((lv_modules->selectedItem()->text(1) == tr("Dynamic")) && 
 			(lv_modules->selectedItem()->text(2) == tr("Not loaded")))
 			loadItem();
+	kdebugf2();
 }
 
 void ModulesDialog::loadItem()
 {
+	kdebugf();
 	modules_manager->activateModule(lv_modules->selectedItem()->text(0));
 	refreshList();
 	modules_manager->saveLoadedModules();	
+	kdebugf2();
 }
 
 void ModulesDialog::unloadItem()
 {
+	kdebugf();
 	modules_manager->deactivateModule(lv_modules->selectedItem()->text(0));
 	refreshList();
 	modules_manager->saveLoadedModules();
+	kdebugf2();
 }
 
 void ModulesDialog::refreshList()
@@ -182,6 +191,7 @@ void ModulesDialog::refreshList()
 		(void) new QListViewItem(lv_modules, sl_list[i], tr("Dynamic"), tr("Not loaded"));
 	
 	lv_modules->setSelected(lv_modules->findItem(s_selected, 0), true);
+	kdebugf2();
 }
 
 void ModulesDialog::getInfo()
@@ -190,7 +200,10 @@ void ModulesDialog::getInfo()
 	ModuleInfo info;
 	
 	if(!modules_manager->moduleInfo(lv_modules->selectedItem()->text(0), info))
+	{
+		kdebugf2();
 		return;
+	}
 
 	l_moduleinfo->setText(tr("<b>Module: </b>") + lv_modules->selectedItem()->text(0) + 
 				tr("<br/><b>Depends on: </b>") + info.depends.join(", ") + 
@@ -198,6 +211,7 @@ void ModulesDialog::getInfo()
 				tr("<br/><b>Provides: </b>") + info.provides.join(", ") + 
 				tr("<br/><b>Author: </b>") + info.author +
 				tr("<br/><b>Description: </b>") + info.description);
+	kdebugf2();
 }
 
 void ModulesDialog::keyPressEvent(QKeyEvent *ke_event)
@@ -249,6 +263,7 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager")
 	ConfigDialog::addTab("ShortCuts");
 	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", "Define keys");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QString("&Manage Modules").replace(QRegExp("&"), ""), "kadu_modulesmanager", "F4");
+	kdebugf2();
 }
 
 ModulesManager::~ModulesManager()
@@ -276,6 +291,7 @@ ModulesManager::~ModulesManager()
 		kdebugm(KDEBUG_PANIC, "WARNING! Could not deactivate module %s, killing\n",(*i).local8Bit().data());
 		deactivateModule(*i,true);
 	}
+	kdebugf2();
 }
 
 QTranslator* ModulesManager::loadModuleTranslation(const QString& module_name)
@@ -303,15 +319,20 @@ bool ModulesManager::satisfyModuleDependencies(const ModuleInfo& module_info)
 			if(moduleIsInstalled(*it) || moduleIsStatic(*it))
 			{
 				if(!activateModule(*it))
+				{
+					kdebugf2();
 					return false;
+				}
 			}
 			else
 			{
 				MessageBox::msg(tr("Required module %1 was not found").arg(*it));
+				kdebugf2();
 				return false;
 			}
 		}
 	}
+	kdebugf2();
 	return true;
 }
 
@@ -440,11 +461,13 @@ void ModulesManager::saveLoadedModules()
 
 bool ModulesManager::conflictsWithLoaded(const QString &module_name, const ModuleInfo& module_info) const
 {
+	kdebugf();
 	for (QStringList::ConstIterator it = module_info.conflicts.begin(); it != module_info.conflicts.end(); ++it)
 	{
 		if(moduleIsActive(*it))
 		{
 			MessageBox::msg(tr("Module %1 conflicts with: %2").arg(module_name).arg(*it));
+			kdebugf2();
 			return true;
 		}
 		for (QMap<QString, Module>::const_iterator mit=Modules.begin(); mit!=Modules.end(); mit++)
@@ -452,6 +475,7 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, const Modul
 				if ((*it)==(*sit))
 				{
 					MessageBox::msg(tr("Module %1 conflicts with: %2").arg(module_name).arg(mit.key()));
+					kdebugf2();
 					return true;
 				}
 	}
@@ -460,28 +484,37 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, const Modul
 			if ((*sit)==module_name)
 			{
 				MessageBox::msg(tr("Module %1 conflicts with: %2").arg(module_name).arg(it.key()));
+				kdebugf2();
 				return true;
 			}
+	kdebugf2();
 	return false;
 }
 
 bool ModulesManager::activateModule(const QString& module_name)
 {
 	Module m;
-	kdebugm(KDEBUG_INFO, QString("activateModule %1\n").arg(module_name));
+	kdebugm(KDEBUG_FUNCTION_START, "ModulesManager::activateModule(%s)\n", module_name.local8Bit().data());
 	
 	if(moduleIsActive(module_name))
 	{
 		MessageBox::msg(tr("Module %1 is already active").arg(module_name));
+		kdebugf2();
 		return false;
 	}
 
 	if(moduleInfo(module_name,m.info))
 	{
 		if (conflictsWithLoaded(module_name, m.info))
+		{
+			kdebugf2();
 			return false;
+		}
 		if(!satisfyModuleDependencies(m.info))
+		{
+			kdebugf2();
 			return false;
+		}
 	}
 
 	typedef int InitModuleFunc();
@@ -500,6 +533,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 		if(!m.lib->load())
 		{
 			MessageBox::msg(tr("Cannot load %1 module library.:\n%2").arg(module_name).arg(m.lib->error()));
+			kdebugf2();
 			return false;
 		}	
 		init=(InitModuleFunc*)m.lib->resolve(module_name+"_init");
@@ -508,6 +542,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 		{
 			MessageBox::msg(tr("Cannot find required functions.\nMaybe it's not Kadu-compatible Module."));
 			delete m.lib;
+			kdebugf2();
 			return false;
 		}
 	}
@@ -527,17 +562,19 @@ bool ModulesManager::activateModule(const QString& module_name)
 	
 	m.usage_counter=0;
 	Modules.insert(module_name,m);
+	kdebugf2();
 	return true;
 }
 
 bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 {
 	Module m=Modules[module_name];
-	kdebugm(KDEBUG_INFO, "ModulesManager::deactivateModule(%s,%d) usage:%d\n", (const char *)module_name.local8Bit(), force, m.usage_counter);
+	kdebugm(KDEBUG_FUNCTION_START, "ModulesManager::deactivateModule(%s,%d) usage:%d\n", (const char *)module_name.local8Bit(), force, m.usage_counter);
 
 	if(m.usage_counter>0 && !force)
 	{
 		MessageBox::msg(tr("Module %1 cannot be deactivated because it is used now").arg(module_name));
+		kdebugf2();
 		return false;
 	}
 	
@@ -556,6 +593,7 @@ bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 
 	Modules.remove(module_name);
 	
+	kdebugf2();
 	return true;
 }
 
@@ -570,12 +608,14 @@ void ModulesManager::showDialog()
 	}
 	else
 		Dialog->setActiveWindow();
+	kdebugf2();
 }
 
 void ModulesManager::dialogDestroyed()
 {
 	kdebugf();
 	Dialog=NULL;
+	kdebugf2();
 }
 
 void ModulesManager::moduleIncUsageCount(const QString& module_name)

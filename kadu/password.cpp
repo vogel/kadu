@@ -33,10 +33,12 @@ void RemindPassword::start() {
 	delete tokendialog;
 
 	gadu->doRemind(config_file.readNumEntry("General", "UIN"), Tokenid, Tokenval);
+	kdebugf2();
 }
 
 void RemindPassword::reminded(bool ok)
 {
+	kdebugf();
 	if (ok)
 		QMessageBox::information(0, tr("Remind password"),
 				tr("Password reminded"), tr("OK"), 0, 0, 1);
@@ -45,6 +47,7 @@ void RemindPassword::reminded(bool ok)
 				tr("Error during remind password"), tr("OK"), 0, 0, 1);
 
 	deleteLater();
+	kdebugf2();
 }
 
 ChangePassword::ChangePassword(QDialog *parent, const char *name)
@@ -109,12 +112,14 @@ ChangePassword::ChangePassword(QDialog *parent, const char *name)
 	
  	loadGeometry(this, "General", "ChangePasswordDialogGeometry", 0, 0, 355, 300);
 	connect(gadu, SIGNAL(passwordChanged(bool)), this, SLOT(passwordChanged(bool)));
+	kdebugf2();
 }
 
 ChangePassword::~ChangePassword()
 {
 	kdebugf();
 	saveGeometry(this, "General", "ChangePasswordDialogGeometry");
+	kdebugf2();
 }
 
 void ChangePassword::keyPressEvent(QKeyEvent *ke_event)
@@ -153,15 +158,18 @@ void ChangePassword::start()
 	
 	if (gadu->doChangePassword(config_file.readNumEntry("General", "UIN"), mail, password, newpassword, Tokenid, Tokenval))
 		setEnabled(false);
+	kdebugf2();
 }
 
 void ChangePassword::passwordChanged(bool ok)
 {
+	kdebugf();
 	if (ok)
 	{
 		config_file.writeEntry("General", "Password", pwHash(newpwd->text()));
 		config_file.sync();
 		close();
 	}
+	kdebugf2();
 }
 
