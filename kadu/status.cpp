@@ -24,10 +24,10 @@ const char *statustext[] = {"Online", "Online (d.)",
 /* sprawdza czy nasz status jest opisowy
  odporne na podanie status'u z maska dla przyjaciol */
 bool ifStatusWithDescription(int status) {
-    status = status & (~GG_STATUS_FRIENDS_MASK);
+	status = status & (~GG_STATUS_FRIENDS_MASK);
 
-    return (status == GG_STATUS_AVAIL_DESCR || status == GG_STATUS_NOT_AVAIL_DESCR ||
-	status == GG_STATUS_BUSY_DESCR || status == GG_STATUS_INVISIBLE_DESCR);
+	return (status == GG_STATUS_AVAIL_DESCR || status == GG_STATUS_NOT_AVAIL_DESCR ||
+		status == GG_STATUS_BUSY_DESCR || status == GG_STATUS_INVISIBLE_DESCR);
 }
 
 /* zwraca nasz aktualny status 
@@ -38,43 +38,43 @@ int getActualStatus() {
 		return sess->status;
 
 	return GG_STATUS_NOT_AVAIL;
-};
+}
 
 int statusGGToStatusNr(int status) {
-    int i = 0;
-    if (status == GG_STATUS_INVISIBLE2)
-	return 4;
-    while (i < 9 && gg_statuses[i] != status)
-	i++;
-    if (i < 9)
-	return i;
-    return -1;
-};
+	int i = 0;
+	if (status == GG_STATUS_INVISIBLE2)
+		return 4;
+	while (i < 9 && gg_statuses[i] != status)
+		i++;
+	if (i < 9)
+		return i;
+	return -1;
+}
 
 AutoStatusTimer::AutoStatusTimer(QObject* parent)
 	: QTimer(parent,"AutoStatusTimer")
 {
-	connect(this,SIGNAL(timeout()),SLOT(onTimeout()));
-	start(1000);
-};
+	connect(this, SIGNAL(timeout()), SLOT(onTimeout()));
+	start(1000, TRUE);
+}
 
 void AutoStatusTimer::onTimeout()
 {
-	if(ifStatusWithDescription(sess->status))
-	{
+	if (ifStatusWithDescription(sess->status)) {
 		QFile f(preparePath("description"));
-		if(!f.open(IO_ReadOnly)) return;
+		if (!f.open(IO_ReadOnly))
+			return;
 		QTextStream s(&f);
 		QString new_description;
-		new_description=s.readLine();
+		new_description = s.readLine();
 		f.close();
-		if(new_description!=own_description)
-		{
-			fprintf(stderr,"AutoStatus: changing to \"%s\"\n",new_description.local8Bit().data());
-			own_description=new_description;
+		if (new_description!=own_description) {
+			fprintf(stderr, "AutoStatus: changing to \"%s\"\n", new_description.local8Bit().data());
+			own_description = new_description;
 			kadu->setStatus(sess->status);
-		};
-	};
-};
+			}
+		}
+	start(1000, TRUE);
+}
 
 #include "status.moc"
