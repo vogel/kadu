@@ -663,6 +663,7 @@ class ConfigDialog : public QDialog	{
 		**/
 		static int existControl(const QString& groupname, const QString& caption, const QString& name="");
 		
+		static bool dialogOpened();
 		//
 	protected:
 		QListBox* listBox;

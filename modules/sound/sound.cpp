@@ -360,13 +360,15 @@ void SoundSlots::muteUnmuteSounds()
 	sound_manager->setMute(mute);
 	config_file.writeEntry("Sounds", "PlaySound", !mute);
 	
-	QCheckBox *box=ConfigDialog::getCheckBox("Sounds", "Play sounds");
-	if (box)
+	if (ConfigDialog::dialogOpened())
+	{
+		QCheckBox *box=ConfigDialog::getCheckBox("Sounds", "Play sounds");
 		if (box->isChecked()==mute)
 		{
 			box->setChecked(!mute);
 			soundPlayer(!mute, true);
 		}
+	}
 	if (mute) {
 		mutebtn->setIconSet(icons_manager.loadIcon("Mute"));
 		mutebtn->setTextLabel(tr("Unmute sounds"));

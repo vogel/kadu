@@ -1099,7 +1099,16 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) 
 	connect(searchnextbtn, SIGNAL(clicked()), this, SLOT(searchNextBtnClicked()));
 	connect(searchprevbtn, SIGNAL(clicked()), this, SLOT(searchPrevBtnClicked()));
 
-	resize(500,400);
+	QRect def_rect(0, 0, 500, 400);
+	config_file.addVariable("History", "HistoryGeometry", def_rect);
+
+	QRect geom;
+	geom=config_file.readRectEntry("History", "HistoryGeometry");
+	kdebug("Setting HistoryDialog size: width=%d, height=%d and setting position: x=%d, y=%d\n",
+		geom.width(),geom.height(),
+		geom.x(), geom.y());
+	resize(geom.width(),geom.height());
+	move(geom.x(),geom.y());
 
 	findrec.type = 1;
 	findrec.reverse = 0;
@@ -1379,10 +1388,18 @@ void History::searchHistory() {
 }
 
 void History::closeEvent(QCloseEvent *e) {
+	QRect geom;
+	geom.setX(pos().x());
+	geom.setY(pos().y());
+	geom.setWidth(size().width());
+	geom.setHeight(size().height());
+	
+	config_file.writeEntry("History", "HistoryGeometry",geom);
+	
 	if (finding) {
 		e->ignore();
 		closeDemand = true;
-		}
+	}
 	else
 		e->accept();
 }

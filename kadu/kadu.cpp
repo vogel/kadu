@@ -562,10 +562,10 @@ void Kadu::createToolBar()
 void Kadu::popupMenu()
 {
 	UserList users;
-	UserBox *box=UserBox::getActiveUserBox();
-	if (box==NULL)//to siê zdarza...
+	UserBox *activeUserBox=UserBox::getActiveUserBox();
+	if (activeUserBox==NULL)//to siê zdarza...
 		return;
-	users = box->getSelectedUsers();
+	users = activeUserBox->getSelectedUsers();
 	UserListElement user = users.first();
 	bool isOurUin = (user.uin == config_file.readNumEntry("General", "UIN"));
 
@@ -603,7 +603,7 @@ void Kadu::popupMenu()
 		}
 	else {
 		UinsList uins;
-		uins = UserBox::getActiveUserBox()->getSelectedUins();
+		uins = activeUserBox->getSelectedUins();
 		if (isIgnored(uins))
 			UserBox::userboxmenu->setItemChecked(ignoreuseritem, true);
 		if (user.blocking)
@@ -646,23 +646,29 @@ void Kadu::sendSms()
 void Kadu::sendSmsToUser()
 {
 	UserList users;
-	users= UserBox::getActiveUserBox()->getSelectedUsers();
+	UserBox *activeUserBox=UserBox::getActiveUserBox();
+	if (activeUserBox==NULL)
+		return;
+	users= activeUserBox->getSelectedUsers();
 	if (users.count() != 1)
 		return;
 	if (users.first().mobile.length())
-		{
+	{
 		Sms *sms = new Sms(users.first().altnick, 0);
 		sms->show();
-		}
+	}
 }
 
 
 void Kadu::viewHistory() {
-	UinsList uins= UserBox::getActiveUserBox()->getSelectedUins();
+	UserBox *activeUserBox=UserBox::getActiveUserBox();
+	if (activeUserBox==NULL)
+		return;
+	UinsList uins= activeUserBox->getSelectedUins();
 		if (uins.count()) {
 			History *hb = new History(uins);
 			hb->show();
-			}
+		}
 }
 
 void Kadu::sendFile()
@@ -670,8 +676,11 @@ void Kadu::sendFile()
 	if (config_file.readBoolEntry("Network", "AllowDCC"))
 		if (config_dccip.isIp4Addr()) {
 			struct gg_dcc *dcc_new;
+			UserBox *activeUserBox=UserBox::getActiveUserBox();
 			UserList users;
-			users= UserBox::getActiveUserBox()->getSelectedUsers();
+			if (activeUserBox==NULL)
+				return;
+			users= activeUserBox->getSelectedUsers();
 			if (users.count() != 1)
 				return;
 			UserListElement user = users.first();
@@ -694,8 +703,11 @@ void Kadu::makeVoiceChat()
 	if (config_file.readBoolEntry("Network", "AllowDCC"))
 		if (config_dccip.isIp4Addr()) {
 			struct gg_dcc *dcc_new;
+			UserBox *activeUserBox=UserBox::getActiveUserBox();
 			UserList users;
-			users = UserBox::getActiveUserBox()->getSelectedUsers();
+			if (activeUserBox==NULL)
+				return;
+			users = activeUserBox->getSelectedUsers();
 			if (users.count() != 1)
 				return;
 			UserListElement user = users.first();
@@ -715,33 +727,41 @@ void Kadu::makeVoiceChat()
 
 void Kadu::lookupInDirectory() {
 	SearchDialog *sd;
+	UserBox *activeUserBox=UserBox::getActiveUserBox();
 	UserList users;
-	users = UserBox::getActiveUserBox()->getSelectedUsers();
+	if (activeUserBox==NULL)
+		return;
+	users = activeUserBox->getSelectedUsers();
 	if (users.count() == 1) {
-		sd = new SearchDialog(0, tr("User info"),
-			userlist.byAltNick(users.first().altnick).uin);
+		sd = new SearchDialog(0, tr("User info"), userlist.byAltNick(users.first().altnick).uin);
 		sd->show();
 		sd->firstSearch();
-		}
+	}
 	else {
 		sd = new SearchDialog();
 		sd->show();
-		}
+	}
 }
 
 void Kadu::showUserInfo() {
+	UserBox *activeUserBox=UserBox::getActiveUserBox();
 	UserList users;
-	users= UserBox::getActiveUserBox()->getSelectedUsers();
+	if (activeUserBox==NULL)
+		return;
+	users = activeUserBox->getSelectedUsers();
 	if (users.count() == 1)
-		{
+	{
 		UserInfo *ui = new UserInfo("user info", 0, users.first().altnick);
 		ui->show();
-		}
+	}
 }
 
 void Kadu::deleteUsers()
 {
-	QStringList  users = UserBox::getActiveUserBox()->getSelectedAltNicks();
+	UserBox *activeUserBox=UserBox::getActiveUserBox();
+	if (activeUserBox==NULL)
+		return;
+	QStringList  users = activeUserBox->getSelectedAltNicks();
 	removeUser(users, false);
 	if (!Userbox->isSelected(Userbox->currentItem()))
 		descrtb->setText("");
@@ -760,8 +780,10 @@ void Kadu::addUserAction() {
 
 void Kadu::deleteHistory()
 {
-
-	history.removeHistory(UserBox::getActiveUserBox()->getSelectedUins());
+	UserBox *activeUserBox=UserBox::getActiveUserBox();
+	if (activeUserBox==NULL)
+		return;
+	history.removeHistory(activeUserBox->getSelectedUins());
 }
 
 void Kadu::manageIgnored()
@@ -772,7 +794,10 @@ void Kadu::manageIgnored()
 
 void Kadu::openChat()
 {
-	chat_manager->openPendingMsgs(UserBox::getActiveUserBox()->getSelectedUins());
+	UserBox *activeUserBox=UserBox::getActiveUserBox();
+	if (activeUserBox==NULL)
+		return;
+	chat_manager->openPendingMsgs(activeUserBox->getSelectedUins());
 }
 
 void Kadu::searchInDirectory()
@@ -844,7 +869,10 @@ void Kadu::hideKadu()
 
 void Kadu::ignoreUser()
 {
-	UinsList uins = UserBox::getActiveUserBox()->getSelectedUins();
+	UserBox *activeUserBox=UserBox::getActiveUserBox();
+	if (activeUserBox==NULL)
+		return;
+	UinsList uins = activeUserBox->getSelectedUins();
 	if (isIgnored(uins))
 		delIgnored(uins);
 	else
@@ -854,7 +882,10 @@ void Kadu::ignoreUser()
 
 void Kadu::blockUser()
 {
-	UserListElement *puser = &userlist.byAltNick(UserBox::getActiveUserBox()->getSelectedUsers().first().altnick);
+	UserBox *activeUserBox=UserBox::getActiveUserBox();
+	if (activeUserBox==NULL)
+		return;
+	UserListElement *puser = &userlist.byAltNick(activeUserBox->getSelectedUsers().first().altnick);
 	puser->blocking = !puser->blocking;
 	gg_remove_notify_ex(sess, puser->uin, puser->blocking ? GG_USER_NORMAL : GG_USER_BLOCKED);
 	gg_add_notify_ex(sess, puser->uin, puser->blocking ? GG_USER_BLOCKED : GG_USER_NORMAL);
@@ -863,14 +894,20 @@ void Kadu::blockUser()
 
 void Kadu::notifyUser()
 {
-	UserListElement *puser = &userlist.byAltNick(UserBox::getActiveUserBox()->getSelectedUsers().first().altnick);
+	UserBox *activeUserBox=UserBox::getActiveUserBox();
+	if (activeUserBox==NULL)
+		return;
+	UserListElement *puser = &userlist.byAltNick(activeUserBox->getSelectedUsers().first().altnick);
 	puser->notify = !puser->notify;
 	userlist.writeToFile();
 }
 
 void Kadu::offlineToUser()
 {
-	UserListElement *puser = &userlist.byAltNick(UserBox::getActiveUserBox()->getSelectedUsers().first().altnick);
+	UserBox *activeUserBox=UserBox::getActiveUserBox();
+	if (activeUserBox==NULL)
+		return;
+	UserListElement *puser = &userlist.byAltNick(activeUserBox->getSelectedUsers().first().altnick);
 	puser->offline_to_user = !puser->offline_to_user;
 	gg_remove_notify_ex(sess, puser->uin, puser->offline_to_user ? GG_USER_NORMAL : GG_USER_OFFLINE);
 	gg_add_notify_ex(sess, puser->uin, puser->offline_to_user ? GG_USER_OFFLINE : GG_USER_NORMAL);
@@ -1119,12 +1156,15 @@ void Kadu::mouseButtonClicked(int button, QListBoxItem *item) {
 /* if something's pending, open it, if not, open new message */
 void Kadu::sendMessage(QListBoxItem *item)
 {
+	UserBox *activeUserBox=UserBox::getActiveUserBox();
+	if (activeUserBox==NULL)
+		return;
 	uin_t uin = userlist.byAltNick(item->text()).uin;
 	if (uin) {
-		UinsList uins = UserBox::getActiveUserBox()->getSelectedUins();
+		UinsList uins = activeUserBox->getSelectedUins();
 		if (uins.findIndex(config_file.readNumEntry("General", "UIN")) == -1)
 			chat_manager->sendMessage(uin, uins);
-		}
+	}
 	else
 		sendSmsToUser();
 }
@@ -1572,33 +1612,34 @@ bool Kadu::close(bool quit) {
 		kdebug("Kadu::close(): Kadu hide\n");
 		hide();
 		return false;
-		}
+	}
 	else {
 
 #ifdef MODULES_ENABLED
 		ModulesManager::closeModule();
 #endif
 
-	    if (config_file.readBoolEntry("General", "SaveGeometry"))
-	    {
-		if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
-		    {
-			QSize split;
-			config_file.writeEntry("General", "UserBoxHeight", Userbox->size().height());
-			config_file.writeEntry("General", "DescriptionHeight", descrtb->size().height());
-		}
-		if (config_file.readBoolEntry("Look", "ShowStatusButton"))
+		if (config_file.readBoolEntry("General", "SaveGeometry"))
 		{
-			config_file.writeEntry("General", "UserBoxHeight", Userbox->size().height());
-		    }
-		QRect geom;
-		    geom.setX(pos().x());
-		    geom.setY(pos().y());
-		    geom.setWidth(size().width());
-		    geom.setHeight(size().height());
-
-		config_file.writeEntry("General", "Geometry",geom);
-	    }
+			if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
+			{
+				QSize split;
+				config_file.writeEntry("General", "UserBoxHeight", Userbox->size().height());
+				config_file.writeEntry("General", "DescriptionHeight", descrtb->size().height());
+			}
+			if (config_file.readBoolEntry("Look", "ShowStatusButton"))
+			{
+				config_file.writeEntry("General", "UserBoxHeight", Userbox->size().height());
+			}
+			QRect geom;
+			geom.setX(pos().x());
+			geom.setY(pos().y());
+			geom.setWidth(size().width());
+			geom.setHeight(size().height());
+	
+			config_file.writeEntry("General", "Geometry",geom);
+		}
+	
 		config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));
 		config_file.writeEntry( "Look", "CurrentGroupTab", GroupBar->currentTab() );
 

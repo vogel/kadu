@@ -320,7 +320,19 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 	connect(listBox, SIGNAL(highlighted(const QString&)), this, SLOT(changeTab(const QString&)));
 	
 	setCaption(tr("Kadu configuration"));
-	resize(790, 480);
+
+	QRect def_rect(0, 0, 790, 480);
+	config_file.addVariable("General", "ConfigGeometry", def_rect);
+
+	QRect geom;
+	geom=config_file.readRectEntry("General", "ConfigGeometry");
+	kdebug("Setting ConfigDialog size: width=%d, height=%d and setting position: x=%d, y=%d\n",
+		geom.width(),geom.height(),
+		geom.x(), geom.y());
+	resize(geom.width(),geom.height());
+	move(geom.x(),geom.y());
+
+//	resize(790, 480);
 
 	configdialog = this;
 	emit create();
@@ -392,6 +404,14 @@ void ConfigDialog::updateConfig(void)
 				break;
 		}
 	}
+	QRect geom;
+	geom.setX(pos().x());
+	geom.setY(pos().y());
+	geom.setWidth(size().width());
+	geom.setHeight(size().height());
+	
+	config_file.writeEntry("General", "ConfigGeometry",geom);
+
 	for(QValueList<ElementConnections>::iterator a=SlotsOnDestroy.begin(); a!=SlotsOnDestroy.end(); a++)
 		connect(this, SIGNAL(destroy()), (*a).receiver, (*a).slot);
 
@@ -890,6 +910,11 @@ QWidget* ConfigDialog::getWidget(const QString& groupname, const QString& captio
 		return (RegisteredControls[nr].widget);
 	kdebug("Warning there is no \\" +groupname+ "\\"+ caption+ "\\"+ name+ "\\ control\n");
 	return NULL;
+}
+
+bool ConfigDialog::dialogOpened()
+{
+	return (configdialog!=NULL);
 }
 
 QCheckBox* ConfigDialog::getCheckBox(const QString& groupname, const QString& caption, const QString& name)

@@ -536,14 +536,14 @@ UserList UserBox::getSelectedUsers()
 
 UserBox* UserBox::getActiveUserBox()
 {
-    for (int i=0; i<UserBoxes.size(); i++)
+	for (int i=0; i<UserBoxes.size(); i++)
 	{
 		UserBox *box=UserBoxes[i];
 		if (box->isActiveWindow())
 			return box;
 	}
 	kdebug("return NULL!\n");
-    return NULL;
+	return NULL;
 }
 
 QStringList UserBox::getSelectedAltNicks()

@@ -219,6 +219,10 @@ void EncryptionManager::sendMessageFilter(const UinsList& uins,char*& msg)
 void EncryptionManager::userBoxMenuPopup()
 {
 	int sendkeyitem = UserBox::userboxmenu->getItem(tr("Send my public key"));
+
+	UserBox *activeUserBox=UserBox::getActiveUserBox();
+	if (activeUserBox==NULL)
+		return;
 	
 	QString keyfile_path;
 	keyfile_path.append(ggPath("keys/"));
@@ -226,7 +230,7 @@ void EncryptionManager::userBoxMenuPopup()
 	keyfile_path.append(".pem");
 	QFileInfo keyfile(keyfile_path);
 	
-	const UinsList& uins = UserBox::getActiveUserBox()->getSelectedUins();
+	const UinsList& uins = activeUserBox->getSelectedUins();
 	uin_t uin = uins.first();
 	
 	if ((keyfile.permission(QFileInfo::ReadUser) && uin) && (uins.count() == 1))
@@ -241,6 +245,10 @@ void EncryptionManager::sendPublicKey()
 	QString mykey;
 	QFile keyfile;
 
+	UserBox *activeUserBox=UserBox::getActiveUserBox();
+	if (activeUserBox==NULL)
+		return;
+
 	keyfile_path.append(ggPath("keys/"));
 	keyfile_path.append(config_file.readEntry("General", "UIN"));
 	keyfile_path.append(".pem");
@@ -254,7 +262,7 @@ void EncryptionManager::sendPublicKey()
 		keyfile.close();
 		QCString tmp(mykey.local8Bit());
 		UinsList uins;
-		uins.append(UserBox::getActiveUserBox()->getSelectedUins().first());
+		uins.append(activeUserBox->getSelectedUins().first());
 		gadu->sendMessage(uins, tmp.data());
 		QMessageBox::information(kadu, "Kadu",
 			tr("Your public key has been sent"), tr("OK"), QString::null, 0);
