@@ -847,6 +847,7 @@ Optional Features:
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --disable-dependency-tracking Speeds up one-time builds
   --enable-dependency-tracking  Do not reject slow dependency extractors
+  --enable-voice          compile with experimental voice talk support
   --enable-doc=DIR        install doc in DIR [DATADIR/apps/kadu/doc]
   --disable-doc           do not install documentation
   --enable-debug          compile with debug symbols
@@ -5567,6 +5568,38 @@ else
 	CPPFLAGS="$CPPFLAGS -I../libgadu/lib"
 fi
 
+# Voice talk support
+# Check whether --enable-voice or --disable-voice was given.
+if test "${enable_voice+set}" = set; then
+  enableval="$enable_voice"
+
+fi;
+if test -z "$enable_voice"; then
+	enable_voice=no
+fi
+if test "$enable_voice" = "yes"; then
+
+cat >>confdefs.h <<\_ACEOF
+#define VOICE_ENABLED 1
+_ACEOF
+
+	GSM_LIBS="-L../libgsm/lib -lgsm"
+	GSM_INCLUDES="-I../libgsm/inc"
+	MY_SUBDIRS="$MY_SUBDIRS libgsm"
+fi
+
+
+if test "$enable_voice" = "yes"; then
+  VOICE_TRUE=
+  VOICE_FALSE='#'
+else
+  VOICE_TRUE='#'
+  VOICE_FALSE=
+fi
+
+
+
+
 MY_SUBDIRS="$MY_SUBDIRS kadu translations varia"
 
 # doc support
@@ -5646,24 +5679,6 @@ fi
 cat >>confdefs.h <<_ACEOF
 #define DIST_TYPE "$enable_dist_info"
 _ACEOF
-
-
-# LibGSM support
-# AC_CHECK_LIBGSM
-if test -z "$enable_voice"; then
-	enable_voice=no
-fi
-
-
-if test "$enable_voice" = "yes"; then
-  VOICE_TRUE=
-  VOICE_FALSE='#'
-else
-  VOICE_TRUE='#'
-  VOICE_FALSE=
-fi
-
-
 
 
 # OpenSSL support
@@ -6543,11 +6558,11 @@ s,@QTLIBDIR@,$QTLIBDIR,;t t
 s,@QTINCDIR@,$QTINCDIR,;t t
 s,@CPP@,$CPP,;t t
 s,@LIBOBJS@,$LIBOBJS,;t t
-s,@docdir@,$docdir,;t t
 s,@VOICE_TRUE@,$VOICE_TRUE,;t t
 s,@VOICE_FALSE@,$VOICE_FALSE,;t t
-s,@LIBGSM_LIBS@,$LIBGSM_LIBS,;t t
-s,@LIBGSM_INCLUDES@,$LIBGSM_INCLUDES,;t t
+s,@GSM_LIBS@,$GSM_LIBS,;t t
+s,@GSM_INCLUDES@,$GSM_INCLUDES,;t t
+s,@docdir@,$docdir,;t t
 s,@OPENSSL_LIBS@,$OPENSSL_LIBS,;t t
 s,@OPENSSL_INCLUDES@,$OPENSSL_INCLUDES,;t t
 s,@PKGCONFIG@,$PKGCONFIG,;t t

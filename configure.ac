@@ -317,6 +317,21 @@ else
 	CPPFLAGS="$CPPFLAGS -I../libgadu/lib"
 fi
 
+# Voice talk support
+AC_ARG_ENABLE(voice,[  --enable-voice          compile with experimental voice talk support])
+if test -z "$enable_voice"; then
+	enable_voice=no
+fi
+if test "$enable_voice" = "yes"; then
+	AC_DEFINE(VOICE_ENABLED,1,[Define if voice talk support is enabled])
+	GSM_LIBS="-L../libgsm/lib -lgsm"
+	GSM_INCLUDES="-I../libgsm/inc"
+	MY_SUBDIRS="$MY_SUBDIRS libgsm"
+fi
+AM_CONDITIONAL(VOICE,[test "$enable_voice" = "yes"])
+AC_SUBST(GSM_LIBS)
+AC_SUBST(GSM_INCLUDES)
+
 MY_SUBDIRS="$MY_SUBDIRS kadu translations varia"
 
 # doc support
@@ -364,15 +379,6 @@ if test -z "$enable_dist_info"; then
 	enable_dist_info=sources
 fi
 AC_DEFINE_UNQUOTED(DIST_TYPE,"$enable_dist_info",[Define distribution type of this copy of application])
-
-# LibGSM support
-# AC_CHECK_LIBGSM
-if test -z "$enable_voice"; then
-	enable_voice=no
-fi
-AM_CONDITIONAL(VOICE,[test "$enable_voice" = "yes"])
-AC_SUBST(LIBGSM_LIBS)
-AC_SUBST(LIBGSM_INCLUDES)
 
 # OpenSSL support
 AC_CHECK_OPENSSL

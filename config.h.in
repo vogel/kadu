@@ -150,6 +150,9 @@
 /* Version number of package */
 #undef VERSION
 
+/* Define if voice talk support is enabled */
+#undef VOICE_ENABLED
+
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const
 
