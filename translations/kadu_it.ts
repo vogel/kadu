@@ -350,10 +350,6 @@ Le discussioni dovrebbero essere separate con gli spazi. la discussione di %n è
         <translation>secondi</translation>
     </message>
     <message>
-        <source>Default Status</source>
-        <translation>Condizione Di Difetto</translation>
-    </message>
-    <message>
         <source>On shutdown, set description:</source>
         <translation>Sull&apos;arresto, regoli la descrizione:</translation>
     </message>
@@ -688,6 +684,10 @@ Se lasciate lo spazio in bianco, le regolazioni di difetto saranno usate.</trans
     <message>
         <source>Type of gateway</source>
         <translation>Tipo di Gateway</translation>
+    </message>
+    <message>
+        <source>Default status</source>
+        <translation>Condizione di difetto</translation>
     </message>
 </context>
 <context>
@@ -1474,10 +1474,6 @@ Controlli il vostro collegamento del Internet.</translation>
         <translation>Ricordi alla &amp;password</translation>
     </message>
     <message>
-        <source>&amp;Change password</source>
-        <translation>&amp;Cambi la password</translation>
-    </message>
-    <message>
         <source>Register &amp;new user</source>
         <translation>&amp;Nuovo utente del registro</translation>
     </message>
@@ -1532,6 +1528,10 @@ Controlli il vostro collegamento del Internet.</translation>
     <message>
         <source>Voice chat</source>
         <translation>Chiacchierata di voce</translation>
+    </message>
+    <message>
+        <source>&amp;Change password/email</source>
+        <translation>&amp;Cambi la password/email</translation>
     </message>
 </context>
 <context>
@@ -2455,10 +2455,6 @@ L&apos;importazione era infruttuosa</translation>
         <translation>OK</translation>
     </message>
     <message>
-        <source>Change password</source>
-        <translation>Cambi la password</translation>
-    </message>
-    <message>
         <source>Bad data</source>
         <translation>Dati difettosi</translation>
     </message>
@@ -2469,6 +2465,10 @@ L&apos;importazione era infruttuosa</translation>
     <message>
         <source>New email</source>
         <translation>Nuovo E-mail</translation>
+    </message>
+    <message>
+        <source>Change password/email</source>
+        <translation>Cambi la password/email</translation>
     </message>
 </context>
 <context>

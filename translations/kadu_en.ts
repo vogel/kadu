@@ -350,10 +350,6 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <translation> seconds</translation>
     </message>
     <message>
-        <source>Default Status</source>
-        <translation>Default Status</translation>
-    </message>
-    <message>
         <source>On shutdown, set description:</source>
         <translation>On shutdown, set description:</translation>
     </message>
@@ -683,6 +679,10 @@ If you leave blank, default settings will be used.</source>
     </message>
     <message>
         <source>Type of gateway</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default status</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1469,10 +1469,6 @@ Check your internet connection.</translation>
         <translation>Remind &amp;password</translation>
     </message>
     <message>
-        <source>&amp;Change password</source>
-        <translation>&amp;Change password</translation>
-    </message>
-    <message>
         <source>Register &amp;new user</source>
         <translation>Register &amp;new user</translation>
     </message>
@@ -1526,6 +1522,10 @@ Check your internet connection.</translation>
     </message>
     <message>
         <source>Voice chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Change password/email</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2454,10 +2454,6 @@ The import was unsuccessful</translation>
         <translation>OK</translation>
     </message>
     <message>
-        <source>Change password</source>
-        <translation>Change password</translation>
-    </message>
-    <message>
         <source>Bad data</source>
         <translation>Bad data</translation>
     </message>
@@ -2467,6 +2463,10 @@ The import was unsuccessful</translation>
     </message>
     <message>
         <source>New email</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change password/email</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

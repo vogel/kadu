@@ -1474,10 +1474,6 @@ Sprawdź swoje połączenie internetowe.</translation>
         <translation>Przypomnij h&amp;asło</translation>
     </message>
     <message>
-        <source>&amp;Change password</source>
-        <translation>Zmień &amp;hasło</translation>
-    </message>
-    <message>
         <source>Register &amp;new user</source>
         <translation>Zarejestruj &amp;nowego użytkownika</translation>
     </message>
@@ -1532,6 +1528,10 @@ Sprawdź swoje połączenie internetowe.</translation>
     <message>
         <source>Voice chat</source>
         <translation>Rozmowa głosowa</translation>
+    </message>
+    <message>
+        <source>&amp;Change password/email</source>
+        <translation>&amp;Zmień hasło/email</translation>
     </message>
 </context>
 <context>
@@ -2456,10 +2456,6 @@ zakończony niepowodzeniem.</translation>
         <translation>OK</translation>
     </message>
     <message>
-        <source>Change password</source>
-        <translation>Zmień hasło</translation>
-    </message>
-    <message>
         <source>Bad data</source>
         <translation>Złe dane</translation>
     </message>
@@ -2470,6 +2466,10 @@ zakończony niepowodzeniem.</translation>
     <message>
         <source>New email</source>
         <translation>Nowy e-mail</translation>
+    </message>
+    <message>
+        <source>Change password/email</source>
+        <translation>Zmień hasło/email</translation>
     </message>
 </context>
 <context>
