@@ -68,11 +68,11 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name)
 	notify_slots=new NotifySlots(NULL, "notify_slots");
 
 	ConfigDialog::addCheckBox("Notify", "Notify",
-		QT_TRANSLATE_NOOP("@default", "Ignore changes on connection to server"), "NotifyIgnoreOnConnection", true, QT_TRANSLATE_NOOP("@default","This option will supersede tooltips with users' status\n changes upon establishing connection to the server"));
+		QT_TRANSLATE_NOOP("@default", "Ignore changes right after connection to the server"), "NotifyIgnoreOnConnection", true, QT_TRANSLATE_NOOP("@default","This option will supersede tooltips with users' status\n changes upon establishing connection to the server"));
 	ConfigDialog::addCheckBox("Notify", "Notify",
 		QT_TRANSLATE_NOOP("@default", "Notify about all users"), "NotifyAboutAll", false);
 	ConfigDialog::addCheckBox("Notify", "Notify",
-		QT_TRANSLATE_NOOP("@default", "Ignore status change if old status is available/busy (and new is available/busy also)"),
+		QT_TRANSLATE_NOOP("@default", "Ignore status changes from available/busy to available/busy"),
 		"IgnoreOnlineToOnline", true);
 
 	ConfigDialog::addGrid("Notify", "Notify" ,"listboxy",3);
@@ -132,9 +132,9 @@ Notify::~Notify()
 		ConfigDialog::removeControl("Notify", "listbox1");
 	ConfigDialog::removeControl("Notify", "listboxy");
 
-	ConfigDialog::removeControl("Notify", "Ignore status change if old status is available/busy (and new is available/busy also)");
+	ConfigDialog::removeControl("Notify", "Ignore status changes from available/busy to available/busy");
 	ConfigDialog::removeControl("Notify", "Notify about all users");
-	ConfigDialog::removeControl("Notify", "Ignore changes on connection to server");
+	ConfigDialog::removeControl("Notify", "Ignore changes right after connection to the server");
 
 	disconnect(kadu, SIGNAL(connectionError(const QString &)), this, notifySignals["ConnError"]);
 	disconnect(gadu, SIGNAL(chatMsgReceived1(UinsList, const QString&, time_t,bool&)), this, SLOT(probablyNewMessage(UinsList, const QString&, time_t, bool&)));
