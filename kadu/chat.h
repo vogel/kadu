@@ -40,6 +40,7 @@ class Chat : public QWidget {
 		IconSelector *iconsel_ptr;
 		QPushButton *iconsel;
 		QPushButton *autosend;
+		QPushButton *lockscroll;
 		QAccel *acc;
 		QPushButton *sendbtn;
 		QPushButton *cancelbtn;

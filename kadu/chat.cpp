@@ -118,6 +118,9 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 		autosend->setOn(true);
 		autosend_enabled = true;
 		}
+	lockscroll = new QPushButton(buttontray);
+	lockscroll->setToggleButton(true);
+	QToolTip::add(lockscroll, i18n("Blocks scrolling"));
 
 #ifdef HAVE_OPENSSL
 	QString keyfile_path;
@@ -171,6 +174,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	QToolTip::add(whois, i18n("Lookup user info"));
 
 	connect(autosend, SIGNAL(clicked()), this, SLOT(regAutosend()));
+//	connect(lockscroll, SIGNAL(clicked()), this, SLOT(lockScroll()));
 	connect(history, SIGNAL(clicked()), this, SLOT(HistoryBox()));
 	connect(iconsel, SIGNAL(clicked()), this, SLOT(insertEmoticon()));
 	connect(whois, SIGNAL(clicked()), this, SLOT(userWhois()));
@@ -457,7 +461,8 @@ void Chat::scrollMessages(QString &toadd) {
 		body->setText(toadd + body->text());
 	else {
 		body->setText(body->text() + toadd);
-		body->scrollToBottom();
+		if (!lockscroll->isOn())
+			body->scrollToBottom();
 		}
 	body->viewport()->setUpdatesEnabled(true);
 	body->viewport()->repaint();
