@@ -5,6 +5,34 @@
 # autoconf macros
 ########################################################################
 
+AC_DEFUN(CHECK_PTHREAD,
+[
+	AC_CHECK_LIB(pthread,pthread_create,
+	[
+		PTHREAD_FLAGS=
+		PTHREAD_LIBS=-lpthread
+	],[
+		AC_MSG_CHECKING(if compiler supports -pthread)
+		save_CPPFLAGS="$CPPFLAGS"
+		CPPFLAGS="$CXXFLAGS -pthread"
+		AC_TRY_LINK(
+		[
+			#include <pthread.h>
+		],[
+			pthread_create(0,0,0,0);
+		],
+		[
+			AC_MSG_RESULT(yes)
+			PTHREAD_FLAGS=-pthread
+			PTHREAD_LIBS=
+		],[
+			AC_MSG_RESULT(no)
+			AC_MSG_ERROR([Your system is not supporting pthreads!])
+		])
+		CPPFLAGS="$save_CPPFLAGS"
+	])
+])
+
 AC_DEFUN(FIND_MOC,[
 	AC_MSG_CHECKING([for QT moc])
 
@@ -113,10 +141,9 @@ AM_PROG_LIBTOOL
 
 # pthread
 
-AC_CHECK_LIB(pthread,pthread_create,,
-[
-	AC_MSG_ERROR([libpthread was not found!])
-])
+CHECK_PTHREAD
+AC_SUBST(PTHREAD_FLAGS)
+AC_SUBST(PTHREAD_LIBS)
 
 # QT
 

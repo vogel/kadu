@@ -44,9 +44,6 @@
 /* Define to 1 if you have the `gadu' library (-lgadu). */
 #undef HAVE_LIBGADU
 
-/* Define to 1 if you have the `pthread' library (-lpthread). */
-#undef HAVE_LIBPTHREAD
-
 /* Define to 1 if you have the `ssl' library (-lssl). */
 #undef HAVE_LIBSSL
 
