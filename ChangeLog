@@ -1,5 +1,7 @@
 
 +++ wersja 0.3.3
+* doklejanie ~/.gg/description do statusu jesli chcemy (por.
+  XMMS - libsongchange.so)
 * automatyczna kompilacja programu sms
 * porz±dki w opcji wysy³ania sms: brak opcji, je¶li osoba nie ma
   numeru, osobna opcja w menu g³ównym do wysy³ania sms'a pod wpisany z
