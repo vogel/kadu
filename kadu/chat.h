@@ -213,6 +213,7 @@ class Chat : public QWidget
 		void* myLastFormats;
 		int seq;
 		KaduSplitter *vertSplit, *horizSplit;
+		int ParagraphSeparator;
 
 		void pruneWindow();
 

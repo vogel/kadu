@@ -517,6 +517,8 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	title_timer = new QTimer(this, "title_timer");
 	connect(title_timer,SIGNAL(timeout()),this,SLOT(changeTitle()));
 
+	ParagraphSeparator=config_file.readNumEntry("General", "ParagraphSeparator");
+
 	/* register us in the chats registry... */
 	index=chat_manager->registerChat(this);
 
@@ -535,11 +537,12 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_ANIMATED)
 		body->setStyleSheet(new AnimStyleSheet(body,emoticons->themePath()));
+	else
+		body->setStyleSheet(new StaticStyleSheet(body,emoticons->themePath()));
 
+	body->setMargin(ParagraphSeparator);
 	body->setMinimumSize(QSize(100,100));
 	body->setFont(config_file.readFontEntry("Look","ChatFont"));
-	if (config_file.readBoolEntry("General", "UseParagraphs"))
-		body->setParagraphSeparators(true);
 
 	QPoint pos = QCursor::pos();
 
@@ -1025,7 +1028,7 @@ void Chat::formatMessage(ChatMessage &msg)
 {
 	QString formatString;
 	if (config_file.readBoolEntry("General", "UseParagraphs"))
-		formatString="<p style=\"background-color: %1\"><font color=\"%2\"><b>%3 :: %4</b><br/>%5</font></p>";
+		formatString="<p style=\"background-color: %1\"><img title=\"\" height=\"%2\" width=\"10000\" align=\"right\"><font color=\"%3\"><b>%4 :: %5</b><br/>%6</font></p>";
 	else
 		formatString="<table width=\"100%\"><tr><td bgcolor=\"%1\"><font color=\"%2\"><b>%3 :: %4</b><br/>%5</font></td></tr></table>";
 
@@ -1047,6 +1050,7 @@ void Chat::formatMessage(ChatMessage &msg)
 
 	msg.message=formatString
 			.arg(msg.backgroundColor.name())
+			.arg(ParagraphSeparator)
 			.arg(msg.textColor.name())
 			.arg(nick)
 			.arg(date)
@@ -1064,7 +1068,16 @@ void Chat::repaintMessages()
 	int i;
 	if (config_file.readBoolEntry("Chat","ScrollDown"))
 	{
-		for(QValueList<ChatMessage *>::const_iterator it=ChatMessages.begin(); it!=ChatMessages.end(); ++it)
+		QValueList<ChatMessage *>::const_iterator it=ChatMessages.begin();
+		//z pierwszej wiadomo¶ci usuwamy obrazek separatora
+		if (it!=ChatMessages.end())
+		{
+			QString msg=(*it)->message;
+			msg.replace(QRegExp("<img title=\"\" height=\"[0-9]*\" width=\"10000\" align=\"right\">"), "");
+			text+=msg;
+			++it;
+		}
+		for(; it!=ChatMessages.end(); ++it)
 			text+=(*it)->message;
 		body->setText(text);
 
@@ -1080,7 +1093,15 @@ void Chat::repaintMessages()
 	}
 	else
 	{
-		for(QValueList<ChatMessage *>::const_iterator it=ChatMessages.begin(); it!=ChatMessages.end(); ++it)
+		QValueList<ChatMessage *>::const_iterator it=ChatMessages.begin();
+		if (it!=ChatMessages.end())
+		{
+			QString msg=(*it)->message;
+			msg.replace(QRegExp("<img title=\"\" height=\"[0-9]*\" width=\"10000\" align=\"right\">"), "");
+			text+=msg;
+			++it;
+		}
+		for(; it!=ChatMessages.end(); ++it)
 			text=(*it)->message+text;
 		body->setText(text);
 		if (config_file.readBoolEntry("General", "UseParagraphs"))

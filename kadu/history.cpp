@@ -1191,7 +1191,7 @@ HistoryDate &DateListViewText::getDate()
 	return date;
 }
 
-History::History(UinsList uins): uins(uins), closeDemand(false), finding(false)
+History::History(UinsList uins) : QDialog(NULL, "HistoryDialog"), uins(uins), closeDemand(false), finding(false)
 {
 	kdebugf();
 	history.convHist2ekgForm(uins);
@@ -1200,36 +1200,35 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false)
 	setCaption(tr("History"));
 	setWFlags(Qt::WDestructiveClose);
 
-	QGridLayout *grid = new QGridLayout(this, 2, 5, 3, 3);
+	QGridLayout *grid = new QGridLayout(this, 2, 5, 3, 3, "grid");
 
-	QSplitter *split1 = new QSplitter(Qt::Horizontal, this);
+	QSplitter *splitter = new QSplitter(Qt::Horizontal, this, "splitter");
 
-	uinslv = new QListView(split1, "History uins");
+	uinslv = new QListView(splitter, "uinslv");
 	uinslv->addColumn(tr("Uins"));
 	uinslv->setRootIsDecorated(TRUE);
 
-	QVBox *vbox1 = new QVBox(split1);
-	body = new KaduTextBrowser(vbox1, "History browser");
-	if (config_file.readBoolEntry("General", "UseParagraphs"))
-		body->setParagraphSeparators(true);
+	QVBox *vbox = new QVBox(splitter, "vbox");
+	body = new KaduTextBrowser(vbox, "body");
 	body->setReadOnly(true);
-	body->QTextEdit::setFont(config_file.readFontEntry("Look","ChatFont"));
+	body->QTextEdit::setFont(config_file.readFontEntry("Look", "ChatFont"));
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_ANIMATED)
 		body->setStyleSheet(new AnimStyleSheet(body, emoticons->themePath()));
+	else
+		body->setStyleSheet(new StaticStyleSheet(body,emoticons->themePath()));
+	ParagraphSeparator=config_file.readNumEntry("General", "ParagraphSeparator");
+	body->setMargin(ParagraphSeparator);
 
-	QHBox *btnbox = new QHBox(vbox1);
-	QPushButton *searchbtn = new QPushButton(btnbox);
-	searchbtn->setText(tr("&Find"));
-	QPushButton *searchnextbtn = new QPushButton(btnbox);
-	searchnextbtn->setText(tr("Find &next"));
-	QPushButton *searchprevbtn = new QPushButton(btnbox);
-	searchprevbtn->setText(tr("Find &previous"));
+	QHBox *btnbox = new QHBox(vbox, "btnbox");
+	QPushButton *searchbtn = new QPushButton(tr("&Find"), btnbox, "searchbtn");
+	QPushButton *searchnextbtn = new QPushButton(tr("Find &next"), btnbox, "searcgnextbtn");
+	QPushButton *searchprevbtn = new QPushButton(tr("Find &previous"), btnbox, "searchprevbtn");
 
 	QValueList<int> sizes;
 	sizes.append(1);
 	sizes.append(3);
-	split1->setSizes(sizes);
-	grid->addMultiCellWidget(split1, 0, 1, 0, 4);
+	splitter->setSizes(sizes);
+	grid->addMultiCellWidget(splitter, 0, 1, 0, 4);
 
 	connect(uinslv, SIGNAL(expanded(QListViewItem *)), this, SLOT(uinsChanged(QListViewItem *)));
 	connect(uinslv, SIGNAL(currentChanged(QListViewItem *)), this, SLOT(dateChanged(QListViewItem *)));
@@ -1343,9 +1342,9 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry, QStri
 	bool useParagraphs=config_file.readBoolEntry("General", "UseParagraphs");
 
 	if (useParagraphs)
-		text.append(QString("<p style=\"color:") + textcolor + "\"><b>");
+		text.append(QString("<p style=\"background-color: %1; color: %2\"><img title=\"\" height=\"%3\" width=\"10000\" align=\"right\"><b>").arg(bgcolor).arg(textcolor).arg(ParagraphSeparator));
 	else
-		text.append(QString("<table width=\"100%\"><tr><td bgcolor=\"") + bgcolor + "\"><font color=\"" + textcolor + "\"><b>");
+		text.append(QString("<table width=\"100%\"><tr><td bgcolor=\"%1\"><font color=\"%2\"><b>").arg(bgcolor).arg(textcolor));
 	paracolors.append(bgcolor);
 
 	if (entry.type == HISTORYMANAGER_ENTRY_SMSSEND)
@@ -1423,9 +1422,20 @@ void History::showHistoryEntries(int from, int count)
 
 	QValueList<HistoryEntry> entries;
 	entries = history.getHistoryEntries(uins, from, count);
+	
 	for (i = 0; i < entries.count(); ++i)
 		if ( ! (noStatus && entries[i].type & HISTORYMANAGER_ENTRY_STATUS))
+		{
 			formatHistoryEntry(text, entries[i], paracolors);
+			++i;
+			break;
+		}
+	//z pierwszej wiadomo¶ci usuwamy obrazek separatora
+	text.replace(QRegExp("<img title=\"\" height=\"[0-9]*\" width=\"10000\" align=\"right\">"), "");
+	for (; i < entries.count(); ++i)
+		if ( ! (noStatus && entries[i].type & HISTORYMANAGER_ENTRY_STATUS))
+			formatHistoryEntry(text, entries[i], paracolors);
+
 	body->setText(text);
 
 	if (config_file.readBoolEntry("General", "UseParagraphs"))

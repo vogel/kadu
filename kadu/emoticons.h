@@ -90,6 +90,29 @@ class EmoticonSelector : public QWidget
 		void alignTo(QWidget* w);
 };
 
+/* Klasa wyciêta za ¼róde³ Qt i przystosowana na potrzeby Kadu (oryginalnie nazywa³a siê QTextImage) */
+class StaticTextItem : public QTextCustomItem
+{
+	public:
+		StaticTextItem(QTextDocument *p, const QMap<QString, QString> &attr, const QString& context,
+			QMimeSourceFactory &factory );
+		virtual ~StaticTextItem();
+
+		Placement placement() const { return place; }
+		void adjustToPainter( QPainter* );
+		int minimumWidth() const { return width; }
+
+		QString richText() const;
+		void draw(QPainter* p, int x, int y, int cx, int cy, int cw, int ch, const QColorGroup& cg, bool selected);
+	private:
+		QRegion* reg;
+		QPixmap pm;
+		Placement place;
+		int tmpwidth, tmpheight;
+		QMap<QString, QString> attributes;
+		QString imgId;
+};
+
 class AnimTextItem : public QTextCustomItem
 {
 	private:
@@ -121,16 +144,26 @@ class AnimTextItem : public QTextCustomItem
 
 class AnimStyleSheet : public QStyleSheet
 {
-private:
-	QTextEdit* Editor;
-	QString Path;
-public:
-	AnimStyleSheet(
-		QTextEdit* parent, const QString& path, const char* name = 0 );
-	QTextCustomItem* tag(
-		const QString& name, const QMap<QString,QString>& attr,
-		const QString& context, const QMimeSourceFactory& factory,
-		bool emptyTag, QTextDocument* doc) const;
+	private:
+		QString Path;
+	public:
+		AnimStyleSheet(QTextEdit* parent, const QString& path, const char* name = 0);
+		QTextCustomItem* tag(
+			const QString& name, const QMap<QString,QString>& attr,
+			const QString& context, const QMimeSourceFactory& factory,
+			bool emptyTag, QTextDocument* doc) const;
+};
+
+class StaticStyleSheet : public QStyleSheet
+{
+	private:
+		QString Path;
+	public:
+		StaticStyleSheet(QTextEdit* parent, const QString& path, const char* name = 0);
+		QTextCustomItem* tag(
+			const QString& name, const QMap<QString,QString>& attr,
+			const QString& context, const QMimeSourceFactory& factory,
+			bool emptyTag, QTextDocument* doc) const;
 };
 
 

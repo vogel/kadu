@@ -105,6 +105,7 @@ class History : public QDialog {
 		bool closeDemand;
 		bool finding;
 		QValueList<HistoryDate> dateentries;
+		int ParagraphSeparator;
 };
 
 class HistorySearch : public QDialog {

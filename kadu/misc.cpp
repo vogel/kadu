@@ -2396,17 +2396,17 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 	: QTextBrowser(parent, name),QToolTip(viewport()),level(0)
 {
 	kdebugf();
-	ParagraphSeparators = false;
+//	setResizePolicy(QScrollView::AutoOne);
+//	setWFlags(Qt::WNoAutoErase|Qt::WStaticContents|Qt::WPaintClever);
 	connect(this, SIGNAL(linkClicked(const QString&)), this, SLOT(hyperlinkClicked(const QString&)));
 	connect(this, SIGNAL(highlighted(const QString&)), this, SLOT(linkHighlighted(const QString &)));
 #if QT_VERSION >= 0x030100
 	setWrapPolicy(QTextEdit::AtWordOrDocumentBoundary);
 #endif
-	if (config_file.readBoolEntry("General", "UseParagraphs"))
+//	if (config_file.readBoolEntry("General", "UseParagraphs"))
 		setTextFormat(Qt::RichText);
 	
-	connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedSlot()));
-//	connect(verticalScrollBar(), SIGNAL(sliderReleased()), this, SLOT(repaintSeparators()));
+//	connect(verticalScrollBar(), SIGNAL(sliderReleased()), this, SLOT(repaint()));
 	kdebugf2();
 }
 
@@ -2426,59 +2426,9 @@ void KaduTextBrowser::setSource(const QString &/*name*/)
 {
 }
 
-void KaduTextBrowser::setParagraphSeparators(bool enabled, int width)
+void KaduTextBrowser::setMargin(int width)
 {
-	ParagraphSeparators = enabled;
-	if (width==-1)
-		width=config_file.readNumEntry("General", "ParagraphSeparator");
-	
-	separatorWidth=width;
-	if (enabled)
-		setMargins(width, width, width, width);
-	else
-		setMargins(0,0,0,0);
-}
-
-void KaduTextBrowser::drawSeparators(QPainter *p, QPoint offset)
-{
-//	kdebugf();
-	if (ParagraphSeparators)
-	{
-		int paraFrom, paraTo;
-		int x1,y1,x2,y2;
-		viewportToContents(0,0,x1,y1);
-		viewportToContents(visibleWidth(), visibleHeight(),x2,y2);
-		paraFrom=paragraphAt(QPoint(x1,y1));
-		paraTo=paragraphAt(QPoint(x2,y2));
-
-		p->setPen(p->backgroundColor());
-		p->setBrush(p->backgroundColor());
-		if (paraTo==paragraphs()-1)
-			paraTo--;
-
-		for (int i = paraFrom; i <= paraTo; i++)
-		{
-			QRect pr = paragraphRect(i);
-			pr.moveBy(offset.x(), offset.y());
-			p->drawRect(pr.left(), pr.bottom()-(separatorWidth/2)+1, pr.width(), separatorWidth);
-		}
-	}
-//	kdebugf2();
-}
-
-void KaduTextBrowser::repaintSeparators()
-{
-//	kdebugf();
-	QPainter p(viewport(), true);
-	drawSeparators(&p, QPoint(-contentsX(), -contentsY()));
-//	kdebugf2();
-}
-
-void KaduTextBrowser::selectionChangedSlot()
-{
-	kdebugf();
-	repaintSeparators();
-	kdebugf2();
+	setMargins(width, width, width, width);
 }
 
 void KaduTextBrowser::copyLinkLocation()
@@ -2515,8 +2465,7 @@ void KaduTextBrowser::drawContents(QPainter * p, int clipx, int clipy, int clipw
 	{
 //		kdebugm(KDEBUG_INFO, "x:%d y:%d w:%d h:%d\n", clipx, clipy, clipw, cliph);
 		QTextBrowser::drawContents(p, clipx, clipy, clipw, cliph);
-		drawSeparators(p, QPoint(0,0));
-		QTimer::singleShot(0, this, SLOT(repaintSeparators()));//niestety konieczne
+//		QTimer::singleShot(0, this, SLOT(repaint()));//niestety konieczne
 	}
 	--level;
 }

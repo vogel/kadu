@@ -405,6 +405,246 @@ void EmoticonSelector::alignTo(QWidget* w)
 	move(x, y);
 }
 
+#include <qdragobject.h>
+#include <qpaintdevicemetrics.h>
+#include <qglobal.h>
+#include <qfeatures.h>
+
+static inline bool is_printer( QPainter *p )
+{
+	if ( !p || !p->device() )
+		return FALSE;
+	return p->device()->devType() == QInternal::Printer;
+}
+
+static inline int scale( int value, QPainter *painter )
+{
+	if ( is_printer( painter ) ) {
+		QPaintDeviceMetrics metrics( painter->device() );
+#if defined(Q_WS_X11)
+		value = value * metrics.logicalDpiY() / QPaintDevice::x11AppDpiY( painter->device()->x11Screen() );
+#elif defined (Q_WS_WIN)
+		HDC hdc = GetDC( 0 );
+		int gdc = GetDeviceCaps( hdc, LOGPIXELSY );
+		if ( gdc )
+			value = value * metrics.logicalDpiY() / gdc;
+		ReleaseDC( 0, hdc );
+#elif defined (Q_WS_MAC)
+		value = value * metrics.logicalDpiY() / 75; // ##### FIXME
+#elif defined (Q_WS_QWS)
+		value = value * metrics.logicalDpiY() / 75;
+#endif
+	}
+	return value;
+}
+
+struct QPixmapInt
+{
+	QPixmapInt() : ref( 0 ) {}
+	QPixmap pm;
+	int	    ref;
+	Q_DUMMY_COMPARISON_OPERATOR(QPixmapInt)
+};
+
+static QMap<QString, QPixmapInt> *pixmap_map = 0;
+
+StaticTextItem::StaticTextItem( QTextDocument *p, const QMap<QString, QString> &attr, const QString& context,
+			QMimeSourceFactory &factory )
+    : QTextCustomItem( p )
+{
+	width = height = 0;
+	if ( attr.contains("width") )
+		width = attr["width"].toInt();
+	if ( attr.contains("height") )
+		height = attr["height"].toInt();
+
+	reg = 0;
+	QString imageName = attr["src"];
+
+	if (!imageName)
+		imageName = attr["source"];
+
+	if ( !imageName.isEmpty() )
+	{
+		imgId = QString( "%1,%2,%3,%4" ).arg( imageName ).arg( width ).arg( height ).arg( (ulong)&factory );
+		if ( !pixmap_map )
+			pixmap_map = new QMap<QString, QPixmapInt>;
+		if ( pixmap_map->contains( imgId ) ) {
+			QPixmapInt& pmi = pixmap_map->operator[](imgId);
+			pm = pmi.pm;
+			pmi.ref++;
+			width = pm.width();
+			height = pm.height();
+		} else {
+			QImage img;
+			const QMimeSource* m = factory.data( imageName, context );
+			if ( !m ) {
+				qWarning("StaticTextItem: no mimesource for %s", imageName.latin1() );
+			}
+			else {
+				if ( !QImageDrag::decode( m, img ) ) {
+					qWarning("StaticTextItem: cannot decode %s", imageName.latin1() );
+				}
+			}
+
+			if ( !img.isNull() ) {
+				if ( width == 0 ) {
+					width = img.width();
+					if ( height != 0 ) {
+						width = img.width() * height / img.height();
+					}
+				}
+				if ( height == 0 ) {
+					height = img.height();
+					if ( width != img.width() ) {
+						height = img.height() * width / img.width();
+					}
+				}
+				if ( img.width() != width || img.height() != height ){
+#ifndef QT_NO_IMAGE_SMOOTHSCALE
+					img = img.smoothScale(width, height);
+#endif
+					width = img.width();
+					height = img.height();
+				}
+				pm.convertFromImage( img );
+			}
+			if ( !pm.isNull() ) {
+				QPixmapInt& pmi = pixmap_map->operator[](imgId);
+				pmi.pm = pm;
+				pmi.ref++;
+			}
+		}
+		if ( pm.mask() ) {
+			QRegion mask( *pm.mask() );
+			QRegion all( 0, 0, pm.width(), pm.height() );
+			reg = new QRegion( all.subtract( mask ) );
+		}
+    }
+
+	if ( pm.isNull() && (width*height)==0 )
+		width = height = 50;
+
+	place = PlaceInline;
+	if ( attr["align"] == "left" )
+		place = PlaceLeft;
+	else if ( attr["align"] == "right" )
+		place = PlaceRight;
+
+	tmpwidth = width;
+	tmpheight = height;
+
+	attributes = attr;
+}
+
+StaticTextItem::~StaticTextItem()
+{
+	if ( pixmap_map && pixmap_map->contains( imgId ) ) {
+		QPixmapInt& pmi = pixmap_map->operator[](imgId);
+		pmi.ref--;
+		if ( !pmi.ref ) {
+			pixmap_map->remove( imgId );
+			if ( pixmap_map->isEmpty() ) {
+				delete pixmap_map;
+				pixmap_map = 0;
+			}
+		}
+	}
+	delete reg;
+}
+
+QString StaticTextItem::richText() const
+{
+	QMap<QString, QString>::ConstIterator it=attributes.find("title");
+	if (it!=attributes.end())
+		return *it;
+	it=attributes.find("src");
+	if (it!=attributes.end())
+		return *it;
+	
+	QString s;
+	s += "<img ";
+	it = attributes.begin();
+	for ( ; it != attributes.end(); ++it ) {
+		s += it.key() + "=";
+		if ( (*it).find( ' ' ) != -1 )
+			s += "\"" + *it + "\"" + " ";
+		else
+			s += *it + " ";
+	}
+	s += ">";
+	return s;
+}
+
+void StaticTextItem::adjustToPainter( QPainter* p )
+{
+	width = scale( tmpwidth, p );
+	height = scale( tmpheight, p );
+}
+
+#if !defined(Q_WS_X11)
+#include <qbitmap.h>
+#include <qcleanuphandler.h>
+static QPixmap *qrt_selection = 0;
+static QSingleCleanupHandler<QPixmap> qrt_cleanup_pixmap;
+static void qrt_createSelectionPixmap( const QColorGroup &cg )
+{
+	qrt_selection = new QPixmap( 2, 2 );
+	qrt_cleanup_pixmap.set( &qrt_selection );
+	qrt_selection->fill( Qt::color0 );
+	QBitmap m( 2, 2 );
+	m.fill( Qt::color1 );
+	QPainter p( &m );
+	p.setPen( Qt::color0 );
+	for ( int j = 0; j < 2; ++j ) {
+		p.drawPoint( j % 2, j );
+	}
+	p.end();
+	qrt_selection->setMask( m );
+	qrt_selection->fill( cg.highlight() );
+}
+#endif
+
+//#include <qdatastream.h>
+void StaticTextItem::draw( QPainter* p, int x, int y, int cx, int cy, int cw, int ch, const QColorGroup& cg, bool selected )
+{
+	if ( placement() != PlaceInline ) {
+		x = xpos;
+		y = ypos;
+	}
+//	for (int i=QColorGroup::Foreground; i<QColorGroup::NColorRoles; i++)
+//		kdebugm(KDEBUG_INFO, "%s\n", cg.color((QColorGroup::ColorRole)i).name().local8Bit().data());
+//	kdebugm(KDEBUG_INFO, "%s\n", cg..name().local8Bit().data());
+
+	if ( pm.isNull() ) {
+		p->fillRect( x , y, width, height,  cg.base() );
+		return;
+	}
+
+	if ( is_printer( p ) ) {
+		p->drawPixmap( QRect( x, y, width, height ), pm );
+		return;
+	}
+
+	if ( placement() != PlaceInline && !QRect( xpos, ypos, width, height ).intersects( QRect( cx, cy, cw, ch ) ) )
+		return;
+
+	if ( placement() == PlaceInline )
+		p->drawPixmap( x , y, pm );
+	else
+		p->drawPixmap( cx , cy, pm, cx - x, cy - y, cw, ch );
+
+	if ( selected && placement() == PlaceInline && is_printer( p ) ) {
+#if defined(Q_WS_X11)
+		p->fillRect( QRect( QPoint( x, y ), pm.size() ), QBrush( cg.highlight(), QBrush::Dense4Pattern) );
+#else // in WIN32 Dense4Pattern doesn't work correctly (transparency problem), so work around it
+		if ( !qrt_selection )
+			qrt_createSelectionPixmap( cg );
+		p->drawTiledPixmap( x, y, pm.width(), pm.height(), *qrt_selection );
+#endif
+	}
+}
+
 AnimTextItem::AnimTextItem(
 	QTextDocument *p, QTextEdit* edit,
 	const QString& filename, const QColor& bgcolor, const QString& tip)
@@ -478,6 +718,7 @@ void AnimTextItem::draw(
 			u += Edit->paragraphRect(0).topLeft();
 	}
 	
+//	Edit->moveChild(Label, u.x(), u.y());
 	Label->move(u);
 	Label->show();
 }
@@ -512,7 +753,25 @@ QTextCustomItem* AnimStyleSheet::tag(
 			return new AnimTextItem(doc,(QTextEdit*)parent(),         attr["src"],QColor(attr["bgcolor"]),attr["title"]);
 	}
 	else
+		return new StaticTextItem(doc, attr, context, (QMimeSourceFactory&)factory);
+//		return QStyleSheet::tag(name,attr,context,factory,emptyTag,doc);
+}
+
+StaticStyleSheet::StaticStyleSheet(
+	QTextEdit* parent, const QString& path, const char* name )
+	: QStyleSheet(parent, name)
+{
+	Path=path;
+}
+
+QTextCustomItem* StaticStyleSheet::tag(
+	const QString& name, const QMap<QString,QString>& attr,
+	const QString& context, const QMimeSourceFactory& factory,
+	bool emptyTag, QTextDocument* doc) const
+{
+	if (name!="img")
 		return QStyleSheet::tag(name,attr,context,factory,emptyTag,doc);
+	return new StaticTextItem(doc, attr, context, (QMimeSourceFactory&)factory);
 }
 
 /** create fresh emoticons dictionary, which will allow easy finding of occurrences

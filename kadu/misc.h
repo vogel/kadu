@@ -444,33 +444,21 @@ class KaduTextBrowser : public QTextBrowser, QToolTip
 			for use with maybeTip(), or is null
 		**/
 		QString highlightedlink; 	
-		bool ParagraphSeparators;
-		int separatorWidth;
 
 	private slots:
 		void copyLinkLocation();
 		void hyperlinkClicked(const QString& link);
 		void linkHighlighted(const QString &);
-		void selectionChangedSlot();
-		void repaintSeparators();
 		
 	protected:
 		QPopupMenu *createPopupMenu(const QPoint &point);
 		virtual void drawContents(QPainter * p, int clipx, int clipy, int clipw, int cliph);
 		virtual void maybeTip(const QPoint&);
 		virtual void contentsMouseReleaseEvent(QMouseEvent * e);
-		void drawSeparators(QPainter *p, QPoint offset);
 
 	public:
 		KaduTextBrowser(QWidget *parent = 0, const char *name = 0);
 		void setSource(const QString &name);
-		/**
-			Ustaw na true je¶li paragrafy maj± byæ
-			oddzielane od boków okna i od siebie
-			separatorami w kolorze t³a.
-			gdy width==-1, to brane s± domy¶lne odleg³o¶ci
-		**/
-		void setParagraphSeparators(bool enabled, int width=-1);
 		/**
 			Nadpisane dla wyja¶nienia wieloznaczno¶ci
 		**/
@@ -479,6 +467,7 @@ class KaduTextBrowser : public QTextBrowser, QToolTip
 			Nadpisane dla wyja¶nienia wieloznaczno¶ci		**/
 
 		void setFont(const QFont& f) 	{ QTextBrowser::setFont(f); }
+		void setMargin(int width);
 
 	public slots:
 		virtual void copy();

@@ -451,6 +451,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	InfoPanel->QTextEdit::setFont(config_file.readFontEntry("Look", "PanelFont"));
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_ANIMATED)
 		InfoPanel->setStyleSheet(new AnimStyleSheet(InfoPanel, emoticons->themePath()));
+	else
+		InfoPanel->setStyleSheet(new StaticStyleSheet(InfoPanel,emoticons->themePath()));
+
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		InfoPanel->QWidget::hide();
 	QObject::connect(&userlist, SIGNAL(dnsNameReady(UinType)), this, SLOT(infopanelUpdate(UinType)));
