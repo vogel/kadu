@@ -101,7 +101,7 @@ AutoAwayTimer::AutoAwayTimer(QObject* parent) : QTimer(parent,"AutoAwayTimer") {
 
 bool AutoAwayTimer::eventFilter(QObject *o,QEvent *e)
 {
-	fprintf(stderr, "KK AutoAwayTimer::eventFilter()\n");
+//	fprintf(stderr, "KK AutoAwayTimer::eventFilter()\n");
 	if (e->type() == QEvent::KeyPress || e->type() == QEvent::Enter || e->type() == QEvent::MouseMove) {
 		stop();
 		start(config.autoawaytime * 1000, TRUE);
