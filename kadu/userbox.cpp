@@ -86,8 +86,10 @@ void UserBox::maybeTip(const QPoint &c)
 void UserBox::mousePressEvent(QMouseEvent *e) {
 	if (e->button() != RightButton)
 		QListBox::mousePressEvent(e);
-	else
-		emit rightButtonClicked(item(currentItem()), e->globalPos());
+	else {
+		setSelected(itemAt(e->pos()), TRUE);
+		emit rightButtonClicked(itemAt(e->pos()), e->globalPos());
+		}
 }
 
 void UserBox::sortUsersByAltNick(QStringList &users) {
