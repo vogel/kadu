@@ -18,6 +18,287 @@
 #include "history.h"
 //
 
+/********** SmsImageWidget **********/
+
+SmsImageWidget::SmsImageWidget(QWidget* parent,const QByteArray& image)
+	: QWidget(parent, "SmsImageWidget"), Image(image)
+{
+	setMinimumSize(Image.width(),Image.height());
+};
+
+void SmsImageWidget::paintEvent(QPaintEvent* e)
+{
+	QPainter p(this);
+	p.drawImage(0,0,Image);
+};
+
+/********** SmsImageDialog **********/
+
+SmsImageDialog::SmsImageDialog(QDialog* parent,const QByteArray& image)
+	: QDialog (parent, "SmsImageDialog")
+{
+	QGridLayout * grid = new QGridLayout(this, 2, 2, 10, 10);
+	SmsImageWidget* image_widget=new SmsImageWidget(this,image);
+	grid->addMultiCellWidget(image_widget, 0, 0, 0, 1);
+	QLabel* label=new QLabel(this);
+	label->setText(i18n("Enter text from the picture:"));
+	grid->addWidget(label, 1, 0);
+	code_edit=new QLineEdit(this);
+	grid->addWidget(code_edit, 1, 1);
+	connect(code_edit,SIGNAL(returnPressed()),this,SLOT(onReturnPressed()));
+};
+
+void SmsImageDialog::onReturnPressed()
+{
+	accept();
+	emit codeEntered(code_edit->text());
+};
+
+/********** HttpClient **********/
+
+HttpClient::HttpClient()
+{
+	connect(&Socket,SIGNAL(connected()),this,SLOT(onConnected()));
+	connect(&Socket,SIGNAL(readyRead()),this,SLOT(onReadyRead()));
+};
+
+void HttpClient::onConnected()
+{
+	QString query=(PostData.size()>0?"POST":"GET");
+	query+=" ";
+	if(Path==""||Path[0]!='/')
+		query+='/';
+	query+=Path;
+	query+=" HTTP/1.1\n";
+	query+="Host: "+Host+"\n";
+	query+="User-Agent: Mozilla/5.0 (X11; U; Linux i686; pl-PL; rv:1.2)\n";
+//	query+="Connection: keep-alive\n";
+	if(CookieName!="")
+		query+="Cookie: "+CookieName+"="+CookieValue+"\n";
+	if(PostData.size()>0)
+	{
+		query+="Content-Type: application/x-www-form-urlencoded\n";
+		query+="Content-Length: "+QString::number(PostData.size())+"\n";
+	};
+	query+="\n";
+	if(PostData.size()>0)
+		query+=QString(PostData);
+	fprintf(stderr,"HttpClient: Sending query:\n%s\n",query.local8Bit().data());	
+	Socket.writeBlock(query.local8Bit().data(),query.length());
+};
+
+void HttpClient::onReadyRead()
+{
+	int size=Socket.bytesAvailable();
+	fprintf(stderr,"HttpClient: Data Block Retreived: %i bytes\n",size);
+	// Dodaj nowe dane do starych
+	char buf[size];
+	Socket.readBlock(buf,size);
+	int old_size=Data.size();
+	Data.resize(old_size+size);
+	for(int i=0; i<size; i++)
+		Data[old_size+i]=buf[i];
+	// Jesli nie mamy jeszcze naglowka
+	if(ContentLength<0)
+	{	
+		fprintf(stderr,"HttpClient: Trying to parse header\n");
+		// Kontynuuj odczyt jesli naglowek niekompletny
+		QString s=QString(Data);
+		int p=s.find("\r\n\r\n");
+		if(p<0)
+			return;
+		// Dostalismy naglowek, 
+		fprintf(stderr,"HttpClient: Http header found:\n%s\n",s.local8Bit().data());		
+		// Wyci±gamy status
+		QRegExp status_regexp("HTTP/1.1 (\\d+)");
+		if(status_regexp.search(s)<0)
+		{
+			Socket.close();
+			emit error();
+			return;
+		};
+		Status=status_regexp.cap(1).toInt();
+		fprintf(stderr,"HttpClient: Status: %i\n",Status);			
+		// Wyci±gamy Content-Length
+		QRegExp cl_regexp("Content-Length: (\\d+)");
+		if(cl_regexp.search(s)<0)
+			ContentLength=0;
+		else
+			ContentLength=cl_regexp.cap(1).toInt();
+		fprintf(stderr,"HttpClient: Content-Length: %i bytes\n",ContentLength);			
+		// Wyciagamy ewentualne cookie (dla uproszczenia tylko jedno)
+		QRegExp cookie_regexp("Set-Cookie: ([^=]+)=([^;]+);");
+		if(cookie_regexp.search(s)>=0)
+		{
+			CookieName=cookie_regexp.cap(1);
+			CookieValue=cookie_regexp.cap(2);
+			fprintf(stderr,"HttpClient: Cookie retreived: %s=%s\n",CookieName.local8Bit().data(),CookieValue.local8Bit().data());
+		};
+		// Wytnij naglowek z Data
+		int header_size=p+4;
+		int new_data_size=Data.size()-header_size;
+		for(int i=0; i<new_data_size; i++)
+			Data[i]=Data[header_size+i];
+		Data.resize(new_data_size);
+		fprintf(stderr,"HttpClient: Header parsed and cutted off from data\n");
+		fprintf(stderr,"HttpClient: Header size: %i bytes\n",header_size);
+		fprintf(stderr,"HttpClient: New data block size: %i bytes\n",new_data_size);
+		// Je¶li status jest 100 - Continue to czekamy na dalsze dane
+		// (uniewa¿niamy ten nag³owek i czekamy na nastêpny)
+		if(Status==100)
+		{
+			ContentLength=-1;
+			return;
+		};
+	};
+	// Kontynuuj odczyt jesli dane niekompletne
+	if(ContentLength>Data.size())
+		return;
+	// Mamy cale dane
+	fprintf(stderr,"HttpClient: All Data Retreived: %i bytes\n",Data.size());
+	Socket.close();
+	emit finished();
+};
+
+void HttpClient::setHost(QString host)
+{
+	Host=host;
+	CookieName="";
+};
+
+void HttpClient::get(QString path)
+{
+	Path=path;
+	Data.resize(0);
+	PostData.resize(0);
+	ContentLength=-1;
+	Socket.connectToHost(Host,80);
+};
+
+void HttpClient::post(QString path,const QByteArray& data)
+{
+	Path=path;
+	Data.resize(0);
+	PostData.duplicate(data);
+	ContentLength=-1;
+	Socket.connectToHost(Host,80);
+};
+
+int HttpClient::status()
+{
+	return Status;
+};
+
+const QByteArray& HttpClient::data()
+{
+	return Data;
+};
+
+/********** SmsSender **********/
+
+SmsSender::SmsSender(QObject* parent)
+	: QObject(parent,"SmsSender")
+{
+	QObject::connect(&Http,SIGNAL(finished()),this,SLOT(onFinished()));
+};
+
+void SmsSender::onFinished()
+{
+	if(State==SMS_LOADING_PAGE)
+	{
+		QString Page=Http.data();
+		fprintf(stderr,"SMS Idea Page:\n%s\n",Page.local8Bit().data());
+		QRegExp pic_regexp("rotate_vt\\.asp\\?token=([^\"]+)");
+		int pic_pos=pic_regexp.search(Page);
+		if(pic_pos<0)
+		{
+			QMessageBox::critical((QWidget*)parent(),"SMS",i18n("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
+			emit finished(false);
+			return;
+		};
+		QString pic_path=Page.mid(pic_pos,pic_regexp.matchedLength());
+		Token=pic_regexp.cap(1);
+		fprintf(stderr,"SMS Idea Token: %s\n",Token.local8Bit().data());
+		fprintf(stderr,"SMS Idea Picture: %s\n",pic_path.local8Bit().data());
+		State=SMS_LOADING_PICTURE;
+		Http.get(pic_path);
+	}
+	else if(State==SMS_LOADING_PICTURE)
+	{
+		fprintf(stderr,"SMS Idea Picture Loaded: %i bytes\n",Http.data().size());
+		SmsImageDialog* d=new SmsImageDialog((QDialog*)parent(),Http.data());
+		connect(d,SIGNAL(codeEntered(const QString&)),this,SLOT(onCodeEntered(const QString&)));
+		d->show();
+	}
+	else if(State==SMS_LOADING_RESULTS)
+	{
+		QString Page=Http.data();
+		fprintf(stderr,"SMS Idea Results Page:\n%s\n",Page.local8Bit().data());	
+		if(Page.find("wyczerpany")>=0)
+		{
+			QMessageBox::critical((QWidget*)parent(),"SMS",i18n("You exceeded your daily limit"));
+			emit finished(false);
+		}
+		else
+			emit finished(true);
+	}
+	else
+		fprintf(stderr,"SMS Panic! Unknown state\n");	
+};
+
+void SmsSender::onCodeEntered(const QString& code)
+{
+	fprintf(stderr,"SMS User entered the code\n");
+	State=SMS_LOADING_RESULTS;
+	QString post_data=QString("token=")+Token+"&SENDER=Kadu&RECIPIENT="+Number+"&SHORT_MESSAGE="+Message+"&pass="+code;
+	QByteArray PostData;
+	PostData.duplicate(post_data.local8Bit().data(),post_data.length());
+	Http.post("sendsms.asp",PostData);
+};
+
+void SmsSender::send(const QString& number,const QString& message)
+{
+	Number=number;
+	Message=message;
+	if(Number.length()!=9)
+	{
+		QMessageBox::critical((QWidget*)parent(),"SMS",i18n("Mobile number is incorrect"));
+		emit finished(false);
+		return;
+	};
+	// Rozpoznaj siec
+	if(Number[0]=='5')
+		Provider=SMS_IDEA;
+	else if(Number[0]=='6')
+	{
+		if((QChar(Number[2])-'0')%2)
+			Provider=SMS_PLUS;
+		else
+ 			Provider=SMS_ERA;
+    	}
+	else
+	{
+		QMessageBox::critical((QWidget*)parent(),"SMS",i18n("Mobile number is incorrect"));
+		emit finished(false);
+		return;
+	};	
+	// Wyslij
+	State=SMS_LOADING_PAGE;
+	if(Provider==SMS_IDEA)
+	{
+		Http.setHost("213.218.116.131");
+		Http.get("/");
+	}
+	else
+	{
+		QMessageBox::critical((QWidget*)parent(),"SMS",i18n("Routines for this provider not implemented yet"));
+		emit finished(false);
+
+	};
+};
+
+/********** Sms **********/
+
 Sms::Sms(const QString& altnick, QDialog* parent) : QDialog (parent, "Sms")
 {
 	QGridLayout * grid = new QGridLayout(this, 3, 4, 10, 3);
@@ -54,7 +335,7 @@ Sms::Sms(const QString& altnick, QDialog* parent) : QDialog (parent, "Sms")
 	grid->addWidget(b_send, 3, 3);
 	QObject::connect(b_send, SIGNAL(clicked()), this, SLOT(sendSms()));
 
-	QPushButton* b_send_int = new QPushButton(this);
+	b_send_int = new QPushButton(this);
 	b_send_int->setText(i18n("Send (internal)"));
 	grid->addWidget(b_send_int, 3, 1);
 	QObject::connect(b_send_int, SIGNAL(clicked()), this, SLOT(sendSmsInternal()));
@@ -65,6 +346,8 @@ Sms::Sms(const QString& altnick, QDialog* parent) : QDialog (parent, "Sms")
 
 	resize(300,200);
 	setCaption(i18n("Send SMS"));
+
+	connect(&Sender,SIGNAL(finished(bool)),this,SLOT(onSmsSenderFinished(bool)));
 }
 
 void Sms::updateRecipient(const QString &newtext)
@@ -95,7 +378,10 @@ void Sms::updateList(const QString &newnumber)
 
 void Sms::sendSms(void) {
 	b_send->setEnabled(false);
+	b_send_int->setEnabled(false);
 	body->setEnabled(false);
+
+	appendSMSHistory(recipient->text(),body->text());
 
 	QString SmsAppPath;
 	if(config.smsbuildin)
@@ -135,12 +421,12 @@ void Sms::sendSms(void) {
 }
 
 void Sms::smsSigHandler() {
-	appendSMSHistory(recipient->text(),body->text());
 	if (smsProcess->normalExit())
 		QMessageBox::information(this, i18n("SMS sent"), i18n("The process exited normally. The SMS should be on its way"));
 	else
 		QMessageBox::warning(this, i18n("SMS not sent"), i18n("The process exited abnormally. The SMS may not be sent"));
 	b_send->setEnabled(true);
+	b_send_int->setEnabled(true);
 	body->setEnabled(true);
 	body->clear();
 }
@@ -153,217 +439,21 @@ void Sms::updateCounter() {
 
 void Sms::sendSmsInternal()
 {
-	(new SmsSender(this,recipient->text(),body->text()))->run();
+	b_send->setEnabled(false);
+	b_send_int->setEnabled(false);
+	body->setEnabled(false);
+	Sender.send(recipient->text(),body->text());
 };
 
-/********** SmsImageWidget **********/
-
-SmsImageWidget::SmsImageWidget(QWidget* parent,const QByteArray& image)
-	: QWidget(parent, "SmsImageWidget"), Image(image)
+void Sms::onSmsSenderFinished(bool success)
 {
-	setMinimumSize(Image.width(),Image.height());
-};
-
-void SmsImageWidget::paintEvent(QPaintEvent* e)
-{
-	QPainter p(this);
-	p.drawImage(0,0,Image);
-};
-
-/********** SmsImageDialog **********/
-
-SmsImageDialog::SmsImageDialog(QDialog* parent,const QByteArray& image)
-	: QDialog (parent, "SmsImageDialog")
-{
-	QGridLayout * grid = new QGridLayout(this, 2, 2, 10, 10);
-	SmsImageWidget* image_widget=new SmsImageWidget(this,image);
-	grid->addMultiCellWidget(image_widget, 0, 0, 0, 1);
-	QLabel* label=new QLabel(this);
-	label->setText(i18n("Enter text from the picture:"));
-	grid->addWidget(label, 1, 0);
-	code_edit=new QLineEdit(this);
-	grid->addWidget(code_edit, 1, 1);
-	connect(code_edit,SIGNAL(returnPressed()),this,SLOT(onReturnPressed()));
-};
-
-void SmsImageDialog::onReturnPressed()
-{
-	accept();
-	emit codeEntered(code_edit->text());
-};
-
-/********** HttpClient **********/
-
-HttpClient::HttpClient(QString host)
-{
-	Host=host;
-	connect(this,SIGNAL(connected()),this,SLOT(onConnected()));
-	connect(this,SIGNAL(readyRead()),this,SLOT(onReadyRead()));
-};
-
-void HttpClient::onConnected()
-{
-	QString query=(PostData.size()>0?"POST":"GET");
-	query+=" ";
-	query+=Path;
-	query+=" HTTP/1.1\n";
-	query+="Host: "+Host+"\n";
-	query+="User-Agent: Mozilla/5.0 (X11; U; Linux i686; pl-PL; rv:1.2)\n";
-	query+="Connection: keep-alive\n";
-	if(CookieName!="")
-		query+="Cookie: "+CookieName+"="+CookieValue+"\n";
-	if(PostData.size()>0)
-	{
-		query+="Content-Type: application/x-www-form-urlencoded\n";
-		query+="Content-Length: "+QString::number(PostData.size())+"\n";
-	};
-	query+="\n";
-	if(PostData.size()>0)
-		query+=QString(PostData);
-	fprintf(stderr,"HttpClient: Sending query:\n%s\n",query.local8Bit().data());	
-	writeBlock(query.local8Bit().data(),query.length());
-};
-
-void HttpClient::onReadyRead()
-{
-	int size=bytesAvailable();
-	fprintf(stderr,"HttpClient: Data Block Retreived: %i bytes\n",size);
-	// Dodaj nowe dane do starych
-	char buf[size];
-	readBlock(buf,size);
-	int old_size=Data.size();
-	Data.resize(old_size+size);
-	for(int i=0; i<size; i++)
-		Data[old_size+i]=buf[i];
-	// Jesli nie mamy jeszcze naglowka
-	if(ContentLength<0)
-	{	
-		fprintf(stderr,"HttpClient: Trying to parse header\n");
-		// Kontynuuj odczyt jesli naglowek niekompletny
-		QString s=QString(Data);
-		int p=s.find("\r\n\r\n");
-		if(p<0)
-			return;
-		// Dostalismy naglowek, pobieramy Content-Length
-		fprintf(stderr,"HttpClient: Http header found\n");
-		QRegExp cl_regexp("Content-Length: (\\d+)");
-		if(cl_regexp.search(s)<0)
-			ContentLength=0;
-		else
-			ContentLength=atoi(cl_regexp.cap(1).local8Bit().data());
-		fprintf(stderr,"HttpClient: Content-Length: %i bytes\n",ContentLength);			
-		// Wyciagamy ewentualne cookie (dla uproszczenia tylko jedno)
-		QRegExp cookie_regexp("Set-Cookie: ([^=]+)=([^;]+);");
-		if(cookie_regexp.search(s)>=0)
-		{
-			CookieName=cookie_regexp.cap(1);
-			CookieValue=cookie_regexp.cap(2);
-			fprintf(stderr,"HttpClient: Cookie retreived: %s=%s\n",CookieName.local8Bit().data(),CookieValue.local8Bit().data());
-		};
-		// Wytnij naglowek z Data
-		int header_size=p+4;
-		int new_data_size=Data.size()-header_size;
-		for(int i=0; i<new_data_size; i++)
-			Data[i]=Data[header_size+i];
-		Data.resize(new_data_size);
-		fprintf(stderr,"HttpClient: Header parsed and cutted off from data\n");
-		fprintf(stderr,"HttpClient: Header size: %i bytes\n",header_size);
-		fprintf(stderr,"HttpClient: New data block size: %i bytes\n",new_data_size);
-	};
-	// Kontynuuj odczyt jesli dane niekompletne
-	if(ContentLength>Data.size())
-		return;
-	// Mamy cale dane
-	fprintf(stderr,"HttpClient: All Data Retreived: %i bytes\n",Data.size());
-	close();
-	emit finished();
-};
-
-void HttpClient::get(QString path)
-{
-	Path=path;
-	Data.resize(0);
-	PostData.resize(0);
-	ContentLength=-1;
-	connectToHost(Host,80);
-};
-
-void HttpClient::post(QString path,const QByteArray& data)
-{
-	Path=path;
-	Data.resize(0);
-	PostData.duplicate(data);
-	ContentLength=-1;
-	connectToHost(Host,80);
-};
-
-const QByteArray& HttpClient::data()
-{
-	return Data;
-};
-
-/********** SmsSender **********/
-
-SmsSender::SmsSender(QObject* parent,const QString& number,const QString& message)
-	: QObject(parent,"SmsSender")
-{
-	Number=number;
-	Message=message;
-	Http=new HttpClient("213.218.116.131");
-	QObject::connect(Http,SIGNAL(finished()),this,SLOT(onFinished()));
-};
-
-void SmsSender::onFinished()
-{
-	//fprintf(stderr,"SMS Operation State: %i\n",op->state());
-	if(State==SMS_LOADING_PAGE)
-	{
-		QString Page=Http->data();
-		fprintf(stderr,"SMS Idea Page:\n%s\n",Page.local8Bit().data());
-		QRegExp pic_regexp("rotate_vt\\.asp\\?token=([^\"]+)");
-		int pic_pos=pic_regexp.search(Page);
-		if(pic_pos<0)
-		{
-			QMessageBox::critical((QWidget*)parent(),"SMS",i18n("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
-			return;
-		};
-		QString pic_path=Page.mid(pic_pos,pic_regexp.matchedLength());
-		Token=pic_regexp.cap(1);
-		fprintf(stderr,"SMS Idea Token: %s\n",Token.local8Bit().data());
-		fprintf(stderr,"SMS Idea Picture: %s\n",pic_path.local8Bit().data());
-		State=SMS_LOADING_PICTURE;
-		Http->get(QString("/")+pic_path);
-	}
-	else if(State==SMS_LOADING_PICTURE)
-	{
-		fprintf(stderr,"SMS Idea Picture Loaded: %i bytes\n",Http->data().size());
-		SmsImageDialog* d=new SmsImageDialog((QDialog*)parent(),Http->data());
-		connect(d,SIGNAL(codeEntered(const QString&)),this,SLOT(onCodeEntered(const QString&)));
-		d->show();
-	}
-	else if(State==SMS_LOADING_RESULTS)
-	{
-		QString Page=Http->data();
-		fprintf(stderr,"SMS Idea Results Page:\n%s\n",Page.local8Bit().data());	
-	}
-	else
-		fprintf(stderr,"SMS Panic! Unknown state\n");	
-};
-
-void SmsSender::onCodeEntered(const QString& code)
-{
-	fprintf(stderr,"SMS User entered the code\n");
-	State=SMS_LOADING_RESULTS;
-	QString post_data=QString("token=")+Token+"&SENDER=Kadu&RECIPIENT="+Number+"&SHORT_MESSAGE="+Message+"&pass="+code;
-	QByteArray PostData;
-	PostData.duplicate(post_data.local8Bit().data(),post_data.length());
-	Http->post("/sendsms.asp",PostData);
-};
-
-void SmsSender::run()
-{
-	State=SMS_LOADING_PAGE;
-	Http->get("/");
+	if(success)
+		QMessageBox::information(this, i18n("SMS sent"), i18n("The SMS should be on its way"));
+	b_send->setEnabled(true);
+	b_send_int->setEnabled(true);
+	body->setEnabled(true);
+	if(success)
+		body->clear();
 };
 
 #include "sms.moc"

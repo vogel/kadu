@@ -20,29 +20,6 @@
 #include <qsocket.h>
 #include <qimage.h>
 
-class Sms : public QDialog {
-	Q_OBJECT
-	
-	public:
-		Sms(const QString& altnick, QDialog* parent=0);
-
-	private:
-		QMultiLineEdit *body;
-		QLineEdit *recipient;
-		QComboBox* list;
-		QLabel *smslen;
-		QPushButton *b_send;
-		QProcess *smsProcess;
-
-	private slots:
-		void updateRecipient(const QString &);
-		void updateList(const QString& newnumber);
-		void sendSms();
-		void updateCounter();
-		void smsSigHandler();
-		void sendSmsInternal();
-};
-
 class SmsImageWidget : public QWidget
 {
 	Q_OBJECT
@@ -74,15 +51,17 @@ class SmsImageDialog : public QDialog
 		void codeEntered(const QString& code);
 };
 
-class HttpClient : public QSocket
+class HttpClient : public QObject
 {
 	Q_OBJECT
 	
 	private:
+		QSocket Socket;
 		QString Host;
 		QString Path;
 		QByteArray Data;
 		QByteArray PostData;
+		int Status;
 		int ContentLength;
 		QString CookieName;
 		QString CookieValue;
@@ -92,13 +71,16 @@ class HttpClient : public QSocket
 		void onReadyRead();
 		
 	public:
-		HttpClient(QString host);
+		HttpClient();
+		void setHost(QString host);
 		void get(QString path);
 		void post(QString path,const QByteArray& data);
+		int status();
 		const QByteArray& data();
 		
 	signals:
 		void finished();
+		void error();
 };
 
 class SmsSender : public QObject
@@ -109,22 +91,59 @@ class SmsSender : public QObject
 		QString Number;
 		QString Message;
 		QString Token;
-		HttpClient* Http;
-		enum SmsThreadState
+		HttpClient Http;
+		enum SmsSenderProvider
+		{
+			SMS_IDEA,
+			SMS_ERA,
+			SMS_PLUS
+		};
+		SmsSenderProvider Provider;
+		enum SmsSenderState
 		{
 			SMS_LOADING_PAGE,
 			SMS_LOADING_PICTURE,
 			SMS_LOADING_RESULTS
 		};
-		SmsThreadState State;
+		SmsSenderState State;
 
 	private slots:
 		void onFinished();
 		void onCodeEntered(const QString& code);
 
 	public:
-		SmsSender(QObject* parent,const QString& number,const QString& message);
-		void run();
+		SmsSender(QObject* parent=0);
+		void send(const QString& number,const QString& message);
+		
+	signals:
+		void finished(bool success);
 };
+
+class Sms : public QDialog {
+	Q_OBJECT
+	
+	public:
+		Sms(const QString& altnick, QDialog* parent=0);
+
+	private:
+		QMultiLineEdit *body;
+		QLineEdit *recipient;
+		QComboBox* list;
+		QLabel *smslen;
+		QPushButton *b_send;
+		QPushButton* b_send_int;
+		QProcess *smsProcess;
+		SmsSender Sender;
+
+	private slots:
+		void updateRecipient(const QString &);
+		void updateList(const QString& newnumber);
+		void sendSms();
+		void updateCounter();
+		void smsSigHandler();
+		void sendSmsInternal();
+		void onSmsSenderFinished(bool success);
+};
+
 
 #endif
