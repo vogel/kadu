@@ -1,11 +1,3 @@
-/**************OC*************************************************************
-                          chat.cpp  -  description
-                             -------------------
-    begin                : Sat Sep 8 2001
-    copyright            : (C) 2001 by tomee
-    email                : tomee@cpi.pl
- ***************************************************************************/
-
 /***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,7 +14,6 @@
 #include <qlayout.h>
 #include <qaccel.h>
 #include <qtimer.h>
-#include <qtoolbutton.h>
 
 //
 #include "kadu.h"
@@ -31,6 +22,7 @@
 #include "search.h"
 #include "history.h"
 #include "misc.h"
+#include "emoticons.h"
 //
 
 Chat::Chat(UinsList uins, QWidget *parent)
@@ -229,37 +221,8 @@ void CustomInput::keyPressEvent(QKeyEvent * e) {
 
 /* convert special characters into emoticons, HTML into plain text and so forth */
 QString Chat::convertCharacters(QString edit) {
-	if (config.emoticons) {
-		edit.replace(QRegExp(__c2q("(<p³acze>|<placze>)")), "__escaped_lt__IMG SRC=cry.gif /__escaped_gt__");
-		edit.replace(QRegExp(__c2q("<zdziwiony>")), "__escaped_lt__IMG SRC=surprised.gif /__escaped_gt__");
-		edit.replace(QRegExp(__c2q("(<ró¿a>|<roza>)")), "__escaped_lt__IMG SRC=rose.gif /__escaped_gt__");
-		edit.replace( QRegExp(__c2q("<kwiatek>")), "__escaped_lt__IMG SRC=flower.gif /__escaped_gt__");
-		edit.replace( QRegExp(__c2q("<piwo>")), "__escaped_lt__IMG SRC=beer.gif /__escaped_gt__");
-		edit.replace( QRegExp(__c2q("<OK>")), "__escaped_lt__IMG SRC=thumbsup.gif /__escaped_gt__");
-		edit.replace( QRegExp(__c2q("<do bani>")), "__escaped_lt__IMG SRC=thumbsdown.gif /__escaped_gt__");
-		edit.replace( QRegExp(__c2q("<serce>")), "__escaped_lt__IMG SRC=heart.gif /__escaped_gt__");
-		edit.replace( QRegExp(__c2q("<serduszka>")), "__escaped_lt__IMG SRC=hearts.gif /__escaped_gt__");
-		edit.replace( QRegExp(__c2q("<kawa>")), "__escaped_lt__IMG SRC=coffee.gif /__escaped_gt__");
-		edit.replace( QRegExp(__c2q("<komórka>")), "__escaped_lt__IMG SRC=cell.gif /__escaped_gt__");
-		edit.replace( QRegExp(__c2q("<prezent>")), "__escaped_lt__IMG SRC=gift.gif /__escaped_gt__");
-		edit.replace( QRegExp(__c2q("<telefon>")), "__escaped_lt__IMG SRC=phone.gif /__escaped_gt__");
-		edit.replace( QRegExp(__c2q("<cmok>")), "__escaped_lt__IMG SRC=kiss.gif /__escaped_gt__");
-		edit.replace( QRegExp(__c2q("<zawstydzony>")), "__escaped_lt__IMG SRC=blush.gif /__escaped_gt__");
-		edit.replace( QRegExp(__c2q("<papa>")), "__escaped_lt__IMG SRC=bye.gif /__escaped_gt__");
-		edit.replace( QRegExp(":\\)+"), "__escaped_lt__IMG SRC=smile.gif /__escaped_gt__");
-		edit.replace( QRegExp(":-\\)+"), "__escaped_lt__IMG SRC=smile.gif /__escaped_gt__");
-		edit.replace( QRegExp(";\\)+"), "__escaped_lt__IMG SRC=wink.gif /__escaped_gt__");
-		edit.replace( QRegExp(";-\\)+"), "__escaped_lt__IMG SRC=wink.gif /__escaped_gt__");
-		edit.replace( QRegExp(":\\(+"), "__escaped_lt__IMG SRC=sad.gif /__escaped_gt__");
-		edit.replace( QRegExp(";\\(+"), "__escaped_lt__IMG SRC=sad.gif /__escaped_gt__");
-		edit.replace( QRegExp(":-\\(+"), "__escaped_lt__IMG SRC=sad.gif /__escaped_gt__");
-		edit.replace( QRegExp(":P+"), "__escaped_lt__IMG SRC=grin.gif /__escaped_gt__");
-		edit.replace( QRegExp(":-P+"), "__escaped_lt__IMG SRC=grin.gif /__escaped_gt__");
-		edit.replace( QRegExp(";P+"), "__escaped_lt__IMG SRC=grin.gif /__escaped_gt__");
-		edit.replace( QRegExp(";-P+"), "__escaped_lt__IMG SRC=grin.gif /__escaped_gt__");
-		edit.replace( QRegExp(":,\\(+"), "__escaped_lt__IMG SRC=cry.gif /__escaped_gt__");
-		edit.replace( QRegExp(":x+"), "__escaped_lt__IMG SRC=kiss.gif /__escaped_gt__");
-		}
+	if (config.emoticons)
+		emoticons.expandEmoticons(edit);
 
 	edit.replace( QRegExp("<"), "&lt;" );
 	edit.replace( QRegExp(">"), "&gt;" );
@@ -543,6 +506,18 @@ void Chat::addEmoticon(QString string) {
 	iconsel->setOn(false);
 }
 
+IconSelectorButton::IconSelectorButton(QWidget* parent,const QString& emoticon_string)
+	: QToolButton(parent)
+{
+	EmoticonString=emoticon_string;
+	connect(this,SIGNAL(clicked()),this,SLOT(buttonClicked()));
+};
+
+void IconSelectorButton::buttonClicked()
+{
+	emit clicked(EmoticonString);
+};
+
 /* the icon selector itself */
 IconSelector::IconSelector(QWidget *parent, const char *name, Chat * caller) : QWidget (parent, name) {
 	callingwidget = caller;
@@ -550,156 +525,30 @@ IconSelector::IconSelector(QWidget *parent, const char *name, Chat * caller) : Q
 
 	QString path;
 	path.append(config.emoticonspath);
-	QGridLayout *grid = new QGridLayout(this, 5, 4, 0, 0);
+	
+	int emoticons_count=emoticons.emoticonsCount();
+	int selector_width=(int)sqrt((double)emoticons_count);
+	int btn_width=0;
+	QGridLayout *grid = new QGridLayout(this, 0, selector_width, 0, 0);
 
-	QToolButton *icon_1_1 = new QToolButton(this);
-	icon_1_1->setPixmap(QPixmap(path + "smile.gif"));
-	icon_1_1->setAutoRaise(true);
-	grid->addWidget(icon_1_1, 0, 0);
-	QObject::connect(icon_1_1, SIGNAL(clicked()), this, SLOT(slot_1_1()));
+	for(int i=0; i<emoticons_count; i++)
+	{
+		IconSelectorButton* btn = new IconSelectorButton(this,emoticons.emoticonString(i));
+		btn->setPixmap(QPixmap(path + emoticons.emoticonPicName(i)));
+		btn->setAutoRaise(true);
+		btn_width=btn->sizeHint().width();
+		grid->addWidget(btn, i/selector_width, i%selector_width);
+		connect(btn,SIGNAL(clicked(const QString&)),this,SLOT(iconClicked(const QString&)));
+	};
 
-	QToolButton *icon_1_2 = new QToolButton(this);
-	icon_1_2->setPixmap(QPixmap(path + "sad.gif"));
-	icon_1_2->setAutoRaise(true);
-	grid->addWidget(icon_1_2, 0, 1);
-	QObject::connect(icon_1_2, SIGNAL(clicked()), this, SLOT(slot_1_2()));
+	move(callingwidget->buttontray->x() - sizeHint().width() + btn_width,
+		callingwidget->buttontray->y() + callingwidget->buttontray->height());
+};
 
-	QToolButton *icon_1_3 = new QToolButton(this);
-	icon_1_3->setPixmap(QPixmap(path + "surprised.gif"));
-	icon_1_3->setAutoRaise(true);
-	grid->addWidget(icon_1_3, 0, 2);
-	QObject::connect(icon_1_3, SIGNAL(clicked()), this, SLOT(slot_1_3()));
-
-	QToolButton *icon_1_4 = new QToolButton(this);
-	icon_1_4->setPixmap(QPixmap(path + "wink.gif"));
-	icon_1_4->setAutoRaise(true);
-	grid->addWidget(icon_1_4, 0, 3);
-	QObject::connect(icon_1_4, SIGNAL(clicked()), this, SLOT(slot_1_4()));
-
-	QToolButton *icon_2_1 = new QToolButton(this);
-	icon_2_1->setPixmap(QPixmap(path + "beer.gif"));
-	icon_2_1->setAutoRaise(true);
-	grid->addWidget(icon_2_1, 1, 0);
-	QObject::connect(icon_2_1, SIGNAL( clicked() ), this, SLOT(slot_2_1()));
-
-	QToolButton *icon_2_2 = new QToolButton(this);
-	icon_2_2->setPixmap(QPixmap(path + "cry.gif"));
-	icon_2_2->setAutoRaise(true);
-	grid->addWidget(icon_2_2,1,1);
-	QObject::connect(icon_2_2, SIGNAL(clicked()), this, SLOT(slot_2_2()));
-
-	QToolButton *icon_2_3 = new QToolButton(this);
-	icon_2_3->setPixmap(QPixmap(path + "grin.gif"));
-	icon_2_3->setAutoRaise(true);
-	grid->addWidget(icon_2_3, 1, 2);
-	QObject::connect(icon_2_3, SIGNAL(clicked()), this, SLOT(slot_2_3()));
-
-	QToolButton *icon_2_4 = new QToolButton(this);
-	icon_2_4->setPixmap(QPixmap(path + "coffee.gif"));
-	icon_2_4->setAutoRaise(true);
-	grid->addWidget(icon_2_4, 1, 3);
-	QObject::connect(icon_2_4, SIGNAL(clicked()), this, SLOT(slot_2_4()));
-
-	QToolButton *icon_3_1 = new QToolButton(this);
-	icon_3_1->setPixmap(QPixmap(path + "flower.gif"));
-	icon_3_1->setAutoRaise(true);
-	grid->addWidget(icon_3_1, 2, 0);
-	QObject::connect(icon_3_1, SIGNAL(clicked()), this, SLOT(slot_3_1()));
-
-	QToolButton *icon_3_2 = new QToolButton(this);
-	icon_3_2->setPixmap(QPixmap(path + "rose.gif"));
-	icon_3_2->setAutoRaise(true);
-	grid->addWidget(icon_3_2, 2, 1);
-	QObject::connect(icon_3_2, SIGNAL(clicked()), this, SLOT(slot_3_2()));
-
-	QToolButton *icon_3_3 = new QToolButton(this);
-	icon_3_3->setPixmap(QPixmap(path + "heart.gif"));
-	icon_3_3->setAutoRaise(true);
-	grid->addWidget(icon_3_3, 2, 2);
-	QObject::connect(icon_3_3, SIGNAL(clicked()), this, SLOT(slot_3_3()));
-
-	QToolButton *icon_3_4 = new QToolButton(this);
-	icon_3_4->setPixmap(QPixmap(path + "thumbsup.gif"));
-	icon_3_4->setAutoRaise(true);
-	grid->addWidget(icon_3_4, 2, 3);
-	QObject::connect(icon_3_4, SIGNAL(clicked()), this, SLOT(slot_3_4()));
-
-	QToolButton *icon_4_1 = new QToolButton(this);
-	icon_4_1->setPixmap(QPixmap(path + "thumbsdown.gif"));
-	icon_4_1->setAutoRaise(true);
-	grid->addWidget(icon_4_1, 3, 0);
-	QObject::connect(icon_4_1, SIGNAL(clicked()), this, SLOT(slot_4_1()));
-
-	QToolButton *icon_4_2 = new QToolButton(this);
-	icon_4_2->setPixmap(QPixmap(path + "gift.gif"));
-	icon_4_2->setAutoRaise(true);
-	grid->addWidget(icon_4_2, 3, 1);
-	QObject::connect(icon_4_2, SIGNAL(clicked()), this, SLOT(slot_4_2()));
-
-	QToolButton *icon_4_3 = new QToolButton(this);
-	icon_4_3->setPixmap(QPixmap(path + "cell.gif"));
-	icon_4_3->setAutoRaise(true);
-	grid->addWidget(icon_4_3, 3, 2);
-	QObject::connect(icon_4_3, SIGNAL(clicked()), this, SLOT(slot_4_3()));
-
-	QToolButton *icon_4_4 = new QToolButton(this);
-	icon_4_4->setPixmap(QPixmap(path + "phone.gif"));
-	icon_4_4->setAutoRaise(true);
-	grid->addWidget(icon_4_4, 3, 3);
-	QObject::connect(icon_4_4, SIGNAL(clicked()), this, SLOT(slot_4_4()));
-
-	QToolButton *icon_5_1 = new QToolButton(this);
-	icon_5_1->setPixmap(QPixmap(path + "hearts.gif"));
-	icon_5_1->setAutoRaise(true);
-	grid->addWidget(icon_5_1, 4, 0);
-	QObject::connect(icon_5_1, SIGNAL(clicked()), this, SLOT(slot_5_1()));
-
-	QToolButton *icon_5_2 = new QToolButton(this);
-	icon_5_2->setPixmap(QPixmap(path + "kiss.gif"));
-	icon_5_2->setAutoRaise(true);
-	grid->addWidget(icon_5_2, 4, 1);
-	QObject::connect(icon_5_2, SIGNAL(clicked()), this, SLOT(slot_5_2()));
-
-	QToolButton *icon_5_3 = new QToolButton(this);
-	icon_5_3->setPixmap(QPixmap(path + "blush.gif"));
-	icon_5_3->setAutoRaise(true);
-	grid->addWidget(icon_5_3, 4, 2);
-	QObject::connect(icon_5_3, SIGNAL(clicked()), this, SLOT(slot_5_3()));
-
-	QToolButton *icon_5_4 = new QToolButton(this);
-	icon_5_4->setPixmap(QPixmap(path + "bye.gif"));
-	icon_5_4->setAutoRaise(true);
-	grid->addWidget(icon_5_4, 4, 3);
-	QObject::connect(icon_5_4, SIGNAL(clicked()), this, SLOT(slot_5_4()));
-
-	move(callingwidget->buttontray->x() - sizeHint().width() + icon_1_4->sizeHint().width(),
-	callingwidget->buttontray->y() + callingwidget->buttontray->height());
-}
-
-/* a set of slots. tell me it can be done better. */
-void IconSelector::slot_1_1() { callingwidget->addEmoticon(":)"); close(); };
-void IconSelector::slot_1_2() { callingwidget->addEmoticon(":("); close(); };
-void IconSelector::slot_1_3() { callingwidget->addEmoticon("<zdziwiony>"); close(); };
-void IconSelector::slot_1_4() { callingwidget->addEmoticon(";)"); close(); };
-
-void IconSelector::slot_2_1() { callingwidget->addEmoticon("<piwo>"); close(); };
-void IconSelector::slot_2_2() { callingwidget->addEmoticon(__c2q("<p³acze>")); close(); };
-void IconSelector::slot_2_3() { callingwidget->addEmoticon(";P"); close(); };
-void IconSelector::slot_2_4() { callingwidget->addEmoticon("<kawa>"); close(); };
-
-void IconSelector::slot_3_1() { callingwidget->addEmoticon("<kwiatek>"); close(); };
-void IconSelector::slot_3_2() { callingwidget->addEmoticon("<roza>"); close(); };
-void IconSelector::slot_3_3() { callingwidget->addEmoticon("<serce>"); close(); };
-void IconSelector::slot_3_4() { callingwidget->addEmoticon("<OK>"); close(); };
-
-void IconSelector::slot_4_1() { callingwidget->addEmoticon("<do bani>"); close(); };
-void IconSelector::slot_4_2() { callingwidget->addEmoticon("<prezent>"); close(); };
-void IconSelector::slot_4_3() { callingwidget->addEmoticon("<komórka>"); close(); };
-void IconSelector::slot_4_4() { callingwidget->addEmoticon("<telefon>"); close(); };
-
-void IconSelector::slot_5_1() { callingwidget->addEmoticon("<serduszka>"); close(); };
-void IconSelector::slot_5_2() { callingwidget->addEmoticon("<cmok>"); close(); };
-void IconSelector::slot_5_3() { callingwidget->addEmoticon("<zawstydzony>"); close(); };
-void IconSelector::slot_5_4() { callingwidget->addEmoticon("<papa>"); close(); };
+void IconSelector::iconClicked(const QString& emoticon_string)
+{
+	callingwidget->addEmoticon(emoticon_string);
+	close();
+};
 
 #include "chat.moc"

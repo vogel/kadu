@@ -23,6 +23,7 @@
 #include <qhbox.h>
 #include <qmultilineedit.h>
 #include <qarray.h>
+#include <qtoolbutton.h>
 #include "../libgadu/lib/libgadu.h"
 #include "misc.h"
 #include "userbox.h"
@@ -95,6 +96,23 @@ class CustomInput : public QMultiLineEdit {
 		void keyPressEvent(QKeyEvent *e);
 };
 
+class IconSelectorButton : public QToolButton
+{
+	Q_OBJECT
+	
+	private:
+		QString EmoticonString;
+	
+	private slots:
+		void buttonClicked();
+	
+	public:
+		IconSelectorButton(QWidget* parent,const QString& emoticon_string);	
+	
+	signals:
+		void clicked(const QString& emoticon_string);
+};
+
 class IconSelector : public QWidget {
 	Q_OBJECT
 	public:
@@ -104,30 +122,7 @@ class IconSelector : public QWidget {
 		Chat *callingwidget;
 
 	private slots:
-		void slot_1_1();
-		void slot_1_2();
-		void slot_1_3();
-		void slot_1_4();
-
-		void slot_2_1();
-		void slot_2_2();
-		void slot_2_3();
-		void slot_2_4();
-
-		void slot_3_1();
-		void slot_3_2();
-		void slot_3_3();
-		void slot_3_4();
-
-		void slot_4_1();
-		void slot_4_2();
-		void slot_4_3();
-		void slot_4_4();
-
-		void slot_5_1();
-		void slot_5_2();
-		void slot_5_3();
-		void slot_5_4();
+		void iconClicked(const QString& emoticon_string);
 };
 
 #endif

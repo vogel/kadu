@@ -22,6 +22,8 @@ install-data-local:
 	$(INSTALL_DATA) images/kiss.gif "$(DESTDIR)/$(kde_datadir)/kadu/images/"
 	$(INSTALL_DATA) images/blush.gif "$(DESTDIR)/$(kde_datadir)/kadu/images/"
 	$(INSTALL_DATA) images/bye.gif "$(DESTDIR)/$(kde_datadir)/kadu/images/"
+	$(INSTALL_DATA) images/emoticons_regexp "$(DESTDIR)/$(kde_datadir)/kadu/images/"
+	$(INSTALL_DATA) images/emoticons_selector "$(DESTDIR)/$(kde_datadir)/kadu/images/"
 
 uninstall-local:
 	rm -f "$(DESTDIR)/$(kde_datadir)/kadu/msg.wav"
