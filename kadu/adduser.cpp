@@ -10,6 +10,8 @@
 #include <qlayout.h>
 #include <qpushbutton.h>
 #include <qmessagebox.h>
+#include <qhbox.h>
+#include <qvbox.h>
 
 //
 #include "kadu.h"
@@ -20,67 +22,61 @@
 Adduser::Adduser(QDialog* parent, const char *name) {
 	kdebug("Adduser::Adduser()\n");
 
-	resize(400,150);
+	resize(350, 250);
 	setCaption(i18n("Add user"));
 
-	QLabel *descr = new QLabel(i18n("ATTENTION! As of version 0.3.1, Kadu identifies users by the ALTNICK,\n"
-		"not Nickname field. This is similar to EKG, GG and GNU Gadu"), this);
+	QGridLayout *grid = new QGridLayout(this, 9, 2, 10, 10);
 
-	QLabel *l_nickname = new QLabel(i18n("Nickname"),this);
-	e_nickname = new QLineEdit(this);
+	QVBox *vbox11 = new QVBox(this);
+	QLabel *l_uin = new QLabel(i18n("Uin"), vbox11);
+	e_uin = new QLineEdit(vbox11);
+	grid->addMultiCellWidget(vbox11, 0, 1, 0, 0);
 
-	QLabel *l_uin = new QLabel(i18n("Uin"),this);
-	e_uin = new QLineEdit(this);
+	QVBox *vbox12 = new QVBox(this);
+	QLabel *l_group = new QLabel(i18n("Group"), vbox12);
+	e_group = new QLineEdit(vbox12);
+	grid->addMultiCellWidget(vbox12, 0, 1, 1, 1);
 
-	e_fname = new QLineEdit(this);
-	QLabel *l_fname = new QLabel(i18n("Name"),this);
+	QVBox *vbox21 = new QVBox(this);
+	QLabel *l_nickname = new QLabel(i18n("Nickname"), vbox21);
+	e_nickname = new QLineEdit(vbox21);
+	grid->addMultiCellWidget(vbox21, 2, 3, 0, 0);
 
-	e_lname = new QLineEdit(this);
-	QLabel *l_lname = new QLabel(i18n("Surname"),this);
+	QVBox *vbox22 = new QVBox(this);
+	QLabel *l_altnick = new QLabel(i18n("AltNick"), vbox22);
+	e_altnick = new QLineEdit(vbox22);
+	grid->addMultiCellWidget(vbox22, 2, 3, 1, 1);
 
-	e_altnick = new QLineEdit(this);
-	QLabel *l_altnick = new QLabel(i18n("AltNick"),this);
+	QVBox *vbox31 = new QVBox(this);
+	QLabel *l_fname = new QLabel(i18n("Name"), vbox31);
+	e_fname = new QLineEdit(vbox31);
+	grid->addMultiCellWidget(vbox31, 4, 5, 0, 0);
 
-	e_tel = new QLineEdit(this);
-	QLabel *l_tel = new QLabel(i18n("Cell #"),this);
+	QVBox *vbox32 = new QVBox(this);
+	QLabel *l_lname = new QLabel(i18n("Surname"), vbox32);
+	e_lname = new QLineEdit(vbox32);
+	grid->addMultiCellWidget(vbox32, 4, 5, 1, 1);
 
-	effect = new QLabel(this);
+	QVBox *vbox41 = new QVBox(this);
+	QLabel *l_tel = new QLabel(i18n("Cell #"), vbox41);
+	e_tel = new QLineEdit(vbox41);
+	grid->addMultiCellWidget(vbox41, 6, 7, 0, 0);
 
-	QPushButton *b_commit = new QPushButton(i18n("&Add"),this);
+	QVBox *vbox42 = new QVBox(this);
+	QLabel *l_email = new QLabel(i18n("Email"), vbox42);
+	e_email = new QLineEdit(vbox42);
+	grid->addMultiCellWidget(vbox42, 6, 7, 1, 1);
+
+	QPushButton *b_commit = new QPushButton(i18n("&Add"), this);
 	b_commit->setAccel(Key_Return);	
-
-	QPushButton *b_cancel = new QPushButton(i18n("&Cancel"),this);
+	grid->addWidget(b_commit, 8, 0);
+	QPushButton *b_cancel = new QPushButton(i18n("&Cancel"), this);
+	grid->addWidget(b_cancel, 8, 1);
 
 	QObject::connect(e_nickname, SIGNAL(textChanged(const QString &)), e_altnick,
 		SLOT(setText(const QString &)));
 	QObject::connect(b_commit, SIGNAL(clicked()), this, SLOT(Add()));
 	QObject::connect(b_cancel, SIGNAL(clicked()), this, SLOT(reject()));
-
-	QGridLayout *grid = new QGridLayout (this, 5, 5, 6, 6);
-	grid->addColSpacing(2, 30);
-	grid->addMultiCellWidget(descr, 0, 0, 0, 4);
-
-	grid->addWidget(l_nickname, 1, 0);
-	grid->addWidget(e_nickname, 1, 1);
-
-	grid->addWidget(l_uin, 1, 3);
-	grid->addWidget(e_uin, 1, 4);
-
-	grid->addWidget(l_fname, 2, 0);
-	grid->addWidget(e_fname, 2, 1);
-
-	grid->addWidget(l_lname, 2, 3);
-	grid->addWidget(e_lname, 2, 4);
-
-	grid->addWidget(l_altnick, 3, 0);
-	grid->addWidget(e_altnick, 3, 1);
-
-	grid->addWidget(l_tel, 3, 3);
-	grid->addWidget(e_tel, 3, 4);
-
-	grid->addWidget(b_commit, 4, 4);
-	grid->addWidget(b_cancel, 4, 3);
-	grid->addMultiCellWidget(effect, 4, 4, 0, 1);
 
 	kdebug("Adduser::Adduser(): finished\n");
 }
@@ -91,7 +87,7 @@ void Adduser::Add() {
 	if (e_altnick->text().length()) {
 		kadu->addUser(e_fname->text(), e_lname->text(), e_nickname->text(),
 			e_altnick->text(), e_tel->text(), e_uin->text(),
-			GG_STATUS_NOT_AVAIL, "", "", "");
+			GG_STATUS_NOT_AVAIL, e_group->text(), "", e_email->text());
 		close(true);
 		}
 	else

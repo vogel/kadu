@@ -16,8 +16,8 @@ class Adduser : public QDialog {
 		Adduser(QDialog* parent=0, const char *name=0);
 
 	protected:
-		QLineEdit * e_nickname, * e_uin, * e_fname, * e_lname, * e_altnick, * e_tel;
-		QLabel * effect;
+		QLineEdit *e_nickname, *e_uin, *e_fname, *e_lname, *e_altnick, *e_tel;
+		QLineEdit *e_group, *e_email;
 
 	protected slots:
 		void Add();

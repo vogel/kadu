@@ -14,6 +14,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   /usr/share to ikonki i link kadu nie bêd± instalowane (mast3r)
 * eksport/import kontaktów dostosowany do standardu GG (chilek)
 * w oknie informacji o u¿ytkowniku mo¿liwo¶æ edycji emaila (chilek)
+* przeprojektowanie wygl±du okna "dodaj u¿ytownika" (chilek)
 
 +++ wersja 0.3.4-rc2
 * porzadki: kod rejestrujacy opcje modulow Chat i Sms w oknie konfiguracji
