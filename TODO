@@ -1,4 +1,4 @@
-/** TODO, stan na 16/04/2003. **/
+/** TODO, stan na 18/05/2003. **/
 (TODO mo¿e byæ nieaktualne... zapraszamy na kadu.net/forum)
 
 
@@ -7,7 +7,7 @@
 
 - :: Dobrymi chêciami, to...
 + :: Powinno byæ
-? :: Jeszcze siê zastanawiam
+? :: Jeszcze siê zastanawiamy
 ! :: _MUSI_ byæ
 
 
@@ -15,32 +15,29 @@
  TODO dla wersji 0.3.4
 -----------------------
 
- ! dopracowaæ animowane emotikony
- ! dopracowaæ wysy³anie sms'ów - dodatkowe komunikaty o b³êdach
+ ! dopracowaæ animowane emotikony na ile siê da
  + dopracowaæ grupy
- + lepsza ob³uga historii
- + mo¿liwo¶æ ustawienia czy historia rozmowy ma znikaæ po zamkniêciu okna
- + zmiany statusu u¿ytkowników zapisuj± siê w oknie rozmowy i historii (opcja)
+ ! dopracowaæ ob³ugê historii
+ + zmiany statusu u¿ytkowników pokazuj± siê w oknie rozmowy i historii (opcja)
  + okno rozmowy "wyp³ywa na wierzch" za ka¿d± now± wiadomo¶ci± (je¶li
    odpowiednia opcja w oknie rozmowy jest w³±czona)
  + okno rozmowy otwiera siê automatycznie, gdy nadejdzie wiadomo¶æ (opcja)
- ! przetestowaæ wysy³anie plików
- + mo¿liwo¶æ wznowienia transmisji plików
 
 
  TODO dla wersji 0.3.5 lub pó¼niejszych
 ----------------------------------------
 
- + dokoñczyæ rozmowy g³osowe
+ - sprawdzanie pisowni w oknie chat
+ - dokoñczyæ rozmowy g³osowe
  ? dodawanie nieznanych u¿ytkowników z konferencji do listy jako opcja
    i ew. z listy userów w oknie konferencji
  ? wykrywanie niewidocznych jako opcja
  + wywo³ywanie domyslnego klienta e-mail i pozycja e-mail w info o kontaktach
- + wysy³anie smsów do wielu osób jednoczesnie
+ ? wysy³anie smsów do wielu osób jednoczesnie
  - mo¿liwo¶æ formatowania tekstu
  ? ustawienie miejsca wyskakiwania hinta zamiast ko³o tray'a
  ? podrêczne menu w oknie rozmowy
- - inteligentna data w oknie rozmowy
+ ? inteligentna data w oknie rozmowy
 
  
  TODO dla wersji 0.4.0
@@ -53,7 +50,6 @@
  + dodaæ profile
  ? dodaæ wiêcej funkcji do dock menu (szukaj, dodaj, usuñ, odbierz)
  ? autostatus (zmiana z listy co jaki¶ czas)
- ! dodaæ do pliku AUTHORS sekcjê "Byli autorzy"
 
  
  TODO dla wersji pó¼niejszych
@@ -61,9 +57,5 @@
 
  + mo¿liwo¶æ do³±czenia zewnêtrznego kodu (wtyczki)
  + zrobiæ skórki (Licq) 
- - fukcja "autopilot'a" czyli generowanie automatycznych wiadomo¶ci
-   jako odpowiedzi na czyje¶ zapytania (uskryptowienie kadu) 
- ? przechowywanie adresów pocztowych u¿ytkowników i
-   uruchamianie klienta pocztowego
+ - uskryptowienie kadu (python? perl? javascript?)
  ? przezroczysto¶æ
-
