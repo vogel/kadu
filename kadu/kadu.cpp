@@ -54,7 +54,6 @@
 #include <qnetworkprotocol.h>
 #include <qstringlist.h>
 #include <qsplitter.h>
-#include <netinet/in.h>
 #include <arpa/inet.h>
 #include <libintl.h>
 #include <stdio.h>
@@ -69,7 +68,6 @@
 // #include <net/route.h>
 #define RTF_GATEWAY 0x2
 
-#include <pthread.h>
 #include <ctype.h>
 #include <errno.h>
 
@@ -80,6 +78,7 @@
 #include <sys/socket.h>
 #include <sys/ioctl.h>
 #include <net/if.h>
+#include <netinet/in.h>
 
 #include "libgadu.h"
 
