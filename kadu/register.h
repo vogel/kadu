@@ -35,6 +35,7 @@ class Register : public QDialog {
 
 	  	void ask();	
 		void deleteSocketNotifiers();
+		void createSocketNotifiers();
 
 	private slots:
 		void doRegister();

@@ -11,10 +11,15 @@
 #include <kaboutdata.h>
 #include <klocale.h>
 #include <qtextcodec.h>
+#include <qmessagebox.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 //
 #include "kadu.h"
 #include "pixmaps.h"
+#include "config.h"
+#include "register.h"
 #include "../config.h"
 #ifdef HAVE_OPENSSL
 #include "simlite.h"
@@ -57,7 +62,31 @@ int main(int argc, char *argv[])
 	
 	// pokazanie okna przeniesione do konstruktora z powodu RunDocked
 //	kadu->show();
-	
+	if (!config.uin) {
+		QString path_;
+		path_ = ggPath("");
+		mkdir(path_.local8Bit(), 0700);
+		path_.append("/history/");
+		mkdir(path_.local8Bit(), 0700);
+		switch (QMessageBox::information( kadu, "Kadu",
+			i18n("You don't have a config file.\nWhat would you like to do?"),
+			i18n("New UIN"), i18n("Configure"), i18n("Cancel"), 0, 1) ) {
+			case 1: // Configure
+				ConfigDialog *cd;
+				cd = new ConfigDialog;
+				cd->show();
+				break;
+			case 0: // Register
+				Register *reg;
+				reg = new Register;
+				reg->show();
+				break;
+			case 2: // Nothing
+				break;
+			}
+		kadu->setCaption("Kadu: new user");
+		}
+
 	if (config.defaultstatus != GG_STATUS_NOT_AVAIL && config.defaultstatus != GG_STATUS_NOT_AVAIL_DESCR) {
 		kadu->autohammer = true;
 		own_description = config.defaultdescription;

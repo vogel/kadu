@@ -26,26 +26,27 @@
 //
 
 Register::Register(QDialog *parent, const char *name) : QDialog (parent, name, FALSE, Qt::WDestructiveClose) {
+	fprintf(stderr, "KK Register::Register()\n");
+
 	QGridLayout *grid = new QGridLayout(this, 5, 2, 6, 5);
 
 	QLabel *l_pwd = new QLabel(this);
 	l_pwd->setText(i18n("Password"));
+	pwd = new QLineEdit(this);
+	pwd->setEchoMode(QLineEdit::Password);
 
 	QLabel *l_pwd2 = new QLabel(this);
 	l_pwd2->setText(i18n("Retype password"));
+	pwd2 = new QLineEdit(this);
+	pwd2->setEchoMode(QLineEdit::Password);
 
 	QLabel *l_mail = new QLabel(this);
 	l_mail->setText(i18n("E-mail"));
+	mail = new QLineEdit(this);
 
 	QPushButton *snd = new QPushButton(this);
 	snd->setText(i18n("Register"));
 	QObject::connect(snd, SIGNAL(clicked()), this, SLOT(doRegister()));
-
-	pwd = new QLineEdit(this);
-	pwd->setEchoMode(QLineEdit::Password);
-	pwd2 = new QLineEdit(this);
-	pwd2->setEchoMode(QLineEdit::Password);
-	mail = new QLineEdit(this);
 
 	status = new QLabel(this);
 
@@ -75,34 +76,30 @@ Register::Register(QDialog *parent, const char *name) : QDialog (parent, name, F
 }
 
 void Register::doRegister() {
-	if (strcmp(pwd->text().latin1(),pwd2->text().latin1()) != 0) {
-		QMessageBox::warning( this, "Kadu",i18n("Passwords do not match"),"OK", 0, 0, 1);
+	fprintf(stderr, "KK Register::doRegister()\n");
+	if (pwd->text() != pwd2->text()) {
+		QMessageBox::warning(this, "Kadu", i18n("Passwords do not match"), i18n("OK"), 0, 0, 1);
 		return;
 		}
 
-	if (strcmp(pwd->text().latin1(),"") == 0 || strcmp(mail->text().latin1(),"") == 0) {
-		QMessageBox::warning( this, "Kadu",i18n("Please fill out all fields"),"OK", 0, 0, 1);
+	if (!pwd->text().length()) {
+		QMessageBox::warning(this, "Kadu", i18n("Please fill out all fields"), i18n("OK"), 0, 0, 1);
 		return;
 		}
 
-	char *email = strdup(mail->text().latin1());
-	char *password = strdup(pwd->text().latin1());
-
-	if (!(h = gg_register(email, password, 1))) {
+	if (!(h = gg_register(mail->text().local8Bit(), pwd->text().local8Bit(), 1))) {
 		status->setText(i18n("Error"));
 		return;
 		}
 
-	snr = new QSocketNotifier(h->fd, QSocketNotifier::Read, kadu);
-	QObject::connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
-
-	snw = new QSocketNotifier(h->fd, QSocketNotifier::Write, kadu);
-	QObject::connect(snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
-
 	status->setText(i18n("Registering"));
+
+	setEnabled(false);
+	createSocketNotifiers();
 }
 
 void Register::closeEvent(QCloseEvent *e) {
+	fprintf(stderr, "KK Register::closeEvent()\n");
 	deleteSocketNotifiers();
 	if (h) {
 		gg_free_register(h);
@@ -111,7 +108,18 @@ void Register::closeEvent(QCloseEvent *e) {
 	QWidget::closeEvent(e);
 }
 
+void Register::createSocketNotifiers() {
+	fprintf(stderr, "KK Register::createSocketNotifiers()\n");
+
+	snr = new QSocketNotifier(h->fd, QSocketNotifier::Read, kadu);
+	QObject::connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
+
+	snw = new QSocketNotifier(h->fd, QSocketNotifier::Write, kadu);
+	QObject::connect(snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
+}
+
 void Register::deleteSocketNotifiers() {
+	fprintf(stderr, "KK Register::deleteSocketNotifiers()\n");
 	if (snr) {
 		snr->setEnabled(false);
 		snr->deleteLater();
@@ -138,56 +146,62 @@ void Register::dataSent() {
 }
 
 void Register::socketEvent() {
+	fprintf(stderr, "KK Register::socketEvent()\n");
 	if (gg_register_watch_fd(h) == -1) {
 		deleteSocketNotifiers();
 		gg_free_register(h);
 		h = NULL;
-		fprintf(stderr, "KK error registering\n");
+		fprintf(stderr, "KK Register::socketEvent(): error registering\n");
 		status->setText(i18n("Error"));
+		setEnabled(true);
 		return;
 		}
-	if (h->state == GG_STATE_CONNECTING) {
-		fprintf(stderr, "KK Register::socketEvent(): changing QSocketNotifiers.\n");
-		deleteSocketNotifiers();
-
-		snr = new QSocketNotifier(h->fd, QSocketNotifier::Read, kadu);
-		QObject::connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
-
-		snw = new QSocketNotifier(h->fd, QSocketNotifier::Write, kadu);
-		QObject::connect(snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
+	struct gg_pubdir *p = (struct gg_pubdir *)h->data;
+	switch (h->state) {
+		case GG_STATE_CONNECTING:
+			fprintf(stderr, "KK Register::socketEvent(): changing QSocketNotifiers.\n");
+			deleteSocketNotifiers();
+			createSocketNotifiers();
+			if (h->check & GG_CHECK_WRITE)
+				snw->setEnabled(true);
+			break;
+		case GG_STATE_ERROR:
+			deleteSocketNotifiers();
+			gg_free_register(h);
+			h = NULL;
+			fprintf(stderr, "KK Register::socketEvent(): error registering\n");
+			status->setText(i18n("Error"));
+			setEnabled(true);
+			break;
+		case GG_STATE_DONE:
+			deleteSocketNotifiers();
+			fprintf(stderr, "KK Register::socketEvent(): success=%d, uin=%ld\n", p->success, p->uin);
+			if (p->success) {
+				status->setText(i18n("Success!"));
+				uin = p->uin;
+				QMessageBox::information(0, "Kadu", i18n("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(uin),
+					i18n("OK"), 0, 0, 1);
+				ask();
+				fprintf(stderr, "KK Register::socketEvent() before close()\n");
+				deleteLater();
+				accept();
+				}
+			else {
+				gg_free_register(h);
+				h = NULL;
+				fprintf(stderr, "KK Register::socketEvent(): error registering\n");
+				status->setText(i18n("Error"));
+				setEnabled(true);
+				}
+			break;
+		default:
+			if (h->check & GG_CHECK_WRITE)
+				snw->setEnabled(true);
 		}
-
-	if (h->state == GG_STATE_ERROR) {
-		deleteSocketNotifiers();
-		gg_free_register(h);
-		h = NULL;
-		fprintf(stderr, "KK error registering\n");
-		status->setText(i18n("Error"));
-		return;
-		}
-	if (h->state == GG_STATE_DONE) {													
-		deleteSocketNotifiers();
-		p = (struct gg_pubdir *) h->data;
-		fprintf(stderr, "KK register success=%d, uin=%ld\n", p->success, p->uin);
-		status->setText(i18n("Success!"));
-		uin = p->uin;
-		gg_free_register(h);
-		h = NULL;
-		QMessageBox::information( 0, "Kadu",i18n("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(uin),"OK", 0, 0, 1);
-		ask();
-//		Adduser *au;
-//		au = new Adduser(0,"add_user");
-//		au->show();
-		fprintf(stderr, "KK socketEvent() before close()\n");
-		close();
-		}
-	else
-		if (h->check & GG_CHECK_WRITE)
-			snw->setEnabled(true);
 }
 
-void createKonfig() {
-//	FILE *f;
+void createConfig() {
+	fprintf(stderr, "KK createConfig()\n");
 	char *home = getenv("HOME");
 	struct passwd *pw;
 
@@ -201,16 +215,16 @@ void createKonfig() {
 	QString ggpath = ggPath("");
 	stat(ggpath.local8Bit(), buf);
 	if (S_ISDIR(buf->st_mode))
-		fprintf(stderr, "KK createKonfig(): Directory %s exists\n", (const char *)ggpath.local8Bit());
+		fprintf(stderr, "KK createConfig(): Directory %s exists\n", (const char *)ggpath.local8Bit());
 	else {
-		fprintf(stderr, "KK createKonfig(): Creating directory\n");
+		fprintf(stderr, "KK createConfig(): Creating directory\n");
 		if (mkdir(ggpath.local8Bit(), 0700) != 0 ) {
 			perror("mkdir");
 			return;
 			}
 		}
 
-	fprintf(stderr,"KK createKonfig(): Writing config files...\n");
+	fprintf(stderr, "KK createConfig(): Writing config files...\n");
 	KConfig *konf;
 	konf = new KConfig(ggPath("kadu.conf"));
 	konf->setGroup("Global");
@@ -218,17 +232,15 @@ void createKonfig() {
 	konf->writeEntry("Password", pwHash(config.password));
 	konf->sync();
 
-	fprintf(stderr,"KK createKonfig(): Config file created\n");
+	fprintf(stderr, "KK createConfig(): Config file created\n");
 }
 
 void Register::ask() {
+	fprintf(stderr, "KK Register::ask()\n");
 	if (updateconfig->isChecked()) {
-//  	printf("is checked\n");
-//		createKonfig();
 		config.uin = uin;
 		config.password = pwd->text();
-//		kadu->setCaption(i18n("Kadu: new user"));
-		createKonfig();
+		createConfig();
 		}
 }
 

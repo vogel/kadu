@@ -427,31 +427,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 
 	/* a newbie? */
-	if (!config.uin) {
-		QString path_;
-		path_ = ggPath("");
-		mkdir(path_.local8Bit(), 0700);
-		path_.append("/history/");
-		mkdir(path_.local8Bit(), 0700);
-		switch (QMessageBox::information( kadu, "Kadu",
-	    		i18n("You don't have a config file.\nWhat would you like to do?"),
-			i18n("New UIN"), i18n("Configure"), i18n("Cancel"), 0, 1) ) {
-			case 1: // Configure
-				ConfigDialog *cd;
-				cd = new ConfigDialog;
-				cd->show();
-				break;
-	    		case 0: // Register
-				Register *reg;
-				reg = new Register;
-				reg->show();
-				break;
-	    		case 2: // Nothing
-				break;
-			}
-		setCaption("Kadu: new user");
-		}
-	else
+	if (config.uin)
 		setCaption(i18n("Kadu: %1").arg(config.uin));
 
 	pending.loadFromFile();

@@ -283,7 +283,7 @@ extern QSocketNotifier *dccsnw;
 void deletePendingMessage(int nr);
 void sendUserlist(void);
 
-void createKonfig(char *, uin_t);
+void createConfig(char *, uin_t);
 void addIgnored(uin_t);
 void delIgnored(uin_t);
 bool isIgnored(uin_t);
