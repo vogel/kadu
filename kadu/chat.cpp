@@ -201,8 +201,6 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	else
 		grid->addMultiCellWidget(body, 0, 0, 0, 3);
 	grid->addMultiCellLayout(subgrid, 2, 2, 0, 3);
-//	grid->addWidget(buttontray, 2,3,Qt::AlignRight);
-//	grid->addMultiCellWidget(edt, 2, 2, 0, 2, Qt::AlignLeft);
 	grid->addMultiCellWidget(edit, 3, 3, 0, 3);
 	grid->addWidget(cancelbtn, 4, 2);
 	grid->addWidget(sendbtn, 4, 3);
@@ -244,6 +242,16 @@ Chat::~Chat() {
 		delete userbox;
 		
 	fprintf(stderr, "KK Chat::~Chat: chat destroyed: index %d\n", index);
+}
+
+void Chat::changeAppearance() {
+	if (uins.count() > 1 && userbox) {
+		userbox->setPaletteBackgroundColor(config.colors.userboxBg);
+		userbox->setPaletteForegroundColor(config.colors.userboxFg);
+		userbox->QListBox::setFont(config.fonts.userbox);
+		}
+	body->setFont(config.fonts.chat);
+	edit->setFont(config.fonts.chat);
 }
 
 void Chat::setTitle() {

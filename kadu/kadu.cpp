@@ -436,7 +436,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	setCentralWidget(centralFrame);
 
 	/* initialize group tabbar */
-	group_bar=new QTabBar(centralFrame, "groupbar");
+	group_bar = new QTabBar(centralFrame, "groupbar");
 	group_bar->addTab(new QTab(i18n("All")));
 	refreshGroupTabBar();
 	connect(group_bar, SIGNAL(selected(int)), this, SLOT(groupTabSelected(int)));
@@ -540,6 +540,18 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 				this, SLOT(gotUpdatesInfo(const QByteArray &, QNetworkOperation *)));
 		ut->start();
 		}
+}
+
+void Kadu::changeAppearance() {
+	fprintf(stderr, "KK kadu::changeAppearance()\n");
+
+	userbox->setPaletteBackgroundColor(config.colors.userboxBg);
+	userbox->setPaletteForegroundColor(config.colors.userboxFg);
+	userbox->QListBox::setFont(config.fonts.userbox);
+
+	descrtb->setPaletteBackgroundColor(config.colors.userboxDescBg);
+	descrtb->setPaletteForegroundColor(config.colors.userboxDescText);
+	descrtb->setFont(config.fonts.userboxDesc);
 }
 
 void Kadu::currentChanged(QListBoxItem *item) {

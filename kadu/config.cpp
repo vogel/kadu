@@ -34,6 +34,7 @@
 //
 #include "kadu.h"
 #include "misc.h"
+#include "chat.h"
 #include "emoticons.h"
 #include "config.h"
 #include "dock_widget.h"
@@ -1437,6 +1438,9 @@ void ConfigDialog::updateConfig(void) {
 	userlist.writeToFile();
 
 	/* I odswiez okno Kadu */
+	kadu->changeAppearance();
+	for (i = 0; i < chats.count(); i++)
+		chats[i].ptr->changeAppearance();
 	kadu->refreshGroupTabBar();
 }
 

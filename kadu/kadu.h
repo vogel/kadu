@@ -142,6 +142,7 @@ class Kadu : public QMainWindow
 	 
 	public:
 		Kadu(QWidget* parent=0, const char *name=0);
+		void changeAppearance();
 		~Kadu();
 		bool autohammer;
 		bool userInActiveGroup(uin_t uin);

@@ -55,6 +55,7 @@ class Chat : public QWidget {
 	public:
 		Chat(UinsList uins, QWidget *parent = 0, const char *name = 0);
 		~Chat();
+		void changeAppearance();
 		void setTitle(void);
 		void formatMessage(bool, QString &, QString &, const char *, QString &);
 		void checkPresence(UinsList, QString &, time_t, QString &);

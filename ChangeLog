@@ -38,6 +38,8 @@
   plików d¼wiêkowych
 * konfiguracja: dodano guzik testowania przy wyborze d¼wiêku powiadamiania o
   obecno¶ci uzytkownika
+* konfiguracja: zmiana konfiguracji wygl±du nie wymaga zrestartowania kadu, aby
+  zasz³y zmiany w wygl±dzie
 
 +++ wersja 0.3.3-pre3
 * CTRL + klik dowolnego przycisku myszki na ikonce w tray'u powoduje

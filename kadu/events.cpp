@@ -213,23 +213,12 @@ void playSound(const char *sound) {
 		}
 	if (config.playartsdsp) {
 		args.append("artsdsp");
-		if (config.soundvolctrl) {
-//			args.append(QString("artsdsp %1 -v %.2f %3").arg(config.soundprog).arg(config.soundvol).arg(sound));
-			args.append(config.soundprog);
-			args.append(QString("-v %1").arg(config.soundvol));
-			}
-		else
-			args.append(config.soundprog);
+		args.append(config.soundprog);
 		}
-	else {
-		if (config.soundvolctrl) {
-//			args.append(QString("%s -v %.2f %s", config.soundprog, config.soundvol, sound);
-			args.append(config.soundprog);
-			args.append(QString("-v %1").arg(config.soundvol));
-			}
-		else
-			args.append(config.soundprog);
-		}
+	else
+		args.append(config.soundprog);
+	if (config.soundvolctrl)
+		args.append(QString("-v %1").arg(config.soundvol));
 	args.append(sound);
 	for (QStringList::Iterator it = args.begin(); it != args.end(); ++it ) {
        		fprintf(stderr, "KK playSound(): %s\n", (*it).latin1());
