@@ -370,8 +370,10 @@ void eventStatusChange(struct gg_event * e) {
 
 	if (user.description)
 		user.description.truncate(0);
-	if (ifStatusWithDescription(user.status))
+	if (ifStatusWithDescription(user.status)) {
+		cp_to_iso((unsigned char *)e->event.status.descr);
 		user.description.append(__c2q(e->event.status.descr));
+		}
 	if (user.status == GG_STATUS_NOT_AVAIL || user.status == GG_STATUS_NOT_AVAIL_DESCR) {
 		user.ip = 0;
 		user.port = 0;
