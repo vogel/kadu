@@ -291,7 +291,7 @@ void SearchDialog::nextSearch(void) {
 
 	struct SearchIdStruct sid;
 	sid.ptr = this;
-	sid.seq = gg_search50(sess, req);
+	sid.seq = gg_search50(sess, req, 0x03);
 	sid.type = DIALOG_SEARCH;
 	SearchList.append(sid);
 	gg_search50_free(req);

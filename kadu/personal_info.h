@@ -29,16 +29,11 @@ class PersonalInfoDialog : public QDialog
 		QSocketNotifier* SocketReadNotifier;
 		QSocketNotifier* SocketWriteNotifier;
 		struct gg_http* http;
-		enum DialogState { READY, READING, WRITTING };
+		enum DialogState {READY, READING, WRITTING};
 		DialogState State;
-		void socketEvent();
-		void createSocketNotifiers();
-		void deleteSocketNotifiers();
 
 	private slots:
 		void OkButtonClicked();
-		void dataReceived();
-		void dataSent();
 
 	protected:
 		virtual void closeEvent(QCloseEvent * e);
