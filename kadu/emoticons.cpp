@@ -84,6 +84,7 @@ void EmoticonsManager::loadEmoticonsSelectorList()
 		return;
 	};
 	QTextStream emoticons_stream(&emoticons_file);
+	emoticons_stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 	QString string;
 	while(!emoticons_stream.atEnd())
 	{

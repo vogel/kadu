@@ -2,6 +2,7 @@
 * ¶rodkowy guzik myszki wci¶niêty na u¿ytkowniku
   otwiera okno wysy³ania smsa (chilek)
 * pierwsza próbna wersja animowanych emotikonów (adrian)
+* ³adowanie pliku emoticons_selector w standardzie ISO-8859-2 (chilek)
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem
