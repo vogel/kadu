@@ -464,7 +464,7 @@ void ConfigDialog::addCheckBox(ConfigFile* config, const QString& groupname,
 		c.defaultS=QString::number(defaultS);
 		c.tip=tip;
 		if (addControl(groupname,c) == 0)
-			config_file.addVariable(groupname, entry, defaultS);
+			c.config->addVariable(groupname, entry, defaultS);
 	}
 }
 
@@ -579,7 +579,7 @@ void ConfigDialog::addLineEdit(ConfigFile* config, const QString& groupname,
 		c.tip=tip;
 
 		if (addControl(groupname,c) == 0)
-			config_file.addVariable(groupname, entry, defaultS);	
+			c.config->addVariable(groupname, entry, defaultS);	
 	}
 }
 
@@ -602,7 +602,7 @@ void ConfigDialog::addTextEdit(ConfigFile* config, const QString& groupname,
 		c.tip=tip;
 
 		if (addControl(groupname,c) == 0)
-			config_file.addVariable(groupname, entry, defaultS);	
+			c.config->addVariable(groupname, entry, defaultS);	
 	}
 }
 
@@ -683,7 +683,7 @@ void ConfigDialog::addSlider(ConfigFile* config, const QString& groupname,
 		c.defaultS=QString::number(minValue)+","+QString::number(maxValue)+","+QString::number(pageStep)+","+QString::number(value);
 
 		if (addControl(groupname,c) == 0)
-			config_file.addVariable(groupname, entry, value);
+			c.config->addVariable(groupname, entry, value);
 	}
 }
 
@@ -711,7 +711,7 @@ void ConfigDialog::addSpinBox(ConfigFile* config, const QString& groupname,
 		c.defaultS=QString::number(minValue)+","+QString::number(maxValue)+","+QString::number(step)+","+QString::number(value);
 		
 		if (addControl(groupname,c) == 0)
-			config_file.addVariable(groupname, entry, value);
+			c.config->addVariable(groupname, entry, value);
 	}
 }
 
