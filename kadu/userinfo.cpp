@@ -310,12 +310,13 @@ void UserInfo::updateUserlist() {
 								if (e.uin)
 									gg_add_notify(sess, e.uin);
 								}
-							else {
-								if (puser->uin)
-									gg_remove_notify(sess, puser->uin);
-								if (e.uin)
-									gg_add_notify(sess, e.uin);
-								}
+							else
+								if (e.uin != puser->uin) {
+									if (puser->uin)
+										gg_remove_notify(sess, puser->uin);
+									if (e.uin)
+										gg_add_notify(sess, e.uin);
+									}
 			}
 		if (e.uin == puser->uin)
 			e.status = puser->status;
