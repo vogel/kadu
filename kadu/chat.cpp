@@ -406,10 +406,13 @@ void Chat::writeMyMessage() {
 
 	scrollMessages(toadd);
 
-	edit->clear();
-	edit->setReadOnly(false);
-	edit->setEnabled(true);
-	edit->setFocus();
+	if (!edit->isEnabled()) {
+		edit->clear();
+		edit->setReadOnly(false);
+		edit->setEnabled(true);
+		edit->setFocus();
+		sendbtn->setText(i18n("&Send"));
+		}
 }
 
 void Chat::addMyMessageToHistory() {
@@ -433,6 +436,14 @@ void Chat::sendMessage(void) {
 	int i,j;
 	uin_t *users;
 
+	if (!edit->isEnabled()) {
+		edit->setReadOnly(false);
+		edit->setEnabled(true);
+		edit->setFocus();
+		sendbtn->setText(i18n("&Send"));
+		return;
+		}
+
 	if (!QString::compare(edit->text().local8Bit(),""))
 		return;
 
@@ -444,6 +455,7 @@ void Chat::sendMessage(void) {
 	if (config.msgacks) {
 		edit->setReadOnly(true);	
 		edit->setEnabled(false);
+		sendbtn->setText(i18n("&Cancel"));
 		}
 
 	addMyMessageToHistory();

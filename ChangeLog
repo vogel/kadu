@@ -3,6 +3,8 @@
 * dostosowanie do QT 3.1.0 i KDE 3.1-rc5
 * lepszy selektor emotow - potrafi wystawac za chat
   i zachowuje sie jak popup-menu
+* mo¿na anulowaæ wysy³anie wiadomo¶ci podczas oczekiwania na potwierdzenie
+  jej wys³ania
 
 +++ wersja 0.3.3-pre1
 * automatyczna kompilacja programu sms
