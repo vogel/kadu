@@ -3,13 +3,15 @@
 #include <qobject.h>
 #include <qstring.h>
 #include <qmap.h>
+#include <qvariant.h>
 #include <qpair.h>
 #include <qvaluelist.h>
 
 #include "gadu.h"
 #include "notify_slots.h"
+#include "userlist.h"
 
-class Notify : QObject
+class Notify : public QObject
 {
 	Q_OBJECT
 	private:
@@ -36,10 +38,15 @@ class Notify : QObject
 	
 	private slots:
 	/* obs³uga zmian statusów */
-	void changingStatus(const UinType, const unsigned int, const unsigned int);
+	void changingStatus(const UinType uin, const unsigned int oldstatus, const unsigned int status, bool onConnection);
 
 	/* obs³uga zmian statusów */
-	void changedStatus(UserListElement *);
+	void changedStatus(UserListElement *, bool onConnection);
+	
+	/* pomocniczy slot */
+	void probablyNewChat(UinsList senders, const QString& msg, time_t time);
+	/* pomocniczy slot */
+	void probablyNewMessage(UinsList senders, const QString& msg, time_t time, bool &);
 	
 	/*
 	 * ³±czy odpowiedni sygna³ z notifierName (np.: Window, Hint, Sound)
@@ -93,16 +100,16 @@ class Notify : QObject
 	 *  je¿eli to!=QString::null, to wysy³a tylko do jednego
 	 * Notifier decyduje, których argumentów u¿yæ
 	 */
-	void emitMessage(const QString &from, const QString &to, const QString &type=QString(), const QString &message=QString(), const UserListElement *ule=NULL);
+	void emitMessage(const QString &from, const QString &to, const QString &message=QString(), const QMap<QString, QVariant> *parameters=NULL, const UserListElement *ule=NULL);
 	
 	signals:
 	//UWAGA: razem ze zmianami nazw/parametrów tych sygna³ów nale¿y aktualizowaæ wpisy w konstruktorze Notify
 	
 	/* nowa rozmowa */
-	void newChat(UinsList senders, const QString& msg, time_t time, bool &grab);
+	void newChat(UinsList senders, const QString& msg, time_t time);
 	
 	/* nowa wiadomo¶æ w oknie chat */
-	void newMessage(UinsList senders, const QString& msg, time_t time);
+	void newMessage(UinsList senders, const QString& msg, time_t time, bool &grab);
 	
 	/* b³±d po³±czenia */
 	void connectionError(const QString &message);
@@ -120,11 +127,11 @@ class Notify : QObject
 	void userChangedStatusToNotAvailable(const UserListElement &);
 
 	/* inna informacja do powiadomienia */
-	void message(const QString &from, const QString &type, const QString &message, const UserListElement *ule);
+	void message(const QString &from, const QString &msg, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
 	
 	signals:
 	/* do u¿ytku wewnêtrznego */
-	void privateMessage(const QString &from, const QString &message, const QString &type, const UserListElement *ule);
+	void privateMessage(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
 };
 
 extern Notify *notify;

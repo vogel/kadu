@@ -54,20 +54,6 @@ DirectPlayerSlots::DirectPlayerSlots():thread(NULL)
 
 	connect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
 			this, SLOT(playSound(const QString &, bool, double)));
-	connect(sound_manager, SIGNAL(playOnNewMessage(UinsList, const QString &, bool, double, const QString &)),
-			this, SLOT(playNewMessage(UinsList, const QString &, bool, double, const QString &)));
-	connect(sound_manager, SIGNAL(playOnNewChat(UinsList, const QString &, bool, double, const QString &)),
-			this, SLOT(playNewChat(UinsList, const QString &, bool, double, const QString &)));
-	connect(sound_manager, SIGNAL(playOnConnectionError(const QString &, bool, double, const QString &)),
-			this, SLOT(playConnectionError(const QString &, bool, double, const QString &)));
-	connect(sound_manager, SIGNAL(playOnNotifyAvail(const UinType, const QString &, bool, double)),
-			this, SLOT(playNotify(const UinType, const QString &, bool, double)));
-	connect(sound_manager, SIGNAL(playOnNotifyBusy(const UinType, const QString &, bool, double)),
-			this, SLOT(playNotify(const UinType, const QString &, bool, double)));
-	connect(sound_manager, SIGNAL(playOnNotifyNotAvail(const UinType, const QString &, bool, double)),
-			this, SLOT(playNotify(const UinType, const QString &, bool, double)));
-	connect(sound_manager, SIGNAL(playOnMessage(const QString &, bool, double, const QString &, const QString &, const QString &, const UserListElement *)),
-			this, SLOT(playMessage(const QString &, bool, double, const QString &, const QString &, const QString &, const UserListElement *)));
 
 	kdebugf2();
 }
@@ -78,20 +64,6 @@ DirectPlayerSlots::~DirectPlayerSlots()
 
 	disconnect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
 			this, SLOT(playSound(const QString &, bool, double)));
-	disconnect(sound_manager, SIGNAL(playOnNewMessage(UinsList, const QString &, bool, double, const QString &)),
-			this, SLOT(playNewMessage(UinsList, const QString &, bool, double, const QString &)));
-	disconnect(sound_manager, SIGNAL(playOnNewChat(UinsList, const QString &, bool, double, const QString &)),
-			this, SLOT(playNewChat(UinsList, const QString &, bool, double, const QString &)));
-	disconnect(sound_manager, SIGNAL(playOnConnectionError(const QString &, bool, double, const QString &)),
-			this, SLOT(playConnectionError(const QString &, bool, double, const QString &)));
-	disconnect(sound_manager, SIGNAL(playOnNotifyAvail(const UinType, const QString &, bool, double)),
-			this, SLOT(playNotify(const UinType, const QString &, bool, double)));
-	disconnect(sound_manager, SIGNAL(playOnNotifyBusy(const UinType, const QString &, bool, double)),
-			this, SLOT(playNotify(const UinType, const QString &, bool, double)));
-	disconnect(sound_manager, SIGNAL(playOnNotifyNotAvail(const UinType, const QString &, bool, double)),
-			this, SLOT(playNotify(const UinType, const QString &, bool, double)));
-	disconnect(sound_manager, SIGNAL(playOnMessage(const QString &, bool, double, const QString &, const QString &, const QString &, const UserListElement *)),
-			this, SLOT(playMessage(const QString &, bool, double, const QString &, const QString &, const QString &, const UserListElement *)));
 
 	if (thread)
 	{
@@ -137,36 +109,6 @@ void DirectPlayerSlots::playSound(const QString &s, bool volCntrl, double vol)
 	}
 	play(s, volCntrl, vol, dev);
 	kdebugf2();
-}
-
-void DirectPlayerSlots::playNewMessage(UinsList senders, const QString &sound, bool volCntrl, double vol, const QString &msg)
-{
-	kdebugf();
-	play(sound, volCntrl, vol, QString::null);
-}
-
-void DirectPlayerSlots::playNewChat(UinsList senders, const QString &sound, bool volCntrl, double vol, const QString &msg)
-{
-	kdebugf();
-	play(sound, volCntrl, vol, QString::null);
-}
-
-void DirectPlayerSlots::playConnectionError(const QString &sound, bool volCntrl, double vol, const QString &msg)
-{
-	kdebugf();
-	play(sound, volCntrl, vol, QString::null);
-}
-
-void DirectPlayerSlots::playNotify(const UinType uin, const QString &sound, bool volCntrl, double vol)
-{
-	kdebugf();
-	play(sound, volCntrl, vol, QString::null);
-}
-
-void DirectPlayerSlots::playMessage(const QString &sound, bool volCntrl, double vol, const QString &from, const QString &type, const QString &msg, const UserListElement *ule)
-{
-	kdebugf();
-	play(sound, volCntrl, vol, QString::null);
 }
 
 DirectPlayThread::DirectPlayThread()

@@ -100,7 +100,7 @@ class UserList : public QObject, public QMap<QString,UserListElement>
 		void addAnonymous(UinType uin);
 		void removeUser(const QString &altnick);
 		void changeUserInfo(const QString& old_altnick, const UserListElement& new_data);
-		void changeUserStatus(const UinType uin, const unsigned int status);
+		void changeUserStatus(const UinType uin, const unsigned int status, bool onConnection=false);
 		bool writeToFile(QString filename = "");
 		bool readFromFile();
 		void setDnsName(UinType uin, const QString &name);
@@ -112,8 +112,8 @@ class UserList : public QObject, public QMap<QString,UserListElement>
 		/**
 		  Przesyla obecny i przyszly status uzytkonika
 		**/
-		void changingStatus(const UinType uin, const unsigned int oldstatus, const unsigned int status);
-		void statusModified(UserListElement *);
+		void changingStatus(const UinType uin, const unsigned int oldstatus, const unsigned int status, bool onConnection);
+		void statusModified(UserListElement *, bool onConnection);
 		void userAdded(const UserListElement& user);
 		void dnsNameReady(UinType);
 };

@@ -85,8 +85,8 @@ HintManager::HintManager()
 			QStringList values3;
 			options3<<tr("Online")<<tr("Online (d.)")<<tr("Busy")<<tr("Busy (d.)")<<
 					tr("Invisible")<<tr("Invisible (d.)")<<tr("Offline")<<tr("Offline (d.)")<<
-					tr("Blocking")<<tr("New chat")<<tr("New message in chat")<<tr("Error");
-			values3<<"0"<<"1"<<"2"<<"3"<<"4"<<"5"<<"6"<<"7"<<"8"<<"9"<<"10"<<"11";
+					tr("Blocking")<<tr("New chat")<<tr("New message in chat")<<tr("Error")<<tr("Other message");
+			values3<<"0"<<"1"<<"2"<<"3"<<"4"<<"5"<<"6"<<"7"<<"8"<<"9"<<"10"<<"11"<<"12";
 			ConfigDialog::addVRadioGroup("Hints", "center", QT_TRANSLATE_NOOP("@default", "Hint type"), "LastSelected", options3, values3, "0");
 
 			ConfigDialog::addVBox("Hints", "center", "bottom");
@@ -115,14 +115,14 @@ HintManager::HintManager()
 	connect(this, SIGNAL(searchingForTrayPosition(QPoint &)), kadu, SIGNAL(searchingForTrayPosition(QPoint &)));
 
 	QMap<QString, QString> s;
-	s["NewChat"]=SLOT(newChat(UinsList, const QString &, time_t, bool &));
-	s["NewMessage"]=SLOT(newMessage(UinsList, const QString &, time_t));
+	s["NewChat"]=SLOT(newChat(UinsList, const QString &, time_t));
+	s["NewMessage"]=SLOT(newMessage(UinsList, const QString &, time_t, bool &));
 	s["ConnError"]=SLOT(connectionError(const QString &));
 	s["ChangingStatus"]=SLOT(userChangingStatus(const UinType, const unsigned int, const unsigned int));
 	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const UserListElement &));
 	s["toBusy"]=SLOT(userChangedStatusToBusy(const UserListElement &));
 	s["toNotAvailable"]=SLOT(userChangedStatusToNotAvailable(const UserListElement &));
-	s["Message"]=SLOT(message(const QString &, const QString &, const QString &, const UserListElement *));
+	s["Message"]=SLOT(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *));
 	notify->registerNotifier("Hints", this, s);
 
 	kdebugf2();
@@ -374,7 +374,7 @@ void HintManager::setGridOrigin()
 	kdebugf2();
 }
 
-void HintManager::newChat(UinsList senders, const QString& msg, time_t time, bool &grab)
+void HintManager::newChat(UinsList senders, const QString& msg, time_t time)
 {
 	kdebugf();
 	if (config_file.readBoolEntry("Hints", "ShowContentMessage"))
@@ -405,32 +405,42 @@ void HintManager::newChat(UinsList senders, const QString& msg, time_t time, boo
 	kdebugf2();
 }
 
-void HintManager::newMessage(UinsList senders, const QString& msg, time_t time)
+void HintManager::newMessage(UinsList senders, const QString& msg, time_t time, bool &grab)
 {
 	kdebugf();
-	if (config_file.readBoolEntry("Hints", "ShowContentMessage"))
+	Chat* chat=chat_manager->findChatByUins(senders);
+	if (chat==NULL)
 	{
-		unsigned int citeSign=config_file.readUnsignedNumEntry("Hints","CiteSign");
-		QString cite;
-		if (msg.length() <= citeSign)
-			cite = msg;
-		else
-			cite = msg.left(citeSign)+"...";
-		addHint(tr("New message from <b>%1</b><br/> <small>%2</small>")
-			.arg(userlist.byUinValue(senders[0]).altnick).arg(cite),
-			icons_manager.loadIcon("Message"),
-			config_file.readFontEntry("Hints", "HintNewMessage_font"),
-			config_file.readColorEntry("Hints", "HintNewMessage_fgcolor"),
-			config_file.readColorEntry("Hints", "HintNewMessage_bgcolor"),
-			config_file.readUnsignedNumEntry("Hints", "HintNewMessage_timeout"));
+		kdebugm(KDEBUG_ERROR|KDEBUG_FUNCTION_END, "void HintManager::newMessage(...) end: chat==NULL!\n");
+		return;
 	}
-	else
-		addHint(tr("New message from <b>%1</b>").arg(userlist.byUinValue(senders[0]).altnick),
-			icons_manager.loadIcon("Message"),
-			config_file.readFontEntry("Hints", "HintNewMessage_font"),
-			config_file.readColorEntry("Hints", "HintNewMessage_fgcolor"),
-			config_file.readColorEntry("Hints", "HintNewMessage_bgcolor"),
-			config_file.readUnsignedNumEntry("Hints", "HintNewMessage_timeout"));
+	
+	if (!chat->isActiveWindow())
+	{
+		if (config_file.readBoolEntry("Hints", "ShowContentMessage"))
+		{
+			unsigned int citeSign=config_file.readUnsignedNumEntry("Hints","CiteSign");
+			QString cite;
+			if (msg.length() <= citeSign)
+				cite = msg;
+			else
+				cite = msg.left(citeSign)+"...";
+			addHint(tr("New message from <b>%1</b><br/> <small>%2</small>")
+				.arg(userlist.byUinValue(senders[0]).altnick).arg(cite),
+				icons_manager.loadIcon("Message"),
+				config_file.readFontEntry("Hints", "HintNewMessage_font"),
+				config_file.readColorEntry("Hints", "HintNewMessage_fgcolor"),
+				config_file.readColorEntry("Hints", "HintNewMessage_bgcolor"),
+				config_file.readUnsignedNumEntry("Hints", "HintNewMessage_timeout"));
+		}
+		else
+			addHint(tr("New message from <b>%1</b>").arg(userlist.byUinValue(senders[0]).altnick),
+				icons_manager.loadIcon("Message"),
+				config_file.readFontEntry("Hints", "HintNewMessage_font"),
+				config_file.readColorEntry("Hints", "HintNewMessage_fgcolor"),
+				config_file.readColorEntry("Hints", "HintNewMessage_bgcolor"),
+				config_file.readUnsignedNumEntry("Hints", "HintNewMessage_timeout"));
+	}
 
 	kdebugf2();
 }
@@ -449,6 +459,9 @@ void HintManager::connectionError(const QString &message)
 void HintManager::userChangingStatus(const UinType uin, const unsigned int oldstatus, const unsigned int status)
 {
 	kdebugf();
+	UinsList ulist;
+	ulist.append(uin);
+
 	UserListElement &ule=userlist.byUin(uin);
 	int statusnr = statusGGToStatusNr(status);
 
@@ -466,7 +479,7 @@ void HintManager::userChangingStatus(const UinType uin, const unsigned int oldst
 			config_file.readFontEntry("Hints", "Hint"+stat+"_font"),
 			config_file.readColorEntry("Hints", "Hint"+stat+"_fgcolor"),
 			config_file.readColorEntry("Hints", "Hint"+stat+"_bgcolor"),
-			config_file.readUnsignedNumEntry("Hints", "Hint"+stat+"_timeout"));
+			config_file.readUnsignedNumEntry("Hints", "Hint"+stat+"_timeout"), &ulist);
 	else
 		if (ifStatusWithDescription(status) && config_file.readBoolEntry("Hints","NotifyHintDescription"))
 			addHint(tr("<b>%1</b> changed status to <i>%2</i><br/> <small>%3</small>")
@@ -477,7 +490,7 @@ void HintManager::userChangingStatus(const UinType uin, const unsigned int oldst
 				config_file.readFontEntry("Hints", "Hint"+stat+"D_font"),
 				config_file.readColorEntry("Hints", "Hint"+stat+"D_fgcolor"),
 				config_file.readColorEntry("Hints", "Hint"+stat+"D_bgcolor"),
-				config_file.readUnsignedNumEntry("Hints", "Hint"+stat+"D_timeout"));
+				config_file.readUnsignedNumEntry("Hints", "Hint"+stat+"D_timeout"), &ulist);
 		else
 			addHint(tr("<b>%1</b> changed status to <i>%2</i>").arg(ule.altnick)
 				.arg(qApp->translate("@default", statustext[statusnr])),
@@ -485,13 +498,17 @@ void HintManager::userChangingStatus(const UinType uin, const unsigned int oldst
 				config_file.readFontEntry("Hints", "Hint"+stat+"_font"),
 				config_file.readColorEntry("Hints", "Hint"+stat+"_fgcolor"),
 				config_file.readColorEntry("Hints", "Hint"+stat+"_bgcolor"),
-				config_file.readUnsignedNumEntry("Hints", "Hint"+stat+"_timeout"));
+				config_file.readUnsignedNumEntry("Hints", "Hint"+stat+"_timeout"), &ulist);
 	kdebugf2();
 }
 
 void HintManager::userChangedStatusToAvailable(const UserListElement &ule)
 {
 	kdebugf();
+
+	UinsList ulist;
+	ulist.append(ule.uin);
+
 	int statusnr = statusGGToStatusNr(ule.status);
 	if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
 		addHint(parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true),
@@ -499,7 +516,7 @@ void HintManager::userChangedStatusToAvailable(const UserListElement &ule)
 			config_file.readFontEntry("Hints", "HintOnline_font"),
 			config_file.readColorEntry("Hints", "HintOnline_fgcolor"),
 			config_file.readColorEntry("Hints", "HintOnline_bgcolor"),
-			config_file.readUnsignedNumEntry("Hints", "HintOnline_timeout"));
+			config_file.readUnsignedNumEntry("Hints", "HintOnline_timeout"), &ulist);
 	else
 		if (ifStatusWithDescription(ule.status) && config_file.readBoolEntry("Hints","NotifyHintDescription"))
 			addHint(tr("<b>%1</b> is available<br/> <small>%2</small>")
@@ -508,20 +525,24 @@ void HintManager::userChangedStatusToAvailable(const UserListElement &ule)
 				config_file.readFontEntry("Hints", "HintOnlineD_font"),
 				config_file.readColorEntry("Hints", "HintOnlineD_fgcolor"),
 				config_file.readColorEntry("Hints", "HintOnlineD_bgcolor"),
-				config_file.readUnsignedNumEntry("Hints", "HintOnlineD_timeout"));
+				config_file.readUnsignedNumEntry("Hints", "HintOnlineD_timeout"), &ulist);
 		else
 			addHint(tr("<b>%1</b> is available").arg(ule.altnick),
 				icons_manager.loadIcon(gg_icons[statusnr]),
 				config_file.readFontEntry("Hints", "HintOnline_font"),
 				config_file.readColorEntry("Hints", "HintOnline_fgcolor"),
 				config_file.readColorEntry("Hints", "HintOnline_bgcolor"),
-				config_file.readUnsignedNumEntry("Hints", "HintOnline_timeout"));
+				config_file.readUnsignedNumEntry("Hints", "HintOnline_timeout"), &ulist);
 	kdebugf2();
 }
 
 void HintManager::userChangedStatusToBusy(const UserListElement &ule)
 {
 	kdebugf();
+
+	UinsList ulist;
+	ulist.append(ule.uin);
+
 	int statusnr = statusGGToStatusNr(ule.status);
 	if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
 		addHint(parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true),
@@ -529,7 +550,7 @@ void HintManager::userChangedStatusToBusy(const UserListElement &ule)
 			config_file.readFontEntry("Hints", "HintBusy_font"),
 			config_file.readColorEntry("Hints", "HintBusy_fgcolor"),
 			config_file.readColorEntry("Hints", "HintBusy_bgcolor"),
-			config_file.readUnsignedNumEntry("Hints", "HintBusy_timeout"));
+			config_file.readUnsignedNumEntry("Hints", "HintBusy_timeout"), &ulist);
 	else
 		if (ifStatusWithDescription(ule.status) && config_file.readBoolEntry("Hints","NotifyHintDescription"))
 			addHint(tr("<b>%1</b> is busy<br/> <small>%2</small>")
@@ -538,20 +559,24 @@ void HintManager::userChangedStatusToBusy(const UserListElement &ule)
 				config_file.readFontEntry("Hints", "HintBusyD_font"),
 				config_file.readColorEntry("Hints", "HintBusyD_fgcolor"),
 				config_file.readColorEntry("Hints", "HintBusyD_bgcolor"),
-				config_file.readUnsignedNumEntry("Hints", "HintBusyD_timeout"));
+				config_file.readUnsignedNumEntry("Hints", "HintBusyD_timeout"), &ulist);
 		else
 			addHint(tr("<b>%1</b> is busy").arg(ule.altnick),
 				icons_manager.loadIcon(gg_icons[statusnr]),
 				config_file.readFontEntry("Hints", "HintBusy_font"),
 				config_file.readColorEntry("Hints", "HintBusy_fgcolor"),
 				config_file.readColorEntry("Hints", "HintBusy_bgcolor"),
-				config_file.readUnsignedNumEntry("Hints", "HintBusy_timeout"));
+				config_file.readUnsignedNumEntry("Hints", "HintBusy_timeout"), &ulist);
 	kdebugf2();
 }
 
 void HintManager::userChangedStatusToNotAvailable(const UserListElement &ule)
 {
 	kdebugf();
+
+	UinsList ulist;
+	ulist.append(ule.uin);
+
 	int statusnr = statusGGToStatusNr(ule.status);
 	if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
 		addHint(parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true),
@@ -559,29 +584,53 @@ void HintManager::userChangedStatusToNotAvailable(const UserListElement &ule)
 			config_file.readFontEntry("Hints", "HintOffline_font"),
 			config_file.readColorEntry("Hints", "HintOffline_fgcolor"),
 			config_file.readColorEntry("Hints", "HintOffline_bgcolor"),
-			config_file.readUnsignedNumEntry("Hints", "HintOffline_timeout"));
+			config_file.readUnsignedNumEntry("Hints", "HintOffline_timeout"), &ulist);
 	else
 		if (ifStatusWithDescription(ule.status) && config_file.readBoolEntry("Hints","NotifyHintDescription"))
-			addHint(tr("<b>%1</b> is available<br/> <small>%2</small>")
+			addHint(tr("<b>%1</b> is not available<br/> <small>%2</small>")
 				.arg(ule.altnick).arg(QStyleSheet::escape(ule.description)),
 				icons_manager.loadIcon(gg_icons[statusnr]),
 				config_file.readFontEntry("Hints", "HintOfflineD_font"),
 				config_file.readColorEntry("Hints", "HintOfflineD_fgcolor"),
 				config_file.readColorEntry("Hints", "HintOfflineD_bgcolor"),
-				config_file.readUnsignedNumEntry("Hints", "HintOfflineD_timeout"));
+				config_file.readUnsignedNumEntry("Hints", "HintOfflineD_timeout"), &ulist);
 		else
-			addHint(tr("<b>%1</b> is available").arg(ule.altnick),
+			addHint(tr("<b>%1</b> is not available").arg(ule.altnick),
 				icons_manager.loadIcon(gg_icons[statusnr]),
 				config_file.readFontEntry("Hints", "HintOffline_font"),
 				config_file.readColorEntry("Hints", "HintOffline_fgcolor"),
 				config_file.readColorEntry("Hints", "HintOffline_bgcolor"),
-				config_file.readUnsignedNumEntry("Hints", "HintOffline_timeout"));
+				config_file.readUnsignedNumEntry("Hints", "HintOffline_timeout"), &ulist);
 	kdebugf2();
 }
 
-void HintManager::message(const QString &from, const QString &type, const QString &message, const UserListElement *ule)
+void HintManager::message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule)
 {
 	kdebugf();
+	if (ule!=NULL)
+	{
+		addHint("ule!=NULL jeszcze nie obs³ugiwane :)",
+			icons_manager.loadIcon("Message"),
+			config_file.readFontEntry("Hints", "HintMessage_font"),
+			config_file.readColorEntry("Hints", "HintMessage_fgcolor"),
+			config_file.readColorEntry("Hints", "HintMessage_bgcolor"),
+			config_file.readUnsignedNumEntry("Hints", "HintMessage_timeout"));
+		kdebugm(KDEBUG_WARNING, "not implemented\n");
+	}
+	else if (from!="")
+		addHint(tr("From <b>%1</b>: %2").arg(from).arg(message),
+			icons_manager.loadIcon("Message"),
+			config_file.readFontEntry("Hints", "HintMessage_font"),
+			config_file.readColorEntry("Hints", "HintMessage_fgcolor"),
+			config_file.readColorEntry("Hints", "HintMessage_bgcolor"),
+			config_file.readUnsignedNumEntry("Hints", "HintMessage_timeout"));
+	else
+		addHint(message,
+			icons_manager.loadIcon("Message"),
+			config_file.readFontEntry("Hints", "HintMessage_font"),
+			config_file.readColorEntry("Hints", "HintMessage_fgcolor"),
+			config_file.readColorEntry("Hints", "HintMessage_bgcolor"),
+			config_file.readUnsignedNumEntry("Hints", "HintMessage_timeout"));
 	kdebugf2();
 }
 

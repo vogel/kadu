@@ -23,13 +23,13 @@ class SpeechSlots : public QObject
 					int freq=0, int tempo=0, int basefreq=0);
 		
 
-		void newChat(UinsList senders, const QString& msg, time_t time, bool &grab);
-		void newMessage(UinsList senders, const QString& msg, time_t time);
+		void newChat(UinsList senders, const QString& msg, time_t time);
+		void newMessage(UinsList senders, const QString& msg, time_t time, bool &grab);
 		void connectionError(const QString &message);
 		void userChangedStatusToAvailable(const UserListElement &ule);
 		void userChangedStatusToBusy(const UserListElement &ule);
 		void userChangedStatusToNotAvailable(const UserListElement &ule);
-		void message(const QString &from, const QString &type, const QString &message, const UserListElement *ule);
+		void message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
 
 		void useArts();
 		void useEsd();

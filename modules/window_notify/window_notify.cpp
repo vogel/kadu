@@ -39,14 +39,14 @@ WindowNotify::WindowNotify()
 	kdebugf();
 
 	QMap<QString, QString> s;
-	s["NewChat"]=SLOT(newChat(UinsList, const QString &, time_t, bool &));
-	s["NewMessage"]=SLOT(newMessage(UinsList, const QString &, time_t));
+	s["NewChat"]=SLOT(newChat(UinsList, const QString &, time_t));
+	s["NewMessage"]=SLOT(newMessage(UinsList, const QString &, time_t, bool &));
 	s["ConnError"]=SLOT(connectionError(const QString &));
 	s["ChangingStatus"]=SLOT(userChangingStatus(const UinType, const unsigned int, const unsigned int));
 	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const UserListElement &));
 	s["toBusy"]=SLOT(userChangedStatusToBusy(const UserListElement &));
 	s["toNotAvailable"]=SLOT(userChangedStatusToNotAvailable(const UserListElement &));
-	s["Message"]=SLOT(message(const QString &, const QString &, const QString &, const UserListElement *));
+	s["Message"]=SLOT(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *));
 
 	config_file.addVariable("Notify", "NewChat_Window", false);
 	config_file.addVariable("Notify", "NewMessage_Window", false);
@@ -68,14 +68,14 @@ WindowNotify::~WindowNotify()
 	kdebugf2();
 }
 
-void WindowNotify::newChat(UinsList senders, const QString& msg, time_t time, bool &grab)
+void WindowNotify::newChat(UinsList senders, const QString& msg, time_t time)
 {
 	kdebugf();
 	MessageBox::msg(tr("Chat with <b>%1</b><br/> <small>%2</small>").arg(userlist.byUinValue(senders[0]).altnick).arg(msg));
 	kdebugf2();
 }
 
-void WindowNotify::newMessage(UinsList senders, const QString& msg, time_t time)
+void WindowNotify::newMessage(UinsList senders, const QString& msg, time_t time, bool &grab)
 {
 	kdebugf();
 	MessageBox::msg(tr("New message from <b>%1</b><br/> <small>%2</small>").arg(userlist.byUinValue(senders[0]).altnick).arg(msg));
@@ -129,7 +129,7 @@ void WindowNotify::userChangedStatusToNotAvailable(const UserListElement &ule)
 	kdebugf2();
 }
 
-void WindowNotify::message(const QString &from, const QString &type, const QString &message, const UserListElement *ule)
+void WindowNotify::message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule)
 {
 	kdebugf();
 	if (ule==NULL)

@@ -94,10 +94,10 @@ class HintManager : public QFrame
 	public slots:
 /*********** sloty dla notify ************/
 		/* nowa rozmowa */
-		void newChat(UinsList senders, const QString& msg, time_t time, bool &grab);
+		void newChat(UinsList senders, const QString& msg, time_t time);
 	
 		/* nowa wiadomo¶æ w oknie chat */
-		void newMessage(UinsList senders, const QString& msg, time_t time);
+		void newMessage(UinsList senders, const QString& msg, time_t time, bool &grab);
 	
 		/* b³±d po³±czenia */
 		void connectionError(const QString &message);
@@ -115,7 +115,7 @@ class HintManager : public QFrame
 		void userChangedStatusToNotAvailable(const UserListElement &ule);
 
 		/* inna informacja do powiadomienia */
-		void message(const QString &from, const QString &type, const QString &message, const UserListElement *ule);
+		void message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
 /*********** koniec slotów dla notify *************/
 
 	signals:

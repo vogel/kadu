@@ -307,15 +307,15 @@ void UserList::changeUserInfo(const QString& old_altnick, const UserListElement&
 	kdebugf2();
 }
 
-void UserList::changeUserStatus(const UinType uin, const unsigned int status)
+void UserList::changeUserStatus(const UinType uin, const unsigned int status, bool onConnection)
 {
 	kdebugf();
 	UserListElement &e = byUin(uin);
 	if (status != e.status) {
-		emit changingStatus(uin, e.status, status);
+		emit changingStatus(uin, e.status, status, onConnection);
 		e.status = status;
-//		UserBox::all_refresh();			
-		emit statusModified(&e);
+//		UserBox::all_refresh();
+		emit statusModified(&e, onConnection);
 	}
 	kdebugf2();
 }

@@ -2057,8 +2057,8 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 				break;
 		}
 
-		userlist.changeUserStatus(e->event.notify60[nr].uin, e->event.notify60[nr].status);
-		emit userStatusChanged(user, oldStatus);
+		userlist.changeUserStatus(e->event.notify60[nr].uin, e->event.notify60[nr].status, true);
+		emit userStatusChanged(user, oldStatus, true);
 
 		nr++;
 	}

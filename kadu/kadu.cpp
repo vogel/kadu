@@ -403,7 +403,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	/* connect userlist signals */
 	connect(&userlist, SIGNAL(modified()), this, SLOT(userListModified()));
-	connect(&userlist, SIGNAL(statusModified(UserListElement *)), this, SLOT(userListStatusModified(UserListElement *)));
+	connect(&userlist, SIGNAL(statusModified(UserListElement *, bool)), this, SLOT(userListStatusModified(UserListElement *, bool)));
 	connect(&userlist, SIGNAL(userAdded(const UserListElement&)),this,SLOT(userListUserAdded(const UserListElement&)));
 
 	/* add all users to userbox */
@@ -488,8 +488,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		this, SLOT(readTokenValue(QPixmap, QString &)));
 	connect(gadu, SIGNAL(systemMessageReceived(QString &)), this, SLOT(systemMessageReceived(QString &)));
 	connect(gadu, SIGNAL(userListChanged()), this, SLOT(userListChanged()));
-	connect(gadu, SIGNAL(userStatusChanged(UserListElement&, int)),
-		this, SLOT(userStatusChanged(UserListElement&, int)));
+	connect(gadu, SIGNAL(userStatusChanged(UserListElement&, int, bool)),
+		this, SLOT(userStatusChanged(UserListElement&, int, bool)));
 
 	kdebugf2();
 }
@@ -916,7 +916,7 @@ void Kadu::userListModified()
 	refreshGroupTabBar();
 }
 
-void Kadu::userListStatusModified(UserListElement *user)
+void Kadu::userListStatusModified(UserListElement *user, bool onConnection)
 {
 	kdebugm(KDEBUG_FUNCTION_START, "Kadu::userListStatusModified(): %d\n", user->uin);
 	if ((user->status == GG_STATUS_NOT_AVAIL)
@@ -933,13 +933,12 @@ void Kadu::userListChanged()
 	kdebugf2();
 }
 
-void Kadu::userStatusChanged(UserListElement &user, int oldstatus)
+void Kadu::userStatusChanged(UserListElement &user, int oldstatus, bool onConnection)
 {
 	kdebugf();
 
 	history.appendStatus(user.uin, user.status, user.description.length() ? user.description : QString::null);
 	chat_manager->refreshTitlesForUin(user.uin);
-//	ifNotify(user.uin, user.status, oldstatus);
 
 	kdebugf2();
 }

@@ -40,20 +40,6 @@ ESDPlayerSlots::ESDPlayerSlots()
 
 	connect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
 			this, SLOT(playSound(const QString &, bool, double)));
-	connect(sound_manager, SIGNAL(playOnNewMessage(UinsList, const QString &, bool, double, const QString &)),
-			this, SLOT(playNewMessage(UinsList, const QString &, bool, double, const QString &)));
-	connect(sound_manager, SIGNAL(playOnNewChat(UinsList, const QString &, bool, double, const QString &)),
-			this, SLOT(playNewChat(UinsList, const QString &, bool, double, const QString &)));
-	connect(sound_manager, SIGNAL(playOnConnectionError(const QString &, bool, double, const QString &)),
-			this, SLOT(playConnectionError(const QString &, bool, double, const QString &)));
-	connect(sound_manager, SIGNAL(playOnNotifyAvail(const UinType, const QString &, bool, double)),
-			this, SLOT(playNotify(const UinType, const QString &, bool, double)));
-	connect(sound_manager, SIGNAL(playOnNotifyBusy(const UinType, const QString &, bool, double)),
-			this, SLOT(playNotify(const UinType, const QString &, bool, double)));
-	connect(sound_manager, SIGNAL(playOnNotifyNotAvail(const UinType, const QString &, bool, double)),
-			this, SLOT(playNotify(const UinType, const QString &, bool, double)));
-	connect(sound_manager, SIGNAL(playOnMessage(const QString &, bool, double, const QString &, const QString &, const QString &, const UserListElement *)),
-			this, SLOT(playMessage(const QString &, bool, double, const QString &, const QString &, const QString &, const UserListElement *)));
 
 	kdebugf2();
 }
@@ -64,27 +50,13 @@ ESDPlayerSlots::~ESDPlayerSlots()
 
 	disconnect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
 			this, SLOT(playSound(const QString &, bool, double)));
-	disconnect(sound_manager, SIGNAL(playOnNewMessage(UinsList, const QString &, bool, double, const QString &)),
-			this, SLOT(playNewMessage(UinsList, const QString &, bool, double, const QString &)));
-	disconnect(sound_manager, SIGNAL(playOnNewChat(UinsList, const QString &, bool, double, const QString &)),
-			this, SLOT(playNewChat(UinsList, const QString &, bool, double, const QString &)));
-	disconnect(sound_manager, SIGNAL(playOnConnectionError(const QString &, bool, double, const QString &)),
-			this, SLOT(playConnectionError(const QString &, bool, double, const QString &)));
-	disconnect(sound_manager, SIGNAL(playOnNotifyAvail(const UinType, const QString &, bool, double)),
-			this, SLOT(playNotify(const UinType, const QString &, bool, double)));
-	disconnect(sound_manager, SIGNAL(playOnNotifyBusy(const UinType, const QString &, bool, double)),
-			this, SLOT(playNotify(const UinType, const QString &, bool, double)));
-	disconnect(sound_manager, SIGNAL(playOnNotifyNotAvail(const UinType, const QString &, bool, double)),
-			this, SLOT(playNotify(const UinType, const QString &, bool, double)));
-	disconnect(sound_manager, SIGNAL(playOnMessage(const QString &, bool, double, const QString &, const QString &, const QString &, const UserListElement *)),
-			this, SLOT(playMessage(const QString &, bool, double, const QString &, const QString &, const QString &, const UserListElement *)));
 
 	esd_close(sock);
 	sock=-1;
 	kdebugf2();
 }
 
-void ESDPlayerSlots::play(const QString &s, bool volCntrl, double vol)
+void ESDPlayerSlots::playSound(const QString &s, bool volCntrl, double vol)
 {
 	kdebugf();
 	int id=esd_file_cache(sock, "Kadu", s.ascii());
@@ -98,42 +70,6 @@ void ESDPlayerSlots::play(const QString &s, bool volCntrl, double vol)
 	esd_sample_play(sock, id);
 	esd_sample_free(sock, id);
 	kdebugf2();
-}
-
-void ESDPlayerSlots::playSound(const QString &s, bool volCntrl, double vol)
-{
-	kdebugf();
-	play(s, volCntrl, vol);
-}
-
-void ESDPlayerSlots::playNewMessage(UinsList senders, const QString &sound, bool volCntrl, double vol, const QString &msg)
-{
-	kdebugf();
-	play(sound, volCntrl, vol);
-}
-
-void ESDPlayerSlots::playNewChat(UinsList senders, const QString &sound, bool volCntrl, double vol, const QString &msg)
-{
-	kdebugf();
-	play(sound, volCntrl, vol);
-}
-
-void ESDPlayerSlots::playNotify(const UinType uin, const QString &sound, bool volCntrl, double vol)
-{
-	kdebugf();
-	play(sound, volCntrl, vol);
-}
-
-void ESDPlayerSlots::playConnectionError(const QString &sound, bool volCntrl, double vol, const QString &msg)
-{
-	kdebugf();
-	play(sound, volCntrl, vol);
-}
-
-void ESDPlayerSlots::playMessage(const QString &sound, bool volCntrl, double vol, const QString &from, const QString &type, const QString &msg, const UserListElement *ule)
-{
-	kdebugf();
-	play(sound, volCntrl, vol);
 }
 
 ESDPlayerSlots *esdPlayerObj;

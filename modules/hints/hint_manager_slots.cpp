@@ -34,7 +34,7 @@ HintManagerSlots::HintManagerSlots()
 
 	config_opts_prefixes<<"HintOnline"<<"HintOnlineD"<<"HintBusy"<<"HintBusyD"<<
 					"HintInvisible"<<"HintInvisibleD"<<"HintOffline"<<"HintOfflineD"<<
-					"HintBlocking"<<"HintNewChat"<<"HintNewMessage"<<"HintError";
+					"HintBlocking"<<"HintNewChat"<<"HintNewMessage"<<"HintError"<<"HintMessage";
 	for (QStringList::iterator it=config_opts_prefixes.begin(); it!=config_opts_prefixes.end(); it++)
 	{
 		//wczytanie starego configa

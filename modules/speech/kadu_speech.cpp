@@ -150,13 +150,13 @@ SpeechSlots::SpeechSlots()
 	ConfigDialog::registerSlotOnCreate(this, SLOT(onCreateConfigDialog()));
 
 	QMap<QString, QString> s;
-	s["NewChat"]=SLOT(newChat(UinsList, const QString &, time_t, bool &));
-	s["NewMessage"]=SLOT(newMessage(UinsList, const QString &, time_t));
+	s["NewChat"]=SLOT(newChat(UinsList, const QString &, time_t));
+	s["NewMessage"]=SLOT(newMessage(UinsList, const QString &, time_t, bool &));
 	s["ConnError"]=SLOT(connectionError(const QString &));
 	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const UserListElement &));
 	s["toBusy"]=SLOT(userChangedStatusToBusy(const UserListElement &));
 	s["toNotAvailable"]=SLOT(userChangedStatusToNotAvailable(const UserListElement &));
-	s["Message"]=SLOT(message(const QString &, const QString &, const QString &, const UserListElement *));
+	s["Message"]=SLOT(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *));
 	
 	config_file.addVariable("Notify", "NewChat_Speech", true);
 	config_file.addVariable("Notify", "NewMessage_Speech", false);
@@ -305,7 +305,7 @@ void SpeechSlots::testSpeech()
 	kdebugf2();
 }
 
-void SpeechSlots::newChat(UinsList senders, const QString &msg, time_t time, bool &grab)
+void SpeechSlots::newChat(UinsList senders, const QString &msg, time_t time)
 {
 	kdebugf();
 	if (lastSpeech.elapsed()<1500)
@@ -327,7 +327,7 @@ void SpeechSlots::newChat(UinsList senders, const QString &msg, time_t time, boo
 	kdebugf2();
 }
 
-void SpeechSlots::newMessage(UinsList senders, const QString &msg, time_t time)
+void SpeechSlots::newMessage(UinsList senders, const QString &msg, time_t time, bool &grab)
 {
 	kdebugf();
 	if (lastSpeech.elapsed()<1500)
@@ -397,7 +397,7 @@ void SpeechSlots::userChangedStatusToNotAvailable(const UserListElement &ule)
 	kdebugf2();
 }
 
-void SpeechSlots::message(const QString &from, const QString &type, const QString &message, const UserListElement *ule)
+void SpeechSlots::message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule)
 {
 	kdebugf();
 	say(message);

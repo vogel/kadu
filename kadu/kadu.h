@@ -86,7 +86,7 @@ class Kadu : public QMainWindow
 	private slots:
 		void groupTabSelected(int id);
 		void userListModified();
-		void userListStatusModified(UserListElement *);
+		void userListStatusModified(UserListElement *, bool);
 		void openChat();
 		void userListUserAdded(const UserListElement& user);
 
@@ -137,7 +137,7 @@ class Kadu : public QMainWindow
 		void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
 		void systemMessageReceived(QString &);
 		void userListChanged();
-		void userStatusChanged(UserListElement &, int oldstatus);
+		void userStatusChanged(UserListElement &, int oldstatus, bool onConnection);
 
 	public slots:
 		/**
