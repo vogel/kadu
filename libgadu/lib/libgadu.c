@@ -1,4 +1,4 @@
-/* $Id: libgadu.c,v 1.18 2003/02/13 01:16:35 chilek Exp $ */
+/* $Id: libgadu.c,v 1.19 2003/02/20 13:57:51 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -61,7 +61,7 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c,v 1.18 2003/02/13 01:16:35 chilek Exp $";
+= "$Id: libgadu.c,v 1.19 2003/02/20 13:57:51 chilek Exp $";
 #endif 
 
 /*
@@ -351,10 +351,18 @@ void *gg_recv_packet(struct gg_session *sess)
 	}
 
 	if (sess->recv_left < 1) {
-		while (ret != sizeof(h)) {
-			ret = read(sess->fd, &h, sizeof(h));
+		if (sess->header_buf) {
+			memcpy(&h, sess->header_buf, sess->header_done);
+			gg_debug(GG_DEBUG_MISC, "// gg_recv_packet() header recv: resuming last read (%d bytes left)\n", sizeof(h) - sess->header_done);
+			free(sess->header_buf);
+			sess->header_buf = NULL;
+		} else
+			sess->header_done = 0;
 
-			gg_debug(GG_DEBUG_MISC, "// gg_recv_packet() header recv(%d,%p,%d) = %d\n", sess->fd, &h, sizeof(h), ret);
+		while (sess->header_done < sizeof(h)) {
+			ret = read(sess->fd, (char*) &h + sess->header_done, sizeof(h) - sess->header_done);
+
+			gg_debug(GG_DEBUG_MISC, "// gg_recv_packet() header recv(%d,%p,%d) = %d\n", sess->fd, &h + sess->header_done, sizeof(h) - sess->header_done, ret);
 
 			if (!ret) {
 				gg_debug(GG_DEBUG_MISC, "// gg_recv_packet() header recv() failed: connection broken\n");
@@ -367,10 +375,25 @@ void *gg_recv_packet(struct gg_session *sess)
 					continue;
 				}
 
+				if (errno == EAGAIN) {
+					gg_debug(GG_DEBUG_MISC, "// gg_recv_packet() header recv() incomplete header received\n");
+
+					if (!(sess->header_buf = malloc(sess->header_done))) {
+						gg_debug(GG_DEBUG_MISC, "// gg_recv_packet() header recv() not enough memory\n");
+						return NULL;
+					}
+
+					memcpy(sess->header_buf, &h, sess->header_done);
+
+					return NULL;
+				}
+
 				gg_debug(GG_DEBUG_MISC, "// gg_recv_packet() header recv() failed: errno=%d, %s\n", errno, strerror(errno));
 
 				return NULL;
 			}
+
+			sess->header_done += ret;
 		}
 
 		h.type = gg_fix32(h.type);
@@ -419,7 +442,6 @@ void *gg_recv_packet(struct gg_session *sess)
 				return NULL;
 			}
 			if (errno != EINTR) {
-//				errno = EINVAL;
 				free(buf);
 				return NULL;
 			}
@@ -573,12 +595,12 @@ struct gg_session *gg_login(const struct gg_login_params *p)
 
 	gg_debug(GG_DEBUG_FUNCTION, "** gg_login(%p: [uin=%u, async=%d, ...]);\n", p, p->uin, p->async);
 
-	if (!(sess = malloc(sizeof(*sess)))) {
+	if (!(sess = malloc(sizeof(struct gg_session)))) {
 		gg_debug(GG_DEBUG_MISC, "// gg_login() not enough memory for session data\n");
 		goto fail;
 	}
 
-	memset(sess, 0, sizeof(*sess));
+	memset(sess, 0, sizeof(struct gg_session));
 
 	if (!p->password || !p->uin) {
 		gg_debug(GG_DEBUG_MISC, "// gg_login() invalid arguments. uin and password needed\n");
@@ -732,6 +754,9 @@ void gg_free_session(struct gg_session *sess)
 
 	if (sess->resolver)
 		free(sess->resolver);
+
+	if (sess->header_buf)
+		free(sess->header_buf);
 
 	free(sess);
 }

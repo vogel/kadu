@@ -1,4 +1,4 @@
-/* $Id: userlist.c,v 1.16 2003/02/13 01:16:35 chilek Exp $ */
+/* $Id: userlist.c,v 1.17 2003/02/20 13:57:51 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -58,7 +58,7 @@ struct gg_http *gg_userlist_get(uin_t uin, const char *passwd, int async)
 		return NULL;
 	}
 	
-	if (!(form = gg_saprintf("FmNum=%ld&Pass=%s", uin, __passwd))) {
+	if (!(form = gg_saprintf("FmNum=%d&Pass=%s", uin, __passwd))) {
 		gg_debug(GG_DEBUG_MISC, "=> userlist_get, not enough memory for form fields\n");
 		free(__passwd);
 		errno = ENOMEM;
@@ -198,7 +198,7 @@ struct gg_http *gg_userlist_put(uin_t uin, const char *passwd, const char *conta
 		return NULL;
 	}
 	
-	if (!(form = gg_saprintf("FmNum=%ld&Pass=%s&Contacts=%s", uin, __passwd, __contacts))) {
+	if (!(form = gg_saprintf("FmNum=%d&Pass=%s&Contacts=%s", uin, __passwd, __contacts))) {
 		gg_debug(GG_DEBUG_MISC, "=> userlist_put, not enough memory for form fields\n");
 		free(__passwd);
 		free(__contacts);

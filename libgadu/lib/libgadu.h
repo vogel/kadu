@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.27 2003/02/13 01:16:35 chilek Exp $ */
+/* $Id: libgadu.h,v 1.28 2003/02/20 13:57:51 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -107,6 +107,9 @@ struct gg_session {
 	char *initial_descr;	/* pocz±tkowy opis stanu klienta */
 
 	void *resolver;		/* wska¼nik na informacje resolvera */
+
+	char *header_buf;	/* bufor na pocz±tek nag³ówka */
+	int header_done;	/* ile ju¿ mamy */
 };
 
 /*
@@ -135,6 +138,12 @@ struct gg_http {
 	void *resolver;		/* wska¼nik na informacje resolvera */
 };
 
+#ifdef __GNUC__
+#define GG_PACKED __attribute__ ((packed))
+#else
+#define GG_PACKED
+#endif
+
 #define GG_MAX_PATH 276
 
 /*
@@ -152,8 +161,9 @@ struct gg_file_info {
 	uint32_t size;			/* nFileSizeLow */
 	uint32_t reserved0;		/* dwReserved0 */
 	uint32_t reserved1;		/* dwReserved1 */
-	unsigned char filename[GG_MAX_PATH];	/* cFileName */
-};
+	unsigned char filename[GG_MAX_PATH - 14];	/* cFileName */
+	unsigned char short_filename[14];		/* cAlternateFileName */
+} GG_PACKED;
 
 /*
  * struct gg_dcc
@@ -727,7 +737,12 @@ int gg_thread_socket(int thread_id, int socket);
 
 int gg_resolve(int *fd, int *pid, const char *hostname);
 
+#ifdef __GNUC__
+char *gg_saprintf(const char *format, ...) __attribute__ ((format (printf, 1, 2)));
+#else
 char *gg_saprintf(const char *format, ...);
+#endif
+
 #define gg_alloc_sprintf gg_saprintf
 
 char *gg_get_line(char **ptr);
@@ -766,15 +781,9 @@ char *gg_base64_decode(const char *buf);
 #define GG_DEFAULT_PROTOCOL_VERSION 0x18
 #define GG_DEFAULT_TIMEOUT 30
 #define GG_HAS_AUDIO_MASK 0x40000000
-#define GG_LIBGADU_VERSION "20030212"
+#define GG_LIBGADU_VERSION "20030219"
 
 #define GG_DEFAULT_DCC_PORT 1550
-
-#ifdef __GNUC__
-#define GG_PACKED __attribute__ ((packed))
-#else
-#define GG_PACKED
-#endif
 
 struct gg_header {
 	uint32_t type;			/* typ pakietu */

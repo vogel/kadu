@@ -6,6 +6,70 @@ d - drg, sz - szalik). ,,p/nick'' oznacza patch lub ¼ród³o podes³ane
 przez ,,nick'', ,,i/nick'' oznacza czyj¶ pomys³, ,,b/nick'' mówi, kto
 zg³osi³ b³±d.
 
+// 2003-02-19
+
+- dope³nianie uin'ów z listy kontaktów (sz)
+- usuniêcie ui-automaton (ok malekith@pld-linux.org/sz)
+- ,,-'' przy /quit i /disconnect usuwa opis permanentie tak, jak to robi±
+  /away, /back czy /invisible (sz)
+- /disconnect pamiêta opis przy w³±czonym ,,keep_reason'' (Brzezi/sz)
+- poprawka warning'ów kompilacji z iocltd (pmb/sz)
+- poprawki window next/prev, ¿eby bardziej uwa¿a³o na pl±taj±ce siê
+  gdzieniegdzie okienka p³ywaj±ce (andylm/sz)
+- nie tworzymy niepotrzebnie nowych okien, na przyk³ad przy ,,chat numer'',
+  a pó¼niej ,,chat alias'' (pmb/sz)
+
+// 2003-02-18
+
+- ,,fade_in'' jest domy¶lnie wy³±czone (ubanus,w/sz)
+- uaktualnianie timeout'ów sesji nie czê¶ciej ni¿ raz na sekundê, ¿eby
+  timeout timeout'owi by³ równy (sz)
+- poprawka wczytywania pojedynczych zmiennych, m.in. ,,fade_in'' i
+  ,,interface''. ta ostatania nie by³a zawsze zapisywana. teraz odbywa
+  siê to automagicznie po uruchomieniu ekg z opcj± -f (sz)
+- kosmetyka dcc. standardowo wiêcej informacji w /dcc list. pe³niejszy
+  komunikat o timeout'cie po³±czenia (sz)
+
+// 2003-02-16
+
+- usuniêcie leak'a w /exec (sz)
+- zapisanie opcji dla /exec wielkimi literami spowoduje dodanie polecenia
+  do wysy³anego wyniku. czasami siê przydaje ;> (sz)
+- dok³adne czysczenie formatów po ,,/set -theme''. problem by³ na przyk³ad
+  z wy³±czeniem tematu ircopodobnego (sz)
+
+// 2003-02-15
+
+- g³upia ja - poprawka poprawki timestamp'ów (sz)
+- poprawka window next/prev (sz)
+- nie pozwalajmy na podanie konfliktowej warto¶ci zmiennej w postaci
+  liczby (sz)
+- libgadu: dodanie atrybutu ,,printf'' do funkcji gg_saprintf(), dziêki
+  czemu kompilator bêdzie sprawdza³ poprawno¶æ jej parametrów (w)
+- libgadu: drobne poprawki parametrów gg_saprintf() (w)
+- ekg: j.w. do funkcji saprintf() (w)
+- libgadu: obs³uga fragmentacji nag³ówków pakietów (speedy/w)
+- poprawka nazwy struktury w opisie protoko³u (solaris/w)
+
+// 2003-02-14
+
+- d¿wiêki przy zmianach stanu zachowuj± siê tak, jak to nakazuje zmienna
+  ,,display_notify''. nie s± natomiast wy³±czane przy ukrywaniu zmian
+  poprzez ,,contacts'' równe 2 (sz)
+- poziom ignorowania ,,notify'' (sz)
+- mniej ra¿±cy w oczy theme dla nazwy grupy w li¶cie kontaktów (sz)
+- ,,stderr'' wêdruje do aktualnego okna (w/sz)
+- poprawka powtórzeñ zmiany stanu, gdy w opisie by³y polskie literki (sz)
+- zabezpieczenie przed zalewem po³±czeñ dcc (segfault/w)
+- libgadu: wype³nianie wszystkich pól file_info przy wysy³aniu pliku (Chile/w)
+
+// 2003-02-13
+
+- lepsze wykrywanie pthread (adrians/w)
+- drobna kosmetyka: ignorowanie spacji po przecinku w ,,contacts_groups''
+  oraz prawid³owe dope³nianie przy aliasach do komend z backslashem na
+  pocz±tku (sz)
+
 // 2003-02-12
 
 - skrypt autorun/__init__.py nie jest ³adowany (rmrmg/w)
@@ -14,6 +78,7 @@ zg³osi³ b³±d.
   ,,na sta³e'' planowaæ komendy (sz)
 - krzyk.theme (krzyk/sz)
 - poprawka wyciszania /sms (sz)
+- poprawka zapisu uk³adu okienek (sz/w)
 
 // 2003-02-11
 
@@ -3045,4 +3110,4 @@ i BUGS.
 - eleet niebieskie t³o mesgów (wiem, dalekie od idea³u).
 
 
-$Id: ChangeLog,v 1.15 2003/02/13 01:16:34 chilek Exp $
+$Id: ChangeLog,v 1.16 2003/02/20 13:59:23 chilek Exp $
