@@ -34,7 +34,6 @@
 #include <qradiobutton.h>
 #include <ksystemtray.h>
 #include <qtextview.h>
-#include <ktextbrowser.h>
 #include <qtooltip.h>
 #include <qfile.h>
 #include <qfileinfo.h>
@@ -53,7 +52,6 @@
 #include <qstrlist.h>
 #include <qgroupbox.h>
 #include <kmainwindow.h>
-#include <kmenubar.h>
 #include <qcheckbox.h>
 #include <qtextcodec.h>
 #include <kglobal.h>
@@ -1809,7 +1807,7 @@ void Kadu::createMenu() {
 
 	KIconLoader *loader = KGlobal::iconLoader();
 
-	mmb = new KMenuBar(this, "mmb");
+	mmb = new QMenuBar(this, "mmb");
 
 	QPopupMenu *ppm = new QPopupMenu(this, "ppm");
 	ppm->insertItem(i18n("Manage &ignored"), KADU_CMD_MANAGE_IGNORED);
