@@ -2,30 +2,36 @@
 bin_PROGRAMS = kadu
 
 kadu_SOURCES = \
-about.cpp about.h about_moc.cpp \
-chat.cpp chat.h chat_moc.cpp \
-config_dialog.cpp config_dialog.h config_dialog_moc.cpp \
+about.cpp about.h \
+chat.cpp chat.h \
+config_dialog.cpp config_dialog.h \
 config_file.cpp config_file.h \
 debug.cpp debug.h \
-emoticons.cpp emoticons.h emoticons_moc.cpp \
-expimp.cpp expimp.h expimp_moc.cpp \
-gadu.cpp gadu.h gadu_moc.cpp \
-history.cpp history.h history_moc.cpp \
-ignore.cpp ignore.h ignore_moc.cpp \
-kadu.cpp kadu.h kadu_moc.cpp \
+emoticons.cpp emoticons.h \
+expimp.cpp expimp.h \
+gadu.cpp gadu.h \
+history.cpp history.h \
+ignore.cpp ignore.h \
+kadu.cpp kadu.h \
 main.cpp \
-message_box.cpp message_box.h message_box_moc.cpp \
-misc.cpp misc.h misc_moc.cpp \
-modules.cpp modules.h modules_moc.cpp \
-pending_msgs.cpp pending_msgs.h pending_msgs_moc.cpp \
-personal_info.cpp personal_info.h personal_info_moc.cpp \
-search.cpp search.h search_moc.cpp \
-status.cpp status.h status_moc.cpp \
-tabbar.cpp tabbar.h tabbar_moc.cpp \
-userbox.cpp userbox.h userbox_moc.cpp \
-userinfo.cpp userinfo.h userinfo_moc.cpp \
-userlist.cpp userlist.h userlist_moc.cpp \
-updates.cpp updates.h updates_moc.cpp
+message_box.cpp message_box.h \
+misc.cpp misc.h \
+modules.cpp modules.h \
+pending_msgs.cpp pending_msgs.h \
+personal_info.cpp personal_info.h \
+search.cpp search.h \
+status.cpp status.h \
+tabbar.cpp tabbar.h \
+userbox.cpp userbox.h \
+userinfo.cpp userinfo.h \
+userlist.cpp userlist.h \
+updates.cpp updates.h \
+about_moc.cpp chat_moc.cpp config_dialog_moc.cpp emoticons_moc.cpp \
+expimp_moc.cpp gadu_moc.cpp history_moc.cpp ignore_moc.cpp \
+kadu_moc.cpp message_box_moc.cpp misc_moc.cpp modules_moc.cpp \
+pending_msgs_moc.cpp personal_info_moc.cpp search_moc.cpp status_moc.cpp \
+tabbar_moc.cpp userbox_moc.cpp userinfo_moc.cpp userlist_moc.cpp \
+updates_moc.cpp
 
 ###########################################################################
 # Precompiled headers support
