@@ -518,8 +518,10 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	pending.loadFromFile();
 
+
+
 	/* initialize group tabbar */
-	group_bar=new QTabBar(this);
+	group_bar=new QTabBar(this, "groupbar");
 	group_bar->addTab(new QTab(i18n("All")));
 	refreshGroupTabBar();
 	connect(group_bar,SIGNAL(selected(int)),this,SLOT(groupTabSelected(int)));
@@ -528,7 +530,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(&userlist,SIGNAL(modified()),this,SLOT(userListModified()));
 		
 	/* initialize and configure userbox */
-	userbox = new UserBox(this);
+	userbox = new UserBox(this, "userbox");
 	userbox->setPaletteBackgroundColor(QColor(config.colors.userboxBgR,config.colors.userboxBgG,config.colors.userboxBgB));
 	userbox->setPaletteForegroundColor(QColor(config.colors.userboxFgR,config.colors.userboxFgG,config.colors.userboxFgB));
 	userbox->QListBox::setFont(QFont(config.colors.userboxFont, config.colors.userboxFontSize));
@@ -545,11 +547,11 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(userbox, SIGNAL(rightButtonClicked(QListBoxItem *, const QPoint &)),
 		this, SLOT(listPopupMenu(QListBoxItem *)));
 
-	statuslabeltxt = new MyLabel (this);
+	statuslabeltxt = new MyLabel(this, "statuslabeltxt");
 	statuslabeltxt->setText(i18n("Offline"));
 	statuslabeltxt->setFrameStyle(QFrame::WinPanel|QFrame::Sunken);
 	statuslabeltxt->setFont(QFont("Verdana", 9));
-	statuslabeltxt->setMinimumWidth(this->width()-45);
+	statuslabeltxt->setMinimumWidth(width()-45);
 
 	/* a bit darker than the rest */
 	statuslabeltxt->setPaletteBackgroundColor(QColor(
@@ -557,7 +559,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		qGreen(statuslabeltxt->paletteBackgroundColor().rgb()) - 20,
 		qBlue(statuslabeltxt->paletteBackgroundColor().rgb()) - 20));
 
-	statuslabel = new MyLabel (this);
+	statuslabel = new MyLabel(this, "statuslabel");
 	statuslabel->setPixmap(QPixmap((const char**)gg_inact_xpm) );
 
 	/* guess what */
@@ -571,8 +573,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	dockppm->insertItem(loader->loadIcon("exit",KIcon::Small), i18n("&Exit Kadu"), 9);
 	connect(dockppm, SIGNAL(activated(int)), dw, SLOT(dockletChange(int)));
 	
-	QGridLayout * grid = new QGridLayout (this,4,3);
-	grid->addMultiCellWidget(mmb,0,0,0,2);
+	QGridLayout * grid = new QGridLayout(this, 4, 3);
+	grid->setMenuBar(mmb);
 	grid->addMultiCellWidget(group_bar,1,1,0,2);
 	grid->addMultiCellWidget(userbox,2,2,0,2);
 	grid->addWidget(statuslabeltxt,3,0,Qt::AlignLeft);
@@ -580,6 +582,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	grid->setColStretch(0, 3);
 	grid->setColStretch(1, 1);
 	grid->setColStretch(2, 1);
+	grid->activate();
 
 	dccsock = NULL;
 	/* dirty workaround for multiple showEvents */
@@ -1824,7 +1827,9 @@ void Kadu::createMenu() {
 
 	KIconLoader *loader = KGlobal::iconLoader();
 
-	QPopupMenu *ppm = new QPopupMenu(this);
+	mmb = new KMenuBar(this, "mmb");
+
+	QPopupMenu *ppm = new QPopupMenu(this, "ppm");
 	ppm->insertItem(i18n("Manage &ignored"), KADU_CMD_MANAGE_IGNORED);
 	ppm->insertItem(loader->loadIcon("configure", KIcon::Small), i18n("&Configuration"), KADU_CMD_CONFIG);
 	ppm->insertItem(loader->loadIcon("reload", KIcon::Small), i18n("Resend &userlist"), KADU_CMD_SEND_USERLIST);
@@ -1873,9 +1878,8 @@ ppm->insertSeparator();
 	ppm->insertItem(i18n("&Hide Kadu"), KADU_CMD_HIDE);
 	ppm->insertItem(loader->loadIcon("exit", KIcon::Small), i18n("&Exit Kadu"), KADU_CMD_QUIT);
 
-	mmb = new KMenuBar(this);
 	mmb->insertItem(i18n("&Kadu"), ppm);
-	mmb->polish();
+//	mmb->polish();
 
 	connect(ppm, SIGNAL(activated(int)), this, SLOT(commandParser(int)));
 }
@@ -1886,8 +1890,8 @@ void Kadu::createStatusPopupMenu() {
 	QPixmap pixmap;
 	QIconSet icon;
 
-	statusppm = new QPopupMenu(this);
-	dockppm = new KPopupMenu(this);
+	statusppm = new QPopupMenu(this, "statusppm");
+	dockppm = new KPopupMenu(this, "dockppm");
 
 	for (int i=0; i<8; i++) {
 		pixmap = QPixmap((const char **)gg_xpm[i]);

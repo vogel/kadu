@@ -90,13 +90,15 @@ void UserBox::mousePressEvent(QMouseEvent *e) {
 	else {
 		QListBoxItem *item;
 		item = itemAt(e->pos());
-		if (!item->isSelected())
-			if (!(e->state() & Qt::ControlButton))
-				for (int i = 0; i < count(); i++)
-					setSelected(i, FALSE);
-		setSelected(item, TRUE);
-		setCurrentItem(item);
-		emit rightButtonClicked(item, e->globalPos());
+		if (item) {
+			if (!item->isSelected())
+				if (!(e->state() & Qt::ControlButton))
+					for (int i = 0; i < count(); i++)
+						setSelected(i, FALSE);
+			setSelected(item, TRUE);
+			setCurrentItem(item);
+			emit rightButtonClicked(item, e->globalPos());
+			}
 		}
 }
 

@@ -182,8 +182,8 @@ class Kadu : public QMainWindow
 		int openChat(UinsList);
 	
 	private:
-		KMenuBar* mmb;
-		QTabBar* group_bar;
+		QMenuBar *mmb;
+		QTabBar *group_bar;
 		int beforeAutoAway;
 		int commencing_startup;
 		void createMenu();
@@ -255,13 +255,12 @@ class ChooseDescription : public QDialog {
 };
 
 class MyLabel : public QLabel {
-  Q_OBJECT
-  public:
-    MyLabel ( QWidget * parent ): QLabel(parent) { ; };
+	Q_OBJECT
+	public:
+		MyLabel(QWidget *parent, const char *name): QLabel(parent, name) {};
 
-  protected:
-    void mousePressEvent (QMouseEvent * e);
-
+	protected:
+		void mousePressEvent (QMouseEvent * e);
 };
 
 class Chat;
