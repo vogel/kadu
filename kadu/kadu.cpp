@@ -263,7 +263,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 {
 	kdebugf();
 	Docked = false;
-	Autohammer = false;
 	ShowMainWindowOnStart = true;
 
 	KaduSlots *kaduslots=new KaduSlots(this, "kaduslots");
@@ -1120,13 +1119,9 @@ void Kadu::slotHandleState(int command)
 
 		if (status.isOffline())
 		{
-			Autohammer = false;
-			gadu->disableAutoConnection();
 			statusMenu->setItemEnabled(7, false);
 			dockMenu->setItemEnabled(7, false);
 		}
-		else
-			Autohammer = true;
 	}
 	else
 		status.setStatus(gadu->status());
@@ -1183,7 +1178,7 @@ void Kadu::error(GaduError err)
 	kdebugf();
 	QString msg = QString::null;
 
-	Autohammer = true;
+	bool continue_connecting = true;
 	switch (err)
 	{
 		case ConnectionServerNotFound:
@@ -1197,8 +1192,7 @@ void Kadu::error(GaduError err)
 		case ConnectionNeedEmail:
 			msg = QString(tr("Please change your email in \"Change password/email\" window. "
 				"Leave new password field blank."));
-			Autohammer = false; /* FIXME 2/2*/
-			gadu->disableAutoConnection();
+			continue_connecting = false;
 			MessageBox::msg(msg);
 			break;
 
@@ -1216,8 +1210,7 @@ void Kadu::error(GaduError err)
 
 		case ConnectionIncorrectPassword:
 			msg = QString(tr("Unable to connect, incorrect password"));
-			Autohammer = false; /* FIXME 2/2*/
-			gadu->disableAutoConnection();
+			continue_connecting = false;
 			MessageBox::wrn(tr("Connection will be stoped\nYour password is incorrect !"));
 			break;
 
@@ -1256,10 +1249,9 @@ void Kadu::error(GaduError err)
 		emit connectionError(msg);
 	}
 
-	if (Autohammer)
-		gadu->enableAutoConnection();
-	else
-		gadu->disableAutoConnection();
+	if (continue_connecting)
+		gadu->connectAfterOneSecond();
+
 	kdebugf2();
 }
 
@@ -1293,8 +1285,6 @@ void Kadu::disconnected()
 		blinktimer = NULL;
 	}
 
-	Autohammer = false;
-	gadu->disableAutoConnection();
 	kdebugf2();
 }
 
@@ -1766,8 +1756,6 @@ void Kadu::startupProcedure()
 		status.setIndex(statusIndex, descr);
 	status.setFriendsOnly(config_file.readBoolEntry("General", "PrivateStatus"));
 
-	if (!status.isOffline())
-		Autohammer = true;
 	gadu->status().setStatus(status);
 
 	kdebugf2();

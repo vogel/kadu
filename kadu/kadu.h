@@ -70,7 +70,6 @@ class Kadu : public QMainWindow
 		UserStatus status;
 
 		bool ShowMainWindowOnStart;
-		bool Autohammer;
 		bool DoBlink;
 		bool BlinkOn;
 		bool Docked;

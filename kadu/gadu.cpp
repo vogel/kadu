@@ -48,45 +48,11 @@ class ConnectionTimeoutTimer : public QTimer {
 		static ConnectionTimeoutTimer *connectiontimeout_object;
 };
 
-AutoConnectionTimer *AutoConnectionTimer::autoconnection_object = NULL;
 ConnectionTimeoutTimer *ConnectionTimeoutTimer::connectiontimeout_object = NULL;
 
 // ------------------------------------
 //        Timers - implementation
 // ------------------------------------
-
-AutoConnectionTimer::AutoConnectionTimer(QObject *parent, const char *name) : QTimer(parent, name)
-{
-	doConnect(); // czasami GaduSocketNotifiers::dataSent wywolywane 
-		     // jest przed doConnect() (Snw== NULL) co powoduje 
-    		     // segfaulta
-	connect(this, SIGNAL(timeout()), SLOT(doConnect()));
-	start(1000, TRUE);
-}
-
-void AutoConnectionTimer::doConnect()
-{
-	kdebugf();
-	if (!gadu->userListSent())
-		gadu->login();
-}
-
-void AutoConnectionTimer::on()
-{
-	kdebugf();
-	if (!autoconnection_object)
-		autoconnection_object = new AutoConnectionTimer(kadu, "auto_connection_timer_object");
-}
-
-void AutoConnectionTimer::off()
-{
-	kdebugf();
-	if (autoconnection_object)
-	{
-		delete autoconnection_object;
-		autoconnection_object = NULL;
-	}
-}
 
 ConnectionTimeoutTimer::ConnectionTimeoutTimer(QObject *parent, const char *name) : QTimer(parent, name)
 {
@@ -753,18 +719,6 @@ void GaduSocketNotifiers::socketEvent()
 	else if (e->type == GG_EVENT_NONE)
 		kdebugm (KDEBUG_NETWORK, "GG_EVENT_NONE\n");
 
-	// TODO: to mi siê nie podoba
-	if (!gadu->currentStatus().isOffline())
-		if (Sess->state == GG_STATE_IDLE && gadu->userListSent())
-		{
-			gadu->status().setOffline("");
-			UserBox::all_changeAllToInactive();
-			emit error(ConnectionUnknow);
-		}
-		else
-			checkWrite();
-	// TODO: to mi siê nie podoba
-
 	gg_free_event(e);
 	--calls;
 	kdebugf2();
@@ -1397,8 +1351,6 @@ void GaduProtocol::login()
 
 	if (LoginParams.status_descr)
 		free(LoginParams.status_descr);
-
-	disableAutoConnection();
 
 	if (Sess)
 	{
@@ -2043,16 +1995,11 @@ void GaduProtocol::streamToUserList(QTextStream& stream, UserList& userList) con
 	kdebugf2();
 }
 
-void GaduProtocol::enableAutoConnection()
+void GaduProtocol::connectAfterOneSecond()
 {
 	kdebugf();
-	AutoConnectionTimer::on();
-}
-
-void GaduProtocol::disableAutoConnection()
-{
-	kdebugf();
-	AutoConnectionTimer::off();
+	QTimer::singleShot(1000, this, SLOT(login()));
+	kdebugf2();
 }
 
 bool GaduProtocol::doExportUserList(const UserList& userList)

@@ -22,26 +22,6 @@ class UserListElement;
 extern QHostAddress config_extip;
 
 // ------------------------------------
-//              Timers
-// ------------------------------------
-
-class AutoConnectionTimer : private QTimer {
-	Q_OBJECT
-
-	public:
-		static void on();
-		static void off();
-
-	public slots:
-		void doConnect();
-
-	private:
-		AutoConnectionTimer(QObject *parent = 0, const char *name=0);
-
-		static AutoConnectionTimer *autoconnection_object;
-};
-
-// ------------------------------------
 //            UinsList
 // ------------------------------------
 
@@ -292,8 +272,6 @@ class GaduProtocol : public QObject
 {
 	Q_OBJECT
 
-	friend class AutoConnectionTimer;
-
 	private:
 
 		/**
@@ -438,31 +416,6 @@ class GaduProtocol : public QObject
 		void setupProxy();
 
 		/**
-			Loguje siê do serwera Gadu-Gadu. Po uruchomieniu emituje sygna³ connecting. Parametry
-			logowania odczytuje z konfiguracji, status logowania pobiera z pola NextStatus.
-			£±cz±c siê, wybiera kolejne serwery (w przypadku nieudanego po³±czenia) wykorzystuj±c
-			pola ConfigServers i i ServerNr.
-
-			Po poprawnym zalogowaniu wywo³ywany jest slot connectedSlot, który emituje sygna³
-			GaduProtocol::connected
-
-			Metodê mo¿na uruchomiæ po¶rednio poprzez wywo³anie typu gadu->status().setOnline(),
-			które wywo³a slot iWantToGoOnline, który z kolei (gdy stwierdzi, ¿e nie jeste¶my zalogowani)
-			wywo³a procedurê.
-
-			Metoda jest te¿ wywo³ywana przez obiekt statyczny klasy AutoConnectionTimer, która
-			jest zaprzyja¼niona z GaduProtocol.
-
-			@see connecting
-			@see connected
-			@see connectedSlot
-			@see NextStatus
-			@see ConfigServers
-			@see ServerNr
-			@see AutoConnectionTimer
-		**/
-		void login();
-		/**
 			Metoda wywo³ywana w razie roz³±czenie siê z serwerem. Wywo³ywana przez iWantGoOffline
 			albo przez connectionTimeoutTimerSlot. Wywo³uje disconnectedSlot, który z kolei
 			emituje sygna³ disconnected
@@ -538,6 +491,28 @@ class GaduProtocol : public QObject
 		void doChangePassword();
 
 	private slots:
+
+		/**
+			Loguje siê do serwera Gadu-Gadu. Po uruchomieniu emituje sygna³ connecting. Parametry
+			logowania odczytuje z konfiguracji, status logowania pobiera z pola NextStatus.
+			£±cz±c siê, wybiera kolejne serwery (w przypadku nieudanego po³±czenia) wykorzystuj±c
+			pola ConfigServers i i ServerNr.
+
+			Po poprawnym zalogowaniu wywo³ywany jest slot connectedSlot, który emituje sygna³
+			GaduProtocol::connected
+
+			Metodê mo¿na uruchomiæ po¶rednio poprzez wywo³anie typu gadu->status().setOnline(),
+			które wywo³a slot iWantToGoOnline, który z kolei (gdy stwierdzi, ¿e nie jeste¶my zalogowani)
+			wywo³a procedurê.
+
+			@see connecting
+			@see connected
+			@see connectedSlot
+			@see NextStatus
+			@see ConfigServers
+			@see ServerNr
+		**/
+		void login();
 		/**
 			Wywo³ywany po zarejestrowaniu konta. Emituje registered/
 
@@ -845,13 +820,9 @@ class GaduProtocol : public QObject
 		void streamToUserList(QTextStream &source, UserList &userList) const;
 
 		/**
-			W³±cza próby automatycznego ³±czenia w razie niepowodzenia.
+			Po jedno sekundowym opó¼nieniu wykonuje próbê po³±czenia.
 		**/
-		void enableAutoConnection();
-		/**
-			Wy³±cza próby automatycznego ³±czenia w razie niepowodzenia.
-		**/
-		void disableAutoConnection();
+		void connectAfterOneSecond();
 
 		/**
 			Zwraca true, je¿eli jeste¶my po³±czenie z serwerem.
