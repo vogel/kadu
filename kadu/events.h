@@ -59,7 +59,8 @@ class EventManager : public QObject
 		void ackReceivedSlot(int seq);
 		void dccConnectionReceivedSlot(const UserListElement& sender);
 		void pubdirReplyReceivedSlot(gg_pubdir50_t res);
-		
+		void userlistReplyReceivedSlot(char type, char *reply);
+
 	public:
 		EventManager();
 		void eventHandler(gg_session* sess);
@@ -113,6 +114,11 @@ class EventManager : public QObject
 			w katalogu publicznym
 		**/		
 		void pubdirReplyReceived(gg_pubdir50_t res);
+		/**
+			Otrzymano z serwera rezultat operacji na li¶cie
+			u¿ytkowników
+		**/		
+		void userlistReplyReceived(char type, char *reply);
 };
 
 extern EventManager event_manager;

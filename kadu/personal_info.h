@@ -24,9 +24,6 @@ class PersonalInfoDialog : public QDialog
 		QLineEdit* CityEdit;
 		QLineEdit* FamilyNameEdit;
 		QLineEdit* FamilyCityEdit;
-		QSocketNotifier* SocketReadNotifier;
-		QSocketNotifier* SocketWriteNotifier;
-		struct gg_http* http;
 		enum DialogState {READY, READING, WRITTING};
 		DialogState State;
 

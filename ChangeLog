@@ -27,6 +27,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   informacyjnego (mast3r)
 * kadu nie powinno siê wywalaæ jak otrzymamy wiadomo¶æ graficzn±;
   póki co obrazek jest ignorowany (chilek)
+* eksport/import listy u¿ytkowników zgodny z GG6 (chilek)
 
 +++ wersja 0.3.4-rc4
 * kadu nie pokazuje fa³szywych statusów ukrytych w userboksie (chilek)

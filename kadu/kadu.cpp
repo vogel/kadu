@@ -773,14 +773,12 @@ void Kadu::quit()
 void Kadu::exportUserlist()
 {
 	UserlistExport *ule = new UserlistExport();
-	ule->init();
 	ule->show();
 }
 
 void Kadu::importUserlist()
 {
 	UserlistImport *uli = new UserlistImport();
-	uli->init();
 	uli->show();
 }
 

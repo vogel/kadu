@@ -156,6 +156,8 @@ EventManager::EventManager()
 		this,SLOT(dccConnectionReceivedSlot(const UserListElement&)));
 	connect(this,SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
 		this,SLOT(pubdirReplyReceivedSlot(gg_pubdir50_t)));
+	connect(this,SIGNAL(userlistReplyReceived(char, char *)),
+		this,SLOT(userlistReplyReceivedSlot(char, char *)));
 };
 
 void EventManager::connectedSlot()
@@ -623,6 +625,11 @@ void EventManager::pubdirReplyReceivedSlot(gg_pubdir50_t res)
 		};
 };
 
+void EventManager::userlistReplyReceivedSlot(char type, char *reply)
+{
+	kdebug("EVentManager::userlistReplyReceivedSlot(): got userlist reply.\n");
+}
+
 void EventManager::eventHandler(gg_session* sess)
 {
 	static int calls = 0;
@@ -722,6 +729,10 @@ void EventManager::eventHandler(gg_session* sess)
 		|| e->type == GG_EVENT_PUBDIR50_READ || e->type == GG_EVENT_PUBDIR50_WRITE)
 		emit pubdirReplyReceived(e->event.pubdir50);
 	
+	if (e->type == GG_EVENT_USERLIST)
+		emit event_manager.userlistReplyReceived(e->event.userlist.type,
+			e->event.userlist.reply);
+
 	if (e->type == GG_EVENT_CONN_SUCCESS)
 		emit connected();
 
