@@ -125,7 +125,6 @@ void Sms::sendSms(void) {
 	else
 	{
 		smsProcess->addArgument(SmsAppPath);
-		smsProcess->addArgument("--bramkaorg");
 		smsProcess->addArgument(recipient->text());
 		smsProcess->addArgument(body->text());
 	};
