@@ -51,20 +51,20 @@ Wizard::Wizard(QWidget * /*parent*/, const char * /*name*/)
 	setCaption(tr("Kadu Wizard"));
 	setFixedSize(470, 300);	/* ustawia rozmiar okna */
 
-	showWelcomePage();		/* wyswietla powitanie */
-	showLanguagePage();		/* ustawienie jezyka */
-  	showGGNumberSelect();	/* wyswietla okno ustawien numerka */
-	showGGCurrentNumberPage();
-	showGGNewNumberPage();
-	showGeneralOptionsPage(); /* inne */
-	showChatOpionsPage();	/* ustawienia gadki */
-	showColorsPage();			/* kolory */
-	showHintsOptionsPage();	/* dymki */
-	showInfoPanelPage();		/* wybor panelu */
-	showQtStylePage();			/* Qt3 theme */
-	showSoundOptionsPage();	/* dzwieki */
-	showWWWOpionsPage();	/* ustawienie przegladarki */
-	showGreetingsPage();		/* okno koncowe */
+	createWelcomePage();		/* powitanie */
+	createLanguagePage();		/* ustawienie jezyka */
+  	createGGNumberSelect();	/* wyswietla okno ustawien numerka */
+	createGGCurrentNumberPage();
+	createGGNewNumberPage();
+	createGeneralOptionsPage(); /* inne */
+	createChatOpionsPage();	/* ustawienia gadki */
+	createColorsPage();			/* kolory */
+	createHintsOptionsPage();	/* dymki */
+	createInfoPanelPage();		/* wybor panelu */
+	createQtStylePage();			/* Qt3 theme */
+	createSoundOptionsPage();	/* dzwieki */
+	createWWWOpionsPage();	/* ustawienie przegladarki */
+	createGreetingsPage();		/* okno koncowe */
 
 	QPushButton *finish_button = finishButton();
 	connect(finish_button, SIGNAL(clicked()), this, SLOT(finishPressed()));
@@ -99,23 +99,14 @@ Wizard::~Wizard()
 	disconnect(gadu, SIGNAL(userListImported(bool, UserList&)), this, SLOT(userListImported(bool, UserList&)));
 	disconnect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registeredAccount(bool, UinType)));
 	//disconnect(gadu, SIGNAL(connected(), this, SLOT(connected())));
-
-	/* czyszczenie pamieci */
-	delete(rb_haveNumber); delete(rb_dontHaveNumber); delete(l_ggNumber); delete(l_ggPassword); delete(l_ggNewPasssword); delete(l_ggNewPassswordRetyped); delete(l_email); delete(l_customBrowser);
-	delete(c_importContacts); delete(c_waitForDelivery); delete(c_enterSendsMessage); delete(c_openOnNewMessage); delete(c_flashTitleOnNewMessage); delete(c_ignoreAnonyms);
-	delete(c_logMessages); delete(c_logStatusChanges); delete(c_privateStatus); delete(c_showBlocked); delete(c_showBlocking); delete(c_startDocked); delete(c_enableSounds); delete(c_playWhilstChatting);
-	delete(c_playWhenInvisible); delete(c_showInfoPanel); delete(cb_browser); delete(cb_browserOptions); delete(cb_hintsTheme); delete(cb_hintsType); delete(cb_colorTheme); delete(cb_iconTheme); 
-	delete(cb_qtTheme); delete(cb_panelTheme); delete(preview); delete(preview2); delete(preview4); delete(iconPreview); delete(iconPreview2); delete(iconPreview3); delete(iconPreview4); delete(infoPreview);
-	delete(welcomePage); delete(ggNumberSelect); delete(ggCurrentNumberPage); delete(ggNewNumberPage); delete(languagePage); delete(chatOptionsPage); delete(wwwOptionsPage); 
-	delete(soundOptionsPage); delete(generalOptionsPage); delete(greetingsPage); delete(hintsOptionsPage); delete(colorsPage); delete(qtStylePage); delete(infoPanelPage); delete(c_showScrolls);
 	startWizardObj=NULL;
 	kdebugf2();
 }
 
 /**
-	Wyswietla powitanie
+	Powitanie
 **/
-void Wizard::showWelcomePage()
+void Wizard::createWelcomePage()
 {
 	kdebugf();
 	welcomePage=new QVBox(this);
@@ -133,7 +124,7 @@ void Wizard::showWelcomePage()
 /**
 	Wybor opcji z numerkiem gg
 **/
-void Wizard::showGGNumberSelect()
+void Wizard::createGGNumberSelect()
 {
 	kdebugf();
 	ggNumberSelect=new QVBox(this);
@@ -157,7 +148,7 @@ void Wizard::showGGNumberSelect()
 /**
 	Wyswietlenie ustawienia istniejacego konta
 **/
-void Wizard::showGGCurrentNumberPage()
+void Wizard::createGGCurrentNumberPage()
 {
 	kdebugf();
 	ggCurrentNumberPage=new QVBox(this);
@@ -187,7 +178,7 @@ void Wizard::showGGCurrentNumberPage()
 /**
 	Zakladanie nowego konta
 **/
-void Wizard::showGGNewNumberPage()
+void Wizard::createGGNewNumberPage()
 {
 	kdebugf();
 	ggNewNumberPage=new QVBox(this);
@@ -216,7 +207,7 @@ void Wizard::showGGNewNumberPage()
 /**
 	Wybor jezyka
 **/
-void Wizard::showLanguagePage()
+void Wizard::createLanguagePage()
 {
 	kdebugf();
 	languagePage = new QVBox(this);
@@ -250,7 +241,7 @@ void Wizard::showLanguagePage()
 /**
 	Opcje chata
 **/
-void Wizard::showChatOpionsPage()
+void Wizard::createChatOpionsPage()
 {
 	kdebugf();
 	chatOptionsPage=new QVBox(this);
@@ -282,7 +273,7 @@ void Wizard::showChatOpionsPage()
 /**
 	opcje przegladarki www
 **/
-void Wizard::showWWWOpionsPage()
+void Wizard::createWWWOpionsPage()
 {
 	kdebugf();
 	wwwOptionsPage=new QVBox(this);
@@ -315,7 +306,7 @@ void Wizard::showWWWOpionsPage()
 /**
 	opcje dzwieku
 **/
-void Wizard::showSoundOptionsPage()
+void Wizard::createSoundOptionsPage()
 {
 	kdebugf();
 	soundOptionsPage = new QVBox(this);
@@ -342,7 +333,7 @@ void Wizard::showSoundOptionsPage()
 /**
 	opcje ogolne
 **/
-void Wizard::showGeneralOptionsPage()
+void Wizard::createGeneralOptionsPage()
 {
 	kdebugf();
 	generalOptionsPage = new QVBox(this);
@@ -381,7 +372,7 @@ void Wizard::showGeneralOptionsPage()
 /**
 	opcje dymkow
 **/
-void Wizard::showHintsOptionsPage()
+void Wizard::createHintsOptionsPage()
 {
 	kdebugf();
 	hintsOptionsPage = new QVBox(this);
@@ -468,7 +459,7 @@ void Wizard::showHintsOptionsPage()
 /**
 	kolorki i ikonki
 **/
-void Wizard::showColorsPage()
+void Wizard::createColorsPage()
 {
 	kdebugf();
 	colorsPage = new QVBox(this);
@@ -521,7 +512,7 @@ void Wizard::showColorsPage()
 /**
 	panel informacyjny
 **/
-void Wizard::showInfoPanelPage()
+void Wizard::createInfoPanelPage()
 {
 	kdebugf();
 	infoPanelPage = new QVBox(this);
@@ -591,7 +582,7 @@ void Wizard::showInfoPanelPage()
 /**
 	wybor stylu qt
 **/
-void Wizard::showQtStylePage()
+void Wizard::createQtStylePage()
 {
 	kdebugf();
 	qtStylePage = new QVBox(this);
@@ -624,7 +615,7 @@ void Wizard::showQtStylePage()
 /**
 	pozegnanie
 **/
-void Wizard::showGreetingsPage()
+void Wizard::createGreetingsPage()
 {
 	kdebugf();
 	greetingsPage = new QVBox(this);
@@ -1179,4 +1170,4 @@ void Wizard::connected()
 }
 
 
-Wizard *startWizardObj;
+Wizard *startWizardObj = NULL;

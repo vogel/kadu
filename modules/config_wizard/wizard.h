@@ -25,24 +25,24 @@ public:
 	int menuPos;
 
 protected:
-	/*  te funkcje wyswietlaja poszczegolne okna wizarda */ 
-	void showWelcomePage();
-	void showGGNumberSelect();
-	void showGGCurrentNumberPage();
-	void showGGNewNumberPage();
-	void showLanguagePage();
-	void showWWWOpionsPage();
-	void showChatOpionsPage();
-	void showSoundOptionsPage();
-	void showGeneralOptionsPage();
-	void showHintsOptionsPage();
-	void showColorsPage();
-	void showInfoPanelPage();
-	void showQtStylePage();
-	void showGreetingsPage();
+	/*  te funkcje tworz± poszczegolne okna wizarda */ 
+	void createWelcomePage();
+	void createGGNumberSelect();
+	void createGGCurrentNumberPage();
+	void createGGNewNumberPage();
+	void createLanguagePage();
+	void createWWWOpionsPage();
+	void createChatOpionsPage();
+	void createSoundOptionsPage();
+	void createGeneralOptionsPage();
+	void createHintsOptionsPage();
+	void createColorsPage();
+	void createInfoPanelPage();
+	void createQtStylePage();
+	void createGreetingsPage();
 	
 	/* a tu sa okna */
-    QVBox *welcomePage, *ggNumberSelect, *ggCurrentNumberPage, *ggNewNumberPage, *languagePage, *chatOptionsPage, *wwwOptionsPage, 
+	QVBox *welcomePage, *ggNumberSelect, *ggCurrentNumberPage, *ggNewNumberPage, *languagePage, *chatOptionsPage, *wwwOptionsPage, 
 		*soundOptionsPage, *generalOptionsPage, *greetingsPage, *hintsOptionsPage, *colorsPage, *qtStylePage, *infoPanelPage;
 	QRadioButton *rb_haveNumber, *rb_dontHaveNumber;
 	QLineEdit *l_ggNumber, *l_ggPassword, *l_ggNewPasssword, *l_ggNewPassswordRetyped, *l_email, *l_customBrowser;
@@ -52,6 +52,7 @@ protected:
 	QComboBox *cb_browser, *cb_browserOptions, *cb_hintsTheme, *cb_hintsType, *cb_colorTheme, *cb_iconTheme, *cb_qtTheme, *cb_panelTheme;
 	QLabel *preview, *preview2, *preview4, *iconPreview, *iconPreview2, *iconPreview3, *iconPreview4, *infoPreview;
 	QString customHint, customPanel;
+
 	/* a tu poszczegolne funkcje zapisujace konfiguracje */
 	void tryImport();
 	void setGaduAccount();
@@ -62,11 +63,13 @@ protected:
 	void setHints();
 	void setColorsAndIcons();
 	void setPanelTheme();
+
 	/* funkcje pomocnicze */
 	QString toDisplay(QString);
 	QString toSave(QString);
 
 protected slots:
+
 	/* a tu implementacja slotow */
 	void setLanguage(int);	/* ustawia jezyk */
 	void registeredAccount(bool, UinType);	/* jak zarejestrowal konto */
@@ -90,6 +93,6 @@ protected slots:
 	void connected();
 };
 
-
 extern Wizard *startWizardObj;
+
 #endif
