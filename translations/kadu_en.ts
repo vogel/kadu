@@ -1270,10 +1270,6 @@ Your password is incorrect !!!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ignored Uins:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1283,6 +1279,22 @@ Your password is incorrect !!!</source>
     </message>
     <message>
         <source>Uin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This dialog box allows you to manage your ignored contacts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type here the UIN of the person you want to ignore.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uin:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2229,11 +2241,11 @@ Now add your friends to the userlist.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This dialog box allows you to edit your informations about selected contact.</source>
+        <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Close</source>
+        <source>This dialog box allows you to view and edit information about the selected contact.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

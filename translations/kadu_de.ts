@@ -1276,10 +1276,6 @@ Dein Passwort ist falsch!!!</translation>
         <translation>Liste der Ignorierten</translation>
     </message>
     <message>
-        <source>Ignored Uins:</source>
-        <translation>Ingnorierte Nr. GG (UINs):</translation>
-    </message>
-    <message>
         <source>Delete</source>
         <translation>Lösche</translation>
     </message>
@@ -1290,6 +1286,22 @@ Dein Passwort ist falsch!!!</translation>
     <message>
         <source>Uin</source>
         <translation>Uin</translation>
+    </message>
+    <message>
+        <source>This dialog box allows you to manage your ignored contacts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type here the UIN of the person you want to ignore.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uin:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2242,11 +2254,11 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
         <translation>Das Feld &quot;Alternativ-Nick&quot; kann nicht leer sein.</translation>
     </message>
     <message>
-        <source>This dialog box allows you to edit your informations about selected contact.</source>
+        <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Close</source>
+        <source>This dialog box allows you to view and edit information about the selected contact.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -1276,10 +1276,6 @@ La password è errata!!!</translation>
         <translation>Lista contatti ignorati </translation>
     </message>
     <message>
-        <source>Ignored Uins:</source>
-        <translation>no GG Ignorato:</translation>
-    </message>
-    <message>
         <source>Delete</source>
         <translation>Elimina</translation>
     </message>
@@ -1290,6 +1286,22 @@ La password è errata!!!</translation>
     <message>
         <source>Uin</source>
         <translation>numero GG</translation>
+    </message>
+    <message>
+        <source>This dialog box allows you to manage your ignored contacts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type here the UIN of the person you want to ignore.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uin:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Chiudi</translation>
     </message>
 </context>
 <context>
@@ -2242,12 +2254,12 @@ Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation
         <translation>Il campo Nick Visualizzato non può essere vuoto.</translation>
     </message>
     <message>
-        <source>This dialog box allows you to edit your informations about selected contact.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Close</source>
         <translation type="unfinished">&amp;Chiudi</translation>
+    </message>
+    <message>
+        <source>This dialog box allows you to view and edit information about the selected contact.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

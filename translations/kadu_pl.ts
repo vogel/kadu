@@ -1277,10 +1277,6 @@ by zmiany odniosły skutek</translation>
         <translation>Lista ignorowanych</translation>
     </message>
     <message>
-        <source>Ignored Uins:</source>
-        <translation>Ignorowane numery GG</translation>
-    </message>
-    <message>
         <source>Delete</source>
         <translation>Usuń</translation>
     </message>
@@ -1291,6 +1287,22 @@ by zmiany odniosły skutek</translation>
     <message>
         <source>Uin</source>
         <translation></translation>
+    </message>
+    <message>
+        <source>This dialog box allows you to manage your ignored contacts.</source>
+        <translation>To okno dialogowe pozwala dodawać lub usówać kontakty, które maja być ignorowane.</translation>
+    </message>
+    <message>
+        <source>Type here the UIN of the person you want to ignore.</source>
+        <translation>Wpisz tutaj Nr GG osoby, która ma być ignorowana.</translation>
+    </message>
+    <message>
+        <source>Uin:</source>
+        <translation>Numer GG: </translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation>&amp;Zamknij</translation>
     </message>
 </context>
 <context>
@@ -2244,12 +2256,12 @@ Teraz już nie masz numeru GG :(</translation>
         <translation>Pole Wyświetl nie może być puste.</translation>
     </message>
     <message>
-        <source>This dialog box allows you to edit your informations about selected contact.</source>
-        <translation>To okno dialogowe pozwala redagować informacje o wybranym kontakcie.</translation>
-    </message>
-    <message>
         <source>&amp;Close</source>
         <translation>&amp;Zamknij</translation>
+    </message>
+    <message>
+        <source>This dialog box allows you to view and edit information about the selected contact.</source>
+        <translation>To okno dialogowe pozwala redagować informacje o wybranym kontakcie.</translation>
     </message>
 </context>
 <context>
