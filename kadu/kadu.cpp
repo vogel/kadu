@@ -1493,13 +1493,20 @@ void Kadu::setStatus(int status) {
 	if (config_file.readBoolEntry("Global","AllowDCC"))
 		prepareDcc();
 
+	if (gg_proxy_host) {
+		free(gg_proxy_host);
+		gg_proxy_host = NULL;
+		}
+	if (gg_proxy_username) {
+		free(gg_proxy_username);
+		free(gg_proxy_password);
+		gg_proxy_username = gg_proxy_password = NULL;
+		}
 	if (config_file.readBoolEntry("Proxy","UseProxy")) {
-		char *gg_proxy_username;
-		char *gg_proxy_password;
-		if (gg_proxy_host)
-			delete gg_proxy_host;
 		gg_proxy_host = strdup(config_proxyaddr.toString().latin1());
+		kdebug("Kadu::setStatus(): gg_proxy_host = %s\n", gg_proxy_host);
 		gg_proxy_port = config_file.readNumEntry("Proxy","ProxyPort");
+		kdebug("Kadu::setStatus(): gg_proxy_port = %d\n", gg_proxy_port);
 		if (pwHash(config_file.readEntry("Proxy","ProxyUser")).length()) {
 			gg_proxy_username = strdup(pwHash(config_file.readEntry("Proxy","ProxyUser")).latin1());
 			gg_proxy_password = strdup(pwHash(config_file.readEntry("Proxy","ProxyPassword")).latin1());
@@ -1563,8 +1570,7 @@ void Kadu::setStatus(int status) {
 		loginparams.server_port = config_file.readNumEntry("Global","DefaultPort");
 	sess = gg_login(&loginparams);
 	free(loginparams.client_version);
-//	if (descr)
-//		free(descr);
+	free(loginparams.password);
 
 	AutoConnectionTimer::off();
 
