@@ -1,6 +1,7 @@
 +++ wersja 0.3.3-rc2
 * sporo poprawek dla FreeBSD
 * gdy mamy status domy¶lny "niedostêpny" to nie ginie nam zapamiêtany opis statusu
+* okno rozmowy: PAGEUP i PAGEDOWN nie przesuwaj± historii rozmowy
 
 +++ wersja 0.3.3-rc1
 * sms.cpp ma szansê kompilowaæ siê na Qt < 3.0.5

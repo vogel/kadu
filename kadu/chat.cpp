@@ -199,10 +199,8 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 	acc = new QAccel(this);
 	acc->connectItem(acc->insertItem(Key_PageUp + SHIFT), this, SLOT(pageUp()));
-	acc->connectItem(acc->insertItem(Key_PageUp), this, SLOT(pageUp()));
 	acc = new QAccel(this);
 	acc->connectItem(acc->insertItem(Key_PageDown + SHIFT), this, SLOT(pageDown()));
-	acc->connectItem(acc->insertItem(Key_PageDown), this, SLOT(pageDown()));
 
 	btnpart->setStretchFactor(fillerbox, 50);
 	btnpart->setStretchFactor(cancelbtn, 1);
