@@ -45,6 +45,7 @@ class UserList : public QValueList<UserListElement>
 	public:
 		UserList();
 		UserListElement& byUin(uin_t uin);
+		UserListElement& byNick(QString nickname);
 		UserListElement& byComment(QString comment);
 		bool containsUin(uin_t uin);
 		void addUser(const QString FirstName,const QString LastName,

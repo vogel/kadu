@@ -28,22 +28,29 @@ UserList::UserList() : QValueList<UserListElement>()
 
 UserListElement& UserList::byUin(uin_t uin)
 {
-	for(int i=0; i<size(); i++)
-		if(operator[](i).uin==uin)
-			return operator[](i);
+	for(iterator i=begin(); i!=end(); i++)
+		if((*i).uin==uin)
+			return (*i);
 	fprintf(stderr, "KK UserList::byUin(): Panic!\n");
 	// Kadu Panic :) What we should do here???
-//	return NULL;
+};
+
+UserListElement& UserList::byNick(QString nickname)
+{
+	for(iterator i=begin(); i!=end(); i++)
+		if((*i).nickname==nickname)
+			return (*i);
+	fprintf(stderr, "KK UserList::byNick(): Panic! %s not exists\n",(const char*)nickname.local8Bit());
+	// Kadu Panic :) What we should do here???
 };
 
 UserListElement& UserList::byComment(QString comment)
 {
-	for(int i=0; i<userlist.size(); i++)
-		if(operator[](i).comment==comment)
-			return operator[](i);
-	fprintf(stderr, "KK UserList::byComment(): Panic!\n");
+	for(iterator i=begin(); i!=end(); i++)
+		if((*i).comment==comment)
+			return (*i);
+	fprintf(stderr, "KK UserList::byComment(): Panic! %s not exists\n",(const char*)comment.local8Bit());
 	// Kadu Panic :) What we should do here???
-//	return;
 };
 
 bool UserList::containsUin(uin_t uin)
@@ -139,7 +146,7 @@ bool UserList::readFromFile()
 	printf("KK UserList::readFromFile(): Opening userlist file: %s\n",path);
 
 	QFile f(path);
-	if(f.open(IO_ReadOnly))
+	if(!f.open(IO_ReadOnly))
 	{
 		fprintf(stderr, "KK UserList::readFromFile(): Error opening userlist file");
 		return FALSE;
@@ -150,7 +157,7 @@ bool UserList::readFromFile()
 	clear();
 
 	QString line;
-	while (f.readLine(line,1000))
+	while (f.readLine(line,1000)>0)
 	{
 		if (line[0] == '#')
 			continue;
