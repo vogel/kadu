@@ -284,7 +284,7 @@ struct config {
 	bool playsoundchat;
 	bool playsoundchatinvisible;
 	int defaultstatus;
-	QString defaultdescription;
+	QStringList defaultdescription;
 	int sysmsgidx;
 	bool allowdcc;
 	QHostAddress dccip;
