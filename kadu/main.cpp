@@ -106,6 +106,9 @@ int main(int argc, char *argv[])
 	}
 #endif
 
+	config_file.addVariable("General", "StartDelay", 0);
+	sleep(config_file.readNumEntry("General", "StartDelay"));
+
 	dataPath("", argv[0]);
 	emoticons=new EmoticonsManager();
 
