@@ -812,31 +812,31 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     <name>ChatSlots</name>
     <message>
         <source>None</source>
-        <translation>Bez emotów</translation>
+        <translation type="unfinished">Bez emotów</translation>
     </message>
     <message>
         <source>Static</source>
-        <translation>Statyczne</translation>
+        <translation type="unfinished">Statyczne</translation>
     </message>
     <message>
         <source>Animated</source>
-        <translation>Animowane</translation>
+        <translation type="unfinished">Animowane</translation>
     </message>
     <message>
         <source>Your background color</source>
-        <translation>Twój kolor tła</translation>
+        <translation type="unfinished">Twój kolor tła</translation>
     </message>
     <message>
         <source>Your font color</source>
-        <translation>Twój kolor czcionki</translation>
+        <translation type="unfinished">Twój kolor czcionki</translation>
     </message>
     <message>
         <source>User background color</source>
-        <translation>Kolor tła kontaktu</translation>
+        <translation type="unfinished">Kolor tła kontaktu</translation>
     </message>
     <message>
         <source>User font color</source>
-        <translation>Kolor czcionki kontaktu</translation>
+        <translation type="unfinished">Kolor czcionki kontaktu</translation>
     </message>
     <message>
         <source>Font in chat window</source>
@@ -894,7 +894,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     <name>ColorButton</name>
     <message>
         <source>Color dialog</source>
-        <translation>Kolory</translation>
+        <translation type="unfinished">Kolory</translation>
     </message>
 </context>
 <context>
@@ -1077,11 +1077,11 @@ Dein Passwort ist falsch!!!</translation>
     </message>
     <message>
         <source>Offline</source>
-        <translation>Niedostępny</translation>
+        <translation type="unfinished">Niedostępny</translation>
     </message>
     <message>
         <source>Offline (d.)</source>
-        <translation>Niedostępny (Beschr.)</translation>
+        <translation type="unfinished">Niedostępny (Beschr.)</translation>
     </message>
     <message>
         <source>Blocking</source>
@@ -1852,10 +1852,6 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
         <source>Select user first</source>
         <translation>Markiere zuerst Benutzer</translation>
     </message>
-    <message>
-        <source> </source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Sms</name>
@@ -2376,12 +2372,12 @@ The export userlist to file was unsuccessful</source>
     <message>
         <source>The application encountered an internal error
 The delete userlist on server was unsuccessful</source>
-        <translation>Usunięcie listy kontaktów z serwera
+        <translation type="unfinished">Usunięcie listy kontaktów z serwera
 zostało zakończone niepowodzeniem.</translation>
     </message>
     <message>
         <source>Your userlist has been successfully exported to server</source>
-        <translation>Lista kontaktów została wyeksportowana na serwer.</translation>
+        <translation type="unfinished">Lista kontaktów została wyeksportowana na serwer.</translation>
     </message>
 </context>
 <context>
