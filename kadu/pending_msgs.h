@@ -3,20 +3,23 @@
 #define PENDING_MSGS_H
 
 #include <qvaluelist.h>
+#include "../libgadu/lib/libgadu.h"
 
 class PendingMsgs
 {
 	public:
+		typedef QValueList<uin_t> UinsList;
 		struct Element
 		{
-			QValueList<uin_t> uins;
+			UinsList uins;
 			QString msg;
 			int msgclass;
 			time_t time;
 		};
 
 	private:
-		QValueList<Element> msgs;
+		typedef QValueList<Element> PendingMsgsList;
+		PendingMsgsList msgs;
 		void saveToFile();
 		
 	public:
