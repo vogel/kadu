@@ -30,15 +30,7 @@
  ! wyja¶niæ zapêtlenia siê przy utracie ³±czno¶ci z serwerem 
  + przycisk TEST w ustawieniach d¼wiêku
  ! inne pady i halty kadu - patrz forum
- 
-
- TODO dla wersji 0.3.4 (ze wzglêdu na konieczno¶æ modyfikacji configure)
--------------------------------------------------------------------------
-
- + mo¿liwo¶æ wy³±czenia kompilacji kadusms
- + dodaæ domy¶lnie strip do makefile'a i opcjê --enable-debug
- + instalacja dokumentacji wraz z Kadu, opcja Pomoc w menu
-
+ + opcja Pomoc w menu
 
  TODO dla wersji 0.4.0
 -----------------------

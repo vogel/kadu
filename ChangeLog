@@ -27,6 +27,11 @@
 * status opisowy: bardziej restrykcyjne (zmienna sess) sprawdzanie czy jeste¶my
   od³±czeni od serwera
 * status opisowy: kasowanie pliku description po jego odczytaniu
+* configure: pare pomocniczych komunikatów
+* configure: mo¿liwo¶æ wy³±czenia kompilacji kadusms (--disable-sms)
+* instalacja dokumentacji wraz z Kadu (i opcja --disable-doc)
+* standardowo symbole dla debugera nie sa wkompilowywane (opcja --enable-debug)
+
 
 +++ wersja 0.3.2
 * dalsze porz±dki w kodzie
