@@ -1,0 +1,48 @@
+/***************************************************************************
+                         userlist.h  -  description
+                             -------------------
+    begin                : 15.07.2002
+    copyright            : (C) 2002 by A.Smarzewski
+    email                : adrians@aska.com.pl
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
+struct UserListElement
+{
+	QString first_name;
+	QString last_name;
+	QString nickname;
+	QString comment;
+	QString mobile;
+	QString group;
+	QString description;
+	uin_t uin;
+	unsigned int status;
+	bool anonymous;
+	int ip;
+	short port;
+};
+
+class UserList : public QValueList<UserListElement>
+{
+	Q_OBJECT
+	public:
+		UserList();
+		UserListElement& byUin();
+		UserListElement& byComment();
+		void addUser(const QString& FirstName,const QString& LastName,
+			const QString& NickName,const QString& AltNick,
+			const QString& Mobile,const QString& Uin,const int Status,
+			const QString& Group,const QString& Description);
+		void removeUser(uin_t uin);
+		int writeToFile(char *filename = NULL);
+		int readFromFile()
+};
