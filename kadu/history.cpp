@@ -938,7 +938,8 @@ QValueList<UinsList> HistoryManager::getUinsLists() const
 	QStringList struins;
 	UinsList uins;
 
-	FOREACH(entry, dir.entryList())
+	QStringList entryList = dir.entryList();
+	FOREACH(entry, entryList)
 	{
 		struins = QStringList::split("_", (*entry).replace(QRegExp(".idx$"), ""));
 		uins.clear();
