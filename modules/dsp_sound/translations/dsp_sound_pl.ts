@@ -2,12 +2,12 @@
 <context>
     <name>@default</name>
     <message>
-        <source>Output device</source>
-        <translation type="unfinished"></translation>
+        <source>Path:</source>
+        <translation>Ścieżka:</translation>
     </message>
     <message>
-        <source>Path:</source>
-        <translation type="unfinished"></translation>
+        <source>Output device</source>
+        <translation>Urządzenie wyjścia</translation>
     </message>
 </context>
 </TS>
