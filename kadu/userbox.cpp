@@ -594,7 +594,7 @@ void UserBox::renameUser(const QString &oldaltnick, const QString &newaltnick)
 	if (it != Users.end())
 		(*it) = newaltnick;
 	else
-		kdebug_mask(KADU_DEBUG_WARNING, "Userbox::renameUser(): userbox doesnt contain: %s\n", (const char *)oldaltnick.local8Bit());
+		kdebugm(KADU_DEBUG_WARNING, "Userbox::renameUser(): userbox doesnt contain: %s\n", (const char *)oldaltnick.local8Bit());
 }
 
 bool UserBox::containsAltNick(const QString &altnick)
@@ -602,7 +602,7 @@ bool UserBox::containsAltNick(const QString &altnick)
 	for (QStringList::iterator it = Users.begin(); it != Users.end(); it++)
 		if ((*it).lower() == altnick.lower())
 			return true;
-	kdebug_mask(KADU_DEBUG_INFO, "UserBox::containsAltNick(): userbox doesnt contain: %s\n", (const char *)altnick.lower().local8Bit());
+	kdebugm(KADU_DEBUG_INFO, "UserBox::containsAltNick(): userbox doesnt contain: %s\n", (const char *)altnick.lower().local8Bit());
 	return false;
 }
 
@@ -659,7 +659,7 @@ UserBox* UserBox::getActiveUserBox()
 			return box;
 		}
 	}
-	kdebug_mask(KADU_DEBUG_PANIC, "return NULL!\n");
+	kdebugm(KADU_DEBUG_PANIC, "return NULL!\n");
 	return NULL;
 }
 
@@ -818,7 +818,7 @@ void UserBoxSlots::chooseColor(const char *name, const QColor &color)
 	else if (QString(name)=="userbox_font_color")
 		preview->setPaletteBackgroundColor(color);
 	else
-		kdebug_mask(KADU_DEBUG_ERROR, "chooseColor: ups!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! '%s'\n", name);
+		kdebugm(KADU_DEBUG_ERROR, "chooseColor: ups!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! '%s'\n", name);
 	kdebugf2();
 }
 

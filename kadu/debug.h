@@ -25,11 +25,11 @@
 #ifdef DEBUG_ENABLED
 #define kdebug(format,args...) \
 	_kdebug_with_mask(KADU_DEBUG_ALL,__FILE__,__LINE__,format,##args)
-#define kdebug_mask(mask,format,args...) \
+#define kdebugm(mask,format,args...) \
 	_kdebug_with_mask(mask,__FILE__,__LINE__,format,##args)
 #else
 #define kdebug(format,args...)
-#define kdebug_mask(mask,format,args...)
+#define kdebugm(mask,format,args...)
 #endif
 
 
@@ -43,10 +43,10 @@
 	dzia³anie programu.
 */	
 #define kdebugf() \
-	kdebug_mask(KADU_DEBUG_FUNCTION_START, "%s\n",__PRETTY_FUNCTION__)
+	kdebugm(KADU_DEBUG_FUNCTION_START, "%s\n",__PRETTY_FUNCTION__)
 
 #define kdebugf2() \
-	kdebug_mask(KADU_DEBUG_FUNCTION_END, "%s end\n",__PRETTY_FUNCTION__)
+	kdebugm(KADU_DEBUG_FUNCTION_END, "%s end\n",__PRETTY_FUNCTION__)
 
 /*
 	Funkcja pomocnicza. Nie u¿ywaæ.

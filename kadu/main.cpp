@@ -40,28 +40,28 @@ Kadu *kadu;
 #endif
 void kadu_signal_handler(int s)
 {
-	kdebug_mask(KADU_DEBUG_INFO, "kadu_signal_handler: %d\n", s);
+	kdebugm(KADU_DEBUG_INFO, "kadu_signal_handler: %d\n", s);
 	if(lockFile){ // moze sie wywalic praktycznie po wylaczeniu i to tez trzeba uwzglednic	
 		flock(lockFileHandle, LOCK_UN);
-		kdebug_mask(KADU_DEBUG_INFO, "lock released\n");
+		kdebugm(KADU_DEBUG_INFO, "lock released\n");
 		lockFile->close();
-		kdebug_mask(KADU_DEBUG_INFO, "lockfile closed\n");
+		kdebugm(KADU_DEBUG_INFO, "lockfile closed\n");
 	}
 	
 	QString f=QString("kadu.conf.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
 	if (s==SIGSEGV)
 	{
-		kdebug_mask(KADU_DEBUG_PANIC, "Kadu crashed :(\n");
+		kdebugm(KADU_DEBUG_PANIC, "Kadu crashed :(\n");
 #ifdef HAVE_EXECINFO
 		void *bt_array[100];
 		char **bt_strings;
 		int num_entries;
 		if ((num_entries = backtrace(bt_array, 100)) < 0) {
-			kdebug_mask(KADU_DEBUG_ERROR, "could not generate backtrace\n");
+			kdebugm(KADU_DEBUG_ERROR, "could not generate backtrace\n");
 			return;
 		}
 		if ((bt_strings = backtrace_symbols(bt_array, num_entries)) == NULL) {
-			kdebug_mask(KADU_DEBUG_ERROR, "could not get symbol names for backtrace\n");
+			kdebugm(KADU_DEBUG_ERROR, "could not get symbol names for backtrace\n");
 			return;
 		}
 		fprintf(stderr, "\n======= BEGIN OF BACKTRACE =====\n");
@@ -71,7 +71,7 @@ void kadu_signal_handler(int s)
 		fprintf(stderr, "======= END OF BACKTRACE  ======\n");
 		free(bt_strings);
 #else
-		kdebug_mask(KADU_DEBUG_WARNING, "backtrace not available\n");		
+		kdebugm(KADU_DEBUG_WARNING, "backtrace not available\n");		
 #endif
 		config_file.saveTo(ggPath(f.latin1()));
 		abort();
