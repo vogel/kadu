@@ -1,14 +1,22 @@
 #ifndef DEBUG_H
 #define DEBUG_H
 
+#include "../config.h"
+
 /*
+	<<< kdebug >>>
 	Wy¶wietla komunikat debuguj±cy na konsoli.
 	Sk³adnia jak w printf.
 */
+#ifdef DEBUG_MODE
 #define kdebug(format,...) \
-	_kdebug(__FILE__,__LINE__,format,##__VA_ARGS__)	
+	_kdebug(__FILE__,__LINE__,format,##__VA_ARGS__)
+#else
+#define kdebug(format,...)
+#endif
 	
 /*
+	<<< kdebugf >>>
 	Wy¶wietla komunikat debuguj±cy zawieraj±cy
 	nazwê aktualnie wykonywanej funkcji.
 	Z za³o¿enia makro to powinno byæ wywo³ane
@@ -22,6 +30,8 @@
 /*
 	Funkcja pomocnicza. Nie u¿ywaæ.
 */
+#ifdef DEBUG_MODE
 void _kdebug(const char* file,const int line,const char* format,...);
+#endif
 
 #endif

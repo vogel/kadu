@@ -1,5 +1,8 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
+/* Define if you want console debug output */
+#undef DEBUG_MODE
+
 /* Define distribution type of this copy of application */
 #undef DIST_TYPE
 

@@ -7338,6 +7338,11 @@ if test -z "$enable_debug"; then
 	enable_debug=no
 fi
 if test "$enable_debug" = "yes"; then
+
+cat >>confdefs.h <<\_ACEOF
+#define DEBUG_MODE 1
+_ACEOF
+
 	CXXFLAGS="$CXXFLAGS -ggdb"
 else
 	ac_configure_args="$ac_configure_args --disable-debug"

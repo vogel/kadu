@@ -1,6 +1,7 @@
 #include "debug.h"
 
-#include <qstring.h>
+#ifdef DEBUG_MODE
+
 #include <qmutex.h>
 #include <stdio.h>
 #include <stdarg.h>
@@ -23,3 +24,5 @@ void _kdebug(const char* file,const int line,const char* format,...)
 	va_end(args);
 	debug_mutex.unlock();
 };
+
+#endif

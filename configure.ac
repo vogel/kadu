@@ -362,6 +362,7 @@ if test -z "$enable_debug"; then
 	enable_debug=no
 fi
 if test "$enable_debug" = "yes"; then
+	AC_DEFINE(DEBUG_MODE,1,[Define if you want console debug output])
 	CXXFLAGS="$CXXFLAGS -ggdb"
 else
 	ac_configure_args="$ac_configure_args --disable-debug"
