@@ -712,16 +712,19 @@ void Kadu::blink() {
 /* dcc initials */
 void Kadu::prepareDcc(void) {
 	struct in_addr in;
-	in.s_addr = getMyIP();
-	config.dccip = inet_ntoa(in);
-	if (!in.s_addr) {
-		fprintf(stderr, "KK Cannot determine IP address!\n");
-		return;
+	
+	if (!strcmp(config.dccip, "0.0.0.0")) {
+		in.s_addr = getMyIP();
+		if (!in.s_addr) {
+			fprintf(stderr, "KK Cannot determine IP address!\n");
+			return;
+			}
+		config.dccip = inet_ntoa(in);
+		fprintf(stderr, "KK My IP address: %s\n", inet_ntoa(in));
 		}
-	fprintf(stderr, "KK My IP address: %s\n", inet_ntoa(in));
 
 	dccsock = gg_dcc_socket_create(config.uin, 0);
-	
+
 	if (!dccsock) {
 		perror("DCC");
 		gg_dcc_free(dccsock);

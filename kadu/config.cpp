@@ -73,6 +73,7 @@ void loadKaduConfig(void) {
 	config.autoaway = konf->readBoolEntry("AutoAway", false);
 	config.autoawaytime = konf->readNumEntry("AutoAwayTime", 300);
 	config.allowdcc = konf->readBoolEntry("AllowDCC",false);
+	config.dccip = strdup(konf->readEntry("DccIP", "0.0.0.0"));
 	config.extip = strdup(konf->readEntry("ExternalIP", "0.0.0.0"));
 	config.extport = konf->readNumEntry("ExternalPort", 0);
 	config.server = strdup(konf->readEntry("Server", "0.0.0.0"));
@@ -152,6 +153,7 @@ void saveKaduConfig(void) {
 	konf->writeEntry("AutoAway",config.autoaway);
 	konf->writeEntry("AutoAwayTime",config.autoawaytime);
 	konf->writeEntry("AllowDCC",config.allowdcc);
+	konf->writeEntry("DccIP", config.dccip);
 	konf->writeEntry("ExternalIP", config.extip);
 	konf->writeEntry("ExternalPort", config.extport);
 	konf->writeEntry("Server", config.server);
