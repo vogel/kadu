@@ -83,6 +83,7 @@
 * w informacji o u¿ytkowniku pokazujemy port nawet gdy nie znamy ip (mast3r)
 * pocz±tki klasy MessageBox - z za³o¿enia lepszej i wygodniej od oryginalnej
   QMessageBox. Mam parê pomys³ów. Bêdê j± rozbudowywa³ w miarê potrzeb (adrian)
+* nowe okno dialogowe: definiowanie zapytania przeszukuj±cego historiê (chilek)
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem
