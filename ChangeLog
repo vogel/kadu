@@ -99,6 +99,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   prawidlowo dziala przy "tylko dla znajomych" i czyta plik autoresponder.conf.
   od dzisiaj Daniel jest oficjalnym opiekunem tego modulu (adrian)
 * drobne poprawki przy Makefile do modulow (adrian)
+* poprawiony segfault, przy starcie kadu, zwiazany z zestawami 
+  dzwiekowymi (mAR/pawel_p)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶
