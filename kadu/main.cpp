@@ -17,7 +17,7 @@
 
 #include "kadu.h"
 #include "voice.h"
-#include "sound_dsp.h"
+#include "voice_dsp.h"
 #include "config_file.h"
 #include "config_dialog.h"
 #include "register.h"

@@ -14,7 +14,7 @@
 
 #include "debug.h"
 #include "voice.h"
-#include "sound_dsp.h"
+#include "voice_dsp.h"
 
 SoundDsp::SoundDsp() {
 	kdebug("SoundDsp::SoundDsp()\n");
