@@ -124,7 +124,23 @@ struct UserListElement
 
 /**
 	Klasa reprezentuj±ca listê kontaktów.
-	indexami s± altnicki.
+	indexami s± altnicki konwertowane tak,
+	aby wszystkie litery by³y ma³e.
+	Dziêki temu nie mog± istnieæ dwa kontakty
+	o tych samych altnickach nawet, je¶li
+	ró¿ni± siê wielko¶ciami liter.
+	Pole Altnick w UserListElement zawiera natomiast
+	oryginalny altnick.
+	
+	UWAGA! U¿ywanie metod klasy QMap nie jest zalecane,
+	trzeba wtedy pamiêtaæ, ¿e jako klucza u¿ywamy altnicków
+	odpowiednio skonwertowanych, ¿e zmiany powinny generowaæ
+	odpowiednie sygna³y, itd. Du¿o lepiej u¿ywaæ specjalnie
+	przygotowanych metod klasy UserList.
+	
+	TODO: Zgodnie z tym co powy¿ej z QMap powinni¶my dziedziczyæ
+	prywatnie albo niech to bêdzie pole wewn±trz klasy. W tej
+	chwili nie chcê ³amaæ api freeze w 0.4.0.
 **/
 class UserList : public QObject, public QMap<QString,UserListElement>
 {
@@ -141,26 +157,111 @@ class UserList : public QObject, public QMap<QString,UserListElement>
 
 		UserListElement& byUin(UinType uin);
 		UserListElement& byNick(const QString& nickname);
+		/**
+			Wyszukuje kontakt po altnicku. Ma³e i
+			du¿e litery nie maj± znaczenia.
+		**/
 		UserListElement& byAltNick(const QString& altnick);
+		/**
+			Wyszukuje kontakt po numerze uin.
+			Jezeli nie znajdzie, zwracany jest
+			UserListElement tylko z uin i altnick == uin
+		**/
 		UserListElement byUinValue(UinType uin);
-
+		/**
+			Sprawdza czy istnieje kontakt o danym numerze uin.
+		**/
 		bool containsUin(UinType uin) const;
+		/**
+			Sprawdza czy istnieje kontakt o danym altnicku.
+			Ma³e i du¿e litery nie maj± znaczenia.
+		**/
 		bool containsAltNick(const QString& altnick) const;
 
 	public slots:
-		void addUser(UserListElement &ule);
+		/**
+			Dodaje do listy kontakt o podanych danych.
+			Generuje nastêpnie sygna³y userDataChanged()
+			i modified().
+		**/
+		void addUser(UserListElement& ule);
+		/**
+			Dodaje do listy "anonimowy" kontakt o podanym
+			numerze uin. Numer ten wykorzystywany jest jako
+			altnick. Wywo³uje metodê addUser(), wiêc
+			generowane s± sygna³y userDataChanged() i modified().
+		**/
 		void addAnonymous(UinType uin);
-		void removeUser(const QString &altnick);
+		/**
+			Usuwa kontakt o podanym altnicku. Ma³e i
+			du¿e litery nie maj± znaczenia.
+			Tu¿ przed usuniêciem kontaktu z listy generuje
+			sygna³ userDataChanged(). Po usuniêciu generowany
+			jest sygna³ modified().
+		**/
+		void removeUser(const QString& altnick);
+		/**
+			Zmienia dane kontaktu o podanym altnicku. Ma³e i
+			du¿e litery w zmiennej old_altnick nie maj± znaczenia.
+			Po wykonaniu zmian wymusza ich uwzglêdnienie przez
+			wszystkie obiekty klasy UserBox wywo³uj±c metodê
+			UserBox::all_renameUser() i UserBox::all_refresh().
+			Na koniec generuje sygna³y userDataChanged() i modified().
+		**/		
 		void changeUserInfo(const QString& old_altnick, const UserListElement& new_data);
+		/**
+			Zapisuje listê kontaktów do pliku o podanej nazwie
+			(wraz ze ¶cie¿k±). Domy¶lnie jest to plik "userlist"
+			w katalogu z ustawieniami.
+			Utrzymywana jest kompatybilno¶æ z programem EKG,
+			z tej przyczyny dodatkowe informacje jak to czy
+			blokujemy u¿ytkownika, czy chcemy byæ powiadamiani
+			o zmianach jego statusu itp. s± zapisywane do
+			oddzielnego pliku "userattribs" w katalogu z
+			ustawieniami.
+			Kontakty "anonimowe" s± pomijane.
+			
+			TODO: To gdzie zapisujemy dodatkowe atrybutami te¿
+			powinno byæ chyba podawane jako argument? Inaczej
+			je¶li chcemy zapisaæ listê gdzie¶ indziej to nadpisz±
+			nam siê atrybuty :/
+		**/
 		bool writeToFile(QString filename = "");
+		/**
+			Wczytuje listê kontaktów z plików "userlist"
+			i "userattribs" z katalogu z ustawieniami.
+			Metoda ta jest przeznaczona do przywracania
+			danych zapisanych za pomoc± writeToFile().
+		**/		
 		bool readFromFile();
 		void merge(UserList &userlist);
 
 	signals:
+		/**
+			Sygna³ generowany po zakoñczeniu zmian w li¶cie
+			kontaktów.
+		**/
 		void modified();
+		/**
+			Sygna³ generowany po dodaniu kontaktu do listy
+			kontaktów.
+			UWAGA! Sygna³ jest w zasadzie martwy (nie jest
+			nigdy generowany). Je¶li chcesz dostaæ odpowiedni±
+			informacjê musisz skorzystaæ z sygna³u userDataChanged().
+			Ten prawdopodobnie zostanie usuniêty.
+		**/
 		void userAdded(const UserListElement& user);
 		void dnsNameReady(UinType);
-
+		/**
+			Sygna³ jest generowany je¶li cokolwiek zmieni³o
+			siê w danych którego¶ z kontaktów na li¶cie
+			(wtedy przekazywane s± argumenty oldData i newData).
+			Zmiana mo¿e nast±piæ przez bezpo¶rednie u¿ycie której¶
+			z metod klasy UserListElement.
+			Sygna³ przekazuje równie¿ informacjê o tym, ¿e nowy
+			kontakt pojawi³ siê na li¶cie (wtedy oldData == NULL)
+			lub ¿e zosta³ z listy usuniêty (wtedy newData = NULL).
+		**/
 		void userDataChanged(const UserListElement* const oldData, const UserListElement* const newData);
 };
 

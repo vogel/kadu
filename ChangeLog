@@ -192,6 +192,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   ³adowaniu / wy³adowywaniu (joi)
 * ³ata Vogela usuwaj±ca segfault przy braku po³±czenia z serwerem (joi)
 * gdy w nicku wystêpuje ',', to w oknie historii wpisy nie ³±cz± siê pod jedn± dat± (joi)
+* poprawki w UserList dotycz±ce ma³ych/du¿ych liter i dokumentowanie (adrian)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

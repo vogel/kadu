@@ -458,15 +458,14 @@ UserListElement& UserList::byNick(const QString& nickname)
 
 UserListElement& UserList::byAltNick(const QString& altnick)
 {
-	if(contains(altnick))
-		return (*this)[altnick];
+	QString altnick_norm = altnick.lower();
+	if(contains(altnick_norm))
+		return (*this)[altnick_norm];
 	kdebugm(KDEBUG_PANIC, "UserList::byAltNick(): Panic! %s not exists\n",
-		(const char*)altnick.lower().local8Bit());
+		(const char*)altnick_norm.local8Bit());
 	return *((UserListElement*)NULL);
 }
 
-//Zwraca elementy userlisty, jezeli nie mamy danego
-//uin na liscie, zwracany jest UserListElement tylko z uin i altnick == uin
 UserListElement UserList::byUinValue(UinType uin)
 {
 	for (iterator i = begin(); i != end(); ++i)
@@ -479,7 +478,7 @@ UserListElement UserList::byUinValue(UinType uin)
 	return ule;
 }
 
-bool UserList::containsUin(UinType  uin) const
+bool UserList::containsUin(UinType uin) const
 {
 	for (const_iterator i = begin(); i != end(); ++i)
 		if ((*i).uin() == uin)
@@ -490,11 +489,11 @@ bool UserList::containsUin(UinType  uin) const
 
 bool UserList::containsAltNick(const QString &altnick) const
 {
-	for (const_iterator i = begin(); i != end(); ++i)
-		if ((*i).altNick().lower() == altnick.lower())
-			return true;
+	QString altnick_norm = altnick.lower();
+	if(contains(altnick_norm))
+		return true;
 	kdebugm(KDEBUG_INFO, "UserList::containsAltNick(): userlist doesn't contain %s\n",
-		(const char *)altnick.lower().local8Bit());
+		(const char *)altnick_norm.local8Bit());
 	return false;
 }
 
@@ -509,7 +508,7 @@ void UserList::addUser(UserListElement& ule)
 	else
 		e.setGroup("");
 
-	insert(e.altNick(), e);
+	insert(e.altNick().lower(), e);
 	//emit userAdded(e);
 
 	emit userDataChanged(NULL, &e);
@@ -535,39 +534,36 @@ void UserList::addAnonymous(UinType uin)
 	kdebugf2();
 }
 
-void UserList::changeUserInfo(const QString& old_altnick, const UserListElement& new_data)
-{
-	kdebugf();
-	// mamy lokaln± kopiê old_altnick, na wypadek je¶li
-	// przekazany old_altnick jest referencj± do elementu,
-	// który zaraz bêdziemy usuwaæ.
-	QString local_old_altnick = old_altnick;
-	UserListElement e = byAltNick(old_altnick);
-	remove(old_altnick);
-
-	UserListElement old_data = e;
-	e = new_data;
-	insert(e.altNick(), e);
-
-	UserBox::all_renameUser(local_old_altnick, e.altNick());
-	UserBox::all_refresh();
-
-	emit userDataChanged(&old_data, &new_data);
-	emit modified();
-	kdebugf2();
-}
-
 void UserList::removeUser(const QString &altnick)
 {
 	kdebugf();
+	QString altnick_norm = altnick.lower();
 	for (Iterator i = begin(); i != end(); ++i)
-		if((*i).altNick() == altnick)
+		if((*i).altNick().lower() == altnick_norm)
 		{
 			emit userDataChanged(&(i.data()), NULL);
 			remove(i);
 			emit modified();
 			break;
 		}
+	kdebugf2();
+}
+
+void UserList::changeUserInfo(const QString& old_altnick, const UserListElement& new_data)
+{
+	kdebugf();
+	UserListElement e = byAltNick(old_altnick);
+	remove(old_altnick.lower());
+
+	UserListElement old_data = e;
+	e = new_data;
+	insert(e.altNick().lower(), e);
+
+	UserBox::all_renameUser(old_altnick, e.altNick());
+	UserBox::all_refresh();
+
+	emit userDataChanged(&old_data, &new_data);
+	emit modified();
 	kdebugf2();
 }
 
@@ -830,7 +826,7 @@ void UserList::merge(UserList &userlist)
 		else
 		{
 			e = *i; // to jest na pewno potrzebne ??
-			insert(e.altNick(), e);
+			insert(e.altNick().lower(), e);
 		}
 	}
 
