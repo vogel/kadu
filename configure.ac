@@ -88,16 +88,16 @@ AC_DEFUN(FIND_HEADER,[
 # $4 - action if not found (default is error message)
 AC_DEFUN(FIND_LIBRARY,[
 	AC_MSG_CHECKING([if lib$1.so library is in system directories])
-	save_CXXFLAGS="$CXXFLAGS"
-	CXXFLAGS="$CXXFLAGS -l$1"
+	save_CFLAGS="$CFLAGS"
+	CFLAGS="$CFLAGS -l$1"
 	AC_TRY_LINK([],
 	[
 		return 0;
 	],[
-		CXXFLAGS="$save_CXXFLAGS"
+		CFLAGS="$save_CFLAGS"
 		AC_MSG_RESULT([yes])
 	],[
-		CXXFLAGS="$save_CXXFLAGS"
+		CFLAGS="$save_CFLAGS"
 		AC_MSG_RESULT([no])
 		FIND_FILE([lib$1.so],[$2],[$3],[$4])
 	])

@@ -3165,8 +3165,8 @@ PNG_LIBS="-lpng"
 
 	echo "$as_me:$LINENO: checking if libpng.so library is in system directories" >&5
 echo $ECHO_N "checking if libpng.so library is in system directories... $ECHO_C" >&6
-	save_CXXFLAGS="$CXXFLAGS"
-	CXXFLAGS="$CXXFLAGS -lpng"
+	save_CFLAGS="$CFLAGS"
+	CFLAGS="$CFLAGS -lpng"
 	cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 #include "confdefs.h"
@@ -3200,7 +3200,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
 
-		CXXFLAGS="$save_CXXFLAGS"
+		CFLAGS="$save_CFLAGS"
 		echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6
 
@@ -3208,7 +3208,7 @@ else
   echo "$as_me: failed program was:" >&5
 cat conftest.$ac_ext >&5
 
-		CXXFLAGS="$save_CXXFLAGS"
+		CFLAGS="$save_CFLAGS"
 		echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6
 
@@ -5464,8 +5464,8 @@ rm -f conftest.$ac_objext conftest.$ac_ext
 
 	echo "$as_me:$LINENO: checking if libintl.so library is in system directories" >&5
 echo $ECHO_N "checking if libintl.so library is in system directories... $ECHO_C" >&6
-	save_CXXFLAGS="$CXXFLAGS"
-	CXXFLAGS="$CXXFLAGS -lintl"
+	save_CFLAGS="$CFLAGS"
+	CFLAGS="$CFLAGS -lintl"
 	cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 #include "confdefs.h"
@@ -5499,7 +5499,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
 
-		CXXFLAGS="$save_CXXFLAGS"
+		CFLAGS="$save_CFLAGS"
 		echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6
 
@@ -5507,7 +5507,7 @@ else
   echo "$as_me: failed program was:" >&5
 cat conftest.$ac_ext >&5
 
-		CXXFLAGS="$save_CXXFLAGS"
+		CFLAGS="$save_CFLAGS"
 		echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6
 
