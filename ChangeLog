@@ -234,6 +234,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   warunkach (http://www.kadu.net/forum/viewtopic.php?t=2486) (joi)
 * poprawa wygl±du okna "Zarz±dcy modu³ów" oraz zapamiêtywanie jego rozmiarów (joi)
 * obs³uga ¶cie¿ek do plików danych przeniesiona do jednej funkcji dataPath() (joi)
+* poprawa powa¿nego segfaulta w modu³ach d¼wiêkowych i w module speech (michal/joi)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
