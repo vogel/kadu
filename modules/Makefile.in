@@ -282,7 +282,7 @@ all:
 install-data-local:
 	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/modules/"
 	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/modules/translations"
-	@for dir in $(module_dir_list); do \
+	@for dir in $(shared_modules); do \
 		echo ">>> Installing $$dir module ..."; \
 		$(INSTALL_DATA) $$dir/$$dir.so "$(DESTDIR)/$(datadir)/kadu/modules/"; \
 		if test -d $$dir/translations; then \
