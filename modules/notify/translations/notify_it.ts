@@ -6,10 +6,6 @@
         <translation>Notifica</translation>
     </message>
     <message>
-        <source>Notify when users become available</source>
-        <translation>Notifica quando i contatti diventano disponibili</translation>
-    </message>
-    <message>
         <source>Notify about all users</source>
         <translation>Notifica tutti i contatti</translation>
     </message>
@@ -59,6 +55,11 @@
     </message>
     <message>
         <source>Ignore changes on connection to server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This option will supersede tooltips with users&apos; status
+ changes upon establishing connection to the server</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

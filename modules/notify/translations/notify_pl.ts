@@ -6,10 +6,6 @@
         <translation>Powiadamianie</translation>
     </message>
     <message>
-        <source>Notify when users become available</source>
-        <translation>Powiadom kiedy kontakt będzie dostępny</translation>
-    </message>
-    <message>
         <source>Notify about all users</source>
         <translation>Powiadom o wszystkich kontaktach</translation>
     </message>
@@ -59,7 +55,13 @@
     </message>
     <message>
         <source>Ignore changes on connection to server</source>
-        <translation>Ignoruj zmiany po połączeniu z serwerem</translation>
+        <translation>Nie pokazuj dymków ze statusem po połączeniu z serwerem</translation>
+    </message>
+    <message>
+        <source>This option will supersede tooltips with users&apos; status
+ changes upon establishing connection to the server</source>
+        <translation>Ta opcja wyłączy ukazywanie się dymków ze statusem kontaktów
+przy pierwszym połaczeniu sie Kadu z serwerem</translation>
     </message>
 </context>
 </TS>
