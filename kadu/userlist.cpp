@@ -242,15 +242,17 @@ bool UserList::readFromFile()
 	if (!fa.open(IO_ReadOnly)) {
 		fprintf(stderr, "KK UserList::readFromFile(): Error opening userattribs file");
 		}
-	QTextStream s(&fa);
-	QString line;
-	while ((line = s.readLine()).length()) {
-		QStringList slist;
-		slist = QStringList::split(';', line);
-		if (slist.count() == 4)
-			ualist.append(slist);
+	else {
+		QTextStream s(&fa);
+		QString line;
+		while ((line = s.readLine()).length()) {
+			QStringList slist;
+			slist = QStringList::split(';', line);
+			if (slist.count() == 4)
+				ualist.append(slist);
+			}
+		fa.close();
 		}
-	fa.close();
 
 	path = preparePath("userlist");
 	fprintf(stderr, "KK UserList::readFromFile(): Opening userlist file: %s\n", path);
