@@ -70,10 +70,16 @@ HintManager::HintManager()
 
 		ConfigDialog::addVGroupBox("Hints", "hints-hbox", QT_TRANSLATE_NOOP("@default","Hints position"));
 			ConfigDialog::addCheckBox("Hints", "Hints position", QT_TRANSLATE_NOOP("@default", "Own hints position"), "UseUserPosition", false);
-			ConfigDialog::addHBox("Hints", "Hints position", "coords");
+			
+			ConfigDialog::addVBox("Hints", "Hints position", "coords");
 				ConfigDialog::addSpinBox("Hints", "coords", "x=", "HintsPositionX", -2048, 2048, 1, 100);
-				ConfigDialog::addLabel("Hints", "coords", "", "stretcher");
 				ConfigDialog::addSpinBox("Hints", "coords", "y=", "HintsPositionY", -2048, 2048, 1, 100);
+				
+		QStringList options4;
+		QStringList values4;
+		options4<<tr("Top left")<<tr("Top right")<<tr("Bottom left")<<tr("Bottom right");
+		values4<<"0"<<"1"<<"2"<<"3";
+		ConfigDialog::addVRadioGroup("Hints", "hints-hbox", QT_TRANSLATE_NOOP("@default", "Corner"), "Corner", options4, values4, "0");
 	
 	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Parameters"));
 		ConfigDialog::addHBox("Hints", "Parameters", "top");
@@ -154,8 +160,8 @@ HintManager::~HintManager()
 	ConfigDialog::removeControl("Hints", "Set for all");
 	ConfigDialog::removeControl("Hints", "top");
 	ConfigDialog::removeControl("Hints", "Parameters");
+	ConfigDialog::removeControl("Hints", "Corner");
 	ConfigDialog::removeControl("Hints", "y=");
-	ConfigDialog::removeControl("Hints", "", "stretcher");
 	ConfigDialog::removeControl("Hints", "x=");
 	ConfigDialog::removeControl("Hints", "coords");
 	ConfigDialog::removeControl("Hints", "Own hints position");
@@ -190,6 +196,28 @@ void HintManager::setHint(void)
 	if (config_file.readBoolEntry("Hints", "UseUserPosition") || trayPosition.isNull())
 	{
 		newPosition=QPoint(config_file.readNumEntry("Hints","HintsPositionX"),config_file.readNumEntry("Hints","HintsPositionY"));
+		
+//		kdebugm(KDEBUG_INFO, "%d %d %d\n", config_file.readNumEntry("Hints", "Corner"), preferredSize.width(), preferredSize.height());
+		switch(config_file.readNumEntry("Hints", "Corner"))
+		{
+			case 1: // "TopRight"
+				newPosition-=QPoint(preferredSize.width(), 0);
+				break;
+			case 2: // "BottomLeft"
+				newPosition-=QPoint(0, preferredSize.height());
+				break;
+			case 3: // "BottomRight"
+				newPosition-=QPoint(preferredSize.width(), preferredSize.height());
+				break;
+			case 0: // "TopLeft"
+				break;
+		};
+
+		if (newPosition.x()<0) //gdy hinty wyje¿d¿aj± poza ekran w lewo
+			newPosition.setX(0);
+		if (newPosition.y()<0) //gdy hinty wyje¿d¿aj± poza ekran u góry
+			newPosition.setY(0);
+
 		if (newPosition.x()+preferredSize.width()>=desktopSize.width()) //gdy hinty wyje¿d¿aj± poza ekran w prawo
 			newPosition.setX(desktopSize.width()-preferredSize.width());
 		if (newPosition.y()+preferredSize.height()>=desktopSize.height()) //gdy hinty wyje¿d¿aj± poza ekran u do³u
@@ -356,7 +384,7 @@ void HintManager::setGridOrigin()
 				else
 					grid->setOrigin(QGridLayout::BottomLeft);
 			}
-			else			
+			else
 			{
 				if (trayPosition.y() < QApplication::desktop()->size().height()/2)
 					grid->setOrigin(QGridLayout::TopLeft);

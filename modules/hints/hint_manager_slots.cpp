@@ -71,13 +71,11 @@ void HintManagerSlots::onCreateConfigDialog()
 	kdebugf();
 	ConfigDialog::getLabel("Hints", "<b>Text</b> preview")->setAlignment(Qt::AlignCenter);;
 
-	ConfigDialog::getSpinBox("Hints", "Number of quoted characters")->setEnabled(config_file.readBoolEntry("Hints", "ShowContentMessage"));
-	ConfigDialog::getLineEdit("Hints", "Hint syntax")->setEnabled(config_file.readBoolEntry("Hints", "NotifyHintUseSyntax"));
+	toggled_ShowMessageContent(config_file.readBoolEntry("Hints", "ShowContentMessage"));
+	toggled_UseNotifySyntax(config_file.readBoolEntry("Hints", "NotifyHintUseSyntax"));
 
-	ConfigDialog::getSpinBox("Hints", "x=")->setEnabled(config_file.readBoolEntry("Hints", "UseUserPosition"));
-	ConfigDialog::getSpinBox("Hints", "y=")->setEnabled(config_file.readBoolEntry("Hints", "UseUserPosition"));
-
-	ConfigDialog::getVButtonGroup("Hints", "Hint type")->setEnabled(!config_file.readBoolEntry("Hints", "SetAll"));
+	toggled_UseOwnPosition(config_file.readBoolEntry("Hints", "UseUserPosition"));
+	toggled_SetAll(config_file.readBoolEntry("Hints", "SetAll"));
 	
 	config_hint_properties.clear();
 
@@ -229,6 +227,7 @@ void HintManagerSlots::toggled_UseOwnPosition(bool val)
 	kdebugf();
 	ConfigDialog::getSpinBox("Hints", "x=")->setEnabled(val);
 	ConfigDialog::getSpinBox("Hints", "y=")->setEnabled(val);
+	ConfigDialog::getVButtonGroup("Hints", "Corner")->setEnabled(val);
 	kdebugf2();
 }
 

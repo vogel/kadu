@@ -100,13 +100,14 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * mo¿liwo¶æ wy³±czenia dymka w trayu (tego z w³asnym statusem i opisem co który klawisz myszki robi) (joi)
 * usuniêty segfault w module encryption przy odbiorze klucza (joi)
 * drobna przebudowa powiadamiania z usuniêciem kilku b³êdów
-  opcja ignorowania zmian statusów zaraz po po³aczeniu z serwerem
+  opcja ignorowania zmian statusów zaraz po po³±czeniu z serwerem
   uproszczenie modu³ów d¼wiêkowych (joi)
 * usuwanie kolejnych zbêdnych tagów z wiadomo¶ci (<wsp></wsp>) (joi)
 * mo¿liwo¶æ wy³±czenia dymka nad list± kontaktów (joi)
 * rozwi±zanie problemów z krzakami zamiast polskich znaków
   w smsach wys³anych przez bramkê idei (joi)
 * konfigurowalna ilo¶æ ostatnich opisów (joi)
+* mo¿liowo¶æ wybrania rogu, od którego bêdzie liczona pozycja dymków (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
