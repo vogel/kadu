@@ -31,6 +31,7 @@ class ConfigFile {
 		void saveTo(const QString &);
 		
 		QMap<QString, QString>& getGroupSection(const QString& name);
+		QStringList getGroupList() const;
 
 		void writeEntry(const QString &group,const QString &name, const QString &value);
 		void writeEntry(const QString &group,const QString &name, const char *value);

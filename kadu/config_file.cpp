@@ -92,6 +92,11 @@ void ConfigFile::write(const QString &f)
 	kdebugf2();
 }
 
+QStringList ConfigFile::getGroupList() const
+{
+	return QStringList(groups.keys());
+}
+
 void ConfigFile::sync()
 {
 	write();
