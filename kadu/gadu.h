@@ -12,6 +12,7 @@
 
 class UinsList;
 class UserList;
+class UserListElement;
 
 class QSocketNotifier;
 class QTextStream;
@@ -179,6 +180,7 @@ class GaduSocketNotifiers : public QObject //SocketNotifiers
 		void pubdirReplyReceived(gg_pubdir50_t);
 		void systemMessageReceived(QString &);
 		void userlistReplyReceived(char, char *);
+		void userStatusChanged(struct gg_event *);
 };
 
 class GaduProtocol : public QObject
@@ -188,7 +190,7 @@ class GaduProtocol : public QObject
 	private:
 		GaduSocketNotifiers *SocketNotifiers;
 		QTimer* PingTimer;
-		
+
 		bool userListClear;
 		QString importReply;
 		int RequestedStatusForLogin;
@@ -212,8 +214,9 @@ class GaduProtocol : public QObject
 		void pingNetwork();
 		void newResults(gg_pubdir50_t res);
 		void userListReplyReceived(char, char *);
+		void userStatusChanged(struct gg_event *);
 
-	public:	
+	public:
 		static void initModule();
 		GaduProtocol(QObject *parent=NULL, const char *name=NULL);
 		virtual ~GaduProtocol();
@@ -321,6 +324,7 @@ class GaduProtocol : public QObject
 		void connecting();
 		void disconnected();
 		void error(GaduError);
+		void userStatusChanged(UserListElement &, int oldstatus);
 		void systemMessageReceived(QString &);
 
 		void dccSetupFailed();

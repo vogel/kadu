@@ -47,7 +47,7 @@ class ToolBar : public QToolBar
 		static ToolBar* instance;
 		ToolBar(QMainWindow* parent);
 		~ToolBar();
-		static void registerButton(const QIconSet& iconfile, const QString& caption, 
+		static void registerButton(const QIconSet& iconfile, const QString& caption,
 			QObject* receiver, const char* slot, const int position=-1, const char* name="");
 		static void unregisterButton(const char* name);
 		static void registerSeparator(int position=-1);
@@ -78,12 +78,14 @@ class Kadu : public QMainWindow
 		void createMenu();
 		void createToolBar();
 		void createStatusPopupMenu();
+		void ifNotify(UinType uin, unsigned int status, unsigned int oldstatus);
 		void setActiveGroup(const QString& group);
 
 	private slots:
 		void groupTabSelected(int id);
 		void userListModified();
 		void userListStatusModified(UserListElement *);
+		void userStatusChanged(UserListElement &, int oldstatus);
 		void openChat();
 		void userListUserAdded(const UserListElement& user);
 
@@ -93,7 +95,7 @@ class Kadu : public QMainWindow
 		void keyPressEvent(QKeyEvent *e);
 		virtual void resizeEvent(QResizeEvent *);
 //		virtual void moveEvent(QMoveEvent *);
-	 
+
 	public:
 		Kadu(QWidget* parent=0, const char *name=0);
 		~Kadu();
@@ -129,7 +131,7 @@ class Kadu : public QMainWindow
 		void disconnected();
 		void error(GaduError);
 		void systemMessageReceived(QString &);
-	
+
 	public slots:
 		/**
 			Modu³ dokowania powinien to ustawic, aby kadu
@@ -205,7 +207,7 @@ class Kadu : public QMainWindow
 		/**
 			Podczas ³±czenia (mruganie ikonki) czas na zmianê
 			ikony na t± reprezentuj±c± status offline.
-		**/		
+		**/
 		void connectingBlinkShowOffline();
 		/**
 			Zmieni³ siê nasz aktualny status GG.

@@ -18,7 +18,7 @@ class AutoConnectionTimer : private QTimer {
 
 	public slots:
 		void doConnect();
-	
+
 	private:
 		AutoConnectionTimer(QObject *parent = 0, const char *name=0);
 
@@ -46,9 +46,8 @@ class ConnectionTimeoutTimer : public QTimer {
 class EventManager : public QObject
 {
 	Q_OBJECT
-	
+
 	private slots:
-		void userStatusChangedSlot(struct gg_event*);
 		void userlistReceivedSlot(struct gg_event *);
 		void messageReceivedSlot(int, UinsList,QCString& msg,time_t,
 			QByteArray& formats);
@@ -81,7 +80,7 @@ class EventManager : public QObject
 		/**
 			Otrzymano polecenie roz³±czenia
 		**/
-		void disconnected();		
+		void disconnected();
 		/**
 			Który¶ z kontaktów zmieni³ swój status
 		**/
@@ -137,7 +136,7 @@ class EventManager : public QObject
 		void imageReceived(UinType sender,uint32_t size,uint32_t crc32,const QString& filename,const char* data);
 		/**
 			Otrzymano dane obrazka i zapisano go do pliku.
-		**/		
+		**/
 		void imageReceivedAndSaved(UinType sender,uint32_t size,uint32_t crc32,const QString& path);
 		/**
 			Otrzymano potwierdzenie wiadomo¶ci
@@ -150,12 +149,12 @@ class EventManager : public QObject
 		/**
 			Otrzymano z serwera rezultat operacji wyszukiwania
 			w katalogu publicznym
-		**/		
+		**/
 		void pubdirReplyReceived(gg_pubdir50_t res);
 		/**
 			Otrzymano z serwera rezultat operacji na li¶cie
 			u¿ytkowników
-		**/		
+		**/
 		void userlistReplyReceived(char type, char *reply);
 };
 
@@ -167,7 +166,7 @@ class EventConfigSlots : public QObject
 	public:
 		EventConfigSlots(QObject *parent=NULL, const char *name=NULL);
 	    static void initModule();
-	    
+
 	public slots:
 	    void onCreateConfigDialog();
 	    void onDestroyConfigDialog();

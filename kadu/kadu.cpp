@@ -98,7 +98,7 @@ ToolBar::ToolBar(QMainWindow* parent) : QToolBar(parent, "main toolbar")
 	setVerticallyStretchable(true);
 	setHorizontallyStretchable(true);
 
-	createControls();	
+	createControls();
 	instance=this;
 	kdebugf2();
 }
@@ -138,11 +138,11 @@ void ToolBar::registerSeparator(int position)
 		RegisteredToolButtons.insert(RegisteredToolButtons.at(position), RToolButton);
 
 	if(instance!=NULL)
-		instance->createControls();	
+		instance->createControls();
 	kdebugf2();
 }
 
-void ToolBar::registerButton(const QIconSet& iconfile, const QString& caption, 
+void ToolBar::registerButton(const QIconSet& iconfile, const QString& caption,
 			QObject* receiver, const char* slot, int position, const char* name)
 {
 	kdebugf();
@@ -182,7 +182,7 @@ void ToolBar::unregisterButton(const char* name)
 		}
 
 	if(instance!=NULL)
-		instance->createControls();		
+		instance->createControls();
 	kdebugf2();
 }
 
@@ -373,7 +373,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		setCaption(tr("Kadu: %1").arg(myUin));
 
 	pending.loadFromFile();
-	
+
 	QVBox *vbox=new QVBox(this);
 	setCentralWidget(vbox);
 
@@ -480,7 +480,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	statusbutton = new QPushButton(QIconSet(icons_manager.loadIcon("Offline")), tr("Offline"), vbox, "statusbutton");
 	statusbutton->setPopup(statusppm);
-	
+
 	if (!config_file.readBoolEntry("Look", "ShowStatusButton"))
 		statusbutton->hide();
 
@@ -510,6 +510,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(gadu, SIGNAL(disconnected()), this, SLOT(disconnected()));
 	connect(gadu, SIGNAL(error(GaduError)), this, SLOT(error(GaduError)));
 	connect(gadu, SIGNAL(statusChanged(int)), this, SLOT(setCurrentStatus(int)));
+	connect(gadu, SIGNAL(userStatusChanged(UserListElement &)), this, SLOT(userStatusChagned(UserListElement &)));
 
 	dccsock = NULL;
 	kdebugf2();
@@ -539,7 +540,7 @@ void Kadu::popupMenu()
 	UserListElement user = users.first();
 
 	bool isOurUin=users.containsUin(config_file.readNumEntry("General", "UIN"));
-	
+
 	int sendfile = UserBox::userboxmenu->getItem(tr("Send file"));
 
 	if (dccSocketClass::count >= 8 && users.count() != 1) {
@@ -1013,6 +1014,62 @@ void Kadu::userListStatusModified(UserListElement *user)
 	kdebugf2();
 }
 
+void Kadu::ifNotify(UinType uin, unsigned int status, unsigned int oldstatus)
+{
+	if (!config_file.readBoolEntry("Notify","NotifyStatusChange"))
+		return;
+
+	if (userlist.containsUin(uin))
+	{
+		UserListElement ule = userlist.byUin(uin);
+		if (!ule.notify && !config_file.readBoolEntry("Notify","NotifyAboutAll"))
+			return;
+	}
+	else
+		if (!config_file.readBoolEntry("Notify","NotifyAboutAll"))
+			return;
+
+	if (config_file.readBoolEntry("Hints","NotifyHint"))
+		hintmanager->addHintStatus(userlist.byUinValue(uin), status, oldstatus);
+
+	if (config_file.readBoolEntry("Notify","NotifyStatusChange") && (status == GG_STATUS_AVAIL ||
+		status == GG_STATUS_AVAIL_DESCR || status == GG_STATUS_BUSY || status == GG_STATUS_BUSY_DESCR
+		|| status == GG_STATUS_BLOCKED) &&
+		(oldstatus == GG_STATUS_NOT_AVAIL || oldstatus == GG_STATUS_NOT_AVAIL_DESCR || oldstatus == GG_STATUS_INVISIBLE ||
+		oldstatus == GG_STATUS_INVISIBLE_DESCR || oldstatus == GG_STATUS_INVISIBLE2))
+	{
+		kdebugm(KDEBUG_INFO, "Notify about user\n");
+
+		if (config_file.readBoolEntry("Notify","NotifyWithDialogBox"))
+		{
+			// FIXME convert into a regular QMessageBox
+			QString msg;
+			msg = QString(QT_TR_NOOP("User %1 is available")).arg(userlist.byUin(uin).altnick);
+			QMessageBox *msgbox;
+			msgbox = new QMessageBox(qApp->translate("@default",QT_TR_NOOP("User notify")), qApp->translate("@default",msg), QMessageBox::NoIcon,
+				QMessageBox::Ok, QMessageBox::NoButton, QMessageBox::NoButton,
+				0, 0, FALSE, Qt::WStyle_DialogBorder || Qt::WDestructiveClose);
+			msgbox->show();
+		}
+
+	}
+
+}
+
+void Kadu::userStatusChanged(UserListElement &user, int oldstatus)
+{
+	kdebugf();
+
+	history.appendStatus(user.uin, user.status, user.description.length() ? user.description : QString::null);
+
+	chat_manager->refreshTitlesForUin(user.uin);
+
+	ifNotify(user.uin, user.status, oldstatus);
+	UserBox::all_refresh();
+
+	kdebugf2();
+}
+
 void Kadu::removeUser(QStringList &users, bool permanently = false)
 {
 	kdebugf();
@@ -1132,7 +1189,7 @@ void Kadu::sendMessage(QListBoxItem *item)
 void Kadu::slotHandleState(int command) {
 	kdebugf();
 	ChooseDescription *cd;
-	
+
 	switch (command) {
 		case 0:
 			Autohammer = true;
@@ -1298,7 +1355,7 @@ void Kadu::error(GaduError err)
 		case ConnectionInvalidData:
 			msg = QString(tr("Unable to connect, server has returned unknown data"));
 			break;
-			
+
 		case ConnectionCannotRead:
 			msg = QString(tr("Unable to connect, connection break during reading"));
 			break;
@@ -1334,7 +1391,7 @@ void Kadu::error(GaduError err)
 
 		default:
 			break;
-	
+
 	}
 
 	if (msg != QString::null)
@@ -1513,20 +1570,20 @@ bool Kadu::close(bool quit) {
 			}
 			saveGeometry(this, "General", "Geometry");
 		}
-	
+
 		config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));
 		config_file.writeEntry( "Look", "CurrentGroupTab", GroupBar->currentTab() );
 
 		QString dockwindows=config_file.readEntry("General", "DockWindows");
 		QTextStream stream(&dockwindows, IO_WriteOnly);
 		stream << *kadu;
-		dockwindows.replace(QRegExp("\\n"), "\\n");	
+		dockwindows.replace(QRegExp("\\n"), "\\n");
 		config_file.writeEntry("General", "DockWindows", dockwindows);
-		
+
 		delete ToolBar::instance;
-		
+
 		config_file.sync();
-		
+
 		pending.writeToFile();
 		writeIgnored();
 		if (config_file.readBoolEntry("General", "DisconnectWithDescription") && getCurrentStatus() != GG_STATUS_NOT_AVAIL) {
@@ -1745,7 +1802,7 @@ void KaduSlots::onCreateConfigDialog()
 	int i;
 	for (i = 0;i < 7; i++)
 		cb_defstatus->insertItem(qApp->translate("@default", statustext[i]));
-	i=0;	
+	i=0;
 	while (i<7 && statusnr !=gg_statuses[i])
 		i++;
 	cb_defstatus->setCurrentItem(i);
@@ -1778,7 +1835,7 @@ void KaduSlots::onDestroyConfigDialog()
 	int status = getCurrentStatus();
 
 	bool privateStatus=config_file.readBoolEntry("General", "PrivateStatus");
-	
+
 	if (status != GG_STATUS_NOT_AVAIL)
 	if ((!(status & GG_STATUS_FRIENDS_MASK)&& privateStatus)
 		|| ((status & GG_STATUS_FRIENDS_MASK) && !privateStatus))

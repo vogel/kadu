@@ -183,7 +183,7 @@ void SocketNotifiers::createSocketNotifiers()
 void SocketNotifiers::deleteSocketNotifiers()
 {
 	kdebugf();
-	
+
 	if (Snr)
 	{
 		Snr->setEnabled(false);
@@ -357,6 +357,7 @@ GaduSocketNotifiers::GaduSocketNotifiers()
 	connect(&event_manager, SIGNAL(systemMessageReceived(QString &, QDateTime &, int, void *)), this,
 		SLOT(proteza_systemMessageReceived(QString &, QDateTime &, int, void *)));
 	connect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)), this, SIGNAL(userlistReplyReceived(char, char *)));
+	connect(&event_manager, SIGNAL(userStatusChanged(struct gg_event* )), this, SIGNAL(userStatusChanged(struct gg_event *)));
 	kdebugf2();
 }
 
@@ -406,7 +407,7 @@ void GaduProtocol::initModule()
 {
 	kdebugf();
 	gadu = new GaduProtocol(kadu, "gadu");
-	
+
 	QHostAddress ip;
 	for (int i = 0; i < 7; i++)
 	{
@@ -425,7 +426,7 @@ void GaduProtocol::initModule()
 GaduProtocol::GaduProtocol(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
-	
+
 	SocketNotifiers = new GaduSocketNotifiers();
 	PingTimer = NULL;
 	ActiveServer = NULL;
@@ -437,6 +438,8 @@ GaduProtocol::GaduProtocol(QObject *parent, const char *name) : QObject(parent, 
 	connect(SocketNotifiers, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)), this, SLOT(newResults(gg_pubdir50_t)));
 	connect(SocketNotifiers, SIGNAL(systemMessageReceived(QString &)), this, SIGNAL(systemMessageReceived(QString &)));
 	connect(SocketNotifiers, SIGNAL(userlistReplyReceived(char, char *)), this, SLOT(userListReplyReceived(char, char *)));
+	connect(SocketNotifiers, SIGNAL(userStatusChanged(struct gg_event *)), this, SLOT(userStatusChanged(struct gg_event *)));
+
 	kdebugf2();
 }
 
@@ -476,7 +479,7 @@ void GaduProtocol::disconnectedSlot()
 {
 	kdebugf();
 	ConnectionTimeoutTimer::off();
-	
+
 	if (PingTimer)
 	{
 		PingTimer->stop();
@@ -490,26 +493,26 @@ void GaduProtocol::disconnectedSlot()
 		delete kadusnw;
 		kadusnw = NULL;
 	}
-	
+
 	if (kadusnr)
 	{
 		kadusnr->setEnabled(false);
 		delete kadusnr;
 		kadusnr = NULL;
 	}
-	
+
 	if (dccsnr)
 	{
 		delete dccsnr;
 		dccsnr = NULL;
 	}
-	
+
 	if (dccsnw)
 	{
 		delete dccsnw;
 		dccsnw = NULL;
 	}
-	
+
 	if (dccsock)
 	{
 		gg_dcc_free(dccsock);
@@ -517,7 +520,7 @@ void GaduProtocol::disconnectedSlot()
 		gg_dcc_ip = 0;
 		gg_dcc_port = 0;
 	}
-	
+
 
 	if (sess)
 	{
@@ -525,7 +528,7 @@ void GaduProtocol::disconnectedSlot()
 		gg_free_session(sess);
 		sess = NULL;
 	}
-	
+
 	userlist_sent = false;
 
 	for (unsigned int i=0; i < userlist.count(); i++)
@@ -588,7 +591,7 @@ void GaduProtocol::setStatus(int status)
 
 	status &= ~GG_STATUS_FRIENDS_MASK;
 	IWannaBeInvisible = (status == GG_STATUS_INVISIBLE) || (status == GG_STATUS_INVISIBLE_DESCR);
-	
+
 	//emit changingStatus();
 
 	if (socket_active)
@@ -684,7 +687,7 @@ void GaduProtocol::login(int status)
 		loginparams.external_addr = 0;
 		loginparams.external_port = 0;
 	}
-	
+
 	if (config_servers.count() && !config_file.readBoolEntry("Network", "isDefServers") && config_servers[server_nr].ip4Addr())
 	{
 		ActiveServer = &config_servers[server_nr];
@@ -713,7 +716,7 @@ void GaduProtocol::login(int status)
 		loginparams.server_addr = 0;
 		loginparams.server_port = 0;
 	}
-	
+
 //	polaczenia TLS z serwerami GG na razie nie dzialaja
 //	loginparams.tls = config_file.readBoolEntry("Network", "UseTLS");
 	loginparams.tls = 0;
@@ -1160,7 +1163,7 @@ bool GaduProtocol::doChangePassword(UinType uin, QString& mail, QString& passwor
 {
 	kdebugf();
 
-	struct gg_http *h = gg_change_passwd4(uin, unicode2cp(mail).data(), unicode2cp(password).data(), 
+	struct gg_http *h = gg_change_passwd4(uin, unicode2cp(mail).data(), unicode2cp(password).data(),
 			unicode2cp(new_password).data(), unicode2cp(token_id).data(), unicode2cp(token_val).data(), 1);
 	if (h)
 	{
@@ -1370,6 +1373,82 @@ void GaduProtocol::userListReplyReceived(char type, char *reply)
 
 		emit userListImported(true, importedUserList);
 	}
+	kdebugf2();
+}
+
+void GaduProtocol::userStatusChanged(struct gg_event *e)
+{
+	kdebugf();
+
+	unsigned int oldStatus, status;
+	uint32_t uin;
+	uint32_t remote_ip;
+	uint16_t remote_port;
+	uint8_t version;
+	uint8_t image_size;
+	char *descr;
+
+	if (e->type == GG_EVENT_STATUS60)
+	{
+		uin = e->event.status60.uin;
+		status = e->event.status60.status;
+		descr = e->event.status60.descr;
+		remote_ip = e->event.status60.remote_ip;
+		remote_port = e->event.status60.remote_port;
+		version = e->event.status60.version;
+		image_size = e->event.status60.image_size;
+	}
+	else
+	{
+		uin = e->event.status.uin;
+		status = e->event.status.status;
+		descr = e->event.status.descr;
+		remote_ip = 0;
+		remote_port = 0;
+		version = 0;
+		image_size = 0;
+	}
+
+	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventStatusChange(): User %d went %d\n", uin, status);
+	UserListElement &user = userlist.byUin(uin);
+
+	if (!userlist.containsUin(uin))
+	{
+		// ignore!
+		kdebugm(KDEBUG_INFO, "eventStatusChange(): buddy %d not in list. Damned server!\n", uin);
+		gg_remove_notify(sess, uin);
+		return;
+	}
+
+	oldStatus = user.status;
+
+	if (user.description)
+		user.description.truncate(0);
+
+//	if (ifStatusWithDescription(e->event.status.status)) {
+	if (descr)
+		user.description.append(cp2unicode((unsigned char *)descr));
+	userlist.changeUserStatus(uin, status);
+
+	if (user.status == GG_STATUS_NOT_AVAIL || user.status == GG_STATUS_NOT_AVAIL_DESCR)
+	{
+		user.ip.setAddress((unsigned int)0);
+		userlist.addDnsLookup(user.uin, user.ip);
+		user.port = 0;
+		user.version = 0;
+		user.image_size = 0;
+	}
+	else
+	{
+		user.ip.setAddress(ntohl(remote_ip));
+		userlist.addDnsLookup(user.uin, user.ip);
+		user.port = remote_port;
+		user.version = version;
+		user.image_size = image_size;
+	}
+
+	emit userStatusChanged(user, oldStatus);
+
 	kdebugf2();
 }
 
