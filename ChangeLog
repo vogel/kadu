@@ -3,6 +3,7 @@
 * w oknie konfiguracji pola puste zamieniane s± na faktyczne
   domy¶lne ustawienia (mast3r)
 * optymalizacja kodu w/w (mast3r)
+* dodany pasek narzêdziowy (chilek)
 
 +++ wersja 0.3.4-pre2
 * graficzny instalator - instaluj.tcl (googie)

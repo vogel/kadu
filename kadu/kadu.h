@@ -99,7 +99,9 @@ class Kadu : public QMainWindow
 		void hidedesc(void);
 		void statusMenuAboutToHide(void);
 		void mouseButtonClicked(int, QListBoxItem *);
-
+		void viewHistory();
+		void lookupInDirectory();
+		void showUserInfo();
 	private:
 		QFrame *centralFrame;
 		QGridLayout *grid;

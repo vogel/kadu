@@ -55,6 +55,9 @@
 #include <qsplitter.h>
 #include <qdatetime.h>
 #include <qframe.h>
+#include <qaction.h>
+#include <qtoolbar.h>
+
 #include <arpa/inet.h>
 #include <libintl.h>
 #include <stdio.h>
@@ -478,6 +481,22 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	splitsizes.append(config.splitsize.height());
 	split->setSizes(splitsizes);
 
+	QAction *historyaction = new QAction(i18n("View history"), loadIcon("history.png"), QString::null,
+		CTRL+Key_H, this, "save");
+	QAction *userinfoaction = new QAction(i18n("View/edit user info"), loadIcon("identity.png"),
+		QString::null, CTRL+Key_I, this, "userinfo");
+	QAction *searchaction = new QAction(i18n("Lookup in directory"), loadIcon("viewmag.png"),
+		QString::null, CTRL+Key_L, this, "lookup");
+	connect(historyaction, SIGNAL(activated()), this, SLOT(viewHistory()));
+	connect(userinfoaction, SIGNAL(activated()), this, SLOT(showUserInfo()));
+	connect(searchaction, SIGNAL(activated()), this, SLOT(lookupInDirectory()));
+
+	QToolBar *toolbar = new QToolBar(this, "main toolbar");
+	toolbar->setMovingEnabled(false);
+	historyaction->addTo(toolbar);
+	userinfoaction->addTo(toolbar);
+	searchaction->addTo(toolbar);
+
 	grid = new QGridLayout(centralFrame, 2, 6);
 //	grid->addMultiCellWidget(group_bar, 0, 0, 0, 2);
 	grid->addMultiCellWidget(split, 0, 0, 0, 5);
@@ -516,6 +535,18 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 				this, SLOT(gotUpdatesInfo(const QByteArray &, QNetworkOperation *)));
 		uc->run();
 		}
+}
+
+void Kadu::viewHistory() {
+	commandParser(KADU_CMD_SHOW_HISTORY);
+}
+
+void Kadu::lookupInDirectory() {
+	commandParser(KADU_CMD_SEARCH_USER);
+}
+
+void Kadu::showUserInfo() {
+	commandParser(KADU_CMD_USERINFO);
 }
 
 void Kadu::resizeEvent(QResizeEvent *e) {
@@ -875,8 +906,10 @@ void Kadu::commandParser (int command) {
 			break;
 		case KADU_CMD_USERINFO:
 			UserInfo *ui;
-			ui = new UserInfo("user info", 0, userbox->currentText());
-			ui->show();
+			if (userbox->currentItem() != -1) {
+				ui = new UserInfo("user info", 0, userbox->currentText());
+				ui->show();
+				}
 			break;
 		case KADU_CMD_SEARCH:
 			sd = new SearchDialog();
@@ -961,11 +994,13 @@ void Kadu::commandParser (int command) {
 			a->quit();
 			break;
 		case KADU_CMD_SEARCH_USER:
-			sd = new SearchDialog(0, i18n("User info"),
-				userlist.byAltNick(userbox->currentText()).uin);
-			sd->init();
-			sd->show();
-			sd->firstSearch();
+			if (userbox->currentItem() != -1) {
+				sd = new SearchDialog(0, i18n("User info"),
+					userlist.byAltNick(userbox->currentText()).uin);
+				sd->init();
+				sd->show();
+				sd->firstSearch();
+				}
 			break;
 		case KADU_CMD_IMPORT_USERLIST:
 			UserlistImport *uli;
