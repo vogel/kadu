@@ -370,8 +370,9 @@ void Chat::hyperlinkClicked(const QString &link) {
 			}
 		cmd = QString(config.webbrowser).arg(link);
 		}
-	fprintf(stderr, "KK Chat::hyperlinkClicked(): %s\n", cmd.latin1());
 	args = QStringList::split(" ", cmd);
+	for (QStringList::iterator i = args.begin(); i != args.end(); i++)
+		fprintf(stderr, "KK Chat::hyperlinkClicked(): %s\n", (*i).latin1());
 	browser = new QProcess(this);
 	browser->setArguments(args);
 	if (!browser->start())
