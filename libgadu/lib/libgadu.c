@@ -1,4 +1,4 @@
-/* $Id: libgadu.c,v 1.31 2003/10/05 22:12:57 chilek Exp $ */
+/* $Id: libgadu.c,v 1.32 2003/10/09 15:42:19 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -69,7 +69,7 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c,v 1.31 2003/10/05 22:12:57 chilek Exp $";
+= "$Id: libgadu.c,v 1.32 2003/10/09 15:42:19 chilek Exp $";
 #endif 
 
 /*
@@ -873,9 +873,6 @@ void gg_free_session(struct gg_session *sess)
 	if (sess->client_version)
 		free(sess->client_version);
 
-	if (sess->resolver)
-		free(sess->resolver);
-
 	if (sess->header_buf)
 		free(sess->header_buf);
 
@@ -893,6 +890,9 @@ void gg_free_session(struct gg_session *sess)
 		free(sess->resolver);
 		sess->resolver = NULL;
 	}
+#else
+	if (sess->resolver)
+		free(sess->resolver);
 #endif
 
 	if (sess->fd != -1)
