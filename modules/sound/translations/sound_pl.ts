@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>Enable volume control (player must support it)</source>
-        <translation>Reg. głośności (gdy odtwarzacz obsługuje)</translation>
+        <translation>Regulacja głośności (gdy odtwarzacz obsługuje)</translation>
     </message>
     <message>
         <source>Message sound</source>
@@ -51,7 +51,7 @@
     </message>
     <message>
         <source>Sound paths</source>
-        <translation>Ścieżki do dźwieków</translation>
+        <translation>Ścieżki do dźwięków</translation>
     </message>
     <message>
         <source>Sound theme</source>
@@ -94,7 +94,7 @@
     </message>
     <message>
         <source>Sound file</source>
-        <translation>Plik dźwiekowy</translation>
+        <translation>Plik dźwiękowy</translation>
     </message>
     <message>
         <source>Chat sound</source>

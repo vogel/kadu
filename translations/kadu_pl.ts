@@ -81,11 +81,11 @@ Wybierz jedną z poniższych opcji:</translation>
     </message>
     <message>
         <source>Clear Chat:</source>
-        <translation>Wyczyść Okno:</translation>
+        <translation>Wyczyść okno:</translation>
     </message>
     <message>
         <source>Close Chat:</source>
-        <translation>Zamknij Okno:</translation>
+        <translation>Zamknij okno:</translation>
     </message>
     <message>
         <source>Bold text:</source>
@@ -233,7 +233,7 @@ Wybierz jedną z poniższych opcji:</translation>
     </message>
     <message>
         <source>View/edit user info</source>
-        <translation>Pokaż/Zmień informacje o kontakcie</translation>
+        <translation>Pokaż / zmień informacje o kontakcie</translation>
     </message>
     <message>
         <source>View history</source>
@@ -405,7 +405,7 @@ Wybierz jedną z poniższych opcji:</translation>
     </message>
     <message>
         <source>Chat properties</source>
-        <translation>Własciwości okna rozmowy</translation>
+        <translation>Właściwości okna rozmowy</translation>
     </message>
     <message>
         <source>Font</source>
@@ -429,7 +429,7 @@ Wybierz jedną z poniższych opcji:</translation>
     </message>
     <message>
         <source>Conference window title prefix:</source>
-        <translation>Prefix tytułu okna konferencji: </translation>
+        <translation>Prefiks tytułu okna konferencji: </translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - frist name
@@ -505,7 +505,7 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>Userbox properties</source>
-        <translation>Właściwosci listy kontaktów</translation>
+        <translation>Właściwości listy kontaktów</translation>
     </message>
     <message>
         <source>Preview userbox</source>
@@ -569,7 +569,7 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>Show info-panel</source>
-        <translation>Pokaż panel info</translation>
+        <translation>Pokaż panel informacyjny</translation>
     </message>
     <message>
         <source>Show description in userbox</source>
