@@ -13,11 +13,12 @@
 
 //
 #include "kadu.h"
-#include "adduser.h"
 //
+#include "adduser.h"
+#include "debug.h"
 
 Adduser::Adduser(QDialog* parent, const char *name) {
-	fprintf(stderr, "KK Adduser::Adduser()\n");
+	kdebug("Adduser::Adduser()\n");
 
 	resize(400,150);
 	setCaption(i18n("Add user"));
@@ -90,11 +91,11 @@ Adduser::Adduser(QDialog* parent, const char *name) {
 	grid->addWidget(b_cancel, 4, 3);
 	grid->addMultiCellWidget(effect, 4, 4, 0, 1);
 
-	fprintf(stderr, "KK Adduser::Adduser(): finished\n");
+	kdebug("Adduser::Adduser(): finished\n");
 }
 
 void Adduser::Add() {
-	fprintf(stderr, "KK Adduser::Add()\n");
+	kdebug("Adduser::Add()\n");
 
 	if (e_altnick->text().length()) {
 		kadu->addUser(e_fname->text(),e_lname->text(),e_nickname->text(),
@@ -106,6 +107,6 @@ void Adduser::Add() {
 		QMessageBox::warning(this, i18n("Add user problem"),
 			i18n("Altnick field cannot be empty."));
 
-	fprintf(stderr, "KK Adduser::Add(): finished\n");
+	kdebug("Adduser::Add(): finished\n");
 }
 

@@ -12,6 +12,7 @@
 #include <qdir.h>
 
 #include "emoticons.h"
+#include "debug.h"
 
 // dla config
 #include "kadu.h"
@@ -44,7 +45,7 @@ void EmoticonsManager::loadEmoticonsRegexpList()
 	QFile emoticons_file(themePath()+"/emoticons_regexp");
 	if(!emoticons_file.open(IO_ReadOnly))
 	{
-		fprintf(stderr,"KK Error opening emoticons_regexp file\n");
+		kdebug("Error opening emoticons_regexp file\n");
 		return;
 	};
 	QTextStream emoticons_stream(&emoticons_file);
@@ -67,7 +68,7 @@ void EmoticonsManager::loadEmoticonsRegexpList()
 			};
 		if(!added)
 			EmoticonsRegexpList.append(item);
-		fprintf(stderr,"EMOTICON REGEXP: %s=%s\n",(const char*)regexp.local8Bit(),(const char*)picname.local8Bit());
+		kdebug("EMOTICON REGEXP: %s=%s\n",(const char*)regexp.local8Bit(),(const char*)picname.local8Bit());
 	};
 };
 
@@ -77,7 +78,7 @@ void EmoticonsManager::loadEmoticonsSelectorList()
 	QFile emoticons_file(themePath()+"/emoticons_selector");
 	if(!emoticons_file.open(IO_ReadOnly))
 	{
-		fprintf(stderr,"KK Error opening emoticons_selector file\n");
+		kdebug("Error opening emoticons_selector file\n");
 		return;
 	};
 	QTextStream emoticons_stream(&emoticons_file);
@@ -102,7 +103,7 @@ QString EmoticonsManager::themePath()
 void EmoticonsManager::expandEmoticons(QString& text)
 {
 	QString new_text;
-	fprintf(stderr,"Expanding emoticons...\n");
+	kdebug("Expanding emoticons...\n");
 	for(int j=0; j<text.length(); j++)
 	{
 		bool emoticonFound=false;
@@ -119,7 +120,7 @@ void EmoticonsManager::expandEmoticons(QString& text)
 			new_text+=text[j];
 	};
 	text=new_text;
-	fprintf(stderr,"Emoticons expanded...\n");
+	kdebug("Emoticons expanded...\n");
 };
 
 int EmoticonsManager::emoticonsCount()

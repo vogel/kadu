@@ -30,6 +30,7 @@
 #include "history.h"
 #include "misc.h"
 #include "emoticons.h"
+#include "debug.h"
 #ifdef HAVE_OPENSSL
 extern "C"
 {
@@ -250,7 +251,7 @@ Chat::~Chat() {
 	if (userbox)
 		delete userbox;
 		
-	fprintf(stderr, "KK Chat::~Chat: chat destroyed: index %d\n", index);
+	kdebug("Chat::~Chat: chat destroyed: index %d\n", index);
 }
 
 void Chat::setupEncryptButton(bool enabled) {
@@ -432,7 +433,7 @@ QString Chat::convertCharacters(QString edit) {
 
 /* unregister us */
 void Chat::closeEvent(QCloseEvent *e) {
-	fprintf(stderr, "KK Chat::closeEvent()\n");	
+	kdebug("Chat::closeEvent()\n");	
 	QWidget::closeEvent(e);
 }
 
@@ -466,14 +467,14 @@ void Chat::hyperlinkClicked(const QString &link) {
                 if (config.webbrowser == "") {
 			QMessageBox::warning(this, i18n("WWW error"),
 				i18n("Web browser was not specified. Visit the configuration section"));
-			fprintf(stderr,"KK Chat::hyperlinkClicked(): Web browser NOT specified.\n");
+			kdebug("Chat::hyperlinkClicked(): Web browser NOT specified.\n");
 			return;
 			}
 		cmd = QString(config.webbrowser).arg(link);
 		}
 	args = QStringList::split(" ", cmd);
 	for (QStringList::iterator i = args.begin(); i != args.end(); i++)
-		fprintf(stderr, "KK Chat::hyperlinkClicked(): %s\n", (*i).latin1());
+		kdebug("Chat::hyperlinkClicked(): %s\n", (*i).latin1());
 	browser = new QProcess(this);
 	browser->setArguments(args);
 	if (!browser->start())
