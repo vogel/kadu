@@ -187,7 +187,6 @@ void sendUserlist(void);
 
 void *watch_socket(void *);
 QString pwHash(const QString);
-void confirmHistoryDeletion(const char *);
 extern QPopupMenu *dockppm;
 
 #endif

@@ -30,6 +30,7 @@
 #include <qdir.h>
 #include <qvaluelist.h>
 #include <qstringlist.h>
+#include <qmessagebox.h>
 
 #include <time.h>
 #include <sys/socket.h>
@@ -279,6 +280,24 @@ void HistoryManager::appendStatus(uin_t uin, unsigned int status, QString descri
 	stream << line << '\n';
 
 	f.close();
+}
+
+void HistoryManager::removeHistory(UinsList uins) {
+	kdebug("HistoryManager::removeHistory()\n");
+
+	QString fname;
+	switch (QMessageBox::information(kadu, "Kadu", i18n("Clear history?"),
+		i18n("Yes"), i18n("No"), QString::null, 1, 1)) {
+		case 0:
+			fname = ggPath("history/");
+			fname.append(getFileNameByUinsList(uins));
+			kdebug("HistoryManager::removeHistory(): deleting %s\n", (const char *)fname.local8Bit());
+			QFile::remove(fname);
+			QFile::remove(fname + ".idx");
+			break;
+		case 1:
+			break;
+		}
 }
 
 void HistoryManager::convHist2ekgForm(UinsList uins) {

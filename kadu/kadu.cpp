@@ -251,29 +251,6 @@ void deletePendingMessage(int nr) {
 		}
 }
 
-void confirmHistoryDeletion(UinsList &uins) {
-	QString fname;
-	QString s;
-	int i;
-
-	switch(QMessageBox::information(kadu, "Kadu", i18n("Clear history?"),
-		i18n("Yes"), i18n("No"), QString::null, 1, 1)) {
-		case 0: // Yes?
-			fname = ggPath("history/");
-			uins.sort();
-			for (i = 0; i < uins.count(); i++) {
-				fname.append(QString::number(uins[i]));
-				if (i < uins.count() - 1)
-					fname.append("_");
-				}
-			kdebug("confirmHistoryDeletion(): deleting %s\n", (const char *)fname.local8Bit());
-			unlink((const char *)fname.local8Bit());
-			break;
-		case 1: // Nope?
-			return;
-		}
-}
-
 /* sends the userlist. ripped off EKG, actually, but works */
 void sendUserlist() {
 	uin_t *uins;
@@ -911,7 +888,7 @@ void Kadu::commandParser (int command) {
 			for (i = 0; i < userbox->count(); i++)
 				if (userbox->isSelected(i))
 					uins.append(userlist.byAltNick(userbox->text(i)).uin);
-			confirmHistoryDeletion(uins);
+			history.removeHistory(uins);
 			break;
 		case KADU_CMD_SHOW_HISTORY:
 			History *hb;
