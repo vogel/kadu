@@ -48,13 +48,14 @@ Chat::Chat(UinsList uins, QWidget *parent)
 	index = chats.count() - 1;
 
 	body = new KTextBrowser(this);
+	body->setFont(QFont(config.chatFont, config.chatFontSize));
 	if (uins.count() > 1) {
 		resize(550,400);
 		userbox = new UserBox(this);
 
 		userbox->setPaletteBackgroundColor(QColor(config.colors.userboxBgR,config.colors.userboxBgG,config.colors.userboxBgB));
 		userbox->setPaletteForegroundColor(QColor(config.colors.userboxFgR,config.colors.userboxFgG,config.colors.userboxFgB));
-		userbox->QListBox::setFont(QFont(config.colors.userboxFont, config.colors.userboxFontSize));
+		userbox->QListBox::setFont(QFont(config.userboxFont, config.userboxFontSize));
 
 		for (i = 0; i < uins.count(); i++)
 			userbox->addUser(userlist.byUin(uins[i]).altnick);
@@ -68,6 +69,7 @@ Chat::Chat(UinsList uins, QWidget *parent)
 	edit = new CustomInput(this);
 	edit->setGeometry(5,215, 390, 150);
 	edit->setWordWrap(QMultiLineEdit::WidgetWidth);
+	edit->setFont(QFont(config.chatFont, config.chatFontSize));
 
 	KIconLoader *loader = KGlobal::iconLoader();
 

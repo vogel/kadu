@@ -534,7 +534,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	userbox = new UserBox(this, "userbox");
 	userbox->setPaletteBackgroundColor(QColor(config.colors.userboxBgR,config.colors.userboxBgG,config.colors.userboxBgB));
 	userbox->setPaletteForegroundColor(QColor(config.colors.userboxFgR,config.colors.userboxFgG,config.colors.userboxFgB));
-	userbox->QListBox::setFont(QFont(config.colors.userboxFont, config.colors.userboxFontSize));
+	userbox->QListBox::setFont(QFont(config.userboxFont, config.userboxFontSize));
 
 	/* add all users to userbox */
 	setActiveGroup("");
@@ -550,9 +550,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	statuslabeltxt = new MyLabel(this, "statuslabeltxt");
 	statuslabeltxt->setText(i18n("Offline"));
-	statuslabeltxt->setFrameStyle(QFrame::WinPanel|QFrame::Sunken);
+	statuslabeltxt->setFrameStyle(QFrame::WinPanel | QFrame::Sunken);
 	statuslabeltxt->setFont(QFont("Verdana", 9));
-	statuslabeltxt->setMinimumWidth(width()-45);
+	statuslabeltxt->setMinimumWidth(width() - 45);
 
 	/* a bit darker than the rest */
 	statuslabeltxt->setPaletteBackgroundColor(QColor(
@@ -1592,7 +1592,7 @@ void Kadu::eventHandler(int state) {
 
 	if (e->type == GG_EVENT_CONN_FAILED) {
 		char error[512];
-		snprintf(error, sizeof(error), "KK Kadu::eventHandler(): Unable to connect, the following error has occured:\n%s\nKK Kadu::nConnect(): Keep trying to connect?\n", strerror(errno));
+		snprintf(error, sizeof(error), "KK Kadu::eventHandler(): Unable to connect, the following error has occured:\n%s\nKK Kadu::eventHandler(): Keep trying to connect?\n", strerror(errno));
 		disconnectNetwork();	
 		setCurrentStatus(GG_STATUS_NOT_AVAIL);
 		fprintf(stderr, "KK Kadu::eventHandler(): Connection failed\n");

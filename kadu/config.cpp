@@ -119,8 +119,10 @@ void loadKaduConfig(void) {
 	config.colors.userboxFgR = konf->readNumEntry("UserboxFgR",0);
 	config.colors.userboxFgG = konf->readNumEntry("UserboxFgG",0);
 	config.colors.userboxFgB = konf->readNumEntry("UserboxFgB",0);
-	config.colors.userboxFont = strdup(konf->readEntry("UserboxFont","sans-serif"));
-	config.colors.userboxFontSize = konf->readNumEntry("UserboxFontSize",12);
+	config.userboxFont = konf->readEntry("UserboxFont","sans-serif");
+	config.userboxFontSize = konf->readNumEntry("UserboxFontSize",12);
+	config.chatFont = konf->readEntry("ChatFont","sans-serif");
+	config.chatFontSize = konf->readNumEntry("ChatFontSize",12);
 
 	/* no need for it anymore */
 	delete konf;
@@ -196,8 +198,10 @@ void saveKaduConfig(void) {
 	konf->writeEntry("UserboxFgR", config.colors.userboxFgR);
 	konf->writeEntry("UserboxFgG", config.colors.userboxFgG);
 	konf->writeEntry("UserboxFgB", config.colors.userboxFgB);
-	konf->writeEntry("UserboxFont", config.colors.userboxFont);
-	konf->writeEntry("UserboxFontSize", config.colors.userboxFontSize);
+	konf->writeEntry("UserboxFont", config.userboxFont);
+	konf->writeEntry("UserboxFontSize", config.userboxFontSize);
+	konf->writeEntry("ChatFont", config.chatFont);
+	konf->writeEntry("ChatFontSize", config.chatFontSize);
 
 	konf->sync();
 	delete konf;

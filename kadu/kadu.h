@@ -50,8 +50,6 @@ struct colors {
     int userboxFgR;
     int userboxFgG;
     int userboxFgB;
-    char* userboxFont;
-    int userboxFontSize;
 };
 
 
@@ -112,6 +110,10 @@ struct config {
 	bool raise;
 
 	struct colors colors;
+	QString userboxFont;
+	int userboxFontSize;
+	QString chatFont;
+	int chatFontSize;
 };
 
 struct groups {
