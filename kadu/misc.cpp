@@ -102,11 +102,12 @@ QDateTime currentDateTime(void) {
 
 QString pwHash(const QString tekst) {
 	QString nowytekst;
-	int ile, znak;
+	int ile;
+	unsigned short znak;
 	nowytekst = tekst;
 	for (ile = 0; ile < tekst.length(); ile++) {
-		znak = nowytekst[ile].latin1() ^ ile ^ 1;
-		nowytekst[ile] = znak;
+		znak = nowytekst[ile].unicode() ^ ile ^ 1;
+		nowytekst[ile] = QChar(znak);
 		}
 	return nowytekst;
 }

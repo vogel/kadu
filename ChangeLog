@@ -16,6 +16,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * nie pojawiaj± siê okna b³êdu transmisji DCC, gdy tranmisja pliku nie
   zaczê³a siê (chilek)
 * tworzenie nowego u¿ytkownika po polsku (chilek)
+* poprawione hashowanie has³a - tymczasowo rozszyfrowane has³o
+  pojawia siê na konsoli (chilek)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci

@@ -13,6 +13,7 @@
 #include <qlistbox.h>
 #include <qstring.h>
 #include <qtextstream.h>
+#include <qtextcodec.h>
 #include <qpoint.h>
 #include <qfile.h>
 #include <qfileinfo.h>
@@ -1511,7 +1512,12 @@ void Kadu::setStatus(int status) {
 		gg_proxy_enabled = 0;
 		
 	loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("Global","PrivateStatus"));
-        loginparams.password =	strdup(pwHash(config_file.readEntry("Global","Password")).latin1());
+        loginparams.password =
+		strdup(unicode2cp(pwHash(config_file.readEntry("Global","Password"))).data());
+	char *tmp =
+		strdup(QTextCodec::codecForName("ISO8859-2")->fromUnicode(pwHash(config_file.readEntry("Global", "Password"))).data());
+	kdebug("Kadu::setStatus(): password = %s\n", tmp);
+	free(tmp);
 	loginparams.uin = config_file.readNumEntry("Global","UIN");
 	loginparams.client_version = GG_DEFAULT_CLIENT_VERSION;
 	loginparams.has_audio = 1;
