@@ -19,6 +19,8 @@
 * lista w³asnych serwerów nie znika po ustawieniu domy¶lnych serwerów (mast3r)
 * osoby nie maj±ce uin, opisem jest: Mobile: nr_telefonu
   + info o 3 klawiszu, aby wys³aæ sms (mast3r)
+* wykluczenie mo¿liwo¶ci wys³ania swojego klucza do osoby
+  nie maj±cej w userliscie uin'u (mast3r)
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem

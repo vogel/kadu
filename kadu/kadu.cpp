@@ -1149,6 +1149,7 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 
 #ifdef HAVE_OPENSSL
 	pm->insertItem(loadIcon("encrypted.png"), i18n("Send my public key"), KADU_CMD_SEND_KEY);
+
 	QString keyfile_path;
 
 	keyfile_path.append(ggPath("keys/"));
@@ -1156,11 +1157,11 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 	keyfile_path.append(".pem");
 
 	QFileInfo keyfile(keyfile_path);
-	if (keyfile.permission(QFileInfo::ReadUser)) {
+	if (keyfile.permission(QFileInfo::ReadUser) && user.uin)
 		pm->setItemEnabled(KADU_CMD_SEND_KEY, true);
-	} else {
+	else
 		pm->setItemEnabled(KADU_CMD_SEND_KEY, false);
-	}
+
 #endif
 
 	pm->insertSeparator();
