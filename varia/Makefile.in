@@ -239,19 +239,20 @@ install-data-local:
 	$(INSTALL_DATA) msg.wav "$(DESTDIR)/$(datadir)/apps/kadu/"
 	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/apps/kadu/icons/"
 	$(INSTALL_DATA) images/*.png "$(DESTDIR)/$(datadir)/apps/kadu/icons/"	
-	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/apps/kadu/themes/emoticons/kadubis/"	
-	$(INSTALL_DATA) themes/emoticons/kadubis/*.gif "$(DESTDIR)/$(datadir)/apps/kadu/themes/emoticons/kadubis/"
-	$(INSTALL_DATA) themes/emoticons/kadubis/emoticons_regexp "$(DESTDIR)/$(datadir)/apps/kadu/themes/emoticons/kadubis/"
-	$(INSTALL_DATA) themes/emoticons/kadubis/emoticons_selector "$(DESTDIR)/$(datadir)/apps/kadu/themes/emoticons/kadubis/"
-	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/apps/kadu/themes/emoticons/original_kadu/"
-	$(INSTALL_DATA) themes/emoticons/original_kadu/*.gif "$(DESTDIR)/$(datadir)/apps/kadu/themes/emoticons/original_kadu/"
-	$(INSTALL_DATA) themes/emoticons/original_kadu/emoticons_regexp "$(DESTDIR)/$(datadir)/apps/kadu/themes/emoticons/original_kadu/"
-	$(INSTALL_DATA) themes/emoticons/original_kadu/emoticons_selector "$(DESTDIR)/$(datadir)/apps/kadu/themes/emoticons/original_kadu/"
+	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/apps/kadu/themes/emoticons/gadu-gadu/"	
+	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/apps/kadu/themes/emoticons/gadu-gadu/1/"	
+	$(INSTALL_DATA) themes/emoticons/gadu-gadu/1/*.gif "$(DESTDIR)/$(datadir)/apps/kadu/themes/emoticons/gadu-gadu/1/"
+	$(INSTALL_DATA) themes/emoticons/gadu-gadu/1/emots.txt "$(DESTDIR)/$(datadir)/apps/kadu/themes/emoticons/gadu-gadu/1/"
+
+	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/apps/kadu/themes/emoticons/gadu-gadu/2/"	
+	$(INSTALL_DATA) themes/emoticons/gadu-gadu/2/*.gif "$(DESTDIR)/$(datadir)/apps/kadu/themes/emoticons/gadu-gadu/2/"
+	$(INSTALL_DATA) themes/emoticons/gadu-gadu/2/*.GIF "$(DESTDIR)/$(datadir)/apps/kadu/themes/emoticons/gadu-gadu/2/"
+	$(INSTALL_DATA) themes/emoticons/gadu-gadu/2/emots.txt "$(DESTDIR)/$(datadir)/apps/kadu/themes/emoticons/gadu-gadu/2/"
 
 uninstall-local:
 	rm -f "$(DESTDIR)/$(datadir)/apps/kadu/msg.wav"
-	rm -f "$(DESTDIR)/$(datadir)/apps/kadu/themes/emoticons/kadubis"/*
-	rm -f "$(DESTDIR)/$(datadir)/apps/kadu/themes/emoticons/original_kadu"/*
+	rm -f "$(DESTDIR)/$(datadir)/apps/kadu/themes/emoticons/gadu-gadu/1"/*
+	rm -f "$(DESTDIR)/$(datadir)/apps/kadu/themes/emoticons/gadu-gadu/2"/*
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

@@ -114,7 +114,7 @@ void loadKaduConfig(void) {
 
 	konf->setGroup("Other");
 	config.emoticons = konf->readBoolEntry("UseEmoticons",false);
-	emoticons.setEmoticonsTheme(konf->readEntry("EmoticonsTheme","kadubis"));
+	emoticons.setEmoticonsTheme(konf->readEntry("EmoticonsTheme",""));
 	config.autosend = konf->readBoolEntry("AutoSend",false);
 	config.scrolldown = konf->readBoolEntry("ScrollDown",true);
 	config.chatprune = konf->readBoolEntry("ChatPrune",false);

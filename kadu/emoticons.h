@@ -26,29 +26,29 @@ class EmoticonsManager
 {
 	private:
 		QStringList ThemesList;
-		struct EmoticonsRegexpListItem
+		struct EmoticonsListItem
 		{
-			QRegExp regexp;
-			QString picname;
+			QString alias;
+			QString anim;
+			QString stat;
 		};
-		QValueList<EmoticonsRegexpListItem> EmoticonsRegexpList;
-		struct EmoticonsSelectorListItem
-		{
-			QString string;
-			QString picname;
-		};
-		QValueList<EmoticonsSelectorListItem> EmoticonsSelectorList;
-		void loadEmoticonsRegexpList();
-		void loadEmoticonsSelectorList();
+		QValueList<EmoticonsListItem> Aliases;
+		QValueList<EmoticonsListItem> Selector;
+		QStringList getSubDirs(const QString& path);
+		QString getQuoted(const QString& s,int& pos);
+		QString fixFileName(const QString& path,const QString& fn);
+		bool loadGGEmoticonThemePart(QString subdir);
+		bool loadGGEmoticonTheme();
 	public:
 		EmoticonsManager();
 		const QStringList& themes();
 		void setEmoticonsTheme(const QString& theme);
 		QString themePath();
 		void expandEmoticons(QString& text,const QColor& bgcolor);
-		int emoticonsCount();
-		QString emoticonString(int emot_num);
-		QString emoticonPicPath(int emot_num);
+		int selectorCount();
+		QString selectorString(int emot_num);
+		QString selectorAnimPath(int emot_num);
+		QString selectorStaticPath(int emot_num);
 };
 
 extern EmoticonsManager emoticons;
@@ -58,7 +58,8 @@ class EmoticonSelectorButton : public QToolButton
 	Q_OBJECT	
 	private:
 		QString EmoticonString;
-		QString EmoticonPath;
+		QString AnimPath;
+		QString StaticPath;
 		QMovie* Movie;
 	private slots:
 		void buttonClicked();
@@ -69,7 +70,7 @@ class EmoticonSelectorButton : public QToolButton
 	public:
 		EmoticonSelectorButton(
 			QWidget* parent,const QString& emoticon_string,
-			const QString& file_path);	
+			const QString& static_path,const QString& anim_path);	
 	signals:
 		void clicked(const QString& emoticon_string);
 };
