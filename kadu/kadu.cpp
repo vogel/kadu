@@ -625,6 +625,8 @@ void Kadu::viewHistory() {
 void Kadu::sendFile()
 {
 			struct gg_dcc *dcc_new;
+			if(userbox->currentText()=="")
+				return;
 			UserListElement user = userlist.byAltNick(userbox->currentText());
 			if (user.port >= 10) {
 				if ((dcc_new = gg_dcc_send_file(htonl(user.ip.ip4Addr()), user.port, config.uin, user.uin)) != NULL) {
