@@ -148,13 +148,14 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 			MODULE_LIBS_PATH=; \
 			MODULE_INCLUDES=; \
 			MODULE_INCLUDES_PATH=; \
+			MODULE_LDFLAGS=; \
+			MODULE_CXXFLAGS=; \
+			MODULE_DIR=../modules/$mod; \
 			. ./modules/$mod/spec; \
 			echo "MODULE_LIBS:          $MODULE_LIBS"; \
 			echo "MODULE_LIBS_PATH:     $MODULE_LIBS_PATH"; \
 			echo "MODULE_INCLUDES:      $MODULE_INCLUDES"; \
 			echo "MODULE_INCLUDES_PATH: $MODULE_INCLUDES_PATH"; \
-			MODULE_LDFLAGS=; \
-			MODULE_CXXFLAGS=; \
 			for lib in $MODULE_LIBS; do \
 				FIND_LIBRARY([$lib],[$MODULE_LIBS_PATH],
 				[

@@ -1,4 +1,4 @@
 MODULE_SOURCES="voice.cpp voice_dsp.cpp"
 MODULE_MOC_HEADERS="voice.h voice_dsp.h"
 MODULE_3RDPARTY=libgsm
-MODULE_LDFLAGS=voice/libgsm/lib/libgsm.a
+MODULE_LDFLAGS=$MODULE_DIR/libgsm/lib/libgsm.a

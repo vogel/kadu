@@ -238,9 +238,10 @@ all:
 		MODULE_CXXFLAGS= && \
 		MODULE_LDFLAGS= && \
 		MODULE_3RDPARTY= && \
+		MODULE_DIR=../modules/$$dir && \
 		. ./$$dir/spec && \
-		MODULE_CXXFLAGS="$$MODULE_CXXFLAGS "`cat $$dir/cxxflags` && \
-		MODULE_LDFLAGS="$$MODULE_LDFLAGS "`cat $$dir/ldflags` && \
+		MODULE_CXXFLAGS=`cat $$dir/cxxflags` && \
+		MODULE_LDFLAGS=`cat $$dir/ldflags` && \
 		echo && \
 		echo -e "\033[32m>>>\033[0m Compiling $$dir module [LD=$$MODULE_LDFLAGS,CXX=$$MODULE_CXXFLAGS] ..." && \
 		echo && \

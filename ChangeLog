@@ -35,7 +35,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   oznaczaj±ca kompilacjê dodatkowych ¼róde³ w podanym podkatalogu
   przed kompilacj± modu³u (adrian)
 * dodana funkcja kdebugf2() analogiczna do kdebugf(), aby móc zaznaczyæ
-  w debugu koniec funkcji (joi)
+  w debugu koniec funkcji (joi)  
+* plik spec modu³ów mo¿e u¿ywaæ zmiennej MODULE_DIR - wzglêdna ¶cie¿ka do
+  katalogu z modu³em, poprawna dla komp. stat. i dynam., mo¿na u¿yæ np. w
+  MODULE_LDFLAGS, bo modu³ mo¿e siê linkowaæ w katalogu kadu lub modules (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
