@@ -56,7 +56,7 @@ class SearchDialog : public QDialog {
 		QRadioButton *r_mail;
 		QPushButton *b_sendbtn;
 		QPushButton *b_nextbtn;
-
+		QPushButton *b_addbtn;
 		uin_t _whoisSearchUin;
 
 		QLineEdit *e_phone;
@@ -79,10 +79,12 @@ class SearchDialog : public QDialog {
 		void dataReceived(void);
 		void dataSent(void);
 		void AddButtonClicked();
+		void updateInfoClicked();
 
 	public slots:
 		int doSearch(void);
 		int doSearchWithoutStart(void);
+		void selectionChanged(QListViewItem *);
 
 	protected:
 		void closeEvent(QCloseEvent * e);

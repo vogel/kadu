@@ -52,15 +52,15 @@ class UserList : public QObject, public QValueList<UserListElement>
 		UserListElement& byNick(QString nickname);
 		UserListElement& byAltNick(QString altnick);
 		bool containsUin(uin_t uin);
-		void addUser(const QString FirstName,const QString LastName,
-			const QString NickName,const QString AltNick,
-			const QString Mobile,const QString Uin,
-			const int Status=GG_STATUS_NOT_AVAIL,
-			const QString Group="",const QString Description="", const bool Foreign = false);
+		void addUser(const QString FirstName, const QString LastName,
+			const QString NickName, const QString AltNick,
+			const QString Mobile, const QString Uin,
+			const int Status = GG_STATUS_NOT_AVAIL,
+			const QString Group = "", const QString Description = "", const bool Foreign = false);
 		void changeUserInfo(const QString OldAltNick,
-			const QString& FirstName, const QString& LastName,
-			const QString& NickName, const QString& AltNick,
-			const QString& Mobile, const QString& Group);
+			const QString &FirstName, const QString &LastName,
+			const QString &NickName, const QString &AltNick,
+			const QString &Mobile, const QString &Group);
 		void changeUserStatus(const uin_t uin, const unsigned int status);
 		void removeUser(const QString &altnick);
 		bool writeToFile(char *filename = NULL);

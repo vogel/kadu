@@ -116,16 +116,16 @@ void UserList::addUser(const QString FirstName,const QString LastName,
 void UserList::changeUserInfo(const QString OldAltNick,
 	const QString& FirstName, const QString& LastName,
 	const QString& NickName, const QString& AltNick,
-	const QString& Mobile,const QString& Group)
+	const QString& Mobile, const QString& Group)
 {
 	UserListElement& e=byAltNick(OldAltNick);
 	e.first_name = FirstName;
 	e.last_name = LastName;
 	e.nickname = NickName;
-	e.altnick=AltNick;
-	e.mobile=Mobile;
-	e.foreign=false;		
-	e.group=Group;
+	e.altnick = AltNick;
+	e.mobile = Mobile;
+	e.foreign = false;
+	e.group = Group;
 	if (AltNick != OldAltNick)
 	{
 		UserBox::all_renameUser(OldAltNick,AltNick);

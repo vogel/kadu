@@ -59,7 +59,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 	b_clrbtn->setText(i18n("C&lear list"));
 	connect(b_clrbtn, SIGNAL(clicked()), this, SLOT(clearResults()));
 
-	QPushButton* b_addbtn=new QPushButton(this);
+	b_addbtn = new QPushButton(this);
 	b_addbtn->setText(i18n("&Add User"));
 	connect(b_addbtn, SIGNAL(clicked()), this, SLOT(AddButtonClicked()));
 
@@ -129,6 +129,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 	/* change radio buttons automagically if some fields are altered */
 	connect(e_phone, SIGNAL(textChanged(const QString &)), this, SLOT(phoneTyped()));
 	connect(e_uin, SIGNAL(textChanged(const QString &)), this, SLOT(uinTyped()));
+	connect(results, SIGNAL(selectionChanged(QListViewItem *)), this, SLOT(selectionChanged(QListViewItem *)));
 
 	btngrp->insert(r_pers, 1);
 	btngrp->insert(r_uin, 2);
@@ -180,6 +181,29 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 
 SearchDialog::~SearchDialog() {
 	fprintf(stderr, "KK SearchDialog::~SearchDialog()\n");
+}
+
+void SearchDialog::selectionChanged(QListViewItem *item) {
+	uin_t uin;
+
+	fprintf(stderr, "KK SearchDialog::currentChanged()\n");
+
+	if (item) {
+		uin = item->text(1).toUInt();
+		disconnect(b_addbtn, SIGNAL(clicked()), 0, 0);
+		if (userlist.containsUin(uin)) {
+			b_addbtn->setText(i18n("&Update Info"));
+			connect(b_addbtn, SIGNAL(clicked()), this, SLOT(updateInfoClicked()));
+			}
+		else {
+			b_addbtn->setText(i18n("&Add User"));
+			connect(b_addbtn, SIGNAL(clicked()), this, SLOT(AddButtonClicked()));
+			}
+		}
+	else {
+		b_addbtn->setText(i18n("&Add User"));
+		connect(b_addbtn, SIGNAL(clicked()), this, SLOT(AddButtonClicked()));
+		}
 }
 
 void SearchDialog::init() {
@@ -393,6 +417,7 @@ void SearchDialog::socketEvent(void) {
 			qlv->setPixmap(0, *qpx);
 			}
 		r.start = res->results[res->count-1].uin;
+		selectionChanged(results->selectedItem());
 
 		deleteSocketNotifiers();
 		gg_free_search(foo);
@@ -455,6 +480,43 @@ void SearchDialog::AddButtonClicked()
 
 	kadu->addUser(firstname,lastname,nickname,altnick,"",uin,
 		GG_STATUS_NOT_AVAIL,"","");
+}
+
+void SearchDialog::updateInfoClicked()
+{
+	QListViewItem *selected = results->selectedItem();
+	if (!selected)
+		return;
+
+	QString suin = selected->text(1);
+	QString firstname = selected->text(2);
+	QString lastname = selected->text(3);
+	QString nickname = selected->text(5);
+
+	uin_t uin = suin.toUInt();
+	UserListElement &ule = userlist.byUin(uin);
+
+	// Build altnick. Try user nick first.
+	QString altnick = nickname;
+	// If nick is empty, try firstname+lastname.
+	if (!altnick.length()) {
+		altnick = firstname;
+		if (firstname.length() && lastname.length())
+			altnick += " ";
+		altnick += lastname;
+		}
+	// If nick is empty, use uin.
+	if (!altnick.length())
+		altnick = uin;
+
+	if (QMessageBox::information(this, i18n("Update Info"),
+		i18n("Do you want to update user info for %1?").arg(altnick),
+		i18n("&Yes"), i18n("&No")) != 0)
+		return;
+
+	userlist.changeUserInfo(ule.altnick, firstname, lastname, nickname, ule.altnick,
+		ule.mobile, ule.group);
+	userlist.writeToFile();
 }
 
 #include "search.moc"
