@@ -728,7 +728,7 @@ void AnimTextItem::draw(
 //	kdebugm(KDEBUG_WARNING, "%s x:%d y:%d cx:%d cy:%d cw:%d ch:%d\n", text.local8Bit().data(), x, y, cx, cy, cw, ch);
 //	kdebugm(KDEBUG_WARNING, "contX:%d contY:%d contW:%d contH:%d visW:%d visH:%d\n", Edit->contentsX(), Edit->contentsY(), Edit->contentsWidth(), Edit->contentsHeight(), Edit->visibleWidth(), Edit->visibleHeight());
 //	if(EditSize==Edit->size())
-	if(EditSize==Edit->size() && ch!=Edit->visibleHeight())
+	if(EditSize == Edit->size()  &&  ch != Edit->visibleHeight())
 	{
 //		kdebugm(KDEBUG_WARNING, "back\n\n");
 		return;
@@ -738,13 +738,11 @@ void AnimTextItem::draw(
 //	if(Label->isVisible()&&EditSize==Edit->size())
 //		return;
 
-	EditSize=Edit->size();
+	EditSize = Edit->size();
 
 	QPoint u(x, y - cy);
-	//trzeba ustaliæ warto¶æ prawej strony tej nierówno¶ci, na pewno jest to warto¶æ dodatnia
-	//nie jest to 0,10,ch,height,visibleHeight/2
-	if (u.y()>=10)
-		u += QPoint(0, Edit->visibleHeight()-ch);
+	if (u.y() > 0)
+		u += QPoint(0, Edit->visibleHeight() - ch);
 	
 //	Edit->moveChild(Label, u.x(), u.y());
 	Label->move(u);
