@@ -214,7 +214,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 		return;
 		}
 
-	playSound((const char *)config.soundmsg);
+	playSound(config.soundmsg);
 
 //	fprintf(stderr, "KK eventRecvMsg(): New buffer size: %d\n",pending.size());
 
@@ -253,26 +253,26 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 		}*/
 }
 
-void playSound(const char *sound) {
+void playSound(const QString &sound, const QString player) {
 	if (!config.playsound || mute)
 		return;
 
 	QStringList args;
-	if ((QString::compare(sound,NULL) == 0) || (QString::compare(sound, "") == 0)) {
+	if ((QString::compare(sound, NULL) == 0) || (QString::compare(sound, "") == 0)) {
 		fprintf(stderr,"KK No sound file specified?\n");
 		return;
 		}
-	if (config.playartsdsp) {
+	if (config.playartsdsp)
 		args.append("artsdsp");
+	if (player == QString::null)
 		args.append(config.soundprog);
-		}
 	else
-		args.append(config.soundprog);
+		args.append(player);
 	if (config.soundvolctrl)
 		args.append(QString("-v %1").arg(config.soundvol));
 	args.append(sound);
 	for (QStringList::Iterator it = args.begin(); it != args.end(); ++it ) {
-       		fprintf(stderr, "KK playSound(): %s\n", (*it).latin1());
+       		fprintf(stderr, "KK playSound(): %s\n", (const char *)(*it).local8Bit());
 		}
 	QProcess *sndprocess = new QProcess(args, kadu);
 	sndprocess->start();
@@ -311,7 +311,7 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 		if (config.notifysound) {
 			QTime acttime(QTime::currentTime());			
 			if (acttime.msecsTo(oldtime) <= -500)
-				playSound((const char *)config.soundnotify);
+				playSound(config.soundnotify);
 			oldtime = acttime;
 			}
 		}

@@ -25,6 +25,7 @@
 #include <qpopupmenu.h>
 #include <qnetworkprotocol.h>
 #include <qstringlist.h>
+#include <qstring.h>
 
 #include "userlist.h"
 #include "userbox.h"
@@ -54,9 +55,9 @@ struct config {
 	uin_t uin;
 	QString password;
 	QString nick;
-	char *soundmsg;
-	char *soundchat;
-	char *soundprog;
+	QString soundmsg;
+	QString soundchat;
+	QString soundprog;
 	double soundvol;
 	bool soundvolctrl;
 	bool playartsdsp;
@@ -298,7 +299,7 @@ bool isIgnored(uin_t);
 int writeIgnored(QString filename = "");
 void *watch_socket(void *);
 void kadu_debug(int, char*);
-void playSound(const char *);
+void playSound(const QString &sound, const QString player = QString::null);
 void readConfig(void);
 QString pwHash(const QString);
 void confirmHistoryDeletion(const char *);

@@ -53,11 +53,11 @@ void loadKaduConfig(void) {
 	config.uin = konf->readNumEntry("UIN",0);
 	config.password = pwHash(konf->readEntry("Password",""));
 	fprintf(stderr,"KK Read user data: uin %d password :-P\n", config.uin);
-	config.soundprog = strdup(konf->readEntry("SoundPlayer",""));
-	config.soundmsg = strdup(konf->readEntry("Message_sound",""));
+	config.soundprog = konf->readEntry("SoundPlayer","");
+	config.soundmsg = konf->readEntry("Message_sound","");
 	config.soundvolctrl = konf->readBoolEntry("VolumeControl",false);
 	config.soundvol = konf->readDoubleNumEntry("SoundVolume",1.0);
-	config.soundchat = strdup(konf->readEntry("Chat_sound",""));
+	config.soundchat = konf->readEntry("Chat_sound","");
 	config.nick = konf->readEntry("Nick", i18n("Me"));
 	
 	config.defaultstatus = konf->readNumEntry("DefaultStatus", GG_STATUS_NOT_AVAIL);
@@ -1222,15 +1222,15 @@ void ConfigDialog::chooseUserboxLine(const QString& text) {
 }
 
 void ConfigDialog::chooseMsgTest(void) {
-	playSound(e_msgfile->text().local8Bit());
+	playSound(e_msgfile->text(), e_soundprog->text());
 }
 
 void ConfigDialog::chooseChatTest(void) {
-	playSound(e_chatfile->text().local8Bit());
+	playSound(e_chatfile->text(), e_soundprog->text());
 }
 
 void ConfigDialog::chooseNotifyTest(void) {
-	playSound(e_soundnotify->text().local8Bit());
+	playSound(e_soundnotify->text(), e_soundprog->text());
 }
 
 void ConfigDialog::generateMyKeys(void) {
@@ -1276,11 +1276,9 @@ void ConfigDialog::updateConfig(void) {
 	config.logmessages = b_logging->isChecked();
 	config.playsoundchat = b_playchat->isChecked();
 	config.playsoundchatinvisible = b_playchatinvisible->isChecked();
-	free(config.soundmsg);
-	config.soundmsg = strdup(e_msgfile->text().local8Bit());
-	free(config.soundchat);
-	config.soundchat = strdup(e_chatfile->text().local8Bit());
-	config.soundprog = strdup(e_soundprog->text().latin1());
+	config.soundmsg = e_msgfile->text();
+	config.soundchat = e_chatfile->text();
+	config.soundprog = e_soundprog->text();
 	config.playsound = b_playsound->isChecked();
 	config.playartsdsp = b_playartsdsp->isChecked();
 	config.soundvol = (double) s_volume->value();
