@@ -29,12 +29,14 @@
 
 extern "C" int dcc_init()
 {
+	kdebugf();
 	dcc_manager = new DccManager();
 	return 0;
 }
 
 extern "C" void dcc_close()
 {
+	kdebugf();
 	delete dcc_manager;
 	dcc_manager = NULL;
 }
@@ -203,52 +205,64 @@ int DccSocket::count()
 
 void DccSocket::connectionBroken()
 {
+	kdebugf();
 }
 
 void DccSocket::dccError()
 {
+	kdebugf();
 }
 
 void DccSocket::dccEvent()
 {
+	kdebugf();
 }
 
 void DccSocket::needFileAccept()
 {
+	kdebugf();
 }
 
 void DccSocket::needFileInfo()
 {
+	kdebugf();
 }
 
 void DccSocket::noneEvent()
 {
+	kdebugf();
 }
 
 void DccSocket::dccDone()
 {
+	kdebugf();
 	setState(DCC_SOCKET_TRANSFER_FINISHED);
+	kdebugf2();
 }
 
 DccFileDialog::DccFileDialog(FileDccSocket* dccsocket, TransferType type, QDialog* parent, const char* name)
 	: QDialog (parent, name), dccsocket(dccsocket), type(type)
 {
+	kdebugf();
 	vlayout1 = new QVBoxLayout(this);
 	vlayout1->setAutoAdd(true);
 	vlayout1->setMargin(5);
 	setWFlags(Qt::WDestructiveClose);
 	prevPercent = 0;
 	dccFinished = false;
+	kdebugf2();
 }
 
 DccFileDialog::~DccFileDialog()
 {
+	kdebugf();
 	delete time;
 	if (!dccFinished)
 	{
 		kdebugm(KDEBUG_WARNING, "DccFileDialog::closeEvent(): DCC transfer has not finished yet!\n");
 		delete dccsocket;
 	}
+	kdebugf2();
 }
 
 void DccFileDialog::closeEvent(QCloseEvent* e)
@@ -300,10 +314,11 @@ void DccFileDialog::printFileInfo(struct gg_dcc* dccsock)
 	prevOffset = dccsock->offset;
 	fpercent = ((long double)dccsock->offset * 100.0) / (long double)dccsock->file_info.size;
 	percent = (long long int) fpercent;
-	if (percent > prevPercent) {
+	if (percent > prevPercent)
+	{
 		p_progress->setProgress(percent);
 		prevPercent = percent;
-		}
+	}
 	else
 		p_progress->setProgress(0);
 
@@ -324,7 +339,8 @@ void DccFileDialog::updateFileInfo(struct gg_dcc *dccsock)
 	int diffOffset,diffTime;
 	QString str;
 
-	if ((diffTime = time->elapsed()) > 1000) {
+	if ((diffTime = time->elapsed()) > 1000)
+	{
 		diffOffset = dccsock->offset - prevOffset;
 		prevOffset = dccsock->offset;
 		str.append(tr("Speed: "));
@@ -334,13 +350,14 @@ void DccFileDialog::updateFileInfo(struct gg_dcc *dccsock)
 			str.append(tr("(stalled)"));
 		l_offset->setText(str);
 		time->restart();
-		}
+	}
 	fpercent = ((long double)dccsock->offset * 100.0) / (long double)dccsock->file_info.size;
 	percent = (long long int) fpercent;
-	if (percent > prevPercent) {
+	if (percent > prevPercent)
+	{
 		p_progress->setProgress(percent);
 		prevPercent = percent;
-		}
+	}
 	setCaption(tr("File transfered %1%").arg((int)percent));
 	kdebugf2();
 }
@@ -353,6 +370,7 @@ FileDccSocket::FileDccSocket(struct gg_dcc* dcc_sock)
 
 FileDccSocket::~FileDccSocket()
 {
+	kdebugf();
 	if (filedialog)
 	{
 		if (filedialog->dccFinished)
@@ -364,10 +382,12 @@ FileDccSocket::~FileDccSocket()
 			filedialog = NULL;
 		}
 	}
+	kdebugf2();
 }
 
 QString FileDccSocket::selectFile()
 {
+	kdebugf();
 	QString f;
 	QFileInfo fi;
 	do
@@ -377,21 +397,27 @@ QString FileDccSocket::selectFile()
 		fi.setFile(f);
 	}
 	while (f != QString::null && !fi.isReadable());
+	kdebugf2();
 	return f;
 }
 
 void FileDccSocket::connectionBroken()
 {
+	kdebugf();
 	setState(filedialog ? DCC_SOCKET_TRANSFER_ERROR : DCC_SOCKET_CONNECTION_BROKEN);
+	kdebugf2();
 }
 
 void FileDccSocket::dccError()
 {
+	kdebugf();
 	setState(filedialog ? DCC_SOCKET_TRANSFER_ERROR : DCC_SOCKET_CONNECTION_BROKEN);
+	kdebugf2();
 }
 
 void FileDccSocket::needFileInfo()
 {
+	kdebugf();
 	QString f = selectFile();
 	if (f == QString::null)
 	{
@@ -402,6 +428,7 @@ void FileDccSocket::needFileInfo()
 	gadu->dccFillFileInfo(dccsock, f);
 	filedialog = new DccFileDialog(this, DccFileDialog::TRANSFER_TYPE_SEND, NULL, "dcc_file_dialog");
 	filedialog->printFileInfo(dccsock);
+	kdebugf2();
 }
 
 void FileDccSocket::needFileAccept()
@@ -418,65 +445,77 @@ void FileDccSocket::needFileAccept()
 	str.append(tr("\nof size "));
 
 	char fsize[20];
-	snprintf(fsize, sizeof(fsize), "%.1fKB", (float) dccsock->file_info.size / 1024);
+	snprintf(fsize, sizeof(fsize), "%.1fkB", (float) dccsock->file_info.size / 1024);
 	str.append(fsize);
 	str.append(tr(". Accept transfer?"));
 
 	switch (QMessageBox::information(0, tr("Incoming transfer"), str, tr("Yes"), tr("No"),
-		QString::null, 0, 1)) {
+		QString::null, 0, 1))
+	{
 		case 0: // Yes?
 			kdebugm(KDEBUG_INFO, "DccSocket::askAccept(): accepted\n");
 			f = QFileDialog::getSaveFileName((char *)dccsock->file_info.filename,
 				QString::null, 0, tr("save file"), tr("Select file location"));
-			if (f.isEmpty()) {
+			if (f.isEmpty())
+			{
 				kdebugm(KDEBUG_INFO, "DccSocket::askAccept(): discarded\n");
 				setState(DCC_SOCKET_TRANSFER_DISCARDED);
 				return;
-				}
+			}
 
 			fi.setFile(f);
-			if (fi.exists() && fi.size() < dccsock->file_info.size) {
+			if (fi.exists() && fi.size() < dccsock->file_info.size)
+			{
 				str.truncate(0);
 				str = QString(tr("File %1 already exists.")).arg(f);
 				switch (QMessageBox::information(0, tr("save file"),
 					str, tr("Overwrite"), tr("Resume"),
-					tr("Cancel"), 0, 2)) {
+					tr("Cancel"), 0, 2))
+				{
 					case 0:
 						kdebugm(KDEBUG_INFO, "DccSocket::askAccept(): truncating file %s\n", f.latin1());
 
-						if ((dccsock->file_fd = open(f.latin1(), O_WRONLY | O_CREAT | O_TRUNC, 0600)) == -1) {
+						if ((dccsock->file_fd = open(f.latin1(), O_WRONLY | O_CREAT | O_TRUNC, 0600)) == -1)
+						{
 							MessageBox::wrn(tr("Could not open file"));
 							setState(DCC_SOCKET_COULDNT_OPEN_FILE);
+							kdebugf2();
 							return;
-							}
+						}
 						dccsock->offset = 0;
 						break;
 					case 1:
 						kdebugm(KDEBUG_INFO, "DccSocket::askAccept(): appending to file %s\n", f.latin1());
 
-						if ((dccsock->file_fd = open(f.latin1(), O_WRONLY | O_APPEND, 0600)) == -1) {
+						if ((dccsock->file_fd = open(f.latin1(), O_WRONLY | O_APPEND, 0600)) == -1)
+						{
 							MessageBox::wrn(tr("Could not open file"));
 							setState(DCC_SOCKET_COULDNT_OPEN_FILE);
+							kdebugf2();
 							return;
-							}
+						}
 						dccsock->offset = fi.size();
 						break;
 					case 2:
 						kdebugm(KDEBUG_INFO, "DccSocket::askAccept(): discarded\n");
 						setState(DCC_SOCKET_TRANSFER_DISCARDED);
+						kdebugf2();
 						return;
-					}
 				}
-			else {
+			}
+			else
+			{
 				kdebugm(KDEBUG_INFO, "DccSocket::askAccept(): creating file %s\n", f.latin1());
 
-				if ((dccsock->file_fd = open(f.latin1(), O_WRONLY | O_CREAT, 0600)) == -1) {
+				if ((dccsock->file_fd = open(f.latin1(), O_WRONLY | O_CREAT, 0600)) == -1)
+				{
 					MessageBox::wrn(tr("Could not open file"));
 					setState(DCC_SOCKET_COULDNT_OPEN_FILE);
+					kdebugf2();
 					return;
-					}
-				dccsock->offset = 0;
 				}
+				dccsock->offset = 0;
+			}
 
 			filedialog = new DccFileDialog(this, DccFileDialog::TRANSFER_TYPE_GET, NULL, "dcc_file_dialog");
 			filedialog->printFileInfo(dccsock);
@@ -485,32 +524,39 @@ void FileDccSocket::needFileAccept()
 			kdebugm(KDEBUG_INFO, "DccSocket::askAccept(): discarded\n");
 			setState(DCC_SOCKET_TRANSFER_DISCARDED);
 			break;
-		}
+	}
 	kdebugf2();
 }
 
 void FileDccSocket::noneEvent()
 {
+	kdebugf();
 	if (filedialog && filedialog->isVisible())
 		filedialog->updateFileInfo(dccsock);
+	kdebugf2();
 }
 
 void FileDccSocket::dccDone()
 {
+	kdebugf();
 	DccSocket::dccDone();
 	if (filedialog && filedialog->isVisible())
 		filedialog->updateFileInfo(dccsock);
+	kdebugf2();
 }
 
 void FileDccSocket::setState(int pstate)
 {
+	kdebugf();
 	DccSocket::setState(pstate);
 	if (filedialog)
 		filedialog->dccFinished = true;
+	kdebugf2();
 }
 
 DccManager::DccManager() : QObject(NULL,"dcc_manager")
 {
+	kdebugf();
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Send file"), "kadu_sendfile", "F8");
 
 	ConfigDialog::addCheckBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "DCC enabled"), "AllowDCC", false);
@@ -551,15 +597,31 @@ DccManager::DccManager() : QObject(NULL,"dcc_manager")
 		HotKey::shortCutFromFile("ShortCuts", "kadu_sendfile"));
 	connect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userboxMenuPopup()));
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(kaduKeyPressed(QKeyEvent*)));
+	kdebugf2();
 }
 
 DccManager::~DccManager()
 {
+	kdebugf();
 	ConfigDialog::disconnectSlot("Network", "DCC enabled", SIGNAL(toggled(bool)), this, SLOT(ifDccEnabled(bool)));
 	ConfigDialog::disconnectSlot("Network", "DCC IP autodetection", SIGNAL(toggled(bool)), this, SLOT(ifDccIpEnabled(bool)));
 
 	ConfigDialog::unregisterSlotOnCreate(this, SLOT(configDialogCreated()));
 	ConfigDialog::unregisterSlotOnApply(this, SLOT(configDialogApply()));
+
+	ConfigDialog::removeControl("Network", "DCC enabled");
+	ConfigDialog::removeControl("Network", "DCC IP autodetection");
+
+	ConfigDialog::removeControl("Network", "IP address:");
+	ConfigDialog::removeControl("Network", "DCC forwarding enabled");
+	ConfigDialog::removeControl("Network", "DCC IP");
+
+	ConfigDialog::removeControl("Network", "External IP address:");
+	ConfigDialog::removeControl("Network", "External TCP port:");
+	ConfigDialog::removeControl("Network", "Local TCP port:");
+	ConfigDialog::removeControl("Network", "DCC forwarding properties");
+
+	ConfigDialog::removeControl("ShortCuts", "Send file");
 
 	disconnect(gadu, SIGNAL(connecting()), this, SLOT(setupDcc()));
 	disconnect(gadu, SIGNAL(disconnected()), this, SLOT(closeDcc()));
@@ -569,6 +631,7 @@ DccManager::~DccManager()
 	UserBox::userboxmenu->removeItem(sendfile);
 	disconnect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userboxMenuPopup()));
 	disconnect(kadu, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(kaduKeyPressed(QKeyEvent*)));
+	kdebugf2();
 }
 
 QHostAddress DccManager::configDccIp()
@@ -673,6 +736,7 @@ void DccManager::setupDcc()
 
 		QMessageBox::warning(kadu, "",
 			tr("Couldn't create DCC socket.\nDirect connections disabled."));
+		kdebugf2();
 		return;
 	}
 
@@ -691,6 +755,7 @@ void DccManager::setupDcc()
 
 void DccManager::closeDcc()
 {
+	kdebugf();
 	if (DccSnr)
 	{
 		delete DccSnr;
@@ -709,34 +774,44 @@ void DccManager::closeDcc()
 		DccSock = NULL;
 		gadu->setDccIpAndPort(0, 0);
 	}
+	kdebugf2();
 }
 
 void DccManager::sendFile()
 {
 	kdebugf();
 	if (config_file.readBoolEntry("Network", "AllowDCC"))
-		if (ConfigDccIp.isIp4Addr()) {
+		if (ConfigDccIp.isIp4Addr())
+		{
 			struct gg_dcc *dcc_new;
 			UserBox *activeUserBox=UserBox::getActiveUserBox();
 			UserList users;
 			if (activeUserBox==NULL)
+			{
+				kdebugf2();
 				return;
+			}
 			users= activeUserBox->getSelectedUsers();
 			if (users.count() != 1)
+			{
+				kdebugf2();
 				return;
+			}
 			UserListElement user = (*users.begin());
-			if (user.port >= 10) {
+			if (user.port >= 10)
+			{
 				if ((dcc_new = gadu->dccSendFile(htonl(user.ip.ip4Addr()), user.port,
-					config_file.readNumEntry("General", "UIN"), user.uin)) != NULL) {
+					config_file.readNumEntry("General", "UIN"), user.uin)) != NULL)
+				{
 					FileDccSocket* dcc = new FileDccSocket(dcc_new);
 					connect(dcc, SIGNAL(dccFinished(DccSocket*)), dcc_manager,
 						SLOT(dccFinished(DccSocket*)));
 					dcc->initializeNotifiers();
-					}
 				}
+			}
 			else
 				gadu->dccRequest(user.uin);
-			}
+		}
 	kdebugf2();
 }
 
@@ -752,21 +827,19 @@ void DccManager::userboxMenuPopup()
 	}
 	UserList users = activeUserBox->getSelectedUsers();
 	UserListElement user = (*users.begin());
-	if (DccSocket::count() >= 8 && users.count() != 1)
-	{
-		UserBox::userboxmenu->setItemEnabled(sendfile, false);
-	}
-	bool isOurUin=users.containsUin(config_file.readNumEntry("General", "UIN"));
-	if (users.count() == 1 && (config_file.readBoolEntry("Network", "AllowDCC") &&
-		(user.status == GG_STATUS_AVAIL || user.status == GG_STATUS_AVAIL_DESCR ||
-		user.status == GG_STATUS_BUSY || user.status == GG_STATUS_BUSY_DESCR)) && !isOurUin)
-	{
-		UserBox::userboxmenu->setItemEnabled(sendfile, true);
-	}
-	else
-	{
-		UserBox::userboxmenu->setItemEnabled(sendfile, false);
-	}
+
+	bool containsOurUin=users.containsUin(config_file.readNumEntry("General", "UIN"));
+	bool userIsOnline=(user.status == GG_STATUS_AVAIL ||
+			user.status == GG_STATUS_AVAIL_DESCR ||
+			user.status == GG_STATUS_BUSY ||
+			user.status == GG_STATUS_BUSY_DESCR);
+	bool dccEnabled=(users.count() == 1 &&
+		config_file.readBoolEntry("Network", "AllowDCC") &&
+		!containsOurUin &&
+		userIsOnline &&
+		DccSocket::count() < 8);
+
+	UserBox::userboxmenu->setItemEnabled(sendfile, dccEnabled);
 	kdebugf2();
 }
 
@@ -807,6 +880,7 @@ bool DccManager::event(QEvent* e)
 		delete data;
 		delete dcc;
 		ce->setData(NULL);
+		kdebugf2();
 	}
 	return QObject::event(e);
 }
@@ -821,22 +895,22 @@ void DccManager::ifDccEnabled(bool value)
 	QCheckBox *b_dccfwd = ConfigDialog::getCheckBox("Network", "DCC forwarding enabled");
 
 	b_dccip->setEnabled(value);
-	g_dccip->setEnabled(!b_dccip->isChecked()&& value);
+	g_dccip->setEnabled(!b_dccip->isChecked() && value);
 	b_dccfwd->setEnabled(value);
-	g_fwdprop->setEnabled(b_dccfwd->isChecked() &&value);
+	g_fwdprop->setEnabled(b_dccfwd->isChecked() && value);
 	kdebugf2();
 }
 
 void DccManager::ifDccIpEnabled(bool value)
 {
 	kdebugf();
-	QVGroupBox *g_dccip = ConfigDialog::getVGroupBox("Network", "DCC IP");
-	g_dccip->setEnabled(!value);
+	ConfigDialog::getVGroupBox("Network", "DCC IP")->setEnabled(!value);
 	kdebugf2();
 }
 
 void DccManager::configDialogCreated()
 {
+	kdebugf();
 	QCheckBox *b_dccenabled = ConfigDialog::getCheckBox("Network", "DCC enabled");
 	QCheckBox *b_dccip= ConfigDialog::getCheckBox("Network", "DCC IP autodetection");
 	QVGroupBox *g_dccip = ConfigDialog::getVGroupBox("Network", "DCC IP");
@@ -848,22 +922,25 @@ void DccManager::configDialogCreated()
 	b_dccfwd->setEnabled(b_dccenabled->isChecked());
 	g_fwdprop->setEnabled(b_dccenabled->isChecked() && b_dccfwd->isChecked());
 	connect(b_dccfwd, SIGNAL(toggled(bool)), g_fwdprop, SLOT(setEnabled(bool)));
+	kdebugf2();
 }
 
 void DccManager::configDialogApply()
 {
-	if (!ConfigDccIp.setAddress(config_file.readEntry("Network","DccIP")))
+	kdebugf();
+	if (!ConfigDccIp.setAddress(config_file.readEntry("Network", "DccIP")))
 	{
-		config_file.writeEntry("Network","DccIP","0.0.0.0");
+		config_file.writeEntry("Network", "DccIP", "0.0.0.0");
 		ConfigDccIp.setAddress((unsigned int)0);
 	}
-	if (!config_extip.setAddress(config_file.readEntry("Network","ExternalIP")))
+	if (!config_extip.setAddress(config_file.readEntry("Network", "ExternalIP")))
 	{
-		config_file.writeEntry("Network","ExternalIP","0.0.0.0");
+		config_file.writeEntry("Network", "ExternalIP", "0.0.0.0");
 		config_extip.setAddress((unsigned int)0);
 	}
-	if (config_file.readNumEntry("Network","ExternalPort")<=1023)
-		config_file.writeEntry("Network","ExternalPort",0);
+	if (config_file.readNumEntry("Network", "ExternalPort")<=1023)
+		config_file.writeEntry("Network", "ExternalPort", 0);
+	kdebugf2();
 }
 
 void DccManager::dccConnectionReceived(const UserListElement& sender)
