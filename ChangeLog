@@ -6,6 +6,7 @@
 * dodany pasek narzêdziowy (chilek)
 * zapamiêtywanie odebranych wiadomo¶ci przy ka¿dej operacji na li¶cie wiadomo¶ci
   oczekuj±cych na odczytanie (chilek)
+* pasek narzêdziowy dokowalny, guzik narzêdziowy "dodaj u¿ytkownika" (chilek)
 
 +++ wersja 0.3.4-pre2
 * graficzny instalator - instaluj.tcl (googie)
