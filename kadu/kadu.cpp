@@ -89,7 +89,7 @@ ToolBar::ToolBar(QMainWindow* parent) : QToolBar(parent, "main toolbar")
 {
 	kdebugf();
 	setCloseMode(QDockWindow::Undocked);
-	setLabel(tr("Main toolbar"));
+	setLabel(qApp->translate("ToolBar", "Main toolbar"));
 
 	config_file.addVariable("General", "ToolBarHidden", false);
 	if (config_file.readBoolEntry("General", "ToolBarHidden"))
