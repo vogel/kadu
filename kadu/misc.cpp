@@ -2319,6 +2319,7 @@ void KaduTextBrowser::copy()
 		txt.replace(QRegExp("&lt;"), "<");
 		txt.replace(QRegExp("&gt;"), ">");
 		txt.replace(QRegExp("&amp;"), "&");
+		txt.replace(QRegExp("&quot;"), "\"");
 
 //		kdebugm(KDEBUG_DUMP, "result: \n%s\n\n", txt.local8Bit().data());
 		QApplication::clipboard()->setText(txt, QClipboard::Clipboard);
