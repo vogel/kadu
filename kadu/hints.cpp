@@ -703,6 +703,8 @@ void HintManagerSlots::onCreateConfigDialog()
 void HintManagerSlots::onDestroyConfigDialog()
 {
 	kdebugf();
+
+	kdebugm(KDEBUG_FUNCTION_START, "Hint 1 timeout: %s\n", hint[0][4].latin1());
 	config_file.writeEntry("Hints", "NewHintUnder", combobox2->currentItem());
 	config_file.writeEntry("Hints", "UseUserPosition", b_useposition->isChecked());
 	config_file.writeEntry("Hints", "HintsPosition", QPoint(e_posx->value(),e_posy->value()));
