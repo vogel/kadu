@@ -1551,7 +1551,7 @@ Sprawdź swoje połączenie internetowe.</translation>
     </message>
     <message>
         <source>&amp;Manage Modules</source>
-        <translation>&amp;Menadżer Modułów</translation>
+        <translation>Zarządca &amp;modułów</translation>
     </message>
 </context>
 <context>
@@ -1595,7 +1595,7 @@ Sprawdź swoje połączenie internetowe.</translation>
     <name>ModulesDialog</name>
     <message>
         <source>Manage Modules</source>
-        <translation>Menadżer Modułów</translation>
+        <translation>Zarządca modułów</translation>
     </message>
     <message>
         <source>Installed modules</source>
@@ -1603,15 +1603,15 @@ Sprawdź swoje połączenie internetowe.</translation>
     </message>
     <message>
         <source>Load</source>
-        <translation>Ładuj</translation>
+        <translation>Uruchom</translation>
     </message>
     <message>
         <source>Loaded modules</source>
-        <translation>Moduły załadowane</translation>
+        <translation>Uruchomione moduły</translation>
     </message>
     <message>
         <source>Unload</source>
-        <translation>Wyładuj</translation>
+        <translation>Wstrzymaj</translation>
     </message>
 </context>
 <context>
