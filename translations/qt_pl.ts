@@ -505,7 +505,7 @@
     </message>
     <message>
         <source>Preview File Contents</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatyczny podgląd</translation>
     </message>
     <message>
         <source>Read-write</source>

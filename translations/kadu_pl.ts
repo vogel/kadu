@@ -1315,7 +1315,7 @@ by zmiany odniosły skutek</translation>
     <name>ImageDialog</name>
     <message>
         <source>Images</source>
-        <translation>Obrazy</translation>
+        <translation>Obrazki</translation>
     </message>
 </context>
 <context>
@@ -1805,7 +1805,7 @@ Być może nie jest to moduł kompatybilny z Kadu</translation>
     <name>PixmapPreview</name>
     <message>
         <source>This is not an image</source>
-        <translation>To nie jest obraz</translation>
+        <translation>To nie jest obrazek</translation>
     </message>
 </context>
 <context>
