@@ -804,7 +804,7 @@ uint HistoryManager::getHistoryDate(QTextStream &stream)
 	int type, pos;
 
 	line = stream.readLine();
-	tokens = QStringList::split(",", line);
+	tokens = mySplit(',', line);
 	type = types.findIndex(tokens[0]);
 	if (!type)
 		pos = 2;
