@@ -219,7 +219,8 @@ void ChangeUserStatus(uin_t uin, unsigned int new_status) {
 
 void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 {
-	if (config.notifyglobal && config.notifies.contains(QString::number(uin)) && (status == GG_STATUS_AVAIL ||
+	if (config.notifyglobal && (config.notifies.contains(QString::number(uin))
+		|| config.notifyall) && (status == GG_STATUS_AVAIL ||
 		status == GG_STATUS_AVAIL_DESCR || status == GG_STATUS_BUSY || status == GG_STATUS_BUSY_DESCR
 		|| status == GG_STATUS_BLOCKED) &&
 		(oldstatus == GG_STATUS_NOT_AVAIL || oldstatus == GG_STATUS_NOT_AVAIL_DESCR || oldstatus == GG_STATUS_INVISIBLE ||

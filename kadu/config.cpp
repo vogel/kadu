@@ -107,10 +107,11 @@ void loadKaduConfig(void) {
 	config.msgacks = konf->readBoolEntry("MessageAcks", true);
 	
 	konf->setGroup("Notify");
-	config.soundnotify = strdup(konf->readEntry("NotifySound",""));
-	config.notifyglobal = konf->readBoolEntry("NotifyStatusChange",false);
-	config.notifydialog = konf->readBoolEntry("NotifyWithDialogBox",false);
-	config.notifysound = konf->readBoolEntry("NotifyWithSound",false);
+	config.soundnotify = strdup(konf->readEntry("NotifySound", ""));
+	config.notifyglobal = konf->readBoolEntry("NotifyStatusChange", false);
+	config.notifyall = konf->readBoolEntry("NotifyAboutAll", false);
+	config.notifydialog = konf->readBoolEntry("NotifyWithDialogBox", false);
+	config.notifysound = konf->readBoolEntry("NotifyWithSound", false);
 	config.notifies = konf->readListEntry("NotifyUsers");
 
 	konf->setGroup("Proxy");
@@ -199,11 +200,12 @@ void saveKaduConfig(void) {
 	konf->writeEntry("ProxyPassword", pwHash(config.proxypassword));
 
 	konf->setGroup("Notify");
-	konf->writeEntry("NotifyUsers",config.notifies);
-	konf->writeEntry("NotifySound",config.soundnotify);
-	konf->writeEntry("NotifyStatusChange",config.notifyglobal);
-	konf->writeEntry("NotifyWithDialogBox",config.notifydialog);
-	konf->writeEntry("NotifyWithSound",config.notifysound);
+	konf->writeEntry("NotifyUsers", config.notifies);
+	konf->writeEntry("NotifySound", config.soundnotify);
+	konf->writeEntry("NotifyStatusChange", config.notifyglobal);
+	konf->writeEntry("NotifyAboutAll", config.notifyall);
+	konf->writeEntry("NotifyWithDialogBox", config.notifydialog);
+	konf->writeEntry("NotifyWithSound", config.notifysound);
 
 	konf->setGroup("Colors");
 	konf->writeEntry("UserboxBgColor", config.colors.userboxBgColor);
@@ -533,8 +535,11 @@ void ConfigDialog::setupTab4(void) {
 	b_notifyglobal = new QCheckBox(box4);
 	b_notifyglobal->setText(i18n("Notify when users become available"));
 
+	b_notifyall = new QCheckBox(box4);
+	b_notifyall->setText(i18n("Notify about all users"));
+
 	/* two nice panes */
-	QHBox *panebox = new QHBox(box4);
+	panebox = new QHBox(box4);
 
 	QVBox *vbox1 = new QVBox(panebox);
 	QLabel *_l1 = new QLabel(vbox1);
@@ -579,11 +584,6 @@ void ConfigDialog::setupTab4(void) {
 	notifybox->setTitle(i18n("Notify options"));
 	notifybox->setMargin(2);
 
-	if (config.notifyglobal)
-		b_notifyglobal->setChecked(true);
-	else
-		notifybox->setEnabled(false);
-
 	b_notifysound = new QCheckBox(notifybox);
 	b_notifysound->setText(i18n("Notify by sound"));
 
@@ -599,6 +599,19 @@ void ConfigDialog::setupTab4(void) {
 	b_notifydialog = new QCheckBox(notifybox);
 	b_notifydialog->setText(i18n("Notify by dialog box"));
 
+	if (config.notifyglobal)
+		b_notifyglobal->setChecked(true);
+	else {
+		b_notifyall->setEnabled(false);
+		notifybox->setEnabled(false);
+		panebox->setEnabled(false);
+		}
+
+	if (config.notifyall) {
+		b_notifyall->setChecked(true);
+		panebox->setEnabled(false);
+		}
+
 	if (config.notifydialog)
 		b_notifydialog->setChecked(true);
 
@@ -608,7 +621,10 @@ void ConfigDialog::setupTab4(void) {
 		soundbox->setEnabled(false);
 
 	QObject::connect(b_notifysound, SIGNAL(toggled(bool)), soundbox, SLOT(setEnabled(bool)));
+	QObject::connect(b_notifyall, SIGNAL(toggled(bool)), this, SLOT(ifNotifyAll(bool)));
 	QObject::connect(b_notifyglobal, SIGNAL(toggled(bool)), notifybox, SLOT(setEnabled(bool)));
+	QObject::connect(b_notifyglobal, SIGNAL(toggled(bool)), panebox, SLOT(setEnabled(bool)));
+	QObject::connect(b_notifyglobal, SIGNAL(toggled(bool)), b_notifyall, SLOT(setEnabled(bool)));
 
 	addTab(box4, i18n("Users"));
 }
@@ -906,6 +922,10 @@ void ConfigDialog::ifDccEnabled(bool toggled) {
 		}
 }
 
+void ConfigDialog::ifNotifyAll(bool toggled) {
+	panebox->setEnabled(!toggled);
+}
+
 void ConfigDialog::ifDccIpEnabled(bool toggled) {
 	g_dccip->setEnabled(!toggled);
 }
@@ -1100,6 +1120,7 @@ void ConfigDialog::updateConfig(void) {
 	free(config.soundnotify);
 	config.soundnotify = strdup(e_soundnotify->text().latin1());
 	config.notifyglobal = b_notifyglobal->isChecked();
+	config.notifyall = b_notifyall->isChecked();
 	config.notifysound = b_notifysound->isChecked();
 	config.notifydialog = b_notifydialog->isChecked();
 

@@ -91,6 +91,7 @@ struct config {
 	QStringList notifies;
 	char *soundnotify;
 	bool notifyglobal;
+	bool notifyall;
 	bool notifydialog;
 	bool notifysound;
 
