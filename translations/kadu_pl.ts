@@ -2176,7 +2176,7 @@ Prawy przycisk - Ustaw status</translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;i&gt;Not available&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;i&gt;Nie dostępny&lt;/i&gt;&lt;/nobr&gt;</translation>
+        <translation>&lt;nobr&gt;&lt;i&gt;Niedostępny&lt;/i&gt;&lt;/nobr&gt;</translation>
     </message>
     <message>
         <source>&lt;i&gt;Invisible&lt;/i&gt;</source>
@@ -2192,7 +2192,7 @@ Prawy przycisk - Ustaw status</translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;i&gt;Not available &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;i&gt;Nie dostępny &lt;b&gt;(opis)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</translation>
+        <translation>&lt;nobr&gt;&lt;i&gt;Niedostępny &lt;b&gt;(opis)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;i&gt;Available &lt;b&gt;(d.)&lt;/b&gt;&lt;/i&gt;&lt;/nobr&gt;</source>
