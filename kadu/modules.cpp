@@ -146,11 +146,9 @@ void ModulesDialog::moduleAction(QListViewItem *)
 
 void ModulesDialog::loadItem()
 {
-	if(modules_manager->activateModule(lv_modules->selectedItem()->text(0)))
-	{
-		refreshList();
-		modules_manager->saveLoadedModules();
-	}	
+	modules_manager->activateModule(lv_modules->selectedItem()->text(0));
+	refreshList();
+	modules_manager->saveLoadedModules();	
 }
 
 void ModulesDialog::unloadItem()
