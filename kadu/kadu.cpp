@@ -1158,8 +1158,7 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 	UserListElement user;
 	user = userlist.byAltNick(item->text());
 
-	pm->insertItem(msg, i18n("Send message"), KADU_CMD_SEND_MESSAGE);
-	pm->setItemEnabled(KADU_CMD_SEND_MESSAGE, false);
+//	pm->insertItem(msg, i18n("Send message"), KADU_CMD_SEND_MESSAGE);
 	pm->insertItem(i18n("Open chat window"), KADU_CMD_OPEN_CHAT);
 	pm->insertItem(i18n("Send SMS"), KADU_CMD_SMS);
 	if (!user.mobile.length())
