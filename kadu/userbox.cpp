@@ -327,24 +327,22 @@ void UserBox::maybeTip(const QPoint &c)
 		QString s;
 		Status *status = userlist.byAltNick(item->text()).status;
 		QString description = status->description();
-		QString name = Status::name(Status::index(status->status(), false));
+		QString name = qApp->translate("@default", Status::name(Status::index(status->status(), false)));
 
 		if (description.isEmpty())
 		{
 			if (status->isOffline() && !userlist.byAltNick(item->text()).uin)
-				s = tr("<i>Mobile:</i><b> ") + userlist.byAltNick(item->text()).mobile + "</b>";
+				s = tr("<i>Mobile:</i> <b>%1</b>").arg(userlist.byAltNick(item->text()).mobile);
 			else
-				s = tr(QString("<nobr><i>%1</i></nobr>").arg(name));
+				s = tr("<nobr><i>%1</i></nobr>").arg(name);
 		}
 		else
 		{
-			s = tr(QString("<nobr><i>%1</i> <b>(d.)</b></nobr>").arg(name));
-			s += "<br/><br/>";
-			s += tr("<b>Description:</b><br/>");
 			HtmlDocument::escapeText(description);
 			description.replace(QRegExp(" "), "&nbsp;");
 			description.replace(QRegExp("\n"), "<br/>");
-			s += description;
+
+			s = tr("<nobr><i>%1</i> <b>(d.)</b></nobr><br/><br/><b>Description:</b><br/>%2").arg(name).arg(description);
 		}
 		tip(r, s);
 	}
