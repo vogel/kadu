@@ -1,7 +1,6 @@
 #include <qmessagebox.h>
 #include <qfile.h>
 #include <qtextstream.h>
-#include "libgadu.h"
 #include "kadu.h"
 #include "vuser.h"
 

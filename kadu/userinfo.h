@@ -12,7 +12,6 @@
 
 #include <qdialog.h>
 #include <qlineedit.h>
-#include "../libgadu/lib/libgadu.h"
 
 class UserInfo : public QTabDialog {
 	Q_OBJECT

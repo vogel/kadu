@@ -12,7 +12,7 @@
 
 #include <qdialog.h>
 #include <qmultilineedit.h>
-#include "../libgadu/lib/libgadu.h"
+#include "libgadu.h"
 
 class History : public QDialog {
 	Q_OBJECT

@@ -16,7 +16,6 @@
 #include <qlabel.h>
 #include <qcheckbox.h>
 #include <qsocketnotifier.h>
-#include "../libgadu/lib/libgadu.h"
 
 class Register : public QDialog {
 	Q_OBJECT

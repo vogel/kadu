@@ -14,7 +14,7 @@
 #include <qmultilineedit.h>
 #include <qlabel.h>
 #include <qradiobutton.h>
-#include "../libgadu/lib/libgadu.h"
+#include "libgadu.h"
 #include "misc.h"
 
 class Message : public QDialog {

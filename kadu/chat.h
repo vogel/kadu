@@ -17,7 +17,6 @@
 #include <qmultilineedit.h>
 #include <qarray.h>
 #include <qtoolbutton.h>
-#include "../libgadu/lib/libgadu.h"
 #include "misc.h"
 #include "userbox.h"
 

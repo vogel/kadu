@@ -7,7 +7,7 @@
 #include <qlabel.h>
 #include <qsocketnotifier.h>
 #include <qprocess.h>
-#include "../libgadu/lib/libgadu.h"
+#include "libgadu.h"
 
 enum DccGetType {
 	DCC_TYPE_SEND,

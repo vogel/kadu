@@ -17,7 +17,6 @@
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qprocess.h>
-#include "../libgadu/lib/libgadu.h"
 
 class Sms : public QDialog {
 	Q_OBJECT

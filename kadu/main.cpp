@@ -11,7 +11,6 @@
 #include <kaboutdata.h>
 #include <klocale.h>
 #include <qtextcodec.h>
-#include "libgadu.h"
 
 //
 #include "kadu.h"

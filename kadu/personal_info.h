@@ -14,7 +14,6 @@
 #include <qlineedit.h>
 #include <qcombobox.h>
 #include <qsocketnotifier.h>
-#include "../libgadu/lib/libgadu.h"
 
 class PersonalInfoDialog : public QDialog
 {

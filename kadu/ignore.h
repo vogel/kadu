@@ -13,7 +13,6 @@
 #include <qdialog.h>
 #include <qlistbox.h>
 #include <qlineedit.h>
-#include "../libgadu/lib/libgadu.h"
 
 class Ignored : public QDialog {
 	Q_OBJECT

@@ -11,7 +11,6 @@
 #include <qlayout.h>
 #include <qtimer.h>
 #include <klocale.h>
-#include "libgadu.h"
 
 //
 #include "kadu.h"

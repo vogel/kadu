@@ -19,7 +19,6 @@
 #include <qpushbutton.h>
 #include <qlistview.h>
 #include <qlabel.h>
-#include "../libgadu/lib/libgadu.h"
 
 class SearchDialog : public QDialog {
 	Q_OBJECT

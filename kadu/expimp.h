@@ -13,7 +13,7 @@
 #include <qdialog.h>
 #include <qlistview.h>
 #include <qsocketnotifier.h>
-#include "../libgadu/lib/libgadu.h"
+#include "libgadu.h"
 
 class UserlistImport : public QDialog {
 	Q_OBJECT

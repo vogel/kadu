@@ -30,7 +30,6 @@
 #include <string.h>
 #include <unistd.h>
 #include <pwd.h>
-#include "libgadu.h"
 
 #include "kadu.h"
 #include "pixmaps.h"

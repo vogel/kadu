@@ -15,7 +15,6 @@
 #include <qpixmap.h>
 #include <qsimplerichtext.h>
 #include <qtimer.h>
-#include "../libgadu/lib/libgadu.h"
 
 class About : public QDialog {
 	Q_OBJECT

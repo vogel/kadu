@@ -4,7 +4,6 @@
 
 #include <qvaluelist.h>
 #include "misc.h"
-#include "../libgadu/lib/libgadu.h"
 
 class PendingMsgs
 {

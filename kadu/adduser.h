@@ -13,7 +13,7 @@
 #include <qdialog.h>
 #include <qlineedit.h>
 #include <qlabel.h>
-#include "../libgadu/lib/libgadu.h"
+#include "libgadu.h"
 
 class Adduser : public QDialog {
 	Q_OBJECT
