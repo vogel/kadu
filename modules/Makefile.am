@@ -12,7 +12,7 @@ all:
 		MODULE_HEADERS=; \
 		MODULE_CXXFLAGS=; \
 		MODULE_LDFLAGS=; \
-		source $$dir/spec; \
+		. $$dir/spec; \
 		MODULE_CXXFLAGS="$$MODULE_CXXFLAGS "`cat $$dir/cxxflags`; \
 		MODULE_LDFLAGS="$$MODULE_LDFLAGS "`cat $$dir/ldflags`; \
 		echo; \

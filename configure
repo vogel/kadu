@@ -6184,8 +6184,6 @@ fi
 
 
 
-MY_SUBDIRS="$MY_SUBDIRS kadu translations varia"
-
 # pthread support
 
 # Check whether --with-pthread or --without-pthread was given.
@@ -6473,10 +6471,10 @@ _ACEOF
 	static_modules=
 	shared_modules=
 	disabled_modules=
-	source .config; \
+	. .config; \
 	for mod in $available_modules; do \
 		echo "option=\$module_$mod" > .temp; \
-		source .temp; \
+		. .temp; \
 		if test -z "$option"; then \
 			option=m; \
 		fi; \
@@ -6489,11 +6487,16 @@ _ACEOF
 	rm .temp
 
 
+cat >>confdefs.h <<_ACEOF
+#define STATIC_MODULES "$static_modules"
+_ACEOF
+
+
 	echo
 	echo " ******************************************"
 	echo " * Configuring modules, please wait . . . *"
 	echo " ******************************************"
-	for mod in $shared_modules; do \
+	for mod in $static_module $shared_modules; do \
 		if test -f modules/$mod/spec; then \
 			echo; \
 			echo ">>> Configuring $mod module..."; \
@@ -6501,7 +6504,7 @@ _ACEOF
 			MODULE_LIBS_PATH=; \
 			MODULE_INCLUDES=; \
 			MODULE_INCLUDES_PATH=; \
-			source modules/$mod/spec; \
+			. modules/$mod/spec; \
 			echo "MODULE_LIBS:          $MODULE_LIBS"; \
 			echo "MODULE_LIBS_PATH:     $MODULE_LIBS_PATH"; \
 			echo "MODULE_INCLUDES:      $MODULE_INCLUDES"; \
@@ -6774,6 +6777,7 @@ fi
 
 
 
+MY_SUBDIRS="$MY_SUBDIRS kadu translations varia"
 
 
 

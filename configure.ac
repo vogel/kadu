@@ -121,10 +121,10 @@ AC_DEFUN(CHECK_MODULES_CONFIGURATION,[
 	static_modules=
 	shared_modules=
 	disabled_modules=
-	source .config; \
+	. .config; \
 	for mod in $available_modules; do \
 		echo "option=\$module_$mod" > .temp; \
-		source .temp; \
+		. .temp; \
 		if test -z "$option"; then \
 			option=m; \
 		fi; \
@@ -142,7 +142,7 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 	echo " ******************************************"
 	echo " * Configuring modules, please wait . . . *"
 	echo " ******************************************"
-	for mod in $shared_modules; do \
+	for mod in $static_module $shared_modules; do \
 		if test -f modules/$mod/spec; then \
 			echo; \
 			echo ">>> Configuring $mod module..."; \
@@ -150,7 +150,7 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 			MODULE_LIBS_PATH=; \
 			MODULE_INCLUDES=; \
 			MODULE_INCLUDES_PATH=; \
-			source modules/$mod/spec; \
+			. modules/$mod/spec; \
 			echo "MODULE_LIBS:          $MODULE_LIBS"; \
 			echo "MODULE_LIBS_PATH:     $MODULE_LIBS_PATH"; \
 			echo "MODULE_INCLUDES:      $MODULE_INCLUDES"; \
@@ -338,8 +338,6 @@ AM_CONDITIONAL(VOICE,[test "$enable_voice" = "yes"])
 AC_SUBST(GSM_LIBS)
 AC_SUBST(GSM_INCLUDES)
 
-MY_SUBDIRS="$MY_SUBDIRS kadu translations varia"
-
 # pthread support
 AC_ARG_WITH(pthread,[  --without-pthread       do not use pthread in libgadu resolver])
 if test -z "$with_pthread"; then
@@ -388,6 +386,7 @@ if test "$enable_modules" = "yes"; then
 	MY_SUBDIRS="$MY_SUBDIRS modules"
 	FIND_AVAILABLE_MODULES()
 	CHECK_MODULES_CONFIGURATION()
+	AC_DEFINE_UNQUOTED(STATIC_MODULES,"$static_modules",[List of modules compiled-in into Kadu binary])
 	PROCESS_MODULE_SPEC_FILES()
 fi
 AM_CONDITIONAL(MODULES,[test "$enable_modules" = "yes"])
@@ -395,6 +394,7 @@ AC_SUBST(MODULES_LDFLAGS)
 AC_SUBST(shared_modules)
 AC_SUBST(static_modules)
 
+MY_SUBDIRS="$MY_SUBDIRS kadu translations varia"
 AC_SUBST(MY_SUBDIRS)
 
 

@@ -147,6 +147,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   gg 6.0.0.132 (chilek)
 * w opcjach powiadamiania mozna wybierac wielu uzytkownikow (michal)
 * usuwanie polskich ogonków przy eksporcie listy kontaktów na serwer (chilek)
+* zaaplikowana poprawka - wojtekka - kompatybilnosci z shellem sh (adrian)
+* prace nad statycznymi modulami: lista tych modulów w pliku kadu-config.h,
+  najpierw kompiluj± siê modu³y a potem j±dro kadu (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
