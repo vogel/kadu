@@ -518,8 +518,12 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 				{
 					kdebugmf(KDEBUG_INFO, "I got image probably\n");
 					actimage = (struct gg_msg_richtext_image*)(cformats);
-					kdebugm(KDEBUG_INFO, QString("Image size: %1, crc32: %2\n").arg(actimage->size).arg(actimage->crc32).local8Bit().data());
-					if (sender!=0)
+					kdebugm(KDEBUG_INFO, "Image size: %d, crc32: %d\n", actimage->size, actimage->crc32);
+					
+					//ukrywamy siê przed spy'em i ekg2
+					if (actimage->size == 20 && (actimage->crc32 == 4567 || actimage->crc32==99))
+						kdebugm(KDEBUG_INFO, "scanning for invisibility detected ;)\n");
+					else if (sender!=0)
 					{
 						kdebugm(KDEBUG_INFO, "Someone sends us an image\n");
 						QString file_name =

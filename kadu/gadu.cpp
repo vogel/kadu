@@ -1272,6 +1272,8 @@ void GaduProtocol::messageReceived(int msgclass, UinsList senders, QCString &msg
 	}
 
 	mesg = formatGGMessage(mesg, formats.size(), formats.data(), senders[0]);
+	if (mesg.isEmpty())
+		return;
 
 	if(!userlist.containsUin(senders[0]))
 		userlist.addAnonymous(senders[0]);
