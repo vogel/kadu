@@ -181,7 +181,9 @@ class GaduSocketNotifiers : public QObject //SocketNotifiers
 		void connected();
 		void disconnected();
 		void error(GaduError);
+		void pubdirReplyReceived(gg_pubdir50_t);
 		void systemMessageReceived(QString &);
+		void userlistReplyReceived(char, char *);
 };
 
 class GaduProtocol : public QObject

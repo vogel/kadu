@@ -61,8 +61,6 @@ class EventManager : public QObject
 		void imageReceivedAndSavedSlot(UinType sender,uint32_t size,uint32_t crc32,const QString& path);
 		void ackReceivedSlot(int seq);
 		void dccConnectionReceivedSlot(const UserListElement& sender);
-		void pubdirReplyReceivedSlot(gg_pubdir50_t res);
-		void userlistReplyReceivedSlot(char type, char *reply);
 
 	public:
 		EventManager();

@@ -224,6 +224,9 @@ void PersonalInfoDialog::fillFields(SearchResults& searchResults, int seq, int)
 			kdebug("PersonalInfoDialog::fillFields(): Done writing info.\n");
 			State = READY;
 			break;
+
+		default:
+			break;
 	}
 
 	setEnabled(true);

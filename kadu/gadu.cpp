@@ -337,8 +337,10 @@ GaduSocketNotifiers::GaduSocketNotifiers()
 	connect(&event_manager, SIGNAL(connectionBroken()), this, SLOT(proteza_connectionBroken()));
 	connect(&event_manager, SIGNAL(connectionTimeout()), this, SLOT(proteza_connectionTimeout()));
 	connect(&event_manager, SIGNAL(disconnected()), this, SIGNAL(disconnected()));
+	connect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)), this, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)));
 	connect(&event_manager, SIGNAL(systemMessageReceived(QString &, QDateTime &, int, void *)), this,
 		SLOT(proteza_systemMessageReceived(QString &, QDateTime &, int, void *)));
+	connect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)), this, SIGNAL(userlistReplyReceived(char, char *)));
 }
 
 GaduSocketNotifiers::~GaduSocketNotifiers()
@@ -409,12 +411,9 @@ GaduProtocol::GaduProtocol() : QObject()
 	connect(SocketNotifiers, SIGNAL(connected()), this, SLOT(connectedSlot()));
 	connect(SocketNotifiers, SIGNAL(disconnected()), this, SIGNAL(disconnected()));
 	connect(SocketNotifiers, SIGNAL(error(GaduError)), this, SLOT(errorSlot(GaduError)));
+	connect(SocketNotifiers, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)), this, SLOT(newResults(gg_pubdir50_t)));
 	connect(SocketNotifiers, SIGNAL(systemMessageReceived(QString &)), this, SIGNAL(systemMessageReceived(QString &)));
-
-	connect(&event_manager, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
-		this, SLOT(newResults(gg_pubdir50_t)));
-	connect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)),
-		this, SLOT(userListReplyReceived(char, char *)));
+	connect(SocketNotifiers, SIGNAL(userlistReplyReceived(char, char *)), this, SLOT(userListReplyReceived(char, char *)));
 }
 
 GaduProtocol::~GaduProtocol()

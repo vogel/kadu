@@ -102,10 +102,6 @@ EventManager::EventManager()
 	connect(this,SIGNAL(ackReceived(int)),this,SLOT(ackReceivedSlot(int)));
 	connect(this,SIGNAL(dccConnectionReceived(const UserListElement&)),
 		this,SLOT(dccConnectionReceivedSlot(const UserListElement&)));
-	connect(this,SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
-		this,SLOT(pubdirReplyReceivedSlot(gg_pubdir50_t)));
-	connect(this,SIGNAL(userlistReplyReceived(char, char *)),
-		this,SLOT(userlistReplyReceivedSlot(char, char *)));
 }
 
 void EventManager::systemMessageReceivedSlot(QString &msg, QDateTime &time,
@@ -424,16 +420,6 @@ void EventManager::dccConnectionReceivedSlot(const UserListElement& sender)
 			dcc->initializeNotifiers();
 		}
 	}
-}
-
-void EventManager::pubdirReplyReceivedSlot(gg_pubdir50_t res)
-{
-	kdebug("EventManager::pubdirReplyReceivedSlot(): got pubdir reply.\n");
-}
-
-void EventManager::userlistReplyReceivedSlot(char type, char *reply)
-{
-	kdebug("EventManager::userlistReplyReceivedSlot(): got userlist reply.\n");
 }
 
 void EventManager::connectionTimeoutTimerSlot() {
