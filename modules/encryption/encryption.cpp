@@ -187,6 +187,7 @@ void EncryptionManager::receivedMessageFilter(const UinsList& senders,char* msg)
 		{
 			strcpy(msg,"[SSL]\n");
 			strcat(msg, decoded);
+			free(decoded);
 		}
 	}
 }
