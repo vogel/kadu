@@ -208,12 +208,16 @@ void UserInfo::writeUserlist() {
 								gg_remove_notify_ex(sess, userlist[this_index].uin, GG_USER_BLOCKED);
 								gg_add_notify_ex(sess, userlist[this_index].uin, GG_USER_NORMAL);
 								}
+							else
+								if (userlist[this_index].anonymous)
+									gg_add_notify(sess, userlist[this_index].uin);
 				}
 			userlist.changeUserInfo(userlist[this_index].altnick,
 				e_firstname->text(),e_lastname->text(),
 				e_nickname->text(),e_altnick->text(),
 				e_mobile->text(), c_blocking->isChecked(),
 				c_offtouser->isChecked(), c_notify->isChecked(), e_group->text());
+			userlist[this_index].anonymous = false;
 			userlist.writeToFile();
 			close();
 			break;

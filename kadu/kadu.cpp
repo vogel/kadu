@@ -255,7 +255,8 @@ void deletePendingMessage(int nr) {
 	fprintf(stderr, "KK deletePendingMessage(%d), counts: %d\n",nr,pending.count());
 	if (!pending.pendingMsgs()) {
 		fprintf(stderr, "KK pendingMessage is false\n");
-		dw->setType((char **)gg_xpm[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);
+		if (dw)
+			dw->setType((char **)gg_xpm[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);
 		}
 }
 
@@ -525,7 +526,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	KIconLoader *loader = KGlobal::iconLoader();
 
 	dockppm->insertItem(loader->loadIcon("exit",KIcon::Small), i18n("&Exit Kadu"), 9);
-	connect(dockppm, SIGNAL(activated(int)), dw, SLOT(dockletChange(int)));
+	if (config.dock)
+		connect(dockppm, SIGNAL(activated(int)), dw, SLOT(dockletChange(int)));
 
 	descrtb = new QTextBrowser(centralFrame, "descrtb");
 	descrtb->setFrameStyle(QFrame::NoFrame);
@@ -651,7 +653,7 @@ void Kadu::setActiveGroup(const QString& group)
 				if(user_group==group)
 					belongsToGroup=true;
 		};
-		if (belongsToGroup && !userlist[i].anonymous)
+		if (belongsToGroup && (!userlist[i].anonymous || !dw))
 			userbox->addUser(userlist[i].altnick);
 	};
 	UserBox::all_refresh();
@@ -691,9 +693,10 @@ void Kadu::removeUser(QString &username, bool permanently = false) {
 
 	UserBox::all_removeUser(username);	
 	UserBox::all_refresh();
-	
+
 	UserListElement user = userlist.byAltNick(username);
-	gg_remove_notify(sess, user.uin);
+	if (!user.anonymous)
+		gg_remove_notify(sess, user.uin);
     	userlist.removeUser(user.altnick);
 
 	switch (QMessageBox::information(kadu, "Kadu", i18n("Save current userlist to file?"), i18n("Yes"), i18n("No"), QString::null, 0, 1) ) {
@@ -716,19 +719,22 @@ void Kadu::blink() {
 	else
 		if (!doBlink && !socket_active) {
 	    		statuslabel->setPixmap(QPixmap((const char**)gg_inact_xpm) );
-	    		dw->setType((char **)gg_inact_xpm);
+	    		if (dw)
+				dw->setType((char **)gg_inact_xpm);
 	    		return;
 	    		}
 
 	if (blinkOn) {
 		statuslabel->setPixmap(QPixmap((const char**)gg_inact_xpm) );
-		dw->setType((char **)gg_inact_xpm);
+		if (dw)
+			dw->setType((char **)gg_inact_xpm);
 		blinkOn = false;
 		}
 	else {
 		i = statusGGToStatusNr(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 		statuslabel->setPixmap(QPixmap((const char **)gg_xpm[i]));
-		dw->setType((char **)gg_xpm[i]);
+		if (dw)
+			dw->setType((char **)gg_xpm[i]);
 		blinkOn = true;
 		}
 
@@ -794,7 +800,8 @@ void Kadu::addUser(const QString& FirstName, const QString& LastName,
 
 	refreshGroupTabBar();
 
-	gg_add_notify(sess, Uin.toInt());
+	if (!Anonymous)
+		gg_add_notify(sess, Uin.toInt());
 };
 
 int Kadu::openChat(UinsList senders) {
@@ -1130,8 +1137,12 @@ void Kadu::sendMessage(QListBoxItem *item) {
 				for (j = 0; j < elem.uins.count(); j++)
 					if (!userlist.containsUin(elem.uins[j])) {
 						tmp = QString::number(pending[i].uins[j]);
-						userlist.addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL,
-							false, false, true, "", "", true);
+						if (dw)
+							userlist.addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL,
+								false, false, true, "", "", true);
+						else
+							addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL,
+								"", "", true);
 						}
 				k = openChat(elem.uins);
 				chats[k].ptr->formatMessage(false,
@@ -1256,7 +1267,7 @@ void Kadu::setCurrentStatus(int status) {
 	dockppm->setItemEnabled(7, statusnr != 6);
 	statuslabel->setPixmap(QPixmap((const char**)gg_xpm[statusnr]));
 	setIcon(QPixmap((const char**)gg_xpm[statusnr]));
-	if (!pending.pendingMsgs())
+	if (!pending.pendingMsgs() && dw)
 		dw->setType((char **)gg_xpm[statusnr]);
 }
 
@@ -1746,7 +1757,8 @@ void Kadu::disconnectNetwork() {
 
 	socket_active = false;
 	statuslabel->setPixmap(QPixmap((const char**)gg_inact_xpm));
-	dw->setType((char **)gg_inact_xpm);
+	if (dw)
+		dw->setType((char **)gg_inact_xpm);
 	setIcon(QPixmap((const char**)gg_inact_xpm));
 
 }
@@ -1852,7 +1864,7 @@ void Kadu::createStatusPopupMenu() {
 }
 
 void Kadu::closeEvent(QCloseEvent *e) {
-	if (!close_permitted && config.dock) {
+	if (!close_permitted && dw) {
 		e->ignore();
 		hide();
 		}

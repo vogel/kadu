@@ -1,5 +1,9 @@
 +++ wersja 0.3.3-pre4
 * przy imporcie listy u¿ytkowników ustawiamy domy¶lne atrybuty u¿ytkowników
+* poprawki zwi±zane z zarz±dzaniem widoczno¶ci± ikony programu w tray'u
+* je¶li ikona programu jest widoczna w tray'u to wiadomo¶ci od u¿ytkowniów
+  anonimowych nie powoduj± dodawania tych u¿ytkowników do listy; w przeciwnym przypadku
+  u¿ytkownicy s± dodawani do listy (serwer GG nie jest o tym informowany!)
 
 +++ wersja 0.3.3-pre3
 * CTRL + klik dowolnego przycisku myszki na ikonce w tray'u powoduje

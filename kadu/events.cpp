@@ -94,9 +94,12 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 			if (config.ignoreanonusers)
 				return;
 			nick = QString::number(senders[0]);
-//			kadu->addUser("", "", nick, nick, "", nick, GG_STATUS_NOT_AVAIL, "", "", true);
-			userlist.addUser("", "", nick, nick, "", nick, GG_STATUS_NOT_AVAIL,
-				false, false, true, "", "", true);
+			if (dw)
+				userlist.addUser("", "", nick, nick, "", nick, GG_STATUS_NOT_AVAIL,
+					false, false, true, "", "", true);
+			else
+				kadu->addUser("", "", nick, nick, "", nick, GG_STATUS_NOT_AVAIL,
+					"", "", true);
 			}
 	if (config.logmessages && senders[0] != config.uin)
 		appendHistory(senders, senders[0], msg, FALSE, time);
@@ -275,9 +278,9 @@ void eventGotUserlist(struct gg_event *e) {
 
 		if (!userlist.containsUin(n->uin)) {
 			fprintf(stderr, "KK eventGotUserlist(): buddy %d not in list. Damned server!\n", n->uin);
-  			gg_remove_notify(sess, n->uin);
-    			n++;
-    			continue;
+			gg_remove_notify(sess, n->uin);
+			n++;
+			continue;
 			}
 
 		user.ip = n->remote_ip;

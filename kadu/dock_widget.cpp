@@ -92,8 +92,12 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 					for (j = 0; j < elem.uins.count(); j++)
 						if (!userlist.containsUin(elem.uins[j])) {
 							tmp = QString::number(elem.uins[j]);
-							userlist.addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL,
-								false, false, true, "", "", true);
+							if (config.dock)
+								userlist.addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL,
+									false, false, true, "", "", true);
+							else
+								kadu->addUser("", "", tmp, tmp, "", tmp, GG_STATUS_NOT_AVAIL,
+									"", "", true);
 							}
 					k = kadu->openChat(elem.uins);
 					chats[k].ptr->formatMessage(false, userlist.byUin(elem.uins[0]).altnick,
@@ -240,6 +244,6 @@ void DockHint::remove_hint() {
 	move(p);
 }
 
-DockWidget* dw;
+DockWidget *dw = NULL;
 DockHint *tip;
 #include "dock_widget.moc"
