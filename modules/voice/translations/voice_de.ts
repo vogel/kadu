@@ -7,7 +7,7 @@
     </message>
 </context>
 <context>
-    <name>DccVoiceDialog</name>
+    <name>VoiceChatDialog</name>
     <message>
         <source>Voice chat</source>
         <translation>Telephonat</translation>
@@ -23,9 +23,10 @@
         <source>Voice chat</source>
         <translation>Telephonat</translation>
     </message>
-</context>
-<context>
-    <name>VoiceSocket</name>
+    <message>
+        <source>User %1 wants to talk with you. Do you accept it?</source>
+        <translation>Benutzer %1 will mit Ihnen reden. Wollen Sie das Gespräch anfangen?</translation>
+    </message>
     <message>
         <source>Incoming voice chat</source>
         <translation>Es kommt ein Telefonat an</translation>
@@ -37,10 +38,6 @@
     <message>
         <source>No</source>
         <translation>Nein</translation>
-    </message>
-    <message>
-        <source>User %1 wants to talk with you. Do you accept it?</source>
-        <translation>Benutzer %1 will mit Ihnen reden. Wollen Sie das Gespräch anfangen?</translation>
     </message>
 </context>
 </TS>
