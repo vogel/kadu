@@ -719,6 +719,14 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <source>Show avaliable in bold</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Icon theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Icon paths</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1336,6 +1344,21 @@ Your password is incorrect !!!</source>
     </message>
 </context>
 <context>
+    <name>IconsManager</name>
+    <message>
+        <source>Default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Icons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please restart kadu to apply new icon theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Ignored</name>
     <message>
         <source>Manage ignored users</source>
@@ -1654,11 +1677,6 @@ Check your internet connection.</source>
 <context>
     <name>ModulesManager</name>
     <message>
-        <source>Cannot load module library.
-Maybe it&apos;s incorrecty compiled.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Manage Modules</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1669,6 +1687,11 @@ Maybe it&apos;s incorrecty compiled.</source>
     <message>
         <source>Cannot find required functions.
 Maybe it&apos;s not Kadu-compatible Module.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot load %1 module library.
+Maybe it&apos;s incorrecty compiled.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

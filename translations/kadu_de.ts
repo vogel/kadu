@@ -725,6 +725,14 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
         <source>Show avaliable in bold</source>
         <translation>Zeige erreichbare fett gedruckt</translation>
     </message>
+    <message>
+        <source>Icon theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Icon paths</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1343,6 +1351,21 @@ Dein Passwort ist falsch!!!</translation>
     </message>
 </context>
 <context>
+    <name>IconsManager</name>
+    <message>
+        <source>Default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Icons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please restart kadu to apply new icon theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Ignored</name>
     <message>
         <source>Manage ignored users</source>
@@ -1663,12 +1686,6 @@ Check your internet connection.</source>
 <context>
     <name>ModulesManager</name>
     <message>
-        <source>Cannot load module library.
-Maybe it&apos;s incorrecty compiled.</source>
-        <translation>Modul-Bibliothek kann nich geladen werden.
-Möglicherweise ist sie falsch kompiliert.</translation>
-    </message>
-    <message>
         <source>&amp;Manage Modules</source>
         <translation>&amp;Manage Module</translation>
     </message>
@@ -1681,6 +1698,11 @@ Möglicherweise ist sie falsch kompiliert.</translation>
 Maybe it&apos;s not Kadu-compatible Module.</source>
         <translation>Ich kann die notwendigen Funktionen nicht finden.
 Vielleicht ist es kein Kadu-kompatibles Modul.</translation>
+    </message>
+    <message>
+        <source>Cannot load %1 module library.
+Maybe it&apos;s incorrecty compiled.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1966,6 +1988,10 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
     <message>
         <source>Select user first</source>
         <translation>Markiere zuerst Benutzer</translation>
+    </message>
+    <message>
+        <source> </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

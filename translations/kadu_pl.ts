@@ -725,6 +725,14 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <source>Show avaliable in bold</source>
         <translation>Dostępni pogrubioną czcionką</translation>
     </message>
+    <message>
+        <source>Icon theme</source>
+        <translation>Zestaw ikon</translation>
+    </message>
+    <message>
+        <source>Icon paths</source>
+        <translation>Ścieżka do ikon</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1343,6 +1351,22 @@ Twoje hasło jest nieprawidłowe!!!</translation>
     </message>
 </context>
 <context>
+    <name>IconsManager</name>
+    <message>
+        <source>Default</source>
+        <translation>Domyślny</translation>
+    </message>
+    <message>
+        <source>Icons</source>
+        <translation>Ikony</translation>
+    </message>
+    <message>
+        <source>Please restart kadu to apply new icon theme</source>
+        <translation>Proszę zrestartować Kadu
+by zmiany odniosły skutek</translation>
+    </message>
+</context>
+<context>
     <name>Ignored</name>
     <message>
         <source>Manage ignored users</source>
@@ -1663,12 +1687,6 @@ Sprawdź swoje połączenie internetowe.</translation>
 <context>
     <name>ModulesManager</name>
     <message>
-        <source>Cannot load module library.
-Maybe it&apos;s incorrecty compiled.</source>
-        <translation>Nie mogę załadować bibloteki modułów.
-Być może jest nieprawidłowo skompilowana.</translation>
-    </message>
-    <message>
         <source>&amp;Manage Modules</source>
         <translation>Z&amp;arządca Modułów</translation>
     </message>
@@ -1681,6 +1699,12 @@ Być może jest nieprawidłowo skompilowana.</translation>
 Maybe it&apos;s not Kadu-compatible Module.</source>
         <translation>Nie znaleziono wymaganej funkcji.
 Być może nie jest to moduł kompatybilny z Kadu</translation>
+    </message>
+    <message>
+        <source>Cannot load %1 module library.
+Maybe it&apos;s incorrecty compiled.</source>
+        <translation>Nie mogę załadować modułu %1.
+Być może jest nieprawidłowo skompilowany.</translation>
     </message>
 </context>
 <context>
@@ -2200,7 +2224,7 @@ czasowo wyłączona lub zmieniła zasady dostępu.</translation>
     </message>
     <message>
         <source>default</source>
-        <translation>domyślny</translation>
+        <translation>Domyślny</translation>
     </message>
 </context>
 <context>

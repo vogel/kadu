@@ -725,6 +725,14 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <source>Show avaliable in bold</source>
         <translation>Mostra disponibile in grassetto</translation>
     </message>
+    <message>
+        <source>Icon theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Icon paths</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1343,6 +1351,21 @@ La password è errata!!!</translation>
     </message>
 </context>
 <context>
+    <name>IconsManager</name>
+    <message>
+        <source>Default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Icons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please restart kadu to apply new icon theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Ignored</name>
     <message>
         <source>Manage ignored users</source>
@@ -1663,12 +1686,6 @@ Controllare connessione a Internet.</translation>
 <context>
     <name>ModulesManager</name>
     <message>
-        <source>Cannot load module library.
-Maybe it&apos;s incorrecty compiled.</source>
-        <translation>Impossibile caricare libreria del modulo.
-Propbabilmente è stata compilata male.</translation>
-    </message>
-    <message>
         <source>&amp;Manage Modules</source>
         <translation>Gestione &amp;Moduli</translation>
     </message>
@@ -1681,6 +1698,11 @@ Propbabilmente è stata compilata male.</translation>
 Maybe it&apos;s not Kadu-compatible Module.</source>
         <translation>Le funzioni richieste non si trovano
 Probabilmente Modulo non è compatibile.</translation>
+    </message>
+    <message>
+        <source>Cannot load %1 module library.
+Maybe it&apos;s incorrecty compiled.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1966,6 +1988,10 @@ Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation
     <message>
         <source>Select user first</source>
         <translation>Prima scegli l&apos;utente</translation>
+    </message>
+    <message>
+        <source> </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
