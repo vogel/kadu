@@ -64,6 +64,7 @@ class EventManager : public QObject
 		void chatMsgReceived2Slot(UinsList senders,const QString& msg,time_t time);
 		void imageRequestReceivedSlot(uin_t sender,uint32_t size,uint32_t crc32);
 		void imageReceivedSlot(uin_t sender,uint32_t size,uint32_t crc32,const QString& filename,const char* data);
+		void imageReceivedAndSavedSlot(uin_t sender,uint32_t size,uint32_t crc32,const QString& path);
 		void ackReceivedSlot(int seq);
 		void dccConnectionReceivedSlot(const UserListElement& sender);
 		void pubdirReplyReceivedSlot(gg_pubdir50_t res);
@@ -142,6 +143,10 @@ class EventManager : public QObject
 			Otrzymano dane obrazka
 		**/
 		void imageReceived(uin_t sender,uint32_t size,uint32_t crc32,const QString& filename,const char* data);
+		/**
+			Otrzymano dane obrazka i zapisano go do pliku.
+		**/		
+		void imageReceivedAndSaved(uin_t sender,uint32_t size,uint32_t crc32,const QString& path);
 		/**
 			Otrzymano potwierdzenie wiadomo¶ci
 		**/

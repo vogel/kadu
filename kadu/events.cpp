@@ -102,6 +102,8 @@ EventManager::EventManager()
 		this,SLOT(imageRequestReceivedSlot(uin_t,uint32_t,uint32_t)));
 	connect(this,SIGNAL(imageReceived(uin_t,uint32_t,uint32_t,const QString&,const char*)),
 		this,SLOT(imageReceivedSlot(uin_t,uint32_t,uint32_t,const QString&,const char*)));
+	connect(this, SIGNAL(imageReceivedAndSaved(uin_t,uint32_t,uint32_t,const QString&)),
+		this, SLOT(imageReceivedAndSavedSlot(uin_t,uint32_t,uint32_t,const QString&)));
 	connect(this,SIGNAL(ackReceived(int)),this,SLOT(ackReceivedSlot(int)));
 	connect(this,SIGNAL(dccConnectionReceived(const UserListElement&)),
 		this,SLOT(dccConnectionReceivedSlot(const UserListElement&)));
@@ -291,21 +293,24 @@ void EventManager::chatMsgReceived2Slot(UinsList senders,const QString& msg,time
 void EventManager::imageRequestReceivedSlot(uin_t sender,uint32_t size,uint32_t crc32)
 {
 	kdebug(QString("Received image request. sender: %1, size: %2, crc32: %3\n").arg(sender).arg(size).arg(crc32).local8Bit().data());
-	image_queue.sendImage(sender,size,crc32);
+	gadu_images_manager.sendImage(sender,size,crc32);
 }	
 
 void EventManager::imageReceivedSlot(uin_t sender,uint32_t size,uint32_t crc32,const QString& filename,const char* data)
 {
 	kdebug(QString("Received image. sender: %1, size: %2, crc32: %3,filename: %4\n").arg(sender).arg(size).arg(crc32).arg(filename).local8Bit().data());
-	QString path = ggPath("images");
-	kdebug("Creating directory: %s\n",path.local8Bit().data());
-	QDir().mkdir(path);
-	QString file_name = QString("%1-%2-%3-%4").arg(sender).arg(size).arg(crc32).arg(filename);
-	kdebug("Saving image as file: %s\n",file_name.local8Bit().data());
-	QFile f(path+"/"+file_name);
-	f.open(IO_WriteOnly);
-	f.writeBlock(data,size);
+	QString full_path = gadu_images_manager.saveImage(sender,size,crc32,filename,data);
+	emit imageReceivedAndSaved(sender,size,crc32,full_path);
 }	
+
+void EventManager::imageReceivedAndSavedSlot(uin_t sender,uint32_t size,uint32_t crc32,const QString& path)
+{
+	for (int i = 0; i < pending.count(); i++)
+	{
+		PendingMsgs::Element& e = pending[i];
+		e.msg = gadu_images_manager.replaceLoadingImages(e.msg,sender,size,crc32);
+	}
+}
 
 void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 {

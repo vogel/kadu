@@ -358,25 +358,51 @@ class CreateNotifier : public QObject
 		void objectCreated(QObject* new_object);
 };
 
-class ImageQueue
+class GaduImagesManager
 {
 	private:
-		struct QueuedImage
+		struct ImageToSend
 		{
 			uint32_t size;
 			uint32_t crc32;
 			QString file_name;
 			char* data;		
 		};
-		QValueList<QueuedImage> QueuedImages;
-		
+		QValueList<ImageToSend> ImagesToSend;
+		struct SavedImage
+		{
+			uint32_t size;
+			uint32_t crc32;
+			QString file_name;
+		};
+		QValueList<SavedImage> SavedImages;
+
 	public:
-		void addImage(const QString& file_name,uint32_t& size,uint32_t& crc32);
+		static QString loadingImageHtml(uin_t uin,uint32_t size,uint32_t crc32);
+		static QString imageHtml(const QString& file_name);
+		void addImageToSend(const QString& file_name,uint32_t& size,uint32_t& crc32);
 		void sendImage(uin_t uin,uint32_t size,uint32_t crc32);
-		QString getImageFileName(uint32_t size,uint32_t crc32);
+		/**
+			Szuka zakolejkowanego obrazka i zwraca jego nazwê pliku
+			Zwraca ci±g pusty, je¶li obrazek nie zosta³ w tej sesji
+			zakolejkowany do wys³ania.
+		**/
+		QString getImageToSendFileName(uint32_t size,uint32_t crc32);
+		/**
+			Zapisuje obrazek w katalogu .gg/images.
+			Zwraca pe³n± ¶cie¿kê do zapisanego obrazka.
+		**/
+		QString saveImage(uin_t sender,uint32_t size,uint32_t crc32,const QString& filename,const char* data);
+		/**
+			Szuka zapisanego obrazka i zwraca jego nazwê pliku
+			wraz ze ¶cie¿k±. Zwraca ci±g pusty, je¶li obrazek
+			nie zosta³ w tej sesji zapisany.
+		**/
+		QString getSavedImageFileName(uint32_t size,uint32_t crc32);
+		QString replaceLoadingImages(const QString& text,uin_t sender,uint32_t size,uint32_t crc32);
 };
 
-extern ImageQueue image_queue;
+extern GaduImagesManager gadu_images_manager;
 
 class PixmapPreview : public QLabel, public QFilePreview
 {

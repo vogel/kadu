@@ -393,20 +393,33 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, u
 					kdebug(QString("Image size: %1, crc32: %2\n").arg(actimage->size).arg(actimage->crc32).local8Bit().data());
 					if (sender!=0)
 					{
-						kdebug("Someone sends us an image\n");							
-						gadu->sendImageRequest(sender,
-							actimage->size,
-							actimage->crc32);
-						mesg.append("[[[OBRAZEK]]]");
+						kdebug("Someone sends us an image\n");
+						QString file_name =
+							gadu_images_manager.getSavedImageFileName(
+								actimage->size,
+								actimage->crc32);
+						if(file_name != "")
+						{
+							kdebug("This image was already saved\n");
+							mesg.append(GaduImagesManager::imageHtml(file_name));
+						}
+						else
+						{
+							gadu->sendImageRequest(sender,
+								actimage->size,
+								actimage->crc32);
+							mesg.append(GaduImagesManager::loadingImageHtml(
+								sender,actimage->size,actimage->crc32));
+						}
 					}
 					else
 					{
 						kdebug("It is my message and my image\n");
 						QString file_name =
-							image_queue.getImageFileName(
+							gadu_images_manager.getImageToSendFileName(
 								actimage->size,
 								actimage->crc32);
-						mesg.append("<img src=\""+file_name+"\" static=\"1\"/>");
+						mesg.append(GaduImagesManager::imageHtml(file_name));
 					}
 					cformats += sizeof(gg_msg_richtext_image);
 					formats_length -= sizeof(gg_msg_richtext_image);
@@ -500,7 +513,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 			QString file_name = mesg.mid(image_idx+7,idx_end-image_idx-7);
 			uint32_t size;
 			uint32_t crc32;
-			image_queue.addImage(file_name,size,crc32);
+			gadu_images_manager.addImageToSend(file_name,size,crc32);
 			mesg.remove(image_idx,idx_end-image_idx+1);
 			actformant.format.position = image_idx;
 			actformant.format.font = GG_FONT_IMAGE;
@@ -1965,10 +1978,21 @@ void CreateNotifier::notify(QObject* new_object)
 	emit objectCreated(new_object);
 }
 
-void ImageQueue::addImage(const QString& file_name,uint32_t& size,uint32_t& crc32)
+QString GaduImagesManager::imageHtml(const QString& file_name)
+{
+	return QString("<img src=\"%1\" static=\"1\"/>").arg(file_name);
+}
+
+QString GaduImagesManager::loadingImageHtml(uin_t uin,uint32_t size,uint32_t crc32)
+{
+	return QString("<img src=\"loading.png\" static=\"1\" gg_sender=\"%1\" gg_size=\"%2\" gg_crc=\"%3\"/>")
+		.arg(uin).arg(size).arg(crc32);
+}
+
+void GaduImagesManager::addImageToSend(const QString& file_name,uint32_t& size,uint32_t& crc32)
 {
 	kdebugf();
-	QueuedImage img;
+	ImageToSend img;
 	QFile f(file_name);
 	kdebug("Opening file \"%s\"\n",file_name.local8Bit().data());
 	if(!f.open(IO_ReadOnly))
@@ -1982,17 +2006,17 @@ void ImageQueue::addImage(const QString& file_name,uint32_t& size,uint32_t& crc3
 	kdebug("Reading file\n");
 	f.readBlock(img.data,img.size);
 	img.crc32 = gg_crc32(0,(const unsigned char*)img.data,img.size);
-	kdebug("Inserting into images queue: filename=%s, size=%i, crc32=%i\n\n",img.file_name.local8Bit().data(),img.size,img.crc32);
-	QueuedImages.append(img);
+	kdebug("Inserting into images to send: filename=%s, size=%i, crc32=%i\n\n",img.file_name.local8Bit().data(),img.size,img.crc32);
+	ImagesToSend.append(img);
 	size = img.size;
 	crc32 = img.crc32;
 }
 
-void ImageQueue::sendImage(uin_t uin,uint32_t size,uint32_t crc32)
+void GaduImagesManager::sendImage(uin_t uin,uint32_t size,uint32_t crc32)
 {
 	kdebugf();
-	kdebug("Searching images queue: size=%i, crc32=%i\n",size,crc32);
-	for(QValueList<QueuedImage>::Iterator i=QueuedImages.begin(); i!=QueuedImages.end(); i++)
+	kdebug("Searching images to send: size=%u, crc32=%u\n",size,crc32);
+	for(QValueList<ImageToSend>::Iterator i=ImagesToSend.begin(); i!=ImagesToSend.end(); i++)
 	{
 		if ((*i).size==size && (*i).crc32==crc32)
 		{
@@ -2000,18 +2024,39 @@ void ImageQueue::sendImage(uin_t uin,uint32_t size,uint32_t crc32)
 			gadu->sendImage(uin,(*i).file_name,(*i).size,(*i).data);
 			delete[] (*i).data;
 			kdebug("Removing from images queue\n");	
-			QueuedImages.remove(i);
+			ImagesToSend.remove(i);
 			return;
 		}
 	}
 	kdebug("Image data not found\n");
 }
 
-QString ImageQueue::getImageFileName(uint32_t size,uint32_t crc32)
+QString GaduImagesManager::saveImage(uin_t sender,uint32_t size,uint32_t crc32,const QString& filename,const char* data)
 {
 	kdebugf();
-	kdebug("Searching images queue: size=%i, crc32=%i\n",size,crc32);
-	for(QValueList<QueuedImage>::Iterator i=QueuedImages.begin(); i!=QueuedImages.end(); i++)
+	QString path = ggPath("images");
+	kdebug("Creating directory: %s\n",path.local8Bit().data());
+	QDir().mkdir(path);
+	QString file_name = QString("%1-%2-%3-%4").arg(sender).arg(size).arg(crc32).arg(filename);
+	kdebug("Saving image as file: %s\n",file_name.local8Bit().data());
+	SavedImage img;
+	img.size = size;
+	img.crc32 = crc32;
+	img.file_name = path+"/"+file_name;
+	QFile f(img.file_name);
+	f.open(IO_WriteOnly);
+	f.writeBlock(data,size);
+	f.close();
+	SavedImages.append(img);
+	kdebugf2();
+	return img.file_name;
+}	
+
+QString GaduImagesManager::getImageToSendFileName(uint32_t size,uint32_t crc32)
+{
+	kdebugf();
+	kdebug("Searching images to send: size=%u, crc32=%u\n",size,crc32);
+	for(QValueList<ImageToSend>::Iterator i=ImagesToSend.begin(); i!=ImagesToSend.end(); i++)
 	{
 		if ((*i).size==size && (*i).crc32==crc32)
 		{
@@ -2023,7 +2068,43 @@ QString ImageQueue::getImageFileName(uint32_t size,uint32_t crc32)
 	return "";
 }
 
-ImageQueue image_queue;
+QString GaduImagesManager::getSavedImageFileName(uint32_t size,uint32_t crc32)
+{
+	kdebugf();
+	kdebug("Searching saved images: size=%u, crc32=%u\n",size,crc32);
+	for(QValueList<SavedImage>::Iterator i=SavedImages.begin(); i!=SavedImages.end(); i++)
+	{
+		if ((*i).size==size && (*i).crc32==crc32)
+		{
+			kdebug("Image data found\n");
+			return (*i).file_name;
+		}
+	}
+	kdebug("Image data not found\n");
+	return "";
+}
+
+QString GaduImagesManager::replaceLoadingImages(const QString& text,uin_t sender,uint32_t size,uint32_t crc32)
+{
+	kdebugf();
+	QString loading_string =
+		GaduImagesManager::loadingImageHtml(sender,size,crc32);
+	QString image_string =
+		QString("<img src=\"%1\" static=\"1\"/>")
+		.arg(getSavedImageFileName(size,crc32));
+	QString new_text = text;
+	int pos;
+	while ((pos = new_text.find(loading_string)) != -1)
+	{
+		kdebug("Found coresponding loading image at pos %i, replacing\n",pos);
+		new_text = new_text.replace(pos, loading_string.length(), image_string);
+	}
+	kdebugf2();
+	return new_text;
+}
+
+
+GaduImagesManager gadu_images_manager;
 
 PixmapPreview::PixmapPreview() : QLabel(NULL)
 {

@@ -186,6 +186,7 @@ class Chat : public QWidget
 		void pageUp();
 		void pageDown();
 		void insertImage();
+		void imageReceivedAndSaved(uin_t sender,uint32_t size,uint32_t crc32,const QString& path);
 
 	protected:
 		void closeEvent(QCloseEvent *);

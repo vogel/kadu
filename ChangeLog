@@ -75,6 +75,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   opcji -Wall (joi)
 * patch vogel-a wydzielaj±cy mechanizm szukania w katalogu jako gotowe do
   u¿ycia przez modu³y metody klasy GaduProtocol (adrian)
+* kadu nie odbiera dwa razy tego samego obrazka w obrêbie jednej sesji (adrian)
+* pokazywanie odebranych obrazków w oknie rozmowy (adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
