@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.46 2003/10/09 15:53:48 chilek Exp $ */
+/* $Id: libgadu.h,v 1.47 2003/10/16 21:30:11 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -127,7 +127,7 @@ struct gg_session {
 	void *ssl_ctx;
 #endif
 
-	int image_size;		/* maksymalny rozmiar obrazków */
+	int image_size;		/* maksymalny rozmiar obrazków w KiB */
 
 	char *userlist_reply;	/* fragment odpowiedzi listy kontaktów */
 
@@ -344,7 +344,7 @@ struct gg_login_params {
 	uint32_t external_addr;		/* adres widziany na zewnatrz */
 	uint16_t external_port;		/* port widziany na zewnatrz */
 	int tls;			/* czy ³±czymy po TLS? */
-	int image_size;			/* maksymalny rozmiar obrazka */
+	int image_size;			/* maksymalny rozmiar obrazka w KiB */
 
 	char dummy[7 * sizeof(int)];	/* miejsce na kolejnych 8 zmiennych,
 					 * ¿eby z dodaniem parametru nie 
@@ -364,6 +364,7 @@ int gg_send_message_confer_richtext(struct gg_session *sess, int msgclass, int r
 int gg_send_message_ctcp(struct gg_session *sess, int msgclass, uin_t recipient, const unsigned char *message, int message_len);
 int gg_ping(struct gg_session *sess);
 int gg_userlist_request(struct gg_session *sess, char type, const char *request);
+int gg_image_request(struct gg_session *sess, uin_t recipient, int size, uint32_t crc32);
 
 uint32_t gg_crc32(uint32_t crc, const unsigned char *buf, int len);
 
@@ -391,8 +392,8 @@ enum gg_event_t {
 	GG_EVENT_STATUS,		/* kto¶ zmieni³ stan */
 	GG_EVENT_ACK,			/* potwierdzenie wys³ania wiadomo¶ci */
 	GG_EVENT_PONG,			/* pakiet pong */
-	GG_EVENT_CONN_FAILED,		/* po³±czenie siê powiod³o */
-	GG_EVENT_CONN_SUCCESS,		/* po³±czenie siê nie uda³o */
+	GG_EVENT_CONN_FAILED,		/* po³±czenie siê nie uda³o */
+	GG_EVENT_CONN_SUCCESS,		/* po³±czenie siê powiod³o */
 	GG_EVENT_DISCONNECT,		/* serwer zrywa po³±czenie */
 
 	GG_EVENT_DCC_NEW,		/* nowe po³±czenie miêdzy klientami */
@@ -407,13 +408,14 @@ enum gg_event_t {
 
 	GG_EVENT_PUBDIR50_SEARCH_REPLY,	/* odpowiedz wyszukiwania */
 	GG_EVENT_PUBDIR50_READ,		/* odczytano w³asne dane z katalogu */
-	GG_EVENT_PUBDIR50_WRITE,		/* wpisano w³asne dane do katalogu */
+	GG_EVENT_PUBDIR50_WRITE,	/* wpisano w³asne dane do katalogu */
 
 	GG_EVENT_STATUS60,		/* kto¶ zmieni³ stan w GG 6.0 */
 	GG_EVENT_NOTIFY60,		/* kto¶ siê pojawi³ w GG 6.0 */
 	GG_EVENT_USERLIST,		/* odpowied¼ listy kontaktów w GG 6.0 */
 	GG_EVENT_IMAGE_REQUEST,		/* pro¶ba o wys³anie obrazka GG 6.0 */
-	GG_EVENT_IMAGE_REPLY		/* podes³any obrazek GG 6.0 */
+	GG_EVENT_IMAGE_REPLY,		/* podes³any obrazek GG 6.0 */
+	GG_EVENT_DCC_ACK		/* potwierdzenie transmisji */
 };
 
 #define GG_EVENT_SEARCH50_REPLY GG_EVENT_PUBDIR50_SEARCH_REPLY
@@ -534,9 +536,9 @@ struct gg_event {
 			uint32_t remote_ip;	/* adres ip */
 			uint16_t remote_port;	/* port */
 			int version;	/* wersja klienta */
-			int image_size;	/* maksymalny rozmiar grafiki */
+			int image_size;	/* maksymalny rozmiar grafiki w KiB */
 			char *descr;		/* opis stanu */
-			int time;		/* czas powrotu */
+			time_t time;		/* czas powrotu */
 		} status60;
 
 		struct {			/* @notify60 informacja o li¶cie kontaktów -- GG_EVENT_NOTIFY60 */
@@ -545,9 +547,9 @@ struct gg_event {
 			uint32_t remote_ip;	/* adres ip */
 			uint16_t remote_port;	/* port */
 			int version;	/* wersja klienta */
-			int image_size;	/* maksymalny rozmiar grafiki */
+			int image_size;	/* maksymalny rozmiar grafiki w KiB */
 			char *descr;		/* opis stanu */
-			int time;		/* czas powrotu */
+			time_t time;		/* czas powrotu */
 		} *notify60;
 		
 		struct {			/* @ack potwierdzenie wiadomo¶ci -- GG_EVENT_ACK */
@@ -912,6 +914,7 @@ uint16_t gg_fix16(uint16_t x);
 char *gg_proxy_auth(void);
 char *gg_base64_encode(const char *buf);
 char *gg_base64_decode(const char *buf);
+int gg_image_queue_remove(struct gg_session *s, struct gg_image_queue *q, int freeq);
 
 #define GG_APPMSG_HOST "appmsg.gadu-gadu.pl"
 #define GG_APPMSG_PORT 80
@@ -930,7 +933,7 @@ char *gg_base64_decode(const char *buf);
 #define GG_DEFAULT_PROTOCOL_VERSION 0x20
 #define GG_DEFAULT_TIMEOUT 30
 #define GG_HAS_AUDIO_MASK 0x40000000
-#define GG_LIBGADU_VERSION "CVS"
+#define GG_LIBGADU_VERSION "20031016"
 
 #define GG_DEFAULT_DCC_PORT 1550
 
@@ -981,7 +984,7 @@ struct gg_login60 {
 	uint16_t local_port;		/* port, na którym s³ucham */
 	uint32_t external_ip;		/* zewnêtrzny adres ip */
 	uint16_t external_port;		/* zewnêtrzny port */
-	uint8_t image_size;		/* maksymalny rozmiar grafiki */
+	uint8_t image_size;		/* maksymalny rozmiar grafiki w KiB */
 	uint8_t dunno2;			/* 0xbe */
 } GG_PACKED;
 
@@ -1087,7 +1090,7 @@ struct gg_notify_reply60 {
 	uint32_t remote_ip;		/* adres ip delikwenta */
 	uint16_t remote_port;		/* port, na którym s³ucha klient */
 	uint8_t version;		/* wersja klienta */
-	uint8_t image_size;		/* maksymalny rozmiar grafiki */
+	uint8_t image_size;		/* maksymalny rozmiar grafiki w KiB */
 	uint8_t dunno1;			/* 0x00 */
 } GG_PACKED;
 
@@ -1099,7 +1102,7 @@ struct gg_status60 {
 	uint32_t remote_ip;		/* adres ip delikwenta */
 	uint16_t remote_port;		/* port, na którym s³ucha klient */
 	uint8_t version;		/* wersja klienta */
-	uint8_t image_size;		/* maksymalny rozmiar grafiki */
+	uint8_t image_size;		/* maksymalny rozmiar grafiki w KiB */
 	uint8_t dunno1;			/* 0x00 */
 } GG_PACKED;
 
@@ -1156,6 +1159,7 @@ struct gg_msg_richtext_image {
 #define GG_FONT_ITALIC 0x02
 #define GG_FONT_UNDERLINE 0x04
 #define GG_FONT_COLOR 0x08
+#define GG_FONT_IMAGE 0x80
 
 struct gg_msg_richtext_color { 
 	uint8_t red;

@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 1.26 2003/10/09 16:06:19 chilek Exp $
+dnl $Id: configure.in,v 1.27 2003/10/16 21:30:11 chilek Exp $
 
 AC_INIT(lib/libgadu.h)
 AC_PREREQ(2.50)

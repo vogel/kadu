@@ -1,4 +1,4 @@
-/* $Id: libgadu.c,v 1.33 2003/10/09 15:53:48 chilek Exp $ */
+/* $Id: libgadu.c,v 1.34 2003/10/16 21:30:11 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -69,7 +69,7 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c,v 1.33 2003/10/09 15:53:48 chilek Exp $";
+= "$Id: libgadu.c,v 1.34 2003/10/16 21:30:11 chilek Exp $";
 #endif 
 
 /*
@@ -895,6 +895,9 @@ void gg_free_session(struct gg_session *sess)
 	if (sess->fd != -1)
 		close(sess->fd);
 
+	while (sess->images)
+		gg_image_queue_remove(sess, sess->images, 1);
+
 	free(sess);
 }
 
@@ -1039,6 +1042,81 @@ void gg_logoff(struct gg_session *sess)
 		close(sess->fd);
 		sess->fd = -1;
 	}
+}
+
+/*
+ * gg_image_request()
+ *
+ * wysy³a ¿±danie wys³ania obrazka o podanych parametrach.
+ *
+ *  - sess - opis sesji
+ *  - recipient - numer adresata
+ *  - size - rozmiar obrazka
+ *  - crc32 - suma kontrolna obrazka
+ *
+ * 0/-1
+ */
+int gg_image_request(struct gg_session *sess, uin_t recipient, int size, uint32_t crc32)
+{
+	struct gg_send_msg s;
+	struct gg_msg_image_request r;
+	char dummy = 0;
+	int res;
+
+	gg_debug(GG_DEBUG_FUNCTION, "** gg_image_request(%p, %d, %u, 0x%.4x);\n", sess, recipient, size, crc32);
+
+	if (!sess) {
+		errno = EFAULT;
+		return -1;
+	}
+	
+	if (sess->state != GG_STATE_CONNECTED) {
+		errno = ENOTCONN;
+		return -1;
+	}
+
+	s.recipient = gg_fix32(recipient);
+	s.seq = gg_fix32(0);
+	s.msgclass = gg_fix32(GG_CLASS_MSG);
+
+	r.flag = 0x04;
+	r.size = gg_fix32(size);
+	r.crc32 = gg_fix32(crc32);
+	
+	res = gg_send_packet(sess, GG_SEND_MSG, &s, sizeof(s), &dummy, 1, &r, sizeof(r), NULL);
+
+	if (!res) {
+		struct gg_image_queue *q = malloc(sizeof(*q));
+		char *buf = malloc(size);
+
+		if (!q) {
+			gg_debug(GG_DEBUG_MISC, "// gg_image_request() not enough memory for image queue\n");
+			free(q);
+			free(buf);
+			errno = ENOMEM;
+			return -1;
+		}
+
+		memset(q, 0, sizeof(*q));
+
+		q->sender = recipient;
+		q->size = size;
+		q->crc32 = crc32;
+		q->image = buf;
+
+		if (!sess->images)
+			sess->images = q;
+		else {
+			struct gg_image_queue *qq;
+
+			for (qq = sess->images; qq->next; qq = qq->next)
+				;
+
+			qq->next = q;
+		}
+	}
+
+	return res;
 }
 
 /*

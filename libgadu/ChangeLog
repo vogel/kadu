@@ -4,9 +4,25 @@ oznacza, ¿e ,,nick'' jest pomys³odawc± lub podes³a³ patcha, a zrobi³
 to kto¶ oznaczony przez ,,x'' (w - wojtekka, s - speedy, a - arekm,
 d - drg, sz - szalik).
 
+// 2003-10-15
+
+- libgadu: poprawka api odbierania obrazków (w)
+- libgadu: usuniêcie leaków przy zdarzeniach GG_EVENT_NOTIFY60 i _STATUS60 (w)
+- poprawka czytania cudzej pamiêci w /add (w)
+- poprawka dokumentacji protoko³u (w)
+- libgadu: poprawka pracy na maszynach BE (speedy/w)
+- libgadu: dodanie zdarzenia GG_EVENT_DCC_ACK po zaakceptowaniu po³±czenia
+  przez drug± stronê (Chilek/w)
+
+// 2003-10-13
+
+- libgadu: bardzo eksperymentalna obs³uga wiadomo¶ci graficznych w
+  docs/api.txt (w)
+
 // 2003-10-09
 
 - poprawka segfaultu w gg_free_session() z w±tkami (Chilek/w)
+
 // 2003-10-08
 
 - poprawka zapisu tokenu na dysku (porridge/w)
@@ -361,4 +377,4 @@ d - drg, sz - szalik).
 - poprawka zachowania trybu wielolinijkowego (theKnight/w)
 
 
-$Id: ChangeLog,v 1.26 2003/10/09 15:53:47 chilek Exp $
+$Id: ChangeLog,v 1.27 2003/10/16 21:30:11 chilek Exp $

@@ -54,7 +54,6 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   niepoprawnym hasle i poprawka przy DISCONNECT - by³y wywo³ywane
   dwie funkcje zamiast jednej (mast3r)
 * znowu dobrze zapamiêtuje blokowanych itd. itp. (chilek)
-* libgadu z 09.10.2003 (chilek)
 * wydzielenie funkcji openWebBrowser() - pomoc te¿ otwiera siê w zdefiniowanej
   przez u¿ytkownika przegl±darce WWW (chilek)
 * libgadu z pakietu kadu linkowane jest statycznie. w razie czego pozosta³a
@@ -79,6 +78,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka wykrywania nag³ówków QT - katalog /usr/X11R6/include/qt (adrian)
 * wyeliminowane "pykniêcia" przy nadawaniu g³osu (chilek)
 * poprawki poprawek pawla_p ;) (pawel_p/adrian)
+* libgadu z 16.10.2003 (chilek)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci

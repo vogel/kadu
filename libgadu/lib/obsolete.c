@@ -1,4 +1,4 @@
-/* $Id: obsolete.c,v 1.4 2003/10/09 15:53:48 chilek Exp $ */
+/* $Id: obsolete.c,v 1.5 2003/10/16 21:30:11 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -197,4 +197,3 @@ void gg_change_info_request_free(struct gg_change_info_request *r)
 {
 
 }
-
