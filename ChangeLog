@@ -15,6 +15,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   (ludwik/chilek)
 * modyfikacja formatu wy¶wietlania daty zdarzeñ; teraz dodatkowo przy otrzymanych
   wiadomo¶ciach mamy pe³n± datê nadania wiadomo¶ci (chilek)
+* informacje o proxy nie powinny ju¿ znikaæ po ponownej aktywacji (lol/mast3r)
 
 +++ wersja 0.3.4-rc1
 * wiêkszo¶æ kodu dotycz±cego obs³ugi zdarzeñ sieciowych przeniesiona z

@@ -157,7 +157,6 @@ class ConfigDialog : public QTabDialog	{
 		QCheckBox *b_defserver;
 		QHBox	*serverbox;
 		QLineEdit *e_server;
-		QVGroupBox *g_proxy;
 		QCheckBox *b_useproxy;
 		QLineEdit *e_proxyserver;
 		QLineEdit *e_proxyport;
@@ -240,7 +239,6 @@ class ConfigDialog : public QTabDialog	{
 		void ifDccEnabled(bool);
 		void ifDccIpEnabled(bool);
 		void ifDefServerEnabled(bool);
-		void ifUseProxyEnabled(bool);
 		void onSmsBuildInCheckToogle(bool);
 		void onDefWebBrowserToogle(bool);
 		void updateQuoteTimeLabel(int);

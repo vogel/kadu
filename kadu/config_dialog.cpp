@@ -998,23 +998,25 @@ void ConfigDialog::setupTab5(void) {
         cb_portselect->setCurrentText(QString::number(config.default_port));
 						
 	b_useproxy = new QCheckBox(i18n("Use proxy server"),box5);
+	b_useproxy->setChecked(config.useproxy);
 
-	g_proxy = new QVGroupBox(box5);
+	QVGroupBox *g_proxy = new QVGroupBox(box5);
 	g_proxy->setTitle(i18n("Proxy server"));
+	g_proxy->setEnabled(b_useproxy->isChecked());
 
 	QHBox *proxyserverbox = new QHBox(g_proxy);
 	proxyserverbox->setSpacing(5);
 	QLabel *l5 = new QLabel(i18n("IP address:"),proxyserverbox);
-	e_proxyserver = new QLineEdit(proxyserverbox);
+	e_proxyserver = new QLineEdit(config.proxyaddr.toString(),proxyserverbox);
 	QLabel *l6 = new QLabel(i18n("Port:"),proxyserverbox);
-	e_proxyport = new QLineEdit(proxyserverbox);
+	e_proxyport = new QLineEdit(QString::number(config.proxyport),proxyserverbox);
 
 	QHBox *proxyuserbox = new QHBox(g_proxy);
 	proxyuserbox->setSpacing(5);
 	QLabel *l7 = new QLabel(i18n("Username:"),proxyuserbox);
-	e_proxyuser = new QLineEdit(proxyuserbox);
+	e_proxyuser = new QLineEdit(config.proxyuser,proxyuserbox);
 	QLabel *l8 = new QLabel(i18n("Password:"),proxyuserbox);
-	e_proxypassword = new QLineEdit(proxyuserbox);
+	e_proxypassword = new QLineEdit(config.proxypassword,proxyuserbox);
 	e_proxypassword->setEchoMode(QLineEdit::Password);
 
 	g_fwdprop->setEnabled(config.extip.ip4Addr() && config.extport > 1023);    
@@ -1028,21 +1030,12 @@ void ConfigDialog::setupTab5(void) {
 //		b_defserver->setChecked(true);
 //	else
 //		e_server->setText(config.servers.join(";"));
-	
-	g_proxy->setEnabled(config.proxyaddr.isIp4Addr() && config.proxyport > 1023 && config.useproxy);
-	b_useproxy->setChecked(g_proxy->isEnabled());
-	if (g_proxy->isEnabled()) {
-		e_proxyserver->setText(config.proxyaddr.toString());
-		e_proxyport->setText(QString::number(config.proxyport));
-		e_proxyuser->setText(config.proxyuser);
-		e_proxypassword->setText(config.proxypassword);
-		}
 
 	QObject::connect(b_dccenabled, SIGNAL(toggled(bool)), this, SLOT(ifDccEnabled(bool)));
 	QObject::connect(b_dccip, SIGNAL(toggled(bool)), this, SLOT(ifDccIpEnabled(bool)));
 	QObject::connect(b_dccfwd, SIGNAL(toggled(bool)), g_fwdprop, SLOT(setEnabled(bool)));
 	QObject::connect(b_defserver, SIGNAL(toggled(bool)), this, SLOT(ifDefServerEnabled(bool)));
-	QObject::connect(b_useproxy, SIGNAL(toggled(bool)), this, SLOT(ifUseProxyEnabled(bool)));
+	QObject::connect(b_useproxy, SIGNAL(toggled(bool)), g_proxy, SLOT(setEnabled(bool)));
 
 	addTab(box5, i18n("Network"));
 }
@@ -1079,11 +1072,6 @@ void ConfigDialog::ifDccIpEnabled(bool toggled) {
 void ConfigDialog::ifDefServerEnabled(bool toggled) {
 	serverbox->setEnabled(!toggled);
 }
-
-void ConfigDialog::ifUseProxyEnabled(bool toggled) {
-	g_proxy->setEnabled(toggled);
-}
-
 
 void ConfigDialog::setupTab6(void) {
 
@@ -1827,24 +1815,18 @@ void ConfigDialog::updateConfig(void) {
 	server_nr = 0;
 
 	config.default_port = atoi(cb_portselect->currentText().latin1());
-
-	ipok = ip.setAddress(e_proxyserver->text());
-	config.useproxy = b_useproxy->isChecked() && ipok
-		&& atoi(e_proxyport->text().latin1()) > 1023;
+	config.useproxy = b_useproxy->isChecked();
 	if (config.useproxy) {
-		config.proxyaddr = ip;
-		config.proxyport = (unsigned short)atoi(e_proxyport->text().latin1());
+		ipok = ip.setAddress(e_proxyserver->text());
+		if (ipok && ip.isIp4Addr())
+			config.proxyaddr = ip;
+		if (atoi(e_proxyport->text().latin1()) > 1023)
+			config.proxyport = (unsigned short)atoi(e_proxyport->text().latin1());
 		config.proxyuser = e_proxyuser->text();
 		if (config.proxyuser.length())
 			config.proxypassword = e_proxypassword->text();
 		else
 			config.proxypassword.truncate(0);
-		}
-	else {
-		config.proxyaddr.setAddress((unsigned int)0);
-		config.proxyport = 0;
-		config.proxyuser.truncate(0);
-		config.proxypassword.truncate(0);
 		}
 
 	config.chathistorycitation = s_qcount->value();
