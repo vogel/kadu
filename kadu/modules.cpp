@@ -12,6 +12,8 @@
 
 #include <qdir.h>
 #include <qlayout.h>
+#include <qlabel.h>
+#include <qpushbutton.h>
 
 void ModulesManager::initModule()
 {
@@ -97,19 +99,48 @@ ModulesDialog::ModulesDialog()
 {
 	setWFlags(Qt::WDestructiveClose);
 	resize(300,200);
+	setCaption(tr("Manage Modules"));
 	
 	QHBoxLayout* layout= new QHBoxLayout(this);
-	layout->setAutoAdd(true);
+	QVBoxLayout* installed_layout=new QVBoxLayout(this);
+	QVBoxLayout* loaded_layout=new QVBoxLayout(this);	
 
+	layout->addLayout(installed_layout);
+	layout->addLayout(loaded_layout);
+		
+	QLabel* InstalledLabel = new QLabel(this);
+	InstalledLabel->setText(QString("<b>")+tr("Installed modules")+"</b>");
+	
 	InstalledListBox = new QListBox(this);
 	InstalledListBox->insertStringList(modules_manager->unloadedModules());
 	connect(InstalledListBox,SIGNAL(doubleClicked(QListBoxItem*)),
 		this,SLOT(loadItem(QListBoxItem*)));
 	
+	QButton* LoadButton=new QPushButton(this);
+	LoadButton->setText(tr("Load"));
+	connect(LoadButton,SIGNAL(clicked()),
+		this,SLOT(loadSelectedItem()));
+	
+	installed_layout->addWidget(InstalledLabel);
+	installed_layout->addWidget(InstalledListBox);
+	installed_layout->addWidget(LoadButton);
+
+	QLabel* LoadedLabel = new QLabel(this);
+	LoadedLabel->setText(QString("<b>")+tr("Loaded modules")+"</b>");
+
 	LoadedListBox = new QListBox(this);
 	LoadedListBox->insertStringList(modules_manager->loadedModules());	
 	connect(LoadedListBox,SIGNAL(doubleClicked(QListBoxItem*)),
 		this,SLOT(unloadItem(QListBoxItem*)));
+
+	QButton* UnloadButton=new QPushButton(this);
+	UnloadButton->setText(tr("Unload"));
+	connect(UnloadButton,SIGNAL(clicked()),
+		this,SLOT(unloadSelectedItem()));
+
+	loaded_layout->addWidget(LoadedLabel);
+	loaded_layout->addWidget(LoadedListBox);
+	loaded_layout->addWidget(UnloadButton);	
 }
 
 void ModulesDialog::loadItem(QListBoxItem* item)
@@ -128,4 +159,18 @@ void ModulesDialog::unloadItem(QListBoxItem* item)
 	modules_manager->unloadModule(mod_name);
 	InstalledListBox->insertItem(mod_name);
 	LoadedListBox->removeItem(LoadedListBox->currentItem());
+}
+
+void ModulesDialog::loadSelectedItem()
+{
+	int current=InstalledListBox->currentItem();
+	if(current>=0)
+		loadItem(InstalledListBox->item(current));
+}
+
+void ModulesDialog::unloadSelectedItem()
+{
+	int current=LoadedListBox->currentItem();
+	if(current>=0)
+		unloadItem(LoadedListBox->item(current));
 }

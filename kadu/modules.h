@@ -47,6 +47,8 @@ class ModulesDialog : public QDialog
 	private slots:
 		void loadItem(QListBoxItem* item);
 		void unloadItem(QListBoxItem* item);
+		void loadSelectedItem();
+		void unloadSelectedItem();
 	
 	public:
 		ModulesDialog();
