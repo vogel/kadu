@@ -75,7 +75,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 
 	l_gender = new QLabel(tr("Gender"),this);
 	c_gender = new QComboBox(this);
-	c_gender->insertItem(tr(" "), 0);
+	c_gender->insertItem(" ", 0);
 	c_gender->insertItem(tr("Male"), 1);
 	c_gender->insertItem(tr("Female"), 2);
 	connect(c_gender, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));

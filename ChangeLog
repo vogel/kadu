@@ -220,6 +220,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * w obs³udze sygna³ów systemowych konfiguracjê zapisujemy do innego pliku ni¿
   kadu.conf (kadu.conf.backup.data) + obs³uga sygna³u SIGPIPE generowanego przez
   niektóre WM przy zamykaniu iksów (joi)
+* Usunieta translacjia spacji w search.cpp (Ron_K)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
