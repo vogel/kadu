@@ -11,5 +11,5 @@ if test -z "$1"; then
 fi
 
 cvs commit -f -m "$1" \
-	aclocal.m4 stamp-h.in kadu-config.h.in stamp-h configure.ac configure \
+	aclocal.m4 stamp-h.in kadu-config.h.in stamp-h configure \
 	Makefile.in kadu/Makefile.in translations/Makefile.in varia/Makefile.in modules/Makefile.in
