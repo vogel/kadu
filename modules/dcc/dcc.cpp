@@ -741,7 +741,7 @@ void DccManager::dccSent()
 
 void DccManager::timeout()
 {
-	MessageBox::msg(tr("Direct connection timeout!\nThe receiver doesn't support direct connections or\nboth computers are behind routers with nat."));
+	MessageBox::wrn(tr("Direct connection timeout!\nThe receiver doesn't support direct connections or\nboth machines are behind routers with nat."));
 }
 
 void DccManager::cancelTimeout()
