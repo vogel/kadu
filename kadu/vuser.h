@@ -1,6 +1,9 @@
+#ifndef VUSER_H
+#define VUSER_H
 
 #include <qstring.h>
-
+#include <qobject.h>
+#include <qprocess.h>
 
 
 class VUserScript;
@@ -24,16 +27,25 @@ class vuVoidReturner : public vuTreeNode
 		static vuVoidReturner* parse(VUserScript* script,QString& s);
 };
 
-class VUserScript
+class VUserScript : public QObject
 {
+Q_OBJECT
 private:
 	vuVoidReturner* msg_handler;
+public slots:
+	void shellProcessOutputReady();
+	void shellProcessFinished();
 public:
 	QString str_reg;
 	QMap<QString,int> variables;
+	QProcess* shell_process;
+	uin_t shell_process_uin;
+	int shell_process_class;
 	VUserScript(QString filename);
 	void eventMsg(uin_t sender,int msgclass,QString msg);
 //	void eventChangeStatus(QString user,int status);
 };
 
 extern VUserScript script;
+
+#endif

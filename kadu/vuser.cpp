@@ -163,6 +163,78 @@ class vuSendMsg : public vuVoidReturner
 		};
 };
 
+class vuShell : public vuVoidReturner
+{
+	private:
+		vuStrReturner* cmd;
+		vuIntReturner* uin;
+		vuIntReturner* msgclass;		
+	public:
+		vuShell(VUserScript* script,vuStrReturner* cmd,vuIntReturner* uin,vuIntReturner* msgclass)
+			: vuVoidReturner(script)
+		{
+			vuShell::cmd=cmd;
+			vuShell::uin=uin;
+			vuShell::msgclass=msgclass;
+		};
+		virtual bool eval()
+		{
+			QString c; int u; int cl;
+			fprintf(stderr,"VUSER preparing shell command\n");
+			if(!cmd->eval(c)) return false;
+			if(!uin->eval(u)) return false;
+			if(!msgclass->eval(cl)) return false;
+			script->shell_process=new QProcess();
+			script->shell_process->addArgument("/bin/sh");
+			script->shell_process->addArgument("-c");
+			script->shell_process->addArgument(/*QString("\"")+*/c/*+QString("\"")*/);
+			script->shell_process->setCommunication(QProcess::Stdout);
+			if(!QObject::connect(script->shell_process,SIGNAL(readyReadStdout()),script,SLOT(shellProcessOutputReady())))
+			{
+				fprintf(stderr,"VUSER connecting signals failed\n");			
+			};
+			QObject::connect(script->shell_process,SIGNAL(processExited()),script,SLOT(shellProcessFinished()));
+			fprintf(stderr,"VUSER executing: %s\n",c.local8Bit().data());
+			if(!script->shell_process->start())
+			{
+				fprintf(stderr,"VUSER executing failed.\n");
+				delete script->shell_process;
+				return false;
+			};
+			script->shell_process_uin=u;
+			script->shell_process_class=cl;
+			fprintf(stderr,"VUSER executed: %s\n",c.local8Bit().data());
+			return true;
+		};		
+		static vuVoidReturner* parse(VUserScript* script,QString& s)
+		{
+			s=s.stripWhiteSpace();
+			if(s.startsWith("shell"))
+			{
+				s=s.right(s.length()-5);
+				vuStrReturner* cmd=vuStrReturner::parse(script,s);
+				if(cmd==NULL) return NULL;
+				vuIntReturner* uin=vuIntReturner::parse(script,s);
+				if(uin==NULL)
+				{
+					delete cmd;
+					return NULL;
+				};
+				vuIntReturner* msgclass=vuIntReturner::parse(script,s);
+				if(msgclass==NULL)
+				{
+					delete cmd;
+					delete uin;
+					return NULL;
+				};
+				fprintf(stderr,"VUSER shell command compiled.\n");				
+				return new vuShell(script,cmd,uin,msgclass);
+			}
+			else
+				return NULL;
+		};
+};
+
 class vuIf : public vuVoidReturner
 {
 	private:
@@ -285,6 +357,9 @@ class vuContains : public vuIntReturner
 VUserScript::VUserScript(QString filename)
 {
 //	status_handler=NULL;
+	shell_process=NULL;
+	shell_process_uin=0;
+	shell_process_class=0;
 	QString path=QString("vuser/")+filename;
 	QFile f(preparePath(path.local8Bit().data()));
 	if(!f.open(IO_ReadOnly))
@@ -321,14 +396,40 @@ void VUserScript::eventChangeStatus(QString user,int status)
 };
 */
 
+void VUserScript::shellProcessOutputReady()
+{
+	fprintf(stderr,"VUSER shell process output ready signal\n");
+	QString o;
+	QByteArray b=shell_process->readStdout();
+	for(int i=0; i<b.count(); i++)
+	{
+		o+=b[i];
+		if(o.length()>999)
+		{
+			gg_send_message(&sess,shell_process_class,shell_process_uin,(const unsigned char*)o.local8Bit().data());		
+			o="";
+		};
+	};
+	if(o.length()>0)
+		gg_send_message(&sess,shell_process_class,shell_process_uin,(const unsigned char*)o.local8Bit().data());
+};
+
+void VUserScript::shellProcessFinished()
+{
+	fprintf(stderr,"VUSER shell process finished signal\n");	
+	delete shell_process;
+	shell_process=NULL;
+};
+
 VUserScript script("script");
 
 vuVoidReturner* vuVoidReturner::parse(VUserScript* script,QString& s)
 {
 	vuVoidReturner* r=NULL;
 	if((r=vuSendMsg::parse(script,s))==NULL)
-		if((r=vuIf::parse(script,s))==NULL)
-			return NULL;
+		if((r=vuShell::parse(script,s))==NULL)
+			if((r=vuIf::parse(script,s))==NULL)
+				return NULL;
 	return r;
 };	
 
@@ -349,3 +450,5 @@ vuStrReturner* vuStrReturner::parse(VUserScript* script,QString& s)
 			return NULL;
 	return r;
 };	
+
+#include "vuser.moc"
