@@ -529,16 +529,16 @@ void Chat::HistoryBox(void) {
 
 /* this nifty icon selector */
 void Chat::insertEmoticon(void) {
-	if (iconsel_ptr == NULL) {
-		iconsel->setOn(true);
-		iconsel_ptr = new IconSelector(this,"Icon selector",this);
+/*	if (iconsel_ptr == NULL) {
+		iconsel->setOn(true);*/
+		iconsel_ptr = new IconSelector(NULL,"Icon selector",this);
 		iconsel_ptr->show();
-		}
+/*		}
 	else {
 		iconsel->setOn(false);
 		iconsel_ptr->close();
 		iconsel_ptr = NULL;
-		}
+		}*/
 }
 
 /* adds an emoticon code to the edit window */
@@ -562,9 +562,9 @@ void IconSelectorButton::buttonClicked()
 };
 
 /* the icon selector itself */
-IconSelector::IconSelector(QWidget *parent, const char *name, Chat * caller) : QWidget (parent, name) {
+IconSelector::IconSelector(QWidget *parent, const char *name, Chat * caller) : QWidget (parent, name,Qt::WType_Popup) {
 	callingwidget = caller;
-	setWFlags(Qt::WDestructiveClose||Qt::WStyle_NoBorder||Qt::WStyle_NoBorderEx||Qt::WX11BypassWM);
+	setWFlags(Qt::WDestructiveClose/*||Qt::WStyle_NoBorder||Qt::WStyle_NoBorderEx||Qt::WX11BypassWM*/);
 	
 	int emoticons_count=emoticons.emoticonsCount();
 	int selector_width=(int)sqrt((double)emoticons_count);
@@ -581,8 +581,8 @@ IconSelector::IconSelector(QWidget *parent, const char *name, Chat * caller) : Q
 		connect(btn,SIGNAL(clicked(const QString&)),this,SLOT(iconClicked(const QString&)));
 	};
 
-	move(callingwidget->buttontray->x() - sizeHint().width() + btn_width,
-		callingwidget->buttontray->y() + callingwidget->buttontray->height()/2 - sizeHint().height()/2 );
+	move(callingwidget->pos().x()+callingwidget->buttontray->x() - sizeHint().width() + btn_width,
+		callingwidget->pos().y()+callingwidget->buttontray->y() + callingwidget->buttontray->height()/2 - sizeHint().height()/2 );
 };
 
 void IconSelector::iconClicked(const QString& emoticon_string)

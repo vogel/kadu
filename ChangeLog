@@ -1,6 +1,8 @@
 
 +++ wersja 0.3.3-pre2
 * dostosowanie do QT 3.1.0 i KDE 3.1-rc5
+* lepszy selektor emotow - potrafi wystawac za chat
+  i zachowuje sie jak popup-menu
 
 +++ wersja 0.3.3-pre1
 * automatyczna kompilacja programu sms
