@@ -194,8 +194,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   konferencji jest na liscie ponad wlasnym numerem w userbox-ie (michal)
 * w³asna klasa Library zamiast QLibrary ³aduj±ca modu³y z RTLD_GLOBAL (adrian)
 * usuwanie zbêdnych <p dir="ltr"> z chatu (joi)
-* przyspieszenie (x2) dzia³ania obs³ugi plików konfiguracyjnych + optymalizacaje
-  w ró¿nych miejscach kodu (joi)
+* przyspieszenie (x2) dzia³ania obs³ugi plików konfiguracyjnych + optymalizacje
+  (w ró¿nych miejscach kodu) dotycz±ce obs³ugi pliku konfiguracyjnego (joi)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
