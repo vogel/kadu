@@ -547,7 +547,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 //	mesg.replace(QRegExp("&lt;"), "#");
 //	mesg.replace(QRegExp("&gt;"), "#");
 
-	kdebugm(KDEBUG_INFO, "unformatGGMessage():\n%s\n", (const char *)unicode2latin(mesg));
+	kdebugm(KDEBUG_INFO, "unformatGGMessage():\n%s\n", mesg.local8Bit().data());
 
 	inspan = -1;
 	pos = idx = formats_length = 0;
@@ -556,19 +556,18 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 		int image_idx    = mesg.find("[IMAGE ", pos);
 		int span_idx     = mesg.find("<span style=", pos);
 		int span_end_idx = mesg.find("</span>", pos);
-		if (
-			image_idx != -1 &&
+		if (image_idx != -1 &&
 			(span_idx == -1 || image_idx < span_idx) &&
 			(span_end_idx == -1 || image_idx < span_end_idx))
 		{
-			int idx_end = mesg.find("]",idx);
+			int idx_end = mesg.find("]", image_idx);
 			if (idx_end == -1)
 				idx_end = mesg.length() - 1;
-			QString file_name = mesg.mid(image_idx+7,idx_end-image_idx-7);
+			QString file_name = mesg.mid(image_idx+7, idx_end-image_idx-7);
 			uint32_t size;
 			uint32_t crc32;
-			gadu_images_manager.addImageToSend(file_name,size,crc32);
-			mesg.remove(image_idx,idx_end-image_idx+1);
+			gadu_images_manager.addImageToSend(file_name, size, crc32);
+			mesg.remove(image_idx, idx_end-image_idx+1);
 			actformant.format.position = image_idx;
 			actformant.format.font = GG_FONT_IMAGE;
 			actformant.image.unknown1 = 0x0109;
