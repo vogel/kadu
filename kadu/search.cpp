@@ -48,12 +48,12 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	QLabel *l_city;
 	QLabel *l_uin;
 
-	b_chat = new QPushButton(tr("&Chat"),this);
-	connect(b_chat, SIGNAL(clicked()), this, SLOT(openChat()));
-
 	b_sendbtn = new QPushButton(tr("&Search"),this);
 	b_sendbtn->setAccel(Key_Return);
 	connect(b_sendbtn, SIGNAL(clicked()), this, SLOT(firstSearch()));
+
+	b_chat = new QPushButton(tr("&Chat"),this);
+	connect(b_chat, SIGNAL(clicked()), this, SLOT(openChat()));
 
 	b_nextbtn = new QPushButton(tr("&Next results"),this);
 	connect(b_nextbtn, SIGNAL(clicked()), this, SLOT(nextSearch()));
