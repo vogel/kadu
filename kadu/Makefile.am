@@ -32,8 +32,8 @@ userbox.cpp userbox.h userbox_moc.cpp \
 userinfo.cpp userinfo.h userinfo_moc.cpp \
 userlist.cpp userlist.h userlist_moc.cpp \
 updates.cpp updates.h \
-voice.cpp voice.h \
-voice_dsp.cpp voice_dsp.h
+voice.cpp voice.h voice_moc.cpp \
+voice_dsp.cpp voice_dsp.h voice_dsp_moc.cpp
 
 EXTRA_kadu_SOURCES = simlite.c simlite.h
 
