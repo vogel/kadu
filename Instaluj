@@ -24,13 +24,38 @@ export LANG=pl_PL
 # Configure, build and install Kadu
 perform_install()
 {
-	./configure `cat log_prefix 2> /dev/null` `cat log_configureoptions 2>/dev/null`
-	if [[ $advanced_install == true ]]; then
-		make `cat log_makeoptions 2> /dev/null`
+	if  ./configure `cat log_prefix 2> /dev/null` `cat log_configureoptions 2>/dev/null`; then
+		if [[ $advanced_install == true ]]; then
+			if make `cat log_makeoptions 2> /dev/null`;then
+				perform_make_install
+			else
+				echo "Instalacja nie powiod³a siê (na etapie make)"
+				exit
+			fi;
+			
+		else
+			if make; then
+				perform_make_install
+			else
+				echo "Instalacja nie powiod³a siê (na etapie make)"
+				exit
+			fi;
+		fi;
 	else
-		make
+		echo "Instalacja nie powiod³a siê (na etapie ./configure)"
+		exit
 	fi;
-	make install 
+}
+
+perform_make_install()
+{
+	if [ $UID != "0" ]; then
+		dialog --backtitle "Instalator Kadu" --infobox "Podaj has³o roota:" 3 24
+		su -c "make install"
+	else
+		make install
+	fi;
+
 }
 
 # make uninstall
@@ -60,7 +85,7 @@ find_possible_errors()
 {
 	# Check if user is logged in as root:
 	if [ $UID != "0" ]; then
-		dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --defaultno --backtitle "Instalator Kadu" --title "Brak uprawnieñ administratora" --yesno "Nie pracujesz jako root\nCzy chcesz kontynuowaæ instalacjê?" 6 50
+		dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --defaultno --backtitle "Instalator Kadu" --title "Brak uprawnieñ administratora" --yesno "Nie pracujesz jako root\nMusisz znaæ to has³o, ¿eby zainstalowaæ Kadu.\nCzy chcesz kontynuowaæ instalacjê?" 7 50
 		if [ $? == "1" ]; then
 			exit
 		fi;
@@ -294,10 +319,12 @@ save_module_list()
 # Display a menu which allows user to select modules
 menu_select_modules()
 {
-	CONFIGMENUCHOICE=`dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --no-cancel --backtitle "Instalator Kadu" --menu "Wybierz modu³y do kompilacji" 10 75 3 \
-	Statyczne	"Modu³y bêda kompilowane statycznie" \
-	Dynamiczne	"Modu³y bêda kompilowane dynamicznie" \
-	Dalej		"Rozpocznij proces instalacji"`
+	CONFIGMENUCHOICE=`dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --no-cancel --backtitle "Instalator Kadu" --title "Wybór modu³ów" --menu "Wybierz modu³y do kompilacji. \
+	\nModu³y s± pewnego rodzaju pluginami do Kadu. Statyczne s± ca³y czas w³±czone, dynamiczne
+	mo¿esz wy³±czaæ. Je¶li nie wiesz co wybraæ, wybierz opcjê \"Dalej\". Zostan± wybrane modu³y domy¶lne" 12 75 3 \
+	Statyczne	"Modu³y bêd± kompilowane statycznie" \
+	Dynamiczne	"Modu³y bêd± kompilowane dynamicznie" \
+	Dalej		"Rozpocznij proces instalacji" `
 	
 	if [ $CONFIGMENUCHOICE == "Statyczne" ]; then
 		select_static
@@ -388,7 +415,7 @@ make_options()
 {
 	makeoptions=`dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --nocancel --ok-label "OK" --backtitle "Instalator Kadu" --title "Parametry make" --inputbox  "Je¶li potrzebujesz, to podaj parametry programu make (np. -j <numer>)" 8 50 ""`
 	if [[ $makeoptions != "" ]]; then
-		echo -e -n "--prefix=$makeoptions" > log_makeoptions
+		echo -e -n "$makeoptions" > log_makeoptions
 	fi;
 }
 
