@@ -27,7 +27,7 @@ class DockWidget : public KSystemTray
 		void dockletChange(int id);
 		//Funkcja do migania koperty
 		void changeIcon(void);
-  private:
+	private:
 		QTimer *icon_timer;
 		bool blink;
 };

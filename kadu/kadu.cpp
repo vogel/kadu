@@ -253,10 +253,10 @@ void deletePendingMessage(int nr) {
 	fprintf(stderr, "KK predeletePendingMessage(), counts: %d\n",pending.count());
 	pending.deleteMsg(nr);
 	fprintf(stderr, "KK deletePendingMessage(%d), counts: %d\n",nr,pending.count());
-  if (!pending.pendingMsgs()) {
+	if (!pending.pendingMsgs()) {
 		fprintf(stderr, "KK pendingMessage is false\n");
 		dw->setType((char **)gg_xpm[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);
-	}
+		}
 }
 
 void readIgnore(void)
@@ -414,12 +414,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		resize(130,250);
 		move(maximumSize().width() - x(), maximumSize().height() - y());
 		}
-    
-	/* use dock icon? */
-	if (config.dock) {
-		dw = new DockWidget(this);
-		dw->show();
-	}
+
 	
 	/* use dock hint? */
 	if (config.showhint)
@@ -468,6 +463,13 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		setCaption(i18n("Kadu: %1").arg(config.uin));
 
 	pending.loadFromFile();
+
+	/* use dock icon? */
+	if (config.dock) {
+		dw = new DockWidget(this);
+		dw->show();
+		dw->changeIcon();
+		}
 
 	QFrame *centralFrame = new QFrame(this);
 	setCentralWidget(centralFrame);
@@ -542,7 +544,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		show();
 
 	autostatus_timer = new AutoStatusTimer(this);
-  if (config.addtodescription)
+	if (config.addtodescription)
 		autostatus_timer->start(1000,TRUE);
 
 	ut = new UpdatesThread(config.uin);
