@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.23 2003/07/03 19:53:11 adrian Exp $
+# $Id: Makefile.in,v 1.24 2003/10/02 15:33:40 chilek Exp $
 
 prefix = @prefix@
 exec_prefix = @exec_prefix@
@@ -21,8 +21,8 @@ RANLIB = @RANLIB@
 STRIP = @STRIP@
 LN_S = @LN_S@
 
-OBJS = common.o libgadu.o search.o pubdir.o http.o dcc.o userlist.o events.o pubdir50.o
-LOBJS = common.lo libgadu.lo search.lo pubdir.lo http.lo dcc.lo userlist.lo events.lo pubdir50.lo
+OBJS = common.o libgadu.o pubdir.o http.o dcc.o events.o pubdir50.o obsolete.o
+LOBJS = common.lo libgadu.lo pubdir.lo http.lo dcc.lo events.lo pubdir50.lo obsolete.lo
 SRCS = $(OBJS:.o=.c)
 
 SHAREDMM = libgadu.so

@@ -1,4 +1,4 @@
-/* $Id: common.c,v 1.25 2003/09/04 17:59:33 mast3r Exp $ */
+/* $Id: common.c,v 1.26 2003/10/02 15:33:40 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -385,9 +385,9 @@ char *gg_urlencode(const char *str)
  */
 int gg_http_hash(const char *format, ...)
 {
-	unsigned int a, c;
+	unsigned int a, c, i, j;
 	va_list ap;
-	int b = -1, i, j;
+	int b = -1;
 
 	va_start(ap, format);
 

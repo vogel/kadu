@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.41 2003/09/12 17:27:22 chilek Exp $ */
+/* $Id: libgadu.h,v 1.42 2003/10/02 15:33:40 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -115,7 +115,7 @@ struct gg_session {
 	void *resolver;		/* wska¼nik na informacje resolvera */
 
 	char *header_buf;	/* bufor na pocz±tek nag³ówka */
-	int header_done;	/* ile ju¿ mamy */
+	unsigned int header_done;/* ile ju¿ mamy */
 
 #ifdef __GG_LIBGADU_HAVE_OPENSSL
 	SSL *ssl;		/* sesja TLS */
@@ -126,6 +126,8 @@ struct gg_session {
 #endif
 
 	int image_size;		/* maksymalny rozmiar obrazków */
+
+	char *userlist_reply;	/* fragment odpowiedzi listy kontaktów */
 };
 
 /*
@@ -145,13 +147,15 @@ struct gg_http {
         char *header;           /* bufor nag³ówka */
         int header_size;        /* rozmiar wczytanego nag³ówka */
         char *body;             /* bufor otrzymanych informacji */
-        int body_size;          /* ilo¶æ informacji */
+        unsigned int body_size; /* oczekiwana ilo¶æ informacji */
 
         void *data;             /* dane danej operacji http */
 
 	char *user_data;	/* dane u¿ytkownika, nie s± zwalniane przez gg_http_free() */
 
 	void *resolver;		/* wska¼nik na informacje resolvera */
+
+	unsigned int body_done;	/* ile ju¿ tre¶ci odebrano? */
 };
 
 #ifdef __GNUC__
@@ -197,9 +201,9 @@ struct gg_dcc {
 	uin_t uin;		/* uin klienta */
 	uin_t peer_uin;		/* uin drugiej strony */
 	int file_fd;		/* deskryptor pliku */
-	int offset;		/* offset w pliku */
-	int chunk_size;		/* rozmiar kawa³ka */
-	int chunk_offset;	/* offset w aktualnym kawa³ku */
+	unsigned int offset;	/* offset w pliku */
+	unsigned int chunk_size;/* rozmiar kawa³ka */
+	unsigned int chunk_offset;/* offset w aktualnym kawa³ku */
 	struct gg_file_info file_info;
 				/* informacje o pliku */
 	int established;	/* po³±czenie ustanowione */
@@ -232,6 +236,7 @@ enum gg_session_t {
 	GG_SESSION_USERLIST_PUT,	/* wysy³anie userlisty */
 	GG_SESSION_UNREGISTER,	/* usuwanie konta */
 	GG_SESSION_USERLIST_REMOVE,	/* usuwanie userlisty */
+	GG_SESSION_TOKEN,	/* pobieranie tokenu */
 	
 	GG_SESSION_USER0 = 256,	/* zdefiniowana dla u¿ytkownika */
 	GG_SESSION_USER1,	/* j.w. */
@@ -443,7 +448,7 @@ struct gg_pubdir50_entry {
 
 struct gg_pubdir50_s {
 	int count;
-	int next;
+	uin_t next;
 	int type;
 	uint32_t seq;
 	struct gg_pubdir50_entry *entries;
@@ -563,6 +568,7 @@ struct gg_http *gg_http_connect(const char *hostname, int port, int async, const
 int gg_http_watch_fd(struct gg_http *h);
 void gg_http_stop(struct gg_http *h);
 void gg_http_free(struct gg_http *h);
+void gg_http_free_fields(struct gg_http *h);
 #define gg_free_http gg_http_free
 
 /*
@@ -671,9 +677,22 @@ int gg_pubdir_watch_fd(struct gg_http *f);
 void gg_pubdir_free(struct gg_http *f);
 #define gg_free_pubdir gg_pubdir_free
 
+struct gg_token {
+	int width;		/* szeroko¶æ obrazka */
+	int height;		/* wysoko¶æ obrazka */
+	int length;		/* ilo¶æ znaków w tokenie */
+	char *tokenid;		/* id tokenu */
+};
+
+/* funkcje dotycz±ce tokenów */
+struct gg_http *gg_token(int async);
+int gg_token_watch_fd(struct gg_http *h);
+void gg_token_free(struct gg_http *h);
+
 /* rejestracja nowego numerka */
 struct gg_http *gg_register(const char *email, const char *password, int async);
 struct gg_http *gg_register2(const char *email, const char *password, const char *qa, int async);
+struct gg_http *gg_register3(const char *email, const char *password, const char *tokenid, const char *tokenval, int async);
 #define gg_register_watch_fd gg_pubdir_watch_fd
 #define gg_register_free gg_pubdir_free
 #define gg_free_register gg_pubdir_free
@@ -693,6 +712,7 @@ struct gg_http *gg_remind_passwd(uin_t uin, int async);
 struct gg_http *gg_change_passwd(uin_t uin, const char *passwd, const char *newpasswd, const char *newemail, int async);
 struct gg_http *gg_change_passwd2(uin_t uin, const char *passwd, const char *newpasswd, const char *email, const char *newemail, int async);
 struct gg_http *gg_change_passwd3(uin_t uin, const char *passwd, const char *newpasswd, const char *qa, int async);
+struct gg_http *gg_change_passwd4(uin_t uin, const char *email, const char *passwd, const char *newpasswd, const char *tokenid, const char *tokenval, int async);
 #define gg_change_passwd_free gg_pubdir_free
 #define gg_free_change_passwd gg_pubdir_free
 
@@ -1132,8 +1152,8 @@ struct gg_recv_msg {
 
 #define GG_USERLIST_REQUEST 0x0016
 
-#define GG_USERLIST_PUT 0x00
-#define GG_USERLIST_PUT2 0x01
+#define GG_USERLIST_PUT 0x01
+#define GG_USERLIST_PUT_MORE 0x00
 #define GG_USERLIST_GET 0x02
 
 struct gg_userlist_request {
@@ -1142,8 +1162,10 @@ struct gg_userlist_request {
 
 #define GG_USERLIST_REPLY 0x0010
 
-#define GG_USERLIST_PUT_REPLY 0x00
+#define GG_USERLIST_PUT_REPLY 0x02
+#define GG_USERLIST_PUT_MORE_REPLY 0x00
 #define GG_USERLIST_GET_REPLY 0x06
+#define GG_USERLIST_GET_MORE_REPLY 0x04
 
 struct gg_userlist_reply {
 	uint8_t type;

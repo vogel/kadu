@@ -1,4 +1,4 @@
-/* $Id: pubdir50.c,v 1.9 2003/09/04 17:59:34 mast3r Exp $ */
+/* $Id: pubdir50.c,v 1.10 2003/10/02 15:33:40 chilek Exp $ */
 
 /*
  *  (C) Copyright 2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -438,7 +438,7 @@ int gg_pubdir50_type(gg_pubdir50_t res)
  */
 uin_t gg_pubdir50_next(gg_pubdir50_t res)
 {
-	return (!res) ? -1 : res->next;
+	return (!res) ? (unsigned) -1 : res->next;
 }
 
 /*
@@ -452,7 +452,7 @@ uin_t gg_pubdir50_next(gg_pubdir50_t res)
  */
 uint32_t gg_pubdir50_seq(gg_pubdir50_t res)
 {
-	return (!res) ? -1 : res->seq;
+	return (!res) ? (unsigned) -1 : res->seq;
 }
 
 /*

@@ -4,6 +4,110 @@ oznacza, ¿e ,,nick'' jest pomys³odawc± lub podes³a³ patcha, a zrobi³
 to kto¶ oznaczony przez ,,x'' (w - wojtekka, s - speedy, a - arekm,
 d - drg, sz - szalik).
 
+// 2003-10-01
+
+- poprawka wykrywania libjpeg (embe/w)
+
+// 2003-09-30
+
+- poprawienie zachowania siê /set dla irssi_set_mode == 1 (weirdo/wysek)
+- libgadu: poprawki zmiennych ze znakiem i bez znaku, które s± potencjalnie
+  niebezpieczne dla u¿ytkownika (gj/w)
+- libgadu: usuniêcie funkcji nieaktualnych ze wzglêdu na zmiany w protokole.
+  przeniesiono je do pliku lib/obsolete.c (w)
+- libgadu: poprawka wysy³ania i pobierania listy kontaktów z serwera (Chilek/w)
+- libgadu: pobieranie tokenu za pomoc± funkcji gg_token(). zwrócon± strukturê
+  obs³ugiwaæ przez gg_token_watch_fd(). po zakoñczeniu w ->body mamy plik
+  graficzny o rozmiarze ->body_size, w ->token->width i ->token->height
+  wymiary obrazka, w ->token->length d³ugo¶æ tokenu i w ->token->tokenid
+  jego identyfikator (w)
+- libgadu: poprawki obs³ugi http, by mo¿na by³o odbieraæ dane binarne (w)
+- poprawki w dokumentacji (w)
+- poprawka flag kompilacji pythona (ksmigrod/w)
+- libgadu: uaktualnienie rejestracji i zmiany has³a (w)
+- dodanie komendy /token pobieraj±cej token z serwera (w)
+- uaktualnienie opisu api (w)
+
+// 2003-09-21
+
+- nowa zmienna irssi_set_mode, je¶li ustawiona na 1, to zmienia zachowanie
+  /set z jednym argumentem. domy¶lnie wy³±czone. wiêcej w docs/vars.txt (wysek)
+
+// 2003-09-14
+
+- libgadu: poprawka segfaulta (Chilek/wysek)
+
+// 2003-09-12
+
+- libgadu: wysy³anie listy kontaktów ju¿ dzia³a (Chilek/w)
+
+// 2003-09-11
+
+- libgadu: obs³uga listy kontaktów na serwerze zgodnej z GG 6.0. wysy³anie
+  jeszcze nie dzia³a prawid³owo (w)
+- libgadu: logowanie siê za pomoc± pakietu GG_LOGIN60 (w)
+
+// 2003-09-10
+
+- w³±czenie ga³êzi GG6 do g³ównej (w)
+
+// 2003-09-09
+
+- je¶li ustawiona jest zmienna ,,EKG_NO_TITLE'', to nie bêdzie
+  zmiany tytu³u okna xterm'a (sz)
+- dokumentacja dla ekglogs. kosmetyka manuali ekg (porridge/sz)
+- uaktualnienie arim.theme (arim/sz)
+
+// 2003-08-27
+
+- usuniêcie nieaktualnych informacji, nowe rodzaje pakietów w GG 6.0,
+  indeks pakietów (*/w)
+
+// 2003-08-26
+
+- uaktualnienie ekg_logs (Goblin/w)
+- libgadu: poprawka zwalniania zasobów gg_session przy w±tkowanym
+  resolverze (ppluciennik/w)
+- libgadu: poprawka b³êdu typu DoS. wysy³aj±c wiadomo¶æ niezakoñczon±
+  znakiem '\0', mo¿na by³o roz³±czyæ ekg (NEMO/w)
+
+// 2003-08-05
+
+- dodanie obs³ugi nowego formatu pliku do WAP (serek/sz)
+
+// 2003-07-23
+
+- poprawka wy¶wietlania nazwy programu w tytule okna xterma (?/w)
+
+// 2003-07-22
+
+- poprawka segfaulta przy czytaniu/pobieraniu uszkodzonej listy kontaktów (w)
+- kosmetyczne poprawki zwi±zane z dos³ownym u¿yciem znaku '%' w niektórych
+  miejscach (savage,w/sz)
+
+// 2003-07-14
+
+- kosmetyczna poprawka dzia³ania polecania /dcc get (struthio/sz)
+
+// 2003-07-09
+
+- libgadu: poprawka zapisu opcji pthread dla pkgconfig (w)
+- poprawka obs³ugi listy kontaktów z oryginalnego klienta (gamster/w)
+
+// 2003-07-07
+
+- libgadu: poprawka b³êdu znaku przy dcc (joshua/w)
+
+// 2003-07-06
+
+- poprawka wykrywania OpenSSL (perry/w)
+
+// 2003-07-03
+
+- poprawka obs³ugi zdarzeñ w pythonie (rmrmg/w)
+- dodanie show_status_{header,footer} i %} w tematach (viraptor/w)
+- poprawka segfaulta przy mieszaniu histori± poleceñ (Goblin/w)
+
 // 2003-07-02
 
 - informacja o b³êdach przy logowaniu (*/w)
@@ -48,7 +152,7 @@ d - drg, sz - szalik).
 
 // 2003-06-22
 
-- dodanie informacji o kompilacji rtg (rinoa/w)
+- dodanie informacji o kompilacji rtg (struthio/w)
 - ekg nie usuwa u¿ytkowników bez podanego numeru z listy kontaktów
   (a.latanski/w)
 - lepsza obs³uga padniêtego katalogu publicznego (w)
@@ -221,4 +325,4 @@ d - drg, sz - szalik).
 - poprawka zachowania trybu wielolinijkowego (theKnight/w)
 
 
-$Id: ChangeLog,v 1.22 2003/07/03 19:54:14 adrian Exp $
+$Id: ChangeLog,v 1.23 2003/10/02 15:33:39 chilek Exp $

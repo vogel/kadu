@@ -1,5 +1,5 @@
 dnl Rewritten from scratch. --speedy 
-dnl $Id: python.m4,v 1.9 2003/07/03 19:53:24 adrian Exp $
+dnl $Id: python.m4,v 1.10 2003/10/02 15:33:40 chilek Exp $
 
 PYTHON=
 PYTHON_VERSION=
@@ -46,7 +46,8 @@ AC_DEFUN(AC_CHECK_PYTHON,[
 			PY_OTHER_LIBS=`sed -n -e 's/^LIBS=\(.*\)/\1/p' $PY_MAKEFILE`
 			PY_OTHER_LIBM=`sed -n -e 's/^LIBC=\(.*\)/\1/p' $PY_MAKEFILE`
 			PY_OTHER_LIBC=`sed -n -e 's/^LIBM=\(.*\)/\1/p' $PY_MAKEFILE`
-			PY_LIBS="$PY_LOCALMODLIBS $PY_BASEMODLIBS $PY_OTHER_LIBS $PY_OTHER_LIBC $PY_OTHER_LIBM"
+			PY_LINKFORSHARED="$(python -c "import distutils.sysconfig; print distutils.sysconfig.get_config_var('LINKFORSHARED')")"
+			PY_LIBS="$PY_LOCALMODLIBS $PY_BASEMODLIBS $PY_OTHER_LIBS $PY_OTHER_LIBC $PY_OTHER_LIBM $PY_LINKFORSHARED"
 
 			PYTHON_LIBS="-L$PY_EXEC_PREFIX/lib $PY_LIB_LOC -lpython$PY_VERSION $PY_LIBS"
 			PYTHON_INCLUDES="$PY_CFLAGS"
