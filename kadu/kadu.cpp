@@ -1767,7 +1767,7 @@ bool Kadu::close(bool quit) {
 		pending.writeToFile();
 		kadu->disconnectNetwork();
 		kdebug("Kadu::close(): Saved config, ignored and disconnect\n");
-		QMainWindow::close();
+		QMainWindow::close(true);
 		a->quit();
 		kdebug("Kadu::close(): Graceful shutdown...\n");
 		return true;
