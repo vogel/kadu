@@ -155,7 +155,7 @@ class SelectPaths : public QDialog
 		/**
 			Ustawia ¶cie¿ki z katalogami
 		**/
-		void setPathList(QStringList& list);
+		void setPathList(const QStringList& list);
 
 	signals:
 

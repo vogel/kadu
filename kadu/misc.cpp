@@ -1147,12 +1147,15 @@ void IconsManager::initModule()
 
 void IconsManager::selectedPaths(const QStringList& paths)
 {
-	icons_manager.setPaths(paths);
-	QComboBox* cb_icontheme= ConfigDialog::getComboBox("Look","Icon theme");
-	QString current= cb_icontheme->currentText();
+	setPaths(paths);
+	QComboBox* cb_icontheme = ConfigDialog::getComboBox("Look","Icon theme");
+	QString current = cb_icontheme->currentText();
+
+	SelectPaths* iconPath = ConfigDialog::getSelectPaths("Look","Icon paths");
+	iconPath->setPathList(additionalPaths());
 	
 	cb_icontheme->clear();
-	cb_icontheme->insertStringList(icons_manager.themes());
+	cb_icontheme->insertStringList(themes());
 	cb_icontheme->setCurrentText(current);
 
 	if (paths.contains("default"))
@@ -2000,20 +2003,21 @@ void Themes::setPaths(const QStringList& paths)
 	ThemesList.clear();
 	ThemesPaths.clear();
 	additional.clear();
-	QStringList add, temp=paths+defaultKaduPathsWithThemes();
+	QStringList add, temp = paths + defaultKaduPathsWithThemes();
 	QFile s;
-	for (QStringList::Iterator it= temp.begin(); it!=temp.end(); it++)
-		{
+	for (QStringList::Iterator it = temp.begin(); it != temp.end(); it++)
+	{
 		s.setName((*it)+"/"+ConfigName);
 		if (s.exists())
-			{
+		{
 			if (paths.findIndex(*it)!=-1)
-			    additional.append(*it);
-
+				additional.append(*it);
 			ThemesPaths.append(*it);
 			ThemesList.append((*it).section("/", -2));
-			}
 		}
+		else
+			MessageBox::wrn("<i>"+(*it)+"</i><br>"+tr("does not contain any theme configuration file"));
+	}
 	emit pathsChanged(ThemesPaths);
 }
 

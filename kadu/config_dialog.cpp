@@ -1353,7 +1353,7 @@ QStringList SelectPaths::getPathList()
 }
 
 
-void SelectPaths::setPathList(QStringList& list)
+void SelectPaths::setPathList(const QStringList& list)
 {
 	kdebugf();
 	pathListBox->clear();
