@@ -61,13 +61,14 @@ UserList::UserList() : QObject(), QValueList<UserListElement>()
 
 UserList::~UserList()
 {
-	dnsresolver.clear();
+	kdebug("UserList::~UserList(): dnslookups.count() = %d\n", dnslookups.count());
 	invisibleTimer->stop();
 	delete invisibleTimer;
 }
 
 void UserList::addDnsLookup(uin_t uin, const QHostAddress &ip) {
-	DnsHandler *dnshandler = dnslookups.first();
+	DnsHandler *dnshandler;
+	dnshandler = dnslookups.first();
 	while (dnshandler) {
 		if (dnshandler->isCompleted()) {
 			dnslookups.remove();
