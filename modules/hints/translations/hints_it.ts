@@ -256,6 +256,14 @@
         <source>Bottom right</source>
         <translation>Sotto a destra</translation>
     </message>
+    <message>
+        <source>&lt;b&gt;%1&lt;/b&gt; is invisible&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;%1&lt;/b&gt; is invisible</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HintManagerSlots</name>

@@ -67,5 +67,9 @@ durante primo colegamento Kadu con serwer</translation>
         <source>Ignore status changes from available/busy to available/busy</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>User changed status to &quot;Invisible&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

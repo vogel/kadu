@@ -73,6 +73,17 @@ plików lub oba komputery są za NAT-em.</translation>
         <source>Couldn&apos;t open file!</source>
         <translation>Problem z otworzeniem pliku!</translation>
     </message>
+    <message>
+        <source>%1 is asking for direct connection but his/her
+IP address (%2) differs from what GG server returned
+as his/her IP address (%3). It may be spoofing
+or he/she has port forwarding. Continue connection?</source>
+        <translation>%1 prosi o bezpośrednie połączenie ale jego /jej
+adres IP (%2 ) różni się od tego jaki serwer GG 
+zwrócił to jest IP: (%3 ). To może jest *spoofing* 
+albo on /ona ma port przekiewrowujący.
+Kontynuować połączenie?</translation>
+    </message>
 </context>
 <context>
     <name>FileTransferDialog</name>

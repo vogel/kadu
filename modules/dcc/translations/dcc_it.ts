@@ -73,6 +73,13 @@ oppure entrambe le macchine sono dietro router con NAT.</translation>
         <source>Couldn&apos;t open file!</source>
         <translation>Problemi con apertura file!</translation>
     </message>
+    <message>
+        <source>%1 is asking for direct connection but his/her
+IP address (%2) differs from what GG server returned
+as his/her IP address (%3). It may be spoofing
+or he/she has port forwarding. Continue connection?</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>FileTransferDialog</name>

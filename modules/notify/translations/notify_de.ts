@@ -67,5 +67,9 @@ Zustandsänderungen während des Verbindens zum Server</translation>
         <source>Ignore status changes from available/busy to available/busy</source>
         <translation>Ignoriere Zustandsänderungen von erreichbar/bschäftigt auf erreichbar/beschäftigt</translation>
     </message>
+    <message>
+        <source>User changed status to &quot;Invisible&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

@@ -53,16 +53,16 @@
         <translation>Wyczerpany limit SMS</translation>
     </message>
     <message>
-        <source>Wrong receiver adress</source>
-        <translation>Błędny adres odbiorcy SMS</translation>
-    </message>
-    <message>
         <source>Message too long</source>
         <translation>Wiadomość za długa</translation>
     </message>
     <message>
-        <source>Unknown error</source>
-        <translation>Nieznany błąd</translation>
+        <source>Wrong receiver address</source>
+        <translation>Nieprawidłowy  adres odbiorcy</translation>
+    </message>
+    <message>
+        <source>Unknown error (%d)</source>
+        <translation>Nieznany błąd (%d)</translation>
     </message>
 </context>
 <context>

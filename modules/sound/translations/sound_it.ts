@@ -45,6 +45,26 @@
         <source>Sound theme</source>
         <translation>Thema di suoni</translation>
     </message>
+    <message>
+        <source>Samples</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Test sample playing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Test sample recording</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Test full duplex</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sound</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SoundSlots</name>
@@ -99,6 +119,22 @@
     <message>
         <source>Other message</source>
         <translation>Altro messaggio</translation>
+    </message>
+    <message>
+        <source>Status invisible sound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Opening test sample file failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reading test sample file failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Playing test sample failed.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

@@ -53,16 +53,16 @@
         <translation>Verbleibende freie Zeichen</translation>
     </message>
     <message>
-        <source>Wrong receiver adress</source>
-        <translation>falsche Empfängeradresse</translation>
-    </message>
-    <message>
         <source>Message too long</source>
         <translation>Nachricht zu lang</translation>
     </message>
     <message>
-        <source>Unknown error</source>
-        <translation>Unbekannter Fehler</translation>
+        <source>Wrong receiver address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown error (%d)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

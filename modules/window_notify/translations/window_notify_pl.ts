@@ -1,5 +1,12 @@
 <!DOCTYPE TS><TS>
 <context>
+    <name>@default</name>
+    <message>
+        <source>Window</source>
+        <translation>Okno</translation>
+    </message>
+</context>
+<context>
     <name>WindowNotify</name>
     <message>
         <source>Chat with &lt;b&gt;%1&lt;/b&gt;&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>

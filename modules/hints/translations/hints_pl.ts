@@ -256,6 +256,14 @@
         <source>Bottom right</source>
         <translation>Prawy dolny</translation>
     </message>
+    <message>
+        <source>&lt;b&gt;%1&lt;/b&gt; is invisible&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
+        <translation>&lt;b&gt;%1&lt;/b&gt; jest ukryty&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;%1&lt;/b&gt; is invisible</source>
+        <translation>&lt;b&gt;%1&lt;/b&gt; jest ukryty</translation>
+    </message>
 </context>
 <context>
     <name>HintManagerSlots</name>
