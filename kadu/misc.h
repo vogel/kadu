@@ -40,7 +40,7 @@ QString ggPath(const QString &subpath="");
 	je¿eli drugi parametr nie jest == 0, to funkcja próbuje najpierw ustaliæ
 	¶cie¿kê na podstawie argv0, które ma byæ równe argv[0] oraz zmiennej PATH
 */
-QString dataPath(const QString &f="", const char *argv0=0);
+QString dataPath(const QString &f = "", const char *argv0 = 0);
 
 class UserListElement;
 
@@ -490,7 +490,7 @@ template<class T, class X> QValueList<T> keys(const QMap<T, X> &m)
 {
 #if QT_VERSION < 0x030005
     QValueList<T> ret;
-    for(QMap<T,X>::const_iterator it=m.begin(); it!=m.end(); it++)
+    for(QMap<T,X>::const_iterator it = m.begin(), map_end = m.end(); it != map_end; ++it)
         ret.append(it.key());
     return ret;
 #else
@@ -502,7 +502,7 @@ template<class T, class X> QValueList<X> values(const QMap<T, X> &m)
 {
 #if QT_VERSION < 0x030005
     QValueList<X> ret;
-    for(QMap<T,X>::const_iterator it=m.begin(); it!=m.end(); it++)
+    for(QMap<T,X>::const_iterator it = m.begin(), map_end = m.end(); it != map_end; ++it)
         ret.append(it.data());
     return ret;
 #else

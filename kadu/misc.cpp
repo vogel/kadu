@@ -689,7 +689,7 @@ void *allocFormantBuffer(const QValueList<struct richtext_formant> &formants, in
 	tmpformats = cformats;
 	memcpy(tmpformats, &richtext_header, sizeof(struct gg_msg_richtext));
 	tmpformats += sizeof(struct gg_msg_richtext);
-	for (QValueList<struct richtext_formant>::const_iterator it = formants.begin(); it != formants.end(); ++it)
+	CONST_FOREACH(it, formants)
 	{
 		struct richtext_formant actformant = (*it);
 		memcpy(tmpformats, &actformant, sizeof(gg_msg_richtext_format));
@@ -2217,11 +2217,11 @@ QStringList Themes::getSubDirs(const QString& path) const
 	QStringList subdirs, dirs=dir.entryList();
 	dirs.remove(".");
 	dirs.remove("..");
-	for (QStringList::Iterator it= dirs.begin(); it!=dirs.end(); ++it)
+	CONST_FOREACH(dir, dirs)
 	{
-		QFile s(path+"/"+(*it)+"/"+ConfigName);
+		QFile s(path+"/"+(*dir)+"/"+ConfigName);
 		if (s.exists())
-			subdirs.append((*it));
+			subdirs.append(*dir);
 	}
 	return subdirs;
 }
@@ -2279,7 +2279,7 @@ void Themes::setPaths(const QStringList& paths)
 	additional.clear();
 	QStringList add, temp = paths + defaultKaduPathsWithThemes();
 	QFile s;
-	for (QStringList::Iterator it = temp.begin(); it != temp.end(); ++it)
+	CONST_FOREACH(it, temp)
 	{
 		s.setName((*it)+"/"+ConfigName);
 		if (s.exists())
@@ -2299,16 +2299,16 @@ void Themes::setPaths(const QStringList& paths)
 QStringList Themes::defaultKaduPathsWithThemes() const
 {
 	QStringList default1, default2;
-	default1=getSubDirs(dataPath("kadu/themes/"+Name));
-	default2=getSubDirs(ggPath(Name));
+	default1 = getSubDirs(dataPath("kadu/themes/" + Name));
+	default2 = getSubDirs(ggPath(Name));
 
-	for (QStringList::Iterator it= default1.begin(); it!=default1.end(); ++it)
-		(*it)=dataPath("kadu/themes/"+Name+"/"+(*it)+"/");
+	FOREACH(it, default1)
+		*it = dataPath("kadu/themes/" + Name + "/" + (*it) + "/");
 
-	for (QStringList::Iterator it= default2.begin(); it!=default2.end(); ++it)
-		(*it)=ggPath(Name)+"/"+(*it)+"/";
+	FOREACH(it, default2)
+		*it = ggPath(Name)+"/" + (*it) + "/";
 
-	return default1+default2;
+	return default1 + default2;
 }
 
 const QStringList &Themes::paths() const
@@ -2407,7 +2407,7 @@ void GaduImagesManager::sendImage(UinType uin,uint32_t size,uint32_t crc32)
 {
 	kdebugf();
 	kdebugm(KDEBUG_INFO, "Searching images to send: size=%u, crc32=%u\n",size,crc32);
-	for(QValueList<ImageToSend>::Iterator i=ImagesToSend.begin(); i!=ImagesToSend.end(); ++i)
+	FOREACH(i, ImagesToSend)
 	{
 		if ((*i).size==size && (*i).crc32==crc32)
 		{
@@ -2447,7 +2447,7 @@ QString GaduImagesManager::getImageToSendFileName(uint32_t size,uint32_t crc32)
 {
 	kdebugf();
 	kdebugm(KDEBUG_INFO, "Searching images to send: size=%u, crc32=%u\n",size,crc32);
-	for(QValueList<ImageToSend>::Iterator i=ImagesToSend.begin(); i!=ImagesToSend.end(); ++i)
+	CONST_FOREACH(i, ImagesToSend)
 	{
 		if ((*i).size==size && (*i).crc32==crc32)
 		{
@@ -2463,7 +2463,7 @@ QString GaduImagesManager::getSavedImageFileName(uint32_t size,uint32_t crc32)
 {
 	kdebugf();
 	kdebugm(KDEBUG_INFO, "Searching saved images: size=%u, crc32=%u\n",size,crc32);
-	for(QValueList<SavedImage>::Iterator i=SavedImages.begin(); i!=SavedImages.end(); ++i)
+	CONST_FOREACH(i, SavedImages)
 	{
 		if ((*i).size==size && (*i).crc32==crc32)
 		{

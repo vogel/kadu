@@ -555,9 +555,9 @@ void HistoryManager::convSms2ekgForm()
 			datetime.setTime(QTime(czas.left(2).toInt(), czas.mid(3, 2).toInt(), czas.right(2).toInt()));
 			linelist.append(QString::number(-datetime.secsTo(
 				QDateTime(QDate(1970, 1, 1), QTime(0 ,0)))));
-			for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
-				if ((*i).mobile() == mobile)
-					uin = (*i).uin();
+			CONST_FOREACH(user, userlist)
+				if ((*user).mobile() == mobile)
+					uin = (*user).uin();
 			header = false;
 		}
 		else

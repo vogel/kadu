@@ -907,9 +907,9 @@ void Kadu::refreshGroupTabBar()
 	}
 	/* budujemy listê grup */
 	QStringList group_list;
-	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
+	CONST_FOREACH(user, userlist)
 	{
-		QString groups = (*i).group();
+		QString groups = (*user).group();
 		QString group;
 		for (int g = 0; (group = groups.section(',' ,g ,g)) != ""; ++g)
 			if(!group_list.contains(group))
@@ -950,12 +950,12 @@ void Kadu::setActiveGroup(const QString& group)
 	kdebugf();
 
 	Userbox->clearUsers();
-	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
+	CONST_FOREACH(user, userlist)
 	{
 		bool belongsToGroup = group.isEmpty();
 		if (!belongsToGroup)
 		{
-			QString user_groups = (*i).group();
+			QString user_groups = (*user).group();
 			QString user_group;
 			for (int g = 0; (user_group = user_groups.section(',',g,g)) != ""; ++g)
 				if (user_group == group)
@@ -964,8 +964,8 @@ void Kadu::setActiveGroup(const QString& group)
 					break;
 				}
 		}
-		if (belongsToGroup && (!(*i).isAnonymous() || !Docked))
-			Userbox->addUser((*i).altNick());
+		if (belongsToGroup && (!(*user).isAnonymous() || !Docked))
+			Userbox->addUser((*user).altNick());
 	}
 	UserBox::all_refresh();
 	kdebugf2();
@@ -1522,8 +1522,8 @@ void KaduSlots::onCreateConfigDialog()
 	QDir locale(dataPath("kadu/translations/"), "kadu_*.qm");
 	QStringList files=locale.entryList();
 
-	for ( QStringList::Iterator it = files.begin(); it != files.end(); ++it )
-		*it=translateLanguage(qApp, (*it).mid(5, (*it).length()-8), true);
+	FOREACH(file, files)
+		*file = translateLanguage(qApp, (*file).mid(5, (*file).length()-8), true);
 	cb_language->insertStringList(files);
 	cb_language->setCurrentText(translateLanguage(qApp,
 	config_file.readEntry("General", "Language", QTextCodec::locale()),true));

@@ -1165,8 +1165,8 @@ void GaduProtocol::disconnectedSlot()
 
 	UserListSent = false;
 
-	for (UserList::Iterator i = userlist.begin(); i != userlist.end(); ++i)
-		(*i).status().setOffline();
+	FOREACH(user, userlist)
+		(*user).status().setOffline();
 
 	CurrentStatus->setOffline("");
 	emit disconnected();
@@ -1650,8 +1650,8 @@ void GaduProtocol::sendUserList(const UserList &ulist)
 	UserListSent = true;
 
 	unsigned int j = 0;
-	for (UserList::ConstIterator i = ulist.begin(); i != ulist.end(); ++i)
-		if ((*i).uin())
+	CONST_FOREACH(user, ulist)
+		if ((*user).uin())
 			++j;
 
 	if (!j)
@@ -1665,14 +1665,14 @@ void GaduProtocol::sendUserList(const UserList &ulist)
 	types = (char *) malloc(j * sizeof(char));
 
 	j = 0;
-	for (UserList::ConstIterator i = ulist.begin(); i != ulist.end(); ++i)
-		if ((*i).uin() && !(*i).isAnonymous())
+	CONST_FOREACH(user, ulist)
+		if ((*user).uin() && !(*user).isAnonymous())
 		{
-			uins[j] = (*i).uin();
-			if ((*i).offlineTo())
+			uins[j] = (*user).uin();
+			if ((*user).offlineTo())
 				types[j] = GG_USER_OFFLINE;
 			else
-				if ((*i).blocking())
+				if ((*user).blocking())
 					types[j] = GG_USER_BLOCKED;
 				else
 					types[j] = GG_USER_NORMAL;
@@ -2054,7 +2054,7 @@ QString GaduProtocol::userListToString(const UserList& userList) const
 	QString file;
 	QString contacts, tmp;
 
-	for (UserList::ConstIterator i = userList.begin(); i != userList.end(); ++i)
+	CONST_FOREACH(i, userList)
 		if (!(*i).isAnonymous())
 		{
 			contacts += (*i).firstName();					contacts += ";";

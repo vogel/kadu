@@ -56,7 +56,7 @@ UserInfo::UserInfo(const QString &altnick, bool addUser, QDialog* parent, const 
 	}
 	else
 	{
-		for (UserList::Iterator i = userlist.begin(); i != userlist.end(); ++i)
+		FOREACH(i, userlist)
 			if ((*i).altNick() == altnick)
 			{
 				puser = &(*i);

@@ -253,8 +253,8 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager")
 	//
 	registerStaticModules();
 	QStringList static_list=staticModules();
-	for (QStringList::ConstIterator i=static_list.begin(); i!=static_list.end(); ++i)
-		if(!moduleIsActive(*i))
+	CONST_FOREACH(i, static_list)
+		if (!moduleIsActive(*i))
 			activateModule(*i);
 
 	// za³aduj modu³y wed³ug pliku konfiguracyjnego
@@ -265,7 +265,7 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager")
 	QString unloaded_str = config_file.readEntry("General", "UnloadedModules");
 	QStringList unloaded_list = QStringList::split(',',unloaded_str);
 	bool load_error = false;
-	for(QStringList::ConstIterator i = installed_list.begin(); i != installed_list.end(); i++)
+	CONST_FOREACH(i, installed_list)
 		if (!moduleIsActive(*i))
 		{
 			bool load_module;
@@ -314,18 +314,18 @@ ModulesManager::~ModulesManager()
 	bool deactivated;
 	do
 	{
-		QStringList active=activeModules();
-		deactivated=false;
-		for(QStringList::ConstIterator i=active.begin(); i!=active.end(); ++i)
+		QStringList active = activeModules();
+		deactivated = false;
+		CONST_FOREACH(i, active)
 			if (Modules[*i].usage_counter == 0)
 				if (deactivateModule(*i))
-					deactivated=true;
+					deactivated = true;
 	}
 	while (deactivated);
 	// Wiêcej modu³ów nie mo¿na wy³adowaæ normalnie,
 	// je¶li jakie¶ zosta³y trzeba to zrobiæ brutalnie
 	QStringList active=activeModules();
-	for(QStringList::ConstIterator i=active.begin(); i!=active.end(); ++i)
+	CONST_FOREACH(i, active)
 	{
 		kdebugm(KDEBUG_PANIC, "WARNING! Could not deactivate module %s, killing\n",(*i).local8Bit().data());
 		deactivateModule(*i,true);
@@ -352,7 +352,7 @@ QTranslator* ModulesManager::loadModuleTranslation(const QString& module_name)
 bool ModulesManager::satisfyModuleDependencies(const ModuleInfo& module_info)
 {
 	kdebugf();
-	for (QStringList::ConstIterator it = module_info.depends.begin(); it != module_info.depends.end(); ++it)
+	CONST_FOREACH(it, module_info.depends)
 	{
 		if (!moduleIsActive(*it))
 		{
@@ -379,7 +379,7 @@ bool ModulesManager::satisfyModuleDependencies(const ModuleInfo& module_info)
 void ModulesManager::incDependenciesUsageCount(const ModuleInfo& module_info)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", module_info.description.local8Bit().data());
-	for (QStringList::ConstIterator it = module_info.depends.begin(); it != module_info.depends.end(); ++it)
+	CONST_FOREACH(it, module_info.depends)
 	{
 		kdebugm(KDEBUG_INFO, "incUsage: %s\n", (*it).local8Bit().data());
 		moduleIncUsageCount(*it);
@@ -510,7 +510,7 @@ void ModulesManager::saveLoadedModules()
 bool ModulesManager::conflictsWithLoaded(const QString &module_name, const ModuleInfo& module_info) const
 {
 	kdebugf();
-	for (QStringList::ConstIterator it = module_info.conflicts.begin(); it != module_info.conflicts.end(); ++it)
+	CONST_FOREACH(it, module_info.conflicts)
 	{
 		if (moduleIsActive(*it))
 		{
@@ -632,7 +632,7 @@ bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 		return false;
 	}
 	
-	for (QStringList::Iterator i = m.info.depends.begin(); i != m.info.depends.end(); ++i)
+	CONST_FOREACH(i, m.info.depends)
 		moduleDecUsageCount(*i);
 	
 	m.close();

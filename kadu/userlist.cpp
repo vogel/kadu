@@ -686,7 +686,7 @@ bool UserList::writeToFile(QString filename)
 	}
 
 	QString s;
-	for (Iterator i = begin(); i != end(); ++i)
+	CONST_FOREACH(i, *this)
 	{
 		s.truncate(0);
 		s.append(QString::number((*i).uin()))
