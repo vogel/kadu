@@ -422,6 +422,8 @@ QString FileDccSocket::selectFile()
 		f = QFileDialog::getOpenFileName((char *)dccsock->file_info.filename,
 			QString::null, 0, tr("open file"), tr("Select file location"));
 		fi.setFile(f);
+		if (f!=QString::null && !fi.isReadable())
+			MessageBox::msg(tr("This file is not readable"), true);
 	}
 	while (f != QString::null && !fi.isReadable());
 	kdebugf2();
