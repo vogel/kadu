@@ -53,7 +53,7 @@ void loadKaduConfig(void) {
 	konf->setGroup("Global");
 	config.uin = konf->readNumEntry("UIN",0);
 	config.password = pwHash(konf->readEntry("Password",""));
-	fprintf(stderr,"KK Read user data: uin %d password %s\n",config.uin,config.password);
+	fprintf(stderr,"KK Read user data: uin %d password :-P\n",config.uin);
 	config.soundprog = strdup(konf->readEntry("SoundPlayer",""));
 	config.soundmsg = strdup(konf->readEntry("Message_sound",""));
 	config.soundvolctrl = konf->readBoolEntry("VolumeControl",false);
