@@ -66,7 +66,6 @@ UserList::~UserList()
 		konieczne wiêc zakomentowa³em.
 		kdebug("UserList::~UserList(): dnslookups.count() = %d\n", dnslookups.count());
 	*/
-
 	invisibleTimer->stop();
 	delete invisibleTimer;
 }

@@ -308,11 +308,10 @@ void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 	delete uc;
 }
 
-
 void Kadu::keyPressEvent(QKeyEvent *e) {
-	if (e->key() == Key_Escape) {
-		kdebug("Kadu::keyPressEvent(Key_Escape)\n");
-		close();
+	if (e->key() == Key_Escape && trayicon) {
+		kdebug("Kadu::keyPressEvent(Key_Escape): Kadu hide\n");
+		hide();
 	}
 	QWidget::keyPressEvent(e);
 }
