@@ -33,6 +33,7 @@ class ConfigFile {
 		void sync();
 		void setGroup(const QString &name);
 		void writeEntry(const QString &name, const QString &value);
+		void writeEntry(const QString &name, const char *value);
 		void writeEntry(const QString &name, const int value);
 		void writeEntry(const QString &name, const double value);
 		void writeEntry(const QString &name, const bool value);
@@ -42,6 +43,7 @@ class ConfigFile {
 		void writeEntry(const QString &name, const QFont &value);
 
 		QString readEntry(const QString &name, const QString &def = QString::null) const;
+//		char *readEntry(const QString &name, const char *value = NULL) const;
 		int readNumEntry(const QString &name, int def = 0) const;
 		double readDoubleNumEntry(const QString &name, double def = 0.0) const;
 		bool readBoolEntry(const QString &name, bool def = false) const;

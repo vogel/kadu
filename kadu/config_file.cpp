@@ -10,6 +10,7 @@
 #include <qapplication.h>
 #include <stdio.h>
 
+#include "misc.h"
 #include "config_file.h"
 
 ConfigFile::ConfigFile(const QString &filename) : filename(filename) {
@@ -140,6 +141,10 @@ QString ConfigFile::getEntry(const QString &name, bool *ok) const {
 
 void ConfigFile::writeEntry(const QString &name, const QString &value) {
 	changeEntry(name, value);
+}
+
+void ConfigFile::writeEntry(const QString &name, const char *value) {
+	changeEntry(name, __c2q(value));
 }
 
 void ConfigFile::writeEntry(const QString &name, const int value) {
