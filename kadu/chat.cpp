@@ -185,6 +185,8 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	whois->setPixmap(p_whois);
 	QToolTip::add(whois, i18n("Lookup user info"));
 
+	buttontray->setFixedWidth(7 * whois->sizeHint().width());
+
 	connect(autosend, SIGNAL(clicked()), this, SLOT(regAutosend()));
 //	connect(lockscroll, SIGNAL(clicked()), this, SLOT(lockScroll()));
 	connect(history, SIGNAL(clicked()), this, SLOT(HistoryBox()));
