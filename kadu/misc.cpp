@@ -28,6 +28,7 @@
 #include "gadu.h"
 #include "debug.h"
 #include "userlist.h"
+#include "message_box.h"
 #include "kadu-config.h"
 
 #define GG_FONT_IMAGE	0x80
