@@ -7,6 +7,29 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef EVENTS_H
+#define EVENTS_H
+
+#include <qdialog.h>
+#include <qstring.h>
+
+#include "libgadu.h"
+
+class SavePublicKey : public QDialog {
+	Q_OBJECT
+	public:
+		SavePublicKey(uin_t uin, QString keyData, QWidget *parent = 0, const char *name = 0);
+
+	private:
+		uin_t uin;
+		QString keyData;
+
+	private slots:
+		void yesClicked();
+};
+
 void eventRecvMsg(int, UinsList, unsigned char *,time_t,int=0,struct gg_msg_format * = NULL);
 void eventGotUserlist(struct gg_event *);
 void eventStatusChange(struct gg_event *);
+
+#endif

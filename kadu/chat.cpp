@@ -268,6 +268,10 @@ Chat::~Chat() {
 	fprintf(stderr, "KK Chat::~Chat: chat destroyed: index %d\n", index);
 }
 
+void Chat::setEncryptionBtnEnabled(bool enabled) {
+	encryption->setEnabled(enabled && config.encryption);
+}
+
 void Chat::changeAppearance() {
 	if (uins.count() > 1 && userbox) {
 		userbox->setPaletteBackgroundColor(config.colors.userboxBg);

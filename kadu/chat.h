@@ -42,13 +42,13 @@ class Chat : public QWidget {
 		QPushButton *autosend;
 		QPushButton *lockscroll;
 		QAccel *acc;
+#ifdef HAVE_OPENSSL
+		QPushButton *encryption;
+#endif
 		QPushButton *sendbtn;
 		QPushButton *cancelbtn;
 		UserBox *userbox;
 		QString myLastMessage;
-#ifdef HAVE_OPENSSL
-		QPushButton *encryption;
-#endif
 
 		void pruneWindow(void);
 
@@ -62,7 +62,8 @@ class Chat : public QWidget {
 		void addEmoticon(QString);
 		void scrollMessages(QString &);
 		void alertNewMessage(void);
-      
+		void setEncryptionBtnEnabled(bool);
+
 		QTextBrowser *body;
 		CustomInput *edit;
 		QHBox *buttontray;

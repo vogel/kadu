@@ -19,7 +19,9 @@
 #include <qstring.h>
 #include <qfile.h>
 #include <qarray.h>
-#include <iostream>
+#include <qlayout.h>
+#include <qtextbrowser.h>
+//#include <iostream>
 #include <klocale.h>
 #include <qmessagebox.h>
 #define _USE_BSD
@@ -34,6 +36,7 @@
 
 //
 #include "kadu.h"
+#include "events.h"
 #include "pixmaps.h"
 #include "chat.h"
 #include "message.h"
@@ -50,8 +53,74 @@ extern "C"
 };
 #endif
 
+SavePublicKey::SavePublicKey(uin_t uin, QString keyData, QWidget *parent, const char *name) :
+	QDialog(parent, name, Qt::WDestructiveClose), uin(uin), keyData(keyData) {
+	
+	fprintf(stderr, "KK SavePublicKey::SavePublicKey()\n");
+
+	setCaption(i18n("Save public key"));
+	resize(200, 80);
+	
+//	QTextBrowser *qtext = new QTextBrowser(this);
+//	qtext->setText(
+//		i18n("User %1 is sending you his public key. Do you want to save it?").arg(userlist.byUin(uin).altnick));
+//	qtext->setAlignment(Qt::AlignCenter);
+
+	QLabel *l_info = new QLabel(
+		i18n("User %1 is sending you his public key. Do you want to save it?").arg(userlist.byUin(uin).altnick),
+		this);
+
+	QPushButton *yesbtn = new QPushButton(i18n("Yes"), this);
+	QPushButton *nobtn = new QPushButton(i18n("No"), this);
+
+	QObject::connect(yesbtn, SIGNAL(clicked()), this, SLOT(yesClicked()));
+	QObject::connect(nobtn, SIGNAL(clicked()), this, SLOT(reject()));
+
+	QGridLayout *grid = new QGridLayout(this, 2, 2, 3, 3);
+	grid->addMultiCellWidget(l_info, 0, 0, 0, 1);
+	grid->addWidget(yesbtn, 1, 0);
+	grid->addWidget(nobtn, 1, 1);
+
+	fprintf(stderr, "KK SavePublicKey::SavePublicKey(): finished\n");
+}
+
+void SavePublicKey::yesClicked() {
+	QFile keyfile;
+	QString keyfile_path;
+
+	fprintf(stderr, "KK SavePublicKey::yesClicked()\n");
+
+	keyfile_path.append(ggPath("keys/"));
+	keyfile_path.append(QString::number(uin));
+	keyfile_path.append(".pem");
+
+	keyfile.setName(keyfile_path);
+
+	if (!(keyfile.open(IO_WriteOnly))) {
+		QMessageBox::critical(this, i18n("Error"), i18n("Error writting the key"), i18n("OK"), QString::null, 0);
+		fprintf(stderr, "eventRecvMsg(): Error opening key file %s\n", (const char *)keyfile_path.local8Bit());
+		return;
+		}
+	else {
+		keyfile.writeBlock(keyData.local8Bit(), keyData.length());
+		keyfile.close();
+		int i = 0;
+		UinsList uins;
+		uins.append(uin);
+		while (i < chats.count() && !chats[i].uins.equals(uins))
+			i++;
+		if (i < chats.count())
+			chats[i].ptr->setEncryptionBtnEnabled(true);
+		}
+	accept();
+
+	fprintf(stderr, "KK SavePublicKey::yesClicked(): finished\n");
+}
+
 void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t time,int formats_count=0,struct gg_msg_format * formats=NULL)
 {
+	int i;
+
 	fprintf(stderr, "KK eventRecvMsg()\n");
 
 	// ignorujemy, jesli nick na liscie ignorowanych
@@ -81,10 +150,24 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 		if (!strncmp((char *)msg, "-----BEGIN RSA PUBLIC KEY-----", 20)) {
 			QFile keyfile;
 			QString keyfile_path;
+			QWidget *parent;
 
-			if(QMessageBox::information(kadu, "Kadu", i18n("User %1 is sending you his public key. Do you want to save it?").arg(userlist.byUin(senders[0]).altnick), i18n("Yes"), i18n("No"), QString::null, 0, 1)!=0)
-				return;
-				
+			i = 0;
+			while (i < chats.count() && !chats[i].uins.equals(senders))
+				i++;
+			if (i == chats.count())
+				parent = kadu;
+			else
+				parent = chats[i].ptr;
+
+//			if (QMessageBox::information(parent, i18n("Save public key"),
+//				i18n("User %1 is sending you his public key. Do you want to save it?").arg(userlist.byUin(senders[0]).altnick),
+//				i18n("Yes"), i18n("No"), QString::null, 0, 1) != 0)
+//				return;
+			SavePublicKey *spk = new SavePublicKey(senders[0], __c2q((const char *)msg), NULL);
+			spk->show();
+			return;
+
 			keyfile_path.append(ggPath("keys/"));
 			keyfile_path.append(QString::number(senders[0]));
 			keyfile_path.append(".pem");
@@ -142,7 +225,6 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 
 	//script.eventMsg(senders[0],msgclass,(char*)msg);
 
-	int i;
 	i = 0;
 	while (i < chats.count() && !chats[i].uins.equals(senders))
 		i++;
@@ -409,3 +491,5 @@ void ackHandler(int seq) {
 					}
 				}
 }
+
+#include "events.moc"

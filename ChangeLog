@@ -12,6 +12,9 @@
 * okno rozmowy: mo¿liwo¶æ zmieniania proporcji pomiêdzy widokiem historii rozmowy,
   a reszt± okna
 * sms: znowu powinny dzia³aæ era i plus. Idea w przygotowaniu
+* szyfrowanie: odbierania klucza publicznego nie powoduje padów aplikacji, a ponadto
+  zatwierdzenie jego zapisania powoduje uaktywnienie guzika "encryption" w rozmowie
+  prowadzonej z osob±, która do nas przys³a³a swój klucz publiczny
 
 +++ wersja 0.3.3-pre4
 * przy imporcie listy u¿ytkowników ustawiamy domy¶lne atrybuty u¿ytkowników
