@@ -558,14 +558,16 @@ int HistoryManager::getHistoryEntriesCountPrivate(const QString &filename) {
 	QString path = ggPath("history/");
 	QByteArray buffer;
 
-	f.setName(path + filename);
+	f.setName(path + filename + ".idx");
 	if (!(f.open(IO_ReadOnly))) {
 		kdebug("HistoryManager::getHistoryEntriesCountPrivate(const QString &filename): Error opening history file %s\n", (const char *)filename.local8Bit());
 		return -1;
 		}
-	buffer = f.readAll();
+	lines = f.size() / sizeof(int);
+//	buffer = f.readAll();
 	f.close();
-	lines = buffer.contains('\n');
+//	lines = buffer.contains('\n');
+	
 	kdebug("HistoryManager::getHistoryEntriesCountPrivate(const QString &filename): %d lines\n", lines);
 	return lines;
 }
