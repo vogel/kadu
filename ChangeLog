@@ -78,6 +78,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dalsza walka vogela ze statusami - sygna³ changingStatus (adrian)
 * drobne optymalizacje libgadu, IconsManagera, GaduSocketNotifiers (joi)
 * ³atka vogela - porz±dki w tokenach i przenosiny klasy Status (adrian)
+* eskejpowanie znaków htmla przy zapisie do historii statusów z opisami (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

@@ -273,6 +273,7 @@ void HistoryManager::appendStatus(UinType uin, unsigned int status, QString desc
 			linelist.append("notavail");
 			break;
 	}
+	HtmlDocument::escapeText(description);
 	if (description != QString::null)
 		linelist.append(text2csv(description));
 	line = linelist.join(",");
