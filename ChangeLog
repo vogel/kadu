@@ -519,6 +519,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   opuszczane jest kilka ramek (joi)
 * przyspiesznie okna konfiguracji (pawel_p, joi)
 * kadu nie zamrozi siê, gdy arts padnie (joi)
+* ostatnio otwarta "zak³adka" w konfiguracji jest zapamiêtywana pomiêdzy
+  uruchomieniami programu (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
