@@ -146,7 +146,7 @@ void TrayIcon::setType(QPixmap &pixmap)
 void TrayIcon::changeIcon() {
 	if (pending.pendingMsgs() && config.dock && !icon_timer->isActive()) {
 		if (!blink) {
-			setPixmap(QPixmap((const char**)gg_msg_xpm));
+			setPixmap(*icons->loadIcon("message"));
 			icon_timer->start(500,TRUE);
 			blink = true;
 			}

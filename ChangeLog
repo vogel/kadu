@@ -24,7 +24,8 @@
   brana ze sta³ej deklerowanej w libgadu.h (mast3r)
 * poprawne wyswietlanie pola "wyswietl" w informacji o kontakcie (mast3r)
 * kontakty z ustawionym numerem telefonu maj± ikonki z telefonami (jz,adrian)
-* wydzielenie ikon ze statusami do odzielnych plików (chilek)
+* wydzielenie ikon ze statusami do oddzielnych plików (chilek)
+* ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem do oddzielnych plików (chilek)
 
 +++ wersja 0.3.3-rc3
 * sensowne potwierdzenie usuniêcia kontaktu (adrian)

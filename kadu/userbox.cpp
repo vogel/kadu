@@ -181,10 +181,9 @@ void UserBox::refresh()
 	{
 		UserListElement &user = userlist.byAltNick(a_users[i]);
 		bool has_mobile = user.mobile.length();
-		if (pending.pendingMsgs(user.uin))
-		{
-	    		insertItem(QPixmap((const char **)gg_msg_xpm), user.altnick);
-		}
+		if (pending.pendingMsgs(user.uin)) {
+	    		insertItem(*icons->loadIcon("message"), user.altnick);
+			}
 		else
 		{
 			QPixmap *pix = NULL;
@@ -228,7 +227,7 @@ void UserBox::refresh()
 		UserListElement &user = userlist.byAltNick(i_users[i]);
 		bool has_mobile = user.mobile.length();
 		if (pending.pendingMsgs(user.uin)) {
-	    		insertItem(QPixmap((const char **)gg_msg_xpm), user.altnick);
+	    		insertItem(*icons->loadIcon("message"), user.altnick);
 			}
 		else {
 			QPixmap *pix = NULL;
@@ -254,10 +253,9 @@ void UserBox::refresh()
 	{
 		UserListElement &user = userlist.byAltNick(n_users[i]);
 		bool has_mobile = user.mobile.length();
-		if (pending.pendingMsgs(user.uin))
-		{
-	    		insertItem(QPixmap((const char **)gg_msg_xpm), user.altnick);
-		}
+		if (pending.pendingMsgs(user.uin)) {
+	    		insertItem(*icons->loadIcon("message"), user.altnick);
+			}
 		else
 		{
 			QPixmap *pix = NULL;
