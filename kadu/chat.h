@@ -42,14 +42,17 @@ class CustomInput : public QMultiLineEdit {
 			};
 
 	signals:
-		void enterPressed();
+		void sendMessage();
 		void specialKeyPressed(int key);
 
 	public slots:
 		void paste();
+		void setAutosend(bool);
 
 	protected:
 		void keyPressEvent(QKeyEvent *e);
+
+		bool autosend_enabled;
 };
 
 class KaduTextBrowser : public QTextBrowser {
@@ -99,7 +102,6 @@ class Chat : public QWidget {
 		QTextBrowser *body;
 		CustomInput *edit;
 		QHBox *buttontray;
-		bool autosend_enabled;
 #ifdef HAVE_OPENSSL
 		bool encrypt_enabled;
 #endif
@@ -115,7 +117,6 @@ class Chat : public QWidget {
 		void toggledItalic(bool on);
 		void toggledUnderline(bool on);
 		void curPosChanged(int para, int pos);
-		void enterPressed();
 		void specialKeyPressed(int key);
 
 	protected:
@@ -129,7 +130,6 @@ class Chat : public QWidget {
 		void userWhois(void);
 		void insertEmoticon(void);
 		void regEncryptSend(void);
-		void regAutosend(void);
 		void addMyMessageToHistory(void);
 		void clearChatWindow(void);
 		void pageUp();

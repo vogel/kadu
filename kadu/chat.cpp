@@ -57,9 +57,9 @@ CustomInput::CustomInput(QWidget *parent, const char *name) : QMultiLineEdit(par
 
 void CustomInput::keyPressEvent(QKeyEvent * e) {
 	kdebug("CustomInput::keyPressEvent()\n");
-	if (e->key() == Key_Return && !(e->state() & ShiftButton)) {
+	if (autosend_enabled && e->key() == Key_Return && !(e->state() & ShiftButton)) {
 		kdebug("CustomInput::keyPressEvent(): emit enterPressed()\n");
-		emit enterPressed();
+		emit sendMessage();
 		}
 	else {
 		if (e->state() & ControlButton) {
@@ -78,6 +78,10 @@ void CustomInput::keyPressEvent(QKeyEvent * e) {
 		}
 }
 
+void CustomInput::setAutosend(bool on) {
+	autosend_enabled = on;
+}
+
 void CustomInput::paste() {
 	pasteSubType("plain");
 }
@@ -89,7 +93,6 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	QValueList<int> sizes;
 
 	emoticon_selector = NULL;
-	autosend_enabled = false;
 
 	title_timer = new QTimer(this);
 	connect(title_timer,SIGNAL(timeout()),this,SLOT(changeTitle()));
@@ -152,10 +155,6 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	autosend->setPixmap(loadIcon("key_enter.png"));
 	autosend->setToggleButton(true);
 	QToolTip::add(autosend, i18n("Enter key sends message"));
-	if (config.autosend) {
-		autosend->setOn(true);
-		autosend_enabled = true;
-		}
 
 	lockscroll = new QPushButton(buttontray);
 	lockscroll->setPixmap(QPixmap((const char**)scroll_lock));
@@ -208,6 +207,10 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	edit->setMinimumHeight(1);
 	edit->setWordWrap(QMultiLineEdit::WidgetWidth);
 	edit->setFont(config.fonts.chat);
+
+	if (config.autosend)
+		autosend->setOn(true);
+	edit->setAutosend(config.autosend);
 
 	QHBox *btnpart = new QHBox(downpart);
 
@@ -270,7 +273,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	edit->setMimeSourceFactory(bodyformat);
 	edit->setTextFormat(Qt::RichText);
 
-	connect(autosend, SIGNAL(clicked()), this, SLOT(regAutosend()));
+	connect(autosend, SIGNAL(toggled(bool)), edit, SLOT(setAutosend(bool)));
 	connect(history, SIGNAL(clicked()), this, SLOT(HistoryBox()));
 	connect(iconsel, SIGNAL(clicked()), this, SLOT(insertEmoticon()));
 	connect(whois, SIGNAL(clicked()), this, SLOT(userWhois()));
@@ -280,7 +283,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	connect(italicbtn, SIGNAL(toggled(bool)), this, SLOT(toggledItalic(bool)));
 	connect(underlinebtn, SIGNAL(toggled(bool)), this, SLOT(toggledUnderline(bool)));
 	connect(edit, SIGNAL(cursorPositionChanged(int, int)), this, SLOT(curPosChanged(int, int)));
-	connect(edit, SIGNAL(enterPressed()), this, SLOT(enterPressed()));
+	connect(edit, SIGNAL(sendMessage()), this, SLOT(sendMessage()));
 	connect(edit, SIGNAL(specialKeyPressed(int)), this, SLOT(specialKeyPressed(int)));
 
 	totaloccurences = 0;
@@ -331,12 +334,6 @@ void Chat::specialKeyPressed(int key) {
 			edit->setUnderline(underlinebtn->isOn());
 			break;
 		}
-}
-
-void Chat::enterPressed() {
-	kdebug("Chat::enterPressed()\n");
-	if (autosend_enabled)
-		sendMessage();
 }
 
 void Chat::toggledBold(bool on) {
@@ -477,11 +474,6 @@ void Chat::regEncryptSend(void) {
 	encrypt_enabled = !encrypt_enabled;
 	setupEncryptButton(encrypt_enabled);
 #endif
-}
-
-/* register/unregister sending with Return key */
-void Chat::regAutosend(void) {
-	autosend_enabled = !autosend_enabled;
 }
 
 /* convert special characters into emoticons, HTML into plain text and so forth */
