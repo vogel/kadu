@@ -5,7 +5,7 @@
 
 #include "gadu.h"
 
-class WindowNotify : QObject
+class WindowNotify : public QObject
 {
 	Q_OBJECT
 	public:
