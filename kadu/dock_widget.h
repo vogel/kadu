@@ -15,7 +15,7 @@
 #include <qstringlist.h>
 #include <qpixmap.h>
 
-class TrayIcon : public QWidget
+class TrayIcon : public QLabel
 {
 	Q_OBJECT
 
