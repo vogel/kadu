@@ -3,6 +3,9 @@ lub rozbudowy. Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub
 podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y. Je¶li jest
 w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
++++ wersja 0.3.4-final
+* kadu nie pokazuje fa³szywych statusów ukrytych w userboksie (chilek)
+
 +++ wersja 0.3.4-rc3
 * je¶li u¿ywamy po³±czenia TLSv1 i wpisujemy jawnie serwery GG to domy¶lnym
   portem jest 443 (chilek)

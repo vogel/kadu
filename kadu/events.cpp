@@ -476,17 +476,7 @@ void EventManager::userlistReceivedSlot(struct gg_event *e) {
 				kdebug("eventGotUserlist(): Unknown status for user %d: %d\n", n->uin, n->status);
 				break;
 			}
-		if (n->status != GG_STATUS_NOT_AVAIL)
-//			user.status = n->status;
-			userlist.changeUserStatus(n->uin, n->status);
-		else
-			if (user.status == GG_STATUS_NOT_AVAIL
-				|| user.status == GG_STATUS_INVISIBLE2)
-//				user.status = GG_STATUS_INVISIBLE2;
-				userlist.changeUserStatus(n->uin, GG_STATUS_INVISIBLE2);
-			else
-//				user.status = GG_STATUS_NOT_AVAIL;
-				userlist.changeUserStatus(n->uin, GG_STATUS_NOT_AVAIL);
+		userlist.changeUserStatus(n->uin, n->status);
 
 		history.appendStatus(user.uin, user.status, user.description.length() ? user.description : QString::null);
 
