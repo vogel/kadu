@@ -46,14 +46,16 @@
    z historii rozmowy (chilek)
 * historie rozmów: optymalizacja obs³ugi historii rozmów - wprowadzenie plików
   z indeksami wpisów historii (chilek)
-* mozliwo¶æ ustawienia domy¶lnego portu na który kadu ma siê ³±czyæ z serwerami
-  gg. Przy ustawieniu serwery domy¶lne, kadu ³±cz±c siê z hubem - dostaje dane
-  i ustawienie portu nie jest brane pod uwagê. Dopiero przy ³±czeniu siê z pozosta³ymi
-  serwerami, ustawienie portu jest uwzglêdniane. Przy w³asnych wpisach ip serwerów,
-  kadu siê ³±czu odrazu z danym ip na ustawiony port (mast3r)
-* poprawka w konfiguracji, wybór "brak" emotikon - deaktywuje
-  mo¿liwo¶æ wyboru themes'u, stary kod byl niepoprawny i wywala³ 
+* mo¿liwo¶æ ustawienia domy¶lnego portu na który kadu ma ³±czyæ siê z serwerami
+  gg. Przy ustawieniu serwerów domy¶lnych kadu ³±cz±c siê z hubem - dostaje dane,
+  a ustawienie portu nie jest brane pod uwagê. Dopiero przy ³±czeniu siê z pozosta³ymi
+  serwerami ustawienie portu jest uwzglêdniane. Przy w³asnych wpisach ip serwerów,
+  kadu ³±czy siê odrazu z danym ip na ustawiony port (mast3r)
+* poprawka w konfiguracji: wybór "brak" emotikon - deaktywuje
+  mo¿liwo¶æ wyboru themes-u, stary kod byl niepoprawny i wywala³ 
   bl±d na standardowe wyj¶cie (mast3r)
+* okno rozmowy: nie czekamy na potwierdzenie dostarczenia wiadomo¶ci
+  do osoby niedostêpnej lub ukrytej (chilek)
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem

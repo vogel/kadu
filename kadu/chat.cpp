@@ -622,7 +622,7 @@ void Chat::cancelMessage(void) {
 
 /* sends the message typed */
 void Chat::sendMessage(void) {
-	int i,j;
+	int i, j, online;
 	uin_t *users;
 	
 	if (getActualStatus() == GG_STATUS_NOT_AVAIL) {
@@ -653,7 +653,13 @@ void Chat::sendMessage(void) {
 	unsigned char *utmp = (unsigned char *)strdup(unicode2cp(myLastMessage).data());
 
 	users = new (uin_t)[uins.count()];
-	if (config.msgacks) {
+	for (j = 0, online = 0; j < uins.count(); j++) {
+		UserListElement &ule = userlist.byUin(uins[j]);
+		if (ule.status == GG_STATUS_AVAIL || ule.status == GG_STATUS_AVAIL_DESCR ||
+			ule.status == GG_STATUS_BUSY || ule.status == GG_STATUS_BUSY_DESCR)
+			online++;
+		}
+	if (config.msgacks && online) {
 		acks.resize(acks.size() + 1);
 		i = acks.size() - 1;
 		if (uins.count() > 1) {
@@ -661,7 +667,7 @@ void Chat::sendMessage(void) {
 				users[j] = uins[j];
 			acks[i].seq = gg_send_message_confer(sess, GG_CLASS_CHAT,
 				uins.count(), users, (unsigned char *)utmp);    
-			acks[i].ack = uins.count();
+			acks[i].ack = online;
 			}
 		else {
 #ifdef HAVE_OPENSSL
