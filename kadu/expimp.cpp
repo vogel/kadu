@@ -107,6 +107,7 @@ void UserlistImport::startTransfer() {
 
 	fetchbtn->setEnabled(false);
 
+	importreply.truncate(0);
 	connect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)),
 		this, SLOT(userlistReplyReceivedSlot(char, char *)));
 }
@@ -180,14 +181,21 @@ void UserlistImport::userlistReplyReceivedSlot(char type, char *reply) {
 		}*/
 
 	kdebug("ImportUserlist::userlistReplyReceivedSlot()\n");
-	if (type != GG_USERLIST_GET_REPLY)
+	if (type != GG_USERLIST_GET_REPLY && type != 0x04)
 		return;
 
+	if (strlen(reply))
+		importreply = importreply + cp2unicode((unsigned char *)reply);
+	if (type == 0x04) {
+		kdebug("ImportUserlist::userlistReplyReceivedSlot(): next portion.\n");
+		return;
+		}
 	fetchbtn->setEnabled(true);
-	kdebug("ImportUserlist::userlistReplyReceivedSlot(): Done\n");
+	kdebug("ImportUserlist::userlistReplyReceivedSlot(): Done.\n");
 	QStringList strlist;
-	strlist = QStringList::split("\r\n", cp2unicode((unsigned char *)reply), true);
-	kdebug("ImportUserlist::userlistReplyReceivedSlot()\n%s\n", reply);
+	strlist = QStringList::split("\r\n", importreply, true);
+	kdebug("ImportUserlist::userlistReplyReceivedSlot()\n%s\n",
+		importreply.latin1());
 	QStringList fieldlist;
 	// this is temporary array dedicated to Adrian
 	QString tmparray[16];

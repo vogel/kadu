@@ -22,6 +22,7 @@ class UserlistImport : public QDialog {
 		QArray<struct userlist> importedusers;
 		QPushButton *fetchbtn;
 		UserList importedUserlist;
+		QString importreply;
 
 	protected:
 		QListView *results;
