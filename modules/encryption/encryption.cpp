@@ -197,16 +197,12 @@ void EncryptionManager::encryptionButtonClicked()
 void EncryptionManager::receivedMessageFilter(const UinsList& senders, QCString& msg, QByteArray& formats, bool& stop)
 {
 	kdebugf();
-	if (config_file.readBoolEntry("Chat","Encryption"))
+	if (!strncmp(msg, "-----BEGIN RSA PUBLIC KEY-----", 20))
 	{
-		if (!strncmp(msg, "-----BEGIN RSA PUBLIC KEY-----", 20))
-		{
-			(new SavePublicKey(senders[0], msg, NULL))->show();
-			stop = true;
-
-			kdebugf2();
-			return;
-		}
+		(new SavePublicKey(senders[0], msg, NULL))->show();
+		stop = true;
+		kdebugf2();
+		return;
 	}
 
 	kdebugm(KDEBUG_INFO, "Decrypting encrypted message...\n");
