@@ -80,6 +80,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   minimalnych odstepow miedzy dzwiekami powiadamiajacymi (adrian)
 * zaaplikowany patch michala usuwajacy splitter przy guziku ze statusem
   w oknie kadu i poprawiajacy tym samym jego wyglad (adrian)
+* nie mo¿na rozpoczynaæ rozmów je¶li w sk³ad grupy rozmówców wchodzi nasz uin (chilek)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

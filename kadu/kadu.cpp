@@ -1115,9 +1115,12 @@ void Kadu::mouseButtonClicked(int button, QListBoxItem *item) {
 /* if something's pending, open it, if not, open new message */
 void Kadu::sendMessage(QListBoxItem *item)
 {
-	uin_t uin=userlist.byAltNick(item->text()).uin;
-	if(uin!=0)
-		chat_manager->sendMessage(uin,UserBox::getActiveUserBox()->getSelectedUins());
+	uin_t uin = userlist.byAltNick(item->text()).uin;
+	if (uin) {
+		UinsList uins = UserBox::getActiveUserBox()->getSelectedUins();
+		if (uins.findIndex(config_file.readNumEntry("General", "UIN")) == -1)
+			chat_manager->sendMessage(uin, uins);
+		}
 	else
 		sendSmsToUser();
 }
