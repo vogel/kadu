@@ -95,14 +95,14 @@ class Kadu : public QMainWindow
 		int openChat(UinsList);
 		void gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op);
 		void currentChanged(QListBoxItem *item);
-		void showdesc(bool);
+		void showdesc(bool show = true);
 		void statusMenuAboutToHide(void);
 		void mouseButtonClicked(int, QListBoxItem *);
 		void viewHistory();
 		void lookupInDirectory();
 		void showUserInfo();
 		void addUserAction();
-		void infopanelUpdate(uin_t uin);
+		void infopanelUpdate(uin_t);
 
 	private:
 		QFrame *centralFrame;
@@ -130,21 +130,6 @@ struct acks {
     int type;
     QWidget *ptr;
 };
-
-/* Klasa nie uzywana, patrz plik network.cpp
-class Operation : public QProgressDialog {
-	Q_OBJECT
-	public:
-	Operation(const QString & labelText, const QString & cancelButtonText, int totalSteps, QWidget *parent = 0 );
-	int laststate;
-	QTimer * t;
-	int steps;
-
-	private slots:
-	void perform();
-	void cancel();
-};
-*/
 
 class MyLabel : public QLabel {
 	Q_OBJECT
