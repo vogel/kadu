@@ -9,6 +9,7 @@
 
 #include "events.h"
 #include "misc.h"
+#include "modules.h"
 
 class SoundSlots: public QObject
 {
@@ -21,19 +22,15 @@ class SoundSlots: public QObject
 		void onCreateConfigDialog();
 		void onDestroyConfigDialog();
 		void chooseSoundTheme(const QString& string);
-		void choosePlayerFile();
 		void chooseSoundFile();
 		void clearSoundFile();
 		void testSoundFile();
 		void selectedPaths(const QStringList& paths);
 		void muteUnmuteSounds();
-		void playingSound(const QString& file);
 	public:
 		SoundSlots();
 		~SoundSlots();
 };
-
-extern SoundSlots* soundslots;
 
 class SoundManager : public Themes
 {
@@ -52,20 +49,22 @@ class SoundManager : public Themes
 		SoundManager(const QString& name, const QString& configname);
 		bool getMute();
 		void setMute(const bool& enable);
-		void playSound(const QString &sound, const QString player = QString::null);
 		int timeAfterLastSound();		
-		static void initModule();
+		void playTestSound(const QString &);
 
 	signals:
-		void playFile(const QString& file);
-
-		void playOnMessage(UinsList senders);
-		void playOnChat(UinsList senders);
-		void playOnNotify(const uin_t uin);
-
-
+		void playOnTestSound(const QString &sound, bool volCntrl, double vol);
+		void playOnMessage(UinsList senders, const QString &sound, const QString &msg, bool volCntrl, double vol);
+		void playOnChat(UinsList senders, const QString &sound, const QString &msg, bool volCntrl, double vol);
+		void playOnNotify(const uin_t uin, const QString &sound, bool volCntrl, double vol);
 };
 
-extern SoundManager* sound_manager;
+inline SoundManager* soundManager()
+{
+	SoundManager** snd=(SoundManager**)modules_manager->moduleSymbol("sound","sound_manager");
+	if(snd==NULL)
+		return NULL;
+	return *snd;
+}
 
 #endif

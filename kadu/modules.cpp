@@ -149,8 +149,7 @@ void ModulesDialog::getInfo()
 
 void ModulesManager::initModule()
 {
-	modules_manager=new ModulesManager();
-	kadu->mainMenu()->insertItem(icons_manager.loadIcon("ManageModules"), tr("&Manage Modules"), modules_manager, SLOT(showDialog()), QKeySequence(), -1, 2);
+	new ModulesManager();
 }
 
 void ModulesManager::closeModule()
@@ -160,6 +159,13 @@ void ModulesManager::closeModule()
 
 ModulesManager::ModulesManager() : QObject()
 {
+	// wazne, aby inicjalizacja tej zmiennej wystapila przed wczytaniem
+	// modulow, bo niektore juz moga z niej korzystac, wiec dlatego
+	// przenioslem to tutaj z funkcji ModulesManagert::initModule
+	// to samo z menu - moduly powinny sie ladowac na samym koncu
+	modules_manager=this;
+	kadu->mainMenu()->insertItem(icons_manager.loadIcon("ManageModules"), tr("&Manage Modules"), this, SLOT(showDialog()), QKeySequence(), -1, 2);
+	//
 	Dialog=NULL;
 	QString loaded_str=config_file.readEntry("General", "LoadedModules");
 	QStringList loaded_list=QStringList::split(',',loaded_str);
@@ -351,6 +357,14 @@ bool ModulesManager::unloadModule(const QString& module_name, bool force)
 	}
 	delete m.lib;
 	Modules.remove(module_name);
+}
+
+void* ModulesManager::moduleSymbol(const QString& module_name, const QString& symbol_name)
+{
+	if (!Modules.contains(module_name))
+		return NULL;
+	Module m=Modules[module_name];
+	return m.lib->resolve(symbol_name);
 }
 
 void ModulesManager::saveLoadedModules()

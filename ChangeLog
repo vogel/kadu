@@ -58,6 +58,13 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zaaplikowany patch michala rozbudowujacy menadzera modulow o pobieranie
   informacji o module oraz obsluge zaleznosci miedzy modulami. wprowadzony
   kod nie jest oryginalny - wprowadzilem w nim pewne zmiany (adrian)
+* funkcja ModulesManager::moduleSymbol() pobierajaca adres symbolu z
+  zaladowanego modulu i funkcja inline "soundManager" w module sound
+  wykorzystujaca ja zamiast laczenia extern (adrian)
+* zaaplikowany patch joi'a do modulu sound przerabiajacy go w ogolny modul
+  obslugi dzwieku + pierwszy z modulow "serwerowych" ext_sound obslugujacy
+  odtwarzanie przez zewnetrzny program. wszystko dostosowane przeze mnie
+  do nowych mozliwosci managera modulow (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)

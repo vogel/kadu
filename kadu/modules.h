@@ -81,6 +81,14 @@ class ModulesManager : public QObject
 		bool moduleInfo(const QString& module_name, ModuleInfo& info);
 		bool loadModule(const QString& module_name);
 		bool unloadModule(const QString& module_name, bool force=false);
+		/**
+			Pobiera adres symbolu zaladowanego do pamieci modulu.
+			zwraca NULL gdy modul nie jest zaladowany lub symbol
+			nie istnieje.
+			@param module_name nazwa modulu
+			@param symbol_name nazwa symbolu
+		**/
+		void* moduleSymbol(const QString& module_name, const QString& symbol_name);
 		void saveLoadedModules();
 		
 	public slots:
