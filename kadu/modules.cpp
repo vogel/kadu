@@ -278,7 +278,7 @@ bool ModulesManager::satisfyModuleDependencies(const ModuleInfo& module_info)
 	{
 		if(!moduleIsActive(*it))
 		{
-			if(moduleIsInstalled(*it))
+			if(moduleIsInstalled(*it) || moduleIsStatic(*it))
 			{
 				if(!activateModule(*it))
 					return false;
