@@ -906,7 +906,7 @@ void Kadu::refreshGroupTabBar()
 		return;
 	}
 	/* budujemy listê grup */
-	QValueList<QString> group_list;
+	QStringList group_list;
 	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
 	{
 		QString groups = (*i).group();
@@ -915,7 +915,7 @@ void Kadu::refreshGroupTabBar()
 			if(!group_list.contains(group))
 				group_list.append(group);
 	}
-	kdebugm(KDEBUG_INFO, "%i groups found\n",group_list.count());
+	kdebugm(KDEBUG_INFO, "%i groups found: %s\n",group_list.count(), group_list.join(",").local8Bit().data());
 	//
 	if (group_list.count() == 0)
 	{
