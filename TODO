@@ -1,18 +1,64 @@
-/** TODO dla wersji 0.4.0, stan na 30/08/2002. **/
+/** TODO, stan na 08/10/2002. **/
+(TODO mo¿e byæ "trochê" nieaktualne... zapraszamy na kadu.net/forum)
+
+*******************************************
+Do Teamu Kadu:
+Na kolana i dziêkujcie ;)
+Adrian
+*******************************************
+
+
+ Legenda
+---------
 
 - :: Dobrymi chêciami, to...
 + :: Powinno byæ
 ? :: Jeszcze siê zastanawiam
 ! :: _MUSI_ byæ
 
-(TODO mo¿e byæ "trochê" nieaktualne... zapraszamy na kadu.net/forum)
+
+ TODO dla wersji 0.3.2
+-----------------------
 
  ! przetestowaæ wysy³anie plików
+ ! wyeliminowaæ wszystkie b³êdy Xlib
+ ! wyeliminowaæ problemy z polskimi znakami na niektórych systemach
+ 
+
+ TODO dla wersji 0.3.3
+-----------------------
+
+ + zrobiæ skórki (Licq)
+ + dopracowaæ grupy
+ + dokoñczyæ rozmowy g³osowe
+ + automatyczna kompilacja sms jako kadusms i domy¶lne wywo³anie tego
+   programu
+ + mrugaj±cy tytu³ okna chat (zminimalizowanego te¿) przy doj¶ciu nowej wiad.
+ + mrugaj±ca koperta nowej wiadomo¶ci
+ + historia wys³anych sms'ów
+ + w konfiguracji przy ustawieniach powiadomienia opcja dodania wszystkich
+ + uporz±dkowaæ opcjê wysy³ania sms: brak opcji, je¶li osoba nie ma
+   numeru, osobna opcja w menu g³ównym do wysy³ania sms'a pod wpisany z
+   klawiatury numer.
+ + autoryzacja proxy
+ + dodaæ domy¶lnie strip do makefile'a i opcjê --enable-debug
+ ? wykrywanie niewidocznych jako opcja
+
+
+ TODO dla wersji pó¼niejszych
+---------------------------------------- 
+ 
+ - animowane emotikony
+ + dodaæ profile
+ - fukcja "autopilot'a" czyli generowanie automatycznych wiadomo¶ci
+   jako odpowiedzi na czyje¶ zapytania
+   (kontynuowanie prac nad jêzykiem skryptowym v-user) 
  ? naprawiæ ikonkê w dock menu
  ? dodaæ wiêcej funkcji do dock menu (szukaj, dodaj, usuñ, odbierz)
- - zrobiæ skórki (Licq)
- + dopracowaæ grupy/dodaæ profile
- - fukcja "autopilot'a" czyli generowanie automatycznych wiadomo¶ci
-   jako odpowiedzi na czyje¶ zapytania (mo¿e napisaæ do tego jaki¶
-   prosty jêzyk skryptowy?) :-)
- ! wyeliminowaæ wszystkie b³êdy Xlib
+ ? ustawienia kolorów w oknie konfiguracji
+ ? ustawienie czy mesg ma wpadaæ do otwartego okna chat
+ ? przechowywanie maili userów i uruchamianie klienta mail
+ - wybór przegl±darki obs³uguj±cej linki
+ ? ustawienia czcionki okien w oknie konfiguracji
+ ? rozbudowa opcji ignorowania o blokowanie
+ - mechanizm plugin'ów
