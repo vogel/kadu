@@ -511,7 +511,7 @@ void ConfigDialog::setupTab2(void) {
 	connect(msgsnd, SIGNAL(clicked()), this, SLOT(chooseMsgFile()));
 
 	QPushButton *testsoundmsg = new QPushButton(msggroup);
-	testsoundmsg->setText(i18n("Testing"));
+	testsoundmsg->setText(i18n("Test"));
 	connect(testsoundmsg, SIGNAL(clicked()), this, SLOT(chooseMsgTest()));
 
 	b_playchat = new QCheckBox(box2);
@@ -539,7 +539,7 @@ void ConfigDialog::setupTab2(void) {
 	connect(chatsnd, SIGNAL(clicked()), this, SLOT(chooseChatFile()));
 
 	QPushButton *testsoundchat = new QPushButton(chatgroup);
-	testsoundchat->setText(i18n("Testing"));
+	testsoundchat->setText(i18n("Test"));
 	connect(testsoundchat, SIGNAL(clicked()), this, SLOT(chooseChatTest()));
 
 	QObject::connect(b_playsound, SIGNAL(toggled(bool)), testsoundmsg, SLOT(setEnabled(bool)));
@@ -725,12 +725,17 @@ void ConfigDialog::setupTab4(void) {
 
 	QHGroupBox *soundbox = new QHGroupBox(notifybox);
 	soundbox->setTitle(i18n("Notify sound"));
+
 	e_soundnotify = new QLineEdit(soundbox);
 	e_soundnotify->setText(config.soundnotify);
 
 	QPushButton *nsndget = new QPushButton(soundbox);
 	nsndget->setPixmap(loader->loadIcon("fileopen", KIcon::Small));
 	connect(nsndget, SIGNAL(clicked()), this, SLOT(chooseNotifyFile()));
+
+	QPushButton *testsoundnotify = new QPushButton(soundbox);
+	testsoundnotify->setText(i18n("Test"));
+	connect(testsoundnotify, SIGNAL(clicked()), this, SLOT(chooseNotifyTest()));
 
 	b_notifydialog = new QCheckBox(notifybox);
 	b_notifydialog->setText(i18n("Notify by dialog box"));
@@ -1226,6 +1231,10 @@ void ConfigDialog::chooseMsgTest(void) {
 
 void ConfigDialog::chooseChatTest(void) {
 	playSound(e_chatfile->text().local8Bit());
+}
+
+void ConfigDialog::chooseNotifyTest(void) {
+	playSound(e_soundnotify->text().local8Bit());
 }
 
 void ConfigDialog::generateMyKeys(void) {

@@ -34,8 +34,10 @@
   kolorów i czcionek.
 * dodane okno wyrejestrowania u¿ytkownika GG
 * dane osobiste: kosmetyka wygl±du okna
-* konfiguracja: testowanie d¼wiêków uzglêdnia zmiany dokonane w polach konfiguracji
+* konfiguracja: testowanie d¼wiêków uwzglêdnia zmiany dokonane w polach konfiguracji
   plików d¼wiêkowych
+* konfiguracja: dodano guzik testowania przy wyborze d¼wiêku powiadamiania o
+  obecno¶ci uzytkownika
 
 +++ wersja 0.3.3-pre3
 * CTRL + klik dowolnego przycisku myszki na ikonce w tray'u powoduje

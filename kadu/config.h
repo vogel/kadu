@@ -157,6 +157,7 @@ class ConfigDialog : public QTabDialog	{
 		void chooseUserboxLine(const QString&);
 		void chooseMsgTest();
 		void chooseChatTest();
+		void chooseNotifyTest();
 		void ifNotifyGlobal(bool);
 		void ifNotifyAll(bool);
 		void ifDccEnabled(bool);
