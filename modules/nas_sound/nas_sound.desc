@@ -3,3 +3,5 @@ Description=Network Audio System sound module
 Description[pl]=Modu³ obs³ugi d¼wiêku przez NAS
 Author=Kadu Team
 Dependencies=sound
+Provides=sound_driver
+Conflicts=sound_driver
