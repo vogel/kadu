@@ -561,9 +561,9 @@ void HintManagerSlots::onCreateConfigDialog()
 	QLineEdit *e_syntax = ConfigDialog::getLineEdit("Hints", "Hint syntax");
 	QCheckBox *b_showcontent = ConfigDialog::getCheckBox("Hints", "Show message content in hint");
 	QVGroupBox *messagegrp = ConfigDialog::getVGroupBox("Hints", "Message content in hint");
-	QComboBox* cb_left = ConfigDialog::getComboBox("Hints", "Left");
-	QComboBox* cb_right = ConfigDialog::getComboBox("Hints", "Right");
-	QComboBox* cb_middle = ConfigDialog::getComboBox("Hints", "Middle");
+	QComboBox* cb_left = ConfigDialog::getComboBox("Hints", "Left button");
+	QComboBox* cb_right = ConfigDialog::getComboBox("Hints", "Right button");
+	QComboBox* cb_middle = ConfigDialog::getComboBox("Hints", "Middle button");
 
 	messagegrp->setEnabled(b_showcontent->isChecked());
 	QHBox *h_msg = new QHBox(messagegrp);
@@ -692,9 +692,9 @@ void HintManagerSlots::onDestroyConfigDialog()
 	config_file.writeEntry("Hints", "HintNewMessage", hint[10].join(","));
 	config_file.writeEntry("Hints", "HintError", hint[11].join(","));
 
-	QComboBox* cb_left = ConfigDialog::getComboBox("Hints", "Left");
-	QComboBox* cb_right = ConfigDialog::getComboBox("Hints", "Right");
-	QComboBox* cb_middle = ConfigDialog::getComboBox("Hints", "Middle");
+	QComboBox* cb_left = ConfigDialog::getComboBox("Hints", "Left button");
+	QComboBox* cb_right = ConfigDialog::getComboBox("Hints", "Right button");
+	QComboBox* cb_middle = ConfigDialog::getComboBox("Hints", "Middle button");
 	
 	config_file.writeEntry("Hints", "LeftButon", cb_left->currentItem());
 	config_file.writeEntry("Hints", "RightButton", cb_right->currentItem());
