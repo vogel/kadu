@@ -313,43 +313,43 @@
     <name>QColorDialog</name>
     <message>
         <source>Hu&amp;e:</source>
-        <translation type="unfinished"></translation>
+        <translation>Hu&amp;e:</translation>
     </message>
     <message>
         <source>&amp;Sat:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Saturazione:</translation>
     </message>
     <message>
         <source>&amp;Val:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Valore:</translation>
     </message>
     <message>
         <source>&amp;Red:</source>
-        <translation>&amp;Czerwony:</translation>
+        <translation>&amp;Rosso:</translation>
     </message>
     <message>
         <source>&amp;Green:</source>
-        <translation>&amp;Zielony:</translation>
+        <translation>&amp;Verde:</translation>
     </message>
     <message>
         <source>Bl&amp;ue:</source>
-        <translation>&amp;Niebieski:</translation>
+        <translation>&amp;Blñ:</translation>
     </message>
     <message>
         <source>A&amp;lpha channel:</source>
-        <translation type="unfinished"></translation>
+        <translation>A&amp;lpha channel:</translation>
     </message>
     <message>
         <source>&amp;Basic colors</source>
-        <translation>&amp;Kolory podstawowe</translation>
+        <translation>Colori di &amp;Base</translation>
     </message>
     <message>
         <source>&amp;Custom colors</source>
-        <translation> &amp;Własne kolory</translation>
+        <translation> Colori Personal&amp;izzati</translation>
     </message>
     <message>
         <source>&amp;Define Custom Colors &gt;&gt;</source>
-        <translation>&amp;Definiuj Własny Kolor &gt;&gt;</translation>
+        <translation>&amp;Definisci colori personalizzati &gt;&gt;</translation>
     </message>
     <message>
         <source>OK</source>
@@ -357,15 +357,15 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Anuluj</translation>
+        <translation>Cancella</translation>
     </message>
     <message>
         <source>&amp;Add to Custom Colors</source>
-        <translation>&amp;Dodaj do Własnych Kolorów</translation>
+        <translation>&amp;Aggiungi ai colori personalizzati</translation>
     </message>
     <message>
         <source>Select color</source>
-        <translation>Wybierz kolor</translation>
+        <translation>Seleziona Colore</translation>
     </message>
 </context>
 <context>
@@ -425,35 +425,35 @@
     <name>QFileDialog</name>
     <message>
         <source>Copy or Move a File</source>
-        <translation>Skopiuj lub Przenieś plik</translation>
+        <translation>Copia o sposta File</translation>
     </message>
     <message>
         <source>Read: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Lettura: %1</translation>
     </message>
     <message>
         <source>Write: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Scrittura: %1</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Anuluj</translation>
+        <translation>Anulla</translation>
     </message>
     <message>
         <source>All Files (*)</source>
-        <translation>Wszystkie pliki (*)</translation>
+        <translation>Titti Files (*)</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation>Nazwa</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <source>Size</source>
-        <translation>Rozmiar</translation>
+        <translation>Dimensione</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation>Typ</translation>
+        <translation>Tipo</translation>
     </message>
     <message>
         <source>Date</source>
@@ -461,7 +461,7 @@
     </message>
     <message>
         <source>Attributes</source>
-        <translation>Prawa dostępu</translation>
+        <translation>Attributi</translation>
     </message>
     <message>
         <source>OK</source>
@@ -469,230 +469,230 @@
     </message>
     <message>
         <source>Look &amp;in:</source>
-        <translation>&amp;Przeglądaj w:</translation>
+        <translation>Sfoglia &amp;in:</translation>
     </message>
     <message>
         <source>File &amp;name:</source>
-        <translation>&amp;Lokacja:</translation>
+        <translation>&amp;Nome File:</translation>
     </message>
     <message>
         <source>File &amp;type:</source>
-        <translation>&amp;Filtr:</translation>
+        <translation>&amp;Filtro:</translation>
     </message>
     <message>
         <source>Back</source>
-        <translation>W tył</translation>
+        <translation>Indietro</translation>
     </message>
     <message>
         <source>One directory up</source>
-        <translation>Katalog wyżej</translation>
+        <translation>Directory Su</translation>
     </message>
     <message>
         <source>Create New Folder</source>
-        <translation>Nowy katalog</translation>
+        <translation>Nuova cartella</translation>
     </message>
     <message>
         <source>List View</source>
-        <translation>Skrócony widok</translation>
+        <translation>Vista Abbreviata</translation>
     </message>
     <message>
         <source>Detail View</source>
-        <translation>Szczegółowy widok</translation>
+        <translation>Vista dettagliata</translation>
     </message>
     <message>
         <source>Preview File Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Anteprima File Info</translation>
     </message>
     <message>
         <source>Preview File Contents</source>
-        <translation type="unfinished"></translation>
+        <translation>Anteprima Contenuto File</translation>
     </message>
     <message>
         <source>Read-write</source>
-        <translation>Pełny dostęp</translation>
+        <translation>Lettura-scrittura</translation>
     </message>
     <message>
         <source>Read-only</source>
-        <translation>Tylko do odczytu</translation>
+        <translation>Solo lettura</translation>
     </message>
     <message>
         <source>Write-only</source>
-        <translation>Tylko do zapisu</translation>
+        <translation>Solo scrittura</translation>
     </message>
     <message>
         <source>Inaccessible</source>
-        <translation>Niedostępny</translation>
+        <translation>Inaccessibile</translation>
     </message>
     <message>
         <source>Symlink to File</source>
-        <translation>Dowiązanie do Pliku</translation>
+        <translation>Link simbolico</translation>
     </message>
     <message>
         <source>Symlink to Directory</source>
-        <translation>Dowiązanie do Katalogu</translation>
+        <translation>Link Simboliko a cartella</translation>
     </message>
     <message>
         <source>Symlink to Special</source>
-        <translation>Dowiązanie do Specjalnego</translation>
+        <translation>Link simbolico a FileSpeciale</translation>
     </message>
     <message>
         <source>File</source>
-        <translation>Plik</translation>
+        <translation>File</translation>
     </message>
     <message>
         <source>Dir</source>
-        <translation>Kat</translation>
+        <translation>Cartella</translation>
     </message>
     <message>
         <source>Special</source>
-        <translation>Specjalny</translation>
+        <translation>Speciale</translation>
     </message>
     <message>
         <source>Open</source>
-        <translation>Otwórz</translation>
+        <translation>Apri</translation>
     </message>
     <message>
         <source>Save As</source>
-        <translation>Zapisz jako</translation>
+        <translation>Salva con nome</translation>
     </message>
     <message>
         <source>&amp;Open</source>
-        <translation>&amp;Otwórz</translation>
+        <translation>A&amp;pri</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation>&amp;Zapisz</translation>
+        <translation>&amp;Salva</translation>
     </message>
     <message>
         <source>&amp;Rename</source>
-        <translation>Zmień &amp;nazwę</translation>
+        <translation>&amp;Rinomina</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>&amp;Usuń</translation>
+        <translation>&amp;Cancella</translation>
     </message>
     <message>
         <source>R&amp;eload</source>
-        <translation>O&amp;dśwież</translation>
+        <translation>R&amp;icarica</translation>
     </message>
     <message>
         <source>Sort by &amp;Name</source>
-        <translation>Wg &amp;nazwy</translation>
+        <translation>Ordina per &amp;Nome</translation>
     </message>
     <message>
         <source>Sort by &amp;Size</source>
-        <translation>Wg &amp;rozmiaru</translation>
+        <translation>Ordina per dimen&amp;sione</translation>
     </message>
     <message>
         <source>Sort by &amp;Date</source>
-        <translation>Wg &amp;daty</translation>
+        <translation>Ordina per &amp;Data</translation>
     </message>
     <message>
         <source>&amp;Unsorted</source>
-        <translation>Nie&amp;uporządkowane</translation>
+        <translation>Dis&amp;ordinato</translation>
     </message>
     <message>
         <source>Sort</source>
-        <translation>Sortowanie</translation>
+        <translation>Sorteggio</translation>
     </message>
     <message>
         <source>Show &amp;hidden files</source>
-        <translation>Wyświetlaj &amp;ukryte pliki</translation>
+        <translation>Mostra file nascos&amp;ti</translation>
     </message>
     <message>
         <source>the file</source>
-        <translation>plik</translation>
+        <translation>il file</translation>
     </message>
     <message>
         <source>the directory</source>
-        <translation>katalog</translation>
+        <translation>la cartella</translation>
     </message>
     <message>
         <source>the symlink</source>
-        <translation>dowiązanie</translation>
+        <translation>il link simbolico</translation>
     </message>
     <message>
         <source>Delete %1</source>
-        <translation>Usuń %1</translation>
+        <translation>Cancella %1</translation>
     </message>
     <message>
         <source>&lt;qt&gt;Are you sure you wish to delete %1 &quot;%2&quot;?&lt;/qt&gt;</source>
-        <translation>&lt;qt&gt;Czy chcesz skasować %1 &quot;%2&quot;?&lt;/qt&gt;</translation>
+        <translation>&lt;qt&gt;Vuoi eliminare %1 &quot;%2&quot;?&lt;/qt&gt;</translation>
     </message>
     <message>
         <source>&amp;Yes</source>
-        <translation>&amp;Tak</translation>
+        <translation>&amp;S�</translation>
     </message>
     <message>
         <source>&amp;No</source>
-        <translation>&amp;Nie</translation>
+        <translation>&amp;No</translation>
     </message>
     <message>
         <source>New Folder 1</source>
-        <translation>Nowy Katalog 1</translation>
+        <translation>Nuova Cartella 1</translation>
     </message>
     <message>
         <source>New Folder</source>
-        <translation>Nowy katalog</translation>
+        <translation>Nuova Cartella</translation>
     </message>
     <message>
         <source>New Folder %1</source>
-        <translation>Nowy Katalog %1</translation>
+        <translation>Nuova Cartella %1</translation>
     </message>
     <message>
         <source>Find Directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Trova Cartella</translation>
     </message>
     <message>
         <source>Directories</source>
-        <translation>Katalogi</translation>
+        <translation>Cartelle</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation>Zapisz</translation>
+        <translation>Salva</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation>Błąd</translation>
+        <translation>Errore</translation>
     </message>
     <message>
         <source>%1
 File not found.
 Check path and filename.</source>
-        <translation>Nie odnaleziono pliku
+        <translation>Non trovato file
 %1.
-Sprawdź ścieżkę i nazwę pliku.</translation>
+Controlla percorso e nome del file.</translation>
     </message>
     <message>
         <source>All Files (*.*)</source>
-        <translation>Wszystkie pliki (*.*)</translation>
+        <translation>Tutti (*.*)</translation>
     </message>
     <message>
         <source>Open </source>
-        <translation>Otwórz</translation>
+        <translation>Apri</translation>
     </message>
     <message>
         <source>Select a Directory</source>
-        <translation>Wybierz katalog</translation>
+        <translation>Seleziona Cartella</translation>
     </message>
     <message>
         <source>Directory:</source>
-        <translation>Katalog:</translation>
+        <translation>Cartella:</translation>
     </message>
 </context>
 <context>
     <name>QFont</name>
     <message>
         <source>Latin</source>
-        <translation>Wschodnio-europejski</translation>
+        <translation>Latino</translation>
     </message>
     <message>
         <source>Greek</source>
-        <translation>Grecki</translation>
+        <translation>Greco</translation>
     </message>
     <message>
         <source>Cyrillic</source>
-        <translation>Cyrylica</translation>
+        <translation>Cirilico</translation>
     </message>
     <message>
         <source>Armenian</source>
@@ -712,7 +712,7 @@ Sprawdź ścieżkę i nazwę pliku.</translation>
     </message>
     <message>
         <source>Hebrew</source>
-        <translation>Hebrajski</translation>
+        <translation>Ebreo</translation>
     </message>
     <message>
         <source>Arabic</source>
@@ -864,46 +864,46 @@ Sprawdź ścieżkę i nazwę pliku.</translation>
     </message>
     <message>
         <source>Unicode</source>
-        <translation>Unikod</translation>
+        <translation>Unicode</translation>
     </message>
 </context>
 <context>
     <name>QFontDialog</name>
     <message>
         <source>&amp;Font</source>
-        <translation type="unfinished">&amp;Tipo di carattere</translation>
+        <translation>&amp;Tipo di carattere</translation>
     </message>
     <message>
         <source>Font st&amp;yle</source>
-        <translation>Sty&amp;l czcionki</translation>
+        <translation>Sti&amp;le caratteri</translation>
     </message>
     <message>
         <source>&amp;Size</source>
-        <translation>&amp;Rozmiar</translation>
+        <translation>&amp;Dimensione</translation>
     </message>
     <message>
         <source>Effects</source>
-        <translation>Efekty</translation>
+        <translation>Effetti</translation>
     </message>
     <message>
         <source>Stri&amp;keout</source>
-        <translation>Prze&amp;kreślenie</translation>
+        <translation>Prze&amp;kre�enie</translation>
     </message>
     <message>
         <source>&amp;Underline</source>
-        <translation>&amp;Podkreślenie</translation>
+        <translation>&amp;Sottolineato</translation>
     </message>
     <message>
         <source>&amp;Color</source>
-        <translation>&amp;Kolor</translation>
+        <translation>&amp;Colore</translation>
     </message>
     <message>
         <source>Sample</source>
-        <translation>Podgląd</translation>
+        <translation>Esempio</translation>
     </message>
     <message>
         <source>Scr&amp;ipt</source>
-        <translation>Kodowan&amp;ie</translation>
+        <translation>Codi&amp;fica</translation>
     </message>
     <message>
         <source>OK</source>
@@ -911,19 +911,19 @@ Sprawdź ścieżkę i nazwę pliku.</translation>
     </message>
     <message>
         <source>Apply</source>
-        <translation>Zastosuj</translation>
+        <translation>Applica</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Anuluj</translation>
+        <translation>Anulla</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>Zamknij</translation>
+        <translation>Chiudi</translation>
     </message>
     <message>
         <source>Select Font</source>
-        <translation>Wybór Czcionki</translation>
+        <translation>Seleziona Carattere</translation>
     </message>
 </context>
 <context>
@@ -1111,7 +1111,7 @@ Sprawdź ścieżkę i nazwę pliku.</translation>
     </message>
     <message>
         <source>&amp;Redo</source>
-        <translation>&amp;Ripeti</translation>
+        <translation>&amp;Ripristina</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -1127,7 +1127,7 @@ Sprawdź ścieżkę i nazwę pliku.</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation>Radura</translation>
+        <translation>Cancella</translation>
     </message>
     <message>
         <source>Select All</source>
@@ -1177,7 +1177,7 @@ to
     </message>
     <message>
         <source>Customize...</source>
-        <translation>Adatti...</translation>
+        <translation>Personalizza...</translation>
     </message>
 </context>
 <context>
@@ -1223,27 +1223,27 @@ to
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Anuluj</translation>
+        <translation>Anulla</translation>
     </message>
     <message>
         <source>&amp;Yes</source>
-        <translation>&amp;Tak</translation>
+        <translation type="unfinished">&amp;S�</translation>
     </message>
     <message>
         <source>&amp;No</source>
-        <translation>&amp;Nie</translation>
+        <translation>&amp;No</translation>
     </message>
     <message>
         <source>&amp;Abort</source>
-        <translation>&amp;Zrezygnuj</translation>
+        <translation type="unfinished">&amp;Abandona</translation>
     </message>
     <message>
         <source>&amp;Retry</source>
-        <translation>&amp;Powtórz</translation>
+        <translation type="unfinished">&amp;Retry</translation>
     </message>
     <message>
         <source>&amp;Ignore</source>
-        <translation>&amp;Ignoruj</translation>
+        <translation>&amp;Ignora</translation>
     </message>
     <message>
         <source>&lt;h3&gt;About Qt&lt;/h3&gt;&lt;p&gt;This program uses Qt version %1.&lt;/p&gt;&lt;p&gt;Qt is a C++ toolkit for multiplatform GUI &amp;amp; application development.&lt;/p&gt;&lt;p&gt;Qt provides single-source portability across MS&amp;nbsp;Windows, Mac&amp;nbsp;OS&amp;nbsp;X, Linux, and all major commercial Unix variants.&lt;br&gt;Qt is also available for embedded devices.&lt;/p&gt;&lt;p&gt;Qt is a Trolltech product. See &lt;tt&gt;http://www.trolltech.com/qt/&lt;/tt&gt; for more information.&lt;/p&gt;</source>
@@ -1616,7 +1616,7 @@ to
     </message>
     <message>
         <source>&amp;Redo</source>
-        <translation>&amp;Ripeti</translation>
+        <translation>&amp;Ripristina</translation>
     </message>
     <message>
         <source>Cu&amp;t</source>
@@ -1632,7 +1632,7 @@ to
     </message>
     <message>
         <source>Clear</source>
-        <translation>Radura</translation>
+        <translation>Cancella</translation>
     </message>
     <message>
         <source>Select All</source>
@@ -1674,7 +1674,7 @@ to
     <name>QToolBar</name>
     <message>
         <source>More...</source>
-        <translation>Più...</translation>
+        <translation>Di Piñ...</translation>
     </message>
 </context>
 <context>
@@ -1955,7 +1955,7 @@ to
     </message>
     <message>
         <source>Redo</source>
-        <translation>Ripeti</translation>
+        <translation>Ripristina</translation>
     </message>
     <message>
         <source>Cut</source>
@@ -1975,7 +1975,7 @@ to
     </message>
     <message>
         <source>Clear</source>
-        <translation>Radura</translation>
+        <translation>Cancella</translation>
     </message>
     <message>
         <source>Select All</source>
