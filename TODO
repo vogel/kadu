@@ -1,39 +1,29 @@
-/** TODO, stan na 03/07/2003. **/
-(TODO mo¿e byæ nieaktualne... zapraszamy na kadu.net/forum)
+* TODO, stan na 03/07/2003.
 
+* Legenda
 
- Legenda
----------
+ - :: Dobrymi chêciami, to...
+ + :: Powinno byæ
+ ? :: Jeszcze siê zastanawiamy
+ ! :: MUSI byæ
 
-- :: Dobrymi chêciami, to...
-+ :: Powinno byæ
-? :: Jeszcze siê zastanawiamy
-! :: _MUSI_ byæ
-
-
-
- TODO dla wersji 0.3.4
------------------------
+* TODO dla wersji 0.3.4
 
  ! dopracowaæ animowane emotikony na ile siê da
  ! dopracowaæ ob³ugê historii
  ! dopracowaæ wysy³anie SMS'ów do ERY
- ! wyja¶niæ problemy z autoaway'em albo przynajmniej umo¿liwiæ
-   u¿ywanie poprzedniej metody
+ ! wyja¶niæ problemy z autoaway'em albo przynajmniej umo¿liwiæ u¿ywanie poprzedniej metody
  ! poprawiæ escapowanie znaków specjalnych, m.in. ¼le escape'uje <<
 
- TODO dla wersji 0.3.5 lub pó¼niejszych
-----------------------------------------
+* TODO dla wersji 0.3.5 lub pó¼niejszych
 
  + po³±czenia ssl z serwerami gadu
- + ca³kowite przej¶cie na nowy mechanizm budowania okna konfiguracji
-   i uporz±dkowanie go
+ + ca³kowite przej¶cie na nowy mechanizm budowania okna konfiguracji i uporz±dkowanie go
  + konfigurowanie klawiszologii kadu
  + zapamiêtywanie wymiarów okien
  - sprawdzanie pisowni w oknie chat
  - dokoñczyæ rozmowy g³osowe
- ? dodawanie nieznanych u¿ytkowników z konferencji do listy jako opcja
-   i ew. z listy userów w oknie konferencji
+ ? dodawanie nieznanych u¿ytkowników z konferencji do listy jako opcja i ew. z listy userów w oknie konferencji
  ? wykrywanie niewidocznych jako opcja
  + wywo³ywanie domyslnego klienta e-mail i pozycja e-mail w info o kontaktach
  ? wysy³anie smsów do wielu osób jednoczesnie
@@ -42,26 +32,19 @@
  ? inteligentna data w oknie rozmowy
  + zak³adki w oknie rozmowy (opcja)
  + dopracowaæ grupy
- + okno rozmowy "wyp³ywa na wierzch" za ka¿d± now± wiadomo¶ci± (je¶li
-   odpowiednia opcja w oknie rozmowy jest w³±czona)
- + mo¿liwo¶æ wy³±czenia pokazywania siê zmian statusu u¿ytkowników
-   w oknie rozmowy i historii
+ + okno rozmowy "wyp³ywa na wierzch" za ka¿d± now± wiadomo¶ci± (je¶li odpowiednia opcja w oknie rozmowy jest w³±czona)
+ + mo¿liwo¶æ wy³±czenia pokazywania siê zmian statusu u¿ytkowników w oknie rozmowy i historii
  + obs³uga /img wstawiaj±ca obrazek z podanego url
  
- TODO dla wersji 0.4.0
------------------------
+* TODO dla wersji 0.4.0
 
  Ogólne za³o¿enie:
-   stabilny komunikator z kompletem opcji, wyrównanie poziomu
-   mo¿liwo¶ci do orygina³u + nadliczbowe dodatki
- 
+ stabilny komunikator z kompletem opcji, wyrównanie poziomu mo¿liwo¶ci do orygina³u + nadliczbowe dodatki
  + dodaæ profile
  ? dodaæ wiêcej funkcji do dock menu (szukaj, dodaj, usuñ, odbierz)
  ? autostatus (zmiana z listy co jaki¶ czas)
 
- 
- TODO dla wersji pó¼niejszych
----------------------------------------- 
+* TODO dla wersji pó¼niejszych
 
  + mo¿liwo¶æ do³±czenia zewnêtrznego kodu (wtyczki)
  + zrobiæ skórki (Licq) 
