@@ -66,6 +66,8 @@ binary-indep: build install
 #Nothing
 
 binary-arch: build install
+#Tu ustawiamy(podmieniamy) w changelog'u wersje paczki kadu
+	cat debian/changelog |sed -e "s/<wersja>/`cat VERSION`/g" > debian/changelog
 	dh_testdir
 	dh_testroot
 	dh_movefiles

@@ -1,5 +1,6 @@
 kadu (0.3.4-cvs-0) unstable; urgency=low
 
   * Pierwsza wersja plikow
+  * 04.07.2003 - Wersja paczki kadu jest pobierana z pliku VERSION
 
  -- Dariusz Jagodzik <mast3r@kadu.net>  Tue, 25 Feb 2003 10:06:51 +0100
