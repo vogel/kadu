@@ -25,47 +25,45 @@
 #include "../libgadu/lib/libgadu.h"
 
 class Message : public QDialog {
-    Q_OBJECT
-	QPushButton *sendbtn;
-	int index;
-	QString nicksnd;
-	QMultiLineEdit *body;	
-	QLabel *nicknamelab;
-	QDialog *sendmessage;
-	QRadioButton *b_chat;
+	Q_OBJECT
+		QPushButton *sendbtn;
+		int index;
+		QString nicksnd;
+		QMultiLineEdit *body;	
+		QLabel *nicknamelab;
+		QDialog *sendmessage;
+		QRadioButton *b_chat;
 
-    public:
-    	Message(const QString &, bool tchat=false, QDialog* parent=0, const char *name=0);
-	~Message();
-	
-    public slots:
-	void gotAck(void);
-	void commitSend(void);
-	void HistoryBox(void);		
-	
-    protected slots:
-	void accept();
-	void reject();
+	public:
+    		Message(const QString &, bool tchat=false, QDialog* parent=0, const char *name=0);
+		~Message();
 
-    protected:
-	void closeEvent(QCloseEvent *);
+	public slots:
+		void gotAck(void);
+		void commitSend(void);
+		void HistoryBox(void);		
+
+	protected slots:
+		void accept();
+		void reject();
 };
 
 class rMessage : public QDialog {
-    Q_OBJECT
-    private:
-	QString sender;
-	QMultiLineEdit *body;	
-	QLabel *lejbel;
-	QDialog *recvmsg;
-	bool tchat;
-    public:
-	rMessage(const QString &, int, QDialog *parent=0, const char *name=0);
+	Q_OBJECT
+	private:
+		QString sender;
+		QMultiLineEdit *body;	
+		QLabel *lejbel;
+		QDialog *recvmsg;
+		bool tchat;
+	
+	public:
+		rMessage(const QString &, int, QDialog *parent=0, const char *name=0);
 
-    public slots:
-	void replyMessage(void);
-	void openChat(void);
-	void cleanUp(void);
+	public slots:
+		void replyMessage(void);
+		void openChat(void);
+		void cleanUp(void);
 };
 
 #endif
