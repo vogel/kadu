@@ -1,4 +1,4 @@
-/* $Id: common.c,v 1.30 2003/11/03 18:30:06 chilek Exp $ */
+/* $Id: common.c,v 1.31 2004/01/10 12:57:28 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>

@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.25 2003/10/09 15:53:47 chilek Exp $
+# $Id: Makefile.in,v 1.26 2004/01/10 12:57:27 chilek Exp $
 
 prefix = @prefix@
 exec_prefix = @exec_prefix@
@@ -6,9 +6,9 @@ libdir = @libdir@
 includedir = @includedir@
 
 # increased with ABI changes
-VERSION_MAJOR=2
+VERSION_MAJOR=3
 # increased with API changes
-VERSION_MINOR=13
+VERSION_MINOR=0
 
 CC = @CC@ 
 CFLAGS = @CFLAGS_LIBGADU@ -I. -I.. -Wall

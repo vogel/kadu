@@ -4,6 +4,59 @@ oznacza, ¿e ,,nick'' jest pomys³odawc± lub podes³a³ patcha, a zrobi³
 to kto¶ oznaczony przez ,,x'' (w - wojtekka, s - speedy, a - arekm,
 d - drg, sz - szalik).
 
+// 2004-01-06
+
+- /passwd nie zmienia zmiennej ,,email'' (sgurgacz/w)
+
+// 2003-12-28
+
+- poprawka opisu protoko³u (JAJAJA/w)
+
+// 2003-12-22
+
+- poprawka segfaultu przy wielolinijkowych wiadomo¶ciach (nyarlath/w)
+- obs³uga locali przy sortowaniu listy kontaktów (rmrmg/w)
+
+// 2003-12-21
+
+- poprawka ,,auto_back'' i ,,auto_away_keep_descr'' (s_wilk/sz)
+
+// 2003-12-20
+
+- poprawka szukania nieprawid³owych nicków w li¶cie kontaktów (adderek/w)
+
+// 2003-12-02
+
+- poprawki zwi±zane z ,,auto_away''. dodanie zmiennej ,,auto_away_keep_descr'' (s_wilk/sz)
+
+// 2003-11-27
+
+- dope³nianie opisów bez cytowania (*/sz)
+
+// 2003-11-22
+
+- dodany kod b³êdu GG_FAILURE_NEED_EMAIL przy zdarzeniu GG_EVENT_CONN_FAILED (chilek)
+- zmienna auto_conference (joshua/sz)
+
+// 2003-11-20
+
+- poprawka /find dla u¿ytkowników ze spacj± w nazwie (pi/sz)
+
+// 2003-11-19
+
+- poprawka /dcc list dla du¿ych plików (?/sz)
+- prosta obs³uga grup w ignore/unignore (sz)
+- zdarzenie dccfinish. mo¿liwo¶æ usuwania nie tylko ze wzglêdu na numer
+  zdarzenia (struthio/sz)
+
+// 2003-11-14
+
+- libgadu: podbicie wersji ABI (porridge/w)
+
+// 2003-11-05
+
+- dope³nianie opisów w komendach /away itp. (szok,przemmaj/w)
+
 // 2003-11-03
 
 - zmiany stanu bez opisów nie bêd± logowane przy ,,log_status'' równym 2
@@ -418,4 +471,4 @@ d - drg, sz - szalik).
 - poprawka zachowania trybu wielolinijkowego (theKnight/w)
 
 
-$Id: ChangeLog,v 1.28 2003/11/03 18:30:06 chilek Exp $
+$Id: ChangeLog,v 1.29 2004/01/10 12:57:27 chilek Exp $

@@ -1,4 +1,4 @@
-/* $Id: pubdir.c,v 1.27 2003/10/16 21:30:11 chilek Exp $ */
+/* $Id: pubdir.c,v 1.28 2004/01/10 12:57:28 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>

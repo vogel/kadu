@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.50 2003/11/22 18:14:54 chilek Exp $ */
+/* $Id: libgadu.h,v 1.51 2004/01/10 12:57:28 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -933,7 +933,7 @@ int gg_image_queue_remove(struct gg_session *s, struct gg_image_queue *q, int fr
 #define GG_DEFAULT_PROTOCOL_VERSION 0x20
 #define GG_DEFAULT_TIMEOUT 30
 #define GG_HAS_AUDIO_MASK 0x40000000
-#define GG_LIBGADU_VERSION "CVS"
+#define GG_LIBGADU_VERSION "20040109"
 
 #define GG_DEFAULT_DCC_PORT 1550
 
