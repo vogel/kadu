@@ -27,7 +27,7 @@
 
 int dccSocketClass::count = 0;
 
-dccSocketClass::dccSocketClass(struct gg_dcc *dcc_sock) : QObject() {
+dccSocketClass::dccSocketClass(struct gg_dcc *dcc_sock, int type) : QObject(), type(type) {
 	dccsock = dcc_sock;
 	dccevent = NULL;
 	snr = snw = NULL;

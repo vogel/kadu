@@ -14,6 +14,11 @@ enum DccGetType {
 	DCC_TYPE_GET
 };
 
+enum DccType {
+	DCC_TYPE_FILE,
+	DCC_TYPE_VOICE
+};
+
 class dccSocketClass;
 
 class DccGet : public QDialog {
@@ -50,11 +55,12 @@ enum dccSocketState {
 class dccSocketClass : public QObject {
 	Q_OBJECT
 	public:
-		dccSocketClass(struct gg_dcc *dcc_sock);
+		dccSocketClass(struct gg_dcc *dcc_sock, int type = DCC_TYPE_FILE);
 		~dccSocketClass();
 		void initializeNotifiers();
 		void watchDcc(int check);
 
+		int type;
 		int state;
 		static int count;
 
