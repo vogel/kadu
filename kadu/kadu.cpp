@@ -839,6 +839,7 @@ void Kadu::currentChanged(QListBoxItem *item) {
 			emoticons->expandEmoticons(doc, config_file.readColorEntry("Look", "InfoPanelBgColor"));
 		}
 		InfoPanel->setText(doc.generateHtml());
+		InfoPanel->scrollToBottom();
 	}
 }
 
@@ -1562,6 +1563,7 @@ void Kadu::infopanelUpdate(UinType uin) {
 			emoticons->expandEmoticons(doc, config_file.readColorEntry("Look", "InfoPanelBgColor"));
 		}
 		InfoPanel->setText(doc.generateHtml());
+		InfoPanel->scrollToBottom();
 	}
 }
 

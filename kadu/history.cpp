@@ -1248,6 +1248,13 @@ void History::showHistoryEntries(int from, int count) {
 		if ( ! (noStatus && entries[i].type & HISTORYMANAGER_ENTRY_STATUS))
 			formatHistoryEntry(text, entries[i]);
 	body->setText(text);
+
+	//obej¶cie buga w qt - dziêki zeskrolowaniu okna animowane emotikony l±duj± tam gdzie trzeba
+	body->scrollToBottom();
+	//poni¿sze 2 linie to zastêpstwo dla scrollToTop(), ale niestety po nich emotikony siê rozje¿d¿aj± :/
+//	body->sync();
+//	body->setContentsPos(0,0);
+
 	kdebugf2();
 }
 

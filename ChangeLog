@@ -223,6 +223,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * drobne porz±dki, usuniêcie paru niepotrzebnych zmiennych, przeniesienie
   paru globalnych do klas, zmiana publicznych na prywatne, nazwy.. (adrian)
 * w konferencji od¶wie¿anie listy u¿ytkowników gdy w³±czone s± opisy pod kontaktami (joi)
+* emotikony w historii i w panelu infomacyjnym nie powinny siê ju¿ rozje¿d¿aæ (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
