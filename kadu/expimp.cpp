@@ -189,7 +189,7 @@ void UserlistImport::userlistReplyReceivedSlot(char type, char *reply) {
 		}*/
 
 	kdebug("ImportUserlist::userlistReplyReceivedSlot()\n");
-	if (type != GG_USERLIST_GET_REPLY)
+	if (type != GG_USERLIST_GET_REPLY && type != GG_USERLIST_GET_MORE_REPLY)
 		return;
 
 	if (!reply) {
@@ -200,7 +200,11 @@ void UserlistImport::userlistReplyReceivedSlot(char type, char *reply) {
 		return;
 		}
 	if (strlen(reply))
-		importreply = cp2unicode((unsigned char *)reply);
+		importreply = importreply + cp2unicode((unsigned char *)reply);
+	if (type == GG_USERLIST_GET_MORE_REPLY) {
+		kdebug("ImportUserlist::userlistReplyReceived(): next portion\n");
+		return;
+		}
 	fetchbtn->setEnabled(true);
 	kdebug("ImportUserlist::userlistReplyReceivedSlot(): Done.\n");
 	QStringList strlist;
