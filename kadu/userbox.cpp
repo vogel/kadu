@@ -102,6 +102,7 @@ void UserBox::refresh()
 			case GG_STATUS_INVISIBLE_DESCR:
 			case GG_STATUS_INVISIBLE2:
 				i_users.append(Uins[i]);
+				break;
 			default:
 				n_users.append(Uins[i]);			
 		};
