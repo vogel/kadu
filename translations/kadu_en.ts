@@ -74,22 +74,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Use encryption</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Encryption properties</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Keys length</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Generate keys</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Scroll chat window downward, not upward</source>
         <translation type="unfinished"></translation>
     </message>
@@ -214,23 +198,7 @@ If you leave blank, default settings will be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Notify by sound</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Path:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Test</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Notify by dialog box</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify sound</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -556,46 +524,6 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Sounds</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Play sounds</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Play sounds using aRts! server</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sound player</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enable volume control (player must support it)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Message sound</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Play sounds from a person whilst chatting</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Play chat sounds only when window is invisible</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Chat sound</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Volume</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Online</source>
         <translation type="unfinished"></translation>
     </message>
@@ -689,22 +617,6 @@ Arguments should be separated with spaces. %n argument is converted to number, %
     </message>
     <message>
         <source>Multicolumn userbox</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Choose</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Clear</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sound paths</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sound theme</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -841,14 +753,6 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Disable encryption for this conversation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enable encryption for this conversation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Conference with </source>
         <translation type="unfinished"></translation>
     </message>
@@ -909,30 +813,6 @@ Arguments should be separated with spaces. %n argument is converted to number, %
     </message>
     <message>
         <source>Conference with </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Keys exist. Do you want to overwrite them?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Yes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error generating keys</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Keys have been generated and written</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1420,10 +1300,6 @@ Your password is incorrect !!!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Send my public key</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Ignore user</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1472,10 +1348,6 @@ Your password is incorrect !!!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Main toolbar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show / hide inactive users</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1489,14 +1361,6 @@ Your password is incorrect !!!</source>
     </message>
     <message>
         <source>User info</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Your public key has been sent</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1673,6 +1537,18 @@ Check your internet connection.</source>
         <source>Unload</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;br&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Description&lt;/b&gt;:&lt;br&gt;%2</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ModulesManager</name>
@@ -1692,6 +1568,18 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     <message>
         <source>Cannot load %1 module library.
 Maybe it&apos;s incorrecty compiled.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Module %1 is loaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Required module %1 was not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Module %1 cannot be unloaded because it is used by another module</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1828,37 +1716,6 @@ Now add your friends to the userlist.</source>
     </message>
 </context>
 <context>
-    <name>SavePublicKey</name>
-    <message>
-        <source>Save public key</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User %1 is sending you his public key. Do you want to save it?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Yes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error writting the key</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>SearchDialog</name>
     <message>
         <source>&amp;Search</source>
@@ -1974,6 +1831,10 @@ Now add your friends to the userlist.</source>
     </message>
     <message>
         <source>Select user first</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Chat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2176,45 +2037,6 @@ or has beed changed too much to parse it correctly.</source>
     </message>
 </context>
 <context>
-    <name>SoundSlots</name>
-    <message>
-        <source>Custom</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Event</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sound file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Chat sound</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Message sound</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notify sound</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unmute sounds</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Mute sounds</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>default</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>TokenDialog</name>
     <message>
         <source>Read this code ...</source>
@@ -2230,6 +2052,13 @@ or has beed changed too much to parse it correctly.</source>
     </message>
     <message>
         <source>&amp;Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ToolBar</name>
+    <message>
+        <source>Main toolbar</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

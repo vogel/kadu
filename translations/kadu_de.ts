@@ -294,50 +294,6 @@ nicht versteht. Gib hier die Argumente ein, getrennt mit Komma. %n=Tel.; %m=Nach
         <translation>Benutzer-ID</translation>
     </message>
     <message>
-        <source>Sounds</source>
-        <translation>Töne</translation>
-    </message>
-    <message>
-        <source>Play sounds</source>
-        <translation>Ton-Benachrichtigung</translation>
-    </message>
-    <message>
-        <source>Play sounds using aRts! server</source>
-        <translation>Ton-Benachrichtigung über aRts!-Server</translation>
-    </message>
-    <message>
-        <source>Sound player</source>
-        <translation>Abspielen mit</translation>
-    </message>
-    <message>
-        <source>Path:</source>
-        <translation>Pfad:</translation>
-    </message>
-    <message>
-        <source>Enable volume control (player must support it)</source>
-        <translation>Lautstärke (wenn unterstüzt)</translation>
-    </message>
-    <message>
-        <source>Message sound</source>
-        <translation>Ton-Benachrichtigung</translation>
-    </message>
-    <message>
-        <source>Test</source>
-        <translation>Test</translation>
-    </message>
-    <message>
-        <source>Play sounds from a person whilst chatting</source>
-        <translation>Töne nur während des Gesprächs</translation>
-    </message>
-    <message>
-        <source>Play chat sounds only when window is invisible</source>
-        <translation>Töne nur, wenn das chat-Fenster innaktiv</translation>
-    </message>
-    <message>
-        <source>Chat sound</source>
-        <translation>Chat-Ton</translation>
-    </message>
-    <message>
         <source>Enable autoaway</source>
         <translation>Automatisch &quot;Beschäftigt&quot;-Status</translation>
     </message>
@@ -474,22 +430,6 @@ nicht versteht. Gib hier die Argumente ein, getrennt mit Komma. %n=Tel.; %m=Nach
         <translation>Setze Zahl der sichtbaren Nachrichten auf</translation>
     </message>
     <message>
-        <source>Use encryption</source>
-        <translation>Benutze Verschlüsselung</translation>
-    </message>
-    <message>
-        <source>Encryption properties</source>
-        <translation>Verschlüsselung-Optionen</translation>
-    </message>
-    <message>
-        <source>Keys length</source>
-        <translation>Schlüssellänge</translation>
-    </message>
-    <message>
-        <source>Generate keys</source>
-        <translation>Erstelle Schlüssel</translation>
-    </message>
-    <message>
         <source>Scroll chat window downward, not upward</source>
         <translation>Scrolle das Fenster nach unten, nicht nach oben</translation>
     </message>
@@ -590,16 +530,8 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
         <translation>Benachrichtigungskonfiguration</translation>
     </message>
     <message>
-        <source>Notify by sound</source>
-        <translation>Ton-Benachrichtigung</translation>
-    </message>
-    <message>
         <source>Notify by dialog box</source>
         <translation>Benachrichtigung mit einem Fenster</translation>
-    </message>
-    <message>
-        <source>Notify sound</source>
-        <translation>Benachrichtigungston</translation>
     </message>
     <message>
         <source>Set language:</source>
@@ -674,10 +606,6 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
         <translation>&lt;b&gt;Gesprächspartner&lt;/b&gt; 00:00:02</translation>
     </message>
     <message>
-        <source>Volume</source>
-        <translation>Verbinden der Sprechblasen</translation>
-    </message>
-    <message>
         <source>German</source>
         <translation>Deutsch</translation>
     </message>
@@ -696,22 +624,6 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     <message>
         <source>User %1 is available</source>
         <translation>Benutzer %1 ist erreichbar</translation>
-    </message>
-    <message>
-        <source>Choose</source>
-        <translation>Wählen</translation>
-    </message>
-    <message>
-        <source>Clear</source>
-        <translation>Löschen</translation>
-    </message>
-    <message>
-        <source>Sound paths</source>
-        <translation>Sound path</translation>
-    </message>
-    <message>
-        <source>Sound theme</source>
-        <translation>Sound thema</translation>
     </message>
     <message>
         <source>Show info-panel</source>
@@ -851,14 +763,6 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
         <translation>&amp;Sende</translation>
     </message>
     <message>
-        <source>Disable encryption for this conversation</source>
-        <translation>Verschlüsselung für dieses GEspräch ausschalten</translation>
-    </message>
-    <message>
-        <source>Enable encryption for this conversation</source>
-        <translation>Verschlüsselung für dieses gespräch einschalten</translation>
-    </message>
-    <message>
         <source>Conference with </source>
         <translation>Konferenz mit</translation>
     </message>
@@ -916,30 +820,6 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     <message>
         <source>Conference with </source>
         <translation>Konferenz mit</translation>
-    </message>
-    <message>
-        <source>Keys exist. Do you want to overwrite them?</source>
-        <translation>Schlüssel existieren schon. Soll sie ich überschreiben?</translation>
-    </message>
-    <message>
-        <source>Yes</source>
-        <translation>Ja</translation>
-    </message>
-    <message>
-        <source>No</source>
-        <translation>Nein</translation>
-    </message>
-    <message>
-        <source>Error generating keys</source>
-        <translation>Fehler beim Erzeugen der Schlüssel</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <source>Keys have been generated and written</source>
-        <translation>Die Schlüssel wurden erzeugt und geschrieben</translation>
     </message>
 </context>
 <context>
@@ -1455,20 +1335,8 @@ Dein Passwort ist falsch!!!</translation>
         <translation>Kadu &amp;verlassen</translation>
     </message>
     <message>
-        <source>Main toolbar</source>
-        <translation>Mein Toolbar</translation>
-    </message>
-    <message>
         <source>User info</source>
         <translation>Kontakt-Informationen</translation>
-    </message>
-    <message>
-        <source>Your public key has been sent</source>
-        <translation>Dein öffentlicher Schlüssel wurde verschickt</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
     </message>
     <message>
         <source>Selected users will be deleted. Are you sure?</source>
@@ -1491,10 +1359,6 @@ Direkte Verbindungen ausgeschaltet.</translation>
     <message>
         <source>Open chat window</source>
         <translation>Öffne ein Chat-Fenster</translation>
-    </message>
-    <message>
-        <source>Send my public key</source>
-        <translation>Sende meinen öffentlichen Schlüssel</translation>
     </message>
     <message>
         <source>Ignore user</source>
@@ -1682,6 +1546,18 @@ Check your internet connection.</source>
         <source>Unload</source>
         <translation>Leeren</translation>
     </message>
+    <message>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;br&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Description&lt;/b&gt;:&lt;br&gt;%2</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ModulesManager</name>
@@ -1702,6 +1578,18 @@ Vielleicht ist es kein Kadu-kompatibles Modul.</translation>
     <message>
         <source>Cannot load %1 module library.
 Maybe it&apos;s incorrecty compiled.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Module %1 is loaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Required module %1 was not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Module %1 cannot be unloaded because it is used by another module</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1841,37 +1729,6 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
     </message>
 </context>
 <context>
-    <name>SavePublicKey</name>
-    <message>
-        <source>Save public key</source>
-        <translation>Sichere den öffentlichen Schlüssel</translation>
-    </message>
-    <message>
-        <source>User %1 is sending you his public key. Do you want to save it?</source>
-        <translation>Benutzer %1 hat die seinen öffentlichen Schlüssel zugeschickt. Willst du ihn speichern?</translation>
-    </message>
-    <message>
-        <source>Yes</source>
-        <translation>Ja</translation>
-    </message>
-    <message>
-        <source>No</source>
-        <translation>Nein</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation>Fehler</translation>
-    </message>
-    <message>
-        <source>Error writting the key</source>
-        <translation>Fehler beim schreiben des Schlüssels</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-</context>
-<context>
     <name>SearchDialog</name>
     <message>
         <source>&amp;Search</source>
@@ -1988,6 +1845,10 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
     <message>
         <source>Select user first</source>
         <translation>Markiere zuerst Benutzer</translation>
+    </message>
+    <message>
+        <source>&amp;Chat</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source> </source>
@@ -2191,45 +2052,6 @@ oder änderte die Zugangserlaubnis.</translation>
     </message>
 </context>
 <context>
-    <name>SoundSlots</name>
-    <message>
-        <source>Custom</source>
-        <translation>Eigene</translation>
-    </message>
-    <message>
-        <source>Event</source>
-        <translation>Ereignis</translation>
-    </message>
-    <message>
-        <source>Sound file</source>
-        <translation>Sound datei</translation>
-    </message>
-    <message>
-        <source>Chat sound</source>
-        <translation>Chat-Ton</translation>
-    </message>
-    <message>
-        <source>Message sound</source>
-        <translation>Ton-Benachrichtigung</translation>
-    </message>
-    <message>
-        <source>Notify sound</source>
-        <translation>Benachrichtigungston</translation>
-    </message>
-    <message>
-        <source>Unmute sounds</source>
-        <translation>Töne einschalten</translation>
-    </message>
-    <message>
-        <source>Mute sounds</source>
-        <translation>Töne ausschalten</translation>
-    </message>
-    <message>
-        <source>default</source>
-        <translation>default</translation>
-    </message>
-</context>
-<context>
     <name>TokenDialog</name>
     <message>
         <source>Read this code ...</source>
@@ -2246,6 +2068,13 @@ oder änderte die Zugangserlaubnis.</translation>
     <message>
         <source>&amp;Cancel</source>
         <translation>&amp;Abbrechen</translation>
+    </message>
+</context>
+<context>
+    <name>ToolBar</name>
+    <message>
+        <source>Main toolbar</source>
+        <translation type="unfinished">Mein Toolbar</translation>
     </message>
 </context>
 <context>

@@ -294,50 +294,6 @@ e scrivi la stringa corretta. I parametri devono essere separati da spazio. Il p
         <translation>ID dell&apos;utente</translation>
     </message>
     <message>
-        <source>Sounds</source>
-        <translation>Suoni</translation>
-    </message>
-    <message>
-        <source>Play sounds</source>
-        <translation>Riproduci Suoni</translation>
-    </message>
-    <message>
-        <source>Play sounds using aRts! server</source>
-        <translation>Riproduci suoni usando aRts! server </translation>
-    </message>
-    <message>
-        <source>Sound player</source>
-        <translation>Riproduttore suoni</translation>
-    </message>
-    <message>
-        <source>Path:</source>
-        <translation>Percorso:</translation>
-    </message>
-    <message>
-        <source>Enable volume control (player must support it)</source>
-        <translation>Attiva controllo volume (Il riproduttore deve permetterlo)</translation>
-    </message>
-    <message>
-        <source>Message sound</source>
-        <translation>Suono messaggio</translation>
-    </message>
-    <message>
-        <source>Test</source>
-        <translation>Prova</translation>
-    </message>
-    <message>
-        <source>Play sounds from a person whilst chatting</source>
-        <translation>Suoni durante chat</translation>
-    </message>
-    <message>
-        <source>Play chat sounds only when window is invisible</source>
-        <translation>Suona solo se finestra chat non è attiva</translation>
-    </message>
-    <message>
-        <source>Chat sound</source>
-        <translation>Suono di chat</translation>
-    </message>
-    <message>
         <source>Enable autoaway</source>
         <translation>&quot;Torno subito&quot; automatico</translation>
     </message>
@@ -474,22 +430,6 @@ e scrivi la stringa corretta. I parametri devono essere separati da spazio. Il p
         <translation>Riduci il numero di messaggi visibili a</translation>
     </message>
     <message>
-        <source>Use encryption</source>
-        <translation>Usa la crittografia</translation>
-    </message>
-    <message>
-        <source>Encryption properties</source>
-        <translation>Proprietà di crittografia</translation>
-    </message>
-    <message>
-        <source>Keys length</source>
-        <translation>Lunghezza delle chiavi</translation>
-    </message>
-    <message>
-        <source>Generate keys</source>
-        <translation>Genera le chiavi</translation>
-    </message>
-    <message>
         <source>Scroll chat window downward, not upward</source>
         <translation>Scorri il testo chat verso il basso</translation>
     </message>
@@ -590,16 +530,8 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <translation>Opzioni notifica</translation>
     </message>
     <message>
-        <source>Notify by sound</source>
-        <translation>Notifica con suono</translation>
-    </message>
-    <message>
         <source>Notify by dialog box</source>
         <translation>Notifica aprendo la finestra</translation>
-    </message>
-    <message>
-        <source>Notify sound</source>
-        <translation>Suono di notifica</translation>
     </message>
     <message>
         <source>Set language:</source>
@@ -674,10 +606,6 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <translation>&lt;b&gt;Interlocutore&lt;/b&gt; 00:00:02</translation>
     </message>
     <message>
-        <source>Volume</source>
-        <translation>Volume</translation>
-    </message>
-    <message>
         <source>Type of gateway</source>
         <translation>Tipo di Gateway</translation>
     </message>
@@ -696,22 +624,6 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     <message>
         <source>User %1 is available</source>
         <translation>%1 è disponibile</translation>
-    </message>
-    <message>
-        <source>Choose</source>
-        <translation>Sciegli</translation>
-    </message>
-    <message>
-        <source>Clear</source>
-        <translation>Cancella</translation>
-    </message>
-    <message>
-        <source>Sound paths</source>
-        <translation>Percorso suoni</translation>
-    </message>
-    <message>
-        <source>Sound theme</source>
-        <translation>Tema suoni</translation>
     </message>
     <message>
         <source>Show info-panel</source>
@@ -851,14 +763,6 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <translation>&amp;Manda</translation>
     </message>
     <message>
-        <source>Disable encryption for this conversation</source>
-        <translation>Disattiva la crittografia</translation>
-    </message>
-    <message>
-        <source>Enable encryption for this conversation</source>
-        <translation>Attiva la crittografia per questa conversazione</translation>
-    </message>
-    <message>
         <source>Conference with </source>
         <translation>Conferenza con </translation>
     </message>
@@ -916,30 +820,6 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     <message>
         <source>Conference with </source>
         <translation>Conferenza con  </translation>
-    </message>
-    <message>
-        <source>Keys exist. Do you want to overwrite them?</source>
-        <translation>Chiavi gia&apos;esistenti. Desiderate sovrascriverle?</translation>
-    </message>
-    <message>
-        <source>Yes</source>
-        <translation>Sì</translation>
-    </message>
-    <message>
-        <source>No</source>
-        <translation>No</translation>
-    </message>
-    <message>
-        <source>Error generating keys</source>
-        <translation>Errore durante generazione delle chiavi</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <source>Keys have been generated and written</source>
-        <translation>Le chiavi sono state generate e salvate</translation>
     </message>
 </context>
 <context>
@@ -1455,20 +1335,8 @@ La password è errata!!!</translation>
         <translation>&amp;Termina Kadu</translation>
     </message>
     <message>
-        <source>Main toolbar</source>
-        <translation>Toolbar principale</translation>
-    </message>
-    <message>
         <source>User info</source>
         <translation>Info contatto</translation>
-    </message>
-    <message>
-        <source>Your public key has been sent</source>
-        <translation>La tua chiave pubblica è stata trasmessa</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
     </message>
     <message>
         <source>Selected users will be deleted. Are you sure?</source>
@@ -1491,10 +1359,6 @@ Connessioni dirette disabilitate.</translation>
     <message>
         <source>Open chat window</source>
         <translation>Apri finestra di Chat</translation>
-    </message>
-    <message>
-        <source>Send my public key</source>
-        <translation>Manda la mia chiave pubblica</translation>
     </message>
     <message>
         <source>Ignore user</source>
@@ -1682,6 +1546,18 @@ Controllare connessione a Internet.</translation>
         <source>Unload</source>
         <translation>Scaricamento</translation>
     </message>
+    <message>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;br&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br&gt;%1&lt;br&gt;&lt;b&gt;Description&lt;/b&gt;:&lt;br&gt;%2</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ModulesManager</name>
@@ -1702,6 +1578,18 @@ Probabilmente Modulo non è compatibile.</translation>
     <message>
         <source>Cannot load %1 module library.
 Maybe it&apos;s incorrecty compiled.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Module %1 is loaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Required module %1 was not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Module %1 cannot be unloaded because it is used by another module</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1841,37 +1729,6 @@ Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation
     </message>
 </context>
 <context>
-    <name>SavePublicKey</name>
-    <message>
-        <source>Save public key</source>
-        <translation>Salva la chiave pubblica</translation>
-    </message>
-    <message>
-        <source>User %1 is sending you his public key. Do you want to save it?</source>
-        <translation>L&apos;utente %1 sta trasmettendo la sua chiave pubblica. Desideri conservarla?</translation>
-    </message>
-    <message>
-        <source>Yes</source>
-        <translation>Sì</translation>
-    </message>
-    <message>
-        <source>No</source>
-        <translation>No</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation>Errore</translation>
-    </message>
-    <message>
-        <source>Error writting the key</source>
-        <translation>Errore di salvataggio chiave</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-</context>
-<context>
     <name>SearchDialog</name>
     <message>
         <source>&amp;Search</source>
@@ -1988,6 +1845,10 @@ Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation
     <message>
         <source>Select user first</source>
         <translation>Prima scegli l&apos;utente</translation>
+    </message>
+    <message>
+        <source>&amp;Chat</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source> </source>
@@ -2191,45 +2052,6 @@ Probabilmente è temporaneamente disattivata, o sono state cambiate le reole acc
     </message>
 </context>
 <context>
-    <name>SoundSlots</name>
-    <message>
-        <source>Custom</source>
-        <translation>Personalizzato</translation>
-    </message>
-    <message>
-        <source>Event</source>
-        <translation>Evento</translation>
-    </message>
-    <message>
-        <source>Sound file</source>
-        <translation>Suono di file</translation>
-    </message>
-    <message>
-        <source>Chat sound</source>
-        <translation>Suono di chat</translation>
-    </message>
-    <message>
-        <source>Message sound</source>
-        <translation>Suono messaggio</translation>
-    </message>
-    <message>
-        <source>Notify sound</source>
-        <translation>Suono di notifica</translation>
-    </message>
-    <message>
-        <source>Unmute sounds</source>
-        <translation>Attiva Suoni</translation>
-    </message>
-    <message>
-        <source>Mute sounds</source>
-        <translation>Disattiva Suoni</translation>
-    </message>
-    <message>
-        <source>default</source>
-        <translation>predefinito</translation>
-    </message>
-</context>
-<context>
     <name>TokenDialog</name>
     <message>
         <source>Read this code ...</source>
@@ -2246,6 +2068,13 @@ Probabilmente è temporaneamente disattivata, o sono state cambiate le reole acc
     <message>
         <source>&amp;Cancel</source>
         <translation>&amp;Annulla</translation>
+    </message>
+</context>
+<context>
+    <name>ToolBar</name>
+    <message>
+        <source>Main toolbar</source>
+        <translation type="unfinished">Toolbar principale</translation>
     </message>
 </context>
 <context>
