@@ -79,4 +79,5 @@ install-data-local:
 	done
 
 uninstall-local:
+	rm -f "$(DESTDIR)/$(includedir)/kadu/modules/*.h"
 	rm -f $(DESTDIR)/$(datadir)/kadu/modules/*.so
