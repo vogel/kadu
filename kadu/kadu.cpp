@@ -695,7 +695,7 @@ void Kadu::removeUser(QStringList &users, bool permanently = false) {
 		userlist.removeUser(user.altnick);
 		}
 
-	switch (QMessageBox::information(kadu, "Kadu", i18n("Save current userlist to file?"),
+	switch (QMessageBox::information(kadu, "Kadu", i18n("Save current userlist?"),
 		i18n("Yes"), i18n("No"), QString::null, 0, 1) ) {
 		case 0: // Yes?
 			userlist.writeToFile();
