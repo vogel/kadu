@@ -38,15 +38,14 @@ UserBox::~UserBox()
 
 void UserBox::maybeTip(const QPoint &c)
 {
-/*	QListBoxItem* item = static_cast<QListBoxItem*>(itemAt(c));
+	QListBoxItem* item = static_cast<QListBoxItem*>(itemAt(c));
 
 	if(item)
 	{
 		QRect r(itemRect(item));
 		QString s;
-		int i=FindCommentInUserlist(item->text());
 
-		switch (userlist[i].status)
+		switch (userlist.byComment(item->text()).status)
 		{
 			case GG_STATUS_AVAIL:
 				s = i18n("<I>Available</I>");
@@ -73,45 +72,16 @@ void UserBox::maybeTip(const QPoint &c)
 				s = i18n("<nobr><I>Unknown status</I></nobr>");
 				break;
 		};
-		if (descriptionForUser(item) != -1)
+		QString desc=userlist.byComment(item->text()).description;
+		if (desc!="")
 		{
 			s += "<BR><BR>";
 			s += i18n("<B>Description:</B><BR>");
-			s += QString(*userlist[descriptionForUser(item)].description);
+			s += desc;
 		};
 		tip(r, s);
-	};*/
+	};
 }
-
-int UserBox::descriptionForUser(QListBoxItem * s)
-{
-/*	int i = FindCommentInUserlist(s->text());
-	if(userlist[i].description==0)*/
-		return -1;
-/*	if(userlist[i].description->length()<=0)
-		return -1;
-	return i;*/
-};
-
-int UserBox::findUinInUserlist(uin_t uin)
-{
-	int i;
-	for(i=0; i<userlist.size(); i++)
-		if(userlist[i].uin==uin)
-			return i;
-	fprintf(stderr, "KK UserBox::findUinInUserList(): userlist[] out bound!\n");
-	return -1;
-};
-
-int UserBox::findCommentInUserlist(QString& comment)
-{
-	int i;
-	for(i=0; i<userlist.size(); i++)
-		if(userlist[i].comment==comment)
-			return i;
-	fprintf(stderr, "KK UserBox::findCommentInUserList(): userlist[] out bound!\n");
-	return -1;
-};
 
 /* don't worry if you can't follow this. I can't either. */
 /* should brew beer, sorts users instead */
@@ -230,47 +200,47 @@ int UserBox::findCommentInUserlist(QString& comment)
 */
 void UserBox::refresh()
 {
-/*	clear();	
+	clear();	
 	for(int i=0; i<Uins.count(); i++)
 	{
-		int u=FindUinInUserlist(Uins[i]);
+		UserListElement& user=userlist.byUin(Uins[i]);
 		if (ifPendingMessages(Uins[i]))
 		{
-	    		insertItem(QPixmap((const char **)gg_msg_xpm), __c2q(userlist[u].nickname));
+	    		insertItem(QPixmap((const char **)gg_msg_xpm), __c2q(user.nickname));
 		}
 		else
 		{
-			switch (userlist[u].status)
+			switch (user.status)
 			{
 				case GG_STATUS_AVAIL:
-		    			insertItem(QPixmap((const char **)gg_act_xpm), __c2q(userlist[u].nickname));			
+		    			insertItem(QPixmap((const char **)gg_act_xpm), __c2q(user.nickname));			
 		    			break;
 				case GG_STATUS_AVAIL_DESCR:
-		    			insertItem(QPixmap((const char **)gg_actdescr_xpm), __c2q(userlist[u].nickname));			
+		    			insertItem(QPixmap((const char **)gg_actdescr_xpm), __c2q(user.nickname));			
 		    			break;
 				case GG_STATUS_NOT_AVAIL:
-		    			insertItem(QPixmap((const char **)gg_inact_xpm), __c2q(userlist[u].nickname));			
+		    			insertItem(QPixmap((const char **)gg_inact_xpm), __c2q(user.nickname));			
 		    			break;
 				case GG_STATUS_BUSY:
-		    			insertItem(QPixmap((const char **)gg_busy_xpm), __c2q(userlist[u].nickname));			
+		    			insertItem(QPixmap((const char **)gg_busy_xpm), __c2q(user.nickname));			
 		    			break;
 				case GG_STATUS_BUSY_DESCR:
-		    			insertItem(QPixmap((const char **)gg_busydescr_xpm), __c2q(userlist[u].nickname));			
+		    			insertItem(QPixmap((const char **)gg_busydescr_xpm), __c2q(user.nickname));			
 		    			break;
 				case GG_STATUS_NOT_AVAIL_DESCR:
-		    			insertItem(QPixmap((const char **)gg_inactdescr_xpm), __c2q(userlist[u].nickname));			
+		    			insertItem(QPixmap((const char **)gg_inactdescr_xpm), __c2q(user.nickname));			
 		    			break;
 				case GG_STATUS_INVISIBLE_DESCR:
-		    			insertItem(QPixmap((const char **)gg_invidescr_xpm), __c2q(userlist[u].nickname));			
+		    			insertItem(QPixmap((const char **)gg_invidescr_xpm), __c2q(user.nickname));			
     		    			break;
 				case GG_STATUS_INVISIBLE2:
-		    			insertItem(QPixmap((const char **)gg_invi_xpm), __c2q(userlist[u].nickname));			
+		    			insertItem(QPixmap((const char **)gg_invi_xpm), __c2q(user.nickname));			
 		    			break;
 				default:
-		    			insertItem(QPixmap((const char **)gg_inact_xpm), __c2q(userlist[u].nickname));			
+		    			insertItem(QPixmap((const char **)gg_inact_xpm), __c2q(user.nickname));			
 			};
 		};
-	};	*/
+	};	
 };
 
 void UserBox::addUin(uin_t uin)
@@ -286,7 +256,7 @@ void UserBox::removeUin(uin_t uin)
 
 void UserBox::removeUser(QString& username)
 {
-/*	removeUin(userlist[FindCommentInUserlist(username)].uin);*/
+	removeUin(userlist.byComment(username).uin);
 };
 
 /*void ChangeUserStatus (unsigned int uin, int new_status) {
@@ -336,9 +306,9 @@ void UserBox::removeUser(QString& username)
 
 void UserBox::changeAllToInactive()
 {
-/*	QPixmap qp_inact((const char **)gg_inact_xpm);
+	QPixmap qp_inact((const char **)gg_inact_xpm);
 	for(int i=0; i<count(); i++)
-		changeItem(qp_inact,item(i).text,i);*/
+		changeItem(qp_inact,item(i)->text,i);
 };
 
 /////////////////////////////////////////////////////////

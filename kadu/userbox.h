@@ -32,9 +32,6 @@ class UserBox : public QListBox , QToolTip
 	
 	protected:
 		virtual void maybeTip(const QPoint&);
-		int descriptionForUser(QListBoxItem *);
-		int findUinInUserlist(uin_t uin);    
-		int findCommentInUserlist(QString& comment);
 		void sortUsers();
 		
 	public:
