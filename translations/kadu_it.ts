@@ -768,7 +768,7 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     <message>
         <source>Error data typed in required fields.
 
-Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot; should be the same!</source>
+Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1764,14 +1764,6 @@ Probabilmente Modulo non è compatibile.</translation>
         <translation>Password</translation>
     </message>
     <message>
-        <source>Retype password</source>
-        <translation>Riscrivi la password</translation>
-    </message>
-    <message>
-        <source>E-mail</source>
-        <translation>E-mail</translation>
-    </message>
-    <message>
         <source>Register</source>
         <translation>Registra</translation>
     </message>
@@ -1790,10 +1782,6 @@ Il vecchio file, se esiste, sarà sovrascritto</translation>
         <translation>Registra nuovo utente</translation>
     </message>
     <message>
-        <source>Passwords do not match</source>
-        <translation>Le passwords non coincidono</translation>
-    </message>
-    <message>
         <source>OK</source>
         <translation>OK</translation>
     </message>
@@ -1802,24 +1790,46 @@ Il vecchio file, se esiste, sarà sovrascritto</translation>
         <translation>Compilare tutti i campi</translation>
     </message>
     <message>
-        <source>Error</source>
-        <translation>Errore</translation>
-    </message>
-    <message>
-        <source>Registering</source>
-        <translation>Registrazione in corso</translation>
-    </message>
-    <message>
-        <source>Success!</source>
-        <translation>Successo!</translation>
-    </message>
-    <message>
         <source>Registration was successful. Your new number is %1.
 Store it in a safe place along with the password.
 Now add your friends to the userlist.</source>
         <translation>La registrazione riuscita. Il vostro nuovo numero è %1.
 Conservilo insieme con la password in un luogo sicuro
 Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation>
+    </message>
+    <message>
+        <source>This dialog box allows you to register a new account.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Email</source>
+        <translation type="unfinished">E-mail</translation>
+    </message>
+    <message>
+        <source>New email:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Retype new password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Chiudi</translation>
+    </message>
+    <message>
+        <source>Error data typed in required fields.
+
+Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>An error has occured while registration. Please try again later.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2043,14 +2053,6 @@ Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation
 <context>
     <name>Unregister</name>
     <message>
-        <source>UIN</source>
-        <translation>Numero GG</translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation>Password</translation>
-    </message>
-    <message>
         <source>Unregister</source>
         <translation>Sconnetti utente</translation>
     </message>
@@ -2067,23 +2069,35 @@ Ora è possibile aggiungere i vostri amici alla lista dei contatti.</translation
         <translation>OK</translation>
     </message>
     <message>
-        <source>Error</source>
-        <translation>Errore</translation>
-    </message>
-    <message>
-        <source>Unregistering</source>
-        <translation>Sconessione utente</translation>
-    </message>
-    <message>
-        <source>Success!</source>
-        <translation>Successo!</translation>
-    </message>
-    <message>
         <source>No user</source>
         <translation>Nessun utente</translation>
     </message>
     <message>
         <source>Unregistation was successful. Now you don&apos;t have any GG number :(</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This dialog box allows you to unregister your account. Be aware of using this option. It will permanently delete your UIN and you will not be able to use it later!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>UIN and password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>UIN:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password:</source>
+        <translation type="unfinished">Password:</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Chiudi</translation>
+    </message>
+    <message>
+        <source>An error has occured while unregistration. Please try again later.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -768,9 +768,9 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     <message>
         <source>Error data typed in required fields.
 
-Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot; should be the same!</source>
-        <translation>Błędne dane w wymaganych polach.
-Hasła muszą być identyczne w obu polach!</translation>
+Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
+        <translation>Błędne dane w  wymaganych polach.
+Hasła  muszą być identyczne w obu polach!</translation>
     </message>
 </context>
 <context>
@@ -1766,14 +1766,6 @@ Być może nie jest to moduł kompatybilny z Kadu</translation>
         <translation>Hasło</translation>
     </message>
     <message>
-        <source>Retype password</source>
-        <translation>Powtórz hasło</translation>
-    </message>
-    <message>
-        <source>E-mail</source>
-        <translation>e-mail</translation>
-    </message>
-    <message>
         <source>Register</source>
         <translation>Zarejestruj</translation>
     </message>
@@ -1792,10 +1784,6 @@ konfiguracyjnego. Stary plik zostanie nadpisany.</translation>
         <translation>Zarejestruj nowego użytkownika</translation>
     </message>
     <message>
-        <source>Passwords do not match</source>
-        <translation>Hasła nie są zgodne</translation>
-    </message>
-    <message>
         <source>OK</source>
         <translation>OK</translation>
     </message>
@@ -1804,24 +1792,47 @@ konfiguracyjnego. Stary plik zostanie nadpisany.</translation>
         <translation>Wypełnij wszystkie pola</translation>
     </message>
     <message>
-        <source>Error</source>
-        <translation>Błąd</translation>
-    </message>
-    <message>
-        <source>Registering</source>
-        <translation>Rejestrowanie</translation>
-    </message>
-    <message>
-        <source>Success!</source>
-        <translation>Sukces!</translation>
-    </message>
-    <message>
         <source>Registration was successful. Your new number is %1.
 Store it in a safe place along with the password.
 Now add your friends to the userlist.</source>
         <translation>Rejestracja zakończona. Twój nowy numer to: %1.
 Zapisz go wraz z hasłem w bezpiecznym miejscu.
 Teraz możesz dodać znajomych do listy kontaktów.</translation>
+    </message>
+    <message>
+        <source>This dialog box allows you to register a new account.</source>
+        <translation>To okno dialogowe pozwala zarejestrowac nowe konto.</translation>
+    </message>
+    <message>
+        <source>Email</source>
+        <translation>e-mail</translation>
+    </message>
+    <message>
+        <source>New email:</source>
+        <translation>Nowy e-mail:</translation>
+    </message>
+    <message>
+        <source>New password:</source>
+        <translation>Nowe hasło:</translation>
+    </message>
+    <message>
+        <source>Retype new password:</source>
+        <translation>Powtórz hasło:</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation>&amp;Zamknij</translation>
+    </message>
+    <message>
+        <source>Error data typed in required fields.
+
+Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
+        <translation>Błędne dane w  wymaganych polach.
+Hasła  muszą być identyczne w obu polach!</translation>
+    </message>
+    <message>
+        <source>An error has occured while registration. Please try again later.</source>
+        <translation>Wystąpił błąd podczas rejestracji. Proszę spróbowac później.</translation>
     </message>
 </context>
 <context>
@@ -2045,14 +2056,6 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
 <context>
     <name>Unregister</name>
     <message>
-        <source>UIN</source>
-        <translation>Numer GG</translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation>Hasło</translation>
-    </message>
-    <message>
         <source>Unregister</source>
         <translation>Wyrejestruj użytkownika</translation>
     </message>
@@ -2069,18 +2072,6 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
         <translation>OK</translation>
     </message>
     <message>
-        <source>Error</source>
-        <translation>Błąd</translation>
-    </message>
-    <message>
-        <source>Unregistering</source>
-        <translation>Wyrejestrowywanie</translation>
-    </message>
-    <message>
-        <source>Success!</source>
-        <translation>Sukces!</translation>
-    </message>
-    <message>
         <source>No user</source>
         <translation>Brak użytkownika</translation>
     </message>
@@ -2088,6 +2079,30 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
         <source>Unregistation was successful. Now you don&apos;t have any GG number :(</source>
         <translation>Wyrejestrowanie przebiegło prawidłowo.
 Teraz już nie masz numeru GG :(</translation>
+    </message>
+    <message>
+        <source>This dialog box allows you to unregister your account. Be aware of using this option. It will permanently delete your UIN and you will not be able to use it later!</source>
+        <translation>To okno dialogowe daje możliwość wyrejestrowania twojego konta. Musisz zdawać sobie sprawę z tego co robisz. Zostanie usunięty twój nr GG i nie będziesz już mógł go więcej używać!</translation>
+    </message>
+    <message>
+        <source>UIN and password</source>
+        <translation>Numer GG i hasło</translation>
+    </message>
+    <message>
+        <source>UIN:</source>
+        <translation>Numer GG: </translation>
+    </message>
+    <message>
+        <source>Password:</source>
+        <translation>Hasło:</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation>&amp;Zamknij</translation>
+    </message>
+    <message>
+        <source>An error has occured while unregistration. Please try again later.</source>
+        <translation>Wystąpił błąd podczas wyrejestrowywania. Proszę spróbowac później.</translation>
     </message>
 </context>
 <context>

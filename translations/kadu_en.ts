@@ -763,7 +763,7 @@ What would you like to do?</source>
     <message>
         <source>Error data typed in required fields.
 
-Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot; should be the same!</source>
+Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1754,14 +1754,6 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Retype password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>E-mail</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Register</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1779,10 +1771,6 @@ This will erase your current config file contents if you have one</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Passwords do not match</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1791,21 +1779,43 @@ This will erase your current config file contents if you have one</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Registering</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Success!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Registration was successful. Your new number is %1.
 Store it in a safe place along with the password.
 Now add your friends to the userlist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This dialog box allows you to register a new account.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Email</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New email:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Retype new password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error data typed in required fields.
+
+Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>An error has occured while registration. Please try again later.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2030,14 +2040,6 @@ Now add your friends to the userlist.</source>
 <context>
     <name>Unregister</name>
     <message>
-        <source>UIN</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Unregister</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2054,23 +2056,35 @@ Now add your friends to the userlist.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unregistering</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Success!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>No user</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Unregistation was successful. Now you don&apos;t have any GG number :(</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This dialog box allows you to unregister your account. Be aware of using this option. It will permanently delete your UIN and you will not be able to use it later!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>UIN and password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>UIN:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>An error has occured while unregistration. Please try again later.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
