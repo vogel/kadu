@@ -435,7 +435,7 @@ void HistoryManager::convSms2ekgForm() {
 	QString path = ggPath("history/");
 	QString fname, fnameout, line, nick;
 	QStringList linelist;
-	UinType uin;
+	UinType uin=0;
 	unsigned int i;
 
 	fname = "sms";
