@@ -1383,6 +1383,8 @@ void ConfigDialog::updateConfig(void) {
 
 	/* and now, save it */
 	saveKaduConfig();
+	userlist.writeToFile();
+
 	/* I odswiez okno Kadu */
 	kadu->refreshGroupTabBar();
 }

@@ -17,6 +17,7 @@
   numeru GG
 * prawid³owe wy¶wietlanie polskich literek w opisach osób niedostêpnych
 * poprawka domy¶lnej geometri g³ównego okna
+* po zmianie powiadomieñ w oknie konfiguracji ustawienia powiadomieñ s± zapamiêtywane
 
 +++ wersja 0.3.3-pre2
 * dostosowanie do QT 3.1.0 i KDE 3.1-rc5
