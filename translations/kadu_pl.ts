@@ -76,131 +76,6 @@ Wybierz jedną z poniższych opcji:</translation>
     </message>
 </context>
 <context>
-    <name>Adduser</name>
-    <message>
-        <source>Add user</source>
-        <translation>Dodaj kontakt</translation>
-    </message>
-    <message>
-        <source>Uin</source>
-        <translation>Numer GG</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation>Grupa</translation>
-    </message>
-    <message>
-        <source>Nickname</source>
-        <translation>Pseudonim</translation>
-    </message>
-    <message>
-        <source>AltNick</source>
-        <translation>Wyświetl</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation>Imię</translation>
-    </message>
-    <message>
-        <source>Surname</source>
-        <translation>Nazwisko</translation>
-    </message>
-    <message>
-        <source>Cell #</source>
-        <translation>Numer tel.</translation>
-    </message>
-    <message>
-        <source>Email</source>
-        <translation>e-mail</translation>
-    </message>
-    <message>
-        <source>&amp;Add</source>
-        <translation>&amp;Dodaj</translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation>&amp;Anuluj</translation>
-    </message>
-</context>
-<context>
-    <name>AutoAwaySlots</name>
-    <message>
-        <source>General</source>
-        <translation>Ogólne</translation>
-    </message>
-    <message>
-        <source>Enable autoaway</source>
-        <translation>Automatyczny status &quot;Zaraz wracam&quot;</translation>
-    </message>
-    <message>
-        <source>On shutdown, set description:</source>
-        <translation>Wyłączając ustaw opis:</translation>
-    </message>
-    <message>
-        <source>Default Status</source>
-        <translation>Status domyślny</translation>
-    </message>
-    <message>
-        <source>Enable tray hints</source>
-        <translation>Włącz dymki w zasobniku systemowym</translation>
-    </message>
-    <message>
-        <source>---</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show connection errors in tray hints</source>
-        <translation>Pokaż błędy połączeń w dymkach</translation>
-    </message>
-</context>
-<context>
-    <name>AutoAwayTimer</name>
-    <message>
-        <source>General</source>
-        <translation>Ogólne</translation>
-    </message>
-    <message>
-        <source>Enable autoaway</source>
-        <translation>Automatyczny status &quot;Zaraz wracam&quot;</translation>
-    </message>
-    <message>
-        <source>Set status to away after </source>
-        <translation>Zmień status po</translation>
-    </message>
-    <message>
-        <source> seconds</source>
-        <translation> sekundach</translation>
-    </message>
-    <message>
-        <source>Default Status</source>
-        <translation>Status domyślny</translation>
-    </message>
-    <message>
-        <source>On shutdown, set description:</source>
-        <translation>Wyłączając ustaw opis:</translation>
-    </message>
-    <message>
-        <source>Enable dock icon</source>
-        <translation>Ikona w panelu dokującym</translation>
-    </message>
-    <message>
-        <source>Start docked</source>
-        <translation>Uruchom zminimalizowany</translation>
-    </message>
-    <message>
-        <source>Private status</source>
-        <translation>Tylko dla znajomych</translation>
-    </message>
-    <message>
-        <source>Check for updates</source>
-        <translation>Sprawdzaj uaktualnienia</translation>
-    </message>
-    <message>
-        <source>Add to description</source>
-        <translation>Dodaj do opisu</translation>
-    </message>
-</context>
-<context>
     <name>Chat</name>
     <message>
         <source>Edit window:</source>
@@ -287,46 +162,6 @@ wiadomości</translation>
         <source>Application encountered network error.</source>
         <translation>Błąd sieci.</translation>
     </message>
-    <message>
-        <source>General</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Open chat window on new message</source>
-        <translation>Otwórz okno rozmowy gdy nadejdzie nowa wiadomość</translation>
-    </message>
-    <message>
-        <source>ShortCuts</source>
-        <translation>Skróty klawiszowe</translation>
-    </message>
-    <message>
-        <source>Define keys</source>
-        <translation>Definiuj klawisze</translation>
-    </message>
-    <message>
-        <source>New line / send message:</source>
-        <translation>Nowa linia / wyślij wiadomość</translation>
-    </message>
-    <message>
-        <source>Clear Chat:</source>
-        <translation>Wyczyść rozmowę</translation>
-    </message>
-    <message>
-        <source>Close Chat:</source>
-        <translation>Zamknij rozmowę</translation>
-    </message>
-    <message>
-        <source>Bold text:</source>
-        <translation>Tekst pogrubiony</translation>
-    </message>
-    <message>
-        <source>Italic text:</source>
-        <translation>Kursywa</translation>
-    </message>
-    <message>
-        <source>Underline text:</source>
-        <translation>Tekst podkreślony</translation>
-    </message>
 </context>
 <context>
     <name>ChooseDescription</name>
@@ -356,173 +191,6 @@ wiadomości</translation>
     <message>
         <source>Kadu configuration</source>
         <translation>Konfiguracja Kadu</translation>
-    </message>
-    <message>
-        <source>Keys exist. Do you want to overwrite them?</source>
-        <translation>Klucze istnieją. Czy chcesz je nadpisać?</translation>
-    </message>
-    <message>
-        <source>Yes</source>
-        <translation>Tak</translation>
-    </message>
-    <message>
-        <source>No</source>
-        <translation>Nie</translation>
-    </message>
-    <message>
-        <source>Error generating keys</source>
-        <translation>Błąd podczas generowania kluczy</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <source>Keys have been generated and written</source>
-        <translation>Klucze zostały wygenerowane i zapisane</translation>
-    </message>
-    <message>
-        <source>Log messages</source>
-        <translation>Przechowuj wiadomości</translation>
-    </message>
-    <message>
-        <source>Restore window geometry</source>
-        <translation>Przywróć kształt okna</translation>
-    </message>
-    <message>
-        <source>Check for updates</source>
-        <translation>Sprawdzaj uaktualnienia</translation>
-    </message>
-    <message>
-        <source>Network</source>
-        <translation>Sieć</translation>
-    </message>
-    <message>
-        <source>DCC enabled</source>
-        <translation>DCC włączone (połączenia bezpośrednie)</translation>
-    </message>
-    <message>
-        <source>DCC IP autodetection</source>
-        <translation>Wykrywanie adres IP dla DCC</translation>
-    </message>
-    <message>
-        <source>DCC IP</source>
-        <translation>Adres IP dla DCC</translation>
-    </message>
-    <message>
-        <source>IP address:</source>
-        <translation>Adres IP:</translation>
-    </message>
-    <message>
-        <source>DCC forwarding enabled</source>
-        <translation>Przekierowywanie portów przy DCC</translation>
-    </message>
-    <message>
-        <source>DCC forwarding properties</source>
-        <translation>Ustawienia</translation>
-    </message>
-    <message>
-        <source>External IP address:</source>
-        <translation>Zewnętrzny adres IP:</translation>
-    </message>
-    <message>
-        <source>External TCP port:</source>
-        <translation>Zewnętrzny port TCP:</translation>
-    </message>
-    <message>
-        <source>Servers properties</source>
-        <translation>Serwery</translation>
-    </message>
-    <message>
-        <source>Use default servers</source>
-        <translation>Używaj domyślnych serwerów</translation>
-    </message>
-    <message>
-        <source>Use TLSv1</source>
-        <translation>Używaj TLSv1</translation>
-    </message>
-    <message>
-        <source>IP addresses:</source>
-        <translation>Adresy IP:</translation>
-    </message>
-    <message>
-        <source>Default port to connect to servers</source>
-        <translation>Domyślny port do połączeń z serwerami</translation>
-    </message>
-    <message>
-        <source>Use proxy server</source>
-        <translation>Używaj serwera proxy</translation>
-    </message>
-    <message>
-        <source>Proxy server</source>
-        <translation>Serwer proxy</translation>
-    </message>
-    <message>
-        <source>Port:</source>
-        <translation>Port:</translation>
-    </message>
-    <message>
-        <source>Username:</source>
-        <translation>Użytkownik:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation>Hasło:</translation>
-    </message>
-</context>
-<context>
-    <name>ConfigSlots</name>
-    <message>
-        <source>Network</source>
-        <translation>Sieć</translation>
-    </message>
-    <message>
-        <source>DCC enabled</source>
-        <translation>DCC włączone (połączenia bezpośrednie)</translation>
-    </message>
-    <message>
-        <source>DCC IP autodetection</source>
-        <translation>Wykrywanie adres IP dla DCC</translation>
-    </message>
-    <message>
-        <source>DCC IP</source>
-        <translation>Adres IP dla DCC</translation>
-    </message>
-    <message>
-        <source>Proxy server</source>
-        <translation>Serwer proxy</translation>
-    </message>
-    <message>
-        <source>DCC forwarding properties</source>
-        <translation>Ustawienia</translation>
-    </message>
-    <message>
-        <source>DCC forwarding enabled</source>
-        <translation>Przekierowywanie portów przy DCC</translation>
-    </message>
-    <message>
-        <source>Use TLSv1</source>
-        <translation>Używaj TLSv1</translation>
-    </message>
-    <message>
-        <source>Use proxy server</source>
-        <translation>Używaj serwera proxy</translation>
-    </message>
-    <message>
-        <source>Servers properties</source>
-        <translation>Serwery</translation>
-    </message>
-    <message>
-        <source>Default port to connect to servers</source>
-        <translation>Domyślny port do połączeń z serwerami</translation>
-    </message>
-    <message>
-        <source>IP addresses:</source>
-        <translation>Adresy IP:</translation>
-    </message>
-    <message>
-        <source>Use default servers</source>
-        <translation>Używaj domyślnych serwerów</translation>
     </message>
 </context>
 <context>
@@ -612,18 +280,6 @@ wiadomości</translation>
     <message>
         <source>Offline</source>
         <translation>Niedostępny</translation>
-    </message>
-    <message>
-        <source>Quoted phrases during chat open</source>
-        <translation>Cytowanie fraz przy otwieraniu rozmowy</translation>
-    </message>
-    <message>
-        <source>Count:</source>
-        <translation>Ilość</translation>
-    </message>
-    <message>
-        <source>Don&apos;t quote phrases older than:</source>
-        <translation>Nie wyświetlaj wierszy starszych niż:</translation>
     </message>
 </context>
 <context>
@@ -715,10 +371,6 @@ wiadomości</translation>
 <context>
     <name>HistorySlots</name>
     <message>
-        <source>Quoted phrases during chat open</source>
-        <translation>Cytowanie fraz przy otwieraniu rozmowy</translation>
-    </message>
-    <message>
         <source>%1 day(s) %2 hour(s)</source>
         <translation>dni: %1 godzin: %2</translation>
     </message>
@@ -757,32 +409,8 @@ wiadomości</translation>
         <translation>Najnowszą wersją kadu jest %1</translation>
     </message>
     <message>
-        <source>General</source>
-        <translation>Ogólne</translation>
-    </message>
-    <message>
-        <source>User data</source>
-        <translation>Dane użytkownika</translation>
-    </message>
-    <message>
-        <source>Uin</source>
-        <translation>Numer GG</translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation>Hasło</translation>
-    </message>
-    <message>
-        <source>Nick</source>
-        <translation>Pseudonim</translation>
-    </message>
-    <message>
         <source>Me</source>
         <translation>Ja</translation>
-    </message>
-    <message>
-        <source>Define keys</source>
-        <translation>Definiuj klawisze</translation>
     </message>
     <message>
         <source>Remove from userlist</source>
@@ -1016,16 +644,25 @@ Sprawdź swoje połączenie internetowe.</translation>
         <source>I am busy.</source>
         <translation>Jestem zajęty.</translation>
     </message>
-</context>
-<context>
-    <name>KaduSlots</name>
     <message>
-        <source>User data</source>
-        <translation></translation>
+        <source>Keys exist. Do you want to overwrite them?</source>
+        <translation>Klucze istnieją. Czy chcesz je nadpisać?</translation>
     </message>
     <message>
-        <source>Password</source>
-        <translation>Hasło</translation>
+        <source>Yes</source>
+        <translation>Tak</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation>Nie</translation>
+    </message>
+    <message>
+        <source>Error generating keys</source>
+        <translation>Błąd podczas generowania kluczy</translation>
+    </message>
+    <message>
+        <source>Keys have been generated and written</source>
+        <translation>Klucze zostały wygenerowane i zapisane</translation>
     </message>
 </context>
 <context>
@@ -1327,22 +964,6 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
         <source>Select user first</source>
         <translation>Zaznacz użytkownika</translation>
     </message>
-    <message>
-        <source>&amp;Yes</source>
-        <translation>&amp;Tak</translation>
-    </message>
-    <message>
-        <source>&amp;No</source>
-        <translation>&amp;Nie</translation>
-    </message>
-    <message>
-        <source>Update Info</source>
-        <translation>Uaktualnij informacje</translation>
-    </message>
-    <message>
-        <source>Do you want to update user info for %1?</source>
-        <translation>Czy chcesz uaktualnić informacje o użytkowniku %1?</translation>
-    </message>
 </context>
 <context>
     <name>Sms</name>
@@ -1389,46 +1010,6 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
     <message>
         <source>The SMS was sent and should be on its way</source>
         <translation>SMS został wysłany i powinien być już w drodze.</translation>
-    </message>
-    <message>
-        <source>SMS</source>
-        <translation>SMS</translation>
-    </message>
-    <message>
-        <source>SMS options</source>
-        <translation>Opcje SMS</translation>
-    </message>
-    <message>
-        <source>Use built-in SMS application</source>
-        <translation>Użyj wbudowanej aplikacji SMS</translation>
-    </message>
-    <message>
-        <source>Custom SMS application</source>
-        <translation>Aplikacja SMS użytkownika</translation>
-    </message>
-    <message>
-        <source>SMS custom string</source>
-        <translation>Ciąg formatujący SMS</translation>
-    </message>
-    <message>
-        <source>Check this box if your sms application doesn&apos;t understand arguments: number &quot;message&quot;
-Arguments should be separated with spaces. %n argument is converted to number, %m to message</source>
-        <translation>Jeśli Twoja aplikacja SMS nie rozumie argumentów
-&quot;numer tel. treść wiadomości&quot; zaznacz i wpisz w to
-pole poprawny ciąg. Argumenty oddziel spacjami.
-Argument %n jest zamieniany na numer, %m na wiadomość.</translation>
-    </message>
-    <message>
-        <source>SMS Era Gateway</source>
-        <translation>Bramka SMS Era</translation>
-    </message>
-    <message>
-        <source>User ID</source>
-        <translation>ID użytkownika</translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation>Hasło</translation>
     </message>
 </context>
 <context>
@@ -1515,25 +1096,6 @@ czasowo wyłączona lub zmieniła zasady dostępu.</translation>
     </message>
 </context>
 <context>
-    <name>SmsSlots</name>
-    <message>
-        <source>SMS options</source>
-        <translation>Opcje SMS</translation>
-    </message>
-    <message>
-        <source>Custom SMS application</source>
-        <translation>Aplikacja SMS użytkownika</translation>
-    </message>
-    <message>
-        <source>SMS custom string</source>
-        <translation>Ciąg formatujący SMS</translation>
-    </message>
-    <message>
-        <source>Use built-in SMS application</source>
-        <translation>Użyj wbudowanej aplikacji SMS</translation>
-    </message>
-</context>
-<context>
     <name>TrayIcon</name>
     <message>
         <source>Left click - hide/show window
@@ -1545,33 +1107,6 @@ Prawy przycisk - Ustaw status</translation>
     <message>
         <source>Error: </source>
         <translation>Błąd: </translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation>Ogólne</translation>
-    </message>
-    <message>
-        <source>Enable tray hints</source>
-        <translation>Włącz dymki w zasobniku systemowym</translation>
-    </message>
-    <message>
-        <source>Tray hints timeout </source>
-        <translation>Schowaj podpowiedź w dymku po </translation>
-    </message>
-    <message>
-        <source>Show connection errors in tray hints</source>
-        <translation>Pokaż błędy połączeń w dymkach</translation>
-    </message>
-</context>
-<context>
-    <name>TraySlots</name>
-    <message>
-        <source>General</source>
-        <translation>Ogólne</translation>
-    </message>
-    <message>
-        <source>Enable tray hints</source>
-        <translation>Włącz dymki w zasobniku systemowym</translation>
     </message>
 </context>
 <context>
@@ -1670,14 +1205,6 @@ Prawy przycisk - Ustaw status</translation>
     <message>
         <source>&lt;B&gt;Description:&lt;/B&gt;&lt;BR&gt;</source>
         <translation>&lt;B&gt;Opis:&lt;/B&gt;&lt;BR&gt;</translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation>Ogólne</translation>
-    </message>
-    <message>
-        <source>Show Inactive users</source>
-        <translation>Pokaż niedostępnych</translation>
     </message>
 </context>
 <context>
