@@ -3460,6 +3460,7 @@ fi;
 
 if test "x$enable_debug" = "xno"; then
 	CFLAGS="$CFLAGS -DGG_DEBUG_DISABLE"
+	CFLAGS_LIBGADU="$CFLAGS_LIBGADU -DGG_DEBUG_DISABLE"
 	strip_ekg="strip-ekg"
 	strip_ioctld="strip-ioctld"
 	strip_libgadu_so="strip-libgadu-so"
@@ -3949,6 +3950,7 @@ if test x"$acx_pthread_ok" = xyes; then
 
 		LIBS="$PTHREAD_LIBS $LIBS"
 		CFLAGS="$CFLAGS $PTHREAD_CFLAGS"
+		CFLAGS_LIBGADU="$CFLAGS_LIBGADU $PTHREAD_CFLAGS"
 		CC="$PTHREAD_CC"
 		have_pthread=yes
 
@@ -4024,7 +4026,6 @@ rm -f core core.* *.core conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
 fi
 
 
-CFLAGS_LIBGADU="$CFLAGS_LIBGADU $CFLAGS"
 LIBS_LIBGADU="$LIBS_LIBGADU $LIBS"
 
 
