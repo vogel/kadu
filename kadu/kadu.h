@@ -74,7 +74,6 @@ class Kadu : public QMainWindow
 		void slotShowStatusMenu();
 		void setCurrentStatus(int status);
 		void sendMessage(QListBoxItem *);
-		void listPopupMenu(QListBoxItem *);
 		void dataReceived();
 		void dataSent();
 		void dccReceived();
@@ -124,11 +123,11 @@ class Kadu : public QMainWindow
 		void sendSms();
 		void sendSmsToUser();
 		void sendUserlist1();
-		void showHideInactive();		
 		void showUserInfo();
 		void unregisterUser();
 		void viewHistory();
-
+		void popupMenu();
+		
 	private:
 		QFrame *centralFrame;
 		QGridLayout *grid;
@@ -140,7 +139,6 @@ class Kadu : public QMainWindow
 		void createMenu();
 		void createStatusPopupMenu();
 		void setActiveGroup(const QString& group);
-		UinsList getSelectedUins();
 
 	private slots:
 		void groupTabSelected(int id);

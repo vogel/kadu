@@ -173,12 +173,12 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 	}
 	else if (HotKey::shortCut(e,"kadu_deleteuser"))
 	{
-	if (userbox->isSelected(userbox->currentItem()))
+	if (userbox->getSelectedAltNicks().count())
 		deleteUsers();
 	}
 	else if (HotKey::shortCut(e,"kadu_persinfo"))
 	{
-	if (userbox->isSelected(userbox->currentItem()))
+	if (userbox->getSelectedAltNicks().count() == 1)
 	        showUserInfo();
 	}	
 	else if (HotKey::shortCut(e,"kadu_sendsms"))
@@ -195,7 +195,7 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 	}	
 	else if (HotKey::shortCut(e,"kadu_showinactive"))
 	{
-		showHideInactive();
+		userbox->showHideInactive();
 	}
 	else if (HotKey::shortCut(e, "kadu_voicechat")) {
 		makeVoiceChat();
@@ -485,10 +485,45 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	/* add all users to userbox */
 	setActiveGroup("");
 
+	// popupmenu
+	UserBox::userboxmenu->addItem(tr("Open chat window") ,this, SLOT(openChat()));
+	UserBox::userboxmenu->addItem("mobile.png", tr("Send SMS"), this, SLOT(sendSmsToUser()),
+		HotKey::shortCutFromFile("kadu_sendsms"));
+
+
+	UserBox::userboxmenu->addItem("filesave.png", tr("Send file"), this,
+		SLOT(sendFile()), HotKey::shortCutFromFile("kadu_sendfile"));
+	UserBox::userboxmenu->addItem(tr("Voice chat"), this,
+		SLOT(makeVoiceChat()), HotKey::shortCutFromFile("kadu_voicechat"));
+
+#ifdef HAVE_OPENSSL
+	UserBox::userboxmenu->addItem("encrypted.png", tr("Send my public key"), this, SLOT(sendKey()));
+#endif
+
+	UserBox::userboxmenu->insertSeparator();
+	UserBox::userboxmenu->addItem(tr("Ignore user"), this, SLOT(ignoreUser()));
+	UserBox::userboxmenu->addItem(tr("Block user"), this, SLOT(blockUser()));
+	UserBox::userboxmenu->addItem(tr("Notify about user"), this, SLOT(notifyUser()));
+	UserBox::userboxmenu->addItem(tr("Offline to user"), this, SLOT(offlineToUser()));
+
+	UserBox::userboxmenu->insertSeparator();
+	UserBox::userboxmenu->addItem("remove.png", tr("Remove from userlist"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("kadu_deleteuser"));
+	UserBox::userboxmenu->addItem("eraser.png", tr("Clear history"), this, SLOT(deleteHistory()));
+	UserBox::userboxmenu->addItem("history.png", tr("View history"),this,SLOT(viewHistory()),HotKey::shortCutFromFile("kadu_viewhistory"));
+	UserBox::userboxmenu->addItem("identity.png", tr("View/edit user info"), this, SLOT(showUserInfo()),HotKey::shortCutFromFile("kadu_persinfo"));
+	UserBox::userboxmenu->addItem("viewmag.png", tr("Lookup in directory"), this, SLOT(lookupInDirectory()),HotKey::shortCutFromFile("kadu_searchuser"));
+	UserBox::userboxmenu->insertSeparator();
+	UserBox::userboxmenu->addItem(tr("About..."), this, SLOT(about()));
+
+
+	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(popupMenu()));
+	connect(userbox, SIGNAL(rightButtonClicked(QListBoxItem *, const QPoint &)),
+		UserBox::userboxmenu, SLOT(show(QListBoxItem *)));
+	//
+	
 	connect(userbox, SIGNAL(doubleClicked(QListBoxItem *)), this, SLOT(sendMessage(QListBoxItem *)));
 	connect(userbox, SIGNAL(returnPressed(QListBoxItem *)), this, SLOT(sendMessage(QListBoxItem *)));
-	connect(userbox, SIGNAL(rightButtonClicked(QListBoxItem *, const QPoint &)),
-		this, SLOT(listPopupMenu(QListBoxItem *)));
+	
 	connect(userbox, SIGNAL(mouseButtonClicked(int, QListBoxItem *, const QPoint &)),
 		this, SLOT(mouseButtonClicked(int, QListBoxItem *)));
 	connect(userbox, SIGNAL(currentChanged(QListBoxItem *)), this, SLOT(currentChanged(QListBoxItem *)));
@@ -551,7 +586,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	toolbar->setLabel(tr("Main toolbar"));
 
 	QToolButton *inactivebtn = new QToolButton(*icons->loadIcon("offline"), tr("Show / hide inactive users"),
-	QString::null, this, SLOT(showHideInactive()), toolbar, "ShowHideInactive");
+	QString::null, userbox, SLOT(showHideInactive()), toolbar, "ShowHideInactive");
 
 	
 	QIconSet *mu;
@@ -629,12 +664,91 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 			QObject::connect(uc->op, SIGNAL(data(const QByteArray &, QNetworkOperation *)),
 				this, SLOT(gotUpdatesInfo(const QByteArray &, QNetworkOperation *)));
 		uc->run();
-		}
+		}		
 }
 
-void Kadu::showHideInactive() 
-{
-	userbox->showHideInactive();
+void Kadu::popupMenu()
+{	
+	UserList users;
+	users =userbox->getSelectedUsers();
+	UserListElement user = users.first();
+
+	if (!user.mobile.length() || (users.count() !=1))
+	    UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Send SMS")), false);
+
+	int voicechat= UserBox::userboxmenu->getItem(tr("Voice chat"));
+	int sendfile= UserBox::userboxmenu->getItem(tr("Send file"));
+
+	if ((dccSocketClass::count >= 8) && (users.count() != 1)){
+		UserBox::userboxmenu->setItemEnabled(sendfile, false);
+		UserBox::userboxmenu->setItemEnabled(voicechat, false);
+		}
+	if ((users.count() == 1)&& ((config_file.readBoolEntry("Network", "AllowDCC")) &&
+		(user.status == GG_STATUS_AVAIL || user.status == GG_STATUS_AVAIL_DESCR ||
+		user.status == GG_STATUS_BUSY || user.status == GG_STATUS_BUSY_DESCR))) {
+			UserBox::userboxmenu->setItemEnabled(sendfile, true);
+			UserBox::userboxmenu->setItemEnabled(voicechat, true);
+			}
+		else {
+			UserBox::userboxmenu->setItemEnabled(sendfile, false);
+			UserBox::userboxmenu->setItemEnabled(voicechat, false);
+			}
+
+#ifdef HAVE_OPENSSL
+	int sendkeyitem= UserBox::userboxmenu->getItem(tr("Send my public key"));
+	QString keyfile_path;
+
+	keyfile_path.append(ggPath("keys/"));
+	keyfile_path.append(QString::number(config_file.readNumEntry("General", "UIN")));
+	keyfile_path.append(".pem");
+
+	QFileInfo keyfile(keyfile_path);
+	if ((keyfile.permission(QFileInfo::ReadUser) && user.uin) && (users.count() == 1))
+		UserBox::userboxmenu->setItemEnabled(sendkeyitem, true);
+	else
+		UserBox::userboxmenu->setItemEnabled(sendkeyitem, false);
+
+#endif
+
+	int ignoreuseritem= UserBox::userboxmenu->getItem(tr("Ignore user"));
+	int blockuseritem= UserBox::userboxmenu->getItem(tr("Block user"));
+	int notifyuseritem= UserBox::userboxmenu->getItem(tr("Notify about user"));
+	int offlinetouseritem= UserBox::userboxmenu->getItem(tr("Offline to user"));
+
+	if (!user.uin) {
+		UserBox::userboxmenu->setItemEnabled(ignoreuseritem, false);
+		UserBox::userboxmenu->setItemEnabled(blockuseritem, false);
+		UserBox::userboxmenu->setItemEnabled(notifyuseritem, false);
+		UserBox::userboxmenu->setItemEnabled(offlinetouseritem, false);
+		}
+	else {
+		UinsList uins;
+		uins = userbox->getSelectedUins();
+		if (isIgnored(uins))
+			UserBox::userboxmenu->setItemChecked(ignoreuseritem, true);
+		if (user.blocking)
+			UserBox::userboxmenu->setItemChecked(blockuseritem, true);
+		UserBox::userboxmenu->setItemEnabled(offlinetouseritem, config_file.readBoolEntry("General", "PrivateStatus"));
+		if (user.offline_to_user)
+			UserBox::userboxmenu->setItemChecked(offlinetouseritem, true);
+		UserBox::userboxmenu->setItemEnabled(notifyuseritem, config_file.readBoolEntry("Notify", "NotifyStatusChange") && !config_file.readBoolEntry("Notify", "NotifyAboutAll"));
+		if (user.notify)
+			UserBox::userboxmenu->setItemChecked(notifyuseritem, true);
+		}
+
+	int deletehistoryitem= UserBox::userboxmenu->getItem(tr("Clear history"));
+	int historyitem= UserBox::userboxmenu->getItem(tr("View history"));
+	int searchuser= UserBox::userboxmenu->getItem(tr("Lookup in directory"));
+	if ((!user.uin) ) {
+		UserBox::userboxmenu->setItemEnabled(deletehistoryitem, false);
+		UserBox::userboxmenu->setItemEnabled(historyitem, false);
+
+		}
+		if ((users.count() != 1) || (!user.uin)) UserBox::userboxmenu->setItemEnabled(searchuser, false);
+		if (users.count() != 1) 
+			UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("View/edit user info")), false);
+
+	if (!user.uin)	UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Open chat window")), false);
 }
 
 void Kadu::muteUnmuteSounds()
@@ -665,19 +779,20 @@ void Kadu::sendSms()
 
 void Kadu::sendSmsToUser()
 {
-	if ((userbox->isSelected(userbox->currentItem())) &&
-	(userlist.byAltNick(kadu->userbox->currentText()).mobile.length()!=0)) {
-		Sms *sms = new Sms(userbox->currentText(), 0);
+	UserList users;
+	users= userbox->getSelectedUsers();
+	if (users.count() != 1)
+		return;
+	if (users.first().mobile.length())
+		{
+		Sms *sms = new Sms(users.first().altnick, 0);
 		sms->show();
 		}	
 }
 
 
 void Kadu::viewHistory() {
-	UinsList uins;
-	for (int i = 0; i < userbox->count(); i++)
-		if (userbox->isSelected(i))
-			uins.append(userlist.byAltNick(userbox->text(i)).uin);
+	UinsList uins= userbox->getSelectedUins();
 		if (uins.count()) {
 			History *hb = new History(uins);
 			hb->show();
@@ -689,9 +804,11 @@ void Kadu::sendFile()
 	if (config_file.readBoolEntry("Network", "AllowDCC"))
 		if (config_dccip.isIp4Addr()) {
 			struct gg_dcc *dcc_new;
-			if (userbox->currentText() == "")
+			UserList users;
+			users= userbox->getSelectedUsers();
+			if (users.count() != 1)
 				return;
-			UserListElement user = userlist.byAltNick(userbox->currentText());
+			UserListElement user = users.first();
 			if (user.port >= 10) {
 				if ((dcc_new = gg_dcc_send_file(htonl(user.ip.ip4Addr()), user.port,
 					config_file.readNumEntry("General", "UIN"), user.uin)) != NULL) {
@@ -711,9 +828,11 @@ void Kadu::makeVoiceChat()
 	if (config_file.readBoolEntry("Network", "AllowDCC"))
 		if (config_dccip.isIp4Addr()) {
 			struct gg_dcc *dcc_new;
-			if (userbox->currentText() == "")
+			UserList users;
+			users= userbox->getSelectedUsers();
+			if (users.count() != 1)
 				return;
-			UserListElement user = userlist.byAltNick(userbox->currentText());
+			UserListElement user = users.first();
 			if (user.port >= 10) {
 				if ((dcc_new = gg_dcc_voice_chat(htonl(user.ip.ip4Addr()), user.port,
 					config_file.readNumEntry("General", "UIN"), user.uin)) != NULL) {
@@ -729,28 +848,29 @@ void Kadu::makeVoiceChat()
 }
 
 void Kadu::lookupInDirectory() {
-	if (userbox->currentItem() != -1) {
+	UserList users;
+	users= userbox->getSelectedUsers();
+	if (users.count() == 1) {
 		SearchDialog *sd = new SearchDialog(0, tr("User info"),
-			userlist.byAltNick(userbox->currentText()).uin);
+			userlist.byAltNick(users.first().altnick).uin);
 		sd->show();
 		sd->firstSearch();
 		}
 }
 
 void Kadu::showUserInfo() {
-	if (userbox->currentItem() != -1) 
+	UserList users;
+	users= userbox->getSelectedUsers();
+	if (users.count() == 1) 
 		{
-		UserInfo *ui = new UserInfo("user info", 0, userbox->currentText());
+		UserInfo *ui = new UserInfo("user info", 0, users.first().altnick);
 		ui->show();
 		}
 }
 
 void Kadu::deleteUsers() 
 {
-	QStringList users;
-	for (int i = 0; i < userbox->count(); i++)
-		if (userbox->isSelected(i))
-			users.append(userbox->text(i));
+	QStringList  users =userbox->getSelectedAltNicks();
 	removeUser(users, false);
 }
 
@@ -768,7 +888,6 @@ void Kadu::addUserAction() {
 void Kadu::sendKey()
 {
 #ifdef HAVE_OPENSSL
-	UserListElement user = userlist.byAltNick(userbox->currentText());
 	QString keyfile_path;
 	QString mykey;
 	QFile keyfile;
@@ -784,7 +903,7 @@ void Kadu::sendKey()
 		mykey = t.read();
 		keyfile.close();
 		QCString tmp(mykey.local8Bit());
-		gg_send_message(sess, GG_CLASS_MSG, user.uin, (unsigned char *)tmp.data());
+		gg_send_message(sess, GG_CLASS_MSG, userbox->getSelectedUins().first(), (unsigned char *)tmp.data());
 		QMessageBox::information(this, "Kadu",
 			tr("Your public key has been sent"), tr("OK"), QString::null, 0);
 		}
@@ -793,11 +912,8 @@ void Kadu::sendKey()
 
 void Kadu::deleteHistory()
 {
-	UinsList uins;
-	for (int i = 0; i < userbox->count(); i++)
-		if (userbox->isSelected(i))
-			uins.append(userlist.byAltNick(userbox->text(i)).uin);
-	history.removeHistory(uins);
+    
+	history.removeHistory(userbox->getSelectedUins());
 }
 
 void Kadu::manageIgnored()
@@ -811,7 +927,7 @@ void Kadu::openChat()
 	PendingMsgs::Element elem;
 	int l,k;
 	bool stop = false;
-	UinsList uins = getSelectedUins();
+	UinsList uins = userbox->getSelectedUins();
 	QString toadd;
 	for (int i = 0; i < pending.count(); i++) {
 		elem = pending[i];
@@ -916,7 +1032,7 @@ void Kadu::sendUserlist1()
 
 void Kadu::ignoreUser()
 {
-	UinsList uins = getSelectedUins();
+	UinsList uins = userbox->getSelectedUins();
 	if (isIgnored(uins))
 		delIgnored(uins);
 	else
@@ -926,7 +1042,7 @@ void Kadu::ignoreUser()
 
 void Kadu::blockUser()
 {
-	UserListElement *puser = &userlist.byAltNick(userbox->currentText());
+	UserListElement *puser = &userlist.byAltNick(userbox->getSelectedUsers().first().altnick);
 	puser->blocking = !puser->blocking;
 	gg_remove_notify_ex(sess, puser->uin, puser->blocking ? GG_USER_NORMAL : GG_USER_BLOCKED);
 	gg_add_notify_ex(sess, puser->uin, puser->blocking ? GG_USER_BLOCKED : GG_USER_NORMAL);
@@ -935,14 +1051,14 @@ void Kadu::blockUser()
 
 void Kadu::notifyUser()
 {
-	UserListElement *puser = &userlist.byAltNick(userbox->currentText());
+	UserListElement *puser = &userlist.byAltNick(userbox->getSelectedUsers().first().altnick);
 	puser->notify = !puser->notify;
 	userlist.writeToFile();
 }
 
 void Kadu::offlineToUser()
 {
-	UserListElement *puser = &userlist.byAltNick(userbox->currentText());
+	UserListElement *puser = &userlist.byAltNick(userbox->getSelectedUsers().first().altnick);
 	puser->offline_to_user = !puser->offline_to_user;
 	gg_remove_notify_ex(sess, puser->uin, puser->offline_to_user ? GG_USER_NORMAL : GG_USER_OFFLINE);
 	gg_add_notify_ex(sess, puser->uin, puser->offline_to_user ? GG_USER_OFFLINE : GG_USER_NORMAL);
@@ -1239,18 +1355,6 @@ int Kadu::openChat(UinsList senders) {
 	return i;
 }
 
-UinsList Kadu::getSelectedUins() {
-	UinsList uins;
-	UserListElement user;
-	for (int i = 0; i < userbox->count(); i++)
-		if (userbox->isSelected(i)) {
-			user = userlist.byAltNick(userbox->text(i));
-			if (user.uin)
-				uins.append(user.uin);
-			}
-	return uins;
-}
-
 /* changes the active group */
 void Kadu::changeGroup(int group) {
 	activegrpno = group;
@@ -1270,118 +1374,6 @@ void Kadu::mouseButtonClicked(int button, QListBoxItem *item) {
 		sendSmsToUser();
 }
 
-/* the list that pops up if we right-click one someone */
-void Kadu::listPopupMenu(QListBoxItem *item) {
-	if (item == NULL)
-		return;
-
-	QPopupMenu * pm;
-	pm = new QPopupMenu(this);
-
-	QPixmap msg;
-	msg = loadIcon("mail_generic.png");
-	int smsitem;
-	int sendfile;
-	int voicechat;
-	int deletehistoryitem;
-	int historyitem;
-	int searchuser;
-	int openchatitem;
-	int ignoreuseritem;
-	int blockuseritem;
-	int notifyuseritem;
-	int offlinetouseritem;
-	UserListElement user;
-	user = userlist.byAltNick(item->text());
-
-	openchatitem= pm->insertItem(tr("Open chat window") ,this, SLOT(openChat()));
-	smsitem = pm->insertItem(tr("Send SMS"), this, SLOT(sendSmsToUser()),
-		HotKey::shortCutFromFile("kadu_sendsms"));
-	if (!user.mobile.length())
-		pm->setItemEnabled(smsitem, false);
-
-	sendfile = pm->insertItem(loadIcon("filesave.png"), tr("Send file"), this,
-		SLOT(sendFile()), HotKey::shortCutFromFile("kadu_sendfile"));
-	voicechat =  pm->insertItem(tr("Voice chat"), this,
-		SLOT(makeVoiceChat()), HotKey::shortCutFromFile("kadu_voicechat"));
-	if (dccSocketClass::count >= 8) {
-		pm->setItemEnabled(sendfile, false);
-		pm->setItemEnabled(voicechat, false);
-		}
-	if ((config_file.readBoolEntry("Network", "AllowDCC")) &&
-		(user.status == GG_STATUS_AVAIL || user.status == GG_STATUS_AVAIL_DESCR ||
-		user.status == GG_STATUS_BUSY || user.status == GG_STATUS_BUSY_DESCR)) {
-			pm->setItemEnabled(sendfile, true);
-			pm->setItemEnabled(voicechat, true);
-			}
-		else {
-			pm->setItemEnabled(sendfile, false);
-			pm->setItemEnabled(voicechat, false);
-			}
-
-#ifdef HAVE_OPENSSL
-	int sendkeyitem;
-	sendkeyitem= pm->insertItem(loadIcon("encrypted.png"), tr("Send my public key"), this, SLOT(sendKey()));
-
-	QString keyfile_path;
-
-	keyfile_path.append(ggPath("keys/"));
-	keyfile_path.append(QString::number(config_file.readNumEntry("General", "UIN")));
-	keyfile_path.append(".pem");
-
-	QFileInfo keyfile(keyfile_path);
-	if (keyfile.permission(QFileInfo::ReadUser) && user.uin)
-		pm->setItemEnabled(sendkeyitem, true);
-	else
-		pm->setItemEnabled(sendkeyitem, false);
-
-#endif
-
-	pm->insertSeparator();
-	ignoreuseritem= pm->insertItem(tr("Ignore user"), this, SLOT(ignoreUser()));
-	blockuseritem= pm->insertItem(tr("Block user"), this, SLOT(blockUser()));
-	notifyuseritem= pm->insertItem(tr("Notify about user"), this, SLOT(notifyUser()));
-	offlinetouseritem= pm->insertItem(tr("Offline to user"), this, SLOT(offlineToUser()));
-	if (!user.uin) {
-		pm->setItemEnabled(ignoreuseritem, false);
-		pm->setItemEnabled(blockuseritem, false);
-		pm->setItemEnabled(notifyuseritem, false);
-		pm->setItemEnabled(offlinetouseritem, false);
-		}
-	else {
-		UinsList uins;
-		uins = getSelectedUins();
-		if (isIgnored(uins))
-			pm->setItemChecked(ignoreuseritem, true);
-		if (user.blocking)
-			pm->setItemChecked(blockuseritem, true);
-		pm->setItemEnabled(offlinetouseritem, config_file.readBoolEntry("General", "PrivateStatus"));
-		if (user.offline_to_user)
-			pm->setItemChecked(offlinetouseritem, true);
-		pm->setItemEnabled(notifyuseritem, config_file.readBoolEntry("Notify", "NotifyStatusChange") && !config_file.readBoolEntry("Notify", "NotifyAboutAll"));
-		if (user.notify)
-			pm->setItemChecked(notifyuseritem, true);
-		}
-
-	pm->insertSeparator();
-	pm->insertItem(loadIcon("remove.png"), tr("Remove from userlist"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("kadu_deleteuser"));
-	deletehistoryitem= pm->insertItem(loadIcon("eraser.png"), tr("Clear history"), this, SLOT(deleteHistory()));
-	QPixmap history;
-	history = loadIcon("history.png");
-	historyitem= pm->insertItem(history, tr("View history"),this,SLOT(viewHistory()),HotKey::shortCutFromFile("kadu_viewhistory"));
-	pm->insertItem(loadIcon("identity.png"), tr("View/edit user info"), this, SLOT(showUserInfo()),HotKey::shortCutFromFile("kadu_persinfo"));
-	searchuser= pm->insertItem(loadIcon("viewmag.png"), tr("Lookup in directory"), this, SLOT(lookupInDirectory()),HotKey::shortCutFromFile("kadu_searchuser"));
-	if (!user.uin) {
-		pm->setItemEnabled(deletehistoryitem, false);
-		pm->setItemEnabled(historyitem, false);
-		pm->setItemEnabled(searchuser, false);
-		pm->setItemEnabled(openchatitem, false);
-		}
-	pm->insertSeparator();
-	pm->insertItem(tr("About..."), this, SLOT(about()));
-
-	pm->exec(QCursor::pos());    	
-}
 
 /* if something's pending, open it, if not, open new message */
 void Kadu::sendMessage(QListBoxItem *item) {
@@ -1398,7 +1390,8 @@ void Kadu::sendMessage(QListBoxItem *item) {
 	QString toadd;
 	bool msgsFromHist = false;
 
-	uin = userlist.byAltNick(item->text()).uin;
+	uins = userbox->getSelectedUins();
+	uin = userlist.byAltNick(userbox->getSelectedAltNicks().first()).uin;
 
 	if (!uin) {
 		sendSmsToUser();
@@ -1475,12 +1468,8 @@ void Kadu::sendMessage(QListBoxItem *item) {
 		return;
 		}
 
-	uins.clear();
-	for (i = 0; i < userbox->count(); i++)
-		if (userbox->isSelected(i))
-			uins.append(userlist.byAltNick(userbox->text(i)).uin);
-	if (!uins.count())
-		uins.append(userlist.byAltNick(item->text()).uin);
+//	if (!uins.count())
+//		uins.append(userlist.byAltNick(item->text()).uin);
 
 /*	if (uins.count() > 1 || (userlist.byUin(uins[0]).status != GG_STATUS_NOT_AVAIL
 		&& userlist.byUin(uins[0]).status != GG_STATUS_NOT_AVAIL_DESCR))
@@ -2111,8 +2100,6 @@ void KaduSlots::onCreateConfigDialog()
 	e_password->setText(pwHash(config_file.readEntry("General", "Password", "")));
 	QComboBox *cb_language= ConfigDialog::getComboBox("General", "Set language:");
 
-	QString language;
-	language= config_file.readEntry("General", "Language", QTextCodec::locale());
 	QDir locale(QString(DATADIR)+"/kadu/translations/", "kadu_*.qm");
 	QStringList files=locale.entryList();
 
@@ -2120,7 +2107,8 @@ void KaduSlots::onCreateConfigDialog()
 	         *it=translateLanguage((*it).mid(5, (*it).length()-8), true);
 		      }
 	cb_language->insertStringList(files);
-	cb_language->setCurrentText(translateLanguage(language,true));
+	cb_language->setCurrentText(translateLanguage(
+	       config_file.readEntry("General", "Language", QTextCodec::locale()),true));
 }
 
 void KaduSlots::onDestroyConfigDialog()
@@ -2129,11 +2117,6 @@ void KaduSlots::onDestroyConfigDialog()
 	QLineEdit *e_password=ConfigDialog::getLineEdit("General", "Password");
 	e_password->setEchoMode(QLineEdit::Password);
 	config_file.writeEntry("General", "Password",pwHash(e_password->text()));
-
-	if (config_file.readBoolEntry("General", "AutoAway"))
-	        AutoAwayTimer::on();
-	else
-                AutoAwayTimer::off();
 	    
 	if (config_file.readBoolEntry("General", "UseDocking") && !trayicon) {
 			trayicon = new TrayIcon(kadu);
@@ -2142,10 +2125,10 @@ void KaduSlots::onDestroyConfigDialog()
 			trayicon->setType(*icons->loadIcon(gg_icons[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]));
 			trayicon->changeIcon();
 				       }
-		    else
-			    if (!config_file.readBoolEntry("General", "UseDocking") && trayicon) {
-				delete trayicon;
-				trayicon = NULL;
+	else
+		if (!config_file.readBoolEntry("General", "UseDocking") && trayicon) {
+			delete trayicon;
+			trayicon = NULL;
 							  }
 
 	if (!statusppm->isItemChecked(6) && !statusppm->isItemChecked(7)
@@ -2173,9 +2156,7 @@ void KaduSlots::onDestroyConfigDialog()
 	for (z = 0; z < chats.count(); z++)
 		chats[z].ptr->changeAppearance();
 	kadu->refreshGroupTabBar();
-
 	kadu->setCaption(tr("Kadu: %1").arg(config_file.readNumEntry("General", "UIN")));
-
 
 	QComboBox *cb_language= ConfigDialog::getComboBox("General", "Set language:");
 	config_file.writeEntry("General", "Language", translateLanguage(cb_language->currentText(),false));
