@@ -84,43 +84,66 @@ void PendingMsgs::writeToFile()
 
 bool PendingMsgs::loadFromFile()
 {
-	char* path=preparePath("kadu.msgs");
+	char* path = preparePath("kadu.msgs");
 	QFile f(path);
-	if(!f.open(IO_ReadOnly))
-	{
+	if (!f.open(IO_ReadOnly)) {
 		fprintf(stderr,"KK PendingMsgs::loadFromFile(): Cannot open file kadu.msgs\n");
 		return false;
-	};
+		}
 	// Najpierw wczytujemy ilosc wiadomosci
 	int msgs_size;
-	f.readBlock((char*)&msgs_size,sizeof(int));
+	if (f.readBlock((char*)&msgs_size,sizeof(int)) <= 0) {
+		fprintf(stderr,"KK PendingMsgs::loadFromFile(): kadu.msgs is corrupted\n");
+		return false;
+		}
 	// Teraz w petli dla kazdej wiadomosci
-	for(int i=0; i<msgs_size; i++)
+	for (int i = 0; i < msgs_size; i++)
 	{
 		Element e;
 		// wczytujemy uiny - najpierw ilosc
 		int uins_size;
-		f.readBlock((char*)&uins_size,sizeof(int));
+		if (f.readBlock((char*)&uins_size, sizeof(int)) <= 0) {
+			msgs_size--;
+			return false;
+			}
 		// teraz dane
-		for(int j=0; j<uins_size; j++)
+		for (int j = 0; j < uins_size; j++)
 		{
 			int uin;
-			f.readBlock((char*)&uin,sizeof(uin_t));
+			if (f.readBlock((char*)&uin, sizeof(uin_t)) <= 0) {
+				msgs_size--;
+				return false;
+				}
 			e.uins.append(uin);
 		};
 		// nastepnie wiadomosc - dlugosc
 		int msg_size;
-		f.readBlock((char*)&msg_size,sizeof(int));
+		if (f.readBlock((char*)&msg_size, sizeof(int)) <= 0) {
+			msgs_size--;
+			return false;
+			}		
 		// i tresc
-		char* buf=new char[msg_size+1];
-		f.readBlock(buf,msg_size);
-		buf[msg_size]=0;
+		char* buf = new char[msg_size + 1];
+		if (f.readBlock(buf, msg_size) <= 0) {
+			msgs_size--;
+			delete [] buf;
+			return false;
+			}				
+		buf[msg_size] = 0;
 		e.msg = __c2q(buf);
 		delete[] buf;
 		// na koniec jeszcze klase wiadomosci
-		f.readBlock((char*)&e.msgclass,sizeof(int));
+		if (f.readBlock((char*)&e.msgclass, sizeof(int)) <= 0) {
+			msgs_size--;
+			delete [] buf;
+			return false;
+			}						
 		// i czas
-		f.readBlock((char*)&e.time,sizeof(time_t));
+		if (f.readBlock((char*)&e.time, sizeof(time_t)) <= 0) {
+			msgs_size--;
+			delete [] buf;
+			return false;
+			}						
 		// dodajemy do listy
 		msgs.append(e);
 	};
