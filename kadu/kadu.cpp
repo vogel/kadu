@@ -824,6 +824,7 @@ void Kadu::autoAway(void) {
 		default: return;
 		}
 
+	fprintf(stderr, "KK Kadu::autoAway(): I am away!\n");
 	i_am_busy = true;
 	autoawayed = true;
 	autoaway->start(config.autoawaytime * 1000, TRUE);
@@ -1623,8 +1624,8 @@ void Kadu::pingNetwork(void) {
 	fprintf(stderr, "KK Kadu::pingNetwork()\n");
 	gg_ping(&sess);
 	// Fuck you, since you don't reply anyway
-	if (socket_active && i_wanna_be_invisible)
-		gg_change_status(&sess, GG_STATUS_INVISIBLE | (GG_STATUS_FRIENDS_MASK * config.privatestatus));
+//	if (socket_active && i_wanna_be_invisible)
+//		gg_change_status(&sess, GG_STATUS_INVISIBLE | (GG_STATUS_FRIENDS_MASK * config.privatestatus));
 	pingtimer->start(60000, TRUE);
 }
 
@@ -1789,7 +1790,7 @@ void DockWidget::mousePressEvent(QMouseEvent * e) {
 			}
 		}
 
-	if (e->button() == LeftButton) 
+	if (e->button() == LeftButton)
 		{
 		switch (kadu->isVisible()) {
 			case 0:

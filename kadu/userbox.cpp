@@ -235,6 +235,8 @@ void UserBox::refresh()
 	for (i = 0; i < s_users.count(); i++)
 		setSelected(findItem(s_users[i]), true);
 	setCurrentItem(findItem(s_user));
+
+	fprintf(stderr, "KK UserBox::refresh() exit\n");
 };
 
 void UserBox::addUser(const QString &altnick)
