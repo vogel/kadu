@@ -73,6 +73,12 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   zmieniony wyglad zakladki "sounds" (pawel_p)
 * poprawiony segfault przy wybieraniu katalogu w ktorym nie ma zestawu dzwiekow
   oraz poprawka w oknie wybierania sciezek (ciuciu/pawel_p)
+* mozliwosc tworzenia modulow wieloplikowych. kazdy modul ma teraz oddzielny
+  katalog z dowolna iloscia plikow ".cpp", ".h" i innych. w katalogu z modulem
+  musi istniec plik "spec". ustawiamy tam nastepujace zmienne:
+  MODULE_SOURCES - lista plikow ".cpp", MODULE_MOC_HEADERS - naglowki dla moc'a,
+  MODULE_HEADERS - pozostale, MODULE_CXXFLAGS oraz MODULE_LDFLAGS - wiadomo.
+  generowany plik ".so" ma nazwe zgodna z nazwa katalogu modulu.
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶
