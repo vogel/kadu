@@ -21,6 +21,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * formatowanie kolorków i wygl±du czcionki w wiadomo¶ciach przychodz±cych od
   u¿ytkowników GG (chilek)
 * wywalenie z menu zdeaktywowanego "Wyslij wiadomosc" (mast3r)
+* mo¿emy formatowaæ swoje wiadomo¶ci (chilek)
  
 +++ wersja 0.3.4-pre3
 * dodane przeszukiwanie historii (chilek)

@@ -757,6 +757,8 @@ void Chat::sendMessage(void) {
 	if (myLastFormatsLength)
 		myLastMessage = formatGGMessage(myLastMessage, myLastFormatsLength - sizeof(struct gg_msg_richtext),
 			(void *)((char *)(myLastFormats) + sizeof(struct gg_msg_richtext)));
+	else
+		escapeSpecialCharacters(myLastMessage);
 	kdebug("Chat::sendMessage():\n%s\n", myLastMessage.latin1());
 	myLastMessage.replace(QRegExp("\r\n"), "\n");
 
