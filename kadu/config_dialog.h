@@ -24,6 +24,7 @@
 #include <qvbox.h>
 #include <qvgroupbox.h>
 
+#include "config_file.h"
 /**
     Kontrolka umozliwiajaca wybranie skrotu klawiszowego
 **/
@@ -207,6 +208,7 @@ class ConfigDialog : public QDialog	{
 			QString tip;
 			QWidget* widget;
 			int nrOfControls;
+			ConfigFile* config;
 			QValueList <ElementConnections> ConnectedSlots;
 		};
 
@@ -262,7 +264,7 @@ class ConfigDialog : public QDialog	{
 		    Dodaje kontrolke do zakladki "groupname", 
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
-			Wartosc kontrolki jest zapisana do pliku konfiguracyjnego w postaci
+			Wartosc kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
 			-------------
 			[groupname]
 			entry= value {defaultS}
@@ -276,6 +278,11 @@ class ConfigDialog : public QDialog	{
  		static void addCheckBox(const QString& groupname, 
 		    	    const QString& parent, const QString& caption,
 			    const QString& entry, const bool defaultS=false, const QString &tip="", const QString& name="");
+		static void addCheckBox(ConfigFile* config, const QString& groupname, 
+		    	    const QString& parent, const QString& caption,
+			    const QString& entry, const bool defaultS=false, const QString &tip="", const QString& name="");
+
+		
 			    			    
 		/**
 		    Dodaje kontrolke do zakladki "groupname", 
@@ -351,6 +358,10 @@ class ConfigDialog : public QDialog	{
 		static void addHotKeyEdit(const QString& groupname, 
 			    const QString& parent, const QString& caption,
 			    const QString& entry, const QString& defaultS="", const QString& tip="", const QString& name="");
+		static void addHotKeyEdit(ConfigFile* config, const QString& groupname, 
+			    const QString& parent, const QString& caption,
+			    const QString& entry, const QString& defaultS="", const QString& tip="", const QString& name="");
+
 			    
 		/**
 		    Dodaje kontrolke do zakladki "groupname", 
@@ -381,6 +392,10 @@ class ConfigDialog : public QDialog	{
 		static void addLineEdit(const QString& groupname,
 			    const QString& parent, const QString& caption,
 			    const QString& entry, const QString& defaultS="", const QString& tip="",const QString& name="");
+		static void addLineEdit(ConfigFile* config, const QString& groupname,
+			    const QString& parent, const QString& caption,
+			    const QString& entry, const QString& defaultS="", const QString& tip="",const QString& name="");
+
 
 		/**
 		    Dodaje kontrolke do zakladki "groupname", 
@@ -414,6 +429,10 @@ class ConfigDialog : public QDialog	{
 		static void addTextEdit(const QString& groupname,
 			    const QString& parent, const QString& caption,
 			    const QString& entry, const QString& defaultS="", const QString& tip="",const QString& name="");
+		static void addTextEdit(ConfigFile* config, const QString& groupname,
+			    const QString& parent, const QString& caption,
+			    const QString& entry, const QString& defaultS="", const QString& tip="",const QString& name="");
+
 
 		/**
 		    Dodaje kontrolke do zakladki "groupname", 
@@ -483,6 +502,12 @@ class ConfigDialog : public QDialog	{
 			    const QString& entry,
 			    const int minValue=0, const int maxValue=100,
 			    const int pageStep=1, const int value=50, const QString& tip="", const QString& name="");
+		static void addSlider(ConfigFile* config, const QString& groupname, 
+			    const QString& parent, const QString& caption,
+			    const QString& entry,
+			    const int minValue=0, const int maxValue=100,
+			    const int pageStep=1, const int value=50, const QString& tip="", const QString& name="");
+		
 
 		/**
 		    Dodaje kontrolke do zakladki "groupname", 
@@ -502,6 +527,11 @@ class ConfigDialog : public QDialog	{
 		**/		
 
 		static void addSpinBox(const QString& groupname, 
+			    const QString& parent, const QString& caption,
+			    const QString& entry,
+			    const int minValue=0, const int maxValue=100, const int step=1,
+			    const int value=50, const QString& tip="", const QString& name="");
+		static void addSpinBox(ConfigFile* config, const QString& groupname, 
 			    const QString& parent, const QString& caption,
 			    const QString& entry,
 			    const int minValue=0, const int maxValue=100, const int step=1,

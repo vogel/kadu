@@ -16,7 +16,6 @@
 #include <qfiledialog.h>
 
 #include "config_dialog.h"
-#include "config_file.h"
 #include "misc.h"
 #include "debug.h"
 
@@ -112,7 +111,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			case CONFIG_CHECKBOX:
 			{
 				QCheckBox* check=new QCheckBox(appHandle->translate("@default",(*i).caption), parent, (*i).name);
-				check->setChecked(config_file.readBoolEntry((*i).group, (*i).entry, (*i).defaultS));
+				check->setChecked((*i).config->readBoolEntry((*i).group, (*i).entry, (*i).defaultS));
 				(*i).widget=check;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
@@ -160,7 +159,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				QHBox* hbox=new QHBox(parent);
 				QLabel *lab=new QLabel(appHandle->translate("@default",(*i).caption), hbox);
 				HotKey* hotkey=new HotKey(hbox, (*i).name);
-				hotkey->setShortCut(config_file.readEntry((*i).group, (*i).entry, (*i).defaultS));
+				hotkey->setShortCut((*i).config->readEntry((*i).group, (*i).entry, (*i).defaultS));
 				hbox->setStretchFactor(lab, 1000);
 				static int hotwidth=int(hotkey->fontMetrics().width("Ctrl+Alt+Shift+F12")*1.5);
 				hotkey->setFixedWidth(hotwidth);
@@ -179,7 +178,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				QHBox* hbox=new QHBox(parent);
 				new QLabel(appHandle->translate("@default",(*i).caption), hbox);
 				QLineEdit* line=new QLineEdit(hbox, (*i).name);
-				line->setText(config_file.readEntry((*i).group, (*i).entry, (*i).defaultS));
+				line->setText((*i).config->readEntry((*i).group, (*i).entry, (*i).defaultS));
 				(*i).widget=line;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
@@ -200,7 +199,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				new QLabel(appHandle->translate("@default",(*i).caption), hbox);
 				QTextEdit* line=new QTextEdit(hbox, (*i).name);
 				line->setTextFormat(Qt::PlainText);
-				line->setText(config_file.readEntry((*i).group, (*i).entry, (*i).defaultS));
+				line->setText((*i).config->readEntry((*i).group, (*i).entry, (*i).defaultS));
 				(*i).widget=line;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
@@ -251,7 +250,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				pageStep=values[2].toInt();
 				value=values[3].toInt();
 				QSlider *slider=new QSlider(minVal, maxVal, pageStep, value, Qt::Horizontal, parent, (*i).caption);
-				slider->setValue(config_file.readNumEntry((*i).group, (*i).entry,value));
+				slider->setValue((*i).config->readNumEntry((*i).group, (*i).entry,value));
 				slider->setTickmarks(QSlider::Below);
 				(*i).widget=slider;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
@@ -267,7 +266,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				int step=values[2].toInt();
 				int value=values[3].toInt();
 				QSpinBox *spinbox=new QSpinBox(minVal, maxVal, step, hbox);
-				int val=config_file.readNumEntry((*i).group, (*i).entry,value);
+				int val=(*i).config->readNumEntry((*i).group, (*i).entry,value);
 				spinbox->setValue(val);
 				(*i).widget=spinbox;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
@@ -372,32 +371,32 @@ void ConfigDialog::updateConfig(void)
 		{
 			case CONFIG_CHECKBOX:
 			{
-				config_file.writeEntry((*i).group, (*i).entry, ((QCheckBox*)((*i).widget))->isChecked());
+				(*i).config->writeEntry((*i).group, (*i).entry, ((QCheckBox*)((*i).widget))->isChecked());
 				break;
 			}
 			case CONFIG_HOTKEYEDIT:
 			{
-				config_file.writeEntry((*i).group, (*i).entry, ((HotKey*)((*i).widget))->getShortCutString());
+				(*i).config->writeEntry((*i).group, (*i).entry, ((HotKey*)((*i).widget))->getShortCutString());
 				break;
 			}
 			case CONFIG_LINEEDIT:
 			{
-				config_file.writeEntry((*i).group, (*i).entry, ((QLineEdit*)((*i).widget))->text());
+				(*i).config->writeEntry((*i).group, (*i).entry, ((QLineEdit*)((*i).widget))->text());
 				break;
 			}
 			case CONFIG_TEXTEDIT:
 			{
-				config_file.writeEntry((*i).group, (*i).entry, ((QTextEdit*)((*i).widget))->text());
+				(*i).config->writeEntry((*i).group, (*i).entry, ((QTextEdit*)((*i).widget))->text());
 				break;
 			}
 			case CONFIG_SLIDER:
 			{
-				config_file.writeEntry((*i).group, (*i).entry, ((QSlider*)((*i).widget))->value());
+				(*i).config->writeEntry((*i).group, (*i).entry, ((QSlider*)((*i).widget))->value());
 				break;
 			}
 			case CONFIG_SPINBOX:
 			{
-				config_file.writeEntry((*i).group, (*i).entry, ((QSpinBox*)((*i).widget))->value());
+				(*i).config->writeEntry((*i).group, (*i).entry, ((QSpinBox*)((*i).widget))->value());
 				break;
 			}
 			default:
@@ -421,13 +420,20 @@ void ConfigDialog::updateConfig(void)
 	close();
 }
 
-
 void ConfigDialog::addCheckBox(const QString& groupname,
+			const QString& parent, const QString& caption,
+			const QString& entry, const bool defaultS, const QString& tip, const QString& name)
+{
+	addCheckBox(&config_file, groupname, parent, caption, entry, defaultS, tip, name);
+}
+
+void ConfigDialog::addCheckBox(ConfigFile* config, const QString& groupname,
 			const QString& parent, const QString& caption,
 			const QString& entry, const bool defaultS, const QString& tip, const QString& name)
 {
 	if (existControl(groupname, caption, name) == -1){
 		RegisteredControl c(CONFIG_CHECKBOX, groupname, parent, caption, name);
+		c.config=config;
 		c.entry=entry;
 		c.defaultS=QString::number(defaultS);
 		c.tip=tip;
@@ -494,8 +500,16 @@ void ConfigDialog::addHotKeyEdit(const QString& groupname,
 			const QString& parent, const QString& caption,
 			const QString& entry, const QString& defaultS, const QString& tip, const QString& name)
 {
+	addHotKeyEdit(&config_file, groupname, parent, caption, entry, defaultS, tip, name);
+}
+
+void ConfigDialog::addHotKeyEdit(ConfigFile* config, const QString& groupname,
+			const QString& parent, const QString& caption,
+			const QString& entry, const QString& defaultS, const QString& tip, const QString& name)
+{
 	if (existControl(groupname, caption, name) == -1){
 		RegisteredControl c(CONFIG_HOTKEYEDIT, groupname, parent, caption, name);
+		c.config=config;
 		c.entry=entry;
 		c.defaultS=defaultS;
 		c.tip=tip;
@@ -519,13 +533,21 @@ void ConfigDialog::addLineEdit2(const QString& groupname,
 	}
 }
 
-
 void ConfigDialog::addLineEdit(const QString& groupname,
+			const QString& parent, const QString& caption,
+			const QString& entry, const QString& defaultS, const QString& tip, const QString& name)
+{
+	addLineEdit(&config_file, groupname, parent, caption, entry,  defaultS, tip, name);
+}
+
+
+void ConfigDialog::addLineEdit(ConfigFile* config, const QString& groupname,
 			const QString& parent, const QString& caption,
 			const QString& entry, const QString& defaultS, const QString& tip, const QString& name)
 {
 	if (existControl(groupname, caption, name) == -1){
 		RegisteredControl c(CONFIG_LINEEDIT, groupname, parent, caption, name);
+		c.config=config;
 		c.entry=entry;
 		c.defaultS=defaultS;
 		c.tip=tip;
@@ -539,8 +561,16 @@ void ConfigDialog::addTextEdit(const QString& groupname,
 			const QString& parent, const QString& caption,
 			const QString& entry, const QString& defaultS, const QString& tip, const QString& name)
 {
+	addTextEdit(&config_file, groupname, parent, caption, entry, defaultS, tip, name);
+}
+
+void ConfigDialog::addTextEdit(ConfigFile* config, const QString& groupname,
+			const QString& parent, const QString& caption,
+			const QString& entry, const QString& defaultS, const QString& tip, const QString& name)
+{
 	if (existControl(groupname, caption, name) == -1){
 		RegisteredControl c(CONFIG_TEXTEDIT, groupname, parent, caption, name);
+		c.config=config;
 		c.entry=entry;
 		c.defaultS=defaultS;
 		c.tip=tip;
@@ -601,8 +631,19 @@ void ConfigDialog::addSelectPaths(const QString& groupname,
 	}
 }
 
-
 void ConfigDialog::addSlider(const QString& groupname,
+			const QString& parent, const QString& caption,
+			const QString& entry,
+			const int minValue, const int maxValue,
+			const int pageStep, const int value, const QString& tip, const QString& name)
+{
+	addSlider(&config_file, groupname, parent, caption, entry, minValue,  maxValue,
+			pageStep, value, tip, name);
+
+}
+
+
+void ConfigDialog::addSlider(ConfigFile* config, const QString& groupname,
 			const QString& parent, const QString& caption,
 			const QString& entry,
 			const int minValue, const int maxValue,
@@ -610,6 +651,7 @@ void ConfigDialog::addSlider(const QString& groupname,
 {
 	if (existControl(groupname, caption, name) == -1){
 		RegisteredControl c(CONFIG_SLIDER, groupname, parent, caption, name);
+		c.config=config;
 		c.entry=entry;
 		c.tip=tip;
 		c.defaultS=QString::number(minValue)+","+QString::number(maxValue)+","+QString::number(pageStep)+","+QString::number(value);
@@ -624,9 +666,20 @@ void ConfigDialog::addSpinBox(const QString& groupname,
 			const QString& entry,
 			const int minValue, const int maxValue, const int step, const int value, const QString& tip, const QString& name)
 {
+	addSpinBox(&config_file, groupname, parent, caption, entry, minValue, maxValue,
+			step, value, tip, name);
+
+}
+
+void ConfigDialog::addSpinBox(ConfigFile* config, const QString& groupname,
+			const QString& parent, const QString& caption,
+			const QString& entry,
+			const int minValue, const int maxValue, const int step, const int value, const QString& tip, const QString& name)
+{
 
 	if (existControl(groupname, caption, name) == -1){
 		RegisteredControl c(CONFIG_SPINBOX, groupname, parent, caption, name);
+		c.config=config;
 		c.entry=entry;
 		c.tip=tip;
 		c.defaultS=QString::number(minValue)+","+QString::number(maxValue)+","+QString::number(step)+","+QString::number(value);

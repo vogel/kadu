@@ -704,6 +704,7 @@ void EventConfigSlots::initModule()
 	QT_TRANSLATE_NOOP("@default", "DCC forwarding properties");
 	QT_TRANSLATE_NOOP("@default", "External IP address:");
 	QT_TRANSLATE_NOOP("@default", "External TCP port:");
+	QT_TRANSLATE_NOOP("@default", "Local TCP port:");
 	QT_TRANSLATE_NOOP("@default", "Servers properties");
 	QT_TRANSLATE_NOOP("@default", "Use default servers");
 	QT_TRANSLATE_NOOP("@default", "Use TLSv1");
