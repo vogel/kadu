@@ -1046,14 +1046,14 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) 
 			dates->insertItem(dateentries[i].date.toString("dd.MM.yyyy"));
 		dates->setCurrentItem(dateentries.count() - 1);
 		dates->setSelected(dateentries.count() - 1, TRUE);
-		QValueList<HistoryDate>::iterator it = dateentries.end();
-		it--;
-		if (it != dateentries.end())
-			start = (*it).idx;
-		else
-			start = 0;
-		count -= start;
-		showHistoryEntries(start, count);
+//		QValueList<HistoryDate>::iterator it = dateentries.end();
+//		it--;
+//		if (it != dateentries.end())
+//			start = (*it).idx;
+//		else
+//			start = 0;
+//		count -= start;
+//		showHistoryEntries(start, count);
 		}
 }
 
