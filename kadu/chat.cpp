@@ -1033,6 +1033,8 @@ void Chat::initModule()
 	QT_TRANSLATE_NOOP("@default", "Ignore messages from anonymous users");
 	QT_TRANSLATE_NOOP("@default", "Syntax the same as in information panel.");
 	QT_TRANSLATE_NOOP("@default", "%1 - Url clicked in chat window");
+	QT_TRANSLATE_NOOP("@default", "<b>Me</b> 00:00:00");
+	QT_TRANSLATE_NOOP("@default", "<b>Other party</b> 00:00:02");
 
 	ConfigDialog::registerTab("ShortCuts");
 	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", "Define keys");

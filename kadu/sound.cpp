@@ -58,6 +58,7 @@ void SoundSlots::initModule()
 	QT_TRANSLATE_NOOP("@default","Play sounds from a person whilst chatting");
 	QT_TRANSLATE_NOOP("@default","Play chat sounds only when window is invisible");
 	QT_TRANSLATE_NOOP("@default","Chat sound");
+	QT_TRANSLATE_NOOP("@default","Volume");
 
 
 	ConfigDialog::registerTab("Sounds");
