@@ -30,12 +30,12 @@ extern "C" void echo_close()
 
 Echo::Echo() : QObject()
 {
-	MessageBox::msg("Echo started");
+	MessageBox::msg(tr("Echo started"));
 }
 
 Echo::~Echo()
 {
-	MessageBox::msg("Echo stopped");
+	MessageBox::msg(tr("Echo stopped"));
 }
 
 void Echo::chatReceived(UinsList senders,const QString& msg,time_t time)

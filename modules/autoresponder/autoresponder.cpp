@@ -32,12 +32,12 @@ extern "C" void autoresponder_close()
 
 AutoResponder::AutoResponder() : QObject()
 {
-	MessageBox::msg("Autoresponder started");
+	MessageBox::msg(tr("Autoresponder started"));
 }
 
 AutoResponder::~AutoResponder()
 {
-	MessageBox::msg("Autoresponder stopped");
+	MessageBox::msg(tr("Autoresponder stopped"));
 }
 
 void AutoResponder::chatReceived(UinsList senders,const QString& msg,time_t time)
@@ -51,7 +51,7 @@ void AutoResponder::chatReceived(UinsList senders,const QString& msg,time_t time
 		
 		ConfigFile config(ggPath(QString("autoresponder.conf")));
 		QString message = config.readEntry("General", "Response", 
-				"KADU AUTORESPONDER: Thanks for your message. User is not currently available.");
+				tr("KADU AUTORESPONDER: Thanks for your message. User is not currently available."));
 		
 		gadu->sendMessage(senders, message);
 	}
