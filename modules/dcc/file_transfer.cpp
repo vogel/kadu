@@ -204,6 +204,17 @@ FileTransferManager::~FileTransferManager()
 	kdebugf2();
 }
 
+void FileTransferManager::sendFile(UinType receiver, const QString &filename)
+{
+	kdebugf();
+	if (config_file.readBoolEntry("Network", "AllowDCC") && dcc_manager->dccEnabled())
+	{
+		pendingFiles[receiver].push_back(filename);
+		sendFile(receiver);
+	}
+	kdebugf2();
+}
+
 void FileTransferManager::sendFile(UinType receiver)
 {
 	kdebugf();
@@ -328,22 +339,33 @@ void FileTransferManager::dccError(DccSocket* socket)
 void FileTransferManager::needFileInfo(DccSocket* socket)
 {
 	kdebugf();
-	QString f = selectFile(socket);
-	if (f == QString::null)
-	{
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Abort transfer\n");
-		socket->setState(DCC_SOCKET_TRANSFER_DISCARDED);
-		return;
-	}
-	gadu->dccFillFileInfo(socket->ggDccStruct(), f);
-	FileTransferDialog* filedialog = new FileTransferDialog(socket, FileTransferDialog::TRANSFER_TYPE_SEND);
-	filedialog->printFileInfo();
-
 	//je¿eli druga strona prosi o plik, to znaczy,
 	//¿e nie bêdziemy potrzebowali po³±czenia zwrotnego
 	UinType peer_uin=socket->ggDccStruct()->peer_uin;
 	if (direct.contains(peer_uin))
 		direct.remove(peer_uin);
+
+	QString filename;
+	if (pendingFiles.contains(peer_uin))
+	{
+		filename = pendingFiles[peer_uin].front();
+		pendingFiles[peer_uin].pop_front();
+		if (pendingFiles[peer_uin].empty())
+			pendingFiles.remove(peer_uin);
+	}
+	else
+		filename = selectFile(socket);
+
+	if (filename.isEmpty())
+	{
+		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Abort transfer\n");
+		socket->setState(DCC_SOCKET_TRANSFER_DISCARDED);
+		return;
+	}
+	
+	gadu->dccFillFileInfo(socket->ggDccStruct(), filename);
+	FileTransferDialog* filedialog = new FileTransferDialog(socket, FileTransferDialog::TRANSFER_TYPE_SEND);
+	filedialog->printFileInfo();
 
 	kdebugf2();
 }

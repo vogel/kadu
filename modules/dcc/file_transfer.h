@@ -5,6 +5,7 @@
 
 #include <qdialog.h>
 #include <qvaluelist.h>
+#include <qmap.h>
 
 class QLabel;
 class QProgressBar;
@@ -48,6 +49,7 @@ class FileTransferManager : public QObject
 
 	private:
 		QValueList<UinType> direct;
+		QMap<UinType, QValueList<QString> > pendingFiles;
 		QString selectFile(DccSocket* socket);
 
 	private slots:
@@ -71,6 +73,8 @@ class FileTransferManager : public QObject
 			Inicjuje wysy³anie pliku do podanego odbiorcy.
 		**/
 		void sendFile(UinType receiver);
+		
+		void sendFile(UinType receiver, const QString &filename);
 };
 
 extern FileTransferManager* file_transfer_manager;
