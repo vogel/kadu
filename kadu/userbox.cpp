@@ -349,6 +349,8 @@ UserBox::UserBox(QWidget* parent,const char* name,WFlags f)
 	QListBox::setFont(config_file.readFontEntry("Look", "UserboxFont"));
 	setMinimumWidth(20);
 	setSelectionMode(QListBox::Extended);
+	connect(this, SIGNAL(doubleClicked(QListBoxItem *)), this, SLOT(doubleClickedSlot(QListBoxItem *)));
+	connect(this, SIGNAL(returnPressed(QListBoxItem *)), this, SLOT(returnPressedSlot(QListBoxItem *)));
 
 	kdebugf2();
 }
@@ -832,6 +834,16 @@ void UserBox::resizeEvent(QResizeEvent *r)
 //	kdebugf();
 	QListBox::resizeEvent(r);
 	refresh();
+}
+
+void UserBox::doubleClickedSlot(QListBoxItem *item)
+{
+	emit doubleClicked(item->text());
+}
+
+void UserBox::returnPressedSlot(QListBoxItem *item)
+{
+	emit returnPressed(item->text());
 }
 
 UserBoxMenu::UserBoxMenu(QWidget *parent, const char *name): QPopupMenu(parent, name)

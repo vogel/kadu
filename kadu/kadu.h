@@ -86,7 +86,7 @@ class Kadu : public QMainWindow
 		void mouseButtonClicked(int, QListBoxItem *);
 		void infopanelUpdate(UinType);
 		void currentChanged(QListBoxItem *item);
-		void sendMessage(QListBoxItem *);
+		void sendMessage(const QString &to);
 		void configure();
 
 	private slots:

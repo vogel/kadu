@@ -181,6 +181,21 @@ class UserBox : public QListBox , QToolTip
 		static void all_removeUser(QString &altnick);
 		static void all_changeAllToInactive();
 		static void all_renameUser(const QString &oldaltnick, const QString &newaltnick);
+	signals:
+		/**
+			u¿ywaj tego sygna³u zamiast QListBox::doubleClicked(QListBoxItem *) !!!
+			
+			tamten ze wzglêdu na od¶wie¿anie listy w jednym ze slotów pod³±czonych
+			do tego sygna³u czasami przekazuje wska¼nik do elementu, który ju¿ NIE ISTNIEJE
+		**/
+		void doubleClicked(const QString &text);
+		/**
+			sytuacja analogiczna do doubleClicked
+		**/
+		void returnPressed(const QString &text);
+	private slots:
+		void doubleClickedSlot(QListBoxItem *item);
+		void returnPressedSlot(QListBoxItem *item);
 };
 
 

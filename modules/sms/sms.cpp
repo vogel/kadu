@@ -58,12 +58,12 @@ extern "C" int sms_init()
 	ConfigDialog::connectSlot("SMS", "Up", SIGNAL(clicked()), smsslots, SLOT(onUpButton()));
 	ConfigDialog::connectSlot("SMS", "Down", SIGNAL(clicked()), smsslots, SLOT(onDownButton()));
 
-	QObject::connect(kadu->userbox(), SIGNAL(doubleClicked(QListBoxItem *)),
-			smsslots, SLOT(onUserDblClicked(QListBoxItem *)));
+	QObject::connect(kadu->userbox(), SIGNAL(doubleClicked(const QString &)),
+			smsslots, SLOT(onUserDblClicked(const QString &)));
 	QObject::connect(kadu->userbox(), SIGNAL(mouseButtonClicked(int, QListBoxItem*,const QPoint&)),
 			smsslots, SLOT(onUserClicked(int, QListBoxItem*, const QPoint&)));
-	QObject::connect(kadu->userbox(), SIGNAL(returnPressed(QListBoxItem *)),
-			smsslots, SLOT(onUserDblClicked(QListBoxItem *)));
+	QObject::connect(kadu->userbox(), SIGNAL(returnPressed(const QString &)),
+			smsslots, SLOT(onUserDblClicked(const QString &)));
 	QObject::connect(UserBox::userboxmenu, SIGNAL(popup()), smsslots, SLOT(onPopupMenuCreate()));
 
 	config_file.addVariable("SMS", "Priority", "");
@@ -97,10 +97,10 @@ extern "C" void sms_close()
 	ConfigDialog::removeControl("SMS", "SMS options");
 	ConfigDialog::removeTab("SMS");
 
-	QObject::disconnect(kadu->userbox(), SIGNAL(doubleClicked(QListBoxItem *)),
-			smsslots, SLOT(onUserDblClicked(QListBoxItem *)));
-	QObject::disconnect(kadu->userbox(), SIGNAL(returnPressed(QListBoxItem *)),
-			smsslots, SLOT(onUserDblClicked(QListBoxItem *)));
+	QObject::disconnect(kadu->userbox(), SIGNAL(doubleClicked(const QString &)),
+			smsslots, SLOT(onUserDblClicked(const QString &)));
+	QObject::disconnect(kadu->userbox(), SIGNAL(returnPressed(const QString &)),
+			smsslots, SLOT(onUserDblClicked(const QString &)));
 	QObject::disconnect(kadu->userbox(), SIGNAL(mouseButtonClicked(int, QListBoxItem*,const QPoint&)),
 			smsslots, SLOT(onUserClicked(int, QListBoxItem*, const QPoint&)));
 	QObject::disconnect(UserBox::userboxmenu, SIGNAL(popup()), smsslots, SLOT(onPopupMenuCreate()));
@@ -517,15 +517,10 @@ void SmsSlots::onUserClicked(int button, QListBoxItem* /*item*/, const QPoint& /
 		onSendSmsToUser();
 }
 
-void SmsSlots::onUserDblClicked(QListBoxItem* item)
+void SmsSlots::onUserDblClicked(const QString &text)
 {
 	kdebugf();
-	kdebugm(KDEBUG_INFO, "userlist: %p\n", &userlist);
-	kdebugm(KDEBUG_INFO, "item: %p\n", item);
-	QString txt = item->text();
-	kdebugm(KDEBUG_INFO, "isNull: %d\n", txt.isNull());
-	kdebugm(KDEBUG_INFO, "item->text(): '%s'\n", txt.local8Bit().data());
-	UserListElement user = userlist.byAltNick(item->text());
+	UserListElement user = userlist.byAltNick(text);
 	if (!user.uin())
 		newSms(user.altNick());
 	kdebugf2();

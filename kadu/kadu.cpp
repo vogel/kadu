@@ -364,8 +364,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(popupMenu()));
 	connect(Userbox, SIGNAL(rightButtonClicked(QListBoxItem *, const QPoint &)),
 		UserBox::userboxmenu, SLOT(show(QListBoxItem *)));
-	connect(Userbox, SIGNAL(doubleClicked(QListBoxItem *)), this, SLOT(sendMessage(QListBoxItem *)));
-	connect(Userbox, SIGNAL(returnPressed(QListBoxItem *)), this, SLOT(sendMessage(QListBoxItem *)));
+	connect(Userbox, SIGNAL(doubleClicked(const QString &)), this, SLOT(sendMessage(const QString &)));
+	connect(Userbox, SIGNAL(returnPressed(const QString &)), this, SLOT(sendMessage(const QString &)));
 	connect(Userbox, SIGNAL(mouseButtonClicked(int, QListBoxItem *, const QPoint &)),
 		this, SLOT(mouseButtonClicked(int, QListBoxItem *)));
 	connect(Userbox, SIGNAL(currentChanged(QListBoxItem *)), this, SLOT(currentChanged(QListBoxItem *)));
@@ -1025,7 +1025,7 @@ void Kadu::mouseButtonClicked(int button, QListBoxItem *item)
 }
 
 /* if something's pending, open it, if not, open new message */
-void Kadu::sendMessage(QListBoxItem *item)
+void Kadu::sendMessage(const QString &to)
 {
 	kdebugf();
 	UserBox *activeUserBox=UserBox::getActiveUserBox();
@@ -1034,7 +1034,7 @@ void Kadu::sendMessage(QListBoxItem *item)
 		kdebugf2();
 		return;
 	}
-	UinType uin = userlist.byAltNick(item->text()).uin();
+	UinType uin = userlist.byAltNick(to).uin();
 	if (uin)
 	{
 		UinsList uins = activeUserBox->getSelectedUins();
