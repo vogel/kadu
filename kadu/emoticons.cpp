@@ -102,7 +102,7 @@ QString EmoticonsManager::themePath()
 	return QString(DATADIR)+"/apps/kadu/themes/emoticons/"+config.emoticons_theme;
 };
 
-void EmoticonsManager::expandEmoticons(QString& text)
+void EmoticonsManager::expandEmoticons(QString& text,const QColor& bgcolor)
 {
 	QString new_text;
 	kdebug("Expanding emoticons...\n");
@@ -113,7 +113,7 @@ void EmoticonsManager::expandEmoticons(QString& text)
 		{
 			if((*i).regexp.search(text,j)==j)
 			{
-				new_text+=QString("__escaped_lt__IMG SRC=")+(*i).picname+"__escaped_gt__";
+				new_text+=QString("__escaped_lt__IMG src=")+(*i).picname+" bgcolor="+bgcolor.name()+"__escaped_gt__";
 				j+=(*i).regexp.matchedLength()-1;
 				emoticonFound=true;
 			};
@@ -141,3 +141,60 @@ QString EmoticonsManager::emoticonPicPath(int emot_num)
 };
 				
 EmoticonsManager emoticons;
+
+#include <qimage.h>
+
+AnimTextItem::AnimTextItem(
+	QTextDocument *p, QTextEdit* editor,
+	const QString& filename, const QColor& bgcolor )
+	: QTextCustomItem(p)
+{
+	Editor=editor;
+	Label=new QLabel(Editor->viewport());
+	Editor->addChild(Label);
+	Label->setMovie(QMovie(filename));
+	QImage* i=new QImage(filename);
+	width=i->width();
+	height=i->height();
+	Label->resize(i->size());
+	Label->setPaletteBackgroundColor(bgcolor);
+	delete i;
+};
+
+AnimTextItem::~AnimTextItem()
+{
+	delete Label;
+};
+
+void AnimTextItem::draw(
+	QPainter* p, int x, int y, int cx, int cy,
+	int cw, int ch, const QColorGroup& cg,
+	bool selected )
+{
+	p->fillRect(x,y,width,height,Qt::blue);
+	if(Label->isVisible())
+		return;
+	QPoint u=p->xForm(QPoint(x,y));
+	fprintf(stderr,"%i\n",Editor->contentsY());
+	if(Editor->contentsY()==0)
+		u+=Editor->paragraphRect(0).topLeft();
+	Label->move(u);
+	Label->show();
+};
+
+AnimStyleSheet::AnimStyleSheet(
+	QTextEdit* parent, const QString& path, const char* name )
+	: QStyleSheet(parent, name)
+{
+	Path=path;
+};
+
+QTextCustomItem* AnimStyleSheet::tag(
+	const QString& name, const QMap<QString,QString>& attr,
+	const QString& context, const QMimeSourceFactory& factory,
+	bool emptyTag, QTextDocument* doc) const
+{
+	if(name!="img")
+		return QStyleSheet::tag(name,attr,context,factory,emptyTag,doc);
+	return new AnimTextItem(doc,(QTextEdit*)parent(),Path+"/"+attr["src"],QColor(attr["bgcolor"]));
+};

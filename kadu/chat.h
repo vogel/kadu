@@ -81,7 +81,7 @@ class Chat : public QWidget {
 
 	protected:
 		void closeEvent(QCloseEvent *);
-		QString convertCharacters(QString);
+		QString convertCharacters(QString,bool me);
 		virtual void windowActivationChange(bool oldActive);
 		void keyPressEvent(QKeyEvent *e);
 

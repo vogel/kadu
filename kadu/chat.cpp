@@ -76,6 +76,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 		}
 	else 
 		body = new KaduTextBrowser(split1);
+	body->setStyleSheet(new AnimStyleSheet(body,emoticons.themePath()));
 	body->setMinimumSize(QSize(1,1));
 	body->setFont(config.fonts.chat);
 	QObject::connect(body, SIGNAL(linkClicked(const QString &)), this, SLOT(hyperlinkClicked(const QString &)));
@@ -382,7 +383,7 @@ void CustomInput::keyPressEvent(QKeyEvent * e) {
 }
 
 /* convert special characters into emoticons, HTML into plain text and so forth */
-QString Chat::convertCharacters(QString edit) {
+QString Chat::convertCharacters(QString edit, bool me) {
 
 	// escape'ujemy http:// i ftp:// zeby emotikony nie bruzdzily
 	edit.replace(QRegExp("http://"),"___escaped_http___");
@@ -391,7 +392,10 @@ QString Chat::convertCharacters(QString edit) {
 	if(config.emoticons)
 	{
 		body->mimeSourceFactory()->addFilePath(emoticons.themePath());
-		emoticons.expandEmoticons(edit);
+		if (me)
+			emoticons.expandEmoticons(edit,config.colors.mychatBg);
+		else
+			emoticons.expandEmoticons(edit,config.colors.usrchatBg);
 	};
 	
 	// przywracamy http:// i ftp://
@@ -478,7 +482,7 @@ void Chat::hyperlinkClicked(const QString &link) {
 }
 
 void Chat::formatMessage(bool me, QString &altnick, QString &msg, const char *time, QString &toadd) {
-	QString editext = convertCharacters(msg);
+	QString editext = convertCharacters(msg,me);
 
 	toadd.append("<TABLE width=\"100%\"><TR><TD bgcolor=\"");
 	if (me)
