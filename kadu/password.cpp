@@ -123,14 +123,16 @@ changePassword::changePassword(QDialog *parent, const char *name) : QDialog(pare
 	snr = snw = NULL;
 	h = NULL;
 
-	QGridLayout *grid = new QGridLayout(this, 7, 2, 6, 5);
+	QGridLayout *grid = new QGridLayout(this, 8, 2, 6, 5);
 	
-	QLabel *l_actpwd = new QLabel(tr("Actual password"),this);
-	actpwd = new QLineEdit(this);
-	actpwd->setEchoMode(QLineEdit::Password);
+	tokenimage = new ImageWidget(this);
 
-	QLabel *l_actemail = new QLabel(tr("Actual email"),this);
-	actemail = new QLineEdit(this);
+	QLabel *l_email = new QLabel(tr("E-email"),this);
+	emailedit = new QLineEdit(this);
+
+	QLabel *l_pwd = new QLabel(tr("Actual password"),this);
+	pwdedit = new QLineEdit(this);
+	pwdedit->setEchoMode(QLineEdit::Password);
 
 	QLabel *l_newpwd = new QLabel(tr("New password"),this);
 	newpwd = new QLineEdit(this);
@@ -140,8 +142,8 @@ changePassword::changePassword(QDialog *parent, const char *name) : QDialog(pare
 	newpwd2 = new QLineEdit(this);
 	newpwd2->setEchoMode(QLineEdit::Password);
 
-	QLabel *l_newemail = new QLabel(tr("New email"),this);
-	newemail = new QLineEdit(this);
+	QLabel *l_token = new QLabel(tr("Text from the top"),this);
+	tokenedit = new QLineEdit(this);
 
 	status = new QLabel(this);
 
@@ -149,22 +151,56 @@ changePassword::changePassword(QDialog *parent, const char *name) : QDialog(pare
 	okbtn->setText(tr("OK"));
 	QObject::connect(okbtn, SIGNAL(clicked()), this, SLOT(start()));
 
-	grid->addWidget(l_actpwd, 0, 0);
-	grid->addWidget(actpwd, 0, 1);
-	grid->addWidget(l_actemail, 1, 0);
-	grid->addWidget(actemail, 1, 1);
-	grid->addWidget(l_newpwd, 2, 0);
-	grid->addWidget(newpwd, 2, 1);
-	grid->addWidget(l_newpwd2, 3, 0);
-	grid->addWidget(newpwd2, 3, 1);
-	grid->addWidget(l_newemail, 4, 0);
-	grid->addWidget(newemail, 4, 1);
-	grid->addWidget(status, 6, 0);
-	grid->addWidget(okbtn, 6, 1);
+	grid->addMultiCellWidget(tokenimage, 0, 0, 0, 1, Qt::AlignHCenter);
+	grid->addWidget(l_email, 1, 0);
+	grid->addWidget(emailedit, 1, 1);
+	grid->addWidget(l_pwd, 2, 0);
+	grid->addWidget(pwdedit, 2, 1);
+	grid->addWidget(l_newpwd, 3, 0);
+	grid->addWidget(newpwd, 3, 1);
+	grid->addWidget(l_newpwd2, 4, 0);
+	grid->addWidget(newpwd2, 4, 1);
+	grid->addWidget(l_token, 5, 0);
+	grid->addWidget(tokenedit, 5, 1);
+	grid->addWidget(status, 7, 0);
+	grid->addWidget(okbtn, 7, 1);
 	grid->addRowSpacing(3, 20);
 
 	setCaption(tr("Change password"));
-	resize(300, 180);
+	resize(300, 220);
+
+	doGetToken();
+}
+
+void changePassword::doGetToken() {
+	setEnabled(false);
+        status->setText(tr("Getting token"));
+        connect(&token_handle, SIGNAL(gotToken(struct gg_http *)),
+                this, SLOT(gotTokenReceived(struct gg_http *)));
+        connect(&token_handle, SIGNAL(tokenError()),
+                this, SLOT(tokenErrorReceived()));
+        token_handle.getToken();
+}
+
+void changePassword::gotTokenReceived(struct gg_http *h) {
+        kdebug("changePassword::gotTokenReceived()\n");
+        struct gg_token *t = (struct gg_token *)h->data;
+        token_id = cp2unicode((unsigned char *)t->tokenid);
+
+        // nie optymalizowac !!!
+        QByteArray buf(h->body_size);
+        for (int i = 0; i < h->body_size; i++)
+                buf[i] = h->body[i];
+
+        tokenimage->setImage(buf);
+        setEnabled(true);
+        kdebug("changePassword::gotTokenReceived(): finished\n");
+}
+
+void changePassword::tokenErrorReceived() {
+        kdebug("changePassword::tokenErrorReceived()\n");
+        status->setText(tr("Couldn't get token"));
+        setEnabled(true);
 }
 
 void changePassword::closeEvent(QCloseEvent *e) {
@@ -180,28 +216,32 @@ void changePassword::closeEvent(QCloseEvent *e) {
 
 void changePassword::start() {
 	kdebug("changePassword::start()\n");
-	if (!actpwd->text().length() || !actemail->text().length() || !newpwd->text().length() ||
-		newpwd->text() != newpwd2->text() || !newemail->text().length()) {
+	if (!pwdedit->text().length() || !emailedit->text().length() || !newpwd->text().length() ||
+		newpwd->text() != newpwd2->text()) {
 		status->setText(tr("Bad data"));
 		return;
 		}
-	char *actpasswd, *newpasswd, *actmail, *newmail;
-	actpasswd = strdup(unicode2cp(actpwd->text()).data());
+	char *passwd, *newpasswd, *mail, *tokenid, *tokenval;
+	passwd = strdup(unicode2cp(pwdedit->text()).data());
 	newpasswd = strdup(unicode2cp(newpwd->text()).data());
-	actmail = strdup(unicode2cp(actemail->text()).data());
-	newmail = strdup(unicode2cp(newemail->text()).data());
-	if (!(h = gg_change_passwd2(config_file.readNumEntry("General","UIN"), actpasswd, newpasswd, actmail, newmail, 1))) {
+	mail = strdup(unicode2cp(emailedit->text()).data());
+	tokenid = strdup(unicode2cp(token_id).data());
+	tokenval = strdup(unicode2cp(tokenedit->text()).data());
+	if (!(h = gg_change_passwd4(config_file.readNumEntry("General","UIN"), mail, passwd,
+		newpasswd, tokenid, tokenval, 1))) {
 		status->setText(tr("Error"));
-		free(actpasswd);
+		free(passwd);
 		free(newpasswd);
-		free(actmail);
-		free(newmail);
+		free(mail);
+		free(tokenid);
+		free(tokenval);
 		return;
 		}
-	free(actpasswd);
+	free(passwd);
 	free(newpasswd);
-	free(actmail);
-	free(newmail);
+	free(mail);
+	free(tokenid);
+	free(tokenval);
 	setEnabled(false);
 	createSocketNotifiers();
 }

@@ -160,4 +160,30 @@ class ImageWidget : public QWidget
 		void setImage(const QByteArray &image);
 };
 
+class token : public QObject {
+        Q_OBJECT
+
+        public:
+                token();
+                ~token();
+                void getToken();
+
+        private:
+                struct gg_http *h;
+                QSocketNotifier *snr;
+                QSocketNotifier *snw;
+
+                void deleteSocketNotifiers();
+                void createSocketNotifiers();
+
+        private slots:
+                void socketEvent();
+                void dataReceived();
+                void dataSent();
+
+        signals:
+                void gotToken(struct gg_http *h);
+                void tokenError();
+};
+
 #endif

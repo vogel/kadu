@@ -42,6 +42,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * Hinty: przy zmianie statusu powinno dzia³aæ ju¿ t³umaczenie, ma³a
   przeróbka estetyczna w zak³adce konfiguracji (mast3r) 
 * libgadu z 02.10.2003 (chilek)
+* rejestracja zgodna z GG6 (chilek)
+* zmiana has³a zgodna z GG6 (chilek)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci

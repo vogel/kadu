@@ -11,32 +11,6 @@
 #include "libgadu.h"
 #include "misc.h"
 
-class token : public QObject {
-	Q_OBJECT
-
-	public:
-		token();
-		~token();
-		void getToken();
-
-	private:
-		struct gg_http *h;
-		QSocketNotifier *snr;
-		QSocketNotifier *snw;
-
-		void deleteSocketNotifiers();
-		void createSocketNotifiers();
-
-	private slots:
-		void socketEvent();
-		void dataReceived();
-		void dataSent();
-
-	signals:
-		void gotToken(struct gg_http *h);
-		void tokenError();
-};
-
 /**
 	Dialog umo¿liwiaj±cy rejestracjê nowego u¿ytkownika
 **/

@@ -810,3 +810,107 @@ void ImageWidget::paintEvent(QPaintEvent *e)
 	        p.drawImage(0,0,Image);
 		}
 };
+
+token::token() : QObject() {
+        h = NULL;
+        snr = snw = NULL;
+}
+
+token::~token() {
+        deleteSocketNotifiers();
+        if (h) {
+                gg_token_free(h);
+                h = NULL;
+                }
+}
+
+void token::getToken() {
+        kdebug("token::getToken()\n");
+        if (!(h = gg_token(1))) {
+                emit tokenError();
+                return;
+                }
+        createSocketNotifiers();
+}
+
+void token::createSocketNotifiers() {
+        kdebug("token::createSocketNotifiers()\n");
+
+        snr = new QSocketNotifier(h->fd, QSocketNotifier::Read, qApp->mainWidget());
+        QObject::connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
+
+        snw = new QSocketNotifier(h->fd, QSocketNotifier::Write, qApp->mainWidget());
+        QObject::connect(snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
+}
+
+void token::deleteSocketNotifiers() {
+        kdebug("token::deleteSocketNotifiers()\n");
+        if (snr) {
+                snr->setEnabled(false);
+                snr->deleteLater();
+                snr = NULL;
+                }
+        if (snw) {
+                snw->setEnabled(false);
+                snw->deleteLater();
+                snw = NULL;
+                }
+}
+
+void token::dataReceived() {
+        kdebug("token::dataReceived()\n");
+        if (h->check && GG_CHECK_READ)
+                socketEvent();
+}
+
+void token::dataSent() {
+        kdebug("token::dataSent()\n");
+        snw->setEnabled(false);
+        if (h->check && GG_CHECK_WRITE)
+                socketEvent();
+}
+
+void token::socketEvent() {
+        kdebug("token::socketEvent()\n");
+        if (gg_token_watch_fd(h) == -1) {
+                deleteSocketNotifiers();
+                emit tokenError();
+                gg_token_free(h);
+                h = NULL;
+                kdebug("token::socketEvent(): getting token error\n");
+                return;
+                }
+        struct gg_pubdir *p = (struct gg_pubdir *)h->data;
+        switch (h->state) {
+                case GG_STATE_CONNECTING:
+                        kdebug("Register::socketEvent(): changing QSocketNotifiers.\n");
+                        deleteSocketNotifiers();
+                        createSocketNotifiers();
+                        if (h->check & GG_CHECK_WRITE)
+                                snw->setEnabled(true);
+                        break;
+                case GG_STATE_ERROR:
+                        deleteSocketNotifiers();
+                        emit tokenError();
+                        gg_token_free(h);
+                        h = NULL;
+                        kdebug("token::socketEvent(): getting token error\n");
+                        break;
+                case GG_STATE_DONE:
+                        deleteSocketNotifiers();
+                        if (p->success) {
+                                kdebug("token::socketEvent(): success\n");
+                                emit gotToken(h);
+                                }
+                        else {
+                                kdebug("token::socketEvent(): getting token error\n");
+                                emit tokenError();
+                                }
+                        gg_token_free(h);
+                        h = NULL;
+                        break;
+                default:
+                        if (h->check & GG_CHECK_WRITE)
+                                snw->setEnabled(true);
+                }
+}
