@@ -53,6 +53,7 @@ kadu-headers.d: kadu-headers.h
 	sed "s,\(.*\):,$(basename $@).h.gch $@:," > $@
 
 %.h.gch: %.h
+	rm -f $@
 	$(CXX) -o $@ -c $< $(INCLUDES) $(AM_CPPFLAGS) $(AM_CXXFLAGS) $(module_cxxflags)  $(CXXFLAGS)
 
  endif
