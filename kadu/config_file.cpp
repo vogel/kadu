@@ -35,14 +35,14 @@ void ConfigFile::read() {
 				if (activegroup.name != line.mid(1, line.length() - 2)) {
 					if (activegroup.name.length())
 						groups.append(activegroup);
-					activegroup.name = line.mid(1, line.length() - 2);
+					activegroup.name = line.mid(1, line.length() - 2).stripWhiteSpace();
 					activegroup.entries.clear();
 					}
 				}
 			else 
 				if (activegroup.name.length()) {
-					activeentry.name = line.section('=', 0, 0);
-					activeentry.value = line.section('=', -1, -1);
+					activeentry.name = line.section('=', 0, 0).stripWhiteSpace();
+					activeentry.value = line.section('=', -1, -1).stripWhiteSpace();
 					if (line.contains('=') == 1 && activeentry.name.length()
 						&& activeentry.value.length())
 						activegroup.entries.append(activeentry);
