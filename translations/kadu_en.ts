@@ -578,6 +578,14 @@ It&apos;s a high security risk!</source>
         <source>Host: </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>###IMAGE BLOCKED###</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>###IMAGE TOO BIG###</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -799,6 +807,55 @@ You may add it to $PATH or specify location using Specify path option.</source>
     <name>GaduProtocol</name>
     <message>
         <source>I am busy.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, server has not been found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, server has returned unknown data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, connection break during reading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, connection break during writing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, incorrect password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection will be stoped
+Your password is incorrect !</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, error of negotiation TLS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection timeout!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disconnection has occured</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>UIN or password not set!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1130,52 +1187,7 @@ You may add it to $PATH or specify location using Specify path option.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unable to connect, server has not been found</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect, server has returned unknown data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect, connection break during reading</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect, connection break during writing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect, incorrect password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect, error of negotiation TLS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Disconnection has occured</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Connection timeout!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show / hide users without description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Connection will be stoped
-Your password is incorrect !</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

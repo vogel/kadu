@@ -479,5 +479,9 @@ Press Next to continue</source>
         <source>Configuration Wizard</source>
         <translation type="unfinished">Konfigurationsassistent</translation>
     </message>
+    <message>
+        <source>User list wasn&apos;t imported because of some error</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

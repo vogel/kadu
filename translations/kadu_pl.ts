@@ -583,6 +583,14 @@ Jest to wysoce ryzykowne!</translation>
         <source>Host: </source>
         <translation>Nazwa komputera:</translation>
     </message>
+    <message>
+        <source>###IMAGE BLOCKED###</source>
+        <translation>###ZDJĘCIE ZABLOKOWANE###</translation>
+    </message>
+    <message>
+        <source>###IMAGE TOO BIG###</source>
+        <translation>###ZDJĘCIE ZA DUŻE###</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -807,6 +815,56 @@ Wybrana ścieżka do przeglądarki nie istnieje w zmiennej $PATH. Musisz ją do 
     <message>
         <source>I am busy.</source>
         <translation>Jestem zajęty.</translation>
+    </message>
+    <message>
+        <source>Unable to connect, server has not been found</source>
+        <translation>Połączenie niemożliwe, serwer nie znaleziony</translation>
+    </message>
+    <message>
+        <source>Unable to connect</source>
+        <translation>Połączenie niemożliwe</translation>
+    </message>
+    <message>
+        <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
+        <translation>Zmień swój e-mail w oknie &quot;Zmień hasło/e-mail&quot;. Pole nowe hasło pozostaw puste.</translation>
+    </message>
+    <message>
+        <source>Unable to connect, server has returned unknown data</source>
+        <translation>Połączenie niemożliwe, serwer odpowiedział nieznane dane</translation>
+    </message>
+    <message>
+        <source>Unable to connect, connection break during reading</source>
+        <translation>Połączenie niemożliwe, połączenie przerwane w czasie odczytu</translation>
+    </message>
+    <message>
+        <source>Unable to connect, connection break during writing</source>
+        <translation>Połączenie niemożliwe, połączenie przerwane w czasie zapisu</translation>
+    </message>
+    <message>
+        <source>Unable to connect, incorrect password</source>
+        <translation>Połączenia niemożliwe, nieprawidłowe hasło</translation>
+    </message>
+    <message>
+        <source>Connection will be stoped
+Your password is incorrect !</source>
+        <translation>Połączenie zostało przerwane
+Twoje hasło jest nieprawidłowe!</translation>
+    </message>
+    <message>
+        <source>Unable to connect, error of negotiation TLS</source>
+        <translation>Połączenie niemożliwe, błąd negocjacji TLS</translation>
+    </message>
+    <message>
+        <source>Connection timeout!</source>
+        <translation>Przekroczenie czasu połączenia!</translation>
+    </message>
+    <message>
+        <source>Disconnection has occured</source>
+        <translation>Nastąpiło rozłączenie</translation>
+    </message>
+    <message>
+        <source>UIN or password not set!</source>
+        <translation>Nie podałeś nr GG lub hasła!</translation>
     </message>
 </context>
 <context>
@@ -1137,55 +1195,8 @@ Wybrana ścieżka do przeglądarki nie istnieje w zmiennej $PATH. Musisz ją do 
         <translation>I&amp;mport / eksport listy kontaktów</translation>
     </message>
     <message>
-        <source>Unable to connect, server has not been found</source>
-        <translation>Połączenie niemożliwe, serwer  nie znaleziony</translation>
-    </message>
-    <message>
-        <source>Unable to connect</source>
-        <translation>Połączenie niemożliwe</translation>
-    </message>
-    <message>
-        <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
-        <translation>Zmień swój e-mail w oknie &quot;Zmień hasło/e-mail&quot;. Pole nowe hasło pozostaw puste.</translation>
-    </message>
-    <message>
-        <source>Unable to connect, server has returned unknown data</source>
-        <translation>Połączenie niemożliwe, serwer odpowiedział nieznane dane</translation>
-    </message>
-    <message>
-        <source>Unable to connect, connection break during reading</source>
-        <translation>Połączenie niemożliwe, połączenie przerwane w czasie odczytu</translation>
-    </message>
-    <message>
-        <source>Unable to connect, connection break during writing</source>
-        <translation>Połączenie niemożliwe, połączenie przerwane w czasie zapisu</translation>
-    </message>
-    <message>
-        <source>Unable to connect, incorrect password</source>
-        <translation>Połączenia niemożliwe, nieprawidłowe hasło</translation>
-    </message>
-    <message>
-        <source>Unable to connect, error of negotiation TLS</source>
-        <translation>Połączenie niemożliwe, błąd negocjacji TLS</translation>
-    </message>
-    <message>
-        <source>Disconnection has occured</source>
-        <translation>Nastąpiło rozłączenie</translation>
-    </message>
-    <message>
-        <source>Connection timeout!</source>
-        <translation>
-Przekroczenie czasu połączenia!</translation>
-    </message>
-    <message>
         <source>Show / hide users without description</source>
         <translation>Pokaż / ukryj kontakty bez opisu</translation>
-    </message>
-    <message>
-        <source>Connection will be stoped
-Your password is incorrect !</source>
-        <translation>Połączenie zostało przerwane
-Twoje hasło jest nieprawidłowe!</translation>
     </message>
 </context>
 <context>

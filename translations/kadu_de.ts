@@ -580,6 +580,14 @@ Es ist ein sehr hohes Risiko!</translation>
         <source>Host: </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>###IMAGE BLOCKED###</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>###IMAGE TOO BIG###</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -804,6 +812,56 @@ Sie sollten den Pfad zum Browser in $PATH eintragen oder in der kadu-Konfigurati
     <message>
         <source>I am busy.</source>
         <translation>Ich bin beschäftigt.</translation>
+    </message>
+    <message>
+        <source>Unable to connect, server has not been found</source>
+        <translation>Verbindung nicht möglich, Server wurde nicht gefunden</translation>
+    </message>
+    <message>
+        <source>Unable to connect</source>
+        <translation>Verbindung nicht möglich</translation>
+    </message>
+    <message>
+        <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
+        <translation>Ändern Sie Ihre Email-Adresse in &quot;Passwort/Email ändern&quot;-Fenster. Lassen Sie das Feld für neues Passwort leer.</translation>
+    </message>
+    <message>
+        <source>Unable to connect, server has returned unknown data</source>
+        <translation>Verbindung nicht nöglich, Server lieferte unbekannte Daten zurück</translation>
+    </message>
+    <message>
+        <source>Unable to connect, connection break during reading</source>
+        <translation>Verbindung nicht möglich, Abbruch beim Lesen</translation>
+    </message>
+    <message>
+        <source>Unable to connect, connection break during writing</source>
+        <translation>Verbindung nicht möglich, Abbruch beim Schreiben</translation>
+    </message>
+    <message>
+        <source>Unable to connect, incorrect password</source>
+        <translation>Verbindung nicht möglich. Falsches Passwort</translation>
+    </message>
+    <message>
+        <source>Connection will be stoped
+Your password is incorrect !</source>
+        <translation>Verbindung wird angehalten
+Ihr Passwort stimmt nicht!</translation>
+    </message>
+    <message>
+        <source>Unable to connect, error of negotiation TLS</source>
+        <translation>Verbindung nicht möglich, TLS-Negotiation schlug fehl</translation>
+    </message>
+    <message>
+        <source>Connection timeout!</source>
+        <translation>Verbindungs-Timeout!</translation>
+    </message>
+    <message>
+        <source>Disconnection has occured</source>
+        <translation>Verbindung wurde getrennt</translation>
+    </message>
+    <message>
+        <source>UIN or password not set!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1134,54 +1192,8 @@ Sie sollten den Pfad zum Browser in $PATH eintragen oder in der kadu-Konfigurati
         <translation>I&amp;mportieren / Exportieren Benutzerlistet</translation>
     </message>
     <message>
-        <source>Unable to connect, server has not been found</source>
-        <translation>Verbindung nicht möglich, Server wurde nicht gefunden</translation>
-    </message>
-    <message>
-        <source>Unable to connect</source>
-        <translation>Verbindung nicht möglich</translation>
-    </message>
-    <message>
-        <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
-        <translation>Ändern Sie Ihre Email-Adresse in &quot;Passwort/Email ändern&quot;-Fenster. Lassen Sie das Feld für neues Passwort leer.</translation>
-    </message>
-    <message>
-        <source>Unable to connect, server has returned unknown data</source>
-        <translation>Verbindung nicht nöglich, Server lieferte unbekannte Daten zurück</translation>
-    </message>
-    <message>
-        <source>Unable to connect, connection break during reading</source>
-        <translation>Verbindung nicht möglich, Abbruch beim Lesen</translation>
-    </message>
-    <message>
-        <source>Unable to connect, connection break during writing</source>
-        <translation>Verbindung nicht möglich, Abbruch beim Schreiben</translation>
-    </message>
-    <message>
-        <source>Unable to connect, incorrect password</source>
-        <translation>Verbindung nicht möglich. Falsches Passwort</translation>
-    </message>
-    <message>
-        <source>Unable to connect, error of negotiation TLS</source>
-        <translation>Verbindung nicht möglich, TLS-Negotiation schlug fehl</translation>
-    </message>
-    <message>
-        <source>Disconnection has occured</source>
-        <translation>Verbindung wurde getrennt</translation>
-    </message>
-    <message>
-        <source>Connection timeout!</source>
-        <translation>Verbindungs-Timeout!</translation>
-    </message>
-    <message>
         <source>Show / hide users without description</source>
         <translation>Zeige / verstecke Kontakte ohne Beschreibung</translation>
-    </message>
-    <message>
-        <source>Connection will be stoped
-Your password is incorrect !</source>
-        <translation>Verbindung wird angehalten
-Ihr Passwort stimmt nicht!</translation>
     </message>
 </context>
 <context>

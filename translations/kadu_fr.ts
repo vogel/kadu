@@ -584,6 +584,14 @@ Attention danger!
         <source>Host: </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>###IMAGE BLOCKED###</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>###IMAGE TOO BIG###</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -808,6 +816,57 @@ Vous pouvez l&apos;ajouter dans $PATH ou indiquer l&apos;emplacement d&apos;une 
     <message>
         <source>I am busy.</source>
         <translation>Je suis occupé.</translation>
+    </message>
+    <message>
+        <source>Unable to connect, server has not been found</source>
+        <translation>Communication impossible, serveur introuvable</translation>
+    </message>
+    <message>
+        <source>Unable to connect</source>
+        <translation>Connexion impossible</translation>
+    </message>
+    <message>
+        <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
+        <translation>Change votre adresse e-Mail dans la fenêtre &quot;Change mot de passe/e-Mail&quot;. Le champs de mot de passe nouveau vide.</translation>
+    </message>
+    <message>
+        <source>Unable to connect, server has returned unknown data</source>
+        <translation>Connexion impossible, serveur reponds données inconnues</translation>
+    </message>
+    <message>
+        <source>Unable to connect, connection break during reading</source>
+        <translation>Connexion impossible, interrompue lors de la lecture</translation>
+    </message>
+    <message>
+        <source>Unable to connect, connection break during writing</source>
+        <translation>Connexion impossible, interrompue lors de l&apos;enregistrement</translation>
+    </message>
+    <message>
+        <source>Unable to connect, incorrect password</source>
+        <translation>Connexion impossible, mot de passe incorrect</translation>
+    </message>
+    <message>
+        <source>Connection will be stoped
+Your password is incorrect !</source>
+        <translation>Connexion interrompue
+Mot de passe incorrect !</translation>
+    </message>
+    <message>
+        <source>Unable to connect, error of negotiation TLS</source>
+        <translation>Connexion impossible, erreur négotiation TLS</translation>
+    </message>
+    <message>
+        <source>Connection timeout!</source>
+        <translation>Temps de connexion depassé!
+</translation>
+    </message>
+    <message>
+        <source>Disconnection has occured</source>
+        <translation>Connexion interrompue</translation>
+    </message>
+    <message>
+        <source>UIN or password not set!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1138,55 +1197,8 @@ Vous pouvez l&apos;ajouter dans $PATH ou indiquer l&apos;emplacement d&apos;une 
         <translation>I&amp;mport / eksport liste de contacts</translation>
     </message>
     <message>
-        <source>Unable to connect, server has not been found</source>
-        <translation>Communication impossible, serveur introuvable</translation>
-    </message>
-    <message>
-        <source>Unable to connect</source>
-        <translation>Connexion impossible</translation>
-    </message>
-    <message>
-        <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
-        <translation>Change votre adresse e-Mail dans la fenêtre &quot;Change mot de passe/e-Mail&quot;. Le champs de mot de passe nouveau vide.</translation>
-    </message>
-    <message>
-        <source>Unable to connect, server has returned unknown data</source>
-        <translation>Connexion impossible, serveur reponds données inconnues</translation>
-    </message>
-    <message>
-        <source>Unable to connect, connection break during reading</source>
-        <translation>Connexion impossible, interrompue lors de la lecture.</translation>
-    </message>
-    <message>
-        <source>Unable to connect, connection break during writing</source>
-        <translation>Connexion impossible, interrompue lors de l&apos;enregistrement.</translation>
-    </message>
-    <message>
-        <source>Unable to connect, incorrect password</source>
-        <translation>Connexion impossible, mot de passe incorrect.</translation>
-    </message>
-    <message>
-        <source>Unable to connect, error of negotiation TLS</source>
-        <translation>Connexion impossible, erreur négotiation TLS.</translation>
-    </message>
-    <message>
-        <source>Disconnection has occured</source>
-        <translation>Connexion interrompue</translation>
-    </message>
-    <message>
-        <source>Connection timeout!</source>
-        <translation>Temps de connexion depassé!
-</translation>
-    </message>
-    <message>
         <source>Show / hide users without description</source>
         <translation>Montre/cache les contacts sans description</translation>
-    </message>
-    <message>
-        <source>Connection will be stoped
-Your password is incorrect !</source>
-        <translation>Connexion interrompue
-Mot de passe incorrect !</translation>
     </message>
 </context>
 <context>

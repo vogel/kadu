@@ -479,5 +479,9 @@ Press Next to continue</source>
         <source>Configuration Wizard</source>
         <translation>Kreator konfiguracji</translation>
     </message>
+    <message>
+        <source>User list wasn&apos;t imported because of some error</source>
+        <translation type="unfinished">Erreur d&apos;importation de la liste de contacts</translation>
+    </message>
 </context>
 </TS>

@@ -483,5 +483,9 @@ Naciśnij Dalej by kontynuować</translation>
         <source>Configuration Wizard</source>
         <translation>Kreator konfiguracji</translation>
     </message>
+    <message>
+        <source>User list wasn&apos;t imported because of some error</source>
+        <translation>Lista kontaktów nie została zaimportowana z powodu błędu</translation>
+    </message>
 </context>
 </TS>
