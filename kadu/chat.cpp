@@ -655,6 +655,7 @@ void Chat::sendMessage(void) {
 			ule.status == GG_STATUS_BUSY || ule.status == GG_STATUS_BUSY_DESCR)
 			online++;
 		}
+	online = uins.count();
 	if (config.msgacks && online) {
 		acks.resize(acks.size() + 1);
 		i = acks.size() - 1;
