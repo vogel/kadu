@@ -137,29 +137,29 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	QToolTip::add(lockscroll, i18n("Blocks scrolling"));
 
 #ifdef HAVE_OPENSSL
-	QString keyfile_path;
 	encryption = new QPushButton(buttontray);
-	if(config.encryption) {
-		QToolTip::add(encryption, i18n("Disable encoding of this conversation"));
-		encryption->setPixmap(loader->loadIcon("encrypted", KIcon::Small));
-		encrypt_enabled = true;
-	} else {
-		QToolTip::add(encryption, i18n("Enable encoding of this conversation"));
-		encryption->setPixmap(loader->loadIcon("encrypted", KIcon::Small));
-		encrypt_enabled = false;
-	}
+	connect(encryption, SIGNAL(clicked()), this, SLOT(regEncryptSend()));
+
+	QString keyfile_path;
 	keyfile_path.append(ggPath("keys/"));
 	keyfile_path.append(QString::number(uins[0]));
 	keyfile_path.append(".pem");
 	QFileInfo keyfile(keyfile_path);
+	bool encryption_possible=
+		(keyfile.permission(QFileInfo::ReadUser)&&uins.count()==1);
+
+	if(config.encryption&&encryption_possible) {
+		QToolTip::add(encryption, i18n("Disable encryption for this conversation"));
+		encryption->setPixmap(loader->loadIcon("encrypted", KIcon::Small));
+		encrypt_enabled = true;
+	} else {
+		QToolTip::add(encryption, i18n("Enable encryption for this conversation"));
+		encryption->setPixmap(loader->loadIcon("encrypted", KIcon::Small));
+		encrypt_enabled = false;
+	}
 	
-	if(!keyfile.permission(QFileInfo::ReadUser))
-	{
-		encrypt_enabled = false;	
-		encryption->setEnabled(false);
-	};
+	encryption->setEnabled(encryption_possible);
 	
-	connect(encryption, SIGNAL(clicked()), this, SLOT(regEncryptSend()));
 #endif
 	
 	QPushButton *clearchat= new QPushButton(buttontray);
