@@ -816,7 +816,7 @@ void Kadu::autoAway(void) {
 //		return;
 	if (!config.autoaway)
 		return;
-	beforeAutoAway = getActualStatus();
+	beforeAutoAway = getActualStatus() & (~GG_STATUS_FRIENDS_MASK);;
 	fprintf(stderr, "KK Kadu::autoAway(): checking whether to go auto away\n");
 	switch (beforeAutoAway) {
 		case GG_STATUS_AVAIL_DESCR: setStatus(GG_STATUS_BUSY_DESCR); break;
