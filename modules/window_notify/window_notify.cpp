@@ -17,6 +17,7 @@
 #include "../notify/notify.h"
 #include "message_box.h"
 #include "userlist.h"
+#include "misc.h"
 
 extern "C" int window_notify_init()
 {
