@@ -735,7 +735,7 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>This dialog box allows you to change your current password or e-mail.</source>
-        <translation>To okno dialogowe pozwala zmienić bierzące hasło lub e-mail.</translation>
+        <translation>To okno dialogowe pozwala zmienić bieżące hasło lub e-mail.</translation>
     </message>
     <message>
         <source>Email</source>
@@ -769,8 +769,8 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <source>Error data typed in required fields.
 
 Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot; should be the same!</source>
-        <translation>Błędne dane w  wymaganych polach.
-Hasła  muszą być identyczne w obu polach!</translation>
+        <translation>Błędne dane w wymaganych polach.
+Hasła muszą być identyczne w obu polach!</translation>
     </message>
 </context>
 <context>
