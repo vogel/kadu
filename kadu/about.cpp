@@ -46,7 +46,7 @@ About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopL
 	
 	QLabel *l_info = new QLabel(center);
 	l_icon->setPixmap(icons_manager.loadIcon("AboutIcon"));
-	l_info->setText(QString("<span style=\"font-size: 12pt\">Kadu %1 <br>(c) 2001-2004 Kadu Team</span>").arg(VERSION));
+	l_info->setText(QString("<span style=\"font-size: 12pt\">Kadu %1 <br>(c) 2001-2005 Kadu Team</span>").arg(VERSION));
 	// end create main QLabel widgets (icon and app info)
 	
 	// our TabWidget
