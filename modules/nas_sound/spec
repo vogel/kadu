@@ -1,3 +1,5 @@
 MODULE_SOURCES=nas_sound.cpp
 MODULE_MOC_HEADERS=nas_sound.h
-
+MODULE_INCLUDES="soundlib.h audiolib.h"
+MODULE_INCLUDES_PATH=/usr/include/audio
+MODULE_LIBS=audio

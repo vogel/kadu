@@ -7,9 +7,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qsound.h>
 #include "nas_sound.h"
 #include "debug.h"
+#include <qapplication.h>
+
+#ifdef INTERNAL_QT_SOUND_SUPPORT
+#include <qsound.h>
+#else
+#define AuFixedPointFromFraction2(nnn,ddd) \
+    ((((audiolib::AuInt32) (nnn)) * AU_FIXED_POINT_SCALE) / ((audiolib::AuInt32) (ddd)))
+#endif
 
 SoundManager* sound_manager;
 
@@ -28,6 +35,11 @@ extern "C" int nas_sound_init()
 		return 1;
 
 	slotsObj=new NASPlayerSlots();
+	if (!slotsObj->isConnected())
+	{
+		delete slotsObj;
+		return 2;
+	}
 
 	QObject::connect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
 					 slotsObj, SLOT(playSound(const QString &, bool, double)));
@@ -58,30 +70,77 @@ extern "C" void nas_sound_close()
 
 NASPlayerSlots::NASPlayerSlots()
 {
+#ifndef INTERNAL_QT_SOUND_SUPPORT
+	auserver=audiolib::AuOpenServer(NULL, 0, NULL, 0, NULL, NULL);
+	sn=new QSocketNotifier(AuServerConnectionNumber(auserver), QSocketNotifier::Read);
+	QObject::connect(sn, SIGNAL(activated(int)), this, SLOT(dataReceived()));
+#endif
+}
+
+NASPlayerSlots::~NASPlayerSlots()
+{
+#ifndef INTERNAL_QT_SOUND_SUPPORT
+	if (auserver)
+		audiolib::AuCloseServer(auserver);
+	QObject::disconnect(sn, SIGNAL(activated(int)), this, SLOT(dataReceived()));
+	delete sn;
+#endif
+}
+
+bool NASPlayerSlots::isConnected()
+{
+#ifdef INTERNAL_QT_SOUND_SUPPORT
+	return QSound::available();
+#else
+	return (auserver!=NULL);
+#endif
 }
 
 void NASPlayerSlots::playSound(const QString &s, bool volCntrl, double vol)
 {
 	kdebugf();
-	QSound::play(s);
+	if (!volCntrl)
+		vol=1;
+	if (isConnected())
+	{
+#ifdef INTERNAL_QT_SOUND_SUPPORT
+		QSound::play(s);
+#else
+		audiolib::AuFixedPoint volume=AuFixedPointFromFraction2(int(vol*100),100);
+		audiolib::AuSoundPlayFromFile(auserver, (const char *)s.local8Bit(), AuNone, volume, NULL, NULL, NULL, NULL, NULL, NULL);
+		audiolib::AuFlush(auserver);
+		dataReceived();
+		audiolib::AuFlush(auserver);
+		qApp->flushX();
+#endif
+	}
+	else
+		kdebug("not connected\n");
+}
+
+void NASPlayerSlots::dataReceived()
+{
+#ifndef INTERNAL_QT_SOUND_SUPPORT
+	audiolib::AuHandleEvents(auserver);
+#endif
 }
 
 void NASPlayerSlots::playMessage(UinsList senders, const QString &sound, const QString &msg, bool volCntrl, double vol)
 {
 	kdebugf();
-	QSound::play(sound);
+	playSound(sound, volCntrl, vol);
 }
 
 void NASPlayerSlots::playChat(UinsList senders, const QString &sound, const QString &msg, bool volCntrl, double vol)
 {
 	kdebugf();
-	QSound::play(sound);
+	playSound(sound, volCntrl, vol);
 }
 
 void NASPlayerSlots::playNotify(const uin_t uin, const QString &sound, bool volCntrl, double vol)
 {
 	kdebugf();
-	QSound::play(sound);
+	playSound(sound, volCntrl, vol);
 }
 
 NASPlayerSlots *slotsObj;
