@@ -221,7 +221,7 @@ Wybierz jedną z poniższych opcji:</translation>
     </message>
     <message>
         <source>ShortCuts</source>
-        <translation></translation>
+        <translation>Skróty Klawiszowe</translation>
     </message>
     <message>
         <source>Remove from userlist</source>
@@ -563,36 +563,32 @@ wiadomości</translation>
         <source>changed status to</source>
         <translation>zmień status na</translation>
     </message>
+    <message>
+        <source>is unavailable</source>
+        <translation>nie osiągalny</translation>
+    </message>
 </context>
 <context>
     <name>HintManagerSlots</name>
     <message>
-        <source>Number cited sign</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>New hints add to hint</source>
-        <translation type="unfinished"></translation>
+        <translation>Łączenie dymków</translation>
     </message>
     <message>
         <source>Auto</source>
-        <translation type="unfinished"></translation>
+        <translation>Auto</translation>
     </message>
     <message>
         <source>Under up</source>
-        <translation type="unfinished"></translation>
+        <translation>Na górze</translation>
     </message>
     <message>
         <source>Under down</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use my hints position</source>
-        <translation type="unfinished"></translation>
+        <translation>Pod spodem</translation>
     </message>
     <message>
         <source>Hints position</source>
-        <translation type="unfinished"></translation>
+        <translation>Pozycja dymków</translation>
     </message>
     <message>
         <source>Online</source>
@@ -636,7 +632,7 @@ wiadomości</translation>
     </message>
     <message>
         <source>New message in chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Nowa wiadomość w oknie rozmowy</translation>
     </message>
     <message>
         <source>Error</source>
@@ -645,10 +641,6 @@ wiadomości</translation>
     <message>
         <source>Preview</source>
         <translation>Podgląd</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Text&lt;/b&gt; to preview</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Change font color</source>
@@ -665,6 +657,18 @@ wiadomości</translation>
     <message>
         <source>Color dialog</source>
         <translation>Kolory</translation>
+    </message>
+    <message>
+        <source>Number of quoted characters</source>
+        <translation>Liczba znaków</translation>
+    </message>
+    <message>
+        <source>Use custom hints position</source>
+        <translation>Własna pozycja dla dymków</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Text&lt;/b&gt; preview</source>
+        <translation>&lt;b&gt;Tekst&lt;/b&gt; w dymku</translation>
     </message>
 </context>
 <context>

@@ -561,13 +561,13 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <source>changed status to</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>is unavailable</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HintManagerSlots</name>
-    <message>
-        <source>Number cited sign</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>New hints add to hint</source>
         <translation type="unfinished"></translation>
@@ -582,10 +582,6 @@ Arguments should be separated with spaces. %n argument is converted to number, %
     </message>
     <message>
         <source>Under down</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use my hints position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -645,10 +641,6 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;b&gt;Text&lt;/b&gt; to preview</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Change font color</source>
         <translation type="unfinished"></translation>
     </message>
@@ -662,6 +654,18 @@ Arguments should be separated with spaces. %n argument is converted to number, %
     </message>
     <message>
         <source>Color dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number of quoted characters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use custom hints position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Text&lt;/b&gt; preview</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
