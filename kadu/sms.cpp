@@ -25,7 +25,7 @@
 SmsImageWidget::SmsImageWidget(QWidget* parent,const QByteArray& image)
 	: QWidget(parent, "SmsImageWidget"), Image(image)
 {
-	setCaption(i18n("Send SMS"));
+	setCaption(tr("Send SMS"));
 	setMinimumSize(Image.width(),Image.height());
 };
 
@@ -43,7 +43,7 @@ SmsImageDialog::SmsImageDialog(QDialog* parent,const QByteArray& image)
 	QGridLayout * grid = new QGridLayout(this, 2, 2, 10, 10);
 	SmsImageWidget* image_widget=new SmsImageWidget(this,image);
 	grid->addMultiCellWidget(image_widget, 0, 0, 0, 1);
-	QLabel* label=new QLabel(i18n("Enter text from the picture:"),this);
+	QLabel* label=new QLabel(tr("Enter text from the picture:"),this);
 	grid->addWidget(label, 1, 0);
 	code_edit=new QLineEdit(this);
 	grid->addWidget(code_edit, 1, 1);
@@ -290,7 +290,7 @@ SmsGateway::SmsGateway(QObject* parent)
 
 void SmsGateway::httpError()
 {
-	QMessageBox::critical((QWidget*)parent(),"SMS",i18n("Network error. Provider gateway page is probably unavailable"));
+	QMessageBox::critical((QWidget*)parent(),"SMS",tr("Network error. Provider gateway page is probably unavailable"));
 	emit finished(false);
 };
 
@@ -326,7 +326,7 @@ void SmsIdeaGateway::httpFinished()
 		int pic_pos=pic_regexp.search(Page);
 		if(pic_pos<0)
 		{
-			QMessageBox::critical(p,"SMS",i18n("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
+			QMessageBox::critical(p,"SMS",tr("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
 			emit finished(false);
 			return;
 		};
@@ -351,19 +351,19 @@ void SmsIdeaGateway::httpFinished()
 		if(Page.find("wyczerpany")>=0)
 		{
 			kdebug("You exceeded your daily limit\n");
-			QMessageBox::critical(p,"SMS",i18n("You exceeded your daily limit"));
+			QMessageBox::critical(p,"SMS",tr("You exceeded your daily limit"));
 			emit finished(false);
 		}
 		else if(Page.find("Podano b³êdne has³o")>=0)
 		{
 			kdebug("Text from the picture is incorrect\n");
-			QMessageBox::critical(p,"SMS",i18n("Text from the picture is incorrect"));
+			QMessageBox::critical(p,"SMS",tr("Text from the picture is incorrect"));
 			emit finished(false);				
 		}
 		else if(Page.find("Odbiorca nie ma aktywnej uslugi")>=0)
 		{
 			kdebug("The receiver has to enable SMS STANDARD service\n");
-			QMessageBox::critical(p,"SMS",i18n("The receiver has to enable SMS STANDARD service"));
+			QMessageBox::critical(p,"SMS",tr("The receiver has to enable SMS STANDARD service"));
 			emit finished(false);				
 		}			
 		else if(Page.find("Twój SMS zosta³ wys³any")>=0)
@@ -374,7 +374,7 @@ void SmsIdeaGateway::httpFinished()
 		else
 		{
 			kdebug("Provider gateway results page looks strange. SMS was probably NOT sent.\n");
-			QMessageBox::critical(p,"SMS",i18n("Provider gateway results page looks strange. SMS was probably NOT sent."));
+			QMessageBox::critical(p,"SMS",tr("Provider gateway results page looks strange. SMS was probably NOT sent."));
 			emit finished(false);
 		};
 	}
@@ -427,12 +427,12 @@ void SmsPlusGateway::httpFinished()
 		QRegExp code_regexp("name=\\\"kod\\\" value=\\\"(\\d+)\\\"");
 		QRegExp code_regexp2("name=\\\"Kod(\\d+)\\\" value=\\\"(\\d+)\\\"");
 		if(code_regexp.search(Page) < 0) {
-			QMessageBox::critical(p,"SMS",i18n("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
+			QMessageBox::critical(p,"SMS",tr("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
 			emit finished(false);
 			return;
 		}
 		if(code_regexp2.search(Page) < 0) {
-			QMessageBox::critical(p,"SMS",i18n("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
+			QMessageBox::critical(p,"SMS",tr("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
 			emit finished(false);
 			return;
 			}
@@ -453,7 +453,7 @@ void SmsPlusGateway::httpFinished()
 		}
 		else
 		{
-			QMessageBox::critical(p,"SMS",i18n("Provider gateway results page looks strange. SMS was probably NOT sent."));
+			QMessageBox::critical(p,"SMS",tr("Provider gateway results page looks strange. SMS was probably NOT sent."));
 			emit finished(false);
 		};				
 	}
@@ -491,7 +491,7 @@ void SmsEraGateway::httpFinished()
 		kdebug("SMS Provider Login Page:\n%s\n",Page.local8Bit().data());
 		if(Page.find("Zaloguj siê") < 0)
 		{
-			QMessageBox::critical(p,"SMS",i18n("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
+			QMessageBox::critical(p,"SMS",tr("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
 			emit finished(false);
 			return;
 		};
@@ -509,7 +509,7 @@ void SmsEraGateway::httpFinished()
 		if(Page.find("Wyloguj siê")<0)
 		{
 			kdebug("Authorization error\n");
-			QMessageBox::critical(p,"SMS",i18n("Authorization error. Incorrect login or password."));
+			QMessageBox::critical(p,"SMS",tr("Authorization error. Incorrect login or password."));
 			emit finished(false);
 			return;
 		};
@@ -522,7 +522,7 @@ void SmsEraGateway::httpFinished()
 		kdebug("SMS Provider Page:\n%s\n",Page.local8Bit().data());
 		if(Page.find("Bramka podstawowa") < 0)
 		{
-			QMessageBox::critical(p,"SMS",i18n("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
+			QMessageBox::critical(p,"SMS",tr("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
 			emit finished(false);
 			return;
 		};	
@@ -543,7 +543,7 @@ void SmsEraGateway::httpFinished()
 		QRegExp token_regexp("sms\\/do\\/sendSMS\\?org\\.apache\\.struts\\.taglib\\.html\\.TOKEN=([^\"]+)");
 		if(token_regexp.search(Page)<0)
 		{
-			QMessageBox::critical(p,"SMS",i18n("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
+			QMessageBox::critical(p,"SMS",tr("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
 			emit finished(false);
 			return;
 		};
@@ -560,7 +560,7 @@ void SmsEraGateway::httpFinished()
 		}
 		else
 		{
-			QMessageBox::critical(p,"SMS",i18n("Provider gateway results page looks strange. SMS was probably NOT sent."));
+			QMessageBox::critical(p,"SMS",tr("Provider gateway results page looks strange. SMS was probably NOT sent."));
 			emit finished(false);
 		};		
 	}
@@ -587,7 +587,7 @@ void SmsSender::send(const QString& number,const QString& message)
 		Number=Number.right(9);
 	if(Number.length()!=9)
 	{
-		QMessageBox::critical((QWidget*)parent(),"SMS",i18n("Mobile number is incorrect"));
+		QMessageBox::critical((QWidget*)parent(),"SMS",tr("Mobile number is incorrect"));
 		emit finished(false);
 		return;
 	};
@@ -600,7 +600,7 @@ void SmsSender::send(const QString& number,const QString& message)
 		Gateway=new SmsEraGateway(this);
 	else		
 	{
-		QMessageBox::critical((QWidget*)parent(),"SMS",i18n("Mobile number is incorrect"));
+		QMessageBox::critical((QWidget*)parent(),"SMS",tr("Mobile number is incorrect"));
 		emit finished(false);
 		return;
 	};	
@@ -637,11 +637,11 @@ Sms::Sms(const QString& altnick, QDialog* parent) : QDialog (parent, "Sms")
 	QObject::connect(list, SIGNAL(activated(const QString&)), this, SLOT(updateRecipient(const QString &)));
 	grid->addWidget(list, 0, 3);
 
-	QLabel *recilabel = new QLabel(i18n("Recipient"),this);
+	QLabel *recilabel = new QLabel(tr("Recipient"),this);
 	grid->addWidget(recilabel, 0, 0);
 
 	b_send = new QPushButton(this);
-	b_send->setText(i18n("Send"));
+	b_send->setText(tr("Send"));
 	grid->addWidget(b_send, 3, 3);
 	QObject::connect(b_send, SIGNAL(clicked()), this, SLOT(sendSms()));
 
@@ -649,7 +649,7 @@ Sms::Sms(const QString& altnick, QDialog* parent) : QDialog (parent, "Sms")
 	grid->addWidget(smslen, 3, 0);
 
 	resize(300,200);
-	setCaption(i18n("Send SMS"));
+	setCaption(tr("Send SMS"));
 
 	connect(&Sender,SIGNAL(finished(bool)),this,SLOT(onSmsSenderFinished(bool)));
 }
@@ -695,7 +695,7 @@ void Sms::sendSms(void) {
 		if(config_file.readEntry("SMS","SmsApp")=="")
 		
 		{
-			QMessageBox::warning(this, i18n("SMS error"), i18n("Sms application was not specified. Visit the configuration section") );
+			QMessageBox::warning(this, tr("SMS error"), tr("Sms application was not specified. Visit the configuration section") );
 			kdebug("SMS application NOT specified. Exit.\n");
 			return;
 		};
@@ -721,16 +721,16 @@ void Sms::sendSms(void) {
 		};
 
 		if (!smsProcess->start())
-			QMessageBox::critical(this, i18n("SMS error"), i18n("Could not spawn child process. Check if the program is functional") );
+			QMessageBox::critical(this, tr("SMS error"), tr("Could not spawn child process. Check if the program is functional") );
 		QObject::connect(smsProcess, SIGNAL(processExited()), this, SLOT(smsSigHandler()));
 	};
 }
 
 void Sms::smsSigHandler() {
 	if (smsProcess->normalExit())
-		QMessageBox::information(this, i18n("SMS sent"), i18n("The process exited normally. The SMS should be on its way"));
+		QMessageBox::information(this, tr("SMS sent"), tr("The process exited normally. The SMS should be on its way"));
 	else
-		QMessageBox::warning(this, i18n("SMS not sent"), i18n("The process exited abnormally. The SMS may not be sent"));
+		QMessageBox::warning(this, tr("SMS not sent"), tr("The process exited abnormally. The SMS may not be sent"));
 	b_send->setEnabled(true);
 	body->setEnabled(true);
 	body->clear();
@@ -743,7 +743,7 @@ void Sms::updateCounter() {
 void Sms::onSmsSenderFinished(bool success)
 {
 	if(success)
-		QMessageBox::information(this, i18n("SMS sent"), i18n("The SMS was sent and should be on its way"));
+		QMessageBox::information(this, tr("SMS sent"), tr("The SMS was sent and should be on its way"));
 	b_send->setEnabled(true);
 	body->setEnabled(true);
 	if(success)
@@ -755,27 +755,27 @@ void Sms::initModule()
 	kdebug("Sms::initModule \n");	
 
 	SmsSlots *smsslots=new SmsSlots();
-	ConfigDialog::registerTab(i18n("SMS"));
-	ConfigDialog::registerVGroupBox(i18n("SMS"),i18n("SMS options"));
-	ConfigDialog::registerCheckBox(i18n("SMS options"),i18n("Use built-in SMS application"),"SMS","BuiltInApp",true);
-	ConfigDialog::registerLineEdit(i18n("SMS options"),i18n("Custom SMS application"),"SMS","SmsApp","");
-	ConfigDialog::registerGrid(i18n("SMS options"),"sms",2);
-	ConfigDialog::registerCheckBox("sms",i18n("SMS custom string"),"SMS","UseCustomString",false
-	,i18n("Check this box if your sms application doesn't understand arguments: number \"message\"\nArguments should be separated with spaces. %n argument is converted to number, %m to message"));
+	ConfigDialog::registerTab(tr("SMS"));
+	ConfigDialog::registerVGroupBox(tr("SMS"),tr("SMS options"));
+	ConfigDialog::registerCheckBox(tr("SMS options"),tr("Use built-in SMS application"),"SMS","BuiltInApp",true);
+	ConfigDialog::registerLineEdit(tr("SMS options"),tr("Custom SMS application"),"SMS","SmsApp","");
+	ConfigDialog::registerGrid(tr("SMS options"),"sms",2);
+	ConfigDialog::registerCheckBox("sms",tr("SMS custom string"),"SMS","UseCustomString",false
+	,tr("Check this box if your sms application doesn't understand arguments: number \"message\"\nArguments should be separated with spaces. %n argument is converted to number, %m to message"));
 	ConfigDialog::registerLineEdit("sms","","SMS","SmsString","");
-    	ConfigDialog::connectSlot(i18n("Use built-in SMS application"), SIGNAL(toggled(bool)), smsslots, SLOT(onSmsBuildInCheckToggle(bool)));
+    	ConfigDialog::connectSlot(tr("Use built-in SMS application"), SIGNAL(toggled(bool)), smsslots, SLOT(onSmsBuildInCheckToggle(bool)));
 	ConfigDialog::registerSlotOnCreate(smsslots,SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerVGroupBox(i18n("SMS"),i18n("SMS Era Gateway"));
-	ConfigDialog::registerLineEdit(i18n("SMS Era Gateway"),i18n("User ID"),"SMS","EraGatewayUser","");
-	ConfigDialog::registerLineEdit(i18n("SMS Era Gateway"),i18n("Password"),"SMS","EraGatewayPassword","");
+	ConfigDialog::registerVGroupBox(tr("SMS"),tr("SMS Era Gateway"));
+	ConfigDialog::registerLineEdit(tr("SMS Era Gateway"),tr("User ID"),"SMS","EraGatewayUser","");
+	ConfigDialog::registerLineEdit(tr("SMS Era Gateway"),tr("Password"),"SMS","EraGatewayPassword","");
 };
 
 void SmsSlots::onSmsBuildInCheckToggle(bool value)
 {
 	kdebug("SmsSlots::onSmsBuildInCheckToggle \n");
 
-	QLineEdit *e_smsapp=((QLineEdit*)ConfigDialog::getWidget(i18n("SMS options"),i18n("Custom SMS application")));
-	QCheckBox *b_smscustomconf=((QCheckBox*)ConfigDialog::getWidget("sms",i18n("SMS custom string")));
+	QLineEdit *e_smsapp=((QLineEdit*)ConfigDialog::getWidget(tr("SMS options"),tr("Custom SMS application")));
+	QCheckBox *b_smscustomconf=((QCheckBox*)ConfigDialog::getWidget("sms",tr("SMS custom string")));
 	QLineEdit *e_smsconf=((QLineEdit*)ConfigDialog::getWidget("sms",""));
 
 	((QHBox*)(e_smsapp->parent()))->setEnabled(!value);
@@ -787,9 +787,9 @@ void SmsSlots::onCreateConfigDialog()
 {
 	kdebug("SmsSlots::onCreateConfigDialog \n");
 	
-	QCheckBox *b_smsbuildin=((QCheckBox*)ConfigDialog::getWidget(i18n("SMS options"),i18n("Use built-in SMS application")));
-	QLineEdit *e_smsapp=((QLineEdit*)ConfigDialog::getWidget(i18n("SMS options"),i18n("Custom SMS application")));
-	QCheckBox *b_smscustomconf=((QCheckBox*)ConfigDialog::getWidget("sms",i18n("SMS custom string")));
+	QCheckBox *b_smsbuildin=((QCheckBox*)ConfigDialog::getWidget(tr("SMS options"),tr("Use built-in SMS application")));
+	QLineEdit *e_smsapp=((QLineEdit*)ConfigDialog::getWidget(tr("SMS options"),tr("Custom SMS application")));
+	QCheckBox *b_smscustomconf=((QCheckBox*)ConfigDialog::getWidget("sms",tr("SMS custom string")));
 	QLineEdit *e_smsconf=((QLineEdit*)ConfigDialog::getWidget("sms",""));
 	
 	if (b_smsbuildin->isChecked())

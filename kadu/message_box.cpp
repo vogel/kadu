@@ -43,25 +43,25 @@ MessageBox::MessageBox(const QString& message,int components,bool modal)
 	if(components&OK)
 	{
 		QPushButton* b=new QPushButton(buttons);
-		b->setText(i18n("&OK"));
+		b->setText(tr("&OK"));
 		connect(b,SIGNAL(clicked()),this,SLOT(okClicked()));
 	};
 	if(components&YES)
 	{
 		QPushButton* b=new QPushButton(buttons);
-		b->setText(i18n("&Yes"));
+		b->setText(tr("&Yes"));
 		connect(b,SIGNAL(clicked()),this,SLOT(yesClicked()));
 	};
 	if(components&NO)
 	{
 		QPushButton* b=new QPushButton(buttons);
-		b->setText(i18n("&No"));
+		b->setText(tr("&No"));
 		connect(b,SIGNAL(clicked()),this,SLOT(noClicked()));
 	};
 	if(components&CANCEL)
 	{
 		QPushButton* b=new QPushButton(buttons);
-		b->setText(i18n("&Cancel"));
+		b->setText(tr("&Cancel"));
 		connect(b,SIGNAL(clicked()),this,SLOT(cancelClicked()));
 	};
 	buttons->setMaximumSize(buttons->sizeHint());

@@ -8,10 +8,12 @@
  ***************************************************************************/
 
 #include <qapplication.h>
+#include <qtranslator.h>
+#include <qtextcodec.h>
 #include <qmessagebox.h>
 
 #include <sys/stat.h>
-#include <locale.h>
+//#include <locale.h>
 
 #include "kadu.h"
 #include "config_file.h"
@@ -29,13 +31,17 @@ int main(int argc, char *argv[])
 {
 	gg_debug_level = 255;
 
-	setlocale(LC_ALL, "");
-	bindtextdomain("kadu", (QString(DATADIR)+"/locale").local8Bit().data());
-//	bind_textdomain_codeset("kadu", "ISO-8859-2");
-	textdomain("kadu");
+//	setlocale(LC_ALL, "");
+//	bindtextdomain("kadu", (QString(DATADIR)+"/locale").local8Bit().data());
+//	textdomain("kadu");
 
 	a = new QApplication(argc, argv);
-//	a->setDefaultCodec( QTextCodec::codecForName("ISO 8859-2"));
+
+	// ladowanie tlumaczenia
+	QTranslator kadu_qm(0);
+	kadu_qm.load(QString(DATADIR) + QString("locale/kadu_") + QTextCodec::locale(), ".");
+	a->installTranslator(&kadu_qm);
+
 	QString dir;
 	dir = QString(DATADIR) + "/apps/kadu/icons";
 	icons = new IconsManager(dir);
@@ -50,8 +56,8 @@ int main(int argc, char *argv[])
 		path_.append("/history/");
 		mkdir(path_.local8Bit(), 0700);
 		switch (QMessageBox::information(kadu, "Kadu",
-			i18n("You don't have a config file.\nWhat would you like to do?"),
-			i18n("New UIN"), i18n("Configure"), i18n("Cancel"), 0, 1) ) {
+			QT_TR_NOOP("You don't have a config file.\nWhat would you like to do?"),
+			QT_TR_NOOP("New UIN"), QT_TR_NOOP("Configure"), QT_TR_NOOP("Cancel"), 0, 1) ) {
 			case 1: // Configure
 				ConfigDialog *cd;
 				cd = new ConfigDialog;
@@ -65,7 +71,7 @@ int main(int argc, char *argv[])
 			case 2: // Nothing
 				break;
 			}
-		kadu->setCaption(i18n("Kadu: new user"));
+		kadu->setCaption(QT_TR_NOOP("Kadu: new user"));
 		}
 
 	own_description = defaultdescriptions.first();

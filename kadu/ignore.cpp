@@ -22,22 +22,22 @@ QValueList<UinsList> ignored;
 
 Ignored::Ignored(QDialog *parent, const char *name) : QDialog (parent, name) {
 	resize(180,260);
-	setCaption(i18n("Manage ignored users"));
-	QLabel *descr = new QLabel(i18n("Ignored Uins:"),this);
+	setCaption(tr("Manage ignored users"));
+	QLabel *descr = new QLabel(tr("Ignored Uins:"),this);
 
 	list = new QListBox(this);
 
 	getList();
 
-	QPushButton *b_del = new QPushButton(i18n("Delete"),this);
+	QPushButton *b_del = new QPushButton(tr("Delete"),this);
 	QObject::connect(b_del, SIGNAL(clicked()), this, SLOT(remove()));
 
-	QPushButton *b_add = new QPushButton(i18n("Add"),this);
+	QPushButton *b_add = new QPushButton(tr("Add"),this);
 	QObject::connect(b_add, SIGNAL(clicked()), this, SLOT(add()));
 
 	e_uin = new QLineEdit(this);
 	QToolTip::add(e_uin, "Type here the UIN of the person you want to ignore");
-	QLabel *l_uin = new QLabel(i18n("Uin"),this);
+	QLabel *l_uin = new QLabel(tr("Uin"),this);
 
 	QGridLayout *grid = new QGridLayout(this, 4,2,6,6);
 	grid->addWidget(descr,0,0);

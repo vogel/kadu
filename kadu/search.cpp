@@ -31,18 +31,18 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 	QLabel *l_city;
 	QLabel *l_uin;
 
-	b_sendbtn = new QPushButton(i18n("&Search"),this);
+	b_sendbtn = new QPushButton(tr("&Search"),this);
 	b_sendbtn->setAccel(Key_Return);	
 	connect(b_sendbtn, SIGNAL(clicked()), this, SLOT(firstSearch()));
 
-	b_nextbtn = new QPushButton(i18n("&Next results"),this);
+	b_nextbtn = new QPushButton(tr("&Next results"),this);
 	connect(b_nextbtn, SIGNAL(clicked()), this, SLOT(nextSearch()));
 
 	QPushButton *b_clrbtn;
-	b_clrbtn = new QPushButton(i18n("C&lear list"),this);
+	b_clrbtn = new QPushButton(tr("C&lear list"),this);
 	connect(b_clrbtn, SIGNAL(clicked()), this, SLOT(clearResults()));
 
-	b_addbtn = new QPushButton(i18n("&Add User"),this);
+	b_addbtn = new QPushButton(tr("&Add User"),this);
 	connect(b_addbtn, SIGNAL(clicked()), this, SLOT(AddButtonClicked()));
 
 	QHBoxLayout* CommandLayout = new QHBoxLayout(5);
@@ -51,35 +51,35 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 	CommandLayout->addWidget(b_clrbtn);
 	CommandLayout->addWidget(b_addbtn);
 
-	l_nick = new QLabel(i18n("Nickname"),this);
+	l_nick = new QLabel(tr("Nickname"),this);
 	e_nick = new QLineEdit(this);
 	connect(e_nick, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
-	l_name = new QLabel(i18n("Name"),this);
+	l_name = new QLabel(tr("Name"),this);
 	e_name = new QLineEdit(this);
 	connect(e_name, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
-	l_surname = new QLabel(i18n("Surname"),this);
+	l_surname = new QLabel(tr("Surname"),this);
 	e_surname = new QLineEdit(this);
 	connect(e_surname, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
-	l_gender = new QLabel(i18n("Gender"),this);
+	l_gender = new QLabel(tr("Gender"),this);
 	c_gender = new QComboBox(this);
-	c_gender->insertItem(i18n(" "), 0);
-	c_gender->insertItem(i18n("Male"), 1);
-	c_gender->insertItem(i18n("Female"), 2);
+	c_gender->insertItem(tr(" "), 0);
+	c_gender->insertItem(tr("Male"), 1);
+	c_gender->insertItem(tr("Female"), 2);
 	connect(c_gender, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
-	l_byr = new QLabel(i18n("Birthyear"),this);
+	l_byr = new QLabel(tr("Birthyear"),this);
 	e_byr = new QLineEdit(this);
 	connect(e_byr, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
-	l_city = new QLabel(i18n("City"),this);
+	l_city = new QLabel(tr("City"),this);
 	e_city = new QLineEdit(this);
 	connect(e_city, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
-	QGroupBox * qgrp1 = new QGroupBox(2, Qt::Horizontal, i18n("Uin"), this);
-	l_uin = new QLabel(i18n("Uin"),qgrp1);
+	QGroupBox * qgrp1 = new QGroupBox(2, Qt::Horizontal, tr("Uin"), this);
+	l_uin = new QLabel(tr("Uin"),qgrp1);
 	e_uin = new QLineEdit(qgrp1);
 	connect(e_uin, SIGNAL(textChanged(const QString &)), this, SLOT(uinTyped()));
 
@@ -89,20 +89,20 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 	connect(results, SIGNAL(doubleClicked(QListViewItem *)), this, SLOT(prepareMessage(QListViewItem *)));
 
 	QHButtonGroup * btngrp = new QHButtonGroup(this);
-	btngrp->setTitle(i18n("Search criteria"));
-	r_pers = new QRadioButton(i18n("&Personal data"),btngrp);
+	btngrp->setTitle(tr("Search criteria"));
+	r_pers = new QRadioButton(tr("&Personal data"),btngrp);
 	r_pers->setChecked(true);
-	QToolTip::add(r_pers, i18n("Search using the personal data typed above (name, nickname)..."));
+	QToolTip::add(r_pers, tr("Search using the personal data typed above (name, nickname)..."));
 
-	r_uin = new QRadioButton(i18n("&Uin number"),btngrp);
-	QToolTip::add(r_uin, i18n("Search for this UIN exclusively"));
+	r_uin = new QRadioButton(tr("&Uin number"),btngrp);
+	QToolTip::add(r_uin, tr("Search for this UIN exclusively"));
 
 	connect(results, SIGNAL(selectionChanged(QListViewItem *)), this, SLOT(selectionChanged(QListViewItem *)));
 
 	btngrp->insert(r_pers, 1);
 	btngrp->insert(r_uin, 2);
 
-	only_active = new QCheckBox(i18n("Only active users"),this);
+	only_active = new QCheckBox(tr("Only active users"),this);
 
 	QGridLayout * grid = new QGridLayout (this, 7, 8, 3, 3);
 	grid->addMultiCellWidget(only_active, 0, 0, 0, 2);
@@ -125,12 +125,12 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 	grid->addColSpacing(5, 10);
 	grid->addColSpacing(0, 10);
 
-	results->addColumn(i18n("Status"));
-	results->addColumn(i18n("Uin"));
-	results->addColumn(i18n("Name"));
-	results->addColumn(i18n("City"));
-	results->addColumn(i18n("Nickname"));
-	results->addColumn(i18n("Birth year"));
+	results->addColumn(tr("Status"));
+	results->addColumn(tr("Uin"));
+	results->addColumn(tr("Name"));
+	results->addColumn(tr("City"));
+	results->addColumn(tr("Nickname"));
+	results->addColumn(tr("Birth year"));
 	results->setAllColumnsShowFocus(true);
 	results->setResizeMode(QListView::AllColumns);
 	for (int i = 1; i < 5; i++)
@@ -143,7 +143,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 		e_uin->setText(QString::number(_whoisSearchUin));
 		}
 	resize(450,330);
-	setCaption(i18n("Search in directory"));
+	setCaption(tr("Search in directory"));
 }
 
 SearchDialog::~SearchDialog() {
@@ -159,16 +159,16 @@ void SearchDialog::selectionChanged(QListViewItem *item) {
 	if (item) {
 		uin = item->text(1).toUInt();
 		if (userlist.containsUin(uin) && !userlist.byUin(uin).anonymous) {
-			b_addbtn->setText(i18n("&Update Info"));
+			b_addbtn->setText(tr("&Update Info"));
 			connect(b_addbtn, SIGNAL(clicked()), this, SLOT(updateInfoClicked()));
 			}
 		else {
-			b_addbtn->setText(i18n("&Add User"));
+			b_addbtn->setText(tr("&Add User"));
 			connect(b_addbtn, SIGNAL(clicked()), this, SLOT(AddButtonClicked()));
 			}
 		}
 	else {
-		b_addbtn->setText(i18n("&Add User"));
+		b_addbtn->setText(tr("&Add User"));
 		connect(b_addbtn, SIGNAL(clicked()), this, SLOT(AddButtonClicked()));
 		}
 }
@@ -250,7 +250,7 @@ void SearchDialog::nextSearch(void) {
 	s = QString::number(fromUin);
 	gg_pubdir50_add(req, GG_PUBDIR50_START, s.local8Bit());
 
-	progress->setText(i18n("Searching..."));
+	progress->setText(tr("Searching..."));
 	kdebug("SearchDialog::doSearch(): let the search begin\n");
 
 	seq = gg_pubdir50(sess, req);
@@ -273,9 +273,9 @@ void SearchDialog::showResults(gg_pubdir50_t res) {
 
 	if (count < 1) {
 		kdebug("SearchDialog::showResults(): No results. Exit.\n");
-		progress->setText(i18n("Done searching"));
-		QMessageBox::information(this, i18n("No results"),
-			i18n("There were no results of your search"));
+		progress->setText(tr("Done searching"));
+		QMessageBox::information(this, tr("No results"),
+			tr("There were no results of your search"));
 		searchhidden = false;
 		b_sendbtn->setEnabled(true);
 		b_nextbtn->setEnabled(true);
@@ -329,7 +329,7 @@ void SearchDialog::showResults(gg_pubdir50_t res) {
 		qlv = NULL;
 		}
 
-	progress->setText(i18n("Done searching"));
+	progress->setText(tr("Done searching"));
 
 	fromUin = gg_pubdir50_next(res);
 	if (!results->selectedItem())
@@ -362,8 +362,8 @@ void SearchDialog::AddButtonClicked()
 	if (!selected && results->childCount() == 1)
 		selected = results->firstChild();
 	if (!selected) {
-		QMessageBox::information(this,i18n("Add User"),
-			i18n("Select user first"));
+		QMessageBox::information(this,tr("Add User"),
+			tr("Select user first"));
 		return;
 		}
 
@@ -384,9 +384,9 @@ void SearchDialog::AddButtonClicked()
 	if (!altnick.length())
 		altnick = uin;
 
-	if (QMessageBox::information(this, i18n("Add User"),
-		i18n("Do you want to add user %1 to user list?").arg(altnick),
-		i18n("&Yes"), i18n("&No")) != 0)
+	if (QMessageBox::information(this, tr("Add User"),
+		tr("Do you want to add user %1 to user list?").arg(altnick),
+		tr("&Yes"), tr("&No")) != 0)
 		return;
 
 	kadu->addUser(firstname, "", nickname, altnick, "", uin,
@@ -423,9 +423,9 @@ void SearchDialog::updateInfoClicked()
 	if (!altnick.length())
 		altnick = uin;
 
-	if (QMessageBox::information(this, i18n("Update Info"),
-		i18n("Do you want to update user info for %1?").arg(altnick),
-		i18n("&Yes"), i18n("&No")) != 0)
+	if (QMessageBox::information(this, tr("Update Info"),
+		tr("Do you want to update user info for %1?").arg(altnick),
+		tr("&Yes"), tr("&No")) != 0)
 		return;
 
 	userlist.changeUserInfo(ule.altnick, firstname, "", nickname, ule.altnick,

@@ -162,20 +162,20 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	QVBox *downpart = new QVBox(split1);
 	QHBox *edtbuttontray = new QHBox(downpart);
 
-	QLabel *edt = new QLabel(i18n("Edit window:"),edtbuttontray);
-	QToolTip::add(edt, i18n("This is where you type in the text to be sent"));
+	QLabel *edt = new QLabel(tr("Edit window:"),edtbuttontray);
+	QToolTip::add(edt, tr("This is where you type in the text to be sent"));
 
 	buttontray = new QHBox(edtbuttontray);
 
 	autosend = new QPushButton(buttontray);
 	autosend->setPixmap(loadIcon("key_enter.png"));
 	autosend->setToggleButton(true);
-	QToolTip::add(autosend, i18n("Enter key sends message"));
+	QToolTip::add(autosend, tr("Enter key sends message"));
 
 	lockscroll = new QPushButton(buttontray);
 	lockscroll->setPixmap(loadIcon("scroll_lock.png"));
 	lockscroll->setToggleButton(true);
-	QToolTip::add(lockscroll, i18n("Blocks scrolling"));
+	QToolTip::add(lockscroll, tr("Blocks scrolling"));
 
 #ifdef HAVE_OPENSSL
 	encryption = new QPushButton(buttontray);
@@ -196,25 +196,25 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	
 	QPushButton *clearchat= new QPushButton(buttontray);
 	clearchat->setPixmap(loadIcon("eraser.png"));
-	QToolTip::add(clearchat, i18n("Clear messages in chat window"));
+	QToolTip::add(clearchat, tr("Clear messages in chat window"));
 
 	iconsel = new QPushButton(buttontray);
 	iconsel->setPixmap(loadIcon("icons.png"));
 	if((EmoticonsStyle)config_file.readNumEntry("Other","EmoticonsStyle")==EMOTS_NONE)
 	{
-		QToolTip::add(iconsel, i18n("Insert emoticon - enable in configuration"));
+		QToolTip::add(iconsel, tr("Insert emoticon - enable in configuration"));
 		iconsel->setEnabled(false);
 	}
 	else
-		QToolTip::add(iconsel, i18n("Insert emoticon"));
+		QToolTip::add(iconsel, tr("Insert emoticon"));
 
 	QPushButton *history = new QPushButton(buttontray);
 	history->setPixmap(loadIcon("history.png"));
-	QToolTip::add(history, i18n("Show history"));
+	QToolTip::add(history, tr("Show history"));
 
 	QPushButton *whois = new QPushButton(buttontray);
 	whois->setPixmap(loadIcon("viewmag.png"));
-	QToolTip::add(whois, i18n("Lookup user info"));
+	QToolTip::add(whois, tr("Lookup user info"));
 
 	edtbuttontray->setStretchFactor(edt, 50);
 	edtbuttontray->setStretchFactor(buttontray, 1);
@@ -253,12 +253,12 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 	QHBox *fillerbox = new QHBox(btnpart);
 
-	cancelbtn = new QPushButton(QIconSet(loadIcon("stop.png")),i18n("&Cancel"),btnpart);
+	cancelbtn = new QPushButton(QIconSet(loadIcon("stop.png")),tr("&Cancel"),btnpart);
 	cancelbtn->setFixedWidth(120);
-	QToolTip::add(cancelbtn, i18n("Cancel waiting for delivery"));
+	QToolTip::add(cancelbtn, tr("Cancel waiting for delivery"));
 	cancelbtn->hide();
 
-	sendbtn = new QPushButton(QIconSet(loadIcon("forward.png")),i18n("&Send"),btnpart);
+	sendbtn = new QPushButton(QIconSet(loadIcon("forward.png")),tr("&Send"),btnpart);
 	sendbtn->setFixedWidth(120);
 	connect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
 	QAccel *acc = new QAccel(this);
@@ -405,11 +405,11 @@ void Chat::setupEncryptButton(bool enabled) {
 	encrypt_enabled = enabled;
 	QToolTip::remove(encryption);
 	if (enabled) {
-		QToolTip::add(encryption, i18n("Disable encryption for this conversation"));
+		QToolTip::add(encryption, tr("Disable encryption for this conversation"));
 		encryption->setPixmap(loadIcon("encrypted.png"));
 		}
 	else {
-		QToolTip::add(encryption, i18n("Enable encryption for this conversation"));
+		QToolTip::add(encryption, tr("Enable encryption for this conversation"));
 		encryption->setPixmap(loadIcon("decrypted.png"));
 		}
 #endif		
@@ -446,7 +446,7 @@ void Chat::setTitle() {
 	if (uins.size() > 1) {
 		kdebug("Chat::setTitle(): uins.size() > 1\n");
 		if (config_file.readEntry("Other","ConferencePrefix").isEmpty())
-			title = i18n("Conference with ");
+			title = tr("Conference with ");
 		else
 			title = config_file.readEntry("Other","ConferencePrefix");
 		for (int k = 0; k < uins.size(); k++) {
@@ -459,7 +459,7 @@ void Chat::setTitle() {
 	else {
 		kdebug("Chat::setTitle()\n");
 		if (config_file.readEntry("Other","ChatContents").isEmpty())
-			title = parse(i18n("Chat with ")+"%a (%s[: %d])",userlist.byUinValue(uins[0]),false);
+			title = parse(tr("Chat with ")+"%a (%s[: %d])",userlist.byUinValue(uins[0]),false);
 		else
 			title = parse(config_file.readEntry("Other","ChatContents"),userlist.byUinValue(uins[0]),false);
 		setIcon(*icons->loadIcon(gg_icons[statusGGToStatusNr(userlist.byUinValue(uins[0]).status)]));
@@ -584,8 +584,8 @@ void Chat::hyperlinkClicked(const QString &link) {
 		cmd = QString("konqueror %1").arg(link);
 	else {
                 if (config_file.readEntry("WWW","WebBrowser") == "") {
-			QMessageBox::warning(this, i18n("WWW error"),
-				i18n("Web browser was not specified. Visit the configuration section"));
+			QMessageBox::warning(this, tr("WWW error"),
+				tr("Web browser was not specified. Visit the configuration section"));
 			kdebug("Chat::hyperlinkClicked(): Web browser NOT specified.\n");
 			return;
 			}
@@ -597,8 +597,8 @@ void Chat::hyperlinkClicked(const QString &link) {
 	browser = new QProcess(this);
 	browser->setArguments(args);
 	if (!browser->start())
-		QMessageBox::critical(this, i18n("WWW error"),
-			i18n("Could not spawn Web browser process. Check if the Web browser is functional"));
+		QMessageBox::critical(this, tr("WWW error"),
+			tr("Could not spawn Web browser process. Check if the Web browser is functional"));
 //	QObject::connect(smsProcess, SIGNAL(processExited()), this, SLOT(smsSigHandler()));
 	delete browser;
 }
@@ -782,8 +782,8 @@ void Chat::sendMessage(void) {
 	QString mesg;
 
 	if (getActualStatus() == GG_STATUS_NOT_AVAIL) {
-		QMessageBox::critical(this, i18n("Send message error"),
-			i18n("Application encountered network error."));
+		QMessageBox::critical(this, tr("Send message error"),
+			tr("Application encountered network error."));
 		return;
 		}
 
@@ -1018,16 +1018,16 @@ void Chat::addEmoticon(QString string) {
 
 void Chat::initModule()
 {
-	ConfigDialog::registerTab(i18n("General"));
-	ConfigDialog::registerCheckBox(i18n("General"),i18n("Open chat window on new message"),"Other","OpenChatOnMessage");
-	ConfigDialog::registerTab(i18n("ShortCuts"));
-	ConfigDialog::registerVGroupBox(i18n("ShortCuts"),i18n("Define keys"));
-	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("New line / send message:"),"ShortCuts","chat_newline","Return");
-	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("Clear Chat:"),"ShortCuts","chat_clear","F9");
-	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("Close Chat:"),"ShortCuts","chat_close","Esc");
-	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("Bold text:"),"ShortCuts","chat_bold","Ctrl+B");
-	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("Italic text:"),"ShortCuts","chat_italic","Ctrl+I");
-	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("Underline text:"),"ShortCuts","chat_underline","Ctrl+U");
+	ConfigDialog::registerTab(tr("General"));
+	ConfigDialog::registerCheckBox(tr("General"),tr("Open chat window on new message"),"Other","OpenChatOnMessage");
+	ConfigDialog::registerTab(tr("ShortCuts"));
+	ConfigDialog::registerVGroupBox(tr("ShortCuts"),tr("Define keys"));
+	ConfigDialog::registerHotKeyEdit(tr("Define keys"),tr("New line / send message:"),"ShortCuts","chat_newline","Return");
+	ConfigDialog::registerHotKeyEdit(tr("Define keys"),tr("Clear Chat:"),"ShortCuts","chat_clear","F9");
+	ConfigDialog::registerHotKeyEdit(tr("Define keys"),tr("Close Chat:"),"ShortCuts","chat_close","Esc");
+	ConfigDialog::registerHotKeyEdit(tr("Define keys"),tr("Bold text:"),"ShortCuts","chat_bold","Ctrl+B");
+	ConfigDialog::registerHotKeyEdit(tr("Define keys"),tr("Italic text:"),"ShortCuts","chat_italic","Ctrl+I");
+	ConfigDialog::registerHotKeyEdit(tr("Define keys"),tr("Underline text:"),"ShortCuts","chat_underline","Ctrl+U");
 };
 
 ColorSelectorButton::ColorSelectorButton(QWidget* parent, const QColor& qcolor) : QToolButton(parent)

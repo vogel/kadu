@@ -159,8 +159,8 @@ void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 	kdebug("Kadu::gotUpdatesInfo(): %s\n", buf);
 
 	if (uc->ifNewerVersion(newestversion)) {
-		QMessageBox::information(this, i18n("Update information"),
-			i18n("The newest Kadu version is %1").arg(newestversion), QMessageBox::Ok);
+		QMessageBox::information(this, tr("Update information"),
+			tr("The newest Kadu version is %1").arg(newestversion), QMessageBox::Ok);
 		}
 	delete uc;
 }
@@ -214,11 +214,11 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 {
 	KaduSlots *kaduslots=new KaduSlots();
 	
-	ConfigDialog::registerTab(i18n("General"));
-	ConfigDialog::registerHGroupBox(i18n("General"),i18n("User data"));
-	ConfigDialog::registerLineEdit(i18n("User data"),i18n("Uin"),"Global","UIN","0");
-	ConfigDialog::registerLineEdit(i18n("User data"),i18n("Password"),"Global","Password","");
-	ConfigDialog::registerLineEdit(i18n("User data"),i18n("Nick"),"Global","Nick",i18n("Me"));
+	ConfigDialog::registerTab(tr("General"));
+	ConfigDialog::registerHGroupBox(tr("General"),tr("User data"));
+	ConfigDialog::registerLineEdit(tr("User data"),tr("Uin"),"Global","UIN","0");
+	ConfigDialog::registerLineEdit(tr("User data"),tr("Password"),"Global","Password","");
+	ConfigDialog::registerLineEdit(tr("User data"),tr("Nick"),"Global","Nick",tr("Me"));
 	ConfigDialog::registerSlotOnCreate(kaduslots,SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnDestroy(kaduslots,SLOT(onDestroyConfigDialog()));
 
@@ -231,15 +231,15 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	Chat::initModule();
 	History::initModule();
 	
-	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("Remove from userlist"),  "ShortCuts","kadu_deleteuser","Del");
-	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("View/edit user info"),"ShortCuts","kadu_persinfo","Ins");
-	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("Send SMS"),"ShortCuts","kadu_sendsms","Ctrl+S");
-	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("View history"),"ShortCuts","kadu_viewhistory","F11");
-	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("Lookup in directory"),"ShortCuts","kadu_searchuser","F10");
-	ConfigDialog::registerHotKeyEdit(i18n("Define keys"), i18n("Show / hide inactive users"),"ShortCuts","kadu_showinactive","F9");
-	ConfigDialog::registerHotKeyEdit(i18n("Define keys"), i18n("Send file"),"ShortCuts","kadu_sendfile","F8");
-	ConfigDialog::registerHotKeyEdit(i18n("Define keys"), i18n("Configuration"),"ShortCuts","kadu_configure","F2");
-	ConfigDialog::registerHotKeyEdit(i18n("Define keys"), i18n("Add user"),"ShortCuts","kadu_adduser","F3");
+	ConfigDialog::registerHotKeyEdit(tr("Define keys"),tr("Remove from userlist"),  "ShortCuts","kadu_deleteuser","Del");
+	ConfigDialog::registerHotKeyEdit(tr("Define keys"),tr("View/edit user info"),"ShortCuts","kadu_persinfo","Ins");
+	ConfigDialog::registerHotKeyEdit(tr("Define keys"),tr("Send SMS"),"ShortCuts","kadu_sendsms","Ctrl+S");
+	ConfigDialog::registerHotKeyEdit(tr("Define keys"),tr("View history"),"ShortCuts","kadu_viewhistory","F11");
+	ConfigDialog::registerHotKeyEdit(tr("Define keys"),tr("Lookup in directory"),"ShortCuts","kadu_searchuser","F10");
+	ConfigDialog::registerHotKeyEdit(tr("Define keys"), tr("Show / hide inactive users"),"ShortCuts","kadu_showinactive","F9");
+	ConfigDialog::registerHotKeyEdit(tr("Define keys"), tr("Send file"),"ShortCuts","kadu_sendfile","F8");
+	ConfigDialog::registerHotKeyEdit(tr("Define keys"), tr("Configuration"),"ShortCuts","kadu_configure","F2");
+	ConfigDialog::registerHotKeyEdit(tr("Define keys"), tr("Add user"),"ShortCuts","kadu_adduser","F3");
 	closestatusppmtime.start();
 	lastsoundtime.start();
 
@@ -293,7 +293,7 @@ Po jakiego czorta to ?
 	/* a newbie? */
 
 	if (config_file.readNumEntry("Global","UIN"))
-		setCaption(i18n("Kadu: %1").arg(config_file.readNumEntry("Global","UIN")));
+		setCaption(tr("Kadu: %1").arg(config_file.readNumEntry("Global","UIN")));
 
 	pending.loadFromFile();
 
@@ -313,7 +313,7 @@ Po jakiego czorta to ?
 //	vbox1->setMinimumWidth(10);
 	group_bar = new KaduTabBar(hbox1, "groupbar");
 	group_bar->setShape(QTabBar::RoundedBelow);
-	group_bar->addTab(new QTab(i18n("All")));
+	group_bar->addTab(new QTab(tr("All")));
 	group_bar->setFont(QFont(config_file.readFontEntry("Fonts","UserboxFont").family(),config_file.readFontEntry("Fonts","UserboxFont").pointSize(),75));
 //	group_bar->setMinimumWidth(group_bar->sizeHint().width());
 	connect(group_bar, SIGNAL(selected(int)), this, SLOT(groupTabSelected(int)));
@@ -352,7 +352,7 @@ Po jakiego czorta to ?
 	connect(userbox, SIGNAL(currentChanged(QListBoxItem *)), this, SLOT(currentChanged(QListBoxItem *)));
 
 	statuslabeltxt = new MyLabel(centralFrame, "statuslabeltxt");
-	statuslabeltxt->setText(i18n("Offline"));
+	statuslabeltxt->setText(tr("Offline"));
 	statuslabeltxt->setFrameStyle(QFrame::WinPanel | QFrame::Sunken);
 	statuslabeltxt->setFont(QFont("Verdana", 9));
 	statuslabeltxt->setFixedWidth((width() - 45) > 50 ? width() - 45 : 50);
@@ -375,7 +375,7 @@ Po jakiego czorta to ?
 	connect(statusppm, SIGNAL(aboutToHide()), this, SLOT(statusMenuAboutToHide()));
 
 	dockppm->insertSeparator();
-	dockppm->insertItem(loadIcon("exit.png"), i18n("&Exit Kadu"), 9);
+	dockppm->insertItem(loadIcon("exit.png"), tr("&Exit Kadu"), 9);
 	if (config_file.readBoolEntry("Global","UseDocking"))
 		trayicon->connectSignals();
 //		connect(dockppm, SIGNAL(activated(int)), trayicon, SLOT(dockletChange(int)));
@@ -406,9 +406,9 @@ Po jakiego czorta to ?
 	setDockEnabled(Qt::DockBottom, false);
 	setAppropriate(toolbar, true);
 	toolbar->setCloseMode(QDockWindow::Undocked);
-	toolbar->setLabel(i18n("Main toolbar"));
+	toolbar->setLabel(tr("Main toolbar"));
 
-	QToolButton *inactivebtn = new QToolButton(*icons->loadIcon("offline"), i18n("Show / hide inactive users"),
+	QToolButton *inactivebtn = new QToolButton(*icons->loadIcon("offline"), tr("Show / hide inactive users"),
 	QString::null, this, SLOT(showHideInactive()), toolbar, "ShowHideInactive");
 
 	
@@ -417,21 +417,21 @@ Po jakiego czorta to ?
 	{mu= new QIconSet(loadIcon("mute.png"));}
 	else
 	{mu= new QIconSet(loadIcon("unmute.png"));}
-	mutebtn = new QToolButton((*mu), i18n("Mute sounds"),
+	mutebtn = new QToolButton((*mu), tr("Mute sounds"),
 	QString::null, this, SLOT(muteUnmuteSounds()), toolbar, "mute");
 
-	QToolButton *configbtn = new QToolButton(loadIcon("configure.png"), i18n("Configuration"),
+	QToolButton *configbtn = new QToolButton(loadIcon("configure.png"), tr("Configuration"),
 		QString::null, this, SLOT(configure()), toolbar, "configure");
 		
 	toolbar->addSeparator();
-	QToolButton *viewhistorybtn = new QToolButton(loadIcon("history.png"), i18n("View history"),
+	QToolButton *viewhistorybtn = new QToolButton(loadIcon("history.png"), tr("View history"),
 		QString::null, this, SLOT(viewHistory()), toolbar, "viewhistory");
-	QToolButton *userinfobtn = new QToolButton(loadIcon("identity.png"), i18n("View/edit user info"),
+	QToolButton *userinfobtn = new QToolButton(loadIcon("identity.png"), tr("View/edit user info"),
 		QString::null, this, SLOT(showUserInfo()), toolbar, "userinfo");
-	QToolButton *lookupbtn = new QToolButton(loadIcon("viewmag.png"),i18n("Lookup in directory"),
+	QToolButton *lookupbtn = new QToolButton(loadIcon("viewmag.png"),tr("Lookup in directory"),
 		QString::null, this, SLOT(lookupInDirectory()), toolbar, "lookup");
 	toolbar->addSeparator();
-	QToolButton *adduserbtn = new QToolButton(*icons->loadIcon("online"), i18n("Add user"),
+	QToolButton *adduserbtn = new QToolButton(*icons->loadIcon("online"), tr("Add user"),
 		QString::null, this, SLOT(addUserAction()), toolbar, "adduser");
 	QFrame *toolbarfiller = new QFrame(toolbar);
 	toolbar->setStretchableWidget(toolbarfiller);
@@ -500,12 +500,12 @@ void Kadu::muteUnmuteSounds()
 	mute = !mute;
 	if (mute) {
 		mutebtn->setIconSet(loadIcon("mute.png"));
-		mutebtn->setTextLabel(i18n("Unmute sounds"));
-		mmb->changeItem(muteitem, loadIcon("mute.png"), i18n("Unmute sounds"));
+		mutebtn->setTextLabel(tr("Unmute sounds"));
+		mmb->changeItem(muteitem, loadIcon("mute.png"), tr("Unmute sounds"));
 		}
 	else {
-		mmb->changeItem(muteitem, loadIcon("unmute.png"), i18n("Mute sounds"));
-		mutebtn->setTextLabel(i18n("Mute sounds"));
+		mmb->changeItem(muteitem, loadIcon("unmute.png"), tr("Mute sounds"));
+		mutebtn->setTextLabel(tr("Mute sounds"));
 		mutebtn->setIconSet(loadIcon("unmute.png"));
 		}
 }
@@ -562,7 +562,7 @@ void Kadu::sendFile()
 
 void Kadu::lookupInDirectory() {
 	if (userbox->currentItem() != -1) {
-		SearchDialog *sd = new SearchDialog(0, i18n("User info"),
+		SearchDialog *sd = new SearchDialog(0, tr("User info"),
 			userlist.byAltNick(userbox->currentText()).uin);
 		sd->show();
 		sd->firstSearch();
@@ -618,7 +618,7 @@ void Kadu::sendKey()
 		QCString tmp(mykey.local8Bit());
 		gg_send_message(sess, GG_CLASS_MSG, user.uin, (unsigned char *)tmp.data());
 		QMessageBox::information(this, "Kadu",
-			i18n("Your public key has been sent"), i18n("OK"), QString::null, 0);
+			tr("Your public key has been sent"), tr("OK"), QString::null, 0);
 		}
 #endif
 }
@@ -914,8 +914,8 @@ void Kadu::userListStatusModified(UserListElement *user)
 void Kadu::removeUser(QStringList &users, bool permanently = false)
 {
 	if(QMessageBox::warning(kadu, "Kadu",
-		i18n("Selected users will be deleted. Are you sure?"),
-		i18n("&Yes"),i18n("&No"))!=0)
+		tr("Selected users will be deleted. Are you sure?"),
+		tr("&Yes"),tr("&No"))!=0)
 		return;
 
 	int i;
@@ -986,7 +986,7 @@ void Kadu::prepareDcc(void) {
 		kdebug("Kadu::prepareDcc(): Couldn't bind DCC socket.\n");
 		gg_dcc_free(dccsock);
 		QMessageBox::warning(kadu, "",
-			i18n("Couldn't create DCC socket.\nDirect connections disabled."));
+			tr("Couldn't create DCC socket.\nDirect connections disabled."));
 		return;
 		}
 
@@ -1120,13 +1120,13 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 	UserListElement user;
 	user = userlist.byAltNick(item->text());
 
-//	pm->insertItem(msg, i18n("Send message"), KADU_CMD_SEND_MESSAGE);
-	openchatitem= pm->insertItem(i18n("Open chat window") ,this, SLOT(openChat()));
-	smsitem= pm->insertItem(i18n("Send SMS"),this,SLOT(sendSmsToUser()),HotKey::shortCutFromFile("kadu_sendsms"));
+//	pm->insertItem(msg, tr("Send message"), KADU_CMD_SEND_MESSAGE);
+	openchatitem= pm->insertItem(tr("Open chat window") ,this, SLOT(openChat()));
+	smsitem= pm->insertItem(tr("Send SMS"),this,SLOT(sendSmsToUser()),HotKey::shortCutFromFile("kadu_sendsms"));
 	if (!user.mobile.length())
 		pm->setItemEnabled(smsitem,false);
 
-	sendfile= pm->insertItem(loadIcon("filesave.png"), i18n("Send file"), this, SLOT(sendFile()),HotKey::shortCutFromFile("kadu_sendfile"));
+	sendfile= pm->insertItem(loadIcon("filesave.png"), tr("Send file"), this, SLOT(sendFile()),HotKey::shortCutFromFile("kadu_sendfile"));
 	if (dccSocketClass::count >= 8)
 		pm->setItemEnabled(sendfile, false);
 	if (user.status == GG_STATUS_AVAIL || user.status == GG_STATUS_AVAIL_DESCR ||
@@ -1137,7 +1137,7 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 
 #ifdef HAVE_OPENSSL
 	int sendkeyitem;
-	sendkeyitem= pm->insertItem(loadIcon("encrypted.png"), i18n("Send my public key"), this, SLOT(sendKey()));
+	sendkeyitem= pm->insertItem(loadIcon("encrypted.png"), tr("Send my public key"), this, SLOT(sendKey()));
 
 	QString keyfile_path;
 
@@ -1154,10 +1154,10 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 #endif
 
 	pm->insertSeparator();
-	ignoreuseritem= pm->insertItem(i18n("Ignore user"), this, SLOT(ignoreUser()));
-	blockuseritem= pm->insertItem(i18n("Block user"), this, SLOT(blockUser()));
-	notifyuseritem= pm->insertItem(i18n("Notify about user"), this, SLOT(notifyUser()));
-	offlinetouseritem= pm->insertItem(i18n("Offline to user"), this, SLOT(offlineToUser()));
+	ignoreuseritem= pm->insertItem(tr("Ignore user"), this, SLOT(ignoreUser()));
+	blockuseritem= pm->insertItem(tr("Block user"), this, SLOT(blockUser()));
+	notifyuseritem= pm->insertItem(tr("Notify about user"), this, SLOT(notifyUser()));
+	offlinetouseritem= pm->insertItem(tr("Offline to user"), this, SLOT(offlineToUser()));
 	if (!user.uin) {
 		pm->setItemEnabled(ignoreuseritem, false);
 		pm->setItemEnabled(blockuseritem, false);
@@ -1180,13 +1180,13 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 		}
 
 	pm->insertSeparator();
-	pm->insertItem(loadIcon("remove.png"), i18n("Remove from userlist"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("kadu_deleteuser"));
-	deletehistoryitem= pm->insertItem(loadIcon("eraser.png"), i18n("Clear history"), this, SLOT(deleteHistory()));
+	pm->insertItem(loadIcon("remove.png"), tr("Remove from userlist"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("kadu_deleteuser"));
+	deletehistoryitem= pm->insertItem(loadIcon("eraser.png"), tr("Clear history"), this, SLOT(deleteHistory()));
 	QPixmap history;
 	history = loadIcon("history.png");
-	historyitem= pm->insertItem(history, i18n("View history"),this,SLOT(viewHistory()),HotKey::shortCutFromFile("kadu_viewhistory"));
-	pm->insertItem(loadIcon("identity.png"), i18n("View/edit user info"), this, SLOT(showUserInfo()),HotKey::shortCutFromFile("kadu_persinfo"));
-	searchuser= pm->insertItem(loadIcon("viewmag.png"), i18n("Lookup in directory"), this, SLOT(lookupInDirectory()),HotKey::shortCutFromFile("kadu_searchuser"));
+	historyitem= pm->insertItem(history, tr("View history"),this,SLOT(viewHistory()),HotKey::shortCutFromFile("kadu_viewhistory"));
+	pm->insertItem(loadIcon("identity.png"), tr("View/edit user info"), this, SLOT(showUserInfo()),HotKey::shortCutFromFile("kadu_persinfo"));
+	searchuser= pm->insertItem(loadIcon("viewmag.png"), tr("Lookup in directory"), this, SLOT(lookupInDirectory()),HotKey::shortCutFromFile("kadu_searchuser"));
 	if (!user.uin) {
 		pm->setItemEnabled(deletehistoryitem, false);
 		pm->setItemEnabled(historyitem, false);
@@ -1195,7 +1195,7 @@ void Kadu::listPopupMenu(QListBoxItem *item) {
 		pm->setItemEnabled(openchatitem, false);
 		}
 	pm->insertSeparator();
-	pm->insertItem(i18n("About..."), this, SLOT(about()));
+	pm->insertItem(tr("About..."), this, SLOT(about()));
 
 	pm->exec(QCursor::pos());    	
 }
@@ -1385,7 +1385,7 @@ void Kadu::setCurrentStatus(int status) {
 	statusppm->setItemChecked(statusnr, true);
 	dockppm->setItemChecked(statusnr, true);	
 
-	statuslabeltxt->setText(i18n(statustext[statusnr]));
+	statuslabeltxt->setText(tr(statustext[statusnr]));
 	statusppm->setItemEnabled(7, statusnr != 6);
 	dockppm->setItemEnabled(7, statusnr != 6);
 	QPixmap *pix = icons->loadIcon(gg_icons[statusnr]);
@@ -1535,8 +1535,8 @@ void Kadu::setStatus(int status) {
 		}
 	else {
 		disconnectNetwork();
-		QMessageBox::warning(kadu, i18n("Connection problem"),
-			i18n("Couldn't connect.\nCheck your internet connection."));
+		QMessageBox::warning(kadu, tr("Connection problem"),
+			tr("Couldn't connect.\nCheck your internet connection."));
 		}
 }
 
@@ -1663,24 +1663,24 @@ bool Kadu::event(QEvent *e) {
 		dcc = *data;
 		switch (dcc->state) {
 			case DCC_SOCKET_TRANSFER_FINISHED:
-				QMessageBox::information(0, i18n("Information"),
-					i18n("File has been transferred sucessfully."),
-					i18n("&OK"));
+				QMessageBox::information(0, tr("Information"),
+					tr("File has been transferred sucessfully."),
+					tr("&OK"));
 				break;
 			case DCC_SOCKET_TRANSFER_DISCARDED:
-//				QMessageBox::information(0, i18n("Information"), 
-//					i18n("File transfer has been discarded."), i18n("&OK"));
+//				QMessageBox::information(0, tr("Information"), 
+//					tr("File transfer has been discarded."), tr("&OK"));
 				break;
 			case DCC_SOCKET_TRANSFER_ERROR:
 			case DCC_SOCKET_CONNECTION_BROKEN:
-				QMessageBox::information(0, i18n("Error"),
-					i18n("File transfer error!"),
-					i18n("&OK"));
+				QMessageBox::information(0, tr("Error"),
+					tr("File transfer error!"),
+					tr("&OK"));
 				break;
 			case DCC_SOCKET_COULDNT_OPEN_FILE:
-				QMessageBox::information(0, i18n("Error"),
-					i18n("Couldn't open file!"),
-					i18n("&OK"));
+				QMessageBox::information(0, tr("Error"),
+					tr("Couldn't open file!"),
+					tr("&OK"));
 				break;
 			}
 		delete data;
@@ -1789,42 +1789,42 @@ void Kadu::createMenu() {
 	mmb = new QMenuBar(this, "mmb");
 
 	QPopupMenu *ppm = new QPopupMenu(this, "ppm");
-	ppm->insertItem(i18n("Manage &ignored"), this, SLOT(manageIgnored()));
-	ppm->insertItem(loadIcon("configure.png"), i18n("&Configuration"), this, SLOT(configure()),HotKey::shortCutFromFile("kadu_configure"));
-	ppm->insertItem(loadIcon("reload.png"), i18n("Resend &userlist"), this, SLOT(sendUserlist1()));
+	ppm->insertItem(tr("Manage &ignored"), this, SLOT(manageIgnored()));
+	ppm->insertItem(loadIcon("configure.png"), tr("&Configuration"), this, SLOT(configure()),HotKey::shortCutFromFile("kadu_configure"));
+	ppm->insertItem(loadIcon("reload.png"), tr("Resend &userlist"), this, SLOT(sendUserlist1()));
 	if (mute) {
-		muteitem= ppm->insertItem(loadIcon("mute.png"), i18n("Unmute sounds"), this, SLOT(muteUnmuteSounds()));
+		muteitem= ppm->insertItem(loadIcon("mute.png"), tr("Unmute sounds"), this, SLOT(muteUnmuteSounds()));
 		}
 	else {
-		muteitem= ppm->insertItem(loadIcon("unmute.png"), i18n("Mute sounds"), this, SLOT(muteUnmuteSounds()));
+		muteitem= ppm->insertItem(loadIcon("unmute.png"), tr("Mute sounds"), this, SLOT(muteUnmuteSounds()));
 		}
 	ppm->insertSeparator();
 
 	grpmenu = new QPopupMenu(this);
-	grpmenu->insertItem(i18n("All"), 600);
+	grpmenu->insertItem(tr("All"), 600);
 	grpmenu->insertSeparator();
 
-	ppm->insertItem(i18n("Remind &password"), this, SLOT(remindPassword1()));
-	ppm->insertItem(i18n("&Change password"), this, SLOT(changePassword1()));
-	ppm->insertItem(loadIcon("newuser.png"),i18n("Register &new user"), this, SLOT(registerUser()));
-	ppm->insertItem(i18n("Unregister user"), this, SLOT(unregisterUser()));
-	ppm->insertItem(i18n("Personal information"), this,SLOT(personalInfo()));
+	ppm->insertItem(tr("Remind &password"), this, SLOT(remindPassword1()));
+	ppm->insertItem(tr("&Change password"), this, SLOT(changePassword1()));
+	ppm->insertItem(loadIcon("newuser.png"),tr("Register &new user"), this, SLOT(registerUser()));
+	ppm->insertItem(tr("Unregister user"), this, SLOT(unregisterUser()));
+	ppm->insertItem(tr("Personal information"), this,SLOT(personalInfo()));
 	ppm->insertSeparator();
 	QPixmap find;
 	find = loadIcon("viewmag.png");
-	ppm->insertItem(find, i18n("&Search for users"), this, SLOT(searchInDirectory()));
-	ppm->insertItem(i18n("I&mport userlist"), this, SLOT(importUserlist()));
-	ppm->insertItem(i18n("E&xport userlist"), this, SLOT(exportUserlist()));
-	ppm->insertItem(*icons->loadIcon("online"), i18n("&Add user"), this, SLOT(addUserAction()),HotKey::shortCutFromFile("kadu_adduser"));
-	ppm->insertItem(i18n("Send SMS"), this,SLOT(sendSms()));
+	ppm->insertItem(find, tr("&Search for users"), this, SLOT(searchInDirectory()));
+	ppm->insertItem(tr("I&mport userlist"), this, SLOT(importUserlist()));
+	ppm->insertItem(tr("E&xport userlist"), this, SLOT(exportUserlist()));
+	ppm->insertItem(*icons->loadIcon("online"), tr("&Add user"), this, SLOT(addUserAction()),HotKey::shortCutFromFile("kadu_adduser"));
+	ppm->insertItem(tr("Send SMS"), this,SLOT(sendSms()));
 	ppm->insertSeparator();	
-	ppm->insertItem(i18n("H&elp"), this, SLOT(help()));	
-	ppm->insertItem(i18n("A&bout..."), this, SLOT(about()));
+	ppm->insertItem(tr("H&elp"), this, SLOT(help()));	
+	ppm->insertItem(tr("A&bout..."), this, SLOT(about()));
 	ppm->insertSeparator();
-	ppm->insertItem(i18n("&Hide Kadu"), this, SLOT(hideKadu()));
-	ppm->insertItem(loadIcon("exit.png"), i18n("&Exit Kadu"), this, SLOT(quit()));
+	ppm->insertItem(tr("&Hide Kadu"), this, SLOT(hideKadu()));
+	ppm->insertItem(loadIcon("exit.png"), tr("&Exit Kadu"), this, SLOT(quit()));
 
-	mmb->insertItem(i18n("&Kadu"), ppm);
+	mmb->insertItem(tr("&Kadu"), ppm);
 //	mmb->polish();
 }
 
@@ -1843,15 +1843,15 @@ void Kadu::createStatusPopupMenu() {
 	for (int i=0; i<8; i++) {
 		pix = icons->loadIcon(gg_icons[i]);
 		icon = QIconSet(*pix);
-		statusppm->insertItem(icon, i18n((const char *)statustext[i]), i);
-		dockppm->insertItem(icon, i18n((const char *)statustext[i]), i);
+		statusppm->insertItem(icon, tr((const char *)statustext[i]), i);
+		dockppm->insertItem(icon, tr((const char *)statustext[i]), i);
 		}
 
 	statusppm->insertSeparator();
 	dockppm->insertSeparator();
-	statusppm->insertItem(i18n("Private"), 8);
+	statusppm->insertItem(tr("Private"), 8);
 	statusppm->setItemChecked(8, config_file.readBoolEntry("Global","PrivateStatus"));
-	dockppm->insertItem(i18n("Private"), 8);
+	dockppm->insertItem(tr("Private"), 8);
 	dockppm->setItemChecked(8, config_file.readBoolEntry("Global","PrivateStatus"));
 
 	statusppm->setCheckable(true);
@@ -1889,7 +1889,7 @@ void Kadu::infopanelUpdate(uin_t uin) {
 void KaduSlots::onCreateConfigDialog()
 {
 	kdebug("KaduSlots::onCreateConfigDialog() \n");
-	QLineEdit *e_password=((QLineEdit*)ConfigDialog::getWidget(i18n("User data"),i18n("Password")));
+	QLineEdit *e_password=((QLineEdit*)ConfigDialog::getWidget(tr("User data"),tr("Password")));
 	e_password->setEchoMode(QLineEdit::Password);
 	e_password->setText(pwHash(config_file.readEntry("Global","Password","")));
 }
@@ -1897,7 +1897,7 @@ void KaduSlots::onCreateConfigDialog()
 void KaduSlots::onDestroyConfigDialog()
 {
 	kdebug("KaduSlots::onDestroyConfigDialog() \n");
-	QLineEdit *e_password=((QLineEdit*)ConfigDialog::getWidget(i18n("User data"),i18n("Password")));
+	QLineEdit *e_password=((QLineEdit*)ConfigDialog::getWidget(tr("User data"),tr("Password")));
 	e_password->setEchoMode(QLineEdit::Password);
 	config_file.writeEntry("Global","Password",pwHash(e_password->text()));
 }

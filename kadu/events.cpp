@@ -68,15 +68,15 @@ SavePublicKey::SavePublicKey(uin_t uin, QString keyData, QWidget *parent, const 
 	
 	kdebug("SavePublicKey::SavePublicKey()\n");
 
-	setCaption(i18n("Save public key"));
+	setCaption(tr("Save public key"));
 	resize(200, 80);
 	
 	QLabel *l_info = new QLabel(
-		i18n("User %1 is sending you his public key. Do you want to save it?").arg(userlist.byUin(uin).altnick),
+		tr("User %1 is sending you his public key. Do you want to save it?").arg(userlist.byUin(uin).altnick),
 		this);
 
-	QPushButton *yesbtn = new QPushButton(i18n("Yes"), this);
-	QPushButton *nobtn = new QPushButton(i18n("No"), this);
+	QPushButton *yesbtn = new QPushButton(tr("Yes"), this);
+	QPushButton *nobtn = new QPushButton(tr("No"), this);
 
 	QObject::connect(yesbtn, SIGNAL(clicked()), this, SLOT(yesClicked()));
 	QObject::connect(nobtn, SIGNAL(clicked()), this, SLOT(reject()));
@@ -102,7 +102,7 @@ void SavePublicKey::yesClicked() {
 	keyfile.setName(keyfile_path);
 
 	if (!(keyfile.open(IO_WriteOnly))) {
-		QMessageBox::critical(this, i18n("Error"), i18n("Error writting the key"), i18n("OK"), QString::null, 0);
+		QMessageBox::critical(this, tr("Error"), tr("Error writting the key"), tr("OK"), QString::null, 0);
 		kdebug("eventRecvMsg(): Error opening key file %s\n", (const char *)keyfile_path.local8Bit());
 		return;
 		}
@@ -185,7 +185,7 @@ void EventManager::connectionBrokenSlot()
 
 void EventManager::disconnectedSlot()
 {
-	trayicon->showErrorHint(i18n("Disconnection has occured"));
+	trayicon->showErrorHint(tr("Disconnection has occured"));
 	kdebug("Disconnection been occured\n");
 	kadu->autohammer = false;
 	kadu->disconnectNetwork();
@@ -306,7 +306,7 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 		chats[i].ptr->checkPresence(senders, mesg, time, toadd);
 		chats[i].ptr->alertNewMessage();
 		if (!chats[i].ptr->isActiveWindow() && config_file.readBoolEntry("Other","HintAlert"))
-			trayicon->showHint(i18n("New message from: "), ule.altnick,0);
+			trayicon->showHint(tr("New message from: "), ule.altnick,0);
 		return;
 		}
 
@@ -327,9 +327,9 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 		}
 
 	if (msgclass == GG_CLASS_CHAT)
-		trayicon->showHint(i18n("Chat with: "), ule.altnick,0);
+		trayicon->showHint(tr("Chat with: "), ule.altnick,0);
 	if (msgclass == GG_CLASS_MSG)
-		trayicon->showHint(i18n("Message from: "), ule.altnick,0);
+		trayicon->showHint(tr("Message from: "), ule.altnick,0);
 
 	emit chatReceived(senders,mesg,time);
 
@@ -371,9 +371,9 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 		if (config_file.readBoolEntry("Notify","NotifyWithDialogBox")) {		
 			// FIXME convert into a regular QMessageBox
 			QString msg;
-			msg = i18n("User %1 is available").arg(userlist.byUin(uin).altnick);
+			msg = QT_TR_NOOP(QString("User %1 is available")).arg(userlist.byUin(uin).altnick);
 			QMessageBox *msgbox;
-			msgbox = new QMessageBox(i18n("User notify"), msg, QMessageBox::NoIcon,
+			msgbox = new QMessageBox(QT_TR_NOOP("User notify"), msg, QMessageBox::NoIcon,
 				QMessageBox::Ok, QMessageBox::NoButton, QMessageBox::NoButton,
 				0, 0, FALSE, Qt::WStyle_DialogBorder || Qt::WDestructiveClose);
 			msgbox->show();
@@ -387,7 +387,7 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 			lastsoundtime.restart();
 			}
 		if (config_file.readBoolEntry("Notify","NotifyWithHint"))		
-			trayicon->showHint(i18n(" is available"),userlist.byUin(uin).altnick,1);
+			trayicon->showHint(QT_TR_NOOP(" is available"),userlist.byUin(uin).altnick,1);
 		}
 }
 

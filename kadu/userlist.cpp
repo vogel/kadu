@@ -69,7 +69,7 @@ QString UserListElement::group()
 
 void UserListElement::setGroup(const QString& group)
 {
-	if (group == i18n("All"))
+	if (group == QT_TR_NOOP("All"))
 		Group="";
 	else
 		Group=group;
@@ -201,7 +201,7 @@ void UserList::addUser(const QString &FirstName,const QString &LastName,
 	e.blocking = Blocking;
 	e.offline_to_user = Offline_to_user;
 	e.notify = Notify;
-	if (Group != i18n("All"))
+	if (Group != tr("All"))
 		e.Group = Group;
 	else
 		e.Group = "";
@@ -239,7 +239,7 @@ void UserList::changeUserInfo(const QString &OldAltNick,
 	e.blocking = Blocking;
 	e.offline_to_user = Offline_to_user;
 	e.notify = Notify;
-	if (Group != i18n("All"))
+	if (Group != tr("All"))
 		e.Group = Group;
 	else
 		e.Group = "";

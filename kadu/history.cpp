@@ -267,8 +267,8 @@ void HistoryManager::removeHistory(UinsList uins) {
 	kdebug("HistoryManager::removeHistory()\n");
 
 	QString fname;
-	switch (QMessageBox::information(kadu, "Kadu", i18n("Clear history?"),
-		i18n("Yes"), i18n("No"), QString::null, 1, 1)) {
+	switch (QMessageBox::information(kadu, "Kadu", QT_TR_NOOP("Clear history?"),
+		QT_TR_NOOP("Yes"), QT_TR_NOOP("No"), QString::null, 1, 1)) {
 		case 0:
 			fname = ggPath("history/");
 			fname.append(getFileNameByUinsList(uins));
@@ -888,7 +888,7 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) 
 	history.convHist2ekgForm(uins);
 	history.buildIndex(uins);
 
-	setCaption(i18n("History"));
+	setCaption(tr("History"));
 	setWFlags(Qt::WDestructiveClose);
 
 	QGridLayout *grid = new QGridLayout(this, 2, 4, 3, 3);
@@ -898,17 +898,17 @@ History::History(UinsList uins): uins(uins), closeDemand(false), finding(false) 
 	body->setFont(config_file.readFontEntry("Fonts","ChatFont"));
 
 //	QPushButton *closebtn = new QPushButton(this);
-//	closebtn->setText(i18n("&Close"));
+//	closebtn->setText(tr("&Close"));
 	QPushButton *prevbtn = new QPushButton(this);
 	prevbtn->setPixmap(loadIcon("back.png"));
 	QPushButton *nextbtn = new QPushButton(this);
 	nextbtn->setPixmap(loadIcon("forward.png"));
 	QPushButton *searchbtn = new QPushButton(this);
-	searchbtn->setText(i18n("&Find"));
+	searchbtn->setText(tr("&Find"));
 	QPushButton *searchnextbtn = new QPushButton(this);
-	searchnextbtn->setText(i18n("Find &next"));
+	searchnextbtn->setText(tr("Find &next"));
 	QPushButton *searchprevbtn = new QPushButton(this);
-	searchprevbtn->setText(i18n("Find &previous"));
+	searchprevbtn->setText(tr("Find &previous"));
 
 	grid->addMultiCellWidget(body, 0, 0, 0, 4);
 	grid->addWidget(prevbtn, 1, 0);
@@ -998,19 +998,19 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry) {
 		switch (entry.status) {
 			case GG_STATUS_AVAIL:
 			case GG_STATUS_AVAIL_DESCR:
-				text.append(i18n("Online"));
+				text.append(tr("Online"));
 				break;
 			case GG_STATUS_BUSY:
 			case GG_STATUS_BUSY_DESCR:
-				text.append(i18n("Busy"));
+				text.append(tr("Busy"));
 				break;
 			case GG_STATUS_INVISIBLE:
 			case GG_STATUS_INVISIBLE_DESCR:
-				text.append(i18n("Invisible"));
+				text.append(tr("Invisible"));
 				break;
 			case GG_STATUS_NOT_AVAIL:
 			case GG_STATUS_NOT_AVAIL_DESCR:
-				text.append(i18n("Offline"));
+				text.append(tr("Offline"));
 				break;
 			}
 		if (entry.description.length())
@@ -1188,12 +1188,12 @@ void History::closeEvent(QCloseEvent *e) {
 void History::initModule()
 {
 	HistorySlots *historyslots=new HistorySlots();
-	ConfigDialog::registerTab(i18n("History"));
-	ConfigDialog::registerVGroupBox(i18n("History"),i18n("Quoted phrases during chat open"));
-	ConfigDialog::registerSpinBox(i18n("Quoted phrases during chat open"),i18n("Count:"),"Other","ChatHistoryCitation",0,200,1);
-	ConfigDialog::registerLabel(i18n("Quoted phrases during chat open"),i18n("Don't quote phrases older than:"));
-	ConfigDialog::registerSlider(i18n("Quoted phrases during chat open"),"historyslider","Other","ChatHistoryQuotationTime",-744,-1,24,-336);
-	ConfigDialog::registerLabel(i18n("Quoted phrases during chat open"),"","dayhour");
+	ConfigDialog::registerTab(tr("History"));
+	ConfigDialog::registerVGroupBox(tr("History"),tr("Quoted phrases during chat open"));
+	ConfigDialog::registerSpinBox(tr("Quoted phrases during chat open"),tr("Count:"),"Other","ChatHistoryCitation",0,200,1);
+	ConfigDialog::registerLabel(tr("Quoted phrases during chat open"),tr("Don't quote phrases older than:"));
+	ConfigDialog::registerSlider(tr("Quoted phrases during chat open"),"historyslider","Other","ChatHistoryQuotationTime",-744,-1,24,-336);
+	ConfigDialog::registerLabel(tr("Quoted phrases during chat open"),"","dayhour");
 
 	ConfigDialog::registerSlotOnCreate(historyslots,SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnDestroy(historyslots,SLOT(onDestroyConfigDialog()));
@@ -1201,7 +1201,7 @@ void History::initModule()
 }
 
 HistorySearch::HistorySearch(QWidget *parent, UinsList uins) : QDialog(parent), uins(uins) {
-	setCaption(i18n("Search history"));
+	setCaption(tr("Search history"));
 
 	int i;
 	char buf[128];
@@ -1228,61 +1228,61 @@ HistorySearch::HistorySearch(QWidget *parent, UinsList uins) : QDialog(parent), 
 		minslist.append(numslist[i]);
 	
 	QHBox *from_hb = new QHBox(this);
-	from_chb = new QCheckBox(i18n("&From:") ,from_hb);
+	from_chb = new QCheckBox(tr("&From:") ,from_hb);
 	from_hgb = new QHGroupBox(from_hb);
 	from_day_cob = new QComboBox(from_hgb);
 	from_day_cob->insertStringList(dayslist);
-	QToolTip::add(from_day_cob, i18n("day"));
+	QToolTip::add(from_day_cob, tr("day"));
 	from_month_cob = new QComboBox(from_hgb);
 	from_month_cob->insertStringList(monthslist);
-	QToolTip::add(from_month_cob, i18n("month"));
+	QToolTip::add(from_month_cob, tr("month"));
 	from_year_cob = new QComboBox(from_hgb);
 	from_year_cob->insertStringList(yearslist);
-	QToolTip::add(from_year_cob, i18n("year"));
+	QToolTip::add(from_year_cob, tr("year"));
 	from_hour_cob = new QComboBox(from_hgb);
 	from_hour_cob->insertStringList(hourslist);
-	QToolTip::add(from_hour_cob, i18n("hour"));
+	QToolTip::add(from_hour_cob, tr("hour"));
 	from_min_cob = new QComboBox(from_hgb);
 	from_min_cob->insertStringList(minslist);
-	QToolTip::add(from_min_cob, i18n("minute"));
+	QToolTip::add(from_min_cob, tr("minute"));
 
 	QHBox *to_hb = new QHBox(this);
-	to_chb = new QCheckBox(i18n("&To:") ,to_hb);
+	to_chb = new QCheckBox(tr("&To:") ,to_hb);
 	to_hgb = new QHGroupBox(to_hb);
 	to_day_cob = new QComboBox(to_hgb);
 	to_day_cob->insertStringList(dayslist);
-	QToolTip::add(to_day_cob, i18n("day"));
+	QToolTip::add(to_day_cob, tr("day"));
 	to_month_cob = new QComboBox(to_hgb);
 	to_month_cob->insertStringList(monthslist);
-	QToolTip::add(to_month_cob, i18n("month"));
+	QToolTip::add(to_month_cob, tr("month"));
 	to_year_cob = new QComboBox(to_hgb);
 	to_year_cob->insertStringList(yearslist);
-	QToolTip::add(to_year_cob, i18n("year"));
+	QToolTip::add(to_year_cob, tr("year"));
 	to_hour_cob = new QComboBox(to_hgb);
 	to_hour_cob->insertStringList(hourslist);
-	QToolTip::add(to_hour_cob, i18n("hour"));
+	QToolTip::add(to_hour_cob, tr("hour"));
 	to_min_cob = new QComboBox(to_hgb);
 	to_min_cob->insertStringList(minslist);
-	QToolTip::add(to_min_cob, i18n("minute"));
+	QToolTip::add(to_min_cob, tr("minute"));
 
-	criteria_bg = new QVButtonGroup(i18n("Find Criteria"), this);
-	phrase_rb = new QRadioButton(i18n("&Pattern"), criteria_bg);
-	status_rb = new QRadioButton(i18n("&Status"), criteria_bg);
+	criteria_bg = new QVButtonGroup(tr("Find Criteria"), this);
+	phrase_rb = new QRadioButton(tr("&Pattern"), criteria_bg);
+	status_rb = new QRadioButton(tr("&Status"), criteria_bg);
 	criteria_bg->insert(phrase_rb, 1);
 	criteria_bg->insert(status_rb, 2);
 
-	phrase_hgb = new QHGroupBox(i18n("Pattern"), this);
+	phrase_hgb = new QHGroupBox(tr("Pattern"), this);
 	phrase_edit = new QLineEdit(phrase_hgb);
-	status_hgb = new QHGroupBox(i18n("Status"), this);
+	status_hgb = new QHGroupBox(tr("Status"), this);
 	status_cob = new QComboBox(status_hgb);
 	for (i = 0; i < 4; i++)
-		status_cob->insertItem(i18n(statustext[i * 2]));
+		status_cob->insertItem(tr(statustext[i * 2]));
 
-	reverse_chb = new QCheckBox(i18n("&Reverse find"), this);
+	reverse_chb = new QCheckBox(tr("&Reverse find"), this);
 
-	QPushButton *find_btn = new QPushButton(i18n("&Find"), this);
-	QPushButton *reset_btn = new QPushButton(i18n("Reset"), this);
-	QPushButton *cancel_btn = new QPushButton(i18n("&Cancel"), this);
+	QPushButton *find_btn = new QPushButton(tr("&Find"), this);
+	QPushButton *reset_btn = new QPushButton(tr("Reset"), this);
+	QPushButton *cancel_btn = new QPushButton(tr("&Cancel"), this);
 
 	connect(from_chb, SIGNAL(toggled(bool)), this, SLOT(fromToggled(bool)));
 	connect(from_month_cob, SIGNAL(activated(int)), this, SLOT(correctFromDays(int)));
@@ -1491,7 +1491,7 @@ HistoryFindRec HistorySearch::getDialogValues() {
 void HistorySlots::onCreateConfigDialog()
 {
 	kdebug("HistorySlots::onCreateConfigDialog() \n");
-	QLabel *l_qtimeinfo=(QLabel*)(ConfigDialog::getWidget(i18n("Quoted phrases during chat open"),"","dayhour"));
+	QLabel *l_qtimeinfo=(QLabel*)(ConfigDialog::getWidget(tr("Quoted phrases during chat open"),"","dayhour"));
 	l_qtimeinfo->setAlignment(Qt::AlignHCenter);
 	updateQuoteTimeLabel(-config_file.readNumEntry("Other","ChatHistoryQuotationTime",336));
 
@@ -1500,7 +1500,7 @@ void HistorySlots::onCreateConfigDialog()
 void HistorySlots::onDestroyConfigDialog()
 {
 	kdebug("HistorySlots::onDestroyConfigDialog() \n");
-	QSlider *sl_quotation=(QSlider*)(ConfigDialog::getWidget(i18n("Quoted phrases during chat open"),"historyslider"));
+	QSlider *sl_quotation=(QSlider*)(ConfigDialog::getWidget(tr("Quoted phrases during chat open"),"historyslider"));
 	config_file.writeEntry("Other","ChatHistoryQuotationTime",-sl_quotation->value());
 
 };
@@ -1509,8 +1509,8 @@ void HistorySlots::onDestroyConfigDialog()
 void HistorySlots::updateQuoteTimeLabel(int value)
 {
 	kdebug("HistorySlots::updateQuoteTimeLabel() \n");
-    	QLabel *l_qtimeinfo=(QLabel*)(ConfigDialog::getWidget(i18n("Quoted phrases during chat open"),"","dayhour"));
-	l_qtimeinfo->setText(QString(i18n("%1 day(s) %2 hour(s)")).arg(-value / 24).arg((-value) % 24));
+    	QLabel *l_qtimeinfo=(QLabel*)(ConfigDialog::getWidget(tr("Quoted phrases during chat open"),"","dayhour"));
+	l_qtimeinfo->setText(QString(tr("%1 day(s) %2 hour(s)")).arg(-value / 24).arg((-value) % 24));
 };
 
 

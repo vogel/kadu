@@ -11,7 +11,7 @@
 #include <qdatetime.h>
 #include <qkeysequence.h>
 #include <qlineedit.h>
-#include <libintl.h>
+//#include <libintl.h>
 
 #include "libgadu.h"
 #include "userlist.h"
@@ -25,7 +25,7 @@
 */
 QString ggPath(QString subpath);
 
-#define i18n(String) __c2q(gettext(String))
+//#define i18n(String) __c2q(gettext(String))
 
 QString cp2unicode(unsigned char *);
 QCString unicode2cp(const QString &);

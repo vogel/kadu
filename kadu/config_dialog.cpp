@@ -34,14 +34,15 @@ void loadKaduConfig(void) {
 	/* first read our own config file... */
 	kdebug("loadKaduConfig(): Reading config file...\n");
 	
-	defaultdescriptions = QStringList::split(QRegExp("<-->"),config_file.readEntry("Global","DefaultDescription", i18n("I am busy.")),true);
+	defaultdescriptions = QStringList::split(QRegExp("<-->"),
+		config_file.readEntry("Global", "DefaultDescription", QT_TR_NOOP("I am busy.")), true);
 
-	temp=config_file.readEntry("Global","VolumeControl");
-	if (temp=="")
-	config_file.writeEntry("Global","VolumeControl",false);
-	temp=config_file.readEntry("Global","SoundVolume");
-	if (temp=="")
-	config_file.writeEntry("Global","SoundVolume",1.0);
+	temp = config_file.readEntry("Global","VolumeControl");
+	if (temp == "")
+	config_file.writeEntry("Global", "VolumeControl", false);
+	temp = config_file.readEntry("Global", "SoundVolume");
+	if (temp == "")
+	config_file.writeEntry("Global", "SoundVolume", 1.0);
 	
 	
 	temp=config_file.readEntry("Global","Logging");
@@ -464,7 +465,7 @@ void saveKaduConfig(void) {
 	config_file.sync();
 }
 
-QString ConfigDialog::acttab = i18n("General");
+QString ConfigDialog::acttab = QT_TR_NOOP("General");
 ConfigDialog *ConfigDialog::configdialog = NULL;
 
 void ConfigDialog::showConfigDialog() {
@@ -632,9 +633,9 @@ ConfigDialog::ConfigDialog(QWidget *parent, const char *name) : QTabDialog(paren
 			connect(this,SIGNAL(create()),(*a).receiver,(*a).slot);
 
 	connect(this, SIGNAL(applyButtonPressed()), this, SLOT(updateConfig()));
-	setCancelButton(i18n("Cancel"));
+	setCancelButton(tr("Cancel"));
 	connect(this, SIGNAL(cancelButtonPressed()), this, SLOT(close()));
-	setCaption(i18n("Kadu configuration"));
+	setCaption(tr("Kadu configuration"));
 	resize(480,500);
 
 	configdialog = this;
@@ -911,8 +912,8 @@ void ConfigDialog::generateMyKeys(void) {
 	
 	if (keyfile.permission(QFileInfo::WriteUser))
 		if(QMessageBox::warning(this, "Kadu",
-			i18n("Keys exist. Do you want to overwrite them?"),
-			i18n("Yes"), i18n("No"),QString::null, 0, 1)==1)
+			tr("Keys exist. Do you want to overwrite them?"),
+			tr("Yes"), tr("No"),QString::null, 0, 1)==1)
 				return;
 	
 	QCString tmp=ggPath("keys").local8Bit();
@@ -920,11 +921,11 @@ void ConfigDialog::generateMyKeys(void) {
 
 //	kdebug("Generating my keys, len: %d\n", atoi(cb_keyslen->currentText()));
 	if (sim_key_generate(config_file.readNumEntry("Global","UIN")) < 0) {
-		QMessageBox::critical(this, "Kadu", i18n("Error generating keys"), i18n("OK"), QString::null, 0);
+		QMessageBox::critical(this, "Kadu", tr("Error generating keys"), tr("OK"), QString::null, 0);
 		return;
 	}
 
-	QMessageBox::information(this, "Kadu", i18n("Keys have been generated and written"), i18n("OK"), QString::null, 0);
+	QMessageBox::information(this, "Kadu", tr("Keys have been generated and written"), tr("OK"), QString::null, 0);
 #endif
 }
 
@@ -987,93 +988,93 @@ void ConfigDialog::initModule()
 
 // zakladka "ogolne"
 	
-	ConfigDialog::registerGrid(i18n("General"),"grid",3);
-	ConfigDialog::registerCheckBox("grid",i18n("Log messages"),"Global","Logging",true);
-	ConfigDialog::registerCheckBox("grid",i18n("Restore window geometry"),"Global","SaveGeometry",true);
-	ConfigDialog::registerCheckBox("grid",i18n("Enable dock icon"),"Global","UseDocking",true);
-	ConfigDialog::registerCheckBox("grid",i18n("Private status"),"Global","PrivateStaus",false);
-	ConfigDialog::registerCheckBox("grid",i18n("Start docked"),"Global","RunDocked",false);
-	ConfigDialog::registerCheckBox("grid",i18n("Check for updates"),"Global","CheckUpdates",true);
-	ConfigDialog::registerCheckBox("grid",i18n("Add to description"),"Global","AddToDescription",false);
+	ConfigDialog::registerGrid(tr("General"),"grid",3);
+	ConfigDialog::registerCheckBox("grid",tr("Log messages"),"Global","Logging",true);
+	ConfigDialog::registerCheckBox("grid",tr("Restore window geometry"),"Global","SaveGeometry",true);
+	ConfigDialog::registerCheckBox("grid",tr("Enable dock icon"),"Global","UseDocking",true);
+	ConfigDialog::registerCheckBox("grid",tr("Private status"),"Global","PrivateStaus",false);
+	ConfigDialog::registerCheckBox("grid",tr("Start docked"),"Global","RunDocked",false);
+	ConfigDialog::registerCheckBox("grid",tr("Check for updates"),"Global","CheckUpdates",true);
+	ConfigDialog::registerCheckBox("grid",tr("Add to description"),"Global","AddToDescription",false);
 
 /*
 
 // zakladka "dzwieki"
 
-	ConfigDialog::registerTab(i18n("Sounds"));
-	ConfigDialog::registerCheckBox(i18n("Sounds"),i18n("Play sounds"),"Global","PlaySound",false);
-	ConfigDialog::registerCheckBox(i18n("Sounds"),i18n("Play sounds using aRts! server"),"Global","PlaySoundArtsDsp",false);
+	ConfigDialog::registerTab(tr("Sounds"));
+	ConfigDialog::registerCheckBox(tr("Sounds"),tr("Play sounds"),"Global","PlaySound",false);
+	ConfigDialog::registerCheckBox(tr("Sounds"),tr("Play sounds using aRts! server"),"Global","PlaySoundArtsDsp",false);
 	
-	ConfigDialog::registerHGroupBox(i18n("Sounds"),i18n("Sound player"));
-	ConfigDialog::registerLineEdit(i18n("Sound player"),i18n("Path:"),"Global","SoundPlayer","");
-	ConfigDialog::registerPushButton(i18n("Sound player"),"","fileopen.png");
+	ConfigDialog::registerHGroupBox(tr("Sounds"),tr("Sound player"));
+	ConfigDialog::registerLineEdit(tr("Sound player"),tr("Path:"),"Global","SoundPlayer","");
+	ConfigDialog::registerPushButton(tr("Sound player"),"","fileopen.png");
 	
-	ConfigDialog::registerCheckBox(i18n("Sounds"),i18n("Enable volume control (player must support it)"),"Global","VolumeControl",false);
-	ConfigDialog::registerGrid(i18n("Sounds"),"volume",2);
-	ConfigDialog::registerLabel("volume",i18n("Volume"));
+	ConfigDialog::registerCheckBox(tr("Sounds"),tr("Enable volume control (player must support it)"),"Global","VolumeControl",false);
+	ConfigDialog::registerGrid(tr("Sounds"),"volume",2);
+	ConfigDialog::registerLabel("volume",tr("Volume"));
 	ConfigDialog::registerSlider("volume","slider","Global","SoundVolume");
 
-	ConfigDialog::registerHGroupBox(i18n("Sounds"),i18n("Message sound"));
-	ConfigDialog::registerLineEdit(i18n("Message sound"),i18n("Path:"),"Global","Message_sound","");
-	ConfigDialog::registerPushButton(i18n("Message sound"),"","fileopen.png");
-	ConfigDialog::registerPushButton(i18n("Message sound"),i18n("Test"));
+	ConfigDialog::registerHGroupBox(tr("Sounds"),tr("Message sound"));
+	ConfigDialog::registerLineEdit(tr("Message sound"),tr("Path:"),"Global","Message_sound","");
+	ConfigDialog::registerPushButton(tr("Message sound"),"","fileopen.png");
+	ConfigDialog::registerPushButton(tr("Message sound"),tr("Test"));
 
-	ConfigDialog::registerCheckBox(i18n("Sounds"),i18n("Play sounds from a person whilst chatting"),"Global","PlaySoundChat",true);
-	ConfigDialog::registerCheckBox(i18n("Sounds"),i18n("Play chat sounds only when window is invisible"),"Global","PlaySoundChatInvisible",true);
+	ConfigDialog::registerCheckBox(tr("Sounds"),tr("Play sounds from a person whilst chatting"),"Global","PlaySoundChat",true);
+	ConfigDialog::registerCheckBox(tr("Sounds"),tr("Play chat sounds only when window is invisible"),"Global","PlaySoundChatInvisible",true);
 	
-	ConfigDialog::registerHGroupBox(i18n("Sounds"),i18n("Chat sound"));
-	ConfigDialog::registerLineEdit(i18n("Chat sound"),i18n("Path:"),"Global","Chat_sound","");
-	ConfigDialog::registerPushButton(i18n("Chat sound"),"","fileopen.png");
-	ConfigDialog::registerPushButton(i18n("Chat sound"),i18n("Test"));
+	ConfigDialog::registerHGroupBox(tr("Sounds"),tr("Chat sound"));
+	ConfigDialog::registerLineEdit(tr("Chat sound"),tr("Path:"),"Global","Chat_sound","");
+	ConfigDialog::registerPushButton(tr("Chat sound"),"","fileopen.png");
+	ConfigDialog::registerPushButton(tr("Chat sound"),tr("Test"));
 
 // zakladka "rozmowa"
 
-	ConfigDialog::registerTab(i18n("Chat"));
-	ConfigDialog::registerVGroupBox(i18n("Chat"),i18n("Emoticons"));
+	ConfigDialog::registerTab(tr("Chat"));
+	ConfigDialog::registerVGroupBox(tr("Chat"),tr("Emoticons"));
 // wczytac wartosci do comboboxa		
 	values.clear();
-	values.append(i18n("None"));
-	values.append(i18n("Static"));
-	values.append(i18n("Animated"));
+	values.append(tr("None"));
+	values.append(tr("Static"));
+	values.append(tr("Animated"));
 
-	ConfigDialog::registerComboBox(i18n("Emoticons"),i18n("Emoticons:"),"Other","EmoticonsTypes",values);
-	ConfigDialog::registerComboBox(i18n("Emoticons"),i18n("Emoticons theme"),"Other","EmoticonsTheme",QStringList(""));
+	ConfigDialog::registerComboBox(tr("Emoticons"),tr("Emoticons:"),"Other","EmoticonsTypes",values);
+	ConfigDialog::registerComboBox(tr("Emoticons"),tr("Emoticons theme"),"Other","EmoticonsTheme",QStringList(""));
 
-	ConfigDialog::registerVGroupBox(i18n("Chat"),i18n("WWW options"));
-	ConfigDialog::registerCheckBox(i18n("WWW options"),i18n("Use default Web browser"),"WWW","DefaultWebBrowser",true);
-	ConfigDialog::registerLineEdit(i18n("WWW options"),i18n("Custom Web browser"),"WWW","WebBrowser");
+	ConfigDialog::registerVGroupBox(tr("Chat"),tr("WWW options"));
+	ConfigDialog::registerCheckBox(tr("WWW options"),tr("Use default Web browser"),"WWW","DefaultWebBrowser",true);
+	ConfigDialog::registerLineEdit(tr("WWW options"),tr("Custom Web browser"),"WWW","WebBrowser");
 	
-	ConfigDialog::registerCheckBox(i18n("Chat"),i18n("Automatically prune chat messages"),"Other","ChatPrune",false);
+	ConfigDialog::registerCheckBox(tr("Chat"),tr("Automatically prune chat messages"),"Other","ChatPrune",false);
 	
-	ConfigDialog::registerHGroupBox(i18n("Chat"),i18n("Message pruning"));
-	ConfigDialog::registerLineEdit(i18n("Message pruning"),i18n("Reduce the number of visible messages to"),"Other","ChatPruneLen","20");
+	ConfigDialog::registerHGroupBox(tr("Chat"),tr("Message pruning"));
+	ConfigDialog::registerLineEdit(tr("Message pruning"),tr("Reduce the number of visible messages to"),"Other","ChatPruneLen","20");
 	
-	ConfigDialog::registerCheckBox(i18n("Chat"),i18n("Use encryption"),"Other","Encryption",false);
+	ConfigDialog::registerCheckBox(tr("Chat"),tr("Use encryption"),"Other","Encryption",false);
 	
-	ConfigDialog::registerHGroupBox(i18n("Chat"),i18n("Encryption properties"));
+	ConfigDialog::registerHGroupBox(tr("Chat"),tr("Encryption properties"));
 	values.clear();
 	values.append("128");
 	values.append("256");
 	values.append("512");
 	values.append("1024");	
-	ConfigDialog::registerComboBox(i18n("Encryption properties"),i18n("Keys length"),"Other","KeyLength",values);
-	ConfigDialog::registerPushButton(i18n("Encryption properties"),i18n("Generate keys"));
+	ConfigDialog::registerComboBox(tr("Encryption properties"),tr("Keys length"),"Other","KeyLength",values);
+	ConfigDialog::registerPushButton(tr("Encryption properties"),tr("Generate keys"));
 	
-	ConfigDialog::registerCheckBox(i18n("Chat"),i18n("Scroll chat window downward, not upward"),"Other","ScrollDown",true);
-	ConfigDialog::registerCheckBox(i18n("Chat"),i18n("\"Enter\" key in chat sends message by default"),"Other","AutoSend",true);
-	ConfigDialog::registerCheckBox(i18n("Chat"),i18n("Message acknowledgements (wait for delivery)"),"Other","MessageAcks",true);
-	ConfigDialog::registerCheckBox(i18n("Chat"),i18n("Flash chat title on new message"),"Other","BlinkChatTitle",true);
-	ConfigDialog::registerCheckBox(i18n("Chat"),i18n("Ignore messages from anonymous users"),"Other","IgnoreAnonymousUsers",false);
-	ConfigDialog::registerCheckBox(i18n("Chat"),i18n("Show tray hint on new message"),"Other","HintAlert",false);
+	ConfigDialog::registerCheckBox(tr("Chat"),tr("Scroll chat window downward, not upward"),"Other","ScrollDown",true);
+	ConfigDialog::registerCheckBox(tr("Chat"),tr("\"Enter\" key in chat sends message by default"),"Other","AutoSend",true);
+	ConfigDialog::registerCheckBox(tr("Chat"),tr("Message acknowledgements (wait for delivery)"),"Other","MessageAcks",true);
+	ConfigDialog::registerCheckBox(tr("Chat"),tr("Flash chat title on new message"),"Other","BlinkChatTitle",true);
+	ConfigDialog::registerCheckBox(tr("Chat"),tr("Ignore messages from anonymous users"),"Other","IgnoreAnonymousUsers",false);
+	ConfigDialog::registerCheckBox(tr("Chat"),tr("Show tray hint on new message"),"Other","HintAlert",false);
 
 // zakladka "powiadom"
-	ConfigDialog::registerTab(i18n("Users"));
-	ConfigDialog::registerCheckBox(i18n("Users"),i18n("Notify when users become available"),"Notify","NotifyStatuschange",false);
-	ConfigDialog::registerCheckBox(i18n("Users"),i18n("Notify about all users"),"Notify","NotifyAboutAll",false);
-	ConfigDialog::registerGrid(i18n("Users"),"listboxy",3);
+	ConfigDialog::registerTab(tr("Users"));
+	ConfigDialog::registerCheckBox(tr("Users"),tr("Notify when users become available"),"Notify","NotifyStatuschange",false);
+	ConfigDialog::registerCheckBox(tr("Users"),tr("Notify about all users"),"Notify","NotifyAboutAll",false);
+	ConfigDialog::registerGrid(tr("Users"),"listboxy",3);
 	
 	ConfigDialog::registerGrid("listboxy","listbox1",1);
-	ConfigDialog::registerLabel("listbox1",i18n("Available"));
+	ConfigDialog::registerLabel("listbox1",tr("Available"));
 	ConfigDialog::registerListBox("listbox1","available");
 	
 	ConfigDialog::registerGrid("listboxy","listbox2",1);
@@ -1081,60 +1082,60 @@ void ConfigDialog::initModule()
 	ConfigDialog::registerPushButton("listbox2","","back.png");
 	
 	ConfigDialog::registerGrid("listboxy","listbox3",1);
-	ConfigDialog::registerLabel("listbox3",i18n("Tracked"));
+	ConfigDialog::registerLabel("listbox3",tr("Tracked"));
 	ConfigDialog::registerListBox("listbox3","tracked");
 	
-	ConfigDialog::registerVGroupBox(i18n("Users"),i18n("Notify options"));
-	ConfigDialog::registerCheckBox(i18n("Notify options"),i18n("Notify by sound"),"Notify","NotifyWithSound",false);
+	ConfigDialog::registerVGroupBox(tr("Users"),tr("Notify options"));
+	ConfigDialog::registerCheckBox(tr("Notify options"),tr("Notify by sound"),"Notify","NotifyWithSound",false);
 	
-	ConfigDialog::registerHGroupBox(i18n("Notify options"),i18n("Notify sound"));
-	ConfigDialog::registerLineEdit(i18n("Notify sound"),i18n("Path:"),"Notify","NotifySound");
-	ConfigDialog::registerPushButton(i18n("Notify sound"),"","fileopen.png");
-	ConfigDialog::registerPushButton(i18n("Notify sound"),i18n("Test"));
-	ConfigDialog::registerCheckBox(i18n("Notify options"),i18n("Notify by dialog box"),"Notify","NotifyWithSound",false);
-	ConfigDialog::registerCheckBox(i18n("Notify options"),i18n("Notify by hint"),"Notify","NotifyWithHint",false);
+	ConfigDialog::registerHGroupBox(tr("Notify options"),tr("Notify sound"));
+	ConfigDialog::registerLineEdit(tr("Notify sound"),tr("Path:"),"Notify","NotifySound");
+	ConfigDialog::registerPushButton(tr("Notify sound"),"","fileopen.png");
+	ConfigDialog::registerPushButton(tr("Notify sound"),tr("Test"));
+	ConfigDialog::registerCheckBox(tr("Notify options"),tr("Notify by dialog box"),"Notify","NotifyWithSound",false);
+	ConfigDialog::registerCheckBox(tr("Notify options"),tr("Notify by hint"),"Notify","NotifyWithHint",false);
 	
 */
 
 //zakladka "siec"
 	ConfigSlots *configslots= new ConfigSlots();
 	
-	ConfigDialog::registerTab(i18n("Network"));
-	ConfigDialog::registerCheckBox(i18n("Network"),i18n("DCC enabled"),"Global","AllowDCC",false);
-	ConfigDialog::registerCheckBox(i18n("Network"),i18n("DCC IP autodetection"),"Global","DccIpDetect",false);
+	ConfigDialog::registerTab(tr("Network"));
+	ConfigDialog::registerCheckBox(tr("Network"),tr("DCC enabled"),"Global","AllowDCC",false);
+	ConfigDialog::registerCheckBox(tr("Network"),tr("DCC IP autodetection"),"Global","DccIpDetect",false);
 	
-	ConfigDialog::registerVGroupBox(i18n("Network"),i18n("DCC IP"));
-	ConfigDialog::registerLineEdit(i18n("DCC IP"),i18n("IP address:"),"Global","DccIp","");
-	ConfigDialog::registerCheckBox(i18n("Network"),i18n("DCC forwarding enabled"),"Global","DccForwarding",false);
+	ConfigDialog::registerVGroupBox(tr("Network"),tr("DCC IP"));
+	ConfigDialog::registerLineEdit(tr("DCC IP"),tr("IP address:"),"Global","DccIp","");
+	ConfigDialog::registerCheckBox(tr("Network"),tr("DCC forwarding enabled"),"Global","DccForwarding",false);
 	
-	ConfigDialog::registerVGroupBox(i18n("Network"),i18n("DCC forwarding properties"));
-	ConfigDialog::registerLineEdit(i18n("DCC forwarding properties"),i18n("External IP address:"),"Global","ExternalIP","");
-	ConfigDialog::registerLineEdit(i18n("DCC forwarding properties"),i18n("External TCP port:"),"Global","ExternalPort","0");
+	ConfigDialog::registerVGroupBox(tr("Network"),tr("DCC forwarding properties"));
+	ConfigDialog::registerLineEdit(tr("DCC forwarding properties"),tr("External IP address:"),"Global","ExternalIP","");
+	ConfigDialog::registerLineEdit(tr("DCC forwarding properties"),tr("External TCP port:"),"Global","ExternalPort","0");
 
-	ConfigDialog::registerVGroupBox(i18n("Network"),i18n("Servers properties"));
-	ConfigDialog::registerGrid(i18n("Servers properties"),"servergrid",2);
-	ConfigDialog::registerCheckBox("servergrid",i18n("Use default servers"),"Global","isDefServers",true);
-	ConfigDialog::registerCheckBox("servergrid",i18n("Use TLSv1"),"Global","UseTLS",false);
-	ConfigDialog::registerLineEdit(i18n("Servers properties"),i18n("IP addresses:"),"Global","Server","");
+	ConfigDialog::registerVGroupBox(tr("Network"),tr("Servers properties"));
+	ConfigDialog::registerGrid(tr("Servers properties"),"servergrid",2);
+	ConfigDialog::registerCheckBox("servergrid",tr("Use default servers"),"Global","isDefServers",true);
+	ConfigDialog::registerCheckBox("servergrid",tr("Use TLSv1"),"Global","UseTLS",false);
+	ConfigDialog::registerLineEdit(tr("Servers properties"),tr("IP addresses:"),"Global","Server","");
 
 
-	ConfigDialog::registerComboBox(i18n("Servers properties"),i18n("Default port to connect to servers"),"Global","DefaultPort", "");
-	ConfigDialog::registerCheckBox(i18n("Network"),i18n("Use proxy server"),"Proxy","UseProxy",false);
+	ConfigDialog::registerComboBox(tr("Servers properties"),tr("Default port to connect to servers"),"Global","DefaultPort", "");
+	ConfigDialog::registerCheckBox(tr("Network"),tr("Use proxy server"),"Proxy","UseProxy",false);
 
-	ConfigDialog::registerVGroupBox(i18n("Network"),i18n("Proxy server"));
-	ConfigDialog::registerGrid(i18n("Proxy server"),"proxygrid",2);
-	ConfigDialog::registerLineEdit("proxygrid",i18n("IP addresses:"),"Proxy","ProxyHost","");
-	ConfigDialog::registerLineEdit("proxygrid",i18n("Port:"),"Proxy","ProxyPort","0");
-	ConfigDialog::registerLineEdit("proxygrid",i18n("Username:"),"Proxy","ProxyUser","");
-	ConfigDialog::registerLineEdit("proxygrid",i18n("Password:"),"Proxy","ProxyPassword","");
+	ConfigDialog::registerVGroupBox(tr("Network"),tr("Proxy server"));
+	ConfigDialog::registerGrid(tr("Proxy server"),"proxygrid",2);
+	ConfigDialog::registerLineEdit("proxygrid",tr("IP addresses:"),"Proxy","ProxyHost","");
+	ConfigDialog::registerLineEdit("proxygrid",tr("Port:"),"Proxy","ProxyPort","0");
+	ConfigDialog::registerLineEdit("proxygrid",tr("Username:"),"Proxy","ProxyUser","");
+	ConfigDialog::registerLineEdit("proxygrid",tr("Password:"),"Proxy","ProxyPassword","");
 	
 	ConfigDialog::registerSlotOnCreate(configslots,SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnDestroy(configslots,SLOT(onDestroyConfigDialog()));
 	
-	ConfigDialog::connectSlot(i18n("DCC enabled"),SIGNAL(toggled(bool)),configslots,SLOT(ifDccEnabled(bool)));
-	ConfigDialog::connectSlot(i18n("DCC IP autodetection"),SIGNAL(toggled(bool)),configslots,SLOT(ifDccIpEnabled(bool)));
-	ConfigDialog::connectSlot(i18n("Use default servers"),SIGNAL(toggled(bool)),configslots,SLOT(ifDefServerEnabled(bool)));
-	ConfigDialog::connectSlot(i18n("Use TLSv1"),SIGNAL(toggled(bool)),configslots,SLOT(useTlsEnabled(bool)));
+	ConfigDialog::connectSlot(tr("DCC enabled"),SIGNAL(toggled(bool)),configslots,SLOT(ifDccEnabled(bool)));
+	ConfigDialog::connectSlot(tr("DCC IP autodetection"),SIGNAL(toggled(bool)),configslots,SLOT(ifDccIpEnabled(bool)));
+	ConfigDialog::connectSlot(tr("Use default servers"),SIGNAL(toggled(bool)),configslots,SLOT(ifDefServerEnabled(bool)));
+	ConfigDialog::connectSlot(tr("Use TLSv1"),SIGNAL(toggled(bool)),configslots,SLOT(useTlsEnabled(bool)));
 	
 	
 }	
@@ -1143,17 +1144,17 @@ void ConfigSlots::onCreateConfigDialog()
 {
 	kdebug("ConfigSlots::onCreateConfigDialog() \n");
 
-	QCheckBox *b_dccenabled = (QCheckBox*)(ConfigDialog::getWidget(i18n("Network"),i18n("DCC enabled")));
-	QCheckBox *b_dccip= (QCheckBox*)(ConfigDialog::getWidget(i18n("Network"),i18n("DCC IP autodetection")));
-	QVGroupBox *g_dccip = (QVGroupBox*)(ConfigDialog::getWidget(i18n("Network"),i18n("DCC IP")));
-	QVGroupBox *g_proxy = (QVGroupBox*)(ConfigDialog::getWidget(i18n("Network"),i18n("Proxy server")));
-	QVGroupBox *g_fwdprop =(QVGroupBox*)(ConfigDialog::getWidget(i18n("Network"),i18n("DCC forwarding properties")));
-	QCheckBox *b_dccfwd =(QCheckBox*)(ConfigDialog::getWidget(i18n("Network"),i18n("DCC forwarding enabled")));
-	QCheckBox *b_tls=(QCheckBox*)(ConfigDialog::getWidget("servergrid",i18n("Use TLSv1")));
-	QCheckBox *b_useproxy=(QCheckBox*)(ConfigDialog::getWidget(i18n("Network"),i18n("Use proxy server")));
-	QComboBox *cb_portselect=(QComboBox*)(ConfigDialog::getWidget(i18n("Servers properties"),i18n("Default port to connect to servers")));
-	QHBox *serverbox=(QHBox*)((ConfigDialog::getWidget(i18n("Servers properties"),i18n("IP addresses:")))->parent());
-	QCheckBox* b_defaultserver=(QCheckBox*)(ConfigDialog::getWidget("servergrid",i18n("Use default servers")));
+	QCheckBox *b_dccenabled = (QCheckBox*)(ConfigDialog::getWidget(tr("Network"),tr("DCC enabled")));
+	QCheckBox *b_dccip= (QCheckBox*)(ConfigDialog::getWidget(tr("Network"),tr("DCC IP autodetection")));
+	QVGroupBox *g_dccip = (QVGroupBox*)(ConfigDialog::getWidget(tr("Network"),tr("DCC IP")));
+	QVGroupBox *g_proxy = (QVGroupBox*)(ConfigDialog::getWidget(tr("Network"),tr("Proxy server")));
+	QVGroupBox *g_fwdprop =(QVGroupBox*)(ConfigDialog::getWidget(tr("Network"),tr("DCC forwarding properties")));
+	QCheckBox *b_dccfwd =(QCheckBox*)(ConfigDialog::getWidget(tr("Network"),tr("DCC forwarding enabled")));
+	QCheckBox *b_tls=(QCheckBox*)(ConfigDialog::getWidget("servergrid",tr("Use TLSv1")));
+	QCheckBox *b_useproxy=(QCheckBox*)(ConfigDialog::getWidget(tr("Network"),tr("Use proxy server")));
+	QComboBox *cb_portselect=(QComboBox*)(ConfigDialog::getWidget(tr("Servers properties"),tr("Default port to connect to servers")));
+	QHBox *serverbox=(QHBox*)((ConfigDialog::getWidget(tr("Servers properties"),tr("IP addresses:")))->parent());
+	QCheckBox* b_defaultserver=(QCheckBox*)(ConfigDialog::getWidget("servergrid",tr("Use default servers")));
 	
 	b_dccip->setEnabled(b_dccenabled->isChecked());
 	g_dccip->setEnabled(b_dccip->isChecked()&& b_dccenabled->isChecked());
@@ -1177,7 +1178,7 @@ void ConfigSlots::onDestroyConfigDialog()
 {
 	kdebug("ConfigSlots::onDestroyConfigDialog() \n");
 
-	QComboBox *cb_portselect=(QComboBox*)(ConfigDialog::getWidget(i18n("Servers properties"),i18n("Default port to connect to servers")));
+	QComboBox *cb_portselect=(QComboBox*)(ConfigDialog::getWidget(tr("Servers properties"),tr("Default port to connect to servers")));
 	config_file.writeEntry("Global","DefaultPort",cb_portselect->currentText());
 };
 
@@ -1186,10 +1187,10 @@ void ConfigSlots::ifDccEnabled(bool value)
 {
 	kdebug("ConfigSlots::ifDccEnabled() \n");
 
-	QCheckBox *b_dccip= (QCheckBox*)(ConfigDialog::getWidget(i18n("Network"),i18n("DCC IP autodetection")));
-	QVGroupBox *g_dccip = (QVGroupBox*)(ConfigDialog::getWidget(i18n("Network"),i18n("DCC IP")));
-	QVGroupBox *g_fwdprop =(QVGroupBox*)(ConfigDialog::getWidget(i18n("Network"),i18n("DCC forwarding properties")));
-	QCheckBox *b_dccfwd =(QCheckBox*)(ConfigDialog::getWidget(i18n("Network"),i18n("DCC forwarding enabled")));
+	QCheckBox *b_dccip= (QCheckBox*)(ConfigDialog::getWidget(tr("Network"),tr("DCC IP autodetection")));
+	QVGroupBox *g_dccip = (QVGroupBox*)(ConfigDialog::getWidget(tr("Network"),tr("DCC IP")));
+	QVGroupBox *g_fwdprop =(QVGroupBox*)(ConfigDialog::getWidget(tr("Network"),tr("DCC forwarding properties")));
+	QCheckBox *b_dccfwd =(QCheckBox*)(ConfigDialog::getWidget(tr("Network"),tr("DCC forwarding enabled")));
 	
 	b_dccip->setEnabled(value);
 	g_dccip->setEnabled(b_dccip->isChecked()&& value);	
@@ -1200,21 +1201,21 @@ void ConfigSlots::ifDccEnabled(bool value)
 void ConfigSlots::ifDccIpEnabled(bool value)
 {
 	kdebug("ConfigSlots::ifDccIpEnabled() \n");
-	QVGroupBox *g_dccip = (QVGroupBox*)(ConfigDialog::getWidget(i18n("Network"),i18n("DCC IP")));
+	QVGroupBox *g_dccip = (QVGroupBox*)(ConfigDialog::getWidget(tr("Network"),tr("DCC IP")));
 	g_dccip->setEnabled(value);
 };
 
 void ConfigSlots::ifDefServerEnabled(bool value)
 {
 	kdebug("ConfigSlots::ifDefServerEnabled() \n");
-	QHBox *serverbox=(QHBox*)((ConfigDialog::getWidget(i18n("Servers properties"),i18n("IP addresses:")))->parent());
+	QHBox *serverbox=(QHBox*)((ConfigDialog::getWidget(tr("Servers properties"),tr("IP addresses:")))->parent());
 	serverbox->setEnabled(!value);	
 };
 
 void ConfigSlots::useTlsEnabled(bool value)
 {
 	kdebug("ConfigSlots::useTlsEnabled() \n");
-	QHBox *box_portselect=(QHBox*)(ConfigDialog::getWidget(i18n("Servers properties"),i18n("Default port to connect to servers"))->parent());
+	QHBox *box_portselect=(QHBox*)(ConfigDialog::getWidget(tr("Servers properties"),tr("Default port to connect to servers"))->parent());
 	box_portselect->setEnabled(!value);
 };
 

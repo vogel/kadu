@@ -26,10 +26,17 @@ int gg_statuses[] = {GG_STATUS_AVAIL, GG_STATUS_AVAIL_DESCR, GG_STATUS_BUSY, GG_
 	GG_STATUS_INVISIBLE, GG_STATUS_INVISIBLE_DESCR, GG_STATUS_NOT_AVAIL, GG_STATUS_NOT_AVAIL_DESCR,
 	GG_STATUS_BLOCKED};
 
-const char *statustext[] = {"Online", "Online (d.)",
-	"Busy", "Busy (d.)",
-	"Invisible", "Invisible (d.)",
-	"Offline", "Offline (d.)", "Blocking"};
+const char *statustext[] = {
+	QT_TR_NOOP("Online"),
+	QT_TR_NOOP("Online (d.)"),
+	QT_TR_NOOP("Busy"),
+	QT_TR_NOOP("Busy (d.)"),
+	QT_TR_NOOP("Invisible"),
+	QT_TR_NOOP("Invisible (d.)"),
+	QT_TR_NOOP("Offline"),
+	QT_TR_NOOP("Offline (d.)"),
+	QT_TR_NOOP("Blocking")
+};
 
 /* our own description container */
 QString own_description;
@@ -194,15 +201,15 @@ void AutoAwayTimer::off() {
 void AutoAwayTimer::initModule()
 {
 	kdebug("AutoAwayTimer::initModule() \n");
-	ConfigDialog::registerTab(i18n("General"));
-	ConfigDialog::registerCheckBox(i18n("General"),i18n("Enable autoaway"),"Global","AutoAway",false);
-	ConfigDialog::registerHGroupBox(i18n("General"),"--");
-	ConfigDialog::registerLineEdit("--",i18n("Set status to away after "),"Global","AutoAwayTime","300");
-	ConfigDialog::registerLabel("--",i18n(" seconds"));	
-	ConfigDialog::registerHGroupBox(i18n("General"),i18n("Default Status"));
-	ConfigDialog::registerComboBox(i18n("Default Status"),"","Global","DefaultStatus","","cb_defstatus");
-	ConfigDialog::registerCheckBox(i18n("General"),i18n("On shutdown, set description:"),"Other","DisconnectWithDescription",false);
-	ConfigDialog::registerLineEdit(i18n("General"),"","Other","DisconnectDescription","","","e_defaultstatus");	
+	ConfigDialog::registerTab(tr("General"));
+	ConfigDialog::registerCheckBox(tr("General"),tr("Enable autoaway"),"Global","AutoAway",false);
+	ConfigDialog::registerHGroupBox(tr("General"),"--");
+	ConfigDialog::registerLineEdit("--",tr("Set status to away after "),"Global","AutoAwayTime","300");
+	ConfigDialog::registerLabel("--",tr(" seconds"));	
+	ConfigDialog::registerHGroupBox(tr("General"),tr("Default Status"));
+	ConfigDialog::registerComboBox(tr("Default Status"),"","Global","DefaultStatus","","cb_defstatus");
+	ConfigDialog::registerCheckBox(tr("General"),tr("On shutdown, set description:"),"Other","DisconnectWithDescription",false);
+	ConfigDialog::registerLineEdit(tr("General"),"","Other","DisconnectDescription","","","e_defaultstatus");	
 	AutoAwaySlots *autoawayslots=new AutoAwaySlots();
 	ConfigDialog::registerSlotOnCreate(autoawayslots,SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnDestroy(autoawayslots,SLOT(onDestroyConfigDialog()));
@@ -211,22 +218,22 @@ void AutoAwayTimer::initModule()
 void AutoAwaySlots::onCreateConfigDialog()
 {
 	kdebug("AutoAwayTimer::onCreateConfigDialog() \n");
-	QHGroupBox *awygrp = (QHGroupBox*)(ConfigDialog::getWidget(i18n("General"),"--"));
-	QCheckBox * b_autoaway= (QCheckBox*)(ConfigDialog::getWidget(i18n("General"),i18n("Enable autoaway")));
+	QHGroupBox *awygrp = (QHGroupBox*)(ConfigDialog::getWidget(tr("General"),"--"));
+	QCheckBox * b_autoaway= (QCheckBox*)(ConfigDialog::getWidget(tr("General"),tr("Enable autoaway")));
 	awygrp->setEnabled(b_autoaway->isChecked());
 	connect(b_autoaway,SIGNAL(toggled(bool)),awygrp,SLOT(setEnabled(bool)));
 	
-	QCheckBox *b_disconnectdesc=(QCheckBox*)(ConfigDialog::getWidget(i18n("General"),i18n("On shutdown, set description:")));
-	QLineEdit *e_disconnectdesc=(QLineEdit*)(ConfigDialog::getWidget(i18n("General"),"","e_defaultstatus"));
+	QCheckBox *b_disconnectdesc=(QCheckBox*)(ConfigDialog::getWidget(tr("General"),tr("On shutdown, set description:")));
+	QLineEdit *e_disconnectdesc=(QLineEdit*)(ConfigDialog::getWidget(tr("General"),"","e_defaultstatus"));
 	e_disconnectdesc->setEnabled(b_disconnectdesc->isChecked());
 	connect(b_disconnectdesc,SIGNAL(toggled(bool)),e_disconnectdesc,SLOT(setEnabled(bool)));
 
-	QComboBox* cb_defstatus=(QComboBox*)(ConfigDialog::getWidget(i18n("Default Status"),"","cb_defstatus"));
+	QComboBox* cb_defstatus=(QComboBox*)(ConfigDialog::getWidget(tr("Default Status"),"","cb_defstatus"));
 	int statusnr=config_file.readNumEntry("Global","DefaultStatus",GG_STATUS_NOT_AVAIL);
 	cb_defstatus->clear();
 	int i;
 	for (i = 0;i < 7; i++)
-		cb_defstatus->insertItem(i18n(__c2q(statustext[i])));
+		cb_defstatus->insertItem(tr(__c2q(statustext[i])));
 	i=0;	
 	while (i<7 && statusnr !=gg_statuses[i])
 		i++;
@@ -237,7 +244,7 @@ void AutoAwaySlots::onCreateConfigDialog()
 void AutoAwaySlots::onDestroyConfigDialog()
 {
 	kdebug("AutoAwayTimer::onDestroyConfigDialog() \n");
-	QComboBox* cb_defstatus=(QComboBox*)(ConfigDialog::getWidget(i18n("Default Status"),"","cb_defstatus"));
+	QComboBox* cb_defstatus=(QComboBox*)(ConfigDialog::getWidget(tr("Default Status"),"","cb_defstatus"));
 	config_file.writeEntry("Global","DefaultStatus",gg_statuses[cb_defstatus->currentItem()]);
 	config_file.sync();	
 }

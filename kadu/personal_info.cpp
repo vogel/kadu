@@ -24,59 +24,59 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name)
 	kdebug("PersonalInfoDialog::PersonalInfoDialog()\n");
 
 	resize(400, 150);
-	setCaption(i18n("Personal Information"));	
+	setCaption(tr("Personal Information"));	
 	setWFlags(Qt::WDestructiveClose);
 	
 	QGridLayout *GridLayout = new QGridLayout(this, 8, 3, 10, 10);
 
 	QVBox *NicknameBox = new QVBox(this);
-	QLabel *NicknameLabel = new QLabel(i18n("Nickname"), NicknameBox);
+	QLabel *NicknameLabel = new QLabel(tr("Nickname"), NicknameBox);
 	NicknameEdit = new QLineEdit(NicknameBox);
 	GridLayout->addMultiCellWidget(NicknameBox, 0, 1, 0, 0);
 
 	QVBox *NameBox = new QVBox(this);
-	QLabel *NameLabel = new QLabel(i18n("Name"), NameBox);
+	QLabel *NameLabel = new QLabel(tr("Name"), NameBox);
 	NameEdit = new QLineEdit(NameBox);
 	GridLayout->addMultiCellWidget(NameBox, 0, 1, 1, 1);
 	
 	QVBox *SurnameBox = new QVBox(this);
-	QLabel *SurnameLabel = new QLabel(i18n("Surname"), SurnameBox);
+	QLabel *SurnameLabel = new QLabel(tr("Surname"), SurnameBox);
 	SurnameEdit = new QLineEdit(SurnameBox);
 	GridLayout->addMultiCellWidget(SurnameBox, 0, 1, 2, 2);
 
 	QVBox *GenderBox = new QVBox(this);
-	QLabel *GenderLabel = new QLabel(i18n("Gender"), GenderBox);
+	QLabel *GenderLabel = new QLabel(tr("Gender"), GenderBox);
 	GenderCombo = new QComboBox(GenderBox);
 	GenderCombo->insertItem("");	
-	GenderCombo->insertItem(i18n("Male"));
-	GenderCombo->insertItem(i18n("Female"));
+	GenderCombo->insertItem(tr("Male"));
+	GenderCombo->insertItem(tr("Female"));
 	GridLayout->addMultiCellWidget(GenderBox, 2, 3, 0, 0);
 
 	QVBox *BirthyearBox = new QVBox(this);
-	QLabel *BirthyearLabel = new QLabel(i18n("Birthyear"), BirthyearBox);
+	QLabel *BirthyearLabel = new QLabel(tr("Birthyear"), BirthyearBox);
 	BirthyearEdit = new QLineEdit(BirthyearBox);
 	GridLayout->addMultiCellWidget(BirthyearBox, 2, 3, 1, 1);
 
 	QVBox *CityBox = new QVBox(this);
-	QLabel *CityLabel = new QLabel(i18n("City"), CityBox);
+	QLabel *CityLabel = new QLabel(tr("City"), CityBox);
 	CityEdit = new QLineEdit(CityBox);
 	GridLayout->addMultiCellWidget(CityBox, 2, 3, 2, 2);
 
 	QVBox *FamilyNameBox = new QVBox(this);
-	QLabel *FamilyNameLabel = new QLabel(i18n("Family Name"), FamilyNameBox);
+	QLabel *FamilyNameLabel = new QLabel(tr("Family Name"), FamilyNameBox);
 	FamilyNameEdit = new QLineEdit(FamilyNameBox);
 	GridLayout->addMultiCellWidget(FamilyNameBox, 4, 5, 0, 0);
 
 	QVBox *FamilyCityBox = new QVBox(this);
-	QLabel *FamilyCityLabel = new QLabel(i18n("Family City"), FamilyCityBox);
+	QLabel *FamilyCityLabel = new QLabel(tr("Family City"), FamilyCityBox);
 	FamilyCityEdit = new QLineEdit(FamilyCityBox);
 	GridLayout->addMultiCellWidget(FamilyCityBox, 4, 5, 1, 1);
 
-	QPushButton* OkButton = new QPushButton(i18n("&OK"), this);
+	QPushButton* OkButton = new QPushButton(tr("&OK"), this);
 	GridLayout->addWidget(OkButton, 7, 1);
 	connect(OkButton, SIGNAL(clicked()), this, SLOT(OkButtonClicked()));
 
-	QPushButton* CancelButton = new QPushButton(i18n("&Cancel"), this);
+	QPushButton* CancelButton = new QPushButton(tr("&Cancel"), this);
 	GridLayout->addWidget(CancelButton, 7, 2);	
 	connect(CancelButton, SIGNAL(clicked()), this, SLOT(reject()));
 

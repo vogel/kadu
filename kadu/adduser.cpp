@@ -28,17 +28,17 @@ Adduser::Adduser(QDialog* parent, const char *name) {
 		list << kadu->group_bar->tabAt(i)->text();
 
 	resize(350, 250);
-	setCaption(i18n("Add user"));
+	setCaption(tr("Add user"));
 
 	QGridLayout *grid = new QGridLayout(this, 9, 2, 10, 10);
 
 	QVBox *vbox11 = new QVBox(this);
-	QLabel *l_uin = new QLabel(i18n("Uin"), vbox11);
+	QLabel *l_uin = new QLabel(tr("Uin"), vbox11);
 	e_uin = new QLineEdit(vbox11);
 	grid->addMultiCellWidget(vbox11, 0, 1, 0, 0);
 
 	QVBox *vbox12 = new QVBox(this);
-	QLabel *l_group = new QLabel(i18n("Group"), vbox12);
+	QLabel *l_group = new QLabel(tr("Group"), vbox12);
 	cb_group = new QComboBox(vbox12);
 	cb_group->insertStringList(list);
 	cb_group->setCurrentItem(0);
@@ -48,39 +48,39 @@ Adduser::Adduser(QDialog* parent, const char *name) {
 	grid->addMultiCellWidget(vbox12, 0, 1, 1, 1);
 
 	QVBox *vbox21 = new QVBox(this);
-	QLabel *l_nickname = new QLabel(i18n("Nickname"), vbox21);
+	QLabel *l_nickname = new QLabel(tr("Nickname"), vbox21);
 	e_nickname = new QLineEdit(vbox21);
 	grid->addMultiCellWidget(vbox21, 2, 3, 0, 0);
 
 	QVBox *vbox22 = new QVBox(this);
-	QLabel *l_altnick = new QLabel(i18n("AltNick"), vbox22);
+	QLabel *l_altnick = new QLabel(tr("AltNick"), vbox22);
 	e_altnick = new QLineEdit(vbox22);
 	grid->addMultiCellWidget(vbox22, 2, 3, 1, 1);
 
 	QVBox *vbox31 = new QVBox(this);
-	QLabel *l_fname = new QLabel(i18n("Name"), vbox31);
+	QLabel *l_fname = new QLabel(tr("Name"), vbox31);
 	e_fname = new QLineEdit(vbox31);
 	grid->addMultiCellWidget(vbox31, 4, 5, 0, 0);
 
 	QVBox *vbox32 = new QVBox(this);
-	QLabel *l_lname = new QLabel(i18n("Surname"), vbox32);
+	QLabel *l_lname = new QLabel(tr("Surname"), vbox32);
 	e_lname = new QLineEdit(vbox32);
 	grid->addMultiCellWidget(vbox32, 4, 5, 1, 1);
 
 	QVBox *vbox41 = new QVBox(this);
-	QLabel *l_tel = new QLabel(i18n("Cell #"), vbox41);
+	QLabel *l_tel = new QLabel(tr("Cell #"), vbox41);
 	e_tel = new QLineEdit(vbox41);
 	grid->addMultiCellWidget(vbox41, 6, 7, 0, 0);
 
 	QVBox *vbox42 = new QVBox(this);
-	QLabel *l_email = new QLabel(i18n("Email"), vbox42);
+	QLabel *l_email = new QLabel(tr("Email"), vbox42);
 	e_email = new QLineEdit(vbox42);
 	grid->addMultiCellWidget(vbox42, 6, 7, 1, 1);
 
-	QPushButton *b_commit = new QPushButton(i18n("&Add"), this);
+	QPushButton *b_commit = new QPushButton(tr("&Add"), this);
 	b_commit->setAccel(Key_Return);	
 	grid->addWidget(b_commit, 8, 0);
-	QPushButton *b_cancel = new QPushButton(i18n("&Cancel"), this);
+	QPushButton *b_cancel = new QPushButton(tr("&Cancel"), this);
 	grid->addWidget(b_cancel, 8, 1);
 
 	QObject::connect(e_nickname, SIGNAL(textChanged(const QString &)), e_altnick,
@@ -101,8 +101,8 @@ void Adduser::Add() {
 		close(true);
 		}
 	else
-		QMessageBox::warning(this, i18n("Add user problem"),
-			i18n("Altnick field cannot be empty."));
+		QMessageBox::warning(this, tr("Add user problem"),
+			tr("Altnick field cannot be empty."));
 
 	kdebug("Adduser::Add(): finished\n");
 }

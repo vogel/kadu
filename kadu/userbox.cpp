@@ -76,45 +76,45 @@ void UserBox::maybeTip(const QPoint &c)
 		switch (userlist.byAltNick(item->text()).status)
 		{
 			case GG_STATUS_AVAIL:
-				s = i18n("<I>Available</I>");
+				s = tr("<I>Available</I>");
 				break;
 			case GG_STATUS_BUSY:
-				s = i18n("<I>Busy</I>");
+				s = tr("<I>Busy</I>");
 				break;
 			case GG_STATUS_NOT_AVAIL:
 				if (!userlist.byAltNick(item->text()).uin)
-				    s = i18n("<I>Mobile:</I><B> ")+userlist.byAltNick(item->text()).mobile+"</B>";
+				    s = tr("<I>Mobile:</I><B> ")+userlist.byAltNick(item->text()).mobile+"</B>";
 				else
-				    s = i18n("<nobr><I>Not available</I></nobr>");
+				    s = tr("<nobr><I>Not available</I></nobr>");
 				break;
 			case GG_STATUS_INVISIBLE:
 			case GG_STATUS_INVISIBLE2:
-				s = i18n("<I>Invisible</I>");
+				s = tr("<I>Invisible</I>");
 				break;
 			case GG_STATUS_INVISIBLE_DESCR:
-				s = i18n("<I>Invisible <B>(d.)</B></I>");
+				s = tr("<I>Invisible <B>(d.)</B></I>");
 				break;
 			case GG_STATUS_BUSY_DESCR:
-				s = i18n("<nobr><I>Busy <B>(d.)</B></I></nobr>");
+				s = tr("<nobr><I>Busy <B>(d.)</B></I></nobr>");
 				break;
 			case GG_STATUS_NOT_AVAIL_DESCR:
-				s = i18n("<nobr><I>Not available <B>(d.)</B></I></nobr>");
+				s = tr("<nobr><I>Not available <B>(d.)</B></I></nobr>");
 				break;
 			case GG_STATUS_AVAIL_DESCR:
-				s = i18n("<nobr><I>Available <B>(d.)</B></I></nobr>");
+				s = tr("<nobr><I>Available <B>(d.)</B></I></nobr>");
 				break;
 			case GG_STATUS_BLOCKED:
-				s = i18n("<nobr><I>Blocking</I></nobr>");				
+				s = tr("<nobr><I>Blocking</I></nobr>");				
 				break;
 			default:
-				s = i18n("<nobr><I>Unknown status</I></nobr>");
+				s = tr("<nobr><I>Unknown status</I></nobr>");
 				break;
 		};
 		QString desc = userlist.byAltNick(item->text()).description;
 		if (desc != "")
 		{
 			s += "<BR><BR>";
-			s += i18n("<B>Description:</B><BR>");
+			s += tr("<B>Description:</B><BR>");
 			escapeSpecialCharacters(desc);
 			desc.replace(QRegExp(" "), "&nbsp;");
 			s += desc;
@@ -429,8 +429,8 @@ void UserBox::all_renameUser(const QString &oldaltnick, const QString &newaltnic
 
 void UserBox::initModule()
 {
-	ConfigDialog::registerTab(i18n("General"));
-	ConfigDialog::registerCheckBox(i18n("General"),i18n("Show Inactive users"),"Other","ShowHideInactive",true);
+	ConfigDialog::registerTab(tr("General"));
+	ConfigDialog::registerCheckBox(tr("General"),tr("Show Inactive users"),"Other","ShowHideInactive",true);
 };
 
 QValueList<UserBox *> UserBox::UserBoxes;

@@ -63,27 +63,27 @@ Register::Register(QDialog *parent, const char *name) : QDialog (parent, name, F
 
 	QGridLayout *grid = new QGridLayout(this, 5, 2, 6, 5);
 
-	QLabel *l_pwd = new QLabel(i18n("Password"),this);
+	QLabel *l_pwd = new QLabel(tr("Password"),this);
 	pwd = new QLineEdit(this);
 	pwd->setEchoMode(QLineEdit::Password);
 
-	QLabel *l_pwd2 = new QLabel(i18n("Retype password"),this);
+	QLabel *l_pwd2 = new QLabel(tr("Retype password"),this);
 	pwd2 = new QLineEdit(this);
 	pwd2->setEchoMode(QLineEdit::Password);
 
-	QLabel *l_mail = new QLabel(i18n("E-mail"),this);
+	QLabel *l_mail = new QLabel(tr("E-mail"),this);
 	mail = new QLineEdit(this);
 
 	QPushButton *snd = new QPushButton(this);
-	snd->setText(i18n("Register"));
+	snd->setText(tr("Register"));
 	QObject::connect(snd, SIGNAL(clicked()), this, SLOT(doRegister()));
 
 	status = new QLabel(this);
 
 	updateconfig = new QCheckBox(this);
-	QLabel *l_updateconfig = new QLabel(i18n("Create config file"),this);
+	QLabel *l_updateconfig = new QLabel(tr("Create config file"),this);
 	updateconfig->setChecked(true);
-	QToolTip::add(l_updateconfig, i18n("Write the newly obtained UIN and password into a clean configuration file\nThis will erase your current config file contents if you have one"));
+	QToolTip::add(l_updateconfig, tr("Write the newly obtained UIN and password into a clean configuration file\nThis will erase your current config file contents if you have one"));
 
 	grid->addWidget(l_pwd, 0, 0);
 	grid->addWidget(pwd, 0, 1);
@@ -97,7 +97,7 @@ Register::Register(QDialog *parent, const char *name) : QDialog (parent, name, F
 	grid->addWidget(snd, 4, 1);
 	grid->addRowSpacing(3, 20);
 
-	setCaption(i18n("Register user"));
+	setCaption(tr("Register user"));
 	resize(240, 150);
 
 	snr = snw = NULL;
@@ -107,12 +107,12 @@ Register::Register(QDialog *parent, const char *name) : QDialog (parent, name, F
 void Register::doRegister() {
 	kdebug("Register::doRegister()\n");
 	if (pwd->text() != pwd2->text()) {
-		QMessageBox::warning(this, "Kadu", i18n("Passwords do not match"), i18n("OK"), 0, 0, 1);
+		QMessageBox::warning(this, "Kadu", tr("Passwords do not match"), tr("OK"), 0, 0, 1);
 		return;
 		}
 
 	if (!pwd->text().length()) {
-		QMessageBox::warning(this, "Kadu", i18n("Please fill out all fields"), i18n("OK"), 0, 0, 1);
+		QMessageBox::warning(this, "Kadu", tr("Please fill out all fields"), tr("OK"), 0, 0, 1);
 		return;
 		}
 
@@ -120,7 +120,7 @@ void Register::doRegister() {
 	passwd = strdup(unicode2cp(pwd->text()).data());
 	email = strdup(unicode2cp(mail->text()).data());
 	if (!(h = gg_register(email, passwd, 1))) {
-		status->setText(i18n("Error"));
+		status->setText(tr("Error"));
 		free(passwd);
 		free(email);
 		return;
@@ -128,7 +128,7 @@ void Register::doRegister() {
 	free(passwd);
 	free(email);
 
-	status->setText(i18n("Registering"));
+	status->setText(tr("Registering"));
 
 	setEnabled(false);
 	createSocketNotifiers();
@@ -189,7 +189,7 @@ void Register::socketEvent() {
 		gg_free_register(h);
 		h = NULL;
 		kdebug("Register::socketEvent(): error registering\n");
-		status->setText(i18n("Error"));
+		status->setText(tr("Error"));
 		setEnabled(true);
 		return;
 		}
@@ -207,17 +207,17 @@ void Register::socketEvent() {
 			gg_free_register(h);
 			h = NULL;
 			kdebug("Register::socketEvent(): error registering\n");
-			status->setText(i18n("Error"));
+			status->setText(tr("Error"));
 			setEnabled(true);
 			break;
 		case GG_STATE_DONE:
 			deleteSocketNotifiers();
 			kdebug("Register::socketEvent(): success=%d, uin=%ld\n", p->success, p->uin);
 			if (p->success) {
-				status->setText(i18n("Success!"));
+				status->setText(tr("Success!"));
 				uin = p->uin;
-				QMessageBox::information(this, "Kadu", i18n("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(uin),
-					i18n("OK"), 0, 0, 1);
+				QMessageBox::information(this, "Kadu", tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(uin),
+					tr("OK"), 0, 0, 1);
 				ask();
 				kdebug("Register::socketEvent() before close()\n");
 //				accept();
@@ -227,7 +227,7 @@ void Register::socketEvent() {
 				gg_free_register(h);
 				h = NULL;
 				kdebug("Register::socketEvent(): error registering\n");
-				status->setText(i18n("Error"));
+				status->setText(tr("Error"));
 				setEnabled(true);
 				}
 			break;
@@ -251,18 +251,18 @@ Unregister::Unregister(QDialog *parent, const char *name) : QDialog (parent, nam
 
 	QGridLayout *grid = new QGridLayout(this, 4, 2, 6, 5);
 
-	QLabel *l_uin = new QLabel(i18n("UIN"),this);
+	QLabel *l_uin = new QLabel(tr("UIN"),this);
 	uin = new QLineEdit(this);
 
-	QLabel *l_pwd = new QLabel(i18n("Password"),this);
+	QLabel *l_pwd = new QLabel(tr("Password"),this);
 	pwd = new QLineEdit(this);
 	pwd->setEchoMode(QLineEdit::Password);
 
-	QLabel *l_mail = new QLabel(i18n("E-mail"),this);
+	QLabel *l_mail = new QLabel(tr("E-mail"),this);
 	mail = new QLineEdit(this);
 
 	QPushButton *snd = new QPushButton(this);
-	snd->setText(i18n("Unregister"));
+	snd->setText(tr("Unregister"));
 	QObject::connect(snd, SIGNAL(clicked()), this, SLOT(doUnregister()));
 
 	status = new QLabel(this);
@@ -277,7 +277,7 @@ Unregister::Unregister(QDialog *parent, const char *name) : QDialog (parent, nam
 	grid->addWidget(snd, 3, 1);
 	grid->addRowSpacing(3, 20);
 
-	setCaption(i18n("Unregister user"));
+	setCaption(tr("Unregister user"));
 	resize(240, 150);
 
 	snr = snw = NULL;
@@ -288,7 +288,7 @@ void Unregister::doUnregister() {
 	kdebug("Unregister::doUnregister()\n");
 
 	if (!uin->text().toUInt() || !pwd->text().length()) {
-		QMessageBox::warning(this, "Kadu", i18n("Please fill out all fields"), i18n("OK"), 0, 0, 1);
+		QMessageBox::warning(this, "Kadu", tr("Please fill out all fields"), tr("OK"), 0, 0, 1);
 		return;
 		}
 
@@ -296,7 +296,7 @@ void Unregister::doUnregister() {
 	passwd = strdup(unicode2cp(pwd->text()).data());
 	email = strdup(unicode2cp(mail->text()).data());
 	if (!(h = gg_unregister(uin->text().toUInt(), passwd, email, 1))) {
-		status->setText(i18n("Error"));
+		status->setText(tr("Error"));
 		free(passwd);
 		free(email);
 		return;
@@ -304,7 +304,7 @@ void Unregister::doUnregister() {
 	free(passwd);
 	free(email);
 
-	status->setText(i18n("Unregistering"));
+	status->setText(tr("Unregistering"));
 
 	setEnabled(false);
 	createSocketNotifiers();
@@ -365,7 +365,7 @@ void Unregister::socketEvent() {
 		gg_free_register(h);
 		h = NULL;
 		kdebug("Unregister::socketEvent(): error unregistering\n");
-		status->setText(i18n("Error"));
+		status->setText(tr("Error"));
 		setEnabled(true);
 		return;
 		}
@@ -383,17 +383,17 @@ void Unregister::socketEvent() {
 			gg_free_register(h);
 			h = NULL;
 			kdebug("Unregister::socketEvent(): error unregistering\n");
-			status->setText(i18n("Error"));
+			status->setText(tr("Error"));
 			setEnabled(true);
 			break;
 		case GG_STATE_DONE:
 			deleteSocketNotifiers();
 			kdebug("Unregister::socketEvent(): success\n");
 			if (p->success) {
-				status->setText(i18n("Success!"));
+				status->setText(tr("Success!"));
 //				uin = p->uin;
-//				QMessageBox::information(this, "Kadu", i18n("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(uin),
-//					i18n("OK"), 0, 0, 1);
+//				QMessageBox::information(this, "Kadu", tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(uin),
+//					tr("OK"), 0, 0, 1);
 //				ask();
 				deleteConfig();
 				kdebug("Unregister::socketEvent() before close()\n");
@@ -403,7 +403,7 @@ void Unregister::socketEvent() {
 				gg_free_register(h);
 				h = NULL;
 				kdebug("Unregister::socketEvent(): error unregistering\n");
-				status->setText(i18n("Error"));
+				status->setText(tr("Error"));
 				setEnabled(true);
 				}
 			break;
@@ -420,7 +420,7 @@ void Unregister::deleteConfig() {
 	QFile::remove(ggPath("kadu.conf"));
 	config_file.writeEntry("Global","UIN",0);
 
-	kadu->setCaption(i18n("No user"));
+	kadu->setCaption(tr("No user"));
 
 	kdebug("Unregister::deleteConfig(): Config file deleted\n");
 }

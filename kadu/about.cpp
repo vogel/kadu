@@ -161,7 +161,7 @@ static const char * shade_sun_xpm[] = {
 QString aboutText;
 
 About::About() : QDialog(0) {
-    setCaption(i18n("About"));
+    setCaption(tr("About"));
 
 aboutText.append("<CENTER><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>"
 "<H1><FONT COLOR=\"#ffd326\">Kadu ");

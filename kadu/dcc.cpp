@@ -210,23 +210,23 @@ void dccSocketClass::askAccept(void) {
 	QFileInfo fi;
 
 	kdebug("dccSocketClass::askAccept()\n");
-	str.append(i18n("User "));
+	str.append(tr("User "));
 	str.append(userlist.byUin(dccsock->peer_uin).altnick);
-	str.append(i18n(" wants to send us a file "));
+	str.append(tr(" wants to send us a file "));
 	str.append((char *)dccsock->file_info.filename);
-	str.append(i18n("\nof size "));
+	str.append(tr("\nof size "));
 
 	char fsize[20];
 	snprintf(fsize, sizeof(fsize), "%.1fKB", (float) dccsock->file_info.size / 1024);
 	str.append(fsize);
-	str.append(i18n(". Accept transfer?"));
+	str.append(tr(". Accept transfer?"));
 
-	switch (QMessageBox::information(0, i18n("Incoming transfer"), str, i18n("Yes"), i18n("No"),
+	switch (QMessageBox::information(0, tr("Incoming transfer"), str, tr("Yes"), tr("No"),
 		QString::null, 0, 1)) {
 		case 0: // Yes?
 			kdebug("dccSocketClass::askAccept(): accepted\n");
 			f = QFileDialog::getSaveFileName((char *)dccsock->file_info.filename,
-				QString::null, 0, i18n("save file"), i18n("Select file location"));
+				QString::null, 0, tr("save file"), tr("Select file location"));
 			if (f.isEmpty()) {
 				kdebug("dccSocketClass::askAccept(): discarded\n");
 				setState(DCC_SOCKET_TRANSFER_DISCARDED);
@@ -236,15 +236,15 @@ void dccSocketClass::askAccept(void) {
 			fi.setFile(f);
 			if (fi.exists() && fi.size() < dccsock->file_info.size) {
 				str.truncate(0);
-				str = QString(i18n("File %1 already exists.")).arg(f);
-				switch (QMessageBox::information(0, i18n("save file"),
-					str, i18n("Overwrite"), i18n("Resume"),
-					i18n("Cancel"), 0, 2)) {
+				str = QString(tr("File %1 already exists.")).arg(f);
+				switch (QMessageBox::information(0, tr("save file"),
+					str, tr("Overwrite"), tr("Resume"),
+					tr("Cancel"), 0, 2)) {
 					case 0:
 						kdebug("dccSocketClass::askAccept(): truncating file %s\n", f.latin1());
 
 						if ((dccsock->file_fd = open(f.latin1(), O_WRONLY | O_CREAT | O_TRUNC, 0600)) == -1) {
-							QMessageBox::warning(kadu, i18n("Connect error"), i18n("Could not open file"));
+							QMessageBox::warning(kadu, tr("Connect error"), tr("Could not open file"));
 							setState(DCC_SOCKET_COULDNT_OPEN_FILE);
 							return;
 							}
@@ -254,7 +254,7 @@ void dccSocketClass::askAccept(void) {
 						kdebug("dccSocketClass::askAccept(): appending to file %s\n", f.latin1());
 
 						if ((dccsock->file_fd = open(f.latin1(), O_WRONLY | O_APPEND, 0600)) == -1) {
-							QMessageBox::warning(kadu, i18n("Connect error"), i18n("Could not open file"));
+							QMessageBox::warning(kadu, tr("Connect error"), tr("Could not open file"));
 							setState(DCC_SOCKET_COULDNT_OPEN_FILE);
 							return;
 							}
@@ -270,7 +270,7 @@ void dccSocketClass::askAccept(void) {
 				kdebug("dccSocketClass::askAccept(): creating file %s\n", f.latin1());
 
 				if ((dccsock->file_fd = open(f.latin1(), O_WRONLY | O_CREAT, 0600)) == -1) {
-					QMessageBox::warning(kadu, i18n("Connect error"), i18n("Could not open file"));
+					QMessageBox::warning(kadu, tr("Connect error"), tr("Could not open file"));
 					setState(DCC_SOCKET_COULDNT_OPEN_FILE);
 					return;
 					}
@@ -292,7 +292,7 @@ QString dccSocketClass::selectFile(void) {
 	QFileInfo fi;
 	do {
 		f = QFileDialog::getOpenFileName((char *)dccsock->file_info.filename,
-			QString::null, 0, i18n("open file"), i18n("Select file location"));
+			QString::null, 0, tr("open file"), tr("Select file location"));
 		fi.setFile(f);
 	} while (f != QString::null && !fi.isReadable());
 
@@ -341,29 +341,29 @@ void DccGet::printFileInfo(struct gg_dcc *dccsock) {
 	QString sender;
 
 	if (type == DCC_TYPE_GET)
-		sender.append(i18n("Sender: "));
+		sender.append(tr("Sender: "));
 	else
-		sender.append(i18n("Receiver: "));
+		sender.append(tr("Receiver: "));
 	sender.append(userlist.byUin(dccsock->peer_uin).altnick);
 	l_sender->setText(sender);
 
 	QLabel *l_filename = new QLabel(vbox1);
 	sender.truncate(0);
 
-	sender.append(i18n("Filename: "));
+	sender.append(tr("Filename: "));
 	sender.append((char *)dccsock->file_info.filename);
 	l_filename->setText(sender);
 
 	QLabel *l_filesize = new QLabel(vbox1);
 	sender.truncate(0);
 
-	sender.append(i18n("File size: "));
+	sender.append(tr("File size: "));
 	sender.append(QString::number(dccsock->file_info.size));
 	sender.append("B");
 
 	l_filesize->setText(sender);
 
-	l_offset = new QLabel(i18n("Speed: 0KB/s (not started)  "),vbox1);
+	l_offset = new QLabel(tr("Speed: 0KB/s (not started)  "),vbox1);
 
 	p_progress = new QProgressBar(100, vbox1);
 	p_progress->setProgress(0);
@@ -384,7 +384,7 @@ void DccGet::printFileInfo(struct gg_dcc *dccsock) {
 	vbox1->resize(vbox1->sizeHint());
 	resize(vbox1->sizeHint().width() + 15, vbox1->sizeHint().height() + 15);
 
-	setCaption(i18n("File transfer"));
+	setCaption(tr("File transfer"));
 	show();
 }
 
@@ -397,11 +397,11 @@ void DccGet::updateFileInfo(struct gg_dcc *dccsock) {
 	if ((diffTime = time->elapsed()) > 1000) {
 		diffOffset = dccsock->offset - prevOffset;
 		prevOffset = dccsock->offset;
-		str.append(i18n("Speed: "));
+		str.append(tr("Speed: "));
 		str.append(QString::number(diffOffset/1024));
 		str.append("KB/s ");
 		if (!diffOffset)
-			str.append(i18n("(stalled)"));
+			str.append(tr("(stalled)"));
 		l_offset->setText(str);
 		time->restart();	
 		}

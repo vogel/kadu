@@ -376,9 +376,9 @@ QString parse_symbols(QString s, int i, UserListElement &ule, bool escape) {
 					break;
 				j=statusGGToStatusNr(ule.status);
 				if (j == 1 || j == 3 || j == 5 || j == 7)
-					r+=i18n(statustext[j-1]);
+					r+=QT_TR_NOOP(statustext[j-1]);
 				else
-					r+=i18n(statustext[j]);
+					r+=QT_TR_NOOP(statustext[j]);
 				break;
 			case 'd':
 				i++;
@@ -541,7 +541,7 @@ void UinsList::sort() {
 ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * name)
 : QDialog(parent, name, true) {
 	setWFlags(Qt::WDestructiveClose);
-	setCaption(i18n("Select description"));
+	setCaption(tr("Select description"));
 
   	desc = new QComboBox(TRUE,this,own_description);
 
@@ -572,8 +572,8 @@ ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * na
 			pix = icons->loadIcon("offline_d");
 		}
 
-	QPushButton *okbtn = new QPushButton(QIconSet(*pix), i18n("&OK"), this);
-	QPushButton *cancelbtn = new QPushButton(i18n("&Cancel"), this);
+	QPushButton *okbtn = new QPushButton(QIconSet(*pix), tr("&OK"), this);
+	QPushButton *cancelbtn = new QPushButton(tr("&Cancel"), this);
 	
 
 	QObject::connect(okbtn, SIGNAL(clicked()), this, SLOT(okbtnPressed()));

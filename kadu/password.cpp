@@ -38,8 +38,8 @@ void remindPassword::start() {
 
 void remindPassword::showErrorMessageBox() {
 	kdebug("remindPassword::showErrorMessageBox()\n");
-	QMessageBox::information(0, i18n("Remind password"),
-		i18n("Error during remind password"), i18n("OK"), 0, 0, 1);
+	QMessageBox::information(0, tr("Remind password"),
+		tr("Error during remind password"), tr("OK"), 0, 0, 1);
 }
 
 void remindPassword::createSocketNotifiers() {
@@ -125,28 +125,28 @@ changePassword::changePassword(QDialog *parent, const char *name) : QDialog(pare
 
 	QGridLayout *grid = new QGridLayout(this, 7, 2, 6, 5);
 	
-	QLabel *l_actpwd = new QLabel(i18n("Actual password"),this);
+	QLabel *l_actpwd = new QLabel(tr("Actual password"),this);
 	actpwd = new QLineEdit(this);
 	actpwd->setEchoMode(QLineEdit::Password);
 
-	QLabel *l_actemail = new QLabel(i18n("Actual email"),this);
+	QLabel *l_actemail = new QLabel(tr("Actual email"),this);
 	actemail = new QLineEdit(this);
 
-	QLabel *l_newpwd = new QLabel(i18n("New password"),this);
+	QLabel *l_newpwd = new QLabel(tr("New password"),this);
 	newpwd = new QLineEdit(this);
 	newpwd->setEchoMode(QLineEdit::Password);
 	
-	QLabel *l_newpwd2 = new QLabel(i18n("Retype new password"),this);
+	QLabel *l_newpwd2 = new QLabel(tr("Retype new password"),this);
 	newpwd2 = new QLineEdit(this);
 	newpwd2->setEchoMode(QLineEdit::Password);
 
-	QLabel *l_newemail = new QLabel(i18n("New email"),this);
+	QLabel *l_newemail = new QLabel(tr("New email"),this);
 	newemail = new QLineEdit(this);
 
 	status = new QLabel(this);
 
 	QPushButton *okbtn = new QPushButton(this);
-	okbtn->setText(i18n("OK"));
+	okbtn->setText(tr("OK"));
 	QObject::connect(okbtn, SIGNAL(clicked()), this, SLOT(start()));
 
 	grid->addWidget(l_actpwd, 0, 0);
@@ -163,7 +163,7 @@ changePassword::changePassword(QDialog *parent, const char *name) : QDialog(pare
 	grid->addWidget(okbtn, 6, 1);
 	grid->addRowSpacing(3, 20);
 
-	setCaption(i18n("Change password"));
+	setCaption(tr("Change password"));
 	resize(300, 180);
 }
 
@@ -182,7 +182,7 @@ void changePassword::start() {
 	kdebug("changePassword::start()\n");
 	if (!actpwd->text().length() || !actemail->text().length() || !newpwd->text().length() ||
 		newpwd->text() != newpwd2->text() || !newemail->text().length()) {
-		status->setText(i18n("Bad data"));
+		status->setText(tr("Bad data"));
 		return;
 		}
 	char *actpasswd, *newpasswd, *actmail, *newmail;
@@ -191,7 +191,7 @@ void changePassword::start() {
 	actmail = strdup(unicode2cp(actemail->text()).data());
 	newmail = strdup(unicode2cp(newemail->text()).data());
 	if (!(h = gg_change_passwd2(config_file.readNumEntry("Global","UIN"), actpasswd, newpasswd, actmail, newmail, 1))) {
-		status->setText(i18n("Error"));
+		status->setText(tr("Error"));
 		free(actpasswd);
 		free(newpasswd);
 		free(actmail);
@@ -250,7 +250,7 @@ void changePassword::socketEvent() {
 		gg_change_passwd_free(h);
 		h = NULL;
 		kdebug("changePassword::socketEvent(): error changing password!\n");
-		status->setText(i18n("Error"));
+		status->setText(tr("Error"));
 		setEnabled(true);
 		return;
 		}
@@ -268,7 +268,7 @@ void changePassword::socketEvent() {
 			deleteSocketNotifiers();
 			gg_change_passwd_free(h);
 			h = NULL;
-			status->setText(i18n("Error"));
+			status->setText(tr("Error"));
 			setEnabled(true);
 			break;
 		case GG_STATE_DONE:
@@ -278,7 +278,7 @@ void changePassword::socketEvent() {
 				gg_change_passwd_free(h);
 				h = NULL;
 				kdebug("changePassword::socketEvent(): error changing password!\n");
-				status->setText(i18n("Error"));
+				status->setText(tr("Error"));
 				setEnabled(true);
 				}
 			else {

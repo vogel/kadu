@@ -91,7 +91,7 @@ TrayIcon::TrayIcon(QWidget *parent, const char *name)
 	QLabel::setPixmap(pix);
 	resize(pix.size());
 	setMouseTracking(true);
-	QToolTip::add(this, i18n("Left click - hide/show window\nMiddle click or Left click- next message"));
+	QToolTip::add(this, tr("Left click - hide/show window\nMiddle click or Left click- next message"));
 	update();
 
 	icon_timer = new QTimer(this);
@@ -295,16 +295,16 @@ void TrayIcon::showErrorHint(const QString &str) {
 	if (!config_file.readBoolEntry("Global","HintError"))
 		return;
 	kdebug("TrayIcon::showErrorHint()\n");
-	hint->show_hint(str, i18n("Error: "), 1);
+	hint->show_hint(str, tr("Error: "), 1);
 }
 
 void TrayIcon::initModule()
 {
-	ConfigDialog::registerTab(i18n("General"));
-	ConfigDialog::registerCheckBox(i18n("General"),i18n("Enable tray hints"),"Global","TrayHint",true);
-	ConfigDialog::registerVGroupBox(i18n("General"),"---");
-	ConfigDialog::registerLineEdit("---",i18n("Tray hints timeout "),"Global","TimeoutHint","5");
-	ConfigDialog::registerCheckBox("---",i18n("Show connection errors in tray hints"),"Global","HintError",true);
+	ConfigDialog::registerTab(tr("General"));
+	ConfigDialog::registerCheckBox(tr("General"),tr("Enable tray hints"),"Global","TrayHint",true);
+	ConfigDialog::registerVGroupBox(tr("General"),"---");
+	ConfigDialog::registerLineEdit("---",tr("Tray hints timeout "),"Global","TimeoutHint","5");
+	ConfigDialog::registerCheckBox("---",tr("Show connection errors in tray hints"),"Global","HintError",true);
 	TraySlots *trayslots=new TraySlots();
 	ConfigDialog::registerSlotOnCreate(trayslots,SLOT(onCreateConfigDialog()));
 
@@ -426,8 +426,8 @@ TrayIcon *trayicon = NULL;
 void TraySlots::onCreateConfigDialog()
 {
 	kdebug("TraySlots::onCreateConfigDialog()\n");
-	QCheckBox* b_trayhint=(QCheckBox*)(ConfigDialog::getWidget(i18n("General"),i18n("Enable tray hints")));
-	QVGroupBox* hintgrp=(QVGroupBox*)(ConfigDialog::getWidget(i18n("General"),"---"));
+	QCheckBox* b_trayhint=(QCheckBox*)(ConfigDialog::getWidget(tr("General"),tr("Enable tray hints")));
+	QVGroupBox* hintgrp=(QVGroupBox*)(ConfigDialog::getWidget(tr("General"),"---"));
 	
 	hintgrp->setEnabled(b_trayhint->isChecked());
 	connect(b_trayhint,SIGNAL(toggled(bool)),hintgrp,SLOT(setEnabled(bool)));
