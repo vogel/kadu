@@ -125,6 +125,7 @@ class VoiceSocket : public DccSocket
 
 	protected:
 		virtual void connectionBroken();
+		virtual void callbackReceived();
 		virtual void dccError();
 		virtual void dccEvent();
 

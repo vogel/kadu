@@ -226,31 +226,37 @@ int DccSocket::count()
 void DccSocket::connectionBroken()
 {
 	kdebugf();
+	kdebugf2();
 }
 
 void DccSocket::dccError()
 {
 	kdebugf();
+	kdebugf2();
 }
 
 void DccSocket::dccEvent()
 {
 	kdebugf();
+	kdebugf2();
 }
 
 void DccSocket::needFileAccept()
 {
 	kdebugf();
+	kdebugf2();
 }
 
 void DccSocket::needFileInfo()
 {
 	kdebugf();
+	kdebugf2();
 }
 
 void DccSocket::noneEvent()
 {
 	kdebugf();
+	kdebugf2();
 }
 
 void DccSocket::dccDone()
@@ -269,8 +275,9 @@ void DccSocket::tranferDiscarded()
 
 void DccSocket::callbackReceived()
 {
+	kdebugf();
 	dcc_manager->cancelTimeout();
-	gadu->dccSetType(dccsock, GG_SESSION_DCC_SEND);
+	kdebugf2();
 }
 
 
@@ -564,6 +571,14 @@ void FileDccSocket::dccDone()
 	DccSocket::dccDone();
 	if (filedialog && filedialog->isVisible())
 		filedialog->updateFileInfo(dccsock);
+	kdebugf2();
+}
+
+void FileDccSocket::callbackReceived()
+{
+	kdebugf();
+	DccSocket::callbackReceived();
+	gadu->dccSetType(dccsock, GG_SESSION_DCC_SEND);
 	kdebugf2();
 }
 

@@ -109,6 +109,7 @@ class FileDccSocket : public DccSocket
 		virtual void needFileInfo();
 		virtual void noneEvent();
 		virtual void dccDone();
+		virtual void callbackReceived();
 		virtual void setState(int pstate);
 
 	public:

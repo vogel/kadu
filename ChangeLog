@@ -270,6 +270,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   dodatkowo nazwê funkcji (joi)
 * ikony w dockmenu poprawnie od¶wie¿aj± siê przy zmianie zestawu ikon (joi)
 * ograniczenie ilo¶ci czytanych przez modu³ speech znaków (joi)
+* prawid³owa obs³uga wywo³ywania rozmowy g³osowej z osob± za nat'em (adrian)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

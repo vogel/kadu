@@ -382,6 +382,14 @@ void VoiceSocket::connectionBroken()
 	kdebugf2();
 }
 
+void VoiceSocket::callbackReceived()
+{
+	kdebugf();
+	DccSocket::callbackReceived();
+	gadu->dccSetType(dccsock, GG_SESSION_DCC_VOICE);
+	kdebugf2();
+}
+
 void VoiceSocket::dccError()
 {
 	kdebugf();
