@@ -168,6 +168,7 @@ void UserInfo::writeUserlist() {
 				e_nickname->text(),e_altnick->text(),
 				e_mobile->text(),e_group->text());
 			userlist.writeToFile();
+			close();
 			break;
 		case 1:
 			return;	
