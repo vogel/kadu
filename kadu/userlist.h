@@ -70,6 +70,7 @@ struct UserListElement
 		QHostAddress ip;
 		QString dnsname;
 		short port;
+		int version;
 		bool blocking;
 		bool offline_to_user;
 		bool notify;
