@@ -1136,7 +1136,7 @@ void Chat::repaintMessages()
 		body->setText(text);
 
 		i=0;
-		FOREACH(msg, ChatMessages)
+		CONST_FOREACH(msg, ChatMessages)
 			body->setParagraphBackgroundColor(i++, (*msg)->backgroundColor);
 
 		if (!lockscroll->isOn())
@@ -1157,7 +1157,7 @@ void Chat::repaintMessages()
 		body->setText(text);
 		
 		i=ChatMessages.size()-1;
-		FOREACH(msg, ChatMessages)
+		CONST_FOREACH(msg, ChatMessages)
 			body->setParagraphBackgroundColor(i--, (*msg)->backgroundColor);
 	}
 
@@ -2048,7 +2048,7 @@ void ChatSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo, QCombo
 			browserName="mozilla-xremote-client";
 
 			QStringList dirList=QDir("/usr/lib").entryList("mozilla*", QDir::All, QDir::Name|QDir::Reversed);
-			FOREACH(dir, dirList)
+			CONST_FOREACH(dir, dirList)
 				searchPath.append("/usr/lib/"+(*dir));
 
 			searchPath.append("/usr/local/Mozilla");
@@ -2067,11 +2067,11 @@ void ChatSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo, QCombo
 			browserName="mozilla-xremote-client";
 
 			QStringList dirList=QDir("/usr/lib").entryList("firefox*", QDir::All, QDir::Name|QDir::Reversed);
-			FOREACH(dir, dirList)
+			CONST_FOREACH(dir, dirList)
 				searchPath.append("/usr/lib/"+(*dir));
 
 			dirList=QDir("/usr/lib").entryList("mozilla-firefox*", QDir::All, QDir::Name|QDir::Reversed);
-			FOREACH(dir, dirList)
+			CONST_FOREACH(dir, dirList)
 				searchPath.append("/usr/lib/"+(*dir));
 			if (!dirList.empty())//jeste¶my na debianie, gdzie zmienili nazwê skryptu, grrr :|
 				browserName="mozilla-firefox-xremote-client";
@@ -2082,7 +2082,7 @@ void ChatSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo, QCombo
 			searchPath.append(homePath+"/firefox:");
 
 			dirList=QDir("/usr/lib").entryList("mozilla*", QDir::All, QDir::Name|QDir::Reversed);
-			FOREACH(dir, dirList)
+			CONST_FOREACH(dir, dirList)
 				searchPath.append("/usr/lib/"+(*dir));
 
 			browserOptionsCombo->clear();

@@ -154,7 +154,7 @@ void UserlistImportExport::fromfile()
 			gadu->streamToUserList(stream, importedUserlist);
 			file.close();
 
-			FOREACH(i, importedUserlist)
+			CONST_FOREACH(i, importedUserlist)
 				new QListViewItem(lv_userlist, QString::number((*i).uin()),
 					(*i).nickName(),  (*i).altNick(),
 					(*i).firstName(), (*i).lastName(),
@@ -193,7 +193,7 @@ void UserlistImportExport::makeUserlist()
 	clearIgnored();
 	kadu->userbox()->clear();
 	kadu->userbox()->clearUsers();
-	FOREACH(user, userlist)
+	CONST_FOREACH(user, userlist)
 		kadu->userbox()->addUser((*user).altNick());
 
 	UserBox::all_refresh();
@@ -212,7 +212,7 @@ void UserlistImportExport::updateUserlist()
 	kadu->userbox()->clear();
 	kadu->userbox()->clearUsers();
 
-	FOREACH(user, userlist)
+	CONST_FOREACH(user, userlist)
 		kadu->userbox()->addUser((*user).altNick());
 
 	UserBox::all_refresh();
@@ -232,7 +232,7 @@ void UserlistImportExport::userListImported(bool ok, UserList& userList)
 	pb_fetch->setEnabled(true);
 
 	if (ok)
-		FOREACH(user, userList)
+		CONST_FOREACH(user, userList)
 			new QListViewItem(lv_userlist, (*user).uin() ? QString::number((*user).uin()) : QString(), (*user).nickName(),
 				(*user).altNick(), (*user).firstName(), (*user).lastName(), (*user).mobile(), (*user).group(), (*user).email());
 	kdebugf2();
@@ -275,7 +275,7 @@ void UserlistImportExport::ExportToFile(void)
 		if (file.open(IO_WriteOnly))
 		{
 			QTextStream stream(&file);
-			stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
+			stream.setCodec(codec_latin2);
 			stream << contacts;
 			file.close();
 			MessageBox::msg(tr("Your userlist has been successfully exported to file"));

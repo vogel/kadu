@@ -172,7 +172,7 @@ void ToolBar::unregisterButton(const char* name)
 
 QToolButton* ToolBar::getButton(const char* name)
 {
-	FOREACH(j, RegisteredToolButtons)
+	CONST_FOREACH(j, RegisteredToolButtons)
 		if ((*j).name == name)
 			return (*j).button;
 	kdebugmf(KDEBUG_WARNING, "'%s' return NULL\n", name?name:"[null]");

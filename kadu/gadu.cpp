@@ -86,7 +86,7 @@ bool UinsList::equals(const UinsList &uins) const
 {
 	if (count() != uins.count())
 		return false;
-	FOREACH(i, *this)
+	CONST_FOREACH(i, *this)
 		if(!uins.contains(*i))
 			return false;
 	return true;
@@ -96,16 +96,21 @@ UinsList::UinsList()
 {
 }
 
+UinsList::UinsList(UinType uin)
+{
+	append(uin);
+}
+
 UinsList::UinsList (const QString &uins)
 {
 	QStringList list = QStringList::split (",", uins);
-	FOREACH(it, list)
+	CONST_FOREACH(it, list)
 		append ((*it).toUInt ());
 }
 
 UinsList::UinsList (const QStringList &list)
 {
-	FOREACH(it, list)
+	CONST_FOREACH(it, list)
 		append ((*it).toUInt ());
 }
 
@@ -117,7 +122,7 @@ void UinsList::sort()
 QStringList UinsList::toStringList() const
 {
 	QStringList list;
-	FOREACH(uin, *this)
+	CONST_FOREACH(uin, *this)
 		list.append(QString::number(*uin));
 	return list;
 }
@@ -646,17 +651,15 @@ void GaduSocketNotifiers::socketEvent()
 
 	if (e->type == GG_EVENT_MSG)
 	{
-		UinsList uins;
+		UinsList uins(e->event.msg.sender);
 		if (e->event.msg.msgclass == GG_CLASS_CTCP)
 		{
-			uins.append(e->event.msg.sender);
 			if (config_file.readBoolEntry("Network", "AllowDCC") && !isIgnored(uins) && userlist.containsUin(e->event.msg.sender))
 				emit dccConnectionReceived(userlist.byUin(e->event.msg.sender));
 		}
 		else
 		{
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "recipients_count: %d\n", e->event.msg.recipients_count);
-			uins.append(e->event.msg.sender);
 			if ((e->event.msg.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT)
 				for (int i = 0; i < e->event.msg.recipients_count; ++i)
 					uins.append(e->event.msg.recipients[i]);
@@ -2095,7 +2098,7 @@ void GaduProtocol::streamToUserList(QTextStream& stream, UserList& userList) con
 	bool ok;
 
 	userList.clear();
-	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
+	stream.setCodec(codec_latin2);
 
 	while (!stream.eof())
 	{

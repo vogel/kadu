@@ -324,8 +324,7 @@ void EncryptionManager::sendPublicKey()
 		mykey = t.read();
 		keyfile.close();
 		QCString tmp(mykey.local8Bit());
-		UinsList uins;
-		uins.append(activeUserBox->getSelectedUins().first());
+		UinsList uins(activeUserBox->getSelectedUins().first());
 		gadu->sendMessage(uins, tmp.data());
 		QMessageBox::information(kadu, "Kadu",
 			tr("Your public key has been sent"), tr("OK"), QString::null, 0);
@@ -387,8 +386,7 @@ void SavePublicKey::yesClicked()
 	{
 		keyfile.writeBlock(keyData.local8Bit(), keyData.length());
 		keyfile.close();
-		UinsList uins;
-		uins.append(uin);
+		UinsList uins(uin);
 		encryption_manager->enableEncryptionBtnForUins(uins);
 	}
 	accept();

@@ -295,7 +295,7 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager")
 	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", "Define keys");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QString("&Manage Modules").replace(QRegExp("&"), ""), "kadu_modulesmanager", "F4");
 
-	FOREACH(it, Modules)
+	CONST_FOREACH(it, Modules)
 		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", it.key().local8Bit().data(), it.data().usage_counter);
 
 	kdebugf2();
@@ -305,7 +305,7 @@ ModulesManager::~ModulesManager()
 {
 	kdebugf();
 
-	FOREACH(it, Modules)
+	CONST_FOREACH(it, Modules)
 		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", it.key().local8Bit().data(), it.data().usage_counter);
 
 	// Wyladowujemy wszystkie nieu¿ywane modu³y
@@ -399,7 +399,7 @@ void ModulesManager::registerStaticModule(const QString& module_name,
 QStringList ModulesManager::staticModules() const
 {
 	QStringList static_modules;
-	FOREACH(i, StaticModules)
+	CONST_FOREACH(i, StaticModules)
 		static_modules.append(i.key());
 	return static_modules;
 }
@@ -420,7 +420,7 @@ QStringList ModulesManager::installedModules() const
 QStringList ModulesManager::loadedModules() const
 {
 	QStringList loaded;
-	FOREACH(i, Modules)
+	CONST_FOREACH(i, Modules)
 		if (i.data().lib!=NULL)
 			loaded.append(i.key());
 	return loaded;
@@ -443,7 +443,7 @@ QStringList ModulesManager::unloadedModules() const
 QStringList ModulesManager::activeModules() const
 {
 	QStringList active;
-	FOREACH(i, Modules)
+	CONST_FOREACH(i, Modules)
 		active.append(i.key());
 	return active;
 }
@@ -518,8 +518,8 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, const Modul
 			kdebugf2();
 			return true;
 		}
-		FOREACH(mit, Modules)
-			FOREACH(sit, (*mit).info.provides)
+		CONST_FOREACH(mit, Modules)
+			CONST_FOREACH(sit, (*mit).info.provides)
 				if ((*it)==(*sit))
 				{
 					MessageBox::msg(narg(tr("Module %1 conflicts with: %2"), module_name, mit.key()));
@@ -527,8 +527,8 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, const Modul
 					return true;
 				}
 	}
-	FOREACH(it, Modules)
-		FOREACH(sit, (*it).info.conflicts)
+	CONST_FOREACH(it, Modules)
+		CONST_FOREACH(sit, (*it).info.conflicts)
 			if ((*sit)==module_name)
 			{
 				MessageBox::msg(narg(tr("Module %1 conflicts with: %2"), module_name, it.key()));

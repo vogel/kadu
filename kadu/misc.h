@@ -76,6 +76,9 @@ QString toPlainText(const QString &text);
 extern QFont defaultFont;
 extern QFontInfo defaultFontInfo;
 
+extern QTextCodec *codec_cp1250;
+extern QTextCodec *codec_latin2;
+
 class ChooseDescription : public QDialog
 {
 	Q_OBJECT
@@ -540,5 +543,11 @@ void printBacktrace(const QString &header="");
 
 // szybsza w zapisaniu pêtla for
 #define FOREACH(i,c) for(VAR(i, (c).begin()); i!=(c).end(); ++i)
+
+#if QT_VERSION >= 0x030200
+#define CONST_FOREACH(i,c) for(VAR(i, (c).constBegin()); i!=(c).constEnd(); ++i)
+#else
+#define CONST_FOREACH(i,c) FOREACH(i,c)
+#endif
 
 #endif

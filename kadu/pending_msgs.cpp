@@ -29,22 +29,22 @@ void PendingMsgs::deleteMsg(int index)
 	emit messageDeleted();
 }
 
-bool PendingMsgs::pendingMsgs(UinType uin)
+bool PendingMsgs::pendingMsgs(UinType uin) const
 {
 	if(uin==0)
 		return pendingMsgs();
-	FOREACH(msg, msgs)
+	CONST_FOREACH(msg, msgs)
 		if((*msg).uins[0]==uin)
 			return true;
 	return false;
 }
 
-bool PendingMsgs::pendingMsgs()
+bool PendingMsgs::pendingMsgs() const
 {
 	return (msgs.size()>0);
 }
 
-int PendingMsgs::count()
+int PendingMsgs::count() const
 {
 	return msgs.count();
 }
@@ -79,19 +79,19 @@ void PendingMsgs::writeToFile()
 	int t=msgs.count();
 	f.writeBlock((char*)&t,sizeof(int));
 	// Teraz w petli dla kazdej wiadomosci
-	FOREACH(i, msgs)
+	CONST_FOREACH(i, msgs)
 	{
 		// zapisujemy uiny - najpierw ilosc
 		t=(*i).uins.size();
 		f.writeBlock((char*)&t,sizeof(int));
 		// teraz dane
-		FOREACH(j, (*i).uins)
+		CONST_FOREACH(j, (*i).uins)
 			f.writeBlock((char*)&(*j),sizeof(UinType));
 		// nastepnie wiadomosc - dlugosc
 		t=(*i).msg.length();
 		f.writeBlock((char*)&t,sizeof(int));
 		// i tresc
-		QCString cmsg = QTextCodec::codecForName("ISO 8859-2")->fromUnicode((*i).msg);
+		QCString cmsg = codec_latin2->fromUnicode((*i).msg);
 		f.writeBlock(cmsg, cmsg.length());
 		// na koniec jeszcze klase wiadomosci
 		f.writeBlock((char*)&(*i).msgclass,sizeof(int));
@@ -156,7 +156,7 @@ bool PendingMsgs::loadFromFile()
 			return false;
 		}
 		buf[msg_size] = 0;
-		e.msg = QTextCodec::codecForName("ISO 8859-2")->toUnicode(buf);
+		e.msg = codec_latin2->toUnicode(buf);
 		delete[] buf;
 		
 		// na koniec jeszcze klase wiadomosci

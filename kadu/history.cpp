@@ -71,10 +71,11 @@ QString HistoryManager::getFileNameByUinsList(UinsList uins)
 	if (uins.count())
 	{
 		uins.sort();
-		for (unsigned int i = 0; i < uins.count(); ++i)
+		unsigned int i = 0, uinsCount = uins.count();
+		CONST_FOREACH(uin, uins)
 		{
-			fname.append(QString::number(uins[i]));
-			if (i < uins.count() - 1)
+			fname.append(QString::number(*uin));
+			if (i++ < uinsCount - 1)
 				fname.append("_");
 		}
 	}
@@ -135,7 +136,7 @@ void HistoryManager::appendMessage(UinsList uins, UinType uin, const QString &ms
 	}
 
 	QTextStream stream(&f);
-	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
+	stream.setCodec(codec_latin2);
 	stream << line << '\n';
 
 	f.close();
@@ -159,7 +160,7 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 	linelist.append(QString::number(time(NULL)));
 	linelist.append(text2csv(msg));
 
-	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
+	CONST_FOREACH(i, userlist)
 		if ((*i).mobile() == mobile)
 		{
 			altnick = (*i).altNick();
@@ -168,8 +169,7 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 		}
 	if (uin)
 	{
-		UinsList uins;
-		uins.append(uin);
+		UinsList uins(uin);
 		convHist2ekgForm(uins);
 		linelist.append(text2csv(altnick));
 		linelist.append(QString::number(uin));
@@ -194,7 +194,7 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 	}
 
 	stream.setDevice(&f);
-	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
+	stream.setCodec(codec_latin2);
 	stream << line << '\n';
 	f.close();
 
@@ -218,7 +218,7 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 		}
 
 		stream.setDevice(&f);
-		stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
+		stream.setCodec(codec_latin2);
 		stream << line << '\n';
 		f.close();
 	}
@@ -244,8 +244,7 @@ void HistoryManager::appendStatus(UinType uin, const UserStatus &status)
 		return;
 	}
 
-	UinsList uins;
-	uins.append(uin);
+	UinsList uins(uin);
 	convHist2ekgForm(uins);
 	linelist.append("status");
 	linelist.append(QString::number(uin));
@@ -309,7 +308,7 @@ void HistoryManager::appendStatus(UinType uin, const UserStatus &status)
 	}
 
 	QTextStream stream(&f);
-	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
+	stream.setCodec(codec_latin2);
 	stream << line << '\n';
 
 	f.close();
@@ -367,9 +366,9 @@ void HistoryManager::convHist2ekgForm(UinsList uins)
 	}
 
 	QTextStream stream(&f);
-	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
+	stream.setCodec(codec_latin2);
 	QTextStream streamout(&fout);
-	streamout.setCodec(QTextCodec::codecForName("ISO 8859-2"));
+	streamout.setCodec(codec_latin2);
 
 	bool our, foreign;
 	QString dzien, miesiac, rok, czas, sczas, text, temp, lineout;
@@ -430,10 +429,7 @@ void HistoryManager::convHist2ekgForm(UinsList uins)
 					uin = uins[1];
 			}
 			else if (userlist.containsAltNick(nick))
-			{
-				UserListElement &user = userlist.byAltNick(nick);
-				uin = user.uin();
-			}
+				uin = userlist.byAltNick(nick).uin();
 			else if (uins.count() > 1)
 				uin = 0;
 			else if (myUin != uins[0])
@@ -511,9 +507,9 @@ void HistoryManager::convSms2ekgForm()
 	}
 
 	QTextStream stream(&f);
-	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
+	stream.setCodec(codec_latin2);
 	QTextStream streamout(&fout);
-	streamout.setCodec(QTextCodec::codecForName("ISO 8859-2"));
+	streamout.setCodec(codec_latin2);
 
 	bool header;
 	QString mobile, dzien, miesiac, rok, czas, text, temp, lineout;
@@ -679,11 +675,12 @@ QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int fr
 		return entries;
 
 	QTextStream stream(&f);
-	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
+	stream.setCodec(codec_latin2);
 
 	int linenr = from;
 
 	struct HistoryEntry entry;
+//	int num = 0;
 	while (linenr < from + count && (line = stream.readLine()) != QString::null)
 	{
 		++linenr;
@@ -704,6 +701,8 @@ QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int fr
 			entry.type = HISTORYMANAGER_ENTRY_SMSSEND;
 		if (!(entry.type & mask))
 			continue;
+//		if (num++%10==0)
+//			qApp->processEvents();
 		switch (entry.type)
 		{
 			case HISTORYMANAGER_ENTRY_CHATSEND:
@@ -838,6 +837,7 @@ QValueList<HistoryDate> HistoryManager::getHistoryDates(const UinsList &uins)
 	QString path = ggPath("history/");
 	QString filename, line;
 	uint offs, count, oldidx, actidx, leftidx, rightidx, /*mididx,*/ olddate, actdate, jmp;
+//	uint num = 0;
 
 	if (uins.count())
 		count = getHistoryEntriesCount(uins);
@@ -854,7 +854,7 @@ QValueList<HistoryDate> HistoryManager::getHistoryDates(const UinsList &uins)
 		return entries;
 	}
 	QTextStream stream(&f);
-	stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
+	stream.setCodec(codec_latin2);
 
 	fidx.setName(f.name() + ".idx");
 	if (!fidx.open(IO_ReadOnly))
@@ -885,6 +885,8 @@ QValueList<HistoryDate> HistoryManager::getHistoryDates(const UinsList &uins)
 			fidx.readBlock((char *)&offs, (Q_LONG)sizeof(int));
 			f.at(offs);
 			actdate = getHistoryDate(stream);
+//			if (++num%10 == 0)
+//				qApp->processEvents();
 		} while (actdate == olddate);
 
 		if (actidx == oldidx)
@@ -904,6 +906,8 @@ QValueList<HistoryDate> HistoryManager::getHistoryDates(const UinsList &uins)
 					rightidx = actidx;
 				else
 					leftidx = actidx;
+//				if (++num%10 == 0)
+//					qApp->processEvents();
 			}
 			newdate.idx = actidx = rightidx;
 			if (actdate == olddate)
@@ -939,8 +943,8 @@ QValueList<UinsList> HistoryManager::getUinsLists() const
 		struins = QStringList::split("_", dir[i].replace(QRegExp(".idx$"), ""));
 		uins.clear();
 		if (struins[0] != "sms")
-			for (unsigned int j = 0; j < struins.count(); ++j)
-				uins.append(struins[j].toUInt());
+			FOREACH(struin, struins)
+				uins.append((*struin).toUInt());
 		entries.append(uins);
 	}
 
@@ -1130,11 +1134,10 @@ int HistoryManager::getHistoryEntryIndexByDate(const UinsList &uins, const QDate
 		if (entries.count())
 			if (date < entries[0].date)
 				end -= ((end - start) / 2) + 1;
+			else if (date > entries[0].date)
+				start += ((end - start) / 2) + 1;
 			else
-				if (date > entries[0].date)
-					start += ((end - start) / 2) + 1;
-				else
-					return start + ((end - start) / 2);
+				return start + ((end - start) / 2);
 	}
 	if (end < 0)
 	{
@@ -1190,8 +1193,7 @@ void HistoryManager::imageReceivedAndSaved(UinType sender, uint32_t size, uint32
 	{
 //		kdebugm(KDEBUG_INFO, "sender found\n");
 		QValueList<BuffMessage> &messages=it.data();
-		QValueList<BuffMessage>::iterator msgsEnd=messages.end();
-		for (QValueList<BuffMessage>::iterator msg=messages.begin(); msg!=msgsEnd; msg++)
+		FOREACH(msg, messages)
 		{
 //			kdebugm(KDEBUG_INFO, "counter:%d\n", (*msg).counter);
 			if ((*msg).counter)
@@ -1268,33 +1270,34 @@ void HistoryManager::checkImagesTimeouts()
 	kdebugf();
 	QValueList<UinType> uins=keys(bufferedMessages);
 	
-	FOREACH(uin, uins)
+	CONST_FOREACH(uin, uins)
 		checkImageTimeout(*uin);
 	kdebugf2();
 }
 
-UinsListViewText::UinsListViewText(QListView *parent, UinsList &uins)
+UinsListViewText::UinsListViewText(QListView *parent, const UinsList &uins)
 	: QListViewItem(parent), uins(uins)
 {
-	kdebugf();
+//	kdebugf();
 	QString name;
 
 	if (!uins.count())
 		setText(0, "SMS");
 	else
 	{
-		for (unsigned int i = 0; i < uins.count(); ++i)
+		uint i = 0, uinsCount = uins.count();
+		CONST_FOREACH(uin, uins)
 		{
-			if (userlist.containsUin(uins[i]))
-				name.append(userlist.byUin(uins[i]).altNick());
+			if (userlist.containsUin(*uin))
+				name.append(userlist.byUin(*uin).altNick());
 			else
-				name.append(QString::number(uins[i]));
-			if (i < uins.count() - 1)
+				name.append(QString::number(*uin));
+			if (i++ < uinsCount - 1)
 				name.append(",");
 		}
 		setText(0, name);
 	}
-	kdebugf2();
+//	kdebugf2();
 }
 
 const UinsList &UinsListViewText::getUinsList() const
@@ -1302,7 +1305,7 @@ const UinsList &UinsListViewText::getUinsList() const
 	return uins;
 }
 
-DateListViewText::DateListViewText(QListViewItem *parent, HistoryDate &date)
+DateListViewText::DateListViewText(QListViewItem *parent, const HistoryDate &date)
 	: QListViewItem(parent), date(date)
 {
 	setText(0, date.date.toString("yyyy.MM.dd"));
@@ -1368,13 +1371,15 @@ History::History(UinsList uins) : QDialog(NULL, "HistoryDialog"), uins(uins), cl
 	QListViewItem *datelvt;
 
 	QValueList<UinsList> uinsentries = history.getUinsLists();
-	for (unsigned int i = 0; i < uinsentries.count(); ++i)
+
+	CONST_FOREACH(uinsentry, uinsentries)
 	{
-		uinslvt = new UinsListViewText(uinslv, uinsentries[i]);
+		uinslvt = new UinsListViewText(uinslv, *uinsentry);
 		uinslvt->setExpandable(TRUE);
-		if (uinsentries[i].equals(uins) && uins.count())
+		if ((*uinsentry).equals(uins) && uins.count())
 			selecteduinslvt = uinslvt;
 	}
+
 	uinslv->sort();
 	if (selecteduinslvt)
 	{
@@ -1402,8 +1407,8 @@ void History::uinsChanged(QListViewItem *item)
 		if (!item->childCount())
 		{
 			dateentries = history.getHistoryDates(uins);
-			for (unsigned int i = 0; i < dateentries.count(); ++i)
-				(new DateListViewText(item, dateentries[i]))->setExpandable(FALSE);
+			CONST_FOREACH(dateentry, dateentries)
+				(new DateListViewText(item, *dateentry))->setExpandable(FALSE);
 		}
 	}
 	kdebugf2();
@@ -1536,26 +1541,28 @@ void History::showHistoryEntries(int from, int count)
 
 	bool noStatus = config_file.readBoolEntry("History", "DontShowStatusChanges");
 
-	QValueList<HistoryEntry> entries;
-	entries = history.getHistoryEntries(uins, from, count);
+	QValueList<HistoryEntry> entries = history.getHistoryEntries(uins, from, count);
 	
-	for (i = 0; i < entries.count(); ++i)
-		if ( ! (noStatus && entries[i].type & HISTORYMANAGER_ENTRY_STATUS))
+	QValueList<HistoryEntry>::const_iterator entry = entries.begin();
+	QValueList<HistoryEntry>::const_iterator lastEntry = entries.end();
+	for(; entry != lastEntry; ++entry)
+		if ( ! (noStatus && (*entry).type & HISTORYMANAGER_ENTRY_STATUS))
 		{
-			formatHistoryEntry(text, entries[i], paracolors);
-			++i;
+			formatHistoryEntry(text, *entry++, paracolors);
 			break;
 		}
 	//z pierwszej wiadomo¶ci usuwamy obrazek separatora
 	text.replace(QRegExp("<img title=\"\" height=\"[0-9]*\" width=\"10000\" align=\"right\">"), "");
-	for (; i < entries.count(); ++i)
-		if ( ! (noStatus && entries[i].type & HISTORYMANAGER_ENTRY_STATUS))
-			formatHistoryEntry(text, entries[i], paracolors);
+
+	for (; entry != lastEntry; ++entry)
+		if ( ! (noStatus && (*entry).type & HISTORYMANAGER_ENTRY_STATUS))
+			formatHistoryEntry(text, *entry, paracolors);
 
 	body->setText(text);
 
-	for (i = 0; i < paracolors.count(); ++i)
-		body->setParagraphBackgroundColor(i, paracolors[i]);
+	i = 0;
+	CONST_FOREACH (paracolor, paracolors)
+		body->setParagraphBackgroundColor(i++, *paracolor);
 
 	kdebugf2();
 }
@@ -1594,21 +1601,22 @@ void History::searchPrevBtnClicked()
 	kdebugf2();
 }
 
-QString History::gaduStatus2symbol(unsigned int status)
+const QString &History::gaduStatus2symbol(unsigned int status)
 {
+	static const QString sym[]={QString("avail"), QString("busy"), QString("invisible"), QString("notavail")};
 	switch (status)
 	{
 		case GG_STATUS_AVAIL:
 		case GG_STATUS_AVAIL_DESCR:
-			return QString("avail");
+			return sym[0];
 		case GG_STATUS_BUSY:
 		case GG_STATUS_BUSY_DESCR:
-			return QString("busy");
+			return sym[1];
 		case GG_STATUS_INVISIBLE:
 		case GG_STATUS_INVISIBLE_DESCR:
-			return QString("invisible");
+			return sym[2];
 		default:
-			return QString("notavail");
+			return sym[3];
 	}
 }
 
@@ -1641,6 +1649,7 @@ void History::searchHistory()
 	unsigned int i;
 	QDateTime fromdate, todate;
 	QValueList<HistoryEntry> entries;
+	unsigned int entriesCount;
 	QRegExp rxp;
 
 	count = history.getHistoryEntriesCount(uins);
@@ -1684,13 +1693,14 @@ void History::searchHistory()
 		{
 			len = total > 100 ? 100 : total;
 			entries = history.getHistoryEntries(uins, findrec.actualrecord - len + 1, len);
-			for (i = 0; i < entries.count(); ++i)
+			entriesCount = entries.count();
+			for (i = 0; i < entriesCount; ++i)
 				if ((findrec.type == 1 &&
-					(entries[entries.count() - i - 1].type & HISTORYMANAGER_ENTRY_ALL_MSGS)
-					&& entries[entries.count() - i - 1].message.contains(rxp)) ||
+					(entries[entriesCount - i - 1].type & HISTORYMANAGER_ENTRY_ALL_MSGS)
+					&& entries[entriesCount - i - 1].message.contains(rxp)) ||
 					(findrec.type == 2 &&
-					(entries[entries.count() - i - 1].type & HISTORYMANAGER_ENTRY_STATUS)
-					&& findrec.data == gaduStatus2symbol(entries[entries.count() - i - 1].status)))
+					(entries[entriesCount - i - 1].type & HISTORYMANAGER_ENTRY_STATUS)
+					&& findrec.data == gaduStatus2symbol(entries[entriesCount - i - 1].status)))
 				{
 					setDateListViewText(entries[entries.count() - i - 1].date);
 					//showHistoryEntries(findrec.actualrecord - i,
@@ -1699,18 +1709,19 @@ void History::searchHistory()
 					History::start = findrec.actualrecord - i;
 					break;
 				}
-			findrec.actualrecord -= i + (i < entries.count());
-			total -= i + (i < entries.count());
+			findrec.actualrecord -= i + (i < entriesCount);
+			total -= i + (i < entriesCount);
 			kdebugmf(KDEBUG_INFO, "actualrecord = %d, i = %d, total = %d\n",
 				findrec.actualrecord, i, total);
 			qApp->processEvents();
-		} while (total > 0 && i == entries.count() && !closeDemand);
+		} while (total > 0 && i == entriesCount && !closeDemand);
 	else
 		do
 		{
 			len = total > 100 ? 100 : total;
 			entries = history.getHistoryEntries(uins, findrec.actualrecord, len);
-			for (i = 0; i < entries.count(); ++i)
+			entriesCount = entries.count();
+			for (i = 0; i < entriesCount; ++i)
 				if ((findrec.type == 1 && (entries[i].type & HISTORYMANAGER_ENTRY_ALL_MSGS)
 					&& entries[i].message.contains(rxp)) ||
 					(findrec.type == 2 &&
@@ -1724,12 +1735,12 @@ void History::searchHistory()
 					History::start = findrec.actualrecord + i;
 					break;
 				}
-			findrec.actualrecord += i + (i < entries.count());
-			total -= i + (i < entries.count());
+			findrec.actualrecord += i + (i < entriesCount);
+			total -= i + (i < entriesCount);
 			kdebugmf(KDEBUG_INFO, "actualrecord = %d, i = %d, total = %d\n",
 				findrec.actualrecord, i, total);
 			qApp->processEvents();
-		} while (total > 0 && i == entries.count() && !closeDemand);
+		} while (total > 0 && i == entriesCount && !closeDemand);
 	if (closeDemand)
 	{
 		reject();

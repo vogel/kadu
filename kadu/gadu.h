@@ -29,6 +29,11 @@ class UinsList : public QValueList<UinType>
 			konstruuje obiekt UinsList
 		**/
 		UinsList();
+
+		/**
+			konstruuje obiekt UinsList, inicjuj±c go uinem
+		**/
+		UinsList(UinType uin);
 		
 		/**
 			konstruuje obiekt UinsList na podstawie ³añcucha "uins" sk³adaj±cego

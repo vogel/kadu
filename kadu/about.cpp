@@ -125,7 +125,7 @@ QString About::loadFile(const QString &name)
 		return QString::null;
 	}
 	QTextStream str(&file);
-	str.setCodec(QTextCodec::codecForName("ISO8859-2"));
+	str.setCodec(codec_latin2);
 	data = str.read();
 	file.close();
 	kdebugf2();

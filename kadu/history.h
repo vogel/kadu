@@ -58,7 +58,7 @@ struct HistoryDate {
 
 class UinsListViewText : public QListViewItem {
 	public:
-		UinsListViewText(QListView *parent, UinsList &uins);
+		UinsListViewText(QListView *parent, const UinsList &uins);
 		const UinsList &getUinsList() const;
 
 	private:
@@ -67,7 +67,7 @@ class UinsListViewText : public QListViewItem {
 
 class DateListViewText : public QListViewItem {
 	public:
-		DateListViewText(QListViewItem *parent, HistoryDate &date);
+		DateListViewText(QListViewItem *parent, const HistoryDate &date);
 		const HistoryDate &getDate() const;
 
 	private:
@@ -96,7 +96,7 @@ class History : public QDialog {
 		void showHistoryEntries(int from, int count);
 		void setDateListViewText(QDateTime &datetime);
 		void searchHistory();
-		static QString gaduStatus2symbol(unsigned int status);
+		static const QString &gaduStatus2symbol(unsigned int status);
 		void closeEvent(QCloseEvent *e);
 
 		QListView *uinslv;

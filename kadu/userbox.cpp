@@ -107,8 +107,7 @@ void KaduListBoxPixmap::paint(QPainter *painter)
 	QColor origColor = painter->pen().color();
 	if (user.uin())
 	{
-		UinsList uins;
-		uins.append(user.uin());
+		UinsList uins(user.uin());
 		if (user.blocking())
 			painter->setPen(QColor(255, 0, 0));
 		else if (isIgnored(uins))
@@ -174,7 +173,7 @@ void KaduListBoxPixmap::paint(QPainter *painter)
 				painter->setPen(descColor);
 			else
 				painter->setPen(origColor);
-			FOREACH(text, out)
+			CONST_FOREACH(text, out)
 			{
 				painter->drawText(pm.width() + 5, yPos, *text);
 				yPos += descriptionFontMetrics->lineSpacing();
@@ -484,7 +483,7 @@ void UserBox::refresh()
 	QStringList b_users;
 
 	UinType myUin = config_file.readNumEntry("General", "UIN");
-	FOREACH(username, Users)
+	CONST_FOREACH(username, Users)
 	{
 		UserListElement &user = userlist.byAltNick(*username);
 		if (user.uin())
@@ -522,7 +521,7 @@ void UserBox::refresh()
 	bool showBlocked = config_file.readBoolEntry("General", "ShowBlocked");
 
 	// Dodajemy aktywnych
-	FOREACH(username, a_users)
+	CONST_FOREACH(username, a_users)
 	{
 		UserListElement &user = userlist.byAltNick(*username);
 		if (user.blocking() && !showBlocked)
@@ -551,7 +550,7 @@ void UserBox::refresh()
 	}
 
 	// Dodajemy niewidocznych
-	FOREACH(username, i_users)
+	CONST_FOREACH(username, i_users)
 	{
 		UserListElement &user = userlist.byAltNick(*username);
 		if (user.blocking() && !showBlocked)
@@ -578,7 +577,7 @@ void UserBox::refresh()
 
 	// Dodajemy nieaktywnych
 	if (config_file.readBoolEntry("General","ShowHideInactive"))
-	FOREACH(username, n_users)
+	CONST_FOREACH(username, n_users)
 	{
 		UserListElement &user = userlist.byAltNick(*username);
 		if (user.blocking() && !showBlocked)
@@ -605,7 +604,7 @@ void UserBox::refresh()
 
 	// Dodajemy uzytkownikow bez numerow GG
 	if(!showOnlyDesc)
-		FOREACH(username, b_users)
+		CONST_FOREACH(username, b_users)
 		{
 			UserListElement &user = userlist.byAltNick(*username);
 			lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Mobile"), user.altNick(),
@@ -614,7 +613,7 @@ void UserBox::refresh()
 		}
 
 	// Przywracamy zaznaczenie wczesniej zaznaczonych uzytkownikow
-	FOREACH(username, s_users)
+	CONST_FOREACH(username, s_users)
 		setSelected(findItem(*username), true);
 	setCurrentItem(findItem(s_user));
 
@@ -655,7 +654,7 @@ void UserBox::renameUser(const QString &oldaltnick, const QString &newaltnick)
 bool UserBox::containsAltNick(const QString &altnick) const
 {
 	kdebugf();
-	FOREACH(username, Users)
+	CONST_FOREACH(username, Users)
 		if ((*username).lower() == altnick.lower())
 			return true;
 	kdebugmf(KDEBUG_INFO, "userbox does not contain: %s\n", altnick.lower().local8Bit().data());
@@ -746,7 +745,7 @@ void UserBox::all_refresh()
 		(*box)->refresh();
 }
 
-void UserBox::all_removeUser(QString &altnick)
+void UserBox::all_removeUser(const QString &altnick)
 {
 	kdebugf();
 	FOREACH(box, UserBoxes)
@@ -915,7 +914,7 @@ void UserBoxMenu::refreshIcons()
 		int id=idAt(i);
 		QString t=text(id);
 
-		FOREACH(it, iconNames)
+		CONST_FOREACH(it, iconNames)
 			if (t.startsWith((*it).first))
 			{
 				bool enabled=isItemEnabled(id);

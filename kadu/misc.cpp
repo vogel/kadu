@@ -471,7 +471,7 @@ void openWebBrowser(const QString &link)
 	
 	args=toStringList("sh", "-c", webBrowser);
 
-	FOREACH(i, args)
+	CONST_FOREACH(i, args)
 		kdebugmf(KDEBUG_INFO, "%s\n", (*i).local8Bit().data());
 	browser = new QProcess();
 	browser->setArguments(args);
@@ -496,8 +496,7 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 	bold = italic = underline = color = inspan = false;
 	unsigned int pos = 0;
 	
-	UinsList uins;
-	uins.append(sender);
+	UinsList uins(sender);
 
 	const UserStatus &curStat = gadu->currentStatus();
 	
@@ -1553,12 +1552,13 @@ void HttpClient::onConnected()
 	if (Cookies.size() > 0)
 	{
 		query += "Cookie: ";
-		FOREACH(it, Cookies)
+		CONST_FOREACH(it, Cookies)
 		{
 			query += it.key() + "=" +it.data();
-			it++;
+			++it;
 			if (it!=Cookies.end())
 				query+="; ";
+			--it;
 		}
 		query+="\r\n";
 	}
@@ -2713,7 +2713,7 @@ void KaduTextBrowser::contentsMouseReleaseEvent(QMouseEvent *e)
 QValueList<int> toIntList(const QValueList<QVariant> &in)
 {
 	QValueList<int> out;
-	FOREACH(it, in)
+	CONST_FOREACH(it, in)
 		out.append((*it).toInt());
 	return out;
 }
@@ -2721,7 +2721,7 @@ QValueList<int> toIntList(const QValueList<QVariant> &in)
 QValueList<QVariant> toVariantList(const QValueList<int> &in)
 {
 	QValueList<QVariant> out;
-	FOREACH(it, in)
+	CONST_FOREACH(it, in)
 		out.append(QVariant(*it));
 	return out;
 }

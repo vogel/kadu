@@ -16,8 +16,7 @@
 
 #include "debug.h"
 #include "config_file.h"
-
-static QTextCodec *codec_latin2 = QTextCodec::codecForName("ISO8859-2");
+#include "misc.h"
 
 template<class T, class X> QValueList<T> keys2(const QMap<T, X> &m)
 {

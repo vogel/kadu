@@ -309,7 +309,7 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 
 	// ??	if ((status && atoi(status) <= 1 && only_active->isChecked()) || !status)
 
-	FOREACH(searchIterator, searchResults)
+	CONST_FOREACH(searchIterator, searchResults)
 	{
 		qlv = results->findItem((*searchIterator).Uin, 1);
 
@@ -492,9 +492,7 @@ void SearchDialog::openChat()
 	}
 
 	QString uin = selected->text(1);
-	UinsList uins;
-
-	uins.append((UinType)uin.toInt());
+	UinsList uins((UinType)uin.toInt());
 
 	if (uins.findIndex(config_file.readNumEntry("General", "UIN")) == -1)
 		chat_manager->openChat(uins);

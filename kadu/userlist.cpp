@@ -487,7 +487,7 @@ void UserListElement::operator = (const UserListElement &copyMe)
 
 UserList::UserList(const UserList &source) : QObject(NULL, "userlist"), QMap<QString,UserListElement>()
 {
-	FOREACH(i, source)
+	CONST_FOREACH(i, source)
 	{
 		insert(i.key(),i.data());
 		emit userDataChanged(NULL, &(i.data()));
@@ -552,7 +552,7 @@ UserListElement& UserList::byAltNick(const QString& altnick)
 
 UserListElement UserList::byUinValue(UinType uin)
 {
-	FOREACH(i, *this)
+	CONST_FOREACH(i, *this)
 		if ((*i).uin() == uin)
 			return (*i);
 	UserListElement ule;
@@ -564,7 +564,7 @@ UserListElement UserList::byUinValue(UinType uin)
 
 bool UserList::containsUin(UinType uin) const
 {
-	FOREACH(i, *this)
+	CONST_FOREACH(i, *this)
 		if ((*i).uin() == uin)
 			return true;
 	kdebugmf(KDEBUG_INFO, "userlist doesn't contain %d\n", uin);
@@ -673,7 +673,7 @@ bool UserList::writeToFile(QString filename)
 		kdebugmf(KDEBUG_ERROR, "Error opening file :(\n");
 		return false;
 	}
-	QCString str = QTextCodec::codecForName("ISO 8859-2")->fromUnicode(gadu->userListToString(*this));
+	QCString str = codec_latin2->fromUnicode(gadu->userListToString(*this));
 	f.writeBlock(str, str.length());
 	f.close();
 
@@ -701,7 +701,7 @@ bool UserList::writeToFile(QString filename)
 		if (!(*i).isAnonymous() && (*i).uin())
 		{
 			kdebugm(KDEBUG_INFO, "%s", s.local8Bit().data());
-			str = QTextCodec::codecForName("ISO 8859-2")->fromUnicode(s);
+			str = codec_latin2->fromUnicode(s);
 			fa.writeBlock(str, str.length());
 		}
 	}
@@ -752,7 +752,7 @@ bool UserList::readFromFile()
 	kdebugmf(KDEBUG_INFO, "File opened successfuly\n");
 
 	QTextStream t(&f);
-	t.setCodec(QTextCodec::codecForName("ISO 8859-2"));
+	t.setCodec(codec_latin2);
 	gadu->streamToUserList(t, *this);
 
 	FOREACH(user, *this)
@@ -782,14 +782,14 @@ bool UserList::readFromFile()
 UserList& UserList::operator=(const UserList& userlist)
 {
 	kdebugf();
-	FOREACH(i, *this)
+	CONST_FOREACH(i, *this)
 		emit userDataChanged(&(i.data()), NULL);
 
 	QMap<QString,UserListElement>::operator=(userlist);
 	FOREACH(i, *this)
 		(*i).Parent = this;
 
-	FOREACH(i, *this)
+	CONST_FOREACH(i, *this)
 		emit userDataChanged(NULL, &(i.data()));
 
 	emit modified();
@@ -803,10 +803,10 @@ void UserList::merge(const UserList &ulist)
 	UserListElement e(this);
 	UserStatus status;
 
-	FOREACH(i, *this)
+	CONST_FOREACH(i, *this)
 		emit userDataChanged(&(i.data()), NULL);
 
-	FOREACH(i, ulist)
+	CONST_FOREACH(i, ulist)
 	{
 		Iterator j = begin();
 		if ((*i).uin())
@@ -832,7 +832,7 @@ void UserList::merge(const UserList &ulist)
 
 	emit allNewContacts(*this);
 
-	FOREACH(i, *this)
+	CONST_FOREACH(i, *this)
 		emit userDataChanged(NULL, &(i.data()), true);
 
 	emit modified();

@@ -24,9 +24,9 @@ class PendingMsgs : public QObject
 		
 	public:
 		PendingMsgs(QObject *parent=0, const char *name=0);
-		bool pendingMsgs(UinType uin);
-		bool pendingMsgs();
-		int count();
+		bool pendingMsgs(UinType uin) const;
+		bool pendingMsgs() const;
+		int count() const;
 		Element &operator[](int index);
 
 	public slots:
