@@ -28,6 +28,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * kadu nie powinno siê wywalaæ jak otrzymamy wiadomo¶æ graficzn±;
   póki co obrazek jest ignorowany (chilek)
 * eksport/import listy u¿ytkowników zgodny z GG6 (chilek)
+* libgadu z dnia 12.09.2003; poprawionych kilka bugów przy imporcie i
+  eksporcie listy u¿ytkowników (chilek)
 
 +++ wersja 0.3.4-rc4
 * kadu nie pokazuje fa³szywych statusów ukrytych w userboksie (chilek)

@@ -20,6 +20,7 @@
 #include "config_dialog.h"
 #include "debug.h"
 #include "events.h"
+#include "message_box.h"
 #include "expimp.h"
 
 UserlistImport::UserlistImport(QWidget *parent, const char *name)
@@ -63,23 +64,27 @@ void UserlistImport::fromfile(){
 	QListViewItem * qlv;
 	QString line;    
 	QString fname = QFileDialog::getOpenFileName("/", QString::null, this);
-	if (fname.length()){
+	if (fname.length()) {
 		QFile file(fname);
  		if (file.open(IO_ReadOnly)) {
 			QTextStream stream(&file);
 			stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 			importedUserlist.clear();
 			results->clear();
-			while ( !stream.eof() ) {
+			while (!stream.eof()) {
 				line = stream.readLine();
 				lines = QStringList::split(";", line, true);
 				if (lines[6] == "0")
 					lines[6].truncate(0);
-				importedUserlist.addUser(lines[0], lines[1], lines[2],
-					lines[3], lines[4], lines[6], GG_STATUS_NOT_AVAIL,
-					false, false, true, lines[5], "", lines[7]);
-				qlv = new QListViewItem(results, lines[6], lines[2], lines[3],
-					lines[0], lines[1], lines[4], lines[5], lines[7]);
+				importedUserlist.addUser(lines[0], lines[1],
+					lines[2], lines[3], lines[4],
+					lines[6], GG_STATUS_NOT_AVAIL, 0,
+					false, false, true, lines[5],
+					QString::null, lines[7]);
+				qlv = new QListViewItem(results, lines[6],
+					lines[2], lines[3], lines[0],
+					lines[1], lines[4], lines[5],
+					lines[7]);
 	  			}
 			file.close();
 			}
@@ -95,7 +100,8 @@ void UserlistImport::startTransfer() {
 
 	if (gg_userlist_request(sess, GG_USERLIST_GET, NULL) == -1) {
 		kdebug("UserlistImport: gg_userlist_get() failed\n");
-		QMessageBox::critical(this, "Import error", i18n("The application encountered an internal error\nThe import was unsuccessful") );
+		QMessageBox::critical(this, i18n("Import error"),
+			i18n("The application encountered an internal error\nThe import was unsuccessful"));
 		return;
 		}
 
@@ -181,29 +187,30 @@ void UserlistImport::userlistReplyReceivedSlot(char type, char *reply) {
 	kdebug("ImportUserlist::userlistReplyReceivedSlot(): Done\n");
 	QStringList strlist;
 	strlist = QStringList::split("\r\n", cp2unicode((unsigned char *)reply), true);
-	kdebug("! %d !\n", strlist.count());		
-	kdebug("%s\n", reply);
+	kdebug("ImportUserlist::userlistReplyReceivedSlot()\n%s\n", reply);
 	QStringList fieldlist;
+	// this is temporary array dedicated to Adrian
 	QString tmparray[16];
-	QListViewItem * qlv;
-	int i, j;
-	QStringList::Iterator it, it2;
+	QListViewItem *qlv;
+	QStringList::Iterator it;
 
 	results->clear();
 	importedUserlist.clear();
-	for ((it = strlist.begin()), (i = 1); it != strlist.end(), i < strlist.count(); ++it, i++ ) {
-		fieldlist = QStringList::split(";",*it,true);
-		for ((it2 = fieldlist.begin()), (j = 1); it2 != fieldlist.end(), j < fieldlist.count(); ++it2, j++) {
-			tmparray[j-1] = (*it2);
-			}
-		if (tmparray[6] == "0")
-			tmparray[6].truncate(0);
-		importedUserlist.addUser(tmparray[0], tmparray[1], tmparray[2],
-			tmparray[3], tmparray[4], tmparray[6], GG_STATUS_NOT_AVAIL,
-			false, false, true, tmparray[5], "", tmparray[7]);
-
-		qlv = new QListViewItem(results, tmparray[6], tmparray[2], tmparray[3],
-			tmparray[0], tmparray[1], tmparray[4], tmparray[5], tmparray[7]);
+	for ((it = strlist.begin()); it != strlist.end(); it++) {
+		if ((*it).contains(';') != 11)
+			continue;
+		fieldlist = QStringList::split(";", *it, true);
+		if (fieldlist[6] == "0")
+			fieldlist[6].truncate(0);
+		importedUserlist.addUser(fieldlist[0], fieldlist[1],
+			fieldlist[2], fieldlist[3], fieldlist[4],
+			fieldlist[6], GG_STATUS_NOT_AVAIL, 0,
+			false, false, true, fieldlist[5], QString::null,
+			fieldlist[7]);
+		qlv = new QListViewItem(results, fieldlist[6],
+			fieldlist[2], fieldlist[3], fieldlist[0],
+			fieldlist[1], fieldlist[4], fieldlist[5],
+			fieldlist[7]);
 		}
 	disconnect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)),
 		this, SLOT(userlistReplyReceivedSlot(char, char *)));
@@ -283,7 +290,8 @@ void UserlistExport::startTransfer() {
 	
 	if (gg_userlist_request(sess, GG_USERLIST_PUT, con2) == -1) {
 		kdebug("UserlistExport: gg_userlist_put() failed\n");
-		QMessageBox::critical(this, "Export error", i18n("The application encountered an internal error\nThe export was unsuccessful") );
+		QMessageBox::critical(this, i18n("Export error"),
+			i18n("The application encountered an internal error\nThe export was unsuccessful"));
 		free(con2);
 		return;
 		}
@@ -312,10 +320,12 @@ void UserlistExport::ExportToFile(void) {
 			stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
 			stream << contacts;
 			file.close();
-			QMessageBox::information(this, "Export completed", i18n("Your userlist has been successfully exported to file"));
+			QMessageBox::information(this, i18n("Export completed"),
+				i18n("Your userlist has been successfully exported to file"));
 			}
 		else
-			QMessageBox::critical(this, "Export error", i18n("The application encountered an internal error\nThe export userlist to file was unsuccessful") );
+			QMessageBox::critical(this, i18n("Export error"),
+				i18n("The application encountered an internal error\nThe export userlist to file was unsuccessful"));
 		}
 
 	sendbtn->setEnabled(true);
@@ -366,8 +376,9 @@ void UserlistExport::userlistReplyReceivedSlot(char type, char *reply) {
 	sendbtn->setEnabled(true);
 	tofilebtn->setEnabled(true);
 	deletebtn->setEnabled(true);
-	QMessageBox::information(this, i18n("Export complete"),
-		i18n("Your userlist has been successfully exported to server"));
+//	QMessageBox::information(this, i18n("Export complete"),
+//		i18n("Your userlist has been successfully exported to server"));
+	MessageBox::msg(i18n("Your userlist has been successfully exported to server"));
 }
 
 void UserlistExport::closeEvent(QCloseEvent * e) {
