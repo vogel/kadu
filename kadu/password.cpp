@@ -1,4 +1,3 @@
-#include <klocale.h>
 #include <qlayout.h>
 #include <qpushbutton.h>
 #include <qmessagebox.h>

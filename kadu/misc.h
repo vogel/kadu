@@ -4,6 +4,8 @@
 #include <qvaluelist.h>
 #include <qdialog.h>
 #include <qlineedit.h>
+#include <libintl.h>
+
 #include "libgadu.h"
 
 #define __c2q(__char_pointer__) QString::fromLocal8Bit(__char_pointer__)
@@ -14,6 +16,8 @@
 	$HOME i $CONFIG_DIR
 */
 QString ggPath(QString subpath);
+
+#define i18n(String) __c2q(gettext(String))
 
 void cp_to_iso(unsigned char *);
 void iso_to_cp(unsigned char *);

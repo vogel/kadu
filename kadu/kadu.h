@@ -16,7 +16,7 @@
 #include <config.h>
 #endif
 
-#include <kapp.h>
+#include <kapplication.h>
 #include <qprogressdialog.h>
 #include <qmultilineedit.h>
 #include <qsocketnotifier.h>
@@ -26,6 +26,7 @@
 #include <qpopupmenu.h>
 #include <qnetworkprotocol.h>
 #include <qstringlist.h>
+
 #include "userlist.h"
 #include "userbox.h"
 #include "pending_msgs.h"

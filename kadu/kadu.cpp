@@ -7,8 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <kapp.h>
-#include <klocale.h>
 #include <kglobal.h>
 #include <kiconloader.h>
 #include <kconfig.h>
@@ -62,7 +60,7 @@
 #include <qsplitter.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-
+#include <libintl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -287,7 +285,8 @@ void confirmHistoryDeletion(UinsList &uins) {
 	QString s;
 	int i;
 
-	switch(QMessageBox::information( kadu, "Kadu",i18n("Clear history?"), i18n("Yes"), i18n("No"), QString::null, 1, 1)) {
+	switch(QMessageBox::information(kadu, "Kadu", i18n("Clear history?"),
+		i18n("Yes"), i18n("No"), QString::null, 1, 1)) {
 		case 0: // Yes?
 			fname = ggPath("history/");
 			uins.sort();
@@ -353,8 +352,8 @@ void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 	fprintf(stderr, "KK Kadu::gotUpdatesInfo(): %s\n", buf);
 	
 	if (uc->ifNewerVersion(newestversion)) {
-		QMessageBox::information(this,(i18n("Update information")),
-			QString(i18n("The newest Kadu version is %1")).arg(newestversion), QMessageBox::Ok);
+		QMessageBox::information(this, i18n("Update information"),
+			i18n("The newest Kadu version is %1").arg(newestversion), QMessageBox::Ok);
 		}
 	delete uc;
 }
@@ -481,6 +480,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	KIconLoader *loader = KGlobal::iconLoader();
 
+//	dockppm->insertItem(loader->loadIcon("exit",KIcon::Small), i18n("&Exit Kadu"), 9);
 	dockppm->insertItem(loader->loadIcon("exit",KIcon::Small), i18n("&Exit Kadu"), 9);
 	if (config.dock)
 		connect(dockppm, SIGNAL(activated(int)), dw, SLOT(dockletChange(int)));
@@ -683,7 +683,8 @@ void Kadu::removeUser(QStringList &users, bool permanently = false) {
 		userlist.removeUser(user.altnick);
 		}
 
-	switch (QMessageBox::information(kadu, "Kadu", i18n("Save current userlist to file?"), i18n("Yes"), i18n("No"), QString::null, 0, 1) ) {
+	switch (QMessageBox::information(kadu, "Kadu", i18n("Save current userlist to file?"),
+		i18n("Yes"), i18n("No"), QString::null, 0, 1) ) {
 		case 0: // Yes?
 			userlist.writeToFile();
 			break;
@@ -745,7 +746,8 @@ void Kadu::prepareDcc(void) {
 	if (!dccsock) {
 		perror("DCC");
 		gg_dcc_free(dccsock);
-		QMessageBox::warning(kadu, "", i18n("Couldn't create DCC socket.\nDirect connections disabled."));
+		QMessageBox::warning(kadu, "",
+			i18n("Couldn't create DCC socket.\nDirect connections disabled."));
 		return;
 		}
 
@@ -888,7 +890,7 @@ void Kadu::commandParser (int command) {
 			else {
 				QPixmap snd_mute((const char **)snd_unmute_xpm);
 				QIconSet icon(snd_mute);
-				mmb->changeItem(KADU_CMD_MUTE, icon, i18n("Mute sounds"));		
+				mmb->changeItem(KADU_CMD_MUTE, icon, i18n("Mute sounds"));
 				}
 			break;
 		case KADU_CMD_ADD_USER:
@@ -953,7 +955,8 @@ void Kadu::commandParser (int command) {
 			close(true);
 			break;
 		case KADU_CMD_SEARCH_USER:
-			sd = new SearchDialog(0, i18n("User info"), userlist.byAltNick(userbox->currentText()).uin);
+			sd = new SearchDialog(0, i18n("User info"),
+				userlist.byAltNick(userbox->currentText()).uin);
 			sd->init();
 			sd->show();
 			sd->firstSearch();
@@ -1021,7 +1024,8 @@ void Kadu::commandParser (int command) {
 				keyfile.close();
 				QCString tmp(mykey.local8Bit());
 				gg_send_message(sess, GG_CLASS_MSG, user.uin, (unsigned char *)tmp.data());
-				QMessageBox::information(this, "Kadu", i18n("Your public key has been sent"), i18n("OK"), QString::null, 0);
+				QMessageBox::information(this, "Kadu",
+					i18n("Your public key has been sent"), i18n("OK"), QString::null, 0);
 			}
 
 			break;
@@ -1403,7 +1407,8 @@ void Kadu::setStatus(int status) {
 		}
 	else {
 		disconnectNetwork();
-		QMessageBox::warning(kadu, i18n("Connection problem"), i18n("Couldn't connect.\nCheck your internet connection."));
+		QMessageBox::warning(kadu, i18n("Connection problem"),
+			i18n("Couldn't connect.\nCheck your internet connection."));
 		}
 }
 
@@ -1431,20 +1436,23 @@ bool Kadu::event(QEvent *e) {
 		switch (dcc->state) {
 			case DCC_SOCKET_TRANSFER_FINISHED:
 				QMessageBox::information(0, i18n("Information"),
-					i18n("File has been transferred sucessfully."), i18n("&OK"));
+					i18n("File has been transferred sucessfully."),
+					i18n("&OK"));
 				break;
 			case DCC_SOCKET_TRANSFER_DISCARDED:
 				QMessageBox::information(0, i18n("Information"), 
-				i18n("File transfer has been discarded."), i18n("&OK"));
+					i18n("File transfer has been discarded."), i18n("&OK"));
 				break;
 			case DCC_SOCKET_TRANSFER_ERROR:
 			case DCC_SOCKET_CONNECTION_BROKEN:
-				QMessageBox::information(0, i18n("Error"), i18n("File transfer error!"),
-				i18n("&OK"));
+				QMessageBox::information(0, i18n("Error"),
+					i18n("File transfer error!"),
+					i18n("&OK"));
 				break;
 			case DCC_SOCKET_COULDNT_OPEN_FILE:
-				QMessageBox::information(0, i18n("Error"), i18n("Couldn't open file!"),
-				i18n("&OK"));
+				QMessageBox::information(0, i18n("Error"),
+					i18n("Couldn't open file!"),
+					i18n("&OK"));
 				break;
 			}
 		delete data;
@@ -1870,9 +1878,9 @@ void Kadu::createStatusPopupMenu() {
 
 	statusppm->insertSeparator();
 	dockppm->insertSeparator();
-	statusppm->insertItem(i18n("Private"),8);
+	statusppm->insertItem(i18n("Private"), 8);
 	statusppm->setItemChecked(8, config.privatestatus);
-	dockppm->insertItem(i18n("Private"),8);
+	dockppm->insertItem(i18n("Private"), 8);
 	dockppm->setItemChecked(8, config.privatestatus);
 
 	statusppm->setCheckable(true);

@@ -8,7 +8,6 @@
  ***************************************************************************/
 
 
-#include <klocale.h>
 #include <qwidget.h>
 #include <qdialog.h>
 #include <qmultilineedit.h>

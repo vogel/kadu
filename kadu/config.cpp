@@ -9,9 +9,9 @@
 
 #include <kicontheme.h>
 #include <kiconloader.h>
-#include <klocale.h>
 #include <kconfig.h>
 #include <kglobal.h>
+#include <qapplication.h>
 #include <qvaluelist.h>
 #include <qcolordialog.h>
 #include <qfontdatabase.h>
@@ -51,6 +51,8 @@ void loadKaduConfig(void) {
 	fprintf(stderr,"KK loadKaduConfig(): Reading config file...\n");
 	KConfig * konf;
 	konf = new KConfig(ggPath(QString("kadu.conf")));
+
+	fprintf(stderr, "KK loadKaduConfig(): here I am\n");
 
 	konf->setGroup("Global");
 	config.uin = konf->readNumEntry("UIN",0);

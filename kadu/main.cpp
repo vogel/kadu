@@ -10,10 +10,14 @@
 #include <kcmdlineargs.h>
 #include <kaboutdata.h>
 #include <klocale.h>
+#include <kapplication.h>
+#include <qapplication.h>
 #include <qtextcodec.h>
 #include <qmessagebox.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <locale.h>
+#include <libintl.h>
 
 //
 #include "kadu.h"
@@ -46,6 +50,11 @@ int main(int argc, char *argv[])
 {
 	gg_debug_level = 255;
 
+	setlocale(LC_ALL, "");
+	bindtextdomain("kadu", "/usr/share/locale");
+//	bind_textdomain_codeset("kadu", "ISO-8859-2");
+	textdomain("kadu");
+
 	KAboutData aboutData( "kadu", I18N_NOOP("Kadu"),
 		"0.3.3", description, KAboutData::License_GPL,
 		"(c) 2001-2002, Kadu Team", 0, 0, "www.kadu.net");
@@ -54,6 +63,7 @@ int main(int argc, char *argv[])
 	KCmdLineArgs::addCmdLineOptions( options ); // Add our own options.
 
 	a = new KApplication;
+//	a = new QApplication(argc, argv);
 	a->setDefaultCodec( QTextCodec::codecForName("ISO 8859-2"));
 	kadu = new Kadu(0, "Kadu");
 	QPixmap px((const char **)gg_inact_xpm);
@@ -68,7 +78,7 @@ int main(int argc, char *argv[])
 		mkdir(path_.local8Bit(), 0700);
 		path_.append("/history/");
 		mkdir(path_.local8Bit(), 0700);
-		switch (QMessageBox::information( kadu, "Kadu",
+		switch (QMessageBox::information(kadu, "Kadu",
 			i18n("You don't have a config file.\nWhat would you like to do?"),
 			i18n("New UIN"), i18n("Configure"), i18n("Cancel"), 0, 1) ) {
 			case 1: // Configure

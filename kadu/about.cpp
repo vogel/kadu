@@ -7,7 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <klocale.h>
 #include <qbitmap.h>
 #include <qpainter.h>
 #include <qlayout.h>

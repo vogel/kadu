@@ -7,7 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <klocale.h>
 #include <signal.h>
 #include <qwidget.h>
 #include <qdialog.h>

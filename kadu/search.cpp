@@ -7,7 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <klocale.h>
 #include <qgroupbox.h>
 #include <qpushbutton.h>
 #include <qlistview.h>

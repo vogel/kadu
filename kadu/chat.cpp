@@ -7,7 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <klocale.h>
 #include <kicontheme.h>
 #include <kiconloader.h>
 #include <qregexp.h>

@@ -11,7 +11,6 @@
 #define CHAT_H
 
 #include <qdialog.h>
-//#include <ktextbrowser.h>
 #include <qtextbrowser.h>
 #include <qhbox.h>
 #include <qmultilineedit.h>

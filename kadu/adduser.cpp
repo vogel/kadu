@@ -7,7 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <klocale.h>
 #include <qlayout.h>
 #include <qpushbutton.h>
 #include <qmessagebox.h>
@@ -104,7 +103,8 @@ void Adduser::Add() {
 		close(true);
 		}
 	else
-		QMessageBox::warning(this, i18n("Add user problem"), i18n("Altnick field cannot be empty."));
+		QMessageBox::warning(this, i18n("Add user problem"),
+			i18n("Altnick field cannot be empty."));
 
 	fprintf(stderr, "KK Adduser::Add(): finished\n");
 }

@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <klocale.h>
+#include <qapplication.h>
 #include <qcursor.h>
 
 #include "dock_widget.h"
@@ -177,7 +177,7 @@ void DockHint::Show(QString Text) {
 	size=QSize(size.width()+5,size.height()+5);
 	fprintf(stderr,"w:%d,h:%d\n",size.width(),size.height());
 	resize(size.width(),size.height());
-	QSize desksize=QApplication::desktop()->size();
+	QSize desksize = QApplication::desktop()->size();
 
 	if (p.x()+size.width() > desksize.width()) {
 		if(p.x()-size.width() <0)
@@ -222,7 +222,7 @@ void DockHint::remove_hint() {
 	size=QSize(size.width()+5,size.height()+5);
 	fprintf(stderr,"w:%d,h:%d\n",size.width(),size.height());
 	resize(size.width(),size.height());
-	QSize desksize=QApplication::desktop()->size();
+	QSize desksize = QApplication::desktop()->size();
 
 	if (p.x()+size.width() > desksize.width()) {
 		if(p.x()-size.width() <0)

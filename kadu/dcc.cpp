@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <klocale.h>
+#include <qapplication.h>
 #include <qfiledialog.h>
 #include <iostream>
 #include <fcntl.h>

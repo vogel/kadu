@@ -15,7 +15,6 @@
 #include <qcheckbox.h>
 #include <qlineedit.h>
 #include <qcombobox.h>
-//#include <qsocketnotifier.h>
 #include <qpushbutton.h>
 #include <qlistview.h>
 #include <qlabel.h>

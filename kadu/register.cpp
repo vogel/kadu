@@ -7,7 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <klocale.h>
 #include <kconfig.h>
 #include <qlayout.h>
 #include <qpushbutton.h>
