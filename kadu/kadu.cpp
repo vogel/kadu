@@ -1153,8 +1153,9 @@ void Kadu::slotShowStatusMenu() {
 
 void Kadu::setStatus(int status) {
 
-	fprintf(stderr, "KK Kadu::setStatus()\n");
-    
+	fprintf(stderr, "KK Kadu::setStatus(): setting status: %d\n",
+		status | (GG_STATUS_FRIENDS_MASK * config.privatestatus));
+
 	bool with_description;
     
 	with_description = ifStatusWithDescription(status);
@@ -1196,7 +1197,9 @@ void Kadu::setStatus(int status) {
 			kadusnw->setEnabled(true);
 	
 		setCurrentStatus(status);
-	    		
+
+		fprintf(stderr, "KK Kadu::setStatus(): actual status: %d\n", sess->status);
+
 		return;
 		}
 
