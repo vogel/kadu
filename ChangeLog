@@ -61,6 +61,9 @@
   wiadomo¶ciami, które otrzymali¶my, a jeszcze nie przeczytali¶my (chilek)
 * plik konfiguracyjny: dodana opcja ChatHistoryCitation w sekcji Others
   okre¶laj±ca ilo¶æ cytowanych wypowiedzi przy otwieraniu okna rozmowy (chilek)
+* poprawka b³êdu, który powodowa³ wywalanie siê kadu, nie mo¿na wybraæ ju¿
+  statusu niedostepny z opisem, przy uruchomionym kadu z domyslnym statusem
+  niedostêpny i poprawka w menu z docku- domyslny status nie byl checkniêty (mast3r)
 
 +++ wersja 0.3.3-final
 * ikonka wiadomo¶ci i ikon statusu "ukryty" z telefonikiem
