@@ -43,7 +43,7 @@ void ConfigFile::read() {
 				if (activegroup.name.length()) {
 					activeentry.name = line.section('=', 0, 0).stripWhiteSpace();
 					activeentry.value = line.section('=', 1, -1, QString::SectionIncludeTrailingSep).stripWhiteSpace();
-					if (line.contains('=') == 1 && activeentry.name.length()
+					if (line.contains('=') >= 1 && activeentry.name.length()
 						&& activeentry.value.length())
 						activegroup.entries.append(activeentry);
 					}
