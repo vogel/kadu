@@ -213,7 +213,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 		chats[i].ptr->checkPresence(senders, tmp, time, toadd);
 		chats[i].ptr->alertNewMessage();
 		if (!chats[i].ptr->isActiveWindow() && config.hintalert)
-			trayicon->showHint(i18n("New message from: "), (const char *)nick.local8Bit(),0);
+			trayicon->showHint(i18n("New message from: "), nick,0);
 		return;
 		}
 
@@ -235,9 +235,9 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 		}
 
 	if (msgclass == GG_CLASS_CHAT)
-		trayicon->showHint(i18n("Chat with: "), (const char *)nick.local8Bit(),0);
+		trayicon->showHint(i18n("Chat with: "), nick,0);
 	if (msgclass == GG_CLASS_MSG)
-		trayicon->showHint(i18n("Message from: "), (const char *)nick.local8Bit(),0);
+		trayicon->showHint(i18n("Message from: "), nick,0);
 
 	PendingMsgs::Element elem;
 /*
