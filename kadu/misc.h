@@ -545,9 +545,9 @@ void printBacktrace(const QString &header="");
 #define FOREACH(i,c) for(VAR(i, (c).begin()); i!=(c).end(); ++i)
 
 #if QT_VERSION >= 0x030200
-#define CONST_FOREACH(i,c) for(VAR(i, (c).constBegin()); i!=(c).constEnd(); ++i)
+#define CONST_FOREACH(i,c) for(VAR(i, (c).constBegin()), _kadu__##i##__end = (c).constEnd(); i!=_kadu__##i##__end; ++i)
 #else
-#define CONST_FOREACH(i,c) FOREACH(i,c)
+#define CONST_FOREACH(i,c) for(VAR(i, (c).begin()), _kadu__##i##__end = (c).end(); i!=_kadu__##i##__end; ++i)
 #endif
 
 #endif
