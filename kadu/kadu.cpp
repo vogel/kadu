@@ -541,12 +541,8 @@ void Kadu::currentChanged(QListBoxItem *item) {
 		return;
 
 	kdebug("Kadu::currentChanged(): %s\n", (const char *)item->text().local8Bit());
-	if (!config.showdesc)
-		return;
 
-	if (config.panelsyntax.isEmpty())
-		descrtb->setText(parse("[#%u][, %f] %r [- %d] [ (%i)]",userlist.byAltNick(item->text())));
-	else
+	if (config.showdesc)
 		descrtb->setText(parse(config.panelsyntax,userlist.byAltNick(item->text())));
 }
 

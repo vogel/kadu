@@ -313,10 +313,7 @@ void Chat::setTitle() {
 				user = userlist.byUin(uins[k]);
 			else
 				user.uin = uins[k];
-			if (config.conferencesyntax.isEmpty())
-				title.append(parse("%a (%s[: %d])",user));
-			else
-				title.append(parse(config.conferencesyntax,user));
+			title.append(parse(config.conferencesyntax,user));
 		}
 		setIcon(*icons->loadIcon("online"));
 	}
