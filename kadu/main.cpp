@@ -7,10 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifdef HAVE_KDE
-#include <kcmdlineargs.h>
-#include <kapplication.h>
-#endif
 #include <qapplication.h>
 #include <qtextcodec.h>
 #include <qmessagebox.h>
@@ -44,12 +40,7 @@ int main(int argc, char *argv[])
 //	bind_textdomain_codeset("kadu", "ISO-8859-2");
 	textdomain("kadu");
 
-#ifdef HAVE_KDE
-	KCmdLineArgs::init( argc, argv, "Kadu", "GG-Client for X-Win", VERSION);
-	a = new KApplication;
-#else
 	a = new QApplication(argc, argv);
-#endif
 	a->setDefaultCodec( QTextCodec::codecForName("ISO 8859-2"));
 	kadu = new Kadu(0, "Kadu");
 	QPixmap px((const char **)gg_inact_xpm);
