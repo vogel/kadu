@@ -17,6 +17,7 @@
 #include <qlistview.h>
 #include <qmap.h>
 #include <qstringlist.h>
+#include <time.h>
 
 #include "misc.h"
 
