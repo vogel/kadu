@@ -8,4 +8,4 @@ MODULE_LIBS_PATH="$KDEDIR/lib /usr/kde/3.1/lib /usr/kde/3.2/lib /usr/kde/3.3/lib
 
 MODULE_3RDPARTY="arts_connector"
 MODULE_TOOLS="artsc-config"
-MODULE_CONFIGURE_CMD='mkdir ./modules/arts_sound/data; TOOL_DIRS2=`echo $TOOL_DIRS | sed -e "s/\//\\\\\\\\\//g"`;  sed -e "s/artsc-config/$TOOL_DIRS2\/artsc-config/g" <./modules/arts_sound/arts_connector/Makefile.in >./modules/arts_sound/arts_connector/Makefile'
+MODULE_CONFIGURE_CMD='mkdir ./modules/arts_sound/bin; TOOL_DIRS2=`echo $TOOL_DIRS | sed -e "s/\//\\\\\\\\\//g"`;  sed -e "s/artsc-config/$TOOL_DIRS2\/artsc-config/g" <./modules/arts_sound/arts_connector/Makefile.in >./modules/arts_sound/arts_connector/Makefile'
