@@ -66,8 +66,8 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	connect(b_addbtn, SIGNAL(clicked()), this, SLOT(AddButtonClicked()));
 
 	QHBoxLayout* CommandLayout = new QHBoxLayout(5);
-	CommandLayout->addWidget(b_chat);
 	CommandLayout->addWidget(b_sendbtn);
+	CommandLayout->addWidget(b_chat);
 	CommandLayout->addWidget(b_nextbtn);
 	CommandLayout->addWidget(b_clrbtn);
 	CommandLayout->addWidget(b_addbtn);
