@@ -9,6 +9,8 @@
 * okno dodawania u¿ytkownika: nie mo¿na dodaæ do listy u¿ytkownika, który
   ma puste pole "altnick"
 * emotikony: kadu nie zapêtla siê jesli mamy ustawiony nie istniej±cy juz zestaw
+* okno rozmowy: mo¿liwo¶æ zmieniania proporcji pomiêdzy widokiem historii rozmowy,
+  a reszt± okna
 
 +++ wersja 0.3.3-pre4
 * przy imporcie listy u¿ytkowników ustawiamy domy¶lne atrybuty u¿ytkowników

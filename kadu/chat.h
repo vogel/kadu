@@ -101,7 +101,7 @@ class Chat : public QWidget {
 class CustomInput : public QMultiLineEdit {
 	Q_OBJECT
 	public:
-		CustomInput(Chat *parent = 0, const char *name = 0);
+		CustomInput(QWidget *parent = 0, Chat *owner = 0, const char *name = 0);
 		friend class Chat;
 
 	private:

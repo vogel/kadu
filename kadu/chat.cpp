@@ -20,6 +20,8 @@
 #include <qfileinfo.h>
 #include <math.h>
 #include <qsplitter.h>
+#include <qhbox.h>
+#include <qvbox.h>
 
 //
 #include "kadu.h"
@@ -49,6 +51,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
  : QWidget(parent, name, Qt::WDestructiveClose), uins(uins) {
 	int i;
 	struct chats chat;
+	QValueList<int> sizes;
 
 	iconsel_ptr = NULL;
 	autosend_enabled = false;
@@ -62,22 +65,24 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	chats.append(chat);
 	index = chats.count() - 1;
 
-	QSplitter *split1;
+	QSplitter *split1, *split2;
+
+	split1 = new QSplitter(Qt::Vertical, this);
 
 	if (uins.count() > 1) {
-		split1 = new QSplitter(Qt::Horizontal, this);
-		body = new KaduTextBrowser(split1);
+		split2 = new QSplitter(Qt::Horizontal, split1);
+		body = new KaduTextBrowser(split2);
 		}
 	else 
-		body = new KaduTextBrowser(this);
+		body = new KaduTextBrowser(split1);
 	body->setFont(config.fonts.chat);
 	QObject::connect(body, SIGNAL(linkClicked(const QString &)), this, SLOT(hyperlinkClicked(const QString &)));
 
 	QPoint pos = QCursor::pos();
 	
 	if (uins.count() > 1) {
-		setGeometry((pos.x()+550)/2,(pos.y()+400)/2,550,400);
-		userbox = new UserBox(split1);
+		setGeometry((pos.x() + 550) / 2, (pos.y() + 400) / 2, 550, 400);
+		userbox = new UserBox(split2);
 		userbox->setPaletteBackgroundColor(config.colors.userboxBg);
 		userbox->setPaletteForegroundColor(config.colors.userboxFg);
 		userbox->QListBox::setFont(config.fonts.userbox);
@@ -85,44 +90,25 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 		for (i = 0; i < uins.count(); i++)
 			userbox->addUser(userlist.byUin(uins[i]).altnick);
 		userbox->refresh();
-		QValueList<int> sizes;
 		sizes.append(3);
 		sizes.append(1);
-		split1->setSizes(sizes);
+		split2->setSizes(sizes);
 		}
 	else {
-		setGeometry((pos.x()+400)/2,(pos.y()+400)/2,400,400);
+		setGeometry((pos.x() + 400) / 2, (pos.y() + 400) / 2, 400, 400);
 		userbox = NULL;
 		}
 		
-	edit = new CustomInput(this);
-	edit->setGeometry(5,215, 390, 150);
-	edit->setWordWrap(QMultiLineEdit::WidgetWidth);
-	edit->setFont(config.fonts.chat);
-
 	KIconLoader *loader = KGlobal::iconLoader();
 
-	sendbtn = new QPushButton(this);
-	sendbtn->setText(i18n("&Send"));
-	sendbtn->setGeometry(320, 375, 75, 20);
-	sendbtn->setIconSet(QIconSet( loader->loadIcon("forward", KIcon::Small) ));
-	connect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
-	QAccel *acc = new QAccel( this );
-	acc->connectItem(acc->insertItem(Key_Return+CTRL), this, SLOT(sendMessage()));
+	QVBox *downpart = new QVBox(split1);
+	QHBox *edtbuttontray = new QHBox(downpart);
 
-	cancelbtn = new QPushButton(this);
-	cancelbtn->setText(i18n("&Cancel"));
-	cancelbtn->setGeometry(245, 375, 70, 20);
-	cancelbtn->setIconSet(QIconSet(loader->loadIcon("stop", KIcon::Small)));
-	QToolTip::add(cancelbtn, i18n("Cancel waiting for delivery"));
-	cancelbtn->hide();
-	connect(cancelbtn, SIGNAL(clicked()), this, SLOT(cancelMessage()));
-
-	QLabel *edt = new QLabel(this);
+	QLabel *edt = new QLabel(edtbuttontray);
 	edt->setText(i18n("Edit window:"));
 	QToolTip::add(edt, i18n("This is where you type in the text to be sent"));
 
-	buttontray = new QHBox(this);
+	buttontray = new QHBox(edtbuttontray);
 	autosend = new QPushButton(buttontray);
 	autosend->setPixmap(loader->loadIcon("key_enter", KIcon::Small));
 	autosend->setToggleButton(true);
@@ -131,6 +117,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 		autosend->setOn(true);
 		autosend_enabled = true;
 		}
+
 	lockscroll = new QPushButton(buttontray);
 	lockscroll->setPixmap(QPixmap((const char**)scroll_lock));
 	lockscroll->setToggleButton(true);
@@ -145,8 +132,8 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	keyfile_path.append(QString::number(uins[0]));
 	keyfile_path.append(".pem");
 	QFileInfo keyfile(keyfile_path);
-	bool encryption_possible=
-		(keyfile.permission(QFileInfo::ReadUser)&&uins.count()==1);
+	bool encryption_possible =
+		(keyfile.permission(QFileInfo::ReadUser)&&uins.count() == 1);
 
 	if(config.encryption&&encryption_possible) {
 		QToolTip::add(encryption, i18n("Disable encryption for this conversation"));
@@ -185,35 +172,70 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	whois->setPixmap(p_whois);
 	QToolTip::add(whois, i18n("Lookup user info"));
 
-//	buttontray->setFixedWidth(7 * whois->sizeHint().width());
+	edtbuttontray->setStretchFactor(edt, 50);
+	edtbuttontray->setStretchFactor(buttontray, 1);
 
-	connect(autosend, SIGNAL(clicked()), this, SLOT(regAutosend()));
-//	connect(lockscroll, SIGNAL(clicked()), this, SLOT(lockScroll()));
-	connect(history, SIGNAL(clicked()), this, SLOT(HistoryBox()));
-	connect(iconsel, SIGNAL(clicked()), this, SLOT(insertEmoticon()));
-	connect(whois, SIGNAL(clicked()), this, SLOT(userWhois()));
-	connect(clearchat, SIGNAL(clicked()), this, SLOT(clearChatWindow()));
+	edit = new CustomInput(downpart, this);
+	edit->setMinimumHeight(100);
+	edit->setWordWrap(QMultiLineEdit::WidgetWidth);
+	edit->setFont(config.fonts.chat);
+
+	QHBox *btnpart = new QHBox(downpart);
+
+	QHBox *fillerbox = new QHBox(btnpart);
+
+	sendbtn = new QPushButton(btnpart);
+	sendbtn->setText(i18n("&Send"));
+	sendbtn->setFixedWidth(120);
+	sendbtn->setIconSet(QIconSet(loader->loadIcon("forward", KIcon::Small)));
+	connect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
+	QAccel *acc = new QAccel( this );
+	acc->connectItem(acc->insertItem(Key_Return+CTRL), this, SLOT(sendMessage()));
+
+	cancelbtn = new QPushButton(btnpart);
+	cancelbtn->setText(i18n("&Cancel"));
+	cancelbtn->setFixedWidth(120);
+	cancelbtn->setIconSet(QIconSet(loader->loadIcon("stop", KIcon::Small)));
+	QToolTip::add(cancelbtn, i18n("Cancel waiting for delivery"));
+	cancelbtn->hide();
+
+	btnpart->setStretchFactor(fillerbox, 50);
+	btnpart->setStretchFactor(cancelbtn, 1);
+	btnpart->setStretchFactor(sendbtn, 1);
+
+	sizes.clear();
+	sizes.append(50);
+	sizes.append(1);
+	split1->setSizes(sizes);
 
 	QGridLayout *grid = new QGridLayout (this, 5, 4, 3, 3);
-	QHBoxLayout *subgrid = new QHBoxLayout();
-	subgrid->addWidget(edt, 50);
-	subgrid->addWidget(buttontray, 1);
-	if (userbox)
-		grid->addMultiCellWidget(split1, 0, 0, 0, 3);
-	else
-		grid->addMultiCellWidget(body, 0, 0, 0, 3);
-	grid->addMultiCellLayout(subgrid, 2, 2, 0, 3);
-	grid->addMultiCellWidget(edit, 3, 3, 0, 3);
-	grid->addWidget(cancelbtn, 4, 2);
-	grid->addWidget(sendbtn, 4, 3);
+	grid->addMultiCellWidget(split1, 0, 4, 0, 3);
+//	QHBoxLayout *subgrid = new QHBoxLayout();
+//	subgrid->addWidget(edt, 50);
+//	subgrid->addWidget(buttontray, 1);
+//	if (userbox)
+//		grid->addMultiCellWidget(split2, 0, 0, 0, 3);
+//	else
+//		grid->addMultiCellWidget(body, 0, 0, 0, 3);
+//	grid->addMultiCellLayout(subgrid, 2, 2, 0, 3);
+//	grid->addMultiCellWidget(edit, 3, 3, 0, 3);
+//	grid->addWidget(cancelbtn, 4, 2);
+//	grid->addWidget(sendbtn, 4, 3);
 	grid->addRowSpacing(1, 5);
-	grid->setRowStretch(0,2);
+	grid->setRowStretch(0, 2);
 
 	QMimeSourceFactory *bodyformat;
 	bodyformat = new QMimeSourceFactory;
 
 	body->setMimeSourceFactory(bodyformat);
 	body->setTextFormat(Qt::RichText);
+
+	connect(autosend, SIGNAL(clicked()), this, SLOT(regAutosend()));
+	connect(history, SIGNAL(clicked()), this, SLOT(HistoryBox()));
+	connect(iconsel, SIGNAL(clicked()), this, SLOT(insertEmoticon()));
+	connect(whois, SIGNAL(clicked()), this, SLOT(userWhois()));
+	connect(clearchat, SIGNAL(clicked()), this, SLOT(clearChatWindow()));
+	connect(cancelbtn, SIGNAL(clicked()), this, SLOT(cancelMessage()));
 
 	totaloccurences = 0;
 	
@@ -340,8 +362,8 @@ void Chat::regAutosend(void) {
 	autosend_enabled = !autosend_enabled;
 }
 
-CustomInput::CustomInput(Chat* parent, const char *name) : QMultiLineEdit(parent, name) {
-	tata = parent;
+CustomInput::CustomInput(QWidget *parent, Chat *owner, const char *name) : QMultiLineEdit(parent, name) {
+	tata = owner;
 }
 
 void CustomInput::keyPressEvent(QKeyEvent * e) {
