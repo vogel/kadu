@@ -136,9 +136,11 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	keyfile_path.append(".pem");
 	QFileInfo keyfile(keyfile_path);
 	
-	if(!keyfile.permission(QFileInfo::ReadUser)) {
-	    encryption->setEnabled(false);
-	}
+	if(!keyfile.permission(QFileInfo::ReadUser))
+	{
+		encrypt_enabled = false;	
+		encryption->setEnabled(false);
+	};
 	
 	connect(encryption, SIGNAL(clicked()), this, SLOT(regEncryptSend()));
 #endif
@@ -523,7 +525,7 @@ void Chat::sendMessage(void) {
 #ifdef HAVE_OPENSSL
 	int enclen;
 	char encoded[4096];
-	memset(encoded, 0, sizeof(encoded));
+	memset(encoded, 0, 4096*sizeof(char));
 #endif
 
 	if (!QString::compare(edit->text().local8Bit(),""))

@@ -51,7 +51,7 @@ rMessage::rMessage(const QString & nick, int msgclass, UinsList uins, QString &m
 	char decoded[2048];
 	int declen = strlen((const char *)msg);
 
-	memset(decoded, 0, 2048);
+	memset(decoded, 0, sizeof(char)*2048);
 
 	QCString tmp(msg.local8Bit());
 	unsigned char *utmp = (unsigned char *)tmp.data();
@@ -317,7 +317,7 @@ void Message::commitSend(void) {
 #ifdef HAVE_OPENSSL
         int enclen;
         char encoded[4096];
-        memset(encoded, 0, sizeof(encoded));
+        memset(encoded, 0, 4096*sizeof(char));
 #endif
 	QString text;
 	text = body->text();

@@ -59,7 +59,7 @@ void eventRecvMsg(int msgclass, UinsList senders, unsigned char * msg, time_t ti
 
 	if(msg != NULL) {
 		int msglen = strlen((const char *)msg);
-		memset(decoded, 0, 2048);
+		memset(decoded, 0, sizeof(char)*2048);
 
 		declen = SIM_Message_Decrypt((unsigned char *)msg, (unsigned char *)decoded, msglen, senders[0]);
 
