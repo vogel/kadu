@@ -333,7 +333,7 @@ void sendUserlist() {
 	types = (char *) malloc(j * sizeof(char));
 
 	for (i = 0, j = 0; i < userlist.count(); i++)
-		if (userlist[i].uin) {
+		if (userlist[i].uin && !userlist[i].anonymous) {
 			uins[j] = userlist[i].uin;
 			if (userlist[i].offline_to_user)
 				types[j] = GG_USER_OFFLINE;
