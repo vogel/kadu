@@ -144,8 +144,10 @@ VoiceManager::VoiceManager(QObject *parent, const char *name) : QObject(parent, 
 	kdebugf();
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys",
 			QT_TRANSLATE_NOOP("@default", "Voice chat"), "kadu_voicechat", "F7");
-	ConfigDialog::addHGroupBox("Sounds", "Sounds", QT_TRANSLATE_NOOP("@default","Voice chat"));
+	ConfigDialog::addVGroupBox("Sounds", "Sounds", QT_TRANSLATE_NOOP("@default","Voice chat"));
 	ConfigDialog::addPushButton("Sounds", "Voice chat", QT_TRANSLATE_NOOP("@default","Test GSM Encoding"));
+	ConfigDialog::addCheckBox("Sounds", "Voice chat", QT_TRANSLATE_NOOP("@default","Faster compression algorithm (degrades quality)"), "FastGSM", false);
+	ConfigDialog::addCheckBox("Sounds", "Voice chat", QT_TRANSLATE_NOOP("@default","Cut-off optimization (faster but degrades quality)"), "CutGSM", false);
 	ConfigDialog::connectSlot("Sounds", "Test GSM Encoding", SIGNAL(clicked()), this, SLOT(testGsmEncoding()));
 
 	GsmEncodingTestMsgBox = NULL;
@@ -178,6 +180,8 @@ VoiceManager::~VoiceManager()
 {
 	kdebugf();
 	ConfigDialog::disconnectSlot("Sounds", "Test GSM Encoding", SIGNAL(clicked()), this, SLOT(testGsmEncoding()));
+	ConfigDialog::removeControl("Sounds", "Cut-off optimization (faster but degrades quality)");
+	ConfigDialog::removeControl("Sounds", "Faster compression algorithm (degrades quality)");
 	ConfigDialog::removeControl("Sounds", "Test GSM Encoding");
 	ConfigDialog::removeControl("Sounds", "Voice chat");
 	ConfigDialog::removeControl("ShortCuts", "Voice chat");
@@ -211,6 +215,12 @@ void VoiceManager::testGsmEncoding()
 		MessageBox::wrn(tr("Opening DSP Encoder failed."));
 		return;
 	}
+	int value = 1;
+	gsm_option(GsmEncodingTestHandle, GSM_OPT_VERBOSE, &value);
+	if (ConfigDialog::getCheckBox("Sounds", "Faster compression algorithm (degrades quality)")->isChecked())
+		gsm_option(GsmEncodingTestHandle, GSM_OPT_FAST, &value);
+	if (ConfigDialog::getCheckBox("Sounds", "Cut-off optimization (faster but degrades quality)")->isChecked())
+		gsm_option(GsmEncodingTestHandle, GSM_OPT_LTP_CUT, &value);
 		
 	GsmEncodingTestDevice = sound_manager->openDevice(PLAY_AND_RECORD, 8000);
 	if (GsmEncodingTestDevice == NULL)
@@ -221,7 +231,7 @@ void VoiceManager::testGsmEncoding()
 	sound_manager->enableThreading(GsmEncodingTestDevice);
 	sound_manager->setFlushingEnabled(GsmEncodingTestDevice, false);
 
-	GsmEncodingTestSample = new int16_t[160];
+	GsmEncodingTestSample = new int16_t[160 * 10];
 	GsmEncodingTestFrames = new gsm_frame[8000 * 3 / 160]; // = 150
 	GsmEncodingTestCurrFrame = 0;
 
@@ -231,7 +241,7 @@ void VoiceManager::testGsmEncoding()
 	GsmEncodingTestMsgBox = new MessageBox(tr("Testing GSM Encoding. Please talk now (3 seconds)."));
 	GsmEncodingTestMsgBox->show();
 
-	sound_manager->recordSample(GsmEncodingTestDevice, GsmEncodingTestSample, sizeof(int16_t) * 160);
+	sound_manager->recordSample(GsmEncodingTestDevice, GsmEncodingTestSample, sizeof(int16_t) * 160 * 10);
 	kdebugf2();
 }
 
@@ -243,9 +253,9 @@ void VoiceManager::gsmEncodingTestSampleRecorded(SoundDevice device)
 		if (GsmEncodingTestCurrFrame < 150)
 		{
 			kdebugmf(KDEBUG_INFO, "Encoding gsm frame no %i\n", GsmEncodingTestCurrFrame);
-			gsm_encode(GsmEncodingTestHandle, GsmEncodingTestSample, GsmEncodingTestFrames[GsmEncodingTestCurrFrame]);
-			GsmEncodingTestCurrFrame++;
-			sound_manager->recordSample(GsmEncodingTestDevice, GsmEncodingTestSample, sizeof(int16_t) * 160);
+			for(int i = 0; i < 10; ++i)
+				gsm_encode(GsmEncodingTestHandle, GsmEncodingTestSample + i * 160, GsmEncodingTestFrames[GsmEncodingTestCurrFrame++]);
+			sound_manager->recordSample(GsmEncodingTestDevice, GsmEncodingTestSample, sizeof(int16_t) * 160 * 10);
 		}
 		else
 		{
@@ -254,10 +264,10 @@ void VoiceManager::gsmEncodingTestSampleRecorded(SoundDevice device)
 			GsmEncodingTestMsgBox->show();
 			GsmEncodingTestCurrFrame = 0;
 			kdebugmf(KDEBUG_INFO, "Decoding gsm frame no %i\n", GsmEncodingTestCurrFrame);
-			if (gsm_decode(GsmEncodingTestHandle, GsmEncodingTestFrames[GsmEncodingTestCurrFrame], GsmEncodingTestSample))
-				kdebugm(KDEBUG_ERROR, "we've got problem, decoding failed\n");
-			sound_manager->playSample(device, GsmEncodingTestSample, sizeof(int16_t) * 160);
-			GsmEncodingTestCurrFrame++;
+			for (int i = 0; i < 10; ++i)
+				if (gsm_decode(GsmEncodingTestHandle, GsmEncodingTestFrames[GsmEncodingTestCurrFrame++], GsmEncodingTestSample + i * 160))
+					kdebugm(KDEBUG_ERROR, "we've got problem, decoding failed %d\n", i);
+			sound_manager->playSample(device, GsmEncodingTestSample, sizeof(int16_t) * 160 * 10);
 		}
 	}
 	kdebugf2();
@@ -271,10 +281,10 @@ void VoiceManager::gsmEncodingTestSamplePlayed(SoundDevice device)
 		if (GsmEncodingTestCurrFrame < 150)
 		{
 			kdebugmf(KDEBUG_INFO, "Decoding gsm frame no %i\n", GsmEncodingTestCurrFrame);
-			if (gsm_decode(GsmEncodingTestHandle, GsmEncodingTestFrames[GsmEncodingTestCurrFrame], GsmEncodingTestSample))
-				kdebugm(KDEBUG_ERROR, "we've got problem, decoding failed\n");
-			sound_manager->playSample(device, GsmEncodingTestSample, sizeof(int16_t) * 160);
-			GsmEncodingTestCurrFrame++;
+			for (int i = 0; i < 10; ++i)
+				if (gsm_decode(GsmEncodingTestHandle, GsmEncodingTestFrames[GsmEncodingTestCurrFrame++], GsmEncodingTestSample + i * 160))
+					kdebugm(KDEBUG_ERROR, "we've got problem, decoding failed %d\n", i);
+			sound_manager->playSample(device, GsmEncodingTestSample, sizeof(int16_t) * 160 * 10);
 		}
 		else
 		{
@@ -321,7 +331,8 @@ void VoiceManager::free()
 	struct gsm_sample gsmsample;
 	if (rt->running())
 		rt->rsem++;
-	if (pt->running()) {
+	if (pt->running())
+	{
 		pt->wsem--;
 		pt->rsem++;
 		pt->mutex.lock();
@@ -351,8 +362,13 @@ void VoiceManager::resetCoder()
 	if (voice_enc)
 		gsm_destroy(voice_enc);
 	voice_enc = gsm_create();
-	gsm_option(voice_enc, GSM_OPT_FAST, &value);
 	gsm_option(voice_enc, GSM_OPT_WAV49, &value);
+	gsm_option(voice_dec, GSM_OPT_VERBOSE, &value);
+	if (config_file.readBoolEntry("Sounds", "FastGSM"))
+		gsm_option(voice_enc, GSM_OPT_FAST, &value);
+	if (config_file.readBoolEntry("Sounds", "CutGSM"))
+		gsm_option(voice_enc, GSM_OPT_LTP_CUT, &value);
+
 	kdebugf2();
 }
 
@@ -363,10 +379,12 @@ void VoiceManager::resetDecoder()
 	if (voice_dec)
 		gsm_destroy(voice_dec);
 	voice_dec = gsm_create();
-	gsm_option(voice_dec, GSM_OPT_FAST, &value);
 	gsm_option(voice_dec, GSM_OPT_WAV49, &value);
 	gsm_option(voice_dec, GSM_OPT_VERBOSE, &value);
-	gsm_option(voice_dec, GSM_OPT_LTP_CUT, &value);
+	if (config_file.readBoolEntry("Sounds", "FastGSM"))
+		gsm_option(voice_dec, GSM_OPT_FAST, &value);
+	if (config_file.readBoolEntry("Sounds", "CutGSM"))
+		gsm_option(voice_dec, GSM_OPT_LTP_CUT, &value);
 	kdebugf2();
 }
 
@@ -375,28 +393,31 @@ void VoiceManager::playGsmSampleReceived(char *data, int length)
 	kdebugf();
 	char *pos = data;
 	int outlen = 320;
-	gsm_signal output[160];
+	gsm_signal output[160 * 10], *output2;
+	output2 = output;
+
 	resetDecoder();
 	++data;
 	++pos;
 	--length;
 	while (pos <= (data + length - 65))
 	{
-		if (gsm_decode(voice_dec, (gsm_byte *) pos, output))
+		if (gsm_decode(voice_dec, (gsm_byte *) pos, output2))
 		{
 			kdebugmf(KDEBUG_ERROR, "gsm_decode() error\n");
 			return;
 		}
 		pos += 33;
-		sound_manager->playSample(device, output, outlen);
-		if (gsm_decode(voice_dec, (gsm_byte *) pos, output))
+		output2 += 160;
+		if (gsm_decode(voice_dec, (gsm_byte *) pos, output2))
 		{
 			kdebugmf(KDEBUG_ERROR, "gsm_decode() error\n");
 			return;
 		}
 		pos += 32;
-		sound_manager->playSample(device, output, outlen);
+		output2 += 160;
 	}
+	sound_manager->playSample(device, output, outlen * 10);
 	kdebugf2();
 }
 
@@ -405,20 +426,23 @@ void VoiceManager::recordSampleReceived(char *data, int length)
 	kdebugf();
 	char *pos = data;
 	int inlen = 320;
-	gsm_signal input[160];
+	gsm_signal input[160 * 10], *input2;
+	input2 = input;
+
 	resetCoder();
 	*data = 0;
 	++data;
 	++pos;
 	--length;
+	sound_manager->recordSample(device, input, inlen * 10);
 	while (pos <= (data + length - 65))
 	{
-		sound_manager->recordSample(device, input, inlen);
-		gsm_encode(voice_enc, input, (gsm_byte *) pos);
+		gsm_encode(voice_enc, input2, (gsm_byte *) pos);
 		pos += 32;
-		sound_manager->recordSample(device, input, inlen);
-		gsm_encode(voice_enc, input, (gsm_byte *) pos);
+		input2 += 160;
+		gsm_encode(voice_enc, input2, (gsm_byte *) pos);
 		pos += 33;
+		input2 += 160;
 	}
 	VoiceChatDialog::sendDataToAll(data - 1, length + 1);
 	kdebugf2();
@@ -441,13 +465,14 @@ void VoiceManager::makeVoiceChat()
 {
 	kdebugf();
 
-	UserBox *activeUserBox=UserBox::getActiveUserBox();
-	UserList users;
+	UserBox *activeUserBox = UserBox::getActiveUserBox();
 	if (activeUserBox==NULL)
 		return;
-	users = activeUserBox->getSelectedUsers();
+
+	UserList users = activeUserBox->getSelectedUsers();
 	if (users.count() != 1)
 		return;
+
 	UserListElement user = (*users.begin());
 	makeVoiceChat(user.uin());
 

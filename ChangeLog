@@ -502,6 +502,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * kompatybilno¶æ z Psi: w opisach \r jest zamieniane na \n (i \r\n na \n) (joi)
 * poprawne zapisywanie listy kontaktów, o których chcemy byæ powiadamiani
   przy zmianie statusu (joi)
+* znaczna poprawa jako¶ci d¼wiêku produkowanego przez modu³ voice (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
