@@ -854,7 +854,7 @@ void Kadu::commandParser (int command) {
 			
 			dccSocketClass *dcc;
 			if (user.port >= 10) {
-				if ((dcc_new = gg_dcc_send_file(user.ip, user.port, config.uin, uin)) != NULL) {
+				if ((dcc_new = gg_dcc_send_file(user.ip, user.port, config.uin, user.uin)) != NULL) {
 					dcc = new dccSocketClass(dcc_new);
 					connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));		    
 					dcc->initializeNotifiers();
@@ -864,7 +864,7 @@ void Kadu::commandParser (int command) {
 				acks.resize(acks.size() + 1);
 				i = acks.size() - 1;
 				acks[i].ack = 0;
-				acks[i].seq = gg_dcc_request(&sess, uin);
+				acks[i].seq = gg_dcc_request(&sess, user.uin);
 				acks[i].type = 0;
 				acks[i].ptr = NULL;
 				}
