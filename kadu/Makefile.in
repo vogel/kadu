@@ -191,12 +191,12 @@ am_kadu_OBJECTS = about.$(OBJEXT) about_moc.$(OBJEXT) adduser.$(OBJEXT) \
 	pending_msgs.$(OBJEXT) personal_info.$(OBJEXT) \
 	personal_info_moc.$(OBJEXT) register.$(OBJEXT) \
 	register_moc.$(OBJEXT) search.$(OBJEXT) search_moc.$(OBJEXT) \
-	sms.$(OBJEXT) sms_moc.$(OBJEXT) sound.$(OBJEXT) sound_moc.$(OBJEXT) \
-	status.$(OBJEXT) status_moc.$(OBJEXT) tabbar.$(OBJEXT) \
-	tabbar_moc.$(OBJEXT) userbox.$(OBJEXT) userbox_moc.$(OBJEXT) \
-	userinfo.$(OBJEXT) userinfo_moc.$(OBJEXT) userlist.$(OBJEXT) \
-	userlist_moc.$(OBJEXT) updates.$(OBJEXT) vuser.$(OBJEXT) \
-	vuser_moc.$(OBJEXT)
+	sms.$(OBJEXT) sms_moc.$(OBJEXT) sound.$(OBJEXT) \
+	sound_moc.$(OBJEXT) status.$(OBJEXT) status_moc.$(OBJEXT) \
+	tabbar.$(OBJEXT) tabbar_moc.$(OBJEXT) userbox.$(OBJEXT) \
+	userbox_moc.$(OBJEXT) userinfo.$(OBJEXT) userinfo_moc.$(OBJEXT) \
+	userlist.$(OBJEXT) userlist_moc.$(OBJEXT) updates.$(OBJEXT) \
+	vuser.$(OBJEXT) vuser_moc.$(OBJEXT)
 kadu_OBJECTS = $(am_kadu_OBJECTS)
 
 DEFS = @DEFS@
@@ -229,8 +229,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/register.Po ./$(DEPDIR)/register_moc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/search.Po ./$(DEPDIR)/search_moc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/simlite.Po ./$(DEPDIR)/sms.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/sms_moc.Po ./$(DEPDIR)/status.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/sound_moc.Po ./$(DEPDIR)/sound.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/sms_moc.Po ./$(DEPDIR)/sound.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/sound_moc.Po ./$(DEPDIR)/status.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/status_moc.Po ./$(DEPDIR)/tabbar.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/tabbar_moc.Po ./$(DEPDIR)/updates.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/userbox.Po ./$(DEPDIR)/userbox_moc.Po \

@@ -180,9 +180,9 @@ AC_DEFUN(FIND_QT_INCLUDES,[
 
 ########################################################################
 
-AC_INIT([Kadu],[0.3.3-rc2])
+AC_INIT([Kadu],[0.3.3-rc3])
 AC_COPYRIGHT([configure.ac written by A.Smarzewski])
-AC_REVISION([0.3.3-rc2])
+AC_REVISION([0.3.3-rc3])
 AC_PREREQ(2.53)
 
 echo
@@ -195,7 +195,7 @@ AC_CONFIG_SRCDIR([kadu/kadu.cpp])
 AC_CONFIG_AUX_DIR([admin])
 AM_CONFIG_HEADER([config.h])
 AC_CANONICAL_SYSTEM
-AM_INIT_AUTOMAKE([kadu-0.3.3-rc2],[0.3.3-rc2])
+AM_INIT_AUTOMAKE([kadu-0.3.3-rc3],[0.3.3-rc3])
 
 
 ########################################################################
