@@ -21,6 +21,7 @@
 #include <qcolordialog.h>
 #include <qfontdialog.h>
 #include <qvbox.h>
+#include <qglobal.h>
 
 #define FRAME_WIDTH 1
 
@@ -30,6 +31,7 @@ Hint::Hint(QWidget *parent, const QString& text, const QPixmap& pixmap, unsigned
 
 	secs = timeout;
 	ident = 0;
+
 	if (!pixmap.isNull() && config_file.readBoolEntry("Hints","Icons"))
 	{
 		icon = new QLabel(parent, "Icon");
@@ -149,8 +151,8 @@ Hint::~Hint(void)
 	kdebug("Hint::~Hint() id=%d\n", ident);
 
 	if (icon != NULL)
-		delete icon;
-	delete label;
+		icon->deleteLater();
+	label->deleteLater();
 }
 
 HintManager::HintManager()
@@ -198,6 +200,9 @@ void HintManager::setHint(void) {
 void HintManager::deleteHint(unsigned int id)
 {
 	kdebug("HintManager::deleteHint() id=%d\n", id);
+#if QT_VERSION >= 0x030100
+	grid->removeItem(hints.at(id));
+#endif
 	hints.remove(id);
 	if (!hints.count())
 	{
@@ -234,6 +239,10 @@ void HintManager::rightButtonSlot(void)
 	kdebug("HintManager::rightButtonSlot()\n");
 
 	hint_timer->stop();
+#if QT_VERSION >= 0x030100
+	for (int i = 0; i < hints.count(); i++)
+		grid->removeItem(hints.at(i));
+#endif
 	hints.clear();
 	hide();
 }
@@ -458,8 +467,9 @@ void HintManager::initModule(void)
 	config_file.addVariable("Hints","HintNewChat",def_font.family()+","+QString::number(def_font.pointSize())+",#000000,#F0F0F0,10");
 	config_file.addVariable("Hints","HintNewMessage",def_font.family()+","+QString::number(def_font.pointSize())+",#000000,#F0F0F0,10");
 	config_file.addVariable("Hints","HintError",def_font.family()+","+QString::number(def_font.pointSize())+",#000000,#F0F0F0,10");
-	
-	HintManagerSlots *hintmanagerslots = new HintManagerSlots();
+
+	/* FIXME */
+	HintManagerSlots *hintmanagerslots = new HintManagerSlots(); 
 	ConfigDialog::registerSlotOnCreate(hintmanagerslots,SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnDestroy(hintmanagerslots,SLOT(onDestroyConfigDialog()));
 }
