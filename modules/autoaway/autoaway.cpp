@@ -17,7 +17,6 @@
 #include "config_dialog.h"
 #include "debug.h"
 #include "kadu.h"
-#include "events.h"
 
 #include "autoaway.h"
 

@@ -5,7 +5,6 @@ extern "C"
 };
 #include "config_dialog.h"
 #include "kadu.h"
-#include "events.h"
 #include "gadu.h"
 #include "debug.h"
 #include <qfile.h>
