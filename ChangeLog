@@ -76,6 +76,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zak³adki z grupami przyjmuj± drag&drop z userbox'a. Przenosi
   to kontakt do okre¶lonej grupy. trzeba to jeszcze dopracowaæ.
   przy okazji drobna przeróbka UserListElement (adrian)
+* podczas przebudowy zak³adek z grupami kadu stara siê
+  pamiêtaæ aktualnie wybran± przez u¿ytkownika grupê (adrian)
 
 +++ wersja 0.3.4-pre3
 * dodane przeszukiwanie historii (chilek)

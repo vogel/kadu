@@ -596,35 +596,46 @@ void Kadu::currentChanged(QListBoxItem *item) {
 
 void Kadu::refreshGroupTabBar()
 {
-	if (!config.grouptabs) {
+	if (!config.grouptabs)
+	{
 		group_bar->hide();
 		return;
-		}
-	/* usuwamy wszystkie zakladki - od tylu,
-	   bo indeksy sie przesuwaja po usunieciu */
-	for (int i = group_bar->count() - 1; i >= 1; i--)
-		group_bar->removeTab(group_bar->tabAt(i));
-	/* dodajemy nowe zakladki */
-	for (int i = 0; i < userlist.count(); i++) {
+	};	
+	/* budujemy listê grup */
+	QValueList<QString> group_list;
+	for (int i = 0; i < userlist.count(); i++)
+	{
 		QString groups = userlist[i].group();
 		QString group;
-		for (int g = 0; (group = groups.section(',' ,g ,g)) != ""; g++) {
-			bool createNewTab = true;
-			for (int j = 0; j < group_bar->count(); j++)
-				if (group_bar->tabAt(j)->text() == group)
-					createNewTab = false;
-			if(createNewTab)
-				group_bar->addTab(new QTab(group));
-			}
-		}
-	if (group_bar->count() == 1) {
+		for (int g = 0; (group = groups.section(',' ,g ,g)) != ""; g++)
+			if(!group_list.contains(group))
+				group_list.append(group);
+	};
+	kdebug("%i groups found\n",group_list.count());
+	//
+	if (group_list.count() == 0)
+	{
 		group_bar->hide();
 		setActiveGroup("");
-		}
-	else
-	{
-		group_bar->show();
+		return;
 	};
+	/* usuwamy wszystkie niepotrzebne zakladki - od tylu,
+	   bo indeksy sie przesuwaja po usunieciu */
+	for (int i = group_bar->count() - 1; i >= 1; i--)
+		if(!group_list.contains(group_bar->tabAt(i)->text()))
+			group_bar->removeTab(group_bar->tabAt(i));
+	/* dodajemy nowe zakladki */
+	for (int i = 0; i < group_list.count(); i++)
+	{
+		bool createNewTab = true;
+		for (int j = 0; j < group_bar->count(); j++)
+			if (group_bar->tabAt(j)->text() == group_list[i])
+				createNewTab = false;
+		if(createNewTab)
+			group_bar->addTab(new QTab(group_list[i]));
+	};
+	kdebug("%i group tabs\n",group_bar->count());
+	group_bar->show();
 	/* odswiezamy - dziala tylko jesli jest widoczny */
 	group_bar->update();
 };
