@@ -150,7 +150,7 @@ void HintManager::setHint(void) {
 void HintManager::deleteHint(unsigned int id)
 {
 	kdebug("HintManager::deleteHint() id=%d\n", id);
-	grid->removeItem(hints.at(id));
+//	grid->removeItem(hints.at(id)); //Nie ma tego w qt 3.0.x
 	hints.remove(id);
 	if (!hints.count())
 	{
