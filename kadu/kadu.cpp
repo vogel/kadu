@@ -570,309 +570,307 @@ Po jakiego czorta to ?
 
 void Kadu::showHideInactive() 
 {
-userbox->showHideInactive();
+	userbox->showHideInactive();
 }
 
 void Kadu::muteUnmuteSounds()
 {
-			mute = !mute;
-			if (mute) {
-				mutebtn->setIconSet(loadIcon("mute.png"));
-				mutebtn->setTextLabel(i18n("Unmute sounds"));
-				mmb->changeItem(muteitem, loadIcon("mute.png"), i18n("Unmute sounds"));
-				}
-			else {
-				mmb->changeItem(muteitem, loadIcon("unmute.png"), i18n("Mute sounds"));
-				mutebtn->setTextLabel(i18n("Mute sounds"));
-				mutebtn->setIconSet(loadIcon("unmute.png"));
-				}
+	mute = !mute;
+	if (mute) {
+		mutebtn->setIconSet(loadIcon("mute.png"));
+		mutebtn->setTextLabel(i18n("Unmute sounds"));
+		mmb->changeItem(muteitem, loadIcon("mute.png"), i18n("Unmute sounds"));
+		}
+	else {
+		mmb->changeItem(muteitem, loadIcon("unmute.png"), i18n("Mute sounds"));
+		mutebtn->setTextLabel(i18n("Mute sounds"));
+		mutebtn->setIconSet(loadIcon("unmute.png"));
+		}
 }
 
 void Kadu::configure() 
 {
-			ConfigDialog::showConfigDialog();	
+	ConfigDialog::showConfigDialog();	
 }
 
 void Kadu::sendSms()
 {
-			Sms *sms = new Sms("", 0);
-			sms->show();
+	Sms *sms = new Sms("", 0);
+	sms->show();
 }
 
 void Kadu::sendSmsToUser()
 {
 	if ((userbox->isSelected(userbox->currentItem())) &&
-	(userlist.byAltNick(kadu->userbox->currentText()).mobile.length()!=0))
-		    {
-			Sms *sms = new Sms(userbox->currentText(), 0);
-			sms->show();
-		    }
-	
+	(userlist.byAltNick(kadu->userbox->currentText()).mobile.length()!=0)) {
+		Sms *sms = new Sms(userbox->currentText(), 0);
+		sms->show();
+		}	
 }
 
 
 void Kadu::viewHistory() {
-			UinsList uins;
-			for (int i = 0; i < userbox->count(); i++)
-				if (userbox->isSelected(i))
-					uins.append(userlist.byAltNick(userbox->text(i)).uin);
-			if (uins.count()) {
-				History *hb = new History(uins);
-				hb->show();
-				}
+	UinsList uins;
+	for (int i = 0; i < userbox->count(); i++)
+		if (userbox->isSelected(i))
+			uins.append(userlist.byAltNick(userbox->text(i)).uin);
+		if (uins.count()) {
+			History *hb = new History(uins);
+			hb->show();
+			}
 }
 
 void Kadu::sendFile()
 {
-			struct gg_dcc *dcc_new;
-			if(userbox->currentText()=="")
-				return;
-			UserListElement user = userlist.byAltNick(userbox->currentText());
-			if (user.port >= 10) {
-				if ((dcc_new = gg_dcc_send_file(htonl(user.ip.ip4Addr()), user.port, config.uin, user.uin)) != NULL) {
-					dccSocketClass *dcc = new dccSocketClass(dcc_new);
-					connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));
-					dcc->initializeNotifiers();
-					}
-				}
-			else {
-				acks.resize(acks.size() + 1);
-				int i = acks.size() - 1;
-				acks[i].ack = 0;
-				acks[i].seq = gg_dcc_request(sess, user.uin);
-				acks[i].type = 0;
-				acks[i].ptr = NULL;
-				}
+	struct gg_dcc *dcc_new;
+	if (userbox->currentText()=="")
+		return;
+	UserListElement user = userlist.byAltNick(userbox->currentText());
+	if (user.port >= 10) {
+		if ((dcc_new = gg_dcc_send_file(htonl(user.ip.ip4Addr()), user.port, config.uin, user.uin)) != NULL) {
+			dccSocketClass *dcc = new dccSocketClass(dcc_new);
+			connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));
+			dcc->initializeNotifiers();
+			}
+		}
+	else {
+		acks.resize(acks.size() + 1);
+		int i = acks.size() - 1;
+		acks[i].ack = 0;
+		acks[i].seq = gg_dcc_request(sess, user.uin);
+		acks[i].type = 0;
+		acks[i].ptr = NULL;
+		}
 }
 
 
 void Kadu::lookupInDirectory() {
-			if (userbox->currentItem() != -1) {
-				SearchDialog *sd = new SearchDialog(0, i18n("User info"),
-					userlist.byAltNick(userbox->currentText()).uin);
-				sd->init();
-				sd->show();
-				sd->firstSearch();
-				}
+	if (userbox->currentItem() != -1) {
+		SearchDialog *sd = new SearchDialog(0, i18n("User info"),
+			userlist.byAltNick(userbox->currentText()).uin);
+		sd->init();
+		sd->show();
+		sd->firstSearch();
+		}
 }
 
 void Kadu::showUserInfo() {
-			if (userbox->currentItem() != -1) 
-				{
-				UserInfo *ui = new UserInfo("user info", 0, userbox->currentText());
-				ui->show();
-				}
+	if (userbox->currentItem() != -1) 
+		{
+		UserInfo *ui = new UserInfo("user info", 0, userbox->currentText());
+		ui->show();
+		}
 }
 
 void Kadu::deleteUsers() 
 {
-			QStringList users;
-			for (int i = 0; i < userbox->count(); i++)
-				if (userbox->isSelected(i))
-					users.append(userbox->text(i));
-			removeUser(users,false);
+	QStringList users;
+	for (int i = 0; i < userbox->count(); i++)
+		if (userbox->isSelected(i))
+			users.append(userbox->text(i));
+	removeUser(users,false);
 }
 
 void Kadu::personalInfo()
 {
-			PersonalInfoDialog *pid = new PersonalInfoDialog();
-			pid->show();
+	PersonalInfoDialog *pid = new PersonalInfoDialog();
+	pid->show();
 }
 
 void Kadu::addUserAction() {
-			Adduser *au = new Adduser(0, "add_user");
-			au->show();
+	Adduser *au = new Adduser(0, "add_user");
+	au->show();
 }
 
 void Kadu::sendKey()
 {
 #ifdef HAVE_OPENSSL
-			UserListElement user = userlist.byAltNick(userbox->currentText());
-			QString keyfile_path;
-			QString mykey;
-			QFile keyfile;
+	UserListElement user = userlist.byAltNick(userbox->currentText());
+	QString keyfile_path;
+	QString mykey;
+	QFile keyfile;
 
-			keyfile_path.append(ggPath("keys/"));
-			keyfile_path.append(QString::number(config.uin));
-			keyfile_path.append(".pem");
+	keyfile_path.append(ggPath("keys/"));
+	keyfile_path.append(QString::number(config.uin));
+	keyfile_path.append(".pem");
 
-			keyfile.setName(keyfile_path);
+	keyfile.setName(keyfile_path);
 
-			if(keyfile.open(IO_ReadOnly)) {
-				QTextStream t(&keyfile);
-				mykey = t.read();
-				keyfile.close();
-				QCString tmp(mykey.local8Bit());
-				gg_send_message(sess, GG_CLASS_MSG, user.uin, (unsigned char *)tmp.data());
-				QMessageBox::information(this, "Kadu",
-					i18n("Your public key has been sent"), i18n("OK"), QString::null, 0);
-			}
+	if (keyfile.open(IO_ReadOnly)) {
+		QTextStream t(&keyfile);
+		mykey = t.read();
+		keyfile.close();
+		QCString tmp(mykey.local8Bit());
+		gg_send_message(sess, GG_CLASS_MSG, user.uin, (unsigned char *)tmp.data());
+		QMessageBox::information(this, "Kadu",
+			i18n("Your public key has been sent"), i18n("OK"), QString::null, 0);
+		}
 #endif
 }
 
 void Kadu::deleteHistory()
 {
-			UinsList uins;
-			for (int i = 0; i < userbox->count(); i++)
-				if (userbox->isSelected(i))
-					uins.append(userlist.byAltNick(userbox->text(i)).uin);
-			history.removeHistory(uins);
+	UinsList uins;
+	for (int i = 0; i < userbox->count(); i++)
+		if (userbox->isSelected(i))
+			uins.append(userlist.byAltNick(userbox->text(i)).uin);
+	history.removeHistory(uins);
 }
 
 void Kadu::manageIgnored()
 {
-			Ignored *ign = new Ignored(0, "ignored");
-			ign->show();
+	Ignored *ign = new Ignored(0, "ignored");
+	ign->show();
 }
 
 void Kadu::openChat()
 {
-			PendingMsgs::Element elem;
-			int l,k;
-			bool stop = false;
-			UinsList uins = getSelectedUins();
-			QString toadd;
-			for (int i = 0; i < pending.count(); i++) {
-				elem = pending[i];
-				if (elem.uins.equals(uins))
-					if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT
-						|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
-						|| !elem.msgclass) {
-						l = chats.count();
-						k = openChat(elem.uins);
-						QValueList<UinsList>::iterator it = wasFirstMsgs.begin();
-						while (it != wasFirstMsgs.end() && !elem.uins.equals(*it))
-							it++;
-						if (it != wasFirstMsgs.end())
-							wasFirstMsgs.remove(*it);
-						if (l < chats.count())
-							chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
-						chats[k].ptr->formatMessage(false,
-							userlist.byUin(elem.uins[0]).altnick, elem.msg,
-							timestamp(elem.time), toadd);
-						pending.deleteMsg(i);
-						i--;
-						stop = true;
-						}
+	PendingMsgs::Element elem;
+	int l,k;
+	bool stop = false;
+	UinsList uins = getSelectedUins();
+	QString toadd;
+	for (int i = 0; i < pending.count(); i++) {
+		elem = pending[i];
+		if (elem.uins.equals(uins))
+			if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT
+				|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
+				|| !elem.msgclass) {
+				l = chats.count();
+				k = openChat(elem.uins);
+				QValueList<UinsList>::iterator it = wasFirstMsgs.begin();
+				while (it != wasFirstMsgs.end() && !elem.uins.equals(*it))
+					it++;
+				if (it != wasFirstMsgs.end())
+					wasFirstMsgs.remove(*it);
+				if (l < chats.count())
+					chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
+				chats[k].ptr->formatMessage(false,
+					userlist.byUin(elem.uins[0]).altnick, elem.msg,
+					timestamp(elem.time), toadd);
+				pending.deleteMsg(i);
+				i--;
+				stop = true;
 				}
-			if (!stop) {
-				k = openChat(uins);
-				chats[k].ptr->writeMessagesFromHistory(uins, 0);
-				}
+		}
+	if (!stop) {
+		k = openChat(uins);
+		chats[k].ptr->writeMessagesFromHistory(uins, 0);
+		}
 }
 
 void Kadu::searchInDirectory()
 {
-			SearchDialog *sd = new SearchDialog();
-			sd->init();
-			sd->show();
+	SearchDialog *sd = new SearchDialog();
+	sd->init();
+	sd->show();
 }
 
 void Kadu::help()
 {
-			QProcess *help = new QProcess();
-			help->addArgument("konqueror");
-			if (QFile::exists(QString(DOCDIR)+"/index_doc.html"))
-				help->addArgument(QString(DOCDIR)+"/index_doc.html");
-			else
-				help->addArgument("http://kadu.net/index_doc.html");
-			help->start();
-			delete help;
+	QProcess *help = new QProcess();
+	help->addArgument("konqueror");
+	if (QFile::exists(QString(DOCDIR)+"/index_doc.html"))
+		help->addArgument(QString(DOCDIR)+"/index_doc.html");
+	else
+		help->addArgument("http://kadu.net/index_doc.html");
+	help->start();
+	delete help;
 }
 
 void Kadu::about()
 {
-			About *about = new About;
-			about->show();
+	About *about = new About;
+	about->show();
 }
 
 void Kadu::remindPassword1()
 {
-			remindPassword *rp = new remindPassword();
-			rp->start();
+	remindPassword *rp = new remindPassword();
+	rp->start();
 }
 
 void Kadu::changePassword1()
 {
-			changePassword *cp = new changePassword();
-			cp->show();
+	changePassword *cp = new changePassword();
+	cp->show();
 }
 
 void Kadu::registerUser()
 {
-			Register *reg = new Register;
-			reg->show();
+	Register *reg = new Register;
+	reg->show();
 }
 void Kadu::unregisterUser()
 {
-			Unregister *ureg = new Unregister;
-			ureg->show();
+	Unregister *ureg = new Unregister;
+	ureg->show();
 }
 
 void Kadu::quit()
 {
-			close(true);
+	close(true);
 }
 
 void Kadu::exportUserlist()
 {
-			UserlistExport *ule = new UserlistExport();
-			ule->init();
-			ule->show();
+	UserlistExport *ule = new UserlistExport();
+	ule->init();
+	ule->show();
 }
 
 void Kadu::importUserlist()
 {
-			UserlistImport *uli = new UserlistImport();
-			uli->init();
-			uli->show();
+	UserlistImport *uli = new UserlistImport();
+	uli->init();
+	uli->show();
 }
 
 
 void Kadu::hideKadu()
 {
-			if (trayicon)
-				close();
+	if (trayicon)
+		close();
 }
 
 void Kadu::sendUserlist1()
 {
-			sendUserlist();
+	sendUserlist();
 }
 
 void Kadu::ignoreUser()
 {
-			UinsList uins = getSelectedUins();
-			if (isIgnored(uins))
-				delIgnored(uins);
-			else
-				addIgnored(uins);
-			writeIgnored();
+	UinsList uins = getSelectedUins();
+	if (isIgnored(uins))
+		delIgnored(uins);
+	else
+		addIgnored(uins);
+	writeIgnored();
 }
 
 void Kadu::blockUser()
 {
-			UserListElement *puser = &userlist.byAltNick(userbox->currentText());
-			puser->blocking = !puser->blocking;
-			gg_remove_notify_ex(sess, puser->uin, puser->blocking ? GG_USER_NORMAL : GG_USER_BLOCKED);
-			gg_add_notify_ex(sess, puser->uin, puser->blocking ? GG_USER_BLOCKED : GG_USER_NORMAL);
-			userlist.writeToFile();
+	UserListElement *puser = &userlist.byAltNick(userbox->currentText());
+	puser->blocking = !puser->blocking;
+	gg_remove_notify_ex(sess, puser->uin, puser->blocking ? GG_USER_NORMAL : GG_USER_BLOCKED);
+	gg_add_notify_ex(sess, puser->uin, puser->blocking ? GG_USER_BLOCKED : GG_USER_NORMAL);
+	userlist.writeToFile();
 }
 
 void Kadu::notifyUser()
 {
-			UserListElement *puser = &userlist.byAltNick(userbox->currentText());
-			puser->notify = !puser->notify;
-			userlist.writeToFile();
+	UserListElement *puser = &userlist.byAltNick(userbox->currentText());
+	puser->notify = !puser->notify;
+	userlist.writeToFile();
 }
 
 void Kadu::offlineToUser()
 {
-			UserListElement *puser = &userlist.byAltNick(userbox->currentText());
-			puser->offline_to_user = !puser->offline_to_user;
-			gg_remove_notify_ex(sess, puser->uin, puser->offline_to_user ? GG_USER_NORMAL : GG_USER_OFFLINE);
-			gg_add_notify_ex(sess, puser->uin, puser->offline_to_user ? GG_USER_OFFLINE : GG_USER_NORMAL);
-			userlist.writeToFile();
+	UserListElement *puser = &userlist.byAltNick(userbox->currentText());
+	puser->offline_to_user = !puser->offline_to_user;
+	gg_remove_notify_ex(sess, puser->uin, puser->offline_to_user ? GG_USER_NORMAL : GG_USER_OFFLINE);
+	gg_add_notify_ex(sess, puser->uin, puser->offline_to_user ? GG_USER_OFFLINE : GG_USER_NORMAL);
+	userlist.writeToFile();
 }
 
 void Kadu::resizeEvent(QResizeEvent *e) {
@@ -900,34 +898,34 @@ void Kadu::currentChanged(QListBoxItem *item) {
 	kdebug("Kadu::currentChanged(): %s\n", (const char *)item->text().local8Bit());
 
 	if (config.showdesc)
-		descrtb->setText(parse(config.panelsyntax,userlist.byAltNick(item->text())));
+		descrtb->setText(parse(config.panelsyntax, userlist.byAltNick(item->text())));
 }
 
 void Kadu::refreshGroupTabBar()
 {
 	if (!config.grouptabs)
-	{
+		{
 		group_bar->hide();
 		return;
-	};	
+		}
 	/* budujemy listê grup */
 	QValueList<QString> group_list;
 	for (int i = 0; i < userlist.count(); i++)
-	{
+		{
 		QString groups = userlist[i].group();
 		QString group;
 		for (int g = 0; (group = groups.section(',' ,g ,g)) != ""; g++)
 			if(!group_list.contains(group))
 				group_list.append(group);
-	};
+		}
 	kdebug("%i groups found\n",group_list.count());
 	//
 	if (group_list.count() == 0)
-	{
+		{
 		group_bar->hide();
 		setActiveGroup("");
 		return;
-	};
+		}
 	/* usuwamy wszystkie niepotrzebne zakladki - od tylu,
 	   bo indeksy sie przesuwaja po usunieciu */
 	for (int i = group_bar->count() - 1; i >= 1; i--)
@@ -935,15 +933,15 @@ void Kadu::refreshGroupTabBar()
 			group_bar->removeTab(group_bar->tabAt(i));
 	/* dodajemy nowe zakladki */
 	for (int i = 0; i < group_list.count(); i++)
-	{
+		{
 		bool createNewTab = true;
 		for (int j = 0; j < group_bar->count(); j++)
 			if (group_bar->tabAt(j)->text() == group_list[i])
 				createNewTab = false;
 		if(createNewTab)
 			group_bar->addTab(new QTab(group_list[i]));
-	};
-	kdebug("%i group tabs\n",group_bar->count());
+		}
+	kdebug("%i group tabs\n", group_bar->count());
 	group_bar->show();
 	/* odswiezamy - dziala tylko jesli jest widoczny */
 	group_bar->update();
@@ -952,29 +950,29 @@ void Kadu::refreshGroupTabBar()
 void Kadu::setActiveGroup(const QString& group)
 {
 	userbox->clearUsers();
-	for(int i=0; i<userlist.count(); i++)
-	{
-		bool belongsToGroup;
-		if(group=="")
-			belongsToGroup=true;
-		else
+	for (int i = 0; i < userlist.count(); i++)
 		{
-			belongsToGroup=false;
-			QString user_groups=userlist[i].group();
+		bool belongsToGroup;
+		if (group == "")
+			belongsToGroup = true;
+		else
+			{
+			belongsToGroup = false;
+			QString user_groups = userlist[i].group();
 			QString user_group;
-			for(int g=0; (user_group=user_groups.section(',',g,g))!=""; g++)
-				if(user_group==group)
-					belongsToGroup=true;
-		};
+			for (int g = 0; (user_group = user_groups.section(',',g,g)) != ""; g++)
+				if (user_group == group)
+					belongsToGroup = true;
+			}
 		if (belongsToGroup && (!userlist[i].anonymous || !trayicon))
 			userbox->addUser(userlist[i].altnick);
-	};
+		}
 	UserBox::all_refresh();
 };
 
 void Kadu::groupTabSelected(int id)
 {
-	if(id==0)
+	if (id == 0)
 		setActiveGroup("");
 	else
 		setActiveGroup(group_bar->tab(id)->text());
@@ -1190,7 +1188,7 @@ void Kadu::mouseButtonClicked(int button, QListBoxItem *item) {
 	UserListElement user;
 	user = userlist.byAltNick(item->text());
 	if (user.mobile.length())	
-	    sendSmsToUser();
+		sendSmsToUser();
 }
 
 /* the list that pops up if we right-click one someone */
@@ -1498,6 +1496,7 @@ void Kadu::setStatus(int status) {
 		status | (GG_STATUS_FRIENDS_MASK * config.privatestatus));
 
 	bool with_description;
+	unsigned char *descr;
     
 	with_description = ifStatusWithDescription(status);
 	status &= ~GG_STATUS_FRIENDS_MASK;
@@ -1519,7 +1518,6 @@ void Kadu::setStatus(int status) {
 	if (socket_active) {
 		doBlink = false;
 		if (with_description) {
-			unsigned char *descr;
 			descr = (unsigned char *)strdup(unicode2cp(own_description).data());
 			if (status == GG_STATUS_NOT_AVAIL_DESCR)
 				gg_change_status_descr(sess, status, (const char *)descr);
@@ -1571,6 +1569,10 @@ void Kadu::setStatus(int status) {
 	loginparams.uin = config.uin;
 	loginparams.client_version = GG_DEFAULT_CLIENT_VERSION;
 	loginparams.has_audio = 1;
+//	if (with_description)
+//		descr = (unsigned char *)strdup(unicode2cp(own_description).data());
+//	else
+//		descr = NULL;
 	
 	if (config.allowdcc && config.extip.ip4Addr() && config.extport > 1023) {
 		loginparams.external_addr = htonl(config.extip.ip4Addr());
@@ -1610,6 +1612,8 @@ void Kadu::setStatus(int status) {
 	else
 		loginparams.server_port = config.default_port;
 	sess = gg_login(&loginparams);
+//	if (descr)
+//		free(descr);
 
 	AutoConnectionTimer::off();
 

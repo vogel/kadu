@@ -164,8 +164,10 @@ void EventManager::connectedSlot()
 	sendUserlist();
 	kadu->setCurrentStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 	userlist_sent = true;
+
 	if (ifStatusWithDescription(loginparams.status))
 		kadu->setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
+
 	/* uruchamiamy autoawaya(jezeli wlaczony) po wyslaniu userlisty i ustawieniu statusu */
 	if (config.autoaway)
 		AutoAwayTimer::on();
@@ -682,18 +684,15 @@ void EventManager::eventHandler(gg_session* sess)
 			break;
 	}
 
-	if (sess->check == GG_CHECK_READ)
-	{
+	if (sess->check == GG_CHECK_READ) {
 		timeout_connected = true;
 		last_read_event = time(NULL);
-	};
+		}
 
-	if (e->type == GG_EVENT_MSG)
-	{
+	if (e->type == GG_EVENT_MSG) {
 		if (e->event.msg.msgclass == GG_CLASS_CTCP)
 			emit dccConnectionReceived(userlist.byUin(e->event.msg.sender));
-		else
-		{
+		else {
 			UinsList uins;
 			kdebug("eventHandler(): %d\n", e->event.msg.recipients_count);
 			if ((e->event.msg.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT) {
@@ -705,17 +704,16 @@ void EventManager::eventHandler(gg_session* sess)
 				uins.append(e->event.msg.sender);				
 			emit event_manager.messageReceived(e->event.msg.msgclass, uins, e->event.msg.message,
 				e->event.msg.time, e->event.msg.formats_length, e->event.msg.formats);
+			}
 		}
-	};
 
 	if (e->type == GG_EVENT_STATUS60 || e->type == GG_EVENT_STATUS)
 		emit event_manager.userStatusChanged(e);
 
-	if (e->type == GG_EVENT_ACK)
-	{
+	if (e->type == GG_EVENT_ACK) {
 		kdebug("EventManager::eventHandler(): message reached %d (seq %d)\n", e->event.ack.recipient, e->event.ack.seq);
 		emit ackReceived(e->event.ack.seq);
-	};
+		}
 
 	if (e->type == GG_EVENT_NOTIFY60)
 		emit event_manager.userlistReceived(e);
@@ -733,18 +731,16 @@ void EventManager::eventHandler(gg_session* sess)
 	if (e->type == GG_EVENT_DISCONNECT)
 		emit disconnected();
 
-	if (socket_active)
-	{
-		if (sess->state == GG_STATE_IDLE && userlist_sent)
-		{
+	if (socket_active) {
+		if (sess->state == GG_STATE_IDLE && userlist_sent) {
 			socket_active = false;
 			UserBox::all_changeAllToInactive();
 			emit connectionBroken();
-		}
+			}
 		else
 			if (sess->check & GG_CHECK_WRITE)
 				kadusnw->setEnabled(true);
-	};
+		}
 
 	gg_free_event(e);
 	calls--;
