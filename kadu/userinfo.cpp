@@ -91,7 +91,7 @@ void UserInfo::setupTab1() {
 	e_addr = new QLineEdit(vbox51);
 	e_addr->setReadOnly(true);
 	QVBox *vbox52 = new QVBox(hbox5);
-	QLabel *l_ver = new QLabel(i18n("Client version"), vbox52);
+	QLabel *l_ver = new QLabel(i18n("Protocol version"), vbox52);
 	e_ver = new QLineEdit(vbox52);
 	e_ver->setReadOnly(true);
 	
