@@ -5,6 +5,194 @@ pierwsz± liter± nicka jest ,,x'' (w - wojtekka, s - speedy, a - arekm,
 d - drg). ,,p/nick'' oznacza patch lub ¼ród³o podes³ane przez ,,nick'',
 ,,i/nick'' oznacza czyj¶ pomys³, ,,b/nick'' mówi, kto zg³osi³ b³±d.
 
+// 2002-09-11
+
+- dodany skrót "-A" dla parametru "--all" w ekgsearch (wysek)
+- komenda set akceptuje i wy¶wietla flagi dla niektórych zmiennych. mo¿liwe
+  jest dodawanie flag poprzedzaj±c warto¶æ plusem, lub usuwanie poprzedzaj±c
+  minusem. na przyk³ad ,,set log +gzip'' lub ,,set random_reason -away'' (w)
+- porz±dki w configure.in. nie wykrywamy niepotrzebnych rzeczy -- na przyk³ad
+  je¶li nie znajdzie libgsm, nie sprawdza <linux/soundcard.h>; je¶li nie
+  chcemy ioctld, nie szuka <linux/kd.h> (w)
+- obs³uga logów skompresowanych gzipem: ,,set log +gzip''. je¶li dany log
+  ju¿ istnieje, bêdzie dopisywany w postaci nieskompresowanej -- nale¿y
+  go najpierw skompresowaæ rêcznie za pomoc± komendy gzip (w)
+- uaktualnienia, dodatki i poprawki w dokumentacji (w)
+- usuniêcie configure z cvsu. bêdzie generowany automagicznie przy
+  tworzeniu snapshotów (speedy/w)
+- je¶li podczas ./configure-owania bêdzie w katalogu plik .enable-ui-ncurses,
+  to zostanie wkompilowane. mam do¶æ zapominania o tej opcji (w)
+- regeneracja configure po zmianach configure.in, m4/* i acheader.h (w)
+- poprawka b³êdu przy usuwaniu zmiennych (speedy/w)
+- tab completion przy ,,window'' (jr178783/d) 
+- poprawka rzucania wiadomo¶ci do innych okienek. tak, przyznajê, moja
+  wina. g³upi b³±d. (w)
+- matik.theme (matik/s)
+- ,,find -A'' wy¶wietla wszystkie wyniki (wysek/w)
+- wynik wyszukiwania nie jest ju¿ rozstrzelony co dwie linijki (w)
+- dodanie gg_search_request_free(), podbicie API (w)
+- dodanie osobnych timestampów dla czasu nadania wiadomo¶ci (Bies/w)
+- poprawka potencjalnego segfaulta w szukaniu (wysek/w)
+
+// 2002-09-10
+
+- inna filozofia gg_saprintf(). rodzaj maszyny (pre-C99 lub post-C99)
+  jest wykrywany przez ./configure. dodatkowo zmieniono lekko sposób
+  uzyskiwania rozmiaru na post-C99, ¿eby dzia³a³o poprawnie na Sunach
+  (Murphy/w)
+- segfault przy completion_notify 2 i dope³nianiu tabem (Murphy/w)
+- usuniêcie niepotrzebnego ju¿ katalogu misc/ (w)
+- dodanie arim_irc.theme, dj.theme (Arim,dawjar/w)
+- usuniêcie niepotrzebnych includów z libgadu (m.in. <sys/time.h>) (w)
+
+// 2002-09-08
+
+- mamo, a speedy popsul VOIP i ncurses ;P (s)
+- wymuszanie ui-readline [--enable-force-readline] (s)
+- sigh... dlaczego config.h.in sie nie robilo ? (s)
+- poprawka dope³niania tabem (jp/w)
+
+// 2002-09-07
+
+- dodane komendy ,,last'' oraz zmiennej ,,last_count'' (d)
+- update ,,docs/vars.txt'' (d)
+- dodanie zmiennej ,,last'' (d)
+- zmiana ,,last_count'' na ,,last_size'' (d)
+- uaktualniony ,,docs/vars.txt'' (d)
+- dodany ,,last_list_timestamp'' do themes (d)
+- poprawne zapisywanie polskich znaków mesgów wychodz±cych w last (d)
+- s/get_last_count/last_count_get/ (d)
+- brakuj±ce sent_line_first (dawjar/w)
+- usuniêcie kilku drobnych leaków (w)
+- ekg pyta siê o zapisanie konfiguracji, nie ui (Arim/w)
+- Ctrl-Fx zmienia okno na konsoli FreeBSD (cukier/w)
+	
+// 2002-09-06
+
+- update arim.theme (Arim/w)
+- ui-readline respektuje zmienn± ,,sort_windows'' (d)
+- ui-ncurses poprawnie wykrywa p³eæ przy imionach z polskimi znakami.
+  widocznie ncurses co¶ psuje (Arim/w)
+- prompt z nickiem query w ui-ncurses (w)
+
+// 2002-09-05
+
+- ui-ncurses respektuje zmienn± display_color (w)
+- informowanie o zmianach w oknach w ui-readline (d)
+- dodanie zmiennej display_sent (w)
+- zniesienie ograniczeñ rozmiaru ekranu. póki co, jeszcze nie bêdzie
+  siê dostosowywa³ do zmian rozmiaru terminala (w)
+- mniejsze poprawki ui-ncurses (w)
+- dodanie ,,window next'' i ,,window prev'' (w)
+- obs³uga Ctrl-L w ui-ncurses (Kooba/w)
+- w query domy¶lne dope³nianie dodaje '/' (jojo/w)
+- dodanie zmiennej sort_windows (wielu/w)
+
+// 2002-09-04
+
+- ³adniejszy, dresiarski status w ui-ncurses (w)
+- ³adniejsze, dresiarskie prompty w ui-ncurses (w)
+- pocz±tek timestampów _przed_ lini± (w)
+- ui-ncurses obs³uguje Ctrl-W (w)
+- obs³uga okienek w ui-ncurses. jest jeszcze niekompletna w stosunku do
+  okienek z ui-readline, ale ma te¿ sporo zalet -- dresiarski status i
+  informowanie o zmianach w oknach. szczegó³y w docs/ui-ncurses.txt (w)
+
+// 2002-09-03
+
+- dodanie ' do znaków escapowanych w logach, ¿eby mo¿na by³o ³atwo
+  i przyjemnie to rozbiæ przez array_make(), która ju¿ obs³uguje
+  escapowane teksty (w)
+- poprawki w helpie (w)
+- nie mo¿na utworzyæ aliasu przykrywaj±cego komendê (FIG/w)
+- dodanie zmiennej save_password (FIG/w)
+- dodanie argumentów do connect (FIG/w)
+- polecenia przy braku parametrów proponuj± zajrzeæ do pomocy (FIG/w)
+- pseudokonfigurowalny statusbar w ui-ncurses, szczegó³y w ¼ród³ach.
+  póki co, pokazuje zegarek, numerek i kolorem okre¶la stan (w)
+
+// 2002-09-02
+
+- pager w bind (FIG/w)
+- segfault przy dcc (theKnight,wojboj/w)
+- escapowanie logów (w)
+
+// 2002-09-01
+
+- z okazji urlopu dodalem eksperymentalne wykrywanie pythona (s)
+- poprawka kolejno¶ci includów (kloczek,Charvel/w)
+
+// 2002-08-25
+
+- dodanie funkcji gg_libgadu_version() zwracaj±cej wersjê biblioteki
+  i makro GG_LIBGADU_VERSION, które podaje wersjê inkludów (w)
+- ekg -v zwraca wersjê ekg i libgadu ze szczegó³ami (niepamiêtamkto/w)
+- podbicie wersji api (w)
+- poprawki voip (Chilek/w)
+- MILI PAÑSTWO, PROSZÊ PRZYGOTOWAÆ SZAMPANA! pierwszy snapshot, który
+  znalaz³em na dysku to 20010825 ----  wynika z tego, ¿e min±³ rok od pierwszej
+  zachowanej, nieoficjalnej wersji ekg. je¶li kto¶ chce siê po¶miaæ,
+  zapraszam do http://dev.null.pl/ekg/stare/ekg-2001082501.tar.gz a jako
+  ciekawostkê za³±czam wykres rozmiaru tarballa w czasie (jest pod adresem
+  http://dev.null.pl/ekg/tarball.png). dziêkujê za uwagê i przepraszam za
+  za¶miecanie changeloga. (w)
+
+// 2002-08-23
+
+- \n po zamkniêciu query (theKnight/w)
+- dodanie zmiennej ctrld_quits (rmrmg/w)
+- dodanie contrib/link.pl (theKnight/w)
+
+// 2002-08-22
+
+- msg @grupa wysy³a do wszystkich cz³onków grupy. ¿eby wys³aæ do kogo¶,
+  czyj nick zaczyna siê od ma³py, nale¿y wpisaæ msg ,@nick (zdzichuBG/w)
+
+// 2002-08-21
+
+- usuniêcie innego aliasu w aliasie nie wywala klienta (theKnight/w)
+- bind bez parametrów pokazuje listê (theKnight/w)
+
+// 2002-08-20
+
+- pocz±tek obs³ugi skryptów Pythona. jak wiêkszo¶æ ficzerów, w stanie
+  u¿ywalnym bêdzie dopiero za pó³ roku. szczegó³y w docs/python.txt (w)
+- dodane timery, które przydadz± siê w skryptach. do tego mo¿na nimi
+  zarz±dzaæ komend± ,,timer'' (w)
+- dalsze psucie pythona. dodanie przyk³adowego skryptu. dodanie komendy
+  _py, która wykona kod w pythonie (w)
+- usuniêcie copyrightów z docs/README i z bannera, ¿eby wymienieni ludzie
+  nie byli traktowani jako jedyni autorzy (w)
+- sensowne opisanie instalacji w docs/README (w)
+- komenda quit jest ju¿ traktowana jako zwyk³a komenda, przez co nie
+  powinno byæ problemów z aliasami i timerami. niestety spowoduje to
+  leaki pamiêci przy wychodzeniu, ale tym zajmê siê kiedy indziej (w)
+- reorganizacja skryptów pythona. nie dzia³aj±. (w)
+
+// 2002-08-19
+
+- poprawka kolejnej konstrukcji mog±cej powodowaæ segfaulty. niech ¿yje
+  readline! (w)
+- poprawka b³êdu w rozwijaniu emotikonów (theKnight/w)
+- wysy³anie rozmów grupowych (stforek/w)
+- wyra¼ne zaznaczenie wersji licencji (L)GPL (w)
+- poprawka wy¶wietlania mesgów w ui-readline (dawjar/w)
+
+// 2002-08-18
+
+- g³upie porz±dki w kodzie. mniejszenie ilo¶ci #ifdef WITH_IOCTLD,
+  zmiany nazw funkcji dotycz±cych ioctld itd. (w)
+- pozbycie siê g³upiego b³êdu z czyszczeniem ekranu po w³±czeniu ekg (w)
+- wy³±czenie domy¶lnej kompilacji ioctld. czasami jest z tym jednak
+  wiêcej k³opotów ni¿ po¿ytku (w)
+- segfault w _msg (w)
+- mo¿liwo¶æ robienia theme'ów ircopodobnych. przyk³ad w themes/irc.theme (w)
+- jest ju¿ dope³nianie tabem w ui-ncurses. niniejszym og³aszam ten interfejs
+  u¿ywalnym. jak zwykle, prosimy zapi±æ pasy, spodziewamy siê nieznacznych
+  turbulencji (w)
+- poprawka ui-readline, by unikn±æ potencjalnego segfaulta (adwol/w)
+- segfault przy podwójnym bindowanie (booyas/w)
+
 // 2002-08-15
 
 - poprawki wspó³pracy z ekgwap (serek/w)
@@ -1551,4 +1739,4 @@ i BUGS.
 - eleet niebieskie t³o mesgów (wiem, dalekie od idea³u).
 
 
-$Id: ChangeLog,v 1.3 2002/08/17 20:24:55 chilek Exp $
+$Id: ChangeLog,v 1.4 2002/09/12 21:05:00 chilek Exp $

@@ -1,31 +1,63 @@
-/* Define if your processor stores words with the most significant
-   byte first (like Motorola and SPARC, unlike Intel and VAX). */
-#undef WORDS_BIGENDIAN
+/* config.h.in.  Generated automatically from configure.in by autoheader.  */
+/* $Id: config.h.in,v 1.3 2002/09/12 21:05:00 chilek Exp $ */
 
-/* curses checks */
-#undef HAVE_CURSES
+/* define if you want "wap" support */
+#undef WITH_WAP
 
-/* readline checks */
+/* define if you have ncurses */
+#undef HAVE_NCURSES
+
+/* define if you have readline */
 #undef HAVE_READLINE
-#undef HAVE_RL_SET_PROMPT
-#undef HAVE_RL_FILENAME_COMPLETION_FUNCTION
-#undef HAVE_RL_GET_SCREEN_SIZE
-#undef HAVE_RL_SET_KEY
-#undef HAVE_RL_BIND_KEY_IN_MAP
 
-/* voice stuff */
-#undef HAVE_LINUX_SOUNDCARD_H
-#undef HAVE_GSM_H
-#if defined(HAVE_LINUX_SOUNDCARD_H) && defined(HAVE_GSM_H)
-#define HAVE_VOIP
-#endif
+/* define if you have C99-compatible vsnprintf() */
+#undef HAVE_C99_VSNPRINTF
 
-/* ui */
-#undef WITH_UI_READLINE
+/* define if you have python */
+#undef WITH_PYTHON
+
+/* define if you want ui_ncurses */
 #undef WITH_UI_NCURSES
 
-/* ioctld */
+/* define if you want ui_readline */
+#undef WITH_UI_READLINE
+
+/* define if you want default ui_readline */
+#undef WITH_FORCE_READLINE
+
+/* define if you want VOIP support */
+#undef HAVE_VOIP
+
+/* define if you have zlib for compressed logs */
+#undef HAVE_ZLIB
+
+/* Define if you have the <gsm.h> header file. */
+#undef HAVE_GSM_H
+
+/* Define if you have the <linux/kd.h> header file. */
 #undef HAVE_LINUX_KD_H
 
-/* ekgwap */
-#undef WITH_WAP
+/* Define if you have the <linux/soundcard.h> header file. */
+#undef HAVE_LINUX_SOUNDCARD_H
+
+/* Define if you have the `rl_bind_key_in_map' function. */
+#undef HAVE_RL_BIND_KEY_IN_MAP
+
+/* Define if you have the `rl_filename_completion_function' function. */
+#undef HAVE_RL_FILENAME_COMPLETION_FUNCTION
+
+/* Define if you have the `rl_get_screen_size' function. */
+#undef HAVE_RL_GET_SCREEN_SIZE
+
+/* Define if you have the `rl_set_key' function. */
+#undef HAVE_RL_SET_KEY
+
+/* Define if you have the `rl_set_prompt' function. */
+#undef HAVE_RL_SET_PROMPT
+
+/* Define if you have the <zlib.h> header file. */
+#undef HAVE_ZLIB_H
+
+/* Define if your processor stores words with the most significant byte first
+   (like Motorola and SPARC, unlike Intel and VAX). */
+#undef WORDS_BIGENDIAN

@@ -1,4 +1,4 @@
-/* $Id: search.c,v 1.3 2002/08/17 20:24:56 chilek Exp $ */
+/* $Id: search.c,v 1.4 2002/09/12 21:05:02 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -43,7 +43,7 @@
  * zaalokowana struct gg_http, któr± po¼niej nale¿y zwolniæ
  * funkcj± gg_free_search(), albo NULL je¶li wyst±pi³ b³±d.
  */
-struct gg_http *gg_search(struct gg_search_request *r, int async)
+struct gg_http *gg_search(const struct gg_search_request *r, int async)
 {
 	struct gg_http *h;
 	char *form, *query;
@@ -60,7 +60,7 @@ struct gg_http *gg_search(struct gg_search_request *r, int async)
 	strcpy(__suffix, (r->active) ? "&ActiveOnly=" : "");
 
 	if (r->start)
-		sprintf(__suffix + strlen(__suffix), "&Start=%d", r->start);
+		sprintf(__suffix + strlen(__suffix), "&Start=%d", r->start & 0x7fffffff);
 		
 	if (r->nickname || r->first_name || r->last_name || r->city || r->gender || r->min_birth || r->max_birth)
 		mode = 0;
@@ -318,12 +318,12 @@ void gg_search_free(struct gg_http *h)
  *  - phone - numer telefonu
  *  - uin - numer
  *  - active - szukaj tylko aktywnych
- *  - start - zacznij od podanego wyniku
+ *  - start - zacznij od podanego wyniku (dolne 31 bitów)
  *
  * wszystkie zwracaj± adres statycznego bufora, który mo¿na wykorzystaæ
  * do nakarmienia funkcji gg_search().
  */
-struct gg_search_request *gg_search_request_mode_0(char *nickname, char *first_name, char *last_name, char *city, int gender, int min_birth, int max_birth, int active, int start)
+const struct gg_search_request *gg_search_request_mode_0(char *nickname, char *first_name, char *last_name, char *city, int gender, int min_birth, int max_birth, int active, int start)
 {
 	static struct gg_search_request r;
 
@@ -341,7 +341,7 @@ struct gg_search_request *gg_search_request_mode_0(char *nickname, char *first_n
 	return &r;
 }
 
-struct gg_search_request *gg_search_request_mode_1(char *email, int active, int start)
+const struct gg_search_request *gg_search_request_mode_1(char *email, int active, int start)
 {
 	static struct gg_search_request r;
 
@@ -353,7 +353,7 @@ struct gg_search_request *gg_search_request_mode_1(char *email, int active, int 
 	return &r;
 }
 
-struct gg_search_request *gg_search_request_mode_2(char *phone, int active, int start)
+const struct gg_search_request *gg_search_request_mode_2(char *phone, int active, int start)
 {
 	static struct gg_search_request r;
 
@@ -365,7 +365,7 @@ struct gg_search_request *gg_search_request_mode_2(char *phone, int active, int 
 	return &r;
 }
 
-struct gg_search_request *gg_search_request_mode_3(uin_t uin, int active, int start)
+const struct gg_search_request *gg_search_request_mode_3(uin_t uin, int active, int start)
 {
 	static struct gg_search_request r;
 
@@ -377,6 +377,31 @@ struct gg_search_request *gg_search_request_mode_3(uin_t uin, int active, int st
 	return &r;
 }
 
+/*
+ * gg_search_request_free()
+ *
+ * zwalnia pamiêæ po struct gg_search_request.
+ *
+ *  - r - zwalniana struktura.
+ */
+void gg_search_request_free(struct gg_search_request *r)
+{
+	if (!r)
+		return;
+	if (r->first_name)
+		free(r->first_name);
+	if (r->last_name)
+		free(r->last_name);
+	if (r->nickname)
+		free(r->nickname);
+	if (r->city)
+		free(r->city);
+	if (r->email)
+		free(r->email);
+	if (r->phone)
+		free(r->phone);
+	free(r);
+}
 
 /*
  * Local variables:

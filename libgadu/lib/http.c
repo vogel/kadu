@@ -1,4 +1,4 @@
-/* $Id: http.c,v 1.3 2002/08/17 20:24:56 chilek Exp $ */
+/* $Id: http.c,v 1.4 2002/09/12 21:05:01 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -23,8 +23,8 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <sys/wait.h>
 #include <netdb.h>
+#include <sys/wait.h>
 #include <errno.h>
 #ifndef _AIX
 #  include <string.h>

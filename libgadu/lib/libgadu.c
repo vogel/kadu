@@ -1,4 +1,4 @@
-/* $Id: libgadu.c,v 1.4 2002/08/17 20:24:56 chilek Exp $ */
+/* $Id: libgadu.c,v 1.5 2002/09/12 21:05:01 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
@@ -26,16 +26,12 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <sys/ioctl.h>
-#include <sys/wait.h>
-#include <sys/time.h>
 #include <netdb.h>
 #include <errno.h>
 #ifndef _AIX
 #  include <string.h>
 #endif
 #include <stdarg.h>
-#include <time.h>
 #ifdef sun
 #  include <sys/filio.h>
 #endif
@@ -61,8 +57,18 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c,v 1.4 2002/08/17 20:24:56 chilek Exp $";
+= "$Id: libgadu.c,v 1.5 2002/09/12 21:05:01 chilek Exp $";
 #endif 
+
+/*
+ * gg_libgadu_version()
+ *
+ * zwraca wersjê libgadu.
+ */
+const char *gg_libgadu_version()
+{
+	return GG_LIBGADU_VERSION;
+}
 
 /*
  * gg_fix32()

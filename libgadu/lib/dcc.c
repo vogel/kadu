@@ -1,4 +1,4 @@
-/* $Id: dcc.c,v 1.3 2002/08/17 20:24:56 chilek Exp $ */
+/* $Id: dcc.c,v 1.4 2002/09/12 21:05:01 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -24,9 +24,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <sys/wait.h>
 #include <sys/stat.h>
-#include <netdb.h>
 #include <fcntl.h>		/* XXX fixy na inne systemy */
 #include <sys/ioctl.h>		/* XXX j.w. */
 #include <errno.h>

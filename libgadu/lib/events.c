@@ -1,4 +1,4 @@
-/* $Id: events.c,v 1.3 2002/08/17 20:24:56 chilek Exp $ */
+/* $Id: events.c,v 1.4 2002/09/12 21:05:01 chilek Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>,
@@ -27,8 +27,6 @@
 #include <arpa/inet.h>
 #include <sys/ioctl.h>
 #include <sys/wait.h>
-#include <sys/time.h>
-#include <netdb.h>
 #include <errno.h>
 #ifndef _AIX
 #  include <string.h>
