@@ -160,8 +160,9 @@ bool UserList::readFromFile()
 	    
 	clear();
 
+	QTextStream t(&f);
 	QString line;
-	while (f.readLine(line,1000)>0)
+	while ((line = t.readLine()).length())
 	{
 		if (line[0] == '#')
 			continue;
