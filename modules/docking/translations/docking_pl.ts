@@ -15,7 +15,7 @@ Current status:
 %1</source>
         <translation>
 
-Bierzący status:
+Bieżący status:
 %1</translation>
     </message>
     <message>
