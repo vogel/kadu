@@ -102,18 +102,18 @@ void UserInfo::setupTab1() {
 	QVBox *vbox51 = new QVBox(hbox5);
 	QLabel *l_addr = new QLabel(i18n("Address IP and Port"), vbox51);
 	e_addr = new QLineEdit(vbox51);
-	e_addr->setDisabled(true);
+	e_addr->setReadOnly(true);
 	QVBox *vbox52 = new QVBox(hbox5);
 	QLabel *l_ver = new QLabel(i18n("Protocol version"), vbox52);
 	e_ver = new QLineEdit(vbox52);
-	e_ver->setDisabled(true);
+	e_ver->setReadOnly(true);
 	
 	QHBox *hbox6 = new QHBox(box);
 	hbox6->setSpacing(10);
 	QVBox *vbox61 = new QVBox(hbox6);
 	QLabel *l_dnsname = new QLabel(i18n("DNS name"), vbox61);
 	e_dnsname = new QLineEdit(vbox61);
-	e_dnsname->setDisabled(true);
+	e_dnsname->setReadOnly(true);
 	QVBox *vbox62 = new QVBox(hbox6);
 	QLabel *l_email = new QLabel(i18n("Email"), vbox62);
 	e_email = new QLineEdit(puser->email, vbox62);
@@ -158,7 +158,7 @@ void UserInfo::setupTab1() {
 	if (!userlist_sent)
 		e_status->setText(i18n("(Unknown)"));
 
-	e_status->setDisabled(true);
+	e_status->setReadOnly(true);
 
 	if (puser->uin)
 		e_uin->setText(QString::number(puser->uin));
