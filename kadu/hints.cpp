@@ -318,6 +318,8 @@ void HintManager::deleteAllHints()
 
 void HintManager::addHint(const QString& text, const QPixmap& pixmap,  const QFont &font, const QColor &color, const QColor &bgcolor, unsigned int timeout, UinsList* senders)
 {
+	if (this==NULL)
+		return;
 	kdebugf();
 	hints.append(new Hint(this, text, pixmap, timeout));
 	int i = hints.count()-1;
