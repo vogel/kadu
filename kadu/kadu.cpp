@@ -237,7 +237,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	QFont def_font(info.family(),info.pointSize());
 	config_file.addVariable("Look", "UserboxFont", &def_font);
 	config_file.addVariable("Look", "UserboxDescFont", &def_font);
-	
+
+	config_file.addVariable("General", "ToolBarHidden", false);
+
 	closestatusppmtime.start();
 
 	gg_proxy_host = NULL;
@@ -523,7 +525,8 @@ void Kadu::createToolBar()
 	setAppropriate(ToolBar, true);
 	ToolBar->setCloseMode(QDockWindow::Undocked);
 	ToolBar->setLabel(tr("Main toolbar"));
-
+	if (config_file.readBoolEntry("General", "ToolBarHidden"))
+		ToolBar->hide();
 
 	for(QValueList<ToolButton>::iterator j=RegisteredToolButtons.begin(); j!=RegisteredToolButtons.end(); j++)
 		if ((*j).caption== "--separator--")
@@ -531,14 +534,10 @@ void Kadu::createToolBar()
 		else 
 		    (*j).button= new QToolButton((*j).iconfile, (*j).caption,
 			QString::null, (*j).receiver, (*j).slot, ToolBar, (*j).name);
-		    
-
-
 
 	QFrame *toolbarfiller = new QFrame(ToolBar);
 	ToolBar->setStretchableWidget(toolbarfiller);
 	ToolBar->setVerticallyStretchable(true);
-
 };
 
 
@@ -1610,9 +1609,9 @@ bool Kadu::close(bool quit) {
 		config_file.writeEntry("General", "Geometry",geom);
 	    }
 		config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));
+		config_file.writeEntry( "Look", "CurrentGroupTab", GroupBar->currentTab() );
+		config_file.writeEntry("General", "ToolBarHidden", ToolBar->isHidden());
 
-                config_file.writeEntry( "Look", "CurrentGroupTab", 
-                                        GroupBar -> currentTab() );
 		QString dockwindows=config_file.readEntry("General", "DockWindows");
 		QTextStream stream(&dockwindows, IO_WriteOnly);
 		stream << *kadu;

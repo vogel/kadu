@@ -32,6 +32,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * wywalilem opcje "dodaj do opisu". to bylo kiepsko napisane, istnieje
   juz zarowno modul do bezposredniej obslugi xmms jak i do czytania opisow
   z pliku z duzo wiekszymi mozliwosciami (adrian)
+* kadu zapamiêtuje "widoczno¶æ" ToolBar'a (mast3r)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
