@@ -10,6 +10,7 @@
   Kadu nie jest aktywne (adrian)
 * polskie znaczki w dymkach powinny byæ ju¿ - OK (mast3r)
 * nowe libgadu, zwiêkszenie tymczasowo wysoko¶ci okna konfiguracji (chilek)
+* uaktualnione wysy³anie smsów do telefonów komórkowych w sieci era (chilek)
 
 +++ wersja 0.3.3-rc4
 * dodatkowe opcje dostêpne w menu podrêcznym u¿ytkownika (blokowanie, ignorowanie,

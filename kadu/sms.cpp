@@ -259,17 +259,24 @@ void SmsSender::onFinished()
 		}
 		else
 		{
-			QRegExp code_regexp("name=\\\"Code\\\" value=\\\"(\\d+)\\\"");
-			if(code_regexp.search(Page)<0)
-			{
+			QRegExp code_regexp("name=\\\"kod\\\" value=\\\"(\\d+)\\\"");
+			QRegExp code_regexp2("name=\\\"Kod(\\d+)\\\" value=\\\"(\\d+)\\\"");
+			if(code_regexp.search(Page) < 0) {
 				QMessageBox::critical((QWidget*)parent(),"SMS",i18n("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
 				emit finished(false);
 				return;
-			};
-			QString code=code_regexp.cap(1);
-			State=SMS_LOADING_RESULTS;
-			QString post_data="bookopen=&numer="+Number+"&ksiazka=ksi%B1%BFka+telefoniczna&message="+Http.encode(Message)+"&podpis="+config.nick+"&kontakt=&code="+code+"&Nadaj=Nadaj";
-			Http.post("sms/sendsms.asp",post_data);
+				}
+			if(code_regexp2.search(Page) < 0) {
+				QMessageBox::critical((QWidget*)parent(),"SMS",i18n("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
+				emit finished(false);
+				return;
+				}
+			QString code = code_regexp.cap(1);
+			QString num = code_regexp2.cap(1);
+			QString code2 = code_regexp2.cap(2);
+			State = SMS_LOADING_RESULTS;
+			QString post_data = "bookopen=&numer="+Number+"&ksiazka=ksi%B1%BFka+telefoniczna&message="+Http.encode(Message)+"&podpis="+config.nick+"&kontakt=&Send=++tak-nada%E6++&Kod"+num+"="+code2+"&kod="+code;
+			Http.post("sms/sendsms.asp", post_data);
 		};
 	}
 	else if(State==SMS_LOADING_PICTURE)
