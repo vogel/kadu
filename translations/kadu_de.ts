@@ -315,7 +315,7 @@ nicht versteht. Gib hier die Argumente ein, getrennt mit Komma. %n=Tel.; %m=Nach
     </message>
     <message>
         <source>Enable volume control (player must support it)</source>
-        <translation>Lautstärke (wenn unterstützt)</translation>
+        <translation>Lautstärke (wenn unterstüzt)</translation>
     </message>
     <message>
         <source>Message sound</source>
@@ -936,7 +936,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>File transfer</source>
-        <translation>Datei-Transfär</translation>
+        <translation>Datei-Transfer</translation>
     </message>
     <message>
         <source>Speed: </source>
@@ -1292,7 +1292,7 @@ Dein Passwort ist falsch!!!</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation>Füge Hinzu</translation>
+        <translation>Füge hinzu</translation>
     </message>
     <message>
         <source>Uin</source>
@@ -1455,7 +1455,7 @@ Check your internet connection.</source>
     </message>
     <message>
         <source>File has been transferred sucessfully.</source>
-        <translation>Transfär der Datei gelungen.</translation>
+        <translation>Transfer der Datei gelungen.</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -1857,7 +1857,7 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
         <translation>Markiere zuerst Benutzer</translation>
     </message>
     <message>
-        <source> </source>
+        <source></source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2510,7 +2510,7 @@ mit Größe</translation>
     </message>
     <message>
         <source>Incoming transfer</source>
-        <translation>Ankommender Transfär</translation>
+        <translation>Ankommender Transfer</translation>
     </message>
     <message>
         <source>Yes</source>

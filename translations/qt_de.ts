@@ -1803,35 +1803,35 @@ nach
     <name>QUrlOperator</name>
     <message>
         <source>The protocol `%1&apos; is not supported</source>
-        <translation>Das Protokoll `%1&apos; wird nicht unterstützt</translation>
+        <translation>Das Protokoll `%1&apos; wird nicht unterstüzt</translation>
     </message>
     <message>
         <source>The protocol `%1&apos; does not support listing directories</source>
-        <translation>Das Protokoll &quot;%1&quot; wird nicht unterstützt oder es &quot;%2&quot; unterstützt nicht die Auflistung von Verzeichnissen</translation>
+        <translation>Das Protokoll &quot;%1&quot; wird nicht unterstüzt oder es &quot;%2&quot; unterstüzt nicht die Auflistung von Verzeichnissen</translation>
     </message>
     <message>
         <source>The protocol `%1&apos; does not support creating new directories</source>
-        <translation>Das Protokoll `%1&apos; unterstützt nicht das Anlegen neuer Verzeichnisse</translation>
+        <translation>Das Protokoll `%1&apos; unterstüzt nicht das Anlegen neuer Verzeichnisse</translation>
     </message>
     <message>
         <source>The protocol `%1&apos; does not support removing files or directories</source>
-        <translation>Das Protokoll `%1&apos; untersützt nicht das Löschen von Dateien oder Verzeichnissen</translation>
+        <translation>Das Protokoll `%1&apos; unterstüzt nicht das Löschen von Dateien oder Verzeichnissen</translation>
     </message>
     <message>
         <source>The protocol `%1&apos; does not support renaming files or directories</source>
-        <translation>Das Protokoll `%1&apos; untersützt nicht das Umbenennen von Dateien oder Verzeichnissen</translation>
+        <translation>Das Protokoll `%1&apos; unterstüzt nicht das Umbenennen von Dateien oder Verzeichnissen</translation>
     </message>
     <message>
         <source>The protocol `%1&apos; does not support getting files</source>
-        <translation>Das Protokoll `%1&apos; untersützt nicht das Laden von Files</translation>
+        <translation>Das Protokoll `%1&apos; unterstüzt nicht das Laden von Files</translation>
     </message>
     <message>
         <source>The protocol `%1&apos; does not support putting files</source>
-        <translation>Das Protokoll `%1&apos; untersützt nicht das Speichern von Files</translation>
+        <translation>Das Protokoll `%1&apos; unterstüzt nicht das Speichern von Files</translation>
     </message>
     <message>
         <source>The protocol `%1&apos; does not support copying or moving files or directories</source>
-        <translation> Das Protokoll `%1&apos; untersützt nicht das Kopieren oder Verschieben von Dateien oder Verzeichnissen</translation>
+        <translation> Das Protokoll `%1&apos; unterstüzt nicht das Kopieren oder Verschieben von Dateien oder Verzeichnissen</translation>
     </message>
     <message>
         <source>(unknown)</source>
