@@ -27,17 +27,6 @@
 /* 2^31-1 - wszystkie komunikaty */
 #define KDEBUG_ALL 2147483647
 
-/* stare-dluzsze wersje tych stalych */
-#define KADU_DEBUG_FUNTION_START KDEBUG_FUNCTION_START
-#define KADU_DEBUG_FUNTION_END KDEBUG_FUNCTION_END
-#define KADU_DEBUG_INFO KDEBUG_INFO
-#define KADU_DEBUG_WARNING KDEBUG_WARNING
-#define KADU_DEBUG_ERROR KDEBUG_ERROR
-#define KADU_DEBUG_PANIC KDEBUG_PANIC
-#define KADU_DEBUG_DUMP KDEBUG_DUMP
-#define KADU_DEBUG_NETWORK KDEBUG_NETWORK
-#define KADU_DEBUG_ALL KDEBUG_ALL
-
 /*
 	<<< kdebug >>>
 	Wy¶wietla komunikat debuguj±cy na konsoli.

@@ -59,13 +59,6 @@ int getCurrentStatus()
 	return GG_STATUS_NOT_AVAIL;
 }
 
-// b³êdna nazwa funkcji, u¿yj getCurrentStatus()
-int getActualStatus()
-{
-	qWarning("============================>>>>>>>>>>>>>>>>>>>> getActualStatus() DEPRACATED - use getCurrentStatus !!");
-	return getCurrentStatus();
-}
-
 int statusGGToStatusNr(int status) {
 	int i = 0;
 	if (status == GG_STATUS_INVISIBLE2)
