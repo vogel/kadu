@@ -30,76 +30,76 @@ void loadKaduConfig(void);
 void saveKaduConfig(void);
 
 class ConfigDialog : public QTabDialog	{
-    Q_OBJECT
+	Q_OBJECT
 
-    public:
-	ConfigDialog(QWidget *parent=0, const char *name=0);
+	public:
+		ConfigDialog(QWidget *parent=0, const char *name=0);
 
-    protected:
-        void setupTab1();
-        void setupTab2();
-        void setupTab3();
-        void setupTab4();
-	void setupTab5();
-	
-        QComboBox *cb_defstatus;
-        QCheckBox *b_geometry;
-        QCheckBox *b_logging;
-        QLineEdit *e_password;
-        QLineEdit *e_uin;
-        QLineEdit *e_smsapp;
-        QLineEdit *e_smsconf;
-        QCheckBox *b_smscustomconf;
-        QCheckBox *b_autoaway;
-        QLineEdit *e_autoawaytime;
-        QCheckBox *b_dock;
-        QCheckBox *b_private;
-			
-        QLineEdit *e_soundprog;
-        QCheckBox *b_playsound;
-        QCheckBox *b_playartsdsp;
-        QLineEdit *e_msgfile;
-        QLineEdit *e_chatfile;
-        QCheckBox *b_playchat;
-        QCheckBox *b_playchatinvisible;
-        QSlider *s_volume;
-        QCheckBox *b_soundvolctrl;
+	protected:
+		void setupTab1();
+		void setupTab2();
+		void setupTab3();
+		void setupTab4();
+		void setupTab5();
 
-        QCheckBox *b_emoticons;
-        QCheckBox *b_autosend;
-        QCheckBox *b_scrolldown;
-        QLineEdit *e_emoticonspath;
-        QCheckBox *b_chatprune;
-        QLineEdit *e_chatprunelen;
+		QComboBox *cb_defstatus;
+		QCheckBox *b_geometry;
+		QCheckBox *b_logging;
+		QLineEdit *e_password;
+		QLineEdit *e_uin;
+		QLineEdit *e_smsapp;
+		QLineEdit *e_smsconf;
+		QCheckBox *b_smscustomconf;
+		QCheckBox *b_autoaway;
+		QLineEdit *e_autoawaytime;
+		QCheckBox *b_dock;
+		QCheckBox *b_private;
 
-        QListBox *e_notifies;
-        QListBox *e_availusers;
-        QCheckBox *b_notifyglobal;
-        QCheckBox *b_notifydialog;
-        QCheckBox *b_notifysound;
-        QLineEdit *e_soundnotify;
+		QLineEdit *e_soundprog;
+		QCheckBox *b_playsound;
+		QCheckBox *b_playartsdsp;
+		QLineEdit *e_msgfile;
+		QLineEdit *e_chatfile;
+		QCheckBox *b_playchat;
+		QCheckBox *b_playchatinvisible;
+		QSlider *s_volume;
+		QCheckBox *b_soundvolctrl;
 
-	QCheckBox *b_dccenabled;
-	QCheckBox *b_dccfwd;
-	QVGroupBox *g_fwdprop;
-	QLineEdit *e_extip;
-	QLineEdit *e_extport;
-	QCheckBox *b_defserver;
-	QVGroupBox *g_server;
-	QLineEdit *e_server;
-				
-    protected slots:
-	void _Left();
-	void _Right();
-	void updateConfig();
-	void chooseMsgFile();
-	void chooseChatFile();
-	void choosePlayerFile();
-	void chooseNotifyFile();
-	void chooseEmoticonsPath();
-	void emoticonsEnabled(bool);
-	void ifDccEnabled(bool);
-	void ifDefServerEnabled(bool);
+		QCheckBox *b_emoticons;
+		QCheckBox *b_autosend;
+		QCheckBox *b_scrolldown;
+		QLineEdit *e_emoticonspath;
+		QCheckBox *b_chatprune;
+		QLineEdit *e_chatprunelen;
+
+		QListBox *e_notifies;
+		QListBox *e_availusers;
+		QCheckBox *b_notifyglobal;
+		QCheckBox *b_notifydialog;
+		QCheckBox *b_notifysound;
+		QLineEdit *e_soundnotify;
+
+		QCheckBox *b_dccenabled;
+		QCheckBox *b_dccfwd;
+		QVGroupBox *g_fwdprop;
+		QLineEdit *e_extip;
+		QLineEdit *e_extport;
+		QCheckBox *b_defserver;
+		QVGroupBox *g_server;
+		QLineEdit *e_server;
+
+	protected slots:
+		void _Left();
+		void _Right();
+		void updateConfig();
+		void chooseMsgFile();
+		void chooseChatFile();
+		void choosePlayerFile();
+		void chooseNotifyFile();
+		void chooseEmoticonsPath();
+		void emoticonsEnabled(bool);
+		void ifDccEnabled(bool);
+		void ifDefServerEnabled(bool);
 };
 
 #endif
