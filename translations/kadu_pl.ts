@@ -235,7 +235,7 @@
     </message>
     <message>
         <source>Hint syntax</source>
-        <translation>Składnia dymku </translation>
+        <translation>Składnia dymka </translation>
     </message>
     <message>
         <source>Notify about new message</source>
