@@ -85,12 +85,14 @@ Ignored::Ignored(QDialog *parent, const char *name)
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 	
  	loadGeometry(this, "General", "IgnoredDialogGeometry", 0, 0, 330, 350);
+	kdebugf2();
 }
 
 Ignored::~Ignored()
 {
 	kdebugf();
 	saveGeometry(this, "General", "IgnoredDialogGeometry");
+	kdebugf2();
 }
 
 void Ignored::keyPressEvent(QKeyEvent *ke_event)
@@ -102,6 +104,7 @@ void Ignored::keyPressEvent(QKeyEvent *ke_event)
 }
 
 void Ignored::add() {
+	kdebugf();
 	QStringList strlist;
 	strlist = QStringList::split(";", e_uin->text());
 	bool ok;
@@ -117,9 +120,11 @@ void Ignored::add() {
 		writeIgnored();
 		getList();
 		}
+	kdebugf2();
 }
 
 void Ignored::getList() {
+	kdebugf();
 	unsigned int i, j, k;
 	lb_list->clear();
 	for (i = 0; i < ignored.count(); i++) {
@@ -135,9 +140,11 @@ void Ignored::getList() {
 			}
 		lb_list->insertItem(icons_manager.loadIcon("Blocking"), strlist.join(";"));
 		}
+	kdebugf2();
 }
 
 void Ignored::remove() {
+	kdebugf();
 	if (lb_list->currentItem() == -1)
 		return;
 	QStringList strlist;
@@ -151,6 +158,7 @@ void Ignored::remove() {
 	delIgnored(uins);
 	getList();
 	writeIgnored();
+	kdebugf2();
 }
 
 bool isIgnored(UinsList uins) {
@@ -171,10 +179,14 @@ void delIgnored(UinsList uins) {
 
 int writeIgnored(QString filename)
 {
+	kdebugf();
 	QString tmp;
 
 	if (!(tmp = ggPath("")))
+	{
+		kdebugm(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "writeIgnored(): failed\n");
 		return 1;
+	}
 	mkdir(tmp.local8Bit(), 0700);
 
 	if (filename == QString::null)
@@ -182,7 +194,10 @@ int writeIgnored(QString filename)
 
 	QFile file(filename);
 	if (!file.open(IO_WriteOnly | IO_Truncate))
+	{
+		kdebugm(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "writeIgnored(): can't open ignore file!\n");
 		return 2;
+	}
 
 //	fchmod(fileno(f), 0600);
 
@@ -198,10 +213,12 @@ int writeIgnored(QString filename)
 		file.writeBlock(buf, buf.length());
 	file.close();
 
+	kdebugf2();
 	return 0;
 }
 
 int readIgnored() {
+	kdebugf();
 	QString line, fname;
 	QStringList list;
 
@@ -209,7 +226,10 @@ int readIgnored() {
 
 	QFile f(fname);
 	if (!f.open(IO_ReadOnly))
+	{
+		kdebugm(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "readIgnored(): can't open ignore file!\n");
 		return 1;
+	}
 
 	QTextStream stream(&f);
 	while ((line = stream.readLine()) != QString::null) {
@@ -222,6 +242,7 @@ int readIgnored() {
 
 	f.close();
 
+	kdebugf2();
 	return 0;
 }
 
