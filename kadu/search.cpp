@@ -345,6 +345,7 @@ void SearchDialog::showResults(gg_search50_t res) {
 	else
 		selectionChanged(results->selectedItem());
 
+	deleteSearchIdStruct();
 	b_sendbtn->setEnabled(true);
 	b_nextbtn->setEnabled(true);
 }
