@@ -33,602 +33,598 @@
 //
 
 Chat::Chat(QArray<uin_t> _uins, QDialog *parent) : QDialog (parent) {
-    int i;
-    
-    uins.duplicate(_uins);
-    setWFlags(Qt::WDestructiveClose);
-    iconsel_ptr = NULL;
-    autosend_enabled = false;
-    
-    /* register us in the chats registry... */
-    chats.resize(chats.size() + 1);
-    i = chats.size() - 1;
-    chats[i].uins = new QArray<uin_t>;
-    chats[i].uins->duplicate(_uins);
-    chats[i].ptr = this;
-    index = i;
+	int i;
 
-    resize(400,400);
-    
-    setTitle();
+	uins.duplicate(_uins);
+	setWFlags(Qt::WDestructiveClose);
+	iconsel_ptr = NULL;
+	autosend_enabled = false;
 
-    body = new KTextBrowser(this);
-	
-    edit = new CustomInput(this);
-    edit->setGeometry(5,215, 390, 150);
-    edit->setWordWrap(QMultiLineEdit::WidgetWidth);
-	
-    KIconLoader *loader = KGlobal::iconLoader();
+	/* register us in the chats registry... */
+	chats.resize(chats.size() + 1);
+	i = chats.size() - 1;
+	chats[i].uins = new QArray<uin_t>;
+	chats[i].uins->duplicate(_uins);
+	chats[i].ptr = this;
+	index = i;
 
-    sendbtn = new QPushButton(this);
-    sendbtn->setText(i18n("&Send"));
-    sendbtn->setGeometry(320, 375, 75, 20);
-    sendbtn->setIconSet(QIconSet( loader->loadIcon("forward", KIcon::Small) ));
-    connect(sendbtn, SIGNAL( clicked() ), this, SLOT( sendMessage() ));
-    QAccel *acc = new QAccel( this );
-    acc->connectItem( acc->insertItem(Key_Return+CTRL), this, SLOT(sendMessage()) );
+	resize(400,400);
 
-    QPushButton *closebtn = new QPushButton(this);
-    closebtn->setText(i18n("&Close"));
-    closebtn->setGeometry(245, 375, 70, 20);
-    closebtn->setIconSet(QIconSet( loader->loadIcon("stop", KIcon::Small) ));
-    connect(closebtn, SIGNAL( clicked() ), this, SLOT( cleanUp() ));
+	setTitle();
 
-    QLabel *edt = new QLabel(this);
-    edt->setText(i18n("Edit window:"));
-    QToolTip::add(edt, i18n("This is where you type in the text to be sent"));
+	body = new KTextBrowser(this);
 
-    buttontray = new QHBox(this);
+	edit = new CustomInput(this);
+	edit->setGeometry(5,215, 390, 150);
+	edit->setWordWrap(QMultiLineEdit::WidgetWidth);
 
-    autosend = new QPushButton(buttontray);
-    autosend->setPixmap(loader->loadIcon("key_enter", KIcon::Small));
-    autosend->setToggleButton(true);
-    QToolTip::add(autosend, i18n("Enter key sends message"));
-    if (config.autosend) {
-	autosend->setOn(true);
-	autosend_enabled = true;
-	}
+	KIconLoader *loader = KGlobal::iconLoader();
 
-    iconsel = new QPushButton(buttontray);
-    iconsel->setPixmap(loader->loadIcon("icons", KIcon::Small));
-    iconsel->setToggleButton(true);
+	sendbtn = new QPushButton(this);
+	sendbtn->setText(i18n("&Send"));
+	sendbtn->setGeometry(320, 375, 75, 20);
+	sendbtn->setIconSet(QIconSet( loader->loadIcon("forward", KIcon::Small) ));
+	connect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
+	QAccel *acc = new QAccel( this );
+	acc->connectItem(acc->insertItem(Key_Return+CTRL), this, SLOT(sendMessage()));
 
-    if (config.emoticons)
-	QToolTip::add(iconsel, i18n("Insert emoticon"));
-    else {
-	QToolTip::add(iconsel, i18n("Insert emoticon - enable in configuration"));
-	iconsel->setEnabled(false);
-	}
+	QPushButton *closebtn = new QPushButton(this);
+	closebtn->setText(i18n("&Close"));
+	closebtn->setGeometry(245, 375, 70, 20);
+	closebtn->setIconSet(QIconSet(loader->loadIcon("stop", KIcon::Small)));
+	connect(closebtn, SIGNAL(clicked()), this, SLOT(cleanUp()));
 
-    QPushButton *history = new QPushButton(buttontray);
-    history->setPixmap(QPixmap((const char**)history_xpm));
-    QToolTip::add(history, i18n("Show history"));
+	QLabel *edt = new QLabel(this);
+	edt->setText(i18n("Edit window:"));
+	QToolTip::add(edt, i18n("This is where you type in the text to be sent"));
 
-    QPushButton *whois = new QPushButton(buttontray);
-    QPixmap p_whois;
-    p_whois = loader->loadIcon("viewmag", KIcon::Small);
-    whois->setPixmap(p_whois);
-    QToolTip::add(whois, i18n("Lookup user info"));
+	buttontray = new QHBox(this);
 
-    connect(autosend, SIGNAL(clicked()), this, SLOT(regAutosend()));
-    connect(history, SIGNAL(clicked()), this, SLOT(HistoryBox()));
-    connect(iconsel, SIGNAL(clicked()), this, SLOT(insertEmoticon()));
-    connect(whois, SIGNAL(clicked()), this, SLOT(userWhois()));
+	autosend = new QPushButton(buttontray);
+	autosend->setPixmap(loader->loadIcon("key_enter", KIcon::Small));
+	autosend->setToggleButton(true);
+	QToolTip::add(autosend, i18n("Enter key sends message"));
+	if (config.autosend) {
+		autosend->setOn(true);
+		autosend_enabled = true;
+		}
 
-    QGridLayout *grid = new QGridLayout (this, 5, 4, 3, 3);
-    grid->addMultiCellWidget(body, 0, 0, 0, 3);
-    grid->addWidget(buttontray, 2,3,Qt::AlignRight);
-    grid->addMultiCellWidget(edt, 2, 2, 0, 2, Qt::AlignLeft);
-    grid->addMultiCellWidget(edit, 3, 3, 0, 3);
-    grid->addWidget(closebtn, 4, 2);
-    grid->addWidget(sendbtn, 4, 3);
-    grid->addRowSpacing(1, 5);
-    grid->setRowStretch(0,2);
+	iconsel = new QPushButton(buttontray);
+	iconsel->setPixmap(loader->loadIcon("icons", KIcon::Small));
+	iconsel->setToggleButton(true);
 
-    QMimeSourceFactory *bodyformat;
-    bodyformat = new QMimeSourceFactory;
-    if (config.emoticons)
-	bodyformat->addFilePath(config.emoticonspath);
-    
-    body->setMimeSourceFactory(bodyformat);
-    body->setTextFormat(Qt::RichText);
+	if (config.emoticons)
+		QToolTip::add(iconsel, i18n("Insert emoticon"));
+	else {
+		QToolTip::add(iconsel, i18n("Insert emoticon - enable in configuration"));
+		iconsel->setEnabled(false);
+		}
 
-    totaloccurences = 0;
+	QPushButton *history = new QPushButton(buttontray);
+	history->setPixmap(QPixmap((const char**)history_xpm));
+	QToolTip::add(history, i18n("Show history"));
 
-    QObject::connect(edit, SIGNAL(textChanged()), this, SLOT(timerReset()));
+	QPushButton *whois = new QPushButton(buttontray);
+	QPixmap p_whois;
+	p_whois = loader->loadIcon("viewmag", KIcon::Small);
+	whois->setPixmap(p_whois);
+	QToolTip::add(whois, i18n("Lookup user info"));
+
+	connect(autosend, SIGNAL(clicked()), this, SLOT(regAutosend()));
+	connect(history, SIGNAL(clicked()), this, SLOT(HistoryBox()));
+	connect(iconsel, SIGNAL(clicked()), this, SLOT(insertEmoticon()));
+	connect(whois, SIGNAL(clicked()), this, SLOT(userWhois()));
+
+	QGridLayout *grid = new QGridLayout (this, 5, 4, 3, 3);
+	grid->addMultiCellWidget(body, 0, 0, 0, 3);
+	grid->addWidget(buttontray, 2,3,Qt::AlignRight);
+	grid->addMultiCellWidget(edt, 2, 2, 0, 2, Qt::AlignLeft);
+	grid->addMultiCellWidget(edit, 3, 3, 0, 3);
+	grid->addWidget(closebtn, 4, 2);
+	grid->addWidget(sendbtn, 4, 3);
+	grid->addRowSpacing(1, 5);
+	grid->setRowStretch(0,2);
+
+	QMimeSourceFactory *bodyformat;
+	bodyformat = new QMimeSourceFactory;
+	if (config.emoticons)
+		bodyformat->addFilePath(config.emoticonspath);
+
+	body->setMimeSourceFactory(bodyformat);
+	body->setTextFormat(Qt::RichText);
+
+	totaloccurences = 0;
+
+	QObject::connect(edit, SIGNAL(textChanged()), this, SLOT(timerReset()));
 }
 
 Chat::~Chat() {
-    int i,j;
-    for (i = index + 1; i < chats.size(); i++) {
-	chats[i-1].uins->duplicate(*chats[i].uins);
-	chats[i-1].ptr = chats[i].ptr;
-	}
-    delete chats[chats.size()-1].uins;	
-    chats.resize(chats.size() - 1);	
-    i = 0;
-    while (i < acks.size() && acks[i].ptr != this)
-	i++;
-    if (i < acks.size()) {
-	for (j = i + 1; j < acks.size(); j++) {
-	    acks[j-1].ack = acks[j].ack;
-	    acks[j-1].seq = acks[j].seq;
-	    acks[j-1].ptr = acks[j].ptr;
-	    acks[j-1].type = acks[j].type;
-	    }
-	acks.resize(acks.size() - 1);
-	}
-    fprintf(stderr, "KK Chat::~Chat: chat destroyed: index %d\n", index);
+	int i,j;
+	for (i = index + 1; i < chats.size(); i++) {
+		chats[i-1].uins->duplicate(*chats[i].uins);
+		chats[i-1].ptr = chats[i].ptr;
+		}
+	delete chats[chats.size()-1].uins;	
+	chats.resize(chats.size() - 1);	
+	i = 0;
+	while (i < acks.size() && acks[i].ptr != this)
+		i++;
+	if (i < acks.size()) {
+		for (j = i + 1; j < acks.size(); j++) {
+			acks[j-1].ack = acks[j].ack;
+			acks[j-1].seq = acks[j].seq;
+			acks[j-1].ptr = acks[j].ptr;
+			acks[j-1].type = acks[j].type;
+			}
+		acks.resize(acks.size() - 1);
+		}
+	fprintf(stderr, "KK Chat::~Chat: chat destroyed: index %d\n", index);
 }
 
 void Chat::setTitle() {
-    QString name;
-    QString title;
-    int i,j,k;
-    
-    title = i18n("Chat with ");
-    
-    for (k = 0; k < uins.size(); k++) {
-	if (k)
-	    title.append(", ");
+	QString name;
+	QString title;
+	int i,j,k;
+	UserListElement ule;
+
+	title = i18n("Chat with ");
+
+	for (k = 0; k < uins.size(); k++) {
+		if (k)
+			title.append(", ");
 	    
-        name = UinToUser(uins[k]);
-	title.append(name);
-	i = 0;
-	while (i < userlist.size() && userlist[i].uin != uins[k])
-	    i++;
-	j = statusGGToStatusNr(userlist[i].status);
-        
-        title.append(" (");
-        title.append(i18n(statustext[j]));
-        if (j & 1)
-	    title.append(i18n(": %1)").arg(*userlist[i].description));
-        else
-	    title.append(")");
-	}
-    title.replace(QRegExp("\n"), " ");
-    
-    setCaption(title);
+		name = userlist.byUin(uins[k]).comment;
+		title.append(name);
+		ule = userlist.byUin(uins[k]);
+		j = statusGGToStatusNr(ule.status);
+
+		title.append(" (");
+		title.append(i18n(statustext[j]));
+		if (j & 1)
+			title.append(i18n(": %1)").arg(*userlist[i].description));
+		else
+			title.append(")");
+		}
+	title.replace(QRegExp("\n"), " ");
+
+	setCaption(title);
 }
 
 /* register/unregister sending with Return key */
 void Chat::regAutosend(void) {
-    autosend_enabled = !autosend_enabled;
+	autosend_enabled = !autosend_enabled;
 }
 
 CustomInput::CustomInput(Chat* parent, const char *name) : QMultiLineEdit(parent, name) {
-    tata = parent;
+	tata = parent;
 }
 
 void CustomInput::keyPressEvent(QKeyEvent * e) {
-    if (tata->autosend_enabled && ((e->key() == Key_Return) || (e->key() == Key_Enter))
-	&& !(e->state() & ShiftButton))
-	tata->sendMessage();
-    else
-	QMultiLineEdit::keyPressEvent(e);
+	if (tata->autosend_enabled && ((e->key() == Key_Return) || (e->key() == Key_Enter))
+		&& !(e->state() & ShiftButton))
+		tata->sendMessage();
+	else
+		QMultiLineEdit::keyPressEvent(e);
 }
 
 /* convert special characters into emoticons, HTML into plain text and so forth */
 QString Chat::convertCharacters(QString edit) {
-    if (config.emoticons) {
-	edit.replace(QRegExp(__c2q("(<p³acze>|<placze>)")), "__escaped_lt__IMG SRC=cry.gif /__escaped_gt__");
-	edit.replace(QRegExp(__c2q("<zdziwiony>")), "__escaped_lt__IMG SRC=surprised.gif /__escaped_gt__");
-	edit.replace(QRegExp(__c2q("(<ró¿a>|<roza>)")), "__escaped_lt__IMG SRC=rose.gif /__escaped_gt__");
-	edit.replace( QRegExp(__c2q("<kwiatek>")), "__escaped_lt__IMG SRC=flower.gif /__escaped_gt__");
-	edit.replace( QRegExp(__c2q("<piwo>")), "__escaped_lt__IMG SRC=beer.gif /__escaped_gt__");
-	edit.replace( QRegExp(__c2q("<OK>")), "__escaped_lt__IMG SRC=thumbsup.gif /__escaped_gt__");
-	edit.replace( QRegExp(__c2q("<do bani>")), "__escaped_lt__IMG SRC=thumbsdown.gif /__escaped_gt__");
-	edit.replace( QRegExp(__c2q("<serce>")), "__escaped_lt__IMG SRC=heart.gif /__escaped_gt__");
-	edit.replace( QRegExp(__c2q("<serduszka>")), "__escaped_lt__IMG SRC=hearts.gif /__escaped_gt__");
-	edit.replace( QRegExp(__c2q("<kawa>")), "__escaped_lt__IMG SRC=coffee.gif /__escaped_gt__");
-	edit.replace( QRegExp(__c2q("<komórka>")), "__escaped_lt__IMG SRC=cell.gif /__escaped_gt__");
-	edit.replace( QRegExp(__c2q("<prezent>")), "__escaped_lt__IMG SRC=gift.gif /__escaped_gt__");
-	edit.replace( QRegExp(__c2q("<telefon>")), "__escaped_lt__IMG SRC=phone.gif /__escaped_gt__");
-	edit.replace( QRegExp(__c2q("<cmok>")), "__escaped_lt__IMG SRC=kiss.gif /__escaped_gt__");
-	edit.replace( QRegExp(__c2q("<zawstydzony>")), "__escaped_lt__IMG SRC=blush.gif /__escaped_gt__");
-	edit.replace( QRegExp(__c2q("<papa>")), "__escaped_lt__IMG SRC=bye.gif /__escaped_gt__");
-	edit.replace( QRegExp(":\\)+"), "__escaped_lt__IMG SRC=smile.gif /__escaped_gt__");
-	edit.replace( QRegExp(":-\\)+"), "__escaped_lt__IMG SRC=smile.gif /__escaped_gt__");
-	edit.replace( QRegExp(";\\)+"), "__escaped_lt__IMG SRC=wink.gif /__escaped_gt__");
-	edit.replace( QRegExp(";-\\)+"), "__escaped_lt__IMG SRC=wink.gif /__escaped_gt__");
-	edit.replace( QRegExp(":\\(+"), "__escaped_lt__IMG SRC=sad.gif /__escaped_gt__");
-	edit.replace( QRegExp(";\\(+"), "__escaped_lt__IMG SRC=sad.gif /__escaped_gt__");
-	edit.replace( QRegExp(":-\\(+"), "__escaped_lt__IMG SRC=sad.gif /__escaped_gt__");
-	edit.replace( QRegExp(":P+"), "__escaped_lt__IMG SRC=grin.gif /__escaped_gt__");
-	edit.replace( QRegExp(":-P+"), "__escaped_lt__IMG SRC=grin.gif /__escaped_gt__");
-	edit.replace( QRegExp(";P+"), "__escaped_lt__IMG SRC=grin.gif /__escaped_gt__");
-	edit.replace( QRegExp(";-P+"), "__escaped_lt__IMG SRC=grin.gif /__escaped_gt__");
-	edit.replace( QRegExp(":,\\(+"), "__escaped_lt__IMG SRC=cry.gif /__escaped_gt__");
-	edit.replace( QRegExp(":x+"), "__escaped_lt__IMG SRC=kiss.gif /__escaped_gt__");
-	}
+	if (config.emoticons) {
+		edit.replace(QRegExp(__c2q("(<p³acze>|<placze>)")), "__escaped_lt__IMG SRC=cry.gif /__escaped_gt__");
+		edit.replace(QRegExp(__c2q("<zdziwiony>")), "__escaped_lt__IMG SRC=surprised.gif /__escaped_gt__");
+		edit.replace(QRegExp(__c2q("(<ró¿a>|<roza>)")), "__escaped_lt__IMG SRC=rose.gif /__escaped_gt__");
+		edit.replace( QRegExp(__c2q("<kwiatek>")), "__escaped_lt__IMG SRC=flower.gif /__escaped_gt__");
+		edit.replace( QRegExp(__c2q("<piwo>")), "__escaped_lt__IMG SRC=beer.gif /__escaped_gt__");
+		edit.replace( QRegExp(__c2q("<OK>")), "__escaped_lt__IMG SRC=thumbsup.gif /__escaped_gt__");
+		edit.replace( QRegExp(__c2q("<do bani>")), "__escaped_lt__IMG SRC=thumbsdown.gif /__escaped_gt__");
+		edit.replace( QRegExp(__c2q("<serce>")), "__escaped_lt__IMG SRC=heart.gif /__escaped_gt__");
+		edit.replace( QRegExp(__c2q("<serduszka>")), "__escaped_lt__IMG SRC=hearts.gif /__escaped_gt__");
+		edit.replace( QRegExp(__c2q("<kawa>")), "__escaped_lt__IMG SRC=coffee.gif /__escaped_gt__");
+		edit.replace( QRegExp(__c2q("<komórka>")), "__escaped_lt__IMG SRC=cell.gif /__escaped_gt__");
+		edit.replace( QRegExp(__c2q("<prezent>")), "__escaped_lt__IMG SRC=gift.gif /__escaped_gt__");
+		edit.replace( QRegExp(__c2q("<telefon>")), "__escaped_lt__IMG SRC=phone.gif /__escaped_gt__");
+		edit.replace( QRegExp(__c2q("<cmok>")), "__escaped_lt__IMG SRC=kiss.gif /__escaped_gt__");
+		edit.replace( QRegExp(__c2q("<zawstydzony>")), "__escaped_lt__IMG SRC=blush.gif /__escaped_gt__");
+		edit.replace( QRegExp(__c2q("<papa>")), "__escaped_lt__IMG SRC=bye.gif /__escaped_gt__");
+		edit.replace( QRegExp(":\\)+"), "__escaped_lt__IMG SRC=smile.gif /__escaped_gt__");
+		edit.replace( QRegExp(":-\\)+"), "__escaped_lt__IMG SRC=smile.gif /__escaped_gt__");
+		edit.replace( QRegExp(";\\)+"), "__escaped_lt__IMG SRC=wink.gif /__escaped_gt__");
+		edit.replace( QRegExp(";-\\)+"), "__escaped_lt__IMG SRC=wink.gif /__escaped_gt__");
+		edit.replace( QRegExp(":\\(+"), "__escaped_lt__IMG SRC=sad.gif /__escaped_gt__");
+		edit.replace( QRegExp(";\\(+"), "__escaped_lt__IMG SRC=sad.gif /__escaped_gt__");
+		edit.replace( QRegExp(":-\\(+"), "__escaped_lt__IMG SRC=sad.gif /__escaped_gt__");
+		edit.replace( QRegExp(":P+"), "__escaped_lt__IMG SRC=grin.gif /__escaped_gt__");
+		edit.replace( QRegExp(":-P+"), "__escaped_lt__IMG SRC=grin.gif /__escaped_gt__");
+		edit.replace( QRegExp(";P+"), "__escaped_lt__IMG SRC=grin.gif /__escaped_gt__");
+		edit.replace( QRegExp(";-P+"), "__escaped_lt__IMG SRC=grin.gif /__escaped_gt__");
+		edit.replace( QRegExp(":,\\(+"), "__escaped_lt__IMG SRC=cry.gif /__escaped_gt__");
+		edit.replace( QRegExp(":x+"), "__escaped_lt__IMG SRC=kiss.gif /__escaped_gt__");
+		}
 
-    edit.replace( QRegExp("<"), "&lt;" );
-    edit.replace( QRegExp(">"), "&gt;" );
-    edit.replace( QRegExp("__escaped_lt__"), "<");
-    edit.replace( QRegExp("__escaped_gt__"), ">");
-    edit.replace( QRegExp("  "), " &nbsp;" );
-    edit.replace( QRegExp("\n"), "<BR>" );
+	edit.replace( QRegExp("<"), "&lt;" );
+	edit.replace( QRegExp(">"), "&gt;" );
+	edit.replace( QRegExp("__escaped_lt__"), "<");
+	edit.replace( QRegExp("__escaped_gt__"), ">");
+	edit.replace( QRegExp("  "), " &nbsp;" );
+	edit.replace( QRegExp("\n"), "<BR>" );
 
-    int s = 0;
-    int p,l,q;
-    for (;;) {
-	// find next url
-	if (s >= (int)edit.length())
-	    break;
-	p = edit.find(QRegExp("(http://|www\\.|ftp://ftp\\.)[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{1,4}"), s);
+	int s = 0;
+	int p,l,q;
+	for (;;) {
+		// find next url
+		if (s >= (int)edit.length())
+			break;
+		p = edit.find(QRegExp("(http://|www\\.|ftp://ftp\\.)[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{1,4}"), s);
 
-	if (p < 0) 
-	    break;
+		if (p < 0) 
+			break;
 
-	// clean up;
-	l = (edit.find(" ", p) < 0) ? edit.length() - p : edit.find(" ", p) - p;
-	QChar c = edit[l+p-1];
-	while ( !( ((c >= 'a') && (c <= 'z')) || ((c >= 'A') && (c <= 'Z')) || ((c >= '0') && (c <= '9')) ) )
-    	    c = edit [p - 1 + (--l)];
+		// clean up;
+		l = (edit.find(" ", p) < 0) ? edit.length() - p : edit.find(" ", p) - p;
+		QChar c = edit[l+p-1];
+		while ( !( ((c >= 'a') && (c <= 'z')) || ((c >= 'A') && (c <= 'Z')) || ((c >= '0') && (c <= '9')) ) )
+			c = edit [p - 1 + (--l)];
 
-	// urlize
-	q = edit.find("http://", p);
-//    if (q < 0)
-//      edit.insert(p, "http://");
+		// urlize
+		q = edit.find("http://", p);
 
-	edit = edit.left(p) + "<a href=\"" + ((q < 0) ? "http://" : "") + edit.mid(p,l) + "\">" +
-	edit.mid(p,l) + "</a>" + edit.mid(p+l);
-	if (q < 0)
-	    s = p + 2*l + 22;
-	else
-	    s = p + 2*l + 15;
-	}
+		edit = edit.left(p) + "<a href=\"" + ((q < 0) ? "http://" : "") + edit.mid(p,l) + "\">" +
+		edit.mid(p,l) + "</a>" + edit.mid(p+l);
+		if (q < 0)
+			s = p + 2*l + 22;
+		else
+			s = p + 2*l + 15;
+		}
 
-    return edit;
+	return edit;
 }
 
 /* unregister us */
 void Chat::closeEvent(QCloseEvent *e) {
-    fprintf(stderr, "KK Chat::closeEvent()\n");	
-    QWidget::closeEvent(e);
+	fprintf(stderr, "KK Chat::closeEvent()\n");	
+	QWidget::closeEvent(e);
 }
 
 /* look up party's info */
 void Chat::userWhois(void) {
-    SearchDialog *sd;
-    QString tmp;
-        
-    sd = new SearchDialog(0, "User info", uins[0]);
-    sd->show();
-    sd->doSearch();
+	SearchDialog *sd;
+	QString tmp;
+
+	sd = new SearchDialog(0, "User info", uins[0]);
+	sd->show();
+	sd->doSearch();
 }
 
 /* clean us up */
 void Chat::cleanUp(void) {
-    fprintf(stderr, "KK Chat::cleanUp: chat destroying: %d\n", index);
-    close();
+	fprintf(stderr, "KK Chat::cleanUp: chat destroying: %d\n", index);
+	close();
 }
 
 /* reset autoaway timer, something was pressed */
 void Chat::timerReset(void) {
-    kadu->autoaway->stop();
-    kadu->autoaway->start(config.autoawaytime * 1000, TRUE);
+	kadu->autoaway->stop();
+	kadu->autoaway->start(config.autoawaytime * 1000, TRUE);
 }	
 
 /* invoked from outside when new message arrives, this is the window to the world */
 int Chat::checkPresence(QArray<uin_t> senders, QString *msg, time_t time) {
-    kadu->autoaway->stop();
-    kadu->autoaway->start(config.autoawaytime * 1000, TRUE);
+	kadu->autoaway->stop();
+	kadu->autoaway->start(config.autoawaytime * 1000, TRUE);
 
-    QString toadd;
-    QString editext = convertCharacters(*msg);
-//printf("Numformats %d\n", formats_count);
-//getFormatting(editext,formats_count,formats);
-    toadd.append("<TABLE width=\"100%\"><TR><TD bgcolor=\"#F0F0F0\"><B>");
-    toadd.append(__c2q(UinToUser(senders[0])));
-    toadd.append(" ");
-    toadd.append(__c2q(timestamp(time)));
-    toadd.append("</B><BR>");
-    toadd.append(editext);
-    toadd.append("</TD></TR></TABLE>");
+	QString toadd;
+	QString editext = convertCharacters(*msg);
+	toadd.append("<TABLE width=\"100%\"><TR><TD bgcolor=\"#F0F0F0\"><B>");
+	toadd.append(userlist.byUin(senders[0]).comment);
+	toadd.append(" ");
+	toadd.append(__c2q(timestamp(time)));
+	toadd.append("</B><BR>");
+	toadd.append(editext);
+	toadd.append("</TD></TR></TABLE>");
 
-    if (config.chatprune)
-	pruneWindow();
+	if (config.chatprune)
+		pruneWindow();
 
-    if (!config.scrolldown)
-	body->setText(toadd + body->text());
-    else {
-	body->setText(body->text() + toadd);
-	body->scrollToBottom();
-	}
+	if (!config.scrolldown)
+		body->setText(toadd + body->text());
+	else {
+		body->setText(body->text() + toadd);
+		body->scrollToBottom();
+		}
 
-    return 0;
+	return 0;
 }
 
 void Chat::playChatSound() {
-    if (config.playsoundchatinvisible && config.playsoundchat) {
-	if (!isActiveWindow())
-	     alertNewMessage();
-	return;
-	}
-    else
-	if (config.playsoundchat)
-	    alertNewMessage();
+	if (config.playsoundchatinvisible && config.playsoundchat) {
+		if (!isActiveWindow())
+			alertNewMessage();
+		return;
+		}
+	else
+		if (config.playsoundchat)
+			alertNewMessage();
 }
 
 void Chat::alertNewMessage(void) {
-    playSound(config.soundchat);
+	playSound(config.soundchat);
 }
 
 void Chat::writeMyMessage() {
-    QString toadd;
-    QString editext = convertCharacters(edit->text());
+	QString toadd;
+	QString editext = convertCharacters(edit->text());
 
-    toadd.append("<TABLE WIDTH=\"100%\"><TR><TD bgcolor=\"#E0E0E0\"><B>Me ");
-    toadd.append(__c2q(timestamp()));
-    toadd.append("</B><BR>");
-    toadd.append(editext);
-    toadd.append("</TD></TR></TABLE>");
+	toadd.append("<TABLE WIDTH=\"100%\"><TR><TD bgcolor=\"#E0E0E0\"><B>Me ");
+	toadd.append(__c2q(timestamp()));
+	toadd.append("</B><BR>");
+	toadd.append(editext);
+	toadd.append("</TD></TR></TABLE>");
 
-    if (config.chatprune)
-	pruneWindow();
+	if (config.chatprune)
+		pruneWindow();
 
-    if (!config.scrolldown)
-	body->setText(toadd + body->text());
-    else {
-	body->setText(body->text() + toadd);
-	body->scrollToBottom();    
-	}
-	
-    edit->clear();
-    edit->setReadOnly(false);
-    edit->setEnabled(true);
+	if (!config.scrolldown)
+		body->setText(toadd + body->text());
+	else {
+		body->setText(body->text() + toadd);
+		body->scrollToBottom();    
+		}
+
+	edit->clear();
+	edit->setReadOnly(false);
+	edit->setEnabled(true);
 }
 
 void Chat::addMyMessageToHistory() {
-    int uin;
-    QString text;
-    text = edit->text();
-    QCString tmp(text.local8Bit());
-    unsigned char *utmp = (unsigned char *) tmp.data();
+	int uin;
+	QString text;
+	text = edit->text();
+	QCString tmp(text.local8Bit());
+	unsigned char *utmp = (unsigned char *) tmp.data();
 
-    uin = uins[0];
-    if (config.logmessages)
+	uin = uins[0];
+	if (config.logmessages)
 	appendHistory(uin, (unsigned char *)utmp, true);
 }
 
 /* sends the message typed */
 void Chat::sendMessage(void) {
-    int i,j;
-    
-    kadu->autoaway->stop();
-    kadu->autoaway->start(config.autoawaytime * 1000, TRUE);
+	int i,j;
 
-    if (!QString::compare(edit->text().local8Bit(),""))
-	return;
+	kadu->autoaway->stop();
+	kadu->autoaway->start(config.autoawaytime * 1000, TRUE);
 
-    if (edit->length() >= 2000)
-	return;
-	
-    edit->setReadOnly(true);	
-    edit->setEnabled(false);
-    
-    QString text;
-    text = edit->text();
-    QCString tmp(text.local8Bit());
-    unsigned char *utmp = (unsigned char *) tmp.data();
+	if (!QString::compare(edit->text().local8Bit(),""))
+		return;
 
-    addMyMessageToHistory();
+	if (edit->length() >= 2000)
+		return;
 
-    iso_to_cp(utmp);
-    acks.resize(acks.size() + 1);
-    i = acks.size() - 1;
-    uin_t users[32];
-    if (uins.size() > 1) {
-        for (j = 0; j < uins.size(); j++)
-	    users[j] = uins[j];
-	acks[i].seq = gg_send_message_to_users(&sess, GG_CLASS_CHAT, uins.size(), users, (unsigned char *)utmp);    
-	acks[i].ack = uins.size();
-	}
-    else {
-        acks[i].seq = gg_send_message(&sess, GG_CLASS_CHAT, uins[0], (unsigned char *)utmp);
-	acks[i].ack = 1;
-	}
-    acks[i].type = 2;
-    acks[i].ptr = this;
+	edit->setReadOnly(true);	
+	edit->setEnabled(false);
 
-    if (sess.check & GG_CHECK_WRITE)
-	kadusnw->setEnabled(true);
+	QString text;
+	text = edit->text();
+	QCString tmp(text.local8Bit());
+	unsigned char *utmp = (unsigned char *) tmp.data();
+
+	addMyMessageToHistory();
+
+	iso_to_cp(utmp);
+	acks.resize(acks.size() + 1);
+	i = acks.size() - 1;
+	uin_t users[32];
+	if (uins.size() > 1) {
+		for (j = 0; j < uins.size(); j++)
+			users[j] = uins[j];
+		acks[i].seq = gg_send_message_to_users(&sess, GG_CLASS_CHAT,
+			uins.size(), users, (unsigned char *)utmp);    
+		acks[i].ack = uins.size();
+		}
+	else {
+		acks[i].seq = gg_send_message(&sess, GG_CLASS_CHAT, uins[0], (unsigned char *)utmp);
+		acks[i].ack = 1;
+		}
+	acks[i].type = 2;
+	acks[i].ptr = this;
+
+	if (sess.check & GG_CHECK_WRITE)
+		kadusnw->setEnabled(true);
 }
 
 /* prunes messages */
 void Chat::pruneWindow(void) {
-    int index,occurences;
-    
-    occurences = 0;
-    if (config.scrolldown) {
-	index = -1;
-	while (occurences != config.chatprunelen && totaloccurences > config.chatprunelen - 1) {
-	    index = body->text().findRev(QString("<TABLE"), index - 8);
-	    occurences++;
-	    }
-	totaloccurences++;
-		
-	body->setText(body->text().right(body->text().length() - index));	
-	}
-    else {
-	index = 0;
-	while (occurences != config.chatprunelen && totaloccurences > config.chatprunelen ) {
-	    if (occurences == 0)
-		index = body->text().find(QString("<TABLE"), 0);
-	    else
-		index = body->text().find(QString("<TABLE"), index + 8);
-		
-	    occurences++;
-	    }
-	totaloccurences++;
-	
-	if (totaloccurences > config.chatprunelen && index != -1 && index != 0)
-	    body->setText( body->text().left( index ) );
-	}
+	int index,occurences;
+
+	occurences = 0;
+	if (config.scrolldown) {
+		index = -1;
+		while (occurences != config.chatprunelen && totaloccurences > config.chatprunelen - 1) {
+			index = body->text().findRev(QString("<TABLE"), index - 8);
+			occurences++;
+			}
+		totaloccurences++;
+
+		body->setText(body->text().right(body->text().length() - index));	
+		}
+	else {
+		index = 0;
+		while (occurences != config.chatprunelen && totaloccurences > config.chatprunelen ) {
+			if (occurences == 0)
+				index = body->text().find(QString("<TABLE"), 0);
+			else
+				index = body->text().find(QString("<TABLE"), index + 8);
+
+			occurences++;
+			}
+		totaloccurences++;
+
+		if (totaloccurences > config.chatprunelen && index != -1 && index != 0)
+			body->setText(body->text().left(index));
+		}
 }
 
 /* opens messages history */
 void Chat::HistoryBox(void) {
-    History *hb;
-    
-    hb = new History(uins[0]);
-    hb->show();
+	History *hb;
+
+	hb = new History(uins[0]);
+	hb->show();
 }
 
 /* this nifty icon selector */
 void Chat::insertEmoticon(void) {
-    if (iconsel_ptr == NULL) {
-	iconsel->setOn(true);
-	iconsel_ptr = new IconSelector(this,"Icon selector",this);
-	iconsel_ptr->show();
-	}
-    else {
-	iconsel->setOn(false);
-	iconsel_ptr->close();
-	iconsel_ptr = NULL;
-	}
+	if (iconsel_ptr == NULL) {
+		iconsel->setOn(true);
+		iconsel_ptr = new IconSelector(this,"Icon selector",this);
+		iconsel_ptr->show();
+		}
+	else {
+		iconsel->setOn(false);
+		iconsel_ptr->close();
+		iconsel_ptr = NULL;
+		}
 }
 
 /* adds an emoticon code to the edit window */
 void Chat::addEmoticon(QString string) {
-    edit->setText(edit->text() + string);
-    edit->end();
-    iconsel_ptr = NULL;
-    iconsel->setOn(false);
+	edit->setText(edit->text() + string);
+	edit->end();
+	iconsel_ptr = NULL;
+	iconsel->setOn(false);
 }
 
 /* the icon selector itself */
 IconSelector::IconSelector(QWidget *parent, const char *name, Chat * caller) : QWidget (parent, name) {
-    callingwidget = caller;
-    setWFlags(Qt::WDestructiveClose||Qt::WStyle_NoBorder||Qt::WStyle_NoBorderEx||Qt::WX11BypassWM);
+	callingwidget = caller;
+	setWFlags(Qt::WDestructiveClose||Qt::WStyle_NoBorder||Qt::WStyle_NoBorderEx||Qt::WX11BypassWM);
 
-    QString path;
-    path.append(config.emoticonspath);
-    QGridLayout *grid = new QGridLayout(this, 5, 4, 0, 0);
+	QString path;
+	path.append(config.emoticonspath);
+	QGridLayout *grid = new QGridLayout(this, 5, 4, 0, 0);
 
-    QToolButton *icon_1_1 = new QToolButton(this);
-    icon_1_1->setPixmap(QPixmap(path + "smile.gif"));
-    icon_1_1->setAutoRaise(true);
-    grid->addWidget(icon_1_1, 0, 0);
-    QObject::connect(icon_1_1, SIGNAL(clicked()), this, SLOT(slot_1_1()));
+	QToolButton *icon_1_1 = new QToolButton(this);
+	icon_1_1->setPixmap(QPixmap(path + "smile.gif"));
+	icon_1_1->setAutoRaise(true);
+	grid->addWidget(icon_1_1, 0, 0);
+	QObject::connect(icon_1_1, SIGNAL(clicked()), this, SLOT(slot_1_1()));
 
-    QToolButton *icon_1_2 = new QToolButton(this);
-    icon_1_2->setPixmap(QPixmap(path + "sad.gif"));
-    icon_1_2->setAutoRaise(true);
-    grid->addWidget(icon_1_2, 0, 1);
-    QObject::connect(icon_1_2, SIGNAL(clicked()), this, SLOT(slot_1_2()));
+	QToolButton *icon_1_2 = new QToolButton(this);
+	icon_1_2->setPixmap(QPixmap(path + "sad.gif"));
+	icon_1_2->setAutoRaise(true);
+	grid->addWidget(icon_1_2, 0, 1);
+	QObject::connect(icon_1_2, SIGNAL(clicked()), this, SLOT(slot_1_2()));
 
-    QToolButton *icon_1_3 = new QToolButton(this);
-    icon_1_3->setPixmap(QPixmap(path + "surprised.gif"));
-    icon_1_3->setAutoRaise(true);
-    grid->addWidget(icon_1_3, 0, 2);
-    QObject::connect(icon_1_3, SIGNAL(clicked()), this, SLOT(slot_1_3()));
+	QToolButton *icon_1_3 = new QToolButton(this);
+	icon_1_3->setPixmap(QPixmap(path + "surprised.gif"));
+	icon_1_3->setAutoRaise(true);
+	grid->addWidget(icon_1_3, 0, 2);
+	QObject::connect(icon_1_3, SIGNAL(clicked()), this, SLOT(slot_1_3()));
 
-    QToolButton *icon_1_4 = new QToolButton(this);
-    icon_1_4->setPixmap(QPixmap(path + "wink.gif"));
-    icon_1_4->setAutoRaise(true);
-    grid->addWidget(icon_1_4, 0, 3);
-    QObject::connect(icon_1_4, SIGNAL(clicked()), this, SLOT(slot_1_4()));
+	QToolButton *icon_1_4 = new QToolButton(this);
+	icon_1_4->setPixmap(QPixmap(path + "wink.gif"));
+	icon_1_4->setAutoRaise(true);
+	grid->addWidget(icon_1_4, 0, 3);
+	QObject::connect(icon_1_4, SIGNAL(clicked()), this, SLOT(slot_1_4()));
 
-    QToolButton *icon_2_1 = new QToolButton(this);
-    icon_2_1->setPixmap(QPixmap(path + "beer.gif"));
-    icon_2_1->setAutoRaise(true);
-    grid->addWidget(icon_2_1, 1, 0);
-    QObject::connect(icon_2_1, SIGNAL( clicked() ), this, SLOT(slot_2_1()));
+	QToolButton *icon_2_1 = new QToolButton(this);
+	icon_2_1->setPixmap(QPixmap(path + "beer.gif"));
+	icon_2_1->setAutoRaise(true);
+	grid->addWidget(icon_2_1, 1, 0);
+	QObject::connect(icon_2_1, SIGNAL( clicked() ), this, SLOT(slot_2_1()));
 
-    QToolButton *icon_2_2 = new QToolButton(this);
-    icon_2_2->setPixmap(QPixmap(path + "cry.gif"));
-    icon_2_2->setAutoRaise(true);
-    grid->addWidget(icon_2_2,1,1);
-    QObject::connect(icon_2_2, SIGNAL(clicked()), this, SLOT(slot_2_2()));
+	QToolButton *icon_2_2 = new QToolButton(this);
+	icon_2_2->setPixmap(QPixmap(path + "cry.gif"));
+	icon_2_2->setAutoRaise(true);
+	grid->addWidget(icon_2_2,1,1);
+	QObject::connect(icon_2_2, SIGNAL(clicked()), this, SLOT(slot_2_2()));
 
-    QToolButton *icon_2_3 = new QToolButton(this);
-    icon_2_3->setPixmap(QPixmap(path + "grin.gif"));
-    icon_2_3->setAutoRaise(true);
-    grid->addWidget(icon_2_3, 1, 2);
-    QObject::connect(icon_2_3, SIGNAL(clicked()), this, SLOT(slot_2_3()));
+	QToolButton *icon_2_3 = new QToolButton(this);
+	icon_2_3->setPixmap(QPixmap(path + "grin.gif"));
+	icon_2_3->setAutoRaise(true);
+	grid->addWidget(icon_2_3, 1, 2);
+	QObject::connect(icon_2_3, SIGNAL(clicked()), this, SLOT(slot_2_3()));
 
-    QToolButton *icon_2_4 = new QToolButton(this);
-    icon_2_4->setPixmap(QPixmap(path + "coffee.gif"));
-    icon_2_4->setAutoRaise(true);
-    grid->addWidget(icon_2_4, 1, 3);
-    QObject::connect(icon_2_4, SIGNAL(clicked()), this, SLOT(slot_2_4()));
+	QToolButton *icon_2_4 = new QToolButton(this);
+	icon_2_4->setPixmap(QPixmap(path + "coffee.gif"));
+	icon_2_4->setAutoRaise(true);
+	grid->addWidget(icon_2_4, 1, 3);
+	QObject::connect(icon_2_4, SIGNAL(clicked()), this, SLOT(slot_2_4()));
 
-    QToolButton *icon_3_1 = new QToolButton(this);
-    icon_3_1->setPixmap(QPixmap(path + "flower.gif"));
-    icon_3_1->setAutoRaise(true);
-    grid->addWidget(icon_3_1, 2, 0);
-    QObject::connect(icon_3_1, SIGNAL(clicked()), this, SLOT(slot_3_1()));
+	QToolButton *icon_3_1 = new QToolButton(this);
+	icon_3_1->setPixmap(QPixmap(path + "flower.gif"));
+	icon_3_1->setAutoRaise(true);
+	grid->addWidget(icon_3_1, 2, 0);
+	QObject::connect(icon_3_1, SIGNAL(clicked()), this, SLOT(slot_3_1()));
 
-    QToolButton *icon_3_2 = new QToolButton(this);
-    icon_3_2->setPixmap(QPixmap(path + "rose.gif"));
-    icon_3_2->setAutoRaise(true);
-    grid->addWidget(icon_3_2, 2, 1);
-    QObject::connect(icon_3_2, SIGNAL(clicked()), this, SLOT(slot_3_2()));
+	QToolButton *icon_3_2 = new QToolButton(this);
+	icon_3_2->setPixmap(QPixmap(path + "rose.gif"));
+	icon_3_2->setAutoRaise(true);
+	grid->addWidget(icon_3_2, 2, 1);
+	QObject::connect(icon_3_2, SIGNAL(clicked()), this, SLOT(slot_3_2()));
 
-    QToolButton *icon_3_3 = new QToolButton(this);
-    icon_3_3->setPixmap(QPixmap(path + "heart.gif"));
-    icon_3_3->setAutoRaise(true);
-    grid->addWidget(icon_3_3, 2, 2);
-    QObject::connect(icon_3_3, SIGNAL(clicked()), this, SLOT(slot_3_3()));
+	QToolButton *icon_3_3 = new QToolButton(this);
+	icon_3_3->setPixmap(QPixmap(path + "heart.gif"));
+	icon_3_3->setAutoRaise(true);
+	grid->addWidget(icon_3_3, 2, 2);
+	QObject::connect(icon_3_3, SIGNAL(clicked()), this, SLOT(slot_3_3()));
 
-    QToolButton *icon_3_4 = new QToolButton(this);
-    icon_3_4->setPixmap(QPixmap(path + "thumbsup.gif"));
-    icon_3_4->setAutoRaise(true);
-    grid->addWidget(icon_3_4, 2, 3);
-    QObject::connect(icon_3_4, SIGNAL(clicked()), this, SLOT(slot_3_4()));
+	QToolButton *icon_3_4 = new QToolButton(this);
+	icon_3_4->setPixmap(QPixmap(path + "thumbsup.gif"));
+	icon_3_4->setAutoRaise(true);
+	grid->addWidget(icon_3_4, 2, 3);
+	QObject::connect(icon_3_4, SIGNAL(clicked()), this, SLOT(slot_3_4()));
 
-    QToolButton *icon_4_1 = new QToolButton(this);
-    icon_4_1->setPixmap(QPixmap(path + "thumbsdown.gif"));
-    icon_4_1->setAutoRaise(true);
-    grid->addWidget(icon_4_1, 3, 0);
-    QObject::connect(icon_4_1, SIGNAL(clicked()), this, SLOT(slot_4_1()));
+	QToolButton *icon_4_1 = new QToolButton(this);
+	icon_4_1->setPixmap(QPixmap(path + "thumbsdown.gif"));
+	icon_4_1->setAutoRaise(true);
+	grid->addWidget(icon_4_1, 3, 0);
+	QObject::connect(icon_4_1, SIGNAL(clicked()), this, SLOT(slot_4_1()));
 
-    QToolButton *icon_4_2 = new QToolButton(this);
-    icon_4_2->setPixmap(QPixmap(path + "gift.gif"));
-    icon_4_2->setAutoRaise(true);
-    grid->addWidget(icon_4_2, 3, 1);
-    QObject::connect(icon_4_2, SIGNAL(clicked()), this, SLOT(slot_4_2()));
+	QToolButton *icon_4_2 = new QToolButton(this);
+	icon_4_2->setPixmap(QPixmap(path + "gift.gif"));
+	icon_4_2->setAutoRaise(true);
+	grid->addWidget(icon_4_2, 3, 1);
+	QObject::connect(icon_4_2, SIGNAL(clicked()), this, SLOT(slot_4_2()));
 
-    QToolButton *icon_4_3 = new QToolButton(this);
-    icon_4_3->setPixmap(QPixmap(path + "cell.gif"));
-    icon_4_3->setAutoRaise(true);
-    grid->addWidget(icon_4_3, 3, 2);
-    QObject::connect(icon_4_3, SIGNAL(clicked()), this, SLOT(slot_4_3()));
+	QToolButton *icon_4_3 = new QToolButton(this);
+	icon_4_3->setPixmap(QPixmap(path + "cell.gif"));
+	icon_4_3->setAutoRaise(true);
+	grid->addWidget(icon_4_3, 3, 2);
+	QObject::connect(icon_4_3, SIGNAL(clicked()), this, SLOT(slot_4_3()));
 
-    QToolButton *icon_4_4 = new QToolButton(this);
-    icon_4_4->setPixmap(QPixmap(path + "phone.gif"));
-    icon_4_4->setAutoRaise(true);
-    grid->addWidget(icon_4_4, 3, 3);
-    QObject::connect(icon_4_4, SIGNAL(clicked()), this, SLOT(slot_4_4()));
+	QToolButton *icon_4_4 = new QToolButton(this);
+	icon_4_4->setPixmap(QPixmap(path + "phone.gif"));
+	icon_4_4->setAutoRaise(true);
+	grid->addWidget(icon_4_4, 3, 3);
+	QObject::connect(icon_4_4, SIGNAL(clicked()), this, SLOT(slot_4_4()));
 
-    QToolButton *icon_5_1 = new QToolButton(this);
-    icon_5_1->setPixmap(QPixmap(path + "hearts.gif"));
-    icon_5_1->setAutoRaise(true);
-    grid->addWidget(icon_5_1, 4, 0);
-    QObject::connect(icon_5_1, SIGNAL(clicked()), this, SLOT(slot_5_1()));
+	QToolButton *icon_5_1 = new QToolButton(this);
+	icon_5_1->setPixmap(QPixmap(path + "hearts.gif"));
+	icon_5_1->setAutoRaise(true);
+	grid->addWidget(icon_5_1, 4, 0);
+	QObject::connect(icon_5_1, SIGNAL(clicked()), this, SLOT(slot_5_1()));
 
-    QToolButton *icon_5_2 = new QToolButton(this);
-    icon_5_2->setPixmap(QPixmap(path + "kiss.gif"));
-    icon_5_2->setAutoRaise(true);
-    grid->addWidget(icon_5_2, 4, 1);
-    QObject::connect(icon_5_2, SIGNAL(clicked()), this, SLOT(slot_5_2()));
+	QToolButton *icon_5_2 = new QToolButton(this);
+	icon_5_2->setPixmap(QPixmap(path + "kiss.gif"));
+	icon_5_2->setAutoRaise(true);
+	grid->addWidget(icon_5_2, 4, 1);
+	QObject::connect(icon_5_2, SIGNAL(clicked()), this, SLOT(slot_5_2()));
 
-    QToolButton *icon_5_3 = new QToolButton(this);
-    icon_5_3->setPixmap(QPixmap(path + "blush.gif"));
-    icon_5_3->setAutoRaise(true);
-    grid->addWidget(icon_5_3, 4, 2);
-    QObject::connect(icon_5_3, SIGNAL(clicked()), this, SLOT(slot_5_3()));
+	QToolButton *icon_5_3 = new QToolButton(this);
+	icon_5_3->setPixmap(QPixmap(path + "blush.gif"));
+	icon_5_3->setAutoRaise(true);
+	grid->addWidget(icon_5_3, 4, 2);
+	QObject::connect(icon_5_3, SIGNAL(clicked()), this, SLOT(slot_5_3()));
 
-    QToolButton *icon_5_4 = new QToolButton(this);
-    icon_5_4->setPixmap(QPixmap(path + "bye.gif"));
-    icon_5_4->setAutoRaise(true);
-    grid->addWidget(icon_5_4, 4, 3);
-    QObject::connect(icon_5_4, SIGNAL(clicked()), this, SLOT(slot_5_4()));
+	QToolButton *icon_5_4 = new QToolButton(this);
+	icon_5_4->setPixmap(QPixmap(path + "bye.gif"));
+	icon_5_4->setAutoRaise(true);
+	grid->addWidget(icon_5_4, 4, 3);
+	QObject::connect(icon_5_4, SIGNAL(clicked()), this, SLOT(slot_5_4()));
 
-    move(callingwidget->buttontray->x() - sizeHint().width() + icon_1_4->sizeHint().width(),
-    callingwidget->buttontray->y() + callingwidget->buttontray->height());
+	move(callingwidget->buttontray->x() - sizeHint().width() + icon_1_4->sizeHint().width(),
+	callingwidget->buttontray->y() + callingwidget->buttontray->height());
 }
 
 /* a set of slots. tell me it can be done better. */
