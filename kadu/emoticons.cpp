@@ -605,7 +605,6 @@ static void qrt_createSelectionPixmap( const QColorGroup &cg )
 }
 #endif
 
-//#include <qdatastream.h>
 void StaticTextItem::draw( QPainter* p, int x, int y, int cx, int cy, int cw, int ch, const QColorGroup& cg, bool selected )
 {
 	if ( placement() != PlaceInline ) {
@@ -614,11 +613,12 @@ void StaticTextItem::draw( QPainter* p, int x, int y, int cx, int cy, int cw, in
 	}
 //	for (int i=QColorGroup::Foreground; i<QColorGroup::NColorRoles; i++)
 //		kdebugm(KDEBUG_INFO, "%s\n", cg.color((QColorGroup::ColorRole)i).name().local8Bit().data());
-//	kdebugm(KDEBUG_INFO, "%s\n", cg..name().local8Bit().data());
 
 	if ( pm.isNull() ) {
-		p->fillRect( x , y, width, height,  cg.base() );
-		return;
+		pm=QPixmap(width, height);
+		pm.fill(cg.base());
+//		p->fillRect( x , y, width, height,  cg.base() );
+//		return;
 	}
 
 	if ( is_printer( p ) ) {
