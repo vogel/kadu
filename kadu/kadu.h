@@ -42,7 +42,6 @@ class Kadu : public QMainWindow
 		Kadu(QWidget* parent=0, const char *name=0);
 		void changeAppearance();
 		~Kadu();
-		bool autohammer;
 		bool userInActiveGroup(uin_t uin);
 		void addUser(const QString& FirstName,const QString& LastName,
 			const QString& NickName,const QString& AltNick,
@@ -52,8 +51,11 @@ class Kadu : public QMainWindow
 		void refreshGroupTabBar();
 		void setClosePermitted(bool permitted);
     
+		// te zmienne s± tylko chwilowo publiczne.
+		// trzeba to uporz±dkowaæ
+		bool autohammer;
+		bool doBlink;
 		UserBox *userbox;
-
 		AutoStatusTimer* autostatus_timer;    
 
 	protected:
@@ -65,11 +67,8 @@ class Kadu : public QMainWindow
 
 		struct gg_event *dcc_e;
 		int dcc_ret;
-
 		int activegrpno;
-
 		bool blinkOn;
-		bool doBlink;
 
 	public slots:
 		void blink();
@@ -84,7 +83,6 @@ class Kadu : public QMainWindow
 		void dataSent();
 		void dccReceived();
 		void dccSent();
-		void eventHandler(int state);
 		void prepareDcc(void);
 		void cleanUp(void);
 		void pingNetwork(void);
@@ -180,5 +178,17 @@ void sendUserlist(void);
 void *watch_socket(void *);
 QString pwHash(const QString);
 extern QPopupMenu *dockppm;
+
+extern bool userlist_sent;
+extern bool socket_active;
+extern bool disconnect_planned;
+extern int userlist_count;
+extern int last_ping;
+extern int last_read_event;
+extern int server_nr;
+extern bool timeout_connected;
+extern struct gg_login_params loginparams;
+extern QTimer *pingtimer;
+extern QTimer *readevent;
 
 #endif

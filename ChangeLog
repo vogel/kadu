@@ -58,6 +58,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zmienna liczba kolumn w userbox'ie (chilek)
 * mo¿liwo¶æ ustawienia w konfiguracji czy liczba kolumn w userbox'ie
   ma byæ zmienna (chilek)
+* wiêkszo¶æ kodu dotycz±cego obs³ugi zdarzeñ sieciowych przeniesiona z
+  kadu.cpp/h do klasy EventManager. Tam nast±pi jego dalsze porz±dkowanie
+  i wydzielanie sygna³ów (adrian)
 
 +++ wersja 0.3.4-pre2
 * graficzny instalator - instaluj.tcl (googie)

@@ -35,10 +35,7 @@ class EventManager : public QObject
 	Q_OBJECT
 
 	private:
-		// Chwilowo. Tego nie bêdzie.
-		friend void eventRecvMsg(int, UinsList, unsigned char *,time_t,int,struct gg_msg_format*);
-		friend void eventGotUserlist(struct gg_event *);
-		friend void eventStatusChange(struct gg_event *);
+		void ackHandler(int seq);
 			
 	private slots:
 		void userStatusChangedSlot(struct gg_event*);
@@ -47,11 +44,20 @@ class EventManager : public QObject
 		
 	public:
 		EventManager();
-		
+		void eventHandler(gg_session* sess);
+
 	signals:
+		/**
+			Który¶ z kontaktów zmieni³ swój status
+		**/
 		void userStatusChanged(struct gg_event*);
+		/**
+			Przysz³a z serwera lista kontaktów
+		**/
 		void userlistReceived(struct gg_event *);
-		// Dosz³a jaka¶ wiadomo¶æ z serwera GG
+		/**
+			Dosz³a jaka¶ wiadomo¶æ z serwera GG
+		**/
 		void messageReceived(int,UinsList,unsigned char* msg,time_t,int,struct gg_msg_format*);
 		/**
 			Dosz³a wiadomo¶æ, któr± trzeba pokazaæ (klasa chat lub msg,
@@ -64,10 +70,5 @@ class EventManager : public QObject
 extern EventManager event_manager;
 
 extern QTime lastsoundtime;
-
-// Chwilowo. Tego nie bêdzie.
-void eventRecvMsg(int, UinsList, unsigned char *,time_t,int=0,struct gg_msg_format * = NULL);
-void eventGotUserlist(struct gg_event *);
-void eventStatusChange(struct gg_event *);
 
 #endif

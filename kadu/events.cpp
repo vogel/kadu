@@ -50,6 +50,9 @@
 #include "dock_widget.h"
 #include "debug.h"
 #include "sound.h"
+#include "dcc.h"
+#include "search.h"
+#include "personal_info.h"
 #include "../config.h"
 #ifdef HAVE_OPENSSL
 extern "C"
@@ -428,9 +431,10 @@ void EventManager::userStatusChangedSlot(struct gg_event * e) {
 			chats[i].ptr->setTitle();
 
 	ifNotify(e->event.status.uin, e->event.status.status, oldstatus);
-}
+};
 
-void ackHandler(int seq) {
+void EventManager::ackHandler(int seq)
+{
 	int i,j,k;
 	for (i = 0; i < acks.size(); i++)
 		if (acks[i].seq == seq && acks[i].ptr) {
@@ -453,25 +457,220 @@ void ackHandler(int seq) {
 				}
 			}
 		}
-}
+};
+
+void EventManager::eventHandler(gg_session* sess)
+{
+	static int calls = 0;
+
+	kdebug("Kadu::eventHandler()\n");
+	calls++;
+	if (calls > 1)
+		kdebug("************* Kadu::eventHandler(): Recursive eventHandler calls detected!\n");
+
+	gg_event* e;
+	if (!(e = gg_watch_fd(sess)))
+	{
+		kdebug("Kadu::eventHandler(): Connection broken unexpectedly!\n");
+		char error[512];
+		kadu->disconnectNetwork();
+		snprintf(error, sizeof(error), "Kadu::eventHandler(): Unscheduled connection termination\n");
+		kdebug(error);
+		kadu->setCurrentStatus(GG_STATUS_NOT_AVAIL);
+		gg_free_event(e);
+		if (kadu->autohammer)
+			kadu->setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
+		calls--;
+		return;	
+	};
+	
+	if (sess->state == GG_STATE_CONNECTING_HUB || sess->state == GG_STATE_CONNECTING_GG)
+	{
+		kdebug("Kadu::eventHandler(): changing QSocketNotifiers.\n");
+
+		kadusnw->setEnabled(false);
+		delete kadusnw;
+
+		kadusnr->setEnabled(false);
+		delete kadusnr;
+
+		kadusnw = new QSocketNotifier(sess->fd, QSocketNotifier::Write, this); 
+		QObject::connect(kadusnw, SIGNAL(activated(int)), kadu, SLOT(dataSent()));
+
+		kadusnr = new QSocketNotifier(sess->fd, QSocketNotifier::Read, this); 
+		QObject::connect(kadusnr, SIGNAL(activated(int)), kadu, SLOT(dataReceived()));    
+	};
+
+	switch (sess->state)
+	{
+		case GG_STATE_RESOLVING:
+			kdebug("Kadu::eventHandler(): Resolving address\n");
+			break;
+		case GG_STATE_CONNECTING_HUB:
+			kdebug("Kadu::eventHandler(): Connecting to hub\n");
+			break;
+		case GG_STATE_READING_DATA:
+			kdebug("Kadu::eventHandler(): Fetching data from hub\n");
+			break;
+		case GG_STATE_CONNECTING_GG:
+			kdebug("Kadu::eventHandler(): Connecting to server\n");
+			break;
+		case GG_STATE_READING_KEY:
+			kdebug("Kadu::eventHandler(): Waiting for hash key\n");
+			break;
+		case GG_STATE_READING_REPLY:
+			kdebug("Kadu::eventHandler(): Sending key\n");
+			break;
+		case GG_STATE_CONNECTED:
+			break;
+		default:
+			break;
+	}
+
+	if (sess->check == GG_CHECK_READ)
+	{
+		timeout_connected = true;
+		last_read_event = time(NULL);
+	};
+
+	if (e->type == GG_EVENT_MSG)
+	{
+		if (e->event.msg.msgclass == GG_CLASS_CTCP)
+		{
+			struct gg_dcc *dcc_new;
+
+			UserListElement user;
+			user = userlist.byUin(e->event.msg.sender);
+			dccSocketClass *dcc;
+			if (dccSocketClass::count < 8)
+			{
+				dcc_new = gg_dcc_get_file(htonl(user.ip.ip4Addr()), user.port, config.uin, e->event.msg.sender);
+				if (dcc_new)
+				{
+					dcc = new dccSocketClass(dcc_new);
+					connect(dcc, SIGNAL(dccFinished(dccSocketClass *)), this, SLOT(dccFinished(dccSocketClass *)));
+					dcc->initializeNotifiers();
+				}
+			}
+		}
+		else
+		{
+			UinsList uins;
+			kdebug("eventHandler(): %d\n", e->event.msg.recipients_count);
+			if (e->event.msg.msgclass == GG_CLASS_CHAT) {
+				uins.append(e->event.msg.sender);	
+				for (int i = 0; i < e->event.msg.recipients_count; i++)
+					uins.append(e->event.msg.recipients[i]);
+				}
+			else
+				uins.append(e->event.msg.sender);				
+			emit event_manager.messageReceived(e->event.msg.msgclass, uins, e->event.msg.message, e->event.msg.time, 0, NULL);
+		}
+	};
+
+	if (e->type == GG_EVENT_STATUS)
+	{
+		emit event_manager.userStatusChanged(e);
+		UserBox::all_refresh();
+	};
+
+	if (e->type == GG_EVENT_ACK)
+	{
+		kdebug("EventManager::eventHandler(): message reached %d (seq %d)\n", e->event.ack.recipient, e->event.ack.seq);
+		ackHandler(e->event.ack.seq);
+	};
+
+	if (e->type == GG_EVENT_NOTIFY_DESCR || e->type == GG_EVENT_NOTIFY)
+	{
+		emit event_manager.userlistReceived(e);
+		UserBox::all_refresh();
+	};
+	
+	if (e->type == GG_EVENT_PUBDIR50_SEARCH_REPLY
+		|| e->type == GG_EVENT_PUBDIR50_READ || e->type == GG_EVENT_PUBDIR50_WRITE)
+	{
+		gg_pubdir50_t res = e->event.pubdir50;
+		uint32_t seq = gg_pubdir50_seq(res);
+		int i = 0;
+		while (i < SearchList.count() && SearchList[i].seq != seq)
+			i++;
+		if (i < SearchList.count())
+			switch (SearchList[i].type)
+			{
+				case DIALOG_SEARCH:
+					((SearchDialog *)SearchList[i].ptr)->showResults(res);
+					break;
+				case DIALOG_PERSONAL:
+					((PersonalInfoDialog *)SearchList[i].ptr)->fillFields(res);
+					break;
+			};
+	};
+	
+	if (e->type == GG_EVENT_CONN_SUCCESS)
+	{
+		kadu->doBlink = false;
+		sendUserlist();
+		kadu->setCurrentStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
+		userlist_sent = true;
+		if (ifStatusWithDescription(loginparams.status))
+			kadu->setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
+		/* uruchamiamy autoawaya(jezeli wlaczony) po wyslaniu userlisty i ustawieniu statusu */
+		if (config.autoaway)
+			AutoAwayTimer::on();
+		/* jezeli sie rozlaczymy albo stracimy polaczenie, proces laczenia sie z serwerami zaczyna sie od poczatku */
+		server_nr = 0;
+		pingtimer = new QTimer;
+		QObject::connect(pingtimer, SIGNAL(timeout()), kadu, SLOT(pingNetwork()));
+		pingtimer->start(60000, TRUE);
+		
+		readevent = new QTimer;
+		QObject::connect(readevent, SIGNAL(timeout()), kadu, SLOT(checkConnection()));    
+		readevent->start(10000, TRUE);
+	};
+
+	if (e->type == GG_EVENT_CONN_FAILED || e->type == GG_EVENT_DISCONNECT)
+	{
+		char error[512];
+		snprintf(error, sizeof(error), "Kadu::eventHandler(): Unable to connect, the following error has occured:\n%s\nKadu::eventHandler(): Keep trying to connect?\n", strerror(errno));
+		kdebug(error);
+		
+		if (kadu->autohammer)
+			kadu->setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
+	};
+
+	if (e->type == GG_EVENT_DISCONNECT)
+	{
+		trayicon->showErrorHint(i18n("Disconnection has been occured"));
+		kdebug("Kadu::eventHandler(): Disconnection has been occured\n");
+
+		kadu->disconnectNetwork();
+		kadu->setCurrentStatus(GG_STATUS_NOT_AVAIL);
+
+		if (e->type == GG_EVENT_DISCONNECT)
+			kadu->autohammer = false;
+	};
+
+	if (socket_active)
+	{
+		if (sess->state == GG_STATE_IDLE && userlist_sent)
+		{
+			char error[512];
+			socket_active = false;
+			UserBox::all_changeAllToInactive();
+			snprintf(error, sizeof(error), "Kadu::eventHandler(): Unscheduled connection termination\n");
+			kdebug(error);
+			kadu->disconnectNetwork();			
+			kadu->setCurrentStatus(GG_STATUS_NOT_AVAIL);
+			if (kadu->autohammer)
+				kadu->setStatus(config.defaultstatus & (~GG_STATUS_FRIENDS_MASK));
+		}
+		else
+			if (sess->check & GG_CHECK_WRITE)
+				kadusnw->setEnabled(true);
+	};
+
+	gg_free_event(e);
+	calls--;
+};
 
 EventManager event_manager;
-
-void eventRecvMsg(int msgclass, UinsList senders, unsigned char *msg, time_t time,int formats_count,struct gg_msg_format * formats)
-{
-	fprintf(stderr,"eventRecvMsg\n");
-	kdebug("eventRecvMsg()\n");
-	emit event_manager.messageReceived(msgclass,senders,msg,time,formats_count,formats);
-};
-
-void eventGotUserlist(struct gg_event *e)
-{
-	fprintf(stderr,"eventGotUserlist\n");
-	emit event_manager.userlistReceived(e);
-};
-
-void eventStatusChange(struct gg_event * e)
-{
-	fprintf(stderr,"eventStatusChange\n");
-	emit event_manager.userStatusChanged(e);
-};
