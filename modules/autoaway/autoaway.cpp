@@ -192,7 +192,8 @@ void AutoAwayTimer::checkIdleTime()
 	/* czy sie nie rozlaczyc */
 	//if (idletime >= autoDisconnectTime && autoDisconnect && ((currentStatus==GG_STATUS_INVISIBLE_DESCR) || (currentStatus==GG_STATUS_INVISIBLE)) && !autodisconnected)
 	if (idletime >= autoDisconnectTime && autoDisconnect && !autodisconnected)
-	{	kdebugm(KDEBUG_INFO, "AutoAwayTimer::checkIdleTime(): checking whether to disconnect, beforeAutoDisconnect = %d\n", gadu->status().getIndex());
+	{
+		kdebugm(KDEBUG_INFO, "AutoAwayTimer::checkIdleTime(): checking whether to disconnect, beforeAutoDisconnect = %d\n", gadu->status().index());
 			if (!autoinvisibled)
 				{	beforeAutoAway.setStatus(gadu->status());
 					autoinvisibled=true;
@@ -222,7 +223,8 @@ void AutoAwayTimer::checkIdleTime()
 	/* potem sprawdzamy czy nie idziemy do ukrytego - ale to tylko jak wczesniej byl busy */
 	//if (idletime >= autoInvisibleTime && autoInvisible && ((currentStatus==GG_STATUS_BUSY_DESCR) || (currentStatus==GG_STATUS_BUSY)) && !autoinvisibled && !autodisconnected)
 	if (idletime >= autoInvisibleTime && autoInvisible && !autoinvisibled)
-		{	kdebugm(KDEBUG_INFO, "AutoAwayTimer::checkIdleTime(): checking whether to go invisible, beforeAutoInvisible = %d\n", gadu->status().getIndex());
+		{	
+			kdebugm(KDEBUG_INFO, "AutoAwayTimer::checkIdleTime(): checking whether to go invisible, beforeAutoInvisible = %d\n", gadu->status().index());
 			if (!autoawayed)
 				{	beforeAutoAway.setStatus(gadu->status());
 					autoawayed=true;
@@ -257,9 +259,10 @@ void AutoAwayTimer::checkIdleTime()
 		}
 	else
 	//	czy mamy stac sie "zajeci" po config.autoawaytime sekund nieaktywnosci
-	if (idletime >= autoAwayTime && !autoawayed && autoAway) {
+	if (idletime >= autoAwayTime && !autoawayed && autoAway)
+	{
 		beforeAutoAway.setStatus(gadu->status());
-		kdebugm(KDEBUG_INFO, "AutoAwayTimer::checkIdleTime(): checking whether to go auto away, beforeAutoAway = %d\n", beforeAutoAway.getIndex());
+		kdebugm(KDEBUG_INFO, "AutoAwayTimer::checkIdleTime(): checking whether to go auto away, beforeAutoAway = %d\n", beforeAutoAway.index());
 		if (!autodescription)
 			    if (autoChangeDescription==1)
 					{	gadu->status().setDescription(autoStatusText);

@@ -1030,7 +1030,7 @@ void Kadu::blink() {
 	}
 	else if (!DoBlink && gadu->status().isOffline())
 	{
-		pix = gadu->status().getPixmap(Offline, false);
+		pix = gadu->status().pixmap(Offline, false);
 		statusbutton->setIconSet(QIconSet(pix));
 		emit statusPixmapChanged(pix);
 		return;
@@ -1038,13 +1038,13 @@ void Kadu::blink() {
 
 	if (BlinkOn)
 	{
-		pix = gadu->status().getPixmap(Offline, false);
+		pix = gadu->status().pixmap(Offline, false);
 		statusbutton->setIconSet(QIconSet(pix));
 		emit statusPixmapChanged(pix);
 	}
 	else
 	{
-		pix = gadu->status().getPixmap(status, false);
+		pix = gadu->status().pixmap(status, false);
 		statusbutton->setIconSet(QIconSet(pix));
 		emit statusPixmapChanged(pix);
 	}
@@ -1612,27 +1612,27 @@ void KaduSlots::onCreateConfigDialog()
 		statusIndex = config_file.readNumEntry("General", "DefaultStatus", -1);
 		switch (statusIndex)
 		{
-			case 0x0001: statusIndex = Status::getIndex(Offline, false); break;
-			case 0x0015: statusIndex = Status::getIndex(Offline, true); break;
-			case 0x0002: statusIndex = Status::getIndex(Online, false); break;
-			case 0x0004: statusIndex = Status::getIndex(Online, true); break;
-			case 0x0003: statusIndex = Status::getIndex(Busy, false); break;
-			case 0x0005: statusIndex = Status::getIndex(Busy, true); break;
-			case 0x0014: statusIndex = Status::getIndex(Invisible, false); break;
-			case 0x0016: statusIndex = Status::getIndex(Invisible, true); break;
+			case 0x0001: statusIndex = Status::index(Offline, false); break;
+			case 0x0015: statusIndex = Status::index(Offline, true); break;
+			case 0x0002: statusIndex = Status::index(Online, false); break;
+			case 0x0004: statusIndex = Status::index(Online, true); break;
+			case 0x0003: statusIndex = Status::index(Busy, false); break;
+			case 0x0005: statusIndex = Status::index(Busy, true); break;
+			case 0x0014: statusIndex = Status::index(Invisible, false); break;
+			case 0x0016: statusIndex = Status::index(Invisible, true); break;
 			default:
 				statusIndex = -1;
 		}
 	}
 	if (statusIndex == -1)
-		statusIndex = Status::getIndex(Offline, false);
+		statusIndex = Status::index(Offline, false);
 	// END: wsteczna kombatybilno¶æ, do wywalenia w 0.5.x
 
-	int max = Status::getInitCount();
+	int max = Status::initCount();
 	QComboBox* cb_defstatus = ConfigDialog::getComboBox("General", "Default status", "cb_defstatus");
 	cb_defstatus->clear();
 	for (int i = 0; i < max; i++)
-		cb_defstatus->insertItem(qApp->translate("@default", Status::getName(i)));
+		cb_defstatus->insertItem(qApp->translate("@default", Status::name(i)));
 	cb_defstatus->setCurrentItem(statusIndex);
 
 	updatePreview();
@@ -1767,20 +1767,20 @@ void Kadu::startupProcedure()
 		statusIndex = config_file.readNumEntry("General", "DefaultStatus", -1);
 		switch (statusIndex)
 		{
-			case 0x0001: statusIndex = Status::getIndex(Offline, false); break;
-			case 0x0015: statusIndex = Status::getIndex(Offline, true); break;
-			case 0x0002: statusIndex = Status::getIndex(Online, false); break;
-			case 0x0004: statusIndex = Status::getIndex(Online, true); break;
-			case 0x0003: statusIndex = Status::getIndex(Busy, false); break;
-			case 0x0005: statusIndex = Status::getIndex(Busy, true); break;
-			case 0x0014: statusIndex = Status::getIndex(Invisible, false); break;
-			case 0x0016: statusIndex = Status::getIndex(Invisible, true); break;
+			case 0x0001: statusIndex = Status::index(Offline, false); break;
+			case 0x0015: statusIndex = Status::index(Offline, true); break;
+			case 0x0002: statusIndex = Status::index(Online, false); break;
+			case 0x0004: statusIndex = Status::index(Online, true); break;
+			case 0x0003: statusIndex = Status::index(Busy, false); break;
+			case 0x0005: statusIndex = Status::index(Busy, true); break;
+			case 0x0014: statusIndex = Status::index(Invisible, false); break;
+			case 0x0016: statusIndex = Status::index(Invisible, true); break;
 			default:
 				statusIndex = -1;
 		}
 	}
 	if (statusIndex == -1)
-		statusIndex = Status::getIndex(Offline, false);
+		statusIndex = Status::index(Offline, false);
 	// END: wsteczna kombatybilno¶æ, do wywalenia w 0.5.x
 
 	if (!Status::isOffline(statusIndex))
@@ -1839,7 +1839,7 @@ void Kadu::showStatusOnMenu(int statusNr)
 	statusbutton->setText(qApp->translate("@default", statustext[statusNr]));
 	statusppm->setItemEnabled(7, statusNr != 6);
 	dockppm->setItemEnabled(7, statusNr != 6);
-	QPixmap pix = gadu->status().getPixmap();
+	QPixmap pix = gadu->status().pixmap();
 	statusbutton->setIconSet(QIconSet(pix));
 	setIcon(pix);
 	UserBox::all_refresh();

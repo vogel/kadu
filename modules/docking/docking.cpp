@@ -86,7 +86,7 @@ void DockingManager::changeIcon()
 		}
 		else
 		{
-			emit emit trayPixmapChanged(gadu->status().getPixmap());
+			emit trayPixmapChanged(gadu->status().pixmap());
 			icon_timer->start(500,TRUE);
 			blink = false;
 		}
@@ -112,14 +112,14 @@ void DockingManager::pendingMessageAdded()
 void DockingManager::pendingMessageDeleted()
 {
 	if (!pending.pendingMsgs())
-		emit trayPixmapChanged(gadu->status().getPixmap());
+		emit trayPixmapChanged(gadu->status().pixmap());
 }
 
 void DockingManager::defaultToolTip()
 {
 	QString tiptext = tr("Left click - hide/show window\nMiddle click or Left click- open message");
 	tiptext.append(tr("\n\nCurrent status:\n%1")
-		.arg(qApp->translate("@default", Status::getName(gadu->status().getIndex()))));
+		.arg(qApp->translate("@default", Status::name(gadu->status().index()))));
 
 	if (gadu->status().hasDescription())
 		tiptext.append(tr("\n\nDescription:\n%2").arg(gadu->status().description()));
@@ -179,7 +179,7 @@ void DockingManager::statusPixmapChanged(QPixmap &pix)
 
 QPixmap DockingManager::defaultPixmap()
 {
-	return gadu->status().getPixmap();
+	return gadu->status().pixmap();
 }
 
 void DockingManager::setDocked(bool docked)

@@ -1170,7 +1170,7 @@ void GaduProtocol::systemMessageReceived(QString &message, QDateTime &time, int 
 void GaduProtocol::login()
 {
 	kdebugf();
-	RequestedStatusForLogin = NextStatus->getStatusNumber();
+	RequestedStatusForLogin = NextStatus->statusNumber();
 
 	emit connecting();
 
@@ -1182,7 +1182,7 @@ void GaduProtocol::login()
 
 	setupProxy();
 
-	LoginParams.status = NextStatus->getStatusNumber();
+	LoginParams.status = NextStatus->statusNumber();
 	if (config_file.readBoolEntry("General", "PrivateStatus") == 1)
 	{
 		CurrentStatus->setFriendsOnly(true);
@@ -2324,9 +2324,9 @@ Status::~Status()
 {
 }
 
-QPixmap Status::getPixmap()
+QPixmap Status::pixmap()
 {
-	return getPixmap(Stat, hasDescription());
+	return pixmap(Stat, hasDescription());
 }
 
 bool Status::isOnline()
@@ -2369,17 +2369,17 @@ QString Status::description()
 	return Description;
 }
 
-int Status::getIndex(eStatus stat, bool desc)
+int Status::index(eStatus stat, bool desc)
 {
 	return (static_cast<int>(stat) << 1) + (desc ? 1 : 0);
 }
 
-int Status::getIndex()
+int Status::index()
 {
 	return (static_cast<int>(Stat) << 1) + (Description.isEmpty() ? 0 : 1);
 }
 
-void Status::setOnline(const QString &desc)
+void Status::setOnline(const QString& desc)
 {
 	if (Stat == Online && Description == desc && !Changed)
 		return;
@@ -2391,7 +2391,7 @@ void Status::setOnline(const QString &desc)
 	emit goOnline(Description);
 }
 
-void Status::setBusy(const QString &desc)
+void Status::setBusy(const QString& desc)
 {
 	if (Stat == Busy && Description == desc && !Changed)
 		return;
@@ -2403,7 +2403,7 @@ void Status::setBusy(const QString &desc)
 	emit goBusy(Description);
 }
 
-void Status::setInvisible(const QString &desc)
+void Status::setInvisible(const QString& desc)
 {
 	if (Stat == Invisible && Description == desc && !Changed)
 		return;
@@ -2415,7 +2415,7 @@ void Status::setInvisible(const QString &desc)
 	emit goInvisible(Description);
 }
 
-void Status::setOffline(const QString &desc)
+void Status::setOffline(const QString& desc)
 {
 	if (Stat == Offline && Description == desc)
 		return;
@@ -2427,7 +2427,7 @@ void Status::setOffline(const QString &desc)
 	emit goOffline(Description);
 }
 
-void Status::setDescription(const QString &desc)
+void Status::setDescription(const QString& desc)
 {
 	if (Description == desc)
 		return;
@@ -2471,7 +2471,7 @@ void Status::setFriendsOnly(bool f)
 	}
 }
 
-void Status::setStatus(const Status &stat)
+void Status::setStatus(const Status& stat)
 {
 	setFriendsOnly(stat.FriendsOnly);
 
@@ -2484,7 +2484,7 @@ void Status::setStatus(const Status &stat)
 	}
 }
 
-void Status::setIndex(int index, const QString &desc)
+void Status::setIndex(int index, const QString& desc)
 {
 	if (index % 2 == 0)
 		setStatus(static_cast<eStatus>(index >> 1), "");
@@ -2492,7 +2492,7 @@ void Status::setIndex(int index, const QString &desc)
 		setStatus(static_cast<eStatus>(index >> 1), desc);
 }
 
-void Status::setStatus(eStatus stat, const QString &desc)
+void Status::setStatus(eStatus stat, const QString& desc)
 {
 	switch (stat)
 	{
@@ -2503,7 +2503,7 @@ void Status::setStatus(eStatus stat, const QString &desc)
 	}
 }
 
-eStatus Status::fromString(const QString &stat)
+eStatus Status::fromString(const QString& stat)
 {
 	if (stat.contains("Online"))
 		return Online;
@@ -2529,17 +2529,17 @@ QString Status::toString(eStatus stat, bool desc)
 	return res;
 }
 
-int Status::getCount()
+int Status::count()
 {
 	return 9;
 }
 
-int Status::getInitCount()
+int Status::initCount()
 {
 	return 7;
 }
 
-QString Status::getName(int nr)
+QString Status::name(int nr)
 {
 	static const char * names[] = {
 		QT_TR_NOOP("Online"),
@@ -2564,7 +2564,7 @@ GaduStatus::~GaduStatus()
 {
 }
 
-QPixmap GaduStatus::getPixmap(eStatus stat, bool hasDescription)
+QPixmap GaduStatus::pixmap(eStatus stat, bool hasDescription)
 {
 	kdebugf();
 	QPixmap pix;
@@ -2586,7 +2586,7 @@ QPixmap GaduStatus::getPixmap(eStatus stat, bool hasDescription)
 	return pix;
 }
 
-int GaduStatus::getStatusNumber()
+int GaduStatus::statusNumber()
 {
 	int sn = 0;
 

@@ -262,40 +262,40 @@ class Status : public QObject
 		bool isBusy();
 		bool isInvisible();
 		bool isOffline();
-		static bool isOffline(int);
+		static bool isOffline(int index);
 		bool hasDescription();
 		bool isFriendsOnly();
 		QString description();
 
-		int getIndex();
-		static int getIndex(eStatus, bool);
+		int index();
+		static int index(eStatus stat, bool has_desc);
 
-		virtual QPixmap getPixmap();
-		virtual QPixmap getPixmap(eStatus, bool) = 0;
+		virtual QPixmap pixmap();
+		virtual QPixmap pixmap(eStatus stat, bool has_desc) = 0;
 
-		static eStatus fromString(const QString &);
-		static QString toString(eStatus, bool);
+		static eStatus fromString(const QString& stat);
+		static QString toString(eStatus stat, bool has_desc);
 
-		static int getCount();
-		static int getInitCount();
-		static QString getName(int);
+		static int count();
+		static int initCount();
+		static QString name(int nr);
 
 	public slots:
-		void setOnline(const QString & = "");
-		void setBusy(const QString & = "");
-		void setInvisible(const QString & = "");
-		void setOffline(const QString & = "");
-		void setDescription(const QString & = "");
-		void setStatus(const Status &);
-		void setStatus(eStatus, const QString & = "");
-		void setIndex(int, const QString & = "");
-		void setFriendsOnly(bool);
+		void setOnline(const QString& desc = "");
+		void setBusy(const QString& desc = "");
+		void setInvisible(const QString& desc = "");
+		void setOffline(const QString& desc = "");
+		void setDescription(const QString& desc = "");
+		void setStatus(const Status& stat);
+		void setStatus(eStatus stat, const QString& desc = "");
+		void setIndex(int index, const QString& desc = "");
+		void setFriendsOnly(bool f);
 
 	signals:
-		void goOnline(const QString &);
-		void goBusy(const QString &);
-		void goInvisible(const QString &);
-		void goOffline(const QString &);
+		void goOnline(const QString& desc);
+		void goBusy(const QString& desc);
+		void goInvisible(const QString& desc);
+		void goOffline(const QString& desc);
 };
 
 class GaduStatus : public Status
@@ -306,8 +306,8 @@ class GaduStatus : public Status
 		GaduStatus();
 		virtual ~GaduStatus();
 
-		virtual QPixmap getPixmap(eStatus, bool);
-		int getStatusNumber();
+		virtual QPixmap pixmap(eStatus status, bool has_desc);
+		int statusNumber();
 };
 
 // ------------------------------------
