@@ -189,15 +189,18 @@ void UserlistImport::userlistReplyReceivedSlot(char type, char *reply) {
 		}*/
 
 	kdebug("ImportUserlist::userlistReplyReceivedSlot()\n");
-	if (type != GG_USERLIST_GET_REPLY && type != 0x04)
+	if (type != GG_USERLIST_GET_REPLY)
 		return;
 
-	if (strlen(reply))
-		importreply = importreply + cp2unicode((unsigned char *)reply);
-	if (type == 0x04) {
-		kdebug("ImportUserlist::userlistReplyReceivedSlot(): next portion.\n");
+	if (!reply) {
+		disconnect(&event_manager, SIGNAL(userlistReplyReceived(char, char *)),
+			this, SLOT(userlistReplyReceivedSlot(char, char *)));
+		results->clear();
+		fetchbtn->setEnabled(true);
 		return;
 		}
+	if (strlen(reply))
+		importreply = cp2unicode((unsigned char *)reply);
 	fetchbtn->setEnabled(true);
 	kdebug("ImportUserlist::userlistReplyReceivedSlot(): Done.\n");
 	QStringList strlist;
