@@ -488,7 +488,9 @@ void ConfigDialog::updateConfig(void)
 			case CONFIG_HRADIOGROUP:
 			{
 				QStringList values=(*i).additionalParams[1].toStringList();
-				(*i).config->writeEntry((*i).group, (*i).entry, values[((QButtonGroup*)(*i).widget)->selectedId()]);
+				QButtonGroup *group=(QButtonGroup*)(*i).widget;
+				int selectedId=group->id(group->selected());
+				(*i).config->writeEntry((*i).group, (*i).entry, values[selectedId]);
 				break;
 			}
 			default:
