@@ -433,14 +433,9 @@ void SearchDialog::updateInfoClicked()
 	if (!altnick.length())
 		altnick = uin;
 
-	if (QMessageBox::information(this, tr("Update Info"),
-		tr("Do you want to update user info for %1?").arg(altnick),
-		tr("&Yes"), tr("&No")) != 0)
-		return;
-
 	UserListElement e;
 	e.first_name = firstname;
-	e.last_name = "";
+	e.last_name = ule.last_name;
 	e.nickname = nickname;
 	e.altnick = ule.altnick;
 	e.mobile = ule.mobile;
@@ -452,6 +447,9 @@ void SearchDialog::updateInfoClicked()
 	e.notify = ule.notify;
 	e.setGroup(ule.group());
 	e.email = ule.email;
-	userlist.changeUserInfo(ule.altnick, e);
-	userlist.writeToFile();
+	UserInfo *ui = new UserInfo("user info", 0, QString::null);
+	ui->setUserInfo(e);
+	ui->show();
+//	userlist.changeUserInfo(ule.altnick, e);
+//	userlist.writeToFile();
 }
