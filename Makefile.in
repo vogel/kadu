@@ -96,6 +96,7 @@ LTLIBINTL = @LTLIBINTL@
 MKINSTALLDIRS = @MKINSTALLDIRS@
 MY_SUBDIRS = @MY_SUBDIRS@
 PACKAGE = @PACKAGE@
+PNG_LIBS = @PNG_LIBS@
 POSUB = @POSUB@
 PTHREAD_FLAGS = @PTHREAD_FLAGS@
 PTHREAD_LIBS = @PTHREAD_LIBS@
@@ -132,10 +133,8 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive install-info-recursive \
 	uninstall-recursive check-recursive installcheck-recursive
 DIST_COMMON = README AUTHORS COPYING ChangeLog INSTALL Makefile.am \
 	Makefile.in TODO aclocal.m4 admin/config.guess admin/config.sub \
-	admin/depcomp admin/install-sh admin/ltcf-c.sh \
-	admin/ltcf-cxx.sh admin/ltcf-gcj.sh admin/ltconfig \
-	admin/ltmain.sh admin/missing admin/mkinstalldirs config.h.in \
-	configure configure.ac
+	admin/depcomp admin/install-sh admin/missing \
+	admin/mkinstalldirs config.h.in configure configure.ac
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 

@@ -33,6 +33,10 @@ AC_DEFUN(CHECK_PTHREAD,
 	])
 ])
 
+# $1 - file name
+# $2 - directories
+# $3 - action if found
+# $4 - action if not found (default is error message)
 AC_DEFUN(FIND_FILE,[
 	AC_MSG_CHECKING([for $1 in specified directiories])
 	FILE_DIR=
@@ -42,31 +46,58 @@ AC_DEFUN(FIND_FILE,[
 		then
 			FILE_DIR=$dir
 			AC_MSG_RESULT([found in $FILE_DIR])
+			$3
 			break
 		fi
 	done
 	if test "X$FILE_DIR" = "X"
 	then
-		AC_MSG_ERROR([$1 not found!])
+		AC_MSG_RESULT([not found])
+		if test "X$4" = "X"
+		then
+			AC_MSG_ERROR([$1 not found!])
+		fi
+		$4
 	fi
 ])
 
 # $1 - header name
 # $2 - directories
-# $3 - action if not in system include dirs
+# $3 - action if found but not in system dirs
+# $4 - action if not found (default is error message)
 AC_DEFUN(FIND_HEADER,[
-	AC_MSG_CHECKING([if $1 is in system include dirs])
+	AC_MSG_CHECKING([if $1 header is in system directories])
 	AC_TRY_COMPILE(
 	[
-		#include <libintl.h>
+		#include <$1>
 	],[
 		return 0;
 	],[
 		AC_MSG_RESULT([yes])
 	],[
 		AC_MSG_RESULT([no])
-		FIND_FILE([$1],[$2])
-		$3
+		FIND_FILE([$1],[$2],[$3],[$4])
+	])
+])
+
+# $1 - library name (without "lib" prefix and extension)
+# $2 - directories
+# $3 - action if found but not in system dirs
+# $4 - action if not found (default is error message)
+AC_DEFUN(FIND_LIBRARY,[
+	AC_MSG_CHECKING([if lib$1.so library is in system directories])
+	save_CPPFLAGS="$CPPFLAGS"
+	CPPFLAGS="$CXXFLAGS -l$1"
+	AC_TRY_LINK([],
+	[
+		return 0;
+	],[
+		CPPFLAGS="$save_CPPFLAGS"
+		AC_MSG_RESULT([yes])
+	],[
+		CPPFLAGS="$save_CPPFLAGS"
+		AC_MSG_RESULT([no])
+		FIND_FILE([lib$1.so],[$2],[$3],[$4])
 	])
 ])
 
@@ -182,6 +213,15 @@ CHECK_PTHREAD
 AC_SUBST(PTHREAD_FLAGS)
 AC_SUBST(PTHREAD_LIBS)
 
+# png
+
+PNG_LIBS="-lpng"
+FIND_LIBRARY([png],[/usr/lib /usr/local/lib],
+[
+	PNG_LIBS="$PNG_LIBS -L$FILE_DIR"
+])
+AC_SUBST(PNG_LIBS)
+
 # QT
 
 AC_ARG_WITH(qt-dir,        [  --with-qt-dir=DIR       qt-dir in DIR])
@@ -254,6 +294,10 @@ FIND_HEADER([libintl.h],[/usr/include /usr/local/include],
 [
 	CPPFLAGS="$CPPFLAGS -I$FILE_DIR"
 ])
+FIND_LIBRARY([intl],[/usr/lib /usr/local/lib],
+[
+	LIBS="$LIBS -L$FILE_DIR"
+],[ ])
 AM_GNU_GETTEXT([external])
 
 ########################################################################
