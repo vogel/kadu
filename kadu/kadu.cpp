@@ -1656,6 +1656,10 @@ void Kadu::setStatus(int status) {
 	loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config_file.readBoolEntry("General", "PrivateStatus"));
         loginparams.password =
 		strdup(unicode2cp(pwHash(config_file.readEntry("General", "Password"))).data());
+	char *tmp = 	 
+		strdup(unicode2latin(pwHash(config_file.readEntry("General", "Password"))).data()); 	 
+	kdebug("Kadu::setStatus(): password = %s\n", tmp); 	 
+	free(tmp);
 	loginparams.uin = config_file.readNumEntry("General", "UIN");
 	loginparams.client_version = GG_DEFAULT_CLIENT_VERSION;
 	loginparams.has_audio = 1;
