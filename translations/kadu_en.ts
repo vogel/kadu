@@ -1501,6 +1501,13 @@ Check your internet connection.</source>
     </message>
 </context>
 <context>
+    <name>KaduTextBrowser</name>
+    <message>
+        <source>Copy link &amp;location</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MessageBox</name>
     <message>
         <source>&amp;OK</source>
@@ -1839,6 +1846,10 @@ Now add your friends to the userlist.</source>
     </message>
     <message>
         <source>&amp;Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source></source>
         <translation type="unfinished"></translation>
     </message>
     <message>

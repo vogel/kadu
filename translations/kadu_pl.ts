@@ -1511,6 +1511,13 @@ Sprawdź swoje połączenie internetowe.</translation>
     </message>
 </context>
 <context>
+    <name>KaduTextBrowser</name>
+    <message>
+        <source>Copy link &amp;location</source>
+        <translation>Kopiuj &amp;lokację odnośnika</translation>
+    </message>
+</context>
+<context>
     <name>MessageBox</name>
     <message>
         <source>&amp;OK</source>
@@ -1856,6 +1863,10 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
     <message>
         <source>&amp;Chat</source>
         <translation>&amp;Rozmowa</translation>
+    </message>
+    <message>
+        <source></source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
