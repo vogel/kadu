@@ -65,8 +65,7 @@ rMessage::rMessage(const QString & nick, int msgclass, UinsList uins, QString &m
 	lejbel = new QLabel(i18n("Sender: "),this);
 	lejbel->setGeometry(5,5,200,10);
 
-	QLineEdit *sendere = new QLineEdit(this);
-	sendere->setText(sender);
+	QLineEdit *sendere = new QLineEdit(sender,this);
 	sendere->setReadOnly(true);
 
 	QLabel *klejbel = new QLabel(i18n("Class: "),this);
@@ -123,10 +122,8 @@ rMessage::rMessage(const QString & nick, int msgclass, UinsList uins, QString &m
 //	UserBox::all_refresh();
 
 	QPushButton * btn;
-	btn = new QPushButton (this);
+	btn = new QPushButton(QIconSet(QPixmap((const char**)reply_ico)),i18n("&Reply"),this);
 	btn->setGeometry(220,195,80,20);
-	btn->setText(i18n("&Reply"));
-	btn->setIconSet(QIconSet(QPixmap((const char**)reply_ico)));
 	connect(btn, SIGNAL(clicked()), this, SLOT(replyMessage()));
 
 	if (sysmsg)
@@ -135,9 +132,7 @@ rMessage::rMessage(const QString & nick, int msgclass, UinsList uins, QString &m
 		strncpy(tmprcvr, sender, 255);
 
 	QPushButton *closebtn;
-	closebtn = new QPushButton(this);
-	closebtn->setText(i18n("&Close"));
-	closebtn->setIconSet(QIconSet(loadIcon("stop.png")));
+	closebtn = new QPushButton(QIconSet(loadIcon("stop.png")),i18n("&Close"),this);
 	connect(closebtn, SIGNAL(clicked()), this, SLOT(cleanUp()));
 
 	QGridLayout *grid = new QGridLayout(this,3,5,3,3);
@@ -195,9 +190,8 @@ Message::Message (const QString & nick, bool tchat, QWidget *parent, const char 
 	nicknamelab = new QLabel(i18n("Recipient"),this);
 	nicknamelab->setGeometry(5,5,65,20);
 
-	nickedit = new QLineEdit(this);
+	nickedit = new QLineEdit(nicksnd,this);
 	nickedit->setGeometry(70, 5, 80, 20);
-	nickedit->setText(nicksnd);
 	nickedit->setReadOnly(true);
 
 	statuslab = new QLabel(i18n("Status"),this);
@@ -218,26 +212,20 @@ Message::Message (const QString & nick, bool tchat, QWidget *parent, const char 
 	body->setWordWrap(QMultiLineEdit::WidgetWidth);
 	body->setFont(config.fonts.chat);
 
-	sendbtn = new QPushButton (this);
+	sendbtn = new QPushButton(QIconSet(loadIcon("forward.png")),i18n("&Send"),this);
 	sendbtn->setGeometry(240,185,60,20);
-	sendbtn->setText(i18n("&Send"));
-	sendbtn->setIconSet(QIconSet(loadIcon("forward.png")));
 	connect(sendbtn, SIGNAL(clicked()), this, SLOT(commitSend()));
 	QToolTip::add(sendbtn, i18n("Sends message. Hit CTRL+Enter or ALT+S for shortcut"));
 
-	closebtn = new QPushButton (this);
+	closebtn = new QPushButton(QIconSet(loadIcon("stop.png")),i18n("&Close"),this);
 	closebtn->setGeometry(170, 185, 60, 20);
-	closebtn->setText(i18n("&Close"));
-	closebtn->setIconSet(QIconSet(loadIcon("stop.png")));
 	connect(closebtn, SIGNAL(clicked()), this, SLOT(reject()));
 	QHButtonGroup *btngrp = new QHButtonGroup(this);
 
-	b_chat = new QRadioButton(btngrp);
-	b_chat->setText(i18n("C&hat"));
+	b_chat = new QRadioButton(i18n("C&hat"),btngrp);
 	QToolTip::add(b_chat, i18n("This option sends the message as a chat event"));
 
-	QRadioButton *b_msg = new QRadioButton(btngrp);
-	b_msg->setText(i18n("&Mesg"));
+	QRadioButton *b_msg = new QRadioButton(i18n("&Mesg"),btngrp);
 	if (!tchat)
 		b_msg->setChecked(true);
 	else

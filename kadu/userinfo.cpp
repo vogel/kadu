@@ -56,33 +56,26 @@ void UserInfo::setupTab1() {
 	QLineEdit *e_status = new QLineEdit(box);
 
 	QLabel *l_nickname = new QLabel(i18n("Nickname"),box);
-	e_nickname = new QLineEdit(box);
+	e_nickname = new QLineEdit(puser->nickname,box);
 
 	QLabel *l_firstname = new QLabel(i18n("First name"),box);
-	e_firstname = new QLineEdit(box);
+	e_firstname = new QLineEdit(puser->first_name,box);
 
 	QLabel *l_lastname = new QLabel(i18n("Surname"),box);
-	e_lastname = new QLineEdit(box);
+	e_lastname = new QLineEdit(puser->last_name,box);
 
 	QLabel *l_altnick = new QLabel(i18n("AltNick"),box);
 	e_altnick = new QLineEdit(box);
 
 	QLabel *l_mobile = new QLabel(i18n("Mobile"),box);
-	e_mobile = new QLineEdit(box);
+	e_mobile = new QLineEdit(puser->mobile,box);
 
 	QLabel *l_group = new QLabel(i18n("Group"),box);
-	e_group = new QLineEdit(box);
+	e_group = new QLineEdit(puser->group,box);
 
 	QLabel *l_addr = new QLabel(i18n("Address"),box);
 	e_addr = new QLineEdit(box);
 	e_addr->setReadOnly(true);
-
-	e_nickname->setText(puser->nickname);
-	e_altnick->setText(puser->altnick);
-	e_firstname->setText(puser->first_name);
-	e_lastname->setText(puser->last_name);
- 	e_mobile->setText(puser->mobile);	
-	e_group->setText(puser->group);
 	
 	if (puser->ip) {
 		struct in_addr in;

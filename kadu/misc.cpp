@@ -162,15 +162,11 @@ ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * na
 	setWFlags(Qt::WDestructiveClose);
 	setCaption(i18n("Select description"));
 
-	desc = new QLineEdit(this);
-	desc->setMaxLength(40);
+	desc = new QLineEdit(own_description,this);
+	desc->setMaxLength(GG_STATUS_DESCR_MAXSIZE);
 
-	QPushButton *okbtn;
-	okbtn = new QPushButton(this);
-	okbtn->setText(i18n("&OK"));
-	QPushButton *cancelbtn;
-	cancelbtn = new QPushButton(this);
-	cancelbtn->setText(i18n("&Cancel"));
+	l_yetlen = new QLabel(" "+QString::number(GG_STATUS_DESCR_MAXSIZE - desc->text().length()),this);
+	connect(desc, SIGNAL(textChanged(const QString&)), this, SLOT(updateYetLen(const QString&)));
 
 	char **gg_xpm;
 	switch (nr) {
@@ -189,20 +185,23 @@ ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * na
 		default:
 			gg_xpm = (char **)gg_inactdescr_xpm;
 		}
-	okbtn->setIconSet(QIconSet(QPixmap((const char**)gg_xpm)));
+
+	QPushButton *okbtn = new QPushButton(QIconSet(QPixmap((const char**)gg_xpm)),i18n("&OK"),this);
+	QPushButton *cancelbtn = new QPushButton(i18n("&Cancel"),this);
+	
 
 	QObject::connect(okbtn, SIGNAL(clicked()), this, SLOT(okbtnPressed()));
 	QObject::connect(cancelbtn, SIGNAL(clicked()), this, SLOT(cancelbtnPressed()));
 
 	QGridLayout *grid = new QGridLayout(this, 2, 2);
 
-	grid->addMultiCellWidget(desc, 0, 0, 0, 1);
-	grid->addWidget(cancelbtn, 1, 1, Qt::AlignRight);
-	grid->addWidget(okbtn, 1, 0, Qt::AlignRight);
+	grid->addMultiCellWidget(desc, 0, 0, 0, 2);
+	grid->addWidget(l_yetlen, 1, 0);
+	grid->addWidget(okbtn, 1, 1, Qt::AlignRight);
+	grid->addWidget(cancelbtn, 1, 2, Qt::AlignRight);
 	grid->addColSpacing(0, 200);
 
 	resize(250,80);
-	desc->setText(own_description);
 	desc->selectAll();
 }
 
@@ -217,3 +216,6 @@ void ChooseDescription::cancelbtnPressed() {
 //	close();
 }
 
+void ChooseDescription::updateYetLen(const QString& text) {
+	l_yetlen->setText(" "+QString::number(GG_STATUS_DESCR_MAXSIZE - text.length()));
+}

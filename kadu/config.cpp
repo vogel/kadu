@@ -330,19 +330,16 @@ void ConfigDialog::setupTab1(void) {
 
 	QLabel *l_uin = new QLabel(i18n("Uin"),userinfo);
 
-	e_uin = new QLineEdit(userinfo);
-	e_uin->setText(QString::number(config.uin));
+	e_uin = new QLineEdit(QString::number(config.uin),userinfo);
 
 	QLabel *l_password = new QLabel(i18n("Password"),userinfo);
 
-	e_password = new QLineEdit(userinfo);
+	e_password = new QLineEdit(config.password,userinfo);
 	e_password->setEchoMode(QLineEdit::Password);
-	e_password->setText(config.password);
 
 	QLabel *l_nick = new QLabel(i18n("Nick"),userinfo);
 	
-	e_nick = new QLineEdit(userinfo);
-	e_nick->setText(config.nick);
+	e_nick = new QLineEdit(config.nick,userinfo);
 	
 	/* SMS begin */
 	QVGroupBox *smsvgrp = new QVGroupBox(box);
@@ -353,16 +350,14 @@ void ConfigDialog::setupTab1(void) {
 	smshbox1 = new QHBox(smsvgrp);
 	smshbox1->setSpacing(5);
 	QLabel *l_smsapp = new QLabel(i18n("Custom SMS application"),smshbox1);
-	e_smsapp = new QLineEdit(smshbox1);
-	e_smsapp->setText(config.smsapp);
+	e_smsapp = new QLineEdit(config.smsapp,smshbox1);
 
 	smshbox2 = new QHBox(smsvgrp);
 	smshbox2->setSpacing(5);
 	b_smscustomconf = new QCheckBox(i18n("SMS custom string"),smshbox2);
 	QToolTip::add(b_smscustomconf,i18n("Check this box if your sms application doesn't understand arguments: number \"message\"\nArguments should be separated with spaces. %n argument is converted to number, %m to message"));
 
-	e_smsconf = new QLineEdit(smshbox2);
-	e_smsconf->setText(config.smsconf);
+	e_smsconf = new QLineEdit(config.smsconf,smshbox2);
 
 	if (config.smsbuildin)
 	{
@@ -384,10 +379,7 @@ void ConfigDialog::setupTab1(void) {
 
 	QHGroupBox *awygrp = new QHGroupBox(box);
 	QLabel *l_autoaway = new QLabel(i18n("Set status to away after "),awygrp);
-
-	e_autoawaytime = new QLineEdit(awygrp);
-	e_autoawaytime->setText(QString::number(config.autoawaytime));
-
+	e_autoawaytime = new QLineEdit(QString::number(config.autoawaytime),awygrp);
 	QLabel *l_autoaway2 = new QLabel(i18n(" seconds"),awygrp);
 
 	if (config.autoaway)
@@ -403,9 +395,7 @@ void ConfigDialog::setupTab1(void) {
 	QHBox *box_time = new QHBox(hintgrp);
 	QLabel *l_trayhint = new QLabel(i18n("Tray hints timeout "),box_time);
 
-	e_hinttime = new QLineEdit(box_time);
-	e_hinttime->setText(QString::number(config.hinttime));
-
+	e_hinttime = new QLineEdit(QString::number(config.hinttime),box_time);
 	QLabel *l_trayhint2 = new QLabel(i18n(" seconds"),box_time);
 
 	b_hinterror = new QCheckBox(i18n("Show connection errors in tray hints"),hintgrp);
@@ -489,8 +479,7 @@ void ConfigDialog::setupTab2(void) {
 
 	QHGroupBox *sndgroup = new QHGroupBox(box2);
 	sndgroup->setTitle(i18n("Sound player"));
-	e_soundprog = new QLineEdit(sndgroup);
-	e_soundprog->setText(config.soundprog);
+	e_soundprog = new QLineEdit(config.soundprog,sndgroup);
 
 	QPushButton *f_soundprog = new QPushButton(sndgroup);
 	f_soundprog->setPixmap(loadIcon("fileopen.png"));
@@ -515,17 +504,15 @@ void ConfigDialog::setupTab2(void) {
 	QHGroupBox *msggroup = new QHGroupBox(box2);
 	msggroup->setTitle(i18n("Message sound"));
 
-	e_msgfile = new QLineEdit(msggroup);
-	e_msgfile->setText(config.soundmsg);
+	e_msgfile = new QLineEdit(config.soundmsg,msggroup);
 
-	QPixmap icon;
-	icon = loadIcon("fileopen.png");
+	QPixmap icon = loadIcon("fileopen.png");
+
 	QPushButton *msgsnd = new QPushButton(msggroup);
 	msgsnd->setPixmap(icon);
 	connect(msgsnd, SIGNAL(clicked()), this, SLOT(chooseMsgFile()));
 
-	QPushButton *testsoundmsg = new QPushButton(msggroup);
-	testsoundmsg->setText(i18n("Test"));
+	QPushButton *testsoundmsg = new QPushButton(i18n("Test"),msggroup);
 	connect(testsoundmsg, SIGNAL(clicked()), this, SLOT(chooseMsgTest()));
 
 	b_playchat = new QCheckBox(i18n("Play sounds from a person whilst chatting"),box2);
@@ -543,15 +530,13 @@ void ConfigDialog::setupTab2(void) {
 	QHGroupBox *chatgroup = new QHGroupBox(box2);
 	chatgroup->setTitle(i18n("Chat sound"));
 
-	e_chatfile = new QLineEdit(chatgroup);
-	e_chatfile->setText(config.soundchat);
+	e_chatfile = new QLineEdit(config.soundchat,chatgroup);
 
 	QPushButton *chatsnd = new QPushButton(chatgroup);
 	chatsnd->setPixmap(icon);
 	connect(chatsnd, SIGNAL(clicked()), this, SLOT(chooseChatFile()));
 
-	QPushButton *testsoundchat = new QPushButton(chatgroup);
-	testsoundchat->setText(i18n("Test"));
+	QPushButton *testsoundchat = new QPushButton(i18n("Test"),chatgroup);
 	connect(testsoundchat, SIGNAL(clicked()), this, SLOT(chooseChatTest()));
 
 	QObject::connect(b_playsound, SIGNAL(toggled(bool)), testsoundmsg, SLOT(setEnabled(bool)));
@@ -609,8 +594,7 @@ void ConfigDialog::setupTab3(void) {
 
 	QLabel *l_chatprunedsc1 = new QLabel(i18n("Reduce the number of visible messages to"),prunebox);
 
-	e_chatprunelen = new QLineEdit(prunebox);
-	e_chatprunelen->setText(QString::number(config.chatprunelen));
+	e_chatprunelen = new QLineEdit(QString::number(config.chatprunelen),prunebox);
 
 	if (config.chatprune)
 		b_chatprune->setChecked(true);
@@ -635,8 +619,7 @@ void ConfigDialog::setupTab3(void) {
 	cb_keyslen->setCurrentText("1024");
 	cb_keyslen->setEnabled(false);
 
-	QPushButton *pb_genkeys = new QPushButton(encryptbox);
-	pb_genkeys->setText(i18n("Generate keys"));
+	QPushButton *pb_genkeys = new QPushButton(i18n("Generate keys"),encryptbox);
 
         if (config.encryption) {
 		b_encryption->setChecked(true);
@@ -735,15 +718,13 @@ void ConfigDialog::setupTab4(void) {
 	QHGroupBox *soundbox = new QHGroupBox(notifybox);
 	soundbox->setTitle(i18n("Notify sound"));
 
-	e_soundnotify = new QLineEdit(soundbox);
-	e_soundnotify->setText(config.soundnotify);
+	e_soundnotify = new QLineEdit(config.soundnotify,soundbox);
 
 	QPushButton *nsndget = new QPushButton(soundbox);
 	nsndget->setPixmap(loadIcon("fileopen.png"));
 	connect(nsndget, SIGNAL(clicked()), this, SLOT(chooseNotifyFile()));
 
-	QPushButton *testsoundnotify = new QPushButton(soundbox);
-	testsoundnotify->setText(i18n("Test"));
+	QPushButton *testsoundnotify = new QPushButton(i18n("Test"),soundbox);
 	connect(testsoundnotify, SIGNAL(clicked()), this, SLOT(chooseNotifyTest()));
 
 	b_notifydialog = new QCheckBox(i18n("Notify by dialog box"),notifybox);
@@ -925,8 +906,7 @@ void ConfigDialog::setupTab6(void) {
 	
 	connect(cb_chatselect, SIGNAL(activated(int)), this, SLOT(chooseChatSelect(int)));
 	
-	e_chatcolor = new QLineEdit(chatselectcolor);
-	e_chatcolor->setText(vl_chatcolor[0].name());
+	e_chatcolor = new QLineEdit(vl_chatcolor[0].name(),chatselectcolor);
 	
 	connect(e_chatcolor, SIGNAL(textChanged(const QString&)), this, SLOT(chooseChatLine(const QString&)));
 	
@@ -973,8 +953,7 @@ void ConfigDialog::setupTab6(void) {
 	
 	connect(cb_userboxselect, SIGNAL(activated(int)), this, SLOT(chooseUserboxSelect(int)));
 
-	e_userboxcolor = new QLineEdit(userboxselectcolor);
-	e_userboxcolor->setText(vl_userboxcolor[0].name());
+	e_userboxcolor = new QLineEdit(vl_userboxcolor[0].name(),userboxselectcolor);
 
 	connect(e_userboxcolor, SIGNAL(textChanged(const QString&)), this, SLOT(chooseUserboxLine(const QString&)));
 
@@ -1019,8 +998,7 @@ void ConfigDialog::setupTab6(void) {
 	
 	connect(cb_otherselect, SIGNAL(activated(int)), this, SLOT(chooseOtherSelect(int)));
 
-	e_othercolor = new QLineEdit(otherselectcolor);
-	e_othercolor->setText(vl_othercolor[0].name());
+	e_othercolor = new QLineEdit(vl_othercolor[0].name(),otherselectcolor);
 
 	connect(e_othercolor, SIGNAL(textChanged(const QString&)), this, SLOT(chooseOtherLine(const QString&)));
 

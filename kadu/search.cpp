@@ -36,22 +36,18 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 	QLabel *l_city;
 	QLabel *l_uin;
 
-	b_sendbtn = new QPushButton(this);
-	b_sendbtn->setText(i18n("&Search"));
+	b_sendbtn = new QPushButton(i18n("&Search"),this);
 	b_sendbtn->setAccel(Key_Return);	
 	connect(b_sendbtn, SIGNAL(clicked()), this, SLOT(firstSearch()));
 
-	b_nextbtn = new QPushButton(this);
-	b_nextbtn->setText(i18n("&Next results"));
+	b_nextbtn = new QPushButton(i18n("&Next results"),this);
 	connect(b_nextbtn, SIGNAL(clicked()), this, SLOT(nextSearch()));
 
 	QPushButton *b_clrbtn;
-	b_clrbtn = new QPushButton(this);
-	b_clrbtn->setText(i18n("C&lear list"));
+	b_clrbtn = new QPushButton(i18n("C&lear list"),this);
 	connect(b_clrbtn, SIGNAL(clicked()), this, SLOT(clearResults()));
 
-	b_addbtn = new QPushButton(this);
-	b_addbtn->setText(i18n("&Add User"));
+	b_addbtn = new QPushButton(i18n("&Add User"),this);
 	connect(b_addbtn, SIGNAL(clicked()), this, SLOT(AddButtonClicked()));
 
 	QHBoxLayout* CommandLayout = new QHBoxLayout(5);
@@ -99,13 +95,11 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchU
 
 	QHButtonGroup * btngrp = new QHButtonGroup(this);
 	btngrp->setTitle(i18n("Search criteria"));
-	r_pers = new QRadioButton(btngrp);
-	r_pers->setText(i18n("&Personal data"));
+	r_pers = new QRadioButton(i18n("&Personal data"),btngrp);
 	r_pers->setChecked(true);
 	QToolTip::add(r_pers, i18n("Search using the personal data typed above (name, nickname)..."));
 
-	r_uin = new QRadioButton(btngrp);
-	r_uin->setText(i18n("&Uin number"));
+	r_uin = new QRadioButton(i18n("&Uin number"),btngrp);
 	QToolTip::add(r_uin, i18n("Search for this UIN exclusively"));
 
 	connect(results, SIGNAL(selectionChanged(QListViewItem *)), this, SLOT(selectionChanged(QListViewItem *)));

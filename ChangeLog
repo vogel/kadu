@@ -19,6 +19,9 @@
   komunikatów debuguj±cych, dziêki czemu jest mniejsze i szybsze (adrian)
 * configure: poprawka wykrywania QT (adrian)
 * poprawki kosmetyczne i optymalizacja (mast3r)
+* optymalizacja reszty kodu, w dialogu do opisu statusu jest liczba
+  informuj±ca ile znaków mo¿na jeszcze wprowadziæ, a tak¿e max. d³ugo¶æ opisu jest
+  brana ze sta³ej deklerowanej w libgadu.h (mast3r)
 
 +++ wersja 0.3.3-rc3
 * sensowne potwierdzenie usuniêcia kontaktu (adrian)

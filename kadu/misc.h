@@ -6,6 +6,7 @@
 #include <qlineedit.h>
 #include <qstring.h>
 #include <qpixmap.h>
+#include <qlabel.h>
 #include <libintl.h>
 
 #include "libgadu.h"
@@ -56,10 +57,12 @@ class ChooseDescription : public QDialog {
 
 	private:
 		QLineEdit * desc;
+		QLabel *l_yetlen;
 
 	private slots:
 		void okbtnPressed();
 		void cancelbtnPressed();
+		void updateYetLen(const QString&);
 
 };
 

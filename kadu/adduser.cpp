@@ -46,12 +46,10 @@ Adduser::Adduser(QDialog* parent, const char *name) {
 
 	effect = new QLabel(this);
 
-	QPushButton *b_commit = new QPushButton(this);
-	b_commit->setText(i18n("&Add"));
+	QPushButton *b_commit = new QPushButton(i18n("&Add"),this);
 	b_commit->setAccel(Key_Return);	
 
-	QPushButton *b_cancel = new QPushButton(this);
-	b_cancel->setText(i18n("&Cancel"));
+	QPushButton *b_cancel = new QPushButton(i18n("&Cancel"),this);
 
 	QObject::connect(e_nickname, SIGNAL(textChanged(const QString &)), e_altnick,
 		SLOT(setText(const QString &)));

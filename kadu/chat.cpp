@@ -157,10 +157,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	QToolTip::add(history, i18n("Show history"));
 
 	QPushButton *whois = new QPushButton(buttontray);
-	QPixmap p_whois;
-	p_whois = loadIcon("viewmag.png");
-
-	whois->setPixmap(p_whois);
+	whois->setPixmap(loadIcon("viewmag.png"));
 	QToolTip::add(whois, i18n("Lookup user info"));
 
 	edtbuttontray->setStretchFactor(edt, 50);
@@ -175,17 +172,13 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 	QHBox *fillerbox = new QHBox(btnpart);
 
-	cancelbtn = new QPushButton(btnpart);
-	cancelbtn->setText(i18n("&Cancel"));
+	cancelbtn = new QPushButton(QIconSet(loadIcon("stop.png")),i18n("&Cancel"),btnpart);
 	cancelbtn->setFixedWidth(120);
-	cancelbtn->setIconSet(QIconSet(loadIcon("stop.png")));
 	QToolTip::add(cancelbtn, i18n("Cancel waiting for delivery"));
 	cancelbtn->hide();
 
-	sendbtn = new QPushButton(btnpart);
-	sendbtn->setText(i18n("&Send"));
+	sendbtn = new QPushButton(QIconSet(loadIcon("forward.png")),i18n("&Send"),btnpart);
 	sendbtn->setFixedWidth(120);
-	sendbtn->setIconSet(QIconSet(loadIcon("forward.png")));
 	connect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
 	QAccel *acc = new QAccel(this);
 	acc->connectItem(acc->insertItem(Key_Return + CTRL), this, SLOT(sendMessage()));

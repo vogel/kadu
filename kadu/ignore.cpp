@@ -29,12 +29,10 @@ Ignored::Ignored(QDialog *parent, const char *name) : QDialog (parent, name) {
 
 	getList();
 
-	QPushButton *b_del = new QPushButton(this);
-	b_del->setText(i18n("Delete"));
+	QPushButton *b_del = new QPushButton(i18n("Delete"),this);
 	QObject::connect(b_del, SIGNAL(clicked()), this, SLOT(remove()));
 
-	QPushButton *b_add = new QPushButton(this);
-	b_add->setText(i18n("Add"));
+	QPushButton *b_add = new QPushButton(i18n("Add"),this);
 	QObject::connect(b_add, SIGNAL(clicked()), this, SLOT(add()));
 
 	e_uin = new QLineEdit(this);
