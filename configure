@@ -4469,7 +4469,6 @@ echo "${ECHO_T}no" >&6
 
 	echo "$as_me:$LINENO: checking for libpng.so in specified directiories" >&5
 echo $ECHO_N "checking for libpng.so in specified directiories... $ECHO_C" >&6
-	echo "DIRS: $with_libs /usr/lib /usr/local/lib"
 	FILE_DIR=
 	for dir in $with_libs /usr/lib /usr/local/lib
 	do
@@ -4491,7 +4490,6 @@ echo "${ECHO_T}not found" >&6
 
 	echo "$as_me:$LINENO: checking for libpng.dylib in specified directiories" >&5
 echo $ECHO_N "checking for libpng.dylib in specified directiories... $ECHO_C" >&6
-	echo "DIRS: $with_libs /usr/lib /usr/local/lib"
 	FILE_DIR=
 	for dir in $with_libs /usr/lib /usr/local/lib
 	do
@@ -4586,7 +4584,6 @@ echo "${ECHO_T}no" >&6
 
 	echo "$as_me:$LINENO: checking for qwidget.h in specified directiories" >&5
 echo $ECHO_N "checking for qwidget.h in specified directiories... $ECHO_C" >&6
-	echo "DIRS: $with_includes $QTDIR/include /usr/lib/qt/include /usr/lib/qt3/include /usr/local/qt/include /usr/include /usr/include/qt /usr/include/qt3 /usr/local/include /usr/X11R6/include /usr/X11R6/include/qt /usr/X11R6/include/qt3 /sw/include/qt"
 	FILE_DIR=
 	for dir in $with_includes $QTDIR/include /usr/lib/qt/include /usr/lib/qt3/include /usr/local/qt/include /usr/include /usr/include/qt /usr/include/qt3 /usr/local/include /usr/X11R6/include /usr/X11R6/include/qt /usr/X11R6/include/qt3 /sw/include/qt
 	do
@@ -4681,7 +4678,6 @@ echo "${ECHO_T}no" >&6
 
 	echo "$as_me:$LINENO: checking for libqt-mt.so in specified directiories" >&5
 echo $ECHO_N "checking for libqt-mt.so in specified directiories... $ECHO_C" >&6
-	echo "DIRS: $with_libs $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib"
 	FILE_DIR=
 	for dir in $with_libs $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib
 	do
@@ -4703,7 +4699,6 @@ echo "${ECHO_T}not found" >&6
 
 	echo "$as_me:$LINENO: checking for libqt-mt.dylib in specified directiories" >&5
 echo $ECHO_N "checking for libqt-mt.dylib in specified directiories... $ECHO_C" >&6
-	echo "DIRS: $with_libs $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib"
 	FILE_DIR=
 	for dir in $with_libs $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib
 	do
@@ -4743,7 +4738,6 @@ rm -f conftest.err conftest.$ac_objext \
 
 	echo "$as_me:$LINENO: checking for moc in specified directiories" >&5
 echo $ECHO_N "checking for moc in specified directiories... $ECHO_C" >&6
-	echo "DIRS: $with_apps $QTDIR/bin /usr/lib/qt3/bin /usr/local/qt/bin /usr/lib/qt/bin /usr/bin /bin /usr/local/bin /usr/X11R6/bin"
 	FILE_DIR=
 	for dir in $with_apps $QTDIR/bin /usr/lib/qt3/bin /usr/local/qt/bin /usr/lib/qt/bin /usr/bin /bin /usr/local/bin /usr/X11R6/bin
 	do
@@ -6240,7 +6234,6 @@ echo "${ECHO_T}no" >&6
 
 	echo "$as_me:$LINENO: checking for libgadu.h in specified directiories" >&5
 echo $ECHO_N "checking for libgadu.h in specified directiories... $ECHO_C" >&6
-	echo "DIRS: $with_includes $with_existing_libgadu $with_existing_libgadu/include"
 	FILE_DIR=
 	for dir in $with_includes $with_existing_libgadu $with_existing_libgadu/include
 	do
@@ -6328,7 +6321,6 @@ echo "${ECHO_T}no" >&6
 
 	echo "$as_me:$LINENO: checking for libgadu.so in specified directiories" >&5
 echo $ECHO_N "checking for libgadu.so in specified directiories... $ECHO_C" >&6
-	echo "DIRS: $with_libs $with_existing_libgadu $with_existing_libgadu/lib"
 	FILE_DIR=
 	for dir in $with_libs $with_existing_libgadu $with_existing_libgadu/lib
 	do
@@ -6350,7 +6342,6 @@ echo "${ECHO_T}not found" >&6
 
 	echo "$as_me:$LINENO: checking for libgadu.dylib in specified directiories" >&5
 echo $ECHO_N "checking for libgadu.dylib in specified directiories... $ECHO_C" >&6
-	echo "DIRS: $with_libs $with_existing_libgadu $with_existing_libgadu/lib"
 	FILE_DIR=
 	for dir in $with_libs $with_existing_libgadu $with_existing_libgadu/lib
 	do
@@ -6547,22 +6538,22 @@ echo "$as_me: error: $mod download failed!" >&2;}
 		if test -f modules/$mod/spec; then \
 			echo; \
 			echo ">>> Configuring $mod module..."; \
-			MODULE_LIBS=; \
-			MODULE_LIBS_PATH=; \
-			MODULE_INCLUDES=; \
-			MODULE_INCLUDES_PATH=; \
-			MODULE_TOOLS=; \
-			MODULE_CONFIGURE_CMD=; \
-			MODULE_LDFLAGS=; \
-			MODULE_CXXFLAGS=; \
-			MODULE_DIR=../modules/$mod; \
-			. ./modules/$mod/spec; \
-			echo "MODULE_LIBS:           $MODULE_LIBS"; \
-			echo "MODULE_LIBS_PATH:      $MODULE_LIBS_PATH"; \
-			echo "MODULE_INCLUDES:       $MODULE_INCLUDES"; \
-			echo "MODULE_INCLUDES_PATH:  $MODULE_INCLUDES_PATH"; \
-			echo "MODULE_TOOLS:          $MODULE_TOOLS"; \
-			echo "MODULE_CONFIGURE_CMD:  $MODULE_CONFIGURE_CMD"; \
+			MODULE_LIBS= && \
+			MODULE_LIBS_PATH= && \
+			MODULE_INCLUDES= && \
+			MODULE_INCLUDES_PATH= && \
+			MODULE_TOOLS= && \
+			MODULE_CONFIGURE_CMD= && \
+			MODULE_LDFLAGS= && \
+			MODULE_CXXFLAGS= && \
+			MODULE_DIR=../modules/$mod && \
+			. ./modules/$mod/spec && \
+			echo "MODULE_LIBS:           $MODULE_LIBS" && \
+			echo "MODULE_LIBS_PATH:      $MODULE_LIBS_PATH" && \
+			echo "MODULE_INCLUDES:       $MODULE_INCLUDES" && \
+			echo "MODULE_INCLUDES_PATH:  $MODULE_INCLUDES_PATH" && \
+			echo "MODULE_TOOLS:          $MODULE_TOOLS" && \
+			echo "MODULE_CONFIGURE_CMD:  $MODULE_CONFIGURE_CMD" && \
 			for lib in $MODULE_LIBS; do \
 
 	echo "$as_me:$LINENO: checking if lib$lib.so/dylib library is in system directories" >&5
@@ -6624,7 +6615,6 @@ echo "${ECHO_T}no" >&6
 
 	echo "$as_me:$LINENO: checking for lib$lib.so in specified directiories" >&5
 echo $ECHO_N "checking for lib$lib.so in specified directiories... $ECHO_C" >&6
-	echo "DIRS: $with_libs $MODULE_LIBS_PATH"
 	FILE_DIR=
 	for dir in $with_libs $MODULE_LIBS_PATH
 	do
@@ -6646,7 +6636,6 @@ echo "${ECHO_T}not found" >&6
 
 	echo "$as_me:$LINENO: checking for lib$lib.dylib in specified directiories" >&5
 echo $ECHO_N "checking for lib$lib.dylib in specified directiories... $ECHO_C" >&6
-	echo "DIRS: $with_libs $MODULE_LIBS_PATH"
 	FILE_DIR=
 	for dir in $with_libs $MODULE_LIBS_PATH
 	do
@@ -6678,7 +6667,7 @@ rm -f conftest.err conftest.$ac_objext \
       conftest$ac_exeext conftest.$ac_ext
  \
 				MODULE_LDFLAGS="$MODULE_LDFLAGS -l$lib"; \
-			done; \
+			done && \
 			for hdr in $MODULE_INCLUDES; do \
 
 	echo "$as_me:$LINENO: checking if $hdr header is in system directories" >&5
@@ -6738,7 +6727,6 @@ echo "${ECHO_T}no" >&6
 
 	echo "$as_me:$LINENO: checking for $hdr in specified directiories" >&5
 echo $ECHO_N "checking for $hdr in specified directiories... $ECHO_C" >&6
-	echo "DIRS: $with_includes $MODULE_INCLUDES_PATH"
 	FILE_DIR=
 	for dir in $with_includes $MODULE_INCLUDES_PATH
 	do
@@ -6765,7 +6753,7 @@ echo "$as_me: error: $hdr not found!" >&2;}
 fi
 rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
  \
-			done; \
+			done && \
 			for tool in $MODULE_TOOLS; do \
 
 	echo "$as_me:$LINENO: checking if $tool tool is available" >&5
@@ -6789,7 +6777,7 @@ echo "$as_me: error: $tool not found!" >&2;}
 
 	fi
  \
-			done; \
+			done && \
 			if test -n "$MODULE_CONFIGURE_CMD"; then \
 				if eval "$MODULE_CONFIGURE_CMD"; then \
 					echo "Additional module configuration command successed."; \
@@ -6798,14 +6786,14 @@ echo "$as_me: error: $tool not found!" >&2;}
 echo "$as_me: error: Additional module configuration command failed!" >&2;}
    { (exit 1); exit 1; }; }; \
 				fi; \
-			fi; \
-			echo -n "$MODULE_CXXFLAGS" > modules/$mod/cxxflags; \
+			fi && \
+			echo -n "$MODULE_CXXFLAGS" > modules/$mod/cxxflags && \
 			if test -z `expr " $shared_modules " : ".* \($mod\) "`; then \
 				echo -n > modules/$mod/ldflags; \
 				static_modules_ldflags="$static_modules_ldflags $MODULE_LDFLAGS"; \
 			else \
 				echo -n "$MODULE_LDFLAGS" > modules/$mod/ldflags; \
-			fi; \
+			fi || exit 1; \
 		fi; \
 	done
 

@@ -59,7 +59,6 @@ AC_DEFUN(TRY_LINK_EXECINFO,[
 # $4 - action if not found (default is error message)
 AC_DEFUN(FIND_FILE,[
 	AC_MSG_CHECKING([for $1 in specified directiories])
-	echo "DIRS: $2"
 	FILE_DIR=
 	for dir in $2
 	do
@@ -233,22 +232,22 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 		if test -f modules/$mod/spec; then \
 			echo; \
 			echo ">>> Configuring $mod module..."; \
-			MODULE_LIBS=; \
-			MODULE_LIBS_PATH=; \
-			MODULE_INCLUDES=; \
-			MODULE_INCLUDES_PATH=; \
-			MODULE_TOOLS=; \
-			MODULE_CONFIGURE_CMD=; \
-			MODULE_LDFLAGS=; \
-			MODULE_CXXFLAGS=; \
-			MODULE_DIR=../modules/$mod; \
-			. ./modules/$mod/spec; \
-			echo "MODULE_LIBS:           $MODULE_LIBS"; \
-			echo "MODULE_LIBS_PATH:      $MODULE_LIBS_PATH"; \
-			echo "MODULE_INCLUDES:       $MODULE_INCLUDES"; \
-			echo "MODULE_INCLUDES_PATH:  $MODULE_INCLUDES_PATH"; \
-			echo "MODULE_TOOLS:          $MODULE_TOOLS"; \
-			echo "MODULE_CONFIGURE_CMD:  $MODULE_CONFIGURE_CMD"; \
+			MODULE_LIBS= && \
+			MODULE_LIBS_PATH= && \
+			MODULE_INCLUDES= && \
+			MODULE_INCLUDES_PATH= && \
+			MODULE_TOOLS= && \
+			MODULE_CONFIGURE_CMD= && \
+			MODULE_LDFLAGS= && \
+			MODULE_CXXFLAGS= && \
+			MODULE_DIR=../modules/$mod && \
+			. ./modules/$mod/spec && \
+			echo "MODULE_LIBS:           $MODULE_LIBS" && \
+			echo "MODULE_LIBS_PATH:      $MODULE_LIBS_PATH" && \
+			echo "MODULE_INCLUDES:       $MODULE_INCLUDES" && \
+			echo "MODULE_INCLUDES_PATH:  $MODULE_INCLUDES_PATH" && \
+			echo "MODULE_TOOLS:          $MODULE_TOOLS" && \
+			echo "MODULE_CONFIGURE_CMD:  $MODULE_CONFIGURE_CMD" && \
 			for lib in $MODULE_LIBS; do \
 				FIND_LIBRARY([$lib],[$MODULE_LIBS_PATH],
 				[
@@ -256,30 +255,30 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 				],,
 				[$MODULE_LDFLAGS]) \
 				MODULE_LDFLAGS="$MODULE_LDFLAGS -l$lib"; \
-			done; \
+			done && \
 			for hdr in $MODULE_INCLUDES; do \
 				FIND_HEADER([$hdr],[$MODULE_INCLUDES_PATH],
 				[
 					MODULE_CXXFLAGS="$MODULE_CXXFLAGS -I$FILE_DIR"
 				]) \
-			done; \
+			done && \
 			for tool in $MODULE_TOOLS; do \
 				FIND_TOOL([$tool]) \
-			done; \
+			done && \
 			if test -n "$MODULE_CONFIGURE_CMD"; then \
 				if eval "$MODULE_CONFIGURE_CMD"; then \
 					echo "Additional module configuration command successed."; \
 				else \
 					AC_MSG_ERROR([Additional module configuration command failed!]); \
 				fi; \
-			fi; \
-			echo -n "$MODULE_CXXFLAGS" > modules/$mod/cxxflags; \
+			fi && \
+			echo -n "$MODULE_CXXFLAGS" > modules/$mod/cxxflags && \
 			if test -z `expr " $shared_modules " : ".* \($mod\) "`; then \
 				echo -n > modules/$mod/ldflags; \
 				static_modules_ldflags="$static_modules_ldflags $MODULE_LDFLAGS"; \
 			else \
 				echo -n "$MODULE_LDFLAGS" > modules/$mod/ldflags; \
-			fi; \
+			fi || exit 1; \
 		fi; \
 	done
 ])
