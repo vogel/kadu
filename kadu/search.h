@@ -20,6 +20,7 @@
 #include <qlistview.h>
 #include <qlabel.h>
 #include <qvaluelist.h>
+#include "libgadu.h"
 
 class SearchDialog : public QDialog {
 	Q_OBJECT
