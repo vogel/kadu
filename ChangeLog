@@ -16,6 +16,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodano pole kontaktu oraz podpisu w oknie wysylania smsow (pawel_p)
 * poprawna obs³uga UseTLS (chilek)
 * "Change password" => "Change password/email" (chilek)
+* "Default status" w konfiguracji powinien t³umaczyæ siê na inne jêzyki (chilek)
 
 +++ wersja 0.3.5 (05.11.2003)
 * dalsza czê¶æ przeróbek mechanizmu konfiguracji. brakuje jeszcze

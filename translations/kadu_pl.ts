@@ -350,7 +350,7 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
         <translation> sekundach</translation>
     </message>
     <message>
-        <source>Default Status</source>
+        <source>Default status</source>
         <translation>Status domyślny</translation>
     </message>
     <message>

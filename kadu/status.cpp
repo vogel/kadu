@@ -209,7 +209,7 @@ void AutoAwayTimer::initModule()
 	QT_TRANSLATE_NOOP("@default", "Enable autoaway");
 	QT_TRANSLATE_NOOP("@default", "Set status to away after ");
 	QT_TRANSLATE_NOOP("@default", " seconds");
-	QT_TRANSLATE_NOOP("@default", "Default Status");
+	QT_TRANSLATE_NOOP("@default", "Default status");
 	QT_TRANSLATE_NOOP("@default", "On shutdown, set description:");
 	QT_TRANSLATE_NOOP("@default", "Enable dock icon");
 	QT_TRANSLATE_NOOP("@default", "Start docked");
