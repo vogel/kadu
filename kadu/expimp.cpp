@@ -176,6 +176,18 @@ void UserlistImport::socketEvent() {
 		return;
 		}
 
+	if (gg_http->state == GG_STATE_CONNECTING) {
+		fprintf(stderr, "KK ImportUserlist::socketEvent(): changing QSocketNotifiers.\n");
+
+		deleteSocketNotifiers();
+
+		snr = new QSocketNotifier(gg_http->fd, QSocketNotifier::Read, this);
+		connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
+
+		snw = new QSocketNotifier(gg_http->fd, QSocketNotifier::Write, this);
+		connect(snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
+		}
+
 	if (gg_http->state == GG_STATE_DONE && gg_http->data == NULL) {
 		fprintf(stderr, "KK ImportUserlist::socketEvent(): No results. Exit.\n");
 		QMessageBox::information(this, "No results", i18n("Your action yielded no results") );
@@ -355,6 +367,18 @@ void UserlistExport::socketEvent() {
 		gg_userlist_put_free(gg_http);
 		gg_http = NULL;
 		return;
+		}
+
+	if (gg_http->state == GG_STATE_CONNECTING) {
+		fprintf(stderr, "KK ExportUserlist::socketEvent(): changing QSocketNotifiers.\n");
+
+		deleteSocketNotifiers();
+
+		snr = new QSocketNotifier(gg_http->fd, QSocketNotifier::Read, this);
+		connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
+
+		snw = new QSocketNotifier(gg_http->fd, QSocketNotifier::Write, this);
+		connect(snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
 		}
 
 	if (gg_http->state == GG_STATE_ERROR) {

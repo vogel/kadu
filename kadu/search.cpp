@@ -366,6 +366,18 @@ void SearchDialog::socketEvent(void) {
 		return;
 		}
 
+	if (foo->state == GG_STATE_CONNECTING) {
+		fprintf(stderr, "KK SearchDialog::socketEvent(): changing QSocketNotifiers.\n");
+
+		deleteSocketNotifiers();
+
+		snr = new QSocketNotifier(foo->fd, QSocketNotifier::Read, this);
+		connect(snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
+
+		snw = new QSocketNotifier(foo->fd, QSocketNotifier::Write, this);
+		connect(snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
+		}
+
 	res = (struct gg_search *) foo->data;
 
 	if (foo->state == GG_STATE_DONE && (foo->data == NULL || (res && res->results == NULL))) {
