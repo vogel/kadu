@@ -18,7 +18,7 @@ else
 	ZM=$1;
 fi
 
-dialog	--begin 3 5 --nocancel --ok-label "OK" \
+dialog	--separate-output --begin 3 5 --nocancel --ok-label "OK" \
 		--checklist "Wybierz typy komunikatów:" 0 0 0 \
 		GG_DEBUG_NET "?" `[ $(($ZM&(1<<0))) != 0 ] && echo on || echo off` \
 		GG_DEBUG_TRAFFIC "?" `[ $(($ZM&(1<<1))) != 0 ] && echo on || echo off` \
