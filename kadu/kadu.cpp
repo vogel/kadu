@@ -306,22 +306,6 @@ bool ifStatusWithDescription(int status) {
 	status == GG_STATUS_BUSY_DESCR || status == GG_STATUS_INVISIBLE_DESCR);
 }
 
-/*bool ifPendingMessages(int uin) {
-    bool pendings = false;
-    int i;
-    
-    switch (uin) {
-	case -1:
-	    pendings = pending.count();
-	    break;
-	default:
-	    for (i = 0; i < pending.size(); i++)
-    		if (pending[i].uins[0] == uin)
-		    pendings = true;
-	}
-    return pendings;
-}*/
-
 /* reading only ignore file right now */
 void readConfig(void)
 {
@@ -522,6 +506,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	else
 		setCaption(i18n("Kadu: %1").arg(config.uin));
 
+	pending.loadFromFile();
 	/* initialize and configure userbox */
 	userbox = new UserBox(this);
 	userbox->setPaletteBackgroundColor(QColor(config.colors.userboxBgR,config.colors.userboxBgG,config.colors.userboxBgB));
@@ -864,6 +849,7 @@ void Kadu::commandParser (int command) {
 			reg->show();
 			break;
 		case KADU_CMD_QUIT:
+			pending.writeToFile();
 			close_permitted = true;
 			disconnectNetwork();
 			close(true);

@@ -20,7 +20,6 @@ class PendingMsgs
 	private:
 		typedef QValueList<Element> PendingMsgsList;
 		PendingMsgsList msgs;
-		void saveToFile();
 		
 	public:
 		PendingMsgs();
@@ -31,6 +30,7 @@ class PendingMsgs
 		Element &operator[](int index);
 		void addMsg(UinsList uins, QString msg, int msgclass, time_t time);
 		bool loadFromFile();
+		void writeToFile();
 };
 
 #endif

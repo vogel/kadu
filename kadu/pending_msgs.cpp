@@ -47,13 +47,13 @@ void PendingMsgs::addMsg(UinsList uins, QString msg, int msgclass, time_t time)
 	msgs.append(e);
 };
 
-void PendingMsgs::saveToFile()
+void PendingMsgs::writeToFile()
 {
 	char* path=preparePath("kadu.msgs");
 	QFile f(path);
 	if(!f.open(IO_WriteOnly))
 	{
-		fprintf(stderr,"KK PendingMsgs::saveToFile(): Cannot open file kadu.msgs");
+		fprintf(stderr,"KK PendingMsgs::saveToFile(): Cannot open file kadu.msgs\n");
 		return;
 	};
 	// Najpierw zapisujemy ilosc wiadomosci
@@ -88,7 +88,7 @@ bool PendingMsgs::loadFromFile()
 	QFile f(path);
 	if(!f.open(IO_ReadOnly))
 	{
-		fprintf(stderr,"KK PendingMsgs::loadFromFile(): Cannot open file kadu.msgs");
+		fprintf(stderr,"KK PendingMsgs::loadFromFile(): Cannot open file kadu.msgs\n");
 		return false;
 	};
 	// Najpierw wczytujemy ilosc wiadomosci
