@@ -2185,7 +2185,7 @@ bool GaduProtocol::doExportUserList(const UserList& userList)
 	kdebugf();
 
 	QString contacts = userListToString(userList);
-	char *dup = strdup(unicode2latin(contacts));
+	char *dup = strdup(unicode2cp(contacts));
 
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", dup);
 //	free(dup);
