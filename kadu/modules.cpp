@@ -299,26 +299,14 @@ bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info)
 		info=Modules[module_name].info;
 		return true;
 	}
-	Library* lib=new Library(QString(DATADIR)+"/kadu/modules/"+module_name+".so");
 
-	if(!lib->load())
-	{
-		MessageBox::msg(tr("Cannot load %1 module library.\nMaybe it's incorrecty compiled.").arg(module_name));
-		return false;
-	}
-		
-	typedef void InfoModuleFunc(ModuleInfo* info);
-	InfoModuleFunc* info_f=(InfoModuleFunc*)lib->resolve(module_name+"_info");
+	ConfigFile desc_file(QString(DATADIR)+"/kadu/modules/"+module_name+".desc");
 
-	if(info_f)
-		info_f(&info);
-	else
-	{
-		delete lib;
-		return true;
-	}
+	info.description = desc_file.readEntry("Module","Description");
+	info.author = desc_file.readEntry("Module","Author");
+	info.depends = QStringList::split(" ",
+		desc_file.readEntry("Module","Dependencies"));
 
-	delete lib;
 	return true;
 }
 
@@ -334,29 +322,8 @@ bool ModulesManager::loadModule(const QString& module_name)
 		return false;
 	}
 
-	m.lib=new Library(QString(DATADIR)+"/kadu/modules/"+module_name+".so");
-	if(!m.lib->load())
-	{
-		MessageBox::msg(tr("Cannot load %1 module library.\nMaybe it's incorrecty compiled.").arg(module_name));
-		return false;
-	}
-		
-	typedef int InitModuleFunc();
-	typedef void InfoModuleFunc(ModuleInfo* info);
-	InitModuleFunc* init=(InitModuleFunc*)m.lib->resolve(module_name+"_init");
-	InfoModuleFunc* info=(InfoModuleFunc*)m.lib->resolve(module_name+"_info");
-	m.close=(CloseModuleFunc*)m.lib->resolve(module_name+"_close");
-
-	if(init==NULL||m.close==NULL)
-	{
-		MessageBox::msg(tr("Cannot find required functions.\nMaybe it's not Kadu-compatible Module."));
-		delete m.lib;
-		return false;
-	}
-
-	if(info)
-	{
-		info(&modinfo);
+	if(moduleInfo(module_name,modinfo))
+	{	
 		for (QStringList::Iterator it = modinfo.depends.begin(); it != modinfo.depends.end(); ++it)
 		{
 			if((*loadedModules().find(*it))==QString::null)
@@ -382,6 +349,24 @@ bool ModulesManager::loadModule(const QString& module_name)
 				Modules[*it].usage_counter++;
 		}
 		m.info=modinfo;
+	}
+
+	m.lib=new Library(QString(DATADIR)+"/kadu/modules/"+module_name+".so");
+	if(!m.lib->load())
+	{
+		MessageBox::msg(tr("Cannot load %1 module library.\nMaybe it's incorrecty compiled.").arg(module_name));
+		return false;
+	}
+		
+	typedef int InitModuleFunc();
+	InitModuleFunc* init=(InitModuleFunc*)m.lib->resolve(module_name+"_init");
+	m.close=(CloseModuleFunc*)m.lib->resolve(module_name+"_close");
+
+	if(init==NULL||m.close==NULL)
+	{
+		MessageBox::msg(tr("Cannot find required functions.\nMaybe it's not Kadu-compatible Module."));
+		delete m.lib;
+		return false;
 	}
 
 	m.translator = loadModuleTranslation(module_name);

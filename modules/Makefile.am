@@ -92,6 +92,7 @@ install-data-local:
 	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/modules/translations"
 	@for dir in $(static_modules) $(shared_modules); do \
 		echo -e "\033[32m>>>\033[0m Installing $$dir module ..."; \
+		$(INSTALL_DATA) $$dir/$$dir.desc "$(DESTDIR)/$(datadir)/kadu/modules"; \
 		$(INSTALL_DATA) $$dir/*.h "$(DESTDIR)/$(includedir)/kadu/modules"; \
 		if test -d $$dir/translations; then \
 			$(INSTALL_DATA) $$dir/translations/*.qm "$(DESTDIR)/$(datadir)/kadu/modules/translations/"; \
@@ -103,4 +104,6 @@ install-data-local:
 
 uninstall-local:
 	rm -f "$(DESTDIR)/$(includedir)/kadu/modules/*.h"
+	rm -f $(DESTDIR)/$(datadir)/kadu/modules/*.desc
 	rm -f $(DESTDIR)/$(datadir)/kadu/modules/*.so
+	rm -f $(DESTDIR)/$(datadir)/kadu/modules/translations/*.qm

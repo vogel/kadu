@@ -196,6 +196,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuwanie zbêdnych <p dir="ltr"> z chatu (joi)
 * przyspieszenie (x2) dzia³ania obs³ugi plików konfiguracyjnych + optymalizacje
   (w ró¿nych miejscach kodu) dotycz±ce obs³ugi pliku konfiguracyjnego (joi)
+* opis modu³ów w plikach desc zamiast w funkcjach *_info (adrian)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
