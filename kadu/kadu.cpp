@@ -1204,7 +1204,7 @@ void Kadu::setStatus(int status) {
 	loginparams.async = 1;
 	
 	// maksymalny rozmiar grafiki w kb
-	loginparams.image_size = 255;
+	loginparams.image_size = config_file.readNumEntry("Chat", "MaxImageSize", 20);
 
 	if (config_file.readBoolEntry("Network", "AllowDCC"))
 		prepareDcc();

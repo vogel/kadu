@@ -50,6 +50,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * je¶li ³±czymy siê ze statusem "ukryty z opisem" wysy³amy po po³±czeniu siê
   z serwerem GG drugi pakiet zmiany statusu (chilek)
 * pokazujemy na li¶cie kontaktów nasz status ukryty (chilek)
+* w opcjach mozna ustawic maksymalna wielkosc odbieranych obrazkow (michal)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
