@@ -53,7 +53,8 @@ extern "C" int autoaway_init()
 			QT_TRANSLATE_NOOP("@default", "Check idle every "), "AutoAwayCheckTime", 1, 10000, 1, 1);
 	ConfigDialog::addCheckBox("General", "Status",
 			QT_TRANSLATE_NOOP("@default", "Autorestore status"), "AutoRestoreStatus", true);
-	ConfigDialog::addHGroupBox("General", "General", "AutoStatus Description");
+	ConfigDialog::addHGroupBox("General", "General", 
+			QT_TRANSLATE_NOOP("@default", "AutoStatus Description"));
 	ConfigDialog::addHBox("General", "AutoStatus Description", "first");
 	ConfigDialog::addLineEdit("General", "first",
 			QT_TRANSLATE_NOOP("@default", "Auto change status"), "AutoStatusText", "");
@@ -389,10 +390,10 @@ void AutoAwaySlots::onCreateConfigDialog()
 	ConfigDialog::getSpinBox("General", "Check idle every ")->setSuffix(" s");
 	
 	QComboBox *autoDescription= ConfigDialog::getComboBox("General"," ");
-	autoDescription->insertItem("Don't change the description");
-	autoDescription->insertItem("Change");
-	autoDescription->insertItem("Add in front of description");
-	autoDescription->insertItem("Add at the back of description");
+	autoDescription->insertItem(tr("Don't change the description"));
+	autoDescription->insertItem(tr("Change"));
+	autoDescription->insertItem(tr("Add in front of description"));
+	autoDescription->insertItem(tr("Add at the back of description"));
 	
 	int i=config_file.readNumEntry("General", "AutoChangeDescription");
 	autoDescription->setCurrentItem(i);
