@@ -248,19 +248,29 @@ void SoundManager::notifySound(const uin_t uin, const unsigned int oldstatus, co
 void SoundManager::play(const QString &path, bool force)
 {
 	kdebugf();
+	bool volCntrl;
+	float vol;
+	
 	if (isMuted() && !force)
 		return;
-	QCheckBox *b_volumectrl= ConfigDialog::getCheckBox("Sounds", "Enable volume control (player must support it)");
-	QSlider *s_volume=ConfigDialog::getSlider("Sounds", "slider");
+	if (ConfigDialog::dialogOpened())
+	{
+		volCntrl=ConfigDialog::getCheckBox("Sounds", "Enable volume control (player must support it)")->isChecked();
+		vol=1.0*ConfigDialog::getSlider("Sounds", "slider")->value()/100;
+	}
+	else
+	{
+		volCntrl=config_file.readBoolEntry("Sounds","VolumeControl");
+		vol=1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100;
+	}
 	if (QFile::exists(path))
-		emit playSound(path, b_volumectrl->isChecked(), 1.0*s_volume->value()/100);
+		emit playSound(path, volCntrl, vol);
 }
 
 int SoundManager::timeAfterLastSound()
 {
 	return lastsoundtime.elapsed();
 }
-
 
 SoundSlots::SoundSlots()
 {
