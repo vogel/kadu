@@ -42,9 +42,9 @@ int main(int argc, char *argv[])
 //	bind_textdomain_codeset("kadu", "ISO-8859-2");
 	textdomain("kadu");
 
-//	KCmdLineArgs::init( argc, argv, "Kadu", "GG-Client for X-Win", VERSION);
-//	a = new KApplication;
-	a = new QApplication(argc, argv);
+	KCmdLineArgs::init( argc, argv, "Kadu", "GG-Client for X-Win", VERSION);
+	a = new KApplication;
+//	a = new QApplication(argc, argv);
 	a->setDefaultCodec( QTextCodec::codecForName("ISO 8859-2"));
 	kadu = new Kadu(0, "Kadu");
 	QPixmap px((const char **)gg_inact_xpm);
