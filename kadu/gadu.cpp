@@ -1003,16 +1003,18 @@ void GaduProtocol::userDataChanged(const UserListElement* const oldData, const U
 			return;
 
 	// nowy kontakt
-	if (!oldData && newData->uin())
+	if (!oldData && newData)
 	{
-		gg_add_notify(Sess, newData->uin());
+		if (newData->uin())
+			gg_add_notify(Sess, newData->uin());
 		return;
 	}
 
 	// usuwamy kontakt
-	if (!newData && oldData->uin())
+	if (!newData && oldData)
 	{
-		gg_remove_notify(Sess, oldData->uin());
+		if (oldData->uin())
+			gg_remove_notify(Sess, oldData->uin());
 		return;
 	}
 
