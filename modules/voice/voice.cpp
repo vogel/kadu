@@ -254,7 +254,8 @@ void VoiceManager::gsmEncodingTestSampleRecorded(SoundDevice device)
 			GsmEncodingTestMsgBox->show();
 			GsmEncodingTestCurrFrame = 0;
 			kdebugmf(KDEBUG_INFO, "Decoding gsm frame no %i\n", GsmEncodingTestCurrFrame);
-			gsm_decode(GsmEncodingTestHandle, GsmEncodingTestFrames[GsmEncodingTestCurrFrame], GsmEncodingTestSample);
+			if (gsm_decode(GsmEncodingTestHandle, GsmEncodingTestFrames[GsmEncodingTestCurrFrame], GsmEncodingTestSample))
+				kdebugm(KDEBUG_ERROR, "we've got problem, decoding failed\n");
 			sound_manager->playSample(device, GsmEncodingTestSample, sizeof(int16_t) * 160);
 			GsmEncodingTestCurrFrame++;
 		}
@@ -270,7 +271,8 @@ void VoiceManager::gsmEncodingTestSamplePlayed(SoundDevice device)
 		if (GsmEncodingTestCurrFrame < 150)
 		{
 			kdebugmf(KDEBUG_INFO, "Decoding gsm frame no %i\n", GsmEncodingTestCurrFrame);
-			gsm_decode(GsmEncodingTestHandle, GsmEncodingTestFrames[GsmEncodingTestCurrFrame], GsmEncodingTestSample);
+			if (gsm_decode(GsmEncodingTestHandle, GsmEncodingTestFrames[GsmEncodingTestCurrFrame], GsmEncodingTestSample))
+				kdebugm(KDEBUG_ERROR, "we've got problem, decoding failed\n");
 			sound_manager->playSample(device, GsmEncodingTestSample, sizeof(int16_t) * 160);
 			GsmEncodingTestCurrFrame++;
 		}
