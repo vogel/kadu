@@ -197,6 +197,7 @@ class Kadu : public QMainWindow
 	private slots:
 		void groupTabSelected(int id);
 		void userListModified();
+		void userListStatusModified(UserListElement *);
 };
 
 struct acks {

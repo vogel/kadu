@@ -528,10 +528,11 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	group_bar=new QTabBar(centralFrame, "groupbar");
 	group_bar->addTab(new QTab(i18n("All")));
 	refreshGroupTabBar();
-	connect(group_bar,SIGNAL(selected(int)),this,SLOT(groupTabSelected(int)));
+	connect(group_bar, SIGNAL(selected(int)), this, SLOT(groupTabSelected(int)));
 
 	/* connect userlist modified signal */
-	connect(&userlist,SIGNAL(modified()),this,SLOT(userListModified()));
+	connect(&userlist, SIGNAL(modified()), this, SLOT(userListModified()));
+	connect(&userlist, SIGNAL(statusModified(UserListElement *)), this, SLOT(userListStatusModified(UserListElement *)));
 
 	/* initialize and configure userbox */
 	userbox = new UserBox(centralFrame, "userbox");
@@ -665,6 +666,13 @@ void Kadu::groupTabSelected(int id)
 void Kadu::userListModified()
 {
 	refreshGroupTabBar();
+};
+
+void Kadu::userListStatusModified(UserListElement *ule)
+{
+	for (int i = 0; i < chats.count(); i++)
+		if (chats[i].uins.contains(ule->uin))
+			chats[i].ptr->setTitle();
 };
 
 void Kadu::removeUser(QString &username, bool permanently = false) {
