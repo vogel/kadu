@@ -31,7 +31,7 @@ fi
 exec wish "$0" "$@"
 
 ### I teraz juz TCL/TK :)
-set scriptversion 1.0.2
+set scriptversion 1.0.3
 
 ### Sprawdzanie kompatybilnosci TCL/TK:
 if {$tk_version < 8.3} {
@@ -423,8 +423,9 @@ proc install {} {
         vwait forever
     }
     unset var(ins)
-    
-    if {"$env(USER)" == "root"} {
+
+    catch {exec whoami} res
+    if {"$res" == "root"} {
         $p configure -text "Status:\nKopiowanie plikow... (make install)"
         wm title . "Kopiowanie plikow... $scriptversion"
         set fd [open "|make install" r]
