@@ -49,13 +49,6 @@ void KaduTabBar::layoutTabs() {
 	if (lstatic2->isEmpty())
 		return;
 
-	QFont tfont(font());
-	tfont.setStyleStrategy(QFont::PreferBitmap);
-	tfont.setFamily("clean");
-	tfont.setPixelSize(6);
-	tfont.setBold(true);
-	setFont(tfont);
-
 	int hframe, vframe, overlap;
 	hframe  = style().pixelMetric(QStyle::PM_TabBarTabHSpace, this);
 	vframe  = style().pixelMetric(QStyle::PM_TabBarTabVSpace, this);
@@ -72,7 +65,6 @@ void KaduTabBar::layoutTabs() {
 		t = lstatic2->first();
 	while (t) {
 		int lw = fm.width(t->text());
-		lw -= 10;
 		lw -= t->text().contains('&') * fm.width('&');
 		lw += t->text().contains("&&") * fm.width('&');
 		int iw = 0;
@@ -133,22 +125,14 @@ void KaduTabBar::paint(QPainter *p, QTab *t, bool selected) const {
 		flags |= QStyle::Style_MouseOver;
 
 	QRect r(t->rect());
-	QFont tfont(font());
-	tfont.setStyleStrategy(QFont::PreferBitmap);
-	tfont.setFamily("clean");
-	tfont.setPixelSize(6);
-	tfont.setBold(true);
-
-	p->setFont(tfont);
+	p->setFont(font());
 	QRect v(t->rect().top(), t->rect().left(), t->rect().height(), t->rect().width());
-
+	
 	p->save();
 	p->setWindow(- r.width(), 0, p->window().width(), p->window().height());
 	p->rotate(90.0);
-	p->scale(1.0,0.8);
 	style().drawControl(QStyle::CE_TabBarTab, p, this, v,
 		colorGroup(), flags, QStyleOption(t));
-	p->scale(1.0,1/0.8);
 
 	int iw = 0;
 	int ih = 0;
@@ -162,8 +146,8 @@ void KaduTabBar::paint(QPainter *p, QTab *t, bool selected) const {
 	fw += t->text().contains("&&") * fm.width('&');
 	int w = iw + fw + 4;
 	int h = QMAX(fm.height() + 4, ih);
-	paintLabel(p, QRect(v.left() + (v.width() - w) / 2 + 2,
-		v.top() + (v.height() - h) / 2 - 3,
+	paintLabel(p, QRect(v.left() + (v.width() - w) / 2 - 3,
+		v.top() + (v.height() - h) / 2,
 		w, h), t, t->identifier() == keyboardFocusTab());
 	p->restore();
 }
@@ -201,8 +185,8 @@ void KaduTabBar::setCurrentTab(QTab *tab) {
 void KaduTabBar::resizeEvent(QResizeEvent *e) {
 	kdebug("KaduTabBar::resizeEvent()\n");
 	const int arrowHeight = 16;
-	downB->setGeometry(width()-16, height() - arrowHeight, 16, arrowHeight);
-	upB->setGeometry(width()-16, height() - 2 * arrowHeight, 16, arrowHeight);
+	downB->setGeometry(0, height() - arrowHeight, width(), arrowHeight);
+	upB->setGeometry(0, height() - 2 * arrowHeight, width(), arrowHeight);
 	QTabBar::resizeEvent(e);
 	updateArrowButtonsVert();
 	makeVisibleVert(tab(currentTab()));
