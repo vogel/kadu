@@ -2,7 +2,7 @@ Kadu, klient Gadu-Gadu dla KDE, wersja 0.3.3 (lub nowsza)
 
 +++ WYMAGANIA
  * Qt-3.0.x (pisano na 3.0.4)
- * szczegó³y w pliku /doc/install.html
+ * szczegó³y w pomocy online http://kadu.net/install.html
  
 +++ FICZERSY
  * status: offline, online, away, invisible
