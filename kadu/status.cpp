@@ -12,6 +12,47 @@
 #include "debug.h"
 #include <qobject.h>
 
+Status::Status()
+{
+	Stat = Offline;
+	Description = "";
+	FriendsOnly = false;
+}
+
+Status::Status(const Status &copyMe)
+{
+	Stat = copyMe.Stat;
+	Description = copyMe.Description;
+	FriendsOnly = copyMe.FriendsOnly;
+}
+
+Status::~Status()
+{
+}
+
+void Status::operator = (const Status &copyMe)
+{
+	Stat = copyMe.Stat;
+	Description = copyMe.Description;
+	FriendsOnly = copyMe.FriendsOnly;
+}
+
+QPixmap Status::pixmap(bool mobile) const
+{
+	return pixmap(Stat, hasDescription(), mobile);
+}
+
+QPixmap Status::pixmap(const Status &stat, bool mobile) const
+{
+	return pixmap(stat.status(), stat.hasDescription(), mobile);
+}
+
+QPixmap Status::pixmap(eStatus stat, bool desc, bool mobile) const
+{
+	static QPixmap result;
+	return result;
+}
+
 eStatus Status::status() const
 {
 	return Stat;
@@ -35,6 +76,11 @@ bool Status::isInvisible() const
 bool Status::isOffline() const
 {
 	return Stat == Offline;
+}
+
+bool Status::isBlocking() const
+{
+	return Stat == Blocking;
 }
 
 bool Status::isOffline(int index)
@@ -119,6 +165,19 @@ void Status::setOffline(const QString& desc)
 	emit changed(*this);
 }
 
+void Status::setBlocking()
+{
+	if (Stat == Blocking)
+		return;
+
+	Stat = Blocking;
+	Description = "";
+	Changed = false;
+
+	emit goBlocking();
+	emit changed(*this);
+}
+
 void Status::setDescription(const QString& desc)
 {
 	if (Description == desc)
@@ -143,7 +202,13 @@ void Status::setDescription(const QString& desc)
 			emit changed(*this);
 			break;
 
+		case Blocking:
+			emit goBlocking();
+			emit changed(*this);
+			break;
+
 		case Offline:
+		default:
 			emit goOffline(Description);
 			emit changed(*this);
 			break;
@@ -163,7 +228,10 @@ void Status::setFriendsOnly(bool f)
 		case Online: setOnline(Description); break;
 		case Busy: setBusy(Description); break;
 		case Invisible: setInvisible(Description); break;
-		case Offline: break;
+		case Blocking: setBlocking(); break;
+		case Offline:
+		default:
+			break;
 	}
 }
 
@@ -176,7 +244,11 @@ void Status::setStatus(const Status& stat)
 		case Online: setOnline(stat.Description); break;
 		case Busy: setBusy(stat.Description); break;
 		case Invisible: setInvisible(stat.Description); break;
-		case Offline: setOffline(stat.Description); break;
+		case Blocking: setBlocking(); break;
+		case Offline:
+		default:
+			setOffline(stat.Description);
+			break;
 	}
 }
 
@@ -195,7 +267,10 @@ void Status::setStatus(eStatus stat, const QString& desc)
 		case Online: setOnline(desc); break;
 		case Busy: setBusy(desc); break;
 		case Invisible: setInvisible(desc); break;
-		case Offline: setOffline(desc); break;
+		case Blocking: setBlocking(); break;
+		case Offline:
+		default:
+			setOffline(desc); break;
 	}
 }
 
@@ -213,6 +288,8 @@ eStatus Status::fromString(const QString& stat)
 		return Busy;
 	if (stat.contains("Invisible"))
 		return Invisible;
+	if (stat.contains("Blocking"))
+		return Blocking;
 	return Offline;
 }
 
@@ -224,9 +301,13 @@ QString Status::toString(eStatus stat, bool desc)
 		case Online: res.append("Online"); break;
 		case Busy: res.append("Busy"); break;
 		case Invisible: res.append("Invisible"); break;
-		case Offline: res.append("Offline"); break;
+		case Blocking: res.append("Blocking"); break;
+		case Offline:
+		default:
+			res.append("Offline");
+			break;
 	}
-	if (desc)
+	if (desc && stat!=Blocking)
 		res.append("WithDescription");
 	return res;
 }
@@ -258,57 +339,10 @@ QString Status::name(int nr)
 	return names[nr];
 }
 
-QString gg_icons[] = {"Online", "OnlineWithDescription", "Busy", "BusyWithDescription", "Invisible", "InvisibleWithDescription",
-	"Offline", "OfflineWithDescription", "Blocking"};
-
-int gg_statuses[] = {GG_STATUS_AVAIL, GG_STATUS_AVAIL_DESCR, GG_STATUS_BUSY, GG_STATUS_BUSY_DESCR,
-	GG_STATUS_INVISIBLE, GG_STATUS_INVISIBLE_DESCR, GG_STATUS_NOT_AVAIL, GG_STATUS_NOT_AVAIL_DESCR,
-	GG_STATUS_BLOCKED};
-
-const char *statustext[] = {
-	QT_TR_NOOP("Online"),
-	QT_TR_NOOP("Online (d.)"),
-	QT_TR_NOOP("Busy"),
-	QT_TR_NOOP("Busy (d.)"),
-	QT_TR_NOOP("Invisible"),
-	QT_TR_NOOP("Invisible (d.)"),
-	QT_TR_NOOP("Offline"),
-	QT_TR_NOOP("Offline (d.)"),
-	QT_TR_NOOP("Blocking")
-};
+QString Status::name() const
+{
+	return name(index());
+}
 
 /* our own description container */
 QStringList defaultdescriptions;
-
-/* sprawdza czy nasz status jest opisowy
- odporne na podanie statusu z mask± dla przyjació³ */
-bool ifStatusWithDescription(int status) {
-	status = status & (~GG_STATUS_FRIENDS_MASK);
-
-	return (status == GG_STATUS_AVAIL_DESCR || status == GG_STATUS_NOT_AVAIL_DESCR ||
-		status == GG_STATUS_BUSY_DESCR || status == GG_STATUS_INVISIBLE_DESCR);
-}
-
-bool isAvailableStatus(unsigned int status)
-{
-	return (status != GG_STATUS_NOT_AVAIL && status != GG_STATUS_NOT_AVAIL_DESCR);
-}
-
-int statusGGToStatusNr(int status) {
-	kdebugm(KDEBUG_FUNCTION_START, "int statusGGToStatusNr(%d)\n", status);
-	int i = 0;
-	if (status == GG_STATUS_INVISIBLE2)
-	{
-		kdebugm(KDEBUG_FUNCTION_END, "int statusGGToStatusNr() end: return 4\n");
-		return 4;
-	}
-	while (i < 9 && gg_statuses[i] != status)
-		i++;
-	if (i < 9)
-	{
-		kdebugm(KDEBUG_FUNCTION_END, "int statusGGToStatusNr() end: return %d\n", i);
-		return i;
-	}
-	kdebugm(KDEBUG_FUNCTION_END|KDEBUG_PANIC, "int statusGGToStatusNr() end: PANIC! i==9\n");
-	return -1;
-}

@@ -25,7 +25,7 @@ bool PendingMsgs::pendingMsgs(UinType uin)
 {
 	if(uin==0)
 		return pendingMsgs();
-	for(PendingMsgsList::iterator i=msgs.begin(); i!=msgs.end(); i++)
+	for(PendingMsgsList::iterator i=msgs.begin(); i!=msgs.end(); ++i)
 		if((*i).uins[0]==uin)
 			return true;
 	return false;
@@ -71,13 +71,13 @@ void PendingMsgs::writeToFile()
 	int t=msgs.count();
 	f.writeBlock((char*)&t,sizeof(int));
 	// Teraz w petli dla kazdej wiadomosci
-	for(PendingMsgsList::iterator i=msgs.begin(); i!=msgs.end(); i++)
+	for(PendingMsgsList::iterator i=msgs.begin(); i!=msgs.end(); ++i)
 	{
 		// zapisujemy uiny - najpierw ilosc
 		t=(*i).uins.size();
 		f.writeBlock((char*)&t,sizeof(int));
 		// teraz dane
-		for(UinsList::iterator j=(*i).uins.begin(); j!=(*i).uins.end(); j++)
+		for(UinsList::iterator j=(*i).uins.begin(); j!=(*i).uins.end(); ++j)
 			f.writeBlock((char*)&(*j),sizeof(UinType));
 		// nastepnie wiadomosc - dlugosc
 		t=(*i).msg.length();
@@ -109,53 +109,53 @@ bool PendingMsgs::loadFromFile()
 		return false;
 		}
 	// Teraz w petli dla kazdej wiadomosci
-	for (int i = 0; i < msgs_size; i++)
+	for (int i = 0; i < msgs_size; ++i)
 	{
 		Element e;
 		// wczytujemy uiny - najpierw ilosc
 		int uins_size;
 		if (f.readBlock((char*)&uins_size, sizeof(int)) <= 0) {
-			msgs_size--;
+			--msgs_size;
 			return false;
-			}
+		}
 		// teraz dane
-		for (int j = 0; j < uins_size; j++)
+		for (int j = 0; j < uins_size; ++j)
 		{
 			int uin;
 			if (f.readBlock((char*)&uin, sizeof(UinType)) <= 0) {
-				msgs_size--;
+				--msgs_size;
 				return false;
-				}
+			}
 			e.uins.append(uin);
 		}
 		// nastepnie wiadomosc - dlugosc
 		int msg_size;
 		if (f.readBlock((char*)&msg_size, sizeof(int)) <= 0) {
-			msgs_size--;
+			--msgs_size;
 			return false;
-			}		
+		}
 		// i tresc
 		char *buf = new char[msg_size + 1];
 		if (f.readBlock(buf, msg_size) <= 0) {
-			msgs_size--;
+			--msgs_size;
 			delete [] buf;
 			return false;
-			}				
+		}
 		buf[msg_size] = 0;
 		e.msg = QTextCodec::codecForName("ISO 8859-2")->toUnicode(buf);
 		delete[] buf;
 		// na koniec jeszcze klase wiadomosci
 		if (f.readBlock((char*)&e.msgclass, sizeof(int)) <= 0) {
-			msgs_size--;
+			--msgs_size;
 			delete [] buf;
 			return false;
-			}						
+		}
 		// i czas
 		if (f.readBlock((char*)&e.time, sizeof(time_t)) <= 0) {
-			msgs_size--;
+			--msgs_size;
 			delete [] buf;
 			return false;
-			}						
+		}
 		// dodajemy do listy
 		msgs.append(e);
 	}

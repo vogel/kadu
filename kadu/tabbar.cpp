@@ -275,7 +275,7 @@ void KaduTabBar::dropEvent(QDropEvent* e)
 		else {
 			bool ok;
 			QStringList list;
-			for (int i=0; i < count(); i++)
+			for (int i=0; i < count(); ++i)
 				list << tabAt(i)->text();
 			QString text = QInputDialog::getItem(tr("Add new group"), tr("Name of new group:"),
 				list, 0, true, &ok, 0);
@@ -284,7 +284,7 @@ void KaduTabBar::dropEvent(QDropEvent* e)
 			group=text;		
 		}
 		QStringList altnick_list=QStringList::split("\n",altnicks);
-		for(unsigned int i=0; i<altnick_list.count(); i++)
+		for(unsigned int i=0; i<altnick_list.count(); ++i)
 			userlist.byAltNick(altnick_list[i]).setGroup(group);
 		// bardzo niewygodne, trzeba poprawiæ writeToFile !! ta funkcja jest za wolna
 		// trzeba dodaæ mozliwo¶æ zmiany danych tylko jednego user !!

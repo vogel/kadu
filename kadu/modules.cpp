@@ -179,15 +179,15 @@ void ModulesDialog::refreshList()
 	lv_modules->clear();
 
 	QStringList sl_list = modules_manager->staticModules();
-	for(unsigned int i = 0; i < sl_list.size(); i++)
+	for(unsigned int i = 0; i < sl_list.size(); ++i)
 		(void) new QListViewItem(lv_modules, sl_list[i], tr("Static"), tr("Loaded"));
 		
 	sl_list = modules_manager->loadedModules();
-	for(unsigned int i = 0; i < sl_list.size(); i++)
+	for(unsigned int i = 0; i < sl_list.size(); ++i)
 		(void) new QListViewItem(lv_modules, sl_list[i], tr("Dynamic"), tr("Loaded"));
 		
 	sl_list = modules_manager->unloadedModules();
-	for(unsigned int i = 0; i < sl_list.size(); i++)
+	for(unsigned int i = 0; i < sl_list.size(); ++i)
 		(void) new QListViewItem(lv_modules, sl_list[i], tr("Dynamic"), tr("Not loaded"));
 	
 	lv_modules->setSelected(lv_modules->findItem(s_selected, 0), true);
@@ -244,14 +244,14 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager")
 	//
 	registerStaticModules();
 	QStringList static_list=staticModules();
-	for (QStringList::ConstIterator i=static_list.begin(); i!=static_list.end(); i++)
+	for (QStringList::ConstIterator i=static_list.begin(); i!=static_list.end(); ++i)
 		if(!moduleIsActive(*i))
 			activateModule(*i);
 	//
 	QString loaded_str=config_file.readEntry("General", "LoadedModules");
 	QStringList loaded_list=QStringList::split(',',loaded_str);
 	bool all_loaded=true;
-	for(QStringList::ConstIterator i=loaded_list.begin(); i!=loaded_list.end(); i++)
+	for(QStringList::ConstIterator i=loaded_list.begin(); i!=loaded_list.end(); ++i)
 		if(!moduleIsActive(*i))
 			if(!activateModule(*i))
 				all_loaded=false;
@@ -277,7 +277,7 @@ ModulesManager::~ModulesManager()
 	{
 		QStringList active=activeModules();
 		deactivated=false;
-		for(QStringList::ConstIterator i=active.begin(); i!=active.end(); i++)
+		for(QStringList::ConstIterator i=active.begin(); i!=active.end(); ++i)
 			if(Modules[*i].usage_counter == 0)
 				if(deactivateModule(*i))
 					deactivated=true;
@@ -286,7 +286,7 @@ ModulesManager::~ModulesManager()
 	// Wiêcej modu³ów nie mo¿na wy³adowaæ normalnie,
 	// je¶li jakie¶ zosta³y trzeba to zrobiæ brutalnie
 	QStringList active=activeModules();
-	for(QStringList::ConstIterator i=active.begin(); i!=active.end(); i++)
+	for(QStringList::ConstIterator i=active.begin(); i!=active.end(); ++i)
 	{
 		kdebugm(KDEBUG_PANIC, "WARNING! Could not deactivate module %s, killing\n",(*i).local8Bit().data());
 		deactivateModule(*i,true);
@@ -354,7 +354,7 @@ void ModulesManager::registerStaticModule(const QString& module_name,
 QStringList ModulesManager::staticModules() const
 {
 	QStringList static_modules;
-	for (QMap<QString,StaticModule>::const_iterator i=StaticModules.begin(); i!=StaticModules.end(); i++)
+	for (QMap<QString,StaticModule>::const_iterator i=StaticModules.begin(); i!=StaticModules.end(); ++i)
 		static_modules.append(i.key());
 	return static_modules;
 }
@@ -364,7 +364,7 @@ QStringList ModulesManager::installedModules() const
 	QDir dir(dataPath("kadu/modules"),"*.so");
 	dir.setFilter(QDir::Files);
 	QStringList installed;
-	for(unsigned int i=0; i<dir.count(); i++)
+	for(unsigned int i=0; i<dir.count(); ++i)
 	{
 		QString name=dir[i];
 		installed.append(name.left(name.length()-3));
@@ -375,7 +375,7 @@ QStringList ModulesManager::installedModules() const
 QStringList ModulesManager::loadedModules() const
 {
 	QStringList loaded;
-	for (QMap<QString,Module>::const_iterator i=Modules.begin(); i!=Modules.end(); i++)
+	for (QMap<QString,Module>::const_iterator i=Modules.begin(); i!=Modules.end(); ++i)
 		if(i.data().lib!=NULL)
 			loaded.append(i.key());
 	return loaded;
@@ -386,7 +386,7 @@ QStringList ModulesManager::unloadedModules() const
 	QStringList installed=installedModules();
 	QStringList loaded=loadedModules();
 	QStringList unloaded;
-	for(unsigned int i=0; i<installed.size(); i++)
+	for(unsigned int i=0; i<installed.size(); ++i)
 	{
 		QString name=installed[i];
 		if(!loaded.contains(name))
@@ -398,7 +398,7 @@ QStringList ModulesManager::unloadedModules() const
 QStringList ModulesManager::activeModules() const
 {
 	QStringList active;
-	for (QMap<QString,Module>::const_iterator i=Modules.begin(); i!=Modules.end(); i++)
+	for (QMap<QString,Module>::const_iterator i=Modules.begin(); i!=Modules.end(); ++i)
 		active.append(i.key());
 	return active;
 }
@@ -470,8 +470,8 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, const Modul
 			kdebugf2();
 			return true;
 		}
-		for (QMap<QString, Module>::const_iterator mit=Modules.begin(); mit!=Modules.end(); mit++)
-			for (QStringList::const_iterator sit=(*mit).info.provides.begin(); sit!=(*mit).info.provides.end(); sit++)
+		for (QMap<QString, Module>::const_iterator mit=Modules.begin(); mit!=Modules.end(); ++mit)
+			for (QStringList::const_iterator sit=(*mit).info.provides.begin(); sit!=(*mit).info.provides.end(); ++sit)
 				if ((*it)==(*sit))
 				{
 					MessageBox::msg(tr("Module %1 conflicts with: %2").arg(module_name).arg(mit.key()));
@@ -479,8 +479,8 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, const Modul
 					return true;
 				}
 	}
-	for (QMap<QString, Module>::const_iterator it=Modules.begin(); it!=Modules.end(); it++)
-		for (QStringList::const_iterator sit=(*it).info.conflicts.begin(); sit!=(*it).info.conflicts.end(); sit++)
+	for (QMap<QString, Module>::const_iterator it=Modules.begin(); it!=Modules.end(); ++it)
+		for (QStringList::const_iterator sit=(*it).info.conflicts.begin(); sit!=(*it).info.conflicts.end(); ++sit)
 			if ((*sit)==module_name)
 			{
 				MessageBox::msg(tr("Module %1 conflicts with: %2").arg(module_name).arg(it.key()));
@@ -578,7 +578,7 @@ bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 		return false;
 	}
 	
-	for (QStringList::Iterator i = m.info.depends.begin(); i != m.info.depends.end(); i++)
+	for (QStringList::Iterator i = m.info.depends.begin(); i != m.info.depends.end(); ++i)
 		moduleDecUsageCount(*i);
 	
 	m.close();
@@ -620,12 +620,12 @@ void ModulesManager::dialogDestroyed()
 
 void ModulesManager::moduleIncUsageCount(const QString& module_name)
 {
-	Modules[module_name].usage_counter++;	
+	++Modules[module_name].usage_counter;
 }
 
 void ModulesManager::moduleDecUsageCount(const QString& module_name)
 {
-	Modules[module_name].usage_counter--;
+	--Modules[module_name].usage_counter;
 }
 
 ModulesManager* modules_manager;

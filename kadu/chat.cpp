@@ -76,7 +76,7 @@ int ChatManager::registerChat(Chat* chat)
 void ChatManager::unregisterChat(Chat* chat)
 {
 	kdebugf();
-	for(unsigned int i=0; i<Chats.count(); i++)
+	for(unsigned int i=0; i<Chats.count(); ++i)
 		if(Chats[i]==chat)
 		{
 			ChatInfo info;
@@ -87,7 +87,7 @@ void ChatManager::unregisterChat(Chat* chat)
 			info.geometry.setWidth(chat->size().width());
 			info.geometry.setHeight(chat->size().height());
 
-			for (QValueList<ChatInfo>::iterator j=sizes.begin(); j!=sizes.end(); j++)
+			for (QValueList<ChatInfo>::iterator j=sizes.begin(); j!=sizes.end(); ++j)
 				if ((*j).uins.equals(info.uins))
 				{
 					sizes.remove(j);
@@ -111,26 +111,26 @@ void ChatManager::unregisterChat(Chat* chat)
 
 void ChatManager::refreshTitles()
 {
-	for (unsigned int i = 0; i < Chats.count(); i++)
+	for (unsigned int i = 0; i < Chats.count(); ++i)
 		Chats[i]->setTitle();
 }
 
 void ChatManager::refreshTitlesForUin(UinType uin)
 {
-	for (unsigned int i = 0; i < Chats.count(); i++)
+	for (unsigned int i = 0; i < Chats.count(); ++i)
 		if (Chats[i]->uins().contains(uin))
 			Chats[i]->setTitle();
 }
 
 void ChatManager::changeAppearance()
 {
-	for (unsigned int i = 0; i < Chats.count(); i++)
+	for (unsigned int i = 0; i < Chats.count(); ++i)
 		Chats[i]->changeAppearance();
 }
 
 Chat* ChatManager::findChatByUins(UinsList uins)
 {
-	for(unsigned int i=0; i<Chats.count(); i++)
+	for(unsigned int i=0; i<Chats.count(); ++i)
 		if(Chats[i]->uins().equals(uins))
 			return Chats[i];
 	kdebugm(KDEBUG_WARNING, "return NULL\n");
@@ -140,7 +140,7 @@ Chat* ChatManager::findChatByUins(UinsList uins)
 int ChatManager::openChat(UinsList senders,time_t time)
 {
 	kdebugf();
-	for (unsigned int i = 0; i < Chats.count(); i++)
+	for (unsigned int i = 0; i < Chats.count(); ++i)
 		if (Chats[i]->uins().equals(senders))
 		{
 			Chats[i]->raise();
@@ -151,7 +151,7 @@ int ChatManager::openChat(UinsList senders,time_t time)
 	chat->setTitle();
 
 	bool found=false;
-	for (QValueList<ChatInfo>::iterator j=sizes.begin(); j!=sizes.end(); j++)
+	for (QValueList<ChatInfo>::iterator j=sizes.begin(); j!=sizes.end(); ++j)
 		if ((*j).uins.equals(senders))
 		{
 			found=true;
@@ -196,7 +196,7 @@ int ChatManager::openPendingMsg(int index, ChatMessage &msg)
 	PendingMsgs::Element p = pending[index];
 	// jesli ktoregos z nadawcow nie mamy na liscie to dodajemy
 	// go tam jako anonymous
-	for (unsigned int j = 0; j < p.uins.count(); j++)
+	for (unsigned int j = 0; j < p.uins.count(); ++j)
 		if (!userlist.containsUin(p.uins[j]))
 			userlist.addAnonymous(p.uins[j]);
 	// otwieramy chat (jesli nie istnieje)
@@ -224,7 +224,7 @@ void ChatManager::openPendingMsgs(UinsList uins)
 	bool stop = false;
 
 	QValueList<ChatMessage *> messages;
-	for (int i = 0; i < pending.count(); i++)
+	for (int i = 0; i < pending.count(); ++i)
 	{
 		elem = pending[i];
 		if (elem.uins.equals(uins))
@@ -236,7 +236,7 @@ void ChatManager::openPendingMsgs(UinsList uins)
 				k=openPendingMsg(i, *msg);
 				messages.append(msg);
 
-				i--;
+				--i;
 				uins = elem.uins;
 				stop = true;
 			}
@@ -261,7 +261,7 @@ void ChatManager::openPendingMsgs()
 	UserListElement e;
 	QValueList<ChatMessage *> messages;
 
-	for(i = 0; i<pending.count(); i++)
+	for(i = 0; i<pending.count(); ++i)
 	{
 		elem = pending[i];
 		if (!uins.count() || elem.uins.equals(uins))
@@ -276,7 +276,7 @@ void ChatManager::openPendingMsgs()
 				k=openPendingMsg(i, *msg);
 				messages.append(msg);
 
-				i--;
+				--i;
 				stop = true;
 			}
 	}
@@ -299,7 +299,7 @@ void ChatManager::sendMessage(UinType uin,UinsList selected_uins)
 	UinsList uins;
 	QValueList<ChatMessage *> messages;
 
-	for (i = 0; i < pending.count(); i++)
+	for (i = 0; i < pending.count(); ++i)
 	{
 		elem = pending[i];
 		if ((!uins.count() && elem.uins.contains(uin)) || (uins.count() && elem.uins.equals(uins)))
@@ -314,7 +314,7 @@ void ChatManager::sendMessage(UinType uin,UinsList selected_uins)
 				k=openPendingMsg(i, *msg);
 				messages.append(msg);
 
-				i--;
+				--i;
 				stop = true;
 			}
 	}
@@ -429,7 +429,7 @@ void KaduSplitter::drawContents(QPainter *p)
 {
 	QSplitter::drawContents(p);
 	kdebugf();
-	for (QValueList<KaduTextBrowser *>::iterator i=list.begin(); i!=list.end(); i++)
+	for (QValueList<KaduTextBrowser *>::iterator i=list.begin(); i!=list.end(); ++i)
 		(*i)->viewport()->repaint();
 //	kdebugf2();
 }
@@ -512,7 +512,7 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 		userbox->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
 		userbox->QListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
 
-		for (unsigned i = 0; i < uins.count(); i++)
+		for (unsigned i = 0; i < uins.count(); ++i)
 			userbox->addUser(userlist.byUin(uins[i]).altnick);
 		userbox->refresh();
 
@@ -544,7 +544,7 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	lockscroll->setToggleButton(true);
 	QToolTip::add(lockscroll, tr("Blocks scrolling"));
 
-	for(unsigned int i=0; i<RegisteredButtons.size(); i++)
+	for(unsigned int i=0; i<RegisteredButtons.size(); ++i)
 	{
 		RegisteredButton& b=RegisteredButtons[i];
 		QPushButton* btn=new QPushButton(buttontray,b.name.local8Bit().data());
@@ -683,7 +683,7 @@ Chat::~Chat()
 	disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)),
 		this, SLOT(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)));
 
-	for(QValueList<ChatMessage *>::iterator it=chatMessages.begin(); it!=chatMessages.end(); it++)
+	for(QValueList<ChatMessage *>::iterator it=chatMessages.begin(); it!=chatMessages.end(); ++it)
 		delete *it;
 	chatMessages.clear();
 
@@ -707,13 +707,13 @@ void Chat::registerButton(const QString& name,QObject* receiver,const QString& s
 void Chat::unregisterButton(const QString& name)
 {
 	kdebugf();
-	for(unsigned int i=0; i<RegisteredButtons.size(); i++)
+	for(unsigned int i=0; i<RegisteredButtons.size(); ++i)
 		if(RegisteredButtons[i].name==name)
 		{
 			RegisteredButtons.remove(RegisteredButtons.at(i));
 			break;
 		}
-	for(unsigned int i=0; i<chat_manager->chats().size(); i++)
+	for(unsigned int i=0; i<chat_manager->chats().size(); ++i)
 	{
 		Chat* chat=chat_manager->chats()[i];
 		if(chat->Buttons.contains(name))
@@ -786,7 +786,7 @@ void Chat::curPosChanged(int para, int pos)
 		underlinebtn->setOn(edit->underline());
 	if (edit->color() != actcolor)
 	{
-		for (i = 0; i < 16; i++)
+		for (i = 0; i < 16; ++i)
 			if (edit->color() == QColor(colors[i]))
 				break;
 		QPixmap p(16, 16);
@@ -858,7 +858,7 @@ void Chat::setTitle()
 		else
 			title = config_file.readEntry("Look","ConferencePrefix");
 		title.append(parse(config_file.readEntry("Look","ConferenceContents"),userlist.byUinValue(Uins[0]),false));
-		for (unsigned int k = 1; k < Uins.size(); k++)
+		for (unsigned int k = 1; k < Uins.size(); ++k)
 		{
 			title.append(", ");
 			title.append(parse(config_file.readEntry("Look","ConferenceContents"),userlist.byUinValue(Uins[k]),false));
@@ -872,7 +872,7 @@ void Chat::setTitle()
 			title = parse(tr("Chat with ")+"%a (%s[: %d])",userlist.byUinValue(Uins[0]),false);
 		else
 			title = parse(config_file.readEntry("Look","ChatContents"),userlist.byUinValue(Uins[0]),false);
-		setIcon(icons_manager.loadIcon(gg_icons[statusGGToStatusNr(userlist.byUinValue(Uins[0]).status)]));
+		setIcon(userlist.byUinValue(Uins[0]).status->pixmap());
 	}
 
 	title.replace(QRegExp("<br/>"), " ");
@@ -1019,7 +1019,7 @@ void Chat::scrollMessages(const QValueList<ChatMessage *> &messages)
 	int i;
 	if (config_file.readBoolEntry("Chat","ScrollDown"))
 	{
-		for(QValueList<ChatMessage *>::const_iterator it=chatMessages.begin(); it!=chatMessages.end(); it++)
+		for(QValueList<ChatMessage *>::const_iterator it=chatMessages.begin(); it!=chatMessages.end(); ++it)
 			text+=(*it)->message;
 		body->setText(text);
 
@@ -1027,7 +1027,7 @@ void Chat::scrollMessages(const QValueList<ChatMessage *> &messages)
 			((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_ANIMATED))
 		{
 			i=0;
-			for(QValueList<ChatMessage *>::const_iterator it=chatMessages.begin(); it!=chatMessages.end(); it++, i++)
+			for(QValueList<ChatMessage *>::const_iterator it=chatMessages.begin(); it!=chatMessages.end(); ++it, ++i)
 				body->setParagraphBackgroundColor(i, (*it)->backgroundColor);
 		}
 
@@ -1036,14 +1036,14 @@ void Chat::scrollMessages(const QValueList<ChatMessage *> &messages)
 	}
 	else
 	{
-		for(QValueList<ChatMessage *>::const_iterator it=chatMessages.begin(); it!=chatMessages.end(); it++)
+		for(QValueList<ChatMessage *>::const_iterator it=chatMessages.begin(); it!=chatMessages.end(); ++it)
 			text=(*it)->message+text;
 		body->setText(text);
 		if (config_file.readBoolEntry("General", "ForceUseParagraphs") ||
 			((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_ANIMATED))
 		{
 			i=chatMessages.size()-1;
-			for(QValueList<ChatMessage *>::const_iterator it=chatMessages.begin(); it!=chatMessages.end(); it++, i--)
+			for(QValueList<ChatMessage *>::const_iterator it=chatMessages.begin(); it!=chatMessages.end(); ++it, --i)
 				body->setParagraphBackgroundColor(i, (*it)->backgroundColor);
 		}
 	}
@@ -1089,10 +1089,10 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time)
 					if (date <= (*it).sdate)
 						it = entriestmp.remove(it);
 					else
-						it++;
+						++it;
 				}
 				else
-					it++;
+					++it;
 			}
 		}
 		if (entriestmp.count())
@@ -1107,7 +1107,7 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time)
 
 	QValueList<ChatMessage *> messages;
 
-	for (unsigned int i = from; i < entries.count(); i++)
+	for (unsigned int i = from; i < entries.count(); ++i)
 		if (entries[i].date.secsTo(QDateTime::currentDateTime()) <= -config_file.readNumEntry("History","ChatHistoryQuotationTime") * 3600)
 		{
 			ChatMessage *msg;
@@ -1173,7 +1173,7 @@ void Chat::addMyMessageToHistory()
 void Chat::clearChatWindow()
 {
 	kdebugf();
-	for(QValueList<ChatMessage *>::iterator it=chatMessages.begin(); it!=chatMessages.end(); it++)
+	for(QValueList<ChatMessage *>::iterator it=chatMessages.begin(); it!=chatMessages.end(); ++it)
 		delete *it;
 	chatMessages.clear();
 	body->clear();
@@ -1312,7 +1312,7 @@ void Chat::pruneWindow()
 	}
 	QValueList<ChatMessage *>::iterator start=chatMessages.begin();
 	QValueList<ChatMessage *>::iterator stop=chatMessages.at(chatMessages.size()-chatPruneLen+1);
-	for(QValueList<ChatMessage *>::iterator it=start; it!=stop; it++)
+	for(QValueList<ChatMessage *>::iterator it=start; it!=stop; ++it)
 		delete *it;
 	chatMessages.erase(start, stop);
 
@@ -1513,14 +1513,14 @@ ColorSelector::ColorSelector(const QColor &defColor, QWidget* parent, const char
 	QValueList<QColor> qcolors;
 	int i;
 
-	for (i = 0; i < 16; i++)
+	for (i = 0; i < 16; ++i)
 		qcolors.append(colors[i]);
 
 	int selector_count=qcolors.count();
 	int selector_width=(int)sqrt((double)selector_count);
 	QGridLayout *grid = new QGridLayout(this, 0, selector_width, 0, 0);
 
-	for(int i=0; i<selector_count; i++)
+	for(int i=0; i<selector_count; ++i)
 	{
 		ColorSelectorButton* btn = new ColorSelectorButton(this, qcolors[i], 1);
 		grid->addWidget(btn, i/selector_width, i%selector_width);

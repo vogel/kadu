@@ -233,7 +233,7 @@ Sms::Sms(const QString& altnick, QDialog* parent) : QDialog (parent, "Sms")
 
 	QStringList strlist;
 	list = new QComboBox(this);
-	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); i++)
+	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
 		if ((*i).mobile.length())
 		 	strlist.append((*i).altnick);
 	strlist.sort();
@@ -296,7 +296,7 @@ void Sms::updateRecipient(const QString &newtext)
 void Sms::updateList(const QString &newnumber)
 {
 	kdebugf();
-	for(UserList::ConstIterator i = userlist.begin(); i != userlist.end(); i++)
+	for(UserList::ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
 		if((*i).mobile==newnumber)
 		{
 			list->setCurrentText((*i).altnick);
@@ -452,7 +452,7 @@ void SmsSlots::onCreateConfigDialog()
 	QMap<QString,isValidFunc*>::Iterator it;
 	QStringList priority=QStringList::split(";", config_file.readEntry("SMS", "Priority"));	
 
-	for(QStringList::Iterator it=priority.begin();it != priority.end();++it)
+	for(QStringList::Iterator it=priority.begin(); it!=priority.end(); ++it)
 		if(gateways.contains(*it))
 			lb_gws->insertItem(*it);
 
@@ -560,7 +560,7 @@ SmsGateway* SmsSlots::getGateway(QString& number)
 	SmsGateway* Gateway;
 	QStringList priority=QStringList::split(";", config_file.readEntry("SMS", "Priority"));	
 
-	for(QStringList::Iterator it=priority.begin();it != priority.end();++it) {
+	for(QStringList::Iterator it=priority.begin(); it != priority.end(); ++it) {
 		if(gateways.contains(*it)){
 			f=gateways[*it];
 			Gateway=f(number, this);

@@ -297,7 +297,8 @@ QString unicodeUrl2latinUrl(const QString &buf)
 	return tmp;
 }
 
-QString printDateTime(const QDateTime &datetime) {
+QString printDateTime(const QDateTime &datetime)
+{
 	QString tmp;
 	time_t t;
 	QDateTime dt2;
@@ -333,7 +334,8 @@ QString timestamp(time_t customtime)
 	return buf;
 }
 
-QDateTime currentDateTime(void) {
+QDateTime currentDateTime(void)
+{
 	time_t t;
 	QDateTime date;
 
@@ -356,15 +358,17 @@ QStringList toStringList(const QString &e1, const QString &e2, const QString &e3
 	return list;
 }
 
-QString pwHash(const QString &tekst) {
+QString pwHash(const QString &tekst)
+{
 	QString nowytekst;
 	unsigned int ile;
 	unsigned short znak;
 	nowytekst = tekst;
-	for (ile = 0; ile < tekst.length(); ile++) {
+	for (ile = 0; ile < tekst.length(); ++ile)
+	{
 		znak = nowytekst[ile].unicode() ^ ile ^ 1;
 		nowytekst[ile] = QChar(znak);
-		}
+	}
 	return nowytekst;
 }
 
@@ -380,22 +384,25 @@ QString translateLanguage(const QApplication *application, const QString &locale
 		QT_TR_NOOP("Italian"),
 		QT_TR_NOOP("Polish"), 0};
 
-	for (int i = 0; local[i]; i++) {
-		if (l2n) {
+	for (int i = 0; local[i]; ++i)
+	{
+		if (l2n)
+		{
 			if (locale.mid(0, 2) == local[i])
 				return application->translate("@default", name[i]);
-			}
+		}
 		else
 			if (locale == application->translate("@default", name[i]))
 				return local[i];
-		}
+	}
 	if (l2n)
 		return application->translate("@default", QT_TR_NOOP("English"));
 	else
 		return "en";
 }
 
-void openWebBrowser(const QString &link) {
+void openWebBrowser(const QString &link)
+{
 	kdebugf();
 	QProcess *browser;
 	QString cmd;
@@ -416,7 +423,7 @@ void openWebBrowser(const QString &link) {
 		cmd = webBrowser.arg(link);
 	}
 	args = QStringList::split(" ", cmd);
-	for (QStringList::iterator i = args.begin(); i != args.end(); i++)
+	for (QStringList::iterator i = args.begin(); i != args.end(); ++i)
 		kdebugm(KDEBUG_INFO, "openWebBrowser(): %s\n", unicode2latin(*i).data());
 	browser = new QProcess();
 	browser->setArguments(args);
@@ -644,7 +651,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 				tmp = tmp.section("\"", 1, 1);
 				attribs = QStringList::split(";", tmp);
 				formantattribs.clear();
-				for (i = 0; i < attribs.count(); i++)
+				for (i = 0; i < attribs.count(); ++i)
 				{
 					actattrib.name = attribs[i].section(":", 0, 0);
 					actattrib.value = attribs[i].section(":", 1, 1);
@@ -652,7 +659,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 				}
 				actformant.format.position = pos;
 				actformant.format.font = 0;
-				for (i = 0; i < formantattribs.count(); i++)
+				for (i = 0; i < formantattribs.count(); ++i)
 				{
 					actattrib = formantattribs[i];
 					if (actattrib.name == "font-style" && actattrib.value == "italic")
@@ -708,7 +715,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 		tmpformats = cformats;
 		memcpy(tmpformats, &richtext_header, sizeof(struct gg_msg_richtext));
 		tmpformats += sizeof(struct gg_msg_richtext);
-		for (QValueList<struct richtext_formant>::iterator it = formants.begin(); it != formants.end(); it++)
+		for (QValueList<struct richtext_formant>::iterator it = formants.begin(); it != formants.end(); ++it)
 		{
 			actformant = (*it);
 			memcpy(tmpformats, &actformant, sizeof(gg_msg_richtext_format));
@@ -749,7 +756,7 @@ struct ParseElem
 QString parse(const QString &s, const UserListElement &ule, bool escape)
 {
 	kdebugm(KDEBUG_DUMP, "parse(): %s escape=%i\n",(const char *)s.local8Bit(), escape);
-	int index=0, i, j, len=s.length();
+	int index = 0, i, len = s.length();
 	QValueList<ParseElem> parseStack;
 
 	static bool searchChars[256]={false};
@@ -766,7 +773,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 	{
 		ParseElem pe1, pe;
 
-		for(i=index; i<len; i++)
+		for(i=index; i<len; ++i)
 			if (searchChars[(unsigned char)unicode2latin(s)[i]])
 				break;
 		if (i==len)
@@ -792,29 +799,26 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 		QChar c=s[i];
 		if (c=='%')
 		{
-			i++;
+			++i;
 			if (i==len)
 				break;
 			pe.type=ParseElem::PE_STRING;
 
 			switch(unicode2latin(s)[i]) {
 				case 's':
-					i++;
+					++i;
 					if (!ule.uin)
 						break;
-					j=statusGGToStatusNr(ule.status);
-					if (j%2)
-						j--;
-					pe.str= qApp->translate("@default", statustext[j]);
+					pe.str= qApp->translate("@default",
+						Status::name(Status::index(ule.status->status(), false)));
 					break;
 				case 'd':
-					i++;
-					if( myUin == ule.uin && !(gadu->status().hasDescription()))
-						pe.str=QString::null;
+					++i;
+					if (myUin == ule.uin)
+						pe.str = gadu->status().description();
 					else
-						pe.str=ule.description;
+						pe.str = ule.status->description();
 
-					//pe.str=ule.description;
 				 	if (escape)
 			 			HtmlDocument::escapeText(pe.str);
 					if(config_file.readBoolEntry("Look", "ShowMultilineDesc")) {
@@ -822,39 +826,39 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 						pe.str.replace(QRegExp("\\s\\s"), QString(" &nbsp;"));
 					}
 					break;
-				case 'i': i++; if (ule.ip.ip4Addr()) pe.str=ule.ip.toString();         break;
-				case 'v': i++; if (ule.ip.ip4Addr()) pe.str=ule.dnsname;               break;
-				case 'o': i++; if (ule.port==2)      pe.str=" ";                       break;
-				case 'p': i++; if (ule.port)         pe.str=QString::number(ule.port); break;
-				case 'u': i++; if (ule.uin)          pe.str=QString::number(ule.uin);  break;
+				case 'i': ++i; if (ule.ip.ip4Addr()) pe.str=ule.ip.toString();         break;
+				case 'v': ++i; if (ule.ip.ip4Addr()) pe.str=ule.dnsname;               break;
+				case 'o': ++i; if (ule.port==2)      pe.str=" ";                       break;
+				case 'p': ++i; if (ule.port)         pe.str=QString::number(ule.port); break;
+				case 'u': ++i; if (ule.uin)          pe.str=QString::number(ule.uin);  break;
 				case 'n':
-					i++;
+					++i;
 					pe.str=ule.nickname;
 					if(escape)
 						HtmlDocument::escapeText(pe.str);
 					break;
 				case 'a':
-					i++;
+					++i;
 					pe.str=ule.altnick;
 					if(escape)
 						HtmlDocument::escapeText(pe.str);
 					break;
 				case 'f':
-					i++;
+					++i;
 					pe.str=ule.first_name;
 					if(escape)
 						HtmlDocument::escapeText(pe.str);
 					break;
 				case 'r':
-					i++;
+					++i;
 					pe.str=ule.last_name;
 					if(escape)
 						HtmlDocument::escapeText(pe.str);
 					break;
-				case 'm': i++; pe.str=ule.mobile;		break;
-				case 'g': i++; pe.str=ule.group();		break;
-				case 'e': i++; pe.str=ule.email;		break;
-				case '%': i++;
+				case 'm': ++i; pe.str=ule.mobile;		break;
+				case 'g': ++i; pe.str=ule.group();		break;
+				case 'e': ++i; pe.str=ule.email;		break;
+				case '%': ++i;
 				default:
 					pe.str="%";
 			}
@@ -862,13 +866,13 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 		}
 		else if (c=='[')
 		{
-			i++;
+			++i;
 			pe.type=ParseElem::PE_CHECK_NULL;
 			parseStack.push_back(pe);
 		}
 		else if (c==']')
 		{
-			i++;
+			++i;
 			bool anyNull=false;
 			while (!parseStack.empty())
 			{
@@ -895,13 +899,13 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 		}
 		else if (c=='{')
 		{
-			i++;
+			++i;
 			pe.type=ParseElem::PE_CHECK_FILE;
 			parseStack.push_back(pe);
 		}
 		else if (c=='}')
 		{
-			i++;
+			++i;
 			while (!parseStack.empty())
 			{
 				ParseElem &pe2=parseStack.last();
@@ -938,13 +942,13 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 		}
 		else if (c=='`')
 		{
-			i++;
+			++i;
 			pe.type=ParseElem::PE_EXECUTE;
 			parseStack.push_back(pe);
 		}
 		else if (c=='\'')
 		{
-			i++;
+			++i;
 			while (!parseStack.empty())
 			{
 				ParseElem pe2=parseStack.last();
@@ -1032,7 +1036,7 @@ void stringHeapSortHelper( QStringList::iterator b, QStringList::iterator e, QSt
 		}
 	}
 
-	for( uint i = n; i > 0; i-- ) {
+	for( uint i = n; i > 0; --i ) {
 		*b++ = heap[1];
 		if ( i > 1 ) {
 			heap[1] = heap[i];
@@ -1120,7 +1124,7 @@ void ChooseDescription::okbtnPressed()
 	defaultdescriptions.remove(desc->currentText());
 	//i dodajemy na pocz±tek
 	defaultdescriptions.prepend(desc->currentText());
-	
+
 	while (defaultdescriptions.count()>config_file.readUnsignedNumEntry("General", "NumberOfDescriptions"))
 		defaultdescriptions.pop_back();
 	accept();
@@ -1308,8 +1312,8 @@ void HttpClient::onConnected()
 
 //		wywolanie Cookies.keys() zostaje na lepsze czasu jak juz
 //		wszyscy beda mieli Qt >= 3.0.5
-//    		for(int i=0; i<Cookies.keys().size(); i++)
-		for (unsigned int i = 0; i < keys.size(); i++) {
+//    		for(int i=0; i<Cookies.keys().size(); ++i)
+		for (unsigned int i = 0; i < keys.size(); ++i) {
 			if (i > 0)
 				query+="; ";
 //			query+=Cookies.keys()[i]+"="+Cookies[Cookies.keys()[i]];
@@ -1342,7 +1346,7 @@ void HttpClient::onReadyRead()
 	//
 	int old_size=Data.size();
 	Data.resize(old_size+size);
-	for(int i=0; i<size; i++)
+	for(int i=0; i<size; ++i)
 		Data[old_size+i]=buf[i];
 	// Jesli nie mamy jeszcze naglowka
 	if(!HeaderParsed)
@@ -1415,7 +1419,7 @@ void HttpClient::onReadyRead()
 		// Wytnij naglowek z Data
 		int header_size=p+4;
 		int new_data_size=Data.size()-header_size;
-		for(int i=0; i<new_data_size; i++)
+		for(int i=0; i<new_data_size; ++i)
 			Data[i]=Data[header_size+i];
 		Data.resize(new_data_size);
 		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Header parsed and cutted off from data\n");
@@ -1566,7 +1570,7 @@ void HtmlDocument::parseHtml(const QString& html)
 {
 	Element e;
 	e.tag=false;
-	for(unsigned int i=0; i<html.length(); i++)
+	for(unsigned int i=0; i<html.length(); ++i)
 	{
 		QChar ch=html[i];
 		switch(ch)
@@ -1600,7 +1604,7 @@ void HtmlDocument::parseHtml(const QString& html)
 QString HtmlDocument::generateHtml()
 {
 	QString html;
-	for(unsigned int i=0; i<Elements.size(); i++)
+	for(unsigned int i=0; i<Elements.size(); ++i)
 	{
 		Element e=Elements[i];
 		if(!e.tag)
@@ -1641,7 +1645,7 @@ void HtmlDocument::splitElement(int& index,int start,int length)
 		pre.tag=e.tag;
 		pre.text=e.text.left(start);
 		Elements.insert(Elements.at(index),pre);
-		index++;
+		++index;
 	}
 	if(uint(start+length)<e.text.length())
 	{
@@ -1660,7 +1664,7 @@ void HtmlDocument::convertUrlsToHtml()
 {
 //	QRegExp url_regexp("(http://|https://|www\\.|ftp://|ftp\\.|sftp://|smb://|file:/|rsync://|mailto:)[a-zA-Z0-9\\-\\._/~?=&#\\+%:;,!@\\\\]+");
 	QRegExp url_regexp(latin2unicode((const unsigned char *)"(http://|https://|www\\.|ftp://|ftp\\.|sftp://|smb://|file:/|rsync://|mailto:)[a-zA-Z0-9êó±¶³¿¼æñÊÓ¡¦£¯¬ÆÑ\\-\\._/~?=&#\\+%:;,!@\\\\]+"));
-	for(int i = 0; i < countElements(); i++)
+	for(int i = 0; i < countElements(); ++i)
 	{
 		if(isTagElement(i))
 			continue;
@@ -1772,7 +1776,7 @@ void HtmlDocumentToGGMessage(HtmlDocument &htmldoc, QString &msg, int &formats_l
 
 	kdebugf();
 
-	for (it = 0, pos = 0, formats_length = 0, inspan = -1; it < htmldoc.countElements(); it++) {
+	for (it = 0, pos = 0, formats_length = 0, inspan = -1; it < htmldoc.countElements(); ++it) {
 		tmp = htmldoc.elementText(it);
 		if (htmldoc.isTagElement(it)) {
 			kdebugm(KDEBUG_INFO, "HtmlDocumentToGGMessage(): pos = %d\n", pos);
@@ -1783,14 +1787,14 @@ void HtmlDocumentToGGMessage(HtmlDocument &htmldoc, QString &msg, int &formats_l
 				tmp = tmp.section("\"", 1, 1);
 				attribs = QStringList::split(";", tmp);
 				formantattribs.clear();
-				for (i = 0; i < attribs.count(); i++) {
+				for (i = 0; i < attribs.count(); ++i) {
 					actattrib.name = attribs[i].section(":", 0, 0);
 					actattrib.value = attribs[i].section(":", 1, 1);
 					formantattribs.append(actattrib);
 					}
 				actformant.format.position = pos;
 				actformant.format.font = 0;
-				for (i = 0; i < formantattribs.count(); i++) {
+				for (i = 0; i < formantattribs.count(); ++i) {
 					actattrib = formantattribs[i];
 					if (actattrib.name == "font-style" && actattrib.value == "italic")
 						actformant.format.font |= GG_FONT_ITALIC;
@@ -1831,7 +1835,8 @@ void HtmlDocumentToGGMessage(HtmlDocument &htmldoc, QString &msg, int &formats_l
 		tmpformats = cformats;
 		memcpy(tmpformats, &richtext_header, sizeof(struct gg_msg_richtext));
 		tmpformats += sizeof(struct gg_msg_richtext);
-		for (QValueList<struct richtext_formant>::iterator it = formants.begin(); it != formants.end(); it++) {
+		for (QValueList<struct richtext_formant>::iterator it = formants.begin(); it != formants.end(); ++it)
+		{
 			actformant = (*it);
 			if (actformant.format.font & GG_FONT_COLOR) {
 				memcpy(tmpformats, &actformant, sizeof(richtext_formant));
@@ -1938,12 +1943,12 @@ QStringList Themes::getSubDirs(const QString& path)
 	QStringList subdirs, dirs=dir.entryList();
 	dirs.remove(".");
 	dirs.remove("..");
-	for (QStringList::Iterator it= dirs.begin(); it!=dirs.end(); it++)
-		{
+	for (QStringList::Iterator it= dirs.begin(); it!=dirs.end(); ++it)
+	{
 		QFile s(path+"/"+(*it)+"/"+ConfigName);
 		if (s.exists())
 			subdirs.append((*it));
-		}
+	}
 	return subdirs;
 }
 
@@ -1998,7 +2003,7 @@ void Themes::setPaths(const QStringList& paths)
 	additional.clear();
 	QStringList add, temp = paths + defaultKaduPathsWithThemes();
 	QFile s;
-	for (QStringList::Iterator it = temp.begin(); it != temp.end(); it++)
+	for (QStringList::Iterator it = temp.begin(); it != temp.end(); ++it)
 	{
 		s.setName((*it)+"/"+ConfigName);
 		if (s.exists())
@@ -2020,10 +2025,10 @@ QStringList Themes::defaultKaduPathsWithThemes()
 	default1=getSubDirs(dataPath("kadu/themes/"+Name));
 	default2=getSubDirs(ggPath(Name));
 
-	for (QStringList::Iterator it= default1.begin(); it!=default1.end(); it++)
+	for (QStringList::Iterator it= default1.begin(); it!=default1.end(); ++it)
 		(*it)=dataPath("kadu/themes/"+Name+"/"+(*it)+"/");
 
-	for (QStringList::Iterator it= default2.begin(); it!=default2.end(); it++)
+	for (QStringList::Iterator it= default2.begin(); it!=default2.end(); ++it)
 		(*it)=ggPath(Name)+"/"+(*it)+"/";
 
 	return default1+default2;
@@ -2102,7 +2107,7 @@ void GaduImagesManager::sendImage(UinType uin,uint32_t size,uint32_t crc32)
 {
 	kdebugf();
 	kdebugm(KDEBUG_INFO, "Searching images to send: size=%u, crc32=%u\n",size,crc32);
-	for(QValueList<ImageToSend>::Iterator i=ImagesToSend.begin(); i!=ImagesToSend.end(); i++)
+	for(QValueList<ImageToSend>::Iterator i=ImagesToSend.begin(); i!=ImagesToSend.end(); ++i)
 	{
 		if ((*i).size==size && (*i).crc32==crc32)
 		{
@@ -2142,7 +2147,7 @@ QString GaduImagesManager::getImageToSendFileName(uint32_t size,uint32_t crc32)
 {
 	kdebugf();
 	kdebugm(KDEBUG_INFO, "Searching images to send: size=%u, crc32=%u\n",size,crc32);
-	for(QValueList<ImageToSend>::Iterator i=ImagesToSend.begin(); i!=ImagesToSend.end(); i++)
+	for(QValueList<ImageToSend>::Iterator i=ImagesToSend.begin(); i!=ImagesToSend.end(); ++i)
 	{
 		if ((*i).size==size && (*i).crc32==crc32)
 		{
@@ -2158,7 +2163,7 @@ QString GaduImagesManager::getSavedImageFileName(uint32_t size,uint32_t crc32)
 {
 	kdebugf();
 	kdebugm(KDEBUG_INFO, "Searching saved images: size=%u, crc32=%u\n",size,crc32);
-	for(QValueList<SavedImage>::Iterator i=SavedImages.begin(); i!=SavedImages.end(); i++)
+	for(QValueList<SavedImage>::Iterator i=SavedImages.begin(); i!=SavedImages.end(); ++i)
 	{
 		if ((*i).size==size && (*i).crc32==crc32)
 		{
@@ -2279,10 +2284,10 @@ void KaduTextBrowser::drawContents(QPainter * p, int clipx, int clipy, int clipw
 		oraz zawieszenie Kadu (http://www.kadu.net/forum/viewtopic.php?t=2486)
 	*/
 //	kdebugm(KDEBUG_INFO, "KaduTextBrowser::drawContents(): level: %d\n", level);
-	level++;
+	++level;
 	if (level==1)
 		QTextBrowser::drawContents(p, clipx, clipy, clipw, cliph);
-	level--;
+	--level;
 }
 
 void KaduTextBrowser::hyperlinkClicked(const QString &link)

@@ -60,17 +60,20 @@ AutoConnectionTimer::AutoConnectionTimer(QObject *parent, const char *name) : QT
 
 void AutoConnectionTimer::doConnect()
 {
-	gadu->status().setOnline("");
+	kdebugf();
+	gadu->login();
 }
 
 void AutoConnectionTimer::on()
 {
+	kdebugf();
 	if (!autoconnection_object)
 		autoconnection_object = new AutoConnectionTimer(kadu, "auto_connection_timer_object");
 }
 
 void AutoConnectionTimer::off()
 {
+	kdebugf();
 	if (autoconnection_object)
 	{
 		delete autoconnection_object;
@@ -111,7 +114,7 @@ bool UinsList::equals(const UinsList &uins) const
 {
 	if (count() != uins.count())
 		return false;
-	for (UinsList::const_iterator i = begin(); i != end(); i++)
+	for (UinsList::const_iterator i = begin(); i != end(); ++i)
 		if(!uins.contains(*i))
 			return false;
 	return true;
@@ -139,7 +142,7 @@ SearchResult::SearchResult(const SearchResult& copyFrom)
 	FamilyName = copyFrom.FamilyName;
 	FamilyCity = copyFrom.FamilyCity;
 	Gender = copyFrom.Gender;
-	Status = copyFrom.Status;
+	Stat = copyFrom.Stat;
 }
 
 void SearchResult::setData(const char *uin, const char *first, const char *last, const char *nick, const char *born,
@@ -155,7 +158,7 @@ void SearchResult::setData(const char *uin, const char *first, const char *last,
 	FamilyName = cp2unicode((unsigned char *)familyName);
 	FamilyCity = cp2unicode((unsigned char *)familyCity);
 	if (status)
-		Status = atoi(status) & 127;
+		Stat.fromStatusNumber(atoi(status) & 127, "");
 	if (gender)
 		Gender = atoi(gender);
 	else
@@ -498,7 +501,7 @@ void TokenSocketNotifiers::socketEvent()
 
 				//nie optymalizowac!!!
 				QByteArray buf(H->body_size);
-				for (unsigned int i = 0; i < H->body_size; i++)
+				for (unsigned int i = 0; i < H->body_size; ++i)
 					buf[i] = H->body[i];
 
 				QPixmap tokenImage(buf);
@@ -577,7 +580,7 @@ void GaduSocketNotifiers::socketEvent()
 	kdebugf();
 	static int calls = 0;
 
-	calls++;
+	++calls;
 	if (calls > 1)
 		kdebugm(KDEBUG_WARNING, "************* GaduSocketNotifiers::socketEvent(): Recursive eventHandler calls detected!\n");
 
@@ -586,7 +589,7 @@ void GaduSocketNotifiers::socketEvent()
 	{
 		emit error(ConnectionUnknow);
 //		gg_free_event(e);//nulla nie zwalniamy, bo i po co?
-		calls--;
+		--calls;
 		return;
 	}
 
@@ -639,7 +642,7 @@ void GaduSocketNotifiers::socketEvent()
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduSocketNotifiers::socketEvent(): recipients_count: %d\n", e->event.msg.recipients_count);
 			uins.append(e->event.msg.sender);
 			if ((e->event.msg.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT)
-				for (int i = 0; i < e->event.msg.recipients_count; i++)
+				for (int i = 0; i < e->event.msg.recipients_count; ++i)
 					uins.append(e->event.msg.recipients[i]);
 			QCString msg((char*)e->event.msg.message);
 			QByteArray formats;
@@ -702,7 +705,7 @@ void GaduSocketNotifiers::socketEvent()
 	if (!gadu->status().isOffline())
 		if (Sess->state == GG_STATE_IDLE && gadu->userListSent())
 		{
-			//gadu->status().setOffline("");
+			gadu->status().setOffline("");
 			UserBox::all_changeAllToInactive();
 			emit error(ConnectionUnknow);
 		}
@@ -711,7 +714,7 @@ void GaduSocketNotifiers::socketEvent()
 	// TODO: to mi siê nie podoba
 
 	gg_free_event(e);
-	calls--;
+	--calls;
 	kdebugf2();
 }
 
@@ -746,7 +749,7 @@ void GaduProtocol::initModule()
 	gadu = new GaduProtocol(kadu, "gadu");
 
 	QHostAddress ip;
-	for (int i = 0; i < 7; i++)
+	for (int i = 0; i < 7; ++i)
 	{
 		ip.setAddress(QString(gg_servers_ip[i]));
 		gg_servers.append(ip);
@@ -806,7 +809,7 @@ void GaduProtocol::initModule()
 	QHostAddress ip2;
 	servers = QStringList::split(";", config_file.readEntry("Network","Server", ""));
 	ConfigServers.clear();
-	for (unsigned int i = 0; i < servers.count(); i++)
+	for (unsigned int i = 0; i < servers.count(); ++i)
 		if (ip2.setAddress(servers[i]))
 			ConfigServers.append(ip2);
 
@@ -831,12 +834,6 @@ GaduProtocol::GaduProtocol(QObject *parent, const char *name) : QObject(parent, 
 	connect(NextStatus, SIGNAL(goBusy(const QString &)), this, SLOT(iWantGoBusy(const QString &)));
 	connect(NextStatus, SIGNAL(goInvisible(const QString &)), this, SLOT(iWantGoInvisible(const QString &)));
 	connect(NextStatus, SIGNAL(goOffline(const QString &)), this, SLOT(iWantGoOffline(const QString &)));
-
-	connect(CurrentStatus, SIGNAL(goOnline(const QString &)), this, SIGNAL(goOnline(const QString &)));
-	connect(CurrentStatus, SIGNAL(goBusy(const QString &)), this, SIGNAL(goBusy(const QString &)));
-	connect(CurrentStatus, SIGNAL(goInvisible(const QString &)), this, SIGNAL(goInvisible(const QString &)));
-	connect(CurrentStatus, SIGNAL(goOffline(const QString &)), this, SIGNAL(goOffline(const QString &)));
-	connect(CurrentStatus, SIGNAL(changed(const Status &)), this, SIGNAL(statusChanged(const Status &)));
 
 	connect(SocketNotifiers, SIGNAL(ackReceived(int)), this, SIGNAL(ackReceived(int)));
 	connect(SocketNotifiers, SIGNAL(connected()), this, SLOT(connectedSlot()));
@@ -1081,11 +1078,8 @@ void GaduProtocol::disconnectedSlot()
 
 	UserListSent = false;
 
-	for (UserList::Iterator i = userlist.begin(); i != userlist.end(); i++)
-	{
-		(*i).status = GG_STATUS_NOT_AVAIL;
-		(*i).description = "";
-	}
+	for (UserList::Iterator i = userlist.begin(); i != userlist.end(); ++i)
+		(*i).status->setOffline();
 
 	chat_manager->refreshTitles();
 	UserBox::all_refresh();
@@ -1115,8 +1109,6 @@ void GaduProtocol::errorSlot(GaduError err)
 
 	disconnectedSlot();
 	emit error(err);
-	if(err != Disconnected)
-		login();
 	kdebugf2();
 }
 
@@ -1224,7 +1216,7 @@ void GaduProtocol::systemMessageReceived(QString &message, QDateTime &time, int 
 void GaduProtocol::login()
 {
 	kdebugf();
-	RequestedStatusForLogin = NextStatus->statusNumber();
+	RequestedStatusForLogin = NextStatus->toStatusNumber();
 
 	emit connecting();
 
@@ -1262,7 +1254,7 @@ void GaduProtocol::login()
 	if (ConfigServers.count() && !config_file.readBoolEntry("Network", "isDefServers") && ConfigServers[ServerNr].ip4Addr())
 	{
 		ActiveServer = &ConfigServers[ServerNr];
-		ServerNr++;
+		++ServerNr;
 		if (ServerNr >= ConfigServers.count())
 			ServerNr = 0;
 	}
@@ -1272,7 +1264,7 @@ void GaduProtocol::login()
 			ActiveServer = &gg_servers[ServerNr - 1];
 		else
 			ActiveServer = NULL;
-		ServerNr++;
+		++ServerNr;
 		if (ServerNr > gg_servers.count())
 			ServerNr = 0;
 	}
@@ -1381,7 +1373,7 @@ int GaduProtocol::sendMessage(const UinsList& uins,const char* msg)
 	if(uins.count()>1)
 	{
 		UinType* users = new UinType[uins.count()];
-		for (unsigned int i = 0; i < uins.count(); i++)
+		for (unsigned int i = 0; i < uins.count(); ++i)
 			users[i] = uins[i];
 		seq=gg_send_message_confer(Sess, GG_CLASS_CHAT,
 			uins.count(), users, (unsigned char*)msg);
@@ -1404,7 +1396,7 @@ int GaduProtocol::sendMessageRichText(const UinsList& uins,const char* msg,unsig
 	if(uins.count()>1)
 	{
 		UinType* users = new UinType[uins.count()];
-		for (unsigned int i = 0; i < uins.count(); i++)
+		for (unsigned int i = 0; i < uins.count(); ++i)
 			users[i] = uins[i];
 		seq = gg_send_message_confer_richtext(Sess, GG_CLASS_CHAT,
 				uins.count(), users, (unsigned char*)msg,
@@ -1431,9 +1423,9 @@ void GaduProtocol::sendUserList()
 	UserListSent = true;
 
 	unsigned int j = 0;
-	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); i++)
+	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
 		if ((*i).uin)
-			j++;
+			++j;
 
 	if (!j)
 	{
@@ -1446,7 +1438,7 @@ void GaduProtocol::sendUserList()
 	types = (char *) malloc(j * sizeof(char));
 
 	j = 0;
-	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); i++)
+	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
 		if ((*i).uin && !(*i).anonymous)
 		{
 			uins[j] = (*i).uin;
@@ -1457,7 +1449,7 @@ void GaduProtocol::sendUserList()
 					types[j] = GG_USER_BLOCKED;
 				else
 					types[j] = GG_USER_NORMAL;
-			j++;
+			++j;
 		}
 
 	/** we were popping up sometimes, so let's keep the server informed **/
@@ -1554,7 +1546,7 @@ void GaduProtocol::newResults(gg_pubdir50_t res)
 
 	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "GaduProtocol::newResults(): found %d results\n", count);
 
-	for (int i = 0; i < count; i++)
+	for (int i = 0; i < count; ++i)
 	{
 		searchResult.setData(
 			gg_pubdir50_get(res, i, GG_PUBDIR50_UIN),
@@ -1837,7 +1829,7 @@ QString GaduProtocol::userListToString(const UserList& userList) const
 	kdebugf();
 	QString contacts(""), tmp;
 
-	for (UserList::ConstIterator i = userList.begin(); i != userList.end(); i++)
+	for (UserList::ConstIterator i = userList.begin(); i != userList.end(); ++i)
 		if (!(*i).anonymous)
 		{
 			contacts += (*i).first_name;
@@ -1903,13 +1895,13 @@ void GaduProtocol::streamToUserList(QTextStream& stream, UserList& userList) con
 		else
 			groups = sections.count() - 7;
 		groupNames.clear();
-		for (i = 0; i < groups; i++)
+		for (i = 0; i < groups; ++i)
 			groupNames.append(sections[5 + i]);
 		e.setGroup(groupNames.join(","));
 		e.uin = sections[5 + groups].toUInt(&ok);
 		if (!ok)
 			e.uin = 0;
-		e.description = QString::null;
+
 		e.email = sections[6 + groups];
 		userList.addUser(e);
 	}
@@ -1918,11 +1910,13 @@ void GaduProtocol::streamToUserList(QTextStream& stream, UserList& userList) con
 
 void GaduProtocol::enableAutoConnection()
 {
+	kdebugf();
 	AutoConnectionTimer::on();
 }
 
 void GaduProtocol::disableAutoConnection()
 {
+	kdebugf();
 	AutoConnectionTimer::off();
 }
 
@@ -1987,7 +1981,7 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 {
 	kdebugf();
 
-	unsigned int oldStatus;
+	Status oldStatus;
 	int nr = 0;
 
 	while (e->event.notify60[nr].uin)
@@ -1997,7 +1991,7 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 			kdebugm(KDEBUG_INFO, "eventGotUserlist(): buddy %d not in list. Damned server!\n",
 				e->event.notify60[nr].uin);
 			gg_remove_notify(Sess, e->event.notify60[nr].uin);
-			nr++;
+			++nr;
 			continue;
 		}
 
@@ -2009,13 +2003,13 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 		user.version = e->event.notify60[nr].version;
 		user.image_size = e->event.notify60[nr].image_size;
 
-		oldStatus = user.status;
-
-		if (user.description)
-			user.description.truncate(0);
+		oldStatus.setStatus(*(user.status));
 
 		if (e->event.notify60[nr].descr)
-			user.description.append(cp2unicode((unsigned char *)e->event.notify60[nr].descr));
+			dynamic_cast<GaduStatus *>(user.status)->fromStatusNumber(e->event.notify60[nr].status,
+				cp2unicode((unsigned char *)e->event.notify60[nr].descr));
+		else
+			dynamic_cast<GaduStatus *>(user.status)->fromStatusNumber(e->event.notify60[nr].status, "");
 
 		switch (e->event.notify60[nr].status)
 		{
@@ -2057,10 +2051,10 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 				break;
 		}
 
-		userlist.changeUserStatus(e->event.notify60[nr].uin, e->event.notify60[nr].status, true);
-		emit userStatusChanged(user, oldStatus, true);
+		userlist.changeUserStatus(user.uin, *(user.status), true);
+		emit userStatusChanged(user, oldStatus, false);
 
-		nr++;
+		++nr;
 	}
 
 	emit userListChanged();
@@ -2122,19 +2116,18 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 {
 	kdebugf();
 
-	unsigned int oldStatus, status;
+	GaduStatus oldStatus, status;
 	uint32_t uin;
 	uint32_t remote_ip;
 	uint16_t remote_port;
 	uint8_t version;
 	uint8_t image_size;
-	char *descr;
 
 	if (e->type == GG_EVENT_STATUS60)
 	{
 		uin = e->event.status60.uin;
-		status = e->event.status60.status;
-		descr = e->event.status60.descr;
+		status.fromStatusNumber(e->event.status60.status,
+			cp2unicode((unsigned char *)e->event.status60.descr));
 		remote_ip = e->event.status60.remote_ip;
 		remote_port = e->event.status60.remote_port;
 		version = e->event.status60.version;
@@ -2143,15 +2136,16 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 	else
 	{
 		uin = e->event.status.uin;
-		status = e->event.status.status;
-		descr = e->event.status.descr;
+		status.fromStatusNumber(e->event.status60.status,
+			cp2unicode((unsigned char *)e->event.status60.descr));
 		remote_ip = 0;
 		remote_port = 0;
 		version = 0;
 		image_size = 0;
 	}
 
-	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventStatusChange(): User %d went %d\n", uin, status);
+	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "eventStatusChange(): User %d went %d\n", uin,
+		status.toStatusNumber());
 	UserListElement &user = userlist.byUin(uin);
 
 	if (!userlist.containsUin(uin))
@@ -2162,16 +2156,10 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 		return;
 	}
 
-	oldStatus = user.status;
-
-	if (user.description)
-		user.description.truncate(0);
-
-	if (descr)
-		user.description.append(cp2unicode((unsigned char *)descr));
+	oldStatus.setStatus(*(user.status));
 	userlist.changeUserStatus(uin, status);
 
-	if (user.status == GG_STATUS_NOT_AVAIL || user.status == GG_STATUS_NOT_AVAIL_DESCR)
+	if (user.status->isOffline())
 	{
 		user.ip.setAddress((unsigned int)0);
 		user.port = 0;
@@ -2301,7 +2289,7 @@ void GaduProtocol::onDestroyConfigDialog()
 	unsigned int i;
 
 	tmpservers = QStringList::split(";", e_servers->text());
-	for (i = 0; i < tmpservers.count(); i++)
+	for (i = 0; i < tmpservers.count(); ++i)
 	{
 		ipok = ip.setAddress(tmpservers[i]);
 		if (!ipok)
@@ -2343,36 +2331,6 @@ void GaduProtocol::useTlsEnabled(bool value)
 #endif
 }
 
-Status::Status()
-{
-	Stat = Offline;
-	Description = "";
-	FriendsOnly = false;
-
-	emit goOffline(Description);
-	emit changed(*this);
-}
-
-Status::~Status()
-{
-}
-
-QPixmap Status::pixmap() const
-{
-	return pixmap(Stat, hasDescription());
-}
-
-QPixmap Status::pixmap(const Status &stat) const
-{
-	return pixmap(stat.status(), stat.hasDescription());
-}
-
-QPixmap Status::pixmap(eStatus stat, bool desc) const
-{
-	static QPixmap result;
-	return result;
-}
-
 GaduStatus::GaduStatus()
 {
 }
@@ -2381,46 +2339,108 @@ GaduStatus::~GaduStatus()
 {
 }
 
-QPixmap GaduStatus::pixmap(eStatus stat, bool hasDescription) const
+void GaduStatus::operator = (const Status &copyMe)
 {
-	kdebugf();
+	setStatus(copyMe);
+}
+
+QPixmap GaduStatus::pixmap(eStatus stat, bool hasDescription, bool mobile) const
+{
+//	kdebugf();
+
+	QString add = (hasDescription ? "WithDescription" : "");
+	add.append(mobile ? (!hasDescription) ? "WithMobile" : "Mobile" : "");
+
 	switch (stat)
 	{
 		case Online:
-			return icons_manager.loadIcon(hasDescription ? "OnlineWithDescription" : "Online");
+			return icons_manager.loadIcon(QString("Online").append(add));
 		case Busy:
-			return icons_manager.loadIcon(hasDescription ? "BusyWithDescription" : "Busy");
+			return icons_manager.loadIcon(QString("Busy").append(add));
 		case Invisible:
-			return icons_manager.loadIcon(hasDescription ? "InvisibleWithDescription" : "Invisible");
+			return icons_manager.loadIcon(QString("Invisible").append(add));
+		case Blocking:
+			return icons_manager.loadIcon(QString("Blocking"));
 		default:
-			return icons_manager.loadIcon(hasDescription ? "OfflineWithDescription" : "Offline");
+			return icons_manager.loadIcon(QString("Offline").append(add));
 	}
 }
 
-int GaduStatus::statusNumber() const
+int GaduStatus::toStatusNumber() const
+{
+	return toStatusNumber(Stat, !Description.isEmpty());
+}
+
+int GaduStatus::toStatusNumber(eStatus status, bool has_desc)
 {
 	int sn = 0;
 
-	switch (Stat)
+	switch (status)
 	{
 		case Online:
-			sn = Description.isEmpty() ? GG_STATUS_AVAIL : GG_STATUS_AVAIL_DESCR;
+			sn = has_desc ? GG_STATUS_AVAIL : GG_STATUS_AVAIL_DESCR;
 			break;
 
 		case Busy:
-			sn = Description.isEmpty() ? GG_STATUS_BUSY : GG_STATUS_BUSY_DESCR;
+			sn = has_desc ? GG_STATUS_BUSY : GG_STATUS_BUSY_DESCR;
 			break;
 
 		case Invisible:
-			sn = Description.isEmpty() ? GG_STATUS_INVISIBLE : GG_STATUS_INVISIBLE_DESCR;
+			sn = has_desc ? GG_STATUS_INVISIBLE : GG_STATUS_INVISIBLE_DESCR;
+			break;
+
+		case Blocking:
+			sn = GG_STATUS_BLOCKED;
 			break;
 
 		case Offline:
-			sn = Description.isEmpty() ? GG_STATUS_NOT_AVAIL : GG_STATUS_NOT_AVAIL_DESCR;
+		default:
+			sn = has_desc ? GG_STATUS_NOT_AVAIL : GG_STATUS_NOT_AVAIL_DESCR;
 			break;
 	}
 
 	return sn;
+}
+
+void GaduStatus::fromStatusNumber(int statusNumber, const QString &description)
+{
+	Description = "";
+
+	switch (statusNumber)
+	{
+		case GG_STATUS_AVAIL:
+		case GG_STATUS_AVAIL_DESCR:
+			Stat = Online;
+			break;
+
+		case GG_STATUS_BUSY:
+		case GG_STATUS_BUSY_DESCR:
+			Stat = Busy;
+			break;
+
+		case GG_STATUS_INVISIBLE:
+		case GG_STATUS_INVISIBLE2:
+		case GG_STATUS_INVISIBLE_DESCR:
+			Stat = Invisible;
+			break;
+		
+		case GG_STATUS_BLOCKED:
+			Stat = Blocking;
+			break;
+
+		case GG_STATUS_NOT_AVAIL:
+		case GG_STATUS_NOT_AVAIL_DESCR:
+		default:
+			Stat = Offline;
+			break;
+	}
+
+	if ((statusNumber == GG_STATUS_AVAIL_DESCR) ||
+	    (statusNumber == GG_STATUS_BUSY_DESCR) ||
+	    (statusNumber == GG_STATUS_INVISIBLE_DESCR) ||
+	    (statusNumber == GG_STATUS_NOT_AVAIL_DESCR))
+		Description = description;
+
 }
 
 GaduProtocol* gadu;

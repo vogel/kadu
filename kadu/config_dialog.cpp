@@ -103,10 +103,10 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 		if((*i).type == CONFIG_DELETED)
 			i = RegisteredControls.remove(i);
 		else
-			i++;
+			++i;
 	}
 
-	for(QValueList<RegisteredControl>::iterator i = RegisteredControls.begin(); i != RegisteredControls.end(); i++, num++)
+	for(QValueList<RegisteredControl>::iterator i = RegisteredControls.begin(); i != RegisteredControls.end(); ++i, ++num)
 	{
 // wyswietla cala liste 
 //		kdebugm(KDEBUG_DUMP, "%d: (%d) "+(*i).group+"->"+(*i).parent+"->"+(*i).caption+"->"+(*i).name+"\n", num, (*i).nrOfControls);
@@ -124,7 +124,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			if ((*i).parent == actualparentname)
 				parent=RegisteredControls[actualparent].widget;
 			else
-				for (z=actualtab; z<nexttab; z++)
+				for (z=actualtab; z<nexttab; ++z)
 					if ((*i).parent == RegisteredControls[z].caption && RegisteredControls[z].type!=CONFIG_DELETED)
 					{
 						parent= RegisteredControls[z].widget;
@@ -224,7 +224,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 
 				QStringList options=(*i).additionalParams[0].toStringList();
 				QStringList values=(*i).additionalParams[1].toStringList();
-				for(QStringList::iterator it=options.begin(); it!=options.end(); it++)
+				for(QStringList::iterator it=options.begin(); it!=options.end(); ++it)
 					new QRadioButton(*it, group, (*i).name+(*it));
 				group->setButton(values.findIndex((*i).config->readEntry((*i).group, (*i).entry, (*i).defaultS)));
 
@@ -372,18 +372,18 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			}
 		}
 
-		for(QValueList<ElementConnections>::iterator k=(*i).ConnectedSlots.begin(); k!=(*i).ConnectedSlots.end(); k++)
+		for(QValueList<ElementConnections>::iterator k=(*i).ConnectedSlots.begin(); k!=(*i).ConnectedSlots.end(); ++k)
 			if (!connect((*i).widget, (*k).signal, (*k).receiver, (*k).slot))
 				kdebugm(KDEBUG_ERROR, "unable to connect signal: "+(*k).signal+" slot: "+(*k).slot+"\n");
 	}
 
-	for(QValueList<ElementConnections>::iterator a=SlotsOnCreate.begin(); a!=SlotsOnCreate.end(); a++)
+	for(QValueList<ElementConnections>::iterator a=SlotsOnCreate.begin(); a!=SlotsOnCreate.end(); ++a)
 		connect(this, SIGNAL(create()), (*a).receiver, (*a).slot);
 	
-	for(QValueList<ElementConnections>::iterator a=SlotsOnApply.begin(); a!=SlotsOnApply.end(); a++)
+	for(QValueList<ElementConnections>::iterator a=SlotsOnApply.begin(); a!=SlotsOnApply.end(); ++a)
 		connect(this, SIGNAL(apply()), (*a).receiver, (*a).slot);
 
-	for(QValueList<ElementConnections>::iterator a=SlotsOnClose.begin(); a!=SlotsOnClose.end(); a++)
+	for(QValueList<ElementConnections>::iterator a=SlotsOnClose.begin(); a!=SlotsOnClose.end(); ++a)
 		connect(this, SIGNAL(destroy()), (*a).receiver, (*a).slot);
 
 
@@ -446,7 +446,7 @@ void ConfigDialog::changeTab(const QString& name)
 void ConfigDialog::updateConfig(void) 
 {
 	kdebugf();
-	for(QValueList<RegisteredControl>::iterator i=RegisteredControls.begin(); i!=RegisteredControls.end(); i++)
+	for(QValueList<RegisteredControl>::iterator i=RegisteredControls.begin(); i!=RegisteredControls.end(); ++i)
 	{
 		if (!(*i).widget)
 			continue;
@@ -989,7 +989,7 @@ ConfigDialog::RegisteredControl::RegisteredControl(RegisteredControlType t,
 void ConfigDialog::connectSlot(const QString& groupname, const QString& caption, const char* signal, const QObject* receiver, const char* slot,const QString& name)
 {
 	kdebugf();
-	for(QValueList<RegisteredControl>::iterator j=RegisteredControls.begin(); j!=RegisteredControls.end(); j++)
+	for(QValueList<RegisteredControl>::iterator j=RegisteredControls.begin(); j!=RegisteredControls.end(); ++j)
 		if(((*j).group == groupname) && ((*j).caption == caption) && ((*j).name == name) && (*j).type!=CONFIG_DELETED)
 		{
 			ElementConnections c;
@@ -1006,7 +1006,7 @@ void ConfigDialog::connectSlot(const QString& groupname, const QString& caption,
 void ConfigDialog::disconnectSlot(const QString& groupname, const QString& caption, const char* signal, const QObject* receiver, const char* slot,const QString& name)
 {
 	kdebugf();
-	for(QValueList<RegisteredControl>::iterator j=RegisteredControls.begin(); j!=RegisteredControls.end(); j++)
+	for(QValueList<RegisteredControl>::iterator j=RegisteredControls.begin(); j!=RegisteredControls.end(); ++j)
 		if(((*j).group == groupname) && ((*j).caption == caption) && ((*j).name == name) && (*j).type!=CONFIG_DELETED)
 		{
 			ElementConnections c;
@@ -1078,7 +1078,7 @@ int ConfigDialog::findPreviousTab(int pos)
 		pos=0;
 	if ((uint)(pos+1)>RegisteredControls.count())
 		pos=RegisteredControls.count()-1;
-	for(; pos>=0; pos--)
+	for(; pos>=0; --pos)
 		if (RegisteredControls[pos].type == CONFIG_TAB)
 			return pos;
 	return -1;
@@ -1098,7 +1098,7 @@ int ConfigDialog::findNextTab(int pos)
 	if (pos>=count)
 		pos=count;
 
-	for(; pos<count; pos++)
+	for(; pos<count; ++pos)
 		if (RegisteredControls[pos].type == CONFIG_TAB)
 			return pos;
 	return -1;
@@ -1120,7 +1120,7 @@ int ConfigDialog::findTab(const QString& groupname, int pos)
 	pos=findPreviousTab(pos);
 	if (pos<0)
 		pos=0;
-	for(; pos<count; pos++)
+	for(; pos<count; ++pos)
 		if(RegisteredControls[pos].type==CONFIG_TAB && RegisteredControls[pos].caption == groupname)
 			return pos;
 	return -1;
@@ -1177,11 +1177,11 @@ void ConfigDialog::decreaseNrOfControls(int control)
 //	kdebugf();
 	int j;
 	QString localparent=RegisteredControls[control].parent;
-	for (j=control; j>=0; j--)
+	for (j=control; j>=0; --j)
 		if(RegisteredControls[j].type!=CONFIG_DELETED)
 			if (RegisteredControls[j].caption==localparent)
 			{
-				RegisteredControls[j].nrOfControls--;
+				--RegisteredControls[j].nrOfControls;
 				localparent= RegisteredControls[j].parent;
 				if (RegisteredControls[j].type == CONFIG_TAB)
 					break;
@@ -1194,11 +1194,11 @@ void ConfigDialog::increaseNrOfControls(const int startpos, const int endpos, co
 //	kdebugf();
 	int j;
 	QString localparent=parent;
-	for (j=endpos;j>=startpos;j--)
+	for (j=endpos; j>=startpos; --j)
 		if(RegisteredControls[j].type!=CONFIG_DELETED)
 			if (RegisteredControls[j].caption==localparent)
 			{
-				RegisteredControls[j].nrOfControls++;
+				++RegisteredControls[j].nrOfControls;
 				localparent= RegisteredControls[j].parent;
 				if (RegisteredControls[j].type == CONFIG_TAB)
 					break;
@@ -1220,7 +1220,7 @@ int ConfigDialog::addControl(const QString& groupname, const ConfigDialog::Regis
 		nexttab= RegisteredControls.count()-1;
 
 	int j;
-	for (j=position; j<=nexttab; j++)
+	for (j=position; j<=nexttab; ++j)
 		if(RegisteredControls[j].type!=CONFIG_DELETED)
 			if (RegisteredControls[j].caption == control.parent)
 			{
@@ -1374,10 +1374,10 @@ int ConfigDialog::existControl(const QString& groupname, const QString& caption,
 
 	int j;
 	int count;
-	for(j=position, count=0; count <= RegisteredControls[position].nrOfControls; j++)
+	for(j=position, count=0; count <= RegisteredControls[position].nrOfControls; ++j)
 		if(RegisteredControls[j].type!=CONFIG_DELETED)
 		{
-			count++;
+			++count;
 			if (RegisteredControls[j].caption == caption)
 				if (RegisteredControls[j].name == name)
 					return j;
@@ -1686,7 +1686,7 @@ void SelectPaths::okButton()
 {
 	kdebugf();
 	releaseList.clear();
-	for (unsigned int i=0; i<pathListBox->count(); i++)
+	for (unsigned int i=0; i<pathListBox->count(); ++i)
 		releaseList.append(pathListBox->text(i));
 
 	pathEdit->setText("");

@@ -40,13 +40,18 @@ struct UserListElement
 		QString Group;
 		UserList* Parent;
 		friend class UserList;
-	
+
 	public:
 		UserListElement(UserList* parent);
+		UserListElement(const UserListElement &copyMe);
 		UserListElement();
+		virtual ~UserListElement();
+
+		void operator = (const UserListElement &copyMe);
+
 		QString group() const;
 		void setGroup(const QString& group);
-	
+
 		// te trzeba kiedys trzeba tak uporzadkowac
 		// jak Group
 		QString first_name;
@@ -54,10 +59,9 @@ struct UserListElement
 		QString nickname;
 		QString altnick;
 		QString mobile;
-		QString description;
 		QString email;
 		UinType uin;
-		unsigned int status;
+		Status *status;
 		int image_size;
 		bool anonymous;
 		QHostAddress ip;
@@ -76,7 +80,7 @@ struct UserListElement
 class UserList : public QObject, public QMap<QString,UserListElement>
 {
 	Q_OBJECT
-	
+
 	protected:
 		DnsLookups dnslookups;
 		friend class UserListElement;
@@ -100,7 +104,7 @@ class UserList : public QObject, public QMap<QString,UserListElement>
 		void addAnonymous(UinType uin);
 		void removeUser(const QString &altnick);
 		void changeUserInfo(const QString& old_altnick, const UserListElement& new_data);
-		void changeUserStatus(const UinType uin, const unsigned int status, bool onConnection=false);
+		void changeUserStatus(const UinType uin, const Status &status, bool onConnection=false);
 		bool writeToFile(QString filename = "");
 		bool readFromFile();
 		void setDnsName(UinType uin, const QString &name);
@@ -112,7 +116,7 @@ class UserList : public QObject, public QMap<QString,UserListElement>
 		/**
 		  Przesyla obecny i przyszly status uzytkonika
 		**/
-		void changingStatus(const UinType uin, const unsigned int oldstatus, const unsigned int status, bool onConnection);
+		void changingStatus(const UinType uin, const Status &oldstatus, const Status &status, bool onConnection);
 		void statusModified(UserListElement *, bool onConnection);
 		void userAdded(const UserListElement& user);
 		void dnsNameReady(UinType);

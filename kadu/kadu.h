@@ -137,7 +137,7 @@ class Kadu : public QMainWindow
 		void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
 		void systemMessageReceived(QString &);
 		void userListChanged();
-		void userStatusChanged(UserListElement &, int oldstatus, bool onConnection);
+		void userStatusChanged(UserListElement &, const Status &oldstatus, bool onConnection);
 
 	public slots:
 		/**

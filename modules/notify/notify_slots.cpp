@@ -22,7 +22,7 @@ void NotifySlots::onCreateConfigDialog()
 
 	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
 	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
-	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); i++)
+	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
 	{
 		if ((*i).uin)
 			if (!(*i).notify)
@@ -44,7 +44,7 @@ void NotifySlots::onCreateConfigDialog()
 
 	connect(b_notifyall, SIGNAL(toggled(bool)), this, SLOT(ifNotifyAll(bool)));
 	
-	for (QStringList::iterator it=disabledControls.begin(); it!=disabledControls.end(); it++)
+	for (QStringList::iterator it=disabledControls.begin(); it!=disabledControls.end(); ++it)
 	{
 		ConfigDialog::getCheckBox("Notify", " ", *it)->setDisabled(true);
 		ConfigDialog::getCheckBox("Notify", " ", *it)->setDown(true);
@@ -60,9 +60,9 @@ void NotifySlots::onApplyConfigDialog()
 	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
 	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
 
-	for (i = 0; i < e_notifies->count(); i++)
+	for (i = 0; i < e_notifies->count(); ++i)
 		userlist.byAltNick(e_notifies->text(i)).notify = true;
-	for (i = 0; i < e_availusers->count(); i++)
+	for (i = 0; i < e_availusers->count(); ++i)
 		userlist.byAltNick(e_availusers->text(i)).notify = false;
 	kdebugf2();
 }
@@ -116,11 +116,11 @@ void NotifySlots::_Left(void)
 	QStringList tomove;
 	unsigned int i;
 
-	for(i=0; i<e_notifies->count(); i++)
+	for(i=0; i<e_notifies->count(); ++i)
 		if (e_notifies->isSelected(i))
 			tomove+=e_notifies->text(i);
 
-	for(i=0; i<tomove.size(); i++)
+	for(i=0; i<tomove.size(); ++i)
 	{
 		e_availusers->insertItem(tomove[i]);
 		e_notifies->removeItem(e_notifies->index(e_notifies->findItem(tomove[i])));
@@ -138,11 +138,11 @@ void NotifySlots::_Right(void)
 	QStringList tomove;
 	unsigned int i;
 
-	for(i=0; i<e_availusers->count(); i++)
+	for(i=0; i<e_availusers->count(); ++i)
 		if (e_availusers->isSelected(i))
 			tomove+=e_availusers->text(i);
 
-	for(i=0; i<tomove.size(); i++)
+	for(i=0; i<tomove.size(); ++i)
 	{
 		e_notifies->insertItem(tomove[i]);
 		e_availusers->removeItem(e_availusers->index(e_availusers->findItem(tomove[i])));

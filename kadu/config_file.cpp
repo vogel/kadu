@@ -68,11 +68,11 @@ void ConfigFile::write(const QString &f) {
 		kdebugm(KDEBUG_INFO, "file opened '%s'\n", (const char *)file.name().local8Bit());
 		QTextStream stream(&file);
 		stream.setCodec(QTextCodec::codecForName("ISO 8859-2"));
-		for(QMap<QString, QMap<QString, QString> >::const_iterator i=groups.begin(); i!=groups.end(); i++)
+		for(QMap<QString, QMap<QString, QString> >::const_iterator i=groups.begin(); i!=groups.end(); ++i)
 		{
 //			kdebugm(KDEBUG_DUMP, ">> %s\n", (const char*)i.key().local8Bit());
 			stream << '[' << i.key() << "]\n";
-			for(QMap<QString, QString>::const_iterator j=i.data().begin(); j!=i.data().end(); j++)
+			for(QMap<QString, QString>::const_iterator j=i.data().begin(); j!=i.data().end(); ++j)
 			{
 				QString q=j.data();
 				stream << j.key() << '=' << q.replace(QRegExp("\n"), "\\n") << '\n';

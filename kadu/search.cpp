@@ -152,7 +152,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	results->addColumn(tr("Birth year"));
 	results->setAllColumnsShowFocus(true);
 	results->setResizeMode(QListView::AllColumns);
-	for (int i = 1; i < 5; i++)
+	for (int i = 1; i < 5; ++i)
 		results->setColumnWidthMode(i, QListView::Maximum);
 
 //	searchhidden = false;
@@ -279,7 +279,6 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 
 	QListViewItem *qlv = NULL;
 	QPixmap pix;
-	SearchResults::iterator searchIterator;
 
 	if (seq != searchRecord->Seq)
 		return;
@@ -288,14 +287,12 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 
 	// ??	if ((status && atoi(status) <= 1 && only_active->isChecked()) || !status)
 
-	for (searchIterator = searchResults.begin(); searchIterator != searchResults.end(); searchIterator++) {
-
+	SearchResults::const_iterator end=searchResults.constEnd();
+	for (SearchResults::const_iterator searchIterator = searchResults.constBegin(); searchIterator != end; ++searchIterator)
+	{
 		qlv = results->findItem((*searchIterator).Uin, 1);
 
-		if ((*searchIterator).Status)
-			pix = icons_manager.loadIcon(gg_icons[statusGGToStatusNr((*searchIterator).Status)]);
-		else
-			pix = icons_manager.loadIcon("Offline");
+		pix = static_cast<Status>((*searchIterator).Stat).pixmap();
 
 		if (qlv) {
 //			if (!searchhidden) {
@@ -397,7 +394,6 @@ void SearchDialog::AddButtonClicked()
 	if (!ok)
 		e.uin = 0;
 	e.setGroup("");
-	e.description = "";
 	e.email = "";
 	ui->setUserInfo(e);
 	ui->show();

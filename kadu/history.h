@@ -37,7 +37,7 @@ struct HistoryEntry {
 	unsigned int status;
 	QString ip;
 	QString description;
-	QString mobile;	
+	QString mobile;
 };
 
 struct HistoryFindRec {
@@ -146,7 +146,7 @@ class HistorySearch : public QDialog {
 class HistoryManager : public QObject
 {
 	Q_OBJECT
-	
+
 	public:
 		HistoryManager();
 		int getHistoryEntriesCount(UinsList uins);
@@ -163,12 +163,12 @@ class HistoryManager : public QObject
 		int getHistoryEntriesCountPrivate(const QString &filename);
 		uint getHistoryDate(QTextStream &stream);
 		void buildIndexPrivate(const QString &filename);
-		
+
 	public slots:
 		void chatMsgReceived(UinsList senders,const QString& msg,time_t time,bool& grab);
 		void appendMessage(UinsList receivers, UinType sender, const QString &msg, bool own, time_t=0, bool chat=true);
 		void appendSms(const QString &mobile, const QString &msg);
-		void appendStatus(UinType uin, unsigned int status, QString description = QString::null);
+		void appendStatus(UinType uin, const Status &sstatus);
 		void removeHistory(UinsList uins);
 
 		void convHist2ekgForm(UinsList uins);

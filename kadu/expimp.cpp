@@ -150,7 +150,7 @@ void UserlistImportExport::fromfile() {
 			gadu->streamToUserList(stream, importedUserlist);
 			file.close();
 
-			for (UserList::const_iterator i = importedUserlist.begin(); i != importedUserlist.end(); i++)
+			for (UserList::const_iterator i = importedUserlist.begin(); i != importedUserlist.end(); ++i)
 				new QListViewItem(lv_userlist, QString::number((*i).uin),
 					(*i).nickname,   (*i).altnick,
 					(*i).first_name, (*i).last_name,
@@ -183,7 +183,7 @@ void UserlistImportExport::makeUserlist()
 	if (!MessageBox::ask(tr("This operation will delete your current user list. Are you sure you want this?")))
 		return;
 
-	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); i++)
+	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); ++i)
 		if ((*i).uin)
 			gadu->removeNotify((*i).uin);
 
@@ -192,12 +192,12 @@ void UserlistImportExport::makeUserlist()
 	clearIgnored();
 	kadu->userbox()->clear();
 	kadu->userbox()->clearUsers();
-	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); i++)
+	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); ++i)
 		kadu->userbox()->addUser((*i).altnick);
 
 	UserBox::all_refresh();
 
-	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); i++)
+	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); ++i)
 		if ((*i).uin)
 			gadu->addNotify((*i).uin);
 
@@ -210,7 +210,7 @@ void UserlistImportExport::updateUserlist()
 {
 	kdebugf();
 
-	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); i++)
+	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); ++i)
 		if ((*i).uin)
 			gadu->removeNotify((*i).uin);
 
@@ -218,12 +218,12 @@ void UserlistImportExport::updateUserlist()
 
 	kadu->userbox()->clear();
 	kadu->userbox()->clearUsers();
-	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); i++)
+	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); ++i)
 		kadu->userbox()->addUser((*i).altnick);
 
 	UserBox::all_refresh();
 
-	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); i++)
+	for (UserList::const_iterator i = userlist.begin(); i != userlist.end(); ++i)
 		if ((*i).uin)
 			gadu->addNotify((*i).uin);
 
@@ -242,7 +242,7 @@ void UserlistImportExport::userListImported(bool ok, UserList& userList)
 	pb_fetch->setEnabled(true);
 
 	if (ok)
-		for (UserList::const_iterator i = userList.begin(); i != userList.end(); i++)
+		for (UserList::const_iterator i = userList.begin(); i != userList.end(); ++i)
 			new QListViewItem(lv_userlist, (*i).uin ? QString::number((*i).uin) : QString(), (*i).nickname, (*i).altnick, (*i).first_name,
 				(*i).last_name, (*i).mobile, (*i).group(), (*i).email);
 	kdebugf2();

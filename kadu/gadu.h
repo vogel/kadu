@@ -54,6 +54,28 @@ class UinsList : public QValueList<UinType>
 };
 
 // ------------------------------------
+//             Status
+// ------------------------------------
+
+class GaduStatus : public Status
+{
+	Q_OBJECT
+
+	public:
+		GaduStatus();
+		virtual ~GaduStatus();
+
+		void operator = (const Status &copyMe);
+
+		virtual QPixmap pixmap(eStatus status, bool has_desc, bool mobile) const;
+
+		int toStatusNumber() const;
+		static int toStatusNumber(eStatus status, bool has_desc);
+
+		void fromStatusNumber(int statusNumber, const QString &description);
+};
+
+// ------------------------------------
 //              Search
 // ------------------------------------
 
@@ -68,10 +90,10 @@ struct SearchResult
 	QString FamilyName;
 	QString FamilyCity;
 	int Gender;
-	int Status;
+	GaduStatus Stat;
 
 	SearchResult();
-	SearchResult(const SearchResult&);
+	SearchResult(const SearchResult &);
 	void setData(const char *uin, const char *first, const char *last, const char *nick, const char *born,
 		const char *city, const char *familyName, const char *familyCity, const char *gender, const char *status);
 };
@@ -237,28 +259,14 @@ class GaduSocketNotifiers : public SocketNotifiers
 };
 
 // ------------------------------------
-//             Status
-// ------------------------------------
-
-class GaduStatus : public Status
-{
-	Q_OBJECT
-
-	public:
-		GaduStatus();
-		virtual ~GaduStatus();
-
-		virtual QPixmap pixmap(eStatus status, bool has_desc) const;
-		int statusNumber() const;
-};
-
-// ------------------------------------
 //            GaduProtocol
 // ------------------------------------
 
 class GaduProtocol : public QObject
 {
 	Q_OBJECT
+
+	friend class AutoConnectionTimer;
 
 	private:
 
@@ -282,7 +290,7 @@ class GaduProtocol : public QObject
 		gg_session* Sess;
 
 		/**
-			rzeczywisty bierz±cy status
+			rzeczywisty bie¿±cy status
 		**/
 		GaduStatus* CurrentStatus;
 		/**
@@ -477,7 +485,7 @@ class GaduProtocol : public QObject
 		**/
 		void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
 		void userListChanged();
-		void userStatusChanged(UserListElement &, int oldstatus, bool onConnection=false);
+		void userStatusChanged(UserListElement &, const Status &oldStatus, bool onConnection = false);
 		void systemMessageReceived(QString &);
 		void dccConnectionReceived(const UserListElement&);
 		void disconnectNetwork();
@@ -489,12 +497,6 @@ class GaduProtocol : public QObject
 		void userListExported(bool ok);
 		void userListCleared(bool ok);
 		void userListImported(bool ok, UserList&);
-
-		void goOnline(const QString &);
-		void goBusy(const QString &);
-		void goInvisible(const QString &);
-		void goOffline(const QString &);
-		void statusChanged(const Status &);
 
 		/**
 			Sygnal daje mozliwosc operowania na wiadomoci
@@ -535,4 +537,3 @@ class GaduProtocol : public QObject
 extern GaduProtocol* gadu;
 
 #endif
-

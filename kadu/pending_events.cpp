@@ -24,7 +24,7 @@ PendingMessage::~PendingMessage()
 
 bool PendingMessage::sendBy(UinType uin)
 {
-	for(UinsList::iterator i=Uins.begin(); i!=Uins.end(); i++)
+	for(UinsList::iterator i=Uins.begin(); i!=Uins.end(); ++i)
 		if((*i)==uin)
 			return true;
 	return false;
@@ -38,7 +38,7 @@ void PendingMessage::activate()
 	if ((MsgClass & GG_CLASS_CHAT) == GG_CLASS_CHAT || (MsgClass & GG_CLASS_MSG) == GG_CLASS_MSG
 		|| (!MsgClass))
 	{
-		for (int i = 0; i < Uins.count(); i++)
+		for (int i = 0; i < Uins.count(); ++i)
 			if (!userlist.containsUin(Uins[i]))
 			{
 				QString tmp = QString::number(Uins[i]);
@@ -105,7 +105,7 @@ PendingEvent* PendingEvents::operator[](int index)
 
 bool PendingEvents::pendingEvents(UinType uin)
 {
-	for(PendingEventsList::iterator i=Events.begin(); i!=Events.end(); i++)
+	for(PendingEventsList::iterator i=Events.begin(); i!=Events.end(); ++i)
 		if((*i)->sendBy(uin))
 			return true;
 	return false;

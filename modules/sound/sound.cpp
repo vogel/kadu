@@ -446,7 +446,7 @@ void SoundSlots::onCreateConfigDialog()
 	
 	soundfiles.clear();	
 	if (cb_soundtheme->currentText() == tr("Custom"))
-		for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); it++)
+		for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); ++it)
 			soundfiles[*it]=config_file.readEntry("Sounds", (*it)+"_sound");
 	else
 	{
@@ -455,12 +455,12 @@ void SoundSlots::onCreateConfigDialog()
 		choose->setEnabled(false);
 		clear->setEnabled(false);
 
-		for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); it++)
+		for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); ++it)
 			soundfiles[*it]=sound_manager->themePath()+sound_manager->getThemeEntry(*it);
 	}
 	
 	QStringList::iterator it2=soundTexts.begin();
-	for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); it++, it2++)
+	for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); ++it, ++it2)
 		new QListViewItem(lv_soundfiles, *it2, soundfiles[*it]);
 
 	QVBox* util_box=ConfigDialog::getVBox("Sounds","util_box");
@@ -599,21 +599,21 @@ void SoundSlots::chooseSoundTheme(const QString& string)
 	soundfiles.clear();	
 	if (str == "Custom")
 	{
-		for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); it++)
+		for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); ++it)
 			soundfiles[*it]=config_file.readEntry("Sounds", (*it)+"_sound");
 		choose->setEnabled(true);
 		clear->setEnabled(true);
 	}
 	else
 	{
-		for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); it++)
+		for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); ++it)
 			soundfiles[*it]=sound_manager->themePath()+sound_manager->getThemeEntry(*it);
 		choose->setEnabled(false);
 		clear->setEnabled(false);
 	}
 
 	QStringList::iterator it2=soundTexts.begin();
-	for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); it++, it2++)
+	for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); ++it, ++it2)
 		new QListViewItem(lv_soundfiles, *it2, soundfiles[*it]);
 	kdebugf2();
 }
@@ -651,7 +651,7 @@ void SoundSlots::onApplyConfigDialog()
 		theme= "Custom";
 
 		QStringList::iterator it2=soundTexts.begin();
-		for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); it++, it2++)
+		for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); ++it, ++it2)
 			config_file.writeEntry("Sounds", (*it)+"_sound", lv_soundfiles->findItem(*it2, 0)->text(1));
 	}
 	else

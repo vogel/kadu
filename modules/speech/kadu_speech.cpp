@@ -304,7 +304,8 @@ void SpeechSlots::testSpeech()
 	int basefreq=ConfigDialog::getSlider("Speech", "slider3")->value();
 	
 	int i=int(userlist.count()*float(rand())/RAND_MAX);
-	if (i>0) i--;
+	if (i>0)
+		--i;
 	UserListElement ule=userlist.values()[i];
 
 	kdebugm(KDEBUG_INFO, "%d %d %d %d\n", freq, tempo, basefreq, i);

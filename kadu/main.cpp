@@ -67,9 +67,8 @@ void kadu_signal_handler(int s)
 			abort();
 		}
 		fprintf(stderr, "\n======= BEGIN OF BACKTRACE =====\n");
-		for (int i = 0; i < num_entries; i++) {
+		for (int i = 0; i < num_entries; ++i)
 			fprintf(stderr, "[%d] %s\n", i, bt_strings[i]);
-		}
 		fprintf(stderr, "======= END OF BACKTRACE  ======\n");
 		free(bt_strings);
 #else

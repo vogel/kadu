@@ -210,7 +210,7 @@ void KaduListBoxPixmap::calculateSize(const QString &text, int width, QStringLis
 
 /*	struct timeval t1,t2;
 	gettimeofday(&t1, NULL);
-	for(int j=0; j<1000; j++)
+	for(int j=0; j<1000; ++j)
 	{
 		out.clear();
 		height=0;
@@ -244,17 +244,17 @@ void KaduListBoxPixmap::calculateSize(const QString &text, int width, QStringLis
 		if (tooWide) //przekroczyli¶my szeroko¶æ listy
 		{
 			while(descriptionFontMetrics->width(curtext.left(len))>=width) //skracamy ¿eby w ogóle siê zmie¶ciæ
-				len--;
+				--len;
 			tmplen=len;
 			while (len>0 && !curtext[len-1].isSpace()) //nie b±d¼my chamy i dzielmy opisy na granicach s³ów
-				len--;
+				--len;
 			if (len==0)//no ale mo¿e kto¶ wpisa³ bez spacji?
 				len=tmplen-1;
 		}
 		QString next=curtext.mid(len);//przenosimy do nastêpnego wiersza
 		out.push_back(curtext.left(len));
 		tmpout.pop_front();
-		height++;
+		++height;
 		if (tooWide)
 		{
 			if (next[0].isSpace())//je¿eli obcinamy na bia³ym znaku, to w nastêpnej linii ten znak nie jest potrzebny
@@ -325,53 +325,26 @@ void UserBox::maybeTip(const QPoint &c)
 	{
 		QRect r(itemRect(item));
 		QString s;
+		Status *status = userlist.byAltNick(item->text()).status;
+		QString description = status->description();
+		QString name = Status::name(Status::index(status->status(), false));
 
-		switch (userlist.byAltNick(item->text()).status)
+		if (description.isEmpty())
 		{
-			case GG_STATUS_AVAIL:
-				s = tr("<i>Available</i>");
-				break;
-			case GG_STATUS_BUSY:
-				s = tr("<i>Busy</i>");
-				break;
-			case GG_STATUS_NOT_AVAIL:
-				if (!userlist.byAltNick(item->text()).uin)
-					s = tr("<i>Mobile:</i> <b>%1</b>").arg(userlist.byAltNick(item->text()).mobile);
-				else
-					s = tr("<nobr><i>Not available</i></nobr>");
-				break;
-			case GG_STATUS_INVISIBLE:
-			case GG_STATUS_INVISIBLE2:
-				s = tr("<i>Invisible</i>");
-				break;
-			case GG_STATUS_INVISIBLE_DESCR:
-				s = tr("<i>Invisible <b>(d.)</b></i>");
-				break;
-			case GG_STATUS_BUSY_DESCR:
-				s = tr("<nobr><i>Busy <b>(d.)</b></i></nobr>");
-				break;
-			case GG_STATUS_NOT_AVAIL_DESCR:
-				s = tr("<nobr><i>Not available <b>(d.)</b></i></nobr>");
-				break;
-			case GG_STATUS_AVAIL_DESCR:
-				s = tr("<nobr><i>Available <b>(d.)</b></i></nobr>");
-				break;
-			case GG_STATUS_BLOCKED:
-				s = tr("<nobr><i>Blocking</i></nobr>");
-				break;
-			default:
-				s = tr("<nobr><i>Unknown status</i></nobr>");
-				break;
+			if (status->isOffline() && !userlist.byAltNick(item->text()).uin)
+				s = tr("<i>Mobile:</i><b> ") + userlist.byAltNick(item->text()).mobile + "</b>";
+			else
+				s = tr(QString("<nobr><i>%1</i></nobr>").arg(name));
 		}
-		QString desc = userlist.byAltNick(item->text()).description;
-		if (desc != "")
+		else
 		{
+			s = tr(QString("<nobr><i>%1</i> <b>(d.)</b></nobr>").arg(name));
 			s += "<br/><br/>";
 			s += tr("<b>Description:</b><br/>");
-			HtmlDocument::escapeText(desc);
-			desc.replace(QRegExp(" "), "&nbsp;");
-			desc.replace(QRegExp("\n"), "<br/>");
-			s += desc;
+			HtmlDocument::escapeText(description);
+			description.replace(QRegExp(" "), "&nbsp;");
+			description.replace(QRegExp("\n"), "<br/>");
+			s += description;
 		}
 		tip(r, s);
 	}
@@ -389,7 +362,7 @@ void UserBox::mousePressEvent(QMouseEvent *e) {
 		{
 			if (!item->isSelected())
 				if (!(e->state() & Qt::ControlButton))
-					for (unsigned int i = 0; i < count(); i++)
+					for (unsigned int i = 0; i < count(); ++i)
 						setSelected(i, FALSE);
 			setSelected(item, TRUE);
 			setCurrentItem(item);
@@ -405,7 +378,7 @@ void UserBox::mouseMoveEvent(QMouseEvent* e)
 	if ((e->state() & LeftButton)&&itemAt(e->pos()))
 	{
 		QString drag_text;
-		for(unsigned int i=0; i<count(); i++)
+		for(unsigned int i=0; i<count(); ++i)
 			if(isSelected(i))
 			{
 				if(drag_text!="")
@@ -447,7 +420,7 @@ void UserBox::refresh()
 
 	// Zapamietujemy zaznaczonych uzytkownikow
 	QStringList s_users;
-	for (i = 0; i < count(); i++)
+	for (i = 0; i < count(); ++i)
 		if (isSelected(i))
 			s_users.append(item(i)->text());
 	QString s_user = currentText();
@@ -462,66 +435,23 @@ void UserBox::refresh()
 	QStringList b_users;
 
 	UinType myUin=config_file.readNumEntry("General", "UIN");
-	for (i = 0; i < Users.count(); i++)
+	for (i = 0; i < Users.count(); ++i)
 	{
 		UserListElement &user = userlist.byAltNick(Users[i]);
 		if (user.uin)
 		{
 			if (user.uin == myUin)
-			{
-				//user.status = gadu->getCurrentStatus() & (~GG_STATUS_FRIENDS_MASK);
-				user.description = gadu->status().description();
-				
-				//mo¿e niezbyt optymalnie, ale przynajmniej dzia³a
-				if (gadu->status().isOnline())
-				{
-					if (gadu->status().hasDescription())
-						user.status=GG_STATUS_AVAIL_DESCR;
-					else
-						user.status=GG_STATUS_AVAIL;
-				}
-				else if (gadu->status().isBusy())
-				{
-					if (gadu->status().hasDescription())
-						user.status=GG_STATUS_BUSY_DESCR;
-					else
-						user.status=GG_STATUS_BUSY;
-				}
-				else if (gadu->status().isInvisible())
-				{
-					if (gadu->status().hasDescription())
-						user.status=GG_STATUS_INVISIBLE_DESCR;
-					else
-						user.status=GG_STATUS_INVISIBLE;
-				}
+				user.status->setStatus(gadu->status());
+			if (!user.status->isInvisible())
+				if (!user.status->isOffline())
+					a_users.append(user.altnick);//online,busy,blocking
 				else
-				{
-					if (gadu->status().hasDescription())
-						user.status=GG_STATUS_NOT_AVAIL_DESCR;
-					else
-						user.status=GG_STATUS_NOT_AVAIL;
-				}
-			}
-			switch (user.status)
-			{
-				case GG_STATUS_AVAIL:
-				case GG_STATUS_AVAIL_DESCR:
-				case GG_STATUS_BUSY:
-				case GG_STATUS_BUSY_DESCR:
-				case GG_STATUS_BLOCKED:
-					a_users.append(user.altnick);
-					break;
-				case GG_STATUS_INVISIBLE_DESCR:
-				case GG_STATUS_INVISIBLE:
-				case GG_STATUS_INVISIBLE2:
-					i_users.append(user.altnick);
-					break;
-				default:
-					n_users.append(user.altnick);
-			}
+					n_users.append(user.altnick);//offline
+			else
+				i_users.append(user.altnick);//invisible
 		}
 		else
-			b_users.append(user.altnick);
+			b_users.append(user.altnick);//bez uinów
 	}
 	sortUsersByAltNick(a_users);
 	sortUsersByAltNick(i_users);
@@ -534,154 +464,96 @@ void UserBox::refresh()
 	bool showBold=config_file.readBoolEntry("Look", "ShowBold");
 	bool showOnlyDesc=config_file.readBoolEntry("General", "ShowOnlyDescriptionUsers");
 
-	for (i = 0; i < a_users.count(); i++)
+	for (i = 0; i < a_users.count(); ++i)
 	{
 		UserListElement &user = userlist.byAltNick(a_users[i]);
+		if (user.blocking && !config_file.readBoolEntry("General", "ShowBlocked"))
+			continue;
+		if (user.status->isBlocking() && !config_file.readBoolEntry("General", "ShowBlocking"))
+			continue;
 
-		//kontakt nie jest blokowany lub w³±czone jest pokazywanie blokowanych
-		if (!user.blocking || config_file.readBoolEntry("General", "ShowBlocked"))
-		//status jest opisowy lub wy³±czone jest pokazywanie statusów tylko opisowych
-		if (user.status==GG_STATUS_AVAIL_DESCR || user.status==GG_STATUS_BUSY_DESCR || !showOnlyDesc)
+		if (!showOnlyDesc || user.status->hasDescription())
 		{
-			bool showUser=true;
 			bool has_mobile = user.mobile.length();
-			bool bold = showBold ? (user.status == GG_STATUS_AVAIL ||
-									user.status == GG_STATUS_AVAIL_DESCR ||
-									user.status == GG_STATUS_BUSY ||
-									user.status == GG_STATUS_BUSY_DESCR) : 0;
+			bool bold = showBold ? (user.status->isOnline() || user.status->isBusy()) : false;
 			if (pending.pendingMsgs(user.uin))
-				lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), user.altnick, user.description, bold);
+				lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), user.altnick,
+					user.status->description(), bold);
 			else
 			{
-				QPixmap pix;
-				switch (user.status)
-				{
-					case GG_STATUS_AVAIL:
-						if (has_mobile)
-							pix = icons_manager.loadIcon("OnlineWithMobile");
-						else
-							pix = icons_manager.loadIcon("Online");
-						break;
-					case GG_STATUS_AVAIL_DESCR:
-						if (has_mobile)
-							pix = icons_manager.loadIcon("OnlineWithDescriptionMobile");
-						else
-							pix = icons_manager.loadIcon("OnlineWithDescription");
-						break;
-					case GG_STATUS_BUSY:
-						if (has_mobile)
-							pix = icons_manager.loadIcon("BusyWithMobile");
-						else
-							pix = icons_manager.loadIcon("Busy");
-						break;
-					case GG_STATUS_BUSY_DESCR:
-						if (has_mobile)
-							pix = icons_manager.loadIcon("BusyWithDescriptionMobile");
-						else
-							pix = icons_manager.loadIcon("BusyWithDescription");
-						break;
-					case GG_STATUS_BLOCKED:
-						if (config_file.readBoolEntry("General", "ShowBlocking"))
-							pix = icons_manager.loadIcon("Blocking");
-						else
-							showUser=false;
-
-						break;
-				}
-				if (showUser)
-				{
-					if (!pix.isNull())
-						lbp = new KaduListBoxPixmap(pix, user.altnick, user.description, bold);
-					else
-						lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Online"), user.altnick, user.description, bold);
-				}
+				QPixmap pix = user.status->pixmap(has_mobile);
+				if (!pix.isNull())
+					lbp = new KaduListBoxPixmap(pix, user.altnick, user.status->description(), bold);
+				else
+					lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Online"), user.altnick,
+						user.status->description(), bold);
 			}
-			if (showUser)
-				insertItem(lbp);
+			insertItem(lbp);
 		}
 	}
+
 	// Dodajemy niewidocznych
-	for (i = 0; i < i_users.count(); i++)
+	for (i = 0; i < i_users.count(); ++i)
 	{
 		UserListElement &user = userlist.byAltNick(i_users[i]);
-		if (!user.blocking || config_file.readBoolEntry("General", "ShowBlocked"))
-		if (user.status==GG_STATUS_INVISIBLE_DESCR || !showOnlyDesc)
+		if (user.blocking && !config_file.readBoolEntry("General", "ShowBlocked"))
+			continue;
+
+		if (!showOnlyDesc || user.status->hasDescription())
 		{
 			bool has_mobile = user.mobile.length();
 			if (pending.pendingMsgs(user.uin))
-				lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), user.altnick, user.description, 0);
+				lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), user.altnick,
+					user.status->description(), 0);
 			else
 			{
-				QPixmap pix;
-				switch (user.status)
-				{
-					case GG_STATUS_INVISIBLE_DESCR:
-						if (has_mobile)
-							pix = icons_manager.loadIcon("InvisibleWithDescriptionMobile");
-						else
-							pix = icons_manager.loadIcon("InvisibleWithDescription");
-						break;
-					case GG_STATUS_INVISIBLE:
-					case GG_STATUS_INVISIBLE2:
-						if (has_mobile)
-							pix = icons_manager.loadIcon("InvisibleWithMobile");
-						else
-							pix = icons_manager.loadIcon("Invisible");
-						break;
-				}
-				lbp = new KaduListBoxPixmap(pix, user.altnick, user.description, 0);
+				QPixmap pix = user.status->pixmap(has_mobile);
+				lbp = new KaduListBoxPixmap(pix, user.altnick, user.status->description(), 0);
 			}
 			insertItem(lbp);
 		}
 	}
+
 	// Dodajemy nieaktywnych
 	if (config_file.readBoolEntry("General","ShowHideInactive"))
-	for (i = 0; i < n_users.count(); i++)
+	for (i = 0; i < n_users.count(); ++i)
 	{
 		UserListElement &user = userlist.byAltNick(n_users[i]);
-		if (!user.blocking || config_file.readBoolEntry("General", "ShowBlocked"))
-		if (user.status==GG_STATUS_NOT_AVAIL_DESCR || !showOnlyDesc)
+		if (user.blocking && !config_file.readBoolEntry("General", "ShowBlocked"))
+			continue;
+
+		if (!showOnlyDesc || user.status->hasDescription())
 		{
+
 			bool has_mobile = user.mobile.length();
 			if (pending.pendingMsgs(user.uin))
-				lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), user.altnick, user.description, 0);
+				lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), user.altnick,
+					user.status->description(), 0);
 			else
 			{
-				QPixmap pix;
-				switch (user.status)
-				{
-					case GG_STATUS_NOT_AVAIL_DESCR:
-						if (has_mobile)
-							pix = icons_manager.loadIcon("OfflineWithDescriptionMobile");
-						else
-							pix = icons_manager.loadIcon("OfflineWithDescription");
-						break;
-					default:
-						if (has_mobile)
-							pix = icons_manager.loadIcon("OfflineWithMobile");
-						else
-							pix = icons_manager.loadIcon("Offline");
-						break;
-				}
+				QPixmap pix = user.status->pixmap(has_mobile);
 				if (!pix.isNull())
-					lbp = new KaduListBoxPixmap(pix, user.altnick, user.description, 0);
+					lbp = new KaduListBoxPixmap(pix, user.altnick, user.status->description(), 0);
 				else
-					lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Online"), user.altnick, user.description, 0);
+					lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Online"), user.altnick,
+						user.status->description(), 0);
 			}
 			insertItem(lbp);
 		}
 	}
+
 	// Dodajemy uzytkownikow bez numerow GG
 	if(!showOnlyDesc)
-		for (i = 0; i < b_users.count(); i++)
+		for (i = 0; i < b_users.count(); ++i)
 		{
 			UserListElement &user = userlist.byAltNick(b_users[i]);
-			lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Mobile"), user.altnick, user.description, 0);
+			lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Mobile"), user.altnick,
+				user.status->description(), 0);
 			insertItem(lbp);
 		}
 
 	// Przywracamy zaznaczenie wczesniej zaznaczonych uzytkownikow
-	for (i = 0; i < s_users.count(); i++)
+	for (i = 0; i < s_users.count(); ++i)
 		setSelected(findItem(s_users[i]), true);
 	setCurrentItem(findItem(s_user));
 
@@ -720,7 +592,7 @@ void UserBox::renameUser(const QString &oldaltnick, const QString &newaltnick)
 bool UserBox::containsAltNick(const QString &altnick)
 {
 	kdebugf();
-	for (QStringList::iterator it = Users.begin(); it != Users.end(); it++)
+	for (QStringList::iterator it = Users.begin(); it != Users.end(); ++it)
 		if ((*it).lower() == altnick.lower())
 			return true;
 	kdebugm(KDEBUG_INFO, "UserBox::containsAltNick(): userbox doesnt contain: %s\n", (const char *)altnick.lower().local8Bit());
@@ -731,7 +603,7 @@ void UserBox::changeAllToInactive()
 {
 	kdebugf();
 	QPixmap qp_inact = icons_manager.loadIcon("Offline");
-	for(unsigned int i=0; i<count(); i++)
+	for(unsigned int i=0; i<count(); ++i)
 		changeItem(qp_inact,item(i)->text(),i);
 	kdebugf2();
 }
@@ -755,7 +627,7 @@ UinsList UserBox::getSelectedUins()
 {
 	kdebugf();
 	UinsList uins;
-	for (unsigned int i = 0; i < count(); i++)
+	for (unsigned int i = 0; i < count(); ++i)
 		if (isSelected(i))
 		{
 			UserListElement user = userlist.byAltNick(text(i));
@@ -770,7 +642,7 @@ UserList UserBox::getSelectedUsers()
 {
 	kdebugf();
 	UserList users;
-	for (unsigned int i=0; i< count(); i++)
+	for (unsigned int i=0; i< count(); ++i)
 		if (isSelected(i))
 			users.addUser(userlist.byAltNick(text(i)));
 	kdebugf2();
@@ -780,7 +652,7 @@ UserList UserBox::getSelectedUsers()
 UserBox* UserBox::getActiveUserBox()
 {
 	kdebugf();
-	for (unsigned int i=0; i<UserBoxes.size(); i++)
+	for (unsigned int i=0; i<UserBoxes.size(); ++i)
 	{
 		UserBox *box=UserBoxes[i];
 		if (box->isActiveWindow())
@@ -797,7 +669,7 @@ QStringList UserBox::getSelectedAltNicks()
 {
 	kdebugf();
 	QStringList nicks;
-	for (unsigned int i=0; i< count(); i++)
+	for (unsigned int i=0; i< count(); ++i)
 		if (isSelected(i))
 			nicks.append(text(i));
 	kdebugf2();
@@ -808,14 +680,14 @@ QStringList UserBox::getSelectedAltNicks()
 void UserBox::all_refresh()
 {
 	kdebugf();
-	for(unsigned int i=0; i<UserBoxes.size(); i++)
+	for(unsigned int i=0; i<UserBoxes.size(); ++i)
 		UserBoxes[i]->refresh();
 }
 
 void UserBox::all_removeUser(QString &altnick)
 {
 	kdebugf();
-	for(unsigned int i=0; i<UserBoxes.size(); i++)
+	for(unsigned int i=0; i<UserBoxes.size(); ++i)
 		UserBoxes[i]->removeUser(altnick);
 	kdebugf2();
 }
@@ -823,7 +695,7 @@ void UserBox::all_removeUser(QString &altnick)
 void UserBox::all_changeAllToInactive()
 {
 	kdebugf();
-	for(unsigned int i=0; i<UserBoxes.size(); i++)
+	for(unsigned int i=0; i<UserBoxes.size(); ++i)
 		UserBoxes[i]->changeAllToInactive();
 	kdebugf2();
 }
@@ -831,7 +703,7 @@ void UserBox::all_changeAllToInactive()
 void UserBox::all_renameUser(const QString &oldaltnick, const QString &newaltnick)
 {
 	kdebugf();
-	for(unsigned int i = 0; i < UserBoxes.size(); i++)
+	for(unsigned int i = 0; i < UserBoxes.size(); ++i)
 		UserBoxes[i]->renameUser(oldaltnick, newaltnick);
 	kdebugf2();
 }
@@ -882,7 +754,7 @@ void UserBox::initModule()
 				ConfigDialog::addLabel("Look", "Preview panel", "<b>Text</b> preview", "preview_panel");
 
 	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show tooltip on userbox"), "ShowTooltipOnUserbox", true);
-	
+
 	UserBoxSlots *userboxslots= new UserBoxSlots();
 	ConfigDialog::registerSlotOnCreate(userboxslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnApply(userboxslots, SLOT(onDestroyConfigDialog()));
@@ -926,7 +798,7 @@ int UserBoxMenu::addItemAtPos(int index,const QString &iconname, const QString &
 
 int UserBoxMenu::getItem(const QString &caption)
 {
-	for (unsigned int i=0; i<count(); i++)
+	for (unsigned int i=0; i<count(); ++i)
 		if (!QString::localeAwareCompare(caption,text(idAt(i)).left(caption.length())))
 			return idAt(i);
 	return -1;
@@ -934,7 +806,7 @@ int UserBoxMenu::getItem(const QString &caption)
 
 void UserBoxMenu::restoreLook()
 {
-	for (unsigned int i=0; i<count(); i++)
+	for (unsigned int i=0; i<count(); ++i)
 	{
 		setItemEnabled(idAt(i),true);
 		setItemChecked(idAt(i),false);

@@ -110,7 +110,7 @@ void Ignored::add()
 	strlist = QStringList::split(";", e_uin->text());
 	bool ok;
 	UinsList uins;
-	for (unsigned int i = 0; i < strlist.count(); i++)
+	for (unsigned int i = 0; i < strlist.count(); ++i)
 	{
 		UinType uin = strlist[i].toUInt(&ok);
 		if (ok)
@@ -130,10 +130,10 @@ void Ignored::getList()
 {
 	kdebugf();
 	lb_list->clear();
-	for (unsigned int i = 0; i < ignored.count(); i++)
+	for (unsigned int i = 0; i < ignored.count(); ++i)
 	{
 		QStringList strlist;
-		for (unsigned int j = 0; j < ignored[i].count(); j++)
+		for (unsigned int j = 0; j < ignored[i].count(); ++j)
 		{
 			if (userlist.containsUin(ignored[i][j]))
 			{
@@ -148,14 +148,15 @@ void Ignored::getList()
 	kdebugf2();
 }
 
-void Ignored::remove() {
+void Ignored::remove()
+{
 	kdebugf();
 	if (lb_list->currentItem() == -1)
 		return;
 	QStringList strlist;
 	strlist = QStringList::split(";", lb_list->currentText());
 	UinsList uins;
-	for (unsigned int i = 0; i < strlist.count(); i++)
+	for (unsigned int i = 0; i < strlist.count(); ++i)
 		uins.append(strlist[i].section(' ', 0, 0).toUInt());
 	delIgnored(uins);
 	getList();
@@ -168,7 +169,6 @@ bool isIgnored(UinsList uins)
 	uins.sort();
 	return ignored.contains(uins);
 }
-
 
 void addIgnored(UinsList uins)
 {
@@ -207,10 +207,10 @@ int writeIgnored(QString filename)
 //	fchmod(fileno(f), 0600);
 
 	QString buf;
-	for (unsigned int i = 0; i < ignored.count(); i++)
+	for (unsigned int i = 0; i < ignored.count(); ++i)
 	{
 		QStringList list;
-		for (unsigned int j = 0; j < ignored[i].count(); j++)
+		for (unsigned int j = 0; j < ignored[i].count(); ++j)
 			list.append(QString::number(ignored[i][j]));
 		buf.append(list.join(";"));
 	}
@@ -243,7 +243,7 @@ int readIgnored()
 	{
 		list = QStringList::split(";", line);
 		UinsList uins;
-		for (unsigned int i = 0; i < list.count(); i++)
+		for (unsigned int i = 0; i < list.count(); ++i)
 			uins.append(list[i].toUInt());
 		ignored.append(uins);
 	}

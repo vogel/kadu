@@ -51,7 +51,7 @@ DccSocket::DccSocket(struct gg_dcc* dcc_sock)
 	snr = snw = NULL;
 	State = DCC_SOCKET_TRANSFERRING;
 	in_watchDcc = false;
-	Count++;
+	++Count;
 	kdebugm(KDEBUG_FUNCTION_END|KDEBUG_INFO, "DccSocket::DccSocket(): dcc sockets count = %d\n", Count);
 }
 
@@ -83,7 +83,7 @@ DccSocket::~DccSocket()
 		}
 		gadu->dccFree(dccsock);
 		dccsock = NULL;
-		Count--;
+		--Count;
 	}
 	kdebugm(KDEBUG_INFO|KDEBUG_FUNCTION_END, "DccSocket::~DccSocket(): dcc sockets count = %d\n", Count);
 }
@@ -184,7 +184,7 @@ void DccSocket::setState(int pstate)
 	snr->setEnabled(false);
 	snw->setEnabled(false);
 	State = pstate;
-	
+
 	switch (State)
 	{
 		case DCC_SOCKET_TRANSFER_FINISHED:
@@ -255,7 +255,7 @@ void DccSocket::dccDone()
 
 void DccSocket::tranferDiscarded()
 {
-	kdebugf();				
+	kdebugf();
 	setState(DCC_SOCKET_TRANSFER_DISCARDED);
 	kdebugf2();
 }
@@ -871,11 +871,8 @@ void DccManager::userboxMenuPopup()
 	UserListElement user = (*users.begin());
 
 	bool containsOurUin=users.containsUin(config_file.readNumEntry("General", "UIN"));
-	bool userIsOnline=(user.status == GG_STATUS_AVAIL ||
-			user.status == GG_STATUS_AVAIL_DESCR ||
-			user.status == GG_STATUS_BUSY ||
-			user.status == GG_STATUS_BUSY_DESCR);
-	bool dccEnabled=(users.count() == 1 &&
+	bool userIsOnline = user.status->isOnline() || user.status->isBusy();
+	bool dccEnabled = (users.count() == 1 &&
 		config_file.readBoolEntry("Network", "AllowDCC") &&
 		!containsOurUin &&
 		userIsOnline &&

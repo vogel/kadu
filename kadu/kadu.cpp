@@ -108,7 +108,7 @@ ToolBar::~ToolBar()
 void ToolBar::createControls()
 {
 	kdebugf();
-	for(QValueList<ToolButton>::iterator j=RegisteredToolButtons.begin(); j!=RegisteredToolButtons.end(); j++)
+	for(QValueList<ToolButton>::iterator j=RegisteredToolButtons.begin(); j!=RegisteredToolButtons.end(); ++j)
 		if ((*j).caption== "--separator--")
 			addSeparator();
 		else
@@ -170,7 +170,7 @@ void ToolBar::unregisterButton(const char* name)
 	if(instance!=NULL)
 		instance->clear();
 
-	for(QValueList<ToolButton>::iterator j=RegisteredToolButtons.begin(); j!=RegisteredToolButtons.end(); j++)
+	for(QValueList<ToolButton>::iterator j=RegisteredToolButtons.begin(); j!=RegisteredToolButtons.end(); ++j)
 		if ((*j).name == name)
 		{
 			RegisteredToolButtons.remove(j);
@@ -184,14 +184,15 @@ void ToolBar::unregisterButton(const char* name)
 
 QToolButton* ToolBar::getButton(const char* name)
 {
-	for(QValueList<ToolButton>::iterator j=RegisteredToolButtons.begin(); j!=RegisteredToolButtons.end(); j++)
+	for(QValueList<ToolButton>::iterator j=RegisteredToolButtons.begin(); j!=RegisteredToolButtons.end(); ++j)
 		if ((*j).name == name)
 			return (*j).button;
 	kdebugm(KDEBUG_WARNING, "return NULL\n");
 	return NULL;
 }
 
-void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
+void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op)
+{
 	char buf[32];
 //	int i;
 	QString newestversion;
@@ -203,7 +204,7 @@ void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 			delete uc;
 			return;
 		}
-		for (unsigned i = 0; i < data.size(); i++)
+		for (unsigned i = 0; i < data.size(); ++i)
 			buf[i] = data[i];
 		buf[data.size()] = 0;
 		newestversion = buf;
@@ -218,8 +219,10 @@ void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 	delete uc;
 }
 
-void Kadu::keyPressEvent(QKeyEvent *e) {
-	if (e->key() == Key_Escape && Docked) {
+void Kadu::keyPressEvent(QKeyEvent *e)
+{
+	if (e->key() == Key_Escape && Docked)
+	{
 		kdebugm(KDEBUG_INFO, "Kadu::keyPressEvent(Key_Escape): Kadu hide\n");
 		hide();
 	}
@@ -479,18 +482,23 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(gadu, SIGNAL(connected()), this, SLOT(connected()));
 	connect(gadu, SIGNAL(disconnected()), this, SLOT(disconnected()));
 	connect(gadu, SIGNAL(error(GaduError)), this, SLOT(error(GaduError)));
-	connect(gadu, SIGNAL(goOnline(const QString &)), this, SLOT(wentOnline(const QString &)));
-	connect(gadu, SIGNAL(goBusy(const QString &)), this, SLOT(wentBusy(const QString &)));
-	connect(gadu, SIGNAL(goInvisible(const QString &)), this, SLOT(wentInvisible(const QString &)));
-	connect(gadu, SIGNAL(goOffline(const QString &)), this, SLOT(wentOffline(const QString &)));
 	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
 		this, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
 	connect(gadu, SIGNAL(needTokenValue(QPixmap, QString &)),
 		this, SLOT(readTokenValue(QPixmap, QString &)));
 	connect(gadu, SIGNAL(systemMessageReceived(QString &)), this, SLOT(systemMessageReceived(QString &)));
 	connect(gadu, SIGNAL(userListChanged()), this, SLOT(userListChanged()));
-	connect(gadu, SIGNAL(userStatusChanged(UserListElement&, int, bool)),
-		this, SLOT(userStatusChanged(UserListElement&, int, bool)));
+	connect(gadu, SIGNAL(userStatusChanged(UserListElement&, const Status &, bool)),
+		this, SLOT(userStatusChanged(UserListElement&, const Status &, bool)));
+
+	connect(&(gadu->status()), SIGNAL(goOnline(const QString &)),
+		this, SLOT(wentOnline(const QString &)));
+	connect(&(gadu->status()), SIGNAL(goBusy(const QString &)),
+		this, SLOT(wentBusy(const QString &)));
+	connect(&(gadu->status()), SIGNAL(goInvisible(const QString &)),
+		this, SLOT(wentInvisible(const QString &)));
+	connect(&(gadu->status()), SIGNAL(goOffline(const QString &)),
+		this, SLOT(wentOffline(const QString &)));
 
 	kdebugf2();
 }
@@ -838,11 +846,11 @@ void Kadu::refreshGroupTabBar()
 	}
 	/* budujemy listê grup */
 	QValueList<QString> group_list;
-	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); i++)
+	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
 	{
 		QString groups = (*i).group();
 		QString group;
-		for (int g = 0; (group = groups.section(',' ,g ,g)) != ""; g++)
+		for (int g = 0; (group = groups.section(',' ,g ,g)) != ""; ++g)
 			if(!group_list.contains(group))
 				group_list.append(group);
 	}
@@ -856,14 +864,14 @@ void Kadu::refreshGroupTabBar()
 	}
 	/* usuwamy wszystkie niepotrzebne zakladki - od tylu,
 	   bo indeksy sie przesuwaja po usunieciu */
-	for (int i = GroupBar->count() - 1; i >= 1; i--)
+	for (int i = GroupBar->count() - 1; i >= 1; --i)
 		if(!group_list.contains(GroupBar->tabAt(i)->text()))
 			GroupBar->removeTab(GroupBar->tabAt(i));
 	/* dodajemy nowe zakladki */
-	for (unsigned int i = 0; i < group_list.count(); i++)
+	for (unsigned int i = 0; i < group_list.count(); ++i)
 		{
 		bool createNewTab = true;
-		for (int j = 0; j < GroupBar->count(); j++)
+		for (int j = 0; j < GroupBar->count(); ++j)
 			if (GroupBar->tabAt(j)->text() == group_list[i])
 				createNewTab = false;
 		if(createNewTab)
@@ -880,7 +888,7 @@ void Kadu::setActiveGroup(const QString& group)
 {
 	kdebugf();
 	Userbox->clearUsers();
-	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); i++)
+	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); ++i)
 	{
 		bool belongsToGroup;
 		if (group == "")
@@ -890,7 +898,7 @@ void Kadu::setActiveGroup(const QString& group)
 			belongsToGroup = false;
 			QString user_groups = (*i).group();
 			QString user_group;
-			for (int g = 0; (user_group = user_groups.section(',',g,g)) != ""; g++)
+			for (int g = 0; (user_group = user_groups.section(',',g,g)) != ""; ++g)
 				if (user_group == group)
 					belongsToGroup = true;
 		}
@@ -917,8 +925,7 @@ void Kadu::userListModified()
 void Kadu::userListStatusModified(UserListElement *user, bool onConnection)
 {
 	kdebugm(KDEBUG_FUNCTION_START, "Kadu::userListStatusModified(): %d\n", user->uin);
-	if ((user->status == GG_STATUS_NOT_AVAIL)
-		|| (user->status == GG_STATUS_NOT_AVAIL_DESCR))
+	if (user->status->isOffline())
 		InfoPanel->setText("");
 	chat_manager->refreshTitlesForUin(user->uin);
 	kdebugf2();
@@ -931,11 +938,11 @@ void Kadu::userListChanged()
 	kdebugf2();
 }
 
-void Kadu::userStatusChanged(UserListElement &user, int oldstatus, bool onConnection)
+void Kadu::userStatusChanged(UserListElement &user, const Status &oldstatus, bool onConnection)
 {
 	kdebugf();
 
-	history.appendStatus(user.uin, user.status, user.description.length() ? user.description : QString::null);
+	history.appendStatus(user.uin, *(user.status));
 	chat_manager->refreshTitlesForUin(user.uin);
 
 	kdebugf2();
@@ -951,23 +958,25 @@ void Kadu::removeUser(QStringList &users, bool permanently = false)
 
 	unsigned int i;
 
-	for (i = 0; i < users.count(); i++)
+	for (i = 0; i < users.count(); ++i)
 		UserBox::all_removeUser(users[i]);
 	UserBox::all_refresh();
 
-	for (i = 0; i < users.count(); i++) {
+	for (i = 0; i < users.count(); ++i)
+	{
 		UserListElement user = userlist.byAltNick(users[i]);
 		if (!user.anonymous && user.uin)
 			gadu->removeNotify(user.uin);
 		userlist.removeUser(user.altnick);
-		}
+	}
 
 	userlist.writeToFile();
 	refreshGroupTabBar();
 	kdebugf2();
 }
 
-void Kadu::blink() {
+void Kadu::blink()
+{
 	QPixmap pix;
 
 	kdebugf();
@@ -1052,7 +1061,8 @@ void Kadu::sendMessage(QListBoxItem *item)
 }
 
 /* when we want to change the status */
-void Kadu::slotHandleState(int command) {
+void Kadu::slotHandleState(int command)
+{
 	kdebugf();
 	ChooseDescription *cd;
 	QString desc;
@@ -1178,16 +1188,13 @@ void Kadu::chatMsgReceived(UinsList senders, const QString &msg, time_t time)
 void Kadu::connected()
 {
 	kdebugf();
-
 	DoBlink = false;
-
 	kdebugf2();
 }
 
 void Kadu::error(GaduError err)
 {
 	kdebugf();
-
 	QString msg = QString::null;
 
 	switch (err)
@@ -1226,7 +1233,7 @@ void Kadu::error(GaduError err)
 			gadu->disableAutoConnection();
 			MessageBox::wrn(tr("Connection will be stoped\nYour password is incorrect !"));
 			break;
-			
+
 		case ConnectionTlsError:
 			msg = QString(tr("Unable to connect, error of negotiation TLS"));
 			break;
@@ -1264,6 +1271,8 @@ void Kadu::error(GaduError err)
 
 	if (Autohammer)
 		gadu->enableAutoConnection();
+	else
+		gadu->disableAutoConnection();
 	kdebugf2();
 }
 
@@ -1366,13 +1375,11 @@ void Kadu::quitApplication() {
 
 Kadu::~Kadu(void) {
 	kdebugf();
-
 	kdebugf2();
 }
 
 void Kadu::createMenu() {
 	kdebugf();
-
 	MenuBar = new QMenuBar(this, "MenuBar");
 
 	MainMenu = new QPopupMenu(this, "MainMenu");
@@ -1409,12 +1416,20 @@ void Kadu::createStatusPopupMenu() {
 	statusppm = new QPopupMenu(this, "statusppm");
 	dockppm = new QPopupMenu(this, "dockppm");
 
-	for (int i=0; i<8; i++) {
-		pix = icons_manager.loadIcon(gg_icons[i]);
+	Status *s = new GaduStatus();
+	for (int i=0; i<8; ++i)
+	{
+		// je¿eli wywo³anie mia³o by postaæ setIndex(i)
+		// to po sprawdzeniu, czy opis jest równy "" nast±pi³oby automatyczne
+		// przyjêcie, ¿e status jest jednak bez opisu
+		// co przyczyni³oby siê do z³ej ikonki
+		s->setIndex(i, ".");
+		pix = s->pixmap();
 		icon = QIconSet(pix);
-		statusppm->insertItem(icon, qApp->translate("@default", statustext[i]), i);
-		dockppm->insertItem(icon, qApp->translate("@default", statustext[i]), i);
-		}
+		statusppm->insertItem(icon, qApp->translate("@default", Status::name(i)), i);
+		dockppm->insertItem(icon, qApp->translate("@default", Status::name(i)), i);
+	}
+	delete s;
 
 	bool privateStatus=config_file.readBoolEntry("General", "PrivateStatus");
 	statusppm->insertSeparator();
@@ -1559,7 +1574,7 @@ void KaduSlots::onCreateConfigDialog()
 	int max = Status::initCount();
 	QComboBox* cb_defstatus = ConfigDialog::getComboBox("General", "Default status", "cb_defstatus");
 	cb_defstatus->clear();
-	for (int i = 0; i < max; i++)
+	for (int i = 0; i < max; ++i)
 		cb_defstatus->insertItem(qApp->translate("@default", Status::name(i)));
 	cb_defstatus->setCurrentItem(statusIndex);
 
@@ -1759,7 +1774,7 @@ void Kadu::wentOffline(const QString &desc)
 
 void Kadu::showStatusOnMenu(int statusNr)
 {
-	for(int i = 0; i < 8; i++)
+	for(int i = 0; i < 8; ++i)
 	{
 		statusppm->setItemChecked(i, false);
 		dockppm->setItemChecked(i, false);
@@ -1769,7 +1784,7 @@ void Kadu::showStatusOnMenu(int statusNr)
 	statusppm->setItemChecked(8, gadu->status().isFriendsOnly());
 	dockppm->setItemChecked(8, gadu->status().isFriendsOnly());
 
-	statusbutton->setText(qApp->translate("@default", statustext[statusNr]));
+	statusbutton->setText(qApp->translate("@default", gadu->status().name()));
 	statusppm->setItemEnabled(7, statusNr != 6);
 	dockppm->setItemEnabled(7, statusNr != 6);
 	QPixmap pix = gadu->status().pixmap();

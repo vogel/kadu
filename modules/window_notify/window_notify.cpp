@@ -42,7 +42,7 @@ WindowNotify::WindowNotify()
 	s["NewChat"]=SLOT(newChat(UinsList, const QString &, time_t));
 	s["NewMessage"]=SLOT(newMessage(UinsList, const QString &, time_t, bool &));
 	s["ConnError"]=SLOT(connectionError(const QString &));
-	s["ChangingStatus"]=SLOT(userChangingStatus(const UinType, const unsigned int, const unsigned int));
+	s["ChangingStatus"]=SLOT(userChangingStatus(const UinType, const Status &, const Status &));
 	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const UserListElement &));
 	s["toBusy"]=SLOT(userChangedStatusToBusy(const UserListElement &));
 	s["toNotAvailable"]=SLOT(userChangedStatusToNotAvailable(const UserListElement &));
@@ -56,7 +56,7 @@ WindowNotify::WindowNotify()
 	config_file.addVariable("Notify", "toBusy_Window", false);
 	config_file.addVariable("Notify", "toNotAvailable_Window", false);
 	config_file.addVariable("Notify", "Message_Window", false);
-	
+
 	notify->registerNotifier("Window", this, s);
 	kdebugf2();
 }
@@ -89,29 +89,26 @@ void WindowNotify::connectionError(const QString &message)
 	kdebugf2();
 }
 
-void WindowNotify::userChangingStatus(const UinType uin, const unsigned int oldstatus, const unsigned int status)
+void WindowNotify::userChangingStatus(const UinType uin, const Status &oldstatus, const Status &status)
 {
 	kdebugf();
-	int statusnr = statusGGToStatusNr(oldstatus);
-	int statusnr2 = statusGGToStatusNr(status);
-	UserListElement ule=userlist.byUinValue(uin);
-	
+	UserListElement ule = userlist.byUinValue(uin);
+
 	MessageBox::msg(tr("<b>%1</b> is changing status from <i>%2</i> to <i>%3</i>")
 					.arg(ule.altnick)
-					.arg(qApp->translate("@default", statustext[statusnr]))
-					.arg(qApp->translate("@default", statustext[statusnr2])));
+					.arg(qApp->translate("@default", oldstatus.name()))
+					.arg(qApp->translate("@default", status.name())));
 	kdebugf2();
 }
 
 void WindowNotify::userChangedStatusToAvailable(const UserListElement &ule)
 {
 	kdebugf();
-	int statusnr = statusGGToStatusNr(ule.status);
-	
+
 	MessageBox::msg(tr("<b>%1</b> changed status to <i>%2</i><br/> <small>%3</small>")
 					.arg(ule.altnick)
-					.arg(qApp->translate("@default", statustext[statusnr]))
-					.arg(QStyleSheet::escape(ule.description)));
+					.arg(qApp->translate("@default", ule.status->name()))
+					.arg(QStyleSheet::escape(ule.status->description())));
 	kdebugf2();
 }
 
@@ -136,12 +133,10 @@ void WindowNotify::message(const QString &from, const QString &message, const QM
 		MessageBox::msg(tr("<b>From %1:</b>%2").arg(from).arg(message));
 	else
 	{
-		int statusnr = statusGGToStatusNr(ule->status);
-	
 		MessageBox::msg(tr("<b>From %1: %2</b> changed status to <i>%3</i>")
 						.arg(from)
 						.arg(ule->altnick)
-						.arg(qApp->translate("@default", statustext[statusnr])));
+						.arg(qApp->translate("@default", ule->status->name())));
 	}
 	kdebugf2();
 }

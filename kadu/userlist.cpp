@@ -29,12 +29,12 @@ DnsHandler::DnsHandler(UinType uin) : uin(uin) {
 	connect(&dnsresolver, SIGNAL(resultsReady()), this, SLOT(resultsReady()));
 	dnsresolver.setRecordType(QDns::Ptr);
 	dnsresolver.setLabel(ule.ip);
-	counter++;
+	++counter;
 	kdebugm(KDEBUG_FUNCTION_END, "DnsHandler::DnsHandler(): counter = %d\n", counter);
 }
 
 DnsHandler::~DnsHandler() {
-	counter--;
+	--counter;
 /* patrz ~Userlist()
 	kdebugm(KDEBUG_INFO, "DnsHandler::~DnsHandler(): counter = %d\n", counter);
 */
@@ -58,22 +58,31 @@ bool DnsHandler::isCompleted() {
 
 UserListElement::UserListElement(UserList* parent)
 {
+	kdebugf();
 	Parent = parent;
 	version = 0;
-	status = GG_STATUS_NOT_AVAIL;
 	image_size = 0;
 	port = 0;
 	blocking = false;
 	offline_to_user = false;
 	notify = true;
 	anonymous = false;
+	// TODO: zuniwersalizowaæ
+	status = new GaduStatus();
+}
+
+UserListElement::UserListElement(const UserListElement &copyMe)
+{
+	kdebugf();
+	// TODO: zuniwersalizowaæ
+	status = new GaduStatus();
+	*this = copyMe;
 }
 
 UserListElement::UserListElement()
 {
 	Parent = NULL;
 	version = 0;
-	status = GG_STATUS_NOT_AVAIL;
 	image_size = 0;
 	port = 0;
 	QHostAddress ipaddress;
@@ -83,6 +92,38 @@ UserListElement::UserListElement()
 	offline_to_user = false;
 	notify = true;
 	anonymous = false;
+	// TODO: zuniwersalizowaæ
+	status = new GaduStatus();
+}
+
+UserListElement::~UserListElement()
+{
+	delete status;
+}
+
+void UserListElement::operator = (const UserListElement &copyMe)
+{
+	kdebugf();
+
+	Parent = copyMe.Parent;
+	version = copyMe.version;
+	image_size = copyMe.image_size;
+	port = copyMe.port;
+	ip = copyMe.ip;
+	blocking = copyMe.blocking;
+	offline_to_user = copyMe.offline_to_user;
+	notify = copyMe.notify;
+	anonymous = copyMe.anonymous;
+	status->setStatus(*(copyMe.status));
+
+	Group = copyMe.Group;
+	first_name = copyMe.first_name;
+	last_name = copyMe.last_name;
+	nickname = copyMe.nickname;
+	altnick = copyMe.altnick;
+	mobile = copyMe.mobile;
+	email = copyMe.email;
+	uin = copyMe.uin;
 }
 
 QString UserListElement::group() const
@@ -102,7 +143,7 @@ void UserListElement::setGroup(const QString& group)
 
 UserList::UserList(const UserList& source)
 {
-	for(const_iterator i=source.begin(); i!=source.end(); i++)
+	for(const_iterator i=source.begin(); i!=source.end(); ++i)
 		insert(i.key(),i.data());
 }
 
@@ -168,7 +209,7 @@ void UserList::setDnsName(UinType  uin, const QString &name) {
 
 UserListElement& UserList::byUin(UinType  uin)
 {
-	for(iterator i=begin(); i!=end(); i++)
+	for(iterator i=begin(); i!=end(); ++i)
 		if((*i).uin==uin)
 			return (*i);
 	kdebugm(KDEBUG_PANIC, "UserList::byUin(): Panic!\n");
@@ -177,7 +218,7 @@ UserListElement& UserList::byUin(UinType  uin)
 
 UserListElement& UserList::byNick(const QString& nickname)
 {
-	for (iterator i = begin(); i != end(); i++)
+	for (iterator i = begin(); i != end(); ++i)
 		if ((*i).nickname.lower() == nickname.lower())
 			return (*i);
 	kdebugm(KDEBUG_PANIC, "UserList::byNick(): Panic! %s not exists\n",
@@ -198,7 +239,7 @@ UserListElement& UserList::byAltNick(const QString& altnick)
 //uin na liscie, zwracany jest UserListElement tylko z uin i altnick == uin
 UserListElement UserList::byUinValue(UinType  uin)
 {
-	for (iterator i = begin(); i != end(); i++)
+	for (iterator i = begin(); i != end(); ++i)
 		if ((*i).uin == uin)
 			return (*i);
 	UserListElement ule;
@@ -208,16 +249,18 @@ UserListElement UserList::byUinValue(UinType  uin)
 	return ule;
 }
 
-bool UserList::containsUin(UinType  uin) const {
-	for (const_iterator i = begin(); i != end(); i++)
+bool UserList::containsUin(UinType  uin) const
+{
+	for (const_iterator i = begin(); i != end(); ++i)
 		if ((*i).uin == uin)
 			return true;
 	kdebugm(KDEBUG_INFO, "UserList::containsUin(): userlist doesn't contain %d\n", uin);
 	return false;
 }
 
-bool UserList::containsAltNick(const QString &altnick) const {
-	for (const_iterator i = begin(); i != end(); i++)
+bool UserList::containsAltNick(const QString &altnick) const
+{
+	for (const_iterator i = begin(); i != end(); ++i)
 		if ((*i).altnick.lower() == altnick.lower())
 			return true;
 	kdebugm(KDEBUG_INFO, "UserList::containsAltNick(): userlist doesn't contain %s\n",
@@ -229,26 +272,13 @@ void UserList::addUser(UserListElement& ule)
 {
 	kdebugf();
 	UserListElement e(this);
-	e.first_name = ule.first_name;
-	e.last_name = ule.last_name;
-	e.nickname = ule.nickname;
-	e.altnick = ule.altnick;
-	e.mobile = ule.mobile;
-	e.uin = ule.uin;
-	e.status = ule.status;
-	e.image_size = ule.image_size;
-	e.blocking = ule.blocking;
-	e.offline_to_user = ule.offline_to_user;
-	e.notify = ule.notify;
+	e = ule;
+
 	if (e.group() != tr("All"))
 		e.setGroup(ule.Group);
 	else
 		e.setGroup("");
-	e.description = ule.description;
-	e.email = ule.email;
-	e.anonymous = ule.anonymous;
-	e.ip = ule.ip;
-	e.port = ule.port;
+
 	insert(e.altnick,e);
 	emit userAdded(e);
 	emit modified();
@@ -267,7 +297,6 @@ void UserList::addAnonymous(UinType uin)
 	e.mobile = "";
 	e.uin = uin;
 	e.setGroup("");
-	e.description = "";
 	e.email = "";
 	e.anonymous = true;
 	addUser(e);
@@ -307,25 +336,26 @@ void UserList::changeUserInfo(const QString& old_altnick, const UserListElement&
 	kdebugf2();
 }
 
-void UserList::changeUserStatus(const UinType uin, const unsigned int status, bool onConnection)
+void UserList::changeUserStatus(const UinType uin, const Status &status, bool onConnection)
 {
 	kdebugf();
 	UserListElement &e = byUin(uin);
-	if (status != e.status) {
-		emit changingStatus(uin, e.status, status, onConnection);
-		e.status = status;
-//		UserBox::all_refresh();
+	// TODO: dodaæ
+	// if (status != (*e.status)) {
+		emit changingStatus(uin, *(e.status), status, onConnection);
+		e.status->setStatus(status);
+		UserBox::all_refresh();
 		emit statusModified(&e, onConnection);
-	}
+	// }
 	kdebugf2();
 }
 
 void UserList::removeUser(const QString &altnick)
 {
 	kdebugf();
-	for (Iterator i = begin(); i != end(); i++)
+	for (Iterator i = begin(); i != end(); ++i)
 		if((*i).altnick == altnick)
-		{ 
+		{
 			remove(i);
 			emit modified();
 			break;
@@ -359,7 +389,7 @@ bool UserList::writeToFile(QString filename)
 
 	QString s;
 	QCString str;
-	for (Iterator i = begin(); i != end(); i++) {
+	for (Iterator i = begin(); i != end(); ++i) {
 		s.truncate(0);
 		s.append((*i).first_name);
 		s.append(QString(";"));
@@ -380,7 +410,7 @@ bool UserList::writeToFile(QString filename)
 		s.append(QString(";"));
 		s.append((*i).email);
 		s.append(QString("\r\n"));
-		
+
 		if (!(*i).anonymous) {
 			kdebugm(KDEBUG_INFO, "%s", s.local8Bit().data());
 			str = QTextCodec::codecForName("ISO 8859-2")->fromUnicode(s);
@@ -396,7 +426,7 @@ bool UserList::writeToFile(QString filename)
 		return false;
 	}
 
-	for (Iterator i = begin(); i != end(); i++) {
+	for (Iterator i = begin(); i != end(); ++i) {
 		s.truncate(0);
 		s.append(QString::number((*i).uin));
 		s.append(QString(";"));
@@ -406,7 +436,7 @@ bool UserList::writeToFile(QString filename)
 		s.append(QString(";"));
 		s.append((*i).notify ? QString("true") : QString("false"));
 		s.append(QString("\r\n"));
-		
+
 		if (!(*i).anonymous && (*i).uin) {
 			kdebugm(KDEBUG_INFO, "%s", s.local8Bit().data());
 			str = QTextCodec::codecForName("ISO 8859-2")->fromUnicode(s);
@@ -414,7 +444,7 @@ bool UserList::writeToFile(QString filename)
 			}
 		}
 	fa.close();
-	
+
 	kdebugf2();
 	return true;
 }
@@ -481,15 +511,15 @@ bool UserList::readFromFile()
 			if (!ok)
 				e.uin = 0;
 			e.setGroup("");
-			e.description = "";
 			e.email = "";
 			e.blocking = false;
 			e.offline_to_user = false;
 			e.notify = true;
+			e.status->setOffline();
 			addUser(e);
 			}
 		else {
-			userattribs = QStringList::split(";", line, TRUE);
+			userattribs = QStringList::split(";", line, true);
 			kdebugm(KDEBUG_INFO, "UserList::readFromFile(): userattribs = %d\n", userattribs.count());
 			if (userattribs.count() >= 12)
 				groups = userattribs.count() - 11;
@@ -501,7 +531,7 @@ bool UserList::readFromFile()
 			e.altnick = userattribs[3];
 			e.mobile = userattribs[4];
 			groupnames.clear();
-			for (i = 0; i < groups; i++)
+			for (i = 0; i < groups; ++i)
 				groupnames.append(userattribs[5 + i]);
 			e.setGroup(groupnames.join(","));
 			e.uin = userattribs[5 + groups].toUInt(&ok);
@@ -518,7 +548,7 @@ bool UserList::readFromFile()
 
 			QValueList<QStringList>::Iterator i = ualist.begin();
 			while ((*i)[0].toUInt() != e.uin && i != ualist.end())
-				i++;
+				++i;
 			if (i != ualist.end()) {
 				e.blocking = ((*i)[1] == "true");
 				e.offline_to_user = ((*i)[2] == "true");
@@ -530,7 +560,7 @@ bool UserList::readFromFile()
 				e.notify = true;
 				}
 
-			e.description = "";
+			e.status->setOffline();
 			addUser(e);
 			}
 		}
@@ -544,7 +574,7 @@ bool UserList::readFromFile()
 UserList& UserList::operator=(const UserList& userlist)
 {
 	QMap<QString,UserListElement>::operator=(userlist);
-	for (Iterator i = begin(); i != end(); i++)
+	for (Iterator i = begin(); i != end(); ++i)
 		(*i).Parent = this;
 	emit modified();
 	return *this;
@@ -554,17 +584,17 @@ void UserList::merge(UserList &userlist) {
 	kdebugf();
 	UserListElement e(this);
 
-	for (Iterator i = userlist.begin(); i != userlist.end(); i++) {
+	for (Iterator i = userlist.begin(); i != userlist.end(); ++i) {
 		Iterator j;
 		if ((*i).uin) {
 			j = begin();
 			while (j != end() && (*j).uin != (*i).uin)
-				j++;
+				++j;
 			}
 		else {
 			j = begin();
 			while (j != end() && (*j).mobile != (*i).mobile)
-				j++;
+				++j;
 			}
 		if (j != end()) {
 			(*j).first_name = (*i).first_name;
@@ -594,7 +624,6 @@ void UserList::merge(UserList &userlist) {
 			e.offline_to_user = (*i).offline_to_user;
 			e.notify = (*i).notify;
 			e.setGroup((*i).group());
-			e.description = (*i).description;
 			e.email = (*i).email;
 			e.anonymous = (*i).anonymous;
 			e.port = (*i).port;

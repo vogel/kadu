@@ -50,7 +50,7 @@ bool Hint::nextSecond(void)
 		kdebugm(KDEBUG_ERROR, "ERROR: secs == 0 !\n");
 	else if (secs>2000000000)
 		kdebugm(KDEBUG_WARNING, "WARNING: secs > 2 000 000 000 !\n");
-	secs--;
+	--secs;
 	return secs>0;
 }
 

@@ -53,7 +53,7 @@ UserInfo::UserInfo(const QString &altnick, bool addUser, QDialog* parent, const 
 	}
 	else
 	{
-		for (UserList::Iterator i = userlist.begin(); i != userlist.end(); i++)
+		for (UserList::Iterator i = userlist.begin(); i != userlist.end(); ++i)
 			if ((*i).altnick == altnick)
 			{
 				puser = &(*i);
@@ -246,46 +246,8 @@ void UserInfo::setupTab1()
 		else
 			e_ver->setText(tr("(Unknown)"));
 
-		switch (puser->status)
-		{
-			case GG_STATUS_AVAIL:
-				e_status->setText(tr("Online"));
-				tw_main->setTabIconSet(vgb_general, icons_manager.loadIcon("Online"));
-				break;
-			case GG_STATUS_AVAIL_DESCR:
-				e_status->setText(tr("Online (d.)"));
-				tw_main->setTabIconSet(vgb_general, icons_manager.loadIcon("OnlineWithDescription"));
-				break;
-			case GG_STATUS_NOT_AVAIL:
-				e_status->setText(tr("Offline"));
-				tw_main->setTabIconSet(vgb_general, icons_manager.loadIcon("Offline"));
-				break;
-			case GG_STATUS_NOT_AVAIL_DESCR:
-				e_status->setText(tr("Offline (d.)"));
-				tw_main->setTabIconSet(vgb_general, icons_manager.loadIcon("OfflineWithDescription"));
-				break;
-			case GG_STATUS_BUSY:
-				e_status->setText(tr("Busy"));
-				tw_main->setTabIconSet(vgb_general, icons_manager.loadIcon("Busy"));
-				break;
-			case GG_STATUS_BUSY_DESCR:
-				e_status->setText(tr("Busy (d.)"));
-				tw_main->setTabIconSet(vgb_general, icons_manager.loadIcon("BusyWithDescription"));
-				break;
-			case GG_STATUS_INVISIBLE:
-			case GG_STATUS_INVISIBLE2:
-				e_status->setText(tr("Invisible"));
-				tw_main->setTabIconSet(vgb_general, icons_manager.loadIcon("Invisible"));
-				break;
-			case GG_STATUS_INVISIBLE_DESCR:
-				e_status->setText(tr("Invisible (d.)"));
-				tw_main->setTabIconSet(vgb_general, icons_manager.loadIcon("InvisibleWithDescription"));
-				break;
-			case GG_STATUS_BLOCKED:
-				e_status->setText(tr("Blocks us"));
-				tw_main->setTabIconSet(vgb_general, icons_manager.loadIcon("Blocking"));
-				break;
-		}
+		e_status->setText(tr(puser->status->name()));
+		tw_main->setTabIconSet(vgb_general, puser->status->pixmap());
 		if (!(puser->ip==QHostAddress()))
 		{
 			dns->setLabel(puser->ip);
@@ -306,7 +268,7 @@ void UserInfo::setupTab2()
 
 	// get available groups
 	QStringList list;
-	for (int i=0; i < kadu->groupBar()->count(); i++)
+	for (int i=0; i < kadu->groupBar()->count(); ++i)
 		list << kadu->groupBar()->tabAt(i)->text();
 	list.remove(tr("All"));
 	// end get available groups
@@ -317,16 +279,16 @@ void UserInfo::setupTab2()
 
 	groupsBox = new QVBox(groupsTab);
 	groupsBox->setSpacing(3);
-	
-	for (QStringList::iterator it=list.begin(); it!=list.end(); it++)
+
+	for (QStringList::iterator it=list.begin(); it!=list.end(); ++it)
 	{
 		QCheckBox *checkBox=new QCheckBox(*it, groupsBox);
 		checkBox->setChecked(groupsList.contains(*it));
 		groups.append(checkBox);
 	}
-	
+
 	//zobacz komentarz w newGroupClicked()
-	for (int i=0; i<10; i++)
+	for (int i=0; i<10; ++i)
 	{
 		QCheckBox *box=new QCheckBox(groupsBox);
 		box->setChecked(true);
@@ -338,7 +300,7 @@ void UserInfo::setupTab2()
 	QPushButton *addNewGroup=new QPushButton(tr("Add new group"), groupsTab);
 	connect(addNewGroup, SIGNAL(clicked()), this, SLOT(newGroupClicked()));
 	connect(newGroup, SIGNAL(returnPressed()), this, SLOT(newGroupClicked()));
-	
+
 	kdebugf2();
 }
 
@@ -363,7 +325,7 @@ void UserInfo::newGroupClicked()
 		MessageBox::msg(tr("This group already exists!"), true);
 		return;
 	}
-	for (QValueList<QCheckBox *>::iterator it=groups.begin(); it!=groups.end(); it++)
+	for (QValueList<QCheckBox *>::iterator it=groups.begin(); it!=groups.end(); ++it)
 		if ((*it)->text()==groupName)
 		{
 			MessageBox::wrn(tr("This group already exists!"), true);
@@ -384,7 +346,7 @@ void UserInfo::newGroupClicked()
 	hiddenCheckBoxes.pop_front();
 	box->setText(groupName);
 	box->show();
-	
+
 	groups.append(box);
 	kdebugf2();
 }
@@ -563,14 +525,13 @@ void UserInfo::updateUserlist()
 	e.uin = e_uin->text().toUInt(&ok);
 	if (!ok)
 		e.uin = 0;
-	
+
 	QStringList l;
-	for (QValueList<QCheckBox *>::iterator it=groups.begin(); it!=groups.end(); it++)
+	for (QValueList<QCheckBox *>::iterator it=groups.begin(); it!=groups.end(); ++it)
 		if ((*it)->isChecked())
 			l.append((*it)->text());
 	e.setGroup(l.join(","));
 
-	e.description = "";
 	e.email = e_email->text();
 	if (addUser)
 		addNewUser(e);

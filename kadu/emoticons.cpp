@@ -71,13 +71,13 @@ void EmoticonsManager::setEmoticonsTheme(const QString& theme)
 QString EmoticonsManager::getQuoted(const QString& s, unsigned int& pos)
 {
 	QString r;
-	pos++; // eat '"'
+	++pos; // eat '"'
 	while(s[pos]!="\"")
 	{
 		r+=s[pos];
-		pos++;
+		++pos;
 	}
-	pos++; // eat '"'
+	++pos; // eat '"'
 	return r;
 }
 
@@ -120,31 +120,31 @@ bool EmoticonsManager::loadGGEmoticonThemePart(QString subdir)
 		bool multi=false;
 		QStringList aliases;
 		if(line[i]=='*')
-			i++; // eat '*'
+			++i; // eat '*'
 		if(line[i]=='(')
 		{
 			multi=true;
-			i++;
+			++i;
 		}
 		for(;;)
 		{
 			aliases.append(getQuoted(line, i));
 			if((!multi)||line[i]==')')
 				break;
-			i++; // eat ','
+			++i; // eat ','
 		}
 		if(multi)
-			i++; // eat ')'
-		i++; // eat ','
+			++i; // eat ')'
+		++i; // eat ','
 		item.anim=subdir+fixFileName(path,getQuoted(line,i));
 		if(i<line.length()&&line[i]==',')
 		{
-			i++; // eat ','
+			++i; // eat ','
 			item.stat=subdir+fixFileName(path,getQuoted(line,i));
 		}
 		else
 			item.stat=item.anim;
-		for(i=0; i<aliases.size(); i++)
+		for(i=0; i<aliases.size(); ++i)
 		{
 			item.alias=aliases[i];
 			Aliases.push_back(item);
@@ -165,7 +165,7 @@ bool EmoticonsManager::loadGGEmoticonTheme()
 	if(loadGGEmoticonThemePart(""))
 		something_loaded=true;
 	QStringList subdirs=getSubDirs(themePath());
-	for(unsigned int i=0; i<subdirs.size(); i++)
+	for(unsigned int i=0; i<subdirs.size(); ++i)
 		if(loadGGEmoticonThemePart(subdirs[i]))
 			something_loaded=true;
 
@@ -204,7 +204,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc,const QColor& bgcolor)
 
 	kdebugm(KDEBUG_INFO, "Expanding emoticons...\n");
 	// iterate through parsed html parts of message
-	for(int e_i = 0; e_i < doc.countElements(); e_i++)
+	for(int e_i = 0; e_i < doc.countElements(); ++e_i)
 	{
 		// emots are not expanded in html tags
 		if(doc.isTagElement(e_i))
@@ -219,7 +219,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc,const QColor& bgcolor)
 		// intitialize automata for checking occurrences
 		// of emots in text
 		walker -> initWalking();
-		for(unsigned int j = 0; j < text.length(); j++)
+		for(unsigned int j = 0; j < text.length(); ++j)
 		{
 			// find out if there is some emot occurence when we
 			// add current character
@@ -351,7 +351,7 @@ EmoticonSelector::EmoticonSelector(QWidget *parent, const char *name, Chat * cal
 	int btn_width=0;
 	QGridLayout *grid = new QGridLayout(this, 0, selector_width, 0, 0);
 
-	for(int i=0; i<selector_count; i++)
+	for(int i=0; i<selector_count; ++i)
 	{
 		EmoticonSelectorButton* btn = new EmoticonSelectorButton(
 			this,emoticons->selectorString(i),
@@ -576,7 +576,7 @@ void EmotsWalker::insertString( const QString& str, int num )
 		if ( child == NULL )
 			child = insertChild( node, str[pos] );
 		node = child;
-		pos++;
+		++pos;
 	}
 
 	if ( node -> emotIndex == -1 ) 
@@ -598,12 +598,12 @@ int EmotsWalker::checkEmotOccurrence( const QChar& c )
 		positions[amountPositions++] = root;
 	}
 	else {
-		amountPositions++;
+		++amountPositions;
 		positions.push_back( root );
 		lengths.push_back( 0 );
 	}
 
-	for (int i = amountPositions - 1; i >= 0; i--) {
+	for (int i = amountPositions - 1; i >= 0; --i) {
 		next = findChild( positions[i], c );
 		if ( next == NULL ) {
 			lengths[i] = lengths[amountPositions - 1];
@@ -611,7 +611,7 @@ int EmotsWalker::checkEmotOccurrence( const QChar& c )
 		}
 		else {
 			positions[i] = next;
-			lengths[i]++;
+			++lengths[i];
 			if ( result == -1 || 
 				( next -> emotIndex >= 0 &&
 				( next -> emotIndex < result || resultLen < lengths[i] ) ) )
