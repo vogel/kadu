@@ -38,7 +38,8 @@ class ConfigDialog : public QTabDialog	{
 			CONFIG_TAB,
 			CONFIG_GROUPBOX,
 			CONFIG_CHECKBOX,
-			CONFIG_LINEEDIT
+			CONFIG_LINEEDIT,
+			CONFIG_HOTKEYEDIT
 		};
 		struct RegisteredControl
 		{
@@ -47,6 +48,7 @@ class ConfigDialog : public QTabDialog	{
 			QString caption;
 			QString group;
 			QString entry;
+			QString defaultS;
 			QWidget* widget;
 		};
 		static QValueList<RegisteredControl> RegisteredControls;
@@ -58,7 +60,10 @@ class ConfigDialog : public QTabDialog	{
 			const QString& group,const QString& entry);
 		static void registerLineEdit(
 			const QString& parent,const QString& caption,
-			const QString& group,const QString& entry);
+			const QString& group,const QString& entry,const QString& defaultS="");
+		static void registerHotKeyEdit(
+			const QString& parent,const QString& caption,
+			const QString& group,const QString& entry,const QString& defaultS="");
 		//
 				
 	protected:

@@ -8,6 +8,7 @@
 #include <qregexp.h>
 #include <qcolor.h>
 #include <qlineedit.h>
+#include <qaccel.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <pwd.h>
@@ -19,6 +20,7 @@
 #include "misc.h"
 #include "pixmaps.h"
 #include "config_dialog.h"
+#include "config_file.h"
 #include "kadu.h"
 #include "debug.h"
 
@@ -663,3 +665,59 @@ void IconsManager::clear() {
 }
 
 IconsManager *icons = NULL;
+
+QKeySequence HotKey::shortCutFromFile(const QString &name)
+{
+    config_file.setGroup("ShortCuts");
+return QKeySequence(config_file.readEntry(name));
+}
+
+
+
+bool HotKey::shortCut(QKeyEvent *e,const QString &name)
+{
+return (shortCutFromFile(name)==QKeySequence(keyEventToString(e)));
+}
+
+
+
+HotKey::HotKey(QWidget *parent,const char* name):QLineEdit(parent,name)
+{
+
+}
+
+QString HotKey::keyEventToString(QKeyEvent *e)
+{
+    QString result;
+if ((e->state()&Qt::ControlButton)||(e->key()==Qt::Key_Control)) 
+    result="Ctrl+";
+if ((e->state()&Qt::MetaButton)||(e->key()==Qt::Key_Meta)) 
+    {result+="Shift+Alt+";}
+else {
+    if ((e->state()&Qt::ShiftButton)||(e->key()==Qt::Key_Shift)) 
+	result+="Shift+";
+    if ((e->state()&Qt::AltButton)||(e->key()==Qt::Key_Alt)) 
+	result+="Alt+";
+     }
+if (!((e->key()==Qt::Key_Control) 
+    ||(e->key()==Qt::Key_Shift)     
+    ||(e->key()==Qt::Key_Alt)
+    ||(e->key()==Qt::Key_Meta)))
+    result+=QAccel::keyToString(QKeySequence(e->key()));
+
+return result;
+}
+
+
+void HotKey::keyPressEvent(QKeyEvent *e)
+{
+    setText(keyEventToString(e));
+}
+
+void HotKey::keyReleaseEvent(QKeyEvent *e)
+{
+    // sprawdzenie czy ostatnim znakiem jest "+" 
+    // jesli tak to nie ma takiego skrotu klawiszowego
+    if (text().at(text().length()-1)==QChar(43)) 
+    setText("");
+}

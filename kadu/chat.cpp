@@ -61,35 +61,38 @@ CustomInput::CustomInput(QWidget *parent, const char *name) : QMultiLineEdit(par
 
 void CustomInput::keyPressEvent(QKeyEvent * e) {
 	kdebug("CustomInput::keyPressEvent()\n");
-	if (autosend_enabled && (e->key() == Key_Enter || e->key() == Key_Return) && !(e->state() & ShiftButton)) {
+	if (autosend_enabled && (HotKey::shortCut(e,"chat_newline")) && !(e->state() & ShiftButton)) {
 		kdebug("CustomInput::keyPressEvent(): emit enterPressed()\n");
 		emit sendMessage();
 		}
 	else {
-		if (e->key() == Key_Minus) {
+		if (e->key() == Key_Minus) 
+			{
 			insert("-");
 			return;
 			}
-		if (e->text() == "*") {
+		if (e->text() == "*") 
+			{
 			insert("*");
 			return;
 			}
-		if (e->state() & ControlButton) {
-			if (e->key() == Key_B) {
+		if (HotKey::shortCut(e,"chat_bold"))	
+			{
 				emit specialKeyPressed(CustomInput::KEY_BOLD);
 				return;
-				}
-			else if (e->key() == Key_I) {
+			}
+		else if (HotKey::shortCut(e,"chat_italic"))
+			{
 				emit specialKeyPressed(CustomInput::KEY_ITALIC);
 				return;
-				}
-			else if (e->key() == Key_U)
-				emit specialKeyPressed(CustomInput::KEY_UNDERLINE);
-			else if (e->key() == Key_Minus) {
-				}
 			}
+		else if (HotKey::shortCut(e,"chat_underline"))
+				emit specialKeyPressed(CustomInput::KEY_UNDERLINE);
 		QMultiLineEdit::keyPressEvent(e);
 		}
+		// przekazanie event'a do qwidget 
+		// aby obsluzyc skroty klawiszowe (definiowane sa dla okna chat)
+		QWidget::keyPressEvent(e);
 }
 
 void CustomInput::setAutosend(bool on) {
@@ -488,11 +491,11 @@ void Chat::windowActivationChange(bool oldActive) {
 }
 
 void Chat::keyPressEvent(QKeyEvent *e) {
-	if (e->key() == Key_F9)
+	if (HotKey::shortCut(e,"chat_clear"))
 		clearChatWindow();
 	else
-		if (e->key() == Key_Escape)
-			close();
+	if (HotKey::shortCut(e,"chat_close"))
+		close();
 	QWidget::keyPressEvent(e);
 }
 
@@ -1001,6 +1004,16 @@ void Chat::initModule()
 {
 	ConfigDialog::registerTab(i18n("Other"));
 	ConfigDialog::registerCheckBox(i18n("Other"),i18n("Open chat window on new message"),"Other","OpenChatOnMessage");
+	ConfigDialog::registerTab(i18n("ShortCuts"));
+	ConfigDialog::registerGroupBox(i18n("ShortCuts"),i18n("Define keys"));
+	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("New line / send message:"),"ShortCuts","chat_newline","Return");
+	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("Clear Chat:"),"ShortCuts","chat_clear","F9");
+	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("Close Chat:"),"ShortCuts","chat_close","Esc");
+	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("Bold text:"),"ShortCuts","chat_bold","Ctrl+B");
+	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("Italic text:"),"ShortCuts","chat_italic","Ctrl+I");
+	ConfigDialog::registerHotKeyEdit(i18n("Define keys"),i18n("Underline text:"),"ShortCuts","chat_underline","Ctrl+U");
+	
+	
 };
 
 ColorSelectorButton::ColorSelectorButton(QWidget* parent, const QColor& qcolor) : QToolButton(parent)

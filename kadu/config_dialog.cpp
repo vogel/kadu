@@ -415,6 +415,16 @@ ConfigDialog::ConfigDialog(QWidget *parent, const char *name) : QTabDialog(paren
 				(*i).widget=line;
 				break;
 			}
+			case CONFIG_HOTKEYEDIT:
+			{
+				QHBox* hbox=new QHBox(parent);
+				QLabel* label=new QLabel((*i).caption,hbox);
+				HotKey* hotkey=new HotKey(hbox);
+				config_file.setGroup((*i).group);
+				hotkey->setText(config_file.readEntry((*i).entry,(*i).defaultS));
+				(*i).widget=hotkey;
+				break;
+			}			
 		};			
 	};
 	//
@@ -474,7 +484,7 @@ void ConfigDialog::registerCheckBox(
 
 void ConfigDialog::registerLineEdit(
 			const QString& parent,const QString& caption,
-			const QString& group,const QString& entry)
+			const QString& group,const QString& entry,const QString& defaultS)
 {
 	RegisteredControl c;
 	c.type=CONFIG_LINEEDIT;
@@ -482,8 +492,29 @@ void ConfigDialog::registerLineEdit(
 	c.caption=caption;
 	c.group=group;
 	c.entry=entry;
+	c.defaultS=defaultS;
 	RegisteredControls.append(c);
 };
+
+
+void ConfigDialog::registerHotKeyEdit(
+			const QString& parent,const QString& caption,
+			const QString& group,const QString& entry,const QString& defaultS)
+{
+	RegisteredControl c;
+	c.type=CONFIG_HOTKEYEDIT;
+	c.parent=parent;
+	c.caption=caption;
+	c.group=group;
+	c.entry=entry;
+	c.defaultS=defaultS;
+	RegisteredControls.append(c);
+	// zapisujemy warto¶æ domy¶ln±, aby ju¿ wiêcej nie musieæ
+	// jej podawaæ przy czytaniu z pliku conf
+	config_file.setGroup(group);
+	config_file.writeEntry(entry,defaultS);
+};
+
 
 void ConfigDialog::setupTab1(void) {
 	int i;
@@ -1876,6 +1907,9 @@ void ConfigDialog::updateConfig(void) {
 			case CONFIG_LINEEDIT:
 				config_file.writeEntry((*i).entry,((QLineEdit*)((*i).widget))->text());
 				break;
+			case CONFIG_HOTKEYEDIT:
+				config_file.writeEntry((*i).entry,((HotKey*)((*i).widget))->text());
+				break;				
 		};			
 	};
 	config_file.sync();
