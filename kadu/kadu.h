@@ -71,6 +71,7 @@ class Kadu : public QMainWindow
 
 		int commencing_startup;
 		bool updateChecked;
+		bool Docked;
 
 		void createMenu();
 		void createToolBar();
@@ -118,6 +119,15 @@ class Kadu : public QMainWindow
 			Zwraca wskaznik do userbox-a w glownym oknie.
 		**/
 		UserBox* userbox();
+		/**
+			Modu³ dokowania powinien to ustawic, aby kadu
+			wiedzialo, ze jest zadokowane.
+		**/
+		void setDocked(bool docked);
+		/**
+			Zwraca true je¶li kadu jest zadokowane.
+		**/
+		bool docked();
 
 		// te zmienne s± tylko chwilowo publiczne.
 		// trzeba to uporz±dkowaæ
@@ -174,9 +184,24 @@ class Kadu : public QMainWindow
 		void unregisterUser();
 		void viewHistory();
 		void popupMenu();
+
 	signals:
 		void disconnectingNetwork();
 		void disconnectedNetwork();
+		/**
+			Podczas ³±czenia (mruganie ikonki) czas na zmianê
+			ikony na t± reprezentuj±c± docelowy status.
+		**/
+		void connectingBlinkShowStatus(int status);
+		/**
+			Podczas ³±czenia (mruganie ikonki) czas na zmianê
+			ikony na t± reprezentuj±c± status offline.
+		**/		
+		void connectingBlinkShowOffline();
+		/**
+			Zmieni³ siê nasz aktualny status GG.
+		**/
+		void currentStatusChanged(int status);
 };
 
 class KaduSlots : public QObject

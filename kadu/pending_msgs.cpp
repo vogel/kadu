@@ -4,7 +4,6 @@
 
 #include "pending_msgs.h"
 #include "debug.h"
-#include "dock_widget.h"
 #include "kadu.h"
 #include "config_file.h"
 #include "chat.h"
@@ -19,11 +18,7 @@ void PendingMsgs::deleteMsg(int index)
 	msgs.remove(msgs.at(index));
 	writeToFile();
 	kdebug("PendingMsgs::deleteMsg(%d), count=%d\n", index, count());
-	if (!pendingMsgs() && trayicon)
-		{
-		QPixmap pix= icons_manager.loadIcon(gg_icons[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);
-		trayicon->setType(pix);
-		}
+	emit messageDeleted();
 }
 
 bool PendingMsgs::pendingMsgs(uin_t uin)
@@ -60,6 +55,7 @@ void PendingMsgs::addMsg(UinsList uins, QString msg, int msgclass, time_t time)
 	e.time = time;
 	msgs.append(e);
 	writeToFile();
+	emit messageAdded();
 }
 
 void PendingMsgs::writeToFile()

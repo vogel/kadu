@@ -33,7 +33,6 @@
 #include "history.h"
 #include "pending_msgs.h"
 #include "hints.h"
-#include "dock_widget.h"
 #include "debug.h"
 #include "dcc.h"
 #include "config_dialog.h"
@@ -271,8 +270,6 @@ void EventManager::chatMsgReceived2Slot(UinsList senders,const QString& msg,time
 	pending.addMsg(senders, msg, GG_CLASS_CHAT, time);
 	
 	UserBox::all_refresh();
-	if (trayicon)
-		trayicon->changeIcon();
 
 	if (config_file.readBoolEntry("General","AutoRaise")) {
 		kadu->showNormal();

@@ -31,7 +31,6 @@ void PendingMessage::activate()
 	bool msgsFromHist = false;
 	QString toadd;
 	
-	bool useDocking=config_file.readBoolEntry("General", "UseDocking");
 	if ((MsgClass & GG_CLASS_CHAT) == GG_CLASS_CHAT || (MsgClass & GG_CLASS_MSG) == GG_CLASS_MSG
 		|| (!MsgClass))
 	{

@@ -37,7 +37,6 @@
 #include "history.h"
 #include "emoticons.h"
 #include "pending_msgs.h"
-#include "dock_widget.h"
 #include "debug.h"
 #include "gadu.h"
 #include "hints.h"

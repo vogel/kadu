@@ -7,18 +7,20 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "docking.h"
+
 #include <qapplication.h>
 #include <qcursor.h>
 #include <qobject.h>
 #include <qtimer.h>
 
-#include "dock_widget.h"
 #include "config_file.h"
 #include "config_dialog.h"
 #include "debug.h"
 #include "pending_msgs.h"
 #include "status.h"
 #include "kadu.h"
+#include "hints.h"
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -79,12 +81,27 @@ static bool send_message(
 #define SYSTEM_TRAY_BEGIN_MESSAGE   1
 #define SYSTEM_TRAY_CANCEL_MESSAGE  2
 
+extern "C" int docking_init()
+{
+	trayicon = new TrayIcon(kadu);
+	trayicon->show();
+	QPixmap pix=icons_manager.loadIcon(gg_icons[
+		statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);
+	trayicon->setType(pix);
+	trayicon->changeIcon();
+	trayicon->connectSignals();
+	return 0;
+}
+
+extern "C" int docking_close()
+{
+	delete trayicon;
+	trayicon = NULL;
+}
+
 TrayIcon::TrayIcon(QWidget *parent, const char *name)
 	: QLabel(0,"TrayIcon", WMouseNoMask | WRepaintNoErase | WType_TopLevel | WStyle_Customize | WStyle_NoBorder | WStyle_StaysOnTop)
 {
-	if (!config_file.readBoolEntry("General","UseDocking"))
-		return;
-
 	QPixmap pix = icons_manager.loadIcon("Offline");
 	setBackgroundMode(X11ParentRelative);
 	setMinimumSize(pix.size());
@@ -146,12 +163,32 @@ TrayIcon::TrayIcon(QWidget *parent, const char *name)
 	XSetWMHints(dsp, w_id, hints);
 	XFree( hints );
 
+	QT_TRANSLATE_NOOP("@default", "Start docked");
+	ConfigDialog::addCheckBox("General", "grid", "Start docked", "RunDocked", false);
+	if (config_file.readBoolEntry("General", "RunDocked"))
+		kadu->hide();
+
+	connect(kadu, SIGNAL(connectingBlinkShowOffline()), this, SLOT(showOffline()));
+	connect(kadu, SIGNAL(connectingBlinkShowStatus(int)), this, SLOT(showStatus(int)));
+	connect(kadu, SIGNAL(currentStatusChanged(int)), this, SLOT(showCurrentStatus(int)));
+	connect(&pending, SIGNAL(messageAdded()), this, SLOT(pendingMessageAdded()));
+	connect(&pending, SIGNAL(messageDeleted()), this, SLOT(pendingMessageDeleted()));
 	connect(this, SIGNAL(mousePressMidButton()), &pending, SLOT(openMessages()));
+
+	hintmanager->setDetectedPosition(trayPosition());
 }
 
 TrayIcon::~TrayIcon()
 {
 	kdebug("TrayIcon::~TrayIcon()\n");
+
+	ConfigDialog::removeControl("grid", "Start docked");
+
+	disconnect(kadu, SIGNAL(connectingBlinkShowOffline()), this, SLOT(showOffline()));
+	disconnect(kadu, SIGNAL(connectingBlinkShowStatus(int)), this, SLOT(showStatus(int)));
+	disconnect(kadu, SIGNAL(currentStatusChanged(int)), this, SLOT(showCurrentStatus(int)));
+	disconnect(&pending, SIGNAL(messageAdded()), this, SLOT(pendingMessageAdded()));
+	disconnect(&pending, SIGNAL(messageDeleted()), this, SLOT(pendingMessageDeleted()));
 	delete WMakerMasterWidget;
 }
 
@@ -177,15 +214,13 @@ void TrayIcon::setPixmap(const QPixmap& pixmap)
 	repaint();
 }
 
-void TrayIcon::setType(QPixmap &pixmap)
+void TrayIcon::setType(const QPixmap& pixmap)
 {
-	if (!config_file.readBoolEntry("General","UseDocking"))
-		return;
 	setPixmap(pixmap);
 }
 
 void TrayIcon::changeIcon() {
-	if (pending.pendingMsgs() && config_file.readBoolEntry("General","UseDocking") && !icon_timer->isActive()) {
+	if (pending.pendingMsgs() && !icon_timer->isActive()) {
 		if (!blink) {
 			setPixmap(icons_manager.loadIcon("Message"));
 			icon_timer->start(500,TRUE);
@@ -240,11 +275,8 @@ void TrayIcon::enterEvent(QEvent* e)
 	QWidget::enterEvent(e);
 }
 
-void TrayIcon::mousePressEvent(QMouseEvent * e) {
-
-	if (!config_file.readBoolEntry("General","UseDocking"))
-		return;
-
+void TrayIcon::mousePressEvent(QMouseEvent * e)
+{
 	if (e->button() == MidButton) {
 		emit mousePressMidButton();
 		return;
@@ -273,6 +305,39 @@ void TrayIcon::mousePressEvent(QMouseEvent * e) {
 		dockppm->exec(QCursor::pos());
 		return;
 		}
+}
+
+void TrayIcon::pendingMessageAdded()
+{
+	changeIcon();
+}
+
+void TrayIcon::pendingMessageDeleted()
+{
+	if (!pending.pendingMsgs())
+	{
+		QPixmap pix= icons_manager.loadIcon(gg_icons[statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);
+		setType(pix);
+	}
+}
+
+void TrayIcon::showOffline()
+{
+	setType(icons_manager.loadIcon("Offline"));
+}
+
+void TrayIcon::showStatus(int status)
+{
+	int i = statusGGToStatusNr(status);
+	setType(icons_manager.loadIcon(gg_icons[i]));
+}
+
+void TrayIcon::showCurrentStatus(int status)
+{
+	int statusnr = statusGGToStatusNr(status);
+	QPixmap pix = icons_manager.loadIcon(gg_icons[statusnr]);
+	if (!pending.pendingMsgs())
+		setType(pix);
 }
 
 TrayIcon *trayicon = NULL;

@@ -113,7 +113,6 @@ config_dialog.cpp config_dialog.h config_dialog_moc.cpp \
 config_file.cpp config_file.h \
 dcc.cpp dcc.h dcc_moc.cpp \
 debug.cpp debug.h \
-dock_widget.cpp dock_widget.h dock_widget_moc.cpp \
 emoticons.cpp emoticons.h emoticons_moc.cpp \
 events.cpp events.h events_moc.cpp \
 expimp.cpp expimp.h expimp_moc.cpp \
@@ -184,8 +183,7 @@ PROGRAMS = $(bin_PROGRAMS)
 am_kadu_OBJECTS = about.$(OBJEXT) about_moc.$(OBJEXT) chat.$(OBJEXT) \
 	chat_moc.$(OBJEXT) config_dialog.$(OBJEXT) \
 	config_dialog_moc.$(OBJEXT) config_file.$(OBJEXT) dcc.$(OBJEXT) \
-	dcc_moc.$(OBJEXT) debug.$(OBJEXT) dock_widget.$(OBJEXT) \
-	dock_widget_moc.$(OBJEXT) emoticons.$(OBJEXT) \
+	dcc_moc.$(OBJEXT) debug.$(OBJEXT) emoticons.$(OBJEXT) \
 	emoticons_moc.$(OBJEXT) events.$(OBJEXT) events_moc.$(OBJEXT) \
 	expimp.$(OBJEXT) expimp_moc.$(OBJEXT) gadu.$(OBJEXT) \
 	gadu_moc.$(OBJEXT) hints.$(OBJEXT) hints_moc.$(OBJEXT) \
@@ -216,8 +214,6 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/config_dialog_moc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/config_file.Po ./$(DEPDIR)/dcc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/dcc_moc.Po ./$(DEPDIR)/debug.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/dock_widget.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/dock_widget_moc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/emoticons.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/emoticons_moc.Po ./$(DEPDIR)/events.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/events_moc.Po ./$(DEPDIR)/expimp.Po \
@@ -317,8 +313,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dcc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dcc_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/debug.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dock_widget.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dock_widget_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/emoticons.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/emoticons_moc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/events.Po@am__quote@

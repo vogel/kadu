@@ -1,5 +1,5 @@
-#ifndef DOCKAPP_H
-#define DOCKAPP_H
+#ifndef DOCKING_H
+#define DOCKING_H
 
 #include <qlabel.h>
 #include <qpixmap.h>
@@ -15,6 +15,13 @@ class TrayIcon : public QLabel
 		QWidget* WMakerMasterWidget;
 		QTimer *icon_timer;
 		bool blink;
+		
+	private slots:
+		void pendingMessageAdded();
+		void pendingMessageDeleted();
+		void showOffline();
+		void showStatus(int status);
+		void showCurrentStatus(int status);
 
 	protected:
 		void setPixmap(const QPixmap& pixmap);
@@ -27,7 +34,7 @@ class TrayIcon : public QLabel
 		~TrayIcon();
 		QPoint trayPosition();
 		void show();
-		void setType(QPixmap &pixmap);
+		void setType(const QPixmap& pixmap);
 		void connectSignals();
 		
 	public slots:
@@ -40,6 +47,10 @@ class TrayIcon : public QLabel
 		void mousePressMidButton();
 		void mousePressLeftButton();
 		void mousePressRightButton();
+		
+	public:
+		static void initModule();
+		static void closeModule();
 };
 
 extern TrayIcon *trayicon;

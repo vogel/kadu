@@ -61,6 +61,7 @@ class HintManager : public QFrame
 		QPtrList<Hint> hints;
 		bool useposition;
 		QPoint position;
+		QPoint DetectedPosition;
 		QValueList<QStringList> config;
 
 	public:
@@ -71,6 +72,11 @@ class HintManager : public QFrame
 		void addHintNewMsg(const QString &, const QString &);
 		void addHintNewChat(UinsList& senders, const QString &);
 		void addHintStatus(const UserListElement &, unsigned int status, unsigned int oldstatus);
+		/**
+			Ustawia automatycznie wykryt± pozycjê dla hintów.
+			Mo¿e to zrobiæ np. modu³ docking.
+		**/
+		void setDetectedPosition(const QPoint& pos);
 
 	public slots:
 		void loadConfig();

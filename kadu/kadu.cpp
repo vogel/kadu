@@ -54,7 +54,6 @@
 #include "emoticons.h"
 #include "history.h"
 #include "pending_msgs.h"
-#include "dock_widget.h"
 #include "updates.h"
 #include "password.h"
 #include "tabbar.h"
@@ -217,7 +216,7 @@ void Kadu::gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op) {
 }
 
 void Kadu::keyPressEvent(QKeyEvent *e) {
-	if (e->key() == Key_Escape && trayicon) {
+	if (e->key() == Key_Escape && Docked) {
 		kdebug("Kadu::keyPressEvent(Key_Escape): Kadu hide\n");
 		hide();
 	}
@@ -264,14 +263,13 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	QT_TRANSLATE_NOOP("@default", "Restore window geometry");
 	QT_TRANSLATE_NOOP("@default", "Check for updates");
 	QT_TRANSLATE_NOOP("@default", "Set language:");
-	QT_TRANSLATE_NOOP("@default", "Enable dock icon");
-	QT_TRANSLATE_NOOP("@default", "Start docked");
 	QT_TRANSLATE_NOOP("@default", "Private status");
 
 	QT_TRANSLATE_NOOP("@default", "Default status");
 	QT_TRANSLATE_NOOP("@default", "On shutdown, set description:");
 
 	updateChecked=false;
+	Docked=false;
 
 	KaduSlots *kaduslots=new KaduSlots();
 	int myUin=config_file.readNumEntry("General", "UIN");
@@ -287,8 +285,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ConfigDialog::addCheckBox("General", "grid", "Restore window geometry", "SaveGeometry", true);
 	ConfigDialog::addCheckBox("General", "grid", "Check for updates", "CheckUpdates", true);
 
-	ConfigDialog::addCheckBox("General", "grid", "Enable dock icon", "UseDocking", true);
-	ConfigDialog::addCheckBox("General", "grid", "Start docked", "RunDocked", false);
 	ConfigDialog::addCheckBox("General", "grid", "Private status", "PrivateStatus", false);
 
 	ConfigDialog::addVGroupBox("General", "General", "Status");
@@ -324,13 +320,11 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Configuration", "kadu_configure", "F2");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Add user", "kadu_adduser", "Ctrl+N");
 
-
 	Chat::initModule();
 	UserBox::initModule();
 	History::initModule();
 	HintManager::initModule();
 	EventConfigSlots::initModule();
-
 
 	//zaladowanie wartosci domyslnych (pierwsze uruchomienie)
 	QRect def_rect(0, 0, 145, 465);
@@ -369,12 +363,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	resize(geom.width(),geom.height());
 	move(geom.x(),geom.y());
 
-	if (config_file.readBoolEntry("General", "UseDocking")) {
-		trayicon = new TrayIcon(this);
-		trayicon->show();
-		trayicon->changeIcon();
-		}
-
 	if (config_file.readBoolEntry("Hints", "Hints"))
 		hintmanager = new HintManager();
 
@@ -389,9 +377,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		setCaption(tr("Kadu: %1").arg(myUin));
 
 	pending.loadFromFile();
-
-	if (config_file.readBoolEntry("General", "UseDocking"))
-		trayicon->changeIcon();
 	
 	QVBox *vbox=new QVBox(this);
 	setCentralWidget(vbox);
@@ -481,9 +466,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	dockppm->insertSeparator();
 	dockppm->insertItem(icons_manager.loadIcon("Exit"), tr("&Exit Kadu"), 9);
-	if (config_file.readBoolEntry("General", "UseDocking"))
-		trayicon->connectSignals();
-//		connect(dockppm, SIGNAL(activated(int)), trayicon, SLOT(dockletChange(int)));
 
 	descrtb = new QTextBrowser(split, "descrtb");
 	descrtb->setFrameStyle(QFrame::NoFrame);
@@ -504,7 +486,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	
 	if (!config_file.readBoolEntry("Look", "ShowStatusButton"))
 		statusbutton->hide();
-
 
 	QValueList<int> splitsizes;
 
@@ -537,9 +518,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	/* dirty workaround for multiple showEvents */
 	commencing_startup = true;
 
-	/* pokaz okno jesli RunDocked jest wylaczone lub dock wylaczone */
-	if ((!config_file.readBoolEntry("General", "RunDocked")) || (!config_file.readBoolEntry("General", "UseDocking")))
-		show();
+	show();
 }
 
 void Kadu::createToolBar()
@@ -830,7 +809,7 @@ void Kadu::importUserlist()
 
 void Kadu::hideKadu()
 {
-	if (trayicon)
+	if (Docked)
 		close();
 }
 
@@ -968,7 +947,7 @@ void Kadu::setActiveGroup(const QString& group)
 				if (user_group == group)
 					belongsToGroup = true;
 			}
-		if (belongsToGroup && (!userlist[i].anonymous || !trayicon))
+		if (belongsToGroup && (!userlist[i].anonymous || !Docked))
 			Userbox->addUser(userlist[i].altnick);
 		}
 	UserBox::all_refresh();
@@ -1029,27 +1008,25 @@ void Kadu::blink() {
 		return;
 		}
 	else
-		if (!doBlink && !socket_active) {
+		if (!doBlink && !socket_active)
+		{
 			pix = icons_manager.loadIcon("Offline");
 			statusbutton->setIconSet(QIconSet(pix));
-			if (trayicon)
-				trayicon->setType(pix);
-				return;
+			emit connectingBlinkShowOffline();
+			return;
 		}
 
 	if (blinkOn) {
 		pix = icons_manager.loadIcon("Offline");
 		statusbutton->setIconSet(QIconSet(pix));
-		if (trayicon)
-			trayicon->setType(pix);
+		emit connectingBlinkShowOffline();
 		blinkOn = false;
 		}
 	else {
 		i = statusGGToStatusNr(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 		pix = icons_manager.loadIcon(gg_icons[i]);
 		statusbutton->setIconSet(QIconSet(pix));
-		if (trayicon)
-			trayicon->setType(pix);
+		emit connectingBlinkShowStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 		blinkOn = true;
 		}
 
@@ -1093,7 +1070,7 @@ void Kadu::userListUserAdded(const UserListElement& user)
 	// (odezwal sie do nas) i mamy wlaczone dokowanie (mozemy kliknac
 	// na kopertce w trayu, zeby odebrac wiadomosc) to nie dodajemy
 	// go do userboxa itp bo po co.
-	if (user.anonymous && config_file.readBoolEntry("General", "UseDocking"))
+	if (user.anonymous && Docked)
 		return;
 	userlist.writeToFile();
 
@@ -1214,11 +1191,10 @@ void Kadu::setCurrentStatus(int status) {
 	statusbutton->setText(qApp->translate("@default", statustext[statusnr]));
 	statusppm->setItemEnabled(7, statusnr != 6);
 	dockppm->setItemEnabled(7, statusnr != 6);
-	QPixmap pix= icons_manager.loadIcon(gg_icons[statusnr]);
+	QPixmap pix = icons_manager.loadIcon(gg_icons[statusnr]);
 	statusbutton->setIconSet(QIconSet(pix));
 	setIcon(pix);
-	if (!pending.pendingMsgs() && trayicon)
-		trayicon->setType(pix);
+	emit currentStatusChanged(status);
 }
 
 void Kadu::setStatus(int status) {
@@ -1587,7 +1563,7 @@ void Kadu::watchDcc(void) {
 }
 
 bool Kadu::close(bool quit) {
-	if (!quit && trayicon) {
+	if (!quit && Docked) {
 		kdebug("Kadu::close(): Kadu hide\n");
 		hide();
 		return false;
@@ -1658,11 +1634,6 @@ void Kadu::quitApplication() {
 
 Kadu::~Kadu(void) {
 	kdebugf();
-	if (trayicon)
-	{
-		delete trayicon;
-		trayicon=NULL;
-	}
 	if (hintmanager)
 	{
 		delete hintmanager;
@@ -1777,6 +1748,15 @@ UserBox* Kadu::userbox()
 	return Userbox;
 }
 
+void Kadu::setDocked(bool docked)
+{
+	Docked = docked;
+}
+
+bool Kadu::docked()
+{
+	return Docked;
+}
 
 void KaduSlots::onCreateConfigDialog()
 {
@@ -1820,21 +1800,6 @@ void KaduSlots::onDestroyConfigDialog()
 	e_password->setEchoMode(QLineEdit::Password);
 	config_file.writeEntry("General", "Password",pwHash(e_password->text()));
 
-	if (config_file.readBoolEntry("General", "UseDocking") && !trayicon) {
-		trayicon = new TrayIcon(kadu);
-		trayicon->show();
-		trayicon->connectSignals();
-		QPixmap pix=icons_manager.loadIcon(gg_icons[
-		statusGGToStatusNr(getActualStatus() & (~GG_STATUS_FRIENDS_MASK))]);
-		trayicon->setType(pix);
-		trayicon->changeIcon();
-	}
-	else
-		if (!config_file.readBoolEntry("General", "UseDocking") && trayicon)
-		{
-			delete trayicon;
-			trayicon = NULL;
-		}
 	kadu->showdesc(config_file.readBoolEntry("Look", "ShowInfoPanel"));
 
 	if (config_file.readBoolEntry("Look", "ShowStatusButton"))

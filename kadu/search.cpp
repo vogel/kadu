@@ -22,7 +22,7 @@
 #include "userinfo.h"
 #include "chat.h"
 #include "debug.h"
-//
+#include "kadu.h"
 
 SearchDialog::SearchDialog(QWidget *parent, const char *name, uin_t whoisSearchUin)
 : QDialog (parent, name, FALSE, Qt::WDestructiveClose) {
@@ -169,7 +169,7 @@ void SearchDialog::selectionChanged(QListViewItem *item) {
 	if (item) {
 		uin = item->text(1).toUInt();
 		if ((userlist.containsUin(uin) && !userlist.byUin(uin).anonymous)
-			|| (userlist.containsUin(uin) && !config_file.readBoolEntry("General", "UseDocking"))) {
+			|| (userlist.containsUin(uin) && !kadu->docked())) {
 			b_addbtn->setText(tr("&Update Info"));
 			connect(b_addbtn, SIGNAL(clicked()), this, SLOT(updateInfoClicked()));
 			}

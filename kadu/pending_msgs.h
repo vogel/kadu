@@ -35,6 +35,10 @@ class PendingMsgs : public QObject
 
 	public slots:
 		void openMessages();
+		
+	signals:
+		void messageAdded();
+		void messageDeleted();
 };
 
 extern PendingMsgs pending;

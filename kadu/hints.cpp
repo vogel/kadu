@@ -9,7 +9,6 @@
 
 #include "hints.h"
 #include "debug.h"
-#include "dock_widget.h"
 #include "config_dialog.h"
 #include "config_file.h"
 #include "pending_msgs.h"
@@ -189,13 +188,13 @@ HintManager::HintManager()
 void HintManager::setHint(void) {
 	kdebug("HintManager::setHint()\n");
 
-	if (useposition || trayicon == NULL)
+	if (useposition || DetectedPosition.isNull())
 		move(position);
 	else
 	{
 		QPoint pos_hint;
 		QSize size_hint = sizeHint();
-		QPoint pos_tray = trayicon->trayPosition();
+		QPoint pos_tray = DetectedPosition;
 		QSize size_desk = QApplication::desktop()->size();
 		if (pos_tray.x() < size_desk.width()/2)
 			pos_hint.setX(pos_tray.x()+32);
@@ -443,9 +442,9 @@ void HintManager::loadConfig(void)
 	switch(config_file.readNumEntry("Hints","NewHintUnder"))
 	{
 		case 0:
-			if (trayicon != NULL && !useposition)
+			if (DetectedPosition.isNull() && !useposition)
 			{
-				if (trayicon->trayPosition().y() < QApplication::desktop()->size().height()/2)
+				if (DetectedPosition.y() < QApplication::desktop()->size().height()/2)
 					grid->setOrigin(QGridLayout::TopLeft);
 				else
 					grid->setOrigin(QGridLayout::BottomLeft);
@@ -467,6 +466,12 @@ void HintManager::loadConfig(void)
 			break;
 	}
 }
+
+void HintManager::setDetectedPosition(const QPoint& pos)
+{
+	DetectedPosition = pos;
+}
+
 void HintManager::initModule(void)
 {
 	kdebug("HintManager::initModule()\n");
