@@ -118,6 +118,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   i messageSent (nazgul/adrian)
 * na potrzeby modulow dwie nowe metody w klasie HtmlDocument:
   insertTag i insertText (nazgul/adrian)
+* poprawka padu przy wybieraniu zaznaczonych kontaktow z userbox (joi/adrian)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶

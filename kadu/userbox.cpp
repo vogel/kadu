@@ -492,52 +492,50 @@ void UserBox::showHideInactive()
 }
 
 
-UinsList UserBox::getSelectedUins() {
+UinsList UserBox::getSelectedUins()
+{
 	UinsList uins;
-	UserListElement user;
-	int j;
-	for(j=0; j<UserBoxes.size(); j++)
+	for(int j=0; j<UserBoxes.size(); j++)
 		if (UserBoxes[j]->isActiveWindow())
-		    break;
-
-	for (int i = 0; i < UserBoxes[j]->count(); i++)
-		if (UserBoxes[j]->isSelected(i)) {
-			user = userlist.byAltNick(UserBoxes[j]->text(i));
-
-			if (user.uin)
-				uins.append(user.uin);
-			}
+		{
+			for (int i = 0; i < UserBoxes[j]->count(); i++)
+				if (UserBoxes[j]->isSelected(i))
+				{
+					UserListElement user = userlist.byAltNick(UserBoxes[j]->text(i));
+					if (user.uin)
+						uins.append(user.uin);
+				}
+			break;
+		}
 	return uins;
 }
 
 UserList UserBox::getSelectedUsers()
 {
-    UserList users;
-	int j;
-	for(j=0; j<UserBoxes.size(); j++)
+	UserList users;
+	for(int j=0; j<UserBoxes.size(); j++)
 		if (UserBoxes[j]->isActiveWindow())
-		    break;
-
-	for (int i=0; i< UserBoxes[j]->count(); i++)
-		if (UserBoxes[j]->isSelected(i))
-			users.addUser(userlist.byAltNick(UserBoxes[j]->text(i)));
+		{
+			for (int i=0; i< UserBoxes[j]->count(); i++)
+				if (UserBoxes[j]->isSelected(i))
+					users.addUser(userlist.byAltNick(UserBoxes[j]->text(i)));
+			break;
+		}
 	return users;
-
 }
 
 QStringList UserBox::getSelectedAltNicks()
 {
-    QStringList users;
-
-	int j;
-	for(j=0; j<UserBoxes.size(); j++)
+	QStringList nicks;
+	for(int j=0; j<UserBoxes.size(); j++)
 		if (UserBoxes[j]->isActiveWindow())
-		    break;
-
-	for (int i=0; i< UserBoxes[j]->count(); i++)
-		if (UserBoxes[j]->isSelected(i))
-		    users.append(UserBoxes[j]->text(i));
-	return users;
+		{
+			for (int i=0; i< UserBoxes[j]->count(); i++)
+				if (UserBoxes[j]->isSelected(i))
+					nicks.append(UserBoxes[j]->text(i));
+			break;
+		}
+	return nicks;
 }
 /////////////////////////////////////////////////////////
 
