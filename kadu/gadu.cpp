@@ -469,12 +469,14 @@ void GaduProtocol::searchNextInPubdir(SearchRecord& searchRecord) {
 		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)unicode2cp(searchRecord.NickName).data());
 	if (searchRecord.City.length())
 		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)unicode2cp(searchRecord.City).data());
-	if (searchRecord.BirthYearFrom.length() && searchRecord.BirthYearTo.length()) {
+	if (searchRecord.BirthYearFrom.length() && searchRecord.BirthYearTo.length())
+	{
 		QString bufYear = searchRecord.BirthYearFrom + " " + searchRecord.BirthYearTo;
 		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)unicode2cp(bufYear).data());
 	}
 
-	switch (searchRecord.Gender) {
+	switch (searchRecord.Gender)
+	{
 		case 1:
 			gg_pubdir50_add(req, GG_PUBDIR50_GENDER, GG_PUBDIR50_GENDER_MALE);
 			break;
@@ -482,6 +484,9 @@ void GaduProtocol::searchNextInPubdir(SearchRecord& searchRecord) {
 			gg_pubdir50_add(req, GG_PUBDIR50_GENDER, GG_PUBDIR50_GENDER_FEMALE);
 			break;
 	}
+
+	if (searchRecord.Active)
+		gg_pubdir50_add(req, GG_PUBDIR50_ACTIVE, GG_PUBDIR50_ACTIVE_TRUE);
 
 	QString s = QString::number(searchRecord.FromUin);
 	gg_pubdir50_add(req, GG_PUBDIR50_START, s.local8Bit());
