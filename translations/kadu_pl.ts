@@ -1290,11 +1290,11 @@ by zmiany odniosły skutek</translation>
     </message>
     <message>
         <source>This dialog box allows you to manage your ignored contacts.</source>
-        <translation>To okno dialogowe pozwala dodawać lub usówać kontakty, które maja być ignorowane.</translation>
+        <translation>To okno dialogowe pozwala dodawać lub usuwać kontakty, które mają być ignorowane.</translation>
     </message>
     <message>
         <source>Type here the UIN of the person you want to ignore.</source>
-        <translation>Wpisz tutaj Nr GG osoby, która ma być ignorowana.</translation>
+        <translation>Wpisz tutaj numer GG osoby, która ma być ignorowana.</translation>
     </message>
     <message>
         <source>Uin:</source>
@@ -1332,7 +1332,7 @@ by zmiany odniosły skutek</translation>
     </message>
     <message>
         <source>View/edit user info</source>
-        <translation>Pokaż/Zmień informacje o kontakcie</translation>
+        <translation>Pokaż/zmień informacje o kontakcie</translation>
     </message>
     <message>
         <source>View history</source>
@@ -1571,7 +1571,7 @@ Sprawdź swoje połączenie internetowe.</translation>
     </message>
     <message>
         <source>This dialog box allows you to manage installed modules. Modules are responsible for numerous vital features like playing sounds or message encryption. You can load (or unload) them by double-clicking on their names.</source>
-        <translation>To okno dialogowe daje możliwość zarządzania zainstalowanymi modułami. Moduły są odpowiedzialne za wiele funkcji takich jak odtwarzanie dźwieków lub szyfrowanie wiadomości. Jeśli zechcesz włączyć (lub wyłączyć) któryś z nich wystarczy dwukrotnie kliknąć na jego nazwie. Modułu statycznego nie można wyłączyć.</translation>
+        <translation>To okno dialogowe daje możliwość zarządzania zainstalowanymi modułami. Moduły są odpowiedzialne za wiele funkcji takich jak odtwarzanie dźwięków lub szyfrowanie wiadomości. Jeśli zechcesz włączyć (lub wyłączyć) któryś z nich wystarczy dwukrotnie kliknąć na jego nazwie. Modułu statycznego nie można wyłączyć.</translation>
     </message>
     <message>
         <source>Module name</source>
