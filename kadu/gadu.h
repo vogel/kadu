@@ -262,6 +262,12 @@ class GaduSocketNotifiers : public SocketNotifiers
 	signals:
 		void ackReceived(int seq, uin_t uin, int status);
 		void connected();
+		/**
+			Otrzymano wiadomo¶æ CTCP.
+			Kto¶ nas prosi o po³±czenie dcc, poniewa¿
+			jeste¶my za NAT-em.
+			TODO: zmieniæ nazwê.
+		**/
 		void dccConnectionReceived(const UserListElement &);
 		void disconnected();
 		void error(GaduError);

@@ -135,6 +135,11 @@ class DccManager : public QObject
 		void userboxMenuPopup();
 		void sendFile();
 		void kaduKeyPressed(QKeyEvent* e);
+		/**
+			Otrzymano wiadomo¶æ CTCP.
+			Kto¶ nas prosi o po³±czenie dcc, poniewa¿
+			jeste¶my za NAT-em.
+		**/
 		void dccConnectionReceived(const UserListElement& sender);
 		void timeout();
 
