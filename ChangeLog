@@ -181,8 +181,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * przycisk "Zastosuj" w konfiguracji (joi)
 * nie zwalniamy loginparams.client_version po wywo³aniu gg_login(...) - jest zarezerwowane
   na sta³e (chilek)
-* klikniecie srodkowym przyciskiem myszy na dymek nowej rozmowy otwiera
-  okno chat-a (michal)
+* klikniecie przyciskiem myszy na dymek nowej rozmowy otwiera okno chat-a (michal)
 * wyodrêbnienie czê¶ci wspólnej importu listy kontaktów z pliku i z serwera z wykorzystaniem
   QTextStream (chilek)
 

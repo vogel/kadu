@@ -242,7 +242,11 @@ void HintManager::oneSecond(void)
 void HintManager::leftButtonSlot(unsigned int id)
 {
 	kdebug("HintManager::leftButtonSlot() %d\n", id);
-
+	if(hints.at(id)->getUin()){
+		UinsList uins;
+		uins+=hints.at(id)->getUin();
+		chat_manager->openPendingMsgs(uins);
+	}
 	deleteHint(id);
 }
 
@@ -262,12 +266,6 @@ void HintManager::rightButtonSlot(void)
 void HintManager::midButtonSlot(unsigned int id)
 {
 	kdebug("HintManager::midButtonSlot() %d\n", id);
-	if(hints.at(id)->getUin()){
-		UinsList uins;
-		uins+=hints.at(id)->getUin();
-		chat_manager->openPendingMsgs(uins);
-		deleteHint(id);
-	}
 }
 
 void HintManager::addHint(const QString& text, const QPixmap& pixmap,  const QFont &font, const QColor &color, const QColor &bgcolor, unsigned int timeout, uin_t uin)
