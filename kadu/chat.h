@@ -44,6 +44,7 @@ class Chat : public QDialog {
 		QAccel *acc;
 		QPushButton *sendbtn;
 		UserBox *userbox;
+		QString myLastMessage;
 
 		void pruneWindow(void);
 

@@ -379,7 +379,7 @@ void Chat::alertNewMessage(void) {
 
 void Chat::writeMyMessage() {
 	QString toadd;
-	QString editext = convertCharacters(edit->text());
+	QString editext = convertCharacters(myLastMessage);
 
 	toadd.append("<TABLE WIDTH=\"100%\"><TR><TD bgcolor=\"#E0E0E0\"><B>");
 	toadd.append(config.nick);
@@ -406,9 +406,8 @@ void Chat::writeMyMessage() {
 
 void Chat::addMyMessageToHistory() {
 	int uin;
-	QString text;
-	text = edit->text();
-	QCString tmp(text.local8Bit());
+
+	QCString tmp(myLastMessage.local8Bit());		
 	unsigned char *utmp = (unsigned char *) tmp.data();
 
 	uin = uins[0];
@@ -427,6 +426,8 @@ void Chat::sendMessage(void) {
 	if (!QString::compare(edit->text().local8Bit(),""))
 		return;
 
+	myLastMessage = edit->text();
+
 	if (edit->length() >= 2000)
 		return;
 
@@ -434,13 +435,11 @@ void Chat::sendMessage(void) {
 		edit->setReadOnly(true);	
 		edit->setEnabled(false);
 		}
-		
-	QString text;
-	text = edit->text();
-	QCString tmp(text.local8Bit());
-	unsigned char *utmp = (unsigned char *) tmp.data();
 
 	addMyMessageToHistory();
+			
+	QCString tmp(myLastMessage.local8Bit());
+	unsigned char *utmp = (unsigned char *) tmp.data();
 
 	iso_to_cp(utmp);
 	
