@@ -189,7 +189,8 @@ void Chat::setTitle() {
 		title.append(name);
 		user = userlist.byUin(uins[k]);
 		j = statusGGToStatusNr(user.status);
-
+		if (!k)
+			setIcon(QPixmap((const char**)gg_xpm[statusGGToStatusNr(user.status)]));
 		title.append(" (");
 		title.append(i18n(statustext[j]));
 		if (j & 1)
