@@ -23,7 +23,7 @@
     </message>
     <message>
         <source>Enable Move entry in docklet&apos;s menu</source>
-        <translation>Włącz przesówanie ikony w menu zasobnika systemowego</translation>
+        <translation>Włącz przesuwanie ikony w menu zasobnika systemowego</translation>
     </message>
     <message>
         <source>Move</source>
