@@ -94,10 +94,7 @@ bool OSSPlayThread::play(const char *path, const char *device, bool volumeContro
 
 	SoundDevice dev;
 	oss_player_slots->openDevice(sound->speed, sound->channels, dev);
-
-	if (((OSSSoundDevice*)dev)->fd>0)
-		oss_player_slots->playSample(dev, sound->data, sound->length*sizeof(sound->data[0]), ret);
-	
+	oss_player_slots->playSample(dev, sound->data, sound->length*sizeof(sound->data[0]), ret);
 	oss_player_slots->closeDevice(dev);
 	
 	delete sound;
@@ -256,9 +253,12 @@ void OSSPlayerSlots::openDevice(int sample_rate, int channels, SoundDevice& devi
 void OSSPlayerSlots::closeDevice(SoundDevice device)
 {
 	kdebugf();
-	OSSSoundDevice* dev = (OSSSoundDevice*)device;			
-	close(dev->fd);
-	delete dev;
+	OSSSoundDevice* dev = (OSSSoundDevice*)device;
+	if (dev)
+	{
+		close(dev->fd);
+		delete dev;
+	}
 	device = NULL;
 	kdebugf2();
 }
@@ -269,6 +269,12 @@ void OSSPlayerSlots::playSample(SoundDevice device, const int16_t* data, int len
 	result = true;
 	OSSSoundDevice* dev = (OSSSoundDevice*)device;
 	int c = 0;
+	if (!dev || dev->fd<0)
+	{
+		result = false;
+		kdebugm(KDEBUG_WARNING, "cannot play sample, device not opened, dev:%p dev->fd:%p\n", dev, dev?dev->fd:NULL);
+		return;
+	}
 	while (c < length)
 	{
 		int l = (dev->max_buf_size < length - c) ? dev->max_buf_size : length - c;
