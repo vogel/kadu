@@ -312,10 +312,15 @@ void ifNotify(uin_t uin, unsigned int status, unsigned int oldstatus)
 }
 
 void eventGotUserlist(struct gg_event * e) {
-	struct gg_notify_reply *n = e->event.notify;
+	struct gg_notify_reply *n;
 	unsigned int oldstatus;
 	int i;
-	
+
+	if (e->type == GG_EVENT_NOTIFY)
+		n = e->event.notify;
+	else
+		n = e->event.notify_descr.notify;
+
 	while (n->uin) {
 		UserListElement &user = userlist.byUin(n->uin);
 
@@ -329,34 +334,57 @@ void eventGotUserlist(struct gg_event * e) {
 		user.ip = n->remote_ip;
 		user.port = n->remote_port;
 
-		oldstatus = userlist.byUin(n->uin).status;
+		oldstatus = user.status;
 
-		if (n->status == GG_STATUS_AVAIL)
-			fprintf(stderr, "KK eventGotUserlist(): User %d went online\n", n->uin);
-		else
-			if (n->status == GG_STATUS_BUSY)
+		if (user.description)
+			user.description.truncate(0);
+
+		if (e->type == GG_EVENT_NOTIFY_DESCR) {
+			cp_to_iso((unsigned char *)e->event.notify_descr.descr);
+			user.description.append(__c2q(e->event.notify_descr.descr));
+			}
+
+		switch (n->status) {
+			case GG_STATUS_AVAIL:
+				fprintf(stderr, "KK eventGotUserlist(): User %d went online\n", n->uin);
+				break;
+			case GG_STATUS_BUSY:
 				fprintf(stderr, "KK eventGotUserlist(): User %d went busy\n", n->uin);
-			else
-				if (n->status == GG_STATUS_NOT_AVAIL && (userlist.byUin(n->uin).status == GG_STATUS_NOT_AVAIL
-					|| userlist.byUin(n->uin).status == GG_STATUS_INVISIBLE2)) {
+				break;
+			case GG_STATUS_NOT_AVAIL:
+				if (user.status == GG_STATUS_NOT_AVAIL
+					|| user.status == GG_STATUS_INVISIBLE2) {
 		    			fprintf(stderr, "KK eventGotUserlist(): User %d went offline (probably invisible ;))\n", n->uin);
-					UserListElement &ule = userlist.byUin(n->uin);
-					ule.time_to_death = 300;
+					user.time_to_death = 300;
 					}
 				else
-					if (n->status == GG_STATUS_NOT_AVAIL && userlist.byUin(n->uin).status != GG_STATUS_NOT_AVAIL)
+					if (userlist.byUin(n->uin).status != GG_STATUS_NOT_AVAIL)
 						fprintf(stderr, "KK eventGotUserlist(): User %d went offline\n", n->uin);
-					else
-						if (n->status == GG_STATUS_BLOCKED)
-							fprintf(stderr, "KK eventGotUserlist(): User %d has blocked us\n", n->uin);
-						else
-							fprintf(stderr, "KK eventGotUserlist(): Unknown status for user %d: %d\n", n->uin, n->status);
-
+				break;
+			case GG_STATUS_BLOCKED:
+				fprintf(stderr, "KK eventGotUserlist(): User %d has blocked us\n", n->uin);
+				break;
+			case GG_STATUS_BUSY_DESCR:
+				fprintf(stderr, "KK eventGotUserlistWithDescription(): User %d went busy with descr.\n", n->uin);
+				break;
+			case GG_STATUS_NOT_AVAIL_DESCR:
+				fprintf(stderr, "KK eventGotUserlistWithDescription(): User %d went offline with descr.\n", n->uin);
+				break;
+			case GG_STATUS_AVAIL_DESCR:
+				fprintf(stderr, "KK eventGotUserlistWithDescription(): User %d went online with descr.\n", n->uin);
+				break;
+			case GG_STATUS_INVISIBLE_DESCR:
+				fprintf(stderr, "KK eventGotUserlistWithDescription(): User %d went invisible with descr.\n", n->uin);
+				break;
+			default:
+				fprintf(stderr, "KK eventGotUserlist(): Unknown status for user %d: %d\n", n->uin, n->status);
+				break;
+			}
 		if (n->status != GG_STATUS_NOT_AVAIL)
 			user.status = n->status;
 		else
-			if (n->status == GG_STATUS_NOT_AVAIL && (userlist.byUin(n->uin).status == GG_STATUS_NOT_AVAIL
-				|| userlist.byUin(n->uin).status == GG_STATUS_INVISIBLE2))
+			if (user.status == GG_STATUS_NOT_AVAIL
+				|| user.status == GG_STATUS_INVISIBLE2)
 				user.status = GG_STATUS_INVISIBLE2;
 			else
 				user.status = GG_STATUS_NOT_AVAIL;
@@ -367,65 +395,10 @@ void eventGotUserlist(struct gg_event * e) {
 
 		ifNotify(n->uin, n->status, oldstatus);
 
-		n++;
-
-		if (user.description)
-			user.description.truncate(0);
-		
+		n++;		
 		}
 
 }
-
-void eventGotUserlistWithDescription(struct gg_event *e) {
-	struct gg_notify_reply *n = e->event.notify_descr.notify;
-	unsigned int oldstatus;
-	int i;
-	
-	while (n->uin) {
-		UserListElement &user = userlist.byUin(n->uin);	
-		
-		if (!userlist.containsUin(n->uin)) {
-    	    		fprintf(stderr, "KK eventGotUserlist(): buddy %d not in list. Damned server!\n", n->uin);
-  			gg_remove_notify(sess, n->uin);
-    			n++;
-			continue;
-			}
-
-		user.ip = n->remote_ip;
-		user.port = n->remote_port;
-
-		oldstatus = user.status;
-		
-		if (user.description)
-			user.description.truncate(0);
-
-		cp_to_iso((unsigned char *)e->event.notify_descr.descr);
-		user.status = n->status;
-		user.description.append(__c2q(e->event.notify_descr.descr));
-		
-		if (n->status == GG_STATUS_BUSY_DESCR)
-			fprintf(stderr, "KK eventGotUserlistWithDescription(): User %d went busy with descr.\n", n->uin);
-		else
-			if (n->status == GG_STATUS_NOT_AVAIL_DESCR)
-				fprintf(stderr, "KK eventGotUserlistWithDescription(): User %d went offline with descr.\n", n->uin);
-			else
-				if (n->status == GG_STATUS_AVAIL_DESCR)
-					fprintf(stderr, "KK eventGotUserlistWithDescription(): User %d went online with descr.\n", n->uin);
-				else
-					if (n->status == GG_STATUS_INVISIBLE_DESCR)
-						fprintf(stderr, "KK eventGotUserlistWithDescription(): User %d went invisible with descr.\n", n->uin);
-
-		for (i = 0; i < chats.count(); i++)
-			if (chats[i].uins.contains(n->uin))
-				chats[i].ptr->setTitle();
-
-		ifNotify(n->uin, n->status, oldstatus);
-
-		n++;
-		}
-
-}
-
 
 void eventStatusChange(struct gg_event * e) {
 	fprintf(stderr, "KK eventStatusChange(): User %d went %d\n", e->event.status.uin,  e->event.status.status);

@@ -10,5 +10,4 @@
 void eventRecvMsg(int, UinsList, unsigned char *,time_t,int=0,struct gg_msg_format * = NULL);
 void ChangeUserStatus (unsigned int, int);
 void eventGotUserlist(struct gg_event *);
-void eventGotUserlistWithDescription(struct gg_event *);
 void eventStatusChange(struct gg_event *);

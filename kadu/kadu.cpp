@@ -1560,12 +1560,7 @@ void Kadu::eventHandler(int state) {
 			}
 		}
 
-	if (e->type == GG_EVENT_NOTIFY_DESCR) {
-		eventGotUserlistWithDescription(e);
-		UserBox::all_refresh();
-		}
-
-	if (e->type == GG_EVENT_NOTIFY) {
+	if (e->type == GG_EVENT_NOTIFY_DESCR || e->type == GG_EVENT_NOTIFY) {
 		eventGotUserlist(e);
 		UserBox::all_refresh();
 		}
