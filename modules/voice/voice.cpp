@@ -364,7 +364,7 @@ void VoiceManager::resetCoder()
 		gsm_destroy(voice_enc);
 	voice_enc = gsm_create();
 	gsm_option(voice_enc, GSM_OPT_WAV49, &value);
-	gsm_option(voice_dec, GSM_OPT_VERBOSE, &value);
+	gsm_option(voice_enc, GSM_OPT_VERBOSE, &value);
 	if (config_file.readBoolEntry("Sounds", "FastGSM"))
 		gsm_option(voice_enc, GSM_OPT_FAST, &value);
 	if (config_file.readBoolEntry("Sounds", "CutGSM"))
