@@ -268,6 +268,10 @@ class Chat;
 struct chats {
     UinsList uins;
     Chat *ptr;
+    bool operator==(const chats& r) const
+    {
+    	return (uins==r.uins)&&(ptr==r.ptr);
+    };
 };
 
 extern const char *statustext[];
@@ -277,14 +281,23 @@ extern KApplication *a;
 extern Kadu *kadu;
 extern struct gg_session *sess;
 extern struct config config;
-extern QValueList<struct chats> chats;
+// Ominiecie bledu w gcc 3.2
+static QValueList<chats> chats_gcc32_bug;
+////////////////////////////
+extern QValueList<chats> chats;
 extern UserList userlist;
 extern QArray<uin_t> ignored;
 extern PendingMsgs pending;
+// Ominiecie bledu w gcc 3.2
+static QArray<groups> grouplist_gcc32_bug;
+////////////////////////////
 extern QArray<groups> grouplist;
 extern DockWidget *dw;
 extern bool mute;
 extern bool userlist_sent;
+// Ominiecie bledu w gcc 3.2
+static QArray<acks> acks_gcc32_bug;
+////////////////////////////
 extern QArray<acks> acks;
 extern QString own_description;
 
