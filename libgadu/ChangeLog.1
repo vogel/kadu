@@ -1,0 +1,3520 @@
+Teksty w nawiasach na koñcu linii mówi± o tym, kto dokona³ poprawki.
+Je¶li jest postaci ,,nick'', powinno byæ jasne. Postaæ ,,nick/x''
+oznacza, ¿e pomys³odawc± jest ,,nick'', a zrobi³ to kto¶, czyjego
+pierwsz± liter± nicka jest ,,x'' (w - wojtekka, s - speedy, a - arekm,
+d - drg, sz - szalik). ,,p/nick'' oznacza patch lub ¼ród³o podes³ane
+przez ,,nick'', ,,i/nick'' oznacza czyj¶ pomys³, ,,b/nick'' mówi, kto
+zg³osi³ b³±d.
+
+// 2003-04-28
+
+- libgadu: obs³uga wznawianych transferów plików (Chilek/w)
+- dodanie polecenia ,,dcc resume'' do wznawiania przerwanych transferów (w)
+
+// 2003-04-26
+
+- poprawka wyciszania komendy /alias -a (sz)
+
+// 2003-04-23
+
+- poprawka zachowania trybu wielolinijkowego (theKnight/w)
+
+// 2003-04-22
+
+- poprawka p³ci przy zmianie informacji w katalogu publicznym (fixer/w)
+- libgadu: dodane sta³e GG_PUBDIR50_GENDER_SET_{MALE,FEMALE} do ustawiania
+  p³ci w katalogu publicznym. niestety sta³e przy szukaniu i ustawianiu s±
+  zamienione (fixer/w)
+- wy¶wietlanie u¿ytkowników, którzy do³±czyli do konferencji (sz)
+
+// 2003-04-21
+
+- za³adowanie themu czy¶ci cache (rmrmg/w)
+- libgadu: poprawka obs³ugi b³êdu pthread_create() (scooty/w)
+- poprawki opisu poleceñ wsadowych (Lordzik/w)
+- poprawka konferencji, dodanie /conf --join (w)
+
+// 2003-04-20
+
+- poprawka zachowania przy zmianie rozmiaru terminala (weirdo/w)
+
+// 2003-04-18
+
+- poprawka zachowania /find (mateusza/w)
+- nieblokuj±ca obs³uga klawiatury w ncurses (FIG/w)
+
+// 2003-04-17
+
+- poprawka /dcc list (weirdo/sz)
+
+// 2003-04-16
+
+- kosmetyka wy¶wietlania wiadomo¶ci w readline (Lordzik/sz)
+- poprawka warninga przy kompilacji bez ncurses (Lordzik/w)
+- poprawka komunikatu b³êdu przy b³êdzie ³adowania themu (gozda/w)
+- poprawka debugowania w readline (Lordzik/w)
+
+// 2003-04-15
+
+- /reconnect nie psuje opisu. zostaje on bez zmian, niezale¿nie
+  od ustawieñ zmiennej ,,keep_reason'' (sz)
+- nie dzia³a ju¿ wy¶wietlanie stanu osób z trybem ,,tylko dla
+  znajomych'' podczas wyszukiwania. to by³o do przewidzenia :) (sz)
+
+// 2003-04-14
+
+- libgadu: poprawka obs³ugi b³êdów w gg_read_line() (jajcus/w)
+- kropka na pocz±tku nazwy pliku zamieniana na '_', ¿eby nie nadpisaæ
+  przypadkiem wa¿nych plików konfiguracyjnych (jojo/w)
+
+// 2003-04-12
+
+- poprawka wielolinijkowych komend przez pipe (mateusza/w)
+
+// 2003-04-11
+
+- usuniêcie kilku ma³ych leak'ów (sz)
+- kosmetyka pomocy dla komendy /add (FIG/sz)
+- ekg respektuje zapis userlisty od wersji 4.9.3 oryginalnego klienta
+  i nie gubi zapisywanych tam informacji (e-mail, d¼wiêki). obecnie
+  s± one po prostu przechowywane; mo¿e po wydaniu 1.0 zrobi siê z nich
+  u¿ytek (sz)
+
+// 2003-04-10
+
+- kosmetyka - polecenie /python korzysta z w³asnych formatów (sz)
+
+// 2003-04-09
+
+- poprawka polskich liter w opisach (sz)
+- wspomnienie w README o konfiguracji za pomoc± zmiennych i polecenia
+  /set, bo chyba nie zawsze by³o to oczywiste (sz)
+- dok³adniejszy opis logów w dokumentacji, logowanie portów (Chilek/w)
+- poprawka Entera wielolinijkowych (w)
+- poprawka informacji o dcc z samym sob± (wojtu¶/w)
+- dodanie zmiennej ,,dcc_limit'' okre¶laj±cej limit po³±czeñ w danym
+  przedziale czasu. domy¶lna warto¶æ to 30 po³±czeñ na 30 sekund. potem
+  zostaje wy³±czone dcc, ¿eby ekg nie da³o siê ubiæ (w)
+- dodanie Alt-A -> /window active. jednolinijkowe patche, które komu¶
+  mog± pomóc, a nie szkodz±, chyba nie powinny czekaæ miesiêcy na wydanie
+  1.0 (gozda/w)
+
+// 2003-04-08
+
+- poprawka segfaulta w readline przy dope³nianiu nazw plików, gdy
+  brak funkcji ,,rl_filename_completion_function'' (sz)
+- poprawka stanów opisowych zawieraj±cych znaki poni¿ej 32 (adaml/w)
+
+// 2003-04-07
+
+- libgadu: poprawka pthreadów w libgadu.pc (jajcus/w)
+- poprawka zawijania wiadomo¶ci przy niestandardowych timestampach (mp/o)
+- ekg nie wysy³a ju¿ niepotrzebnie zmiany stanu po zalogowaniu, dziêki
+  czemu Kadu nie wykrywa niewidzialno¶ci (scooty/w)
+- poprawka tajemniczego b³êdu 'handle_command_line' w pythonie (sznik,sz/w)
+
+// 2003-04-06
+
+- kosmetyka ekl2.sh (porridge/sz)
+- ,,/ignore <user> notify'' spowoduje te¿, ¿e u¿ytkownik, przy zmianie
+  stanu, nie zostanie dopisany do listy dope³niania Tabem (kbns/sz)
+
+// 2003-04-05
+
+- dalsze kosmetyczne poprawki reakcji na zmianê rozmiaru terminala
+  w readline i ncurses. komenda ,,_resize'', je¶li nie mo¿emy
+  obs³ugiwaæ zmian automagicznie (sz)
+- deaktywacja systemowego znaczenia klawiszy Ctrl-C, Ctrl-Y itp.
+  w ncurses (sz)
+
+// 2003-04-03
+
+- poprawka reakcji na zmianê rozmiaru terminala (sz)
+- poprawka segfaulta przy wyj¶ciu z ekg z za³adowanym
+  skryptem pythona, który pisze co¶ w deinit() (embe/sz)
+
+// 2003-04-02
+
+- libgadu: poprawka konferencji na bigendianach (pmb/sz)
+- przy wysy³aniu smsów zamyka siê stdin, ¿eby przypadkiem interaktywna
+  aplikacja nie zepsu³a ekg (w)
+- komendy wysy³ane przez rurkê rozumiej± \ na koñcu linii jako przej¶cie
+  do kolejnej (mateusza/w)
+
+// 2003-04-01
+
+- libgadu: wywo³anie gg_watch_fd() w stanie GG_STATE_CONNECTING_GG
+  i z session->timeout == 0 spowoduje po³±czenie z kolejnym portem (Ron_K/w)
+- poprawka b³êdów przy wielokrotnym ,,/dcc get'' (ubanus/sz)
+- poprawka ekg -b przy w³±czonym back_reason (jojo/w)
+
+// 2003-03-30
+
+- uruchomienie interatywnej aplikacji nie blokuje ekg (ubanus/w)
+- /play dzia³a jak /exec sound_app, dziêki czemu zadzia³a modprobe
+  w przypadku braku odpowiednich modu³ów (ubanus/w)
+- keep_reason == 2 nie zapisuje stanu (Tohver/w)
+- Alt-Backspace dzia³a w ncurses (porridge/w)
+- poprawka Backspace w wielolinijkowych (embe/w)
+
+// 2003-03-29
+
+- poprawka Ctrl-W (w)
+- ucinanie zbyt d³ugich szyfrowanych wiadomo¶ci (sz/w)
+- poprawka segfaultów przy wysy³aniu d³ugich wiadomo¶ci (w)
+- poprawka Ctrl-Spacja (mateusza/w)
+- zamiana ,,dcc send --reverse'' na ,,dcc rsend'' i ,,dcc voice --reverse''
+  na ,,dcc rvoice'' (FIG/w)
+- poprawka Shift-Enter w xtermopobnych (*/w)
+
+// 2003-03-28
+
+- libgadu: usuniêcie starych sta³ych i nazw struktur zachowanych dla
+  kompatybilno¶ci ze nieaktualnymi wersjami API (w)
+- drobna poprawka do licencji pozwalaj±ca kompilowaæ, konsolidowaæ i
+  uruchamiaæ ekg z bibliotek± OpenSSL (porridge/w)
+- drobne poprawki readline. niech wygl±da jako tako w 1.0, mimo ¿e
+  ju¿ nie supportowane: operator $, window active/last, msg * (sz)
+- sekwencje z Alt'em w readline zawsze odnosz± siê do ma³ych liter (sz)
+- kosmetyczna poprawka jednoczesnego u¿ycia parametrów --stime i --number
+  w /last (sz)
+
+// 2003-03-27
+
+- poprawki zachowania interfejsu readline (porridge/sz)
+- drobne uzupe³nienie dope³niania Tabem w readline (sz)
+
+// 2003-03-26
+
+- usuniêcie leaka w aliasach (w/sz)
+- poprawka wpisywania kolorów (pmb/w)
+
+// 2003-03-25
+
+- zmiana nazw ukrytych poleceñ z _add/_del na _addtab/_deltab (sz)
+- poprawki wymawiania tekstu. nie blokuje, nie gubi tekstu,
+  buforuje, gdy nie mo¿e wypowiedzieæ w danej chwili. dodanie
+  g³upiego polecenia /say, g³ownie dla opcji ,,--clear''. w ogóle,
+  kto¶ tego u¿ywa? (sz)
+
+// 2003-03-24
+
+- kosmetyka komunikatów o b³êdach przy /ignore i /block (sz)
+- przeniesienie obs³ugi logowania i /last do log.c (sz)
+- poprawka dokumentacji zmiennych (embe/w)
+- rozmowy g³osowe dzia³aj± z GG 5.0.5 (w)
+
+// 2003-03-23
+
+- konsekwentne zachowanie przy aliasach ze spacj± (tokugawa/sz)
+- poprawka dokumentacji zmiennych (embe/w)
+- przy uruchomieniu ekg powód bêdzie ustawiany zgodnie z ustawieniami (embe/w)
+
+// 2003-03-22
+
+- poprawka /add -f (embe/sz)
+- poprawka wielokomendowych aliasów z formatami %1...%9 (sz)
+
+// 2003-03-21
+
+- drobne literówki (FIG/sz)
+- libgadu: naprawienie b³êdu wysy³ania plików z libgadu do GG -- po
+  zakoñczonym transferze GG wy¶wietla³o b³±d transferu (w) 
+- sensowniejszy termin ,,motyw'' zamiast ,,opis wygl±du'' (rmrmg/w)
+
+// 2003-03-20
+
+- zmiana domy¶lnych warto¶ci zmiennych: contacts = 2, display_ack = 3,
+  display_sent = 1, make_window = 2 (sz/w)
+- dodanie podstawowych informacji o obs³udze klienta przy pierwszym
+  uruchomieniu (sz/w)
+
+// 2003-03-18
+
+- ,,/_descr -'' prawid³owo wy³±cza stan opisowy (sz)
+- poprawki dokumentacji (w)
+- poprawki literówek w dokumentacji (FIG/w)
+- poprawka obs³ugi kolorowych wiadomo¶ci (sz/w)
+
+// 2003-03-17
+
+- docs/protocol.html zgodne z XHTML 1.0 Transitional (w)
+- zmiana nazwy komendy /_status na bardziej intuicyjn± /_descr (sz/w)
+
+// 2003-03-16
+
+- libgadu: kolejna poprawka kompilacji na bigendianach (speedy/w)
+- dodanie komendy /_status zmieniaj±cej tylko opis stanu (mkanski/w)
+
+// 2003-03-15
+
+- poprawka kompilacji ui-readline (charvel/sz)
+- kosmetyka kilku rzeczy, ¿eby nie tworzyæ nowych katalogów w ~/.gg
+  przy pomy³ce w parametrze ,,-u'' podczas startu (sz)
+- poprawka zapisywania konfiguracji z profili (pirat/sz)
+
+// 2003-03-14
+
+- kosmetyka w³asnego stanu (gozda/sz)
+- prostsza obs³uga ¶cie¿ki ,,config_dir'' w przypadku profili.
+  mamy prawdziwe ¶ciezki po segfault/oom (sz)
+- kosmetyka i uproszczenie zachowania widzianego przez usera w 
+  przypadku segfault/oom (sz)
+
+// 2003-03-12
+
+- mówimy papa sim, zostaje simlite (w/sz)
+- poprawka zachowania /window last (khhh/sz)
+- libgadu: poprawki dla bigendianowych maszyn (gs/w)
+- poprawki leaków (w)
+- poprawne wy¶wietlanie tabów w ui-ncurses (w)
+
+// 2003-03-11
+
+- libgadu: poprawki dokumentacji (w)
+
+// 2003-03-10
+
+- poprawiona kompilacja ui-readline (Charvel/w)
+- dodanie /window last (cowboy/w)
+- usuniêcie informacji o p³ywaj±cych oknach z pomocy. bez sensu siê
+  w nie bawiæ przed 1.0. wiêcej z nimi k³opotów, ni¿ po¿ytku. je¶li
+  kto¶ chce to s±, ale nieudokumentowane (sz?/w)
+- libgadu: uaktualnienie skryptu generuj±cego dokumentacjê o typedefy i
+  enumeracje (w)
+- libgadu: poprawka wiadomo¶ci systemowych (sz/w)
+
+// 2003-03-09
+
+- zmienna ,,mesg'' zamiast ,,mesg_allow'' i jej poprawki (sz)
+- kosmetyka kilku drobiazgów zwi±zanych z ,,$'' (sz)
+- poprawka kompilacji pythona (sz,embe/w)
+- kosmetyka configure.in, prosimy zapi±æ pasy (w)
+
+// 2003-03-08
+
+- ,,$'' w miejscu ,,numer/alias'' bêdzie zast±pione w ka¿dej komendzie
+  aktualnym rozmówc± (sz)
+- libgadu: poprawki kompilacji z pthreadami (w)
+- porz±dki w kodzie, wydzielenie ¶mieci ze stuff.c (w)
+
+// 2003-03-07
+
+- uporz±dkowanie #include'owanych plików, dodanie potrzebnych, usuniêcie
+  zbêdnych. inne kosmetyczne zmiany. pozbycie siê warningów na
+  niektórych systemach (sz)
+- libgadu: maksymalna d³ugo¶æ opisu (GG_STATUS_DESCR_MAXSIZE) to 70
+  znaków (*/sz)
+- usuniêcie ,,fade_in'' (w/sz)
+- libgadu: dodanie zmiennej ,,gg_debug_handler'' pozwalaj±cej przej±æ
+  wywo³ania gg_debug() (hao/w)
+- libgadu: wyeksportowanie funkcji gg_vsaprintf() i zmiennej gg_debug_file (w)
+- libgadu: dodanie funkcji gg_register2(), gg_unregister2() i
+  gg_change_passwd3() obs³uguj±cych protokó³ GG 5.0 (w)
+- uaktualnienie opisu protoko³u (w)
+- komenda /passwd nie wymaga adresu e-mail (wojtu¶/w)
+- komenda /unregister wymaga podania numeru i has³a, ¿eby zabezpieczyæ siê
+  przed przypadkowym usuniêciem konta (w)
+- komenda /change ju¿ dzia³a (w)
+
+// 2003-03-06
+
+- libgadu: dodanie funkcji usuwania listy kontaktów z serwera (wysek?/w)
+
+// 2003-03-04
+
+- poprawka /find bez parametrów w oknie z rozmówc± (embe/sz)
+
+// 2003-03-03
+
+- poprawka /python exec bez parametru (sz)
+- poprawka np. /exec -b $ w przypadku bindowania (krzyk/sz)
+- bezpieczniejsze wywo³ywanie timerów, gdyby czasem mia³ on sam siebie
+  usuwaæ... tak na wszelki wypadek ;> (sz)
+
+// 2003-03-02
+
+- nowe man'y dla ekl2 (porridge/sz)
+- generowanie kluczy dla SIM na maszynach bez /dev/urandom (sz)
+- zabezpieczenie podczas wykonywania aliasu na wypadek, gdyby alias
+  sam siebie usuwa³ (sz)
+
+// 2003-03-01
+
+- poprawka ,,odszyfrowywania'' wiadomo¶ci systemowych w sim.c (pmb/sz)
+
+// 2003-02-28
+
+- /last -n (joshua/sz)
+
+// 2003-02-27
+
+- poprawka przewijania okna (FIG/w)
+- poprawka segfault'a przy /reconnect po usuniêciu zmiennej ,,proxy'' (sz)
+
+// 2003-02-26
+
+- poprawka kompilacji pod Cygwin'em (Sydney/sz)
+- update krzyk.theme (krzyk/sz)
+- poprawki zachowania niektórych formatów w statusbarze (krzyk/sz)
+- poprawka odczytu z listy kontaktów blokowanych/ignorowanych niewidocznych
+  jawnie na li¶cie (FIG/sz)
+- libgadu: poprawka przesy³ania plików na bigendianach (sz)
+
+// 2003-02-25
+
+- mo¿liwy segfault, gdy ignorujemy kogo¶, kogo nie mamy na li¶cie (FIG/sz)
+- poprawka compat/scandir.c, ¿eby dzia³a³o dobrze na SunOS 5.8, gdzie
+  w ,,struct dirent'' mamy d_name[1] (sz)
+- nasz adres i port dla dcc zmienia siê na li¶cie dopiero po /reconnect,
+  co bardziej odpowiada rzeczywisto¶ci (sz)
+- mea culpa - przez kilka dni nie dzia³a³o dobrze odczytywanie listy
+  kontaktów eksportowanej z gg 4.6.3 i nowszego (sz)
+- segfault przy /dcc close (sz)
+- poprawka wysy³ania konfiguracji na serwer (zmienne VAR_MAP) (sz)
+- poprawki sim oraz simlite: ¿eby dzia³a³y dobrze na maszynach
+  bigendianowych oraz tam, gdzie nie ma /dev/urandom (sz)
+
+// 2003-02-24
+
+- pozbycie siê kosmicznych warningów (sz)
+- bardziej zrozumia³e zachowanie przy make_window = 1 (sz)
+- poprawka segfault'a przy /list -G (sz)
+- /list <user> poka¿e te¿, ¿e kto¶ jest za firewall'em lub nie ma nas
+  w kontaktach. trochê zbêdne, bo mo¿na ten fakt stwierdziæ i bez
+  tego... (spaceman/sz)
+
+// 2003-02-23
+
+- /window active (sz)
+- kosmetyczne poprawki /dcc (sz)
+- odszyfrowywanie wiadomo¶ci od ignorowanych przy ,,log_ignored = 1'' (sz)
+- poprawka wy¶wietlania w³asnego stanu przy w³±czonym trybie
+  ,,tylko dla znajomych'' (sz)
+
+// 2003-02-22
+
+- w aliasach mog± wystêpowaæ formaty %1...%9, dziêki czemu mo¿na dowolnie
+  ustawiaæ sobie przekazywane parametry (sz)
+- delikatna normalizacja promptów w standardowym temacie (sz)
+
+// 2003-02-21
+
+- szyfrowanie dzia³a tak¿e wtedy, gdy wysy³amy do wielu osób za pomoc± 
+  /msg (sz)
+- /msg oraz /chat z adresatem wiadomo¶ci w postaci ,,*'' roze¶le do
+  wszystkich aktualnych rozmówców (rmrmg/sz)
+- drobne korekty dokumentacji (sz)
+
+// 2003-02-20
+
+- poprawka segfault'a przy braku niektórych zmiennych w pliku
+  konfiguracyjnym (a.latanski/sz)
+- ma³a poprawka /quit, ¿eby zachowywa³o siê _dok³adnie_ tak jak komendy
+  zmiany stanu, w zale¿no¶ci od zmiennej ,,keep_reason'' (sz)
+
+// 2003-02-19
+
+- dope³nianie uin'ów z listy kontaktów (sz)
+- usuniêcie ui-automaton (ok malekith@pld-linux.org/sz)
+- ,,-'' przy /quit i /disconnect usuwa opis permanentie tak, jak to robi±
+  /away, /back czy /invisible (sz)
+- /disconnect pamiêta opis przy w³±czonym ,,keep_reason'' (Brzezi/sz)
+- poprawka warning'ów kompilacji z iocltd (pmb/sz)
+- poprawki window next/prev, ¿eby bardziej uwa¿a³o na pl±taj±ce siê
+  gdzieniegdzie okienka p³ywaj±ce (andylm/sz)
+- nie tworzymy niepotrzebnie nowych okien, na przyk³ad przy ,,chat numer'',
+  a pó¼niej ,,chat alias'' (pmb/sz)
+
+// 2003-02-18
+
+- ,,fade_in'' jest domy¶lnie wy³±czone (ubanus,w/sz)
+- uaktualnianie timeout'ów sesji nie czê¶ciej ni¿ raz na sekundê, ¿eby
+  timeout timeout'owi by³ równy (sz)
+- poprawka wczytywania pojedynczych zmiennych, m.in. ,,fade_in'' i
+  ,,interface''. ta ostatania nie by³a zawsze zapisywana. teraz odbywa
+  siê to automagicznie po uruchomieniu ekg z opcj± -f (sz)
+- kosmetyka dcc. standardowo wiêcej informacji w /dcc list. pe³niejszy
+  komunikat o timeout'cie po³±czenia (sz)
+
+// 2003-02-16
+
+- usuniêcie leak'a w /exec (sz)
+- zapisanie opcji dla /exec wielkimi literami spowoduje dodanie polecenia
+  do wysy³anego wyniku. czasami siê przydaje ;> (sz)
+- dok³adne czysczenie formatów po ,,/set -theme''. problem by³ na przyk³ad
+  z wy³±czeniem tematu ircopodobnego (sz)
+
+// 2003-02-15
+
+- g³upia ja - poprawka poprawki timestamp'ów (sz)
+- poprawka window next/prev (sz)
+- nie pozwalajmy na podanie konfliktowej warto¶ci zmiennej w postaci
+  liczby (sz)
+- libgadu: dodanie atrybutu ,,printf'' do funkcji gg_saprintf(), dziêki
+  czemu kompilator bêdzie sprawdza³ poprawno¶æ jej parametrów (w)
+- libgadu: drobne poprawki parametrów gg_saprintf() (w)
+- ekg: j.w. do funkcji saprintf() (w)
+- libgadu: obs³uga fragmentacji nag³ówków pakietów (speedy/w)
+- poprawka nazwy struktury w opisie protoko³u (solaris/w)
+
+// 2003-02-14
+
+- d¿wiêki przy zmianach stanu zachowuj± siê tak, jak to nakazuje zmienna
+  ,,display_notify''. nie s± natomiast wy³±czane przy ukrywaniu zmian
+  poprzez ,,contacts'' równe 2 (sz)
+- poziom ignorowania ,,notify'' (sz)
+- mniej ra¿±cy w oczy theme dla nazwy grupy w li¶cie kontaktów (sz)
+- ,,stderr'' wêdruje do aktualnego okna (w/sz)
+- poprawka powtórzeñ zmiany stanu, gdy w opisie by³y polskie literki (sz)
+- zabezpieczenie przed zalewem po³±czeñ dcc (segfault/w)
+- libgadu: wype³nianie wszystkich pól file_info przy wysy³aniu pliku (Chile/w)
+
+// 2003-02-13
+
+- lepsze wykrywanie pthread (adrians/w)
+- drobna kosmetyka: ignorowanie spacji po przecinku w ,,contacts_groups''
+  oraz prawid³owe dope³nianie przy aliasach do komend z backslashem na
+  pocz±tku (sz)
+
+// 2003-02-12
+
+- skrypt autorun/__init__.py nie jest ³adowany (rmrmg/w)
+- poprawka segfaulta przy ,,python unload'' bez parametrów (rmrmg/w)
+- ma³a reorganizacja komend /timer i /at. ta ostatnia potrafi ju¿ 
+  ,,na sta³e'' planowaæ komendy (sz)
+- krzyk.theme (krzyk/sz)
+- poprawka wyciszania /sms (sz)
+- poprawka zapisu uk³adu okienek (sz/w)
+
+// 2003-02-11
+
+- poprawka przewijania okien (sz/w)
+- poprawka segfaulta przy oknach p³ywaj±cych (lordzik/w)
+- /window new nie tworzy wiêcej ni¿ jednego okna o danej nazwie (ember/sz)
+- poprawka zmiennej ,,interface'' (a.latanski/w)
+
+// 2003-02-10
+
+- poprawka duuu¿ych marginesów okna (sdas/w)
+- zmienna ,,events_delay'' dotyczy równie¿ d¼wiêków (rmrmg/w)
+- poprawki sprawdzania, którego timestampu u¿yæ w /status i wiadomo¶ciach.
+  w wyj±tkowych przypadkach (np. gdy w³±czenie/po³±czenie ekg nast±pi³o
+  kilka minut po pó³nocy) z powodu ma³ej precyzji, dochodzi³o do pomy³ek (sz)
+- /add alias robi u¿ytek z dodatkowych opcji dotycz±cych wpisu (sz)
+- s/gg_remove_notify/gg_remove_notify_ex, ¿eby nie zostawiaæ ¶mieæi np. po
+  usuniêciu z listy osoby, któr± blokujemy (sz)
+- ekg ostrzega o mo¿liwo¶ci filtrowania wiadomo¶ci przez serwer (joshua/w)
+- informacja dla nowych u¿ytkowników o konieczno¶ci podania adresu e-mail (w)
+- zmienna ,,display_pl_chars'' dzia³a te¿ w nag³ówku i pasku stanu (sz/w)
+- usuniêcie informacji o zmiennej ,,debug'' (sCoOtY/w)
+- poprawka segfaulta przy zbyt du¿ym rozmiarze listy kontaktów (salvador/w)
+- poprawka sortowania userlisty (leon,fidor/w)
+
+// 2003-02-09
+
+- poprawione zawijanie w li¶cie kontaktów (pmb/w)
+- dodanie implementacji funkcji strlcpy/strlcat z OpenBSD. mo¿na z nich 
+  wiêc korzystaæ na ka¿dym systemie (sz)
+- poprawka segfaulta przy automatycznym reconnect'cie (acze/sz)
+- poprawka otwierania nowych okien z nickami z '+' lub '*' na
+  pocz±tku (K.Gibas/sz)
+- poprawka segfaultów i b³êdów z w³±czonym sort_windows (*/w)
+- dodanie zmiennej ,,fade_in'' (w)
+- poprawka przewijania ekranu w ncurses (sz/w)
+
+// 2003-02-08
+
+- przepisanie compat/dirname.c, gdy¿ poprzednia wersja by³a na innej
+  licencji (BSD) ni¿ ca³y ekg (sz)
+- drobne porz±dki, poprawki w ustawianiu zmiennych, ,,0xF'' te¿ jest
+  prawid³ow± warto¶ci± liczbow± (sz)
+- zbyt d³uga wysy³ana wiadomo¶æ zostanie przyciêta. niestety, nie dotyczy
+  to jeszcze szyfrowanych wiadomo¶ci (w)
+- drobne poprawki kodu (w)
+- usuniêcie zmiennej ,,contacts_descr'' (w)
+- kompletna reorganizacja listy kontaków. jest nowa, kolorowa, bardziej
+  konfigurowalna, themowalna i nie szczypie w oczy. dodanie zmiennej
+  ,,contacts_options'', warto zajrzeæ do jej opisu (koniu i wiele innych
+  osób, które dzieli³y siê pomys³ami/w)
+- obs³uga grup w li¶cie kontaktów. ustawiane zmienn± ,,contacts_groups''
+  i prze³±czane klawiszem F4 (jojo/w)
+- libgadu: bufor z opisem stanu z gg_login_params jest strdup()owany (pirat/w)
+- informowanie o blokowaniu lub ukrywaniu siê przed kim¶ w /list (cukier/w)
+- mo¿liwo¶æ negacji w ,,/list @grupa'' (cukier/w)
+
+// 2003-02-07
+
+- poprawka dzielenia linii po zmianie listy kontaktów (pmb/w)
+- porz±dki i reorganizacja dokumentacji: w³±czenie dcc-protocol.txt
+  do protocol.html, po³±czenie opisów formatów plików w files.txt,
+  literówki i drobne poprawki dokumentacji libgadu (w)
+- poprawka obs³ugi zmiennej ,,interface'' (a.latanski/w)
+- dodana zmienna ,,reason_limit'' (jojo/w)
+- poprawki ,,reload plik'', gdy kto¶ u¿ywa zarówno readline jak i ncurses (sz)
+- kosmetyka /change (sz)
+- poprawka /add -f (sz)
+- zmiana stanu przy starcie zachowuje siê przy w³±czonym ,,keep_reason'' tak
+  samo, jak w kliencie. ze wzglêdu na sposób podawania parametrów, nie mo¿na
+  jednak wyczy¶ciæ stanu przez ,,-''. je¶li bêdzie to przeszkadza³o, zawsze
+  mo¿na przywróciæ stare, ale chyba bardziej k³opotliwe zachowanie ;) (sz)
+- usuniêcie zbêdnego sprawdzania pod k±tem ,,NULL'' w userlist.c. je¶li
+  komu¶ co¶ sie zepsu³o, krzyczeæ, bo trzeba wszystkie b³êdy wy³apaæ. (sz)
+- poziomy ignorowania. /help ignore (sz)
+
+// 2003-02-06
+
+- s/strcmp/strcasecmp/ w kodzie query dla ui-readline (teardrop/d)
+- taby w docs/vars.txt (sz)
+- ustawienie ,,contacts'' na warto¶æ 2 nie oznacza wcale, ¿e 
+  ,,beep_notify'' czy te¿ ,,sound_notify_file'' ma przestaæ dzia³aæ (sz)
+- poprawka kompilacji biblioteki dzielonej na OpenBSD (bartek/w)
+- poprawka obs³ugi zmiany rozmiaru terminala (perry/w)
+- je¶li terminal jest zbyt ma³y, lista kontaktów jest ukrywana (w)
+- /status pokazuje uptime klienta (FIG/w)
+- poprawka stylu w docs/protocol.html (w)
+- poprawka tymczasowej zmiany poziomu debugowania (w)
+- dodana komenda /_ctcp (w)
+	
+// 2003-02-05
+
+- dodanie ,,cleartab -o'' (Murphy/sz)
+- drobne porz±dki (sz)
+- ma³a poprawka precyzji /at (TycooN/sz)
+- sprawdzanie warto¶ci ,,contacts_size'' (sdas/w)
+- libgadu: s/fix16/gg_fix16/, s/fix32/gg_fix32/ (w)
+- pozbycie siê s³owa ,,status'' z themów. nastêpnym etapiem bêdzie pozbycie
+  siê s³owa ,,theme'' ;) (w)
+- dok³adniejszy opis /passwd (sz/w)
+
+// 2003-02-04
+
+- poprawka inteligencji /timer (FIG/sz)
+- poprawka zdarzenia sigusr2 (krzyk/sz)
+- usuniêcie zapomnianych ¶mieci (lordzik/w)
+- poprawka themów wiadomo¶ci (lordzik/w)
+- poprawka segv przy opcji -f (d)
+- poprawka bindowaniu w ui-readline (d) 
+- dodanie opisu us³ug http do docs/protocol.html (pm/w)
+- dodanie opisu nowego protoko³u katalogu publicznego (w)
+
+// 2003-02-03
+
+- poprawka kompilacji przy braku openssl'a (*/sz)
+- zapêdzi³em siê: on przyjmuje znów tylko jednego u¿ytkownika/grupê.
+  przy wiêkszej ilo¶ci trzeba by wiele rzeczy sprawdzaæ, a to tylko
+  niepotrzebnie skomplikowa³oby i tak ju¿ brzydki kod (z powodu
+  ma³ych mo¿liwo¶ci manipulacji grupami). w ogóle to, zamiast /on
+  lepiej u¿yæ o wiele lepszego python'a ;> (sz)
+- przekazywanie liczby nowych maili w zdarzeniu ,,newmail'' (sz)
+- drobne poprawki dokumentacji (sz)
+- nie czytajmy ca³ego pliku np. w /reload, je¶li nie wygl±da
+  to na plik z konfiguracj± - po co zawieszaæ ekg. sam tak zrobi³em,
+  przez przypadek daj±c za parametr plik wielko¶ci 150 MB...
+  je¶li co¶ pójdzie ¼le podczas ,,reload plik'', wczytana zostanie
+  ponownie konfiguracja z ~/.gg/config (sz)
+- poprawka /blink_leds i /beeps_spk (sz)
+- usuniêcie nieaktualnego przyk³adu search.c (sz)
+- ujednolicenie opcji --list w niektórych komendach (sz)
+- mo¿liwo¶æ wy¶wietlania tylko wybranej sekwencji w /bind (FIG/w)
+- sensowna lista kluczy publicznych (FIG/w)
+- wykrywanie p³ci w wynikach wyszukiwania (FIG/w)
+- libgadu: usuniêcie leaków w gg_pubdir50() (w)
+- libgadu: gg_pubdir50_add() zastêpuje pole, je¶li ju¿ istnieje (w)
+- dodanie /find --all (*/w)
+- dodanie /find --stop (FIG/w)
+- drobna optymalizacja wy¶wietlania listy kontaktów (w)
+- obs³uga klawiszy F1-F4, Home i End na g³upich terminalach (czyt. Konsole
+  z KDE 3.0, pewnie inne te¿), kosztem Alt-Shift-O (w)
+
+// 2003-02-02
+
+- komenda ,,key'' do obs³ugi kluczy SIM (sz)
+- poprawka zachowania po ,,reload'' (m.in. duplikaty aliasów) (sz)
+- kolejna poprawka tabów podczas czytania z potoku (sz)
+- mo¿na podaæ wiele numerów/aliasów/grup jako parametr /on (sz)
+- wy¶wietlanie fingerprintu kluczy (w)
+- poprawka analizy parametrów klienta. rozumie ju¿ --away "powód",
+  -a "powód" i -a"powód" (w)
+- drobne poprawki sztucznej inteligencji /list (w)
+- poprawka dope³niania (FIG/w)
+- ,,add --find'' doda do listy kontaktów ostatnio znalezion± osobê (w)
+
+// 2003-02-01
+
+- poprawka Alt-9 (krzyk/w)
+- uaktualnienie leon.theme (leon/w)
+- dodana zmienna ,,proxy_forwarding'', która pozwala podaæ adres i port
+  przekierowania na serwerze po¶rednicz±cym (proxy, router, nat, cokolwiek)
+  i mieæ dzia³aj±ce dcc. przyznajê, ¿e nazwa nie jest najlepsza. (fidor/w)
+- libgadu: brakuj±cy include w search.c (sCoOtY/w)
+- konwersja has³a na CP1250 podczas ³±czenia (Mati/w)
+- dodanie zmiennej ,,password_cp1250'', któr± nale¿y w³±czyæ, je¶li serwer
+  odrzuca has³o z polskimi literami (w)
+- plik /etc/ekg.conf jest ³adowany _przed_ konfiguracj± u¿ytkownika, plik
+  /etc/ekg-override.conf _po_ konfiguracji u¿ytkownika (porridge/w)
+- dodanie do dokumentacji informacji o kolejno¶ci ³adowania konfiguracji (w)
+- spore zmiany w kodzie dope³niania Tabem. prosimy zapi±æ pasy i w przypadku
+  b³êdów pokazaæ _dok³adn±_ liniê i opis tego, co powinno siê staæ (w)
+- poprawka segfaulta przy wczytywaniu b³êdnego .gg/emoticons (*/sz)
+- w oknie rozmowy z nieznan± osob± wystarczy /add alias (krzyk/sz)
+- komenda reload (stforek/sz)
+- poprawka kodowania eksportowanej listy kontaktów (Sero/sz)
+- dalsza reorganizacja zdarzeñ, ulepszenie logiki, opis w /help on 
+  i troche innych mniej powa¿nych zmian. zdarzenie ,,blocked''.
+  zmiana ,,new_mail'' na ,,newmail'' i ,,disconnect'' na ,,notavail'' (sz)
+- zmienna ,,events_delay'' (sz)
+- usuniêcie ekgsearch (sz)
+- poprawka wy¶wietlania tabów (w)
+- dodanie parametru do /save, który mówi, gdzie zapisaæ konfiguracjê (w)
+- po uruchomieniu drugiej sesji ekg nie bêdzie próbowa³o siê ³±czyæ
+  ponownie (fidor/w)
+- obs³uga kolorów. niestety ze wzglêdu na niewielk± ilo¶æ kolorów na
+  terminalu ANSI bêd± problemy z odwzorowaniem prawdziwej barwy. poza
+  tym, mog± wyst±piæ problemy z atrybutami i kolorami na tym samym
+  tek¶cie (np. zielony i podkre¶lony). kolory w wysy³anych wiadomo¶ciach
+  wybiera siê przez wci¶niêcie Ctrl-R i wpisaniu za tym numeru koloru
+  (od 0 do 15). koniec kolorowej sekwencji to samo Ctrl-R. ka¿dy kolor
+  nale¿y koñczyæ. klawisz Ctrl-R jest tymczasowy, dopóki nie znajdê
+  sposobu na obs³u¿enie Ctrl-C w ncurses (w)
+
+// 2003-01-31
+
+- drobna reorganizacja kolorów w ui-ncurses (w)
+- zmienna ,,display_color = 2'' wy¶wietla kolory wszêdzie oprócz pasku
+  stanu i nag³ówka okna (Charvel/w)
+- nowy rodzaj okna ,,w->doodle = 1'' przeznaczony dla skryptów pythonowych.
+  mog± rysowaæ po nim co tylko chc±, gdzie tylko chc± i jak tylko chc±.
+  wszystko dziêki funkcjom ekg.window_printat() i ekg.window_commit().
+  nie ma przewijania, nie ma bajerów. po dodaniu kilku mi³ych funkcji do
+  obs³ugi okien z pythona bêdzie mo¿na tworzyæ okna dialogowe. a z tego
+  wzglêdu, ¿e skrypty pythona maj± dostêp do zmiennych... hmm, kto napisze
+  Kreator Konfiguracji EKG? :> (w)
+
+// 2003-01-30
+
+- bardziej precyzyjny opis zmiennej ,,auto_back'' (pmb/sz)
+- ekg nie pozwala na niebezpiecznie ma³e warto¶ci ,,backlog_size'' (sz)
+- /list pokazuje nasz przyciêty opis, a nie taki, który wpisali¶my (sz)
+- /on pozwala na wykonanie ka¿dej komendy ekg. akcje (beep, play) s±
+  teraz dostêpne jako zwyk³e komendy (sz)
+- parametr /exec % zamieniony na $, ¿eby unikn±æ ew. konfliktów z
+  formatami (sz)
+- nie dodawajmy do listy dope³nieñ przy b³êdnym nicku w chat/msg (sz)
+- taby w stderr, tyczy siê to wiêc m.in. wyników /exec (sz)
+- poprawka niedzia³aj±cego string_insert_n() (sz)
+- poprawienie make_window = 1 (salvador/sz)
+- poprawka kombinacji Ctrl-<kursor> na terminalach BSD (sz/w)
+- ignorowanie SIGQUIT, przez co Ctrl-4 i Ctrl-\ nie bêd± wychodziæ (sz/w)
+- libgadu: usuniêcie kodu gg_search50() (w)
+- libgadu: usuniêcie kodu gg_search() i zast±pienie go funkcjami
+  zwracaj±cymi b³±d (w)
+- poprawka klawisza End (Brzezi/w)
+- rewrite kodu parsowania zdarzeñ dla ioctld (w)
+- poprawki helpów nowych komend (w)
+- poprawka przenoszenia atrybutów do nowej linii wiadomo¶ci (*/w)
+- poprawka zachowania zmiennej ,,random_reason''. teraz losuje nowy
+  opis przy ka¿dym po³±czeniu (w)
+
+// 2003-01-29
+
+- dodanie klawisza Ctrl-K (bies/w)
+- poprawienie docs/protocol.html. jest zgodne z XHTML 1.0 Transitional (w)
+- zmienna ,,sound_mail_file'' (sz)
+- wzmianka o statusie ,,tylko dla znajomych'' w search50 w docs/api.txt (sz)
+- kosmetyka konferencji. nie tworzy kolejnych nazw #confX przy b³êdach.
+  /find w oknie z konferencj± wyszuka wszystkich uczestników (sz)
+- /bind mo¿e ju¿ przypisywaæ domy¶lne akcje klienta innym klawiszom,
+  szczegó³y w ,,/bind -L'' (w)
+- libgadu: dodanie funkcji gg_pubdir50_seq_set() (mmazur/w)
+- libgadu: podbicie wersji API (w)
+- reakcja na zmianê rozmiaru terminala (w)
+- poprawka Alt-G i zapisywania bindów (sz/w)
+
+// 2003-01-28
+
+- uaktualnienie opisu protoko³u (rano/w)
+- poprawka zapisywania p³ywaj±cych okienek (wojboj/w)
+- dosyæ du¿e uproszczenie komendy ,,on'', dziêki czemu
+  obs³uguje siê j± bardziej intuicyjnie (sz)
+- dope³nianie w /python i /on (zdarzenia) (sz)
+- ,,dcc list'' zamiast ,,dcc show'' (sz)
+- kosmetyka opisów niektórych komend w /help (sz)
+- mo¿na wyciszyæ za pomoc± ^ komendê ,,exec'' (sz)
+- poprawki komendy ,,exec'', ¿eby nie psu³a escapowania (w)
+- libgadu: zapisywanie wykrytych includów z uintXX_t do libgadu-config.h
+  (adrians/w)
+- dodanie klawisza Ctrl-V (w)
+- poprawka kombinacji z Altem (sz/w)
+- dodanie klawiszy Alt-B, Alt-D i Alt-F (bies/w)
+
+// 2003-01-27
+
+- wyciszenie aliasu spowoduje wyciszenie komend w nim zawartych (sz)
+- brakuj±cy opis warto¶ci 4 zmiennej ,,completion_notify'' (sz)
+- usuwanie u¿ytkownika z dope³nieñ TABem po usuniêciu go z listy (sz)
+- poprawki w dope³nianiu utworzonej konferencji (bies/sz)
+- irc.theme pokazuje ircopodobnie równie¿ konferencje (sz)
+- ekg znów pokazuje status osób w /find, które maj± w³±czony tryb
+  ,,tylko dla znajomych'' (sz)
+- zmiana ignorowania z Alt-I na Alt-G (perry/w)
+- poprawne wy¶wietlanie wysy³anych wiadomo¶ci z atrybutami (Murphy/w)
+
+// 2003-01-26
+
+- list alias -o/-O dzia³aj± wy³±cznie w trybie ,,tylko dla znajomych''.
+  ,,help list'' o tym wspomina (sz)
+
+// 2003-01-25
+
+- przy w³±czonym auto_back nie wraca ze stanu ,,zajêty'', je¶li
+  nie by³ on ustawiony automagicznie (Tohver/sz)
+- dope³nianie blokowanych w /unblock (sz)
+- poprawki dope³niania uinów nieznanych osób (perry/sz)
+- poprawki readline (sz)
+- ma³y g³upi bajer: version pokazuje czas kompilacji (sz)
+- usuniêcie pewnego niejasnego zachowania. przy ,,private on''
+  ignorowanie powodowa³o, ¿e ignorowana osoba przestawa³a widzieæ
+  nasz status - od tego jest jednak funkcja blokowania (pmb/sz)
+- drobne poprawki helpa i tematów /list (sz)
+
+// 2003-01-24
+
+- wykoñczenie wyciszania niektórych komend (sz)
+- ignorowanie znaków nowej linii w opisie, niektóre klienty jabbera
+  pozwalaj± na to i psuje nam to wy¶wietlanie m.in. /list (sz)
+- w zmiennej systemowej ,,EKG_DEBUG'' mo¿na umie¶ciæ nazwê pliku, do
+  którego poleci debug (sz)
+- naprawienie /bind nie wczytuj±cego konfiguracji z pliku (pmb/sz)
+- mo¿na wysy³aæ wynik exec do rozmówcy z aktualnego okna (pmb/sz)
+- klawisze Alt-Q do Alt-P prze³±czaj± do okienek 11..20 (gozda/w)
+
+// 2003-01-23
+
+- dodanie ukrytej zmiennej ,,interface'' przechowuj±cej nazwê u¿ywanego
+  interfejsu (a.latanski/w)
+- mo¿liwo¶æ wys³ania komu¶ wyniku /exec. szczegó³y: help exec (sz)
+- dodanie komendy _debug_dump (sz)
+- przywrócenie dawnego zachowania przy zmianie rozmiaru terminala.
+  wci±¿ nie dzia³a, ale przynajmniej rzadziej siê wszystko
+  wysypuje (spaceman/sz)
+- kosmetyka (sz)
+- poprawki zwi±zane z strncpy() i strncat() (sz)
+- poprawka kodowania argumentów /find (zuko_wski/w)
+- j.w. dla /change (sz)
+- nowe formaty /list (w)
+- dodanie ^ przed nazw± komendy ukryje jej wynik (w)
+
+// 2003-01-22
+
+- poprawka zachowania przy segfault'cie (sz)
+- j.w. w przypadku braku pamieci (sz)
+
+// 2003-01-21
+
+- poprawki /list (fig/sz)
+- uaktualnienie leon.theme (leon/sz)
+- window next/prev omija okno z debugiem (sz)
+- userlist, config, debug po wywrotce zapisywane s± w odpowiednim
+  katalogu, je¶li u¿ywamy ró¿nych profili (sz)
+- je¶li ekg siê wywróci, to ostatnie 50 linii z debug zapisywane
+  jest do ~/.gg/debug.PID (sz)
+
+// 2003-01-20
+
+- poprawki wczytywania zmiennych w wersji skompilowanej z ncurses
+  i readline jednocze¶nie (sz)
+- debug jest w³±czony na sta³e (sz)
+- F12 lub Alt-` prze³±czaj± do okna z debug (sz)
+- debug pisze do okna o numerze 0 zamiast do statusowego (*/sz)
+- poprawka display_crap przy make_window == 1 (pmb/sz)
+- dodanie zdarzenia ,,on query'' (kameleon/w)
+
+// 2003-01-19
+
+- poprawki kompilacji na BeOSie (w)
+- libgadu: poprawki kompilacji na BeOSie (w)
+- dodanie formatu ,,sms_conf'' przy wiadomo¶ci konferencyjnej (rmrmg/sz)
+- ,,on nasz_nick descr'' te¿ zadzia³a (krzyk/sz)
+- dodanie parametru ,,*'' do del, unignore, unblock (sz)
+
+// 2003-01-18
+
+- poprawki wygl±du ui-ncurses przy display_color 0 (w)
+
+// 2003-01-17
+
+- make uninstall nie usuwa³ manuali (wysek)
+- poprawki /dcc get (w)
+- drobne sprz±tanie kodu (w,sz)
+
+// 2003-01-16
+
+- drobne poprawki dokumentacji (sz)
+- czasami, po zerwaniu po³±czenia, ekg nadal nie czy¶ci³ userlisty (sz)
+- kolejne drobne kroki ku unifikacji komend (sz)
+- nie dope³niajmy ukrytych zmiennych (sz)
+- dodane opcje --clear i --clear-config dla /list (fig/wysek)
+- dodatkowe testy przy %4 w zdarzeniach, bardziej szczegó³owy opis
+  u¿ycia %4 w dokumentacji (jelo/w)
+- libgadu: poprawka konfiguracji pkgconfig (jajcus/w)
+
+// 2003-01-15
+
+- automatyczny away zachowuje ,,tylko dla przyjació³'' (pmb/sz)
+- kosmetyka themów dla /private (sz)
+- prawid³owe ustawianie stanu po ¶ci±gniêciu konfiguracji z serwera (sz)
+- poprawka ,,display_transparent'' (kotek/sz)
+- libgadu: dodanie nowego API do obs³ugi katalogu publicznego w stylu
+  GG 5.0. przyk³adowe API gg_search50*() zosta³o zachowanie, póki co,
+  i jest zgodne na poziomie ABI, ale bêdzie usuniête (Chilek/w)
+- update arim.theme (Arim/w)
+
+// 2003-01-14
+
+- poprawione zachowanie zmiennych ui-ncurses przy w³±czonym ui-readline
+  (kbns/w)
+- prowizoryczne dope³nianie nicków ze spacj± w ¶rodku. dzia³a tylko w
+  obrêbie pierwszego wyrazu (pirat/w)
+- kosmetyka /list, nie wy¶wietla w³asnego IP przy braku po³aczenia (sz)
+- kosmetyka /conference, nazwa przy tworzeniu konferencji jest opcjonalna,
+  mo¿na usuwaæ od razu wszystkie konferencje (sz)
+- poprawka mo¿liwego segfaulta przy /timer -d * (sz)
+- mo¿na ignorowaæ samego siebie. wtedy nie jeste¶my pokazywani na li¶cie
+  kontaktów (gozda/sz)
+- nowe pytanie w FAQ (sz)
+- ignorowanie podanego potoku przy uruchomieniu, je¶li to zwyk³y plik (*/sz)
+- poprawka opcji --private przy uruchomieniu (sz)
+- libgadu: poprawione wysy³anie roku urodzenia w gg_change_info() (Chilek/w)
+- /change nie wymaga ju¿ wszystkich parametrów (w)
+- /find pokazuje stan niewidoczny (gozda/w)
+- kolorki statusów dla /find takie same jak w /list (sz)
+- /find pokazuje poprawnie niektóre (private, descr) stany (sz)
+- poprawka zjadania 100% procesora przy -c z plikiem (*/w)
+- poprawka zachowania ,,make_window 1'' (rmrmg/w)
+
+// 2003-01-13
+
+- poprawka /private (cukier/sz)
+- kilka mozliwych segfaultow (w/sz)
+- kosmetyka w msg_queue_write() (fig/sz)
+- segfault przy batch-mode (sz)
+- uaktualnienie arim.theme (Arim/w)
+- wiêcej szczegó³ów o F3 i zabawie z ,,contacts'' i ,,display_notify''
+  w dokumentacji (tokugawa/w)
+- poprawki themów helpa (sz/w)
+- poprawka usuwania /on (pmb/w)
+- libgadu: poprawka szukania z GG 5.0, same wnêtrzno¶ci. API nietkniête (w)
+
+// 2003-01-12
+
+- poprawka /alias (kbns/sz)
+- porz±dki kosmetyczno-funkcjonalne w kodzie timerów (sz)
+- pamietajmy o czyszczeniu adresu IP i portu usera tak, ¿eby np. w nag³ówku
+  query nie by³o kosmicznych adresów (sz)
+
+// 2003-01-11
+
+- zmienna ,,display_transparent'' (MP/sz)
+- poprawki /on, aby by³o bardziej userfriendly. dodanie przekazywania
+  nowego opisu w parametrach %3 i %4 (sz)
+- ,,*'' w nazwie timera i at usuwa wszystkie (ale nie timery UI) (sz)
+- dok³adniejsze sprawdzanie argumentów w kilku funkcjach (mati/w)
+- poprawka dope³niania zmiennych przy w³±czonej li¶cie kontaktów (*/w)
+- libgadu: eksperymentalny kod wyszukiwania zgodny z GG 5.0. API mo¿e siê
+  zmieniæ. na pewno siê zmieni. trzeba uzgodniæ z ekip± Kadu (w)
+- /find wysy³a zapytania zgodne z GG 5.0 (w)
+- wyszukiwanie dzia³a (w)
+- lekka poprawka themów wyszukiwania, ze wzglêdu na brak informacji o p³ci
+  w wynikach (w)
+- poprawka zale¿no¶ci w Makefile'ach (FIG/w)
+- poprawka b³êdu autoconfa w m4/stdint.m4 (Brzezi/w)
+- poprawiona kompilacja przy braku openssl (boncur/w)
+- poprawka gg_saprintf() dla PPC (mmazur/w)
+
+// 2003-01-10
+
+- timery (oraz at) u¿ytkownika s± zapisywane przy /save (sz)
+- dodanie komendy /at (sz)
+- zmiana timestamp'u /last i /queue na dzieñ-miesi±c-rok (sz)
+- uproszczenie kodu ,,last'' (sz)
+- przepisanie kodu wy¶wietlaj±cego pasek stanu od nowa. mo¿na zagnie¿d¿aæ,
+  dodano nowe formaty (w)
+- nag³ówek okna mo¿na opisaæ formatami ,,header<n>'', podobnie jak pasek
+  stanu (w)
+- dodanie eksperymentalnego zamiennika sim.c. podczas testów wypada
+  trochê lepiej ni¿ orygina³, ze wzglêdu na brak zaawansowanych
+  algorytmów cache'owania kluczy. po prostu za ka¿dym razem generuje
+  nowy. kodu jest znacznie mniej i jest bardziej przejrzysty.
+  w³±czany przez ,,/set encryption 2'' (w)
+- poprawka zachowania kontaktów przy mieszaniu paskiem stanu i nag³ówkiem
+  (sz/w)
+- dodatki do pythona: mo¿na pisaæ w nag³ówku i statusie funkcjami
+  ekg.print_header() i ekg.print_statusbar. zdarzenie handle_keypress (w)
+
+// 2003-01-09
+
+- dodanie komendy ukrytej _queue dla tych, którzy czasami chc± wiedzieæ,
+  co siê dok³adnie dzieje w kolejce wiadomo¶ci (sz)
+- poprawka segfaulta (cukier/sz)
+- libgadu: makra GG_S_*() nie zwracaj± uwagi na stan tylko dla znajomych (w)
+- libgadu: dodanie makra GG_S_F() sprawdzaj±cego stan tylko dla znajomych (w)
+- libgadu: podbicie wersji API (w)
+- uporz±dkowanie kodu timerów, timeoutów itp. (w)
+- wyrzucenie zmiennych away i private_mode, bo tylko komplikowa³y sprawy (w)
+- ró¿ne porz±dki w kodzie (w)
+- libgadu: poprawka b³êdu w gg_get_line() wyje¿d¿aj±cego w pustych
+  liniach 1 bajt przed bufor (w)
+- optymalizacja dodawania linii do backlogu, dziêki czemu mamy O(1) i
+  ekg nie chodzi tym wolniej, im d³u¿ej dzia³a i wiêcej siedzi w 
+  backlogu (w)
+- /list na siebie pokazuje prawid³owy port (FIG/w)
+- poprawki configure.in (FIG/w)
+- mo¿liwo¶æ rozszerzania pasku statusu zmienn± ,,statusbar_size''.
+  kolejne linie s± opisane formatami ,,statusbar2'', ,,statusbar3'' itd. (w)
+- mo¿liwo¶æ stworzenia nag³ówka okna zmienn± ,,header_size''. póki co,
+  nie ma mo¿liwo¶ci wy¶wietlania w nim czegokolwiek (w)
+
+// 2003-01-08
+
+- poprawka ostrze¿eñ przy kompilacji gcc 3.x (MuchaR/w)
+- kosmetyka komunikatów o b³êdach niektórych komend (sz)
+- rozszerzenie mo¿liwo¶ci /timer (sz)
+- poprawka themów dla bia³ych terminali (MP/w)
+- libgadu: poprawka pkgconfig (w)
+
+// 2003-01-07
+
+- dodanie portu do /list (sz)
+- drobne poprawki w configure.in (w)
+
+// 2003-01-06
+
+- drobna kosmetyka komendy /sms (sz)
+- poprawka timerów, które czasami potrafi³y siê zapêtliæ (fig/sz)
+- ,,/list user'' pokazuje te¿ adres IP (*/sz)
+
+// 2003-01-05
+
+- kosmetyczne poprawki przy ,,help set zmienna'' (sz)
+- je¶li utworzymy alias do jakiej¶ komendy (tylko jednej), to bêdzie przy
+  nim dzia³a³o dope³nianie tak, jak przy oryginalnej komendzie (sz)
+
+// 2003-01-04
+
+- g³upia ja, zepsu³em ,,del'' (sz)
+- ³adne od¶wie¿anie listy kontaktów po ,,list --get'' (sz)
+- nie pozwalajmy na zmianê nazwy/uin kogo¶ poprzez /list, je¶li
+  kto¶ ju¿ taka nazwê/uin posiada na naszej li¶cie (sz)
+- poprawka wy¶wietlania formatowanych wiadomo¶ci (sz/w)
+- dodanie formatu %|, szczegó³y w docs/themes.txt (w)
+- dodanie ,,/help set <zmienna>'' (w)
+- instalowanie vars.txt do ${prefix}/share/ekg/ (w)
+- poprawki helpa /list (FIG/w)
+- informowanie o zapisie lub odczycie konfiguracji z serwera (FIG/w)
+- poprawki helpów, ¿eby u¿ywa³y %| i wygl±da³y ³adnie po zmianie
+  rozmiaru okna (w)
+- libgadu: dodanie makra GG_S_BL() (w)
+- libgadu: podbicie wersji API do 2.9 (w)
+- dokoñczenie kilku zapomnianych rzeczy w /list (sz/w)
+- eksperymentalne wprowadzenie ,,make dep''. mam nadziejê, ¿e na egzotycznych
+  systemach nie bêdzie sprawiaæ problemów (w)
+- reorganizacja timerów, dziêki czemu maj± teraz odpowiedni± dok³adno¶æ,
+  a nie +/- 1s. jest mo¿liwe zrobienie sta³ych timerów (w)
+- czytanie globalnego pliku konfiguracyjnego /etc/ekg.conf,
+  /usr/local/etc/ekg.conf itp. po konfiguracji u¿ytkownika, ¿eby móc
+  na przyk³ad wymusiæ jakie¶ konkretne serwery (w)
+- dodanie opcji -N (w)
+
+// 2003-01-03
+
+- ekg nie pozwala dodaæ kogo¶ m.in. z '@' lub '#' na pocz±tku w nazwie,
+  ¿eby unikn±æ dziwnych problemów (sz)
+- kosmetyka, m.in. rzeczy zwi±zanych z obs³uga uin/nick w komendach (sz)
+- ignore/unignore powoduje, odpowiednio, wyczyszczenie/uaktualnienie stanu
+  danego u¿ytkownika. w ogóle, to trzeba bêdzie nied³ugo zrobiæ ró¿ne
+  stopnie ignorowania... (sz)
+- poprawka wy¶wietlania nieznanych u¿ytkowników w /ignore (Arim/w)
+- dok³adniejsze informacje o b³êdach us³ug http (FIG/w)
+- poprawna reakcja na PageDown po /window clear (theKnight/w)
+
+// 2003-01-02
+
+- czyszczenie stanów ludzi z listy kontaktów po timeout'cie (pmb/sz)
+- zmienna ,,display_pl_chars'' pozwalaj±ca maskowaæ polskie literki
+  dla tych, którym nie chce siê (nie mog±) skonfigurowaæ terminala (sz)
+- je¶li komu¶ siê nudzi i nadaje ludziom aliasy w postaci liczb, to
+  nie powinien ju¿ mieæ z tym problemów ;> (sz)
+
+// 2002-12-31
+
+- poprawka ,,del'', które nie potrafi³o usun±æ kogo¶, którego alias
+  sk³ada³ siê tylko z liczby (sz)
+
+// 2002-12-30
+
+- bardziej zrozumia³e opisy b³êdów przy ,,add'' (Sero/sz)
+- ekg nie gubi ju¿ informacji o formatowaniu wiadomo¶ci (bold, italic, etc.)
+  podczas kolejkowania (sz)
+- niech systemy bez utimes() korzystaj± z utime() (sz)
+
+// 2002-12-29
+
+- check_mail nie zalicza plików zaczynaj±cych siê od kropki do poczty
+  w przypadku u¿ywania Maildir/ (rmrmg/sz)
+- kosmetyka kodu (Sero/sz)
+- kosmetyka w³asnego IP w ,,list'' (sz)
+
+// 2002-12-27
+
+- dodanie zdarzenia ,,new_mail'' do ,,on'' (scooty/sz)
+
+// 2002-12-26
+
+- ekg pokazuje ju¿, ¿e kto¶ nas ,,zablokowa³'' (w)
+- libgadu: poprawka wykrywania wersji vsnprintf(). searche, eksporty listy
+  itp. powinny ju¿ dzia³aæ poprawnie (Chilek/w)
+- libgadu: dodanie typów u¿ytkowników do libgadu.h, uaktualnienie
+  opisu protoko³u (Chilek/w)
+- dodanie komend /block i /unblock (w)
+- dodanie opcji --offline i --online do /list (w)
+- libgadu: poprawka ³±czenia synchronicznego (sCoOtY/w)
+- usuniêcie warningów przy kompilacji przyk³adów (w)
+- libgadu: gdy gg_dcc_ip bêdzie równe 0xffffffff, adres bêdzie ustalany
+  automatycznie na podstawie getsockname() (w)
+- zmienna dcc_ip mo¿e przyj±æ warto¶æ ,,auto'' (w)
+- dodanie docs/userlista.txt z opisem formatu listy kontaktów i zapisu
+  konfiguracji na serwerze (w)
+- dodanie mo¿liwo¶ci zapisu konfiguracji ekg na serwerze (opcje
+  --put-config i --get-config komendy /list) (w)
+- zmienna sms_max_length przy warto¶ci 0 usuwa limit (rmrmg/w)
+- poprawka wysy³ania wielolinijkowych (pmb/w)
+
+// 2002-12-24
+
+- trochê ¶wi±tecznych, g³ównie kosmetycznych, porz±dków w kodzie,
+  m.in. pozbycie siê warning'ów przy execl, które nie by³o ,,64 bit
+  clean'' ;> (sz)
+
+// 2002-12-23
+
+- przywrócenie przezroczystego tla (w)
+
+// 2002-12-22
+
+- poprawka segfaulta przy dope³nianiu nieznanych numerów (perry/w)
+
+// 2002-12-17
+
+- skrypty z ~/.gg/scripts/autorun/ bêd± ³adowane automagicznie przy
+  starcie ekg (w)
+
+// 2002-12-16
+
+- poprawka przewijania okna (w)
+- poprawka ,,set -a...'' (sero/w)
+- zmiany w docs/FAQ - dosz³y nowe serwery gg (sz)
+
+// 2002-12-15
+
+- ekg pokazuje stderr normalnie ju¿, ¿eby widzieæ informacje o wyj±tkach
+  pythona (w)
+- dodanie komendy /python (w)
+- pocz±tek obs³ugi zdarzeñ w skryptach pythonowych. szczegó³y
+  w docs/python.txt (w)
+- poprawka /window clear (pmb/w)
+- poprawka /set ukrytej zmiennej (sero/w)
+
+// 2002-12-14
+
+- kosmetyka, ,,help /komenda'' te¿ zadzia³a (sz)
+- du¿a reorganizacja ui-ncurses. mog± wyst±piæ drobne problemy, ale stara³em
+  siê przetestowaæ wszystkie mo¿liwe dziwne sytuacje (w)
+- dodanie zmiennej backlog_size, nie bêdzie siê powiêksza³ w nieskoñczono¶æ,
+  jak to mia³o miejsce poprzednio (w)
+- dodanie pi±tego parametru liczbowego do ,,/window new'', który mówi, z
+  której strony maj± byæ umieszczone ramki. mapa bitowa: 1 - lewo, 2 - góra,
+  4 - prawo, 8 - dó³. wszystkie ramki to oczywi¶cie 15 (w)
+- ponowne zawijanie tekstu po zmianie rozmiaru okna (chocia¿by przez w³±czenie
+  lub wy³±czenie listy kontaktów). niestety nie jest jeszcze optymalne, bo
+  po wy¶wietleniu ka¿dej linii analizuje ca³y bufor od nowa, ale nie chcia³em
+  zwlekaæ z commitem. w ka¿dym razie, dziêki temu p³ywaj±ce okienka maj±
+  w koñcu sens (w)
+
+// 2002-12-13
+
+- reorganizacja sprawdzania poczty w skrzynkach mbox (sz)
+- poprawka segfaulta przy wielolinijkowych (seba/w)
+
+// 2002-12-11
+
+- nie wy¶wietlajmy komunikatu o zakolejkowaniu wiadomo¶ci do 
+  nieprawid³owego adresata (sz)
+- stan ,,zajêty'' bez opisu by³ ¼le ustawiany (sz)
+
+// 2002-12-10
+
+- poprawka segfaulta w wielolinijkowych (seba,wojboj/w)
+- poprawka usuwania przypisanych klawiszy (seba/w)
+- sprawdzanie poczty (mbox) nie przegl±da niepotrzebnie 
+  ca³ego pliku, je¶li nie by³o w nim zmian (sz)
+- poprawka ¶mieci w wielolinijkowych (seba/w)
+- dzia³a ju¿ tab w wielolinijkowych (seba/w)
+
+// 2002-12-09
+
+- poprawka wczytywania konfiguracji (szalik,Murphy/w)
+- libgadu: kosmetyka deklaracji funkcji (MatNet/w)
+- libgadu: usuniêcie wycieku pamiêci przy szukaniu (jajcus/w)
+- libgadu: generowanie pliku <libgadu-config.h> z konfiguracj± systemu
+  niezbêdn± do w³±czenia biblioteki do programu. niestety nie bêdzie on
+  regenerowany przez skrypt config.status (adrians/w)
+- libgadu: dodanie obs³ugi pkgconfig. program linkuj±ce siê z libgadu
+  mog± sprawdzaæ flagi kompilatora i linkera przez ,,pkgconfig libgadu
+  --libs --cflags'' (w)
+- libgadu: zlikwidowanie rozbie¿no¶ci ABI w wersji z i bez pthread
+  (adrians/w)
+
+// 2002-12-08
+
+- poprawka segfaulta przy display_crap = 0 (FIG,wojboj/w)
+- poprawka listy kontaktów i wielolinijkowych wiadomo¶ci (w)
+- poprawka segfaulta przy wielolinikowych wiadomo¶ciach (w)
+- komunikat o nowej poczcie zawsze zawiera s³owo ,,nowe'',
+  aby nie powodowaæ niejasno¶ci co do tego, o jak± ilo¶æ
+  emaili chodzi (Arim/sz)
+- du¿a ilo¶æ wywo³añ /exec, /sms lub sprawdzanie poczty po
+  pewnym czasie powodowa³o brak wolnych deskryptorów (sz)
+- poprawka dokumentacji (rmrmg/w)
+- dodanie zmiennej contacts_descr (rmrmg/w)
+- dalsze zmiany p³ywaj±cych okienek (wojboj/w)
+- dodanie zmiennej windows_save (w)
+
+// 2002-12-07
+
+- ekg potrafi ju¿ sprawdzaæ czy nadesz³a nowa poczta, wiêcej w
+  docs/vars.txt w opisie zmiennych check_mail. wymaga jeszcze
+  optymalizacji, poprawek ;> (sz)
+- /bind w ui-ncurses nie dodaje sekwencji, je¶li ju¿ istnieje (sz)
+- porz±dek musi byæ - miejscowa kosmetyka kodu/komentarzy (sz)
+- compat te¿ wymaga czyszczenia (sz)
+- lekkie porz±dki w sprawdzaniu poczty (w)
+- ci±g dalszy p³ywaj±cych okienek (wojboj/w)
+- poprawki dokumentacji (gophi/w)
+- powiadamianie o nowej poczcie na ekran (d)
+- powiadamianie na ekran mo¿na w³±czyæ/wy³±czyæ w zmiennej check_mail (sz)
+- mo¿liwo¶æ wysy³ania pogrubionej czcionki (Ctrl-B), pochy³ej (Ctrl-T)
+  i podkre¶lonej (Ctrl-_) (w)
+- libgadu: dodanie funkcji gg_send_message_richtext() i
+  gg_send_message_confer_richtext(). paskudnie to wygl±da, ale ABI
+  trzeba zachowaæ (w)
+- libgadu: podbicie wersji API (w)
+- wy¶wietlanie pogrubionych, pochy³ych i podkre¶lonych czcionek (w)
+- dodanie zmiennej display_color_map (w)
+- dodatki do zmiennej contacts (Murphy/w)
+
+// 2002-12-06
+
+- poprawiony odczyt /bindowanych klawiszy z konfiga (kostoo/w)
+- dodana zmienna display_crap (Murphy,pmb/w)
+
+// 2002-12-05
+
+- ujednolicenie nazewnictwa grup. zawsze nale¿y u¿ywaæ zapisu ,,@grupa''.
+  jedynie w miejscach, gdzie nie powoduje to dwuznaczno¶ci (list -m grupa,
+  list alias -g grupa) dopuszczalne jest w _ostateczno¶ci_ ,,grupa'' (pmb/sz)
+- dodanie /bind w ui-ncurses (w)
+
+// 2002-12-04
+
+- /list mo¿e ju¿ dodawaæ/usuwaæ z wielu grup (rodzielonych przecinkiem)
+  na raz. dodatkowo, nie dodaje ju¿ u¿ytkownika kilka razy do tej samej
+  grupy. kosmetyka (sz)
+- po reorganizacji stanów nie zapisywa³ siê nasz aktualny stan po /save (sz)
+- obs³uga zdarzenia ,,blink_leds'' w ,,on'' dla solarisa (d)
+- ma³a poprawka konfliktu nazw dla solarisa (d)
+- dodana ¿a³osna namiastka ,,beeps_spk'' dla solarisa (d)
+- --enable-ioctld ju¿ nie jest tylko Linux only (d)
+- kompilacja ioctld dla solarisa. powinno wystarczyæ (d)
+- poprawia wieszaj±cego siê /exec (wojboj/w)
+- pocz±tek obs³ugi p³ywaj±cych okienek (wojboj/w)
+
+// 2002-12-03
+
+- /list --member <grupa> wy¶wietla tylko cz³onków grupy (sz)
+
+// 2002-12-02
+
+- uaktualnienie contrib/link.pl (theKnight/w)
+- poprawka reakcji na F3 (Murphy/w)
+- sprawdzanie, czy podany uin dla /add, /del itp. jest sensowny (sz)
+- /list @grupa wy¶wietla cz³onków grupy (pmb/sz)
+- dodanie zmiennej auto_back (pmb/w)
+- spora reorganizacja zmiany stanu w /away, /back, /invisible, auto_away
+  itp. wiêc teoretycznie mog± wyst±piæ problemy (w)
+
+// 2002-12-01
+
+- kosmetyka kodu usuwania niektórych list (sz)
+- dalsza kosmetyka /query (sz)
+- b³êdny zapis listy nicków w chat/query wy¶wietli b³±d zamiast
+  utworzenia bezsensownej konferencji (sz)
+- usuniêcie leaka przy /find (w)
+- libgadu: usuniêcie leaka przy http (w)
+- drobne zmiany w ioctld (przy ,,beeps_spk'' ioctld nie potrzebuje +s) (d)
+- zdarzenia ,,beeps_spk'' i ,,blink_leds'' mog± dzia³aæ na FreeBSD (d)
+- wykrywanie <sys/kbio.h> dla FreeBSD (d/w)
+- ioctld na li¶cie wkompilowanych opcji (d/w)
+- porz±dki w autoconfie, s/true/yes/ (w)
+- przywrócenie /list --phone (FIG/w)
+- zmiana numeru w li¶cie kontaktów usuwa stary numer (FIG/w)
+
+// 2002-11-30
+
+- kosmetyka dokumentacji (sz)
+- poprawka /query, które nie potrafi³o utworzyæ konferencji (sz)
+- dodana opcja -s / --stime do ,,last'', dziêki czemu mo¿na
+  sprawdziæ, kiedy wys³ana zosta³a wiadomo¶æ. przydatne, gdy
+  nasz temat nie wy¶wietla timestampu wiadomo¶ci (sz)
+
+// 2002-11-29
+
+- usuniêcie opcji --phone z /find i /change (mateusza/w)
+- poprawka polskich krzaczków w opisie przy po³±czeniu (ubanus/w)
+- poprawka zapisywania opisu /quit przy keep_reason (w)
+
+// 2002-11-28
+
+- ma³a poprawka opcji --debug w ekgsearch (wysek)
+- poprawka kompilacji z readline (a.latanski/w)
+- przeniesienie obs³ugi kolejki wiadomo¶ci do msgqueue.[ch] (w)
+- wiadomo¶ci z kolejki bêd± zapisywane na dysku do ~/.gg/queue
+  po wyj¶ciu z programu (w)
+
+// 2002-11-27
+
+- ,,on'' mo¿e ju¿ reagowaæ na zmianê czyjego¶ opisu (rmrmg/sz)
+- poprawka od¶wie¿ania prompta przy activity w ui-readline (d)
+- /query wymaga podania prawid³ego u¿ytkownika lub numer (Murphy/w)
+
+// 2002-11-26
+
+- dodanie zmiennej sound_notify_file (sz)
+- obs³uga konferencji w /queue (sz)
+- kosmetyczne poprawki w tematach (sz)
+- /status nie wy¶wietla ilo¶ci zakolejkowanych wiadomo¶ci, gdy kolejka
+  jest pusta (sz)
+- /set nie wy¶wietla ju¿ nieaktywnych opcji (np. log_path przy wy³±czonym
+  logowaniu, beep_notify przy wy³±czonym beepaniu). ¿eby wy¶wietliæ
+  wszystkie zmienne, wpisujemy ,,/set -a'' (Arim/w)
+- F3 i F12 nie pokazuj± informacji o zmianie zmiennej (w)
+
+// 2002-11-25
+
+- s/struct queue/struct msg_queue/, poniewa¿ kolidowa³o z SunOSowymi
+  libcami (Murphy/w)
+- poprawka wykrywania scandir() (Murphy/w)
+
+// 2002-11-24
+
+- segfault w momencie rozpoczynania konferencji (szalik/s)
+- kosmetyka i poprawki w last i queue (szalik/s)
+
+// 2002-11-22
+
+- kosmetyka (szalik/w)
+- dodana zmienna ,,display_welcome'' (seba/w)
+- libgadu: wyrzucenie wielokrotnych prób czytania z socketa. je¶li nie
+  ma danych na sockecie mimo wywo³ania funkcji, zrywamy po³±czenie, zamiast
+  wieszaæ program (*/w)
+- poprawka dope³niania plików zaczynaj±cych siê od kropki (salvador/w)
+
+// 2002-11-21
+
+- dodanie w³asnej implementacji scandir(). co prawda nie dzia³a jeszcze,
+  ale ui-ncurses skompiluje siê na SunOSach (Murphy/w)
+- dodanie kolejkowania wiadomo¶ci wysy³anych przy roz³±czonej sesji.
+  komenda /queue (Murphy,szalik/w)
+
+// 2002-11-20
+
+- dodanie zmiennej ,,mesg_allow'' (mateusza,szalik/w)
+- poprawka leon.theme (leon/w)
+- inteligentne timestampy w /status (szalik/w)
+- literówki (szalik/w)
+
+// 2002-11-19
+
+- poprawki ,,last'' (joshua,szalik/d)
+- poprawka szyfrowania (w)
+- poprawka segfaulta w dope³nianiu plików (salvador/w)
+- przezroczyste t³o na kolorowych terminalach (greblus/w)
+- dodanie zmiennej ,,time_deviation'' (w)
+- usuniêcie timestampów z wychodz±cych wiadomo¶ci (w)
+- inteligentne timestampy w przychodz±cych. je¶li wiadomo¶æ zosta³a
+  nadana +/- time_deviation, nie wy¶wietla go. je¶li wys³ana tego samego
+  dnia, wy¶wietla tylko godzinê. je¶li wys³ana wcze¶niej, wy¶wietla datê
+  i godzinê (w)
+- dodany parametr ,,-d'' do /list (krzyk/w)
+- poprawka polskich znaków w ncurses (robson/w)
+- dodany format %{descr} do statusu w ncurses (FIG/w)
+- Alt-K w pierwszym oknie zamknie query (rmrmg/w)
+- libgadu: usuniêcie -g z CFLAGS przy --disable-debug (adrians/w)
+
+// 2002-11-18
+
+- poprawka reakcji F3 (kostoo/w)
+- libgadu: poprawka wysy³ania du¿ych zapytañ http (Chilek/w)
+- libgadu: nieznaczna zmiana ABI -- dodano GG_STATE_SENDING_QUERY, ale
+  z tego wzglêdu, ¿e jest to sta³a wewnêtrzna biblioteki, nie podbijam
+  ABI biblioteki (w)
+- libgadu: w±tkowany resolver. w³±czany przez #define HAVE_PTHREAD lub
+  ./configure --with-pthread (adrians/w)
+- kosmetyka wygl±du w³asnego stanu (szalik/w)
+- poprawki dokumentacji (mati/w)
+- libgadu: gg_change_passwd2() jest dostosowane do zmian w protokole (w)
+- dodana zmienna ,,email'' przechowuj±ca adres e-mail u¿ytkownia, w celu
+  pó¼niejszej zmiany has³a. drugi parametr nie jest ju¿ obowi±zkowy
+  w /passwd (w)
+
+// 2002-11-17
+
+- klawisz F3 toggluje listê kontaktów (w)
+- tryb debugowania jest odnotowywany na pasku stanu (w)
+- usuniêcie leaka przy debugowaniu (w)
+- poprawka zapisywania szyfrowanych wiadomo¶ci do /last (szalik/w)
+- wczytywanie z konfiga niepoprawnych zdarzeñ ,,on'' jako nieaktywne (d)
+- poprawka polskich liter w li¶cie kontaktów (kostoo/w)
+
+// 2002-11-16
+
+- libgadu: poprawki w configure (adrians/w)
+- kosmetyka (szalik/w)
+- libgadu: dodanie funkcji gg_base64_encode() i gg_base64_decode() (w)
+- libgadu: obs³uga autoryzacji proxy (adrians,leszek/w)
+- usuniêcie leaka przy debugowaniu (w)
+- poprawka zawijania wiadomo¶ci przy oknie kontaktów (Zwierz/w)
+- uaktualnienie dokumentacji (w)
+- ³adne, dresiarskie kolorki w li¶cie kontaktów, zajêci (Zwierz/w)
+- ³adne, dresiarskie ,,i'' przy ludziach z opisem (w)
+- poprawka zapêtlenia siê przy utracie terminala (Mati/w)
+
+// 2002-11-15
+
+- ctxwindow - okienko z dostepnymi osobami (wojboj/s)
+- dodanie opcji --clear do ,,last'' (d)
+- configure nie wyrzuca informacji o interfejsie w libgadu (adrians/w)
+- poprawki okienka z osobami (w)
+
+// 2002-11-14
+
+- poprawka obs³ugi proxy http (Chilek/w)
+- poprawka segfaulta przy szukaniu (*/w)
+- poprawka themów czasu po³±czenia (FIG,szalik/w)
+- dodanie zmiennej ,,server_save'' (*/w)
+
+// 2002-11-13
+
+- dodany eileen.theme (en/d)
+- poprawki wykrywania openssl (Arim/w)
+
+// 2002-11-12
+
+- usuniêcie basename() i jego u¿ycia (w)
+- dodanie nag³ówków do compatowego dirname() (w)
+- zmiana domy¶lnego wygl±du statusu w ncurses. zamiast ,,uin'' jest w³asny
+  nick, je¶li jest zdefiniowany w li¶cie kontaktów (FIG/w)
+- dodanie serwera w docs/FAQ (szalik/w)
+- drobne poprawki dokumentacji (szalik/w)
+
+// 2002-11-11
+
+- limitowanie wysy³anych sms'ów przy w³±czonym sms_away (szalik/s)
+- /status wy¶wietla od kiedy jeste¶my po³±czeni lub roz³±czeni (szalik/s)
+- dodany leon.theme (leon/s)
+
+// 2002-11-09 
+
+- poprawka wykrywania openssl (s)
+
+// 2002-11-08
+
+- poprawka dla "starych" systemow - libgen.h pojawilo sie dopiero 
+  w fbsd 4.2. (s)
+  
+// 2002-11-06
+
+- poprawka wykrywania <gsm/gsm.h> na Debianach (pawsku/w)
+
+// 2002-11-05
+
+- poprawka timestampów w logach na maszynach niezgodnych z SUS (Murphy/w)
+
+// 2002-11-03
+
+- poprawka kompilacji na systemach bez openssl (kjtd/w)
+- poprawka segfaulta przy zmianie w li¶cie kontaktów (sdas/w)
+
+// 2002-11-02
+
+- poprawka segfaulta przy /reconnect (szalik/w)
+- usuniêcie kodu /history (w)
+- przy w³±czonym keep_reason, stan i opis zostan± zapisane w konfiguracji
+  bez potrzebny wydawania komendy /save (w)
+
+// 2002-11-01
+
+- poprawka docs/themes.txt (en/w)
+- uaktualnienie informacji o protokole (pm/w)
+
+// 2002-10-31
+
+- configure pokazuje, które wersje bibliotek i interfejsów zosta³y
+  wybrane i które s± domy¶lne (seba/w)
+- zmiana domy¶lnego interfejsu na ncurses. szczegó³y w FAQ, w README,
+  w tek¶cie wyrzucanym przez ./configure (w)
+
+// 2002-10-30
+
+- poprawka wy³±czonego debugowania (Brzezi/w)
+- poprawka segfaultu po wygenerowaniu kluczy (FIG/w)
+- podanie powodu ,,-'' spowoduje jego wyczyszczenie bez wzglêdu na
+  ustawienia jakichkolwiek zmiennych zmieniaj±cych zachowanie komend
+  /away, /back, /invisible i /quit (w)
+- zmienne tekstowe s± wy¶wietlane w cudzys³owiach (w)
+- dodanie skryptu contrib/ekgh (greblus/w)
+- poprawka wysy³ania wiadomo¶ci do grup (Joshua/w)
+
+// 2002-10-29
+
+- ze wzglêdu na du¿e zainteresowanie u¿ytkowników, dodano zmienn±
+  log_timestamp (*/w)
+- poprawka configure.in (porridge/w)
+- Alt-I ignoruje rozmówcê w ui-ncurses (w)
+- dodanie krótkiego tekstu, który informuje, co fajnego mo¿na zrobiæ
+  z okienkiem, gdy kto¶ nas mesgn±³ (w)
+- poprawka timestampu w ui-readline (w)
+- poprawka pagera w ui-readline (Brzezi/w)
+- usuniêciê z listy kontaktów uaktualnia nazwê okna w ui-ncurses (Perry/w)
+
+// 2002-10-28
+
+- poprawka extract.pl (sdas/w)
+- dwie nowe odpowiedzi w docs/FAQ (w)
+- literówka w README (Brzezi/w)
+
+// 2002-10-27
+
+- poprawki PATH_MAX dla hurd'a (s) 
+
+// 2002-10-24
+
+- dodanie komend /_keydel i /_keysend. szczegó³y w docs/sim.txt (w)
+
+// 2002-10-23
+
+- timestampy w ui-readline (Joshua/w)
+- wrzucenie ncursesowych promptów do g³ównego themu (w)
+
+// 2002-10-21
+
+- poprawka literówki (shasta/w)
+
+// 2002-10-19
+
+- poprawka themów wymiany kluczy (w)
+
+// 2002-10-18
+
+- poprawienie komendy ,,last'' dla last & 2 (d)
+- porz±dki w libgadu: poprawki kodu po³±czenia, wiêcej szczegó³ów w debugach
+  (na przyk³ad adresy struktur, ¿eby móc wykryæ operacje na niezainicjowanych
+  wska¼nikach), znacznie wiêcej komentarzy do kodu (w)
+- poprawka linkowania z openssl (Zwierz/w)
+
+// 2002-10-17
+
+- poprawka zapêtlania siê libgadu przy po³±czeniu zerwanym w trakcie
+  odbierania nag³ówka (w)
+- poprawka pagera w ui-readline (w)
+- /find bez parametrów dzia³a ju¿ w ui-readline (w)
+- je¶li mamy zainstalowane OpenSSL, mo¿emy u¿ywaæ szyfrowania SIM.
+  szczegó³y w docs/sim.txt (w)
+
+// 2002-10-16
+
+- poprawienie wielolinijkowych wiadomo¶ci w ui-readline (d)
+- drobna poprawka w syntezie mowy (d)
+- synteza mowy w ui-readline (d)
+- nowe zdarzenia ,,delivered'' i ,,queued'' (Murphy/w)
+- poprawki opisu protoko³u: d³ugo¶æ opisu, informacje zwracane przez
+  huba (adaml/w)	
+
+// 2002-10-15
+
+- dodanie syntezy mowy, szczegó³y w README. uprzedzaj±c pytania, dzia³a
+  tylko w ncurses. (tarapat/w)
+
+// 2002-10-13
+
+- poprawka aliasów z ,,/'' (mateusza/w)
+
+// 2002-10-10
+
+- poprawienie segfaulta przy /disconnect z opisem (w)
+
+// 2002-10-09
+
+- pokazuje opis przy po³±czeniu (theKnight/w)
+
+// 2002-10-08
+
+- poprawka konferencji (DJ/w)
+- poprawka ,,-c'' w getopt (serek/w)
+
+// 2002-10-07
+
+- poprawka p³ci w wyszukiwaniu (FIG/w)
+
+// 2002-10-06
+
+- poprawka logowania w iso (wielu/w)
+- poprawka synchronicznych po³±czeñ (hao/w)
+- dodanie kolejnego ui-automaton przeznaczonego do wspó³pracy z pluginem
+  do irssi (malekith/w)
+- poprawka w³asnego adresu w li¶cie kontaktów (FIG/w)
+
+// 2002-10-05
+
+- /query z drugim parametrem wysy³a od razu wiadomo¶æ (czach/w)
+
+// 2002-10-04
+
+- usuniêcie #include "db.h" (a.latanski/w)
+- nieco inteligentniejsze ioctld_socket() (d)
+
+// 2002-10-03
+
+- s/csae/case/ przy WITH_IOCTLD (d)
+- wy¶wietlanie wyniku wysy³ania smsów (wojboj/w)
+- poprawki konferencji, wy¶wietlanie jej nazwy (DJ/w)
+- wyrzucenie -I/usr/include z flag kompilatora (malekith/w)
+- poprawka kodu o niezdefiniowanym dzia³aniu (malekith/w)
+- porz±dki z ui_event() (malekith/w)
+- porz±dki w configure.in i Makefile.in (w)
+- proste dope³nianie plików w ui-ncurses (DJ/w)
+- poprawka wy¶wietlanie w³asnego stanu niewidocznego (w)
+- dodanie u¿ytkownika powoduje uaktualnienie nazwy okienka (w)
+- po wielu latach w koñcu saprintf() nie zwraca NULL (w)
+
+// 2002-10-02
+
+- wy¶wietla potwierdzenia w oknie rozmowy (theKnight/w)
+- o zbyt d³ugim opisie informacja poprawna gramatycznie bardziej (konik/w)
+- /find szuka rozmówcy albo nas samych. dotyczy ui-ncurses (w)
+- usuniêcie niedokoñczonego 2k2.theme (w)
+- usuniêcie timestampów z domy¶lnego themu. stary zosta³ zachowany
+  w old.theme (w)
+- domy¶lne w³±czenie timestamp "%H%M " (w)
+- uaktualnianie w³asnego stanu w li¶cie kontaktów (w)
+- przej¶cie na getopt() (DJ/w)
+- dodanie katalogu compat/, na wypadek, gdyby systemowi brakowa³o funkcji
+  getopt_long (w)
+
+// 2002-10-01
+
+- round robin serwerów (w)
+- wiadomo¶æ (nie myliæ z rozmow±) nie otwiera nowego okna (theKnight/w)
+
+// 2002-09-30
+
+- poprawka us³ug http. mo¿liwe, ¿e znajd± siê jakie¶ b³êdy, bo nie by³em
+  w stanie sprawdziæ tego w ka¿dej mo¿liwej konfiguracji (wiele_osób/w)
+- poprawka debugowania (nie blokuje ju¿ rurki, co doprowadza³o do wieszania
+  siê ekg przy du¿ej ilo¶ci debugowych tekstów) (w)
+- dodanie zmiennej enter_scrolls (jp/w)
+
+// 2002-09-28
+
+- poprawka sms_away i back z opisem (kbns/w)
+
+// 2002-09-25
+
+- dalsza rewolucja w krainie autoconf/python (s)
+
+// 2002-09-24
+
+- kolejne poprawki /exec (wojboj/w)
+- dodanie string_clear() (w)
+- poprawki debugowania (sdas/w)
+- ma³y cleanup w ekgsearch (wysek)
+- je¶li pubdir jest przeci±¿ony, ekgsearch napisze o tym (w/wysek)
+- drobne poprawki w docach (w)
+- optymalizacja /exec (w)
+
+// 2002-09-23
+
+- optymalizacja string_*() (wojboj/w)
+- poprawka /exec (wojboj/w)
+- dodanie konferencji do dope³niania (DJ/w)
+- poprawka configure.in/LDFLAGS (s)
+- /msg do wielu osób nie tworzy konferencji (joshua/w)
+- rewolucja w krainie autoconfa (s,w)
+- informacje o rozpoznawaniu p³ci w dokumentacji (w)
+- poprawka segfaulta przy quicie (s/w)
+- poprawka g³upiego zachowania readline (Zwierz/w)
+- dodanie debugów do ui-ncurses (w)
+- usuniêcie leaka przy /set (w)
+
+// 2002-09-22
+
+- poprawki /exec (wojboj/w)
+- poprawki wyszukiwania -- dok³adniejsze komunikaty b³êdów (w)
+- zwiêkszenie limitu rozmiaru opisu (jojo/w)
+- przy zmianie stanu, zaznaczana jest widoczna i ucinana czê¶æ opisu (jojo/w)
+
+// 2002-09-21
+
+- poprawka themów ze stylami (Arim/w)
+- poprawka execa z ukrytym zakoñczeniem (sdas/w)
+- dodanie pól gg_dcc->remote_{addr,port}, podbicie wersji API (w)
+- b³êdy dcc informuj± równie¿ o adresie IP, ¿eby wiedzieæ kto nas
+  mo¿e DoSowaæ (w)
+- poprawione wysy³anie mesgów do nieistniej±cych (jojo/w)
+- poprawka rozpoznawania p³ci w /list (w)
+- poprawka informacji o u¿ytkownikach (sdas/w)
+- dodanie sta³ej GG_STATUS_DESCR_MAXSIZE (jojo/w)
+- informowanie o przekroczeniu rozmiaru opisu (jojo/w)
+- libgadu potrafi ustawiaæ opis przy logowaniu (w)
+- ekg zachowuje opis przy /save (FIG/w)
+- poprawki w /help (FIG/w)
+- mo¿liwo¶æ usuwania u¿ytkowników (DJ/w)
+- poprawione /exec (wojboj/w)
+- poprawka g³upiego zachowania ui-ncurses przy pustych liniach (sdas/w)
+
+// 2002-09-20
+
+- poprawka statusbara (sdas/w)
+- /find bez parametrów szuka nas samych (sdas/w)
+- puste linie nie s± zapisywane w historii (sdas/w)
+- usuniêcie leaka w add_send_nick() (w)
+- usuniêcie leaka w ui-ncurses (w)
+- uconstowienie command_exec() i argumentów komend (w)
+- poprawka segfaulta przy nieudanym szukaniu (wojboj/w)
+- ustawianie LDFLAGS w configure.in (sdad,wojboj/w)
+- pominiêcie /usr/include/readline.h w wykrywaniu readline, ¿eby nie
+  powodowaæ b³êdów na NetBSD. wszystkie w miarê nowe wersje readline
+  instaluj± siê w $prefix/include/readline/readline.h (w)
+- wys³anie wiadomo¶ci nie otwiera okienka (jojo/w)
+- poprawka helpa aliasów i debugowych komend (sdas/w)
+- przerzucenie tekstu z F1 do theme'u (thv/w)
+
+// 2002-09-19
+
+- poprawki dope³nieñ w ui-ncurses (theKnight/w)
+- zmiany stanu zawsze wrzuca do pierwszego okna (theKnight/w)
+- wska¼nik (more) w ui-ncurses (sdas/w)
+- ³adowanie themu zeruje poprzedni (Arim/w)
+- pocz±tek obs³ugi xtermowych tytu³ów (jojo/w)
+- dodana zmienna keep_reason (jojo/w)
+- format statusbara %{nick} i %{?nick ...} (FIG/w)
+- ³adniejszy /status (FIG/w)
+- poprawka /set i nieistniej±cych zmiennych (sdas/w)
+
+// 2002-09-18
+
+- poprawka segfaultu przy sortowaniu okien w ui-readline (wojboj/w)
+- ignore/unignore akceptuj± konferencje (DJ/w)
+- update DJ.theme (DJ/w)
+- poprawka d³ugich linii w ui-readline (*/w)
+
+// 2002-09-17
+
+- literówka w themie (thv/w)
+- osobny format dla timestampów wysy³anych mesgów (FIG/w)
+- update themów (Arim/w)
+- themy mog± mieæ kilka dostêpnych wygl±dów. rodzaj wygl±du podaje siê
+  po przecinku za nazw± pliku. przyk³ad ,,set theme arim'' i 
+  ,,set theme arim,irc''. ró¿ne wygl±dy definiuje siê przez dodanie do
+  themu wpisów z nazwami zakoñczonymi przecinkiem i nazw±. póki co,
+  eksperymentalne -- sposób zapisu i okre¶lania mo¿e siê zmieniæ. (Arim/w)
+- poprawka /query (Arim/w)
+- dodanie /conference --ignore, --unignore i --find (DJ/w)
+
+// 2002-09-14
+
+- poprawka segfaultu w /set (mihau/w)
+- poprawka dokumentacji docs/on.txt (thv/w)
+
+// 2002-09-13
+
+- sent_line* zawieraj± datê wys³ania mesga, a nie 1.01.1970r (Arim/w)
+- update dj.theme (DJ/w)
+- mo¿liwo¶æ zmiany nazwy konferencji (DJ/w)
+- poprawka b³êdu przy log_status 1 (speedy/w)
+- naprawienie zmiennej timestamp w ncurses (czach/w)
+- ,,W pogoni za kursorem'' (DJ,czach/w)
+
+// 2002-09-12
+
+- completion_notify ma now± flagê 4 (busy), która bierze pod uwagê
+  równie¿ zajêtych (Murphy,kameleon/w)
+- ,,window clear'' dzia³a w ui-ncurses. wzorowane na irssi, gdzie
+  zawarto¶æ okna nie jest kompletnie czyszczona, tylko przewijana
+  poza obszar ekranu (w)
+- zmiana zachowania gg_search(). active w wyniku bêdzie zawiera³o
+  stan danej osoby. z tego wzglêdu bêdzie wy¶wietla³o te¿ zajêtych
+  jako dostêpnych w aplikacjach. podbicie API, mimo ¿e powinno byæ
+  ABI. tyle, ¿e z powodu takiej bzdury nie warto psuæ zale¿no¶ci (w)
+- wielolinijkowe wiadomo¶ci w ui-ncurses, wywo³ywane Ctrl-Enter,
+  Alt-Enter lub Esc-Enter. wysy³ane t± sam± kombinacj±, anulowane
+  samym Esc. teoretycznie mo¿e powodowaæ segfaulty, ale sprawdzi³em
+  valgrindem i niczego niebezpiecznego nie znalaz³. (w)
+- konferencje. wynalazek ten obs³uguje siê poleceniem ,,conference''.
+  okienka bêda automagicznie tworzone, je¶li mamy odpowiednie
+  ustawienia. (dawjar/w)
+- zmiana kolejno¶ci poszukiwania themeów (dawjar/w)
+- update dj.theme (dawjar/w)
+- dodanie GG_STATUS_BLOCKED (Chilek/w)
+- dodanie funkcji gg_notify_ex(), gg_add_notify_ex() i gg_remove_notify_ex().
+  podbicie API (Chilek/w)
+- ujemna warto¶æ formatów _line_width powoduje odjêcie ich od szeroko¶ci
+  ekranu (czach/w)
+- naprawienie rozrzucania mesgów po okienkach, zepsutego jednym z patchy (w)
+
+// 2002-09-11
+
+- dodany skrót "-A" dla parametru "--all" w ekgsearch (wysek)
+- komenda set akceptuje i wy¶wietla flagi dla niektórych zmiennych. mo¿liwe
+  jest dodawanie flag poprzedzaj±c warto¶æ plusem, lub usuwanie poprzedzaj±c
+  minusem. na przyk³ad ,,set log +gzip'' lub ,,set random_reason -away'' (w)
+- porz±dki w configure.in. nie wykrywamy niepotrzebnych rzeczy -- na przyk³ad
+  je¶li nie znajdzie libgsm, nie sprawdza <linux/soundcard.h>; je¶li nie
+  chcemy ioctld, nie szuka <linux/kd.h> (w)
+- obs³uga logów skompresowanych gzipem: ,,set log +gzip''. je¶li dany log
+  ju¿ istnieje, bêdzie dopisywany w postaci nieskompresowanej -- nale¿y
+  go najpierw skompresowaæ rêcznie za pomoc± komendy gzip (w)
+- uaktualnienia, dodatki i poprawki w dokumentacji (w)
+- usuniêcie configure z cvsu. bêdzie generowany automagicznie przy
+  tworzeniu snapshotów (speedy/w)
+- je¶li podczas ./configure-owania bêdzie w katalogu plik .enable-ui-ncurses,
+  to zostanie wkompilowane. mam do¶æ zapominania o tej opcji (w)
+- regeneracja configure po zmianach configure.in, m4/* i acheader.h (w)
+- poprawka b³êdu przy usuwaniu zmiennych (speedy/w)
+- tab completion przy ,,window'' (jr178783/d) 
+- poprawka rzucania wiadomo¶ci do innych okienek. tak, przyznajê, moja
+  wina. g³upi b³±d. (w)
+- matik.theme (matik/s)
+- ,,find -A'' wy¶wietla wszystkie wyniki (wysek/w)
+- wynik wyszukiwania nie jest ju¿ rozstrzelony co dwie linijki (w)
+- dodanie gg_search_request_free(), podbicie API (w)
+- dodanie osobnych timestampów dla czasu nadania wiadomo¶ci (Bies/w)
+- poprawka potencjalnego segfaulta w szukaniu (wysek/w)
+- poprawka czasu wiadomo¶ci w ekgwap (serek/w)
+
+// 2002-09-10
+
+- inna filozofia gg_saprintf(). rodzaj maszyny (pre-C99 lub post-C99)
+  jest wykrywany przez ./configure. dodatkowo zmieniono lekko sposób
+  uzyskiwania rozmiaru na post-C99, ¿eby dzia³a³o poprawnie na Sunach
+  (Murphy/w)
+- segfault przy completion_notify 2 i dope³nianiu tabem (Murphy/w)
+- usuniêcie niepotrzebnego ju¿ katalogu misc/ (w)
+- dodanie arim_irc.theme, dj.theme (Arim,dawjar/w)
+- usuniêcie niepotrzebnych includów z libgadu (m.in. <sys/time.h>) (w)
+
+// 2002-09-08
+
+- mamo, a speedy popsul VOIP i ncurses ;P (s)
+- wymuszanie ui-readline [--enable-force-readline] (s)
+- sigh... dlaczego config.h.in sie nie robilo ? (s)
+- poprawka dope³niania tabem (jp/w)
+
+// 2002-09-07
+
+- dodane komendy ,,last'' oraz zmiennej ,,last_count'' (d)
+- update ,,docs/vars.txt'' (d)
+- dodanie zmiennej ,,last'' (d)
+- zmiana ,,last_count'' na ,,last_size'' (d)
+- uaktualniony ,,docs/vars.txt'' (d)
+- dodany ,,last_list_timestamp'' do themes (d)
+- poprawne zapisywanie polskich znaków mesgów wychodz±cych w last (d)
+- s/get_last_count/last_count_get/ (d)
+- brakuj±ce sent_line_first (dawjar/w)
+- usuniêcie kilku drobnych leaków (w)
+- ekg pyta siê o zapisanie konfiguracji, nie ui (Arim/w)
+- Ctrl-Fx zmienia okno na konsoli FreeBSD (cukier/w)
+	
+// 2002-09-06
+
+- update arim.theme (Arim/w)
+- ui-readline respektuje zmienn± ,,sort_windows'' (d)
+- ui-ncurses poprawnie wykrywa p³eæ przy imionach z polskimi znakami.
+  widocznie ncurses co¶ psuje (Arim/w)
+- prompt z nickiem query w ui-ncurses (w)
+
+// 2002-09-05
+
+- ui-ncurses respektuje zmienn± display_color (w)
+- informowanie o zmianach w oknach w ui-readline (d)
+- dodanie zmiennej display_sent (w)
+- zniesienie ograniczeñ rozmiaru ekranu. póki co, jeszcze nie bêdzie
+  siê dostosowywa³ do zmian rozmiaru terminala (w)
+- mniejsze poprawki ui-ncurses (w)
+- dodanie ,,window next'' i ,,window prev'' (w)
+- obs³uga Ctrl-L w ui-ncurses (Kooba/w)
+- w query domy¶lne dope³nianie dodaje '/' (jojo/w)
+- dodanie zmiennej sort_windows (wielu/w)
+
+// 2002-09-04
+
+- ³adniejszy, dresiarski status w ui-ncurses (w)
+- ³adniejsze, dresiarskie prompty w ui-ncurses (w)
+- pocz±tek timestampów _przed_ lini± (w)
+- ui-ncurses obs³uguje Ctrl-W (w)
+- obs³uga okienek w ui-ncurses. jest jeszcze niekompletna w stosunku do
+  okienek z ui-readline, ale ma te¿ sporo zalet -- dresiarski status i
+  informowanie o zmianach w oknach. szczegó³y w docs/ui-ncurses.txt (w)
+
+// 2002-09-03
+
+- dodanie ' do znaków escapowanych w logach, ¿eby mo¿na by³o ³atwo
+  i przyjemnie to rozbiæ przez array_make(), która ju¿ obs³uguje
+  escapowane teksty (w)
+- poprawki w helpie (w)
+- nie mo¿na utworzyæ aliasu przykrywaj±cego komendê (FIG/w)
+- dodanie zmiennej save_password (FIG/w)
+- dodanie argumentów do connect (FIG/w)
+- polecenia przy braku parametrów proponuj± zajrzeæ do pomocy (FIG/w)
+- pseudokonfigurowalny statusbar w ui-ncurses, szczegó³y w ¼ród³ach.
+  póki co, pokazuje zegarek, numerek i kolorem okre¶la stan (w)
+
+// 2002-09-02
+
+- pager w bind (FIG/w)
+- segfault przy dcc (theKnight,wojboj/w)
+- escapowanie logów (w)
+
+// 2002-09-01
+
+- z okazji urlopu dodalem eksperymentalne wykrywanie pythona (s)
+- poprawka kolejno¶ci includów (kloczek,Charvel/w)
+
+// 2002-08-25
+
+- dodanie funkcji gg_libgadu_version() zwracaj±cej wersjê biblioteki
+  i makro GG_LIBGADU_VERSION, które podaje wersjê inkludów (w)
+- ekg -v zwraca wersjê ekg i libgadu ze szczegó³ami (niepamiêtamkto/w)
+- podbicie wersji api (w)
+- poprawki voip (Chilek/w)
+- MILI PAÑSTWO, PROSZÊ PRZYGOTOWAÆ SZAMPANA! pierwszy snapshot, który
+  znalaz³em na dysku to 20010825 ----  wynika z tego, ¿e min±³ rok od pierwszej
+  zachowanej, nieoficjalnej wersji ekg. je¶li kto¶ chce siê po¶miaæ,
+  zapraszam do http://dev.null.pl/ekg/stare/ekg-2001082501.tar.gz a jako
+  ciekawostkê za³±czam wykres rozmiaru tarballa w czasie (jest pod adresem
+  http://dev.null.pl/ekg/tarball.png). dziêkujê za uwagê i przepraszam za
+  za¶miecanie changeloga. (w)
+
+// 2002-08-23
+
+- \n po zamkniêciu query (theKnight/w)
+- dodanie zmiennej ctrld_quits (rmrmg/w)
+- dodanie contrib/link.pl (theKnight/w)
+
+// 2002-08-22
+
+- msg @grupa wysy³a do wszystkich cz³onków grupy. ¿eby wys³aæ do kogo¶,
+  czyj nick zaczyna siê od ma³py, nale¿y wpisaæ msg ,@nick (zdzichuBG/w)
+
+// 2002-08-21
+
+- usuniêcie innego aliasu w aliasie nie wywala klienta (theKnight/w)
+- bind bez parametrów pokazuje listê (theKnight/w)
+
+// 2002-08-20
+
+- pocz±tek obs³ugi skryptów Pythona. jak wiêkszo¶æ ficzerów, w stanie
+  u¿ywalnym bêdzie dopiero za pó³ roku. szczegó³y w docs/python.txt (w)
+- dodane timery, które przydadz± siê w skryptach. do tego mo¿na nimi
+  zarz±dzaæ komend± ,,timer'' (w)
+- dalsze psucie pythona. dodanie przyk³adowego skryptu. dodanie komendy
+  _py, która wykona kod w pythonie (w)
+- usuniêcie copyrightów z docs/README i z bannera, ¿eby wymienieni ludzie
+  nie byli traktowani jako jedyni autorzy (w)
+- sensowne opisanie instalacji w docs/README (w)
+- komenda quit jest ju¿ traktowana jako zwyk³a komenda, przez co nie
+  powinno byæ problemów z aliasami i timerami. niestety spowoduje to
+  leaki pamiêci przy wychodzeniu, ale tym zajmê siê kiedy indziej (w)
+- reorganizacja skryptów pythona. nie dzia³aj±. (w)
+
+// 2002-08-19
+
+- poprawka kolejnej konstrukcji mog±cej powodowaæ segfaulty. niech ¿yje
+  readline! (w)
+- poprawka b³êdu w rozwijaniu emotikonów (theKnight/w)
+- wysy³anie rozmów grupowych (stforek/w)
+- wyra¼ne zaznaczenie wersji licencji (L)GPL (w)
+- poprawka wy¶wietlania mesgów w ui-readline (dawjar/w)
+
+// 2002-08-18
+
+- g³upie porz±dki w kodzie. mniejszenie ilo¶ci #ifdef WITH_IOCTLD,
+  zmiany nazw funkcji dotycz±cych ioctld itd. (w)
+- pozbycie siê g³upiego b³êdu z czyszczeniem ekranu po w³±czeniu ekg (w)
+- wy³±czenie domy¶lnej kompilacji ioctld. czasami jest z tym jednak
+  wiêcej k³opotów ni¿ po¿ytku (w)
+- segfault w _msg (w)
+- mo¿liwo¶æ robienia theme'ów ircopodobnych. przyk³ad w themes/irc.theme (w)
+- jest ju¿ dope³nianie tabem w ui-ncurses. niniejszym og³aszam ten interfejs
+  u¿ywalnym. jak zwykle, prosimy zapi±æ pasy, spodziewamy siê nieznacznych
+  turbulencji (w)
+- poprawka ui-readline, by unikn±æ potencjalnego segfaulta (adwol/w)
+- segfault przy podwójnym bindowanie (booyas/w)
+
+// 2002-08-15
+
+- poprawki wspó³pracy z ekgwap (serek/w)
+- porz±dki w theme'ach. b³êdy po³±czenia bêd± ju¿ zawsze pokazywane
+  po polsku i bêd± mówi³y co naprawdê siê sta³o. precz z errno! (w)
+- polecenie bind obs³uguje ju¿ klawisze z altem (w)
+
+// 2002-08-13
+
+- niedostêpni bêd± dope³niani tabem przy completion_notify=2 (Joshua/w)
+
+// 2002-08-12
+
+- lista funkcji w docs/api/ref.html (w)
+- dodanie informacji do help bind (Murphy/w)
+- poprawienie kilku themeów (w)
+- poprawki w okienkach (w)
+- poprawka segfaultu w status (FIG/w)
+- poprawka --enable-wap (serek/w)
+- nowa zmienna ,,tab_command'' (Murphy/w)
+- niedostêpni nie bêd± dope³niani tabem (Murphy/w)
+- poprawka NAPRAWDE IDIOTYCZNEGO b³êdu. powinienem sobie chyba
+  darowaæ to wszystko. wszystkie operacja na listach alokowa³y
+  za ma³o pamiêci. (w)
+
+// 2002-08-11
+
+- czas nadania wiadomo¶ci w UTC (alfapawel/w)
+- literówki (FIG/w)
+- przygotowanie kodu pod ekgwap. rozwój jest prowadzony gdzie indziej
+  (http://www.comm.pl/~serek/ekgwap/), ale po co za ka¿dym razem
+  dostosowywaæ patche do aktualnej wersji ekg? (w)
+
+// 2002-08-10
+
+- poprawka lib/http.c dla przypadku, gdy nag³ówek przychodzi osobno
+  z danymi (wojboj/w)
+
+// 2002-08-09
+
+- poprawka themeów kolejny raz (joshua/w)
+- uaktualnienie protocol.html (kdebski/w)
+
+// 2002-08-07
+
+- poprawka standardowego theme + nowy przelacznik (zaor/s)
+- poprawka bezpo¶redniego po³±czenia z serwerem dla synchronicznych (hao/w)
+- poprawka wywo³añ gg_free_event (w)
+- dodanie win32, szczegó³y w README (hao/w)
+- rozszerzenie komend /version i /status (FIG/w)
+- poprawka ^D w pagerze (FIG/w)
+- dodanie komentarzy i \$Id\$ w win32/*.h (speedy/w)
+- speedy mnie zabije za zepsucie /status. poprawione (w)
+- naprawienie odbioru dcc. nag³ówek chunka mo¿e byæ ju¿ podzielony na
+  dwa pakiety. po tylu latach. przepraszam. (Chilek/w)
+- Traalala.. mozecie bic, ale na bialym tle biale literki zle wygladaja ;>
+  zaor zwrocil uwage i stwierdzil ze pogrubione znaczy tluste jest lepsze (s)
+- rewrite du¿ej czê¶ci kodu okienek. ju¿ wolê posiedzieæ, zrozumieæ co
+  robi która funkcja, ni¿ czytaæ codziennie na ekg-users kolejne porcje
+  core'ów. przy okazji Ctrl-D w okienku zamyka je. (w)
+- informacja o ulotce jest ju¿ wy¶wietlana w /help (FIG/w)
+
+// 2002-08-06
+
+- poprawki libgadu pod k±tem kompilacji pod win32 (hao/w)
+- malutki porz±dek w ui-readline (w)
+- poprawka segfaulta w ui-readline przy usuwaniu okienek (goblin/w)
+- ignorowanie autom4te.cache z autoconfa 2.53 (w)
+- zapomniany patch na wrzucanie ioctld do libexecdir (porridge/w)
+- s/struct list \*/list_t / (w)
+- s/AUTHOR/AUTOR/ w docs/ekgsearch.man.pl (w)
+- sunowe libce chyba nie akceptuj± NULL w %s, naprawiono (speedy/w)
+- dodana zmienna ekg_segv_handler, która mówi funkcjom ui_deinit(),
+  ¿eby niczego nie zwalnia³y, bo mo¿e byæ jeszcze gorzej (w)
+- s/windows_sort/window_sort/ w ui-readline (w)
+- poprawienie potencjalnego b³êdu w ui-readline (w)
+- literówki w komentarzach (w)
+- docs/api z prostym skryptem generuj±cym dokumentacjê (w)
+- zamiana ,,unsigned long'' na ,,uint32_t'' i ,,unsigned short'' na
+  ,,uint16_t'' w libgadu (w)
+- podbicie wersji ABI. na maszynach, gdzie nie ma wyrównywania
+  do 4 bajtów mog± byæ problemy z okazji zmian rozmiarów zmiennych (w)
+- s/gg_free_event/gg_event_free/ plus #define dla kompatybilno¶ci wstecz (w)
+- s/gg_free_search/gg_search_free/ (w)
+
+// 2002-08-05
+
+- aliasy naprawione. s± ju¿ traktowane na równi z komendami, wiêc nie
+  powinno byæ sytuacji, gdy komendy dzia³aj±, aliasy nie (w)
+- poprawione formatowanie (rmrmg/w)
+- poprawiony b³±d w gg_saprintf() (hao/w)
+
+// 2002-08-04
+
+- s/ekg_execute/command_exec/ (w)
+- komendy s± ju¿ w li¶cie, nie w tablicy (w)
+- aliasy nie dzia³aj± (w)
+- zapomniane podbicie ABI (arekm/w)
+
+// 2002-08-03
+
+- poprawka opisów funkcji w ¼ród³ach. pora zabraæ siê za automagiczne
+  generowanie opisu api (w)
+- zamiana fix16 i fix32 na gg_fix16 i gg_fix32. nie mo¿e byæ tak, ¿e
+  libgadu.{so,a} eksportuje nazwy niepoprzedzone prefiksem gg_. dla
+  zachowania kompatybilno¶ci <libgadu.h> tworzy aliasy, ale zostan±
+  one usuniête w przysz³o¶ci. (w)
+- poprawka pubdir.c (hao/w)
+- zamiana arytmetyki (void*) na odpowiednie typy, poniewa¿ niektóre
+  kompilatory nie pozwalaj± dodawaæ (void*)'ów (hao/w)
+- przepisanie handle_status() od zera. mniej kodu, mniej b³êdów (w)
+- poprawka extract.pl (Arim/w)
+- poprawka gg_logout (hao/w)
+
+// 2002-08-02
+
+- valgrind jest *PRZEPIEKNY*, na dzisiaj dwa leaki usuniête (w)
+- naprawienie va_format_string() -- nie siêga w va_list g³êbiej
+  ni¿ jest to potrzebne. valgrind mniej ¶mieci (w)
+- zwalnianie wszystkiego, co nie jest potrzebne ekg. tak, trochê
+  siê to ró¿ni od dotychczasowej polityki (po co zwalniaæ, skoro
+  i tak exit() siê tym zajmie), ale w ten sposób znacznie ³atwiej
+  jest wykrywaæ leaki (w)
+- zwalnianie w ui-readline (w)
+- poprawka off-by-one w ui-readline z MAX_LINES_PER_SCREEN (w)
+
+// 2002-08-01
+
+- literówki w dokumentacji (Gophi/w)
+- brakuj±ce <limits.h> (DomBal/w)
+
+// 2002-07-27
+
+- mo¿liwo¶æ nieuruchamiania ./configure przez ./autogen.sh (porridge/w)
+- AC_PREREQ (porridge/w)
+- ekg mo¿e byæ linkowane dynamicznie z libgadu (porridge/w)
+- many dla ekgsearch (porridge/w)
+- literówki (porridge/w)
+- ioctld nie jest instalowany z suidem (w)
+- instalacja manów ekgsearch (w)
+- du¿o psucia autoconfów i Makefile'i (w)
+- dodanie ,,make uninstall'', które usuwa pozosta³o¶ci po ró¿nych
+  wersjach i konfiguracjach ekg (w)
+- wersja statyczna libgadu jest kompilowana bez -fPIC, dzielona z -fPIC,
+  przez co w najgorszym wypadku bêdzie kompilowana dwa razy (porridge/w)
+- konwersja cp->iso userlisty z serwera (a.latanski/w),
+- zamiana spacji na podkre¶lenia w userli¶cie z serwera (a.latanski/w),
+- ,,display_notify 2'', szczegó³y w docs/vars.txt (w),
+- dodanie prostych hashy themeów i zmiennych, ¿eby ltrace nie za¶mieca³o
+  konsoli przez 5 minut przy starcie programu. przy okazji ekg bêdzie
+  startowa³o oko³o 20us szybciej (w),
+- s/struct list */list_t /, s/struct string */string_t / (w)
+- drobne porz±dki w kodzie ekg (w)
+
+// 2002-07-25
+
+- je¶li wykryje <linux/kd.h>, robi --with-ioctld (w)
+
+// 2002-07-24
+
+- poprawki configure dla Murphy'ego (w)
+
+// 2002-07-23
+
+- dodanie obs³ugi znaków ¡±¦¶¬¼ w ekgsearch (wysek)
+- poprawka komunikatu przy segfaultach (w)
+
+// 2002-07-22
+
+- dodanie komendy ,,bind'' (d)
+- dopisywanie do konfiga bindowanych klawiszy (d)
+- drobne zmiany w ,,bind'' (d)
+- dalsze poprawki (d)
+- uaktualnienie ,,docs/FAQ'' (d)
+- lekkie poprawki obs³ugi eventów (w)
+- poprawka wykrywania ncurses (w)
+- poprawka gg_send_message_confer (Chilek/w)
+
+// 2002-07-21
+
+- poprawka komendy ,,alias'' (eileen/d)
+
+// 2002-07-20
+
+- porz±dki w poleceniu help (w)
+- dodanie komendy echo (w)
+- dodanie akcji zdarzeñ ,,exec'' (w)
+- poprawka zdarzeñ z wieloma akcjami (w)
+- dodanie %4 w zdarzeniach, które zawiera eskejpowan± tre¶æ wiadomo¶ci (w)
+- poprawki dokumentacji. dodanie gdb.txt, przenosny-kod.txt (w)
+
+// 2002-07-19
+
+- poprawki dokumentacji (tommy/w)
+- update arim.theme (arim/w)
+- poprawka DESTDIR (baseciq/w)
+- omijanie braku FIONBIO fcntlem (adwol/w)
+- poprawka pagera, o jedn± liniê za ma³o (neeo/w)
+- spacja nie wywo³uje aliasu (perry/w)
+- kod obs³ugi konferencji (Chilek/w)
+- podbicie libgadu.so.0.10 (w)
+
+// 2002-07-18
+
+- poprawienie wy¶wietlanie d³ugich promptów przy alt+? (arim/d)
+- ,,window refresh'' po ,,window clear'' (d)
+
+// 2002-07-15
+
+- wywalenie printfa (neeo/w)
+
+// 2002-07-12
+
+- przepisanie curses.m4 od zera unikaj±c wielokrotnego wywo³ywania makr.
+  dziêki temu configure zajmuje ~100kB mniej (w)
+- dodanie $(DESTDIR) do Makefile (jajcus/w)
+- instalacja libgadu.h, polskich manów, ekgsearch (w)
+- przepisanie readline.m4 od zera. teraz siê zacznie narzekanie na mnie
+  na ekg-users (w)
+- dodanie opcji --all i --debug, usuniêcie opcji --raw w ekgsearch (wysek)
+- poprawka do¶æ nieciekawego segfaulta (print() przed ui_init()) (baseciq/w)
+
+// 2002-07-11
+
+- poprawka aliasów w query (theKnight/w)
+- poprawka Makefile dla --with-shared (Charvel/w)
+- dodanie skryptu ekgsearch (wysek/w)
+
+// 2002-07-10
+
+- poprawki w numeracji libgadu.so, szczegó³y w lib/Makefile.in (jajcus/w)
+
+// 2002-07-08
+
+- dodana komenda ,,window list'' (d)
+- dodana zmienna ,,make_window'' (d)
+- update ,,docs/vars.txt'' (d)
+- poprawka od¶wie¿ania prompta w okienkach (d)
+- poprawka obcinania chat_headera (arim/d)
+- poprawka ,,query_finished'' z themes.c (d)
+- s/Okienku/Okienko/g w themes.c (grzelo/d)
+- dodanie docs/emoticons.ansi (mateusza/w)
+
+// 2002-07-07
+
+- update sic.theme (sic/w)
+
+// 2002-07-06
+
+- sprawdzanie czy query istnieje (d)
+- poprawka gg_dcc_debug_data (Chilek/w)
+- b³±d w GG_CLASS_ACK (acc/w)
+
+// 2002-07-05
+
+- poprawiony segfault w okienkach (d)
+- lekko zmodyfikowane funkcje window_0X (d)
+- drobna poprawka od¶wie¿ania przy ,,window_switch()'' (d)
+- poprawka segfaulta przy away/back/... (rmrmg/w)
+- poprawka INADDR_NONE (Murphy/w)
+- obs³uga forwardowania portów. dodatkowe pola gg_login_params:
+  external_addr, external_port (Chilek/w)
+
+// 2002-07-04
+
+- update arim.theme (arim/w)
+- update opisu protoko³u: GG_CLASS_ACK (acc/w)
+- update opisu protoko³u: GG_LOGIN_EXT (pm,ajron/w)
+- poprawka beepania w ui-readline (ghunt/w)
+- dodanie lib/compat.h, który bêdzie zawiera³ wszystkie dziwne deklaracje
+  dla dziwnych systemów (s/w)
+- dodanie makra GG_PACKED, które przydaje siê przy definicji struktur (w)
+- dodane okienka do ui-readline (d)
+- ma³y cleanup (w)
+- poprawka kombinacji alt+[1-9] (d)
+
+// 2002-07-03
+
+- pocz±tek ui_event() (w)
+- poprawiony segfault w ,,dcc get #'' (Chilek/w)
+- update feeg.theme (feeg/w)
+
+// 2002-07-02
+
+- usuniêto problem z select()em przy wychodzeniu (ekg-users/w)
+- dostêpny z opisem idzie do dope³nienia ju¿ (joshua/w)
+- dodane docs/http.txt (pm/w)
+
+// 2002-06-29
+
+- poprawka includów dla FreeBSD (argasek/w)
+- poprawka edycji linii w ui-ncurses (w)
+- poprawka dcc (Chilek/w)
+- poprawka ui-readline (seba/w)
+
+// 2002-06-28
+
+- porz±dkowanie funkcji w stuff.c (w)
+- dodawanie const do deklaracji funkcji, gdzie trzeba (w)
+- porz±dki w event_flags() i event_format() (w)
+- historia i edycja linii w ui-ncurses. jest ju¿ u¿ywalne. (w)
+
+// 2002-06-27
+
+- wydzielenie kodu readline. bardzo mo¿liwe, ¿e przy okazji co¶ zosta³o
+  zepsute. w razie problemów krzyczeæ (w)
+- przygotowanie do tworzenia innych frontendów, szczegó³y w docs/ui.txt (w)
+- poprawka aliasów (MG/w)
+- doda³em parametry --enable-ui-*. oczywi¶cie nie dzia³aj±. (w)
+- dodanie ui-batch, który nic nie robi dla trybu wsadowego. (w)
+- pocz±tek ui-ncurses. na upartego da siê tego ju¿ u¿ywaæ. (w)
+- porz±dki w configure.in (w)
+- namiastka tab completion w ui-ncurses (w)
+- parametr -f do wyboru ui (w)
+- dodanie ui-none (w)
+
+// 2002-06-25
+
+- poprawka segfaulta z -t (qbas/w)
+
+// 2002-06-22
+
+- poprawka aliasów (perry/w)
+- poprawka devel-hints.txt (w)
+- dodanie xmalloc.[ch], zmiana wszystkich alokacji w ekg na funkcje x*().
+  niestety libgadu nie mo¿e byæ zale¿ne od tego, wiêc tam nadal bêdzie
+  zabawa w sprawdzanie wszystkiego (w)
+- uaktualnienie helpów /back i /invisible (gophi/w)
+
+// 2002-06-21
+
+- aliasy mog± ju¿ wywo³ywaæ quit (ekg-users/w)
+- pusta linia nie wywo³uje aliasów (joshua/w)
+- poprawka klith.theme (MG/w)
+- testowy commit (w)
+
+// 2002-06-19
+
+- ma³a proteza dla themeów które zmieniaj± aliases_add (arim/w)
+- usuniêto --wait (charvel/w)
+
+// 2002-06-19
+
+- poprawki libgadu, ¿eby ignorowaæ przynêty (w)
+- poprawka reakcji na ctcp (w)
+- /status podaje adres serwera (seba/w)
+- poprawka /set (seba/w)
+- wielokomendowe aliasy. kolejn± komendê dodaje siê przez ,,alias -A'' (w)
+- poprawka charsetu logów (joshua/w)
+
+// 2002-06-18
+
+- drobne poprawki dcc (ekg-users/w)
+- zmiana adresu huba z appmsg.asp na appmsg2.asp. mo¿liwe, ¿e pomo¿e
+  to na problemy z zabronionym dostêpem (w)
+- wy³±czenie /history. na lito¶æ bosk±, jak jeszcze raz zobaczê taki
+  kod to zabijê ;/ (w)
+
+// 2002-06-17 
+
+- history command (tri10o/s) - need cleaning... but now works ;>
+
+// 2002-06-16
+
+- poprawki g³osowych (s/w)
+- poprawka kolejno¶ci argumentów linkera. pomo¿e sunosom, innym nie
+  zaszkodzi (Beeth/w)
+- poprawka auto_reconnect (Yarko/w)
+
+// 2002-06-15
+
+- s/u_int/uint/, brakuj±ce #include "config.h" (Beeth/w)
+- dodany opis docs/voip.txt, uaktualnienie FAQ (w)
+- dodane w³±cz/wy³±cz debug pod F12. nie bêdê siê bawi³ w obs³ugê
+  wszystkich terminali. jak komu¶ potrzebny inny, to niech pode¶le
+  patcha (w)
+- poprawki configure.in (w
+- poprawka b³êdów przy --without-debug (cooler/w)
+- dalsze poprawki configure.in (w)
+- poprawki rozmów g³osowych (w)
+
+// 2002-06-14
+
+- mocna przebudowa kodu dcc. makra gg_read() i gg_write() odchudzi³y
+  nieco kod i zwiêkszy³y odporno¶æ na b³êdy sieci. przygotowanie pod
+  rozmowy g³osowe. (w)
+- zmiana API, dodane zdarzenie GG_EVENT_DCC_CALLBACK, po którym nale¿y
+  wywo³aæ gg_dcc_set_type() (w)
+- dodane <gsm.h> i -lgsm, je¶li s± w systemie. teoretycznie obs³uguje
+  rozmowy g³osowe, ale nie testowano dobrze. (w)
+- dodanie ,,dcc close #x'', które przydaje siê w g³osowych (w)
+
+// 2002-06-13
+
+- s/init_pipe/init_control_pipe/ w stuff.h (d)
+- wywalenie warninga przy ,,changed_dcc'' (d)
+- dodana zmienna ,,dcc_dir'' (d)
+- update docs/vars.txt (d)
+- poprawka quita (chilek/w)
+
+// 2002-06-12
+
+- poprawka quita (carnil/w)
+- wszystkie kombinacje dcc dzia³aj±, tadaaaa! (w)
+- update dokumentacji (w)
+- poprawka wysy³ania dcc (chilek/w)
+
+// 2002-06-11
+
+- du¿e poprawki configure.in, */Makefile.in, przygotowuj±ce pod
+  osobn± dystrybucjê libgadu (w)
+- drobne poprawki dcc (w)
+- dodanie -Wall (w)
+- ,,dcc send 12345 plik --reverse'' wysy³a pasywnie bez wzglêdu na to
+  czy klient jest za maskarad± czy nie (w)
+
+// 2002-06-10
+
+- poprawki dcc, dodanie gg_dcc_get_file() (chilek/w)
+
+// 2002-06-09
+
+- poprawki w komentarzach libgadu, by w przysz³o¶ci móc w ³atwy sposób
+  przerobiæ je skryptem na zgrabne ,,api reference'' (w)
+- przygotowanie gg_gethostbyname() pod wielobie¿no¶æ (w)
+- poprawka p³ci w /list (neeo/w)
+- --without-debug naprawdê pozbywa siê debugów z binarek (w)
+- poprawki dokumentacji (fig/w)
+- dodanie \$\I\d\$ w docach (fig/w)
+
+// 2002-06-08
+
+- drobne poprawki w docach (w)
+
+// 2002-06-06
+
+- nowy contrib Auto_Make_EKG (ciacho/w)
+- poprawka config.h.in (murphy,klith/w)
+
+// 2002-06-05
+
+- poprawka gg_saprintf (krzak/s)
+- angielska wersja ekl2.man (w)
+
+// 2002-06-04
+
+- poprawka libgadu.h (adaml/w)
+
+// 2002-06-03
+
+- od¶miecanie libgadu.h (adaml/w)
+- poprawka libgadu.h, brak include'a config.h (murphy/w)
+
+// 2002-06-02
+
+- poprawka ,,set dcc_ip'' (adwol/w)
+- poprawka emotikonów (fig/w)
+
+// 2002-05-29
+
+- dodanie patcha na CONFIG_DIR (orzech/s)
+- arim.theme (arim/w)
+
+// 2002-05-28
+
+- contrib/getekg.sh (arim/w)
+- zabijanie ioctld przy SEGV (perry/d)
+
+// 2002-05-27
+
+- update ekl2.sh (tri10o/w)
+- zmiana ,,--ioctl-daemon-path'' na ,,--ioctld-path'' (w)
+- poprawka emotikonów. znowu (w)
+- poprawka potencjalnego format-vulnerability (w)
+
+// 2002-05-26
+
+- uaktualnienie i poprawki opisu protoko³u (adaml/w)
+- wywalenie protocol.txt (w)
+
+// 2002-05-25
+
+- literówki w dokumentacji (fig/w)
+- poprawki themeów (theKnight/w)
+- poprawki pagera (seba,adwol/w)
+
+// 2002-05-23
+
+- usuniêcie -o, dodanie komend, dodanie docs/emoticons.txt (adwol/w)
+- poprawka segfaulta w wy¶wietlaniu emotikonów (adwol/w)
+
+// 2002-05-22
+
+- poprawka wysy³ania do nieznajomych (kalkos/w)
+- dodanie ostrze¿eñ do dokumentacji themów (theKnight/w)
+- potok steruj±cy za pomoc± parametru -c (adwol/w)
+- wykonywanie komend w trybie wsadowym (adwol/w)
+- obs³uga emotikonów (adwol/w)
+
+// 2002-05-19
+
+- poprawka configure/zle includowanie (s)
+- poprawka examples/Makefile.in (jojo/w)
+- update arim.theme (arim/w)
+- poprawka rozpoznawania p³ci. bierze najpierw imiê, potem ksywê. dlatego
+  ,,kuba'' powinien mieæ wpisane imiê ,,jakub'', je¶li nie chcemy z niego
+  robiæ dziewczynki (arim/w)
+
+// 2002-05-18
+
+- poprawka reakcji na zmiany stanu (scooty/w)
+
+// 2002-05-17
+
+- dodany arim.theme (arim/w)
+- poprawka themeów roz³±czania (arim/w)
+- DU¯E zmiany w autoconfie i Makefileach (w)
+- poprawione wykrywanie p³ci w list (gawrysz/w)
+- s/ioctl_daemon/ioctld/ (w)
+- poprawka rizonów przy reconnecie (gawrysz/w)
+- poprawka pagera i autosave'a (wielu/w)
+- ma³y rewrite obs³ugi gg_notify (w)
+
+// 2002-05-16
+
+- poprawka endianów w kolorkowych pakietach (murphy/w)
+- dodane zdarzenia ,,sigusr1'' i ,,sigusr2'' odpowiadaj±ce sygna³om (joshua/w)
+- dodana akcja ,,command'', która wywo³uje podan± komendê (w)
+- wysy³anie wiadomo¶ci do wielu odbiorców (wojboj/w)
+- poprawka rejestracji (scooty/w)
+
+// 2002-05-15
+
+- poprawka listowania (joshua/w)
+- usuniêcie wykrywania niewidocznych (w)
+- b³êdy w F1 (w)
+- mo¿na tylko raz zarejestrowaæ numerek w ci±gu sesji, by dzieciom trochê
+  utrudniæ zabawê w polowanie na numerki (w)
+- rozpoznawanie p³ci. szczegó³y w docs/themes.txt (w)
+- ukryta zmienna ,,protocol'' w ekg pozwala szybko zmieniæ wersjê protoko³u,
+  ¿eby sprawdziæ jaki¶ egzotyczny ficzer (w)
+- zmienne liczbowe mo¿na wpisywaæ jako heksadecymalne, poprzedzaj±ce je
+  tekstem ,,0x'' (w)
+
+// 2002-05-14
+
+- ma³e poprawki w dokumentacji (w)
+
+// 2002-05-09
+
+- dodanie debian/ (phantomik/w)
+- Ctrl-C zachowuje siê jak w bashu -- czy¶ci liniê, nie wychodzi (adwol/w)
+- ujednolicone zachowanie Ctrl-D i ,,quit'' (adwol/w)
+- usuniêcie u¿ytkownika zaznacza zmianê konfiguracji (adwol/w)
+- poprawka array_make() (adwol/w)
+- poprawka stanów po reconnekcie (gawrysz/w)
+
+// 2002-05-07
+
+- poprawka autosave (baseciq/w)
+- find w query szuka rozmówcy (dawszy/w)
+- update docs/on.txt (w)
+- uaktualnienie ,,docs/vars.txt'' (d)
+
+// 2002-05-06
+
+- poprawka autosave (baseciq/w)
+- dodana komenda ,,version'' (d)
+- ekg --version (d)
+- drobna poprawka w ,,docs/on.txt'' (d)
+
+// 2002-04-30
+
+- poprawki docs/devel-hints.txt, dodanie docs/ULOTKA, na czerwono ka¿e
+  na pocz±tku czytaæ pomoc itd. (w)
+- skrypt themes/extract.pl (w)
+- je¶li w themie bêdzie ,,no_prompt_cache 1'', prompty nie bêd± keszowane
+  (a to dopiero nowina!) i mo¿na przez to w nich dawaæ timestampy (w)
+- niedorobiony theme 2k2 (w)
+- zmiana licencji libgadu na LGPL (w)
+- dorzucenie plików COPYING (w)
+- poprawienie README (w)
+
+// 2002-04-28
+
+- dok³adniejsze ifdefowanie kodu dla ioctldaemona (w)
+- s/bzero/memset/ (w)
+
+// 2002-04-27
+
+- obs³uga F-ów pod konsol± FreeBSD (maciekk/w)
+- poprawka reasonów przy autoawayu (gawrysz/w)
+- poprawka themeów (gawrysz/w)
+- poprawka synchronicznych po³±czeñ (azzie/w)
+
+// 2002-04-25
+
+- sekwencje F1 i F2 dla putty (jmk/w)
+- poprawka dla nie-gnu-kompilatorów (speedy/w)
+
+// 2002-04-24
+
+- poprawka autoawaya (gawrysz/w)
+
+// 2002-04-23
+
+- libgadu: s/gg_alloc_sprintf/gg_saprintf/ (w)
+- ekg: s/gg_alloc_sprintf/saprintf/ (w)
+- sensowny pager reaguj±cy na zmiany rozmiaru terminala (w)
+- podbindowanie prostego helpa pod F1 (w)
+- krótka i zwiêz³a lista aktywnych i zajêtych u¿ytkowników pod F2 (w)
+
+// 2002-04-22
+
+- poprawka ,,dostêpny z opisem'' (gawrysz/w)
+- uzupe³nienie themeów (gawrysz/w)
+- poprawka ,,set proxy'' (seba/w)
+- poprawki promptów, dodanie readline_prompt_invisible (gawrysz/w)
+- dostêpny z opisem w /list (gawrysz/w)
+- back i invisible dobrze pokazuj± opisy (gallanonim/w)
+
+// 2002-04-19
+
+- obs³uga dostêpnego i niewidocznego z opisem (w)
+- literówki w dokumentacji (FIG/w)
+
+// 2002-04-18
+
+- rewrite kodu ³±czenia siê z serwerem, nie dzia³a jeszcze z proxy (w)
+- usuniêcie zmiennych ,,proxy_*'' na rzecz jednej ,,proxy'' (w)
+- dodanie zmiennej ,,server'', opis w ,,docs/vars.txt'' (w)
+- porz±dki w cvsie. usuniêcie starych i niepotrzebnych plików (w)
+- poprawka b³êdnych statusów (wielu/w)
+- porz±dki w Makefile'ach i configure.in (w)
+- update faq (w)
+- zmiana w api, parametry gg_login() (w)
+- poprawka _msg (seba/w)
+- poprawka kodu proxy, ju¿ dzia³a jak trzeba (w)
+- poprawka statusów (w)
+
+// 2002-04-16
+
+- zmienna ,,query_commands'' (robson/w)
+- usuniêcie ,,ordering cd'' -- b³êdy na starszych solarisach (M.Przadlo/w)
+- update readme w zakresie wysy³ania bugreportów (w)
+- poprawka segfaultu przy b³êdach w pubdir (robson/w)
+- prawid³owy host w gg_change_info() (robson/w)
+- mo¿liwy b³±d w completion (seba/w)
+
+// 2002-04-12
+
+- poprawki kodu formatów, nie wywala klienta (w)
+- poprawki kodu dcc. odbieranie nie-za-maskarad± dzia³a (w)
+
+// 2002-04-11
+
+- uaktualnienie docs/on.txt (jmk/w)
+- poprawka tab completion (gawrysz/w)
+- dodanie opisu protoko³u dcc w pliku docs/dcc-protocol.txt (ws/w)
+- poprawka segfaulta przy userliscie na serwerze (dyziu/w)
+
+// 2002-04-09
+
+- formatowanie akcji zdarzeñ. od teraz %1 w akcji oznacza uin nadawcy,
+  %2 nazwê, je¶li jest w userli¶cie albo numerek (w)
+- poprawka \n na \r\n przy awaryjnym zapisie userlisty (nie-pamiêtam-kto/w)
+- config_read() poprawnie obs³uguje komentarz typu ,,//'' (D.Jarosz/w)
+- posortowanie poleceñ w tablicy commands (D.Jarosz/w)
+- poprawka w docs/api.txt zmiana libgg -> libgadu (D.Jarosz/w)
+- przymiarka do akcji ,,exec'' (w)
+- og³aszanie userlisty po ,,list --get'' (cooler/w)
+- poprawka helpa ,,disconnect'', dopisanie rizonu (cooler/w)
+
+// 2002-04-04
+
+- drobna poprawka w funkcji correct_event() (D.Jarosz@elka.pw.edu.pl/d)
+- dodana obs³uga sygna³u zmiany rozmiaru okna (d)
+
+// 2002-03-31
+
+- poprawka ,,reconnect'' (d)
+
+// 2002-03-30
+
+- poprawka helpa ,,list'', bo zaczynaj± mnie denerowaæ listy o -g (w)
+- uaktualnienie ekgnv.sh (jojo/w)
+- losowany opis przy ,,auto_away'' w razie potrzeby (d)
+
+// 2002-03-29
+
+- wyrzucenie ekl.pl z Makefile.in (d)
+- dorzucenie ekl2.pl autorstwa smarkacza (smarkacz/w)
+- poprawka wczytywania sekwencji z themów przy ,,on'' (d)
+- poprawka pagera przy ,,list'' i ,,help'' (eileen/d)
+- losowanie opisu przy ,,disconnect'' w razie potrzeby (d)
+
+// 2002-03-28
+
+- dodana zmienna ,,log_status'' (d)
+- uaktualnienie docs/vars.txt (d)
+- przeniesienie contribów z docs/ do contrib/ (w)
+- dodanie contrib/ekgnv.sh ¶ci±gaj±cego i buduj±cego now± wersjê (jojo/w)
+- dodane zmienne ,,away_reason'' oraz ,,random_reason'' (d)
+- poprawka przy ,,display_notify'' (eileen/d)
+
+// 2002-03-27
+
+- akcja ,,beep'' przy ,,on'' (smarkacz/d)
+
+// 2002-03-26
+
+- numerek i stan w ,,list user'' (klith/w)
+- uaktualnienie klith.theme (klith/w)
+- poprawki niewidzialnych (klith/w)
+- pokazywane opisy przy ,,away'' i ,,quit'' (klith/w)
+- pager przy ,,help'' (wojboj/w)
+- zdarzenie ,,invisible'' dla komendy ,,on'' (d)
+- uaktualnienie docs/on.txt (d)
+
+// 2002-03-25
+
+- format_string() przy wy¶wietlaniu krótkich helpów (d)
+- poprawka cp->iso w opisie w³asnej zajêto¶ci (wasyl/w)
+- poprawka segfaulta przy /reconnect (anonimowy darczyñca/w)
+
+// 2002-03-24
+
+- domy¶lny powód nieobecno¶ci w zmiennej ,,quit_reason'' (matias/w)
+- poprawka inkludów readline (seiko/w)
+- obs³uga niewidocznych u¿ytkowników (klith/w)
+- poprawka poprawki mkdir (wasyl/w)
+- kolejna poprawka wykrywania readline (wojboj/w)
+
+// 2002-03-23
+
+- porz±dki w kodzie i Makefile (wojboj/w)
+- dodany ekl2.sh (tri10o/w)
+- ,,find'' bez parametrów mówi o sobie (w)
+- poprawka obs³ugi parametrów komend (wasyl/w)
+- konwersja iso->cp przy szukaniu (wasyl/w)
+
+// 2002-03-20
+
+- wy³±czenie tab completion w wielolinijkowych mesgach (gawrysz/w)
+- literówki w README (celtique/w)
+
+// 2002-03-18
+
+- poprawka b³êdu w obs³ugi statusu (kuki/w)
+- konwersja cp-iso w opisach stanów (noname/w)
+- powód nieaktywno¶ci w ,,quit'' (klith/w)
+
+// 2002-03-17
+
+- bzdurka w helpie (cry/w)
+
+// 2002-03-14
+
+- poprawka s/ /\t/ w Makefile.in (booyas/w)
+
+// 2002-03-13
+
+- fix Makefile.in, install -d $(prefiX)/bin (gawrysz/w)
+- poprawka dope³niania w query (gawrysz/w)
+
+// 2002-03-12
+
+- ,,list --wait'' czeka na wci¶niêcie klawisza po zape³nieniu ekranu.
+  nie do koñca dopracowane, ale dzia³a. (jojo/w)
+
+// 2002-03-11
+
+- mam drania! nie powinno segfaulciæ przy zmianie stanu z tekstem. (w)
+- poprawka kodu kolorków. teoretycznie nie powinno wywalaæ b³êdów,
+  ale g³owy nie dam, bo nie mam jak tego sprawdziæ. (w)
+
+// 2002-03-10
+
+- dodanie ³adniej obs³ugi segfaultów - wy¶wietla komunikat i zrzuca
+  konfiguracjê i userlistê do ~/.gg/{config,userlist}.$PID (w)
+- rewrite kodu obs³ugi argumentów. nie bêdzie ju¿ niescis³o¶ci typu
+  ,,list --googoo''.
+
+// 2002-03-09
+
+- tab completion przy query nie dope³nia do nicka rozmówcy, bo i po co,
+  i zostawia w spokoju ,,/'' przy dope³nianiu komend (jojo/w)
+- wci¶niêcie enter w pustej linii w query nie wysy³a niczego (w)
+- literówka w helpie (jojo/w)
+- ,,const char'' w libgadu, gdzie trzeba (tomee/w)
+- poprawka komendy ,,status'' (w)
+
+// 2002-03-08
+
+- próbna obs³uga kolorków. (w)
+- obs³uga opisów stanów -- wy¶wietla przy po³±czeniu, zmianie stanów. (w)
+- komenda ,,away'' ma parametr, który okre¶la powód. (w)
+- podbicie wersji do 0x15. raz kozie ¶mieræ. (w)
+- poprawka nowo¶ci (kfazi/w)
+- obs³uga EINTR w select() (eileen/w)
+
+// 2002-03-07
+
+- poprawka desciptor-leaka. nie powinno wywalaæ ju¿ ,,too many open files''
+  gdy serwer le¿y i libgadu stara siê ³±czyæ w kó³ko. (w)
+
+// 2002-03-06
+
+- nowo¶ci w docs/protocol.*, powody nieobecno¶ci (adaml/w)
+- dodanie do gg_search_request pola ,,start'' mówi±cego, od którego
+  wyniku ma byæ pokazywane. dodanie parametru ,,start'' do funkcji
+  gg_search_request_mode_*() (meecash/w)
+- dodanie parametru ,,--start'' do komendy ,,find'' (w)
+- poprawka g³upiego b³êdu z watches (kfazi/w)
+
+// 2002-03-04
+
+- poprawka prepare_path(), bo na NetBSD nie mo¿na tworzyæ ,,x//'' (dawszy/w)
+- dodatkowe sprawdzanie NULLi (kfazi/w)
+- poprawka list (kfazi,jmk/w)
+
+// 2002-02-26
+
+- poprawka segfaulta, gdy dane watcha == NULL (kfazi/w)
+- theme (jojo/w)
+
+// 2002-02-21
+
+- poprawka tab completion zmiennych (jojo@slackware.pl/w)
+
+// 2002-02-20
+
+- poprawka w kodzie eventów ,,on'' (d)
+- poprawka poprawki ;/ (w)
+
+// 2002-02-19
+
+- poprawka lib/dcc.c, brakuj±ce GG_EVENT_DCC_CLIENT_ACCEPT (tomee/w)
+- poprawka dcc.txt, brakuj±ce gg_dcc_port... (tomee/w)
+
+// 2002-02-17
+
+- poprawka segfaulta w variable_add() (smiechu@rtr.fsi.pl/w)
+- wywalenie komendy ,,info'' (w)
+- poprawka command_set() i variable_find() (eileen/w)
+- poprawka zachowania ,,find'' (dawid@jarosz.one.pl/w)
+- poprawki dokumentacji, w miarê kompletny opis api dcc (w)
+
+// 2002-02-16
+
+- rewrite kodu parsuj±cego odebrane wiadomo¶ci (w)
+
+// 2002-02-15
+
+- quickfix zapisywania theme'ów (jsm/w)
+- sensowne themey. zniknê³o polecenie ,,theme''. zmienia siê zmienn±
+  ,,theme'' (w)
+- duuu¿o poprawek w kodzie eventów ,,on'' (macpias@poczta.fm/w)
+
+// 2002-02-14
+
+- s/libgg/libgadu/ w Makefile.in (tomee/w)
+
+// 2002-02-13
+
+- poprawka algorytmu liczenia hashy (poprzedni te¿ by dobry, ale ten
+  ³adniej implementuje ROR). autor kodu: bart/xtreeme, cryogen@host.sk (w)
+- podbicie GG_CLIENT_VERSION do 0x14 (w)
+
+// 2002-02-12
+
+- mo¿na zmieniaæ swoje informacje w katalogu publicznym poleceniem
+  ,,change'', ale niestety póki co, trzeba za ka¿dym razem podawaæ
+  wszystko (w)
+- poprawka gg_change_info(), ¿eby poprawnie urlencodowa³a pola (w)
+
+// 2002-02-11
+
+- poprawka segfaultu w funkcjach poprawiaj±cych wynik array_make() (w)
+- poprawka ,,list'', zmiana informacji dzia³a jak trzeba (dawid@pj190/w)
+
+// 2002-02-10
+
+- przerzucenie wszystkich funkcji userlisty (w tym modify) do jednego
+  polecenia ,,list''. userlista z serwera to ,,list --get'', na serwer
+  ,,list --put'' (w)
+- drobne poprawki w docach (w)
+- drobne poprawki w dcc i http (w)
+
+// 2002-02-09
+
+- nowe funkcje array_make() i array_free() s³u¿± do ³adnego dzielenia
+  tekstów na pola. obs³uguje eskejpowanie, cudzys³owie itp. dziêki
+  czemu dzia³aj± konstrukcje typu ,,msg "mi¶ yogi" cze¶æ'' (w)
+- nowe logowanie wiadomo¶ci, tak jak wspomnia³em na ekg-devel (w)
+- obs³uga listy kontaktów na serwerze (w)
+- komendy ,,_ul_get'' i ,,_ul_put'', bo póki co, nie mam pomys³u,
+  jak to rozwi±zaæ (w)
+- poprawki w dokumentacji. pocz±tek htmlizacji protokol.txt (w)
+
+// 2002-02-08
+
+- dopisane externy do zmiennych w libgadu.h (tomee/w)
+- dopisana nowa funkcja hashowania has³a. nie dzia³a. pó¼niej sprawdzê
+  (ajron/w)
+
+// 2002-02-07
+
+- ju¿ nie dodaje ,,obcych zmiennych'' przy /set (w)
+- auto_save, domy¶lnie wy³±czona (cry/w)
+- poprawki MacOSX'owe - teraz powinno sie komplikowac [z fink'iem] (s)
+- biblioteka dzielona bedzie komplikowana dopiero po wybraniu 
+  opcji --with-shared przy configure (s)
+
+// 2002-02-06
+
+- kosmetyka, dodanie obslugi akcji "play" (s)
+- poprawka --ioctl-... w helpie, bo siê nie kompilowa³o na gcc 3.0 (w)
+- dodane exit(0) za execl() ioctl-daemona, bo przy jego braku program
+  szed³ dalej i dzia³a³y dwie sesje ekg (w)
+- wydzielenie kodu userlist i ignorowanych do userlist.c, dodanie
+  kodu obs³ugi grup u¿ytkowników (w)
+- czyszczenie stanu userów po roz³±czeniu (w)
+- komenda ,,list <alias>'' wyswietla informacje o danej osobie z listy
+  kontaktów (w)
+- komenda ,,modify <alias> --group ...'' mo¿e dodawaæ lub usuwaæ
+  u¿ytkownika z danej grupy (w)
+- parê fixów, ¿eby funkcje systemowe na pewno nie dosta³y NULL jako
+  argumentu (w)
+- kopirajty od 2001-2002 i dopisanie vinila gdzieniegdzie (w)
+- s/libgg/libgadu/ w examples/ (w)
+- wywalenie ekg.c do ekg.o, niech siê na koñcu linkuje wszystko
+  i niech rekompilacja pakietu bêdzie szybsza (w)
+- przeniesienie zmiennych do listy. dziêki temu bêdzie zachowywa³
+  grzecznie wszystkie ustawienia innyc klientów, g³ównie GNU Gadu (w)
+- porzadki w zmiennych -- wszystkie funkcje variable_* (w)
+- porzadki w konfiguracji -- wszystkie zmienne config_* (w)
+- zabija dzieciaki przy wyj¶ciu, typu wavplay/mpg123/resolver (w)
+- poprawki w dokumentacji (w)
+
+// 2002-02-03
+
+- kosmetyka "ioctl" (s)
+- --with-ioctl komplikuje tez ioctl_daemon 
+    (na razie wspierane tylko na linuksie) (s)
+
+// 2002-02-02
+
+- dodana komenda ,,on'' (d)
+- dodany docs/on.txt (d)
+- dodany ioctl_daemon (d)
+- poprawka docs/ekl.pl (d)
+
+// 2002-01-29
+
+- zmiana libgg na libgadu. WSZÊDZIE. ¿eby nie koligowa³o z libgii,
+  libggi i kilkoma innymi. przykro mi. (w)
+
+// 2002-01-28
+
+- poprawka liczenia hasha z has³a, s/char/uchar/ (adaml/w)
+- dodana komenda ,,reconnect'' (matias@dexter.zst.bytom.pl/w)
+- poprawka docs/api.txt (jajcus@bnet.pl/w)
+
+// 2002-01-22
+
+- dodane ,,--group'' w helpie do ,,modify'' (adaml/w)
+- poprawka obs³uga wielolinijkowych sysmsg (jajcus@bnet.pl/w)
+- zamykanie po³±czenia jeszcze raz dla pewno¶ci po nieudanym po³±czeniu (jam/w)
+- wywala b³±d w przypadku braku readline{,-devel} (leszek@php.net/w)
+
+// 2002-01-17 
+
+- poprawka base64 na !linux'owych systemach ;>>> (p/kfazi)
+
+// 2002-01-12
+
+- co¶ mi siê dziwnie zapêtli³o i rzuca³o ,,header recv() = -1'' ca³y
+  czas, co nie powinno siê zdarzyæ, ale na wszelki wypadek dorzuci³em
+  ograniczenie do 10 prób recv()owania. (w)
+- dorzucony plik docs/devel-hints.txt bêd±cy moim pierwszym postem na
+  listê ekg-devel ze wskazówkami dla developerów. (w)
+
+// 2002-01-05
+
+- tak siedzia³em i w pld stwierdzi³em angielski manual. doda³em go 
+  i zarazem poprawi³em polski [p/gotar@pld/s] 
+
+// 2001-12-26
+
+- tak sobie podczas ¶wi±tecznego obiadu wymy¶li³em, ¿e napiszê funkcjê
+  itoa(), która zast±pi ¶mieszne konstrukcje typu { char buf[16];
+  snprintf(buf, 16, "%d", x); return x; }. i napisa³em. (w)
+
+// 2001-12-18
+
+- encode_base64() i decode_base64() ju¿ dzia³aj± (w)
+- has³a s± zapisywane w base64. s± poprzedzane znakiem '\001', by odró¿niæ
+  je od hase³ zapisanych plaintextem. to nie jest ¿adne zabezpieczenie,
+  wiêc mo¿na sobie darowaæ posty na bugtraq, ¿e z³amano szyfrowanie hase³
+  w konfigach ekg. to ma chroniæ przed osobami postronnymi, zapamiêtaniem
+  has³a po zerkniêciu do pliku itd. od razu mówiê, ¿e mo¿na je odkodowaæ
+  przez ,,echo haslo | mimencode -u'' (w)
+
+// 2001-12-17
+
+- gg_send_packet() o zmiennej ilo¶ci parametrów (a)
+- informowanie o wiadomo¶ciach konferencyjnych przez API libgg (a)
+- poprawki w gg_watch_fd_connected() (w)
+- dodanie gg_session->last_event (a/w)
+- dodana komenda ,,_ping'' (w)
+- uaktualnienie docs/protocol.txt, GG_DISCONNECTING (w)
+
+// 2001-12-16
+ 
+- zmiana has³a komend± ,,passwd'' (w)
+- fix gg_change_passwd(), ¿eby dzia³a³o (w)
+- ,,dcc get'' dzia³a (w)
+- poprawka README i ChangeLoga, ¿eby da³y siê ³atwo zHTMLizowaæ (w)
+- nowa strona http://dev.null.pl/ekg/ (w)
+- poprawki wysy³ania plików. niestety nie by³o okazji sprawdziæ (w).
+
+// 2001-12-14
+
+- szkielet zmian w katalogu publicznym / biblioteka (s)
+- dodany event GG_EVENT_PONG (w)
+- ekg ignoruje SIGPIPE (arekm/w)
+- dodana komenda ,,query'' (d)
+
+// 2001-12-12
+
+- poprawka segfaultu przy timeoutach (w)
+- poprawka b³êdu searcha na systemach innych ni¿ mój (charvel/w)
+
+// 2001-12-09 
+
+- poprawka configure gdzie make nie jest <gnu> make (s)
+
+// 2001-12-08 
+
+- obs³uga wiadomo¶ci systemowych (s)
+
+// 2001-12-07
+
+- poprawka pytania o zapis konfiguracji przy wychodzeniu. bez theme'ów
+  nie trzeba siê martwiæ o z³e prompty (w)
+- dodanie timeoutów do libgg i korzystanie z nich w kliencie. ka¿da
+  sesja ma pole ,,timeout'', które biblioteka ustawia na GG_DEFAULT_TIMEOUT
+  (w tej chwili 30 sekund) przy ka¿dej operacji, lub -1 je¶li nie ma byæ
+  timeout (GG_STATE_CONNECTED). klient sam musi zadbaæ o to, ¿eby zmniejszaæ
+  warto¶æ tego pola co sekundê i zatroszczyæ siê o reakcjê w przypadku
+  zej¶cia do zera (w)
+  
+// 2001-12-06
+
+- dodana funkcja wysy³ania has³a juzerom do libgg (thrull/w)
+- dodana lista ,,watches'' w kliencie. dziêki niej sobie grzeczie
+  przemiata wa¿ne deskyptory. dziêki niej mo¿e chodziæ równocze¶nie
+  kilka searczy. i ³atwiej siê po³apaæ. (w)
+- dodana komenda ,,remind'', która powoduje wys³anie has³a na skrzynkê (w)
+- dodanie funkcji zmiany has³a (w)
+
+// 2001-12-04
+
+- kolejny rewrite http. jeszcze czeka sporo poprawek, ale kszta³t jest
+  ju¿ nadany. drobne poprawki w libgg (w)
+
+// 2001-12-03 
+
+- przygotowanie do obs³ugi http proxy (s)
+- obs³uga http proxy (w)
+- poprawki http proxy (s)
+- wcze¶niej dodane ,,find --stop'' (fahren/w)
+
+// 2001-12-02
+
+- algorytm obliczania hasha http (coxoc/a)
+- przymiarka do komendy register (s)
+- zmiana znaczenia komendy info (s)
+
+// 2001-11-26
+
+- przygotowanie do obs³ugi rejestracji (w)
+- wordwrapping, haha! nowe formaty {message,chat}_line{,_width}
+  do ³adnych mesgów z rameczkami i takimi tam (w)
+
+// 2001-11-25 
+
+- GG_CLASS_OFFLINE = GG_CLASS_QUEUED (arekm/s)
+- totalna reorganizacja zrodel... mam nadzieje ze sie komplikuja (s)
+- more TODO (s)
+- reorganizacja libgg. podzia³ na mniejsze pliki. wydzielenie obs³ugi
+  http z sercza. i takie tam bzdurki (w)
+- popsucie paru dumpów (w)
+
+// 2001-11-22
+
+- GG_CLASS_OFFLINE w libgg.h i docs/protocol.txt (THRull/w)
+- sic.theme
+- update TODO/FAQ (w)
+
+// 2001-11-21
+
+- poprawka configure.in, wykrywanie rl_set_prompt() (w)
+
+// 2001-11-20
+
+- mocno poprawiona obs³uga ustawieñ pocz±tkowych (w)
+- ¿egnamy siê z ~/.gg/autoexec, skoro mamy zmienn± ,,theme'' (w)
+- przy readline 4.x bêdzie ³adnie zmieniaæ prompta przy awayu (w)
+- ,,ekg --help'' i okolice (w)
+- dodany include do libgg.h, poprawka INADDR_NONE (w)
+- stan o kliencie jest przechowywany w zmiennej ,,default_status'', a nie
+  jak dotychczas, w ,,away'' i ,,private''. stan mo¿na te¿ podaæ przy
+  uruchamianiu.
+- mo¿liwo¶æ zmiany gg_session->initial_status w libgg zaraz po wywo³aniu
+  gg_login(). trochê nie³adne, ale ciê¿ko to zrobiæ inaczej ;/
+- posortowanie listy zmiennych (w)
+- bugfixy ,,find'', poprawnie akceptuje --male, --female, --active,
+  dodana p³eæ do helpa (w)
+- jest zmienna ,,display_notify'' (w)
+- uaktualnione docs/protocol.txt, konferencje (w)
+- popsucie 10 innych rzeczy (w)
+- by³o sobie FAQ (s/w)
+
+// 2001-11-19 
+
+- wiecej instalowania... (i/drake)
+- przygotowania do base64, theme'y bêd± szukane w $(datadir)/ekg/themes,
+  ~/.gg i ~/.gg/themes (w).
+- nowa zmienna "theme" ... - ustala "defaultowy" theme po odpaleniu ekg (s)
+
+// 2001-11-18
+
+- mo¿na usun±æ warto¶æ zmiennej tekstowej przez ,,set -nazwa'' (w).
+- porz±dkowanie errno (w).
+- feeg.theme.
+
+// 2001-11-15
+
+- poprawki dokumentacji (shasta/w).
+- dodane dzwiêki przy wiadomo¶ciach -- zmienne ,,sound_...'' (feeg/w).
+- ,,display_ack'': 0 - nie pokazuje nic, 1 - pokazuje wszystkie, 2 - tylko
+  dostarczone, 3 - tylko zakolejkowane. (i/klith).
+- klith.theme.
+
+// 2001-11-11 
+
+- make shared/static + jakis tam spec dla rpm'a... (speedy)
+- poprawiona dokumentacja [ja chce wpisywac polskie krzaki i nie wiem jak] 
+  (wojtekka)
+- logowanie wielolinijkowych wiadomosci (wojtekka)
+- poprawiony segfault na bsd w pewnych warunkach (smarkacz/w)
+
+// 2001-11-04 
+
+- dalsze psucie https... teraz jest zawsze i wszedzie (speedy)
+
+// 2001-11-03 
+
+- popsuta kompilacja na broken solaris ;> [sprawdzone na solarisie 2.7/gcc]
+  (speedy)
+- tryb https - juz dostepny ;> ogolnie to milo mnie autor gg zaskoczyl 
+  praktycznie jest juz jeden format. errr w razie b³êdu po³±czenia 
+  appmsg:8074 próbuje siê ³±czyæ z portem :443 tego samego hosta (speedy) 
+- mamo, mamo, a vinil popsu³ czejd¿loga ;) ja chcia³em przypomnieæ, ¿e
+  naprawi³em parê memory leaków i leakdet.pl (w)
+  
+// 2001-11-02
+
+- w razie b³êdu po³±czenia z appmsg:80, próbuje siê ³±czyæ po :8074 z
+  tym samym hostem (w).
+- dopisa³em urla do README, bo mam ju¿ do¶æ pytañ, sk±d to ¶ci±gn±æ (w).
+- wywalone z IDEAS to, co ju¿ zrobione (w).
+- po ,,disconnect'' nie powinien próbowaæ siê ³±czyæ (w).
+- poprawka segfaultu na nie-x86 (w).
+
+// 2001-11-01
+
+- plumk, dodatkowe parametry ,,list'' (wojtekka).
+- sortowana userlista, dodana list_add_sorted() w dynstuff.c (wojtekka).
+- ,,modify'' ju¿ ma przypadkiem zostawionego printf()a (wojtekka).
+- ,,add'' mo¿e przyjmowaæ takie same parametry jak ,,modify'' (wojtekka).
+- dodany prompt do rozszerzonych helpów (wojtekka).
+- poprawka README (wojtekka).
+
+// 2001-10-31 
+
+- popsuty manual... docs/ekg.man... (?/speedy)
+- poprawka manuala, configure.in i aclocal.m4 do autoconfa 2.5x (wojtekka).
+
+// 2001-10-27 
+
+- popsulem configure [kompatybilnosc z termcapem + wymuszenie curses 
+  --without-termcap + mozliwosc wylaczenia -Wall -ggdb --without-debug]
+  pierwsze (i/wojtekka), drugie (i/undefined)
+- poprawione gg_alloc_sprintf() na maszynach pre-C99 (p/wojtekka).
+
+// 2001-10-26
+
+- lekko poprawi³em obs³ugê dzieciaków. nie wait()uje na ka¿dy z listy po
+  kolei, tylko na _wszystkie_ i potem po kolei sprawdza, czy przypadkiem
+  nie jest na li¶cie. powinno zlikwidowaæ dziwne przypadki tworzenia
+  zombie i zajmowania ca³ych dostêpnych zasobów (p/wojtekka)
+- fix commands.c dla BSD (p/wojtekka)
+
+// 2001-10-24
+
+- nudny dzien w pracy... hmm.. popsulem configure... (?/speedy)
+
+// 2001-10-21
+
+- nudne niedzielne popo³unie... hmm, popsujê mo¿e cvsa vinilowi, hehe ;)
+  (?/wojtekka)
+- dodane wszystko, co le¿a³o u mnie w ~/src/gg, a nie by³o do³±czane do
+  snapshotów (p/wojtekka)
+
+// 2001-10-17
+
+- czyszczenie userlist [statusow] (i/agaran)
+- mozliwosc wyboru usera ekg -u <user> - konfig pobiera z ~/.gg/<user>/config
+- cvs  ;>
+ 
+// 2001-10-14
+
+- dodana komenda ,,alias'' (p/drg).
+- dodany docs/ekl.pl (p/drg).
+- mo¿na zmieniaæ prompta w themes ustawieniami ,,readline_prompt''
+  i ,,readline_prompt_away'' (i/drg).
+- fix command_alias (p/drg).
+- time.h w libgg.c (p/drg).
+
+// 2001-10-09
+
+- dodane pole ,,last_pong'' w strukturze ,,gg_session'' zwieraj±ce czas
+  otrzymania ostatniego pakietu GG_PONG (i/tomee).
+- dodana komenda ,,private'' w³±czaj±ca lub wy³±czaj±ca tryb tylko dla
+  znajomych z GG 4.6 (p/pkot,vinil).
+- dodana komenda ,,status'' wy¶wietlaj±ca aktualny stan (i/Sydney Green).
+- stan klienta jest zapisywany komend± ,,save'', wiêc mo¿e wej¶æ na sieæ
+  w trybie tylko dla przyjació³ lub zajêty itd, itd.
+- wiêcej debugów w libgg_search.c (i/tomee).
+- poprawki w docs/protocol.txt (i/wzik).
+
+// 2001-10-08
+
+- dopisana zmienna ,,bold_font'' ¿eby nie psu³o konfigów GNU Gadu (p/thrull).
+
+// 2001-10-05
+
+- zmienna display_ack (i/outsider).
+- informacje o nickach w changelogu bêd± poprzedzane literk± 'i' w przypadku
+  propozycji lub pomys³u, 'b' w przypadku bugreportu lub 'p' w przypadku
+  gotowego patcha lub ¼róde³ek.
+- zmienna completion_notify (i/rekin).
+- dorzucony jamzed.theme (p/jamzed).
+- automatyczne dopisywanie rozszerzenia przy ³adowaniu theme'ów (i/nie
+  pamiêtam, kto to proponowa³ -- niech siê zg³osi ;))
+
+// 2001-10-02
+
+- chmody zapisywanych plików (p/ascent).
+- poprawka komunikatu przy EINPROGRESS w gg_connect(). 
+- fixy dla AIXa (p/arturp).
+
+// 2001-10-01
+
+- poprawki na alphê.
+- /cleartab (i/szok).
+- poprawki debugowania dla MacOS X (p/vinil).
+- fix segfaultu przy otrzymaniu notify usera spoza listy (b/ascent).
+- wykrywanie czy $cc obs³uguje -pipe (p/ascent).
+- pyta o zapisanie konfiguracji przy wychodzeniu (p/pkot).
+- wywalenie #ifdefów GG_DEBUG, niech sobie bêdzie na sta³e. w koñcu to
+  wersja rozwojowa. i siê powinno kompilowaæ na MacOS X (p/vinil,wojtekka).
+- wywalenie <termcap.h> z testowania termcapa. dziêki temu od rêki
+  kompiluje siê na IRIXie (vinil wiedzia³, nie powiedzia³, a to by³o tak...)
+- cleanup w list_remove() (p/pkot).
+- poprawka wykrywania -pipe (p/vinil).
+- info o kompilacji na MacOS-ie w README (i/vinil).
+
+// 2001-09-30
+
+- numerek snapshotu w themes.c (b/jack).
+- update docs/protocol.txt (p/wzik).
+- configure wykrywa readline z pakietów netbsd (b/socrtp).
+- poprawka bigendianów (p/vinil,wojtekka).
+
+// 2001-09-29
+
+- case insensitive tab completion (i/pkot).
+- poprawka gg_urlencode(), bo segfaultowa³o z polskimi localami.
+- ,,make shared'' do³±cza libgg_search.o (p/tomee).
+
+// 2001-09-28
+
+- poprawka command_del() -- sensowniejsze komunikaty (b/ascent).
+- poprawka command_add() -- nie mo¿na dodaæ dwóch userów o tych samych
+  ksywach (b/ascent).
+- poprawka zapisu ustawieñ. tworzy ~/.gg (b/madmax).
+- ,,configure --help'' nie idzie dalej (b/madmax).
+
+// 2001-09-27
+
+- poprawka s/ENOTSUP/EINVAL/ bo OpenBSD nie ma tego (b/phantom).
+- poprawka add_user() (pkot).
+- dodana komenda ,,modify''.
+- zmiana licencji na GPLv2, przygotowania do pierwszego publicznego
+  snapshotu.
+
+// 2001-09-26
+
+- poprawka p³ci przy formularzu szukania ludków (b/arekm).
+
+// 2001-09-25
+
+- rewrite obs³ugi listy kontaktów, ignorowanych i theme'ów. nie maj± ju¿
+  sztywno ustalonych limitów. dosz³a lista dzieciaków.
+- obs³uga dzieciaków na waitpid(), dziêki czemu wiadomo który i jak siê
+  zakoñczy³.
+- przy wysy³aniu smsów, zamykane s± wszystkie deskryptory, przez co nie
+  bêdzie ¶mieciæ na ekranie.
+
+// 2001-09-24
+
+- poprawka wait(). na wolniejszym sprzêcie select() potrafi³ siê wieszaæ,
+  je¶li przyszed³ SIGCHLD.
+- nie robi autoawaya, gdy user jest niewidoczny (miskoala).
+- nie loguje je¶li nie ma logowaæ (zdzichu).
+
+// 2001-09-23
+
+- poprawki parsera komend.
+- klient potrafi szukaæ userów. szczegó³y w ,,help find''. jako parametr
+  mo¿na podaæ nicka z ksi±¿ki lub sam numerek, pomijaj±c fiku¶ne opcje tej
+  komendy. i tak, wiem, czasami nie wiadomo dlaczego wywala b³êdy.
+- ekg odpalone z parametrem '-n' albo '--no-auto' nie ³±czy siê od razu
+  z serwerem. do tego '-d' dorobi³o siê d³ugiej nazwy '--debug'.
+- poprawka gg_urlencode() ¿eby nie korzysta³o isalnum(), bo locale mog³yby
+  popsuæ (arekm).
+
+- configure wykrywa endiany i nie bawi siê w setki #ifdef'ów (kod vinila)
+- wywalona obs³uga wyj±tków przy select(), bo powodowa³a tylko dziwne
+  problemy z nieistniej±cymi b³êdami.
+- dodane i poprawione mnóstwo wpisów gg_debug().
+- dodane opisy funkcji w stuff.c, themes.c i vars.c.
+- poprawione cp_to_iso().
+- poprawki poprawek parsera komend (bugreport jack'a).
+- poprawki Makefile.in.
+- poprawka loga poprawki poprawek -- dopisanie apostrofa (jack zg³osi³).
+- zmienne ,,beep_msg'', ,,beep_chat'', ,,beep_notify'' (jack).
+
+- wielolinijkowe mesgi. wystarczy zamiast tre¶ci wiadomo¶ci wpisaæ ,,\'',
+  wklepaæ wiadomo¶æ i zakoñczyæ lini± zawieraj±c± sam± kropkê. ¿eby anulowaæ
+  wystarczy ^D. i tak, niestety jak w trakcie pisania co¶ przyjdzie, to
+  potnie wiadomo¶æ. póki co.
+
+- fix polskich znaczków.
+
+- poprawne dope³nianie parametrów przy skróconych komendach (wysek).
+
+// 2001-09-22
+
+- poprawiony b³±d w configure po checkinie.
+- interfejs szukania luserów. póki co, klient jeszcze z niego nie korzysta
+  ale jest do³±czony prosty programik w `docs/search.c'. niestety mo¿e siê
+  wywalaæ na egzotycznych systemach z popsutym vsnprintf()... :/
+
+- niewielkie zmiany w api. gg_login() zwraca zaalokowan± strukturê
+  `gg_session' albo NULL, któr± zwalnia siê przez gg_free_session().
+  zmieniona nazwa funkcji gg_watch_event() na gg_watch_fd().
+- za to w libgg_search.c duuu¿e zmiany w api. do³±czony plik
+  examples/search.c powinien rozja¶niæ nieco. poza tym, dopisa³em jakie¶tam
+  komentarze przy funkcjach. haha.
+
+- read_file() czyta z pliku liniê i dynamicznie alokuje. dziêki temu
+  maksymalny rozmiar linii w konfiguracji, autoexecu i themes jest zale¿ny
+  wy³±cznie od dostêpnej pamiêci.
+
+- dope³nianie do lewej, do prawej, spacjami, kropkami, podkre¶leniami i takie
+  tam inne bzdururki. szczegó³y w docs/themes.txt
+
+// 2001-09-20
+
+- nowy format `prompt2', ¿eby ³adnie i kolorowo odró¿niaæ wiadomo¶ci od
+  innych tekstów wywalanych na ekran.
+- zmieni³ siê format userlisty, ¿eby by³ zgodny z eksportem/importem
+  windzianego klienta. i tak, linie koñcz± siê `\r\n'. pó¼niej dopiszê
+  jakie¶ zarz±dzanie tym.
+
+// 2001-09-19
+
+- wygl±da na to, ¿e mój magiczny configure siê wywala³ tam, gdzie shellem
+  nie jest bash tylko na przyk³ad tcsh. poprawi³em, dzia³a niektórym ;)
+- poprawiona kolejno¶æ include'ów i ma³y fix w themes.c, dziêki czemu
+  nie rzuca warningami na OpenBSD.
+- poprawione wykrywanie readline >= 4.x (dziêki wyskowi i zdzichowi).
+- sms_away, powiadamienie na komórkê o przychodz±cych wiadomo¶ciach,
+  jako¶ tak... podziêkowaæ wyskowi, bo podes³a³ patcha.
+
+// 2001-09-18
+
+- configure, haha!
+- powinno pój¶æ nawet na Irixie dziêki configure i patchom vinila.
+
+// 2001-09-17
+
+- ³adniejsze formatowanie w skrypcie ggsearch.
+- dane mog± przychodziæ w kilku pakietach i nie bêdzie EAGAIN. jedynie
+  nag³ówek musi byæ w ca³o¶ci. w normalnych warunkach nie przyjdzie nigdy
+  w kawa³kach, wiêc je¶li klient siê wywali, co co¶ bardzo dziwnego siê
+  dzieje z sieci± ;)
+- poprawka /away (MisKoala).
+- wywalenie kolorków z prompta. przynajmniej dobrze zawija.
+
+// 2001-09-16
+
+- poprawki w formatowaniu unignore.
+- dope³nianie nazw zmiennych i ignorowanych.
+- jakie¶tam poprawki w README.
+
+// 2001-09-15
+
+- czytanie listy ignorowanych z ~/.gg/config.
+- zapis konfiguracji (zmiennych i ignorowanych).
+- bugfix parsowania skróconych komend.
+
+// 2001-09-14
+
+- poprawka segfaultu w przypadku roz³±czenia przez serwer (zg³osi³ martii).
+
+// 2001-09-13
+
+- Makefile vs. PLDowe ncurses (bugreport jacka),
+
+// 2001-09-12
+
+- parê bugfixów z reconnectem,
+- dodane komendy 'connect' i 'disconnect',
+- uin i has³o przeniesione do zmiennych.
+
+// 2001-09-11
+
+- dodane '-lcurses', ¿eby siê kompilowa³o pod dziwnymi systemami ;)
+- dodany tryb niewidoczny (patch vinila).
+- poprawiona reakcja na zerwanie po³±czenia.
+- zmienna 'auto_reconnect' w sekundach.
+- resolver nie zostawia ju¿ zombie.
+- update w docs/protocol.txt z nowymi ficzerami GG 4.6 (info od vinila).
+
+// 2001-09-09
+
+- zmienne, ale jeszcze nie zapisuje ustawieñ.
+- logowanie (patch phantoma),
+  log=1 loguje do pliku $log_path, log=2 do $log_path/$uin
+- mo¿na wy³±czyæ kolorki (zmienna display_color)
+- mo¿na wy³±czyæ beepanie (zmienna beep)
+
+// 2001-09-08
+
+- blokuj±ce sockety.
+- uaktualnienie opisu protoko³u.
+
+// 2001-09-07
+
+- dodane extern "C" i s/class/msgclass/, ¿eby siê tomeemu kompilowa³o w C++.
+- do nick completion dodawane s± nicki osób, które w³a¶nie siê pojawi³y.
+- theme'y obs³uguj± kolorowe t³a. szczegó³y w themes.c
+
+// 2001-09-06
+
+- poprawione braki w obs³udze b³êdów.
+- pocz±tek przywracania blokuj±cej obs³ugi socketów.
+- pocz±tki dokumentacji dla programistów - uzupe³nione braki w komentarzach
+  libgg.c i osobny plik API.
+
+// 2001-09-05
+
+- poprawione klasy mesgów. nie wiem dlaczgo, ale teraz dochodz± potwierdzenia.
+- zmiana nazwy binarki z gg na ekg.
+- usuniêcie wszystkich tekstów ,,G*du-g*du'' z pakietu, poniewa¿ to
+  znak towarowy zastrze¿ony. whatever ;)
+
+// 2001-09-02
+
+- biblioteka jest nieblokuj±ca. no dobra, czê¶æ rzeczy jak czytanie
+  http mo¿e siê wywaliæ, je¶li nie dostanie od razu wszystkich danych,
+  ale teoretycznie nie powinno siê to przytrafiæ. nawet na moim magicznym
+  ³±czu 28800 nigdy nie by³o problemu. kiedy¶ poprawiê. trzeba tylko
+  jeszcze poprawiæ komendy, ¿eby reagowa³y odpowiednio, je¶li klient siê
+  nie po³±czy³ jeszcze.
+- reconnect na ka¿dym etapie. nie wa¿ne, czy to zaraz po uruchomieniu czy
+  w trakcie dzia³ania. w tej chwili czas, po którym siê ³±czy jeszcze raz
+  jest ustawiony na 5 sekund.
+- poprawione endiany, ¿eby dzia³a³y i na solku.
+- do Makefile'a dopisana opcja ,,shared'' buduj±ca bibliotekê dzielon±
+  (przepis od tomee'go).
+
+- komendy wymagaj±ce po³±czenia bêd± krzyczeæ, je¶li go nie ma.
+- automatyczne stawianie awaya po ponownym po³±czeniu.
+- autoaway dzia³a tylko podczas po³±czenia.
+
+// 2001-09-01
+
+- usuniêcie strsep (vinil co¶tam mówi³).
+
+// 2001-08-30
+
+- powinno kompilowaæ siê na bsd bez poprawek (vinil poda³ ifdefy).
+
+// 2001-08-29
+
+d³ugo mnie w domu nie widzieli, wiêc nie by³o dziennych snapshotów. jako¶
+tak. whatever. i je¶li kto¶ ma jakie¶ uwagi, niech najpierw zajrzy do TODO
+i BUGS.
+
+- niby obs³uguje EINTR przy read(), ale czasami jeszcze mówi, ¿e roz³±czono
+  z powodem ,,Interrupted System Call''.
+- podzia³ ,,send'' na ,,msg'' i ,,chat'' (Wiadomo¶æ i Rozmowa odpowiednio).
+  i nie, nie ma ¿adnych osobnych okienek.
+- poprawiony b³±d przy kompilacji, konfikt z <readline.h>
+- beepa przy wiadomo¶ciach. póki co nie ma mo¿liwo¶ci wy³±czenia innej ni¿
+  zmianê w theme'ach.
+
+// 2001-08-25
+
+- themes. domy¶lnie szuka w '~/.gg/default.theme'.
+- '~/.gg/autoexec' zawiera listê komend do wykonania po starcie, na przyk³ad
+  za³adowanie jakiego¶tam theme'u.
+- dwa przyk³adowe g³upie theme'y w docs/, które mo¿na wrzuciæ do ~/.gg
+- poprawiony warning z rl_extend_line_buffer (zg³osi³ wysek),
+
+// 2001-08-23
+
+- ignorowanie '/' na pocz±tku komendy,
+- 'make checkin',
+- timestamp przy otrzymanym mesgu,
+- reconnect 5 razy,
+- pokazuje powód b³êdu (connection refused itd),
+- poprawione unknown_uin_completion,
+- testowe komendy _add i _send,
+- t³o mesgów,
+- tab completion dzia³a jak trzeba,
+- eleet niebieskie t³o mesgów (wiem, dalekie od idea³u).
+
+
+$Id: ChangeLog.1,v 1.1 2003/04/28 20:20:06 chilek Exp $
