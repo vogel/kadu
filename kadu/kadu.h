@@ -79,7 +79,6 @@ class Kadu : public QMainWindow
 		void createMenu();
 		void createToolBar();
 		void createStatusPopupMenu();
-		void ifNotify(UinType uin, unsigned int status, unsigned int oldstatus);
 		void setActiveGroup(const QString& group);
 
 		void showStatusOnMenu(int);
@@ -190,8 +189,6 @@ class Kadu : public QMainWindow
 		void viewHistory();
 		void popupMenu();
 		void show();
-/*		void showMinimized();
-		void hide();*/
 
 		// odczytuje z obrazka tekst i zapisuje go w drugim parametrze
 		void readTokenValue(QPixmap, QString &);
@@ -227,11 +224,18 @@ class Kadu : public QMainWindow
 		**/
 		void shown();
 		/**
-			wci¶niêty przycisk minimalizacji g³ównego okna
-			póki co nie dzia³a
+			u¿ytkownik chce zarejestrowaæ nowy numer gg
 		**/
-//		void minimized();
 		void wantRegister();
+		/**
+			wyst±pi³ b³±d po³±czenia
+		**/
+		void connectionError(const QString &reason);
+		/**
+			u¿ywany przez modu³ hints do zdobycia pozycji traya od modu³u docking
+			TODO: trzeba wymy¶liæ jaki¶ elegancki sposób na komunikacjê pomiêdzy modu³ami, które nie zale¿± od siebie
+		**/
+		void searchingForTrayPosition(QPoint &point);
 };
 
 class KaduSlots : public QObject

@@ -38,7 +38,6 @@
 #include "pending_msgs.h"
 #include "debug.h"
 #include "gadu.h"
-#include "hints.h"
 #include "status.h"
 #include "message_box.h"
 
@@ -328,8 +327,6 @@ void ChatManager::chatMsgReceived(UinsList senders, const QString& msg, time_t t
 		QValueList<ChatMessage *> messages;
 		chat->checkPresence(senders, msg, time, messages);
 		chat->alertNewMessage();
-		if (!chat->isActiveWindow() && config_file.readBoolEntry("Hints","NotifyNewMessage"))
-			hintmanager->addHintNewMsg(userlist.byUinValue(senders[0]).altnick, msg);
 		grab=true;
 	}
 }
@@ -342,9 +339,11 @@ const char *colors[16] = {"#FF0000", "#A00000", "#00FF00", "#00A000", "#0000FF",
 CustomInput::CustomInput(QWidget* parent, const char* name)
 	: QMultiLineEdit(parent, name)
 {
+	kdebugf();
 	QStyleSheet *style=styleSheet();
 	style->item("p")->setMargin(QStyleSheetItem::MarginVertical, 0);
 	setStyleSheet(style);
+	kdebugf2();
 }
 
 void CustomInput::keyPressEvent(QKeyEvent* e)
@@ -683,15 +682,18 @@ Chat::~Chat()
 
 void Chat::registerButton(const QString& name,QObject* receiver,const QString& slot)
 {
+	kdebugf();
 	RegisteredButton b;
 	b.name=name;
 	b.receiver=receiver;
 	b.slot=slot;
 	RegisteredButtons.append(b);
+	kdebugf2();
 }
 
 void Chat::unregisterButton(const QString& name)
 {
+	kdebugf();
 	for(unsigned int i=0; i<RegisteredButtons.size(); i++)
 		if(RegisteredButtons[i].name==name)
 		{
@@ -707,6 +709,7 @@ void Chat::unregisterButton(const QString& name)
 			chat->Buttons.remove(name);
 		}
 	}
+	kdebugf2();
 }
 
 QPushButton* Chat::button(const QString& name)
@@ -817,6 +820,7 @@ void Chat::imageReceivedAndSaved(UinType sender,uint32_t size,uint32_t crc32,con
 
 void Chat::changeAppearance()
 {
+	kdebugf();
 	if (Uins.count() > 1 && userbox)
 	{
 		userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
@@ -825,6 +829,7 @@ void Chat::changeAppearance()
 	}
 	body->setFont(config_file.readFontEntry("Look","ChatFont"));
 	edit->setFont(config_file.readFontEntry("Look","ChatFont"));
+	kdebugf2();
 }
 
 void Chat::setTitle()
@@ -935,6 +940,7 @@ void Chat::closeEvent(QCloseEvent* e)
 /* look up party's info */
 void Chat::userWhois()
 {
+	kdebugf();
 	UinType uin;
 
 	if (!userbox)
@@ -947,6 +953,7 @@ void Chat::userWhois()
 	SearchDialog *sd = new SearchDialog(0, "User info", uin);
 	sd->show();
 	sd->firstSearch();
+	kdebugf2();
 }
 
 void Chat::formatMessage(ChatMessage &msg)
@@ -988,6 +995,7 @@ void Chat::formatMessage(ChatMessage &msg)
 
 void Chat::scrollMessages(const QValueList<ChatMessage *> &messages)
 {
+	kdebugf();
 	if (config_file.readBoolEntry("Chat","ChatPrune"))
 		pruneWindow();
 
@@ -1028,6 +1036,7 @@ void Chat::scrollMessages(const QValueList<ChatMessage *> &messages)
 	}
 	body->viewport()->setUpdatesEnabled(true);
 	body->viewport()->repaint();
+	kdebugf2();
 }
 
 void Chat::writeMessagesFromHistory(UinsList senders, time_t time)
@@ -1123,6 +1132,7 @@ void Chat::alertNewMessage()
 
 void Chat::writeMyMessage()
 {
+	kdebugf();
 	QValueList<ChatMessage *> messages;
 	ChatMessage *msg=new ChatMessage(config_file.readEntry("General","Nick"), myLastMessage, true, QDateTime::currentDateTime());
 	formatMessage(*msg);
@@ -1138,6 +1148,7 @@ void Chat::writeMyMessage()
 		edit->setItalic(true);
 	if (underlinebtn->isOn())
 		edit->setUnderline(true);
+	kdebugf2();
 }
 
 void Chat::addMyMessageToHistory()
@@ -1148,14 +1159,17 @@ void Chat::addMyMessageToHistory()
 
 void Chat::clearChatWindow()
 {
+	kdebugf();
 	for(QValueList<ChatMessage *>::iterator it=chatMessages.begin(); it!=chatMessages.end(); it++)
 		delete *it;
 	chatMessages.clear();
 	body->clear();
+	kdebugf2();
 }
 
 void Chat::cancelMessage()
 {
+	kdebugf();
 	seq = 0;
 	disconnect(gadu, SIGNAL(ackReceived(int)),
 		this, SLOT(ackReceivedSlot(int)));
@@ -1166,6 +1180,7 @@ void Chat::cancelMessage()
 	connect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
 	sendbtn->setIconSet(QIconSet(icons_manager.loadIcon("SendMessage")));
 	sendbtn->setText(tr("&Send"));
+	kdebugf2();
 }
 
 void Chat::ackReceivedSlot(int Seq)

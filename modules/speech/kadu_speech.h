@@ -12,6 +12,7 @@ class SpeechSlots : public QObject
 		QTime lastSpeech;
 	public:
 		SpeechSlots();
+		~SpeechSlots();
 	private slots:
 		void onCreateConfigDialog();
 		void chooseSpeechProgram();
@@ -21,13 +22,18 @@ class SpeechSlots : public QObject
 					bool arts=false, bool esd=false, bool dsp=false, const QString &device=QString::null,
 					int freq=0, int tempo=0, int basefreq=0);
 		
-		void chat(UinsList senders, const QString& msg, time_t time, bool& grab);
-		void message(UinsList senders, const QString& msg, time_t time);
-		void notify(UserListElement *);
-		
-		void useArts(bool);
-		void useEsd(bool);
-		void useDsp(bool);
+
+		void newChat(UinsList senders, const QString& msg, time_t time, bool &grab);
+		void newMessage(UinsList senders, const QString& msg, time_t time);
+		void connectionError(const QString &message);
+		void userChangedStatusToAvailable(const UserListElement &ule);
+		void userChangedStatusToBusy(const UserListElement &ule);
+		void userChangedStatusToNotAvailable(const UserListElement &ule);
+		void message(const QString &from, const QString &type, const QString &message, const UserListElement *ule);
+
+		void useArts();
+		void useEsd();
+		void useDsp();
 		void testSpeech();
 
 };

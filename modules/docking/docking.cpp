@@ -46,9 +46,9 @@ DockingManager::DockingManager() : QObject(NULL, "docking_manager")
 		this, SLOT(statusPixmapChanged(QPixmap &)));
 	connect(&pending, SIGNAL(messageAdded()), this, SLOT(pendingMessageAdded()));
 	connect(&pending, SIGNAL(messageDeleted()), this, SLOT(pendingMessageDeleted()));
-	hintmanager_existed_on_start=(hintmanager!=NULL);
-	if (hintmanager_existed_on_start)
-		connect(hintmanager, SIGNAL(searchingForPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
+
+	connect(kadu, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
+
 	connect(dockppm, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
 	connect(this, SIGNAL(mousePressMidButton()), &pending, SLOT(openMessages()));
 
@@ -63,8 +63,9 @@ DockingManager::~DockingManager()
 		this, SLOT(statusPixmapChanged(QPixmap &)));
 	disconnect(&pending, SIGNAL(messageAdded()), this, SLOT(pendingMessageAdded()));
 	disconnect(&pending, SIGNAL(messageDeleted()), this, SLOT(pendingMessageDeleted()));
-	if (hintmanager_existed_on_start && hintmanager!=NULL)
-		disconnect(hintmanager, SIGNAL(searchingForPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
+
+	disconnect(kadu, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
+
 	disconnect(dockppm, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
 	disconnect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
 
@@ -162,7 +163,8 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 		return;
 	}
 
-	if (e->button() == RightButton) {
+	if (e->button() == RightButton)
+	{
 		emit mousePressRightButton();
 		dockppm->exec(QCursor::pos());
 		return;

@@ -758,33 +758,8 @@ void GaduProtocol::initModule()
 
 
 	// ---------------------------------------------------------
-	//  Okno dialogowe - czï¿½ kodu przejdzie do klasy Protocol
+	//  Okno dialogowe - czê¶æ kodu przejdzie do klasy Protocol
 	// ---------------------------------------------------------
-
-// zakladka "powiadom"
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Notify"));
-	ConfigDialog::addCheckBox("Notify", "Notify",
-		QT_TRANSLATE_NOOP("@default", "Notify when users become available"), "NotifyStatusChange", false);
-	ConfigDialog::addCheckBox("Notify", "Notify",
-		QT_TRANSLATE_NOOP("@default", "Notify about all users"), "NotifyAboutAll", false);
-	ConfigDialog::addGrid("Notify", "Notify" ,"listboxy",3);
-
-	ConfigDialog::addGrid("Notify", "listboxy", "listbox1", 1);
-	ConfigDialog::addLabel("Notify", "listbox1", QT_TRANSLATE_NOOP("@default", "Available"));
-	ConfigDialog::addListBox("Notify", "listbox1","available");
-
-	ConfigDialog::addGrid("Notify", "listboxy", "listbox2", 1);
-	ConfigDialog::addPushButton("Notify", "listbox2", "", "AddToNotifyList","","forward");
-	ConfigDialog::addPushButton("Notify", "listbox2", "", "RemoveFromNotifyList","","back");
-
-	ConfigDialog::addGrid("Notify", "listboxy", "listbox3", 1);
-	ConfigDialog::addLabel("Notify", "listbox3", QT_TRANSLATE_NOOP("@default", "Tracked"));
-	ConfigDialog::addListBox("Notify", "listbox3", "track");
-
-	ConfigDialog::addVGroupBox("Notify", "Notify", QT_TRANSLATE_NOOP("@default", "Notify options"));
-	ConfigDialog::addCheckBox("Notify", "Notify options",
-		QT_TRANSLATE_NOOP("@default", "Notify by dialog box"), "NotifyWithDialogBox", false);
-
 //zakladka "siec"
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Network"));
 
@@ -834,13 +809,6 @@ void GaduProtocol::initModule()
 	for (unsigned int i = 0; i < servers.count(); i++)
 		if (ip2.setAddress(servers[i]))
 			ConfigServers.append(ip2);
-
-	ConfigDialog::connectSlot("Notify", "", SIGNAL(clicked()), gadu, SLOT(_Right()), "forward");
-	ConfigDialog::connectSlot("Notify", "", SIGNAL(clicked()), gadu, SLOT(_Left()), "back");
-	ConfigDialog::connectSlot("Notify", "available", SIGNAL(doubleClicked(QListBoxItem *)),
-		gadu, SLOT(_Right2(QListBoxItem *)));
-	ConfigDialog::connectSlot("Notify", "track", SIGNAL(doubleClicked(QListBoxItem *)),
-		gadu, SLOT(_Left2(QListBoxItem *)));
 
 	kdebugf2();
 }
@@ -2313,42 +2281,6 @@ void GaduProtocol::onCreateConfigDialog()
 
 	connect(b_useproxy, SIGNAL(toggled(bool)), g_proxy, SLOT(setEnabled(bool)));
 
-// notify
-
-	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
-	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
-	for (UserList::ConstIterator i = userlist.begin(); i != userlist.end(); i++)
-	{
-		if ((*i).uin)
-			if (!(*i).notify)
-				e_availusers->insertItem((*i).altnick);
-			else
-				e_notifies->insertItem((*i).altnick);
-	}
-
-	e_availusers->sort();
-	e_notifies->sort();
-	e_availusers->setSelectionMode(QListBox::Extended);
-	e_notifies->setSelectionMode(QListBox::Extended);
-
-	QCheckBox *b_notifyglobal= ConfigDialog::getCheckBox("Notify", "Notify when users become available");
-	QCheckBox *b_notifyall= ConfigDialog::getCheckBox("Notify", "Notify about all users");
-	QVGroupBox *notifybox= ConfigDialog::getVGroupBox("Notify", "Notify options");
-	QGrid *panebox = ConfigDialog::getGrid("Notify","listboxy");
-
-	if (config_file.readBoolEntry("Notify", "NotifyAboutAll"))
-		panebox->setEnabled(false);
-
-	if (!config_file.readBoolEntry("Notify", "NotifyStatusChange"))
-	{
-		b_notifyall->setEnabled(false);
-		panebox->setEnabled(false);
-		notifybox->setEnabled(false);
-	}
-
-	QObject::connect(b_notifyall, SIGNAL(toggled(bool)), this, SLOT(ifNotifyAll(bool)));
-	QObject::connect(b_notifyglobal, SIGNAL(toggled(bool)), this, SLOT(ifNotifyGlobal(bool)));
-
 	kdebugf2();
 }
 
@@ -2387,87 +2319,9 @@ void GaduProtocol::onDestroyConfigDialog()
 	if (config_file.readNumEntry("Network","ProxyPort")<=1023)
 		config_file.writeEntry("Network","ProxyPort",0);
 
-
-	//notify
-	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
-	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
-
-	for (i = 0; i < e_notifies->count(); i++)
-		userlist.byAltNick(e_notifies->text(i)).notify = true;
-	for (i = 0; i < e_availusers->count(); i++)
-		userlist.byAltNick(e_availusers->text(i)).notify = false;
-
 	/* and now, save it */
 	userlist.writeToFile();
 	//
-	kdebugf2();
-}
-
-void GaduProtocol::ifNotifyGlobal(bool toggled)
-{
-	QCheckBox *b_notifyall= ConfigDialog::getCheckBox("Notify", "Notify about all users");
-
-	b_notifyall->setEnabled(toggled);
-	ConfigDialog::getGrid("Notify","listboxy")->setEnabled(toggled && !b_notifyall->isChecked());
-	ConfigDialog::getVGroupBox("Notify", "Notify options")->setEnabled(toggled);
-}
-
-void GaduProtocol::ifNotifyAll(bool toggled)
-{
-	ConfigDialog::getGrid("Notify","listboxy")->setEnabled(!toggled);
-}
-
-void GaduProtocol::_Left2( QListBoxItem *item)
-{
-	_Left();
-}
-
-void GaduProtocol::_Right2( QListBoxItem *item)
-{
-	_Right();
-}
-
-void GaduProtocol::_Left(void)
-{
-	kdebugf();
-	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
-	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
-	QStringList tomove;
-	unsigned int i;
-
-	for(i=0; i<e_notifies->count(); i++)
-		if (e_notifies->isSelected(i))
-			tomove+=e_notifies->text(i);
-
-	for(i=0; i<tomove.size(); i++)
-	{
-		e_availusers->insertItem(tomove[i]);
-		e_notifies->removeItem(e_notifies->index(e_notifies->findItem(tomove[i])));
-	}
-
-	e_availusers->sort();
-	kdebugf2();
-}
-
-void GaduProtocol::_Right(void)
-{
-	kdebugf();
-	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
-	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
-	QStringList tomove;
-	unsigned int i;
-
-	for(i=0; i<e_availusers->count(); i++)
-		if (e_availusers->isSelected(i))
-			tomove+=e_availusers->text(i);
-
-	for(i=0; i<tomove.size(); i++)
-	{
-		e_notifies->insertItem(tomove[i]);
-		e_availusers->removeItem(e_availusers->index(e_availusers->findItem(tomove[i])));
-	}
-
-	e_notifies->sort();
 	kdebugf2();
 }
 

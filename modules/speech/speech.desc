@@ -2,3 +2,5 @@
 Description="Speech" module
 Description[pl]=Modu³ obs³ugi "G³o¶nego czytania" przez zewnêtrzny program "Powiedz"
 Author=Kadu Team
+Dependencies=notify
+Provides=notify_method

@@ -1,0 +1,2 @@
+MODULE_SOURCES="window_notify.cpp"
+MODULE_MOC_HEADERS="window_notify.h"

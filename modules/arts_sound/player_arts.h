@@ -14,14 +14,20 @@ class ArtsPlayerSlots : public QObject
 		Dispatcher disp;
 	public:
 		ArtsPlayerSlots();
+		~ArtsPlayerSlots();
 		SoundServerV2 server;
 	private slots:
 		void play(const QString &s, bool volCntrl=false, double vol=1);
 		
 		void playSound(const QString &s, bool volCntrl, double vol);
-		void playMessage(UinsList senders, const QString &sound, const QString &msg, bool volCntrl, double vol);
-		void playChat(UinsList senders, const QString &sound, const QString &msg, bool volCntrl, double vol);
+
+		void playNewMessage(UinsList senders, const QString &sound, bool volCntrl, double vol, const QString &msg);
+		void playNewChat(UinsList senders, const QString &sound, bool volCntrl, double vol, const QString &msg);
+		void playConnectionError(const QString &sound, bool volCntrl, double vol, const QString &msg);
+
 		void playNotify(const UinType uin, const QString &sound, bool volCntrl, double vol);
+		
+		void playMessage(const QString &sound, bool volCntrl, double vol, const QString &from, const QString &type, const QString &msg, const UserListElement *ule);
 };
 
 extern ArtsPlayerSlots *artsPlayerObj;

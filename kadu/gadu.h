@@ -351,14 +351,14 @@ class GaduProtocol : public QObject
 		Status & status();
 
 		/**
-			Zwraca serwer z ktorym jestesmy polaczeni
-			lub do ktorego sie wlasnie laczymy.
+			Zwraca serwer z którym jeste¶my po³±czeni
+			lub do którego siê w³a¶nie ³±czymy.
 			NULL = hub.
 		**/
 		QHostAddress* activeServer();
 
 		/**
-			Zamienia listï¿½uytkownikï¿½ na aï¿½uch i na odwrï¿½
+			Zamienia listê u¿ytkowników na ³añcuch i na odwrót
 		**/
 		QString userListToString(const UserList& userList) const;
 		void stringToUserList(QString&, UserList& userList) const;
@@ -465,12 +465,6 @@ class GaduProtocol : public QObject
 		void onDestroyConfigDialog();
 		void ifDefServerEnabled(bool value);
 		void useTlsEnabled(bool value);
-		void _Left();
-		void _Right();
-		void _Left2(QListBoxItem *item);
-		void _Right2(QListBoxItem *item);
-		void ifNotifyGlobal(bool toggled);
-		void ifNotifyAll(bool toggled);
 
 	signals:
 		void ackReceived(int);

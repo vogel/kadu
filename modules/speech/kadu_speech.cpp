@@ -10,30 +10,74 @@
 #include <qfiledialog.h>
 #include <qregexp.h>
 #include <qprocess.h>
+
+#include <stdlib.h>
+#include <time.h>
+
 #include "kadu_speech.h"
 #include "debug.h"
 #include "config_dialog.h"
 #include "chat.h"
-#include <stdlib.h>
-#include <time.h>
+#include "../notify/notify.h"
 
 extern "C" int speech_init()
 {
 	kdebugf();
-
 	speechObj=new SpeechSlots();
+	kdebugf2();
+	return 0;
+}
 
-	QObject::connect(gadu, SIGNAL(chatMsgReceived1(UinsList, const QString&, time_t,bool&)),
-		speechObj, SLOT(chat(UinsList, const QString&, time_t,bool&)));
-	QObject::connect(gadu, SIGNAL(chatMsgReceived2(UinsList, const QString&, time_t)),
-		speechObj, SLOT(message(UinsList, const QString&,time_t)));
-	QObject::connect(&userlist, SIGNAL(statusModified(UserListElement*)),
-		speechObj, SLOT(notify(UserListElement*)));
+extern "C" void speech_close()
+{
+	kdebugf();
+	delete speechObj;
+	speechObj=NULL;
+	kdebugf2();
+}
 
-	ConfigDialog::addTab("Notify");
-	ConfigDialog::addVGroupBox("Notify", "Notify", "Notify options");
-	ConfigDialog::addCheckBox("Notify", "Notify options",
-			QT_TRANSLATE_NOOP("@default","Notify by speech"), "NotifyWithSpeech", true);
+bool isFemale(QString s)
+{
+#if QT_VERSION >= 0x030200
+	return s.endsWith("a", false);
+#else
+	return s.endsWith("a")||s.endsWith("A");
+#endif
+}
+
+void SpeechSlots::useArts()
+{
+	kdebugf();
+	ConfigDialog::getCheckBox("Speech", "Use aRts", "usearts")->setChecked(true);
+	ConfigDialog::getCheckBox("Speech", "Use Esd", "useesd")->setChecked(false);
+	ConfigDialog::getCheckBox("Speech", "Use Dsp", "usedsp")->setChecked(false);
+	kdebugf2();
+}
+
+void SpeechSlots::useEsd()
+{
+	kdebugf();
+	ConfigDialog::getCheckBox("Speech", "Use aRts", "usearts")->setChecked(false);
+	ConfigDialog::getCheckBox("Speech", "Use Esd", "useesd")->setChecked(true);
+	ConfigDialog::getCheckBox("Speech", "Use Dsp", "usedsp")->setChecked(false);
+	kdebugf2();
+}
+
+void SpeechSlots::useDsp()
+{
+	kdebugf();
+	ConfigDialog::getCheckBox("Speech", "Use aRts", "usearts")->setChecked(false);
+	ConfigDialog::getCheckBox("Speech", "Use Esd", "useesd")->setChecked(false);
+	ConfigDialog::getCheckBox("Speech", "Use Dsp", "usedsp")->setChecked(true);
+	kdebugf2();
+}
+
+
+SpeechSlots::SpeechSlots()
+{
+	kdebugf();
+	srand(time(NULL));
+	lastSpeech.start();
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default","Speech"));
 
@@ -69,7 +113,7 @@ extern "C" int speech_init()
 	ConfigDialog::addLineEdit("Speech", "Program",
 			QT_TRANSLATE_NOOP("@default","Speech program:"), "SpeechProgram","powiedz");
 	ConfigDialog::addPushButton("Speech", "Program", "", "OpenFile","","speech_fileopen");
-	ConfigDialog::connectSlot("Speech", "", SIGNAL(clicked()), speechObj, SLOT(chooseSpeechProgram()), "speech_fileopen");
+	ConfigDialog::connectSlot("Speech", "", SIGNAL(clicked()), this, SLOT(chooseSpeechProgram()), "speech_fileopen");
 	
 	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Chat format (male):"),
@@ -91,41 +135,57 @@ extern "C" int speech_init()
 	ConfigDialog::addLineEdit("Speech", "Speech", 
 			QT_TRANSLATE_NOOP("@default","Notify format (female):"),
 			"NotifyFormatFemale", SpeechSlots::tr("woman %a changed status to %s %d"));
+
+	ConfigDialog::addLineEdit("Speech", "Speech", 
+			QT_TRANSLATE_NOOP("@default","Connection error:"),
+			"ConnectionError", SpeechSlots::tr("Connection error - %1"));
 	
 	ConfigDialog::addPushButton("Speech", "Speech",	QT_TRANSLATE_NOOP("@default","Test"), "", "", "testspeech");
 
-	ConfigDialog::connectSlot("Speech", "Test", SIGNAL(clicked()), speechObj, SLOT(testSpeech()), "testspeech");
-	ConfigDialog::connectSlot("Speech", "Use aRts", SIGNAL(toggled(bool)), speechObj, SLOT(useArts(bool)), "usearts");
-	ConfigDialog::connectSlot("Speech", "Use Esd", SIGNAL(toggled(bool)), speechObj, SLOT(useEsd(bool)), "useesd");
-	ConfigDialog::connectSlot("Speech", "Use Dsp", SIGNAL(toggled(bool)), speechObj, SLOT(useDsp(bool)), "usedsp");
+	ConfigDialog::connectSlot("Speech", "Test", SIGNAL(clicked()), this, SLOT(testSpeech()), "testspeech");
+	ConfigDialog::connectSlot("Speech", "Use aRts", SIGNAL(clicked()), this, SLOT(useArts()), "usearts");
+	ConfigDialog::connectSlot("Speech", "Use Esd", SIGNAL(clicked()), this, SLOT(useEsd()), "useesd");
+	ConfigDialog::connectSlot("Speech", "Use Dsp", SIGNAL(clicked()), this, SLOT(useDsp()), "usedsp");
 
-	ConfigDialog::registerSlotOnCreate(speechObj, SLOT(onCreateConfigDialog()));
+	ConfigDialog::registerSlotOnCreate(this, SLOT(onCreateConfigDialog()));
+
+	QMap<QString, QString> s;
+	s["NewChat"]=SLOT(newChat(UinsList, const QString &, time_t, bool &));
+	s["NewMessage"]=SLOT(newMessage(UinsList, const QString &, time_t));
+	s["ConnError"]=SLOT(connectionError(const QString &));
+	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const UserListElement &));
+	s["toBusy"]=SLOT(userChangedStatusToBusy(const UserListElement &));
+	s["toNotAvailable"]=SLOT(userChangedStatusToNotAvailable(const UserListElement &));
+	s["Message"]=SLOT(message(const QString &, const QString &, const QString &, const UserListElement *));
+	
+	config_file.addVariable("Notify", "NewChat_Speech", true);
+	config_file.addVariable("Notify", "NewMessage_Speech", false);
+	config_file.addVariable("Notify", "ConnError_Speech", false);
+	config_file.addVariable("Notify", "toAvailable_Speech", false);
+	config_file.addVariable("Notify", "toBusy_Speech", false);
+	config_file.addVariable("Notify", "toNotAvailable_Speech", false);
+	config_file.addVariable("Notify", "Message_Speech", true);
+
+	notify->registerNotifier("Speech", this, s);
 
 	kdebugf2();
-	return 0;
 }
 
-extern "C" void speech_close()
+SpeechSlots::~SpeechSlots()
 {
 	kdebugf();
+	notify->unregisterNotifier("Speech");
 
-	ConfigDialog::unregisterSlotOnCreate(speechObj, SLOT(onCreateConfigDialog()));
+	ConfigDialog::unregisterSlotOnCreate(this, SLOT(onCreateConfigDialog()));
 
-	ConfigDialog::disconnectSlot("Speech", "", SIGNAL(clicked()), speechObj, SLOT(chooseSpeechProgram()), "speech_fileopen");
-	ConfigDialog::disconnectSlot("Speech", "Test", SIGNAL(clicked()), speechObj, SLOT(testSpeech()), "testspeech");
-	ConfigDialog::disconnectSlot("Speech", "Use aRts", SIGNAL(toggled(bool)), speechObj, SLOT(useArts(bool)), "usearts");
-	ConfigDialog::disconnectSlot("Speech", "Use Esd", SIGNAL(toggled(bool)), speechObj, SLOT(useEsd(bool)), "useesd");
-	ConfigDialog::disconnectSlot("Speech", "Use Dsp", SIGNAL(toggled(bool)), speechObj, SLOT(useDsp(bool)), "usedsp");
-
-	QObject::disconnect(gadu, SIGNAL(chatMsgReceived1(UinsList, const QString&, time_t,bool&)),
-		speechObj, SLOT(chat(UinsList, const QString&, time_t,bool&)));
-	QObject::disconnect(gadu, SIGNAL(chatMsgReceived2(UinsList, const QString&, time_t)),
-		speechObj, SLOT(message(UinsList, const QString&,time_t)));
-
-	QObject::disconnect(&userlist, SIGNAL(statusModified(UserListElement*)),
-		speechObj, SLOT(notify(UserListElement*)));
+	ConfigDialog::disconnectSlot("Speech", "", SIGNAL(clicked()), this, SLOT(chooseSpeechProgram()), "speech_fileopen");
+	ConfigDialog::disconnectSlot("Speech", "Test", SIGNAL(clicked()), this, SLOT(testSpeech()), "testspeech");
+	ConfigDialog::disconnectSlot("Speech", "Use aRts", SIGNAL(clicked()), this, SLOT(useArts()), "usearts");
+	ConfigDialog::disconnectSlot("Speech", "Use Esd", SIGNAL(clicked()), this, SLOT(useEsd()), "useesd");
+	ConfigDialog::disconnectSlot("Speech", "Use Dsp", SIGNAL(clicked()), this, SLOT(useDsp()), "usedsp");
 
 	ConfigDialog::removeControl("Speech", "Test", "testspeech");
+	ConfigDialog::removeControl("Speech", "Connection error:");
 	ConfigDialog::removeControl("Speech", "Notify format (female):");
 	ConfigDialog::removeControl("Speech", "Notify format (male):");
 	ConfigDialog::removeControl("Speech", "Message format (female):");
@@ -151,77 +211,7 @@ extern "C" void speech_close()
 	ConfigDialog::removeControl("Speech", "Frequency");
 	ConfigDialog::removeControl("Speech", "freq");
 	ConfigDialog::removeControl("Speech", "Say only when chat window is not active");
-	ConfigDialog::removeControl("Notify", "Notify by speech");
 	ConfigDialog::removeTab("Speech");
-
-	delete speechObj;
-	speechObj=NULL;
-	kdebugf2();
-}
-
-bool isFemale(QString s)
-{
-#if QT_VERSION >= 0x030200
-	return s.endsWith("a", false);
-#else
-	return s.endsWith("a")||s.endsWith("A");
-#endif
-}
-
-void SpeechSlots::useArts(bool b)
-{
-	kdebugf();
-	if (b)
-	{
-		ConfigDialog::getCheckBox("Speech", "Use aRts", "usearts")->setEnabled(false);
-
-		ConfigDialog::getCheckBox("Speech", "Use Esd", "useesd")->setChecked(false);
-		ConfigDialog::getCheckBox("Speech", "Use Dsp", "usedsp")->setChecked(false);
-
-		ConfigDialog::getCheckBox("Speech", "Use Esd", "useesd")->setEnabled(true);
-		ConfigDialog::getCheckBox("Speech", "Use Dsp", "usedsp")->setEnabled(true);
-	}
-	kdebugf2();
-}
-
-void SpeechSlots::useEsd(bool b)
-{
-	kdebugf();
-	if (b)
-	{
-		ConfigDialog::getCheckBox("Speech", "Use Esd", "useesd")->setEnabled(false);
-
-		ConfigDialog::getCheckBox("Speech", "Use aRts", "usearts")->setChecked(false);
-		ConfigDialog::getCheckBox("Speech", "Use Dsp", "usedsp")->setChecked(false);
-
-		ConfigDialog::getCheckBox("Speech", "Use aRts", "usearts")->setEnabled(true);
-		ConfigDialog::getCheckBox("Speech", "Use Dsp", "usedsp")->setEnabled(true);
-	}
-	kdebugf2();
-}
-
-void SpeechSlots::useDsp(bool b)
-{
-	kdebugf();
-	if (b)
-	{
-		ConfigDialog::getCheckBox("Speech", "Use Dsp", "usedsp")->setEnabled(false);
-
-		ConfigDialog::getCheckBox("Speech", "Use Esd", "useesd")->setChecked(false);
-		ConfigDialog::getCheckBox("Speech", "Use aRts", "usearts")->setChecked(false);
-
-		ConfigDialog::getCheckBox("Speech", "Use Esd", "useesd")->setEnabled(true);
-		ConfigDialog::getCheckBox("Speech", "Use aRts", "usearts")->setEnabled(true);
-	}
-	kdebugf2();
-}
-
-
-SpeechSlots::SpeechSlots()
-{
-	kdebugf();
-	srand(time(NULL));
-	lastSpeech.start();
 	kdebugf2();
 }
 
@@ -315,88 +305,108 @@ void SpeechSlots::testSpeech()
 	kdebugf2();
 }
 
-void SpeechSlots::chat(UinsList senders,const QString& msg,time_t time, bool& grab)
+void SpeechSlots::newChat(UinsList senders, const QString &msg, time_t time, bool &grab)
 {
 	kdebugf();
-	if (lastSpeech.elapsed()>1500)
+	if (lastSpeech.elapsed()<1500)
 	{
-		Chat* chatWin= chat_manager->findChatByUins(senders);
-		if (config_file.readBoolEntry("Speech","SayWhenWinNotActive") && chatWin)
-			if (chatWin->isActiveWindow())
-				return;
-		UserListElement ule=userlist.byUin(senders.first());
-		if (isFemale(ule.first_name))
-			say(parse(config_file.readEntry("Speech", "ChatFormatFemale"), ule).arg(msg));
-		else
-			say(parse(config_file.readEntry("Speech", "ChatFormatMale"), ule).arg(msg));
-		lastSpeech.restart();
+		kdebugf2();
+		return;
 	}
+
+	Chat* chatWin= chat_manager->findChatByUins(senders);
+	if (config_file.readBoolEntry("Speech","SayWhenWinNotActive") && chatWin)
+		if (chatWin->isActiveWindow())
+			return;
+	UserListElement ule=userlist.byUin(senders.first());
+	if (isFemale(ule.first_name))
+		say(parse(config_file.readEntry("Speech", "ChatFormatFemale"), ule).arg(msg));
+	else
+		say(parse(config_file.readEntry("Speech", "ChatFormatMale"), ule).arg(msg));
+	lastSpeech.restart();
 	kdebugf2();
 }
 
-void SpeechSlots::message(UinsList senders,const QString& msg,time_t time)
+void SpeechSlots::newMessage(UinsList senders, const QString &msg, time_t time)
 {
 	kdebugf();
-	if (lastSpeech.elapsed()>1500)
+	if (lastSpeech.elapsed()<1500)
 	{
-		UserListElement ule=userlist.byUin(senders.first());
-		if (isFemale(ule.first_name))
-			say(parse(config_file.readEntry("Speech", "MessageFormatFemale"), ule).arg(msg));
-		else
-			say(parse(config_file.readEntry("Speech", "MessageFormatMale"), ule).arg(msg));
-		lastSpeech.restart();
+		kdebugf2();
+		return;
 	}
+
+	UserListElement ule=userlist.byUin(senders.first());
+	if (isFemale(ule.first_name))
+		say(parse(config_file.readEntry("Speech", "MessageFormatFemale"), ule).arg(msg));
+	else
+		say(parse(config_file.readEntry("Speech", "MessageFormatMale"), ule).arg(msg));
+	lastSpeech.restart();
+	kdebugf2();
 }
 
-void SpeechSlots::notify(UserListElement *ule)
+void SpeechSlots::connectionError(const QString &message)
 {
 	kdebugf();
-	if (!config_file.readBoolEntry("Notify","NotifyStatusChange"))
+	if (lastSpeech.elapsed()<1500)
+	{
+		kdebugf2();
 		return;
+	}
 
-	if (userlist.containsUin(ule->uin)) {
-		if (!ule->notify && !config_file.readBoolEntry("Notify","NotifyAboutAll"))
-			return;
-		}
+	say(config_file.readEntry("Speech", "ConnectionError").arg(message));
+	lastSpeech.restart();
+	kdebugf2();
+}
+
+void SpeechSlots::userChangedStatusToAvailable(const UserListElement &ule)
+{
+	kdebugf();
+	if (lastSpeech.elapsed()<1500)
+	{
+		kdebugf2();
+		return;
+	}
+
+	QString t;
+	if (isFemale(ule.first_name))
+		t=parse(config_file.readEntry("Speech", "NotifyFormatFemale"), ule);
 	else
-		if (!config_file.readBoolEntry("Notify","NotifyAboutAll"))
-			return;
-	int status=ule->status;
-	if (config_file.readBoolEntry("Notify","NotifyStatusChange") && (status == GG_STATUS_AVAIL ||
-		status == GG_STATUS_AVAIL_DESCR || status == GG_STATUS_BUSY || status == GG_STATUS_BUSY_DESCR
-		|| status == GG_STATUS_BLOCKED)/* &&
-		(oldstatus == GG_STATUS_NOT_AVAIL || oldstatus == GG_STATUS_NOT_AVAIL_DESCR || oldstatus == GG_STATUS_INVISIBLE ||
-		oldstatus == GG_STATUS_INVISIBLE_DESCR || oldstatus == GG_STATUS_INVISIBLE2)*/) 
-		if (config_file.readBoolEntry("Notify","NotifyWithSpeech"))
-			if (lastSpeech.elapsed()>1500)
-			{
-				QString t;
-				if (isFemale(ule->first_name))
-					t=parse(config_file.readEntry("Speech", "NotifyFormatFemale"), *ule);
-				else
-					t=parse(config_file.readEntry("Speech", "NotifyFormatMale"), *ule);
-				t.replace(QRegExp("&nbsp;"), " ");
-				t.replace(QRegExp("&lt;"), "<");
-				t.replace(QRegExp("&gt;"), ">");
-				t.replace(QRegExp("&amp;"), "&");
-				say(t);
-				lastSpeech.restart();
-			}
+		t=parse(config_file.readEntry("Speech", "NotifyFormatMale"), ule);
+	t.replace(QRegExp("&nbsp;"), " ");
+	t.replace(QRegExp("&lt;"), "<");
+	t.replace(QRegExp("&gt;"), ">");
+	t.replace(QRegExp("&amp;"), "&");
+	say(t);
+	lastSpeech.restart();
+
+	kdebugf2();
+}
+
+void SpeechSlots::userChangedStatusToBusy(const UserListElement &ule)
+{
+	kdebugf();
+	userChangedStatusToAvailable(ule);
+	kdebugf2();
+}
+
+void SpeechSlots::userChangedStatusToNotAvailable(const UserListElement &ule)
+{
+	kdebugf();
+	userChangedStatusToAvailable(ule);
+	kdebugf2();
+}
+
+void SpeechSlots::message(const QString &from, const QString &type, const QString &message, const UserListElement *ule)
+{
+	kdebugf();
+	say(message);
 	kdebugf2();
 }
 
 void SpeechSlots::onCreateConfigDialog()
 {
 	kdebugf();
-	QCheckBox *b=ConfigDialog::getCheckBox("Speech", "Use aRts", "usearts");
-	if (b->isChecked())
-		b->setEnabled(false);
-	b=ConfigDialog::getCheckBox("Speech", "Use Dsp", "usedsp");
-	if (b->isChecked())
-		b->setEnabled(false);
-	b=ConfigDialog::getCheckBox("Speech", "Use Esd", "useesd");
-	if (b->isChecked())
-		b->setEnabled(false);
 	kdebugf2();
 }
 

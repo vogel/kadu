@@ -29,14 +29,6 @@ extern "C" int nas_sound_init()
 		return 2;
 	}
 
-	QObject::connect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
-					 nasPlayerObj, SLOT(playSound(const QString &, bool, double)));
-	QObject::connect(sound_manager, SIGNAL(playOnMessage(UinsList, const QString &, const QString &, bool, double)),
-					 nasPlayerObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
-	QObject::connect(sound_manager, SIGNAL(playOnChat(UinsList, const QString &, const QString &, bool, double)),
-					 nasPlayerObj, SLOT(playChat(UinsList, const QString &, const QString &, bool, double)));
-	QObject::connect(sound_manager, SIGNAL(playOnNotify(const UinType, const QString &, bool, double)),
-					 nasPlayerObj, SLOT(playNotify(const UinType, const QString &, bool, double)));
 	kdebugf2();
 	return 0;
 }
@@ -44,16 +36,9 @@ extern "C" void nas_sound_close()
 {
 	kdebugf();
 
-	QObject::disconnect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
-						nasPlayerObj, SLOT(playSound(const QString &, bool, double)));
-	QObject::disconnect(sound_manager, SIGNAL(playOnMessage(UinsList, const QString &, const QString &, bool, double)),
-						nasPlayerObj, SLOT(playMessage(UinsList, const QString &, const QString &, bool, double)));
-	QObject::disconnect(sound_manager, SIGNAL(playOnChat(UinsList, const QString &, const QString &, bool, double)),
-						nasPlayerObj, SLOT(playChat(UinsList, const QString &, const QString &, bool, double)));
-	QObject::disconnect(sound_manager, SIGNAL(playOnNotify(const UinType, const QString &, bool, double)),
-						nasPlayerObj, SLOT(playNotify(const UinType, const QString &, bool, double)));
 	delete nasPlayerObj;
 	nasPlayerObj=NULL;
+
 	kdebugf2();
 }
 
@@ -68,6 +53,24 @@ NASPlayerSlots::NASPlayerSlots()
 		QObject::connect(sn, SIGNAL(activated(int)), this, SLOT(dataReceived()));
 	}
 #endif
+
+	connect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
+			this, SLOT(playSound(const QString &, bool, double)));
+	connect(sound_manager, SIGNAL(playOnNewMessage(UinsList, const QString &, bool, double, const QString &)),
+			this, SLOT(playNewMessage(UinsList, const QString &, bool, double, const QString &)));
+	connect(sound_manager, SIGNAL(playOnNewChat(UinsList, const QString &, bool, double, const QString &)),
+			this, SLOT(playNewChat(UinsList, const QString &, bool, double, const QString &)));
+	connect(sound_manager, SIGNAL(playOnConnectionError(const QString &, bool, double, const QString &)),
+			this, SLOT(playConnectionError(const QString &, bool, double, const QString &)));
+	connect(sound_manager, SIGNAL(playOnNotifyAvail(const UinType, const QString &, bool, double)),
+			this, SLOT(playNotify(const UinType, const QString &, bool, double)));
+	connect(sound_manager, SIGNAL(playOnNotifyBusy(const UinType, const QString &, bool, double)),
+			this, SLOT(playNotify(const UinType, const QString &, bool, double)));
+	connect(sound_manager, SIGNAL(playOnNotifyNotAvail(const UinType, const QString &, bool, double)),
+			this, SLOT(playNotify(const UinType, const QString &, bool, double)));
+	connect(sound_manager, SIGNAL(playOnMessage(const QString &, bool, double, const QString &, const QString &, const QString &, const UserListElement *)),
+			this, SLOT(playMessage(const QString &, bool, double, const QString &, const QString &, const QString &, const UserListElement *)));
+
 	kdebugf2();
 }
 
@@ -82,6 +85,24 @@ NASPlayerSlots::~NASPlayerSlots()
 		delete sn;
 	}
 #endif
+
+	disconnect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
+			this, SLOT(playSound(const QString &, bool, double)));
+	disconnect(sound_manager, SIGNAL(playOnNewMessage(UinsList, const QString &, bool, double, const QString &)),
+			this, SLOT(playNewMessage(UinsList, const QString &, bool, double, const QString &)));
+	disconnect(sound_manager, SIGNAL(playOnNewChat(UinsList, const QString &, bool, double, const QString &)),
+			this, SLOT(playNewChat(UinsList, const QString &, bool, double, const QString &)));
+	disconnect(sound_manager, SIGNAL(playOnConnectionError(const QString &, bool, double, const QString &)),
+			this, SLOT(playConnectionError(const QString &, bool, double, const QString &)));
+	disconnect(sound_manager, SIGNAL(playOnNotifyAvail(const UinType, const QString &, bool, double)),
+			this, SLOT(playNotify(const UinType, const QString &, bool, double)));
+	disconnect(sound_manager, SIGNAL(playOnNotifyBusy(const UinType, const QString &, bool, double)),
+			this, SLOT(playNotify(const UinType, const QString &, bool, double)));
+	disconnect(sound_manager, SIGNAL(playOnNotifyNotAvail(const UinType, const QString &, bool, double)),
+			this, SLOT(playNotify(const UinType, const QString &, bool, double)));
+	disconnect(sound_manager, SIGNAL(playOnMessage(const QString &, bool, double, const QString &, const QString &, const QString &, const UserListElement *)),
+			this, SLOT(playMessage(const QString &, bool, double, const QString &, const QString &, const QString &, const UserListElement *)));
+
 	kdebugf2();
 }
 
@@ -124,19 +145,31 @@ void NASPlayerSlots::dataReceived()
 #endif
 }
 
-void NASPlayerSlots::playMessage(UinsList senders, const QString &sound, const QString &msg, bool volCntrl, double vol)
+void NASPlayerSlots::playNewMessage(UinsList senders, const QString &sound, bool volCntrl, double vol, const QString &msg)
 {
 	kdebugf();
 	playSound(sound, volCntrl, vol);
 }
 
-void NASPlayerSlots::playChat(UinsList senders, const QString &sound, const QString &msg, bool volCntrl, double vol)
+void NASPlayerSlots::playNewChat(UinsList senders, const QString &sound, bool volCntrl, double vol, const QString &msg)
 {
 	kdebugf();
 	playSound(sound, volCntrl, vol);
 }
 
 void NASPlayerSlots::playNotify(const UinType uin, const QString &sound, bool volCntrl, double vol)
+{
+	kdebugf();
+	playSound(sound, volCntrl, vol);
+}
+
+void NASPlayerSlots::playConnectionError(const QString &sound, bool volCntrl, double vol, const QString &msg)
+{
+	kdebugf();
+	playSound(sound, volCntrl, vol);
+}
+
+void NASPlayerSlots::playMessage(const QString &sound, bool volCntrl, double vol, const QString &from, const QString &type, const QString &msg, const UserListElement *ule)
 {
 	kdebugf();
 	playSound(sound, volCntrl, vol);

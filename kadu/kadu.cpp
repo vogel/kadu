@@ -49,7 +49,6 @@
 #include "personal_info.h"
 #include "about.h"
 #include "ignore.h"
-#include "hints.h"
 #include "emoticons.h"
 #include "history.h"
 #include "pending_msgs.h"
@@ -382,7 +381,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	// history, hints
 	History::initModule();
-	HintManager::initModule();
 
 	closestatusppmtime.start();
 
@@ -394,9 +392,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	DoBlink = false;
 
 	loadGeometry(this, "General", "Geometry", 0, 0, 145, 465);
-
-	if (config_file.readBoolEntry("Hints", "Hints"))
-		hintmanager = new HintManager();
 
 	/* read the userlist */
 	userlist.readFromFile();
@@ -935,48 +930,6 @@ void Kadu::userListStatusModified(UserListElement *user)
 	kdebugf2();
 }
 
-void Kadu::ifNotify(UinType uin, unsigned int status, unsigned int oldstatus)
-{
-	if (!config_file.readBoolEntry("Notify","NotifyStatusChange"))
-		return;
-
-	if (userlist.containsUin(uin))
-	{
-		UserListElement ule = userlist.byUin(uin);
-		if (!ule.notify && !config_file.readBoolEntry("Notify","NotifyAboutAll"))
-			return;
-	}
-	else
-		if (!config_file.readBoolEntry("Notify","NotifyAboutAll"))
-			return;
-
-	if (config_file.readBoolEntry("Hints","NotifyHint"))
-		hintmanager->addHintStatus(userlist.byUinValue(uin), status, oldstatus);
-
-	if (config_file.readBoolEntry("Notify","NotifyStatusChange") && (status == GG_STATUS_AVAIL ||
-		status == GG_STATUS_AVAIL_DESCR || status == GG_STATUS_BUSY || status == GG_STATUS_BUSY_DESCR
-		|| status == GG_STATUS_BLOCKED) &&
-		(oldstatus == GG_STATUS_NOT_AVAIL || oldstatus == GG_STATUS_NOT_AVAIL_DESCR || oldstatus == GG_STATUS_INVISIBLE ||
-		oldstatus == GG_STATUS_INVISIBLE_DESCR || oldstatus == GG_STATUS_INVISIBLE2))
-	{
-		kdebugm(KDEBUG_INFO, "Notify about user\n");
-
-		if (config_file.readBoolEntry("Notify","NotifyWithDialogBox"))
-		{
-			// FIXME convert into a regular QMessageBox
-			QString msg;
-			msg = QString(QT_TR_NOOP("User %1 is available")).arg(userlist.byUin(uin).altnick);
-			QMessageBox *msgbox;
-			msgbox = new QMessageBox(qApp->translate("@default",QT_TR_NOOP("User notify")), qApp->translate("@default",msg), QMessageBox::NoIcon,
-				QMessageBox::Ok, QMessageBox::NoButton, QMessageBox::NoButton,
-				0, 0, FALSE, Qt::WStyle_DialogBorder || Qt::WDestructiveClose);
-			msgbox->show();
-		}
-
-	}
-
-}
-
 void Kadu::userListChanged()
 {
 	kdebugf();
@@ -990,7 +943,7 @@ void Kadu::userStatusChanged(UserListElement &user, int oldstatus)
 
 	history.appendStatus(user.uin, user.status, user.description.length() ? user.description : QString::null);
 	chat_manager->refreshTitlesForUin(user.uin);
-	ifNotify(user.uin, user.status, oldstatus);
+//	ifNotify(user.uin, user.status, oldstatus);
 
 	kdebugf2();
 }
@@ -1222,8 +1175,6 @@ void Kadu::chatMsgReceived(UinsList senders, const QString &msg, time_t time)
 		kadu->setFocus();
 	}
 
-	hintmanager->addHintNewChat(senders, msg);
-
 	if(config_file.readBoolEntry("Chat", "OpenChatOnMessage"))
 		pending.openMessages();
 
@@ -1260,7 +1211,6 @@ void Kadu::error(GaduError err)
 				"Leave new password field blank."));
 			Autohammer = false; /* FIXME 2/2*/
 			gadu->disableAutoConnection();
-			hintmanager->addHintError(msg);
 			MessageBox::msg(msg);
 			break;
 
@@ -1280,10 +1230,9 @@ void Kadu::error(GaduError err)
 			msg = QString(tr("Unable to connect, incorrect password"));
 			Autohammer = false; /* FIXME 2/2*/
 			gadu->disableAutoConnection();
-			hintmanager->addHintError(msg);
-			QMessageBox::critical(0, tr("Incorrect password"), tr("Connection will be stoped\nYour password is incorrect !!!"), QMessageBox::Ok, 0);
-			return;
-
+			MessageBox::wrn(tr("Connection will be stoped\nYour password is incorrect !"));
+			break;
+			
 		case ConnectionTlsError:
 			msg = QString(tr("Unable to connect, error of negotiation TLS"));
 			break;
@@ -1297,11 +1246,11 @@ void Kadu::error(GaduError err)
 			break;
 
 		case Disconnected:
-			kdebugm(KDEBUG_INFO, "Disconnection!\n");
 			msg = QString(tr("Disconnection has occured"));
 			break;
 
 		default:
+			kdebugm(KDEBUG_WARNING, "Unhandled error?\n");
 			break;
 
 	}
@@ -1315,8 +1264,8 @@ void Kadu::error(GaduError err)
 		else
 			host = "HUB";
 		msg = QString("(") + host + ") " + msg;
-		kdebugm(KDEBUG_INFO, "%s\n", unicode2latin(msg).data());
-		hintmanager->addHintError(msg);
+		kdebugm(KDEBUG_INFO, "%s\n", msg.local8Bit().data());
+		emit connectionError(msg);
 	}
 
 	if (Autohammer)
@@ -1423,11 +1372,7 @@ void Kadu::quitApplication() {
 
 Kadu::~Kadu(void) {
 	kdebugf();
-	if (hintmanager)
-	{
-		delete hintmanager;
-		hintmanager=NULL;
-	}
+
 	kdebugf2();
 }
 
@@ -1560,22 +1505,6 @@ void Kadu::show()
 	QMainWindow::show();
 	emit shown();
 }
-
-/*
-void Kadu::showMinimized()
-{
-	kdebugf();
-	QWidget::showMinimized();
-//	emit minimized();
-}
-
-void Kadu::hide()
-{
-	kdebugf();
-//	emit minimized();
-	QWidget::hide();
-}
-*/
 
 void KaduSlots::onCreateConfigDialog()
 {

@@ -15,6 +15,7 @@
 #include <qscrollview.h>
 #include <qfiledialog.h>
 #include <qfontdialog.h>
+#include <qradiobutton.h>
 
 #include "config_dialog.h"
 #include "misc.h"
@@ -143,7 +144,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
 			}
-			
 			case CONFIG_COLORBUTTON:
 			{
 				QColor col((*i).defaultS);
@@ -160,6 +160,11 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				QComboBox* combo=new QComboBox(hbox, (*i).name);
 				(*i).widget=combo;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
+				if (!(*i).options.empty())
+				{
+					combo->insertStringList((*i).options);
+					combo->setCurrentItem((*i).values.findIndex((*i).config->readEntry((*i).group, (*i).entry, (*i).defaultS)));
+				}
 				break;
 			}
 			case CONFIG_GRID:
@@ -168,19 +173,48 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				(*i).widget=grid;
 				break;
 			}
+			case CONFIG_VBOX:
 			case CONFIG_HBOX:
 			{
-				QHBox* box = new QHBox(parent,(*i).caption);
+				QHBox* box;
+				if ((*i).type==CONFIG_HBOX)
+					box = new QHBox(parent,(*i).caption);
+				else
+					box = new QVBox(parent,(*i).caption);
 				box->setSpacing(2);
 				(*i).widget=box;
 				break;
 			}
+			case CONFIG_VGROUPBOX:
 			case CONFIG_HGROUPBOX:
 			{
-				QHGroupBox* box = new QHGroupBox(appHandle->translate("@default",(*i).caption), parent, (*i).name);
+				QGroupBox* box;
+				if ((*i).type==CONFIG_HGROUPBOX)
+					box = new QHGroupBox(appHandle->translate("@default",(*i).caption), parent, (*i).name);
+				else
+					box = new QVGroupBox(appHandle->translate("@default",(*i).caption), parent, (*i).name);
 				(*i).widget=box;
-				box->setSizePolicy(QSizePolicy(QSizePolicy::Minimum,QSizePolicy::Maximum));
+				box->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum));
 				break;
+			}
+			case CONFIG_VRADIOGROUP:
+			case CONFIG_HRADIOGROUP:
+			{
+				QButtonGroup* group;
+				if ((*i).type==CONFIG_HRADIOGROUP)
+					group = new QHButtonGroup(appHandle->translate("@default",(*i).caption), parent, (*i).name);
+				else
+					group = new QVButtonGroup(appHandle->translate("@default",(*i).caption), parent, (*i).name);
+				
+				(*i).widget=group;
+				group->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum));
+//				group->setExclusive(true);
+				group->setRadioButtonExclusive(true);
+				for(QStringList::iterator it=(*i).options.begin(); it!=(*i).options.end(); it++)
+					new QRadioButton(*it, group, (*i).name+(*it));
+				group->setButton((*i).values.findIndex((*i).config->readEntry((*i).group, (*i).entry, (*i).defaultS)));
+				break;
+
 			}
 			case CONFIG_HOTKEYEDIT:
 			{
@@ -200,7 +234,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				QLabel* label=new QLabel(appHandle->translate("@default",(*i).caption), parent, (*i).name);
 				(*i).widget=label;
 				break;
-			}	
+			}
 			case CONFIG_LINEEDIT:
 			{
 				QHBox* hbox=new QHBox(parent);
@@ -233,14 +267,14 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				break;
 			}
 			case CONFIG_LISTBOX:
-			{	
+			{
 				QListBox* listbox= new QListBox(parent, (*i).caption);
 				(*i).widget=listbox;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
 			}
 			case CONFIG_LISTVIEW:
-			{	
+			{
 				QListView* listview= new QListView(parent, (*i).caption);
 				(*i).widget=listview;
 				if ((*i).tip.length()) QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
@@ -290,7 +324,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				break;
 			}
 			case CONFIG_SPINBOX:
-			{	
+			{
 				QHBox* hbox=new QHBox(parent);
 				new QLabel(appHandle->translate("@default",(*i).caption), hbox);
 				QStringList values= QStringList::split(",", (*i).defaultS);
@@ -312,23 +346,11 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				(*i).widget=subbox;
 				break;
 			}
-			case CONFIG_VBOX:
-			{
-				QVBox* box = new QVBox(parent,(*i).caption);
-				(*i).widget=box;
-				box->setSpacing(2);
-				break;
-			}
-			case CONFIG_VGROUPBOX:
-			{
-				QVGroupBox* box = new QVGroupBox(appHandle->translate("@default",(*i).caption), parent, (*i).name);
-				(*i).widget=box;
-				box->setSizePolicy(QSizePolicy(QSizePolicy::Minimum,QSizePolicy::Maximum));
-				break;
-			}
 			case CONFIG_DELETED:
+			{
 				kdebugm(KDEBUG_ERROR, "CONFIG_DELETED found!\n");
 				break;
+			}
 		}
 
 		for(QValueList<ElementConnections>::iterator k=(*i).ConnectedSlots.begin(); k!=(*i).ConnectedSlots.end(); k++)
@@ -411,45 +433,40 @@ void ConfigDialog::updateConfig(void)
 		switch((*i).type)
 		{
 			case CONFIG_CHECKBOX:
-			{
 				(*i).config->writeEntry((*i).group, (*i).entry, ((QCheckBox*)((*i).widget))->isChecked());
 				break;
-			}
+			case CONFIG_COMBOBOX:
+				if (!(*i).options.empty())
+				{
+					int selected=((QComboBox*)((*i).widget))->currentItem();
+					(*i).config->writeEntry((*i).group, (*i).entry, (*i).values[selected]);
+				}
+				break;
 			case CONFIG_HOTKEYEDIT:
-			{
 				(*i).config->writeEntry((*i).group, (*i).entry, ((HotKey*)((*i).widget))->getShortCutString());
 				break;
-			}
 			case CONFIG_LINEEDIT:
-			{
 				(*i).config->writeEntry((*i).group, (*i).entry, ((QLineEdit*)((*i).widget))->text());
 				break;
-			}
 			case CONFIG_TEXTEDIT:
-			{
 				(*i).config->writeEntry((*i).group, (*i).entry, ((QTextEdit*)((*i).widget))->text());
 				break;
-			}
 			case CONFIG_SLIDER:
-			{
 				(*i).config->writeEntry((*i).group, (*i).entry, ((QSlider*)((*i).widget))->value());
 				break;
-			}
 			case CONFIG_SPINBOX:
-			{
 				(*i).config->writeEntry((*i).group, (*i).entry, ((QSpinBox*)((*i).widget))->value());
 				break;
-			}
 			case CONFIG_COLORBUTTON:
-			{
 				(*i).config->writeEntry((*i).group, (*i).entry, ((ColorButton*)((*i).widget))->color());
 				break;
-			}
 			case CONFIG_SELECTFONT:
-			{
 				(*i).config->writeEntry((*i).group, (*i).entry, ((SelectFont*)((*i).widget))->font());
 				break;
-			}
+			case CONFIG_VRADIOGROUP:
+			case CONFIG_HRADIOGROUP:
+				(*i).config->writeEntry((*i).group, (*i).entry, (*i).values[((QButtonGroup*)(*i).widget)->selectedId()]);
+				break;
 			default:
 				break;
 		}
@@ -526,6 +543,33 @@ void ConfigDialog::addComboBox(const QString& groupname,
 	}
 }
 
+void ConfigDialog::addComboBox(const QString& groupname, 
+				const QString& parent, const QString& caption,
+				const QString &entry, const QStringList &options, const QStringList &values,
+				const QString &defaultS, const QString& tip, const QString& name)
+{
+	addComboBox(&config_file, groupname, parent, caption, entry, options, values, defaultS, tip, name);
+}
+
+void ConfigDialog::addComboBox(ConfigFile* config, const QString& groupname, 
+				const QString& parent, const QString& caption,
+				const QString &entry, const QStringList &options, const QStringList &values,
+				const QString &defaultS, const QString& tip, const QString& name)
+{
+	if (existControl(groupname, caption, name) == -1)
+	{
+		RegisteredControl c(CONFIG_COMBOBOX, groupname, parent, caption, name);
+		c.tip=tip;
+		c.config=config;
+		c.entry=entry;
+		c.defaultS=defaultS;
+		c.options=options;
+		c.values=values;
+		addControl(groupname,c);
+	}
+}
+
+
 void ConfigDialog::addGrid(const QString& groupname,
 			const QString& parent, const QString& caption, const int nrColumns, const QString& name)
 {
@@ -551,6 +595,32 @@ void ConfigDialog::addHGroupBox(const QString& groupname,
 {
 	if (existControl(groupname, caption, name) == -1){
 		RegisteredControl c(CONFIG_HGROUPBOX, groupname, parent, caption, name);
+		addControl(groupname,c);
+	}
+}
+
+void ConfigDialog::addHRadioGroup(
+	const QString& groupname, const QString& parent, const QString& caption,
+	const QString &entry, const QStringList &options, const QStringList &values,
+	const QString &defaultS, const QString& tip, const QString& name)
+{
+	addHRadioGroup(&config_file, groupname, parent, caption, entry, options, values, defaultS, tip, name);
+}
+
+void ConfigDialog::addHRadioGroup(ConfigFile* config,
+	const QString& groupname, const QString& parent, const QString& caption,
+	const QString &entry, const QStringList &options, const QStringList &values,
+	const QString &defaultS, const QString& tip, const QString& name)
+{
+	if (existControl(groupname, caption, name) == -1)
+	{
+		RegisteredControl c(CONFIG_HRADIOGROUP, groupname, parent, caption, name);
+		c.tip=tip;
+		c.config=config;
+		c.entry=entry;
+		c.defaultS=defaultS;
+		c.options=options;
+		c.values=values;
 		addControl(groupname,c);
 	}
 }
@@ -774,6 +844,32 @@ void ConfigDialog::addVGroupBox(const QString& groupname,
 	}
 }
 
+void ConfigDialog::addVRadioGroup(
+	const QString& groupname, const QString& parent, const QString& caption,
+	const QString &entry, const QStringList &options, const QStringList &values,
+	const QString &defaultS, const QString& tip, const QString& name)
+{
+	addVRadioGroup(&config_file, groupname, parent, caption, entry, options, values, defaultS, tip, name);
+}
+
+void ConfigDialog::addVRadioGroup(ConfigFile* config,
+	const QString& groupname, const QString& parent, const QString& caption,
+	const QString &entry, const QStringList &options, const QStringList &values,
+	const QString &defaultS, const QString& tip, const QString& name)
+{
+	if (existControl(groupname, caption, name) == -1)
+	{
+		RegisteredControl c(CONFIG_VRADIOGROUP, groupname, parent, caption, name);
+		c.tip=tip;
+		c.config=config;
+		c.entry=entry;
+		c.defaultS=defaultS;
+		c.options=options;
+		c.values=values;
+		addControl(groupname,c);
+	}
+}
+
 void ConfigDialog::addSelectFont(const QString& groupname, const QString& parent,
 				const QString& caption, const QString& entry, const QString& defaultS,
 				const QString &tip, const QString& name)
@@ -925,11 +1021,9 @@ int ConfigDialog::findNextTab(int pos)
 	if (pos>=count)
 		pos=count;
 
-	for(; pos<count; pos++) {
-		if (RegisteredControls[pos].type == CONFIG_TAB) {
+	for(; pos<count; pos++)
+		if (RegisteredControls[pos].type == CONFIG_TAB)
 			return pos;
-			}
-		}
 	return -1;
 //	zwraca miejsce znalezienia TAB'a
 //	jesli nie znajdzie to zwraca -1	
@@ -1076,7 +1170,7 @@ QWidget* ConfigDialog::getWidget(const QString& groupname, const QString& captio
 	int nr=existControl(groupname,caption,name);
 	if (nr!=-1)
 		return (RegisteredControls[nr].widget);
-	kdebugm(KDEBUG_PANIC, "Warning there is no \\" +groupname+ "\\"+ caption+ "\\"+ name+ "\\ control\n");
+	kdebugm(KDEBUG_PANIC, "Warning: there is no \\" +groupname+ "\\"+ caption+ "\\"+ name+ "\\ control\n");
 	return NULL;
 }
 
@@ -1113,6 +1207,11 @@ QHBox* ConfigDialog::getHBox(const QString& groupname, const QString& caption, c
 QHGroupBox* ConfigDialog::getHGroupBox(const QString& groupname, const QString& caption, const QString& name)
 {	
 	return dynamic_cast<QHGroupBox*>(getWidget(groupname,caption,name));
+}
+
+QHButtonGroup* ConfigDialog::getHButtonGroup(const QString& groupname, const QString& caption, const QString& name)
+{
+	return dynamic_cast<QHButtonGroup*>(getWidget(groupname,caption,name));
 }
 
 HotKey* ConfigDialog::getHotKeyEdit(const QString& groupname, const QString& caption, const QString& name)
@@ -1178,6 +1277,11 @@ QVBox* ConfigDialog::getVBox(const QString& groupname, const QString& caption, c
 QVGroupBox* ConfigDialog::getVGroupBox(const QString& groupname, const QString& caption, const QString& name)
 {	
 	return dynamic_cast<QVGroupBox*>(getWidget(groupname,caption,name));
+}
+
+QVButtonGroup* ConfigDialog::getVButtonGroup(const QString& groupname, const QString& caption, const QString& name)
+{
+	return dynamic_cast<QVButtonGroup*>(getWidget(groupname,caption,name));
 }
 
 int ConfigDialog::existControl(const QString& groupname, const QString& caption, const QString& name)

@@ -19,6 +19,7 @@
 #include "config_file.h"
 #include "config_dialog.h"
 #include "kadu.h"
+#include "../notify/notify.h"
 
 SoundManager* sound_manager=NULL;
 SoundSlots* soundslots;
@@ -26,20 +27,25 @@ SoundSlots* soundslots;
 extern "C" int sound_init()
 {
 	kdebugf();
-	sound_manager=new SoundManager("sounds", "sound.conf");
-	
-	QObject::connect(gadu, SIGNAL(chatMsgReceived1(UinsList, const QString&, time_t,bool&)),
-		sound_manager, SLOT(chatSound(UinsList, const QString&, time_t,bool&)));
-	QObject::connect(gadu, SIGNAL(chatMsgReceived2(UinsList, const QString&, time_t)),
-		sound_manager, SLOT(messageSound(UinsList, const QString&,time_t)));
-	QObject::connect(&userlist, SIGNAL(changingStatus(const UinType, const unsigned int, const unsigned int)),
-		sound_manager, SLOT(notifySound(const UinType, const unsigned int, const unsigned int)));
+	new SoundManager("sounds", "sound.conf");
+	kdebugf2();
+	return 0;
+}
 
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Notify"));
-	ConfigDialog::addVGroupBox("Notify", "Notify", QT_TRANSLATE_NOOP("@default", "Notify options"));
-	ConfigDialog::addCheckBox("Notify", "Notify options",
-			QT_TRANSLATE_NOOP("@default", "Notify by sound"), "NotifyWithSound", false);	
-	
+extern "C" void sound_close()
+{
+	kdebugf();
+	delete sound_manager;
+	sound_manager=NULL;
+	kdebugf2();
+}
+
+SoundManager::SoundManager(const QString& name, const QString& configname)
+	:Themes(name, configname, "sound_manager")
+{
+	mute = false;
+	lastsoundtime.start();
+
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default","Sounds"));
 	ConfigDialog::addCheckBox("Sounds", "Sounds",
 			QT_TRANSLATE_NOOP("@default","Play sounds"), "PlaySound", false);
@@ -70,6 +76,8 @@ extern "C" int sound_init()
 	ConfigDialog::addPushButton("Sounds", "util_box", QT_TRANSLATE_NOOP("@default","Choose"));
 	ConfigDialog::addPushButton("Sounds", "util_box", QT_TRANSLATE_NOOP("@default","Clear"));
 	ConfigDialog::addPushButton("Sounds", "util_box", QT_TRANSLATE_NOOP("@default","Test"));
+	
+	sound_manager=this;
 	soundslots= new SoundSlots();
 
 	ConfigDialog::registerSlotOnCreate(soundslots, SLOT(onCreateConfigDialog()));
@@ -82,26 +90,33 @@ extern "C" int sound_init()
 	ConfigDialog::connectSlot("Sounds", "Sound paths", SIGNAL(changed(const QStringList&)), soundslots, SLOT(selectedPaths(const QStringList&)));
 	
 	config_file.addVariable("Sounds", "SoundTheme", "default");
-	
 	config_file.addVariable("Sounds", "SoundPaths","");
 	
-	sound_manager->setPaths(QStringList::split(";", config_file.readEntry("Sounds", "SoundPaths")));
-	sound_manager->setTheme(config_file.readEntry("Sounds","SoundTheme"));
+	setPaths(QStringList::split(";", config_file.readEntry("Sounds", "SoundPaths")));
+	setTheme(config_file.readEntry("Sounds","SoundTheme"));
 
-	kdebugf2();
-	return 0;
+	QMap<QString, QString> s;
+	s["NewChat"]=SLOT(newChat(UinsList, const QString &, time_t, bool &));
+	s["NewMessage"]=SLOT(newMessage(UinsList, const QString &, time_t));
+	s["ConnError"]=SLOT(connectionError(const QString &));
+	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const UserListElement &));
+	s["toBusy"]=SLOT(userChangedStatusToBusy(const UserListElement &));
+	s["toNotAvailable"]=SLOT(userChangedStatusToNotAvailable(const UserListElement &));
+	s["Message"]=SLOT(message(const QString &, const QString &, const QString &, const UserListElement *));
+	
+	config_file.addVariable("Notify", "NewChat_Sound", true);
+	config_file.addVariable("Notify", "NewMessage_Sound", true);
+	config_file.addVariable("Notify", "ConnError_Sound", true);
+	config_file.addVariable("Notify", "toAvailable_Sound", true);
+	config_file.addVariable("Notify", "toBusy_Sound", true);
+	config_file.addVariable("Notify", "toNotAvailable_Sound", false);
+	config_file.addVariable("Notify", "Message_Sound", true);
+
+	notify->registerNotifier("Sound", this, s);
 }
 
-extern "C" void sound_close()
+SoundManager::~SoundManager()
 {
-	kdebugf();
-	QObject::disconnect(gadu, SIGNAL(chatMsgReceived1(UinsList, const QString&, time_t,bool&)),
-		sound_manager, SLOT(chatSound(UinsList, const QString&, time_t,bool&)));
-	QObject::disconnect(gadu, SIGNAL(chatMsgReceived2(UinsList, const QString&, time_t)),
-		sound_manager, SLOT(messageSound(UinsList, const QString&,time_t)));
-	QObject::disconnect(&userlist, SIGNAL(changingStatus(const UinType, const unsigned int, const unsigned int)),
-		sound_manager, SLOT(notifySound(const UinType, const unsigned int, const unsigned int)));
-
 	ConfigDialog::unregisterSlotOnCreate(soundslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::unregisterSlotOnApply(soundslots, SLOT(onApplyConfigDialog()));
 	ConfigDialog::disconnectSlot("Sounds", "Play sounds", SIGNAL(toggled(bool)), soundslots, SLOT(soundPlayer(bool)));
@@ -110,6 +125,9 @@ extern "C" void sound_close()
 	ConfigDialog::disconnectSlot("Sounds", "Test", SIGNAL(clicked()), soundslots, SLOT(testSoundFile()));
 	ConfigDialog::disconnectSlot("Sounds", "Sound theme", SIGNAL(activated(const QString&)), soundslots, SLOT(chooseSoundTheme(const QString&)));
 	ConfigDialog::disconnectSlot("Sounds", "Sound paths", SIGNAL(changed(const QStringList&)), soundslots, SLOT(selectedPaths(const QStringList&)));
+
+	delete soundslots;
+	soundslots=NULL;
 
 	ConfigDialog::removeControl("Sounds", "Test");
 	ConfigDialog::removeControl("Sounds", "Clear");
@@ -127,20 +145,9 @@ extern "C" void sound_close()
 	ConfigDialog::removeControl("Sounds", "volume");
 	ConfigDialog::removeControl("Sounds", "Enable volume control (player must support it)");
 	ConfigDialog::removeControl("Sounds", "Play sounds");
-	ConfigDialog::removeControl("Notify", "Notify by sound");
 	ConfigDialog::removeTab("Sounds");
 
-	delete sound_manager;
-	delete soundslots;
-	kdebugf2();
-}
-
-
-SoundManager::SoundManager(const QString& name, const QString& configname)
-	:Themes(name, configname, "sound_manager")
-{
-	mute = false;
-	lastsoundtime.start();
+	notify->unregisterNotifier("Sound");
 }
 
 bool SoundManager::isMuted()
@@ -153,32 +160,17 @@ void SoundManager::setMute(const bool& enable)
 	mute= enable;
 }
 
-void SoundManager::messageSound(UinsList senders,const QString& msg,time_t time)
+void SoundManager::newChat(UinsList senders, const QString& msg, time_t time, bool &grab)
 {
 	kdebugf();
 	if (isMuted())
 	{
-		kdebugm(KDEBUG_FUNCTION_END, "muted\n");
+		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::newChat() end: muted\n");
 		return;
 	}
-	UserListElement ule = userlist.byUinValue(senders[0]);
-	QString messagesound;
-	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
-		messagesound=parse(config_file.readEntry("Sounds","Message_sound"),ule);
-	else 
-		messagesound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("Message");
-	if (QFile::exists(messagesound))
-		emit playOnMessage(senders, messagesound, msg, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
-	lastsoundtime.restart();
-	kdebugf2();
-}
-
-void SoundManager::chatSound(UinsList senders,const QString& msg,time_t time, bool& grab)
-{
-	kdebugf();
-	if (isMuted())
+	if (timeAfterLastSound()<500)
 	{
-		kdebugm(KDEBUG_FUNCTION_END, "muted\n");
+		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::newChat() end: too often, exiting\n");
 		return;
 	}
 
@@ -195,50 +187,160 @@ void SoundManager::chatSound(UinsList senders,const QString& msg,time_t time, bo
 		else 
 			chatsound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("Chat");
 		if (QFile::exists(chatsound))
-			emit playOnChat(senders, chatsound, msg, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
+			emit playOnNewChat(senders, chatsound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100, msg);
 		lastsoundtime.restart();
 	}
 	kdebugf2();
 }
 
-void SoundManager::notifySound(const UinType uin, const unsigned int oldstatus, const unsigned int status)
+void SoundManager::newMessage(UinsList senders, const QString& msg, time_t time)
 {
 	kdebugf();
 	if (isMuted())
 	{
-		kdebugm(KDEBUG_FUNCTION_END, "muted\n");
+		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::newMessage() end: muted\n");
 		return;
 	}
-	UserListElement &user = userlist.byUin(uin);
-
-	if (!config_file.readBoolEntry("Notify","NotifyStatusChange"))
+	if (timeAfterLastSound()<500)
+	{
+		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::newMessage() end: too often, exiting\n");
 		return;
-
-	if (userlist.containsUin(uin)) {
-		if (!user.notify && !config_file.readBoolEntry("Notify","NotifyAboutAll"))
-			return;
 	}
-	else
-		if (!config_file.readBoolEntry("Notify","NotifyAboutAll"))
-			return;
 
-	if (config_file.readBoolEntry("Notify","NotifyStatusChange") && (status == GG_STATUS_AVAIL ||
-		status == GG_STATUS_AVAIL_DESCR || status == GG_STATUS_BUSY || status == GG_STATUS_BUSY_DESCR
-		|| status == GG_STATUS_BLOCKED) &&
-		(oldstatus == GG_STATUS_NOT_AVAIL || oldstatus == GG_STATUS_NOT_AVAIL_DESCR || oldstatus == GG_STATUS_INVISIBLE ||
-		oldstatus == GG_STATUS_INVISIBLE_DESCR || oldstatus == GG_STATUS_INVISIBLE2)) 
-		if (config_file.readBoolEntry("Notify","NotifyWithSound"))
-			if (timeAfterLastSound()>500)
-			{
-				QString notifysound;
-				if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
-					notifysound=parse(config_file.readEntry("Notify","NotifySound"),userlist.byUin(uin),false);
-				else 
-					notifysound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("Notify");
-				if (QFile::exists(notifysound))
-					emit playOnNotify(uin, notifysound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
-				lastsoundtime.restart();
-			}
+	UserListElement ule = userlist.byUinValue(senders[0]);
+	QString messagesound;
+	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
+		messagesound=parse(config_file.readEntry("Sounds","Message_sound"),ule);
+	else 
+		messagesound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("Message");
+	if (QFile::exists(messagesound))
+		emit playOnNewMessage(senders, messagesound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100, msg);
+	lastsoundtime.restart();
+	kdebugf2();
+}
+
+void SoundManager::connectionError(const QString &message)
+{
+	kdebugf();
+	if (isMuted())
+	{
+		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::connectionError() end: muted\n");
+		return;
+	}
+	if (timeAfterLastSound()<500)
+	{
+		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::connectionError() end: too often, exiting\n");
+		return;
+	}
+
+	QString conn_error_sound;
+	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
+		conn_error_sound=config_file.readEntry("Sounds","ConnectionError_sound");
+	else 
+		conn_error_sound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("ConnectionError");
+	if (QFile::exists(conn_error_sound))
+		emit playOnConnectionError(conn_error_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100, message);
+	lastsoundtime.restart();
+	kdebugf2();
+}
+
+void SoundManager::userChangedStatusToAvailable(const UserListElement &ule)
+{
+	kdebugf();
+	if (isMuted())
+	{
+		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::userChangedStatusToAvailable() end: muted\n");
+		return;
+	}
+	if (timeAfterLastSound()<500)
+	{
+		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::userChangedStatusToAvailable() end: too often, exiting\n");
+		return;
+	}
+
+	QString status_change_sound;
+	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
+		status_change_sound=parse(config_file.readEntry("Sounds","StatusAvailable_sound"), ule);
+	else 
+		status_change_sound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("StatusAvailable");
+	if (QFile::exists(status_change_sound))
+		emit playOnNotifyAvail(ule.uin, status_change_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
+	lastsoundtime.restart();
+	kdebugf2();
+}
+
+void SoundManager::userChangedStatusToBusy(const UserListElement &ule)
+{
+	kdebugf();
+	if (isMuted())
+	{
+		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::userChangedStatusToBusy() end: muted\n");
+		return;
+	}
+	if (timeAfterLastSound()<500)
+	{
+		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::userChangedStatusToBusy() end: too often, exiting\n");
+		return;
+	}
+
+	QString status_change_sound;
+	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
+		status_change_sound=parse(config_file.readEntry("Sounds","StatusBusy_sound"), ule);
+	else 
+		status_change_sound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("StatusBusy");
+	if (QFile::exists(status_change_sound))
+		emit playOnNotifyBusy(ule.uin, status_change_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
+	lastsoundtime.restart();
+	kdebugf2();
+}
+
+void SoundManager::userChangedStatusToNotAvailable(const UserListElement &ule)
+{
+	kdebugf();
+	if (isMuted())
+	{
+		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::userChangedStatusToNotAvailable() end: muted\n");
+		return;
+	}
+	if (timeAfterLastSound()<500)
+	{
+		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::userChangedStatusToNotAvailable() end: too often, exiting\n");
+		return;
+	}
+	
+	QString status_change_sound;
+	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
+		status_change_sound=parse(config_file.readEntry("Sounds","StatusNotAvailable_sound"), ule);
+	else 
+		status_change_sound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("StatusNotAvailable");
+	if (QFile::exists(status_change_sound))
+		emit playOnNotifyNotAvail(ule.uin, status_change_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
+	lastsoundtime.restart();
+	kdebugf2();
+}
+
+void SoundManager::message(const QString &from, const QString &type, const QString &message, const UserListElement *ule)
+{
+	kdebugf();
+	if (isMuted())
+	{
+		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::message() end: muted\n");
+		return;
+	}
+	if (timeAfterLastSound()<500)
+	{
+		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::message() end: too often, exiting\n");
+		return;
+	}
+
+	QString message_sound;
+	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
+		message_sound=config_file.readEntry("Sounds","OtherMessage_sound");
+	else 
+		message_sound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("OtherMessage");
+	if (QFile::exists(message_sound))
+		emit playOnMessage(message_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100, from, type, message, ule);
+	lastsoundtime.restart();
 	kdebugf2();
 }
 
@@ -250,7 +352,7 @@ void SoundManager::play(const QString &path, bool force)
 	
 	if (isMuted() && !force)
 	{
-		kdebugm(KDEBUG_FUNCTION_END, "muted\n");
+		kdebugm(KDEBUG_FUNCTION_END, "SoundManager::play() end: muted\n");
 		return;
 	}
 	if (ConfigDialog::dialogOpened())
@@ -276,13 +378,23 @@ int SoundManager::timeAfterLastSound()
 SoundSlots::SoundSlots() : QObject(NULL, "sound_slots")
 {
 	kdebugf();
+
+	soundNames<<"Chat"<<"Message"<<"StatusAvailable"<<"StatusBusy"<<
+			"StatusNotAvailable"<<"ConnectionError"<<"OtherMessage";
+	
+	soundTexts<<tr("Chat sound")<<tr("Message sound")<<tr("Status available sound")<<
+				tr("Status busy sound")<<tr("Status not available sound")<<
+				tr("Conection error sound")<<tr("Other message");
+
 	QIconSet mu;
 	sound_manager->setMute(!config_file.readBoolEntry("Sounds", "PlaySound"));
-	if (sound_manager->isMuted()) {
+	if (sound_manager->isMuted())
+	{
 		muteitem= kadu->mainMenu()->insertItem(icons_manager.loadIcon("Mute"), tr("Unmute sounds"), this, SLOT(muteUnmuteSounds()), 0, -1, 3);
 		mu= QIconSet(icons_manager.loadIcon("Mute"));
 	}
-	else {
+	else
+	{
 		muteitem= kadu->mainMenu()->insertItem(icons_manager.loadIcon("Unmute"), tr("Mute sounds"), this, SLOT(muteUnmuteSounds()), 0, -1, 3);
 		mu= QIconSet(icons_manager.loadIcon("Unmute"));
 	}
@@ -329,30 +441,27 @@ void SoundSlots::onCreateConfigDialog()
 	lv_soundfiles->setColumnWidthMode(1, QListView::Maximum);
 	lv_soundfiles->setResizeMode(QListView::LastColumn);
 	lv_soundfiles->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Ignored));
+	config_file.addVariable("Sounds", "Notify_sound", config_file.readEntry("Notify", "NotifySound"));
 	
-	QString chatfile, messagefile, notifyfile;
+	soundfiles.clear();	
 	if (cb_soundtheme->currentText() == tr("Custom"))
-	{
-		chatfile= config_file.readEntry("Sounds", "Chat_sound");
-		messagefile= config_file.readEntry("Sounds", "Message_sound");
-		notifyfile= config_file.readEntry("Notify", "NotifySound");
-	}
+		for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); it++)
+			soundfiles[*it]=config_file.readEntry("Sounds", (*it)+"_sound");
 	else
 	{
 		QPushButton *choose = ConfigDialog::getPushButton("Sounds","Choose");
 		QPushButton *clear = ConfigDialog::getPushButton("Sounds","Clear");
 		choose->setEnabled(false);
 		clear->setEnabled(false);
-		chatfile= sound_manager->themePath()+sound_manager->getThemeEntry("Chat");
-		messagefile= sound_manager->themePath()+sound_manager->getThemeEntry("Message");
-		notifyfile= sound_manager->themePath()+sound_manager->getThemeEntry("Notify");
+
+		for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); it++)
+			soundfiles[*it]=sound_manager->themePath()+sound_manager->getThemeEntry(*it);
 	}
-
-	new QListViewItem(lv_soundfiles, tr("Chat sound"), chatfile);
-	new QListViewItem(lv_soundfiles, tr("Message sound"), messagefile);
-	new QListViewItem(lv_soundfiles, tr("Notify sound"), notifyfile);
-
 	
+	QStringList::iterator it2=soundTexts.begin();
+	for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); it++, it2++)
+		new QListViewItem(lv_soundfiles, *it2, soundfiles[*it]);
+
 	QVBox* util_box=ConfigDialog::getVBox("Sounds","util_box");
 	util_box->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum));
 	
@@ -387,12 +496,14 @@ void SoundSlots::muteUnmuteSounds()
 			soundPlayer(!mute, true);
 		}
 	}
-	if (mute) {
+	if (mute)
+	{
 		mutebtn->setIconSet(icons_manager.loadIcon("Mute"));
 		mutebtn->setTextLabel(tr("Unmute sounds"));
 		kadu->menuBar()->changeItem(muteitem, icons_manager.loadIcon("Mute"), tr("Unmute sounds"));
 	}
-	else {
+	else
+	{
 		kadu->menuBar()->changeItem(muteitem, icons_manager.loadIcon("Unmute"), tr("Mute sounds"));
 		mutebtn->setTextLabel(tr("Mute sounds"));
 		mutebtn->setIconSet(icons_manager.loadIcon("Unmute"));
@@ -408,14 +519,11 @@ void SoundSlots::soundPlayer(bool value, bool toolbarChanged)
 	QGrid *g_volume= ConfigDialog::getGrid("Sounds","volume");
 	QCheckBox *b_playchatting= ConfigDialog::getCheckBox("Sounds", "Play sounds from a person whilst chatting");
 	QCheckBox *b_playinvisible= ConfigDialog::getCheckBox("Sounds", "Play chat sounds only when window is invisible");
-	QCheckBox *b_notifysound= ConfigDialog::getCheckBox("Notify", "Notify by sound");
 
 	QHBox* box=ConfigDialog::getHBox("Sounds","sound_box");
 	box->setEnabled(value);
 	QHBox* combobox=ConfigDialog::getHBox("Sounds","sound_theme");
 	combobox->setEnabled(value);
-
-	b_notifysound->setEnabled(value);
 
 	b_volumectrl->setEnabled(value);
 	g_volume->setEnabled(value && b_volumectrl->isChecked());
@@ -487,26 +595,28 @@ void SoundSlots::chooseSoundTheme(const QString& string)
 
 	QListView* lv_soundfiles=ConfigDialog::getListView("Sounds", "sound_files");
 	lv_soundfiles->clear();
-	if (str == "Custom") {
-		chatfile=config_file.readEntry("Sounds", "Chat_sound");
-		messagefile=config_file.readEntry("Sounds", "Message_sound");
-		notifyfile= config_file.readEntry("Notify", "NotifySound");
+	soundfiles.clear();	
+	if (str == "Custom")
+	{
+		for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); it++)
+			soundfiles[*it]=config_file.readEntry("Sounds", (*it)+"_sound");
 		choose->setEnabled(true);
 		clear->setEnabled(true);
 	}
-	else {
-		chatfile= sound_manager->themePath()+sound_manager->getThemeEntry("Chat");
-		messagefile= sound_manager->themePath()+sound_manager->getThemeEntry("Message");
-		notifyfile= sound_manager->themePath()+sound_manager->getThemeEntry("Notify");
+	else
+	{
+		for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); it++)
+			soundfiles[*it]=sound_manager->themePath()+sound_manager->getThemeEntry(*it);
 		choose->setEnabled(false);
 		clear->setEnabled(false);
 	}
 
-	new QListViewItem(lv_soundfiles, tr("Chat sound"), chatfile);
-	new QListViewItem(lv_soundfiles, tr("Message sound"), messagefile);
-	new QListViewItem(lv_soundfiles, tr("Notify sound"), notifyfile);
+	QStringList::iterator it2=soundTexts.begin();
+	for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); it++, it2++)
+		new QListViewItem(lv_soundfiles, *it2, soundfiles[*it]);
 	kdebugf2();
 }
+
 
 void SoundSlots::selectedPaths(const QStringList& paths)
 {
@@ -538,10 +648,15 @@ void SoundSlots::onApplyConfigDialog()
 	{
 		QListView* lv_soundfiles=ConfigDialog::getListView("Sounds", "sound_files");
 		theme= "Custom";
-		config_file.writeEntry("Sounds", "Chat_sound", lv_soundfiles->findItem(tr("Chat sound"), 0)->text(1));
+
+		QStringList::iterator it2=soundTexts.begin();
+		for (QStringList::iterator it=soundNames.begin(); it!=soundNames.end(); it++, it2++)
+			config_file.writeEntry("Sounds", (*it)+"_sound", lv_soundfiles->findItem(*it2, 0)->text(1));
+
+/*		config_file.writeEntry("Sounds", "Chat_sound", lv_soundfiles->findItem(tr("Chat sound"), 0)->text(1));
 		config_file.writeEntry("Sounds", "Message_sound", lv_soundfiles->findItem(tr("Message sound"), 0)->text(1));
 		config_file.writeEntry("Notify", "NotifySound", lv_soundfiles->findItem(tr("Notify sound"), 0)->text(1));
-	}
+*/	}
 	else
 		theme= cb_soundtheme->currentText();
 	if (theme == tr("default"))

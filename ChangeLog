@@ -62,7 +62,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   altnickach zawieraj±cych znaki specjalne html, np. znak mniejszo¶ci (adrian)
 * w konfiguracji wygl±dów dymków, w pozycji wyboru powiadomienia dodana
   pozycja "Set for all" (mast3r)
-* w konfiguracji mo¿na wybraæ jaki styl QT ma zostaæ u¿yty (michal) 
+* w konfiguracji mo¿na wybraæ jaki styl Qt ma zostaæ u¿yty (michal) 
 * patch dorregaray'a dodaj±ca do modu³u autoaway opcjê automatycznej
   zmiany opisu, ew. doklejenia czego¶ do poprzedniego (adrian)
 * wydzielenie do modu³u rejestracji/wyrejestrowania konta,
@@ -81,6 +81,15 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * eskejpowanie znaków htmla przy zapisie do historii statusów z opisami (joi)
 * poprawione parsowanie wiadomo¶ci pod k±tem obrazków je¿eli w tre¶ci
   wiadomo¶ci przed obrazkiem gdzie¶ pojawi³ siê znak ']' (joi)
+* wydzielone modu³y notify, window_notify, hints (domy¶lnie statyczne)
+  modu³y sound i speech wymagaj± modu³u notify, dodane nowe rodzaje zdarzeñ d¼wiêkowych
+  modu³y d¼wiêkowe zmodyfikowane do nowego sound
+  usuniêty b³±d w hintach powoduj±cy b³êdne zapisanie warto¶ci czasu znikania
+  hinty przy ustawieniu w³asnej pozycji nie wyje¿d¿aj± poza ekran
+  zmiana wygl±du zak³adki "Dymki" w konfiguracji
+  ConfigDialog: dodane ulepszone addComboBox (automatycznie zapisuj±ce swój stan),
+      dodana nowa kontrolka poprzez addVRadioGroup, addHRadioGroup
+  (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

@@ -2,3 +2,5 @@
 Description=General sound support module
 Description[pl]=Modu³ podstawowej obs³ugi d¼wiêku
 Author=Kadu Team
+Dependencies=notify
+Provides=notify_method

@@ -1,0 +1,6 @@
+[Module]
+Description=Notification by hints module
+Description[pl]=Modu³ powiadamiania u¿ytkownika o zdarzeniach przy pomocy dymków
+Author=Kadu Team
+Dependencies=notify
+Provides=notify_method
