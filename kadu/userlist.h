@@ -41,9 +41,6 @@ struct UserListElement
 class UserList : public QValueList<UserListElement>
 {
 //	Q_OBJECT
-
-	private:
-		char* preparePath(char* filename)
 	
 	public:
 		UserList();

@@ -15,11 +15,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "userlist.h"
-#include "kadu.h"
 #include <qfile.h>
 #include <stdlib.h>
 #include <sys/stat.h>
+#include "userlist.h"
+#include "misc.h"
+#include "kadu.h"
 
 UserList::UserList() : QValueList<UserListElement>()
 {
@@ -75,19 +76,6 @@ void UserList::removeUser(uin_t uin)
 			break;
 		};
 };
-
-char* UserList::preparePath(char* filename)
-{
-	static char path[1023];
-	char* home;
-	struct passwd* pw;
-	if (pw=getpwuid(getuid()))
-		home=pw->pw_dir;
-	else
-		home=getenv("HOME");
-	snprintf(path, sizeof(path), "%s/.gg/%s", home, filename);
-	return path;
-}
 
 bool UserList::writeToFile(char *filename)
 {
