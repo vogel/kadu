@@ -31,6 +31,7 @@ Hint::Hint(QWidget *parent, const QString& text, const QPixmap& pixmap, unsigned
 
 	secs = timeout;
 	ident = 0;
+	setResizeMode(QLayout::Fixed);
 
 	if (!pixmap.isNull() && config_file.readBoolEntry("Hints","Icons"))
 	{
