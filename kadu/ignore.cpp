@@ -57,13 +57,19 @@ Ignored::Ignored(QDialog *parent, const char *name) : QDialog (parent, name) {
 void Ignored::add() {
 	QStringList strlist;
 	strlist = QStringList::split(";", e_uin->text());
+	bool ok;
 	UinsList uins;
-	for (int i = 0; i < strlist.count(); i++)
-		uins.append(strlist[i].toUInt());
-	addIgnored(uins);
-	e_uin->clear();
-	writeIgnored();
-	getList();
+	for (int i = 0; i < strlist.count(); i++) {
+		uin_t uin = strlist[i].toUInt(&ok);
+		if (ok)
+			uins.append(uin);
+		}
+	if (uins.count()) {
+		addIgnored(uins);
+		e_uin->clear();
+		writeIgnored();
+		getList();
+		}
 }
 
 void Ignored::getList() {
