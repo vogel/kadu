@@ -8,6 +8,7 @@
 #include <qpushbutton.h>
 #include <qtoolbutton.h>
 #include <qvaluelist.h>
+#include <qsplitter.h>
 
 #include "misc.h"
 #include "userbox.h"
@@ -23,7 +24,7 @@ class ChatManager : public QObject
 	private:
 		ChatList Chats;
 		int openPendingMsg(int index,QString& to_add);	
-
+		
 	public:	
 		ChatManager();
 		/**
@@ -107,13 +108,23 @@ class KaduTextBrowser : public QTextBrowser {
 		int level;
 };
 
+class KaduSplitter : public QSplitter
+{
+	public:
+		KaduSplitter(QWidget * parent = 0, const char * name = 0);
+		KaduSplitter(Orientation o, QWidget * parent = 0, const char * name = 0 );
+	protected:
+		QValueList<KaduTextBrowser *> list;
+		void drawContents(QPainter *p);
+		void childEvent(QChildEvent *c);
+};
+
 /**
 	Okno rozmowy
 **/
 class Chat : public QWidget
 {
 	Q_OBJECT
-	
 	private:
 		struct RegisteredButton
 		{
@@ -149,6 +160,7 @@ class Chat : public QWidget
 		int seq;
 
 		void pruneWindow(void);
+		KaduSplitter *vertSplit, *horizSplit;
 
 	private slots:
 		void userWhois(void);

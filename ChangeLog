@@ -244,6 +244,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * klikniêcie ¶rodkowym przyciskem myszy na kontakt który ma podany numer
   telefonu znowu powoduje otwarcie okna wysy³ania smsa (michal)
 * wziêta pod uwagê grubo¶æ czcionki przy obliczaniu szeroko¶ci listy kontaktów (joi)
+* porz±dki w chacie (joi)
 
 +++ wersja 0.3.7 (03.02.2004)
 * poprawka podpinania siê pod sygna³ dccFinished() (chilek)
