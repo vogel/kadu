@@ -4,18 +4,413 @@
 # zgodnie z licencj� GNU General Public License opublikowan� przez           #
 # Free Software Foundation w wersji 2 z p�niejszymi zmianami                 #
 ##############################################################################
+function Wyb_Dystr()
+{
+clear
+echo
+	echo " =============================================================================="
+	echo "                    Witaj w skrypcie instalacyjnym v0.1.3"
+	echo "         Skrypt ten konfiguruje, kompiluje, instaluje lub odinstalowywuje"
+	echo "                           $APP_NAME oraz $LIB_NAME."
+	echo " =============================================================================="
+	echo
+        echo 
+	echo " =============================================================================="
+	echo " |                               WYBIERZ RODZAJ DYSTRYBUCJI                   |"
+	echo " =============================================================================="
+	echo " |          Naci�nij   R  jesli twoja dystrybucja to RedHat - Aurox.          |"
+	echo " |          Naci�nij   I  jesli masz inna.                                    |"
+	echo " |          Naci�nij   E  aby zakonczyc program instalacyjny.                 |"
+	echo " =============================================================================="
+}
+function RedHat()
+{
+
+function AskForPath()
+{
+# $1 - nazwy katalog=F3w
+# $2 - wartości domyślne
+	echo -n "Proszę, podać ścieżkę do $1 : "
+	read -e
+	if [ "$REPLY" == "" ]; then
+		REPLY="$2"
+	fi;
+}
 
 
-####################################
-#      DEKLARACJA ZMIENNYCH        #
-####################################
-APP_NAME=KADU
-APP_DEF_DIR=/usr
-LIB_NAME=LibGadu
-LIB_DEF_DIR=/usr/lib
-####################################
-#         DEKLARACJA  FUNKCJI      #
-####################################
+function CheckPath()
+{
+# $1 - ścieżka
+# $2 - plik sprawdzany
+# $3 - prawidłowy string
+# $4 - nieprawidłowy string
+	if [ -e $1/$2 ]; then
+		CORRECT="$3"
+	else
+		CORRECT="$4"
+	fi;
+}
+
+function Konfiguruj()
+{
+	QTDIR="$QT_DIR"
+	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
+	export QTDIR
+	KDEDIR="$KDE_DIR"
+	export KDEDIR
+	OPER="Configure"
+	echo "==============================================================================="
+	echo "                Uruchamiam plik configure z domyślnymi ustawieniami"
+	echo "==============================================================================="
+	./configure "--prefix=$APP_DIR"
+	WYK=$?
+ if test "$WYK" -ne 0; then
+        Error
+	exit
+ fi;
+}
+
+function Konfiguruj_bez_libgadu()
+{
+	QTDIR="$QT_DIR"
+	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
+	export QTDIR
+	KDEDIR="$KDE_DIR"
+	export KDEDIR
+	OPER="Configure"
+	echo "==============================================================================="
+	echo "                Uruchamiam plik configure z opcją linkowania z istniejacym LibGadu"
+	echo "==============================================================================="
+	./configure "--prefix=$APP_DIR" "--with-existing-libgadu"
+	WYK=$?
+ if test "$WYK" -ne 0; then
+        Error
+	exit
+ fi;
+}
+
+function Konfiguruj_bez_ssl()
+{
+	QTDIR="$QT_DIR"
+	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
+	export QTDIR
+	KDEDIR="$KDE_DIR"
+	export KDEDIR
+	OPER="Configure"
+	echo "==============================================================================="
+	echo "                Uruchamiam plik configure z opcją bez SSL"
+	echo "==============================================================================="
+	./configure "--prefix=$APP_DIR" "--without-openssl"
+	WYK=$?
+ if test "$WYK" -ne 0; then
+        Error
+	exit
+ fi;
+}
+
+function Konfiguruj_z_debug()
+{
+	QTDIR="$QT_DIR"
+	LD_LIBRARY_PATH="$QT_DIR/lib:$LD_LIBRARY_PATH"
+	export QTDIR
+	KDEDIR="$KDE_DIR"
+	export KDEDIR
+	OPER="Configure"
+	echo "==============================================================================="
+	echo "                Uruchamiam plik configure z opcją Debug"
+	echo "==============================================================================="
+	./configure "--prefix=$APP_DIR" "--with-debug"
+
+	WYK=$?
+ if test "$WYK" -ne 0; then
+        Error
+	exit
+ fi;
+}
+
+function Kompiluj()
+{
+	echo "==============================================================================="
+	echo "          Operacja $OPER zakończona powodzeniem"
+        echo "          Teraz będziemy wszystko kompilować"
+	echo "==============================================================================="
+	OPER="Kompiluj"
+	make
+	WYK=$?
+if test "$WYK" -ne 0; then
+        Error
+	exit
+ fi;
+}
+
+function Zainstaluj()
+{
+	echo "==============================================================================="
+	echo "          Operacja $OPER zakończona powodzeniem"
+        echo "          Teraz $APP_NAME zostanie zainstalowane"
+	echo "==============================================================================="
+	OPER="Zainstaluj"
+	make install
+	WYK=$?
+ if test "$WYK" ;then
+        Gratulacje
+        exit
+        else
+        Error
+        exit
+ fi;
+}
+
+function Odinstaluj()
+{
+	OPER="Odinstaluj"
+	make uninstall
+	WYK=$?
+ if test "$WYK" ;then
+        Deinstal
+        exit
+        else
+        Error
+        exit
+ fi;
+}
+
+function Gratulacje()
+{
+	clear
+	echo " ============================================================================="
+	echo " 		Gratulacje $APP_NAME zostało zainstalowane do katalogu $APP_DIR"
+	echo " ============================================================================="
+}
+
+function Deinstal()
+{
+	clear
+	echo " ============================================================================="
+	echo " 		$APP_NAME zostało pomyślnie usunięte z  katalogu $APP_DIR"
+	echo " ============================================================================="
+}
+
+function Aktualizuj_ldsoconf()
+{
+GREP_RESULT=`grep $LIB_DIR /etc/ld.so.conf`
+if [ -z "$GREP_RESULT" ]; then
+	echo >> /etc/ld.so.conf
+	echo $LIB_DIR >> /etc/ld.so.conf
+	/sbin/ldconfig
+	echo "Plik ld.so.conf zosta? zaktualizowany"
+fi
+}
+
+function Error()
+{
+	echo -e "\a"
+	echo " ============================================================================="
+	echo " 		Wystąpił błąd operacja $OPER nie powiodła się"
+	echo " ============================================================================="
+}
+
+
+function ShowInfo()
+{
+ 	clear
+        echo
+	echo " =============================================================================="
+	echo "                 PROGRAM BĘDZIE KORZYSTAŁ Z PODANYCH ŚCIEŻEK :"
+	CheckPath "$APP_DIR" bin/kadu "ZAINSTALOWANE" "NIE ZAINSTALOWANE"
+	echo "  * Lokalizacja $APP_NAME w katalogu: [$APP_DIR], $CORRECT"
+	CheckPath "$LIB_DIR" /libgadu.so "ZAINSTALOWANE" "NIE ZAINSTALOWANE użyj opcji standardowej"
+	echo "  * Lokalizacja $LIB_NAME w katalogu: [$LIB_DIR], $CORRECT"
+	CheckPath "$QT_DIR" include/qapplication.h "ZNALEZIONA." "NIE ZNALEZIONA!"
+	echo "  * Biblioteka QT wersja >=3.0.1, w katalogu: [$QT_DIR], $CORRECT"
+	CheckPath "$KDE_DIR" include/kde/kapp.h "ZNALEZIONE." "NIE ZNALEZIONE!"
+	echo "  * KDE Desktop wersja >=3.0.0, w katalogu: [$KDE_DIR], $CORRECT"
+	echo "  KDE NIE JEST WYMAGANE DO INSTALACJI NA INNYCH MENADZERACH OKEN"
+	echo
+	echo " =============================================================================="
+	echo " |                               MENU PROGRAMU                                |"
+	echo " =============================================================================="
+	echo " |          Naciśnij   L  aby zobaczyć licencje GNU.                          |"
+	echo " |          Naciśnij   Q  aby zmienić ścieżkę do biblioteki QT.               |"
+	echo " |          Naciśnij   K  aby zmienić ścieżkę do KDE Desktop.                 |"
+	echo " |          Naciśnij   D  aby zmienić lokalizację $APP_NAME .                      |"
+	echo " |          Naciśnij   I  aby rozpocząć instalację standardową.               |"
+	echo " |          Naciśnij   U  aby odinstalować $APP_NAME.                              |"
+	echo " |          Naciśnij   B  aby rozpocząć instalację bez libgadu.               |"
+	echo " |          Naciśnij   S  aby rozpocząć instalację bez szyfrowania w SSL.     |"
+	echo " |          Naciśnij   G  rozpocząć instalację z debug.                      |"
+	echo " |          Naciśnij   P  aby uzyskać Pomoc za pomocą programu Mozilla.       |"
+	echo " |          Naciśnij   E  aby zakończyć program instalacyjny.                 |"
+	echo " =============================================================================="
+        echo "                 UWAGA!!! musisz mieć uprawnienia administratora"
+}
+
+function Szuk_kadu()
+{
+APP_DIR=`find /usr -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
+echo " ####"
+if [ "$APP_DIR" == "" ]; then
+APP_DIR=`find /usr/local -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
+echo " ####"
+fi;
+if [ "$APP_DIR" == "" ]; then
+APP_DIR=`find $HOME -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
+echo " ####"
+fi;
+if [ "$APP_DIR" == "" ]; then
+APP_DIR=`find /opt -path */bin/kadu -type f | sed -e 's/\/bin\/kadu$//' -e q`
+echo " ####"
+fi;
+if [ "$APP_DIR" == "" ]; then
+APP_DIR="$APP_DEF_DIR"
+echo  " ####"
+fi;
+}
+
+function Szuk_LibGadu()
+{
+LIB_DIR=`find /usr/lib -path */libgadu.so -type l | sed -e 's/\/libgadu.so$//' -e q`
+echo " ####"
+if [ "$LIB_DIR" == "" ]; then
+LIB_DIR=`find /usr/local -path */libgadu.so -type l | sed -e 's/\/libgadu.so$//' -e q`
+echo " ####"
+fi;
+if [ "$LIB_DIR" == "" ]; then
+LIB_DIR=`find $HOME -path */libgadu.so -type l | sed -e 's/\/libgadu.so$//' -e q`
+echo " ####"
+fi;
+if [ "$LIB_DIR" == "" ]; then
+LIB_DIR=`find /opt -path */libgadu.so -type l | sed -e 's/\/libgadu.so$//' -e q`
+echo " ####"
+fi;
+if [ "$LIB_DIR" == "" ]; then
+LIB_DIR="$LIB_DEF_DIR"
+echo " ####"
+fi;
+}
+
+
+function Szuk_QT()
+{
+QT_DIR=`find /usr/lib -path */include/qapplication.h -type f | sed -e 's/\/include\/qapplication.h$//' -e q`
+echo " ####"
+if [ "$QT_DIR" == "" ]; then
+QT_DIR=`find /usr -path */include/qapplication.h -type f | sed -e 's/\/include\/qapplication.h$//' -e q`
+echo " ####"
+fi;
+if [ "$QT_DIR" == "" ]; then
+QT_DIR=`find /opt -path */include/qapplication.h -type f | sed -e 's/\/include\/qapplication.h$//' -e q`
+echo " ####"
+fi;
+}
+
+function Szuk_KDE()
+{
+KDE_DIR=`find /usr/include -path */kde/kapp.h -type f | sed -e 's/\/include\/kde\/kapp.h$//' -e q`
+echo " ####"
+if [ "$KDE_DIR" == "" ]; then
+KDE_DIR=`find /usr/lib -path */include/kde/kapp.h -type f | sed -e 's/\/include\/kde\/kapp.h$//' -e q`
+echo " ####"
+fi;
+if [ "$KDE_DIR" == "" ]; then
+KDE_DIR=`find /opt -path */include/kde/kapp.h -type f | sed -e 's/\/include\/kde\/kapp.h$//' -e q`
+echo " ####"
+fi;
+}
+
+#########################################################################################
+#                                                       START PROGRAMU                                                                     #
+#########################################################################################
+clear
+	echo
+		echo " =============================================================================="
+	echo
+	echo " Ten program jest wolnym oprogramowniem. Można go rozprowadzać i modyfikować"
+	echo " zgodnie z licencją GNU General Public License opublikowaną przez Free Software"
+	echo " Foundation w wersji 2 z późniejszymi zmianami"
+	echo
+        echo " =============================================================================="
+	echo
+        echo " =============================================================================="
+        echo
+        echo " Konfiguruję program instalacyjny to może chwilę potrwać bądź cierpliwy"
+	echo
+	echo " Szukam poprzedniej instalacji $APP_NAME ..........................................."
+		Szuk_kadu
+	echo " Szukam poprzedniej instalacji $LIB_NAME ........................................"
+		Szuk_LibGadu
+	echo " Szukam  QT biblioteka ta jest niezbędna do kompilacji i działania Kadu........"
+		Szuk_QT
+	echo " Szukam KDE potrzebne do instalacji pod KDE ..................................."
+		Szuk_KDE
+
+########################################################################################
+#					SEKCJA WYBORU MENU										#
+########################################################################################
+while [ 1 ]; do
+	ShowInfo
+	while [ 1 ]; do
+		read -n 1 -s
+		if [[ ("$REPLY" == "L") || ("$REPLY" == "l") ]]; then
+			clear
+			cat COPYING | more
+			break
+		fi;
+		if [[ ("$REPLY" == "Q") || ("$REPLY" == "q") ]]; then
+			AskForPath "biblioteki QT"
+			QT_DIR="$REPLY"
+			break
+		fi;
+		if [[ ("$REPLY" == "K") || ("$REPLY" == "k") ]]; then
+			AskForPath "KDE Desktop"
+			KDE_DIR="$REPLY"
+			break
+		fi;
+		if [[ ("$REPLY" == "D") || ("$REPLY" == "d") ]]; then
+			AskForPath "$APP_NAME"
+			APP_DIR="$REPLY"
+                        break
+		fi;
+		if [[ ("$REPLY" == "I") || ("$REPLY" == "i") ]]; then
+			Konfiguruj
+			Kompiluj
+			Zainstaluj
+			Aktualizuj_ldsoconf
+		fi;
+		if [[ ("$REPLY" == "B") || ("$REPLY" == "b") ]]; then
+			Konfiguruj_bez_libgadu
+			Kompiluj
+			Zainstaluj
+		fi;
+		if [[ ("$REPLY" == "S") || ("$REPLY" == "s") ]]; then
+			Konfiguruj_bez_ssl
+			Kompiluj
+			Zainstaluj
+			Aktualizuj_ldsoconf
+		fi;
+		if [[ ("$REPLY" == "G") || ("$REPLY" == "g") ]]; then
+			Konfiguruj_z_debug
+			Kompiluj
+			Zainstaluj
+			Aktualizuj_ldsoconf
+		fi;
+		if [[ ("$REPLY" == "U") || ("$REPLY" == "u") ]]; then
+			Odinstaluj
+		fi;
+		if [[ ("$REPLY" == "E") || ("$REPLY" == "e") ]]; then
+			exit
+		fi;
+		if [[ ("$REPLY" == "P") || ("$REPLY" == "p") ]]; then
+			mozilla ./doc/index_doc.html
+			break
+		fi;
+	done
+done
+#####################################  KONIEC RedHat  #########################
+}
+
+function Inne()
+{
 
 function AskForPath()
 {
@@ -317,20 +712,14 @@ fi;
 #                                                       START PROGRAMU                                                                     #
 #########################################################################################
 clear
-echo
-	echo " =============================================================================="
-	echo "                    Witaj w skrypcie instalacyjnym v0.1.3"
-	echo "         Skrypt ten konfiguruje, kompiluje, instaluje lub odinstalowywuje"
-	echo "                           $APP_NAME oraz $LIB_NAME."
-	echo " =============================================================================="
+	echo
+		echo " =============================================================================="
 	echo
 	echo " Ten program jest wolnym oprogramowaniem. Mo�na go rozprowadza� i modyfikowa�"
 	echo " zgodnie z licencj� GNU General Public License opublikowan� przez Free Software"
 	echo " Foundation w wersji 2 z p�niejszymi zmianami"
 	echo
         echo " =============================================================================="
-        echo
-        echo " Konfiguruj� program instalacyjny to mo�e chwil� potrwa� b�d� cierpliwy"
 	echo
 		Szuk_kadu
 		Szuk_LibGadu
@@ -399,6 +788,30 @@ while [ 1 ]; do
 		fi;
 	done
 done
-########################################################################################
-#					KONIEC													 #
-########################################################################################
+#################################    KONIEC Inne  ####################################
+}
+
+
+####################################
+#      DEKLARACJA ZMIENNYCH        #
+####################################
+APP_NAME=KADU
+APP_DEF_DIR=/usr
+LIB_NAME=LibGadu
+LIB_DEF_DIR=/usr/lib
+
+while [ 1 ]; do
+	Wyb_Dystr
+	while [ 1 ]; do
+		read -n 1 -s
+		if [[ ("$REPLY" == "r") || ("$REPLY" == "R") ]]; then
+			RedHat
+		fi;
+		if [[ ("$REPLY" == "e") || ("$REPLY" == "E") ]]; then
+			exit
+		fi;
+		if [[ ("$REPLY" == "i") || ("$REPLY" == "I") ]]; then
+			Inne
+		fi;
+	done
+done
