@@ -111,6 +111,13 @@ AC_PROG_CXX
 AC_PROG_CC
 AM_PROG_LIBTOOL
 
+# pthread
+
+AC_CHECK_LIB(pthread,pthread_create,,
+[
+	AC_MSG_ERROR([libpthread was not found!])
+])
+
 # QT
 
 AC_ARG_WITH(qt-dir,        [  --with-qt-dir=DIR       qt-dir in DIR])
@@ -140,7 +147,7 @@ else
 	QTLIBDIR="-L$QTLIBDIR"
 fi
 
-FIND_QT_INCLUDES($with_qt_includes $with_qt_dir $QTDIR /usr/lib/qt3 /usr/lib/qt2 /usr/local/qt /usr/lib/qt /usr/include /usr/include/qt /usr/local/include /usr/X11R6/include/qt2 /usr/X11R6/include/qt3)
+FIND_QT_INCLUDES($with_qt_includes $with_qt_dir $QTDIR /usr/lib/qt3 /usr/lib/qt2 /usr/local/qt /usr/lib/qt /usr/include /usr/include/qt /usr/local/include /usr/X11R6/include /usr/X11R6/include/qt2 /usr/X11R6/include/qt3)
 if test "X$QTINCDIR" = "X"
 then
 	echo ""
