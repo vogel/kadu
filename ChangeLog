@@ -393,6 +393,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * libgadu: poprawki w obs³udze proxy (pobrane z cvsu libgadu) (joi)
 * encryption: uniemo¿liwienie wys³ania klucza do samego siebie poprzez
   menu kontekstowe nad list± kontaktów (joi)
+* okna utworzone za pomoc± klasy MessageBoxdaj± siê zamkn±æ tylko przeznaczonymi
+  do tego przyciskami, po co utrudniaæ sobie ¿ycie ;) (adrian)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

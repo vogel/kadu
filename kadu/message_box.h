@@ -29,6 +29,9 @@ class MessageBox : public QDialog
 		void cancelClicked();
 		void yesClicked();
 		void noClicked();
+
+	protected:
+		void closeEvent(QCloseEvent* e);
 	
 	public:
 		// komponenty dialogu

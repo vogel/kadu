@@ -29,6 +29,7 @@ MessageBox::MessageBox(const QString& message1,int components,bool modal)
 	message(message1)
 {
 	kdebugf();
+	
 	_pixmap = 0;
 	_grid=new QGridLayout(this,1,2);
 	
@@ -96,6 +97,11 @@ MessageBox::~MessageBox()
 {
 	if (Boxes.contains(message))
 		Boxes.remove(message);
+}
+
+void MessageBox::closeEvent(QCloseEvent* e)
+{
+	e->ignore();
 }
 
 void MessageBox::setIcon(const QPixmap & pixmap)
