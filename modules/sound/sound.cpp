@@ -183,8 +183,12 @@ void SoundManager::newChat(const UinsList &/*senders*/, const QString& /*msg*/, 
 		else 
 			chatsound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("Chat");
 		if (QFile::exists(chatsound))
+		{
 			emit playSound(chatsound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
-		lastsoundtime.restart();
+			lastsoundtime.restart();
+		}
+		else
+			kdebugm(KDEBUG_WARNING, "file (%s) not found\n", chatsound.local8Bit().data());
 	}
 	kdebugf2();
 }
@@ -214,8 +218,12 @@ void SoundManager::newMessage(const UinsList &senders, const QString& /*msg*/, t
 	else 
 		messagesound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("Message");
 	if (QFile::exists(messagesound))
+	{
 		emit playSound(messagesound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
-	lastsoundtime.restart();
+		lastsoundtime.restart();
+	}
+	else
+		kdebugm(KDEBUG_WARNING, "file (%s) not found\n", messagesound.local8Bit().data());
 	kdebugf2();
 }
 
@@ -239,8 +247,12 @@ void SoundManager::connectionError(const QString &/*message*/)
 	else 
 		conn_error_sound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("ConnectionError");
 	if (QFile::exists(conn_error_sound))
+	{
 		emit playSound(conn_error_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
-	lastsoundtime.restart();
+		lastsoundtime.restart();
+	}
+	else
+		kdebugm(KDEBUG_WARNING, "file (%s) not found\n", conn_error_sound.local8Bit().data());
 	kdebugf2();
 }
 
@@ -264,8 +276,12 @@ void SoundManager::userChangedStatusToAvailable(const UserListElement &ule)
 	else 
 		status_change_sound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("StatusAvailable");
 	if (QFile::exists(status_change_sound))
+	{
 		emit playSound(status_change_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
-	lastsoundtime.restart();
+		lastsoundtime.restart();
+	}
+	else
+		kdebugm(KDEBUG_WARNING, "file (%s) not found\n", status_change_sound.local8Bit().data());
 	kdebugf2();
 }
 
@@ -289,8 +305,12 @@ void SoundManager::userChangedStatusToBusy(const UserListElement &ule)
 	else 
 		status_change_sound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("StatusBusy");
 	if (QFile::exists(status_change_sound))
+	{
 		emit playSound(status_change_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
-	lastsoundtime.restart();
+		lastsoundtime.restart();
+	}
+	else
+		kdebugm(KDEBUG_WARNING, "file (%s) not found\n", status_change_sound.local8Bit().data());
 	kdebugf2();
 }
 
@@ -314,8 +334,12 @@ void SoundManager::userChangedStatusToNotAvailable(const UserListElement &ule)
 	else 
 		status_change_sound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("StatusNotAvailable");
 	if (QFile::exists(status_change_sound))
+	{
 		emit playSound(status_change_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
-	lastsoundtime.restart();
+		lastsoundtime.restart();
+	}
+	else
+		kdebugm(KDEBUG_WARNING, "file (%s) not found\n", status_change_sound.local8Bit().data());
 	kdebugf2();
 }
 
@@ -350,8 +374,12 @@ void SoundManager::message(const QString &, const QString &message, const QMap<Q
 	else 
 		message_sound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("OtherMessage");
 	if (QFile::exists(message_sound))
+	{
 		emit playSound(message_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
-	lastsoundtime.restart();
+		lastsoundtime.restart();
+	}
+	else
+		kdebugm(KDEBUG_WARNING, "file (%s) not found\n", message_sound.local8Bit().data());
 	kdebugf2();
 }
 
@@ -378,6 +406,8 @@ void SoundManager::play(const QString &path, bool force)
 	}
 	if (QFile::exists(path))
 		emit playSound(path, volCntrl, vol);
+	else
+		kdebugm(KDEBUG_WARNING, "file (%s) not found\n", path.local8Bit().data());
 	kdebugf2();
 }
 
