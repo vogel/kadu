@@ -91,7 +91,6 @@ QHostAddress config_dccip;
 QHostAddress config_extip;
 QValueList<QHostAddress> config_servers;
 
-QValueList<struct chats> chats;
 struct gg_session *sess = NULL;
 
 struct gg_dcc * dccsock;
@@ -932,43 +931,7 @@ void Kadu::manageIgnored()
 
 void Kadu::openChat()
 {
-	PendingMsgs::Element elem;
-	int l,k;
-	bool stop = false;
-	UinsList uins = userbox->getSelectedUins();
-	QString toadd;
-	for (int i = 0; i < pending.count(); i++) {
-		elem = pending[i];
-		if (elem.uins.equals(uins))
-			if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT
-				|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
-				|| !elem.msgclass) {
-				l = chats.count();
-				k = openChat(elem.uins);
-//				QValueList<UinsList>::iterator it = wasFirstMsgs.begin();
-//				while (it != wasFirstMsgs.end() && !elem.uins.equals(*it))
-//					it++;
-//				if (it != wasFirstMsgs.end())
-//					wasFirstMsgs.remove(*it);
-				if (l < chats.count())
-					chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
-				chats[k].ptr->formatMessage(false,
-					userlist.byUin(elem.uins[0]).altnick, elem.msg,
-					timestamp(elem.time), toadd);
-				pending.deleteMsg(i);
-				i--;
-				uins = elem.uins;
-				stop = true;
-				}
-		}
-	if (stop) {
-		chats[k].ptr->scrollMessages(toadd);
-		UserBox::all_refresh();
-		}
-	else {
-		k = openChat(uins);
-		chats[k].ptr->writeMessagesFromHistory(uins, 0);
-		}
+	chat_manager->openPendingMsgs(userbox->getSelectedUins());
 }
 
 void Kadu::searchInDirectory()
@@ -1201,9 +1164,7 @@ void Kadu::userListStatusModified(UserListElement *user)
 //		if (u.uin == user->uin)
 //			currentChanged(lbi);
 //		}
-	for (int i = 0; i < chats.count(); i++)
-		if (chats[i].uins.contains(user->uin))
-			chats[i].ptr->setTitle();
+	chat_manager->refreshTitlesForUin(user->uin);
 };
 
 void Kadu::removeUser(QStringList &users, bool permanently = false)
@@ -1341,33 +1302,7 @@ void Kadu::addUser(UserListElement &ule)
 };
 
 int Kadu::openChat(UinsList senders) {
-	int i;
-	UinsList uins;
-
-	i = 0;
-	while (i < chats.count() && !chats[i].uins.equals(senders))
-		i++;
-
-	if (i == chats.count()) {
-		Chat *chat;
-		uins = senders;
-		chat = new Chat(uins, 0);
-		chat->setTitle();
-		chat->show();
-		}
-	else {
-		chats[i].ptr->raise();
-		chats[i].ptr->setActiveWindow();
-		return i;
-		}
-
-	i = 0;
-	while (i < chats.count() && !chats[i].uins.equals(senders))
-		i++;
-
-	kdebug("Kadu::openChat(): return %d\n", i);
-
-	return i;
+	return chat_manager->openChat(senders);
 }
 
 /* changes the active group */
@@ -1442,7 +1377,7 @@ void Kadu::sendMessage(QListBoxItem *item) {
 							addUser(e);
 						}
 				
-				l = chats.count();
+				l = chat_manager->chats.count();
 				k = openChat(elem.uins);
 //				QValueList<UinsList>::iterator it = wasFirstMsgs.begin();
 //				while (it != wasFirstMsgs.end() && !elem.uins.equals(*it))
@@ -1450,11 +1385,11 @@ void Kadu::sendMessage(QListBoxItem *item) {
 //				if (it != wasFirstMsgs.end())
 //					wasFirstMsgs.remove(*it);
 				if (!msgsFromHist) {
-					if (l < chats.count())
-						chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
+					if (l < chat_manager->chats.count())
+						chat_manager->chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
 					msgsFromHist = true;
 					}
-				chats[k].ptr->formatMessage(false,
+				chat_manager->chats[k].ptr->formatMessage(false,
 					userlist.byUin(elem.uins[0]).altnick, elem.msg,
 					timestamp(elem.time), toadd);	    
 				pending.deleteMsg(i);
@@ -1465,17 +1400,17 @@ void Kadu::sendMessage(QListBoxItem *item) {
 		}
 
 	if (stop) {
-		chats[k].ptr->scrollMessages(toadd);
+		chat_manager->chats[k].ptr->scrollMessages(toadd);
 		UserBox::all_refresh();
 		return;
 		}
 	else {
 		// zawsze otwieraja sie czaty
 		uins = userbox->getSelectedUins();
-		l = chats.count();
+		l = chat_manager->chats.count();
 		k = openChat(uins);
-		if (!msgsFromHist && l < chats.count())
-			chats[k].ptr->writeMessagesFromHistory(uins, 0);
+		if (!msgsFromHist && l < chat_manager->chats.count())
+			chat_manager->chats[k].ptr->writeMessagesFromHistory(uins, 0);
 		}
 }
 
@@ -1818,11 +1753,7 @@ void Kadu::disconnectNetwork() {
 		i++;
 		}
 
-	i = 0;
-	while (i < chats.count()) {
-		chats[i].ptr->setTitle();
-		i++;
-		}
+	chat_manager->refreshTitles();
 
 	UserBox::all_refresh();
 	
@@ -2156,10 +2087,8 @@ void KaduSlots::onDestroyConfigDialog()
 
 
 	/* I odswiez okno Kadu */
-	int z;	
 	kadu->changeAppearance();
-	for (z = 0; z < chats.count(); z++)
-		chats[z].ptr->changeAppearance();
+	chat_manager->changeAppearance();
 	kadu->refreshGroupTabBar();
 	kadu->setCaption(tr("Kadu: %1").arg(config_file.readNumEntry("General", "UIN")));
 

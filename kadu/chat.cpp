@@ -34,6 +34,7 @@
 #include "search.h"
 #include "history.h"
 #include "emoticons.h"
+#include "pending_msgs.h"
 #include "debug.h"
 #include "sound.h"
 #ifdef HAVE_OPENSSL
@@ -44,7 +45,176 @@ extern "C"
 #endif
 //
 
-//QValueList<UinsList> wasFirstMsgs;
+ChatManager::ChatManager() : QObject()
+{
+}
+
+void ChatManager::refreshTitles()
+{
+	for (int i = 0; i < chats.count(); i++)
+		chats[i].ptr->setTitle();
+}
+
+void ChatManager::refreshTitlesForUin(uin_t uin)
+{
+	for (int i = 0; i < chats.count(); i++)
+		if (chats[i].uins.contains(uin))
+			chats[i].ptr->setTitle();
+}
+
+void ChatManager::changeAppearance()
+{
+	for (int i = 0; i < chats.count(); i++)
+		chat_manager->chats[i].ptr->changeAppearance();
+}
+
+void ChatManager::enableEncryptionBtnForUins(UinsList uins)
+{
+	for(int i=0; i<chats.count(); i++)
+		if(chats[i].uins.equals(uins))
+		{
+			chats[i].ptr->setEncryptionBtnEnabled(true);
+			return;
+		}
+}
+
+Chat* ChatManager::findChatByUins(UinsList uins)
+{
+	for(int i=0; i<chats.count(); i++)
+		if(chats[i].uins.equals(uins))
+			return chats[i].ptr;
+	return NULL;
+}
+
+int ChatManager::openChat(UinsList senders)
+{
+	int i;
+	UinsList uins;
+
+	i = 0;
+	while (i < chats.count() && !chats[i].uins.equals(senders))
+		i++;
+
+	if (i == chats.count())
+	{
+		Chat *chat;
+		uins = senders;
+		chat = new Chat(uins, 0);
+		chat->setTitle();
+		chat->show();
+	}
+	else
+	{
+		chats[i].ptr->raise();
+		chats[i].ptr->setActiveWindow();
+		return i;
+	}
+
+	i = 0;
+	while (i < chats.count() && !chats[i].uins.equals(senders))
+		i++;
+
+	kdebug("ChatManager::openChat(): return %d\n", i);
+
+	return i;
+}
+
+void ChatManager::openPendingMsgs(UinsList uins)
+{
+	PendingMsgs::Element elem;
+	int l,k;
+	bool stop = false;
+	QString toadd;
+	for (int i = 0; i < pending.count(); i++) {
+		elem = pending[i];
+		if (elem.uins.equals(uins))
+			if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT
+				|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
+				|| !elem.msgclass) {
+				l = chats.count();
+				k = openChat(elem.uins);
+				if (l < chats.count())
+					chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
+				chats[k].ptr->formatMessage(false,
+					userlist.byUin(elem.uins[0]).altnick, elem.msg,
+					timestamp(elem.time), toadd);
+				pending.deleteMsg(i);
+				i--;
+				uins = elem.uins;
+				stop = true;
+				}
+		}
+	if (stop) {
+		chats[k].ptr->scrollMessages(toadd);
+		UserBox::all_refresh();
+		}
+	else {
+		k = openChat(uins);
+		chats[k].ptr->writeMessagesFromHistory(uins, 0);
+		}
+}
+
+void ChatManager::openPendingMsgs()
+{
+	UinsList uins;
+	int i, j, k = -1;
+	QString tmp;
+	PendingMsgs::Element elem;
+	QString toadd;
+	bool msgsFromHist = false;
+	bool stop = false;
+	UserListElement e;
+	bool ok;
+
+	kdebug("ChatManager::openPendingMsgs()\n");
+
+	for(i = 0; i<pending.count(); i++) {
+		elem = pending[i];
+		if (!uins.count() || elem.uins.equals(uins))
+			if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT || (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
+				|| (!elem.msgclass)) {
+				if (!uins.count())
+					uins = elem.uins;
+				for (j = 0; j < elem.uins.count(); j++)
+					if (!userlist.containsUin(elem.uins[j])) {
+						tmp = QString::number(elem.uins[j]);
+						e.first_name = "";
+						e.last_name = "";
+						e.nickname = tmp;
+						e.altnick = tmp;
+						e.mobile = "";
+						e.uin = elem.uins[j];
+						e.setGroup("");
+						e.description = "";
+						e.email = "";
+						e.anonymous = true;
+						if (config_file.readBoolEntry("General", "UseDocking"))
+							userlist.addUser(e);
+						else
+							kadu->addUser(e);
+					}
+				k = kadu->openChat(elem.uins);
+				if (!msgsFromHist) {
+					msgsFromHist = true;
+					chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
+				}
+				chats[k].ptr->formatMessage(false, userlist.byUin(elem.uins[0]).altnick,elem.msg, timestamp(elem.time), toadd);
+				pending.deleteMsg(i);
+				i--;
+				stop = true;
+			}
+		}
+
+	if(stop) {
+		kdebug("ChatManager::openPendingMsgs() end\n");
+		chats[k].ptr->scrollMessages(toadd);
+		UserBox::all_refresh();
+	}
+}
+
+ChatManager* chat_manager=NULL;
+
+
 const char *colors[16] = {"#FF0000", "#A00000", "#00FF00", "#00A000", "#0000FF", "#0000A0", "#FFFF00",
 	"#A0A000", "#FF00FF", "#A000A0", "#00FFFF", "#00A0A0", "#FFFFFF", "#A0A0A0", "#808080", "#000000"};
 
@@ -106,7 +276,7 @@ void CustomInput::paste() {
 Chat::Chat(UinsList uins, QWidget *parent, const char *name)
  : QWidget(parent, name, Qt::WDestructiveClose), uins(uins) {
 	int i;
-	struct chats chat;
+	struct ChatManager::chats chat;
 	QValueList<int> sizes;
 
 	emoticon_selector = NULL;
@@ -118,8 +288,8 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	/* register us in the chats registry... */
 	chat.uins = uins;
 	chat.ptr = this;
-	chats.append(chat);
-	index = chats.count() - 1;
+	chat_manager->chats.append(chat);
+	index = chat_manager->chats.count() - 1;
 
 	QSplitter *split1, *split2;
 
@@ -317,9 +487,9 @@ Chat::~Chat() {
 	int i,j;
 
 	i = 0;
-	while (i < chats.count() && chats[i].ptr != this)
+	while (i < chat_manager->chats.count() && chat_manager->chats[i].ptr != this)
 		i++;
-	chats.remove(chats.at(i));
+	chat_manager->chats.remove(chat_manager->chats.at(i));
 
 	disconnect(&event_manager, SIGNAL(ackReceived(int)),
 		this, SLOT(ackReceivedSlot(int)));
@@ -1141,6 +1311,8 @@ void Chat::initModule()
 	ConfigDialog::connectSlot("Look", "ColorButton1", SIGNAL(changed()), chatslots, SLOT(chooseColorGet()));
 	ConfigDialog::connectSlot("Look", "", SIGNAL(textChanged(const QString&)), chatslots, SLOT(chooseColorGet(const QString&)), "line1");
 	ConfigDialog::connectSlot("Look", "", SIGNAL(activated(int)), chatslots, SLOT(chooseChatSelect(int)), "combobox1");
+	
+	chat_manager=new ChatManager();
 };
 
 ColorSelectorButton::ColorSelectorButton(QWidget* parent, const QColor& qcolor) : QToolButton(parent)
@@ -1353,8 +1525,8 @@ void ChatSlots::onDestroyConfigDialog()
 	config_file.writeEntry("Look","ChatUsrFontColor", vl_chatcolor[3]);
 	config_file.writeEntry("Look", "ChatFont", vl_chatfont[0]);
 	int z;
-	for (z = 0; z < chats.count(); z++)
-		chats[z].ptr->changeAppearance();
+	for (z = 0; z < chat_manager->chats.count(); z++)
+		chat_manager->chats[z].ptr->changeAppearance();
 /*
 	Aby unikn±c problemów z niepoprawnymi localesami i pozniejszymi
 	k³opotami które moga wynikn±c z tego, musimy zamienic dwie mozliwe

@@ -327,9 +327,7 @@ void UserInfo::updateUserlist() {
 		userlist.changeUserInfo(puser->altnick, e);
 		userlist.writeToFile();
 		UserBox::all_refresh();
-		for (int i = 0; i < chats.count(); i++)
-			if (chats[i].uins.contains(puser->uin))
-				chats[i].ptr->setTitle();
+		chat_manager->refreshTitlesForUin(puser->uin);
 		close();
 		}
 }

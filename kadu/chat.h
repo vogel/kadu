@@ -13,7 +13,37 @@
 #include "userbox.h"
 #include "../config.h"
 
-//extern QValueList<UinsList> wasFirstMsgs;
+class Chat;
+
+class ChatManager : public QObject
+{
+	Q_OBJECT
+
+	private:
+	
+	public:	
+		struct chats
+		{
+			UinsList uins;
+			Chat *ptr;
+			bool operator==(const chats& r) const
+			{
+				return (uins==r.uins)&&(ptr==r.ptr);
+			};
+		};
+		QValueList<chats> chats;
+		ChatManager();
+		void refreshTitles();
+		void refreshTitlesForUin(uin_t uin);
+		void changeAppearance();
+		void enableEncryptionBtnForUins(UinsList uins);
+		Chat* findChatByUins(UinsList uins);
+		int openChat(UinsList senders);
+		void openPendingMsgs(UinsList uins);
+		void openPendingMsgs();
+};
+
+extern ChatManager* chat_manager;
 
 class EmoticonSelector;
 class ColorSelector;

@@ -140,10 +140,7 @@ void SavePublicKey::yesClicked() {
 		int i = 0;
 		UinsList uins;
 		uins.append(uin);
-		while (i < chats.count() && !chats[i].uins.equals(uins))
-			i++;
-		if (i < chats.count())
-			chats[i].ptr->setEncryptionBtnEnabled(true);
+		chat_manager->enableEncryptionBtnForUins(uins);
 		}
 	accept();
 
@@ -323,13 +320,11 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 			QString keyfile_path;
 			QWidget *parent;
 
-			i = 0;
-			while (i < chats.count() && !chats[i].uins.equals(senders))
-				i++;
-			if (i == chats.count())
+			Chat* chat=chat_manager->findChatByUins(senders);
+			if (chat == NULL)
 				parent = kadu;
 			else
-				parent = chats[i].ptr;
+				parent = chat;
 
 			SavePublicKey *spk = new SavePublicKey(senders[0], mesg, NULL);
 			spk->show();
@@ -384,16 +379,16 @@ void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned c
 	//script.eventMsg(senders[0],msgclass,(char*)msg);
 
 	i = 0;
-	while (i < chats.count() && !chats[i].uins.equals(senders))
+	while (i < chat_manager->chats.count() && !chat_manager->chats[i].uins.equals(senders))
 		i++;
 
 	if (((msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT || (msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
-		|| !msgclass) && i < chats.count()) {
+		|| !msgclass) && i < chat_manager->chats.count()) {
 		QString toadd;
 
-		chats[i].ptr->checkPresence(senders, mesg, time, toadd);
-		chats[i].ptr->alertNewMessage();
-		if (!chats[i].ptr->isActiveWindow() && config_file.readBoolEntry("Hints","NotifyNewMessage"))
+		chat_manager->chats[i].ptr->checkPresence(senders, mesg, time, toadd);
+		chat_manager->chats[i].ptr->alertNewMessage();
+		if (!chat_manager->chats[i].ptr->isActiveWindow() && config_file.readBoolEntry("Hints","NotifyNewMessage"))
 			hintmanager->addHintNewMsg(ule.altnick, mesg);
 		return;
 		}
@@ -550,9 +545,7 @@ void EventManager::userlistReceivedSlot(struct gg_event *e) {
 
 		history.appendStatus(user.uin, user.status, user.description.length() ? user.description : QString::null);
 
-		for (i = 0; i < chats.count(); i++)
-			if (chats[i].uins.contains(e->event.notify60[nr].uin))
-				chats[i].ptr->setTitle();
+		chat_manager->refreshTitlesForUin(e->event.notify60[nr].uin);
 
 		ifNotify(e->event.notify60[nr].uin, e->event.notify60[nr].status, oldstatus);
 
@@ -626,9 +619,7 @@ void EventManager::userStatusChangedSlot(struct gg_event * e) {
 
 	history.appendStatus(user.uin, user.status, user.description.length() ? user.description : QString::null);
 
-	for (i = 0; i < chats.count(); i++)
-		if (chats[i].uins.contains(uin))
-			chats[i].ptr->setTitle();
+	chat_manager->refreshTitlesForUin(uin);
 			
 	ifNotify(uin, status, oldstatus);
 	UserBox::all_refresh();

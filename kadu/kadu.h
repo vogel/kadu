@@ -156,15 +156,6 @@ class MyLabel : public QLabel {
 
 class Chat;
 
-struct chats {
-    UinsList uins;
-    Chat *ptr;
-    bool operator==(const chats& r) const
-    {
-    	return (uins==r.uins)&&(ptr==r.ptr);
-    };
-};
-
 class KaduSlots : public QObject
 {
 
@@ -180,10 +171,6 @@ extern QApplication *a;
 extern Kadu *kadu;
 
 extern struct gg_session *sess;
-// Ominiecie bledu w gcc 3.2
-static QValueList<chats> chats_gcc32_bug;
-////////////////////////////
-extern QValueList<chats> chats;
 extern bool userlist_sent;
 extern int server_nr;
 

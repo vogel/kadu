@@ -166,66 +166,7 @@ bool PendingMsgs::loadFromFile()
 };
 
 void PendingMsgs::openMessages() {
-
-	UinsList uins;
-	int i, j, k = -1;
-	QString tmp;
-	PendingMsgs::Element elem;
-	QString toadd;
-	bool msgsFromHist = false;
-	bool stop = false;
-	UserListElement e;
-	bool ok;
-
-	kdebug("PendingMsgs::openMessages()\n");
-
-	for(i = 0; i<count(); i++) {
-		elem = (*this)[i];
-		if (!uins.count() || elem.uins.equals(uins))
-			if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT || (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
-				|| (!elem.msgclass)) {
-				if (!uins.count())
-					uins = elem.uins;
-				for (j = 0; j < elem.uins.count(); j++)
-					if (!userlist.containsUin(elem.uins[j])) {
-						tmp = QString::number(elem.uins[j]);
-						e.first_name = "";
-						e.last_name = "";
-						e.nickname = tmp;
-						e.altnick = tmp;
-						e.mobile = "";
-						e.uin = elem.uins[j];
-						e.setGroup("");
-						e.description = "";
-						e.email = "";
-						e.anonymous = true;
-						if (config_file.readBoolEntry("General", "UseDocking"))
-							userlist.addUser(e);
-						else
-							kadu->addUser(e);
-					}
-				k = kadu->openChat(elem.uins);
-//				QValueList<UinsList>::iterator it = wasFirstMsgs.begin();
-//				while (it != wasFirstMsgs.end() && !elem.uins.equals(*it))
-//					it++;
-//				if (it != wasFirstMsgs.end())
-//					wasFirstMsgs.remove(*it);
-				if (!msgsFromHist) {
-					msgsFromHist = true;
-					chats[k].ptr->writeMessagesFromHistory(elem.uins, elem.time);
-				}
-				chats[k].ptr->formatMessage(false, userlist.byUin(elem.uins[0]).altnick,elem.msg, timestamp(elem.time), toadd);
-				deleteMsg(i);
-				i--;
-				stop = true;
-			}
-		}
-
-	if(stop) {
-		kdebug("PendingMsgs::openMessages()end\n");
-		chats[k].ptr->scrollMessages(toadd);
-		UserBox::all_refresh();
-	}
+	chat_manager->openPendingMsgs();
 }
 
 PendingMsgs pending;
