@@ -430,7 +430,7 @@ void DccFileDialog::printFileInfo(struct gg_dcc *dccsock) {
 	vbox1->resize(vbox1->sizeHint());
 	resize(vbox1->sizeHint().width() + 15, vbox1->sizeHint().height() + 15);
 
-	setCaption(tr("File transfered %1%").arg(percent));
+	setCaption(tr("File transfered %1%").arg((int)percent));
 	show();
 }
 
@@ -457,7 +457,7 @@ void DccFileDialog::updateFileInfo(struct gg_dcc *dccsock) {
 		p_progress->setProgress(percent);
 		prevPercent = percent;
 		}
-	setCaption(tr("File transfered %1%").arg(percent));
+	setCaption(tr("File transfered %1%").arg((int)percent));
 }
 
 DccVoiceDialog::DccVoiceDialog(QDialog *parent, const char *name)
