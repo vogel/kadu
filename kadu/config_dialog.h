@@ -17,7 +17,7 @@
 #include <qslider.h>
 #include <qspinbox.h>
 #include <qstringlist.h>
-#include <qtabdialog.h>
+#include <qtabwidget.h>
 #include <qvaluelist.h>
 #include <qvbox.h>
 #include <qvgroupbox.h>
@@ -57,7 +57,7 @@ class ColorButton : public QPushButton
 /**
 	Okno z konfiguracj± Kadu
 **/
-class ConfigDialog : public QTabDialog	{
+class ConfigDialog : public QDialog	{
 	Q_OBJECT
 
 	private:
@@ -121,7 +121,6 @@ class ConfigDialog : public QTabDialog	{
 		ConfigDialog(QApplication *application, QWidget *parent = 0, const char *name = 0);
 		~ConfigDialog();
 		static void showConfigDialog(QApplication* application);
-
 		
  		static void addCheckBox(const QString& groupname, 
 		    	    const QString& parent, const QString& caption,
@@ -179,7 +178,7 @@ class ConfigDialog : public QTabDialog	{
 			    const int minValue=0, const int maxValue=100, const int step=1,
 			    const int value=50, const QString& tip="", const QString& name="");
 			    
-		static void registerTab(const QString& caption);
+		static void addTab(const QString& caption);
 		
 		static void addVBox(const QString& groupname, 
 			    const QString& parent, const QString& caption, const QString& name="");
@@ -215,7 +214,10 @@ class ConfigDialog : public QTabDialog	{
 		
 		//
 	protected:
-
+		QListBox* listBox;
+		QScrollView* view;
+		QPushButton* okButton;
+		QPushButton* cancelButton;
 		static ConfigDialog *configdialog;
 		static QString acttab;
 
@@ -223,8 +225,8 @@ class ConfigDialog : public QTabDialog	{
 		void create();
 		void destroy();
 
-
 	protected slots:
 		void updateConfig();
+		void changeTab(const QString& name);
 };
 #endif

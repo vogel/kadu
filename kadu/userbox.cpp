@@ -410,7 +410,7 @@ void UserBox::changeAllToInactive()
 void UserBox::showHideInactive()
 {	
 	config_file.writeEntry("General","ShowHideInactive",!config_file.readBoolEntry("General","ShowHideInactive"));
-	refresh();
+	all_refresh();
 }
 
 
@@ -494,7 +494,7 @@ void UserBox::initModule()
 	QT_TRANSLATE_NOOP("@default", "Show Inactive users");
 	
 	
-	ConfigDialog::registerTab("General");
+	ConfigDialog::addTab("General");
 	ConfigDialog::addCheckBox("General", "General", "Show Inactive users", "ShowHideInactive", true);
 
 // dodanie wpisow do konfiga (pierwsze uruchomienie)
@@ -517,7 +517,7 @@ void UserBox::initModule()
 	QT_TRANSLATE_NOOP("@default", "Multicolumn userbox");	
 	
 	
-	ConfigDialog::registerTab("Look");
+	ConfigDialog::addTab("Look");
 	ConfigDialog::addVGroupBox("Look","Look","Userbox properties");
 	ConfigDialog::addGrid("Look", "Userbox properties", "previewgrid", 2);
 	ConfigDialog::addHGroupBox("Look","previewgrid","Preview userbox");

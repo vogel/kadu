@@ -821,7 +821,7 @@ void EventConfigSlots::initModule()
 	QT_TRANSLATE_NOOP("@default", "Notify sound");
 
 // zakladka "powiadom"
-	ConfigDialog::registerTab("Notify");
+	ConfigDialog::addTab("Notify");
 	ConfigDialog::addCheckBox("Notify", "Notify", "Notify when users become available", "NotifyStatusChange", false);
 	ConfigDialog::addCheckBox("Notify", "Notify", "Notify about all users", "NotifyAboutAll", false);
 	ConfigDialog::addGrid("Notify", "Notify" ,"listboxy",3);
@@ -871,7 +871,7 @@ void EventConfigSlots::initModule()
 	QT_TRANSLATE_NOOP("@default", "Password:");
 
 
-	ConfigDialog::registerTab("Network");
+	ConfigDialog::addTab("Network");
 	ConfigDialog::addCheckBox("Network", "Network", "DCC enabled", "AllowDCC", false);
 	ConfigDialog::addCheckBox("Network", "Network", "DCC IP autodetection", "DccIpDetect", false);
 	

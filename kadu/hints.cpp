@@ -438,10 +438,10 @@ void HintManager::initModule(void)
 	QT_TRANSLATE_NOOP("@default", "Hint syntax");
 
 /* Zak³adka konfiguracyjna */
-	ConfigDialog::registerTab("Hints");
+	ConfigDialog::addTab("Hints");
 	ConfigDialog::addCheckBox("Hints", "Hints", "Enable hints", "Hints", true);
 	ConfigDialog::addVGroupBox("Hints", "Hints", "Hints options");
-	ConfigDialog::addGrid("Hints", "Hints options", "grid-options", 2);
+	ConfigDialog::addGrid("Hints", "Hints options", "grid-options", 1);
 	ConfigDialog::addCheckBox("Hints", "grid-options", "Enable icons in hints", "Icons", true);
 	ConfigDialog::addCheckBox("Hints", "grid-options", "Show connection errors in hints" ,"Errors", true);
 	ConfigDialog::addCheckBox("Hints", "grid-options", "Notify about new chat", "NotifyNewChat", true);
@@ -450,7 +450,7 @@ void HintManager::initModule(void)
 	ConfigDialog::addVGroupBox("Hints", "Hints options", "Message content in hint");
 	ConfigDialog::addCheckBox("Hints", "Hints options", "Enable status notification by hint", "NotifyHint", true);
 	ConfigDialog::addVGroupBox("Hints", "Hints options", "Notification options");
-	ConfigDialog::addGrid("Hints", "Notification options", "grid-notify-status", 2);
+	ConfigDialog::addGrid("Hints", "Notification options", "grid-notify-status", 1);
 	ConfigDialog::addCheckBox("Hints", "grid-notify-status", "Notify about user status change", "NotifyHintChange", false);
 	ConfigDialog::addCheckBox("Hints", "grid-notify-status", "Notify about user becoming available", "NotifyHintAvailable", true);
 	ConfigDialog::addCheckBox("Hints", "grid-notify-status", "Notify about user becoming unavailable", "NotifyHintUnavailable", false);

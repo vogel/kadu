@@ -219,7 +219,7 @@ void AutoAwayTimer::initModule()
 
 
 	kdebug("AutoAwayTimer::initModule() \n");
-	ConfigDialog::registerTab("General");
+	ConfigDialog::addTab("General");
 	ConfigDialog::addVGroupBox("General", "General", "Status");
 	ConfigDialog::addCheckBox("General", "Status", "Enable autoaway", "AutoAway", false);
 	ConfigDialog::addHBox("General", "Status", "--");

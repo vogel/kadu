@@ -1202,7 +1202,7 @@ void History::initModule()
 
 	kdebug("History::initModule() \n");
 	HistorySlots *historyslots=new HistorySlots();
-	ConfigDialog::registerTab("History");
+	ConfigDialog::addTab("History");
 	ConfigDialog::addVGroupBox("History", "History", "Quoted phrases during chat open");
 	ConfigDialog::addSpinBox("History", "Quoted phrases during chat open", "Count:", "ChatHistoryCitation", 0, 200, 1, 10);
 	ConfigDialog::addLabel("History", "Quoted phrases during chat open", "Don't quote phrases older than:");

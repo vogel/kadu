@@ -333,13 +333,13 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	KaduSlots *kaduslots=new KaduSlots();
 	
-	ConfigDialog::registerTab("General");
+	ConfigDialog::addTab("General");
 	ConfigDialog::addHGroupBox("General", "General", "User data");
 	ConfigDialog::addLineEdit("General", "User data", "Uin", "UIN", "0");
 	ConfigDialog::addLineEdit("General", "User data", "Password", "Password", "");
 	ConfigDialog::addLineEdit("General", "User data", "Nick", "Nick", tr("Me"));
 	ConfigDialog::addComboBox("General", "General", "Set language:");
-	ConfigDialog::addGrid("General", "General", "grid", 3);
+	ConfigDialog::addGrid("General", "General", "grid", 2);
 	ConfigDialog::addCheckBox("General", "grid", "Log messages", "Logging", true);
 	ConfigDialog::addCheckBox("General", "grid", "Restore window geometry", "SaveGeometry", true);
 	ConfigDialog::addCheckBox("General", "grid", "Check for updates", "CheckUpdates", true);
@@ -370,7 +370,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	QT_TRANSLATE_NOOP("@default", "Configuration");
 	QT_TRANSLATE_NOOP("@default", "Add user");
 
-	ConfigDialog::registerTab("ShortCuts");
+	ConfigDialog::addTab("ShortCuts");
 	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", "Define keys");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Remove from userlist", "kadu_deleteuser", "Del");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "View/edit user info", "kadu_persinfo", "Ins");

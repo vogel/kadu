@@ -773,7 +773,7 @@ void Sms::initModule()
 
 	kdebug("Sms::initModule \n");	
 	
-	ConfigDialog::registerTab("SMS");
+	ConfigDialog::addTab("SMS");
 	ConfigDialog::addVGroupBox("SMS", "SMS", "SMS options");
 	ConfigDialog::addCheckBox("SMS", "SMS options", "Use built-in SMS application", "BuiltInApp", true);
 	ConfigDialog::addLineEdit("SMS", "SMS options", "Custom SMS application", "SmsApp");

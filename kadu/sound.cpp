@@ -61,7 +61,7 @@ void SoundSlots::initModule()
 	QT_TRANSLATE_NOOP("@default","Volume");
 
 
-	ConfigDialog::registerTab("Sounds");
+	ConfigDialog::addTab("Sounds");
 	ConfigDialog::addCheckBox("Sounds", "Sounds", "Play sounds", "PlaySound", false);
 	ConfigDialog::addCheckBox("Sounds", "Sounds", "Play sounds using aRts! server", "PlaySoundArtsDsp", false);
 	

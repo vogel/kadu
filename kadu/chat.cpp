@@ -1037,7 +1037,7 @@ void Chat::initModule()
 	QT_TRANSLATE_NOOP("@default", "<b>Me</b> 00:00:00");
 	QT_TRANSLATE_NOOP("@default", "<b>Other party</b> 00:00:02");
 
-	ConfigDialog::registerTab("ShortCuts");
+	ConfigDialog::addTab("ShortCuts");
 	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", "Define keys");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "New line / send message:", "chat_newline", "Return");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Clear Chat:", "chat_clear", "F9");
@@ -1047,7 +1047,7 @@ void Chat::initModule()
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Underline text:", "chat_underline", "Ctrl+U");
 	
 
-	ConfigDialog::registerTab("Chat");
+	ConfigDialog::addTab("Chat");
 	ConfigDialog::addVGroupBox("Chat", "Chat", "Emoticons");
 	ConfigDialog::addComboBox("Chat", "Emoticons", "Emoticons:");
 	ConfigDialog::addComboBox("Chat", "Emoticons", "Emoticons theme");
@@ -1101,7 +1101,7 @@ void Chat::initModule()
 	QT_TRANSLATE_NOOP("@default", "syntax:");
 	QT_TRANSLATE_NOOP("@default", "Preview chat");
 
-	ConfigDialog::registerTab("Look");
+	ConfigDialog::addTab("Look");
 	ConfigDialog::addVGroupBox("Look","Look","Chat properties");
 	ConfigDialog::addGrid("Look", "Chat properties", "previewgrid2", 2);
 	ConfigDialog::addVGroupBox("Look","previewgrid2","Preview chat");
