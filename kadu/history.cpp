@@ -909,6 +909,10 @@ History::History(UinsList uins): uins(uins) {
 
 	resize(500,400);
 
+	findrec.type = 1;
+	findrec.reverse = 0;
+	findrec.actualrecord = -1;
+
 	int count = history.getHistoryEntriesCount(uins);
 	start = count - 100 < 0 ? 0 : count - 100;
 	count -= start;
@@ -1013,11 +1017,14 @@ void History::searchBtnClicked() {
 
 	HistorySearch *hs;
 	hs = new HistorySearch(this, uins);
-	hs->exec();
+//	hs->resetBtnClicked();
+	hs->setDialogValues(findrec);
+	if (hs->exec() == QDialog::Accepted)
+		findrec = hs->getDialogValues();
 	delete hs;
 }
 
-HistorySearch::HistorySearch(QWidget *parent, UinsList uins) : QDialog(parent) {
+HistorySearch::HistorySearch(QWidget *parent, UinsList uins) : QDialog(parent), uins(uins) {
 	setCaption(i18n("Search history"));
 
 	int i;
@@ -1082,7 +1089,7 @@ HistorySearch::HistorySearch(QWidget *parent, UinsList uins) : QDialog(parent) {
 	to_min_cob->insertStringList(minslist);
 	QToolTip::add(to_min_cob, i18n("minute"));
 
-	QVButtonGroup *criteria_bg = new QVButtonGroup(i18n("Find Criteria"), this);
+	criteria_bg = new QVButtonGroup(i18n("Find Criteria"), this);
 	phrase_rb = new QRadioButton(i18n("&Phrase"), criteria_bg);
 	status_rb = new QRadioButton(i18n("&Status"), criteria_bg);
 	criteria_bg->insert(phrase_rb, 1);
@@ -1173,7 +1180,136 @@ void HistorySearch::cancelBtnClicked() {
 	reject();
 }
 
+void HistorySearch::resetFromDate() {
+	QValueList<HistoryEntry> entries;
+	
+	entries = history.getHistoryEntries(uins, 0, 1);
+	if (entries.count()) {
+		from_day_cob->setCurrentItem(entries[0].date.date().day() - 1);
+		from_month_cob->setCurrentItem(entries[0].date.date().month() - 1);
+		from_year_cob->setCurrentItem(entries[0].date.date().year() - 2000);
+		from_hour_cob->setCurrentItem(entries[0].date.time().hour());
+		from_min_cob->setCurrentItem(entries[0].date.time().minute());
+		correctFromDays(entries[0].date.date().month() - 1);
+		}
+}
+
+void HistorySearch::resetToDate() {
+	QValueList<HistoryEntry> entries;
+	
+	entries = history.getHistoryEntries(uins, history.getHistoryEntriesCount(uins) - 1, 1);
+	if (entries.count()) {
+		to_day_cob->setCurrentItem(entries[0].date.date().day() - 1);
+		to_month_cob->setCurrentItem(entries[0].date.date().month() - 1);
+		to_year_cob->setCurrentItem(entries[0].date.date().year() - 2000);
+		to_hour_cob->setCurrentItem(entries[0].date.time().hour());
+		to_min_cob->setCurrentItem(entries[0].date.time().minute());
+		correctToDays(entries[0].date.date().month() - 1);
+		}
+}
+
 void HistorySearch::resetBtnClicked() {
+	from_hgb->setEnabled(false);
+	from_chb->setChecked(false);
+	resetFromDate();
+	to_chb->setChecked(false);
+	to_hgb->setEnabled(false);
+	resetToDate();
+	criteria_bg->setButton(1);
+	phrase_edit->text().truncate(0);
+	status_cob->setCurrentItem(0);
+	criteriaChanged(1);
+	reverse_chb->setChecked(false);
+}
+
+void HistorySearch::setDialogValues(HistoryFindRec &findrec) {
+	int status;
+
+	from_chb->setChecked(!findrec.fromdate.isNull());
+	from_hgb->setEnabled(!findrec.fromdate.isNull());
+	if (findrec.fromdate.isNull())
+		resetFromDate();
+	else {
+		from_day_cob->setCurrentItem(findrec.fromdate.date().day() - 1);
+		from_month_cob->setCurrentItem(findrec.fromdate.date().month() - 1);
+		from_year_cob->setCurrentItem(findrec.fromdate.date().year() - 2000);
+		from_hour_cob->setCurrentItem(findrec.fromdate.time().hour());
+		from_min_cob->setCurrentItem(findrec.fromdate.time().minute());
+		correctFromDays(findrec.fromdate.date().month() - 1);
+		}
+	to_chb->setChecked(!findrec.todate.isNull());
+	to_hgb->setEnabled(!findrec.todate.isNull());
+	if (findrec.todate.isNull())
+		resetToDate();
+	else {
+		to_day_cob->setCurrentItem(findrec.todate.date().day() - 1);
+		to_month_cob->setCurrentItem(findrec.todate.date().month() - 1);
+		to_year_cob->setCurrentItem(findrec.todate.date().year() - 2000);
+		to_hour_cob->setCurrentItem(findrec.todate.time().hour());
+		to_min_cob->setCurrentItem(findrec.todate.time().minute());
+		correctToDays(findrec.todate.date().month() - 1);
+		}
+	criteria_bg->setButton(findrec.type);
+	criteriaChanged(findrec.type);
+	switch (findrec.type) {
+		case 1:
+			phrase_edit->setText(findrec.data);
+			break;
+		case 2:
+			if (findrec.data == "avail")
+				status = 0;
+			else
+				if (findrec.data == "busy")
+					status = 1;
+				else
+					if (findrec.data == "invisible")
+						status = 2;
+					else
+						if (findrec.data == "notavail")
+							status = 3;
+			status_cob->setCurrentItem(status);
+			break;
+		}
+	reverse_chb->setChecked(findrec.reverse);
+}
+
+HistoryFindRec HistorySearch::getDialogValues() {
+	HistoryFindRec findrec;
+
+	if (from_chb->isChecked()) {
+		findrec.fromdate.setDate(QDate(from_year_cob->currentItem() + 2000,
+			from_month_cob->currentItem() + 1, from_day_cob->currentItem() + 1));
+		findrec.fromdate.setTime(QTime(from_hour_cob->currentItem(), from_min_cob->currentItem()));
+		}
+	if (to_chb->isChecked()) {
+		findrec.todate.setDate(QDate(to_year_cob->currentItem() + 2000,
+			to_month_cob->currentItem() + 1, to_day_cob->currentItem() + 1));
+		findrec.todate.setTime(QTime(to_hour_cob->currentItem(), to_min_cob->currentItem()));
+		}
+	findrec.type = criteria_bg->id(criteria_bg->selected());
+	switch (findrec.type) {
+		case 1:
+			findrec.data = phrase_edit->text();
+			break;
+		case 2:
+			switch (status_cob->currentItem()) {
+				case 0:
+					findrec.data = "avail";
+					break;
+				case 1:
+					findrec.data = "busy";
+					break;
+				case 2:
+					findrec.data = "invisible";
+					break;
+				case 3:
+					findrec.data = "notavail";
+					break;
+				}
+			break;
+		}
+	findrec.reverse = reverse_chb->isChecked();
+	return findrec;
 }
 
 HistoryManager history;

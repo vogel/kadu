@@ -21,6 +21,7 @@
 #include <qhgroupbox.h>
 #include <qradiobutton.h>
 #include <qlineedit.h>
+#include <qvbuttongroup.h>
 
 #include "libgadu.h"
 #include "misc.h"
@@ -46,6 +47,15 @@ struct HistoryEntry {
 	QString mobile;	
 };
 
+struct HistoryFindRec {
+	QDateTime fromdate;
+	QDateTime todate;
+	int type;
+	QString data;
+	bool reverse;
+	int actualrecord;
+};
+
 class History : public QDialog {
 	Q_OBJECT
 	public:
@@ -63,12 +73,15 @@ class History : public QDialog {
 		QTextBrowser *body;
 		UinsList uins;
 		int start;
+		HistoryFindRec findrec;
 };
 
 class HistorySearch : public QDialog {
 	Q_OBJECT
 	public:
 		HistorySearch(QWidget *parent, UinsList uins);
+		void setDialogValues(HistoryFindRec &findrec);
+		HistoryFindRec getDialogValues();
 
 	public slots:
 		void correctFromDays(int index);
@@ -87,8 +100,13 @@ class HistorySearch : public QDialog {
 		QComboBox *to_day_cob, *to_month_cob, *to_year_cob, *to_hour_cob, *to_min_cob;
 		QComboBox *status_cob;
 		QLineEdit *phrase_edit;
+		QVButtonGroup *criteria_bg;
 		QRadioButton *phrase_rb, *status_rb;
 		QStringList numslist;
+		UinsList uins;
+
+		void resetFromDate();
+		void resetToDate();
 };
 
 class HistoryManager {
