@@ -721,9 +721,9 @@ Chat::~Chat()
 	disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)),
 		this, SLOT(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)));
 
-	for(QValueList<ChatMessage *>::iterator it=chatMessages.begin(); it!=chatMessages.end(); ++it)
+	for(QValueList<ChatMessage *>::iterator it=ChatMessages.begin(); it!=ChatMessages.end(); ++it)
 		delete *it;
-	chatMessages.clear();
+	ChatMessages.clear();
 
 	if (userbox)
 		delete userbox;
@@ -863,9 +863,11 @@ void Chat::insertImage()
 void Chat::imageReceivedAndSaved(UinType sender,uint32_t size,uint32_t crc32,const QString& path)
 {
 	kdebugf();
-	body->setText(
-		gadu_images_manager.replaceLoadingImages(
-			body->text(),sender,size,crc32));
+	for (QValueList<ChatMessage*>::const_iterator i = ChatMessages.begin(); i != ChatMessages.end(); i++)
+		(*i)->message =
+			gadu_images_manager.replaceLoadingImages(
+				(*i)->message,sender,size,crc32);
+	repaintMessages();
 	kdebugf2();
 }
 
@@ -1051,20 +1053,16 @@ void Chat::formatMessage(ChatMessage &msg)
 	msg.needsToBeFormatted=false;
 }
 
-void Chat::scrollMessages(const QValueList<ChatMessage *> &messages)
+void Chat::repaintMessages()
 {
 	kdebugf();
-	if (config_file.readBoolEntry("Chat","ChatPrune"))
-		pruneWindow();
-
 	body->viewport()->setUpdatesEnabled(false);
-	chatMessages+=messages;
 
 	QString text;
 	int i;
 	if (config_file.readBoolEntry("Chat","ScrollDown"))
 	{
-		for(QValueList<ChatMessage *>::const_iterator it=chatMessages.begin(); it!=chatMessages.end(); ++it)
+		for(QValueList<ChatMessage *>::const_iterator it=ChatMessages.begin(); it!=ChatMessages.end(); ++it)
 			text+=(*it)->message;
 		body->setText(text);
 
@@ -1072,7 +1070,7 @@ void Chat::scrollMessages(const QValueList<ChatMessage *> &messages)
 			((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_ANIMATED))
 		{
 			i=0;
-			for(QValueList<ChatMessage *>::const_iterator it=chatMessages.begin(); it!=chatMessages.end(); ++it, ++i)
+			for(QValueList<ChatMessage *>::const_iterator it=ChatMessages.begin(); it!=ChatMessages.end(); ++it, ++i)
 				body->setParagraphBackgroundColor(i, (*it)->backgroundColor);
 		}
 
@@ -1081,19 +1079,30 @@ void Chat::scrollMessages(const QValueList<ChatMessage *> &messages)
 	}
 	else
 	{
-		for(QValueList<ChatMessage *>::const_iterator it=chatMessages.begin(); it!=chatMessages.end(); ++it)
+		for(QValueList<ChatMessage *>::const_iterator it=ChatMessages.begin(); it!=ChatMessages.end(); ++it)
 			text=(*it)->message+text;
 		body->setText(text);
 		if (config_file.readBoolEntry("General", "ForceUseParagraphs") ||
 			((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_ANIMATED))
 		{
-			i=chatMessages.size()-1;
-			for(QValueList<ChatMessage *>::const_iterator it=chatMessages.begin(); it!=chatMessages.end(); ++it, --i)
+			i=ChatMessages.size()-1;
+			for(QValueList<ChatMessage *>::const_iterator it=ChatMessages.begin(); it!=ChatMessages.end(); ++it, --i)
 				body->setParagraphBackgroundColor(i, (*it)->backgroundColor);
 		}
 	}
+
 	body->viewport()->setUpdatesEnabled(true);
 	body->viewport()->repaint();
+	kdebugf2();
+}
+
+void Chat::scrollMessages(const QValueList<ChatMessage *> &messages)
+{
+	kdebugf();
+	if (config_file.readBoolEntry("Chat","ChatPrune"))
+		pruneWindow();
+	ChatMessages+=messages;
+	repaintMessages();
 	kdebugf2();
 }
 
@@ -1218,9 +1227,9 @@ void Chat::addMyMessageToHistory()
 void Chat::clearChatWindow()
 {
 	kdebugf();
-	for(QValueList<ChatMessage *>::iterator it=chatMessages.begin(); it!=chatMessages.end(); ++it)
+	for(QValueList<ChatMessage *>::iterator it=ChatMessages.begin(); it!=ChatMessages.end(); ++it)
 		delete *it;
-	chatMessages.clear();
+	ChatMessages.clear();
 	body->clear();
 	kdebugf2();
 }
@@ -1350,16 +1359,16 @@ void Chat::pruneWindow()
 	kdebugf();
 	unsigned int chatPruneLen=config_file.readUnsignedNumEntry("Chat","ChatPruneLen");
 
-	if (chatMessages.size()<chatPruneLen)
+	if (ChatMessages.size()<chatPruneLen)
 	{
 		kdebugm(KDEBUG_FUNCTION_END, "void Chat::pruneWindow() end: nothing to do\n");
 		return;
 	}
-	QValueList<ChatMessage *>::iterator start=chatMessages.begin();
-	QValueList<ChatMessage *>::iterator stop=chatMessages.at(chatMessages.size()-chatPruneLen+1);
+	QValueList<ChatMessage *>::iterator start=ChatMessages.begin();
+	QValueList<ChatMessage *>::iterator stop=ChatMessages.at(ChatMessages.size()-chatPruneLen+1);
 	for(QValueList<ChatMessage *>::iterator it=start; it!=stop; ++it)
 		delete *it;
-	chatMessages.erase(start, stop);
+	ChatMessages.erase(start, stop);
 
 	kdebugf2();
 }
@@ -1530,6 +1539,11 @@ void Chat::initModule()
 const UinsList& Chat::uins()
 {
 	return Uins;
+}
+
+QValueList<ChatMessage*>& Chat::chatMessages()
+{
+	return ChatMessages;
 }
 
 ColorSelectorButton::ColorSelectorButton(QWidget* parent, const QColor& qcolor, int width, const char *name) : QPushButton(parent, name)

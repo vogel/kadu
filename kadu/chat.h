@@ -36,10 +36,13 @@ class ChatMessage
 	QColor backgroundColor;
 	QColor textColor;
 	
-	//mo¿e s³u¿yæ do przechowywania informacji o tym
-	//czy wiadomo¶æ by³a potwierdzona, szyfrowana, ...
-	//w zamy¶le ma s³u¿yæ do okre¶lania czy jaki¶ obrazek ma byæ dodawany
-	//do wiadomo¶ci czy nie - jaki obrazek - ta informacja bêdzie gdzie indziej
+	/**
+		Mo¿e s³u¿yæ do przechowywania informacji o tym
+		czy wiadomo¶æ by³a potwierdzona, szyfrowana, ...
+		W zamy¶le ma s³u¿yæ do okre¶lania czy jaki¶ obrazek
+		ma byæ dodawany do wiadomo¶ci czy nie - jaki obrazek -
+		ta informacja bêdzie gdzie indziej
+	**/
 	QMap<QString, bool> attributes; 
 	
 	//inne atrybuty?
@@ -47,7 +50,9 @@ class ChatMessage
 	
 	bool needsToBeFormatted;
 	
-	//sformatowana wiadomo¶æ (razem z <p> lub <table>)
+	/**
+		Sformatowana wiadomo¶æ (razem z <p> lub <table>)
+	**/
 	QString message;
 
 	ChatMessage(const QString &nick, const QString &unformattedMessage, bool myMessage, QDateTime date, QDateTime sdate=QDateTime());
@@ -184,7 +189,7 @@ class Chat : public QWidget
 		static QValueList<RegisteredButton> RegisteredButtons;
 		QMap<QString,QPushButton*> Buttons;
 		
-		QValueList<ChatMessage *> chatMessages;
+		QValueList<ChatMessage *> ChatMessages;
 	
 		UinsList Uins;
 		int index;
@@ -248,9 +253,23 @@ class Chat : public QWidget
 		void checkPresence(UinsList, const QString&, time_t, QValueList<ChatMessage *> &messages);
 		void writeMessagesFromHistory(UinsList, time_t);
 		/**
-			Zwraca liste numerow rozmowcow.
+			Zwraca listê numerów rozmowców.
 		**/
 		const UinsList& uins();
+		/**
+			Daje dostêp do wiadomo¶ci aktualnie przechowywanych
+			w oknie chat. Metody tej mo¿na u¿yæ do zmiany tre¶ci
+			lub w³a¶ciwo¶ci której¶ z wiadomo¶ci w odpowiedzi
+			na jakie¶ zdarzenie.
+		**/
+		QValueList<ChatMessage*>& chatMessages();
+		/**
+			Od¶wie¿a zawarto¶æ okna uwzglêdniaj±c ewentualne
+			zmiany dokonane w której¶ wiadomo¶ci z listy
+			uzyskanej za pomoc± metody chatMessages(),
+			dodanie nowych wiadomo¶ci lub usuniêcie istniej±cych.
+		**/
+		void repaintMessages();
 
 	public slots:
 		void changeAppearance();
