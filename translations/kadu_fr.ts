@@ -361,7 +361,7 @@ Si ce champs reste vide les paramettres par default seront utilisés.</translati
     </message>
     <message>
         <source>User font color</source>
-        <translation>Couleur de la police </translation>
+        <translation>Couleur de la police de description </translation>
     </message>
     <message>
         <source>Fonts</source>
