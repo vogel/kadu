@@ -38,7 +38,13 @@ EXTRA_DIST = hi16-app-kadu.png hi32-app-kadu.png hi48-app-kadu.png kadu.desktop
 install-data-local:
 	if test ! -z "$(KDEDIR)"; then \
 		$(mkinstalldirs) "$(KDEDIR)/share/applnk/Applications/"; \
-		$(INSTALL_DATA) kadu.desktop "$(KDEDIR)/share/applnk/Applications"; \
+		echo "[Desktop Entry]" > "$(KDEDIR)/share/applnk/Applications/kadu.desktop"; \
+		echo "Type=Application" >> "$(KDEDIR)/share/applnk/Applications/kadu.desktop"; \
+		echo "Exec=$(bindir)/kadu" >> "$(KDEDIR)/share/applnk/Applications/kadu.desktop"; \
+		echo "Icon=kadu.png" >> "$(KDEDIR)/share/applnk/Applications/kadu.desktop"; \
+		echo "MiniIcon=kadu.png" >> "$(KDEDIR)/share/applnk/Applications/kadu.desktop"; \
+		echo "Terminal=0" >> "$(KDEDIR)/share/applnk/Applications/kadu.desktop"; \
+		echo "Name=Kadu" >> "$(KDEDIR)/share/applnk/Applications/kadu.desktop"; \
 		$(mkinstalldirs) "$(KDEDIR)/share/icons/hicolor/48x48/apps/"; \
 		$(INSTALL_DATA) hi48-app-kadu.png "$(KDEDIR)/share/icons/hicolor/48x48/apps/kadu.png"; \
 		$(mkinstalldirs) "$(KDEDIR)/share/icons/hicolor/32x32/apps/"; \
