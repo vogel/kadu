@@ -111,7 +111,7 @@ void HttpClient::onReadyRead()
 		// Dostalismy naglowek, 
 		fprintf(stderr,"HttpClient: Http header found:\n%s\n",s.local8Bit().data());		
 		// Wyci±gamy status
-		QRegExp status_regexp("HTTP/1.1 (\\d+)");
+		QRegExp status_regexp("HTTP/1\\.[01] (\\d+)");
 		if(status_regexp.search(s)<0)
 		{
 			Socket.close();
