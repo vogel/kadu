@@ -313,20 +313,7 @@ void UserList::changeUserInfo(const QString& old_altnick, const UserListElement&
 	UserListElement e = byAltNick(old_altnick);
 	remove(old_altnick);
 
-	e.first_name = new_data.first_name;
-	e.last_name = new_data.last_name;
-	e.nickname = new_data.nickname;
-	e.altnick = new_data.altnick;
-	e.mobile = new_data.mobile;
-	e.email = new_data.email;
-	e.uin = new_data.uin;
-	e.anonymous = false;
-	e.status = new_data.status;
-	e.image_size = new_data.image_size;
-	e.blocking = new_data.blocking;
-	e.offline_to_user = new_data.offline_to_user;
-	e.notify = new_data.notify;
-	e.Group = new_data.Group;
+	e = new_data;
 	insert(e.altnick, e);
 
 	UserBox::all_renameUser(local_old_altnick, e.altnick);
@@ -596,37 +583,10 @@ void UserList::merge(UserList &userlist) {
 			while (j != end() && (*j).mobile != (*i).mobile)
 				++j;
 			}
-		if (j != end()) {
-			(*j).first_name = (*i).first_name;
-			(*j).last_name = (*i).last_name;
-			(*j).nickname = (*i).nickname;
-			(*j).altnick = (*i).altnick;
-			if ((*i).uin)
-				(*j).mobile = (*i).mobile;
-			else
-				(*j).uin = (*i).uin;
-//			(*j).status = (*i).status;
-//			(*j).image_size = (*i).image_size;
-			(*j).setGroup((*i).group());
-//			(*j).description = (*i).description;
-			(*j).email = (*i).email;
-			}
+		if (j != end())
+			*j = *i;
 		else {
-			e.first_name = (*i).first_name;
-			e.last_name = (*i).last_name;
-			e.nickname = (*i).nickname;
-			e.altnick = (*i).altnick;
-			e.mobile = (*i).mobile;
-			e.uin = (*i).uin;
-			e.status = (*i).status;
-			e.image_size = (*i).image_size;
-			e.blocking = (*i).blocking;
-			e.offline_to_user = (*i).offline_to_user;
-			e.notify = (*i).notify;
-			e.setGroup((*i).group());
-			e.email = (*i).email;
-			e.anonymous = (*i).anonymous;
-			e.port = (*i).port;
+			e = *i; // to jest na pewno potrzebne ??
 			insert(e.altnick,e);
 			}
 		}
