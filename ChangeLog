@@ -29,6 +29,10 @@
 * obs³uga zmiennej CONFIG_DIR - funkcja ggPath ogólnego zastosowania do
   konwersji scie¿ek ze wzglêdnych w katalogu gg do bezwzglêdnych
 * u¿ytkownicy anonimowi nie s± dodawani do listy.
+* configure: mo¿liwo¶æ wy³±czenia kompilacji libgadu i zlinkowania z ju¿
+  istniej±c± w systemie instalacj± (--with-existing-libgadu)
+* configure: wkompilowywana informacja o typie dystrybucji, np. ¼ród³a, paczka
+  dla okre¶lonego systemu itp. (--enable-dist-info=DIST)
 
 +++ wersja 0.3.3-pre1
 * automatyczna kompilacja programu sms
