@@ -137,7 +137,7 @@ struct gg_event *e;
 QTime closestatusppmtime;
 QTimer *blinktimer;
 QTimer *pingtimer;
-QTimer *readevent;
+//QTimer *readevent; - patrz plik events.cpp
 QPopupMenu *statusppm;
 QPopupMenu *dockppm;
 QLabel *statuslabel;
@@ -327,7 +327,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	gg_proxy_host = NULL;
 
 	/* timers, cause event loops and QSocketNotifiers suck. */
-	pingtimer = blinktimer = readevent = NULL;
+	
+	//pingtimer = blinktimer = readevent = NULL; zamieniamy na(powod: patrz plik events.cpp)
+	pingtimer = blinktimer = NULL;
 
 	/* blinker */
 	blinkOn = false;
@@ -1471,7 +1473,12 @@ void Kadu::setStatus(int status) {
 		setCurrentStatus(status);
 
 		kdebug("Kadu::setStatus(): actual status: %d\n", sess->status);
-
+		/** AutoConnectionTimer u¿ywa loginparams.status jako statusu do nowego po³±czenia siê
+				po stracie po³±czenia, czyli kadu bêdzie próbowal sie po³±czyæ z statusem takim
+				samym, co by³ ostatnio ustawiony(oprócz niedostêpny i niedostêpny z opisem).
+		**/
+		if (status != GG_STATUS_NOT_AVAIL && status != GG_STATUS_NOT_AVAIL_DESCR)
+			loginparams.status = status | (GG_STATUS_FRIENDS_MASK * config.privatestatus);
 		return;
 		}
 
@@ -1551,11 +1558,13 @@ void Kadu::setStatus(int status) {
 		}
 }
 
+/* patrz plik events.cpp
 void Kadu::checkConnection(void) {
-	/* Since it doesnt work anymore...*/
+	// Since it doesnt work anymore...
 	readevent->start(10000, TRUE);
 	return;	
 }
+*/
 
 void Kadu::dataReceived(void) {
 	kdebug("Kadu::dataReceived()\n");
@@ -1594,11 +1603,13 @@ void Kadu::disconnectNetwork() {
 		delete blinktimer;
 		blinktimer = NULL;
 		}
+/* patrz events.cpp
 	if (readevent) {
 		readevent->stop();
 		delete readevent;
 		readevent = NULL;
-		}	
+		}
+*/	
 	if (kadusnw) {
 		kadusnw->setEnabled(false);
 		delete kadusnw;

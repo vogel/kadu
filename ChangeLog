@@ -63,6 +63,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * kolejne "pozbycie" sie seg faulta przy debugu (mast3r)
 * dodanie nowej funkcji do userlist, ktora przydaje sie w kilku miejscach (mast3r)
 * porz±dki w kodzie events.cpp i chat.cpp (mast3r)
+* status do autoconnecta jest statusem ostatnio ustawionym w Kadu (mast3r)
+* checkConnection i QTimer readevent - zakomentowane bo do niczego nie potrzebne (mast3r)
 
 +++ wersja 0.3.4-pre3
 * dodane przeszukiwanie historii (chilek)

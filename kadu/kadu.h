@@ -83,7 +83,7 @@ class Kadu : public QMainWindow
 		void dccSent();
 		void prepareDcc(void);
 		void pingNetwork(void);
-		void checkConnection(void);
+//		void checkConnection(void); - patrz plik events.cpp
 		void setStatus(int);
 		void disconnectNetwork(void);
 		void changeGroup(int);
@@ -187,6 +187,6 @@ extern int server_nr;
 extern bool timeout_connected;
 extern struct gg_login_params loginparams;
 extern QTimer *pingtimer;
-extern QTimer *readevent;
+//extern QTimer *readevent; - patrz plik events.cpp
 
 #endif

@@ -183,9 +183,11 @@ void EventManager::connectedSlot()
 	QObject::connect(pingtimer, SIGNAL(timeout()), kadu, SLOT(pingNetwork()));
 	pingtimer->start(60000, TRUE);
 		
+/* Zauwazy³em ze to wogóle nic nie robi... wiêc co zakomentowa³em..
 	readevent = new QTimer;
 	QObject::connect(readevent, SIGNAL(timeout()), kadu, SLOT(checkConnection()));    
 	readevent->start(10000, TRUE);
+*/
 };
 
 void EventManager::connectionFailedSlot()
