@@ -36,6 +36,7 @@ class TrayIcon : protected QLabel
 		void show();
 		void connectSignals();
 		void showHint(const QString&, const QString&, int index);
+		void showErrorHint(const QString&);
 		void reconfigHint();
 
 	public slots:

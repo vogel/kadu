@@ -228,17 +228,21 @@ void TrayIcon::mousePressEvent(QMouseEvent * e)
 void TrayIcon::showHint(const QString &str, const QString &nick, int index) {
 	if (!config.trayhint || !config.dock)
 		return;
-	if (!config.hinterror && index == 2)
-		return;
-	if (config.hinterror && index == 2)
-		index = 1;
 
 	fprintf(stderr,"KK TrayIcon::showHint()\n");
 	hint->show_hint(str,nick,index);
 }
+
 void TrayIcon::reconfigHint() {
 	fprintf(stderr,"KK TrayIcon::reconfigHint()\n");
 	hint->restart();
+}
+
+void TrayIcon::showErrorHint(const QString &str) {
+	if (!config.hinterror)
+		return
+	fprintf(stderr,"KK TrayIcon::showErrorHint()\n");
+	hint->show_hint(str, i18n("Error: "), 1);
 }
 
 TrayHint::TrayHint(QWidget *parent, const char *name)
@@ -280,11 +284,6 @@ void TrayHint::set_hint(void) {
 		pos_hint.setY(pos_tray.y()-size_hint.height());
 	move(pos_hint);
 	fprintf(stderr,"KK TrayHint::set_hint()\n");
-
-	hint->setFont(config.fonts.trayhint);
-	hint->setPaletteBackgroundColor(config.colors.trayhintBg);
-	hint->setPaletteForegroundColor(config.colors.trayhintText);
-
 }
 
 void TrayHint::show_hint(const QString &str, const QString &nick, int index) {
