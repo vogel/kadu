@@ -17,14 +17,14 @@
 extern "C" int echo_init()
 {
 	echo=new Echo();
-	QObject::connect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
+	QObject::connect(gadu,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
 		echo,SLOT(chatReceived(UinsList,const QString&,time_t)));
 	return 0;
 }
 
 extern "C" void echo_close()
 {
-	QObject::disconnect(&event_manager,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
+	QObject::disconnect(gadu,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
 		echo,SLOT(chatReceived(UinsList,const QString&,time_t)));
 	delete echo;
 }

@@ -24,9 +24,9 @@ extern "C" int speech_init()
 
 	speechObj=new SpeechSlots();
 
-	QObject::connect(&event_manager, SIGNAL(chatMsgReceived1(UinsList, const QString&, time_t,bool&)),
+	QObject::connect(gadu, SIGNAL(chatMsgReceived1(UinsList, const QString&, time_t,bool&)),
 		speechObj, SLOT(chat(UinsList, const QString&, time_t,bool&)));
-	QObject::connect(&event_manager, SIGNAL(chatMsgReceived2(UinsList, const QString&, time_t)),
+	QObject::connect(gadu, SIGNAL(chatMsgReceived2(UinsList, const QString&, time_t)),
 		speechObj, SLOT(message(UinsList, const QString&,time_t)));
 	QObject::connect(&userlist, SIGNAL(statusModified(UserListElement*)),
 		speechObj, SLOT(notify(UserListElement*)));
@@ -118,9 +118,9 @@ extern "C" void speech_close()
 	ConfigDialog::disconnectSlot("Speech", "Use Esd", SIGNAL(toggled(bool)), speechObj, SLOT(useEsd(bool)), "useesd");
 	ConfigDialog::disconnectSlot("Speech", "Use Dsp", SIGNAL(toggled(bool)), speechObj, SLOT(useDsp(bool)), "usedsp");
 
-	QObject::disconnect(&event_manager, SIGNAL(chatMsgReceived1(UinsList, const QString&, time_t,bool&)),
+	QObject::disconnect(gadu, SIGNAL(chatMsgReceived1(UinsList, const QString&, time_t,bool&)),
 		speechObj, SLOT(chat(UinsList, const QString&, time_t,bool&)));
-	QObject::disconnect(&event_manager, SIGNAL(chatMsgReceived2(UinsList, const QString&, time_t)),
+	QObject::disconnect(gadu, SIGNAL(chatMsgReceived2(UinsList, const QString&, time_t)),
 		speechObj, SLOT(message(UinsList, const QString&,time_t)));
 
 	QObject::disconnect(&userlist, SIGNAL(statusModified(UserListElement*)),
