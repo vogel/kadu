@@ -151,6 +151,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   anonimowego u¿ytkownika - wystêpowa³ segfault (mast3r)
 * poprawka przy zmianie wielkosci liter w nazwie wyswietlanej u¿ytkownika -
   juz nie powinno wyswietlaæ informacji, ¿e juz taki kontakt istnieje (mast3r)
+* poprawka wczytywania konfiguracji - powinno pomoc na problemy z
+  logowaniem przy niektorych specyficznych haslach (adrian)
 
 +++ wersja 0.3.6 (22.11.2003)
 * je¶li klikniemy na jaki¶ kontakt w userboxie, od którego otrzymali¶my jak±¶

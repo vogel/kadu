@@ -43,9 +43,9 @@ void ConfigFile::read() {
 				}
 			else 
 				if (activegroup.name.length()) {
-					activeentry.name = line.section('=', 0, 0).stripWhiteSpace();
-//					activeentry.value = line.section('=', 1, -1, QString::SectionIncludeTrailingSep).stripWhiteSpace();
-					activeentry.value = line.section('=', 1, -1, QString::SectionSkipEmpty);
+					QString first_section = line.section('=', 0, 0);
+					activeentry.name = first_section.stripWhiteSpace();
+					activeentry.value = line.right(line.length()-first_section.length()-1);
 					if (line.contains('=') >= 1 && activeentry.name.length()
 						&& activeentry.value.length())
 						activegroup.entries.append(activeentry);
