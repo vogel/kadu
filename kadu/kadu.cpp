@@ -542,12 +542,12 @@ void Kadu::currentChanged(QListBoxItem *item) {
 
 	kdebug("Kadu::currentChanged(): %s\n", (const char *)item->text().local8Bit());
 
-	UserListElement &ule = userlist.byAltNick(item->text());
+//	UserListElement &ule = userlist.byAltNick(item->text());
 
 	if (config.panelcontents.isEmpty())
-		descrtb->setText(parse("[#%u][, %f] %r [- %d] [ (%i)]",ule));
+		descrtb->setText(parse("[#%u][, %f] %r [- %d] [ (%i)]",userlist.byAltNick(item->text())));
 	else
-		descrtb->setText(parse(config.panelcontents,ule));
+		descrtb->setText(parse(config.panelcontents,userlist.byAltNick(item->text())));
 }
 
 void Kadu::refreshGroupTabBar()

@@ -32,7 +32,7 @@ QString timestamp(time_t = 0);
 QDateTime currentDateTime();
 QString pwHash(const QString tekst);
 void deleteSearchIdStruct(QDialog *ptr);
-QString parse(QString s, UserListElement &ule);
+QString parse(QString s, UserListElement ule);
 
 enum {
 	DIALOG_SEARCH,

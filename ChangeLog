@@ -6,6 +6,8 @@
 * parsowanie sie¿ki do pliku odtwarzanego przy powiadomieniu 
   o dostêpno¶ci u¿ytkownika (mast3r)
 * rozbudowa klasy MessageBox o obs³ugê wska¼ników postêpu (adrian)
+* poprawki przy parsowaniu - mam nadzieje, ¿e teraz nie bedzie
+  ju¿ problemów, dodanie debugu do kodu parsowania (mast3r)
 
 +++ wersja 0.3.4-pre1
 * ¶rodkowy guzik myszki wci¶niêty na u¿ytkowniku

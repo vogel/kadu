@@ -22,6 +22,7 @@
 #include "pixmaps.h"
 #include "config_dialog.h"
 #include "kadu.h"
+#include "debug.h"
 
 QValueList<struct SearchIdStruct> SearchList;
 
@@ -109,6 +110,8 @@ QString parse_symbols(QString s, int i, UserListElement &ule) {
 	QString r,d;
 	int j;
 
+	kdebug("parse_symbols() %s, %d\n",(const char *)s.local8Bit(),i);
+
 	while(s[i]!='%' && i != s.length()) {
 		r+=s[i];
 		i++;
@@ -190,6 +193,8 @@ QString parse_symbols(QString s, int i, UserListElement &ule) {
 QString parse_only_text(QString s, int i) {
 	QString r;
 
+	kdebug("parse_only_text() %s, %d\n",(const char *)s.local8Bit(),i);
+
 	while(s[i]!='%' && i != s.length()) {
 	r+=s[i];
 	i++;
@@ -206,6 +211,8 @@ QString parse_only_text(QString s, int i) {
 
 QString parse_expression(QString s, int& i, UserListElement &ule) {
 	QString p,r,f;
+
+	kdebug("parse_expression() %s, %d\n",(const char *)s.local8Bit(),i);
 
 	while(s[i]!='[' && i != s.length()) {
 		f+=s[i];
@@ -238,8 +245,11 @@ QString parse_expression(QString s, int& i, UserListElement &ule) {
 		r+=parse_expression(s,i,ule);
 }
 
-QString parse(QString s, UserListElement &ule) {
+QString parse(QString s, UserListElement ule) {
 	int i=0;
+
+	kdebug("parse() :%s\n",(const char *)s.local8Bit());
+
 	return parse_expression(s,i,ule);
 }
 
