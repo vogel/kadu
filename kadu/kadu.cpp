@@ -1037,8 +1037,8 @@ void Kadu::makeVoiceChat()
 					dcc->initializeNotifiers();
 					}
 				}
-			else
-				gg_dcc_request(sess, user.uin);
+//			else
+//				gg_dcc_request(sess, user.uin);
 			}
 }
 
