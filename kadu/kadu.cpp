@@ -1409,8 +1409,8 @@ void Kadu::slotShowStatusMenu() {
 
 void Kadu::setCurrentStatus(int status) {
 	int statusnr;
-	int i;
-	i = 0;
+	int i = 0;
+
 	statusnr = statusGGToStatusNr(status);
 	while (i<8) {
 		statusppm->setItemChecked(i, false);
@@ -1580,9 +1580,8 @@ void Kadu::pingNetwork(void) {
 
 void Kadu::disconnectNetwork() {
 	int i;
-	QPixmap *pix;
-
 	doBlink = false;
+
 	kdebug("Kadu::disconnectNetwork(): calling offline routines\n");
 
 	if (config.autoaway)
@@ -1638,6 +1637,7 @@ void Kadu::disconnectNetwork() {
 	i = 0;
 	while (i < userlist.count()) {
 		userlist[i].status = GG_STATUS_NOT_AVAIL;
+		userlist[i].description = "";
 		i++;
 		}
 
@@ -1648,15 +1648,10 @@ void Kadu::disconnectNetwork() {
 		}
 
 	UserBox::all_refresh();
-
+	
 	socket_active = false;
 	
-	pix = icons->loadIcon("offline");
-	statuslabel->setPixmap(*pix);
-	if (trayicon)
-		trayicon->setType(*pix);
-	setIcon(*pix);
-
+	setCurrentStatus(GG_STATUS_NOT_AVAIL);
 }
 
 

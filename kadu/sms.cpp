@@ -562,9 +562,7 @@ void Sms::smsSigHandler() {
 }
 
 void Sms::updateCounter() {
-	char len[10];
-	snprintf(len, sizeof(len), "%d", body->text().length());
-	smslen->setText(len);
+	smslen->setText(QString::number(body->text().length()));
 }
 
 void Sms::onSmsSenderFinished(bool success)

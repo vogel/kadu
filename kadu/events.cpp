@@ -166,9 +166,7 @@ void EventManager::connectedSlot()
 
 void EventManager::connectionFailedSlot()
 {
-	char error[512];
-	snprintf(error, sizeof(error), "Unable to connect, the following error has occured:\n%s\nKeep trying to connect?\n", strerror(errno));
-	kdebug(error);
+	kdebug("Unable to connect, the following error has occured:\n%s\nKeep trying to connect?\n", strerror(errno));
 	if (kadu->autohammer)
 		kadu->setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
 };
@@ -176,10 +174,8 @@ void EventManager::connectionFailedSlot()
 void EventManager::connectionBrokenSlot()
 {
 	kdebug("Connection broken unexpectedly!\n");
-	char error[512];
 	kadu->disconnectNetwork();
-	snprintf(error, sizeof(error), "Unscheduled connection termination\n");
-	kdebug(error);
+	kdebug("Unscheduled connection termination\n");
 	kadu->setCurrentStatus(GG_STATUS_NOT_AVAIL);
 	if (kadu->autohammer)
 		kadu->setStatus(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
@@ -189,11 +185,10 @@ void EventManager::disconnectedSlot()
 {
 	trayicon->showErrorHint(i18n("Disconnection has been occured"));
 	kdebug("Disconnection has been occured\n");
+	kadu->autohammer = false;
 	kadu->disconnectNetwork();
-	kadu->setCurrentStatus(GG_STATUS_NOT_AVAIL);
 // Wykomentowa³em, bo to zawsze jest prawdziwe!
 /*	if (e->type == GG_EVENT_DISCONNECT) */
-	kadu->autohammer = false;
 };
 
 void EventManager::messageReceivedSlot(int msgclass, UinsList senders,unsigned char* msg, time_t time,
