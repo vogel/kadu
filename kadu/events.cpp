@@ -176,41 +176,38 @@ void ChangeUserStatus(uin_t uin, unsigned int new_status) {
 
 		if (pending.pendingMsgs(uin))
 			return;
-//		for (int j = 0; j < pending.count(); j++)
-//			if (pending[j].uins[0] == uin)
-//				return;
 
-	if (!tmpstr.compare(userlist.byUin(uin).altnick)) {
-	    QPixmap * gg_st;
-	    if (new_status == GG_STATUS_AVAIL)
-		gg_st = new QPixmap((const char**)gg_act_xpm);
-	    else
-		if (new_status == GG_STATUS_BUSY)
-		    gg_st = new QPixmap((const char**)gg_busy_xpm);
-		else
-		    if (new_status == GG_STATUS_BUSY_DESCR)
-			gg_st = new QPixmap((const char**)gg_busydescr_xpm);
-		    else
-			if (new_status == GG_STATUS_NOT_AVAIL)
-			    gg_st = new QPixmap((const char**)gg_inact_xpm);
+		if (!tmpstr.compare(userlist.byUin(uin).altnick)) {
+			QPixmap * gg_st;
+			if (new_status == GG_STATUS_AVAIL)
+				gg_st = new QPixmap((const char**)gg_act_xpm);
 			else
-			    if (new_status == GG_STATUS_NOT_AVAIL_DESCR)
-				gg_st = new QPixmap((const char**)gg_inactdescr_xpm);
-			    else
-				if (new_status == GG_STATUS_AVAIL_DESCR)
-				    gg_st = new QPixmap((const char**)gg_actdescr_xpm);
+				if (new_status == GG_STATUS_BUSY)
+					gg_st = new QPixmap((const char**)gg_busy_xpm);
 				else
-				    if (new_status == GG_STATUS_INVISIBLE2)
-					gg_st = new QPixmap((const char**)gg_invi_xpm);
-				    else
-					if (new_status == GG_STATUS_INVISIBLE_DESCR)
-					    gg_st = new QPixmap((const char**)gg_invidescr_xpm);
+					if (new_status == GG_STATUS_BUSY_DESCR)
+						gg_st = new QPixmap((const char**)gg_busydescr_xpm);
 					else
-					    gg_st = new QPixmap((const char**)gg_inact_xpm);
+						if (new_status == GG_STATUS_NOT_AVAIL)
+							gg_st = new QPixmap((const char**)gg_inact_xpm);
+						else
+							if (new_status == GG_STATUS_NOT_AVAIL_DESCR)
+								gg_st = new QPixmap((const char**)gg_inactdescr_xpm);
+							else
+								if (new_status == GG_STATUS_AVAIL_DESCR)
+									gg_st = new QPixmap((const char**)gg_actdescr_xpm);
+								else
+									if (new_status == GG_STATUS_INVISIBLE2)
+										gg_st = new QPixmap((const char**)gg_invi_xpm);
+									else
+										if (new_status == GG_STATUS_INVISIBLE_DESCR)
+											gg_st = new QPixmap((const char**)gg_invidescr_xpm);
+										else
+											gg_st = new QPixmap((const char**)gg_inact_xpm);
 
-	    kadu->userbox->changeItem(*gg_st, userlist.byUin(uin).altnick, i);
-	    delete gg_st;
-	    }
+			kadu->userbox->changeItem(*gg_st, userlist.byUin(uin).altnick, i);
+			delete gg_st;
+			}
 		}
 }
 
@@ -261,8 +258,11 @@ void eventGotUserlist(struct gg_event * e) {
 				fprintf(stderr, "KK eventGotUserlist(): User %d went busy\n", n->uin);
 			else
 				if (n->status == GG_STATUS_NOT_AVAIL && (GetStatusFromUserlist(n->uin) == GG_STATUS_NOT_AVAIL
-					|| GetStatusFromUserlist(n->uin) == GG_STATUS_INVISIBLE2))
+					|| GetStatusFromUserlist(n->uin) == GG_STATUS_INVISIBLE2)) {
 		    			fprintf(stderr, "KK eventGotUserlist(): User %d went offline (probably invisible ;))\n", n->uin);
+					UserListElement &ule = userlist.byUin(n->uin);
+					ule.time_to_death = 300;
+					}
 				else
 					if (n->status == GG_STATUS_NOT_AVAIL && GetStatusFromUserlist(n->uin) != GG_STATUS_NOT_AVAIL)
 						fprintf(stderr, "KK eventGotUserlist(): User %d went offline\n", n->uin);
