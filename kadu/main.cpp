@@ -138,41 +138,9 @@ int main(int argc, char *argv[])
 
 	ModulesManager::initModule();
 
-	if (kadu->showMainWindowOnStart)
-		kadu->show();
-
-	if (!config_file.readNumEntry("General","UIN")) {
-		QString path_;
-		path_ = ggPath("");
-		mkdir(path_.local8Bit(), 0700);
-		path_.append("/history/");
-		mkdir(path_.local8Bit(), 0700);
-		switch (QMessageBox::information(kadu, "Kadu",
-			qApp->translate("@default", QT_TR_NOOP("You don't have a config file.\nWhat would you like to do?")),
-			qApp->translate("@default", QT_TR_NOOP("New UIN")),
-			qApp->translate("@default", QT_TR_NOOP("Configure")),
-			qApp->translate("@default", QT_TR_NOOP("Cancel")), 0, 1) ) {
-			case 1: // Configure
-				ConfigDialog::showConfigDialog(qApp);
-				break;
-			case 0: // Register
-				(new Register())->show();
-				break;
-			case 2: // Nothing
-				break;
-			}
-		kadu->setCaption(qApp->translate("@default", QT_TR_NOOP("Kadu: new user")));
-		}
-
-	own_description = defaultdescriptions.first();
-	int defaultStatus=config_file.readNumEntry("General","DefaultStatus",GG_STATUS_NOT_AVAIL);
-	if (defaultStatus != GG_STATUS_NOT_AVAIL && defaultStatus != GG_STATUS_NOT_AVAIL_DESCR) {
-		kadu->autohammer = true;
-		kadu->setStatus(defaultStatus);
-		}
+	kadu->startupProcedure();
 
 	QObject::connect(qApp, SIGNAL(aboutToQuit()), kadu, SLOT(quitApplication()));
-
 
 	return qApp->exec();
 }

@@ -247,9 +247,10 @@ void Kadu::keyPressEvent(QKeyEvent *e) {
 /* a monstrous constructor so Kadu would take longer to start up */
 Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 {
-	UpdateChecked=false;
-	Docked=false;
-	showMainWindowOnStart=true;
+	UpdateChecked = false;
+	Docked = false;
+	Autohammer = false;
+	ShowMainWindowOnStart = true;
 
 	KaduSlots *kaduslots=new KaduSlots();
 	UinType myUin=config_file.readNumEntry("General", "UIN");
@@ -333,10 +334,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	closestatusppmtime.start();
 
-	/* timers, cause event loops and QSocketNotifiers suck. */
-
-	//pingtimer = blinktimer = readevent = NULL; zamieniamy na(powod: patrz plik events.cpp)
-	pingtimer = blinktimer = NULL;
+	// blinktimer = NULL; zamieniamy na(powod: patrz plik events.cpp)
+	blinktimer = NULL;
 
 	/* blinker */
 	BlinkOn = false;
@@ -1047,35 +1046,35 @@ void Kadu::slotHandleState(int command) {
 	
 	switch (command) {
 		case 0:
-			autohammer = true;
+			Autohammer = true;
 			setStatus(GG_STATUS_AVAIL);
 			break;
 		case 1:
 			cd = new ChooseDescription(1);
 			if (cd->exec() == QDialog::Accepted) {
-				autohammer = true;
+				Autohammer = true;
 				setStatus(GG_STATUS_AVAIL_DESCR);
 				}
 			break;
 		case 2:
-			autohammer = true;
+			Autohammer = true;
 			setStatus(GG_STATUS_BUSY);
 			break;
 		case 3:
 			cd = new ChooseDescription(3);
 			if (cd->exec() == QDialog::Accepted) {
-				autohammer = true;
+				Autohammer = true;
 				setStatus(GG_STATUS_BUSY_DESCR);
 				}
 			break;
 		case 4:
-			autohammer = true;
+			Autohammer = true;
 			setStatus(GG_STATUS_INVISIBLE);
 			break;
 		case 5:
 			cd = new ChooseDescription(5);
 			if (cd->exec() == QDialog::Accepted) {
-				autohammer = true;
+				Autohammer = true;
 				setStatus(GG_STATUS_INVISIBLE_DESCR);
 				}
 			break;
@@ -1083,7 +1082,7 @@ void Kadu::slotHandleState(int command) {
 			gadu->logout();
 		//	disconnectNetwork();
 			AutoConnectionTimer::off();
-			autohammer = false;
+			Autohammer = false;
 			setCurrentStatus(GG_STATUS_NOT_AVAIL);
 			break;
 		case 7:
@@ -1094,7 +1093,7 @@ void Kadu::slotHandleState(int command) {
 				gadu->logout();
 				//disconnectNetwork();
 				AutoConnectionTimer::off();
-				autohammer = false;
+				Autohammer = false;
 				}
 			break;
 		case 8:
@@ -1199,7 +1198,7 @@ void Kadu::error(GaduError err)
 		case ConnectionNeedEmail:
 			msg = QString(tr("Please change your email in \"Change password/email\" window. "
 				"Leave new password field blank."));
-			autohammer = false; /* FIXME 2/2*/
+			Autohammer = false; /* FIXME 2/2*/
 			AutoConnectionTimer::off();
 			hintmanager->addHintError(msg);
 			MessageBox::msg(msg);
@@ -1219,7 +1218,7 @@ void Kadu::error(GaduError err)
 
 		case ConnectionIncorrectPassword:
 			msg = QString(tr("Unable to connect, incorrect password"));
-			autohammer = false; /* FIXME 2/2*/
+			Autohammer = false; /* FIXME 2/2*/
 			AutoConnectionTimer::off();
 			hintmanager->addHintError(msg);
 			QMessageBox::critical(0, tr("Incorrect password"), tr("Connection will be stoped\nYour password is incorrect !!!"), QMessageBox::Ok, 0);
@@ -1260,7 +1259,7 @@ void Kadu::error(GaduError err)
 		hintmanager->addHintError(msg);
 	}
 
-	if (autohammer)
+	if (Autohammer)
 		AutoConnectionTimer::on();
 
 }
@@ -1283,12 +1282,6 @@ void Kadu::dataSent(void) {
 		event_manager.eventHandler(sess);
 }
 
-void Kadu::pingNetwork(void) {
-	kdebugf();
-	gg_ping(sess);
-	pingtimer->start(60000, TRUE);
-}
-
 void Kadu::disconnected()
 {
 	kdebugm(KDEBUG_FUNCTION_START, "Kadu::disconnected(): Disconnection has occured\n");
@@ -1302,7 +1295,7 @@ void Kadu::disconnected()
 		blinktimer = NULL;
 	}
 
-	autohammer = false;
+	Autohammer = false;
 	AutoConnectionTimer::off();
 }
 
@@ -1738,3 +1731,47 @@ void Kadu::resizeEvent(QResizeEvent *)
 //	kdebugm(KDEBUG_INFO, "kadu::moveEvent: %d %d %d %d\n", x(), y(), width(), height());
 	QWidget::moveEvent(e);
 }*/
+
+void Kadu::startupProcedure()
+{
+	if (ShowMainWindowOnStart)
+		show();
+
+	if (!config_file.readNumEntry("General","UIN"))
+	{
+		QString path_;
+		path_ = ggPath("");
+		mkdir(path_.local8Bit(), 0700);
+		path_.append("/history/");
+		mkdir(path_.local8Bit(), 0700);
+		switch (QMessageBox::information(kadu, "Kadu",
+			tr("You don't have a config file.\nWhat would you like to do?"),
+			tr("New UIN"),
+			tr("Configure"),
+			tr("Cancel"), 0, 1) )
+		{
+			case 1: // Configure
+				ConfigDialog::showConfigDialog(qApp);
+				break;
+			case 0: // Register
+				(new Register())->show();
+				break;
+			case 2: // Nothing
+				break;
+		}
+		setCaption(tr("Kadu: new user"));
+	}
+
+	own_description = defaultdescriptions.first();
+	int defaultStatus = config_file.readNumEntry("General","DefaultStatus",GG_STATUS_NOT_AVAIL);
+	if (defaultStatus != GG_STATUS_NOT_AVAIL && defaultStatus != GG_STATUS_NOT_AVAIL_DESCR)
+	{
+		Autohammer = true;
+		setStatus(defaultStatus);
+	}
+}
+
+void Kadu::setShowMainWindowOnStart(bool show)
+{
+	ShowMainWindowOnStart = show;
+}

@@ -31,7 +31,6 @@ QSocketNotifier* kadusnw = NULL;
 bool userlist_sent = false;
 bool socket_active = false;
 unsigned int server_nr = 0;
-QTimer* pingtimer;
 QValueList<QHostAddress> config_servers;
 
 QValueList<QHostAddress> gg_servers;
@@ -398,6 +397,7 @@ GaduProtocol::GaduProtocol() : QObject()
 	kdebugf();
 	
 	SocketNotifiers = new GaduSocketNotifiers();
+	PingTimer = NULL;
 	ActiveServer = NULL;
 	IWannaBeInvisible = true;
 
@@ -429,9 +429,9 @@ void GaduProtocol::connectedSlot()
 
 	/* jezeli sie rozlaczymy albo stracimy polaczenie, proces laczenia sie z serwerami zaczyna sie od poczatku */
 	server_nr = 0;
-	pingtimer = new QTimer;
-	connect(pingtimer, SIGNAL(timeout()), kadu, SLOT(pingNetwork()));
-	pingtimer->start(60000, TRUE);
+	PingTimer = new QTimer();
+	connect(PingTimer, SIGNAL(timeout()), this, SLOT(pingNetwork()));
+	PingTimer->start(60000, TRUE);
 
 	emit connected();
 	emit statusChanged(loginparams.status & (~GG_STATUS_FRIENDS_MASK));
@@ -441,11 +441,11 @@ void GaduProtocol::disconnectedSlot()
 {
 	ConnectionTimeoutTimer::off();
 	
-	if (pingtimer)
+	if (PingTimer)
 	{
-		pingtimer->stop();
-		delete pingtimer;
-		pingtimer = NULL;
+		PingTimer->stop();
+		delete PingTimer;
+		PingTimer = NULL;
 	}
 
 	if (kadusnw)
@@ -531,6 +531,14 @@ void GaduProtocol::errorSlot(GaduError err)
 	emit error(err);
 	if(err != Disconnected)
 		login(RequestedStatusForLogin);
+}
+
+void GaduProtocol::pingNetwork()
+{
+	kdebugf();
+	gg_ping(sess);
+	PingTimer->start(60000, TRUE);
+	kdebugf2();
 }
 
 void GaduProtocol::setStatus(int status)

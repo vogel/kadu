@@ -68,6 +68,8 @@ class Kadu : public QMainWindow
 		KaduTabBar* GroupBar;
 		UserBox* Userbox;
 
+		bool ShowMainWindowOnStart;
+		bool Autohammer;
 		bool DoBlink;
 		bool BlinkOn;
 		bool UpdateChecked;
@@ -125,12 +127,12 @@ class Kadu : public QMainWindow
 			Zwraca true je¶li kadu jest zadokowane.
 		**/
 		bool docked();
-
-		// te zmienne s± tylko chwilowo publiczne.
-		// trzeba to uporz±dkowaæ
-		bool autohammer;		
-		// potrzebne dla modu³u dokuj±cego ¿eby g³ówne okno nie miga³o przy starcie...
-		bool showMainWindowOnStart;
+		void startupProcedure();
+		/**
+			Potrzebne dla modu³u dokuj±cego ¿eby
+			g³ówne okno nie miga³o przy starcie...
+		**/
+		void setShowMainWindowOnStart(bool show);
 
 	private slots:
 		void connected();
@@ -150,7 +152,6 @@ class Kadu : public QMainWindow
 		void dataSent();
 		void dccReceived();
 		void dccSent();
-		void pingNetwork(void);
 		void setStatus(int);
 		void gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op);
 		void currentChanged(QListBoxItem *item);
@@ -245,4 +246,5 @@ extern QPopupMenu* dockppm;
 
 extern int lockFileHandle;
 extern QFile *lockFile;
+
 #endif

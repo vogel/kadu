@@ -25,7 +25,6 @@ extern QSocketNotifier* kadusnw;
 extern bool userlist_sent;
 extern bool socket_active;
 extern unsigned int server_nr;
-extern QTimer* pingtimer;
 extern QValueList<QHostAddress> config_servers;
 
 struct SearchResult
@@ -188,6 +187,7 @@ class GaduProtocol : public QObject
 
 	private:
 		GaduSocketNotifiers *SocketNotifiers;
+		QTimer* PingTimer;
 		
 		bool userListClear;
 		QString importReply;
@@ -209,6 +209,7 @@ class GaduProtocol : public QObject
 		void disconnectedSlot();
 		void connectionTimeoutTimerSlot();
 		void errorSlot(GaduError);
+		void pingNetwork();
 
 	public:	
 		static void initModule();

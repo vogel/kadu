@@ -161,7 +161,7 @@ X11TrayIcon::X11TrayIcon()
 	docking_manager->defaultToolTip();
 
 	if (config_file.readBoolEntry("General", "RunDocked"))
-		kadu->showMainWindowOnStart=false;
+		kadu->setShowMainWindowOnStart(false);
 	show();
 	kdebugf2();
 }
