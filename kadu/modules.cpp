@@ -71,7 +71,9 @@ bool ModulesManager::loadModule(const QString& module_name)
 	else
 	{
 		fprintf(stderr,"Cannot load module\n");	
+		return false;
 	}
+	return true;
 }
 
 void ModulesManager::unloadModule(const QString& module_name)
