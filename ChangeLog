@@ -10,6 +10,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   zlikwidowana zak³adka Inne (adrian)
 * zmiana internacjonalizacji z gettext na zgodn± z Qt (chilek)
 * configure: zmiana z gettext na internacjonalizacjê z QT (adrian)
+* dostêpno¶æ w hincie wy¶wietla siê w jêzyku ojczystym (chilek)
 
 +++ wersja 0.3.4
 * pocz±tki nowego formatu wewnêtrznego przechowywania wiadomo¶ci
