@@ -185,7 +185,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 	whois->setPixmap(p_whois);
 	QToolTip::add(whois, i18n("Lookup user info"));
 
-	buttontray->setFixedWidth(7 * whois->sizeHint().width());
+//	buttontray->setFixedWidth(7 * whois->sizeHint().width());
 
 	connect(autosend, SIGNAL(clicked()), this, SLOT(regAutosend()));
 //	connect(lockscroll, SIGNAL(clicked()), this, SLOT(lockScroll()));
@@ -196,7 +196,7 @@ Chat::Chat(UinsList uins, QWidget *parent, const char *name)
 
 	QGridLayout *grid = new QGridLayout (this, 5, 4, 3, 3);
 	QHBoxLayout *subgrid = new QHBoxLayout();
-	subgrid->addWidget(edt, 1);
+	subgrid->addWidget(edt, 50);
 	subgrid->addWidget(buttontray, 1);
 	if (userbox)
 		grid->addMultiCellWidget(split1, 0, 0, 0, 3);
