@@ -34,11 +34,10 @@
  + dodaæ profile
  ? naprawiæ ikonkê w dock menu
  ? dodaæ wiêcej funkcji do dock menu (szukaj, dodaj, usuñ, odbierz)
- ? rozbudowa opcji ignorowania o blokowanie
  ? autostatus (zmiana z listy co jaki¶ czas)
  ! dodaæ do pliku AUTHORS sekcjê "Byli autorzy"
- + Umozliwic edycje UIN kontaktu poprzez wywolanie z menu 
-   "Pokaz/zmien informacje o kontakcie"
+ + Umo¿liwiæ edycjê UIN kontaktu poprzez wywo³anie z menu 
+   "Poka¿/zmieñ informacje o kontakcie"
 
  
  TODO dla wersji pó¼niejszych
@@ -49,6 +48,6 @@
  - fukcja "autopilot'a" czyli generowanie automatycznych wiadomo¶ci
    jako odpowiedzi na czyje¶ zapytania
    (kontynuowanie prac nad jêzykiem skryptowym v-user) 
- ? przechowywanie maili userów i uruchamianie klienta mail
+ ? przechowywanie adresów pocztowych u¿ytkowników i uruchamianie klienta pocztowego
  - mechanizm plugin-ów
  + obs³uga unikodu
