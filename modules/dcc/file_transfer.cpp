@@ -146,7 +146,7 @@ void FileTransferDialog::destroyAll()
 
 QMap<DccSocket*, FileTransferDialog*> FileTransferDialog::Dialogs;
 
-FileTransferManager::FileTransferManager()
+FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
 	config_file.addVariable("Network", "LastUploadDirectory", QString(getenv("HOME"))+"/");

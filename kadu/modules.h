@@ -151,6 +151,11 @@ class ModulesManager : public QObject
 			generowany przez configure.
 		**/
 		void registerStaticModules();
+		
+		/**
+			Skupia wszystkie t³umaczenia w jednej hierarchii
+		**/
+		QObject *translators;
 
 	private slots:
 		void dialogDestroyed();

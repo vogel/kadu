@@ -70,7 +70,7 @@ class FileTransferManager : public QObject
 		void socketDestroying(DccSocket* socket);
 
 	public:
-		FileTransferManager();
+		FileTransferManager(QObject *parent=0, const char *name=0);
 		virtual ~FileTransferManager();
 	public slots:
 		/**

@@ -32,8 +32,8 @@
 extern "C" int dcc_init()
 {
 	kdebugf();
-	dcc_manager = new DccManager();
-	file_transfer_manager = new FileTransferManager();
+	dcc_manager = new DccManager(0, "dcc_manager");
+	file_transfer_manager = new FileTransferManager(dcc_manager, "file_transfer_manager");
 	return 0;
 }
 
@@ -245,7 +245,7 @@ int DccSocket::count()
 }
 
 
-DccManager::DccManager() : QObject(NULL,"dcc_manager")
+DccManager::DccManager(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Send file"), "kadu_sendfile", "F8");

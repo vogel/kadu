@@ -80,7 +80,7 @@ class DccManager : public QObject
 		void timeout();
 
 	public:
-		DccManager();
+		DccManager(QObject *parent=0, const char *name=0);
 		virtual ~DccManager();
 		QHostAddress configDccIp();
 		void startTimeout();

@@ -245,6 +245,7 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager")
 	kadu->mainMenu()->insertItem(icons_manager.loadIcon("ManageModules"), tr("&Manage Modules"), this, SLOT(showDialog()), HotKey::shortCutFromFile("ShortCuts", "kadu_modulesmanager"), -1, 2);
 
 	icons_manager.registerMenuItem(kadu->mainMenu(), tr("&Manage Modules"), "ManageModules");
+	translators=new QObject(this, "translators");
 
 	
 	//
@@ -321,12 +322,13 @@ ModulesManager::~ModulesManager()
 		kdebugm(KDEBUG_PANIC, "WARNING! Could not deactivate module %s, killing\n",(*i).local8Bit().data());
 		deactivateModule(*i,true);
 	}
+	delete translators; translators=NULL;
 	kdebugf2();
 }
 
 QTranslator* ModulesManager::loadModuleTranslation(const QString& module_name)
 {
-	QTranslator* translator=new QTranslator(0, "Translator_"+module_name);
+	QTranslator* translator=new QTranslator(translators, "Translator_"+module_name);
 	if(translator->load(dataPath("kadu/modules/translations/"+module_name+QString("_") + config_file.readEntry("General", "Language", QTextCodec::locale())), "."))
 	{
 		qApp->installTranslator(translator);
