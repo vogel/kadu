@@ -31,9 +31,6 @@
 
 Kadu *kadu;	
 
-//#define HAVE_EXECINFO
-#undef HAVE_EXECINFO
-
 #ifdef SIG_HANDLING_ENABLED
 #include <qdatetime.h>
 #include <signal.h>

@@ -149,6 +149,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   kontaków (KID/michal)
 * ³atka Kida poprawiaj±ca od¶wie¿anie listy modu³ów gdy ¿±dany modu³ nie uda³o
   siê za³adowaæ, ale za³adowany zosta³ modu³ zale¿ny (joi)
+* configure: obs³uga execinfo (backtrace na konsoli przy padzie programu),
+  nie musimy ju¿ rêcznie tego w³±czaæ grzebi±c w main.cpp (michal, adrian)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.

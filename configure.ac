@@ -35,6 +35,24 @@ AC_DEFUN(CHECK_PTHREAD,
 	])
 ])
 
+# $1 - action if successed
+# $2 - action if failed
+AC_DEFUN(TRY_LINK_EXECINFO,[
+	AC_TRY_LINK([],
+	[
+		#include <execinfo.h>
+		int main()
+		{
+			char* data;
+			backtrace(&data, 100);
+		}
+	],[
+		$1
+	],[
+		$2
+	])
+])
+
 # $1 - file name
 # $2 - directories
 # $3 - action if found
@@ -270,6 +288,33 @@ AC_PROG_CXX
 AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_AWK
+
+##################
+# ExecInfo
+##################
+
+AC_CHECK_HEADERS([execinfo.h],
+[
+	AC_MSG_CHECKING([if execinfo is in libc]) 
+	TRY_LINK_EXECINFO(
+	[
+		AC_MSG_RESULT([yes])
+		AC_DEFINE(HAVE_EXECINFO,1,[Define if you want execinfo support])
+	],[
+		AC_MSG_RESULT([no])
+		AC_MSG_CHECKING([if execinfo is in libexecinfo]) 
+		save_LDLAGS="$LDLAGS"
+		LDFLAGS="$LDFLAGS -lexecinfo"
+		TRY_LINK_EXECINFO(
+		[
+			AC_MSG_RESULT([yes])
+			AC_DEFINE(HAVE_EXECINFO,1,[Define if you want execinfo support])
+		],[
+			AC_MSG_RESULT([no])
+			LDFLAGS="$save_LDLAGS"			 
+		])	  
+	])
+])
 
 ##################
 # PTHREAD Library
