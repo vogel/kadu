@@ -124,6 +124,7 @@ AC_DEFUN(FIND_LIBRARY,[
 # $2 - action if not found (default is error message)
 AC_DEFUN(FIND_TOOL,[
 	AC_MSG_CHECKING([if $1 tool is available])
+	TOOL_DIRS=
 	tmp_TOOL_DIR=
 	for dir in $with_apps `echo $PATH | sed "s/:/ /g"` 
 	do
