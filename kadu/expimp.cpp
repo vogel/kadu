@@ -202,11 +202,10 @@ void UserlistImport::userlistReplyReceivedSlot(char type, char *reply) {
 	kdebug("ImportUserlist::userlistReplyReceivedSlot(): Done.\n");
 	QStringList strlist;
 	strlist = QStringList::split("\r\n", importreply, true);
+
 	kdebug("ImportUserlist::userlistReplyReceivedSlot()\n%s\n",
 		unicode2latin(importreply).data());
 	QStringList fieldlist;
-	// this is temporary array dedicated to Adrian
-	QString tmparray[16];
 	QListViewItem *qlv;
 	QStringList::Iterator it;
 	UserListElement e;
