@@ -172,50 +172,74 @@ int KaduListBoxPixmap::width(const QListBox* lb) const
 		return lb->width()-5-scrollWidth;
 }
 
+//#include <sys/time.h>
 void KaduListBoxPixmap::calculateSize(const QString &text, int width, QStringList &out, int &height) const
 {
 //	kdebugf();
-	if (text==buf_text && width==buf_width)	
+	if (text==buf_text && width==buf_width)	//ju¿ to liczyli¶my ;)
 	{
 		out=buf_out;
 		height=buf_height;
 		return;
 	}
 
-	int textlen=text.length();
-	int start=0, len, tmplen;
+	int len, tmplen;
 	
 	out.clear();
 	height=0;
-	
-	while (start<textlen)
+
+/*	struct timeval t1,t2;
+	gettimeofday(&t1, NULL);
+	for(int j=0; j<1000; j++)
 	{
-		len=0;
+		out.clear();
+		height=0;
+*/
+	QStringList tmpout=QStringList::split('\n', text, true);
+	int wsize=descriptionFontMetrics->width('W'); //zdaje siê najszersza litera to 'w'
+	int initialLength=width/wsize; // spróbujmy przewidzieæ szeroko¶æ
+
+	while (tmpout.size())
+	{
+		QString curtext=tmpout.front();
+		int textlen=curtext.length();
+		int len=initialLength;
 		bool tooWide=false;
 		while (1)
 		{
-			tooWide=(descriptionFontMetrics->width(text.mid(start, len))>=width);
-			if (!tooWide && text[start+len]!='\n' && start+len<textlen)
-				len++;
+			tooWide=(descriptionFontMetrics->width(curtext.left(len))>=width);
+			if (!tooWide && len<textlen)
+				len+=5; //przesuwamy siê po 5 znaków ¿eby by³o szybciej
 			else
 				break;
 		}
-		
-		if (tooWide)
+		if (tooWide) //przekroczyli¶my szeroko¶æ listy
 		{
-			tmplen=len;
-			while (len>0 && !text[start+len-1].isSpace())
+			while(descriptionFontMetrics->width(curtext.left(len))>=width) //skracamy ¿eby w ogóle siê zmie¶ciæ
 				len--;
-			if (len==0)
+			tmplen=len;
+			while (len>0 && !curtext[len-1].isSpace()) //nie b±d¼my chamy i dzielmy opisy na granicach s³ów
+				len--;
+			if (len==0)//no ale mo¿e kto¶ wpisa³ bez spacji?
 				len=tmplen-1;
 		}
-
-		out.push_back(text.mid(start, len));
+		QString next=curtext.mid(len);//przenosimy do nastêpnego wiersza
+		out.push_back(curtext.left(len));
+		tmpout.pop_front();
 		height++;
-		start+=len;
-		if (text[start].isSpace())
-			start++;
+		if (tooWide)
+		{
+			if (next[0].isSpace())//je¿eli obcinamy na bia³ym znaku, to w nastêpnej linii ten znak nie jest potrzebny
+				tmpout.push_front(next.mid(1));
+			else
+				tmpout.push_front(next);
+		}
 	}
+
+/*	}
+	gettimeofday(&t2, NULL);
+	kdebug("czas: %ld\n", (t2.tv_usec-t1.tv_usec)+(t2.tv_sec*1000000)-(t1.tv_sec*1000000));
+*/
 	height*=descriptionFontMetrics->lineSpacing();
 	
 	buf_text=text;

@@ -164,6 +164,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * znowu KID zrobi³ ³atke i znowu ja to wrzucam :), tym razem okno
   ignorowanych  (KID/michal)
 * patch joi - zawijanie statusow w oknie listy uzytkownikow (tomee)
+* przyspieszenie oko³o 2,5 raza prêdko¶ci zawijania opisów (joi)
 
 +++ wersja 0.3.8 (20.04.2004)
 * zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
