@@ -1111,6 +1111,10 @@ class GaduProtocol : public QObject
 		void connecting();
 		void disconnected();
 		void error(GaduError);
+		/**
+			wyst±pi³ b³±d po³±czenia
+		**/
+		void connectionError(const QString &reason);
 		void imageRequestReceived(UinType, uint32_t, uint32_t);
 		/**
 			Otrzymano dane obrazka i zapisano go do pliku.

@@ -61,7 +61,7 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name)
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "User changed status to \"Not available\""));
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "Other message"));
 
-	connect(kadu, SIGNAL(connectionError(const QString &)), this, notifySignals["ConnError"]);
+	connect(gadu, SIGNAL(connectionError(const QString &)), this, notifySignals["ConnError"]);
 	connect(gadu, SIGNAL(chatMsgReceived1(UinsList, const QString&, time_t,bool&)), this, SLOT(probablyNewMessage(UinsList, const QString&, time_t, bool&)));
 	connect(gadu, SIGNAL(chatMsgReceived2(UinsList, const QString&, time_t)), this, SLOT(newChatSlot(UinsList, const QString&, time_t)));
 	connect(gadu, SIGNAL(userStatusChanged(const UserListElement &, const UserStatus &, bool)),
@@ -135,7 +135,7 @@ Notify::~Notify()
 	ConfigDialog::removeControl("Notify", "Notify about all users");
 	ConfigDialog::removeControl("Notify", "Ignore changes right after connection to the server");
 
-	disconnect(kadu, SIGNAL(connectionError(const QString &)), this, notifySignals["ConnError"]);
+	disconnect(gadu, SIGNAL(connectionError(const QString &)), this, notifySignals["ConnError"]);
 	disconnect(gadu, SIGNAL(chatMsgReceived1(UinsList, const QString&, time_t,bool&)), this, SLOT(probablyNewMessage(UinsList, const QString&, time_t, bool&)));
 	disconnect(gadu, SIGNAL(chatMsgReceived2(UinsList, const QString&, time_t)), this, SLOT(newChatSlot(UinsList, const QString&, time_t)));
 	disconnect(gadu, SIGNAL(userStatusChanged(const UserListElement &, const UserStatus &, bool)),

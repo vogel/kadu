@@ -479,7 +479,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(gadu, SIGNAL(connecting()), this, SLOT(connecting()));
 	connect(gadu, SIGNAL(connected()), this, SLOT(connected()));
 	connect(gadu, SIGNAL(disconnected()), this, SLOT(disconnected()));
-	connect(gadu, SIGNAL(error(GaduError)), this, SLOT(error(GaduError)));
+	connect(gadu, SIGNAL(connectionError(const QString &)), this, SLOT(connectionError(const QString &)));//do wywalenia po 0.4
 	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
 		this, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
 	connect(gadu, SIGNAL(needTokenValue(QPixmap, QString &)),
@@ -811,7 +811,7 @@ void Kadu::changeAppearance()
 	else
 		InfoPanel->setVScrollBarMode(QScrollView::AlwaysOff);
 
-	QPixmap pix=gadu->status().pixmap(status);
+	QPixmap pix = gadu->currentStatus().pixmap();
 	statusButton->setIconSet(QIconSet(pix));
 	emit statusPixmapChanged(pix);
 	kdebugf2();
@@ -1157,91 +1157,6 @@ void Kadu::connected()
 {
 	kdebugf();
 	DoBlink = false;
-	kdebugf2();
-}
-
-void Kadu::error(GaduError err)
-{
-	kdebugf();
-	QString msg = QString::null;
-
-	bool continue_connecting = true;
-	switch (err)
-	{
-		case ConnectionServerNotFound:
-			msg = tr("Unable to connect, server has not been found");
-			break;
-
-		case ConnectionCannotConnect:
-			msg = tr("Unable to connect");
-			break;
-
-		case ConnectionNeedEmail:
-			msg = tr("Please change your email in \"Change password/email\" window. "
-				"Leave new password field blank.");
-			continue_connecting = false;
-			MessageBox::msg(msg);
-			break;
-
-		case ConnectionInvalidData:
-			msg = tr("Unable to connect, server has returned unknown data");
-			break;
-
-		case ConnectionCannotRead:
-			msg = tr("Unable to connect, connection break during reading");
-			break;
-
-		case ConnectionCannotWrite:
-			msg = tr("Unable to connect, connection break during writing");
-			break;
-
-		case ConnectionIncorrectPassword:
-			msg = tr("Unable to connect, incorrect password");
-			continue_connecting = false;
-			MessageBox::wrn(tr("Connection will be stoped\nYour password is incorrect !"));
-			break;
-
-		case ConnectionTlsError:
-			msg = tr("Unable to connect, error of negotiation TLS");
-			break;
-
-		case ConnectionUnknow:
-			kdebugm(KDEBUG_INFO, "Connection broken unexpectedly!\nUnscheduled connection termination\n");
-			break;
-
-		case ConnectionTimeout:
-			msg = tr("Connection timeout!");
-			break;
-
-		case Disconnected:
-			msg = tr("Disconnection has occured");
-			break;
-
-		default:
-			kdebugm(KDEBUG_WARNING, "Unhandled error?\n");
-			break;
-
-	}
-
-	if (msg != QString::null)
-	{
-		QHostAddress* server = gadu->activeServer();
-		QString host;
-		if (server != NULL)
-			host = server->toString();
-		else
-			host = "HUB";
-		msg = QString("(") + host + ") " + msg;
-		kdebugm(KDEBUG_INFO, "%s\n", msg.local8Bit().data());
-		emit connectionError(msg);
-	}
-
-	// je¶li b³±d który wyst±pi³ umo¿liwia dalsze próby po³±czenia
-	// i w miêdzyczasie u¿ytkownik nie zmieni³ statusu na niedostêpny
-	// to za sekundê próbujemy ponownie
-	if (continue_connecting && !gadu->status().isOffline())
-		gadu->connectAfterOneSecond();
-
 	kdebugf2();
 }
 

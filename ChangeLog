@@ -409,6 +409,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * gdy nie uda siê uruchomiæ arts_connectora kadu siê nie zwiesi (analyzer/joi)
 * dodany modu³ alsa_sound (joi)
 * usuniête 100% obci±¿enia procesora i segfault w przypadku problemów z sieci± (joi)
+* nie pozwalamy siê po³±czyæ z serwerem je¿eli UIN lub has³o nie s± ustawione
+  + drobne porz±dki w obs³udze sytuacji awaryjnych (joi)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,

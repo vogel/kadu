@@ -104,7 +104,6 @@ class Kadu : public QMainWindow
 		void connected();
 		void connecting();
 		void disconnected();
-		void error(GaduError);
 		void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
 		void systemMessageReceived(QString &);
 		void userStatusChanged(const UserListElement &, const UserStatus &oldstatus, bool onConnection);
@@ -227,6 +226,7 @@ class Kadu : public QMainWindow
 		void wantRegister();
 		/**
 			wyst±pi³ b³±d po³±czenia
+			TODO: wywaliæ po 0.4, odpowiedni sygna³ jest w GaduProtocol
 		**/
 		void connectionError(const QString &reason);
 		/**

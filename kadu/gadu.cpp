@@ -1170,9 +1170,93 @@ void GaduProtocol::connectionTimeoutTimerSlot()
 void GaduProtocol::errorSlot(GaduError err)
 {
 	kdebugf();
+	QString msg = QString::null;
 
 	disconnectedSlot();
 	emit error(err);
+
+	bool continue_connecting = true;
+	switch (err)
+	{
+		case ConnectionServerNotFound:
+			msg = tr("Unable to connect, server has not been found");
+			break;
+
+		case ConnectionCannotConnect:
+			msg = tr("Unable to connect");
+			break;
+
+		case ConnectionNeedEmail:
+			msg = tr("Please change your email in \"Change password/email\" window. "
+				"Leave new password field blank.");
+			continue_connecting = false;
+			MessageBox::msg(msg);
+			break;
+
+		case ConnectionInvalidData:
+			msg = tr("Unable to connect, server has returned unknown data");
+			break;
+
+		case ConnectionCannotRead:
+			msg = tr("Unable to connect, connection break during reading");
+			break;
+
+		case ConnectionCannotWrite:
+			msg = tr("Unable to connect, connection break during writing");
+			break;
+
+		case ConnectionIncorrectPassword:
+			msg = tr("Unable to connect, incorrect password");
+			continue_connecting = false;
+			MessageBox::wrn(tr("Connection will be stoped\nYour password is incorrect !"));
+			break;
+
+		case ConnectionTlsError:
+			msg = tr("Unable to connect, error of negotiation TLS");
+			break;
+
+		case ConnectionUnknow:
+			kdebugm(KDEBUG_INFO, "Connection broken unexpectedly!\nUnscheduled connection termination\n");
+			break;
+
+		case ConnectionTimeout:
+			msg = tr("Connection timeout!");
+			break;
+
+		case Disconnected:
+			msg = tr("Disconnection has occured");
+			break;
+
+		default:
+			kdebugm(KDEBUG_WARNING, "Unhandled error?\n");
+			break;
+	}
+
+	if (msg != QString::null)
+	{
+		QHostAddress* server = activeServer();
+		QString host;
+		if (server != NULL)
+			host = server->toString();
+		else
+			host = "HUB";
+		msg = QString("(") + host + ") " + msg;
+		kdebugm(KDEBUG_INFO, "%s\n", msg.local8Bit().data());
+		emit connectionError(msg);
+	}
+
+	if (!continue_connecting)
+	{
+		whileConnecting = false;
+		NextStatus->setOffline();
+	}
+
+	// je¶li b³±d który wyst±pi³ umo¿liwia dalsze próby po³±czenia
+	// i w miêdzyczasie u¿ytkownik nie zmieni³ statusu na niedostêpny
+	// to za sekundê próbujemy ponownie
+	if (continue_connecting && !status().isOffline())
+		connectAfterOneSecond();
+
 	kdebugf2();
 }
 
@@ -1283,6 +1367,14 @@ void GaduProtocol::systemMessageReceived(QString &message, QDateTime &time, int 
 void GaduProtocol::login()
 {
 	kdebugf();
+	if (config_file.readNumEntry("General", "UIN")==0 || config_file.readEntry("General", "Password").isEmpty())
+	{
+		MessageBox::wrn(tr("UIN or password not set!"));
+		NextStatus->setOffline();
+		kdebugmf(KDEBUG_FUNCTION_END, "end: uin or password not set\n");
+		return;
+	}
+
 	whileConnecting = true;
 
 	emit connecting();
