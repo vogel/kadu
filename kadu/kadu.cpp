@@ -415,7 +415,11 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		move(maximumSize().width() - x(), maximumSize().height() - y());
 		}
 
-	
+	if (config.dock) {
+		dw = new DockWidget(this);
+		dw->show();
+		}
+
 	/* use dock hint? */
 	if (config.showhint)
 		tip = new DockHint(0);
@@ -466,8 +470,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	/* use dock icon? */
 	if (config.dock) {
-		dw = new DockWidget(this);
-		dw->show();
 		dw->changeIcon();
 		}
 
