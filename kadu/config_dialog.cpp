@@ -646,7 +646,7 @@ void ConfigDialog::connectSlot(const QString& groupname, const QString& caption,
 	c.receiver=(QObject *)receiver;
 	c.slot=slot;
 	(*j).ConnectedSlots.append(c);
-	kdebug("Slot connected::\n");
+	kdebug("Slot connected:: %s\n",slot);
 		    break;
 			}
 }
