@@ -38,6 +38,9 @@ struct UserListElement
 class UserList : public QValueList<UserListElement>
 {
 //	Q_OBJECT
+
+	private:
+		char* preparePath(char* filename)
 	
 	public:
 		UserList();
@@ -49,6 +52,6 @@ class UserList : public QValueList<UserListElement>
 			const int Status=GG_STATUS_NOT_AVAIL,
 			const QString Group="",const QString Description="");
 		void removeUser(uin_t uin);
-		int writeToFile(char *filename = NULL);
-		int readFromFile();
+		bool writeToFile(char *filename = NULL);
+		bool readFromFile();
 };

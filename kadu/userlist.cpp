@@ -24,56 +24,6 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 
-static char *get_token(char **ptr, char sep)
-{
-	char *foo, *res;
-
-	if (!ptr || !sep || !*ptr)
-		return NULL;
-
-	res = *ptr;
-
-	if (!(foo = strchr(*ptr, sep)))
-		*ptr += strlen(*ptr);
-	else {
-		*ptr = foo + 1;
-		*foo = 0;
-	}
-
-	return res;
-}
-
-static char *read_file(FILE *f) {
-	char buf[1024], *nju, *res = NULL;
-
-	while (fgets(buf, sizeof(buf) - 1, f)) {
-		int new_size = ((res) ? strlen(res) : 0) + strlen(buf) + 1;
-
-		if (!((void *)nju = realloc(res, new_size))) {
-			/* jesli brakuje pamieci, pomijamy reszte linii */
-			if (strchr(buf, '\n'))
-				break;
-			else
-				continue;
-		}
-		if (!res)
-			*nju = 0;
-		res = nju;
-		strcpy(res + strlen(res), buf);
-
-		if (strchr(buf, '\n'))
-			break;
-	}
-
-	if (res && strlen(res) > 0 && res[strlen(res) - 1] == '\n')
-		res[strlen(res) - 1] = 0;
-	if (res && strlen(res) > 0 && res[strlen(res) - 1] == '\r')
-		res[strlen(res) - 1] = 0;
-
-
-	return res;
-}
-
 UserList::UserList() : QValueList<UserListElement>()
 {
 };
@@ -129,18 +79,31 @@ void UserList::removeUser(uin_t uin)
 		};
 };
 
-int UserList::writeToFile(char *filename)
+char* UserList::preparePath(char* filename)
+{
+	static char path[1023];
+	char* home;
+	struct passwd* pw;
+	if (pw=getpwuid(getuid()))
+		home=pw->pw_dir;
+	else
+		home=getenv("HOME");
+	snprintf(path, sizeof(path), "%s/.gg/%s", home, filename);
+	return path;
+}
+
+bool UserList::writeToFile(char *filename)
 {
 	char *tmp;
 
 	if (!(tmp = preparePath("")))
-		return -1;
+		return FALSE;
 	mkdir(tmp, 0700);
 
 	if (!filename)
 	{
 		if (!(filename = preparePath("userlist")))
-			return -1;
+			FALSE;
 	};
 
 	QFile f(filename);
@@ -148,7 +111,7 @@ int UserList::writeToFile(char *filename)
 	if (!f.open(IO_WriteOnly))
 	{
 		fprintf(stderr,"KK UserList::writeToFile(): Error opening file :(\n");
-		return -2;
+		return FALSE;
 	};
 
 //	fchmod(fileno(f), 0600);
@@ -174,76 +137,49 @@ int UserList::writeToFile(char *filename)
 		f.writeBlock(s.local8Bit(),s.length());
 	}	    
 	f.close();
-	return 0;
+	return TRUE;
 }
 
-int UserList::readFromFile()
+bool UserList::readFromFile()
 {
-/*	clear();
+	char * path = preparePath("userlist");
+	printf("KK UserList::readFromFile(): Opening userlist file: %s\n",path);
 
-    char * path;
-    struct passwd *pw;
-
-    if (!(pw = getpwuid(getuid())))
-	path = getenv("HOME");
-    path = pw->pw_dir;
-
-    char * path2 = "/.gg/userlist";
-    char buffer[255];
-    snprintf(buffer,255,"%s%s",path,path2);
-
-    printf("KK readUserlist(): Opening userlist file: %s\n", buffer);
-
-    FILE *f;
-    char * buf;
-    int i = 0;
-    
-    if (!(f = fopen(buffer, "r"))) {
-	fprintf(stderr, "KK readUserlist(): Error opening userlist file");
-	return -1;
+	QFile f(path);
+	if(f.open(IO_ReadOnly))
+	{
+		fprintf(stderr, "KK UserList::readFromFile(): Error opening userlist file");
+		return FALSE;
 	}
 
-    userlist_count = 0;
-
-    printf("KK readUserlist(): File opened successfuly\n");
-
-    while ((buf = read_file(f))) {
-	char *comment;
-
-	if (buf[0] == '#') {
-	    free(buf);
-	    continue;
-	    }
-
-	if (!strchr(buf, ';')) {
-	    if (!(comment = strchr(buf, ' '))) {
-		free(buf);
-		continue;
-		}
+	printf("KK UserList::readFromFile(): File opened successfuly\n");
 	    
-	    uin_t uin;
-	    uin = strtol(buf, NULL, 0);
+	clear();
 
-	    if (!uin) {
-		free(buf);
-		continue;
+	QString line;
+	while (f.readLine(line,1000))
+	{
+		if (line[0] == '#')
+			continue;
+
+		if (line.find(';')<0)
+		{
+			QString comment=comment.section(' ',0,0);
+			QString uin=comment.section(' ',1,1);
+			if(uin=="")
+				continue;
+			void UserList::addUser("","","",const QString& AltNick,++comment,
+				"",uin,GG_STATUS_NOT_AVAIL,"","")
 		}
-
-	void UserList::addUser("","","",const QString& AltNick,++comment,
-		"",uin,GG_STATUS_NOT_AVAIL,"","")
-	    }
-	else {
-	    char *first_name, *last_name, *nickname, *comment, *mobile, *group, *uin,
-	    *foo = buf;
-	    uin_t uint;
-	    
-	    first_name = get_token(&foo, ';');
-	    last_name = get_token(&foo, ';');
-	    comment = get_token(&foo, ';');
-	    nickname = get_token(&foo, ';');
-	    mobile = get_token(&foo, ';');
-	    group = get_token(&foo, ';');
-	    uin = get_token(&foo, ';');*/
+		else
+		{	    
+			QString first_name = line.section(';',0,0);
+			QString last_name = line.section(';',1,1);
+			QString comment = line.section(';',2,2);
+			QString nickname = line.section(';',3,3);
+			QString mobile = line(';',4,4);
+			QString group = line(';',5,5);
+			uin_t uin = get_token(';',6,6);
 
       /* load groups */
 /*
@@ -267,36 +203,33 @@ int UserList::readFromFile()
 
       } */
 
-	    /*
-	    if (!uin || !(uint = strtol(uin, NULL, 0))) {
-		free(buf);
-		continue;
-		}
+			if(uin=="")
+				continue;
+		};
 
-	    cp_to_iso((unsigned char *)first_name);
+	// Trzeba dodac obsluge pl literek!!!!!!!!!!!!!!!
+	
+/*	    cp_to_iso((unsigned char *)first_name);
 	    cp_to_iso((unsigned char *)userlist[i].last_name);
 	    cp_to_iso((unsigned char *)userlist[i].nickname);
 	    cp_to_iso((unsigned char *)userlist[i].comment);
-	    cp_to_iso((unsigned char *)userlist[i].group);
+	    cp_to_iso((unsigned char *)userlist[i].group);*/
 
-	    // if the nickname isn't defined explicitly, try to guess it 
-	    if (!QString::compare(nickname, ""))
-		if (!QString::compare(comment, ""))
-		    strcpy(nickname, first_name);
-		else
-		    strcpy(nickname, comment);
-	    }
+		// if the nickname isn't defined explicitly, try to guess it 
+		if(nickname==""))
+		{
+			if(comment=="")
+				nickname=first_name);
+			else
+				nickname=comment;
+		};
 
-	addUser(first_name,last_name,nickname,comment
-	mobile,uint,GG_STATUS_NOT_AVAIL,group,"")
+		addUser(first_name,last_name,nickname,comment
+			mobile,uin,GG_STATUS_NOT_AVAIL,group,"")
+	};
 
-	free(buf);
-	
-	i++;
-	}
-
-    fclose(f);*/
-    return 0;
+	f.close();
+    	return TRUE;
 }
 
 //#include "userlist.moc"
