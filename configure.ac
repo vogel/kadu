@@ -570,7 +570,11 @@ if test -z "$enable_pheaders"; then
 	enable_pheaders=no
 fi
 if test "$enable_pheaders" = "yes"; then
-	grep -h "include [[\"<]].*\.h" kadu/*.cpp kadu/*.h | sort -u > kadu/kadu-headers.h
+	rm -f kadu/kadu-headers.h
+	for i in kadu-config.h `ls -1 kadu | grep "\.h$"`; do
+		echo "#include \"$i\"" >> kadu/kadu-headers.h
+	done
+	grep -h '#include <q[^>]*>' kadu/*.cpp | sort -u >> kadu/kadu-headers.h
 fi
 AC_SUBST(enable_pheaders)
 AM_CONDITIONAL(PHEADERS_ENABLED,test "$enable_pheaders" = "yes")
