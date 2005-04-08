@@ -45,6 +45,8 @@ QValueList<ConfigDialog::ElementConnections> ConfigDialog::SlotsOnApply;
 QMap<QString, QValueList <ConfigDialog::RegisteredControl> > ConfigDialog::Tabs;
 QStringList ConfigDialog::TabNames;
 QMap<QString, int> ConfigDialog::TabSizes;
+QDict<QSignal> ConfigDialog::tabChangesIn;
+QDict<QSignal> ConfigDialog::tabChangesOut;
 
 ConfigDialog::ElementConnections::ElementConnections()
 	: signal(QString::null), receiver(NULL), slot(QString::null)
@@ -456,6 +458,8 @@ void ConfigDialog::changeTab(const QString& name)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "current tab:%s changeTo:%s\n", currentTab.local8Bit().data(), name.local8Bit().data());
 
+	int counter = 0;
+	QSignal *sig;
 	CONST_FOREACH(tab, Tabs)
 	{
 		const RegisteredControl &tabControl = (*tab).front();
@@ -464,10 +468,20 @@ void ConfigDialog::changeTab(const QString& name)
 			if (tabControl.widget)
 				tabControl.widget->show();
 			currentTab = tabControl.caption;
+			if ((sig = tabChangesIn[tabControl.caption]))
+				sig->activate();
+			++counter;
 		}
 		else 
-			if (tabControl.widget)
+			if (tabControl.widget && tabControl.widget->isShown())
+			{
 				tabControl.widget->hide();
+				if ((sig = tabChangesOut[tabControl.caption]))
+					sig->activate();
+				++counter;
+			}
+		if (counter == 2)
+			break;
 	}
 
 	kdebugmf(KDEBUG_FUNCTION_END, "current tab:%s\n", currentTab.local8Bit().data());
@@ -1094,6 +1108,75 @@ void ConfigDialog::registerSlotOnApply(const QObject* receiver, const char* name
 void ConfigDialog::unregisterSlotOnApply(const QObject* receiver, const char* name)
 {
 	SlotsOnApply.remove(SlotsOnApply.find(ElementConnections(QString::null, receiver, name)));
+}
+
+void ConfigDialog::registerSlotsOnTabChange(const QString &name, const QObject *receiver, const char *slotIn, const char *slotOut)
+{
+	kdebugf();
+	QSignal *sig;
+	if (receiver)
+	{
+		if (slotIn)
+		{
+			sig = tabChangesIn[name];
+			if (sig == 0)
+			{
+				sig = new QSignal();
+				tabChangesIn.insert(name, sig);
+			}
+			if (!sig->connect(receiver, slotIn))
+				kdebugm(KDEBUG_WARNING, "can't connect slot! (in: %s, %s)\n", name.local8Bit().data(), slotIn);
+		}
+		if (slotOut)
+		{
+			sig = tabChangesOut[name];
+			if (sig == 0)
+			{
+				sig = new QSignal();
+				tabChangesOut.insert(name, sig);
+			}
+			if (!sig->connect(receiver, slotOut))
+				kdebugm(KDEBUG_WARNING, "can't connect slot! (in: %s, %s)\n", name.local8Bit().data(), slotOut);
+		}
+	}
+	else
+		kdebugm(KDEBUG_WARNING, "null object! (tab: %s)\n", name.local8Bit().data());
+
+	kdebugf2();
+}
+
+void ConfigDialog::unregisterSlotsOnTabChange(const QString &name, const QObject *receiver, const char *slotIn, const char *slotOut)
+{
+	kdebugf();
+	QSignal *sig;
+	if (receiver)
+	{
+		if (slotIn)
+		{
+			sig = tabChangesIn[name];
+			if (sig)
+			{
+				if (!sig->disconnect(receiver, slotIn))
+					kdebugm(KDEBUG_WARNING, "unregistering not connected slot! (in: %s, %s)\n", name.local8Bit().data(), slotIn);
+			}
+			else
+				kdebugm(KDEBUG_WARNING, "unregistering not connected slot! (in: %s, %s)\n", name.local8Bit().data(), slotIn);
+		}
+		if (slotOut)
+		{
+			sig = tabChangesOut[name];
+			if (sig)
+			{
+				if (!sig->disconnect(receiver, slotOut))
+					kdebugm(KDEBUG_WARNING, "unregistering not connected slot! (out: %s, %s)\n", name.local8Bit().data(), slotOut);
+			}
+			else
+				kdebugm(KDEBUG_WARNING, "unregistering not connected slot! (out: %s, %s)\n", name.local8Bit().data(), slotOut);
+		}
+	}
+	else
+		kdebugm(KDEBUG_WARNING, "null object! (tab: %s)\n", name.local8Bit().data());
+	kdebugf2();
 }
 
 void ConfigDialog::addTab(const QString& caption, const QString& iconFileName)

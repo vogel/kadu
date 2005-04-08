@@ -2,9 +2,11 @@
 #define CONFIG_DIALOG_H
 
 #include <qapplication.h>
+#include <qdict.h>
 #include <qhbox.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
+#include <qsignal.h>
 #include <qstringlist.h>
 #include <qvaluelist.h>
 #include <qvbox.h>
@@ -251,7 +253,7 @@ class ConfigDialog : public QVBox
 		static QMap<QString, QValueList <RegisteredControl> > Tabs;
 		static QStringList TabNames;
 		static QMap<QString, int> TabSizes;
-
+		static QDict<QSignal> tabChangesIn, tabChangesOut;//jakie¶ lepsze nazwy by siê przyda³y ;)
 		
 		/**
 		    Dodaje kontrolkê do listy
@@ -923,6 +925,22 @@ class ConfigDialog : public QVBox
 		static void unregisterSlotOnApply(const QObject* receiver, const char* slot);
 
 		/**
+			Rejestruje 2 sloty obiektu "receiver", które s±
+			wywo³ywane przy zmianie zak³adki "name"
+			slotIn - przy zmianie aktywnej zak³adki na "name" (mo¿e byæ == 0)
+			slotOut - przy zmianie aktywnej zak³adki z "name" na inn± (mo¿e byæ == 0)
+		**/
+		static void registerSlotsOnTabChange(const QString &name, const QObject *receiver, const char *slotIn, const char *slotOut);
+
+		/**
+			Wyrejestrowuje 2 sloty obiektu "receiver", które s±
+			wywo³ywane przy zmianie zak³adki "name"
+			slotIn - przy zmianie aktywnej zak³adki na "name" (mo¿e byæ == 0)
+			slotOut - przy zmianie aktywnej zak³adki z "name" na inn± (mo¿e byæ == 0)
+		**/
+		static void unregisterSlotsOnTabChange(const QString &name, const QObject *receiver, const char *slotIn, const char *slotOut);
+		
+		/**
 		    Usuwa kontrolkê z zak³adki "groupname", o etykiecie "caption" i nazwie "name".
 		**/
 		static void removeControl(const QString& groupname, const QString& caption, const QString& name = "");
@@ -957,16 +975,16 @@ class ConfigDialog : public QVBox
 		    Sygna³ jest emitowany przy otwieraniu okna
 		**/
 		void create();
-		
+
 		/**
 		    Sygna³ jest emitowany przy zamykaniu okna
 		**/
 		void destroy();
+
 		/**
 		   Sygna³ jest emitowany przy zapisywaniu konfiguracji
 		**/
 		void apply();
-
 
 	protected slots:
 		/**
