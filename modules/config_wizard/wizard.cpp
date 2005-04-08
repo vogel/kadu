@@ -1014,6 +1014,7 @@ void Wizard::setLanguage(int languageId)	/* ustawia jêzyk */
 		case 1:	language="pl";	break;
 		case 2:	language="it";	break;
 		case 3:	language="de";	break;
+		case 4:	language="fr";	break;
 		default: language="en";
 	}
 	config_file.writeEntry("General", "Language", language);
