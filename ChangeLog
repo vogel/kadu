@@ -531,6 +531,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   etapie configure (adrian)
 * w konfiguracji powiadomieñ nie wy¶wietlamy na li¶cie anonimów (joi)
 * dodana mo¿liwo¶æ przechwycenia zdarzenia zmiany "zak³adki" w konfiguracji (joi)
+* wybór jêzyka francuskiego w config_wizard jest zapisywany w konfiguracji (dorr/Ron_K)
 
 +++ wersja 0.3.9 (01.07.2004)
 * ostrze¿enie, ¿e drugie kadu jest uruchomione na tym samym profilu,
