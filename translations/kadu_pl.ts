@@ -735,7 +735,7 @@ Jest to wysoce ryzykowne!</translation>
     </message>
     <message>
         <source>This file is too big (%1 &gt;= %2)</source>
-        <translation>Plik jest zaduży (%1 &gt;= %2)</translation>
+        <translation>Plik jest za duży (%1 &gt;= %2)</translation>
     </message>
 </context>
 <context>
