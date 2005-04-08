@@ -7210,6 +7210,85 @@ echo "$as_me: error: Additional module configuration command failed!" >&2;}
 	done
 
 
+	echo "$as_me:$LINENO: checking modules dependencies" >&5
+echo $ECHO_N "checking modules dependencies... $ECHO_C" >&6; \
+	if test -n "$static_modules"; then \
+
+	for mod in $static_modules; do \
+		second_field=\$\2; \
+		echo -n "Dependencies=\"" > .temp; \
+		$AWK -F '=' "/^Dependencies/ { printf $second_field }" modules/$mod/$mod.desc >> .temp; \
+		echo "\"" >> .temp; \
+		. ./.temp; \
+		if test -n "$Dependencies"; then \
+			 for checked_module in $Dependencies; do \
+				 is_ok="false"; \
+				 for one_of_modules in $static_modules; do \
+					 if test "$one_of_modules" = "$checked_module"; then \
+						 is_ok="true"; \
+					 fi; \
+				 done; \
+				 if test "$is_ok" = "false"; then \
+					 echo "$as_me:$LINENO: result: failed" >&5
+echo "${ECHO_T}failed" >&6; \
+					 str="Module $mod selected as static. It depends on $checked_module, however"; \
+					 str="$str $checked_module was not selected"; \
+					 if test "static" = "static"; then \
+						 str="$str as static!"; \
+					 else \
+						 str="$str at all!"; \
+					 fi; \
+					 { { echo "$as_me:$LINENO: error: $str" >&5
+echo "$as_me: error: $str" >&2;}
+   { (exit 1); exit 1; }; }; \
+				 fi; \
+			 done; \
+		 fi; \
+	 done; \
+	 rm .temp; \
+
+	fi; \
+
+	if test -n "$shared_modules"; then \
+
+	for mod in $shared_modules; do \
+		second_field=\$\2; \
+		echo -n "Dependencies=\"" > .temp; \
+		$AWK -F '=' "/^Dependencies/ { printf $second_field }" modules/$mod/$mod.desc >> .temp; \
+		echo "\"" >> .temp; \
+		. ./.temp; \
+		if test -n "$Dependencies"; then \
+			 for checked_module in $Dependencies; do \
+				 is_ok="false"; \
+				 for one_of_modules in $static_modules $shared_modules; do \
+					 if test "$one_of_modules" = "$checked_module"; then \
+						 is_ok="true"; \
+					 fi; \
+				 done; \
+				 if test "$is_ok" = "false"; then \
+					 echo "$as_me:$LINENO: result: failed" >&5
+echo "${ECHO_T}failed" >&6; \
+					 str="Module $mod selected as shared. It depends on $checked_module, however"; \
+					 str="$str $checked_module was not selected"; \
+					 if test "shared" = "static"; then \
+						 str="$str as static!"; \
+					 else \
+						 str="$str at all!"; \
+					 fi; \
+					 { { echo "$as_me:$LINENO: error: $str" >&5
+echo "$as_me: error: $str" >&2;}
+   { (exit 1); exit 1; }; }; \
+				 fi; \
+			 done; \
+		 fi; \
+	 done; \
+	 rm .temp; \
+
+	fi; \
+	echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6
+
+
 	echo
 	echo ">>> Generating kernel code for static modules ..."
 	echo

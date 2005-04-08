@@ -306,6 +306,53 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 	done
 ])
 
+# $1 - modules to be browsed
+# $2 - string of selected modules (shared or static)
+# $3 - "shared" or "static" (depending on what is being checked)
+AC_DEFUN(BROWSE_MODULES,[
+	for mod in $1; do \
+		second_field=\$\2; \
+		echo -n "Dependencies=\"" > .temp; \
+		$AWK -F '=' "/^Dependencies/ { printf $second_field }" modules/$mod/$mod.desc >> .temp; \
+		echo "\"" >> .temp; \
+		. ./.temp; \
+		if test -n "$Dependencies"; then \
+			 for checked_module in $Dependencies; do \
+				 is_ok="false"; \
+				 for one_of_modules in $2; do \
+					 if test "$one_of_modules" = "$checked_module"; then \
+						 is_ok="true"; \
+					 fi; \
+				 done; \
+				 if test "$is_ok" = "false"; then \
+					 AC_MSG_RESULT([failed]); \
+					 str="Module $mod selected as $3. It depends on $checked_module, however"; \
+					 str="$str $checked_module was not selected"; \
+					 if test "$3" = "static"; then \
+						 str="$str as static!"; \
+					 else \
+						 str="$str at all!"; \
+					 fi; \
+					 AC_MSG_ERROR([$str]); \
+				 fi; \
+			 done; \
+		 fi; \
+	 done; \
+	 rm .temp; \
+])
+
+AC_DEFUN(CHECK_MODULES_DEPENDENCIES,[
+	AC_MSG_CHECKING([modules dependencies]); \
+	if test -n "$static_modules"; then \
+		BROWSE_MODULES([$static_modules],[$static_modules],[static])
+	fi; \
+	
+	if test -n "$shared_modules"; then \
+		BROWSE_MODULES([$shared_modules],[$static_modules $shared_modules],[shared])
+	fi; \
+	AC_MSG_RESULT([ok])
+])
+
 AC_DEFUN(PROCESS_ICON_THEMES,[
 	echo
 	echo " **********************************************"
@@ -600,6 +647,7 @@ AC_DEFINE_UNQUOTED(DIST_TYPE,"$enable_dist_info",[Define distribution type of th
 FIND_AVAILABLE_MODULES()
 CHECK_MODULES_CONFIGURATION()
 PROCESS_MODULE_SPEC_FILES()
+CHECK_MODULES_DEPENDENCIES()
 GENERATE_STATIC_MODULES_CODE()
 AC_SUBST(shared_modules)
 AC_SUBST(static_modules)
