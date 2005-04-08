@@ -25,7 +25,7 @@ void NotifySlots::onCreateConfigDialog()
 	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
 	CONST_FOREACH(user, userlist)
 	{
-		if ((*user).uin())
+		if ((*user).uin() && !(*user).isAnonymous())
 			if (!(*user).notify())
 				e_availusers->insertItem((*user).altNick());
 			else
