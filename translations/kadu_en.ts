@@ -724,6 +724,14 @@ It&apos;s a high security risk!</source>
         <source>%1 sends message</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>This file is not readable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This file is too big (%1 &gt;= %2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ChatSlots</name>

@@ -313,7 +313,7 @@ Si ce champs reste vide les paramettres par default seront utilisés.</translati
     </message>
     <message>
         <source>Force running Kadu (not recommended).</source>
-        <translation>Activation Kadu malgré tout ( non conseillée).</translation>
+        <translation>Activation Kadu malgré tout (non conseillée).</translation>
     </message>
     <message>
         <source>Quit.</source>
@@ -504,7 +504,7 @@ Attention danger!
     </message>
     <message>
         <source> Port: </source>
-        <translation> Port: </translation>
+        <translation>Port: </translation>
     </message>
     <message>
         <source>Username: </source>
@@ -574,7 +574,7 @@ Attention danger!
     </message>
     <message>
         <source>Host: </source>
-        <translation>invité:</translation>
+        <translation>Invité:</translation>
     </message>
     <message>
         <source>###IMAGE BLOCKED###</source>
@@ -594,7 +594,7 @@ Attention danger!
     </message>
     <message>
         <source>&quot;%1&quot; in chat sends message by default</source>
-        <translation>par défault %1 envoie le message</translation>
+        <translation>Par défault %1 envoie le message</translation>
     </message>
 </context>
 <context>
@@ -728,7 +728,15 @@ Attention danger!
     </message>
     <message>
         <source>%1 sends message</source>
-        <translation>touche %1 envoie le message</translation>
+        <translation>Touche %1 envoie le message</translation>
+    </message>
+    <message>
+        <source>This file is not readable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This file is too big (%1 &gt;= %2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

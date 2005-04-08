@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Vertical position</source>
-        <translation> Position Verticale</translation>
+        <translation>Position Verticale</translation>
     </message>
     <message>
         <source>Transparent</source>

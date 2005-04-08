@@ -23,7 +23,9 @@ click milieu ou gauche - ouvre message</translation>
 
 Current status:
 %1</source>
-        <translation>Statut actuel:
+        <translation>
+
+Statut actuel:
 %1</translation>
     </message>
     <message>
@@ -31,7 +33,9 @@ Current status:
 
 Description:
 %2</source>
-        <translation>Description:
+        <translation>
+
+Description:
 %2</translation>
     </message>
 </context>

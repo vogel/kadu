@@ -152,7 +152,7 @@ być słyszalny z 1 sekundowym opóźnieniem.</translation>
     </message>
     <message>
         <source>Cannot open sound device for playing!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie mogę otworzyć urządzenia dźwiękowego do odtwarzania!</translation>
     </message>
 </context>
 </TS>

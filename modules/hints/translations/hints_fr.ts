@@ -71,7 +71,7 @@
     </message>
     <message>
         <source>&lt;b&gt;Text&lt;/b&gt; preview</source>
-        <translation>&lt;b&gt;Visionnement &lt;/b&gt; texte</translation>
+        <translation>&lt;b&gt;Visionnement&lt;/b&gt; texte</translation>
     </message>
     <message>
         <source>Hint type</source>
@@ -182,7 +182,7 @@
     </message>
     <message>
         <source>Chat with &lt;b&gt;%1&lt;/b&gt;&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
-        <translation>Discussion avec&lt;b&gt;%1&lt;/b&gt;&lt;br/&gt; &lt;petit&gt;%2&lt;/petit&gt;</translation>
+        <translation>Discussion avec &lt;b&gt;%1&lt;/b&gt;&lt;br/&gt;&lt;small&gt;%2&lt;/small&gt;</translation>
     </message>
     <message>
         <source>Chat with &lt;b&gt;%1&lt;/b&gt;</source>
@@ -190,7 +190,7 @@
     </message>
     <message>
         <source>New message from &lt;b&gt;%1&lt;/b&gt;&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
-        <translation>Nouveau message de la part de &lt;b&gt;%1&lt;/b&gt;&lt;br/&gt; &lt;petit&gt;%2&lt;/petit&gt;</translation>
+        <translation>Nouveau message de la part de &lt;b&gt;%1&lt;/b&gt;&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
     </message>
     <message>
         <source>New message from &lt;b&gt;%1&lt;/b&gt;</source>
@@ -202,7 +202,7 @@
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; changed status to &lt;i&gt;%2&lt;/i&gt;&lt;br/&gt; &lt;small&gt;%3&lt;/small&gt;</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt; change le statut en &lt;i&gt;%2&lt;/i&gt;&lt;br/&gt; &lt;petit&gt;%3&lt;/petit&gt;</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; change le statut en &lt;i&gt;%2&lt;/i&gt;&lt;br/&gt; &lt;small&gt;%3&lt;/small&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; changed status to &lt;i&gt;%2&lt;/i&gt;</source>
@@ -210,19 +210,19 @@
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is available&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt; non disponible&lt;br/&gt; &lt;petit&gt;%2&lt;/petit&gt;</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; non disponible&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is available</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt;disponible</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; disponible</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is busy&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt;est occoupé&lt;br/&gt; &lt;petit&gt;%2&lt;/petit&gt;</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; est occoupé&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is busy</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt;est occoupé</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; est occoupé</translation>
     </message>
     <message>
         <source>Other message</source>
@@ -230,7 +230,7 @@
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is not available&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt; indisponible&lt;br/&gt; &lt;petit&gt;%2&lt;/petit&gt;</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; indisponible&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is not available</source>
@@ -258,7 +258,7 @@
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is invisible&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt; is invisible&lt;br/&gt; &lt;petit&gt;%2&lt;/petit&gt;</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; is invisible&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is invisible</source>

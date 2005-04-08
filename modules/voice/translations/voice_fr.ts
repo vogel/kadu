@@ -9,6 +9,14 @@
         <source>Test GSM Encoding</source>
         <translation>Test encodage GSM</translation>
     </message>
+    <message>
+        <source>Faster compression algorithm (degrades quality)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut-off optimization (faster but degrades quality)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>VoiceChatDialog</name>

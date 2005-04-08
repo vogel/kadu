@@ -729,6 +729,14 @@ Jest to wysoce ryzykowne!</translation>
         <source>%1 sends message</source>
         <translation>%1 wysyła wiadomość</translation>
     </message>
+    <message>
+        <source>This file is not readable</source>
+        <translation>Pliku nie można odczytać</translation>
+    </message>
+    <message>
+        <source>This file is too big (%1 &gt;= %2)</source>
+        <translation>Plik jest zaduży (%1 &gt;= %2)</translation>
+    </message>
 </context>
 <context>
     <name>ChatSlots</name>
