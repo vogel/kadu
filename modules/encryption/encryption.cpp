@@ -24,7 +24,7 @@ extern "C"
 #include "simlite.h"
 };
 
-// uzywamy mkdir z sys/stat.h - nie ma w QT mozliwosci ustawienia praw do kat.
+// uzywamy mkdir z sys/stat.h - nie ma w Qt mozliwosci ustawienia praw do kat.
 #include <sys/stat.h>
 
 EncryptionManager* encryption_manager;
@@ -67,6 +67,10 @@ EncryptionManager::EncryptionManager(QObject *parent, const char *name) : QObjec
 	UserBox::userboxmenu->addItemAtPos(2,"SendPublicKey", tr("Send my public key"), this, SLOT(sendPublicKey()));
 
 	sim_key_path = strdup(ggPath("keys/").local8Bit());
+
+	// uzywamy mkdir z sys/stat.h - nie ma w QT mozliwosci ustawienia praw do kat.
+	mkdir(ggPath("keys").local8Bit().data(), 0700);
+
 	kdebugf2();
 }
 
@@ -116,10 +120,6 @@ void EncryptionManager::generateMyKeys()
 			tr("Keys exist. Do you want to overwrite them?"),
 			tr("Yes"), tr("No"),QString::null, 0, 1)==1)
 				return;
-
-	QCString tmp=ggPath("keys").local8Bit();
-	// uzywamy mkdir z sys/stat.h - nie ma w QT mozliwosci ustawienia praw do kat.
-	mkdir(tmp.data(), 0700);
 
 	if (sim_key_generate(myUin) < 0)
 	{
