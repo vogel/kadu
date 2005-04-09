@@ -25,7 +25,9 @@
 #include <qtextcodec.h>
 #include <qurl.h>
 
+//getpwuid
 #include <pwd.h>
+
 #include <unistd.h>
 #include <time.h>
 #include <stdlib.h>
@@ -547,7 +549,7 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 				{
 					kdebugmf(KDEBUG_INFO, "I got image probably\n");
 					actimage = (struct gg_msg_richtext_image*)(cformats);
-					kdebugm(KDEBUG_INFO, "Image size: %d, crc32: %d\n", actimage->size, actimage->crc32);
+					kdebugm(KDEBUG_INFO, "Image size: %d, crc32: %d, sender:%d\n", actimage->size, actimage->crc32, sender);
 					
 					//ukrywamy siê przed spy'em i ekg2
 					if (actimage->size == 20 && (actimage->crc32 == 4567 || actimage->crc32==99))
@@ -574,6 +576,7 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 							{
 								if (receiveImage)
 								{
+									kdebugm(KDEBUG_INFO, "sending request\n");
 									gadu->sendImageRequest(sender, actimage->size, actimage->crc32);
 									mesg.append(GaduImagesManager::loadingImageHtml(
 											sender,actimage->size,actimage->crc32));
@@ -2349,7 +2352,7 @@ void CreateNotifier::notify(QObject* new_object)
 void GaduImagesManager::setBackgroundsForAnimatedImages(HtmlDocument &doc, const QColor &col)
 {
 	static QRegExp animRE("<img bgcolor=\"\" animated=\"1\"");
-	QString animText=QString("<img bgcolor=\"%1\" animated=\"1\"").arg(col.name());
+	QString animText = QString("<img bgcolor=\"%1\" animated=\"1\"").arg(col.name());
 	for(int i = 0; i < doc.countElements(); ++i)
 	{
 		if (!doc.isTagElement(i))
@@ -2370,59 +2373,71 @@ QString GaduImagesManager::imageHtml(const QString& file_name)
 		return QString("<img src=\"%1\"/>").arg(file_name);
 }
 
-QString GaduImagesManager::loadingImageHtml(UinType uin,uint32_t size,uint32_t crc32)
+QString GaduImagesManager::loadingImageHtml(UinType uin, uint32_t size, uint32_t crc32)
 {
 	return narg(QString("<img src=\"%1\" gg_sender=\"%2\" gg_size=\"%3\" gg_crc=\"%4\"/>"),
 		icons_manager.iconPath("LoadingImage"), QString::number(uin), QString::number(size), QString::number(crc32));
 }
 
-void GaduImagesManager::addImageToSend(const QString& file_name,uint32_t& size,uint32_t& crc32)
+void GaduImagesManager::addImageToSend(const QString& file_name, uint32_t& size, uint32_t& crc32)
 {
 	kdebugf();
 	ImageToSend img;
 	QFile f(file_name);
-	kdebugm(KDEBUG_INFO, "Opening file \"%s\"\n",file_name.local8Bit().data());
-	if(!f.open(IO_ReadOnly))
+	kdebugm(KDEBUG_INFO, "Opening file \"%s\"\n", file_name.local8Bit().data());
+	if (!f.open(IO_ReadOnly))
 	{
 		kdebugm(KDEBUG_ERROR, "Error opening file\n");
 		return;
 	}
 	img.size = f.size();
-	img.file_name=file_name;
+	img.file_name = file_name;
 	img.data = new char[img.size];
 	kdebugm(KDEBUG_INFO, "Reading file\n");
-	unsigned int ret=f.readBlock(img.data,img.size);
-	if (ret!=img.size)
+	unsigned int ret = f.readBlock(img.data, img.size);
+	if (ret != img.size)
 		kdebugm(KDEBUG_ERROR, "ret:%d != %d:img.size\n", ret, img.size);
 	f.close();
-	img.crc32 = gg_crc32(0,(const unsigned char*)img.data,img.size);
-	kdebugm(KDEBUG_INFO, "Inserting into images to send: filename=%s, size=%i, crc32=%i\n\n",img.file_name.local8Bit().data(),img.size,img.crc32);
-	ImagesToSend.append(img);
+	img.crc32 = gg_crc32(0, (const unsigned char*)img.data, img.size);
+	kdebugm(KDEBUG_INFO, "Inserting into images to send: filename=%s, size=%i, crc32=%i\n\n", img.file_name.local8Bit().data(), img.size, img.crc32);
 	size = img.size;
 	crc32 = img.crc32;
+	ImagesToSend[qMakePair(size, crc32)] = img;
 	kdebugf2();
 }
 
-void GaduImagesManager::sendImage(UinType uin,uint32_t size,uint32_t crc32)
+void GaduImagesManager::sendImage(UinType uin, uint32_t size, uint32_t crc32)
 {
 	kdebugf();
-	kdebugm(KDEBUG_INFO, "Searching images to send: size=%u, crc32=%u\n",size,crc32);
-	FOREACH(i, ImagesToSend)
+	kdebugm(KDEBUG_INFO, "Searching images to send: size=%u, crc32=%u, uin=%d\n", size, crc32, uin);
+	if (ImagesToSend.contains(qMakePair(size, crc32)))
 	{
-		if ((*i).size==size && (*i).crc32==crc32)
+		ImageToSend &i = ImagesToSend[qMakePair(size, crc32)];
+		if (!i.data)
 		{
-			kdebugm(KDEBUG_INFO, "Image data found\n");
-			gadu->sendImage(uin,(*i).file_name,(*i).size,(*i).data);
-			delete[] (*i).data;
-			kdebugm(KDEBUG_INFO, "Removing from images queue\n");
-			ImagesToSend.remove(i);
-			return;
+			QFile f(i.file_name);
+			if (!f.open(IO_ReadOnly))
+			{
+				kdebugm(KDEBUG_ERROR, "Error opening file\n");
+				return;
+			}
+			i.data = new char[i.size];
+			kdebugm(KDEBUG_INFO, "Reading file\n");
+			unsigned int ret = f.readBlock(i.data, i.size);
+			if (ret != i.size)
+				kdebugm(KDEBUG_ERROR, "ret:%d != %d:img.size\n", ret, i.size);
+			f.close();
 		}
+
+		gadu->sendImage(uin, i.file_name, i.size, i.data);
+		delete[] i.data;
+		i.data = NULL;
 	}
-	kdebugm(KDEBUG_WARNING, "Image data not found\n");
+	else
+		kdebugm(KDEBUG_WARNING, "Image data not found\n");
 }
 
-QString GaduImagesManager::saveImage(UinType sender,uint32_t size,uint32_t crc32,const QString& filename,const char* data)
+QString GaduImagesManager::saveImage(UinType sender, uint32_t size, uint32_t crc32, const QString& filename, const char* data)
 {
 	kdebugf();
 	QString path = ggPath("images");
@@ -2433,7 +2448,7 @@ QString GaduImagesManager::saveImage(UinType sender,uint32_t size,uint32_t crc32
 	SavedImage img;
 	img.size = size;
 	img.crc32 = crc32;
-	img.file_name = path+"/"+file_name;
+	img.file_name = path + "/" + file_name;
 	QFile f(img.file_name);
 	f.open(IO_WriteOnly);
 	f.writeBlock(data,size);
@@ -2443,7 +2458,7 @@ QString GaduImagesManager::saveImage(UinType sender,uint32_t size,uint32_t crc32
 	return img.file_name;
 }
 
-QString GaduImagesManager::getImageToSendFileName(uint32_t size,uint32_t crc32)
+QString GaduImagesManager::getImageToSendFileName(uint32_t size, uint32_t crc32)
 {
 	kdebugf();
 	kdebugm(KDEBUG_INFO, "Searching images to send: size=%u, crc32=%u\n",size,crc32);
@@ -2459,7 +2474,7 @@ QString GaduImagesManager::getImageToSendFileName(uint32_t size,uint32_t crc32)
 	return "";
 }
 
-QString GaduImagesManager::getSavedImageFileName(uint32_t size,uint32_t crc32)
+QString GaduImagesManager::getSavedImageFileName(uint32_t size, uint32_t crc32)
 {
 	kdebugf();
 	kdebugm(KDEBUG_INFO, "Searching saved images: size=%u, crc32=%u\n",size,crc32);
