@@ -477,7 +477,11 @@ class KaduTextBrowser : public QTextBrowser, QToolTip
 		/**
 			Nadpisane dla wyja¶nienia wieloznaczno¶ci
 		**/
-		void clear() 			{ QTextBrowser::clear(); }
+		void clear() 
+		{ 
+			setText("");
+			//dla QT<3.2 clear() powodowa³o b³±d 
+		}
 		/**
 			Nadpisane dla wyja¶nienia wieloznaczno¶ci		**/
 
