@@ -893,20 +893,23 @@ void Chat::insertImage()
 			return;
 		}
 		
+		if (f.size() >= (1 << 18)) // 256kB
+		{
+			MessageBox::wrn(tr("This file is too big (%1 >= %2)").arg(f.size()).arg(1<<18), true);
+			QTimer::singleShot(0, this, SLOT(insertImage()));
+			kdebugf2();
+			return;
+		}
+
+		int counter = 0;
 		CONST_FOREACH(uin, Uins)
 		{
 			unsigned int maximagesize = userlist.byUinValue(*uin).maxImageSize();
 			if (f.size() >= maximagesize * 1024)
-			{
-				MessageBox::wrn(tr("This file is too big (%1 >= %2)").arg(f.size()).arg(maximagesize * 1024), true);
-				QTimer::singleShot(0, this, SLOT(insertImage()));
-				kdebugf2();
-				return;
-			}
+				++counter;
 		}
-		if (f.size() >= (1 << 18)) // 256kB
+		if (counter > 0 && !MessageBox::ask(tr("This file is too big for %1 of %2 contacts.\nDo you really want to send this image?\nSome of them probably will not get it.").arg(counter).arg(Uins.count())))
 		{
-			MessageBox::wrn(tr("This file is too big (%1 >= %2)").arg(f.size()).arg(1<<18), true);
 			QTimer::singleShot(0, this, SLOT(insertImage()));
 			kdebugf2();
 			return;
