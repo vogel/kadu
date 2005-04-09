@@ -11,11 +11,11 @@
     </message>
     <message>
         <source>Faster compression algorithm (degrades quality)</source>
-        <translation type="unfinished"></translation>
+        <translation>La compression trop élevée provoque la diminution de la qualité médiocre</translation>
     </message>
     <message>
         <source>Cut-off optimization (faster but degrades quality)</source>
-        <translation type="unfinished"></translation>
+        <translation>Optimisation (plus rapide mais de qualité médiocre)</translation>
     </message>
 </context>
 <context>

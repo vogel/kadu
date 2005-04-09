@@ -582,7 +582,7 @@ Attention danger!
     </message>
     <message>
         <source>###IMAGE TOO BIG###</source>
-        <translation></translation>
+        <translation>###CETTE IMAGE A TROP DE POIDS###</translation>
     </message>
     <message>
         <source>Port to connect to servers</source>
@@ -732,11 +732,11 @@ Attention danger!
     </message>
     <message>
         <source>This file is not readable</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier illisible</translation>
     </message>
     <message>
         <source>This file is too big (%1 &gt;= %2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier trop gros (%1 &gt;= %2)</translation>
     </message>
 </context>
 <context>
@@ -801,7 +801,7 @@ Vous pouvez l&apos;ajouter dans $PATH ou indiquer l&apos;emplacement d&apos;une 
     <name>ColorButton</name>
     <message>
         <source>Color dialog</source>
-        <translation>Kolory</translation>
+        <translation>Couleurs</translation>
     </message>
 </context>
 <context>
@@ -943,7 +943,7 @@ Mot de passe incorrect !</translation>
     <name>HistorySearch</name>
     <message>
         <source>Search history</source>
-        <translation> Cherche dans l&apos;historique</translation>
+        <translation>Cherche dans l&apos;historique</translation>
     </message>
     <message>
         <source>&amp;From:</source>
@@ -1014,7 +1014,7 @@ Mot de passe incorrect !</translation>
     <name>HistorySlots</name>
     <message>
         <source>%1 day(s) %2 hour(s)</source>
-        <translation>jours:%1 heures:%2</translation>
+        <translation>jours: %1 heures: %2</translation>
     </message>
 </context>
 <context>
@@ -1071,7 +1071,7 @@ Mot de passe incorrect !</translation>
     <name>ImageDialog</name>
     <message>
         <source>Images</source>
-        <translation>Obrazki</translation>
+        <translation>Les images</translation>
     </message>
 </context>
 <context>
@@ -1178,7 +1178,7 @@ Mot de passe incorrect !</translation>
     </message>
     <message>
         <source>Personal information</source>
-        <translation> Données personnelles</translation>
+        <translation>Données personnelles</translation>
     </message>
     <message>
         <source>&amp;Search for users</source>
@@ -1243,7 +1243,7 @@ Mot de passe incorrect !</translation>
     <name>KaduTextBrowser</name>
     <message>
         <source>Copy link &amp;location</source>
-        <translation>Kopiuj &amp;lokację odnośnika</translation>
+        <translation>Veuillez copier l&apos;adresse du &amp;lien</translation>
     </message>
 </context>
 <context>
@@ -1329,7 +1329,7 @@ Mot de passe incorrect !</translation>
     </message>
     <message>
         <source>&lt;br/&gt;&lt;b&gt;Provides: &lt;/b&gt;</source>
-        <translation>&lt;br/&gt;&lt;b&gt;Fournit: &lt;/b&gt;Fournit</translation>
+        <translation>&lt;br/&gt;&lt;b&gt;Fournit: &lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;br/&gt;&lt;b&gt;Author: &lt;/b&gt;</source>
@@ -1362,7 +1362,7 @@ Mot de passe incorrect !</translation>
     </message>
     <message>
         <source>Module %1 cannot be deactivated because it is used now</source>
-        <translation>Module%1impossible à activer car actuellement utilisé</translation>
+        <translation>Module %1 impossible à activer car actuellement utilisé</translation>
     </message>
     <message>
         <source>Module %1 conflicts with: %2</source>
@@ -1439,7 +1439,7 @@ Peut être module incompatible avec Kadu.</translation>
     </message>
     <message>
         <source>&amp;Reload</source>
-        <translation>&amp;recharge</translation>
+        <translation>&amp;Recharge</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -1450,7 +1450,7 @@ Peut être module incompatible avec Kadu.</translation>
     <name>PixmapPreview</name>
     <message>
         <source>This is not an image</source>
-        <translation>To nie jest obrazek</translation>
+        <translation>Ceci n&apos;est pas l&apos;image</translation>
     </message>
 </context>
 <context>
@@ -1465,7 +1465,7 @@ Peut être module incompatible avec Kadu.</translation>
     </message>
     <message>
         <source>C&amp;lear list</source>
-        <translation>C&amp;Eface liste</translation>
+        <translation>C&amp;eface liste</translation>
     </message>
     <message>
         <source>&amp;Add User</source>
@@ -1649,11 +1649,11 @@ Peut être module incompatible avec Kadu.</translation>
     <name>TokenDialog</name>
     <message>
         <source>Read this code ...</source>
-        <translation>Lisez ce code...</translation>
+        <translation>Lisez ce code ...</translation>
     </message>
     <message>
         <source>and type here</source>
-        <translation> et inscrivez le ici</translation>
+        <translation>et inscrivez le ici</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -1741,7 +1741,7 @@ Peut être module incompatible avec Kadu.</translation>
     </message>
     <message>
         <source>Protocol version</source>
-        <translation>version de protocole</translation>
+        <translation>Version de protocole</translation>
     </message>
     <message>
         <source>DNS name</source>
@@ -1777,7 +1777,7 @@ Peut être module incompatible avec Kadu.</translation>
     </message>
     <message>
         <source>Bad UIN</source>
-        <translation>Nr de  UIN incorrect</translation>
+        <translation>Nr de  VIN incorrect</translation>
     </message>
     <message>
         <source>User is already in userlist</source>
@@ -1847,7 +1847,7 @@ Peut être module incompatible avec Kadu.</translation>
     <name>UserListElement</name>
     <message>
         <source>All</source>
-        <translation>Wszyscy</translation>
+        <translation>Tous</translation>
     </message>
 </context>
 <context>

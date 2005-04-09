@@ -152,7 +152,7 @@ Le délai est une seconde.</translation>
     </message>
     <message>
         <source>Cannot open sound device for playing!</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible d&apos;ouvrir le dispositif du son!</translation>
     </message>
 </context>
 </TS>

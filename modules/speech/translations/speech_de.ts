@@ -27,7 +27,7 @@
     </message>
     <message>
         <source>Klatt synthesizer (requires dsp)</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Use aRts</source>

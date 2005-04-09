@@ -108,14 +108,14 @@ est fonctionnel</translation>
     <name>SmsGateway</name>
     <message>
         <source>Network error. Provider gateway page is probably unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur réseau. Ce portail de SMS est probablement désactivé</translation>
     </message>
 </context>
 <context>
     <name>SmsImageDialog</name>
     <message>
         <source>Enter text from the picture:</source>
-        <translation type="unfinished"></translation>
+        <translation>Veuillez reproduire le texte d&apos;image:</translation>
     </message>
 </context>
 <context>

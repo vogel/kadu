@@ -573,7 +573,7 @@ Jest to wysoce ryzykowne!</translation>
     </message>
     <message>
         <source>Host: </source>
-        <translation>Nazwa komputera:</translation>
+        <translation>Nazwa komputera: </translation>
     </message>
     <message>
         <source>###IMAGE BLOCKED###</source>
@@ -1046,7 +1046,7 @@ Twoje hasło jest nieprawidłowe!</translation>
     </message>
     <message>
         <source>Uin</source>
-        <translation></translation>
+        <translation>Numer GG</translation>
     </message>
     <message>
         <source>This dialog box allows you to manage your ignored contacts.</source>
