@@ -50,7 +50,7 @@ perform_install()
 perform_make_install()
 {
 	if [ $UID != "0" ]; then
-		dialog --backtitle "Instalator Kadu" --infobox "Podaj has³o roota:" 3 24
+		$dialog --backtitle "Instalator Kadu" --infobox "Podaj has³o roota:" 3 24
 		su -c "make install"
 	else
 		make install
@@ -62,7 +62,7 @@ perform_make_install()
 uninstall()
 {
 	$?=0
-	dialog --stdout --defaultno --backtitle "Instalator Kadu" --title "Deinstalacja" --yesno "Czy na pewno chcesz odinstalowaæ Kadu?" 6 50
+	$dialog --stdout --defaultno --backtitle "Instalator Kadu" --title "Deinstalacja" --yesno "Czy na pewno chcesz odinstalowaæ Kadu?" 6 50
 		if [ $? == "0" ]; then
 			make uninstall 
 		fi;
@@ -72,7 +72,7 @@ uninstall()
 additional_parameters()
 {
 	rm -fr log_configureoptions
-	dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --separate-output --nocancel --ok-label "OK" --checklist "Je¶li chcesz, to mo¿esz wybraæ dodatkowe opcje kompilacji:" 0 0 0 \
+	$dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --separate-output --nocancel --ok-label "OK" --checklist "Je¶li chcesz, to mo¿esz wybraæ dodatkowe opcje kompilacji:" 0 0 0 \
 	' --enable-debug' 	'W³±cza tryb debug' 0 \
 	' --enable-pheaders' 'W³±cza obs³ugê prekompilowanych nag³ówków' 0 \
 	' --with-existing-libgadu' 'Linkuje z istniej±cym libgadu' 0 \
@@ -87,7 +87,7 @@ find_possible_errors()
 	# Check if installer is run from the current directory:
 	test -f ./Instaluj
 	if [ $? != "0" ]; then
-		dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --defaultno --backtitle "Instalator Kadu" --title "Niepoprawny katalog" --yesno "Instalator Kadu trzeba uruchamiaæ bezpo¶rednio\nz katalogu zawieraj±cego ¼ród³a!\nNa pewno kontynuowaæ? Mog± pojawiæ siê b³êdy!" 7 50
+		$dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --defaultno --backtitle "Instalator Kadu" --title "Niepoprawny katalog" --yesno "Instalator Kadu trzeba uruchamiaæ bezpo¶rednio\nz katalogu zawieraj±cego ¼ród³a!\nNa pewno kontynuowaæ? Mog± pojawiæ siê b³êdy!" 7 50
 		if [ $? == "1" ]; then
 			exit
 		fi;
@@ -95,7 +95,7 @@ find_possible_errors()
 
 	# Check if user is logged in as root:
 	if [ $UID != "0" ]; then
-		dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --defaultno --backtitle "Instalator Kadu" --title "Brak uprawnieñ administratora" --yesno "Nie pracujesz jako root\nMusisz znaæ to has³o, ¿eby zainstalowaæ Kadu.\nCzy chcesz kontynuowaæ instalacjê?" 7 50
+		$dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --defaultno --backtitle "Instalator Kadu" --title "Brak uprawnieñ administratora" --yesno "Nie pracujesz jako root\nMusisz znaæ to has³o, ¿eby zainstalowaæ Kadu.\nCzy chcesz kontynuowaæ instalacjê?" 7 50
 		if [ $? == "1" ]; then
 			exit
 		fi;
@@ -103,7 +103,7 @@ find_possible_errors()
 	
 	# Chceck if the QTDIR variable is set:
 	if [[ $QTDIR == "" ]]; then
-		dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --defaultno --backtitle "Instalator Kadu" --title "Brak ustawionej zmiennej \$QTDIR" --yesno "Zmienna \$QTDIR nie jest ustawiona. Mo¿esz mieæ problemy z kompilacj±\nCzy chcesz kontynuowaæ instalacjê?" 6 75
+		$dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --defaultno --backtitle "Instalator Kadu" --title "Brak ustawionej zmiennej \$QTDIR" --yesno "Zmienna \$QTDIR nie jest ustawiona. Mo¿esz mieæ problemy z kompilacj±\nCzy chcesz kontynuowaæ instalacjê?" 6 75
 		if [ $? == "1" ]; then
 			exit
 		fi;
@@ -113,7 +113,7 @@ find_possible_errors()
 # Display initial greeting
 hello()
 {
-	dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --backtitle "Instalator Kadu" --ok-label "Kontynuuj" --msgbox "Witaj w programie instalacyjnym Kadu! \
+	$dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --backtitle "Instalator Kadu" --ok-label "Kontynuuj" --msgbox "Witaj w programie instalacyjnym Kadu! \
 	\nInstalator pomo¿e Ci zainstalowaæ lub uaktualniæ Kadu" 6 75
 		
 }
@@ -121,19 +121,19 @@ hello()
 # Perform update form CVS
 update()
 {
-	dialog --backtitle "Instalator Kadu" --infobox "Gdy zostaniesz poproszony o has³o, naci¶nij <ENTER>" 0 0
+	$dialog --backtitle "Instalator Kadu" --infobox "Gdy zostaniesz poproszony o has³o, naci¶nij <ENTER>" 0 0
 	cd ..
 	cvs -d:pserver:anonymous@kadu.net:/usr/src/kadu login
 	cvs -z3 -d:pserver:anonymous@kadu.net:/usr/src/kadu co kadu	
 	cd kadu
-	dialog --beep --backtitle "Instalator Kadu" --msgbox "¬ród³a Kadu zosta³y zaktualizowane!" 0 0
+	$dialog --beep --backtitle "Instalator Kadu" --msgbox "¬ród³a Kadu zosta³y zaktualizowane!" 0 0
 }
 
 # Ask for destination path
 pathmenu()
 {
 	PREF_BAK=$PREFIXPATH
-	PREFIXPATH=`dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --nocancel --ok-label "OK" --backtitle "Instalator Kadu" --inputbox  "Podaj ¶cie¿kê instalacji Kadu" 7 50 "$PREFIXPATH"`
+	PREFIXPATH=`$dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --nocancel --ok-label "OK" --backtitle "Instalator Kadu" --inputbox  "Podaj ¶cie¿kê instalacji Kadu" 7 50 "$PREFIXPATH"`
 	if [[ $PREFIXPATH != "" ]]; then
 		echo -e -n " --prefix=$PREFIXPATH" > log_prefix
 	else
@@ -289,7 +289,7 @@ select_static()
 {
 	rm -f log_static_module
 	
-	dialog --separate-output --ok-label "OK" --cancel-label "Anuluj" --checklist "Wybierz STATYCZNE modu³y do zainstalowania" 0 75 0 \
+	$dialog --separate-output --ok-label "OK" --cancel-label "Anuluj" --checklist "Wybierz STATYCZNE modu³y do zainstalowania" 0 75 0 \
 		$all_st_modules_list 2>log_static_module
 	if [[ $? == 0 ]]; then
 		static_modules_list=`cat log_static_module`
@@ -301,7 +301,7 @@ select_static()
 select_shared()
 {
 	rm -f log_shared_module
-	dialog --separate-output --ok-label "OK" --cancel-label "Anuluj" --checklist "Wybierz DYNAMICZNE modu³y do zainstalowania" 0 75 0 \
+	$dialog --separate-output --ok-label "OK" --cancel-label "Anuluj" --checklist "Wybierz DYNAMICZNE modu³y do zainstalowania" 0 75 0 \
 		$all_sh_modules_list 2>log_shared_module
 	if [[ $? == 0 ]]; then
 		shared_modules_list=`cat log_shared_module`
@@ -329,7 +329,7 @@ save_module_list()
 # Display a menu which allows user to select modules
 menu_select_modules()
 {
-	CONFIGMENUCHOICE=`dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --no-cancel --backtitle "Instalator Kadu" --title "Wybór modu³ów" --menu "Wybierz modu³y do kompilacji. \
+	CONFIGMENUCHOICE=`$dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --no-cancel --backtitle "Instalator Kadu" --title "Wybór modu³ów" --menu "Wybierz modu³y do kompilacji. \
 	\nWy³±cznanie statycznych modu³ów nie jest zalecane. Je¶li nie wiesz co wybraæ, wybierz opcjê \"Dalej\". Zostan± wybrane modu³y domy¶lne" 12 75 3 \
 	Statyczne	"Modu³y bêd± kompilowane statycznie" \
 	Dynamiczne	"Modu³y bêd± kompilowane dynamicznie" \
@@ -403,14 +403,14 @@ display_help()
 	opcje ./configure oraz make). Wyboru wersji
 	instalacji dokonasz za chwilê.
 	END
-	dialog --backtitle "Instalator Kadu" --exit-label "Zrozumia³em" --textbox ./.temp 23 75
+	$dialog --backtitle "Instalator Kadu" --exit-label "Zrozumia³em" --textbox ./.temp 23 75
 	rm -f ./.temp
 }
 
 # Select between simple and advanced install
 choose_advanced_mode()
 {
-	CONFIGMENUCHOICE=`dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --no-cancel --backtitle "Instalator Kadu" --menu "Wybierz rodzaj instalacji - pocz±tkuj±cy powinni wybraæ pierwsz± opcjê" 9 75 2 \
+	CONFIGMENUCHOICE=`$dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --no-cancel --backtitle "Instalator Kadu" --menu "Wybierz rodzaj instalacji - pocz±tkuj±cy powinni wybraæ pierwsz± opcjê" 9 75 2 \
 	Prosty	"Wybiera najczê¶ciej spotykane opcje" \
 	Zaawansowany	"Pozwala na samodzieln± konfiguracjê" `
 	
@@ -422,7 +422,7 @@ choose_advanced_mode()
 # Ask for some options for make
 make_options()
 {
-	makeoptions=`dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --nocancel --ok-label "OK" --backtitle "Instalator Kadu" --title "Parametry make" --inputbox  "Je¶li potrzebujesz, to podaj parametry programu make (np. -j <numer>)" 8 50 ""`
+	makeoptions=`$dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --nocancel --ok-label "OK" --backtitle "Instalator Kadu" --title "Parametry make" --inputbox  "Je¶li potrzebujesz, to podaj parametry programu make (np. -j <numer>)" 8 50 ""`
 	if [[ $makeoptions != "" ]]; then
 		echo -e -n "$makeoptions" > log_makeoptions
 	fi;
@@ -436,19 +436,35 @@ make_options()
 #0. check for "dialog" and given parameters
 step0()
 {	
+	
+	advanced_install=false
+	
+	which cdialog >/dev/null 2>/dev/null
+	if [[ $? != 0 ]]; then
+
+	    which dialog >/dev/null 2>/dev/null
+	    if [[ $? != 0 ]]; then
+
+		echo "Instalator wymaga programu \"dialog\" lub \"cdialog\" na FreeBSD. Wygl±da na to, ¿e nie masz takiego."
+		exit
+	    else
+	        dialog="dialog"
+	    fi;
+	else
+	    dialog="cdialog"
+	fi;
+
+	$dialog --begin 9 0 --infobox "test" 10 10 1>/dev/null 2>/dev/null
+
+	if [[ $? != 0 ]]; then
+    		echo "Instalator wymaga programu \"dialog\" lub \"cdialog\" na FreeBSD. Wygl±da na to, ¿e twoja wersja nie wspiera rzeczy u¿ytych w tym skrypcie."
+		exit	
+	fi;
+
 	if [[ $1 == uninstall ]]; then
 		uninstall
 		exit
 	fi;
-	
-	advanced_install=false
-	
-	which dialog >/dev/null 2>/dev/null
-	if [[ $? != 0 ]]; then
-		echo "Instalator wymaga programu \"dialog\". Wygl±da na to, ¿e nie masz takiego."
-		exit
-	fi;
-	
 }
 
 #1. Greetings
@@ -469,7 +485,7 @@ step2()
 step3()
 {
 	if [[ $advanced_install == true ]]; then
-		dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --backtitle "Instalator Kadu" --title "Aktualizacja" --ok-label "Takkk" --cancel-label "Nieee" --yesno "Czy chcesz zaktualizowaæ Kadu do najnowszej wersji z CVS?" 6 50
+		$dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --backtitle "Instalator Kadu" --title "Aktualizacja" --ok-label "Takkk" --cancel-label "Nieee" --yesno "Czy chcesz zaktualizowaæ Kadu do najnowszej wersji z CVS?" 6 50
 				if [ $? == "0" ]; then
 					update
 				fi;
@@ -560,7 +576,7 @@ step7()
 #8. Prepare for installation
 step8()
 {
-	dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --backtitle "Instalator Kadu"  --yesno "Czy chcesz rozpocz±æ proces instalacji?" 6 50
+	$dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --backtitle "Instalator Kadu"  --yesno "Czy chcesz rozpocz±æ proces instalacji?" 6 50
 		if [ $? == "1" ]; then
 			exit
 		fi;
