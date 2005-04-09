@@ -2432,6 +2432,7 @@ void GaduImagesManager::sendImage(UinType uin, uint32_t size, uint32_t crc32)
 		gadu->sendImage(uin, i.file_name, i.size, i.data);
 		delete[] i.data;
 		i.data = NULL;
+		i.lastSent = QDateTime::currentDateTime(); // to pole wykorzysta siê przy zapisywaniu listy obrazków do pliku, stare obrazki bêd± usuwane
 	}
 	else
 		kdebugm(KDEBUG_WARNING, "Image data not found\n");
