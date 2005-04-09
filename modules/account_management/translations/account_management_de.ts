@@ -157,10 +157,6 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
         <translation>OK</translation>
     </message>
     <message>
-        <source>Password reminded</source>
-        <translation>Passwort erinnert</translation>
-    </message>
-    <message>
         <source>Remind password/email</source>
         <translation type="unfinished"></translation>
     </message>
@@ -179,6 +175,10 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
     <message>
         <source>&amp;Close</source>
         <translation type="unfinished">&amp;Schliessen</translation>
+    </message>
+    <message>
+        <source>Your password has been send on your email</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

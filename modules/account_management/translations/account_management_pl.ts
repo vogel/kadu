@@ -155,10 +155,6 @@ Hasła  muszą być identyczne w obu polach!</translation>
         <translation>OK</translation>
     </message>
     <message>
-        <source>Password reminded</source>
-        <translation>Przypomnij hasło</translation>
-    </message>
-    <message>
         <source>Remind password/email</source>
         <translation>Przypomnij hasło/e-mail</translation>
     </message>
@@ -177,6 +173,10 @@ Hasła  muszą być identyczne w obu polach!</translation>
     <message>
         <source>&amp;Close</source>
         <translation>&amp;Zamknij</translation>
+    </message>
+    <message>
+        <source>Your password has been send on your email</source>
+        <translation>Twoje hasło zostało wysłane na twój e-mail</translation>
     </message>
 </context>
 <context>

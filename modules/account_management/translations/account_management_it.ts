@@ -155,10 +155,6 @@ Le password devo esser identiche !</translation>
         <translation>OK</translation>
     </message>
     <message>
-        <source>Password reminded</source>
-        <translation>Ricordi password</translation>
-    </message>
-    <message>
         <source>Remind password/email</source>
         <translation type="unfinished"></translation>
     </message>
@@ -177,6 +173,10 @@ Le password devo esser identiche !</translation>
     <message>
         <source>&amp;Close</source>
         <translation type="unfinished">&amp;Chiudi</translation>
+    </message>
+    <message>
+        <source>Your password has been send on your email</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
