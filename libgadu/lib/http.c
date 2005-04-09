@@ -1,4 +1,4 @@
-/* $Id: http.c,v 1.31 2005/01/27 00:34:29 joi Exp $ */
+/* $Id: http.c,v 1.32 2005/04/09 11:19:49 adrian Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -62,15 +62,12 @@ struct gg_http *gg_http_connect(const char *hostname, int port, int async, const
 
 	if (!hostname || !port || !method || !path || !header) {
 		gg_debug(GG_DEBUG_MISC, "// gg_http_connect() invalid arguments\n");
-		errno = EINVAL;
+		errno = EFAULT;
 		return NULL;
 	}
 	
 	if (!(h = malloc(sizeof(*h))))
-	{
-		errno = ENOMEM;
 		return NULL;
-	}
 	memset(h, 0, sizeof(*h));
 
 	h->async = async;

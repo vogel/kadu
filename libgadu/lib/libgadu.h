@@ -1,4 +1,4 @@
-/* $Id: libgadu.h,v 1.58 2005/02/18 14:43:23 joi Exp $ */
+/* $Id: libgadu.h,v 1.59 2005/04/09 11:19:49 adrian Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -744,6 +744,7 @@ struct gg_http *gg_unregister3(uin_t uin, const char *password, const char *toke
 /* przypomnienie has³a e-mailem */
 struct gg_http *gg_remind_passwd(uin_t uin, int async);
 struct gg_http *gg_remind_passwd2(uin_t uin, const char *tokenid, const char *tokenval, int async);
+struct gg_http *gg_remind_passwd3(uin_t uin, const char *email, const char *tokenid, const char *tokenval, int async);
 #define gg_remind_passwd_watch_fd gg_pubdir_watch_fd
 #define gg_remind_passwd_free gg_pubdir_free
 #define gg_free_remind_passwd gg_pubdir_free
@@ -941,7 +942,7 @@ int gg_image_queue_remove(struct gg_session *s, struct gg_image_queue *q, int fr
 #define GG_DEFAULT_PROTOCOL_VERSION 0x20
 #define GG_DEFAULT_TIMEOUT 30
 #define GG_HAS_AUDIO_MASK 0x40000000
-#define GG_LIBGADU_VERSION "20041031"
+#define GG_LIBGADU_VERSION "20050408"
 
 #define GG_DEFAULT_DCC_PORT 1550
 

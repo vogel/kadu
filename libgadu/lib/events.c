@@ -1,4 +1,4 @@
-/* $Id: events.c,v 1.42 2005/01/27 00:34:29 joi Exp $ */
+/* $Id: events.c,v 1.43 2005/04/09 11:19:49 adrian Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -216,7 +216,6 @@ static void gg_image_queue_parse(struct gg_event *e, char *p, int len, struct gg
 
 		if (!(q->filename = strdup(p))) {
 			gg_debug(GG_DEBUG_MISC, "// gg_image_queue_parse() not enough memory for filename\n");
-			errno = ENOMEM;
 			return;
 		}
 
@@ -310,7 +309,6 @@ static int gg_handle_recv_msg(struct gg_header *h, struct gg_event *e, struct gg
 			
 				if (!(e->event.msg.recipients = (void*) malloc(count * sizeof(uin_t)))) {
 					gg_debug(GG_DEBUG_MISC, "// gg_handle_recv_msg() not enough memory for recipients data\n");
-					errno = ENOMEM;
 					goto fail;
 				}
 			
@@ -336,7 +334,6 @@ static int gg_handle_recv_msg(struct gg_header *h, struct gg_event *e, struct gg
 
 				if (!(buf = malloc(len))) {
 					gg_debug(GG_DEBUG_MISC, "// gg_handle_recv_msg() not enough memory for richtext data\n");
-					errno = ENOMEM;
 					goto fail;
 				}
 
@@ -379,7 +376,20 @@ static int gg_handle_recv_msg(struct gg_header *h, struct gg_event *e, struct gg
 			case 0x05:		/* image_reply */
 			case 0x06:
 			{
-				if (p + sizeof(struct gg_msg_image_reply) + 1 > packet_end) {
+				struct gg_msg_image_reply *rep = (void*) p;
+
+				if (p + sizeof(struct gg_msg_image_reply) == packet_end) {
+
+					e->type = GG_EVENT_IMAGE_REPLY;
+					e->event.image_reply.sender = gg_fix32(r->sender);
+					e->event.image_reply.size = gg_fix32(rep->size);
+					e->event.image_reply.crc32 = gg_fix32(rep->crc32);
+					e->event.image_reply.filename = strdup("");
+					e->event.image_reply.image = strdup("");
+					return 0;
+
+				} else if (p + sizeof(struct gg_msg_image_reply) + 1 > packet_end) {
+
 					gg_debug(GG_DEBUG_MISC, "// gg_handle_recv_msg() packet out of bounds (4)\n");
 					goto malformed;
 				}
@@ -477,7 +487,6 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 				
 				if (!(e->event.notify_descr.notify = (void*) malloc(sizeof(*n) * 2))) {
 					gg_debug(GG_DEBUG_MISC, "// gg_watch_fd_connected() not enough memory for notify data\n");
-					errno = ENOMEM;
 					goto fail;
 				}
 				e->event.notify_descr.notify[1].uin = 0;
@@ -489,7 +498,6 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 				count = h->length - sizeof(*n);
 				if (!(tmp = malloc(count + 1))) {
 					gg_debug(GG_DEBUG_MISC, "// gg_watch_fd_connected() not enough memory for notify data\n");
-					errno = ENOMEM;
 					goto fail;
 				}
 				memcpy(tmp, p + sizeof(*n), count);
@@ -501,7 +509,6 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 				
 				if (!(e->event.notify = (void*) malloc(h->length + 2 * sizeof(*n)))) {
 					gg_debug(GG_DEBUG_MISC, "// gg_watch_fd_connected() not enough memory for notify data\n");
-					errno = ENOMEM;
 					goto fail;
 				}
 				
@@ -557,7 +564,6 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 
 			if (!e->event.notify60) {
 				gg_debug(GG_DEBUG_MISC, "// gg_watch_fd_connected() not enough memory for notify data\n");
-				errno = ENOMEM;
 				goto fail;
 			}
 
@@ -582,7 +588,6 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 					if (descr_len < length) {
 						if (!(e->event.notify60[i].descr = malloc(descr_len + 1))) {
 							gg_debug(GG_DEBUG_MISC, "// gg_watch_fd_connected() not enough memory for notify data\n");
-							errno = ENOMEM;
 							goto fail;
 						}
 
@@ -602,7 +607,6 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 				if (!(tmp = realloc(e->event.notify60, (i + 2) * sizeof(*e->event.notify60)))) {
 					gg_debug(GG_DEBUG_MISC, "// gg_watch_fd_connected() not enough memory for notify data\n");
 					free(e->event.notify60);
-					errno = ENOMEM;
 					goto fail;
 				}
 
@@ -724,7 +728,6 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 					gg_debug(GG_DEBUG_MISC, "// gg_watch_fd_connected() not enough memory for userlist reply\n");
 					free(sess->userlist_reply);
 					sess->userlist_reply = NULL;
-					errno = ENOMEM;
 					goto fail;
 				}
 
@@ -785,7 +788,6 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 	}
 
 	if (!(e = (void*) calloc(1, sizeof(*e)))) {
-		errno = ENOMEM;
 		gg_debug(GG_DEBUG_MISC, "// gg_watch_fd() not enough memory for event data\n");
 		return NULL;
 	}

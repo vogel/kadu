@@ -1,4 +1,4 @@
-/* $Id: common.c,v 1.36 2005/02/18 14:43:23 joi Exp $ */
+/* $Id: common.c,v 1.37 2005/04/09 11:19:49 adrian Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -333,14 +333,16 @@ char *gg_read_line(int sock, char *buf, int length)
 void gg_chomp(char *line)
 {
 	int len;
+	
 	if (!line)
 		return;
-	len = strlen(line);
 
+	len = strlen(line);
+	
 	if (len > 0 && line[len - 1] == '\n')
-		line[(len--) - 1] = 0;
+		line[--len] = 0;
 	if (len > 0 && line[len - 1] == '\r')
-		line[(len--) - 1] = 0;
+		line[--len] = 0;
 }
 
 /*
@@ -361,7 +363,7 @@ char *gg_urlencode(const char *str)
 	int size = 0;
 
 	if (!str)
-		str = hex + 16; //ustawiamy siê na napis o zerowej d³ugo¶ci
+		str = "";
 
 	for (p = str; *p; p++, size++) {
 		if (!((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z') || (*p >= '0' && *p <= '9') || *p == ' ') || (*p == '@') || (*p == '.') || (*p == '-'))
@@ -369,10 +371,7 @@ char *gg_urlencode(const char *str)
 	}
 
 	if (!(buf = malloc(size + 1)))
-	{
-		errno = ENOMEM;
 		return NULL;
-	}
 
 	for (p = str, q = buf; *p; p++, q++) {
 		if ((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z') || (*p >= '0' && *p <= '9') || (*p == '@') || (*p == '.') || (*p == '-'))
@@ -506,7 +505,6 @@ cleanup:
 	struct hostent *hp;
 
 	if (!(addr = malloc(sizeof(struct in_addr)))) {
-		errno = ENOMEM;
 		goto cleanup;
 	}
 

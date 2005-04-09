@@ -2,7 +2,237 @@ Teksty w nawiasach na koñcu linii mówi± o tym, kto dokona³ poprawki.
 Je¶li jest postaci ,,nick'', powinno byæ jasne. Postaæ ,,nick/x''
 oznacza, ¿e ,,nick'' jest pomys³odawc± lub podes³a³ patcha, a zrobi³
 to kto¶ oznaczony przez ,,x'' (w - wojtekka, s - speedy, a - arekm,
-d - drg, sz - szalik, del - deletek).
+d - drg, sz - szalik, del - deletek, g - gophi).
+
+// 2005-03-24
+
+- libgadu: poprawki zwi±zane ze znakami zmiennych (gj/w)
+
+// 2005-03-19
+
+- libgadu: poprawki zwracanych warto¶ci w errno w przypadku
+  b³êdu (mslusarz/sz)
+- kompilacja na AMD64 i GCC 4.0 (Andreas J/sz)
+
+// 2005-03-17
+
+- drobne poprawki w /help (*/sz)
+
+// 2005-03-09
+
+- /check_conn @grupa (zigi/sz)
+
+// 2005-03-02
+
+- usuwanie wpisu, np. email za pomoc± /list user -e "" (sz)
+
+// 2005-02-28
+
+- drobna poprawka /help w domy¶lnym motywie (gophi)
+
+// 2005-02-27
+
+- drobne kosmetyczne poprawki, g³ównie kompilacji z pythonem (sz)
+
+// 2005-02-26
+
+- dodanie zmiennej status_window (shog/g)
+
+// 2005-02-24
+
+- wy¶wietlanie niedostêpno¶ci po po³±czeniu dla cz³onków grupy ,,spied''
+  zgodne ze zmienn± ,,events_delay'' (zigi/sz)
+
+// 2005-02-22
+
+- mo¿liwo¶æ dodawania niewidocznych do listy dope³nieñ (zigi/sz)
+- mniej ,,¶miec±ce'' wykrywanie niewidocznych (sz)
+
+// 2005-02-21
+
+- libgadu: podbicie wersji API (porridge/w)
+
+// 2005-02-18
+
+- poprawka /list -m (KKKas/w)
+- poprawka /check_conn dla osób spoza grupy spied (zigi/sz)
+- proste przewijanie listy kontaktów, standardowo podbindowane
+  pod Alt-Z oraz Alt-X (sz)
+- libgadu: poprawka zachowania gg_urlencode() przy pustych tekstach (mslusarz/w)
+- libgadu: optymalizacja gg_chomp() (mslusarz/w)
+
+// 2005-02-17
+
+- libgadu: podbicie API z 3.1 do 3.2 (sz)
+- libgadu: dodanie gg_remind_passwd3, która dodatkowo pobiera email
+  jako parametr (zigi/sz)
+- konsekwentne zachowanie przy ,,ignore_empty_msg'' równym 0 i otrzymaniu
+  pustej wiadomo¶ci z obrazkiem(ami). wy¶wietlana jest pusta wiadomo¶æ (zigi/sz)
+- reorganizacja polecenia check_conn, patrz /help_check_conn (zigi/sz)
+
+// 2005-02-15
+
+- zdarzenia ,,connectionlost'' oraz ,,disconnected'' (reef/sz)
+- ³atwiejsze wykrywanie niewidocznych, patrz /help check_conn (sz)
+
+// 2005-02-01
+
+- poprawienie segfaulta podczas /query z 10 znakowym nickiem ze spacj± 
+  (mimek,ramzes/g)
+- poprawienie /set log_status (gophi)
+- poprawienie /help /set quit_reason (gophi)
+
+// 2005-01-30
+
+- dodanie zmiennej ,,ignore_empty_msg'' (porridge/sz)
+- pomijanie ,,\r\n'' w ostatniej linii np. wielolinijkowego statusu (kosma/sz)
+- dodanie funkcji check_conn pomagaj±cej sprawdzaæ czy kto¶ jest 
+  niewidoczny (*/del)
+
+// 2005-01-29
+
+- poprawka segfaultu przy wy¶wietlaniu tokenów (gj/w)
+- poprawka ocrowania tokenów (w)
+- libgadu: parsowanie adresów tokenów, ¿eby dzia³a³y z proxy (porridge/w)
+
+// 2005-01-26
+
+- poprawienie wy¶wietlania informacji na temat zakolejkowania wiadomo¶ci 
+  (teraz wy¶wietlana jest pod wiadomo¶ci±) (gophi)
+- dopisanie do ,,/help on'' informacji na temat podawania sprawcy dla 
+  zdarzeñ ,,connected'' i ,,disconnected'' (zigi/g)
+
+// 2005-01-21
+
+- libgadu: podbicie wersji API z 3.0 do 3.1 (porridge/w)
+- libgadu: cofniêcie poprawki off-by-one gg_base64_encode() (porridge/w)
+
+// 2005-01-19
+
+- dodanie zdarzeñ ,,connected'' i ,,disconnected'' (LANO/sz)
+
+// 2005-01-12
+
+- dodanie do informacji wypisywanych w momencie segfaulta tekstu na
+  temat mo¿liwo¶ci otrzymania core przy pomocy ,,ulimit'' (gophi)
+- poprawienie poprzedniego commita (z rozpêdu ¼le na³o¿y³em patcha) 
+  (gophi)
+
+// 2005-01-11
+
+- dodanie zmiennej beep_title, obs³uguj±cej informowanie o sygnale d¼wiêkowym
+  w pasku tytu³owym na terminalu xterm (qbq/w)
+- libgadu: sprawdzanie poprawno¶ci parametrów funkcji
+  gg_send_message_richtext() i gg_send_message_confer_richtext() (mslusarz/w)
+
+// 2005-01-10
+
+- poprawienie segfaulta przy próbie do³±czenia kogo¶ do nieistniej±cej 
+  konferencji (irys/g)
+
+// 2005-01-04
+
+- libgadu: poprawka po³±czenia przez proxy (porridge/w)
+
+// 2004-12-28
+
+- libgadu: dodanie funkcji gg_dcc_fill_file_info2() pozwalaj±cej na podanie
+  lokalnej nazwy pliku innej ni¿ przesy³anej zdalnemu klientowi, na przyk³ad
+  gdy lokalne kodowanie jest inne ni¿ CP1250 (mslusarz/w)
+- libgadu: poprawka zachowania przy wysy³aniu pustych plików (mslusarz/w)
+- libgadu: poprawka tworzenia krótkiej nazwy przesy³anych plików (w)
+- nazwy przesy³anych plików s± t³umaczone na CP1250 (mslusarz/w)
+- dodanie zmiennej ,,dcc_filter'' pozwalaj±cej na chwilowe wy³±czenie
+  filtrowania nieznanych adresów IP w po³±czeniach bezpo¶rednich (w)
+
+// 2004-12-21
+
+- libgadu: zamykanie gniazda nas³uchuj±cego dcc w przypadku problemów
+  z bindowanie/s³uchaniem (mslusarz/w)
+- libgadu: uproszczenie gg_send_packet() (mslusarz/w)
+- libgadu: uzupe³nienie sta³ych potwierdzeñ (mslusarz/w)
+- libgadu: usuniêcie kodu ustawiaj±cego gg_dcc_ip na auto w funkcji
+  gg_dcc_socket_create() (mslusarz/w)
+- uzupe³nienie dokumentacji protoko³u o po³±czenia bezpo¶rednie i nowy
+  format listy kontaktów (w)
+
+// 2004-12-19
+
+- uzupe³nienie dokumentacji protoko³u o tokenu (w)
+
+// 2004-12-15
+
+- usuniêcie malutkiego wycieku zasobów, je¶li korzystamy z w±tkowego
+  resolvera w libgadu (sz)
+
+// 2004-12-12
+
+- dodanie pamiêtania numerków przy wykrywaniu osób spoza listy 
+  (zigi/g)
+
+// 2004-12-10
+
+- dodanie wykrywania osób w trybie ,,tylko dla znajomych'', które 
+  maj± nas na li¶cie kontaktów (gophi)
+
+// 2004-12-06
+
+- poprawienie obs³ugi zdarzeñ dotycz±cych numeru 1 (gophi)
+- libgadu: poprawienie off-by-one w gg_base64_encode() (thv/w)
+
+// 2004-12-01
+
+- poprawienie segfaulta przy /queue -u user (zigi/g)
+
+// 2004-11-30
+
+- drobna poprawka w /help unregister (zigi/g)
+
+// 2004-11-29
+
+- drobna poprawka w /help set (zigi/g)
+
+// 2004-11-28
+
+- je¶li wiadomo¶æ zawiera obrazki, ale nie posiada tekstu, jest 
+  ca³kowicie ignorowana - zapobiega ¶mieceniu przez osoby u¿ywaj±ce
+  wykrywanie niewidocznych (sz)
+
+// 2004-11-27
+
+- dodanie nachodz±cych na siebie linii przy scrollowaniu (jceel/g)
+- usuniêcie buga przy /help set // ma³y opis dostêpnych zmiennych (gophi)
+
+// 2004-11-25
+
+- kilka poprawek w dokumentacji (gophi)
+- poprawienie debugowania ncurses (gophi)
+
+// 2004-11-22
+
+- poprawienie b³êdu ,,Za ma³o parametrów. Spróbuj help chat'' podczas 
+  uruchamiania z wys³aniem wyniku (-m, -b) niektórych poleceñ systemowych, 
+  np. ,,/exec -m numerek echo'', ,,/exec -b numerek echo -n'' (g)
+
+// 2004-11-19
+
+- poprawienie b³êdu przy obs³udze zdarzenia zmiany opisu w³asnego numerka 
+  (acze/g)
+- wyeliminowanie warninga podczas kompilacji stuff.c (g)
+
+// 2004-11-17
+
+- poprawienie kolejno¶ci logowania podczas wykonywania zdarzeñ 
+  zawieraj±cych akcje msg/chat (g)
+- poprawienie buga podczas dodawania zdarzeñ dotycz±cych osób spoza listy 
+  kontaktów (zamiast numeru osoby by³ dodawany numer zdarzenia) (g)
+
+// 2004-11-11
+
+- usuniêcie dziur w numeracji zdarzeñ (gophi/w)
+- poprawka zachowania readline (gophi/w)
+- dodanie opisu opcji -o (gophi/w)
+- poprawka od¶wie¿ania ekranu podczas u¿ywaniu control-pipe (gophi/sz)
 
 // 2004-10-31
 
@@ -681,4 +911,4 @@ d - drg, sz - szalik, del - deletek).
 - poprawka zachowania trybu wielolinijkowego (theKnight/w)
 
 
-$Id: ChangeLog,v 1.31 2004/11/01 13:51:44 adrian Exp $
+$Id: ChangeLog,v 1.32 2005/04/09 11:19:49 adrian Exp $

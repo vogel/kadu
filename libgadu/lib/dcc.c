@@ -1,4 +1,4 @@
-/* $Id: dcc.c,v 1.34 2005/02/18 14:43:23 joi Exp $ */
+/* $Id: dcc.c,v 1.35 2005/04/09 11:19:49 adrian Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -142,6 +142,7 @@ int gg_dcc_fill_file_info2(struct gg_dcc *d, const char *filename, const char *l
 {
 	struct stat st;
 	const char *name, *ext, *p;
+	unsigned char *q;
 	int i, j;
 
 	gg_debug(GG_DEBUG_FUNCTION, "** gg_dcc_fill_file_info2(%p, \"%s\", \"%s\");\n", d, filename, local_filename);
@@ -191,11 +192,38 @@ int gg_dcc_fill_file_info2(struct gg_dcc *d, const char *filename, const char *l
 	for (i = 0, p = name; i < 8 && p < ext; i++, p++)
 		d->file_info.short_filename[i] = toupper(name[i]);
 
+	if (i == 8 && p < ext) {
+		d->file_info.short_filename[6] = '~';
+		d->file_info.short_filename[7] = '1';
+	}
+
 	if (strlen(ext) > 0) {
 		for (j = 0; *ext && j < 4; j++, p++)
 			d->file_info.short_filename[i + j] = toupper(ext[j]);
 	}
 
+	for (q = d->file_info.short_filename; *q; q++) {
+		if (*q == 185) {
+			*q = 165;
+		} else if (*q == 230) {
+			*q = 198;
+		} else if (*q == 234) {
+			*q = 202;
+		} else if (*q == 179) {
+			*q = 163;
+		} else if (*q == 241) {
+			*q = 209;
+		} else if (*q == 243) {
+			*q = 211;
+		} else if (*q == 156) {
+			*q = 140;
+		} else if (*q == 159) {
+			*q = 143;
+		} else if (*q == 191) {
+			*q = 175;
+		}
+	}
+	
 	gg_debug(GG_DEBUG_MISC, "// gg_dcc_fill_file_info2() short name \"%s\", dos name \"%s\"\n", name, d->file_info.short_filename);
 	strncpy(d->file_info.filename, name, sizeof(d->file_info.filename) - 1);
 
@@ -232,7 +260,6 @@ static struct gg_dcc *gg_dcc_transfer(uint32_t ip, uint16_t port, uin_t my_uin, 
 
 	if (!(d = (void*) calloc(1, sizeof(*d)))) {
 		gg_debug(GG_DEBUG_MISC, "// gg_dcc_transfer() not enough memory\n");
-		errno = ENOMEM;
 		return NULL;
 	}
 
@@ -410,7 +437,6 @@ struct gg_dcc *gg_dcc_socket_create(uin_t uin, uint16_t port)
 	if (!(c = malloc(sizeof(*c)))) {
 		gg_debug(GG_DEBUG_MISC, "// gg_create_dcc_socket() not enough memory for struct\n");
 		close(sock);
-		errno = ENOMEM;
 		return NULL;
 	}
 	memset(c, 0, sizeof(*c));
@@ -532,7 +558,6 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 
 	if (!(e = (void*) calloc(1, sizeof(*e)))) {
 		gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() not enough memory\n");
-		errno = ENOMEM;
 		return NULL;
 	}
 
@@ -567,7 +592,6 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 
 			free(e);
 			close(fd);
-			errno = ENOMEM;
 			return NULL;
 		}
 
@@ -738,7 +762,6 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 				if (!(h->chunk_buf = malloc(sizeof(big)))) {
 					gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() out of memory\n");
 					free(e);
-					errno = ENOMEM;
 					return NULL;
 				}
 				h->check = GG_CHECK_READ;
@@ -851,7 +874,6 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 
 				if (!(h->voice_buf = malloc(h->chunk_size))) {
 					gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() out of memory for voice frame\n");
-					errno = ENOMEM;
 					return NULL;
 				}
 
@@ -1212,7 +1234,6 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 					if (!(h->chunk_buf = malloc(sizeof(big)))) {
 						gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() out of memory\n");
 						free(e);
-						errno = ENOMEM;
 						return NULL;
 					}
 				} else {

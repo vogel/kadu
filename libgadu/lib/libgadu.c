@@ -1,4 +1,4 @@
-/* $Id: libgadu.c,v 1.45 2005/02/18 14:43:23 joi Exp $ */
+/* $Id: libgadu.c,v 1.46 2005/04/09 11:19:49 adrian Exp $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -72,7 +72,7 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c,v 1.45 2005/02/18 14:43:23 joi Exp $";
+= "$Id: libgadu.c,v 1.46 2005/04/09 11:19:49 adrian Exp $";
 #endif 
 
 /*
@@ -300,7 +300,6 @@ int gg_resolve_pthread(int *fd, void **resolver, const char *hostname)
 
 	if (!(tmp = malloc(sizeof(pthread_t)))) {
 		gg_debug(GG_DEBUG_MISC, "// gg_resolve_pthread() out of memory for pthread id\n");
-		errno = ENOMEM;
 		return -1;
 	}
 	
@@ -312,7 +311,7 @@ int gg_resolve_pthread(int *fd, void **resolver, const char *hostname)
 
 	if (!(d = malloc(sizeof(*d)))) {
 		gg_debug(GG_DEBUG_MISC, "// gg_resolve_pthread() out of memory\n");
-		new_errno = ENOMEM;
+		new_errno = errno;
 		goto cleanup;
 	}
 	
@@ -320,7 +319,7 @@ int gg_resolve_pthread(int *fd, void **resolver, const char *hostname)
 
 	if (!(d->hostname = strdup(hostname))) {
 		gg_debug(GG_DEBUG_MISC, "// gg_resolve_pthread() out of memory\n");
-		new_errno = ENOMEM;
+		new_errno = errno;
 		goto cleanup;
 	}
 
@@ -462,7 +461,8 @@ void *gg_recv_packet(struct gg_session *sess)
 {
 	struct gg_header h;
 	char *buf = NULL;
-	int ret = 0, offset, size = 0;
+	int ret = 0;
+	unsigned int offset, size = 0;
 
 	gg_debug(GG_DEBUG_FUNCTION, "** gg_recv_packet(%p);\n", sess);
 	
@@ -525,7 +525,7 @@ void *gg_recv_packet(struct gg_session *sess)
 		memcpy(&h, sess->recv_buf, sizeof(h));
 	
 	/* jakie¶ sensowne limity na rozmiar pakietu */
-	if (h.length < 0 || h.length > 65535) {
+	if (h.length > 65535) {
 		gg_debug(GG_DEBUG_MISC, "// gg_recv_packet() invalid packet length (%d)\n", h.length);
 		errno = ERANGE;
 		return NULL;
@@ -606,9 +606,9 @@ int gg_send_packet(struct gg_session *sess, int type, ...)
 {
 	struct gg_header *h;
 	char *tmp;
-	int tmp_length;
+	unsigned int tmp_length;
 	void *payload;
-	int payload_length;
+	unsigned int payload_length;
 	va_list ap;
 	int res;
 
@@ -618,7 +618,6 @@ int gg_send_packet(struct gg_session *sess, int type, ...)
 
 	if (!(tmp = malloc(tmp_length))) {
 		gg_debug(GG_DEBUG_MISC, "// gg_send_packet() not enough memory for packet header\n");
-		errno = ENOMEM;
 		return -1;
 	}
 
@@ -629,16 +628,12 @@ int gg_send_packet(struct gg_session *sess, int type, ...)
 	while (payload) {
 		char *tmp2;
 
-		payload_length = va_arg(ap, int);
+		payload_length = va_arg(ap, unsigned int);
 
-		if (payload_length < 0)
-			gg_debug(GG_DEBUG_MISC, "// gg_send_packet() invalid payload length (%d)\n", payload_length);
-	
 		if (!(tmp2 = realloc(tmp, tmp_length + payload_length))) {
 			gg_debug(GG_DEBUG_MISC, "// gg_send_packet() not enough memory for payload\n");
 			free(tmp);
 			va_end(ap);
-			errno = ENOMEM;
 			return -1;
 		}
 
@@ -654,7 +649,7 @@ int gg_send_packet(struct gg_session *sess, int type, ...)
 
 	h = (struct gg_header*) tmp;
 	h->type = gg_fix32(type);
-	h->length = gg_fix32(tmp_length-sizeof(struct gg_header));
+	h->length = gg_fix32(tmp_length - sizeof(struct gg_header));
 
 	if ((gg_debug_level & GG_DEBUG_DUMP)) {
 		unsigned int i;
@@ -684,7 +679,7 @@ int gg_send_packet(struct gg_session *sess, int type, ...)
 static int gg_session_callback(struct gg_session *s)
 {
 	if (!s) {
-		errno = EINVAL;
+		errno = EFAULT;
 		return -1;
 	}
 
@@ -722,7 +717,6 @@ struct gg_session *gg_login(const struct gg_login_params *p)
 
 	if (!(sess = malloc(sizeof(struct gg_session)))) {
 		gg_debug(GG_DEBUG_MISC, "// gg_login() not enough memory for session data\n");
-		errno = ENOMEM;
 		goto fail;
 	}
 
@@ -730,19 +724,17 @@ struct gg_session *gg_login(const struct gg_login_params *p)
 
 	if (!p->password || !p->uin) {
 		gg_debug(GG_DEBUG_MISC, "// gg_login() invalid arguments. uin and password needed\n");
-		errno = EINVAL;
+		errno = EFAULT;
 		goto fail;
 	}
 
 	if (!(sess->password = strdup(p->password))) {
 		gg_debug(GG_DEBUG_MISC, "// gg_login() not enough memory for password\n");
-		errno = ENOMEM;
 		goto fail;
 	}
 
 	if (p->status_descr && !(sess->initial_descr = strdup(p->status_descr))) {
 		gg_debug(GG_DEBUG_MISC, "// gg_login() not enough memory for status\n");
-		errno = ENOMEM;
 		goto fail;
 	}
 
@@ -1154,20 +1146,18 @@ int gg_image_request(struct gg_session *sess, uin_t recipient, int size, uint32_
 
 	if (!res) {
 		struct gg_image_queue *q = malloc(sizeof(*q));
-		char *buf = malloc(size);
+		char *buf;
 
 		if (!q) {
 			gg_debug(GG_DEBUG_MISC, "// gg_image_request() not enough memory for image queue\n");
-			free(buf);
-			errno = ENOMEM;
 			return -1;
 		}
 
+		buf = malloc(size);
 		if (size && !buf)
 		{
 			gg_debug(GG_DEBUG_MISC, "// gg_image_request() not enough memory for image\n");
 			free(q);
-			errno = ENOMEM;
 			return -1;
 		}
 
@@ -1369,7 +1359,7 @@ int gg_send_message_richtext(struct gg_session *sess, int msgclass, uin_t recipi
 	}
 
 	if (!message) {
-		errno = EINVAL;
+		errno = EFAULT;
 		return -1;
 	}
 	
@@ -1457,10 +1447,8 @@ int gg_send_message_confer_richtext(struct gg_session *sess, int msgclass, int r
 	s.msgclass = gg_fix32(msgclass);
 
 	recps = malloc(sizeof(uin_t) * recipients_count);
-	if (!recps) {
-		errno = ENOMEM;
+	if (!recps)
 		return -1;
-	}
 
 	for (i = 0; i < recipients_count; i++) {
 	 
@@ -1559,10 +1547,7 @@ int gg_notify_ex(struct gg_session *sess, uin_t *userlist, char *types, int coun
 		}
 
 		if (!(n = (struct gg_notify*) malloc(sizeof(*n) * part_count)))
-		{
-			errno = ENOMEM;
 			return -1;
-		}
 	
 		for (u = userlist, t = types, i = 0; i < part_count; u++, t++, i++) { 
 			n[i].uin = gg_fix32(*u);
@@ -1630,10 +1615,7 @@ int gg_notify(struct gg_session *sess, uin_t *userlist, int count)
 		}
 			
 		if (!(n = (struct gg_notify*) malloc(sizeof(*n) * part_count)))
-		{
-			errno = ENOMEM;
 			return -1;
-		}
 	
 		for (u = userlist, i = 0; i < part_count; u++, i++) { 
 			n[i].uin = gg_fix32(*u);
