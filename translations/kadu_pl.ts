@@ -745,6 +745,13 @@ Some of them probably will not get it.</source>
 Czy napewno chcesz wysłać ten obrazek?
 Prawdopodobnie nie zostanie on wszystkim dostarczony.</translation>
     </message>
+    <message>
+        <source>This file is too big for %1.
+Do you really want to send this image?
+</source>
+        <translation>Rozmiar pliku jest zaduży dla %1.
+Czy napewno chcesz wysłać ten obrazek?</translation>
+    </message>
 </context>
 <context>
     <name>ChatSlots</name>

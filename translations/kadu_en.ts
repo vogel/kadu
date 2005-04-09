@@ -738,6 +738,12 @@ Do you really want to send this image?
 Some of them probably will not get it.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>This file is too big for %1.
+Do you really want to send this image?
+</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ChatSlots</name>
