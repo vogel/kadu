@@ -908,7 +908,17 @@ void Chat::insertImage()
 			if (f.size() >= maximagesize * 1024)
 				++counter;
 		}
-		if (counter > 0 && !MessageBox::ask(tr("This file is too big for %1 of %2 contacts.\nDo you really want to send this image?\nSome of them probably will not get it.").arg(counter).arg(Uins.count())))
+		if (counter == 1 && Uins.count() == 1)
+		{
+			if (!MessageBox::ask(tr("This file is too big for %1.\nDo you really want to send this image?\n").arg(userlist.byUinValue(Uins[0]).altNick())))
+			{
+				QTimer::singleShot(0, this, SLOT(insertImage()));
+				kdebugf2();
+				return;
+			}
+		}
+		else if	(counter > 0 &&
+			!MessageBox::ask(tr("This file is too big for %1 of %2 contacts.\nDo you really want to send this image?\nSome of them probably will not get it.").arg(counter).arg(Uins.count())))
 		{
 			QTimer::singleShot(0, this, SLOT(insertImage()));
 			kdebugf2();
