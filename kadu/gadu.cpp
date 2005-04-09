@@ -1872,12 +1872,13 @@ void GaduProtocol::unregisterAccount(UinType uin, const QString &password)
 	kdebugf2();
 }
 
-void GaduProtocol::remindPassword(UinType uin)
+void GaduProtocol::remindPassword(UinType uin, const QString& mail)
 {
 	kdebugf();
 
 	Mode = RemindPassword;
 	DataUin = uin;
+	DataEmail = mail;
 	getToken();
 
 	kdebugf2();
@@ -1949,7 +1950,7 @@ void GaduProtocol::doRemindPassword()
 {
 	kdebugf();
 
-	struct gg_http *h = gg_remind_passwd2(DataUin, unicode2cp(TokenId).data(),
+	struct gg_http *h = gg_remind_passwd3(DataUin, unicode2cp(DataEmail).data(), unicode2cp(TokenId).data(),
 		unicode2cp(TokenValue).data(), 1);
 	if (h)
 	{

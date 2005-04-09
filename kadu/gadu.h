@@ -945,9 +945,10 @@ class GaduProtocol : public QObject
 			zostaæ tak¿e wywo³any sygna³ needTokenValue.
 
 			@param uin nasz uin
+			@param email nasz email (musi byæ taki sam jak podczas rejestracji)
 			@todo parametr uin naprawdê potrzebny?
 		**/
-		void remindPassword(UinType uin);
+		void remindPassword(UinType uin, const QString& mail);
 		/**
 			Zmienia nasze has³o. Odpowied¼ przychodzi poprzez sygna³ passwordChanged. Mo¿e
 			zostaæ tak¿e wywo³any sygna³ needTokenValue.
