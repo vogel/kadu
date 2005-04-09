@@ -147,10 +147,6 @@ Les mot de passe dans le deux champs doivent être idéntiques!</translation>
 <context>
     <name>RemindPassword</name>
     <message>
-        <source>Remind password</source>
-        <translation>Rapelle mot de passe</translation>
-    </message>
-    <message>
         <source>Error during remind password</source>
         <translation>Erreur lors de rapelle de mot de passe</translation>
     </message>
@@ -161,6 +157,26 @@ Les mot de passe dans le deux champs doivent être idéntiques!</translation>
     <message>
         <source>Password reminded</source>
         <translation>Rapelle le mot de passe</translation>
+    </message>
+    <message>
+        <source>Remind password/email</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This dialog box allows you to ask server to remind your current password.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Email</source>
+        <translation type="unfinished">E-mail</translation>
+    </message>
+    <message>
+        <source>Email (as during registration):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Fermes</translation>
     </message>
 </context>
 <context>

@@ -147,10 +147,6 @@ Hasła  muszą być identyczne w obu polach!</translation>
 <context>
     <name>RemindPassword</name>
     <message>
-        <source>Remind password</source>
-        <translation>Przypomnij hasło</translation>
-    </message>
-    <message>
         <source>Error during remind password</source>
         <translation>Błąd podczas przypominania hasła</translation>
     </message>
@@ -161,6 +157,26 @@ Hasła  muszą być identyczne w obu polach!</translation>
     <message>
         <source>Password reminded</source>
         <translation>Przypomnij hasło</translation>
+    </message>
+    <message>
+        <source>Remind password/email</source>
+        <translation>Przypomnij hasło/e-mail</translation>
+    </message>
+    <message>
+        <source>This dialog box allows you to ask server to remind your current password.</source>
+        <translation>To okno dialogowe pozwala zapytać serwer o przypomnienie bieżacego hasła.</translation>
+    </message>
+    <message>
+        <source>Email</source>
+        <translation>E-mail</translation>
+    </message>
+    <message>
+        <source>Email (as during registration):</source>
+        <translation>E-mail (podany przy rejestracji):</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation>&amp;Zamknij</translation>
     </message>
 </context>
 <context>

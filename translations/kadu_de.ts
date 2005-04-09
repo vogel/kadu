@@ -736,6 +736,12 @@ Es ist ein sehr hohes Risiko!</translation>
         <source>This file is too big (%1 &gt;= %2)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>This file is too big for %1 of %2 contacts.
+Do you really want to send this image?
+Some of them probably will not get it.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ChatSlots</name>

@@ -149,10 +149,6 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
 <context>
     <name>RemindPassword</name>
     <message>
-        <source>Remind password</source>
-        <translation>Erinnere an Passwort</translation>
-    </message>
-    <message>
         <source>Error during remind password</source>
         <translation>Fehler beim Erinnern des Passworts</translation>
     </message>
@@ -163,6 +159,26 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
     <message>
         <source>Password reminded</source>
         <translation>Passwort erinnert</translation>
+    </message>
+    <message>
+        <source>Remind password/email</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This dialog box allows you to ask server to remind your current password.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Email</source>
+        <translation type="unfinished">Email</translation>
+    </message>
+    <message>
+        <source>Email (as during registration):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Schliessen</translation>
     </message>
 </context>
 <context>

@@ -737,6 +737,14 @@ Jest to wysoce ryzykowne!</translation>
         <source>This file is too big (%1 &gt;= %2)</source>
         <translation>Plik jest za duży (%1 &gt;= %2)</translation>
     </message>
+    <message>
+        <source>This file is too big for %1 of %2 contacts.
+Do you really want to send this image?
+Some of them probably will not get it.</source>
+        <translation>Rozmiar pliku jest zaduży dla %1 z %2 kontaktów.
+Czy napewno chcesz wysłać ten obrazek?
+Prawdopodobnie nie zostanie on wszystkim dostarczony.</translation>
+    </message>
 </context>
 <context>
     <name>ChatSlots</name>
