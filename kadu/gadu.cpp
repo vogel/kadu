@@ -14,7 +14,9 @@
 #include <qtextcodec.h>
 #include <qvgroupbox.h>
 
+//dla htonl
 #include <netinet/in.h>
+
 #include <stdlib.h>
 
 #include "config_dialog.h"

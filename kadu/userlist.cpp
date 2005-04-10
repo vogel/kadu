@@ -12,6 +12,7 @@
 #include <qtextcodec.h>
 #include <qregexp.h>
 
+//mkdir
 #include <sys/stat.h>
 
 #include "debug.h"
