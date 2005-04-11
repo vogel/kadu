@@ -1,4 +1,4 @@
-Instrukcja instalacji dla wersji 0.3.8 lub nowszej
+Instrukcja instalacji
 
 Aby zainstalowaæ Kadu ze ¼róde³ przeczytaj dokumentacjê, która siê
 znajduje na stronie http://www.kadu.net/index.php?page=docs
@@ -6,12 +6,12 @@ Nastêpnie spróbuj u¿yæ kreatora:
  ./Instaluj
 
 W przypadku problemów zainstaluj Kadu rêcznie:
-1. vi .config - wybierz modu³y, które chcesz instalowaæ stawiaj±c przy nich
+1. $EDITOR .config - wybierz modu³y, które chcesz instalowaæ stawiaj±c przy nich
    literê 'm' je¿eli chcesz je skompilowaæ jako modu³y dynamiczne lub 'y' je¿eli
    chcesz je wkompilowaæ na sta³e w binarkê Kadu (we¼ pod uwagê zale¿no¶ci!)
 2. zrób ./configure ; make
    ewentualnie mo¿na posi³kowaæ siê np. --with-includes=/¶cie¿ka --with-libs=/¶cie¿ka
    lub pozosta³ymi opcjami configure (listê dostaniesz dziêki opcji --help)
 3. jako root make install 
-   (np. poprzez su -c make install)
+   (np. poprzez su -c "make install")
 proste? proste ;>
