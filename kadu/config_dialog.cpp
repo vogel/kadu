@@ -426,9 +426,11 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 	connect(okButton, SIGNAL(clicked()), this, SLOT(updateAndCloseConfig()));
 	connect(applyButton, SIGNAL(clicked()), this, SLOT(updateConfig()));
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));
-
 	// end buttons
 	
+	configdialog = this;
+	emit create();
+
 	if (currentTab.isEmpty())
 		currentTab = config_file.readEntry("General", "ConfigDialogLastTab", QT_TRANSLATE_NOOP("@default", "General"));
 	if (TabNames.contains(currentTab))
@@ -437,9 +439,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 		changeTab(appHandle->translate("@default", "General"));
 	listBox->setCurrentItem(listBox->findItem(appHandle->translate("@default", currentTab)));
 	connect(listBox, SIGNAL(highlighted(const QString&)), this, SLOT(changeTab(const QString&)));
-	
-	configdialog = this;
-	emit create();
 
 	loadGeometry(this, "General", "ConfigGeometry", 0, 30, 790, 480);
 	kdebugf2();
