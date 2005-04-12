@@ -592,7 +592,7 @@ Es ist ein sehr hohes Risiko!</translation>
     </message>
     <message>
         <source>&quot;%1&quot; in chat sends message by default</source>
-        <translation>&quot;%1&quot; im Chat sendet Nachricht (Voreinstellung)</translation>
+        <translation>Port für Verbindung zum Server</translation>
     </message>
 </context>
 <context>
@@ -730,23 +730,26 @@ Es ist ein sehr hohes Risiko!</translation>
     </message>
     <message>
         <source>This file is not readable</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Datei ist nicht lesbar</translation>
     </message>
     <message>
         <source>This file is too big (%1 &gt;= %2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Datei ist zu groß (%1 &gt;0 %2)</translation>
     </message>
     <message>
         <source>This file is too big for %1 of %2 contacts.
 Do you really want to send this image?
 Some of them probably will not get it.</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Datei ist für %1 von %2 Benutzern zu groß.
+Wollen Sie diese Datei wirklich senden?
+Einige von ihnen bekommen sie nicht.</translation>
     </message>
     <message>
         <source>This file is too big for %1.
 Do you really want to send this image?
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Die Datei ist zu groß für %1.
+Wollen Sie wirklich diese Datei senden?</translation>
     </message>
 </context>
 <context>
