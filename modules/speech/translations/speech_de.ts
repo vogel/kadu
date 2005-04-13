@@ -27,7 +27,7 @@
     </message>
     <message>
         <source>Klatt synthesizer (requires dsp)</source>
-        <translation type="unfinished"></translation>
+        <translation>Klatt-Sprachausgabe (benutzt dsp)</translation>
     </message>
     <message>
         <source>Use aRts</source>
@@ -39,11 +39,11 @@
     </message>
     <message>
         <source>Use Dsp</source>
-        <translation>Benutze Dsp</translation>
+        <translation>Benutze dsp</translation>
     </message>
     <message>
         <source>Dsp device:</source>
-        <translation>Gerät Dsp:</translation>
+        <translation>Gerät dsp:</translation>
     </message>
     <message>
         <source>Program</source>

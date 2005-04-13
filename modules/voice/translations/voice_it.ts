@@ -7,15 +7,15 @@
     </message>
     <message>
         <source>Test GSM Encoding</source>
-        <translation type="unfinished"></translation>
+        <translation>Test Codifica GSM</translation>
     </message>
     <message>
         <source>Faster compression algorithm (degrades quality)</source>
-        <translation type="unfinished"></translation>
+        <translation>Compressione veloce (degrada qualità)</translation>
     </message>
     <message>
         <source>Cut-off optimization (faster but degrades quality)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ottimizzazione Cut-off (più veloce ma degrada qualità)</translation>
     </message>
 </context>
 <context>
@@ -53,19 +53,19 @@
     </message>
     <message>
         <source>Opening DSP Encoder failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Apertura Encoder DSP fallita.</translation>
     </message>
     <message>
         <source>Opening sound device failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Apertura dispositivo audio fallita.</translation>
     </message>
     <message>
         <source>Testing GSM Encoding. Please talk now (3 seconds).</source>
-        <translation type="unfinished"></translation>
+        <translation>Test codifica GSM. Prego di parlare per 3 secondi.</translation>
     </message>
     <message>
         <source>You should hear your recorded sample now.</source>
-        <translation type="unfinished"></translation>
+        <translation>Audio registrato dovrebbe farsi sentire.</translation>
     </message>
 </context>
 </TS>

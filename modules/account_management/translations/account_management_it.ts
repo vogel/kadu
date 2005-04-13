@@ -156,27 +156,27 @@ Le password devo esser identiche !</translation>
     </message>
     <message>
         <source>Remind password/email</source>
-        <translation type="unfinished"></translation>
+        <translation>Ricorda password/e-mail</translation>
     </message>
     <message>
         <source>This dialog box allows you to ask server to remind your current password.</source>
-        <translation type="unfinished"></translation>
+        <translation>Questa finestra di dialogo permette di interrograe server per ricordare password d&apos;accesso.</translation>
     </message>
     <message>
         <source>Email</source>
-        <translation type="unfinished">E-mail</translation>
+        <translation>E-mail</translation>
     </message>
     <message>
         <source>Email (as during registration):</source>
-        <translation type="unfinished"></translation>
+        <translation>E-mail (messo durante la registrazione):</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Chiudi</translation>
+        <translation>&amp;Chiudi</translation>
     </message>
     <message>
         <source>Your password has been send on your email</source>
-        <translation type="unfinished"></translation>
+        <translation>La tua password sarà spedita via E-mail</translation>
     </message>
 </context>
 <context>

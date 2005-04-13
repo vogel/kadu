@@ -152,7 +152,7 @@ Devresti sentire con un secondo di ritardo.</translation>
     </message>
     <message>
         <source>Cannot open sound device for playing!</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile aprire dispositivo audio per riproduzione!</translation>
     </message>
 </context>
 </TS>

@@ -158,27 +158,27 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
     </message>
     <message>
         <source>Remind password/email</source>
-        <translation type="unfinished"></translation>
+        <translation>An Passwort/Email erinnern</translation>
     </message>
     <message>
         <source>This dialog box allows you to ask server to remind your current password.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieses Dialog ermöglicht es Ihnen, den Server um eine Passwort-Erinnerung anzusuchen.</translation>
     </message>
     <message>
         <source>Email</source>
-        <translation type="unfinished">Email</translation>
+        <translation>Email</translation>
     </message>
     <message>
         <source>Email (as during registration):</source>
-        <translation type="unfinished"></translation>
+        <translation>Email (wie bei der Anmeldung):</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Schliessen</translation>
+        <translation>&amp;Schliessen</translation>
     </message>
     <message>
         <source>Your password has been send on your email</source>
-        <translation type="unfinished"></translation>
+        <translation>Ihr Passwort wird an Ihre Email geschickt</translation>
     </message>
 </context>
 <context>
