@@ -742,13 +742,16 @@ Attention danger!
         <source>This file is too big for %1 of %2 contacts.
 Do you really want to send this image?
 Some of them probably will not get it.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ce fichier est trop volumineux pour  %1 z %2 contacts.
+Souhaitez vous vraiment expédier cette image?
+Probablement il ne sera pas delivré.</translation>
     </message>
     <message>
         <source>This file is too big for %1.
 Do you really want to send this image?
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Le volume de ce fichier est trop gros pour %1.
+Souhaitez vous vraiment expédier cette image?</translation>
     </message>
 </context>
 <context>

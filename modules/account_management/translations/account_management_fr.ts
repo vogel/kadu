@@ -156,27 +156,27 @@ Les mot de passe dans le deux champs doivent être idéntiques!</translation>
     </message>
     <message>
         <source>Remind password/email</source>
-        <translation type="unfinished"></translation>
+        <translation>Rappelle le nom d&apos;utilisateur-pseudo /e-mail</translation>
     </message>
     <message>
         <source>This dialog box allows you to ask server to remind your current password.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cette fenêtre de dialogue permet d&apos;interroger le serveur afin de rappeler votre pseudo actuel.</translation>
     </message>
     <message>
         <source>Email</source>
-        <translation type="unfinished">E-mail</translation>
+        <translation>E-mail</translation>
     </message>
     <message>
         <source>Email (as during registration):</source>
-        <translation type="unfinished"></translation>
+        <translation>E-mail (inscrit lors de l&apos;enregistrement):</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Fermes</translation>
+        <translation>&amp;Fermes</translation>
     </message>
     <message>
         <source>Your password has been send on your email</source>
-        <translation type="unfinished"></translation>
+        <translation>Votre pseudo a été expédié à votre adresse e-mail</translation>
     </message>
 </context>
 <context>
