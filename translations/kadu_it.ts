@@ -731,23 +731,26 @@ E un rischio per la sicurezza!</translation>
     </message>
     <message>
         <source>This file is not readable</source>
-        <translation type="unfinished"></translation>
+        <translation>Questo file non è leggibile</translation>
     </message>
     <message>
         <source>This file is too big (%1 &gt;= %2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Questo File è troppo grande (%1 &gt;= %2)</translation>
     </message>
     <message>
         <source>This file is too big for %1 of %2 contacts.
 Do you really want to send this image?
 Some of them probably will not get it.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dimensione file troppo grande per %1 di %2 contatti.
+Sei sicuro di voler mandare questa immagine ?
+Probbabilmente non sarà consegnato a tutti.</translation>
     </message>
     <message>
         <source>This file is too big for %1.
 Do you really want to send this image?
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Dimensione file troppo grande per %1.
+Sicuro di spedirlo comunque ?</translation>
     </message>
 </context>
 <context>
