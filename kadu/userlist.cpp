@@ -645,9 +645,11 @@ void UserList::changeUserInfo(const QString& old_altnick, const UserListElement&
 
 	UserListElement old_data = e;
 	e = new_data;
-	insert(e.altNick().lower(), e);
-
-	UserBox::all_renameUser(old_altnick, e.altNick());
+	insert(e.altNick().lower(), e);// jakims cudem w tym miejscu 
+					//zmieniane jest old_altnick
+					// i all_renameUser mialo 
+					//takie same parametry
+	UserBox::all_renameUser(old_data.altNick(), e.altNick());
 	UserBox::all_refresh();
 
 	emit userDataChanged(&old_data, &new_data);
