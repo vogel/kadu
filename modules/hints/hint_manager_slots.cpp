@@ -125,7 +125,7 @@ void HintManagerSlots::onCloseConfigDialog()
 void HintManagerSlots::clicked_HintType(int id)
 {
 	kdebugf();
-	if (config_opts_prefixes[id]==currentOptionPrefix)
+	if (id == -1 || config_opts_prefixes[id] == currentOptionPrefix)
 		return;
 	currentOptionPrefix=config_opts_prefixes[id];
 	QLabel *preview=ConfigDialog::getLabel("Hints", "<b>Text</b> preview");
