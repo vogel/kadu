@@ -356,6 +356,12 @@ void SearchDialog::closeEvent(QCloseEvent * e)
 	QWidget::closeEvent(e);
 }
 
+void SearchDialog::resizeEvent(QResizeEvent *e)
+{
+	QWidget::resizeEvent(e);
+	results->triggerUpdate();//obej¶cie b³êdu w Qt, które nie od¶wie¿a w³a¶ciwie wyników
+}
+
 void SearchDialog::uinTyped(void)
 {
 	r_uin->setChecked(true);

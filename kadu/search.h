@@ -110,7 +110,8 @@ class SearchDialog : public QDialog {
 			Obs³uguje zdarzenie zamkniêcia okna wyszukiwania w katalogu publicznym.
 			\param e wska¼nik do obiektu opisuj±cego zdarzenie zamkniêcie okna.
 		**/
-		void closeEvent(QCloseEvent * e);
+		virtual void closeEvent(QCloseEvent *e);
+		virtual void resizeEvent(QResizeEvent *e);
 };
 
 #endif
