@@ -4405,6 +4405,15 @@ fi
 
 
 
+########
+# PATHS
+########
+QT_LIBS_PATHS="    $QTDIR/lib     /usr/lib/qt3/lib     /usr/lib/qt/lib     /usr/local/qt/lib     /usr/local/lib     /usr/lib      /usr/lib/qt     /usr/share/qt3/lib     /usr/X11R6/lib     /sw/lib        /usr/lib/qt3     /usr/X11R6/lib/qt     /usr/X11R6/lib/qt3     /usr/lib/qt3/lib64"
+QT_INCLUDES_PATHS="$QTDIR/include /usr/lib/qt3/include /usr/lib/qt/include /usr/local/qt/include /usr/local/include /usr/include  /usr/include/qt /usr/share/qt3/include /usr/X11R6/include /sw/include/qt /usr/include/qt3 /usr/X11R6/include/qt /usr/X11R6/include/qt3"
+QT_TOOLS_PATHS="   $QTDIR/bin     /usr/lib/qt3/bin     /usr/lib/qt/bin     /usr/local/qt/bin     /usr/local/bin     /usr/bin      /bin            /usr/share/qt3/bin     /usr/X11R6/bin"
+PNG_LIBS_PATHS="   /usr/lib /usr/local/lib /sw/lib"
+Z_LIBS_PATHS="     /usr/lib /usr/local/lib /sw/lib"
+
 
 #################
 # PNG Library
@@ -4469,10 +4478,10 @@ sed 's/^/| /' conftest.$ac_ext >&5
 		echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6
 
-		echo "$as_me:$LINENO: checking if libpng is in specified directories: $with_libs /usr/lib /usr/local/lib /sw/lib" >&5
-echo $ECHO_N "checking if libpng is in specified directories: $with_libs /usr/lib /usr/local/lib /sw/lib... $ECHO_C" >&6
+		echo "$as_me:$LINENO: checking if libpng is in specified directories: $with_libs $PNG_LIBS_PATHS" >&5
+echo $ECHO_N "checking if libpng is in specified directories: $with_libs $PNG_LIBS_PATHS... $ECHO_C" >&6
 		FILE_DIR=
-		for dir in $with_libs /usr/lib /usr/local/lib /sw/lib
+		for dir in $with_libs $PNG_LIBS_PATHS
 		do
 			CFLAGS="$save_CFLAGS  -L $dir -lpng"
 			cat >conftest.$ac_ext <<_ACEOF
@@ -4606,10 +4615,10 @@ sed 's/^/| /' conftest.$ac_ext >&5
 		echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6
 
-		echo "$as_me:$LINENO: checking if libz is in specified directories: $with_libs /usr/lib /usr/local/lib /sw/lib" >&5
-echo $ECHO_N "checking if libz is in specified directories: $with_libs /usr/lib /usr/local/lib /sw/lib... $ECHO_C" >&6
+		echo "$as_me:$LINENO: checking if libz is in specified directories: $with_libs $Z_LIBS_PATHS" >&5
+echo $ECHO_N "checking if libz is in specified directories: $with_libs $Z_LIBS_PATHS... $ECHO_C" >&6
 		FILE_DIR=
-		for dir in $with_libs /usr/lib /usr/local/lib /sw/lib
+		for dir in $with_libs $Z_LIBS_PATHS
 		do
 			CFLAGS="$save_CFLAGS  -L $dir -lz"
 			cat >conftest.$ac_ext <<_ACEOF
@@ -4750,10 +4759,10 @@ sed 's/^/| /' conftest.$ac_ext >&5
 		echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6
 
-		echo "$as_me:$LINENO: checking if libpng is in specified directories: $with_libs /usr/lib /usr/local/lib /sw/lib" >&5
-echo $ECHO_N "checking if libpng is in specified directories: $with_libs /usr/lib /usr/local/lib /sw/lib... $ECHO_C" >&6
+		echo "$as_me:$LINENO: checking if libpng is in specified directories: $with_libs $PNG_LIBS_PATHS" >&5
+echo $ECHO_N "checking if libpng is in specified directories: $with_libs $PNG_LIBS_PATHS... $ECHO_C" >&6
 		FILE_DIR=
-		for dir in $with_libs /usr/lib /usr/local/lib /sw/lib
+		for dir in $with_libs $PNG_LIBS_PATHS
 		do
 			CFLAGS="$save_CFLAGS $Z_LIBS -lm -L $dir -lpng"
 			cat >conftest.$ac_ext <<_ACEOF
@@ -4904,7 +4913,7 @@ echo "${ECHO_T}no" >&6
 	echo "$as_me:$LINENO: checking for qwidget.h in specified directiories" >&5
 echo $ECHO_N "checking for qwidget.h in specified directiories... $ECHO_C" >&6
 	FILE_DIR=
-	for dir in $with_includes $QTDIR/include /usr/lib/qt/include /usr/lib/qt3/include /usr/local/qt/include /usr/include /usr/include/qt /usr/include/qt3 /usr/local/include /usr/X11R6/include /usr/X11R6/include/qt /usr/X11R6/include/qt3 /sw/include/qt /usr/share/qt3/include
+	for dir in $with_includes $QT_INCLUDES_PATHS
 	do
 		if test -f $dir/qwidget.h; then
 			FILE_DIR=$dir
@@ -4921,8 +4930,8 @@ echo "${ECHO_T}found in $FILE_DIR" >&6
 echo "${ECHO_T}not found" >&6
 
 
-	{ { echo "$as_me:$LINENO: error: libqt-mt headers not found - please install libqt3-devel" >&5
-echo "$as_me: error: libqt-mt headers not found - please install libqt3-devel" >&2;}
+	{ { echo "$as_me:$LINENO: error: libqt-mt headers not found - please install libqt3-devel - check: http://kadu.net/qt" >&5
+echo "$as_me: error: libqt-mt headers not found - please install libqt3-devel - check: http://kadu.net/qt" >&2;}
    { (exit 1); exit 1; }; }
 
 	fi
@@ -4997,10 +5006,10 @@ sed 's/^/| /' conftest.$ac_ext >&5
 		echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6
 
-		echo "$as_me:$LINENO: checking if libqt-mt is in specified directories: $with_libs $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib/qt/lib /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib /usr/share/qt3/lib" >&5
-echo $ECHO_N "checking if libqt-mt is in specified directories: $with_libs $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib/qt/lib /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib /usr/share/qt3/lib... $ECHO_C" >&6
+		echo "$as_me:$LINENO: checking if libqt-mt is in specified directories: $with_libs $QT_LIBS_PATHS" >&5
+echo $ECHO_N "checking if libqt-mt is in specified directories: $with_libs $QT_LIBS_PATHS... $ECHO_C" >&6
 		FILE_DIR=
-		for dir in $with_libs $QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib/qt/lib /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib /usr/share/qt3/lib
+		for dir in $with_libs $QT_LIBS_PATHS
 		do
 			CFLAGS="$save_CFLAGS $PNG_LIBS $PTHREAD_LDFLAGS $PTHREAD_LIBS -L $dir -lqt-mt"
 			cat >conftest.$ac_ext <<_ACEOF
@@ -5069,8 +5078,8 @@ rm -f conftest.err conftest.$ac_objext \
 echo "${ECHO_T}not found" >&6
 
 
-	{ { echo "$as_me:$LINENO: error: libqt-mt not found - please install libqt3" >&5
-echo "$as_me: error: libqt-mt not found - please install libqt3" >&2;}
+	{ { echo "$as_me:$LINENO: error: libqt-mt not found - please install libqt3 - check: http://kadu.net/qt" >&5
+echo "$as_me: error: libqt-mt not found - please install libqt3 - check: http://kadu.net/qt" >&2;}
    { (exit 1); exit 1; }; }
 
 		fi
@@ -5089,7 +5098,7 @@ rm -f conftest.err conftest.$ac_objext \
 	echo "$as_me:$LINENO: checking for moc in specified directiories" >&5
 echo $ECHO_N "checking for moc in specified directiories... $ECHO_C" >&6
 	FILE_DIR=
-	for dir in $with_apps $QTDIR/bin /usr/lib/qt3/bin /usr/local/qt/bin /usr/lib/qt/bin /usr/bin /bin /usr/local/bin /usr/X11R6/bin /usr/share/qt3/bin
+	for dir in $with_apps $QT_TOOLS_PATHS
 	do
 		if test -f $dir/moc; then
 			FILE_DIR=$dir

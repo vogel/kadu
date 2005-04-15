@@ -461,13 +461,22 @@ AC_SUBST(PTHREAD_LDFLAGS)
 AC_SUBST(PTHREAD_LIBS)
 
 
+########
+# PATHS
+########
+QT_LIBS_PATHS="    $QTDIR/lib     /usr/lib/qt3/lib     /usr/lib/qt/lib     /usr/local/qt/lib     /usr/local/lib     /usr/lib      /usr/lib/qt     /usr/share/qt3/lib     /usr/X11R6/lib     /sw/lib        /usr/lib/qt3     /usr/X11R6/lib/qt     /usr/X11R6/lib/qt3     /usr/lib/qt3/lib64"
+QT_INCLUDES_PATHS="$QTDIR/include /usr/lib/qt3/include /usr/lib/qt/include /usr/local/qt/include /usr/local/include /usr/include  /usr/include/qt /usr/share/qt3/include /usr/X11R6/include /sw/include/qt /usr/include/qt3 /usr/X11R6/include/qt /usr/X11R6/include/qt3"
+QT_TOOLS_PATHS="   $QTDIR/bin     /usr/lib/qt3/bin     /usr/lib/qt/bin     /usr/local/qt/bin     /usr/local/bin     /usr/bin      /bin            /usr/share/qt3/bin     /usr/X11R6/bin"
+PNG_LIBS_PATHS="   /usr/lib /usr/local/lib /sw/lib"
+Z_LIBS_PATHS="     /usr/lib /usr/local/lib /sw/lib"
+
 
 #################
 # PNG Library
 #################
 
 PNG_LIBS="-lpng"
-FIND_LIBRARY([png],[/usr/lib /usr/local/lib /sw/lib],
+FIND_LIBRARY([png],[$PNG_LIBS_PATHS],
 [
 	PNG_LIBS="$PNG_LIBS -L$FILE_DIR"
 ],[
@@ -477,7 +486,7 @@ FIND_LIBRARY([png],[/usr/lib /usr/local/lib /sw/lib],
 	# LibZ
 	#################
 	Z_LIBS="-lz"
-	FIND_LIBRARY([z],[/usr/lib /usr/local/lib /sw/lib],
+	FIND_LIBRARY([z],[$Z_LIBS_PATHS],
 	[
 		Z_LIBS="$Z_LIBS -L$FILE_DIR"
 	],[
@@ -486,7 +495,7 @@ FIND_LIBRARY([png],[/usr/lib /usr/local/lib /sw/lib],
 	AC_SUBST(Z_LIBS)
 	AC_MSG_RESULT([zlib found - checking for libpng once again])
 
-	FIND_LIBRARY([png],[/usr/lib /usr/local/lib /sw/lib],
+	FIND_LIBRARY([png],[$PNG_LIBS_PATHS],
 	[
 		PNG_LIBS="$Z_LIBS $PNG_LIBS -L$FILE_DIR"
 	],[
@@ -499,11 +508,11 @@ AC_SUBST(PNG_LIBS)
 # QT Headers
 #################
 
-FIND_HEADER([qwidget.h],[$QTDIR/include /usr/lib/qt/include /usr/lib/qt3/include /usr/local/qt/include /usr/include /usr/include/qt /usr/include/qt3 /usr/local/include /usr/X11R6/include /usr/X11R6/include/qt /usr/X11R6/include/qt3 /sw/include/qt /usr/share/qt3/include],
+FIND_HEADER([qwidget.h],[$QT_INCLUDES_PATHS],
 [
 	QT_INCLUDES="-I$FILE_DIR"
 ],[
-	AC_MSG_ERROR([libqt-mt headers not found - please install libqt3-devel])
+	AC_MSG_ERROR([libqt-mt headers not found - please install libqt3-devel - check: http://kadu.net/qt])
 ])
 AC_SUBST(QT_INCLUDES)
 
@@ -513,11 +522,11 @@ AC_SUBST(QT_INCLUDES)
 
 
 QT_LIBS="-lqt-mt"
-FIND_LIBRARY([qt-mt],[$QTDIR/lib /usr/lib/qt3/lib /usr/local/qt/lib /usr/lib/qt /usr/lib/qt/lib /usr/lib /usr/local/lib /usr/X11R6/lib /usr/lib/qt3/lib64 /sw/lib /usr/share/qt3/lib],
+FIND_LIBRARY([qt-mt],[$QT_LIBS_PATHS],
 [
 	QT_LIBS="$QT_LIBS -L$FILE_DIR"
 ],[
-	AC_MSG_ERROR([libqt-mt not found - please install libqt3])
+	AC_MSG_ERROR([libqt-mt not found - please install libqt3 - check: http://kadu.net/qt])
 ],[$PNG_LIBS $PTHREAD_LDFLAGS $PTHREAD_LIBS])
 AC_SUBST(QT_LIBS)
 
@@ -525,7 +534,7 @@ AC_SUBST(QT_LIBS)
 # QT MOC
 #################
 
-FIND_FILE([moc],[$with_apps $QTDIR/bin /usr/lib/qt3/bin /usr/local/qt/bin /usr/lib/qt/bin /usr/bin /bin /usr/local/bin /usr/X11R6/bin /usr/share/qt3/bin],
+FIND_FILE([moc],[$with_apps $QT_TOOLS_PATHS],
 [
 	QT_MOC_DIR="$FILE_DIR"
 ],[
