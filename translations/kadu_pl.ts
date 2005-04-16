@@ -741,7 +741,7 @@ Jest to wysoce ryzykowne!</translation>
         <source>This file is too big for %1 of %2 contacts.
 Do you really want to send this image?
 Some of them probably will not get it.</source>
-        <translation>Rozmiar pliku jest zaduży dla %1 z %2 kontaktów.
+        <translation>Rozmiar pliku jest za duży dla %1 z %2 kontaktów.
 Czy napewno chcesz wysłać ten obrazek?
 Prawdopodobnie nie zostanie on wszystkim dostarczony.</translation>
     </message>
@@ -749,7 +749,7 @@ Prawdopodobnie nie zostanie on wszystkim dostarczony.</translation>
         <source>This file is too big for %1.
 Do you really want to send this image?
 </source>
-        <translation>Rozmiar pliku jest zaduży dla %1.
+        <translation>Rozmiar pliku jest za duży dla %1.
 Czy napewno chcesz wysłać ten obrazek?</translation>
     </message>
 </context>
