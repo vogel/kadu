@@ -4438,7 +4438,7 @@ echo "$as_me: WARNING: we do not know how to create joinable pthreads" >&2;}
 echo $ECHO_N "checking if -pthread is sufficient with -shared... $ECHO_C" >&6
 	save_CFLAGS="$CFLAGS"
 	save_LIBS="$LIBS"
-	CFLAGS="-shared -Wl,-z,defs $CFLAGS"
+	CFLAGS="-shared -fPIC -Wl,-z,defs $CFLAGS"
 	ok="no"
         cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
