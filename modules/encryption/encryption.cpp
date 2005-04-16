@@ -205,10 +205,10 @@ void EncryptionManager::receivedMessageFilter(const UinsList& senders, QCString&
 		return;
 	}
 
-	kdebugm(KDEBUG_INFO, "Decrypting encrypted message...\n");
+	kdebugm(KDEBUG_INFO, "Decrypting encrypted message...(%d)\n", msg.length());
 	const char* msg_c = msg;
 	char* decoded = sim_message_decrypt((const unsigned char*)msg_c, senders[0]);
-	kdebugm(KDEBUG_DUMP, "Decrypted message is: %s\n", decoded);
+	kdebugm(KDEBUG_DUMP, "Decrypted message is(len:%d): %s\n", decoded?strlen(decoded):0, decoded);
 	if (decoded != NULL)
 	{
 		msg=decoded;
@@ -259,6 +259,7 @@ void EncryptionManager::enableEncryptionBtnForUins(UinsList uins)
 void EncryptionManager::sendMessageFilter(const UinsList& uins, QCString& msg, bool &stop)
 {
 	Chat* chat=chat_manager->findChatByUins(uins);
+//	kdebugm(KDEBUG_INFO, "length: %d\n", msg.length());
 	if (uins.count()==1 && EncryptionEnabled[chat])
 	{
 		char *msg_c = sim_message_encrypt((const unsigned char*)(const char*)msg, uins[0]);
@@ -271,6 +272,7 @@ void EncryptionManager::sendMessageFilter(const UinsList& uins, QCString& msg, b
 		else
 			msg = msg_c;
 	}
+//	kdebugm(KDEBUG_INFO, "length: %d\n", msg.length());
 }
 
 void EncryptionManager::userBoxMenuPopup()
