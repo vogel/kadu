@@ -3,7 +3,9 @@ lub rozbudowy. Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub
 podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y. Je¶li jest
 w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
-+++ wersja 0.4.0
++++ wersja 0.4.1
+
++++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
   w oknie konfiguracji (adrian)
 * poprawione 2 b³êdy zwi±zane z dymkami i docking gdy te pierwsze s± wy³±czone (joi)
