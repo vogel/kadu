@@ -1,4 +1,4 @@
-/* $Id: simlite.c,v 1.3 2005/04/16 11:34:10 joi Exp $ */
+/* $Id: simlite.c,v 1.4 2005/04/16 11:59:11 joi Exp $ */
 
 /*
  *  (C) Copyright 2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -21,8 +21,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 
-#include <stdio.h>
-#include <string.h>
 
 #include <openssl/bio.h>
 #include <openssl/evp.h>
@@ -32,13 +30,47 @@
 #include <openssl/pem.h>
 #include <openssl/sha.h>
 
+#include <limits.h>
+#include <stdio.h>
+#include <string.h>
+#include <time.h>
+
+/*dla gg_fix16()*/
+#include "libgadu.h"
+
 #include "simlite.h"
+
+#ifndef PATH_MAX
+#  define PATH_MAX _POSIX_PATH_MAX
+#endif
 
 char *sim_key_path = NULL;
 int sim_errno = 0;
 
 /*
- * sim_keygen()
+ * sim_seed_prng()
+ */
+static int sim_seed_prng()
+{
+	char rubbish[1024];
+	struct {
+		time_t time;
+		void * foo;
+		void * foo2;
+	} data;
+
+	data.time = time(NULL);
+	data.foo = (void *) &data;
+	data.foo2 = (void *) rubbish;
+
+	RAND_seed((void *) &data, sizeof(data));
+	RAND_seed((void *) rubbish, sizeof(rubbish));
+
+	return sizeof(data) + sizeof(rubbish);
+}
+
+/*
+ * sim_key_generate()
  *
  * tworzy parê kluczy i zapisuje je na dysku.
  *
@@ -48,10 +80,13 @@ int sim_errno = 0;
  */
 int sim_key_generate(uint32_t uin)
 {
-	char path[PATH_MAX];
+	char path[PATH_MAX + 1];
 	RSA *keys = NULL;
 	int res = -1;
 	FILE *f = NULL;
+
+	if (!RAND_status())
+		sim_seed_prng();
 
 	if (!(keys = RSA_generate_key(1024, RSA_F4, NULL, NULL))) {
 		sim_errno = SIM_ERROR_RSA;
@@ -112,7 +147,7 @@ cleanup:
  */
 static RSA *sim_key_read(uint32_t uin)
 {
-	char path[PATH_MAX];
+	char path[PATH_MAX + 1];
 	FILE *f;
 	RSA *key;
 
@@ -135,6 +170,61 @@ static RSA *sim_key_read(uint32_t uin)
 }
 
 /*
+ * sim_key_fingerprint()
+ *
+ * zwraca fingerprint danego klucza.
+ *
+ *  - uin - numer posiadacza klucza.
+ *
+ * zaalokowany bufor.
+ */
+char *sim_key_fingerprint(uint32_t uin)
+{
+	RSA *key = sim_key_read(uin);
+	unsigned char md_value[EVP_MAX_MD_SIZE], *buf, *newbuf;
+	char *result = NULL;
+	EVP_MD_CTX ctx;
+	int md_len, size, i;
+
+	if (!key)
+		return NULL;
+
+	if (uin)
+		size = i2d_RSAPublicKey(key, NULL);
+	else
+		size = i2d_RSAPrivateKey(key, NULL);
+
+	if (!(newbuf = buf = malloc(size))) {
+		sim_errno = SIM_ERROR_MEMORY;
+		goto cleanup;
+	}
+
+	if (uin)
+		size = i2d_RSAPublicKey(key, &newbuf);
+	else
+		size = i2d_RSAPrivateKey(key, &newbuf);
+	
+	EVP_DigestInit(&ctx, EVP_sha1());	
+	EVP_DigestUpdate(&ctx, buf, size);
+	EVP_DigestFinal(&ctx, md_value, &md_len);
+
+	free(buf);
+
+	if (!(result = malloc(md_len * 3))) {
+		sim_errno = SIM_ERROR_MEMORY;
+		goto cleanup;
+	}
+
+	for (i = 0; i < md_len; i++)
+		snprintf(result + i * 3, (md_len * 3 - i * 3), (i != md_len - 1) ? "%.2x:" : "%.2x", md_value[i]);
+
+cleanup:
+	RSA_free(key);
+
+	return result;
+}
+
+/*
  * sim_strerror()
  *
  * zamienia kod b³êdu simlite na komunikat.
@@ -145,7 +235,7 @@ static RSA *sim_key_read(uint32_t uin)
  */
 const char *sim_strerror(int error)
 {
-	char *result = "Unknown error";
+	const char *result = "Unknown error";
 	
 	switch (error) {
 		case SIM_ERROR_SUCCESS:
@@ -208,6 +298,10 @@ char *sim_message_encrypt(const unsigned char *message, uint32_t uin)
 		goto cleanup;
 	}
 
+	/* trzeba nakarmiæ potwora? */
+	if (!RAND_status())
+		sim_seed_prng();
+
 	/* wylosuj klucz symetryczny */
 	if (RAND_bytes(bf_key, sizeof(bf_key)) != 1) {
 		sim_errno = SIM_ERROR_RAND;
@@ -222,7 +316,7 @@ char *sim_message_encrypt(const unsigned char *message, uint32_t uin)
 
 	/* przygotuj zawarto¶æ pakietu do szyfrowania blowfishem */
 	memset(&head, 0, sizeof(head));
-	head.magic = SIM_MAGIC_V1;
+	head.magic = gg_fix16(SIM_MAGIC_V1);
 
 	if (RAND_bytes(head.init, sizeof(head.init)) != 1) {
 		sim_errno = SIM_ERROR_RAND;
@@ -386,7 +480,7 @@ char *sim_message_decrypt(const unsigned char *message, uint32_t uin)
 
 	memcpy(&head, data, sizeof(head));
 
-	if (head.magic != SIM_MAGIC_V1) {
+	if (head.magic != gg_fix16(SIM_MAGIC_V1)) {
 		sim_errno = SIM_ERROR_MAGIC;
 		goto cleanup;
 	}

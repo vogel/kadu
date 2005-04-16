@@ -18,14 +18,7 @@
 #ifndef __SIMLITE_H
 #define __SIMLITE_H
 
-#include <openssl/rsa.h>
-#ifdef HAVE_STDINT_H
 #include <stdint.h>
-#else
-#include <inttypes.h>
-#endif
-#include <limits.h>
-#include <sys/param.h>
 
 extern char *sim_key_path;
 extern int sim_errno;
@@ -57,6 +50,7 @@ sim_message_header;
 char *sim_message_decrypt(const unsigned char *message, uint32_t uin);
 char *sim_message_encrypt(const unsigned char *message, uint32_t uin);
 int sim_key_generate(uint32_t uin);
+char *sim_key_fingerprint(uint32_t uin);
 
 const char *sim_strerror(int error);
 
