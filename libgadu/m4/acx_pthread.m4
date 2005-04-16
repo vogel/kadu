@@ -162,7 +162,7 @@ if test "x$acx_pthread_ok" = xyes; then
 	AC_MSG_CHECKING([if -pthread is sufficient with -shared])
 	save_CFLAGS="$CFLAGS"
 	save_LIBS="$LIBS"
-	CFLAGS="-shared -Wl,-z,defs $CFLAGS"
+	CFLAGS="-shared -fPIC -Wl,-z,defs $CFLAGS"
 	ok="no"
         AC_TRY_LINK([#include <pthread.h>],
                     [pthread_t th; pthread_join(th, 0);
