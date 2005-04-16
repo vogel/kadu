@@ -11,6 +11,7 @@
 #include <qfile.h>
 #include <qhgroupbox.h>
 #include <qmessagebox.h>
+#include <stdlib.h>
 
 #include "config_dialog.h"
 #include "debug.h"
