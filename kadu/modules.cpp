@@ -598,12 +598,17 @@ bool ModulesManager::activateModule(const QString& module_name)
 	
 	m.translator = loadModuleTranslation(module_name);
 
-	int res=init();
-	if (res!=0)
+	int res = init();
+	if (res != 0)
 	{
 		MessageBox::msg(tr("Module initialization routine for %1 failed.").arg(module_name));
-		if (m.lib!=NULL)
+		if (m.lib != NULL)
 			delete m.lib;
+		if (m.translator != NULL)
+		{
+			qApp->removeTranslator(m.translator);
+			delete m.translator;
+		}
 		return false;		
 	}
 	
