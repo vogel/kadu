@@ -472,7 +472,7 @@ void ConfigDialog::changeTab(const QString& name)
 			++counter;
 		}
 		else 
-			if (tabControl.widget && tabControl.widget->isShown())
+			if (tabControl.widget && tabControl.widget->isVisible())
 			{
 				tabControl.widget->hide();
 				if ((sig = tabChangesOut[tabControl.caption]))
