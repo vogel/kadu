@@ -4,7 +4,7 @@
 # Regeneracja configure i innych. Uruchamiaæ z katalogu wy¿ej.
 #
 
-aclocal
-autoconf
-autoheader
-automake
+aclocal || exit 1
+autoconf || exit 2
+autoheader || exit 3
+automake || exit 4
