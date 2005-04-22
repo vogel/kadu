@@ -1,7 +1,7 @@
 #ifndef KADU_SOUNDFILE_H
 #define KADU_SOUNDFILE_H
 
-#include <stdint.h>
+#include "../../kadu-stdint.h"
 
 class SoundFile
 {

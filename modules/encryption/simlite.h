@@ -18,7 +18,7 @@
 #ifndef __SIMLITE_H
 #define __SIMLITE_H
 
-#include <stdint.h>
+#include "../../kadu-stdint.h"
 
 extern char *sim_key_path;
 extern int sim_errno;

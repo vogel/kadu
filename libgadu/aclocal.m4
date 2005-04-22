@@ -15,7 +15,7 @@ dnl Based on AC_NEED_STDINT_H by Guido Draheim <guidod@gmx.de> that can be
 dnl found at http://www.gnu.org/software/ac-archive/. Do not complain him
 dnl about this macro.
 dnl
-dnl $Id: aclocal.m4,v 1.22 2005/04/16 18:31:04 joi Exp $
+dnl $Id: aclocal.m4,v 1.23 2005/04/22 20:56:03 joi Exp $
 
 AC_DEFUN([AC_NEED_STDINT_H],
  [AC_MSG_CHECKING([for uintXX_t types])
@@ -237,6 +237,8 @@ if test "x$acx_pthread_ok" = xyes; then
 	AC_MSG_CHECKING([if -pthread is sufficient with -shared])
 	save_CFLAGS="$CFLAGS"
 	save_LIBS="$LIBS"
+	# This forces link-time symbol resolution, so that the linking checks
+	# with -shared actually have any value
 	CFLAGS="-shared -fPIC -Wl,-z,defs $CFLAGS"
 	ok="no"
         AC_TRY_LINK([#include <pthread.h>],
@@ -260,7 +262,23 @@ if test "x$acx_pthread_ok" = xyes; then
 			PTHREAD_LIBS="-lpthread $PTHREAD_LIBS"
 		else
 			AC_MSG_RESULT([no])
-			acx_pthread_ok=no
+			# FreeBSD 4.10 gcc -pthread implementation forgets to
+			# use -lc_r instead of -lc if -shared is specified.
+			# Try to detect and workaround that.
+			AC_MSG_CHECKING([if -lc_r fixes that])
+			LIBS="-lc_r $save_LIBS"
+			AC_TRY_LINK([#include <pthread.h>],
+			    [pthread_t th; pthread_join(th, 0);
+			     pthread_attr_init(0); pthread_cleanup_push(0, 0);
+			     pthread_create(0,0,0,0); pthread_cleanup_pop(0); ],
+			    [ok=yes])
+			if test "x$ok" = xyes; then
+				AC_MSG_RESULT([yes])
+				PTHREAD_LIBS="-lc_r $PTHREAD_LIBS"
+			else
+				AC_MSG_RESULT([no])
+				acx_pthread_ok=no
+			fi
 		fi
 	fi
         CFLAGS="$save_CFLAGS"
@@ -302,7 +320,7 @@ AC_LANG_RESTORE
 ])dnl ACX_PTHREAD
 
 dnl based on curses.m4 
-dnl $Id: aclocal.m4,v 1.22 2005/04/16 18:31:04 joi Exp $
+dnl $Id: aclocal.m4,v 1.23 2005/04/22 20:56:03 joi Exp $
 
 AC_DEFUN(AC_CHECK_OPENSSL,[
   AC_SUBST(OPENSSL_LIBS)

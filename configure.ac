@@ -118,7 +118,7 @@ AC_DEFUN(FIND_LIBRARY,[
 		FILE_DIR=
 		for dir in $with_libs $2
 		do
-			CFLAGS="$save_CFLAGS $5 -L $dir -l$1"
+			CFLAGS="$save_CFLAGS $5 -L$dir -l$1"
 			AC_TRY_LINK([],
 			[
 				return 0;
@@ -546,7 +546,7 @@ AC_SUBST(QT_MOC_DIR)
 
 # Checks for header files.
 AC_HEADER_STDC
-AC_CHECK_HEADERS([fcntl.h inttypes.h limits.h netinet/in.h stdint.h stdlib.h string.h sys/ioctl.h sys/socket.h unistd.h])
+AC_CHECK_HEADERS([fcntl.h limits.h netinet/in.h stdlib.h string.h sys/ioctl.h sys/socket.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
@@ -560,6 +560,7 @@ AC_FUNC_STAT
 AC_FUNC_VPRINTF
 AC_CHECK_FUNCS([memset mkdir sqrt strdup])
 
+AX_CREATE_STDINT_H([kadu-stdint.h])
 
 ########################################################################
 # parse configuration options
