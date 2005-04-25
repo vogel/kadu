@@ -271,7 +271,10 @@ void EncryptionManager::sendMessageFilter(const UinsList& uins, QCString& msg, b
 			MessageBox::wrn(tr("Cannot encrypt message. sim_message_encrypt returned: \"%1\" (sim_errno=%2)").arg(sim_strerror(sim_errno)).arg(sim_errno), true);
 		}
 		else
+		{
 			msg = msg_c;
+			free(msg_c);
+		}
 	}
 //	kdebugm(KDEBUG_INFO, "length: %d\n", msg.length());
 }

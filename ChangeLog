@@ -8,6 +8,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawiona kompatybilno¶æ z Qt 3.0 (joi)
 * poprawka wykrywania pthreadów w libgadu na FreeBSD 4.x (z cvsu EKG) (joi)
 * poprawka wykrywania bibliotek na MacOSX (joi)
+* usuniêty wyciek pamiêci w module encryption przy wysy³aniu zaszyfrowanej
+  wiadomo¶ci (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
