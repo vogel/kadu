@@ -1,0 +1,4 @@
+#!/bin/sh
+
+touch aclocal.m4 stamp-h.in kadu-config.h.in stamp-h configure \
+        Makefile.in kadu/Makefile.in translations/Makefile.in varia/Makefile.in modules/Makefile.in

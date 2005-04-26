@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 #
 # Wykonanie cvs commit na wszystkich plikach, które bêd± modyfikowane przez
@@ -10,6 +10,7 @@ if test -z "$1"; then
 	exit 1
 fi
 
+#jakis zamiennik dla opcji -f ?
 svn commit -f -m "$1" \
 	aclocal.m4 stamp-h.in kadu-config.h.in stamp-h configure \
 	Makefile.in kadu/Makefile.in translations/Makefile.in varia/Makefile.in modules/Makefile.in

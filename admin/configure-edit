@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 #
 # Wykonanie cvs edit na wszystkich plikach, które bêd± modyfikowane przez

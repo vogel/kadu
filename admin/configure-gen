@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 #
 # Regeneracja configure i innych. Uruchamiaæ z katalogu wy¿ej.
