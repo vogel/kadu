@@ -118,15 +118,17 @@ hello()
 		
 }
 
-# Perform update form CVS
+# Perform update form SVN
 update()
 {
-	$dialog --backtitle "Instalator Kadu" --infobox "Gdy zostaniesz poproszony o has³o, naci¶nij <ENTER>" 0 0
 	cd ..
-	cvs -d:pserver:anonymous@kadu.net:/usr/src/kadu login
-	cvs -z3 -d:pserver:anonymous@kadu.net:/usr/src/kadu co kadu	
-	cd kadu
+	LC_ALL=C svn checkout http://kadu.net/svn/kadu/trunk kadu
+	if [[ $? == "0" ]]; then
 	$dialog --beep --backtitle "Instalator Kadu" --msgbox "¬ród³a Kadu zosta³y zaktualizowane!" 0 0
+	else 
+	$dialog --beep --backtitle "Instalator Kadu" --msgbox "B³±d przy aktualizacji ¼róde³!" 0 0
+	fi
+	cd kadu
 }
 
 # Ask for destination path
@@ -399,7 +401,7 @@ display_help()
 	DLA ZAAWANSOWANYCH: uruchom instalatora w trybie
 	zaawansowanym, aby uzyskaæ dostêp do kilku dodatkowych
 	opcji instalacyjnych (wybór katalogu docelowego,
-	automatyczna aktualizacja do wersji z CVS, ró¿ne
+	automatyczna aktualizacja do wersji z SVN, ró¿ne
 	opcje ./configure oraz make). Wyboru wersji
 	instalacji dokonasz za chwilê.
 	END
@@ -485,7 +487,7 @@ step2()
 step3()
 {
 	if [[ $advanced_install == true ]]; then
-		$dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --backtitle "Instalator Kadu" --title "Aktualizacja" --ok-label "Takkk" --cancel-label "Nieee" --yesno "Czy chcesz zaktualizowaæ Kadu do najnowszej wersji z CVS?" 6 50
+		$dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --backtitle "Instalator Kadu" --title "Aktualizacja" --ok-label "Takkk" --cancel-label "Nieee" --yesno "Czy chcesz zaktualizowaæ Kadu do najnowszej wersji z SVN?" 6 50
 				if [ $? == "0" ]; then
 					update
 				fi;
