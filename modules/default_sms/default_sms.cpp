@@ -226,10 +226,19 @@ void SmsPlusGateway::httpFinished()
 	{
 		QString Page=Http.data();
 		kdebugm(KDEBUG_INFO, "SMS Provider Results Page:\n%s\n",Page.local8Bit().data());	
-		bool success=(Page.find("SMS zosta³ wys³any")>=0);
-		if (!success)
+		if (Page.find("Z powodu przekroczenia limitów bramki")>=0)
+		{
+			kdebugm(KDEBUG_INFO, "Limit exceeded\n");
+			QMessageBox::critical(p,"SMS",tr("Limits have been exceeded, try again later."));
+			emit finished(false);
+		}
+		else if (Page.find("SMS zosta³ wys³any")>=0)
+			emit finished(true);
+		else
+		{
 			QMessageBox::critical(p,"SMS",tr("Provider gateway results page looks strange. SMS was probably NOT sent."));
-		emit finished(success);
+			emit finished(false);
+		}
 	}
 	else
 		kdebugm(KDEBUG_PANIC, "SMS Panic! Unknown state\n");	
