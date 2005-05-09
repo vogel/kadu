@@ -1017,7 +1017,7 @@ void Kadu::removeUser(const QStringList &users, bool /*permanently*/)
 {
 	kdebugf();
 	if (QMessageBox::warning(kadu, "Kadu",
-		tr("Selected users will be deleted. Are you sure?"),
+		tr("Selected users:\n%0\nwill be deleted. Are you sure?").arg(users.join(", ")),
 		tr("&Yes"),tr("&No"))!=0)
 		return;
 
