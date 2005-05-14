@@ -10,6 +10,6 @@ gcc $MODULE_CXXFLAGS asoundtest.c -o asoundtest
 ret=`./asoundtest`
 rm -f asoundtest asoundtest.c
 if [ "$ret" != "1" ]; then
-        echo "your libasound headears are too OLD, get libasound >= 1.0"
+        echo "your libasound headers are too OLD, get libasound >= 1.0"
         exit 1
 fi'

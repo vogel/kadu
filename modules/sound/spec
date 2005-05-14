@@ -10,6 +10,6 @@ gcc $MODULE_CXXFLAGS sndfiletest.c -o sndfiletest
 ret=`./sndfiletest`
 rm -f sndfiletest sndfiletest.c
 if [ "$ret" != "1" ]; then
-        echo "your libsndfile headears are too OLD, get libsndfile >= 1.0"
+        echo "your libsndfile headers are too OLD, get libsndfile >= 1.0"
         exit 1
 fi'
