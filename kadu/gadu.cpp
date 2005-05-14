@@ -14,6 +14,8 @@
 #include <qtextcodec.h>
 #include <qvgroupbox.h>
 
+//netinet/in.h na freebsd 4.x jest wybrakowane i trzeba inkludowaæ sys/types.h
+#include <sys/types.h>
 //dla htonl
 #include <netinet/in.h>
 
