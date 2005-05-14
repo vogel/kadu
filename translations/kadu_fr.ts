@@ -1144,10 +1144,6 @@ Mot de passe incorrect !</translation>
         <translation>Informations concernant le contact</translation>
     </message>
     <message>
-        <source>Selected users will be deleted. Are you sure?</source>
-        <translation>Les contacts choisis serons effacés.Veuillez confirmer?</translation>
-    </message>
-    <message>
         <source>&amp;Yes</source>
         <translation>&amp;Oui</translation>
     </message>
@@ -1230,6 +1226,12 @@ Mot de passe incorrect !</translation>
     <message>
         <source>Show / hide users without description</source>
         <translation>Montre/cache les contacts sans description</translation>
+    </message>
+    <message>
+        <source>Selected users:
+%0
+will be deleted. Are you sure?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

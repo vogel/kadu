@@ -1142,10 +1142,6 @@ Twoje hasło jest nieprawidłowe!</translation>
         <translation>Informacje o kontakcie</translation>
     </message>
     <message>
-        <source>Selected users will be deleted. Are you sure?</source>
-        <translation>Wybrane kontakty zostaną usunięte. Czy jesteś pewien?</translation>
-    </message>
-    <message>
         <source>&amp;Yes</source>
         <translation>&amp;Tak</translation>
     </message>
@@ -1228,6 +1224,15 @@ Twoje hasło jest nieprawidłowe!</translation>
     <message>
         <source>Show / hide users without description</source>
         <translation>Pokaż / ukryj kontakty bez opisu</translation>
+    </message>
+    <message>
+        <source>Selected users:
+%0
+will be deleted. Are you sure?</source>
+        <translation>Wybrane kontakty:
+%0
+zostaną usunięte.
+Czy napewno tego chcesz?</translation>
     </message>
 </context>
 <context>

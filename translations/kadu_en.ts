@@ -1159,10 +1159,6 @@ Your password is incorrect !</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Selected users will be deleted. Are you sure?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Yes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1216,6 +1212,12 @@ Your password is incorrect !</source>
     </message>
     <message>
         <source>Show / hide users without description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected users:
+%0
+will be deleted. Are you sure?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
