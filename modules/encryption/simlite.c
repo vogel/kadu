@@ -1,4 +1,4 @@
-/* $Id: simlite.c,v 1.5 2005/04/16 12:03:47 joi Exp $ */
+/* $Id$ */
 
 /*
  *  (C) Copyright 2003 Wojtek Kaniewski <wojtekka@irc.pl>

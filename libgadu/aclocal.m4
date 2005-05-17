@@ -15,7 +15,7 @@ dnl Based on AC_NEED_STDINT_H by Guido Draheim <guidod@gmx.de> that can be
 dnl found at http://www.gnu.org/software/ac-archive/. Do not complain him
 dnl about this macro.
 dnl
-dnl $Id: aclocal.m4,v 1.23 2005/04/22 20:56:03 joi Exp $
+dnl $Id$
 
 AC_DEFUN([AC_NEED_STDINT_H],
  [AC_MSG_CHECKING([for uintXX_t types])
@@ -320,7 +320,7 @@ AC_LANG_RESTORE
 ])dnl ACX_PTHREAD
 
 dnl based on curses.m4 
-dnl $Id: aclocal.m4,v 1.23 2005/04/22 20:56:03 joi Exp $
+dnl $Id$
 
 AC_DEFUN(AC_CHECK_OPENSSL,[
   AC_SUBST(OPENSSL_LIBS)

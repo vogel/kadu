@@ -1,4 +1,4 @@
-/* $Id: events.c,v 1.43 2005/04/09 11:19:49 adrian Exp $ */
+/* $Id$ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>

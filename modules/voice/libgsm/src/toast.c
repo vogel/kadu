@@ -710,7 +710,7 @@ static void version P0()
 {
 	printf( "%s 1.0, version %s\n",
 		progname,
-		"$Id: toast.c,v 1.1 2003/10/15 09:54:12 adrian Exp $" );
+		"$Id$" );
 }
 
 static void help P0()

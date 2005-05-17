@@ -1,4 +1,4 @@
-/* $Id: http.c,v 1.32 2005/04/09 11:19:49 adrian Exp $ */
+/* $Id$ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
