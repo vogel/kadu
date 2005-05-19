@@ -1,7 +1,0 @@
-?package(kadu):needs="X11" \
-  section=Apps/Net \
-  title="Kadu" \
-  command="/usr/bin/kadu" \
-  hints="Gadu-Gadu client for X" \
-  longtitle="Kadu - klient gadu-gadu dla X11" \
-  icon="/usr/share/pixmaps/kadu-48.png"
