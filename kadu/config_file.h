@@ -15,7 +15,6 @@
 class ConfigFile {
 
 	private:
-		void read();
 		void write(const QString &f=QString::null) const;
 		bool changeEntry(const QString &group, const QString &name, const QString &value);
 		QString getEntry(const QString &group, const QString &name, bool *ok = 0) const;
@@ -30,7 +29,10 @@ class ConfigFile {
 			Otwiera plik filename i go wczytuje
 		**/
 		ConfigFile(const QString &filename);
-		
+		/**
+			Wczytuje plik konfiguracyjny z dysku
+		**/
+		void read();
 		/**
 			Zapisuje na dysk zawarto¶æ konfiguracji
 		**/

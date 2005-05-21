@@ -87,9 +87,9 @@ QString ggPath(const QString &subpath)
 			home = getenv("HOME");
 		char *config_dir = getenv("CONFIG_DIR");
 		if (config_dir == NULL)
-			path = QString("%1/.gg/").arg(home);
+			path = QString("%1/.kadu/").arg(home);
 		else
-			path = QString("%1/%2/gg/").arg(home).arg(config_dir);
+			path = QString("%1/%2/kadu/").arg(home).arg(config_dir);
 	}
 	return path+subpath;
 }
