@@ -10,6 +10,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka wykrywania bibliotek na MacOSX (joi)
 * usuniêty wyciek pamiêci w module encryption przy wysy³aniu zaszyfrowanej
   wiadomo¶ci (joi)
+* usuniêty potencjalny segfault w encryption przy zepsutej wiadomo¶ci (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

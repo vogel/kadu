@@ -478,6 +478,12 @@ char *sim_message_decrypt(const unsigned char *message, uint32_t uin)
 
 	len = BIO_get_mem_data(mbio, &data);
 
+	if (len < sizeof(head))
+	{
+		sim_errno = SIM_ERROR_INVALID;
+		goto cleanup;
+	}
+
 	memcpy(&head, data, sizeof(head));
 
 	if (head.magic != gg_fix16(SIM_MAGIC_V1)) {
