@@ -1,4 +1,4 @@
-/* $Id: simlite.c,v 1.5 2005/04/16 12:03:47 joi Exp $ */
+/* $Id$ */
 
 /*
  *  (C) Copyright 2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -477,6 +477,12 @@ char *sim_message_decrypt(const unsigned char *message, uint32_t uin)
 	all_data = NULL;
 
 	len = BIO_get_mem_data(mbio, &data);
+
+	if (len < sizeof(head))
+	{
+		sim_errno = SIM_ERROR_INVALID;
+		goto cleanup;
+	}
 
 	memcpy(&head, data, sizeof(head));
 
