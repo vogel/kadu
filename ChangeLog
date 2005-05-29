@@ -6,7 +6,6 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 +++ wersja 0.5.0
 * wszystkie pliki uzytkownika w katalogu .kadu zamiast .gg (adrian)
 * modul migration - automatyczna migracja z katalogu .gg do .kadu (adrian)
-* libgadu - Poprawiony b³±d przesy³u du¿ych zdjêæ (EKG-devel/Ron_K)
 
 +++ wersja 0.4.1
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
@@ -16,6 +15,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniêty wyciek pamiêci w module encryption przy wysy³aniu zaszyfrowanej
   wiadomo¶ci (joi)
 * usuniêty potencjalny segfault w encryption przy zepsutej wiadomo¶ci (joi)
+* libgadu - Poprawiony b³±d przesy³u du¿ych zdjêæ (EKG-devel/Ron_K)
+* dodany do autodownloadu modu³ screenshot (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
