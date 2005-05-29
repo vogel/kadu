@@ -1,4 +1,4 @@
-/* $Id: dcc.c,v 1.35 2005/04/09 11:19:49 adrian Exp $ */
+/* $Id$ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -52,9 +52,9 @@
  *  - buf - bufor z danymi
  *  - size - rozmiar danych
  */
-static void gg_dcc_debug_data(const char *prefix, int fd, const void *buf, int size)
+static void gg_dcc_debug_data(const char *prefix, int fd, const void *buf, unsigned int size)
 {
-	int i;
+	unsigned int i;
 	
 	gg_debug(GG_DEBUG_MISC, "++ gg_dcc %s (fd=%d,len=%d)", prefix, fd, size);
 	
