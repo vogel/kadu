@@ -12,6 +12,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   wiadomo¶ci (joi)
 * usuniêty potencjalny segfault w encryption przy zepsutej wiadomo¶ci (joi)
 * dokumentacja klas z pliku misc.h (googie/pawel_p)
+* libgadu - Poprawiony b³±d przesy³u du¿ych zdjêæ (EKG-devel/Ron_K)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
