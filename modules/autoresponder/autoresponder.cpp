@@ -65,7 +65,7 @@ AutoResponder::~AutoResponder()
 	kdebugf2();
 }
 
-void AutoResponder::chatReceived(UinsList senders, const QString& msg, time_t time)
+void AutoResponder::chatReceived(UinsList senders, const QString& msg, time_t /*time*/)
 {
 	kdebugf();
 	if (msg.left(5)!="KADU ")

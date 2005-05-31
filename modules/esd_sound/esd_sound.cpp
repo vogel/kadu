@@ -183,7 +183,7 @@ void ESDPlayer::recordSample(SoundDevice device, int16_t* data, int length, bool
 	kdebugf2();
 }
 
-void ESDPlayer::setFlushingEnabled(SoundDevice device, bool enabled)
+void ESDPlayer::setFlushingEnabled(SoundDevice device, bool /*enabled*/)
 {
 	kdebugf();
 	ESDDevice *dev = (ESDDevice *) device;

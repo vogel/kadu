@@ -394,7 +394,7 @@ void ALSAPlayerSlots::recordSample(SoundDevice device, int16_t* data, int length
 		kdebugmf(KDEBUG_ERROR, "device closed!\n");
 }
 
-void ALSAPlayerSlots::setFlushingEnabled(SoundDevice device, bool enabled)
+void ALSAPlayerSlots::setFlushingEnabled(SoundDevice device, bool /*enabled*/)
 {
 	kdebugf();
 	ALSADevice *dev = (ALSADevice*)device;

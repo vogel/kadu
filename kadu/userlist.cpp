@@ -54,7 +54,7 @@ void DnsHandler::resultsReady()
 
 int DnsHandler::counter = 0;
 
-UserListElement::UserListElement(UserList* parent)
+UserListElement::UserListElement(UserList* parent) : QObject(NULL, 0)
 {
 //	kdebugf();
 	Parent = parent;
@@ -73,7 +73,7 @@ UserListElement::UserListElement(UserList* parent)
 //	kdebugf2();
 }
 
-UserListElement::UserListElement(const UserListElement &copyMe)
+UserListElement::UserListElement(const UserListElement &copyMe) : QObject(NULL, 0)
 {
 //	kdebugf();
 	// TODO: zuniwersalizowaæ
@@ -82,7 +82,7 @@ UserListElement::UserListElement(const UserListElement &copyMe)
 //	kdebugf2();
 }
 
-UserListElement::UserListElement()
+UserListElement::UserListElement() : QObject(NULL, 0)
 {
 //	kdebugf();
 	Parent = NULL;

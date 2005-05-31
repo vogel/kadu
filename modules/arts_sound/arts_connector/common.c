@@ -1,6 +1,6 @@
 int read_all(int fd, char *buffer, int count)
 {
-	int offset = 0, c;
+	int /*offset = 0,*/ c;
 	kdebugf();
 	if (fd < 0)
 		return -1;
