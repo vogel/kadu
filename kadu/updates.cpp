@@ -84,7 +84,7 @@ void Updates::gotUpdatesInfo(const QByteArray &data, QNetworkOperation * /*op*/)
 	kdebugf();
 	if (config_file.readBoolEntry("General", "CheckUpdates"))
 	{
-		int size = data.size();
+		unsigned int size = data.size();
 		if (size > 31)
 		{
 			kdebugmf(KDEBUG_WARNING, "cannot obtain update info\n");

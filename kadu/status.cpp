@@ -13,14 +13,14 @@
 #include "gadu.h"
 #include "status.h"
 
-UserStatus::UserStatus()
+UserStatus::UserStatus() : QObject(NULL, 0)
 {
 	Stat = Offline;
 	Description = "";
 	FriendsOnly = false;
 }
 
-UserStatus::UserStatus(const UserStatus &copyMe)
+UserStatus::UserStatus(const UserStatus &copyMe) : QObject(NULL, 0)
 {
 	Stat = copyMe.Stat;
 	Description = copyMe.Description;

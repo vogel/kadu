@@ -1376,7 +1376,7 @@ void Chat::cancelMessage()
 	kdebugf2();
 }
 
-void Chat::messageBlockedSlot(int Seq, UinType uin)
+void Chat::messageBlockedSlot(int Seq, UinType /*uin*/)
 {
 	kdebugf();
 	if (seq != Seq)
@@ -1387,7 +1387,7 @@ void Chat::messageBlockedSlot(int Seq, UinType uin)
 	kdebugf2();
 }
 
-void Chat::messageBoxFullSlot(int Seq, UinType uin)
+void Chat::messageBoxFullSlot(int Seq, UinType /*uin*/)
 {
 	kdebugf();
 	if (seq != Seq)
@@ -1398,7 +1398,7 @@ void Chat::messageBoxFullSlot(int Seq, UinType uin)
 	kdebugf2();
 }
 
-void Chat::messageNotDeliveredSlot(int Seq, UinType uin)
+void Chat::messageNotDeliveredSlot(int Seq, UinType /*uin*/)
 {
 	kdebugf();
 	if (seq != Seq)
@@ -1409,7 +1409,7 @@ void Chat::messageNotDeliveredSlot(int Seq, UinType uin)
 	kdebugf2();
 }
 
-void Chat::messageAcceptedSlot(int Seq, UinType uin)
+void Chat::messageAcceptedSlot(int Seq, UinType /*uin*/)
 {
 	kdebugf();
 	if (seq != Seq)
