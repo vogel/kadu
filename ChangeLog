@@ -6,6 +6,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 +++ wersja 0.5.0
 * wszystkie pliki uzytkownika w katalogu .kadu zamiast .gg (adrian)
 * modul migration - automatyczna migracja z katalogu .gg do .kadu (adrian)
+* opcja usuwania historii razem z kontaktem (michal)
 
 +++ wersja 0.4.1
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

@@ -1016,10 +1016,25 @@ void Kadu::userStatusChanged(const UserListElement &user, const UserStatus &/*ol
 void Kadu::removeUser(const QStringList &users, bool /*permanently*/)
 {
 	kdebugf();
-	if (QMessageBox::warning(kadu, "Kadu",
+	switch (QMessageBox::warning(kadu, "Kadu",
 		tr("Selected users:\n%0\nwill be deleted. Are you sure?").arg(users.join(", ")),
-		tr("&Yes"),tr("&No"))!=0)
-		return;
+		tr("&Yes"),tr("Yes, with &history"), tr("&No"), 2, 2)){
+		case 2:
+			return;
+		case 1:
+			CONST_FOREACH(altnick, users)
+			{
+				UserListElement user = userlist.byAltNick(*altnick);
+				QString fname;
+				// cut&paste z history.cpp, bez tego by by³o gorsze lub takie same kombinowanie
+				if(user.uin()){
+					fname = ggPath("history/") + QString::number(user.uin());
+					kdebugmf(KDEBUG_INFO, "deleting %s\n", (const char *)fname.local8Bit());
+					QFile::remove(fname);
+					QFile::remove(fname + ".idx");
+				}
+			}
+	}
 
 	CONST_FOREACH(user, users)
 		UserBox::all_removeUser(*user);
