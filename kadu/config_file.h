@@ -8,6 +8,37 @@
 #include <qcolor.h>
 #include <qfont.h>
 #include <qmap.h>
+#include <qdom.h>
+
+/**
+	Klasa reprezentuj±ca plik XML-owy z zapisem konfiguracji programu
+**/
+class XmlConfigFile
+{
+	private:
+		QDomDocument DomDocument;
+		void write();
+		
+	public:
+		/**
+			Otwiera plik i go wczytuje
+		**/
+		XmlConfigFile();
+		/**
+			Wczytuje plik konfiguracyjny z dysku
+		**/
+		void read();		
+		/**
+			Zapisuje na dysk zawarto¶æ konfiguracji
+		**/
+		void sync();
+		/**
+			Zwraca glowny element konfiguracji
+		**/
+		QDomElement rootElement();
+};
+
+extern XmlConfigFile* xml_config_file;
 
 /**
 	Klasa reprezentuj±ca plik z zapisem konfiguracji programu

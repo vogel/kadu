@@ -18,6 +18,65 @@
 #include "config_file.h"
 #include "misc.h"
 
+
+XmlConfigFile::XmlConfigFile()
+{
+	read();
+}
+
+void XmlConfigFile::read()
+{
+	QFile file(ggPath("kadu.conf.xml"));
+	if (file.open(IO_ReadOnly))
+	{
+		if (DomDocument.setContent(&file))
+			kdebugm(KDEBUG_INFO, "xml configuration file loaded");
+		else
+			kdebugm(KDEBUG_ERROR, "error reading or parsing xml configuration file");
+		file.close();
+	}
+	else
+	{
+		kdebugm(KDEBUG_ERROR, "error opening xml configuration file, creating empty document");
+		QDomElement root = DomDocument.createElement( "Kadu" );
+		DomDocument.appendChild(root);
+	}
+	kdebugf2();
+}		
+
+void XmlConfigFile::write()
+{
+	kdebugf();
+	rootElement().setAttribute("last_save_time", QDateTime::currentDateTime().toString());
+	rootElement().setAttribute("last_save_version", VERSION);
+	QFile file(ggPath("kadu.conf.xml"));
+	if (file.open(IO_WriteOnly | IO_Truncate))
+	{
+		kdebugm(KDEBUG_INFO, "file opened '%s'\n", (const char *)file.name().local8Bit());
+		QTextStream stream(&file);
+		stream.setCodec(codec_latin2);		
+		stream << DomDocument.toString();
+		file.close();
+	}
+	else
+		kdebugm(KDEBUG_ERROR, "can't open '%s'\n", (const char *)file.name().local8Bit());
+	kdebugf2();
+}
+
+void XmlConfigFile::sync()
+{
+	write();
+}
+
+QDomElement XmlConfigFile::rootElement()
+{
+	return DomDocument.documentElement();
+}
+
+XmlConfigFile* xml_config_file = NULL;
+
+
+
 ConfigFile::ConfigFile(const QString &filename) : filename(filename),activeGroup(NULL)
 {
 	read();

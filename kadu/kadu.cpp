@@ -1318,6 +1318,7 @@ bool Kadu::close(bool quit)
 
 		delete ToolBar::instance;
 
+		xml_config_file->sync();
 		config_file.sync();
 
 		pending.writeToFile();

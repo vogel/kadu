@@ -119,6 +119,7 @@ static void kadu_signal_handler(int s)
 
 int main(int argc, char *argv[])
 {
+	xml_config_file = new XmlConfigFile();
 	config_file_ptr = new ConfigFile(ggPath(QString("kadu.conf")));
 	config_file.addVariable("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
 	debug_mask=config_file.readNumEntry("General", "DEBUG_MASK");
