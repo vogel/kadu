@@ -601,6 +601,12 @@ class UserList : public QObject, public QMap<QString,UserListElement>
 			\param userlist lista kontaktów z któr± nale¿y scaliæ
 		**/
 		void merge(const UserList &userlist);
+		/**
+			\fn void writeToConfig()
+			Dodaje listê kontaktów do drzewa xml z konfiguracj±
+			programu. Poprzednie kontakty s± usuwane.
+		**/
+		void writeToConfig();
 
 	signals:
 		/**

@@ -199,6 +199,7 @@ void UserlistImportExport::makeUserlist()
 	UserBox::all_refresh();
 
 	userlist.writeToFile();
+	userlist.writeToConfig();
 	l_itemscount->setText(tr("%1 entries will be exported").arg(userlist.count()));
 	kdebugf2();
 }
@@ -218,6 +219,7 @@ void UserlistImportExport::updateUserlist()
 	UserBox::all_refresh();
 
 	userlist.writeToFile();
+	userlist.writeToConfig();
 	l_itemscount->setText(tr("%1 entries will be exported").arg(userlist.count()));
 	kdebugf2();
 }

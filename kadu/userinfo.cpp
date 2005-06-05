@@ -448,6 +448,7 @@ void UserInfo::addNewUser(UserListElement& e)
 	}
 	userlist.addUser(e);
 	userlist.writeToFile();
+	userlist.writeToConfig();
 	close(true);
 
 	QString currentGroup = kadu->currentGroup();
@@ -509,6 +510,7 @@ void UserInfo::changeUserData(UserListElement& e)
 	userlist.changeUserInfo(puser->altNick(), e); //po tej linii NIE wolno korzystaæ z puser, bo jego ju¿ nie ma!
 	puser = NULL;
 	userlist.writeToFile();
+	userlist.writeToConfig();
 
 	chat_manager->refreshTitlesForUin(uin);
 	close(true);

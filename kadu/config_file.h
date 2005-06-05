@@ -36,6 +36,14 @@ class XmlConfigFile
 			Zwraca glowny element konfiguracji
 		**/
 		QDomElement rootElement();
+		/**
+			Dodaje nowy element i przypisuje do rodzica.
+		**/
+		QDomElement createElement(QDomElement parent, const QString& tag_name);
+		/**
+			Zwraca pierwszy element lub dodaje nowy i przypisuje do rodzica.
+		**/
+		QDomElement accessElement(QDomElement parent, const QString& tag_name);
 };
 
 extern XmlConfigFile* xml_config_file;

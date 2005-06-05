@@ -73,6 +73,23 @@ QDomElement XmlConfigFile::rootElement()
 	return DomDocument.documentElement();
 }
 
+QDomElement XmlConfigFile::createElement(QDomElement parent, const QString& tag_name)
+{
+	QDomElement elem = DomDocument.createElement(tag_name);
+	parent.appendChild(elem);
+	return elem;
+}
+
+QDomElement XmlConfigFile::accessElement(QDomElement parent, const QString& tag_name)
+{
+	QDomNodeList elems = parent.elementsByTagName(tag_name);
+	QDomElement elem;
+	if (elems.length() > 0)
+		return elems.item(0).toElement();
+	else
+		return createElement(parent, tag_name);
+}
+
 XmlConfigFile* xml_config_file = NULL;
 
 

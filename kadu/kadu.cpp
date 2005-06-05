@@ -785,6 +785,7 @@ void Kadu::blockUser()
 		}
 	}
 	userlist.writeToFile();
+	userlist.writeToConfig();
 	kdebugf2();
 }
 
@@ -817,6 +818,7 @@ void Kadu::notifyUser()
 	}
 
 	userlist.writeToFile();
+	userlist.writeToConfig();
 	kdebugf2();
 }
 
@@ -849,6 +851,7 @@ void Kadu::offlineToUser()
 	}
 
 	userlist.writeToFile();
+	userlist.writeToConfig();
 	kdebugf2();
 }
 
@@ -1047,6 +1050,7 @@ void Kadu::removeUser(const QStringList &users, bool /*permanently*/)
 	}
 
 	userlist.writeToFile();
+	userlist.writeToConfig();
 	refreshGroupTabBar();
 	kdebugf2();
 }

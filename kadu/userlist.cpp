@@ -845,5 +845,43 @@ void UserList::merge(const UserList &ulist)
 	kdebugf2();
 }
 
+void UserList::writeToConfig()
+{
+	QDomElement root_elem = xml_config_file->rootElement();
+	QDomElement contacts_elem = xml_config_file->accessElement(root_elem, "Contacts");
+	while (contacts_elem.hasChildNodes())
+	{
+		contacts_elem.firstChild().clear();
+		contacts_elem.removeChild(contacts_elem.firstChild());
+	}
+	CONST_FOREACH(i, *this)
+	{
+		if ((*i).isAnonymous())
+			continue;
+		QDomElement contact_elem = xml_config_file->createElement(contacts_elem, "Contact");
+		contact_elem.setAttribute("altnick", (*i).altNick());
+		contact_elem.setAttribute("first_name", (*i).firstName());
+		contact_elem.setAttribute("last_name", (*i).lastName());
+		contact_elem.setAttribute("nick_name", (*i).nickName());
+		contact_elem.setAttribute("mobile", (*i).mobile());
+		contact_elem.setAttribute("email", (*i).email());
+		contact_elem.setAttribute("home_phone", (*i).homePhone());
+		contact_elem.setAttribute("uin", (*i).uin());
+		contact_elem.setAttribute("blocking",
+			(*i).blocking() ? QString("true") : QString("false"));
+		contact_elem.setAttribute("offline_to",
+			(*i).offlineTo() ? QString("true") : QString("false"));
+		contact_elem.setAttribute("notify", 
+			(*i).notify() ? QString("true") : QString("false"));
+		contact_elem.setAttribute("groups", (*i).group());
+		NotifyType type;
+		contact_elem.setAttribute("alive_sound_file", (*i).aliveSound(type));
+		contact_elem.setAttribute("alive_sound_type", type);
+		contact_elem.setAttribute("message_sound_file", (*i).messageSound(type));
+		contact_elem.setAttribute("message_sound_type", type);
+	}
+	xml_config_file->sync();
+}
+
 UserList userlist;
 

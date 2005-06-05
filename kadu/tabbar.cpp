@@ -312,5 +312,6 @@ void KaduTabBar::dropEvent(QDropEvent* e)
 		// bardzo niewygodne, trzeba poprawiæ writeToFile !! ta funkcja jest za wolna
 		// trzeba dodaæ mozliwo¶æ zmiany danych tylko jednego user !!
 		userlist.writeToFile();
+		userlist.writeToConfig();
 	}
 }
