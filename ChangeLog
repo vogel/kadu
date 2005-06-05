@@ -14,6 +14,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dokumentacja klas z pliku misc.h (googie/pawel_p)
 * libgadu - Poprawiony b³±d przesy³u du¿ych zdjêæ (EKG-devel/Ron_K)
 * dodany do autodownloadu modu³ screenshot (joi)
+* usuniêty wyciek pamiêci w module speech (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
