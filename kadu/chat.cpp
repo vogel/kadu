@@ -1856,6 +1856,7 @@ void ChatSlots::initBrowserOptions(QComboBox *browserCombo, QComboBox *browserOp
 	browserCombo->insertItem("Mozilla Firefox");
 	browserCombo->insertItem("Dillo");
 	browserCombo->insertItem("Galeon");
+	browserCombo->insertItem("Safari");
 	QString browserCommandLine=browserPath->text();
 	browserOptionsCombo->setEnabled(false);
 
@@ -2154,6 +2155,12 @@ void ChatSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo, QCombo
 		}
 		case 5: browserName="dillo"; break;
 		case 6: browserName="galeon"; break;
+		case 7: 	//safari - mac
+		{	
+			browserName="Safari.app"; 
+			searchPath.append("/Applications");
+			break;
+		}
 		default: return;
 	}
 	QFile browserFile;
@@ -2279,6 +2286,8 @@ void ChatSlots::setBrowserOption(int selectedOption, QLineEdit *browserPathEdit,
 			browserPathEdit->setText(browserPath);
 			break;
 		}
+		case 7:		//Safari - mac
+			browserPathEdit->setText("open /Applications/Safari.app %1");
 	}
 	kdebugf2();
 }

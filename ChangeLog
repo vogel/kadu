@@ -9,6 +9,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * opcja usuwania historii razem z kontaktem (michal)
 * klasa do obslugi xml-owego pliku konfiguracyjnego, odczyt kadu.conf.xml podczas startu,
   zapis podczas zamykania kadu, atrybuty last_save_time i last_save_version (adrian)
+* mo¿liwo¶c wyboru przegl±darki Safari (Dorregaray/michal)
 
 +++ wersja 0.4.1
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
