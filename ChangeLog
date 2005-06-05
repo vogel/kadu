@@ -4,25 +4,24 @@ podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y. Je¶li jest
 w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
 +++ wersja 0.5.0
-* wszystkie pliki uzytkownika w katalogu .kadu zamiast .gg (adrian)
-* modul migration - automatyczna migracja z katalogu .gg do .kadu (adrian)
-* opcja usuwania historii razem z kontaktem (michal)
-* klasa do obslugi xml-owego pliku konfiguracyjnego, odczyt kadu.conf.xml podczas startu,
-  zapis podczas zamykania kadu, atrybuty last_save_time i last_save_version (adrian)
-* mo¿liwo¶c wyboru przegl±darki Safari (Dorregaray/michal)
-* ka¿dy zapis listy kontaktów do plików userlist i userattribs powoduje
-  równie¿ zapisanie listy kontaktów do kadu.conf.xml (adrian)
-
-+++ wersja 0.4.1
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
 * poprawiona kompatybilno¶æ z Qt 3.0 (joi)
 * poprawka wykrywania pthreadów w libgadu na FreeBSD 4.x (z cvsu EKG) (joi)
 * poprawka wykrywania bibliotek na MacOSX (joi)
 * usuniêty wyciek pamiêci w module encryption przy wysy³aniu zaszyfrowanej
   wiadomo¶ci (joi)
+* wszystkie pliki u¿ytkownika w katalogu .kadu zamiast .gg (adrian)
+* modu³ migration - automatyczna migracja z katalogu .gg do .kadu (adrian)
 * usuniêty potencjalny segfault w encryption przy zepsutej wiadomo¶ci (joi)
-* libgadu - Poprawiony b³±d przesy³u du¿ych zdjêæ (EKG-devel/Ron_K)
+* libgadu - poprawiony b³±d przesy³u du¿ych zdjêæ (EKG-devel/Ron_K)
 * dodany do autodownloadu modu³ screenshot (joi)
+* opcja usuwania historii razem z kontaktem (michal)
+* klasa do obs³ugi xml-owego pliku konfiguracyjnego, odczyt kadu.conf.xml podczas startu,
+  zapis podczas zamykania kadu, atrybuty last_save_time i last_save_version (adrian)
+* mo¿liwo¶æ wyboru przegl±darki Safari (Dorregaray/michal)
+* ka¿dy zapis listy kontaktów do plików userlist i userattribs powoduje
+  równie¿ zapisanie listy kontaktów do kadu.conf.xml (adrian)
+* usuniêty wyciek pamiêci w module speech (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

@@ -294,8 +294,8 @@ void SpeechSlots::say(const QString &s, const QString &path,
 
 	kdebugm(KDEBUG_INFO, "%s\n", (const char *)list.join(" ").local8Bit());
 	QProcess *p=new QProcess(list);
+	connect(p, SIGNAL(processExited()), p, SLOT(deleteLater()));
 	p->launch(s.local8Bit());
-//	delete p;
 	kdebugf2();
 }
 
