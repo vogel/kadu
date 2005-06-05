@@ -102,5 +102,9 @@ czasowo wyłączona lub zmieniła zasady dostępu.</translation>
         <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
         <translation>Bramka zwróciła dziwną odpowiedź. SMS prawdopodobnie nie został wysłany.</translation>
     </message>
+    <message>
+        <source>Limits have been exceeded, try again later.</source>
+        <translation>Limit został przekroczony, spróbuj później.</translation>
+    </message>
 </context>
 </TS>
