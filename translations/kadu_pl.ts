@@ -1234,6 +1234,10 @@ will be deleted. Are you sure?</source>
 zostaną usunięte.
 Czy napewno tego chcesz?</translation>
     </message>
+    <message>
+        <source>Yes, with &amp;history</source>
+        <translation>Tak, z &amp;historią</translation>
+    </message>
 </context>
 <context>
     <name>KaduSlots</name>

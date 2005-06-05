@@ -1233,6 +1233,10 @@ Mot de passe incorrect !</translation>
 will be deleted. Are you sure?</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Yes, with &amp;history</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KaduSlots</name>
