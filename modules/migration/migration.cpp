@@ -12,6 +12,7 @@
 
 static QString old_ggPath()
 {
+	kdebugf();
 	char* home;
 	struct passwd* pw;
 	if ((pw = getpwuid(getuid())))
@@ -19,10 +20,12 @@ static QString old_ggPath()
 	else
 		home = getenv("HOME");
 	char* config_dir = getenv("CONFIG_DIR");
+	QString path;
 	if (config_dir == NULL)
-		return QString("%1/.gg/").arg(home);
+		path = QString("%1/.gg/").arg(home);
 	else
-		return QString("%1/%2/.gg/").arg(home).arg(config_dir);
+		path = QString("%1/%2/.gg/").arg(home).arg(config_dir);
+	return path;
 }
 
 extern "C" int migration_init()
@@ -36,12 +39,18 @@ extern "C" int migration_init()
 					"older version of Kadu before. Would you like to try\n"
 					"to import your settings from %1?").arg(old_path)))
 		{
+			kdebug("creating process: cp");
 			QProcess copy_process(QString("cp"));
+			kdebug("adding argument: -r");
 			copy_process.addArgument("-r");
+			kdebug("adding argument: %s", old_path.local8Bit().data());
 			copy_process.addArgument(old_path);
+			kdebug("adding argument: %s", new_path.local8Bit().data());
 			copy_process.addArgument(new_path);
+			kdebug("starting process");
 			if (copy_process.start())
 			{
+				kdebug("process started, waiting while it is running");
 				MessageBox::status("Migrating data ...");
 				while (copy_process.isRunning()) { };
 				MessageBox::close("Migrating data ...");
@@ -54,10 +63,17 @@ extern "C" int migration_init()
 					_exit(0);
 				}
 				else
+				{
+					kdebug("error migrating data. exit status: %i",
+						copy_process.exitStatus());
 					MessageBox::wrn("Error migrating data!");
+				}
 			}
 			else
+			{
+				kdebug("cannot start migration process");
 				MessageBox::wrn("Cannot start migration process!");
+			}
 		}
 	}
 	kdebugf2();
