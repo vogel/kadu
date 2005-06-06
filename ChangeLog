@@ -22,6 +22,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * ka¿dy zapis listy kontaktów do plików userlist i userattribs powoduje
   równie¿ zapisanie listy kontaktów do kadu.conf.xml (adrian)
 * usuniêty wyciek pamiêci w module speech (joi)
+* nowa opcja "przywróæ poprzedni status" ustawia status po w³±czeniu Kadu,
+  domy¶lnie w³±czona, usuniêty kod kompatybilno¶ci z 0.3.x do obs³ugi
+  domy¶lnego statusu (Vogel/joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

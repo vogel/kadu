@@ -67,7 +67,7 @@ class Kadu : public QMainWindow
 
 		QPopupMenu* statusMenu;
 		QPushButton* statusButton;
-		
+
 		UserStatus status;
 
 		bool ShowMainWindowOnStart;
@@ -253,6 +253,7 @@ class KaduSlots : public QObject
 		void chooseColor(const char *name, const QColor& color);
 		void chooseFont(const char *name, const QFont& font);
 		void updatePreview();
+		void updateStatus(bool);
 };
 
 extern Kadu* kadu;

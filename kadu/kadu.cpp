@@ -277,6 +277,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	ConfigDialog::addVGroupBox("General", "General", "Status");
 	ConfigDialog::addComboBox("General", "Status", QT_TRANSLATE_NOOP("@default", "Default status"), "", "cb_defstatus");
+	ConfigDialog::addCheckBox("General", "Status", QT_TRANSLATE_NOOP("@default", "On shutdown, set current description"), "DisconnectWithCurrentDescription");
+	ConfigDialog::connectSlot("General", "On shutdown, set current description", SIGNAL(toggled(bool)), kaduslots, SLOT(updateStatus(bool)));
+
 	ConfigDialog::addHBox("General", "Status", "discstatus");
 	ConfigDialog::addCheckBox("General", "discstatus", QT_TRANSLATE_NOOP("@default", "On shutdown, set description:"), "DisconnectWithDescription", false);
 	ConfigDialog::addLineEdit("General", "discstatus", "", "DisconnectDescription", "", "", "e_defaultstatus");
@@ -601,7 +604,7 @@ void Kadu::viewHistory()
 	UserBox *activeUserBox=UserBox::getActiveUserBox();
 
 	if (activeUserBox==NULL)
-	{	
+	{
 		kdebugf2();
 		return;
 	}
@@ -1312,9 +1315,9 @@ bool Kadu::close(bool quit)
 		}
 
 		config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));
-		config_file.writeEntry( "Look", "CurrentGroupTab", GroupBar->currentTab() );
+		config_file.writeEntry("Look", "CurrentGroupTab", GroupBar->currentTab());
 
-		QString dockwindows=config_file.readEntry("General", "DockWindows");
+		QString dockwindows = config_file.readEntry("General", "DockWindows");
 		QTextStream stream(&dockwindows, IO_WriteOnly);
 		stream << *kadu;
 		dockwindows.replace(QRegExp("\\n"), "\\n");
@@ -1322,15 +1325,29 @@ bool Kadu::close(bool quit)
 
 		delete ToolBar::instance;
 
+		if (config_file.readNumEntry("General", "DefaultStatusIndex") == 7 || config_file.readNumEntry("General", "DefaultStatusIndex") == 8)
+		{
+			config_file.writeEntry("General", "LastStatusIndex", gadu->status().index());
+			config_file.writeEntry("General", "LastStatusDescription", gadu->status().description());
+		}
+
 		xml_config_file->sync();
 		config_file.sync();
 
 		pending.writeToFile();
 		writeIgnored();
-		if (config_file.readBoolEntry("General", "DisconnectWithDescription") && !gadu->status().isOffline())
+		if (!gadu->status().isOffline())
 		{
-			kdebugmf(KDEBUG_INFO, "Set status NOT_AVAIL_DESCR with disconnect description(%s)\n",(const char *)config_file.readEntry("General", "DisconnectDescription").local8Bit());
-			gadu->status().setOffline(config_file.readEntry("General", "DisconnectDescription"));
+			if (config_file.readBoolEntry("General", "DisconnectWithCurrentDescription"))
+			{
+				kdebugmf(KDEBUG_INFO, "Set status NOT_AVAIL_DESCR with current description(%s)\n", gadu->status().description().data());
+				gadu->status().setOffline(gadu->status().description());
+			}
+			else if (config_file.readBoolEntry("General", "DisconnectWithDescription"))
+			{
+				kdebugmf(KDEBUG_INFO, "Set status NOT_AVAIL_DESCR with disconnect description(%s)\n", config_file.readEntry("General", "DisconnectDescription").local8Bit().data());
+				gadu->status().setOffline(config_file.readEntry("General", "DisconnectDescription"));
+			}
 		}
 //		disconnectNetwork();
 //		gadu->logout();
@@ -1556,44 +1573,26 @@ void KaduSlots::onCreateConfigDialog()
 	e_disconnectdesc->setEnabled(b_disconnectdesc->isChecked());
 	connect(b_disconnectdesc, SIGNAL(toggled(bool)), e_disconnectdesc, SLOT(setEnabled(bool)));
 
-	int statusIndex = config_file.readNumEntry("General", "DefaultStatusIndex", -1);
-
-	// BEGIN: wsteczna kompatybilno뜻, do wywalenia w 0.5.x
-	if (statusIndex == -1)
-	{
-		statusIndex = config_file.readNumEntry("General", "DefaultStatus", -1);
-		switch (statusIndex)
-		{
-			case 0x0001: statusIndex = UserStatus::index(Offline, false); break;
-			case 0x0015: statusIndex = UserStatus::index(Offline, true); break;
-			case 0x0002: statusIndex = UserStatus::index(Online, false); break;
-			case 0x0004: statusIndex = UserStatus::index(Online, true); break;
-			case 0x0003: statusIndex = UserStatus::index(Busy, false); break;
-			case 0x0005: statusIndex = UserStatus::index(Busy, true); break;
-			case 0x0014: statusIndex = UserStatus::index(Invisible, false); break;
-			case 0x0016: statusIndex = UserStatus::index(Invisible, true); break;
-			default:
-				statusIndex = -1;
-		}
-	}
-	if (statusIndex == -1)
-		statusIndex = UserStatus::index(Offline, false);
-	// END: wsteczna kombatybilno뜻, do wywalenia w 0.5.x
+	int statusIndex = config_file.readNumEntry("General", "DefaultStatusIndex", 7);
 
 	int max = UserStatus::initCount();
 	QComboBox* cb_defstatus = ConfigDialog::getComboBox("General", "Default status", "cb_defstatus");
 	cb_defstatus->clear();
 	for (int i = 0; i < max; ++i)
 		cb_defstatus->insertItem(qApp->translate("@default", UserStatus::name(i)));
+	cb_defstatus->insertItem("Restore last status");
+	cb_defstatus->insertItem("Restore last status (change Offline to Invisible)");
 	cb_defstatus->setCurrentItem(statusIndex);
 
 	updatePreview();
+	updateStatus(config_file.readBoolEntry("General", "DisconnectWithCurrentDescription"));
 	kdebugf2();
 }
 
 void KaduSlots::onDestroyConfigDialog()
 {
 	kdebugf();
+
 	QLineEdit *e_password=ConfigDialog::getLineEdit("General", "Password");
 //	e_password->setEchoMode(QLineEdit::Password);
 	config_file.writeEntry("General", "Password",pwHash(e_password->text()));
@@ -1677,6 +1676,17 @@ void KaduSlots::updatePreview()
 	kdebugf2();
 }
 
+void KaduSlots::updateStatus(bool current)
+{
+	kdebugf();
+ 	QCheckBox *cb_setdesc = ConfigDialog::getCheckBox("General", "On shutdown, set description:");
+ 	QLineEdit *e_defaultstatus = ConfigDialog::getLineEdit("General", "", "e_defaultstatus");
+
+	cb_setdesc->setEnabled(!current);
+	e_defaultstatus->setEnabled(!current && cb_setdesc->isChecked());
+	kdebugf2();
+}
+
 KaduSlots::KaduSlots(QObject *parent, const char *name) : QObject(parent, name)
 {
 }
@@ -1707,29 +1717,15 @@ void Kadu::startupProcedure()
 	Updates::initModule();
 
 	QString descr = defaultdescriptions.first();
-	int statusIndex = config_file.readNumEntry("General", "DefaultStatusIndex", -1);
-	// BEGIN: wsteczna kompatybilno뜻, do wywalenia w 0.5.x
-	if (statusIndex == -1)
+	int statusIndex = config_file.readNumEntry("General", "DefaultStatusIndex", 7);
+	if (statusIndex == 7 || statusIndex == 8) //restore status
 	{
-		statusIndex = config_file.readNumEntry("General", "DefaultStatus", -1);
-		switch (statusIndex)
-		{
-			case 0x0001: statusIndex = UserStatus::index(Offline, false); break;
-			case 0x0015: statusIndex = UserStatus::index(Offline, true); break;
-			case 0x0002: statusIndex = UserStatus::index(Online, false); break;
-			case 0x0004: statusIndex = UserStatus::index(Online, true); break;
-			case 0x0003: statusIndex = UserStatus::index(Busy, false); break;
-			case 0x0005: statusIndex = UserStatus::index(Busy, true); break;
-			case 0x0014: statusIndex = UserStatus::index(Invisible, false); break;
-			case 0x0016: statusIndex = UserStatus::index(Invisible, true); break;
-			default:
-				statusIndex = -1;
-		}
+		int lastStatusIndex = config_file.readNumEntry("General", "LastStatusIndex", UserStatus::index(Offline, false));
+		QString lastStatusDescription = config_file.readEntry("General", "LastStatusDescription");
+		if (statusIndex == 8 && UserStatus::isOffline(lastStatusIndex))
+			lastStatusIndex = UserStatus::index(Invisible, !lastStatusDescription.isEmpty());
+		status.setIndex(lastStatusIndex, lastStatusDescription);
 	}
-	// END: wsteczna kombatybilno뜻, do wywalenia w 0.5.x
-
-	if (statusIndex == -1)
-		status.setOffline();
 	else
 		status.setIndex(statusIndex, descr);
 	status.setFriendsOnly(config_file.readBoolEntry("General", "PrivateStatus"));
