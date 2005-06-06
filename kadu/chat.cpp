@@ -653,6 +653,16 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 		autosend->setOn(true);
 	edit->setAutosend(config_file.readBoolEntry("Chat","AutoSend"));
 
+	// headers removal stuff
+	CfgNoHeaderRepeat = config_file.readBoolEntry("Look","NoHeaderRepeat");
+	if (CfgNoHeaderRepeat)
+	{
+	    CfgHeaderSeparatorHeight = config_file.readNumEntry("Look","HeaderSeparatorHeight");
+	    CfgNoHeaderInterval = config_file.readNumEntry("Look","NoHeaderInterval");
+	    LastTime = 0;		//zerowanie licznika ró¿nicy czasu miêdzy wiadomo¶ciami
+	    PreviousMessage = "";
+	}
+
 	QHBox *btnpart = new QHBox(downpart, "buttonpartBox");
 	btnpart->setMargin(2);
 	btnpart->setSpacing(1);
@@ -1114,7 +1124,9 @@ void Chat::formatMessages(QValueList<ChatMessage *> &msgs)
 
 void Chat::formatMessage(ChatMessage &msg, QColor myBgColor, QColor usrBgColor, QColor myFontColor, QColor usrFontColor, EmoticonsStyle style)
 {
-	const static QString formatString("<p style=\"background-color: %1\"><img title=\"\" height=\"%5\" width=\"10000\" align=\"right\"><font color=\"%2\"><b>%3 :: %4</b><br/>%6</font></p>");
+	const static QString formatStringFull("<p style=\"background-color: %1\"><img title=\"\" height=\"%5\" width=\"10000\" align=\"right\"><font color=\"%2\"><b>%3 :: %4</b><br/>%6</font></p>");
+	const static QString formatStringPure("<p style=\"background-color: %1\"><img title=\"\" height=\"%3\" width=\"10000\" align=\"right\"><font color=\"%2\">%4</font></p>");
+	const static QString formatStringWithoutSeparator("<p style=\"background-color: %1\"><font color=\"%2\">%3</font></p>");
 
 	if (msg.isMyMessage)
 	{
@@ -1142,21 +1154,62 @@ void Chat::formatMessage(ChatMessage &msg, QColor myBgColor, QColor usrBgColor, 
 	}
 
 	QString date=printDateTime(msg.date);
+
+	// ilo¶æ minut od 1970 roku
+	time_t CurTime = msg.date.toTime_t() / 60;
+
 	if (!msg.sdate.isNull())
 		date.append(" / S "+printDateTime(msg.sdate));
 
 	QString nick = msg.nick;
 	HtmlDocument::escapeText(nick);
 
-	msg.message=narg(formatString,
+	if (CfgNoHeaderRepeat && (CurTime - LastTime <= CfgNoHeaderInterval))
+	{
+		if (PreviousMessage == msg.nick)
+		{
+			if (CfgHeaderSeparatorHeight > 0)
+			{
+				msg.message = narg(formatStringPure,
+				msg.backgroundColor.name(),
+				msg.textColor.name(),
+				QString::number(CfgHeaderSeparatorHeight),
+				convertCharacters(msg.unformattedMessage, msg.backgroundColor, style));
+			}
+			else
+			{
+				msg.message = narg(formatStringWithoutSeparator,
+					msg.backgroundColor.name(),
+					msg.textColor.name(),
+					convertCharacters(msg.unformattedMessage, msg.backgroundColor, style));
+			}
+		}
+		else
+		{
+			msg.message = narg(formatStringFull,
+				msg.backgroundColor.name(),
+				msg.textColor.name(),
+				nick,
+				date,
+				QString::number(ParagraphSeparator),
+				convertCharacters(msg.unformattedMessage, msg.backgroundColor, style));
+		}
+	}
+	else
+	{
+		msg.message = narg(formatStringFull,
 			msg.backgroundColor.name(),
 			msg.textColor.name(),
 			nick,
 			date,
 			QString::number(ParagraphSeparator),
 			convertCharacters(msg.unformattedMessage, msg.backgroundColor, style));
+	}
 
-	msg.needsToBeFormatted=false;
+	msg.needsToBeFormatted = false;
+
+	PreviousMessage = msg.nick;
+	LastTime = CurTime;
 }
 
 void Chat::repaintMessages()
@@ -1660,6 +1713,11 @@ void Chat::initModule()
 	config_file.addVariable("Look", "ChatMyFontColor", QColor("#000000"));
 	config_file.addVariable("Look", "ChatUsrFontColor", QColor("#000000"));
 
+	//naglowki wiadomosci
+	config_file.addVariable("Look", "NoHeaderRepeat", false);
+	config_file.addVariable("Look", "HeaderSeparatorHeight", 1);
+	config_file.addVariable("Look", "NoHeaderInterval", "10");
+
 	config_file.addVariable("Look", "ChatFont", defaultFont);
 
 	config_file.addVariable("Chat", "LastImagePath", QString(getenv("HOME"))+"/");
@@ -1672,6 +1730,7 @@ void Chat::initModule()
 		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Display group tabs"), "DisplayGroupTabs", true);
 		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Show available users in bold"), "ShowBold", true, QT_TRANSLATE_NOOP("@default","Displays users that are not offline using a bold font"));
 		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Show description in userbox"), "ShowDesc", true);
+
 	ConfigDialog::addVBox("Look", "Look", "varOpts2");//potrzebne userboksowi
 
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Colors"));
@@ -1692,6 +1751,12 @@ void Chat::initModule()
 				ConfigDialog::addLabel("Look", "chat_prvw", QT_TRANSLATE_NOOP("@default", "<b>Me</b> 00:00:00"), "chat_me");
 				ConfigDialog::addLabel("Look", "chat_prvw", QT_TRANSLATE_NOOP("@default", "<b>Other party</b> 00:00:02"), "chat_other");
 
+	//naglowki
+	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Headers"));
+		ConfigDialog::addCheckBox("Look", "Headers", QT_TRANSLATE_NOOP("@default", "Remove chat header repetitions"), "NoHeaderRepeat", true);
+		ConfigDialog::addSpinBox("Look", "Headers", QT_TRANSLATE_NOOP("@default", "Chat header separators height:"), "HeaderSeparatorHeight", 0, config_file.readNumEntry("General", "ParagraphSeparator"), 1, 1);
+		ConfigDialog::addSpinBox("Look", "Headers", QT_TRANSLATE_NOOP("@default", "Interval between header removal:"), "NoHeaderInterval", 1, 1439, 1, 10);
+
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Other"));
 		ConfigDialog::addLineEdit("Look", "Other", QT_TRANSLATE_NOOP("@default", "Chat window title syntax:"), "ChatContents", "", Kadu::SyntaxText);
 		ConfigDialog::addHBox("Look", "Other", "conference");
@@ -1708,6 +1773,8 @@ void Chat::initModule()
 	ConfigDialog::connectSlot("Chat", "Automatically prune chat messages", SIGNAL(toggled(bool)), chatslots, SLOT(onPruneChat(bool)));
 	ConfigDialog::connectSlot("Chat", "Automatically fold links", SIGNAL(toggled(bool)), chatslots, SLOT(onFoldLink(bool)));
 	ConfigDialog::connectSlot("Chat", "Block window close on new message", SIGNAL(toggled(bool)), chatslots, SLOT(onBlockClose(bool)));
+
+	ConfigDialog::connectSlot("Look", "Remove chat header repetitions", SIGNAL(toggled(bool)), chatslots, SLOT(onRemoveHeaders(bool)));
 
 	ConfigDialog::connectSlot("Look", "Your background color", SIGNAL(changed(const char *, const QColor&)),
 		chatslots, SLOT(chooseColor(const char *, const QColor&)), "own_bg_color");
@@ -1924,6 +1991,19 @@ void ChatSlots::onCreateConfigDialog()
 	QLineEdit *browserPath= ConfigDialog::getLineEdit("Chat", "Custom Web browser");
 	initBrowserOptions(browserCombo, browserOptionsCombo, browserPath);
 
+	//deaktywacja opcji wylaczenia separatorow
+	QCheckBox *b_noHeadersRepeat= ConfigDialog::getCheckBox("Look", "Remove chat header repetitions");
+
+	QSpinBox *s_headersSeparatorHeight= ConfigDialog::getSpinBox("Look", "Chat header separators height:");
+	QSpinBox *s_noHeadersInterval= ConfigDialog::getSpinBox("Look", "Interval between header removal:");
+
+	s_headersSeparatorHeight->setEnabled(b_noHeadersRepeat->isChecked());
+	s_noHeadersInterval->setEnabled(b_noHeadersRepeat->isChecked());
+
+	//dodanie suffiksu w spinboksach
+	ConfigDialog::getSpinBox("Look", "Chat header separators height:")->setSuffix(" px");
+	ConfigDialog::getSpinBox("Look", "Interval between header removal:")->setSuffix(" min");
+
 	//podpiecie pod zmiane w combo
 	connect(browserCombo, SIGNAL(activated (int)), this, SLOT(findAndSetWebBrowser(int)));
 	connect(browserOptionsCombo, SIGNAL(activated (int)), this, SLOT(findAndSetBrowserOption(int)));
@@ -1963,6 +2043,11 @@ void ChatSlots::onPruneChat(bool toggled)
 void ChatSlots::onFoldLink(bool toggled)
 {
 	ConfigDialog::getHGroupBox("Chat", "Link folding")->setEnabled(toggled);
+}
+void ChatSlots::onRemoveHeaders(bool toggled)
+{
+	ConfigDialog::getSpinBox("Look", "Chat header separators height:")->setEnabled(toggled);
+	ConfigDialog::getSpinBox("Look", "Interval between header removal:")->setEnabled(toggled);
 }
 
 void ChatSlots::onDestroyConfigDialog()

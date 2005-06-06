@@ -26,6 +26,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   domy¶lnie w³±czona, usuniêty kod kompatybilno¶ci z 0.3.x do obs³ugi
   domy¶lnego statusu (Vogel/joi)
 * default_sms: domy¶lna warto¶æ pola User dla bramki Ery = "48" (joi)
+* opcja usuwania nag³ówków i/lub separatorów z kolejno przychodz±cych wiadomo¶ci
+  od jednego "nadawcy" (OBenY/Vogel/joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

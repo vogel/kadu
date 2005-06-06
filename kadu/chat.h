@@ -497,8 +497,17 @@ class Chat : public QWidget
 		int seq; /* ?? */
 		KaduSplitter *vertSplit, *horizSplit; /*!< obiekty oddzielaj±ce
 							 kontrolki od siebie */
-		int ParagraphSeparator; /* ?? */
+		int ParagraphSeparator; /* odstêp miêdzy kolejnymi wypowiedziami */
+		
 		QDateTime lastMsgTime; /*!< czas ostatniej wiadomo¶ci */
+
+		//pomijanie nag³ówków w wiadomo¶ciach
+		QString PreviousMessage;           //pamiêtamy od kogo by³a ostatnia wiadomo¶æ
+		bool CfgNoHeaderRepeat;         //czy chcemy w ogóle u¿ywaæ okrojonych nag³ówków ?
+		int CfgHeaderSeparatorHeight;      //jaki wysoki chcemy mieæ separator ?
+		int CfgNoHeaderInterval;        //co ile chcemy przywróciæ nag³ówek ?
+
+		time_t LastTime;
 
 		/**
 			\fn void pruneWindow()
@@ -1080,6 +1089,12 @@ class ChatSlots :public QObject
 		**/
 		void onBlockClose(bool toggled);
 		
+		/**
+			Slot jest wywo³ywany gdy w³±czono/wy³±czono wy¶wietlanie nag³ówków,
+			aby uaktualniæ podgl±d
+		**/
+		void onRemoveHeaders(bool toggled);
+
 		/**
 			\fn void chooseColor(const char* name, const QColor& color)
 			Slot jest wywo³ywany gdy zmieniono kolor,
