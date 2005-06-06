@@ -549,7 +549,7 @@ Jest to wysoce ryzykowne!</translation>
     </message>
     <message>
         <source>Receive images during invisibility</source>
-        <translation>Odbieraj obrazki gdy jestem niewidoczny</translation>
+        <translation>Odbieraj obrazki gdy jestem ukryty</translation>
     </message>
     <message>
         <source>Block window close on new message</source>
@@ -922,7 +922,7 @@ Twoje hasło jest nieprawidłowe!</translation>
     </message>
     <message>
         <source>Busy</source>
-        <translation>Zaraz wracam</translation>
+        <translation>Zajęty</translation>
     </message>
     <message>
         <source>Invisible</source>
@@ -1884,11 +1884,11 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     </message>
     <message>
         <source>Busy</source>
-        <translation>Zaraz wracam</translation>
+        <translation>Zajęty</translation>
     </message>
     <message>
         <source>Busy (d.)</source>
-        <translation>Zaraz wracam z opisem</translation>
+        <translation>Zajęty z opisem</translation>
     </message>
     <message>
         <source>Invisible</source>
