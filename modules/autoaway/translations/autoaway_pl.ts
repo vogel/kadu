@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Enable autoaway</source>
-        <translation>Automatyczny status &quot;zaraz wracam&quot;</translation>
+        <translation>Automatyczny status &quot;zajęty&quot;</translation>
     </message>
     <message>
         <source>Set status to away after </source>
@@ -19,7 +19,7 @@
     </message>
     <message>
         <source>Enable autoinvisible</source>
-        <translation>Włącz auto niewidoczny</translation>
+        <translation>Włącz auto ukryty</translation>
     </message>
     <message>
         <source>Enable autodisconnect</source>
@@ -27,7 +27,7 @@
     </message>
     <message>
         <source>Set status to invisible after </source>
-        <translation>Ustaw status niewidoczny po:  </translation>
+        <translation>Ustaw status ukryty po:  </translation>
     </message>
     <message>
         <source>Disconnect after </source>
