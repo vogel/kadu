@@ -4,3 +4,4 @@ Description[pl]=Narzêdzie do migracji
 Author=Kadu Team
 Dependencies=
 LoadByDefault=true
+Version=core

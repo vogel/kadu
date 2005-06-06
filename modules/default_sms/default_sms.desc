@@ -4,3 +4,4 @@ Description[pl]=Modu³ obs³ugi bramek Idea, Plus, Era
 Author=Kadu Team
 Dependencies=sms
 LoadByDefault=true
+Version=core

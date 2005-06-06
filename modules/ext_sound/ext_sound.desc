@@ -4,3 +4,4 @@ Description[pl]=Modu³ obs³ugi d¼wiêku przez zewnêtrzn± aplikacjê
 Author=Kadu Team
 Dependencies=sound
 LoadByDefault=true
+Version=core

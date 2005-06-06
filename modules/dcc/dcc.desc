@@ -3,3 +3,4 @@ Description=Dcc module with file transfer support
 Description[pl]=Modu³ po³±czeñ bezpo¶rednich z obs³ug± przesy³u plików
 Author=Kadu Team
 LoadByDefault=true
+Version=core

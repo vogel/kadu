@@ -5,3 +5,4 @@ Author=Kadu Team
 Dependencies=notify
 Provides=notify_method
 LoadByDefault=true
+Version=core

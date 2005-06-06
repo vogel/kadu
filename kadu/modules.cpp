@@ -91,6 +91,7 @@ ModulesDialog::ModulesDialog()
 	// our QListView
 	lv_modules = new QListView(center);
 	lv_modules->addColumn(tr("Module name"), 160);
+	lv_modules->addColumn(tr("Version"), 100);
 	lv_modules->addColumn(tr("Module type"), 150);
 	lv_modules->addColumn(tr("State"), 120);
 	lv_modules->setAllColumnsShowFocus(true);
@@ -102,8 +103,7 @@ ModulesDialog::ModulesDialog()
 	//end our QGroupBox
 	
 	l_moduleinfo = new QLabel(vgb_info);
-	l_moduleinfo->setText(tr("<b>Module:</b><br/><b>Depends on:</b><br/><b>Conflicts with:</b><br/>"
-				"<b>Provides:</b><br/><b>Author:</b><br/><b>Description:</b>"));
+	l_moduleinfo->setText(tr("<b>Module:</b><br/><b>Depends on:</b><br/><b>Conflicts with:</b><br/><b>Provides:</b><br/><b>Author:</b><br/><b>Version:</b><br/><b>Description:</b>"));
 
 	// buttons
 	QHBox *bottom=new QHBox(center);
@@ -139,12 +139,12 @@ void ModulesDialog::moduleAction(QListViewItem *)
 {
 	kdebugf();
 	if (lv_modules->selectedItem() != NULL)
-		if ((lv_modules->selectedItem()->text(1) == tr("Dynamic")) && 
-			(lv_modules->selectedItem()->text(2) == tr("Loaded")))
+		if ((lv_modules->selectedItem()->text(2) == tr("Dynamic")) && 
+			(lv_modules->selectedItem()->text(3) == tr("Loaded")))
 			unloadItem();
 		else
-		if ((lv_modules->selectedItem()->text(1) == tr("Dynamic")) && 
-			(lv_modules->selectedItem()->text(2) == tr("Not loaded")))
+		if ((lv_modules->selectedItem()->text(2) == tr("Dynamic")) && 
+			(lv_modules->selectedItem()->text(3) == tr("Not loaded")))
 			loadItem();
 	kdebugf2();
 }
@@ -182,15 +182,33 @@ void ModulesDialog::refreshList()
 
 	QStringList moduleList = modules_manager->staticModules();
 	CONST_FOREACH(module, moduleList)
-		new QListViewItem(lv_modules, *module, tr("Static"), tr("Loaded"));
+	{
+		ModuleInfo info;
+		if (modules_manager->moduleInfo(*module,info))
+			new QListViewItem(lv_modules, *module, info.version, tr("Static"), tr("Loaded"));
+		else
+			new QListViewItem(lv_modules, *module, "", tr("Static"), tr("Loaded"));
+	}
 		
 	moduleList = modules_manager->loadedModules();
 	CONST_FOREACH(module, moduleList)
-		new QListViewItem(lv_modules, *module, tr("Dynamic"), tr("Loaded"));
+	{
+		ModuleInfo info;
+		if (modules_manager->moduleInfo(*module,info))
+			new QListViewItem(lv_modules, *module, info.version, tr("Dynamic"), tr("Loaded"));
+		else
+			new QListViewItem(lv_modules, *module, "", tr("Dynamic"), tr("Loaded"));
+	}
 		
 	moduleList = modules_manager->unloadedModules();
 	CONST_FOREACH(module, moduleList)
-		new QListViewItem(lv_modules, *module, tr("Dynamic"), tr("Not loaded"));
+	{
+		ModuleInfo info;
+		if (modules_manager->moduleInfo(*module,info))
+			new QListViewItem(lv_modules, *module, info.version, tr("Dynamic"), tr("Not loaded"));
+		else
+			new QListViewItem(lv_modules, *module, "", tr("Dynamic"), tr("Not loaded"));
+	}
 	
 	lv_modules->setSelected(lv_modules->findItem(s_selected, 0), true);
 
@@ -214,6 +232,7 @@ void ModulesDialog::getInfo()
 				tr("<br/><b>Conflicts with: </b>") + info.conflicts.join(", ") + 
 				tr("<br/><b>Provides: </b>") + info.provides.join(", ") + 
 				tr("<br/><b>Author: </b>") + info.author +
+				tr("<br/><b>Version: </b>") + info.version +
 				tr("<br/><b>Description: </b>") + info.description);
 	kdebugf2();
 }
@@ -424,6 +443,7 @@ QStringList ModulesManager::loadedModules() const
 	return loaded;
 }
 
+
 QStringList ModulesManager::unloadedModules() const
 {
 	QStringList installed = installedModules();
@@ -461,6 +481,11 @@ bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info) co
 
 	info.author = desc_file.readEntry("Module", "Author");
 
+	if (desc_file.readEntry("Module", "Version") == "core")
+		info.version = VERSION;
+	else
+		info.version = desc_file.readEntry("Module", "Version");
+	
 	info.depends = QStringList::split(" ",
 		desc_file.readEntry("Module", "Dependencies"));
 

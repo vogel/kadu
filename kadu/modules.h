@@ -63,6 +63,7 @@ struct ModuleInfo
 	QStringList provides; /*!< Jak± cechê dostarcza ten modu³. */
 	QString description; /*!< Opis modu³u. */
 	QString author; /*!< Autor modu³u. */
+	QString version; /*!< Wersja modu³u. */
 	bool load_by_def; /*!< Czy modu³ jest domy¶lnie ³adowany, czy nie? */
 };
 

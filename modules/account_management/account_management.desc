@@ -3,3 +3,4 @@ Description=
 Description[pl]=Modu³ zawieraj±cy rzadko u¿ywane funkcje dotycz±ce: rejestracji nowego konta, usuwania konta, zmiany i przypominania has³a
 Author=Kadu Team
 LoadByDefault=true
+Version=core

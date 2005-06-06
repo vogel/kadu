@@ -4,3 +4,4 @@ Description[pl]=Kreator konfiguracji
 Author=Dorregaray
 Dependencies=account_management sound hints
 LoadByDefault=true
+Version=core

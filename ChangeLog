@@ -28,6 +28,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * default_sms: domy¶lna warto¶æ pola User dla bramki Ery = "48" (joi)
 * opcja usuwania nag³ówków i/lub separatorów z kolejno przychodz±cych wiadomo¶ci
   od jednego "nadawcy" (OBenY/Vogel/joi)
+* dodanie do "Zarz±dcy modu³ów" kolumny "Wersja", obs³uga pola "Version"
+  w plikach .desc modu³ów (FuKu/joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
