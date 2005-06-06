@@ -33,6 +33,7 @@ extern "C" int migration_init()
 	kdebugf();
 	QString old_path = old_ggPath();
 	QString new_path = ggPath("");
+	new_path.truncate(new_path.length() - 1); // obetnij konczacy /
 	if (!QFile::exists(new_path) && QFile::exists(old_path))
 	{
 		if (MessageBox::ask(QString("Kadu detected, that you were using EKG, GnuGadu or\n"
