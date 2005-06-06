@@ -394,7 +394,7 @@ void SmsGatewaySlots::onChangeEraGateway(int gateway)
 	config_file.writeEntry("SMS", "EraGateway_"+actualEraGateway+"_Password", e_erapassword->text());
 	config_file.writeEntry("SMS", "EraGateway_"+actualEraGateway+"_User", e_erauser->text());
 
-	e_erauser->setText(config_file.readEntry("SMS", "EraGateway_"+cb_typegateway->currentText()+"_User"));
+	e_erauser->setText(config_file.readEntry("SMS", "EraGateway_"+cb_typegateway->currentText()+"_User", "48"));
 	e_erapassword->setText(config_file.readEntry("SMS", "EraGateway_"+cb_typegateway->currentText()+"_Password"));
 	actualEraGateway=cb_typegateway->text(gateway);
 	kdebugf2();
@@ -428,7 +428,7 @@ void SmsGatewaySlots::onCreateConfigDialog()
 	e_erapassword->setEchoMode(QLineEdit::Password);
 	
 	e_erapassword->setText(config_file.readEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_Password"));
-	e_erauser->setText(config_file.readEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_User"));
+	e_erauser->setText(config_file.readEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_User", "48"));
 
 	modules_manager->moduleIncUsageCount("default_sms");
 	kdebugf2();
