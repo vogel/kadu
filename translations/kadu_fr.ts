@@ -596,6 +596,26 @@ Attention danger!
         <source>&quot;%1&quot; in chat sends message by default</source>
         <translation>Par défault %1 envoie le message</translation>
     </message>
+    <message>
+        <source>Headers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove chat header repetitions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat header separators height:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Interval between header removal:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On shutdown, set current description</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1321,10 +1341,6 @@ will be deleted. Are you sure?</source>
         <translation>État</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Exige:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflit avec:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Delivre:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Auteur:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;</translation>
-    </message>
-    <message>
         <source>&amp;Close</source>
         <translation>&amp;Fermes</translation>
     </message>
@@ -1359,6 +1375,18 @@ will be deleted. Are you sure?</source>
     <message>
         <source>&lt;br/&gt;&lt;b&gt;Description: &lt;/b&gt;</source>
         <translation>&lt;br/&gt;&lt;b&gt;Description: &lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Version:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

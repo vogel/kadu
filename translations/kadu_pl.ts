@@ -595,6 +595,26 @@ Jest to wysoce ryzykowne!</translation>
         <source>&quot;%1&quot; in chat sends message by default</source>
         <translation>&quot;%1&quot; domyślnie wysyła wiadomość</translation>
     </message>
+    <message>
+        <source>Headers</source>
+        <translation>Nagłówki</translation>
+    </message>
+    <message>
+        <source>Remove chat header repetitions</source>
+        <translation>Usuń powtarzające się nagłówki w oknie rozmowy</translation>
+    </message>
+    <message>
+        <source>Chat header separators height:</source>
+        <translation>Wysokość separatora nagłowków: </translation>
+    </message>
+    <message>
+        <source>Interval between header removal:</source>
+        <translation>Czas, pomiędzy którym nagłówek będzie usuwany: </translation>
+    </message>
+    <message>
+        <source>On shutdown, set current description</source>
+        <translation>Wyłączając ustaw bierzący opis</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1265,7 +1285,7 @@ Czy napewno tego chcesz?</translation>
     <name>KaduTextBrowser</name>
     <message>
         <source>Copy link &amp;location</source>
-        <translation>Kopiuj &amp;lokację odnośnika</translation>
+        <translation>Kopiuj &amp;adres odnośnika</translation>
     </message>
 </context>
 <context>
@@ -1322,10 +1342,6 @@ Czy napewno tego chcesz?</translation>
         <translation>Stan</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Moduł:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Wymaga:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Konflikt z:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Dostarcza:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Autor:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Opis:&lt;/b&gt;</translation>
-    </message>
-    <message>
         <source>&amp;Close</source>
         <translation>&amp;Zamknij</translation>
     </message>
@@ -1360,6 +1376,18 @@ Czy napewno tego chcesz?</translation>
     <message>
         <source>&lt;br/&gt;&lt;b&gt;Description: &lt;/b&gt;</source>
         <translation>&lt;br/&gt;&lt;b&gt;Opis: &lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation>Wersja</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Version:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;</source>
+        <translation>&lt;b&gt;Moduł:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Wymaga:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Konflikt z:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Dostarcza:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Autor:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Wersja:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Opis:&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;</source>
+        <translation>&lt;br/&gt;&lt;b&gt;Wersja: &lt;/b&gt;</translation>
     </message>
 </context>
 <context>
