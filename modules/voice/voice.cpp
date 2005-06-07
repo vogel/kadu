@@ -170,7 +170,7 @@ void PlayThread::addGsmSample(char *data, int length)
 	kdebugf();
 	if (end)
 	{
-		delete data;
+		delete [] data;
 		kdebugmf(KDEBUG_FUNCTION_END, "end: thread is going to be deleted!\n");
 		return;
 	}
