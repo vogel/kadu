@@ -54,7 +54,7 @@ void XmlConfigFile::write()
 	{
 		kdebugm(KDEBUG_INFO, "file opened '%s'\n", (const char *)file.name().local8Bit());
 		QTextStream stream(&file);
-		stream.setCodec(codec_latin2);		
+		stream.setEncoding(QTextStream::UnicodeUTF8);		
 		stream << DomDocument.toString();
 		file.close();
 	}
