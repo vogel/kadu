@@ -41,6 +41,10 @@ class XmlConfigFile
 		**/
 		QDomElement createElement(QDomElement parent, const QString& tag_name);
 		/**
+			Zwraca pierwszy element lub element typu null jesli nie znajdzie.
+		**/
+		QDomElement findElement(QDomElement parent, const QString& tag_name);
+		/**
 			Zwraca pierwszy element lub dodaje nowy i przypisuje do rodzica.
 		**/
 		QDomElement accessElement(QDomElement parent, const QString& tag_name);

@@ -10,6 +10,7 @@
 #include "message_box.h"
 #include "debug.h"
 #include "userlist.h"
+#include "kadu.h"
 
 static QString old_ggPath()
 {
@@ -94,6 +95,7 @@ static void xmlUserListMigration()
 		userlist.readFromFile();
 		userlist.writeToConfig();
 		xml_config_file->sync();
+		kadu->setActiveGroup("");
 		MessageBox::msg(QString("Contact list migrated to kadu.conf.xml.\n"
 			"You can remove %1\n"
 			"and %2 now\n"

@@ -845,6 +845,45 @@ void UserList::merge(const UserList &ulist)
 	kdebugf2();
 }
 
+void UserList::readFromConfig()
+{
+	kdebugf();
+	clear();
+	QDomElement contacts_elem = xml_config_file->findElement(
+		xml_config_file->rootElement(), "Contacts");
+	if (contacts_elem.isNull())
+	{
+		emit modified();
+		kdebugf2();
+		return;
+	}
+	QDomNodeList contact_list = contacts_elem.elementsByTagName("Contact");
+	UserListElement e;
+	for (unsigned int i = 0; i < contact_list.count(); i++)
+	{
+		QDomElement contact_elem = contact_list.item(i).toElement();
+		e.setAltNick(contact_elem.attribute("altnick"));
+		e.setFirstName(contact_elem.attribute("first_name"));
+		e.setLastName(contact_elem.attribute("last_name"));
+		e.setNickName(contact_elem.attribute("nick_name"));
+		e.setMobile(contact_elem.attribute("mobile"));
+		e.setEmail(contact_elem.attribute("email"));
+		e.setHomePhone(contact_elem.attribute("home_phone"));
+		e.setUin(contact_elem.attribute("uin").toInt());
+		e.setBlocking(contact_elem.attribute("blocking") == "true");
+		e.setOfflineTo(contact_elem.attribute("offline_to") == "true");
+		e.setNotify(contact_elem.attribute("notify") == "true");
+		e.setGroup(contact_elem.attribute("groups"));
+		e.setAliveSound((NotifyType)contact_elem.attribute("alive_sound_type").toInt(),
+			contact_elem.attribute("alive_sound_file"));
+		e.setMessageSound((NotifyType)contact_elem.attribute("message_sound_type").toInt(),
+			contact_elem.attribute("message_sound_file"));
+		addUser(e);
+	}
+	emit modified();
+	kdebugf2();
+}
+
 void UserList::writeToConfig()
 {
 	QDomElement root_elem = xml_config_file->rootElement();

@@ -80,14 +80,22 @@ QDomElement XmlConfigFile::createElement(QDomElement parent, const QString& tag_
 	return elem;
 }
 
-QDomElement XmlConfigFile::accessElement(QDomElement parent, const QString& tag_name)
+QDomElement XmlConfigFile::findElement(QDomElement parent, const QString& tag_name)
 {
 	QDomNodeList elems = parent.elementsByTagName(tag_name);
-	QDomElement elem;
 	if (elems.length() > 0)
 		return elems.item(0).toElement();
 	else
+		return QDomNode().toElement();
+}
+
+QDomElement XmlConfigFile::accessElement(QDomElement parent, const QString& tag_name)
+{
+	QDomElement elem = findElement(parent, tag_name);
+	if (elem.isNull())
 		return createElement(parent, tag_name);
+	else
+		return elem;
 }
 
 XmlConfigFile* xml_config_file = NULL;

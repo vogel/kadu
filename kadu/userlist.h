@@ -602,6 +602,12 @@ class UserList : public QObject, public QMap<QString,UserListElement>
 		**/
 		void merge(const UserList &userlist);
 		/**
+			\fn void readFromConfig()
+			Wczytuje listê kontaktów z drzewa xml z konfiguracj±
+			programu. Poprzednie kontakty s± usuwane.
+		**/
+		void readFromConfig();
+		/**
 			\fn void writeToConfig()
 			Dodaje listê kontaktów do drzewa xml z konfiguracj±
 			programu. Poprzednie kontakty s± usuwane.

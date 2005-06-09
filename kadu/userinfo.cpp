@@ -447,7 +447,6 @@ void UserInfo::addNewUser(UserListElement& e)
 		return;
 	}
 	userlist.addUser(e);
-	userlist.writeToFile();
 	userlist.writeToConfig();
 	close(true);
 
@@ -509,7 +508,6 @@ void UserInfo::changeUserData(UserListElement& e)
 	UinType uin = puser->uin();
 	userlist.changeUserInfo(puser->altNick(), e); //po tej linii NIE wolno korzystaæ z puser, bo jego ju¿ nie ma!
 	puser = NULL;
-	userlist.writeToFile();
 	userlist.writeToConfig();
 
 	chat_manager->refreshTitlesForUin(uin);

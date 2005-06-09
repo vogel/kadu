@@ -79,7 +79,6 @@ class Kadu : public QMainWindow
 		void createMenu();
 		void createToolBar();
 		void createStatusPopupMenu();
-		void setActiveGroup(const QString& group);
 
 		void showStatusOnMenu(int);
 
@@ -205,6 +204,7 @@ class Kadu : public QMainWindow
 		void showUserInfo();
 		void viewHistory();
 		void popupMenu();
+		void setActiveGroup(const QString& group);
 
 		// odczytuje z obrazka tekst i zapisuje go w drugim parametrze
 		void readTokenValue(QPixmap, QString &);

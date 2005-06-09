@@ -247,7 +247,7 @@ void WizardStarter::userListImported(bool ok, UserList& userList)
 	}
 
 	userlist.merge(userList);
-	userlist.writeToFile();
+	userlist.writeToConfig();
 
 	kadu->userbox()->clear();
 	kadu->userbox()->clearUsers();

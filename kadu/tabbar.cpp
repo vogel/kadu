@@ -311,7 +311,8 @@ void KaduTabBar::dropEvent(QDropEvent* e)
 			userlist.byAltNick(*altnick).setGroup(group);
 		// bardzo niewygodne, trzeba poprawiæ writeToFile !! ta funkcja jest za wolna
 		// trzeba dodaæ mozliwo¶æ zmiany danych tylko jednego user !!
-		userlist.writeToFile();
+		//
+		// Po przejsciu na xml powyzszy komentarz w zasadzie wciaz obowiazuje - Adrian
 		userlist.writeToConfig();
 	}
 }

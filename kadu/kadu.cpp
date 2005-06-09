@@ -385,7 +385,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	loadGeometry(this, "General", "Geometry", 0, 0, 145, 465);
 
 	/* read the userlist */
-	userlist.readFromFile();
+	userlist.readFromConfig();
 
 	readIgnored();
 
@@ -787,7 +787,6 @@ void Kadu::blockUser()
 			userlist.changeUserInfo((*user).altNick(), *user);
 		}
 	}
-	userlist.writeToFile();
 	userlist.writeToConfig();
 	kdebugf2();
 }
@@ -820,7 +819,6 @@ void Kadu::notifyUser()
 		}
 	}
 
-	userlist.writeToFile();
 	userlist.writeToConfig();
 	kdebugf2();
 }
@@ -853,7 +851,6 @@ void Kadu::offlineToUser()
 		}
 	}
 
-	userlist.writeToFile();
 	userlist.writeToConfig();
 	kdebugf2();
 }
@@ -1052,7 +1049,6 @@ void Kadu::removeUser(const QStringList &users, bool /*permanently*/)
 		userlist.removeUser(user.altNick());
 	}
 
-	userlist.writeToFile();
 	userlist.writeToConfig();
 	refreshGroupTabBar();
 	kdebugf2();
