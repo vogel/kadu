@@ -26,7 +26,7 @@ static QString old_ggPath()
 	if (config_dir == NULL)
 		path = QString("%1/.gg/").arg(home);
 	else
-		path = QString("%1/%2/.gg/").arg(home).arg(config_dir);
+		path = QString("%1/%2/gg/").arg(home).arg(config_dir);
 	return path;
 }
 
@@ -36,6 +36,8 @@ static void settingsDirMigration()
 	QString old_path = old_ggPath();
 	QString new_path = ggPath("");
 	new_path.truncate(new_path.length() - 1); // obetnij konczacy /
+	kdebug("old_path: %s\n", old_path.local8Bit().data());
+	kdebug("new_path: %s\n", new_path.local8Bit().data());
 	if (QFile::exists(new_path) || !QFile::exists(old_path))
 	{
 		kdebugf2();
@@ -45,18 +47,18 @@ static void settingsDirMigration()
 				"older version of Kadu before. Would you like to try\n"
 				"to import your settings from %1?").arg(old_path)))
 	{
-		kdebug("creating process: cp");
+		kdebug("creating process: cp\n");
 		QProcess copy_process(QString("cp"));
-		kdebug("adding argument: -r");
+		kdebug("adding argument: -r\n");
 		copy_process.addArgument("-r");
-		kdebug("adding argument: %s", old_path.local8Bit().data());
+		kdebug("adding argument: %s\n", old_path.local8Bit().data());
 		copy_process.addArgument(old_path);
-		kdebug("adding argument: %s", new_path.local8Bit().data());
+		kdebug("adding argument: %s\n", new_path.local8Bit().data());
 		copy_process.addArgument(new_path);
-		kdebug("starting process");
+		kdebug("starting process\n");
 		if (copy_process.start())
 		{
-			kdebug("process started, waiting while it is running");
+			kdebug("process started, waiting while it is running\n");
 			MessageBox::status("Migrating data ...");
 			while (copy_process.isRunning()) { };
 			MessageBox::close("Migrating data ...");
@@ -70,14 +72,14 @@ static void settingsDirMigration()
 			}
 			else
 			{
-				kdebug("error migrating data. exit status: %i",
+				kdebug("error migrating data. exit status: %i\n",
 					copy_process.exitStatus());
 				MessageBox::wrn("Error migrating data!");
 			}
 		}
 		else
 		{
-			kdebug("cannot start migration process");
+			kdebug("cannot start migration process\n");
 			MessageBox::wrn("Cannot start migration process!");
 		}
 	}
