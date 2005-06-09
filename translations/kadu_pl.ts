@@ -613,7 +613,7 @@ Jest to wysoce ryzykowne!</translation>
     </message>
     <message>
         <source>On shutdown, set current description</source>
-        <translation>Wyłączając ustaw bierzący opis</translation>
+        <translation>Wyłączając ustaw bieżący opis</translation>
     </message>
 </context>
 <context>
