@@ -48,6 +48,10 @@ class XmlConfigFile
 			Zwraca pierwszy element lub dodaje nowy i przypisuje do rodzica.
 		**/
 		QDomElement accessElement(QDomElement parent, const QString& tag_name);
+		/**
+			Usuwa wszystkie dzieci elementu.
+		**/
+		void removeChildren(QDomElement parent);
 };
 
 extern XmlConfigFile* xml_config_file;

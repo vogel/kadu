@@ -888,11 +888,7 @@ void UserList::writeToConfig()
 {
 	QDomElement root_elem = xml_config_file->rootElement();
 	QDomElement contacts_elem = xml_config_file->accessElement(root_elem, "Contacts");
-	while (contacts_elem.hasChildNodes())
-	{
-		contacts_elem.firstChild().clear();
-		contacts_elem.removeChild(contacts_elem.firstChild());
-	}
+	xml_config_file->removeChildren(contacts_elem);
 	CONST_FOREACH(i, *this)
 	{
 		if ((*i).isAnonymous())

@@ -98,6 +98,15 @@ QDomElement XmlConfigFile::accessElement(QDomElement parent, const QString& tag_
 		return elem;
 }
 
+void XmlConfigFile::removeChildren(QDomElement parent)
+{
+	while (parent.hasChildNodes())
+	{
+		parent.firstChild().clear();
+		parent.removeChild(parent.firstChild());
+	}
+}
+
 XmlConfigFile* xml_config_file = NULL;
 
 
