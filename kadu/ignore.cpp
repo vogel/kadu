@@ -225,30 +225,28 @@ int writeIgnored(QString filename)
 int readIgnored()
 {
 	kdebugf();
-	QString line, fname;
-	QStringList list;
-
-	fname = ggPath("ignore");
-
-	QFile f(fname);
-	if (!f.open(IO_ReadOnly))
+	QDomElement ignored_elem = xml_config_file->findElement(
+		xml_config_file->rootElement(), "Ignored");
+	if (ignored_elem.isNull())
 	{
-		kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "can't open ignore file!\n");
+		kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "can't find IgnoredContacts element!\n");
 		return 1;
 	}
-
-	QTextStream stream(&f);
-	while ((line = stream.readLine()) != QString::null)
+	QDomNodeList ignored_groups =
+		ignored_elem.elementsByTagName("IgnoredGroup");
+	for (unsigned int i = 0; i < ignored_groups.count(); i++)
 	{
+		QDomElement ignored_group = ignored_groups.item(i).toElement();
 		UinsList uins;
-		list = QStringList::split(";", line);
-		CONST_FOREACH(strUin, list)
-			uins.append((*strUin).toUInt());
+		QDomNodeList ignored_contacts =
+			ignored_group.elementsByTagName("IgnoredContact");
+		for (unsigned int j = 0; j < ignored_contacts.count(); j++)
+		{
+			QDomElement ignored_contact = ignored_contacts.item(j).toElement();
+			uins.append(ignored_contact.attribute("uin").toUInt());
+		}
 		ignored.append(uins);
 	}
-
-	f.close();
-
 	kdebugf2();
 	return 0;
 }
