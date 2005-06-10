@@ -33,6 +33,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniêty segfault przy zakañczaniu rozmowy g³osowej (joi)
 * modu³ migration migruje listê kontaktów do pliku kadu.conf.xml (adrian)
 * pliki userlist i userattribs nie s± ju¿ u¿ywane - lista kontaktów w kadu.conf.xml (adrian)
+* modu³ migration migruje listê ignorowanych do pliku kadu.conf.xml (adrian)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

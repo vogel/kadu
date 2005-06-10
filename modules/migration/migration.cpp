@@ -106,11 +106,52 @@ static void xmlUserListMigration()
 	kdebugf2();
 }
 
+static void xmlIgnoredListMigration()
+{
+	kdebugf();
+	QString ignored_path = ggPath("ignore");
+	if (xml_config_file->rootElement().elementsByTagName("Ignored").length() == 0 &&
+		QFile::exists(ignored_path))
+	{
+		QFile f(ignored_path);
+		if (!f.open(IO_ReadOnly))
+		{
+			kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "can't open ignore file!\n");
+			return;
+		}
+		QTextStream stream(&f);
+		QString line;
+		QDomElement ignored_elem =
+			xml_config_file->createElement(xml_config_file->rootElement(), "Ignored");
+		while ((line = stream.readLine()) != QString::null)
+		{
+			UinsList uins;
+			QStringList list = QStringList::split(";", line);
+			QDomElement ignored_grp_elem =
+				xml_config_file->createElement(ignored_elem, "IgnoredGroup");
+			CONST_FOREACH(strUin, list)
+			{
+				QDomElement ignored_contact_elem =
+					xml_config_file->createElement(ignored_grp_elem,
+						"IgnoredContact");
+				ignored_contact_elem.setAttribute("uin", (*strUin));
+			}
+		}
+		f.close();
+		xml_config_file->sync();
+		MessageBox::msg(QString("Ignored contact list migrated to kadu.conf.xml.\n"
+			"You can remove %1 now\n"
+			"(backup will be a good idea).\n").arg(ignored_path));	
+	}
+	kdebugf2();
+}
+
 extern "C" int migration_init()
 {
 	kdebugf();
 	settingsDirMigration();
 	xmlUserListMigration();
+	xmlIgnoredListMigration();
 	kdebugf2();
 	return 0;
 }
