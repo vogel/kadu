@@ -183,41 +183,22 @@ void delIgnored(UinsList uins)
 int writeIgnored(QString filename)
 {
 	kdebugf();
-	QString tmp;
-
-	if (!(tmp = ggPath("")))
-	{
-		kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "failed\n");
-		return 1;
-	}
-	mkdir(tmp.local8Bit(), 0700);
-
-	if (filename == QString::null)
-		filename = ggPath("ignore");
-
-	QFile file(filename);
-	if (!file.open(IO_WriteOnly | IO_Truncate))
-	{
-		kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "can't open ignore file!\n");
-		return 2;
-	}
-
-//	fchmod(fileno(f), 0600);
-
-	QString buf;
+	QDomElement ignored_elem =
+		xml_config_file->accessElement(xml_config_file->rootElement(), "Ignored");
+	xml_config_file->removeChildren(ignored_elem);
 	CONST_FOREACH(ignoreList, ignored)
 	{
-		QStringList list;
+		QDomElement ignored_group_elem =
+			xml_config_file->createElement(ignored_elem, "IgnoredGroup");
 		CONST_FOREACH(uin, *ignoreList)
-			list.append(QString::number(*uin));
-		buf.append(list.join(";"));
-		buf.append('\n');
+		{
+			QDomElement ignored_contact_elem =
+				xml_config_file->createElement(
+					ignored_group_elem, "IgnoredContact");
+			ignored_contact_elem.setAttribute("uin", *uin);
+		}
 	}
-
-	if (!buf.isEmpty())
-		file.writeBlock(buf, buf.length());
-	file.close();
-
+	xml_config_file->sync();
 	kdebugf2();
 	return 0;
 }
