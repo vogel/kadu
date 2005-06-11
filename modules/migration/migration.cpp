@@ -110,9 +110,11 @@ static void xmlIgnoredListMigration()
 {
 	kdebugf();
 	QString ignored_path = ggPath("ignore");
+	kdebug("ignored_path: %s\n", ignored_path.local8Bit().data());
 	if (xml_config_file->rootElement().elementsByTagName("Ignored").length() == 0 &&
 		QFile::exists(ignored_path))
 	{
+		kdebug("migrating ignored list\n");
 		QFile f(ignored_path);
 		if (!f.open(IO_ReadOnly))
 		{
@@ -121,22 +123,29 @@ static void xmlIgnoredListMigration()
 		}
 		QTextStream stream(&f);
 		QString line;
+		kdebug("creating Ignored element\n");
 		QDomElement ignored_elem =
 			xml_config_file->createElement(xml_config_file->rootElement(), "Ignored");
+		kdebug("begin of ignored file loop\n");
 		while ((line = stream.readLine()) != QString::null)
 		{
+			kdebug("ignored file line: %s\n", line.local8Bit().data());
 			UinsList uins;
 			QStringList list = QStringList::split(";", line);
 			QDomElement ignored_grp_elem =
 				xml_config_file->createElement(ignored_elem, "IgnoredGroup");
+			kdebug("begin of ignored group loop\n");
 			CONST_FOREACH(strUin, list)
 			{
+				kdebug("ignored uin: %s\n", (*strUin).local8Bit().data());
 				QDomElement ignored_contact_elem =
 					xml_config_file->createElement(ignored_grp_elem,
 						"IgnoredContact");
 				ignored_contact_elem.setAttribute("uin", (*strUin));
 			}
+			kdebug("end of ignored group loop\n");
 		}
+		kdebug("end of ignored file loop\n");
 		f.close();
 		xml_config_file->sync();
 		MessageBox::msg(QString("Ignored contact list migrated to kadu.conf.xml.\n"
