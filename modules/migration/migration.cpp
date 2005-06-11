@@ -11,6 +11,7 @@
 #include "debug.h"
 #include "userlist.h"
 #include "kadu.h"
+#include "ignore.h"
 
 static QString old_ggPath()
 {
@@ -148,6 +149,7 @@ static void xmlIgnoredListMigration()
 		kdebug("end of ignored file loop\n");
 		f.close();
 		xml_config_file->sync();
+		readIgnored();
 		MessageBox::msg(QString("Ignored contact list migrated to kadu.conf.xml.\n"
 			"You can remove %1 now\n"
 			"(backup will be a good idea).\n").arg(ignored_path));	

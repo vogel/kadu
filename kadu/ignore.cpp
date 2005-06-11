@@ -210,7 +210,7 @@ int readIgnored()
 		xml_config_file->rootElement(), "Ignored");
 	if (ignored_elem.isNull())
 	{
-		kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "can't find IgnoredContacts element!\n");
+		kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "can't find Ignored element!\n");
 		return 1;
 	}
 	QDomNodeList ignored_groups =
