@@ -1704,6 +1704,7 @@ void HttpClient::get(const QString &path)
 	Data.resize(0);
 	PostData.resize(0);
 	HeaderParsed = false;
+
 	if(config_file.readBoolEntry("Network", "UseProxy", false))
 		Socket.connectToHost(
 			config_file.readEntry("Network", "ProxyHost"),
@@ -1719,7 +1720,14 @@ void HttpClient::post(const QString &path, const QByteArray& data)
 	Data.resize(0);
 	PostData.duplicate(data);
 	HeaderParsed = false;
-	Socket.connectToHost(Host, 80);
+
+	if(config_file.readBoolEntry("Network", "UseProxy", false))
+		Socket.connectToHost(
+			config_file.readEntry("Network", "ProxyHost"),
+			config_file.readNumEntry("Network", "ProxyPort"));
+	else
+		Socket.connectToHost(Host, 80);
+
 }
 
 void HttpClient::post(const QString &path,const QString& data)
