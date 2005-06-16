@@ -44,6 +44,7 @@ HintManager::HintManager(QWidget *parent, const char *name)
 
 	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "New chat / new message"));
 		ConfigDialog::addCheckBox("Hints", "New chat / new message", QT_TRANSLATE_NOOP("@default", "Show message content in hint"), "ShowContentMessage", false);
+		ConfigDialog::addCheckBox("Hints", "New chat / new message", QT_TRANSLATE_NOOP("@default", "Delete pending message when user deletes hint"), "DeletePendingMsgWhenHintDeleted", false);
 		ConfigDialog::addSpinBox("Hints", "New chat / new message", QT_TRANSLATE_NOOP("@default", "Number of quoted characters"), "CiteSign", 10, 1000, 1, 50);
 
 	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Status change"));
@@ -175,6 +176,7 @@ HintManager::~HintManager()
 	ConfigDialog::removeControl("Hints", "Open chat on click");
 	ConfigDialog::removeControl("Hints", "Status change");
 	ConfigDialog::removeControl("Hints", "Number of quoted characters");
+	ConfigDialog::removeControl("Hints", "Delete pending message when user deletes hint");
 	ConfigDialog::removeControl("Hints", "Show message content in hint");
 	ConfigDialog::removeControl("Hints", "New chat / new message");
 	ConfigDialog::removeTab("Hints");
@@ -287,6 +289,7 @@ void HintManager::recreateLayout()
 void HintManager::deleteHint(unsigned int id)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "id=%d\n", id);
+	
 #if QT_VERSION >= 0x030100
 	grid->removeItem(hints.at(id));
 #endif
@@ -332,6 +335,9 @@ void HintManager::leftButtonSlot(unsigned int id)
 			openChat(id);
 			break;
 		case 2:
+			if(config_file.readBoolEntry("Hints", "DeletePendingMsgWhenHintDeleted"))
+				chat_manager->deletePendingMsgs(hints.at(id)->getUins());
+			
 			deleteHint(id);
 			break;
 		case 3:
@@ -350,6 +356,9 @@ void HintManager::rightButtonSlot(unsigned int id)
 			openChat(id);
 			break;
 		case 2:
+			if(config_file.readBoolEntry("Hints", "DeletePendingMsgWhenHintDeleted"))
+				chat_manager->deletePendingMsgs(hints.at(id)->getUins());
+
 			deleteHint(id);
 			break;
 		case 3:
@@ -368,6 +377,9 @@ void HintManager::midButtonSlot(unsigned int id)
 			openChat(id);
 			break;
 		case 2:
+			if(config_file.readBoolEntry("Hints", "DeletePendingMsgWhenHintDeleted"))
+				chat_manager->deletePendingMsgs(hints.at(id)->getUins());
+
 			deleteHint(id);
 			break;
 		case 3:
