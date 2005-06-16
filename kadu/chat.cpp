@@ -225,6 +225,21 @@ int ChatManager::openPendingMsg(int index, ChatMessage &msg)
 	return k;
 }
 
+void ChatManager::deletePendingMsgs(UinsList uins)
+{
+	kdebugf();
+
+	for (int i=0;i<pending.count();++i)
+		if (pending[i].uins.equals(uins))
+		{
+			pending.deleteMsg(i);
+			--i;
+		}
+
+	UserBox::all_refresh();
+	kdebugf2();
+}	
+
 void ChatManager::openPendingMsgs(UinsList uins)
 {
 	kdebugf();

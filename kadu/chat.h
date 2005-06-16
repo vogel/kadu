@@ -198,6 +198,15 @@ class ChatManager : public QObject
 			do odpowiednich okien
 		**/
 		void openPendingMsgs();
+
+		/**
+			\fn void deletePendingMsgs(UinsList uins)
+			Funkcja usuwa zakolejkowane wiadomo¶ci
+			z u¿ytkownikami "uins"
+			\param uins lista u¿ytkowników identyfikuj±cych okno
+		**/
+		void deletePendingMsgs(UinsList uins);
+
 		
 		//TODO: opisac funkcje sendMessage(..)
 		/*
