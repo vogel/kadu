@@ -40,6 +40,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   d¼wiêkowymi (joi)
 * poprawka dla proxy w HttpClient (michal)
 * opcja kasowania nadchodz±cych wiadomo¶ci przy usuniêciu dymka z wiadomo¶ci± (serine/joi)
+* dodany do autodownloadu modu³ osdhints_notify (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
