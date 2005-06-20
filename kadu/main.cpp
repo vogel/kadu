@@ -155,7 +155,7 @@ int main(int argc, char *argv[])
 	// ³adowanie t³umaczenia
 	config_file.addVariable("General", "Language", QString(QTextCodec::locale()).mid(0,2));
 	QTranslator qt_qm(0, "Translator_qt");
-	QString lang=config_file.readEntry("General", "Language");
+	QString lang = config_file.readEntry("General", "Language");
 	qt_qm.load(dataPath(QString("kadu/translations/qt_") + lang), ".");
 	qApp->installTranslator(&qt_qm);
 	QTranslator kadu_qm(0, "Translator_kadu");
@@ -163,17 +163,17 @@ int main(int argc, char *argv[])
 	qApp->installTranslator(&kadu_qm);
 	qApp->setStyle(config_file.readEntry("Look", "QtStyle"));
 
-	lockFile=new QFile(ggPath("lock"));
+	lockFile = new QFile(ggPath("lock"));
 	if (lockFile->open(IO_ReadWrite))
 	{
-		lockFileHandle=lockFile->handle();
-		if (flock(lockFileHandle, LOCK_EX|LOCK_NB)!=0)
+		lockFileHandle = lockFile->handle();
+		if (flock(lockFileHandle, LOCK_EX | LOCK_NB) != 0)
 		{
 			kdebugm(KDEBUG_WARNING, "flock: %s\n", strerror(errno));
-			if (QMessageBox::warning(NULL, "Kadu lock",
-				qApp->translate("@default", QT_TR_NOOP("Lock file in profile directory exists. Another Kadu probably running.")),
+			if (QMessageBox::warning(NULL, "Kadu",
+				qApp->translate("@default", QT_TR_NOOP("Another Kadu is running on this profile.")),
 				qApp->translate("@default", QT_TR_NOOP("Force running Kadu (not recommended).")),
-				qApp->translate("@default", QT_TR_NOOP("Quit.")), 0, 1)==1 )
+				qApp->translate("@default", QT_TR_NOOP("Quit.")), 0, 1, 1) == 1)
 			return 1;
 		}
 	}
