@@ -18,6 +18,7 @@
 #include "debug.h"
 #include "userbox.h"
 #include "userlist.h"
+#include "misc.h"
 
 DnsHandler::DnsHandler(const QHostAddress &address)
 {
@@ -531,6 +532,7 @@ UserListElement& UserList::byUin(UinType uin)
 		if((*i).uin() == uin)
 			return (*i);
 	kdebugmf(KDEBUG_PANIC, "Panic! uin:%d not found\n", uin);
+	printBacktrace("UserList::byUin()");
 	return *((UserListElement*)NULL);
 }
 
@@ -541,6 +543,7 @@ UserListElement& UserList::byNick(const QString& nickname)
 			return (*i);
 	kdebugmf(KDEBUG_PANIC, "Panic! %s not exists\n",
 		nickname.lower().local8Bit().data());
+	printBacktrace("UserList::byNick()");
 	return *((UserListElement*)NULL);
 }
 
@@ -551,6 +554,7 @@ UserListElement& UserList::byAltNick(const QString& altnick)
 		return (*this)[altnick_norm];
 	kdebugmf(KDEBUG_PANIC, "Panic! %s not exists\n",
 		altnick_norm.local8Bit().data());
+	printBacktrace("UserList::byAltNick()");
 	return *((UserListElement*)NULL);
 }
 

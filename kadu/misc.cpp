@@ -241,7 +241,10 @@ QString dataPath(const QString &p, const char *argv0)
 		}
 	}
 	if (path.isEmpty())
+	{
 		kdebugm(KDEBUG_PANIC, "dataPath() called _BEFORE_ initial dataPath(\"\",argv[0]) (static object uses dataPath()?) !!!\n");
+		printBacktrace("dataPath(): constructor of static object uses dataPath");
+	}
 	kdebugm(KDEBUG_INFO, "%s%s\n", (const char *)path.local8Bit(), (const char *)p.local8Bit());
 	return path+p;
 }
@@ -2849,4 +2852,5 @@ void printBacktrace(const QString &header)
 #else
 	fprintf(stderr, "backtrace not available\n");		
 #endif
+	fflush(stderr);
 }

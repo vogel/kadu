@@ -557,13 +557,20 @@ void GaduSocketNotifiers::setSession(gg_session *sess)
 void GaduSocketNotifiers::checkWrite()
 {
 	kdebugf();
-	//gdzie¶ tu siê sypie :|
-	if (Sess==NULL)
+	//kiedy¶ tu siê sypa³o, ale b³±d zosta³ naprawiony
+	//mimo to niech kdebugi zostan± w razie gdyby ten b³±d kiedy¶ powróci³
+	if (Sess == NULL)
+	{
 		kdebugm(KDEBUG_PANIC, "Sess == NULL !!\n");
+		printBacktrace("GaduSocketNotifiers::checkWrite(): Sess==null");
+	}
 	if (Sess->check & GG_CHECK_WRITE)
 	{
-		if (Snw==NULL)
+		if (Snw == NULL)
+		{
 			kdebugm(KDEBUG_PANIC, "Snw == NULL !!\n");
+			printBacktrace("GaduSocketNotifiers::checkWrite(): Snw==null");
+		}
 		Snw->setEnabled(true);
 	}
 	kdebugf2();
@@ -584,9 +591,15 @@ void GaduSocketNotifiers::dataSent()
 	kdebugf();
 
 	if (Sess==NULL)
+	{
 		kdebugm(KDEBUG_PANIC, "Sess == NULL !!\n");
+		printBacktrace("GaduSocketNotifiers::dataSent(): Sess==null");
+	}
 	if (Snw==NULL)
+	{
 		kdebugm(KDEBUG_PANIC, "Snw == NULL !!\n");
+		printBacktrace("GaduSocketNotifiers::dataSent(): Snw==null");
+	}
 
 	Snw->setEnabled(false);
 	if (Sess->check & GG_CHECK_WRITE)

@@ -1333,6 +1333,7 @@ QWidget* ConfigDialog::widget(const QString& groupname, const QString& caption, 
 	{
 		kdebugm(KDEBUG_PANIC, "ConfigDialog is closed! Can't get widget! (%s,%s,%s)\n",
 			groupname.local8Bit().data(), caption.local8Bit().data(), name.local8Bit().data());
+		printBacktrace("ConfigDialog::widget(): CD is closed!");
 		return NULL;
 	}
 	QValueListConstIterator<RegisteredControl> control;

@@ -79,6 +79,7 @@ static void kadu_signal_handler(int s)
 		for (int i = 0; i < num_entries; ++i)
 			fprintf(stderr, "[%d] %s\n", i, bt_strings[i]);
 		fprintf(stderr, "======= END OF BACKTRACE  ======\n");
+		fflush(stderr);
 
 		dbgfile = fopen(ggPath(debug_file), "w");
 		if (dbgfile)
