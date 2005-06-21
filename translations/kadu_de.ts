@@ -304,10 +304,6 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
         <translation>Zustandsänderungen nicht speichern</translation>
     </message>
     <message>
-        <source>Lock file in profile directory exists. Another Kadu probably running.</source>
-        <translation>Im Profilverzeichnis existiert eine Lockdatei. Vermutlich läuft Kadu schon.</translation>
-    </message>
-    <message>
         <source>Force running Kadu (not recommended).</source>
         <translation>Trotzdem starten (nicht empfohlen).</translation>
     </message>
@@ -612,6 +608,10 @@ Es ist ein sehr hohes Risiko!</translation>
     </message>
     <message>
         <source>On shutdown, set current description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Another Kadu is running on this profile.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -304,10 +304,6 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <translation>Non memorizzi cambiamenti di status</translation>
     </message>
     <message>
-        <source>Lock file in profile directory exists. Another Kadu probably running.</source>
-        <translation>Trovato file bloccante. Probbabilmente Kadu è già in esecuzione.</translation>
-    </message>
-    <message>
         <source>Force running Kadu (not recommended).</source>
         <translation>Lanciare Kadu comunque (non raccomandato).</translation>
     </message>
@@ -613,6 +609,10 @@ E un rischio per la sicurezza!</translation>
     </message>
     <message>
         <source>On shutdown, set current description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Another Kadu is running on this profile.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

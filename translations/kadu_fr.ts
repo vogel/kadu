@@ -308,10 +308,6 @@ Si ce champs reste vide les paramettres par default seront utilisés.</translati
         <translation>N&apos;enregistre pas le changement de statut</translation>
     </message>
     <message>
-        <source>Lock file in profile directory exists. Another Kadu probably running.</source>
-        <translation>Fichier de blockage trouvé. Kadu est probabalement en utilisation.</translation>
-    </message>
-    <message>
         <source>Force running Kadu (not recommended).</source>
         <translation>Activation Kadu malgré tout (non conseillée).</translation>
     </message>
@@ -614,6 +610,10 @@ Attention danger!
     </message>
     <message>
         <source>On shutdown, set current description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Another Kadu is running on this profile.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

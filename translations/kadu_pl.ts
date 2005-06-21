@@ -308,10 +308,6 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <translation>Nie zapisuj zmian statusu</translation>
     </message>
     <message>
-        <source>Lock file in profile directory exists. Another Kadu probably running.</source>
-        <translation>Znaleziono plik blokujący. Kadu prawdopodobnie jest już uruchomione.</translation>
-    </message>
-    <message>
         <source>Force running Kadu (not recommended).</source>
         <translation>Uruchom mimo to (nie zalecane).</translation>
     </message>
@@ -614,6 +610,10 @@ Jest to wysoce ryzykowne!</translation>
     <message>
         <source>On shutdown, set current description</source>
         <translation>Wyłączając ustaw bieżący opis</translation>
+    </message>
+    <message>
+        <source>Another Kadu is running on this profile.</source>
+        <translation>Kadu jest już uruchomione w tym profilu.</translation>
     </message>
 </context>
 <context>
