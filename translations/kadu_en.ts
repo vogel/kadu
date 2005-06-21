@@ -303,10 +303,6 @@ If you leave blank, default settings will be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Lock file in profile directory exists. Another Kadu probably running.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Force running Kadu (not recommended).</source>
         <translation type="unfinished"></translation>
     </message>
@@ -588,6 +584,10 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>&quot;%1&quot; in chat sends message by default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Another Kadu is running on this profile.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
