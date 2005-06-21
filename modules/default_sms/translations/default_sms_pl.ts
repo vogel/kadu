@@ -79,7 +79,7 @@ czasowo wyłączona lub zmieniła zasady dostępu.</translation>
     </message>
     <message>
         <source>Text from the picture is incorrect</source>
-        <translation>Tekst z obrazka wpisany nie poprawnie</translation>
+        <translation>Tekst z obrazka wpisany niepoprawnie</translation>
     </message>
     <message>
         <source>The receiver has to enable SMS STANDARD service</source>
@@ -101,6 +101,10 @@ czasowo wyłączona lub zmieniła zasady dostępu.</translation>
     <message>
         <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
         <translation>Bramka zwróciła dziwną odpowiedź. SMS prawdopodobnie nie został wysłany.</translation>
+    </message>
+    <message>
+        <source>Limits have been exceeded, try again later.</source>
+        <translation>Limit został przekroczony, spróbuj później.</translation>
     </message>
 </context>
 </TS>

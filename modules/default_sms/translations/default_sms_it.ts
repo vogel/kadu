@@ -102,5 +102,9 @@ Probabilmente è temporaneamente disattivata, o sono state cambiate le reole acc
         <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
         <translation>La pagina dei risultati del Gateway del operatore GSM sembra sconosciuta. SMS probabilmente NON trasmesso.</translation>
     </message>
+    <message>
+        <source>Limits have been exceeded, try again later.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

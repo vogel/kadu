@@ -102,5 +102,9 @@ oder änderte die Zugangserlaubnis.</translation>
         <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
         <translation>Die Antwort des SMS-Gateways ist seltsam. SMS wurde wahrscheinlich nicht verschickt.</translation>
     </message>
+    <message>
+        <source>Limits have been exceeded, try again later.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

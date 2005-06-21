@@ -104,5 +104,9 @@ ou il est impossible de l&apos;analyser correctement.
         <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
         <translation>La page du Portail de fournisseur semble être étrange.Probablement le SMS n&apos;a pas été  envoyé.</translation>
     </message>
+    <message>
+        <source>Limits have been exceeded, try again later.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>
