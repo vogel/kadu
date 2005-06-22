@@ -158,12 +158,80 @@ static void xmlIgnoredListMigration()
 	kdebugf2();
 }
 
+static void xmlConfigFileMigration()
+{
+	kdebugf();
+	QString config_path = ggPath("kadu.conf");
+	kdebug("config_path: %s\n", config_path.local8Bit().data());
+	QDomElement root_elem = xml_config_file->rootElement();
+	if (!QFile::exists(config_path) ||
+		!xml_config_file->findElement(root_elem, "Deprecated").isNull())
+	{
+		kdebugf2();
+		return;
+	}
+	QFile file(config_path);
+	QString line;
+#if QT_VERSION < 0x030100
+	QRegExp newLine("\\\\n");
+#endif
+	if (file.open(IO_ReadOnly))
+	{
+		QTextStream stream(&file);
+		stream.setCodec(codec_latin2);
+		QDomElement deprecated_elem = xml_config_file->accessElement(root_elem, "Deprecated");
+		QDomElement conf_elem = xml_config_file->accessElement(deprecated_elem, "ConfigFile");
+		conf_elem.setAttribute("name", "kadu.conf");
+		QDomElement group_elem;
+		while (!stream.atEnd())
+		{
+			line = stream.readLine();
+			line.stripWhiteSpace();
+			if (line.startsWith("[") && line.endsWith("]"))
+			{
+				QString name = line.mid(1, line.length() - 2).stripWhiteSpace();
+				kdebug("group: %s\n", name.local8Bit().data());
+				group_elem = xml_config_file->createElement(conf_elem, "Group");
+				group_elem.setAttribute("name", name);
+			}
+			else if (!group_elem.isNull())
+			{
+				kdebug("line: %s\n", line.local8Bit().data());
+				QString name = line.section('=', 0, 0);
+#if QT_VERSION < 0x030100
+				//kilka razy wolniejsze...
+				QString value = line.right(line.length()-name.length()-1).replace(newLine, "\n");
+#else
+				QString value = line.right(line.length()-name.length()-1).replace("\\n", "\n");
+#endif
+				name = name.stripWhiteSpace();
+				if (line.contains('=') >= 1 && !name.isEmpty() && !value.isEmpty())
+				{
+					kdebug("entry: %s=%s\n", name.local8Bit().data(),
+						value.local8Bit().data());
+					QDomElement entry_elem =
+						xml_config_file->createElement(group_elem, "Entry");
+					entry_elem.setAttribute("name", name);
+					entry_elem.setAttribute("value", value);
+				}
+			}
+		}
+		file.close();
+		xml_config_file->sync();
+		MessageBox::msg(QString("Configuration file migrated to kadu.conf.xml.\n"
+			"You can remove %1 now\n"
+			"(backup will be a good idea).\n").arg(config_path));		
+	}
+	kdebugf2();
+}
+
 extern "C" int migration_init()
 {
 	kdebugf();
 	settingsDirMigration();
 	xmlUserListMigration();
 	xmlIgnoredListMigration();
+	xmlConfigFileMigration();
 	kdebugf2();
 	return 0;
 }
