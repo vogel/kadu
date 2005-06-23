@@ -158,18 +158,12 @@ static void xmlIgnoredListMigration()
 	kdebugf2();
 }
 
-static void xmlConfigFileMigration()
+static void xmlConfigFileMigration(const QString& config_name)
 {
 	kdebugf();
-	QString config_path = ggPath("kadu.conf");
+	QString config_path = ggPath(config_name);
 	kdebug("config_path: %s\n", config_path.local8Bit().data());
 	QDomElement root_elem = xml_config_file->rootElement();
-	if (!QFile::exists(config_path) ||
-		!xml_config_file->findElement(root_elem, "Deprecated").isNull())
-	{
-		kdebugf2();
-		return;
-	}
 	QFile file(config_path);
 	QString line;
 #if QT_VERSION < 0x030100
@@ -180,8 +174,8 @@ static void xmlConfigFileMigration()
 		QTextStream stream(&file);
 		stream.setCodec(codec_latin2);
 		QDomElement deprecated_elem = xml_config_file->accessElement(root_elem, "Deprecated");
-		QDomElement conf_elem = xml_config_file->accessElement(deprecated_elem, "ConfigFile");
-		conf_elem.setAttribute("name", "kadu.conf");
+		QDomElement conf_elem = xml_config_file->createElement(deprecated_elem, "ConfigFile");
+		conf_elem.setAttribute("name", config_name);
 		QDomElement group_elem;
 		while (!stream.atEnd())
 		{
@@ -217,11 +211,30 @@ static void xmlConfigFileMigration()
 			}
 		}
 		file.close();
-		xml_config_file->sync();
-		MessageBox::msg(QString("Configuration file migrated to kadu.conf.xml.\n"
-			"You can remove %1 now\n"
-			"(backup will be a good idea).\n").arg(config_path));		
 	}
+	kdebugf2();
+}
+
+static void xmlConfigFilesMigration()
+{
+	kdebugf();
+	QString config_path = ggPath("kadu.conf");
+	kdebug("config_path: %s\n", config_path.local8Bit().data());
+	QDomElement root_elem = xml_config_file->rootElement();
+	if (!QFile::exists(config_path) ||
+		!xml_config_file->findElement(root_elem, "Deprecated").isNull())
+	{
+		kdebugf2();
+		return;
+	}
+	QDir dir(ggPath(""));
+	dir.setNameFilter("*.conf");
+	for (int i = 0; i < dir.count(); i++)
+		xmlConfigFileMigration(dir[i]);
+	xml_config_file->sync();
+	MessageBox::msg(QString("Configuration files migrated to kadu.conf.xml.\n"
+		"You can remove following files now:\n%1\n"
+		"(backup will be a good idea).\n").arg(dir.entryList().join("\n")));		
 	kdebugf2();
 }
 
@@ -231,7 +244,7 @@ extern "C" int migration_init()
 	settingsDirMigration();
 	xmlUserListMigration();
 	xmlIgnoredListMigration();
-	xmlConfigFileMigration();
+	xmlConfigFilesMigration();
 	kdebugf2();
 	return 0;
 }

@@ -42,6 +42,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * opcja kasowania nadchodz±cych wiadomo¶ci przy usuniêciu dymka z wiadomo¶ci± (serine/joi)
 * dodany do autodownloadu modu³ osdhints_notify (joi)
 * modu³ migration migruje kadu.conf do pliku kadu.conf.xml (adrian)
+* modu³ migration migruje wszystkie pliki konfiguracyjne do pliku kadu.conf.xml (adrian)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
