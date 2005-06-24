@@ -81,7 +81,7 @@ class VoiceManager : public QObject
 	public:
 		VoiceManager(QObject *parent = 0, const char *name = 0);
 		~VoiceManager();
-		void setup();
+		int setup();
 		void free();
 		void resetCodec();
 		void addGsmSample(char *data, int length);

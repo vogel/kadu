@@ -18,6 +18,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniêty segfault przy zakañczaniu rozmowy g³osowej (joi)
 * dodany do autodownloadu modu³ osdhints_notify (joi)
 * poprawka dla proxy w HttpClient (michal)
+* poprawka segfaulta w module voice gdy karta muzyczna byla zajeta (pawel_p)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
