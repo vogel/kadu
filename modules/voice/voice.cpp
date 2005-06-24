@@ -57,8 +57,16 @@ VoiceChatDialog::VoiceChatDialog(DccSocket *socket)
 	connect(b_stop, SIGNAL(clicked()), this, SLOT(close()));
 	show();
 	
-	voice_manager->setup();
 	Dialogs.insert(socket, this);
+	
+	if (voice_manager->setup() == -1) 
+	{
+		chatFinished= true;  /* jezeli urzadzenie device jest zajete albo go nie ma 
+										zrywamy polaczenie oraz zamykamy okienko*/
+		socket->setState(DCC_SOCKET_VOICECHAT_DISCARDED);
+		delete this;
+	}
+
 	kdebugf2();
 }
 
@@ -227,7 +235,7 @@ void RecordThread::endThread()
 	wait();
 }
 
-void VoiceManager::setup()
+int VoiceManager::setup()
 {
 	kdebugf();
 	if (!playThread)
@@ -236,7 +244,7 @@ void VoiceManager::setup()
 		if (device == NULL)
 		{
 			MessageBox::wrn(tr("Opening sound device failed."));
-			return;
+			return -1;
 		}
 		sound_manager->setFlushingEnabled(device, false);
 		playThread = new PlayThread();
@@ -249,25 +257,27 @@ void VoiceManager::setup()
 		connect(recordThread, SIGNAL(recordSample(char *, int)), this, SLOT(recordSampleReceived(char *, int)));
 		recordThread->start();
 	}	
+	return 0;
 	kdebugf2();
 }
 
 void VoiceManager::free()
 {
 	kdebugf();
-	if (recordThread->running())
+	if (recordThread && recordThread->running())
 	{
 		disconnect(recordThread, SIGNAL(recordSample(char *, int)), this, SLOT(recordSampleReceived(char *, int)));
 		recordThread->endThread();
 		recordThread = NULL;
 	}
-	if (playThread->running())
+	if (playThread && playThread->running())
 	{
 		disconnect(playThread, SIGNAL(playGsmSample(char *, int)), this, SLOT(playGsmSampleReceived(char *, int)));
 		playThread->endThread();
 		playThread = NULL;
 	}
-	sound_manager->closeDevice(device);
+	if (device) 
+		sound_manager->closeDevice(device);
 	kdebugf2();
 }
 

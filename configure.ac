@@ -262,7 +262,7 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 			MODULE_TOOLS= && \
 			MODULE_CONFIGURE_CMD= && \
 			MODULE_LDFLAGS= && \
-			MODULE_CXXFLAGS= && \
+			MODULE_CXXFLAGS=" $CFLAGS $CPPFLAGS" && \
 			MODULE_DIR=../modules/$mod && \
 			. ./modules/$mod/spec && \
 			echo "MODULE_LIBS:           $MODULE_LIBS" && \

@@ -310,7 +310,8 @@ SoundManager::~SoundManager()
 	ConfigDialog::removeControl("Sounds", "Play sounds");
 	ConfigDialog::removeTab("Sounds");
 
-	notify->unregisterNotifier("Sound");
+	if (notify)
+	    notify->unregisterNotifier("Sound");
 
 	play_thread->wait(2000);
 	if (play_thread->running())
