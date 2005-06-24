@@ -23,7 +23,6 @@
 #include "kadu-config.h"
 #include "debug.h"
 
-
 About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopLevel|WDestructiveClose)
 {
 	kdebugf();
