@@ -63,16 +63,16 @@ bool ConfigDialog::ElementConnections::operator== (const ElementConnections& r) 
 	return (signal==r.signal && receiver==r.receiver && slot==r.slot);
 }
 
-void ConfigDialog::showConfigDialog(QApplication* application) 
+void ConfigDialog::showConfigDialog(QApplication* application)
 {
 	kdebugf();
-	
+
 	if (configdialog)
 	{
 		configdialog->setActiveWindow();
 		configdialog->raise();
 	}
-	else 	
+	else
 		(new ConfigDialog(application, 0, "configDialog"))->show();
 	kdebugf2();
 }
@@ -105,39 +105,39 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 
 	ConfigDialog::appHandle=application;
 	setWFlags(Qt::WDestructiveClose);
-	
+
 	configdialog = this;
-	
+
 	setCaption(tr("Kadu configuration"));
-		
+
 	QHBox *center = new QHBox(this,"center");
 	center->setMargin(10);
 	center->setSpacing(10);
-	
+
 	QVBox *left = new QVBox(center,"left");
-	
+
 	listBox = new QListBox(left,"listbox");
-	listBox->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)0, (QSizePolicy::SizeType)7, 0, 0, 
+	listBox->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)0, (QSizePolicy::SizeType)7, 0, 0,
 	listBox->sizePolicy().hasHeightForWidth()));
-	
+
 	QVGroupBox* vgb_viewcontainer = new QVGroupBox(center,"mainGroupBox");
-	
+
 	view = new QScrollView(vgb_viewcontainer,"scrollView");
 	view->setResizePolicy(QScrollView::AutoOneFit);
 	view->setFrameStyle(QFrame::NoFrame);
- 
+
 	QVGroupBox* box= new QVGroupBox(view, "groupBox");
 	box->setFrameStyle(QFrame::NoFrame);
 	view->addChild(box);
-	
+
 //	int num = 0;
 
 	CONST_FOREACH(tabName, TabNames)
 	FOREACH(i, Tabs[*tabName])
 	{
-// wyswietla cala liste 
+// wyswietla cala liste
 //		kdebugm(KDEBUG_DUMP, "%d: (%d) "+(*i).group+"->"+(*i).parent+"->"+(*i).caption+"->"+(*i).name+"\n", num, (*i).nrOfControls);
-		
+
 		QWidget* parent = NULL;
 		if ((*i).type != CONFIG_TAB)
 		    parent = (*(*i).parentControl).widget;
@@ -227,7 +227,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 							appHandle->translate("@default",(*i).caption),
 							parent,
 							(*i).name);
-				
+
 				(*i).widget=group;
 				group->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum));
 //				group->setExclusive(true);
@@ -403,7 +403,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 	kdebugm(KDEBUG_INFO, "connecting SlotsOnCreate\n");
 	CONST_FOREACH(conn, SlotsOnCreate)
 		connect(this, SIGNAL(create()), (*conn).receiver, (*conn).slot);
-	
+
 	kdebugm(KDEBUG_INFO, "connecting SlotsOnApply\n");
 	CONST_FOREACH(conn, SlotsOnApply)
 		connect(this, SIGNAL(apply()), (*conn).receiver, (*conn).slot);
@@ -411,23 +411,34 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 	kdebugm(KDEBUG_INFO, "connecting SlotsOnClose\n");
 	CONST_FOREACH(conn, SlotsOnClose)
 		connect(this, SIGNAL(destroy()), (*conn).receiver, (*conn).slot);
-	
+
 	// buttons
 	QHBox *bottom = new QHBox(this, "buttons");
 	bottom->setMargin(10);
 	bottom->setSpacing(5);
-	
+
 	(new QWidget(bottom, "blank"))->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
+
+	userLevel = static_cast<UserLevel>(config_file.readNumEntry("General", "UserLevel"));
+
+	new QLabel(tr("User experience level:"), bottom);
+	QComboBox *userLevelComboBox = new QComboBox(bottom);
+	userLevelComboBox->insertItem(tr("Beginner"));
+	userLevelComboBox->insertItem(tr("Advanced"));
+	userLevelComboBox->insertItem(tr("Expert"));
+	userLevelComboBox->setCurrentItem(userLevel);
+
+	connect(userLevelComboBox, SIGNAL(activated(int)), this, SLOT(changeUserLevel(int)));
 
 	okButton = new QPushButton(icons_manager.loadIcon("OkWindowButton"), tr("Ok"), bottom, "okButton");
 	applyButton = new QPushButton(icons_manager.loadIcon("ApplyWindowButton"), tr("Apply"), bottom, "applyButton");
 	cancelButton = new QPushButton(icons_manager.loadIcon("CloseWindowButton"), tr("Cancel"), bottom, "cancelButton");
-	
+
 	connect(okButton, SIGNAL(clicked()), this, SLOT(updateAndCloseConfig()));
 	connect(applyButton, SIGNAL(clicked()), this, SLOT(updateConfig()));
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));
 	// end buttons
-	
+
 	configdialog = this;
 	emit create();
 
@@ -441,6 +452,9 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 	connect(listBox, SIGNAL(highlighted(const QString&)), this, SLOT(changeTab(const QString&)));
 
 	loadGeometry(this, "General", "ConfigGeometry", 0, 30, 790, 480);
+
+	changeUserLevel(static_cast<int>(userLevel));
+
 	kdebugf2();
 }
 
@@ -448,6 +462,7 @@ ConfigDialog::~ConfigDialog()
 {
 	saveGeometry(this, "General", "ConfigGeometry");
 	config_file.writeEntry("General", "ConfigDialogLastTab", currentTab);
+	config_file.writeEntry("General", "UserLevel", userLevel);
 	emit destroy();
 	configdialog = NULL;
 	config_file.sync();
@@ -470,8 +485,10 @@ void ConfigDialog::changeTab(const QString& name)
 			if ((sig = tabChangesIn[tabControl.caption]))
 				sig->activate();
 			++counter;
+
+			updateUserLevel(tab);
 		}
-		else 
+		else
 			if (tabControl.widget && tabControl.widget->isVisible())
 			{
 				tabControl.widget->hide();
@@ -486,7 +503,45 @@ void ConfigDialog::changeTab(const QString& name)
 	kdebugmf(KDEBUG_FUNCTION_END, "current tab:%s\n", currentTab.local8Bit().data());
 }
 
-void ConfigDialog::updateConfig(void) 
+void ConfigDialog::updateUserLevel(QMapConstIterator<QString,
+			QValueList<ConfigDialog::RegisteredControl> > tab)
+{
+	kdebugf();
+
+	CONST_FOREACH(i, *tab)
+	{
+		if (!(*i).widget)
+			continue;
+		if ((*i).userLevelRequired <= userLevel)
+		{
+			if ((*i).type != CONFIG_SELECTPATHS)
+				(*i).widget->show();
+		}
+		else
+			(*i).widget->hide();
+	}
+
+	kdebugf2();
+}
+
+void ConfigDialog::changeUserLevel(int newUserLevel)
+{
+	kdebugf();
+
+	userLevel = static_cast<UserLevel>(newUserLevel);
+
+	CONST_FOREACH(tab, Tabs)
+	{
+		const RegisteredControl &tabControl = (*tab).front();
+		if (tabControl.caption == currentTab)
+			updateUserLevel(tab);
+	}
+
+	kdebugf2();
+}
+
+
+void ConfigDialog::updateConfig(void)
 {
 	kdebugf();
 	CONST_FOREACH(tab, Tabs)
@@ -557,24 +612,26 @@ void ConfigDialog::updateConfig(void)
 void ConfigDialog::updateAndCloseConfig()
 {
 	updateConfig();
-	
+
 	close();
 }
 
 void ConfigDialog::addCheckBox(const QString& groupname,
 			const QString& parent, const QString& caption,
-			const QString& entry, const bool defaultS, const QString& tip, const QString& name)
+			const QString& entry, const bool defaultS, const QString& tip, const QString& name,
+			UserLevel userLevelRequired)
 {
-	addCheckBox(&config_file, groupname, parent, caption, entry, defaultS, tip, name);
+	addCheckBox(&config_file, groupname, parent, caption, entry, defaultS, tip, name, userLevelRequired);
 }
 
 void ConfigDialog::addCheckBox(ConfigFile* config, const QString& groupname,
 			const QString& parent, const QString& caption,
-			const QString& entry, const bool defaultS, const QString& tip, const QString& name)
+			const QString& entry, const bool defaultS, const QString& tip, const QString& name,
+			UserLevel userLevelRequired)
 {
 	if (!controlExists(groupname, caption, name))
 	{
-		RegisteredControl c(CONFIG_CHECKBOX, groupname, parent, caption, name);
+		RegisteredControl c(CONFIG_CHECKBOX, groupname, parent, caption, name, userLevelRequired);
 		c.config=config;
 		c.entry=entry;
 		c.defaultS=QString::number(defaultS);
@@ -587,11 +644,12 @@ void ConfigDialog::addCheckBox(ConfigFile* config, const QString& groupname,
 
 void ConfigDialog::addColorButton(ConfigFile *config, const QString& groupname,
 				const QString& parent, const QString& caption, const QString &entry,
-				const QColor& color, const QString& tip, const QString& name)
+				const QColor& color, const QString& tip, const QString& name,
+				UserLevel userLevelRequired)
 {
 	if (!controlExists(groupname, caption, name))
 	{
-		RegisteredControl c(CONFIG_COLORBUTTON, groupname, parent, caption, name);
+		RegisteredControl c(CONFIG_COLORBUTTON, groupname, parent, caption, name, userLevelRequired);
 		c.config=config;
 		c.entry=entry;
 		c.defaultS=color.name();
@@ -602,40 +660,44 @@ void ConfigDialog::addColorButton(ConfigFile *config, const QString& groupname,
 
 void ConfigDialog::addColorButton(const QString& groupname,
 				const QString& parent, const QString& caption, const QString &entry,
-				const QColor& color, const QString& tip, const QString& name)
+				const QColor& color, const QString& tip, const QString& name,
+				UserLevel userLevelRequired)
 {
-	addColorButton(&config_file, groupname, parent, caption, entry, color, tip, name);
+	addColorButton(&config_file, groupname, parent, caption, entry, color, tip, name, userLevelRequired);
 }
 
 
 void ConfigDialog::addComboBox(const QString& groupname,
 			const QString& parent, const QString& caption,
-			const QString& tip, const QString& name)
+			const QString& tip, const QString& name,
+			UserLevel userLevelRequired)
 {
 	if (!controlExists(groupname, caption, name))
 	{
-		RegisteredControl c(CONFIG_COMBOBOX, groupname, parent, caption, name);
+		RegisteredControl c(CONFIG_COMBOBOX, groupname, parent, caption, name, userLevelRequired);
 		c.tip=tip;
 		addControl(groupname,c);
 	}
 }
 
-void ConfigDialog::addComboBox(const QString& groupname, 
+void ConfigDialog::addComboBox(const QString& groupname,
 				const QString& parent, const QString& caption,
 				const QString &entry, const QStringList &options, const QStringList &values,
-				const QString &defaultS, const QString& tip, const QString& name)
+				const QString &defaultS, const QString& tip, const QString& name,
+				UserLevel userLevelRequired)
 {
-	addComboBox(&config_file, groupname, parent, caption, entry, options, values, defaultS, tip, name);
+	addComboBox(&config_file, groupname, parent, caption, entry, options, values, defaultS, tip, name, userLevelRequired);
 }
 
-void ConfigDialog::addComboBox(ConfigFile* config, const QString& groupname, 
+void ConfigDialog::addComboBox(ConfigFile* config, const QString& groupname,
 				const QString& parent, const QString& caption,
 				const QString &entry, const QStringList &options, const QStringList &values,
-				const QString &defaultS, const QString& tip, const QString& name)
+				const QString &defaultS, const QString& tip, const QString& name,
+				UserLevel userLevelRequired)
 {
 	if (!controlExists(groupname, caption, name))
 	{
-		RegisteredControl c(CONFIG_COMBOBOX, groupname, parent, caption, name);
+		RegisteredControl c(CONFIG_COMBOBOX, groupname, parent, caption, name, userLevelRequired);
 		c.tip=tip;
 		c.config=config;
 		c.entry=entry;
@@ -648,33 +710,36 @@ void ConfigDialog::addComboBox(ConfigFile* config, const QString& groupname,
 
 
 void ConfigDialog::addGrid(const QString& groupname,
-			const QString& parent, const QString& caption, const int nrColumns, const QString& name)
+			const QString& parent, const QString& caption, const int nrColumns, const QString& name,
+			UserLevel userLevelRequired)
 {
 	if (!controlExists(groupname, caption, name))
 	{
-		RegisteredControl c(CONFIG_GRID, groupname, parent, caption, name);
+		RegisteredControl c(CONFIG_GRID, groupname, parent, caption, name, userLevelRequired);
 		c.defaultS=QString::number(nrColumns);
 		addControl(groupname,c);
 	}
 }
 
 void ConfigDialog::addHBox(const QString& groupname,
-	const QString& parent, const QString& caption, const QString& name)
+	const QString& parent, const QString& caption, const QString& name,
+	UserLevel userLevelRequired)
 {
 	if (!controlExists(groupname, caption, name))
 	{
-		RegisteredControl c(CONFIG_HBOX, groupname, parent, caption, name);
+		RegisteredControl c(CONFIG_HBOX, groupname, parent, caption, name, userLevelRequired);
 		addControl(groupname,c);
 	}
 }
 
 
 void ConfigDialog::addHGroupBox(const QString& groupname,
-	const QString& parent, const QString& caption, const QString& name)
+	const QString& parent, const QString& caption, const QString& name,
+	UserLevel userLevelRequired)
 {
 	if (!controlExists(groupname, caption, name))
 	{
-		RegisteredControl c(CONFIG_HGROUPBOX, groupname, parent, caption, name);
+		RegisteredControl c(CONFIG_HGROUPBOX, groupname, parent, caption, name, userLevelRequired);
 		addControl(groupname,c);
 	}
 }
@@ -682,19 +747,22 @@ void ConfigDialog::addHGroupBox(const QString& groupname,
 void ConfigDialog::addHRadioGroup(
 	const QString& groupname, const QString& parent, const QString& caption,
 	const QString &entry, const QStringList &options, const QStringList &values,
-	const QString &defaultS, const QString& tip, const QString& name)
+	const QString &defaultS, const QString& tip, const QString& name,
+	UserLevel userLevelRequired)
 {
-	addHRadioGroup(&config_file, groupname, parent, caption, entry, options, values, defaultS, tip, name);
+	addHRadioGroup(&config_file, groupname, parent, caption, entry, options, values, defaultS, tip, name,
+		userLevelRequired);
 }
 
 void ConfigDialog::addHRadioGroup(ConfigFile* config,
 	const QString& groupname, const QString& parent, const QString& caption,
 	const QString &entry, const QStringList &options, const QStringList &values,
-	const QString &defaultS, const QString& tip, const QString& name)
+	const QString &defaultS, const QString& tip, const QString& name,
+	UserLevel userLevelRequired)
 {
 	if (!controlExists(groupname, caption, name))
 	{
-		RegisteredControl c(CONFIG_HRADIOGROUP, groupname, parent, caption, name);
+		RegisteredControl c(CONFIG_HRADIOGROUP, groupname, parent, caption, name, userLevelRequired);
 		c.tip=tip;
 		c.config=config;
 		c.entry=entry;
@@ -707,37 +775,40 @@ void ConfigDialog::addHRadioGroup(ConfigFile* config,
 
 void ConfigDialog::addHotKeyEdit(const QString& groupname,
 			const QString& parent, const QString& caption,
-			const QString& entry, const QString& defaultS, const QString& tip, const QString& name)
+			const QString& entry, const QString& defaultS, const QString& tip, const QString& name,
+			UserLevel userLevelRequired)
 {
-	addHotKeyEdit(&config_file, groupname, parent, caption, entry, defaultS, tip, name);
+	addHotKeyEdit(&config_file, groupname, parent, caption, entry, defaultS, tip, name, userLevelRequired);
 }
 
 void ConfigDialog::addHotKeyEdit(ConfigFile* config, const QString& groupname,
 			const QString& parent, const QString& caption,
-			const QString& entry, const QString& defaultS, const QString& tip, const QString& name)
+			const QString& entry, const QString& defaultS, const QString& tip, const QString& name,
+			UserLevel userLevelRequired)
 {
 	if (!controlExists(groupname, caption, name))
 	{
-		RegisteredControl c(CONFIG_HOTKEYEDIT, groupname, parent, caption, name);
+		RegisteredControl c(CONFIG_HOTKEYEDIT, groupname, parent, caption, name, userLevelRequired);
 		c.config=config;
 		c.entry=entry;
 		c.defaultS=defaultS;
 		c.tip=tip;
-		
+
 		if (addControl(groupname,c))
 		// zapisujemy warto¶æ domy¶ln±, aby ju¿ wiêcej nie musieæ
-		// jej podawaæ przy czytaniu z pliku conf		
-			config->addVariable(groupname, entry, defaultS);	
+		// jej podawaæ przy czytaniu z pliku conf
+			config->addVariable(groupname, entry, defaultS);
 	}
 }
 
 void ConfigDialog::addLineEdit2(const QString& groupname,
 			const QString& parent, const QString& caption,
-			const QString& defaultS, const QString& tip, const QString& name)
+			const QString& defaultS, const QString& tip, const QString& name,
+			UserLevel userLevelRequired)
 {
 	if (!controlExists(groupname, caption, name))
 	{
-		RegisteredControl c(CONFIG_LINEEDIT2, groupname, parent, caption, name);
+		RegisteredControl c(CONFIG_LINEEDIT2, groupname, parent, caption, name, userLevelRequired);
 		c.defaultS=defaultS;
 		c.tip=tip;
 		addControl(groupname,c);
@@ -746,26 +817,28 @@ void ConfigDialog::addLineEdit2(const QString& groupname,
 
 void ConfigDialog::addLineEdit(const QString& groupname,
 			const QString& parent, const QString& caption,
-			const QString& entry, const QString& defaultS, const QString& tip, const QString& name)
+			const QString& entry, const QString& defaultS, const QString& tip, const QString& name,
+			UserLevel userLevelRequired)
 {
-	addLineEdit(&config_file, groupname, parent, caption, entry, defaultS, tip, name);
+	addLineEdit(&config_file, groupname, parent, caption, entry, defaultS, tip, name, userLevelRequired);
 }
 
 
 void ConfigDialog::addLineEdit(ConfigFile* config, const QString& groupname,
 			const QString& parent, const QString& caption,
-			const QString& entry, const QString& defaultS, const QString& tip, const QString& name)
+			const QString& entry, const QString& defaultS, const QString& tip, const QString& name,
+			UserLevel userLevelRequired)
 {
 	if (!controlExists(groupname, caption, name))
 	{
-		RegisteredControl c(CONFIG_LINEEDIT, groupname, parent, caption, name);
+		RegisteredControl c(CONFIG_LINEEDIT, groupname, parent, caption, name, userLevelRequired);
 		c.config=config;
 		c.entry=entry;
 		c.defaultS=defaultS;
 		c.tip=tip;
 
 		if (addControl(groupname,c))
-			c.config->addVariable(groupname, entry, defaultS);	
+			c.config->addVariable(groupname, entry, defaultS);
 	}
 }
 
@@ -773,21 +846,23 @@ void ConfigDialog::addRadioGroup(
 			const QString& groupname, const QString& parent, const QString& caption,
 			const QString &entry, const QStringList &options, const QStringList &values,
 			int strips, Orientation orientation,
-			const QString &defaultS, const QString& tip, const QString& name)
+			const QString &defaultS, const QString& tip, const QString& name,
+			UserLevel userLevelRequired)
 {
 	addRadioGroup(&config_file, groupname, parent, caption, entry, options, values,
-			strips, orientation, defaultS, tip, name);
+			strips, orientation, defaultS, tip, name, userLevelRequired);
 }
 
 void ConfigDialog::addRadioGroup(ConfigFile* config,
 				const QString& groupname, const QString& parent, const QString& caption,
 				const QString &entry, const QStringList &options, const QStringList &values,
 				int strips, Orientation orientation,
-				const QString &defaultS, const QString& tip, const QString& name)
+				const QString &defaultS, const QString& tip, const QString& name,
+				UserLevel userLevelRequired)
 {
 	if (!controlExists(groupname, caption, name))
 	{
-		RegisteredControl c(CONFIG_RADIOGROUP, groupname, parent, caption, name);
+		RegisteredControl c(CONFIG_RADIOGROUP, groupname, parent, caption, name, userLevelRequired);
 		c.tip=tip;
 		c.config=config;
 		c.entry=entry;
@@ -802,56 +877,61 @@ void ConfigDialog::addRadioGroup(ConfigFile* config,
 
 void ConfigDialog::addTextEdit(const QString& groupname,
 			const QString& parent, const QString& caption,
-			const QString& entry, const QString& defaultS, const QString& tip, const QString& name)
+			const QString& entry, const QString& defaultS, const QString& tip, const QString& name,
+			UserLevel userLevelRequired)
 {
-	addTextEdit(&config_file, groupname, parent, caption, entry, defaultS, tip, name);
+	addTextEdit(&config_file, groupname, parent, caption, entry, defaultS, tip, name, userLevelRequired);
 }
 
 void ConfigDialog::addTextEdit(ConfigFile* config, const QString& groupname,
 			const QString& parent, const QString& caption,
-			const QString& entry, const QString& defaultS, const QString& tip, const QString& name)
+			const QString& entry, const QString& defaultS, const QString& tip, const QString& name,
+			UserLevel userLevelRequired)
 {
 	if (!controlExists(groupname, caption, name))
 	{
-		RegisteredControl c(CONFIG_TEXTEDIT, groupname, parent, caption, name);
+		RegisteredControl c(CONFIG_TEXTEDIT, groupname, parent, caption, name, userLevelRequired);
 		c.config=config;
 		c.entry=entry;
 		c.defaultS=defaultS;
 		c.tip=tip;
 
 		if (addControl(groupname,c))
-			c.config->addVariable(groupname, entry, defaultS);	
+			c.config->addVariable(groupname, entry, defaultS);
 	}
 }
 
 void ConfigDialog::addLabel(const QString& groupname,
-			const QString& parent, const QString& caption, const QString& name)
+			const QString& parent, const QString& caption, const QString& name,
+			UserLevel userLevelRequired)
 {
 	if (!controlExists(groupname, caption, name))
 	{
-		RegisteredControl c(CONFIG_LABEL, groupname, parent, caption, name);
+		RegisteredControl c(CONFIG_LABEL, groupname, parent, caption, name, userLevelRequired);
 		addControl(groupname,c);
 	}
 }
 
 
 void ConfigDialog::addListBox(const QString& groupname,
-			const QString& parent, const QString& caption, const QString& tip, const QString& name)
+			const QString& parent, const QString& caption, const QString& tip, const QString& name,
+			UserLevel userLevelRequired)
 {
 	if (!controlExists(groupname, caption, name))
 	{
-		RegisteredControl c(CONFIG_LISTBOX, groupname, parent, caption, name);
+		RegisteredControl c(CONFIG_LISTBOX, groupname, parent, caption, name, userLevelRequired);
 		c.tip=tip;
 		addControl(groupname,c);
 	}
 }
 
 void ConfigDialog::addListView(const QString& groupname,
-			const QString& parent, const QString& caption, const QString& tip, const QString& name)
+			const QString& parent, const QString& caption, const QString& tip, const QString& name,
+			UserLevel userLevelRequired)
 {
 	if (!controlExists(groupname, caption, name))
 	{
-		RegisteredControl c(CONFIG_LISTVIEW, groupname, parent, caption, name);
+		RegisteredControl c(CONFIG_LISTVIEW, groupname, parent, caption, name, userLevelRequired);
 		c.tip=tip;
 		addControl(groupname,c);
 	}
@@ -859,11 +939,12 @@ void ConfigDialog::addListView(const QString& groupname,
 
 void ConfigDialog::addPushButton(const QString& groupname,
 			const QString& parent, const QString& caption,
-			const QString &iconFileName, const QString& tip, const QString& name)
+			const QString &iconFileName, const QString& tip, const QString& name,
+			UserLevel userLevelRequired)
 {
 	if (!controlExists(groupname, caption, name))
 	{
-		RegisteredControl c(CONFIG_PUSHBUTTON, groupname, parent, caption, name);
+		RegisteredControl c(CONFIG_PUSHBUTTON, groupname, parent, caption, name, userLevelRequired);
 		c.defaultS=iconFileName;
 		c.tip=tip;
 		addControl(groupname,c);
@@ -871,11 +952,12 @@ void ConfigDialog::addPushButton(const QString& groupname,
 }
 
 void ConfigDialog::addSelectPaths(const QString& groupname,
-			const QString& parent, const QString& caption, const QString& name)
+			const QString& parent, const QString& caption, const QString& name,
+			UserLevel userLevelRequired)
 {
 	if (!controlExists(groupname, caption, name))
 	{
-		RegisteredControl c(CONFIG_SELECTPATHS, groupname, parent, caption, name);
+		RegisteredControl c(CONFIG_SELECTPATHS, groupname, parent, caption, name, userLevelRequired);
 		addControl(groupname,c);
 	}
 }
@@ -884,21 +966,23 @@ void ConfigDialog::addSlider(const QString& groupname,
 			const QString& parent, const QString& caption,
 			const QString& entry,
 			const int minValue, const int maxValue,
-			const int pageStep, const int value, const QString& tip, const QString& name)
+			const int pageStep, const int value, const QString& tip, const QString& name,
+			UserLevel userLevelRequired)
 {
 	addSlider(&config_file, groupname, parent, caption, entry, minValue, maxValue,
-			pageStep, value, tip, name);
+			pageStep, value, tip, name, userLevelRequired);
 }
 
 void ConfigDialog::addSlider(ConfigFile* config, const QString& groupname,
 			const QString& parent, const QString& caption,
 			const QString& entry,
 			const int minValue, const int maxValue,
-			const int pageStep, const int value, const QString& tip, const QString& name)
+			const int pageStep, const int value, const QString& tip, const QString& name,
+			UserLevel userLevelRequired)
 {
 	if (!controlExists(groupname, caption, name))
 	{
-		RegisteredControl c(CONFIG_SLIDER, groupname, parent, caption, name);
+		RegisteredControl c(CONFIG_SLIDER, groupname, parent, caption, name, userLevelRequired);
 		c.config=config;
 		c.entry=entry;
 		c.tip=tip;
@@ -912,48 +996,52 @@ void ConfigDialog::addSlider(ConfigFile* config, const QString& groupname,
 void ConfigDialog::addSpinBox(const QString& groupname,
 			const QString& parent, const QString& caption,
 			const QString& entry,
-			const int minValue, const int maxValue, const int step, const int value, const QString& tip, const QString& name)
+			const int minValue, const int maxValue, const int step, const int value, const QString& tip, const QString& name,
+			UserLevel userLevelRequired)
 {
 	addSpinBox(&config_file, groupname, parent, caption, entry, minValue, maxValue,
-			step, value, tip, name);
+			step, value, tip, name, userLevelRequired);
 
 }
 
 void ConfigDialog::addSpinBox(ConfigFile* config, const QString& groupname,
 			const QString& parent, const QString& caption,
 			const QString& entry,
-			const int minValue, const int maxValue, const int step, const int value, const QString& tip, const QString& name)
+			const int minValue, const int maxValue, const int step, const int value, const QString& tip, const QString& name,
+			UserLevel userLevelRequired)
 {
 
 	if (!controlExists(groupname, caption, name))
 	{
-		RegisteredControl c(CONFIG_SPINBOX, groupname, parent, caption, name);
+		RegisteredControl c(CONFIG_SPINBOX, groupname, parent, caption, name, userLevelRequired);
 		c.config=config;
 		c.entry=entry;
 		c.tip=tip;
 		c.defaultS=QString::number(minValue)+","+QString::number(maxValue)+","+QString::number(step)+","+QString::number(value);
-		
+
 		if (addControl(groupname,c))
 			c.config->addVariable(groupname, entry, value);
 	}
 }
 
 void ConfigDialog::addVBox(const QString& groupname,
-	const QString& parent, const QString& caption, const QString& name)
+	const QString& parent, const QString& caption, const QString& name,
+	UserLevel userLevelRequired)
 {
 	if (!controlExists(groupname, caption, name))
 	{
-		RegisteredControl c(CONFIG_VBOX, groupname, parent, caption, name);
+		RegisteredControl c(CONFIG_VBOX, groupname, parent, caption, name, userLevelRequired);
 		addControl(groupname,c);
 	}
 }
 
 void ConfigDialog::addVGroupBox(const QString& groupname,
-	const QString& parent, const QString& caption, const QString& name)
+	const QString& parent, const QString& caption, const QString& name,
+	UserLevel userLevelRequired)
 {
 	if (!controlExists(groupname, caption, name))
 	{
-		RegisteredControl c(CONFIG_VGROUPBOX, groupname, parent, caption, name);
+		RegisteredControl c(CONFIG_VGROUPBOX, groupname, parent, caption, name, userLevelRequired);
 		addControl(groupname,c);
 	}
 }
@@ -961,19 +1049,22 @@ void ConfigDialog::addVGroupBox(const QString& groupname,
 void ConfigDialog::addVRadioGroup(
 	const QString& groupname, const QString& parent, const QString& caption,
 	const QString &entry, const QStringList &options, const QStringList &values,
-	const QString &defaultS, const QString& tip, const QString& name)
+	const QString &defaultS, const QString& tip, const QString& name,
+	UserLevel userLevelRequired)
 {
-	addVRadioGroup(&config_file, groupname, parent, caption, entry, options, values, defaultS, tip, name);
+	addVRadioGroup(&config_file, groupname, parent, caption, entry, options, values, defaultS, tip, name,
+		userLevelRequired);
 }
 
 void ConfigDialog::addVRadioGroup(ConfigFile* config,
 	const QString& groupname, const QString& parent, const QString& caption,
 	const QString &entry, const QStringList &options, const QStringList &values,
-	const QString &defaultS, const QString& tip, const QString& name)
+	const QString &defaultS, const QString& tip, const QString& name,
+	UserLevel userLevelRequired)
 {
 	if (!controlExists(groupname, caption, name))
 	{
-		RegisteredControl c(CONFIG_VRADIOGROUP, groupname, parent, caption, name);
+		RegisteredControl c(CONFIG_VRADIOGROUP, groupname, parent, caption, name, userLevelRequired);
 		c.tip=tip;
 		c.config=config;
 		c.entry=entry;
@@ -986,25 +1077,27 @@ void ConfigDialog::addVRadioGroup(ConfigFile* config,
 
 void ConfigDialog::addSelectFont(const QString& groupname, const QString& parent,
 				const QString& caption, const QString& entry, const QString& defaultS,
-				const QString &tip, const QString& name)
+				const QString &tip, const QString& name,
+				UserLevel userLevelRequired)
 {
-	addSelectFont(&config_file, groupname, parent, caption, entry, defaultS, tip, name);
+	addSelectFont(&config_file, groupname, parent, caption, entry, defaultS, tip, name, userLevelRequired);
 }
 
 void ConfigDialog::addSelectFont(ConfigFile *config, const QString& groupname, const QString& parent,
 				const QString& caption, const QString& entry, const QString& defaultS,
-				const QString &tip, const QString& name)
+				const QString &tip, const QString& name,
+				UserLevel userLevelRequired)
 {
 	if (!controlExists(groupname, caption, name))
 	{
-		RegisteredControl c(CONFIG_SELECTFONT, groupname, parent, caption, name);
+		RegisteredControl c(CONFIG_SELECTFONT, groupname, parent, caption, name, userLevelRequired);
 		c.config=config;
 		c.entry=entry;
 		c.defaultS=defaultS;
 		c.tip=tip;
 
 		if (addControl(groupname,c))
-			c.config->addVariable(groupname, entry, defaultS);	
+			c.config->addVariable(groupname, entry, defaultS);
 	}
 }
 
@@ -1012,7 +1105,8 @@ ConfigDialog::RegisteredControl::RegisteredControl(RegisteredControlType t,
 	const QString &groupname,
 	const QString &parent,
 	const QString &caption,
-	const QString &name)
+	const QString &name,
+	const UserLevel userLevelRequired)
 {
 	this->type = t;
 	this->group = groupname;
@@ -1022,6 +1116,7 @@ ConfigDialog::RegisteredControl::RegisteredControl(RegisteredControlType t,
 	this->widget = 0;
 	this->nrOfControls = 0;
 	this->config = 0;
+	this->userLevelRequired = userLevelRequired;
 }
 
 void ConfigDialog::connectSlot(const QString& groupname, const QString& caption,
@@ -1178,17 +1273,18 @@ void ConfigDialog::unregisterSlotsOnTabChange(const QString &name, const QObject
 	kdebugf2();
 }
 
-void ConfigDialog::addTab(const QString& caption, const QString& iconFileName)
+void ConfigDialog::addTab(const QString& caption, const QString& iconFileName,
+	UserLevel userLevelRequired)
 {
 	if (!Tabs.contains(caption))
 	{
 		TabNames.append(caption);
 
 		QValueList<RegisteredControl> l;
-		RegisteredControl c(CONFIG_TAB, QString::null, QString::null, caption);
+		RegisteredControl c(CONFIG_TAB, QString::null, QString::null, caption, "", userLevelRequired);
 		c.defaultS = iconFileName;
 		l.append(c);
-		
+
 		Tabs[caption] = l;
 		TabSizes[caption] = 1;
 	}
@@ -1227,7 +1323,7 @@ bool ConfigDialog::controlExists(const QString& groupname, const QString& captio
 	bool ok;
 	QValueListIterator<RegisteredControl> curControl;
 	tab(groupname, curControl, &ok);
-	
+
 	if (!ok)
 	{
 		kdebugm(KDEBUG_ERROR,"Tab "+groupname+" not found\n");
@@ -1250,7 +1346,7 @@ bool ConfigDialog::controlExists(const QString& groupname, const QString& captio
 	bool ok;
 	QValueListConstIterator<RegisteredControl> curControl;
 	tab(groupname, curControl, &ok);
-	
+
 	if (!ok)
 	{
 		kdebugm(KDEBUG_ERROR,"Tab "+groupname+" not found\n");
@@ -1271,7 +1367,7 @@ bool ConfigDialog::controlExists(const QString& groupname, const QString& captio
 void ConfigDialog::removeControl(const QString& groupname, const QString& caption, const QString& name)
 {
 	QValueListIterator<RegisteredControl> control;
-	
+
 	//kdebugm(KDEBUG_INFO, "nrOfControls=%i "+groupname+"\\"+caption+"\\"+name+"\n", RegisteredControls[i].nrOfControls);
 	//
 	if (!controlExists(groupname, caption, name, &control))
@@ -1279,7 +1375,7 @@ void ConfigDialog::removeControl(const QString& groupname, const QString& captio
 		kdebugm(KDEBUG_ERROR, "No such control %s %s %s\n", groupname.ascii(), caption.ascii(), name.ascii());
 		return;
 	}
- 	
+
 	if ((*control).nrOfControls != 0)
 	{
 		kdebugm(KDEBUG_ERROR, "Container not empty: %d %s %s %s\n", (*control).nrOfControls, groupname.ascii(), caption.ascii(), name.ascii());
@@ -1349,7 +1445,7 @@ bool ConfigDialog::addControl(const QString& groupname, ConfigDialog::Registered
 	bool ok;
 	QValueListIterator<RegisteredControl> curControl, tabControl, end, parent;
 	tab(groupname, tabControl, &ok);
-	if (!ok) 
+	if (!ok)
 	{
 		kdebugm(KDEBUG_FUNCTION_END|KDEBUG_ERROR, "There is no Tab: "+groupname+"\n");
 		return false;
@@ -1516,7 +1612,7 @@ QString HotKey::keyEventToString(QKeyEvent *e)
 	QString result;
 	if ((e->state()& Qt::ControlButton) || (e->key() == Qt::Key_Control))
 		result = "Ctrl+";
-		
+
 	if ((e->state()& Qt::MetaButton) || (e->key() == Qt::Key_Meta))
 		result+= "Shift+Alt+";
 	else
@@ -1527,7 +1623,7 @@ QString HotKey::keyEventToString(QKeyEvent *e)
 			result+= "Alt+";
 	}
 
-	if (!((e->key() == Qt::Key_Control) 
+	if (!((e->key() == Qt::Key_Control)
 		||(e->key() == Qt::Key_Shift)
 		||(e->key() == Qt::Key_Alt)
 		||(e->key() == Qt::Key_Meta)))
@@ -1543,9 +1639,9 @@ void HotKey::keyPressEvent(QKeyEvent *e)
 
 void HotKey::keyReleaseEvent(QKeyEvent *)
 {
-	// sprawdzenie czy ostatnim znakiem jest "+" 
+	// sprawdzenie czy ostatnim znakiem jest "+"
 	// jesli tak to nie ma takiego skrotu klawiszowego
-	if (text().at(text().length()-1) == QChar(43)) 
+	if (text().at(text().length()-1) == QChar(43))
 		setText("");
 }
 
@@ -1639,7 +1735,7 @@ void ColorButton::setColor(const QColor &color)
 		QPixmap pm(35,10);
 		pm.fill(QColor(color.name()));
 		setPixmap(pm);
-	}	
+	}
 }
 
 SelectPaths::SelectPaths(QWidget *parent, const char* name) : QHBox(parent, name)
@@ -1652,21 +1748,21 @@ SelectPaths::SelectPaths(QWidget *parent, const char* name) : QHBox(parent, name
 	QVBox *left=new QVBox(this, "left");
 	left->setMargin(10);
 	left->setSpacing(10);
-	
+
 	QLabel *l_icon = new QLabel(left,"icon");
 	QWidget *blank=new QWidget(left,"blank");
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
-	
+
 	QVBox *center=new QVBox(this,"center");
 	center->setMargin(10);
 	center->setSpacing(10);
-	
+
 	QLabel *l_info = new QLabel(center,"info");
 	l_icon->setPixmap(icons_manager.loadIcon("SelectPathWindowIcon"));
 	l_info->setText(tr("This dialog box allows you to choose directories in which kadu will look for icons or sounds."));
 	l_info->setAlignment(Qt::WordBreak);
 	// end create main QLabel widgets (icon and app info)
-	
+
 	//our QVGroupBox
 	QVGroupBox *vgb_pathlist = new QVGroupBox(center,"pathlist");
 	vgb_pathlist->setTitle(tr("Paths"));
@@ -1674,7 +1770,7 @@ SelectPaths::SelectPaths(QWidget *parent, const char* name) : QHBox(parent, name
 	vgb_pathtoadd->setTitle(tr("Path to add"));
 	center->setStretchFactor(vgb_pathlist, 1);
 	//end our QGroupBox
-	
+
 	// create needed fields
 	QHBox *hb_pathlist = new QHBox(vgb_pathlist,"box");
 	hb_pathlist->setSpacing(5);
@@ -1687,7 +1783,7 @@ SelectPaths::SelectPaths(QWidget *parent, const char* name) : QHBox(parent, name
 	pb_remove = new QPushButton(icons_manager.loadIcon("RemoveSelectPathDialogButton"), tr("Remove"), vb_managebuttons, "removeButton");
 	QWidget *w_managebuttons = new QWidget(vb_managebuttons,"blank");
 	vb_managebuttons->setStretchFactor(w_managebuttons, 1);
-	
+
 	QHBox *hb_selectpath = new QHBox(vgb_pathtoadd,"box");
 	hb_selectpath ->setSpacing(5);
 	pathEdit = new QLineEdit(hb_selectpath,"newPathLineEdit");
@@ -1742,7 +1838,7 @@ void SelectPaths::addPath()
 		{
 			if (dirtoadd.right(1) != "/")
 				dirtoadd+="/";
-			if (!pathListBox->findItem(dirtoadd, Qt::ExactMatch)) 
+			if (!pathListBox->findItem(dirtoadd, Qt::ExactMatch))
 				pathListBox->insertItem(dirtoadd);
 		}
 	pathListBox->setSelected(pathListBox->currentItem(),true);
@@ -1762,7 +1858,7 @@ void SelectPaths::replacePath()
 			{
 				if (dirtochange.right(1) != "/")
 					dirtochange+="/";
-				if (!pathListBox->findItem(dirtochange, Qt::ExactMatch)) 
+				if (!pathListBox->findItem(dirtochange, Qt::ExactMatch))
 					pathListBox->changeItem(dirtochange, pathListBox->currentItem());
 				pathListBox->setSelected(pathListBox->currentItem(), true);
 			}

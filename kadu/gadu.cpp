@@ -792,8 +792,8 @@ void GaduProtocol::initModule()
 //zakladka "siec"
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Network"), "NetworkTab");
 
-	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "Servers properties"));
-	ConfigDialog::addGrid("Network", "Servers properties", "servergrid", 2);
+	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "Servers properties"), "", Expert);
+	ConfigDialog::addGrid("Network", "Servers properties", "servergrid", Expert);
 	ConfigDialog::addCheckBox("Network", "servergrid",
 		QT_TRANSLATE_NOOP("@default", "Use default servers"), "isDefServers", true);
 #ifdef HAVE_OPENSSL
@@ -809,14 +809,14 @@ void GaduProtocol::initModule()
 	values << "0" << "8074" << "443";
 	ConfigDialog::addComboBox("Network", "Servers properties",
 		QT_TRANSLATE_NOOP("@default", "Port to connect to servers"), "DefaultPort", options, values);
-	
+
 	config_file.addVariable("Network", "TimeoutInMs", 5000);
 
 	ConfigDialog::addCheckBox("Network", "Network",
-		QT_TRANSLATE_NOOP("@default", "Use proxy server"), "UseProxy", false);
+		QT_TRANSLATE_NOOP("@default", "Use proxy server"), "UseProxy", false, "", "", Expert);
 
-	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "Proxy server"));
-	ConfigDialog::addGrid("Network", "Proxy server", "proxygrid", 2);
+	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "Proxy server"), "", Expert);
+	ConfigDialog::addGrid("Network", "Proxy server", "proxygrid", Expert);
 	ConfigDialog::addLineEdit("Network", "proxygrid", QT_TRANSLATE_NOOP("@default", "Host: "), "ProxyHost", "0.0.0.0","","proxyhost");
 	ConfigDialog::addLineEdit("Network", "proxygrid",
 		QT_TRANSLATE_NOOP("@default", " Port: "), "ProxyPort", "0");
@@ -1143,19 +1143,19 @@ void GaduProtocol::connectedSlot()
 		UWAGA: je¿eli robimy refresh(), to przy przechodzeniu z niedostêpnego z opisem
 		na niewidoczny z opisem ta zmiana jest ujawniana naszym kontaktom!
 		przy przechodzeniu z niedostêpnego na niewidoczny efekt nie wystêpuje
-	
+
 		je¿eli NIE zrobimy refresh(), to powy¿szy efekt nie wystêpuje, ale przy
 		przechodzeniu z niedostêpnego z opisem na niewidoczny (bez opisu), nasz
 		opis u innych pozostaje! (a¿ do czasu naszej zmiany statusu lub ich
 		roz³±czenia i po³±czenia)
 	*/
-	
+
 	/*
 		UWAGA 2: procedura ³±czenia siê z serwerem w chwili obecnej wykorzystuje
 		fakt ponownego ustawienia statusu po zalogowaniu, bo iWantGo* blokuj±
 		zmiany statusów w trakcie ³±czenia siê z serwerem
 	*/
-	
+
 	kdebugf2();
 }
 

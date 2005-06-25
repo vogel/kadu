@@ -238,7 +238,7 @@ void ChatManager::deletePendingMsgs(UinsList uins)
 
 	UserBox::all_refresh();
 	kdebugf2();
-}	
+}
 
 void ChatManager::openPendingMsgs(UinsList uins)
 {
@@ -917,7 +917,7 @@ void Chat::insertImage()
 			kdebugf2();
 			return;
 		}
-		
+
 		if (f.size() >= (1 << 18)) // 256kB
 		{
 			MessageBox::wrn(tr("This file is too big (%1 >= %2)").arg(f.size()).arg(1<<18), true);
@@ -1339,7 +1339,7 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time)
 		kdebugmf(KDEBUG_INFO, "entries = %d\n", entries.count());
 		end = from - 1;
 	}
-	
+
 	unsigned int entryCount = entries.count();
 	if (entryCount < chatHistoryQuotation)
 		from = 0;
@@ -1691,33 +1691,34 @@ void Chat::initModule()
 	ConfigDialog::addTab("Chat","ChatTab");
 	ConfigDialog::addVGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Emoticons"));
 	ConfigDialog::addComboBox("Chat", "Emoticons", QT_TRANSLATE_NOOP("@default", "Emoticons:"),
-			"EmoticonsStyle", toStringList(tr("None"), tr("Static"), tr("Animated")), toStringList("0", "1", "2"), "2");
+			"EmoticonsStyle", toStringList(tr("None"), tr("Static"), tr("Animated")), toStringList("0", "1", "2"), "2",
+			"", "", Advanced);
 
 	ConfigDialog::addComboBox("Chat", "Emoticons", QT_TRANSLATE_NOOP("@default", "Emoticons theme"));
-	ConfigDialog::addVGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "WWW options"));
+	ConfigDialog::addVGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "WWW options"), "", Advanced);
 
 	ConfigDialog::addComboBox("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Choose your browser"));
 	ConfigDialog::addComboBox("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Browser options"));
 	ConfigDialog::addLineEdit("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Custom Web browser"), "WebBrowser", "", QT_TRANSLATE_NOOP("@default", "%1 - Url clicked in chat window"));
-	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Automatically prune chat messages"), "ChatPrune", true);
-	ConfigDialog::addHGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Message pruning"));
+	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Automatically prune chat messages"), "ChatPrune", true, "", "", Advanced);
+	ConfigDialog::addHGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Message pruning"), "", Advanced);
 	ConfigDialog::addSpinBox("Chat", "Message pruning", QT_TRANSLATE_NOOP("@default", "Reduce the number of visible messages to"), "ChatPruneLen", 1,255,1,20);
-	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Automatically fold links"), "FoldLink", false);
-	ConfigDialog::addHGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Link folding"));
+	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Automatically fold links"), "FoldLink", false, "", "", Advanced);
+	ConfigDialog::addHGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Link folding"), "", Advanced);
 	ConfigDialog::addSpinBox("Chat", "Link folding", QT_TRANSLATE_NOOP("@default", "Automatically fold links longer than"), "LinkFoldTreshold", 1,500,1,50);
 	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Open chat window on new message"), "OpenChatOnMessage", false);
-	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Scroll chat window downward, not upward"), "ScrollDown", true);
-	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "\"%1\" in chat sends message by default"), "AutoSend", true);
-	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Message acknowledgements (wait for delivery)"), "MessageAcks", true);
-	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Flash chat title on new message"), "BlinkChatTitle", true);
-	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Ignore messages from anonymous users"), "IgnoreAnonymousUsers", false);
-	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Receive images during invisibility"), "ReceiveImagesDuringInvisibility", true);
-	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Block window close on new message"), "ChatCloseTimer", false);
+	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Scroll chat window downward, not upward"), "ScrollDown", true, "", "", Advanced);
+	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "\"%1\" in chat sends message by default"), "AutoSend", true, "", "", Advanced);
+	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Message acknowledgements (wait for delivery)"), "MessageAcks", true, "", "", Expert);
+	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Flash chat title on new message"), "BlinkChatTitle", true, "", "", Advanced);
+	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Ignore messages from anonymous users"), "IgnoreAnonymousUsers", false, "", "", Advanced);
+	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Receive images during invisibility"), "ReceiveImagesDuringInvisibility", true, "", "", Expert);
+	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Block window close on new message"), "ChatCloseTimer", false, "", "", Advanced);
 	ConfigDialog::addSpinBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Max time to block window close"),
-			"ChatCloseTimerPeriod", 1, 5, 1, 2);
+			"ChatCloseTimerPeriod", 1, 5, 1, 2, "", "", Expert);
 
 	ConfigDialog::addSpinBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Max image size"),
-			"MaxImageSize", 0, 255, 5, 20);
+			"MaxImageSize", 0, 255, 5, 20, "", "", Advanced);
 
 
 // pierwsze uruchomienie kadu
@@ -1741,8 +1742,8 @@ void Chat::initModule()
 
 	ConfigDialog::addGrid("Look", "Look", "varOpts", 2);
 		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Show status button"), "ShowStatusButton", true);
-		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Multiline description in userbox"), "ShowMultilineDesc", true);
-		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Display group tabs"), "DisplayGroupTabs", true);
+		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Multiline description in userbox"), "ShowMultilineDesc", true, "", "", Advanced);
+		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Display group tabs"), "DisplayGroupTabs", true, "", "", Expert);
 		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Show available users in bold"), "ShowBold", true, QT_TRANSLATE_NOOP("@default","Displays users that are not offline using a bold font"));
 		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Show description in userbox"), "ShowDesc", true);
 
@@ -1768,13 +1769,13 @@ void Chat::initModule()
 
 	//naglowki
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Headers"));
-		ConfigDialog::addCheckBox("Look", "Headers", QT_TRANSLATE_NOOP("@default", "Remove chat header repetitions"), "NoHeaderRepeat", true);
-		ConfigDialog::addSpinBox("Look", "Headers", QT_TRANSLATE_NOOP("@default", "Chat header separators height:"), "HeaderSeparatorHeight", 0, config_file.readNumEntry("General", "ParagraphSeparator"), 1, 1);
-		ConfigDialog::addSpinBox("Look", "Headers", QT_TRANSLATE_NOOP("@default", "Interval between header removal:"), "NoHeaderInterval", 1, 1439, 1, 10);
+		ConfigDialog::addCheckBox("Look", "Headers", QT_TRANSLATE_NOOP("@default", "Remove chat header repetitions"), "NoHeaderRepeat", true, "", "", Advanced);
+		ConfigDialog::addSpinBox("Look", "Headers", QT_TRANSLATE_NOOP("@default", "Chat header separators height:"), "HeaderSeparatorHeight", 0, config_file.readNumEntry("General", "ParagraphSeparator"), 1, 1, "", "", Expert);
+		ConfigDialog::addSpinBox("Look", "Headers", QT_TRANSLATE_NOOP("@default", "Interval between header removal:"), "NoHeaderInterval", 1, 1439, 1, 10, "", "", Expert);
 
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Other"));
-		ConfigDialog::addLineEdit("Look", "Other", QT_TRANSLATE_NOOP("@default", "Chat window title syntax:"), "ChatContents", "", Kadu::SyntaxText);
-		ConfigDialog::addHBox("Look", "Other", "conference");
+		ConfigDialog::addLineEdit("Look", "Other", QT_TRANSLATE_NOOP("@default", "Chat window title syntax:"), "ChatContents", "", Kadu::SyntaxText, "", Expert);
+		ConfigDialog::addHBox("Look", "Other", "conference", "", Expert);
 			ConfigDialog::addLineEdit("Look", "conference", QT_TRANSLATE_NOOP("@default", "Conference window title prefix:"), "ConferencePrefix", "", QT_TRANSLATE_NOOP("@default", "This text will be before syntax.\nIf you leave blank, default settings will be used."));
 			ConfigDialog::addLineEdit("Look", "conference", QT_TRANSLATE_NOOP("@default", "syntax:"), "ConferenceContents", "%a (%s[: %d])", Kadu::SyntaxText);
 
@@ -2256,8 +2257,8 @@ void ChatSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo, QCombo
 		case 5: browserName="dillo"; break;
 		case 6: browserName="galeon"; break;
 		case 7: 	//safari - mac
-		{	
-			browserName="Safari.app"; 
+		{
+			browserName="Safari.app";
 			searchPath.append("/Applications");
 			break;
 		}

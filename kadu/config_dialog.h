@@ -62,7 +62,7 @@ class HotKey : public QLineEdit
 		static QString keyEventToString(QKeyEvent *e);
 
 		/**
-		 Pobiera skrót klawiszowy, z pliku konfiguracyjnego 
+		 Pobiera skrót klawiszowy, z pliku konfiguracyjnego
 		 z grupy "groupname", o polu "name"
 		**/
 		static QKeySequence shortCutFromFile(const QString& groupname, const QString &name);
@@ -131,7 +131,7 @@ class SelectFont : public QHBox
 };
 
 class SelectPaths : public QHBox
-{	
+{
 	Q_OBJECT
 	protected:
 		QStringList releaseList;
@@ -170,6 +170,12 @@ class SelectPaths : public QHBox
 			przesy³a on zmienion± listê ¶cie¿ek katalogów
 	    **/
 		void changed(const QStringList& paths);
+};
+
+enum UserLevel {
+	Beginner,
+	Advanced,
+	Expert
 };
 
 /**
@@ -226,7 +232,8 @@ class ConfigDialog : public QVBox
 				const QString &groupname=QString::null,
 				const QString &parent=QString::null,
 				const QString &caption=QString::null,
-				const QString &name=QString::null);
+				const QString &name=QString::null,
+				const UserLevel userLevelRequired = Beginner);
 			QString parent;
 			QString name;
 			QString caption;
@@ -234,13 +241,14 @@ class ConfigDialog : public QVBox
 			QString entry;
 			QString defaultS;
 			QString tip;
-			
+
 			//dodatkowe dane
 			QValueList<QVariant> additionalParams;
 			QValueListIterator<RegisteredControl> parentControl;
 			QWidget* widget;
 			int nrOfControls;
-			
+			UserLevel userLevelRequired;
+
 			ConfigFile* config;
 			QValueList <ElementConnections> ConnectedSlots;
 		};
@@ -254,7 +262,7 @@ class ConfigDialog : public QVBox
 		static QStringList TabNames;
 		static QMap<QString, int> TabSizes;
 		static QDict<QSignal> tabChangesIn, tabChangesOut;//jakie¶ lepsze nazwy by siê przyda³y ;)
-		
+
 		/**
 		    Dodaje kontrolkê do listy
 		**/
@@ -262,7 +270,7 @@ class ConfigDialog : public QVBox
 
 	public:
 		/**
-		    Konstruktor 
+		    Konstruktor
 		**/
 
 		ConfigDialog(QApplication *application, QWidget *parent = 0, const char *name = 0);
@@ -273,7 +281,7 @@ class ConfigDialog : public QVBox
 		static void showConfigDialog(QApplication* application);
 
 		/**
-		    Dodaje kontrolkê do zak³adki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname",
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
 			Warto¶æ kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
@@ -281,40 +289,44 @@ class ConfigDialog : public QVBox
 			[groupname]
 			entry= value {defaultS}
 			-------------
-			
-			Domy¶ln± warto¶ci± kontrolki przy pierwszym uruchomieniu programu 
+
+			Domy¶ln± warto¶ci± kontrolki przy pierwszym uruchomieniu programu
 			jest "defaultS".
 			Podpowied¼ kontrolki ustawiona jest na "tip".
 			Nazwa kontrolki ustawiona jest na "name".
-		**/		
+		**/
  		static void addCheckBox(
 				const QString& groupname, const QString& parent, const QString& caption,
 			    const QString& entry, const bool defaultS=false, const QString &tip="",
-				const QString& name="");
+				const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 		static void addCheckBox(ConfigFile* config,
 				const QString& groupname, const QString& parent, const QString& caption,
 			    const QString& entry, const bool defaultS=false, const QString &tip="",
-				const QString& name="");
+				const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 
 		/**
-		    Dodaje kontrolkê do zak³adki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname",
 			Rodzicem kontrolki jest kontrolka "parent".
-			Ustawia text kontrolki na "caption".		
+			Ustawia text kontrolki na "caption".
 			Kolor przycisku jest ustawiony na "color"
 			Podpowied¼ kontrolki ustawiona jest na "tip".
 			Nazwa kontrolki ustawiona jest na "name".
-		**/		
+		**/
 		static void addColorButton(
 				const QString& groupname, const QString& parent, const QString& caption,
 				const QString &entry, const QColor& color, const QString& tip="",
-				const QString& name="");
+				const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 		static void addColorButton(ConfigFile *config,
 				const QString& groupname, const QString& parent, const QString& caption,
 				const QString &entry, const QColor& color, const QString& tip="",
-				const QString& name="");
+				const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 
 		/**
-		    Dodaje kontrolkê do zak³adki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname",
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
 			Podpowied¼ kontrolki ustawiona jest na "tip".
@@ -322,13 +334,14 @@ class ConfigDialog : public QVBox
 		**/
 		static void addComboBox(
 				const QString& groupname, const QString& parent, const QString& caption,
-			    const QString& tip="", const QString& name="");
+			    const QString& tip="", const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 
 		/**
-		    Dodaje kontrolkê do zak³adki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname",
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
-			
+
 			Warto¶æ kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
 			-------------
 			[groupname]
@@ -341,49 +354,54 @@ class ConfigDialog : public QVBox
 		static void addComboBox(
 				const QString& groupname, const QString& parent, const QString& caption,
 				const QString &entry, const QStringList &options, const QStringList &values,
-				const QString &defaultS="", const QString& tip="", const QString& name="");
+				const QString &defaultS="", const QString& tip="", const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 		static void addComboBox(ConfigFile* config,
 				const QString& groupname, const QString& parent, const QString& caption,
 				const QString &entry, const QStringList &options, const QStringList &values,
-				const QString &defaultS="", const QString& tip="", const QString& name="");
+				const QString &defaultS="", const QString& tip="", const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 
 		/**
-		    Dodaje kontrolkê do zak³adki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname",
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
 			Ilo¶æ kolumn w kontrolce ustwiona jest na nrColumns
 			Nazwa kontrolki ustawiona jest na "name".
-		**/		
-			    
+		**/
+
 		static void addGrid(
 				const QString& groupname, const QString& parent, const QString& caption,
-				const int nrColumns=3, const QString& name="");
+				const int nrColumns=3, const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 
 		/**
-		    Dodaje kontrolkê do zak³adki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname",
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
 			Nazwa kontrolki ustawiona jest na "name".
-		**/		
+		**/
 
 		static void addHBox(
 				const QString& groupname, const QString& parent, const QString& caption,
-				const QString& name="");
+				const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 
 		/**
-		    Dodaje kontrolkê do zak³adki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname",
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
 			Nazwa kontrolki ustawiona jest na "name".
-		**/		
+		**/
 
 		static void addHGroupBox(
 				const QString& groupname, const QString& parent, const QString& caption,
-				const QString& name="");
+				const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 
-			    
+
 		/**
-		    Dodaje kontrolkê do zak³adki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname",
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
 			Warto¶æ kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
@@ -391,27 +409,29 @@ class ConfigDialog : public QVBox
 			[groupname]
 			entry= value {defaultS}
 			-------------
-			
-			Domy¶ln± warto¶ci± kontrolki przy pierwszym uruchomieniu programu 
+
+			Domy¶ln± warto¶ci± kontrolki przy pierwszym uruchomieniu programu
 			jest "defaultS".
 			Podpowied¼ kontrolki ustawiona jest na "tip".
 			Nazwa kontrolki ustawiona jest na "name".
-		**/		
+		**/
 
 		static void addHotKeyEdit(
 				const QString& groupname, const QString& parent, const QString& caption,
 			    const QString& entry, const QString& defaultS="", const QString& tip="",
-				const QString& name="");
+				const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 		static void addHotKeyEdit(ConfigFile* config,
 				const QString& groupname, const QString& parent, const QString& caption,
 			    const QString& entry, const QString& defaultS="", const QString& tip="",
-				const QString& name="");
+				const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 
 		/**
-		    Dodaje kontrolkê do zak³adki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname",
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
-			
+
 			Warto¶æ kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
 			-------------
 			[groupname]
@@ -424,25 +444,28 @@ class ConfigDialog : public QVBox
 		static void addHRadioGroup(
 				const QString& groupname, const QString& parent, const QString& caption,
 				const QString &entry, const QStringList &options, const QStringList &values,
-				const QString &defaultS="", const QString& tip="", const QString& name="");
+				const QString &defaultS="", const QString& tip="", const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 		static void addHRadioGroup(ConfigFile* config,
 				const QString& groupname, const QString& parent, const QString& caption,
 				const QString &entry, const QStringList &options, const QStringList &values,
-				const QString &defaultS="", const QString& tip="", const QString& name="");
+				const QString &defaultS="", const QString& tip="", const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 
 		/**
-		    Dodaje kontrolkê do zak³adki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname",
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
 			Nazwa kontrolki ustawiona jest na "name".
-		**/		
+		**/
 
 		static void addLabel(
 				const QString& groupname, const QString& parent, const QString& caption,
-				const QString& name="");
-			    
+				const QString& name="",
+				UserLevel userLevelRequired = Beginner);
+
 		/**
-		    Dodaje kontrolkê do zak³adki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname",
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
 			Warto¶æ kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
@@ -450,38 +473,41 @@ class ConfigDialog : public QVBox
 			[groupname]
 			entry= value {defaultS}
 			-------------
-			
-			Domy¶ln± warto¶ci± kontrolki przy pierwszym uruchomieniu programu 
+
+			Domy¶ln± warto¶ci± kontrolki przy pierwszym uruchomieniu programu
 			jest "defaultS".
 			Podpowied¼ kontrolki ustawiona jest na "tip".
 			Nazwa kontrolki ustawiona jest na "name".
-		**/		
+		**/
 
 		static void addLineEdit(
 				const QString& groupname, const QString& parent, const QString& caption,
 			    const QString& entry, const QString& defaultS="", const QString& tip="",
-				const QString& name="");
+				const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 		static void addLineEdit(ConfigFile* config,
 				const QString& groupname, const QString& parent, const QString& caption,
 			    const QString& entry, const QString& defaultS="", const QString& tip="",
-				const QString& name="");
+				const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 
 
 		/**
-		    Dodaje kontrolkê do zak³adki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname",
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
 			Domy¶ln± warto¶ci± kontrolki ustawion jest na "defaultS".
 			Podpowied¼ kontrolki ustawiona jest na "tip".
 			Nazwa kontrolki ustawiona jest na "name".
-		**/		
+		**/
 
 		static void addLineEdit2(
 				const QString& groupname, const QString& parent, const QString& caption,
-			    const QString& defaultS="", const QString& tip="", const QString& name="");
-			    
+			    const QString& defaultS="", const QString& tip="", const QString& name="",
+				UserLevel userLevelRequired = Beginner);
+
 		/**
-		    Dodaje kontrolkê do zak³adki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname",
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
 			Warto¶æ kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
@@ -489,65 +515,70 @@ class ConfigDialog : public QVBox
 			[groupname]
 			entry= value {defaultS}
 			-------------
-			
-			Domy¶ln± warto¶ci± kontrolki przy pierwszym uruchomieniu programu 
+
+			Domy¶ln± warto¶ci± kontrolki przy pierwszym uruchomieniu programu
 			jest "defaultS".
 			Podpowied¼ kontrolki ustawiona jest na "tip".
 			Nazwa kontrolki ustawiona jest na "name".
-		**/		
+		**/
 
 		static void addTextEdit(
 				const QString& groupname, const QString& parent, const QString& caption,
 			    const QString& entry, const QString& defaultS="", const QString& tip="",
-				const QString& name="");
+				const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 		static void addTextEdit(ConfigFile* config,
 				const QString& groupname, const QString& parent, const QString& caption,
 			    const QString& entry, const QString& defaultS="", const QString& tip="",
-				const QString& name="");
+				const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 
 
 		/**
-		    Dodaje kontrolkê do zak³adki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname",
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
 			Podpowied¼ kontrolki ustawiona jest na "tip".
 			Nazwa kontrolki ustawiona jest na "name".
-		**/		
+		**/
 
 		static void addListBox(
 				const QString& groupname, const QString& parent, const QString& caption,
-				const QString& tip= "", const QString& name="");
+				const QString& tip= "", const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 
 		/**
-		    Dodaje kontrolkê do zak³adki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname",
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
 			Podpowied¼ kontrolki ustawiona jest na "tip".
 			Nazwa kontrolki ustawiona jest na "name".
-		**/		
+		**/
 
 		static void addListView(
 				const QString& groupname, const QString& parent, const QString& caption,
-				const QString& tip= "", const QString& name="");
-			    
+				const QString& tip= "", const QString& name="",
+				UserLevel userLevelRequired = Beginner);
+
 		/**
-		    Dodaje kontrolkê do zak³adki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname",
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
 			Podpowied¼ kontrolki ustawiona jest na "tip".
 			Nazwa kontrolki ustawiona jest na "name".
 			@param iconname nazwa ikony z zestawu lub ¶cie¿ka do pliku
-		**/		
+		**/
 
 		static void addPushButton(
 				const QString& groupname, const QString& parent, const QString& caption,
-			    const QString& iconFileName="", const QString& tip="", const QString& name="");
+			    const QString& iconFileName="", const QString& tip="", const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 
 		/**
-		    Dodaje kontrolkê do zak³adki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname",
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
-			
+
 			Warto¶æ kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
 			-------------
 			[groupname]
@@ -561,15 +592,17 @@ class ConfigDialog : public QVBox
 				const QString& groupname, const QString& parent, const QString& caption,
 				const QString &entry, const QStringList &options, const QStringList &values,
 				int strips, Orientation orientation,
-				const QString &defaultS="", const QString& tip="", const QString& name="");
+				const QString &defaultS="", const QString& tip="", const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 		static void addRadioGroup(ConfigFile* config,
 				const QString& groupname, const QString& parent, const QString& caption,
 				const QString &entry, const QStringList &options, const QStringList &values,
 				int strips, Orientation orientation,
-				const QString &defaultS="", const QString& tip="", const QString& name="");
+				const QString &defaultS="", const QString& tip="", const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 
 		/**
-		    Dodaje kontrolkê do zak³adki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname",
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia tekst kontrolki na "caption".
 			Warto¶æ kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
@@ -577,35 +610,38 @@ class ConfigDialog : public QVBox
 			[groupname]
 			entry= value {defaultS}
 			-------------
-			
-			Domy¶ln± warto¶ci± kontrolki przy pierwszym uruchomieniu programu 
+
+			Domy¶ln± warto¶ci± kontrolki przy pierwszym uruchomieniu programu
 			jest "defaultS".
 			Podpowied¼ kontrolki ustawiona jest na "tip".
 			Nazwa kontrolki ustawiona jest na "name".
-		**/		
+		**/
 
 		static void addSelectFont(
 				const QString& groupname, const QString& parent, const QString& caption,
 				const QString& entry, const QString& defaultS="", const QString &tip="",
-				const QString& name="");
+				const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 		static void addSelectFont(ConfigFile *config,
 				const QString& groupname, const QString& parent, const QString& caption,
 				const QString& entry, const QString& defaultS="", const QString &tip="",
-				const QString& name="");
+				const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 
 		/**
-		    Dodaje kontrolkê do zak³adki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname",
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
 			Nazwa kontrolki ustawiona jest na "name".
-		**/		
+		**/
 
 		static void addSelectPaths(
 				const QString& groupname, const QString& parent, const QString& caption,
-				const QString& name="");
+				const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 
 		/**
-		    Dodaje kontrolkê do zak³adki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname",
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
 			Warto¶æ kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
@@ -613,28 +649,30 @@ class ConfigDialog : public QVBox
 			[groupname]
 			entry= value {defaultS}
 			-------------
-			Minimalna warto¶æ kontrolki ustawiona jest na "minValue", maksymalna 
+			Minimalna warto¶æ kontrolki ustawiona jest na "minValue", maksymalna
 			na "maxValue", krok jest ustawiony na "pageStep"
-			Domy¶ln± warto¶ci± kontrolki przy pierwszym uruchomieniu programu 
+			Domy¶ln± warto¶ci± kontrolki przy pierwszym uruchomieniu programu
 			jest "value"
 			Podpowied¼ kontrolki ustawiona jest na "tip".
 			Nazwa kontrolki ustawiona jest na "name".
-		**/		
+		**/
 
 		static void addSlider(
 				const QString& groupname, const QString& parent, const QString& caption,
 			    const QString& entry, const int minValue=0, const int maxValue=100,
 			    const int pageStep=1, const int value=50, const QString& tip="",
-				const QString& name="");
+				const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 		static void addSlider(ConfigFile* config,
 				const QString& groupname, const QString& parent, const QString& caption,
 			    const QString& entry, const int minValue=0, const int maxValue=100,
 			    const int pageStep=1, const int value=50, const QString& tip="",
-				const QString& name="");
-		
+				const QString& name="",
+				UserLevel userLevelRequired = Beginner);
+
 
 		/**
-		    Dodaje kontrolkê do zak³adki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname",
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
 			Warto¶æ kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
@@ -642,58 +680,63 @@ class ConfigDialog : public QVBox
 			[groupname]
 			entry= value {defaultS}
 			-------------
-			Minimalna warto¶æ kontrolki ustawiona jest na "minValue", maksymalna 
+			Minimalna warto¶æ kontrolki ustawiona jest na "minValue", maksymalna
 			na "maxValue", krok jest ustawiony na "step"
-			Domy¶ln± warto¶ci± kontrolki przy pierwszym uruchomieniu programu 
+			Domy¶ln± warto¶ci± kontrolki przy pierwszym uruchomieniu programu
 			jest "value"
 			Podpowied¼ kontrolki ustawiona jest na "tip".
 			Nazwa kontrolki ustawiona jest na "name".
-		**/		
+		**/
 
 		static void addSpinBox(
 				const QString& groupname, const QString& parent, const QString& caption,
 			    const QString& entry, const int minValue=0, const int maxValue=100,
 				const int step=1, const int value=50, const QString& tip="",
-				const QString& name="");
+				const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 		static void addSpinBox(ConfigFile* config,
 				const QString& groupname, const QString& parent, const QString& caption,
 			    const QString& entry, const int minValue=0, const int maxValue=100,
 				const int step=1, const int value=50, const QString& tip="",
-				const QString& name="");
+				const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 
 		/**
 		    Dodaje zak³adkê o nazwie "caption"
 		    @param iconname nazwa ikony z zestawu lub ¶cie¿ka do pliku
 		**/
-		static void addTab(const QString& caption, const QString& iconFileName="");
-		
+		static void addTab(const QString& caption, const QString& iconFileName="",
+			UserLevel userLevelRequired = Beginner);
+
 		/**
-		    Dodaje kontrolkê do zak³adki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname",
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
 			Nazwa kontrolki ustawiona jest na "name".
-		**/		
+		**/
 
 		static void addVBox(
 				const QString& groupname, const QString& parent, const QString& caption,
-				const QString& name="");
+				const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 
 		/**
-		    Dodaje kontrolkê do zak³adki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname",
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
 			Nazwa kontrolki ustawiona jest na "name".
-		**/		
+		**/
 
 		static void addVGroupBox(
 				const QString& groupname, const QString& parent, const QString& caption,
-				const QString& name="");
+				const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 
 		/**
-		    Dodaje kontrolkê do zak³adki "groupname", 
+		    Dodaje kontrolkê do zak³adki "groupname",
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".
-			
+
 			Warto¶æ kontrolki jest zapisana do pliku konfiguracyjnego "config" w postaci
 			-------------
 			[groupname]
@@ -706,11 +749,13 @@ class ConfigDialog : public QVBox
 		static void addVRadioGroup(
 				const QString& groupname, const QString& parent, const QString& caption,
 				const QString &entry, const QStringList &options, const QStringList &values,
-				const QString &defaultS="", const QString& tip="", const QString& name="");
+				const QString &defaultS="", const QString& tip="", const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 		static void addVRadioGroup(ConfigFile* config,
 				const QString& groupname, const QString& parent, const QString& caption,
 				const QString &entry, const QStringList &options, const QStringList &values,
-				const QString &defaultS="", const QString& tip="", const QString& name="");
+				const QString &defaultS="", const QString& tip="", const QString& name="",
+				UserLevel userLevelRequired = Beginner);
 
 		/**
 		    Pobiera wska¼nik do kontrolki ButtonGroup(groupname, caption, name)
@@ -876,14 +921,14 @@ class ConfigDialog : public QVBox
 
 		/**
 			Pod³±cza slot "slot" obiektu "receiver"
-			pod sygna³ "signal" kontrolki (groupname, caption, name) 
+			pod sygna³ "signal" kontrolki (groupname, caption, name)
 		**/
 		static void connectSlot(const QString& groupname, const QString& caption, const char* signal,
 			    const QObject* receiver, const char* slot,const QString& name="");
 
 		/**
 			Od³±cza slot "slot" obiektu "receiver"
-			od sygna³u "signal" kontrolki (groupname, caption, name) 
+			od sygna³u "signal" kontrolki (groupname, caption, name)
 		**/
 		static void disconnectSlot(const QString& groupname, const QString& caption, const char* signal,
 			    const QObject* receiver, const char* slot,const QString& name="");
@@ -905,7 +950,7 @@ class ConfigDialog : public QVBox
 			który jest wywo³ywany przy zamykaniu okna konfiguracji
 		**/
 		static void registerSlotOnClose(const QObject* receiver, const char* slot);
-		
+
 		/**
 			Wyrejestrowuje slot "slot" obiektu "receiver",
 			który jest wywo³ywany przy zamykaniu okna konfiguracji
@@ -917,7 +962,7 @@ class ConfigDialog : public QVBox
 			który jest wywo³ywany przy zapisywaniu konfiguracji
 		**/
 		static void registerSlotOnApply(const QObject* receiver, const char* slot);
-		
+
 		/**
 			Wyrejestrowuje slot "slot" obiektu "receiver",
 			który jest wywo³ywany przy zapisywaniu konfiguracji
@@ -939,7 +984,7 @@ class ConfigDialog : public QVBox
 			slotOut - przy zmianie aktywnej zak³adki z "name" na inn± (mo¿e byæ == 0)
 		**/
 		static void unregisterSlotsOnTabChange(const QString &name, const QObject *receiver, const char *slotIn, const char *slotOut);
-		
+
 		/**
 		    Usuwa kontrolkê z zak³adki "groupname", o etykiecie "caption" i nazwie "name".
 		**/
@@ -949,7 +994,7 @@ class ConfigDialog : public QVBox
 		    Usuwa zak³adkê o nazwie caption
 		**/
 		static bool removeTab(const QString& caption);
-		
+
 		/**
 			Zwraca prawdê je¿eli zak³adka znajduje siê w konfiguracji
 		**/
@@ -957,11 +1002,12 @@ class ConfigDialog : public QVBox
 
 		static bool dialogOpened();
 		static void closeDialog();
-		
+
 		//u¿ywaæ tylko w wyj±tkowych sytuacjach
 		static ConfigDialog *configdialog;
-		
+
 	protected:
+		UserLevel userLevel;
 		QListBox* listBox;
 		QScrollView* view;
 		QPushButton* okButton;
@@ -969,6 +1015,8 @@ class ConfigDialog : public QVBox
 		QPushButton* cancelButton;
 		static QString currentTab;
 		virtual void keyPressEvent(QKeyEvent *e);
+		void updateUserLevel(QMapConstIterator<QString,
+			QValueList<ConfigDialog::RegisteredControl> > tab);
 
 	signals:
 		/**
@@ -1003,5 +1051,10 @@ class ConfigDialog : public QVBox
 		    Zmienia zak³adkê na "name"
 		**/
 		void changeTab(const QString& name);
+
+		/**
+		    Ukrywa kontrolki o poziomie mniejszym od newUserLevel
+		**/
+		void changeUserLevel(int newUserLevel);
 };
 #endif

@@ -772,10 +772,10 @@ void UserBox::initModule()
 {
 	kdebugf();
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "General"), "GeneralTab");
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show inactive contacts"), "ShowHideInactive", true, QT_TRANSLATE_NOOP("@default", "Display contacts who are offline"));
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show contacts with description"), "ShowOnlyDescriptionUsers", false, QT_TRANSLATE_NOOP("@default", "Display contacts that have a desciption"));
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show contacts that you are blocking"), "ShowBlocked", true);
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show contacts that are blocking you"), "ShowBlocking", true);
+	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show inactive contacts"), "ShowHideInactive", true, QT_TRANSLATE_NOOP("@default", "Display contacts who are offline"), "", Advanced);
+	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show contacts with description"), "ShowOnlyDescriptionUsers", false, QT_TRANSLATE_NOOP("@default", "Display contacts that have a desciption"), "", Advanced);
+	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show contacts that you are blocking"), "ShowBlocked", true, "", "", Expert);
+	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show contacts that are blocking you"), "ShowBlocking", true, "", "", Expert);
 
 	// dodanie wpisow do konfiga (pierwsze uruchomienie)
 	QWidget w;
@@ -791,9 +791,9 @@ void UserBox::initModule()
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"), "LookTab");
 
-	ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Align icon next to contact name"), "AlignUserboxIconsTop", config_file.readBoolEntry("Look", "AlignUserboxIconsTop"));
+	ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Align icon next to contact name"), "AlignUserboxIconsTop", config_file.readBoolEntry("Look", "AlignUserboxIconsTop"), "", "", Advanced);
 
-	ConfigDialog::addVGroupBox("Look", "varOpts2", QT_TRANSLATE_NOOP("@default", "Columns"));
+	ConfigDialog::addVGroupBox("Look", "varOpts2", QT_TRANSLATE_NOOP("@default", "Columns"), "", Advanced);
 	ConfigDialog::addCheckBox("Look", "Columns", QT_TRANSLATE_NOOP("@default", "Multicolumn userbox"), "MultiColumnUserbox", false);
 	ConfigDialog::addSpinBox("Look", "Columns", QT_TRANSLATE_NOOP("@default", "Userbox width when multi column"), "MultiColumnUserboxWidth", 1, 1000, 1);
 
@@ -813,7 +813,7 @@ void UserBox::initModule()
 			ConfigDialog::addVGroupBox("Look", "othr_prvws", QT_TRANSLATE_NOOP("@default", "Preview panel"));
 				ConfigDialog::addLabel("Look", "Preview panel", "<b>Text</b> preview", "preview_panel");
 
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show tooltip on userbox"), "ShowTooltipOnUserbox", true);
+	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show tooltip on userbox"), "ShowTooltipOnUserbox", true, "", "", Expert);
 
 	KaduListBoxPixmap::setFont(config_file.readFontEntry("Look","UserboxFont"));
 	KaduListBoxPixmap::setShowDesc(config_file.readBoolEntry("Look", "ShowDesc"));

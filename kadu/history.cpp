@@ -1269,7 +1269,7 @@ void HistoryManager::checkImagesTimeouts()
 {
 	kdebugf();
 	QValueList<UinType> uins = keys(bufferedMessages);
-	
+
 	CONST_FOREACH(uin, uins)
 		checkImageTimeout(*uin);
 	kdebugf2();
@@ -1542,7 +1542,7 @@ void History::showHistoryEntries(int from, int count)
 	bool noStatus = config_file.readBoolEntry("History", "DontShowStatusChanges");
 
 	QValueList<HistoryEntry> entries = history.getHistoryEntries(uins, from, count);
-	
+
 	QValueList<HistoryEntry>::const_iterator entry = entries.begin();
 	QValueList<HistoryEntry>::const_iterator lastEntry = entries.end();
 	for(; entry != lastEntry; ++entry)
@@ -1798,8 +1798,8 @@ void History::initModule()
 	ConfigDialog::addSlider("History", "Message citation in chat window", "historyslider", "ChatHistoryQuotationTime", -744, -1, 24, -336);
 	ConfigDialog::addLabel("History", "Message citation in chat window", "", "dayhour");
 	ConfigDialog::addCheckBox("History", "History", QT_TRANSLATE_NOOP("@default", "Log messages"), "Logging", true);
-	ConfigDialog::addCheckBox("History", "History", QT_TRANSLATE_NOOP("@default", "Don't show status changes"), "DontShowStatusChanges", false);
-	ConfigDialog::addCheckBox("History", "History", QT_TRANSLATE_NOOP("@default", "Don't save status changes"), "DontSaveStatusChanges", true);
+	ConfigDialog::addCheckBox("History", "History", QT_TRANSLATE_NOOP("@default", "Don't show status changes"), "DontShowStatusChanges", false, "", "", Advanced);
+	ConfigDialog::addCheckBox("History", "History", QT_TRANSLATE_NOOP("@default", "Don't save status changes"), "DontSaveStatusChanges", true, "", "", Advanced);
 
 	ConfigDialog::registerSlotOnCreate(historyslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnApply(historyslots, SLOT(onDestroyConfigDialog()));
