@@ -103,6 +103,19 @@ static void kadu_signal_handler(int s)
 				fprintf(dbgfile, "> %s\n", (*module).local8Bit().data());
 			fflush(dbgfile);
 			fprintf(dbgfile, "Qt compile time version: %d.%d.%d\nQt runtime version: %s\n", (QT_VERSION&0xff0000)>>16, (QT_VERSION&0xff00)>>8, QT_VERSION&0xff, qVersion());
+			fprintf(dbgfile, "Kadu version: %s\n", VERSION);
+			#ifdef __DATE__
+			fprintf(dbgfile, "Compile time: %s %s\n", __DATE__, __TIME__);
+			#endif
+			#ifdef __GNUC__
+				//w gcc < 3.0 nie ma __GNUC_PATCHLEVEL__
+				#ifdef __GNUC_PATCHLEVEL__
+					fprintf(dbgfile, "GCC version: %d.%d.%d\n", __GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__);
+				#else
+					fprintf(dbgfile, "GCC version: %d.%d\n", __GNUC__, __GNUC_MINOR__);
+				#endif
+			#endif
+			fprintf(dbgfile, "EOF\n");
 
 			fclose(dbgfile);
 		}
