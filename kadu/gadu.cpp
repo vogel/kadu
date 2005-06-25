@@ -813,9 +813,9 @@ void GaduProtocol::initModule()
 	config_file.addVariable("Network", "TimeoutInMs", 5000);
 
 	ConfigDialog::addCheckBox("Network", "Network",
-		QT_TRANSLATE_NOOP("@default", "Use proxy server"), "UseProxy", false, "", "", Expert);
+		QT_TRANSLATE_NOOP("@default", "Use proxy server"), "UseProxy", false, "", "", Advanced);
 
-	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "Proxy server"), "", Expert);
+	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "Proxy server"), "", Advanced);
 	ConfigDialog::addGrid("Network", "Proxy server", "proxygrid", Expert);
 	ConfigDialog::addLineEdit("Network", "proxygrid", QT_TRANSLATE_NOOP("@default", "Host: "), "ProxyHost", "0.0.0.0","","proxyhost");
 	ConfigDialog::addLineEdit("Network", "proxygrid",
@@ -2553,7 +2553,7 @@ void GaduProtocol::onCreateConfigDialog()
 #ifdef HAVE_OPENSSL
 	QCheckBox *b_tls= ConfigDialog::getCheckBox("Network", "Use TLSv1");
 #endif
-	QHBox *serverbox=(QHBox*)(ConfigDialog::getLineEdit("Network", "IP addresses:","server")->parent());
+	QWidget *serverbox = ConfigDialog::getEntireWidget("Network", "IP addresses:","server");
 	QCheckBox* b_defaultserver= ConfigDialog::getCheckBox("Network", "Use default servers");
 
 	g_proxy->setEnabled(b_useproxy->isChecked());
@@ -2595,8 +2595,7 @@ void GaduProtocol::onDestroyConfigDialog()
 void GaduProtocol::ifDefServerEnabled(bool value)
 {
 	kdebugf();
-	QHBox *serverbox=(QHBox*)(ConfigDialog::getLineEdit("Network", "IP addresses:","server")->parent());
-	serverbox->setEnabled(!value);
+	ConfigDialog::getEntireWidget("Network", "IP addresses:","server")->setEnabled(!value);
 	kdebugf2();
 }
 
@@ -2604,8 +2603,7 @@ void GaduProtocol::useTlsEnabled(bool value)
 {
 #ifdef HAVE_OPENSSL
 	kdebugf();
-	QHBox *box_portselect=(QHBox*)(ConfigDialog::getComboBox("Network", "Port to connect to servers")->parent());
-	box_portselect->setEnabled(!value);
+	ConfigDialog::getEntireWidget("Network", "Port to connect to servers")->setEnabled(!value);
 	kdebugf2();
 #endif
 }

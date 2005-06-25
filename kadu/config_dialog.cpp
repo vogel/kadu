@@ -150,6 +150,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				QCheckBox* check=new QCheckBox(appHandle->translate("@default",(*i).caption), parent, (*i).name);
 				check->setChecked((*i).config->readBoolEntry((*i).group, (*i).entry, (*i).defaultS));
 				(*i).widget=check;
+				(*i).entireWidget = (*i).widget;
 				if (!(*i).tip.isEmpty())
 					QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
@@ -162,6 +163,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				ColorButton* colorbutton=new ColorButton((*i).config->readColorEntry((*i).group, (*i).entry, &col), hbox, (*i).name);
 				colorbutton->setMaximumSize(QSize(50,25));
 				(*i).widget=colorbutton;
+				(*i).entireWidget = hbox;
 				if (!(*i).tip.isEmpty())
 					QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
@@ -172,6 +174,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				new QLabel(appHandle->translate("@default",(*i).caption), hbox);
 				QComboBox* combo=new QComboBox(hbox, (*i).name);
 				(*i).widget=combo;
+				(*i).entireWidget = hbox;
 				if (!(*i).tip.isEmpty())
 					QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				if ((*i).additionalParams.size()>=2)
@@ -186,6 +189,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			{
 				QGrid* grid=new QGrid((*i).defaultS.toInt(), parent, (*i).caption);
 				(*i).widget=grid;
+				(*i).entireWidget = (*i).widget;
 				break;
 			}
 			case CONFIG_VBOX:
@@ -198,6 +202,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 					box = new QVBox(parent,(*i).caption);
 				box->setSpacing(2);
 				(*i).widget=box;
+				(*i).entireWidget = (*i).widget;
 				break;
 			}
 			case CONFIG_VGROUPBOX:
@@ -209,6 +214,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				else
 					box = new QVGroupBox(appHandle->translate("@default",(*i).caption), parent, (*i).name);
 				(*i).widget=box;
+				(*i).entireWidget = (*i).widget;
 				box->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum));
 				break;
 			}
@@ -229,6 +235,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 							(*i).name);
 
 				(*i).widget=group;
+				(*i).entireWidget = (*i).widget;
 				group->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum));
 //				group->setExclusive(true);
 				group->setRadioButtonExclusive(true);
@@ -252,6 +259,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				static int hotwidth=int(hotkey->fontMetrics().width("Ctrl+Alt+Shift+F12")*1.5);
 				hotkey->setFixedWidth(hotwidth);
 				(*i).widget=hotkey;
+				(*i).entireWidget = hbox;
 				if (!(*i).tip.isEmpty())
 					QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
@@ -260,6 +268,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			{
 				QLabel* label=new QLabel(appHandle->translate("@default",(*i).caption), parent, (*i).name);
 				(*i).widget=label;
+				(*i).entireWidget = (*i).widget;
 				break;
 			}
 			case CONFIG_LINEEDIT:
@@ -269,6 +278,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				QLineEdit* line=new QLineEdit(hbox, (*i).name);
 				line->setText((*i).config->readEntry((*i).group, (*i).entry, (*i).defaultS));
 				(*i).widget=line;
+				(*i).entireWidget = hbox;
 				if (!(*i).tip.isEmpty())
 					QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
@@ -280,6 +290,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				QLineEdit* line=new QLineEdit(hbox, (*i).name);
 				line->setText((*i).defaultS);
 				(*i).widget=line;
+				(*i).entireWidget = hbox;
 				if (!(*i).tip.isEmpty())
 					QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
@@ -292,6 +303,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				line->setTextFormat(Qt::PlainText);
 				line->setText((*i).config->readEntry((*i).group, (*i).entry, (*i).defaultS));
 				(*i).widget=line;
+				(*i).entireWidget = hbox;
 				if (!(*i).tip.isEmpty())
 					QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
@@ -300,6 +312,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			{
 				QListBox* listbox= new QListBox(parent, (*i).caption);
 				(*i).widget=listbox;
+				(*i).entireWidget = (*i).widget;
 				if (!(*i).tip.isEmpty())
 					QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
@@ -308,6 +321,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			{
 				QListView* listview= new QListView(parent, (*i).caption);
 				(*i).widget=listview;
+				(*i).entireWidget = (*i).widget;
 				if (!(*i).tip.isEmpty())
 					QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
@@ -318,6 +332,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				if (!(*i).defaultS.isEmpty())
 					button->setIconSet(icons_manager.loadIcon((*i).defaultS));
 				(*i).widget=button;
+				(*i).entireWidget = (*i).widget;
 				if (!(*i).tip.isEmpty())
 					QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
@@ -326,6 +341,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 			{
 				QFont def_font((*i).defaultS);
 				(*i).widget=new SelectFont((*i).caption, (*i).config->readFontEntry((*i).group, (*i).entry, &def_font), parent, (*i).name, (*i).tip);
+				(*i).entireWidget = (*i).widget;
 				break;
 			}
 			case CONFIG_SELECTPATHS:
@@ -335,6 +351,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				insertChild(paths);//musimy go wstawiæ na listê dzieci, bo inaczej wycieknie nam...
 				button->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum));
 				(*i).widget=paths;
+				(*i).entireWidget = button;
 				if (!(*i).tip.isEmpty())
 					QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				connect(button, SIGNAL(clicked()), paths, SLOT(show()));
@@ -352,6 +369,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				slider->setValue((*i).config->readNumEntry((*i).group, (*i).entry,value));
 				slider->setTickmarks(QSlider::Below);
 				(*i).widget=slider;
+				(*i).entireWidget = (*i).widget;
 				if (!(*i).tip.isEmpty())
 					QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
@@ -369,6 +387,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 				int val=(*i).config->readNumEntry((*i).group, (*i).entry,value);
 				spinbox->setValue(val);
 				(*i).widget=spinbox;
+				(*i).entireWidget = hbox;
 				if (!(*i).tip.isEmpty())
 					QToolTip::add((*i).widget, appHandle->translate("@default",(*i).tip));
 				break;
@@ -381,6 +400,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 					listBox->insertItem(appHandle->translate("@default",(*i).caption));
 				QVBox *subbox= new QVBox(box);
 				(*i).widget=subbox;
+				(*i).entireWidget = (*i).widget;
 				(*i).widget->hide();
 				break;
 			}
@@ -417,8 +437,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 	bottom->setMargin(10);
 	bottom->setSpacing(5);
 
-	(new QWidget(bottom, "blank"))->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
-
 	userLevel = static_cast<UserLevel>(config_file.readNumEntry("General", "UserLevel"));
 
 	new QLabel(tr("User experience level:"), bottom);
@@ -429,6 +447,8 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 	userLevelComboBox->setCurrentItem(userLevel);
 
 	connect(userLevelComboBox, SIGNAL(activated(int)), this, SLOT(changeUserLevel(int)));
+
+	(new QWidget(bottom, "blank"))->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
 	okButton = new QPushButton(icons_manager.loadIcon("OkWindowButton"), tr("Ok"), bottom, "okButton");
 	applyButton = new QPushButton(icons_manager.loadIcon("ApplyWindowButton"), tr("Apply"), bottom, "applyButton");
@@ -510,15 +530,15 @@ void ConfigDialog::updateUserLevel(QMapConstIterator<QString,
 
 	CONST_FOREACH(i, *tab)
 	{
-		if (!(*i).widget)
+		if (!(*i).entireWidget)
 			continue;
 		if ((*i).userLevelRequired <= userLevel)
 		{
 			if ((*i).type != CONFIG_SELECTPATHS)
-				(*i).widget->show();
+				(*i).entireWidget->show();
 		}
 		else
-			(*i).widget->hide();
+			(*i).entireWidget->hide();
 	}
 
 	kdebugf2();
@@ -1591,6 +1611,22 @@ QVGroupBox* ConfigDialog::getVGroupBox(const QString& groupname, const QString& 
 QVButtonGroup* ConfigDialog::getVButtonGroup(const QString& groupname, const QString& caption, const QString& name)
 {
 	return dynamic_cast<QVButtonGroup*>(widget(groupname,caption,name));
+}
+
+QWidget* ConfigDialog::getEntireWidget(const QString& groupname, const QString& caption, const QString& name)
+{
+	if (configdialog == NULL)
+	{
+		kdebugm(KDEBUG_PANIC, "ConfigDialog is closed! Can't get widget! (%s,%s,%s)\n",
+			groupname.local8Bit().data(), caption.local8Bit().data(), name.local8Bit().data());
+		printBacktrace("ConfigDialog::widget(): CD is closed!");
+		return NULL;
+	}
+	QValueListConstIterator<RegisteredControl> control;
+	if (controlExists(groupname, caption, name, &control))
+		return (*control).entireWidget;
+	kdebugm(KDEBUG_PANIC, "Warning: there is no \\" +groupname+ "\\"+ caption+ "\\"+ name+ "\\ control\n");
+	return NULL;
 }
 
 QKeySequence HotKey::shortCutFromFile(const QString& groupname, const QString &name)

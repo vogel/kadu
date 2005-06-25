@@ -51,7 +51,7 @@ DockingManager::DockingManager(QObject *parent, const char *name) : QObject(pare
 	connect(dockMenu, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
 	connect(this, SIGNAL(mousePressMidButton()), &pending, SLOT(openMessages()));
 
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show tooltip in tray"), "ShowTooltipInTray", true);
+	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show tooltip in tray"), "ShowTooltipInTray", true, "", "", Advanced);
 	ConfigDialog::registerSlotOnApply(this, SLOT(onApplyConfigDialog()));
 	
 	kdebugf2();
@@ -204,7 +204,7 @@ void DockingManager::setDocked(bool docked)
 		changeIcon();
 		defaultToolTip();
 		ConfigDialog::addCheckBox("General", "grid",
-			QT_TRANSLATE_NOOP("@default", "Start docked"), "RunDocked", false);
+			QT_TRANSLATE_NOOP("@default", "Start docked"), "RunDocked", false, "", "", Advanced);
 		if (config_file.readBoolEntry("General", "RunDocked"))
 			kadu->setShowMainWindowOnStart(false);
 	}

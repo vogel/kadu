@@ -28,7 +28,7 @@ extern "C" int dsp_sound_init()
 	oss_player_slots=new OSSPlayerSlots(NULL, "oss_player_slots");
 
 	ConfigDialog::addHGroupBox("Sounds", "Sounds",
-			QT_TRANSLATE_NOOP("@default","Output device"));
+			QT_TRANSLATE_NOOP("@default","Output device"), "", Advanced);
 	ConfigDialog::addLineEdit("Sounds", "Output device", 
 			QT_TRANSLATE_NOOP("@default","Path:"), "OutputDevice","/dev/dsp","","device_path");
 	kdebugf2();

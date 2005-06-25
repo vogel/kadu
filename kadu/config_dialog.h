@@ -245,7 +245,12 @@ class ConfigDialog : public QVBox
 			//dodatkowe dane
 			QValueList<QVariant> additionalParams;
 			QValueListIterator<RegisteredControl> parentControl;
-			QWidget* widget;
+			QWidget *widget;
+			
+			//w przypadku kontrolek sk³adaj±cych siê z kilku mniejszych,
+			// wska¼nik na rodzica, w przypadku pojedynczej kontrolki == widget
+			QWidget *entireWidget; 
+
 			int nrOfControls;
 			UserLevel userLevelRequired;
 
@@ -888,6 +893,15 @@ class ConfigDialog : public QVBox
 			je¿eli okno konfiguracji jest zamkniête zwraca NULL
 		**/
 		static QVButtonGroup* getVButtonGroup(const QString& groupname, const QString& caption, const QString& name="");
+
+		/**
+		    W przypadku kontrolki zawieraj±cej kilka mniejszych (z czego jedn± z nich zwraca jedna z funkcji getXXX)
+			zwraca wska¼nik do niej, w przeciwnym wypadku zwraca t± (pojedyncz±) kontrolkê
+			je¿eli okno konfiguracji jest zamkniête zwraca NULL
+			UWAGA: nie wolno rzutowaæ zwracanego wska¼nika na ¿adn± klasê dziedzicz±c± pod QWidget!
+			(np. addSpinBox dodaje QHBox zawieraj±c± QLabel i QSpinBox, getSpinBox() zwróci SpinBoksa, getEntireWidget QHBoksa())
+		**/
+		static QWidget* getEntireWidget(const QString& groupname, const QString& caption, const QString& name="");
 
 		/**
 		    Pobiera wska¼nik do kontrolki Widget(groupname, caption, name)

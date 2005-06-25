@@ -27,7 +27,7 @@ extern "C" int sms_init()
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "SMS"), "SMSTab");
 	ConfigDialog::addVGroupBox("SMS", "SMS",
-			QT_TRANSLATE_NOOP("@default", "SMS options"));
+			QT_TRANSLATE_NOOP("@default", "SMS options"), "", Expert);
 	ConfigDialog::addCheckBox("SMS", "SMS options",
 			QT_TRANSLATE_NOOP("@default", "Use built-in SMS application"), "BuiltInApp", true);
 	ConfigDialog::addLineEdit("SMS", "SMS options",
@@ -38,7 +38,7 @@ extern "C" int sms_init()
 			QT_TRANSLATE_NOOP("@default", "Check this box if your sms application doesn't understand arguments: number \"message\"\nArguments should be separated with spaces. %n argument is converted to number, %m to message"));
 	ConfigDialog::addLineEdit("SMS", "smsgrid", "", "SmsString", "", "", "smsstring");
 	ConfigDialog::addHGroupBox("SMS", "SMS",
-			QT_TRANSLATE_NOOP("@default", "Gateways priority"));
+			QT_TRANSLATE_NOOP("@default", "Gateways priority"), "", Advanced);
 	ConfigDialog::addListBox("SMS", "Gateways priority", "gateways");
 	ConfigDialog::addVBox("SMS", "Gateways priority", "button");
 	ConfigDialog::addPushButton("SMS", "button", QT_TRANSLATE_NOOP("@default", "Up"));

@@ -211,7 +211,7 @@ SoundManager::SoundManager(const QString& name, const QString& configname)
 
 	ConfigDialog::addCheckBox("Sounds", "Sounds",
 			QT_TRANSLATE_NOOP("@default","Play chat sounds only when window is invisible"),
-			"PlaySoundChatInvisible", true);
+			"PlaySoundChatInvisible", true, "", "", Advanced);
 	
 	ConfigDialog::addHBox("Sounds", "Sounds", "sound_box");
 	ConfigDialog::addListView("Sounds", "sound_box", "sound_files");

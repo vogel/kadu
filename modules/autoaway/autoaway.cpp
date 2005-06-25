@@ -433,7 +433,7 @@ AutoAwaySlots::AutoAwaySlots(QObject *parent, const char *name) : QObject(parent
 			QT_TRANSLATE_NOOP("@default", "Enable autoinvisible"), "AutoInvisible", false);
 	ConfigDialog::addCheckBox("General", "enables",
 			QT_TRANSLATE_NOOP("@default", "Enable autodisconnect"), "AutoDisconnect", false);
-	ConfigDialog::addVBox("General", "autoStatus", "times");
+	ConfigDialog::addVBox("General", "autoStatus", "times", "", Advanced);
 	ConfigDialog::addSpinBox("General", "times",
 			QT_TRANSLATE_NOOP("@default", "Set status to away after "), "AutoAwayTime", 1, 10000, 1, 180);
 	ConfigDialog::addSpinBox("General", "times",
@@ -443,11 +443,11 @@ AutoAwaySlots::AutoAwaySlots(QObject *parent, const char *name) : QObject(parent
 	ConfigDialog::addCheckBox("General", "Status",
 			QT_TRANSLATE_NOOP("@default", "Enable AutoStatus"), "AutoChange", false);
 	ConfigDialog::addSpinBox("General", "Status",
-			QT_TRANSLATE_NOOP("@default", "Check idle every "), "AutoAwayCheckTime", 1, 10000, 1, 5);
+			QT_TRANSLATE_NOOP("@default", "Check idle every "), "AutoAwayCheckTime", 1, 10000, 1, 5, "", "", Expert);
 	ConfigDialog::addCheckBox("General", "Status",
 			QT_TRANSLATE_NOOP("@default", "Autorestore status"), "AutoRestoreStatus", true);
 	ConfigDialog::addHGroupBox("General", "General", 
-			QT_TRANSLATE_NOOP("@default", "AutoStatus Description"));
+			QT_TRANSLATE_NOOP("@default", "AutoStatus Description"), "", Advanced);
 	ConfigDialog::addHBox("General", "AutoStatus Description", "first");
 	ConfigDialog::addLineEdit("General", "first",
 			QT_TRANSLATE_NOOP("@default", "Auto change status"), "AutoStatusText", "");

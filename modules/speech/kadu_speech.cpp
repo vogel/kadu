@@ -122,7 +122,7 @@ SpeechSlots::SpeechSlots(QObject *parent, const char *name) : QObject(parent, na
 	ConfigDialog::addCheckBox("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Use Dsp"), "UseDsp", true, "", "usedsp");
 	ConfigDialog::addLineEdit("Speech", "Speech",
-			QT_TRANSLATE_NOOP("@default","Dsp device:"), "DspDev","/dev/dsp");
+			QT_TRANSLATE_NOOP("@default","Dsp device:"), "DspDev","/dev/dsp", "", "", Advanced);
 
 	ConfigDialog::addHGroupBox("Speech", "Speech", QT_TRANSLATE_NOOP("@default","Program"));
 	ConfigDialog::addLineEdit("Speech", "Program",
@@ -132,35 +132,35 @@ SpeechSlots::SpeechSlots(QObject *parent, const char *name) : QObject(parent, na
 	
 	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Chat format (male):"),
-			"ChatFormatMale", SpeechSlots::tr("man %a wrote %1"), Kadu::SyntaxText);
+			"ChatFormatMale", SpeechSlots::tr("man %a wrote %1"), Kadu::SyntaxText, "", Advanced);
 	ConfigDialog::addLineEdit("Speech", "Speech", 
 			QT_TRANSLATE_NOOP("@default","Chat format (female):"),
-			"ChatFormatFemale", SpeechSlots::tr("woman %a wrote %1"), Kadu::SyntaxText);
+			"ChatFormatFemale", SpeechSlots::tr("woman %a wrote %1"), Kadu::SyntaxText, "", Advanced);
 
 	ConfigDialog::addLineEdit("Speech", "Speech", 
 			QT_TRANSLATE_NOOP("@default","Message format (male):"),
-			"MessageFormatMale", SpeechSlots::tr("man %a wrote %1"), Kadu::SyntaxText);
+			"MessageFormatMale", SpeechSlots::tr("man %a wrote %1"), Kadu::SyntaxText, "", Advanced);
 	ConfigDialog::addLineEdit("Speech", "Speech", 
 			QT_TRANSLATE_NOOP("@default","Message format (female):"),
-			"MessageFormatFemale", SpeechSlots::tr("woman %a wrote %1"), Kadu::SyntaxText);
+			"MessageFormatFemale", SpeechSlots::tr("woman %a wrote %1"), Kadu::SyntaxText, "", Advanced);
 
 	ConfigDialog::addLineEdit("Speech", "Speech", 
 			QT_TRANSLATE_NOOP("@default","Notify format (male):"),
-			"NotifyFormatMale", SpeechSlots::tr("man %a changed status to %s %d"), Kadu::SyntaxText);
+			"NotifyFormatMale", SpeechSlots::tr("man %a changed status to %s %d"), Kadu::SyntaxText, "", Advanced);
 	ConfigDialog::addLineEdit("Speech", "Speech", 
 			QT_TRANSLATE_NOOP("@default","Notify format (female):"),
-			"NotifyFormatFemale", SpeechSlots::tr("woman %a changed status to %s %d"), Kadu::SyntaxText);
+			"NotifyFormatFemale", SpeechSlots::tr("woman %a changed status to %s %d"), Kadu::SyntaxText, "", Advanced);
 
 	ConfigDialog::addLineEdit("Speech", "Speech", 
 			QT_TRANSLATE_NOOP("@default","Connection error:"),
-			"ConnectionError", SpeechSlots::tr("Connection error - %1"), Kadu::SyntaxText);
+			"ConnectionError", SpeechSlots::tr("Connection error - %1"), Kadu::SyntaxText, "", Advanced);
 
 	ConfigDialog::addLineEdit("Speech", "Speech", 
 			QT_TRANSLATE_NOOP("@default","Message too long (male):"),
-			"MsgTooLongMale", SpeechSlots::tr("%a wrote long message"), Kadu::SyntaxText);
+			"MsgTooLongMale", SpeechSlots::tr("%a wrote long message"), Kadu::SyntaxText, "", Advanced);
 	ConfigDialog::addLineEdit("Speech", "Speech", 
 			QT_TRANSLATE_NOOP("@default","Message too long (female):"),
-			"MsgTooLongFemale", SpeechSlots::tr("%a wrote long message"), Kadu::SyntaxText);
+			"MsgTooLongFemale", SpeechSlots::tr("%a wrote long message"), Kadu::SyntaxText, "", Advanced);
 	
 	ConfigDialog::addPushButton("Speech", "Speech",	QT_TRANSLATE_NOOP("@default","Test"), "", "", "testspeech");
 
