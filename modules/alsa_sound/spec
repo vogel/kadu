@@ -6,7 +6,7 @@ MODULE_LIBS="asound"
 MODULE_LIBS_PATH="/usr/lib"
 MODULE_CONFIGURE_CMD='
 echo -e "#include <asoundlib.h>\n#include <version.h>\nint main(){\n#if SND_LIB_MAJOR >=1\nprintf(\"1\\\n\");\n#else\nprintf(\"0\\\n\");\n#endif\nreturn 0;}\n" > asoundtest.c
-gcc $MODULE_CXXFLAGS asoundtest.c -o asoundtest
+$CC $MODULE_CXXFLAGS asoundtest.c -o asoundtest
 ret=`./asoundtest`
 rm -f asoundtest asoundtest.c
 if [ "$ret" != "1" ]; then
