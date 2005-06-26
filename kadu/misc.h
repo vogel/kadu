@@ -312,6 +312,7 @@ class IconsManager :public Themes
 	Q_OBJECT
 	public:
 		IconsManager(const QString& name, const QString& configname);
+
 		/**
 			Zwraca pe³n± ¶cie¿kê do ikony z aktualnego zestawu
 			lub bezposrednio name je¶li jest to pe³na ¶cie¿ka.
@@ -320,6 +321,7 @@ class IconsManager :public Themes
 			sciezka).
 		**/
 		QString iconPath(const QString &name) const;
+
 		/**
 			£aduje ikonê z aktualnego zestawu lub z podanego pliku.
 			@param name nazwa ikony z zestawu lub ¶cie¿ka do pliku
@@ -327,6 +329,8 @@ class IconsManager :public Themes
 			¶cie¿ka).
 		**/
 		const QPixmap & loadIcon(const QString &name);
+		const QMovie & loadAnimatedIcon(const QString &name);
+
 		static void initModule();
 		
 		void registerMenu(QMenuData *menu);
@@ -340,6 +344,7 @@ class IconsManager :public Themes
 
 	private:
 		QMap<QString, QPixmap> icons;
+		QMap<QString, QMovie> animatedIcons;
 		
 		QValueList<QPair<QMenuData *, QValueList<QPair<QString, QString> > > > menus;
 

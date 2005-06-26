@@ -51,8 +51,13 @@ DockingManager::DockingManager(QObject *parent, const char *name) : QObject(pare
 	connect(dockMenu, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
 	connect(this, SIGNAL(mousePressMidButton()), &pending, SLOT(openMessages()));
 
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show tooltip in tray"), "ShowTooltipInTray", true, "", "", Advanced);
+	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show tooltip in tray"),
+			"ShowTooltipInTray", true, "", "", Advanced);
+	ConfigDialog::addComboBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "New message tray icon"),
+			"NewMessageIcon", toStringList(tr("Blinking envelope"), tr("Static envelope"), tr("Animated envelope")),
+			toStringList("0", "1", "2"), "0", "", "", Advanced);
 	ConfigDialog::registerSlotOnApply(this, SLOT(onApplyConfigDialog()));
+	newMessageIcon = (IconType) config_file.readNumEntry("Look", "NewMessageIcon");
 	
 	kdebugf2();
 }
@@ -60,6 +65,7 @@ DockingManager::DockingManager(QObject *parent, const char *name) : QObject(pare
 void DockingManager::onApplyConfigDialog()
 {
 	kdebugf();
+	newMessageIcon = (IconType) config_file.readNumEntry("Look", "NewMessageIcon");
 	if (ConfigDialog::getCheckBox("General", "Show tooltip in tray")->isChecked())
 		defaultToolTip();
 	else
@@ -93,17 +99,28 @@ void DockingManager::changeIcon()
 	kdebugf();
 	if (pending.pendingMsgs() && !icon_timer->isActive())
 	{
-		if (!blink)
+		switch (newMessageIcon)
 		{
-			emit trayPixmapChanged(icons_manager.loadIcon("Message"));
-			icon_timer->start(500,TRUE);
-			blink = true;
-		}
-		else
-		{
-			emit trayPixmapChanged(gadu->status().pixmap());
-			icon_timer->start(500,TRUE);
-			blink = false;
+			case AnimatedEnvelope:
+				emit trayMovieChanged(icons_manager.loadAnimatedIcon("MessageAnim"));
+				break;
+			case StaticEnvelope:
+				emit trayPixmapChanged(icons_manager.loadIcon("Message"));
+				break;
+			case BlinkingEnvelope:
+				if (!blink)
+				{
+					emit trayPixmapChanged(icons_manager.loadIcon("Message"));
+					icon_timer->start(500,TRUE);
+					blink = true;
+				}
+				else
+				{
+					emit trayPixmapChanged(gadu->status().pixmap());
+					icon_timer->start(500,TRUE);
+					blink = false;
+				}
+				break;
 		}
 	}
 	else
@@ -199,7 +216,7 @@ QPixmap DockingManager::defaultPixmap()
 void DockingManager::setDocked(bool docked)
 {
 	kdebugf();
-	if(docked)
+	if (docked)
 	{
 		changeIcon();
 		defaultToolTip();

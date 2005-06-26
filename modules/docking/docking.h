@@ -9,6 +9,7 @@ class DockingManager : public QObject
 	Q_OBJECT
 
 	private:
+		enum IconType {BlinkingEnvelope = 0, StaticEnvelope = 1, AnimatedEnvelope = 2} newMessageIcon;
 		QTimer *icon_timer;
 		bool blink;
 		void defaultToolTip();
@@ -37,6 +38,7 @@ class DockingManager : public QObject
 
 	signals:
 		void trayPixmapChanged(const QPixmap& pixmap);
+		void trayMovieChanged(const QMovie& movie);
 		void trayTooltipChanged(const QString& tooltip);
 		void searchingForTrayPosition(QPoint& pos);
 		void mousePressMidButton();

@@ -76,6 +76,7 @@ DesktopDockWindow::DesktopDockWindow(QWidget *parent, const char *name)
 	connect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setToolTip(const QString&)));
 	connect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&)), this, SLOT(setPixmap(const QPixmap&)));
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
+	connect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), this, SLOT(setTrayMovie(const QMovie &)));
 	setMouseTracking(true);
 
 	show();		/*wyswietla ikonke*/
@@ -97,6 +98,7 @@ DesktopDockWindow::~DesktopDockWindow()
 {
 	kdebugf();
 	
+	disconnect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), this, SLOT(setTrayMovie(const QMovie &)));
 	disconnect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setToolTip(const QString&)));
 	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&)), this, SLOT(setPixmap(const QPixmap&)));
 	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
@@ -184,6 +186,13 @@ void DesktopDockWindow::setPixmap(const QPixmap& DockPixmap)
 	repaint();
 	setMask(pixmap()->createHeuristicMask(false));
 }
+
+void DesktopDockWindow::setTrayMovie(const QMovie &movie)
+{
+	QLabel::setMovie(movie);
+	repaint();
+}
+
 
 void DesktopDockWindow::findTrayPosition(QPoint& DockPoint)	/* zwrocenie krawedzi ikony */
 {

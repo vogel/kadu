@@ -11,6 +11,7 @@ class X11TrayIcon : public QLabel
 
 	private slots:
 		void setTrayPixmap(const QPixmap& pixmap);
+		void setTrayMovie(const QMovie &movie);
 		void setTrayTooltip(const QString& tooltip);
 		void findTrayPosition(QPoint& pos);
 		void chatCreatedSlot(const UinsList& senders);

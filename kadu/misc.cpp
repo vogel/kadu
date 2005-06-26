@@ -16,6 +16,7 @@
 #include <qlineedit.h>
 #include <qmenudata.h>
 #include <qmessagebox.h>
+#include <qmovie.h>
 #include <qpainter.h>
 #include <qpopupmenu.h>
 #include <qprocess.h>
@@ -1339,6 +1340,21 @@ const QPixmap &IconsManager::loadIcon(const QString &name)
 	icons[name] = p;
 //	kdebugf2();
 	return icons[name];
+}
+
+const QMovie & IconsManager::loadAnimatedIcon(const QString &name)
+{
+//	kdebugf();
+	QMap<QString, QMovie>::const_iterator i = animatedIcons.find(name);
+	if (i != animatedIcons.end())
+	{
+//		kdebugf2();
+		return *i;
+	}
+
+	animatedIcons[name] = QMovie(iconPath(name));
+//	kdebugf2();
+	return animatedIcons[name];
 }
 
 void IconsManager::clear()

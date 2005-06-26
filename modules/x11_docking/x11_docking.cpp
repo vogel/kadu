@@ -164,6 +164,7 @@ X11TrayIcon::X11TrayIcon(QWidget *parent, const char *name)
 	connect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&)), this, SLOT(setTrayPixmap(const QPixmap&)));
 	connect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
+	connect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), this, SLOT(setTrayMovie(const QMovie &)));
 	connect(chat_manager, SIGNAL(chatCreated(const UinsList&)), this, SLOT(chatCreatedSlot(const UinsList&)));
 	
 	docking_manager->setDocked(true);
@@ -244,6 +245,7 @@ X11TrayIcon::~X11TrayIcon()
 	disconnect(kadu, SIGNAL(shown()), this, SLOT(disableTaskbar()));
 	enableTaskbar();
 #endif
+	disconnect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), this, SLOT(setTrayMovie(const QMovie &)));
 	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&)), this, SLOT(setTrayPixmap(const QPixmap&)));
 	disconnect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
@@ -267,6 +269,12 @@ void X11TrayIcon::show()
 void X11TrayIcon::setTrayPixmap(const QPixmap& pixmap)
 {
 	QLabel::setPixmap(pixmap);
+	repaint();
+}
+
+void X11TrayIcon::setTrayMovie(const QMovie &movie)
+{
+	QLabel::setMovie(movie);
 	repaint();
 }
 

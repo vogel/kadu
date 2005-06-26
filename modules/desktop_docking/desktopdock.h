@@ -21,6 +21,7 @@ class DesktopDockWindow : public QLabel
 		void ApplyConfig();
 		void onCreateConfigDialog();
 		void setPixmap(const QPixmap &DockPixmap);
+		void setTrayMovie(const QMovie &movie);
 		void findTrayPosition(QPoint &DockPoint);
 		void enableColorButton(bool b);
 		void droppedOnDesktop(const QPoint &);

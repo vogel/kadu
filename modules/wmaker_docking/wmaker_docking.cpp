@@ -74,6 +74,7 @@ WMakerTrayIcon::WMakerTrayIcon(QWidget *parent, const char *name)
 	connect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&)), this, SLOT(setTrayPixmap(const QPixmap&)));
 	connect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
+	connect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), this, SLOT(setTrayMovie(const QMovie &)));
 
 	docking_manager->setDocked(true);
 
@@ -84,6 +85,7 @@ WMakerTrayIcon::WMakerTrayIcon(QWidget *parent, const char *name)
 WMakerTrayIcon::~WMakerTrayIcon()
 {
 	kdebugf();
+	disconnect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), this, SLOT(setTrayMovie(const QMovie &)));
 	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&)), this, SLOT(setTrayPixmap(const QPixmap&)));
 	disconnect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
@@ -111,6 +113,12 @@ void WMakerTrayIcon::setTrayPixmap(const QPixmap& pixmap)
 	WMakerMasterWidget->setIcon(pixmap);
 	repaint();
 	kdebugf2();
+}
+
+void WMakerTrayIcon::setTrayMovie(const QMovie &movie)
+{
+	QLabel::setMovie(movie);
+	repaint();
 }
 
 void WMakerTrayIcon::setTrayTooltip(const QString& tooltip)
