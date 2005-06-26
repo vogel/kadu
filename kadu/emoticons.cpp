@@ -24,6 +24,8 @@
 #include "emoticons.h"
 #include "kadu-config.h"
 
+#define IMG_Y_OFFSET 2
+
 EmoticonsManager::EmoticonsManager()
 {
 	ThemesList=getSubDirs(dataPath("kadu/themes/emoticons"));
@@ -653,9 +655,9 @@ void StaticTextItem::draw( QPainter* p, int x, int y, int cx, int cy, int cw, in
 		return;
 
 	if ( placement() == PlaceInline )
-		p->drawPixmap( x , y, pm );
+		p->drawPixmap( x , y + IMG_Y_OFFSET, pm );
 	else
-		p->drawPixmap( cx , cy, pm, cx - x, cy - y, cw, ch );
+		p->drawPixmap( cx , cy + IMG_Y_OFFSET, pm, cx - x, cy + IMG_Y_OFFSET - y, cw, ch );
 
 	if ( selected && placement() == PlaceInline && is_printer( p ) ) {
 #if defined(Q_WS_X11)
@@ -740,10 +742,11 @@ void AnimTextItem::draw(
 
 	EditSize = Edit->size();
 
+	// +IMG_Y_OFFSET dla lepszego efektu optycznego - emotikony s± bardziej wy¶rodkowane
 	if (y - cy > 0)
-		Label->move(x, y - cy + Edit->visibleHeight() - ch);
+		Label->move(x, y - cy + Edit->visibleHeight() - ch + IMG_Y_OFFSET);
 	else
-		Label->move(x, y - cy);
+		Label->move(x, y - cy + IMG_Y_OFFSET);
 
 /*	QPoint u(x, y - cy);
 	if (u.y() > 0)
