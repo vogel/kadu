@@ -9,7 +9,7 @@ install-data-local: uninstall-local
 		echo -e "\033[32m>>>\033[0m Installing $$i_t icon theme ..."; \
 		$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/themes/icons/$$i_t"; \
 		$(INSTALL_DATA) themes/icons/$$i_t/icons.conf "$(DESTDIR)/$(datadir)/kadu/themes/icons/$$i_t"; \
-		$(INSTALL_DATA) themes/icons/$$i_t/*.png "$(DESTDIR)/$(datadir)/kadu/themes/icons/$$i_t"; \
+		$(INSTALL_DATA) themes/icons/$$i_t/* "$(DESTDIR)/$(datadir)/kadu/themes/icons/$$i_t"; \
 	done
 
 	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/themes/emoticons/"	
