@@ -533,10 +533,7 @@ void ConfigDialog::updateUserLevel(QMapConstIterator<QString,
 		if (!(*i).entireWidget)
 			continue;
 		if ((*i).userLevelRequired <= userLevel)
-		{
-			if ((*i).type != CONFIG_SELECTPATHS)
-				(*i).entireWidget->show();
-		}
+			(*i).entireWidget->show();
 		else
 			(*i).entireWidget->hide();
 	}
