@@ -469,7 +469,6 @@ void UserInfo::changeUserData(UserListElement& e)
 	if (!e_uin->text().isEmpty() && !e.uin())
 	{
 		QMessageBox::information(this, "Kadu", tr("Bad UIN"), QMessageBox::Ok);
-		close();
 		kdebugf2();
 		return;
 	}
@@ -477,7 +476,6 @@ void UserInfo::changeUserData(UserListElement& e)
 	if (e_altnick->text().isEmpty())
 	{
 		QMessageBox::warning(this, tr("Add user problem"), tr("Altnick field cannot be empty."));
-		close();
 		kdebugf2();
 		return;
 	}
@@ -486,7 +484,6 @@ void UserInfo::changeUserData(UserListElement& e)
 		(e.altNick().lower() != puser->altNick().lower() && userlist.containsAltNick(e.altNick())))
 	{
 		QMessageBox::information(this, "Kadu", tr("User is already in userlist"), QMessageBox::Ok);
-		close();
 		kdebugf2();
 		return;
 	}
