@@ -23,6 +23,20 @@
 #include "kadu-config.h"
 #include "debug.h"
 
+class KaduLink : public QLabel
+{
+	public:
+		KaduLink(QWidget *parent) : QLabel(parent)
+		{
+			setText("<a href=\"http://www.kadu.net/\">www.kadu.net</a>");
+		}
+	protected:
+		virtual void mousePressEvent(QMouseEvent *)
+		{
+			openWebBrowser("http://www.kadu.net/");
+		}
+};
+
 About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopLevel|WDestructiveClose)
 {
 	kdebugf();
@@ -37,6 +51,8 @@ About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopL
 	left->setSpacing(10);
 	
 	QLabel *l_icon = new QLabel(left);
+	l_icon->setPixmap(icons_manager.loadIcon("AboutIcon"));
+
 	QWidget *blank=new QWidget(left);
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 	
@@ -44,9 +60,15 @@ About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopL
 	center->setMargin(10);
 	center->setSpacing(10);
 	
-	QLabel *l_info = new QLabel(center);
-	l_icon->setPixmap(icons_manager.loadIcon("AboutIcon"));
-	l_info->setText(QString("<span style=\"font-size: 12pt\">Kadu %1 <br>(c) 2001-2005 Kadu Team</span>").arg(VERSION));
+	QHBox *texts = new QHBox(center);
+	QLabel *l_info = new QLabel(texts);
+	l_info->setText(QString("<span style=\"font-size: 12pt\">Kadu %1 <br />(c) 2001-2005 Kadu Team</span>").arg(VERSION));
+	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
+
+	QWidget *blank3 = new QWidget(texts);
+	blank3->setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum));
+
+	new KaduLink(texts);
 	// end create main QLabel widgets (icon and app info)
 	
 	// our TabWidget

@@ -51,6 +51,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * okno zmiany danych o kontakcie nie znika gdy wci¶niemy "Uaktualnij",
   a w jakim¶ polu wpisane s± b³êdne dane (joi)
 * animowana ikona przy nadej¶ciu wiadomo¶ci, grafika by SadMephisto & Arcisz (joi)
+* w oknie "O programie" dodany klikalny link do strony g³ównej Kadu (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
