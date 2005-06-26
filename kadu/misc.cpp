@@ -16,7 +16,6 @@
 #include <qlineedit.h>
 #include <qmenudata.h>
 #include <qmessagebox.h>
-#include <qmovie.h>
 #include <qpainter.h>
 #include <qpopupmenu.h>
 #include <qprocess.h>

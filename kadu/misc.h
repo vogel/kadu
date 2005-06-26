@@ -11,6 +11,7 @@
 #include <qimage.h>
 #include <qlabel.h>
 #include <qmap.h>
+#include <qmovie.h>
 #include <qpair.h>
 #include <qpixmap.h>
 #include <qstringlist.h>
