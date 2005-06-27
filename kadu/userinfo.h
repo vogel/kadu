@@ -4,6 +4,7 @@
 #include <qhbox.h>
 
 #include "userlist.h"
+#include "misc.h"
 
 class QCheckBox;
 class QDns;
