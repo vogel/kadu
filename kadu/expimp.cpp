@@ -10,23 +10,22 @@
 #include <qfiledialog.h>
 #include <qlistview.h>
 #include <qlabel.h>
-#include <qlayout.h>
 #include <qpushbutton.h>
 #include <qstring.h>
-#include <qregexp.h>
 #include <qtextcodec.h>
 #include <qvbox.h>
 #include <qvgroupbox.h>
 
-#include <stdlib.h>
-
 #include "debug.h"
+#include "userlist.h"
 #include "expimp.h"
 #include "gadu.h"
 #include "ignore.h"
 #include "kadu.h"
+#include "misc.h"
 #include "message_box.h"
 #include "status.h"
+
 
 UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopLevel|WDestructiveClose)
 {

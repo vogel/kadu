@@ -2,18 +2,17 @@
 #define CHAT_H
 
 #include <qcolor.h>
-#include <qdialog.h>
 #include <qmap.h>
 #include <qmultilineedit.h>
 #include <qpushbutton.h>
-#include <qrect.h>
 #include <qsplitter.h>
 #include <qvariant.h>
 #include <qvaluelist.h>
+#include <qdatetime.h>
 
-#include "emoticons.h"
+#include "gadu.h"
 #include "misc.h"
-#include "userbox.h"
+#include "emoticons.h"
 
 class Chat;
 class QHBox;
@@ -89,6 +88,7 @@ class ChatMessage
 	\class ChatManager
 	\brief Klasa zarz±dzaj±ca oknami Chat
 **/
+
 class ChatManager : public QObject
 {
 	Q_OBJECT
@@ -449,6 +449,8 @@ class QMimeSourceFactory;
 	\class Chat
 	\brief Okno rozmowy
 **/
+class UserBox;
+
 class Chat : public QWidget
 {
 	Q_OBJECT

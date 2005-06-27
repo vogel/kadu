@@ -1,7 +1,6 @@
 #ifndef CONFIG_FILE_H
 #define CONFIG_FILE_H
 
-#include <qvaluelist.h>
 #include <qstring.h>
 #include <qrect.h>
 #include <qsize.h>

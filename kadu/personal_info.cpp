@@ -19,7 +19,7 @@
 #include "debug.h"
 #include "misc.h"
 #include "personal_info.h"
-#include "status.h"
+//#include "status.h"
 
 PersonalInfoDialog::PersonalInfoDialog(QDialog * /*parent*/, const char * /*name*/)
 {

@@ -7,7 +7,7 @@
 #include <qstringlist.h>
 #include <qtooltip.h>
 
-#include "misc.h"
+//#include "misc.h"
 #include "userlist.h"
 
 class QFontMetrics;

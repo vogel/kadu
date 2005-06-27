@@ -11,7 +11,8 @@
 
 #include <time.h>
 
-#include "misc.h"
+#include "gadu.h"
+//#include "misc.h"
 
 #define HISTORYMANAGER_ENTRY_CHATSEND   0x00000001
 #define HISTORYMANAGER_ENTRY_CHATRCV    0x00000002
@@ -77,6 +78,8 @@ class DateListViewText : public QListViewItem {
 /**
 	Okno historii rozmowy
 **/
+class KaduTextBrowser;
+
 class History : public QDialog {
 	Q_OBJECT
 

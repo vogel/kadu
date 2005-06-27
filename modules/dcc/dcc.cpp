@@ -27,6 +27,7 @@
 #include "debug.h"
 #include "file_transfer.h"
 #include "ignore.h"
+#include "misc.h"
 #include "kadu.h"
 #include "message_box.h"
 #include "userlist.h"

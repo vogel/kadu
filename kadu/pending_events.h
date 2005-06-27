@@ -4,7 +4,6 @@
 
 #include <qptrlist.h>
 #include "gadu.h"
-#include "misc.h"
 
 /**
 	Klasa bazowa dla wszystkich kolejkowanych zdarzeñ.

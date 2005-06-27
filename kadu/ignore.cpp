@@ -10,17 +10,18 @@
 #include <qfile.h>
 #include <qlineedit.h>
 #include <qlistbox.h>
+#include <qlabel.h>
 #include <qpushbutton.h>
 #include <qstringlist.h>
 #include <qtextstream.h>
 #include <qvbox.h>
 #include <qvgroupbox.h>
 
-#include <sys/stat.h>
-
+#include "config_file.h"
 #include "debug.h"
 #include "ignore.h"
 #include "userlist.h"
+#include "misc.h"
 //
 
 QValueList<UinsList> ignored;

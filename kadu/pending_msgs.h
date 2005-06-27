@@ -3,7 +3,6 @@
 
 #include <qvaluelist.h>
 #include "gadu.h"
-#include "misc.h"
 
 /**
 	Klasa ta reprezentuje kolejkê wiadomo¶ci oczekuj±cych na odczytanie.

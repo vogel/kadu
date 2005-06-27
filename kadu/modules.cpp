@@ -25,6 +25,7 @@
 #include "kadu.h"
 #include "kadu-config.h"
 #include "message_box.h"
+#include "misc.h"
 #include "modules.h"
 
 #include "modules_static.cpp"

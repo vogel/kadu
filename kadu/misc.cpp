@@ -11,8 +11,6 @@
 #include <qclipboard.h>
 #include <qcolor.h>
 #include <qcombobox.h>
-#include <qcstring.h>
-#include <qdatetime.h>
 #include <qlineedit.h>
 #include <qmenudata.h>
 #include <qmessagebox.h>
@@ -21,6 +19,7 @@
 #include <qprocess.h>
 #include <qpushbutton.h>
 #include <qregexp.h>
+#include <qsocket.h>
 #include <qstring.h>
 #include <qtextcodec.h>
 #include <qurl.h>

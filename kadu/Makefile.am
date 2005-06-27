@@ -82,30 +82,30 @@ CLEANFILES = *_moc.cpp $(PHEADERS_CLEANFILES)
 install-data-local:
 	$(mkinstalldirs) "$(DESTDIR)/$(includedir)/kadu/"
 	$(INSTALL_DATA) *.h "$(DESTDIR)/$(includedir)/kadu/"
-	@if test -w "$(DESTDIR)/usr/share"; then \
-		$(mkinstalldirs) "$(DESTDIR)/usr/share/applnk/Internet/"; \
-		echo "[Desktop Entry]" > "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
-		echo "Type=Application" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
-		echo "Exec=$(bindir)/kadu" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
-		echo "Icon=kadu.png" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
-		echo "MiniIcon=kadu-16.png" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
-		echo "Terminal=0" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
-		echo "Name=Kadu" >> "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"; \
-		$(mkinstalldirs) "$(DESTDIR)/usr/share/pixmaps/"; \
-		$(INSTALL_DATA) hi48-app-kadu.png "$(DESTDIR)/usr/share/pixmaps/kadu-48.png"; \
-		$(INSTALL_DATA) hi32-app-kadu.png "$(DESTDIR)/usr/share/pixmaps/kadu.png"; \
-		$(INSTALL_DATA) hi24-app-kadu.png "$(DESTDIR)/usr/share/pixmaps/kadu-24.png"; \
-		$(INSTALL_DATA) hi22-app-kadu.png "$(DESTDIR)/usr/share/pixmaps/kadu-22.png"; \
-		$(INSTALL_DATA) hi16-app-kadu.png "$(DESTDIR)/usr/share/pixmaps/kadu-16.png"; \
+	@if test -w "$(DESTDIR)$(datadir)"; then \
+		$(mkinstalldirs) "$(DESTDIR)$(datadir)/applnk/Internet/"; \
+		echo "[Desktop Entry]" > "$(DESTDIR)$(datadir)/applnk/Internet/kadu.desktop"; \
+		echo "Type=Application" >> "$(DESTDIR)$(datadir)/applnk/Internet/kadu.desktop"; \
+		echo "Exec=$(bindir)/kadu" >> "$(DESTDIR)$(datadir)/applnk/Internet/kadu.desktop"; \
+		echo "Icon=kadu.png" >> "$(DESTDIR)$(datadir)/applnk/Internet/kadu.desktop"; \
+		echo "MiniIcon=kadu-16.png" >> "$(DESTDIR)$(datadir)/applnk/Internet/kadu.desktop"; \
+		echo "Terminal=0" >> "$(DESTDIR)$(datadir)/applnk/Internet/kadu.desktop"; \
+		echo "Name=Kadu" >> "$(DESTDIR)$(datadir)/applnk/Internet/kadu.desktop"; \
+		$(mkinstalldirs) "$(DESTDIR)$(datadir)/pixmaps/"; \
+		$(INSTALL_DATA) hi48-app-kadu.png "$(DESTDIR)$(datadir)/pixmaps/kadu-48.png"; \
+		$(INSTALL_DATA) hi32-app-kadu.png "$(DESTDIR)$(datadir)/pixmaps/kadu.png"; \
+		$(INSTALL_DATA) hi24-app-kadu.png "$(DESTDIR)$(datadir)/pixmaps/kadu-24.png"; \
+		$(INSTALL_DATA) hi22-app-kadu.png "$(DESTDIR)$(datadir)/pixmaps/kadu-22.png"; \
+		$(INSTALL_DATA) hi16-app-kadu.png "$(DESTDIR)$(datadir)/pixmaps/kadu-16.png"; \
 		echo ""; \
-		echo "Icons installed to $(DESTDIR)/usr/share/pixmaps"; \
-		echo "Link(kadu.desktop) installed to $(DESTDIR)/usr/share/applnk/Internet"; \
+		echo "Icons installed to $(DESTDIR)$(datadir)/pixmaps"; \
+		echo "Link(kadu.desktop) installed to $(DESTDIR)$(datadir)/applnk/Internet"; \
 		echo ""; \
 	else \
 		echo "";\
 		echo "         *******************************************************************"; \
 		echo "         *                                                                 *"; \
-		echo "         *          You don't have permission to write /usr/share          *"; \
+		echo "         *          You don't have permission to write $(datadir)          *"; \
 		echo "         *          Icons and link(kadu.desktop) won't be installed        *"; \
 		echo "         *                                                                 *"; \
 		echo "         *******************************************************************"; \
@@ -114,7 +114,7 @@ install-data-local:
 
 uninstall-local:
 	rm -f "$(DESTDIR)/$(includedir)/kadu"/*.h
-	rm -f "$(DESTDIR)/usr/share/applnk/Internet/kadu.desktop"
-	rm -f "$(DESTDIR)/usr/share/pixmaps/kadu-48.png"
-	rm -f "$(DESTDIR)/usr/share/pixmaps/kadu.png"
-	rm -f "$(DESTDIR)/usr/share/pixmaps/kadu-16.png"
+	rm -f "$(DESTDIR)$(datadir)/applnk/Internet/kadu.desktop"
+	rm -f "$(DESTDIR)$(datadir)/pixmaps/kadu-48.png"
+	rm -f "$(DESTDIR)$(datadir)/pixmaps/kadu.png"
+	rm -f "$(DESTDIR)$(datadir)/pixmaps/kadu-16.png"

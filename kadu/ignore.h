@@ -4,10 +4,11 @@
 #include <qhbox.h>
 #include <qvaluelist.h>
 
-#include "misc.h"
+#include "gadu.h"
 
 class QLineEdit;
 class QListBox;
+class QDialog;
 
 /**
 	Dialog umo¿liwiaj±cy zarz±dzanie list± ignorowanych

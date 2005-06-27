@@ -18,6 +18,7 @@
 #include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <qregexp.h>
+#include <qtimer.h>
 #include <qsplitter.h>
 #include <qradiobutton.h>
 #include <qtextcodec.h>

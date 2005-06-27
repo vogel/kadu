@@ -55,6 +55,7 @@
 #include "tabbar.h"
 #include "userinfo.h"
 #include "updates.h"
+#include "misc.h"
 
 #include "kadu-config.h"
 

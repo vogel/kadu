@@ -1,8 +1,10 @@
 #ifndef ABOUT_H
 #define ABOUT_H
 
+#include <qstring.h>
 #include <qhbox.h>
 
+#include <qwidget.h>
 /**
 	\class About 
 	\brief Okno z informacjami o programie.

@@ -10,8 +10,10 @@
 
 #include <qapplication.h>
 #include <qtranslator.h>
+#include <qmessagebox.h>
 #include <qtextcodec.h>
 #include <qmessagebox.h>
+#include <qtimer.h>
 
 #include <errno.h>
 #include <string.h>
@@ -26,7 +28,6 @@
 #include "kadu-config.h"
 
 #include "config_file.h"
-#include "config_dialog.h"
 #include "misc.h"
 #include "debug.h"
 #include "modules.h"

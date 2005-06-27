@@ -25,6 +25,7 @@
 #include <netinet/in.h>
 #include <stdlib.h>
 
+#include "misc.h"
 #include "kadu.h"
 #include "config_dialog.h"
 #include "debug.h"

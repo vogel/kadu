@@ -1,9 +1,6 @@
 #ifndef KADU_H
 #define KADU_H
 
-#include <qapplication.h>
-#include <qframe.h>
-#include <qlayout.h>
 #include <qmainwindow.h>
 #include <qpopupmenu.h>
 #include <qstringlist.h>
@@ -12,7 +9,6 @@
 #include <qtoolbar.h>
 #include <qvaluelist.h>
 
-#include "misc.h"
 #include "userbox.h"
 #include "userlist.h"
 #include "tabbar.h"
@@ -20,6 +16,7 @@
 
 class QFile;
 class QMenuBar;
+
 
 /**
 	Toolbar Kadu
@@ -50,9 +47,13 @@ class ToolBar : public QToolBar
 		static void refreshIcons(const QString &caption=QString::null, const QString &newIconName=QString::null, const QString &newCaption=QString::null);
 };
 
+
+class KaduTextBrowser;
 /**
 	G³ówne okno Kadu
 **/
+class QPushButton;
+
 class Kadu : public QMainWindow
 {
 	Q_OBJECT

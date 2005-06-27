@@ -7,7 +7,6 @@
 #include <qfiledialog.h>
 #include <qfont.h>
 #include <qfontinfo.h>
-#include <qiconset.h>
 #include <qimage.h>
 #include <qlabel.h>
 #include <qmap.h>
@@ -99,6 +98,7 @@ class ChooseDescription : public QDialog
 		void cancelbtnPressed();
 		void updateYetLen(const QString&);
 };
+
 
 class HttpClient : public QObject
 {

@@ -2,6 +2,7 @@
 #define KADU_DCC_H
 
 #include <qhostaddress.h>
+#include <qtimer.h>
 
 #include "kadu-config.h"
 #include "gadu.h"

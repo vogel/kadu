@@ -15,8 +15,8 @@
 #include <qhgroupbox.h>
 #include <qlayout.h>
 #include <qlineedit.h>
-#include <qmessagebox.h>
 #include <qmime.h>
+#include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <qregexp.h>
 #include <qspinbox.h>
@@ -26,9 +26,6 @@
 #include <qvbox.h>
 #include <qvaluelist.h>
 
-#include <math.h>
-#include <sys/stat.h>
-#include <stdlib.h>
 
 #include "chat.h"
 #include "config_dialog.h"
@@ -39,7 +36,6 @@
 #include "history.h"
 #include "kadu.h"
 #include "message_box.h"
-#include "misc.h"
 #include "pending_msgs.h"
 #include "search.h"
 #include "status.h"

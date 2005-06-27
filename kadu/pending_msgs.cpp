@@ -13,8 +13,9 @@
 #include "chat.h"
 #include "config_file.h"
 #include "debug.h"
-#include "kadu.h"
+//#include "kadu.h"
 #include "pending_msgs.h"
+#include "misc.h"
 
 PendingMsgs::PendingMsgs(QObject *parent, const char *name): QObject(parent, name)
 {

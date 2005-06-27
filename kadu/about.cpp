@@ -14,7 +14,6 @@
 #include <qsizepolicy.h>
 #include <qtabwidget.h>
 #include <qtextbrowser.h>
-#include <qtextcodec.h>
 #include <qtextstream.h>
 #include <qvbox.h>
 

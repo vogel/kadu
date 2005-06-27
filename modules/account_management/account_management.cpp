@@ -9,6 +9,7 @@
 
 #include "debug.h"
 #include "kadu.h"
+#include "misc.h"
 #include "register.h"
 #include "unregister.h"
 #include "change_password.h"

@@ -24,10 +24,8 @@
 
 #include "chat.h"
 #include "debug.h"
-#include "gadu.h"
 #include "kadu.h"
 #include "search.h"
-#include "status.h"
 #include "userinfo.h"
 #include "userlist.h"
 

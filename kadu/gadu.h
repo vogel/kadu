@@ -6,7 +6,6 @@
 #include <qobject.h>
 #include <qstring.h>
 #include <qtextstream.h>
-#include <qtimer.h>
 #include <qvaluelist.h>
 
 #include "libgadu.h"
@@ -17,6 +16,7 @@ typedef uin_t UinType;
 class QSocketNotifier;
 class UserList;
 class UserListElement;
+class QTimer;
 
 // ------------------------------------
 //            UinsList

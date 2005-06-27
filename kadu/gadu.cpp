@@ -13,6 +13,7 @@
 #include <qsocketnotifier.h>
 #include <qtextcodec.h>
 #include <qvgroupbox.h>
+#include <qtimer.h>
 
 //netinet/in.h na freebsd 4.x jest wybrakowane i trzeba inkludowaæ sys/types.h
 #include <sys/types.h>
@@ -26,6 +27,7 @@
 #include "gadu.h"
 #include "ignore.h"
 #include "kadu.h"
+#include "misc.h"
 #include "message_box.h"
 #include "userlist.h"
 

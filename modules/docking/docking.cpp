@@ -20,6 +20,7 @@
 #include "kadu.h"
 #include "pending_msgs.h"
 #include "status.h"
+#include "misc.h"
 
 extern "C" int docking_init()
 {
