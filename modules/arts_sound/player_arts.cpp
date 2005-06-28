@@ -20,8 +20,9 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 
-#include <qprocess.h>
 #include <qapplication.h>
+#include <qprocess.h>
+#include <qtimer.h>
 #include "arts_connector/common.c"
 
 aRtsDevice::aRtsDevice() : process(NULL), sock(-1), no(-1), valid(true)
