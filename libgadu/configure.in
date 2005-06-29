@@ -235,6 +235,11 @@ AC_ARG_WITH(pthread,
   [  --with-pthread          Use pthread in resolver])
 
 if test "x$with_pthread" = "xyes"; then
+	dnl najpierw sprawdzamy czy pomijac testy pthreads/shared
+	pthreads_shared_skip=0
+	if test "x$lib_shared_enabled" = "xno"; then
+		pthreads_shared_skip=1
+	fi
 	ACX_PTHREAD(
 	[
 	 	dnl workaround dla pkconfiga
@@ -251,7 +256,7 @@ if test "x$with_pthread" = "xyes"; then
 		AC_LIBGADU_DEFINE([HAVE_PTHREAD])
 	], [
 		AC_MSG_ERROR([Your system is not supporting pthreads])
-	])
+	], [$pthreads_shared_skip])
 fi
 
 dnl

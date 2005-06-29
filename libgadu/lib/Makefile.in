@@ -8,7 +8,7 @@ includedir = @includedir@
 # increased with ABI changes
 VERSION_MAJOR=3
 # increased with API changes
-VERSION_MINOR=2
+VERSION_MINOR=3
 
 CC = @CC@ 
 CFLAGS = @CFLAGS_LIBGADU@ -I. -I.. -Wall
