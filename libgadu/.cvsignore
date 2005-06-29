@@ -1,4 +1,15 @@
 Makefile
 config.h
+config.h.in
 config.log
 config.status
+config.cache
+configure
+.DS_Store
+unoff
+stdint.h
+autom4te.cache
+aclocal.m4
+.enable*
+.with*
+*.patch

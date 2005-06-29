@@ -4,6 +4,107 @@ oznacza, ¿e ,,nick'' jest pomys³odawc± lub podes³a³ patcha, a zrobi³
 to kto¶ oznaczony przez ,,x'' (w - wojtekka, s - speedy, a - arekm,
 d - drg, sz - szalik, del - deletek, g - gophi).
 
+// 2005-06-25
+
+- libgadu: rozpoznawanie GG_HAS_AUDIO_MASK oraz GG_ERA_OMNIX_MAX
+  tak¿e w przypadku GG_NOTIFY_REPLY60, a nie tylko GG_STATUS60 (zigi/sz)
+- libgadu: podbicie wersji API po ostatnich zmianach (sz)
+- libgadu: b³ad przy obs³udze GG_NOTIFY_REPLY na Big-Endianach (sz)
+
+// 2005-06-24
+
+- uzupe³nienie opisu protoko³u o po³±czenia z bramki Era Omnix,
+  uzupe³nienie numerków wersji 6.0 i 6.1 oryginalnego klienta (sz)
+- /list pokazuje, kto ³±czy siê przez bramkê Era Omnix (sz)
+- uaktualnienie dj.theme (benetnash/sz)
+
+// 2005-06-23
+
+- dodanie zmiennej ,,era_omnix'' (*/sz)
+- libgadu: mo¿liwo¶æ udawania klienta era omnix (*/sz)
+
+// 2005-06-20
+
+- poziom ignorowania ,,smsaway'' (sz)
+
+// 2005-06-19
+
+- libgadu: poprawka wyrównania dostêpu do pamiêci, która likwiduje SIGBUS
+  na SPARCach (embe/w)
+
+// 2005-06-07
+
+- poprawienie ustawiania scie¿ki wyszukiwania modu³ów pythona na systemach
+  zgodnych z SUSv2 (embe/porridge)
+
+// 2005-06-05
+
+- umo¿liwienie wpisywania wiadomo¶ci zaczynaj±cych siê od slasha 
+  (Kosma/g)
+
+// 2005-05-31
+
+- dodanie do windows_save zapisu stanu okien przy /save (Kosma/g)
+
+// 2005-05-25
+
+- drobna poprawka /help play (gophi)
+
+// 2005-05-22
+
+- poprawka zachowania simlite przy wiadomo¶ciach d³u¿szych ni¿ 628 znaków
+  (mslusarz/w)
+
+// 2005-05-14
+
+- po pierwszym wy¶wietleniu pe³nego ostrze¿enia o filtrowaniu wiadomo¶ci przez
+  serwer, pozosta³e takie bêd± wy¶wietlane w skróconej formie do restartu ekg
+  (joshua/porridge)
+
+// 2005-05-13
+
+- poprawienie kodu konferencji (rodion/g)
+
+// 2005-05-03
+
+- drobna poprawka indentacji w ./configure (gophi)
+
+// 2005-04-29
+
+- poprawienie obs³ugi zdarzeñ konferencji (rodion/g)
+
+// 2005-04-28
+
+- wy³±czenie sprawdzania b³êdów w GCC dot. pthreads przy --disable-shared i
+  reorganzacja tego¿ sprawdzania w acx_pthread.m4 (porridge)
+
+// 2005-04-25
+
+- log_ignored uwzglêdnia tak¿e zmiany stanu (kosma/g)
+- poprawienie literówki w /help on (jceel/g)
+
+// 2005-04-21
+
+- poprawki wykrywania pthread na amd64 i FreeBSD 4.1x (porridge)
+- wycofanie zmiany wykrywania niewidocznych - wiecej problemów ni¿
+  po¿ytku (sz)
+
+// 2005-04-20
+
+- zmiana techniki wykrywania niewidocznych (del/sz)
+
+// 2005-04-12
+
+- dodanie zmiennej dcc_backups (KKKas/g)
+- libgadu: pozbycie siê warningów przy -O2 (porridge/sz)
+- nie dodajemy siebie do konferencji, ani wielokrotnie tych samych
+  osób (mslusarz/sz)
+
+// 2005-04-09
+
+- poprawienie literówki w obs³udze konferencji (petros/g)
+- ,,beep_notify'' te¿ bierze pod uwagê zmienn± ,,events_delay'' (sz)
+
 // 2005-03-24
 
 - libgadu: poprawki zwi±zane ze znakami zmiennych (gj/w)

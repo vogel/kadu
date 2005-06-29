@@ -1,1 +1,11 @@
 Makefile
+send
+search-sync
+search-async
+register-sync
+register-async
+remind-sync
+remind-async
+conn-async
+httphash
+

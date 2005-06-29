@@ -4083,6 +4083,10 @@ if test "${with_pthread+set}" = set; then
 fi;
 
 if test "x$with_pthread" = "xyes"; then
+		pthreads_shared_skip=0
+	if test "x$lib_shared_enabled" = "xno"; then
+		pthreads_shared_skip=1
+	fi
 
 
 
@@ -4433,192 +4437,6 @@ echo "${ECHO_T}${ok}" >&6
 echo "$as_me: WARNING: we do not know how to create joinable pthreads" >&2;}
         fi
 
-	# detect GCC inconsistency with -shared on some arches
-	echo "$as_me:$LINENO: checking if -pthread is sufficient with -shared" >&5
-echo $ECHO_N "checking if -pthread is sufficient with -shared... $ECHO_C" >&6
-	save_CFLAGS="$CFLAGS"
-	save_LIBS="$LIBS"
-	# This forces link-time symbol resolution, so that the linking checks
-	# with -shared actually have any value
-	CFLAGS="-shared -fPIC -Wl,-z,defs $CFLAGS"
-	ok="no"
-        cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-#include <pthread.h>
-int
-main ()
-{
-pthread_t th; pthread_join(th, 0);
-                     pthread_attr_init(0); pthread_cleanup_push(0, 0);
-                     pthread_create(0,0,0,0); pthread_cleanup_pop(0);
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"
-			 || test ! -s conftest.err'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; } &&
-	 { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ok=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-fi
-rm -f conftest.err conftest.$ac_objext \
-      conftest$ac_exeext conftest.$ac_ext
-	if test "x$ok" = xyes; then
-		echo "$as_me:$LINENO: result: yes" >&5
-echo "${ECHO_T}yes" >&6
-	else
-		echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6
-		echo "$as_me:$LINENO: checking if -lpthread fixes that" >&5
-echo $ECHO_N "checking if -lpthread fixes that... $ECHO_C" >&6
-		LIBS="-lpthread $LIBS"
-        	cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-#include <pthread.h>
-int
-main ()
-{
-pthread_t th; pthread_join(th, 0);
-                     pthread_attr_init(0); pthread_cleanup_push(0, 0);
-                     pthread_create(0,0,0,0); pthread_cleanup_pop(0);
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"
-			 || test ! -s conftest.err'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; } &&
-	 { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ok=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-fi
-rm -f conftest.err conftest.$ac_objext \
-      conftest$ac_exeext conftest.$ac_ext
-		if test "x$ok" = xyes; then
-			echo "$as_me:$LINENO: result: yes" >&5
-echo "${ECHO_T}yes" >&6
-			PTHREAD_LIBS="-lpthread $PTHREAD_LIBS"
-		else
-			echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6
-			# FreeBSD 4.10 gcc -pthread implementation forgets to
-			# use -lc_r instead of -lc if -shared is specified.
-			# Try to detect and workaround that.
-			echo "$as_me:$LINENO: checking if -lc_r fixes that" >&5
-echo $ECHO_N "checking if -lc_r fixes that... $ECHO_C" >&6
-			LIBS="-lc_r $save_LIBS"
-			cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-#include <pthread.h>
-int
-main ()
-{
-pthread_t th; pthread_join(th, 0);
-			     pthread_attr_init(0); pthread_cleanup_push(0, 0);
-			     pthread_create(0,0,0,0); pthread_cleanup_pop(0);
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"
-			 || test ! -s conftest.err'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; } &&
-	 { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ok=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-fi
-rm -f conftest.err conftest.$ac_objext \
-      conftest$ac_exeext conftest.$ac_ext
-			if test "x$ok" = xyes; then
-				echo "$as_me:$LINENO: result: yes" >&5
-echo "${ECHO_T}yes" >&6
-				PTHREAD_LIBS="-lc_r $PTHREAD_LIBS"
-			else
-				echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6
-				acx_pthread_ok=no
-			fi
-		fi
-	fi
-        CFLAGS="$save_CFLAGS"
-	LIBS="$save_LIBS"
-
         echo "$as_me:$LINENO: checking if more special flags are required for pthreads" >&5
 echo $ECHO_N "checking if more special flags are required for pthreads... $ECHO_C" >&6
         flag=no
@@ -4672,6 +4490,248 @@ else
 echo "${ECHO_T}no" >&6
 fi
 
+
+	# The next part tries to detect GCC inconsistency with -shared on some
+	# architectures and systems. The problem is that in certain
+	# configurations, when -shared is specified, GCC "forgets" to
+	# internally use various flags which are still necessary.
+
+	# First, check whether caller wants us to skip -shared checks
+	# this is useful
+	echo "$as_me:$LINENO: checking whether to check for GCC pthread/shared inconsistencies" >&5
+echo $ECHO_N "checking whether to check for GCC pthread/shared inconsistencies... $ECHO_C" >&6
+	if test x"$pthreads_shared_skip" = x1; then
+		echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+	else
+		echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6
+
+		# In order not to create several levels of indentation, we test
+		# the value of "$ok" until we find out the cure or run out of
+		# ideas.
+		ok="no"
+
+		#
+		# Prepare the flags
+		#
+		save_CFLAGS="$CFLAGS"
+		save_LIBS="$LIBS"
+		save_CC="$CC"
+		# Try with the flags determined by the earlier checks.
+		#
+		# -Wl,-z,defs forces link-time symbol resolution, so that the
+		# linking checks with -shared actually have any value
+		#
+		# FIXME: -fPIC is required for -shared on many architectures,
+		# so we specify it here, but the right way would probably be to
+		# properly detect whether it is actually required.
+		CFLAGS="-shared -fPIC -Wl,-z,defs $CFLAGS $PTHREAD_CFLAGS"
+		LIBS="$PTHREAD_LIBS $LIBS"
+		CC="$PTHREAD_CC"
+
+		echo "$as_me:$LINENO: checking whether -pthread is sufficient with -shared" >&5
+echo $ECHO_N "checking whether -pthread is sufficient with -shared... $ECHO_C" >&6
+		cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <pthread.h>
+int
+main ()
+{
+pthread_t th; pthread_join(th, 0);
+			pthread_attr_init(0); pthread_cleanup_push(0, 0);
+			pthread_create(0,0,0,0); pthread_cleanup_pop(0);
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ok=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+fi
+rm -f conftest.err conftest.$ac_objext \
+      conftest$ac_exeext conftest.$ac_ext
+
+		if test "x$ok" = xyes; then
+			echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6
+		else
+			echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+		fi
+
+		#
+		# Linux gcc on some architectures such as mips/mipsel forgets
+		# about -lpthread
+		#
+		if test x"$ok" = xno; then
+			echo "$as_me:$LINENO: checking whether -lpthread fixes that" >&5
+echo $ECHO_N "checking whether -lpthread fixes that... $ECHO_C" >&6
+			LIBS="-lpthread $PTHREAD_LIBS $save_LIBS"
+			cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <pthread.h>
+int
+main ()
+{
+pthread_t th; pthread_join(th, 0);
+				pthread_attr_init(0); pthread_cleanup_push(0, 0);
+				pthread_create(0,0,0,0); pthread_cleanup_pop(0);
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ok=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+fi
+rm -f conftest.err conftest.$ac_objext \
+      conftest$ac_exeext conftest.$ac_ext
+
+			if test "x$ok" = xyes; then
+				echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6
+				PTHREAD_LIBS="-lpthread $PTHREAD_LIBS"
+			else
+				echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+			fi
+		fi
+
+		#
+		# FreeBSD 4.10 gcc forgets to use -lc_r instead of -lc
+		#
+		if test x"$ok" = xno; then
+			echo "$as_me:$LINENO: checking whether -lc_r fixes that" >&5
+echo $ECHO_N "checking whether -lc_r fixes that... $ECHO_C" >&6
+			LIBS="-lc_r $PTHREAD_LIBS $save_LIBS"
+			cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <pthread.h>
+int
+main ()
+{
+pthread_t th; pthread_join(th, 0);
+			     pthread_attr_init(0); pthread_cleanup_push(0, 0);
+			     pthread_create(0,0,0,0); pthread_cleanup_pop(0);
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ok=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+fi
+rm -f conftest.err conftest.$ac_objext \
+      conftest$ac_exeext conftest.$ac_ext
+
+			if test "x$ok" = xyes; then
+				echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6
+				PTHREAD_LIBS="-lc_r $PTHREAD_LIBS"
+			else
+				echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+			fi
+		fi
+
+		if test x"$ok" = xno; then
+			# OK, we have run out of ideas
+			{ echo "$as_me:$LINENO: WARNING: Impossible to determine how to use pthreads with shared libraries" >&5
+echo "$as_me: WARNING: Impossible to determine how to use pthreads with shared libraries" >&2;}
+
+			# so it's not safe to assume that we may use pthreads
+			acx_pthread_ok=no
+		fi
+
+		CFLAGS="$save_CFLAGS"
+		LIBS="$save_LIBS"
+		CC="$save_CC"
+	fi
 else
         PTHREAD_CC="$CC"
 fi
