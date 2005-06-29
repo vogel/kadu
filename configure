@@ -866,6 +866,7 @@ Optional Features:
   --disable-dependency-tracking  speeds up one-time build
   --enable-dependency-tracking   do not reject slow dependency extractors
   --enable-debug          compile with debug symbols
+  --enable-macosx         turn on some MacOSX compiler flags
   --disable-sig-handling  disable system signals handling
   --enable-pheaders       enable precompiled headers support
   --enable-dist-info=DIST enable distribution type information, default: sources
@@ -876,6 +877,7 @@ Optional Packages:
   --with-includes="DIRS"  search for includes in DIRS
   --with-libs="DIRS"      search for libs in DIRS
   --with-apps="DIRS"      search for apps in DIRS
+  --without-png-checking       do not check for libpng
   --with-existing-libgadu do not compile libgadu, link with existing one
   --without-pthread       do not use pthread in libgadu resolver
 
@@ -4542,6 +4544,17 @@ Z_LIBS_PATHS="     /usr/lib /usr/local/lib /sw/lib"
 # PNG Library
 #################
 
+
+# Check whether --with-png-checking or --without-png-checking was given.
+if test "${with_png_checking+set}" = set; then
+  withval="$with_png_checking"
+
+fi;
+if test -z "$with_png_checking"; then
+	with_png_checking=yes
+fi
+if test "$with_png_checking" = "yes"; then
+
 PNG_LIBS="-lpng"
 
 	echo "$as_me:$LINENO: checking if libpng is in system directories" >&5
@@ -4972,6 +4985,8 @@ rm -f conftest.err conftest.$ac_objext \
       conftest$ac_exeext conftest.$ac_ext
 
 
+
+fi
 
 #################
 # QT Headers
@@ -9782,6 +9797,21 @@ else
 	CXXFLAGS="$CXXFLAGS -s"
 	libgadu_CFLAGS="-DGG_DEBUG_DISABLE -s"
 fi
+
+
+# macosx support
+# Check whether --enable-macosx or --disable-macosx was given.
+if test "${enable_macosx+set}" = set; then
+  enableval="$enable_macosx"
+
+fi;
+if test -z "$enable_macosx"; then
+	enable_macosx=no
+fi
+if test "$enable_macosx" = "yes"; then
+	LDFLAGS="$LDFLAGS -framework Carbon -framework QuickTime -lz -framework OpenGL -framework AGL"
+fi
+
 
 # signal handling support
 # Check whether --enable-sig-handling or --disable-sig-handling was given.
