@@ -73,10 +73,11 @@ am_kadu_OBJECTS = about.$(OBJEXT) chat.$(OBJEXT) \
 	userlist_moc.$(OBJEXT) updates_moc.$(OBJEXT)
 kadu_OBJECTS = $(am_kadu_OBJECTS)
 am__DEPENDENCIES_1 =
-kadu_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(foreach mod,$(basename \
+kadu_DEPENDENCIES = $(foreach mod,$(basename \
 	$(static_modules)),../modules/$(mod)/$(mod).a) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/admin/depcomp
 am__depfiles_maybe = depfiles
@@ -247,9 +248,9 @@ updates_moc.cpp
 ###########################################################################
 INCLUDES = $(PHEADERS_INCLUDES) $(XFREE_INCLUDES) $(QT_INCLUDES) $(OPENSSL_INCLUDES) $(GADU_INCLUDES)
 kadu_LDADD = \
-$(PTHREAD_LIBS) $(PNG_LIBS) $(QT_LIBS) \
 $(foreach mod,$(basename $(static_modules)),../modules/$(mod)/$(mod).a) \
-$(static_modules_ldflags) $(GADU_LIBS)
+$(static_modules_ldflags) $(GADU_LIBS) \
+$(PTHREAD_LIBS) $(PNG_LIBS) $(QT_LIBS)
 
 kadu_LDFLAGS = \
 $(PTHREAD_LDFLAGS) -rdynamic $(OPENSSL_LIBS)
