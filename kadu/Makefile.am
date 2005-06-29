@@ -64,9 +64,9 @@ kadu-headers.d: kadu-headers.h
 INCLUDES = $(PHEADERS_INCLUDES) $(XFREE_INCLUDES) $(QT_INCLUDES) $(OPENSSL_INCLUDES) $(GADU_INCLUDES)
 
 kadu_LDADD = \
-$(PTHREAD_LIBS) $(PNG_LIBS) $(QT_LIBS) \
 $(foreach mod,$(basename $(static_modules)),../modules/$(mod)/$(mod).a) \
-$(static_modules_ldflags) $(GADU_LIBS)
+$(static_modules_ldflags) $(GADU_LIBS) \
+$(PTHREAD_LIBS) $(PNG_LIBS) $(QT_LIBS)
 
 kadu_LDFLAGS = \
 $(PTHREAD_LDFLAGS) -rdynamic $(OPENSSL_LIBS)

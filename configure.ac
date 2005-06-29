@@ -475,6 +475,12 @@ Z_LIBS_PATHS="     /usr/lib /usr/local/lib /sw/lib"
 # PNG Library
 #################
 
+AC_ARG_WITH(png-checking,[  --without-png-checking       do not check for libpng])
+if test -z "$with_png_checking"; then
+	with_png_checking=yes
+fi
+if test "$with_png_checking" = "yes"; then
+
 PNG_LIBS="-lpng"
 FIND_LIBRARY([png],[$PNG_LIBS_PATHS],
 [
@@ -503,6 +509,8 @@ FIND_LIBRARY([png],[$PNG_LIBS_PATHS],
 	],[$Z_LIBS -lm])
 ])
 AC_SUBST(PNG_LIBS)
+
+fi
 
 #################
 # QT Headers
@@ -611,6 +619,17 @@ else
 	CXXFLAGS="$CXXFLAGS -s"
 	libgadu_CFLAGS="-DGG_DEBUG_DISABLE -s"
 fi
+
+
+# macosx support
+AC_ARG_ENABLE(macosx,[  --enable-macosx         turn on some MacOSX compiler flags])
+if test -z "$enable_macosx"; then
+	enable_macosx=no
+fi
+if test "$enable_macosx" = "yes"; then
+	LDFLAGS="$LDFLAGS -framework Carbon -framework QuickTime -lz -framework OpenGL -framework AGL"
+fi
+
 
 # signal handling support
 AC_ARG_ENABLE(sig-handling,[  --disable-sig-handling  disable system signals handling])
