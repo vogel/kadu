@@ -26,6 +26,7 @@
 #include <qvbox.h>
 #include <qvaluelist.h>
 
+#include <stdlib.h>
 
 #include "chat.h"
 #include "config_dialog.h"

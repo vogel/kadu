@@ -16,6 +16,7 @@
 #include <qtooltip.h>
 
 #include <math.h>
+#include <algorithm>
 
 #include "chat.h"
 #include "config_file.h"
