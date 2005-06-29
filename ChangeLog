@@ -54,6 +54,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * w oknie "O programie" dodany klikalny link do strony g³ównej Kadu (joi)
 * emotikony i obrazki obni¿one o 2 piskele w dó³ dla lepszego wy¶rodkowania (joi)
 * porzadki w includeach - szybsza kompilacja (pawel_p)
+* aktualizacja libgadu do wersji 20050627 (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
