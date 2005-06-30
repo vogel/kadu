@@ -27,6 +27,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawiona endianowo¶æ libgadu (zepsuta przy aktualizacji libgadu)
   + drobne poprawki w Kadu/GaduProtocol (joi)
 * modu³y dynamiczne na MacOS X (joi)
+* w varia/scripts dodana wstêpna wersja skryptu tworz±cego bundle'a na
+  MacOS X + ikonka aplikacji (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
