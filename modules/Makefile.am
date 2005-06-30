@@ -14,7 +14,7 @@ INCLUDES = $(PHEADERS_INCLUDES) -I.. -I../kadu $(CONFIGURE_INCLUDES)
 
 AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT
 
-CLEANFILES = */*.so */*.a */*.o */*_moc.cpp */*.d
+CLEANFILES = */*.$(SO_EXT) */*.a */*.o */*_moc.cpp */*.d
 
 CXXFLAGS = @CXXFLAGS@
 
@@ -54,7 +54,7 @@ all:
 		for h_file in $$MODULE_HEADERS; do \
 			h_files="$$h_files $$dir/$$h_file"; \
 		done && \
-		file_name=$$dir.so && \
+		file_name=$$dir.$(SO_EXT) && \
 		if test -z `expr " $(shared_modules) " : ".* \($$dir\) "`; then \
 			file_name=$$dir.a; \
 		fi && \
@@ -83,8 +83,8 @@ module_d_files = $(addsuffix .d,$(basename $(module_o_files)))
 $(module_o_files):
 $(module_moc_cpp_files):
 
-%.so: $(module_o_files)
-	$(CC) -shared -o $@ $(module_o_files) $(module_ldflags)
+%.$(SO_EXT): $(module_o_files)
+	$(CXX) $(SHARED_OPT) -o $@ $(module_o_files) $(module_ldflags) $(SHARED_FLAGS)
 
 %.a: $(module_o_files)
 	$(AR) rs $@ $(module_o_files)
@@ -141,14 +141,14 @@ install-data-local: uninstall-local
 			done; \
 		fi; \
 		if test -z `expr " $(static_modules) " : ".* \($$dir\) "`; then \
-			$(INSTALL_DATA) $$dir/$$dir.so "$(DESTDIR)/$(datadir)/kadu/modules/"; \
+			$(INSTALL_DATA) $$dir/$$dir.$(SO_EXT) "$(DESTDIR)/$(datadir)/kadu/modules/"; \
 		fi; \
 	done
 
 uninstall-local:
 	rm -f "$(DESTDIR)/$(includedir)/kadu/modules"/*.h
 	rm -f "$(DESTDIR)/$(datadir)/kadu/modules"/*.desc
-	rm -f "$(DESTDIR)/$(datadir)/kadu/modules"/*.so
+	rm -f "$(DESTDIR)/$(datadir)/kadu/modules"/*.$(SO_EXT)
 	rm -f "$(DESTDIR)/$(datadir)/kadu/modules/translations"/*.qm
 	rm -rf "$(DESTDIR)/$(datadir)/kadu/modules/data"/*
 

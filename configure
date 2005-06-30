@@ -314,7 +314,7 @@ ac_includes_default="\
 #endif"
 
 ac_subdirs_all="$ac_subdirs_all libgadu"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CXXDEPMODE CC CFLAGS ac_ct_CC CCDEPMODE CPP EGREP PTHREAD_CPPFLAGS PTHREAD_LDFLAGS PTHREAD_LIBS Z_LIBS PNG_LIBS QT_INCLUDES QT_LIBS QT_MOC_DIR LIBOBJS GADU_LIBS GADU_INCLUDES enable_pheaders PHEADERS_ENABLED_TRUE PHEADERS_ENABLED_FALSE shared_modules static_modules static_modules_ldflags STATIC_MODULES_DECLS STATIC_MODULES_REGRS enabled_icon_themes MY_SUBDIRS subdirs LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CXXDEPMODE CC CFLAGS ac_ct_CC CCDEPMODE CPP EGREP PTHREAD_CPPFLAGS PTHREAD_LDFLAGS PTHREAD_LIBS Z_LIBS PNG_LIBS QT_INCLUDES QT_LIBS QT_MOC_DIR LIBOBJS GADU_LIBS GADU_INCLUDES DYNAMIC_OPT SO_EXT SHARED_OPT SHARED_FLAGS enable_pheaders PHEADERS_ENABLED_TRUE PHEADERS_ENABLED_FALSE shared_modules static_modules static_modules_ldflags STATIC_MODULES_DECLS STATIC_MODULES_REGRS enabled_icon_themes MY_SUBDIRS subdirs LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -4432,7 +4432,7 @@ if test -z "$with_png_checking"; then
 fi
 if test "$with_png_checking" = "yes"; then
 
-PNG_LIBS="-lpng"
+	PNG_LIBS="-lpng"
 
 	echo "$as_me:$LINENO: checking if libpng is in system directories" >&5
 echo $ECHO_N "checking if libpng is in system directories... $ECHO_C" >&6
@@ -4542,7 +4542,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
 				echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
 echo "${ECHO_T}found in $FILE_DIR" >&6
 
-	PNG_LIBS="$PNG_LIBS -L$FILE_DIR"
+		PNG_LIBS="$PNG_LIBS -L$FILE_DIR"
 
 				break
 
@@ -4563,13 +4563,13 @@ rm -f conftest.err conftest.$ac_objext \
 echo "${ECHO_T}not found" >&6
 
 
-	echo "$as_me:$LINENO: result: libpng not found - checking for zlib first" >&5
+		echo "$as_me:$LINENO: result: libpng not found - checking for zlib first" >&5
 echo "${ECHO_T}libpng not found - checking for zlib first" >&6
 
-	#################
-	# LibZ
-	#################
-	Z_LIBS="-lz"
+		#################
+		# LibZ
+		#################
+		Z_LIBS="-lz"
 
 	echo "$as_me:$LINENO: checking if libz is in system directories" >&5
 echo $ECHO_N "checking if libz is in system directories... $ECHO_C" >&6
@@ -4679,7 +4679,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
 				echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
 echo "${ECHO_T}found in $FILE_DIR" >&6
 
-		Z_LIBS="$Z_LIBS -L$FILE_DIR"
+			Z_LIBS="$Z_LIBS -L$FILE_DIR"
 
 				break
 
@@ -4700,7 +4700,7 @@ rm -f conftest.err conftest.$ac_objext \
 echo "${ECHO_T}not found" >&6
 
 
-		{ { echo "$as_me:$LINENO: error: libz not found - please install zlib-devel" >&5
+			{ { echo "$as_me:$LINENO: error: libz not found - please install zlib-devel" >&5
 echo "$as_me: error: libz not found - please install zlib-devel" >&2;}
    { (exit 1); exit 1; }; }
 
@@ -4711,7 +4711,7 @@ rm -f conftest.err conftest.$ac_objext \
       conftest$ac_exeext conftest.$ac_ext
 
 
-	echo "$as_me:$LINENO: result: zlib found - checking for libpng once again" >&5
+		echo "$as_me:$LINENO: result: zlib found - checking for libpng once again" >&5
 echo "${ECHO_T}zlib found - checking for libpng once again" >&6
 
 
@@ -4823,7 +4823,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
 				echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
 echo "${ECHO_T}found in $FILE_DIR" >&6
 
-		PNG_LIBS="$Z_LIBS $PNG_LIBS -L$FILE_DIR"
+			PNG_LIBS="$Z_LIBS $PNG_LIBS -L$FILE_DIR"
 
 				break
 
@@ -4844,7 +4844,7 @@ rm -f conftest.err conftest.$ac_objext \
 echo "${ECHO_T}not found" >&6
 
 
-		{ { echo "$as_me:$LINENO: error: libpng not found - please install libpng-devel" >&5
+			{ { echo "$as_me:$LINENO: error: libpng not found - please install libpng-devel" >&5
 echo "$as_me: error: libpng not found - please install libpng-devel" >&2;}
    { (exit 1); exit 1; }; }
 
@@ -9677,6 +9677,7 @@ fi
 
 
 # macosx support
+# ___NEEDS___ to be done better
 # Check whether --enable-macosx or --disable-macosx was given.
 if test "${enable_macosx+set}" = set; then
   enableval="$enable_macosx"
@@ -9684,10 +9685,25 @@ if test "${enable_macosx+set}" = set; then
 fi;
 if test -z "$enable_macosx"; then
 	enable_macosx=no
+	DYNAMIC_OPT=-rdynamic
+	SO_EXT=so
+	SHARED_OPT=-shared
+	SHARED_FLAGS=
 fi
 if test "$enable_macosx" = "yes"; then
 	LDFLAGS="$LDFLAGS -framework Carbon -framework QuickTime -lz -framework OpenGL -framework AGL"
+	DYNAMIC_OPT=
+	SO_EXT=dylib
+	SHARED_OPT=-dynamiclib
+	SHARED_FLAGS=-undefined suppress -flat_namespace
+
+#only on MacOSX>=10.3
+#	SHARED_FLAGS=-undefined dynamic_lookup
 fi
+
+
+
+
 
 
 # signal handling support
@@ -11026,6 +11042,10 @@ s,@QT_MOC_DIR@,$QT_MOC_DIR,;t t
 s,@LIBOBJS@,$LIBOBJS,;t t
 s,@GADU_LIBS@,$GADU_LIBS,;t t
 s,@GADU_INCLUDES@,$GADU_INCLUDES,;t t
+s,@DYNAMIC_OPT@,$DYNAMIC_OPT,;t t
+s,@SO_EXT@,$SO_EXT,;t t
+s,@SHARED_OPT@,$SHARED_OPT,;t t
+s,@SHARED_FLAGS@,$SHARED_FLAGS,;t t
 s,@enable_pheaders@,$enable_pheaders,;t t
 s,@PHEADERS_ENABLED_TRUE@,$PHEADERS_ENABLED_TRUE,;t t
 s,@PHEADERS_ENABLED_FALSE@,$PHEADERS_ENABLED_FALSE,;t t

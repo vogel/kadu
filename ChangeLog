@@ -26,6 +26,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   --enable-macosx, poprawiona kolejno¶æ opcji budowania ze statycznym Qt (joi)
 * poprawiona endianowo¶æ libgadu (zepsuta przy aktualizacji libgadu)
   + drobne poprawki w Kadu/GaduProtocol (joi)
+* modu³y dynamiczne na MacOS X (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

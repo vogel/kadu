@@ -223,6 +223,17 @@ QString dataPath(const QString &p, const char *argv0)
 
 	if (argv0!=0)
 	{
+#ifdef Q_OS_MACX
+		char cpath[1024];
+		if (findMe(argv0, cpath, 1024)==NULL)
+		{
+			fprintf(stderr, "we've got real problem here ;)\n");
+			fflush(stderr);
+			exit(10);
+		}
+		else
+			path = QString(cpath) + "../../";
+#else
 		QString datadir(DATADIR);
 		QString bindir(BINDIR);
 
@@ -239,6 +250,7 @@ QString dataPath(const QString &p, const char *argv0)
 			else
 				path=QString(cpath)+"../share/";
 		}
+#endif
 	}
 	if (path.isEmpty())
 		kdebugm(KDEBUG_PANIC, "dataPath() called _BEFORE_ initial dataPath(\"\",argv[0]) (static object uses dataPath()?) !!!\n");

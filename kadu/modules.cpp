@@ -29,6 +29,14 @@
 
 #include "modules_static.cpp"
 
+#ifdef Q_OS_MACX
+	#define SO_EXT "dylib"
+	#define SO_EXT_LEN 5
+#else
+	#define SO_EXT "so"
+	#define SO_EXT_LEN 2
+#endif
+
 Library::Library(const QString& file_name)
 {
 	FileName = file_name;
@@ -406,12 +414,12 @@ QStringList ModulesManager::staticModules() const
 
 QStringList ModulesManager::installedModules() const
 {
-	QDir dir(dataPath("kadu/modules"),"*.so");
+	QDir dir(dataPath("kadu/modules"),"*." SO_EXT);
 	dir.setFilter(QDir::Files);
 	QStringList installed;
 	QStringList entries = dir.entryList();
 	CONST_FOREACH(entry, entries)
-		installed.append((*entry).left((*entry).length()-3));
+		installed.append((*entry).left((*entry).length() - SO_EXT_LEN - 1));
 	return installed;
 }
 
@@ -577,7 +585,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 	}
 	else
 	{
-		m.lib=new Library(dataPath("kadu/modules/"+module_name+".so"));
+		m.lib=new Library(dataPath("kadu/modules/"+module_name+"." SO_EXT));
 		if (!m.lib->load())
 		{
 			MessageBox::msg(narg(tr("Cannot load %1 module library.:\n%2"), module_name, m.lib->error()));
