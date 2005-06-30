@@ -497,6 +497,7 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 				memcpy(e->event.notify_descr.notify, p, sizeof(*n));
 				e->event.notify_descr.notify[0].uin = gg_fix32(e->event.notify_descr.notify[0].uin);
 				e->event.notify_descr.notify[0].status = gg_fix32(e->event.notify_descr.notify[0].status);
+				e->event.notify_descr.notify[0].remote_ip = ntohl(e->event.notify_descr.notify[0].remote_ip);
 				e->event.notify_descr.notify[0].remote_port = gg_fix16(e->event.notify_descr.notify[0].remote_port);
 
 				count = h->length - sizeof(*n);
@@ -523,7 +524,8 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 				for (i = 0; i < count; i++) {
 					e->event.notify[i].uin = gg_fix32(e->event.notify[i].uin);
 					e->event.notify[i].status = gg_fix32(e->event.notify[i].status);
-					e->event.notify[i].remote_port = gg_fix16(e->event.notify[i].remote_port);		
+					e->event.notify[i].remote_ip = ntohl(e->event.notify[i].remote_ip);
+					e->event.notify[i].remote_port = gg_fix16(e->event.notify[i].remote_port);
 				}
 			}
 
@@ -578,11 +580,11 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 				char *tmp;
 
 				e->event.notify60[i].uin = uin & 0x00ffffff;
-				e->event.notify60[i].status = gg_fix32(n->status);
-				e->event.notify60[i].remote_ip = gg_fix32(n->remote_ip);
+				e->event.notify60[i].status = n->status;
+				e->event.notify60[i].remote_ip = ntohl(n->remote_ip);
 				e->event.notify60[i].remote_port = gg_fix16(n->remote_port);
-				e->event.notify60[i].version = gg_fix32(n->version);
-				e->event.notify60[i].image_size = gg_fix32(n->image_size);
+				e->event.notify60[i].version = n->version;
+				e->event.notify60[i].image_size = n->image_size;
 				e->event.notify60[i].descr = NULL;
 				e->event.notify60[i].time = 0;
 
@@ -640,11 +642,11 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 
 			e->type = GG_EVENT_STATUS60;
 			e->event.status60.uin = uin & 0x00ffffff;
-			e->event.status60.status = gg_fix32(s->status);
-			e->event.status60.remote_ip = gg_fix32(s->remote_ip);
+			e->event.status60.status = s->status;
+			e->event.status60.remote_ip = ntohl(s->remote_ip);
 			e->event.status60.remote_port = gg_fix16(s->remote_port);
-			e->event.status60.version = gg_fix32(s->version);
-			e->event.status60.image_size = gg_fix32(s->image_size);
+			e->event.status60.version = s->version;
+			e->event.status60.image_size = s->image_size;
 			e->event.status60.descr = NULL;
 			e->event.status60.time = 0;
 
