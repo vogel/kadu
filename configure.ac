@@ -487,34 +487,34 @@ if test -z "$with_png_checking"; then
 fi
 if test "$with_png_checking" = "yes"; then
 
-PNG_LIBS="-lpng"
-FIND_LIBRARY([png],[$PNG_LIBS_PATHS],
-[
-	PNG_LIBS="$PNG_LIBS -L$FILE_DIR"
-],[
-	AC_MSG_RESULT([libpng not found - checking for zlib first])
-
-	#################
-	# LibZ
-	#################
-	Z_LIBS="-lz"
-	FIND_LIBRARY([z],[$Z_LIBS_PATHS],
-	[
-		Z_LIBS="$Z_LIBS -L$FILE_DIR"
-	],[
-		AC_MSG_ERROR([libz not found - please install zlib-devel])
-	])
-	AC_SUBST(Z_LIBS)
-	AC_MSG_RESULT([zlib found - checking for libpng once again])
-
+	PNG_LIBS="-lpng"
 	FIND_LIBRARY([png],[$PNG_LIBS_PATHS],
 	[
-		PNG_LIBS="$Z_LIBS $PNG_LIBS -L$FILE_DIR"
+		PNG_LIBS="$PNG_LIBS -L$FILE_DIR"
 	],[
-		AC_MSG_ERROR([libpng not found - please install libpng-devel])
-	],[$Z_LIBS -lm])
-])
-AC_SUBST(PNG_LIBS)
+		AC_MSG_RESULT([libpng not found - checking for zlib first])
+
+		#################
+		# LibZ
+		#################
+		Z_LIBS="-lz"
+		FIND_LIBRARY([z],[$Z_LIBS_PATHS],
+		[
+			Z_LIBS="$Z_LIBS -L$FILE_DIR"
+		],[
+			AC_MSG_ERROR([libz not found - please install zlib-devel])
+		])
+		AC_SUBST(Z_LIBS)
+		AC_MSG_RESULT([zlib found - checking for libpng once again])
+
+		FIND_LIBRARY([png],[$PNG_LIBS_PATHS],
+		[
+			PNG_LIBS="$Z_LIBS $PNG_LIBS -L$FILE_DIR"
+		],[
+			AC_MSG_ERROR([libpng not found - please install libpng-devel])
+		],[$Z_LIBS -lm])
+	])
+	AC_SUBST(PNG_LIBS)
 
 fi
 
@@ -628,13 +628,29 @@ fi
 
 
 # macosx support
+# ___NEEDS___ to be done better
 AC_ARG_ENABLE(macosx,[  --enable-macosx         turn on some MacOSX compiler flags])
 if test -z "$enable_macosx"; then
 	enable_macosx=no
+	DYNAMIC_OPT=-rdynamic
+	SO_EXT=so
+	SHARED_OPT=-shared
+	SHARED_FLAGS=
 fi
 if test "$enable_macosx" = "yes"; then
 	LDFLAGS="$LDFLAGS -framework Carbon -framework QuickTime -lz -framework OpenGL -framework AGL"
+	DYNAMIC_OPT=
+	SO_EXT=dylib
+	SHARED_OPT=-dynamiclib
+	SHARED_FLAGS=-undefined suppress -flat_namespace
+
+#only on MacOSX>=10.3
+#	SHARED_FLAGS=-undefined dynamic_lookup
 fi
+AC_SUBST(DYNAMIC_OPT)
+AC_SUBST(SO_EXT)
+AC_SUBST(SHARED_OPT)
+AC_SUBST(SHARED_FLAGS)
 
 
 # signal handling support
