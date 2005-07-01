@@ -1,0 +1,3 @@
+MODULE_SOURCES=macosx_docking.cpp
+MODULE_MOC_HEADERS=macosx_docking.h
+

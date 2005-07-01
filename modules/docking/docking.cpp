@@ -41,8 +41,8 @@ DockingManager::DockingManager(QObject *parent, const char *name) : QObject(pare
 	blink = false;
 	connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
 
-	connect(kadu, SIGNAL(statusPixmapChanged(QPixmap &)),
-		this, SLOT(statusPixmapChanged(QPixmap &)));
+	connect(kadu, SIGNAL(statusPixmapChanged(const QPixmap &, const QString &)),
+		this, SLOT(statusPixmapChanged(const QPixmap &, const QString &)));
 	connect(&pending, SIGNAL(messageAdded()), this, SLOT(pendingMessageAdded()));
 	connect(&pending, SIGNAL(messageDeleted()), this, SLOT(pendingMessageDeleted()));
 
@@ -95,13 +95,14 @@ void DockingManager::changeIcon()
 	{
 		if (!blink)
 		{
-			emit trayPixmapChanged(icons_manager.loadIcon("Message"));
+			emit trayPixmapChanged(icons_manager.loadIcon("Message"), "Message");
 			icon_timer->start(500,TRUE);
 			blink = true;
 		}
 		else
 		{
-			emit trayPixmapChanged(gadu->status().pixmap());
+			const UserStatus &stat = gadu->status();
+			emit trayPixmapChanged(stat.pixmap(), stat.toString());
 			icon_timer->start(500,TRUE);
 			blink = false;
 		}
@@ -127,7 +128,10 @@ void DockingManager::pendingMessageAdded()
 void DockingManager::pendingMessageDeleted()
 {
 	if (!pending.pendingMsgs())
-		emit trayPixmapChanged(gadu->status().pixmap());
+	{
+		const UserStatus &stat = gadu->status();
+		emit trayPixmapChanged(stat.pixmap(), stat.toString());
+	}
 }
 
 void DockingManager::defaultToolTip()
@@ -184,10 +188,10 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 	kdebugf2();
 }
 
-void DockingManager::statusPixmapChanged(QPixmap &pix)
+void DockingManager::statusPixmapChanged(const QPixmap &icon, const QString &iconName)
 {
  	kdebugf();
-	emit trayPixmapChanged(pix);
+	emit trayPixmapChanged(icon, iconName);
 	defaultToolTip();
 }
 
@@ -196,7 +200,7 @@ QPixmap DockingManager::defaultPixmap()
 	return gadu->status().pixmap();
 }
 
-void DockingManager::setDocked(bool docked)
+void DockingManager::setDocked(bool docked, bool butDontHideOnClose)
 {
 	kdebugf();
 	if(docked)
@@ -213,7 +217,7 @@ void DockingManager::setDocked(bool docked)
 		ConfigDialog::removeControl("General", "Start docked");
 		kadu->show();
 	}
-	kadu->setDocked(docked);
+	kadu->setDocked(docked, butDontHideOnClose);
 	kdebugf2();
 }
 

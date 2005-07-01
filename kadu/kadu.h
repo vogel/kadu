@@ -74,6 +74,7 @@ class Kadu : public QMainWindow
 		bool DoBlink;
 		bool BlinkOn;
 		bool Docked;
+		bool dontHideOnClose;
 		int lastId;
 
 		void createMenu();
@@ -184,7 +185,7 @@ class Kadu : public QMainWindow
 			Modu³ dokowania powinien to ustawic, aby kadu
 			wiedzialo, ze jest zadokowane.
 		**/
-		void setDocked(bool docked);
+		void setDocked(bool docked, bool dontHideOnClose);
 
 		void about();
 		void addUserAction();
@@ -208,12 +209,14 @@ class Kadu : public QMainWindow
 
 		// odczytuje z obrazka tekst i zapisuje go w drugim parametrze
 		void readTokenValue(QPixmap, QString &);
+		
+		void setMainWindowIcon(const QPixmap &);
 
 	signals:
 		void disconnectingNetwork();
 		void disconnectedNetwork();
 		void keyPressed(QKeyEvent* e);
-		void statusPixmapChanged(QPixmap &);
+		void statusPixmapChanged(const QPixmap &icon, const QString &icon_name);
 
 		/**
 			U¿ytkownik chce zmieniæ status. Je¶li jest to status
@@ -239,6 +242,8 @@ class Kadu : public QMainWindow
 			TODO: trzeba wymy¶liæ jaki¶ elegancki sposób na komunikacjê pomiêdzy modu³ami, które nie zale¿± od siebie
 		**/
 		void searchingForTrayPosition(QPoint &point);
+		
+		void settingMainIconBlocked(bool &);
 };
 
 class KaduSlots : public QObject
