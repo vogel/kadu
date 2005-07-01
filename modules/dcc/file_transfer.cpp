@@ -27,6 +27,7 @@
 
 #include "misc.h"
 #include "kadu.h"
+#include "chat.h"
 #include "config_dialog.h"
 #include "debug.h"
 #include "message_box.h"
@@ -161,6 +162,13 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 		HotKey::shortCutFromFile("ShortCuts", "kadu_sendfile"));
 	connect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userboxMenuPopup()));
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(kaduKeyPressed(QKeyEvent*)));
+
+	connect(chat_manager, SIGNAL(chatCreated(const UinsList &)), this, SLOT(chatCreated(const UinsList &)));
+	connect(chat_manager, SIGNAL(charDestroying(const UinsList &)), this, SLOT(chatDestroying(const UinsList &)));
+	ChatList::ConstIterator it;
+	for ( it = chat_manager->chats().begin(); it != chat_manager->chats().end(); it++ )
+		handleCreatedChat(*it);
+
 	connect(dcc_manager, SIGNAL(connectionBroken(DccSocket*)),
 		this, SLOT(connectionBroken(DccSocket*)));
 	connect(dcc_manager, SIGNAL(dccError(DccSocket*)),
@@ -187,6 +195,13 @@ FileTransferManager::~FileTransferManager()
 	UserBox::userboxmenu->removeItem(sendfile);
 	disconnect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userboxMenuPopup()));
 	disconnect(kadu, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(kaduKeyPressed(QKeyEvent*)));
+
+	disconnect(chat_manager, SIGNAL(chatCreated(const UinsList &)), this, SLOT(chatCreated(const UinsList &)));
+	disconnect(chat_manager, SIGNAL(charDestroying(const UinsList &)), this, SLOT(chatDestroying(const UinsList &)));
+	ChatList::ConstIterator it;
+	for ( it = chat_manager->chats().begin(); it != chat_manager->chats().end(); it++ )
+		handleDestroyingChat(*it);
+
 	disconnect(dcc_manager, SIGNAL(connectionBroken(DccSocket*)),
 		this, SLOT(connectionBroken(DccSocket*)));
 	disconnect(dcc_manager, SIGNAL(dccError(DccSocket*)),
@@ -210,7 +225,7 @@ void FileTransferManager::sendFile(UinType receiver, const QString &filename)
 	kdebugf();
 	if (config_file.readBoolEntry("Network", "AllowDCC") && dcc_manager->dccEnabled())
 	{
-		pendingFiles[receiver].push_back(filename);
+		pendingFiles[receiver].push_front(filename);
 		sendFile(receiver);
 	}
 	kdebugf2();
@@ -309,6 +324,38 @@ void FileTransferManager::kaduKeyPressed(QKeyEvent* e)
 {
 	if (HotKey::shortCut(e,"ShortCuts", "kadu_sendfile"))
 		sendFile();
+}
+
+void FileTransferManager::chatCreated(const UinsList &Uins)
+{
+	kdebugf();
+	Chat* chat = chat_manager->findChatByUins(Uins);
+	handleCreatedChat(chat);
+}
+
+void FileTransferManager::chatDestroying(const UinsList &Uins)
+{
+	kdebugf();
+	Chat* chat = chat_manager->findChatByUins(Uins);
+	handleDestroyingChat(chat);
+}
+
+void FileTransferManager::handleCreatedChat(Chat *chat)
+{
+	connect(chat, SIGNAL(fileDropped(const UinsList &, const QString &)),
+		this, SLOT(fileDropped(const UinsList &, const QString &)));
+}
+
+void FileTransferManager::handleDestroyingChat(Chat *chat)
+{
+	disconnect(chat, SIGNAL(fileDropped(const UinsList &, const QString &)),
+		this, SLOT(fileDropped(const UinsList &, const QString &)));
+}
+
+void FileTransferManager::fileDropped(const UinsList &uins, const QString &fileName)
+{
+	CONST_FOREACH(i, uins)
+		sendFile(*i, fileName);
 }
 
 void FileTransferManager::connectionBroken(DccSocket* socket)

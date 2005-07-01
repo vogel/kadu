@@ -2,8 +2,10 @@
 #define FILE_TRANSFER_H
 
 #include "dcc.h"
+#include "userlist.h"
 
 #include <qdialog.h>
+#include <qstring.h>
 #include <qvaluelist.h>
 #include <qmap.h>
 
@@ -43,6 +45,8 @@ class FileTransferDialog : public QDialog
 		bool dccFinished;		
 };
 
+class Chat;
+
 class FileTransferManager : public QObject
 {
 	Q_OBJECT
@@ -51,6 +55,9 @@ class FileTransferManager : public QObject
 		QValueList<UinType> direct;
 		QMap<UinType, QValueList<QString> > pendingFiles;
 		QString selectFile(DccSocket* socket);
+
+		void handleCreatedChat(Chat *);
+		void handleDestroyingChat(Chat *);
 
 	private slots:
 		void userboxMenuPopup();
@@ -64,6 +71,11 @@ class FileTransferManager : public QObject
 		void dccDone(DccSocket* socket);
 		void setState(DccSocket* socket);
 		void socketDestroying(DccSocket* socket);
+
+		void chatCreated(const UinsList &);
+		void chatDestroying(const UinsList &);
+
+		void fileDropped(const UinsList &, const QString &);
 
 	public:
 		FileTransferManager(QObject *parent=0, const char *name=0);

@@ -763,6 +763,10 @@ class Chat : public QWidget
 		**/
 		const QString& title() const;
 
+		virtual void dragEnterEvent(QDragEnterEvent *e);
+		virtual void dropEvent(QDropEvent *e);
+		virtual void dragMoveEvent(QDragMoveEvent *e);
+
 	public slots:
 		
 		/**
@@ -950,6 +954,8 @@ class Chat : public QWidget
 			 które emitowa³o sygna³
 		**/		
 		void messageSent(Chat* chat);
+
+		void fileDropped(const UinsList& uins, const QString &fileName);
 };
 
 /**

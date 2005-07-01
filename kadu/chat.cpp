@@ -536,6 +536,8 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 	kdebugf();
 	QValueList<int> sizes;
 
+	setAcceptDrops(true);
+
 	emoticon_selector = NULL;
 	color_selector = NULL;
 
@@ -1821,6 +1823,44 @@ QValueList<ChatMessage*>& Chat::chatMessages()
 const QString& Chat::title() const
 {
 	return title_buffer;
+}
+
+void Chat::dragEnterEvent(QDragEnterEvent *e)
+{
+	QStringList files;
+
+	if (QUriDrag::decodeLocalFiles(e, files))
+		e->accept(files.count() > 0);
+	else
+		e->accept(false);
+}
+
+void Chat::dragMoveEvent(QDragMoveEvent *e)
+{
+	QStringList files;
+
+	if (QUriDrag::decodeLocalFiles(e, files))
+		e->accept(files.count() > 0);
+	else
+		e->accept(false);
+}
+
+void Chat::dropEvent(QDropEvent *e)
+{
+	QStringList files;
+
+	if (QUriDrag::decodeLocalFiles(e, files))
+	{
+		e->accept(files.count() > 0);
+
+		QStringList::iterator i = files.begin();
+		QStringList::iterator end = files.end();
+
+		for (; i != end; i++)
+			emit fileDropped(Uins, *i);
+	}
+	else
+		e->accept(false);
 }
 
 ColorSelectorButton::ColorSelectorButton(QWidget* parent, const QColor& qcolor, int width, const char *name) : QPushButton(parent, name)

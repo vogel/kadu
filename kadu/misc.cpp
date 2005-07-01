@@ -2589,6 +2589,10 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 	: QTextBrowser(parent, name),QToolTip(viewport()),level(0)
 {
 	kdebugf();
+
+	setAcceptDrops(false);
+	viewport()->setAcceptDrops(false);
+
 //	setResizePolicy(QScrollView::AutoOne);
 //	setWFlags(Qt::WNoAutoErase|Qt::WStaticContents|Qt::WPaintClever);
 	connect(this, SIGNAL(linkClicked(const QString&)), this, SLOT(hyperlinkClicked(const QString&)));
