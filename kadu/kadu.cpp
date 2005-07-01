@@ -224,14 +224,6 @@ void Kadu::keyPressEvent(QKeyEvent *e)
 				hide();
 		}
 	}
-	if (e->key() == Key_Escape)
-	{
-		if (Docked && !dontHideOnClose)
-		{
-			kdebugm(KDEBUG_INFO, "Kadu::keyPressEvent(Key_Escape): Kadu hide\n");
-			hide();
-		}
-	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_deleteuser"))
 	{
 		if (!Userbox->getSelectedAltNicks().isEmpty())
