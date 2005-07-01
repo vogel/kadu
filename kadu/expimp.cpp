@@ -124,7 +124,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) : 
 	connect(gadu, SIGNAL(userListImported(bool, UserList&)), this, SLOT(userListImported(bool, UserList&)));
 	// end connect
 
- 	loadGeometry(this, "General", "ImportExportDialogGeometry", 0, 0, 640, 450);
+ 	loadGeometry(this, "General", "ImportExportDialogGeometry", 0, 30, 640, 450);
 	kdebugf2();
 }
 

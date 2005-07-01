@@ -379,7 +379,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	BlinkOn = false;
 	DoBlink = false;
 
-	loadGeometry(this, "General", "Geometry", 0, 0, 145, 465);
+	loadGeometry(this, "General", "Geometry", 0, 30, 145, 465);
 
 	/* read the userlist */
 	userlist.readFromFile();

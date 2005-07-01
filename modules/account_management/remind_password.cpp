@@ -68,7 +68,7 @@ RemindPassword::RemindPassword(QDialog * /*parent*/, const char * /*name*/)
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 	connect(pb_ok, SIGNAL(clicked()), this, SLOT(start()));
 
- 	loadGeometry(this, "General", "RemindPasswordDialogGeometry", 0, 0, 355, 200);
+ 	loadGeometry(this, "General", "RemindPasswordDialogGeometry", 0, 30, 355, 200);
 	connect(gadu, SIGNAL(reminded(bool)), this, SLOT(reminded(bool)));
 	kdebugf2();
 }
