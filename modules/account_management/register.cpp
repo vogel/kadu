@@ -126,7 +126,7 @@ Register::Register(QDialog * /*parent*/, const char * /*name*/)
 	connect(pb_register, SIGNAL(clicked()), this, SLOT(doRegister()));
 	connect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registered(bool, UinType)));
 
- 	loadGeometry(this, "General", "RegisterDialogGeometry", 0, 0, 400, 400);
+ 	loadGeometry(this, "General", "RegisterDialogGeometry", 0, 30, 400, 400);
 	kdebugf2();
 }
 

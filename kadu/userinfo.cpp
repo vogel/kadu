@@ -94,7 +94,7 @@ UserInfo::UserInfo(const QString &altnick, bool addUser, QDialog* parent, const 
 
 	createNotifier.notify(this);
 
-	loadGeometry(this, "General", "ManageUsersDialogGeometry", 0, 0, 380, 450);
+	loadGeometry(this, "General", "ManageUsersDialogGeometry", 0, 30, 380, 450);
 	kdebugf2();
 }
 

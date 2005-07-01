@@ -1840,7 +1840,7 @@ SelectPaths::SelectPaths(QWidget *parent, const char* name) : QHBox(parent, name
 	connect(pb_add, SIGNAL(clicked()), this, SLOT(addPath()));
 	connect(pb_remove, SIGNAL(clicked()), this, SLOT(deletePath()));
 
-	loadGeometry(this, "General", "SelectPathDialogGeometry", 0, 0, 330, 330);
+	loadGeometry(this, "General", "SelectPathDialogGeometry", 0, 30, 330, 330);
 	kdebugf2();
 }
 

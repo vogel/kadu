@@ -79,7 +79,7 @@ ChangePassword::ChangePassword(QDialog * /*parent*/, const char * /*name*/)
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 	connect(pb_ok, SIGNAL(clicked()), this, SLOT(start()));
 
- 	loadGeometry(this, "General", "ChangePasswordDialogGeometry", 0, 0, 355, 350);
+ 	loadGeometry(this, "General", "ChangePasswordDialogGeometry", 0, 30, 355, 350);
 	connect(gadu, SIGNAL(passwordChanged(bool)), this, SLOT(passwordChanged(bool)));
 	kdebugf2();
 }

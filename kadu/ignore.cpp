@@ -88,7 +88,7 @@ Ignored::Ignored(QDialog * /*parent*/, const char * /*name*/)
 	connect(pb_del, SIGNAL(clicked()), this, SLOT(remove()));
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 
- 	loadGeometry(this, "General", "IgnoredDialogGeometry", 0, 0, 330, 350);
+ 	loadGeometry(this, "General", "IgnoredDialogGeometry", 0, 30, 330, 350);
 	kdebugf2();
 }
 

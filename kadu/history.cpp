@@ -1362,7 +1362,7 @@ History::History(UinsList uins) : QDialog(NULL, "HistoryDialog"), uins(uins), cl
 	connect(searchnextbtn, SIGNAL(clicked()), this, SLOT(searchNextBtnClicked()));
 	connect(searchprevbtn, SIGNAL(clicked()), this, SLOT(searchPrevBtnClicked()));
 
-	loadGeometry(this, "History", "HistoryGeometry", 0, 0, 500, 400);
+	loadGeometry(this, "History", "HistoryGeometry", 0, 30, 500, 400);
 
 	findrec.type = 1;
 	findrec.reverse = 0;
