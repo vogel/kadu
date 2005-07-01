@@ -636,7 +636,7 @@ if test "$enable_macosx" = "yes"; then
 	DYNAMIC_OPT=
 	SO_EXT=dylib
 	SHARED_OPT=-dynamiclib
-	SHARED_FLAGS=-undefined suppress -flat_namespace
+	SHARED_FLAGS="-undefined suppress -flat_namespace"
 
 #only on MacOSX>=10.3
 #	SHARED_FLAGS=-undefined dynamic_lookup
