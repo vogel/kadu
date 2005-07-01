@@ -220,6 +220,15 @@ class UserStatus : public QObject
 		static QString toString(eUserStatus stat, bool has_desc);
 
 		/**
+			\fn QString toString(eUserStatus stat, bool has_desc)
+			Zamienia status na formê ³añcucha znaków.
+			robi dok³adnie tyle co UserStatus::toString(this->status(), this->hasDescription())
+			\see toString(eUserStatus, bool)
+			\return status w postaci napisu.
+		**/
+		QString toString() const;
+
+		/**
 			\fn static int count()
 			\return liczbê wszystkich mo¿liwych statusów, ³±cznie z "blokowany" oraz "niedostêpny z opisem".
 		**/
