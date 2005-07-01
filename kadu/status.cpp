@@ -324,6 +324,11 @@ QString UserStatus::toString(eUserStatus stat, bool desc)
 	return res;
 }
 
+QString UserStatus::toString() const
+{
+	return UserStatus::toString(this->status(), this->hasDescription());
+}
+
 int UserStatus::count()
 {
 	return 9;
