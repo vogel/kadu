@@ -11,6 +11,7 @@
 #include <qcheckbox.h>
 #include <qcombobox.h>
 #include <qcursor.h>
+#include <qdragobject.h>
 #include <qhbox.h>
 #include <qhgroupbox.h>
 #include <qlayout.h>
