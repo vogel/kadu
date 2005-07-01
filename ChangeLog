@@ -65,6 +65,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * MacOS X: poprawki w kompilacji modu³ów, poprawki skryptu instalacyjnego (joi)
 * MacOS X: pozycje okien mia³y warto¶æ y==0, co powodowa³o zas³anianie paska
   tytu³u okna przez menu systemu (efekt tzw. "braku ramki") (joi)
+* MacOS X: dodany modu³ macosx_docking + szereg zmian potrzebnych temu modu³owi (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

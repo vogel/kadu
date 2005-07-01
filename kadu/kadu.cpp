@@ -213,10 +213,24 @@ void ToolBar::refreshIcons(const QString &caption, const QString &newIconName, c
 
 void Kadu::keyPressEvent(QKeyEvent *e)
 {
-	if (e->key() == Key_Escape && Docked)
+	if (e->key() == Key_Escape)
 	{
-		kdebugm(KDEBUG_INFO, "Kadu::keyPressEvent(Key_Escape): Kadu hide\n");
-		hide();
+		if (Docked)
+		{
+			kdebugm(KDEBUG_INFO, "Kadu::keyPressEvent(Key_Escape): Kadu hide\n");
+			if (dontHideOnClose)
+				showMinimized();
+			else
+				hide();
+		}
+	}
+	if (e->key() == Key_Escape)
+	{
+		if (Docked && !dontHideOnClose)
+		{
+			kdebugm(KDEBUG_INFO, "Kadu::keyPressEvent(Key_Escape): Kadu hide\n");
+			hide();
+		}
 	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_deleteuser"))
 	{
@@ -251,6 +265,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 {
 	kdebugf();
 	Docked = false;
+	dontHideOnClose = false;
 	ShowMainWindowOnStart = true;
 	lastId = -1;//id taba
 
@@ -741,7 +756,10 @@ void Kadu::importExportUserlist()
 void Kadu::hideKadu()
 {
 	if (Docked)
-		close();
+		if (dontHideOnClose)
+			showMinimized();
+		else
+			close();
 }
 
 void Kadu::ignoreUser()
@@ -871,9 +889,10 @@ void Kadu::changeAppearance()
 	else
 		InfoPanel->setVScrollBarMode(QScrollView::AlwaysOff);
 
-	QPixmap pix = gadu->currentStatus().pixmap();
+	const UserStatus &stat = gadu->currentStatus();
+	QPixmap pix = stat.pixmap();
 	statusButton->setIconSet(QIconSet(pix));
-	emit statusPixmapChanged(pix);
+	emit statusPixmapChanged(pix, stat.toString());
 	kdebugf2();
 }
 
@@ -973,7 +992,7 @@ void Kadu::setActiveGroup(const QString& group)
 					break;
 				}
 		}
-		if (belongsToGroup && (!(*user).isAnonymous() || !Docked))
+		if (belongsToGroup && !((*user).isAnonymous() && Docked && !dontHideOnClose))
 			Userbox->addUser((*user).altNick());
 	}
 	UserBox::all_refresh();
@@ -1068,17 +1087,25 @@ void Kadu::blink()
 	{
 		pix = gadu->status().pixmap(Offline, false);
 		statusButton->setIconSet(QIconSet(pix));
-		emit statusPixmapChanged(pix);
+		emit statusPixmapChanged(pix, "Offline");
 		return;
 	}
 
+	QString iconName;
 	if (BlinkOn)
+	{
 		pix = gadu->status().pixmap(Offline, false);
+		iconName = "Offline";
+	}
 	else
-		pix = gadu->status().pixmap(status);
+	{
+		const UserStatus &stat = gadu->status();
+		pix = stat.pixmap(status);
+		iconName = stat.toString();
+	}
 
 	statusButton->setIconSet(QIconSet(pix));
-	emit statusPixmapChanged(pix);
+	emit statusPixmapChanged(pix, iconName);
 
 	BlinkOn=!BlinkOn;
 
@@ -1287,7 +1314,7 @@ void Kadu::disconnected()
 
 bool Kadu::close(bool quit)
 {
-	if (!quit && Docked)
+	if (!quit && Docked && !dontHideOnClose)
 	{
 		kdebugmf(KDEBUG_INFO, "hiding\n");
 		hide();
@@ -1515,9 +1542,10 @@ UserBox* Kadu::userbox() const
 	return Userbox;
 }
 
-void Kadu::setDocked(bool docked)
+void Kadu::setDocked(bool docked, bool dontHideOnClose1)
 {
 	Docked = docked;
+	dontHideOnClose = dontHideOnClose1;
 }
 
 bool Kadu::docked() const
@@ -1782,11 +1810,12 @@ void Kadu::showStatusOnMenu(int statusNr)
 	statusMenu->setItemEnabled(7, statusNr != 6);
 	dockMenu->setItemEnabled(7, statusNr != 6);
 	QPixmap pix = gadu->status().pixmap();
+	QString iconName = gadu->status().toString();
 	statusButton->setIconSet(QIconSet(pix));
-	setIcon(pix);
+	setMainWindowIcon(pix);
 	UserBox::all_refresh();
 
-	emit statusPixmapChanged(pix);
+	emit statusPixmapChanged(pix, iconName);
 }
 
 void Kadu::readTokenValue(QPixmap tokenImage, QString &tokenValue)
@@ -1823,4 +1852,12 @@ void Kadu::deleteOldConfigFiles()
 		}
 //	kdebugm(KDEBUG_INFO, "bts deleted\n");
 	kdebugf2();
+}
+
+void Kadu::setMainWindowIcon(const QPixmap &icon)
+{                              
+	bool blocked = false;
+	emit settingMainIconBlocked(blocked);
+	if (!blocked)
+		setIcon(icon);
 }

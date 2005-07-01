@@ -15,7 +15,7 @@ class DockingManager : public QObject
 		void defaultToolTip();
 
 	private slots:
-		void statusPixmapChanged(QPixmap &);
+		void statusPixmapChanged(const QPixmap &icon, const QString &iconName);
 		void changeIcon();
 		void dockletChange(int id);
 		void pendingMessageAdded();
@@ -34,10 +34,10 @@ class DockingManager : public QObject
 			na true przy starcie i false przy zamknieciu, aby
 			kadu wiedzialo, ze jest zadokowane.
 		**/
-		void setDocked(bool docked);
-
-	signals:
-		void trayPixmapChanged(const QPixmap& pixmap);
+		void setDocked(bool docked, bool butDontHideOnClose = false);
+  
+  	signals:
+		void trayPixmapChanged(const QPixmap& pixmap, const QString &name);
 		void trayMovieChanged(const QMovie& movie);
 		void trayTooltipChanged(const QString& tooltip);
 		void searchingForTrayPosition(QPoint& pos);

@@ -161,7 +161,7 @@ X11TrayIcon::X11TrayIcon(QWidget *parent, const char *name)
 //	connect(kadu, SIGNAL(minimized()), kadu, SLOT(hide()));
 #endif
 	
-	connect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&)), this, SLOT(setTrayPixmap(const QPixmap&)));
+	connect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&, const QString &)), this, SLOT(setTrayPixmap(const QPixmap&, const QString &)));
 	connect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 	connect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), this, SLOT(setTrayMovie(const QMovie &)));
@@ -246,7 +246,7 @@ X11TrayIcon::~X11TrayIcon()
 	enableTaskbar();
 #endif
 	disconnect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), this, SLOT(setTrayMovie(const QMovie &)));
-	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&)), this, SLOT(setTrayPixmap(const QPixmap&)));
+	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&, const QString &)), this, SLOT(setTrayPixmap(const QPixmap&, const QString &)));
 	disconnect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 	disconnect(chat_manager, SIGNAL(chatCreated(const UinsList&)), this, SLOT(chatCreatedSlot(const UinsList&)));
@@ -266,7 +266,7 @@ void X11TrayIcon::show()
 	QLabel::show();
 }
 
-void X11TrayIcon::setTrayPixmap(const QPixmap& pixmap)
+void X11TrayIcon::setTrayPixmap(const QPixmap& pixmap, const QString &/*iconName*/)
 {
 	QLabel::setPixmap(pixmap);
 	repaint();

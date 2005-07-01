@@ -12,7 +12,7 @@ class WMakerTrayIcon : public QLabel
 		QWidget* WMakerMasterWidget;
 		
 	private slots:
-		void setTrayPixmap(const QPixmap& pixmap);
+		void setTrayPixmap(const QPixmap& pixmap, const QString &iconName);
 		void setTrayMovie(const QMovie &movie);
 		void setTrayTooltip(const QString& tooltip);
 		void findTrayPosition(QPoint& pos);
