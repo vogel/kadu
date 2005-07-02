@@ -85,10 +85,17 @@ QString ggPath(const QString &subpath)
 		else
 			home = getenv("HOME");
 		char *config_dir = getenv("CONFIG_DIR");
+#ifdef Q_OS_MACX
+		if (config_dir == NULL)
+			path = QString("%1/Library/Kadu/").arg(home);
+		else
+			path = QString("%1/%2/Kadu/").arg(home).arg(config_dir);
+#else
 		if (config_dir == NULL)
 			path = QString("%1/.kadu/").arg(home);
 		else
 			path = QString("%1/%2/kadu/").arg(home).arg(config_dir);
+#endif
 	}
 	return path+subpath;
 }
