@@ -7,10 +7,14 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <application.h>
+#include <qdesktopwidget.h>
+
 #include "macosx_docking.h"
 #include "../docking/docking.h"
 #include "debug.h"
 #include "kadu.h"
+#include "misc.h"
 
 MacOSXDocking::MacOSXDocking(QObject *parent, const char *name) : QObject(parent, name)
 {
