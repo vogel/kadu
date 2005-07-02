@@ -398,6 +398,8 @@ static int gg_handle_recv_msg(struct gg_header *h, struct gg_event *e, struct gg
 					goto malformed;
 				}
 
+				rep->size = gg_fix32(rep->size);
+				rep->crc32 = gg_fix32(rep->crc32);
 				gg_image_queue_parse(e, p, (unsigned int)(packet_end - p), sess, gg_fix32(r->sender));
 
 				return 0;

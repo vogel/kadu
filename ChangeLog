@@ -33,6 +33,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * MacOS X: pozycje okien mia³y warto¶æ y==0, co powodowa³o zas³anianie paska
   tytu³u okna przez menu systemu (efekt tzw. "braku ramki") (joi)
 * MacOS X: dodany modu³ macosx_docking + szereg zmian potrzebnych temu modu³owi (joi)
+* MacOS X: poprawki w libgadu dotycz±ce endianowo¶ci i obrazków,
+  poprawne dzia³anie formatowania i obrazków w Kadu (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
