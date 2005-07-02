@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <application.h>
+#include <qapplication.h>
 #include <qdesktopwidget.h>
 
 #include "macosx_docking.h"
