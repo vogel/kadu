@@ -32,6 +32,8 @@
 #include "debug.h"
 #include "message_box.h"
 
+uint32_t gg_fix32(uint32_t);
+
 FileTransferDialog::FileTransferDialog(DccSocket* socket, TransferType type)
 	: QDialog (NULL, "file_transfer_dialog"), Socket(socket), Type(type)
 {
@@ -75,7 +77,7 @@ void FileTransferDialog::printFileInfo()
 
 	new QLabel(tr("Filename: %1").arg(cp2unicode(Socket->ggDccStruct()->file_info.filename)), this);
 
-	new QLabel(tr("File size: %1B").arg(QString::number(Socket->ggDccStruct()->file_info.size)), this);
+	new QLabel(tr("File size: %1B").arg(QString::number(gg_fix32(Socket->ggDccStruct()->file_info.size))), this);
 
 	l_offset = new QLabel(tr("Speed: 0kB/s (not started)  "),this);
 

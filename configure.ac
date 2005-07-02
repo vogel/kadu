@@ -628,24 +628,27 @@ fi
 
 
 # macosx support
-# ___NEEDS___ to be done better
+# needs to be done better
 AC_ARG_ENABLE(macosx,[  --enable-macosx         turn on some MacOSX compiler flags])
 if test -z "$enable_macosx"; then
 	enable_macosx=no
-	DYNAMIC_OPT=-rdynamic
-	SO_EXT=so
-	SHARED_OPT=-shared
+	DYNAMIC_OPT="-rdynamic"
+	SO_EXT="so"
+	SHARED_OPT="-shared"
 	SHARED_FLAGS=
 fi
 if test "$enable_macosx" = "yes"; then
+	# -s kills dynamic modules
+	CXXFLAGS="`echo $CXXFLAGS | sed 's/ -s//'`"
+
 	LDFLAGS="$LDFLAGS -framework Carbon -framework QuickTime -lz -framework OpenGL -framework AGL"
-	DYNAMIC_OPT=
-	SO_EXT=dylib
-	SHARED_OPT=-dynamiclib
+	DYNAMIC_OPT="-dynamic"
+	SO_EXT="dylib"
+	SHARED_OPT="-dynamiclib"
 	SHARED_FLAGS="-undefined suppress -flat_namespace"
 
 #only on MacOSX>=10.3
-#	SHARED_FLAGS=-undefined dynamic_lookup
+#	SHARED_FLAGS="-undefined dynamic_lookup"
 fi
 AC_SUBST(DYNAMIC_OPT)
 AC_SUBST(SO_EXT)
