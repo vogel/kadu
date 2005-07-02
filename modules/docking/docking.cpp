@@ -73,8 +73,8 @@ DockingManager::~DockingManager()
 	ConfigDialog::unregisterSlotOnApply(this, SLOT(onApplyConfigDialog()));
 	ConfigDialog::removeControl("General", "Show tooltip in tray");
 
-	disconnect(kadu, SIGNAL(statusPixmapChanged(QPixmap &)),
-		this, SLOT(statusPixmapChanged(QPixmap &)));
+	disconnect(kadu, SIGNAL(statusPixmapChanged(const QPixmap &, const QString &)),
+		this, SLOT(statusPixmapChanged(const QPixmap &, const QString &)));
 	disconnect(&pending, SIGNAL(messageAdded()), this, SLOT(pendingMessageAdded()));
 	disconnect(&pending, SIGNAL(messageDeleted()), this, SLOT(pendingMessageDeleted()));
 
