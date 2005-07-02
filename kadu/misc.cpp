@@ -519,18 +519,22 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 
 		(curStat.isOnline() ||	curStat.isBusy() ||
 		(curStat.isInvisible() && config_file.readBoolEntry("Chat", "ReceiveImagesDuringInvisibility")));
-	
+	kdebugm(KDEBUG_INFO, "formats_length: %d\n", formats_length);
+	for (int i = 0; i < formats_length; ++i)
+    	    kdebugm(KDEBUG_INFO, ">>%d\n", cformats[i]);
 	if (formats_length)
 	{
 		while (formats_length)
 		{
 			actformat = (struct gg_msg_richtext_format *)cformats;
-			if (actformat->position > pos)
+			uint16_t tmpposition = gg_fix16(actformat->position);
+			kdebugm(KDEBUG_INFO, "position: %d, font: %d\n", tmpposition, actformat->font);
+			if (tmpposition > pos)
 			{
-				tmp = msg.mid(pos, actformat->position - pos);
+				tmp = msg.mid(pos, tmpposition - pos);
 				HtmlDocument::escapeText(tmp);
 				mesg.append(tmp);
-				pos = actformat->position;
+				pos = tmpposition;
 			}
 			else
 			{
@@ -563,22 +567,24 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 				{
 					kdebugmf(KDEBUG_INFO, "I got image probably\n");
 					actimage = (struct gg_msg_richtext_image*)(cformats);
-					kdebugm(KDEBUG_INFO, "Image size: %d, crc32: %d, sender:%d\n", actimage->size, actimage->crc32, sender);
-					
+					uint32_t tmpsize = gg_fix32(actimage->size);
+					uint32_t tmpcrc32 = gg_fix32(actimage->crc32);
+					kdebugm(KDEBUG_INFO, "Image size: %d, crc32: %d, sender:%d\n", tmpsize, tmpcrc32, sender);
+
 					//ukrywamy siê przed spy'em i ekg2
-					if (actimage->size == 20 && (actimage->crc32 == 4567 || actimage->crc32==99))
+					if (tmpsize == 20 && (tmpcrc32 == 4567 || tmpcrc32==99))
 					{
 						kdebugm(KDEBUG_INFO, "%d: scanning for invisibility detected, preparing tactical nuclear missiles ;)\n", sender);
 						if (receiveImage)
-							gadu->sendImageRequest(sender, actimage->size, actimage->crc32);
+							gadu->sendImageRequest(sender, tmpsize, tmpcrc32);
 					}
 					else if (sender!=0)
 					{
 						kdebugm(KDEBUG_INFO, "Someone sends us an image\n");
 						QString file_name =
 							gadu_images_manager.getSavedImageFileName(
-								actimage->size,
-								actimage->crc32);
+								tmpsize,
+								tmpcrc32);
 						if (!file_name.isEmpty())
 						{
 							kdebugm(KDEBUG_INFO, "This image was already saved\n");
@@ -586,14 +592,14 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 						}
 						else
 						{
-							if (actimage->size<(config_file.readUnsignedNumEntry("Chat", "MaxImageSize")*1024))
+							if (tmpsize<(config_file.readUnsignedNumEntry("Chat", "MaxImageSize")*1024))
 							{
 								if (receiveImage)
 								{
 									kdebugm(KDEBUG_INFO, "sending request\n");
-									gadu->sendImageRequest(sender, actimage->size, actimage->crc32);
+									gadu->sendImageRequest(sender, tmpsize, tmpcrc32);
 									mesg.append(GaduImagesManager::loadingImageHtml(
-											sender,actimage->size,actimage->crc32));
+											sender,tmpsize,tmpcrc32));
 								}
 								else
 									mesg.append(qApp->translate("@default", QT_TR_NOOP("###IMAGE BLOCKED###")));
@@ -607,8 +613,8 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 						kdebugm(KDEBUG_INFO, "This is my message and my image\n");
 						QString file_name =
 							gadu_images_manager.getImageToSendFileName(
-								actimage->size,
-								actimage->crc32);
+								tmpsize,
+								tmpcrc32);
 						mesg.append(GaduImagesManager::imageHtml(file_name));
 					}
 					cformats += sizeof(gg_msg_richtext_image);
@@ -694,7 +700,7 @@ void *allocFormantBuffer(const QValueList<struct richtext_formant> &formants, in
 	char *cformats, *tmpformats;
 
 	richtext_header.flag = 2;
-	richtext_header.length = formats_length;
+	richtext_header.length = gg_fix16(formats_length);
 	formats_length += sizeof(struct gg_msg_richtext);
 	cformats = new char[formats_length];
 	tmpformats = cformats;
@@ -703,6 +709,7 @@ void *allocFormantBuffer(const QValueList<struct richtext_formant> &formants, in
 	CONST_FOREACH(it, formants)
 	{
 		struct richtext_formant actformant = (*it);
+		actformant.format.position = gg_fix16(actformant.format.position);
 		memcpy(tmpformats, &actformant, sizeof(gg_msg_richtext_format));
 		tmpformats += sizeof(gg_msg_richtext_format);
 		if (actformant.format.font & GG_FONT_COLOR)
@@ -809,8 +816,8 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 			actformant.format.position = image_idx;
 			actformant.format.font = GG_FONT_IMAGE;
 			actformant.image.unknown1 = 0x0109;
-			actformant.image.size = size;
-			actformant.image.crc32 = crc32;
+			actformant.image.size = gg_fix32(size);
+			actformant.image.crc32 = gg_fix32(crc32);
 			formants.append(actformant);
 			formats_length += sizeof(struct gg_msg_richtext_format)
 				+ sizeof(struct gg_msg_richtext_image);
