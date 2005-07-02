@@ -807,7 +807,7 @@ void GaduProtocol::initModule()
 
 	config_file.addVariable("Network", "DefaultPort", 0);
 	QStringList options, values;
-	options << tr("Default") << "8074" << "443";
+	options << tr("Automatic") << "8074" << "443";
 	values << "0" << "8074" << "443";
 	ConfigDialog::addComboBox("Network", "Servers properties",
 		QT_TRANSLATE_NOOP("@default", "Port to connect to servers"), "DefaultPort", options, values);
