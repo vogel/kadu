@@ -73,6 +73,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
    domy¶lna aplikacja do odtwarzania d¼wiêku w ext_sound to playsound,
    a nie play, poprawki w skrypcie instalacyjnym (joi)
 * MacOS X: katalog z ustawieniami to ~/Library/Kadu, a nie ~/.kadu (joi)
+* prze³±czanie focusu w oknie chat do pola edycji z powrotem w³±czone (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
