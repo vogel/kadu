@@ -56,13 +56,7 @@ if [ ! -f ${QTDIR}/include/qwidget.h ]; then
 fi
 
 if [ ! -f ./varia/themes/icons/default/big_message.png ]; then
-	WGETNOTFOUND=`which wget | grep "^no" | wc -l`
-	if [ ${WGETNOTFOUND} -eq 1 ]; then
-		echo "wget not found, download this: ${ICONS_LINK} and copy it to the main directory of Kadu sources"
-		echo "wget nie znalezione, sciagnij powyzszy plik i umiesc go w glownym katalogu zrodel Kadu"
-		exit
-	fi
-	wget -c ${ICONS_LINK}
+	curl -O ${ICONS_LINK}
 	tar xjf ${ICONS_PKG}
 	patch -p0 < icons.diff
 	cd varia
@@ -71,13 +65,7 @@ if [ ! -f ./varia/themes/icons/default/big_message.png ]; then
 fi
 
 if [ ! -f ./playsound ]; then
-	WGETNOTFOUND=`which wget | grep "^no" | wc -l`
-	if [ ${WGETNOTFOUND} -eq 1 ]; then
-		echo "wget not found, download this: ${PLAYSOUND_LINK} and copy it to the main directory of Kadu sources"
-		echo "wget nie znalezione, sciagnij powyzszy plik i umiesc go w glownym katalogu zrodel Kadu"
-		exit
-	fi
-	wget -c ${PLAYSOUND_LINK}
+	curl -O ${PLAYSOUND_LINK}
 	chmod a+x playsound
 fi
 
