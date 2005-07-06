@@ -166,7 +166,7 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(kaduKeyPressed(QKeyEvent*)));
 
 	connect(chat_manager, SIGNAL(chatCreated(const UinsList &)), this, SLOT(chatCreated(const UinsList &)));
-	connect(chat_manager, SIGNAL(charDestroying(const UinsList &)), this, SLOT(chatDestroying(const UinsList &)));
+	connect(chat_manager, SIGNAL(chatDestroying(const UinsList &)), this, SLOT(chatDestroying(const UinsList &)));
 	ChatList::ConstIterator it;
 	for ( it = chat_manager->chats().begin(); it != chat_manager->chats().end(); it++ )
 		handleCreatedChat(*it);
@@ -199,7 +199,7 @@ FileTransferManager::~FileTransferManager()
 	disconnect(kadu, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(kaduKeyPressed(QKeyEvent*)));
 
 	disconnect(chat_manager, SIGNAL(chatCreated(const UinsList &)), this, SLOT(chatCreated(const UinsList &)));
-	disconnect(chat_manager, SIGNAL(charDestroying(const UinsList &)), this, SLOT(chatDestroying(const UinsList &)));
+	disconnect(chat_manager, SIGNAL(chatDestroying(const UinsList &)), this, SLOT(chatDestroying(const UinsList &)));
 	ChatList::ConstIterator it;
 	for ( it = chat_manager->chats().begin(); it != chat_manager->chats().end(); it++ )
 		handleDestroyingChat(*it);
@@ -293,7 +293,7 @@ void FileTransferManager::sendFile()
 	}
 	UserListElement user = (*users.begin());
 	sendFile(user.uin());
-	
+
 	kdebugf2();
 }
 
@@ -420,7 +420,7 @@ void FileTransferManager::needFileInfo(DccSocket* socket)
 		socket->setState(DCC_SOCKET_TRANSFER_DISCARDED);
 		return;
 	}
-	
+
 	gadu->dccFillFileInfo(socket->ggDccStruct(), filename);
 	FileTransferDialog* filedialog = new FileTransferDialog(socket, FileTransferDialog::TRANSFER_TYPE_SEND);
 	filedialog->printFileInfo();
