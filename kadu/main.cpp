@@ -181,6 +181,7 @@ int main(int argc, char *argv[])
 	IconsManager::initModule();
 	kadu = new Kadu(0, "Kadu");
 
+	qApp->setMainWidget(kadu);
 	QPixmap pix;
 #ifdef Q_OS_MACX
 	pix = icons_manager.loadIcon("BigOffline");
@@ -188,7 +189,6 @@ int main(int argc, char *argv[])
 	pix = icons_manager.loadIcon("Offline");
 #endif
 	kadu->setMainWindowIcon(pix);
-	qApp->setMainWidget(kadu);
 
 	ModulesManager::initModule();
 

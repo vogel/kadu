@@ -81,7 +81,7 @@ CNT_DIR=${DEST}/kadu.app/Contents
 mkdir ${CNT_DIR};
 
 echo "log: creating PkgInfo"
-echo "APPL∂çQt" > ${CNT_DIR}/PkgInfo
+echo "APPLKadu" > ${CNT_DIR}/PkgInfo
 
 echo "log: creating Info.plist"
 echo "<?xml version='1.0' encoding='UTF-8'?>
@@ -129,6 +129,7 @@ fi
 RSC_DIR=${CNT_DIR}/Resources
 mkdir ${RSC_DIR}
 cp kadu/kadu.icns $RSC_DIR/
+cp kadu/hi48-app-kadu.png ${DEST}/kadu.app/kadu/kadu.png
 
 FM_DIR=${CNT_DIR}/Frameworks
 mkdir ${FM_DIR}
