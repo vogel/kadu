@@ -8,10 +8,13 @@
  ***************************************************************************/
 
 #include <qapplication.h>
+#include <qcheckbox.h>
 #include <qdesktopwidget.h>
 
 #include "macosx_docking.h"
 #include "../docking/docking.h"
+#include "config_dialog.h"
+#include "config_file.h"
 #include "debug.h"
 #include "kadu.h"
 #include "misc.h"
