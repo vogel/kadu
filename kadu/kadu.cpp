@@ -1368,6 +1368,10 @@ bool Kadu::close(bool quit)
 		}
 //		disconnectNetwork();
 //		gadu->logout();
+#ifdef Q_OS_MACX
+		//na koniec przywracamy domy¶ln± ikonê, je¿eli tego nie zrobimy, to pozostanie bie¿±cy status
+		setMainWindowIcon(QPixmap(dataPath("kadu.png")));
+#endif
 		kdebugmf(KDEBUG_INFO, "Saved config, disconnect and ignored\n");
 		QWidget::close(true);
 		flock(lockFileHandle, LOCK_UN);

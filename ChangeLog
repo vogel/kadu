@@ -74,6 +74,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
    a nie play, poprawki w skrypcie instalacyjnym (joi)
 * MacOS X: katalog z ustawieniami to ~/Library/Kadu, a nie ~/.kadu (joi)
 * prze³±czanie focusu w oknie chat do pola edycji z powrotem w³±czone (joi)
+* MacOS X: przywracanie ikony aplikacji po wy³±czeniu programu,
+   opcja "Uruchom zminimalizowany" wy³±czona, ze wzglêdu na problemy z Qt (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
