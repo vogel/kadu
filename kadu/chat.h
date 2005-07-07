@@ -17,6 +17,7 @@
 
 class Chat;
 class QHBox;
+class ChatSlots;
 /** \typedef QValueList<Chat*> ChatList */
 typedef QValueList<Chat*> ChatList;
 
@@ -96,6 +97,7 @@ class ChatManager : public QObject
 	private:
 		ChatList Chats;/*!< lista okien*/
 		
+		static ChatSlots *chatslots;
 		/**
 		\fn int openPendingMsg(int index, ChatMessage &msg)
 		Funkcja otwieraj±ca zakolejkowan± wiadomo¶æ
@@ -138,6 +140,14 @@ class ChatManager : public QObject
 			\fn const ChatList& chats() const
 			Funkcja zwraca liste otwartych okien Chat
 		**/
+
+		/**
+			\fn static void initModule()
+			Rejestruje opcje modulu Chat w oknie konfiguracji
+		**/
+		static void initModule();
+		static void closeModule();
+
 		const ChatList& chats() const;
 		
 		/**
@@ -620,12 +630,6 @@ class Chat : public QWidget
 		KaduTextBrowser* body; /*!< historia rozmowy */
 		CustomInput* edit; /*!< okno do wpisywania wiadomo¶ci */
 		QHBox* buttontray;/* ?? */
-		
-		/**
-			\fn static void initModule()
-			Rejestruje opcje modulu Chat w oknie konfiguracji
-		**/
-		static void initModule();
 		
 		/**
 			Konstruktor okna rozmowy

@@ -389,6 +389,7 @@ void ChatManager::setChatProperty(const UinsList &uins, const QString &name, con
 }
 
 ChatManager* chat_manager=NULL;
+ChatSlots* ChatManager::chatslots=NULL;
 
 const char *colors[16] = {"#FF0000", "#A00000", "#00FF00", "#00A000", "#0000FF", "#0000A0", "#FFFF00",
 	"#A0A000", "#FF00FF", "#A000A0", "#00FFFF", "#00A0A0", "#FFFFFF", "#A0A0A0", "#808080", "#000000"};
@@ -1607,7 +1608,13 @@ void Chat::addEmoticon(QString emot)
 	emoticon_selector = NULL;
 }
 
-void Chat::initModule()
+void ChatManager::closeModule()
+{
+	delete chatslots;
+	delete chat_manager;
+}
+
+void ChatManager::initModule()
 {
 	kdebugf();
 
@@ -1701,7 +1708,7 @@ void Chat::initModule()
 	config_file.addVariable("Chat", "EmoticonsStyle", EMOTS_ANIMATED);
 	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
 
-	ChatSlots *chatslots =new ChatSlots(kadu, "chat_slots");
+	chatslots =new ChatSlots(kadu, "chat_slots");
 	ConfigDialog::registerSlotOnCreate(chatslots,SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnApply(chatslots,SLOT(onDestroyConfigDialog()));
 	ConfigDialog::connectSlot("Chat", "Emoticons:", SIGNAL(activated(int)), chatslots, SLOT(chooseEmoticonsStyle(int)));

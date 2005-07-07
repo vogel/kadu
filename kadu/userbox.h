@@ -11,7 +11,7 @@
 #include "userlist.h"
 
 class QFontMetrics;
-
+class UserBoxSlots;
 /**
 	Klasa reprezentuj±ca kontakt wizualnie na li¶cie kontaktów. Opisuje ona ikonê kontaktu,
 	jego wy¶witlan± nazwê oraz ewentualny opis.
@@ -298,6 +298,7 @@ class UserBox : public QListBox , QToolTip
 
 	private:
 		static QValueList<UserBox*> UserBoxes;
+		static UserBoxSlots *userboxslots;
 		// Pixmaps
 		static QPixmap* OnlineMobilePixmap;
 		static QPixmap* OnlineDescMobilePixmap;
@@ -375,7 +376,7 @@ class UserBox : public QListBox , QToolTip
 			wywo³ywana przy starcie Kadu przez rdzeñ Kadu.
 		**/
 		static void initModule();
-
+		static void closeModule();
 		/**
 			\fn UinsList getSelectedUins() const
 			Funkcja zwraca listê zaznaczonych u¿ytkowników.
