@@ -476,7 +476,7 @@ void openWebBrowser(const QString &link)
 		webBrowser.append(" \"%1\"");
 
 	webBrowser.replace(QRegExp("%1"), unicode2latinUrl(link));
-	
+
 	args=toStringList("sh", "-c", webBrowser);
 
 	CONST_FOREACH(i, args)
@@ -503,11 +503,11 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 
 	bold = italic = underline = color = inspan = false;
 	unsigned int pos = 0;
-	
+
 	UinsList uins(sender);
 
 	const UserStatus &curStat = gadu->currentStatus();
-	
+
 	/* gdy mamy sendera na li¶cie kontaktów, nie jest on ignorowany,
 	   nie jest anononimowy i nasz status na to pozwala, to zezwalamy na obrazki */
 	bool receiveImage =
@@ -676,19 +676,14 @@ QString stripHTMLFromGGMessage(const QString &msg)
 	regexp.setPattern("<font (face=\"(\\S)+\"\\s)?(size=\"\\d{1,2}\"(\\s)?)?(style=\"font-size:\\d{1,2}pt\"(\\s)?)?>");
 	mesg.replace(regexp, "");
 	mesg.replace(QRegExp("</font>"), "");
-	mesg.replace(QRegExp("&quot;"), "\"");
-	mesg.replace(QRegExp("&amp;"), "&");
-	mesg.replace(QRegExp("&lt;"), "\a");
-	mesg.replace(QRegExp("&gt;"), "\f");
-//	mesg.replace(QRegExp("&lt;"), "#");
-//	mesg.replace(QRegExp("&gt;"), "#");
+	HtmlDocument::unescapeText(mesg);
 
 	return mesg;
 }
 
 /**
  * Translates QValueList with formants into flat buffer on heap
- * 
+ *
  * Precondition - formats_length must contain valid length of result buffer
  */
 void *allocFormantBuffer(const QValueList<struct richtext_formant> &formants, int &formats_length)
@@ -765,7 +760,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 			formants.append(lastformant);
 			formats_length += sizeof(struct gg_msg_richtext_format);
 		}
-		lastformant.format.font = 0; // don't insert this formant again 
+		lastformant.format.font = 0; // don't insert this formant again
 
 		// do we have an image preceding any <span> tags?
 		if (image_idx != -1 &&
@@ -810,7 +805,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 				}
 			}
 
-			// insert the actual image formant into the list 
+			// insert the actual image formant into the list
 			actformant.format.position = image_idx;
 			actformant.format.font = GG_FONT_IMAGE;
 			actformant.image.unknown1 = 0x0109;
@@ -875,7 +870,7 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 					}
 				}
 
-				// insert <span> formant into list 
+				// insert <span> formant into list
 				formants.append(actformant);
 				formats_length += sizeof(struct gg_msg_richtext_format)
 					+ sizeof(struct gg_msg_richtext_color)
@@ -912,17 +907,12 @@ QString unformatGGMessage(const QString &msg, int &formats_length, void *&format
 		formants.append(actformant);
 		formats_length += sizeof(struct gg_msg_richtext_format);
 	}
-	
+
 	// now convert QValueList into flat memory buffer
 	if (formats_length)
 		formats = allocFormantBuffer(formants, formats_length);
 	else
 		formats = NULL;
-
-	mesg.replace(QRegExp("\\a"), "<");
-	mesg.replace(QRegExp("\\f"), ">");
-//	mesg.replace(QRegExp("#"), "<");
-//	mesg.replace(QRegExp("#"), ">");
 
 	kdebugmf(KDEBUG_INFO|KDEBUG_FUNCTION_END, "\n%s\n", unicode2latin(mesg).data());
 	return mesg;
@@ -1351,7 +1341,7 @@ const QPixmap &IconsManager::loadIcon(const QString &name)
 
 	QPixmap p;
 	if (!p.load(iconPath(name)))
-		kdebugmf(KDEBUG_WARNING, "error - pixmap '%s' cannot be loaded!\n", name.local8Bit().data());
+		kdebugmf(KDEBUG_WARNING, "warning - pixmap '%s' cannot be loaded!\n", name.local8Bit().data());
 	icons[name] = p;
 //	kdebugf2();
 	return icons[name];
@@ -1426,7 +1416,7 @@ void IconsManager::refreshMenus()
 			FOREACH(it2, (*it).second)
 				//startsWith jest potrzebne, bo je¿eli opcja w menu ma skrót klawiszowy,
 				//to menu->text(id) zwraca napis "Nazwa opcji\tskrót klawiszowy"
-				if (t == (*it2).first || t.startsWith((*it2).first + "\t")) 
+				if (t == (*it2).first || t.startsWith((*it2).first + "\t"))
 				{
 					bool enabled = menu->isItemEnabled(id);
 					bool checked = menu->isItemChecked(id);
@@ -1790,35 +1780,41 @@ void HttpClient::setCookie(const QString &name, const QString &value)
 
 void HtmlDocument::escapeText(QString& text)
 {
+	//UWAGA: &amp; MUSI byæ na pocz±tku!
 #if QT_VERSION < 0x030100
 	text.replace(QRegExp("&"), "&amp;");
 	text.replace(QRegExp("<"), "&lt;");
 	text.replace(QRegExp(">"), "&gt;");
 	text.replace(QRegExp("\""), "&quot;");
+	text.replace(QRegExp("'"), "&apos;");
 	text.replace(QRegExp("  "), "&nbsp; ");
 #else
 	text.replace("&", "&amp;");
 	text.replace("<", "&lt;");
 	text.replace(">", "&gt;");
 	text.replace("\"", "&quot;");
+	text.replace("'", "&apos;");
 	text.replace("  ", "&nbsp; ");
 #endif
 }
 
 void HtmlDocument::unescapeText(QString& text)
 {
+	//UWAGA: &amp; MUSI byæ na koñcu!
 #if QT_VERSION < 0x030100
 	text.replace(QRegExp("&nbsp;"), " ");
-	text.replace(QRegExp("&amp;"), "&");
 	text.replace(QRegExp("&lt;"), "<");
 	text.replace(QRegExp("&gt;"), ">");
 	text.replace(QRegExp("&quot;"), "\"");
+	text.replace(QRegExp("&apos;"), "'");
+	text.replace(QRegExp("&amp;"), "&");
 #else
 	text.replace("&nbsp;", " ");
-	text.replace("&amp;", "&");
 	text.replace("&lt;", "<");
 	text.replace("&gt;", ">");
 	text.replace("&quot;", "\"");
+	text.replace("&apos;", "'");
+	text.replace("&amp;", "&");
 #endif
 }
 
@@ -2587,7 +2583,7 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 	setWrapPolicy(QTextEdit::AtWordOrDocumentBoundary);
 #endif
 	setTextFormat(Qt::RichText);
-	
+
 //	connect(verticalScrollBar(), SIGNAL(sliderReleased()), this, SLOT(repaint()));
 	kdebugf2();
 }
@@ -2696,7 +2692,7 @@ void KaduTextBrowser::copy()
 	txt.replace(QRegExp("<br>"), "\n");
 	txt.replace(QRegExp("<br/>"), "\n");
 	txt.replace(QRegExp("<br />"), "\n");
-		
+
 	//usuwamy wszystkie znane tagi htmla, które mog± siê pojawiæ w chacie
 	//nie mo¿na u¿yæ po prostu <[^>]+>, bo za³api± siê te¿ emotikony typu <rotfl>
 	txt.replace(QRegExp("<![^>]+>"), "");//<!--StartFragment-->
@@ -2816,7 +2812,7 @@ QString narg(const QString &s, const QString **tab, int count)
 	out.append(QString(d-j, j));
 //	kdebugm(KDEBUG_DUMP, "out: '%s'\n", out.local8Bit().data());
 	kdebugf2();
-	
+
 	return out;
 }
 
@@ -2866,6 +2862,6 @@ void printBacktrace(const QString &header)
 	fprintf(stderr, "======= END OF BACKTRACE  ======\n");
 	free(bt_strings);
 #else
-	fprintf(stderr, "backtrace not available\n");		
+	fprintf(stderr, "backtrace not available\n");
 #endif
 }
