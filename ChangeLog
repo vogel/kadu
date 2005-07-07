@@ -40,6 +40,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
    a nie play, poprawki w skrypcie instalacyjnym (joi)
 * MacOS X: przywracanie ikony aplikacji po wy³±czeniu programu,
    opcja "Uruchom zminimalizowany" wy³±czona, ze wzglêdu na problemy z Qt (joi)
+* przy dodaniu kontaktu do listy nie pojawia siê on dwukrotnie (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

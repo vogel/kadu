@@ -413,6 +413,7 @@ void UserInfo::addNewUser(UserListElement& e)
 {
 	kdebugf();
 	bool uin_exist = e.uin() && userlist.containsUin(e.uin());
+	UserBox *userbox = kadu->userbox();
 	if (uin_exist)
 	{
 		puser = &userlist.byUin(e.uin());
@@ -422,10 +423,10 @@ void UserInfo::addNewUser(UserListElement& e)
 
 			QString currentGroup = kadu->currentGroup();
 			QStringList groups = QStringList::split(",", e.group());
-			if (currentGroup == tr("All") || groups.contains(currentGroup))
+			if ((currentGroup == tr("All") || groups.contains(currentGroup)) && !userbox->containsAltNick(e.altNick()))
 			{
-				kadu->userbox()->addUser(e.altNick());
-				kadu->userbox()->refresh();
+				userbox->addUser(e.altNick());
+				userbox->refresh();
 			}
 
 			kdebugf2();
@@ -453,7 +454,6 @@ void UserInfo::addNewUser(UserListElement& e)
 	QString currentGroup = kadu->currentGroup();
 	QStringList groups = QStringList::split(",", e.group());
 	kdebugm(KDEBUG_INFO, "currentGroup:%s tr(All):%s groups.contains(currentGroup):%d\n", currentGroup.local8Bit().data(), tr("All").local8Bit().data(), groups.contains(currentGroup));
-	UserBox *userbox = kadu->userbox();
 	if ((currentGroup == tr("All") || groups.contains(currentGroup)) && !userbox->containsAltNick(e.altNick()))
 	{
 		userbox->addUser(e.altNick());
