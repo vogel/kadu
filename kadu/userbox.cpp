@@ -26,6 +26,7 @@
 #include "kadu.h"
 
 QFontMetrics* KaduListBoxPixmap::descriptionFontMetrics=NULL;
+UserBoxSlots* UserBox::userboxslots=NULL;
 UinType KaduListBoxPixmap::myUIN;
 bool KaduListBoxPixmap::ShowDesc;
 bool KaduListBoxPixmap::AlignUserboxIconsTop;
@@ -768,6 +769,12 @@ void UserBox::all_renameUser(const QString &oldaltnick, const QString &newaltnic
 	kdebugf2();
 }
 
+void UserBox::closeModule()
+{
+	delete KaduListBoxPixmap::descriptionFontMetrics;
+	delete userboxslots;
+}
+
 void UserBox::initModule()
 {
 	kdebugf();
@@ -824,7 +831,7 @@ void UserBox::initModule()
 	KaduListBoxPixmap::setMyUIN(config_file.readNumEntry("General", "UIN"));
 	KaduListBoxPixmap::setDescriptionColor(config_file.readColorEntry("Look", "DescriptionColor"));
 
-	UserBoxSlots *userboxslots= new UserBoxSlots();
+	userboxslots= new UserBoxSlots();
 	ConfigDialog::registerSlotOnCreate(userboxslots, SLOT(onCreateConfigDialog()));
 	ConfigDialog::registerSlotOnApply(userboxslots, SLOT(onDestroyConfigDialog()));
 

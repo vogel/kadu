@@ -135,6 +135,8 @@ static void kadu_signal_handler(int s)
 
 int main(int argc, char *argv[])
 {
+
+
 	xml_config_file = new XmlConfigFile();
 	config_file_ptr = new ConfigFile(ggPath(QString("kadu.conf")));
 	config_file.addVariable("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
@@ -160,15 +162,12 @@ int main(int argc, char *argv[])
 	//opó¼nienie uruchomienia, przydatne w GNOME
 	config_file.addVariable("General", "StartDelay", 0);
 	sleep(config_file.readNumEntry("General", "StartDelay"));
-
 	dataPath("", argv[0]);
 	emoticons=new EmoticonsManager();
-
+	
 	new QApplication(argc, argv);
-	icons_manager_ptr = new IconsManager ("icons", "icons.conf");
 	defaultFontInfo = new QFontInfo(qApp->font());
 	defaultFont = new QFont(defaultFontInfo->family(), defaultFontInfo->pointSize());
-
 	// ³adowanie t³umaczenia
 	config_file.addVariable("General", "Language", QString(QTextCodec::locale()).mid(0,2));
 	QTranslator qt_qm(0, "Translator_qt");
@@ -191,7 +190,17 @@ int main(int argc, char *argv[])
 				qApp->translate("@default", QT_TR_NOOP("Another Kadu is running on this profile.")),
 				qApp->translate("@default", QT_TR_NOOP("Force running Kadu (not recommended).")),
 				qApp->translate("@default", QT_TR_NOOP("Quit.")), 0, 1, 1) == 1)
-			return 1;
+			{
+			    delete defaultFont;
+			    delete defaultFontInfo;
+			    delete emoticons;
+			    delete xml_config_file;
+			    delete config_file_ptr;
+			    lockFile->close();
+			    delete lockFile;
+			    delete qApp;
+			    return 1;
+			}
 		}
 	}
 
@@ -218,6 +227,7 @@ int main(int argc, char *argv[])
 	if (geteuid() == 0)
 		MessageBox::wrn(qApp->translate("@default", QT_TR_NOOP("Please do not run Kadu as a root!\nIt's a high security risk!")));
 	QTimer::singleShot(15000, kadu, SLOT(deleteOldConfigFiles()));
-
-	return qApp->exec();
+	int ret=qApp->exec();
+	delete qApp;
+	return ret;
 }

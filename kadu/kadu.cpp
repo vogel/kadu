@@ -352,7 +352,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	// gadu, chat
 	GaduProtocol::initModule();
-	Chat::initModule();
+	ChatManager::initModule();
 
 	// userbox
 	UserBox::initModule();
@@ -1314,10 +1314,12 @@ bool Kadu::close(bool quit)
 	}
 	else
 	{
-		chat_manager->closeAllWindows();
 		ConfigDialog::closeDialog();
 		ModulesManager::closeModule();
+
 		Updates::deactivateModule();
+		delete defaultFontInfo;
+		delete defaultFont;
 
 		if (config_file.readBoolEntry("General", "SaveGeometry"))
 		{
@@ -1333,7 +1335,7 @@ bool Kadu::close(bool quit)
 
 		config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));
 		config_file.writeEntry("Look", "CurrentGroupTab", GroupBar->currentTab());
-
+		
 		QString dockwindows = config_file.readEntry("General", "DockWindows");
 		QTextStream stream(&dockwindows, IO_WriteOnly);
 		stream << *kadu;
@@ -1372,14 +1374,25 @@ bool Kadu::close(bool quit)
 		//na koniec przywracamy domy¶ln± ikonê, je¿eli tego nie zrobimy, to pozostanie bie¿±cy status
 		setMainWindowIcon(QPixmap(dataPath("kadu.png")));
 #endif
-		kdebugmf(KDEBUG_INFO, "Saved config, disconnect and ignored\n");
-		QWidget::close(true);
-		flock(lockFileHandle, LOCK_UN);
-		lockFile->close();
-		delete lockFile;
-		lockFile=NULL;
-		kdebugmf(KDEBUG_INFO, "Graceful shutdown...\n");
-		return true;
+
+ 		delete gadu;
+ 		ChatManager::closeModule();
+ 		UserBox::closeModule();
+ 		delete emoticons;
+ 		delete icons_manager_ptr;
+  		kdebugmf(KDEBUG_INFO, "Saved config, disconnect and ignored\n");
+ 
+  		QWidget::close(true);
+  		flock(lockFileHandle, LOCK_UN);
+  		lockFile->close();
+  		delete lockFile;
+  		lockFile=NULL;
+  		kdebugmf(KDEBUG_INFO, "Graceful shutdown...\n");
+
+ 		delete	xml_config_file;
+ 		delete config_file_ptr;
+
+ 		return true;
 	}
 }
 

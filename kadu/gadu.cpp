@@ -902,6 +902,8 @@ GaduProtocol::~GaduProtocol()
 
 	disconnectedSlot();
 	delete SocketNotifiers;
+	delete CurrentStatus;
+	delete NextStatus;
 
 	kdebugf2();
 }

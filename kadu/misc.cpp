@@ -490,7 +490,7 @@ void openWebBrowser(const QString &link)
 
 	CONST_FOREACH(i, args)
 		kdebugmf(KDEBUG_INFO, "%s\n", (*i).local8Bit().data());
-	browser = new QProcess();
+	browser = new QProcess(qApp);
 	browser->setArguments(args);
 
 	if (!browser->start())
@@ -1501,6 +1501,7 @@ void IconsManager::onCreateConfigDialog()
 void IconsManager::initModule()
 {
 	kdebugf();
+	icons_manager_ptr = new IconsManager ("icons", "icons.conf");
 	config_file.addVariable("Look", "IconsPaths", "");
 	config_file.addVariable("Look", "IconTheme", "default");
 

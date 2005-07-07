@@ -695,7 +695,8 @@ AnimTextItem::AnimTextItem(
 		md.count=1;
 		md.movie=QMovie(filename);
 		if(SizeCheckImage==NULL)
-			SizeCheckImage=new QImage();
+		    SizeCheckImage= new QImage();
+
 		SizeCheckImage->load(filename);
 		md.size=SizeCheckImage->size();
 		Movies->insert(filename,md);
@@ -719,6 +720,13 @@ AnimTextItem::~AnimTextItem()
 	md.count--;
 	if (md.count==0)
 		Movies->remove(FileName);
+	if (Movies->isEmpty())
+		{
+		    delete SizeCheckImage;
+		    delete Movies;
+		    Movies=NULL;
+		    SizeCheckImage=NULL;
+		}
 	kdebugf2();
 }
 
