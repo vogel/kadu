@@ -175,7 +175,6 @@ int main(int argc, char *argv[])
 			    delete defaultFont;
 			    delete defaultFontInfo;
 			    delete emoticons;
-			    delete xml_config_file;
 			    delete config_file_ptr;
 			    lockFile->close();
 			    delete lockFile;

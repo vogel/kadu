@@ -1354,7 +1354,6 @@ bool Kadu::close(bool quit)
   		lockFile=NULL;
   		kdebugmf(KDEBUG_INFO, "Graceful shutdown...\n");
 
- 		delete	xml_config_file;
  		delete config_file_ptr;
 
  		return true;
