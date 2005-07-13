@@ -44,12 +44,18 @@ void XmlConfigFile::read()
 	kdebugf2();
 }		
 
-void XmlConfigFile::write()
+void XmlConfigFile::write(const QString& f)
 {
 	kdebugf();
 	rootElement().setAttribute("last_save_time", QDateTime::currentDateTime().toString());
 	rootElement().setAttribute("last_save_version", VERSION);
-	QFile file(ggPath("kadu.conf.xml"));
+	QFile file;
+	if (f == QString::null)
+	{
+		file.setName(ggPath("kadu.conf.xml"));
+	}
+	else
+		file.setName(f);
 	if (file.open(IO_WriteOnly | IO_Truncate))
 	{
 		kdebugm(KDEBUG_INFO, "file opened '%s'\n", (const char *)file.name().local8Bit());
@@ -66,6 +72,11 @@ void XmlConfigFile::write()
 void XmlConfigFile::sync()
 {
 	write();
+}
+
+void XmlConfigFile::saveTo(const QString &f)
+{
+	write(f);
 }
 
 QDomElement XmlConfigFile::rootElement()
@@ -162,7 +173,7 @@ void ConfigFile::read()
 }
 
 //#include <sys/time.h>
-void ConfigFile::write(const QString &f) const
+void ConfigFile::write() const
 {
 	kdebugf();
 
@@ -171,11 +182,7 @@ void ConfigFile::write(const QString &f) const
 	for(int j=0; j<100; ++j)
 	{*/
 
-	QFile file;
-	if (f==QString::null)
-		file.setName(filename);
-	else
-		file.setName(f);
+	QFile file(filename);
 	QString line;
 	QStringList out;
 #if QT_VERSION < 0x030100
@@ -228,11 +235,6 @@ QStringList ConfigFile::getGroupList() const
 void ConfigFile::sync() const
 {
 	write();
-}
-
-void ConfigFile::saveTo(const QString &f) const
-{
-	write(f);
 }
 
 QMap<QString, QString>& ConfigFile::getGroupSection(const QString& name)

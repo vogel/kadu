@@ -52,7 +52,7 @@ static void kadu_signal_handler(int s)
 	if (s==SIGSEGV)
 	{
 		kdebugm(KDEBUG_PANIC, "Kadu crashed :(\n");
-		QString f = QString("kadu.conf.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
+		QString f = QString("kadu.conf.xml.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
 		QString debug_file = QString("kadu.backtrace.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
 
 		if(lockFile)
@@ -125,7 +125,7 @@ static void kadu_signal_handler(int s)
 #else
 		kdebugm(KDEBUG_PANIC, "backtrace not available\n");		
 #endif
-		config_file.saveTo(ggPath(f.latin1()));
+		xml_config_file->saveTo(ggPath(f.latin1()));
 		abort();
 	}
 	else if (s==SIGINT || s==SIGTERM)

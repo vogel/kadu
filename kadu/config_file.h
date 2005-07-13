@@ -16,8 +16,8 @@ class XmlConfigFile
 {
 	private:
 		QDomDocument DomDocument;
-		void write();
-		
+		void write(const QString& f = QString::null);
+
 	public:
 		/**
 			Otwiera plik i go wczytuje
@@ -31,6 +31,10 @@ class XmlConfigFile
 			Zapisuje na dysk zawarto¶æ konfiguracji
 		**/
 		void sync();
+		/**
+			Zapisuje do wybranego pliku kopiê konfiguracji
+		**/
+		void saveTo(const QString &filename);
 		/**
 			Zwraca glowny element konfiguracji
 		**/
@@ -61,7 +65,7 @@ extern XmlConfigFile* xml_config_file;
 class ConfigFile {
 
 	private:
-		void write(const QString &f=QString::null) const;
+		void write() const;
 		bool changeEntry(const QString &group, const QString &name, const QString &value);
 		QString getEntry(const QString &group, const QString &name, bool *ok = 0) const;
 
@@ -82,13 +86,7 @@ class ConfigFile {
 		/**
 			Zapisuje na dysk zawarto¶æ konfiguracji
 		**/
-		void sync() const;
-		
-		/**
-			Zapisuje do wybranego pliku kopiê konfiguracji
-		**/
-		void saveTo(const QString &filename) const;
-		
+		void sync() const;		
 		/**
 			Zwraca ca³± sekcjê "name"
 		**/
