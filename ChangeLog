@@ -80,6 +80,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawione problemy z encjami (&lt; &gt; itp.) w oknie chata (joi)
 * usunieto wycieki pamieci (pawel_p)
 * w razie padu backup pliku kadu.conf.xml zamiast kadu.conf (adrian)
+* klasa ConfigDialog zapisuje dodatkowo warto¶ci w kadu.conf.xml (adrian)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

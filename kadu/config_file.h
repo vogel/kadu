@@ -48,9 +48,22 @@ class XmlConfigFile
 		**/
 		QDomElement findElement(QDomElement parent, const QString& tag_name);
 		/**
+			Zwraca pierwszy element ktorego dany atrybut ma dana wartosc
+			lub element typu null jesli nie znajdzie.
+		**/
+		QDomElement findElementByProperty(QDomElement parent, const QString& tag_name,
+			const QString& property_name, const QString& property_value);
+		/**
 			Zwraca pierwszy element lub dodaje nowy i przypisuje do rodzica.
 		**/
 		QDomElement accessElement(QDomElement parent, const QString& tag_name);
+		/**
+			Zwraca pierwszy element ktorego dany atrybut ma dana wartosc
+			lub dodaje nowy i przypisuje do rodzica (ustawia rowniez zadany
+			atrybut na zadana wartosc).
+		**/
+		QDomElement accessElementByProperty(QDomElement parent, const QString& tag_name,
+			const QString& property_name, const QString& property_value);
 		/**
 			Usuwa wszystkie dzieci elementu.
 		**/

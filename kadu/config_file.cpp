@@ -100,6 +100,29 @@ QDomElement XmlConfigFile::findElement(QDomElement parent, const QString& tag_na
 		return QDomNode().toElement();
 }
 
+QDomElement XmlConfigFile::findElementByProperty(QDomElement parent, const QString& tag_name,
+	const QString& property_name, const QString& property_value)
+{
+	kdebugf();
+	QDomNodeList elems = parent.elementsByTagName(tag_name);
+	for (unsigned int i = 0; i < elems.length(); i++)
+	{
+		QDomElement e = elems.item(i).toElement();
+		QString val = e.attribute(property_name);
+		kdebug("Checking if property value \"%s\" equals \"%s\"\n",
+			val.local8Bit().data(), property_value.local8Bit().data());
+		if (val == property_value)
+		{
+			kdebug("Element found.\n");
+			kdebugf2();
+			return e;
+		}
+	}
+	kdebug("Element not found.\n");
+	kdebugf2();
+	return QDomNode().toElement();
+}
+
 QDomElement XmlConfigFile::accessElement(QDomElement parent, const QString& tag_name)
 {
 	QDomElement elem = findElement(parent, tag_name);
@@ -107,6 +130,19 @@ QDomElement XmlConfigFile::accessElement(QDomElement parent, const QString& tag_
 		return createElement(parent, tag_name);
 	else
 		return elem;
+}
+
+QDomElement XmlConfigFile::accessElementByProperty(QDomElement parent, const QString& tag_name,
+	const QString& property_name, const QString& property_value)
+{
+	QDomElement elem = findElementByProperty(parent, tag_name,
+		property_name, property_value);
+	if (elem.isNull())
+	{
+		elem = createElement(parent, tag_name);
+		elem.setAttribute(property_name, property_value);
+	}
+	return elem;
 }
 
 void XmlConfigFile::removeChildren(QDomElement parent)
@@ -253,6 +289,20 @@ bool ConfigFile::changeEntry(const QString &group, const QString &name, const QS
 	}
 	bool ret=activeGroup->contains(name);
 	(*activeGroup)[name]=value;
+	//
+	QDomElement root_elem = xml_config_file->rootElement();
+	QDomElement deprecated_elem = xml_config_file->findElement(root_elem, "Deprecated");
+	if (!deprecated_elem.isNull())
+	{
+		QDomElement config_file_elem = xml_config_file->accessElementByProperty(
+			deprecated_elem, "ConfigFile", "name", filename.section("/", -1));
+		QDomElement group_elem = xml_config_file->accessElementByProperty(
+			config_file_elem, "Group", "name", group);
+		QDomElement entry_elem = xml_config_file->accessElementByProperty(
+			group_elem, "Entry", "name", name);
+		entry_elem.setAttribute("value", value);
+	}
+	//
 	return ret;
 }
 
