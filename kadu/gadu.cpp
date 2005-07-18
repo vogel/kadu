@@ -2279,7 +2279,7 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 
 		UserListElement &user = userlist.byUin(e->event.notify60[nr].uin);
 
-		user.ip().setAddress(e->event.notify60[nr].remote_ip);
+		user.ip().setAddress(ntohl(e->event.notify60[nr].remote_ip));
 		user.refreshDnsName();
 		user.setPort(e->event.notify60[nr].remote_port);
 		user.setVersion(e->event.notify60[nr].version);
@@ -2468,7 +2468,7 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 	}
 	else
 	{
-		user.ip().setAddress(remote_ip);
+		user.ip().setAddress(ntohl(remote_ip));
 		user.setPort(remote_port);
 		user.setVersion(version);
 		user.setMaxImageSize(image_size);

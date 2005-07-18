@@ -81,6 +81,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usunieto wycieki pamieci (pawel_p)
 * w razie padu backup pliku kadu.conf.xml zamiast kadu.conf (adrian)
 * klasa ConfigDialog zapisuje dodatkowo warto¶ci w kadu.conf.xml (adrian)
+* poprawa b³êdu typu integer overflow w libgadu mog±cego przy z³o¶liwych danych
+  doprowadziæ do zawieszenia Kadu lub wykonania dowolnego kodu (choæ druga mo¿liwo¶æ
+  jest ma³o prawdopodobna) (joi)
+* aktualizacja libgadu do wersji 20050718 (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
