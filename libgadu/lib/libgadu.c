@@ -769,7 +769,7 @@ struct gg_session *gg_login(const struct gg_login_params *p)
 		sess->protocol_version |= GG_HAS_AUDIO_MASK;
 	sess->client_version = (p->client_version) ? strdup(p->client_version) : NULL;
 	sess->last_sysmsg = p->last_sysmsg;
-	sess->image_size = gg_fix32(p->image_size);
+	sess->image_size = p->image_size;
 	sess->pid = -1;
 
 	if (p->tls == 1) {
@@ -1446,7 +1446,7 @@ int gg_send_message_confer_richtext(struct gg_session *sess, int msgclass, int r
 		return -1;
 	}
 
-	if (!message || recipients_count <= 0 || !recipients) {
+	if (!message || recipients_count <= 0 || recipients_count > 0xffff || !recipients) {
 		errno = EINVAL;
 		return -1;
 	}

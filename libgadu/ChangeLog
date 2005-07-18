@@ -4,9 +4,42 @@ oznacza, ¿e ,,nick'' jest pomys³odawc± lub podes³a³ patcha, a zrobi³
 to kto¶ oznaczony przez ,,x'' (w - wojtekka, s - speedy, a - arekm,
 d - drg, sz - szalik, del - deletek, g - gophi).
 
+// 2005-07-17
+
+- libgadu: poprawne zdarzenia GG_EVENT_IMAGE_REPLY, gdy klient po drugiej
+  stronie nie ma ¿±danego obrazka (ono/sz)
+
+// 2005-07-16
+
+- libgadu: poprawka dwóch b³êdów typu integer overflow -- ilo¶æ odbiorców
+  wiadomo¶ci wiêksza ni¿ 0x3fffffff spowoduje przekroczenie zakresu zmiennych
+  i zaalokowanie zbyt ma³ej ilo¶ci pamiêci przy obs³udze konferencji
+  (mslusarz/w)
+
+// 2005-07-13
+
+- poprawka ustawiania tytu³u terminala po rejestracji (w)
+
+// 2005-07-12
+
+- poprawki bezpieczeñstwa i inne pomniejsze contrib/scripts/ekgbot-pre1.py
+  (porridge)
+- poprawki zachowania komend /_image* na maszynach big-endian (w)
+
+// 2005-07-11
+
+- poprawki bezpieczeñstwa skryptów w contrib/ (porridge)
+- poprawki bezpieczeñstwa contrib/scripts/linki.py (eromang/w)
+
+// 2005-07-04
+
+- mo¿liwo¶æ wstawienia pocz±tkowych spacji w opisie, nale¿y
+  u¿yæ sk³adni /away \ opis ze spacja na poczatku (zigi/sz)
+- libgadu: poprawki dla maszyn Big Endian (mslusarz/sz)
+
 // 2005-06-25
 
-- libgadu: rozpoznawanie GG_HAS_AUDIO_MASK oraz GG_ERA_OMNIX_MAX
+- libgadu: rozpoznawanie GG_HAS_AUDIO_MASK oraz GG_ERA_OMNIX_MASK
   tak¿e w przypadku GG_NOTIFY_REPLY60, a nie tylko GG_STATUS60 (zigi/sz)
 - libgadu: podbicie wersji API po ostatnich zmianach (sz)
 - libgadu: b³ad przy obs³udze GG_NOTIFY_REPLY na Big-Endianach (sz)
