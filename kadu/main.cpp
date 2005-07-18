@@ -143,7 +143,15 @@ int main(int argc, char *argv[])
 	//opó¼nienie uruchomienia, przydatne w GNOME
 	config_file.addVariable("General", "StartDelay", 0);
 	sleep(config_file.readNumEntry("General", "StartDelay"));
-	dataPath("", argv[0]);
+	QString data_dir = dataPath("kadu", argv[0]);
+	if (!QDir(data_dir).isReadable())
+	{
+		fprintf(stderr, "data directory (%s) is NOT readable, exiting...\n", data_dir.local8Bit().data());
+		fprintf(stderr, "look at: http://www.kadu.net/msgs/data_dir_not_readable/\n");
+		fflush(stderr);
+		
+		exit(10);
+	}
 	emoticons=new EmoticonsManager();
 	
 	new QApplication(argc, argv);
