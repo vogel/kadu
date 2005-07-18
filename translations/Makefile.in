@@ -73,6 +73,9 @@ LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LTLIBOBJS = @LTLIBOBJS@
+MAINT = @MAINT@
+MAINTAINER_MODE_FALSE = @MAINTAINER_MODE_FALSE@
+MAINTAINER_MODE_TRUE = @MAINTAINER_MODE_TRUE@
 MAKEINFO = @MAKEINFO@
 MY_SUBDIRS = @MY_SUBDIRS@
 OBJEXT = @OBJEXT@
@@ -159,10 +162,10 @@ DIST_COMMON = $(srcdir)/Makefile.in Makefile.am
 all: all-am
 
 .SUFFIXES:
-$(srcdir)/Makefile.in:  Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
 	  $(AUTOMAKE) --gnu  translations/Makefile
-Makefile:  $(srcdir)/Makefile.in  $(top_builddir)/config.status
+Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
 uninstall-info-am:
 tags: TAGS
@@ -287,18 +290,18 @@ uninstall-am: uninstall-info-am uninstall-local
 
 
 install-data-local:
-	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/translations"; \
-	$(INSTALL_DATA) *.qm "$(DESTDIR)/$(datadir)/kadu/translations";
+	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/translations"; \
+	$(INSTALL_DATA) *.qm "$(DESTDIR)$(datadir)/kadu/translations";
 
 uninstall-local:
-	rm -f "$(DESTDIR)/$(datadir)/kadu/translations/kadu_en.qm"; \
-	rm -f "$(DESTDIR)/$(datadir)/kadu/translations/kadu_pl.qm"; \
-	rm -f "$(DESTDIR)/$(datadir)/kadu/translations/kadu_it.qm"; \
-	rm -f "$(DESTDIR)/$(datadir)/kadu/translations/kadu_de.qm"; \
-	rm -f "$(DESTDIR)/$(datadir)/kadu/translations/qt_en.qm"; \
-	rm -f "$(DESTDIR)/$(datadir)/kadu/translations/qt_pl.qm";
-	rm -f "$(DESTDIR)/$(datadir)/kadu/translations/qt_it.qm";
-	rm -f "$(DESTDIR)/$(datadir)/kadu/translations/qt_de.qm";
+	rm -f "$(DESTDIR)$(datadir)/kadu/translations/kadu_en.qm"; \
+	rm -f "$(DESTDIR)$(datadir)/kadu/translations/kadu_pl.qm"; \
+	rm -f "$(DESTDIR)$(datadir)/kadu/translations/kadu_it.qm"; \
+	rm -f "$(DESTDIR)$(datadir)/kadu/translations/kadu_de.qm"; \
+	rm -f "$(DESTDIR)$(datadir)/kadu/translations/qt_en.qm"; \
+	rm -f "$(DESTDIR)$(datadir)/kadu/translations/qt_pl.qm";
+	rm -f "$(DESTDIR)$(datadir)/kadu/translations/qt_it.qm";
+	rm -f "$(DESTDIR)$(datadir)/kadu/translations/qt_de.qm";
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

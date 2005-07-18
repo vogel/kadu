@@ -2,36 +2,64 @@
 bin_PROGRAMS = kadu
 
 kadu_SOURCES = \
-about.cpp about.h \
-chat.cpp chat.h \
-config_dialog.cpp config_dialog.h \
-config_file.cpp config_file.h \
-debug.cpp debug.h \
-emoticons.cpp emoticons.h \
-expimp.cpp expimp.h \
-gadu.cpp gadu.h \
-history.cpp history.h \
-ignore.cpp ignore.h \
-kadu.cpp kadu.h \
-main.cpp \
-message_box.cpp message_box.h \
-misc.cpp misc.h \
-modules.cpp modules.h \
-pending_msgs.cpp pending_msgs.h \
-personal_info.cpp personal_info.h \
-search.cpp search.h \
-status.cpp status.h \
-tabbar.cpp tabbar.h \
-userbox.cpp userbox.h \
-userinfo.cpp userinfo.h \
-userlist.cpp userlist.h \
-updates.cpp updates.h \
-about_moc.cpp chat_moc.cpp config_dialog_moc.cpp emoticons_moc.cpp \
-expimp_moc.cpp gadu_moc.cpp history_moc.cpp ignore_moc.cpp \
-kadu_moc.cpp message_box_moc.cpp misc_moc.cpp modules_moc.cpp \
-pending_msgs_moc.cpp personal_info_moc.cpp search_moc.cpp status_moc.cpp \
-tabbar_moc.cpp userbox_moc.cpp userinfo_moc.cpp userlist_moc.cpp \
-updates_moc.cpp
+about.cpp chat.cpp config_dialog.cpp config_file.cpp debug.cpp emoticons.cpp \
+expimp.cpp gadu.cpp history.cpp ignore.cpp kadu.cpp main.cpp message_box.cpp \
+misc.cpp modules.cpp pending_msgs.cpp personal_info.cpp search.cpp status.cpp \
+tabbar.cpp userbox.cpp userinfo.cpp userlist.cpp updates.cpp
+
+kadudir = $(DESTDIR)$(includedir)/kadu
+
+kadu_HEADERS = \
+about.h chat.h config_dialog.h config_file.h debug.h emoticons.h \
+expimp.h gadu.h history.h ignore.h kadu.h message_box.h \
+misc.h modules.h pending_msgs.h personal_info.h search.h status.h \
+tabbar.h userbox.h userinfo.h userlist.h updates.h
+
+BUILT_SOURCES = moc/about_moc.cpp moc/chat_moc.cpp moc/config_dialog_moc.cpp moc/emoticons_moc.cpp \
+moc/expimp_moc.cpp moc/gadu_moc.cpp moc/history_moc.cpp moc/ignore_moc.cpp \
+moc/kadu_moc.cpp moc/message_box_moc.cpp moc/misc_moc.cpp moc/modules_moc.cpp \
+moc/pending_msgs_moc.cpp moc/personal_info_moc.cpp moc/search_moc.cpp moc/status_moc.cpp \
+moc/tabbar_moc.cpp moc/userbox_moc.cpp moc/userinfo_moc.cpp moc/userlist_moc.cpp \
+moc/updates_moc.cpp
+
+am_kadu_OBJECTS = \
+obj/about.$(OBJEXT) obj/chat.$(OBJEXT) obj/config_dialog.$(OBJEXT) \
+obj/config_file.$(OBJEXT) obj/debug.$(OBJEXT) obj/emoticons.$(OBJEXT) \
+obj/expimp.$(OBJEXT) obj/gadu.$(OBJEXT) obj/history.$(OBJEXT) \
+obj/ignore.$(OBJEXT) obj/kadu.$(OBJEXT) obj/main.$(OBJEXT) \
+obj/message_box.$(OBJEXT) obj/misc.$(OBJEXT) obj/modules.$(OBJEXT) \
+obj/pending_msgs.$(OBJEXT) obj/personal_info.$(OBJEXT) obj/search.$(OBJEXT) \
+obj/status.$(OBJEXT) obj/tabbar.$(OBJEXT) obj/userbox.$(OBJEXT) \
+obj/userinfo.$(OBJEXT) obj/userlist.$(OBJEXT) obj/updates.$(OBJEXT) \
+obj/about_moc.$(OBJEXT) obj/chat_moc.$(OBJEXT) obj/config_dialog_moc.$(OBJEXT) \
+obj/emoticons_moc.$(OBJEXT) obj/expimp_moc.$(OBJEXT) obj/gadu_moc.$(OBJEXT) \
+obj/history_moc.$(OBJEXT) obj/ignore_moc.$(OBJEXT) obj/kadu_moc.$(OBJEXT) \
+obj/message_box_moc.$(OBJEXT) obj/misc_moc.$(OBJEXT) obj/modules_moc.$(OBJEXT) \
+obj/pending_msgs_moc.$(OBJEXT) obj/personal_info_moc.$(OBJEXT) \
+obj/search_moc.$(OBJEXT) obj/status_moc.$(OBJEXT) obj/tabbar_moc.$(OBJEXT) \
+obj/userbox_moc.$(OBJEXT) obj/userinfo_moc.$(OBJEXT) obj/userlist_moc.$(OBJEXT) \
+obj/updates_moc.$(OBJEXT)
+
+.cpp.o:
+	@echo -e "\033[32m >>> make obj/"$@" <<< \033[0m"
+	make obj/$@
+
+.cpp.obj:
+	@echo "go away ;)"
+
+obj/%.o: %.cpp
+@am__fastdepCXX_TRUE@	if $(CXXCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<; then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Po"; else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+
+obj/%_moc.o: moc/%_moc.cpp
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<; then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Po"; else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
 
 ###########################################################################
 # Precompiled headers support
@@ -74,14 +102,14 @@ $(PTHREAD_LDFLAGS) $(DYNAMIC_OPT) $(OPENSSL_LIBS)
 AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT
 
 EXTRA_DIST = hi16-app-kadu.png hi22-app-kadu.png hi24-app-kadu.png hi32-app-kadu.png hi48-app-kadu.png kadu.desktop
-CLEANFILES = *_moc.cpp $(PHEADERS_CLEANFILES)
+CLEANFILES = obj/*.o moc/*_moc.cpp $(PHEADERS_CLEANFILES)
 
-%_moc.cpp: %.h
+moc/%_moc.cpp: %.h
 	$(QT_MOC_DIR)/moc -o $@ $<
 
 install-data-local:
-	$(mkinstalldirs) "$(DESTDIR)/$(includedir)/kadu/"
-	$(INSTALL_DATA) *.h "$(DESTDIR)/$(includedir)/kadu/"
+#	$(mkinstalldirs) "$(DESTDIR)/$(includedir)/kadu/"
+#	$(INSTALL_DATA) *.h "$(DESTDIR)/$(includedir)/kadu/"
 	@if test -w "$(DESTDIR)$(datadir)"; then \
 		$(mkinstalldirs) "$(DESTDIR)$(datadir)/applnk/Internet/"; \
 		echo "[Desktop Entry]" > "$(DESTDIR)$(datadir)/applnk/Internet/kadu.desktop"; \
@@ -113,7 +141,7 @@ install-data-local:
 	fi;
 
 uninstall-local:
-	rm -f "$(DESTDIR)/$(includedir)/kadu"/*.h
+	rm -f "$(DESTDIR)$(includedir)/kadu"/*.h
 	rm -f "$(DESTDIR)$(datadir)/applnk/Internet/kadu.desktop"
 	rm -f "$(DESTDIR)$(datadir)/pixmaps/kadu-48.png"
 	rm -f "$(DESTDIR)$(datadir)/pixmaps/kadu.png"

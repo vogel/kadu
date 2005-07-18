@@ -86,6 +86,13 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   jest ma³o prawdopodobna) (joi)
 * aktualizacja libgadu do wersji 20050718 (joi)
 * sprawdzanie przy uruchomieniu czy katalog z danymi ma odpowiednie prawa (joi)
+* usprawnienia w budowaniu: (joi)
+   - Makefile'e nie powinny siê regenerowaæ przy zmianach dat modyfikacji plików,
+     regenerowanie mo¿na przywróciæ dziêki opcji --enable-maintainer-mode
+   - modu³y: pliki cxxflags i ldflags przemianowane na .cxxflags i .ldflags
+   - modu³y daj± siê zbudowaæ przez make module_nazwa_modu³u
+   - core: pliki *_moc.cpp l±duj± w podkatalogu moc
+   - core: pliki *.o l±duj± w podkatalogu obj
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

@@ -73,6 +73,9 @@ LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LTLIBOBJS = @LTLIBOBJS@
+MAINT = @MAINT@
+MAINTAINER_MODE_FALSE = @MAINTAINER_MODE_FALSE@
+MAINTAINER_MODE_TRUE = @MAINTAINER_MODE_TRUE@
 MAKEINFO = @MAKEINFO@
 MY_SUBDIRS = @MY_SUBDIRS@
 OBJEXT = @OBJEXT@
@@ -159,10 +162,10 @@ DIST_COMMON = $(srcdir)/Makefile.in Makefile.am
 all: all-am
 
 .SUFFIXES:
-$(srcdir)/Makefile.in:  Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
 	  $(AUTOMAKE) --gnu  varia/Makefile
-Makefile:  $(srcdir)/Makefile.in  $(top_builddir)/config.status
+Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
 uninstall-info-am:
 tags: TAGS
@@ -287,39 +290,39 @@ uninstall-am: uninstall-info-am uninstall-local
 
 
 install-data-local: uninstall-local
-	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/themes/sounds/default/"
-	$(INSTALL_DATA) themes/sounds/default/*.wav "$(DESTDIR)/$(datadir)/kadu/themes/sounds/default"
-	$(INSTALL_DATA) themes/sounds/default/sound.conf "$(DESTDIR)/$(datadir)/kadu/themes/sounds/default"
+	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/themes/sounds/default/"
+	$(INSTALL_DATA) themes/sounds/default/*.wav "$(DESTDIR)$(datadir)/kadu/themes/sounds/default"
+	$(INSTALL_DATA) themes/sounds/default/sound.conf "$(DESTDIR)$(datadir)/kadu/themes/sounds/default"
 
-	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/themes/icons/"
+	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/themes/icons/"
 	@for i_t in $(enabled_icon_themes); do \
 		echo -e "\033[32m>>>\033[0m Installing $$i_t icon theme ..."; \
-		$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/themes/icons/$$i_t"; \
-		$(INSTALL_DATA) themes/icons/$$i_t/icons.conf "$(DESTDIR)/$(datadir)/kadu/themes/icons/$$i_t"; \
-		$(INSTALL_DATA) themes/icons/$$i_t/* "$(DESTDIR)/$(datadir)/kadu/themes/icons/$$i_t"; \
+		$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/themes/icons/$$i_t"; \
+		$(INSTALL_DATA) themes/icons/$$i_t/icons.conf "$(DESTDIR)$(datadir)/kadu/themes/icons/$$i_t"; \
+		$(INSTALL_DATA) themes/icons/$$i_t/* "$(DESTDIR)$(datadir)/kadu/themes/icons/$$i_t"; \
 	done
 
-	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/themes/emoticons/"	
-	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/themes/emoticons/gadu-gadu/"
-	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/themes/emoticons/gadu-gadu/1/"	
-	$(INSTALL_DATA) themes/emoticons/gadu-gadu/1/*.gif "$(DESTDIR)/$(datadir)/kadu/themes/emoticons/gadu-gadu/1/"
-	$(INSTALL_DATA) themes/emoticons/gadu-gadu/1/emots.txt "$(DESTDIR)/$(datadir)/kadu/themes/emoticons/gadu-gadu/1/"
-	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/themes/emoticons/gadu-gadu/2/"	
-	$(INSTALL_DATA) themes/emoticons/gadu-gadu/2/*.gif "$(DESTDIR)/$(datadir)/kadu/themes/emoticons/gadu-gadu/2/"
-	$(INSTALL_DATA) themes/emoticons/gadu-gadu/2/*.GIF "$(DESTDIR)/$(datadir)/kadu/themes/emoticons/gadu-gadu/2/"
-	$(INSTALL_DATA) themes/emoticons/gadu-gadu/2/emots.txt "$(DESTDIR)/$(datadir)/kadu/themes/emoticons/gadu-gadu/2/"
+	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/themes/emoticons/"	
+	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/"
+	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/1/"	
+	$(INSTALL_DATA) themes/emoticons/gadu-gadu/1/*.gif "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/1/"
+	$(INSTALL_DATA) themes/emoticons/gadu-gadu/1/emots.txt "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/1/"
+	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/2/"	
+	$(INSTALL_DATA) themes/emoticons/gadu-gadu/2/*.gif "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/2/"
+	$(INSTALL_DATA) themes/emoticons/gadu-gadu/2/*.GIF "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/2/"
+	$(INSTALL_DATA) themes/emoticons/gadu-gadu/2/emots.txt "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/2/"
 
-	$(mkinstalldirs) "$(DESTDIR)/$(bindir)/"	
-	$(INSTALL_SCRIPT) scripts/kadu-mozilla "$(DESTDIR)/$(bindir)/"
-	$(INSTALL_SCRIPT) scripts/kadu-config "$(DESTDIR)/$(bindir)/"
+	$(mkinstalldirs) "$(DESTDIR)$(bindir)/"	
+	$(INSTALL_SCRIPT) scripts/kadu-mozilla "$(DESTDIR)$(bindir)/"
+	$(INSTALL_SCRIPT) scripts/kadu-config "$(DESTDIR)$(bindir)/"
 
 uninstall-local:
-	rm -f "$(DESTDIR)/$(datadir)/kadu/themes/sounds/default"/*
-	rm -rf "$(DESTDIR)/$(datadir)/kadu/themes/icons"/*
-	rm -f "$(DESTDIR)/$(datadir)/kadu/themes/emoticons/gadu-gadu/1"/*
-	rm -f "$(DESTDIR)/$(datadir)/kadu/themes/emoticons/gadu-gadu/2"/*
-	rm -f "$(DESTDIR)/$(bindir)/kadu-mozilla"
-	rm -f "$(DESTDIR)/$(bindir)/kadu-config"
+	rm -f "$(DESTDIR)$(datadir)/kadu/themes/sounds/default"/*
+	rm -rf "$(DESTDIR)$(datadir)/kadu/themes/icons"/*
+	rm -f "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/1"/*
+	rm -f "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/2"/*
+	rm -f "$(DESTDIR)$(bindir)/kadu-mozilla"
+	rm -f "$(DESTDIR)$(bindir)/kadu-config"
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

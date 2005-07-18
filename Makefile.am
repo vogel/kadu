@@ -3,7 +3,7 @@ SUBDIRS = @MY_SUBDIRS@
 
 DIST_SUBDIRS = @MY_SUBDIRS@
 
-EXTRA_DIST = admin kadu.kdevprj AUTHORS COPYING ChangeLog INSTALL README TODO kadu.lsm kadu.spec 
+EXTRA_DIST = admin AUTHORS COPYING ChangeLog INSTALL README TODO 
 
 AUTOMAKE_OPTIONS = foreign 
 
@@ -32,15 +32,15 @@ kadu-headers:
 ###########################################################################
 
 install-data-local:
-	$(mkinstalldirs) "$(DESTDIR)/$(includedir)/kadu/"
-	$(INSTALL_DATA) kadu-config.h "$(DESTDIR)/$(includedir)/kadu/"
-	$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/"	
-	$(INSTALL_DATA) AUTHORS "$(DESTDIR)/$(datadir)/kadu/"
-	$(INSTALL_DATA) ChangeLog "$(DESTDIR)/$(datadir)/kadu/"
-	$(INSTALL_DATA) COPYING "$(DESTDIR)/$(datadir)/kadu/"
-	$(INSTALL_DATA) HISTORY "$(DESTDIR)/$(datadir)/kadu/"
-	$(INSTALL_DATA) README "$(DESTDIR)/$(datadir)/kadu/"
-	$(INSTALL_DATA) THANKS "$(DESTDIR)/$(datadir)/kadu/"
+	$(mkinstalldirs) "$(DESTDIR)$(includedir)/kadu/"
+	$(INSTALL_DATA) kadu-config.h "$(DESTDIR)$(includedir)/kadu/"
+	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/"	
+	$(INSTALL_DATA) AUTHORS "$(DESTDIR)$(datadir)/kadu/"
+	$(INSTALL_DATA) ChangeLog "$(DESTDIR)$(datadir)/kadu/"
+	$(INSTALL_DATA) COPYING "$(DESTDIR)$(datadir)/kadu/"
+	$(INSTALL_DATA) HISTORY "$(DESTDIR)$(datadir)/kadu/"
+	$(INSTALL_DATA) README "$(DESTDIR)$(datadir)/kadu/"
+	$(INSTALL_DATA) THANKS "$(DESTDIR)$(datadir)/kadu/"
 	@echo
 	@echo " **************************************"
 	@echo " * Kadu is now successfully installed *"
@@ -52,10 +52,10 @@ install-data-local:
 	@echo
 
 uninstall-local:
-	rm -f "$(DESTDIR)/$(includedir)/kadu/kadu-config.h"
-	rm -f "$(DESTDIR)/$(datadir)/kadu/AUTHORS"
-	rm -f "$(DESTDIR)/$(datadir)/kadu/ChangeLog"
-	rm -f "$(DESTDIR)/$(datadir)/kadu/COPYING"
-	rm -f "$(DESTDIR)/$(datadir)/kadu/HISTORY"
-	rm -f "$(DESTDIR)/$(datadir)/kadu/README"
-	rm -f "$(DESTDIR)/$(datadir)/kadu/THANKS"
+	rm -f "$(DESTDIR)$(includedir)/kadu/kadu-config.h"
+	rm -f "$(DESTDIR)$(datadir)/kadu/AUTHORS"
+	rm -f "$(DESTDIR)$(datadir)/kadu/ChangeLog"
+	rm -f "$(DESTDIR)$(datadir)/kadu/COPYING"
+	rm -f "$(DESTDIR)$(datadir)/kadu/HISTORY"
+	rm -f "$(DESTDIR)$(datadir)/kadu/README"
+	rm -f "$(DESTDIR)$(datadir)/kadu/THANKS"

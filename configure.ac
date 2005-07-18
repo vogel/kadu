@@ -301,12 +301,12 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 					AC_MSG_ERROR([Additional module configuration command failed!]); \
 				fi; \
 			fi && \
-			echo -n "$MODULE_CXXFLAGS" > modules/$mod/cxxflags && \
+			echo -n "$MODULE_CXXFLAGS" > modules/$mod/.cxxflags && \
 			if test -z `expr " $shared_modules " : ".* \($mod\) "`; then \
-				echo -n > modules/$mod/ldflags; \
+				echo -n > modules/$mod/.ldflags; \
 				static_modules_ldflags="$static_modules_ldflags $MODULE_LDFLAGS"; \
 			else \
-				echo -n "$MODULE_LDFLAGS" > modules/$mod/ldflags; \
+				echo -n "$MODULE_LDFLAGS" > modules/$mod/.ldflags; \
 			fi || exit 1; \
 		fi; \
 	done
@@ -406,6 +406,7 @@ echo " ***************************************"
 AC_CONFIG_SRCDIR([kadu/kadu.cpp])
 AC_CONFIG_AUX_DIR([admin])
 AM_CONFIG_HEADER([kadu-config.h])
+AM_MAINTAINER_MODE
 AC_CANONICAL_SYSTEM
 AM_INIT_AUTOMAKE([kadu-$version],[$version])
 
