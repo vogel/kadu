@@ -713,18 +713,6 @@ Es ist ein sehr hohes Risiko!</translation>
         <translation>Die gefilterte Nachricht ist zu lang (%1&gt;=%2)</translation>
     </message>
     <message>
-        <source>None</source>
-        <translation>Ohne</translation>
-    </message>
-    <message>
-        <source>Static</source>
-        <translation>Statisch</translation>
-    </message>
-    <message>
-        <source>Animated</source>
-        <translation>Animiert</translation>
-    </message>
-    <message>
         <source>Your message has been blocked by server. Message has not been delivered.</source>
         <translation>Ihre Nachricht wurde vom Sever blockiert. Nachricht wurde nicht zugestellt.</translation>
     </message>
@@ -770,6 +758,21 @@ Do you really want to send this image?
 </source>
         <translation>Die Datei ist zu groß für %1.
 Wollen Sie wirklich diese Datei senden?</translation>
+    </message>
+</context>
+<context>
+    <name>ChatManager</name>
+    <message>
+        <source>None</source>
+        <translation type="unfinished">Ohne</translation>
+    </message>
+    <message>
+        <source>Static</source>
+        <translation type="unfinished">Statisch</translation>
+    </message>
+    <message>
+        <source>Animated</source>
+        <translation type="unfinished">Animiert</translation>
     </message>
 </context>
 <context>
@@ -855,6 +858,22 @@ Sie sollten den Pfad zum Browser in $PATH eintragen oder in der kadu-Konfigurati
         <source>Apply</source>
         <translation>Anwenden</translation>
     </message>
+    <message>
+        <source>User experience level:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Beginner</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Advanced</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expert</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>GaduProtocol</name>
@@ -913,8 +932,8 @@ Ihr Passwort stimmt nicht!</translation>
         <translation>Nummer-GG (UIN) oder Passwort fehlt!</translation>
     </message>
     <message>
-        <source>Default</source>
-        <translation>Voreinstellung</translation>
+        <source>Automatic</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

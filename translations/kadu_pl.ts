@@ -714,18 +714,6 @@ Jest to wysoce ryzykowne!</translation>
         <translation>Filtrowana  wiadomość zbyt długa (%1&gt;=%2)</translation>
     </message>
     <message>
-        <source>None</source>
-        <translation>Bez emotikon</translation>
-    </message>
-    <message>
-        <source>Static</source>
-        <translation>Bez animacji</translation>
-    </message>
-    <message>
-        <source>Animated</source>
-        <translation>Animowane</translation>
-    </message>
-    <message>
         <source>Your message has been blocked by server. Message has not been delivered.</source>
         <translation>Twoja wiadomość została zablokowana przez serwer. Wiadomość nie zostanie dostarczona.</translation>
     </message>
@@ -771,6 +759,21 @@ Do you really want to send this image?
 </source>
         <translation>Rozmiar pliku jest za duży dla %1.
 Czy napewno chcesz wysłać ten obrazek?</translation>
+    </message>
+</context>
+<context>
+    <name>ChatManager</name>
+    <message>
+        <source>None</source>
+        <translation>Bez emotikon</translation>
+    </message>
+    <message>
+        <source>Static</source>
+        <translation>Statyczne</translation>
+    </message>
+    <message>
+        <source>Animated</source>
+        <translation>Animowane</translation>
     </message>
 </context>
 <context>
@@ -856,6 +859,22 @@ Wybrana ścieżka do przeglądarki nie istnieje w zmiennej $PATH. Musisz ją do 
         <source>Apply</source>
         <translation>Zastosuj</translation>
     </message>
+    <message>
+        <source>User experience level:</source>
+        <translation>Poziom zaawansowania użytkownika:</translation>
+    </message>
+    <message>
+        <source>Beginner</source>
+        <translation>Początkujący</translation>
+    </message>
+    <message>
+        <source>Advanced</source>
+        <translation>Zaawansowany</translation>
+    </message>
+    <message>
+        <source>Expert</source>
+        <translation>Ekspert</translation>
+    </message>
 </context>
 <context>
     <name>GaduProtocol</name>
@@ -914,8 +933,8 @@ Twoje hasło jest nieprawidłowe!</translation>
         <translation>Nie podałeś nr GG lub hasła!</translation>
     </message>
     <message>
-        <source>Default</source>
-        <translation>Domyślny</translation>
+        <source>Automatic</source>
+        <translation>Automatyczny</translation>
     </message>
 </context>
 <context>

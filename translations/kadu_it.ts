@@ -593,27 +593,27 @@ E un rischio per la sicurezza!</translation>
     </message>
     <message>
         <source>Headers</source>
-        <translation type="unfinished"></translation>
+        <translation>Intestazioni</translation>
     </message>
     <message>
         <source>Remove chat header repetitions</source>
-        <translation type="unfinished"></translation>
+        <translation>Rimuovi intestazioni ripetitive nella finestra chat</translation>
     </message>
     <message>
         <source>Chat header separators height:</source>
-        <translation type="unfinished"></translation>
+        <translation>Larghezza separatori intestazioni Chat:</translation>
     </message>
     <message>
         <source>Interval between header removal:</source>
-        <translation type="unfinished"></translation>
+        <translation>Intervallo tra le rimozioni intestazioni:</translation>
     </message>
     <message>
         <source>On shutdown, set current description</source>
-        <translation type="unfinished"></translation>
+        <translation>Quando spento, utilizza attuale descrizione</translation>
     </message>
     <message>
         <source>Another Kadu is running on this profile.</source>
-        <translation type="unfinished"></translation>
+        <translation>Altro Kadu usa questo profilo.</translation>
     </message>
 </context>
 <context>
@@ -714,18 +714,6 @@ E un rischio per la sicurezza!</translation>
         <translation>messaggio filtrato troppo lungo (%1&gt;=%2)</translation>
     </message>
     <message>
-        <source>None</source>
-        <translation>Senza emoticon</translation>
-    </message>
-    <message>
-        <source>Static</source>
-        <translation>Senza animazione</translation>
-    </message>
-    <message>
-        <source>Animated</source>
-        <translation>Animato</translation>
-    </message>
-    <message>
         <source>Your message has been blocked by server. Message has not been delivered.</source>
         <translation>Il tuo messaggio e stato bloccato dal server, non sarà consegnato.</translation>
     </message>
@@ -771,6 +759,21 @@ Do you really want to send this image?
 </source>
         <translation>Dimensione file troppo grande per %1.
 Sicuro di spedirlo comunque ?</translation>
+    </message>
+</context>
+<context>
+    <name>ChatManager</name>
+    <message>
+        <source>None</source>
+        <translation>Senza emoticon</translation>
+    </message>
+    <message>
+        <source>Static</source>
+        <translation>Statici</translation>
+    </message>
+    <message>
+        <source>Animated</source>
+        <translation>Animato</translation>
     </message>
 </context>
 <context>
@@ -856,6 +859,22 @@ Il percorso per raggiungere browser non esiste in $PATH. Devi specificarlo.</tra
         <source>Apply</source>
         <translation>Applica</translation>
     </message>
+    <message>
+        <source>User experience level:</source>
+        <translation>Livello d&apos;esperienza utente:</translation>
+    </message>
+    <message>
+        <source>Beginner</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Advanced</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expert</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>GaduProtocol</name>
@@ -914,8 +933,8 @@ La tua password è sbagliata!</translation>
         <translation>Numero GG o password non mandati!</translation>
     </message>
     <message>
-        <source>Default</source>
-        <translation>Predefinito</translation>
+        <source>Automatic</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1249,7 +1268,9 @@ La tua password è sbagliata!</translation>
         <source>Selected users:
 %0
 will be deleted. Are you sure?</source>
-        <translation type="unfinished"></translation>
+        <translation>Contatti selezionati:
+%0
+saranno eliminati. Vuoi davvero?</translation>
     </message>
     <message>
         <source>Yes, with &amp;history</source>
