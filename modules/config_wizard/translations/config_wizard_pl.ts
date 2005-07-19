@@ -307,7 +307,7 @@ Hasło powinno w obu polach być takie same!</translation>
     </message>
     <message>
         <source>Busy</source>
-        <translation>Zaraz wracam</translation>
+        <translation>Zajęty</translation>
     </message>
     <message>
         <source>My description</source>

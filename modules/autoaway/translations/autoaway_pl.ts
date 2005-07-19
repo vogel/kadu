@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Enable autoaway</source>
-        <translation>Automatyczny status &quot;zaraz wracam&quot;</translation>
+        <translation>Automatyczny status &quot;zajęty&quot;</translation>
     </message>
     <message>
         <source>Set status to away after </source>
