@@ -3,7 +3,7 @@ lub rozbudowy. Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub
 podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y. Je¶li jest
 w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
-+++ wersja 0.4.1
++++ wersja 0.4.1 (19.07.2005)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
 * poprawiona kompatybilno¶æ z Qt 3.0 (joi)
 * poprawka wykrywania pthreadów w libgadu na FreeBSD 4.x (z cvsu EKG) (joi)
