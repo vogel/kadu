@@ -1370,11 +1370,6 @@ bool Kadu::close(bool quit)
 		}
 //		disconnectNetwork();
 //		gadu->logout();
-#ifdef Q_OS_MACX
-		//na koniec przywracamy domy¶ln± ikonê, je¿eli tego nie zrobimy, to pozostanie bie¿±cy status
-		setMainWindowIcon(QPixmap(dataPath("kadu.png")));
-#endif
-
  		delete gadu;
  		ChatManager::closeModule();
  		UserBox::closeModule();
@@ -1382,6 +1377,11 @@ bool Kadu::close(bool quit)
  		delete icons_manager_ptr;
   		kdebugmf(KDEBUG_INFO, "Saved config, disconnect and ignored\n");
  
+#ifdef Q_OS_MACX
+		//na koniec przywracamy domy¶ln± ikonê, je¿eli tego nie zrobimy, to pozostanie bie¿±cy status
+		setMainWindowIcon(QPixmap(dataPath("kadu.png")));
+#endif
+
   		QWidget::close(true);
   		flock(lockFileHandle, LOCK_UN);
   		lockFile->close();
