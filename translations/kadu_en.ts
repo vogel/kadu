@@ -689,18 +689,6 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>None</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Static</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Animated</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Your message has been blocked by server. Message has not been delivered.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -742,6 +730,21 @@ Some of them probably will not get it.</source>
         <source>This file is too big for %1.
 Do you really want to send this image?
 </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ChatManager</name>
+    <message>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Static</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Animated</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

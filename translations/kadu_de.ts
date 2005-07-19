@@ -693,18 +693,6 @@ Es ist ein sehr hohes Risiko!</translation>
         <translation>Die gefilterte Nachricht ist zu lang (%1&gt;=%2)</translation>
     </message>
     <message>
-        <source>None</source>
-        <translation>Ohne</translation>
-    </message>
-    <message>
-        <source>Static</source>
-        <translation>Statisch</translation>
-    </message>
-    <message>
-        <source>Animated</source>
-        <translation>Animiert</translation>
-    </message>
-    <message>
         <source>Your message has been blocked by server. Message has not been delivered.</source>
         <translation>Ihre Nachricht wurde vom Sever blockiert. Nachricht wurde nicht zugestellt.</translation>
     </message>
@@ -750,6 +738,21 @@ Do you really want to send this image?
 </source>
         <translation>Die Datei ist zu groß für %1.
 Wollen Sie wirklich diese Datei senden?</translation>
+    </message>
+</context>
+<context>
+    <name>ChatManager</name>
+    <message>
+        <source>None</source>
+        <translation>Ohne</translation>
+    </message>
+    <message>
+        <source>Static</source>
+        <translation>Statisch</translation>
+    </message>
+    <message>
+        <source>Animated</source>
+        <translation>Animiert</translation>
     </message>
 </context>
 <context>

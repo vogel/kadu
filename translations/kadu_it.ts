@@ -593,7 +593,7 @@ E un rischio per la sicurezza!</translation>
     </message>
     <message>
         <source>Another Kadu is running on this profile.</source>
-        <translation type="unfinished"></translation>
+        <translation>Altro Kadu viene usato con questo profilo.</translation>
     </message>
 </context>
 <context>
@@ -694,18 +694,6 @@ E un rischio per la sicurezza!</translation>
         <translation>messaggio filtrato troppo lungo (%1&gt;=%2)</translation>
     </message>
     <message>
-        <source>None</source>
-        <translation>Senza emoticon</translation>
-    </message>
-    <message>
-        <source>Static</source>
-        <translation>Senza animazione</translation>
-    </message>
-    <message>
-        <source>Animated</source>
-        <translation>Animato</translation>
-    </message>
-    <message>
         <source>Your message has been blocked by server. Message has not been delivered.</source>
         <translation>Il tuo messaggio e stato bloccato dal server, non sarà consegnato.</translation>
     </message>
@@ -751,6 +739,21 @@ Do you really want to send this image?
 </source>
         <translation>Dimensione file troppo grande per %1.
 Sicuro di spedirlo comunque ?</translation>
+    </message>
+</context>
+<context>
+    <name>ChatManager</name>
+    <message>
+        <source>None</source>
+        <translation>Senza emoticon</translation>
+    </message>
+    <message>
+        <source>Static</source>
+        <translation>Statici</translation>
+    </message>
+    <message>
+        <source>Animated</source>
+        <translation>Animato</translation>
     </message>
 </context>
 <context>
@@ -1229,7 +1232,9 @@ La tua password è sbagliata!</translation>
         <source>Selected users:
 %0
 will be deleted. Are you sure?</source>
-        <translation type="unfinished"></translation>
+        <translation>Contatti selezionati :
+%0
+saranno eliminati. Vuoi davvero?</translation>
     </message>
 </context>
 <context>
