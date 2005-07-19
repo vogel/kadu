@@ -93,6 +93,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
    - modu³y daj± siê zbudowaæ przez make module_nazwa_modu³u
    - core: pliki *_moc.cpp l±duj± w podkatalogu moc
    - core: pliki *.o l±duj± w podkatalogu obj
+* przy zwyk³ym odtwarzaniu pojedynczego d¼wiêku opró¿niamy bufor urz±dzenia
+  (pomaga m.in. na freebsd) (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
