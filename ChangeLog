@@ -48,6 +48,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   jest ma³o prawdopodobna) (joi)
 * aktualizacja libgadu do wersji 20050718 (joi)
 * sprawdzanie przy uruchomieniu czy katalog z danymi ma odpowiednie prawa (joi)
+* przy zwyk³ym odtwarzaniu pojedynczego d¼wiêku opró¿niamy bufor urz±dzenia
+  (pomaga m.in. na freebsd) (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
