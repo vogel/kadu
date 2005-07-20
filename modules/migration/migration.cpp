@@ -234,7 +234,10 @@ static void xmlConfigFilesMigration()
 	xml_config_file->sync();
 	MessageBox::msg(QString("Configuration files migrated to kadu.conf.xml.\n"
 		"You can remove following files now:\n%1\n"
-		"(backup will be a good idea).\n").arg(dir.entryList().join("\n")));		
+		"(backup will be a good idea).\n"
+		"Kadu will be closed now. Please click OK and "
+		"than run Kadu again.").arg(dir.entryList().join("\n")), true);
+	_exit(0);
 	kdebugf2();
 }
 
@@ -242,9 +245,9 @@ extern "C" int migration_init()
 {
 	kdebugf();
 	settingsDirMigration();
+	xmlConfigFilesMigration();
 	xmlUserListMigration();
 	xmlIgnoredListMigration();
-	xmlConfigFilesMigration();
 	kdebugf2();
 	return 0;
 }

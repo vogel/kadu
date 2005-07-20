@@ -2291,7 +2291,8 @@ void Themes::setTheme(const QString& theme)
 		ActualTheme= theme;
 		if (theme != "Custom")
 		{
-			ConfigFile theme_file(themePath()+fixFileName(themePath(),ConfigName));
+			PlainConfigFile theme_file(
+				themePath()+fixFileName(themePath(),ConfigName));
 			entries=theme_file.getGroupSection(Name);
 		}
 		emit themeChanged(ActualTheme);

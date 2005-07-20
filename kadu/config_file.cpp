@@ -158,12 +158,12 @@ XmlConfigFile* xml_config_file = NULL;
 
 
 
-ConfigFile::ConfigFile(const QString &filename) : filename(filename),activeGroup(NULL)
+PlainConfigFile::PlainConfigFile(const QString &filename) : filename(filename),activeGroup(NULL)
 {
 	read();
 }
 
-void ConfigFile::read()
+void PlainConfigFile::read()
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", filename.local8Bit().data());
 	QFile file(filename);
@@ -209,7 +209,7 @@ void ConfigFile::read()
 }
 
 //#include <sys/time.h>
-void ConfigFile::write() const
+void PlainConfigFile::write() const
 {
 	kdebugf();
 
@@ -262,26 +262,26 @@ void ConfigFile::write() const
 	kdebugf2();
 }
 
-QStringList ConfigFile::getGroupList() const
+QStringList PlainConfigFile::getGroupList() const
 {
 	return QStringList(keys(groups));
 //	return QStringList(groups.keys());
 }
 
-void ConfigFile::sync() const
+void PlainConfigFile::sync() const
 {
 	write();
 }
 
-QMap<QString, QString>& ConfigFile::getGroupSection(const QString& name)
+QMap<QString, QString>& PlainConfigFile::getGroupSection(const QString& name)
 {
 	kdebugf();
 	return groups[name];
 }
 
-bool ConfigFile::changeEntry(const QString &group, const QString &name, const QString &value)
+bool PlainConfigFile::changeEntry(const QString &group, const QString &name, const QString &value)
 {
-//	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::changeEntry(%s, %s, %s) %p\n", (const char *)group.local8Bit(), (const char *)name.local8Bit(), (const char *)value.local8Bit(), this);
+//	kdebugm(KDEBUG_FUNCTION_START, "PlainConfigFile::changeEntry(%s, %s, %s) %p\n", (const char *)group.local8Bit(), (const char *)name.local8Bit(), (const char *)value.local8Bit(), this);
 	if (activeGroupName!=group)
 	{
 		activeGroupName=group;
@@ -290,25 +290,12 @@ bool ConfigFile::changeEntry(const QString &group, const QString &name, const QS
 	bool ret=activeGroup->contains(name);
 	(*activeGroup)[name]=value;
 	//
-	QDomElement root_elem = xml_config_file->rootElement();
-	QDomElement deprecated_elem = xml_config_file->findElement(root_elem, "Deprecated");
-	if (!deprecated_elem.isNull())
-	{
-		QDomElement config_file_elem = xml_config_file->accessElementByProperty(
-			deprecated_elem, "ConfigFile", "name", filename.section("/", -1));
-		QDomElement group_elem = xml_config_file->accessElementByProperty(
-			config_file_elem, "Group", "name", group);
-		QDomElement entry_elem = xml_config_file->accessElementByProperty(
-			group_elem, "Entry", "name", name);
-		entry_elem.setAttribute("value", value);
-	}
-	//
 	return ret;
 }
 
-QString ConfigFile::getEntry(const QString &group, const QString &name, bool *ok) const
+QString PlainConfigFile::getEntry(const QString &group, const QString &name, bool *ok) const
 {
-//	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::getEntry(%s, %s) %p\n", (const char *)group.local8Bit(), (const char *)name.local8Bit(), this);
+//	kdebugm(KDEBUG_FUNCTION_START, "PlainConfigFile::getEntry(%s, %s) %p\n", (const char *)group.local8Bit(), (const char *)name.local8Bit(), this);
 	if (activeGroupName!=group)
 	{
 		if (!groups.contains(group))
@@ -326,6 +313,329 @@ QString ConfigFile::getEntry(const QString &group, const QString &name, bool *ok
 		return (*activeGroup)[name];
 	else
 		return QString::null;
+}
+
+void PlainConfigFile::writeEntry(const QString &group,const QString &name, const QString &value)
+{
+	changeEntry(group, name, value);
+}
+
+void PlainConfigFile::writeEntry(const QString &group,const QString &name, const char *value)
+{
+	changeEntry(group, name, QString::fromLocal8Bit(value));
+}
+
+void PlainConfigFile::writeEntry(const QString &group,const QString &name, const int value)
+{
+	changeEntry(group, name, QString::number(value));
+}
+
+void PlainConfigFile::writeEntry(const QString &group,const QString &name, const double value)
+{
+	changeEntry(group, name, QString::number(value, 'f'));
+}
+
+void PlainConfigFile::writeEntry(const QString &group,const QString &name, const bool value)
+{
+	changeEntry(group, name, value ? "true" : "false");
+}
+
+void PlainConfigFile::writeEntry(const QString &group,const QString &name, const QRect &value)
+{
+	changeEntry(group, name, QString("%1,%2,%3,%4").arg(value.left()).arg(value.top()).
+				arg(value.width()).arg(value.height()));
+}
+
+void PlainConfigFile::writeEntry(const QString &group,const QString &name, const QSize &value)
+{
+	changeEntry(group, name, QString("%1,%2").arg(value.width()).arg(value.height()));
+}
+
+void PlainConfigFile::writeEntry(const QString &group,const QString &name, const QColor &value)
+{
+	changeEntry(group, name, value.name());
+}
+
+void PlainConfigFile::writeEntry(const QString &group,const QString &name, const QFont &value)
+{
+	changeEntry(group, name, value.family()+","+QString::number(value.pointSize()));
+}
+
+void PlainConfigFile::writeEntry(const QString &group,const QString &name, const QPoint &value)
+{
+	changeEntry(group, name, QString("%1,%2").arg(value.x()).arg(value.y()));
+}
+
+QString PlainConfigFile::readEntry(const QString &group,const QString &name, const QString &def) const
+{
+	QString string = getEntry(group, name);
+	if (string == QString::null)
+		return def;
+	return string;
+}
+
+unsigned int PlainConfigFile::readUnsignedNumEntry(const QString &group,const QString &name, unsigned int def) const
+{
+	bool ok;
+	QString string = getEntry(group, name);
+	if (string == QString::null)
+		return def;
+	unsigned int num = string.toUInt(&ok);
+	if (!ok)
+		return def;
+	return num;
+}
+
+int PlainConfigFile::readNumEntry(const QString &group,const QString &name, int def) const
+{
+	bool ok;
+	QString string = getEntry(group, name);
+	if (string == QString::null)
+		return def;
+	int num = string.toInt(&ok);
+	if (!ok)
+		return def;
+	return num;
+}
+
+double PlainConfigFile::readDoubleNumEntry(const QString &group,const QString &name, double def) const
+{
+	bool ok;
+	QString string = getEntry(group, name);
+	if (string == QString::null)
+		return def;
+	double num = string.toDouble(&ok);
+	if (!ok)
+		return def;
+	return num;
+}
+
+bool PlainConfigFile::readBoolEntry(const QString &group,const QString &name, bool def) const
+{
+	QString string = getEntry(group, name);
+	if (string == QString::null)
+		return def;
+	return string=="true";
+}
+
+QRect PlainConfigFile::readRectEntry(const QString &group,const QString &name, const QRect *def) const
+{
+	QString string = getEntry(group, name);
+	QStringList stringlist;
+	QRect rect(0,0,0,0);
+	int l, t, w, h;
+	bool ok;
+
+	if (string == QString::null)
+		return def ? *def : rect;
+	stringlist = QStringList::split(",", string);
+	if (stringlist.count() != 4)
+		return def ? *def : rect;
+	l = stringlist[0].toInt(&ok); if (!ok) return def ? *def : rect;
+	t = stringlist[1].toInt(&ok); if (!ok) return def ? *def : rect;
+	w = stringlist[2].toInt(&ok); if (!ok) return def ? *def : rect;
+	h = stringlist[3].toInt(&ok); if (!ok) return def ? *def : rect;
+	rect.setRect(l, t, w, h);
+	return rect;
+}
+
+QSize PlainConfigFile::readSizeEntry(const QString &group,const QString &name, const QSize *def) const
+{
+	QString string = getEntry(group, name);
+	QStringList stringlist;
+	QSize size(0,0);
+	int w, h;
+	bool ok;
+
+	if (string == QString::null)
+		return def ? *def : size;
+	stringlist = QStringList::split(",", string);
+	if (stringlist.count() != 2)
+		return def ? *def : size;
+	w = stringlist[0].toInt(&ok); if (!ok) return def ? *def : size;
+	h = stringlist[1].toInt(&ok); if (!ok) return def ? *def : size;
+	size.setWidth(w);
+	size.setHeight(h);
+	return size;
+}
+
+QColor PlainConfigFile::readColorEntry(const QString &group,const QString &name, const QColor *def) const
+{
+	QColor col(0,0,0);
+	QString str = getEntry(group, name);
+	if (str==QString::null)
+		return def ? *def : col;
+	else
+	{
+		if (!str.contains(','))
+			return QColor(str);
+		
+		//stary zapis kolorów, w 0.5.0 mo¿na bêdzie wywaliæ
+		bool ok;
+		QStringList stringlist = QStringList::split(",", str);
+		if (stringlist.count() != 3)
+			return def ? *def : col;
+		int r = stringlist[0].toInt(&ok); if (!ok) return def ? *def : col;
+		int g = stringlist[1].toInt(&ok); if (!ok) return def ? *def : col;
+		int b = stringlist[2].toInt(&ok); if (!ok) return def ? *def : col;
+		col.setRgb(r, g, b);
+		return col;
+	}
+}
+
+													 
+QFont PlainConfigFile::readFontEntry(const QString &group,const QString &name, const QFont *def) const
+{
+	QString string = getEntry(group, name);
+	QStringList stringlist;
+	QFont font;
+	bool ok;
+
+	if (string == QString::null)
+		return def ? *def : QApplication::font();
+	stringlist = QStringList::split(",", string);
+	if (stringlist.count() < 2)
+		return def ? *def : QApplication::font();
+	font.setFamily(stringlist[0]);
+	font.setPointSize(stringlist[1].toInt(&ok));
+	if (!ok)
+		return def ? *def : QApplication::font();
+	return font;
+}
+
+QPoint PlainConfigFile::readPointEntry(const QString &group,const QString &name, const QPoint *def) const
+{
+	QString string = getEntry(group, name);
+	QStringList stringlist;
+	QPoint point(0,0);
+	int x, y;
+	bool ok;
+
+	if (string == QString::null)
+		return def ? *def : point;
+	stringlist = QStringList::split(",", string);
+	if (stringlist.count() != 2)
+		return def ? *def : point;
+	x = stringlist[0].toInt(&ok); if (!ok) return def ? *def : point;
+	y = stringlist[1].toInt(&ok); if (!ok) return def ? *def : point;
+	point.setX(x);
+	point.setY(y);
+	return point;
+}
+
+void PlainConfigFile::addVariable(const QString &group, const QString &name, const QString &defvalue)
+{
+	if (getEntry(group, name).isEmpty())
+		writeEntry(group,name,defvalue);
+}
+void PlainConfigFile::addVariable(const QString &group, const QString &name, const char *defvalue)
+{
+	if (getEntry(group, name).isEmpty())
+		writeEntry(group,name,defvalue);
+}
+void PlainConfigFile::addVariable(const QString &group, const QString &name, const int defvalue)
+{
+	if (getEntry(group, name).isEmpty())
+		writeEntry(group,name,defvalue);
+}
+void PlainConfigFile::addVariable(const QString &group, const QString &name, const double defvalue)
+{
+	if (getEntry(group, name).isEmpty())
+		writeEntry(group,name,defvalue);
+}
+void PlainConfigFile::addVariable(const QString &group, const QString &name, const bool defvalue)
+{
+	if (getEntry(group, name).isEmpty())
+		writeEntry(group,name,defvalue);
+}
+void PlainConfigFile::addVariable(const QString &group, const QString &name, const QRect &defvalue)
+{
+	if (getEntry(group, name).isEmpty())
+		writeEntry(group,name,defvalue);
+}
+void PlainConfigFile::addVariable(const QString &group, const QString &name, const QSize &defvalue)
+{
+	if (getEntry(group, name).isEmpty())
+		writeEntry(group,name,defvalue);
+}
+void PlainConfigFile::addVariable(const QString &group, const QString &name, const QColor &defvalue)
+{
+	if (getEntry(group, name).isEmpty())
+		writeEntry(group,name,defvalue);
+}
+void PlainConfigFile::addVariable(const QString &group, const QString &name, const QFont &defvalue)
+{
+	if (getEntry(group, name).isEmpty())
+		writeEntry(group,name,defvalue);
+}
+void PlainConfigFile::addVariable(const QString &group, const QString &name, const QPoint &defvalue)
+{
+	if (getEntry(group, name).isEmpty())
+		writeEntry(group,name,defvalue);
+}
+
+
+
+
+ConfigFile::ConfigFile(const QString &filename) : filename(filename),activeGroup(NULL)
+{
+}
+
+void ConfigFile::sync() const
+{
+	xml_config_file->sync();
+}
+
+bool ConfigFile::changeEntry(const QString &group, const QString &name, const QString &value)
+{
+//	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::changeEntry(%s, %s, %s) %p\n", (const char *)group.local8Bit(), (const char *)name.local8Bit(), (const char *)value.local8Bit(), this);
+	QDomElement root_elem = xml_config_file->rootElement();
+	QDomElement deprecated_elem = xml_config_file->findElement(root_elem, "Deprecated");
+	if (!deprecated_elem.isNull())
+	{
+		QDomElement config_file_elem = xml_config_file->accessElementByProperty(
+			deprecated_elem, "ConfigFile", "name", filename.section("/", -1));
+		QDomElement group_elem = xml_config_file->accessElementByProperty(
+			config_file_elem, "Group", "name", group);
+		QDomElement entry_elem = xml_config_file->accessElementByProperty(
+			group_elem, "Entry", "name", name);
+		entry_elem.setAttribute("value", value);
+	}
+	//
+	return true;
+}
+
+QString ConfigFile::getEntry(const QString &group, const QString &name, bool *ok) const
+{
+//	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::getEntry(%s, %s) %p\n", (const char *)group.local8Bit(), (const char *)name.local8Bit(), this);
+	QDomElement root_elem = xml_config_file->rootElement();
+	QDomElement deprecated_elem = xml_config_file->findElement(root_elem, "Deprecated");
+	if (!deprecated_elem.isNull())
+	{
+		QDomElement config_file_elem = xml_config_file->findElementByProperty(
+			deprecated_elem, "ConfigFile", "name", filename.section("/", -1));
+		if (!config_file_elem.isNull())
+		{
+			QDomElement group_elem = xml_config_file->findElementByProperty(
+				config_file_elem, "Group", "name", group);
+			if (!group_elem.isNull())
+			{
+				QDomElement entry_elem =
+					xml_config_file->findElementByProperty(
+						group_elem, "Entry", "name", name);
+				if (!entry_elem.isNull())
+				{
+					if (ok)
+						*ok = true;
+					QString a = entry_elem.attribute("value");
+					return a;
+				}
+			}
+		}
+	}
+	if (ok)
+		*ok = false;
+	return QString::null;	
 }
 
 void ConfigFile::writeEntry(const QString &group,const QString &name, const QString &value)

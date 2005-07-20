@@ -480,7 +480,7 @@ bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info) co
 		return true;
 	}
 
-	ConfigFile desc_file(dataPath("kadu/modules/"+module_name+".desc"));
+	PlainConfigFile desc_file(dataPath("kadu/modules/"+module_name+".desc"));
 
 	QString lang=config_file.readEntry("General", "Language", "en");
 
