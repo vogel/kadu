@@ -770,7 +770,7 @@ Souhaitez vous vraiment expédier cette image?</translation>
     </message>
     <message>
         <source>Static</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Statique</translation>
     </message>
     <message>
         <source>Animated</source>
