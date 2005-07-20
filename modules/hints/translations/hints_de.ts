@@ -101,6 +101,10 @@
         <source>Open chat on click</source>
         <translation>Öffne Chat-Fenster duch Klick</translation>
     </message>
+    <message>
+        <source>Delete pending message when user deletes hint</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HintManager</name>

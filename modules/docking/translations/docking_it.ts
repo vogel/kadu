@@ -9,6 +9,10 @@
         <source>Show tooltip in tray</source>
         <translation>Visualizza notifiche sulla barra</translation>
     </message>
+    <message>
+        <source>New message tray icon</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DockingManager</name>
@@ -37,6 +41,18 @@ Descrizione:
 Middle click or Left click- open message</source>
         <translation>Tasto sx - mostra/nascondi finestra
 Tasto centrale oppure sx - apri messaggio</translation>
+    </message>
+    <message>
+        <source>Blinking envelope</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Static envelope</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Animated envelope</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

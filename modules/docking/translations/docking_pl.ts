@@ -9,6 +9,10 @@
         <source>Show tooltip in tray</source>
         <translation>Wyświetlaj dymki w zasobniku systemowym</translation>
     </message>
+    <message>
+        <source>New message tray icon</source>
+        <translation>Ikona nadejścia nowej wiadomości</translation>
+    </message>
 </context>
 <context>
     <name>DockingManager</name>
@@ -37,6 +41,18 @@ Opis:
 Middle click or Left click- open message</source>
         <translation>Lewy przycisk - pokaż/ukryj okno.
 Środkowy lub lewy przycisk -otwórz wiadomość</translation>
+    </message>
+    <message>
+        <source>Blinking envelope</source>
+        <translation>Migająca koperta</translation>
+    </message>
+    <message>
+        <source>Static envelope</source>
+        <translation>Nieruchoma koperta</translation>
+    </message>
+    <message>
+        <source>Animated envelope</source>
+        <translation>Animowana koperta</translation>
     </message>
 </context>
 </TS>

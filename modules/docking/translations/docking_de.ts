@@ -9,6 +9,10 @@
         <source>Show tooltip in tray</source>
         <translation>Zeige Sprechblase in Ablage</translation>
     </message>
+    <message>
+        <source>New message tray icon</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DockingManager</name>
@@ -37,6 +41,18 @@ Beschreibung:
 Middle click or Left click- open message</source>
         <translation>Linke Maustauste: zeige/verstecke Fenster
 Mittlere Maustaste oder linke Maustaste: Nachricht öffnen</translation>
+    </message>
+    <message>
+        <source>Blinking envelope</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Static envelope</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Animated envelope</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

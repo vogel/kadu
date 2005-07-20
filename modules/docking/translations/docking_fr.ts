@@ -9,6 +9,10 @@
         <source>Start docked</source>
         <translation>Début accouplé</translation>
     </message>
+    <message>
+        <source>New message tray icon</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DockingManager</name>
@@ -37,6 +41,18 @@ Description:
 
 Description:
 %2</translation>
+    </message>
+    <message>
+        <source>Blinking envelope</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Static envelope</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Animated envelope</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
