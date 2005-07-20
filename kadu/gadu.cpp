@@ -1031,6 +1031,7 @@ void GaduProtocol::iWantGoOffline(const QString &desc)
 	else
 		gg_change_status(Sess, GG_STATUS_NOT_AVAIL);
 
+
 	CurrentStatus->setStatus(*NextStatus);
 	logout();
 
@@ -1189,6 +1190,7 @@ void GaduProtocol::disconnectedSlot()
 	FOREACH(user, userlist)
 		(*user).status().setOffline();
 
+	NextStatus->setOffline();
 	CurrentStatus->setOffline("");
 	emit disconnected();
 	kdebugf2();

@@ -1615,8 +1615,8 @@ void KaduSlots::onCreateConfigDialog()
 	cb_defstatus->clear();
 	for (int i = 0; i < max; ++i)
 		cb_defstatus->insertItem(qApp->translate("@default", UserStatus::name(i)));
-	cb_defstatus->insertItem("Restore last status");
-	cb_defstatus->insertItem("Restore last status (change Offline to Invisible)");
+	cb_defstatus->insertItem(qApp->translate("@default", "Restore last status"));
+	cb_defstatus->insertItem(qApp->translate("@default", "Restore last status (change Offline to Invisible)"));
 	cb_defstatus->setCurrentItem(statusIndex);
 
 	updatePreview();
