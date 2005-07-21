@@ -615,6 +615,14 @@ Jest to wysoce ryzykowne!</translation>
         <source>Another Kadu is running on this profile.</source>
         <translation>Kadu jest już uruchomione w tym profilu.</translation>
     </message>
+    <message>
+        <source>Restore last status</source>
+        <translation>Przywróć ostatni status</translation>
+    </message>
+    <message>
+        <source>Restore last status (change Offline to Invisible)</source>
+        <translation>Przywróć ostatni status (zmień Niedostępny na Ukryty)</translation>
+    </message>
 </context>
 <context>
     <name>About</name>

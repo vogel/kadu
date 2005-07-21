@@ -615,6 +615,14 @@ E un rischio per la sicurezza!</translation>
         <source>Another Kadu is running on this profile.</source>
         <translation>Altro Kadu usa questo profilo.</translation>
     </message>
+    <message>
+        <source>Restore last status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restore last status (change Offline to Invisible)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>

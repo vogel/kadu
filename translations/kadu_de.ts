@@ -614,6 +614,14 @@ Es ist ein sehr hohes Risiko!</translation>
         <source>Another Kadu is running on this profile.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Restore last status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restore last status (change Offline to Invisible)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
