@@ -1190,7 +1190,6 @@ void GaduProtocol::disconnectedSlot()
 	FOREACH(user, userlist)
 		(*user).status().setOffline();
 
-	NextStatus->setOffline();
 	CurrentStatus->setOffline("");
 	emit disconnected();
 	kdebugf2();

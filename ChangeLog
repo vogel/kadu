@@ -96,8 +96,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * przy zwyk³ym odtwarzaniu pojedynczego d¼wiêku opró¿niamy bufor urz±dzenia
   (pomaga m.in. na freebsd) (joi)
 * kadu.conf i pozosta³e conf z .kadu nie s± ju¿ u¿ywane. wszystko w kadu.conf.xml (adrian)
-* poprawne ustawianie statusu u¿ytkownika w przypadku zerwania po³±czenia
-  poprawka t³umaczeñ w oknie konfiguracji (pawel_p)
+* poprawka t³umaczeñ w oknie konfiguracji (pawel_p)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

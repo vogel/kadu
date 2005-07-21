@@ -103,23 +103,23 @@ QDomElement XmlConfigFile::findElement(QDomElement parent, const QString& tag_na
 QDomElement XmlConfigFile::findElementByProperty(QDomElement parent, const QString& tag_name,
 	const QString& property_name, const QString& property_value)
 {
-	kdebugf();
+//	kdebugf();
 	QDomNodeList elems = parent.elementsByTagName(tag_name);
 	for (unsigned int i = 0; i < elems.length(); i++)
 	{
 		QDomElement e = elems.item(i).toElement();
 		QString val = e.attribute(property_name);
-		kdebug("Checking if property value \"%s\" equals \"%s\"\n",
-			val.local8Bit().data(), property_value.local8Bit().data());
+//		kdebug("Checking if property value \"%s\" equals \"%s\"\n",
+//			val.local8Bit().data(), property_value.local8Bit().data());
 		if (val == property_value)
 		{
-			kdebug("Element found.\n");
-			kdebugf2();
+//			kdebug("Element found.\n");
+//			kdebugf2();
 			return e;
 		}
 	}
-	kdebug("Element not found.\n");
-	kdebugf2();
+//	kdebug("Element not found.\n");
+//	kdebugf2();
 	return QDomNode().toElement();
 }
 
