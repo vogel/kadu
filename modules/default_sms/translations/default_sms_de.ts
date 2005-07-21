@@ -104,7 +104,7 @@ oder änderte die Zugangserlaubnis.</translation>
     </message>
     <message>
         <source>Limits have been exceeded, try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Limit wurde ausgeschöpft, Versuchen Sie später.</translation>
     </message>
 </context>
 </TS>

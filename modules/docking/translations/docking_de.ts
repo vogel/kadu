@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>New message tray icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Ikone für eine neue Nachricht </translation>
     </message>
 </context>
 <context>
@@ -44,15 +44,15 @@ Mittlere Maustaste oder linke Maustaste: Nachricht öffnen</translation>
     </message>
     <message>
         <source>Blinking envelope</source>
-        <translation type="unfinished"></translation>
+        <translation>Blinkender Briefumschlag</translation>
     </message>
     <message>
         <source>Static envelope</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein Briefumschlag</translation>
     </message>
     <message>
         <source>Animated envelope</source>
-        <translation type="unfinished"></translation>
+        <translation>Animierter Briefumschlag</translation>
     </message>
 </context>
 </TS>

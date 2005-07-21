@@ -103,7 +103,7 @@
     </message>
     <message>
         <source>Delete pending message when user deletes hint</source>
-        <translation type="unfinished"></translation>
+        <translation>Lösche nicht gelesene Nachrichten, wenn Benutzer löscht den Hinweis</translation>
     </message>
 </context>
 <context>
