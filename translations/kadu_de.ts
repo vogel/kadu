@@ -592,35 +592,35 @@ Es ist ein sehr hohes Risiko!</translation>
     </message>
     <message>
         <source>Headers</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopfzeilen</translation>
     </message>
     <message>
         <source>Remove chat header repetitions</source>
-        <translation type="unfinished"></translation>
+        <translation>Entferne Kopfzeilen in Wiederholungen im Chat</translation>
     </message>
     <message>
         <source>Chat header separators height:</source>
-        <translation type="unfinished"></translation>
+        <translation>Höhe des Kopfzeilen-Entferner:</translation>
     </message>
     <message>
         <source>Interval between header removal:</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeit, in der die Kopfzeilen-Entferner verwendet wird:</translation>
     </message>
     <message>
         <source>On shutdown, set current description</source>
-        <translation type="unfinished"></translation>
+        <translation>Setzt beim Ausschalten folgende Beschreibung</translation>
     </message>
     <message>
         <source>Another Kadu is running on this profile.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein Instanz des Kadu nutzt dieses Profil bereits.</translation>
     </message>
     <message>
         <source>Restore last status</source>
-        <translation type="unfinished"></translation>
+        <translation>Wiederherstelle zuletzt verwendetes Kadu-Zustand</translation>
     </message>
     <message>
         <source>Restore last status (change Offline to Invisible)</source>
-        <translation type="unfinished"></translation>
+        <translation>Wiederherstelle zuletzt verwendetes Kadu-Zustand (Nichterreichbar -&gt; Unsichtbar)</translation>
     </message>
 </context>
 <context>
@@ -772,15 +772,15 @@ Wollen Sie wirklich diese Datei senden?</translation>
     <name>ChatManager</name>
     <message>
         <source>None</source>
-        <translation type="unfinished">Ohne</translation>
+        <translation>Nichts</translation>
     </message>
     <message>
         <source>Static</source>
-        <translation type="unfinished">Statisch</translation>
+        <translation>Statisch</translation>
     </message>
     <message>
         <source>Animated</source>
-        <translation type="unfinished">Animiert</translation>
+        <translation>Animiert</translation>
     </message>
 </context>
 <context>
@@ -868,19 +868,19 @@ Sie sollten den Pfad zum Browser in $PATH eintragen oder in der kadu-Konfigurati
     </message>
     <message>
         <source>User experience level:</source>
-        <translation type="unfinished"></translation>
+        <translation>Erfahrung des Nutzers:</translation>
     </message>
     <message>
         <source>Beginner</source>
-        <translation type="unfinished"></translation>
+        <translation>Anfänger</translation>
     </message>
     <message>
         <source>Advanced</source>
-        <translation type="unfinished"></translation>
+        <translation>Erfahrener</translation>
     </message>
     <message>
         <source>Expert</source>
-        <translation type="unfinished"></translation>
+        <translation>Experte</translation>
     </message>
 </context>
 <context>
@@ -941,7 +941,7 @@ Ihr Passwort stimmt nicht!</translation>
     </message>
     <message>
         <source>Automatic</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatisch</translation>
     </message>
 </context>
 <context>
@@ -1275,11 +1275,13 @@ Ihr Passwort stimmt nicht!</translation>
         <source>Selected users:
 %0
 will be deleted. Are you sure?</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausgewählte Benutzer:
+%0
+werden gelöscht. Sind Sie sicher?</translation>
     </message>
     <message>
         <source>Yes, with &amp;history</source>
-        <translation type="unfinished"></translation>
+        <translation>Ja, mit &amp;Verlauf</translation>
     </message>
 </context>
 <context>
@@ -1402,15 +1404,16 @@ will be deleted. Are you sure?</source>
     </message>
     <message>
         <source>Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Version</translation>
     </message>
     <message>
         <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Version:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Hängt ab von:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Im Konflikt 
+zu:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Bringt mit:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Autor:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Verion&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Beschreibung:&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;</translation>
     </message>
 </context>
 <context>
