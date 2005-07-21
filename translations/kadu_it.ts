@@ -617,11 +617,11 @@ E un rischio per la sicurezza!</translation>
     </message>
     <message>
         <source>Restore last status</source>
-        <translation type="unfinished"></translation>
+        <translation>Rispristina l&apos;ultimo status</translation>
     </message>
     <message>
         <source>Restore last status (change Offline to Invisible)</source>
-        <translation type="unfinished"></translation>
+        <translation>Rispristina l&apos;ultimo status (Cambia Fuori linea a Invisibile)</translation>
     </message>
 </context>
 <context>
@@ -735,11 +735,11 @@ E un rischio per la sicurezza!</translation>
     </message>
     <message>
         <source>Chat window will be cleared. Continue?</source>
-        <translation>Finestra chat sarà pulita. Continuare ?</translation>
+        <translation>Finestra chat sarà pulita. Continuare?</translation>
     </message>
     <message>
         <source>New message received, close window anyway?</source>
-        <translation>Ricevuto nuovo messaggio, chiudere comunque ?</translation>
+        <translation>Ricevuto nuovo messaggio, chiudere comunque?</translation>
     </message>
     <message>
         <source>%1 sends message</source>
@@ -758,7 +758,7 @@ E un rischio per la sicurezza!</translation>
 Do you really want to send this image?
 Some of them probably will not get it.</source>
         <translation>Dimensione file troppo grande per %1 di %2 contatti.
-Sei sicuro di voler mandare questa immagine ?
+Sei sicuro di voler mandare questa immagine?
 Probbabilmente non sarà consegnato a tutti.</translation>
     </message>
     <message>
@@ -766,7 +766,7 @@ Probbabilmente non sarà consegnato a tutti.</translation>
 Do you really want to send this image?
 </source>
         <translation>Dimensione file troppo grande per %1.
-Sicuro di spedirlo comunque ?</translation>
+Sicuro di spedirlo comunque?</translation>
     </message>
 </context>
 <context>
@@ -873,15 +873,15 @@ Il percorso per raggiungere browser non esiste in $PATH. Devi specificarlo.</tra
     </message>
     <message>
         <source>Beginner</source>
-        <translation type="unfinished"></translation>
+        <translation>Principiante</translation>
     </message>
     <message>
         <source>Advanced</source>
-        <translation type="unfinished"></translation>
+        <translation>Avanzato</translation>
     </message>
     <message>
         <source>Expert</source>
-        <translation type="unfinished"></translation>
+        <translation>Esperto</translation>
     </message>
 </context>
 <context>
@@ -942,7 +942,7 @@ La tua password è sbagliata!</translation>
     </message>
     <message>
         <source>Automatic</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatico</translation>
     </message>
 </context>
 <context>
@@ -1282,7 +1282,7 @@ saranno eliminati. Vuoi davvero?</translation>
     </message>
     <message>
         <source>Yes, with &amp;history</source>
-        <translation type="unfinished"></translation>
+        <translation>Sì, con la &amp;storia</translation>
     </message>
 </context>
 <context>
@@ -1405,15 +1405,15 @@ saranno eliminati. Vuoi davvero?</translation>
     </message>
     <message>
         <source>Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Versione</translation>
     </message>
     <message>
         <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Version:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Modulo:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Dipende da:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Va in conflitto con:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Fornisce:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Autore:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Versione:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Descrizione:&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;br/&gt;&lt;b&gt;Versione: &lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -2093,7 +2093,7 @@ Cancellazione lista contatti su server GG fallita</translation>
     </message>
     <message>
         <source>This operation will delete your current user list. Are you sure you want this?</source>
-        <translation>Questa operzione cancella lista contatti attuale. Veramente vuoi questo ?</translation>
+        <translation>Questa operzione cancella lista contatti attuale. Veramente vuoi questo?</translation>
     </message>
     <message>
         <source>Cannot export user list to server in offline mode</source>
