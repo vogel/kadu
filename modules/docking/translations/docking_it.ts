@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>New message tray icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Icona del nuovo messaggio sulla barra</translation>
     </message>
 </context>
 <context>
@@ -44,15 +44,15 @@ Tasto centrale oppure sx - apri messaggio</translation>
     </message>
     <message>
         <source>Blinking envelope</source>
-        <translation type="unfinished"></translation>
+        <translation>Copertina lampeggiante</translation>
     </message>
     <message>
         <source>Static envelope</source>
-        <translation type="unfinished"></translation>
+        <translation>Copertina statica</translation>
     </message>
     <message>
         <source>Animated envelope</source>
-        <translation type="unfinished"></translation>
+        <translation>Copertina animata</translation>
     </message>
 </context>
 </TS>

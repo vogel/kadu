@@ -103,7 +103,7 @@
     </message>
     <message>
         <source>Delete pending message when user deletes hint</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancella messaggio pendente quando utente cancella il fumetto</translation>
     </message>
 </context>
 <context>
