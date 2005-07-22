@@ -7,7 +7,7 @@ expimp.cpp gadu.cpp history.cpp ignore.cpp kadu.cpp main.cpp message_box.cpp \
 misc.cpp modules.cpp pending_msgs.cpp personal_info.cpp search.cpp status.cpp \
 tabbar.cpp userbox.cpp userinfo.cpp userlist.cpp updates.cpp
 
-kadudir = $(DESTDIR)$(includedir)/kadu
+kadudir = $(includedir)/kadu
 
 kadu_HEADERS = \
 about.h chat.h config_dialog.h config_file.h debug.h emoticons.h \

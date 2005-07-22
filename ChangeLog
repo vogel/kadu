@@ -97,6 +97,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   (pomaga m.in. na freebsd) (joi)
 * kadu.conf i pozosta³e conf z .kadu nie s± ju¿ u¿ywane. wszystko w kadu.conf.xml (adrian)
 * poprawka t³umaczeñ w oknie konfiguracji (pawel_p)
+* poprawka instalacji plików nag³ówkowych w przypadku u¿ycia zmiennej DESTDIR (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
