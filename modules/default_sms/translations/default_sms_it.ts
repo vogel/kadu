@@ -104,7 +104,7 @@ Probabilmente è temporaneamente disattivata, o sono state cambiate le reole acc
     </message>
     <message>
         <source>Limits have been exceeded, try again later.</source>
-        <translation>I limiti sono stati raggiunti, riprova pi? tardi.</translation>
+        <translation>I limiti sono stati raggiunti, riprova più tardi.</translation>
     </message>
 </context>
 </TS>

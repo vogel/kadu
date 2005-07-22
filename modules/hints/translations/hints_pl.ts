@@ -142,11 +142,11 @@
     </message>
     <message>
         <source>Busy</source>
-        <translation>Zaraz wracam</translation>
+        <translation>Zajęty</translation>
     </message>
     <message>
         <source>Busy (d.)</source>
-        <translation>Zaraz wracam z opisem</translation>
+        <translation>Zajęty z opisem</translation>
     </message>
     <message>
         <source>Invisible</source>
@@ -202,27 +202,27 @@
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; changed status to &lt;i&gt;%2&lt;/i&gt;&lt;br/&gt; &lt;small&gt;%3&lt;/small&gt;</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt; zmienił status na &lt;i&gt;%2&lt;/i&gt;&lt;br/&gt; &lt;small&gt;%3&lt;/small&gt;</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; zmienił(a) status na &lt;i&gt;%2&lt;/i&gt;&lt;br/&gt; &lt;small&gt;%3&lt;/small&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; changed status to &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt; zmienił status na &lt;i&gt;%2&lt;/i&gt;</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; zmienił(a) status na &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is available&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt; jest dostępny&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; ma status dostępny&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is available</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt; jest dostępny</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; ma status dostępny</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is busy&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt; jest zajęty&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; ma status zajęty&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is busy</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt; jest zajęty</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; ma status zajęty</translation>
     </message>
     <message>
         <source>Other message</source>
@@ -230,11 +230,11 @@
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is not available&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt; jest niedostępny&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; ma statust niedostępny&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is not available</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt; jest niedostępny</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; ma status niedostępny</translation>
     </message>
     <message>
         <source>From &lt;b&gt;%1&lt;/b&gt;: %2</source>
@@ -258,11 +258,11 @@
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is invisible&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt; jest ukryty&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; ma status ukryty&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is invisible</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt; jest ukryty</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; ma status ukryty</translation>
     </message>
 </context>
 <context>
