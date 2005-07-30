@@ -300,7 +300,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "ShortCuts"), "ShortCutsTab");
 	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", QT_TRANSLATE_NOOP("@default", "Define keys"));
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Remove from userlist"), "kadu_deleteuser", "Del");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "View/edit user info"), "kadu_persinfo", "Ins");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "View / edit user info"), "kadu_persinfo", "Ins");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "View history"), "kadu_viewhistory", "Ctrl+H");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Lookup in directory"), "kadu_searchuser", "Ctrl+F");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Show / hide inactive users"), "kadu_showinactive", "F9");
@@ -376,7 +376,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	UserBox::userboxmenu->addItem("RemoveFromUserlist", tr("Remove from userlist"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("ShortCuts", "kadu_deleteuser"));
 	UserBox::userboxmenu->addItem("ClearHistory", tr("Clear history"), this, SLOT(deleteHistory()));
 	UserBox::userboxmenu->addItem("History", tr("View history"),this,SLOT(viewHistory()),HotKey::shortCutFromFile("ShortCuts", "kadu_viewhistory"));
-	UserBox::userboxmenu->addItem("EditUserInfo", tr("View/edit user info"), this, SLOT(showUserInfo()),HotKey::shortCutFromFile("ShortCuts", "kadu_persinfo"));
+	UserBox::userboxmenu->addItem("EditUserInfo", tr("View / edit user info"), this, SLOT(showUserInfo()),HotKey::shortCutFromFile("ShortCuts", "kadu_persinfo"));
 	UserBox::userboxmenu->addItem("LookupUserInfo", tr("Lookup in directory"), this, SLOT(lookupInDirectory()),HotKey::shortCutFromFile("ShortCuts", "kadu_searchuser"));
 	UserBox::userboxmenu->insertSeparator();
 	UserBox::userboxmenu->addItem(tr("About..."), this, SLOT(about()));
@@ -417,7 +417,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ToolBar::registerButton("Configuration", tr("Configuration"), this, SLOT(configure()), -1, "configurationButton");
 	ToolBar::registerSeparator();
 	ToolBar::registerButton("History", tr("View history"), this, SLOT(viewHistory()), -1, "historyButton");
-	ToolBar::registerButton("EditUserInfo", tr("View/edit user info"), this, SLOT(showUserInfo()), -1, "editUserButton");
+	ToolBar::registerButton("EditUserInfo", tr("View / edit user info"), this, SLOT(showUserInfo()), -1, "editUserButton");
 	ToolBar::registerButton("LookupUserInfo", tr("Lookup in directory"), this, SLOT(lookupInDirectory()), -1, "lookupUserButton");
 	ToolBar::registerSeparator();
 	ToolBar::registerButton("AddUser", tr("Add user"), this, SLOT(addUserAction()), -1, "addUserButton");
@@ -595,7 +595,7 @@ void Kadu::popupMenu()
 	if (users.count() != 1 || !firstUser.uin())
 		UserBox::userboxmenu->setItemEnabled(searchuser, false);
 	if (users.count() != 1)
-		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("View/edit user info")), false);
+		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("View / edit user info")), false);
 	if (!firstUser.uin() || isOurUin)
 		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Open chat window")), false);
 	kdebugf2();

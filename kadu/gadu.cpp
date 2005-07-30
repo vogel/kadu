@@ -1231,7 +1231,7 @@ void GaduProtocol::errorSlot(GaduError err)
 			break;
 
 		case ConnectionNeedEmail:
-			msg = tr("Please change your email in \"Change password/email\" window. "
+			msg = tr("Please change your email in \"Change password / email\" window. "
 				"Leave new password field blank.");
 			continue_connecting = false;
 			MessageBox::msg(msg);

@@ -23,7 +23,7 @@ ChangePassword::ChangePassword(QDialog * /*parent*/, const char * /*name*/)
 {
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose);
-	setCaption(tr("Change password/email"));
+	setCaption(tr("Change password / email"));
 
 	// create main QLabel widgets (icon and app info)
 	QVBox *left=new QVBox(this);

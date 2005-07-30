@@ -77,7 +77,7 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name)
 	ConfigDialog::addCheckBox("Notify", "Notify",
 		QT_TRANSLATE_NOOP("@default", "Notify about all users"), "NotifyAboutAll", false);
 	ConfigDialog::addCheckBox("Notify", "Notify",
-		QT_TRANSLATE_NOOP("@default", "Ignore status changes from available/busy to available/busy"),
+		QT_TRANSLATE_NOOP("@default", "Ignore status changes from available / busy to available / busy"),
 		"IgnoreOnlineToOnline", true, "", "", Advanced);
 
 	ConfigDialog::addGrid("Notify", "Notify" ,"listboxy",3);
@@ -134,7 +134,7 @@ Notify::~Notify()
 		ConfigDialog::removeControl("Notify", "listbox1");
 	ConfigDialog::removeControl("Notify", "listboxy");
 
-	ConfigDialog::removeControl("Notify", "Ignore status changes from available/busy to available/busy");
+	ConfigDialog::removeControl("Notify", "Ignore status changes from available / busy to available / busy");
 	ConfigDialog::removeControl("Notify", "Notify about all users");
 	ConfigDialog::removeControl("Notify", "Ignore changes right after connection to the server");
 
