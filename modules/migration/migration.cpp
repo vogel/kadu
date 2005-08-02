@@ -6,6 +6,8 @@
 #include <pwd.h>
 #include <unistd.h>
 #include <qprocess.h>
+#include <qlayout.h>
+#include <qgroupbox.h>
 
 #include "misc.h"
 #include "message_box.h"
@@ -14,7 +16,47 @@
 #include "kadu.h"
 #include "ignore.h"
 
-static QString old_ggPath()
+MigrationDialog::MigrationDialog()
+	: QDialog(NULL, NULL, true), ShouldRestart(false), SettingsDirMigrationConfirmed(false)
+{
+	resize(500, 300);
+	setCaption(tr("Migration"));
+	QVBoxLayout* layout = new QVBoxLayout(this);
+	ProgressListView = new QListView(this);
+	ProgressListView->addColumn(tr("Migration steps"));
+	//ProgressListView->setSorting(-1);
+	ProgressListView->setRootIsDecorated(true);
+	layout->addWidget(ProgressListView);
+	QGroupBox* bottom_box = new QGroupBox(2, Qt::Horizontal, this);
+	FinishLabel = new QLabel(tr("Migration in progress ..."), bottom_box);
+	FinishButton = new QPushButton(tr("&Finish"), bottom_box);
+	connect(FinishButton, SIGNAL(clicked()), this, SLOT(finishButtonClicked()));
+	layout->addWidget(bottom_box);
+}
+
+MigrationDialog::~MigrationDialog()
+{
+	disconnect(FinishButton, SIGNAL(clicked()), this, SLOT(finishButtonClicked()));
+}
+
+QListViewItem* MigrationDialog::addItem(const QString& text)
+{
+	QListViewItem* item = new QListViewItem(ProgressListView, ProgressListView->lastItem());
+	item->setText(0, text);
+	return item;
+}
+
+void MigrationDialog::setItemComplete(QListViewItem* item, const QString& text,
+	const QString& details, bool restart)
+{
+	item->setText(0, text);
+	QListViewItem* sub_item = new QListViewItem(item, details);
+	sub_item->setMultiLinesEnabled(true);
+	if (restart)
+		ShouldRestart = true;
+}
+
+QString MigrationDialog::old_ggPath()
 {
 	kdebugf();
 	char* home;
@@ -32,7 +74,7 @@ static QString old_ggPath()
 	return path;
 }
 
-static void settingsDirMigration()
+bool MigrationDialog::settingsDirMigrationNeeded()
 {
 	kdebugf();
 	QString old_path = old_ggPath();
@@ -43,52 +85,75 @@ static void settingsDirMigration()
 	if (QFile::exists(new_path) || !QFile::exists(old_path))
 	{
 		kdebugf2();
-		return;
+		return false;
 	}
-	if (MessageBox::ask(QString("Kadu detected, that you were using EKG, GnuGadu or\n"
+	if (SettingsDirMigrationConfirmed ||
+		MessageBox::ask(tr("Kadu detected, that you were using EKG, GnuGadu or\n"
 				"older version of Kadu before. Would you like to try\n"
 				"to import your settings from %1?").arg(old_path)))
 	{
-		kdebug("creating process: cp\n");
-		QProcess copy_process(QString("cp"));
-		kdebug("adding argument: -r\n");
-		copy_process.addArgument("-r");
-		kdebug("adding argument: %s\n", old_path.local8Bit().data());
-		copy_process.addArgument(old_path);
-		kdebug("adding argument: %s\n", new_path.local8Bit().data());
-		copy_process.addArgument(new_path);
-		kdebug("starting process\n");
-		if (copy_process.start())
+		SettingsDirMigrationConfirmed = true;
+		kdebugf2();
+		return true;
+	}
+	kdebugf2();
+	return false;
+}
+
+void MigrationDialog::settingsDirMigration()
+{
+	kdebugf();
+	QString old_path = old_ggPath();
+	QString new_path = ggPath("");
+	new_path.truncate(new_path.length() - 1); // obetnij konczacy /
+	kdebug("old_path: %s\n", old_path.local8Bit().data());
+	kdebug("new_path: %s\n", new_path.local8Bit().data());
+	if (!settingsDirMigrationNeeded())
+	{
+		kdebugf2();
+		return;
+	}
+	QListViewItem* item = addItem(tr("Step 1: Migrating config files to kadu.conf.xml"));
+	kdebug("creating process: cp\n");
+	QProcess copy_process(QString("cp"));
+	kdebug("adding argument: -r\n");
+	copy_process.addArgument("-r");
+	kdebug("adding argument: %s\n", old_path.local8Bit().data());
+	copy_process.addArgument(old_path);
+	kdebug("adding argument: %s\n", new_path.local8Bit().data());
+	copy_process.addArgument(new_path);
+	kdebug("starting process\n");
+	if (copy_process.start())
+	{
+		kdebug("process started, waiting while it is running\n");
+		while (copy_process.isRunning()) { };
+		if (copy_process.normalExit() && copy_process.exitStatus() == 0)
 		{
-			kdebug("process started, waiting while it is running\n");
-			MessageBox::status("Migrating data ...");
-			while (copy_process.isRunning()) { };
-			MessageBox::close("Migrating data ...");
-			if (copy_process.normalExit() && copy_process.exitStatus() == 0)
-			{
-				MessageBox::msg(QString("Migration process completed. You can remove %1 directory\n"
-							"(backup will be a good idea) or leave it for other applications.\n"
-							"Kadu will be closed now. Please click OK and than run Kadu again.").arg(old_path),
-							true);
-				_exit(0);
-			}
-			else
-			{
-				kdebug("error migrating data. exit status: %i\n",
-					copy_process.exitStatus());
-				MessageBox::wrn("Error migrating data!");
-			}
+			setItemComplete(item,
+				tr("Step 1: Settings migrated to kadu directory"),
+				tr("Migration process completed. You can remove\n%1"
+				"directory\n(backup will be a good idea) or leave it"
+				" for other applications.").arg(old_path), true);
+			kdebugf2();
+			return;
 		}
 		else
 		{
-			kdebug("cannot start migration process\n");
-			MessageBox::wrn("Cannot start migration process!");
+			kdebug("error migrating data. exit status: %i\n",
+				copy_process.exitStatus());
+			MessageBox::wrn(tr("Error migrating data!"));
 		}
 	}
+	else
+	{
+		kdebug("cannot start migration process\n");
+		MessageBox::wrn(tr("Cannot start migration process!"));
+	}
 	kdebugf2();
+	return;
 }
 
-static void xmlUserListMigration()
+bool MigrationDialog::xmlUserListMigrationNeeded()
 {
 	kdebugf();
 	QString userlist_path = ggPath("userlist");
@@ -96,19 +161,36 @@ static void xmlUserListMigration()
 	if (xml_config_file->rootElement().elementsByTagName("Contacts").length() == 0 &&
 		QFile::exists(userlist_path) && QFile::exists(userattribs_path))
 	{
+		kdebugf2();
+		return true;
+	}
+	kdebugf2();
+	return false;
+}
+
+void MigrationDialog::xmlUserListMigration()
+{
+	kdebugf();
+	QString userlist_path = ggPath("userlist");
+	QString userattribs_path = ggPath("userattribs");
+	if (xmlUserListMigrationNeeded())
+	{
+		QListViewItem* item = addItem(
+			tr("Step 2: Migrating user list to kadu.conf.xml"));
 		userlist.readFromFile();
 		userlist.writeToConfig();
 		xml_config_file->sync();
 		kadu->setActiveGroup("");
-		MessageBox::msg(QString("Contact list migrated to kadu.conf.xml.\n"
-			"You can remove %1\n"
-			"and %2 now\n"
-			"(backup will be a good idea).\n").arg(userlist_path).arg(userattribs_path));
+		setItemComplete(item,
+			tr("Step 2: User list migrated to kadu.conf.xml"),
+			tr("Contact list migrated to kadu.conf.xml."
+			"You can remove\n%1 and\n%2 now\n(backup will be a good idea).")
+			.arg(userlist_path).arg(userattribs_path));
 	}
 	kdebugf2();
 }
 
-static void xmlIgnoredListMigration()
+bool MigrationDialog::xmlIgnoredListMigrationNeeded()
 {
 	kdebugf();
 	QString ignored_path = ggPath("ignore");
@@ -116,7 +198,22 @@ static void xmlIgnoredListMigration()
 	if (xml_config_file->rootElement().elementsByTagName("Ignored").length() == 0 &&
 		QFile::exists(ignored_path))
 	{
+		kdebugf2();
+		return true;
+	}
+	kdebugf2();
+	return false;
+}
+
+void MigrationDialog::xmlIgnoredListMigration()
+{
+	kdebugf();
+	QString ignored_path = ggPath("ignore");
+	kdebug("ignored_path: %s\n", ignored_path.local8Bit().data());
+	if (xmlIgnoredListMigrationNeeded())
+	{
 		kdebug("migrating ignored list\n");
+		QListViewItem* item = addItem(tr("Step 3: Migrating ignored list to kadu.conf.xml"));
 		QFile f(ignored_path);
 		if (!f.open(IO_ReadOnly))
 		{
@@ -151,14 +248,15 @@ static void xmlIgnoredListMigration()
 		f.close();
 		xml_config_file->sync();
 		readIgnored();
-		MessageBox::msg(QString("Ignored contact list migrated to kadu.conf.xml.\n"
-			"You can remove %1 now\n"
-			"(backup will be a good idea).\n").arg(ignored_path));	
+		setItemComplete(item, tr("Step 3: Ignored list migrated to kadu.conf.xml"),
+			tr("Ignored contact list migrated to kadu.conf.xml.\n"
+			"You can remove %1 now\n(backup will be a good idea).")
+			.arg(ignored_path));
 	}
 	kdebugf2();
 }
 
-static void xmlConfigFileMigration(const QString& config_name)
+void MigrationDialog::xmlConfigFileMigration(const QString& config_name)
 {
 	kdebugf();
 	QString config_path = ggPath(config_name);
@@ -215,7 +313,7 @@ static void xmlConfigFileMigration(const QString& config_name)
 	kdebugf2();
 }
 
-static void xmlConfigFilesMigration()
+bool MigrationDialog::xmlConfigFilesMigrationNeeded()
 {
 	kdebugf();
 	QString config_path = ggPath("kadu.conf");
@@ -225,29 +323,71 @@ static void xmlConfigFilesMigration()
 		!xml_config_file->findElement(root_elem, "Deprecated").isNull())
 	{
 		kdebugf2();
+		return false;
+	}
+	kdebugf2();
+	return true;
+}
+
+void MigrationDialog::xmlConfigFilesMigration()
+{
+	kdebugf();
+	QString config_path = ggPath("kadu.conf");
+	kdebug("config_path: %s\n", config_path.local8Bit().data());
+	QDomElement root_elem = xml_config_file->rootElement();
+	if (!xmlConfigFilesMigrationNeeded())
+	{
+		kdebugf2();
 		return;
 	}
+	QListViewItem* item = addItem(tr("Step 4: Migrating config files to kadu.conf.xml"));
 	QDir dir(ggPath(""));
 	dir.setNameFilter("*.conf");
 	for (int i = 0; i < dir.count(); i++)
 		xmlConfigFileMigration(dir[i]);
 	xml_config_file->sync();
-	MessageBox::msg(QString("Configuration files migrated to kadu.conf.xml.\n"
-		"You can remove following files now:\n%1\n"
-		"(backup will be a good idea).\n"
-		"Kadu will be closed now. Please click OK and "
-		"than run Kadu again.").arg(dir.entryList().join("\n")), true);
-	_exit(0);
+	setItemComplete(item, tr("Step 4: config files migrated to kadu.conf.xml"),
+		tr("Configuration files migrated to kadu.conf.xml.\n"
+		"You can remove following files now:\n%1\n(backup will be a good idea).")
+		.arg(dir.entryList().join(",")), true);
 	kdebugf2();
+}
+
+void MigrationDialog::migrate()
+{
+	kdebugf();
+	if (settingsDirMigrationNeeded() || xmlConfigFilesMigrationNeeded() ||
+		xmlUserListMigrationNeeded() || xmlIgnoredListMigrationNeeded())
+	{
+		show();
+		settingsDirMigration();
+		xmlConfigFilesMigration();
+		xmlUserListMigration();
+		xmlIgnoredListMigration();
+		if (ShouldRestart)
+			FinishLabel->setText(
+				tr("Migration complete. Kadu will be closed now.\n"
+				"Please click Finish and than run Kadu again."));
+		else
+			FinishLabel->setText(tr("Migration complete."));
+		exec();
+		if (ShouldRestart)
+			_exit(0);
+	}
+	kdebugf2();
+}
+
+void MigrationDialog::finishButtonClicked()
+{
+	accept();
 }
 
 extern "C" int migration_init()
 {
 	kdebugf();
-	settingsDirMigration();
-	xmlConfigFilesMigration();
-	xmlUserListMigration();
-	xmlIgnoredListMigration();
+	MigrationDialog* migration_dialog = new MigrationDialog();
+	migration_dialog->migrate();
+	delete migration_dialog;
 	kdebugf2();
 	return 0;
 }
