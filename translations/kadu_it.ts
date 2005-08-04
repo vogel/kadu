@@ -110,10 +110,6 @@
         <translation>Rimuovi dalla lista dei contatti</translation>
     </message>
     <message>
-        <source>View/edit user info</source>
-        <translation>Vedi/Cambia info contatto</translation>
-    </message>
-    <message>
         <source>View history</source>
         <translation>Visualizza cronologia</translation>
     </message>
@@ -623,6 +619,10 @@ E un rischio per la sicurezza!</translation>
         <source>Restore last status (change Offline to Invisible)</source>
         <translation>Rispristina l&apos;ultimo status (Cambia Fuori linea a Invisibile)</translation>
     </message>
+    <message>
+        <source>View / edit user info</source>
+        <translation>Vedi / Cambia info contatto</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -899,10 +899,6 @@ Il percorso per raggiungere browser non esiste in $PATH. Devi specificarlo.</tra
         <translation>Collegamento impossibile</translation>
     </message>
     <message>
-        <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
-        <translation>Cambiare indirizzo e-mail in &quot;Cambia password/email&quot;. Lasciare vuoto il campo nuova password.</translation>
-    </message>
-    <message>
         <source>Unable to connect, server has returned unknown data</source>
         <translation>Impossibile collegarsi, il server ha restituito i dati sconosciuti</translation>
     </message>
@@ -943,6 +939,10 @@ La tua password è sbagliata!</translation>
     <message>
         <source>Automatic</source>
         <translation>Automatico</translation>
+    </message>
+    <message>
+        <source>Please change your email in &quot;Change password / email&quot; window. Leave new password field blank.</source>
+        <translation>Cambiare indirizzo e-mail in &quot;Cambia password / email&quot;. Lasciare vuoto il campo nuova password.</translation>
     </message>
 </context>
 <context>
@@ -1145,10 +1145,6 @@ La tua password è sbagliata!</translation>
         <translation>Rimuovi dalla lista dei contatti</translation>
     </message>
     <message>
-        <source>View/edit user info</source>
-        <translation>Mostra/modifica Info del contatto</translation>
-    </message>
-    <message>
         <source>View history</source>
         <translation>Visualizza Cronologia</translation>
     </message>
@@ -1283,6 +1279,10 @@ saranno eliminati. Vuoi davvero?</translation>
     <message>
         <source>Yes, with &amp;history</source>
         <translation>Sì, con la &amp;storia</translation>
+    </message>
+    <message>
+        <source>View / edit user info</source>
+        <translation>Vedi / Cambia info contatto</translation>
     </message>
 </context>
 <context>

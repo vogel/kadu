@@ -207,10 +207,6 @@ If you leave blank, default settings will be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>View/edit user info</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>View history</source>
         <translation type="unfinished"></translation>
     </message>
@@ -618,6 +614,10 @@ It&apos;s a high security risk!</source>
         <source>Restore last status (change Offline to Invisible)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>View / edit user info</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -889,10 +889,6 @@ You may add it to $PATH or specify location using Specify path option.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Unable to connect, server has returned unknown data</source>
         <translation type="unfinished"></translation>
     </message>
@@ -931,6 +927,10 @@ Your password is incorrect !</source>
     </message>
     <message>
         <source>Automatic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please change your email in &quot;Change password / email&quot; window. Leave new password field blank.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1170,10 +1170,6 @@ Your password is incorrect !</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>View/edit user info</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Lookup in directory</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1269,6 +1265,10 @@ will be deleted. Are you sure?</source>
     </message>
     <message>
         <source>Yes, with &amp;history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View / edit user info</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

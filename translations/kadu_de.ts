@@ -110,10 +110,6 @@
         <translation>Lösche von der Kontaktliste</translation>
     </message>
     <message>
-        <source>View/edit user info</source>
-        <translation>Zeige/ändere Kontakt-Daten</translation>
-    </message>
-    <message>
         <source>View history</source>
         <translation>Zeige Verlauf</translation>
     </message>
@@ -622,6 +618,10 @@ Es ist ein sehr hohes Risiko!</translation>
         <source>Restore last status (change Offline to Invisible)</source>
         <translation>Wiederherstelle zuletzt verwendetes Kadu-Zustand (Nichterreichbar -&gt; Unsichtbar)</translation>
     </message>
+    <message>
+        <source>View / edit user info</source>
+        <translation>Zeige / Editiere Kontaktinformationen</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -898,10 +898,6 @@ Sie sollten den Pfad zum Browser in $PATH eintragen oder in der kadu-Konfigurati
         <translation>Verbindung nicht möglich</translation>
     </message>
     <message>
-        <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
-        <translation>Ändern Sie Ihre Email-Adresse in &quot;Passwort/Email ändern&quot;-Fenster. Lassen Sie das Feld für neues Passwort leer.</translation>
-    </message>
-    <message>
         <source>Unable to connect, server has returned unknown data</source>
         <translation>Verbindung nicht nöglich, Server lieferte unbekannte Daten zurück</translation>
     </message>
@@ -942,6 +938,10 @@ Ihr Passwort stimmt nicht!</translation>
     <message>
         <source>Automatic</source>
         <translation>Automatisch</translation>
+    </message>
+    <message>
+        <source>Please change your email in &quot;Change password / email&quot; window. Leave new password field blank.</source>
+        <translation>Ändern Sie Ihre Email-Adresse in &quot;Passwort / Email ändern&quot;-Fenster. Lassen Sie das Feld für neues Passwort leer.</translation>
     </message>
 </context>
 <context>
@@ -1144,10 +1144,6 @@ Ihr Passwort stimmt nicht!</translation>
         <translation>Lösche aus der Kontaktliste</translation>
     </message>
     <message>
-        <source>View/edit user info</source>
-        <translation>Zeige/Editiere Kontaktinformationen</translation>
-    </message>
-    <message>
         <source>View history</source>
         <translation>Zeige Verlauf</translation>
     </message>
@@ -1282,6 +1278,10 @@ werden gelöscht. Sind Sie sicher?</translation>
     <message>
         <source>Yes, with &amp;history</source>
         <translation>Ja, mit &amp;Verlauf</translation>
+    </message>
+    <message>
+        <source>View / edit user info</source>
+        <translation>Zeige / Editiere Kontaktinformationen</translation>
     </message>
 </context>
 <context>

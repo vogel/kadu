@@ -114,10 +114,6 @@
         <translation>Usuń z listy kontaktów</translation>
     </message>
     <message>
-        <source>View/edit user info</source>
-        <translation>Pokaż / zmień informacje o kontakcie</translation>
-    </message>
-    <message>
         <source>View history</source>
         <translation>Pokaż historię</translation>
     </message>
@@ -623,6 +619,10 @@ Jest to wysoce ryzykowne!</translation>
         <source>Restore last status (change Offline to Invisible)</source>
         <translation>Przywróć ostatni status (zmień Niedostępny na Ukryty)</translation>
     </message>
+    <message>
+        <source>View / edit user info</source>
+        <translation>Pokaż / zmień informacje o kontakcie</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -899,10 +899,6 @@ Wybrana ścieżka do przeglądarki nie istnieje w zmiennej $PATH. Musisz ją do 
         <translation>Połączenie niemożliwe</translation>
     </message>
     <message>
-        <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
-        <translation>Zmień swój e-mail w oknie &quot;Zmień hasło/e-mail&quot;. Pole nowe hasło pozostaw puste.</translation>
-    </message>
-    <message>
         <source>Unable to connect, server has returned unknown data</source>
         <translation>Połączenie niemożliwe, serwer odpowiedział nieznane dane</translation>
     </message>
@@ -943,6 +939,10 @@ Twoje hasło jest nieprawidłowe!</translation>
     <message>
         <source>Automatic</source>
         <translation>Automatyczny</translation>
+    </message>
+    <message>
+        <source>Please change your email in &quot;Change password / email&quot; window. Leave new password field blank.</source>
+        <translation>Zmień swój e-mail w oknie &quot;Zmień hasło / e-mail&quot;. Pole nowe hasło pozostaw puste.</translation>
     </message>
 </context>
 <context>
@@ -1145,10 +1145,6 @@ Twoje hasło jest nieprawidłowe!</translation>
         <translation>Usuń z listy kontaktów</translation>
     </message>
     <message>
-        <source>View/edit user info</source>
-        <translation>Pokaż/zmień informacje o kontakcie</translation>
-    </message>
-    <message>
         <source>View history</source>
         <translation>Pokaż historię</translation>
     </message>
@@ -1284,6 +1280,10 @@ Czy napewno tego chcesz?</translation>
     <message>
         <source>Yes, with &amp;history</source>
         <translation>Tak, z &amp;historią</translation>
+    </message>
+    <message>
+        <source>View / edit user info</source>
+        <translation>Pokaż / zmień informacje o kontakcie</translation>
     </message>
 </context>
 <context>
