@@ -113,7 +113,7 @@ void MigrationDialog::settingsDirMigration()
 		kdebugf2();
 		return;
 	}
-	QListViewItem* item = addItem(tr("Step 1: Migrating config files to kadu.conf.xml"));
+	QListViewItem* item = addItem(tr("Step 1: Migrating settings to kadu directory"));
 	kdebug("creating process: cp\n");
 	QProcess copy_process(QString("cp"));
 	kdebug("adding argument: -r\n");
