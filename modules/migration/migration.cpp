@@ -346,7 +346,7 @@ void MigrationDialog::xmlConfigFilesMigration()
 	for (int i = 0; i < dir.count(); i++)
 		xmlConfigFileMigration(dir[i]);
 	xml_config_file->sync();
-	setItemComplete(item, tr("Step 4: config files migrated to kadu.conf.xml"),
+	setItemComplete(item, tr("Step 4: Config files migrated to kadu.conf.xml"),
 		tr("Configuration files migrated to kadu.conf.xml.\n"
 		"You can remove following files now:\n%1\n(backup will be a good idea).")
 		.arg(dir.entryList().join(",")), true);
