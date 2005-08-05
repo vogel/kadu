@@ -37,12 +37,6 @@ Opis:
 %2</translation>
     </message>
     <message>
-        <source>Left click - hide/show window
-Middle click or Left click- open message</source>
-        <translation>Lewy przycisk - pokaż/ukryj okno.
-Środkowy lub lewy przycisk -otwórz wiadomość</translation>
-    </message>
-    <message>
         <source>Blinking envelope</source>
         <translation>Migająca koperta</translation>
     </message>
@@ -53,6 +47,12 @@ Middle click or Left click- open message</source>
     <message>
         <source>Animated envelope</source>
         <translation>Animowana koperta</translation>
+    </message>
+    <message>
+        <source>Left click - hide / show window
+Middle click or Left click - open message</source>
+        <translation>Lewy przycisk - pokaż / ukryj okno.
+Środkowy lub lewy przycisk - otwórz wiadomość</translation>
     </message>
 </context>
 </TS>

@@ -64,12 +64,12 @@ durante primo colegamento Kadu con serwer</translation>
         <translation>Non mostrare descrizioni dopo la conessione con server</translation>
     </message>
     <message>
-        <source>Ignore status changes from available/busy to available/busy</source>
-        <translation>Ignora i cambiament dello status da disponibile/occupato a disponibile/occupato</translation>
-    </message>
-    <message>
         <source>User changed status to &quot;Invisible&quot;</source>
         <translation>Contatto ha cambiato status a &quot;Invisibile&quot;</translation>
+    </message>
+    <message>
+        <source>Ignore status changes from available / busy to available / busy</source>
+        <translation>Ignora i cambiament dello status da disponibile / occupato a disponibile / occupato</translation>
     </message>
 </context>
 </TS>

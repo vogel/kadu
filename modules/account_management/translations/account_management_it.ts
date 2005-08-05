@@ -10,12 +10,12 @@
         <translation>&amp;Registra nuovo utente</translation>
     </message>
     <message>
-        <source>&amp;Change password/email</source>
-        <translation>&amp;Cambia la password/email</translation>
-    </message>
-    <message>
         <source>Remind &amp;password</source>
         <translation>Ricorda la &amp;password</translation>
+    </message>
+    <message>
+        <source>&amp;Change password / email</source>
+        <translation>&amp;Cambia la password / email</translation>
     </message>
 </context>
 <context>
@@ -23,10 +23,6 @@
     <message>
         <source>OK</source>
         <translation>OK</translation>
-    </message>
-    <message>
-        <source>Change password/email</source>
-        <translation>Cambia la password/email</translation>
     </message>
     <message>
         <source>This dialog box allows you to change your current password or e-mail.</source>
@@ -66,6 +62,10 @@
 Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
         <translation>Errore dati bnei campi richiesti.
 Campi password devono contenere la stessa frase !</translation>
+    </message>
+    <message>
+        <source>Change password / email</source>
+        <translation>Cambia la password / email</translation>
     </message>
 </context>
 <context>
@@ -155,10 +155,6 @@ Le password devo esser identiche !</translation>
         <translation>OK</translation>
     </message>
     <message>
-        <source>Remind password/email</source>
-        <translation>Ricorda password/e-mail</translation>
-    </message>
-    <message>
         <source>This dialog box allows you to ask server to remind your current password.</source>
         <translation>Questa finestra di dialogo permette di interrograe server per ricordare password d&apos;accesso.</translation>
     </message>
@@ -177,6 +173,10 @@ Le password devo esser identiche !</translation>
     <message>
         <source>Your password has been send on your email</source>
         <translation>La tua password sarà spedita via E-mail</translation>
+    </message>
+    <message>
+        <source>Remind password</source>
+        <translation>Ricorda la password</translation>
     </message>
 </context>
 <context>

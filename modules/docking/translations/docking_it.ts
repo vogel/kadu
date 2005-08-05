@@ -37,12 +37,6 @@ Descrizione:
 %2</translation>
     </message>
     <message>
-        <source>Left click - hide/show window
-Middle click or Left click- open message</source>
-        <translation>Tasto sx - mostra/nascondi finestra
-Tasto centrale oppure sx - apri messaggio</translation>
-    </message>
-    <message>
         <source>Blinking envelope</source>
         <translation>Copertina lampeggiante</translation>
     </message>
@@ -53,6 +47,12 @@ Tasto centrale oppure sx - apri messaggio</translation>
     <message>
         <source>Animated envelope</source>
         <translation>Copertina animata</translation>
+    </message>
+    <message>
+        <source>Left click - hide / show window
+Middle click or Left click - open message</source>
+        <translation>Tasto sx - mostra / nascondi finestra
+Tasto centrale oppure sx - apri messaggio</translation>
     </message>
 </context>
 </TS>

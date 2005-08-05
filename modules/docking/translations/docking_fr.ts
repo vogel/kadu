@@ -17,12 +17,6 @@
 <context>
     <name>DockingManager</name>
     <message>
-        <source>Left click - hide/show window
-Middle click or Left click- open message</source>
-        <translation>click gauche - cache/montre fenêtre
-click milieu ou gauche - ouvre message</translation>
-    </message>
-    <message>
         <source>
 
 Current status:
@@ -53,6 +47,12 @@ Description:
     <message>
         <source>Animated envelope</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Left click - hide / show window
+Middle click or Left click - open message</source>
+        <translation>click gauche - cache / montre fenêtre
+click milieu ou gauche - ouvre message</translation>
     </message>
 </context>
 </TS>

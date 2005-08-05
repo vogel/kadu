@@ -37,12 +37,6 @@ Beschreibung:
 %2</translation>
     </message>
     <message>
-        <source>Left click - hide/show window
-Middle click or Left click- open message</source>
-        <translation>Linke Maustauste: zeige/verstecke Fenster
-Mittlere Maustaste oder linke Maustaste: Nachricht öffnen</translation>
-    </message>
-    <message>
         <source>Blinking envelope</source>
         <translation>Blinkender Briefumschlag</translation>
     </message>
@@ -53,6 +47,12 @@ Mittlere Maustaste oder linke Maustaste: Nachricht öffnen</translation>
     <message>
         <source>Animated envelope</source>
         <translation>Animierter Briefumschlag</translation>
+    </message>
+    <message>
+        <source>Left click - hide / show window
+Middle click or Left click - open message</source>
+        <translation>Linke Maustauste: zeige / verstecke Fenster
+Mittlere Maustaste oder linke Maustaste: Nachricht öffnen</translation>
     </message>
 </context>
 </TS>

@@ -10,12 +10,12 @@
         <translation>&amp;Neuen Benutzer registrieren</translation>
     </message>
     <message>
-        <source>&amp;Change password/email</source>
-        <translation>Passwort/Email &amp;ändern</translation>
-    </message>
-    <message>
         <source>Remind &amp;password</source>
         <translation>An &amp;Passwort erinnern</translation>
+    </message>
+    <message>
+        <source>&amp;Change password / email</source>
+        <translation>Passwort / Email &amp;ändern</translation>
     </message>
 </context>
 <context>
@@ -23,10 +23,6 @@
     <message>
         <source>OK</source>
         <translation>OK</translation>
-    </message>
-    <message>
-        <source>Change password/email</source>
-        <translation>Passwort/Email ändern</translation>
     </message>
     <message>
         <source>This dialog box allows you to change your current password or e-mail.</source>
@@ -67,6 +63,10 @@ Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new pa
         <translation>Fehler in den eingegebenen Daten der Felder.
 
 Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Passwort&quot; und &quot;Neues Passwort wiederholen&quot;) sollte gleich sein!</translation>
+    </message>
+    <message>
+        <source>Change password / email</source>
+        <translation>Passwort / Email ändern</translation>
     </message>
 </context>
 <context>
@@ -157,10 +157,6 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
         <translation>OK</translation>
     </message>
     <message>
-        <source>Remind password/email</source>
-        <translation>An Passwort/Email erinnern</translation>
-    </message>
-    <message>
         <source>This dialog box allows you to ask server to remind your current password.</source>
         <translation>Dieses Dialog ermöglicht es Ihnen, den Server um eine Passwort-Erinnerung anzusuchen.</translation>
     </message>
@@ -179,6 +175,10 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
     <message>
         <source>Your password has been send on your email</source>
         <translation>Ihr Passwort wird an Ihre Email geschickt</translation>
+    </message>
+    <message>
+        <source>Remind password</source>
+        <translation>An Passwort erinnern</translation>
     </message>
 </context>
 <context>

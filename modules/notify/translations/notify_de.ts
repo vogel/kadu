@@ -64,12 +64,12 @@ Zustandsänderungen während des Verbindens zum Server</translation>
         <translation>Ignoriere Änderungen nach dem Verbinden zum Server</translation>
     </message>
     <message>
-        <source>Ignore status changes from available/busy to available/busy</source>
-        <translation>Ignoriere Zustandsänderungen von erreichbar/bschäftigt auf erreichbar/beschäftigt</translation>
-    </message>
-    <message>
         <source>User changed status to &quot;Invisible&quot;</source>
         <translation>Kontankt änderte Zustand auf &quot;Unsichtbar&quot;</translation>
+    </message>
+    <message>
+        <source>Ignore status changes from available / busy to available / busy</source>
+        <translation>Ignoriere Zustandsänderungen von erreichbar / bschäftigt auf erreichbar / beschäftigt</translation>
     </message>
 </context>
 </TS>

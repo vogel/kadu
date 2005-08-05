@@ -66,12 +66,12 @@ lors de la première  connexion de Kadu avec le serveur
         <translation>Ignore les changements juste après la connexion avec le serveur</translation>
     </message>
     <message>
-        <source>Ignore status changes from available/busy to available/busy</source>
-        <translation>Ignore les changements de statuts accessible/occoupé en accessible/occoupé</translation>
-    </message>
-    <message>
         <source>User changed status to &quot;Invisible&quot;</source>
         <translation>Utilisateur a changé le statut en &quot;Invisible&quot;</translation>
+    </message>
+    <message>
+        <source>Ignore status changes from available / busy to available / busy</source>
+        <translation>Ignore les changements de statuts accessible / occoupé en accessible / occoupé</translation>
     </message>
 </context>
 </TS>

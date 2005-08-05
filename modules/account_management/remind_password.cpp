@@ -23,7 +23,7 @@ RemindPassword::RemindPassword(QDialog * /*parent*/, const char * /*name*/)
 {
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose);
-	setCaption(tr("Remind password / email"));
+	setCaption(tr("Remind password"));
 
 	// create main QLabel widgets (icon and app info)
 	QVBox *left=new QVBox(this);

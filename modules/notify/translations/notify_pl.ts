@@ -64,12 +64,12 @@ przy pierwszym połaczeniu sie Kadu z serwerem</translation>
         <translation>Ignoruj zmiany zaraz po połączeniu z serwerem</translation>
     </message>
     <message>
-        <source>Ignore status changes from available/busy to available/busy</source>
-        <translation>Ignoruj zmianę statusów z dostępny/zajęty na dostępny/zajęty</translation>
-    </message>
-    <message>
         <source>User changed status to &quot;Invisible&quot;</source>
         <translation>Użytkownik zmienił status na &quot;Ukryty&quot;</translation>
+    </message>
+    <message>
+        <source>Ignore status changes from available / busy to available / busy</source>
+        <translation>Ignoruj zmianę statusów z dostępny / zajęty na dostępny / zajęty</translation>
     </message>
 </context>
 </TS>

@@ -10,12 +10,12 @@
         <translation>Enregistrement &amp;nouvel utilisateur</translation>
     </message>
     <message>
-        <source>&amp;Change password/email</source>
-        <translation>Change &amp;mot de passe/email</translation>
-    </message>
-    <message>
         <source>Remind &amp;password</source>
         <translation>&amp;Rapelle mot de passe</translation>
+    </message>
+    <message>
+        <source>&amp;Change password / email</source>
+        <translation>Change &amp;mot de passe / email</translation>
     </message>
 </context>
 <context>
@@ -23,10 +23,6 @@
     <message>
         <source>OK</source>
         <translation>OK</translation>
-    </message>
-    <message>
-        <source>Change password/email</source>
-        <translation>Change mot de passe/email</translation>
     </message>
     <message>
         <source>This dialog box allows you to change your current password or e-mail.</source>
@@ -66,6 +62,10 @@
 Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
         <translation>Données incorrects dans le champs.
 Les mot de passe doivent être(&quot;nouveau mot de passe&quot; et &quot;retapper le nouveu mot de passe&quot;) idéntiques dans le deux champs!</translation>
+    </message>
+    <message>
+        <source>Change password / email</source>
+        <translation>Change mot de passe / email</translation>
     </message>
 </context>
 <context>
@@ -155,10 +155,6 @@ Les mot de passe dans le deux champs doivent être idéntiques!</translation>
         <translation>OK</translation>
     </message>
     <message>
-        <source>Remind password/email</source>
-        <translation>Rappelle le nom d&apos;utilisateur-pseudo /e-mail</translation>
-    </message>
-    <message>
         <source>This dialog box allows you to ask server to remind your current password.</source>
         <translation>Cette fenêtre de dialogue permet d&apos;interroger le serveur afin de rappeler votre pseudo actuel.</translation>
     </message>
@@ -177,6 +173,10 @@ Les mot de passe dans le deux champs doivent être idéntiques!</translation>
     <message>
         <source>Your password has been send on your email</source>
         <translation>Votre pseudo a été expédié à votre adresse e-mail</translation>
+    </message>
+    <message>
+        <source>Remind password</source>
+        <translation>Rapelle mot de passe</translation>
     </message>
 </context>
 <context>
