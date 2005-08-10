@@ -319,14 +319,42 @@ bool MigrationDialog::xmlConfigFilesMigrationNeeded()
 	QString config_path = ggPath("kadu.conf");
 	kdebug("config_path: %s\n", config_path.local8Bit().data());
 	QDomElement root_elem = xml_config_file->rootElement();
-	if (!QFile::exists(config_path) ||
-		!xml_config_file->findElement(root_elem, "Deprecated").isNull())
+	if (!QFile::exists(config_path))
 	{
 		kdebugf2();
 		return false;
 	}
+	QDomElement depr_elem = xml_config_file->findElement(root_elem, "Deprecated");
+	if (depr_elem.isNull())
+	{
+		kdebugf2();
+		return true;
+	}
+	QDomElement config_elem = xml_config_file->findElementByProperty(depr_elem, "ConfigFile", "name", "kadu.conf");
+	if (config_elem.isNull())
+	{
+		kdebugf2();
+		return true;
+	}
+	QDomElement group_elem = xml_config_file->findElementByProperty(config_elem, "Group", "name", "General");
+	if (group_elem.isNull())
+	{
+		kdebugf2();
+		return true;
+	}
+	QDomElement uin_elem = xml_config_file->findElementByProperty(group_elem, "Entry", "name", "UIN");
+	if (uin_elem.isNull())
+	{
+		kdebugf2();
+		return true;
+	}
+	if (uin_elem.attribute("value").isNull() || uin_elem.attribute("value") == "0")
+	{
+		kdebugf2();
+		return true;
+	}
 	kdebugf2();
-	return true;
+	return false;
 }
 
 void MigrationDialog::xmlConfigFilesMigration()
@@ -341,6 +369,8 @@ void MigrationDialog::xmlConfigFilesMigration()
 		return;
 	}
 	QListViewItem* item = addItem(tr("Step 4: Migrating config files to kadu.conf.xml"));
+	QDomElement deprecated_elem = xml_config_file->accessElement(root_elem, "Deprecated");
+	xml_config_file->removeChildren(deprecated_elem);
 	QDir dir(ggPath(""));
 	dir.setNameFilter("*.conf");
 	for (int i = 0; i < dir.count(); i++)

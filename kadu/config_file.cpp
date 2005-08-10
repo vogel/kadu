@@ -590,17 +590,14 @@ bool ConfigFile::changeEntry(const QString &group, const QString &name, const QS
 {
 //	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::changeEntry(%s, %s, %s) %p\n", (const char *)group.local8Bit(), (const char *)name.local8Bit(), (const char *)value.local8Bit(), this);
 	QDomElement root_elem = xml_config_file->rootElement();
-	QDomElement deprecated_elem = xml_config_file->findElement(root_elem, "Deprecated");
-	if (!deprecated_elem.isNull())
-	{
-		QDomElement config_file_elem = xml_config_file->accessElementByProperty(
-			deprecated_elem, "ConfigFile", "name", filename.section("/", -1));
-		QDomElement group_elem = xml_config_file->accessElementByProperty(
-			config_file_elem, "Group", "name", group);
-		QDomElement entry_elem = xml_config_file->accessElementByProperty(
-			group_elem, "Entry", "name", name);
-		entry_elem.setAttribute("value", value);
-	}
+	QDomElement deprecated_elem = xml_config_file->accessElement(root_elem, "Deprecated");
+	QDomElement config_file_elem = xml_config_file->accessElementByProperty(
+		deprecated_elem, "ConfigFile", "name", filename.section("/", -1));
+	QDomElement group_elem = xml_config_file->accessElementByProperty(
+		config_file_elem, "Group", "name", group);
+	QDomElement entry_elem = xml_config_file->accessElementByProperty(
+		group_elem, "Entry", "name", name);
+	entry_elem.setAttribute("value", value);
 	//
 	return true;
 }
