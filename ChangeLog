@@ -100,6 +100,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka instalacji plików nag³ówkowych w przypadku u¿ycia zmiennej DESTDIR (joi)
 * komunikaty dotycz±ce migracji zebrane w jedno okno + ró¿ne poprawki (adrian)
 * poprawki w mechanizmach xml-owych plików konf. - pierwszy start kadu (adrian)
+* poprawione od¶wie¿anie ikony w module desktop_docking (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
