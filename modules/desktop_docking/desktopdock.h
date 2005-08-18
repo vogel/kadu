@@ -7,7 +7,7 @@
 /* DesktopDockWindow - ikonka dokujaca */
 
 class DesktopDockWindow : public QLabel
-{	
+{
 	Q_OBJECT
 
 	public:
@@ -20,7 +20,7 @@ class DesktopDockWindow : public QLabel
 		void setToolTip(const QString &statusText);
 		void ApplyConfig();
 		void onCreateConfigDialog();
-		void setPixmap(const QPixmap &DockPixmap);
+		void setPixmap(const QPixmap &DockPixmap, const QString &iconName);
 		void findTrayPosition(QPoint &DockPoint);
 		void enableColorButton(bool b);
 		void droppedOnDesktop(const QPoint &);
