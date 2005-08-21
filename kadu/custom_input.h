@@ -2,8 +2,9 @@
 #define KADU_CUSTOM_INPUT_H
 
 #include <qmultilineedit.h>
-#include <qwidget.h>
-#include <qevent.h>
+
+class QKeyEvent;
+class QWidget;
 
 /**
 	\class CustomInput

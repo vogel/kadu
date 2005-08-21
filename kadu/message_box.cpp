@@ -14,8 +14,8 @@
 #include <qprogressbar.h>
 #include <qpushbutton.h>
 
+#include "icons_manager.h"
 #include "message_box.h"
-#include "misc.h"
 #include "debug.h"
 
 const int MessageBox::OK       = 1;  // 00001
@@ -170,7 +170,7 @@ void MessageBox::msg(const QString& message,bool modal)
 void MessageBox::wrn(const QString& message,bool modal)
 {
 	MessageBox* m=new MessageBox(message,OK,modal);
-	m->setIcon(icons_manager.loadIcon("Warning"));
+	m->setIcon(icons_manager->loadIcon("Warning"));
 	if (modal)
 		m->exec();
 	else

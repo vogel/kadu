@@ -9,14 +9,12 @@
 
 
 #include "debug.h"
-
 #include "kadu.h"
 //CONST_FOREACH
 #include "misc.h"
 
 #include "usergroup.h"
-
-#define KADU_USERLIST_PRIVATE
+#include "userlist.h"
 #include "userlist-private.h"
 
 UserGroup::UserGroup(int size, const char *name) : QObject(NULL, name), d(new UserGroupData(size))

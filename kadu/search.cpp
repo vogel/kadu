@@ -20,15 +20,12 @@
 #include <qradiobutton.h>
 #include <qtooltip.h>
 
-#include <stdlib.h>
-
-#include "chat.h"
 #include "chat_manager.h"
+#include "config_file.h"
 #include "debug.h"
-#include "kadu.h"
+#include "misc.h"
 #include "search.h"
 #include "userinfo.h"
-#include "userlist.h"
 
 SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearchUin)
 : QDialog (parent, name, FALSE, Qt::WDestructiveClose)

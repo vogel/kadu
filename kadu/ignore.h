@@ -4,7 +4,6 @@
 #include <qhbox.h>
 #include <qvaluelist.h>
 
-#include "gadu.h"
 #include "usergroup.h"
 
 class QLineEdit;

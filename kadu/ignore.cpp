@@ -7,22 +7,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qfile.h>
+#include <qlabel.h>
 #include <qlineedit.h>
 #include <qlistbox.h>
-#include <qlabel.h>
 #include <qpushbutton.h>
-#include <qstringlist.h>
-#include <qtextstream.h>
 #include <qvbox.h>
 #include <qvgroupbox.h>
 
 #include "config_file.h"
 #include "debug.h"
+#include "gadu.h"
+#include "icons_manager.h"
 #include "ignore.h"
-#include "userlist.h"
 #include "misc.h"
-//
+#include "userlist.h"
 
 QValueList<UserListElements> ignored;
 
@@ -46,7 +44,7 @@ Ignored::Ignored(QDialog * /*parent*/, const char * /*name*/)
 	center->setSpacing(10);
 
 	QLabel *l_info = new QLabel(center);
-	l_icon->setPixmap(icons_manager.loadIcon("ManageIgnoredWindowIcon"));
+	l_icon->setPixmap(icons_manager->loadIcon("ManageIgnoredWindowIcon"));
 	l_info->setText(tr("This dialog box allows you to manage your ignored contacts."));
 	l_info->setAlignment(Qt::WordBreak);
 	// end create main QLabel widgets (icon and app info)
@@ -79,9 +77,9 @@ Ignored::Ignored(QDialog * /*parent*/, const char * /*name*/)
 	QWidget *blank2=new QWidget(bottom);
 	bottom->setSpacing(5);
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
-	QPushButton *pb_del = new QPushButton(icons_manager.loadIcon("DeleteIgnoredButton"), tr("Delete"), bottom);
-	QPushButton *pb_add = new QPushButton(icons_manager.loadIcon("AddIgnoredButton"), tr("Add"), bottom);
-	QPushButton *pb_close = new QPushButton(icons_manager.loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	QPushButton *pb_del = new QPushButton(icons_manager->loadIcon("DeleteIgnoredButton"), tr("Delete"), bottom);
+	QPushButton *pb_add = new QPushButton(icons_manager->loadIcon("AddIgnoredButton"), tr("Add"), bottom);
+	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	// end buttons
 
 	connect(pb_add, SIGNAL(clicked()), this, SLOT(add()));
@@ -143,7 +141,7 @@ void Ignored::getList()
 			else
 				strlist.append(QString("%1").arg((*user).ID("Gadu")));
 		}
-		lb_list->insertItem(icons_manager.loadIcon("Blocking"), strlist.join(";"));
+		lb_list->insertItem(icons_manager->loadIcon("Blocking"), strlist.join(";"));
 	}
 	kdebugf2();
 }

@@ -14,10 +14,11 @@
 #include <qvgroupbox.h>
 #include <qpushbutton.h>
 
-#include "register.h"
-#include "debug.h"
 #include "config_file.h"
+#include "debug.h"
+#include "icons_manager.h"
 #include "misc.h"
+#include "register.h"
 
 #include <pwd.h>
 #include <sys/types.h>
@@ -81,7 +82,7 @@ Register::Register(QDialog * /*parent*/, const char * /*name*/)
 	center->setSpacing(10);
 
 	QLabel *l_info = new QLabel(center);
-	l_icon->setPixmap(icons_manager.loadIcon("RegisterWindowIcon"));
+	l_icon->setPixmap(icons_manager->loadIcon("RegisterWindowIcon"));
 	l_info->setText(tr("This dialog box allows you to register a new account."));
 	l_info->setAlignment(Qt::WordBreak);
 	// end create main QLabel widgets (icon and app info)
@@ -118,8 +119,8 @@ Register::Register(QDialog * /*parent*/, const char * /*name*/)
 	QWidget *blank2 = new QWidget(bottom);
 	bottom->setSpacing(5);
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
-	QPushButton *pb_register = new QPushButton(icons_manager.loadIcon("RegisterAccountButton"), tr("Register"), bottom, "register");
-	QPushButton *pb_close = new QPushButton(icons_manager.loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	QPushButton *pb_register = new QPushButton(icons_manager->loadIcon("RegisterAccountButton"), tr("Register"), bottom, "register");
+	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	// end buttons
 
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));

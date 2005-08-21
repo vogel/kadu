@@ -9,13 +9,15 @@
 
 #include <qcursor.h>
 
-#include "chat_manager.h"
 #include "chat_manager_slots.h"
 #include "config_dialog.h"
 #include "debug.h"
+#include "chat_manager.h"
 #include "kadu.h"
 #include "kadu_splitter.h"
+#include "misc.h"
 #include "pending_msgs.h"
+#include "userbox.h"
 
 ChatManager::ChatManager(QObject* parent, const char* name)
 	: QObject(parent, name)

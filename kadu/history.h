@@ -1,18 +1,22 @@
 #ifndef HISTORY_H
 #define HISTORY_H
 
-#include <qdatetime.h>
-#include <qdialog.h>
-#include <qlistview.h>
-#include <qmap.h>
-#include <qstring.h>
+/*
 #include <qstringlist.h>
 #include <qvaluelist.h>
 
 #include <time.h>
 
-#include "gadu.h"
 //#include "misc.h"
+*/
+
+#include <qdatetime.h>
+#include <qdialog.h>
+#include <qlistview.h>
+#include <qmap.h>
+#include <qstring.h>
+
+#include "gadu.h"
 
 #define HISTORYMANAGER_ENTRY_CHATSEND   0x00000001
 #define HISTORYMANAGER_ENTRY_CHATRCV    0x00000002

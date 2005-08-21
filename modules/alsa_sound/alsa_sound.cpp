@@ -70,6 +70,7 @@ snd_pcm_t *ALSAPlayerSlots::alsa_open (const char *device, int channels, int sam
 	if ((err = snd_pcm_hw_params_malloc (&hw_params)) < 0)
 	{
 		kdebugm(KDEBUG_WARNING, "cannot allocate hardware parameter structure (%s)\n", snd_strerror (err));
+		snd_pcm_close (alsa_dev);
 		return NULL;
 	}
 	kdebugm(KDEBUG_INFO, "struct allocated\n");
@@ -77,6 +78,7 @@ snd_pcm_t *ALSAPlayerSlots::alsa_open (const char *device, int channels, int sam
 	if ((err = snd_pcm_hw_params_any (alsa_dev, hw_params)) < 0)
 	{
 		kdebugm(KDEBUG_WARNING, "cannot initialize hardware parameter structure (%s)\n", snd_strerror (err));
+		snd_pcm_close (alsa_dev);
 		return NULL;
 	}
 	kdebugm(KDEBUG_INFO, "struct initialized\n");
@@ -84,6 +86,7 @@ snd_pcm_t *ALSAPlayerSlots::alsa_open (const char *device, int channels, int sam
 	if ((err = snd_pcm_hw_params_set_access (alsa_dev, hw_params, SND_PCM_ACCESS_RW_INTERLEAVED)) < 0)
 	{
 		kdebugm(KDEBUG_WARNING, "cannot set access type (%s)\n", snd_strerror (err));
+		snd_pcm_close (alsa_dev);
 		return NULL;
 	}
 	kdebugm(KDEBUG_INFO, "access type set\n");
@@ -91,6 +94,7 @@ snd_pcm_t *ALSAPlayerSlots::alsa_open (const char *device, int channels, int sam
 	if ((err = snd_pcm_hw_params_set_format (alsa_dev, hw_params, SND_PCM_FORMAT_S16_LE)) < 0)
 	{
 		kdebugm(KDEBUG_WARNING, "cannot set sample format (%s)\n", snd_strerror (err));
+		snd_pcm_close (alsa_dev);
 		return NULL;
 	}
 	kdebugm(KDEBUG_INFO, "sample format set\n");
@@ -98,6 +102,7 @@ snd_pcm_t *ALSAPlayerSlots::alsa_open (const char *device, int channels, int sam
 	if ((err = snd_pcm_hw_params_set_rate_near (alsa_dev, hw_params, (unsigned int*)&samplerate, 0)) < 0)
 	{
 		kdebugm(KDEBUG_WARNING, "cannot set sample rate (%s)\n", snd_strerror (err));
+		snd_pcm_close (alsa_dev);
 		return NULL;
 	}
 	kdebugm(KDEBUG_INFO, "sample rate set\n");
@@ -105,6 +110,7 @@ snd_pcm_t *ALSAPlayerSlots::alsa_open (const char *device, int channels, int sam
 	if ((err = snd_pcm_hw_params_set_channels (alsa_dev, hw_params, channels)) < 0)
 	{
 		kdebugm(KDEBUG_WARNING, "cannot set channel count (%s)\n", snd_strerror (err));
+		snd_pcm_close (alsa_dev);
 		return NULL;
 	}
 	kdebugm(KDEBUG_INFO, "channel count set\n");
@@ -112,6 +118,7 @@ snd_pcm_t *ALSAPlayerSlots::alsa_open (const char *device, int channels, int sam
 	if ((err = snd_pcm_hw_params_set_buffer_size_near (alsa_dev, hw_params, &alsa_buffer_frames)) < 0)
 	{
 		kdebugm(KDEBUG_WARNING, "cannot set buffer size (%s)\n", snd_strerror (err));
+		snd_pcm_close (alsa_dev);
 		return NULL;
 	}
 	kdebugm(KDEBUG_INFO, "buffer size set\n");
@@ -119,6 +126,7 @@ snd_pcm_t *ALSAPlayerSlots::alsa_open (const char *device, int channels, int sam
 	if ((err = snd_pcm_hw_params_set_period_size_near (alsa_dev, hw_params, &alsa_period_size, 0)) < 0)
 	{
 		kdebugm(KDEBUG_WARNING, "cannot set period size (%s)\n", snd_strerror (err));
+		snd_pcm_close (alsa_dev);
 		return NULL;
 	}
 	kdebugm(KDEBUG_INFO, "period size set\n");
@@ -126,6 +134,7 @@ snd_pcm_t *ALSAPlayerSlots::alsa_open (const char *device, int channels, int sam
 	if ((err = snd_pcm_hw_params (alsa_dev, hw_params)) < 0)
 	{
 		kdebugm(KDEBUG_WARNING, "cannot set parameters (%s)\n", snd_strerror (err));
+		snd_pcm_close (alsa_dev);
 		return NULL;
 	}
 	kdebugm(KDEBUG_INFO, "parameters set\n");
@@ -136,6 +145,7 @@ snd_pcm_t *ALSAPlayerSlots::alsa_open (const char *device, int channels, int sam
 	if (alsa_period_size == buffer_size)
 	{
 		kdebugm(KDEBUG_WARNING, "Can't use period equal to buffer size (%lu == %lu)\n", alsa_period_size, buffer_size);
+		snd_pcm_close (alsa_dev);
 		return NULL;
 	}
 	kdebugm(KDEBUG_INFO, "period correctly set\n");
@@ -147,6 +157,7 @@ snd_pcm_t *ALSAPlayerSlots::alsa_open (const char *device, int channels, int sam
 	if ((err = snd_pcm_sw_params_malloc (&sw_params)) != 0)
 	{
 		kdebugm(KDEBUG_WARNING, "snd_pcm_sw_params_malloc: %s\n", snd_strerror (err));
+		snd_pcm_close (alsa_dev);
 		return NULL;
 	}
 	kdebugm(KDEBUG_INFO, "another struct allocated\n");
@@ -154,6 +165,7 @@ snd_pcm_t *ALSAPlayerSlots::alsa_open (const char *device, int channels, int sam
 	if ((err = snd_pcm_sw_params_current (alsa_dev, sw_params)) != 0)
 	{
 		kdebugm(KDEBUG_WARNING, "snd_pcm_sw_params_current: %s\n", snd_strerror (err));
+		snd_pcm_close (alsa_dev);
 		return NULL;
 	}
 	kdebugm(KDEBUG_INFO, "params got\n");
@@ -163,6 +175,7 @@ snd_pcm_t *ALSAPlayerSlots::alsa_open (const char *device, int channels, int sam
 	if ((err = snd_pcm_sw_params_get_xfer_align (sw_params, &xfer_align)) < 0)
 	{
 		kdebugm(KDEBUG_WARNING, "cannot get xfer align (%s)\n", snd_strerror (err));
+		snd_pcm_close (alsa_dev);
 		return NULL;
 	}
 	kdebugm(KDEBUG_INFO, "xfer align got\n");
@@ -174,6 +187,7 @@ snd_pcm_t *ALSAPlayerSlots::alsa_open (const char *device, int channels, int sam
 	if ((err = snd_pcm_sw_params_set_start_threshold (alsa_dev, sw_params, start_threshold)) < 0)
 	{
 		kdebugm(KDEBUG_WARNING, "cannot set start threshold (%s)\n", snd_strerror (err));
+		snd_pcm_close (alsa_dev);
 		return NULL;
 	}
 	kdebugm(KDEBUG_INFO, "threshold set\n");
@@ -181,6 +195,7 @@ snd_pcm_t *ALSAPlayerSlots::alsa_open (const char *device, int channels, int sam
 	if ((err = snd_pcm_sw_params (alsa_dev, sw_params)) != 0)
 	{
 		kdebugm(KDEBUG_WARNING, "snd_pcm_sw_params: %s\n", snd_strerror (err));
+		snd_pcm_close (alsa_dev);
 		return NULL;
 	}
 	kdebugm(KDEBUG_INFO, "params ok\n");
@@ -333,10 +348,27 @@ void ALSAPlayerSlots::playSample(SoundDevice device, const int16_t* data, int le
 	if (result)
 	{
 		int res, written = 0;
+		int nullCount = 0;
 		while (written < length)
 		{
+			snd_pcm_wait(dev->player, 100);
 			int towrite = (length - written) / (2 * dev->channels);
-			kdebugm(KDEBUG_INFO, "%p %p %d %d\n", dev->player, cdata + written, towrite, written);
+			int avail = snd_pcm_avail_update(dev->player);
+			if (avail < towrite)
+				towrite = avail;
+
+			if (avail == 0)
+				++nullCount;
+			else
+				nullCount = 0;
+
+			if (nullCount > 10)
+			{
+				result = false;
+				break;
+			}
+
+			kdebugm(KDEBUG_INFO, "writing %p %p %d %d\n", dev->player, cdata + written, towrite, written);
 			res = snd_pcm_writei(dev->player, cdata + written, towrite);
 			kdebugm(KDEBUG_INFO, "req:%d ret:%d\n", towrite, res);
 			if (res == -EAGAIN || res == -EINVAL)
@@ -368,9 +400,26 @@ void ALSAPlayerSlots::recordSample(SoundDevice device, int16_t* data, int length
 	if (result)
 	{
 		int res, reed = 0;
+		int nullCount = 0;
 		while (reed < length)
 		{
+			snd_pcm_wait(dev->recorder, 100);
 			int toread = (length - reed) / (2 * dev->channels);
+			int avail = snd_pcm_avail_update(dev->recorder);
+			if (avail < toread)
+				toread = avail;
+
+			if (avail == 0)
+				++nullCount;
+			else
+				nullCount = 0;
+
+			if (nullCount > 10)
+			{
+				result = false;
+				break;
+			}
+
 			kdebugm(KDEBUG_INFO, "reading %p %p %d %d\n", dev->recorder, cdata + reed, toread, reed);
 			res = snd_pcm_readi(dev->recorder, cdata + reed, toread);
 			kdebugm(KDEBUG_INFO, "req:%d ret:%d\n", toread, res);

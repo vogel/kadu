@@ -7,27 +7,16 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <qapplication.h>
 #include <qcheckbox.h>
 #include <qcombobox.h>
-#include <qdialog.h>
-#include <qdir.h>
-#include <qfile.h>
-#include <qfont.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qlistbox.h>
 #include <qmenubar.h>
 #include <qmessagebox.h>
 #include <qregexp.h>
 #include <qsplitter.h>
-#include <qstring.h>
 #include <qstyle.h>
 #include <qstylefactory.h>
-#include <qtextstream.h>
 #include <qtextcodec.h>
-#include <qtimer.h>
-#include <qtoolbar.h>
-#include <qwidget.h>
 
 #include <sys/file.h>
 #include <sys/types.h>
@@ -36,31 +25,31 @@
 #include <time.h>
 #include <stdlib.h>
 #include <sys/stat.h>
-//
+
 #include "about.h"
-#include "chat.h"
 #include "chat_manager.h"
 #include "config_dialog.h"
 #include "config_file.h"
 #include "debug.h"
-#include "emoticons.h"
 #include "expimp.h"
-#include "gadu.h"
+#include "gadu_images_manager.h"
 #include "groups_manager.h"
 #include "history.h"
+#include "icons_manager.h"
 #include "ignore.h"
 #include "kadu.h"
+#include "kadu-config.h"
+#include "kadu_text_browser.h"
 #include "message_box.h"
+#include "misc.h"
 #include "modules.h"
 #include "pending_msgs.h"
 #include "personal_info.h"
 #include "search.h"
 #include "tabbar.h"
-#include "userinfo.h"
 #include "updates.h"
-#include "misc.h"
-
-#include "kadu-config.h"
+#include "userbox.h"
+#include "userinfo.h"
 
 static QTimer* blinktimer;
 QPopupMenu* dockMenu;
@@ -105,7 +94,7 @@ void ToolBar::createControls()
 		if ((*j).caption== "--separator--")
 			addSeparator();
 		else
-			(*j).button = new QToolButton(icons_manager.loadIcon((*j).iconname), (*j).caption,
+			(*j).button = new QToolButton(icons_manager->loadIcon((*j).iconname), (*j).caption,
 				QString::null, (*j).receiver, (*j).slot, this, (*j).name);
 
 	setStretchableWidget(new QWidget(this));
@@ -191,7 +180,7 @@ void ToolBar::refreshIcons(const QString &caption, const QString &newIconName, c
 	{
 		FOREACH(j, RegisteredToolButtons)
 			if ((*j).caption!="--separator--")
-				(*j).button->setIconSet(icons_manager.loadIcon((*j).iconname));
+				(*j).button->setIconSet(icons_manager->loadIcon((*j).iconname));
 		if (kadu->isVisible())
 		{
 			kadu->hide();
@@ -204,7 +193,7 @@ void ToolBar::refreshIcons(const QString &caption, const QString &newIconName, c
 			{
 				if (newIconName!=QString::null)
 					(*j).iconname=newIconName;
-				(*j).button->setIconSet(icons_manager.loadIcon((*j).iconname));
+				(*j).button->setIconSet(icons_manager->loadIcon((*j).iconname));
 				if (newCaption!=QString::null)
 				{
 					(*j).caption=newCaption;
@@ -438,8 +427,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(statusMenu, SIGNAL(aboutToHide()), this, SLOT(statusMenuAboutToHide()));
 
 	dockMenu->insertSeparator();
-	dockMenu->insertItem(icons_manager.loadIcon("Exit"), tr("&Exit Kadu"), 9);
-	icons_manager.registerMenuItem(dockMenu, tr("&Exit Kadu"), "Exit");
+	dockMenu->insertItem(icons_manager->loadIcon("Exit"), tr("&Exit Kadu"), 9);
+	icons_manager->registerMenuItem(dockMenu, tr("&Exit Kadu"), "Exit");
 
 	InfoPanel = new KaduTextBrowser(split, "InfoPanel");
 	InfoPanel->setFrameStyle(QFrame::NoFrame);
@@ -460,7 +449,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		InfoPanel->QWidget::hide();
 
-	statusButton = new QPushButton(QIconSet(icons_manager.loadIcon("Offline")), tr("Offline"), vbox, "statusButton");
+	statusButton = new QPushButton(QIconSet(icons_manager->loadIcon("Offline")), tr("Offline"), vbox, "statusButton");
 	statusButton->setPopup(statusMenu);
 
 	if (!config_file.readBoolEntry("Look", "ShowStatusButton"))
@@ -1238,7 +1227,7 @@ bool Kadu::close(bool quit)
  		UserBox::closeModule();
 		UserList::closeModule();
  		delete emoticons;
- 		delete icons_manager_ptr;
+ 		delete icons_manager;
   		kdebugmf(KDEBUG_INFO, "Saved config, disconnect and ignored\n");
 
 #ifdef Q_OS_MACX
@@ -1278,35 +1267,35 @@ void Kadu::createMenu()
 	MenuBar = new QMenuBar(this, "MenuBar");
 
 	MainMenu = new QPopupMenu(this, "MainMenu");
-	MainMenu->insertItem(icons_manager.loadIcon("ManageIgnored"), tr("Manage &ignored"), this, SLOT(manageIgnored()));
-	MainMenu->insertItem(icons_manager.loadIcon("Configuration"), tr("&Configuration"), this, SLOT(configure()),HotKey::shortCutFromFile("ShortCuts", "kadu_configure"));
+	MainMenu->insertItem(icons_manager->loadIcon("ManageIgnored"), tr("Manage &ignored"), this, SLOT(manageIgnored()));
+	MainMenu->insertItem(icons_manager->loadIcon("Configuration"), tr("&Configuration"), this, SLOT(configure()),HotKey::shortCutFromFile("ShortCuts", "kadu_configure"));
 	MainMenu->insertSeparator();
 
-	personalInfoMenuId=MainMenu->insertItem(icons_manager.loadIcon("PersonalInfo"), tr("Personal information"), this,SLOT(personalInfo()));
+	personalInfoMenuId=MainMenu->insertItem(icons_manager->loadIcon("PersonalInfo"), tr("Personal information"), this,SLOT(personalInfo()));
 	MainMenu->insertSeparator();
-	MainMenu->insertItem(icons_manager.loadIcon("LookupUserInfo"), tr("&Search for users"), this, SLOT(searchInDirectory()));
-	MainMenu->insertItem(icons_manager.loadIcon("ImportExport"), tr("I&mport / Export userlist"), this, SLOT(importExportUserlist()));
-	MainMenu->insertItem(icons_manager.loadIcon("AddUser"), tr("&Add user"), this, SLOT(addUserAction()),HotKey::shortCutFromFile("ShortCuts", "kadu_adduser"));
+	MainMenu->insertItem(icons_manager->loadIcon("LookupUserInfo"), tr("&Search for users"), this, SLOT(searchInDirectory()));
+	MainMenu->insertItem(icons_manager->loadIcon("ImportExport"), tr("I&mport / Export userlist"), this, SLOT(importExportUserlist()));
+	MainMenu->insertItem(icons_manager->loadIcon("AddUser"), tr("&Add user"), this, SLOT(addUserAction()),HotKey::shortCutFromFile("ShortCuts", "kadu_adduser"));
 	MainMenu->insertSeparator();
-	MainMenu->insertItem(icons_manager.loadIcon("HelpMenuItem"), tr("H&elp"), this, SLOT(help()));
-	MainMenu->insertItem(icons_manager.loadIcon("AboutMenuItem"), tr("A&bout..."), this, SLOT(about()));
+	MainMenu->insertItem(icons_manager->loadIcon("HelpMenuItem"), tr("H&elp"), this, SLOT(help()));
+	MainMenu->insertItem(icons_manager->loadIcon("AboutMenuItem"), tr("A&bout..."), this, SLOT(about()));
 	MainMenu->insertSeparator();
-	MainMenu->insertItem(icons_manager.loadIcon("HideKadu"), tr("&Hide Kadu"), this, SLOT(hideKadu()));
-	MainMenu->insertItem(icons_manager.loadIcon("Exit"), tr("&Exit Kadu"), this, SLOT(quit()));
+	MainMenu->insertItem(icons_manager->loadIcon("HideKadu"), tr("&Hide Kadu"), this, SLOT(hideKadu()));
+	MainMenu->insertItem(icons_manager->loadIcon("Exit"), tr("&Exit Kadu"), this, SLOT(quit()));
 
 	MenuBar->insertItem(tr("&Kadu"), MainMenu);
 
-	icons_manager.registerMenu(MainMenu);
-	icons_manager.registerMenuItem(MainMenu, tr("Manage &ignored"), "ManageIgnored");
-	icons_manager.registerMenuItem(MainMenu, tr("&Configuration"), "Configuration");
-	icons_manager.registerMenuItem(MainMenu, tr("Personal information"), "PersonalInfo");
-	icons_manager.registerMenuItem(MainMenu, tr("&Search for users"), "LookupUserInfo");
-	icons_manager.registerMenuItem(MainMenu, tr("I&mport / Export userlist"), "ImportExport");
-	icons_manager.registerMenuItem(MainMenu, tr("&Add user"), "AddUser");
-	icons_manager.registerMenuItem(MainMenu, tr("H&elp"), "HelpMenuItem");
-	icons_manager.registerMenuItem(MainMenu, tr("A&bout..."), "AboutMenuItem");
-	icons_manager.registerMenuItem(MainMenu, tr("&Hide Kadu"), "HideKadu");
-	icons_manager.registerMenuItem(MainMenu, tr("&Exit Kadu"), "Exit");
+	icons_manager->registerMenu(MainMenu);
+	icons_manager->registerMenuItem(MainMenu, tr("Manage &ignored"), "ManageIgnored");
+	icons_manager->registerMenuItem(MainMenu, tr("&Configuration"), "Configuration");
+	icons_manager->registerMenuItem(MainMenu, tr("Personal information"), "PersonalInfo");
+	icons_manager->registerMenuItem(MainMenu, tr("&Search for users"), "LookupUserInfo");
+	icons_manager->registerMenuItem(MainMenu, tr("I&mport / Export userlist"), "ImportExport");
+	icons_manager->registerMenuItem(MainMenu, tr("&Add user"), "AddUser");
+	icons_manager->registerMenuItem(MainMenu, tr("H&elp"), "HelpMenuItem");
+	icons_manager->registerMenuItem(MainMenu, tr("A&bout..."), "AboutMenuItem");
+	icons_manager->registerMenuItem(MainMenu, tr("&Hide Kadu"), "HideKadu");
+	icons_manager->registerMenuItem(MainMenu, tr("&Exit Kadu"), "Exit");
 	kdebugf2();
 }
 
@@ -1324,8 +1313,8 @@ void Kadu::createStatusPopupMenu()
 	statusMenu = new QPopupMenu(this, "statusMenu");
 	dockMenu = new QPopupMenu(this, "dockMenu");
 
-	icons_manager.registerMenu(statusMenu);
-	icons_manager.registerMenu(dockMenu);
+	icons_manager->registerMenu(statusMenu);
+	icons_manager->registerMenu(dockMenu);
 
 	UserStatus *s = new GaduStatus();
 	for (int i=0; i<8; ++i)
@@ -1340,8 +1329,8 @@ void Kadu::createStatusPopupMenu()
 		statusMenu->insertItem(icon, qApp->translate("@default", UserStatus::name(i)), i);
 		dockMenu->insertItem(icon, qApp->translate("@default", UserStatus::name(i)), i);
 
-		icons_manager.registerMenuItem(statusMenu, qApp->translate("@default", UserStatus::name(i)), UserStatus::toString(s->status(), s->hasDescription()));
-		icons_manager.registerMenuItem(dockMenu, qApp->translate("@default", UserStatus::name(i)), UserStatus::toString(s->status(), s->hasDescription()));
+		icons_manager->registerMenuItem(statusMenu, qApp->translate("@default", UserStatus::name(i)), UserStatus::toString(s->status(), s->hasDescription()));
+		icons_manager->registerMenuItem(dockMenu, qApp->translate("@default", UserStatus::name(i)), UserStatus::toString(s->status(), s->hasDescription()));
 	}
 	delete s;
 

@@ -1,13 +1,16 @@
 #ifndef CONFIG_FILE_H
 #define CONFIG_FILE_H
 
-#include <qstring.h>
+/*#include <qfont.h>
+*/
+
+#include <qcolor.h>
+#include <qdom.h>
+#include <qmap.h>
 #include <qrect.h>
 #include <qsize.h>
-#include <qcolor.h>
-#include <qfont.h>
-#include <qmap.h>
-#include <qdom.h>
+#include <qstring.h>
+#include <qstringlist.h>
 
 /**
 	Klasa reprezentuj±ca plik XML-owy z zapisem konfiguracji programu

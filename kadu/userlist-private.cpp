@@ -11,7 +11,6 @@
 #include "gadu.h"
 #include "usergroup.h"
 #include "misc.h"
-#define KADU_USERLIST_PRIVATE
 #include "userlist-private.h"
 
 // UWAGA: wraz ze wzrostem liczby mo¿liwych kluczy nale¿y powiêkszaæ

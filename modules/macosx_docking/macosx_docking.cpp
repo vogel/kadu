@@ -16,6 +16,7 @@
 #include "config_dialog.h"
 #include "config_file.h"
 #include "debug.h"
+#include "icons_manager.h"
 #include "kadu.h"
 #include "misc.h"
 
@@ -49,7 +50,7 @@ void MacOSXDocking::blockSettingIcon(bool &block)
 
 void MacOSXDocking::trayPixmapChanged(const QPixmap &small_pix, const QString &name)
 {
-	const QPixmap &pix = icons_manager.loadIcon("Big" + name);
+	const QPixmap &pix = icons_manager->loadIcon("Big" + name);
 	if (pix.isNull())
 	{
 		kdebugm(KDEBUG_WARNING, "big icon of %s not available\n", name.local8Bit().data());

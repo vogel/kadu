@@ -9,6 +9,7 @@
 
 #include <qaccel.h>
 #include <qdragobject.h>
+#include <qlabel.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <qregexp.h>
@@ -22,9 +23,14 @@
 #include "config_dialog.h"
 #include "custom_input.h"
 #include "debug.h"
+#include "gadu_images_manager.h"
+#include "gadu_rich_text.h"
 #include "history.h"
+#include "icons_manager.h"
 #include "kadu_splitter.h"
+#include "kadu_text_browser.h"
 #include "message_box.h"
+#include "misc.h"
 #include "search.h"
 #include "userbox.h"
 
@@ -107,12 +113,12 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	buttontray->setSpacing(1);
 
 	autosend = new QPushButton(buttontray, "autoSendButton");
-	autosend->setPixmap(icons_manager.loadIcon("AutoSendMessage"));
+	autosend->setPixmap(icons_manager->loadIcon("AutoSendMessage"));
 	autosend->setToggleButton(true);
 	QToolTip::add(autosend, tr("%1 sends message").arg(config_file.readEntry("ShortCuts", "chat_newline")));
 
 	lockscroll = new QPushButton(buttontray, "lockScrollButton");
-	lockscroll->setPixmap(icons_manager.loadIcon("ScrollLock"));
+	lockscroll->setPixmap(icons_manager->loadIcon("ScrollLock"));
 	lockscroll->setToggleButton(true);
 	QToolTip::add(lockscroll, tr("Blocks scrolling"));
 
@@ -124,11 +130,11 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	}
 
 	QPushButton *clearchat= new QPushButton(buttontray, "clearChatButton");
-	clearchat->setPixmap(icons_manager.loadIcon("ClearChat"));
+	clearchat->setPixmap(icons_manager->loadIcon("ClearChat"));
 	QToolTip::add(clearchat, tr("Clear messages in chat window"));
 
 	iconsel = new QPushButton(buttontray, "selectIconButton");
-	iconsel->setPixmap(icons_manager.loadIcon("ChooseEmoticon"));
+	iconsel->setPixmap(icons_manager->loadIcon("ChooseEmoticon"));
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_NONE)
 	{
 		QToolTip::add(iconsel, tr("Insert emoticon - enable in configuration"));
@@ -138,15 +144,15 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 		QToolTip::add(iconsel, tr("Insert emoticon"));
 
 	QPushButton *history = new QPushButton(buttontray, "showHistoryButton");
-	history->setPixmap(icons_manager.loadIcon("History"));
+	history->setPixmap(icons_manager->loadIcon("History"));
 	QToolTip::add(history, tr("Show history"));
 
 	QPushButton *whois = new QPushButton(buttontray, "whoisButton");
-	whois->setPixmap(icons_manager.loadIcon("LookupUserInfo"));
+	whois->setPixmap(icons_manager->loadIcon("LookupUserInfo"));
 	QToolTip::add(whois, tr("Lookup user info"));
 
 	QPushButton* insertimage = new QPushButton(buttontray, "insertImageButton");
-	insertimage->setPixmap(icons_manager.loadIcon("ChooseImage"));
+	insertimage->setPixmap(icons_manager->loadIcon("ChooseImage"));
 	QToolTip::add(insertimage, tr("Insert image"));
 
 	edtbuttontray->setStretchFactor(edt, 50);
@@ -210,7 +216,7 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 
 	(new QWidget(btnpart, "spacer"))->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
-	sendbtn = new QPushButton(QIconSet(icons_manager.loadIcon("SendMessage")),tr("&Send"),btnpart, "sendButton");
+	sendbtn = new QPushButton(QIconSet(icons_manager->loadIcon("SendMessage")),tr("&Send"),btnpart, "sendButton");
 	sendbtn->setFixedWidth(120);
 	connect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
 	QAccel *acc = new QAccel(this, "returnAccel");
@@ -503,7 +509,7 @@ void Chat::refreshTitle()
 			if (++i < uinsSize)
 				title.append(", ");
 		}
-		setIcon(icons_manager.loadIcon("Online"));
+		setIcon(icons_manager->loadIcon("Online"));
 	}
 	else
 	{
@@ -955,7 +961,7 @@ void Chat::cancelMessage()
 	edit->setFocus();
 	disconnect(sendbtn, SIGNAL(clicked()), this, SLOT(cancelMessage()));
 	connect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
-	sendbtn->setIconSet(QIconSet(icons_manager.loadIcon("SendMessage")));
+	sendbtn->setIconSet(QIconSet(icons_manager->loadIcon("SendMessage")));
 	sendbtn->setText(tr("&Send"));
 	kdebugf2();
 }
@@ -1089,7 +1095,7 @@ void Chat::sendMessage()
 		edit->setEnabled(false);
 		disconnect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
 		connect(sendbtn, SIGNAL(clicked()), this, SLOT(cancelMessage()));
-		sendbtn->setIconSet(QIconSet(icons_manager.loadIcon("CancelMessage")));
+		sendbtn->setIconSet(QIconSet(icons_manager->loadIcon("CancelMessage")));
 		sendbtn->setText(tr("&Cancel"));
 	}
 

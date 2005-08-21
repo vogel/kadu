@@ -9,11 +9,8 @@
 
 
 #include <qapplication.h>
-#include <qtranslator.h>
 #include <qmessagebox.h>
 #include <qtextcodec.h>
-#include <qmessagebox.h>
-#include <qtimer.h>
 
 #include <errno.h>
 #include <string.h>
@@ -31,6 +28,7 @@
 #include "misc.h"
 #include "debug.h"
 #include "groups_manager.h"
+#include "icons_manager.h"
 #include "modules.h"
 #include "emoticons.h"
 #include "message_box.h"
@@ -203,17 +201,18 @@ int main(int argc, char *argv[])
 				qApp->translate("@default", QT_TR_NOOP("Force running Kadu (not recommended).")),
 				qApp->translate("@default", QT_TR_NOOP("Quit.")), 0, 1, 1) == 1)
 			{
-			    delete defaultFont;
-			    delete defaultFontInfo;
-			    delete emoticons;
+				Kadu::setClosing();
+				delete defaultFont;
+				delete defaultFontInfo;
+				delete emoticons;
 				delete config_file_ptr;
 				GroupsManager::closeModule();
 				UserList::closeModule();
-			    delete xml_config_file;
-			    lockFile->close();
-			    delete lockFile;
-			    delete qApp;
-			    return 1;
+				delete xml_config_file;
+				lockFile->close();
+				delete lockFile;
+				delete qApp;
+				return 1;
 			}
 		}
 	}
@@ -224,9 +223,9 @@ int main(int argc, char *argv[])
 	qApp->setMainWidget(kadu);
 	QPixmap pix;
 #ifdef Q_OS_MACX
-	pix = icons_manager.loadIcon("BigOffline");
+	pix = icons_manager->loadIcon("BigOffline");
 #else
-	pix = icons_manager.loadIcon("Offline");
+	pix = icons_manager->loadIcon("Offline");
 #endif
 	kadu->setMainWindowIcon(pix);
 
@@ -242,6 +241,6 @@ int main(int argc, char *argv[])
 		MessageBox::wrn(qApp->translate("@default", QT_TR_NOOP("Please do not run Kadu as a root!\nIt's a high security risk!")));
 	QTimer::singleShot(15000, kadu, SLOT(deleteOldConfigFiles()));
 	int ret=qApp->exec();
-	delete qApp;
+//	delete qApp;
 	return ret;
 }

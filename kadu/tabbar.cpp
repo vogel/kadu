@@ -10,17 +10,15 @@
 #include <qapplication.h>
 #include <qcursor.h>
 #include <qdragobject.h>
-#include <qiconset.h>
-#include <qstyle.h>
 #include <qinputdialog.h>
-#include <qsizepolicy.h>
+#include <qpainter.h>
+#include <qstyle.h>
 #include <qtoolbutton.h>
 
 #include "debug.h"
+#include "misc.h"
 #include "tabbar.h"
 #include "userbox.h"
-#include "userlist.h"
-#include "misc.h"
 
 struct QTabPrivate;
 

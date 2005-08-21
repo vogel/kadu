@@ -1,11 +1,10 @@
 #ifndef KADU_CHAT_MESSAGE_H
 #define KADU_CHAT_MESSAGE_H
 
-#include <qstring.h>
-#include <qdatetime.h>
 #include <qcolor.h>
+#include <qdatetime.h>
 #include <qmap.h>
-//#include <>
+#include <qstring.h>
 
 /**
 

@@ -9,6 +9,7 @@
 
 #include "debug.h"
 #include "kadu_splitter.h"
+#include "kadu_text_browser.h"
 #include "misc.h"
 
 KaduSplitter::KaduSplitter(QWidget* parent, const char* name)

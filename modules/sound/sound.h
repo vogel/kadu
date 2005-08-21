@@ -15,6 +15,7 @@
 #include "misc.h"
 #include "message_box.h"
 #include "modules.h"
+#include "themes.h"
 #include "usergroup.h"
 #include "userlist.h"
 

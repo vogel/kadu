@@ -116,6 +116,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * automatyczne tworzenie / aktualizacja binarnych plików translacji przy
   kompilacji modu³ów (pan_wojtas/joi)
 * usuniêcie komunikatów ostrzegawczych przy instalacji modu³ów (OBenY/joi)
+* podzielenie plików misc.* i gadu.* na mniejsze (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

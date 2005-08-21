@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <qapplication.h>
 #include <qcheckbox.h>
 #include <qcombobox.h>
 #include <qcursor.h>

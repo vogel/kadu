@@ -170,11 +170,18 @@ dnshandler.cpp \
 emoticons.cpp \
 expimp.cpp \
 gadu.cpp \
+gadu-private.cpp \
+gadu_images_manager.cpp \
+gadu_rich_text.cpp \
 groups_manager.cpp \
 history.cpp \
+html_document.cpp \
+http_client.cpp \
+icons_manager.cpp \
 ignore.cpp \
 kadu.cpp \
 kadu_splitter.cpp \
+kadu_text_browser.cpp \
 main.cpp \
 message_box.cpp \
 misc.cpp \
@@ -184,6 +191,7 @@ personal_info.cpp \
 search.cpp \
 status.cpp \
 tabbar.cpp \
+themes.cpp \
 userbox.cpp \
 userinfo.cpp \
 userlist.cpp \
@@ -210,11 +218,18 @@ dnshandler.h \
 emoticons.h \
 expimp.h \
 gadu.h \
+gadu-private.h \
+gadu_images_manager.h \
+gadu_rich_text.h \
 groups_manager.h \
 history.h \
+html_document.h \
+http_client.h \
+icons_manager.h \
 ignore.h \
 kadu.h \
 kadu_splitter.h \
+kadu_text_browser.h \
 message_box.h \
 misc.h \
 modules.h \
@@ -223,6 +238,7 @@ personal_info.h \
 search.h \
 status.h \
 tabbar.h \
+themes.h \
 userbox.h \
 userinfo.h \
 userlist.h \
@@ -244,10 +260,14 @@ moc/dnshandler_moc.cpp \
 moc/emoticons_moc.cpp \
 moc/expimp_moc.cpp \
 moc/gadu_moc.cpp \
+moc/gadu-private_moc.cpp \
 moc/groups_manager_moc.cpp \
 moc/history_moc.cpp \
+moc/http_client_moc.cpp \
+moc/icons_manager_moc.cpp \
 moc/ignore_moc.cpp \
 moc/kadu_moc.cpp \
+moc/kadu_text_browser_moc.cpp \
 moc/message_box_moc.cpp \
 moc/misc_moc.cpp \
 moc/modules_moc.cpp \
@@ -256,6 +276,7 @@ moc/personal_info_moc.cpp \
 moc/search_moc.cpp \
 moc/status_moc.cpp \
 moc/tabbar_moc.cpp \
+moc/themes_moc.cpp \
 moc/userbox_moc.cpp \
 moc/userinfo_moc.cpp \
 moc/userlist_moc.cpp \
@@ -280,11 +301,18 @@ obj/dnshandler.$(OBJEXT) \
 obj/emoticons.$(OBJEXT) \
 obj/expimp.$(OBJEXT) \
 obj/gadu.$(OBJEXT) \
+obj/gadu-private.$(OBJEXT) \
+obj/gadu_images_manager.$(OBJEXT) \
+obj/gadu_rich_text.$(OBJEXT) \
 obj/groups_manager.$(OBJEXT) \
 obj/history.$(OBJEXT) \
+obj/html_document.$(OBJEXT) \
+obj/http_client.$(OBJEXT) \
+obj/icons_manager.$(OBJEXT) \
 obj/ignore.$(OBJEXT) \
 obj/kadu.$(OBJEXT) \
 obj/kadu_splitter.$(OBJEXT) \
+obj/kadu_text_browser.$(OBJEXT) \
 obj/main.$(OBJEXT) \
 obj/message_box.$(OBJEXT) \
 obj/misc.$(OBJEXT) \
@@ -294,6 +322,7 @@ obj/personal_info.$(OBJEXT) \
 obj/search.$(OBJEXT) \
 obj/status.$(OBJEXT) \
 obj/tabbar.$(OBJEXT) \
+obj/themes.$(OBJEXT) \
 obj/userbox.$(OBJEXT) \
 obj/userinfo.$(OBJEXT) \
 obj/userlist.$(OBJEXT) \
@@ -312,10 +341,14 @@ obj/dnshandler_moc.$(OBJEXT) \
 obj/emoticons_moc.$(OBJEXT) \
 obj/expimp_moc.$(OBJEXT) \
 obj/gadu_moc.$(OBJEXT) \
+obj/gadu-private_moc.$(OBJEXT) \
 obj/groups_manager_moc.$(OBJEXT) \
 obj/history_moc.$(OBJEXT) \
+obj/http_client_moc.$(OBJEXT) \
+obj/icons_manager_moc.$(OBJEXT) \
 obj/ignore_moc.$(OBJEXT) \
 obj/kadu_moc.$(OBJEXT) \
+obj/kadu_text_browser_moc.$(OBJEXT) \
 obj/message_box_moc.$(OBJEXT) \
 obj/misc_moc.$(OBJEXT) \
 obj/modules_moc.$(OBJEXT) \
@@ -324,6 +357,7 @@ obj/personal_info_moc.$(OBJEXT) \
 obj/search_moc.$(OBJEXT) \
 obj/status_moc.$(OBJEXT) \
 obj/tabbar_moc.$(OBJEXT) \
+obj/themes_moc.$(OBJEXT) \
 obj/userbox_moc.$(OBJEXT) \
 obj/userinfo_moc.$(OBJEXT) \
 obj/userlist_moc.$(OBJEXT) \
@@ -383,17 +417,24 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/config_file.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/custom_input.Po ./$(DEPDIR)/debug.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/dnshandler.Po ./$(DEPDIR)/emoticons.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/expimp.Po ./$(DEPDIR)/gadu.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/expimp.Po ./$(DEPDIR)/gadu-private.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/gadu.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/gadu_images_manager.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/gadu_rich_text.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/groups_manager.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/history.Po ./$(DEPDIR)/ignore.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/history.Po ./$(DEPDIR)/html_document.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/http_client.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/icons_manager.Po ./$(DEPDIR)/ignore.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/kadu.Po ./$(DEPDIR)/kadu_splitter.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/kadu_text_browser.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/main.Po ./$(DEPDIR)/message_box.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/misc.Po ./$(DEPDIR)/modules.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/pending_msgs.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/personal_info.Po ./$(DEPDIR)/search.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/status.Po ./$(DEPDIR)/tabbar.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/updates.Po ./$(DEPDIR)/userbox.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/usergroup.Po ./$(DEPDIR)/userinfo.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/themes.Po ./$(DEPDIR)/updates.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/userbox.Po ./$(DEPDIR)/usergroup.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/userinfo.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/userlist-private.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/userlist.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/userlistelement.Po
@@ -468,12 +509,19 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dnshandler.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/emoticons.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/expimp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gadu-private.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gadu.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gadu_images_manager.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gadu_rich_text.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/groups_manager.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/history.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/html_document.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/http_client.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/icons_manager.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ignore.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/kadu.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/kadu_splitter.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/kadu_text_browser.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/message_box.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/misc.Po@am__quote@
@@ -483,6 +531,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/search.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/status.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tabbar.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/themes.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/updates.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/userbox.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/usergroup.Po@am__quote@

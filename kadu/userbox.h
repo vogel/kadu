@@ -2,16 +2,14 @@
 #define KADU_USERBOX_H
 
 #include <qlistbox.h>
-#include <qpainter.h>
+#include <qpixmap.h>
 #include <qpopupmenu.h>
-#include <qstringlist.h>
 #include <qtimer.h>
 #include <qtooltip.h>
 
 #include <vector>
 
 #include "gadu.h"
-#include "userlist.h"
 #include "userlistelement.h"
 
 class QFontMetrics;

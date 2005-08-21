@@ -7,25 +7,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qfiledialog.h>
-#include <qlistview.h>
 #include <qlabel.h>
+#include <qlistview.h>
 #include <qpushbutton.h>
-#include <qstring.h>
-#include <qtextcodec.h>
 #include <qvbox.h>
 #include <qvgroupbox.h>
 
 #include "debug.h"
-#include "userlist.h"
 #include "expimp.h"
 #include "gadu.h"
+#include "icons_manager.h"
 #include "ignore.h"
-#include "kadu.h"
-#include "misc.h"
 #include "message_box.h"
-#include "status.h"
-
+#include "misc.h"
+#include "userlist.h"
 
 UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopLevel|WDestructiveClose)
 {
@@ -46,7 +41,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) : 
 	center->setSpacing(10);
 
 	QLabel *l_info = new QLabel(center);
-	l_icon->setPixmap(icons_manager.loadIcon("ImportExportWindowIcon"));
+	l_icon->setPixmap(icons_manager->loadIcon("ImportExportWindowIcon"));
 	l_info->setText(tr("This dialog box allows you to import and export your buddy list to a server or a file."));
 	l_info->setAlignment(Qt::WordBreak);
 	// end create main QLabel widgets (icon and app info)
@@ -74,10 +69,10 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) : 
 	hb_importbuttons->setSpacing(5);
 	w_blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
-	pb_fetch = new QPushButton(icons_manager.loadIcon("FetchUserList"), tr("&Fetch userlist"), hb_importbuttons, "fetch");
-	QPushButton *pb_file = new QPushButton(icons_manager.loadIcon("ImportFromFile"), tr("&Import from file"), hb_importbuttons, "file");
-	QPushButton *pb_save = new QPushButton(icons_manager.loadIcon("SaveUserlist"), tr("&Save results"), hb_importbuttons, "save");
-	QPushButton *pb_merge = new QPushButton(icons_manager.loadIcon("MergeUserlist"), tr("&Merge results"), hb_importbuttons, "merge");
+	pb_fetch = new QPushButton(icons_manager->loadIcon("FetchUserList"), tr("&Fetch userlist"), hb_importbuttons, "fetch");
+	QPushButton *pb_file = new QPushButton(icons_manager->loadIcon("ImportFromFile"), tr("&Import from file"), hb_importbuttons, "file");
+	QPushButton *pb_save = new QPushButton(icons_manager->loadIcon("SaveUserlist"), tr("&Save results"), hb_importbuttons, "save");
+	QPushButton *pb_merge = new QPushButton(icons_manager->loadIcon("MergeUserlist"), tr("&Merge results"), hb_importbuttons, "merge");
 	// end buttons
 
 	// our QVGroupBox
@@ -94,9 +89,9 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) : 
 	hb_exportbuttons->setSpacing(5);
 	w_blank3->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
-	pb_send = new QPushButton(icons_manager.loadIcon("SendUserlist"),tr("Se&nd userlist"), hb_exportbuttons, "send");
-	pb_delete = new QPushButton(icons_manager.loadIcon("DeleteUserlist"),tr("&Delete userlist"), hb_exportbuttons, "delete");
-	pb_tofile = new QPushButton(icons_manager.loadIcon("ExportUserlist"),tr("&Export to file"), hb_exportbuttons, "tofile");
+	pb_send = new QPushButton(icons_manager->loadIcon("SendUserlist"),tr("Se&nd userlist"), hb_exportbuttons, "send");
+	pb_delete = new QPushButton(icons_manager->loadIcon("DeleteUserlist"),tr("&Delete userlist"), hb_exportbuttons, "delete");
+	pb_tofile = new QPushButton(icons_manager->loadIcon("ExportUserlist"),tr("&Export to file"), hb_exportbuttons, "tofile");
 	// end export buttons
 
 	// buttons
@@ -105,7 +100,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) : 
 	bottom->setSpacing(5);
 	w_blank4->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
-	QPushButton *pb_close = new QPushButton(icons_manager.loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	// end buttons
 
 	// connect

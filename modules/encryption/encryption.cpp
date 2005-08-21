@@ -19,6 +19,7 @@
 #include "debug.h"
 #include "encryption.h"
 #include "gadu.h"
+#include "icons_manager.h"
 #include "kadu.h"
 #include "message_box.h"
 #include "userbox.h"
@@ -184,12 +185,12 @@ void EncryptionManager::setupEncryptButton(Chat* chat,bool enabled)
 	if (enabled)
 	{
 		QToolTip::add(encryption_btn, tr("Disable encryption for this conversation"));
-		encryption_btn->setPixmap(icons_manager.loadIcon("EncryptedChat"));
+		encryption_btn->setPixmap(icons_manager->loadIcon("EncryptedChat"));
 	}
 	else
 	{
 		QToolTip::add(encryption_btn, tr("Enable encryption for this conversation"));
-		encryption_btn->setPixmap(icons_manager.loadIcon("DecryptedChat"));
+		encryption_btn->setPixmap(icons_manager->loadIcon("DecryptedChat"));
 	}
 	chat_manager->setChatProperty(chat->users(), "EncryptionEnabled", QVariant(enabled));
 	kdebugf2();

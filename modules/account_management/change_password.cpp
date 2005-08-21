@@ -15,6 +15,7 @@
 
 #include "change_password.h"
 #include "debug.h"
+#include "icons_manager.h"
 #include "misc.h"
 #include "gadu.h"
 #include "config_file.h"
@@ -39,7 +40,7 @@ ChangePassword::ChangePassword(QDialog * /*parent*/, const char * /*name*/)
 	center->setSpacing(10);
 
 	QLabel *l_info = new QLabel(center);
-	l_icon->setPixmap(icons_manager.loadIcon("ChangePasswordWindowIcon"));
+	l_icon->setPixmap(icons_manager->loadIcon("ChangePasswordWindowIcon"));
 	l_info->setText(tr("This dialog box allows you to change your current password or e-mail."));
 	l_info->setAlignment(Qt::WordBreak);
 	// end create main QLabel widgets (icon and app info)
@@ -72,8 +73,8 @@ ChangePassword::ChangePassword(QDialog * /*parent*/, const char * /*name*/)
 	QWidget *blank2 = new QWidget(bottom);
 	bottom->setSpacing(5);
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
-	QPushButton *pb_ok = new QPushButton(icons_manager.loadIcon("ChangePasswordEmailButton"), tr("OK"), bottom, "ok");
-	QPushButton *pb_close = new QPushButton(icons_manager.loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	QPushButton *pb_ok = new QPushButton(icons_manager->loadIcon("ChangePasswordEmailButton"), tr("OK"), bottom, "ok");
+	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	// end buttons
 
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));

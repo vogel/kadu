@@ -7,20 +7,26 @@
  *                                                                         *
  ***************************************************************************/
 
+/*
 #include <qfile.h>
 #include <qhbox.h>
+#include <qsizepolicy.h>
+#include <qtextstream.h>
+
+#include "kadu-config.h"
+*/
+
 #include <qlabel.h>
 #include <qpushbutton.h>
-#include <qsizepolicy.h>
 #include <qtabwidget.h>
 #include <qtextbrowser.h>
-#include <qtextstream.h>
+#include <qtextedit.h>
 #include <qvbox.h>
 
 #include "about.h"
-#include "misc.h"
-#include "kadu-config.h"
 #include "debug.h"
+#include "icons_manager.h"
+#include "misc.h"
 
 class KaduLink : public QLabel
 {
@@ -50,7 +56,7 @@ About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopL
 	left->setSpacing(10);
 	
 	QLabel *l_icon = new QLabel(left);
-	l_icon->setPixmap(icons_manager.loadIcon("AboutIcon"));
+	l_icon->setPixmap(icons_manager->loadIcon("AboutIcon"));
 
 	QWidget *blank=new QWidget(left);
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
@@ -114,7 +120,7 @@ About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopL
 	QHBox *bottom=new QHBox(center);
 	QWidget *blank2=new QWidget(bottom);
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
-	QPushButton *pb_close = new QPushButton(icons_manager.loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 	// end close button
 

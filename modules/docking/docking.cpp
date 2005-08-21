@@ -11,12 +11,14 @@
 #include <qcursor.h>
 #include <qcheckbox.h>
 #include <qobject.h>
+#include <qpopupmenu.h>
 #include <qtimer.h>
 
 #include "config_file.h"
 #include "config_dialog.h"
 #include "docking.h"
 #include "debug.h"
+#include "icons_manager.h"
 #include "kadu.h"
 #include "pending_msgs.h"
 #include "status.h"
@@ -103,15 +105,15 @@ void DockingManager::changeIcon()
 		switch (newMessageIcon)
 		{
 			case AnimatedEnvelope:
-				emit trayMovieChanged(icons_manager.loadAnimatedIcon("MessageAnim"));
+				emit trayMovieChanged(icons_manager->loadAnimatedIcon("MessageAnim"));
 				break;
 			case StaticEnvelope:
-				emit trayPixmapChanged(icons_manager.loadIcon("Message"), "Message");
+				emit trayPixmapChanged(icons_manager->loadIcon("Message"), "Message");
 				break;
 			case BlinkingEnvelope:
 				if (!blink)
 				{
-					emit trayPixmapChanged(icons_manager.loadIcon("Message"), "Message");
+					emit trayPixmapChanged(icons_manager->loadIcon("Message"), "Message");
 					icon_timer->start(500,TRUE);
 					blink = true;
 				}

@@ -17,6 +17,7 @@
 #include "debug.h"
 #include "hint_manager.h"
 #include "hint_manager_slots.h"
+#include "icons_manager.h"
 #include "kadu.h"
 #include "misc.h"
 #include "../notify/notify.h"
@@ -490,7 +491,7 @@ void HintManager::newChat(const QString &protocolName, UserListElements senders,
 			cite = msg.left(citeSign)+"...";
 		addHint(narg(tr("Chat with <b>%1</b><br/> <small>%2</small>"),
 			QStyleSheet::escape(senders[0].altNick()), cite),
-			icons_manager.loadIcon("Message"),
+			icons_manager->loadIcon("Message"),
 			config_file.readFontEntry("Hints", "HintNewChat_font"),
 			config_file.readColorEntry("Hints", "HintNewChat_fgcolor"),
 			config_file.readColorEntry("Hints", "HintNewChat_bgcolor"),
@@ -499,7 +500,7 @@ void HintManager::newChat(const QString &protocolName, UserListElements senders,
 	}
 	else
 		addHint(tr("Chat with <b>%1</b>").arg(QStyleSheet::escape(senders[0].altNick())),
-			icons_manager.loadIcon("Message"),
+			icons_manager->loadIcon("Message"),
 			config_file.readFontEntry("Hints", "HintNewChat_font"),
 			config_file.readColorEntry("Hints", "HintNewChat_fgcolor"),
 			config_file.readColorEntry("Hints", "HintNewChat_bgcolor"),
@@ -530,7 +531,7 @@ void HintManager::newMessage(const QString &protocolName, UserListElements sende
 				cite = msg.left(citeSign)+"...";
 			addHint(narg(tr("New message from <b>%1</b><br/> <small>%2</small>"),
 				QStyleSheet::escape(senders[0].altNick()), cite),
-				icons_manager.loadIcon("Message"),
+				icons_manager->loadIcon("Message"),
 				config_file.readFontEntry("Hints", "HintNewMessage_font"),
 				config_file.readColorEntry("Hints", "HintNewMessage_fgcolor"),
 				config_file.readColorEntry("Hints", "HintNewMessage_bgcolor"),
@@ -539,7 +540,7 @@ void HintManager::newMessage(const QString &protocolName, UserListElements sende
 		else
 			addHint(tr("New message from <b>%1</b>")
 				.arg(QStyleSheet::escape(senders[0].altNick())),
-				icons_manager.loadIcon("Message"),
+				icons_manager->loadIcon("Message"),
 				config_file.readFontEntry("Hints", "HintNewMessage_font"),
 				config_file.readColorEntry("Hints", "HintNewMessage_fgcolor"),
 				config_file.readColorEntry("Hints", "HintNewMessage_bgcolor"),
@@ -552,7 +553,7 @@ void HintManager::newMessage(const QString &protocolName, UserListElements sende
 void HintManager::connectionError(const QString &protocolName, const QString &message)
 {
 	kdebugf();
-	addHint(tr("<b>Error:</b> %1").arg(message), icons_manager.loadIcon("Blocking"),
+	addHint(tr("<b>Error:</b> %1").arg(message), icons_manager->loadIcon("Blocking"),
 		config_file.readFontEntry("Hints", "HintError_font"),
 		config_file.readColorEntry("Hints", "HintError_fgcolor"),
 		config_file.readColorEntry("Hints", "HintError_bgcolor"),
@@ -780,7 +781,7 @@ void HintManager::message(const QString &from, const QString &msg, const QMap<QS
 			showSource=sit.data().toBool();
 	}
 	if (pixmap.isNull())
-		pixmap=icons_manager.loadIcon("Message");
+		pixmap=icons_manager->loadIcon("Message");
 	if (font==qApp->font())
 		font=config_file.readFontEntry("Hints", "HintMessage_font");
 	if (!fgcolor.isValid())

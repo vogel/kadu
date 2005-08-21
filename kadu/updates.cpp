@@ -7,15 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qnetwork.h>
 #include <qmessagebox.h>
+#include <qnetwork.h>
 #include <qurloperator.h>
 
 #include "config_file.h"
 #include "debug.h"
-#include "gadu.h"
 #include "kadu.h"
-#include "kadu-config.h"
 #include "updates.h"
 
 Updates *Updates::instance = NULL;

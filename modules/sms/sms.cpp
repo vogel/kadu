@@ -16,6 +16,7 @@
 #include "config_dialog.h"
 #include "config_file.h"
 #include "history.h"
+#include "icons_manager.h"
 #include "kadu.h"
 #include "modules.h"
 #include "sms.h"
@@ -426,8 +427,8 @@ SmsSlots::SmsSlots(QObject *parent, const char *name) : QObject(parent, name)
 	UserBox::userboxmenu->addItemAtPos(2, "SendSms", tr("Send SMS"), this, SLOT(onSendSmsToUser()),
                 HotKey::shortCutFromFile("ShortCuts", "kadu_sendsms"));
 
-	menuid=kadu->mainMenu()->insertItem(icons_manager.loadIcon("SendSms"), tr("Send SMS"), this, SLOT(onSendSms()), 0, -1, 10);
-	icons_manager.registerMenuItem(kadu->mainMenu(), tr("Send SMS"), "SendSms");
+	menuid=kadu->mainMenu()->insertItem(icons_manager->loadIcon("SendSms"), tr("Send SMS"), this, SLOT(onSendSms()), 0, -1, 10);
+	icons_manager->registerMenuItem(kadu->mainMenu(), tr("Send SMS"), "SendSms");
 	kdebugf2();
 }
 

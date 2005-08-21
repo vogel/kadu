@@ -3,6 +3,7 @@
 
 #include <qstring.h>
 #include <qdatetime.h>
+#include <qobject.h>
 
 #include "gadu.h"
 

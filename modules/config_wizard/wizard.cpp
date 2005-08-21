@@ -21,9 +21,12 @@
 #include "config_file.h"
 #include "debug.h"
 #include "gadu.h"
+#include "icons_manager.h"
 #include "kadu.h"
+#include "kadu_text_browser.h"
 #include "message_box.h"
 #include "modules.h"
+#include "userbox.h"
 #include "wizard.h"
 
 unsigned int informationPanelCount=sizeof(informationPanelSyntax)/sizeof(informationPanelSyntax[0]);
@@ -60,7 +63,7 @@ extern "C" void config_wizard_close()
 WizardStarter::WizardStarter(QObject *parent, const char *name)
 	: QObject(parent, name)
 {
-	menuPos=kadu->mainMenu()->insertItem(icons_manager.loadIcon("ConfigurationWizard"),
+	menuPos=kadu->mainMenu()->insertItem(icons_manager->loadIcon("ConfigurationWizard"),
 		tr("Configuration Wizard"), this, SLOT(start()), 0, -1, 0);
 }
 
@@ -853,10 +856,10 @@ void Wizard::createColorsPage()
 
 	new QLabel(tr("Please choose icon theme"), grp_iconsOptions);
 	cb_iconTheme = new QComboBox(grp_iconsOptions);
-	cb_iconTheme->insertStringList(icons_manager.themes());
+	cb_iconTheme->insertStringList(icons_manager->themes());
 	cb_iconTheme->setCurrentText(config_file.readEntry("Look", "IconTheme"));
-	if (icons_manager.themes().contains("default"))
-	cb_iconTheme->changeItem(tr("Default"), icons_manager.themes().findIndex("default"));
+	if (icons_manager->themes().contains("default"))
+	cb_iconTheme->changeItem(tr("Default"), icons_manager->themes().findIndex("default"));
 
 	QHBox *grp_icons = new QHBox (grp_iconsOptions);
 	iconPreview = new QLabel(grp_icons);
@@ -864,10 +867,10 @@ void Wizard::createColorsPage()
 	iconPreview3 = new QLabel(grp_icons);
 	iconPreview4 = new QLabel(grp_icons);
 
-	iconPreview->setPixmap(icons_manager.loadIcon("Online"));
-	iconPreview2->setPixmap(icons_manager.loadIcon("BusyWithDescription"));
-	iconPreview3->setPixmap(icons_manager.loadIcon("InvisibleWithMobile"));
-	iconPreview4->setPixmap(icons_manager.loadIcon("OfflineWithDescriptionMobile"));
+	iconPreview->setPixmap(icons_manager->loadIcon("Online"));
+	iconPreview2->setPixmap(icons_manager->loadIcon("BusyWithDescription"));
+	iconPreview3->setPixmap(icons_manager->loadIcon("InvisibleWithMobile"));
+	iconPreview4->setPixmap(icons_manager->loadIcon("OfflineWithDescriptionMobile"));
 
 	connect(cb_colorTheme, SIGNAL(activated (int)), this, SLOT(previewColorTheme(int)));
 	connect(cb_iconTheme, SIGNAL(activated (int)), this, SLOT(previewIconTheme(int)));
@@ -1265,10 +1268,10 @@ void Wizard::previewIconTheme(int iconThemeID)
 	if (iconName == tr("Default"))
 		iconName= "default";
 
-	icons_manager.clear();
-	icons_manager.setTheme(iconName);
+	icons_manager->clear();
+	icons_manager->setTheme(iconName);
 
-	QString path=icons_manager.iconPath("Online");
+	QString path=icons_manager->iconPath("Online");
 	for (int i = 0, count = cb_iconTheme->count(); i < count; ++i)
 		if (i != iconThemeID)
 			path.replace(QRegExp(cb_iconTheme->text(i)), cb_iconTheme->text(iconThemeID));
@@ -1291,11 +1294,11 @@ void Wizard::setColorsAndIcons()
 	if (newIconTheme!=oldIconTheme)
 	{
 		newIconTheme.replace(QRegExp(tr("Default")), "default");
-		icons_manager.clear();
-		icons_manager.setTheme(newIconTheme);
+		icons_manager->clear();
+		icons_manager->setTheme(newIconTheme);
 		ToolBar::refreshIcons();
 		UserBox::userboxmenu->refreshIcons();
-		icons_manager.refreshMenus();
+		icons_manager->refreshMenus();
 		kadu->changeAppearance();
 	}
 	else

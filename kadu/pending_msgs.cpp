@@ -7,16 +7,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qfile.h>
 #include <qtextcodec.h>
 
-#include "chat.h"
 #include "chat_manager.h"
-#include "config_file.h"
 #include "debug.h"
-//#include "kadu.h"
-#include "pending_msgs.h"
+#include "gadu.h"
 #include "misc.h"
+#include "pending_msgs.h"
+#include "userlist.h"
 
 PendingMsgs::PendingMsgs(QObject *parent, const char *name): QObject(parent, name)
 {

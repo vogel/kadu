@@ -7,27 +7,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qdir.h>
+#include <qapplication.h>
 #include <qlabel.h>
 #include <qlistview.h>
+#include <qpopupmenu.h>
 #include <qpushbutton.h>
 #include <qregexp.h>
-#include <qsizepolicy.h>
 #include <qtextcodec.h>
-#include <qvgroupbox.h>
+#include <qtranslator.h>
 #include <qvbox.h>
+#include <qvgroupbox.h>
 
 #include <dlfcn.h>
 
-#include "config_file.h"
 #include "config_dialog.h"
+#include "config_file.h"
 #include "debug.h"
+#include "icons_manager.h"
 #include "kadu.h"
-#include "kadu-config.h"
 #include "message_box.h"
 #include "misc.h"
 #include "modules.h"
-
 #include "modules_static.cpp"
 
 #ifdef Q_OS_MACX
@@ -90,7 +90,7 @@ ModulesDialog::ModulesDialog()
 	center->setSpacing(10);
 	
 	QLabel *l_info = new QLabel(center);
-	l_icon->setPixmap(icons_manager.loadIcon("ManageModulesWindowIcon"));
+	l_icon->setPixmap(icons_manager->loadIcon("ManageModulesWindowIcon"));
 	l_info->setText(tr("This dialog box allows you to manage installed modules. Modules are responsible "
 			"for numerous vital features like playing sounds or message encryption. "
 			"You can load (or unload) them by double-clicking on their names."));
@@ -119,7 +119,7 @@ ModulesDialog::ModulesDialog()
 	QWidget *blank2=new QWidget(bottom);
 	bottom->setSpacing(5);
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
-	QPushButton *pb_close = new QPushButton(icons_manager.loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	// end buttons
 	
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
@@ -270,9 +270,9 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager")
 	// przenioslem to tutaj z funkcji ModulesManagert::initModule
 	// to samo z menu - moduly powinny sie ladowac na samym koncu
 	modules_manager=this;
-	kadu->mainMenu()->insertItem(icons_manager.loadIcon("ManageModules"), tr("&Manage Modules"), this, SLOT(showDialog()), HotKey::shortCutFromFile("ShortCuts", "kadu_modulesmanager"), -1, 2);
+	kadu->mainMenu()->insertItem(icons_manager->loadIcon("ManageModules"), tr("&Manage Modules"), this, SLOT(showDialog()), HotKey::shortCutFromFile("ShortCuts", "kadu_modulesmanager"), -1, 2);
 
-	icons_manager.registerMenuItem(kadu->mainMenu(), tr("&Manage Modules"), "ManageModules");
+	icons_manager->registerMenuItem(kadu->mainMenu(), tr("&Manage Modules"), "ManageModules");
 	translators=new QObject(this, "translators");
 
 	

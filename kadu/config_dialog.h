@@ -1,19 +1,17 @@
 #ifndef CONFIG_DIALOG_H
 #define CONFIG_DIALOG_H
 
-#include <qapplication.h>
 #include <qdict.h>
 #include <qhbox.h>
+#include <qkeysequence.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
-#include <qsignal.h>
 #include <qstringlist.h>
-#include <qvaluelist.h>
 #include <qvbox.h>
-#include <qvariant.h>
 
 #include "config_file.h"
 
+class QApplication;
 class QCheckBox;
 class QComboBox;
 class QGrid;

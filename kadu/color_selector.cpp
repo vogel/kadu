@@ -9,6 +9,7 @@
 
 #include <qapplication.h>
 #include <qlayout.h>
+#include <qtooltip.h>
 
 #include "color_selector.h"
 #include "debug.h"

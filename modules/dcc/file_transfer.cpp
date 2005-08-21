@@ -31,6 +31,7 @@
 #include "kadu.h"
 #include "message_box.h"
 #include "misc.h"
+#include "userbox.h"
 
 uint32_t gg_fix32(uint32_t);
 

@@ -1,21 +1,30 @@
 #ifndef KADU_H
 #define KADU_H
 
-#include <qmainwindow.h>
-#include <qpopupmenu.h>
+/*#include <qpopupmenu.h>
 #include <qstringlist.h>
-#include <qstring.h>
-#include <qtoolbutton.h>
-#include <qtoolbar.h>
-#include <qvaluelist.h>
 
 #include "userbox.h"
 #include "userlist.h"
 #include "tabbar.h"
+*/
+
+#include <qmainwindow.h>
+#include <qstring.h>
+#include <qtoolbar.h>
+#include <qtoolbutton.h>
+#include <qvaluelist.h>
+
+#include "gadu.h"
 #include "status.h"
+#include "usergroup.h"
+#include "userlistelement.h"
 
 class QFile;
+class QListBoxItem;
 class QMenuBar;
+class KaduTabBar;
+class UserBox;
 
 /**
 	Toolbar Kadu
@@ -164,6 +173,7 @@ class Kadu : public QMainWindow
 		static const QString SyntaxText;
 
 		static bool closing() { return Closing; }
+		static void setClosing() { Closing = true; }
 	public slots:
 		void slotHandleState(int command);
 		void changeAppearance();

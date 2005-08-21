@@ -7,22 +7,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qdir.h>
 #include <qfile.h>
-#include <qimage.h>
-#include <qlabel.h>
-#include <qtextstream.h>
-#include <qtextcodec.h>
+#include <qtextedit.h>
 #include <qtooltip.h>
 
-#include <math.h>
 #include <algorithm>
+#include <math.h>
 
 #include "chat.h"
-#include "config_file.h"
 #include "debug.h"
 #include "emoticons.h"
-#include "kadu-config.h"
+#include "misc.h"
 
 #define IMG_Y_OFFSET 2
 

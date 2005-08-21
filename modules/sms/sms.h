@@ -16,9 +16,10 @@
 #include <qlistbox.h>
 #include <qptrstack.h>
 
-#include "userlist.h"
-#include "misc.h"
 #include "debug.h"
+#include "http_client.h"
+#include "misc.h"
+#include "userlist.h"
 
 class SmsImageDialog : public QDialog
 {

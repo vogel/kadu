@@ -1,7 +1,3 @@
-//#ifndef KADU_USERLIST_PRIVATE
-//#warning "DO NOT INCLUDE THIS FILE! IT'S PRIVATE! INCLUDE userlist.h"
-//#endif
-
 #ifndef KADU_USERLIST_PRIVATE_H
 #define KADU_USERLIST_PRIVATE_H
 #include <qdict.h>

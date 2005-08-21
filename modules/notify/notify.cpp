@@ -13,6 +13,7 @@
 #include "config_file.h"
 #include "debug.h"
 #include "kadu.h"
+#include "misc.h"
 #include "notify.h"
 #include "notify_slots.h"
 

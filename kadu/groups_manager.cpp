@@ -14,6 +14,7 @@
 #include "kadu.h"
 #include "misc.h"
 #include "tabbar.h"
+#include "userbox.h"
 #include "userlist.h"
 
 void GroupsManager::initModule()
@@ -276,7 +277,8 @@ GroupsManager::~GroupsManager()
 {
 	kdebugf();
 	ConfigDialog::unregisterSlotOnApply(this, SLOT(onApplyConfigDialog()));
-	config_file.writeEntry("Look", "CurrentGroupTab", GroupBar->currentTab());
+	if (GroupBar)
+		config_file.writeEntry("Look", "CurrentGroupTab", GroupBar->currentTab());
 	disconnect (userlist, SIGNAL(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)),
 			 this, SLOT(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)));
 	kdebugf2();

@@ -12,12 +12,13 @@
 #include <qvgroupbox.h>
 #include <qpushbutton.h>
 
-#include "message_box.h"
-#include "remind_password.h"
-#include "debug.h"
-#include "misc.h"
-#include "gadu.h"
 #include "config_file.h"
+#include "debug.h"
+#include "gadu.h"
+#include "icons_manager.h"
+#include "message_box.h"
+#include "misc.h"
+#include "remind_password.h"
 
 RemindPassword::RemindPassword(QDialog * /*parent*/, const char * /*name*/)
 {
@@ -39,7 +40,7 @@ RemindPassword::RemindPassword(QDialog * /*parent*/, const char * /*name*/)
 	center->setSpacing(10);
 
 	QLabel *l_info = new QLabel(center);
-	l_icon->setPixmap(icons_manager.loadIcon("RemindPasswordWindowIcon"));
+	l_icon->setPixmap(icons_manager->loadIcon("RemindPasswordWindowIcon"));
 	l_info->setText(tr("This dialog box allows you to ask server to remind your current password."));
 	l_info->setAlignment(Qt::WordBreak);
 	// end create main QLabel widgets (icon and app info)
@@ -61,8 +62,8 @@ RemindPassword::RemindPassword(QDialog * /*parent*/, const char * /*name*/)
 	QWidget *blank2 = new QWidget(bottom);
 	bottom->setSpacing(5);
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
-	QPushButton *pb_ok = new QPushButton(icons_manager.loadIcon("RemindPasswordButton"), tr("OK"), bottom, "ok");
-	QPushButton *pb_close = new QPushButton(icons_manager.loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	QPushButton *pb_ok = new QPushButton(icons_manager->loadIcon("RemindPasswordButton"), tr("OK"), bottom, "ok");
+	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	// end buttons
 
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));

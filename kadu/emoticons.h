@@ -1,16 +1,15 @@
 #ifndef EMOTICONS_H
 #define EMOTICONS_H
 
+#include <qcolor.h>
 #include <qmovie.h>
-#include <qmap.h>
 #include <private/qrichtext_p.h>
 #include <qstringlist.h>
-#include <qtextedit.h>
 #include <qtoolbutton.h>
-#include <qvaluelist.h>
 #include <qvaluevector.h>
 
-#include "misc.h"
+#include "config_file.h"
+#include "html_document.h"
 
 class Chat;
 class EmotsWalker;

@@ -4,9 +4,12 @@
  *  the Free Software Foundation; either version 2 of the License, or
  *  (at your option) any later version.
  */
+#include <qapplication.h>
 #include <qbitmap.h>
 #include <qtooltip.h>
 #include <qcheckbox.h>
+#include <qdesktopwidget.h>
+#include <qpopupmenu.h>
 #include <qspinbox.h>
 
 #include "desktopdock.h"

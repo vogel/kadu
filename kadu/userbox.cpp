@@ -9,23 +9,23 @@
 
 #include <algorithm>
 
+#include <qapplication.h>
 #include <qcursor.h>
 #include <qdragobject.h>
-#include <qfontmetrics.h>
-#include <qpen.h>
-#include <qpopupmenu.h>
+#include <qpainter.h>
 #include <qregexp.h>
 #include <qspinbox.h>
 
 #include "config_dialog.h"
 #include "config_file.h"
 #include "debug.h"
+#include "html_document.h"
+#include "icons_manager.h"
 #include "ignore.h"
+#include "kadu.h"
 #include "misc.h"
 #include "pending_msgs.h"
-#include "status.h"
 #include "userbox.h"
-#include "kadu.h"
 
 QFontMetrics* KaduListBoxPixmap::descriptionFontMetrics=NULL;
 UserBoxSlots* UserBox::userboxslots=NULL;
@@ -513,16 +513,16 @@ void UserBox::refresh()
 //		kdebugm(KDEBUG_INFO, "creating: %s %d\n", (*user).altNick().local8Bit().data(), usesGadu);
 		KaduListBoxPixmap *lbp;
 		if (!usesGadu)
-			lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Mobile"), *user, false);
+			lbp = new KaduListBoxPixmap(icons_manager->loadIcon("Mobile"), *user, false);
 		else if (pending.pendingMsgs(*user))
-			lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), *user, bold);
+			lbp = new KaduListBoxPixmap(icons_manager->loadIcon("Message"), *user, bold);
 		else
 		{
 			const QPixmap &pix = (*user).status("Gadu").pixmap(has_mobile);
 			if (!pix.isNull())
 				lbp = new KaduListBoxPixmap(pix, *user, bold);
 			else
-				lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Online"), *user, bold);
+				lbp = new KaduListBoxPixmap(icons_manager->loadIcon("Online"), *user, bold);
 		}
 		insertItem(lbp);
 	}
@@ -683,13 +683,13 @@ int UserBoxMenu::addItem(const QString &text, const QObject* receiver, const cha
 int UserBoxMenu::addItem(const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel, int id)
 {
 	iconNames.append(qMakePair(text,iconname));
-	return insertItem( QIconSet(icons_manager.loadIcon(iconname)) , text, receiver, member, accel, id);
+	return insertItem( QIconSet(icons_manager->loadIcon(iconname)) , text, receiver, member, accel, id);
 }
 
 int UserBoxMenu::addItemAtPos(int index,const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel, int id)
 {
 	iconNames.append(qMakePair(text,iconname));
-	return insertItem( QIconSet(icons_manager.loadIcon(iconname)) , text, receiver, member, accel, id, index);
+	return insertItem( QIconSet(icons_manager->loadIcon(iconname)) , text, receiver, member, accel, id, index);
 }
 
 int UserBoxMenu::getItem(const QString &caption) const
@@ -733,7 +733,7 @@ void UserBoxMenu::refreshIcons()
 			{
 				bool enabled=isItemEnabled(id);
 				bool checked=isItemChecked(id);
-				changeItem(id, icons_manager.loadIcon((*it).second), t);
+				changeItem(id, icons_manager->loadIcon((*it).second), t);
 				setItemEnabled(id, enabled);
 				setItemChecked(id, checked);
 			}

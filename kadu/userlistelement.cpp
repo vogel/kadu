@@ -10,9 +10,8 @@
 #include "debug.h"
 #include "dnshandler.h"
 #include "misc.h"
+#include "usergroup.h"
 #include "userlistelement.h"
-
-#define KADU_USERLIST_PRIVATE
 #include "userlist-private.h"
 
 bool UserListElement::hasIP(const QString &protocolName) const

@@ -15,6 +15,7 @@
 
 #include "sound_slots.h"
 #include "debug.h"
+#include "icons_manager.h"
 #include "kadu.h"
 #include "config_dialog.h"
 
@@ -32,15 +33,15 @@ SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name
 	sound_manager->setMute(!config_file.readBoolEntry("Sounds", "PlaySound"));
 	if (sound_manager->isMuted())
 	{
-		muteitem= kadu->mainMenu()->insertItem(icons_manager.loadIcon("Mute"), tr("Unmute sounds"), this, SLOT(muteUnmuteSounds()), 0, -1, 3);
-		icons_manager.registerMenuItem(kadu->mainMenu(), tr("Unmute sounds"), "Mute");
+		muteitem= kadu->mainMenu()->insertItem(icons_manager->loadIcon("Mute"), tr("Unmute sounds"), this, SLOT(muteUnmuteSounds()), 0, -1, 3);
+		icons_manager->registerMenuItem(kadu->mainMenu(), tr("Unmute sounds"), "Mute");
 
 		ToolBar::registerButton("Mute", tr("Unmute sounds"), this, SLOT(muteUnmuteSounds()), 0, "mute");
 	}
 	else
 	{
-		muteitem= kadu->mainMenu()->insertItem(icons_manager.loadIcon("Unmute"), tr("Mute sounds"), this, SLOT(muteUnmuteSounds()), 0, -1, 3);
-		icons_manager.registerMenuItem(kadu->mainMenu(), tr("Mute sounds"), "Unmute");
+		muteitem= kadu->mainMenu()->insertItem(icons_manager->loadIcon("Unmute"), tr("Mute sounds"), this, SLOT(muteUnmuteSounds()), 0, -1, 3);
+		icons_manager->registerMenuItem(kadu->mainMenu(), tr("Mute sounds"), "Unmute");
 		ToolBar::registerButton("Unmute", tr("Mute sounds"), this, SLOT(muteUnmuteSounds()), 0, "mute");
 	}
 
@@ -147,12 +148,12 @@ void SoundSlots::muteUnmuteSounds()
 	if (mute)
 	{
 		ToolBar::refreshIcons(tr("Mute sounds"), "Mute", tr("Unmute sounds"));
-		kadu->menuBar()->changeItem(muteitem, icons_manager.loadIcon("Mute"), tr("Unmute sounds"));
+		kadu->menuBar()->changeItem(muteitem, icons_manager->loadIcon("Mute"), tr("Unmute sounds"));
 	}
 	else
 	{
 		ToolBar::refreshIcons(tr("Unmute sounds"), "Unmute", tr("Mute sounds"));
-		kadu->menuBar()->changeItem(muteitem, icons_manager.loadIcon("Unmute"), tr("Mute sounds"));
+		kadu->menuBar()->changeItem(muteitem, icons_manager->loadIcon("Unmute"), tr("Mute sounds"));
 	}
 
 	kdebugf2();

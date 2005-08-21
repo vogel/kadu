@@ -1,13 +1,14 @@
 #ifndef KADU_CHAT_H
 #define KADU_CHAT_H
 
-#include <qcolor.h>
-#include <qevent.h>
+#include <qdatetime.h>
 #include <qstring.h>
 #include <qwidget.h>
 #include <qvaluelist.h>
 
+#include "config_file.h"
 #include "emoticons.h"
+#include "gadu.h"
 #include "usergroup.h"
 
 class QAccel;
@@ -23,6 +24,7 @@ class ColorSelector;
 class CustomInput;
 class EmoticonSelector;
 class KaduSplitter;
+class KaduTextBrowser;
 class UserBox;
 
 /** \typedef QValueList<Chat*> ChatList */

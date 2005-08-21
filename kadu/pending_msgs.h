@@ -1,8 +1,8 @@
 #ifndef PENDING_MSGS_H
 #define PENDING_MSGS_H
 
+#include <qstring.h>
 #include <qvaluelist.h>
-#include "gadu.h"
 #include "usergroup.h"
 
 /**

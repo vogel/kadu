@@ -2,7 +2,9 @@
 #define EXPIMP_H
 
 #include <qhbox.h>
-#include "userlist.h"
+#include <qvaluelist.h>
+
+#include "userlistelement.h"
 
 class QLabel;
 class QListView;

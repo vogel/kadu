@@ -8,8 +8,6 @@
  ***************************************************************************/
 
 //TODO i pomys³y:
-//zmierzyæ czas od¶wie¿ania?
-
 // lista protoko³ów dla userlisty?
 // u³atwiacze do wyszukiwania po altnickach/protoko³ach+idach?
 // sposób rysowania elementów listy kontaktów? mo¿e tylko parametry?
@@ -25,9 +23,9 @@
 
 #include "config_file.h"
 #include "debug.h"
+#include "gadu.h"
 #include "userlist.h"
 
-#define KADU_USERLIST_PRIVATE
 #include "userlist-private.h"
 #include "misc.h"
 

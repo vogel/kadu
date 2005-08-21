@@ -7,35 +7,45 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qcheckbox.h>
-#include <qcombobox.h>
+/*
 #include <qdir.h>
 #include <qfile.h>
-#include <qhbox.h>
-#include <qhgroupbox.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <qmessagebox.h>
-#include <qpushbutton.h>
-#include <qregexp.h>
 #include <qtimer.h>
-#include <qsplitter.h>
-#include <qradiobutton.h>
 #include <qtextcodec.h>
 #include <qtooltip.h>
-#include <qvbuttongroup.h>
 #include <qwidget.h>
 
 #include <time.h>
 
-#include "config_file.h"
+#include "status.h"
+*/
+
+#include <qapplication.h>
+#include <qcheckbox.h>
+#include <qcombobox.h>
+#include <qgrid.h>
+#include <qhbox.h>
+#include <qhgroupbox.h>
+#include <qmessagebox.h>
+#include <qpushbutton.h>
+#include <qradiobutton.h>
+#include <qregexp.h>
+#include <qsplitter.h>
+#include <qtimer.h>
+#include <qvbox.h>
+#include <qvbuttongroup.h>
+
 #include "config_dialog.h"
+#include "config_file.h"
 #include "debug.h"
 #include "emoticons.h"
+#include "gadu_images_manager.h"
 #include "history.h"
 #include "kadu.h"
+#include "kadu_text_browser.h"
 #include "misc.h"
-#include "status.h"
 
 enum {
 	HISTORYMANAGER_ORDINARY_LINE,

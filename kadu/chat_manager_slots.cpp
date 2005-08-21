@@ -15,6 +15,7 @@
 #include <qlineedit.h>
 #include <qregexp.h>
 #include <qspinbox.h>
+#include <qtooltip.h>
 
 #include "chat_manager.h"
 #include "chat_manager_slots.h"

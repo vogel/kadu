@@ -9,6 +9,7 @@
 #include <qlayout.h>
 #include <qgroupbox.h>
 
+#include "config_file.h"
 #include "debug.h"
 #include "groups_manager.h"
 #include "ignore.h"

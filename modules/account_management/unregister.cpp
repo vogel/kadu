@@ -14,10 +14,12 @@
 #include <qfile.h>
 #include <qapplication.h>
 
+#include "config_file.h"
+#include "debug.h"
+#include "gadu.h"
+#include "icons_manager.h"
 #include "misc.h"
 #include "unregister.h"
-#include "debug.h"
-#include "config_file.h"
 
 Unregister::Unregister(QDialog * /*parent*/, const char * /*name*/)
 {
@@ -39,7 +41,7 @@ Unregister::Unregister(QDialog * /*parent*/, const char * /*name*/)
 	center->setSpacing(10);
 
 	QLabel *l_info = new QLabel(center);
-	l_icon->setPixmap(icons_manager.loadIcon("UnregisterWindowIcon"));
+	l_icon->setPixmap(icons_manager->loadIcon("UnregisterWindowIcon"));
 	l_info->setText(tr("This dialog box allows you to unregister your account. Be aware of using this "
 				"option. <font color=\"red\"><b>It will permanently delete your UIN and you will not be able to use "
 				"it later!</b></font>"));
@@ -67,8 +69,8 @@ Unregister::Unregister(QDialog * /*parent*/, const char * /*name*/)
 	QWidget *blank2 = new QWidget(bottom);
 	bottom->setSpacing(5);
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
-	QPushButton *pb_unregister = new QPushButton(icons_manager.loadIcon("UnregisterAccountButton"), tr("Unregister"), bottom, "unregister");
-	QPushButton *pb_close = new QPushButton(icons_manager.loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	QPushButton *pb_unregister = new QPushButton(icons_manager->loadIcon("UnregisterAccountButton"), tr("Unregister"), bottom, "unregister");
+	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	// end buttons
 
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));

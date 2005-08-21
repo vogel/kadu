@@ -5,11 +5,11 @@
 #include <qobject.h>
 #include <qstring.h>
 #include <qstringlist.h>
-#include <qtranslator.h>
 
 class QLabel;
 class QListView;
 class QListViewItem;
+class QTranslator;
 
 /**
 	Zastêpuje klasê QLibrary na specyficzne potrzeby Kadu.

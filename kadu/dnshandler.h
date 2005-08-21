@@ -1,5 +1,6 @@
 #ifndef KADU_DNS_HANDLER_H
 #define KADU_DNS_HANDLER_H
+
 #include <qdns.h>
 #include <qhostaddress.h>
 #include <qobject.h>

@@ -2,8 +2,9 @@
 #define KADU_USERINFO_H
 
 #include <qhbox.h>
+#include <qvaluelist.h>
 
-#include "userlist.h"
+#include "userlistelement.h"
 #include "misc.h"
 
 class QCheckBox;

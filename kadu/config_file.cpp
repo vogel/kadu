@@ -9,15 +9,10 @@
 
 #include <qapplication.h>
 #include <qfile.h>
-#include <qregexp.h>
-#include <qstringlist.h>
-#include <qtextcodec.h>
-#include <qtextstream.h>
 
 #include "debug.h"
 #include "config_file.h"
 #include "misc.h"
-
 
 XmlConfigFile::XmlConfigFile()
 {

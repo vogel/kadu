@@ -9,18 +9,20 @@
 
 #include <qcheckbox.h>
 #include <qdns.h>
+#include <qhbox.h>
+#include <qlabel.h>
 #include <qlineedit.h>
-#include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <qtabwidget.h>
+#include <qmessagebox.h>
 #include <qvbox.h>
 #include <qvgroupbox.h>
 
-//#include "chat.h"
-//#include "chat_manager.h"
+#include "config_file.h"
 #include "debug.h"
+#include "gadu.h"
 #include "groups_manager.h"
-//#include "kadu.h"
+#include "icons_manager.h"
 #include "message_box.h"
 #include "userinfo.h"
 #include "userlist.h"
@@ -54,12 +56,12 @@ UserInfo::UserInfo(UserListElement user, QDialog* parent, const char *name)
 	if (addUser)
 	{
 		setCaption(tr("Add user"));
-		l_icon->setPixmap(icons_manager.loadIcon("AddUserWindowIcon"));
+		l_icon->setPixmap(icons_manager->loadIcon("AddUserWindowIcon"));
 	}
 	else
 	{
 		setCaption(tr("User info on %1").arg(user.altNick()));
-		l_icon->setPixmap(icons_manager.loadIcon("ManageUsersWindowIcon"));
+		l_icon->setPixmap(icons_manager->loadIcon("ManageUsersWindowIcon"));
 	}
 
 	// end create main QLabel widgets (icon and app info)
@@ -77,11 +79,11 @@ UserInfo::UserInfo(UserListElement user, QDialog* parent, const char *name)
 	bottom->setSpacing(5);
 	w_blankwidget->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 	if (addUser)
-		pb_addapply = new QPushButton(icons_manager.loadIcon("AddUserButton"), tr("Add"), bottom, "add");
+		pb_addapply = new QPushButton(icons_manager->loadIcon("AddUserButton"), tr("Add"), bottom, "add");
 	else
-		pb_addapply = new QPushButton(icons_manager.loadIcon("UpdateUserButton"), tr("Update"), bottom, "update");
+		pb_addapply = new QPushButton(icons_manager->loadIcon("UpdateUserButton"), tr("Update"), bottom, "update");
 
-	QPushButton *pb_close = new QPushButton(icons_manager.loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	// end buttons
 
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));

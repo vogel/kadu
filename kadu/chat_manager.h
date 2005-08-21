@@ -1,16 +1,20 @@
 #ifndef KADU_CHAT_MANAGER_H
 #define KADU_CHAT_MANAGER_H
 
-#include <qobject.h>
+/*
 #include <qvaluelist.h>
 #include <qmap.h>
 #include <qstring.h>
 #include <qvariant.h>
 
+#include "userlistelement.h"
+*/
+
+#include <qobject.h>
+
+#include "chat.h"
 #include "chat_message.h"
 #include "usergroup.h"
-#include "userlistelement.h"
-#include "chat.h"
 
 class ChatManagerSlots;
 

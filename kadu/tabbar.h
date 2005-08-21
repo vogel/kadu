@@ -2,8 +2,8 @@
 #define KADU_TABBAR_H
 
 #include <qtabbar.h>
-#include <qpainter.h>
 
+class QPainter;
 class QToolButton;
 
 /**
