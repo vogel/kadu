@@ -155,7 +155,17 @@ $(module_targets):
 		"module_cxxflags=$$MODULE_CXXFLAGS" \
 		"module_ldflags=$$MODULE_LDFLAGS" \
 		$$dir/$$file_name && \
-	cd $$dir && eval "$$MODULE_MAKE_CMD" && cd .. || \
+	cd $$dir && eval "$$MODULE_MAKE_CMD" && \
+	if test -d translations; then \
+		cd translations && \
+		for trans in *.ts; do \
+			if [ ! -e $${trans//\ts/qm} ] || test $$trans -nt $${trans//\ts/qm}; then \
+				$(QT_LRELEASE_DIR)/lrelease $$trans; \
+			fi; \
+		done && \
+		cd ..; \
+	fi && \
+	cd .. || \
 	exit 1
 
 all: $(module_targets)
