@@ -594,7 +594,7 @@ Attention danger!
     </message>
     <message>
         <source>Another Kadu is running on this profile.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu est probabalement en utilisation.</translation>
     </message>
 </context>
 <context>
@@ -1234,7 +1234,9 @@ Mot de passe incorrect !</translation>
         <source>Selected users:
 %0
 will be deleted. Are you sure?</source>
-        <translation type="unfinished"></translation>
+        <translation>Les contacts choisis:
+%0
+serons effacés.Veuillez confirmer?</translation>
     </message>
 </context>
 <context>
