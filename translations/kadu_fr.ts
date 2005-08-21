@@ -114,20 +114,12 @@
         <translation>Efface de la liste de contacts</translation>
     </message>
     <message>
-        <source>View/edit user info</source>
-        <translation>Montres /change informations concernant l&apos;utilisateur</translation>
-    </message>
-    <message>
         <source>View history</source>
         <translation>Montres historique</translation>
     </message>
     <message>
         <source>Lookup in directory</source>
         <translation>Cherche dans le catalogue</translation>
-    </message>
-    <message>
-        <source>Show / hide inactive users</source>
-        <translation>Montre /cache utilisateurs inactifs</translation>
     </message>
     <message>
         <source>Configuration</source>
@@ -487,16 +479,8 @@ Attention danger!
         <translation>Nombre description mémorisées</translation>
     </message>
     <message>
-        <source>Show inactive contacts</source>
-        <translation>Montres les contacts inactifs</translation>
-    </message>
-    <message>
         <source>Display contacts who are offline</source>
         <translation>Visionnage des contacts indisponibles</translation>
-    </message>
-    <message>
-        <source>Show contacts with description</source>
-        <translation>Montre uniquement les contacts avec description</translation>
     </message>
     <message>
         <source> Port: </source>
@@ -509,11 +493,6 @@ Attention danger!
     <message>
         <source> Password: </source>
         <translation>Mot de passe: </translation>
-    </message>
-    <message>
-        <source>Display contacts that have a desciption</source>
-        <translation>Visionnement uniquement des contacts avec description
-</translation>
     </message>
     <message>
         <source>Show contacts that you are blocking</source>
@@ -593,6 +572,10 @@ Attention danger!
         <translation>Par défault %1 envoie le message</translation>
     </message>
     <message>
+        <source>Another Kadu is running on this profile.</source>
+        <translation>Kadu est probabalement en utilisation.</translation>
+    </message>
+    <message>
         <source>Headers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -609,12 +592,28 @@ Attention danger!
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Show offline contacts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show contacts without description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display contacts that don&apos;t have a description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>On shutdown, set current description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Another Kadu is running on this profile.</source>
-        <translation type="unfinished"></translation>
+        <source>View / edit user info</source>
+        <translation>Montres / change les information concernant des contacts</translation>
+    </message>
+    <message>
+        <source>Show / hide offline users</source>
+        <translation>Montres / Caches non disponibles</translation>
     </message>
     <message>
         <source>Restore last status</source>
@@ -774,37 +773,19 @@ Souhaitez vous vraiment expédier cette image?</translation>
     <name>ChatManager</name>
     <message>
         <source>None</source>
-        <translation type="unfinished">Sans icône d&apos;emotion</translation>
+        <translation>Sans icône d&apos;emotion</translation>
     </message>
     <message>
         <source>Static</source>
-        <translation type="unfinished">Statique</translation>
+        <translation>Statique</translation>
     </message>
     <message>
         <source>Animated</source>
-        <translation type="unfinished">Animation</translation>
+        <translation>Animation</translation>
     </message>
 </context>
 <context>
-    <name>ChatSlots</name>
-    <message>
-        <source>Chat with </source>
-        <translation>Chat avec</translation>
-    </message>
-    <message>
-        <source>Conference with </source>
-        <translation>Discussion avec</translation>
-    </message>
-    <message>
-        <source>URLs longer than this value will be shown truncated to this length</source>
-        <translation>URL plus long que cette valeur sera tronqué jusq&apos;à la valeur montrée</translation>
-    </message>
-    <message>
-        <source>This will show a long URL as http://www.start...end.com/
-to protect the chat window from a mess</source>
-        <translation>Ceci montrera un long URL comme http://www.start...end.com/
-pour proteger la fenêtre du message contre un désordre</translation>
-    </message>
+    <name>ChatManagerSlots</name>
     <message>
         <source>Specify path</source>
         <translation>Indiquez le chemin d&apos;access</translation>
@@ -820,6 +801,24 @@ pour proteger la fenêtre du message contre un désordre</translation>
     <message>
         <source>Open in background tab</source>
         <translation>Ouvrez dans le tabulateur de fond</translation>
+    </message>
+    <message>
+        <source>URLs longer than this value will be shown truncated to this length</source>
+        <translation>URL plus long que cette valeur sera tronqué jusq&apos;à la valeur montrée</translation>
+    </message>
+    <message>
+        <source>This will show a long URL as http://www.start...end.com/
+to protect the chat window from a mess</source>
+        <translation>Ceci montrera un long URL comme http://www.start...end.com/
+pour proteger la fenêtre du message contre un désordre</translation>
+    </message>
+    <message>
+        <source>Chat with </source>
+        <translation>Discussion avec </translation>
+    </message>
+    <message>
+        <source>Conference with </source>
+        <translation>Discussion avec </translation>
     </message>
     <message>
         <source>I didn&apos;t find the browser you selected! The path to it doesn&apos;t exists in $PATH variable. 
@@ -900,10 +899,6 @@ Vous pouvez l&apos;ajouter dans $PATH ou indiquer l&apos;emplacement d&apos;une 
         <translation>Connexion impossible</translation>
     </message>
     <message>
-        <source>Please change your email in &quot;Change password/email&quot; window. Leave new password field blank.</source>
-        <translation>Change votre adresse e-Mail dans la fenêtre &quot;Change mot de passe/e-Mail&quot;. Le champs de mot de passe nouveau vide.</translation>
-    </message>
-    <message>
         <source>Unable to connect, server has returned unknown data</source>
         <translation>Connexion impossible, serveur reponds données inconnues</translation>
     </message>
@@ -945,6 +940,17 @@ Mot de passe incorrect !</translation>
     <message>
         <source>Automatic</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please change your email in &quot;Change password / email&quot; window. Leave new password field blank.</source>
+        <translation>Change votre adresse e-Mail dans la fenêtre &quot;Change mot de passe / e-Mail&quot;. Le champs de mot de passe nouveau vide.</translation>
+    </message>
+</context>
+<context>
+    <name>GroupsManager</name>
+    <message>
+        <source>All</source>
+        <translation>Tous</translation>
     </message>
 </context>
 <context>
@@ -1147,20 +1153,12 @@ Mot de passe incorrect !</translation>
         <translation>Efface de la liste de contacts</translation>
     </message>
     <message>
-        <source>View/edit user info</source>
-        <translation>Montres/change les information concernant des contacts</translation>
-    </message>
-    <message>
         <source>View history</source>
         <translation>Montres historique</translation>
     </message>
     <message>
         <source>Lookup in directory</source>
         <translation>Cherche dans le catalogue</translation>
-    </message>
-    <message>
-        <source>Show / hide inactive users</source>
-        <translation>Montres/Caches non disponibles</translation>
     </message>
     <message>
         <source>Configuration</source>
@@ -1173,10 +1171,6 @@ Mot de passe incorrect !</translation>
     <message>
         <source>Kadu: %1</source>
         <translation>Kadu: %1</translation>
-    </message>
-    <message>
-        <source>All</source>
-        <translation>Tous</translation>
     </message>
     <message>
         <source>Offline</source>
@@ -1278,7 +1272,17 @@ Mot de passe incorrect !</translation>
         <source>Selected users:
 %0
 will be deleted. Are you sure?</source>
-        <translation type="unfinished"></translation>
+        <translation>Les contacts choisis:
+%0
+serons effacés.Veuillez confirmer?</translation>
+    </message>
+    <message>
+        <source>View / edit user info</source>
+        <translation>Montres / change les information concernant des contacts</translation>
+    </message>
+    <message>
+        <source>Show / hide offline users</source>
+        <translation>Montres / Caches non disponibles</translation>
     </message>
     <message>
         <source>Yes, with &amp;history</source>
@@ -1405,7 +1409,7 @@ will be deleted. Are you sure?</source>
     </message>
     <message>
         <source>Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Version</translation>
     </message>
     <message>
         <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Version:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;</source>
@@ -1413,7 +1417,7 @@ will be deleted. Are you sure?</source>
     </message>
     <message>
         <source>&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -1772,6 +1776,14 @@ Peut être module incompatible avec Kadu.</translation>
         <source>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt; &lt;b&gt;(d.)&lt;/b&gt;&lt;/nobr&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;%2</source>
         <translation>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt; &lt;b&gt;(avec description)&lt;/b&gt;&lt;/nobr&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;%2</translation>
     </message>
+    <message>
+        <source>Compares statuses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compares nicks (&quot;altnicks&quot;)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UserInfo</name>
@@ -1806,10 +1818,6 @@ Peut être module incompatible avec Kadu.</translation>
     <message>
         <source>Mobile</source>
         <translation>Téléphone mobile</translation>
-    </message>
-    <message>
-        <source>All</source>
-        <translation>Tous</translation>
     </message>
     <message>
         <source>Address IP and Port</source>
@@ -1850,10 +1858,6 @@ Peut être module incompatible avec Kadu.</translation>
     <message>
         <source>Others</source>
         <translation>Autres</translation>
-    </message>
-    <message>
-        <source>Bad UIN</source>
-        <translation>Nr de  VIN incorrect</translation>
     </message>
     <message>
         <source>User is already in userlist</source>
@@ -1911,19 +1915,9 @@ Peut être module incompatible avec Kadu.</translation>
         <source>Numbers are prohibited</source>
         <translation>Les numéros sont interdit</translation>
     </message>
-</context>
-<context>
-    <name>UserList</name>
     <message>
-        <source>All</source>
-        <translation>Tous</translation>
-    </message>
-</context>
-<context>
-    <name>UserListElement</name>
-    <message>
-        <source>All</source>
-        <translation>Tous</translation>
+        <source>Bad Gadu-Gadu UIN.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

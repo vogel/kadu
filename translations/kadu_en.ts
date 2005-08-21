@@ -215,10 +215,6 @@ If you leave blank, default settings will be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show / hide inactive users</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Configuration</source>
         <translation type="unfinished"></translation>
     </message>
@@ -480,15 +476,7 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show inactive contacts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Display contacts who are offline</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show contacts with description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -501,10 +489,6 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source> Password: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Display contacts that have a desciption</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -616,6 +600,22 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>View / edit user info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show offline contacts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show contacts without description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display contacts that don&apos;t have a description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show / hide offline users</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -777,24 +777,7 @@ Do you really want to send this image?
     </message>
 </context>
 <context>
-    <name>ChatSlots</name>
-    <message>
-        <source>Chat with </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Conference with </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>URLs longer than this value will be shown truncated to this length</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This will show a long URL as http://www.start...end.com/
-to protect the chat window from a mess</source>
-        <translation type="unfinished"></translation>
-    </message>
+    <name>ChatManagerSlots</name>
     <message>
         <source>Specify path</source>
         <translation type="unfinished"></translation>
@@ -809,6 +792,23 @@ to protect the chat window from a mess</source>
     </message>
     <message>
         <source>Open in background tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>URLs longer than this value will be shown truncated to this length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This will show a long URL as http://www.start...end.com/
+to protect the chat window from a mess</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat with </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Conference with </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -931,6 +931,13 @@ Your password is incorrect !</source>
     </message>
     <message>
         <source>Please change your email in &quot;Change password / email&quot; window. Leave new password field blank.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>GroupsManager</name>
+    <message>
+        <source>All</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1134,10 +1141,6 @@ Your password is incorrect !</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Open chat window</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1183,10 +1186,6 @@ Your password is incorrect !</source>
     </message>
     <message>
         <source>&amp;Exit Kadu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show / hide inactive users</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1269,6 +1268,10 @@ will be deleted. Are you sure?</source>
     </message>
     <message>
         <source>View / edit user info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show / hide offline users</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1757,6 +1760,14 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
         <source>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt; &lt;b&gt;(d.)&lt;/b&gt;&lt;/nobr&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;%2</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Compares statuses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compares nicks (&quot;altnicks&quot;)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UserInfo</name>
@@ -1829,10 +1840,6 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Block user</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1858,10 +1865,6 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>User is already in userlist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bad UIN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1896,18 +1899,8 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
         <source>Numbers are prohibited</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>UserList</name>
     <message>
-        <source>All</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>UserListElement</name>
-    <message>
-        <source>All</source>
+        <source>Bad Gadu-Gadu UIN.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

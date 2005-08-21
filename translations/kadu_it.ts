@@ -118,10 +118,6 @@
         <translation>Cerca nell&apos;indice</translation>
     </message>
     <message>
-        <source>Show / hide inactive users</source>
-        <translation>Mostra / nascondi contatti inattivi</translation>
-    </message>
-    <message>
         <source>Configuration</source>
         <translation>Configurazione</translation>
     </message>
@@ -482,16 +478,8 @@ E un rischio per la sicurezza!</translation>
         <translation>Quantità delle descrizioni</translation>
     </message>
     <message>
-        <source>Show inactive contacts</source>
-        <translation>Visualizza contatti inattivi</translation>
-    </message>
-    <message>
         <source>Display contacts who are offline</source>
         <translation>Visualizza contatti non disponibili</translation>
-    </message>
-    <message>
-        <source>Show contacts with description</source>
-        <translation>Visualizza soltanto contatti con descrizione</translation>
     </message>
     <message>
         <source> Port: </source>
@@ -504,10 +492,6 @@ E un rischio per la sicurezza!</translation>
     <message>
         <source> Password: </source>
         <translation>Password:</translation>
-    </message>
-    <message>
-        <source>Display contacts that have a desciption</source>
-        <translation>Saranno visualizzato solamente contatti con descrizione</translation>
     </message>
     <message>
         <source>Show contacts that you are blocking</source>
@@ -622,6 +606,22 @@ E un rischio per la sicurezza!</translation>
     <message>
         <source>View / edit user info</source>
         <translation>Vedi / Cambia info contatto</translation>
+    </message>
+    <message>
+        <source>Show offline contacts</source>
+        <translation>Visualizza contatti inattivi</translation>
+    </message>
+    <message>
+        <source>Show contacts without description</source>
+        <translation>Visualizza contatti senza desc</translation>
+    </message>
+    <message>
+        <source>Display contacts that don&apos;t have a description</source>
+        <translation>Visualizza contatti senza desc</translation>
+    </message>
+    <message>
+        <source>Show / hide offline users</source>
+        <translation>Mostra / nascondi contatti inattivi</translation>
     </message>
 </context>
 <context>
@@ -785,25 +785,7 @@ Sicuro di spedirlo comunque?</translation>
     </message>
 </context>
 <context>
-    <name>ChatSlots</name>
-    <message>
-        <source>Chat with </source>
-        <translation>Chat con  </translation>
-    </message>
-    <message>
-        <source>Conference with </source>
-        <translation>Conferenza con  </translation>
-    </message>
-    <message>
-        <source>URLs longer than this value will be shown truncated to this length</source>
-        <translation>URL più lungo di questo valore sarà troncato a questa lunghezza</translation>
-    </message>
-    <message>
-        <source>This will show a long URL as http://www.start...end.com/
-to protect the chat window from a mess</source>
-        <translation>Saranno visualizzati URL lunghi come http://www.start...end.com/
-per salvare finestra di chat da disordine</translation>
-    </message>
+    <name>ChatManagerSlots</name>
     <message>
         <source>Specify path</source>
         <translation>Specifica percorso</translation>
@@ -819,6 +801,24 @@ per salvare finestra di chat da disordine</translation>
     <message>
         <source>Open in background tab</source>
         <translation>Open in background tab</translation>
+    </message>
+    <message>
+        <source>URLs longer than this value will be shown truncated to this length</source>
+        <translation>URL più lungo di questo valore sarà troncato a questa lunghezza</translation>
+    </message>
+    <message>
+        <source>This will show a long URL as http://www.start...end.com/
+to protect the chat window from a mess</source>
+        <translation>Saranno visualizzati URL lunghi come http://www.start...end.com/
+per salvare finestra di chat da disordine</translation>
+    </message>
+    <message>
+        <source>Chat with </source>
+        <translation>Chat con </translation>
+    </message>
+    <message>
+        <source>Conference with </source>
+        <translation>Conferenza con </translation>
     </message>
     <message>
         <source>I didn&apos;t find the browser you selected! The path to it doesn&apos;t exists in $PATH variable. 
@@ -943,6 +943,13 @@ La tua password è sbagliata!</translation>
     <message>
         <source>Please change your email in &quot;Change password / email&quot; window. Leave new password field blank.</source>
         <translation>Cambiare indirizzo e-mail in &quot;Cambia password / email&quot;. Lasciare vuoto il campo nuova password.</translation>
+    </message>
+</context>
+<context>
+    <name>GroupsManager</name>
+    <message>
+        <source>All</source>
+        <translation>Tutti</translation>
     </message>
 </context>
 <context>
@@ -1153,10 +1160,6 @@ La tua password è sbagliata!</translation>
         <translation>Cerca nell&apos;Indice</translation>
     </message>
     <message>
-        <source>Show / hide inactive users</source>
-        <translation>Mostra/nascondi contatti inattivi</translation>
-    </message>
-    <message>
         <source>Configuration</source>
         <translation>Configurazione</translation>
     </message>
@@ -1167,10 +1170,6 @@ La tua password è sbagliata!</translation>
     <message>
         <source>Kadu: %1</source>
         <translation>Kadu: %1</translation>
-    </message>
-    <message>
-        <source>All</source>
-        <translation>Tutti</translation>
     </message>
     <message>
         <source>Offline</source>
@@ -1283,6 +1282,10 @@ saranno eliminati. Vuoi davvero?</translation>
     <message>
         <source>View / edit user info</source>
         <translation>Vedi / Cambia info contatto</translation>
+    </message>
+    <message>
+        <source>Show / hide offline users</source>
+        <translation>Mostra / nascondi contatti inattivi</translation>
     </message>
 </context>
 <context>
@@ -1772,6 +1775,14 @@ Possibile incompatibilità con Kadu.</translation>
         <source>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt; &lt;b&gt;(d.)&lt;/b&gt;&lt;/nobr&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;%2</source>
         <translation>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt; &lt;b&gt;(desc)&lt;/b&gt;&lt;/nobr&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Descrizione:&lt;/b&gt;&lt;br/&gt;%2</translation>
     </message>
+    <message>
+        <source>Compares statuses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compares nicks (&quot;altnicks&quot;)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UserInfo</name>
@@ -1806,10 +1817,6 @@ Possibile incompatibilità con Kadu.</translation>
     <message>
         <source>Mobile</source>
         <translation>Cell</translation>
-    </message>
-    <message>
-        <source>All</source>
-        <translation>Tutti</translation>
     </message>
     <message>
         <source>Address IP and Port</source>
@@ -1850,10 +1857,6 @@ Possibile incompatibilità con Kadu.</translation>
     <message>
         <source>Others</source>
         <translation>Altro</translation>
-    </message>
-    <message>
-        <source>Bad UIN</source>
-        <translation>Numero GG errato</translation>
     </message>
     <message>
         <source>User is already in userlist</source>
@@ -1911,19 +1914,9 @@ Possibile incompatibilità con Kadu.</translation>
         <source>Numbers are prohibited</source>
         <translation>I numeri sono proibiti</translation>
     </message>
-</context>
-<context>
-    <name>UserList</name>
     <message>
-        <source>All</source>
-        <translation>Tutti</translation>
-    </message>
-</context>
-<context>
-    <name>UserListElement</name>
-    <message>
-        <source>All</source>
-        <translation>Tutti</translation>
+        <source>Bad Gadu-Gadu UIN.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
