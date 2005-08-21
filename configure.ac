@@ -527,7 +527,7 @@ FIND_HEADER([qwidget.h],[$QT_INCLUDES_PATHS],
 [
 	QT_INCLUDES="-I$FILE_DIR"
 ],[
-	AC_MSG_ERROR([libqt-mt headers not found - please install libqt3-devel - check: http://kadu.net/qt])
+	AC_MSG_ERROR([libqt-mt headers not found - please install libqt3-devel (>=3.2 <4.0) - check: http://kadu.net/qt])
 ])
 AC_SUBST(QT_INCLUDES)
 
@@ -541,9 +541,33 @@ FIND_LIBRARY([qt-mt],[$QT_LIBS_PATHS],
 [
 	QT_LIBS="$QT_LIBS -L$FILE_DIR"
 ],[
-	AC_MSG_ERROR([libqt-mt not found - please install libqt3 - check: http://kadu.net/qt])
+	AC_MSG_ERROR([libqt-mt not found - please install libqt3 (>=3.2 <4.0) - check: http://kadu.net/qt])
 ],[$PNG_LIBS $PTHREAD_LDFLAGS $PTHREAD_LIBS])
 AC_SUBST(QT_LIBS)
+
+
+AC_MSG_CHECKING(for Qt version)
+save_CFLAGS="$CFLAGS"
+CFLAGS="$QT_INCLUDES"
+AC_TRY_LINK(
+[
+	#include <qglobal.h>
+],[
+	#if QT_VERSION < 0x030200
+		#error
+	#endif
+	#if QT_VERSION >= 0x040000
+		#error
+	#endif
+],
+[
+	AC_MSG_RESULT(ok)
+	
+],[
+	AC_MSG_RESULT(bad)
+	AC_MSG_ERROR([Your Qt version is not appropiate! Get Qt >= 3.2 and < 4.0])
+])
+CFLAGS="$save_CFLAGS"
 
 #################
 # QT MOC

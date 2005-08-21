@@ -29,10 +29,6 @@ class HintManager : public QFrame
 			ustala róg, od którego bêdzie liczona pozycja grupy dymków
 		**/
 		void setGridOrigin();
-		/**
-			wewnêtrzna funkcja kompatybilno¶ci symuluj±ca usuwanie elementu grida w Qt < 3.1
-		**/
-		void recreateLayout();
 
 	private slots:
 		/**

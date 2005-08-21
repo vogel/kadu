@@ -1914,13 +1914,8 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 			status.fromStatusNumber(e->event.notify60[nr].status,
 				cp2unicode((unsigned char *)e->event.notify60[nr].descr));
 			QString desc = status.description();
-#if QT_VERSION > 0x030100
 			desc.replace("\r\n", "\n");
 			desc.replace("\r", "\n");
-#else
-			desc.replace(QRegExp("\r\n"), "\n");
-			desc.replace(QRegExp("\r"), "\n");
-#endif
 			status.setDescription(desc);
 		}
 		else
@@ -2049,13 +2044,8 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 	}
 
 	QString desc = status.description();
-#if QT_VERSION > 0x030100
 	desc.replace("\r\n", "\n");
 	desc.replace("\r", "\n");
-#else
-	desc.replace(QRegExp("\r\n"), "\n");
-	desc.replace(QRegExp("\r"), "\n");
-#endif
 	status.setDescription(desc);
 
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "User %d went %d (%s)\n", uin,

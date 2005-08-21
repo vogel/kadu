@@ -119,6 +119,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * podzielenie plików misc.* i gadu.* na mniejsze (joi)
 * alsa_sound: przed odegraniem / nagraniem próbki sprawdzamy czy karta
   przyjmie / zwróci j± (joi)
+* usuniêty kod kompatybilno¶ci z Qt < 3.2, configure sprawdza wersjê Qt (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

@@ -42,11 +42,7 @@ extern "C" void speech_close()
 
 bool isFemale(QString s)
 {
-#if QT_VERSION >= 0x030200
 	return s.endsWith("a", false);
-#else
-	return s.endsWith("a")||s.endsWith("A");
-#endif
 }
 
 void SpeechSlots::useArts()

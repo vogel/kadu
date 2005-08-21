@@ -28,9 +28,7 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 //	setWFlags(Qt::WNoAutoErase|Qt::WStaticContents|Qt::WPaintClever);
 	connect(this, SIGNAL(linkClicked(const QString&)), this, SLOT(hyperlinkClicked(const QString&)));
 	connect(this, SIGNAL(highlighted(const QString&)), this, SLOT(linkHighlighted(const QString &)));
-#if QT_VERSION >= 0x030100
 	setWrapPolicy(QTextEdit::AtWordOrDocumentBoundary);
-#endif
 	setTextFormat(Qt::RichText);
 
 //	connect(verticalScrollBar(), SIGNAL(sliderReleased()), this, SLOT(repaint()));
@@ -180,14 +178,8 @@ void KaduTextBrowser::copy()
 //	kdebugm(KDEBUG_DUMP, "result: \n%s\n\n", txt.local8Bit().data());
 
 	QClipboard *clipboard=QApplication::clipboard();
-#if QT_VERSION < 0x030100
-	clipboard->setText(txt);
-	clipboard->setSelectionMode(!clipboard->selectionModeEnabled());
-	clipboard->setText(txt);
-#else
 	clipboard->setText(txt, QClipboard::Clipboard);
 	clipboard->setText(txt, QClipboard::Selection);
-#endif
 	kdebugf2();
 }
 

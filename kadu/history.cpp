@@ -50,13 +50,12 @@ HistoryManager::HistoryManager(QObject *parent, const char *name) : QObject(pare
 QString HistoryManager::text2csv(const QString &text)
 {
 	QString csv = text;
-	//TODO: zrobiæ ifdefa na QT_VERSION<3.1, regexpy s± wolne
-	csv.replace(QRegExp("\\\\"), "\\\\");
-	csv.replace(QRegExp("\""), "\\\"");
-	csv.replace(QRegExp("\r\n"), "\\n");
-	csv.replace(QRegExp("\n"), "\\n");
-	if (csv != text || text.find(QRegExp(","), 0) != -1)
-		csv = QString("\"") + csv + QString("\"");
+	csv.replace("\\", "\\\\");
+	csv.replace("\"", "\\\"");
+	csv.replace("\r\n", "\\n");
+	csv.replace("\n", "\\n");
+	if (csv != text || text.find(',', 0) != -1)
+		csv = QString("\"%1\"").arg(csv);
 	return csv;
 }
 
@@ -1270,7 +1269,7 @@ void HistoryManager::checkImageTimeout(UinType uin)
 void HistoryManager::checkImagesTimeouts()
 {
 	kdebugf();
-	QValueList<UinType> uins = keys(bufferedMessages);
+	QValueList<UinType> uins = bufferedMessages.keys();
 
 	CONST_FOREACH(uin, uins)
 		checkImageTimeout(*uin);

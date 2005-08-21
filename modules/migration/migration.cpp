@@ -266,9 +266,6 @@ void MigrationDialog::xmlConfigFileMigration(const QString& config_name)
 	QDomElement root_elem = xml_config_file->rootElement();
 	QFile file(config_path);
 	QString line;
-#if QT_VERSION < 0x030100
-	QRegExp newLine("\\\\n");
-#endif
 	if (file.open(IO_ReadOnly))
 	{
 		QTextStream stream(&file);
@@ -292,12 +289,7 @@ void MigrationDialog::xmlConfigFileMigration(const QString& config_name)
 			{
 				kdebug("line: %s\n", line.local8Bit().data());
 				QString name = line.section('=', 0, 0);
-#if QT_VERSION < 0x030100
-				//kilka razy wolniejsze...
-				QString value = line.right(line.length()-name.length()-1).replace(newLine, "\n");
-#else
 				QString value = line.right(line.length()-name.length()-1).replace("\\n", "\n");
-#endif
 				name = name.stripWhiteSpace();
 				if (line.contains('=') >= 1 && !name.isEmpty() && !value.isEmpty())
 				{

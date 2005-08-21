@@ -17,41 +17,23 @@
 void HtmlDocument::escapeText(QString& text)
 {
 	//UWAGA: &amp; MUSI byæ na pocz±tku!
-#if QT_VERSION < 0x030100
-	text.replace(QRegExp("&"), "&amp;");
-	text.replace(QRegExp("<"), "&lt;");
-	text.replace(QRegExp(">"), "&gt;");
-	text.replace(QRegExp("\""), "&quot;");
-	text.replace(QRegExp("'"), "&apos;");
-	text.replace(QRegExp("  "), "&nbsp; ");
-#else
 	text.replace("&", "&amp;");
 	text.replace("<", "&lt;");
 	text.replace(">", "&gt;");
 	text.replace("\"", "&quot;");
 	text.replace("'", "&apos;");
 	text.replace("  ", "&nbsp; ");
-#endif
 }
 
 void HtmlDocument::unescapeText(QString& text)
 {
 	//UWAGA: &amp; MUSI byæ na koñcu!
-#if QT_VERSION < 0x030100
-	text.replace(QRegExp("&nbsp;"), " ");
-	text.replace(QRegExp("&lt;"), "<");
-	text.replace(QRegExp("&gt;"), ">");
-	text.replace(QRegExp("&quot;"), "\"");
-	text.replace(QRegExp("&apos;"), "'");
-	text.replace(QRegExp("&amp;"), "&");
-#else
 	text.replace("&nbsp;", " ");
 	text.replace("&lt;", "<");
 	text.replace("&gt;", ">");
 	text.replace("&quot;", "\"");
 	text.replace("&apos;", "'");
 	text.replace("&amp;", "&");
-#endif
 }
 
 void HtmlDocument::addElement(Element e)

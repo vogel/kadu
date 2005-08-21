@@ -5044,8 +5044,8 @@ echo "${ECHO_T}found in $FILE_DIR" >&6
 echo "${ECHO_T}not found" >&6
 
 
-	{ { echo "$as_me:$LINENO: error: libqt-mt headers not found - please install libqt3-devel - check: http://kadu.net/qt" >&5
-echo "$as_me: error: libqt-mt headers not found - please install libqt3-devel - check: http://kadu.net/qt" >&2;}
+	{ { echo "$as_me:$LINENO: error: libqt-mt headers not found - please install libqt3-devel (>=3.2 <4.0) - check: http://kadu.net/qt" >&5
+echo "$as_me: error: libqt-mt headers not found - please install libqt3-devel (>=3.2 <4.0) - check: http://kadu.net/qt" >&2;}
    { (exit 1); exit 1; }; }
 
 	fi
@@ -5192,8 +5192,8 @@ rm -f conftest.err conftest.$ac_objext \
 echo "${ECHO_T}not found" >&6
 
 
-	{ { echo "$as_me:$LINENO: error: libqt-mt not found - please install libqt3 - check: http://kadu.net/qt" >&5
-echo "$as_me: error: libqt-mt not found - please install libqt3 - check: http://kadu.net/qt" >&2;}
+	{ { echo "$as_me:$LINENO: error: libqt-mt not found - please install libqt3 (>=3.2 <4.0) - check: http://kadu.net/qt" >&5
+echo "$as_me: error: libqt-mt not found - please install libqt3 (>=3.2 <4.0) - check: http://kadu.net/qt" >&2;}
    { (exit 1); exit 1; }; }
 
 		fi
@@ -5203,6 +5203,78 @@ rm -f conftest.err conftest.$ac_objext \
       conftest$ac_exeext conftest.$ac_ext
 
 
+
+
+echo "$as_me:$LINENO: checking for Qt version" >&5
+echo $ECHO_N "checking for Qt version... $ECHO_C" >&6
+save_CFLAGS="$CFLAGS"
+CFLAGS="$QT_INCLUDES"
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+	#include <qglobal.h>
+
+int
+main ()
+{
+
+	#if QT_VERSION < 0x030200
+		#error
+	#endif
+	#if QT_VERSION >= 0x040000
+		#error
+	#endif
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+
+	echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6
+
+
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+
+	echo "$as_me:$LINENO: result: bad" >&5
+echo "${ECHO_T}bad" >&6
+	{ { echo "$as_me:$LINENO: error: Your Qt version is not appropiate! Get Qt >= 3.2 and < 4.0" >&5
+echo "$as_me: error: Your Qt version is not appropiate! Get Qt >= 3.2 and < 4.0" >&2;}
+   { (exit 1); exit 1; }; }
+
+fi
+rm -f conftest.err conftest.$ac_objext \
+      conftest$ac_exeext conftest.$ac_ext
+CFLAGS="$save_CFLAGS"
 
 #################
 # QT MOC

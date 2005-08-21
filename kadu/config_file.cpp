@@ -163,9 +163,6 @@ void PlainConfigFile::read()
 	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", filename.local8Bit().data());
 	QFile file(filename);
 	QString line;
-#if QT_VERSION < 0x030100
-	QRegExp newLine("\\\\n");
-#endif
 
 	if (file.open(IO_ReadOnly))
 	{
@@ -187,12 +184,7 @@ void PlainConfigFile::read()
 			else if (activeGroupName.length())
 			{
 				QString name = line.section('=', 0, 0);
-#if QT_VERSION < 0x030100
-				//kilka razy wolniejsze...
-				QString value = line.right(line.length()-name.length()-1).replace(newLine, "\n");
-#else
 				QString value = line.right(line.length()-name.length()-1).replace("\\n", "\n");
-#endif
 				name = name.stripWhiteSpace();
 				if (line.contains('=') >= 1 && !name.isEmpty() && !value.isEmpty())
 					(*activeGroup)[name]=value;
@@ -216,9 +208,6 @@ void PlainConfigFile::write() const
 	QFile file(filename);
 	QString line;
 	QStringList out;
-#if QT_VERSION < 0x030100
-	QRegExp newLine("\n");
-#endif
 	QString format1("[%1]\n");
 	QString format2("%1=%2\n");
 
@@ -234,12 +223,7 @@ void PlainConfigFile::write() const
 			for(QMap<QString, QString>::const_iterator j=i.data().begin(); j!=i.data().end(); ++j)
 			{
 				QString q=j.data();
-#if QT_VERSION < 0x030100
-				//to jest kilka raz wolniejsze...
-				out.append(format2.arg(j.key()).arg(q.replace(newLine, "\\n")));
-#else
 				out.append(format2.arg(j.key()).arg(q.replace('\n', "\\n")));
-#endif
 //				kdebugm(KDEBUG_DUMP, ">>>>> %s %s\n", (const char*)j.key().local8Bit(), (const char*)q.local8Bit());
 			}
 			out.append("\n");
@@ -259,8 +243,7 @@ void PlainConfigFile::write() const
 
 QStringList PlainConfigFile::getGroupList() const
 {
-	return QStringList(keys(groups));
-//	return QStringList(groups.keys());
+	return QStringList(groups.keys());
 }
 
 void PlainConfigFile::sync() const

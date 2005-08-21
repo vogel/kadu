@@ -153,7 +153,7 @@ Notify::~Notify()
 	if (!notifiers.isEmpty())
 	{
 		kdebugm(KDEBUG_WARNING, "WARNING: not unregistered notifiers found! (%d)\n", notifiers.size());
-		QValueList<QString> notifierNames = keys(notifiers);
+		QValueList<QString> notifierNames = notifiers.keys();
 		CONST_FOREACH(name, notifierNames)
 			unregisterNotifier(*name);
 	}
@@ -380,7 +380,7 @@ void Notify::emitMessage(const QString &from, const QString &to, const QString &
 
 QStringList Notify::notifiersList() const
 {
-	return QStringList(keys(notifiers));
+	return QStringList(notifiers.keys());
 }
 
 Notify::Notifier::Notifier() : notifier(NULL)

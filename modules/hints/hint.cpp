@@ -150,15 +150,7 @@ Hint::~Hint(void)
 	kdebugmf(KDEBUG_FUNCTION_START, "id=%d\n", ident);
 
 	if (icon != NULL)
-	{
-#if QT_VERSION < 0x030100
-		icon->hide();
-#endif
 		icon->deleteLater();
-	}
-#if QT_VERSION < 0x030100
-	label->hide();
-#endif
 	label->deleteLater();
 	kdebugf2();
 }

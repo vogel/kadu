@@ -146,30 +146,6 @@ class ImageDialog : public QFileDialog
 QValueList<int> toIntList(const QValueList<QVariant> &in);
 QValueList<QVariant> toVariantList(const QValueList<int> &in);
 
-template<class T, class X> QValueList<T> keys(const QMap<T, X> &m)
-{
-#if QT_VERSION < 0x030005
-    QValueList<T> ret;
-    for(QMap<T,X>::const_iterator it = m.begin(), map_end = m.end(); it != map_end; ++it)
-        ret.append(it.key());
-    return ret;
-#else
-    return m.keys();
-#endif
-}
-
-template<class T, class X> QValueList<X> values(const QMap<T, X> &m)
-{
-#if QT_VERSION < 0x030005
-    QValueList<X> ret;
-    for(QMap<T,X>::const_iterator it = m.begin(), map_end = m.end(); it != map_end; ++it)
-        ret.append(it.data());
-    return ret;
-#else
-    return m.values();
-#endif
-}
-
 /*
 	zastêpstwo dla arga w QString, które podmienia kolejne %[1-4] w miejscu
 	
@@ -204,10 +180,6 @@ void printBacktrace(const QString &header="");
 // szybsza w zapisaniu pêtla for
 #define FOREACH(i,c) for(VAR(i, (c).begin()); i!=(c).end(); ++i)
 
-#if QT_VERSION >= 0x030200
 #define CONST_FOREACH(i,c) for(VAR(i, (c).constBegin()), _kadu__##i##__end = (c).constEnd(); i!=_kadu__##i##__end; ++i)
-#else
-#define CONST_FOREACH(i,c) for(VAR(i, (c).begin()), _kadu__##i##__end = (c).end(); i!=_kadu__##i##__end; ++i)
-#endif
 
 #endif
