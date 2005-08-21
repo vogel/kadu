@@ -241,6 +241,6 @@ int main(int argc, char *argv[])
 		MessageBox::wrn(qApp->translate("@default", QT_TR_NOOP("Please do not run Kadu as a root!\nIt's a high security risk!")));
 	QTimer::singleShot(15000, kadu, SLOT(deleteOldConfigFiles()));
 	int ret=qApp->exec();
-//	delete qApp;
+//	delete qApp; czasem powoduje segfaulta na koniec
 	return ret;
 }
