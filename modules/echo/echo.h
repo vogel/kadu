@@ -2,18 +2,20 @@
 #define ECHO_H
 
 #include <qobject.h>
-#include "misc.h"
+
+#include "gadu.h"
+#include "usergroup.h"
 
 class Echo : public QObject
 {
 	Q_OBJECT
 
-	public:	
+	public:
 		Echo();
 		~Echo();
-		
+
 	public slots:
-		void chatReceived(UinsList senders,const QString& msg,time_t time);
+		void chatMsgReceived(const QString &protocolName, UserListElements senders, const QString& msg, time_t time, bool& grab);
 };
 
 extern Echo* echo;

@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <algorithm>
+
 #include <qcursor.h>
 #include <qdragobject.h>
 #include <qfontmetrics.h>
@@ -46,21 +48,12 @@ void KaduListBoxPixmap::setFont(const QFont &f)
 	kdebugf2();
 }
 
-KaduListBoxPixmap::KaduListBoxPixmap(const QPixmap &pix, const QString &text)
-	: QListBoxItem()
+KaduListBoxPixmap::KaduListBoxPixmap(const QPixmap &pix, UserListElement user, bool bold)
+	: QListBoxItem(), User(user)
 {
 	buf_width=-1;
 	pm = pix;
-	setText(text);
-}
-
-KaduListBoxPixmap::KaduListBoxPixmap(const QPixmap &pix, const QString &text, const QString &descr, bool bold)
-	: QListBoxItem()
-{
-	buf_width=-1;
-	pm = pix;
-	setText(text);
-	setDescription(descr);
+	setText(user.altNick());
 	setBold(bold);
 }
 
@@ -102,25 +95,23 @@ void KaduListBoxPixmap::setDescriptionColor(const QColor &col)
 void KaduListBoxPixmap::paint(QPainter *painter)
 {
 //	kdebugf();
-	UserListElement &user = userlist.byAltNick(text());
-//	kdebugm(KDEBUG_INFO, "%d\n", (int)&user);
-	bool isMyUin=(myUIN == user.uin());
 	QColor origColor = painter->pen().color();
-	if (user.uin())
+	QString description;
+	if (User.usesProtocol("Gadu"))
 	{
-		UinsList uins(user.uin());
-		if (user.blocking())
+		UserListElements users(User);
+		if (User.protocolData("Gadu", "Blocking").toBool())
 			painter->setPen(QColor(255, 0, 0));
-		else if (isIgnored(uins))
+		else if (isIgnored(users))
 			painter->setPen(QColor(192, 192, 0));
-		else if (user.offlineTo())
+		else if (User.protocolData("Gadu", "OfflineTo").toBool())
 			painter->setPen(QColor(128, 128, 128));
+		description = User.status("Gadu").description();
 	}
 
 	int itemHeight = AlignUserboxIconsTop ? lineHeight(listBox()):height(listBox());
 	int yPos;
-	QString descr=isMyUin ? gadu->status().description() : description();
-	bool hasDescription=isMyUin ? gadu->status().hasDescription() : !descr.isEmpty();
+	bool hasDescription = !description.isEmpty();
 
 	if (!pm.isNull())
 	{
@@ -163,13 +154,13 @@ void KaduListBoxPixmap::paint(QPainter *painter)
 
 			if (!ShowMultilineDesc)
 #if QT_VERSION < 0x030100
-				descr.replace(QRegExp("\n"), " ");
+				description.replace(QRegExp("\n"), " ");
 #else
-				descr.replace("\n", " ");
+				description.replace("\n", " ");
 #endif
 			int h;
 			QStringList out;
-			calculateSize(descr, width(listBox())-5-pm.width(), out, h);
+			calculateSize(description, width(listBox()) - 5 - pm.width(), out, h);
 			if (!out.empty() && !isSelected())
 				painter->setPen(descColor);
 			else
@@ -189,24 +180,24 @@ void KaduListBoxPixmap::paint(QPainter *painter)
 int KaduListBoxPixmap::height(const QListBox* lb) const
 {
 //	kdebugf();
-	UserListElement &user = userlist.byAltNick(text());
-	bool isMyUin=(myUIN == user.uin());
-	QString descr=isMyUin ? gadu->status().description() : description();
-	bool hasDescription=isMyUin ? gadu->status().hasDescription() : !descr.isEmpty();
+	QString description;
+	if (User.usesProtocol("Gadu"))
+		description = User.status("Gadu").description();
+	bool hasDescription = !description.isEmpty();
 
 	int height=lb->fontMetrics().lineSpacing()+3;
 	if (hasDescription && ShowDesc)
 	{
 		if (!ShowMultilineDesc)
 #if QT_VERSION < 0x030100
-			descr.replace(QRegExp("\n"), " ");
+			description.replace(QRegExp("\n"), " ");
 #else
-			descr.replace("\n", " ");
+			description.replace("\n", " ");
 #endif
 		QStringList out;
 		int h;
-		calculateSize(descr, width(lb)-5-pm.width(), out, h);
-		height+=h;
+		calculateSize(description, width(lb) - 5 - pm.width(), out, h);
+		height += h;
 	}
 //	kdebugf2();
 	return QMAX(pm.height(), height);
@@ -242,7 +233,7 @@ int KaduListBoxPixmap::width(const QListBox* lb) const
 void KaduListBoxPixmap::calculateSize(const QString &text, int width, QStringList &out, int &height) const
 {
 //	kdebugf();
-	if (text==buf_text && width==buf_width)	//ju¿ to liczyli¶my ;)
+	if (text == buf_text && width == buf_width)	//ju¿ to liczyli¶my ;)
 	{
 		out=buf_out;
 		height=buf_height;
@@ -339,11 +330,33 @@ void KaduListBoxPixmap::changeText(const QString &text)
 
 UserBoxMenu *UserBox::userboxmenu = NULL;
 
-UserBox::UserBox(QWidget* parent,const char* name,WFlags f)
-	: QListBox(parent, name, f),QToolTip(viewport())
+UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
+	: QListBox(parent, name, f), QToolTip(viewport())
 
 {
 	kdebugf();
+	VisibleUsers = new UserGroup(userlist->count() * 2, "visible_users");
+	Filters.append(group);
+	connect(group, SIGNAL(userAdded(UserListElement, bool, bool)),
+			this, SLOT(userAddedToGroup(UserListElement, bool, bool)));
+	connect(group, SIGNAL(userRemoved(UserListElement, bool, bool)),
+			this, SLOT(userRemovedFromGroup(UserListElement, bool, bool)));
+
+	connect(VisibleUsers, SIGNAL(userAdded(UserListElement, bool, bool)),
+			this, SLOT(userAddedToVisible(UserListElement, bool, bool)));
+	connect(VisibleUsers, SIGNAL(userRemoved(UserListElement, bool, bool)),
+			this, SLOT(userRemovedFromVisible(UserListElement, bool, bool)));
+	connect(VisibleUsers, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
+			this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
+	connect(VisibleUsers, SIGNAL(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)),
+			this, SLOT(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)));
+	connect(VisibleUsers, SIGNAL(protocolUserDataChanged(QString, UserListElement, QString, QVariant, QVariant, bool, bool)),
+			this, SLOT(protocolUserDataChanged(QString, UserListElement, QString, QVariant, QVariant, bool, bool)));
+
+	VisibleUsers->addUsers(group);
+
+	addCompareFunction("Status", tr("Compares statuses"), compareStatus);
+	addCompareFunction("AltNick", tr("Compares nicks (\"altnicks\")"), compareAltNick);
 
 	if (!userboxmenu)
 		userboxmenu= new UserBoxMenu(this);
@@ -358,6 +371,8 @@ UserBox::UserBox(QWidget* parent,const char* name,WFlags f)
 	setSelectionMode(QListBox::Extended);
 	connect(this, SIGNAL(doubleClicked(QListBoxItem *)), this, SLOT(doubleClickedSlot(QListBoxItem *)));
 	connect(this, SIGNAL(returnPressed(QListBoxItem *)), this, SLOT(returnPressedSlot(QListBoxItem *)));
+	connect(this, SIGNAL(currentChanged(QListBoxItem *)), this, SLOT(currentChangedSlot(QListBoxItem *)));
+	connect(&refreshTimer, SIGNAL(timeout()), this, SLOT(refresh()));
 
 	kdebugf2();
 }
@@ -366,6 +381,7 @@ UserBox::~UserBox()
 {
 	kdebugf();
 	UserBoxes.remove(this);
+	delete VisibleUsers;
 	kdebugf2();
 }
 
@@ -380,14 +396,17 @@ void UserBox::maybeTip(const QPoint &c)
 	{
 		QRect r(itemRect(item));
 		QString s;
-		const UserStatus & status = userlist.byAltNick(item->text()).status();
+		UserListElement user = userlist->byAltNick(item->text());
+		UserStatus status;
+		if (user.usesProtocol("Gadu"))
+			status = user.status("Gadu");
 		QString description = status.description();
 		QString name = qApp->translate("@default", UserStatus::name(UserStatus::index(status.status(), false)));
 
 		if (description.isEmpty())
 		{
-			if (status.isOffline() && !userlist.byAltNick(item->text()).uin())
-				s = tr("<i>Mobile:</i> <b>%1</b>").arg(userlist.byAltNick(item->text()).mobile());
+			if (status.isOffline() && !user.usesProtocol("Gadu"))
+				s = tr("<i>Mobile:</i> <b>%1</b>").arg(user.mobile());
 			else
 				s = tr("<nobr><i>%1</i></nobr>").arg(name);
 		}
@@ -452,19 +471,23 @@ void UserBox::keyPressEvent(QKeyEvent *e)
 //	kdebugf();
 	QListBox::keyPressEvent(e);
 	QWidget::keyPressEvent(e);
-	emit currentChanged(item(currentItem()));
+	QListBoxItem *i = item(currentItem());
+	if (i)
+		emit currentChanged(static_cast<KaduListBoxPixmap *>(i)->User);
 //	kdebugf2();
 }
 
-void UserBox::sortUsersByAltNick(QStringList &users)
-{
-	stringHeapSort(users);
-}
-
+#include <sys/time.h>
 void UserBox::refresh()
 {
 	kdebugf();
-	KaduListBoxPixmap *lbp;
+
+/*	struct timeval t1,t2;
+	gettimeofday(&t1, NULL);
+	for(int j=0; j<1000; ++j)
+	{
+*/
+	sort();
 
 	// Zapamiêtujemy zaznaczonych u¿ytkowników
 	QStringList s_users;
@@ -476,141 +499,33 @@ void UserBox::refresh()
 	//zapamiêtajmy po³o¿enie pionowego suwaka
 	int vScrollValue = verticalScrollBar()->value();
 
-	// Najpierw dzielimy uzytkownikow na cztery grupy
-	QStringList a_users;
-	QStringList i_users;
-	QStringList n_users;
-	QStringList b_users;
-
-	UinType myUin = config_file.readNumEntry("General", "UIN");
-	CONST_FOREACH(username, Users)
-	{
-		UserListElement &user = userlist.byAltNick(*username);
-		if (user.uin())
-		{
-			if (user.uin() == myUin)
-			{
-				user.status().setStatus(gadu->status());
-				user.setMaxImageSize(config_file.readNumEntry("Chat", "MaxImageSize"));
-			}
-			switch (user.status().status())
-			{
-				case Offline:
-					n_users.append(user.altNick());
-					break;
-				case Invisible:
-					i_users.append(user.altNick());
-					break;
-				default:
-					a_users.append(user.altNick());
-			}
-		}
-		else
-			b_users.append(user.altNick());//bez uinów
-	}
-	sortUsersByAltNick(a_users);
-	sortUsersByAltNick(i_users);
-	sortUsersByAltNick(n_users);
-	sortUsersByAltNick(b_users);
 	// Czyscimy listê
-	clear();
+	QListBox::clear();
 
 	bool showBold = config_file.readBoolEntry("Look", "ShowBold");
-	bool showOnlyDesc = config_file.readBoolEntry("General", "ShowOnlyDescriptionUsers");
-	bool showBlocking = config_file.readBoolEntry("General", "ShowBlocking");
-	bool showBlocked = config_file.readBoolEntry("General", "ShowBlocked");
 
-	// Dodajemy aktywnych
-	CONST_FOREACH(username, a_users)
+	FOREACH(user, sortHelper)
 	{
-		UserListElement &user = userlist.byAltNick(*username);
-		if (user.blocking() && !showBlocked)
-			continue;
-		if (user.status().isBlocking() && !showBlocking)
-			continue;
-
-		if (!showOnlyDesc || user.status().hasDescription())
+		bool has_mobile = !(*user).mobile().isEmpty();
+		bool usesGadu = (*user).usesProtocol("Gadu");
+		bool bold = showBold && usesGadu ? ((*user).status("Gadu").isOnline() ||
+								(*user).status("Gadu").isBusy()) : false;
+//		kdebugm(KDEBUG_INFO, "creating: %s %d\n", (*user).altNick().local8Bit().data(), usesGadu);
+		KaduListBoxPixmap *lbp;
+		if (!usesGadu)
+			lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Mobile"), *user, false);
+		else if (pending.pendingMsgs(*user))
+			lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), *user, bold);
+		else
 		{
-			bool has_mobile = !user.mobile().isEmpty();
-			bool bold = showBold ? (user.status().isOnline() || user.status().isBusy()) : false;
-			if (pending.pendingMsgs(user.uin()))
-				lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), user.altNick(),
-					user.status().description(), bold);
+			const QPixmap &pix = (*user).status("Gadu").pixmap(has_mobile);
+			if (!pix.isNull())
+				lbp = new KaduListBoxPixmap(pix, *user, bold);
 			else
-			{
-				const QPixmap &pix = user.status().pixmap(has_mobile);
-				if (!pix.isNull())
-					lbp = new KaduListBoxPixmap(pix, user.altNick(), user.status().description(), bold);
-				else
-					lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Online"), user.altNick(),
-						user.status().description(), bold);
-			}
-			insertItem(lbp);
+				lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Online"), *user, bold);
 		}
+		insertItem(lbp);
 	}
-
-	// Dodajemy niewidocznych
-	CONST_FOREACH(username, i_users)
-	{
-		UserListElement &user = userlist.byAltNick(*username);
-		if (user.blocking() && !showBlocked)
-			continue;
-
-		if (!showOnlyDesc || user.status().hasDescription())
-		{
-			bool has_mobile = !user.mobile().isEmpty();
-			if (pending.pendingMsgs(user.uin()))
-				lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), user.altNick(),
-					user.status().description(), 0);
-			else
-			{
-				const QPixmap &pix = user.status().pixmap(has_mobile);
-				if (!pix.isNull())
-					lbp = new KaduListBoxPixmap(pix, user.altNick(), user.status().description(), 0);
-				else
-					lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Invisible"), user.altNick(),
-						user.status().description(), 0);
-			}
-			insertItem(lbp);
-		}
-	}
-
-	// Dodajemy nieaktywnych
-	if (config_file.readBoolEntry("General","ShowHideInactive"))
-	CONST_FOREACH(username, n_users)
-	{
-		UserListElement &user = userlist.byAltNick(*username);
-		if (user.blocking() && !showBlocked)
-			continue;
-
-		if (!showOnlyDesc || user.status().hasDescription())
-		{
-			bool has_mobile = !user.mobile().isEmpty();
-			if (pending.pendingMsgs(user.uin()))
-				lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Message"), user.altNick(),
-					user.status().description(), 0);
-			else
-			{
-				const QPixmap &pix = user.status().pixmap(has_mobile);
-				if (!pix.isNull())
-					lbp = new KaduListBoxPixmap(pix, user.altNick(), user.status().description(), 0);
-				else
-					lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Offline"), user.altNick(),
-						user.status().description(), 0);
-			}
-			insertItem(lbp);
-		}
-	}
-
-	// Dodajemy uzytkownikow bez numerow GG
-	if(!showOnlyDesc)
-		CONST_FOREACH(username, b_users)
-		{
-			UserListElement &user = userlist.byAltNick(*username);
-			lbp = new KaduListBoxPixmap(icons_manager.loadIcon("Mobile"), user.altNick(),
-				user.status().description(), 0);
-			insertItem(lbp);
-		}
 
 	// Przywracamy zaznaczenie wczesniej zaznaczonych uzytkownikow
 	CONST_FOREACH(username, s_users)
@@ -620,98 +535,25 @@ void UserBox::refresh()
 	//przywracamy po³o¿enie pionowego suwaka
 	verticalScrollBar()->setValue(vScrollValue);
 
+/*	}
+	gettimeofday(&t2, NULL);
+	kdebugm(KDEBUG_INFO, "czas: %ld\n", (t2.tv_usec-t1.tv_usec)+(t2.tv_sec*1000000)-(t1.tv_sec*1000000));
+*/
 	kdebugf2();
 }
 
-void UserBox::addUser(const QString &altnick)
+UserListElements UserBox::selectedUsers() const
 {
 	kdebugf();
-	Users.append(altnick);
-}
-
-void UserBox::removeUser(const QString &altnick)
-{
-	kdebugf();
-	Users.remove(altnick);
-}
-
-void UserBox::renameUser(const QString &oldaltnick, const QString &newaltnick)
-{
-	kdebugf();
-	QStringList::iterator it = Users.find(oldaltnick);
-	if (it != Users.end())
-	{
-		(*it) = newaltnick;
-		KaduListBoxPixmap *pix=(KaduListBoxPixmap*)findItem(oldaltnick, Qt::ExactMatch|Qt::CaseSensitive);
-		if (pix)
-			pix->changeText(newaltnick);
-	}
-	else
-		kdebugmf(KDEBUG_WARNING, "userbox does not contain: %s\n", oldaltnick.local8Bit().data());
-	kdebugf2();
-}
-
-bool UserBox::containsAltNick(const QString &altnick) const
-{
-	kdebugf();
-	CONST_FOREACH(username, Users)
-		if ((*username).lower() == altnick.lower())
-			return true;
-	kdebugmf(KDEBUG_INFO, "userbox does not contain: %s\n", altnick.lower().local8Bit().data());
-	return false;
-}
-
-void UserBox::changeAllToInactive()
-{
-	kdebugf();
-	QPixmap qp_inact = icons_manager.loadIcon("Offline");
-	for(unsigned int i = 0, count2 = count(); i < count2; ++i)
-		changeItem(qp_inact, item(i)->text(), i);
-	kdebugf2();
-}
-
-void UserBox::showHideInactive()
-{
-	kdebugf();
-	config_file.writeEntry("General","ShowHideInactive",!config_file.readBoolEntry("General","ShowHideInactive"));
-	all_refresh();
-	kdebugf2();
-}
-
-void UserBox::showHideDescriptions()
-{
-	kdebugf();
-	config_file.writeEntry("General","ShowOnlyDescriptionUsers",!config_file.readBoolEntry("General","ShowOnlyDescriptionUsers"));
-	all_refresh();
-}
-
-UinsList UserBox::getSelectedUins() const
-{
-	kdebugf();
-	UinsList uins;
+	UserListElements users;
 	for (unsigned int i = 0, count2 = count(); i < count2; ++i)
 		if (isSelected(i))
-		{
-			UserListElement &user = userlist.byAltNick(text(i));
-			if (user.uin())
-				uins.append(user.uin());
-		}
-	kdebugf2();
-	return uins;
-}
-
-UserList UserBox::getSelectedUsers() const
-{
-	kdebugf();
-	UserList users;
-	for (unsigned int i = 0, count2 = count(); i < count2; ++i)
-		if (isSelected(i))
-			users.addUser(userlist.byAltNick(text(i)));
+			users.append(static_cast<KaduListBoxPixmap *>(item(i))->User);
 	kdebugf2();
 	return users;
 }
 
-UserBox* UserBox::getActiveUserBox()
+UserBox* UserBox::activeUserBox()
 {
 	kdebugf();
 	FOREACH(box, UserBoxes)
@@ -726,47 +568,11 @@ UserBox* UserBox::getActiveUserBox()
 	return NULL;
 }
 
-QStringList UserBox::getSelectedAltNicks() const
-{
-	kdebugf();
-	QStringList nicks;
-	for (unsigned int i = 0, count2 = count(); i < count2; ++i)
-		if (isSelected(i))
-			nicks.append(text(i));
-	kdebugf2();
-	return nicks;
-}
-/////////////////////////////////////////////////////////
-
-void UserBox::all_refresh()
+void UserBox::refreshAll()
 {
 	kdebugf();
 	FOREACH(box, UserBoxes)
 		(*box)->refresh();
-}
-
-void UserBox::all_removeUser(const QString &altnick)
-{
-	kdebugf();
-	FOREACH(box, UserBoxes)
-		(*box)->removeUser(altnick);
-	kdebugf2();
-}
-
-void UserBox::all_changeAllToInactive()
-{
-	kdebugf();
-	FOREACH(box, UserBoxes)
-		(*box)->changeAllToInactive();
-	kdebugf2();
-}
-
-void UserBox::all_renameUser(const QString &oldaltnick, const QString &newaltnick)
-{
-	kdebugf();
-	FOREACH(box, UserBoxes)
-		(*box)->renameUser(oldaltnick, newaltnick);
-	kdebugf2();
 }
 
 void UserBox::closeModule()
@@ -779,10 +585,6 @@ void UserBox::initModule()
 {
 	kdebugf();
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "General"), "GeneralTab");
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show inactive contacts"), "ShowHideInactive", true, QT_TRANSLATE_NOOP("@default", "Display contacts who are offline"), "", Advanced);
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show contacts with description"), "ShowOnlyDescriptionUsers", false, QT_TRANSLATE_NOOP("@default", "Display contacts that have a desciption"), "", Advanced);
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show contacts that you are blocking"), "ShowBlocked", true, "", "", Expert);
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show contacts that are blocking you"), "ShowBlocking", true, "", "", Expert);
 
 	// dodanie wpisow do konfiga (pierwsze uruchomienie)
 	QWidget w;
@@ -854,12 +656,18 @@ void UserBox::resizeEvent(QResizeEvent *r)
 
 void UserBox::doubleClickedSlot(QListBoxItem *item)
 {
-	emit doubleClicked(item->text());
+	emit doubleClicked(static_cast<KaduListBoxPixmap *>(item)->User);
 }
 
 void UserBox::returnPressedSlot(QListBoxItem *item)
 {
-	emit returnPressed(item->text());
+	emit returnPressed(static_cast<KaduListBoxPixmap *>(item)->User);
+}
+
+void UserBox::currentChangedSlot(QListBoxItem *item)
+{
+	if (item)
+		emit currentChanged(static_cast<KaduListBoxPixmap *>(item)->User);
 }
 
 UserBoxMenu::UserBoxMenu(QWidget *parent, const char *name): QPopupMenu(parent, name)
@@ -968,7 +776,7 @@ void UserBoxSlots::onDestroyConfigDialog()
 	KaduListBoxPixmap::setMyUIN(config_file.readNumEntry("General", "UIN"));
 	KaduListBoxPixmap::setDescriptionColor(config_file.readColorEntry("Look", "DescriptionColor"));
 
-	UserBox::all_refresh();
+	UserBox::refreshAll();
 	kdebugf2();
 }
 
@@ -1011,3 +819,411 @@ void UserBoxSlots::onMultiColumnUserbox(bool toggled)
 }
 
 QValueList<UserBox *> UserBox::UserBoxes;
+
+QValueList<UserBox::CmpFuncDesc> UserBox::compareFunctions() const
+{
+	return comparer.CmpFunctions;
+}
+
+void UserBox::applyFilter(UserGroup *g)
+{
+	kdebugf();
+	if (Filters.contains(g))
+		return;
+	Filters.append(g);
+	UserListElements users;
+	CONST_FOREACH(user, *VisibleUsers)
+		if (!g->contains(*user))
+			users.append(*user);
+	VisibleUsers->removeUsers(users);
+	connect(g, SIGNAL(userAdded(UserListElement, bool, bool)),
+			this, SLOT(userAddedToGroup(UserListElement, bool, bool)));
+	connect(g, SIGNAL(userRemoved(UserListElement, bool, bool)),
+			this, SLOT(userRemovedFromGroup(UserListElement, bool, bool)));
+	kdebugf2();
+}
+
+void UserBox::removeFilter(UserGroup *g)
+{
+	kdebugf();
+	if (!Filters.contains(g))
+		return;
+	Filters.remove(g);
+	disconnect(g, SIGNAL(userAdded(UserListElement, bool, bool)),
+			this, SLOT(userAddedToGroup(UserListElement, bool, bool)));
+	disconnect(g, SIGNAL(userRemoved(UserListElement, bool, bool)),
+			this, SLOT(userRemovedFromGroup(UserListElement, bool, bool)));
+	if (Filters.isEmpty())//musi byæ przynajmniej jedna grupa
+		Filters.append(userlist);
+	UserGroup *last = Filters.last();
+	Filters.pop_back(); //tymczasowo usuwamy
+
+	UserListElements users;
+	CONST_FOREACH(user, *last)
+	{
+		if (VisibleUsers->contains(*user))//nie sprawdzamy pewniaków
+			continue;
+		bool omit = false;
+
+		CONST_FOREACH(ngroup, NegativeFilters)
+			if ((*ngroup)->contains(*user))
+			{
+				omit = true;
+				break;
+			}
+		if (omit)
+			continue;
+
+		CONST_FOREACH(group, Filters)
+			if (!(*group)->contains(*user))
+			{
+				omit = true;
+				break;//je¿eli do jakiej¶ nie nale¿y, to nie ma sensu dalej sprawdzaæ
+			}
+		if (omit)
+			continue;
+
+		users.append(*user);
+	}
+	Filters.append(last); //przywracamy
+	VisibleUsers->addUsers(users);
+	kdebugf2();
+}
+
+void UserBox::applyNegativeFilter(UserGroup *g)
+{
+	kdebugf();
+	if (NegativeFilters.contains(g))
+		return;
+	NegativeFilters.append(g);
+	UserListElements users;
+	CONST_FOREACH(user, *VisibleUsers)
+		if (g->contains(*user))
+			users.append(*user);
+	VisibleUsers->removeUsers(users);
+	connect(g, SIGNAL(userAdded(UserListElement, bool, bool)),
+			this, SLOT(userRemovedFromGroup(UserListElement, bool, bool)));
+	connect(g, SIGNAL(userRemoved(UserListElement, bool, bool)),
+			this, SLOT(userAddedToGroup(UserListElement, bool, bool)));
+	kdebugf2();
+}
+
+void UserBox::removeNegativeFilter(UserGroup *g)
+{
+	kdebugf();
+	if (!NegativeFilters.contains(g))
+		return;
+	NegativeFilters.remove(g);
+	disconnect(g, SIGNAL(userAdded(UserListElement, bool, bool)),
+			this, SLOT(userRemovedFromGroup(UserListElement, bool, bool)));
+	disconnect(g, SIGNAL(userRemoved(UserListElement, bool, bool)),
+			this, SLOT(userAddedToGroup(UserListElement, bool, bool)));
+
+	UserListElements users;
+	CONST_FOREACH(user, *g)
+	{
+		bool omit = false;
+		CONST_FOREACH(ngroup, NegativeFilters)
+			if ((*ngroup)->contains(*user))
+			{
+				omit = true;
+				break;
+			}
+		if (omit)
+			continue;
+
+		CONST_FOREACH(group, Filters)
+			if (!(*group)->contains(*user))
+			{
+				omit = true;
+				break;
+			}
+		if (omit)
+			continue;
+
+		users.append(*user);
+	}
+	VisibleUsers->addUsers(users);
+	kdebugf2();
+}
+
+void UserBox::addCompareFunction(const QString &id, const QString &trDescription,
+			int (*cmp)(const UserListElement &, const UserListElement &))
+{
+	comparer.CmpFunctions.append(CmpFuncDesc(id, trDescription, cmp));
+	refresh();
+}
+
+void UserBox::removeCompareFunction(const QString &id)
+{
+	FOREACH(c, comparer.CmpFunctions)
+		if ((*c).id == id)
+		{
+			comparer.CmpFunctions.remove(c);
+			refresh();
+			break;
+		}
+}
+
+void UserBox::moveUpCompareFunction(const QString &id)
+{
+	kdebugf();
+	CmpFuncDesc d;
+	int pos = 0;
+	FOREACH(c, comparer.CmpFunctions)
+	{
+		if ((*c).id == id)
+		{
+			if (pos == 0)
+				break;
+			d = *c;
+			--c;
+			c = comparer.CmpFunctions.insert(c, d);
+			c += 2;
+			comparer.CmpFunctions.remove(c);
+			refresh();
+			break;
+		}
+		++pos;
+	}
+	kdebugf2();
+}
+
+void UserBox::moveDownCompareFunction(const QString &id)
+{
+	kdebugf();
+	CmpFuncDesc d;
+	int pos = 0;
+	int cnt = comparer.CmpFunctions.count();
+	FOREACH(c, comparer.CmpFunctions)
+	{
+		if ((*c).id == id)
+		{
+			if (pos == cnt - 1)
+				break;
+			d = *c;
+			++c;
+			c = comparer.CmpFunctions.insert(c, d);
+			c -= 2;
+			comparer.CmpFunctions.remove(c);
+			refresh();
+			break;
+		}
+		++pos;
+	}
+	kdebugf2();
+}
+
+bool UserBox::ULEComparer::operator()(const UserListElement &e1, const UserListElement &e2) const
+{
+	int ret = 0;
+	CONST_FOREACH(f, CmpFunctions)
+	{
+		ret = (*f).func(e1, e2);
+//		kdebugm(KDEBUG_WARNING, "%s %s %d\n", e1.altNick().local8Bit().data(), e2.altNick().local8Bit().data(), ret);
+		if (ret)
+			break;
+	}
+	return ret < 0;
+}
+
+void UserBox::sort()
+{
+//	FOREACH(u, sortHelper)
+//		kdebugm(KDEBUG_WARNING, ">>%s\n", (*u).altNick().local8Bit().data());
+	std::sort(sortHelper.begin(), sortHelper.end(), comparer);
+//	FOREACH(u, sortHelper)
+//		kdebugm(KDEBUG_ERROR, ">>%s\n", (*u).altNick().local8Bit().data());
+}
+
+void UserBox::statusChanged(UserListElement elem, QString protocolName,
+					const UserStatus &oldStatus, bool massively, bool last)
+{
+	if (massively)
+		refreshLater();
+	else
+		refresh();
+}
+
+void UserBox::userDataChanged(UserListElement elem, QString name, QVariant oldValue,
+					QVariant currentValue, bool massively, bool last)
+{
+	if (name != "AltNick") //inne dane nas nie interesuj±
+		return;
+	if (massively)
+		refreshLater();
+	else
+		refresh();
+}
+
+void UserBox::protocolUserDataChanged(QString protocolName, UserListElement elem,
+					QString name, QVariant oldValue, QVariant currentValue,
+					bool massively, bool last)
+{
+	if (protocolName != "Gadu")
+		return;
+	if (name != "Blocking" && name != "OfflineTo")
+		return;
+	if (massively)
+		refreshLater();
+	else
+		refresh();
+}
+
+
+void UserBox::userAddedToVisible(UserListElement elem, bool massively, bool last)
+{
+	sortHelper.push_back(elem);
+
+	if ((massively && last) || !massively)
+		refresh();
+}
+
+class torem
+{
+	std::vector<UserListElement>::const_iterator begin;
+	std::vector<UserListElement>::const_iterator end;
+
+	public:
+	torem(const std::vector<UserListElement> &src)
+	{
+		begin = src.begin();
+		end = src.end();
+	}
+
+	bool operator()(const UserListElement &u) const
+	{
+		for(std::vector<UserListElement>::const_iterator it = begin; it != end; ++it)
+			if ((*it) == u)
+				return true;
+		return false;
+	}
+};
+
+void UserBox::userRemovedFromVisible(UserListElement elem, bool massively, bool last)
+{
+	kdebugf();
+	if (massively)
+		toRemove.push_back(elem);
+	else
+		sortHelper.erase(std::remove(sortHelper.begin(), sortHelper.end(), elem), sortHelper.end());//najoptymalniejsze
+	if (massively && last)
+	{
+		torem pred(toRemove);
+		sortHelper.erase(std::remove_if(sortHelper.begin(), sortHelper.end(), pred), sortHelper.end());
+		toRemove.clear();
+	}
+	if ((massively && last) || !massively)
+		refresh();
+	kdebugf2();
+}
+
+void UserBox::userAddedToGroup(UserListElement elem, bool massively, bool last)
+{
+	kdebugf();
+	const UserGroup *s = static_cast<const UserGroup *>(sender());
+	bool append = true;
+	CONST_FOREACH(group, NegativeFilters)
+		if ((*group)->contains(elem))
+		{
+			append = false;
+			break;
+		}
+//	kdebugm(KDEBUG_WARNING, "%d %d %d\n", append, massively, last);
+	if (append)
+		CONST_FOREACH(group, Filters)
+			if (!(*group)->contains(elem))
+			{
+				append = false;
+				break;
+			}
+//	kdebugm(KDEBUG_WARNING, "%d\n", append);
+	if (append)
+	{
+		if (massively)
+			AppendProxy[s].append(elem);
+		else
+			VisibleUsers->addUser(elem);
+	}
+	if (massively && last)
+	{
+		VisibleUsers->addUsers(AppendProxy[s]);
+		AppendProxy.remove(s);
+	}
+	kdebugf2();
+}
+
+void UserBox::userRemovedFromGroup(UserListElement elem, bool massively, bool last)
+{
+	kdebugf();
+	const UserGroup *s = static_cast<const UserGroup *>(sender());
+	if (VisibleUsers->contains(elem))
+		if (massively)
+			RemoveProxy[s].append(elem);
+		else
+			VisibleUsers->removeUser(elem);
+	if (massively && last)
+	{
+		VisibleUsers->removeUsers(RemoveProxy[s]);
+		RemoveProxy.remove(s);
+	}
+	kdebugf2();
+}
+
+const UserGroup *UserBox::visibleUsers() const
+{
+	return VisibleUsers;
+}
+
+QValueList<UserGroup *> UserBox::filters() const
+{
+	return Filters;
+}
+
+QValueList<UserGroup *> UserBox::negativeFilters() const
+{
+	return NegativeFilters;
+}
+
+bool UserBox::currentUserExists() const
+{
+	return currentItem() != -1;
+}
+
+UserListElement UserBox::currentUser() const
+{
+	QListBoxItem *i = item(currentItem());
+	if (i)
+		return static_cast<KaduListBoxPixmap *>(i)->User;
+	else
+	{
+		kdebugm(KDEBUG_ERROR, "GO AWAY and check currentUserExists() first!\n");
+		printBacktrace("currentUser");
+		return UserListElement();
+	}
+}
+
+int compareAltNick(const UserListElement &u1, const UserListElement &u2)
+{
+	return u1.altNick().localeAwareCompare(u2.altNick());
+}
+
+int compareStatus(const UserListElement &u1, const UserListElement &u2)
+{
+	//UWAGA: wykorzystany jest fakt, ¿e sta³e w enum eUserStatus s± w "dobrej" kolejno¶ci
+	bool u1Gadu = u1.usesProtocol("Gadu");
+	bool u2Gadu = u2.usesProtocol("Gadu");
+	if (u1Gadu && u2Gadu)
+	{
+		eUserStatus s1 = u1.status("Gadu").status();
+		eUserStatus s2 = u2.status("Gadu").status();
+		// uwa¿amy Busy i Online za równowa¿ne
+		if (s1 == Busy)
+			s1 = Online;
+		if (s2 == Busy)
+			s2 = Online;
+		return (int)s1 - (int)s2;
+	}
+	else
+		return int(u2Gadu) - int(u1Gadu);
+}

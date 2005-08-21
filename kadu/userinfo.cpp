@@ -16,17 +16,19 @@
 #include <qvbox.h>
 #include <qvgroupbox.h>
 
-#include "chat.h"
+//#include "chat.h"
+//#include "chat_manager.h"
 #include "debug.h"
-#include "kadu.h"
+#include "groups_manager.h"
+//#include "kadu.h"
 #include "message_box.h"
 #include "userinfo.h"
-#include "userbox.h"
+#include "userlist.h"
 
 CreateNotifier UserInfo::createNotifier;
 
-UserInfo::UserInfo(const QString &altnick, bool addUser, QDialog* parent, const char *name)
-	: QHBox(parent, name), addUser(addUser)
+UserInfo::UserInfo(UserListElement user, QDialog* parent, const char *name)
+	: QHBox(parent, name), user(user)
 {
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose|Qt::WShowModal);
@@ -48,22 +50,15 @@ UserInfo::UserInfo(const QString &altnick, bool addUser, QDialog* parent, const 
 	l_info->setText(tr("This dialog box allows you to view and edit information about the selected contact."));
 	l_info->setAlignment(Qt::WordBreak);
 
+	bool addUser = !userlist->contains(user, FalseForAnonymous);
 	if (addUser)
 	{
-		puser = NULL;
 		setCaption(tr("Add user"));
 		l_icon->setPixmap(icons_manager.loadIcon("AddUserWindowIcon"));
 	}
 	else
 	{
-		FOREACH(i, userlist)
-			if ((*i).altNick() == altnick)
-			{
-				puser = &(*i);
-				break;
-			}
-		setCaption(tr("User info on %1").arg(altnick));
-
+		setCaption(tr("User info on %1").arg(user.altNick()));
 		l_icon->setPixmap(icons_manager.loadIcon("ManageUsersWindowIcon"));
 	}
 
@@ -96,18 +91,6 @@ UserInfo::UserInfo(const QString &altnick, bool addUser, QDialog* parent, const 
 
 	loadGeometry(this, "General", "ManageUsersDialogGeometry", 0, 30, 380, 450);
 	kdebugf2();
-}
-
-void UserInfo::setUserInfo(UserListElement &ule)
-{
-	e_firstname->setText(ule.firstName());
-	e_lastname->setText(ule.lastName());
-	e_nickname->setText(ule.nickName());
-	e_altnick->setText(ule.altNick());
-	e_mobile->setText(ule.mobile());
-	if (ule.uin())
-		e_uin->setText(QString::number(ule.uin()));
-	e_email->setText(ule.email());
 }
 
 void UserInfo::setupTab1()
@@ -206,7 +189,7 @@ void UserInfo::setupTab1()
 	hb_protversion->setStretchFactor(vb_empty, 1);
 	// end Protocol Version
 
-	if (!gadu->userListSent())
+	if (gadu->currentStatus().isOffline())
 		e_status->setText(tr("(Unknown)"));
 
 	QString s_temp;
@@ -216,49 +199,50 @@ void UserInfo::setupTab1()
 	e_addr->setReadOnly(true);
 	e_ver->setReadOnly(true);
 	e_dnsname->setReadOnly(true);
-	if (addUser)
+
+	e_nickname->setText(user.nickName());
+	e_altnick->setText(user.altNick());
+	e_firstname->setText(user.firstName());
+	e_lastname->setText(user.lastName());
+	e_mobile->setText(user.mobile());
+	e_email->setText(user.email());
+
+	if (user.usesProtocol("Gadu"))
 	{
-		e_status->setEnabled(false);
-		e_addr->setEnabled(false);
-		e_ver->setEnabled(false);
-		e_dnsname->setEnabled(false);
-	}
-	else
-	{
-		if (puser->uin())
-			e_uin->setText(QString::number(puser->uin()));
-		e_nickname->setText(puser->nickName());
-		e_altnick->setText(puser->altNick());
-		e_firstname->setText(puser->firstName());
-		e_lastname->setText(puser->lastName());
-		e_mobile->setText(puser->mobile());
-		e_email->setText(puser->email());
-		if (puser->ip().ip4Addr())
-			e_addr->setText(puser->ip().toString());
+		e_uin->setText(user.ID("Gadu"));
+		if (user.hasIP("Gadu"))
+			e_addr->setText(user.IP("Gadu").toString());
 		else
 			e_addr->setText(tr("(Unknown)"));
-		if (puser->port())
-			e_addr->setText(e_addr->text()+":"+QString::number(puser->port()));
-		else
-			e_addr->setText(e_addr->text()+":"+tr("(Unknown)"));
 
-		if (puser->version())
+		if (user.port("Gadu"))
+			e_addr->setText(e_addr->text() + ":" + QString::number(user.port("Gadu")));
+		else
+			e_addr->setText(e_addr->text() + ":" + tr("(Unknown)"));
+
+		if (user.protocolData("Gadu", "Version").toUInt())
 		{
-			s_temp.sprintf("0x%02x", puser->version() & 0x0000ffff);
+			s_temp.sprintf("0x%02x", user.protocolData("Gadu", "Version").toUInt() & 0x0000ffff);
 			e_ver->setText(s_temp);
 		}
 		else
 			e_ver->setText(tr("(Unknown)"));
+		e_status->setText(tr(user.status("Gadu").name()));
+		tw_main->setTabIconSet(vgb_general, user.status("Gadu").pixmap());
 
-		e_status->setText(tr(puser->status().name()));
-		tw_main->setTabIconSet(vgb_general, puser->status().pixmap());
-		if (!(puser->ip() == QHostAddress()))
+		if (user.hasIP("Gadu"))
 		{
-			dns->setLabel(puser->ip());
-			dns->setRecordType(QDns::Ptr);
-			connect(dns, SIGNAL(resultsReady()), this, SLOT(resultsReady()));
+			if (user.DNSName("Gadu").isEmpty())
+			{
+				dns->setLabel(user.IP("Gadu"));
+				dns->setRecordType(QDns::Ptr);
+				connect(dns, SIGNAL(resultsReady()), this, SLOT(resultsReady()));
+			}
+			else
+				e_dnsname->setText(user.DNSName("Gadu"));
 		}
 	}
+
 	kdebugf2();
 }
 
@@ -270,29 +254,22 @@ void UserInfo::setupTab2()
 
 	tw_main->addTab(groupsTab, tr("Groups"));
 
-	// get available groups
-	QStringList list;
-	for (int i = 0, count = kadu->groupBar()->count(); i < count; ++i)
-		list << kadu->groupBar()->tabAt(i)->text();
-	list.remove(tr("All"));
-	// end get available groups
+	QStringList allGroups = groups_manager->groups();
 
-	QStringList groupsList;
-	if (!addUser)
-		groupsList = QStringList::split(",", puser->group());
+	QStringList userGroups = user.data("Groups").toStringList();
 
 	groupsBox = new QVBox(groupsTab);
 	groupsBox->setSpacing(3);
 
-	CONST_FOREACH(it, list)
+	CONST_FOREACH(it, allGroups)
 	{
 		QCheckBox *checkBox = new QCheckBox(*it, groupsBox);
-		checkBox->setChecked(groupsList.contains(*it));
+		checkBox->setChecked(userGroups.contains(*it));
 		groups.append(checkBox);
 	}
 
 	//zobacz komentarz w newGroupClicked()
-	for (int i=0; i<10; ++i)
+	for (int i = 0; i < 10; ++i)
 	{
 		QCheckBox *box = new QCheckBox(groupsBox);
 		box->setChecked(true);
@@ -301,7 +278,7 @@ void UserInfo::setupTab2()
 	}
 
 	newGroup = new QLineEdit(groupsTab);
-	QPushButton *addNewGroup=new QPushButton(tr("Add new group"), groupsTab);
+	QPushButton *addNewGroup = new QPushButton(tr("Add new group"), groupsTab);
 	connect(addNewGroup, SIGNAL(clicked()), this, SLOT(newGroupClicked()));
 	connect(newGroup, SIGNAL(returnPressed()), this, SLOT(newGroupClicked()));
 
@@ -331,7 +308,7 @@ void UserInfo::newGroupClicked()
 		MessageBox::msg(tr("Numbers are prohibited"), true);//ze wzglêdu na format listy kontaktów...
 		return;
 	}
-	if (groupName == tr("All"))
+	if (groupName == GroupsManager::tr("All"))
 	{
 		MessageBox::msg(tr("This group already exists!"), true);
 		return;
@@ -365,6 +342,7 @@ void UserInfo::newGroupClicked()
 void UserInfo::setupTab3()
 {
 	kdebugf();
+
 	// Misc options
 	QVGroupBox *vgb_others = new QVGroupBox(vgb_general);
 	vgb_others->setFrameStyle(QFrame::NoFrame);
@@ -378,15 +356,14 @@ void UserInfo::setupTab3()
 	if (!config_file.readBoolEntry("General", "PrivateStatus"))
 		c_offtouser->setEnabled(false);
 
-	if (addUser)
-		c_notify->setChecked(true);
-	else
+	if (user.usesProtocol("Gadu"))
 	{
-		c_blocking->setChecked(puser->blocking());
-		c_offtouser->setChecked(puser->offlineTo());
-		c_notify->setChecked(puser->notify());
+		c_blocking->setChecked(user.protocolData("Gadu", "Blocking").toBool());
+		c_offtouser->setChecked(user.protocolData("Gadu", "OfflineTo").toBool());
 	}
+	c_notify->setChecked(user.notify());
 	// end Misc options
+
 	kdebugf2();
 }
 
@@ -409,66 +386,19 @@ void UserInfo::resultsReady()
 	e_dnsname->setText(dns->hostNames()[0]);
 }
 
-void UserInfo::addNewUser(UserListElement& e)
+void UserInfo::updateUserlist()
 {
 	kdebugf();
-	bool uin_exist = e.uin() && userlist.containsUin(e.uin());
-	UserBox *userbox = kadu->userbox();
-	if (uin_exist)
-	{
-		puser = &userlist.byUin(e.uin());
-		if (puser->isAnonymous())
-		{
-			changeUserData(e);
+	bool ok;
+	UinType uin = e_uin->text().toUInt(&ok);
+	if (!ok)
+		uin = 0;
+	QString id = QString::number(uin);
 
-			QString currentGroup = kadu->currentGroup();
-			QStringList groups = QStringList::split(",", e.group());
-			if ((currentGroup == tr("All") || groups.contains(currentGroup)) && !userbox->containsAltNick(e.altNick()))
-			{
-				userbox->addUser(e.altNick());
-				userbox->refresh();
-			}
-
-			kdebugf2();
-			return;
-		}
-	}
-	if (e_altnick->text().isEmpty())
+	//je¿eli cokolwiek wpisano w pole UIN, a nie jest to poprawna liczba, to znaczy, ¿e UIN jest b³êdny
+	if (!e_uin->text().isEmpty() && id != e_uin->text())
 	{
-		QMessageBox::warning(this, tr("Add user problem"),
-			tr("Altnick field cannot be empty."));
-		kdebugf2();
-		return;
-	}
-	if (userlist.containsAltNick(e_altnick->text()) || uin_exist)
-	{
-		QMessageBox::information(this, "Kadu",
-			tr("User is already in userlist"), QMessageBox::Ok);
-		kdebugf2();
-		return;
-	}
-	userlist.addUser(e);
-	userlist.writeToConfig();
-	close(true);
-
-	QString currentGroup = kadu->currentGroup();
-	QStringList groups = QStringList::split(",", e.group());
-	kdebugm(KDEBUG_INFO, "currentGroup:%s tr(All):%s groups.contains(currentGroup):%d\n", currentGroup.local8Bit().data(), tr("All").local8Bit().data(), groups.contains(currentGroup));
-	if ((currentGroup == tr("All") || groups.contains(currentGroup)) && !userbox->containsAltNick(e.altNick()))
-	{
-		userbox->addUser(e.altNick());
-		userbox->refresh();
-	}
-
-	kdebugf2();
-}
-
-void UserInfo::changeUserData(UserListElement& e)
-{
-	kdebugf();
-	if (!e_uin->text().isEmpty() && !e.uin())
-	{
-		QMessageBox::information(this, "Kadu", tr("Bad UIN"), QMessageBox::Ok);
+		QMessageBox::warning(this, tr("Add user problem"), tr("Bad Gadu-Gadu UIN."));
 		kdebugf2();
 		return;
 	}
@@ -480,67 +410,50 @@ void UserInfo::changeUserData(UserListElement& e)
 		return;
 	}
 
-	if ((e.uin() && e.uin() != puser->uin() && userlist.containsUin(e.uin()) && !userlist.byUin(e.uin()).isAnonymous()) ||
-		(e.altNick().lower() != puser->altNick().lower() && userlist.containsAltNick(e.altNick())))
+	if (userlist->contains("Gadu", id) && userlist->byID("Gadu", id) != user)
 	{
 		QMessageBox::information(this, "Kadu", tr("User is already in userlist"), QMessageBox::Ok);
 		kdebugf2();
 		return;
 	}
 
-	if (e.uin() && e.uin() != puser->uin() && userlist.containsUin(e.uin()) && userlist.byUin(e.uin()).isAnonymous())
+	user.setFirstName(e_firstname->text());
+	user.setLastName(e_lastname->text());
+	user.setNickName(e_nickname->text());
+	user.setAltNick(e_altnick->text());
+	user.setMobile(e_mobile->text());
+
+	if (user.usesProtocol("Gadu")) // dotychczas by³ numer?
 	{
-		UserListElement &elem=userlist.byUin(e.uin());
-		e.status().setStatus(elem.status());
-		userlist.remove(elem.altNick());
+		if (user.ID("Gadu").toUInt() != uin || e_uin->text() != id) // identyfikator GG zosta³ zmieniony
+		{
+			user.deleteProtocol("Gadu");
+			if (uin != 0) // ale móg³ zostaæ skasowany
+				user.addProtocol("Gadu", QString::number(uin));
+		}
 	}
-
-	if (e.uin() == puser->uin())
-		e.status().setStatus(puser->status());
-	e.setMaxImageSize(puser->maxImageSize());
-	e.ip()=puser->ip();
-	e.setPort(puser->port());
-	e.setDnsName(puser->dnsName());
-
-	UinType uin = puser->uin();
-	userlist.changeUserInfo(puser->altNick(), e); //po tej linii NIE wolno korzystaæ z puser, bo jego ju¿ nie ma!
-	puser = NULL;
-	userlist.writeToConfig();
-
-	chat_manager->refreshTitlesForUin(uin);
-	close(true);
-	kdebugf2();
-}
-
-void UserInfo::updateUserlist()
-{
-	bool ok;
-	UserListElement e;
-
-	kdebugf();
-	e.setFirstName(e_firstname->text());
-	e.setLastName(e_lastname->text());
-	e.setNickName(e_nickname->text());
-	e.setAltNick(e_altnick->text());
-	e.setMobile(e_mobile->text());
-	e.setUin(e_uin->text().toUInt(&ok));
-	if (!ok)
-		e.setUin(0);
+	else // nie by³o numeru dotychczas
+		if (uin != 0) //je¿eli siê pojawi³, to dodajemy
+			user.addProtocol("Gadu", QString::number(uin));
 
 	QStringList l;
 	CONST_FOREACH(checkbox, groups)
 		if ((*checkbox)->isChecked())
 			l.append((*checkbox)->text());
-	e.setGroup(l.join(","));
+	user.setData("Groups", l);
 
-	e.setEmail(e_email->text());
-	e.setNotify(c_notify->isChecked());
-	e.setOfflineTo(c_offtouser->isChecked());
-	e.setBlocking(c_blocking->isChecked());
+	user.setEmail(e_email->text());
+	user.setNotify(c_notify->isChecked());
+	if (user.usesProtocol("Gadu"))
+	{
+		user.setProtocolData("Gadu", "OfflineTo", c_offtouser->isChecked());
+		user.setProtocolData("Gadu", "Blocking", c_blocking->isChecked());
+	}
+	user.setAnonymous(false);
+	if (!userlist->contains(user))
+		userlist->addUser(user);
 
-	if (addUser)
-		addNewUser(e);
-	else
-		changeUserData(e);
+	userlist->writeToConfig();
+	close(true);
 	kdebugf2();
 }

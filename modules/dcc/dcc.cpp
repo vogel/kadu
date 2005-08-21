@@ -27,9 +27,9 @@
 #include "debug.h"
 #include "file_transfer.h"
 #include "ignore.h"
-#include "misc.h"
 #include "kadu.h"
 #include "message_box.h"
+#include "misc.h"
 #include "userlist.h"
 
 extern "C" int dcc_init()
@@ -136,7 +136,7 @@ void DccSocket::dccDataSent()
 void DccSocket::watchDcc(int /*check*/)
 {
 	kdebugf();
-	UinsList uins;
+	UserListElements users;
 	bool spoofingAttempt, insane, unbidden;
 	UserListElement peer;
 
@@ -154,19 +154,19 @@ void DccSocket::watchDcc(int /*check*/)
 		case GG_EVENT_DCC_CLIENT_ACCEPT:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_CLIENT_ACCEPT! uin:%d peer_uin:%d\n",
 				dccsock->uin, dccsock->peer_uin);
-			uins.append(dccsock->peer_uin);
-			
-			insane = dccsock->uin != (UinType)config_file.readNumEntry("General", "UIN")
-				|| !userlist.containsUin(dccsock->peer_uin);
-			peer=userlist.byUinValue(dccsock->peer_uin);
-			unbidden = peer.isAnonymous() || isIgnored(uins);
-			spoofingAttempt = !(QHostAddress(ntohl(dccsock->remote_addr)) == peer.ip());
-			
+
+			insane = dccsock->uin != (UinType)config_file.readNumEntry("General", "UIN") ||
+					!userlist->contains("Gadu", QString::number(dccsock->peer_uin));
+			peer = userlist->byID("Gadu", QString::number(dccsock->peer_uin));
+			users.append(peer);
+			unbidden = peer.isAnonymous() || isIgnored(users);
+			spoofingAttempt = !(QHostAddress(ntohl(dccsock->remote_addr)) == peer.IP("Gadu"));
+
 			if (insane)
 				kdebugm(KDEBUG_WARNING, "insane values: uin:%d peer_uin:%d\n", dccsock->uin, dccsock->peer_uin);
 			if (!insane && unbidden)
 				kdebugm(KDEBUG_WARNING, "unbidden user: %d\n", dccsock->peer_uin);
-			
+
 			if (!insane && !unbidden && spoofingAttempt)
 			{
 				kdebugm(KDEBUG_WARNING, "possible spoofing attempt from %s (uin:%d)\n",
@@ -179,9 +179,9 @@ void DccSocket::watchDcc(int /*check*/)
 					"or he/she has port forwarding. Continue connection?"),
 					peer.altNick(),
 					QHostAddress(ntohl(dccsock->remote_addr)).toString(),
-					peer.ip().toString()));
+					peer.IP("Gadu").toString()));
 			}
-			
+
 			if (insane || unbidden || spoofingAttempt)
 			{
 				setState(DCC_SOCKET_TRANSFER_DISCARDED);
@@ -382,13 +382,13 @@ void DccManager::watchDcc()
 			break;
 		case GG_EVENT_DCC_NEW:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEW\n");
-			
+
 			if (DccSocket::count() < 8)
 			{
 				DccSocket* dcc_socket = new DccSocket(dcc_e->event.dcc_new);
 				connect(dcc_socket, SIGNAL(dccFinished(DccSocket *)),
 						this, SLOT(dccFinished(DccSocket *)));
-				dcc_socket->initializeNotifiers();	
+				dcc_socket->initializeNotifiers();
 			}
 			else
 			{
@@ -580,7 +580,7 @@ void DccManager::configDialogApply()
 	QHostAddress host;
 	if (!host.setAddress(config_file.readEntry("Network", "DccIP")))
 		config_file.writeEntry("Network", "DccIP", "0.0.0.0");
-	if (!host.setAddress(config_file.readEntry("Network", "ExternalIP")))	
+	if (!host.setAddress(config_file.readEntry("Network", "ExternalIP")))
 		config_file.writeEntry("Network", "ExternalIP", "0.0.0.0");
 
 	kdebugf2();
@@ -592,7 +592,11 @@ void DccManager::dccConnectionReceived(const UserListElement& sender)
 	struct gg_dcc* dcc_new;
 	if (DccSocket::count() < 8)
 	{
-		gadu->dccGetFile(htonl(sender.ip().ip4Addr()), sender.port(), config_file.readNumEntry("General","UIN"), sender.uin(), &dcc_new);
+		gadu->dccGetFile(htonl(sender.IP("Gadu").ip4Addr()),
+						sender.port("Gadu"),
+						config_file.readNumEntry("General","UIN"),
+						sender.ID("Gadu").toUInt(),
+						&dcc_new);
 		if (dcc_new)
 		{
 			DccSocket* dcc_socket = new DccSocket(dcc_new);

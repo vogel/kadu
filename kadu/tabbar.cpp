@@ -138,7 +138,7 @@ void KaduTabBar::paint(QPainter *p, QTab *t, bool selected) const
 	QRect r(t->rect());
 	p->setFont(font());
 	QRect v(t->rect().top(), t->rect().left(), t->rect().height(), t->rect().width());
-	
+
 	p->save();
 	p->setWindow(- r.width(), 0, p->window().width(), p->window().height());
 	p->rotate(90.0);
@@ -214,9 +214,9 @@ void KaduTabBar::makeVisibleVert(QTab *tab)
 	bool tooFarDown = (tab && tab->rect().bottom() >= upB->y());
 	if (!vertscrolls || (!tooFarUp && !tooFarDown))
 		return;
-	
+
 	layoutTabs();
-	
+
 	int offset = 0;
 	if (tooFarUp)
 		offset = tab == lstatic2->first() ? 0 : tab->rect().top() - 8;
@@ -305,15 +305,15 @@ void KaduTabBar::dropEvent(QDropEvent* e)
 				list, 0, true, &ok, 0);
 			if (!ok || text.isEmpty())
 				return;
-			group = text;		
+			group = text;
 		}
 		QStringList altnick_list = QStringList::split("\n", altnicks);
 		CONST_FOREACH(altnick, altnick_list)
-			userlist.byAltNick(*altnick).setGroup(group);
+			userlist->byAltNick(*altnick).setData("Groups", group);
 		// bardzo niewygodne, trzeba poprawiæ writeToFile !! ta funkcja jest za wolna
 		// trzeba dodaæ mozliwo¶æ zmiany danych tylko jednego user !!
 		//
 		// Po przejsciu na xml powyzszy komentarz w zasadzie wciaz obowiazuje - Adrian
-		userlist.writeToConfig();
+		userlist->writeToConfig();
 	}
 }

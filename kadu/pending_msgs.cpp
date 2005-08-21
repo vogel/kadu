@@ -11,6 +11,7 @@
 #include <qtextcodec.h>
 
 #include "chat.h"
+#include "chat_manager.h"
 #include "config_file.h"
 #include "debug.h"
 //#include "kadu.h"
@@ -30,13 +31,21 @@ void PendingMsgs::deleteMsg(int index)
 	emit messageDeleted();
 }
 
-bool PendingMsgs::pendingMsgs(UinType uin) const
+bool PendingMsgs::pendingMsgs(UserListElement user) const
 {
-	if(uin==0)
-		return pendingMsgs();
+//	kdebugf();
+
+//	po co to?
+//	if (uin == 0)
+//		return pendingMsgs();
+
 	CONST_FOREACH(msg, msgs)
-		if((*msg).uins[0]==uin)
+		if((*msg).users[0] == user)
+		{
+//			kdebugf2();
 			return true;
+		}
+//	kdebugf2();
 	return false;
 }
 
@@ -55,10 +64,11 @@ PendingMsgs::Element &PendingMsgs::operator[](int index)
 	return msgs[index];
 }
 
-void PendingMsgs::addMsg(UinsList uins, QString msg, int msgclass, time_t time)
+void PendingMsgs::addMsg(QString protocolName, UserListElements users, QString msg, int msgclass, time_t time)
 {
 	Element e;
-	e.uins = uins;
+	e.users = users;
+	e.proto = protocolName;
 	e.msg = msg;
 	e.msgclass = msgclass;
 	e.time = time;
@@ -83,11 +93,14 @@ void PendingMsgs::writeToFile()
 	CONST_FOREACH(i, msgs)
 	{
 		// zapisujemy uiny - najpierw ilosc
-		t=(*i).uins.size();
+		t=(*i).users.size();
 		f.writeBlock((char*)&t,sizeof(int));
 		// teraz dane
-		CONST_FOREACH(j, (*i).uins)
-			f.writeBlock((char*)&(*j),sizeof(UinType));
+		CONST_FOREACH(j, (*i).users)
+		{
+			UinType uin = (*j).ID("Gadu").toUInt();
+			f.writeBlock((char*)&uin, sizeof(UinType));
+		}
 		// nastepnie wiadomosc - dlugosc
 		t=(*i).msg.length();
 		f.writeBlock((char*)&t,sizeof(int));
@@ -111,26 +124,26 @@ bool PendingMsgs::loadFromFile()
 		kdebugmf(KDEBUG_WARNING, "Cannot open file kadu.msgs\n");
 		return false;
 	}
-	
+
 	// Najpierw wczytujemy ilosc wiadomosci
 	int msgs_size;
 	if (f.readBlock((char*)&msgs_size,sizeof(int)) <= 0) {
 		kdebugmf(KDEBUG_ERROR, "kadu.msgs is corrupted\n");
 		return false;
 	}
-	
+
 	// Teraz w petli dla kazdej wiadomosci
 	for (int i = 0; i < msgs_size; ++i)
 	{
 		Element e;
-		
+
 		// wczytujemy uiny - najpierw ilosc
 		int uins_size;
 		if (f.readBlock((char*)&uins_size, sizeof(int)) <= 0) {
 			--msgs_size;
 			return false;
 		}
-		
+
 		// teraz dane
 		for (int j = 0; j < uins_size; ++j)
 		{
@@ -139,16 +152,16 @@ bool PendingMsgs::loadFromFile()
 				--msgs_size;
 				return false;
 			}
-			e.uins.append(uin);
+			e.users.append(userlist->byID("Gadu", QString::number(uin)));
 		}
-		
+
 		// nastepnie wiadomosc - dlugosc
 		int msg_size;
 		if (f.readBlock((char*)&msg_size, sizeof(int)) <= 0) {
 			--msgs_size;
 			return false;
 		}
-		
+
 		// i tresc
 		char *buf = new char[msg_size + 1];
 		if (f.readBlock(buf, msg_size) <= 0) {
@@ -159,25 +172,25 @@ bool PendingMsgs::loadFromFile()
 		buf[msg_size] = 0;
 		e.msg = codec_latin2->toUnicode(buf);
 		delete[] buf;
-		
+
 		// na koniec jeszcze klase wiadomosci
 		if (f.readBlock((char*)&e.msgclass, sizeof(int)) <= 0) {
 			--msgs_size;
 			delete [] buf;
 			return false;
 		}
-		
+
 		// i czas
 		if (f.readBlock((char*)&e.time, sizeof(time_t)) <= 0) {
 			--msgs_size;
 			delete [] buf;
 			return false;
 		}
-		
+
 		// dodajemy do listy
 		msgs.append(e);
 	}
-	
+
 	// I zamykamy plik
 	f.close();
 	return true;

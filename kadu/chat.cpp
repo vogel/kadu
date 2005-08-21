@@ -8,534 +8,34 @@
  ***************************************************************************/
 
 #include <qaccel.h>
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qcursor.h>
 #include <qdragobject.h>
-#include <qhbox.h>
-#include <qhgroupbox.h>
-#include <qlayout.h>
-#include <qlineedit.h>
-#include <qmime.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <qregexp.h>
-#include <qspinbox.h>
-#include <qsplitter.h>
 #include <qtimer.h>
-#include <qtooltip.h>
 #include <qvbox.h>
-#include <qvaluelist.h>
-
-#include <stdlib.h>
 
 #include "chat.h"
+#include "chat_manager.h"
+#include "chat_message.h"
+#include "color_selector.h"
 #include "config_dialog.h"
-#include "config_file.h"
+#include "custom_input.h"
 #include "debug.h"
-#include "emoticons.h"
-#include "gadu.h"
 #include "history.h"
-#include "kadu.h"
+#include "kadu_splitter.h"
 #include "message_box.h"
-#include "pending_msgs.h"
 #include "search.h"
-#include "status.h"
-
-ChatManager::ChatManager(QObject* parent, const char* name)
-	: QObject(parent, name)
-{
-}
-
-void ChatManager::closeAllWindows()
-{
-	kdebugf();
-	while (!Chats.empty())
-	{
-		Chat *chat=Chats.first();
-		delete chat;
-	}
-	kdebugf2();
-}
-
-ChatManager::~ChatManager()
-{
-	kdebugf();
-	closeAllWindows();
-}
-
-const ChatList& ChatManager::chats() const
-{
-	return Chats;
-}
-
-int ChatManager::registerChat(Chat* chat)
-{
-	Chats.append(chat);
-	return Chats.count() - 1;
-}
-
-void ChatManager::unregisterChat(Chat* chat)
-{
-	kdebugf();
-	FOREACH(curChat, Chats)
-		if (*curChat == chat)
-		{
-			setChatProperty(chat->uins(), "Geometry", QRect(chat->pos().x(), chat->pos().y(), chat->size().width(), chat->size().height()));
-			setChatProperty(chat->uins(), "VerticalSizes", toVariantList(chat->vertSplit->sizes()));
-			if (chat->horizSplit)
-				setChatProperty(chat->uins(), "HorizontalSizes", toVariantList(chat->horizSplit->sizes()));
-
-			emit chatDestroying(chat->uins());
-			Chats.remove(curChat);
-			emit chatDestroyed(chat->uins());
-			kdebugf2();
-			return;
-		}
-	kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "NOT found\n");
-}
-
-void ChatManager::refreshTitles()
-{
-	kdebugf();
-	CONST_FOREACH(chat, Chats)
-		(*chat)->setTitle();
-	kdebugf2();
-}
-
-void ChatManager::refreshTitlesForUin(UinType uin)
-{
-	kdebugf();
-	CONST_FOREACH(chat, Chats)
-		if ((*chat)->uins().contains(uin))
-			(*chat)->setTitle();
-	kdebugf2();
-}
-
-void ChatManager::changeAppearance()
-{
-	kdebugf();
-	CONST_FOREACH(chat, Chats)
-		(*chat)->changeAppearance();
-	kdebugf2();
-}
-
-Chat* ChatManager::findChatByUins(const UinsList &uins) const
-{
-	CONST_FOREACH(chat, Chats)
-		if ((*chat)->uins().equals(uins))
-			return *chat;
-	kdebugmf(KDEBUG_WARNING, "return NULL\n");
-	return NULL;
-}
-
-int ChatManager::openChat(UinsList senders, time_t time)
-{
-	kdebugf();
-	emit chatOpen(senders);
-	unsigned int i = 0;
-	CONST_FOREACH(chat, Chats)
-	{
-		if ((*chat)->uins().equals(senders))
-		{
-#if QT_VERSION >= 0x030300
-			(*chat)->setWindowState((*chat)->windowState() & ~WindowMinimized);
-#endif
-			(*chat)->raise();
-			(*chat)->setActiveWindow();
-			return i;
-		}
-		++i;
-	}
-	QStringList uins=senders.toStringList();	uins.sort();
-	Chat* chat = new Chat(senders, 0, QString("chat:%1").arg(uins.join(",")).local8Bit().data());
-	chat->setTitle();
-
-	QRect geometry=getChatProperty(senders, "Geometry").toRect();
-	if (geometry.isEmpty())
-	{
-		QPoint pos = QCursor::pos();
-		int x,y,width,height;
-		QDesktopWidget *desk=qApp->desktop();
-		x=pos.x()+50;
-		y=pos.y()+50;
-		height=400;
-
-		if (senders.count()>1)
-			width=550;
-		else
-			width=400;
-		if (x+width>desk->width())
-			x=desk->width()-width-50;
-		if (y+height>desk->height())
-			y=desk->height()-height-50;
-		if (x<50) x=50;
-		if (y<50) y=50;
-		geometry.setX(x);
-		geometry.setY(y);
-		geometry.setWidth(width);
-		geometry.setHeight(height);
-	}
-	chat->setGeometry(geometry);
-
-	QValueList<int> vertSizes=toIntList(getChatProperty(senders, "VerticalSizes").toList());
-	if (!vertSizes.empty())
-		chat->vertSplit->setSizes(vertSizes);
-
-	if (chat->horizSplit)
-	{
-		QValueList<int> horizSizes=toIntList(getChatProperty(senders, "HorizontalSizes").toList());
-		if (!horizSizes.empty())
-			chat->horizSplit->setSizes(horizSizes);
-	}
-
-	chat->show();
-	chat->writeMessagesFromHistory(senders, time);
-	emit chatCreated(senders);
-	kdebugf2();
-	return Chats.count()-1;
-}
-
-int ChatManager::openPendingMsg(int index, ChatMessage &msg)
-{
-	kdebugf();
-	// TODO: sprawdzaæ czy pending[index] czy nie wykracza poza istniej±cy zakres
-	PendingMsgs::Element p = pending[index];
-	// jesli ktoregos z nadawcow nie mamy na liscie to dodajemy
-	// go tam jako anonymous
-	CONST_FOREACH(uin, p.uins)
-		if (!userlist.containsUin(*uin))
-			userlist.addAnonymous(*uin);
-	// otwieramy chat (jesli nie istnieje)
-	int k = openChat(p.uins,p.time);
-	// dopisujemy nowa wiadomosc do to_add
-
-	QDateTime date;
-	date.setTime_t(p.time);
-
-	msg = ChatMessage(userlist.byUin(p.uins[0]).altNick(), p.msg, false, QDateTime::currentDateTime(), date);
-	Chats[k]->formatMessage(msg);
-
-	// kasujemy wiadomosc z pending
-	pending.deleteMsg(index);
-	// zwracamy indeks okna chat
-	kdebugf2();
-	return k;
-}
-
-void ChatManager::deletePendingMsgs(UinsList uins)
-{
-	kdebugf();
-
-	for (int i=0;i<pending.count();++i)
-		if (pending[i].uins.equals(uins))
-		{
-			pending.deleteMsg(i);
-			--i;
-		}
-
-	UserBox::all_refresh();
-	kdebugf2();
-}
-
-void ChatManager::openPendingMsgs(UinsList uins)
-{
-	kdebugf();
-	PendingMsgs::Element elem;
-	int k;
-	bool stop = false;
-
-	QValueList<ChatMessage *> messages;
-	for (int i = 0; i < pending.count(); ++i)
-	{
-		elem = pending[i];
-		if (elem.uins.equals(uins))
-			if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT
-				|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
-				|| !elem.msgclass)
-			{
-				ChatMessage *msg = new ChatMessage("");
-				k = openPendingMsg(i, *msg);
-				messages.append(msg);
-
-				--i;
-				uins = elem.uins;
-				stop = true;
-			}
-	}
-	if (stop)
-	{
-		Chats[k]->scrollMessages(messages);
-		UserBox::all_refresh();
-	}
-	else
-		k = openChat(uins, 0);
-	kdebugf2();
-}
-
-void ChatManager::openPendingMsgs()
-{
-	kdebugf();
-	UinsList uins;
-	int i, k = -1;
-	PendingMsgs::Element elem;
-	bool stop = false;
-	QValueList<ChatMessage *> messages;
-
-	for(i = 0; i < pending.count(); ++i)
-	{
-		elem = pending[i];
-		if (uins.isEmpty() || elem.uins.equals(uins))
-			if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT
-				|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
-				|| (!elem.msgclass))
-			{
-				if (uins.isEmpty())
-					uins = elem.uins;
-
-				ChatMessage *msg = new ChatMessage("");
-				k = openPendingMsg(i, *msg);
-				messages.append(msg);
-
-				--i;
-				stop = true;
-			}
-	}
-	if (stop)
-	{
-		kdebugmf(KDEBUG_INFO, "stopped\n");
-		Chats[k]->scrollMessages(messages);
-		UserBox::all_refresh();
-	}
-	kdebugf2();
-}
-
-void ChatManager::sendMessage(UinType uin,UinsList selected_uins)
-{
-	kdebugf();
-	QString tmp;
-	int i, k = -1;
-	bool stop = false;
-	PendingMsgs::Element elem;
-	UinsList uins;
-	QValueList<ChatMessage *> messages;
-
-	for (i = 0; i < pending.count(); ++i)
-	{
-		elem = pending[i];
-		if ((uins.isEmpty() && elem.uins.contains(uin)) || (!uins.isEmpty() && elem.uins.equals(uins)))
-			if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT
-				|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
-				|| !elem.msgclass)
-			{
-				if (uins.isEmpty())
-					uins = elem.uins;
-
-				ChatMessage *msg = new ChatMessage("");
-				k = openPendingMsg(i, *msg);
-				messages.append(msg);
-
-				--i;
-				stop = true;
-			}
-	}
-	if (stop)
-	{
-		Chats[k]->scrollMessages(messages);
-		UserBox::all_refresh();
-	}
-	else
-	{
-		// zawsze otwieraja sie czaty
-		uins = selected_uins;
-		k = openChat(uins, 0);
-	}
-	kdebugf2();
-}
-
-void ChatManager::chatMsgReceived(UinsList senders, const QString& msg, time_t time, bool& grab)
-{
-	Chat* chat=findChatByUins(senders);
-	if(chat!=NULL)
-	{
-		QValueList<ChatMessage *> messages;
-		chat->checkPresence(senders, msg, time, messages);
-		chat->alertNewMessage();
-		grab=true;
-	}
-}
-
-QVariant& ChatManager::getChatProperty(const UinsList &uins, const QString &name)
-{
-	kdebugf();
-	FOREACH(addon, addons)
-		if ((*addon).uins.equals(uins))
-		{
-			kdebugf2();
-			return (*addon).map[name];
-		}
-	ChatInfo info;
-	info.uins=uins;
-	info.map[name]=QVariant();
-	addons.push_front(info);
-	kdebugmf(KDEBUG_FUNCTION_END, "end: %s NOT found\n", name.local8Bit().data());
-	return addons[0].map[name];
-//	return addons[uins][name];
-}
-
-void ChatManager::setChatProperty(const UinsList &uins, const QString &name, const QVariant &value)
-{
-	kdebugf();
-	FOREACH(addon, addons)
-		if ((*addon).uins.equals(uins))
-		{
-			(*addon).map[name]=value;
-			kdebugf2();
-			return;
-		}
-	ChatInfo info;
-	info.uins=uins;
-	info.map[name]=value;
-	addons.push_front(info);
-//	addons[uins][name]=value;
-	kdebugf2();
-}
-
-ChatManager* chat_manager=NULL;
-ChatSlots* ChatManager::chatslots=NULL;
-
-const char *colors[16] = {"#FF0000", "#A00000", "#00FF00", "#00A000", "#0000FF", "#0000A0", "#FFFF00",
-	"#A0A000", "#FF00FF", "#A000A0", "#00FFFF", "#00A0A0", "#FFFFFF", "#A0A0A0", "#808080", "#000000"};
-
-CustomInput::CustomInput(QWidget* parent, const char* name)
-	: QMultiLineEdit(parent, name)
-{
-	kdebugf();
-	QStyleSheet *style=styleSheet();
-	style->item("p")->setMargin(QStyleSheetItem::MarginVertical, 0);
-	setStyleSheet(style);
-	kdebugf2();
-}
-
-void CustomInput::keyPressEvent(QKeyEvent* e)
-{
-//	kdebugf();
-	emit keyPressed(e, this);
-	if (autosend_enabled && ((HotKey::shortCut(e,"ShortCuts", "chat_newline")) || e->key()==Key_Enter)&& !(e->state() & ShiftButton))
-	{
-		kdebugmf(KDEBUG_INFO, "emit sendMessage()\n");
-		emit sendMessage();
-	}
-	else
-	{
-		if (e->key() == Key_Minus)
-		{
-			insert("-");
-			return;
-		}
-		if (e->text() == "*")
-		{
-			insert("*");
-			return;
-		}
-		if (HotKey::shortCut(e,"ShortCuts", "chat_bold"))
-		{
-			emit specialKeyPressed(CustomInput::KEY_BOLD);
-			return;
-		}
-		else if (HotKey::shortCut(e,"ShortCuts", "chat_italic"))
-		{
-			emit specialKeyPressed(CustomInput::KEY_ITALIC);
-			return;
-		}
-		else if (HotKey::shortCut(e,"ShortCuts", "chat_underline"))
-		{
-			emit specialKeyPressed(CustomInput::KEY_UNDERLINE);
-			return;
-		}
-		QMultiLineEdit::keyPressEvent(e);
-	}
-	// przekazanie event'a do qwidget
-	// aby obsluzyc skroty klawiszowe (definiowane sa dla okna chat)
-	QWidget::keyPressEvent(e);
-//	kdebugf2();
-}
-
-void CustomInput::keyReleaseEvent(QKeyEvent* e)
-{
-	emit keyReleased(e, this);
-	QWidget::keyReleaseEvent(e);
-}
-
-void CustomInput::setAutosend(bool on)
-{
-	autosend_enabled = on;
-}
-
-void CustomInput::paste()
-{
-	pasteSubType("plain");
-}
+#include "userbox.h"
 
 QValueList<Chat::RegisteredButton> Chat::RegisteredButtons;
+extern const char *colors[];
 
-KaduSplitter::KaduSplitter(QWidget* parent, const char* name)
-	: QSplitter (parent, name)
-{
-}
-
-KaduSplitter::KaduSplitter(Orientation o, QWidget* parent, const char* name)
-	: QSplitter(o,parent,name)
-{
-}
-
-void KaduSplitter::drawContents(QPainter *p)
-{
-	QSplitter::drawContents(p);
-	kdebugf();
-	FOREACH(browser, textbrowsers)
-		(*browser)->viewport()->repaint();
-//	kdebugf2();
-}
-
-void KaduSplitter::childEvent(QChildEvent *c)
-{
-	QSplitter::childEvent(c);
-	kdebugf();
-	QObject *o=c->child();
-	if (o->inherits("KaduTextBrowser"))
-	{
-		if (c->inserted())
-			textbrowsers.append((KaduTextBrowser*)o);
-		else
-			textbrowsers.remove((KaduTextBrowser*)o);
-	}
-//	kdebugm(KDEBUG_INFO, "%d %d %p %p %s %s\n", c->inserted(), c->removed(), this, o, o->className(), o->name());
-}
-
-ChatMessage::ChatMessage(const QString &nick, const QString &unformattedMessage, bool myMessage, QDateTime date, QDateTime sdate)
-{
-	needsToBeFormatted=true;
-	this->nick=nick;
-	this->unformattedMessage=unformattedMessage;
-	this->isMyMessage=myMessage;
-	this->date=date;
-	this->sdate=sdate;
-}
-
-ChatMessage::ChatMessage(const QString &formattedMessage, const QColor &bgColor, const QColor &txtColor)
-{
-	needsToBeFormatted=false;
-	message=formattedMessage;
-	backgroundColor=bgColor;
-	textColor=txtColor;
-}
-
-
-Chat::Chat(UinsList uins, QWidget* parent, const char* name)
-	: QWidget(parent, name, Qt::WDestructiveClose), Uins(uins)
+Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
+	: QWidget(parent, name, Qt::WDestructiveClose), Users(new UserGroup(2 * usrs.count()))
 {
 	kdebugf();
+	Users->addUsers(usrs);
 	QValueList<int> sizes;
 
 	setAcceptDrops(true);
@@ -553,7 +53,7 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 
 	vertSplit = new KaduSplitter(Qt::Vertical, this, "vertSplit");
 
-	if (uins.count() > 1)
+	if (Users->count() > 1)
 	{
 		horizSplit = new KaduSplitter(Qt::Horizontal, vertSplit, "horizSplit");
 		body = new KaduTextBrowser(horizSplit, "body");
@@ -578,17 +78,13 @@ Chat::Chat(UinsList uins, QWidget* parent, const char* name)
 
 //	QPoint pos = QCursor::pos();
 
-	if (uins.count() > 1)
+	if (Users->count() > 1)
 	{
-		userbox = new UserBox(horizSplit, "userbox");
+		userbox = new UserBox(Users, horizSplit, "userbox");
 		userbox->setMinimumSize(QSize(30,30));
 		userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
 		userbox->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
 		userbox->QListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
-
-		CONST_FOREACH(uin, uins)
-			userbox->addUser(userlist.byUin(*uin).altNick());
-		userbox->refresh();
 
 		connect(userbox, SIGNAL(rightButtonPressed(QListBoxItem *, const QPoint &)),
 		UserBox::userboxmenu, SLOT(show(QListBoxItem *)));
@@ -927,15 +423,20 @@ void Chat::insertImage()
 		}
 
 		int counter = 0;
-		CONST_FOREACH(uin, Uins)
+		CONST_FOREACH(user, *Users)
 		{
-			unsigned int maximagesize = userlist.byUinValue(*uin).maxImageSize();
-			if (f.size() >= maximagesize * 1024)
+			if ((*user).usesProtocol("Gadu"))//TODO: user.hasFeature("ImageSending")
+			{
+				unsigned int maximagesize = (*user).protocolData("Gadu", "MaxImageSize").toUInt();
+				if (f.size() >= maximagesize * 1024)
+					++counter;
+			}
+			else
 				++counter;
 		}
-		if (counter == 1 && Uins.count() == 1)
+		if (counter == 1 && Users->count() == 1)
 		{
-			if (!MessageBox::ask(tr("This file is too big for %1.\nDo you really want to send this image?\n").arg(userlist.byUinValue(Uins[0]).altNick())))
+			if (!MessageBox::ask(tr("This file is too big for %1.\nDo you really want to send this image?\n").arg((*Users->constBegin()).altNick())))
 			{
 				QTimer::singleShot(0, this, SLOT(insertImage()));
 				kdebugf2();
@@ -943,7 +444,7 @@ void Chat::insertImage()
 			}
 		}
 		else if	(counter > 0 &&
-			!MessageBox::ask(tr("This file is too big for %1 of %2 contacts.\nDo you really want to send this image?\nSome of them probably will not get it.").arg(counter).arg(Uins.count())))
+			!MessageBox::ask(tr("This file is too big for %1 of %2 contacts.\nDo you really want to send this image?\nSome of them probably will not get it.").arg(counter).arg(Users->count())))
 		{
 			QTimer::singleShot(0, this, SLOT(insertImage()));
 			kdebugf2();
@@ -971,7 +472,7 @@ void Chat::imageReceivedAndSaved(UinType sender,uint32_t size,uint32_t crc32,con
 void Chat::changeAppearance()
 {
 	kdebugf();
-	if (Uins.count() > 1 && userbox)
+	if (Users->count() > 1 && userbox)
 	{
 		userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
 		userbox->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
@@ -982,12 +483,12 @@ void Chat::changeAppearance()
 	kdebugf2();
 }
 
-void Chat::setTitle()
+void Chat::refreshTitle()
 {
 	kdebugf();
 	QString title;
 
-	int uinsSize = Uins.size();
+	int uinsSize = Users->count();
 	kdebugmf(KDEBUG_FUNCTION_START, "Uins.size() = %d\n", uinsSize);
 	if (uinsSize > 1)
 	{
@@ -996,9 +497,9 @@ void Chat::setTitle()
 		else
 			title = config_file.readEntry("Look","ConferencePrefix");
 		int i = 0;
-		CONST_FOREACH(uin, Uins)
+		CONST_FOREACH(user, *Users)
 		{
-			title.append(parse(config_file.readEntry("Look","ConferenceContents"), userlist.byUinValue(*uin), false));
+			title.append(parse(config_file.readEntry("Look","ConferenceContents"), *user, false));
 			if (++i < uinsSize)
 				title.append(", ");
 		}
@@ -1006,11 +507,12 @@ void Chat::setTitle()
 	}
 	else
 	{
+		UserListElement user = *Users->constBegin();
 		if (config_file.readEntry("Look","ChatContents").isEmpty())
-			title = parse(tr("Chat with ")+"%a (%s[: %d])",userlist.byUinValue(Uins[0]),false);
+			title = parse(tr("Chat with ")+"%a (%s[: %d])", user, false);
 		else
-			title = parse(config_file.readEntry("Look","ChatContents"),userlist.byUinValue(Uins[0]),false);
-		setIcon(userlist.byUinValue(Uins[0]).status().pixmap());
+			title = parse(config_file.readEntry("Look","ChatContents"), user, false);
+		setIcon(user.status("Gadu").pixmap());
 	}
 
 	title.replace(QRegExp("<br/>"), " ");
@@ -1111,18 +613,22 @@ void Chat::closeEvent(QCloseEvent* e)
 void Chat::userWhois()
 {
 	kdebugf();
-	UinType uin;
+	UserListElement user;
 
 	if (!userbox)
-		uin = Uins[0];
+		user = *Users->constBegin();
 	else
 		if (userbox->currentItem() == -1)
-			uin = Uins[0];
+			user = *Users->constBegin();
 		else
-			uin = userlist.byAltNick(userbox->currentText()).uin();
-	SearchDialog *sd = new SearchDialog(0, QString("SearchDialog:%1").arg(uin).local8Bit().data(), uin);
-	sd->show();
-	sd->firstSearch();
+			user = Users->byAltNick(userbox->currentText());
+	if (user.usesProtocol("Gadu"))
+	{
+		UinType uin = user.ID("Gadu").toUInt();
+		SearchDialog *sd = new SearchDialog(0, QString("SearchDialog:%1").arg(uin).local8Bit().data(), uin);
+		sd->show();
+		sd->firstSearch();
+	}
 	kdebugf2();
 }
 
@@ -1290,7 +796,7 @@ void Chat::scrollMessages(const QValueList<ChatMessage *> &messages)
 	kdebugf2();
 }
 
-void Chat::writeMessagesFromHistory(UinsList senders, time_t time)
+void Chat::writeMessagesFromHistory(UserListElements senders, time_t time)
 {
 	kdebugf();
 	QValueList<HistoryEntry> entries;
@@ -1299,7 +805,12 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time)
 	unsigned int from, end, count;
 
 	date.setTime_t(time);
-	count = history.getHistoryEntriesCount(senders);
+
+	UinsList uins;//TODO: wypieprzyæ jak siê przerobi historiê
+	CONST_FOREACH(user, senders)
+		uins.append((*user).ID("Gadu").toUInt());
+
+	count = history.getHistoryEntriesCount(uins);
 	end = count - 1;
 
 	from = count;
@@ -1311,7 +822,7 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time)
 		else
 			from = end - chatHistoryQuotation + 1;
 
-		entriestmp = history.getHistoryEntries(senders, from, end - from + 1, HISTORYMANAGER_ENTRY_CHATSEND
+		entriestmp = history.getHistoryEntries(uins, from, end - from + 1, HISTORYMANAGER_ENTRY_CHATSEND
 			| HISTORYMANAGER_ENTRY_MSGSEND | HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV);
 		kdebugmf(KDEBUG_INFO, "temp entries = %d\n", entriestmp.count());
 		if (time)
@@ -1370,12 +881,13 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time)
 }
 
 /* invoked from outside when new message arrives, this is the window to the world */
-void Chat::checkPresence(UinsList senders, const QString &msg, time_t time, QValueList<ChatMessage *> &messages)
+void Chat::newMessage(const QString &protocolName, UserListElements senders, const QString &msg, time_t time)
 {
+	QValueList<ChatMessage *> messages;
 	QDateTime date;
 	date.setTime_t(time);
 
-	ChatMessage *message = new ChatMessage(userlist.byUin(senders[0]).altNick(), msg, false, QDateTime::currentDateTime(), date);
+	ChatMessage *message = new ChatMessage(senders[0].altNick(), msg, false, QDateTime::currentDateTime(), date);
 	formatMessage(*message);
 	messages.append(message);
 
@@ -1413,7 +925,11 @@ void Chat::writeMyMessage()
 
 void Chat::addMyMessageToHistory()
 {
-	history.addMyMessage(Uins, myLastMessage);
+	UinsList uins;
+	CONST_FOREACH(user, *Users)
+		uins.append((*user).ID("Gadu").toUInt());
+	//TODO: pozbyæ siê UinsList
+	history.addMyMessage(uins, myLastMessage);
 }
 
 void Chat::clearChatWindow()
@@ -1553,7 +1069,7 @@ void Chat::sendMessage()
 	QCString msg = unicode2cp(mesg);
 
 	bool stop = false;
-	emit messageFiltering(Uins, msg, stop);
+	emit messageFiltering(Users, msg, stop);
 	if (stop)
 	{
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filter stopped processing\n");
@@ -1578,9 +1094,9 @@ void Chat::sendMessage()
 	}
 
 	if (myLastFormatsLength)
-		seq = gadu->sendMessageRichText(Uins, msg, (unsigned char *)myLastFormats, myLastFormatsLength);
+		seq = gadu->sendMessageRichText(Users->toUserListElements(), msg, (unsigned char *)myLastFormats, myLastFormatsLength);
 	else
-		seq = gadu->sendMessage(Uins, msg);
+		seq = gadu->sendMessage(Users->toUserListElements(), msg);
 
 	if (myLastFormats)
 		delete [](char *)myLastFormats;
@@ -1621,7 +1137,11 @@ void Chat::pruneWindow()
 void Chat::HistoryBox()
 {
 	kdebugf();
-	(new History(Uins))->show();
+	UinsList uins;
+	CONST_FOREACH(user, *Users)
+		uins.append((*user).ID("Gadu").toUInt());
+	//TODO: pozbyæ siê UinsList
+	(new History(uins))->show();
 	kdebugf2();
 }
 
@@ -1675,151 +1195,10 @@ void Chat::addEmoticon(QString emot)
 	emoticon_selector = NULL;
 }
 
-void ChatManager::closeModule()
+
+const UserGroup *Chat::users() const
 {
-	delete chatslots;
-	delete chat_manager;
-}
-
-void ChatManager::initModule()
-{
-	kdebugf();
-
-	ConfigDialog::addTab("ShortCuts", "ShortCutsTab");
-	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", QT_TRANSLATE_NOOP("@default", "Define keys"));
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "New line / send message:"), "chat_newline", "Return");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Clear Chat:"), "chat_clear", "F9");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Close Chat:"), "chat_close", "Esc");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Bold text:"), "chat_bold", "Ctrl+B");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Italic text:"), "chat_italic", "Ctrl+I");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Underline text:"), "chat_underline", "Ctrl+U");
-
-	ConfigDialog::addTab("Chat","ChatTab");
-	ConfigDialog::addVGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Emoticons"), "", Advanced);
-	ConfigDialog::addComboBox("Chat", "Emoticons", QT_TRANSLATE_NOOP("@default", "Emoticons:"),
-			"EmoticonsStyle", toStringList(tr("None"), tr("Static"), tr("Animated")), toStringList("0", "1", "2"), "2");
-
-	ConfigDialog::addComboBox("Chat", "Emoticons", QT_TRANSLATE_NOOP("@default", "Emoticons theme"));
-
-	ConfigDialog::addVGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "WWW options"), "", Advanced);
-	ConfigDialog::addComboBox("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Choose your browser"));
-	ConfigDialog::addComboBox("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Browser options"));
-	ConfigDialog::addLineEdit("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Custom Web browser"), "WebBrowser", "", QT_TRANSLATE_NOOP("@default", "%1 - Url clicked in chat window"));
-
-	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Automatically prune chat messages"), "ChatPrune", true, "", "", Advanced);
-	ConfigDialog::addHGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Message pruning"), "", Advanced);
-	ConfigDialog::addSpinBox("Chat", "Message pruning", QT_TRANSLATE_NOOP("@default", "Reduce the number of visible messages to"), "ChatPruneLen", 1,255,1,20);
-
-	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Automatically fold links"), "FoldLink", false, "", "", Advanced);
-	ConfigDialog::addHGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Link folding"), "", Advanced);
-	ConfigDialog::addSpinBox("Chat", "Link folding", QT_TRANSLATE_NOOP("@default", "Automatically fold links longer than"), "LinkFoldTreshold", 1,500,1,50);
-
-	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Open chat window on new message"), "OpenChatOnMessage", false);
-	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Scroll chat window downward, not upward"), "ScrollDown", true, "", "", Advanced);
-	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "\"%1\" in chat sends message by default"), "AutoSend", true, "", "", Advanced);
-	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Message acknowledgements (wait for delivery)"), "MessageAcks", true);
-	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Flash chat title on new message"), "BlinkChatTitle", true, "", "", Advanced);
-	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Ignore messages from anonymous users"), "IgnoreAnonymousUsers", false, "", "", Advanced);
-	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Receive images during invisibility"), "ReceiveImagesDuringInvisibility", true, "", "", Expert);
-	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Block window close on new message"), "ChatCloseTimer", false, "", "", Advanced);
-	ConfigDialog::addSpinBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Max time to block window close"),
-			"ChatCloseTimerPeriod", 1, 5, 1, 2, "", "", Expert);
-
-	ConfigDialog::addSpinBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Max image size"),
-			"MaxImageSize", 0, 255, 5, 20);
-
-
-// pierwsze uruchomienie kadu
-	config_file.addVariable("Look", "ChatBgColor", QColor("#ffffff"));
-	config_file.addVariable("Look", "ChatMyBgColor", QColor("#E0E0E0"));
-	config_file.addVariable("Look", "ChatTextBgColor", QColor("#ffffff"));
-	config_file.addVariable("Look", "ChatUsrBgColor", QColor("#F0F0F0"));
-	config_file.addVariable("Look", "ChatMyFontColor", QColor("#000000"));
-	config_file.addVariable("Look", "ChatUsrFontColor", QColor("#000000"));
-
-	//naglowki wiadomosci
-	config_file.addVariable("Look", "NoHeaderRepeat", false);
-	config_file.addVariable("Look", "HeaderSeparatorHeight", 1);
-	config_file.addVariable("Look", "NoHeaderInterval", "10");
-
-	config_file.addVariable("Look", "ChatFont", defaultFont);
-
-	config_file.addVariable("Chat", "LastImagePath", QString(getenv("HOME"))+"/");
-
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"), "LookTab");
-
-	ConfigDialog::addGrid("Look", "Look", "varOpts", 2);
-		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Show status button"), "ShowStatusButton", true, "", "", Advanced);
-		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Multiline description in userbox"), "ShowMultilineDesc", true, "", "", Advanced);
-		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Display group tabs"), "DisplayGroupTabs", true, "", "", Expert);
-		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Show available users in bold"), "ShowBold", true, QT_TRANSLATE_NOOP("@default","Displays users that are not offline using a bold font"), "", Expert);
-		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Show description in userbox"), "ShowDesc", true);
-
-	ConfigDialog::addVBox("Look", "Look", "varOpts2");//potrzebne userboksowi
-
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Colors"), "", Advanced);
-		ConfigDialog::addVGroupBox("Look", "Colors", QT_TRANSLATE_NOOP("@default", "Chat window"));
-			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "Chat window background color"), "ChatBgColor", config_file.readColorEntry("Look","ChatBgColor"), "", "bg_color");
-			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "Text edit background color"), "ChatTextBgColor", config_file.readColorEntry("Look","ChatTextBgColor"), "", "text_bg_color");
-			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "Your background color"), "ChatMyBgColor", config_file.readColorEntry("Look","ChatMyBgColor"), "", "own_bg_color");
-			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "User background color"), "ChatUsrBgColor", config_file.readColorEntry("Look","ChatUsrBgColor"), "", "his_bg_color");
-			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "Your font color"), "ChatMyFontColor", config_file.readColorEntry("Look","ChatMyFontColor"), "", "own_font_color");
-			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "User font color"), "ChatUsrFontColor", config_file.readColorEntry("Look","ChatUsrFontColor"), "", "his_font_color");
-
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Fonts"), "", Advanced);
-		ConfigDialog::addSelectFont("Look", "Fonts", QT_TRANSLATE_NOOP("@default", "Font in chat window"), "ChatFont", defaultFont->toString(), "", "chat_font_box");
-
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Previews"), "", Advanced);
-		ConfigDialog::addVGroupBox("Look", "Previews", QT_TRANSLATE_NOOP("@default", "Chat preview"));
-			ConfigDialog::addHBox("Look", "Chat preview", "chat_prvw");
-				ConfigDialog::addLabel("Look", "chat_prvw", QT_TRANSLATE_NOOP("@default", "<b>Me</b> 00:00:00"), "chat_me");
-				ConfigDialog::addLabel("Look", "chat_prvw", QT_TRANSLATE_NOOP("@default", "<b>Other party</b> 00:00:02"), "chat_other");
-
-	//naglowki
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Headers"), "", Advanced);
-		ConfigDialog::addCheckBox("Look", "Headers", QT_TRANSLATE_NOOP("@default", "Remove chat header repetitions"), "NoHeaderRepeat", true, "", "", Advanced);
-		ConfigDialog::addSpinBox("Look", "Headers", QT_TRANSLATE_NOOP("@default", "Chat header separators height:"), "HeaderSeparatorHeight", 0, config_file.readNumEntry("General", "ParagraphSeparator"), 1, 1, "", "", Expert);
-		ConfigDialog::addSpinBox("Look", "Headers", QT_TRANSLATE_NOOP("@default", "Interval between header removal:"), "NoHeaderInterval", 1, 1439, 1, 10, "", "", Expert);
-
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Other"), "", Expert);
-		ConfigDialog::addLineEdit("Look", "Other", QT_TRANSLATE_NOOP("@default", "Chat window title syntax:"), "ChatContents", "", Kadu::SyntaxText, "", Expert);
-		ConfigDialog::addHBox("Look", "Other", "conference", "", Expert);
-			ConfigDialog::addLineEdit("Look", "conference", QT_TRANSLATE_NOOP("@default", "Conference window title prefix:"), "ConferencePrefix", "", QT_TRANSLATE_NOOP("@default", "This text will be before syntax.\nIf you leave blank, default settings will be used."));
-			ConfigDialog::addLineEdit("Look", "conference", QT_TRANSLATE_NOOP("@default", "syntax:"), "ConferenceContents", "%a (%s[: %d])", Kadu::SyntaxText);
-
-	config_file.addVariable("Chat", "EmoticonsStyle", EMOTS_ANIMATED);
-	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
-
-	chatslots =new ChatSlots(kadu, "chat_slots");
-	ConfigDialog::registerSlotOnCreate(chatslots,SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnApply(chatslots,SLOT(onDestroyConfigDialog()));
-	ConfigDialog::connectSlot("Chat", "Emoticons:", SIGNAL(activated(int)), chatslots, SLOT(chooseEmoticonsStyle(int)));
-	ConfigDialog::connectSlot("Chat", "Automatically prune chat messages", SIGNAL(toggled(bool)), chatslots, SLOT(onPruneChat(bool)));
-	ConfigDialog::connectSlot("Chat", "Automatically fold links", SIGNAL(toggled(bool)), chatslots, SLOT(onFoldLink(bool)));
-	ConfigDialog::connectSlot("Chat", "Block window close on new message", SIGNAL(toggled(bool)), chatslots, SLOT(onBlockClose(bool)));
-
-	ConfigDialog::connectSlot("Look", "Remove chat header repetitions", SIGNAL(toggled(bool)), chatslots, SLOT(onRemoveHeaders(bool)));
-
-	ConfigDialog::connectSlot("Look", "Your background color", SIGNAL(changed(const char *, const QColor&)),
-		chatslots, SLOT(chooseColor(const char *, const QColor&)), "own_bg_color");
-	ConfigDialog::connectSlot("Look", "User background color", SIGNAL(changed(const char *, const QColor&)),
-		chatslots, SLOT(chooseColor(const char *, const QColor&)), "his_bg_color");
-	ConfigDialog::connectSlot("Look", "Your font color", SIGNAL(changed(const char *, const QColor&)),
-		chatslots, SLOT(chooseColor(const char *, const QColor&)), "own_font_color");
-	ConfigDialog::connectSlot("Look", "User font color", SIGNAL(changed(const char *, const QColor&)),
-		chatslots, SLOT(chooseColor(const char *, const QColor&)), "his_font_color");
-
-	ConfigDialog::connectSlot("Look", "Font in chat window", SIGNAL(changed(const char *, const QFont&)), chatslots, SLOT(chooseFont(const char *, const QFont&)), "chat_font_box");
-
-	chat_manager=new ChatManager(kadu, "chat_manager");
-	connect(gadu,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
-		chat_manager,SLOT(chatMsgReceived(UinsList,const QString&,time_t,bool&)));
-	kdebugf2();
-}
-
-const UinsList& Chat::uins() const
-{
-	return Uins;
+	return Users;
 }
 
 QValueList<ChatMessage*>& Chat::chatMessages()
@@ -1864,586 +1243,8 @@ void Chat::dropEvent(QDropEvent *e)
 		QStringList::iterator end = files.end();
 
 		for (; i != end; i++)
-			emit fileDropped(Uins, *i);
+			emit fileDropped(Users, *i);
 	}
 	else
 		e->accept(false);
-}
-
-ColorSelectorButton::ColorSelectorButton(QWidget* parent, const QColor& qcolor, int width, const char *name) : QPushButton(parent, name)
-{
-#define WIDTH1 15
-#define BORDER1 3
-	QPixmap p(WIDTH1*width+(width-1)*(BORDER1*2), WIDTH1);
-	p.fill(qcolor);
-	color = qcolor;
-	setPixmap(p);
-//	setAutoRaise(true);
-	setMouseTracking(true);
-	setFixedSize(WIDTH1*width+(BORDER1*2)+(width-1)*(BORDER1*2), WIDTH1+(BORDER1*2));
-	QToolTip::add(this,color.name());
-	connect(this, SIGNAL(clicked()), this, SLOT(buttonClicked()));
-}
-
-void ColorSelectorButton::buttonClicked()
-{
-	emit clicked(color);
-}
-
-ColorSelector::ColorSelector(const QColor &defColor, QWidget* parent, const char* name)
-	: QWidget (parent, name,Qt::WType_Popup|Qt::WDestructiveClose)
-{
-	kdebugf();
-	QValueList<QColor> qcolors;
-	int i;
-
-	for (i = 0; i < 16; ++i)
-		qcolors.append(colors[i]);
-
-	int selector_width = 4; //sqrt(16)
-	QGridLayout *grid = new QGridLayout(this, 0, selector_width, 0, 0);
-
-	i = 0;
-	CONST_FOREACH(color, qcolors)
-	{
-		ColorSelectorButton* btn = new ColorSelectorButton(this, *color, 1, QString("color_selector:%1").arg((*color).name()).local8Bit().data());
-		grid->addWidget(btn, i / selector_width, i % selector_width);
-		connect(btn, SIGNAL(clicked(const QColor&)), this, SLOT(iconClicked(const QColor&)));
-		++i;
-	}
-	if (!qcolors.contains(defColor))
-	{
-		ColorSelectorButton* btn = new ColorSelectorButton(this, defColor, 4, QString("color_selector:%1").arg(defColor.name()).local8Bit().data());
-		grid->addMultiCellWidget(btn, 4, 4, 0, 3);
-		connect(btn, SIGNAL(clicked(const QColor&)), this, SLOT(iconClicked(const QColor&)));
-	}
-	kdebugf2();
-}
-
-void ColorSelector::iconClicked(const QColor& color)
-{
-	emit colorSelect(color);
-	close();
-}
-
-void ColorSelector::closeEvent(QCloseEvent* e)
-{
-	kdebugf();
-	emit aboutToClose();
-	QWidget::closeEvent(e);
-	kdebugf2();
-}
-
-void ColorSelector::alignTo(QWidget* w)
-{
-	kdebugf();
-	// oblicz pozycjê widgetu do którego równamy
-	QPoint w_pos = w->mapToGlobal(QPoint(0,0));
-	// oblicz rozmiar selektora
-	QSize e_size = sizeHint();
-	// oblicz rozmiar pulpitu
-	QSize s_size = QApplication::desktop()->size();
-	// oblicz dystanse od widgetu do lewego brzegu i do prawego
-	int l_dist = w_pos.x();
-	int r_dist = s_size.width() - (w_pos.x() + w->width());
-	// oblicz pozycjê w zale¿no¶ci od tego czy po lewej stronie
-	// jest wiêcej miejsca czy po prawej
-	int x;
-	if (l_dist >= r_dist)
-		x = w_pos.x() - e_size.width();
-	else
-		x = w_pos.x() + w->width();
-	// oblicz pozycjê y - centrujemy w pionie
-	int y = w_pos.y() + w->height()/2 - e_size.height()/2;
-	// je¶li wychodzi poza doln± krawêd¼ to równamy do niej
-	if (y + e_size.height() > s_size.height())
-		y = s_size.height() - e_size.height();
-	// je¶li wychodzi poza górn± krawêd¼ to równamy do niej
-	if (y < 0)
-		y = 0;
-	// ustawiamy selektor na wyliczonej pozycji
-	move(x, y);
-	kdebugf2();
-}
-
-ChatSlots::ChatSlots(QObject* parent, const char* name)
-	: QObject(parent, name)
-{
-}
-
-void ChatSlots::initBrowserOptions(QComboBox *browserCombo, QComboBox *browserOptionsCombo, QLineEdit *browserPath)
-{
-	/*
-		UWAGA: w tej funkcji NIE WOLNO korzystaæ z klasy ConfigDialog
-		(joi)
-	*/
-	kdebugf();
-	browserCombo->insertItem(tr("Specify path"));
-	browserCombo->insertItem("Konqueror");
-	browserCombo->insertItem("Opera");
-	browserCombo->insertItem("Mozilla");
-	browserCombo->insertItem("Mozilla Firefox");
-	browserCombo->insertItem("Dillo");
-	browserCombo->insertItem("Galeon");
-	browserCombo->insertItem("Safari");
-	QString browserCommandLine=browserPath->text();
-	browserOptionsCombo->setEnabled(false);
-
-	int browserNumber=config_file.readNumEntry("Chat", "WebBrowserNo", 0);
-	browserCombo->setCurrentItem(browserNumber);
-	browserOptionsCombo->clear();
-	switch (browserNumber)
-	{
-		case 1: 	//konqueror
-		{
-			browserOptionsCombo->insertItem(tr("Open in new window"));
-			browserOptionsCombo->insertItem(tr("Open in new tab"));
-			if (browserCommandLine.find("newTab", 0, true) != -1)
-				browserOptionsCombo->setCurrentItem(1);
-			else
-				browserOptionsCombo->setCurrentItem(0);
-			browserOptionsCombo->setEnabled(true);
-			break;
-		}
-		case 2: 	//opera
-		{
-			browserOptionsCombo->insertItem(tr("Open in new window"));
-			browserOptionsCombo->insertItem(tr("Open in new tab"));
-			browserOptionsCombo->insertItem(tr("Open in background tab"));
-			if (browserCommandLine.find("-newpage", 0, true) != -1)	//jak znajdzie ta opcje to podswietla odpowiedni wpis w combo
-				browserOptionsCombo->setCurrentItem(1);
-			else if (browserCommandLine.find("-backgroundpage", 0, true) != -1)
-				browserOptionsCombo->setCurrentItem(2);
-			else
-				browserOptionsCombo->setCurrentItem(0);
-			browserOptionsCombo->setEnabled(true);	//uaktywniamy combo
-			break;
-		}
-		case 3:		//mozilla
-		case 4: 	//firefox
-		{
-			browserOptionsCombo->insertItem(tr("Open in new window"));		//dodajemy pozycje combo
-			browserOptionsCombo->insertItem(tr("Open in new tab"));
-			if (browserCommandLine.find("new-tab", 0, true) != -1)	//i wyszukujemy ktora opcje zaznaczyc
-				browserOptionsCombo->setCurrentItem(1);
-			else
-				browserOptionsCombo->setCurrentItem(0);
-			browserOptionsCombo->setEnabled(true);
-			break;
-		}
-	}
-	browserPath->setText(config_file.readEntry("Chat", "WebBrowser"));//potrzebne dla modu³u start_wizard
-	browserPath->setReadOnly(browserCombo->currentItem()!=0);
-	kdebugf2();
-}
-
-void ChatSlots::onCreateConfigDialog()
-{
-	kdebugf();
-	QComboBox* cb_emoticons_theme= ConfigDialog::getComboBox("Chat", "Emoticons theme");
-	cb_emoticons_theme->insertStringList(emoticons->themes());
-	cb_emoticons_theme->setCurrentText(config_file.readEntry("Chat", "EmoticonsTheme"));
-
-	if ((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") == EMOTS_NONE)
-		(cb_emoticons_theme)->setEnabled(false);
-
-	//ustawienie pól w combo wyboru przegladarki
-	QComboBox *browserCombo= ConfigDialog::getComboBox("Chat", "Choose your browser");
-	QComboBox *browserOptionsCombo=ConfigDialog::getComboBox("Chat", "Browser options");
-	QLineEdit *browserPath= ConfigDialog::getLineEdit("Chat", "Custom Web browser");
-	initBrowserOptions(browserCombo, browserOptionsCombo, browserPath);
-
-	//deaktywacja opcji wylaczenia separatorow
-	QCheckBox *b_noHeadersRepeat= ConfigDialog::getCheckBox("Look", "Remove chat header repetitions");
-
-	QSpinBox *s_headersSeparatorHeight= ConfigDialog::getSpinBox("Look", "Chat header separators height:");
-	QSpinBox *s_noHeadersInterval= ConfigDialog::getSpinBox("Look", "Interval between header removal:");
-
-	s_headersSeparatorHeight->setEnabled(b_noHeadersRepeat->isChecked());
-	s_noHeadersInterval->setEnabled(b_noHeadersRepeat->isChecked());
-
-	//dodanie suffiksu w spinboksach
-	ConfigDialog::getSpinBox("Look", "Chat header separators height:")->setSuffix(" px");
-	ConfigDialog::getSpinBox("Look", "Interval between header removal:")->setSuffix(" min");
-
-	//podpiecie pod zmiane w combo
-	connect(browserCombo, SIGNAL(activated (int)), this, SLOT(findAndSetWebBrowser(int)));
-	connect(browserOptionsCombo, SIGNAL(activated (int)), this, SLOT(findAndSetBrowserOption(int)));
-
-	QCheckBox *c_prunechat= ConfigDialog::getCheckBox("Chat", "Automatically prune chat messages");
-	QHGroupBox *h_prune= ConfigDialog::getHGroupBox("Chat", "Message pruning");
-
-	h_prune->setEnabled(c_prunechat->isChecked());
-
-	QCheckBox *c_foldlink= ConfigDialog::getCheckBox("Chat", "Automatically fold links");
-	QHGroupBox *h_fold= ConfigDialog::getHGroupBox("Chat", "Link folding");
-	QToolTip::add(h_fold, tr("URLs longer than this value will be shown truncated to this length"));
-	QToolTip::add(c_foldlink, tr("This will show a long URL as http://www.start...end.com/\nto protect the chat window from a mess"));
-	ConfigDialog::getSpinBox("Chat", "Max image size")->setSuffix(" kB");
-
-	QSpinBox *blockCloseTime=ConfigDialog::getSpinBox("Chat", "Max time to block window close");
-	blockCloseTime->setEnabled(config_file.readBoolEntry("Chat", "ChatCloseTimer"));
-	blockCloseTime->setSuffix(" s");
-	QCheckBox *shortcutSends = ConfigDialog::getCheckBox("Chat", "\"%1\" in chat sends message by default");
-	shortcutSends->setText(shortcutSends->text().arg(config_file.readEntry("ShortCuts", "chat_newline")));
-
-	h_fold->setEnabled(c_foldlink->isChecked());
-	updatePreview();
-	kdebugf2();
-}
-
-void ChatSlots::onBlockClose(bool toggled)
-{
-	ConfigDialog::getSpinBox("Chat", "Max time to block window close")->setEnabled(toggled);
-}
-
-void ChatSlots::onPruneChat(bool toggled)
-{
-	ConfigDialog::getHGroupBox("Chat", "Message pruning")->setEnabled(toggled);
-}
-
-void ChatSlots::onFoldLink(bool toggled)
-{
-	ConfigDialog::getHGroupBox("Chat", "Link folding")->setEnabled(toggled);
-}
-void ChatSlots::onRemoveHeaders(bool toggled)
-{
-	ConfigDialog::getSpinBox("Look", "Chat header separators height:")->setEnabled(toggled);
-	ConfigDialog::getSpinBox("Look", "Interval between header removal:")->setEnabled(toggled);
-}
-
-void ChatSlots::onDestroyConfigDialog()
-{
-	kdebugf();
-
-	QComboBox* cb_emoticons_theme= ConfigDialog::getComboBox("Chat", "Emoticons theme");
-	config_file.writeEntry("Chat", "EmoticonsTheme",cb_emoticons_theme->currentText());
-	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
-
-	config_file.writeEntry("Chat", "WebBrowserNo", ConfigDialog::getComboBox("Chat", "Choose your browser")->currentItem());
-
-	chat_manager->changeAppearance();
-
-/*
-	Aby unikn±c problemów z niepoprawnymi localesami i pozniejszymi
-	k³opotami które moga wynikn±c z tego, musimy zamienic dwie mozliwe
-	mozliwo¶ci na _puste_pole_ przez co uzyskamy ze kadu i tak bedzie
-	dynamicznie reagowac na zmiany localesów nie zaleznie jaka wersja
-	by³a zapisana przed ustawieniem ustawien domyslnych(moze nie za
-	dobrze to wyjasnione, ale konieczne. Nie dotyczy to dwóch zmiennych
-	config.panelsyntax i config.conferencesyntax, bo pierwotnie zawieraj
-	TYLKO sam± sk³adnie)
-*/
-
-	QLineEdit *e_chatsyntax= ConfigDialog::getLineEdit("Look", "Chat window title syntax:");
-	QLineEdit *e_conferenceprefix= ConfigDialog::getLineEdit("Look", "Conference window title prefix:");
-
-	if (e_chatsyntax->text() == tr("Chat with ")+"%a (%s[: %d])" || e_chatsyntax->text() == "Chat with %a (%s[: %d])")
-		config_file.writeEntry("Look", "ChatContents", "");
-
-	if (e_conferenceprefix->text() == tr("Conference with ") || e_conferenceprefix->text() == "Conference with ")
-		config_file.writeEntry("Look", "ConferencePrefix", "");
-	kdebugf2();
-}
-
-void ChatSlots::chooseColor(const char* name, const QColor& color)
-{
-	kdebugf();
-	QLabel *preview1= ConfigDialog::getLabel("Look", "<b>Me</b> 00:00:00", "chat_me");
-	QLabel *preview2= ConfigDialog::getLabel("Look", "<b>Other party</b> 00:00:02", "chat_other");
-	if (QString(name)=="own_bg_color")
-		preview1->setPaletteBackgroundColor(color);
-	else if (QString(name)=="his_bg_color")
-		preview2->setPaletteBackgroundColor(color);
-	else if (QString(name)=="own_font_color")
-		preview1->setPaletteForegroundColor(color);
-	else if (QString(name)=="his_font_color")
-		preview2->setPaletteForegroundColor(color);
-	else
-		kdebugm(KDEBUG_ERROR, "chooseColor: label '%s' not known!\n", name);
-	kdebugf2();
-}
-
-void ChatSlots::chooseFont(const char* name, const QFont& font)
-{
-	kdebugf();
-	QLabel *preview1= ConfigDialog::getLabel("Look", "<b>Me</b> 00:00:00", "chat_me");
-	QLabel *preview2= ConfigDialog::getLabel("Look", "<b>Other party</b> 00:00:02", "chat_other");
-	if (QString(name)=="chat_font_box")
-	{
-		preview1->setFont(font);
-		preview2->setFont(font);
-	}
-	kdebugf2();
-}
-
-void ChatSlots::chooseEmoticonsStyle(int index)
-{
-	ConfigDialog::getComboBox("Chat","Emoticons theme")->setEnabled(index!=0);
-}
-
-void ChatSlots::updatePreview()
-{
-	kdebugf();
-	QLabel *preview1= ConfigDialog::getLabel("Look", "<b>Me</b> 00:00:00", "chat_me");
-	QLabel *preview2= ConfigDialog::getLabel("Look", "<b>Other party</b> 00:00:02", "chat_other");
-	preview1->setFont(config_file.readFontEntry("Look", "ChatFont"));
-	preview1->setPaletteForegroundColor(config_file.readColorEntry("Look", "ChatMyFontColor"));
-	preview1->setPaletteBackgroundColor(config_file.readColorEntry("Look", "ChatMyBgColor"));
-	preview1->setAlignment(Qt::AlignLeft);
-	preview2->setFont(config_file.readFontEntry("Look", "ChatFont"));
-	preview2->setPaletteForegroundColor(config_file.readColorEntry("Look", "ChatUsrFontColor"));
-	preview2->setPaletteBackgroundColor(config_file.readColorEntry("Look", "ChatUsrBgColor"));
-	preview2->setAlignment(Qt::AlignLeft);
-	kdebugf2();
-}
-
-void ChatSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo, QComboBox *browserOptionsCombo, QLineEdit *browserPath)
-{
-	kdebugf();
-	/*
-		UWAGA1: obs³uga mozilli i firefoksa jest dosyæ skomplikowana, wiêc przy rozbudowie tej funkcji
-		nale¿y najpierw zrozumieæ jej dzia³anie dla tych dwóch przegl±darek, bo mo¿na siê naci±æ...
-
-		UWAGA2: w tej funkcji NIE WOLNO korzystaæ z klasy ConfigDialog
-	*/
-	QString prevBrowser=browserPath->text();
-	browserOptionsCombo->setEnabled(false);	//blokujemy combo
-
-	if (selectedBrowser==0)
-	{
-		browserPath->setReadOnly(false);
-		return;
-	}
-	else
-		browserPath->setReadOnly(true);
-
-	QString homePath=getenv("HOME");
-	QString browserName;
-
-	QStringList searchPath=QStringList::split(":", QString(getenv("PATH")));
-
-	switch (selectedBrowser)
-	{
-		case 1: //konqueror
-		{
-			browserName="dcop";
-			searchPath.append("/opt/kde/bin");
-			searchPath.append("/opt/kde3/bin");
-			browserOptionsCombo->clear();
-			browserOptionsCombo->insertItem(tr("Open in new window"));
-			browserOptionsCombo->insertItem(tr("Open in new tab"));
-			browserOptionsCombo->setCurrentItem(0);
-			browserOptionsCombo->setEnabled(true);
-			break;
-		}
-		case 2://opera
-		{
-			browserName="opera";
-			searchPath.append("/opt/opera");
-			browserOptionsCombo->clear();
-			browserOptionsCombo->insertItem(tr("Open in new window"));
-			browserOptionsCombo->insertItem(tr("Open in new tab"));
-			browserOptionsCombo->insertItem(tr("Open in background tab"));
-			browserOptionsCombo->setCurrentItem(0);
-			browserOptionsCombo->setEnabled(true);
-			break;
-		}
-		case 3: //mozilla
-		{
-			browserName="mozilla-xremote-client";
-
-			QStringList dirList=QDir("/usr/lib").entryList("mozilla*", QDir::All, QDir::Name|QDir::Reversed);
-			CONST_FOREACH(dir, dirList)
-				searchPath.append("/usr/lib/"+(*dir));
-
-			searchPath.append("/usr/local/Mozilla");
-			searchPath.append("/usr/local/mozilla");
-			searchPath.append(homePath+"/Mozilla");
-			searchPath.append(homePath+"/mozilla");
-			browserOptionsCombo->clear();
-			browserOptionsCombo->insertItem(tr("Open in new window"));
-			browserOptionsCombo->insertItem(tr("Open in new tab"));
-			browserOptionsCombo->setCurrentItem(0);
-			browserOptionsCombo->setEnabled(true);
-			break;
-		}
-		case 4:	//firefox
-		{
-			browserName="mozilla-xremote-client";
-
-			QStringList dirList=QDir("/usr/lib").entryList("firefox*", QDir::All, QDir::Name|QDir::Reversed);
-			CONST_FOREACH(dir, dirList)
-				searchPath.append("/usr/lib/"+(*dir));
-
-			dirList=QDir("/usr/lib").entryList("mozilla-firefox*", QDir::All, QDir::Name|QDir::Reversed);
-			CONST_FOREACH(dir, dirList)
-				searchPath.append("/usr/lib/"+(*dir));
-			if (!dirList.empty())//jeste¶my na debianie, gdzie zmienili nazwê skryptu, grrr :|
-				browserName="mozilla-firefox-xremote-client";
-
-			searchPath.append("/usr/lib/MozillaFirefox");
-			searchPath.append("/usr/local/Firefox");
-			searchPath.append("/usr/local/firefox");
-			searchPath.append("/opt/firefox");
-			searchPath.append(homePath+"/Firefox");
-			searchPath.append(homePath+"/firefox");
-
-			dirList=QDir("/usr/lib").entryList("mozilla*", QDir::All, QDir::Name|QDir::Reversed);
-			CONST_FOREACH(dir, dirList)
-				searchPath.append("/usr/lib/"+(*dir));
-
-			browserOptionsCombo->clear();
-			browserOptionsCombo->insertItem(tr("Open in new window"));
-			browserOptionsCombo->insertItem(tr("Open in new tab"));
-			browserOptionsCombo->setCurrentItem(0);
-			browserOptionsCombo->setEnabled(true);
-			break;
-		}
-		case 5: browserName="dillo"; break;
-		case 6: browserName="galeon"; break;
-		case 7: 	//safari - mac
-		{
-			browserName="Safari.app";
-			searchPath.append("/Applications");
-			break;
-		}
-		default: return;
-	}
-	QFile browserFile;
-	QString path, testPath;
-
-	bool browserFound=false;
-	QStringList::iterator dir=searchPath.begin();
-	QStringList::iterator endDir=searchPath.end();
-
-	kdebugm(KDEBUG_INFO, "search path: %s\n", searchPath.join(" ").local8Bit().data());
-	while (!browserFound && dir!=endDir)
-	{
-		testPath=(*dir)+"/"+browserName;
-		if (QFile::exists(testPath))
-		{
-			if (selectedBrowser==1) //konqueror
-			{
-				if (browserName=="kfmclient")
-					path.replace(QRegExp("kfmclient"), testPath);
-				else
-				{
-					path="ok=0;for i in `dcop|grep konqueror`; do shown=`dcop $i konqueror-mainwindow#1 shown`; if [ \"$shown\" == \"true\" ];then dcop $i KonquerorIface openBrowserWindow \"%1\" && ok=1; fi; if [ \"$ok\" == \"1\" ]; then break; fi done; if [ \"$ok\" != \"1\" ]; then kfmclient openURL \"%1\"; fi;";
-					path.replace(QRegExp("dcop"), testPath);
-					browserName="kfmclient";
-					dir=searchPath.begin();
-					continue;
-				}
-			}
-			else if (selectedBrowser==3) //mozilla
-			{
-				if (browserName=="mozilla")
-					path=path+testPath+" \"%1\"";
-				else
-				{
-					path=testPath+" -a mozilla \"openURL(%1,new-window)\" || ";
-					browserName="mozilla";
-					dir=searchPath.begin();
-					continue;
-				}
-			}
-			else if (selectedBrowser==4) //firefox
-			{
-				if (browserName=="firefox")
-					path=path+testPath+" \"%1\"";
-				else
-				{
-					path=testPath+" \"openURL(%1,new-window)\" || ";
-					browserName="firefox";
-					dir=searchPath.begin();
-					continue;
-				}
-			}
-			else
-				path=testPath;
-			browserPath->setText(path);
-			browserFound=true;
-			kdebugm(KDEBUG_INFO, "browser found! '%s'\n", path.local8Bit().data());
-		}
-		dir++;
-	}
-	if (!browserFound)
-	{
-		MessageBox::msg(tr("I didn't find the browser you selected! The path to it doesn't exists in $PATH variable. \nYou may add it to $PATH or specify location using Specify path option."));
-		browserCombo->setCurrentItem(0);	//ustawiamy na default
-		browserOptionsCombo->clear();	//czyscimy opcje
-		browserPath->setText(prevBrowser);
-//		browserPath->clear(); 	//no i czyscimy LineEdita
-	}
-	kdebugf2();
-}
-
-void ChatSlots::findAndSetWebBrowser(int selectedBrowser)
-{
-	kdebugf();
-
-	QComboBox *browserCombo=ConfigDialog::getComboBox("Chat", "Choose your browser");
-	QComboBox *browserOptionsCombo=ConfigDialog::getComboBox("Chat", "Browser options");
-	QLineEdit *browserPath= ConfigDialog::getLineEdit("Chat", "Custom Web browser");
-	findBrowser(selectedBrowser, browserCombo, browserOptionsCombo, browserPath);
-
-	kdebugf2();
-}
-
-void ChatSlots::setBrowserOption(int selectedOption, QLineEdit *browserPathEdit, int chosenBrowser)
-{
-	kdebugf();
-	/*
-		UWAGA: w tej funkcji NIE WOLNO korzystaæ z klasy ConfigDialog
-	*/
-	QString browserPath=browserPathEdit->text();
-	switch(chosenBrowser)
-	{
-		case 1: //Konqueror
-		{
-			if (selectedOption==1)
-				browserPath.replace(QRegExp("KonquerorIface openBrowserWindow"), "konqueror-mainwindow#1 newTab");
-			else
-				browserPath.replace(QRegExp("konqueror-mainwindow#1 newTab"), "KonquerorIface openBrowserWindow");
-			browserPathEdit->setText(browserPath);
-			break;
-		}
-		case 2:		//Opera
-		{
-			browserPath.replace(QRegExp(" -newwindow"), "");
-			browserPath.replace(QRegExp(" -newpage"), "");
-			browserPath.replace(QRegExp(" -backgroundpage"), "");
-			switch(selectedOption)
-			{
-				case 0: browserPath.append(" -newwindow"); break;
-				case 1: browserPath.append(" -newpage"); break;
-				case 2: browserPath.append(" -backgroundpage"); break;
-			}
-			browserPathEdit->setText(browserPath);
-			break;
-		}
-		case 3: 	//Mozilla
-		case 4:		//Firefox
-		{
-			if (selectedOption==1)
-				browserPath.replace(QRegExp("new-window"), "new-tab");
-			else
-				browserPath.replace(QRegExp("new-tab"), "new-window");
-			browserPathEdit->setText(browserPath);
-			break;
-		}
-		case 7:		//Safari - mac
-			browserPathEdit->setText("open /Applications/Safari.app %1");
-	}
-	kdebugf2();
-}
-
-void ChatSlots::findAndSetBrowserOption(int selectedOption)
-{
-	kdebugf();
-	setBrowserOption(selectedOption,
-		ConfigDialog::getLineEdit("Chat", "Custom Web browser"),
-		ConfigDialog::getComboBox("Chat", "Choose your browser")->currentItem());
-	kdebugf2();
 }

@@ -56,12 +56,12 @@ extern "C" int sms_init()
 	ConfigDialog::connectSlot("SMS", "Up", SIGNAL(clicked()), smsslots, SLOT(onUpButton()));
 	ConfigDialog::connectSlot("SMS", "Down", SIGNAL(clicked()), smsslots, SLOT(onDownButton()));
 
-	QObject::connect(kadu->userbox(), SIGNAL(doubleClicked(const QString &)),
-			smsslots, SLOT(onUserDblClicked(const QString &)));
+	QObject::connect(kadu->userbox(), SIGNAL(doubleClicked(UserListElement)),
+			smsslots, SLOT(onUserDblClicked(UserListElement)));
 	QObject::connect(kadu->userbox(), SIGNAL(mouseButtonClicked(int, QListBoxItem*,const QPoint&)),
 			smsslots, SLOT(onUserClicked(int, QListBoxItem*, const QPoint&)));
-	QObject::connect(kadu->userbox(), SIGNAL(returnPressed(const QString &)),
-			smsslots, SLOT(onUserDblClicked(const QString &)));
+	QObject::connect(kadu->userbox(), SIGNAL(returnPressed(UserListElement)),
+			smsslots, SLOT(onUserDblClicked(UserListElement)));
 	QObject::connect(UserBox::userboxmenu, SIGNAL(popup()), smsslots, SLOT(onPopupMenuCreate()));
 
 	config_file.addVariable("SMS", "Priority", "");
@@ -95,10 +95,10 @@ extern "C" void sms_close()
 	ConfigDialog::removeControl("SMS", "SMS options");
 	ConfigDialog::removeTab("SMS");
 
-	QObject::disconnect(kadu->userbox(), SIGNAL(doubleClicked(const QString &)),
-			smsslots, SLOT(onUserDblClicked(const QString &)));
-	QObject::disconnect(kadu->userbox(), SIGNAL(returnPressed(const QString &)),
-			smsslots, SLOT(onUserDblClicked(const QString &)));
+	QObject::disconnect(kadu->userbox(), SIGNAL(doubleClicked(UserListElement)),
+			smsslots, SLOT(onUserDblClicked(UserListElement)));
+	QObject::disconnect(kadu->userbox(), SIGNAL(returnPressed(UserListElement)),
+			smsslots, SLOT(onUserDblClicked(UserListElement)));
 	QObject::disconnect(kadu->userbox(), SIGNAL(mouseButtonClicked(int, QListBoxItem*,const QPoint&)),
 			smsslots, SLOT(onUserClicked(int, QListBoxItem*, const QPoint&)));
 	QObject::disconnect(UserBox::userboxmenu, SIGNAL(popup()), smsslots, SLOT(onPopupMenuCreate()));
@@ -240,13 +240,13 @@ Sms::Sms(const QString& altnick, QDialog* parent, const char *name) : QDialog (p
 	recipient = new QLineEdit(this);
 	recipient->setMinimumWidth(140);
 	if (!altnick.isEmpty())
-		recipient->setText(userlist.byAltNick(altnick).mobile());
+		recipient->setText(userlist->byAltNick(altnick).mobile());
 	QObject::connect(recipient, SIGNAL(textChanged(const QString&)), this, SLOT(updateList(const QString&)));
 	grid->addWidget(recipient, 0, 1);
 
 	QStringList strlist;
 	list = new QComboBox(this);
-	CONST_FOREACH(user, userlist)
+	CONST_FOREACH(user, *userlist)
 		if (!(*user).mobile().isEmpty())
 		 	strlist.append((*user).altNick());
 	strlist.sort();
@@ -306,15 +306,15 @@ void Sms::updateRecipient(const QString &newtext)
 		kdebugf2();
 		return;
 	}
-	if (userlist.containsAltNick(newtext))
-		recipient->setText(userlist.byAltNick(newtext).mobile());
+	if (userlist->containsAltNick(newtext))
+		recipient->setText(userlist->byAltNick(newtext).mobile());
 	kdebugf2();
 }
 
 void Sms::updateList(const QString &newnumber)
 {
 	kdebugf();
-	CONST_FOREACH(user, userlist)
+	CONST_FOREACH(user, *userlist)
 		if ((*user).mobile() == newnumber)
 		{
 			list->setCurrentText((*user).altNick());
@@ -526,11 +526,10 @@ void SmsSlots::onUserClicked(int button, QListBoxItem* /*item*/, const QPoint& /
 		onSendSmsToUser();
 }
 
-void SmsSlots::onUserDblClicked(const QString &text)
+void SmsSlots::onUserDblClicked(UserListElement user)
 {
 	kdebugf();
-	UserListElement user = userlist.byAltNick(text);
-	if (!user.uin())
+	if (!user.usesProtocol("Gadu"))
 		newSms(user.altNick());
 	kdebugf2();
 }
@@ -538,15 +537,15 @@ void SmsSlots::onUserDblClicked(const QString &text)
 void SmsSlots::onSendSmsToUser()
 {
 	kdebugf();
-	UserList users;
-	UserBox *activeUserBox=kadu->userbox()->getActiveUserBox();
+	UserListElements users;
+	UserBox *activeUserBox = kadu->userbox()->activeUserBox();
 	if (activeUserBox==NULL)
 		return;
-	users = activeUserBox->getSelectedUsers();
+	users = activeUserBox->selectedUsers();
 	if (users.count() != 1)
 		return;
-	if (!(*users.begin()).mobile().isEmpty())
-		newSms((*users.begin()).altNick());
+	if (!users[0].mobile().isEmpty())
+		newSms(users[0].altNick());
 	kdebugf2();
 }
 
@@ -629,12 +628,12 @@ void SmsSlots::onDownButton()
 void SmsSlots::onPopupMenuCreate()
 {
 	kdebugf();
-	UserList users;
-	UserBox *activeUserBox=kadu->userbox()->getActiveUserBox();
-	if (activeUserBox==NULL)//to siê zdarza...
+	UserListElements users;
+	UserBox *activeUserBox = kadu->userbox()->activeUserBox();
+	if (activeUserBox == NULL)//to siê zdarza...
 		return;
-	users = activeUserBox->getSelectedUsers();
-	UserListElement user = (*users.begin());
+	users = activeUserBox->selectedUsers();
+	UserListElement user = users[0];
 
 	if (user.mobile().isEmpty() || users.count() != 1)
 		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Send SMS")), false);

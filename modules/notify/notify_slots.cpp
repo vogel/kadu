@@ -23,9 +23,9 @@ void NotifySlots::onCreateConfigDialog()
 
 	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
 	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
-	CONST_FOREACH(user, userlist)
+	CONST_FOREACH(user, *userlist)
 	{
-		if ((*user).uin() && !(*user).isAnonymous())
+		if ((*user).usesProtocol("Gadu") && !(*user).isAnonymous())
 			if (!(*user).notify())
 				e_availusers->insertItem((*user).altNick());
 			else
@@ -63,11 +63,11 @@ void NotifySlots::onApplyConfigDialog()
 
 	unsigned int count = e_notifies->count();
 	for (i = 0; i < count; ++i)
-		userlist.byAltNick(e_notifies->text(i)).setNotify(true);
+		userlist->byAltNick(e_notifies->text(i)).setNotify(true);
 	count = e_availusers->count();
 	for (i = 0; i < count; ++i)
-		userlist.byAltNick(e_availusers->text(i)).setNotify(false);
-	userlist.writeToConfig();
+		userlist->byAltNick(e_availusers->text(i)).setNotify(false);
+	userlist->writeToConfig();
 	kdebugf2();
 }
 

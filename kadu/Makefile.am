@@ -1,43 +1,178 @@
-
 bin_PROGRAMS = kadu
 
 kadu_SOURCES = \
-about.cpp chat.cpp config_dialog.cpp config_file.cpp debug.cpp emoticons.cpp \
-expimp.cpp gadu.cpp history.cpp ignore.cpp kadu.cpp main.cpp message_box.cpp \
-misc.cpp modules.cpp pending_msgs.cpp personal_info.cpp search.cpp status.cpp \
-tabbar.cpp userbox.cpp userinfo.cpp userlist.cpp updates.cpp
+about.cpp \
+chat.cpp \
+chat_manager.cpp \
+chat_manager_slots.cpp \
+chat_message.cpp \
+color_selector.cpp \
+config_dialog.cpp \
+config_file.cpp \
+custom_input.cpp \
+debug.cpp \
+dnshandler.cpp \
+emoticons.cpp \
+expimp.cpp \
+gadu.cpp \
+groups_manager.cpp \
+history.cpp \
+ignore.cpp \
+kadu.cpp \
+kadu_splitter.cpp \
+main.cpp \
+message_box.cpp \
+misc.cpp \
+modules.cpp \
+pending_msgs.cpp \
+personal_info.cpp \
+search.cpp \
+status.cpp \
+tabbar.cpp \
+userbox.cpp \
+userinfo.cpp \
+userlist.cpp \
+userlist-private.cpp \
+usergroup.cpp \
+userlistelement.cpp \
+updates.cpp
+
 
 kadudir = $(includedir)/kadu
 
 kadu_HEADERS = \
-about.h chat.h config_dialog.h config_file.h debug.h emoticons.h \
-expimp.h gadu.h history.h ignore.h kadu.h message_box.h \
-misc.h modules.h pending_msgs.h personal_info.h search.h status.h \
-tabbar.h userbox.h userinfo.h userlist.h updates.h
+about.h \
+chat.h \
+chat_manager.cpp \
+chat_manager_slots.cpp \
+chat_message.cpp \
+color_selector.cpp \
+config_dialog.h \
+config_file.h \
+custom_input.cpp \
+debug.h \
+dnshandler.h \
+emoticons.h \
+expimp.h \
+gadu.h \
+groups_manager.h \
+history.h \
+ignore.h \
+kadu.h \
+kadu_splitter.cpp \
+message_box.h \
+misc.h \
+modules.h \
+pending_msgs.h \
+personal_info.h \
+search.h \
+status.h \
+tabbar.h \
+userbox.h \
+userinfo.h \
+userlist.h \
+userlist-private.h \
+usergroup.h \
+userlistelement.h \
+updates.h
 
-BUILT_SOURCES = moc/about_moc.cpp moc/chat_moc.cpp moc/config_dialog_moc.cpp moc/emoticons_moc.cpp \
-moc/expimp_moc.cpp moc/gadu_moc.cpp moc/history_moc.cpp moc/ignore_moc.cpp \
-moc/kadu_moc.cpp moc/message_box_moc.cpp moc/misc_moc.cpp moc/modules_moc.cpp \
-moc/pending_msgs_moc.cpp moc/personal_info_moc.cpp moc/search_moc.cpp moc/status_moc.cpp \
-moc/tabbar_moc.cpp moc/userbox_moc.cpp moc/userinfo_moc.cpp moc/userlist_moc.cpp \
+BUILT_SOURCES = \
+moc/about_moc.cpp \
+moc/chat_moc.cpp \
+moc/chat_manager_moc.cpp \
+moc/chat_manager_slots_moc.cpp \
+moc/color_selector_moc.cpp \
+moc/config_dialog_moc.cpp \
+moc/custom_input_moc.cpp \
+moc/dnshandler_moc.cpp \
+moc/emoticons_moc.cpp \
+moc/expimp_moc.cpp \
+moc/gadu_moc.cpp \
+moc/groups_manager_moc.cpp \
+moc/history_moc.cpp \
+moc/ignore_moc.cpp \
+moc/kadu_moc.cpp \
+moc/message_box_moc.cpp \
+moc/misc_moc.cpp \
+moc/modules_moc.cpp \
+moc/pending_msgs_moc.cpp \
+moc/personal_info_moc.cpp \
+moc/search_moc.cpp \
+moc/status_moc.cpp \
+moc/tabbar_moc.cpp \
+moc/userbox_moc.cpp \
+moc/userinfo_moc.cpp \
+moc/userlist_moc.cpp \
+moc/userlist-private_moc.cpp \
+moc/usergroup_moc.cpp \
+moc/userlistelement_moc.cpp \
 moc/updates_moc.cpp
 
 am_kadu_OBJECTS = \
-obj/about.$(OBJEXT) obj/chat.$(OBJEXT) obj/config_dialog.$(OBJEXT) \
-obj/config_file.$(OBJEXT) obj/debug.$(OBJEXT) obj/emoticons.$(OBJEXT) \
-obj/expimp.$(OBJEXT) obj/gadu.$(OBJEXT) obj/history.$(OBJEXT) \
-obj/ignore.$(OBJEXT) obj/kadu.$(OBJEXT) obj/main.$(OBJEXT) \
-obj/message_box.$(OBJEXT) obj/misc.$(OBJEXT) obj/modules.$(OBJEXT) \
-obj/pending_msgs.$(OBJEXT) obj/personal_info.$(OBJEXT) obj/search.$(OBJEXT) \
-obj/status.$(OBJEXT) obj/tabbar.$(OBJEXT) obj/userbox.$(OBJEXT) \
-obj/userinfo.$(OBJEXT) obj/userlist.$(OBJEXT) obj/updates.$(OBJEXT) \
-obj/about_moc.$(OBJEXT) obj/chat_moc.$(OBJEXT) obj/config_dialog_moc.$(OBJEXT) \
-obj/emoticons_moc.$(OBJEXT) obj/expimp_moc.$(OBJEXT) obj/gadu_moc.$(OBJEXT) \
-obj/history_moc.$(OBJEXT) obj/ignore_moc.$(OBJEXT) obj/kadu_moc.$(OBJEXT) \
-obj/message_box_moc.$(OBJEXT) obj/misc_moc.$(OBJEXT) obj/modules_moc.$(OBJEXT) \
-obj/pending_msgs_moc.$(OBJEXT) obj/personal_info_moc.$(OBJEXT) \
-obj/search_moc.$(OBJEXT) obj/status_moc.$(OBJEXT) obj/tabbar_moc.$(OBJEXT) \
-obj/userbox_moc.$(OBJEXT) obj/userinfo_moc.$(OBJEXT) obj/userlist_moc.$(OBJEXT) \
+obj/about.$(OBJEXT) \
+obj/chat.$(OBJEXT) \
+obj/chat_manager.$(OBJEXT) \
+obj/chat_manager_slots.$(OBJEXT) \
+obj/chat_message.$(OBJEXT) \
+obj/color_selector.$(OBJEXT) \
+obj/config_dialog.$(OBJEXT) \
+obj/config_file.$(OBJEXT) \
+obj/custom_input.$(OBJEXT) \
+obj/debug.$(OBJEXT) \
+obj/dnshandler.$(OBJEXT) \
+obj/emoticons.$(OBJEXT) \
+obj/expimp.$(OBJEXT) \
+obj/gadu.$(OBJEXT) \
+obj/groups_manager.$(OBJEXT) \
+obj/history.$(OBJEXT) \
+obj/ignore.$(OBJEXT) \
+obj/kadu.$(OBJEXT) \
+obj/kadu_splitter.$(OBJEXT) \
+obj/main.$(OBJEXT) \
+obj/message_box.$(OBJEXT) \
+obj/misc.$(OBJEXT) \
+obj/modules.$(OBJEXT) \
+obj/pending_msgs.$(OBJEXT) \
+obj/personal_info.$(OBJEXT) \
+obj/search.$(OBJEXT) \
+obj/status.$(OBJEXT) \
+obj/tabbar.$(OBJEXT) \
+obj/userbox.$(OBJEXT) \
+obj/userinfo.$(OBJEXT) \
+obj/userlist.$(OBJEXT) \
+obj/userlist-private.$(OBJEXT) \
+obj/usergroup.$(OBJEXT) \
+obj/userlistelement.$(OBJEXT) \
+obj/updates.$(OBJEXT) \
+obj/about_moc.$(OBJEXT) \
+obj/chat_moc.$(OBJEXT) \
+obj/chat_manager_moc.$(OBJEXT) \
+obj/chat_manager_slots_moc.$(OBJEXT) \
+obj/color_selector_moc.$(OBJEXT) \
+obj/config_dialog_moc.$(OBJEXT) \
+obj/custom_input_moc.$(OBJEXT) \
+obj/dnshandler_moc.$(OBJEXT) \
+obj/emoticons_moc.$(OBJEXT) \
+obj/expimp_moc.$(OBJEXT) \
+obj/gadu_moc.$(OBJEXT) \
+obj/groups_manager_moc.$(OBJEXT) \
+obj/history_moc.$(OBJEXT) \
+obj/ignore_moc.$(OBJEXT) \
+obj/kadu_moc.$(OBJEXT) \
+obj/message_box_moc.$(OBJEXT) \
+obj/misc_moc.$(OBJEXT) \
+obj/modules_moc.$(OBJEXT) \
+obj/pending_msgs_moc.$(OBJEXT) \
+obj/personal_info_moc.$(OBJEXT) \
+obj/search_moc.$(OBJEXT) \
+obj/status_moc.$(OBJEXT) \
+obj/tabbar_moc.$(OBJEXT) \
+obj/userbox_moc.$(OBJEXT) \
+obj/userinfo_moc.$(OBJEXT) \
+obj/userlist_moc.$(OBJEXT) \
+obj/userlist-private_moc.$(OBJEXT) \
+obj/usergroup_moc.$(OBJEXT) \
+obj/userlistelement_moc.$(OBJEXT) \
 obj/updates_moc.$(OBJEXT)
 
 .cpp.o:
@@ -55,7 +190,7 @@ obj/%.o: %.cpp
 @am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
 
 obj/%_moc.o: moc/%_moc.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<; then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Po"; else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; fi
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT $@ -MD -MP -MF "$(DEPDIR)/$*_moc.Tpo" -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<; then mv -f "$(DEPDIR)/$*_moc.Tpo" "$(DEPDIR)/$*_moc.Po"; else rm -f "$(DEPDIR)/$*_moc.Tpo"; exit 1; fi
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@

@@ -68,28 +68,28 @@ class HintManager : public QFrame
 	public slots:
 /*********** sloty dla notify ************/
 		/* nowa rozmowa */
-		void newChat(const UinsList &senders, const QString& msg, time_t time);
+		void newChat(const QString &protocolName, UserListElements senders, const QString &msg, time_t t);
 
 		/* nowa wiadomo¶æ w oknie chat */
-		void newMessage(const UinsList &senders, const QString& msg, time_t time, bool &grab);
+		void newMessage(const QString &protocolName, UserListElements senders, const QString &msg, time_t t, bool &grab);
 
 		/* b³±d po³±czenia */
-		void connectionError(const QString &message);
+		void connectionError(const QString &protocolName, const QString &message);
 
 		/* u¿ytkownik zmieni³ status */
-		void userStatusChanged(const UserListElement &ule, const UserStatus &oldStatus);
+		void userStatusChanged(UserListElement ule, QString protocolName, const UserStatus &oldStatus);
 
 		/* u¿ytkownik zmieni³ status na "Dostêpny" */
-		void userChangedStatusToAvailable(const UserListElement &ule);
+		void userChangedStatusToAvailable(const QString &protocolName, UserListElement);
 
 		/* u¿ytkownik zmieni³ status na "Zaraz wracam" */
-		void userChangedStatusToBusy(const UserListElement &ule);
+		void userChangedStatusToBusy(const QString &protocolName, UserListElement);
 
 		/* u¿ytkownik zmieni³ status na "Niewidoczny" */
-		void userChangedStatusToInvisible(const UserListElement &ule);
+		void userChangedStatusToInvisible(const QString &protocolName, UserListElement);
 
 		/* u¿ytkownik zmieni³ status na "Niewidoczny" lub "Niedostêpny" */
-		void userChangedStatusToNotAvailable(const UserListElement &ule);
+		void userChangedStatusToNotAvailable(const QString &protocolName, UserListElement);
 
 		/* inna informacja do powiadomienia */
 		/* je¿eli parameters == NULL, to brane s± domy¶lne ustawienia dymków typu message
@@ -113,7 +113,7 @@ class HintManager : public QFrame
 
 			pozosta³e funkcje pokazuj±ce dymki s± tylko opakowaniami na t± funkcjê
 		**/
-		void addHint(const QString &text, const QPixmap &pixmap, const QFont &font, const QColor &fgcolor, const QColor &bgcolor, unsigned int timeout, const UinsList &senders=UinsList());
+		void addHint(const QString &text, const QPixmap &pixmap, const QFont &font, const QColor &fgcolor, const QColor &bgcolor, unsigned int timeout, const UserListElements &senders = UserListElements());
 
 		/**
 			usuwa dymek o numerze id

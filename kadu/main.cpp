@@ -30,6 +30,7 @@
 #include "config_file.h"
 #include "misc.h"
 #include "debug.h"
+#include "groups_manager.h"
 #include "modules.h"
 #include "emoticons.h"
 #include "message_box.h"
@@ -37,7 +38,7 @@
 //patrz komentarz w config_file.h
 ConfigFile *config_file_ptr;
 
-Kadu *kadu;	
+Kadu *kadu;
 
 #ifdef SIG_HANDLING_ENABLED
 #include <qdatetime.h>
@@ -48,7 +49,7 @@ Kadu *kadu;
 static void kadu_signal_handler(int s)
 {
 	kdebugmf(KDEBUG_WARNING, "%d\n", s);
-	
+
 	if (s==SIGSEGV)
 	{
 		kdebugm(KDEBUG_PANIC, "Kadu crashed :(\n");
@@ -56,7 +57,7 @@ static void kadu_signal_handler(int s)
 		QString debug_file = QString("kadu.backtrace.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
 
 		if(lockFile)
-		{ // moze sie wywalic praktycznie po wylaczeniu i to tez trzeba uwzglednic	
+		{ // moze sie wywalic praktycznie po wylaczeniu i to tez trzeba uwzglednic
 			flock(lockFileHandle, LOCK_UN);
 			kdebugm(KDEBUG_WARNING, "lock released\n");
 			lockFile->close();
@@ -93,7 +94,7 @@ static void kadu_signal_handler(int s)
 
 			fprintf(dbgfile, "static modules:\n");
 			QStringList modules = modules_manager->staticModules();
-			
+
 			CONST_FOREACH(module, modules)
 				fprintf(dbgfile, "> %s\n", (*module).local8Bit().data());
 			fflush(dbgfile);
@@ -123,7 +124,7 @@ static void kadu_signal_handler(int s)
 
 		free(bt_strings);
 #else
-		kdebugm(KDEBUG_PANIC, "backtrace not available\n");		
+		kdebugm(KDEBUG_PANIC, "backtrace not available\n");
 #endif
 		xml_config_file->saveTo(ggPath(f.latin1()));
 		abort();
@@ -168,11 +169,14 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "data directory (%s) is NOT readable, exiting...\n", data_dir.local8Bit().data());
 		fprintf(stderr, "look at: http://www.kadu.net/msgs/data_dir_not_readable/\n");
 		fflush(stderr);
-		
+
 		exit(10);
 	}
-	emoticons=new EmoticonsManager();
-	
+
+	UserList::initModule();
+	GroupsManager::initModule();
+	emoticons = new EmoticonsManager();
+
 	new QApplication(argc, argv);
 	defaultFontInfo = new QFontInfo(qApp->font());
 	defaultFont = new QFont(defaultFontInfo->family(), defaultFontInfo->pointSize());
@@ -203,6 +207,8 @@ int main(int argc, char *argv[])
 			    delete defaultFontInfo;
 			    delete emoticons;
 				delete config_file_ptr;
+				GroupsManager::closeModule();
+				UserList::closeModule();
 			    delete xml_config_file;
 			    lockFile->close();
 			    delete lockFile;
@@ -213,7 +219,7 @@ int main(int argc, char *argv[])
 	}
 
 	IconsManager::initModule();
-	kadu = new Kadu(0, "Kadu");
+	new Kadu(0, "Kadu");
 
 	qApp->setMainWidget(kadu);
 	QPixmap pix;

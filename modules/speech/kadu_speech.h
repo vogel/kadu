@@ -2,6 +2,7 @@
 #define KADU_SPEAK_H
 #include <qobject.h>
 #include <qstring.h>
+
 #include "misc.h"
 #include "userlist.h"
 
@@ -14,13 +15,14 @@ class SpeechSlots : public QObject
 		SpeechSlots(QObject *parent=0, const char *name=0);
 		~SpeechSlots();
 	private slots:
-		void newChat(const UinsList &senders, const QString& msg, time_t time);
-		void newMessage(const UinsList &senders, const QString& msg, time_t time, bool &grab);
-		void connectionError(const QString &message);
-		void userChangedStatusToAvailable(const UserListElement &ule);
-		void userChangedStatusToBusy(const UserListElement &ule);
-		void userChangedStatusToInvisible(const UserListElement &ule);
-		void userChangedStatusToNotAvailable(const UserListElement &ule);
+		void newChat(const QString &protocolName, UserListElements senders, const QString &msg, time_t t);
+		void newMessage(const QString &protocolName, UserListElements senders, const QString &msg, time_t t, bool &grab);
+		void connectionError(const QString &protocolName, const QString &message);
+		void userChangedStatusToAvailable(const QString &protocolName, UserListElement);
+		void userChangedStatusToBusy(const QString &protocolName, UserListElement);
+		void userChangedStatusToInvisible(const QString &protocolName, UserListElement);
+		void userChangedStatusToNotAvailable(const QString &protocolName, UserListElement);
+
 		void message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
 
 		void say(const QString &s, const QString &path=QString::null,

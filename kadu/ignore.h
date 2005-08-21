@@ -5,6 +5,7 @@
 #include <qvaluelist.h>
 
 #include "gadu.h"
+#include "usergroup.h"
 
 class QLineEdit;
 class QListBox;
@@ -13,7 +14,7 @@ class QDialog;
 /**
 	Dialog umo¿liwiaj±cy zarz±dzanie list± ignorowanych
 **/
-class Ignored : public QHBox 
+class Ignored : public QHBox
 {
 	Q_OBJECT
 	public:
@@ -33,14 +34,14 @@ class Ignored : public QHBox
 
 int readIgnored();
 int writeIgnored(QString filename = QString::null);
-void addIgnored(UinsList uins);
-void delIgnored(UinsList uins);
-bool isIgnored(UinsList uins);
+void addIgnored(UserListElements uins);
+void delIgnored(UserListElements uins);
+bool isIgnored(UserListElements uins);
 void clearIgnored();
 
 // Ominiecie bledu w gcc 3.2
-static QValueList<UinsList> ignored_gcc32_bug;
+static QValueList<UserListElements> ignored_gcc32_bug;
 ////////////////////////////
-extern QValueList<UinsList> ignored;
+extern QValueList<UserListElements> ignored;
 
 #endif

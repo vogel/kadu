@@ -48,18 +48,26 @@ bool UserStatus::operator != (const UserStatus &compare) const
 	return (Stat != compare.Stat) || (Description != compare.Description);
 }
 
+UserStatus *UserStatus::copy() const
+{
+	return new UserStatus(*this);
+}
+
 QPixmap UserStatus::pixmap(bool mobile) const
 {
+//	kdebugf();
 	return pixmap(Stat, hasDescription(), mobile);
 }
 
 QPixmap UserStatus::pixmap(const UserStatus &stat, bool mobile) const
 {
+//	kdebugf();
 	return pixmap(stat.status(), stat.hasDescription(), mobile);
 }
 
 QPixmap UserStatus::pixmap(eUserStatus /*stat*/, bool /*desc*/, bool /*mobile*/) const
 {
+//	kdebugf();
 	static QPixmap result;
 	return result;
 }
@@ -128,71 +136,82 @@ void UserStatus::setOnline(const QString& desc)
 {
 	if (Stat == Online && Description == desc && !Changed)
 		return;
+	UserStatus *old = copy();
 
 	Stat = Online;
 	Description = desc;
 	Changed = false;
 
 	emit goOnline(Description);
-	emit changed(*this);
+	emit changed(*this, *old);
+	delete old;
 }
 
 void UserStatus::setBusy(const QString& desc)
 {
 	if (Stat == Busy && Description == desc && !Changed)
 		return;
+	UserStatus *old = copy();
 
 	Stat = Busy;
 	Description = desc;
 	Changed = false;
 
 	emit goBusy(Description);
-	emit changed(*this);
+	emit changed(*this, *old);
+	delete old;
 }
 
 void UserStatus::setInvisible(const QString& desc)
 {
 	if (Stat == Invisible && Description == desc && !Changed)
 		return;
+	UserStatus *old = copy();
 
 	Stat = Invisible;
 	Description = desc;
 	Changed = false;
 
 	emit goInvisible(Description);
-	emit changed(*this);
+	emit changed(*this, *old);
+	delete old;
 }
 
 void UserStatus::setOffline(const QString& desc)
 {
 	if (Stat == Offline && Description == desc)
 		return;
+	UserStatus *old = copy();
 
 	Stat = Offline;
 	Description = desc;
 	Changed = false;
 
 	emit goOffline(Description);
-	emit changed(*this);
+	emit changed(*this, *old);
+	delete old;
 }
 
 void UserStatus::setBlocking()
 {
 	if (Stat == Blocking)
 		return;
+	UserStatus *old = copy();
 
 	Stat = Blocking;
 	Description = "";
 	Changed = false;
 
 	emit goBlocking();
-	emit changed(*this);
+	emit changed(*this, *old);
+	delete old;
 }
 
 void UserStatus::setDescription(const QString& desc)
 {
 	if (Description == desc)
 		return;
+	UserStatus *old = copy();
 
 	Description = desc;
 
@@ -200,30 +219,27 @@ void UserStatus::setDescription(const QString& desc)
 	{
 		case Online:
 			emit goOnline(Description);
-			emit changed(*this);
 			break;
 
 		case Busy:
 			emit goBusy(Description);
-			emit changed(*this);
 			break;
 
 		case Invisible:
 			emit goInvisible(Description);
-			emit changed(*this);
 			break;
 
 		case Blocking:
 			emit goBlocking();
-			emit changed(*this);
 			break;
 
 		case Offline:
 		default:
 			emit goOffline(Description);
-			emit changed(*this);
 			break;
 	}
+	emit changed(*this, *old);
+	delete old;
 }
 
 void UserStatus::setFriendsOnly(bool f)
@@ -359,6 +375,12 @@ QString UserStatus::name(int nr)
 QString UserStatus::name() const
 {
 	return name(index());
+}
+
+QString UserStatus::protocolName() const
+{
+	kdebugmf(KDEBUG_WARNING, "protocolName == \"None\"!\n");
+	return "None";
 }
 
 /* our own description container */

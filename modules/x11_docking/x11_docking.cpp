@@ -19,6 +19,7 @@
 #include "config_file.h"
 #include "kadu.h"
 #include "config_dialog.h"
+#include "chat_manager.h"
 #include "chat.h"
 
 #include <X11/Xlib.h>
@@ -143,7 +144,7 @@ X11TrayIcon::X11TrayIcon(QWidget *parent, const char *name)
 	XFlush(dsp);
 	if (manager_window != None)
 		send_message(dsp, manager_window, SYSTEM_TRAY_REQUEST_DOCK, win, 0, 0);
-	
+
 	// SPOSÓB DRUGI
 	// Dzia³a na KDE 3.0.x i pewnie na starszych
 	// oraz pod GNOME 1.x
@@ -153,35 +154,35 @@ X11TrayIcon::X11TrayIcon(QWidget *parent, const char *name)
 	XChangeProperty(dsp, win, r, r, 32, 0, (uchar *)&data, 1);
 	r = XInternAtom(dsp, "_KDE_NET_WM_SYSTEM_TRAY_WINDOW_FOR", false);
 	XChangeProperty(dsp, win, r, XA_WINDOW, 32, 0, (uchar *)&data, 1);
-	
+
 #ifdef ENABLE_HIDING
 	//wy³±czamy pokazywanie Kadu na pasku zadañ
 	disableTaskbar();
 	connect(kadu, SIGNAL(shown()), this, SLOT(disableTaskbar()));
 //	connect(kadu, SIGNAL(minimized()), kadu, SLOT(hide()));
 #endif
-	
+
 	connect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&, const QString &)), this, SLOT(setTrayPixmap(const QPixmap&, const QString &)));
 	connect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 	connect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), this, SLOT(setTrayMovie(const QMovie &)));
-	connect(chat_manager, SIGNAL(chatCreated(const UinsList&)), this, SLOT(chatCreatedSlot(const UinsList&)));
-	
+	connect(chat_manager, SIGNAL(chatCreated(const UserGroup *)), this, SLOT(chatCreatedSlot(const UserGroup *)));
+
 	docking_manager->setDocked(true);
 
 	show();
-	
+
 	//zapobiega pojawieniu siê 2 ikon jedna na drugiej (z kilkunastopikselowym przesuniêciem)
 	QTimer::singleShot(0, this, SLOT(repaint()));
 	QTimer::singleShot(1000, this, SLOT(repaint()));
-	
+
 	kdebugf2();
 }
 
-void X11TrayIcon::chatCreatedSlot(const UinsList& senders)
+void X11TrayIcon::chatCreatedSlot(const UserGroup *group)
 {
 	kdebugf();
-	Chat *c=chat_manager->findChatByUins(senders);
+	Chat *c=chat_manager->findChat(group);
 	if (!c)
 	{
 		kdebugmf(KDEBUG_FUNCTION_END, "chat is null\n");
@@ -216,7 +217,7 @@ void X11TrayIcon::enableTaskbar(bool enable)
 	Screen *screen = XDefaultScreenOfDisplay(dsp);
 	int screen_id = XScreenNumberOfScreen(screen);
 	WId rootWindow=QApplication::desktop()->screen(screen_id)->winId();
-	
+
 	if (!set)
 	{
 		memset(&e, 0, sizeof(e));
@@ -249,8 +250,8 @@ X11TrayIcon::~X11TrayIcon()
 	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&, const QString &)), this, SLOT(setTrayPixmap(const QPixmap&, const QString &)));
 	disconnect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
-	disconnect(chat_manager, SIGNAL(chatCreated(const UinsList&)), this, SLOT(chatCreatedSlot(const UinsList&)));
-	
+	disconnect(chat_manager, SIGNAL(chatCreated(const UserGroup *)), this, SLOT(chatCreatedSlot(const UserGroup *)));
+
 	docking_manager->setDocked(false);
 
 	kdebugf2();

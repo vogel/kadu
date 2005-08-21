@@ -14,7 +14,7 @@
 #include <qmap.h>
 #include <qmessagebox.h>
 #include <qlistbox.h>
-#include <qptrstack.h> 
+#include <qptrstack.h>
 
 #include "userlist.h"
 #include "misc.h"
@@ -41,7 +41,7 @@ class SmsImageDialog : public QDialog
 class SmsGateway : public QObject
 {
 	Q_OBJECT
-	
+
 	protected:
 		enum GatewayState
 		{
@@ -56,11 +56,11 @@ class SmsGateway : public QObject
 		HttpClient Http;
 
 	private slots:
-		void httpError(); 
+		void httpError();
 	protected slots:
 		virtual void httpFinished()=0;
 		virtual void httpRedirected(QString)=0;
-		
+
 	public:
 		SmsGateway(QObject* parent, const char *name=0);
 	public slots:
@@ -85,7 +85,7 @@ class SmsSender : public QObject
 		~SmsSender();
 	public slots:
 		void send(const QString& number,const QString& message, const QString& contact, const QString& signature);
-		
+
 	signals:
 		void finished(bool success);
 };
@@ -95,7 +95,7 @@ class SmsSender : public QObject
 **/
 class Sms : public QDialog {
 	Q_OBJECT
-	
+
 	public:
 		Sms(const QString& altnick, QDialog* parent=0, const char *name=0);
 		~Sms();
@@ -128,7 +128,7 @@ typedef SmsGateway* isValidFunc(const QString&, QObject*);
 class SmsSlots: public QObject
 {
 	Q_OBJECT
-	
+
 	public:
 		SmsSlots(QObject *parent=0, const char *name=0);
 		~SmsSlots();
@@ -136,11 +136,11 @@ class SmsSlots: public QObject
 		void unregisterGateway(QString);
 		SmsGateway* getGateway(const QString& number);
 		void newSms(QString nick);
-		
+
 	private:
 		int menuid;
 		QMap<QString,isValidFunc*> gateways;
-	
+
 	public slots:
 		void onSmsBuildInCheckToggle(bool);
 		void onCreateConfigDialog();
@@ -148,7 +148,7 @@ class SmsSlots: public QObject
 		void onApplyConfigDialog();
 		void onSendSms();
 		void onUserClicked(int button, QListBoxItem* item, const QPoint& pos);
-		void onUserDblClicked(const QString &text);
+		void onUserDblClicked(UserListElement elem);
 		void onPopupMenuCreate();
 		void onSendSmsToUser();
 		void onUpButton();

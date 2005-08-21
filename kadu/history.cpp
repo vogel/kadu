@@ -109,8 +109,8 @@ void HistoryManager::appendMessage(UinsList uins, UinType uin, const QString &ms
 		else
 			linelist.append("msgrcv");
 	linelist.append(QString::number(uin));
-	if (userlist.containsUin(uin))
-		nick = userlist.byUin(uin).altNick();
+	if (userlist->contains("Gadu", QString::number(uin)))
+		nick = userlist->byID("Gadu", QString::number(uin)).altNick();
 	else
 		nick = QString::number(uin);
 	linelist.append(text2csv(nick));
@@ -161,11 +161,11 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 	linelist.append(QString::number(time(NULL)));
 	linelist.append(text2csv(msg));
 
-	CONST_FOREACH(i, userlist)
+	CONST_FOREACH(i, *userlist)
 		if ((*i).mobile() == mobile)
 		{
 			altnick = (*i).altNick();
-			uin = (*i).uin();
+			uin = (*i).ID("Gadu").toUInt();;
 			break;
 		}
 	if (uin)
@@ -249,11 +249,12 @@ void HistoryManager::appendStatus(UinType uin, const UserStatus &status)
 	convHist2ekgForm(uins);
 	linelist.append("status");
 	linelist.append(QString::number(uin));
-	if (userlist.containsUin(uin))
+	if (userlist->contains("Gadu", QString::number(uin), FalseForAnonymous))
 	{
-		nick = userlist.byUin(uin).altNick();
-		ip = userlist.byUin(uin).ip();
-		port = userlist.byUin(uin).port();
+		UserListElement user = userlist->byID("Gadu", QString::number(uin));
+		nick = user.altNick();
+		ip = user.IP("Gadu");
+		port = user.port("Gadu");
 	}
 	else
 	{
@@ -429,8 +430,8 @@ void HistoryManager::convHist2ekgForm(UinsList uins)
 				else
 					uin = uins[1];
 			}
-			else if (userlist.containsAltNick(nick))
-				uin = userlist.byAltNick(nick).uin();
+			else if (userlist->containsAltNick(nick))
+				uin = userlist->byAltNick(nick).ID("Gadu").toUInt();
 			else if (uins.count() > 1)
 				uin = 0;
 			else if (myUin != uins[0])
@@ -439,8 +440,8 @@ void HistoryManager::convHist2ekgForm(UinsList uins)
 				uin = uins[1];
 			linelist.append(QString::number(uin));
 			if (our)
-				if (userlist.containsUin(uin))
-					nick = userlist.byUin(uin).altNick();
+				if (userlist->contains("Gadu", QString::number(uin)))
+					nick = userlist->byID("Gadu", QString::number(uin)).altNick();
 				else
 					nick = QString::number(uin);
 			linelist.append(nick);
@@ -556,9 +557,9 @@ void HistoryManager::convSms2ekgForm()
 			datetime.setTime(QTime(czas.left(2).toInt(), czas.mid(3, 2).toInt(), czas.right(2).toInt()));
 			linelist.append(QString::number(-datetime.secsTo(
 				QDateTime(QDate(1970, 1, 1), QTime(0 ,0)))));
-			CONST_FOREACH(user, userlist)
+			CONST_FOREACH(user, *userlist)
 				if ((*user).mobile() == mobile)
-					uin = (*user).uin();
+					uin = (*user).ID("Gadu").toUInt();
 			header = false;
 		}
 		else
@@ -1160,23 +1161,28 @@ int HistoryManager::getHistoryEntryIndexByDate(const UinsList &uins, const QDate
 	return start;
 }
 
-void HistoryManager::chatMsgReceived(UinsList senders, const QString& msg, time_t t, bool& /*grab*/)
+void HistoryManager::chatMsgReceived(const QString &protocolName, UserListElements senders, const QString& msg, time_t t, bool& /*grab*/)
 {
 	if (!config_file.readBoolEntry("History", "Logging"))
 		return;
 	kdebugf();
-	int occur=msg.contains(QRegExp("<img [^>]* gg_crc[^>]*>"));
-	kdebugm(KDEBUG_INFO, "sender: %d msg: '%s' occur:%d\n", senders[0], msg.local8Bit().data(), occur);
-	if (bufferedMessages.find(senders[0])!=bufferedMessages.end() || occur>0)
+	int occur = msg.contains(QRegExp("<img [^>]* gg_crc[^>]*>"));
+	UinType sender0 = senders[0].ID("Gadu").toUInt();
+	kdebugm(KDEBUG_INFO, "sender: %d msg: '%s' occur:%d\n", sender0, msg.local8Bit().data(), occur);
+	UinsList uins;//TODO: wywaliæ UinsList
+	CONST_FOREACH(u, senders)
+		if ((*u).usesProtocol("Gadu"))
+			uins.append((*u).ID("Gadu").toUInt());
+	if (bufferedMessages.find(sender0) != bufferedMessages.end() || occur > 0)
 	{
 		kdebugm(KDEBUG_INFO, "buffering\n");
-		bufferedMessages[senders[0]].append(BuffMessage(senders, msg, t, time(NULL), false, occur));
-		checkImageTimeout(senders[0]);
+		bufferedMessages[sender0].append(BuffMessage(uins, msg, t, time(NULL), false, occur));
+		checkImageTimeout(sender0);
 	}
 	else
 	{
 		kdebugm(KDEBUG_INFO, "appending to history\n");
-		history.appendMessage(senders, senders[0], msg, false, t, true, time(NULL));
+		history.appendMessage(uins, sender0, msg, false, t, true, time(NULL));
 	}
 	kdebugf2();
 }
@@ -1289,8 +1295,8 @@ UinsListViewText::UinsListViewText(QListView *parent, const UinsList &uins)
 		uint i = 0, uinsCount = uins.count();
 		CONST_FOREACH(uin, uins)
 		{
-			if (userlist.containsUin(*uin))
-				name.append(userlist.byUin(*uin).altNick());
+			if (userlist->contains("Gadu", QString::number(*uin)))
+				name.append(userlist->byID("Gadu", QString::number(*uin)).altNick());
 			else
 				name.append(QString::number(*uin));
 			if (i++ < uinsCount - 1)
@@ -1806,8 +1812,8 @@ void History::initModule()
 	ConfigDialog::registerSlotOnApply(historyslots, SLOT(onDestroyConfigDialog()));
 	ConfigDialog::connectSlot("History", "historyslider", SIGNAL(valueChanged(int)), historyslots, SLOT(updateQuoteTimeLabel(int)));
 
-	connect(gadu,SIGNAL(chatMsgReceived1(UinsList,const QString&,time_t,bool&)),
-		&history,SLOT(chatMsgReceived(UinsList,const QString&,time_t,bool&)));
+	connect(gadu,SIGNAL(chatMsgReceived1(const QString &, UserListElements, const QString&, time_t, bool&)),
+		&history,SLOT(chatMsgReceived(const QString &, UserListElements, const QString&, time_t, bool&)));
 	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
 		&history, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
 	kdebugf2();

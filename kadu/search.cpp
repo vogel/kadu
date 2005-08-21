@@ -23,6 +23,7 @@
 #include <stdlib.h>
 
 #include "chat.h"
+#include "chat_manager.h"
 #include "debug.h"
 #include "kadu.h"
 #include "search.h"
@@ -194,9 +195,7 @@ void SearchDialog::selectionChanged(QListViewItem *item)
 	if (item)
 	{
 		uin = item->text(1).toUInt();
-		if (userlist.containsUin(uin) && 
-			(!userlist.byUin(uin).isAnonymous() || !kadu->docked())
-		    )
+		if (userlist->contains("Gadu", QString::number(uin)))
 		{
 			b_addbtn->setText(tr("&Update Info"));
 			connect(b_addbtn, SIGNAL(clicked()), this, SLOT(updateInfoClicked()));
@@ -401,29 +400,18 @@ void SearchDialog::AddButtonClicked()
 	if (altnick.isEmpty())
 		altnick = uin;
 
-	UserInfo *ui = new UserInfo(QString::null, true, 0, "user info");
 	UserListElement e;
 	bool ok;
 	e.setFirstName(firstname);
-	e.setLastName("");
 	e.setNickName(nickname);
 	e.setAltNick(altnick);
-	e.setUin(uin.toUInt(&ok));
+	UinType uin2 = uin.toUInt(&ok);
 	if (!ok)
-		e.setUin(0);
-	e.setGroup("");
-	e.setEmail("");
-	ui->setUserInfo(e);
-	ui->show();
-	/*
-		FIXME !!
-	//selectionChanged(selected); - to nic nie daje
-	- funkcja ta powinna byc wywolana po zamknieciu okna dodawania usera
-	a jest wywolywana zaraz po pokazaniu sie okienka z dodawaniem usera
-	tip: dodaæ do okna z dodawaniem sygnal który by wemitowa³ sie
-	gdy dodamy nowego usera i siê pod ten sygna³ podpi±æ i wywo³aæ t± funkcje
+		uin2 = 0;
+	if (uin2)
+		e.addProtocol("Gadu", QString::number(uin2));
 
-	*/
+	(new UserInfo(e, 0, "user info"))->show();
 	kdebugf2();
 }
 
@@ -442,7 +430,7 @@ void SearchDialog::updateInfoClicked()
 	QString nickname = selected->text(4);
 
 	UinType uin = suin.toUInt();
-	UserListElement &ule = userlist.byUin(uin);
+	UserListElement ule = userlist->byID("Gadu", QString::number(uin));
 
 	// Build altnick. Try user nick first.
 	QString altnick = nickname;
@@ -458,13 +446,9 @@ void SearchDialog::updateInfoClicked()
 	if (altnick.isEmpty())
 		altnick = uin;
 
-	UserListElement e;
-	e = ule;
-	e.setFirstName(firstname);
-	e.setNickName(nickname);
-	UserInfo *ui = new UserInfo(ule.altNick(), false, 0, "user info");
-	ui->setUserInfo(e);
-	ui->show();
+	ule.setFirstName(firstname);
+	ule.setNickName(nickname);
+	(new UserInfo(ule, 0, "user info"))->show();
 	kdebugf2();
 }
 
@@ -480,10 +464,10 @@ void SearchDialog::openChat()
 		return;
 	}
 
-	QString uin = selected->text(1);
-	UinsList uins((UinType)uin.toInt());
+	UinType uin = selected->text(1).toUInt();
+	UserListElements users(userlist->byID("Gadu", QString::number(uin)));
 
-	if (uins.findIndex(config_file.readNumEntry("General", "UIN")) == -1)
-		chat_manager->openChat(uins);
+	if (uin != config_file.readUnsignedNumEntry("General", "UIN"))
+		chat_manager->openChat("Gadu", users);
 	kdebugf2();
 }

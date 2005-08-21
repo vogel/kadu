@@ -24,7 +24,7 @@ SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name
 
 	soundNames<<"Chat"<<"Message"<<"StatusAvailable"<<"StatusBusy"<<"StatusInvisible"<<
 			"StatusNotAvailable"<<"ConnectionError"<<"OtherMessage";
-	
+
 	soundTexts<<tr("Chat sound")<<tr("Message sound")<<tr("Status available sound")<<
 				tr("Status busy sound")<<tr("Status invisible sound")<<tr("Status not available sound")<<
 				tr("Conection error sound")<<tr("Other message");
@@ -50,7 +50,7 @@ SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name
 	SampleRecordingTestSample = NULL;
 	FullDuplexTestMsgBox = NULL;
 	FullDuplexTestSample = NULL;
-	
+
 	kdebugf2();
 }
 
@@ -73,7 +73,7 @@ void SoundSlots::onCreateConfigDialog()
 	cb_soundtheme->insertItem("Custom");// 0-wa pozycja
 	cb_soundtheme->insertStringList(sound_manager->themes());
 	cb_soundtheme->setCurrentText(config_file.readEntry("Sounds", "SoundTheme"));
-	cb_soundtheme->changeItem(tr("Custom"), 0);// dodanie translacji 
+	cb_soundtheme->changeItem(tr("Custom"), 0);// dodanie translacji
 	if (sound_manager->themes().contains("default"))
 		cb_soundtheme->changeItem(tr("default"), sound_manager->themes().findIndex("default")+1);
 
@@ -93,7 +93,7 @@ void SoundSlots::onCreateConfigDialog()
 	lv_soundfiles->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Ignored));
 	config_file.addVariable("Sounds", "Notify_sound", config_file.readEntry("Notify", "NotifySound"));
 
-	soundfiles.clear();	
+	soundfiles.clear();
 	if (cb_soundtheme->currentText() == tr("Custom"))
 		CONST_FOREACH(name, soundNames)
 			soundfiles[*name] = config_file.readEntry("Sounds", (*name)+"_sound");
@@ -107,16 +107,16 @@ void SoundSlots::onCreateConfigDialog()
 		CONST_FOREACH(name, soundNames)
 			soundfiles[*name] = sound_manager->themePath()+sound_manager->getThemeEntry(*name);
 	}
-	
+
 	QStringList::const_iterator text = soundTexts.begin();
 	CONST_FOREACH(name, soundNames)
 		new QListViewItem(lv_soundfiles, *text++, soundfiles[*name]);
 
 	QVBox* util_box=ConfigDialog::getVBox("Sounds","util_box");
 	util_box->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum));
-	
+
 	soundPlayer(b_playsound->isChecked());
-	
+
 	g_volume->setEnabled(b_playsound->isChecked() && b_volumectrl->isChecked());
 	b_playinvisible->setEnabled(b_playsound->isChecked());
 
@@ -133,7 +133,7 @@ void SoundSlots::muteUnmuteSounds()
 	bool mute=!sound_manager->isMuted();
 	sound_manager->setMute(mute);
 	config_file.writeEntry("Sounds", "PlaySound", !mute);
-	
+
 	if (ConfigDialog::dialogOpened())
 	{
 		QCheckBox *box=ConfigDialog::getCheckBox("Sounds", "Play sounds");
@@ -197,7 +197,7 @@ void SoundSlots::chooseSoundFile()
 	QString p=item->text(1);
 	if (QFile(p).exists())
 		start=p;
-	
+
 	QString s(QFileDialog::getOpenFileName( start, "Audio Files (*.wav *.au *.raw)", ConfigDialog::configdialog));
 	if (!s.isEmpty())
 		item->setText(1,s);
@@ -263,15 +263,15 @@ void SoundSlots::selectedPaths(const QStringList& paths)
 	sound_manager->setPaths(paths);
 	QComboBox* cb_soundtheme= ConfigDialog::getComboBox("Sounds","Sound theme");
 	QString current= cb_soundtheme->currentText();
-	
+
 	SelectPaths* soundPath = ConfigDialog::getSelectPaths("Sounds","Sound paths");
 	soundPath->setPathList(sound_manager->additionalPaths());
-	
+
 	cb_soundtheme->clear();
 	cb_soundtheme->insertItem("Custom");// 0-wa pozycja
 	cb_soundtheme->insertStringList(sound_manager->themes());
 	cb_soundtheme->setCurrentText(current);
-	cb_soundtheme->changeItem(tr("Custom"), 0);// dodanie translacji 
+	cb_soundtheme->changeItem(tr("Custom"), 0);// dodanie translacji
 
 	if (paths.contains("default"))
 		cb_soundtheme->changeItem(tr("default"), paths.findIndex("default")+1);
@@ -310,7 +310,7 @@ void SoundSlots::testSamplePlaying()
 	QString chatsound;
 	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
 		chatsound = config_file.readEntry("Sounds", "Chat_sound");
-	else 
+	else
 		chatsound = sound_manager->themePath(config_file.readEntry("Sounds", "SoundTheme")) + sound_manager->getThemeEntry("Chat");
 
 	QFile file(chatsound);
@@ -322,16 +322,16 @@ void SoundSlots::testSamplePlaying()
 	// alokujemy jeden int16_t wiêcej w razie gdyby file.size() nie
 	// by³o wielokrotno¶ci± sizeof(int16_t)
 	SamplePlayingTestSample = new int16_t[file.size() / sizeof(int16_t) + 1];
-	if (file.readBlock((char*)SamplePlayingTestSample, file.size()) != file.size())
+	if (file.readBlock((char*)SamplePlayingTestSample, file.size()) != (unsigned)file.size())
 	{
 		MessageBox::wrn(tr("Reading test sample file failed."));
 		file.close();
 		delete[] SamplePlayingTestSample;
 		SamplePlayingTestSample = NULL;
-		return;	
+		return;
 	}
 	file.close();
-	
+
 	SamplePlayingTestDevice = sound_manager->openDevice(PLAY_ONLY, 11025);
 	if (SamplePlayingTestDevice == NULL)
 	{
@@ -340,7 +340,7 @@ void SoundSlots::testSamplePlaying()
 		SamplePlayingTestSample = NULL;
 		return;
 	}
-	
+
 	sound_manager->enableThreading(SamplePlayingTestDevice);
 	sound_manager->setFlushingEnabled(SamplePlayingTestDevice, true);
 	connect(sound_manager, SIGNAL(samplePlayed(SoundDevice)), this, SLOT(samplePlayingTestSamplePlayed(SoundDevice)));

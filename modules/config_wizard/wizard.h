@@ -1,7 +1,7 @@
 #ifndef KADU_CONFIG_WIZARD_H
 #define KADU_CONFIG_WIZARD_H
 
-#include <qwizard.h>	
+#include <qwizard.h>
 #include <qhbox.h>
 #include <qvbox.h>
 #include <qgroupbox.h>
@@ -28,7 +28,7 @@ class Wizard : public QWizard
 	protected:
 		bool noNewAccount;
 
-		/*  tworz± poszczegolne okna wizarda */ 
+		/*  tworz± poszczegolne okna wizarda */
 		void createWelcomePage();
 		void createGGNumberSelect();
 		void createGGCurrentNumberPage();
@@ -43,9 +43,9 @@ class Wizard : public QWizard
 		void createInfoPanelPage();
 		void createQtStylePage();
 		void createGreetingsPage();
-	
+
 		/* a tu sa okna */
-		QVBox *welcomePage, *ggNumberSelect, *ggCurrentNumberPage, *ggNewNumberPage, *languagePage, *chatOptionsPage, *wwwOptionsPage, 
+		QVBox *welcomePage, *ggNumberSelect, *ggCurrentNumberPage, *ggNewNumberPage, *languagePage, *chatOptionsPage, *wwwOptionsPage,
 			*soundOptionsPage, *generalOptionsPage, *greetingsPage, *hintsOptionsPage, *colorsPage, *qtStylePage, *infoPanelPage;
 		QRadioButton *rb_haveNumber, *rb_dontHaveNumber;
 		QLineEdit *l_ggNumber, *l_ggPassword, *l_ggNewPasssword, *l_ggNewPassswordRetyped, *l_email, *l_customBrowser;
@@ -107,7 +107,7 @@ class WizardStarter : public QObject
 	public slots:
 		void start();
 
-		void userListImported(bool ok, UserList& userList);
+		void userListImported(bool ok, QValueList<UserListElement> list);
 		void connected();
 };
 

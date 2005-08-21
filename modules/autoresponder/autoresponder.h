@@ -2,23 +2,24 @@
 #define AUTORESPONDER_H
 
 #include <qobject.h>
-#include "misc.h"
+
 #include "config_file.h"
+#include "misc.h"
+#include "usergroup.h"
 
 class AutoResponder : public QObject
 {
 	Q_OBJECT
-	
 	ConfigFile *config;
-	
-	public:	
+
+	public:
 		AutoResponder(QObject *parent=0, const char *name=0);
 		~AutoResponder();
 	public slots:
-		void chatReceived(UinsList senders,const QString& msg,time_t time);
-		void chatOpened(const UinsList& senders);
+		void chatMsgReceived(const QString &protocolName, UserListElements senders, const QString& msg, time_t time, bool& grab);
+		void chatOpened(const UserGroup *group);
 	public:
-		UinsList UserList;		/* tu beda przechowywane uiny tych ktorzy sie odezwali do nas */
+		UserGroup replied;		/* tu beda przechowywane uiny tych ktorzy sie odezwali do nas */
 };
 
 extern AutoResponder* autoresponder;

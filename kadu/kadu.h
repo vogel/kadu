@@ -17,7 +17,6 @@
 class QFile;
 class QMenuBar;
 
-
 /**
 	Toolbar Kadu
 **/
@@ -59,6 +58,7 @@ class Kadu : public QMainWindow
 	Q_OBJECT
 
 	private:
+		static bool Closing;
 		friend class KaduSlots;
 		KaduTextBrowser* InfoPanel;
 		QMenuBar* MenuBar;
@@ -76,7 +76,6 @@ class Kadu : public QMainWindow
 		bool BlinkOn;
 		bool Docked;
 		bool dontHideOnClose;
-		int lastId;
 
 		void createMenu();
 		void createToolBar();
@@ -87,29 +86,32 @@ class Kadu : public QMainWindow
 	public slots:
 		void show();
 		void mouseButtonClicked(int, QListBoxItem *);
-		void infopanelUpdate(UinType);
-		void currentChanged(QListBoxItem *item);
-		void sendMessage(const QString &to);
+		void updateInformationPanel(UserListElement);
+		void sendMessage(UserListElement elem);
 		void configure();
 
 	private slots:
-		void userListModified();
 		void openChat();
-		void chatMsgReceived(UinsList senders, const QString &msg, time_t time);
-		void userListChanged();
+		void chatMsgReceived(const QString &protocolName, UserListElements senders, const QString &msg, time_t time);
 
 		void wentOnline(const QString &);
 		void wentBusy(const QString &);
 		void wentInvisible(const QString &);
 		void wentOffline(const QString &);
-		void groupTabSelected(int id);
 		void connected();
 		void connecting();
 		void disconnected();
 		void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
 		void systemMessageReceived(const QString &msg);
-		void userStatusChanged(const UserListElement &, const UserStatus &oldstatus, bool onConnection);
+		void userStatusChanged(UserListElement user, QString protocolName, const UserStatus &oldstatus, bool massively, bool last);
 		void deleteOldConfigFiles();
+
+		void userDataChangedSlot(UserListElement elem, QString name, QVariant oldValue,
+							QVariant currentValue, bool massively, bool last);
+		void protocolUserDataChangedSlot(QString protocolName, UserListElement elem,
+							QString name, QVariant oldValue, QVariant currentValue,
+							bool massively, bool last);
+		void currentChanged(UserListElement);
 
 	protected:
 		void keyPressEvent(QKeyEvent *e);
@@ -120,7 +122,7 @@ class Kadu : public QMainWindow
 		Kadu(QWidget* parent=0, const char *name=0);
 		~Kadu();
 		bool userInActiveGroup(UinType uin);
-		void removeUser(const QStringList &, bool);
+		void removeUsers(UserListElements);
 
 		/**
 			Zwraca wskaznik do belki menu glownego okna.
@@ -148,11 +150,6 @@ class Kadu : public QMainWindow
 		bool docked() const;
 
 		/**
-			zwraca nazwê aktualnie wybranej grupy
-		**/
-		QString currentGroup() const;
-
-		/**
 		**/
 		void startupProcedure();
 
@@ -165,11 +162,12 @@ class Kadu : public QMainWindow
 			dodane zosta³o to pole, ¿eby nie trzeba by³o zmieniaæ tekstu w kilku miejscach
 		**/
 		static const QString SyntaxText;
+
+		static bool closing() { return Closing; }
 	public slots:
 		void slotHandleState(int command);
 		void changeAppearance();
 		void blink();
-		void refreshGroupTabBar();
 		void showdesc(bool show = true);
 		void statusMenuAboutToHide(void);
 		virtual bool close(bool quit = false);
@@ -206,11 +204,10 @@ class Kadu : public QMainWindow
 		void showUserInfo();
 		void viewHistory();
 		void popupMenu();
-		void setActiveGroup(const QString& group);
 
 		// odczytuje z obrazka tekst i zapisuje go w drugim parametrze
 		void readTokenValue(QPixmap, QString &);
-		
+
 		void setMainWindowIcon(const QPixmap &);
 
 	signals:
@@ -233,17 +230,11 @@ class Kadu : public QMainWindow
 		void shown();
 
 		/**
-			wyst±pi³ b³±d po³±czenia
-			TODO: wywaliæ po 0.4, odpowiedni sygna³ jest w GaduProtocol
-		**/
-		void connectionError(const QString &reason);
-
-		/**
 			u¿ywany przez modu³ hints do zdobycia pozycji traya od modu³u docking
 			TODO: trzeba wymy¶liæ jaki¶ elegancki sposób na komunikacjê pomiêdzy modu³ami, które nie zale¿± od siebie
 		**/
 		void searchingForTrayPosition(QPoint &point);
-		
+
 		void settingMainIconBlocked(bool &);
 };
 

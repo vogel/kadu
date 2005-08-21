@@ -50,7 +50,7 @@ class SamplePlayThread : public QObject, public QThread
 		SamplePlayThread(SoundDevice device);
 		void playSample(const int16_t* data, int length);
 		void stop();
-		
+
 	signals:
 		void samplePlayed(SoundDevice device);
 };
@@ -79,7 +79,7 @@ class SampleRecordThread : public QObject, public QThread
 		SampleRecordThread(SoundDevice device);
 		void recordSample(int16_t* data, int length);
 		void stop();
-		
+
 	signals:
 		void sampleRecorded(SoundDevice device);
 };
@@ -132,21 +132,22 @@ class SoundManager : public Themes
 		QMap<SoundDevice, SamplePlayThread*> PlayingThreads;
 		QMap<SoundDevice, SampleRecordThread*> RecordingThreads;
 		SoundPlayThread *play_thread;
-		
+
 		int simple_player_count;
 		virtual void connectNotify(const char *signal);
 		virtual void disconnectNotify(const char *signal);
 
 	private slots:
-		void newChat(const UinsList &senders, const QString& msg, time_t time);
-		void newMessage(const UinsList &senders, const QString& msg, time_t time, bool &grab);
-		void connectionError(const QString &message);
-		void userChangedStatusToAvailable(const UserListElement &ule);
-		void userChangedStatusToBusy(const UserListElement &ule);
-		void userChangedStatusToInvisible(const UserListElement &ule);
-		void userChangedStatusToNotAvailable(const UserListElement &ule);
+		void newChat(const QString &protocolName, UserListElements senders, const QString &msg, time_t t);
+		void newMessage(const QString &protocolName, UserListElements senders, const QString &msg, time_t t, bool &grab);
+		void connectionError(const QString &protocolName, const QString &message);
+		void userChangedStatusToAvailable(const QString &protocolName, UserListElement);
+		void userChangedStatusToBusy(const QString &protocolName, UserListElement);
+		void userChangedStatusToInvisible(const QString &protocolName, UserListElement);
+		void userChangedStatusToNotAvailable(const QString &protocolName, UserListElement);
+
 		/* from i ule s± ignorowane, message wskazuje na plik z d¼wiêkiem do odtworzenia
-		 * je¿eli message==QString::null, to odtwarzany jest standardowy d¼wiêk dla tego typu 
+		 * je¿eli message==QString::null, to odtwarzany jest standardowy d¼wiêk dla tego typu
 		 * je¿eli mapa jest!=NULL brane s± z niej nastêpuj±ce warto¶ci:
 		 *		"Force"           - bool (wymuszenie odtwarzania mimo wyciszenia)
 		 */
@@ -253,7 +254,7 @@ class SoundManager : public Themes
 			nagrywania do w±tku.
 			W takim wypadku nale¿y uwa¿aæ, aby nie zwolniæ pamiêci
 			bufora na dane sampla zanim nagrywanie siê nie
-			zakoñczy.			
+			zakoñczy.
 			@param device uogólniony deskryptor urz±dzenia
 			@param data wska¼nik na bufor dla danych sampla
 			@param length d³ugo¶æ sampla do nagrania (wielko¶æ bufora w bajtach)
@@ -329,7 +330,7 @@ class SoundManager : public Themes
 			@param length d³ugo¶æ sampla do nagrania (wielko¶æ bufora w bajtach)
 			@param result zwrócony rezultat operacji - true je¶li nagrywanie zakoñczy³o siê powodzeniem.
 		**/
-		void recordSampleImpl(SoundDevice device, int16_t* data, int length, bool& result);		
+		void recordSampleImpl(SoundDevice device, int16_t* data, int length, bool& result);
 		/**
 		**/
 		void setFlushingEnabledImpl(SoundDevice device, bool enabled);

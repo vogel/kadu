@@ -17,6 +17,7 @@
 #include <time.h>
 
 #include "chat.h"
+#include "chat_manager.h"
 #include "config_dialog.h"
 #include "debug.h"
 #include "kadu_speech.h"
@@ -54,7 +55,7 @@ void SpeechSlots::useArts()
 	ConfigDialog::getCheckBox("Speech", "Use aRts", "usearts")->setChecked(true);
 	ConfigDialog::getCheckBox("Speech", "Use Esd", "useesd")->setChecked(false);
 	ConfigDialog::getCheckBox("Speech", "Use Dsp", "usedsp")->setChecked(false);
-	
+
 	ConfigDialog::getCheckBox("Speech", "Klatt synthesizer (requires dsp)")->setChecked(false);
 	ConfigDialog::getCheckBox("Speech", "Klatt synthesizer (requires dsp)")->setEnabled(false);
 	ConfigDialog::getLineEdit("Speech", "Dsp device:")->setEnabled(false);
@@ -113,11 +114,11 @@ SpeechSlots::SpeechSlots(QObject *parent, const char *name) : QObject(parent, na
 		"Maximum number of spoken letters"), "MaxLength", 10, 2001, 1, 200);
 
 	ConfigDialog::addCheckBox("Speech", "Speech", QT_TRANSLATE_NOOP("@default","Melody"), "Melody", true);
-	ConfigDialog::addCheckBox("Speech", "Speech", 
+	ConfigDialog::addCheckBox("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Klatt synthesizer (requires dsp)"), "KlattSynt", false);
 	ConfigDialog::addCheckBox("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Use aRts"), "UseArts", false, "", "usearts");
-	ConfigDialog::addCheckBox("Speech", "Speech", 
+	ConfigDialog::addCheckBox("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Use Esd"), "UseEsd", false, "", "useesd");
 	ConfigDialog::addCheckBox("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Use Dsp"), "UseDsp", true, "", "usedsp");
@@ -129,39 +130,39 @@ SpeechSlots::SpeechSlots(QObject *parent, const char *name) : QObject(parent, na
 			QT_TRANSLATE_NOOP("@default","Speech program:"), "SpeechProgram","powiedz");
 	ConfigDialog::addPushButton("Speech", "Program", "", "OpenFile","","speech_fileopen");
 	ConfigDialog::connectSlot("Speech", "", SIGNAL(clicked()), this, SLOT(chooseSpeechProgram()), "speech_fileopen");
-	
+
 	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Chat format (male):"),
 			"ChatFormatMale", SpeechSlots::tr("man %a wrote %1"), Kadu::SyntaxText, "", Advanced);
-	ConfigDialog::addLineEdit("Speech", "Speech", 
+	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Chat format (female):"),
 			"ChatFormatFemale", SpeechSlots::tr("woman %a wrote %1"), Kadu::SyntaxText, "", Advanced);
 
-	ConfigDialog::addLineEdit("Speech", "Speech", 
+	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Message format (male):"),
 			"MessageFormatMale", SpeechSlots::tr("man %a wrote %1"), Kadu::SyntaxText, "", Advanced);
-	ConfigDialog::addLineEdit("Speech", "Speech", 
+	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Message format (female):"),
 			"MessageFormatFemale", SpeechSlots::tr("woman %a wrote %1"), Kadu::SyntaxText, "", Advanced);
 
-	ConfigDialog::addLineEdit("Speech", "Speech", 
+	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Notify format (male):"),
 			"NotifyFormatMale", SpeechSlots::tr("man %a changed status to %s %d"), Kadu::SyntaxText, "", Advanced);
-	ConfigDialog::addLineEdit("Speech", "Speech", 
+	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Notify format (female):"),
 			"NotifyFormatFemale", SpeechSlots::tr("woman %a changed status to %s %d"), Kadu::SyntaxText, "", Advanced);
 
-	ConfigDialog::addLineEdit("Speech", "Speech", 
+	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Connection error:"),
 			"ConnectionError", SpeechSlots::tr("Connection error - %1"), Kadu::SyntaxText, "", Advanced);
 
-	ConfigDialog::addLineEdit("Speech", "Speech", 
+	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Message too long (male):"),
 			"MsgTooLongMale", SpeechSlots::tr("%a wrote long message"), Kadu::SyntaxText, "", Advanced);
-	ConfigDialog::addLineEdit("Speech", "Speech", 
+	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Message too long (female):"),
 			"MsgTooLongFemale", SpeechSlots::tr("%a wrote long message"), Kadu::SyntaxText, "", Advanced);
-	
+
 	ConfigDialog::addPushButton("Speech", "Speech",	QT_TRANSLATE_NOOP("@default","Test"), "", "", "testspeech");
 
 	ConfigDialog::connectSlot("Speech", "Test", SIGNAL(clicked()), this, SLOT(testSpeech()), "testspeech");
@@ -172,15 +173,15 @@ SpeechSlots::SpeechSlots(QObject *parent, const char *name) : QObject(parent, na
 	ConfigDialog::registerSlotOnCreate(this, SLOT(onCreateConfigDialog()));
 
 	QMap<QString, QString> s;
-	s["NewChat"]=SLOT(newChat(const UinsList &, const QString &, time_t));
-	s["NewMessage"]=SLOT(newMessage(const UinsList &, const QString &, time_t, bool &));
-	s["ConnError"]=SLOT(connectionError(const QString &));
-	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const UserListElement &));
-	s["toBusy"]=SLOT(userChangedStatusToBusy(const UserListElement &));
-	s["toInvisible"]=SLOT(userChangedStatusToInvisible(const UserListElement &));
-	s["toNotAvailable"]=SLOT(userChangedStatusToNotAvailable(const UserListElement &));
+	s["NewChat"]=SLOT(newChat(const QString &, UserListElements, const QString &, time_t));
+	s["NewMessage"]=SLOT(newMessage(const QString &, UserListElements, const QString &, time_t, bool &));
+	s["ConnError"]=SLOT(connectionError(const QString &, const QString &));
+	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const QString &, UserListElement));
+	s["toBusy"]=SLOT(userChangedStatusToBusy(const QString &, UserListElement));
+	s["toInvisible"]=SLOT(userChangedStatusToInvisible(const QString &, UserListElement));
+	s["toNotAvailable"]=SLOT(userChangedStatusToNotAvailable(const QString &, UserListElement));
 	s["Message"]=SLOT(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *));
-	
+
 	config_file.addVariable("Notify", "NewChat_Speech", true);
 	config_file.addVariable("Notify", "NewMessage_Speech", false);
 	config_file.addVariable("Notify", "ConnError_Speech", false);
@@ -270,7 +271,7 @@ void SpeechSlots::say(const QString &s, const QString &path,
 		t=path;
 		dev=device;
 	}
-	
+
 	list.append(t);
 	if (klatt && dsp)
 		list.append(" -L");
@@ -312,20 +313,23 @@ void SpeechSlots::testSpeech()
 	bool arts=ConfigDialog::getCheckBox("Speech", "Use aRts", "usearts")->isChecked();
 	bool esd=ConfigDialog::getCheckBox("Speech", "Use Esd", "useesd")->isChecked();
 	bool dsp=ConfigDialog::getCheckBox("Speech", "Use Dsp", "usedsp")->isChecked();
-	
+
 	kdebugm(KDEBUG_INFO, "flags: %d %d %d %d %d\n", mel, klatt, arts, esd, dsp);
-	
+
 	int freq=ConfigDialog::getSlider("Speech", "slider1")->value();
 	int tempo=ConfigDialog::getSlider("Speech", "slider2")->value();
 	int basefreq=ConfigDialog::getSlider("Speech", "slider3")->value();
-	
-	int i=int(userlist.count()*float(rand())/RAND_MAX);
-	if (i>0)
+
+	int i = int(userlist->count()*float(rand())/RAND_MAX);
+	if (i > 0)
 		--i;
-	UserListElement ule=values(userlist)[i];
+	UserList::const_iterator it = userlist->constBegin();
+	while (i>0)
+		++it;
+	UserListElement ule = *it;
 
 	kdebugm(KDEBUG_INFO, "%d %d %d %d\n", freq, tempo, basefreq, i);
-	
+
 	if (isFemale(ule.firstName()))
 		say(parse(formatF, ule).arg("Test"), program, klatt, mel, arts, esd, dsp, device, freq, tempo, basefreq);
 	else
@@ -333,7 +337,7 @@ void SpeechSlots::testSpeech()
 	kdebugf2();
 }
 
-void SpeechSlots::newChat(const UinsList &senders, const QString &msg, time_t /*time*/)
+void SpeechSlots::newChat(const QString &protocolName, UserListElements senders, const QString &msg, time_t /*t*/)
 {
 	kdebugf();
 	if (lastSpeech.elapsed()<1500)
@@ -342,13 +346,13 @@ void SpeechSlots::newChat(const UinsList &senders, const QString &msg, time_t /*
 		return;
 	}
 
-	Chat* chatWin= chat_manager->findChatByUins(senders);
+	Chat* chatWin= chat_manager->findChat(senders);
 	if (config_file.readBoolEntry("Speech","SayWhenWinNotActive") && chatWin)
 		if (chatWin->isActiveWindow())
 			return;
 	QString plainMsg=toPlainText(msg);
 	QString format;
-	UserListElement ule=userlist.byUin(senders.first());
+	UserListElement ule = senders[0];
 
 	if (plainMsg.length()>config_file.readUnsignedNumEntry("Speech", "MaxLength"))
 		format="MsgTooLong";
@@ -366,7 +370,7 @@ void SpeechSlots::newChat(const UinsList &senders, const QString &msg, time_t /*
 	kdebugf2();
 }
 
-void SpeechSlots::newMessage(const UinsList &senders, const QString &msg, time_t /*time*/, bool &/*grab*/)
+void SpeechSlots::newMessage(const QString &protocolName, UserListElements senders, const QString &msg, time_t /*t*/, bool &/*grab*/)
 {
 	kdebugf();
 	if (lastSpeech.elapsed()<1500)
@@ -377,7 +381,7 @@ void SpeechSlots::newMessage(const UinsList &senders, const QString &msg, time_t
 
 	QString plainMsg=toPlainText(msg);
 	QString format;
-	UserListElement ule=userlist.byUin(senders.first());
+	UserListElement ule = senders[0];
 
 	if (plainMsg.length()>config_file.readUnsignedNumEntry("Speech", "MaxLength"))
 		format="MsgTooLong";
@@ -395,7 +399,7 @@ void SpeechSlots::newMessage(const UinsList &senders, const QString &msg, time_t
 	kdebugf2();
 }
 
-void SpeechSlots::connectionError(const QString &message)
+void SpeechSlots::connectionError(const QString &protocolName, const QString &message)
 {
 	kdebugf();
 	if (lastSpeech.elapsed()<1500)
@@ -409,7 +413,7 @@ void SpeechSlots::connectionError(const QString &message)
 	kdebugf2();
 }
 
-void SpeechSlots::userChangedStatusToAvailable(const UserListElement &ule)
+void SpeechSlots::userChangedStatusToAvailable(const QString &protocolName, UserListElement ule)
 {
 	kdebugf();
 	if (lastSpeech.elapsed()<1500)
@@ -433,24 +437,24 @@ void SpeechSlots::userChangedStatusToAvailable(const UserListElement &ule)
 	kdebugf2();
 }
 
-void SpeechSlots::userChangedStatusToBusy(const UserListElement &ule)
+void SpeechSlots::userChangedStatusToBusy(const QString &protocolName, UserListElement ule)
 {
 	kdebugf();
-	userChangedStatusToAvailable(ule);
+	userChangedStatusToAvailable(protocolName, ule);
 	kdebugf2();
 }
 
-void SpeechSlots::userChangedStatusToInvisible(const UserListElement &ule)
+void SpeechSlots::userChangedStatusToInvisible(const QString &protocolName, UserListElement ule)
 {
 	kdebugf();
-	userChangedStatusToAvailable(ule);
+	userChangedStatusToAvailable(protocolName, ule);
 	kdebugf2();
 }
 
-void SpeechSlots::userChangedStatusToNotAvailable(const UserListElement &ule)
+void SpeechSlots::userChangedStatusToNotAvailable(const QString &protocolName, UserListElement ule)
 {
 	kdebugf();
-	userChangedStatusToAvailable(ule);
+	userChangedStatusToAvailable(protocolName, ule);
 	kdebugf2();
 }
 

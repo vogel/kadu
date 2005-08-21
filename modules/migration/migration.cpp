@@ -9,12 +9,13 @@
 #include <qlayout.h>
 #include <qgroupbox.h>
 
+#include "debug.h"
+#include "groups_manager.h"
+#include "ignore.h"
+#include "kadu.h"
 #include "misc.h"
 #include "message_box.h"
-#include "debug.h"
 #include "userlist.h"
-#include "kadu.h"
-#include "ignore.h"
 
 MigrationDialog::MigrationDialog()
 	: QDialog(NULL, NULL, true), ShouldRestart(false), SettingsDirMigrationConfirmed(false)
@@ -177,10 +178,10 @@ void MigrationDialog::xmlUserListMigration()
 	{
 		QListViewItem* item = addItem(
 			tr("Step 2: Migrating user list to kadu.conf.xml"));
-		userlist.readFromFile();
-		userlist.writeToConfig();
+		userlist->readFromFile();
+		userlist->writeToConfig();
 		xml_config_file->sync();
-		kadu->setActiveGroup("");
+		groups_manager->setActiveGroup("");
 		setItemComplete(item,
 			tr("Step 2: User list migrated to kadu.conf.xml"),
 			tr("Contact list migrated to kadu.conf.xml."
@@ -373,7 +374,7 @@ void MigrationDialog::xmlConfigFilesMigration()
 	xml_config_file->removeChildren(deprecated_elem);
 	QDir dir(ggPath(""));
 	dir.setNameFilter("*.conf");
-	for (int i = 0; i < dir.count(); i++)
+	for (unsigned int i = 0, dircnt = dir.count(); i < dircnt; ++i)
 		xmlConfigFileMigration(dir[i]);
 	xml_config_file->sync();
 	setItemComplete(item, tr("Step 4: Config files migrated to kadu.conf.xml"),
@@ -425,7 +426,7 @@ extern "C" int migration_init()
 extern "C" void migration_close()
 {
 	kdebugf();
-	
+
 	kdebugf2();
 }
 

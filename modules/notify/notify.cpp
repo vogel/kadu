@@ -7,18 +7,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "notify.h"
-#include "debug.h"
-#include "config_file.h"
-#include "notify_slots.h"
-#include "config_dialog.h"
-#include "kadu.h"
 #include "chat.h"
+#include "chat_manager.h"
+#include "config_dialog.h"
+#include "config_file.h"
+#include "debug.h"
+#include "kadu.h"
+#include "notify.h"
+#include "notify_slots.h"
 
 extern "C" int notify_init()
 {
 	kdebugf();
-	notify=new Notify(NULL, "notify");
+	notify = new Notify(NULL, "notify");
 
 	kdebugf2();
 	return 0;
@@ -28,7 +29,7 @@ extern "C" void notify_close()
 {
 	kdebugf();
 	delete notify;
-	notify=NULL;
+	notify = NULL;
 	kdebugf2();
 }
 
@@ -38,14 +39,14 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name)
 	eventNames<<"ConnError"<<"NewChat"<<"NewMessage"<<"StatusChanged"<<"toAvailable"<<
 				"toBusy"<<"toInvisible"<<"toNotAvailable"<<"Message";
 
-	notifySignals["NewChat"]=			QString(SIGNAL(newChat(const UinsList &, const QString &, time_t)));
-	notifySignals["NewMessage"]=		QString(SIGNAL(newMessage(const UinsList &, const QString &, time_t, bool &)));
-	notifySignals["ConnError"]=			QString(SIGNAL(connectionError(const QString &)));
-	notifySignals["StatusChanged"]=		QString(SIGNAL(userStatusChanged(const UserListElement &, const UserStatus &)));
-	notifySignals["toAvailable"]=		QString(SIGNAL(userChangedStatusToAvailable(const UserListElement &)));
-	notifySignals["toBusy"]=			QString(SIGNAL(userChangedStatusToBusy(const UserListElement &)));
-	notifySignals["toInvisible"]=		QString(SIGNAL(userChangedStatusToInvisible(const UserListElement &)));
-	notifySignals["toNotAvailable"]=	QString(SIGNAL(userChangedStatusToNotAvailable(const UserListElement &)));
+	notifySignals["NewChat"]=			QString(SIGNAL(newChat(const QString &, UserListElements, const QString &, time_t)));
+	notifySignals["NewMessage"]=		QString(SIGNAL(newMessage(const QString &, UserListElements, const QString &, time_t, bool &)));
+	notifySignals["ConnError"]=			QString(SIGNAL(connectionError(const QString &, const QString &)));
+	notifySignals["StatusChanged"]=		QString(SIGNAL(userStatusChanged(UserListElement, QString, const UserStatus &)));
+	notifySignals["toAvailable"]=		QString(SIGNAL(userChangedStatusToAvailable(const QString &, UserListElement)));
+	notifySignals["toBusy"]=			QString(SIGNAL(userChangedStatusToBusy(const QString &, UserListElement)));
+	notifySignals["toInvisible"]=		QString(SIGNAL(userChangedStatusToInvisible(const QString &, UserListElement)));
+	notifySignals["toNotAvailable"]=	QString(SIGNAL(userChangedStatusToNotAvailable(const QString &, UserListElement)));
 	notifySignals["Message"]=			QString(SIGNAL(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *)));
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Notify"), "NotifyTab");
@@ -64,11 +65,13 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name)
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "User changed status to \"Not available\""));
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "Other message"));
 
-	connect(gadu, SIGNAL(connectionError(const QString &)), this, notifySignals["ConnError"]);
-	connect(gadu, SIGNAL(chatMsgReceived1(UinsList, const QString&, time_t,bool&)), this, SLOT(probablyNewMessage(UinsList, const QString&, time_t, bool&)));
-	connect(gadu, SIGNAL(chatMsgReceived2(UinsList, const QString&, time_t)), this, SLOT(newChatSlot(UinsList, const QString&, time_t)));
-	connect(gadu, SIGNAL(userStatusChanged(const UserListElement &, const UserStatus &, bool)),
-		this, SLOT(userStatusChanged(const UserListElement &, const UserStatus &, bool)));
+	connect(gadu, SIGNAL(connectionError(const QString &, const QString &)), this, notifySignals["ConnError"]);
+	connect(gadu, SIGNAL(chatMsgReceived1(const QString &, UserListElements, const QString&, time_t, bool&)),
+			this, SLOT(probablyNewMessage(const QString &, UserListElements, const QString&, time_t, bool&)));
+	connect(gadu, SIGNAL(chatMsgReceived2(const QString &, UserListElements, const QString&, time_t)),
+			this, SLOT(newChatSlot(const QString &, UserListElements, const QString&, time_t)));
+	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
+		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
 
 	notify_slots=new NotifySlots(NULL, "notify_slots");
 
@@ -138,11 +141,13 @@ Notify::~Notify()
 	ConfigDialog::removeControl("Notify", "Notify about all users");
 	ConfigDialog::removeControl("Notify", "Ignore changes right after connection to the server");
 
-	disconnect(gadu, SIGNAL(connectionError(const QString &)), this, notifySignals["ConnError"]);
-	disconnect(gadu, SIGNAL(chatMsgReceived1(UinsList, const QString&, time_t,bool&)), this, SLOT(probablyNewMessage(UinsList, const QString&, time_t, bool&)));
-	disconnect(gadu, SIGNAL(chatMsgReceived2(UinsList, const QString&, time_t)), this, SLOT(newChatSlot(UinsList, const QString&, time_t)));
-	disconnect(gadu, SIGNAL(userStatusChanged(const UserListElement &, const UserStatus &, bool)),
-		this, SLOT(userStatusChanged(const UserListElement &, const UserStatus &, bool)));
+	disconnect(gadu, SIGNAL(connectionError(const QString &, const QString &)), this, notifySignals["ConnError"]);
+	disconnect(gadu, SIGNAL(chatMsgReceived1(const QString &, UserListElements, const QString&, time_t, bool&)),
+			this, SLOT(probablyNewMessage(const QString &, UserListElements, const QString&, time_t, bool&)));
+	disconnect(gadu, SIGNAL(chatMsgReceived2(const QString &, UserListElements, const QString&, time_t)),
+			this, SLOT(newChatSlot(const QString &, UserListElements, const QString&, time_t)));
+	disconnect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
+		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
 
 	if (!notifiers.isEmpty())
 	{
@@ -171,40 +176,41 @@ Notify::~Notify()
 	notifySignals.clear();
 
 	delete notify_slots;
-	notify_slots=NULL;
+	notify_slots = NULL;
 
 	kdebugf2();
 }
 
-void Notify::userStatusChanged(const UserListElement &ule, const UserStatus &oldStatus, bool onConnection)
+void Notify::statusChanged(UserListElement elem, QString protocolName,
+					const UserStatus &oldStatus, bool massively, bool last)
 {
 	kdebugf();
 
-	if (onConnection && config_file.readBoolEntry("Notify", "NotifyIgnoreOnConnection"))
+	if (massively && config_file.readBoolEntry("Notify", "NotifyIgnoreOnConnection"))
 	{
 		kdebugmf(KDEBUG_FUNCTION_END, "end: ignore on connection\n");
 		return;
 	}
 
-	if (!ule.notify() && !config_file.readBoolEntry("Notify","NotifyAboutAll"))
+	if (!elem.notify() && !config_file.readBoolEntry("Notify", "NotifyAboutAll"))
 	{
 		kdebugmf(KDEBUG_FUNCTION_END, "end: not notifying user AND not notifying all users\n");
 		return;
 	}
 
 	if (config_file.readBoolEntry("Notify", "IgnoreOnlineToOnline"))
-		if (ule.status().isOnline() || ule.status().isBusy())
+		if (elem.status("Gadu").isOnline() || elem.status("Gadu").isBusy())
 			if (oldStatus.isOnline() || oldStatus.isBusy())
 				return;
 
-	emit userStatusChanged(ule, oldStatus);
+	emit userStatusChanged(elem, protocolName, oldStatus);
 
-	switch (ule.status().status())
+	switch (elem.status("Gadu").status())
 	{
-		case Online: emit userChangedStatusToAvailable(ule); break;
-		case Busy:   emit userChangedStatusToBusy(ule); break;
-		case Invisible: emit userChangedStatusToInvisible(ule); break;
-		case Offline: emit userChangedStatusToNotAvailable(ule); break;
+		case Online:	emit userChangedStatusToAvailable(protocolName, elem); break;
+		case Busy:		emit userChangedStatusToBusy(protocolName, elem); break;
+		case Invisible:	emit userChangedStatusToInvisible(protocolName, elem); break;
+		case Offline:	emit userChangedStatusToNotAvailable(protocolName, elem); break;
 		default:
 			;//jeszcze jest status "blokowany", który nie jest tu obs³ugiwany
 	}
@@ -212,19 +218,19 @@ void Notify::userStatusChanged(const UserListElement &ule, const UserStatus &old
 	kdebugf2();
 }
 
-void Notify::newChatSlot(UinsList senders, const QString& msg, time_t time)
+void Notify::newChatSlot(const QString &protocolName, UserListElements senders, const QString &msg, time_t t)
 {
 	kdebugf();//sygnatury trochê siê ró¿ni±, wiêc ten slot musi byæ...
-	emit newChat(senders, msg, time);
+	emit newChat(protocolName, senders, msg, t);
 	kdebugf2();
 }
 
-void Notify::probablyNewMessage(UinsList senders, const QString& msg, time_t time, bool &grab)
+void Notify::probablyNewMessage(const QString &protocolName, UserListElements senders, const QString &msg, time_t t, bool &grab)
 {
 	kdebugf();
-	Chat* chat=chat_manager->findChatByUins(senders);
-	if (chat!=NULL)
-		emit newMessage(senders, msg, time, grab);
+	Chat* chat = chat_manager->findChat(senders);
+	if (chat != NULL)
+		emit newMessage(protocolName, senders, msg, t, grab);
 	kdebugf2();
 }
 
@@ -357,7 +363,7 @@ void Notify::disconnectSlot(const QString &notifierName, const QString &slotName
 void Notify::emitMessage(const QString &from, const QString &to, const QString &msg, const QMap<QString, QVariant> *parameters, const UserListElement *ule)
 {
 	kdebugf();
-	if (to==QString::null)
+	if (to.isEmpty())
 		emit message(from, msg, parameters, ule);
 	else if (notifiers.contains(to))
 		if (notifiers[to].notifierSlots.contains("Message"))

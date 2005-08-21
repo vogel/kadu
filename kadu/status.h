@@ -85,6 +85,13 @@ class UserStatus : public QObject
 			\param compare obiekt z którym chcemy porównaæ bierz±cy obiekt.
 		**/
 		bool operator != (const UserStatus &compare) const;
+
+		/**
+			\fn virtual UserStatus *copy() const
+			Wykonuje kopiê obiektu, któr± pó¼niej nale¿y samodzielnie zniszczyæ
+		**/
+		virtual UserStatus *copy() const;
+
 		virtual ~UserStatus();
 
 		/**
@@ -258,9 +265,15 @@ class UserStatus : public QObject
 
 		/**
 			\fn void refresh()
-			Od¶wierza aktualny status.
+			Od¶wie¿a aktualny status.
 		**/
 		void refresh();
+
+		/**
+			\fn virtual QString protocolName() const;
+			Zwraca identyfikator protoko³u.
+		**/
+		virtual QString protocolName() const;
 
 	public slots:
 		/**
@@ -378,9 +391,10 @@ class UserStatus : public QObject
 		/**
 			\fn void changed(const UserStatus& status)
 			Sygna³ jest emitowany, gdy status zosta³ zmieniony na którykolwiek.
-			\param status status na który dokonano zmieniony
+			\param status status, na który dokonano zmiany
+			\param oldStatus status, z którego dokonano zmiany
 		**/
-		void changed(const UserStatus& status);
+		void changed(const UserStatus &status, const UserStatus &oldStatus);
 };
 
 extern QStringList defaultdescriptions;

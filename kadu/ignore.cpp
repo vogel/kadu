@@ -24,7 +24,7 @@
 #include "misc.h"
 //
 
-QValueList<UinsList> ignored;
+QValueList<UserListElements> ignored;
 
 Ignored::Ignored(QDialog * /*parent*/, const char * /*name*/)
 {
@@ -111,17 +111,17 @@ void Ignored::add()
 {
 	kdebugf();
 	bool ok;
-	UinsList uins;
+	UserListElements users;
 	QStringList strlist = QStringList::split(";", e_uin->text());
 	CONST_FOREACH(strUin, strlist)
 	{
 		UinType uin = (*strUin).toUInt(&ok);
 		if (ok)
-			uins.append(uin);
+			users.append(userlist->byID("Gadu", QString::number(uin)));
 	}
-	if (!uins.empty())
+	if (!users.empty())
 	{
-		addIgnored(uins);
+		addIgnored(users);
 		e_uin->clear();
 		writeIgnored();
 		getList();
@@ -136,12 +136,12 @@ void Ignored::getList()
 	CONST_FOREACH(ignoredList, ignored)
 	{
 		QStringList strlist;
-		CONST_FOREACH(uin, *ignoredList)
+		CONST_FOREACH(user, *ignoredList)
 		{
-			if (userlist.containsUin(*uin))
-				strlist.append(QString("%1 (%2)").arg(QString::number(*uin)).arg(userlist.byUin(*uin).altNick()));
+			if (userlist->contains(*user))
+				strlist.append(QString("%1 (%2)").arg((*user).ID("Gadu")).arg((*user).altNick()));
 			else
-				strlist.append(QString("%1").arg(QString::number(*uin)));
+				strlist.append(QString("%1").arg((*user).ID("Gadu")));
 		}
 		lb_list->insertItem(icons_manager.loadIcon("Blocking"), strlist.join(";"));
 	}
@@ -154,31 +154,31 @@ void Ignored::remove()
 	if (lb_list->currentItem() == -1)
 		return;
 	QStringList strlist = QStringList::split(";", lb_list->currentText());
-	UinsList uins;
+	UserListElements users;
 	CONST_FOREACH(str, strlist)
-		uins.append((*str).section(' ', 0, 0).toUInt());
-	delIgnored(uins);
+		users.append(userlist->byID("Gadu", (*str).section(' ', 0, 0)));
+	delIgnored(users);
 	getList();
 	writeIgnored();
 	kdebugf2();
 }
 
-bool isIgnored(UinsList uins)
+bool isIgnored(UserListElements users)
 {
-	uins.sort();
-	return ignored.contains(uins);
+	users.sort();
+	return ignored.contains(users);
 }
 
-void addIgnored(UinsList uins)
+void addIgnored(UserListElements users)
 {
-	uins.sort();
-	ignored.append(uins);
+	users.sort();
+	ignored.append(users);
 }
 
-void delIgnored(UinsList uins)
+void delIgnored(UserListElements users)
 {
-	uins.sort();
-	ignored.remove(uins);
+	users.sort();
+	ignored.remove(users);
 }
 
 int writeIgnored(QString filename)
@@ -191,12 +191,12 @@ int writeIgnored(QString filename)
 	{
 		QDomElement ignored_group_elem =
 			xml_config_file->createElement(ignored_elem, "IgnoredGroup");
-		CONST_FOREACH(uin, *ignoreList)
+		CONST_FOREACH(user, *ignoreList)
 		{
 			QDomElement ignored_contact_elem =
 				xml_config_file->createElement(
 					ignored_group_elem, "IgnoredContact");
-			ignored_contact_elem.setAttribute("uin", *uin);
+			ignored_contact_elem.setAttribute("uin", (*user).ID("Gadu"));
 		}
 	}
 	xml_config_file->sync();
@@ -219,15 +219,15 @@ int readIgnored()
 	for (unsigned int i = 0; i < ignored_groups.count(); i++)
 	{
 		QDomElement ignored_group = ignored_groups.item(i).toElement();
-		UinsList uins;
+		UserListElements users;
 		QDomNodeList ignored_contacts =
 			ignored_group.elementsByTagName("IgnoredContact");
 		for (unsigned int j = 0; j < ignored_contacts.count(); j++)
 		{
 			QDomElement ignored_contact = ignored_contacts.item(j).toElement();
-			uins.append(ignored_contact.attribute("uin").toUInt());
+			users.append(userlist->byID("Gadu", ignored_contact.attribute("uin")));
 		}
-		ignored.append(uins);
+		ignored.append(users);
 	}
 	kdebugf2();
 	return 0;

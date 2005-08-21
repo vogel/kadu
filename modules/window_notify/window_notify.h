@@ -13,14 +13,15 @@ class WindowNotify : public QObject
 		~WindowNotify();
 
 	public slots:
-		void newChat(const UinsList &senders, const QString& msg, time_t time);
-		void newMessage(const UinsList &senders, const QString& msg, time_t time, bool &grab);
-		void connectionError(const QString &message);
-		void userStatusChanged(const UserListElement &ule, const UserStatus &oldStatus);
-		void userChangedStatusToAvailable(const UserListElement &ule);
-		void userChangedStatusToBusy(const UserListElement &ule);
-		void userChangedStatusToInvisible(const UserListElement &ule);
-		void userChangedStatusToNotAvailable(const UserListElement &ule);
+		void newChat(const QString &protocolName, UserListElements senders, const QString &msg, time_t t);
+		void newMessage(const QString &protocolName, UserListElements senders, const QString &msg, time_t t, bool &grab);
+		void connectionError(const QString &protocolName, const QString &message);
+		void userChangedStatusToAvailable(const QString &protocolName, UserListElement);
+		void userChangedStatusToBusy(const QString &protocolName, UserListElement);
+		void userChangedStatusToInvisible(const QString &protocolName, UserListElement);
+		void userChangedStatusToNotAvailable(const QString &protocolName, UserListElement);
+
+		void userStatusChanged(UserListElement ule, QString protocolName, const UserStatus &oldStatus);
 		void message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
 };
 

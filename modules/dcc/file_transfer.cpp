@@ -7,8 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "file_transfer.h"
-
 #include <qfiledialog.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
@@ -25,12 +23,14 @@
 #include <netinet/in.h>
 #include <stdlib.h>
 
-#include "misc.h"
-#include "kadu.h"
 #include "chat.h"
+#include "chat_manager.h"
 #include "config_dialog.h"
 #include "debug.h"
+#include "file_transfer.h"
+#include "kadu.h"
 #include "message_box.h"
+#include "misc.h"
 
 uint32_t gg_fix32(uint32_t);
 
@@ -73,7 +73,7 @@ void FileTransferDialog::printFileInfo()
 		sender=tr("Sender: %1");
 	else
 		sender=tr("Receiver: %1");
-	new QLabel(sender.arg(userlist.byUin(Socket->ggDccStruct()->peer_uin).altNick()), this);
+	new QLabel(sender.arg(userlist->byID("Gadu", QString::number(Socket->ggDccStruct()->peer_uin)).altNick()), this);
 
 	new QLabel(tr("Filename: %1").arg(cp2unicode(Socket->ggDccStruct()->file_info.filename)), this);
 
@@ -165,8 +165,8 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 	connect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userboxMenuPopup()));
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(kaduKeyPressed(QKeyEvent*)));
 
-	connect(chat_manager, SIGNAL(chatCreated(const UinsList &)), this, SLOT(chatCreated(const UinsList &)));
-	connect(chat_manager, SIGNAL(chatDestroying(const UinsList &)), this, SLOT(chatDestroying(const UinsList &)));
+	connect(chat_manager, SIGNAL(chatCreated(const UserGroup *)), this, SLOT(chatCreated(const UserGroup *)));
+	connect(chat_manager, SIGNAL(chatDestroying(const UserGroup *)), this, SLOT(chatDestroying(const UserGroup *)));
 	ChatList::ConstIterator it;
 	for ( it = chat_manager->chats().begin(); it != chat_manager->chats().end(); it++ )
 		handleCreatedChat(*it);
@@ -198,8 +198,8 @@ FileTransferManager::~FileTransferManager()
 	disconnect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userboxMenuPopup()));
 	disconnect(kadu, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(kaduKeyPressed(QKeyEvent*)));
 
-	disconnect(chat_manager, SIGNAL(chatCreated(const UinsList &)), this, SLOT(chatCreated(const UinsList &)));
-	disconnect(chat_manager, SIGNAL(chatDestroying(const UinsList &)), this, SLOT(chatDestroying(const UinsList &)));
+	disconnect(chat_manager, SIGNAL(chatCreated(const UserGroup *)), this, SLOT(chatCreated(const UserGroup *)));
+	disconnect(chat_manager, SIGNAL(chatDestroying(const UserGroup *)), this, SLOT(chatDestroying(const UserGroup *)));
 	ChatList::ConstIterator it;
 	for ( it = chat_manager->chats().begin(); it != chat_manager->chats().end(); it++ )
 		handleDestroyingChat(*it);
@@ -239,11 +239,11 @@ void FileTransferManager::sendFile(UinType receiver)
 	if (config_file.readBoolEntry("Network", "AllowDCC"))
 		if (dcc_manager->dccEnabled())
 		{
-			const UserListElement& user = userlist.byUin(receiver);
-			DccManager::TryType type=dcc_manager->initDCCConnection(user.ip().ip4Addr(),
-				user.port(),
+			const UserListElement& user = userlist->byID("Gadu", QString::number(receiver));
+			DccManager::TryType type=dcc_manager->initDCCConnection(user.IP("Gadu").ip4Addr(),
+				user.port("Gadu"),
 				config_file.readNumEntry("General", "UIN"),
-				user.uin(),
+				user.ID("Gadu").toUInt(),
 				SLOT(dccSendFile(uint32_t, uint16_t, UinType, UinType, struct gg_dcc **)),
 				GG_SESSION_DCC_SEND);
 			if (type==DccManager::DIRECT)
@@ -278,21 +278,21 @@ void FileTransferManager::sendFile()
 {
 	kdebugf();
 
-	UserBox *activeUserBox=UserBox::getActiveUserBox();
-	UserList users;
-	if (activeUserBox==NULL)
+	UserBox *activeUserBox = UserBox::activeUserBox();
+	UserListElements users;
+	if (activeUserBox == NULL)
 	{
 		kdebugf2();
 		return;
 	}
-	users = activeUserBox->getSelectedUsers();
+	users = activeUserBox->selectedUsers();
 	if (users.count() != 1)
 	{
 		kdebugf2();
 		return;
 	}
-	UserListElement user = (*users.begin());
-	sendFile(user.uin());
+	UserListElement user = (*users.constBegin());
+	sendFile(user.ID("Gadu").toUInt());
 
 	kdebugf2();
 }
@@ -301,17 +301,19 @@ void FileTransferManager::userboxMenuPopup()
 {
 	kdebugf();
 	int sendfile = UserBox::userboxmenu->getItem(tr("Send file"));
-	UserBox* activeUserBox=UserBox::getActiveUserBox();
-	if (activeUserBox==NULL)//to siê zdarza...
+	UserBox* activeUserBox = UserBox::activeUserBox();
+	if (activeUserBox == NULL)//to siê zdarza...
 	{
 		kdebugf2();
 		return;
 	}
-	UserList users = activeUserBox->getSelectedUsers();
-	UserListElement user = (*users.begin());
+	UserListElements users = activeUserBox->selectedUsers();
+	UserListElement user = users[0];
 
-	bool containsOurUin=users.containsUin(config_file.readNumEntry("General", "UIN"));
-	bool userIsOnline = user.status().isOnline() || user.status().isBusy();
+	bool containsOurUin = users.contains("Gadu", config_file.readEntry("General", "UIN"));
+	bool userIsOnline = false;
+	if (user.usesProtocol("Gadu"))
+		userIsOnline = user.status("Gadu").isOnline() || user.status("Gadu").isBusy();
 	bool dccEnabled = (users.count() == 1 &&
 		config_file.readBoolEntry("Network", "AllowDCC") &&
 		!containsOurUin &&
@@ -328,36 +330,37 @@ void FileTransferManager::kaduKeyPressed(QKeyEvent* e)
 		sendFile();
 }
 
-void FileTransferManager::chatCreated(const UinsList &Uins)
+void FileTransferManager::chatCreated(const UserGroup *users)
 {
 	kdebugf();
-	Chat* chat = chat_manager->findChatByUins(Uins);
+	Chat* chat = chat_manager->findChat(users);
 	handleCreatedChat(chat);
 }
 
-void FileTransferManager::chatDestroying(const UinsList &Uins)
+void FileTransferManager::chatDestroying(const UserGroup *users)
 {
 	kdebugf();
-	Chat* chat = chat_manager->findChatByUins(Uins);
+	Chat* chat = chat_manager->findChat(users);
 	handleDestroyingChat(chat);
 }
 
 void FileTransferManager::handleCreatedChat(Chat *chat)
 {
-	connect(chat, SIGNAL(fileDropped(const UinsList &, const QString &)),
-		this, SLOT(fileDropped(const UinsList &, const QString &)));
+	connect(chat, SIGNAL(fileDropped(const UserGroup *, const QString &)),
+		this, SLOT(fileDropped(const UserGroup *, const QString &)));
 }
 
 void FileTransferManager::handleDestroyingChat(Chat *chat)
 {
-	disconnect(chat, SIGNAL(fileDropped(const UinsList &, const QString &)),
-		this, SLOT(fileDropped(const UinsList &, const QString &)));
+	disconnect(chat, SIGNAL(fileDropped(const UserGroup *, const QString &)),
+		this, SLOT(fileDropped(const UserGroup *, const QString &)));
 }
 
-void FileTransferManager::fileDropped(const UinsList &uins, const QString &fileName)
+void FileTransferManager::fileDropped(const UserGroup *users, const QString &fileName)
 {
-	CONST_FOREACH(i, uins)
-		sendFile(*i, fileName);
+	CONST_FOREACH(i, *users)
+		if ((*i).usesProtocol("Gadu"))
+			sendFile((*i).ID("Gadu").toUInt(), fileName);
 }
 
 void FileTransferManager::connectionBroken(DccSocket* socket)
@@ -380,11 +383,11 @@ void FileTransferManager::dccError(DccSocket* socket)
 		if (direct.contains(peer_uin))
 		{
 			direct.remove(peer_uin);
-			const UserListElement& user = userlist.byUin(peer_uin);
-			dcc_manager->initDCCConnection(user.ip().ip4Addr(),
-					user.port(),
+			UserListElement user = userlist->byID("Gadu", QString::number(peer_uin));
+			dcc_manager->initDCCConnection(user.IP("Gadu").ip4Addr(),
+					user.port("Gadu"),
 					config_file.readNumEntry("General", "UIN"),
-					user.uin(),
+					user.ID("Gadu").toUInt(),
 					SLOT(dccSendFile(uint32_t, uint16_t, UinType, UinType, struct gg_dcc **)),
 					GG_SESSION_DCC_SEND, true);
 		}
@@ -439,7 +442,7 @@ void FileTransferManager::needFileAccept(DccSocket* socket)
 	snprintf(fsize, sizeof(fsize), "%.1f", (float) socket->ggDccStruct()->file_info.size / 1024);
 
 	str=narg(tr("User %1 wants to send us a file %2\nof size %3kB. Accept transfer?"),
-		userlist.byUin(socket->ggDccStruct()->peer_uin).altNick(),
+		userlist->byID("Gadu", QString::number(socket->ggDccStruct()->peer_uin)).altNick(),
 		cp2unicode(socket->ggDccStruct()->file_info.filename),
 		QString(fsize));
 

@@ -40,9 +40,9 @@ class Notify : public QObject
 
 	private slots:
 		/* pomocniczy slot */
-		void newChatSlot(UinsList senders, const QString& msg, time_t time);
+		void newChatSlot(const QString &protocolName, UserListElements senders, const QString &msg, time_t t);
 		/* pomocniczy slot */
-		void probablyNewMessage(UinsList senders, const QString& msg, time_t time, bool &);
+		void probablyNewMessage(const QString &protocolName, UserListElements senders, const QString &msg, time_t t, bool &grab);
 
 		/*
 		 * ³±czy odpowiedni sygna³ z notifierName (np.: Window, Hint, Sound)
@@ -85,7 +85,7 @@ class Notify : public QObject
 		void unregisterNotifier(const QString &name);
 
 		QStringList notifiersList() const;
-	
+
 	public slots:
 		/*
 		 * aktualizuje wszystkie po³±czenia
@@ -102,34 +102,35 @@ class Notify : public QObject
 		void emitMessage(const QString &from, const QString &to, const QString &message=QString(), const QMap<QString, QVariant> *parameters=NULL, const UserListElement *ule=NULL);
 
 		/* obs³uga zmian statusów */
-		void userStatusChanged(const UserListElement &, const UserStatus &oldStatus, bool onConnection);
+		void statusChanged(UserListElement elem, QString protocolName,
+							const UserStatus &oldStatus, bool massively, bool last);
 
 	signals:
 	//UWAGA: razem ze zmianami nazw/parametrów tych sygna³ów nale¿y aktualizowaæ wpisy w konstruktorze Notify
 
 		/* nowa rozmowa */
-		void newChat(const UinsList &senders, const QString& msg, time_t time);
+		void newChat(const QString &protocolName, UserListElements senders, const QString &msg, time_t t);
 
 		/* nowa wiadomo¶æ w oknie chat */
-		void newMessage(const UinsList &senders, const QString& msg, time_t time, bool &grab);
+		void newMessage(const QString &protocolName, UserListElements senders, const QString &msg, time_t t, bool &grab);
 
 		/* b³±d po³±czenia */
-		void connectionError(const QString &message);
+		void connectionError(const QString &protocolName, const QString &message);
 
 		/* u¿ytkownik zmieni³ status */
-		void userStatusChanged(const UserListElement &, const UserStatus &oldStatus);
+		void userStatusChanged(UserListElement elem, QString protocolName, const UserStatus &oldStatus);
 
 		/* u¿ytkownik zmieni³ status na "Dostêpny" */
-		void userChangedStatusToAvailable(const UserListElement &);
+		void userChangedStatusToAvailable(const QString &protocolName, UserListElement);
 
 		/* u¿ytkownik zmieni³ status na "Zaraz wracam" */
-		void userChangedStatusToBusy(const UserListElement &);
+		void userChangedStatusToBusy(const QString &protocolName, UserListElement);
 
 		/* u¿ytkownik zmieni³ status na "Niewidoczny" */
-		void userChangedStatusToInvisible(const UserListElement &);
+		void userChangedStatusToInvisible(const QString &protocolName, UserListElement);
 
 		/* u¿ytkownik zmieni³ status na "Niewidoczny" lub "Niedostêpny" */
-		void userChangedStatusToNotAvailable(const UserListElement &);
+		void userChangedStatusToNotAvailable(const QString &protocolName, UserListElement);
 
 		/* inna informacja do powiadomienia */
 		void message(const QString &from, const QString &msg, const QMap<QString, QVariant> *parameters, const UserListElement *ule);

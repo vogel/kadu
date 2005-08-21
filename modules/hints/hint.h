@@ -23,7 +23,7 @@ class Hint : public QHBoxLayout
 		QColor bcolor; //kolor t³a
 		unsigned int secs;
 		unsigned int ident; //identyfikator
-		UinsList uins;
+		UserListElements users;
 		void enter();//rozja¶nia dymek (t³o)
 		void leave();//ustawia domy¶lny kolor t³a
 
@@ -33,13 +33,13 @@ class Hint : public QHBoxLayout
 		/**
 			zwraca listê uinów dotycz±cych tego dymka
 		**/
-		UinsList getUins() const { return uins; }
-		
+		UserListElements getUsers() const { return users; }
+
 		/**
 			zwraca identyfikator dymka
 		**/
 		unsigned int id() const {return ident;}
-		
+
 		void getData(QString &text, QPixmap &pixmap, unsigned int &timeout, QFont &font, QColor &fgcolor, QColor &bgcolor);
 
 	protected:
@@ -47,7 +47,7 @@ class Hint : public QHBoxLayout
 			przy najechaniu myszk± uruchamia enter(), przy opuszczeniu myszk± dymka uruchamia leave()
 			przy naci¶niêciu którego¶ przycisku myszy, emituje odpowiedni sygna³ *ButtonClicked(uint)
 		**/
-		bool eventFilter(QObject *obj, QEvent *ev);		
+		bool eventFilter(QObject *obj, QEvent *ev);
 
 	public slots:
 		/**
@@ -76,7 +76,7 @@ class Hint : public QHBoxLayout
 		/**
 			ustawia listê uinów dotycz±cych tego dymka
 		**/
-		void setUins(const UinsList &i) { uins=i; };
+		void setUsers(const UserListElements &i) { users = i; };
 
 	signals:
 		void leftButtonClicked(unsigned int id);

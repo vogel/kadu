@@ -16,14 +16,15 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "wizard.h"
-#include "debug.h"
+#include "addons.h"
+#include "chat_manager_slots.h"
 #include "config_file.h"
+#include "debug.h"
 #include "gadu.h"
 #include "kadu.h"
-#include "modules.h"
-#include "addons.h"
 #include "message_box.h"
+#include "modules.h"
+#include "wizard.h"
 
 unsigned int informationPanelCount=sizeof(informationPanelSyntax)/sizeof(informationPanelSyntax[0]);
 unsigned int hintCount=sizeof(hintSyntax)/sizeof(hintSyntax[0]);
@@ -40,7 +41,7 @@ extern "C" int config_wizard_init()
 
 	if (config_file.readNumEntry("General", "UIN", 0)==0 || config_file.readEntry("General", "Password", "").isEmpty())
 		wizardStarter->start();
-	
+
 	kdebugf2();
 	return 0;
 }
@@ -117,10 +118,10 @@ Wizard::Wizard(QWidget *parent, const char *name, bool modal)
 
 	cancelButton()->setText(tr("Cancel"));
 	connect(cancelButton(), SIGNAL(clicked()), this, SLOT(cancelClicked()));
-	
+
 	helpButton()->hide();
 	noNewAccount=false;
-	
+
 	kdebugf2();
 }
 
@@ -146,7 +147,7 @@ void Wizard::finishClicked()
 	setSoundOptions();
 	setBrowser();
 	tryImport();
-	
+
 	startWizardObj=NULL;
 	deleteLater();
 
@@ -185,14 +186,14 @@ void Wizard::nextClicked()
 			QWizard::showPage(generalOptionsPage);
 	}
 	else if (currentPage()==ggCurrentNumberPage && rb_dontHaveNumber->isChecked())
-	{	
-		QWizard::showPage(ggNewNumberPage);	
+	{
+		QWizard::showPage(ggNewNumberPage);
 		if (!registered)
 			nextButton()->setEnabled(false);
 	}
 	else if (currentPage()==ggNewNumberPage && rb_haveNumber->isChecked())
 		QWizard::showPage(generalOptionsPage);
-	
+
 	if (currentPage()==generalOptionsPage && rb_haveNumber->isChecked())		//jesli przeszedl jedno pole dalej niz konf. konta
 		setOldGaduAccount();	//to zapisuje ustawienia konta
 	kdebugf2();
@@ -208,16 +209,16 @@ void Wizard::backClicked()
 	{
 		if (currentPage()==ggNewNumberPage)
 			QWizard::showPage(ggCurrentNumberPage);
-		else if (currentPage()==ggNumberSelect)	
+		else if (currentPage()==ggNumberSelect)
 		{
 			setBackEnabled(languagePage, false);
 			QWizard::showPage(languagePage);
 		}
 	}
 	else if (currentPage()==ggCurrentNumberPage && rb_dontHaveNumber->isChecked())
-		QWizard::showPage(ggNumberSelect);	
+		QWizard::showPage(ggNumberSelect);
 	else if (currentPage()==ggNewNumberPage && rb_haveNumber->isChecked())
-		QWizard::showPage(ggCurrentNumberPage);	
+		QWizard::showPage(ggCurrentNumberPage);
 	kdebugf2();
 }
 
@@ -235,10 +236,11 @@ void Wizard::wizardStart()
 /**
 	po zaimportowaniu listy kontaktów siê wywo³uje
 **/
-void WizardStarter::userListImported(bool ok, UserList& userList)
+void WizardStarter::userListImported(bool ok, QValueList<UserListElement> list)
 {
 	kdebugf();
-	disconnect(gadu, SIGNAL(userListImported(bool, UserList&)), this, SLOT(userListImported(bool, UserList&)));
+	disconnect(gadu, SIGNAL(userListImported(bool, QValueList<UserListElement>)),
+				this, SLOT(userListImported(bool, QValueList<UserListElement>)));
 
 	if (!ok)
 	{
@@ -246,17 +248,8 @@ void WizardStarter::userListImported(bool ok, UserList& userList)
 		return;
 	}
 
-	userlist.merge(userList);
-	userlist.writeToConfig();
-
-	kadu->userbox()->clear();
-	kadu->userbox()->clearUsers();
-
-	CONST_FOREACH(user, userlist)
-		kadu->userbox()->addUser((*user).altNick());
-
-	UserBox::all_refresh();
-	
+	userlist->merge(list);
+	userlist->writeToConfig();
 	kdebugf2();
 }
 
@@ -267,8 +260,9 @@ void WizardStarter::connected()
 {
 	if (!gadu->doImportUserList())
 	{
-		MessageBox::msg(tr("User list wasn't imported because of some error"));	
-		disconnect(gadu, SIGNAL(userListImported(bool, UserList&)), this, SLOT(userListImported(bool, UserList&)));
+		MessageBox::msg(tr("User list wasn't imported because of some error"));
+		disconnect(gadu, SIGNAL(userListImported(bool, QValueList<UserListElement>)),
+					this, SLOT(userListImported(bool, QValueList<UserListElement>)));
 	}
 
 	disconnect(gadu, SIGNAL(connected()), this, SLOT(connected()));
@@ -302,7 +296,7 @@ void Wizard::setGaduAccount()
 		isOk=false;
 	}
 	if (isOk)
-	{	
+	{
 		gadu->registerAccount(l_email->text(), l_ggNewPasssword->text());
 		registerAccount->setEnabled(false);
 		connect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registeredAccount(bool, UinType)));
@@ -316,7 +310,7 @@ void Wizard::setGaduAccount()
 void Wizard::registeredAccount(bool ok, UinType uin)
 {
 	kdebugf();
-	if (ok) 
+	if (ok)
 	{
 		config_file.writeEntry("General", "UIN", (int)uin);
 		config_file.writeEntry("General", "Password", pwHash(l_ggNewPasssword->text()));
@@ -343,7 +337,8 @@ void Wizard::tryImport()
 	kdebugf();
 	if (c_importContacts->isChecked())
 	{
-		connect(gadu, SIGNAL(userListImported(bool, UserList&)), wizardStarter, SLOT(userListImported(bool, UserList&)));
+		connect(gadu, SIGNAL(userListImported(bool, QValueList<UserListElement>)),
+				wizardStarter, SLOT(userListImported(bool, QValueList<UserListElement>)));
 		if (gadu->status().isOffline())
 		{
 			gadu->status().setOnline();	//kaze sie polaczyc i podpina sie pod sygnal polaczenia sie z siecia
@@ -352,7 +347,8 @@ void Wizard::tryImport()
 		else if (!gadu->doImportUserList())
 		{
 			MessageBox::msg(tr("User list wasn't imported because of some error"));
-			disconnect(gadu, SIGNAL(userListImported(bool, UserList&)), wizardStarter, SLOT(userListImported(bool, UserList&)));
+			disconnect(gadu, SIGNAL(userListImported(bool, QValueList<UserListElement>)),
+						wizardStarter, SLOT(userListImported(bool, QValueList<UserListElement>)));
 		}
 	}
 	kdebugf2();
@@ -410,7 +406,7 @@ void Wizard::createGGCurrentNumberPage()
 {
 	kdebugf();
 	ggCurrentNumberPage=new QVBox(this);
-	
+
 	new QLabel(tr("<h3>You decided to use your existing account. Please configure it</h3>"), ggCurrentNumberPage);
 	QGroupBox *grp_haveNumber=new QGroupBox(tr("Please enter your account settings"), ggCurrentNumberPage);
 	grp_haveNumber->setInsideMargin(10);
@@ -438,7 +434,7 @@ void Wizard::createGGNewNumberPage()
 {
 	kdebugf();
 	ggNewNumberPage=new QVBox(this);
-	
+
 	new QLabel(tr("<h3>Please enter your valid e-mail address and password you want "
 				"to secure your new Gadu-gadu number</h3>\nPassword must contain at least 5 signs (only letters and numbers)"), ggNewNumberPage);
 
@@ -446,7 +442,7 @@ void Wizard::createGGNewNumberPage()
 	grp_dontHaveNumber->setInsideMargin(10);
 	grp_dontHaveNumber->setColumns(2);
 	grp_dontHaveNumber->setInsideSpacing(4);
-	
+
 	new QLabel(tr("Password"), grp_dontHaveNumber);
 	l_ggNewPasssword=new QLineEdit(grp_dontHaveNumber);
 	l_ggNewPasssword->setEchoMode(QLineEdit::Password);
@@ -455,10 +451,10 @@ void Wizard::createGGNewNumberPage()
 	l_ggNewPassswordRetyped->setEchoMode(QLineEdit::Password);
 	new QLabel(tr("Your e-mail address"), grp_dontHaveNumber);
 	l_email=new QLineEdit(grp_dontHaveNumber);
-	
+
 	registerAccount = new QPushButton(tr("Register"), ggNewNumberPage);
 	connect(registerAccount, SIGNAL(clicked()), this, SLOT(setGaduAccount()));
-	
+
 	addPage(ggNewNumberPage, tr("Gadu-gadu account"));
 	kdebugf2();
 }
@@ -505,7 +501,7 @@ void Wizard::createChatOpionsPage()
 {
 	kdebugf();
 	chatOptionsPage=new QVBox(this);
-	
+
 	new QLabel(tr("<h3>Please setup your chat options</h3>"), chatOptionsPage);
 
 	QGroupBox *grp_chatOptions = new QGroupBox(tr("Chat options"), chatOptionsPage);
@@ -518,7 +514,7 @@ void Wizard::createChatOpionsPage()
 	c_openOnNewMessage = new QCheckBox (tr("Open chat window on new message"), grp_chatOptions);
 	c_flashTitleOnNewMessage = new QCheckBox (tr("Flash chat title on new message"), grp_chatOptions);
 	c_ignoreAnonyms = new QCheckBox (tr("Ignore messages from anonymous users"), grp_chatOptions);
-	
+
 	c_waitForDelivery->setChecked(config_file.readBoolEntry("Chat", "MessageAcks", true));
 	c_enterSendsMessage->setChecked(config_file.readBoolEntry("Chat", "AutoSend", true));
 	c_openOnNewMessage->setChecked(config_file.readBoolEntry("Chat", "OpenChatOnMessage",true));
@@ -536,7 +532,7 @@ void Wizard::createWWWOpionsPage()
 {
 	kdebugf();
 	wwwOptionsPage=new QVBox(this);
-	
+
 	new QLabel(tr("<h3>Please setup Kadu for working with your favourite WWW browser</h3>"), wwwOptionsPage);
 
 	QGroupBox *grp_wwwOptions = new QGroupBox(tr("WWW options"), wwwOptionsPage);
@@ -550,7 +546,7 @@ void Wizard::createWWWOpionsPage()
 	new QLabel (tr("Custom Web browser"), grp_wwwOptions);
 	l_customBrowser = new QLineEdit (grp_wwwOptions);
 
-	ChatSlots::initBrowserOptions(cb_browser, cb_browserOptions, l_customBrowser);
+	ChatManagerSlots::initBrowserOptions(cb_browser, cb_browserOptions, l_customBrowser);
 	l_customBrowser->setEnabled(!cb_browser->currentItem());
 	l_customBrowser->setText(config_file.readEntry("Chat", "WebBrowser"));
 
@@ -568,16 +564,16 @@ void Wizard::createSoundOptionsPage()
 {
 	kdebugf();
 	soundOptionsPage = new QVBox(this);
-	
+
 	new QLabel(tr("<h3>Please setup sounds</h3>"), soundOptionsPage);
-	
+
 	QGroupBox *soundModuleOptions = new QGroupBox(tr("Sound module"), soundOptionsPage);
 	soundModuleOptions->setInsideMargin(10);
 	soundModuleOptions->setColumns(2);
 	soundModuleOptions->setInsideSpacing(4);
-				
+
 	new QLabel (tr("Choose sound module"),soundModuleOptions);
-	
+
 	cb_soundModule = new QComboBox(soundModuleOptions);
 	cb_soundModule->insertItem(tr("None"));
 	cb_soundModule->insertItem("alsa_sound");
@@ -587,10 +583,10 @@ void Wizard::createSoundOptionsPage()
 	cb_soundModule->insertItem("esd_sound");
 	cb_soundModule->insertItem("ext_sound");
 	cb_soundModule->insertItem("nas_sound");
-	
+
 	connect(cb_soundModule, SIGNAL(activated (int)), this, SLOT(setSoundModule(int)));
-	
-	new QLabel (tr("<b>Description:</b>"), soundModuleOptions);	
+
+	new QLabel (tr("<b>Description:</b>"), soundModuleOptions);
 	moduleInfo = new QLabel (tr("Kadu uses various sound modules to play its sounds. "
 								"Choosing appropriate module is quite important. "
 								"Browse installed sound modules and choose the best for you."),
@@ -601,7 +597,7 @@ void Wizard::createSoundOptionsPage()
 	moduleInfo->setAutoResize(true);
 
 	if (modules_manager->moduleIsLoaded("alsa_sound"))
-	{	
+	{
 		cb_soundModule->setCurrentItem(1);
 		moduleInfo->setText(tr("This module play sounds using ALSA - Advanced Linux Sound Architecture driver."));
 	}
@@ -618,36 +614,36 @@ void Wizard::createSoundOptionsPage()
 								"multiple digital sources at real time.<br> When your "
 								"soundcard doesn't handle that, this module is for you."));
 	}
-	else if (modules_manager->moduleIsLoaded("dsp_sound")) 
+	else if (modules_manager->moduleIsLoaded("dsp_sound"))
 	{
 		cb_soundModule->setCurrentItem(4);
 		moduleInfo->setText(tr("This module uses OSS kernel module to produce sounds."));
 	}
-	else if (modules_manager->moduleIsLoaded("esd_sound")) 
+	else if (modules_manager->moduleIsLoaded("esd_sound"))
 	{
 		cb_soundModule->setCurrentItem(5);
 		moduleInfo->setText(tr("This module uses GNOME's Enlightened Sound Daemon "
 							"which mixes multiple digital sources at real time.<br> "
 							"When your soundcard doesn't handle that, this module is for you."));
 	}
-	else if (modules_manager->moduleIsLoaded("ext_sound")) 
+	else if (modules_manager->moduleIsLoaded("ext_sound"))
 	{
 		cb_soundModule->setCurrentItem(6);
 		moduleInfo->setText(tr("This module uses external application to produce sounds. "
 								"You must specify path to external program in configuration."));
 	}
-	else if (modules_manager->moduleIsLoaded("nas_sound")) 
+	else if (modules_manager->moduleIsLoaded("nas_sound"))
 	{
 		cb_soundModule->setCurrentItem(7);
 		moduleInfo->setText(tr("This module uses Network Audio System to produce sounds. "
 								"Use it when you use NAS sound system."));
 	}
-	
+
 	QGroupBox *grp_soundOptions = new QGroupBox(tr("Sounds"), soundOptionsPage);
 	grp_soundOptions->setInsideMargin(10);
 	grp_soundOptions->setColumns(1);
 	grp_soundOptions->setInsideSpacing(4);
-	
+
 	c_enableSounds = new QCheckBox (tr("Play sounds"), grp_soundOptions);
 	c_playWhilstChatting = new QCheckBox (tr("Play sounds from a person whilst chatting"), grp_soundOptions);
 	c_playWhenInvisible = new QCheckBox (tr("Play chat sounds only when window is invisible"), grp_soundOptions);
@@ -683,14 +679,14 @@ void Wizard::createGeneralOptionsPage()
 	c_showBlocked->setChecked(config_file.readBoolEntry("General", "ShowBlocked", true));
 	c_showBlocking->setChecked(config_file.readBoolEntry("General", "ShowBlocking", true));
 	c_startDocked->setChecked(config_file.readBoolEntry("General", "RunDocked", true));
-	
+
 	QGroupBox *grp_historyOptions = new QGroupBox(tr("History options"), generalOptionsPage);
 	grp_historyOptions->setInsideMargin(10);
 	grp_historyOptions->setColumns(1);
 	grp_historyOptions->setInsideSpacing(4);
 	c_logMessages = new QCheckBox (tr("Don't log messages"), grp_historyOptions);
 	c_logStatusChanges = new QCheckBox (tr("Don't log status changes"), grp_historyOptions);
-	
+
 	c_logMessages->setChecked(!config_file.readBoolEntry("History", "Logging", true));
 	c_logStatusChanges->setChecked(config_file.readBoolEntry("History", "DontSaveStatusChanges", false));
 
@@ -718,7 +714,7 @@ void Wizard::createHintsOptionsPage()
 	unsigned int i;
 	for (i=0; i<hintColorCount; ++i)
 		cb_hintsTheme->insertItem(tr(hintColorsNames[i]));
-	
+
 	cb_hintsTheme->insertItem(tr("Current")); //wlasne ustawienie
 	cb_hintsTheme->setCurrentItem(i);
 	//teraz musimy je zapamietac
@@ -747,7 +743,7 @@ void Wizard::createHintsOptionsPage()
 	currentHints[9][1] = config_file.readEntry("Hints", "HintOfflineD_fgcolor", "#000000");
 	currentHints[10][1] = config_file.readEntry("Hints", "HintOffline_fgcolor", "#000000");
 	currentHints[11][1] = config_file.readEntry("Hints", "HintOnlineD_fgcolor", "#000000");
-	currentHints[12][1] = config_file.readEntry("Hints", "HintOnline_fgcolor", "#000000"); 
+	currentHints[12][1] = config_file.readEntry("Hints", "HintOnline_fgcolor", "#000000");
 
 
 	new QLabel(tr("Preview"), grp_hintsOptions);
@@ -761,7 +757,7 @@ void Wizard::createHintsOptionsPage()
 	preview->setAutoResize(true);
 
 	new QLabel("", grp_hintsOptions);
-	
+
 	preview2 = new QLabel (tr("<b>Error</b>: (192.168.0.1) Disconnection has occured"), grp_hintsOptions);
 	preview2->setFont(QFont("sans", 10));	//<-----------------------------------
 	preview2->setPaletteForegroundColor(currentHints[3][1]);
@@ -774,12 +770,12 @@ void Wizard::createHintsOptionsPage()
 	grp_hintsOptions2->setInsideMargin(10);
 	grp_hintsOptions2->setColumns(2);
 	grp_hintsOptions2->setInsideSpacing(4);
-	
+
 	new QLabel(tr("Please choose hints type"), grp_hintsOptions2);
 	cb_hintsType = new QComboBox(grp_hintsOptions2);
 	for (unsigned int i=0; i<hintCount; ++i)
 		cb_hintsType->insertItem(tr(hintSyntaxName[i]));
-	
+
 	new QLabel(tr("Preview"), grp_hintsOptions2);
 	preview4 = new QLabel (toDisplay(hintSyntax[0]), grp_hintsOptions2);
 	preview4->setFont(QFont("sans", 10));	//<----------------------------------
@@ -809,7 +805,7 @@ void Wizard::createHintsOptionsPage()
 			cb_hintsType->setCurrentItem(i);
 			customHint=hintConstruction;
 			preview4->setText(toDisplay(hintConstruction));
-		}	
+		}
 	}
 
 	addPage(hintsOptionsPage, tr("Hints"));
@@ -831,13 +827,13 @@ void Wizard::createColorsPage()
 	grp_colorOptions->setInsideMargin(10);
 	grp_colorOptions->setColumns(2);
 	grp_colorOptions->setInsideSpacing(4);
-	
+
 	new QLabel(tr("Please choose Kadu design"), grp_colorOptions);
 	cb_colorTheme = new QComboBox(grp_colorOptions);
 	unsigned int i;
 	for (i=0; i<kaduColorCount; ++i)
 		cb_colorTheme->insertItem(tr(kaduColorNames[i]));
-	
+
 	cb_colorTheme->insertItem(tr("Current"));	//zeby nie stracic wlasnego ustawienia kolorow przez zabawe combo
 	cb_colorTheme->setCurrentItem(i);
 	//zapamietujemy ustawienia kolorkow:
@@ -849,19 +845,19 @@ void Wizard::createColorsPage()
 	currentColors[5] = config_file.readEntry("Look", "InfoPanelFgColor");
 	currentColors[6] = config_file.readEntry("Look", "UserboxBgColor");
 	currentColors[7] = config_file.readEntry("Look", "UserboxFgColor");
-	
+
 	QGroupBox *grp_iconsOptions = new QGroupBox(tr("Icons"), colorsPage);
 	grp_iconsOptions->setInsideMargin(10);
 	grp_iconsOptions->setColumns(2);
 	grp_iconsOptions->setInsideSpacing(4);
-	
+
 	new QLabel(tr("Please choose icon theme"), grp_iconsOptions);
 	cb_iconTheme = new QComboBox(grp_iconsOptions);
 	cb_iconTheme->insertStringList(icons_manager.themes());
 	cb_iconTheme->setCurrentText(config_file.readEntry("Look", "IconTheme"));
 	if (icons_manager.themes().contains("default"))
 	cb_iconTheme->changeItem(tr("Default"), icons_manager.themes().findIndex("default"));
-		
+
 	QHBox *grp_icons = new QHBox (grp_iconsOptions);
 	iconPreview = new QLabel(grp_icons);
 	iconPreview2 = new QLabel(grp_icons);
@@ -908,27 +904,27 @@ void Wizard::createInfoPanelPage()
 		cb_panelTheme->insertItem(tr(informationPanelName[i]));
 
 	new QLabel(tr("Preview"), grp_infoPanelOptions);
-	
+
 	infoPreview = new KaduTextBrowser (grp_infoPanelOptions);	//-- przymiarka pod zmiane podgladu
 	infoPreview->setPaletteBackgroundColor(config_file.readColorEntry("Look", "InfoPanelBgColor"));
 	infoPreview->setPaletteForegroundColor(config_file.readColorEntry("Look", "InfoPanelFgColor"));
 	infoPreview->setFrameStyle(QFrame::Box | QFrame::Plain);
 	infoPreview->setLineWidth(1);
 	infoPreview->setAlignment(Qt::AlignVCenter | Qt::WordBreak | Qt::DontClip);
-	infoPreview->setMaximumWidth(240);	
-	
+	infoPreview->setMaximumWidth(240);
+
 	if (c_showScrolls->isChecked())
 		infoPreview->setVScrollBarMode(QScrollView::AlwaysOn); //zeby bylo je widac nawet przy krotkich panelach
-	else 	
+	else
 		infoPreview->setVScrollBarMode(QScrollView::AlwaysOff);
-	
+
 	connect(cb_panelTheme, SIGNAL(activated (int)), this, SLOT(previewPanelTheme(int)));
 	connect(c_showScrolls, SIGNAL(toggled(bool)), this, SLOT(addScrolls(bool)));	//--j.w.
-	
+
 	QString panelConstruction=config_file.readEntry("Look", "PanelContents", "");
 	if (!panelConstruction.isEmpty())
-	{	
-		UserListElement el;		
+	{
+		UserListElement el;
 		unsigned int i;
 		for (i=0; i<informationPanelCount; ++i)
 			if (panelConstruction==toSave(informationPanelSyntax[i]))
@@ -943,7 +939,7 @@ void Wizard::createInfoPanelPage()
 			cb_panelTheme->setCurrentItem(i);
 			customPanel=panelConstruction;
 			infoPreview->setText(parse(toDisplay(panelConstruction), el));
-		}	
+		}
 	}
 	addPage(infoPanelPage, tr("Information panel look"));
 	kdebugf2();
@@ -964,7 +960,7 @@ void Wizard::createQtStylePage()
 	grp_qtOptions->setInsideMargin(10);
 	grp_qtOptions->setColumns(2);
 	grp_qtOptions->setInsideSpacing(4);
-	
+
 	new QLabel(tr("Please choose Qt design for Kadu"), grp_qtOptions);
 	cb_qtTheme = new QComboBox(grp_qtOptions);
 
@@ -974,7 +970,7 @@ void Wizard::createQtStylePage()
 		cb_qtTheme->setCurrentText(tr("Unknown"));
 	else
 		cb_qtTheme->setCurrentText(QApplication::style().name());
-	
+
 	connect(cb_qtTheme, SIGNAL(activated(int)), this, SLOT(previewQtTheme(int)));
 
 	addPage(qtStylePage, tr("Qt Look"));
@@ -996,7 +992,7 @@ void Wizard::createGreetingsPage()
 					"before changing some advanced settings. If you have questions "
 					"or problems with Kadu look at <b>www.kadu.net/forum</b> and be "
 					"our guest.<br><h3>Enjoy using Kadu ;)<br>Kadu Team</h3>"), greetingsPage);
-	
+
 	addPage(greetingsPage, tr("Congratulations"));
 	setFinishEnabled(greetingsPage, TRUE);
 	kdebugf2();
@@ -1044,7 +1040,7 @@ void Wizard::setSoundOptions()
 	config_file.writeEntry("Sounds", "PlaySound", c_enableSounds->isChecked());
 	config_file.writeEntry("Sounds", "PlaySoundChat", c_playWhilstChatting->isChecked());
 	config_file.writeEntry("Sounds", "PlaySoundChatInvisible", c_playWhenInvisible->isChecked());
-	
+
 	if (modules_manager->moduleIsLoaded("alsa_sound") && (cb_soundModule->currentText() != "alsa_sound")) modules_manager->deactivateModule("alsa_sound", false);
 	else if (modules_manager->moduleIsLoaded("ao_sound") && (cb_soundModule->currentText() != "ao_sound")) modules_manager->deactivateModule("ao_sound", false);
 	else if (modules_manager->moduleIsLoaded("arts_sound") && (cb_soundModule->currentText() != "arts_sound")) modules_manager->deactivateModule("arts_sound", false);
@@ -1052,11 +1048,11 @@ void Wizard::setSoundOptions()
 	else if (modules_manager->moduleIsLoaded("esd_sound") && (cb_soundModule->currentText() != "esd_sound")) modules_manager->deactivateModule("esd_sound", false);
 	else if (modules_manager->moduleIsLoaded("ext_sound") && (cb_soundModule->currentText() != "ext_sound")) modules_manager->deactivateModule("ext_sound", false);
 	else if (modules_manager->moduleIsLoaded("nas_sound") && (cb_soundModule->currentText() != "nas_sound")) modules_manager->deactivateModule("nas_sound", false);
-	
+
 	//jak wybrany modul != zaden to probuje zaladowac
 	if ((cb_soundModule->currentText() != tr("None")) && (!modules_manager->moduleIsLoaded(cb_soundModule->currentText())))
 		modules_manager->activateModule(cb_soundModule->currentText());
-	
+
 	kdebugf2();
 }
 
@@ -1091,7 +1087,7 @@ void Wizard::setBrowser()
 **/
 void Wizard::findAndSetWebBrowser(int selectedBrowser)
 {
-	ChatSlots::findBrowser(selectedBrowser, cb_browser, cb_browserOptions, l_customBrowser);
+	ChatManagerSlots::findBrowser(selectedBrowser, cb_browser, cb_browserOptions, l_customBrowser);
 	l_customBrowser->setEnabled(!selectedBrowser);
 }
 
@@ -1100,7 +1096,7 @@ void Wizard::findAndSetWebBrowser(int selectedBrowser)
 **/
 void Wizard::findAndSetBrowserOption(int selectedOption)
 {
-	ChatSlots::setBrowserOption(selectedOption, l_customBrowser, cb_browser->currentItem());
+	ChatManagerSlots::setBrowserOption(selectedOption, l_customBrowser, cb_browser->currentItem());
 }
 
 /**
@@ -1117,7 +1113,7 @@ void Wizard::previewHintsTheme(int hintsThemeID)
 		preview4->setPaletteForegroundColor(QColor(currentHints[2][1]));
 		preview4->setPaletteBackgroundColor(QColor(currentHints[2][0]));
 	}
-	else 
+	else
 	{
 		preview->setPaletteForegroundColor(QColor(hintColors[hintsThemeID][1]));
 		preview->setPaletteBackgroundColor(QColor(hintColors[hintsThemeID][0]));
@@ -1135,7 +1131,7 @@ void Wizard::previewHintsType(int hintsTypeID)
 {
 	if (hintsTypeID==int(hintCount))
 		preview4->setText(toDisplay(customHint));
-	else 
+	else
 		preview4->setText(toDisplay(hintSyntax[hintsTypeID]));
 }
 
@@ -1145,7 +1141,7 @@ void Wizard::previewHintsType(int hintsTypeID)
 void Wizard::setHints()
 {
 	kdebugf();
-	
+
 	if (cb_hintsTheme->currentText() == tr("Current"))
 	{
 		config_file.writeEntry("Hints", "HintBlocking_bgcolor", currentHints[0][0]);
@@ -1161,7 +1157,7 @@ void Wizard::setHints()
 		config_file.writeEntry("Hints", "HintOffline_bgcolor", currentHints[10][0]);
 		config_file.writeEntry("Hints", "HintOnlineD_bgcolor", currentHints[11][0]);
 		config_file.writeEntry("Hints", "HintOnline_bgcolor", currentHints[12][0]);
-	
+
 		config_file.writeEntry("Hints", "HintBlocking_fgcolor", currentHints[0][1]);
 		config_file.writeEntry("Hints", "HintBusyD_fgcolor", currentHints[1][1]);
 		config_file.writeEntry("Hints", "HintBusy_fgcolor", currentHints[2][1]);
@@ -1176,7 +1172,7 @@ void Wizard::setHints()
 		config_file.writeEntry("Hints", "HintOnlineD_fgcolor", currentHints[11][1]);
 		config_file.writeEntry("Hints", "HintOnline_fgcolor", currentHints[12][1]);
 	}
-	else 
+	else
 	{
 		QColor bg_color, fg_color;
 		bg_color=preview->paletteBackgroundColor();
@@ -1195,7 +1191,7 @@ void Wizard::setHints()
 		config_file.writeEntry("Hints", "HintOffline_bgcolor", bg_color);
 		config_file.writeEntry("Hints", "HintOnlineD_bgcolor", bg_color);
 		config_file.writeEntry("Hints", "HintOnline_bgcolor", bg_color);
-	
+
 		config_file.writeEntry("Hints", "HintBlocking_fgcolor", fg_color);
 		config_file.writeEntry("Hints", "HintBusyD_fgcolor", fg_color);
 		config_file.writeEntry("Hints", "HintBusy_fgcolor", fg_color);
@@ -1211,7 +1207,7 @@ void Wizard::setHints()
 		config_file.writeEntry("Hints", "HintOnline_fgcolor", fg_color);
 	}
 	config_file.writeEntry("Hints", "NotifyHintUseSyntax", true);
-	
+
 	if (cb_hintsType->currentItem()==0)
 	{
 		config_file.writeEntry("Hints", "NotifyHintUseSyntax", false);
@@ -1233,7 +1229,7 @@ void Wizard::setHints()
 void Wizard::previewColorTheme(int colorThemeID)
 {
 	kdebugf();
-	
+
 	if (cb_colorTheme->currentText() == tr("Current"))
 	{
 		config_file.writeEntry("Look", "ChatMyBgColor", currentColors[0]);
@@ -1268,10 +1264,10 @@ void Wizard::previewIconTheme(int iconThemeID)
 	QString iconName=cb_iconTheme->currentText();
 	if (iconName == tr("Default"))
 		iconName= "default";
-	
+
 	icons_manager.clear();
 	icons_manager.setTheme(iconName);
-	
+
 	QString path=icons_manager.iconPath("Online");
 	for (int i = 0, count = cb_iconTheme->count(); i < count; ++i)
 		if (i != iconThemeID)
@@ -1304,7 +1300,7 @@ void Wizard::setColorsAndIcons()
 	}
 	else
 		newIconTheme.replace(QRegExp(tr("Default")), "default");
-		
+
 	config_file.writeEntry("Look", "IconTheme", newIconTheme);
 	kdebugf2();
 }
@@ -1317,15 +1313,15 @@ void Wizard::previewPanelTheme(int panelThemeID)
 	kdebugf();
 	QString panelLook;
 	UserListElement el;
-	
+
 	if (panelThemeID == int(informationPanelCount))
 		panelLook = customPanel;
-	else 
+	else
 		panelLook = informationPanelSyntax[cb_panelTheme->currentItem()];
 
 	if (panelLook.contains("background=", false) == 0)	//to nam zapewnia odswierzenie tla jesli wczesniej byl obrazek
-		infoPreview->setText("<body bgcolor=\""+config_file.readEntry("Look", "InfoPanelBgColor")+"\"></body>");	
-		
+		infoPreview->setText("<body bgcolor=\""+config_file.readEntry("Look", "InfoPanelBgColor")+"\"></body>");
+
 	infoPreview->setText(parse(toDisplay(panelLook), el));
 	kdebugf2();
 }
@@ -1385,7 +1381,7 @@ QString Wizard::toDisplay(QString s)
 	s.replace(QRegExp("\\["), "");
 	s.replace(QRegExp("\\]"), "");
 	s.replace(QRegExp("changed status to"), tr("changed status to"));
-	
+
 	kdebugf2();
 	return s;
 }
@@ -1397,16 +1393,16 @@ QString Wizard::toSave(QString s)
 {
 	s.replace(QRegExp("You are not on the list"), tr("You are not on the list"));
 
-	int i; 
+	int i;
 	for (i=0; i<s.contains("$KADU_SHARE"); ++i)
 		s.replace(QRegExp("\\$KADU_SHARE"), dataPath("kadu"));
-	
+
 	for (i=0; i<s.contains("$KADU_CONF"); ++i)
 		s.replace(QRegExp("\\$KADU_CONF"), ggPath());
-	
+
 	for (i=0; i<s.contains("$HOME"); ++i)
 		s.replace(QRegExp("\\$HOME"), getenv("HOME"));
-	
+
 	return s;
 }
 
@@ -1414,7 +1410,7 @@ QString Wizard::toSave(QString s)
 	wybor modulu dzwiekowego - wypisanie infa na temat modulu + ew. sprawdzenie czy modul jest dostepny
 **/
 void Wizard::setSoundModule(int comboPos)
-{	
+{
 	QString moduleName = cb_soundModule->text(comboPos);
 	if (moduleName == "alsa_sound")
 		moduleInfo->setText(tr("This module play sounds using ALSA - Advanced Linux Sound Architecture driver."));
@@ -1438,10 +1434,10 @@ void Wizard::setSoundModule(int comboPos)
 		moduleInfo->setText(tr("This module uses external application to produce "
 							"sounds. You must specify path to external program "
 							"in configuration."));
-	else 
+	else
 		moduleInfo->setText(tr("There will be no sounds in Kadu"));
 	if ((moduleName != tr("None")) && (!modules_manager->moduleIsInstalled(moduleName)))
-	{	
+	{
 		moduleInfo->setText(tr("<font color=red>Module is not installed! "
 							"If you want to use it download and install "
 							"it first.</font><br>")+moduleInfo->text());
@@ -1455,7 +1451,7 @@ void Wizard::setSoundModule(int comboPos)
 	wlaczenie/wylaczenie Scroolli w podgladzie panelu informacyjnego
 **/
 void Wizard::addScrolls(bool enableScrolls)
-{	
+{
 	kdebugf();
 	if (enableScrolls)
 		infoPreview->setVScrollBarMode(QScrollView::AlwaysOn);	//zeby bylo widac nawet przy krotkich panelach

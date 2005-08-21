@@ -19,6 +19,7 @@
 #include <qslider.h>
 
 #include "chat.h"
+#include "chat_manager.h"
 #include "config_file.h"
 #include "config_dialog.h"
 #include "debug.h"
@@ -247,13 +248,13 @@ SoundManager::SoundManager(const QString& name, const QString& configname)
 	setTheme(config_file.readEntry("Sounds","SoundTheme"));
 
 	QMap<QString, QString> s;
-	s["NewChat"]=SLOT(newChat(const UinsList &, const QString &, time_t));
-	s["NewMessage"]=SLOT(newMessage(const UinsList &, const QString &, time_t, bool &));
-	s["ConnError"]=SLOT(connectionError(const QString &));
-	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const UserListElement &));
-	s["toBusy"]=SLOT(userChangedStatusToBusy(const UserListElement &));
-	s["toInvisible"]=SLOT(userChangedStatusToInvisible(const UserListElement &));
-	s["toNotAvailable"]=SLOT(userChangedStatusToNotAvailable(const UserListElement &));
+	s["NewChat"]=SLOT(newChat(const QString &, UserListElements, const QString &, time_t));
+	s["NewMessage"]=SLOT(newMessage(const QString &, UserListElements, const QString &, time_t, bool &));
+	s["ConnError"]=SLOT(connectionError(const QString &, const QString &));
+	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const QString &, UserListElement));
+	s["toBusy"]=SLOT(userChangedStatusToBusy(const QString &, UserListElement));
+	s["toInvisible"]=SLOT(userChangedStatusToInvisible(const QString &, UserListElement));
+	s["toNotAvailable"]=SLOT(userChangedStatusToNotAvailable(const QString &, UserListElement));
 	s["Message"]=SLOT(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *));
 
 	config_file.addVariable("Notify", "NewChat_Sound", true);
@@ -337,7 +338,7 @@ void SoundManager::setMute(const bool& enable)
 	mute = enable;
 }
 
-void SoundManager::newChat(const UinsList &/*senders*/, const QString& /*msg*/, time_t /*time*/)
+void SoundManager::newChat(const QString &/*protocolName*/, UserListElements /*senders*/, const QString &/*msg*/, time_t /*t*/)
 {
 	kdebugf();
 	if (isMuted())
@@ -366,7 +367,7 @@ void SoundManager::newChat(const UinsList &/*senders*/, const QString& /*msg*/, 
 	kdebugf2();
 }
 
-void SoundManager::newMessage(const UinsList &senders, const QString& /*msg*/, time_t /*time*/, bool &/*grab*/)
+void SoundManager::newMessage(const QString &/*protocolName*/, UserListElements senders, const QString &/*msg*/, time_t /*t*/, bool &/*grab*/)
 {
 	kdebugf();
 	if (isMuted())
@@ -380,13 +381,12 @@ void SoundManager::newMessage(const UinsList &senders, const QString& /*msg*/, t
 		return;
 	}
 
-	if (config_file.readBoolEntry("Sounds", "PlaySoundChatInvisible") && chat_manager->findChatByUins(senders)->isActiveWindow())
+	if (config_file.readBoolEntry("Sounds", "PlaySoundChatInvisible") && chat_manager->findChat(senders)->isActiveWindow())
 		return;
 
-	UserListElement ule = userlist.byUinValue(senders[0]);
 	QString messagesound;
 	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
-		messagesound=parse(config_file.readEntry("Sounds","Message_sound"),ule);
+		messagesound=parse(config_file.readEntry("Sounds","Message_sound"), senders[0]);
 	else
 		messagesound=themePath(config_file.readEntry("Sounds", "SoundTheme"))+getThemeEntry("Message");
 	if (QFile::exists(messagesound))
@@ -399,7 +399,7 @@ void SoundManager::newMessage(const UinsList &senders, const QString& /*msg*/, t
 	kdebugf2();
 }
 
-void SoundManager::connectionError(const QString &/*message*/)
+void SoundManager::connectionError(const QString &/*protocolName*/, const QString &/*message*/)
 {
 	kdebugf();
 	if (isMuted())
@@ -428,7 +428,7 @@ void SoundManager::connectionError(const QString &/*message*/)
 	kdebugf2();
 }
 
-void SoundManager::userChangedStatusToAvailable(const UserListElement &ule)
+void SoundManager::userChangedStatusToAvailable(const QString &/*protocolName*/, UserListElement ule)
 {
 	kdebugf();
 	if (isMuted())
@@ -457,7 +457,7 @@ void SoundManager::userChangedStatusToAvailable(const UserListElement &ule)
 	kdebugf2();
 }
 
-void SoundManager::userChangedStatusToBusy(const UserListElement &ule)
+void SoundManager::userChangedStatusToBusy(const QString &/*protocolName*/, UserListElement ule)
 {
 	kdebugf();
 	if (isMuted())
@@ -486,7 +486,7 @@ void SoundManager::userChangedStatusToBusy(const UserListElement &ule)
 	kdebugf2();
 }
 
-void SoundManager::userChangedStatusToInvisible(const UserListElement &ule)
+void SoundManager::userChangedStatusToInvisible(const QString &/*protocolName*/, UserListElement ule)
 {
 	kdebugf();
 	if (isMuted())
@@ -515,7 +515,7 @@ void SoundManager::userChangedStatusToInvisible(const UserListElement &ule)
 	kdebugf2();
 }
 
-void SoundManager::userChangedStatusToNotAvailable(const UserListElement &ule)
+void SoundManager::userChangedStatusToNotAvailable(const QString &/*protocolName*/, UserListElement ule)
 {
 	kdebugf();
 	if (isMuted())

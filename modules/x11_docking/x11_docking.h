@@ -14,7 +14,7 @@ class X11TrayIcon : public QLabel
 		void setTrayMovie(const QMovie &movie);
 		void setTrayTooltip(const QString& tooltip);
 		void findTrayPosition(QPoint& pos);
-		void chatCreatedSlot(const UinsList& senders);
+		void chatCreatedSlot(const UserGroup *group);
 
 	protected:
 		virtual void enterEvent(QEvent* e);

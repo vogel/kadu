@@ -101,6 +101,18 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * komunikaty dotycz±ce migracji zebrane w jedno okno + ró¿ne poprawki (adrian)
 * poprawki w mechanizmach xml-owych plików konf. - pierwszy start kadu (adrian)
 * poprawione od¶wie¿anie ikony w module desktop_docking (joi)
+* przebudowa UserListy i UserBoksa: (joi)
+   - pliki chat.* i userlist.* podzielone na mniejsze
+   - z klasy UserList wydzielona klasa UserGroup
+   - klasa UserListElement bierze pod uwagê protoko³y
+   - zmiana danych kontaktu emituje sygna³y we wszystkich UserGrupach do których nale¿y
+   - kopiowanie UserListElementów jest bardzo szybkie (dziêki zliczaniu referencji)
+   - lista kontaktów jest ¶ci¶le spiêta z jej graficznym odpowiednikiem (UserBox)
+   - dodany mechanizm filtrów na UserBoksa - blokuj±cy, blokowani, bez opisu,
+     niedostêpni, anonimowi, grupy kontaktów zrealizowane jako filtry
+   - dodany mechanizm pozwalaj±cy zmieniaæ kryteria sortowania listy kontaktów
+     bez ingerencji w kod
+   - ogólne uprotoko³owanie kodu (choæ i tak jest jeszcze duuu¿o pracy przy tym)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

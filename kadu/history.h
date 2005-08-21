@@ -193,7 +193,7 @@ class HistoryManager : public QObject
 
 		void checkImageTimeout(UinType uin);
 	private slots:
-		void chatMsgReceived(UinsList senders, const QString& msg, time_t time, bool& grab);
+		void chatMsgReceived(const QString &protocolName, UserListElements senders, const QString& msg, time_t time, bool& grab);
 		void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
 		void checkImagesTimeouts();
 	public slots:

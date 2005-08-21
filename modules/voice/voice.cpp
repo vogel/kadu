@@ -56,12 +56,12 @@ VoiceChatDialog::VoiceChatDialog(DccSocket *socket)
 
 	connect(b_stop, SIGNAL(clicked()), this, SLOT(close()));
 	show();
-	
+
 	Dialogs.insert(socket, this);
-	
-	if (voice_manager->setup() == -1) 
+
+	if (voice_manager->setup() == -1)
 	{
-		chatFinished= true;  /* jezeli urzadzenie device jest zajete albo go nie ma 
+		chatFinished= true;  /* jezeli urzadzenie device jest zajete albo go nie ma
 										zrywamy polaczenie oraz zamykamy okienko*/
 		socket->setState(DCC_SOCKET_VOICECHAT_DISCARDED);
 		delete this;
@@ -256,7 +256,7 @@ int VoiceManager::setup()
 		recordThread = new RecordThread();
 		connect(recordThread, SIGNAL(recordSample(char *, int)), this, SLOT(recordSampleReceived(char *, int)));
 		recordThread->start();
-	}	
+	}
 	return 0;
 	kdebugf2();
 }
@@ -276,7 +276,7 @@ void VoiceManager::free()
 		playThread->endThread();
 		playThread = NULL;
 	}
-	if (device) 
+	if (device)
 		sound_manager->closeDevice(device);
 	kdebugf2();
 }
@@ -352,7 +352,7 @@ void VoiceManager::testGsmEncoding()
 	kdebugf();
 	if (GsmEncodingTestMsgBox != NULL)
 		return;
-		
+
 	GsmEncodingTestHandle = gsm_create();
 	if (GsmEncodingTestHandle == 0)
 	{
@@ -365,7 +365,7 @@ void VoiceManager::testGsmEncoding()
 		gsm_option(GsmEncodingTestHandle, GSM_OPT_FAST, &value);
 	if (ConfigDialog::getCheckBox("Sounds", "Cut-off optimization (faster but degrades quality)")->isChecked())
 		gsm_option(GsmEncodingTestHandle, GSM_OPT_LTP_CUT, &value);
-		
+
 	GsmEncodingTestDevice = sound_manager->openDevice(PLAY_AND_RECORD, 8000);
 	if (GsmEncodingTestDevice == NULL)
 	{
@@ -533,7 +533,7 @@ void VoiceManager::recordSampleReceived(char *data, int length)
 	++pos;
 	--length;
 	sound_manager->recordSample(device, input, 160 * 10 * 2);
-	
+
 	int silence = 0;
 	for (int i = 0; i < 160 * 10; ++i)
 		if (abs(input[i]) < 256) // 256 ustalone do¶wiadczalnie
@@ -576,16 +576,15 @@ void VoiceManager::makeVoiceChat()
 {
 	kdebugf();
 
-	UserBox *activeUserBox = UserBox::getActiveUserBox();
+	UserBox *activeUserBox = UserBox::activeUserBox();
 	if (activeUserBox == NULL)
 		return;
 
-	UserList users = activeUserBox->getSelectedUsers();
+	UserListElements users = activeUserBox->selectedUsers();
 	if (users.count() != 1)
 		return;
 
-	UserListElement user = (*users.begin());
-	makeVoiceChat(user.uin());
+	makeVoiceChat(users[0].ID("Gadu").toUInt());
 
 	kdebugf2();
 }
@@ -596,17 +595,17 @@ void VoiceManager::makeVoiceChat(UinType dest)
 	if (config_file.readBoolEntry("Network", "AllowDCC"))
 		if (dcc_manager->dccEnabled())
 		{
-			const UserListElement& user = userlist.byUin(dest);
+			const UserListElement& user = userlist->byID("Gadu", QString::number(dest));
 
-			DccManager::TryType type = dcc_manager->initDCCConnection(user.ip().ip4Addr(),
-				user.port(),
+			DccManager::TryType type = dcc_manager->initDCCConnection(user.IP("Gadu").ip4Addr(),
+				user.port("Gadu"),
 				config_file.readNumEntry("General", "UIN"),
-				user.uin(),
+				user.ID("Gadu").toUInt(),
 				SLOT(dccVoiceChat(uint32_t, uint16_t, UinType, UinType, struct gg_dcc **)),
 				GG_SESSION_DCC_VOICE);
 
 			if (type==DccManager::DIRECT)
-				direct.push_front(user.uin());
+				direct.push_front(user.ID("Gadu").toUInt());
 		}
 	kdebugf2();
 }
@@ -615,8 +614,9 @@ void VoiceManager::askAcceptVoiceChat(DccSocket *socket)
 {
 	kdebugf();
 	QString text = tr("User %1 wants to talk with you. Do you accept it?");
-	if (userlist.containsUin(socket->ggDccStruct()->peer_uin))
-		text = text.arg(userlist.byUin(socket->ggDccStruct()->peer_uin).altNick());
+	if (userlist->contains("Gadu", QString::number(socket->ggDccStruct()->peer_uin)) &&
+		!userlist->byID("Gadu", QString::number(socket->ggDccStruct()->peer_uin)).isAnonymous())
+		text = text.arg(userlist->byID("Gadu", QString::number(socket->ggDccStruct()->peer_uin)).altNick());
 	else
 		text = text.arg(socket->ggDccStruct()->peer_uin);
 
@@ -644,25 +644,23 @@ void VoiceManager::mainDialogKeyPressed(QKeyEvent *e)
 void VoiceManager::userBoxMenuPopup()
 {
 	kdebugf();
-	UserBox *activeUserBox = UserBox::getActiveUserBox();
+	UserBox *activeUserBox = UserBox::activeUserBox();
 	if (activeUserBox == NULL) //to siê zdarza...
 		return;
-	UserList users = activeUserBox->getSelectedUsers();
-	UserListElement user = (*users.begin());
+	UserListElements users = activeUserBox->selectedUsers();
+	UserListElement user = users[0];
 
-	bool isOurUin = users.containsUin(config_file.readNumEntry("General", "UIN"));
+	bool containsOurUin = users.contains("Gadu", QString::number(config_file.readNumEntry("General", "UIN")));
 	int voicechat = UserBox::userboxmenu->getItem(tr("Voice chat"));
 
-	if (DccSocket::count() < 8 &&
+	bool enable = (DccSocket::count() < 8 &&
 		users.count() == 1 &&
-		!isOurUin &&
+		user.usesProtocol("Gadu") &&
+		!containsOurUin &&
 		config_file.readBoolEntry("Network", "AllowDCC") &&
-		(user.status().isOnline() || user.status().isBusy())
-	   )
+		(user.status("Gadu").isOnline() || user.status("Gadu").isBusy()));
 
-		UserBox::userboxmenu->setItemEnabled(voicechat, true);
-	else
-		UserBox::userboxmenu->setItemEnabled(voicechat, false);
+	UserBox::userboxmenu->setItemEnabled(voicechat, enable);
 	kdebugf2();
 }
 
@@ -690,11 +688,11 @@ void VoiceManager::dccError(DccSocket *socket)
 		if (direct.contains(peer_uin))
 		{
 			direct.remove(peer_uin);
-			const UserListElement& user = userlist.byUin(peer_uin);
-			dcc_manager->initDCCConnection(user.ip().ip4Addr(),
-					user.port(),
+			UserListElement user = userlist->byID("Gadu", QString::number(peer_uin));
+			dcc_manager->initDCCConnection(user.IP("Gadu").ip4Addr(),
+					user.port("Gadu"),
 					config_file.readNumEntry("General", "UIN"),
-					user.uin(),
+					user.ID("Gadu").toUInt(),
 					SLOT(dccVoiceChat(uint32_t, uint16_t, UinType, UinType, struct gg_dcc **)),
 					GG_SESSION_DCC_VOICE, true);
 		}

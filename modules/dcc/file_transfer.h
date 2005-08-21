@@ -42,7 +42,7 @@ class FileTransferDialog : public QDialog
 		static FileTransferDialog* bySocket(DccSocket* socket);
 		static void destroyAll();
 
-		bool dccFinished;		
+		bool dccFinished;
 };
 
 class Chat;
@@ -72,10 +72,10 @@ class FileTransferManager : public QObject
 		void setState(DccSocket* socket);
 		void socketDestroying(DccSocket* socket);
 
-		void chatCreated(const UinsList &);
-		void chatDestroying(const UinsList &);
+		void chatCreated(const UserGroup *group);
+		void chatDestroying(const UserGroup *group);
 
-		void fileDropped(const UinsList &, const QString &);
+		void fileDropped(const UserGroup *users, const QString &);
 
 	public:
 		FileTransferManager(QObject *parent=0, const char *name=0);
@@ -85,7 +85,7 @@ class FileTransferManager : public QObject
 			Inicjuje wysy³anie pliku do podanego odbiorcy.
 		**/
 		void sendFile(UinType receiver);
-		
+
 		void sendFile(UinType receiver, const QString &filename);
 };
 

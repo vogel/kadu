@@ -19,7 +19,7 @@ class UserlistImportExport : public QHBox {
 	private:
 		int ret;
 		QPushButton *pb_fetch;
-		UserList importedUserlist;
+		QValueList<UserListElement> importedUserlist;
 		QPushButton *pb_send;
 		QPushButton *pb_delete;
 		QPushButton *pb_tofile;
@@ -33,7 +33,7 @@ class UserlistImportExport : public QHBox {
 		void makeUserlist(void);
 		void updateUserlist(void);
 		void fromfile();
-		void userListImported(bool ok, UserList& userList);
+		void userListImported(bool ok, QValueList<UserListElement> userList);
 		void startExportTransfer(void);
 		void clean(void);
 		void ExportToFile(void);

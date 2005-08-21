@@ -13,12 +13,12 @@ class EncryptionManager : public QObject
 		QMap<const QPushButton*,Chat*> EncryptionButtonChat;
 		QMap<Chat*,bool> EncryptionEnabled;
 		void setupEncryptButton(Chat* chat,bool enabled);
-	
+
 	private slots:
-		void receivedMessageFilter(const UinsList& senders,
-			QCString& msg,QByteArray& formats,bool& stop);
-		void sendMessageFilter(const UinsList& uins,QCString& msg,bool& stop);
-		void chatCreated(const UinsList& uins);
+		void receivedMessageFilter(const QString &protocolName, UserListElements senders,
+								QCString& msg, QByteArray& formats, bool& stop);
+		void sendMessageFilter(const UserGroup *users, QCString &msg, bool &stop);
+		void chatCreated(const UserGroup *group);
 
 		void generateMyKeys();
 		void sendPublicKey();
@@ -30,16 +30,16 @@ class EncryptionManager : public QObject
 	public:
 		EncryptionManager(QObject *parent=0, const char *name=0);
 		~EncryptionManager();
-		void enableEncryptionBtnForUins(UinsList uins);
+		void enableEncryptionBtnForUsers(UserListElements users);
 };
 
 class SavePublicKey : public QDialog {
 	Q_OBJECT
 	public:
-		SavePublicKey(UinType uin, QString keyData, QWidget *parent = 0, const char *name = 0);
+		SavePublicKey(UserListElement user, QString keyData, QWidget *parent = 0, const char *name = 0);
 
 	private:
-		UinType uin;
+		UserListElement user;
 		QString keyData;
 
 	private slots:

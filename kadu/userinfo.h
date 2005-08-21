@@ -39,11 +39,11 @@ class UserInfo : public QHBox
 			\param parent wska¼nik do obiektu stanowi±cego rodzica. Domy¶lnie 0.
 			\param name nazwa kontrolki. Domy¶lnie 0.
 		**/
-		UserInfo(const QString &altnick, bool addUser = false, QDialog* parent=0, const char *name=0);
+		UserInfo(UserListElement user, QDialog* parent = 0, const char *name = 0);
 		~UserInfo();
 
 	private:
-		UserListElement *puser;
+		UserListElement user;
 		QLineEdit *e_firstname;
 		QLineEdit *e_lastname;
 		QLineEdit *e_nickname;
@@ -61,15 +61,12 @@ class UserInfo : public QHBox
 		QTabWidget *tw_main;
 		QVGroupBox *vgb_general;
 		QDns *dns;
-		
+
 		QValueList<QCheckBox *> groups;
 		QValueList<QCheckBox *> hiddenCheckBoxes;
 		QLineEdit *newGroup;
 		QVBox *groupsBox;
-		
-		bool addUser;
-		void addNewUser(UserListElement& e);
-		void changeUserData(UserListElement& e);
+
 		void keyPressEvent(QKeyEvent *);
 
 	protected:
@@ -93,20 +90,22 @@ class UserInfo : public QHBox
 
 	public slots:
 		/**
+			\fn void updateUserlist()
+			Wci¶niêcie przycisku Dodaj/Uaktualnij
+		**/
+		void updateUserlist();
+
+	private slots:
+		/**
 			\fn void resultsReady()
 			Ustawia warto¶æ pola DNS na znalezion± nazwê domeny.
 		**/
 		void resultsReady();
 
 		/**
-			\fn void setUserInfo(UserListElement &ule)
-			Ustawia warto¶ci pól informacyjnych dla podanego kontaktu.
-			\param ule obiekt reprezentuj±cy kontakt.
+			\fn void newGroupClicked()
+			wci¶niêto przycisk tworzenia nowej grupy
 		**/
-		void setUserInfo(UserListElement &ule);
-
-	private slots:
-		void updateUserlist();
 		void newGroupClicked();
 };
 

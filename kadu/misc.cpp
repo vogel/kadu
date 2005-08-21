@@ -509,20 +509,23 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 	struct gg_msg_richtext_format *actformat;
 	struct gg_msg_richtext_color *actcolor;
 	struct gg_msg_richtext_image* actimage;
+	UserListElement ule = userlist->byID("Gadu", QString::number(sender));
 
 	bold = italic = underline = color = inspan = false;
 	unsigned int pos = 0;
 
 	UinsList uins(sender);
+	UserListElements users;
+	UserListElement user = userlist->byID("Gadu", QString::number(sender));
+	users.append(user);
 
 	const UserStatus &curStat = gadu->currentStatus();
 
 	/* gdy mamy sendera na li¶cie kontaktów, nie jest on ignorowany,
 	   nie jest anononimowy i nasz status na to pozwala, to zezwalamy na obrazki */
 	bool receiveImage =
-		userlist.containsUin(sender) &&
-		!isIgnored(uins) &&
-		!userlist.byUinValue(sender).isAnonymous() &&
+		userlist->contains(user, FalseForAnonymous) &&
+		!isIgnored(users) &&
 
 		(curStat.isOnline() ||	curStat.isBusy() ||
 		(curStat.isInvisible() && config_file.readBoolEntry("Chat", "ReceiveImagesDuringInvisibility")));
@@ -583,7 +586,7 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 					{
 						kdebugm(KDEBUG_INFO, "%d: scanning for invisibility detected, preparing tactical nuclear missiles ;)\n", sender);
 						if (receiveImage)
-							gadu->sendImageRequest(sender, tmpsize, tmpcrc32);
+							gadu->sendImageRequest(ule, tmpsize, tmpcrc32);
 					}
 					else if (sender!=0)
 					{
@@ -604,7 +607,7 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 								if (receiveImage)
 								{
 									kdebugm(KDEBUG_INFO, "sending request\n");
-									gadu->sendImageRequest(sender, tmpsize, tmpcrc32);
+									gadu->sendImageRequest(ule, tmpsize, tmpcrc32);
 									mesg.append(GaduImagesManager::loadingImageHtml(
 											sender,tmpsize,tmpcrc32));
 								}
@@ -949,7 +952,6 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 	searchChars[(unsigned char)'}']=true;
 	searchChars[(unsigned char)']']=true;
 
-	UinType myUin=config_file.readNumEntry("General", "UIN");
 	while (index<len)
 	{
 		ParseElem pe1, pe;
@@ -989,20 +991,18 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 			{
 				case 's':
 					++i;
-					if (ule.uin())
-						pe.str = qApp->translate("@default", ule.status().name());
+					if (ule.usesProtocol("Gadu"))
+						pe.str = qApp->translate("@default", ule.status("Gadu").name());
 					break;
 				case 't':
 					++i;
-					if (ule.uin())
-						pe.str = ule.status().name();
+					if (ule.usesProtocol("Gadu"))
+						pe.str = ule.status("Gadu").name();
 					break;
 				case 'd':
 					++i;
-					if (myUin == ule.uin())
-						pe.str = gadu->status().description();
-					else
-						pe.str = ule.status().description();
+					if (ule.usesProtocol("Gadu"))
+						pe.str = ule.status("Gadu").description();
 
 				 	if (escape)
 			 			HtmlDocument::escapeText(pe.str);
@@ -1012,11 +1012,31 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 						pe.str.replace(QRegExp("\\s\\s"), QString(" &nbsp;"));
 					}
 					break;
-				case 'i': ++i; if (ule.ip().ip4Addr()) pe.str=ule.ip().toString();         break;
-				case 'v': ++i; if (ule.ip().ip4Addr()) pe.str=ule.dnsName();               break;
-				case 'o': ++i; if (ule.port()==2)      pe.str=" ";                         break;
-				case 'p': ++i; if (ule.port())         pe.str=QString::number(ule.port()); break;
-				case 'u': ++i; if (ule.uin())          pe.str=QString::number(ule.uin());  break;
+				case 'i':
+					++i;
+					if (ule.usesProtocol("Gadu") && ule.hasIP("Gadu"))
+						pe.str = ule.IP("Gadu").toString();
+					break;
+				case 'v':
+					++i;
+					if (ule.usesProtocol("Gadu") && ule.hasIP("Gadu"))
+						pe.str = ule.DNSName("Gadu");
+					break;
+				case 'o':
+					++i;
+					if (ule.usesProtocol("Gadu") && ule.port("Gadu") == 2)
+						pe.str = " ";
+					break;
+				case 'p':
+					++i;
+					if (ule.usesProtocol("Gadu") && ule.port("Gadu"))
+						pe.str = QString::number(ule.port("Gadu"));
+					break;
+				case 'u':
+					++i;
+					if (ule.usesProtocol("Gadu"))
+						pe.str = ule.ID("Gadu");
+					break;
 				case 'n':
 					++i;
 					pe.str=ule.nickName();
@@ -1041,11 +1061,25 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 					if(escape)
 						HtmlDocument::escapeText(pe.str);
 					break;
-				case 'm': ++i; pe.str=ule.mobile();	break;
-				case 'g': ++i; pe.str=ule.group();	break;
-				case 'e': ++i; pe.str=ule.email();	break;
-				case 'x': ++i; pe.str=QString::number(ule.maxImageSize());	break;
-				case '%': ++i;
+				case 'm':
+					++i;
+					pe.str = ule.mobile();
+					break;
+				case 'g':
+					++i;
+					pe.str = ule.data("Groups").toStringList().join(",");
+					break;
+				case 'e':
+					++i;
+					pe.str = ule.email();
+					break;
+				case 'x':
+					++i;
+					if (ule.usesProtocol("Gadu"))
+						pe.str = QString::number(ule.protocolData("Gadu", "MaxImageSize").toUInt());
+					break;
+				case '%':
+					++i;
 				default:
 					pe.str="%";
 			}
@@ -2478,7 +2512,7 @@ void GaduImagesManager::sendImage(UinType uin, uint32_t size, uint32_t crc32)
 			f.close();
 		}
 
-		gadu->sendImage(uin, i.file_name, i.size, i.data);
+		gadu->sendImage(userlist->byID("Gadu", QString::number(uin)), i.file_name, i.size, i.data);
 		delete[] i.data;
 		i.data = NULL;
 		i.lastSent = QDateTime::currentDateTime(); // to pole wykorzysta siê przy zapisywaniu listy obrazków do pliku, stare obrazki bêd± usuwane

@@ -3,6 +3,7 @@
 
 #include <qvaluelist.h>
 #include "gadu.h"
+#include "usergroup.h"
 
 /**
 	Klasa ta reprezentuje kolejkê wiadomo¶ci oczekuj±cych na odczytanie.
@@ -23,7 +24,8 @@ class PendingMsgs : public QObject
 		**/
 		struct Element
 		{
-			UinsList uins; /*!< Lista numerów UIN, które nades³a³y tê wiadomo¶æ. */
+			UserListElements users; /*!< Lista u¿ytkowników, którzy nades³ali tê wiadomo¶æ. */
+			QString proto; /*!< Nazwa protoko³u. */
 			QString msg; /*!< Tre¶æ wiadomo¶ci. */
 			int msgclass; /*!< Klasa wiadomo¶ci. */
 			time_t time; /*!< Czas, w którym nadano wiadomo¶æ. */
@@ -32,7 +34,7 @@ class PendingMsgs : public QObject
 	private:
 		typedef QValueList<Element> PendingMsgsList;
 		PendingMsgsList msgs;
-		
+
 	public:
 		/**
 			\fn PendingMsgs(QObject *parent=0, const char *name=0)
@@ -40,15 +42,15 @@ class PendingMsgs : public QObject
 			\param parent rodzic kontrolki. Domy¶lnie 0.
 			\param name nazwa kontrolki. Domy¶lnie 0.
 		**/
-		PendingMsgs(QObject *parent=0, const char *name=0);
+		PendingMsgs(QObject *parent = 0, const char *name = 0);
 
 		/**
-			\fn bool pendingMsgs(UinType uin) const
-			Sprawdza, czy w kolejce s± jakie¶ oczekuj±ce wiadomo¶ci dla podanego numeru UIN.
-			\param uin numer UIN dla którego nale¿y sprawdziæ kolejkê.
+			\fn bool pendingMsgs(UserListElement user) const
+			Sprawdza, czy w kolejce s± jakie¶ oczekuj±ce wiadomo¶ci dla podanego u¿ytkownika.
+			\param user u¿ytkownik, dla którego nale¿y sprawdziæ kolejkê.
 			\return warto¶æ logiczn± informuj±c± czy w kolejce jest jaka¶ wiadomo¶æ czy nie.
 		**/
-		bool pendingMsgs(UinType uin) const;
+		bool pendingMsgs(UserListElement user) const;
 
 		/**
 			\fn bool pendingMsgs() const
@@ -85,14 +87,15 @@ class PendingMsgs : public QObject
 		void deleteMsg(int index);
 
 		/**
-			void addMsg(UinsList uins, QString msg, int msgclass, time_t time)
+			\fn void addMsg(QString protocolName, UserListElements users, QString msg, int msgclass, time_t time)
 			Dodaje now± wiadomo¶æ do kolejki.
-			\param uins lista numerów UIN, które przys³a³y wiadomo¶æ.
+			\param protocolName nazwa protoko³u
+			\param users lista u¿ytkowników, które przys³a³y wiadomo¶æ.
 			\param msg tre¶æ wiadomo¶ci.
 			\param msgclass klasa wiadomo¶ci.
 			\param time czas nades³ania wiadomo¶ci.
 		**/
-		void addMsg(UinsList uins, QString msg, int msgclass, time_t time);
+		void addMsg(QString protocolName, UserListElements users, QString msg, int msgclass, time_t time);
 
 		/**
 			\fn bool loadFromFile()
@@ -107,7 +110,7 @@ class PendingMsgs : public QObject
 			Kadu.
 		**/
 		void writeToFile();
-		
+
 	signals:
 		/**
 			\fn void messageAdded()

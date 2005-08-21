@@ -10,12 +10,11 @@
 
 #include "libgadu.h"
 #include "status.h"
+#include "userlist.h"
 
 typedef uin_t UinType;
 
 class QSocketNotifier;
-class UserList;
-class UserListElement;
 class QTimer;
 
 // ------------------------------------
@@ -34,7 +33,7 @@ class UinsList : public QValueList<UinType>
 			konstruuje obiekt UinsList, inicjuj±c go uinem
 		**/
 		UinsList(UinType uin);
-		
+
 		/**
 			konstruuje obiekt UinsList na podstawie ³añcucha "uins" sk³adaj±cego
 			siê z oddzielonych przecinkami Uinów
@@ -72,6 +71,9 @@ class GaduStatus : public UserStatus
 		static int toStatusNumber(eUserStatus status, bool has_desc);
 
 		void fromStatusNumber(int statusNumber, const QString &description);
+
+		virtual UserStatus *copy() const;
+		virtual QString protocolName() const;
 };
 
 // ------------------------------------
@@ -256,7 +258,7 @@ class GaduSocketNotifiers : public SocketNotifiers
 		void error(GaduError);
 		void imageReceived(UinType, uint32_t, uint32_t, const QString &filename, const char *data);
 		void imageRequestReceived(UinType, uint32_t, uint32_t);
-		void messageReceived(int, UinsList, QCString &, time_t, QByteArray &);
+		void messageReceived(int, UserListElements, QCString &, time_t, QByteArray &);
 		void pubdirReplyReceived(gg_pubdir50_t);
 		void systemMessageReceived(QString &, QDateTime &, int, void *);
 		void userlistReceived(const struct gg_event *);
@@ -621,7 +623,7 @@ class GaduProtocol : public QObject
 		/**
 			Slot wywo³ywany po otrzymaniu wiadomo¶ci od serwera.
 		**/
-		void messageReceived(int, UinsList, QCString& msg, time_t, QByteArray &formats);
+		void messageReceived(int, UserListElements, QCString& msg, time_t, QByteArray &formats);
 
 		/**
 			Co pewien czas pinguje serwer.
@@ -708,7 +710,7 @@ class GaduProtocol : public QObject
 			@see logout
 		**/
 		void iWantGoOffline(const QString &);
-		
+
 		/**
 			Przysz³a informacja o dostarczeniu (lub nie) wiadomo¶ci.
 			Na podstawie statusu emituje odpowiednie sygna³y message*
@@ -722,7 +724,9 @@ class GaduProtocol : public QObject
 			@see messageRejected
 		**/
 		void ackReceived(int seq, uin_t uin, int status);
-		
+
+		void currentStatusChanged(const UserStatus &status, const UserStatus &oldStatus);
+
 	public:
 		static void initModule();
 		GaduProtocol(QObject *parent = NULL, const char *name = NULL);
@@ -815,7 +819,7 @@ class GaduProtocol : public QObject
 
 			grupy maj± postaæ:
 			<code>
-				grupa_1,grupa_2,grupa_3
+				grupa_1;grupa_2;grupa_3
 			</code>
 
 			@param userList lista u¿ytkowników, która zostanie skonwertowana
@@ -828,29 +832,25 @@ class GaduProtocol : public QObject
 		/**
 			Konwertujê ³añcuch do listy u¿ytkowników.
 
-			Format ³añcucha jest anologiczny do tego z funkcji userListToString. Jedynym wyj±tkiem
-			jest to, ¿e grupy oddzielone s± ¶rednikami, nie przecinkami.
+			Format ³añcucha jest anologiczny do tego z funkcji userListToString.
 
 			@param source ³añuch, bêd±cy reprezentacj± listy u¿ytkowników
-			@param userList lista u¿ytkowników, do której zapisany zostanie wynik konwersji
 			@see userListToString
 			@see streamToUserList
 		**/
-		void stringToUserList(QString &source, UserList &userList) const;
+		QValueList<UserListElement> stringToUserList(const QString &source) const;
 
 		/**
 			Odczytuje ze strumienia ³añcuch reprezentuj±cy listê u¿ytkowników i konwertuje
 			go go postaci obiektu UserList.
 
-			Format ³añcucha jest anologiczny do tego z funkcji userListToString. Jedynym wyj±tkiem
-			jest to, ¿e grupy oddzielone s± ¶rednikami, nie przecinkami.
+			Format ³añcucha jest anologiczny do tego z funkcji userListToString.
 
 			@param source strumieñ, z którego odczytane zostan± dane
-			@param userList lista u¿ytkowników, do której zapisany zostanie wynik konwersji
 			@see userListToString
 			@see stringToUserList
 		**/
-		void streamToUserList(QTextStream &source, UserList &userList) const;
+		QValueList<UserListElement> streamToUserList(QTextStream &source) const;
 
 		/**
 			Po jedno sekundowym opó¼nieniu wykonuje próbê po³±czenia.
@@ -878,18 +878,18 @@ class GaduProtocol : public QObject
 			jest wiadomo¶æ konferencyjna. Zwracany jest numer sekwencyjny wiadomo¶ci, je¶li
 			przypadkiem by¶my chcieli ¶ledziæ jej potwierdzenie.
 
-			@param uins lista u¿ytkowników, do których wysy³amy wiadomo¶æ
+			@param users lista u¿ytkowników, do których wysy³amy wiadomo¶æ
 			@param msg wiadomo¶æ, któr± wysy³amy - musi byæ podana w postaci cp1250
 			@todo zmieniæ na sendMessage(const UinsList &, QString &) z wewnêtrzn± konwersj± na cp1250
 		**/
-		int sendMessage(const UinsList &uins, const char *msg);
+		int sendMessage(UserListElements users, const char *msg);
 
 		/**
 			Wysy³a wiadomo¶æ z formatowaniem tekstu. Je¶li adresatów jest wiêcej ni¿ jeden, to wysy³ana
 			jest wiadomo¶æ konferencyjna. Zwracany jest numer sekwencyjny wiadomo¶ci, je¶li
 			przypadkiem by¶my chcieli ¶ledziæ jej potwierdzenie.
 
-			@param uins lista u¿ytkowników, do których wysy³amy wiadomo¶æ
+			@param users lista u¿ytkowników, do których wysy³amy wiadomo¶æ
 			@param msg wiadomo¶æ, któr± wysy³amy - musi byæ podana w postaci cp1250
 			@param myLastFormats formatowanie tekstu
 			@param myLastFormatsLength ilo¶c znaczników formatuj±cych
@@ -897,28 +897,29 @@ class GaduProtocol : public QObject
 			@todo zmieniæ na sendMessageRichText(const UinsList &, QString &, ...)
 				z wewnêtrzn± konwersj± na cp1250 oraz z jakim¶ lepszym sposobem formatowania tekstu
 		**/
-		int sendMessageRichText(const UinsList &uins, const char *msg, unsigned char *myLastFormats,
+		int sendMessageRichText(UserListElements users, const char *msg, unsigned char *myLastFormats,
 		 	int myLastFormatsLength);
 
 		/**
 			Wysy³a pro¶bê o przys³anie obrazka z danymi parametrami.
 
-			@param uin u¿ytkownik, od którego chcemy obrazek
+			@param user u¿ytkownik, od którego chcemy obrazek
 			@param size rozmiar obrazka w bajtach
 			@param crc32 crc32 pliku
 			@todo powinno byæ sendImageRequest(uniqId uint32_t) - info o obrazku zapisywaæ gdzie¶ w ¶rodku
 		**/
-		bool sendImageRequest(UinType uin, int size, uint32_t crc32);
+		bool sendImageRequest(UserListElement user, int size, uint32_t crc32);
+
 		/**
 			Wywy³a obrazek o podanych parametrach.
 
-			@param uin u¿ytkownik, któremu wysy³amy obrazek
+			@param user u¿ytkownik, któremu wysy³amy obrazek
 			@param file_name nazwa pliku obrazka
 			@param size rozmiar obrazka w bajtach
 			@param data zawarto¶æ pliku
 			@todo usun±æ parametry size i data - mo¿emy to chyba sami wyznaczyæ
 		**/
-		bool sendImage(UinType uin, const QString &file_name, uint32_t size, const char *data);
+		bool sendImage(UserListElement user, const QString &file_name, uint32_t size, const char *data);
 
 		/**
 			Rejetrujemy nowe konto. Odpowied¼ przychodzi poprzez sygna³ registered. Mo¿e
@@ -931,6 +932,7 @@ class GaduProtocol : public QObject
 			@see unregisterAccount
 		**/
 		void registerAccount(const QString &mail, const QString &password);
+
 		/**
 			Wyrejestrowujemy stare konto. Odpowied¼ przychodzi poprzez sygna³ unregistered. Mo¿e
 			zostaæ tak¿e wywo³any sygna³ needTokenValue.
@@ -940,6 +942,7 @@ class GaduProtocol : public QObject
 			@todo parametr uin naprawdê potrzebny?
 		**/
 		void unregisterAccount(UinType uin, const QString &password);
+
 		/**
 			Wysy³a has³o na email. Odpowied¼ przychodzi poprzez sygna³ reminded. Mo¿e
 			zostaæ tak¿e wywo³any sygna³ needTokenValue.
@@ -949,6 +952,7 @@ class GaduProtocol : public QObject
 			@todo parametr uin naprawdê potrzebny?
 		**/
 		void remindPassword(UinType uin, const QString& mail);
+
 		/**
 			Zmienia nasze has³o. Odpowied¼ przychodzi poprzez sygna³ passwordChanged. Mo¿e
 			zostaæ tak¿e wywo³any sygna³ needTokenValue.
@@ -1009,6 +1013,7 @@ class GaduProtocol : public QObject
 			@see searchNextInPubdir
 		**/
 		void searchInPubdir(SearchRecord& searchRecord);
+
 		/**
 			Szuka ludzi w katalogu publicznym. Wyniki przychodz± za pomoca sygna³u newSearchResults.
 
@@ -1077,87 +1082,59 @@ class GaduProtocol : public QObject
 		**/
 		void useTlsEnabled(bool value);
 
-		/**
-			Slot wywo³ywany, gdy zmieni³y siê dane kontaktu. Umo¿liwia poinformowanie serwera
-			o zmianie naszych zaleceñ co do obs³ugi wiadomo¶ci od kontaktu.
+	protected slots:
+		/* sloty pod³±czane do sygna³ów z klasy UserList */
+		void protocolUserDataChanged(QString protocolName, UserListElement elem,
+							QString name, QVariant oldValue, QVariant currentValue,
+							bool massively, bool last);
+		void userDataChanged(UserListElement elem, QString name, QVariant oldValue,
+							QVariant currentValue, bool massively, bool last);
+		void userAdded(UserListElement elem, bool massively, bool last);
 
-			Przyk³ady:
-			<code>
-				GaduProtocol gadu;
-				UserListElement old, new;
+		void removingUser(UserListElement elem, bool massively, bool last);
 
-				...
-				gadu.userDataChanged(NULL, &new);              // dodali¶my nowy kontakt
+		void protocolAdded(UserListElement elem, QString protocolName, bool massively, bool last);
 
-				old = new;
-				new.setBlockng(true);                          // blokujemy
-				gadu.userDataChanged(&old, &new);              // informujemy o tym serwer
-
-				gadu.userDataChanged(new, NULL);               // usunêli¶my kontakt
-				...
-			</code>
-
-			Powy¿sze kontrukcje nie s± jednak na ogó³ potrzebne, gdy¿ obiekty UserListElement
-			wywo³uj± odpowieni sygna³ swoich UserList (konkretnie userDataChanged), który mo¿na
-			podpi±æ bezpo¶rednio pod taki sam slot klasy GaduProtocol, dziêki czemu ka¿da
-			zmiana zostanie automatycznie zauwa¿ona przez serwer.
-
-			<code>
-				GaduProtocol gadu;
-				UserListElement *ule;
-				UserList ul;
-
-				...                                            // po³aczenie odpowiednich slotów
-				ule = &ul.byAltNick("AltNick");
-				ule->setBlocking(true);                        // i wszystko robi siê samo
-			</code>
-
-			@param oldData wska¼nik do starych danych kontatku
-			@param newData wska¼nik do nowych danych konaktu
-			@param massively je¿eli == true, to ta zmiana danych jest czê¶ci± wiêkszych zmian,
-			       wiêc nie nale¿y nic z nimi robiæ, wkrótce (albo ju¿ to zosta³o zrobione)
-				   ca³a lista zostanie wys³ana w jednej paczce
-		**/
-		void userDataChanged(const UserListElement* const oldData, const UserListElement* const newData, bool massively = false);
+		void removingProtocol(UserListElement elem, QString protocolName, bool massively, bool last);
 
 	signals:
 		/**
 			wiadomo¶æ zosta³a zablokowana przez serwer
 		**/
 		void messageBlocked(int seq, UinType uin);
-		
+
 		/**
 			wiadomo¶æ dostarczono
 		**/
 		void messageDelivered(int seq, UinType uin);
-		
+
 		/**
 			wiadomo¶æ zakolejkowano
 		**/
 		void messageQueued(int seq, UinType uin);
-		
+
 		/**
 			skrzynka odbiorcza na serwerze jest pe³na
 		**/
 		void messageBoxFull(int seq, UinType uin);
-		
+
 		/**
 			wiadomo¶æ nie dostaczona (wystêpuje tylko przy CTCP)
 		**/
 		void messageNotDelivered(int seq, UinType uin);
-		
+
 		/**
-			wiadomo¶æ zosta³a przyjêta przez serwer 
+			wiadomo¶æ zosta³a przyjêta przez serwer
 		**/
 		void messageAccepted(int seq, UinType uin);
 		/**
-			wiadomo¶æ zosta³a odrzucona przez serwer 
+			wiadomo¶æ zosta³a odrzucona przez serwer
 		**/
 		void messageRejected(int seq, UinType uin);
-		
+
 		/**
 			otrzymano informacjê o potwierdzeniu wiadomo¶ci
-			
+
 			@todo usun±æ
 			@see messageAccepted
 			@see messageRejected
@@ -1194,9 +1171,10 @@ class GaduProtocol : public QObject
 
 		/**
 			wyst±pi³ b³±d po³±czenia
+			@param protocolName nazwa protoko³u
 			@param reason napis do wy¶wietlenia dla u¿ytkownika
 		**/
-		void connectionError(const QString &reason);
+		void connectionError(const QString &protocolName, const QString &reason);
 
 		/**
 			dostali¶my pro¶bê o przys³anie obrazka
@@ -1214,19 +1192,6 @@ class GaduProtocol : public QObject
 			@param path ¶cie¿ka do zapisanego pliku
 		**/
 		void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
-
-		/**
-			lista kontaktów zosta³a zmodyfikowana
-		**/
-		void userListChanged();
-
-		/**
-			dostali¶my od serwera informacjê o zmianie statusu
-			@param user kontakt, który w³a¶nie zmieni³ status
-			@param oldStatus stary startus
-			@param onConnection czy zmiana zwi±zana jest z pod³±czeniem siê do serwera
-		**/
-		void userStatusChanged(const UserListElement &user, const UserStatus &oldStatus, bool onConnection = false);
 
 		/**
 			dostali¶my od serwera informacjê o zmianie statusu dla kontaktu,
@@ -1312,7 +1277,7 @@ class GaduProtocol : public QObject
 			@param list je¿eli operacja siê powiod³a, to zaimportowana lista
 			@see doImportUserList
 		**/
-		void userListImported(bool ok, UserList &list);
+		void userListImported(bool ok, QValueList<UserListElement> list);
 
 		/**
 			Sygna³ daje mozliwo¶æ operowania na wiadomo¶ci
@@ -1325,8 +1290,8 @@ class GaduProtocol : public QObject
 			Mo¿na te¿ przerwaæ dalsz± obróbkê wiadomo¶ci ustawiaj±c
 			stop na true.
 		**/
-		void messageFiltering(const UinsList& senders,QCString& msg,
-			QByteArray& formats,bool& stop);
+		void messageFiltering(const QString &protocolName, UserListElements senders,
+								QCString& msg, QByteArray& formats, bool& stop);
 		/**
 			Otrzymano wiadomo¶æ któr± trzeba pokazaæ (klasa chat lub msg,
 			nadawca nie jest ignorowany, itp)
@@ -1339,9 +1304,9 @@ class GaduProtocol : public QObject
 			w oknie, dodanie jej do historii, etc.), poza przekonwertowaniem
 			kodowania wiadomo¶ci z CP1250 na Unicode.
 		**/
-		void chatMsgReceived0(UinsList senders, const QString& msg, time_t time, bool& grab);
-		void chatMsgReceived1(UinsList senders, const QString& msg, time_t time, bool& grab);
-		void chatMsgReceived2(UinsList senders, const QString& msg, time_t time);
+		void chatMsgReceived0(const QString &protocolName, UserListElements senders, const QString& msg, time_t time, bool& grab);
+		void chatMsgReceived1(const QString &protocolName, UserListElements senders, const QString& msg, time_t time, bool& grab);
+		void chatMsgReceived2(const QString &protocolName, UserListElements senders, const QString& msg, time_t time);
 
 		/**
 			Wywo³ywane, gdy chcemy odczytaæ token z obrazka

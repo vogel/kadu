@@ -86,7 +86,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) : 
 	// end our QGroupBox
 
 	l_itemscount = new QLabel(vgb_export);
-	l_itemscount->setText(tr("%1 entries will be exported").arg(userlist.count()));
+	l_itemscount->setText(tr("%1 entries will be exported").arg(userlist->count()));
 
 	// export buttons
 	QHBox *hb_exportbuttons = new QHBox(vgb_export);
@@ -120,7 +120,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) : 
 
 	connect(gadu, SIGNAL(userListExported(bool)), this, SLOT(userListExported(bool)));
 	connect(gadu, SIGNAL(userListCleared(bool)), this, SLOT(userListCleared(bool)));
-	connect(gadu, SIGNAL(userListImported(bool, UserList&)), this, SLOT(userListImported(bool, UserList&)));
+	connect(gadu, SIGNAL(userListImported(bool, QValueList<UserListElement>)), this, SLOT(userListImported(bool, QValueList<UserListElement>)));
 	// end connect
 
  	loadGeometry(this, "General", "ImportExportDialogGeometry", 0, 30, 640, 450);
@@ -150,15 +150,20 @@ void UserlistImportExport::fromfile()
  		if (file.open(IO_ReadOnly))
 		{
 			QTextStream stream(&file);
-			gadu->streamToUserList(stream, importedUserlist);
+			importedUserlist = gadu->streamToUserList(stream);
 			file.close();
 
 			CONST_FOREACH(i, importedUserlist)
-				new QListViewItem(lv_userlist, QString::number((*i).uin()),
+			{
+				QString id;
+				if ((*i).usesProtocol("Gadu"))
+					id = (*i).ID("Gadu");
+				new QListViewItem(lv_userlist, id,
 					(*i).nickName(),  (*i).altNick(),
 					(*i).firstName(), (*i).lastName(),
-					(*i).mobile(),    (*i).group(),
+					(*i).mobile(),    (*i).data("Groups").toStringList().join(","),
 					(*i).email());
+			}
 		}
 		else
 			MessageBox::wrn(tr("The application encountered an internal error\nThe import userlist from file was unsuccessful"));
@@ -187,41 +192,25 @@ void UserlistImportExport::makeUserlist()
 	if (!MessageBox::ask(tr("This operation will delete your current user list. Are you sure you want this?")))
 		return;
 
-	userlist = importedUserlist;
-
+	userlist->clear();
+	userlist->addUsers(importedUserlist);
 	clearIgnored();
-	kadu->userbox()->clear();
-	kadu->userbox()->clearUsers();
-	CONST_FOREACH(user, userlist)
-		kadu->userbox()->addUser((*user).altNick());
+	userlist->writeToConfig();
+	l_itemscount->setText(tr("%1 entries will be exported").arg(userlist->count()));
 
-	UserBox::all_refresh();
-
-	userlist.writeToConfig();
-	l_itemscount->setText(tr("%1 entries will be exported").arg(userlist.count()));
 	kdebugf2();
 }
 
 void UserlistImportExport::updateUserlist()
 {
 	kdebugf();
-
-	userlist.merge(importedUserlist);
-
-	kadu->userbox()->clear();
-	kadu->userbox()->clearUsers();
-
-	CONST_FOREACH(user, userlist)
-		kadu->userbox()->addUser((*user).altNick());
-
-	UserBox::all_refresh();
-
-	userlist.writeToConfig();
-	l_itemscount->setText(tr("%1 entries will be exported").arg(userlist.count()));
+	userlist->merge(importedUserlist);
+	userlist->writeToConfig();
+	l_itemscount->setText(tr("%1 entries will be exported").arg(userlist->count()));
 	kdebugf2();
 }
 
-void UserlistImportExport::userListImported(bool ok, UserList& userList)
+void UserlistImportExport::userListImported(bool ok, QValueList<UserListElement> userList)
 {
 	kdebugf();
 
@@ -232,8 +221,14 @@ void UserlistImportExport::userListImported(bool ok, UserList& userList)
 
 	if (ok)
 		CONST_FOREACH(user, userList)
-			new QListViewItem(lv_userlist, (*user).uin() ? QString::number((*user).uin()) : QString(), (*user).nickName(),
-				(*user).altNick(), (*user).firstName(), (*user).lastName(), (*user).mobile(), (*user).group(), (*user).email());
+		{
+			QString id;
+			if ((*user).usesProtocol("Gadu"))
+				id = (*user).ID("Gadu");
+			new QListViewItem(lv_userlist, id, (*user).nickName(),
+				(*user).altNick(), (*user).firstName(), (*user).lastName(), (*user).mobile(),
+				(*user).data("Groups").toStringList().join(","), (*user).email());
+		}
 	kdebugf2();
 }
 
@@ -241,14 +236,14 @@ void UserlistImportExport::startExportTransfer()
 {
 	kdebugf();
 
-	if (gadu->status().isOffline())
+	if (gadu->currentStatus().isOffline())
 	{
 		MessageBox::wrn(tr("Cannot export user list to server in offline mode"));
 		kdebugf2();
 		return;
 	}
 
-	if (gadu->doExportUserList(userlist))
+	if (gadu->doExportUserList(*userlist))
 	{
 		pb_send->setEnabled(false);
 		pb_delete->setEnabled(false);
@@ -268,7 +263,7 @@ void UserlistImportExport::ExportToFile(void)
 	QString fname = QFileDialog::getSaveFileName("/", QString::null,this);
 	if (!fname.isEmpty())
 	{
-		contacts = gadu->userListToString(userlist);
+		contacts = gadu->userListToString(*userlist);
 
 		QFile file(fname);
 		if (file.open(IO_WriteOnly))
