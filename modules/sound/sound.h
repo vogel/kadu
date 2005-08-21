@@ -11,11 +11,12 @@
 #include <qsemaphore.h>
 
 #include "config_file.h"
-#include "modules.h"
 #include "gadu.h"
-#include "userlist.h"
 #include "misc.h"
 #include "message_box.h"
+#include "modules.h"
+#include "usergroup.h"
+#include "userlist.h"
 
 /**
 	Uogólniony deskryptor urz±dzenia d¼wiêkowego.
