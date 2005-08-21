@@ -198,13 +198,13 @@ kadudir = $(includedir)/kadu
 kadu_HEADERS = \
 about.h \
 chat.h \
-chat_manager.cpp \
-chat_manager_slots.cpp \
-chat_message.cpp \
-color_selector.cpp \
+chat_manager.h \
+chat_manager_slots.h \
+chat_message.h \
+color_selector.h \
 config_dialog.h \
 config_file.h \
-custom_input.cpp \
+custom_input.h \
 debug.h \
 dnshandler.h \
 emoticons.h \
@@ -214,7 +214,7 @@ groups_manager.h \
 history.h \
 ignore.h \
 kadu.h \
-kadu_splitter.cpp \
+kadu_splitter.h \
 message_box.h \
 misc.h \
 modules.h \
