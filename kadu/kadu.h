@@ -1,14 +1,6 @@
 #ifndef KADU_H
 #define KADU_H
 
-/*#include <qpopupmenu.h>
-#include <qstringlist.h>
-
-#include "userbox.h"
-#include "userlist.h"
-#include "tabbar.h"
-*/
-
 #include <qmainwindow.h>
 #include <qstring.h>
 #include <qtoolbar.h>

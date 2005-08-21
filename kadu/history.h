@@ -1,15 +1,6 @@
 #ifndef HISTORY_H
 #define HISTORY_H
 
-/*
-#include <qstringlist.h>
-#include <qvaluelist.h>
-
-#include <time.h>
-
-//#include "misc.h"
-*/
-
 #include <qdatetime.h>
 #include <qdialog.h>
 #include <qlistview.h>

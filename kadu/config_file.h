@@ -1,9 +1,6 @@
 #ifndef CONFIG_FILE_H
 #define CONFIG_FILE_H
 
-/*#include <qfont.h>
-*/
-
 #include <qcolor.h>
 #include <qdom.h>
 #include <qmap.h>

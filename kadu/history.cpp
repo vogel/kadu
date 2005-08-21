@@ -7,21 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-/*
-#include <qdir.h>
-#include <qfile.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qtimer.h>
-#include <qtextcodec.h>
-#include <qtooltip.h>
-#include <qwidget.h>
-
-#include <time.h>
-
-#include "status.h"
-*/
-
 #include <qapplication.h>
 #include <qcheckbox.h>
 #include <qcombobox.h>
