@@ -64,7 +64,17 @@ all:
 			"module_cxxflags=$$MODULE_CXXFLAGS" \
 			"module_ldflags=$$MODULE_LDFLAGS" \
 			$$dir/$$file_name && \
-		cd $$dir && eval "$$MODULE_MAKE_CMD" && cd .. || \
+		cd $$dir && eval "$$MODULE_MAKE_CMD" && \
+		if test -d translations; then \
+			cd translations && \
+			for trans in *.ts; do \
+				if [ ! -e $${trans//\ts/qm} ] || test $$trans -nt $${trans//\ts/qm}; then \
+					$(QT_LRELEASE_DIR)/lrelease $$trans; \
+				fi; \
+			done && \
+			cd ..; \
+		fi && \
+		cd .. || \
 		exit 1; \
 	done && \
 	echo && \
@@ -124,7 +134,7 @@ install-data-local: uninstall-local
 			for sub_dir in `find $$dir/data -type d | grep -v /CVS | grep -v /.svn`; do \
 				dst_dir=`echo "$$sub_dir" | sed "s,/data/,/," | sed "s,/data$$,,"`; \
 				$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/modules/data/$$dst_dir"; \
-				for new_file in `find $$sub_dir -type f -maxdepth 1 | sed "s/ /_SPACE_/g"`; do \
+				for new_file in `find $$sub_dir -maxdepth 1 -type f | sed "s/ /_SPACE_/g"`; do \
 					new_file=`echo "$$new_file" | sed "s/_SPACE_/ /g"`; \
 					$(INSTALL_DATA) "$$new_file" "$(DESTDIR)/$(datadir)/kadu/modules/data/$$dst_dir"; \
 				done; \
@@ -134,7 +144,7 @@ install-data-local: uninstall-local
 			for sub_dir in `find $$dir/bin -type d | grep -v /CVS | grep -v /.svn`; do \
 				dst_dir=`echo "$$sub_dir" | sed "s,/bin/,/," | sed "s,/bin$$,,"`; \
 				$(mkinstalldirs) "$(DESTDIR)/$(datadir)/kadu/modules/bin/$$dst_dir"; \
-				for new_file in `find $$sub_dir -type f -maxdepth 1 | sed "s/ /_SPACE_/g"`; do \
+				for new_file in `find $$sub_dir -maxdepth 1 -type f | sed "s/ /_SPACE_/g"`; do \
 					new_file=`echo "$$new_file" | sed "s/_SPACE_/ /g"`; \
 					$(INSTALL_PROGRAM) "$$new_file" "$(DESTDIR)/$(datadir)/kadu/modules/bin/$$dst_dir"; \
 				done; \

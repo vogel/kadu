@@ -550,6 +550,18 @@ FIND_FILE([moc],[$with_apps $QT_TOOLS_PATHS],
 ])
 AC_SUBST(QT_MOC_DIR)
 
+#################
+# QT LRELEASE
+#################
+
+FIND_FILE([lrelease],[$with_apps $QT_TOOLS_PATHS],
+[
+	QT_LRELEASE_DIR="$FILE_DIR"
+],[
+	AC_MSG_ERROR([lrelease not found - please install qt-dev-tools])
+])
+AC_SUBST(QT_LRELEASE_DIR)
+
 ########################################################################
 
 # Checks for header files.

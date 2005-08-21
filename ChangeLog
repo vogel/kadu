@@ -4,7 +4,10 @@ podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y. Je¶li jest
 w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
 +++ wersja 0.4.2
-+* poprawione od¶wie¿anie ikony w module desktop_docking (joi)
+* poprawione od¶wie¿anie ikony w module desktop_docking (joi)
+* automatyczne tworzenie / aktualizacja binarnych plików translacji przy
+  kompilacji modu³ów (pan_wojtas/joi)
+* usuniêcie komunikatów ostrzegawczych przy instalacji modu³ów (OBenY/joi)
 
 +++ wersja 0.4.1 (19.07.2005)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

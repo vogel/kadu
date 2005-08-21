@@ -314,7 +314,7 @@ ac_includes_default="\
 #endif"
 
 ac_subdirs_all="$ac_subdirs_all libgadu"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CXXDEPMODE CC CFLAGS ac_ct_CC CCDEPMODE CPP EGREP PTHREAD_CPPFLAGS PTHREAD_LDFLAGS PTHREAD_LIBS Z_LIBS PNG_LIBS QT_INCLUDES QT_LIBS QT_MOC_DIR LIBOBJS GADU_LIBS GADU_INCLUDES DYNAMIC_OPT SO_EXT SHARED_OPT SHARED_FLAGS enable_pheaders PHEADERS_ENABLED_TRUE PHEADERS_ENABLED_FALSE shared_modules static_modules static_modules_ldflags STATIC_MODULES_DECLS STATIC_MODULES_REGRS enabled_icon_themes MY_SUBDIRS subdirs LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CXXDEPMODE CC CFLAGS ac_ct_CC CCDEPMODE CPP EGREP PTHREAD_CPPFLAGS PTHREAD_LDFLAGS PTHREAD_LIBS Z_LIBS PNG_LIBS QT_INCLUDES QT_LIBS QT_MOC_DIR QT_LRELEASE_DIR LIBOBJS GADU_LIBS GADU_INCLUDES DYNAMIC_OPT SO_EXT SHARED_OPT SHARED_FLAGS enable_pheaders PHEADERS_ENABLED_TRUE PHEADERS_ENABLED_FALSE shared_modules static_modules static_modules_ldflags STATIC_MODULES_DECLS STATIC_MODULES_REGRS enabled_icon_themes MY_SUBDIRS subdirs LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -5132,6 +5132,39 @@ echo "${ECHO_T}not found" >&6
 
 	{ { echo "$as_me:$LINENO: error: moc not found - please install qt-dev-tools" >&5
 echo "$as_me: error: moc not found - please install qt-dev-tools" >&2;}
+   { (exit 1); exit 1; }; }
+
+	fi
+
+
+
+#################
+# QT LRELEASE
+#################
+
+
+	echo "$as_me:$LINENO: checking for lrelease in specified directiories" >&5
+echo $ECHO_N "checking for lrelease in specified directiories... $ECHO_C" >&6
+	FILE_DIR=
+	for dir in $with_apps $QT_TOOLS_PATHS
+	do
+		if test -f $dir/lrelease; then
+			FILE_DIR=$dir
+			echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
+echo "${ECHO_T}found in $FILE_DIR" >&6
+
+	QT_LRELEASE_DIR="$FILE_DIR"
+
+			break
+		fi
+	done
+	if test -z "$FILE_DIR"; then
+		echo "$as_me:$LINENO: result: not found" >&5
+echo "${ECHO_T}not found" >&6
+
+
+	{ { echo "$as_me:$LINENO: error: lrelease not found - please install qt-dev-tools" >&5
+echo "$as_me: error: lrelease not found - please install qt-dev-tools" >&2;}
    { (exit 1); exit 1; }; }
 
 	fi
@@ -11042,6 +11075,7 @@ s,@PNG_LIBS@,$PNG_LIBS,;t t
 s,@QT_INCLUDES@,$QT_INCLUDES,;t t
 s,@QT_LIBS@,$QT_LIBS,;t t
 s,@QT_MOC_DIR@,$QT_MOC_DIR,;t t
+s,@QT_LRELEASE_DIR@,$QT_LRELEASE_DIR,;t t
 s,@LIBOBJS@,$LIBOBJS,;t t
 s,@GADU_LIBS@,$GADU_LIBS,;t t
 s,@GADU_INCLUDES@,$GADU_INCLUDES,;t t
