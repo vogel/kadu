@@ -1047,7 +1047,7 @@ void Chat::sendMessage()
 	if (gadu->currentStatus().isOffline())
 	{
 		QMessageBox::critical(this, tr("Send message error"),
-			tr("Application encountered network error."));
+			tr("Cannot send message while being offline."));
 		kdebugmf(KDEBUG_FUNCTION_END, "not connected!\n");
 		return;
 	}
