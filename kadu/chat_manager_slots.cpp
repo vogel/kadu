@@ -337,9 +337,12 @@ void ChatManagerSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo,
 
 			dirList=QDir("/usr/lib").entryList("mozilla-firefox*", QDir::All, QDir::Name|QDir::Reversed);
 			CONST_FOREACH(dir, dirList)
-				searchPath.append("/usr/lib/"+(*dir));
-			if (!dirList.empty())//jeste¶my na debianie, gdzie zmienili nazwê skryptu, grrr :|
-				browserName="mozilla-firefox-xremote-client";
+			{
+				searchPath.append("/usr/lib/" + (*dir));
+				if (QFile::exists("/usr/lib/" + (*dir) + "mozilla-firefox-xremote-client"))
+					//jeste¶my na debianie, gdzie zmienili nazwê skryptu, grrr :|
+					browserName = "mozilla-firefox-xremote-client";
+			}
 
 			searchPath.append("/usr/lib/MozillaFirefox");
 			searchPath.append("/usr/local/Firefox");
