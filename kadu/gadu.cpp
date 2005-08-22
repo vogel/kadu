@@ -244,11 +244,31 @@ void SearchRecord::clearData()
 /* GaduProtocol */
 
 QValueList<QHostAddress> GaduProtocol::ConfigServers;
+GaduProtocolManager *gadu_protocol_manager;
+
+void GaduProtocol::closeModule()
+{
+	protocols_manager->unregisterProtocol("Gadu");
+	delete gadu_protocol_manager;
+	gadu_protocol_manager = NULL;
+	delete gadu;
+	gadu = NULL;
+}
+
+void GaduProtocol::changeID(const QString &newID)
+{
+	if (id != newID)
+		id = newID;
+}
 
 void GaduProtocol::initModule()
 {
 	kdebugf();
-	gadu = new GaduProtocol(kadu, "gadu");
+	gadu_protocol_manager = new GaduProtocolManager();
+	protocols_manager->registerProtocol("Gadu", "Gadu-Gadu", gadu_protocol_manager);
+	
+	gadu = static_cast<GaduProtocol *>(protocols_manager->newProtocol("Gadu", QString::number(config_file.readNumEntry("General", "UIN"))));
+//	gadu = new GaduProtocol(QString::number(config_file.readNumEntry("General", "UIN")), kadu, "gadu");
 
 	QHostAddress ip;
 	for (int i = 0; i < 9; ++i)
@@ -302,7 +322,7 @@ void GaduProtocol::initModule()
 		QT_TRANSLATE_NOOP("@default", " Password: "), "ProxyPassword");
 
 	ConfigDialog::registerSlotOnCreate(gadu, SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnApply(gadu, SLOT(onDestroyConfigDialog()));
+	ConfigDialog::registerSlotOnApply(gadu, SLOT(onApplyConfigDialog()));
 
 	ConfigDialog::connectSlot("Network", "Use default servers", SIGNAL(toggled(bool)),
 		gadu, SLOT(ifDefServerEnabled(bool)));
@@ -324,9 +344,11 @@ void GaduProtocol::initModule()
 	kdebugf2();
 }
 
-GaduProtocol::GaduProtocol(QObject *parent, const char *name) : QObject(parent, name)
+GaduProtocol::GaduProtocol(const QString &id, QObject *parent, const char *name) : Protocol(id, parent, name)
 {
 	kdebugf();
+
+	ProtocolID = "Gadu";
 
 	whileConnecting = false;
 	Sess = NULL;
@@ -393,20 +415,13 @@ GaduProtocol::~GaduProtocol()
 
 	disconnectedSlot();
 	delete SocketNotifiers;
-	delete CurrentStatus;
-	delete NextStatus;
 
 	kdebugf2();
 }
 
-UserStatus & GaduProtocol::status()
+UserStatus *GaduProtocol::newStatus() const
 {
-	return *NextStatus;
-}
-
-const UserStatus & GaduProtocol::currentStatus()
-{
-	return *CurrentStatus;
+	return new GaduStatus();
 }
 
 void GaduProtocol::currentStatusChanged(const UserStatus &status, const UserStatus &oldStatus)
@@ -717,7 +732,7 @@ void GaduProtocol::connectedSlot()
 
 	// po po³±czeniu z sewerem niestety trzeba ponownie ustawiæ
 	// status, inaczej nie bêdziemy widoczni - raczej b³±d serwerów
-	if (NextStatus->isInvisible() || (LoginParams.status&~GG_STATUS_FRIENDS_MASK) != NextStatus->toStatusNumber())
+	if (NextStatus->isInvisible() || (LoginParams.status&~GG_STATUS_FRIENDS_MASK) != static_cast<GaduStatus *>(NextStatus)->toStatusNumber())
 		NextStatus->refresh();
 
 	/*
@@ -867,7 +882,7 @@ void GaduProtocol::errorSlot(GaduError err)
 			host = "HUB";
 		msg = QString("(") + host + ") " + msg;
 		kdebugm(KDEBUG_INFO, "%s\n", msg.local8Bit().data());
-		emit connectionError("Gadu", msg);
+		emit connectionError(this, msg);
 	}
 
 	if (!continue_connecting)
@@ -925,7 +940,7 @@ void GaduProtocol::messageReceived(int msgclass, UserListElements senders, QCStr
 		return;
 
 	bool block = false;
-	emit messageFiltering("Gadu", senders, msg, formats, block);
+	emit messageFiltering(this, senders, msg, formats, block);
 	if (block)
 		return;
 
@@ -935,7 +950,7 @@ void GaduProtocol::messageReceived(int msgclass, UserListElements senders, QCStr
 	datetime.setTime_t(time);
 
 	bool grab=false;
-	emit chatMsgReceived0("Gadu", senders, mesg, time, grab);
+	emit chatMsgReceived0(this, senders, mesg, time, grab);
 	if (grab)
 		return;
 
@@ -963,9 +978,9 @@ void GaduProtocol::messageReceived(int msgclass, UserListElements senders, QCStr
 	kdebugmf(KDEBUG_INFO, "Got message from %d saying \"%s\"\n",
 			senders[0].ID("Gadu").toUInt(), (const char *)mesg.local8Bit());
 
-	emit chatMsgReceived1("Gadu", senders, mesg, time, grab);
+	emit chatMsgReceived1(this, senders, mesg, time, grab);
 	if (!grab)
-		emit chatMsgReceived2("Gadu", senders, mesg, time);
+		emit chatMsgReceived2(this, senders, mesg, time);
 }
 
 void GaduProtocol::pingNetwork()
@@ -989,7 +1004,7 @@ void GaduProtocol::systemMessageReceived(QString &message, QDateTime &time, int 
 void GaduProtocol::login()
 {
 	kdebugf();
-	if (config_file.readNumEntry("General", "UIN")==0 || config_file.readEntry("General", "Password").isEmpty())
+	if (ID() == "0" || ID().isEmpty() || config_file.readEntry("General", "Password").isEmpty())
 	{
 		MessageBox::wrn(tr("UIN or password not set!"));
 		NextStatus->setOffline();
@@ -1009,13 +1024,13 @@ void GaduProtocol::login()
 
 	setupProxy();
 
-	LoginParams.status = NextStatus->toStatusNumber();
+	LoginParams.status = static_cast<GaduStatus *>(NextStatus)->toStatusNumber();
 	if (NextStatus->isFriendsOnly())
 		LoginParams.status |= GG_STATUS_FRIENDS_MASK;
 	if (NextStatus->hasDescription())
 		LoginParams.status_descr = strdup((const char *)unicode2cp(NextStatus->description()).data());
 
-	LoginParams.uin = (UinType)config_file.readNumEntry("General", "UIN");
+	LoginParams.uin = (UinType) ID().toUInt();
 	LoginParams.has_audio = config_file.readBoolEntry("Network", "AllowDCC");
 	// GG 6.0 build 147 ustawia indeks ostatnio odczytanej wiadomosci systemowej na 1389
 	LoginParams.last_sysmsg = config_file.readNumEntry("General", "SystemMsgIndex", 1389);
@@ -2166,7 +2181,7 @@ void GaduProtocol::onCreateConfigDialog()
 	kdebugf2();
 }
 
-void GaduProtocol::onDestroyConfigDialog()
+void GaduProtocol::onApplyConfigDialog()
 {
 	kdebugf();
 
@@ -2189,6 +2204,7 @@ void GaduProtocol::onDestroyConfigDialog()
 	config_file.writeEntry("Network","Server",server.join(";"));
 	ConfigServers = servers;
 	ServerNr = 0;
+	changeID(QString::number(config_file.readNumEntry("General", "UIN")));
 
 	kdebugf2();
 }

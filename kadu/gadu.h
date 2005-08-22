@@ -5,6 +5,7 @@
 #include <qvaluelist.h>
 
 #include "libgadu.h"
+#include "protocol.h"
 #include "status.h"
 #include "usergroup.h"
 #include "userlist.h"
@@ -151,7 +152,7 @@ enum GaduError
 /**
 	Klasa do obs³ugi protoko³u Gadu-Gadu
 **/
-class GaduProtocol : public QObject
+class GaduProtocol : public Protocol
 {
 	Q_OBJECT
 
@@ -223,39 +224,6 @@ class GaduProtocol : public QObject
 		bool whileConnecting;
 
 		QHostAddress DccExternalIP;
-
-		/**
-			Bie¿±cy status. Zmieniany po po³±czeniu, oraz w przypadku zmiany statusu kiedy po³±czenie
-			jest ju¿ zainicjowane.
-
-			@see login
-			@see connected
-			@see iWantGoOnline
-			@see iWantGoBusy
-			@see iWantGoInvisible
-			@see iWantGoOffline
-			@see NextStatus
-			@see UserStatus
-			@see status
-		**/
-		GaduStatus* CurrentStatus;
-
-		/**
-			Nastêpny status. Ustalany zewnêtrznie przy wykorzystaniu metody status i odpowiednich
-			slotów klasy UserStatus. Zmiana wywo³uje jedn± z metod iWantGo... i w konsekwencji zmianê
-			statusu (w razie konieczno¶ci te¿ zalogowanie).
-
-			@see login
-			@see connected
-			@see iWantGoOnline
-			@see iWantGoBusy
-			@see iWantGoInvisible
-			@see iWantGoOffline
-			@see CurrentStatus
-			@see UserStatus
-			@see status
-		**/
-		GaduStatus* NextStatus;
 
 		/**
 			Klasa gniazdek ³±cz±ca siê z serwerem. Wysy³a sygna³y po wyst±pieniu zdarzenia protoko³u
@@ -607,72 +575,12 @@ class GaduProtocol : public QObject
 
 	public:
 		static void initModule();
-		GaduProtocol(QObject *parent = NULL, const char *name = NULL);
+		static void closeModule();
+
+		GaduProtocol(const QString &id, QObject *parent = NULL, const char *name = NULL);
 		virtual ~GaduProtocol();
 
-		/**
-			Status u¿ytkownika. Za pomoc± tej metody mo¿emy go zmieniæ, pobraæ ikonê statusu i wykonaæ
-			kilka innych ciekawych rzeczy.
-
-			1. Zmiena statusu:
-			<code>
-				GaduProtocol gadu;
-
-				...
-
-				gadu.status().setOnline("Jestem zalogowany"); // zalogowanie i ustawienie opisu
-				gadu.status().setFriendsOnly(true);           // tryb tylko dla przyjació³
-				...
-				gadu.status().setOffline();                   // wylogowanie, usuniêcie opisu
-			</code>
-
-			2. Sprawdzenie statusu:
-			<code>
-				GaduProtocol gadu;
-
-				if (gadu.status().isOnline())                 // jeste¶my online
-					...
-				else if (gadu.status().isInvisible())         // jeste¶my niewidzialni
-					...
-
-				// mo¿na te¿:
-				switch (gadu.status().status())
-				{
-					case Online:
-						break;
-					case Busy:
-						break;
-					case Invisible:
-						break;
-					case Offline:
-						break;
-				}
-			</code>
-
-			3. Pobranie ikony i nazwy statusu
-			<code>
-				QPixmap pix;
-				QString name;
-				GaduProtocol gadu;
-
-				...
-
-				pix = gadu.status().pixmap();
-				name = gadu.status().name();
-			</code>
-
-			@see currentStatus
-		**/
-		UserStatus & status();
-
-		/**
-			Rzeczywisty aktualny status. Mo¿na go wykorzystaæ tylko w trybie do odczytu (pobranie
-			ikony, nazwy, sprawdzenie rzeczywistego stanu po³±czenia).
-
-			@see status
-		**/
-		const UserStatus & currentStatus();
-
+		void changeID(const QString &id);
 		/**
 			Zwraca serwer z którym jeste¶my po³±czeni lub do którego siê w³a¶nie ³±czymy.
 			NULL = hub.
@@ -750,6 +658,7 @@ class GaduProtocol : public QObject
 		**/
 		void setDccExternalIP(const QHostAddress& ip);
 
+		virtual UserStatus *newStatus() const;
 	public slots:
 		/**
 			Wysy³a wiadomo¶æ bez formatowania tekstu. Je¶li adresatów jest wiêcej ni¿ jeden, to wysy³ana
@@ -948,7 +857,7 @@ class GaduProtocol : public QObject
 		/**
 			@todo uprywatniæ
 		**/
-		void onDestroyConfigDialog();
+		void onApplyConfigDialog();
 
 		/**
 			@todo uprywatniæ
@@ -1026,33 +935,11 @@ class GaduProtocol : public QObject
 		void ackReceived(int seq);
 
 		/**
-			uda³o siê zalogowaæ
-		**/
-		void connected();
-
-		/**
-			rozpoczynamy procedurê logowania siê
-		**/
-		void connecting();
-
-		/**
-			roz³±czyli¶my siê z serwerem
-		**/
-		void disconnected();
-
-		/**
 			wyst±pi³ b³±d po³±czenia
 			@param err przyczyna
 			@see connectionError
 		**/
 		void error(GaduError err);
-
-		/**
-			wyst±pi³ b³±d po³±czenia
-			@param protocolName nazwa protoko³u
-			@param reason napis do wy¶wietlenia dla u¿ytkownika
-		**/
-		void connectionError(const QString &protocolName, const QString &reason);
 
 		/**
 			dostali¶my pro¶bê o przys³anie obrazka
@@ -1168,7 +1055,7 @@ class GaduProtocol : public QObject
 			Mo¿na te¿ przerwaæ dalsz± obróbkê wiadomo¶ci ustawiaj±c
 			stop na true.
 		**/
-		void messageFiltering(const QString &protocolName, UserListElements senders,
+		void messageFiltering(Protocol *protocol, UserListElements senders,
 								QCString& msg, QByteArray& formats, bool& stop);
 		/**
 			Otrzymano wiadomo¶æ któr± trzeba pokazaæ (klasa chat lub msg,
@@ -1182,9 +1069,9 @@ class GaduProtocol : public QObject
 			w oknie, dodanie jej do historii, etc.), poza przekonwertowaniem
 			kodowania wiadomo¶ci z CP1250 na Unicode.
 		**/
-		void chatMsgReceived0(const QString &protocolName, UserListElements senders, const QString& msg, time_t time, bool& grab);
-		void chatMsgReceived1(const QString &protocolName, UserListElements senders, const QString& msg, time_t time, bool& grab);
-		void chatMsgReceived2(const QString &protocolName, UserListElements senders, const QString& msg, time_t time);
+		void chatMsgReceived0(Protocol *protocol, UserListElements senders, const QString& msg, time_t time, bool& grab);
+		void chatMsgReceived1(Protocol *protocol, UserListElements senders, const QString& msg, time_t time, bool& grab);
+		void chatMsgReceived2(Protocol *protocol, UserListElements senders, const QString& msg, time_t time);
 
 		/**
 			Wywo³ywane, gdy chcemy odczytaæ token z obrazka

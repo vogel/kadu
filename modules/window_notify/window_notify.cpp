@@ -42,7 +42,7 @@ WindowNotify::WindowNotify(QObject *parent, const char *name) : QObject(parent, 
 	QMap<QString, QString> s;
 	s["NewChat"]=SLOT(newChat(const QString &, UserListElements, const QString &, time_t));
 	s["NewMessage"]=SLOT(newMessage(const QString &, UserListElements, const QString &, time_t, bool &));
-	s["ConnError"]=SLOT(connectionError(const QString &, const QString &));
+	s["ConnError"]=SLOT(connectionError(Protocol *, const QString &));
 	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const QString &, UserListElement));
 	s["toBusy"]=SLOT(userChangedStatusToBusy(const QString &, UserListElement));
 	s["toInvisible"]=SLOT(userChangedStatusToInvisible(const QString &, UserListElement));
@@ -88,7 +88,7 @@ void WindowNotify::newMessage(const QString &protocolName, UserListElements send
 	kdebugf2();
 }
 
-void WindowNotify::connectionError(const QString &protocolName, const QString &message)
+void WindowNotify::connectionError(Protocol *, const QString &message)
 {
 	kdebugf();
 	MessageBox::msg(tr("<b>Error:</b> %1").arg(message));

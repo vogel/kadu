@@ -140,9 +140,9 @@ class SoundManager : public Themes
 		virtual void disconnectNotify(const char *signal);
 
 	private slots:
-		void newChat(const QString &protocolName, UserListElements senders, const QString &msg, time_t t);
-		void newMessage(const QString &protocolName, UserListElements senders, const QString &msg, time_t t, bool &grab);
-		void connectionError(const QString &protocolName, const QString &message);
+		void newChat(Protocol *protocol, UserListElements senders, const QString &msg, time_t t);
+		void newMessage(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool &grab);
+		void connectionError(Protocol *protocol, const QString &message);
 		void userChangedStatusToAvailable(const QString &protocolName, UserListElement);
 		void userChangedStatusToBusy(const QString &protocolName, UserListElement);
 		void userChangedStatusToInvisible(const QString &protocolName, UserListElement);

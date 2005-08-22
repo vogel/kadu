@@ -24,10 +24,10 @@
 #include "config_file.h"
 #include "debug.h"
 #include "gadu.h"
-#include "userlist.h"
-
-#include "userlist-private.h"
 #include "misc.h"
+#include "protocols_manager.h"
+#include "userlist.h"
+#include "userlist-private.h"
 
 UserList::UserList() : UserGroup(101, "userlist")
 {
@@ -191,15 +191,19 @@ void UserList::setAllOffline(const QString &protocolName)
 {
 	kdebugf();
 //	printBacktrace("setAllOffline");
-	UserStatus *s = new GaduStatus();
-	//s = ProtocolManager::newStatus(protocolName);
+	UserStatus *s;
+//	s = new GaduStatus();
+	s = protocols_manager->byProtocolID(protocolName)[0]->newStatus();
 	s->setOffline();
 
-	QIntDictIterator<UserListElement> user(d->data);
-	uint cnt = user.count();
-	for (uint j = 0; j < cnt; ++j, ++user)
+	QValueListIterator<UserListElement> user = begin();
+	uint cnt = count();
+	for (uint j = 1; j <= cnt; ++j, ++user)
+	{
+//		kdebugm(KDEBUG_INFO, "%s %d\n", (*user).altNick().local8Bit().data(), (*user).usesProtocol("Gadu"));
 		if ((*user).usesProtocol("Gadu"))
-			(*user).setStatus(protocolName, *s, true, j++ == cnt);
+			(*user).setStatus(protocolName, *s, true, j == cnt);
+	}
 	kdebugf2();
 }
 

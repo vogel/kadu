@@ -29,8 +29,8 @@ AutoResponder::AutoResponder(QObject *parent, const char *name) : QObject(parent
 {
 	kdebugf();
 	config = new ConfigFile(ggPath("autoresponder.conf"));
-	connect(gadu, SIGNAL(chatMsgReceived1(const QString &, UserListElements, const QString&, time_t, bool&)),
-		this, SLOT(chatMsgReceived(const QString &, UserListElements, const QString&, time_t, bool&)));
+	connect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
+		this, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
 	connect(chat_manager, SIGNAL(chatCreated(const UserGroup *)), this, SLOT(chatOpened(const UserGroup *)));
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Autoresponder"), "AutoresponderTab");
@@ -50,8 +50,8 @@ AutoResponder::AutoResponder(QObject *parent, const char *name) : QObject(parent
 AutoResponder::~AutoResponder()
 {
 	kdebugf();
-	disconnect(gadu, SIGNAL(chatMsgReceived1(const QString &, UserListElements, const QString&, time_t, bool&)),
-		this, SLOT(chatMsgReceived(const QString &, UserListElements, const QString&, time_t, bool&)));
+	disconnect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
+		this, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
 	disconnect(chat_manager, SIGNAL(chatCreated(const UserGroup *)), this, SLOT(chatOpened(const UserGroup *)));
 	ConfigDialog::removeControl("Autoresponder", "Choose status:");
 	ConfigDialog::removeControl("Autoresponder", "Status invisible");
@@ -66,7 +66,7 @@ AutoResponder::~AutoResponder()
 	kdebugf2();
 }
 
-void AutoResponder::chatMsgReceived(const QString &protocolName, UserListElements senders, const QString& msg, time_t /*time*/, bool &/*grab*/)
+void AutoResponder::chatMsgReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t /*time*/, bool &/*grab*/)
 {
 	kdebugf();
 	if (msg.left(5) != "KADU ")

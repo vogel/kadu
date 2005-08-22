@@ -333,12 +333,12 @@ void ChatManager::sendMessage(UserListElement user, UserListElements selected_us
 	kdebugf2();
 }
 
-void ChatManager::chatMsgReceived(const QString &protocolName, UserListElements senders, const QString& msg, time_t time, bool& grab)
+void ChatManager::chatMsgReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t time, bool& grab)
 {
 	Chat *chat = findChat(senders);
 	if (chat != NULL)
 	{
-		chat->newMessage(protocolName, senders, msg, time);
+		chat->newMessage(protocol->protocolID(), senders, msg, time);
 		chat->alertNewMessage();
 		grab = true;
 	}
@@ -517,8 +517,8 @@ void ChatManager::initModule()
 	ConfigDialog::connectSlot("Look", "Font in chat window", SIGNAL(changed(const char *, const QFont&)), chatslots, SLOT(chooseFont(const char *, const QFont&)), "chat_font_box");
 
 	chat_manager=new ChatManager(kadu, "chat_manager");
-	connect(gadu,SIGNAL(chatMsgReceived1(const QString &, UserListElements, const QString&, time_t, bool&)),
-		chat_manager,SLOT(chatMsgReceived(const QString &, UserListElements, const QString&, time_t, bool&)));
+	connect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
+		chat_manager, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
 	kdebugf2();
 }
 

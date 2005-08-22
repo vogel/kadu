@@ -45,6 +45,7 @@
 #include "modules.h"
 #include "pending_msgs.h"
 #include "personal_info.h"
+#include "protocols_manager.h"
 #include "search.h"
 #include "tabbar.h"
 #include "updates.h"
@@ -471,8 +472,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		stream >> *this;
 	}
 
-	connect(gadu, SIGNAL(chatMsgReceived2(const QString &, UserListElements, const QString &, time_t)),
-		this, SLOT(chatMsgReceived(const QString &, UserListElements, const QString &, time_t)));
+	connect(gadu, SIGNAL(chatMsgReceived2(Protocol *, UserListElements, const QString &, time_t)),
+		this, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString &, time_t)));
 	connect(gadu, SIGNAL(connecting()), this, SLOT(connecting()));
 	connect(gadu, SIGNAL(connected()), this, SLOT(connected()));
 	connect(gadu, SIGNAL(disconnected()), this, SLOT(disconnected()));
@@ -1099,10 +1100,10 @@ void Kadu::connecting()
 	kdebugf2();
 }
 
-void Kadu::chatMsgReceived(const QString &protocolName, UserListElements senders, const QString &msg, time_t time)
+void Kadu::chatMsgReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t time)
 {
 	kdebugf();
-	pending.addMsg(protocolName, senders, msg, GG_CLASS_CHAT, time);
+	pending.addMsg(protocol->protocolID(), senders, msg, GG_CLASS_CHAT, time);
 
 	if (config_file.readBoolEntry("General","AutoRaise"))
 	{
@@ -1221,11 +1222,12 @@ bool Kadu::close(bool quit)
 		}
 //		disconnectNetwork();
 //		gadu->logout();
- 		delete gadu;
+		GaduProtocol::closeModule();
  		ChatManager::closeModule();
 		GroupsManager::closeModule();
  		UserBox::closeModule();
 		UserList::closeModule();
+		ProtocolsManager::closeModule();
  		delete emoticons;
  		delete icons_manager;
   		kdebugmf(KDEBUG_INFO, "Saved config, disconnect and ignored\n");

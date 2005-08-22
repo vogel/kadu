@@ -64,10 +64,10 @@ EncryptionManager::EncryptionManager(QObject *parent, const char *name) : QObjec
 	ConfigDialog::connectSlot("Chat", "Generate keys", SIGNAL(clicked()), this, SLOT(generateMyKeys()));
 	ConfigDialog::connectSlot("Chat", "Use encryption", SIGNAL(toggled(bool)), this, SLOT(onUseEncryption(bool)));
 
-	connect(chat_manager,SIGNAL(chatCreated(const UserGroup *)),this,SLOT(chatCreated(const UserGroup *)));
-	connect(gadu, SIGNAL(messageFiltering(const QString &, UserListElements, QCString&, QByteArray&, bool&)),
-			this, SLOT(receivedMessageFilter(const QString &, UserListElements, QCString&, QByteArray&, bool&)));
-	connect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userBoxMenuPopup()));
+	connect(chat_manager, SIGNAL(chatCreated(const UserGroup *)), this, SLOT(chatCreated(const UserGroup *)));
+	connect(gadu, SIGNAL(messageFiltering(Protocol *, UserListElements, QCString&, QByteArray&, bool&)),
+			this, SLOT(receivedMessageFilter(Protocol *, UserListElements, QCString&, QByteArray&, bool&)));
+	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userBoxMenuPopup()));
 
 	Chat::registerButton("encryption_button",this,SLOT(encryptionButtonClicked()));
 	UserBox::userboxmenu->addItemAtPos(2,"SendPublicKey", tr("Send my public key"), this, SLOT(sendPublicKey()));
@@ -88,8 +88,8 @@ EncryptionManager::~EncryptionManager()
 	Chat::unregisterButton("encryption_button");
 
 	disconnect(chat_manager, SIGNAL(chatCreated(const UserGroup *)), this, SLOT(chatCreated(const UserGroup *)));
-	disconnect(gadu, SIGNAL(messageFiltering(const QString &, UserListElements, QCString&, QByteArray&, bool&)),
-			this, SLOT(receivedMessageFilter(const QString &, UserListElements, QCString&, QByteArray&, bool&)));
+	disconnect(gadu, SIGNAL(messageFiltering(Protocol *, UserListElements, QCString&, QByteArray&, bool&)),
+			this, SLOT(receivedMessageFilter(Protocol *, UserListElements, QCString&, QByteArray&, bool&)));
 	disconnect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userBoxMenuPopup()));
 
 	ConfigDialog::disconnectSlot("Chat", "Generate keys", SIGNAL(clicked()), this, SLOT(generateMyKeys()));
@@ -202,7 +202,7 @@ void EncryptionManager::encryptionButtonClicked()
 	setupEncryptButton(chat,!EncryptionEnabled[chat]);
 }
 
-void EncryptionManager::receivedMessageFilter(const QString &protocolName,
+void EncryptionManager::receivedMessageFilter(Protocol *protocol,
 			UserListElements senders, QCString& msg, QByteArray& formats, bool& stop)
 {
 	kdebugf();
@@ -216,7 +216,7 @@ void EncryptionManager::receivedMessageFilter(const QString &protocolName,
 
 	kdebugm(KDEBUG_INFO, "Decrypting encrypted message...(%d)\n", msg.length());
 	const char* msg_c = msg;
-	char* decoded = sim_message_decrypt((const unsigned char*)msg_c, senders[0].ID(protocolName).toUInt());
+	char* decoded = sim_message_decrypt((const unsigned char*)msg_c, senders[0].ID(protocol->protocolID()).toUInt());
 	kdebugm(KDEBUG_DUMP, "Decrypted message is(len:%d): %s\n", decoded ? strlen(decoded) : 0, decoded);
 	if (decoded != NULL)
 	{

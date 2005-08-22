@@ -240,9 +240,9 @@ SoundManager::SoundManager(const QString& name, const QString& configname)
 	setTheme(config_file.readEntry("Sounds","SoundTheme"));
 
 	QMap<QString, QString> s;
-	s["NewChat"]=SLOT(newChat(const QString &, UserListElements, const QString &, time_t));
-	s["NewMessage"]=SLOT(newMessage(const QString &, UserListElements, const QString &, time_t, bool &));
-	s["ConnError"]=SLOT(connectionError(const QString &, const QString &));
+	s["NewChat"]=SLOT(newChat(Protocol *, UserListElements, const QString &, time_t));
+	s["NewMessage"]=SLOT(newMessage(Protocol *, UserListElements, const QString &, time_t, bool &));
+	s["ConnError"]=SLOT(connectionError(Protocol *, const QString &));
 	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const QString &, UserListElement));
 	s["toBusy"]=SLOT(userChangedStatusToBusy(const QString &, UserListElement));
 	s["toInvisible"]=SLOT(userChangedStatusToInvisible(const QString &, UserListElement));
@@ -326,7 +326,7 @@ void SoundManager::setMute(const bool& enable)
 	mute = enable;
 }
 
-void SoundManager::newChat(const QString &/*protocolName*/, UserListElements /*senders*/, const QString &/*msg*/, time_t /*t*/)
+void SoundManager::newChat(Protocol * /*protocol*/, UserListElements /*senders*/, const QString &/*msg*/, time_t /*t*/)
 {
 	kdebugf();
 	if (isMuted())
@@ -355,7 +355,7 @@ void SoundManager::newChat(const QString &/*protocolName*/, UserListElements /*s
 	kdebugf2();
 }
 
-void SoundManager::newMessage(const QString &/*protocolName*/, UserListElements senders, const QString &/*msg*/, time_t /*t*/, bool &/*grab*/)
+void SoundManager::newMessage(Protocol * /*protocol*/, UserListElements senders, const QString &/*msg*/, time_t /*t*/, bool &/*grab*/)
 {
 	kdebugf();
 	if (isMuted())
@@ -387,7 +387,7 @@ void SoundManager::newMessage(const QString &/*protocolName*/, UserListElements 
 	kdebugf2();
 }
 
-void SoundManager::connectionError(const QString &/*protocolName*/, const QString &/*message*/)
+void SoundManager::connectionError(Protocol *, const QString &/*message*/)
 {
 	kdebugf();
 	if (isMuted())

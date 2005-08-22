@@ -169,9 +169,9 @@ SpeechSlots::SpeechSlots(QObject *parent, const char *name) : QObject(parent, na
 	ConfigDialog::registerSlotOnCreate(this, SLOT(onCreateConfigDialog()));
 
 	QMap<QString, QString> s;
-	s["NewChat"]=SLOT(newChat(const QString &, UserListElements, const QString &, time_t));
-	s["NewMessage"]=SLOT(newMessage(const QString &, UserListElements, const QString &, time_t, bool &));
-	s["ConnError"]=SLOT(connectionError(const QString &, const QString &));
+	s["NewChat"]=SLOT(newChat(Protocol *, UserListElements, const QString &, time_t));
+	s["NewMessage"]=SLOT(newMessage(Protocol *, UserListElements, const QString &, time_t, bool &));
+	s["ConnError"]=SLOT(connectionError(Protocol *, const QString &));
 	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const QString &, UserListElement));
 	s["toBusy"]=SLOT(userChangedStatusToBusy(const QString &, UserListElement));
 	s["toInvisible"]=SLOT(userChangedStatusToInvisible(const QString &, UserListElement));
@@ -320,7 +320,7 @@ void SpeechSlots::testSpeech()
 	if (i > 0)
 		--i;
 	UserList::const_iterator it = userlist->constBegin();
-	while (i>0)
+	while (i-- > 0)
 		++it;
 	UserListElement ule = *it;
 
@@ -333,7 +333,7 @@ void SpeechSlots::testSpeech()
 	kdebugf2();
 }
 
-void SpeechSlots::newChat(const QString &protocolName, UserListElements senders, const QString &msg, time_t /*t*/)
+void SpeechSlots::newChat(Protocol * /*protocol*/, UserListElements senders, const QString &msg, time_t /*t*/)
 {
 	kdebugf();
 	if (lastSpeech.elapsed()<1500)
@@ -366,10 +366,10 @@ void SpeechSlots::newChat(const QString &protocolName, UserListElements senders,
 	kdebugf2();
 }
 
-void SpeechSlots::newMessage(const QString &protocolName, UserListElements senders, const QString &msg, time_t /*t*/, bool &/*grab*/)
+void SpeechSlots::newMessage(Protocol * /*protocol*/, UserListElements senders, const QString &msg, time_t /*t*/, bool &/*grab*/)
 {
 	kdebugf();
-	if (lastSpeech.elapsed()<1500)
+	if (lastSpeech.elapsed() < 1500)
 	{
 		kdebugf2();
 		return;
@@ -395,7 +395,7 @@ void SpeechSlots::newMessage(const QString &protocolName, UserListElements sende
 	kdebugf2();
 }
 
-void SpeechSlots::connectionError(const QString &protocolName, const QString &message)
+void SpeechSlots::connectionError(Protocol *, const QString &message)
 {
 	kdebugf();
 	if (lastSpeech.elapsed()<1500)

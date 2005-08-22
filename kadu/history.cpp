@@ -1155,7 +1155,7 @@ int HistoryManager::getHistoryEntryIndexByDate(const UinsList &uins, const QDate
 	return start;
 }
 
-void HistoryManager::chatMsgReceived(const QString &protocolName, UserListElements senders, const QString& msg, time_t t, bool& /*grab*/)
+void HistoryManager::chatMsgReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t t, bool& /*grab*/)
 {
 	if (!config_file.readBoolEntry("History", "Logging"))
 		return;
@@ -1806,8 +1806,8 @@ void History::initModule()
 	ConfigDialog::registerSlotOnApply(historyslots, SLOT(onDestroyConfigDialog()));
 	ConfigDialog::connectSlot("History", "historyslider", SIGNAL(valueChanged(int)), historyslots, SLOT(updateQuoteTimeLabel(int)));
 
-	connect(gadu,SIGNAL(chatMsgReceived1(const QString &, UserListElements, const QString&, time_t, bool&)),
-		&history,SLOT(chatMsgReceived(const QString &, UserListElements, const QString&, time_t, bool&)));
+	connect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
+		&history, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
 	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
 		&history, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
 	kdebugf2();

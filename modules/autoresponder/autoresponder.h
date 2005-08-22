@@ -5,6 +5,7 @@
 
 #include "config_file.h"
 #include "misc.h"
+#include "protocol.h"
 #include "usergroup.h"
 
 class AutoResponder : public QObject
@@ -16,7 +17,7 @@ class AutoResponder : public QObject
 		AutoResponder(QObject *parent=0, const char *name=0);
 		~AutoResponder();
 	public slots:
-		void chatMsgReceived(const QString &protocolName, UserListElements senders, const QString& msg, time_t time, bool& grab);
+		void chatMsgReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t time, bool& grab);
 		void chatOpened(const UserGroup *group);
 	public:
 		UserGroup replied;		/* tu beda przechowywane uiny tych ktorzy sie odezwali do nas */

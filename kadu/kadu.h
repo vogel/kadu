@@ -93,7 +93,7 @@ class Kadu : public QMainWindow
 
 	private slots:
 		void openChat();
-		void chatMsgReceived(const QString &protocolName, UserListElements senders, const QString &msg, time_t time);
+		void chatMsgReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t time);
 
 		void wentOnline(const QString &);
 		void wentBusy(const QString &);

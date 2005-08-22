@@ -32,6 +32,7 @@
 #include "modules.h"
 #include "emoticons.h"
 #include "message_box.h"
+#include "protocols_manager.h"
 
 //patrz komentarz w config_file.h
 ConfigFile *config_file_ptr;
@@ -171,6 +172,7 @@ int main(int argc, char *argv[])
 		exit(10);
 	}
 
+	ProtocolsManager::initModule();
 	UserList::initModule();
 	GroupsManager::initModule();
 	emoticons = new EmoticonsManager();
@@ -208,6 +210,7 @@ int main(int argc, char *argv[])
 				delete config_file_ptr;
 				GroupsManager::closeModule();
 				UserList::closeModule();
+				ProtocolsManager::closeModule();
 				delete xml_config_file;
 				lockFile->close();
 				delete lockFile;

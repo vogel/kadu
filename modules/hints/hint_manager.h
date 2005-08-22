@@ -64,13 +64,13 @@ class HintManager : public QFrame
 	public slots:
 /*********** sloty dla notify ************/
 		/* nowa rozmowa */
-		void newChat(const QString &protocolName, UserListElements senders, const QString &msg, time_t t);
+		void newChat(Protocol *protocol, UserListElements senders, const QString &msg, time_t t);
 
 		/* nowa wiadomo¶æ w oknie chat */
-		void newMessage(const QString &protocolName, UserListElements senders, const QString &msg, time_t t, bool &grab);
+		void newMessage(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool &grab);
 
 		/* b³±d po³±czenia */
-		void connectionError(const QString &protocolName, const QString &message);
+		void connectionError(Protocol *protocol, const QString &message);
 
 		/* u¿ytkownik zmieni³ status */
 		void userStatusChanged(UserListElement ule, QString protocolName, const UserStatus &oldStatus);

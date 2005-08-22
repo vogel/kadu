@@ -120,9 +120,9 @@ HintManager::HintManager(QWidget *parent, const char *name)
 	connect(this, SIGNAL(searchingForTrayPosition(QPoint &)), kadu, SIGNAL(searchingForTrayPosition(QPoint &)));
 
 	QMap<QString, QString> s;
-	s["NewChat"]=SLOT(newChat(const QString &, UserListElements, const QString &, time_t));
-	s["NewMessage"]=SLOT(newMessage(const QString &, UserListElements, const QString &, time_t, bool &));
-	s["ConnError"]=SLOT(connectionError(const QString &, const QString &));
+	s["NewChat"]=SLOT(newChat(Protocol *, UserListElements, const QString &, time_t));
+	s["NewMessage"]=SLOT(newMessage(Protocol *, UserListElements, const QString &, time_t, bool &));
+	s["ConnError"]=SLOT(connectionError(Protocol *, const QString &));
 	s["StatusChanged"] = SLOT(userStatusChanged(UserListElement, QString, const UserStatus &));
 	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const QString &, UserListElement));
 	s["toBusy"]=SLOT(userChangedStatusToBusy(const QString &, UserListElement));
@@ -424,7 +424,7 @@ void HintManager::setGridOrigin()
 	kdebugf2();
 }
 
-void HintManager::newChat(const QString &protocolName, UserListElements senders, const QString &msg, time_t /*t*/)
+void HintManager::newChat(Protocol * /*protocol*/, UserListElements senders, const QString &msg, time_t /*t*/)
 {
 	kdebugf();
 	if (config_file.readBoolEntry("Hints", "ShowContentMessage"))
@@ -455,7 +455,7 @@ void HintManager::newChat(const QString &protocolName, UserListElements senders,
 	kdebugf2();
 }
 
-void HintManager::newMessage(const QString &protocolName, UserListElements senders, const QString &msg, time_t /*t*/, bool &/*grab*/)
+void HintManager::newMessage(Protocol * /*protocol*/, UserListElements senders, const QString &msg, time_t /*t*/, bool &/*grab*/)
 {
 	kdebugf();
 	Chat* chat=chat_manager->findChat(senders);
@@ -496,7 +496,7 @@ void HintManager::newMessage(const QString &protocolName, UserListElements sende
 	kdebugf2();
 }
 
-void HintManager::connectionError(const QString &protocolName, const QString &message)
+void HintManager::connectionError(Protocol *, const QString &message)
 {
 	kdebugf();
 	addHint(tr("<b>Error:</b> %1").arg(message), icons_manager->loadIcon("Blocking"),

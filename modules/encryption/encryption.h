@@ -15,7 +15,7 @@ class EncryptionManager : public QObject
 		void setupEncryptButton(Chat* chat,bool enabled);
 
 	private slots:
-		void receivedMessageFilter(const QString &protocolName, UserListElements senders,
+		void receivedMessageFilter(Protocol *protocol, UserListElements senders,
 								QCString& msg, QByteArray& formats, bool& stop);
 		void sendMessageFilter(const UserGroup *users, QCString &msg, bool &stop);
 		void chatCreated(const UserGroup *group);

@@ -545,3 +545,8 @@ void GaduSocketNotifiers::connectionFailed(int failure)
 	emit error(err);
 	kdebugf2();
 }
+
+Protocol *GaduProtocolManager::newInstance(const QString &id)
+{
+	return new GaduProtocol(id, protocols_manager, "gadu_protocol_");
+}

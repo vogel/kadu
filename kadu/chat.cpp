@@ -1044,7 +1044,7 @@ void Chat::sendMessage()
 
 	emit messageSendRequested(this);
 
-	if (gadu->status().isOffline())
+	if (gadu->currentStatus().isOffline())
 	{
 		QMessageBox::critical(this, tr("Send message error"),
 			tr("Application encountered network error."));

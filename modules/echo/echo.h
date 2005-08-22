@@ -4,6 +4,7 @@
 #include <qobject.h>
 
 #include "gadu.h"
+#include "protocol.h"
 #include "usergroup.h"
 
 class Echo : public QObject
@@ -15,7 +16,7 @@ class Echo : public QObject
 		~Echo();
 
 	public slots:
-		void chatMsgReceived(const QString &protocolName, UserListElements senders, const QString& msg, time_t time, bool& grab);
+		void chatMsgReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t time, bool& grab);
 };
 
 extern Echo* echo;

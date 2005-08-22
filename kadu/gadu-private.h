@@ -6,8 +6,9 @@
 #include <qpixmap.h>
 #include <qstring.h>
 
-#include "userlistelement.h"
 #include "gadu.h"
+#include "protocols_manager.h"
+#include "userlistelement.h"
 
 class QSocketNotifier;
 struct gg_http;
@@ -132,6 +133,12 @@ class GaduSocketNotifiers : public SocketNotifiers
 		void userlistReceived(const struct gg_event *);
 		void userlistReplyReceived(char, char *);
 		void userStatusChanged(const struct gg_event *);
+};
+
+class GaduProtocolManager : public ProtocolManager
+{
+	public:
+		virtual Protocol *newInstance(const QString &id);
 };
 
 #endif

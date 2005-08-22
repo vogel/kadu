@@ -121,6 +121,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   przyjmie / zwróci j± (joi)
 * usuniêty kod kompatybilno¶ci z Qt < 3.2, configure sprawdza wersjê Qt (joi)
 * poprawki w wykrywaniu ¶cie¿ki do Firefoksa na Gentoo (joi)
+* zacz±tki klas Protocol i ProtocolsManager (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

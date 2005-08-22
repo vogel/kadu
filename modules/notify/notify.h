@@ -8,8 +8,8 @@
 #include <qvaluelist.h>
 #include <qstringlist.h>
 
-#include "gadu.h"
 #include "notify_slots.h"
+#include "protocol.h"
 #include "userlist.h"
 
 class Notify : public QObject
@@ -40,9 +40,9 @@ class Notify : public QObject
 
 	private slots:
 		/* pomocniczy slot */
-		void newChatSlot(const QString &protocolName, UserListElements senders, const QString &msg, time_t t);
+		void newChatSlot(Protocol *protocol, UserListElements senders, const QString &msg, time_t t);
 		/* pomocniczy slot */
-		void probablyNewMessage(const QString &protocolName, UserListElements senders, const QString &msg, time_t t, bool &grab);
+		void probablyNewMessage(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool &grab);
 
 		/*
 		 * ³±czy odpowiedni sygna³ z notifierName (np.: Window, Hint, Sound)
@@ -109,13 +109,13 @@ class Notify : public QObject
 	//UWAGA: razem ze zmianami nazw/parametrów tych sygna³ów nale¿y aktualizowaæ wpisy w konstruktorze Notify
 
 		/* nowa rozmowa */
-		void newChat(const QString &protocolName, UserListElements senders, const QString &msg, time_t t);
+		void newChat(Protocol *protocol, UserListElements senders, const QString &msg, time_t t);
 
 		/* nowa wiadomo¶æ w oknie chat */
-		void newMessage(const QString &protocolName, UserListElements senders, const QString &msg, time_t t, bool &grab);
+		void newMessage(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool &grab);
 
 		/* b³±d po³±czenia */
-		void connectionError(const QString &protocolName, const QString &message);
+		void connectionError(Protocol *protocol, const QString &message);
 
 		/* u¿ytkownik zmieni³ status */
 		void userStatusChanged(UserListElement elem, QString protocolName, const UserStatus &oldStatus);

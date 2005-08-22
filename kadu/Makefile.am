@@ -33,6 +33,8 @@ misc.cpp \
 modules.cpp \
 pending_msgs.cpp \
 personal_info.cpp \
+protocol.cpp \
+protocols_manager.cpp \
 search.cpp \
 status.cpp \
 tabbar.cpp \
@@ -80,6 +82,8 @@ misc.h \
 modules.h \
 pending_msgs.h \
 personal_info.h \
+protocol.h \
+protocols_manager.h \
 search.h \
 status.h \
 tabbar.h \
@@ -117,6 +121,8 @@ moc/misc_moc.cpp \
 moc/modules_moc.cpp \
 moc/pending_msgs_moc.cpp \
 moc/personal_info_moc.cpp \
+moc/protocol_moc.cpp \
+moc/protocols_manager_moc.cpp \
 moc/search_moc.cpp \
 moc/status_moc.cpp \
 moc/tabbar_moc.cpp \
@@ -162,6 +168,8 @@ obj/misc.$(OBJEXT) \
 obj/modules.$(OBJEXT) \
 obj/pending_msgs.$(OBJEXT) \
 obj/personal_info.$(OBJEXT) \
+obj/protocol.$(OBJEXT) \
+obj/protocols_manager.$(OBJEXT) \
 obj/search.$(OBJEXT) \
 obj/status.$(OBJEXT) \
 obj/tabbar.$(OBJEXT) \
@@ -197,6 +205,8 @@ obj/misc_moc.$(OBJEXT) \
 obj/modules_moc.$(OBJEXT) \
 obj/pending_msgs_moc.$(OBJEXT) \
 obj/personal_info_moc.$(OBJEXT) \
+obj/protocol_moc.$(OBJEXT) \
+obj/protocols_manager_moc.$(OBJEXT) \
 obj/search_moc.$(OBJEXT) \
 obj/status_moc.$(OBJEXT) \
 obj/tabbar_moc.$(OBJEXT) \

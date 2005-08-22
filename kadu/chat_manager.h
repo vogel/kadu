@@ -8,6 +8,7 @@
 #include "usergroup.h"
 
 class ChatManagerSlots;
+class Protocol;
 
 /**
 	Klasa pozwalaj±ca zarz±dzaæ otwartymi oknami rozmów: otwieraæ,
@@ -120,7 +121,7 @@ class ChatManager : public QObject
 			\param time czas otrzymania wiadomo¶ci
 			\param grab
 		**/
-		void chatMsgReceived(const QString &protocolName, UserListElements senders, const QString& msg, time_t time, bool& grab);
+		void chatMsgReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t time, bool& grab);
 
 		/**
 			\fn int openChat(QString initialProtocol, UserListElements users, time_t time = 0)
