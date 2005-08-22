@@ -13,7 +13,6 @@
 #include <qcursor.h>
 #include <qfile.h>
 #include <qhgroupbox.h>
-#include <qregexp.h>
 #include <qspinbox.h>
 #include <qtextstream.h>
 

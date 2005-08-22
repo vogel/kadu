@@ -10,7 +10,6 @@
 #include <qcheckbox.h>
 #include <qgrid.h>
 #include <qlayout.h>
-#include <qregexp.h>
 #include <qstring.h>
 
 #include "config_dialog.h"

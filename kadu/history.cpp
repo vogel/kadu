@@ -1187,32 +1187,32 @@ void HistoryManager::imageReceivedAndSaved(UinType sender, uint32_t size, uint32
 		return;
 	kdebugf();
 	kdebugm(KDEBUG_INFO, "sender: %d, size: %d, crc:%u, path:%s\n", sender, size, crc32, path.local8Bit().data());
-	QRegExp reg=QRegExp(GaduImagesManager::loadingImageHtml(sender, size, crc32));
-	QString imagehtml=GaduImagesManager::imageHtml(path);
-	QMap<UinType, QValueList<BuffMessage> >::iterator it=bufferedMessages.find(sender);
-	if (it!=bufferedMessages.end())
+	QString reg = GaduImagesManager::loadingImageHtml(sender, size, crc32);
+	QString imagehtml = GaduImagesManager::imageHtml(path);
+	QMap<UinType, QValueList<BuffMessage> >::iterator it = bufferedMessages.find(sender);
+	if (it != bufferedMessages.end())
 	{
 //		kdebugm(KDEBUG_INFO, "sender found\n");
-		QValueList<BuffMessage> &messages=it.data();
+		QValueList<BuffMessage> &messages = it.data();
 		FOREACH(msg, messages)
 		{
 //			kdebugm(KDEBUG_INFO, "counter:%d\n", (*msg).counter);
 			if ((*msg).counter)
 			{
-				int occur=(*msg).message.contains(reg);
+				int occur = (*msg).message.contains(reg);
 //				kdebugm(KDEBUG_INFO, "occur:%d\n", occur);
 				if (occur)
 				{
 					(*msg).message.replace(reg, imagehtml);
-					(*msg).counter-=occur;
+					(*msg).counter -= occur;
 				}
 			}
 		}
 //		kdebugm(KDEBUG_INFO, "> msgs.size():%d\n", messages.size());
 		while (!messages.isEmpty())
 		{
-			BuffMessage &msg=messages.front();
-			if (msg.counter>0)
+			BuffMessage &msg = messages.front();
+			if (msg.counter > 0)
 				break;
 			history.appendMessage(msg.uins, msg.uins[0], msg.message, msg.own, msg.tm, true, msg.arriveTime);
 			messages.pop_front();
@@ -1453,7 +1453,7 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry, QStri
 	QString message;
 
 	message = entry.message;
-	message.replace(QRegExp("\n"), "<br/>");
+	message.replace("\n", "<br/>");
 
 	if (entry.type & (HISTORYMANAGER_ENTRY_CHATSEND | HISTORYMANAGER_ENTRY_MSGSEND
 		| HISTORYMANAGER_ENTRY_SMSSEND))

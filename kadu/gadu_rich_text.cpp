@@ -196,17 +196,17 @@ QString stripHTMLFromGGMessage(const QString &msg)
 //	mesg.replace(QRegExp("^<html><head><meta\\sname=\"qrichtext\"\\s*\\s/></head>"), "");
 	mesg.replace(QRegExp("^<html><head>.*<body\\s.*\">\\r\\n"), "");
 	mesg.replace(QRegExp("\\r\\n</body></html>\\r\\n$"), "");
-	mesg.replace(QRegExp("<wsp>"), "");
-	mesg.replace(QRegExp("</wsp>"), "");
+	mesg.replace("<wsp>", "");
+	mesg.replace("</wsp>", "");
 
-	mesg.replace(QRegExp("<p>"), "");
-	mesg.replace(QRegExp("<p dir=\"ltr\">"), "");
-//	mesg.replace(QRegExp("<p dir=\"rtl\">"), "");
-	mesg.replace(QRegExp("</p>"), "");
+	mesg.replace("<p>", "");
+	mesg.replace("<p dir=\"ltr\">", "");
+//	mesg.replace("<p dir=\"rtl\">", "");
+	mesg.replace("</p>", "");
 	regexp.setMinimal(true);
 	regexp.setPattern("<font (face=\"(\\S)+\"\\s)?(size=\"\\d{1,2}\"(\\s)?)?(style=\"font-size:\\d{1,2}pt\"(\\s)?)?>");
 	mesg.replace(regexp, "");
-	mesg.replace(QRegExp("</font>"), "");
+	mesg.replace("</font>", "");
 	HtmlDocument::unescapeText(mesg);
 
 	return mesg;

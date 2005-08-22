@@ -66,7 +66,7 @@ QPopupMenu *KaduTextBrowser::createPopupMenu(const QPoint &point)
 {
 	kdebugf();
 	anchor = anchorAt(point);
-	anchor.replace(QRegExp("%2520"), "%20");//obej¶cie b³êdu w Qt, patrz HtmlDocument::convertUrlsToHtml()
+	anchor.replace("%2520", "%20");//obej¶cie b³êdu w Qt, patrz HtmlDocument::convertUrlsToHtml()
 
 	QPopupMenu* popupmenu = QTextBrowser::createPopupMenu(point);
 
@@ -121,48 +121,48 @@ void KaduTextBrowser::copy()
 
 	//czasem siê to cholerstwo pojawia gdy dostajemy ca³y dokument (bug w qt!),
 	//wiêc wypada³oby pozbyæ siê wszystkich zbêdnych tagów...
-	txt.replace(QRegExp("<html>"), "");
-	txt.replace(QRegExp("</html>"), "");
+	txt.replace("<html>", "");
+	txt.replace("</html>", "");
 
-	txt.replace(QRegExp("<head>"), "");
-	txt.replace(QRegExp("</head>"), "");
+	txt.replace("<head>", "");
+	txt.replace("</head>", "");
 
 	txt.replace(QRegExp("<meta[^>]+>"), "");
 
-	txt.replace(QRegExp("<body>"), "");
+	txt.replace("<body>", "");
 	txt.replace(QRegExp("<body [^>]+>"), "");
-	txt.replace(QRegExp("</body>"), "");
+	txt.replace("</body>", "");
 
 	txt.replace(QRegExp("<a [^>]+>"), "");
-	txt.replace(QRegExp("</a>"), "");
+	txt.replace("</a>", "");
 
-	txt.replace(QRegExp("<br>"), "\n");
-	txt.replace(QRegExp("<br/>"), "\n");
-	txt.replace(QRegExp("<br />"), "\n");
+	txt.replace("<br>", "\n");
+	txt.replace("<br/>", "\n");
+	txt.replace("<br />", "\n");
 
 	//usuwamy wszystkie znane tagi htmla, które mog± siê pojawiæ w chacie
 	//nie mo¿na u¿yæ po prostu <[^>]+>, bo za³api± siê te¿ emotikony typu <rotfl>
 	txt.replace(QRegExp("<![^>]+>"), "");//<!--StartFragment-->
 
-	txt.replace(QRegExp("<p>"), "");
+	txt.replace("<p>", "");
 	txt.replace(QRegExp("<p [^>]+>"), "");
-	txt.replace(QRegExp("</p>"), "");
+	txt.replace("</p>", "");
 
-	txt.replace(QRegExp("<span>"), "");
+	txt.replace("<span>", "");
 	txt.replace(QRegExp("<span [^>]+>"), "");
-	txt.replace(QRegExp("</span>"), "");
+	txt.replace("</span>", "");
 
-	txt.replace(QRegExp("<table>"), "");
+	txt.replace("<table>", "");
 	txt.replace(QRegExp("<table [^>]+>"), "");
-	txt.replace(QRegExp("</table>"), "");
+	txt.replace("</table>", "");
 
-	txt.replace(QRegExp("<tr>"), "");
+	txt.replace("<tr>", "");
 	txt.replace(QRegExp("<tr [^>]+>"), "");
-	txt.replace(QRegExp("</tr>"), "");
+	txt.replace("</tr>", "");
 
-	txt.replace(QRegExp("<td>"), "");
+	txt.replace("<td>", "");
 	txt.replace(QRegExp("<td [^>]+>"), "");
-	txt.replace(QRegExp("</td>"), "");
+	txt.replace("</td>", "");
 
 	//specjalnie traktujemy obrazki, mo¿e u¿ytkownik domy¶li siê o co tu chodzi :P
 	txt.replace(QRegExp("<img gg_crc=([0-9]*) gg_sender=([0-9]*) gg_size=([0-9]*) src=[^>]+>"), "\\2-\\3-\\1-*");
@@ -170,10 +170,10 @@ void KaduTextBrowser::copy()
 
 //	txt.replace(QRegExp("<[^>]+>[^<]+</[^>]+>"), "");
 
-	txt.replace(QRegExp("&lt;"), "<");
-	txt.replace(QRegExp("&gt;"), ">");
-	txt.replace(QRegExp("&amp;"), "&");
-	txt.replace(QRegExp("&quot;"), "\"");
+	txt.replace("&lt;", "<");
+	txt.replace("&gt;", ">");
+	txt.replace("&amp;", "&");
+	txt.replace("&quot;", "\"");
 
 //	kdebugm(KDEBUG_DUMP, "result: \n%s\n\n", txt.local8Bit().data());
 

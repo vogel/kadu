@@ -7,8 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qregexp.h>
-
 #include "config_file.h"
 #include "debug.h"
 #include "gadu_images_manager.h"
@@ -17,7 +15,7 @@
 
 void GaduImagesManager::setBackgroundsForAnimatedImages(HtmlDocument &doc, const QColor &col)
 {
-	static QRegExp animRE("<img bgcolor=\"\" animated=\"1\"");
+	static QString anim("<img bgcolor=\"\" animated=\"1\"");
 	QString animText = QString("<img bgcolor=\"%1\" animated=\"1\"").arg(col.name());
 	for(int i = 0; i < doc.countElements(); ++i)
 	{
@@ -25,7 +23,7 @@ void GaduImagesManager::setBackgroundsForAnimatedImages(HtmlDocument &doc, const
 			continue;
 
 		QString text = doc.elementText(i);
-		text.replace(animRE, animText);
+		text.replace(anim, animText);
 //		kdebugm(KDEBUG_WARNING, ">>%s\n", text.local8Bit().data());
 		doc.setElementValue(i, text, true);
 	}

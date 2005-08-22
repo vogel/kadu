@@ -8,7 +8,6 @@
 #include <qbuttongroup.h>
 #include <qcheckbox.h>
 #include <qmessagebox.h>
-#include <qregexp.h>
 #include <qstyle.h>
 #include <qstylefactory.h>
 #include <qpopupmenu.h>
@@ -1274,10 +1273,10 @@ void Wizard::previewIconTheme(int iconThemeID)
 	QString path=icons_manager->iconPath("Online");
 	for (int i = 0, count = cb_iconTheme->count(); i < count; ++i)
 		if (i != iconThemeID)
-			path.replace(QRegExp(cb_iconTheme->text(i)), cb_iconTheme->text(iconThemeID));
-	path.replace(QRegExp(tr("Default")), "default");
+			path.replace(cb_iconTheme->text(i), cb_iconTheme->text(iconThemeID));
+	path.replace(tr("Default"), "default");
 	iconPreview->setPixmap(path);
-	path.replace(QRegExp("online.png"), "");
+	path.replace("online.png", "");
 	iconPreview2->setPixmap(path+"busy_d.png");
 	iconPreview3->setPixmap(path+"invisible_m.png");
 	iconPreview4->setPixmap(path+"offline_d_m.png");
@@ -1293,7 +1292,7 @@ void Wizard::setColorsAndIcons()
 	QString oldIconTheme=config_file.readEntry("Look", "IconTheme", "default");
 	if (newIconTheme!=oldIconTheme)
 	{
-		newIconTheme.replace(QRegExp(tr("Default")), "default");
+		newIconTheme.replace(tr("Default"), "default");
 		icons_manager->clear();
 		icons_manager->setTheme(newIconTheme);
 		ToolBar::refreshIcons();
@@ -1302,7 +1301,7 @@ void Wizard::setColorsAndIcons()
 		kadu->changeAppearance();
 	}
 	else
-		newIconTheme.replace(QRegExp(tr("Default")), "default");
+		newIconTheme.replace(tr("Default"), "default");
 
 	config_file.writeEntry("Look", "IconTheme", newIconTheme);
 	kdebugf2();
@@ -1366,24 +1365,24 @@ QString Wizard::toDisplay(QString s)
 {
 	kdebugf();
 	s = toSave(s);		//wpierw zamieniam sciezki, potem ustawiam przykladowe dane
-	s.replace(QRegExp("%t.png"), "Busy.png");	//to obrazek do RonK2 - nie tlumaczymy
-	s.replace(QRegExp("%s"), tr("Busy"));
-	s.replace(QRegExp("%d"), tr("My description"));
-	s.replace(QRegExp("%i"), "192.168.0.1");
-	s.replace(QRegExp("%n"), "Jimbo");
-	s.replace(QRegExp("%a"), "jimbo");
-	s.replace(QRegExp("%f"), tr("Mark"));
-	s.replace(QRegExp("%r"), tr("Smith"));
-	s.replace(QRegExp("%m"), "+4812345679");
-	s.replace(QRegExp("%u"), "999999");
-	s.replace(QRegExp("%g"), tr("Friends"));
-	s.replace(QRegExp("%o"), "");
-	s.replace(QRegExp("%v"), "host.server.net");
-	s.replace(QRegExp("%p"), "80");
-	s.replace(QRegExp("%e"), "jimbo@mail.server.net");
-	s.replace(QRegExp("\\["), "");
-	s.replace(QRegExp("\\]"), "");
-	s.replace(QRegExp("changed status to"), tr("changed status to"));
+	s.replace("%t.png", "Busy.png");	//to obrazek do RonK2 - nie tlumaczymy
+	s.replace("%s", tr("Busy"));
+	s.replace("%d", tr("My description"));
+	s.replace("%i", "192.168.0.1");
+	s.replace("%n", "Jimbo");
+	s.replace("%a", "jimbo");
+	s.replace("%f", tr("Mark"));
+	s.replace("%r", tr("Smith"));
+	s.replace("%m", "+4812345679");
+	s.replace("%u", "999999");
+	s.replace("%g", tr("Friends"));
+	s.replace("%o", "");
+	s.replace("%v", "host.server.net");
+	s.replace("%p", "80");
+	s.replace("%e", "jimbo@mail.server.net");
+	s.replace("[", "");
+	s.replace("]", "");
+	s.replace("changed status to", tr("changed status to"));
 
 	kdebugf2();
 	return s;
@@ -1394,17 +1393,17 @@ QString Wizard::toDisplay(QString s)
 **/
 QString Wizard::toSave(QString s)
 {
-	s.replace(QRegExp("You are not on the list"), tr("You are not on the list"));
+	s.replace("You are not on the list", tr("You are not on the list"));
 
 	int i;
 	for (i=0; i<s.contains("$KADU_SHARE"); ++i)
-		s.replace(QRegExp("\\$KADU_SHARE"), dataPath("kadu"));
+		s.replace("$KADU_SHARE", dataPath("kadu"));
 
 	for (i=0; i<s.contains("$KADU_CONF"); ++i)
-		s.replace(QRegExp("\\$KADU_CONF"), ggPath());
+		s.replace("$KADU_CONF", ggPath());
 
 	for (i=0; i<s.contains("$HOME"); ++i)
-		s.replace(QRegExp("\\$HOME"), getenv("HOME"));
+		s.replace("$HOME", getenv("HOME"));
 
 	return s;
 }

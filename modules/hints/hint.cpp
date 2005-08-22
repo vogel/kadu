@@ -7,7 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qregexp.h>
 
 #include "hint.h"
 #include "debug.h"
@@ -35,7 +34,7 @@ Hint::Hint(QWidget *parent, const QString& text, const QPixmap& pixmap, unsigned
 	else
 		icon = NULL;
 
-	label = new QLabel(" "+QString(text).replace(QRegExp(" "), "&nbsp;"), parent, "Label");
+	label = new QLabel(" " + QString(text).replace(" ", "&nbsp;"), parent, "Label");
 	label->setTextFormat(Qt::RichText);
 	label->setAlignment(AlignVCenter | Qt::AlignLeft);
 	label->hide();
@@ -157,7 +156,7 @@ Hint::~Hint(void)
 
 void Hint::getData(QString &text, QPixmap &pixmap, unsigned int &timeout, QFont &font, QColor &fgcolor, QColor &bgcolor)
 {
-	text=label->text().replace(QRegExp(" "), "");
+	text=label->text().replace(" ", "");
 	if (icon)
 		pixmap=*(icon->pixmap());
 	else

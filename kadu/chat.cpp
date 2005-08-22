@@ -521,8 +521,8 @@ void Chat::refreshTitle()
 		setIcon(user.status("Gadu").pixmap());
 	}
 
-	title.replace(QRegExp("<br/>"), " ");
-	title.replace(QRegExp("&nbsp;"), " ");
+	title.replace("<br/>", " ");
+	title.replace("&nbsp;", " ");
 
 	setCaption(title);
 	title_buffer = title;
@@ -574,8 +574,8 @@ void Chat::mouseReleaseEvent(QMouseEvent *e)
 QString Chat::convertCharacters(QString edit, const QColor &bgcolor, EmoticonsStyle style)
 {
 	// zmieniamy windowsowe \r\n na unixowe \n
-	edit.replace( QRegExp("\r\n"), "<br/>" );
-	edit.replace( QRegExp("\n"), "<br/>" );
+	edit.replace("\r\n", "<br/>");
+	edit.replace("\n",   "<br/>");
 
 	HtmlDocument doc;
 	doc.parseHtml(edit);
@@ -1053,7 +1053,7 @@ void Chat::sendMessage()
 	}
 
 	QString mesg = edit->text();
-	mesg.replace(QRegExp("\n"), "\r\n");
+	mesg.replace("\n", "\r\n");
 	mesg = unformatGGMessage(mesg, myLastFormatsLength, myLastFormats);
 	myLastMessage = mesg;
 	if (myLastFormatsLength)
@@ -1062,8 +1062,7 @@ void Chat::sendMessage()
 	else
 		HtmlDocument::escapeText(myLastMessage);
 	kdebugmf(KDEBUG_INFO, "\n%s\n", (const char *)unicode2latin(myLastMessage));
-	// zmieniamy unixowe \n na windowsowe \r\n
-	myLastMessage.replace(QRegExp("\r\n"), "\n");
+	myLastMessage.replace("\r\n", "\n");
 
 	if (mesg.length() >= 2000)
 	{
@@ -1193,8 +1192,8 @@ void Chat::addEmoticon(QString emot)
 {
 	if (emot.length())
 	{
-		emot.replace(QRegExp("&lt;"), "<");
-		emot.replace(QRegExp("&gt;"), ">");
+		emot.replace("&lt;", "<");
+		emot.replace("&gt;", ">");
 		edit->insert(emot);
 		edit->setFocus();
 	}

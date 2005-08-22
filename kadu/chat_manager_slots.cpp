@@ -13,7 +13,6 @@
 #include <qhgroupbox.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <qregexp.h>
 #include <qspinbox.h>
 #include <qtooltip.h>
 
@@ -388,11 +387,11 @@ void ChatManagerSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo,
 			if (selectedBrowser==1) //konqueror
 			{
 				if (browserName=="kfmclient")
-					path.replace(QRegExp("kfmclient"), testPath);
+					path.replace("kfmclient", testPath);
 				else
 				{
 					path="ok=0;for i in `dcop|grep konqueror`; do shown=`dcop $i konqueror-mainwindow#1 shown`; if [ \"$shown\" == \"true\" ];then dcop $i KonquerorIface openBrowserWindow \"%1\" && ok=1; fi; if [ \"$ok\" == \"1\" ]; then break; fi done; if [ \"$ok\" != \"1\" ]; then kfmclient openURL \"%1\"; fi;";
-					path.replace(QRegExp("dcop"), testPath);
+					path.replace("dcop", testPath);
 					browserName="kfmclient";
 					dir=searchPath.begin();
 					continue;
@@ -465,17 +464,17 @@ void ChatManagerSlots::setBrowserOption(int selectedOption, QLineEdit *browserPa
 		case 1: //Konqueror
 		{
 			if (selectedOption==1)
-				browserPath.replace(QRegExp("KonquerorIface openBrowserWindow"), "konqueror-mainwindow#1 newTab");
+				browserPath.replace("KonquerorIface openBrowserWindow", "konqueror-mainwindow#1 newTab");
 			else
-				browserPath.replace(QRegExp("konqueror-mainwindow#1 newTab"), "KonquerorIface openBrowserWindow");
+				browserPath.replace("konqueror-mainwindow#1 newTab", "KonquerorIface openBrowserWindow");
 			browserPathEdit->setText(browserPath);
 			break;
 		}
 		case 2:		//Opera
 		{
-			browserPath.replace(QRegExp(" -newwindow"), "");
-			browserPath.replace(QRegExp(" -newpage"), "");
-			browserPath.replace(QRegExp(" -backgroundpage"), "");
+			browserPath.replace(" -newwindow", "");
+			browserPath.replace(" -newpage", "");
+			browserPath.replace(" -backgroundpage", "");
 			switch(selectedOption)
 			{
 				case 0: browserPath.append(" -newwindow"); break;
@@ -489,9 +488,9 @@ void ChatManagerSlots::setBrowserOption(int selectedOption, QLineEdit *browserPa
 		case 4:		//Firefox
 		{
 			if (selectedOption==1)
-				browserPath.replace(QRegExp("new-window"), "new-tab");
+				browserPath.replace("new-window", "new-tab");
 			else
-				browserPath.replace(QRegExp("new-tab"), "new-window");
+				browserPath.replace("new-tab", "new-window");
 			browserPathEdit->setText(browserPath);
 			break;
 		}

@@ -12,7 +12,6 @@
 #include <qlistview.h>
 #include <qpopupmenu.h>
 #include <qpushbutton.h>
-#include <qregexp.h>
 #include <qtextcodec.h>
 #include <qtranslator.h>
 #include <qvbox.h>
@@ -321,7 +320,7 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager")
 
 	ConfigDialog::addTab("ShortCuts", "ShortCutsTab");
 	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", "Define keys");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QString("&Manage Modules").replace(QRegExp("&"), ""), "kadu_modulesmanager", "F4");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QString("&Manage Modules").replace("&", ""), "kadu_modulesmanager", "F4");
 
 	CONST_FOREACH(it, Modules)
 		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", it.key().local8Bit().data(), it.data().usage_counter);

@@ -13,7 +13,6 @@
 #include <qcursor.h>
 #include <qdragobject.h>
 #include <qpainter.h>
-#include <qregexp.h>
 #include <qspinbox.h>
 
 #include "config_dialog.h"
@@ -405,8 +404,8 @@ void UserBox::maybeTip(const QPoint &c)
 		else
 		{
 			HtmlDocument::escapeText(description);
-			description.replace(QRegExp(" "), "&nbsp;");
-			description.replace(QRegExp("\n"), "<br/>");
+			description.replace(" ", "&nbsp;");
+			description.replace("\n", "<br/>");
 
 			s = narg(tr("<nobr><i>%1</i> <b>(d.)</b></nobr><br/><br/><b>Description:</b><br/>%2"), name, description);
 		}

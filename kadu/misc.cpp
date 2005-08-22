@@ -286,48 +286,48 @@ QCString unicode2latin(const QString &buf)
 QString unicode2std(const QString &buf)
 {
 	QString tmp = buf;
-	tmp.replace(QRegExp("\\x0119"), "e");
-	tmp.replace(QRegExp("\\x00f3"), "o");
-	tmp.replace(QRegExp("\\x0105"), "a");
-	tmp.replace(QRegExp("\\x015b"), "s");
-	tmp.replace(QRegExp("\\x0142"), "l");
-	tmp.replace(QRegExp("\\x017c"), "z");
-	tmp.replace(QRegExp("\\x017a"), "z");
-	tmp.replace(QRegExp("\\x0107"), "c");
-	tmp.replace(QRegExp("\\x0144"), "n");
-	tmp.replace(QRegExp("\\x0118"), "E");
-	tmp.replace(QRegExp("\\x00d3"), "O");
-	tmp.replace(QRegExp("\\x0104"), "A");
-	tmp.replace(QRegExp("\\x015a"), "S");
-	tmp.replace(QRegExp("\\x0141"), "L");
-	tmp.replace(QRegExp("\\x017b"), "Z");
-	tmp.replace(QRegExp("\\x0179"), "Z");
-	tmp.replace(QRegExp("\\x0106"), "C");
-	tmp.replace(QRegExp("\\x0143"), "N");
+	tmp.replace("\\x0119", "e");
+	tmp.replace("\\x00f3", "o");
+	tmp.replace("\\x0105", "a");
+	tmp.replace("\\x015b", "s");
+	tmp.replace("\\x0142", "l");
+	tmp.replace("\\x017c", "z");
+	tmp.replace("\\x017a", "z");
+	tmp.replace("\\x0107", "c");
+	tmp.replace("\\x0144", "n");
+	tmp.replace("\\x0118", "E");
+	tmp.replace("\\x00d3", "O");
+	tmp.replace("\\x0104", "A");
+	tmp.replace("\\x015a", "S");
+	tmp.replace("\\x0141", "L");
+	tmp.replace("\\x017b", "Z");
+	tmp.replace("\\x0179", "Z");
+	tmp.replace("\\x0106", "C");
+	tmp.replace("\\x0143", "N");
 	return tmp;
 }
 
 QString unicode2latinUrl(const QString &buf)
 {
 	QString tmp = buf;
-	tmp.replace(QRegExp("\\x0119"), "%EA");
-	tmp.replace(QRegExp("\\x00f3"), "%F3");
-	tmp.replace(QRegExp("\\x0105"), "%B1");
-	tmp.replace(QRegExp("\\x015b"), "%B6");
-	tmp.replace(QRegExp("\\x0142"), "%B3");
-	tmp.replace(QRegExp("\\x017c"), "%BF");
-	tmp.replace(QRegExp("\\x017a"), "%BC");
-	tmp.replace(QRegExp("\\x0107"), "%E6");
-	tmp.replace(QRegExp("\\x0144"), "%F1");
-	tmp.replace(QRegExp("\\x0118"), "%CA");
-	tmp.replace(QRegExp("\\x00d3"), "%D3");
-	tmp.replace(QRegExp("\\x0104"), "%A1");
-	tmp.replace(QRegExp("\\x015a"), "%A6");
-	tmp.replace(QRegExp("\\x0141"), "%A3");
-	tmp.replace(QRegExp("\\x017b"), "%AF");
-	tmp.replace(QRegExp("\\x0179"), "%AC");
-	tmp.replace(QRegExp("\\x0106"), "%C3");
-	tmp.replace(QRegExp("\\x0143"), "%D1");
+	tmp.replace("\\x0119", "%EA");
+	tmp.replace("\\x00f3", "%F3");
+	tmp.replace("\\x0105", "%B1");
+	tmp.replace("\\x015b", "%B6");
+	tmp.replace("\\x0142", "%B3");
+	tmp.replace("\\x017c", "%BF");
+	tmp.replace("\\x017a", "%BC");
+	tmp.replace("\\x0107", "%E6");
+	tmp.replace("\\x0144", "%F1");
+	tmp.replace("\\x0118", "%CA");
+	tmp.replace("\\x00d3", "%D3");
+	tmp.replace("\\x0104", "%A1");
+	tmp.replace("\\x015a", "%A6");
+	tmp.replace("\\x0141", "%A3");
+	tmp.replace("\\x017b", "%AF");
+	tmp.replace("\\x0179", "%AC");
+	tmp.replace("\\x0106", "%C3");
+	tmp.replace("\\x0143", "%D1");
 	return tmp;
 }
 
@@ -335,24 +335,24 @@ QString unicode2latinUrl(const QString &buf)
 QString unicodeUrl2latinUrl(const QString &buf)
 {
 	QString tmp = buf;
-	tmp.replace(QRegExp("%C4%99"), "%EA"); //ê
-	tmp.replace(QRegExp("%C3%B3"), "%F3"); //ó
-	tmp.replace(QRegExp("%C4%85"), "%B1"); //±
-	tmp.replace(QRegExp("%C5%9B"), "%B6"); //¶
-	tmp.replace(QRegExp("%C5%82"), "%B3"); //³
-	tmp.replace(QRegExp("%C5%BC"), "%BF"); //¿
-	tmp.replace(QRegExp("%C5%BA"), "%BC"); //¼
-	tmp.replace(QRegExp("%C4%87"), "%E6"); //æ
-	tmp.replace(QRegExp("%C5%84"), "%F1"); //ñ
-	tmp.replace(QRegExp("%C4%98"), "%CA"); //Ê
-	tmp.replace(QRegExp("%C3%93"), "%D3"); //Ó
-	tmp.replace(QRegExp("%C4%84"), "%A1"); //¡
-	tmp.replace(QRegExp("%C5%9A"), "%A6"); //¦
-	tmp.replace(QRegExp("%C5%81"), "%A3"); //£
-	tmp.replace(QRegExp("%C5%BB"), "%AF"); //¯
-	tmp.replace(QRegExp("%C5%B9"), "%AC"); //¬
-	tmp.replace(QRegExp("%C4%86"), "%C3"); //Æ
-	tmp.replace(QRegExp("%C5%83"), "%D1"); //Ñ
+	tmp.replace("%C4%99", "%EA"); //ê
+	tmp.replace("%C3%B3", "%F3"); //ó
+	tmp.replace("%C4%85", "%B1"); //±
+	tmp.replace("%C5%9B", "%B6"); //¶
+	tmp.replace("%C5%82", "%B3"); //³
+	tmp.replace("%C5%BC", "%BF"); //¿
+	tmp.replace("%C5%BA", "%BC"); //¼
+	tmp.replace("%C4%87", "%E6"); //æ
+	tmp.replace("%C5%84", "%F1"); //ñ
+	tmp.replace("%C4%98", "%CA"); //Ê
+	tmp.replace("%C3%93", "%D3"); //Ó
+	tmp.replace("%C4%84", "%A1"); //¡
+	tmp.replace("%C5%9A", "%A6"); //¦
+	tmp.replace("%C5%81", "%A3"); //£
+	tmp.replace("%C5%BB", "%AF"); //¯
+	tmp.replace("%C5%B9", "%AC"); //¬
+	tmp.replace("%C4%86", "%C3"); //Æ
+	tmp.replace("%C5%83", "%D1"); //Ñ
 	return tmp;
 }
 
@@ -474,7 +474,7 @@ void openWebBrowser(const QString &link)
 	if (!webBrowser.contains("%1"))
 		webBrowser.append(" \"%1\"");
 
-	webBrowser.replace(QRegExp("%1"), unicode2latinUrl(link));
+	webBrowser.replace("%1", unicode2latinUrl(link));
 
 	args=toStringList("sh", "-c", webBrowser);
 
@@ -569,7 +569,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 			 			HtmlDocument::escapeText(pe.str);
 					if(config_file.readBoolEntry("Look", "ShowMultilineDesc"))
 					{
-						pe.str.replace(QRegExp("\n"), QString("<br/>"));
+						pe.str.replace("\n", "<br/>");
 						pe.str.replace(QRegExp("\\s\\s"), QString(" &nbsp;"));
 					}
 					break;
@@ -1042,21 +1042,19 @@ QValueList<QVariant> toVariantList(const QValueList<int> &in)
 	return out;
 }
 
-QRegExp clean_regexps[3];
+QRegExp clean_regexp;
 QString toPlainText(const QString &text)
 {
 	kdebugm(KDEBUG_INFO, "rich: %s\n", text.local8Bit().data());
-	if (clean_regexps[0].isEmpty())
+	if (clean_regexp.isEmpty())
 	{
-		clean_regexps[0]=QRegExp("\r\n");
-		clean_regexps[1]=QRegExp("\n");
-		clean_regexps[2]=QRegExp("<.*>");
-		clean_regexps[2].setMinimal(true);
+		clean_regexp = QRegExp("<.*>");
+		clean_regexp.setMinimal(true);
 	}
 	QString copy=text;
-	copy.replace(clean_regexps[0], " ");
-	copy.replace(clean_regexps[1], " ");
-	copy.replace(clean_regexps[2], "");
+	copy.replace("\r\n", " ");
+	copy.replace("\n",   " ");
+	copy.replace(clean_regexp, "");
 	HtmlDocument::unescapeText(copy);
 	kdebugm(KDEBUG_INFO, "plain: %s\n", copy.local8Bit().data());
 	return copy;

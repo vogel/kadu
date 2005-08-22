@@ -190,7 +190,7 @@ void HtmlDocument::convertUrlsToHtml()
 		QString link;
 		int lft = config_file.readNumEntry("Chat","LinkFoldTreshold");
 		QString link2=text.mid(p,l);
-		link2.replace(QRegExp("%20"), "%2520");//obej¶cie buga w operze :|, która nie potrafi otworzyæ linka ze spacj±
+		link2.replace("%20", "%2520");//obej¶cie buga w operze :|, która nie potrafi otworzyæ linka ze spacj±
 		if (l-p > lft && config_file.readBoolEntry("Chat","FoldLink"))
 			link="<a href=\""+link2+"\">"+text.mid(p,p+(lft/2))+"..."+text.mid(l-(lft/2),lft/2)+"</a>";
 		else

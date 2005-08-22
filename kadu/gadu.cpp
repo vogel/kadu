@@ -8,7 +8,6 @@
  ***************************************************************************/
 
 #include <qcheckbox.h>
-#include <qregexp.h>
 #include <qtimer.h>
 #include <qvgroupbox.h>
 
@@ -331,7 +330,7 @@ void GaduProtocol::initModule()
 		gadu, SLOT(useTlsEnabled(bool)));
 #endif
 
-	defaultdescriptions = QStringList::split(QRegExp("<-->"), config_file.readEntry("General","DefaultDescription", tr("I am busy.")), true);
+	defaultdescriptions = QStringList::split("<-->", config_file.readEntry("General","DefaultDescription", tr("I am busy.")), true);
 
 	QStringList servers;
 	QHostAddress ip2;
@@ -1723,7 +1722,7 @@ QString GaduProtocol::userListToString(const UserList& userList) const
 			contacts += "\r\n";
 		}
 
-	contacts.replace(QRegExp("(null)"), "");
+	contacts.replace("(null)", "");
 
 //	kdebugm(KDEBUG_DUMP, "%s\n", contacts.local8Bit().data());
 	kdebugf2();

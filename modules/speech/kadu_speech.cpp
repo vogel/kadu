@@ -10,7 +10,6 @@
 #include <qcheckbox.h>
 #include <qfiledialog.h>
 #include <qprocess.h>
-#include <qregexp.h>
 #include <qslider.h>
 
 #include <stdlib.h>
@@ -423,10 +422,10 @@ void SpeechSlots::userChangedStatusToAvailable(const QString &protocolName, User
 		t=parse(config_file.readEntry("Speech", "NotifyFormatFemale"), ule);
 	else
 		t=parse(config_file.readEntry("Speech", "NotifyFormatMale"), ule);
-	t.replace(QRegExp("&nbsp;"), " ");
-	t.replace(QRegExp("&lt;"), "<");
-	t.replace(QRegExp("&gt;"), ">");
-	t.replace(QRegExp("&amp;"), "&");
+	t.replace("&nbsp;", " ");
+	t.replace("&lt;", "<");
+	t.replace("&gt;", ">");
+	t.replace("&amp;", "&");
 	say(t);
 	lastSpeech.restart();
 
