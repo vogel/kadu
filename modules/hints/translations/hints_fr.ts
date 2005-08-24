@@ -103,7 +103,7 @@
     </message>
     <message>
         <source>Delete pending message when user deletes hint</source>
-        <translation type="unfinished"></translation>
+        <translation>Élimines le message quand j&apos;élimine le fumé</translation>
     </message>
 </context>
 <context>

@@ -106,7 +106,7 @@ ou il est impossible de l&apos;analyser correctement.
     </message>
     <message>
         <source>Limits have been exceeded, try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le limite est dépassé, veuillez essayer plus tard.</translation>
     </message>
 </context>
 </TS>

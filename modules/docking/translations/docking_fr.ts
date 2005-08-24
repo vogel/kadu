@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>New message tray icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Icône de réception de nouveau message</translation>
     </message>
 </context>
 <context>
@@ -38,15 +38,15 @@ Description:
     </message>
     <message>
         <source>Blinking envelope</source>
-        <translation type="unfinished"></translation>
+        <translation>L’enveloppe flottante</translation>
     </message>
     <message>
         <source>Static envelope</source>
-        <translation type="unfinished"></translation>
+        <translation>L’enveloppe statique</translation>
     </message>
     <message>
         <source>Animated envelope</source>
-        <translation type="unfinished"></translation>
+        <translation>L’enveloppe animée</translation>
     </message>
     <message>
         <source>Left click - hide / show window
