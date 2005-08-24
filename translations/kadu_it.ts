@@ -1,5 +1,16 @@
 <!DOCTYPE TS><TS>
 <context>
+    <name></name>
+    <message>
+        <source>###IMAGE BLOCKED###</source>
+        <translation>###IMAGINE BLOCCATA###</translation>
+    </message>
+    <message>
+        <source>###IMAGE TOO BIG###</source>
+        <translation>###IMAGIGINE TROPPO GRANDE###</translation>
+    </message>
+</context>
+<context>
     <name>@default</name>
     <message>
         <source>General</source>
@@ -552,14 +563,6 @@ E un rischio per la sicurezza!</translation>
         <translation>Host:</translation>
     </message>
     <message>
-        <source>###IMAGE BLOCKED###</source>
-        <translation>###IMAGINE BLOCCATA###</translation>
-    </message>
-    <message>
-        <source>###IMAGE TOO BIG###</source>
-        <translation>###IMAGIGINE TROPPO GRANDE###</translation>
-    </message>
-    <message>
         <source>Description font color</source>
         <translation>Colore caratteri descrizione</translation>
     </message>
@@ -706,10 +709,6 @@ E un rischio per la sicurezza!</translation>
         <translation>Errore trasferimento del messaggio</translation>
     </message>
     <message>
-        <source>Application encountered network error.</source>
-        <translation>L&apos;applicazione è incorsa in un errore di rete.</translation>
-    </message>
-    <message>
         <source>Insert image</source>
         <translation>Inserisci immagine</translation>
     </message>
@@ -767,6 +766,10 @@ Do you really want to send this image?
 </source>
         <translation>Dimensione file troppo grande per %1.
 Sicuro di spedirlo comunque?</translation>
+    </message>
+    <message>
+        <source>Cannot send message while being offline.</source>
+        <translation>Non si può mandare messaggio mentre sei fuori linea.</translation>
     </message>
 </context>
 <context>
@@ -1777,11 +1780,11 @@ Possibile incompatibilità con Kadu.</translation>
     </message>
     <message>
         <source>Compares statuses</source>
-        <translation type="unfinished"></translation>
+        <translation>Confronta i status</translation>
     </message>
     <message>
         <source>Compares nicks (&quot;altnicks&quot;)</source>
-        <translation type="unfinished"></translation>
+        <translation>Confronta nicks (&quot;altnnicks&quot;)</translation>
     </message>
 </context>
 <context>
@@ -1916,7 +1919,7 @@ Possibile incompatibilità con Kadu.</translation>
     </message>
     <message>
         <source>Bad Gadu-Gadu UIN.</source>
-        <translation type="unfinished"></translation>
+        <translation>Numero GG non valido.</translation>
     </message>
 </context>
 <context>

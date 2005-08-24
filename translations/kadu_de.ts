@@ -1,5 +1,16 @@
 <!DOCTYPE TS><TS>
 <context>
+    <name></name>
+    <message>
+        <source>###IMAGE BLOCKED###</source>
+        <translation>###BILD BLOCKIERT###</translation>
+    </message>
+    <message>
+        <source>###IMAGE TOO BIG###</source>
+        <translation>###BILD ZU GROSS###</translation>
+    </message>
+</context>
+<context>
     <name>@default</name>
     <message>
         <source>General</source>
@@ -538,14 +549,6 @@ Es ist ein sehr hohes Risiko!</translation>
         <translation>Rechner:</translation>
     </message>
     <message>
-        <source>###IMAGE BLOCKED###</source>
-        <translation>###BILD BLOCKIERT###</translation>
-    </message>
-    <message>
-        <source>###IMAGE TOO BIG###</source>
-        <translation>###BILD ZU GROSS###</translation>
-    </message>
-    <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
 %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %v - revDNS, %p - port %e - email %x - max image size
@@ -705,10 +708,6 @@ Es ist ein sehr hohes Risiko!</translation>
         <translation>Fehler beim Versenden der Nachricht</translation>
     </message>
     <message>
-        <source>Application encountered network error.</source>
-        <translation>Netzwerkfehler.</translation>
-    </message>
-    <message>
         <source>Insert image</source>
         <translation>Bild einfügen</translation>
     </message>
@@ -766,6 +765,10 @@ Do you really want to send this image?
 </source>
         <translation>Die Datei ist zu groß für %1.
 Wollen Sie wirklich diese Datei senden?</translation>
+    </message>
+    <message>
+        <source>Cannot send message while being offline.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -1,5 +1,16 @@
 <!DOCTYPE TS><TS>
 <context>
+    <name></name>
+    <message>
+        <source>###IMAGE BLOCKED###</source>
+        <translation>###ZDJĘCIE ZABLOKOWANE###</translation>
+    </message>
+    <message>
+        <source>###IMAGE TOO BIG###</source>
+        <translation>###ZDJĘCIE ZA DUŻE###</translation>
+    </message>
+</context>
+<context>
     <name>@default</name>
     <message>
         <source>General</source>
@@ -552,14 +563,6 @@ Jest to wysoce ryzykowne!</translation>
         <translation>Nazwa komputera: </translation>
     </message>
     <message>
-        <source>###IMAGE BLOCKED###</source>
-        <translation>###ZDJĘCIE ZABLOKOWANE###</translation>
-    </message>
-    <message>
-        <source>###IMAGE TOO BIG###</source>
-        <translation>###ZDJĘCIE ZA DUŻE###</translation>
-    </message>
-    <message>
         <source>Description font color</source>
         <translation>Kolor czcionki opisu</translation>
     </message>
@@ -706,10 +709,6 @@ Jest to wysoce ryzykowne!</translation>
         <translation>Błąd wysyłania wiadomości</translation>
     </message>
     <message>
-        <source>Application encountered network error.</source>
-        <translation>Błąd sieci.</translation>
-    </message>
-    <message>
         <source>Insert image</source>
         <translation>Wstaw obraz</translation>
     </message>
@@ -767,6 +766,10 @@ Do you really want to send this image?
 </source>
         <translation>Rozmiar pliku jest za duży dla %1.
 Czy napewno chcesz wysłać ten obrazek?</translation>
+    </message>
+    <message>
+        <source>Cannot send message while being offline.</source>
+        <translation>Nie mogę wysłać wiadomości dopóki jesteś niepołączony.</translation>
     </message>
 </context>
 <context>

@@ -1,5 +1,16 @@
 <!DOCTYPE TS><TS>
 <context>
+    <name></name>
+    <message>
+        <source>###IMAGE BLOCKED###</source>
+        <translation>###IMAGE BLOQUÉ###</translation>
+    </message>
+    <message>
+        <source>###IMAGE TOO BIG###</source>
+        <translation>###CETTE IMAGE A TROP DE POIDS###</translation>
+    </message>
+</context>
+<context>
     <name>@default</name>
     <message>
         <source>General</source>
@@ -552,14 +563,6 @@ Attention danger!
         <translation>Invité:</translation>
     </message>
     <message>
-        <source>###IMAGE BLOCKED###</source>
-        <translation>###IMAGE BLOQUÉ###</translation>
-    </message>
-    <message>
-        <source>###IMAGE TOO BIG###</source>
-        <translation>###CETTE IMAGE A TROP DE POIDS###</translation>
-    </message>
-    <message>
         <source>Port to connect to servers</source>
         <translation>Port pour connecter les serveurs</translation>
     </message>
@@ -577,35 +580,35 @@ Attention danger!
     </message>
     <message>
         <source>Headers</source>
-        <translation type="unfinished"></translation>
+        <translation>En-têtes</translation>
     </message>
     <message>
         <source>Remove chat header repetitions</source>
-        <translation type="unfinished"></translation>
+        <translation>Enlevez les en-têtes à répétitions dans la fenêtre du chat</translation>
     </message>
     <message>
         <source>Chat header separators height:</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille de séparateurs d&apos;en-tête: </translation>
     </message>
     <message>
         <source>Interval between header removal:</source>
-        <translation type="unfinished"></translation>
+        <translation>Intervalle entre le déplacement d&apos;en-tête: </translation>
     </message>
     <message>
         <source>Show offline contacts</source>
-        <translation type="unfinished"></translation>
+        <translation>Montrez les contacts hors ligne</translation>
     </message>
     <message>
         <source>Show contacts without description</source>
-        <translation type="unfinished"></translation>
+        <translation>Montrez les contacts sans description</translation>
     </message>
     <message>
         <source>Display contacts that don&apos;t have a description</source>
-        <translation type="unfinished"></translation>
+        <translation>Affichez les contacts qui n&apos;ont pas une description</translation>
     </message>
     <message>
         <source>On shutdown, set current description</source>
-        <translation type="unfinished"></translation>
+        <translation>Sur l&apos;arrêt, placez la description actuelle</translation>
     </message>
     <message>
         <source>View / edit user info</source>
@@ -617,11 +620,11 @@ Attention danger!
     </message>
     <message>
         <source>Restore last status</source>
-        <translation type="unfinished"></translation>
+        <translation>Veuillez restaurer le dernier statut</translation>
     </message>
     <message>
         <source>Restore last status (change Offline to Invisible)</source>
-        <translation type="unfinished"></translation>
+        <translation>Veuillez restaurer le dernier statut (changement de statut de Offline à invisible)</translation>
     </message>
 </context>
 <context>
@@ -706,10 +709,6 @@ Attention danger!
         <translation>Erreur d&apos;expédition du message</translation>
     </message>
     <message>
-        <source>Application encountered network error.</source>
-        <translation>Application a provoquée l&apos;erreur du reséau.</translation>
-    </message>
-    <message>
         <source>Insert image</source>
         <translation>Insère l&apos;image</translation>
     </message>
@@ -767,6 +766,10 @@ Do you really want to send this image?
 </source>
         <translation>Le volume de ce fichier est trop gros pour %1.
 Souhaitez vous vraiment expédier cette image?</translation>
+    </message>
+    <message>
+        <source>Cannot send message while being offline.</source>
+        <translation>Ne peut pas envoyer le message tout en étant hors ligne.</translation>
     </message>
 </context>
 <context>
@@ -869,19 +872,19 @@ Vous pouvez l&apos;ajouter dans $PATH ou indiquer l&apos;emplacement d&apos;une 
     </message>
     <message>
         <source>User experience level:</source>
-        <translation type="unfinished"></translation>
+        <translation>Niveau d&apos;expérience d&apos;utilisateur: </translation>
     </message>
     <message>
         <source>Beginner</source>
-        <translation type="unfinished"></translation>
+        <translation>Débutant</translation>
     </message>
     <message>
         <source>Advanced</source>
-        <translation type="unfinished"></translation>
+        <translation>Avançé</translation>
     </message>
     <message>
         <source>Expert</source>
-        <translation type="unfinished"></translation>
+        <translation>Expert</translation>
     </message>
 </context>
 <context>
@@ -939,7 +942,7 @@ Mot de passe incorrect !</translation>
     </message>
     <message>
         <source>Automatic</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatique</translation>
     </message>
     <message>
         <source>Please change your email in &quot;Change password / email&quot; window. Leave new password field blank.</source>
@@ -1286,7 +1289,7 @@ serons effacés.Veuillez confirmer?</translation>
     </message>
     <message>
         <source>Yes, with &amp;history</source>
-        <translation type="unfinished"></translation>
+        <translation>Oui, avec &amp;historique</translation>
     </message>
 </context>
 <context>
@@ -1413,7 +1416,7 @@ serons effacés.Veuillez confirmer?</translation>
     </message>
     <message>
         <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Version:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Module :&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Dépend de :&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflits avec :&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Fournit :&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Auteur :&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Version :&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description :&lt;/b&gt;&lt;b&gt;&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;</source>
@@ -1778,11 +1781,11 @@ Peut être module incompatible avec Kadu.</translation>
     </message>
     <message>
         <source>Compares statuses</source>
-        <translation type="unfinished"></translation>
+        <translation>Compare des statuts</translation>
     </message>
     <message>
         <source>Compares nicks (&quot;altnicks&quot;)</source>
-        <translation type="unfinished"></translation>
+        <translation>Compare des pseudo (&quot;anciens&quot;)</translation>
     </message>
 </context>
 <context>
@@ -1917,7 +1920,7 @@ Peut être module incompatible avec Kadu.</translation>
     </message>
     <message>
         <source>Bad Gadu-Gadu UIN.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mauvais UIN de Gadu-Gadu.</translation>
     </message>
 </context>
 <context>

@@ -1,5 +1,16 @@
 <!DOCTYPE TS><TS>
 <context>
+    <name></name>
+    <message>
+        <source>###IMAGE BLOCKED###</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>###IMAGE TOO BIG###</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>@default</name>
     <message>
         <source>General</source>
@@ -547,14 +558,6 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>###IMAGE BLOCKED###</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>###IMAGE TOO BIG###</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Description font color</source>
         <translation type="unfinished"></translation>
     </message>
@@ -697,10 +700,6 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Application encountered network error.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -758,6 +757,10 @@ Some of them probably will not get it.</source>
         <source>This file is too big for %1.
 Do you really want to send this image?
 </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot send message while being offline.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
