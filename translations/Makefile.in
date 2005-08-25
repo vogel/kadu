@@ -153,6 +153,9 @@ target_alias = @target_alias@
 target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
+
+translation_ts_files = $(wildcard *.ts)
+translation_qm_files = $(addsuffix .qm,$(basename $(translation_ts_files)))
 subdir = translations
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/admin/mkinstalldirs
@@ -238,7 +241,7 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-generic mostlyclean-am
+clean-am: clean-generic clean-local mostlyclean-am
 
 distclean: distclean-am
 	-rm -f Makefile
@@ -280,15 +283,24 @@ ps-am:
 
 uninstall-am: uninstall-info-am uninstall-local
 
-.PHONY: all all-am check check-am clean clean-generic distclean \
-	distclean-generic distdir dvi dvi-am info info-am install \
-	install-am install-data install-data-am install-data-local \
-	install-exec install-exec-am install-info install-info-am \
-	install-man install-strip installcheck installcheck-am \
-	installdirs maintainer-clean maintainer-clean-generic \
-	mostlyclean mostlyclean-generic pdf pdf-am ps ps-am uninstall \
-	uninstall-am uninstall-info-am uninstall-local
+.PHONY: all all-am check check-am clean clean-generic clean-local \
+	distclean distclean-generic distdir dvi dvi-am info info-am \
+	install install-am install-data install-data-am \
+	install-data-local install-exec install-exec-am install-info \
+	install-info-am install-man install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
+	pdf-am ps ps-am uninstall uninstall-am uninstall-info-am \
+	uninstall-local
 
+
+all: $(translation_qm_files)
+
+%.qm: %.ts
+	$(QT_LRELEASE_DIR)/lrelease $<
+
+clean-local:
+	rm -f *.qm
 
 install-data-local:
 	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/translations"; \

@@ -122,6 +122,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniêty kod kompatybilno¶ci z Qt < 3.2, configure sprawdza wersjê Qt (joi)
 * poprawki w wykrywaniu ¶cie¿ki do Firefoksa na Gentoo (joi)
 * zacz±tki klas Protocol i ProtocolsManager (joi)
+* automatyczne tworzenie / aktualizacja binarnych plików translacji przy
+  kompilacji ca³ego kadu + make clean usuwa utworzone pliki (adrian)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

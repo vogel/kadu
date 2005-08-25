@@ -1,4 +1,15 @@
 
+translation_ts_files = $(wildcard *.ts)
+translation_qm_files = $(addsuffix .qm,$(basename $(translation_ts_files)))
+
+all: $(translation_qm_files)
+
+%.qm: %.ts
+	$(QT_LRELEASE_DIR)/lrelease $<
+
+clean-local:
+	rm -f *.qm
+
 install-data-local:
 	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/translations"; \
 	$(INSTALL_DATA) *.qm "$(DESTDIR)$(datadir)/kadu/translations";

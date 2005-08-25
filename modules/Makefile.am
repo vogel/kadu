@@ -105,6 +105,9 @@ clean-local:
 		for mod_3rdparty in $$MODULE_3RDPARTY; do \
 			$(MAKE) -C $$dir/$$mod_3rdparty clean; \
 		done; \
+		if test -d $$dir/translations; then \
+			rm -f $$dir/translations/*.qm; \
+		fi; \
 	done
 
 module_targets = $(addprefix module_,$(shared_modules) $(static_modules))
