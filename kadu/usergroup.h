@@ -50,7 +50,7 @@ enum BehaviourForAnonymous {TrueForAnonymous, FalseForAnonymous};
 
 	void MojaKlasa::userAdded(UserListElement elem, bool massively, bool last)
 	{
-		if (massievly)
+		if (massively)
 		{
 			akcja1; //np jakie¶ buforowanie
 			...
@@ -75,7 +75,8 @@ class UserGroup : public QObject
 		typedef size_t size_type;
 
 		/**
-			\fn UserGroup(const char *name = 0)
+			\fn UserGroup(int size, const char *name = 0)
+			\param size spodziewana ilo¶æ elementów * 2
 			\param name nazwa grupy
 		**/
 		UserGroup(int size, const char *name = 0);
@@ -89,6 +90,7 @@ class UserGroup : public QObject
 		/**
 			\fn bool equals(UserListElements users) const
 			\param users
+			Z³o¿ono¶æ O(users.count()).
 		**/
 		bool equals(UserListElements users) const;
 
@@ -100,6 +102,7 @@ class UserGroup : public QObject
 			protoko³u i identyfikator w tym¿e protokole.
 			Je¿eli nie znajdzie siê taki kontakt, to tworzony jest nowy
 			anonimowy kontakt i dodawany do listy.
+			Z³o¿ono¶æ O(count()), ale w przysz³o¶ci bêdzie optymalizowana.
 		**/
 		UserListElement byID(const QString &protocolName, const QString &id);
 
@@ -110,6 +113,7 @@ class UserGroup : public QObject
 			Wyszukuje kontakt po wy¶wietlanym pseudonimie.
 			Je¿eli nie znajdzie siê taki kontakt, to tworzony jest nowy
 			anonimowy kontakt i dodawany do listy.
+			Z³o¿ono¶æ O(count()), ale w przysz³o¶ci bêdzie optymalizowana do O(1).
 		**/
 		UserListElement byAltNick(const QString &altnick);
 
@@ -122,7 +126,7 @@ class UserGroup : public QObject
 			W przypadku kontaktów anonimowych zachowanie tej funkcji okre¶la parametr beh. Gdy jest utawiony na:
 				TrueForAnonymous (domy¶lnie), to zwraca prawdê
 				FalseForAnonymous, to zwraca fa³sz
-			Z³o¿ono¶æ O(n), ale w przysz³o¶ci bêdzie optymalizowana.
+			Z³o¿ono¶æ O(count()), ale w przysz³o¶ci bêdzie optymalizowana.
 		**/
 		bool contains(const QString &protocolName, const QString &id, BehaviourForAnonymous beh = TrueForAnonymous) const;
 
@@ -134,7 +138,7 @@ class UserGroup : public QObject
 			W przypadku kontaktów anonimowych zachowanie tej funkcji okre¶la parametr beh. Gdy jest utawiony na:
 				TrueForAnonymous (domy¶lnie), to  zwraca prawdê
 				FalseForAnonymous, to zwraca fa³sz
-			Z³o¿ono¶æ O(log n).
+			Z³o¿ono¶æ O(1).
 		**/
 		bool contains(UserListElement elem, BehaviourForAnonymous beh = TrueForAnonymous) const;
 
@@ -146,7 +150,7 @@ class UserGroup : public QObject
 			W przypadku kontaktów anonimowych zachowanie tej funkcji okre¶la parametr beh. Gdy jest utawiony na:
 				TrueForAnonymous (domy¶lnie), to  zwraca prawdê
 				FalseForAnonymous, to zwraca fa³sz
-			Z³o¿ono¶æ O(n), ale w przysz³o¶ci bêdzie optymalizowana.
+			Z³o¿ono¶æ O(count()), ale w przysz³o¶ci bêdzie optymalizowana do O(1).
 		**/
 		bool containsAltNick(const QString &altnick, BehaviourForAnonymous beh = TrueForAnonymous) const;
 
@@ -186,6 +190,11 @@ class UserGroup : public QObject
 		**/
 		UserListElements toUserListElements() const;
 
+		/**
+			\fn void resize(int size)
+			\param size rozmiar bufora * 2
+			Zmienia wewnêtrzny rozmiar buforów dla klas s³ownikowych (Q*Dict).
+		**/
 		void resize(int size);
 
 	public slots:
@@ -218,7 +227,7 @@ class UserGroup : public QObject
 		UserListElement addAnonymous(const QString &protocolName, const QString &id, bool massively = false, bool last = false);
 
 		/**
-			\fn void addUsers(UserGroup *group)
+			\fn void addUsers(const UserGroup *group)
 			Dodaje do listy wszystkie kontakty nale¿±ce do grupy group
 			\param group grupa kontaktów
 		**/
@@ -284,7 +293,7 @@ class UserGroup : public QObject
 							bool massively, bool last);
 
 		/**
-			\fn void userAdded(const UserListElement &elem, bool massively, bool last)
+			\fn void userAdded(UserListElement elem, bool massively, bool last)
 			\param elem dodany kontakt
 			\param massively czy jest to fragment wiêkszych zmian
 			\param last je¿eli massively == true, to last == true dla ostatniego kontaktu
@@ -302,7 +311,7 @@ class UserGroup : public QObject
 		void addingUser(UserListElement elem, bool massively, bool last);
 
 		/**
-			\fn void removingUser(const UserListElement &elem, bool massively, bool last)
+			\fn void removingUser(UserListElement elem, bool massively, bool last)
 			\param elem usuwany kontakt
 			\param massively czy jest to fragment wiêkszych zmian
 			\param last je¿eli massively == true, to last == true dla ostatniego kontaktu
@@ -396,14 +405,14 @@ class UserListElements : public QValueList<UserListElement>
 		/**
 			\fn bool equals(const UserListElements &elems) const
 			Sprawdza czy bie¿±ca lista zaiwera te same elemnty co wskazana.
-			\attention {Z³o¿ono¶æ O(n*m).}
+			\attention {Z³o¿ono¶æ O(count()*elems.count()).}
 		**/
 		bool equals(const UserListElements &elems) const;
 
 		/**
 			\fn bool equals(const UserGroup *group) const
 			Sprawdza czy bie¿±ca lista zaiwera te same elemnty co wskazana.
-			\attention {Z³o¿ono¶æ O(n*log(m)).}
+			\attention {Z³o¿ono¶æ O(count()).}
 		**/
 		bool equals(const UserGroup *group) const;
 
