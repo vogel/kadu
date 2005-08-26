@@ -15,6 +15,7 @@ class Chat;
 class EmotsWalker;
 class QImage;
 class QLabel;
+class QTextEdit;
 
 enum EmoticonsStyle
 {
