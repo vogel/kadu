@@ -28,20 +28,20 @@
 #include "userbox.h"
 #include "wizard.h"
 
-unsigned int informationPanelCount=sizeof(informationPanelSyntax)/sizeof(informationPanelSyntax[0]);
-unsigned int hintCount=sizeof(hintSyntax)/sizeof(hintSyntax[0]);
-unsigned int hintColorCount=sizeof(hintColors)/sizeof(hintColors[0]);
-unsigned int kaduColorCount=sizeof(kaduColors)/sizeof(kaduColors[0]);
+unsigned int informationPanelCount = sizeof(informationPanelSyntax) / sizeof(informationPanelSyntax[0]);
+unsigned int hintCount = sizeof(hintSyntax) / sizeof(hintSyntax[0]);
+unsigned int hintColorCount = sizeof(hintColors) / sizeof(hintColors[0]);
+unsigned int kaduColorCount = sizeof(kaduColors) / sizeof(kaduColors[0]);
 QString currentColors[8];	//tu przechowujemy aktualny zestaw kolorow
 QString currentHints[13][2]; //a tu aktualne kolorki hintow
-bool registered=false;	//potrzebne przy blokowaniu/odblokowywaniu przyciska Dalej
+bool registered = false;	//potrzebne przy blokowaniu/odblokowywaniu przyciska Dalej
 
 extern "C" int config_wizard_init()
 {
 	kdebugf();
 	wizardStarter = new WizardStarter(NULL, "wizardStarter");
 
-	if (config_file.readNumEntry("General", "UIN", 0)==0 || config_file.readEntry("General", "Password", "").isEmpty())
+	if (config_file.readNumEntry("General", "UIN", 0) == 0 || config_file.readEntry("General", "Password", "").isEmpty())
 		wizardStarter->start();
 
 	kdebugf2();
@@ -62,7 +62,7 @@ extern "C" void config_wizard_close()
 WizardStarter::WizardStarter(QObject *parent, const char *name)
 	: QObject(parent, name)
 {
-	menuPos=kadu->mainMenu()->insertItem(icons_manager->loadIcon("ConfigurationWizard"),
+	menuPos = kadu->mainMenu()->insertItem(icons_manager->loadIcon("ConfigurationWizard"),
 		tr("Configuration Wizard"), this, SLOT(start()), 0, -1, 0);
 }
 
@@ -122,7 +122,7 @@ Wizard::Wizard(QWidget *parent, const char *name, bool modal)
 	connect(cancelButton(), SIGNAL(clicked()), this, SLOT(cancelClicked()));
 
 	helpButton()->hide();
-	noNewAccount=false;
+	noNewAccount = false;
 
 	kdebugf2();
 }
@@ -150,7 +150,7 @@ void Wizard::finishClicked()
 	setBrowser();
 	tryImport();
 
-	startWizardObj=NULL;
+	startWizardObj = NULL;
 	deleteLater();
 
 	kdebugf2();
@@ -159,7 +159,7 @@ void Wizard::finishClicked()
 void Wizard::cancelClicked()
 {
 	kdebugf();
-	startWizardObj=NULL;
+	startWizardObj = NULL;
 	deleteLater();
 	kdebugf2();
 }
@@ -168,7 +168,7 @@ void Wizard::closeEvent(QCloseEvent *e)
 {
 	kdebugf();
 	QWizard::closeEvent(e);
-	startWizardObj=NULL;
+	startWizardObj = NULL;
 	deleteLater();
 }
 
@@ -180,23 +180,23 @@ void Wizard::nextClicked()
 	kdebugf();
 	if (noNewAccount)
 	{
-		if (currentPage()==welcomePage)
+		if (currentPage() == welcomePage)
 			QWizard::showPage(languagePage);
-		else if (currentPage()==ggNumberSelect)
+		else if (currentPage() == ggNumberSelect)
 			QWizard::showPage(ggCurrentNumberPage);
-		else if (currentPage()==ggNewNumberPage)
+		else if (currentPage() == ggNewNumberPage)
 			QWizard::showPage(generalOptionsPage);
 	}
-	else if (currentPage()==ggCurrentNumberPage && rb_dontHaveNumber->isChecked())
+	else if (currentPage() == ggCurrentNumberPage && rb_dontHaveNumber->isChecked())
 	{
 		QWizard::showPage(ggNewNumberPage);
 		if (!registered)
 			nextButton()->setEnabled(false);
 	}
-	else if (currentPage()==ggNewNumberPage && rb_haveNumber->isChecked())
+	else if (currentPage() == ggNewNumberPage && rb_haveNumber->isChecked())
 		QWizard::showPage(generalOptionsPage);
 
-	if (currentPage()==generalOptionsPage && rb_haveNumber->isChecked())		//jesli przeszedl jedno pole dalej niz konf. konta
+	if (currentPage() == generalOptionsPage && rb_haveNumber->isChecked())		//jesli przeszedl jedno pole dalej niz konf. konta
 		setOldGaduAccount();	//to zapisuje ustawienia konta
 	kdebugf2();
 }
@@ -209,17 +209,17 @@ void Wizard::backClicked()
 	kdebugf();
 	if (noNewAccount)
 	{
-		if (currentPage()==ggNewNumberPage)
+		if (currentPage() == ggNewNumberPage)
 			QWizard::showPage(ggCurrentNumberPage);
-		else if (currentPage()==ggNumberSelect)
+		else if (currentPage() == ggNumberSelect)
 		{
 			setBackEnabled(languagePage, false);
 			QWizard::showPage(languagePage);
 		}
 	}
-	else if (currentPage()==ggCurrentNumberPage && rb_dontHaveNumber->isChecked())
+	else if (currentPage() == ggCurrentNumberPage && rb_dontHaveNumber->isChecked())
 		QWizard::showPage(ggNumberSelect);
-	else if (currentPage()==ggNewNumberPage && rb_haveNumber->isChecked())
+	else if (currentPage() == ggNewNumberPage && rb_haveNumber->isChecked())
 		QWizard::showPage(ggCurrentNumberPage);
 	kdebugf2();
 }
@@ -284,18 +284,18 @@ void Wizard::setGaduAccount()
 	kdebugf();
 	//registerAccount->setEnabled(false);	//blokuje przycisk Register
 	//disconnect(registerAccount, SIGNAL(clicked()), this, SLOT(setGaduAccount()));
-	bool isOk=true;
+	bool isOk = true;
 	if (l_ggNewPasssword->text() != l_ggNewPassswordRetyped->text())
 	{
 		MessageBox::msg(tr("Error data typed in required fields.\n\n"
 			"Passwords typed in both fields (\"New password\" and \"Retype new password\") "
 			"should be the same!"));
-		isOk=false;
+		isOk = false;
 	}
 	if (l_ggNewPasssword->text().isEmpty())
 	{
 		MessageBox::wrn(tr("Please fill all fields"));
-		isOk=false;
+		isOk = false;
 	}
 	if (isOk)
 	{
@@ -343,8 +343,8 @@ void Wizard::tryImport()
 				wizardStarter, SLOT(userListImported(bool, QValueList<UserListElement>)));
 		if (gadu->status().isOffline())
 		{
-			gadu->status().setOnline();	//kaze sie polaczyc i podpina sie pod sygnal polaczenia sie z siecia
 			connect(gadu, SIGNAL(connected()), wizardStarter, SLOT(connected()));
+			gadu->status().setOnline();	//kaze sie polaczyc i podpina sie pod sygnal polaczenia sie z siecia
 		}	//jak polaczony to bez cyrkow robi import
 		else if (!gadu->doImportUserList())
 		{
@@ -362,7 +362,7 @@ void Wizard::tryImport()
 void Wizard::createWelcomePage()
 {
 	kdebugf();
-	welcomePage=new QVBox(this);
+	welcomePage = new QVBox(this);
 	welcomePage->setSpacing(8);
 
 	new QLabel(tr("<h2>Welcome in Kadu</h2><h3> the Gadu-gadu network client for *nix "
@@ -383,19 +383,19 @@ void Wizard::createWelcomePage()
 void Wizard::createGGNumberSelect()
 {
 	kdebugf();
-	ggNumberSelect=new QVBox(this);
+	ggNumberSelect = new QVBox(this);
 
 	new QLabel(tr("<h3>Please decide if you want to use your old Gadu-gadu account and "
 					"number or to create the new one</h3>"), ggNumberSelect);
 
-	QButtonGroup *grp_numberSelection=new QButtonGroup(tr("Select account option"), ggNumberSelect);
+	QButtonGroup *grp_numberSelection = new QButtonGroup(tr("Select account option"), ggNumberSelect);
 	grp_numberSelection->setInsideMargin(10);
 	grp_numberSelection->setColumns(1);
 	grp_numberSelection->setInsideSpacing(6);
 
-	rb_haveNumber=new QRadioButton(tr("I have a number"), grp_numberSelection);
+	rb_haveNumber = new QRadioButton(tr("I have a number"), grp_numberSelection);
 	rb_haveNumber->setChecked(true);
-	rb_dontHaveNumber=new QRadioButton(tr("I don't have one"), grp_numberSelection);
+	rb_dontHaveNumber = new QRadioButton(tr("I don't have one"), grp_numberSelection);
 
 	addPage(ggNumberSelect, tr("Gadu-gadu account"));
 	kdebugf2();
@@ -407,19 +407,19 @@ void Wizard::createGGNumberSelect()
 void Wizard::createGGCurrentNumberPage()
 {
 	kdebugf();
-	ggCurrentNumberPage=new QVBox(this);
+	ggCurrentNumberPage = new QVBox(this);
 
 	new QLabel(tr("<h3>You decided to use your existing account. Please configure it</h3>"), ggCurrentNumberPage);
-	QGroupBox *grp_haveNumber=new QGroupBox(tr("Please enter your account settings"), ggCurrentNumberPage);
+	QGroupBox *grp_haveNumber = new QGroupBox(tr("Please enter your account settings"), ggCurrentNumberPage);
 	grp_haveNumber->setInsideMargin(10);
 	grp_haveNumber->setColumns(2);
 	grp_haveNumber->setInsideSpacing(4);
 
 	new QLabel(tr("Gadu-gadu number"), grp_haveNumber);
-	l_ggNumber=new QLineEdit(grp_haveNumber);
+	l_ggNumber = new QLineEdit(grp_haveNumber);
 	l_ggNumber->setText(config_file.readEntry("General", "UIN", "0"));
 	new QLabel(tr("Gadu-gadu password"),grp_haveNumber);
-	l_ggPassword=new QLineEdit(grp_haveNumber);
+	l_ggPassword = new QLineEdit(grp_haveNumber);
 	l_ggPassword->setEchoMode(QLineEdit::Password);
 	l_ggPassword->setText(pwHash(config_file.readEntry("General", "Password", "")));
 	c_importContacts = new QCheckBox(tr("Import contacts"), grp_haveNumber);
@@ -435,21 +435,21 @@ void Wizard::createGGCurrentNumberPage()
 void Wizard::createGGNewNumberPage()
 {
 	kdebugf();
-	ggNewNumberPage=new QVBox(this);
+	ggNewNumberPage = new QVBox(this);
 
 	new QLabel(tr("<h3>Please enter your valid e-mail address and password you want "
 				"to secure your new Gadu-gadu number</h3>\nPassword must contain at least 5 signs (only letters and numbers)"), ggNewNumberPage);
 
-	QGroupBox *grp_dontHaveNumber=new QGroupBox("", ggNewNumberPage);
+	QGroupBox *grp_dontHaveNumber = new QGroupBox("", ggNewNumberPage);
 	grp_dontHaveNumber->setInsideMargin(10);
 	grp_dontHaveNumber->setColumns(2);
 	grp_dontHaveNumber->setInsideSpacing(4);
 
 	new QLabel(tr("Password"), grp_dontHaveNumber);
-	l_ggNewPasssword=new QLineEdit(grp_dontHaveNumber);
+	l_ggNewPasssword = new QLineEdit(grp_dontHaveNumber);
 	l_ggNewPasssword->setEchoMode(QLineEdit::Password);
 	new QLabel(tr("Re-type password"), grp_dontHaveNumber);
-	l_ggNewPassswordRetyped=new QLineEdit(grp_dontHaveNumber);
+	l_ggNewPassswordRetyped = new QLineEdit(grp_dontHaveNumber);
 	l_ggNewPassswordRetyped->setEchoMode(QLineEdit::Password);
 	new QLabel(tr("Your e-mail address"), grp_dontHaveNumber);
 	l_email=new QLineEdit(grp_dontHaveNumber);
@@ -471,7 +471,7 @@ void Wizard::createLanguagePage()
 
 	new QLabel(tr("<h3>Please select language version of Kadu you want to use</h3>"), languagePage);
 
-	QGroupBox *grp_language=new QGroupBox (tr("Language selection"), languagePage);
+	QGroupBox *grp_language = new QGroupBox (tr("Language selection"), languagePage);
 	grp_language->setInsideMargin(10);
 	grp_language->setColumns(2);
 	grp_language->setInsideSpacing(4);
@@ -483,12 +483,12 @@ void Wizard::createLanguagePage()
 	cb_language->insertItem(tr("German"));
 	cb_language->insertItem(tr("French"));
 
-	QString lang=config_file.readEntry("General", "Language");
+	QString lang = config_file.readEntry("General", "Language");
 
-	if (lang=="pl")			cb_language->setCurrentItem(1);
-	else if (lang=="it")	cb_language->setCurrentItem(2);
-	else if (lang=="de")	cb_language->setCurrentItem(3);
-	else if (lang=="fr")	cb_language->setCurrentItem(4);
+	if (lang == "pl")		cb_language->setCurrentItem(1);
+	else if (lang == "it")	cb_language->setCurrentItem(2);
+	else if (lang == "de")	cb_language->setCurrentItem(3);
+	else if (lang == "fr")	cb_language->setCurrentItem(4);
 
 	connect (cb_language, SIGNAL(activated(int)), this, SLOT(setLanguage(int)));
 
@@ -502,7 +502,7 @@ void Wizard::createLanguagePage()
 void Wizard::createChatOpionsPage()
 {
 	kdebugf();
-	chatOptionsPage=new QVBox(this);
+	chatOptionsPage = new QVBox(this);
 
 	new QLabel(tr("<h3>Please setup your chat options</h3>"), chatOptionsPage);
 
@@ -533,7 +533,7 @@ void Wizard::createChatOpionsPage()
 void Wizard::createWWWOpionsPage()
 {
 	kdebugf();
-	wwwOptionsPage=new QVBox(this);
+	wwwOptionsPage = new QVBox(this);
 
 	new QLabel(tr("<h3>Please setup Kadu for working with your favourite WWW browser</h3>"), wwwOptionsPage);
 
@@ -714,7 +714,7 @@ void Wizard::createHintsOptionsPage()
 	new QLabel(tr("Please choose hints design"), grp_hintsOptions);
 	cb_hintsTheme = new QComboBox(grp_hintsOptions);
 	unsigned int i;
-	for (i=0; i<hintColorCount; ++i)
+	for (i = 0; i < hintColorCount; ++i)
 		cb_hintsTheme->insertItem(tr(hintColorsNames[i]));
 
 	cb_hintsTheme->insertItem(tr("Current")); //wlasne ustawienie
@@ -775,7 +775,7 @@ void Wizard::createHintsOptionsPage()
 
 	new QLabel(tr("Please choose hints type"), grp_hintsOptions2);
 	cb_hintsType = new QComboBox(grp_hintsOptions2);
-	for (unsigned int i=0; i<hintCount; ++i)
+	for (unsigned int i = 0; i < hintCount; ++i)
 		cb_hintsType->insertItem(tr(hintSyntaxName[i]));
 
 	new QLabel(tr("Preview"), grp_hintsOptions2);
@@ -790,18 +790,18 @@ void Wizard::createHintsOptionsPage()
 	connect(cb_hintsTheme, SIGNAL(activated(int)), this, SLOT(previewHintsTheme(int)));
 	connect(cb_hintsType, SIGNAL(activated(int)), this, SLOT(previewHintsType(int)));
 
-	QString hintConstruction=config_file.readEntry("Hints", "NotifyHintSyntax", "");
+	QString hintConstruction = config_file.readEntry("Hints", "NotifyHintSyntax", "");
 	if (!hintConstruction.isEmpty())
 	{
 		unsigned int i;
-		for (i=0; i<hintCount; ++i)
-			if (hintConstruction==hintSyntax[i])
+		for (i = 0; i < hintCount; ++i)
+			if (hintConstruction == hintSyntax[i])
 			{
 				cb_hintsType->setCurrentItem(i);
 				preview4->setText(toDisplay(hintSyntax[i]));
 				break;
 			}
-		if (i==hintCount)
+		if (i == hintCount)
 		{
 			cb_hintsType->insertItem(tr("Custom"));
 			cb_hintsType->setCurrentItem(i);
@@ -833,7 +833,7 @@ void Wizard::createColorsPage()
 	new QLabel(tr("Please choose Kadu design"), grp_colorOptions);
 	cb_colorTheme = new QComboBox(grp_colorOptions);
 	unsigned int i;
-	for (i=0; i<kaduColorCount; ++i)
+	for (i = 0; i < kaduColorCount; ++i)
 		cb_colorTheme->insertItem(tr(kaduColorNames[i]));
 
 	cb_colorTheme->insertItem(tr("Current"));	//zeby nie stracic wlasnego ustawienia kolorow przez zabawe combo
@@ -902,7 +902,7 @@ void Wizard::createInfoPanelPage()
 
 	cb_panelTheme = new QComboBox(grp_infoPanelOptions);
 
-	for (unsigned int i=0; i<informationPanelCount; ++i)
+	for (unsigned int i = 0; i < informationPanelCount; ++i)
 		cb_panelTheme->insertItem(tr(informationPanelName[i]));
 
 	new QLabel(tr("Preview"), grp_infoPanelOptions);
@@ -928,14 +928,14 @@ void Wizard::createInfoPanelPage()
 	{
 		UserListElement el;
 		unsigned int i;
-		for (i=0; i<informationPanelCount; ++i)
+		for (i = 0; i < informationPanelCount; ++i)
 			if (panelConstruction==toSave(informationPanelSyntax[i]))
 			{
 				cb_panelTheme->setCurrentItem(i);
 				infoPreview->setText(parse(toDisplay(informationPanelSyntax[i]), el));
 				break;
 			}
-		if (i==informationPanelCount)
+		if (i == informationPanelCount)
 		{
 			cb_panelTheme->insertItem(tr("Custom"));
 			cb_panelTheme->setCurrentItem(i);
@@ -966,7 +966,7 @@ void Wizard::createQtStylePage()
 	new QLabel(tr("Please choose Qt design for Kadu"), grp_qtOptions);
 	cb_qtTheme = new QComboBox(grp_qtOptions);
 
-	QStringList sl_themes=QStyleFactory::keys();
+	QStringList sl_themes = QStyleFactory::keys();
 	cb_qtTheme->insertStringList(sl_themes);
 	if(!sl_themes.contains(QApplication::style().name()))
 		cb_qtTheme->setCurrentText(tr("Unknown"));
@@ -1000,6 +1000,7 @@ void Wizard::createGreetingsPage()
 	kdebugf2();
 }
 
+#include <stdlib.h>
 /**
 	ustawia jêzyk Kadu
 **/
@@ -1009,13 +1010,20 @@ void Wizard::setLanguage(int languageId)	/* ustawia jêzyk */
 	QString language;
 	switch (languageId)
 	{
-		case 1:	language="pl";	break;
-		case 2:	language="it";	break;
-		case 3:	language="de";	break;
-		case 4:	language="fr";	break;
-		default: language="en";
+		case 1:	language = "pl";	break;
+		case 2:	language = "it";	break;
+		case 3:	language = "de";	break;
+		case 4:	language = "fr";	break;
+		default: language = "en";
 	}
-	config_file.writeEntry("General", "Language", language);
+	if (config_file.readEntry("General", "Language") != language)
+	{
+		config_file.writeEntry("General", "Language", language);
+		config_file.sync();
+		(new QProcess(dataPath() + "../bin/kadu"))->start();
+		qApp->processEvents();
+		qApp->exit(0);
+	}
 	kdebugf2();
 }
 
@@ -1131,7 +1139,7 @@ void Wizard::previewHintsTheme(int hintsThemeID)
 **/
 void Wizard::previewHintsType(int hintsTypeID)
 {
-	if (hintsTypeID==int(hintCount))
+	if (hintsTypeID == int(hintCount))
 		preview4->setText(toDisplay(customHint));
 	else
 		preview4->setText(toDisplay(hintSyntax[hintsTypeID]));
@@ -1177,8 +1185,8 @@ void Wizard::setHints()
 	else
 	{
 		QColor bg_color, fg_color;
-		bg_color=preview->paletteBackgroundColor();
-		fg_color=preview->paletteForegroundColor();
+		bg_color = preview->paletteBackgroundColor();
+		fg_color = preview->paletteForegroundColor();
 
 		config_file.writeEntry("Hints", "HintBlocking_bgcolor", bg_color);
 		config_file.writeEntry("Hints", "HintBusyD_bgcolor", bg_color);
@@ -1210,14 +1218,14 @@ void Wizard::setHints()
 	}
 	config_file.writeEntry("Hints", "NotifyHintUseSyntax", true);
 
-	if (cb_hintsType->currentItem()==0)
+	if (cb_hintsType->currentItem() == 0)
 	{
 		config_file.writeEntry("Hints", "NotifyHintUseSyntax", false);
 		config_file.writeEntry("Hints", "NotifyHintSyntax", "");
 	}
 	else
 	{
-		if (cb_hintsType->currentItem()==int(hintCount))
+		if (cb_hintsType->currentItem() == int(hintCount))
 			config_file.writeEntry("Hints", "NotifyHintSyntax", tr(customHint));
 		else
 			config_file.writeEntry("Hints", "NotifyHintSyntax", tr(hintSyntax[cb_hintsType->currentItem()]));
@@ -1263,14 +1271,14 @@ void Wizard::previewColorTheme(int colorThemeID)
 **/
 void Wizard::previewIconTheme(int iconThemeID)
 {
-	QString iconName=cb_iconTheme->currentText();
+	QString iconName = cb_iconTheme->currentText();
 	if (iconName == tr("Default"))
-		iconName= "default";
+		iconName = "default";
 
 	icons_manager->clear();
 	icons_manager->setTheme(iconName);
 
-	QString path=icons_manager->iconPath("Online");
+	QString path = icons_manager->iconPath("Online");
 	for (int i = 0, count = cb_iconTheme->count(); i < count; ++i)
 		if (i != iconThemeID)
 			path.replace(cb_iconTheme->text(i), cb_iconTheme->text(iconThemeID));
@@ -1288,9 +1296,9 @@ void Wizard::previewIconTheme(int iconThemeID)
 void Wizard::setColorsAndIcons()
 {
 	kdebugf();
-	QString newIconTheme=cb_iconTheme->currentText();
-	QString oldIconTheme=config_file.readEntry("Look", "IconTheme", "default");
-	if (newIconTheme!=oldIconTheme)
+	QString newIconTheme = cb_iconTheme->currentText();
+	QString oldIconTheme = config_file.readEntry("Look", "IconTheme", "default");
+	if (newIconTheme != oldIconTheme)
 	{
 		newIconTheme.replace(tr("Default"), "default");
 		icons_manager->clear();
@@ -1322,7 +1330,7 @@ void Wizard::previewPanelTheme(int panelThemeID)
 		panelLook = informationPanelSyntax[cb_panelTheme->currentItem()];
 
 	if (panelLook.contains("background=", false) == 0)	//to nam zapewnia odswierzenie tla jesli wczesniej byl obrazek
-		infoPreview->setText("<body bgcolor=\""+config_file.readEntry("Look", "InfoPanelBgColor")+"\"></body>");
+		infoPreview->setText("<body bgcolor=\"" + config_file.readEntry("Look", "InfoPanelBgColor")+"\"></body>");
 
 	infoPreview->setText(parse(toDisplay(panelLook), el));
 	kdebugf2();
@@ -1337,7 +1345,7 @@ void Wizard::setPanelTheme()
 	UserListElement el;
 	config_file.writeEntry("Look", "ShowInfoPanel", c_showInfoPanel->isChecked());
 	config_file.writeEntry("Look", "PanelVerticalScrollbar", c_showScrolls->isChecked());
-	if (cb_panelTheme->currentItem()==int(informationPanelCount))
+	if (cb_panelTheme->currentItem() == int(informationPanelCount))
 		config_file.writeEntry("Look", "PanelContents", customPanel);
 	else
 		config_file.writeEntry("Look", "PanelContents", toSave(informationPanelSyntax[cb_panelTheme->currentItem()]));
@@ -1350,8 +1358,8 @@ void Wizard::setPanelTheme()
 **/
 void Wizard::previewQtTheme(int themeID)
 {
-	QString new_style=cb_qtTheme->text(themeID);
-	if (new_style!=tr("Unknown") && new_style != QApplication::style().name())
+	QString new_style = cb_qtTheme->text(themeID);
+	if (new_style != tr("Unknown") && new_style != QApplication::style().name())
 	{
 		QApplication::setStyle(new_style);
 		config_file.writeEntry("Look", "QtStyle", new_style);
@@ -1396,13 +1404,13 @@ QString Wizard::toSave(QString s)
 	s.replace("You are not on the list", tr("You are not on the list"));
 
 	int i;
-	for (i=0; i<s.contains("$KADU_SHARE"); ++i)
+	for (i = 0; i < s.contains("$KADU_SHARE"); ++i)
 		s.replace("$KADU_SHARE", dataPath("kadu"));
 
-	for (i=0; i<s.contains("$KADU_CONF"); ++i)
+	for (i = 0; i < s.contains("$KADU_CONF"); ++i)
 		s.replace("$KADU_CONF", ggPath());
 
-	for (i=0; i<s.contains("$HOME"); ++i)
+	for (i = 0; i < s.contains("$HOME"); ++i)
 		s.replace("$HOME", getenv("HOME"));
 
 	return s;
