@@ -14,6 +14,7 @@
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qspinbox.h>
+#include <qtextedit.h>
 #include <qtooltip.h>
 
 #include "chat_manager.h"
