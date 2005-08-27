@@ -8,6 +8,7 @@
 #include <qbuttongroup.h>
 #include <qcheckbox.h>
 #include <qmessagebox.h>
+#include <qprocess.h>
 #include <qstyle.h>
 #include <qstylefactory.h>
 #include <qpopupmenu.h>
