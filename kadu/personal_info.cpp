@@ -156,7 +156,7 @@ void PersonalInfoDialog::keyPressEvent(QKeyEvent *ke_event)
 void PersonalInfoDialog::reloadInfo()
 {
 	kdebugf();
-	if (!gadu->status().isOffline())
+	if (!gadu->currentStatus().isOffline())
 	{
 		State = READING;
 		gadu->getPersonalInfo(*data);
@@ -169,7 +169,7 @@ void PersonalInfoDialog::reloadInfo()
 void PersonalInfoDialog::saveButtonClicked()
 {
 	kdebugf();
-	if (gadu->status().isOffline())
+	if (gadu->currentStatus().isOffline())
 		return;
 
 	SearchResult save;

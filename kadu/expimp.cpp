@@ -169,7 +169,7 @@ void UserlistImportExport::fromfile()
 void UserlistImportExport::startImportTransfer()
 {
 	kdebugf();
-	if (gadu->status().isOffline())
+	if (gadu->currentStatus().isOffline())
 	{
 		MessageBox::wrn(tr("Cannot import user list from server in offline mode"));
 		return;
@@ -283,7 +283,7 @@ void UserlistImportExport::clean()
 {
 	kdebugf();
 
-	if (gadu->status().isOffline())
+	if (gadu->currentStatus().isOffline())
 	{
 		MessageBox::wrn(tr("Cannot clear user list on server in offline mode"));
 		kdebugf2();
