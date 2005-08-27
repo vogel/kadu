@@ -194,6 +194,7 @@ search.cpp \
 status.cpp \
 tabbar.cpp \
 themes.cpp \
+toolbar.cpp \
 userbox.cpp \
 userinfo.cpp \
 userlist.cpp \
@@ -243,6 +244,7 @@ search.h \
 status.h \
 tabbar.h \
 themes.h \
+toolbar.h \
 userbox.h \
 userinfo.h \
 userlist.h \
@@ -283,6 +285,7 @@ moc/search_moc.cpp \
 moc/status_moc.cpp \
 moc/tabbar_moc.cpp \
 moc/themes_moc.cpp \
+moc/toolbar_moc.cpp \
 moc/userbox_moc.cpp \
 moc/userinfo_moc.cpp \
 moc/userlist_moc.cpp \
@@ -331,6 +334,7 @@ obj/search.$(OBJEXT) \
 obj/status.$(OBJEXT) \
 obj/tabbar.$(OBJEXT) \
 obj/themes.$(OBJEXT) \
+obj/toolbar.$(OBJEXT) \
 obj/userbox.$(OBJEXT) \
 obj/userinfo.$(OBJEXT) \
 obj/userlist.$(OBJEXT) \
@@ -368,6 +372,7 @@ obj/search_moc.$(OBJEXT) \
 obj/status_moc.$(OBJEXT) \
 obj/tabbar_moc.$(OBJEXT) \
 obj/themes_moc.$(OBJEXT) \
+obj/toolbar_moc.$(OBJEXT) \
 obj/userbox_moc.$(OBJEXT) \
 obj/userinfo_moc.$(OBJEXT) \
 obj/userlist_moc.$(OBJEXT) \
@@ -445,8 +450,9 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/protocols_manager.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/search.Po ./$(DEPDIR)/status.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/tabbar.Po ./$(DEPDIR)/themes.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/updates.Po ./$(DEPDIR)/userbox.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/usergroup.Po ./$(DEPDIR)/userinfo.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/toolbar.Po ./$(DEPDIR)/updates.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/userbox.Po ./$(DEPDIR)/usergroup.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/userinfo.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/userlist-private.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/userlist.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/userlistelement.Po
@@ -546,6 +552,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/status.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tabbar.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/themes.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/toolbar.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/updates.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/userbox.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/usergroup.Po@am__quote@

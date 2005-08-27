@@ -39,6 +39,7 @@ search.cpp \
 status.cpp \
 tabbar.cpp \
 themes.cpp \
+toolbar.cpp \
 userbox.cpp \
 userinfo.cpp \
 userlist.cpp \
@@ -88,6 +89,7 @@ search.h \
 status.h \
 tabbar.h \
 themes.h \
+toolbar.h \
 userbox.h \
 userinfo.h \
 userlist.h \
@@ -127,6 +129,7 @@ moc/search_moc.cpp \
 moc/status_moc.cpp \
 moc/tabbar_moc.cpp \
 moc/themes_moc.cpp \
+moc/toolbar_moc.cpp \
 moc/userbox_moc.cpp \
 moc/userinfo_moc.cpp \
 moc/userlist_moc.cpp \
@@ -174,6 +177,7 @@ obj/search.$(OBJEXT) \
 obj/status.$(OBJEXT) \
 obj/tabbar.$(OBJEXT) \
 obj/themes.$(OBJEXT) \
+obj/toolbar.$(OBJEXT) \
 obj/userbox.$(OBJEXT) \
 obj/userinfo.$(OBJEXT) \
 obj/userlist.$(OBJEXT) \
@@ -211,6 +215,7 @@ obj/search_moc.$(OBJEXT) \
 obj/status_moc.$(OBJEXT) \
 obj/tabbar_moc.$(OBJEXT) \
 obj/themes_moc.$(OBJEXT) \
+obj/toolbar_moc.$(OBJEXT) \
 obj/userbox_moc.$(OBJEXT) \
 obj/userinfo_moc.$(OBJEXT) \
 obj/userlist_moc.$(OBJEXT) \

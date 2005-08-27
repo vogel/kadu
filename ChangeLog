@@ -125,6 +125,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * automatyczne tworzenie / aktualizacja binarnych plików translacji przy
   kompilacji ca³ego kadu + make clean usuwa utworzone pliki (adrian)
 * restartowanie Kadu po wyborze jêzyka w wizardzie (joi)
+* wydzielenie plików toolbar.cpp/h (adrian)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

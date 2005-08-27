@@ -17,6 +17,7 @@
 #include "icons_manager.h"
 #include "kadu.h"
 #include "misc.h"
+#include "toolbar.h"
 #include "userbox.h"
 
 IconsManager::IconsManager(const QString& name, const QString& configname)

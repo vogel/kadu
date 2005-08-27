@@ -18,6 +18,7 @@
 #include "icons_manager.h"
 #include "kadu.h"
 #include "config_dialog.h"
+#include "toolbar.h"
 
 SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name)
 {
