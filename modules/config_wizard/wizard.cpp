@@ -26,6 +26,7 @@
 #include "kadu_text_browser.h"
 #include "message_box.h"
 #include "modules.h"
+#include "toolbar.h"
 #include "userbox.h"
 #include "wizard.h"
 
