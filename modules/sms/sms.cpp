@@ -383,6 +383,8 @@ void Sms::smsSigHandler()
 		QMessageBox::information(this, tr("SMS sent"), tr("The process exited normally. The SMS should be on its way"));
 	else
 		QMessageBox::warning(this, tr("SMS not sent"), tr("The process exited abnormally. The SMS may not be sent"));
+	delete smsProcess;
+	smsProcess = NULL;
 
 	c_saveInHistory->setEnabled(true);
 	e_contact->setEnabled(true);
