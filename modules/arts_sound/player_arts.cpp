@@ -39,6 +39,8 @@ void aRtsDevice::processExited()
 		sock = -1;
 	}
 	valid = false;
+	delete process;
+	process = NULL;
 	kdebugmf(KDEBUG_INFO, "unlocking\n");
 	mutex.unlock();
 	kdebugf2();
@@ -92,7 +94,7 @@ aRtsPlayerRecorder::aRtsPlayerRecorder(QObject *parent, const char *name) : QObj
 	num = 0;
 	srandom(time(NULL));
 	finalizing = false;
-	
+
 	connect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice&)),
 		this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice&)));
 	connect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
@@ -122,7 +124,7 @@ aRtsPlayerRecorder::~aRtsPlayerRecorder()
 		busymutex.unlock();
 		dev->process->tryTerminate();
 		QTimer::singleShot(5000, dev->process, SLOT(kill()));
-		
+
 		//czekamy a¿ w±tek korzystaj±cy z urz±dzenia go zwolni
 		dev->inUse.lock();
 		dev->inUse.unlock();
@@ -166,7 +168,7 @@ void aRtsPlayerRecorder::openDevice(SoundDeviceType type, int sample_rate, int c
 	struct sockaddr_un unix_sock_name;
 	char tmp[100];
 	int cerr, sock;
-	
+
 	sock = socket(PF_LOCAL, SOCK_STREAM, 0);
 	if (sock == -1)
 	{
@@ -232,12 +234,12 @@ void aRtsPlayerRecorder::openDevice(SoundDeviceType type, int sample_rate, int c
 			kdebugf2();
 			return;
 		}
-	
+
 		unix_sock_name.sun_family = AF_LOCAL;
 
 		sprintf(tmp, "/tmp/kadu-arts-connector-%d-%d", config_file.readNumEntry("General", "UIN"), num);
 		strncpy(unix_sock_name.sun_path, tmp, sizeof(unix_sock_name.sun_path));
-		unix_sock_name.sun_path[sizeof(unix_sock_name.sun_path)-1] = 0;	
+		unix_sock_name.sun_path[sizeof(unix_sock_name.sun_path)-1] = 0;
 		cerr = ::connect(sock, (struct sockaddr *)&unix_sock_name, SUN_LEN(&unix_sock_name));
 		if (cerr == -1)
 		{
