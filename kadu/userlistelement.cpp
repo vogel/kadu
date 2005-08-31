@@ -257,6 +257,13 @@ UserListKey UserListElement::key() const
 
 void UserListElement::addProtocol(const QString &name, const QString &id, bool massively, bool last)
 {
+#ifdef DEBUG_ENABLED
+	if (privateData->protocols.find(name))
+	{
+		kdebugm(KDEBUG_ERROR, "%s found!!\n", name.local8Bit().data());
+		printBacktrace("protocol already exists");
+	}
+#endif
 	privateData->protocols.insert(name, new ProtocolData(name, id));
 	CONST_FOREACH (group, privateData->Parents)
 		emit (*group)->protocolAdded(*this, name, massively, last);
@@ -264,6 +271,13 @@ void UserListElement::addProtocol(const QString &name, const QString &id, bool m
 
 void UserListElement::deleteProtocol(const QString &protocolName, bool massively, bool last)
 {
+#ifdef DEBUG_ENABLED
+	if (privateData->protocols.find(protocolName))
+	{
+		kdebugm(KDEBUG_PANIC, "%s not found!!\n", protocolName.local8Bit().data());
+		printBacktrace("protocol does not exists");
+	}
+#endif
 	CONST_FOREACH (group, privateData->Parents)
 		emit (*group)->removingProtocol(*this, protocolName, massively, last);
 	delete privateData->protocols[protocolName];
