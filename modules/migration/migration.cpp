@@ -90,8 +90,8 @@ bool MigrationDialog::settingsDirMigrationNeeded()
 	QString old_path = old_ggPath();
 	QString new_path = ggPath("");
 	new_path.truncate(new_path.length() - 1); // obetnij konczacy /
-	kdebug("old_path: %s\n", old_path.local8Bit().data());
-	kdebug("new_path: %s\n", new_path.local8Bit().data());
+	kdebugm(KDEBUG_INFO, "old_path: %s\n", old_path.local8Bit().data());
+	kdebugm(KDEBUG_INFO, "new_path: %s\n", new_path.local8Bit().data());
 	if (QFile::exists(new_path) || !QFile::exists(old_path))
 	{
 		kdebugf2();
@@ -116,26 +116,26 @@ void MigrationDialog::settingsDirMigration()
 	QString old_path = old_ggPath();
 	QString new_path = ggPath("");
 	new_path.truncate(new_path.length() - 1); // obetnij konczacy /
-	kdebug("old_path: %s\n", old_path.local8Bit().data());
-	kdebug("new_path: %s\n", new_path.local8Bit().data());
+	kdebugm(KDEBUG_INFO, "old_path: %s\n", old_path.local8Bit().data());
+	kdebugm(KDEBUG_INFO, "new_path: %s\n", new_path.local8Bit().data());
 	if (!settingsDirMigrationNeeded())
 	{
 		kdebugf2();
 		return;
 	}
 	QListViewItem* item = addItem(tr("Step 1: Migrating settings to kadu directory"));
-	kdebug("creating process: cp\n");
+	kdebugm(KDEBUG_INFO, "creating process: cp\n");
 	QProcess copy_process(QString("cp"));
-	kdebug("adding argument: -r\n");
+	kdebugm(KDEBUG_INFO, "adding argument: -r\n");
 	copy_process.addArgument("-r");
-	kdebug("adding argument: %s\n", old_path.local8Bit().data());
+	kdebugm(KDEBUG_INFO, "adding argument: %s\n", old_path.local8Bit().data());
 	copy_process.addArgument(old_path);
-	kdebug("adding argument: %s\n", new_path.local8Bit().data());
+	kdebugm(KDEBUG_INFO, "adding argument: %s\n", new_path.local8Bit().data());
 	copy_process.addArgument(new_path);
-	kdebug("starting process\n");
+	kdebugm(KDEBUG_INFO, "starting process\n");
 	if (copy_process.start())
 	{
-		kdebug("process started, waiting while it is running\n");
+		kdebugm(KDEBUG_INFO, "process started, waiting while it is running\n");
 		while (copy_process.isRunning()) { };
 		if (copy_process.normalExit() && copy_process.exitStatus() == 0)
 		{
@@ -149,14 +149,14 @@ void MigrationDialog::settingsDirMigration()
 		}
 		else
 		{
-			kdebug("error migrating data. exit status: %i\n",
+			kdebugm(KDEBUG_ERROR, "error migrating data. exit status: %i\n",
 				copy_process.exitStatus());
 			MessageBox::wrn(tr("Error migrating data!"));
 		}
 	}
 	else
 	{
-		kdebug("cannot start migration process\n");
+		kdebugm(KDEBUG_ERROR, "cannot start migration process\n");
 		MessageBox::wrn(tr("Cannot start migration process!"));
 	}
 	kdebugf2();
@@ -204,7 +204,7 @@ bool MigrationDialog::xmlIgnoredListMigrationNeeded()
 {
 	kdebugf();
 	QString ignored_path = ggPath("ignore");
-	kdebug("ignored_path: %s\n", ignored_path.local8Bit().data());
+	kdebugm(KDEBUG_INFO, "ignored_path: %s\n", ignored_path.local8Bit().data());
 	if (xml_config_file->rootElement().elementsByTagName("Ignored").length() == 0 &&
 		QFile::exists(ignored_path))
 	{
@@ -219,10 +219,10 @@ void MigrationDialog::xmlIgnoredListMigration()
 {
 	kdebugf();
 	QString ignored_path = ggPath("ignore");
-	kdebug("ignored_path: %s\n", ignored_path.local8Bit().data());
+	kdebugm(KDEBUG_INFO, "ignored_path: %s\n", ignored_path.local8Bit().data());
 	if (xmlIgnoredListMigrationNeeded())
 	{
-		kdebug("migrating ignored list\n");
+		kdebugm(KDEBUG_INFO, "migrating ignored list\n");
 		QListViewItem* item = addItem(tr("Step 3: Migrating ignored list to kadu.conf.xml"));
 		QFile f(ignored_path);
 		if (!f.open(IO_ReadOnly))
@@ -232,29 +232,29 @@ void MigrationDialog::xmlIgnoredListMigration()
 		}
 		QTextStream stream(&f);
 		QString line;
-		kdebug("creating Ignored element\n");
+		kdebugm(KDEBUG_INFO, "creating Ignored element\n");
 		QDomElement ignored_elem =
 			xml_config_file->createElement(xml_config_file->rootElement(), "Ignored");
-		kdebug("begin of ignored file loop\n");
+		kdebugm(KDEBUG_INFO, "begin of ignored file loop\n");
 		while ((line = stream.readLine()) != QString::null)
 		{
-			kdebug("ignored file line: %s\n", line.local8Bit().data());
+			kdebugm(KDEBUG_INFO, "ignored file line: %s\n", line.local8Bit().data());
 			UinsList uins;
 			QStringList list = QStringList::split(";", line);
 			QDomElement ignored_grp_elem =
 				xml_config_file->createElement(ignored_elem, "IgnoredGroup");
-			kdebug("begin of ignored group loop\n");
+			kdebugm(KDEBUG_INFO, "begin of ignored group loop\n");
 			CONST_FOREACH(strUin, list)
 			{
-				kdebug("ignored uin: %s\n", (*strUin).local8Bit().data());
+				kdebugm(KDEBUG_INFO, "ignored uin: %s\n", (*strUin).local8Bit().data());
 				QDomElement ignored_contact_elem =
 					xml_config_file->createElement(ignored_grp_elem,
 						"IgnoredContact");
 				ignored_contact_elem.setAttribute("uin", (*strUin));
 			}
-			kdebug("end of ignored group loop\n");
+			kdebugm(KDEBUG_INFO, "end of ignored group loop\n");
 		}
-		kdebug("end of ignored file loop\n");
+		kdebugm(KDEBUG_INFO, "end of ignored file loop\n");
 		f.close();
 		xml_config_file->sync();
 		readIgnored();
@@ -270,7 +270,7 @@ void MigrationDialog::xmlConfigFileMigration(const QString& config_name)
 {
 	kdebugf();
 	QString config_path = ggPath(config_name);
-	kdebug("config_path: %s\n", config_path.local8Bit().data());
+	kdebugm(KDEBUG_INFO, "config_path: %s\n", config_path.local8Bit().data());
 	QDomElement root_elem = xml_config_file->rootElement();
 	QFile file(config_path);
 	QString line;
@@ -289,19 +289,19 @@ void MigrationDialog::xmlConfigFileMigration(const QString& config_name)
 			if (line.startsWith("[") && line.endsWith("]"))
 			{
 				QString name = line.mid(1, line.length() - 2).stripWhiteSpace();
-				kdebug("group: %s\n", name.local8Bit().data());
+				kdebugm(KDEBUG_INFO, "group: %s\n", name.local8Bit().data());
 				group_elem = xml_config_file->createElement(conf_elem, "Group");
 				group_elem.setAttribute("name", name);
 			}
 			else if (!group_elem.isNull())
 			{
-				kdebug("line: %s\n", line.local8Bit().data());
+				kdebugm(KDEBUG_INFO, "line: %s\n", line.local8Bit().data());
 				QString name = line.section('=', 0, 0);
 				QString value = line.right(line.length()-name.length()-1).replace("\\n", "\n");
 				name = name.stripWhiteSpace();
 				if (line.contains('=') >= 1 && !name.isEmpty() && !value.isEmpty())
 				{
-					kdebug("entry: %s=%s\n", name.local8Bit().data(),
+					kdebugm(KDEBUG_INFO, "entry: %s=%s\n", name.local8Bit().data(),
 						value.local8Bit().data());
 					QDomElement entry_elem =
 						xml_config_file->createElement(group_elem, "Entry");
@@ -319,7 +319,7 @@ bool MigrationDialog::xmlConfigFilesMigrationNeeded()
 {
 	kdebugf();
 	QString config_path = ggPath("kadu.conf");
-	kdebug("config_path: %s\n", config_path.local8Bit().data());
+	kdebugm(KDEBUG_INFO, "config_path: %s\n", config_path.local8Bit().data());
 	QDomElement root_elem = xml_config_file->rootElement();
 	if (!QFile::exists(config_path))
 	{
@@ -363,7 +363,7 @@ void MigrationDialog::xmlConfigFilesMigration()
 {
 	kdebugf();
 	QString config_path = ggPath("kadu.conf");
-	kdebug("config_path: %s\n", config_path.local8Bit().data());
+	kdebugm(KDEBUG_INFO, "config_path: %s\n", config_path.local8Bit().data());
 	QDomElement root_elem = xml_config_file->rootElement();
 	if (!xmlConfigFilesMigrationNeeded())
 	{
