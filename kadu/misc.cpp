@@ -482,6 +482,7 @@ void openWebBrowser(const QString &link)
 		kdebugmf(KDEBUG_INFO, "%s\n", (*i).local8Bit().data());
 	browser = new QProcess(qApp);
 	browser->setArguments(args);
+	QObject::connect(browser, SIGNAL(processExited()), browser, SLOT(deleteLater()));
 
 	if (!browser->start())
 		QMessageBox::critical(0, qApp->translate("@default", QT_TR_NOOP("WWW error")),
