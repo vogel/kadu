@@ -80,7 +80,7 @@ class UserList : public UserGroup
 		/**
 			\fn ~UserList()
 		**/
-		~UserList();
+		virtual ~UserList();
 };
 
 extern UserList *userlist;
