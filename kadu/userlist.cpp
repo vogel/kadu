@@ -204,6 +204,7 @@ void UserList::setAllOffline(const QString &protocolName)
 		if ((*user).usesProtocol("Gadu"))
 			(*user).setStatus(protocolName, *s, true, j == cnt);
 	}
+	delete s;
 	kdebugf2();
 }
 
