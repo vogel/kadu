@@ -35,6 +35,13 @@ void GroupsManager::closeModule()
 	delete groups_manager;
 	groups_manager = NULL;
 
+	UserBox *userbox = kadu->userbox();
+	userbox->removeNegativeFilter(blockingUsers);
+	userbox->removeNegativeFilter(blockedUsers);
+	userbox->removeFilter(onlineUsers);
+	userbox->removeFilter(usersWithDescription);
+	userbox->removeNegativeFilter(anonymousUsers);
+
 	delete usersWithDescription;
 	usersWithDescription = NULL;
 
@@ -281,6 +288,8 @@ GroupsManager::~GroupsManager()
 		config_file.writeEntry("Look", "CurrentGroupTab", GroupBar->currentTab());
 	disconnect (userlist, SIGNAL(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)),
 			 this, SLOT(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)));
+	while (!Groups.isEmpty())
+		removeGroup(Groups.begin().key());
 	kdebugf2();
 }
 
