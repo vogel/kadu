@@ -86,38 +86,49 @@ ha port forwarding attivato. Continuare connessione ?
     </message>
 </context>
 <context>
-    <name>FileTransferDialog</name>
-    <message>
-        <source>Sender: %1</source>
-        <translation>Mandante: %1</translation>
-    </message>
+    <name>FileTransfer</name>
     <message>
         <source>Receiver: %1</source>
-        <translation>Rcevitore: %1</translation>
+        <translation type="unfinished">Rcevitore: %1</translation>
     </message>
     <message>
-        <source>Filename: %1</source>
-        <translation>Nome File: %1</translation>
+        <source>This option only sends a remind message to %1. The transfer will not start immediately</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>File size: %1B</source>
-        <translation>Dimensione File: %1B</translation>
+        <source>Hello. I am an automatic file-transfer reminder. Could you please send me a file named %1?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Speed: 0kB/s (not started)  </source>
-        <translation>Velocità: 0kB/s (non iniziato)</translation>
+        <source>Error: message was not sended</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FileTransferListViewItem</name>
+    <message>
+        <source>Frozen</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>File transfered %1%</source>
-        <translation>File trasferito %1%</translation>
+        <source>0 kB/s</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Speed: %1kB/s </source>
-        <translation>Velocità: %1kB/s</translation>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>(stalled)</source>
-        <translation>(in stallo)</translation>
+        <source>Wait for connection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transfer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finished</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -173,12 +184,86 @@ di %3kB. Accetti trasferimento ?</translation>
         <translation>Resume</translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation>Annulla</translation>
+        <source>Toggle transfer window</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Could not open file</source>
-        <translation>Errore apertura file</translation>
+        <source>User %1 want to send you a file %2
+of size %3kB.
+This is probably a next part of %4
+ What should I do?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continue transfer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save file under new name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore transfer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select another file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not open file. Select another one.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FileTransferWindow</name>
+    <message>
+        <source>Kadu - file transfers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Incoming transfers:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Speed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Progress</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Full file name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Outcoming transfers:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

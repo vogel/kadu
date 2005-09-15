@@ -86,38 +86,49 @@ Kontynuować połączenie?</translation>
     </message>
 </context>
 <context>
-    <name>FileTransferDialog</name>
-    <message>
-        <source>Sender: %1</source>
-        <translation>Nadawca: %1</translation>
-    </message>
+    <name>FileTransfer</name>
     <message>
         <source>Receiver: %1</source>
         <translation>Odbiorca: %1</translation>
     </message>
     <message>
-        <source>Filename: %1</source>
-        <translation>Nazwa pliku: %1</translation>
+        <source>This option only sends a remind message to %1. The transfer will not start immediately</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>File size: %1B</source>
-        <translation>Rozmiar pliku: %1B</translation>
+        <source>Hello. I am an automatic file-transfer reminder. Could you please send me a file named %1?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Speed: 0kB/s (not started)  </source>
-        <translation>Prędkość: 0kB/s (nie zaczęte)</translation>
+        <source>Error: message was not sended</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FileTransferListViewItem</name>
+    <message>
+        <source>Frozen</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>File transfered %1%</source>
-        <translation>Transmisja pliku %1%</translation>
+        <source>0 kB/s</source>
+        <translation>0 kB/s</translation>
     </message>
     <message>
-        <source>Speed: %1kB/s </source>
-        <translation>Prędkość: %1kB/s</translation>
+        <source>Error</source>
+        <translation>Błąd</translation>
     </message>
     <message>
-        <source>(stalled)</source>
-        <translation>(zatrzymana)</translation>
+        <source>Wait for connection</source>
+        <translation>Oczekiwanie na połączenie</translation>
+    </message>
+    <message>
+        <source>Transfer</source>
+        <translation>Transfer</translation>
+    </message>
+    <message>
+        <source>Finished</source>
+        <translation>Zakończony</translation>
     </message>
 </context>
 <context>
@@ -173,12 +184,86 @@ o rozmiarze %3kB. Akceptujesz?</translation>
         <translation>Wznów</translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation>Anuluj</translation>
+        <source>Toggle transfer window</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Could not open file</source>
-        <translation>Problem z otwarciem pliku</translation>
+        <source>User %1 want to send you a file %2
+of size %3kB.
+This is probably a next part of %4
+ What should I do?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continue transfer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save file under new name</source>
+        <translation>Zapisz plik pod nową nazwą</translation>
+    </message>
+    <message>
+        <source>Ignore transfer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select another file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not open file. Select another one.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FileTransferWindow</name>
+    <message>
+        <source>Kadu - file transfers</source>
+        <translation>Kadu - Przesyłanie pliku</translation>
+    </message>
+    <message>
+        <source>Incoming transfers:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File name</source>
+        <translation>Nazwa pliku</translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation>Status</translation>
+    </message>
+    <message>
+        <source>Speed</source>
+        <translation>Prędkość</translation>
+    </message>
+    <message>
+        <source>Progress</source>
+        <translation>Postęp</translation>
+    </message>
+    <message>
+        <source>Full file name</source>
+        <translation>Pełna nazwa pliku</translation>
+    </message>
+    <message>
+        <source>Outcoming transfers:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation>Start</translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation>Stop</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation>Usuń</translation>
     </message>
 </context>
 </TS>
