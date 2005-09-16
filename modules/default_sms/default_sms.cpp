@@ -277,15 +277,13 @@ void SmsEraGateway::send(const QString& number,const QString& message, const QSt
 	    
 	QString gateway= config_file.readEntry("SMS", "EraGateway");
 
-	if (gateway == "Basic")
+	if (gateway == "Sponsored")
 	{
-	    path= "sms/do/extern/tinker/free/send";
+	    path= "msg/api/do/tinker/sponsored";
 	    post_data.replace(post_data.find("&numbers="),9, "&number=48");
 	}
-	else if (gateway == "Charge")
-		path= "sms/do/extern/tinker/super/send";
-	else if (gateway == "Omnix")
-		path= "sms/do/extern/tinker/multi/send";
+	else if (gateway == "OmnixMultimedia")
+		path= "msg/api/do/tinker/omnix";
 	else 
 	{
 		emit finished(false);
@@ -333,6 +331,7 @@ QString SmsEraGateway::errorNumber(int nr)
 		case 7: return tr("Limit of the sms run-down");
 		case 8: return tr("Wrong receiver address");
 		case 9: return tr("Message too long");
+		case 10: return tr("Not enough tokens");
 	}
 	return tr("Unknown error (%1)").arg(nr);
 }
@@ -347,14 +346,19 @@ SmsGatewaySlots::SmsGatewaySlots(QObject *parent, const char *name) : QObject(pa
 	ConfigDialog::addVGroupBox("SMS", "SMS",
 			QT_TRANSLATE_NOOP("@default", "SMS Era Gateway"));
 
-	QStringList types=toStringList("Basic", "Omnix", "Charge");
+	QStringList types=toStringList(tr("Sponsored"), tr("OmnixMultimedia"));
+	QStringList values=toStringList("Sponsored", "OmnixMultimedia");
 	ConfigDialog::addComboBox("SMS", "SMS Era Gateway",
-			QT_TRANSLATE_NOOP("@default", "Type of gateway"), "EraGateway", types, types);
+			QT_TRANSLATE_NOOP("@default", "Type of gateway"), "EraGateway", types, values);
 
-	config_file.addVariable("SMS", "EraGateway", "Omnix");
+	config_file.addVariable("SMS", "EraGateway", "Sponsored");
 	//przepisanie starego hasla
 	config_file.addVariable("SMS", "EraGateway_Omnix_User", config_file.readEntry("SMS", "EraGatewayUser"));
 	config_file.addVariable("SMS", "EraGateway_Omnix_Password", config_file.readEntry("SMS", "EraGatewayPassword"));
+	config_file.addVariable("SMS", "EraGateway_OmnixMultimedia_User", config_file.readEntry("SMS", "EraGateway_Omnix_User"));
+	config_file.addVariable("SMS", "EraGateway_OmnixMultimedia_Password", config_file.readEntry("SMS", "EraGateway_Omnix_Password"));
+	config_file.addVariable("SMS", "EraGateway_Sponsored_User", config_file.readEntry("SMS", "EraGateway_Basic_User"));
+	config_file.addVariable("SMS", "EraGateway_Sponsored_Password", config_file.readEntry("SMS", "EraGateway_Basic_Password"));
 	//
 
 	ConfigDialog::addLineEdit2("SMS", "SMS Era Gateway",
