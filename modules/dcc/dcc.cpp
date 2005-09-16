@@ -27,9 +27,9 @@
 #include "debug.h"
 #include "file_transfer.h"
 #include "ignore.h"
+#include "misc.h"
 #include "kadu.h"
 #include "message_box.h"
-#include "misc.h"
 #include "userlist.h"
 
 extern "C" int dcc_init()
@@ -155,8 +155,8 @@ void DccSocket::watchDcc(int /*check*/)
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_CLIENT_ACCEPT! uin:%d peer_uin:%d\n",
 				dccsock->uin, dccsock->peer_uin);
 
-			insane = dccsock->uin != (UinType)config_file.readNumEntry("General", "UIN") ||
-					!userlist->contains("Gadu", QString::number(dccsock->peer_uin));
+			insane = dccsock->uin != (UinType)config_file.readNumEntry("General", "UIN")
+				|| !userlist->contains("Gadu", QString::number(dccsock->peer_uin));
 			peer = userlist->byID("Gadu", QString::number(dccsock->peer_uin));
 			users.append(peer);
 			unbidden = peer.isAnonymous() || isIgnored(users);
@@ -590,7 +590,7 @@ void DccManager::dccConnectionReceived(const UserListElement& sender)
 {
 	kdebugf();
 	struct gg_dcc* dcc_new;
-	if (DccSocket::count() < 8)
+	if (DccSocket::count() < 8 && sender.usesProtocol("Gadu"))
 	{
 		gadu->dccGetFile(htonl(sender.IP("Gadu").ip4Addr()),
 						sender.port("Gadu"),
