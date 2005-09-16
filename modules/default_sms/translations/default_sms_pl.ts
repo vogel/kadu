@@ -64,6 +64,21 @@
         <source>Unknown error (%1)</source>
         <translation>Nieznany błąd (%1)</translation>
     </message>
+    <message>
+        <source>Not enough tokens</source>
+        <translation type="unfinished">Nie wystarczające tokeny</translation>
+    </message>
+</context>
+<context>
+    <name>SmsGatewaySlots</name>
+    <message>
+        <source>Sponsored</source>
+        <translation>Sponsorowana</translation>
+    </message>
+    <message>
+        <source>OmnixMultimedia</source>
+        <translation>OmnixMultimedia</translation>
+    </message>
 </context>
 <context>
     <name>SmsIdeaGateway</name>

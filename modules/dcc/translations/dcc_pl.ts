@@ -88,31 +88,23 @@ Kontynuować połączenie?</translation>
 <context>
     <name>FileTransfer</name>
     <message>
-        <source>Receiver: %1</source>
-        <translation>Odbiorca: %1</translation>
-    </message>
-    <message>
-        <source>This option only sends a remind message to %1. The transfer will not start immediately</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Hello. I am an automatic file-transfer reminder. Could you please send me a file named %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Witam. Jestem automatem odbierajacym. Czy zechcesz mi przesłać plik o nazwie %1?</translation>
     </message>
     <message>
-        <source>Error: message was not sended</source>
-        <translation type="unfinished"></translation>
+        <source>This option only sends a remind message to %1. The transfer will not start immediately.</source>
+        <translation>Ta opcja tylko wysyła wiadomość  przypominającą do %1. Transfer nie rozpoczynie się natychmiast.</translation>
+    </message>
+    <message>
+        <source>Error: message was not sent</source>
+        <translation>Błąd: wiadomość nie została wysłana</translation>
     </message>
 </context>
 <context>
     <name>FileTransferListViewItem</name>
     <message>
         <source>Frozen</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>0 kB/s</source>
-        <translation>0 kB/s</translation>
+        <translation>Zamrożony</translation>
     </message>
     <message>
         <source>Error</source>
@@ -184,19 +176,18 @@ o rozmiarze %3kB. Akceptujesz?</translation>
         <translation>Wznów</translation>
     </message>
     <message>
-        <source>Toggle transfer window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>User %1 want to send you a file %2
 of size %3kB.
 This is probably a next part of %4
  What should I do?</source>
-        <translation type="unfinished"></translation>
+        <translation>Użytkownik %1 chce przesłać ci plik %2
+o rozmiarze %3kB.
+Jest prawdopodobnie następną częścią z %4
+Co chcesz zrobić?</translation>
     </message>
     <message>
         <source>Continue transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontynuuj przesyłanie</translation>
     </message>
     <message>
         <source>Save file under new name</source>
@@ -204,15 +195,19 @@ This is probably a next part of %4
     </message>
     <message>
         <source>Ignore transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignoruj przesyłanie</translation>
     </message>
     <message>
         <source>Select another file</source>
-        <translation type="unfinished"></translation>
+        <translation>Wybierz inny plik</translation>
     </message>
     <message>
         <source>Could not open file. Select another one.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie mogę otworzyć pliku. Wybierz inny.</translation>
+    </message>
+    <message>
+        <source>Toggle transfers window</source>
+        <translation>Okno przesyłania plików</translation>
     </message>
 </context>
 <context>
@@ -223,11 +218,11 @@ This is probably a next part of %4
     </message>
     <message>
         <source>Incoming transfers:</source>
-        <translation type="unfinished"></translation>
+        <translation>Transfer przychodzacy:</translation>
     </message>
     <message>
         <source>Contact</source>
-        <translation type="unfinished"></translation>
+        <translation>Połączenie</translation>
     </message>
     <message>
         <source>File name</source>
@@ -250,10 +245,6 @@ This is probably a next part of %4
         <translation>Pełna nazwa pliku</translation>
     </message>
     <message>
-        <source>Outcoming transfers:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Start</source>
         <translation>Start</translation>
     </message>
@@ -264,6 +255,10 @@ This is probably a next part of %4
     <message>
         <source>Remove</source>
         <translation>Usuń</translation>
+    </message>
+    <message>
+        <source>Outgoing transfers:</source>
+        <translation>Transfer wychodzący:</translation>
     </message>
 </context>
 </TS>
