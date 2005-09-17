@@ -43,7 +43,7 @@ extern "C" int config_wizard_init()
 	kdebugf();
 	wizardStarter = new WizardStarter(NULL, "wizardStarter");
 
-	if (config_file.readNumEntry("General", "UIN", 0) == 0 || config_file.readEntry("General", "Password", "").isEmpty())
+	if (config_file.readNumEntry("General", "UIN", 0) == 0 || config_file.readEntry("General", "Password").isEmpty())
 		wizardStarter->start();
 
 	kdebugf2();
@@ -423,7 +423,7 @@ void Wizard::createGGCurrentNumberPage()
 	new QLabel(tr("Gadu-gadu password"),grp_haveNumber);
 	l_ggPassword = new QLineEdit(grp_haveNumber);
 	l_ggPassword->setEchoMode(QLineEdit::Password);
-	l_ggPassword->setText(pwHash(config_file.readEntry("General", "Password", "")));
+	l_ggPassword->setText(pwHash(config_file.readEntry("General", "Password")));
 	c_importContacts = new QCheckBox(tr("Import contacts"), grp_haveNumber);
 	c_importContacts->setChecked(false);
 
@@ -442,7 +442,7 @@ void Wizard::createGGNewNumberPage()
 	new QLabel(tr("<h3>Please enter your valid e-mail address and password you want "
 				"to secure your new Gadu-gadu number</h3>\nPassword must contain at least 5 signs (only letters and numbers)"), ggNewNumberPage);
 
-	QGroupBox *grp_dontHaveNumber = new QGroupBox("", ggNewNumberPage);
+	QGroupBox *grp_dontHaveNumber = new QGroupBox(QString::null, ggNewNumberPage);
 	grp_dontHaveNumber->setInsideMargin(10);
 	grp_dontHaveNumber->setColumns(2);
 	grp_dontHaveNumber->setInsideSpacing(4);
@@ -760,7 +760,7 @@ void Wizard::createHintsOptionsPage()
 	preview->setFixedWidth(260);
 	preview->setAutoResize(true);
 
-	new QLabel("", grp_hintsOptions);
+	new QLabel(QString::null, grp_hintsOptions);
 
 	preview2 = new QLabel (tr("<b>Error</b>: (192.168.0.1) Disconnection has occured"), grp_hintsOptions);
 	preview2->setFont(QFont("sans", 10));	//<-----------------------------------
@@ -792,7 +792,7 @@ void Wizard::createHintsOptionsPage()
 	connect(cb_hintsTheme, SIGNAL(activated(int)), this, SLOT(previewHintsTheme(int)));
 	connect(cb_hintsType, SIGNAL(activated(int)), this, SLOT(previewHintsType(int)));
 
-	QString hintConstruction = config_file.readEntry("Hints", "NotifyHintSyntax", "");
+	QString hintConstruction = config_file.readEntry("Hints", "NotifyHintSyntax");
 	if (!hintConstruction.isEmpty())
 	{
 		unsigned int i;
@@ -925,7 +925,7 @@ void Wizard::createInfoPanelPage()
 	connect(cb_panelTheme, SIGNAL(activated (int)), this, SLOT(previewPanelTheme(int)));
 	connect(c_showScrolls, SIGNAL(toggled(bool)), this, SLOT(addScrolls(bool)));	//--j.w.
 
-	QString panelConstruction=config_file.readEntry("Look", "PanelContents", "");
+	QString panelConstruction = config_file.readEntry("Look", "PanelContents");
 	if (!panelConstruction.isEmpty())
 	{
 		UserListElement el;
@@ -1223,7 +1223,7 @@ void Wizard::setHints()
 	if (cb_hintsType->currentItem() == 0)
 	{
 		config_file.writeEntry("Hints", "NotifyHintUseSyntax", false);
-		config_file.writeEntry("Hints", "NotifyHintSyntax", "");
+		config_file.writeEntry("Hints", "NotifyHintSyntax", QString::null);
 	}
 	else
 	{
@@ -1286,7 +1286,7 @@ void Wizard::previewIconTheme(int iconThemeID)
 			path.replace(cb_iconTheme->text(i), cb_iconTheme->text(iconThemeID));
 	path.replace(tr("Default"), "default");
 	iconPreview->setPixmap(path);
-	path.replace("online.png", "");
+	path.replace("online.png", QString::null);
 	iconPreview2->setPixmap(path+"busy_d.png");
 	iconPreview3->setPixmap(path+"invisible_m.png");
 	iconPreview4->setPixmap(path+"offline_d_m.png");
@@ -1305,7 +1305,7 @@ void Wizard::setColorsAndIcons()
 		newIconTheme.replace(tr("Default"), "default");
 		icons_manager->clear();
 		icons_manager->setTheme(newIconTheme);
-		ToolBar::refreshIcons();
+		MainToolBar::refreshIcons();
 		UserBox::userboxmenu->refreshIcons();
 		icons_manager->refreshMenus();
 		kadu->changeAppearance();
@@ -1386,12 +1386,12 @@ QString Wizard::toDisplay(QString s)
 	s.replace("%m", "+4812345679");
 	s.replace("%u", "999999");
 	s.replace("%g", tr("Friends"));
-	s.replace("%o", "");
+	s.replace("%o", QString::null);
 	s.replace("%v", "host.server.net");
 	s.replace("%p", "80");
 	s.replace("%e", "jimbo@mail.server.net");
-	s.replace("[", "");
-	s.replace("]", "");
+	s.replace("[", QString::null);
+	s.replace("]", QString::null);
 	s.replace("changed status to", tr("changed status to"));
 
 	kdebugf2();
