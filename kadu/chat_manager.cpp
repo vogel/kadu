@@ -23,17 +23,40 @@
 ChatManager::ChatManager(QObject* parent, const char* name)
 	: QObject(parent, name)
 {
+	kdebugf();
+
+	Action* auto_send_action = new Action(icons_manager->loadIcon("AutoSendMessage"),
+		tr("%1 sends message").arg(config_file.readEntry("ShortCuts", "chat_newline")),
+		"autoSendAction");
+	auto_send_action->setToggleAction(true);
+	connect(auto_send_action, SIGNAL(activated(const UserGroup*, bool)),
+		this, SLOT(autoSendActionActivated(const UserGroup*, bool)));
+	connect(auto_send_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*,
+			const UserListElements&)),
+		this, SLOT(autoSendActionAddedToToolbar(ToolButton*, ToolBar*,
+			const UserListElements&)));
+	KaduActions.insert("autoSendAction", auto_send_action);
+
+	Action* scroll_lock_action = new Action(icons_manager->loadIcon("ScrollLock"),
+		tr("Blocks scrolling"), "scrollLockAction");
+	scroll_lock_action->setToggleAction(true);
+	connect(scroll_lock_action, SIGNAL(activated(const UserGroup*, bool)),
+		this, SLOT(scrollLockActionActivated(const UserGroup*, bool)));
+	KaduActions.insert("scrollLockAction", scroll_lock_action);
+
 	Action* clear_action = new Action(icons_manager->loadIcon("ClearChat"),
 		tr("Clear messages in chat window"), "clearChatAction");
-	connect(clear_action, SIGNAL(activated(const UserGroup*)),
+	connect(clear_action, SIGNAL(activated(const UserGroup*, bool)),
 		this, SLOT(clearActionActivated(const UserGroup*)));
 	KaduActions.insert("clearChatAction", clear_action);
 
 	Action* history_action = new Action(icons_manager->loadIcon("History"),
 		tr("Show history"), "showHistoryAction");
-	connect(history_action, SIGNAL(activated(const UserGroup*)),
+	connect(history_action, SIGNAL(activated(const UserGroup*, bool)),
 		this, SLOT(historyActionActivated(const UserGroup*)));
 	KaduActions.insert("showHistoryAction", history_action);
+
+	kdebugf2();
 }
 
 void ChatManager::closeAllWindows()
@@ -53,14 +76,40 @@ ChatManager::~ChatManager()
 	closeAllWindows();
 }
 
+void ChatManager::autoSendActionAddedToToolbar(ToolButton* button, ToolBar* toolbar,
+	const UserListElements& users)
+{
+	kdebugf();
+	button->setOn(findChat(users)->autoSend());
+	kdebugf2();
+}
+
+void ChatManager::autoSendActionActivated(const UserGroup* users, bool is_on)
+{
+	kdebugf();
+	findChat(users)->setAutoSend(is_on);
+	kdebugf2();
+}
+
+void ChatManager::scrollLockActionActivated(const UserGroup* users, bool is_on)
+{
+	kdebugf();
+	findChat(users)->setScrollLocked(is_on);
+	kdebugf2();
+}
+
 void ChatManager::clearActionActivated(const UserGroup* users)
 {
+	kdebugf();
 	findChat(users)->clearChatWindow();
+	kdebugf2();
 }
 
 void ChatManager::historyActionActivated(const UserGroup* users)
 {
+	kdebugf();
 	findChat(users)->HistoryBox();
+	kdebugf2();
 }
 
 const ChatList& ChatManager::chats() const

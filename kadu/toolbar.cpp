@@ -165,7 +165,7 @@ void Action::toolButtonClicked()
 	{
 		Chat* c = dynamic_cast<Chat*>(w);
 		if (c != NULL)
-			emit activated(c->users());
+			emit activated(c->users(), button->isOn());
 	}
 	kdebugf2();
 }
@@ -184,11 +184,22 @@ ToolButton* Action::addToToolbar(ToolBar* toolbar)
 	kdebugf();
 	ToolButton* btn = new ToolButton(toolbar, name());
 	btn->setIconSet(iconSet());
+	btn->setToggleButton(isToggleAction());
 	QToolTip::add(btn, menuText());
 	connect(btn, SIGNAL(clicked()), this, SLOT(toolButtonClicked()));
 	connect(btn, SIGNAL(destroyed(QObject*)), this, SLOT(toolButtonDestroyed(QObject*)));
 	ToolButtons.append(btn);
-	emit addedToToolbar(btn, toolbar);
+	UserListElements user_list_elems;
+	for (QWidget* w = toolbar->parentWidget(); w != NULL; w = w->parentWidget())
+	{
+		Chat* c = dynamic_cast<Chat*>(w);
+		if (c != NULL)
+		{
+			user_list_elems = c->users()->toUserListElements();
+			break;
+		}
+	}
+	emit addedToToolbar(btn, toolbar, user_list_elems);
 	kdebugf2();
 	return btn;
 }

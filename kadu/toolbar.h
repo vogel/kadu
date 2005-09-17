@@ -84,8 +84,12 @@ class Action : public QAction
 			const UserListElements& users);
 
 	signals:
-		void addedToToolbar(ToolButton* button, ToolBar* toolbar);
-		void activated(const UserGroup* users);
+		void addedToToolbar(ToolButton* button, ToolBar* toolbar,
+			const UserListElements& users);
+		/**
+			is_on jest zawsze ustawione na false jesli akcja nie jest typu "toggle".
+		**/
+		void activated(const UserGroup* users, bool is_on);
 };
 
 class Actions : public QMap<QString, Action*>

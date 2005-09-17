@@ -47,6 +47,12 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 
 	emoticon_selector = NULL;
 	color_selector = NULL;
+	
+	AutoSend = false;
+	if (config_file.readBoolEntry("Chat","AutoSend"))
+		AutoSend = true;
+
+	ScrollLocked = false;
 
 	title_timer = new QTimer(this, "title_timer");
 	connect(title_timer,SIGNAL(timeout()),this,SLOT(changeTitle()));
@@ -117,6 +123,7 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	edit->setWordWrap(QMultiLineEdit::WidgetWidth);
 	edit->setFont(config_file.readFontEntry("Look","ChatFont"));
 	edit->setPaper(QBrush(config_file.readColorEntry("Look","ChatTextBgColor")));
+	edit->setAutosend(AutoSend);
 
 	connect(body, SIGNAL(mouseReleased(QMouseEvent *, KaduTextBrowser *)), edit, SLOT(setFocus()));
 
@@ -159,20 +166,6 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	buttontray->moveDockWindow(tb1);
 	buttontray->setAcceptDockWindow(tb1, true);
 
-	autosend = new ToolButton(tb1, "autoSendButton");
-	autosend->setPixmap(icons_manager->loadIcon("AutoSendMessage"));
-	autosend->setToggleButton(true);
-	QToolTip::add(autosend, tr("%1 sends message").arg(config_file.readEntry("ShortCuts", "chat_newline")));
-
-	if (config_file.readBoolEntry("Chat","AutoSend"))
-		autosend->setOn(true);
-	edit->setAutosend(config_file.readBoolEntry("Chat","AutoSend"));
-
-	lockscroll = new ToolButton(tb1, "lockScrollButton");
-	lockscroll->setPixmap(icons_manager->loadIcon("ScrollLock"));
-	lockscroll->setToggleButton(true);
-	QToolTip::add(lockscroll, tr("Blocks scrolling"));
-
 	CONST_FOREACH(a, KaduActions)
 	{
 		(*a)->addToToolbar(tb1);
@@ -196,7 +189,6 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	insertimage->setPixmap(icons_manager->loadIcon("ChooseImage"));
 	QToolTip::add(insertimage, tr("Insert image"));
 
-	connect(autosend, SIGNAL(toggled(bool)), edit, SLOT(setAutosend(bool)));
 	connect(iconsel, SIGNAL(clicked()), this, SLOT(emoticonSelectorClicked()));
 	connect(whois, SIGNAL(clicked()), this, SLOT(userWhois()));
 	connect(insertimage, SIGNAL(clicked()), this, SLOT(insertImage()));
@@ -745,7 +737,7 @@ void Chat::repaintMessages()
 		CONST_FOREACH(msg, ChatMessages)
 			body->setParagraphBackgroundColor(i++, (*msg)->backgroundColor);
 
-		if (!lockscroll->isOn())
+		if (!ScrollLocked)
 			body->scrollToBottom();
 	}
 	else
@@ -928,6 +920,21 @@ void Chat::clearChatWindow()
 		ChatMessages.clear();
 		body->clear();
 	}
+	kdebugf2();
+}
+
+void Chat::setAutoSend(bool auto_send)
+{
+	kdebugf();
+	AutoSend = auto_send;
+	edit->setAutosend(auto_send);
+	kdebugf2();
+}
+
+void Chat::setScrollLocked(bool locked)
+{
+	kdebugf();
+	ScrollLocked = locked;
 	kdebugf2();
 }
 
@@ -1194,6 +1201,11 @@ QValueList<ChatMessage*>& Chat::chatMessages()
 const QString& Chat::title() const
 {
 	return title_buffer;
+}
+
+bool Chat::autoSend() const
+{
+	return AutoSend;
 }
 
 void Chat::dragEnterEvent(QDragEnterEvent *e)

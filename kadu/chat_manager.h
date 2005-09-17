@@ -49,6 +49,10 @@ class ChatManager : public QObject
 
 	private slots:
 
+		void autoSendActionAddedToToolbar(ToolButton* button, ToolBar* toolbar,
+			const UserListElements& users);
+		void autoSendActionActivated(const UserGroup* users, bool is_on);
+		void scrollLockActionActivated(const UserGroup* users, bool is_on);
 		void clearActionActivated(const UserGroup* users);
 		void historyActionActivated(const UserGroup* users);
 

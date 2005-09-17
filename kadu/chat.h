@@ -66,9 +66,8 @@ class Chat : public QMainWindow
 		ToolButton* colorbtn; /*!< przycisk umo¿liwiaj±cy
 					wybór koloru czcionki*/
 		ToolButton* iconsel;
-		ToolButton* autosend; /*!< przycisk automatycznego wysy³ania */
-		ToolButton* lockscroll; /*!< przisk blokowania
-						przesuwania rozmowy */
+		bool AutoSend;
+		bool ScrollLocked;
 		QAccel* acc; /*!< zmienna potrzebna do
 				 rejestracji skrótów klawiszowych*/
 		ToolButton* sendbtn; /*!< przycisk do wysy³ania wiadomo¶ci */
@@ -298,6 +297,8 @@ class Chat : public QMainWindow
 		**/
 		const QString& title() const;
 
+		bool autoSend() const;
+
 		virtual void dragEnterEvent(QDragEnterEvent *e);
 		virtual void dropEvent(QDropEvent *e);
 		virtual void dragMoveEvent(QDragMoveEvent *e);
@@ -461,6 +462,18 @@ class Chat : public QMainWindow
 			Slot czyszcz±cy okno rozmowy
 		**/
 		void clearChatWindow();
+
+		/**
+			\fn void setAutoSend(bool auto_send)
+			Ustaw autowysylanie
+		**/
+		void setAutoSend(bool auto_send);
+
+		/**
+			\fn void setScrollLocked(bool locked)
+			Ustaw blokade przewijania
+		**/
+		void setScrollLocked(bool locked);
 
 	signals:
 		/**
