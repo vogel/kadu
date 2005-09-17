@@ -10,7 +10,6 @@ class EncryptionManager : public QObject
 	Q_OBJECT
 
 	private:
-		QMap<const QPushButton*,Chat*> EncryptionButtonChat;
 		QMap<Chat*,bool> EncryptionEnabled;
 		void setupEncryptButton(Chat* chat,bool enabled);
 
@@ -23,7 +22,7 @@ class EncryptionManager : public QObject
 		void generateMyKeys();
 		void sendPublicKey();
 		void onUseEncryption(bool toggled);
-		void encryptionButtonClicked();
+		void encryptionActionActivated(const UserGroup* users);
 		void userBoxMenuPopup();
 		void createConfigDialogSlot();
 

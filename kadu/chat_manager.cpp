@@ -13,6 +13,7 @@
 #include "config_dialog.h"
 #include "debug.h"
 #include "chat_manager.h"
+#include "icons_manager.h"
 #include "kadu.h"
 #include "kadu_splitter.h"
 #include "misc.h"
@@ -22,6 +23,17 @@
 ChatManager::ChatManager(QObject* parent, const char* name)
 	: QObject(parent, name)
 {
+	Action* clear_action = new Action(icons_manager->loadIcon("ClearChat"),
+		tr("Clear messages in chat window"), "clearChatAction");
+	connect(clear_action, SIGNAL(activated(const UserGroup*)),
+		this, SLOT(clearActionActivated(const UserGroup*)));
+	KaduActions.insert("clearChatAction", clear_action);
+
+	Action* history_action = new Action(icons_manager->loadIcon("History"),
+		tr("Show history"), "showHistoryAction");
+	connect(history_action, SIGNAL(activated(const UserGroup*)),
+		this, SLOT(historyActionActivated(const UserGroup*)));
+	KaduActions.insert("showHistoryAction", history_action);
 }
 
 void ChatManager::closeAllWindows()
@@ -39,6 +51,16 @@ ChatManager::~ChatManager()
 {
 	kdebugf();
 	closeAllWindows();
+}
+
+void ChatManager::clearActionActivated(const UserGroup* users)
+{
+	findChat(users)->clearChatWindow();
+}
+
+void ChatManager::historyActionActivated(const UserGroup* users)
+{
+	findChat(users)->HistoryBox();
 }
 
 const ChatList& ChatManager::chats() const

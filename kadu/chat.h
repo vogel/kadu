@@ -3,12 +3,13 @@
 
 #include <qdatetime.h>
 #include <qstring.h>
-#include <qwidget.h>
+#include <qmainwindow.h>
 #include <qvaluelist.h>
 
 #include "config_file.h"
 #include "emoticons.h"
 #include "gadu.h"
+#include "toolbar.h"
 #include "usergroup.h"
 
 class QAccel;
@@ -37,26 +38,12 @@ typedef QValueList<Chat*> ChatList;
 	\brief Okno rozmowy
 **/
 
-class Chat : public QWidget
+class Chat : public QMainWindow
 {
 	Q_OBJECT
 
 	private:
 		friend class ChatManager;
-		/**
-		\struct RegisteredButton struktura przechowuj±ca informacje o zarejestrowanym przycisku
-		**/
-		struct RegisteredButton
-		{
-			QString name; /*!< nazwa przycisku */
-			QObject* receiver; /*!< obiekt z którego wykorzystana
-					bêdzie funkcja do obs³ugi przycisku */
-			QString slot; /*!< funkcja podpiêta pod obs³ugê
-						tego przycisku */
-		};
-		static QValueList<RegisteredButton> RegisteredButtons;/*!<
-				zarejestrowane przyciski w oknie rozmowy */
-		QMap<QString,QPushButton*> Buttons; /*!< przyciski z okna */
 
 		QValueList<ChatMessage *> ChatMessages; /*!< wiadomo¶ci wpisane
 							w oknie rozmowy */
@@ -72,19 +59,19 @@ class Chat : public QWidget
 		EmoticonSelector* emoticon_selector; /*!< okienko do
 							wyboru emotikonek */
 		ColorSelector* color_selector; /*!< okienko do wyboru koloru */
-		QPushButton* boldbtn; /*!< przycisk pogrubiaj±cy czcionkê */
-		QPushButton* italicbtn; /*!< przycisk ustawiaj±cy
+		ToolButton* boldbtn; /*!< przycisk pogrubiaj±cy czcionkê */
+		ToolButton* italicbtn; /*!< przycisk ustawiaj±cy
 					czcionkê na kursywê */
-		QPushButton* underlinebtn; /*!< przycisk podkre¶laj±cy tekst */
-		QPushButton* colorbtn; /*!< przycisk umo¿liwiaj±cy
+		ToolButton* underlinebtn; /*!< przycisk podkre¶laj±cy tekst */
+		ToolButton* colorbtn; /*!< przycisk umo¿liwiaj±cy
 					wybór koloru czcionki*/
-		QPushButton* iconsel;
-		QPushButton* autosend; /*!< przycisk automatycznego wysy³ania */
-		QPushButton* lockscroll; /*!< przisk blokowania
+		ToolButton* iconsel;
+		ToolButton* autosend; /*!< przycisk automatycznego wysy³ania */
+		ToolButton* lockscroll; /*!< przisk blokowania
 						przesuwania rozmowy */
 		QAccel* acc; /*!< zmienna potrzebna do
 				 rejestracji skrótów klawiszowych*/
-		QPushButton* sendbtn; /*!< przycisk do wysy³ania wiadomo¶ci */
+		ToolButton* sendbtn; /*!< przycisk do wysy³ania wiadomo¶ci */
 		UserBox* userbox; /*!< lista kontaktów przydatna gdy jeste¶my w
 						 konferencji */
 		QString myLastMessage;/*!< zmienna przechowuj±ca
@@ -137,12 +124,6 @@ class Chat : public QWidget
 			Slot dodaje wys³an± wiadomo¶æ do historii rozmowy
 		**/
 		void addMyMessageToHistory();
-
-		/**
-			\fn void clearChatWindow()
-			Slot czyszcz±cy okno rozmowy
-		**/
-		void clearChatWindow();
 
 		/**
 			\fn void pageUp()
@@ -225,7 +206,6 @@ class Chat : public QWidget
 		// FIXME - nie powinno byc publicznych zmiennych
 		KaduTextBrowser* body; /*!< historia rozmowy */
 		CustomInput* edit; /*!< okno do wpisywania wiadomo¶ci */
-		QHBox* buttontray;/* ?? */
 
 		/**
 			Konstruktor okna rozmowy
@@ -241,32 +221,6 @@ class Chat : public QWidget
 			Destruktor okna rozmowy
 		**/
 		~Chat();
-
-		/**
-			\fn static void registerButton(const QString& name, QObject* receiver, const QString& slot)
-			Rejestruje przycisk w oknie chat, ustawia funkcje do obs³ugi
-			sygna³u "clicked"
-			\param name nazwa przycisku aby moc siê do niego odwo³aæ
-			\param receiver obiekt który zawiera funkcje do obs³ugi zdarzenia
-			\param slot funkcja która bêdzie obs³ugiwaæ zdarzenie "clicked"
-		**/
-		static void registerButton(const QString& name, QObject* receiver, const QString& slot);
-
-		/**
-			\fn static void unregisterButton(const QString& name)
-			Wyrejestrowuje przycisk ze wszystkich okien
-			\param name nazwa przycisku do wyrejestrowania
-		**/
-		static void unregisterButton(const QString& name);
-
-		/**
-			\fn QPushButton* button(const QString& name) const
-			Zwraca wska¼nik do przycisku
-			\param name nazwa przycisku
-			\return wska¼nik do przycisku, je¶li przycisk
-			nie istnieje zwraca NULL
-		**/
-		QPushButton* button(const QString& name) const;
 
 		/**
 			\fn void formatMessages(QValueList<ChatMessage *> &msgs)
@@ -501,6 +455,12 @@ class Chat : public QWidget
 			\param uin
 		**/
 		void messageAcceptedSlot(int seq, UinType uin);
+
+		/**
+			\fn void clearChatWindow()
+			Slot czyszcz±cy okno rozmowy
+		**/
+		void clearChatWindow();
 
 	signals:
 		/**

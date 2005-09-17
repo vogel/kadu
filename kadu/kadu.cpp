@@ -253,29 +253,29 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	pending.loadFromFile();
 
 	// dodanie przyciskow do paska narzedzi
-	ToolBar::registerButton("ShowHideInactiveUsers", tr("Show / hide offline users"),
+	MainToolBar::registerButton("ShowHideInactiveUsers", tr("Show / hide offline users"),
 							groups_manager, SLOT(changeDisplayingOffline()), -1, "offlineUsersButton");
 
-	ToolBar::registerButton("ShowOnlyDescriptionUsers", tr("Show / hide users without description"),
+	MainToolBar::registerButton("ShowOnlyDescriptionUsers", tr("Show / hide users without description"),
 							groups_manager, SLOT(changeDisplayingWithoutDescription()), -1, "withoutDescriptionUsersButton");
 
-	ToolBar::registerButton("Configuration", tr("Configuration"),
+	MainToolBar::registerButton("Configuration", tr("Configuration"),
 							this, SLOT(configure()), -1, "configurationButton");
 
-	ToolBar::registerSeparator();
+	MainToolBar::registerSeparator();
 
-	ToolBar::registerButton("History", tr("View history"),
+	MainToolBar::registerButton("History", tr("View history"),
 							this, SLOT(viewHistory()), -1, "historyButton");
 
-	ToolBar::registerButton("EditUserInfo", tr("View / edit user info"),
+	MainToolBar::registerButton("EditUserInfo", tr("View / edit user info"),
 							this, SLOT(showUserInfo()), -1, "editUserButton");
 
-	ToolBar::registerButton("LookupUserInfo", tr("Lookup in directory"),
+	MainToolBar::registerButton("LookupUserInfo", tr("Lookup in directory"),
 							this, SLOT(lookupInDirectory()), -1, "lookupUserButton");
 
-	ToolBar::registerSeparator();
+	MainToolBar::registerSeparator();
 
-	ToolBar::registerButton("AddUser", tr("Add user"),
+	MainToolBar::registerButton("AddUser", tr("Add user"),
 							this, SLOT(addUserAction()), -1, "addUserButton");
 
 	/* guess what */
@@ -362,10 +362,10 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 void Kadu::createToolBar()
 {
 	kdebugf();
-	new ToolBar(this);
+	new MainToolBar(this);
 	setRightJustification(true);
 //	setDockEnabled(Qt::DockBottom, false);
-	setAppropriate(ToolBar::instance, true);
+	setAppropriate(MainToolBar::instance, true);
 	kdebugf2();
 }
 
@@ -1051,7 +1051,7 @@ bool Kadu::close(bool quit)
 		dockwindows.replace(QRegExp("\\n"), "\\n");
 		config_file.writeEntry("General", "DockWindows", dockwindows);
 
-		delete ToolBar::instance;
+		delete MainToolBar::instance;
 
 		if (config_file.readNumEntry("General", "DefaultStatusIndex") == 7 || config_file.readNumEntry("General", "DefaultStatusIndex") == 8)
 		{

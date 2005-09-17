@@ -169,7 +169,7 @@ void IconsManager::onApplyConfigDialog()
 
 		icons_manager->clear();
 		icons_manager->setTheme(selectedTheme);
-		ToolBar::refreshIcons();
+		MainToolBar::refreshIcons();
 		UserBox::userboxmenu->refreshIcons();
 		icons_manager->refreshMenus();
 		kadu->changeAppearance();

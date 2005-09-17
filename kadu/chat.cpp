@@ -34,11 +34,10 @@
 #include "search.h"
 #include "userbox.h"
 
-QValueList<Chat::RegisteredButton> Chat::RegisteredButtons;
 extern const char *colors[];
 
 Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
-	: QWidget(parent, name, Qt::WDestructiveClose), Users(new UserGroup(2 * usrs.count()))
+	: QMainWindow(parent, name, Qt::WDestructiveClose), Users(new UserGroup(2 * usrs.count()))
 {
 	kdebugf();
 	Users->addUsers(usrs);
@@ -108,55 +107,10 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	QLabel *edt = new QLabel(tr("Edit window:"), edtbuttontray, "editLabel");
 	QToolTip::add(edt, tr("This is where you type in the text to be sent"));
 
-	buttontray = new QHBox(edtbuttontray, "buttontrayBox");
-	buttontray->setMargin(2);
-	buttontray->setSpacing(1);
-
-	autosend = new QPushButton(buttontray, "autoSendButton");
-	autosend->setPixmap(icons_manager->loadIcon("AutoSendMessage"));
-	autosend->setToggleButton(true);
-	QToolTip::add(autosend, tr("%1 sends message").arg(config_file.readEntry("ShortCuts", "chat_newline")));
-
-	lockscroll = new QPushButton(buttontray, "lockScrollButton");
-	lockscroll->setPixmap(icons_manager->loadIcon("ScrollLock"));
-	lockscroll->setToggleButton(true);
-	QToolTip::add(lockscroll, tr("Blocks scrolling"));
-
-	CONST_FOREACH(b, RegisteredButtons)
-	{
-		QPushButton* btn = new QPushButton(buttontray, (*b).name.local8Bit().data());
-		connect(btn, SIGNAL(clicked()), (*b).receiver, (*b).slot.local8Bit().data());
-		Buttons.insert((*b).name,btn);
-	}
-
-	QPushButton *clearchat= new QPushButton(buttontray, "clearChatButton");
-	clearchat->setPixmap(icons_manager->loadIcon("ClearChat"));
-	QToolTip::add(clearchat, tr("Clear messages in chat window"));
-
-	iconsel = new QPushButton(buttontray, "selectIconButton");
-	iconsel->setPixmap(icons_manager->loadIcon("ChooseEmoticon"));
-	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_NONE)
-	{
-		QToolTip::add(iconsel, tr("Insert emoticon - enable in configuration"));
-		iconsel->setEnabled(false);
-	}
-	else
-		QToolTip::add(iconsel, tr("Insert emoticon"));
-
-	QPushButton *history = new QPushButton(buttontray, "showHistoryButton");
-	history->setPixmap(icons_manager->loadIcon("History"));
-	QToolTip::add(history, tr("Show history"));
-
-	QPushButton *whois = new QPushButton(buttontray, "whoisButton");
-	whois->setPixmap(icons_manager->loadIcon("LookupUserInfo"));
-	QToolTip::add(whois, tr("Lookup user info"));
-
-	QPushButton* insertimage = new QPushButton(buttontray, "insertImageButton");
-	insertimage->setPixmap(icons_manager->loadIcon("ChooseImage"));
-	QToolTip::add(insertimage, tr("Insert image"));
-
-	edtbuttontray->setStretchFactor(edt, 50);
-	edtbuttontray->setStretchFactor(buttontray, 1);
+	DockArea* buttontray = new DockArea(Qt::Horizontal, DockArea::Normal, edtbuttontray, "buttontrayDockArea");
+	buttontray->setMinimumHeight(20);
+	edtbuttontray->setStretchFactor(edt, 1);
+	edtbuttontray->setStretchFactor(buttontray, 50);
 
 	edit = new CustomInput(downpart, "edit");
 	edit->setMinimumHeight(1);
@@ -165,10 +119,6 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	edit->setPaper(QBrush(config_file.readColorEntry("Look","ChatTextBgColor")));
 
 	connect(body, SIGNAL(mouseReleased(QMouseEvent *, KaduTextBrowser *)), edit, SLOT(setFocus()));
-
-	if (config_file.readBoolEntry("Chat","AutoSend"))
-		autosend->setOn(true);
-	edit->setAutosend(config_file.readBoolEntry("Chat","AutoSend"));
 
 	// headers removal stuff
 	CfgNoHeaderRepeat = config_file.readBoolEntry("Look","NoHeaderRepeat");
@@ -180,45 +130,9 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	    PreviousMessage = "";
 	}
 
-	QHBox *btnpart = new QHBox(downpart, "buttonpartBox");
-	btnpart->setMargin(2);
-	btnpart->setSpacing(1);
+	DockArea* btnpart = new DockArea(Qt::Horizontal, DockArea::Normal, downpart);
+	btnpart->setMinimumHeight(20);
 
-	QFont afont = QApplication::font();
-	QSize s=QFontMetrics(afont).size(0, "B")*6;
-
-	boldbtn = new QPushButton("B", btnpart, "boldButton");
-	boldbtn->setToggleButton(true);
-	afont.setBold(true);
-	boldbtn->setFont(afont);
-	boldbtn->setMaximumSize(s);
-
-	italicbtn = new QPushButton("I", btnpart, "italicButton");
-	italicbtn->setToggleButton(true);
-	afont.setBold(false);
-	afont.setItalic(true);
-	italicbtn->setFont(afont);
-	italicbtn->setMaximumSize(s);
-
-	underlinebtn = new QPushButton("U", btnpart, "underlineButton");
-	underlinebtn->setToggleButton(true);
-	afont.setItalic(false);
-	afont.setUnderline(true);
-	underlinebtn->setFont(afont);
-	underlinebtn->setMaximumSize(s);
-
-	colorbtn = new QPushButton(btnpart, "colorButton");
-//	colorbtn->setMinimumSize(boldbtn->width(), boldbtn->height());
-	QPixmap p(16, 16);
-	actcolor=edit->paletteForegroundColor();
-	p.fill(actcolor);
-	colorbtn->setPixmap(p);
-
-	(new QWidget(btnpart, "spacer"))->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
-
-	sendbtn = new QPushButton(QIconSet(icons_manager->loadIcon("SendMessage")),tr("&Send"),btnpart, "sendButton");
-	sendbtn->setFixedWidth(120);
-	connect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
 	QAccel *acc = new QAccel(this, "returnAccel");
 	acc->connectItem(acc->insertItem(Key_Return + CTRL), this, SLOT(sendMessage()));
 
@@ -237,6 +151,120 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	grid->addRowSpacing(1, 5);
 	grid->setRowStretch(0, 2);
 
+	// TOOLBAR 1
+
+	ToolBar* tb1 = new ToolBar("Chat toolbar 1", this, this);
+	tb1->setOffset(1000);
+	tb1->show();
+	buttontray->moveDockWindow(tb1);
+	buttontray->setAcceptDockWindow(tb1, true);
+
+	autosend = new ToolButton(tb1, "autoSendButton");
+	autosend->setPixmap(icons_manager->loadIcon("AutoSendMessage"));
+	autosend->setToggleButton(true);
+	QToolTip::add(autosend, tr("%1 sends message").arg(config_file.readEntry("ShortCuts", "chat_newline")));
+
+	if (config_file.readBoolEntry("Chat","AutoSend"))
+		autosend->setOn(true);
+	edit->setAutosend(config_file.readBoolEntry("Chat","AutoSend"));
+
+	lockscroll = new ToolButton(tb1, "lockScrollButton");
+	lockscroll->setPixmap(icons_manager->loadIcon("ScrollLock"));
+	lockscroll->setToggleButton(true);
+	QToolTip::add(lockscroll, tr("Blocks scrolling"));
+
+	CONST_FOREACH(a, KaduActions)
+	{
+		(*a)->addToToolbar(tb1);
+	}
+
+	iconsel = new ToolButton(tb1, "selectIconButton");
+	iconsel->setPixmap(icons_manager->loadIcon("ChooseEmoticon"));
+	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_NONE)
+	{
+		QToolTip::add(iconsel, tr("Insert emoticon - enable in configuration"));
+		iconsel->setEnabled(false);
+	}
+	else
+		QToolTip::add(iconsel, tr("Insert emoticon"));
+
+	ToolButton* whois = new ToolButton(tb1, "whoisButton");
+	whois->setPixmap(icons_manager->loadIcon("LookupUserInfo"));
+	QToolTip::add(whois, tr("Lookup user info"));
+
+	ToolButton* insertimage = new ToolButton(tb1, "insertImageButton");
+	insertimage->setPixmap(icons_manager->loadIcon("ChooseImage"));
+	QToolTip::add(insertimage, tr("Insert image"));
+
+	connect(autosend, SIGNAL(toggled(bool)), edit, SLOT(setAutosend(bool)));
+	connect(iconsel, SIGNAL(clicked()), this, SLOT(emoticonSelectorClicked()));
+	connect(whois, SIGNAL(clicked()), this, SLOT(userWhois()));
+	connect(insertimage, SIGNAL(clicked()), this, SLOT(insertImage()));
+
+	// TOOLBAR2
+
+	ToolBar* tb2 = new ToolBar("Chat toolbar 2", this, this);
+	tb2->show();
+	btnpart->moveDockWindow(tb2);
+	btnpart->setAcceptDockWindow(tb2, true);
+
+	QFont afont = QApplication::font();
+	QSize s=QFontMetrics(afont).size(0, "B")*6;
+
+	boldbtn = new ToolButton(tb2, "boldButton");
+	boldbtn->setTextLabel("B");
+	boldbtn->setUsesTextLabel(true);
+	boldbtn->setTextPosition(ToolButton::BesideIcon);
+	boldbtn->setToggleButton(true);
+	afont.setBold(true);
+	boldbtn->setFont(afont);
+
+	italicbtn = new ToolButton(tb2, "italicButton");
+	italicbtn->setTextLabel("I");
+	italicbtn->setUsesTextLabel(true);
+	italicbtn->setTextPosition(ToolButton::BesideIcon);
+	italicbtn->setToggleButton(true);
+	afont.setBold(false);
+	afont.setItalic(true);
+	italicbtn->setFont(afont);
+
+	underlinebtn = new ToolButton(tb2, "underlineButton");
+	underlinebtn->setTextLabel("U");
+	underlinebtn->setUsesTextLabel(true);
+	underlinebtn->setTextPosition(ToolButton::BesideIcon);
+	underlinebtn->setToggleButton(true);
+	afont.setItalic(false);
+	afont.setUnderline(true);
+	underlinebtn->setFont(afont);
+
+	colorbtn = new ToolButton(tb2, "colorButton");
+	QPixmap p(12, 12);
+	actcolor=edit->paletteForegroundColor();
+	p.fill(actcolor);
+	colorbtn->setIconSet(QIconSet(p));
+
+	connect(boldbtn, SIGNAL(toggled(bool)), this, SLOT(toggledBold(bool)));
+	connect(italicbtn, SIGNAL(toggled(bool)), this, SLOT(toggledItalic(bool)));
+	connect(underlinebtn, SIGNAL(toggled(bool)), this, SLOT(toggledUnderline(bool)));
+	connect(colorbtn, SIGNAL(clicked()), this, SLOT(changeColor()));
+
+	// TOOLBAR 3
+
+	ToolBar* tb3 = new ToolBar("Chat toolbar 3", this, this);
+	tb3->setOffset(1000);
+	tb3->show();
+	btnpart->moveDockWindow(tb3);
+	btnpart->setAcceptDockWindow(tb3, true);
+
+	sendbtn = new ToolButton(tb3, "sendButton");
+	sendbtn->setIconSet(QIconSet(icons_manager->loadIcon("SendMessage")));
+	sendbtn->setTextLabel(tr("&Send"));
+	sendbtn->setUsesTextLabel(true);
+	sendbtn->setTextPosition(ToolButton::BesideIcon);
+	connect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
+
+	// END TOOLBAR 3
+
 	bodyformat = new QMimeSourceFactory();
 
 	body->setMimeSourceFactory(bodyformat);
@@ -244,16 +272,6 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	edit->setMimeSourceFactory(bodyformat);
 	edit->setTextFormat(Qt::RichText);
 
-	connect(autosend, SIGNAL(toggled(bool)), edit, SLOT(setAutosend(bool)));
-	connect(history, SIGNAL(clicked()), this, SLOT(HistoryBox()));
-	connect(iconsel, SIGNAL(clicked()), this, SLOT(emoticonSelectorClicked()));
-	connect(whois, SIGNAL(clicked()), this, SLOT(userWhois()));
-	connect(insertimage, SIGNAL(clicked()), this, SLOT(insertImage()));
-	connect(clearchat, SIGNAL(clicked()), this, SLOT(clearChatWindow()));
-	connect(boldbtn, SIGNAL(toggled(bool)), this, SLOT(toggledBold(bool)));
-	connect(italicbtn, SIGNAL(toggled(bool)), this, SLOT(toggledItalic(bool)));
-	connect(underlinebtn, SIGNAL(toggled(bool)), this, SLOT(toggledUnderline(bool)));
-	connect(colorbtn, SIGNAL(clicked()), this, SLOT(changeColor()));
 	connect(edit, SIGNAL(cursorPositionChanged(int, int)), this, SLOT(curPosChanged(int, int)));
 	connect(edit, SIGNAL(sendMessage()), this, SLOT(sendMessage()));
 	connect(edit, SIGNAL(specialKeyPressed(int)), this, SLOT(specialKeyPressed(int)));
@@ -284,45 +302,6 @@ Chat::~Chat()
 	delete Users;
 
 	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed: index %d\n", index);
-}
-
-void Chat::registerButton(const QString& name,QObject* receiver,const QString& slot)
-{
-	kdebugf();
-	RegisteredButton b;
-	b.name=name;
-	b.receiver=receiver;
-	b.slot=slot;
-	RegisteredButtons.append(b);
-	kdebugf2();
-}
-
-void Chat::unregisterButton(const QString& name)
-{
-	kdebugf();
-	FOREACH(button, RegisteredButtons)
-		if ((*button).name == name)
-		{
-			RegisteredButtons.remove(button);
-			break;
-		}
-	const ChatList &chatList = chat_manager->chats();
-	CONST_FOREACH(chat, chatList)
-		if ((*chat)->Buttons.contains(name))
-		{
-			delete (*chat)->Buttons[name];
-			(*chat)->Buttons.remove(name);
-		}
-	kdebugf2();
-}
-
-QPushButton* Chat::button(const QString& name) const
-{
-	if (Buttons.contains(name))
-		return Buttons[name];
-
-	kdebugmf(KDEBUG_WARNING, " '%s' - return NULL\n", name.local8Bit().data());
-	return NULL;
 }
 
 void Chat::specialKeyPressed(int key)

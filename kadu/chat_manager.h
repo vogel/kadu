@@ -47,6 +47,11 @@ class ChatManager : public QObject
 		};
 		QValueList<ChatInfo> addons; /*!< lista parametrów okien */
 
+	private slots:
+
+		void clearActionActivated(const UserGroup* users);
+		void historyActionActivated(const UserGroup* users);
+
 	public:
 		/**
 		\fn ChatManager(QObject* parent=NULL, const char* name=NULL)

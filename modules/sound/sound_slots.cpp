@@ -37,13 +37,13 @@ SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name
 		muteitem= kadu->mainMenu()->insertItem(icons_manager->loadIcon("Mute"), tr("Unmute sounds"), this, SLOT(muteUnmuteSounds()), 0, -1, 3);
 		icons_manager->registerMenuItem(kadu->mainMenu(), tr("Unmute sounds"), "Mute");
 
-		ToolBar::registerButton("Mute", tr("Unmute sounds"), this, SLOT(muteUnmuteSounds()), 0, "mute");
+		MainToolBar::registerButton("Mute", tr("Unmute sounds"), this, SLOT(muteUnmuteSounds()), 0, "mute");
 	}
 	else
 	{
 		muteitem= kadu->mainMenu()->insertItem(icons_manager->loadIcon("Unmute"), tr("Mute sounds"), this, SLOT(muteUnmuteSounds()), 0, -1, 3);
 		icons_manager->registerMenuItem(kadu->mainMenu(), tr("Mute sounds"), "Unmute");
-		ToolBar::registerButton("Unmute", tr("Mute sounds"), this, SLOT(muteUnmuteSounds()), 0, "mute");
+		MainToolBar::registerButton("Unmute", tr("Mute sounds"), this, SLOT(muteUnmuteSounds()), 0, "mute");
 	}
 
 	SamplePlayingTestMsgBox = NULL;
@@ -60,7 +60,7 @@ SoundSlots::~SoundSlots()
 {
 	kdebugf();
 	kadu->mainMenu()->removeItem(muteitem);
-	ToolBar::unregisterButton("mute");
+	MainToolBar::unregisterButton("mute");
 	kdebugf2();
 }
 
@@ -148,12 +148,12 @@ void SoundSlots::muteUnmuteSounds()
 
 	if (mute)
 	{
-		ToolBar::refreshIcons(tr("Mute sounds"), "Mute", tr("Unmute sounds"));
+		MainToolBar::refreshIcons(tr("Mute sounds"), "Mute", tr("Unmute sounds"));
 		kadu->menuBar()->changeItem(muteitem, icons_manager->loadIcon("Mute"), tr("Unmute sounds"));
 	}
 	else
 	{
-		ToolBar::refreshIcons(tr("Unmute sounds"), "Unmute", tr("Mute sounds"));
+		MainToolBar::refreshIcons(tr("Unmute sounds"), "Unmute", tr("Mute sounds"));
 		kadu->menuBar()->changeItem(muteitem, icons_manager->loadIcon("Unmute"), tr("Mute sounds"));
 	}
 

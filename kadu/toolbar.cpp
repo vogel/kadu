@@ -8,7 +8,10 @@
  ***************************************************************************/
 
 #include <qapplication.h>
+#include <qcursor.h>
+#include <qtooltip.h>
 
+#include "chat.h" // TODO: akcje powinny byæ niezale¿ne od chat
 #include "config_file.h"
 #include "debug.h"
 #include "icons_manager.h"
@@ -16,10 +19,221 @@
 #include "misc.h"
 #include "toolbar.h"
 
-QValueList<ToolBar::ToolButton> ToolBar::RegisteredToolButtons;
-ToolBar* ToolBar::instance=NULL;
 
-ToolBar::ToolBar(QMainWindow* parent) : QToolBar(parent, "mainToolbar")
+ToolButton::ToolButton(QWidget* parent, const char* name)
+	: QToolButton(parent, name)
+{
+}
+
+void ToolButton::mouseMoveEvent(QMouseEvent* e)
+{
+//	kdebugf();
+	QToolButton::mouseMoveEvent(e);
+	if (e->state() & LeftButton)
+	{
+		QDragObject* d = new ToolButtonDrag(this, parentWidget());
+		d->dragMove();
+	}	
+//	kdebugf2();
+}
+
+void ToolButton::contextMenuEvent(QContextMenuEvent* e)
+{
+	kdebugf();
+	QPopupMenu* p = new QPopupMenu(this);
+	p->insertItem(tr("Delete button"), this, SLOT(deleteLater()));
+	p->exec(QCursor::pos());
+	delete p;
+	e->accept();
+	kdebugf2();
+}
+
+ToolButtonDrag::ToolButtonDrag(ToolButton* button, QWidget* dragSource, const char* name)
+	: QTextDrag(button->name(), dragSource, name)
+{
+}
+
+ToolBar::ToolBar(const QString& label, QMainWindow* mainWindow, QWidget* parent)
+	: QToolBar(label, mainWindow, parent)
+{
+	kdebugf();
+	setAcceptDrops(true);
+	kdebugf2();
+}
+
+void ToolBar::addButtonClicked(int action_index)
+{
+	kdebugf();
+	kdebug("action_index = %d\n", action_index);
+	KaduActions[KaduActions.keys()[action_index]]->addToToolbar(this);
+	kdebugf2();
+}
+
+void ToolBar::dragEnterEvent(QDragEnterEvent* event)
+{
+	kdebugf();
+	event->accept(dynamic_cast<ToolBar*>(event->source()) != NULL);
+	kdebugf2();
+}
+
+void ToolBar::dropEvent(QDropEvent* event)
+{
+	kdebugf();
+	ToolBar* source = dynamic_cast<ToolBar*>(event->source());
+	if (source != NULL)
+	{
+		QString text;
+		if (QTextDrag::decode(event, text))
+		{
+			dynamic_cast<ToolButton*>(source->child(text))->reparent(this, QPoint(0,0), true);
+		}
+	}
+	kdebugf2();
+}
+
+void ToolBar::contextMenuEvent(QContextMenuEvent* e)
+{
+	kdebugf();
+	QPopupMenu* p = new QPopupMenu(this);
+	p->insertItem(tr("Delete toolbar"), this, SLOT(deleteLater()));
+	QPopupMenu* p2 = new QPopupMenu(p);
+	int param = 0;
+	CONST_FOREACH(a, KaduActions)
+	{
+		int id = (*a)->addToPopupMenu(p2, false);
+		p2->setItemParameter(id, param);
+		p2->connectItem(id, this, SLOT(addButtonClicked(int)));
+		param++;
+	}
+	p->insertItem(tr("Add new button"), p2);
+	p->exec(QCursor::pos());
+	delete p;
+	e->accept();
+	kdebugf2();
+}
+
+DockArea::DockArea(Orientation o, HandlePosition h,
+			QWidget * parent, const char * name)
+	: QDockArea(o, h, parent, name)
+{
+	kdebugf();
+	kdebugf2();
+}
+
+void DockArea::contextMenuEvent(QContextMenuEvent* e)
+{
+	kdebugf();
+	QPopupMenu* p = new QPopupMenu(this);
+	p->insertItem(tr("Create new toolbar"), this, SLOT(createNewToolbar()));
+	p->exec(QCursor::pos());
+	delete p;
+	e->accept();
+	kdebugf2();
+}
+
+void DockArea::createNewToolbar()
+{
+	kdebugf();
+	for (QWidget* w = parentWidget(); w != NULL; w = w->parentWidget())
+	{
+		QMainWindow* mw = dynamic_cast<QMainWindow*>(w);
+		if (mw != NULL)
+		{
+			kdebug("Creating new toolbar\n");
+			ToolBar* tb = new ToolBar("New toolbar", mw, mw);
+			tb->show();
+			moveDockWindow(tb);
+			setAcceptDockWindow(tb, true);
+			break;
+		}
+	}
+	kdebugf2();
+}
+
+Action::Action(const QIconSet& icon, const QString& text, const char* name, QKeySequence accel)
+	: QAction(icon, text, accel, kadu, name)
+{
+	kdebugf();
+	kdebugf2();
+}
+
+void Action::toolButtonClicked()
+{
+	kdebugf();
+	const ToolButton* button = dynamic_cast<const ToolButton*>(sender());
+	for (QWidget* w = button->parentWidget(); w != NULL; w = w->parentWidget())
+	{
+		Chat* c = dynamic_cast<Chat*>(w);
+		if (c != NULL)
+			emit activated(c->users());
+	}
+	kdebugf2();
+}
+
+void Action::toolButtonDestroyed(QObject* obj)
+{
+	kdebugf();
+	ToolButton* btn = static_cast<ToolButton*>(obj);
+	QValueList<ToolButton*>::iterator it = ToolButtons.find(btn);
+	ToolButtons.remove(it);
+	kdebugf2();
+}
+
+ToolButton* Action::addToToolbar(ToolBar* toolbar)
+{
+	kdebugf();
+	ToolButton* btn = new ToolButton(toolbar, name());
+	btn->setIconSet(iconSet());
+	QToolTip::add(btn, menuText());
+	connect(btn, SIGNAL(clicked()), this, SLOT(toolButtonClicked()));
+	connect(btn, SIGNAL(destroyed(QObject*)), this, SLOT(toolButtonDestroyed(QObject*)));
+	ToolButtons.append(btn);
+	emit addedToToolbar(btn, toolbar);
+	kdebugf2();
+	return btn;
+}
+
+int Action::addToPopupMenu(QPopupMenu* menu, bool connect_signal)
+{
+	kdebugf();
+	int id = menu->insertItem(iconSet(), menuText());
+	if (connect_signal)
+		menu->connectItem(id, this, SIGNAL(activated()));
+	kdebugf2();
+	return id;
+}
+
+QValueList<ToolButton*> Action::toolButtonsForUserListElements(const UserListElements& users)
+{
+	kdebugf();
+	QValueList<ToolButton*> buttons;
+	for (QValueList<ToolButton*>::iterator i = ToolButtons.begin(); i != ToolButtons.end(); i++)
+	{
+		for (QWidget* w = (*i)->parentWidget(); w != NULL; w = w->parentWidget())
+		{
+			Chat* c = dynamic_cast<Chat*>(w);
+			if (c != NULL)
+			{
+				if (c->users()->toUserListElements().equals(users))
+					buttons.append(*i);
+			}
+		}
+	}
+	kdebugf2();
+	return buttons;
+}
+
+Actions::Actions()
+{
+}
+
+Actions KaduActions;
+
+
+QValueList<MainToolBar::ToolButton> MainToolBar::RegisteredToolButtons;
+MainToolBar* MainToolBar::instance=NULL;
+
+MainToolBar::MainToolBar(QMainWindow* parent) : QToolBar(parent, "mainToolbar")
 {
 	kdebugf();
 	setCloseMode(QDockWindow::Undocked);
@@ -37,13 +251,13 @@ ToolBar::ToolBar(QMainWindow* parent) : QToolBar(parent, "mainToolbar")
 	kdebugf2();
 }
 
-ToolBar::~ToolBar()
+MainToolBar::~MainToolBar()
 {
 	config_file.writeEntry("General", "ToolBarHidden", isHidden());
 	instance=NULL;
 }
 
-void ToolBar::createControls()
+void MainToolBar::createControls()
 {
 	kdebugf();
 	FOREACH(j, RegisteredToolButtons)
@@ -57,7 +271,7 @@ void ToolBar::createControls()
 	kdebugf2();
 }
 
-void ToolBar::registerSeparator(int position)
+void MainToolBar::registerSeparator(int position)
 {
 	kdebugf();
 	if(instance!=NULL)
@@ -76,7 +290,7 @@ void ToolBar::registerSeparator(int position)
 	kdebugf2();
 }
 
-void ToolBar::registerButton(const QString &iconname, const QString& caption,
+void MainToolBar::registerButton(const QString &iconname, const QString& caption,
 			QObject* receiver, const char* slot, int position, const char* name)
 {
 	kdebugf();
@@ -102,7 +316,7 @@ void ToolBar::registerButton(const QString &iconname, const QString& caption,
 	kdebugf2();
 }
 
-void ToolBar::unregisterButton(const char* name)
+void MainToolBar::unregisterButton(const char* name)
 {
 	kdebugf();
 	if(instance!=NULL)
@@ -120,7 +334,7 @@ void ToolBar::unregisterButton(const char* name)
 	kdebugf2();
 }
 
-QToolButton* ToolBar::getButton(const char* name)
+QToolButton* MainToolBar::getButton(const char* name)
 {
 	CONST_FOREACH(j, RegisteredToolButtons)
 		if ((*j).name == name)
@@ -129,7 +343,7 @@ QToolButton* ToolBar::getButton(const char* name)
 	return NULL;
 }
 
-void ToolBar::refreshIcons(const QString &caption, const QString &newIconName, const QString &newCaption)
+void MainToolBar::refreshIcons(const QString &caption, const QString &newIconName, const QString &newCaption)
 {
 	kdebugf();
 	if (caption==QString::null) //wszystkie siê od¶wie¿aj±

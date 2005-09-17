@@ -132,6 +132,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniête kilka drobnych wycieków pamiêci (joi)
 * na³o¿ona ³atka na default_sms dla bramki EraOmnix (Ron_K/Belegdol)
 * nowe dcc (Ron_K/Vogel)
+* przyciski w oknie chat przeniesione do toolbarów, pocz±tek edytowalnych toolbarów,
+  drag&drop przycisków, pocz±tek koncepcji akcji (adrian)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

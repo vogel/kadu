@@ -69,7 +69,12 @@ EncryptionManager::EncryptionManager(QObject *parent, const char *name) : QObjec
 			this, SLOT(receivedMessageFilter(Protocol *, UserListElements, QCString&, QByteArray&, bool&)));
 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userBoxMenuPopup()));
 
-	Chat::registerButton("encryption_button",this,SLOT(encryptionButtonClicked()));
+	Action* action = new Action(icons_manager->loadIcon("EncryptedChat"),
+		tr("Enable encryption for this conversation"), "encryption_action");
+	connect(action, SIGNAL(activated(const UserGroup*)),
+		this, SLOT(encryptionActionActivated(const UserGroup*)));
+	KaduActions.insert("encryption_action", action);
+
 	UserBox::userboxmenu->addItemAtPos(2,"SendPublicKey", tr("Send my public key"), this, SLOT(sendPublicKey()));
 
 	sim_key_path = strdup(ggPath("keys/").local8Bit());
@@ -85,7 +90,7 @@ EncryptionManager::~EncryptionManager()
 	kdebugf();
 	int sendkeyitem = UserBox::userboxmenu->getItem(tr("Send my public key"));
 	UserBox::userboxmenu->removeItem(sendkeyitem);
-	Chat::unregisterButton("encryption_button");
+	KaduActions.remove("encryption_action");
 
 	disconnect(chat_manager, SIGNAL(chatCreated(const UserGroup *)), this, SLOT(chatCreated(const UserGroup *)));
 	disconnect(gadu, SIGNAL(messageFiltering(Protocol *, UserListElements, QCString&, QByteArray&, bool&)),
@@ -158,7 +163,6 @@ void EncryptionManager::chatCreated(const UserGroup *group)
 	connect(chat, SIGNAL(messageFiltering(const UserGroup *, QCString &, bool &)),
 			this, SLOT(sendMessageFilter(const UserGroup *, QCString &, bool &)));
 
-	QPushButton* encryption_btn=chat->button("encryption_button");
 	bool encrypt=false;
 	if (encryption_possible)
 	{
@@ -170,9 +174,12 @@ void EncryptionManager::chatCreated(const UserGroup *group)
 	}
 
 	setupEncryptButton(chat, encrypt);
-	encryption_btn->setEnabled(encryption_possible);
+	QValueList<ToolButton*> buttons =
+		KaduActions["encryption_action"]->toolButtonsForUserListElements(
+			group->toUserListElements());
+	for (QValueList<ToolButton*>::iterator i = buttons.begin(); i != buttons.end(); i++)
+		(*i)->setEnabled(encryption_possible);
 
-	EncryptionButtonChat[encryption_btn]=chat;
 	kdebugf2();
 }
 
@@ -180,26 +187,33 @@ void EncryptionManager::setupEncryptButton(Chat* chat,bool enabled)
 {
 	kdebugf();
 	EncryptionEnabled[chat] = enabled;
-	QPushButton* encryption_btn=chat->button("encryption_button");
-	QToolTip::remove(encryption_btn);
-	if (enabled)
+	QValueList<ToolButton*> buttons =
+		KaduActions["encryption_action"]->toolButtonsForUserListElements(
+			chat->users()->toUserListElements());
+	for (QValueList<ToolButton*>::iterator i = buttons.begin(); i != buttons.end(); i++)
 	{
-		QToolTip::add(encryption_btn, tr("Disable encryption for this conversation"));
-		encryption_btn->setPixmap(icons_manager->loadIcon("EncryptedChat"));
-	}
-	else
-	{
-		QToolTip::add(encryption_btn, tr("Enable encryption for this conversation"));
-		encryption_btn->setPixmap(icons_manager->loadIcon("DecryptedChat"));
+		QToolTip::remove(*i);
+		if (enabled)
+		{
+			QToolTip::add(*i, tr("Disable encryption for this conversation"));
+			(*i)->setPixmap(icons_manager->loadIcon("EncryptedChat"));
+		}
+		else
+		{
+			QToolTip::add(*i, tr("Enable encryption for this conversation"));
+			(*i)->setPixmap(icons_manager->loadIcon("DecryptedChat"));
+		}
 	}
 	chat_manager->setChatProperty(chat->users(), "EncryptionEnabled", QVariant(enabled));
 	kdebugf2();
 }
 
-void EncryptionManager::encryptionButtonClicked()
+void EncryptionManager::encryptionActionActivated(const UserGroup* users)
 {
-	Chat* chat=EncryptionButtonChat[dynamic_cast<const QPushButton*>(sender())];
+	kdebugf();
+	Chat* chat= chat_manager->findChat(users);
 	setupEncryptButton(chat,!EncryptionEnabled[chat]);
+	kdebugf2();
 }
 
 void EncryptionManager::receivedMessageFilter(Protocol *protocol,
@@ -249,19 +263,10 @@ void EncryptionManager::receivedMessageFilter(Protocol *protocol,
 void EncryptionManager::enableEncryptionBtnForUsers(UserListElements users)
 {
 	kdebugf();
-	Chat* chat = chat_manager->findChat(users);
-	if (chat == NULL)
-	{
-		kdebugf2();
-		return;
-	}
-	QPushButton* encryption_btn=chat->button("encryption_button");
-	if (encryption_btn==NULL)
-	{
-		kdebugf2();
-		return;
-	}
-	encryption_btn->setEnabled(true);
+	QValueList<ToolButton*> buttons =
+		KaduActions["encryption_action"]->toolButtonsForUserListElements(users);
+	for (QValueList<ToolButton*>::iterator i = buttons.begin(); i != buttons.end(); i++)
+		(*i)->setEnabled(true);
 	kdebugf2();
 }
 
