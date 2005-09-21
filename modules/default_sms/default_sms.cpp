@@ -331,7 +331,7 @@ QString SmsEraGateway::errorNumber(int nr)
 		case 7: return tr("Limit of the sms run-down");
 		case 8: return tr("Wrong receiver address");
 		case 9: return tr("Message too long");
-		case 10: return tr("Not enough tokens");
+		case 10: return tr("You don't have enough tokens");
 	}
 	return tr("Unknown error (%1)").arg(nr);
 }
