@@ -386,7 +386,7 @@ void SavePublicKey::yesClicked()
 	QString keyfile_path;
 
 	keyfile_path.append(ggPath("keys/"));
-	keyfile_path.append(user.ID("Gadu").toUInt());
+	keyfile_path.append(user.ID("Gadu"));
 	keyfile_path.append(".pem");
 	keyfile.setName(keyfile_path);
 

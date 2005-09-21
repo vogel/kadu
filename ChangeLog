@@ -135,6 +135,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * przyciski w oknie chat przeniesione do toolbarów, pocz±tek edytowalnych toolbarów,
   drag&drop przycisków, pocz±tek koncepcji akcji (adrian)
 * scrolllock i autosend s± akcjami (adrian)
+* zapisywanie klucza w encryption znowu dzia³a (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
