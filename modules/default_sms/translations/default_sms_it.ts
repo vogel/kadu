@@ -65,7 +65,7 @@
         <translation>Errore sconosciuto (%1)</translation>
     </message>
     <message>
-        <source>Not enough tokens</source>
+        <source>You don&apos;t have enough tokens</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

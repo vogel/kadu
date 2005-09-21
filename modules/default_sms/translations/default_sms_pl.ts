@@ -65,8 +65,8 @@
         <translation>Nieznany błąd (%1)</translation>
     </message>
     <message>
-        <source>Not enough tokens</source>
-        <translation type="unfinished">Nie wystarczające tokeny</translation>
+        <source>You don&apos;t have enough tokens</source>
+        <translation>Nie masz wystarczającej liczby żetonów</translation>
     </message>
 </context>
 <context>
