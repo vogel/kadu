@@ -660,23 +660,11 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Blocks scrolling</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Clear messages in chat window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Insert emoticon - enable in configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Insert emoticon</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show history</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -736,10 +724,6 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 sends message</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>This file is not readable</source>
         <translation type="unfinished"></translation>
     </message>
@@ -776,6 +760,22 @@ Do you really want to send this image?
     </message>
     <message>
         <source>Animated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 sends message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blocks scrolling</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear messages in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show history</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -874,6 +874,13 @@ You may add it to $PATH or specify location using Specify path option.</source>
     </message>
     <message>
         <source>Expert</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DockArea</name>
+    <message>
+        <source>Create new toolbar</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1735,6 +1742,21 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     <name>ToolBar</name>
     <message>
         <source>Main toolbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete toolbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add new button</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ToolButton</name>
+    <message>
+        <source>Delete button</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

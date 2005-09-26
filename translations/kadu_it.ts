@@ -665,24 +665,12 @@ E un rischio per la sicurezza!</translation>
         <translation>Inserisci qui il testo del messaggio da spedire</translation>
     </message>
     <message>
-        <source>Blocks scrolling</source>
-        <translation>Ferma scorimento testo</translation>
-    </message>
-    <message>
-        <source>Clear messages in chat window</source>
-        <translation>Cancella cronologia</translation>
-    </message>
-    <message>
         <source>Insert emoticon - enable in configuration</source>
         <translation>Inserisci Emoticon - attiva nella configurazione</translation>
     </message>
     <message>
         <source>Insert emoticon</source>
         <translation>Inserisci emoticon</translation>
-    </message>
-    <message>
-        <source>Show history</source>
-        <translation>Mostra cronologia</translation>
     </message>
     <message>
         <source>Lookup user info</source>
@@ -741,10 +729,6 @@ E un rischio per la sicurezza!</translation>
         <translation>Ricevuto nuovo messaggio, chiudere comunque?</translation>
     </message>
     <message>
-        <source>%1 sends message</source>
-        <translation>%1 manda messaggio</translation>
-    </message>
-    <message>
         <source>This file is not readable</source>
         <translation>Questo file non è leggibile</translation>
     </message>
@@ -785,6 +769,22 @@ Sicuro di spedirlo comunque?</translation>
     <message>
         <source>Animated</source>
         <translation>Animato</translation>
+    </message>
+    <message>
+        <source>%1 sends message</source>
+        <translation>%1 manda messaggio</translation>
+    </message>
+    <message>
+        <source>Blocks scrolling</source>
+        <translation>Ferma scorimento testo</translation>
+    </message>
+    <message>
+        <source>Clear messages in chat window</source>
+        <translation>Cancella cronologia</translation>
+    </message>
+    <message>
+        <source>Show history</source>
+        <translation>Mostra cronologia</translation>
     </message>
 </context>
 <context>
@@ -885,6 +885,13 @@ Il percorso per raggiungere browser non esiste in $PATH. Devi specificarlo.</tra
     <message>
         <source>Expert</source>
         <translation>Esperto</translation>
+    </message>
+</context>
+<context>
+    <name>DockArea</name>
+    <message>
+        <source>Create new toolbar</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1751,6 +1758,21 @@ Possibile incompatibilità con Kadu.</translation>
     <message>
         <source>Main toolbar</source>
         <translation>Toolbar principale</translation>
+    </message>
+    <message>
+        <source>Delete toolbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add new button</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ToolButton</name>
+    <message>
+        <source>Delete button</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -665,24 +665,12 @@ Attention danger!
         <translation>C&apos;est ici que vous saisissez le texte à envoyer</translation>
     </message>
     <message>
-        <source>Blocks scrolling</source>
-        <translation>Faire défiler le blocs</translation>
-    </message>
-    <message>
-        <source>Clear messages in chat window</source>
-        <translation>Efface la fenêtre du chat</translation>
-    </message>
-    <message>
         <source>Insert emoticon - enable in configuration</source>
         <translation>Insère l&apos;emotion - Active dans la configuration</translation>
     </message>
     <message>
         <source>Insert emoticon</source>
         <translation>Insère icône d&apos;emotion</translation>
-    </message>
-    <message>
-        <source>Show history</source>
-        <translation>Montre historique</translation>
     </message>
     <message>
         <source>Lookup user info</source>
@@ -741,10 +729,6 @@ Attention danger!
         <translation>Nouvel message reçu, voulez vous fermer la fenêtre?</translation>
     </message>
     <message>
-        <source>%1 sends message</source>
-        <translation>Touche %1 envoie le message</translation>
-    </message>
-    <message>
         <source>This file is not readable</source>
         <translation>Fichier illisible</translation>
     </message>
@@ -785,6 +769,22 @@ Souhaitez vous vraiment expédier cette image?</translation>
     <message>
         <source>Animated</source>
         <translation>Animation</translation>
+    </message>
+    <message>
+        <source>%1 sends message</source>
+        <translation>Touche %1 envoie le message</translation>
+    </message>
+    <message>
+        <source>Blocks scrolling</source>
+        <translation>Faire défiler le blocs</translation>
+    </message>
+    <message>
+        <source>Clear messages in chat window</source>
+        <translation>Efface la fenêtre du chat</translation>
+    </message>
+    <message>
+        <source>Show history</source>
+        <translation>Montre historique</translation>
     </message>
 </context>
 <context>
@@ -885,6 +885,13 @@ Vous pouvez l&apos;ajouter dans $PATH ou indiquer l&apos;emplacement d&apos;une 
     <message>
         <source>Expert</source>
         <translation>Expert</translation>
+    </message>
+</context>
+<context>
+    <name>DockArea</name>
+    <message>
+        <source>Create new toolbar</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1752,6 +1759,21 @@ Peut être module incompatible avec Kadu.</translation>
     <message>
         <source>Main toolbar</source>
         <translation>Ma barre de tâches</translation>
+    </message>
+    <message>
+        <source>Delete toolbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add new button</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ToolButton</name>
+    <message>
+        <source>Delete button</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -665,24 +665,12 @@ Jest to wysoce ryzykowne!</translation>
         <translation>Tutaj wpisujesz tekst do wysłania</translation>
     </message>
     <message>
-        <source>Blocks scrolling</source>
-        <translation>Blokuj przewijanie historii rozmowy</translation>
-    </message>
-    <message>
-        <source>Clear messages in chat window</source>
-        <translation>Wyczyść wiadomości w historii rozmowy</translation>
-    </message>
-    <message>
         <source>Insert emoticon - enable in configuration</source>
         <translation>Wstaw emotikonę - uaktywnij w konfiguracji</translation>
     </message>
     <message>
         <source>Insert emoticon</source>
         <translation>Wstaw emotikonę</translation>
-    </message>
-    <message>
-        <source>Show history</source>
-        <translation>Pokaż historię</translation>
     </message>
     <message>
         <source>Lookup user info</source>
@@ -741,10 +729,6 @@ Jest to wysoce ryzykowne!</translation>
         <translation>Odebrano nową wiadomość, czy chcesz zamknąć okno?</translation>
     </message>
     <message>
-        <source>%1 sends message</source>
-        <translation>%1 wysyła wiadomość</translation>
-    </message>
-    <message>
         <source>This file is not readable</source>
         <translation>Pliku nie można odczytać</translation>
     </message>
@@ -785,6 +769,22 @@ Czy napewno chcesz wysłać ten obrazek?</translation>
     <message>
         <source>Animated</source>
         <translation>Animowane</translation>
+    </message>
+    <message>
+        <source>%1 sends message</source>
+        <translation>%1 wysyła wiadomość</translation>
+    </message>
+    <message>
+        <source>Blocks scrolling</source>
+        <translation>Blokuj przewijanie historii rozmowy</translation>
+    </message>
+    <message>
+        <source>Clear messages in chat window</source>
+        <translation>Wyczyść wiadomości w historii rozmowy</translation>
+    </message>
+    <message>
+        <source>Show history</source>
+        <translation>Pokaż historię</translation>
     </message>
 </context>
 <context>
@@ -885,6 +885,13 @@ Wybrana ścieżka do przeglądarki nie istnieje w zmiennej $PATH. Musisz ją do 
     <message>
         <source>Expert</source>
         <translation>Ekspert</translation>
+    </message>
+</context>
+<context>
+    <name>DockArea</name>
+    <message>
+        <source>Create new toolbar</source>
+        <translation>Utwórz nowy pasek narzędziowy</translation>
     </message>
 </context>
 <context>
@@ -1752,6 +1759,21 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     <message>
         <source>Main toolbar</source>
         <translation>Główny pasek narzędziowy</translation>
+    </message>
+    <message>
+        <source>Delete toolbar</source>
+        <translation>Usuń pasek narzędziowy</translation>
+    </message>
+    <message>
+        <source>Add new button</source>
+        <translation>Dodaj nowy przyciski</translation>
+    </message>
+</context>
+<context>
+    <name>ToolButton</name>
+    <message>
+        <source>Delete button</source>
+        <translation>Usuń przyciski</translation>
     </message>
 </context>
 <context>
