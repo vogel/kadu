@@ -4210,11 +4210,12 @@ cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
 
+		#include <execinfo.h>
+
 int
 main ()
 {
 
-		#include <execinfo.h>
 		int main()
 		{
 			char* data;
@@ -4278,11 +4279,12 @@ cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
 
+		#include <execinfo.h>
+
 int
 main ()
 {
 
-		#include <execinfo.h>
 		int main()
 		{
 			char* data;

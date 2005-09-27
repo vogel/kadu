@@ -38,9 +38,10 @@ AC_DEFUN(CHECK_PTHREAD,
 # $1 - action if successed
 # $2 - action if failed
 AC_DEFUN(TRY_LINK_EXECINFO,[
-	AC_TRY_LINK([],
+	AC_TRY_LINK(
 	[
 		#include <execinfo.h>
+	],[
 		int main()
 		{
 			char* data;
