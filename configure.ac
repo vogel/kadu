@@ -38,14 +38,12 @@ AC_DEFUN(CHECK_PTHREAD,
 # $1 - action if successed
 # $2 - action if failed
 AC_DEFUN(TRY_LINK_EXECINFO,[
-	AC_TRY_LINK([],
+	AC_TRY_LINK(
 	[
 		#include <execinfo.h>
-		int main()
-		{
+	],[
 			char* data;
 			backtrace(&data, 100);
-		}
 	],[
 		$1
 	],[
@@ -254,6 +252,7 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 		fi; \
 		if test -f modules/$mod/spec; then \
 			echo; \
+
 			echo ">>> Configuring $mod module..."; \
 			MODULE_LIBS= && \
 			MODULE_LIBS_PATH= && \
@@ -261,16 +260,21 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 			MODULE_INCLUDES_PATH= && \
 			MODULE_TOOLS= && \
 			MODULE_CONFIGURE_CMD= && \
-			MODULE_LDFLAGS= && \
 			MODULE_CXXFLAGS= && \
+			MODULE_LDFLAGS= && \
 			MODULE_DIR=../modules/$mod && \
 			. ./modules/$mod/spec && \
+			MODULE_CXXFLAGS="$MODULE_CXXFLAGS $CXXFLAGS" && \
+			MODULE_LDFLAGS="$MODULE_LDFLAGS $LDFLAGS" && \
 			echo "MODULE_LIBS:           $MODULE_LIBS" && \
 			echo "MODULE_LIBS_PATH:      $MODULE_LIBS_PATH" && \
 			echo "MODULE_INCLUDES:       $MODULE_INCLUDES" && \
 			echo "MODULE_INCLUDES_PATH:  $MODULE_INCLUDES_PATH" && \
+			echo "MODULE_CXXFLAGS:       $MODULE_CXXFLAGS" && \
+			echo "MODULE_LDFLAGS:        $MODULE_LDFLAGS" && \
 			echo "MODULE_TOOLS:          $MODULE_TOOLS" && \
 			echo "MODULE_CONFIGURE_CMD:  $MODULE_CONFIGURE_CMD" && \
+			
 			for lib in $MODULE_LIBS; do \
 				FIND_LIBRARY([$lib],[$MODULE_LIBS_PATH],
 				[
