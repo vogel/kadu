@@ -4216,11 +4216,8 @@ int
 main ()
 {
 
-		int main()
-		{
 			char* data;
 			backtrace(&data, 100);
-		}
 
   ;
   return 0;
@@ -4285,11 +4282,8 @@ int
 main ()
 {
 
-		int main()
-		{
 			char* data;
 			backtrace(&data, 100);
-		}
 
   ;
   return 0;
