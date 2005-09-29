@@ -118,14 +118,14 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	edtbuttontray->setStretchFactor(edt, 1);
 	edtbuttontray->setStretchFactor(buttontray, 50);
 
-	edit = new CustomInput(downpart, "edit");
-	edit->setMinimumHeight(1);
-	edit->setWordWrap(QMultiLineEdit::WidgetWidth);
-	edit->setFont(config_file.readFontEntry("Look","ChatFont"));
-	edit->setPaper(QBrush(config_file.readColorEntry("Look","ChatTextBgColor")));
-	edit->setAutosend(AutoSend);
+	Edit = new CustomInput(downpart, "edit");
+	Edit->setMinimumHeight(1);
+	Edit->setWordWrap(QMultiLineEdit::WidgetWidth);
+	Edit->setFont(config_file.readFontEntry("Look","ChatFont"));
+	Edit->setPaper(QBrush(config_file.readColorEntry("Look","ChatTextBgColor")));
+	Edit->setAutosend(AutoSend);
 
-	connect(body, SIGNAL(mouseReleased(QMouseEvent *, KaduTextBrowser *)), edit, SLOT(setFocus()));
+	connect(body, SIGNAL(mouseReleased(QMouseEvent *, KaduTextBrowser *)), Edit, SLOT(setFocus()));
 
 	// headers removal stuff
 	CfgNoHeaderRepeat = config_file.readBoolEntry("Look","NoHeaderRepeat");
@@ -166,10 +166,13 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	buttontray->moveDockWindow(tb1);
 	buttontray->setAcceptDockWindow(tb1, true);
 
-	CONST_FOREACH(a, KaduActions)
-	{
-		(*a)->addToToolbar(tb1);
-	}
+	// TODO: na razie statycznie, potem z pliku xml
+	KaduActions["autoSendAction"]->addToToolbar(tb1);
+	KaduActions["scrollLockAction"]->addToToolbar(tb1);
+	KaduActions["clearChatAction"]->addToToolbar(tb1);
+	KaduActions["showHistoryAction"]->addToToolbar(tb1);
+	if (KaduActions.contains("encryptionAction"))
+		KaduActions["encryptionAction"]->addToToolbar(tb1);
 
 	iconsel = new ToolButton(tb1, "selectIconButton");
 	iconsel->setPixmap(icons_manager->loadIcon("ChooseEmoticon"));
@@ -200,45 +203,10 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	btnpart->moveDockWindow(tb2);
 	btnpart->setAcceptDockWindow(tb2, true);
 
-	QFont afont = QApplication::font();
-	QSize s=QFontMetrics(afont).size(0, "B")*6;
-
-	boldbtn = new ToolButton(tb2, "boldButton");
-	boldbtn->setTextLabel("B");
-	boldbtn->setUsesTextLabel(true);
-	boldbtn->setTextPosition(ToolButton::BesideIcon);
-	boldbtn->setToggleButton(true);
-	afont.setBold(true);
-	boldbtn->setFont(afont);
-
-	italicbtn = new ToolButton(tb2, "italicButton");
-	italicbtn->setTextLabel("I");
-	italicbtn->setUsesTextLabel(true);
-	italicbtn->setTextPosition(ToolButton::BesideIcon);
-	italicbtn->setToggleButton(true);
-	afont.setBold(false);
-	afont.setItalic(true);
-	italicbtn->setFont(afont);
-
-	underlinebtn = new ToolButton(tb2, "underlineButton");
-	underlinebtn->setTextLabel("U");
-	underlinebtn->setUsesTextLabel(true);
-	underlinebtn->setTextPosition(ToolButton::BesideIcon);
-	underlinebtn->setToggleButton(true);
-	afont.setItalic(false);
-	afont.setUnderline(true);
-	underlinebtn->setFont(afont);
-
-	colorbtn = new ToolButton(tb2, "colorButton");
-	QPixmap p(12, 12);
-	actcolor=edit->paletteForegroundColor();
-	p.fill(actcolor);
-	colorbtn->setIconSet(QIconSet(p));
-
-	connect(boldbtn, SIGNAL(toggled(bool)), this, SLOT(toggledBold(bool)));
-	connect(italicbtn, SIGNAL(toggled(bool)), this, SLOT(toggledItalic(bool)));
-	connect(underlinebtn, SIGNAL(toggled(bool)), this, SLOT(toggledUnderline(bool)));
-	connect(colorbtn, SIGNAL(clicked()), this, SLOT(changeColor()));
+	KaduActions["boldAction"]->addToToolbar(tb2);
+	KaduActions["italicAction"]->addToToolbar(tb2);
+	KaduActions["underlineAction"]->addToToolbar(tb2);
+	KaduActions["colorAction"]->addToToolbar(tb2);
 
 	// TOOLBAR 3
 
@@ -261,17 +229,17 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 
 	body->setMimeSourceFactory(bodyformat);
 	body->setTextFormat(Qt::RichText);
-	edit->setMimeSourceFactory(bodyformat);
-	edit->setTextFormat(Qt::RichText);
+	Edit->setMimeSourceFactory(bodyformat);
+	Edit->setTextFormat(Qt::RichText);
 
-	connect(edit, SIGNAL(cursorPositionChanged(int, int)), this, SLOT(curPosChanged(int, int)));
-	connect(edit, SIGNAL(sendMessage()), this, SLOT(sendMessage()));
-	connect(edit, SIGNAL(specialKeyPressed(int)), this, SLOT(specialKeyPressed(int)));
+	connect(Edit, SIGNAL(cursorPositionChanged(int, int)), this, SLOT(curPosChanged(int, int)));
+	connect(Edit, SIGNAL(sendMessage()), this, SLOT(sendMessage()));
+	connect(Edit, SIGNAL(specialKeyPressed(int)), this, SLOT(specialKeyPressed(int)));
 
 	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)),
 		this, SLOT(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)));
 
-	edit->setFocus();
+	Edit->setFocus();
 	kdebugf2();
 }
 
@@ -302,37 +270,19 @@ void Chat::specialKeyPressed(int key)
 	switch (key)
 	{
 		case CustomInput::KEY_BOLD:
-			boldbtn->setOn(!boldbtn->isOn());
-			edit->setBold(boldbtn->isOn());
+			KaduActions["boldAction"]->setOn(Users->toUserListElements(), !KaduActions["boldAction"]->isOn(Users->toUserListElements()));
+			Edit->setBold(KaduActions["boldAction"]->isOn(Users->toUserListElements()));
 			break;
 		case CustomInput::KEY_ITALIC:
-			italicbtn->setOn(!italicbtn->isOn());
-			edit->setItalic(italicbtn->isOn());
+			KaduActions["italicAction"]->setOn(Users->toUserListElements(), !KaduActions["italicAction"]->isOn(Users->toUserListElements()));
+			Edit->setItalic(KaduActions["italicAction"]->isOn(Users->toUserListElements()));
 			break;
 		case CustomInput::KEY_UNDERLINE:
-			underlinebtn->setOn(!underlinebtn->isOn());
-			edit->setUnderline(underlinebtn->isOn());
+			KaduActions["underlineAction"]->setOn(Users->toUserListElements(), !KaduActions["underlineAction"]->isOn(Users->toUserListElements()));
+			Edit->setUnderline(KaduActions["underlineAction"]->isOn(Users->toUserListElements()));
 			break;
 	}
 	kdebugf2();
-}
-
-void Chat::toggledBold(bool on)
-{
-	kdebugf();
-	edit->setBold(on);
-}
-
-void Chat::toggledItalic(bool on)
-{
-	kdebugf();
-	edit->setItalic(on);
-}
-
-void Chat::toggledUnderline(bool on)
-{
-	kdebugf();
-	edit->setUnderline(on);
 }
 
 void Chat::curPosChanged(int, int)
@@ -340,24 +290,24 @@ void Chat::curPosChanged(int, int)
 	int i;
 
 	kdebugf();
-	if (edit->bold() != boldbtn->isOn())
-		boldbtn->setOn(edit->bold());
-	if (edit->italic() != italicbtn->isOn())
-		italicbtn->setOn(edit->italic());
-	if (edit->underline() != underlinebtn->isOn())
-		underlinebtn->setOn(edit->underline());
-	if (edit->color() != actcolor)
+	if (Edit->bold() != KaduActions["boldAction"]->isOn(Users->toUserListElements()))
+		KaduActions["boldAction"]->setOn(Users->toUserListElements(), Edit->bold());
+	if (Edit->italic() != KaduActions["italicAction"]->isOn(Users->toUserListElements()))
+		KaduActions["italicAction"]->setOn(Users->toUserListElements(), Edit->italic());
+	if (Edit->underline() != KaduActions["underlineAction"]->isOn(Users->toUserListElements()))
+		KaduActions["underlineAction"]->setOn(Users->toUserListElements(), Edit->underline());
+	if (Edit->color() != actcolor)
 	{
 		for (i = 0; i < 16; ++i)
-			if (edit->color() == QColor(colors[i]))
+			if (Edit->color() == QColor(colors[i]))
 				break;
-		QPixmap p(16, 16);
+		QPixmap p(12, 12);
 		if (i >= 16)
-			actcolor = edit->paletteForegroundColor();
+			actcolor = Edit->paletteForegroundColor();
 		else
 			actcolor = colors[i];
 		p.fill(actcolor);
-		colorbtn->setPixmap(p);
+		KaduActions["colorAction"]->setPixmaps(Users->toUserListElements(), p);
 	}
 	kdebugf2();
 }
@@ -428,11 +378,11 @@ void Chat::insertImage()
 			kdebugf2();
 			return;
 		}
-		edit->insert(QString("[IMAGE ") + selectedFile + "]");
+		Edit->insert(QString("[IMAGE ") + selectedFile + "]");
 	}
 	else
 		delete id;
-	edit->setFocus();
+	Edit->setFocus();
 	kdebugf2();
 }
 
@@ -457,7 +407,7 @@ void Chat::changeAppearance()
 		userbox->QListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
 	}
 	body->setFont(config_file.readFontEntry("Look","ChatFont"));
-	edit->setFont(config_file.readFontEntry("Look","ChatFont"));
+	Edit->setFont(config_file.readFontEntry("Look","ChatFont"));
 	kdebugf2();
 }
 
@@ -538,7 +488,7 @@ void Chat::keyPressEvent(QKeyEvent* e)
 void Chat::mouseReleaseEvent(QMouseEvent *e)
 {
 	kdebugf();
-	edit->setFocus();
+	Edit->setFocus();
 	QWidget::mouseReleaseEvent(e);
 }
 
@@ -889,15 +839,15 @@ void Chat::writeMyMessage()
 	messages.append(msg);
 	scrollMessages(messages);
 
-	if (!edit->isEnabled())
+	if (!Edit->isEnabled())
 		cancelMessage();
-	edit->clear();
-	if (boldbtn->isOn())
-		edit->setBold(true);
-	if (italicbtn->isOn())
-		edit->setItalic(true);
-	if (underlinebtn->isOn())
-		edit->setUnderline(true);
+	Edit->clear();
+	if (KaduActions["boldAction"]->isOn(Users->toUserListElements()))
+		Edit->setBold(true);
+	if (KaduActions["italicAction"]->isOn(Users->toUserListElements()))
+		Edit->setItalic(true);
+	if (KaduActions["underlineAction"]->isOn(Users->toUserListElements()))
+		Edit->setUnderline(true);
 	kdebugf2();
 }
 
@@ -927,7 +877,7 @@ void Chat::setAutoSend(bool auto_send)
 {
 	kdebugf();
 	AutoSend = auto_send;
-	edit->setAutosend(auto_send);
+	Edit->setAutosend(auto_send);
 	kdebugf2();
 }
 
@@ -943,9 +893,9 @@ void Chat::cancelMessage()
 	kdebugf();
 	seq = 0;
 	disconnectAcknowledgeSlots();
-	edit->setReadOnly(false);
-	edit->setEnabled(true);
-	edit->setFocus();
+	Edit->setReadOnly(false);
+	Edit->setEnabled(true);
+	Edit->setFocus();
 	disconnect(sendbtn, SIGNAL(clicked()), this, SLOT(cancelMessage()));
 	connect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
 	sendbtn->setIconSet(QIconSet(icons_manager->loadIcon("SendMessage")));
@@ -1023,7 +973,7 @@ void Chat::disconnectAcknowledgeSlots()
 void Chat::sendMessage()
 {
 	kdebugf();
-	if (edit->text().isEmpty())
+	if (Edit->text().isEmpty())
 	{
 		kdebugf2();
 		return;
@@ -1039,7 +989,7 @@ void Chat::sendMessage()
 		return;
 	}
 
-	QString mesg = edit->text();
+	QString mesg = Edit->text();
 	mesg.replace("\n", "\r\n");
 	mesg = unformatGGMessage(mesg, myLastFormatsLength, myLastFormats);
 	myLastMessage = mesg;
@@ -1077,8 +1027,8 @@ void Chat::sendMessage()
 
 	if (config_file.readBoolEntry("Chat","MessageAcks"))
 	{
-		edit->setReadOnly(true);
-		edit->setEnabled(false);
+		Edit->setReadOnly(true);
+		Edit->setEnabled(false);
 		disconnect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
 		connect(sendbtn, SIGNAL(clicked()), this, SLOT(cancelMessage()));
 		sendbtn->setIconSet(QIconSet(icons_manager->loadIcon("CancelMessage")));
@@ -1147,11 +1097,11 @@ void Chat::emoticonSelectorClicked()
 	emoticon_selector->show();
 }
 
-void Chat::changeColor()
+void Chat::changeColor(const QWidget* activating_widget)
 {
 	//sytuacja podobna jak w przypadku emoticon_selectora
-	color_selector = new ColorSelector(edit->paletteForegroundColor(), this, "color_selector");
-	color_selector->alignTo(colorbtn);
+	color_selector = new ColorSelector(Edit->paletteForegroundColor(), this, "color_selector");
+	color_selector->alignTo((QWidget*)activating_widget); //TODO: konwersja obcinajaca const nie jest piekna sprawa
 	color_selector->show();
 	connect(color_selector, SIGNAL(colorSelect(const QColor&)), this, SLOT(colorChanged(const QColor&)));
 	connect(color_selector, SIGNAL(aboutToClose()), this, SLOT(colorSelectorAboutToClose()));
@@ -1167,10 +1117,10 @@ void Chat::colorSelectorAboutToClose()
 void Chat::colorChanged(const QColor& color)
 {
 	color_selector = NULL;
-	QPixmap p(16, 16);
+	QPixmap p(12, 12);
 	p.fill(color);
-	colorbtn->setPixmap(p);
-	edit->setColor(color);
+	KaduActions["colorAction"]->setPixmaps(Users->toUserListElements(), p);
+	Edit->setColor(color);
 	actcolor = color;
 }
 
@@ -1181,8 +1131,8 @@ void Chat::addEmoticon(QString emot)
 	{
 		emot.replace("&lt;", "<");
 		emot.replace("&gt;", ">");
-		edit->insert(emot);
-		edit->setFocus();
+		Edit->insert(emot);
+		Edit->setFocus();
 	}
 	emoticon_selector = NULL;
 }
@@ -1201,6 +1151,11 @@ QValueList<ChatMessage*>& Chat::chatMessages()
 const QString& Chat::title() const
 {
 	return title_buffer;
+}
+
+CustomInput* Chat::edit()
+{
+	return Edit;
 }
 
 bool Chat::autoSend() const

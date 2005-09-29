@@ -71,7 +71,7 @@ EncryptionManager::EncryptionManager(QObject *parent, const char *name) : QObjec
 
 	Action* action = new Action(icons_manager->loadIcon("EncryptedChat"),
 		tr("Enable encryption for this conversation"), "encryption_action");
-	connect(action, SIGNAL(activated(const UserGroup*, bool)),
+	connect(action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(encryptionActionActivated(const UserGroup*)));
 	KaduActions.insert("encryption_action", action);
 

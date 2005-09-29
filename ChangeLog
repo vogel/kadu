@@ -140,6 +140,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * config_wizard nie potrzebuje modu³ów sound i hints do dzia³ania -
   wyrzuci³em je z jego zale¿no¶ci (joi)
 * poprawiono wykrywanie libexecinfo (wisnia/pawel_p)
+* przyciski z dolnego lewego paska okna chat zmienione na akcje (adrian)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

@@ -165,7 +165,7 @@ void Action::toolButtonClicked()
 	{
 		Chat* c = dynamic_cast<Chat*>(w);
 		if (c != NULL)
-			emit activated(c->users(), button->isOn());
+			emit activated(c->users(), button, button->isOn());
 	}
 	kdebugf2();
 }
@@ -199,6 +199,7 @@ ToolButton* Action::addToToolbar(ToolBar* toolbar)
 			break;
 		}
 	}
+	btn->setOn(isOn(user_list_elems));
 	emit addedToToolbar(btn, toolbar, user_list_elems);
 	kdebugf2();
 	return btn;
@@ -232,6 +233,48 @@ QValueList<ToolButton*> Action::toolButtonsForUserListElements(const UserListEle
 	}
 	kdebugf2();
 	return buttons;
+}
+
+bool Action::isOn(const UserListElements& users)
+{
+	kdebugf();
+	for (QValueList<ToggleStateStruct>::iterator i = ToggleState.begin(); i != ToggleState.end(); i++)
+		if ((*i).elems == users)
+		{
+			kdebug("state: %i\n", (*i).state);
+			kdebugf2();
+			return (*i).state;
+		}
+	return false;
+	kdebugf2();
+}
+
+void Action::setOn(const UserListElements& users, bool on)
+{
+	kdebugf();
+	QValueList<ToolButton*> buttons = toolButtonsForUserListElements(users);
+	for (QValueList<ToolButton*>::iterator i = buttons.begin(); i != buttons.end(); i++)
+		(*i)->setOn(on);
+	for (QValueList<ToggleStateStruct>::iterator i = ToggleState.begin(); i != ToggleState.end(); i++)
+		if ((*i).elems == users)
+		{
+			(*i).state = on;
+			return;
+		}
+	ToggleStateStruct s;
+	s.elems = users;
+	s.state = on;
+	ToggleState.push_back(s);
+	kdebugf2();
+}
+
+void Action::setPixmaps(const UserListElements& users, const QPixmap& pixmap)
+{
+	kdebugf();
+	QValueList<ToolButton*> buttons = toolButtonsForUserListElements(users);
+	for (QValueList<ToolButton*>::iterator i = buttons.begin(); i != buttons.end(); i++)
+		(*i)->setPixmap(pixmap);
+	kdebugf2();
 }
 
 Actions::Actions()

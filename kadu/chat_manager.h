@@ -51,10 +51,14 @@ class ChatManager : public QObject
 
 		void autoSendActionAddedToToolbar(ToolButton* button, ToolBar* toolbar,
 			const UserListElements& users);
-		void autoSendActionActivated(const UserGroup* users, bool is_on);
-		void scrollLockActionActivated(const UserGroup* users, bool is_on);
+		void autoSendActionActivated(const UserGroup* users, const QWidget* source, bool is_on);
+		void scrollLockActionActivated(const UserGroup* users, const QWidget* source, bool is_on);
 		void clearActionActivated(const UserGroup* users);
 		void historyActionActivated(const UserGroup* users);
+		void boldActionActivated(const UserGroup* users, const QWidget* source, bool is_on);
+		void italicActionActivated(const UserGroup* users, const QWidget* source, bool is_on);
+		void underlineActionActivated(const UserGroup* users, const QWidget* source, bool is_on);
+		void colorActionActivated(const UserGroup* users, const QWidget* source);
 
 	public:
 		/**

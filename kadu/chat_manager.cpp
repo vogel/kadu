@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <qcursor.h>
+#include <qbitmap.h>
 
 #include "chat_manager_slots.h"
 #include "config_dialog.h"
@@ -20,6 +21,22 @@
 #include "pending_msgs.h"
 #include "userbox.h"
 
+// TODO: zrobic ikony w zestawie zamiast sie bawic w takie sztuczki
+static QPixmap string_to_pixmap(const QString& str, const QFont& font)
+{
+	QSize size = QFontMetrics(font).size(0, str);
+	QPixmap pixmap(size);
+	pixmap.fill();
+	QPainter* painter = new QPainter();
+	painter->begin(&pixmap);
+	painter->setFont(font);
+	painter->drawText(QRect(QPoint(0, 0), size), 0, str);
+	painter->end();
+	pixmap.setMask(pixmap.createHeuristicMask());
+	delete painter;
+	return pixmap;
+}
+
 ChatManager::ChatManager(QObject* parent, const char* name)
 	: QObject(parent, name)
 {
@@ -29,8 +46,8 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 		tr("%1 sends message").arg(config_file.readEntry("ShortCuts", "chat_newline")),
 		"autoSendAction");
 	auto_send_action->setToggleAction(true);
-	connect(auto_send_action, SIGNAL(activated(const UserGroup*, bool)),
-		this, SLOT(autoSendActionActivated(const UserGroup*, bool)));
+	connect(auto_send_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		this, SLOT(autoSendActionActivated(const UserGroup*, const QWidget*, bool)));
 	connect(auto_send_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*,
 			const UserListElements&)),
 		this, SLOT(autoSendActionAddedToToolbar(ToolButton*, ToolBar*,
@@ -40,21 +57,57 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 	Action* scroll_lock_action = new Action(icons_manager->loadIcon("ScrollLock"),
 		tr("Blocks scrolling"), "scrollLockAction");
 	scroll_lock_action->setToggleAction(true);
-	connect(scroll_lock_action, SIGNAL(activated(const UserGroup*, bool)),
-		this, SLOT(scrollLockActionActivated(const UserGroup*, bool)));
+	connect(scroll_lock_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		this, SLOT(scrollLockActionActivated(const UserGroup*, const QWidget*, bool)));
 	KaduActions.insert("scrollLockAction", scroll_lock_action);
 
 	Action* clear_action = new Action(icons_manager->loadIcon("ClearChat"),
 		tr("Clear messages in chat window"), "clearChatAction");
-	connect(clear_action, SIGNAL(activated(const UserGroup*, bool)),
+	connect(clear_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(clearActionActivated(const UserGroup*)));
 	KaduActions.insert("clearChatAction", clear_action);
 
 	Action* history_action = new Action(icons_manager->loadIcon("History"),
 		tr("Show history"), "showHistoryAction");
-	connect(history_action, SIGNAL(activated(const UserGroup*, bool)),
+	connect(history_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(historyActionActivated(const UserGroup*)));
 	KaduActions.insert("showHistoryAction", history_action);
+
+	QFont font;
+
+	font.setBold(true);
+	Action* bold_action = new Action(string_to_pixmap("B", font),
+		tr("Bold"), "boldAction");
+	bold_action->setToggleAction(true);
+	connect(bold_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		this, SLOT(boldActionActivated(const UserGroup*, const QWidget*, bool)));
+	KaduActions.insert("boldAction", bold_action);
+
+	font.setBold(false);
+	font.setItalic(true);
+	Action* italic_action = new Action(string_to_pixmap("I", font),
+		tr("Italic"), "italicAction");
+	italic_action->setToggleAction(true);
+	connect(italic_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		this, SLOT(italicActionActivated(const UserGroup*, const QWidget*, bool)));
+	KaduActions.insert("italicAction", italic_action);
+
+	font.setItalic(false);
+	font.setUnderline(true);
+	Action* underline_action = new Action(string_to_pixmap("U", font),
+		tr("Underline"), "underlineAction");
+	underline_action->setToggleAction(true);
+	connect(underline_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		this, SLOT(underlineActionActivated(const UserGroup*, const QWidget*, bool)));
+	KaduActions.insert("underlineAction", underline_action);
+
+	QPixmap p(12, 12);
+	p.fill(Qt::black);
+	Action* color_action = new Action(p,
+		tr("Change color"), "colorAction");
+	connect(color_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		this, SLOT(colorActionActivated(const UserGroup*, const QWidget*)));
+	KaduActions.insert("colorAction", color_action);
 
 	kdebugf2();
 }
@@ -84,14 +137,14 @@ void ChatManager::autoSendActionAddedToToolbar(ToolButton* button, ToolBar* tool
 	kdebugf2();
 }
 
-void ChatManager::autoSendActionActivated(const UserGroup* users, bool is_on)
+void ChatManager::autoSendActionActivated(const UserGroup* users, const QWidget* source, bool is_on)
 {
 	kdebugf();
 	findChat(users)->setAutoSend(is_on);
 	kdebugf2();
 }
 
-void ChatManager::scrollLockActionActivated(const UserGroup* users, bool is_on)
+void ChatManager::scrollLockActionActivated(const UserGroup* users, const QWidget* source, bool is_on)
 {
 	kdebugf();
 	findChat(users)->setScrollLocked(is_on);
@@ -109,6 +162,34 @@ void ChatManager::historyActionActivated(const UserGroup* users)
 {
 	kdebugf();
 	findChat(users)->HistoryBox();
+	kdebugf2();
+}
+
+void ChatManager::boldActionActivated(const UserGroup* users, const QWidget* source, bool is_on)
+{
+	kdebugf();
+	findChat(users)->edit()->setBold(is_on);
+	kdebugf2();
+}
+
+void ChatManager::italicActionActivated(const UserGroup* users, const QWidget* source, bool is_on)
+{
+	kdebugf();
+	findChat(users)->edit()->setItalic(is_on);
+	kdebugf2();
+}
+
+void ChatManager::underlineActionActivated(const UserGroup* users, const QWidget* source, bool is_on)
+{
+	kdebugf();
+	findChat(users)->edit()->setUnderline(is_on);
+	kdebugf2();
+}
+
+void ChatManager::colorActionActivated(const UserGroup* users, const QWidget* source)
+{
+	kdebugf();
+	findChat(users)->changeColor(source);
 	kdebugf2();
 }
 

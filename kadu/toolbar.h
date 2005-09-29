@@ -70,6 +70,12 @@ class Action : public QAction
 
 	private:
 		QValueList<ToolButton*> ToolButtons;
+		struct ToggleStateStruct
+		{
+			UserListElements elems;
+			bool state;
+		};
+		QValueList<ToggleStateStruct> ToggleState;
 
 	private slots:
 		void toolButtonClicked();
@@ -82,6 +88,9 @@ class Action : public QAction
 		int addToPopupMenu(QPopupMenu* menu, bool connect_signal = true);
 		QValueList<ToolButton*> toolButtonsForUserListElements(
 			const UserListElements& users);
+		bool isOn(const UserListElements& users);
+		void setOn(const UserListElements& users, bool on);
+		void setPixmaps(const UserListElements& users, const QPixmap& pixmap);
 
 	signals:
 		void addedToToolbar(ToolButton* button, ToolBar* toolbar,
@@ -89,7 +98,7 @@ class Action : public QAction
 		/**
 			is_on jest zawsze ustawione na false jesli akcja nie jest typu "toggle".
 		**/
-		void activated(const UserGroup* users, bool is_on);
+		void activated(const UserGroup* users, const QWidget* source, bool is_on);
 };
 
 class Actions : public QMap<QString, Action*>

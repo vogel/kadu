@@ -7,6 +7,7 @@
 #include <qvaluelist.h>
 
 #include "config_file.h"
+#include "custom_input.h"
 #include "emoticons.h"
 #include "gadu.h"
 #include "toolbar.h"
@@ -22,7 +23,6 @@ class Chat;
 class ChatManager;
 class ChatMessage;
 class ColorSelector;
-class CustomInput;
 class EmoticonSelector;
 class KaduSplitter;
 class KaduTextBrowser;
@@ -55,16 +55,11 @@ class Chat : public QMainWindow
 					od¶wie¿enia tytu³u okna */
 		QColor actcolor; /*!< zmienna przechowuj±ca aktualny kolor */
 
+		CustomInput* Edit; /*!< okno do wpisywania wiadomo¶ci */
 		QMimeSourceFactory *bodyformat; /*!< zmienna ustawiaj±cy format */
 		EmoticonSelector* emoticon_selector; /*!< okienko do
 							wyboru emotikonek */
 		ColorSelector* color_selector; /*!< okienko do wyboru koloru */
-		ToolButton* boldbtn; /*!< przycisk pogrubiaj±cy czcionkê */
-		ToolButton* italicbtn; /*!< przycisk ustawiaj±cy
-					czcionkê na kursywê */
-		ToolButton* underlinebtn; /*!< przycisk podkre¶laj±cy tekst */
-		ToolButton* colorbtn; /*!< przycisk umo¿liwiaj±cy
-					wybór koloru czcionki*/
 		ToolButton* iconsel;
 		bool AutoSend;
 		bool ScrollLocked;
@@ -116,7 +111,7 @@ class Chat : public QMainWindow
 			\fn void changeColor()
 			Slot zmieniaj±cy kolor czcionki
 		**/
-		void changeColor();
+		void changeColor(const QWidget* activating_widget);
 
 		/**
 			\fn void addMyMessageToHistory()
@@ -204,7 +199,6 @@ class Chat : public QMainWindow
 	public:
 		// FIXME - nie powinno byc publicznych zmiennych
 		KaduTextBrowser* body; /*!< historia rozmowy */
-		CustomInput* edit; /*!< okno do wpisywania wiadomo¶ci */
 
 		/**
 			Konstruktor okna rozmowy
@@ -297,6 +291,8 @@ class Chat : public QMainWindow
 		**/
 		const QString& title() const;
 
+		CustomInput* edit();
+
 		bool autoSend() const;
 
 		virtual void dragEnterEvent(QDragEnterEvent *e);
@@ -371,27 +367,6 @@ class Chat : public QMainWindow
 			\see setTitle
 		**/
 		void changeTitle();
-
-		/**
-			\fn void toggledBold(bool on)
-			Slot wywo³ywany przy naci¶niêciu przycisku pogrubienia
-			\param on ustawia pogrubienie
-		**/
-		void toggledBold(bool on);
-
-		/**
-			\fn void toggledItalic(bool on)
-			Slot wywo³ywany przy naci¶niêciu przycisku kursywy
-			\param on ustawia kursywê
-		**/
-		void toggledItalic(bool on);
-
-		/**
-			\fn void toggledUnderline(bool on)
-			Slot wywo³ywany przy naci¶niêciu przycisku podkre¶lenia
-			\param on ustawia podkre¶lenie
-		**/
-		void toggledUnderline(bool on);
 
 		/**
 			\fn void curPosChanged(int para, int pos)
