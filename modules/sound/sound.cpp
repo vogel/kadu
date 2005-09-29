@@ -221,8 +221,8 @@ SoundManager::SoundManager(const QString& name, const QString& configname)
 	sound_manager = this;
 	sound_slots = new SoundSlots(this, "sound_slots");
 
-	ConfigDialog::registerSlotOnCreate(sound_slots, SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnApply(sound_slots, SLOT(onApplyConfigDialog()));
+	ConfigDialog::registerSlotOnCreateTab("Sounds", sound_slots, SLOT(onCreateTabSounds()));
+	ConfigDialog::registerSlotOnApplyTab("Sounds", sound_slots, SLOT(onApplyTabSounds()));
 	ConfigDialog::connectSlot("Sounds", "Play sounds", SIGNAL(toggled(bool)), sound_slots, SLOT(soundPlayer(bool)));
 	ConfigDialog::connectSlot("Sounds", "Choose", SIGNAL(clicked()), sound_slots, SLOT(chooseSoundFile()));
 	ConfigDialog::connectSlot("Sounds", "Clear", SIGNAL(clicked()), sound_slots, SLOT(clearSoundFile()));
@@ -267,8 +267,8 @@ SoundManager::~SoundManager()
 	kdebugf();
 	play_thread->endThread();
 
-	ConfigDialog::unregisterSlotOnCreate(sound_slots, SLOT(onCreateConfigDialog()));
-	ConfigDialog::unregisterSlotOnApply(sound_slots, SLOT(onApplyConfigDialog()));
+	ConfigDialog::unregisterSlotOnCreateTab("Sounds", sound_slots, SLOT(onCreateTabSounds()));
+	ConfigDialog::unregisterSlotOnApplyTab("Sounds", sound_slots, SLOT(onApplyTabSounds()));
 	ConfigDialog::disconnectSlot("Sounds", "Play sounds", SIGNAL(toggled(bool)), sound_slots, SLOT(soundPlayer(bool)));
 	ConfigDialog::disconnectSlot("Sounds", "Choose", SIGNAL(clicked()), sound_slots, SLOT(chooseSoundFile()));
 	ConfigDialog::disconnectSlot("Sounds", "Clear", SIGNAL(clicked()), sound_slots, SLOT(clearSoundFile()));

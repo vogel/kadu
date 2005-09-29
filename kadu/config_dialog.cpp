@@ -38,9 +38,9 @@ QString ConfigDialog::currentTab;
 ConfigDialog *ConfigDialog::configdialog = NULL;
 QApplication *ConfigDialog::appHandle = NULL;
 
-QValueList<ConfigDialog::ElementConnections> ConfigDialog::SlotsOnCreate;
-QValueList<ConfigDialog::ElementConnections> ConfigDialog::SlotsOnClose;
-QValueList<ConfigDialog::ElementConnections> ConfigDialog::SlotsOnApply;
+QMap<QString, QValueList<ConfigDialog::ElementConnections> > ConfigDialog::SlotsOnCreateTab;
+QMap<QString, QValueList<ConfigDialog::ElementConnections> > ConfigDialog::SlotsOnCloseTab;
+QMap<QString, QValueList<ConfigDialog::ElementConnections> > ConfigDialog::SlotsOnApplyTab;
 
 QMap<QString, QValueList <ConfigDialog::RegisteredControl> > ConfigDialog::Tabs;
 QStringList ConfigDialog::TabNames;
@@ -99,41 +99,12 @@ void ConfigDialog::keyPressEvent(QKeyEvent *e)
 		QVBox::keyPressEvent(e);
 }
 
-ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const char *name) : QVBox(parent, name)
+void ConfigDialog::createWidget(QValueListIterator <RegisteredControl> i)
 {
-	kdebugf();
+//	kdebugf();
+	if ((*i).widget)
+		return;
 
-	ConfigDialog::appHandle=application;
-	setWFlags(Qt::WDestructiveClose);
-
-	configdialog = this;
-
-	setCaption(tr("Kadu configuration"));
-
-	QHBox *center = new QHBox(this,"center");
-	center->setMargin(10);
-	center->setSpacing(10);
-
-	QVBox *left = new QVBox(center,"left");
-
-	listBox = new QListBox(left,"listbox");
-	listBox->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)0, (QSizePolicy::SizeType)7, 0, 0,
-	listBox->sizePolicy().hasHeightForWidth()));
-
-	QVGroupBox* vgb_viewcontainer = new QVGroupBox(center,"mainGroupBox");
-
-	view = new QScrollView(vgb_viewcontainer,"scrollView");
-	view->setResizePolicy(QScrollView::AutoOneFit);
-	view->setFrameStyle(QFrame::NoFrame);
-
-	QVGroupBox* box= new QVGroupBox(view, "groupBox");
-	box->setFrameStyle(QFrame::NoFrame);
-	view->addChild(box);
-
-//	int num = 0;
-
-	CONST_FOREACH(tabName, TabNames)
-	FOREACH(i, Tabs[*tabName])
 	{
 // wyswietla cala liste
 //		kdebugm(KDEBUG_DUMP, "%d: (%d) "+(*i).group+"->"+(*i).parent+"->"+(*i).caption+"->"+(*i).name+"\n", num, (*i).nrOfControls);
@@ -420,17 +391,87 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 //		++num;
 	}
 
-	kdebugm(KDEBUG_INFO, "connecting SlotsOnCreate\n");
-	CONST_FOREACH(conn, SlotsOnCreate)
-		connect(this, SIGNAL(create()), (*conn).receiver, (*conn).slot);
+//	kdebugf2();
 
-	kdebugm(KDEBUG_INFO, "connecting SlotsOnApply\n");
-	CONST_FOREACH(conn, SlotsOnApply)
+}
+
+
+void ConfigDialog::createTabAndWidgets(const QString& tab)
+{
+	kdebugf();
+
+	if (Tabs[tab].back().widget)
+		return;
+
+	FOREACH(i, Tabs[tab])
+		createWidget(i);
+		
+	FOREACH(j, SlotsOnCreateTab[tab])
+		connect(this, SIGNAL(createTab()), (*j).receiver, (*j).slot);
+	
+	emit createTab();
+
+	FOREACH(j, SlotsOnCreateTab[tab])
+		disconnect(this, SIGNAL(createTab()), (*j).receiver, (*j).slot);
+
+
+	kdebugm(KDEBUG_INFO, "connecting SlotsOnApplyTab\n");
+	CONST_FOREACH(conn, SlotsOnApplyTab[tab])
 		connect(this, SIGNAL(apply()), (*conn).receiver, (*conn).slot);
 
-	kdebugm(KDEBUG_INFO, "connecting SlotsOnClose\n");
-	CONST_FOREACH(conn, SlotsOnClose)
+	kdebugm(KDEBUG_INFO, "connecting SlotsOnCloseTab\n");
+	CONST_FOREACH(conn, SlotsOnCloseTab[tab])
 		connect(this, SIGNAL(destroy()), (*conn).receiver, (*conn).slot);
+
+	kdebugf2();
+}
+
+
+
+ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const char *name) : QVBox(parent, name)
+{
+	kdebugf();
+
+			     
+	ConfigDialog::appHandle=application;
+	setWFlags(Qt::WDestructiveClose);
+
+	configdialog = this;
+
+	setCaption(tr("Kadu configuration"));
+
+	QHBox *center = new QHBox(this,"center");
+	center->setMargin(10);
+	center->setSpacing(10);
+
+	QVBox *left = new QVBox(center,"left");
+
+	listBox = new QListBox(left,"listbox");
+	listBox->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)0, (QSizePolicy::SizeType)7, 0, 0,
+	listBox->sizePolicy().hasHeightForWidth()));
+
+	QVGroupBox* vgb_viewcontainer = new QVGroupBox(center,"mainGroupBox");
+
+	view = new QScrollView(vgb_viewcontainer,"scrollView");
+	view->setResizePolicy(QScrollView::AutoOneFit);
+	view->setFrameStyle(QFrame::NoFrame);
+
+	box= new QVGroupBox(view, "groupBox");
+	box->setFrameStyle(QFrame::NoFrame);
+	view->addChild(box);
+
+//	int num = 0;
+
+	CONST_FOREACH(tabName, TabNames)
+	{
+		FOREACH(i, Tabs[*tabName])
+		{
+			(*i).widget= NULL;
+			(*i).entireWidget= NULL;
+		}
+		createWidget(Tabs[*tabName].begin());
+	}
+
 
 	// buttons
 	QHBox *bottom = new QHBox(this, "buttons");
@@ -460,7 +501,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 	// end buttons
 
 	configdialog = this;
-	emit create();
+
 
 	if (currentTab.isEmpty())
 		currentTab = config_file.readEntry("General", "ConfigDialogLastTab", QT_TRANSLATE_NOOP("@default", "General"));
@@ -470,6 +511,8 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 		changeTab(appHandle->translate("@default", "General"));
 	listBox->setCurrentItem(listBox->findItem(appHandle->translate("@default", currentTab)));
 	connect(listBox, SIGNAL(highlighted(const QString&)), this, SLOT(changeTab(const QString&)));
+
+	emit create();
 
 	loadGeometry(this, "General", "ConfigGeometry", 0, 30, 790, 480);
 
@@ -499,7 +542,9 @@ void ConfigDialog::changeTab(const QString& name)
 		const RegisteredControl &tabControl = (*tab).front();
 		if (appHandle->translate("@default", tabControl.caption) == name)
 		{
-			if (tabControl.widget)
+			if (!((*tab).back().widget))
+				createTabAndWidgets(tabControl.caption);
+
 				tabControl.widget->show();
 			currentTab = tabControl.caption;
 			if ((sig = tabChangesIn[tabControl.caption]))
@@ -1191,34 +1236,34 @@ void ConfigDialog::disconnectSlot(const QString& groupname, const QString& capti
 }
 
 
-void ConfigDialog::registerSlotOnCreate(const QObject* receiver, const char* name)
+void ConfigDialog::registerSlotOnCreateTab(const QString& tab, const QObject* receiver, const char* name)
 {
-	SlotsOnCreate.append(ElementConnections(QString::null, receiver, name));
+	SlotsOnCreateTab[tab].append(ElementConnections(QString::null, receiver, name));
 }
 
-void ConfigDialog::unregisterSlotOnCreate(const QObject* receiver, const char* name)
+void ConfigDialog::unregisterSlotOnCreateTab(const QString& tab, const QObject* receiver, const char* name)
 {
-	SlotsOnCreate.remove(SlotsOnCreate.find(ElementConnections(QString::null, receiver, name)));
+	SlotsOnCreateTab[tab].remove(SlotsOnCreateTab[tab].find(ElementConnections(QString::null, receiver, name)));
 }
 
-void ConfigDialog::registerSlotOnClose(const QObject* receiver, const char* name)
+void ConfigDialog::registerSlotOnCloseTab(const QString& tab, const QObject* receiver, const char* name)
 {
-	SlotsOnClose.append(ElementConnections(QString::null, receiver, name));
+	SlotsOnCloseTab[tab].append(ElementConnections(QString::null, receiver, name));
 }
 
-void ConfigDialog::unregisterSlotOnClose(const QObject* receiver, const char* name)
+void ConfigDialog::unregisterSlotOnCloseTab(const QString& tab, const QObject* receiver, const char* name)
 {
-	SlotsOnClose.remove(SlotsOnClose.find(ElementConnections(QString::null, receiver, name)));
+	SlotsOnCloseTab[tab].remove(SlotsOnCloseTab[tab].find(ElementConnections(QString::null, receiver, name)));
 }
 
-void ConfigDialog::registerSlotOnApply(const QObject* receiver, const char* name)
+void ConfigDialog::registerSlotOnApplyTab(const QString& tab, const QObject* receiver, const char* name)
 {
-	SlotsOnApply.append(ElementConnections(QString::null, receiver, name));
+	SlotsOnApplyTab[tab].append(ElementConnections(QString::null, receiver, name));
 }
 
-void ConfigDialog::unregisterSlotOnApply(const QObject* receiver, const char* name)
+void ConfigDialog::unregisterSlotOnApplyTab(const QString& tab, const QObject* receiver, const char* name)
 {
-	SlotsOnApply.remove(SlotsOnApply.find(ElementConnections(QString::null, receiver, name)));
+	SlotsOnApplyTab[tab].remove(SlotsOnApplyTab[tab].find(ElementConnections(QString::null, receiver, name)));
 }
 
 void ConfigDialog::registerSlotsOnTabChange(const QString &name, const QObject *receiver, const char *slotIn, const char *slotOut)
@@ -1449,9 +1494,18 @@ QWidget* ConfigDialog::widget(const QString& groupname, const QString& caption, 
 		printBacktrace("ConfigDialog::widget(): CD is closed!");
 		return NULL;
 	}
-	QValueListConstIterator<RegisteredControl> control;
+	QValueListIterator<RegisteredControl> control;
 	if (controlExists(groupname, caption, name, &control))
+	{
+		if (!(*control).widget)
+		{
+			configdialog->createTabAndWidgets((*control).group);
+			configdialog->createWidget(control);
+		}
+
 		return (*control).widget;
+	}
+
 	kdebugm(KDEBUG_PANIC, "Warning: there is no \\" +groupname+ "\\"+ caption+ "\\"+ name+ "\\ control\n");
 	return NULL;
 }

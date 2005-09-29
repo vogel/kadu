@@ -29,8 +29,8 @@ class SoundSlots : public QObject
 
 	private slots:
 		void soundPlayer(bool value, bool toolbarChanged=false);
-		void onCreateConfigDialog();
-		void onApplyConfigDialog();
+		void onCreateTabSounds();
+		void onApplyTabSounds();
 		void chooseSoundTheme(const QString& string);
 		void chooseSoundFile();
 		void clearSoundFile();

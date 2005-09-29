@@ -305,8 +305,8 @@ DccManager::DccManager(QObject *parent, const char *name) : QObject(parent, name
 	ConfigDialog::connectSlot("Network", "DCC enabled", SIGNAL(toggled(bool)), this, SLOT(ifDccEnabled(bool)));
 	ConfigDialog::connectSlot("Network", "DCC IP autodetection", SIGNAL(toggled(bool)), this, SLOT(ifDccIpEnabled(bool)));
 
-	ConfigDialog::registerSlotOnCreate(this, SLOT(configDialogCreated()));
-	ConfigDialog::registerSlotOnApply(this, SLOT(configDialogApply()));
+	ConfigDialog::registerSlotOnCreateTab("Network", this, SLOT(configDialogCreated()));
+	ConfigDialog::registerSlotOnApplyTab("Network", this, SLOT(configDialogApply()));
 
 	DccSock = NULL;
 	DCCReadSocketNotifier = NULL;
@@ -328,8 +328,8 @@ DccManager::~DccManager()
 	ConfigDialog::disconnectSlot("Network", "DCC enabled", SIGNAL(toggled(bool)), this, SLOT(ifDccEnabled(bool)));
 	ConfigDialog::disconnectSlot("Network", "DCC IP autodetection", SIGNAL(toggled(bool)), this, SLOT(ifDccIpEnabled(bool)));
 
-	ConfigDialog::unregisterSlotOnCreate(this, SLOT(configDialogCreated()));
-	ConfigDialog::unregisterSlotOnApply(this, SLOT(configDialogApply()));
+	ConfigDialog::unregisterSlotOnCreateTab("Network", this, SLOT(configDialogCreated()));
+	ConfigDialog::unregisterSlotOnApplyTab("Network", this, SLOT(configDialogApply()));
 
 	ConfigDialog::removeControl("Network", "DCC enabled");
 	ConfigDialog::removeControl("Network", "DCC IP autodetection");

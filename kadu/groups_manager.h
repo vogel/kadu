@@ -142,7 +142,7 @@ class GroupsManager : public QObject
 
 		void tabSelected(int id);
 
-		void onApplyConfigDialog();
+		void onApplyTabGeneral();
 
 	private:
 		GroupsManager();

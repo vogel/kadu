@@ -70,7 +70,7 @@ HintManagerSlots::~HintManagerSlots()
 	kdebugf2();
 }
 
-void HintManagerSlots::onCreateConfigDialog()
+void HintManagerSlots::onCreateTabHints()
 {
 	kdebugf();
 	ConfigDialog::getSpinBox("Hints", "Hint timeout")->setSuffix(" s");
@@ -102,7 +102,7 @@ void HintManagerSlots::onCreateConfigDialog()
 	kdebugf2();
 }
 
-void HintManagerSlots::onApplyConfigDialog()
+void HintManagerSlots::onApplyTabHints()
 {
 	kdebugf();
 	
@@ -116,7 +116,7 @@ void HintManagerSlots::onApplyConfigDialog()
 	kdebugf2();
 }
 
-void HintManagerSlots::onCloseConfigDialog()
+void HintManagerSlots::onCloseTabHints()
 {
 	kdebugf();
 	config_hint_properties.clear();

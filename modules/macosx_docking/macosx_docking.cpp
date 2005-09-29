@@ -24,7 +24,7 @@ MacOSXDocking::MacOSXDocking(QObject *parent, const char *name) : QObject(parent
 {
 	kdebugf();
 	config_file.writeEntry("General", "RunDocked", false);
-	ConfigDialog::registerSlotOnCreate(this, SLOT(onCreateConfigDialog()));
+	ConfigDialog::registerSlotOnCreateTab("General", this, SLOT(onCreateTabGeneral()));
 	connect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap &, const QString &)), this, SLOT(trayPixmapChanged(const QPixmap &, const QString &)));
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint &)), this, SLOT(findTrayPosition(QPoint &)));
 	connect(kadu, SIGNAL(settingMainIconBlocked(bool &)), this, SLOT(blockSettingIcon(bool &)));
@@ -39,7 +39,7 @@ MacOSXDocking::~MacOSXDocking()
 	disconnect(kadu, SIGNAL(settingMainIconBlocked(bool &)), this, SLOT(blockSettingIcon(bool &)));
 	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap &, const QString &)), this, SLOT(trayPixmapChanged(const QPixmap &, const QString &)));
 	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint &)), this, SLOT(findTrayPosition(QPoint &)));
-	ConfigDialog::unregisterSlotOnCreate(this, SLOT(onCreateConfigDialog()));
+	ConfigDialog::unregisterSlotOnCreateTab("General", this, SLOT(onCreateTabGeneral()));
 	kdebugf2();
 }
 
@@ -66,7 +66,7 @@ void MacOSXDocking::findTrayPosition(QPoint &p)
 	p = QPoint(desktop->width() - 20, desktop->height() - 20);
 }
 
-void MacOSXDocking::onCreateConfigDialog()
+void MacOSXDocking::onCreateTabGeneral()
 {
 	kdebugf();
 	//ze wzglêdu na jaki¶ problem z Qt opcja wy³±czona

@@ -217,8 +217,8 @@ class HistorySlots: public QObject
 	public:
 		HistorySlots(QObject *parent=0, const char *name=0);
 	public slots:
-		void onCreateConfigDialog();
-		void onDestroyConfigDialog();
+		void onCreateTabHistory();
+		void onApplyTabHistory();
 		void updateQuoteTimeLabel(int);
 };
 

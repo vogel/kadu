@@ -13,8 +13,8 @@ class NotifySlots : public QObject
 		QStringList disabledControls;
 
 	public slots:
-		void onCreateConfigDialog();
-		void onApplyConfigDialog();
+		void onCreateTabNotify();
+		void onApplyTabHints();
 
 		void _Left();
 		void _Right();

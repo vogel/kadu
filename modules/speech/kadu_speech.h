@@ -31,7 +31,7 @@ class SpeechSlots : public QObject
 					bool arts=false, bool esd=false, bool dsp=false, const QString &device=QString::null,
 					int freq=0, int tempo=0, int basefreq=0);
 
-		void onCreateConfigDialog();
+		void onCreateTabSpeech();
 		void chooseSpeechProgram();
 		void useArts();
 		void useEsd();

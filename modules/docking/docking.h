@@ -20,7 +20,7 @@ class DockingManager : public QObject
 		void dockletChange(int id);
 		void pendingMessageAdded();
 		void pendingMessageDeleted();
-		void onApplyConfigDialog();
+		void onApplyTabGeneral();
 
 	public:
 		DockingManager(QObject *parent=0, const char *name=0);

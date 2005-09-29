@@ -59,13 +59,13 @@ DockingManager::DockingManager(QObject *parent, const char *name) : QObject(pare
 	ConfigDialog::addComboBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "New message tray icon"),
 			"NewMessageIcon", toStringList(tr("Blinking envelope"), tr("Static envelope"), tr("Animated envelope")),
 			toStringList("0", "1", "2"), "0", "", "", Advanced);
-	ConfigDialog::registerSlotOnApply(this, SLOT(onApplyConfigDialog()));
+	ConfigDialog::registerSlotOnApplyTab("General", this, SLOT(onApplyTabGeneral()));
 	newMessageIcon = (IconType) config_file.readNumEntry("Look", "NewMessageIcon");
 	
 	kdebugf2();
 }
 
-void DockingManager::onApplyConfigDialog()
+void DockingManager::onApplyTabGeneral()
 {
 	kdebugf();
 	newMessageIcon = (IconType) config_file.readNumEntry("Look", "NewMessageIcon");
@@ -79,7 +79,7 @@ void DockingManager::onApplyConfigDialog()
 DockingManager::~DockingManager()
 {
 	kdebugf();
-	ConfigDialog::unregisterSlotOnApply(this, SLOT(onApplyConfigDialog()));
+	ConfigDialog::unregisterSlotOnApplyTab("General", this, SLOT(onApplyTabGeneral()));
 	ConfigDialog::removeControl("General", "Show tooltip in tray");
 
 	disconnect(kadu, SIGNAL(statusPixmapChanged(const QPixmap &, const QString &)),

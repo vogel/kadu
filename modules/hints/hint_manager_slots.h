@@ -27,9 +27,9 @@ class HintManagerSlots : public QObject
 		~HintManagerSlots();
 
 	public slots:
-		void onCreateConfigDialog();
-		void onApplyConfigDialog();
-		void onCloseConfigDialog();
+		void onCreateTabHints();
+		void onApplyTabHints();
+		void onCloseTabHints();
 		
 		void toggled_ShowMessageContent(bool);
 		void toggled_UseNotifySyntax(bool);

@@ -165,7 +165,7 @@ SpeechSlots::SpeechSlots(QObject *parent, const char *name) : QObject(parent, na
 	ConfigDialog::connectSlot("Speech", "Use Esd", SIGNAL(clicked()), this, SLOT(useEsd()), "useesd");
 	ConfigDialog::connectSlot("Speech", "Use Dsp", SIGNAL(clicked()), this, SLOT(useDsp()), "usedsp");
 
-	ConfigDialog::registerSlotOnCreate(this, SLOT(onCreateConfigDialog()));
+	ConfigDialog::registerSlotOnCreateTab("Speech", this, SLOT(onCreateTabSpeech()));
 
 	QMap<QString, QString> s;
 	s["NewChat"]=SLOT(newChat(Protocol *, UserListElements, const QString &, time_t));
@@ -196,7 +196,7 @@ SpeechSlots::~SpeechSlots()
 	kdebugf();
 	notify->unregisterNotifier("Speech");
 
-	ConfigDialog::unregisterSlotOnCreate(this, SLOT(onCreateConfigDialog()));
+	ConfigDialog::unregisterSlotOnCreateTab("Speech", this, SLOT(onCreateTabSpeech()));
 
 	ConfigDialog::disconnectSlot("Speech", "", SIGNAL(clicked()), this, SLOT(chooseSpeechProgram()), "speech_fileopen");
 	ConfigDialog::disconnectSlot("Speech", "Test", SIGNAL(clicked()), this, SLOT(testSpeech()), "testspeech");
@@ -460,7 +460,7 @@ void SpeechSlots::message(const QString &/*from*/, const QString &message, const
 	kdebugf2();
 }
 
-void SpeechSlots::onCreateConfigDialog()
+void SpeechSlots::onCreateTabSpeech()
 {
 	kdebugf();
 	if (config_file.readBoolEntry("Speech", "UseArts"))

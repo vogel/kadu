@@ -32,16 +32,24 @@ class ChatManagerSlots :public QObject
 
 	public slots:
 		/**
-			\fn void onCreateConfigDialog()
-			Slot jest wywo造wany gdy otwierane jest okno konfiguracji
+			\fn void onCreateTabChat()
+			Slot jest wywo造wany gdy otwierana jest zakladka Chat
 		**/
-		void onCreateConfigDialog();
+		void onCreateTabChat();
 
+		void onCreateTabLook();
 		/**
-			\fn void onDestroyConfigDialog()
+			\fn void onApplyConfigDialog()
 			Slot jest wywo造wany gdy zamykane jest okno konfiguracji
 		**/
-		void onDestroyConfigDialog();
+		void onApplyTabChat();
+
+		/**
+			\fn void onApplyConfigDialog()
+			Slot jest wywo造wany gdy zamykane jest okno konfiguracji
+		**/
+		void onApplyTabLook();
+
 
 		/**
 			\fn void chooseEmoticonsStyle(int index)

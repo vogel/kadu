@@ -64,7 +64,7 @@ SoundSlots::~SoundSlots()
 	kdebugf2();
 }
 
-void SoundSlots::onCreateConfigDialog()
+void SoundSlots::onCreateTabSounds()
 {
 	kdebugf();
 	QCheckBox *b_playsound= ConfigDialog::getCheckBox("Sounds", "Play sounds");
@@ -280,7 +280,7 @@ void SoundSlots::selectedPaths(const QStringList& paths)
 	kdebugf2();
 }
 
-void SoundSlots::onApplyConfigDialog()
+void SoundSlots::onApplyTabSounds()
 {
 	kdebugf();
 	QComboBox *cb_soundtheme= ConfigDialog::getComboBox("Sounds", "Sound theme");

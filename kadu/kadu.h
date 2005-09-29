@@ -214,8 +214,10 @@ class KaduSlots : public QObject
 	public:
 		KaduSlots(QObject *parent=0, const char *name=0);
 	public slots:
-		void onCreateConfigDialog();
-		void onDestroyConfigDialog();
+		void onCreateTabGeneral();
+		void onCreateTabLook();
+		void onApplyTabLook();
+		void onApplyTabGeneral();
 		void chooseColor(const char *name, const QColor& color);
 		void chooseFont(const char *name, const QFont& font);
 		void updatePreview();

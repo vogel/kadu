@@ -320,8 +320,8 @@ void GaduProtocol::initModule()
 	ConfigDialog::addLineEdit("Network", "proxygrid",
 		QT_TRANSLATE_NOOP("@default", " Password: "), "ProxyPassword");
 
-	ConfigDialog::registerSlotOnCreate(gadu, SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnApply(gadu, SLOT(onApplyConfigDialog()));
+	ConfigDialog::registerSlotOnCreateTab("Network", gadu, SLOT(onCreateTabNetwork()));
+	ConfigDialog::registerSlotOnApplyTab("Network", gadu, SLOT(onApplyTabNetwork()));
 
 	ConfigDialog::connectSlot("Network", "Use default servers", SIGNAL(toggled(bool)),
 		gadu, SLOT(ifDefServerEnabled(bool)));
@@ -2157,7 +2157,7 @@ void GaduProtocol::setDccIpAndPort(unsigned long dcc_ip, int dcc_port)
 	gg_dcc_port = dcc_port;
 }
 
-void GaduProtocol::onCreateConfigDialog()
+void GaduProtocol::onCreateTabNetwork()
 {
 	kdebugf();
 
@@ -2180,7 +2180,7 @@ void GaduProtocol::onCreateConfigDialog()
 	kdebugf2();
 }
 
-void GaduProtocol::onApplyConfigDialog()
+void GaduProtocol::onApplyTabNetwork()
 {
 	kdebugf();
 

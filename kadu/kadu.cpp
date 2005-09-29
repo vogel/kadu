@@ -145,8 +145,10 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ConfigDialog::addLineEdit("General", "discstatus", "", "DisconnectDescription", "", "", "e_defaultstatus");
 	ConfigDialog::addSpinBox("General", "Status", QT_TRANSLATE_NOOP("@default", "Number of kept descriptions"), "NumberOfDescriptions", 1, 30, 1, 4, "", "", Advanced);
 
-	ConfigDialog::registerSlotOnCreate(kaduslots, SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnApply(kaduslots, SLOT(onDestroyConfigDialog()));
+	ConfigDialog::registerSlotOnCreateTab("General", kaduslots, SLOT(onCreateTabGeneral()));
+	ConfigDialog::registerSlotOnCreateTab("Look", kaduslots, SLOT(onCreateTabLook()));
+	ConfigDialog::registerSlotOnApplyTab("Look", kaduslots, SLOT(onApplyTabLook()));
+	ConfigDialog::registerSlotOnApplyTab("General", kaduslots, SLOT(onApplyTabGeneral()));
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "ShortCuts"), "ShortCutsTab");
 	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", QT_TRANSLATE_NOOP("@default", "Define keys"));
@@ -166,7 +168,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	config_file.addVariable("Look", "UserboxFont", defaultFont);
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"), "LookTab");
-
 	ConfigDialog::addComboBox("Look", "Look",
 			QT_TRANSLATE_NOOP("@default","Qt Theme"));
 
@@ -1314,20 +1315,12 @@ void Kadu::show()
 	emit shown();
 }
 
-void KaduSlots::onCreateConfigDialog()
+void KaduSlots::onCreateTabGeneral()
 {
 	kdebugf();
 	QLineEdit *e_password=ConfigDialog::getLineEdit("General", "Password");
 	e_password->setEchoMode(QLineEdit::Password);
 	e_password->setText(pwHash(config_file.readEntry("General", "Password", "")));
-
-	QComboBox *cb_qttheme=ConfigDialog::getComboBox("Look", "Qt Theme");
-	static QStringList sl_themes = QStyleFactory::keys();//to jest dosyæ kosztowna czasowo operacja
-	cb_qttheme->insertStringList(sl_themes);
-	if(!sl_themes.contains(QApplication::style().name()))
-		cb_qttheme->setCurrentText(tr("Unknown"));
-	else
-		cb_qttheme->setCurrentText(QApplication::style().name());
 
 	QComboBox *cb_language= ConfigDialog::getComboBox("General", "Set language:");
 
@@ -1357,12 +1350,40 @@ void KaduSlots::onCreateConfigDialog()
 	cb_defstatus->insertItem(qApp->translate("@default", "Restore last status (change Offline to Invisible)"));
 	cb_defstatus->setCurrentItem(statusIndex);
 
-	updatePreview();
+
 	updateStatus(config_file.readBoolEntry("General", "DisconnectWithCurrentDescription"));
 	kdebugf2();
 }
 
-void KaduSlots::onDestroyConfigDialog()
+void KaduSlots::onCreateTabLook()
+{
+	kdebugf();
+	
+	QComboBox *cb_qttheme=ConfigDialog::getComboBox("Look", "Qt Theme");
+	static QStringList sl_themes = QStyleFactory::keys();//to jest dosyæ kosztowna czasowo operacja
+	cb_qttheme->insertStringList(sl_themes);
+	if(!sl_themes.contains(QApplication::style().name()))
+		cb_qttheme->setCurrentText(tr("Unknown"));
+	else
+		cb_qttheme->setCurrentText(QApplication::style().name());
+
+	updatePreview();
+	kdebugf2();
+}
+
+void KaduSlots::onApplyTabLook()
+{
+	kdebugf();
+	QString new_style=ConfigDialog::getComboBox("Look", "Qt Theme")->currentText();
+	if(new_style!=tr("Unknown") && new_style != QApplication::style().name())
+	{
+		QApplication::setStyle(new_style);
+		config_file.writeEntry("Look", "QtStyle", new_style);
+	}
+	kdebugf2();
+}
+
+void KaduSlots::onApplyTabGeneral()
 {
 	kdebugf();
 
@@ -1395,12 +1416,6 @@ void KaduSlots::onDestroyConfigDialog()
 	QComboBox *cb_language= ConfigDialog::getComboBox("General", "Set language:");
 	config_file.writeEntry("General", "Language", translateLanguage(qApp, cb_language->currentText(),false));
 
-	QString new_style=ConfigDialog::getComboBox("Look", "Qt Theme")->currentText();
-	if(new_style!=tr("Unknown") && new_style != QApplication::style().name())
-	{
-		QApplication::setStyle(new_style);
-		config_file.writeEntry("Look", "QtStyle", new_style);
-	}
 #ifdef DEBUG_ENABLED
 	debug_mask=config_file.readNumEntry("General", "DEBUG_MASK");
 	gg_debug_level=debug_mask | ~255;

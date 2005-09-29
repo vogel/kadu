@@ -37,8 +37,8 @@ extern "C" int autoaway_init()
 	if (!gadu->status().isOffline())
 		autoawayslots->on();
 
-	ConfigDialog::registerSlotOnCreate(autoawayslots, SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnApply(autoawayslots, SLOT(onApplyConfigDialog()));
+	ConfigDialog::registerSlotOnCreateTab("General", autoawayslots, SLOT(onCreateTabGeneral()));
+	ConfigDialog::registerSlotOnApplyTab("General", autoawayslots, SLOT(onApplyTabGeneral()));
 
 	QObject::connect(kadu, SIGNAL(disconnectingNetwork()), autoawayslots, SLOT(off()));
 	QObject::connect(gadu, SIGNAL(connected()), autoawayslots, SLOT(on()));
@@ -55,8 +55,8 @@ extern "C" void autoaway_close()
 	QObject::disconnect(kadu, SIGNAL(disconnectingNetwork()), autoawayslots, SLOT(off()));
 	QObject::disconnect(gadu, SIGNAL(connected()), autoawayslots, SLOT(on()));
 
-	ConfigDialog::unregisterSlotOnCreate(autoawayslots, SLOT(onCreateConfigDialog()));
-	ConfigDialog::unregisterSlotOnApply(autoawayslots, SLOT(onApplyConfigDialog()));
+	ConfigDialog::unregisterSlotOnCreateTab("General", autoawayslots, SLOT(onCreateTabGeneral()));
+	ConfigDialog::unregisterSlotOnApplyTab("General", autoawayslots, SLOT(onApplyTabGeneral()));
 
 	delete autoawayslots;
 	autoawayslots=NULL;
@@ -273,7 +273,7 @@ void AutoAwaySlots::off()
 	}
 }
 
-void AutoAwaySlots::onCreateConfigDialog()
+void AutoAwaySlots::onCreateTabGeneral()
 {
 	kdebugf();
 
@@ -331,7 +331,7 @@ void AutoAwaySlots::onCreateConfigDialog()
 	kdebugf2();
 }
 
-void AutoAwaySlots::onApplyConfigDialog()
+void AutoAwaySlots::onApplyTabGeneral()
 {
 	kdebugf();
 

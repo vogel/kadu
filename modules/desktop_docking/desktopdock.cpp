@@ -23,8 +23,8 @@ extern "C" int desktop_docking_init()
 {
 	kdebugf();
 	desktop_dock_window=new DesktopDockWindow(NULL, "desktop_dock_window");
-	ConfigDialog::registerSlotOnApply(desktop_dock_window, SLOT(ApplyConfig()));
-	ConfigDialog::registerSlotOnCreate(desktop_dock_window, SLOT(onCreateConfigDialog()));
+	ConfigDialog::registerSlotOnApplyTab("Desktop Dock", desktop_dock_window, SLOT(ApplyConfig()));
+	ConfigDialog::registerSlotOnCreateTab("Desktop Dock", desktop_dock_window, SLOT(onCreateTabDesktopDock()));
 
 	kdebugf2();
 	return 0;
@@ -33,8 +33,8 @@ extern "C" int desktop_docking_init()
 extern "C" void desktop_docking_close()
 {
 	kdebugf();
-	ConfigDialog::unregisterSlotOnApply(desktop_dock_window, SLOT(ApplyConfig()));
-	ConfigDialog::unregisterSlotOnCreate(desktop_dock_window, SLOT(onCreateConfigDialog()));
+	ConfigDialog::unregisterSlotOnApplyTab("Desktop Dock", desktop_dock_window, SLOT(ApplyConfig()));
+	ConfigDialog::unregisterSlotOnCreateTab("Desktop Dock", desktop_dock_window, SLOT(onCreateTabDesktopDock()));
 	delete desktop_dock_window;
 	desktop_dock_window=NULL;
 
@@ -167,7 +167,7 @@ void DesktopDockWindow::ApplyConfig()		/* przy zapisie konfiguracji */
 	kdebugf2();
 }
 
-void DesktopDockWindow::onCreateConfigDialog()
+void DesktopDockWindow::onCreateTabDesktopDock()
 {
 	kdebugf();
 	ConfigDialog::getColorButton("Desktop Dock", "Background color")

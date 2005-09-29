@@ -70,10 +70,11 @@ class SmsGatewaySlots: public QObject
 		static SmsGateway* isValidEra(const QString& number, QObject* parent);
 	private:
 		QString actualEraGateway;			
+		bool createdTab;
 	public slots:
-		void onCreateConfigDialog();
-		void onCloseConfigDialog();
-		void onApplyConfigDialog();
+		void onCreateTabSMS();
+		void onCloseTabSMS();
+		void onApplyTabSMS();
 		void onChangeEraGateway(int gateway);			
 };
 

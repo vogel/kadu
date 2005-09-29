@@ -625,8 +625,8 @@ void UserBox::initModule()
 	KaduListBoxPixmap::setDescriptionColor(config_file.readColorEntry("Look", "DescriptionColor"));
 
 	userboxslots= new UserBoxSlots();
-	ConfigDialog::registerSlotOnCreate(userboxslots, SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnApply(userboxslots, SLOT(onDestroyConfigDialog()));
+	ConfigDialog::registerSlotOnCreateTab("Look", userboxslots, SLOT(onCreateTabLook()));
+	ConfigDialog::registerSlotOnApplyTab("Look", userboxslots, SLOT(onApplyTabLook()));
 
 	ConfigDialog::connectSlot("Look", "Userbox background color", SIGNAL(changed(const char *, const QColor&)), userboxslots, SLOT(chooseColor(const char *, const QColor&)), "userbox_bg_color");
 	ConfigDialog::connectSlot("Look", "Userbox font color", SIGNAL(changed(const char *, const QColor&)), userboxslots, SLOT(chooseColor(const char *, const QColor&)), "userbox_font_color");
@@ -732,7 +732,7 @@ void UserBoxMenu::refreshIcons()
 	kdebugf2();
 }
 
-void UserBoxSlots::onCreateConfigDialog()
+void UserBoxSlots::onCreateTabLook()
 {
 	kdebugf();
 
@@ -744,7 +744,7 @@ void UserBoxSlots::onCreateConfigDialog()
 	kdebugf2();
 }
 
-void UserBoxSlots::onDestroyConfigDialog()
+void UserBoxSlots::onApplyTabLook()
 {
 	kdebugf();
 	UserBox *userbox = kadu->userbox();

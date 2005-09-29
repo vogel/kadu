@@ -17,7 +17,7 @@
 #include "userlist.h"
 #include "misc.h"
 
-void NotifySlots::onCreateConfigDialog()
+void NotifySlots::onCreateTabNotify()
 {
 	kdebugf();
 
@@ -54,7 +54,7 @@ void NotifySlots::onCreateConfigDialog()
 	kdebugf2();
 }
 
-void NotifySlots::onApplyConfigDialog()
+void NotifySlots::onApplyTabHints()
 {
 	kdebugf();
 	unsigned int i;

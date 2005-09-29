@@ -572,16 +572,16 @@ class UserBoxSlots : public QObject
 	Q_OBJECT
 	public slots:
 		/**
-			\fn void onCreateConfigDialog()
+			\fn void onCreateTabLook()
 			Obs³uguje sekcjê UserBox podczas otwierania okna konfiguracji.
 		**/
-		void onCreateConfigDialog();
+		void onCreateTabLook();
 
 		/**
 			\fn void onDestroyConfigDialog()
 			Obs³uguje sekcjê UserBox podczas zamykania okna konfiguracji.
 		**/
-		void onDestroyConfigDialog();
+		void onApplyTabLook();
 
 		/**
 			\fn void chooseColor(const char *name, const QColor& color)

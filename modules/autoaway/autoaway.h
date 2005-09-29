@@ -16,8 +16,8 @@ class AutoAwaySlots : public QObject
 		~AutoAwaySlots();
 
 	public slots:
-		void onCreateConfigDialog();
-		void onApplyConfigDialog();
+		void onCreateTabGeneral();
+		void onApplyTabGeneral();
 		void on();
 		void off();
 		void changeAutoInvisibleTime(int i);

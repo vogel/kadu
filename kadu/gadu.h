@@ -852,12 +852,12 @@ class GaduProtocol : public Protocol
 		/**
 			@todo uprywatniæ
 		**/
-		void onCreateConfigDialog();
+		void onCreateTabNetwork();
 
 		/**
 			@todo uprywatniæ
 		**/
-		void onApplyConfigDialog();
+		void onApplyTabNetwork();
 
 		/**
 			@todo uprywatniæ

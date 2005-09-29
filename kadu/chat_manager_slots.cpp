@@ -96,7 +96,7 @@ void ChatManagerSlots::initBrowserOptions(QComboBox *browserCombo, QComboBox *br
 	kdebugf2();
 }
 
-void ChatManagerSlots::onCreateConfigDialog()
+void ChatManagerSlots::onCreateTabChat()
 {
 	kdebugf();
 	QComboBox* cb_emoticons_theme= ConfigDialog::getComboBox("Chat", "Emoticons theme");
@@ -111,19 +111,6 @@ void ChatManagerSlots::onCreateConfigDialog()
 	QComboBox *browserOptionsCombo=ConfigDialog::getComboBox("Chat", "Browser options");
 	QLineEdit *browserPath= ConfigDialog::getLineEdit("Chat", "Custom Web browser");
 	initBrowserOptions(browserCombo, browserOptionsCombo, browserPath);
-
-	//deaktywacja opcji wylaczenia separatorow
-	QCheckBox *b_noHeadersRepeat= ConfigDialog::getCheckBox("Look", "Remove chat header repetitions");
-
-	QSpinBox *s_headersSeparatorHeight= ConfigDialog::getSpinBox("Look", "Chat header separators height:");
-	QSpinBox *s_noHeadersInterval= ConfigDialog::getSpinBox("Look", "Interval between header removal:");
-
-	s_headersSeparatorHeight->setEnabled(b_noHeadersRepeat->isChecked());
-	s_noHeadersInterval->setEnabled(b_noHeadersRepeat->isChecked());
-
-	//dodanie suffiksu w spinboksach
-	ConfigDialog::getSpinBox("Look", "Chat header separators height:")->setSuffix(" px");
-	ConfigDialog::getSpinBox("Look", "Interval between header removal:")->setSuffix(" min");
 
 	//podpiecie pod zmiane w combo
 	connect(browserCombo, SIGNAL(activated (int)), this, SLOT(findAndSetWebBrowser(int)));
@@ -147,7 +134,28 @@ void ChatManagerSlots::onCreateConfigDialog()
 	shortcutSends->setText(shortcutSends->text().arg(config_file.readEntry("ShortCuts", "chat_newline")));
 
 	h_fold->setEnabled(c_foldlink->isChecked());
+
+	kdebugf2();
+}
+
+void ChatManagerSlots::onCreateTabLook()
+{
+	kdebugf();
+	//deaktywacja opcji wylaczenia separatorow
+	QCheckBox *b_noHeadersRepeat= ConfigDialog::getCheckBox("Look", "Remove chat header repetitions");
+
+	QSpinBox *s_headersSeparatorHeight= ConfigDialog::getSpinBox("Look", "Chat header separators height:");
+	QSpinBox *s_noHeadersInterval= ConfigDialog::getSpinBox("Look", "Interval between header removal:");
+
+	s_headersSeparatorHeight->setEnabled(b_noHeadersRepeat->isChecked());
+	s_noHeadersInterval->setEnabled(b_noHeadersRepeat->isChecked());
+
+	//dodanie suffiksu w spinboksach
+	ConfigDialog::getSpinBox("Look", "Chat header separators height:")->setSuffix(" px");
+	ConfigDialog::getSpinBox("Look", "Interval between header removal:")->setSuffix(" min");
+
 	updatePreview();
+	
 	kdebugf2();
 }
 
@@ -171,18 +179,9 @@ void ChatManagerSlots::onRemoveHeaders(bool toggled)
 	ConfigDialog::getSpinBox("Look", "Interval between header removal:")->setEnabled(toggled);
 }
 
-void ChatManagerSlots::onDestroyConfigDialog()
+void ChatManagerSlots::onApplyTabLook()
 {
 	kdebugf();
-
-	QComboBox* cb_emoticons_theme= ConfigDialog::getComboBox("Chat", "Emoticons theme");
-	config_file.writeEntry("Chat", "EmoticonsTheme",cb_emoticons_theme->currentText());
-	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
-
-	config_file.writeEntry("Chat", "WebBrowserNo", ConfigDialog::getComboBox("Chat", "Choose your browser")->currentItem());
-
-	chat_manager->changeAppearance();
-
 /*
 	Aby unikn±c problemów z niepoprawnymi localesami i pozniejszymi
 	k³opotami które moga wynikn±c z tego, musimy zamienic dwie mozliwe
@@ -202,6 +201,23 @@ void ChatManagerSlots::onDestroyConfigDialog()
 
 	if (e_conferenceprefix->text() == tr("Conference with ") || e_conferenceprefix->text() == "Conference with ")
 		config_file.writeEntry("Look", "ConferencePrefix", "");
+
+	kdebugf2();
+}
+
+void ChatManagerSlots::onApplyTabChat()
+{
+	kdebugf();
+
+	QComboBox* cb_emoticons_theme= ConfigDialog::getComboBox("Chat", "Emoticons theme");
+	config_file.writeEntry("Chat", "EmoticonsTheme",cb_emoticons_theme->currentText());
+	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
+
+	config_file.writeEntry("Chat", "WebBrowserNo", ConfigDialog::getComboBox("Chat", "Choose your browser")->currentItem());
+
+	chat_manager->changeAppearance();
+
+
 	kdebugf2();
 }
 
@@ -370,7 +386,11 @@ void ChatManagerSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo,
 			searchPath.append("/Applications");
 			break;
 		}
-		default: return;
+		default: 
+		{
+			kdebugf2();
+			return;
+		}
 	}
 	QFile browserFile;
 	QString path, testPath;

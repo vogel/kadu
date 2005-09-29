@@ -648,8 +648,10 @@ void ChatManager::initModule()
 	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
 
 	chatslots =new ChatManagerSlots(kadu, "chat_slots");
-	ConfigDialog::registerSlotOnCreate(chatslots,SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnApply(chatslots,SLOT(onDestroyConfigDialog()));
+	ConfigDialog::registerSlotOnCreateTab("Chat", chatslots, SLOT(onCreateTabChat()));
+	ConfigDialog::registerSlotOnCreateTab("Look", chatslots, SLOT(onCreateTabLook()));
+	ConfigDialog::registerSlotOnApplyTab("Chat", chatslots,SLOT(onApplyTabChat()));
+	ConfigDialog::registerSlotOnApplyTab("Look", chatslots,SLOT(onApplyTabLook()));
 	ConfigDialog::connectSlot("Chat", "Emoticons:", SIGNAL(activated(int)), chatslots, SLOT(chooseEmoticonsStyle(int)));
 	ConfigDialog::connectSlot("Chat", "Automatically prune chat messages", SIGNAL(toggled(bool)), chatslots, SLOT(onPruneChat(bool)));
 	ConfigDialog::connectSlot("Chat", "Automatically fold links", SIGNAL(toggled(bool)), chatslots, SLOT(onFoldLink(bool)));

@@ -48,9 +48,9 @@ extern "C" int sms_init()
 
 
 	smsslots=new SmsSlots(NULL, "smsslots");
-	ConfigDialog::registerSlotOnCreate(smsslots, SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnClose(smsslots, SLOT(onCloseConfigDialog()));
-	ConfigDialog::registerSlotOnApply(smsslots, SLOT(onApplyConfigDialog()));
+	ConfigDialog::registerSlotOnCreateTab("SMS", smsslots, SLOT(onCreateTabSMS()));
+	ConfigDialog::registerSlotOnCloseTab("SMS", smsslots, SLOT(onCloseTabSMS()));
+	ConfigDialog::registerSlotOnApplyTab("SMS", smsslots, SLOT(onApplyTabSMS()));
 
 	ConfigDialog::connectSlot("SMS", "Use built-in SMS application", SIGNAL(toggled(bool)), smsslots, SLOT(onSmsBuildInCheckToggle(bool)));
 	ConfigDialog::connectSlot("SMS", "Up", SIGNAL(clicked()), smsslots, SLOT(onUpButton()));
@@ -73,9 +73,9 @@ extern "C" void sms_close()
 {
 	kdebugf();
 
-	ConfigDialog::unregisterSlotOnCreate(smsslots, SLOT(onCreateConfigDialog()));
-	ConfigDialog::unregisterSlotOnClose(smsslots, SLOT(onCloseConfigDialog()));
-	ConfigDialog::unregisterSlotOnApply(smsslots, SLOT(onApplyConfigDialog()));
+	ConfigDialog::unregisterSlotOnCreateTab("SMS", smsslots, SLOT(onCreateTabSMS()));
+	ConfigDialog::unregisterSlotOnCloseTab("SMS", smsslots, SLOT(onCloseTabSMS()));
+	ConfigDialog::unregisterSlotOnApplyTab("SMS", smsslots, SLOT(onApplyTabSMS()));
 
 	ConfigDialog::disconnectSlot("SMS", "Use built-in SMS application", SIGNAL(toggled(bool)), smsslots, SLOT(onSmsBuildInCheckToggle(bool)));
 	ConfigDialog::disconnectSlot("SMS", "Up", SIGNAL(clicked()), smsslots, SLOT(onUpButton()));
@@ -457,7 +457,7 @@ void SmsSlots::onSmsBuildInCheckToggle(bool value)
 	kdebugf2();
 }
 
-void SmsSlots::onCreateConfigDialog()
+void SmsSlots::onCreateTabSMS()
 {
 	kdebugf();
 
@@ -494,7 +494,7 @@ void SmsSlots::onCreateConfigDialog()
 	kdebugf2();
 }
 
-void SmsSlots::onApplyConfigDialog()
+void SmsSlots::onApplyTabSMS()
 {
 	kdebugf();
 
@@ -512,7 +512,7 @@ void SmsSlots::onApplyConfigDialog()
 	kdebugf2();
 }
 
-void SmsSlots::onCloseConfigDialog()
+void SmsSlots::onCloseTabSMS()
 {
 	modules_manager->moduleDecUsageCount("sms");
 }

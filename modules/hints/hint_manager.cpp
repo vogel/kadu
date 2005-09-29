@@ -103,9 +103,9 @@ HintManager::HintManager(QWidget *parent, const char *name)
 				ConfigDialog::addPushButton("Hints", "bottom", QT_TRANSLATE_NOOP("@default", "Change font"));
 
 	hint_manager_slots = new HintManagerSlots(NULL, "hint_manager_slots");
-	ConfigDialog::registerSlotOnCreate(hint_manager_slots, SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnApply(hint_manager_slots, SLOT(onApplyConfigDialog()));
-	ConfigDialog::registerSlotOnClose(hint_manager_slots, SLOT(onCloseConfigDialog()));
+	ConfigDialog::registerSlotOnCreateTab("Hints", hint_manager_slots, SLOT(onCreateTabHints()));
+	ConfigDialog::registerSlotOnApplyTab("Hints", hint_manager_slots, SLOT(onApplyTabHints()));
+	ConfigDialog::registerSlotOnCloseTab("Hints", hint_manager_slots, SLOT(onCloseTabHints()));
 
 	config_file.addVariable("Notify", "NewChat_Hints", true);
 	config_file.addVariable("Notify", "NewMessage_Hints", true);
@@ -140,9 +140,9 @@ HintManager::~HintManager()
 	notify->unregisterNotifier("Hints");
 	disconnect(this, SIGNAL(searchingForTrayPosition(QPoint &)), kadu, SIGNAL(searchingForTrayPosition(QPoint &)));
 
-	ConfigDialog::unregisterSlotOnCreate(hint_manager_slots, SLOT(onCreateConfigDialog()));
-	ConfigDialog::unregisterSlotOnApply(hint_manager_slots, SLOT(onApplyConfigDialog()));
-	ConfigDialog::unregisterSlotOnClose(hint_manager_slots, SLOT(onCloseConfigDialog()));
+	ConfigDialog::unregisterSlotOnCreateTab("Hints", hint_manager_slots, SLOT(onCreateTabHints()));
+	ConfigDialog::unregisterSlotOnApplyTab("Hints", hint_manager_slots, SLOT(onApplyTabHints()));
+	ConfigDialog::unregisterSlotOnCloseTab("Hints", hint_manager_slots, SLOT(onCloseTabHints()));
 
 	delete hint_manager_slots;
 	hint_manager_slots=NULL;

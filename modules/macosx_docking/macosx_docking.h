@@ -10,7 +10,7 @@ class MacOSXDocking : public QObject
 		void blockSettingIcon(bool &);
 		void trayPixmapChanged(const QPixmap &, const QString &);
 		void findTrayPosition(QPoint &);
-		void onCreateConfigDialog();
+		void onCreateTabGeneral();
 	public:
 		MacOSXDocking(QObject *parent = 0, const char *name = 0);
 		~MacOSXDocking();

@@ -105,9 +105,9 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name)
 	ConfigDialog::connectSlot("Notify", "track", SIGNAL(doubleClicked(QListBoxItem *)),
 		notify_slots, SLOT(_Left2(QListBoxItem *)));
 
-	ConfigDialog::registerSlotOnCreate(notify_slots, SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnApply(notify_slots, SLOT(onApplyConfigDialog()));
-	ConfigDialog::registerSlotOnApply(this, SLOT(updateConnections()));
+	ConfigDialog::registerSlotOnCreateTab("Notify", notify_slots, SLOT(onCreateTabNotify()));
+	ConfigDialog::registerSlotOnApplyTab("Notify", notify_slots, SLOT(onApplyTabHints()));
+	ConfigDialog::registerSlotOnApplyTab("Notify", this, SLOT(updateConnections()));
 
 	kdebugf2();
 }
@@ -123,9 +123,9 @@ Notify::~Notify()
 	ConfigDialog::disconnectSlot("Notify", "track", SIGNAL(doubleClicked(QListBoxItem *)),
 		notify_slots, SLOT(_Left2(QListBoxItem *)));
 
-	ConfigDialog::unregisterSlotOnCreate(notify_slots, SLOT(onCreateConfigDialog()));
-	ConfigDialog::unregisterSlotOnApply(notify_slots, SLOT(onApplyConfigDialog()));
-	ConfigDialog::unregisterSlotOnApply(this, SLOT(updateConnections()));
+	ConfigDialog::unregisterSlotOnCreateTab("Notify", notify_slots, SLOT(onCreateTabNotify()));
+	ConfigDialog::unregisterSlotOnApplyTab("Notify", notify_slots, SLOT(onApplyTabHints()));
+	ConfigDialog::unregisterSlotOnApplyTab("Notify", this, SLOT(updateConnections()));
 
 			ConfigDialog::removeControl("Notify", "track");
 			ConfigDialog::removeControl("Notify", "Tracked");

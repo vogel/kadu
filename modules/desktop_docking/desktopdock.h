@@ -19,7 +19,7 @@ class DesktopDockWindow : public QLabel
 	private slots:
 		void setToolTip(const QString &statusText);
 		void ApplyConfig();
-		void onCreateConfigDialog();
+		void onCreateTabDesktopDock();
 		void setPixmap(const QPixmap &DockPixmap, const QString &iconName);
 		void setTrayMovie(const QMovie &movie);
 		void findTrayPosition(QPoint &DockPoint);

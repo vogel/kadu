@@ -1802,8 +1802,8 @@ void History::initModule()
 	ConfigDialog::addCheckBox("History", "History", QT_TRANSLATE_NOOP("@default", "Don't show status changes"), "DontShowStatusChanges", false, "", "", Advanced);
 	ConfigDialog::addCheckBox("History", "History", QT_TRANSLATE_NOOP("@default", "Don't save status changes"), "DontSaveStatusChanges", true, "", "", Advanced);
 
-	ConfigDialog::registerSlotOnCreate(historyslots, SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnApply(historyslots, SLOT(onDestroyConfigDialog()));
+	ConfigDialog::registerSlotOnCreateTab("History", historyslots, SLOT(onCreateTabHistory()));
+	ConfigDialog::registerSlotOnApplyTab("History", historyslots, SLOT(onApplyTabHistory()));
 	ConfigDialog::connectSlot("History", "historyslider", SIGNAL(valueChanged(int)), historyslots, SLOT(updateQuoteTimeLabel(int)));
 
 	connect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
@@ -2146,7 +2146,7 @@ HistorySlots::HistorySlots(QObject *parent, const char *name) : QObject(parent, 
 {
 }
 
-void HistorySlots::onCreateConfigDialog()
+void HistorySlots::onCreateTabHistory()
 {
 	kdebugf();
 	QLabel *l_qtimeinfo=(QLabel*)(ConfigDialog::widget("History", "", "dayhour"));
@@ -2155,7 +2155,7 @@ void HistorySlots::onCreateConfigDialog()
 	kdebugf2();
 }
 
-void HistorySlots::onDestroyConfigDialog()
+void HistorySlots::onApplyTabHistory()
 {
 //	kdebugf();
 //	kdebugf2();

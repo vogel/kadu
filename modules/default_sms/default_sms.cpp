@@ -366,9 +366,9 @@ SmsGatewaySlots::SmsGatewaySlots(QObject *parent, const char *name) : QObject(pa
 	ConfigDialog::addLineEdit2("SMS", "SMS Era Gateway",
 			QT_TRANSLATE_NOOP("@default", "Password"));
 
-	ConfigDialog::registerSlotOnCreate(this, SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnClose(this, SLOT(onCloseConfigDialog()));
-	ConfigDialog::registerSlotOnApply(this, SLOT(onApplyConfigDialog()));
+	ConfigDialog::registerSlotOnCreateTab("SMS", this, SLOT(onCreateTabSMS()));
+	ConfigDialog::registerSlotOnCloseTab("SMS", this, SLOT(onCloseTabSMS()));
+	ConfigDialog::registerSlotOnApplyTab("SMS", this, SLOT(onApplyTabSMS()));
 	ConfigDialog::connectSlot("SMS", "Type of gateway", SIGNAL(activated(int)), this, SLOT(onChangeEraGateway(int)));
 	kdebugf2();
 }
@@ -376,9 +376,9 @@ SmsGatewaySlots::SmsGatewaySlots(QObject *parent, const char *name) : QObject(pa
 SmsGatewaySlots::~SmsGatewaySlots()
 {
 	kdebugf();
-	ConfigDialog::unregisterSlotOnCreate(this, SLOT(onCreateConfigDialog()));
-	ConfigDialog::unregisterSlotOnClose(this, SLOT(onCloseConfigDialog()));
-	ConfigDialog::unregisterSlotOnApply(this, SLOT(onApplyConfigDialog()));
+	ConfigDialog::unregisterSlotOnCreateTab("SMS", this, SLOT(onCreateTabSMS()));
+	ConfigDialog::unregisterSlotOnCloseTab("SMS", this, SLOT(onCloseTabSMS()));
+	ConfigDialog::unregisterSlotOnApplyTab("SMS", this, SLOT(onApplyTabSMS()));
 	
 	ConfigDialog::disconnectSlot("SMS", "Type of gateway", SIGNAL(activated(int)), this, SLOT(onChangeEraGateway(int)));
 	ConfigDialog::removeControl("SMS", "Password");
@@ -404,7 +404,7 @@ void SmsGatewaySlots::onChangeEraGateway(int gateway)
 	kdebugf2();
 }
 
-void SmsGatewaySlots::onApplyConfigDialog()
+void SmsGatewaySlots::onApplyTabSMS()
 {
 	kdebugf();
 	
@@ -415,13 +415,17 @@ void SmsGatewaySlots::onApplyConfigDialog()
 	kdebugf2();
 }
 
-void SmsGatewaySlots::onCloseConfigDialog()
+static bool activated;
+
+void SmsGatewaySlots::onCloseTabSMS()
 {
 	kdebugf();
-	modules_manager->moduleDecUsageCount("default_sms");
+	if (activated)	
+		modules_manager->moduleDecUsageCount("default_sms"); 
+	activated=false;
 }
 
-void SmsGatewaySlots::onCreateConfigDialog()
+void SmsGatewaySlots::onCreateTabSMS()
 {
 	kdebugf();
 	
@@ -433,8 +437,9 @@ void SmsGatewaySlots::onCreateConfigDialog()
 	
 	e_erapassword->setText(config_file.readEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_Password"));
 	e_erauser->setText(config_file.readEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_User", "48"));
-
-	modules_manager->moduleIncUsageCount("default_sms");
+	
+	modules_manager->moduleIncUsageCount("default_sms"); 
+	activated=true;
 	kdebugf2();
 }
 

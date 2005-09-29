@@ -152,7 +152,7 @@ void IconsManager::refreshMenus()
 	kdebugf2();
 }
 
-void IconsManager::onApplyConfigDialog()
+void IconsManager::onApplyTabLook()
 {
 	kdebugf();
 	QString previousIconTheme=config_file.readEntry("Look", "IconTheme");
@@ -180,7 +180,7 @@ void IconsManager::onApplyConfigDialog()
 	kdebugf2();
 }
 
-void IconsManager::onCreateConfigDialog()
+void IconsManager::onCreateTabLook()
 {
 	kdebugf();
 
@@ -220,8 +220,8 @@ void IconsManager::initModule()
 	ConfigDialog::addComboBox("Look", "icon_theme", QT_TRANSLATE_NOOP("@default","Icon theme"));
 	ConfigDialog::addSelectPaths("Look", "icon_theme", QT_TRANSLATE_NOOP("@default","Icon paths"));
 
-	ConfigDialog::registerSlotOnCreate(icons_manager, SLOT(onCreateConfigDialog()));
-	ConfigDialog::registerSlotOnApply(icons_manager, SLOT(onApplyConfigDialog()));
+	ConfigDialog::registerSlotOnCreateTab("Look", icons_manager, SLOT(onCreateTabLook()));
+	ConfigDialog::registerSlotOnApplyTab("Look", icons_manager, SLOT(onApplyTabLook()));
 	ConfigDialog::connectSlot("Look", "Icon paths", SIGNAL(changed(const QStringList&)), icons_manager, SLOT(selectedPaths(const QStringList&)));
 	kdebugf2();
 }

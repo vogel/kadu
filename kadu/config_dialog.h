@@ -256,9 +256,9 @@ class ConfigDialog : public QVBox
 			QValueList <ElementConnections> ConnectedSlots;
 		};
 
-		static QValueList <ElementConnections> SlotsOnCreate;
-		static QValueList <ElementConnections> SlotsOnClose;
-		static QValueList <ElementConnections> SlotsOnApply;
+		static QMap<QString, QValueList <ElementConnections> > SlotsOnCreateTab;
+		static QMap<QString, QValueList <ElementConnections> >SlotsOnCloseTab;
+		static QMap<QString, QValueList <ElementConnections> >SlotsOnApplyTab;
 		static QApplication* appHandle;
 
 		static QMap<QString, QValueList <RegisteredControl> > Tabs;
@@ -266,10 +266,15 @@ class ConfigDialog : public QVBox
 		static QMap<QString, int> TabSizes;
 		static QDict<QSignal> tabChangesIn, tabChangesOut;//jakie¶ lepsze nazwy by siê przyda³y ;)
 
+
+		QVGroupBox* box;
 		/**
 		    Dodaje kontrolkê do listy
 		**/
 		static bool addControl(const QString& groupname, ConfigDialog::RegisteredControl& control);
+		
+		void createWidget(QValueListIterator <RegisteredControl> control);
+		void createTabAndWidgets(const QString& tab);
 
 	public:
 		/**
@@ -947,39 +952,42 @@ class ConfigDialog : public QVBox
 
 		/**
 			Rejestruje slot "slot" obiektu "receiver",
-			który jest wywo³ywany przy otwieraniu okna konfiguracji
+			który jest wywo³ywany przytworzeniu zakladki
 		**/
-		static void registerSlotOnCreate(const QObject* receiver, const char* slot);
+		static void registerSlotOnCreateTab(const QString& tab, const QObject* receiver, const char* slot);
+
 
 		/**
 			Wyrejestrowuje slot "slot" obiektu "receiver",
-			który jest wywo³ywany przy otwieraniu okna konfiguracji
+			który jest wywo³ywany przytworzeniu zakladki
 		**/
-		static void unregisterSlotOnCreate(const QObject* receiver, const char* slot);
+
+		static void unregisterSlotOnCreateTab(const QString& tab, const QObject* receiver, const char* slot);
+
 
 		/**
 			Rejestruje slot "slot" obiektu "receiver",
 			który jest wywo³ywany przy zamykaniu okna konfiguracji
 		**/
-		static void registerSlotOnClose(const QObject* receiver, const char* slot);
+		static void registerSlotOnCloseTab(const QString& tab, const QObject* receiver, const char* slot);
 
 		/**
 			Wyrejestrowuje slot "slot" obiektu "receiver",
 			który jest wywo³ywany przy zamykaniu okna konfiguracji
 		**/
-		static void unregisterSlotOnClose(const QObject* receiver, const char* slot);
+		static void unregisterSlotOnCloseTab(const QString& tab, const QObject* receiver, const char* slot);
 
 		/**
 			Rejestruje slot "slot" obiektu "receiver",
 			który jest wywo³ywany przy zapisywaniu konfiguracji
 		**/
-		static void registerSlotOnApply(const QObject* receiver, const char* slot);
+		static void registerSlotOnApplyTab(const QString& tab, const QObject* receiver, const char* slot);
 
 		/**
 			Wyrejestrowuje slot "slot" obiektu "receiver",
 			który jest wywo³ywany przy zapisywaniu konfiguracji
 		**/
-		static void unregisterSlotOnApply(const QObject* receiver, const char* slot);
+		static void unregisterSlotOnApplyTab(const QString& tab, const QObject* receiver, const char* slot);
 
 		/**
 			Rejestruje 2 sloty obiektu "receiver", które s±
@@ -1030,7 +1038,11 @@ class ConfigDialog : public QVBox
 		void updateUserLevel(QMapConstIterator<QString,
 			QValueList<ConfigDialog::RegisteredControl> > tab);
 
+
+
 	signals:
+
+		void createTab();
 		/**
 		    Sygna³ jest emitowany przy otwieraniu okna
 		**/

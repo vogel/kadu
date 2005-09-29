@@ -60,7 +60,7 @@ EncryptionManager::EncryptionManager(QObject *parent, const char *name) : QObjec
 	ConfigDialog::addColorButton("Chat", "Encryption properties",
 			QT_TRANSLATE_NOOP("@default", "Color of encrypted messages"), "EncryptionColor", QColor("#0000FF"));
 
-	ConfigDialog::registerSlotOnCreate(this,SLOT(createConfigDialogSlot()));
+	ConfigDialog::registerSlotOnCreateTab("Chat", this,SLOT(createConfigDialogSlot()));
 	ConfigDialog::connectSlot("Chat", "Generate keys", SIGNAL(clicked()), this, SLOT(generateMyKeys()));
 	ConfigDialog::connectSlot("Chat", "Use encryption", SIGNAL(toggled(bool)), this, SLOT(onUseEncryption(bool)));
 
@@ -99,7 +99,7 @@ EncryptionManager::~EncryptionManager()
 
 	ConfigDialog::disconnectSlot("Chat", "Generate keys", SIGNAL(clicked()), this, SLOT(generateMyKeys()));
 	ConfigDialog::disconnectSlot("Chat", "Use encryption", SIGNAL(toggled(bool)), this, SLOT(onUseEncryption(bool)));
-	ConfigDialog::unregisterSlotOnCreate(this,SLOT(createConfigDialogSlot()));
+	ConfigDialog::unregisterSlotOnCreateTab("Chat", this, SLOT(createConfigDialogSlot()));
 
 	ConfigDialog::removeControl("Chat", "Color of encrypted messages");
 	ConfigDialog::removeControl("Chat", "Generate keys");

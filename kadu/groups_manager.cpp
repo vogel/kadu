@@ -202,7 +202,7 @@ void GroupsManager::refreshTabBar()
 	kdebugf2();
 }
 
-void GroupsManager::onApplyConfigDialog()
+void GroupsManager::onApplyTabGeneral()
 {
 	kdebugf();
 	if (config_file.readBoolEntry("General", "ShowBlocking") != showBlocking)
@@ -276,14 +276,14 @@ GroupsManager::GroupsManager() : GroupBar(NULL)
 	}
 	connect (userlist, SIGNAL(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)),
 			 this, SLOT(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)));
-	ConfigDialog::registerSlotOnApply(this, SLOT(onApplyConfigDialog()));
+	ConfigDialog::registerSlotOnApplyTab("General", this, SLOT(onApplyTabGeneral()));
 	kdebugf2();
 }
 
 GroupsManager::~GroupsManager()
 {
 	kdebugf();
-	ConfigDialog::unregisterSlotOnApply(this, SLOT(onApplyConfigDialog()));
+	ConfigDialog::unregisterSlotOnApplyTab("General", this, SLOT(onApplyTabGeneral()));
 	if (GroupBar)
 		config_file.writeEntry("Look", "CurrentGroupTab", GroupBar->currentTab());
 	disconnect (userlist, SIGNAL(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)),

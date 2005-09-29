@@ -52,8 +52,8 @@ class IconsManager : public Themes
 
 	private slots:
 		void selectedPaths(const QStringList& paths);
-		void onCreateConfigDialog();
-		void onApplyConfigDialog();
+		void onCreateTabLook();
+		void onApplyTabLook();
 };
 
 extern IconsManager *icons_manager;

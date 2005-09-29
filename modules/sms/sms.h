@@ -144,9 +144,9 @@ class SmsSlots: public QObject
 
 	public slots:
 		void onSmsBuildInCheckToggle(bool);
-		void onCreateConfigDialog();
-		void onCloseConfigDialog();
-		void onApplyConfigDialog();
+		void onCreateTabSMS();
+		void onCloseTabSMS();
+		void onApplyTabSMS();
 		void onSendSms();
 		void onUserClicked(int button, QListBoxItem* item, const QPoint& pos);
 		void onUserDblClicked(UserListElement elem);
