@@ -60,7 +60,6 @@ class Chat : public QMainWindow
 		EmoticonSelector* emoticon_selector; /*!< okienko do
 							wyboru emotikonek */
 		ColorSelector* color_selector; /*!< okienko do wyboru koloru */
-		ToolButton* iconsel;
 		bool AutoSend;
 		bool ScrollLocked;
 		QAccel* acc; /*!< zmienna potrzebna do
@@ -96,18 +95,6 @@ class Chat : public QMainWindow
 	private slots:
 
 		/**
-			\fn void userWhois()
-			Slot wy¶wietlaj±cy informacje o zaznaczonym kontakcie
-		**/
-		void userWhois();
-
-		/**
-			\fn void emoticonSelectorClicked()
-			Slot wy¶wietlaj±cy okno z wyborem emotikonek
-		**/
-		void emoticonSelectorClicked();
-
-		/**
 			\fn void changeColor()
 			Slot zmieniaj±cy kolor czcionki
 		**/
@@ -130,12 +117,6 @@ class Chat : public QMainWindow
 			Slot przewijaj±cy historiê rozmowy w dó³
 		**/
 		void pageDown();
-
-		/**
-			\fn void insertImage()
-			Slot wklejaj±cy obrazek do okna rozmowy (wybór obrazka)
-		**/
-		void insertImage();
 
 		/**
 			\fn void imageReceivedAndSaved(UinType sender,uint32_t size,uint32_t crc32,const QString& path)
@@ -449,6 +430,24 @@ class Chat : public QMainWindow
 			Ustaw blokade przewijania
 		**/
 		void setScrollLocked(bool locked);
+
+		/**
+			\fn void emoticonSelectorClicked()
+			Slot wy¶wietlaj±cy okno z wyborem emotikonek
+		**/
+		void openEmoticonSelector(const QWidget* activating_widget);
+
+		/**
+			\fn void userWhois()
+			Slot wy¶wietlaj±cy informacje o zaznaczonym kontakcie
+		**/
+		void userWhois();
+
+		/**
+			\fn void insertImage()
+			Slot wklejaj±cy obrazek do okna rozmowy (wybór obrazka)
+		**/
+		void insertImage();
 
 	signals:
 		/**

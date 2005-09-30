@@ -113,7 +113,7 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	QLabel *edt = new QLabel(tr("Edit window:"), edtbuttontray, "editLabel");
 	QToolTip::add(edt, tr("This is where you type in the text to be sent"));
 
-	DockArea* buttontray = new DockArea(Qt::Horizontal, DockArea::Normal, edtbuttontray, "buttontrayDockArea");
+	DockArea* buttontray = new DockArea(Qt::Horizontal, DockArea::Normal, edtbuttontray, "chatMiddleDockArea");
 	buttontray->setMinimumHeight(20);
 	edtbuttontray->setStretchFactor(edt, 1);
 	edtbuttontray->setStretchFactor(buttontray, 50);
@@ -137,7 +137,7 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	    PreviousMessage = "";
 	}
 
-	DockArea* btnpart = new DockArea(Qt::Horizontal, DockArea::Normal, downpart);
+	DockArea* btnpart = new DockArea(Qt::Horizontal, DockArea::Normal, downpart, "chatBottomDockArea");
 	btnpart->setMinimumHeight(20);
 
 	QAccel *acc = new QAccel(this, "returnAccel");
@@ -173,28 +173,9 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	KaduActions["showHistoryAction"]->addToToolbar(tb1);
 	if (KaduActions.contains("encryptionAction"))
 		KaduActions["encryptionAction"]->addToToolbar(tb1);
-
-	iconsel = new ToolButton(tb1, "selectIconButton");
-	iconsel->setPixmap(icons_manager->loadIcon("ChooseEmoticon"));
-	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_NONE)
-	{
-		QToolTip::add(iconsel, tr("Insert emoticon - enable in configuration"));
-		iconsel->setEnabled(false);
-	}
-	else
-		QToolTip::add(iconsel, tr("Insert emoticon"));
-
-	ToolButton* whois = new ToolButton(tb1, "whoisButton");
-	whois->setPixmap(icons_manager->loadIcon("LookupUserInfo"));
-	QToolTip::add(whois, tr("Lookup user info"));
-
-	ToolButton* insertimage = new ToolButton(tb1, "insertImageButton");
-	insertimage->setPixmap(icons_manager->loadIcon("ChooseImage"));
-	QToolTip::add(insertimage, tr("Insert image"));
-
-	connect(iconsel, SIGNAL(clicked()), this, SLOT(emoticonSelectorClicked()));
-	connect(whois, SIGNAL(clicked()), this, SLOT(userWhois()));
-	connect(insertimage, SIGNAL(clicked()), this, SLOT(insertImage()));
+	KaduActions["insertEmoticonAction"]->addToToolbar(tb1);
+	KaduActions["whoisAction"]->addToToolbar(tb1);
+	KaduActions["insertImageAction"]->addToToolbar(tb1);
 
 	// TOOLBAR2
 
@@ -216,7 +197,7 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	btnpart->moveDockWindow(tb3);
 	btnpart->setAcceptDockWindow(tb3, true);
 
-	sendbtn = new ToolButton(tb3, "sendButton");
+	sendbtn = new ToolButton(tb3, "");
 	sendbtn->setIconSet(QIconSet(icons_manager->loadIcon("SendMessage")));
 	sendbtn->setTextLabel(tr("&Send"));
 	sendbtn->setUsesTextLabel(true);
@@ -1087,13 +1068,13 @@ void Chat::HistoryBox()
 	kdebugf2();
 }
 
-void Chat::emoticonSelectorClicked()
+void Chat::openEmoticonSelector(const QWidget* activating_widget)
 {
 	//emoticons_selector zawsze bêdzie NULLem gdy wchodzimy do tej funkcji
 	//bo EmoticonSelector ma ustawione flagi Qt::WDestructiveClose i Qt::WType_Popup
 	//akcj± na opuszczenie okna jest ustawienie zmiennej emoticons_selector w Chacie na NULL
 	emoticon_selector = new EmoticonSelector(NULL, "emoticon_selector", this);
-	emoticon_selector->alignTo(iconsel);
+	emoticon_selector->alignTo((QWidget*)activating_widget); //TODO: konwersja obcinajaca const nie jest piekna sprawa
 	emoticon_selector->show();
 }
 

@@ -59,6 +59,11 @@ class ChatManager : public QObject
 		void italicActionActivated(const UserGroup* users, const QWidget* source, bool is_on);
 		void underlineActionActivated(const UserGroup* users, const QWidget* source, bool is_on);
 		void colorActionActivated(const UserGroup* users, const QWidget* source);
+		void insertEmoticonActionActivated(const UserGroup* users, const QWidget* source);
+		void insertEmoticonActionAddedToToolbar(ToolButton* button, ToolBar* toolbar,
+			const UserListElements& users);
+		void whoisActionActivated(const UserGroup* users);
+		void insertImageActionActivated(const UserGroup* users);
 
 	public:
 		/**

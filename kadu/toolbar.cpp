@@ -9,6 +9,7 @@
 
 #include <qapplication.h>
 #include <qcursor.h>
+#include <qobjectlist.h>
 #include <qtooltip.h>
 
 #include "chat.h" // TODO: akcje powinny byæ niezale¿ne od chat
@@ -20,9 +21,10 @@
 #include "toolbar.h"
 
 
-ToolButton::ToolButton(QWidget* parent, const char* name)
-	: QToolButton(parent, name)
+ToolButton::ToolButton(QWidget* parent, const QString& action_name)
+	: QToolButton(parent, 0)
 {
+	ActionName = action_name;
 }
 
 void ToolButton::mouseMoveEvent(QMouseEvent* e)
@@ -45,6 +47,14 @@ void ToolButton::contextMenuEvent(QContextMenuEvent* e)
 	p->exec(QCursor::pos());
 	delete p;
 	e->accept();
+	kdebugf2();
+}
+
+void ToolButton::writeToConfig(QDomElement parent_element)
+{
+	kdebugf();
+	QDomElement button_elem = xml_config_file->createElement(parent_element, "ToolButton");
+	button_elem.setAttribute("action_name", ActionName);
 	kdebugf2();
 }
 
@@ -112,6 +122,19 @@ void ToolBar::contextMenuEvent(QContextMenuEvent* e)
 	kdebugf2();
 }
 
+void ToolBar::writeToConfig(QDomElement parent_element)
+{
+	kdebugf();
+	QDomElement toolbar_elem = xml_config_file->createElement(
+		parent_element, "ToolBar");
+	toolbar_elem.setAttribute("offset", offset());
+	QObjectList* l = queryList("ToolButton");
+	for (QObjectList::iterator i = l->begin(); i != l->end(); i++)
+		((ToolButton*)(*i))->writeToConfig(toolbar_elem);
+	kdebugf2();
+}
+
+
 DockArea::DockArea(Orientation o, HandlePosition h,
 			QWidget * parent, const char * name)
 	: QDockArea(o, h, parent, name)
@@ -144,8 +167,28 @@ void DockArea::createNewToolbar()
 			tb->show();
 			moveDockWindow(tb);
 			setAcceptDockWindow(tb, true);
+			writeToConfig();
 			break;
 		}
+	}
+	kdebugf2();
+}
+
+void DockArea::writeToConfig()
+{
+	kdebugf();
+	QDomElement root_elem = xml_config_file->rootElement();
+	QDomElement toolbars_elem = xml_config_file->accessElement(root_elem, "Toolbars");
+	QDomElement dockarea_elem = xml_config_file->accessElementByProperty(
+		toolbars_elem, "DockArea", "name", name());
+	xml_config_file->removeChildren(dockarea_elem);
+	QPtrList<QDockWindow> dock_windows = dockWindowList();
+	for (QPtrList<QDockWindow>::iterator i = dock_windows.begin();
+		i != dock_windows.end(); i++)
+	{
+		ToolBar* toolbar = dynamic_cast<ToolBar*>(*i);
+		if (toolbar != NULL)
+			toolbar->writeToConfig(dockarea_elem);
 	}
 	kdebugf2();
 }

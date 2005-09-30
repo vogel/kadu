@@ -73,6 +73,28 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 		this, SLOT(historyActionActivated(const UserGroup*)));
 	KaduActions.insert("showHistoryAction", history_action);
 
+	Action* insert_emot_action = new Action(icons_manager->loadIcon("ChooseEmoticon"),
+		tr("Insert emoticon"), "insertEmoticonAction");
+	connect(insert_emot_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		this, SLOT(insertEmoticonActionActivated(const UserGroup*, const QWidget*)));
+	connect(insert_emot_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*,
+			const UserListElements&)),
+		this, SLOT(insertEmoticonActionAddedToToolbar(ToolButton*, ToolBar*,
+			const UserListElements&)));
+	KaduActions.insert("insertEmoticonAction", insert_emot_action);
+
+	Action* whois_action = new Action(icons_manager->loadIcon("LookupUserInfo"),
+		tr("Lookup user info"), "whoisAction");
+	connect(whois_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		this, SLOT(whoisActionActivated(const UserGroup*)));
+	KaduActions.insert("whoisAction", whois_action);
+
+	Action* insert_img_action = new Action(icons_manager->loadIcon("ChooseImage"),
+		tr("Insert image"), "insertImageAction");
+	connect(insert_img_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		this, SLOT(insertImageActionActivated(const UserGroup*)));
+	KaduActions.insert("insertImageAction", insert_img_action);
+
 	QFont font;
 
 	font.setBold(true);
@@ -190,6 +212,40 @@ void ChatManager::colorActionActivated(const UserGroup* users, const QWidget* so
 {
 	kdebugf();
 	findChat(users)->changeColor(source);
+	kdebugf2();
+}
+
+void ChatManager::insertEmoticonActionActivated(const UserGroup* users, const QWidget* source)
+{
+	kdebugf();
+	findChat(users)->openEmoticonSelector(source);
+	kdebugf2();
+}
+
+void ChatManager::insertEmoticonActionAddedToToolbar(ToolButton* button, ToolBar* toolbar,
+	const UserListElements& users)
+{
+	kdebugf();
+	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") == EMOTS_NONE)
+	{
+		QToolTip::remove(button);
+		QToolTip::add(button, tr("Insert emoticon - enable in configuration"));
+		button->setEnabled(false);
+	}
+	kdebugf2();
+}
+
+void ChatManager::whoisActionActivated(const UserGroup* users)
+{
+	kdebugf();
+	findChat(users)->userWhois();
+	kdebugf2();
+}
+
+void ChatManager::insertImageActionActivated(const UserGroup* users)
+{
+	kdebugf();
+	findChat(users)->insertImage();
 	kdebugf2();
 }
 

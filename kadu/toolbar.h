@@ -3,6 +3,7 @@
 
 #include <qaction.h>
 #include <qdockarea.h>
+#include <qdom.h>
 #include <qdragobject.h>
 #include <qmainwindow.h>
 #include <qmap.h>
@@ -16,12 +17,18 @@
 
 class ToolButton : public QToolButton
 {
+	Q_OBJECT
+
+	private:
+		QString ActionName;
+
 	protected:
 		void mouseMoveEvent(QMouseEvent* e);
 		void contextMenuEvent(QContextMenuEvent* e);
 
 	public:
-		ToolButton(QWidget* parent, const char* name = 0);
+		ToolButton(QWidget* parent, const QString& action_name);
+		void writeToConfig(QDomElement parent_element);
 };
 
 class ToolButtonDrag : public QTextDrag
@@ -47,6 +54,7 @@ class ToolBar : public QToolBar
 
 	public:
 		ToolBar(const QString& label, QMainWindow* mainWindow, QWidget* parent);
+		void writeToConfig(QDomElement parent_element);
 };
 
 class DockArea : public QDockArea
@@ -62,6 +70,7 @@ class DockArea : public QDockArea
 	public:
 		DockArea(Orientation o, HandlePosition h = Normal,
 			QWidget * parent = 0, const char * name = 0);
+		void writeToConfig();
 };
 
 class Action : public QAction
