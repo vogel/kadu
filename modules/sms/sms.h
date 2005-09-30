@@ -100,6 +100,7 @@ class Sms : public QDialog {
 	public:
 		Sms(const QString& altnick, QDialog* parent=0, const char *name=0);
 		~Sms();
+		void setRecipient(const QString& phone);
 
 	private:
 		QMultiLineEdit *body;
