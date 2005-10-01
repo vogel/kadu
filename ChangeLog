@@ -130,8 +130,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   w "sprzyjaj±cych" okoliczno¶ciach (anonimowi na li¶cie i w³±czony który¶
   z filtrów na listê kontaktów) (joi)
 * usuniête kilka drobnych wycieków pamiêci (joi)
-* na³o¿ona ³atka na default_sms dla bramki EraOmnix (Ron_K/Belegdol)
-* nowe dcc (Ron_K/Vogel)
+* poprawiona obs³uga nowej bramki Ery (Belegdol/Ron_K)
+* nowe okno transferów dcc (Vogel/Ron_K)
 * przyciski w oknie chat przeniesione do toolbarów, pocz±tek edytowalnych toolbarów,
   drag&drop przycisków, pocz±tek koncepcji akcji (adrian)
 * scrolllock i autosend s± akcjami (adrian)
@@ -142,10 +142,12 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawiono wykrywanie libexecinfo (wisnia/pawel_p)
 * przyciski z dolnego lewego paska okna chat zmienione na akcje (adrian)
 * przyspieszenie otwierania i zamykania okna konfiguracji
-	zmiana API rejestracji slotow na otwieranie i zamykanie okna konfiguracji (pawel_p)
+	zmiana API rejestracji slotów na otwieranie i zamykanie okna konfiguracji (pawel_p)
 * wszystkie przyciski poza "wy¶lij" w oknie chat s± akcjami (adrian)
 * zapisywanie konfiguracji danego obszaru dokowania okna chat po dodaniu
   do niego nowego toolbara (adrian)
+* przeniesienie binarnych plików modu³ów do $prefix/lib/kadu/modules
+  ró¿ne drobne optymalizacje (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
