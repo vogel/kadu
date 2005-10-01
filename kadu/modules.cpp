@@ -69,25 +69,25 @@ QString Library::error()
 	return QString(dlerror());
 }
 
-ModulesDialog::ModulesDialog() 
+ModulesDialog::ModulesDialog()
 {
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Manage Modules"));
-	
+
 	// create main QLabel widgets (icon and app info)
 	QVBox *left=new QVBox(this);
 	left->setMargin(10);
 	left->setSpacing(10);
-	
+
 	QLabel *l_icon = new QLabel(left);
 	QWidget *blank=new QWidget(left);
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
-	
+
 	QVBox *center=new QVBox(this);
 	center->setMargin(10);
 	center->setSpacing(10);
-	
+
 	QLabel *l_info = new QLabel(center);
 	l_icon->setPixmap(icons_manager->loadIcon("ManageModulesWindowIcon"));
 	l_info->setText(tr("This dialog box allows you to manage installed modules. Modules are responsible "
@@ -95,7 +95,7 @@ ModulesDialog::ModulesDialog()
 			"You can load (or unload) them by double-clicking on their names."));
 	l_info->setAlignment(Qt::WordBreak);
 	// end create main QLabel widgets (icon and app info)
-	
+
 	// our QListView
 	lv_modules = new QListView(center);
 	lv_modules->addColumn(tr("Module name"), 160);
@@ -104,12 +104,12 @@ ModulesDialog::ModulesDialog()
 	lv_modules->addColumn(tr("State"), 120);
 	lv_modules->setAllColumnsShowFocus(true);
 	// end our QListView
-	
+
 	//our QVGroupBox
 	QVGroupBox *vgb_info = new QVGroupBox(center);
 	vgb_info->setTitle(tr("Info"));
 	//end our QGroupBox
-	
+
 	l_moduleinfo = new QLabel(vgb_info);
 	l_moduleinfo->setText(tr("<b>Module:</b><br/><b>Depends on:</b><br/><b>Conflicts with:</b><br/><b>Provides:</b><br/><b>Author:</b><br/><b>Version:</b><br/><b>Description:</b>"));
 
@@ -120,11 +120,11 @@ ModulesDialog::ModulesDialog()
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	// end buttons
-	
+
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 	connect(lv_modules, SIGNAL(selectionChanged()), this, SLOT(itemsChanging()));
 	connect(lv_modules, SIGNAL(doubleClicked(QListViewItem *)), this, SLOT(moduleAction(QListViewItem *)));
-	
+
  	loadGeometry(this, "General", "ModulesDialogGeometry", 0, 30, 600, 620);
 	refreshList();
 	kdebugf2();
@@ -147,11 +147,11 @@ void ModulesDialog::moduleAction(QListViewItem *)
 {
 	kdebugf();
 	if (lv_modules->selectedItem() != NULL)
-		if ((lv_modules->selectedItem()->text(2) == tr("Dynamic")) && 
+		if ((lv_modules->selectedItem()->text(2) == tr("Dynamic")) &&
 			(lv_modules->selectedItem()->text(3) == tr("Loaded")))
 			unloadItem();
 		else
-		if ((lv_modules->selectedItem()->text(2) == tr("Dynamic")) && 
+		if ((lv_modules->selectedItem()->text(2) == tr("Dynamic")) &&
 			(lv_modules->selectedItem()->text(3) == tr("Not loaded")))
 			loadItem();
 	kdebugf2();
@@ -162,7 +162,7 @@ void ModulesDialog::loadItem()
 	kdebugf();
 	modules_manager->activateModule(lv_modules->selectedItem()->text(0));
 	refreshList();
-	modules_manager->saveLoadedModules();	
+	modules_manager->saveLoadedModules();
 	kdebugf2();
 }
 
@@ -178,14 +178,14 @@ void ModulesDialog::unloadItem()
 void ModulesDialog::refreshList()
 {
 	kdebugf();
-	
+
 	int vScrollValue=lv_modules->verticalScrollBar()->value();
 
 	QString s_selected;
-	
+
 	if (lv_modules->selectedItem() != NULL)
 		s_selected = lv_modules->selectedItem()->text(0);
-	
+
 	lv_modules->clear();
 
 	QStringList moduleList = modules_manager->staticModules();
@@ -195,9 +195,9 @@ void ModulesDialog::refreshList()
 		if (modules_manager->moduleInfo(*module,info))
 			new QListViewItem(lv_modules, *module, info.version, tr("Static"), tr("Loaded"));
 		else
-			new QListViewItem(lv_modules, *module, "", tr("Static"), tr("Loaded"));
+			new QListViewItem(lv_modules, *module, QString::null, tr("Static"), tr("Loaded"));
 	}
-		
+
 	moduleList = modules_manager->loadedModules();
 	CONST_FOREACH(module, moduleList)
 	{
@@ -205,9 +205,9 @@ void ModulesDialog::refreshList()
 		if (modules_manager->moduleInfo(*module,info))
 			new QListViewItem(lv_modules, *module, info.version, tr("Dynamic"), tr("Loaded"));
 		else
-			new QListViewItem(lv_modules, *module, "", tr("Dynamic"), tr("Loaded"));
+			new QListViewItem(lv_modules, *module, QString::null, tr("Dynamic"), tr("Loaded"));
 	}
-		
+
 	moduleList = modules_manager->unloadedModules();
 	CONST_FOREACH(module, moduleList)
 	{
@@ -215,9 +215,9 @@ void ModulesDialog::refreshList()
 		if (modules_manager->moduleInfo(*module,info))
 			new QListViewItem(lv_modules, *module, info.version, tr("Dynamic"), tr("Not loaded"));
 		else
-			new QListViewItem(lv_modules, *module, "", tr("Dynamic"), tr("Not loaded"));
+			new QListViewItem(lv_modules, *module, QString::null, tr("Dynamic"), tr("Not loaded"));
 	}
-	
+
 	lv_modules->setSelected(lv_modules->findItem(s_selected, 0), true);
 
 	lv_modules->verticalScrollBar()->setValue(vScrollValue);
@@ -228,17 +228,17 @@ void ModulesDialog::getInfo()
 {
 	kdebugf();
 	ModuleInfo info;
-	
+
 	if (!modules_manager->moduleInfo(lv_modules->selectedItem()->text(0), info))
 	{
 		kdebugf2();
 		return;
 	}
 
-	l_moduleinfo->setText(tr("<b>Module: </b>") + lv_modules->selectedItem()->text(0) + 
-				tr("<br/><b>Depends on: </b>") + info.depends.join(", ") + 
-				tr("<br/><b>Conflicts with: </b>") + info.conflicts.join(", ") + 
-				tr("<br/><b>Provides: </b>") + info.provides.join(", ") + 
+	l_moduleinfo->setText(tr("<b>Module: </b>") + lv_modules->selectedItem()->text(0) +
+				tr("<br/><b>Depends on: </b>") + info.depends.join(", ") +
+				tr("<br/><b>Conflicts with: </b>") + info.conflicts.join(", ") +
+				tr("<br/><b>Provides: </b>") + info.provides.join(", ") +
 				tr("<br/><b>Author: </b>") + info.author +
 				tr("<br/><b>Version: </b>") + info.version +
 				tr("<br/><b>Description: </b>") + info.description);
@@ -274,7 +274,7 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager")
 	icons_manager->registerMenuItem(kadu->mainMenu(), tr("&Manage Modules"), "ManageModules");
 	translators=new QObject(this, "translators");
 
-	
+
 	//
 	Dialog=NULL;
 	//
@@ -320,7 +320,7 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager")
 
 	ConfigDialog::addTab("ShortCuts", "ShortCutsTab");
 	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", "Define keys");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QString("&Manage Modules").replace("&", ""), "kadu_modulesmanager", "F4");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QString("&Manage Modules").remove("&"), "kadu_modulesmanager", "F4");
 
 	CONST_FOREACH(it, Modules)
 		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", it.key().local8Bit().data(), it.data().usage_counter);
@@ -433,7 +433,7 @@ QStringList ModulesManager::staticModules() const
 
 QStringList ModulesManager::installedModules() const
 {
-	QDir dir(dataPath("kadu/modules"),"*." SO_EXT);
+	QDir dir(libPath("kadu/modules"),"*." SO_EXT);
 	dir.setFilter(QDir::Files);
 	QStringList installed;
 	QStringList entries = dir.entryList();
@@ -493,7 +493,7 @@ bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info) co
 		info.version = VERSION;
 	else
 		info.version = desc_file.readEntry("Module", "Version");
-	
+
 	info.depends = QStringList::split(" ",
 		desc_file.readEntry("Module", "Dependencies"));
 
@@ -571,7 +571,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 {
 	Module m;
 	kdebugmf(KDEBUG_FUNCTION_START, "'%s'\n", module_name.local8Bit().data());
-	
+
 	if (moduleIsActive(module_name))
 	{
 		MessageBox::msg(tr("Module %1 is already active").arg(module_name));
@@ -600,7 +600,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 
 	typedef int InitModuleFunc();
 	InitModuleFunc* init;
-	
+
 	if (moduleIsStatic(module_name))
 	{
 		m.lib=NULL;
@@ -610,14 +610,14 @@ bool ModulesManager::activateModule(const QString& module_name)
 	}
 	else
 	{
-		m.lib=new Library(dataPath("kadu/modules/"+module_name+"." SO_EXT));
+		m.lib = new Library(libPath("kadu/modules/" + module_name + "." SO_EXT));
 		if (!m.lib->load())
 		{
 			MessageBox::msg(narg(tr("Cannot load %1 module library.:\n%2"), module_name, m.lib->error()));
 			delete m.lib;
 			kdebugf2();
 			return false;
-		}	
+		}
 		init=(InitModuleFunc*)m.lib->resolve(module_name+"_init");
 		m.close=(CloseModuleFunc*)m.lib->resolve(module_name+"_close");
 		if (init==NULL||m.close==NULL)
@@ -628,7 +628,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 			return false;
 		}
 	}
-	
+
 	m.translator = loadModuleTranslation(module_name);
 
 	int res = init();
@@ -642,11 +642,11 @@ bool ModulesManager::activateModule(const QString& module_name)
 			qApp->removeTranslator(m.translator);
 			delete m.translator;
 		}
-		return false;		
+		return false;
 	}
-	
+
 	incDependenciesUsageCount(m.info);
-	
+
 	m.usage_counter=0;
 	Modules.insert(module_name,m);
 	kdebugf2();
@@ -664,22 +664,22 @@ bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 		kdebugf2();
 		return false;
 	}
-	
+
 	CONST_FOREACH(i, m.info.depends)
 		moduleDecUsageCount(*i);
-	
+
 	m.close();
 	if (m.translator!=NULL)
 	{
 		qApp->removeTranslator(m.translator);
 		delete m.translator;
 	}
-	
+
 	if (m.lib!=NULL)
 		m.lib->deleteLater();
 
 	Modules.remove(module_name);
-	
+
 	kdebugf2();
 	return true;
 }

@@ -189,7 +189,7 @@ void aRtsPlayerRecorder::openDevice(SoundDeviceType type, int sample_rate, int c
 		dev->mutex.lock();
 		long pass = random();
 //		kdebugm(KDEBUG_INFO, "creating process\n");
-		dev->process = new QProcess(dataPath("kadu/modules/bin/arts_sound/arts_connector"));
+		dev->process = new QProcess(libPath("kadu/modules/bin/arts_sound/arts_connector"));
 //		kdebugm(KDEBUG_INFO, "connecting processExited() signal\n");
 		connect(dev->process, SIGNAL(processExited()), dev, SLOT(processExited()));
 		kdebugm(KDEBUG_INFO, "starting process\n");

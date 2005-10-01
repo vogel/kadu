@@ -7,15 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-/*
-#include <qfile.h>
-#include <qhbox.h>
-#include <qsizepolicy.h>
-#include <qtextstream.h>
-
-#include "kadu-config.h"
-*/
-
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qtabwidget.h>

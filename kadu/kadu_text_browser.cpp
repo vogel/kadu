@@ -37,7 +37,7 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 
 void KaduTextBrowser::maybeTip(const QPoint &c)
 {
-	if (!highlightedlink.isNull())
+	if (!highlightedlink.isEmpty())
 		kdebugmf(KDEBUG_INFO, "link %s (X,Y)=%d,%d\n", highlightedlink.local8Bit().data(), c.x(), c.y());
 	tip(QRect(c.x()-20,c.y()-5,40,10), highlightedlink);
 }
@@ -121,20 +121,20 @@ void KaduTextBrowser::copy()
 
 	//czasem siê to cholerstwo pojawia gdy dostajemy ca³y dokument (bug w qt!),
 	//wiêc wypada³oby pozbyæ siê wszystkich zbêdnych tagów...
-	txt.replace("<html>", "");
-	txt.replace("</html>", "");
+	txt.remove("<html>");
+	txt.remove("</html>");
 
-	txt.replace("<head>", "");
-	txt.replace("</head>", "");
+	txt.remove("<head>");
+	txt.remove("</head>");
 
-	txt.replace(QRegExp("<meta[^>]+>"), "");
+	txt.remove(QRegExp("<meta[^>]+>"));
 
-	txt.replace("<body>", "");
-	txt.replace(QRegExp("<body [^>]+>"), "");
-	txt.replace("</body>", "");
+	txt.remove("<body>");
+	txt.remove(QRegExp("<body [^>]+>"));
+	txt.remove("</body>");
 
-	txt.replace(QRegExp("<a [^>]+>"), "");
-	txt.replace("</a>", "");
+	txt.remove(QRegExp("<a [^>]+>"));
+	txt.remove("</a>");
 
 	txt.replace("<br>", "\n");
 	txt.replace("<br/>", "\n");
@@ -142,33 +142,33 @@ void KaduTextBrowser::copy()
 
 	//usuwamy wszystkie znane tagi htmla, które mog± siê pojawiæ w chacie
 	//nie mo¿na u¿yæ po prostu <[^>]+>, bo za³api± siê te¿ emotikony typu <rotfl>
-	txt.replace(QRegExp("<![^>]+>"), "");//<!--StartFragment-->
+	txt.remove(QRegExp("<![^>]+>"));//<!--StartFragment-->
 
-	txt.replace("<p>", "");
-	txt.replace(QRegExp("<p [^>]+>"), "");
-	txt.replace("</p>", "");
+	txt.remove("<p>");
+	txt.remove(QRegExp("<p [^>]+>"));
+	txt.remove("</p>");
 
-	txt.replace("<span>", "");
-	txt.replace(QRegExp("<span [^>]+>"), "");
-	txt.replace("</span>", "");
+	txt.remove("<span>");
+	txt.remove(QRegExp("<span [^>]+>"));
+	txt.remove("</span>");
 
-	txt.replace("<table>", "");
-	txt.replace(QRegExp("<table [^>]+>"), "");
-	txt.replace("</table>", "");
+	txt.remove("<table>");
+	txt.remove(QRegExp("<table [^>]+>"));
+	txt.remove("</table>");
 
-	txt.replace("<tr>", "");
-	txt.replace(QRegExp("<tr [^>]+>"), "");
-	txt.replace("</tr>", "");
+	txt.remove("<tr>");
+	txt.remove(QRegExp("<tr [^>]+>"));
+	txt.remove("</tr>");
 
-	txt.replace("<td>", "");
-	txt.replace(QRegExp("<td [^>]+>"), "");
-	txt.replace("</td>", "");
+	txt.remove("<td>");
+	txt.remove(QRegExp("<td [^>]+>"));
+	txt.remove("</td>");
 
 	//specjalnie traktujemy obrazki, mo¿e u¿ytkownik domy¶li siê o co tu chodzi :P
 	txt.replace(QRegExp("<img gg_crc=([0-9]*) gg_sender=([0-9]*) gg_size=([0-9]*) src=[^>]+>"), "\\2-\\3-\\1-*");
 	txt.replace(QRegExp("<img src=([^>]+)>"), "\\1");
 
-//	txt.replace(QRegExp("<[^>]+>[^<]+</[^>]+>"), "");
+//	txt.remove(QRegExp("<[^>]+>[^<]+</[^>]+>"));
 
 	txt.replace("&lt;", "<");
 	txt.replace("&gt;", ">");

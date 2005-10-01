@@ -373,10 +373,10 @@ class UserGroup : public QObject
 
 	private:
 		/* standardowy konstruktor kopiuj±cy zepsu³by obiekt ¼ród³owy */
-		UserGroup(const UserGroup &copyMe) {}
+		UserGroup(const UserGroup &) {}
 
 		/* standardowy operator kopiowania zepsu³by obiekt ¼ród³owy */
- 		virtual void operator = (const UserGroup &copyMe) {}
+ 		virtual void operator = (const UserGroup &) {}
 
 		/* nie da siê porównywaæ obiektów tej klasy */
 		bool operator==(const UserGroup &) const {return false;}
@@ -434,7 +434,7 @@ class UserListElements : public QValueList<UserListElement>
 			Zwraca informacjê o tym czy lista zawiera wskazany kontakt.
 			(Z³o¿ono¶æ O(n))
 		**/
-		bool contains(UserListElement e) const { return QValueList<UserListElement>::contains(e);}
+		bool contains(UserListElement e) const { return QValueList<UserListElement>::contains(e) > 0;}
 };
 
 #endif

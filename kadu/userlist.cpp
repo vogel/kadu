@@ -197,8 +197,8 @@ void UserList::setAllOffline(const QString &protocolName)
 	s->setOffline();
 
 	QValueListIterator<UserListElement> user = begin();
-	uint cnt = count();
-	for (uint j = 1; j <= cnt; ++j, ++user)
+	size_type cnt = count();
+	for (size_type j = 1; j <= cnt; ++j, ++user)
 	{
 //		kdebugm(KDEBUG_INFO, "%s %d\n", (*user).altNick().local8Bit().data(), (*user).usesProtocol("Gadu"));
 		if ((*user).usesProtocol("Gadu"))
@@ -210,8 +210,8 @@ void UserList::setAllOffline(const QString &protocolName)
 
 void UserList::clear()
 {
-	int cnt = count();
-	int j = 1;
+	size_type cnt = count();
+	size_type j = 1;
 	CONST_FOREACH(i, *this)
 		emit removingUser(*i, true, j++ == cnt);
 	d->data.clear();

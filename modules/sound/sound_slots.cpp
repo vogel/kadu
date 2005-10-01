@@ -184,7 +184,7 @@ void SoundSlots::clearSoundFile()
 	QListViewItem *item=ConfigDialog::getListView("Sounds", "sound_files")->currentItem();
 	if (!item->isSelected())
 		return;
-	item->setText(1, "");
+	item->setText(1, QString::null);
 	kdebugf2();
 }
 

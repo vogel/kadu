@@ -17,14 +17,16 @@ class QMenuData;
 	na ¶cie¿kê bezwzgledn± uwzglêdniaj±c zmienne ¶rodowiskowe
 	$HOME i $CONFIG_DIR
 */
-QString ggPath(const QString &subpath="");
+QString ggPath(const QString &subpath = QString::null);
 
 /*
 	zwraca ¶cie¿kê do pliku f
 	je¿eli drugi parametr nie jest == 0, to funkcja próbuje najpierw ustaliæ
 	¶cie¿kê na podstawie argv0, które ma byæ równe argv[0] oraz zmiennej PATH
 */
-QString dataPath(const QString &f = "", const char *argv0 = 0);
+QString dataPath(const QString &f = QString::null, const char *argv0 = 0);
+
+QString libPath(const QString &f = QString::null);
 
 class UserListElement;
 
@@ -172,7 +174,7 @@ QString narg(const QString &s, const QString &arg1, const QString &arg2,
 **/
 QString narg(const QString &s, const QString **tab, int count);
 
-void printBacktrace(const QString &header="");
+void printBacktrace(const QString &header = QString::null);
 
 // definiuje now± zmienn± v o takim samym typie jak x jednocze¶nie inicjuj±c j± warto¶ci± x
 #define VAR(v,x)	__typeof(x) v=x

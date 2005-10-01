@@ -193,20 +193,20 @@ QString stripHTMLFromGGMessage(const QString &msg)
 	QRegExp regexp;
 	QString mesg = msg;
 
-//	mesg.replace(QRegExp("^<html><head><meta\\sname=\"qrichtext\"\\s*\\s/></head>"), "");
-	mesg.replace(QRegExp("^<html><head>.*<body\\s.*\">\\r\\n"), "");
-	mesg.replace(QRegExp("\\r\\n</body></html>\\r\\n$"), "");
-	mesg.replace("<wsp>", "");
-	mesg.replace("</wsp>", "");
+//	mesg.remove(QRegExp("^<html><head><meta\\sname=\"qrichtext\"\\s*\\s/></head>"));
+	mesg.remove(QRegExp("^<html><head>.*<body\\s.*\">\\r\\n"));
+	mesg.remove(QRegExp("\\r\\n</body></html>\\r\\n$"));
+	mesg.remove("<wsp>");
+	mesg.remove("</wsp>");
 
-	mesg.replace("<p>", "");
-	mesg.replace("<p dir=\"ltr\">", "");
-//	mesg.replace("<p dir=\"rtl\">", "");
-	mesg.replace("</p>", "");
+	mesg.remove("<p>");
+	mesg.remove("<p dir=\"ltr\">");
+//	mesg.remove("<p dir=\"rtl\">");
+	mesg.remove("</p>");
 	regexp.setMinimal(true);
 	regexp.setPattern("<font (face=\"(\\S)+\"\\s)?(size=\"\\d{1,2}\"(\\s)?)?(style=\"font-size:\\d{1,2}pt\"(\\s)?)?>");
-	mesg.replace(regexp, "");
-	mesg.replace("</font>", "");
+	mesg.remove(regexp);
+	mesg.remove("</font>");
 	HtmlDocument::unescapeText(mesg);
 
 	return mesg;

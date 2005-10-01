@@ -1288,7 +1288,7 @@ void Wizard::previewIconTheme(int iconThemeID)
 			path.replace(cb_iconTheme->text(i), cb_iconTheme->text(iconThemeID));
 	path.replace(tr("Default"), "default");
 	iconPreview->setPixmap(path);
-	path.replace("online.png", QString::null);
+	path.remove("online.png");
 	iconPreview2->setPixmap(path+"busy_d.png");
 	iconPreview3->setPixmap(path+"invisible_m.png");
 	iconPreview4->setPixmap(path+"offline_d_m.png");
@@ -1388,12 +1388,12 @@ QString Wizard::toDisplay(QString s)
 	s.replace("%m", "+4812345679");
 	s.replace("%u", "999999");
 	s.replace("%g", tr("Friends"));
-	s.replace("%o", QString::null);
+	s.remove("%o");
 	s.replace("%v", "host.server.net");
 	s.replace("%p", "80");
 	s.replace("%e", "jimbo@mail.server.net");
-	s.replace("[", QString::null);
-	s.replace("]", QString::null);
+	s.remove("[");
+	s.remove("]");
 	s.replace("changed status to", tr("changed status to"));
 
 	kdebugf2();

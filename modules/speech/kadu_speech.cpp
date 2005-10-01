@@ -112,53 +112,53 @@ SpeechSlots::SpeechSlots(QObject *parent, const char *name) : QObject(parent, na
 	ConfigDialog::addCheckBox("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Klatt synthesizer (requires dsp)"), "KlattSynt", false);
 	ConfigDialog::addCheckBox("Speech", "Speech",
-			QT_TRANSLATE_NOOP("@default","Use aRts"), "UseArts", false, "", "usearts");
+			QT_TRANSLATE_NOOP("@default","Use aRts"), "UseArts", false, QString::null, "usearts");
 	ConfigDialog::addCheckBox("Speech", "Speech",
-			QT_TRANSLATE_NOOP("@default","Use Esd"), "UseEsd", false, "", "useesd");
+			QT_TRANSLATE_NOOP("@default","Use Esd"), "UseEsd", false, QString::null, "useesd");
 	ConfigDialog::addCheckBox("Speech", "Speech",
-			QT_TRANSLATE_NOOP("@default","Use Dsp"), "UseDsp", true, "", "usedsp");
+			QT_TRANSLATE_NOOP("@default","Use Dsp"), "UseDsp", true, QString::null, "usedsp");
 	ConfigDialog::addLineEdit("Speech", "Speech",
-			QT_TRANSLATE_NOOP("@default","Dsp device:"), "DspDev","/dev/dsp", "", "", Advanced);
+			QT_TRANSLATE_NOOP("@default","Dsp device:"), "DspDev","/dev/dsp", QString::null, QString::null, Advanced);
 
 	ConfigDialog::addHGroupBox("Speech", "Speech", QT_TRANSLATE_NOOP("@default","Program"));
 	ConfigDialog::addLineEdit("Speech", "Program",
 			QT_TRANSLATE_NOOP("@default","Speech program:"), "SpeechProgram","powiedz");
-	ConfigDialog::addPushButton("Speech", "Program", "", "OpenFile","","speech_fileopen");
-	ConfigDialog::connectSlot("Speech", "", SIGNAL(clicked()), this, SLOT(chooseSpeechProgram()), "speech_fileopen");
+	ConfigDialog::addPushButton("Speech", "Program", QString::null, "OpenFile",QString::null,"speech_fileopen");
+	ConfigDialog::connectSlot("Speech", QString::null, SIGNAL(clicked()), this, SLOT(chooseSpeechProgram()), "speech_fileopen");
 
 	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Chat format (male):"),
-			"ChatFormatMale", SpeechSlots::tr("man %a wrote %1"), Kadu::SyntaxText, "", Advanced);
+			"ChatFormatMale", SpeechSlots::tr("man %a wrote %1"), Kadu::SyntaxText, QString::null, Advanced);
 	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Chat format (female):"),
-			"ChatFormatFemale", SpeechSlots::tr("woman %a wrote %1"), Kadu::SyntaxText, "", Advanced);
+			"ChatFormatFemale", SpeechSlots::tr("woman %a wrote %1"), Kadu::SyntaxText, QString::null, Advanced);
 
 	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Message format (male):"),
-			"MessageFormatMale", SpeechSlots::tr("man %a wrote %1"), Kadu::SyntaxText, "", Advanced);
+			"MessageFormatMale", SpeechSlots::tr("man %a wrote %1"), Kadu::SyntaxText, QString::null, Advanced);
 	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Message format (female):"),
-			"MessageFormatFemale", SpeechSlots::tr("woman %a wrote %1"), Kadu::SyntaxText, "", Advanced);
+			"MessageFormatFemale", SpeechSlots::tr("woman %a wrote %1"), Kadu::SyntaxText, QString::null, Advanced);
 
 	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Notify format (male):"),
-			"NotifyFormatMale", SpeechSlots::tr("man %a changed status to %s %d"), Kadu::SyntaxText, "", Advanced);
+			"NotifyFormatMale", SpeechSlots::tr("man %a changed status to %s %d"), Kadu::SyntaxText, QString::null, Advanced);
 	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Notify format (female):"),
-			"NotifyFormatFemale", SpeechSlots::tr("woman %a changed status to %s %d"), Kadu::SyntaxText, "", Advanced);
+			"NotifyFormatFemale", SpeechSlots::tr("woman %a changed status to %s %d"), Kadu::SyntaxText, QString::null, Advanced);
 
 	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Connection error:"),
-			"ConnectionError", SpeechSlots::tr("Connection error - %1"), Kadu::SyntaxText, "", Advanced);
+			"ConnectionError", SpeechSlots::tr("Connection error - %1"), Kadu::SyntaxText, QString::null, Advanced);
 
 	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Message too long (male):"),
-			"MsgTooLongMale", SpeechSlots::tr("%a wrote long message"), Kadu::SyntaxText, "", Advanced);
+			"MsgTooLongMale", SpeechSlots::tr("%a wrote long message"), Kadu::SyntaxText, QString::null, Advanced);
 	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Message too long (female):"),
-			"MsgTooLongFemale", SpeechSlots::tr("%a wrote long message"), Kadu::SyntaxText, "", Advanced);
+			"MsgTooLongFemale", SpeechSlots::tr("%a wrote long message"), Kadu::SyntaxText, QString::null, Advanced);
 
-	ConfigDialog::addPushButton("Speech", "Speech",	QT_TRANSLATE_NOOP("@default","Test"), "", "", "testspeech");
+	ConfigDialog::addPushButton("Speech", "Speech",	QT_TRANSLATE_NOOP("@default","Test"), QString::null, QString::null, "testspeech");
 
 	ConfigDialog::connectSlot("Speech", "Test", SIGNAL(clicked()), this, SLOT(testSpeech()), "testspeech");
 	ConfigDialog::connectSlot("Speech", "Use aRts", SIGNAL(clicked()), this, SLOT(useArts()), "usearts");
@@ -198,7 +198,7 @@ SpeechSlots::~SpeechSlots()
 
 	ConfigDialog::unregisterSlotOnCreateTab("Speech", this, SLOT(onCreateTabSpeech()));
 
-	ConfigDialog::disconnectSlot("Speech", "", SIGNAL(clicked()), this, SLOT(chooseSpeechProgram()), "speech_fileopen");
+	ConfigDialog::disconnectSlot("Speech", QString::null, SIGNAL(clicked()), this, SLOT(chooseSpeechProgram()), "speech_fileopen");
 	ConfigDialog::disconnectSlot("Speech", "Test", SIGNAL(clicked()), this, SLOT(testSpeech()), "testspeech");
 	ConfigDialog::disconnectSlot("Speech", "Use aRts", SIGNAL(clicked()), this, SLOT(useArts()), "usearts");
 	ConfigDialog::disconnectSlot("Speech", "Use Esd", SIGNAL(clicked()), this, SLOT(useEsd()), "useesd");
@@ -214,7 +214,7 @@ SpeechSlots::~SpeechSlots()
 	ConfigDialog::removeControl("Speech", "Message format (male):");
 	ConfigDialog::removeControl("Speech", "Chat format (female):");
 	ConfigDialog::removeControl("Speech", "Chat format (male):");
-	ConfigDialog::removeControl("Speech", "", "speech_fileopen");
+	ConfigDialog::removeControl("Speech", QString::null, "speech_fileopen");
 	ConfigDialog::removeControl("Speech", "Speech program:");
 	ConfigDialog::removeControl("Speech", "Program");
 	ConfigDialog::removeControl("Speech", "Dsp device:");

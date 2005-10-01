@@ -41,11 +41,11 @@ ExternalPlayerSlots::ExternalPlayerSlots(QObject *parent, const char *name) : QO
 	connect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
 			this, SLOT(playSound(const QString &, bool, double)));
 
-	ConfigDialog::addHGroupBox("Sounds", "Sounds", QT_TRANSLATE_NOOP("@default","Sound player"), "", Advanced);
+	ConfigDialog::addHGroupBox("Sounds", "Sounds", QT_TRANSLATE_NOOP("@default","Sound player"), QString::null, Advanced);
 	ConfigDialog::addLineEdit("Sounds", "Sound player",
-			QT_TRANSLATE_NOOP("@default","Path:"), "SoundPlayer","","","soundplayer_path");
-	ConfigDialog::addPushButton("Sounds", "Sound player", "", "OpenFile","","soundplayer_fileopen");
-	ConfigDialog::connectSlot("Sounds", "", SIGNAL(clicked()), this, SLOT(choosePlayerFile()), "soundplayer_fileopen");
+			QT_TRANSLATE_NOOP("@default","Path:"), "SoundPlayer", QString::null, QString::null,"soundplayer_path");
+	ConfigDialog::addPushButton("Sounds", "Sound player", QString::null, "OpenFile", QString::null, "soundplayer_fileopen");
+	ConfigDialog::connectSlot("Sounds", QString::null, SIGNAL(clicked()), this, SLOT(choosePlayerFile()), "soundplayer_fileopen");
 
 	kdebugf2();
 }
@@ -54,8 +54,8 @@ ExternalPlayerSlots::~ExternalPlayerSlots()
 {
 	kdebugf();
 
-	ConfigDialog::disconnectSlot("Sounds", "", SIGNAL(clicked()), this, SLOT(choosePlayerFile()), "soundplayer_fileopen");
-	ConfigDialog::removeControl("Sounds", "", "soundplayer_fileopen");
+	ConfigDialog::disconnectSlot("Sounds", QString::null, SIGNAL(clicked()), this, SLOT(choosePlayerFile()), "soundplayer_fileopen");
+	ConfigDialog::removeControl("Sounds", QString::null, "soundplayer_fileopen");
 	ConfigDialog::removeControl("Sounds", "Path:", "soundplayer_path");
 	ConfigDialog::removeControl("Sounds", "Sound player");
 

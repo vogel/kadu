@@ -370,7 +370,7 @@ class UserListElement : public QObject
 		void setHomePhone(const QString &phone);
 
 		/**
-			\fn void setAliveSound(NotifyType type, const QString &file = "")
+			\fn void setAliveSound(NotifyType type, const QString &file = QString::null)
 			Ustawia sposób powiadamiania d¼wiêkiem o zmianie statusu przez kontakt.
 			\param type sposób powiadamiania.
 			\arg \c GLOBAL powiadomienia zale¿ne od globalnych ustawieñ.
@@ -379,10 +379,10 @@ class UserListElement : public QObject
 
 			\param file plik d¼wiêkowy, wymagany dla indywidualnego ustawienia powiadomieñ.
 		**/
-		void setAliveSound(NotifyType type, const QString &file = "");
+		void setAliveSound(NotifyType type, const QString &file = QString::null);
 
 		/**
-			\fn void setMessageSound(NotifyType type, const QString &file = "")
+			\fn void setMessageSound(NotifyType type, const QString &file = QString::null)
 			Ustawia sposób powiadamiania d¼wiêkiem o nowej wiadomo¶ci od kontaktu.
 			\param type sposób powiadamiania.
 			\arg \c GLOBAL powiadomienia zale¿ne od globalnych ustawieñ.
@@ -391,7 +391,7 @@ class UserListElement : public QObject
 
 			\param file plik d¼wiêkowy, wymagany dla indywidualnego ustawienia powiadomieñ.
 		**/
-		void setMessageSound(NotifyType type, const QString &file = "");
+		void setMessageSound(NotifyType type, const QString &file = QString::null);
 
 		/**
 			\fn void setAddressAndPort(const QString &protocolName, const QHostAddress &ip, short port)

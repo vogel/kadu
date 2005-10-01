@@ -14,6 +14,8 @@
 
 class QFontMetrics;
 class UserBoxSlots;
+class ULEComparer;
+
 /**
 	Klasa reprezentuj±ca kontakt wizualnie na li¶cie kontaktów. Opisuje ona ikonê kontaktu,
 	jego wy¶witlan± nazwê oraz ewentualny opis.
@@ -509,13 +511,7 @@ class UserBox : public QListBox, private QToolTip
 		QMap<const UserGroup *, UserListElements> AppendProxy;
 		QMap<const UserGroup *, UserListElements> RemoveProxy;
 
-		class ULEComparer
-		{
-			public:
-				bool operator()(const UserListElement &e1, const UserListElement &e2) const;
-				QValueList<CmpFuncDesc> CmpFunctions;
-		};
-		ULEComparer comparer;
+		ULEComparer *comparer;
 		void sort();
 		QTimer refreshTimer;
 

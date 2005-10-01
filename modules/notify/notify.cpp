@@ -55,7 +55,7 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name)
 
 	//pierwsza kolumna - nazwy
 	ConfigDialog::addVBox("Notify", "Notify configuration", "names");
-	ConfigDialog::addLabel("Notify", "names", "");
+	ConfigDialog::addLabel("Notify", "names", QString::null);
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "Connection error"));
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "New chat"));
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "New message"));
@@ -77,12 +77,12 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name)
 	notify_slots=new NotifySlots(NULL, "notify_slots");
 
 	ConfigDialog::addCheckBox("Notify", "Notify",
-		QT_TRANSLATE_NOOP("@default", "Ignore changes right after connection to the server"), "NotifyIgnoreOnConnection", true, QT_TRANSLATE_NOOP("@default","This option will supersede tooltips with users' status\n changes upon establishing connection to the server"), "", Advanced);
+		QT_TRANSLATE_NOOP("@default", "Ignore changes right after connection to the server"), "NotifyIgnoreOnConnection", true, QT_TRANSLATE_NOOP("@default","This option will supersede tooltips with users' status\n changes upon establishing connection to the server"), QString::null, Advanced);
 	ConfigDialog::addCheckBox("Notify", "Notify",
 		QT_TRANSLATE_NOOP("@default", "Notify about all users"), "NotifyAboutAll", false);
 	ConfigDialog::addCheckBox("Notify", "Notify",
 		QT_TRANSLATE_NOOP("@default", "Ignore status changes from available / busy to available / busy"),
-		"IgnoreOnlineToOnline", true, "", "", Advanced);
+		"IgnoreOnlineToOnline", true, QString::null, QString::null, Advanced);
 
 	ConfigDialog::addGrid("Notify", "Notify" ,"listboxy",3);
 
@@ -91,15 +91,15 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name)
 			ConfigDialog::addListBox("Notify", "listbox1","available");
 
 		ConfigDialog::addGrid("Notify", "listboxy", "listbox2", 1);
-			ConfigDialog::addPushButton("Notify", "listbox2", "", "AddToNotifyList","","forward");
-			ConfigDialog::addPushButton("Notify", "listbox2", "", "RemoveFromNotifyList","","back");
+			ConfigDialog::addPushButton("Notify", "listbox2", QString::null, "AddToNotifyList",QString::null,"forward");
+			ConfigDialog::addPushButton("Notify", "listbox2", QString::null, "RemoveFromNotifyList",QString::null,"back");
 
 		ConfigDialog::addGrid("Notify", "listboxy", "listbox3", 1);
 			ConfigDialog::addLabel("Notify", "listbox3", QT_TRANSLATE_NOOP("@default", "Tracked"));
 			ConfigDialog::addListBox("Notify", "listbox3", "track");
 
-	ConfigDialog::connectSlot("Notify", "", SIGNAL(clicked()), notify_slots, SLOT(_Right()), "forward");
-	ConfigDialog::connectSlot("Notify", "", SIGNAL(clicked()), notify_slots, SLOT(_Left()), "back");
+	ConfigDialog::connectSlot("Notify", QString::null, SIGNAL(clicked()), notify_slots, SLOT(_Right()), "forward");
+	ConfigDialog::connectSlot("Notify", QString::null, SIGNAL(clicked()), notify_slots, SLOT(_Left()), "back");
 	ConfigDialog::connectSlot("Notify", "available", SIGNAL(doubleClicked(QListBoxItem *)),
 		notify_slots, SLOT(_Right2(QListBoxItem *)));
 	ConfigDialog::connectSlot("Notify", "track", SIGNAL(doubleClicked(QListBoxItem *)),
@@ -116,8 +116,8 @@ Notify::~Notify()
 {
 	kdebugf();
 
-	ConfigDialog::disconnectSlot("Notify", "", SIGNAL(clicked()), notify_slots, SLOT(_Right()), "forward");
-	ConfigDialog::disconnectSlot("Notify", "", SIGNAL(clicked()), notify_slots, SLOT(_Left()), "back");
+	ConfigDialog::disconnectSlot("Notify", QString::null, SIGNAL(clicked()), notify_slots, SLOT(_Right()), "forward");
+	ConfigDialog::disconnectSlot("Notify", QString::null, SIGNAL(clicked()), notify_slots, SLOT(_Left()), "back");
 	ConfigDialog::disconnectSlot("Notify", "available", SIGNAL(doubleClicked(QListBoxItem *)),
 		notify_slots, SLOT(_Right2(QListBoxItem *)));
 	ConfigDialog::disconnectSlot("Notify", "track", SIGNAL(doubleClicked(QListBoxItem *)),
@@ -130,8 +130,8 @@ Notify::~Notify()
 			ConfigDialog::removeControl("Notify", "track");
 			ConfigDialog::removeControl("Notify", "Tracked");
 		ConfigDialog::removeControl("Notify", "listbox3");
-			ConfigDialog::removeControl("Notify", "", "back");
-			ConfigDialog::removeControl("Notify", "", "forward");
+			ConfigDialog::removeControl("Notify", QString::null, "back");
+			ConfigDialog::removeControl("Notify", QString::null, "forward");
 		ConfigDialog::removeControl("Notify", "listbox2");
 			ConfigDialog::removeControl("Notify", "available");
 			ConfigDialog::removeControl("Notify", "Available");
@@ -159,7 +159,7 @@ Notify::~Notify()
 	}
 
 	//pierwsza kolumna - nazwy
-	ConfigDialog::removeControl("Notify", "");
+	ConfigDialog::removeControl("Notify", QString::null);
 	ConfigDialog::removeControl("Notify", "Connection error");
 	ConfigDialog::removeControl("Notify", "New chat");
 	ConfigDialog::removeControl("Notify", "New message");
@@ -244,7 +244,7 @@ void Notify::addConfigColumn(const QString &name, const QMap<QString, QString> &
 	int i = 1;
 	CONST_FOREACH(it, eventNames)
 	{
-		ConfigDialog::addCheckBox("Notify", name+"_vbox", " ", (*it)+"_"+name, false, "", name+QString::number(i));
+		ConfigDialog::addCheckBox("Notify", name+"_vbox", " ", (*it)+"_"+name, false, QString::null, name+QString::number(i));
 		if (!notifierSlots.contains(*it))
 			notify_slots->registerDisabledControl(name+QString::number(i));
 		++i;

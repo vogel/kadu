@@ -138,7 +138,7 @@ QString Themes::themePath(const QString& theme) const
 	if (theme.isEmpty())
 		t= ActualTheme;
 	if (theme == "Custom")
-		return "";
+		return QString::null;
 	if (ThemesPaths.isEmpty())
 		return "Custom";
 	return ThemesPaths.grep(t).first();
@@ -149,5 +149,5 @@ QString Themes::getThemeEntry(const QString& name) const
 	if (entries.contains(name))
 		return entries[name];
 	else
-		return QString("");
+		return QString::null;
 }

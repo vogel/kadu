@@ -17,7 +17,7 @@ class QMouseEvent;
 	W menu kontekstowym jest dodatkowa opcja "Kopiuj lokacjê odno¶nika".
 	Dodatkowo poprawka b³êdu w Qt.
 **/
-class KaduTextBrowser : public QTextBrowser, QToolTip
+class KaduTextBrowser : public QTextBrowser, private QToolTip
 {
 	Q_OBJECT
 

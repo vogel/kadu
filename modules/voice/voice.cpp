@@ -257,8 +257,8 @@ int VoiceManager::setup()
 		connect(recordThread, SIGNAL(recordSample(char *, int)), this, SLOT(recordSampleReceived(char *, int)));
 		recordThread->start();
 	}
-	return 0;
 	kdebugf2();
+	return 0;
 }
 
 void VoiceManager::free()
@@ -288,8 +288,8 @@ VoiceManager::VoiceManager(QObject *parent, const char *name) : QObject(parent, 
 			QT_TRANSLATE_NOOP("@default", "Voice chat"), "kadu_voicechat", "F7");
 	ConfigDialog::addVGroupBox("Sounds", "Sounds", QT_TRANSLATE_NOOP("@default","Voice chat"));
 	ConfigDialog::addPushButton("Sounds", "Voice chat", QT_TRANSLATE_NOOP("@default","Test GSM Encoding"));
-	ConfigDialog::addCheckBox("Sounds", "Voice chat", QT_TRANSLATE_NOOP("@default","Faster compression algorithm (degrades quality)"), "FastGSM", false, "", "", Expert);
-	ConfigDialog::addCheckBox("Sounds", "Voice chat", QT_TRANSLATE_NOOP("@default","Cut-off optimization (faster but degrades quality)"), "CutGSM", false, "", "", Expert);
+	ConfigDialog::addCheckBox("Sounds", "Voice chat", QT_TRANSLATE_NOOP("@default","Faster compression algorithm (degrades quality)"), "FastGSM", false, QString::null, QString::null, Expert);
+	ConfigDialog::addCheckBox("Sounds", "Voice chat", QT_TRANSLATE_NOOP("@default","Cut-off optimization (faster but degrades quality)"), "CutGSM", false, QString::null, QString::null, Expert);
 	ConfigDialog::connectSlot("Sounds", "Test GSM Encoding", SIGNAL(clicked()), this, SLOT(testGsmEncoding()));
 
 	GsmEncodingTestMsgBox = NULL;

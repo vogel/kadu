@@ -49,7 +49,7 @@ void UserListElement::setAddressAndPort(const QString &protocolName, const QHost
 #endif
 		return;
 	}
-	setDNSName(protocolName, "");
+	setDNSName(protocolName, QString::null);
 	setProtocolData(protocolName, "IP", ip.toIPv4Address());
 	setProtocolData(protocolName, "Port", port);
 }
@@ -138,7 +138,7 @@ QString UserListElement::ID(const QString &protocolName) const
 		kdebugm(KDEBUG_ERROR, "%s not found!\n", protocolName.local8Bit().data());
 		printBacktrace("backtrace");
 #endif
-		return "";
+		return QString::null;
 	}
 	return protoData->ID;
 }

@@ -201,7 +201,7 @@ void IconsManager::initModule()
 {
 	kdebugf();
 	icons_manager = new IconsManager ("icons", "icons.conf");
-	config_file.addVariable("Look", "IconsPaths", "");
+	config_file.addVariable("Look", "IconsPaths", QString::null);
 	config_file.addVariable("Look", "IconTheme", "default");
 
 	icons_manager->setPaths(QStringList::split(";", config_file.readEntry("Look", "IconsPaths")));

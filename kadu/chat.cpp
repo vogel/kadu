@@ -47,7 +47,7 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 
 	emoticon_selector = NULL;
 	color_selector = NULL;
-	
+
 	AutoSend = false;
 	if (config_file.readBoolEntry("Chat","AutoSend"))
 		AutoSend = true;
@@ -656,7 +656,7 @@ void Chat::repaintMessages()
 		if (it!=ChatMessages.end())
 		{
 			QString msg=(*it)->message;
-			msg.replace(QRegExp("<img title=\"\" height=\"[0-9]*\" width=\"10000\" align=\"right\">"), "");
+			msg.remove(QRegExp("<img title=\"\" height=\"[0-9]*\" width=\"10000\" align=\"right\">"));
 			text+=msg;
 			++it;
 		}
@@ -677,7 +677,7 @@ void Chat::repaintMessages()
 		if (it!=ChatMessages.end())
 		{
 			QString msg=(*it)->message;
-			msg.replace(QRegExp("<img title=\"\" height=\"[0-9]*\" width=\"10000\" align=\"right\">"), "");
+			msg.remove(QRegExp("<img title=\"\" height=\"[0-9]*\" width=\"10000\" align=\"right\">"));
 			text+=msg;
 			++it;
 		}

@@ -107,7 +107,7 @@ void SmsIdeaGateway::httpFinished()
 	else if (State==SMS_LOADING_RESULTS)
 	{
 		QString Page=Http.data();
-		kdebugm(KDEBUG_INFO, "SMS Provider Results Page:\n%s\n",Page.local8Bit().data());	
+		kdebugm(KDEBUG_INFO, "SMS Provider Results Page:\n%s\n",Page.local8Bit().data());
 		if (Page.find("wyczerpany")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "You exceeded your daily limit\n");
@@ -118,14 +118,14 @@ void SmsIdeaGateway::httpFinished()
 		{
 			kdebugm(KDEBUG_INFO, "Text from the picture is incorrect\n");
 			QMessageBox::critical(p,"SMS",tr("Text from the picture is incorrect"));
-			emit finished(false);				
+			emit finished(false);
 		}
 		else if (Page.find("U¿ytkownik nie ma aktywnej us³ugi")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "The receiver has to enable SMS STANDARD service\n");
 			QMessageBox::critical(p,"SMS",tr("The receiver has to enable SMS STANDARD service"));
-			emit finished(false);				
-		}			
+			emit finished(false);
+		}
 		else if (Page.find("Twój SMS zosta³ wys³any")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "SMS was sent succesfully\n");
@@ -225,7 +225,7 @@ void SmsPlusGateway::httpFinished()
 	else if (State==SMS_LOADING_RESULTS)
 	{
 		QString Page=Http.data();
-		kdebugm(KDEBUG_INFO, "SMS Provider Results Page:\n%s\n",Page.local8Bit().data());	
+		kdebugm(KDEBUG_INFO, "SMS Provider Results Page:\n%s\n",Page.local8Bit().data());
 		if (Page.find("Z powodu przekroczenia limitów bramki")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "Limit exceeded\n");
@@ -241,7 +241,7 @@ void SmsPlusGateway::httpFinished()
 		}
 	}
 	else
-		kdebugm(KDEBUG_PANIC, "SMS Panic! Unknown state\n");	
+		kdebugm(KDEBUG_PANIC, "SMS Panic! Unknown state\n");
 	kdebugf2();
 }
 
@@ -264,7 +264,7 @@ void SmsEraGateway::send(const QString& number,const QString& message, const QSt
 	Number=number;
 	Message=message;
 	Http.setHost("www.eraomnix.pl");
-	
+
 	QString path;
 	QString post_data="login="+config_file.readEntry("SMS","EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_User")+
 	    "&password="+config_file.readEntry("SMS","EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_Password")+
@@ -274,7 +274,7 @@ void SmsEraGateway::send(const QString& number,const QString& message, const QSt
 	    "&numbers="+number+ "&message="+message+
 	    "&contact="+contact+ "&signature="+signature+
 	    "&success=http://moj.serwer.pl/ok.html&failure=http://moj.serwer.pl/blad.html";
-	    
+
 	QString gateway= config_file.readEntry("SMS", "EraGateway");
 
 	if (gateway == "Sponsored")
@@ -284,12 +284,12 @@ void SmsEraGateway::send(const QString& number,const QString& message, const QSt
 	}
 	else if (gateway == "OmnixMultimedia")
 		path= "msg/api/do/tinker/omnix";
-	else 
+	else
 	{
 		emit finished(false);
 		return;
 	}
-	
+
 	Http.post(path, post_data);
 	kdebugf2();
 }
@@ -311,10 +311,10 @@ void SmsEraGateway::httpRedirected(QString link)
 		emit finished(true);
 	else if (link.find("blad.html")> 0)
 	{
-		QMessageBox::critical(p, "SMS", tr("Error: ")+ SmsEraGateway::errorNumber(link.replace(link.find("http://moj.serwer.pl/blad.html?X-ERA-error="),43, "").toInt()));
+		QMessageBox::critical(p, "SMS", tr("Error: ")+ SmsEraGateway::errorNumber(link.remove(link.find("http://moj.serwer.pl/blad.html?X-ERA-error="), 43).toInt()));
 		emit finished(false);
-	}		
-	else 
+	}
+	else
 		QMessageBox::critical(p, "SMS", tr("Provider gateway results page looks strange. SMS was probably NOT sent."));
 	kdebugf2();
 }
@@ -379,7 +379,7 @@ SmsGatewaySlots::~SmsGatewaySlots()
 	ConfigDialog::unregisterSlotOnCreateTab("SMS", this, SLOT(onCreateTabSMS()));
 	ConfigDialog::unregisterSlotOnCloseTab("SMS", this, SLOT(onCloseTabSMS()));
 	ConfigDialog::unregisterSlotOnApplyTab("SMS", this, SLOT(onApplyTabSMS()));
-	
+
 	ConfigDialog::disconnectSlot("SMS", "Type of gateway", SIGNAL(activated(int)), this, SLOT(onChangeEraGateway(int)));
 	ConfigDialog::removeControl("SMS", "Password");
 	ConfigDialog::removeControl("SMS", "User ID (48xxxxxxxxx)");
@@ -394,7 +394,7 @@ void SmsGatewaySlots::onChangeEraGateway(int gateway)
 	QLineEdit *e_erauser= ConfigDialog::getLineEdit("SMS", "User ID (48xxxxxxxxx)");
 	QLineEdit *e_erapassword= ConfigDialog::getLineEdit("SMS", "Password");
 	QComboBox *cb_typegateway= ConfigDialog::getComboBox("SMS","Type of gateway");
-	
+
 	config_file.writeEntry("SMS", "EraGateway_"+actualEraGateway+"_Password", e_erapassword->text());
 	config_file.writeEntry("SMS", "EraGateway_"+actualEraGateway+"_User", e_erauser->text());
 
@@ -407,7 +407,7 @@ void SmsGatewaySlots::onChangeEraGateway(int gateway)
 void SmsGatewaySlots::onApplyTabSMS()
 {
 	kdebugf();
-	
+
 	QLineEdit *e_erauser= ConfigDialog::getLineEdit("SMS", "User ID (48xxxxxxxxx)");
 	QLineEdit *e_erapassword= ConfigDialog::getLineEdit("SMS", "Password");
 	config_file.writeEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_Password", e_erapassword->text());
@@ -428,13 +428,13 @@ void SmsGatewaySlots::onCloseTabSMS()
 void SmsGatewaySlots::onCreateTabSMS()
 {
 	kdebugf();
-	
+
 	actualEraGateway=config_file.readEntry("SMS", "EraGateway");
-	
+
 	QLineEdit *e_erauser= ConfigDialog::getLineEdit("SMS", "User ID (48xxxxxxxxx)");
 	QLineEdit *e_erapassword= ConfigDialog::getLineEdit("SMS", "Password");
 	e_erapassword->setEchoMode(QLineEdit::Password);
-	
+
 	e_erapassword->setText(config_file.readEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_Password"));
 	e_erauser->setText(config_file.readEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_User", "48"));
 	

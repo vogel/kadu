@@ -281,28 +281,28 @@ class UserStatus : public QObject
 			Ustawia status na "dostêpny" z ewentualnym opisem.
 			\param desc opcjonalny opis. Domy¶lnie brak.
 		**/
-		void setOnline(const QString& desc = "");
+		void setOnline(const QString& desc = QString::null);
 
 		/**
 			\fn void setBusy(const QString& desc = "")
 			Ustawia status na "zaraz wracam" z ewentualnym opisem.
 			\param desc opcjonalny opis. Domy¶lnie brak.
 		**/
-		void setBusy(const QString& desc = "");
+		void setBusy(const QString& desc = QString::null);
 
 		/**
 			\fn void setInvisible(const QString& desc = "")
 			Ustawia status na "ukryty" z ewentualnym opisem.
 			\param desc opcjonalny opis. Domy¶lnie brak.
 		**/
-		void setInvisible(const QString& desc = "");
+		void setInvisible(const QString& desc = QString::null);
 
 		/**
 			\fn void setOffline(const QString& desc = "")
 			Ustawia status na "niedostêpny" z ewentualnym opisem.
 			\param desc opcjonalny opis. Domy¶lnie brak.
 		**/
-		void setOffline(const QString& desc = "");
+		void setOffline(const QString& desc = QString::null);
 
 		/**
 			\fn void setBlocking()
@@ -315,7 +315,7 @@ class UserStatus : public QObject
 			Ustawia opis dla statusu.
 			\param desc opcjonalny opis. Domy¶lnie pusty.
 		**/
-		void setDescription(const QString& desc = "");
+		void setDescription(const QString& desc = QString::null);
 
 		/**
 			\fn void setStatus(const UserStatus& stat)
@@ -335,7 +335,7 @@ class UserStatus : public QObject
 				\arg \c Offline - Nidostêpny
 			\param desc opcjonalny opis. Domy¶lnie brak.
 		**/
-		void setStatus(eUserStatus stat, const QString& desc = "");
+		void setStatus(eUserStatus stat, const QString& desc = QString::null);
 
 		/**
 			\fn void setIndex(int index, const QString& desc = "")
@@ -344,7 +344,7 @@ class UserStatus : public QObject
 			\note parzyste indeksy odpowiadaj± statusom bez opisów.
 			\param desc opcjonalny opis. Domy¶lnie pusty.
 		**/
-		void setIndex(int index, const QString& desc = "");
+		void setIndex(int index, const QString& desc = QString::null);
 
 		/**
 			\fn void setFriendsOnly(bool f)

@@ -319,6 +319,26 @@ void KaduListBoxPixmap::changeText(const QString &text)
 	setText(text);
 }
 
+class ULEComparer
+{
+	public:
+		inline bool operator()(const UserListElement &e1, const UserListElement &e2) const;
+		QValueList<UserBox::CmpFuncDesc> CmpFunctions;
+};
+
+inline bool ULEComparer::operator()(const UserListElement &e1, const UserListElement &e2) const
+{
+	int ret = 0;
+	CONST_FOREACH(f, CmpFunctions)
+	{
+		ret = (*f).func(e1, e2);
+//		kdebugm(KDEBUG_WARNING, "%s %s %d\n", e1.altNick().local8Bit().data(), e2.altNick().local8Bit().data(), ret);
+		if (ret)
+			break;
+	}
+	return ret < 0;
+}
+
 UserBoxMenu *UserBox::userboxmenu = NULL;
 
 UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
@@ -326,6 +346,7 @@ UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
 
 {
 	kdebugf();
+	comparer = new ULEComparer();
 	VisibleUsers = new UserGroup(userlist->count() * 2, "visible_users");
 	Filters.append(group);
 	connect(group, SIGNAL(userAdded(UserListElement, bool, bool)),
@@ -373,6 +394,9 @@ UserBox::~UserBox()
 	kdebugf();
 	UserBoxes.remove(this);
 	delete VisibleUsers;
+	VisibleUsers = 0;
+	delete comparer;
+	comparer = 0;
 	kdebugf2();
 }
 
@@ -591,29 +615,29 @@ void UserBox::initModule()
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"), "LookTab");
 
-	ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Align icon next to contact name"), "AlignUserboxIconsTop", config_file.readBoolEntry("Look", "AlignUserboxIconsTop"), "", "", Advanced);
+	ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Align icon next to contact name"), "AlignUserboxIconsTop", config_file.readBoolEntry("Look", "AlignUserboxIconsTop"), QString::null, QString::null, Advanced);
 
-	ConfigDialog::addVGroupBox("Look", "varOpts2", QT_TRANSLATE_NOOP("@default", "Columns"), "", Advanced);
+	ConfigDialog::addVGroupBox("Look", "varOpts2", QT_TRANSLATE_NOOP("@default", "Columns"), QString::null, Advanced);
 	ConfigDialog::addCheckBox("Look", "Columns", QT_TRANSLATE_NOOP("@default", "Multicolumn userbox"), "MultiColumnUserbox", false);
 	ConfigDialog::addSpinBox("Look", "Columns", QT_TRANSLATE_NOOP("@default", "Userbox width when multi column"), "MultiColumnUserboxWidth", 1, 1000, 1);
 
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Colors"), "", Advanced);
+	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Colors"), QString::null, Advanced);
 		ConfigDialog::addVGroupBox("Look", "Colors", QT_TRANSLATE_NOOP("@default", "Main window"));
-			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Userbox background color"), "UserboxBgColor", config_file.readColorEntry("Look","UserboxBgColor"), "", "userbox_bg_color");
-			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Userbox font color"), "UserboxFgColor", config_file.readColorEntry("Look","UserboxFgColor"), "", "userbox_font_color");
-			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Description font color"), "DescriptionColor", config_file.readColorEntry("Look","DescriptionColor"), "", "userbox_desc_color");
+			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Userbox background color"), "UserboxBgColor", config_file.readColorEntry("Look","UserboxBgColor"), QString::null, "userbox_bg_color");
+			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Userbox font color"), "UserboxFgColor", config_file.readColorEntry("Look","UserboxFgColor"), QString::null, "userbox_font_color");
+			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Description font color"), "DescriptionColor", config_file.readColorEntry("Look","DescriptionColor"), QString::null, "userbox_desc_color");
 
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Fonts"), "", Advanced);
-		ConfigDialog::addSelectFont("Look", "Fonts", QT_TRANSLATE_NOOP("@default", "Font in userbox"), "UserboxFont", defaultFont->toString(), "", "userbox_font_box");
+	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Fonts"), QString::null, Advanced);
+		ConfigDialog::addSelectFont("Look", "Fonts", QT_TRANSLATE_NOOP("@default", "Font in userbox"), "UserboxFont", defaultFont->toString(), QString::null, "userbox_font_box");
 
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Previews"), "", Advanced);
+	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Previews"), QString::null, Advanced);
 		ConfigDialog::addHBox("Look", "Previews", "othr_prvws");
 			ConfigDialog::addVGroupBox("Look", "othr_prvws", QT_TRANSLATE_NOOP("@default", "Preview userbox"));
 				ConfigDialog::addLabel("Look", "Preview userbox", "<b>Text</b> preview", "preview_userbox");
 			ConfigDialog::addVGroupBox("Look", "othr_prvws", QT_TRANSLATE_NOOP("@default", "Preview panel"));
 				ConfigDialog::addLabel("Look", "Preview panel", "<b>Text</b> preview", "preview_panel");
 
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show tooltip on userbox"), "ShowTooltipOnUserbox", true, "", "", Expert);
+	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show tooltip on userbox"), "ShowTooltipOnUserbox", true, QString::null, QString::null, Expert);
 
 	KaduListBoxPixmap::setFont(config_file.readFontEntry("Look","UserboxFont"));
 	KaduListBoxPixmap::setShowDesc(config_file.readBoolEntry("Look", "ShowDesc"));
@@ -813,7 +837,7 @@ QValueList<UserBox *> UserBox::UserBoxes;
 
 QValueList<UserBox::CmpFuncDesc> UserBox::compareFunctions() const
 {
-	return comparer.CmpFunctions;
+	return comparer->CmpFunctions;
 }
 
 void UserBox::applyFilter(UserGroup *g)
@@ -941,16 +965,16 @@ void UserBox::removeNegativeFilter(UserGroup *g)
 void UserBox::addCompareFunction(const QString &id, const QString &trDescription,
 			int (*cmp)(const UserListElement &, const UserListElement &))
 {
-	comparer.CmpFunctions.append(CmpFuncDesc(id, trDescription, cmp));
+	comparer->CmpFunctions.append(CmpFuncDesc(id, trDescription, cmp));
 	refresh();
 }
 
 void UserBox::removeCompareFunction(const QString &id)
 {
-	FOREACH(c, comparer.CmpFunctions)
+	FOREACH(c, comparer->CmpFunctions)
 		if ((*c).id == id)
 		{
-			comparer.CmpFunctions.remove(c);
+			comparer->CmpFunctions.remove(c);
 			refresh();
 			break;
 		}
@@ -961,7 +985,7 @@ void UserBox::moveUpCompareFunction(const QString &id)
 	kdebugf();
 	CmpFuncDesc d;
 	int pos = 0;
-	FOREACH(c, comparer.CmpFunctions)
+	FOREACH(c, comparer->CmpFunctions)
 	{
 		if ((*c).id == id)
 		{
@@ -969,9 +993,9 @@ void UserBox::moveUpCompareFunction(const QString &id)
 				break;
 			d = *c;
 			--c;
-			c = comparer.CmpFunctions.insert(c, d);
+			c = comparer->CmpFunctions.insert(c, d);
 			c += 2;
-			comparer.CmpFunctions.remove(c);
+			comparer->CmpFunctions.remove(c);
 			refresh();
 			break;
 		}
@@ -985,8 +1009,8 @@ void UserBox::moveDownCompareFunction(const QString &id)
 	kdebugf();
 	CmpFuncDesc d;
 	int pos = 0;
-	int cnt = comparer.CmpFunctions.count();
-	FOREACH(c, comparer.CmpFunctions)
+	int cnt = comparer->CmpFunctions.count();
+	FOREACH(c, comparer->CmpFunctions)
 	{
 		if ((*c).id == id)
 		{
@@ -994,9 +1018,9 @@ void UserBox::moveDownCompareFunction(const QString &id)
 				break;
 			d = *c;
 			++c;
-			c = comparer.CmpFunctions.insert(c, d);
+			c = comparer->CmpFunctions.insert(c, d);
 			c -= 2;
-			comparer.CmpFunctions.remove(c);
+			comparer->CmpFunctions.remove(c);
 			refresh();
 			break;
 		}
@@ -1005,24 +1029,11 @@ void UserBox::moveDownCompareFunction(const QString &id)
 	kdebugf2();
 }
 
-bool UserBox::ULEComparer::operator()(const UserListElement &e1, const UserListElement &e2) const
-{
-	int ret = 0;
-	CONST_FOREACH(f, CmpFunctions)
-	{
-		ret = (*f).func(e1, e2);
-//		kdebugm(KDEBUG_WARNING, "%s %s %d\n", e1.altNick().local8Bit().data(), e2.altNick().local8Bit().data(), ret);
-		if (ret)
-			break;
-	}
-	return ret < 0;
-}
-
 void UserBox::sort()
 {
 //	FOREACH(u, sortHelper)
 //		kdebugm(KDEBUG_WARNING, ">>%s\n", (*u).altNick().local8Bit().data());
-	std::sort(sortHelper.begin(), sortHelper.end(), comparer);
+	std::sort(sortHelper.begin(), sortHelper.end(), *comparer);
 //	FOREACH(u, sortHelper)
 //		kdebugm(KDEBUG_ERROR, ">>%s\n", (*u).altNick().local8Bit().data());
 }
@@ -1082,7 +1093,7 @@ class torem
 		end = src.end();
 	}
 
-	bool operator()(const UserListElement &u) const
+	inline bool operator()(const UserListElement &u) const
 	{
 		for(std::vector<UserListElement>::const_iterator it = begin; it != end; ++it)
 			if ((*it) == u)
@@ -1194,27 +1205,20 @@ UserListElement UserBox::currentUser() const
 	}
 }
 
-int compareAltNick(const UserListElement &u1, const UserListElement &u2)
+inline int compareAltNick(const UserListElement &u1, const UserListElement &u2)
 {
 	return u1.altNick().localeAwareCompare(u2.altNick());
 }
 
-int compareStatus(const UserListElement &u1, const UserListElement &u2)
+inline int compareStatus(const UserListElement &u1, const UserListElement &u2)
 {
 	//UWAGA: wykorzystany jest fakt, ¿e sta³e w enum eUserStatus s± w "dobrej" kolejno¶ci
+	// uwa¿amy Busy i Online za równowa¿ne
+	int r[] = {Online, Online, Invisible, Offline, Blocking};
 	bool u1Gadu = u1.usesProtocol("Gadu");
 	bool u2Gadu = u2.usesProtocol("Gadu");
 	if (u1Gadu && u2Gadu)
-	{
-		eUserStatus s1 = u1.status("Gadu").status();
-		eUserStatus s2 = u2.status("Gadu").status();
-		// uwa¿amy Busy i Online za równowa¿ne
-		if (s1 == Busy)
-			s1 = Online;
-		if (s2 == Busy)
-			s2 = Online;
-		return (int)s1 - (int)s2;
-	}
+		return r[u1.status("Gadu").status()] - r[u2.status("Gadu").status()];
 	else
 		return int(u2Gadu) - int(u1Gadu);
 }

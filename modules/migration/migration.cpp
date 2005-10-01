@@ -88,7 +88,7 @@ bool MigrationDialog::settingsDirMigrationNeeded()
 {
 	kdebugf();
 	QString old_path = old_ggPath();
-	QString new_path = ggPath("");
+	QString new_path = ggPath(QString::null);
 	new_path.truncate(new_path.length() - 1); // obetnij konczacy /
 	kdebugm(KDEBUG_INFO, "old_path: %s\n", old_path.local8Bit().data());
 	kdebugm(KDEBUG_INFO, "new_path: %s\n", new_path.local8Bit().data());
@@ -114,7 +114,7 @@ void MigrationDialog::settingsDirMigration()
 {
 	kdebugf();
 	QString old_path = old_ggPath();
-	QString new_path = ggPath("");
+	QString new_path = ggPath(QString::null);
 	new_path.truncate(new_path.length() - 1); // obetnij konczacy /
 	kdebugm(KDEBUG_INFO, "old_path: %s\n", old_path.local8Bit().data());
 	kdebugm(KDEBUG_INFO, "new_path: %s\n", new_path.local8Bit().data());
@@ -190,7 +190,7 @@ void MigrationDialog::xmlUserListMigration()
 		userlist->readFromFile();
 		userlist->writeToConfig();
 		xml_config_file->sync();
-		groups_manager->setActiveGroup("");
+		groups_manager->setActiveGroup(QString::null);
 		setItemComplete(item,
 			tr("Step 2: User list migrated to kadu.conf.xml"),
 			tr("Contact list migrated to kadu.conf.xml."
@@ -373,7 +373,7 @@ void MigrationDialog::xmlConfigFilesMigration()
 	QListViewItem* item = addItem(tr("Step 4: Migrating config files to kadu.conf.xml"));
 	QDomElement deprecated_elem = xml_config_file->accessElement(root_elem, "Deprecated");
 	xml_config_file->removeChildren(deprecated_elem);
-	QDir dir(ggPath(""));
+	QDir dir(ggPath(QString::null));
 	dir.setNameFilter("*.conf");
 	for (unsigned int i = 0, dircnt = dir.count(); i < dircnt; ++i)
 		xmlConfigFileMigration(dir[i]);

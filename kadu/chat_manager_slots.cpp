@@ -197,10 +197,10 @@ void ChatManagerSlots::onApplyTabLook()
 	QLineEdit *e_conferenceprefix= ConfigDialog::getLineEdit("Look", "Conference window title prefix:");
 
 	if (e_chatsyntax->text() == tr("Chat with ")+"%a (%s[: %d])" || e_chatsyntax->text() == "Chat with %a (%s[: %d])")
-		config_file.writeEntry("Look", "ChatContents", "");
+		config_file.writeEntry("Look", "ChatContents", QString::null);
 
 	if (e_conferenceprefix->text() == tr("Conference with ") || e_conferenceprefix->text() == "Conference with ")
-		config_file.writeEntry("Look", "ConferencePrefix", "");
+		config_file.writeEntry("Look", "ConferencePrefix", QString::null);
 
 	kdebugf2();
 }
@@ -493,9 +493,9 @@ void ChatManagerSlots::setBrowserOption(int selectedOption, QLineEdit *browserPa
 		}
 		case 2:		//Opera
 		{
-			browserPath.replace(" -newwindow", "");
-			browserPath.replace(" -newpage", "");
-			browserPath.replace(" -backgroundpage", "");
+			browserPath.remove(" -newwindow");
+			browserPath.remove(" -newpage");
+			browserPath.remove(" -backgroundpage");
 			switch(selectedOption)
 			{
 				case 0: browserPath.append(" -newwindow"); break;

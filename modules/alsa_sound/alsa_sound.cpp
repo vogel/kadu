@@ -225,9 +225,9 @@ ALSAPlayerSlots::ALSAPlayerSlots(QObject *parent, const char *name) : QObject(pa
 		this, SLOT(setFlushingEnabled(SoundDevice, bool)));
 
 	ConfigDialog::addHGroupBox("Sounds", "Sounds",
-			QT_TRANSLATE_NOOP("@default","Output device"), "", Advanced);
+			QT_TRANSLATE_NOOP("@default","Output device"), QString::null, Advanced);
 	ConfigDialog::addLineEdit("Sounds", "Output device", 
-			QT_TRANSLATE_NOOP("@default","ALSA device:"), "ALSAOutputDevice","default" /*plughw:0*/,"","device_path");
+			QT_TRANSLATE_NOOP("@default","ALSA device:"), "ALSAOutputDevice", "default", QString::null,"device_path");
 
 	kdebugf2();
 }

@@ -937,7 +937,7 @@ QValueList<UinsList> HistoryManager::getUinsLists() const
 	QStringList entryList = dir.entryList();
 	FOREACH(entry, entryList)
 	{
-		struins = QStringList::split("_", (*entry).replace(QRegExp(".idx$"), ""));
+		struins = QStringList::split("_", (*entry).remove(QRegExp(".idx$")));
 		uins.clear();
 		if (struins[0] != "sms")
 			CONST_FOREACH(struin, struins)
@@ -1553,7 +1553,7 @@ void History::showHistoryEntries(int from, int count)
 			break;
 		}
 	//z pierwszej wiadomo¶ci usuwamy obrazek separatora
-	text.replace(QRegExp("<img title=\"\" height=\"[0-9]*\" width=\"10000\" align=\"right\">"), "");
+	text.remove(QRegExp("<img title=\"\" height=\"[0-9]*\" width=\"10000\" align=\"right\">"));
 
 	for (; entry != lastEntry; ++entry)
 		if ( ! (noStatus && (*entry).type & HISTORYMANAGER_ENTRY_STATUS))
@@ -1797,10 +1797,10 @@ void History::initModule()
 	ConfigDialog::addSpinBox("History", "Message citation in chat window", QT_TRANSLATE_NOOP("@default", "Count:"), "ChatHistoryCitation", 0, 200, 1, 10);
 	ConfigDialog::addLabel("History", "Message citation in chat window", QT_TRANSLATE_NOOP("@default", "Don't cite messages older than:"));
 	ConfigDialog::addSlider("History", "Message citation in chat window", "historyslider", "ChatHistoryQuotationTime", -744, -1, 24, -336);
-	ConfigDialog::addLabel("History", "Message citation in chat window", "", "dayhour");
+	ConfigDialog::addLabel("History", "Message citation in chat window", QString::null, "dayhour");
 	ConfigDialog::addCheckBox("History", "History", QT_TRANSLATE_NOOP("@default", "Log messages"), "Logging", true);
-	ConfigDialog::addCheckBox("History", "History", QT_TRANSLATE_NOOP("@default", "Don't show status changes"), "DontShowStatusChanges", false, "", "", Advanced);
-	ConfigDialog::addCheckBox("History", "History", QT_TRANSLATE_NOOP("@default", "Don't save status changes"), "DontSaveStatusChanges", true, "", "", Advanced);
+	ConfigDialog::addCheckBox("History", "History", QT_TRANSLATE_NOOP("@default", "Don't show status changes"), "DontShowStatusChanges", false, QString::null, QString::null, Advanced);
+	ConfigDialog::addCheckBox("History", "History", QT_TRANSLATE_NOOP("@default", "Don't save status changes"), "DontSaveStatusChanges", true, QString::null, QString::null, Advanced);
 
 	ConfigDialog::registerSlotOnCreateTab("History", historyslots, SLOT(onCreateTabHistory()));
 	ConfigDialog::registerSlotOnApplyTab("History", historyslots, SLOT(onApplyTabHistory()));
@@ -2149,7 +2149,7 @@ HistorySlots::HistorySlots(QObject *parent, const char *name) : QObject(parent, 
 void HistorySlots::onCreateTabHistory()
 {
 	kdebugf();
-	QLabel *l_qtimeinfo=(QLabel*)(ConfigDialog::widget("History", "", "dayhour"));
+	QLabel *l_qtimeinfo=(QLabel*)(ConfigDialog::widget("History", QString::null, "dayhour"));
 	l_qtimeinfo->setAlignment(Qt::AlignHCenter);
 	updateQuoteTimeLabel(config_file.readNumEntry("History", "ChatHistoryQuotationTime"));
 	kdebugf2();
@@ -2164,7 +2164,7 @@ void HistorySlots::onApplyTabHistory()
 void HistorySlots::updateQuoteTimeLabel(int value)
 {
 	kdebugf();
-	ConfigDialog::getLabel("History", "", "dayhour") ->
+	ConfigDialog::getLabel("History", QString::null, "dayhour") ->
 			setText(tr("%1 day(s) %2 hour(s)").arg(-value / 24).arg((-value) % 24));
 	kdebugf2();
 }

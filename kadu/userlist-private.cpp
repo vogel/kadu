@@ -26,7 +26,7 @@ ULEPrivate::~ULEPrivate()
 	protocols.setAutoDelete(true);
 }
 
-ProtocolData::ProtocolData(const QString &protocolName, const QString &id) : data(31)
+ProtocolData::ProtocolData(const QString &/*protocolName*/, const QString &id) : data(31)
 {
 	ID = id;
 	Stat = new GaduStatus();
@@ -61,23 +61,25 @@ void ProtocolData::operator=(const ProtocolData &s)
 	data = s.data;
 }
 
+static QString DNSName("DNSName");
+
 void ULEPrivate::setDNSName(const QString &protocolName, const QString &dnsname)
 {
 	//uproszczona implementacja setProtocolData()
 	ProtocolData *protocolData = protocols.find(protocolName);
 	if (protocolData == NULL)
 		return;
-	QVariant *old = protocolData->data["DNSName"];
+	QVariant *old = protocolData->data[DNSName];
 	if (old && dnsname == old->toString())
 		return;
 	if (old)
-		protocolData->data.replace("DNSName", new QVariant(dnsname));
+		protocolData->data.replace(DNSName, new QVariant(dnsname));
 	else
-		protocolData->data.insert("DNSName", new QVariant(dnsname));
+		protocolData->data.insert(DNSName, new QVariant(dnsname));
 	if (!old)
 		old = new QVariant();
 	CONST_FOREACH (group, Parents)
-		emit (*group)->protocolUserDataChanged(protocolName, userlist->byKey(key), "DNSName", *old, dnsname, false, false);
+		emit (*group)->protocolUserDataChanged(protocolName, userlist->byKey(key), DNSName, *old, dnsname, false, false);
 	delete old;
 }
 

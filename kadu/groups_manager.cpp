@@ -83,10 +83,10 @@ void GroupsManager::setTabBar(KaduTabBar *bar)
 	config_file.addVariable("ShortCuts", "kadu_showoffline", config_file.readEntry("ShortCuts", "kadu_showinactive", "F9"));
 
 
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show offline contacts"), "ShowOffline", true, QT_TRANSLATE_NOOP("@default", "Display contacts who are offline"), "", Advanced);
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show contacts without description"), "ShowWithoutDescription", true, QT_TRANSLATE_NOOP("@default", "Display contacts that don't have a description"), "", Advanced);
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show contacts that you are blocking"), "ShowBlocked", true, "", "", Expert);
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show contacts that are blocking you"), "ShowBlocking", true, "", "", Expert);
+	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show offline contacts"), "ShowOffline", true, QT_TRANSLATE_NOOP("@default", "Display contacts who are offline"), QString::null, Advanced);
+	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show contacts without description"), "ShowWithoutDescription", true, QT_TRANSLATE_NOOP("@default", "Display contacts that don't have a description"), QString::null, Advanced);
+	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show contacts that you are blocking"), "ShowBlocked", true, QString::null, QString::null, Expert);
+	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show contacts that are blocking you"), "ShowBlocking", true, QString::null, QString::null, Expert);
 
 	//najpierw ustawiamy odwrotnie, a pó¼niej robimy x=!x;
 	showBlocked = !config_file.readBoolEntry("General", "ShowBlocked");
@@ -106,7 +106,7 @@ void GroupsManager::tabSelected(int id)
 	{
 		lastId = id;
 		if (id == 0)
-			setActiveGroup("");
+			setActiveGroup(QString::null);
 		else
 			setActiveGroup(GroupBar->tab(id)->text());
 	}
@@ -156,7 +156,7 @@ void GroupsManager::refreshTabBar()
 	if (!config_file.readBoolEntry("Look", "DisplayGroupTabs"))
 	{
 		if (!currentGroup.isEmpty())
-			setActiveGroup("");
+			setActiveGroup(QString::null);
 		GroupBar->hide();
 		kdebugf2();
 		return;
@@ -179,7 +179,7 @@ void GroupsManager::refreshTabBar()
 	if (group_list.isEmpty())
 	{
 		GroupBar->hide();
-		setActiveGroup("");
+		setActiveGroup(QString::null);
 		kdebugf2();
 		return;
 	}

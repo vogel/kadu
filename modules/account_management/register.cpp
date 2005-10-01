@@ -40,7 +40,7 @@ void Register::createConfig()
 	}
 
 	struct stat buf;
-	QString ggpath = ggPath("");
+	QString ggpath = ggPath(QString::null);
 	stat(ggpath.local8Bit(), &buf);
 	if (S_ISDIR(buf.st_mode))
 		kdebugmf(KDEBUG_INFO, "Directory %s exists\n", (const char *)ggpath.local8Bit());

@@ -156,7 +156,7 @@ Hint::~Hint(void)
 
 void Hint::getData(QString &text, QPixmap &pixmap, unsigned int &timeout, QFont &font, QColor &fgcolor, QColor &bgcolor)
 {
-	text=label->text().replace(" ", "");
+	text=label->text().remove(" ");
 	if (icon)
 		pixmap=*(icon->pixmap());
 	else

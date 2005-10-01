@@ -76,6 +76,7 @@ mkdir ${DEST}/kadu.app/
 
 echo "log: copying files"
 cp -r ${INSTALLED_DIR}/share/kadu ${DEST}/kadu.app/kadu
+cp -r ${INSTALLED_DIR}/lib/kadu ${DEST}/kadu.app/kadu
 
 CNT_DIR=${DEST}/kadu.app/Contents
 mkdir ${CNT_DIR};

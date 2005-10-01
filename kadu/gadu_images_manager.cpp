@@ -136,7 +136,7 @@ QString GaduImagesManager::getImageToSendFileName(uint32_t size, uint32_t crc32)
 		}
 	}
 	kdebugm(KDEBUG_WARNING, "Image data not found\n");
-	return "";
+	return QString::null;
 }
 
 QString GaduImagesManager::getSavedImageFileName(uint32_t size, uint32_t crc32)
@@ -152,7 +152,7 @@ QString GaduImagesManager::getSavedImageFileName(uint32_t size, uint32_t crc32)
 		}
 	}
 	kdebugm(KDEBUG_WARNING, "Image data not found\n");
-	return "";
+	return QString::null;
 }
 
 QString GaduImagesManager::replaceLoadingImages(const QString& text, UinType sender, uint32_t size, uint32_t crc32)

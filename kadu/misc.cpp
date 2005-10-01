@@ -213,11 +213,17 @@ static char *findMe(const char *argv0, char *path, int len)
 	kdebugf2();
 }
 
+static QString lib_path;
+static QString data_path;
+
+QString libPath(const QString &f)
+{
+	return lib_path + f;
+}
+
 QString dataPath(const QString &p, const char *argv0)
 {
-	static QString path;
-
-	if (argv0!=0)
+	if (argv0 != 0)
 	{
 #ifdef Q_OS_MACX
 		char cpath[1024];
@@ -228,7 +234,10 @@ QString dataPath(const QString &p, const char *argv0)
 			exit(10);
 		}
 		else
-			path = QString(cpath) + "../../";
+		{
+			data_path = QString(cpath) + "../../";
+			lib_path = QString(cpath) + "../../";
+		}
 #else
 		QString datadir(DATADIR);
 		QString bindir(BINDIR);
@@ -236,25 +245,34 @@ QString dataPath(const QString &p, const char *argv0)
 		//je¿eli ¶cie¿ki nie koñcz± siê na /share i /bin oraz gdy bez tych koñcówek
 		//¶cie¿ki siê nie pokrywaj±, to znaczy ¿e kto¶ ustawi³ rêcznie DATADIR lub BINDIR
 		if (!datadir.endsWith("/share") || !bindir.endsWith("/bin") ||
-			(datadir.left(datadir.length()-6)!=bindir.left(bindir.length()-4)))
-			path=datadir+"/";
+			(datadir.left(datadir.length() - 6) != bindir.left(bindir.length() - 4)))
+		{
+			data_path = datadir + "/";
+			lib_path = datadir + "../lib/";
+		}
 		else
 		{
 			char cpath[1024];
-			if (findMe(argv0, cpath, 1024)==NULL)
-				path=datadir+"/";
+			if (findMe(argv0, cpath, 1024) == NULL)
+			{
+				data_path = datadir + "/";
+				lib_path = datadir + "../lib/";
+			}
 			else
-				path=QString(cpath)+"../share/";
+			{
+				data_path = QString(cpath) + "../share/";
+				lib_path = QString(cpath) + "../lib/";
+			}
 		}
 #endif
 	}
-	if (path.isEmpty())
+	if (data_path.isEmpty())
 	{
 		kdebugm(KDEBUG_PANIC, "dataPath() called _BEFORE_ initial dataPath(\"\",argv[0]) (static object uses dataPath()?) !!!\n");
 		printBacktrace("dataPath(): constructor of static object uses dataPath");
 	}
-	kdebugm(KDEBUG_INFO, "%s%s\n", (const char *)path.local8Bit(), (const char *)p.local8Bit());
-	return path+p;
+	kdebugm(KDEBUG_INFO, "%s%s\n", data_path.local8Bit().data(), p.local8Bit().data());
+	return data_path + p;
 }
 
 QString cp2unicode(const unsigned char *buf)
@@ -428,13 +446,13 @@ QString pwHash(const QString &text)
 
 QString translateLanguage(const QApplication *application, const QString &locale, const bool l2n)
 {
-	const char *local[] = {"en",
+	static const char *local[] = {"en",
 		"de",
 		"fr",
 		"it",
 		"pl",  0};
 
-	const char *name[] ={QT_TR_NOOP("English"),
+	static const char *name[] ={QT_TR_NOOP("English"),
 		QT_TR_NOOP("German"),
 		QT_TR_NOOP("French"),
 		QT_TR_NOOP("Italian"),
@@ -743,7 +761,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 				else if (pe2.type==ParseElem::PE_EXECUTE)
 				{
 					parseStack.pop_back();
-					pe.str.replace(QRegExp("`|>|<"), "");
+					pe.str.remove(QRegExp("`|>|<"));
 					pe.str.append(" >");
 					pe.str.append(ggPath("execoutput"));
 
@@ -1055,7 +1073,7 @@ QString toPlainText(const QString &text)
 	QString copy=text;
 	copy.replace("\r\n", " ");
 	copy.replace("\n",   " ");
-	copy.replace(clean_regexp, "");
+	copy.remove(clean_regexp);
 	HtmlDocument::unescapeText(copy);
 	kdebugm(KDEBUG_INFO, "plain: %s\n", copy.local8Bit().data());
 	return copy;

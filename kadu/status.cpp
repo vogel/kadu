@@ -13,7 +13,7 @@
 UserStatus::UserStatus() : QObject(NULL, 0)
 {
 	Stat = Offline;
-	Description = "";
+	Description = QString::null;
 	FriendsOnly = false;
 }
 
@@ -196,7 +196,7 @@ void UserStatus::setBlocking()
 	UserStatus *old = copy();
 
 	Stat = Blocking;
-	Description = "";
+	Description = QString::null;
 	Changed = false;
 
 	emit goBlocking();
@@ -280,7 +280,7 @@ void UserStatus::setStatus(const UserStatus& stat)
 void UserStatus::setIndex(int index, const QString& desc)
 {
 	if (index % 2 == 0)
-		setStatus(static_cast<eUserStatus>(index >> 1), "");
+		setStatus(static_cast<eUserStatus>(index >> 1), QString::null);
 	else
 		setStatus(static_cast<eUserStatus>(index >> 1), desc);
 }

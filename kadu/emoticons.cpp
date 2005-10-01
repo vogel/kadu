@@ -157,7 +157,7 @@ bool EmoticonsManager::loadGGEmoticonTheme()
 	Aliases.clear();
 	Selector.clear();
 	bool something_loaded=false;
-	if (loadGGEmoticonThemePart(""))
+	if (loadGGEmoticonThemePart(QString::null))
 		something_loaded = true;
 	QStringList subdirs = getSubDirs(themePath());
 	CONST_FOREACH(subdir, subdirs)
@@ -278,7 +278,7 @@ QString EmoticonsManager::selectorString(int emot_num) const
 	if (emot_num>=0 && uint(emot_num)<Selector.count())
 		return Selector[emot_num].alias;
 	else
-		return "";
+		return QString::null;
 }
 
 QString EmoticonsManager::selectorAnimPath(int emot_num) const
@@ -286,7 +286,7 @@ QString EmoticonsManager::selectorAnimPath(int emot_num) const
 	if (emot_num>=0 && uint(emot_num)<Selector.count())
 		return themePath() + "/" + Selector[emot_num].anim;
 	else
-		return "";
+		return QString::null;
 }
 
 QString EmoticonsManager::selectorStaticPath(int emot_num) const
@@ -294,7 +294,7 @@ QString EmoticonsManager::selectorStaticPath(int emot_num) const
 	if (emot_num>=0 && uint(emot_num)<Selector.count())
 		return themePath() + "/" + Selector[emot_num].stat;
 	else
-		return "";
+		return QString::null;
 }
 				
 EmoticonsManager *emoticons;
@@ -379,7 +379,7 @@ EmoticonSelector::EmoticonSelector(QWidget *parent, const char *name, Chat * cal
 }
 
 void EmoticonSelector::closeEvent(QCloseEvent *e) {
-	callingwidget->addEmoticon("");
+	callingwidget->addEmoticon(QString::null);
 	QWidget::closeEvent(e);
 }
 
@@ -712,12 +712,12 @@ AnimTextItem::~AnimTextItem()
 	if (md.count==0)
 		Movies->remove(FileName);
 	if (Movies->isEmpty())
-		{
-		    delete SizeCheckImage;
-		    delete Movies;
-		    Movies=NULL;
-		    SizeCheckImage=NULL;
-		}
+	{
+		delete SizeCheckImage;
+		delete Movies;
+		Movies=NULL;
+		SizeCheckImage=NULL;
+	}
 	kdebugf2();
 }
 

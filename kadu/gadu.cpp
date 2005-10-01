@@ -35,7 +35,7 @@
 #define GG_STATUS_INVISIBLE2 0x0009 /* g³upy... */
 
 QValueList<QHostAddress> gg_servers;
-const char *gg_servers_ip[9] = {"217.17.41.82", "217.17.41.83", "217.17.41.84", "217.17.41.85",
+static const char *gg_servers_ip[9] = {"217.17.41.82", "217.17.41.83", "217.17.41.84", "217.17.41.85",
 	"217.17.41.86", "217.17.41.87", "217.17.41.88", "217.17.41.92", "217.17.41.93"};
 
 // ------------------------------------
@@ -165,7 +165,7 @@ void SearchResult::setData(const char *uin, const char *first, const char *last,
 	FamilyName = cp2unicode((unsigned char *)familyName);
 	FamilyCity = cp2unicode((unsigned char *)familyCity);
 	if (status)
-		Stat.fromStatusNumber(atoi(status) & 127, "");
+		Stat.fromStatusNumber(atoi(status) & 127, QString::null);
 	if (gender)
 		Gender = atoi(gender);
 	else
@@ -265,7 +265,7 @@ void GaduProtocol::initModule()
 	kdebugf();
 	gadu_protocol_manager = new GaduProtocolManager();
 	protocols_manager->registerProtocol("Gadu", "Gadu-Gadu", gadu_protocol_manager);
-	
+
 	gadu = static_cast<GaduProtocol *>(protocols_manager->newProtocol("Gadu", QString::number(config_file.readNumEntry("General", "UIN"))));
 //	gadu = new GaduProtocol(QString::number(config_file.readNumEntry("General", "UIN")), kadu, "gadu");
 
@@ -287,7 +287,7 @@ void GaduProtocol::initModule()
 //zakladka "siec"
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Network"), "NetworkTab");
 
-	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "Servers properties"), "", Expert);
+	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "Servers properties"), QString::null, Expert);
 	ConfigDialog::addGrid("Network", "Servers properties", "servergrid", Expert);
 	ConfigDialog::addCheckBox("Network", "servergrid",
 		QT_TRANSLATE_NOOP("@default", "Use default servers"), "isDefServers", true);
@@ -296,7 +296,7 @@ void GaduProtocol::initModule()
 		QT_TRANSLATE_NOOP("@default", "Use TLSv1"), "UseTLS", false);
 #endif
 	ConfigDialog::addLineEdit("Network", "Servers properties",
-		QT_TRANSLATE_NOOP("@default", "IP addresses:"), "Server","","","server");
+		QT_TRANSLATE_NOOP("@default", "IP addresses:"), "Server", QString::null, QString::null, "server");
 
 	config_file.addVariable("Network", "DefaultPort", 0);
 	QStringList options, values;
@@ -308,11 +308,11 @@ void GaduProtocol::initModule()
 	config_file.addVariable("Network", "TimeoutInMs", 5000);
 
 	ConfigDialog::addCheckBox("Network", "Network",
-		QT_TRANSLATE_NOOP("@default", "Use proxy server"), "UseProxy", false, "", "", Advanced);
+		QT_TRANSLATE_NOOP("@default", "Use proxy server"), "UseProxy", false, QString::null, QString::null, Advanced);
 
-	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "Proxy server"), "", Advanced);
+	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "Proxy server"), QString::null, Advanced);
 	ConfigDialog::addGrid("Network", "Proxy server", "proxygrid", Expert);
-	ConfigDialog::addLineEdit("Network", "proxygrid", QT_TRANSLATE_NOOP("@default", "Host: "), "ProxyHost", "0.0.0.0","","proxyhost");
+	ConfigDialog::addLineEdit("Network", "proxygrid", QT_TRANSLATE_NOOP("@default", "Host: "), "ProxyHost", "0.0.0.0", QString::null, "proxyhost");
 	ConfigDialog::addLineEdit("Network", "proxygrid",
 		QT_TRANSLATE_NOOP("@default", " Port: "), "ProxyPort", "0");
 	ConfigDialog::addLineEdit("Network", "proxygrid",
@@ -334,7 +334,7 @@ void GaduProtocol::initModule()
 
 	QStringList servers;
 	QHostAddress ip2;
-	servers = QStringList::split(";", config_file.readEntry("Network","Server", ""));
+	servers = QStringList::split(";", config_file.readEntry("Network", "Server"));
 	ConfigServers.clear();
 	CONST_FOREACH(server, servers)
 		if (ip2.setAddress(*server))
@@ -785,7 +785,7 @@ void GaduProtocol::disconnectedSlot()
 	if (!Kadu::closing())
 		userlist->setAllOffline("Gadu");
 
-	CurrentStatus->setOffline("");
+	CurrentStatus->setOffline(QString::null);
 	emit disconnected();
 	kdebugf2();
 }
@@ -1722,7 +1722,7 @@ QString GaduProtocol::userListToString(const UserList& userList) const
 			contacts += "\r\n";
 		}
 
-	contacts.replace("(null)", "");
+	contacts.remove("(null)");
 
 //	kdebugm(KDEBUG_DUMP, "%s\n", contacts.local8Bit().data());
 	kdebugf2();
@@ -1933,7 +1933,7 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 			status.setDescription(desc);
 		}
 		else
-			status.fromStatusNumber(e->event.notify60[nr].status, "");
+			status.fromStatusNumber(e->event.notify60[nr].status, QString::null);
 		user.setStatus("Gadu", status, true, nr + 1 == cnt);
 
 		switch (e->event.notify60[nr].status)
@@ -2008,7 +2008,7 @@ void GaduProtocol::userListReplyReceived(char type, char *reply)
 			return;
 		}
 
-		if (strlen(reply))
+		if (reply[0] != 0)
 			ImportReply += cp2unicode((unsigned char *)reply);
 
 		if (type == GG_USERLIST_GET_MORE_REPLY)
@@ -2241,7 +2241,7 @@ QPixmap GaduStatus::pixmap(eUserStatus stat, bool hasDescription, bool mobile) c
 {
 //	kdebugf();
 
-	QString add = (hasDescription ? "WithDescription" : "");
+	QString add = (hasDescription ? "WithDescription" : QString::null);
 	add.append(mobile ? (!hasDescription) ? "WithMobile" : "Mobile" : "");
 
 	switch (stat)
@@ -2301,19 +2301,22 @@ void GaduStatus::fromStatusNumber(int statusNumber, const QString &description)
 
 	switch (statusNumber)
 	{
-		case GG_STATUS_AVAIL:
 		case GG_STATUS_AVAIL_DESCR:
+			Description = description;
+		case GG_STATUS_AVAIL:
 			Stat = Online;
 			break;
 
-		case GG_STATUS_BUSY:
 		case GG_STATUS_BUSY_DESCR:
+			Description = description;
+		case GG_STATUS_BUSY:
 			Stat = Busy;
 			break;
 
+		case GG_STATUS_INVISIBLE_DESCR:
+			Description = description;
 		case GG_STATUS_INVISIBLE:
 		case GG_STATUS_INVISIBLE2:
-		case GG_STATUS_INVISIBLE_DESCR:
 			Stat = Invisible;
 			break;
 
@@ -2321,19 +2324,13 @@ void GaduStatus::fromStatusNumber(int statusNumber, const QString &description)
 			Stat = Blocking;
 			break;
 
-		case GG_STATUS_NOT_AVAIL:
 		case GG_STATUS_NOT_AVAIL_DESCR:
+			Description = description;
+		case GG_STATUS_NOT_AVAIL:
 		default:
 			Stat = Offline;
 			break;
 	}
-
-	if ((statusNumber == GG_STATUS_AVAIL_DESCR) ||
-	    (statusNumber == GG_STATUS_BUSY_DESCR) ||
-	    (statusNumber == GG_STATUS_INVISIBLE_DESCR) ||
-	    (statusNumber == GG_STATUS_NOT_AVAIL_DESCR))
-		Description = description;
-
 }
 
 UserStatus *GaduStatus::copy() const

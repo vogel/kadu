@@ -80,7 +80,7 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog * /*parent*/, const char * /*name
 
 	new QLabel(tr("Gender"), vb_gender);
 	cb_gender = new QComboBox(vb_gender);
-	cb_gender->insertItem("");
+	cb_gender->insertItem(QString::null);
 	cb_gender->insertItem(tr("Male"));
 	cb_gender->insertItem(tr("Female"));
 	cb_gender->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));

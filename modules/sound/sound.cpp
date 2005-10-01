@@ -204,7 +204,7 @@ SoundManager::SoundManager(const QString& name, const QString& configname)
 
 	ConfigDialog::addCheckBox("Sounds", "Sounds",
 			QT_TRANSLATE_NOOP("@default","Play chat sounds only when window is invisible"),
-			"PlaySoundChatInvisible", true, "", "", Advanced);
+			"PlaySoundChatInvisible", true, QString::null, QString::null, Advanced);
 
 	ConfigDialog::addHBox("Sounds", "Sounds", "sound_box");
 	ConfigDialog::addListView("Sounds", "sound_box", "sound_files");
@@ -234,7 +234,7 @@ SoundManager::SoundManager(const QString& name, const QString& configname)
 	ConfigDialog::connectSlot("Sounds", "Test full duplex", SIGNAL(clicked()), sound_slots, SLOT(testFullDuplex()));
 
 	config_file.addVariable("Sounds", "SoundTheme", "default");
-	config_file.addVariable("Sounds", "SoundPaths","");
+	config_file.addVariable("Sounds", "SoundPaths", QString::null);
 
 	setPaths(QStringList::split(";", config_file.readEntry("Sounds", "SoundPaths")));
 	setTheme(config_file.readEntry("Sounds","SoundTheme"));

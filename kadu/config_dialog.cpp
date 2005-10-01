@@ -1343,7 +1343,7 @@ void ConfigDialog::addTab(const QString& caption, const QString& iconFileName,
 		TabNames.append(caption);
 
 		QValueList<RegisteredControl> l;
-		RegisteredControl c(CONFIG_TAB, QString::null, QString::null, caption, "", userLevelRequired);
+		RegisteredControl c(CONFIG_TAB, QString::null, QString::null, caption, QString::null, userLevelRequired);
 		c.defaultS = iconFileName;
 		l.append(c);
 
@@ -1729,7 +1729,7 @@ void HotKey::keyReleaseEvent(QKeyEvent *)
 	// sprawdzenie czy ostatnim znakiem jest "+"
 	// jesli tak to nie ma takiego skrotu klawiszowego
 	if (text().at(text().length()-1) == QChar(43))
-		setText("");
+		setText(QString::null);
 }
 
 QKeySequence HotKey::getShortCut() const
@@ -1746,7 +1746,7 @@ void HotKey::setShortCut(const QString& shortcut)
 {
 	QKeySequence str(shortcut);
 	if (str == QKeySequence())
-		setText("");
+		setText(QString::null);
 	else
 		setText(shortcut);
 }
@@ -1984,7 +1984,7 @@ void SelectPaths::okButton()
 	for (unsigned int i = 0, count = pathListBox->count(); i < count; ++i)
 		releaseList.append(pathListBox->text(i));
 
-	pathEdit->setText("");
+	pathEdit->setText(QString::null);
 	hide();
 	emit changed(releaseList);
 	kdebugf2();
@@ -1995,7 +1995,7 @@ void SelectPaths::cancelButton()
 	kdebugf();
 	pathListBox->clear();
 	pathListBox->insertStringList(releaseList);
-	pathEdit->setText("");
+	pathEdit->setText(QString::null);
 	hide();
 	kdebugf2();
 }
