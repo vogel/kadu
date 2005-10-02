@@ -346,10 +346,10 @@ SmsGatewaySlots::SmsGatewaySlots(QObject *parent, const char *name) : QObject(pa
 	ConfigDialog::addVGroupBox("SMS", "SMS",
 			QT_TRANSLATE_NOOP("@default", "SMS Era Gateway"));
 
-	QStringList types=toStringList(tr("Sponsored"), tr("OmnixMultimedia"));
-	QStringList values=toStringList("Sponsored", "OmnixMultimedia");
+	era_types=toStringList(tr("Sponsored"), tr("OmnixMultimedia"));
+	era_values=toStringList("Sponsored", "OmnixMultimedia");
 	ConfigDialog::addComboBox("SMS", "SMS Era Gateway",
-			QT_TRANSLATE_NOOP("@default", "Type of gateway"), "EraGateway", types, values);
+			QT_TRANSLATE_NOOP("@default", "Type of gateway"), "EraGateway", era_types, era_values);
 
 	config_file.addVariable("SMS", "EraGateway", "Sponsored");
 	//przepisanie starego hasla
@@ -395,12 +395,12 @@ void SmsGatewaySlots::onChangeEraGateway(int gateway)
 	QLineEdit *e_erapassword= ConfigDialog::getLineEdit("SMS", "Password");
 	QComboBox *cb_typegateway= ConfigDialog::getComboBox("SMS","Type of gateway");
 
-	config_file.writeEntry("SMS", "EraGateway_"+actualEraGateway+"_Password", e_erapassword->text());
-	config_file.writeEntry("SMS", "EraGateway_"+actualEraGateway+"_User", e_erauser->text());
+	config_file.writeEntry("SMS", "EraGateway_"+ actualEraGateway+ "_Password", e_erapassword->text());
+	config_file.writeEntry("SMS", "EraGateway_"+ actualEraGateway+ "_User", e_erauser->text());
 
-	e_erauser->setText(config_file.readEntry("SMS", "EraGateway_"+cb_typegateway->currentText()+"_User", "48"));
-	e_erapassword->setText(config_file.readEntry("SMS", "EraGateway_"+cb_typegateway->currentText()+"_Password"));
-	actualEraGateway=cb_typegateway->text(gateway);
+	e_erauser->setText(config_file.readEntry("SMS", "EraGateway_"+ era_values[gateway]+ "_User", "48"));
+	e_erapassword->setText(config_file.readEntry("SMS", "EraGateway_"+ era_values[gateway]+ "_Password"));
+	actualEraGateway=era_values[gateway];
 	kdebugf2();
 }
 

@@ -69,6 +69,8 @@ class SmsGatewaySlots: public QObject
 		static SmsGateway* isValidPlus(const QString& number, QObject* parent);
 		static SmsGateway* isValidEra(const QString& number, QObject* parent);
 	private:
+		QStringList era_types;
+		QStringList era_values;
 		QString actualEraGateway;			
 		bool createdTab;
 	public slots:
