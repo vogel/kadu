@@ -7,6 +7,7 @@
 #include <qimage.h>
 #include <qlabel.h>
 #include <qstring.h>
+#include <time.h>
 
 class QComboBox;
 class QLineEdit;
@@ -150,7 +151,7 @@ QValueList<QVariant> toVariantList(const QValueList<int> &in);
 
 /*
 	zastêpstwo dla arga w QString, które podmienia kolejne %[1-4] w miejscu
-	
+
 	w QStringu efektem:
 		QString("%1 odstêp %2").arg("pierwszy %1 tekst").arg("drugi tekst") jest "pierwszy drugi tekst tekst odstêp %2"
 	a chcieliby¶my ¿eby by³o
