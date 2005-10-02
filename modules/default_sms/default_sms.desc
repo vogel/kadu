@@ -1,6 +1,6 @@
 [Module]
-Description=SMS Gateway for Idea, Plus and Era module
-Description[pl]=Modu³ obs³ugi bramek Idea, Plus, Era
+Description=SMS Gateway for Orange, Plus and Era module
+Description[pl]=Modu³ obs³ugi bramek Orange, Plus, Era
 Author=Kadu Team
 Dependencies=sms
 LoadByDefault=true

@@ -3,7 +3,7 @@
 
 #include "../sms/sms.h"
 
-class SmsIdeaGateway : public SmsGateway
+class SmsOrangeGateway : public SmsGateway
 {
 	Q_OBJECT
 	
@@ -18,8 +18,8 @@ class SmsIdeaGateway : public SmsGateway
 		virtual void httpRedirected(QString);
 
 	public:
-		SmsIdeaGateway(QObject* parent, const char *name=0);
-		~SmsIdeaGateway();
+		SmsOrangeGateway(QObject* parent, const char *name=0);
+		~SmsOrangeGateway();
 		static bool isNumberCorrect(const QString& number);
 	public slots:
 		virtual void send(const QString& number,const QString& message, const QString& contact, const QString& signature);
@@ -65,7 +65,7 @@ class SmsGatewaySlots: public QObject
 	public:
 		SmsGatewaySlots(QObject *parent=0, const char *name=0);
 		~SmsGatewaySlots();
-		static SmsGateway* isValidIdea(const QString& number, QObject* parent);
+		static SmsGateway* isValidOrange(const QString& number, QObject* parent);
 		static SmsGateway* isValidPlus(const QString& number, QObject* parent);
 		static SmsGateway* isValidEra(const QString& number, QObject* parent);
 	private:

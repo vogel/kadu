@@ -81,7 +81,7 @@
     </message>
 </context>
 <context>
-    <name>SmsIdeaGateway</name>
+    <name>SmsOrangeGateway</name>
     <message>
         <source>Provider gateway page looks strange. It&apos;s probably temporary disabled
 or has beed changed too much to parse it correctly.</source>

@@ -10,9 +10,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniêcie komunikatów ostrzegawczych przy instalacji modu³ów (OBenY/joi)
 * poprawki w wykrywaniu ¶cie¿ki do Firefoksa na Gentoo (joi)
 * usuniête kilka drobnych wycieków pamiêci (joi)
-* na³o¿ona ³atka na default_sms dla bramki EraOmnix (Ron_K/Belegdol)
+* poprawiona obs³uga nowej bramki Ery (Belegdol/Ron_K)
 * dodanie flagi CXXFLAGS do kompilacji modulow, poprawka wykrywania libexecinfo
   poprawka sciezek z /usr/share na $(datadir) (pawel_p)
+* poprawiona obs³uga bramki Orange (akasoft/joi)
 
 +++ wersja 0.4.1 (19.07.2005)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
