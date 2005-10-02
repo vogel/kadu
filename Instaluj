@@ -64,7 +64,12 @@ uninstall()
 	$?=0
 	$dialog --stdout --defaultno --backtitle "Instalator Kadu" --title "Deinstalacja" --yesno "Czy na pewno chcesz odinstalowaæ Kadu?" 6 50
 		if [ $? == "0" ]; then
-			make uninstall 
+			if [ $UID != "0" ]; then
+				$dialog --backtitle "Instalator Kadu" --infobox "Podaj has³o roota:" 3 24
+				su -c "make uninstall"
+			else
+				make uninstall
+			fi; 
 		fi;
 }
 

@@ -150,6 +150,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   ró¿ne drobne optymalizacje (joi)
 * mo¿liwo¶æ automatycznego patchowania zewnêtrznych modu³ów poprzez umieszczenie
   ³aty w katalogu modules/patches/nazwa_modu³u (joi)
+* skrypt Instaluj poprosi o has³o roota przy deinstalacji z poziomu zwyk³ego
+  u¿ytkownika (Belegdol/joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
