@@ -37,6 +37,9 @@ extern "C" int sms_init()
 			QT_TRANSLATE_NOOP("@default", "SMS custom string"), "UseCustomString", false ,
 			QT_TRANSLATE_NOOP("@default", "Check this box if your sms application doesn't understand arguments: number \"message\"\nArguments should be separated with spaces. %n argument is converted to number, %m to message"));
 	ConfigDialog::addLineEdit("SMS", "smsgrid", QString::null, "SmsString", QString::null, QString::null, "smsstring");
+	ConfigDialog::addLineEdit("SMS", "SMS options",
+			QT_TRANSLATE_NOOP("@default", "SMS Nick"), "SmsNick");
+	config_file.addVariable("SMS", "SmsNick", config_file.readEntry("General", "Nick"));
 	ConfigDialog::addHGroupBox("SMS", "SMS",
 			QT_TRANSLATE_NOOP("@default", "Gateways priority"), QString::null, Advanced);
 	ConfigDialog::addListBox("SMS", "Gateways priority", "gateways");
@@ -277,7 +280,7 @@ Sms::Sms(const QString& altnick, QDialog* parent, const char *name) : QDialog (p
 
 	l_signature= new QLabel(tr("Signature"), this);
 	grid->addWidget(l_signature, 5, 0);
-	e_signature= new QLineEdit(config_file.readEntry("General", "Nick"), this);
+	e_signature= new QLineEdit(config_file.readEntry("SMS", "SmsNick"), this);
 	grid->addWidget(e_signature, 5, 1);
 
 	if (altnick.isEmpty())
