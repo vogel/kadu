@@ -393,7 +393,6 @@ void SmsGatewaySlots::onChangeEraGateway(int gateway)
 	kdebugf();
 	QLineEdit *e_erauser= ConfigDialog::getLineEdit("SMS", "User ID (48xxxxxxxxx)");
 	QLineEdit *e_erapassword= ConfigDialog::getLineEdit("SMS", "Password");
-	QComboBox *cb_typegateway= ConfigDialog::getComboBox("SMS","Type of gateway");
 	
 	config_file.writeEntry("SMS", "EraGateway_"+actualEraGateway+"_Password", e_erapassword->text());
 	config_file.writeEntry("SMS", "EraGateway_"+actualEraGateway+"_User", e_erauser->text());
