@@ -15,6 +15,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   poprawka sciezek z /usr/share na $(datadir) (pawel_p)
 * poprawiona obs³uga bramki Orange (akasoft/joi)
 * wy³±czenie regenerowania configure/Makefile'i (joi)
+* poprawna zmiana uzytkownika i hasla w konfiguracji dla bramki Ery, 
+	poprawne zapisywanie (pawel_p)
+
 
 +++ wersja 0.4.1 (19.07.2005)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
