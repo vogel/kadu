@@ -404,6 +404,7 @@ echo " ***************************************"
 AC_CONFIG_SRCDIR([kadu/kadu.cpp])
 AC_CONFIG_AUX_DIR([admin])
 AM_CONFIG_HEADER([kadu-config.h])
+AM_MAINTAINER_MODE
 AC_CANONICAL_SYSTEM
 AM_INIT_AUTOMAKE([kadu-$version],[$version])
 

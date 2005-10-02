@@ -14,6 +14,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodanie flagi CXXFLAGS do kompilacji modulow, poprawka wykrywania libexecinfo
   poprawka sciezek z /usr/share na $(datadir) (pawel_p)
 * poprawiona obs³uga bramki Orange (akasoft/joi)
+* wy³±czenie regenerowania configure/Makefile'i (joi)
 
 +++ wersja 0.4.1 (19.07.2005)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
