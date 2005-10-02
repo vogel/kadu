@@ -20,7 +20,7 @@
 extern "C" int default_sms_init()
 {
 	kdebugf();
-	smsslots->registerGateway("idea", &SmsGatewaySlots::isValidIdea);
+	smsslots->registerGateway("orange", &SmsGatewaySlots::isValidOrange);
 	smsslots->registerGateway("plus", &SmsGatewaySlots::isValidPlus);
 	smsslots->registerGateway("era" , &SmsGatewaySlots::isValidEra);
 	sms_gateway_slots=new SmsGatewaySlots(NULL, "sms_gateway_slots");
@@ -31,7 +31,7 @@ extern "C" int default_sms_init()
 extern "C" void default_sms_close()
 {
 	kdebugf();
-	smsslots->unregisterGateway("idea");
+	smsslots->unregisterGateway("orange");
 	smsslots->unregisterGateway("plus");
 	smsslots->unregisterGateway("era");
 	delete sms_gateway_slots;
@@ -39,42 +39,42 @@ extern "C" void default_sms_close()
 }
 
 
-/********** SmsIdeaGateway **********/
+/********** SmsOrangeGateway **********/
 
-SmsIdeaGateway::SmsIdeaGateway(QObject* parent, const char *name)
+SmsOrangeGateway::SmsOrangeGateway(QObject* parent, const char *name)
 	: SmsGateway(parent, name)
 {
 	modules_manager->moduleIncUsageCount("default_sms");
 }
 
-SmsIdeaGateway::~SmsIdeaGateway()
+SmsOrangeGateway::~SmsOrangeGateway()
 {
 	modules_manager->moduleDecUsageCount("default_sms");
 }
 
-void SmsIdeaGateway::httpRedirected(QString link)
+void SmsOrangeGateway::httpRedirected(QString link)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "link: %s\n", link.local8Bit().data());
 }
 
-void SmsIdeaGateway::send(const QString& number,const QString& message, const QString& /*contact*/, const QString& signature)
+void SmsOrangeGateway::send(const QString& number,const QString& message, const QString& /*contact*/, const QString& signature)
 {
 	kdebugf();
 	Number=number;
 	Message=message;
 	Signature= signature;
 	State=SMS_LOADING_PAGE;
-	Http.setHost("sms.idea.pl");
-	Http.get("/");
+	Http.setHost("sms.orange.pl");
+	Http.get("/Default.aspx?id=A2B6173D-CF1A-4c38-B7A7-E3144D43D70C");
 	kdebugf2();
 }
 
-bool SmsIdeaGateway::isNumberCorrect(const QString& number)
+bool SmsOrangeGateway::isNumberCorrect(const QString& number)
 {
 	return (number[0]=='5');
 }
 
-void SmsIdeaGateway::httpFinished()
+void SmsOrangeGateway::httpFinished()
 {
 	kdebugf();
 	QDialog* p=(QDialog*)(parent()->parent());
@@ -92,14 +92,14 @@ void SmsIdeaGateway::httpFinished()
 		}
 		QString pic_path=Page.mid(pic_pos,pic_regexp.matchedLength());
 		Token=pic_regexp.cap(1);
-		kdebugm(KDEBUG_INFO, "SMS Idea Token: %s\n",Token.local8Bit().data());
-		kdebugm(KDEBUG_INFO, "SMS Idea Picture: %s\n",pic_path.local8Bit().data());
+		kdebugm(KDEBUG_INFO, "SMS Orange Token: %s\n",Token.local8Bit().data());
+		kdebugm(KDEBUG_INFO, "SMS Orange Picture: %s\n",pic_path.local8Bit().data());
 		State=SMS_LOADING_PICTURE;
 		Http.get(pic_path);
 	}
 	else if (State==SMS_LOADING_PICTURE)
 	{
-		kdebugm(KDEBUG_INFO, "SMS Idea Picture Loaded: %i bytes\n",Http.data().size());
+		kdebugm(KDEBUG_INFO, "SMS Orange Picture Loaded: %i bytes\n",Http.data().size());
 		SmsImageDialog* d=new SmsImageDialog(p,Http.data());
 		connect(d,SIGNAL(codeEntered(const QString&)),this,SLOT(onCodeEntered(const QString&)));
 		d->show();
@@ -107,26 +107,26 @@ void SmsIdeaGateway::httpFinished()
 	else if (State==SMS_LOADING_RESULTS)
 	{
 		QString Page=Http.data();
-		kdebugm(KDEBUG_INFO, "SMS Provider Results Page:\n%s\n",Page.local8Bit().data());
+		kdebugm(KDEBUG_INFO, "SMS Provider Results Page:\n%s\n", Page.local8Bit().data());
 		if (Page.find("wyczerpany")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "You exceeded your daily limit\n");
 			QMessageBox::critical(p,"SMS",tr("You exceeded your daily limit"));
 			emit finished(false);
 		}
-		else if (Page.find("Podano b³êdne has³o")>=0)
+		else if (Page.find("Podano bÅ‚Ä™dne hasÅ‚o")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "Text from the picture is incorrect\n");
 			QMessageBox::critical(p,"SMS",tr("Text from the picture is incorrect"));
 			emit finished(false);
 		}
-		else if (Page.find("U¿ytkownik nie ma aktywnej us³ugi")>=0)
+		else if (Page.find("UÅ¼ytkownik nie ma aktywnej usÅ‚ugi")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "The receiver has to enable SMS STANDARD service\n");
 			QMessageBox::critical(p,"SMS",tr("The receiver has to enable SMS STANDARD service"));
 			emit finished(false);
 		}
-		else if (Page.find("Twój SMS zosta³ wys³any")>=0)
+		else if (Page.find("TwÃ³j SMS zostaÅ‚ wysÅ‚any")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "SMS was sent succesfully\n");
 			emit finished(true);
@@ -143,7 +143,7 @@ void SmsIdeaGateway::httpFinished()
 	kdebugf2();
 }
 
-void SmsIdeaGateway::onCodeEntered(const QString& code)
+void SmsOrangeGateway::onCodeEntered(const QString& code)
 {
 	kdebugf();
 	if (code.isEmpty())
@@ -443,10 +443,10 @@ void SmsGatewaySlots::onCreateTabSMS()
 	kdebugf2();
 }
 
-SmsGateway* SmsGatewaySlots::isValidIdea(const QString& number, QObject* parent)
+SmsGateway* SmsGatewaySlots::isValidOrange(const QString& number, QObject* parent)
 {
-	if(SmsIdeaGateway::isNumberCorrect(number))
-		return new SmsIdeaGateway(parent, "sms_idea_gateway");
+	if(SmsOrangeGateway::isNumberCorrect(number))
+		return new SmsOrangeGateway(parent, "sms_orange_gateway");
 	else
 		return NULL;
 }

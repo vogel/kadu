@@ -153,6 +153,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * skrypt Instaluj poprosi o has³o roota przy deinstalacji z poziomu zwyk³ego
   u¿ytkownika (Belegdol/joi)
 * oddzielny nick do smsów (Belegdol/joi)
+* poprawiona obs³uga bramki Orange (akasoft/joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
