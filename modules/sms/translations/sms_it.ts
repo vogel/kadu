@@ -43,6 +43,10 @@ e scrivi la stringa corretta. I parametri devono essere separati da spazio. Il p
         <source>Down</source>
         <translation>Sposta giù</translation>
     </message>
+    <message>
+        <source>SMS Nick</source>
+        <translation>SMS Nickname</translation>
+    </message>
 </context>
 <context>
     <name>Sms</name>

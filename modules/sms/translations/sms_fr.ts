@@ -43,6 +43,10 @@ Les arguments doivent être separés par l&apos;espace.%n argument est converti 
         <source>Down</source>
         <translation>Deplace en bâs</translation>
     </message>
+    <message>
+        <source>SMS Nick</source>
+        <translation>SMS Pseudo </translation>
+    </message>
 </context>
 <context>
     <name>Sms</name>

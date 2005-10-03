@@ -43,6 +43,10 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
         <source>Down</source>
         <translation>Przenieś w dół</translation>
     </message>
+    <message>
+        <source>SMS Nick</source>
+        <translation>Pseudonim dla SMS</translation>
+    </message>
 </context>
 <context>
     <name>Sms</name>

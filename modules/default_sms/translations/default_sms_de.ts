@@ -77,7 +77,7 @@
     </message>
     <message>
         <source>OmnixMultimedia</source>
-        <translation type="unfinished"></translation>
+        <translation>OmnixMultimedia</translation>
     </message>
 </context>
 <context>

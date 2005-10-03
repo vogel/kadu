@@ -43,6 +43,10 @@ nicht versteht. Gib hier die Argumente ein, getrennt mit Komma. %n=Tel.; %m=Nach
         <source>Down</source>
         <translation>nach unten</translation>
     </message>
+    <message>
+        <source>SMS Nick</source>
+        <translation>SMS Nick</translation>
+    </message>
 </context>
 <context>
     <name>Sms</name>

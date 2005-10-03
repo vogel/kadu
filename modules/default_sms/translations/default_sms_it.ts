@@ -66,18 +66,18 @@
     </message>
     <message>
         <source>You don&apos;t have enough tokens</source>
-        <translation type="unfinished"></translation>
+        <translation>Non hai sufficente quantita crediti</translation>
     </message>
 </context>
 <context>
     <name>SmsGatewaySlots</name>
     <message>
         <source>Sponsored</source>
-        <translation type="unfinished"></translation>
+        <translation>Sponsorizzata</translation>
     </message>
     <message>
         <source>OmnixMultimedia</source>
-        <translation type="unfinished"></translation>
+        <translation>OmnixMultimedia</translation>
     </message>
 </context>
 <context>
