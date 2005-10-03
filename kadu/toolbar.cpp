@@ -50,6 +50,11 @@ void ToolButton::contextMenuEvent(QContextMenuEvent* e)
 	kdebugf2();
 }
 
+QString ToolButton::actionName()
+{
+	return ActionName;
+}
+
 void ToolButton::writeToConfig(QDomElement parent_element)
 {
 	kdebugf();
@@ -59,7 +64,7 @@ void ToolButton::writeToConfig(QDomElement parent_element)
 }
 
 ToolButtonDrag::ToolButtonDrag(ToolButton* button, QWidget* dragSource, const char* name)
-	: QTextDrag(button->name(), dragSource, name)
+	: QTextDrag(QString::number(button->winId()), dragSource, name)
 {
 }
 
@@ -95,7 +100,9 @@ void ToolBar::dropEvent(QDropEvent* event)
 		QString text;
 		if (QTextDrag::decode(event, text))
 		{
-			dynamic_cast<ToolButton*>(source->child(text))->reparent(this, QPoint(0,0), true);
+			// TODO: uzywanie WId moze nie byc zbyt przenosne ;)
+			// Jakis lepszy pomysl?
+			((ToolBar*)event->source())->find(text.toULong())->reparent(this, QPoint(0,0), true);
 		}
 	}
 	kdebugf2();

@@ -28,6 +28,7 @@ class ToolButton : public QToolButton
 
 	public:
 		ToolButton(QWidget* parent, const QString& action_name);
+		QString actionName();
 		void writeToConfig(QDomElement parent_element);
 };
 
