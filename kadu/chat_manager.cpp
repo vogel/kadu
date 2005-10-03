@@ -131,6 +131,13 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 		this, SLOT(colorActionActivated(const UserGroup*, const QWidget*)));
 	KaduActions.insert("colorAction", color_action);
 
+	Action* send_action = new Action(icons_manager->loadIcon("SendMessage"),
+		tr("&Send"), "sendAction");
+	send_action->setUsesTextLabel(true);
+	connect(send_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		this, SLOT(sendActionActivated(const UserGroup*)));
+	KaduActions.insert("sendAction", send_action);
+
 	kdebugf2();
 }
 
@@ -246,6 +253,17 @@ void ChatManager::insertImageActionActivated(const UserGroup* users)
 {
 	kdebugf();
 	findChat(users)->insertImage();
+	kdebugf2();
+}
+
+void ChatManager::sendActionActivated(const UserGroup* users)
+{
+	kdebugf();
+	Chat* chat = findChat(users);
+	if (chat->waitingForACK())
+		chat->cancelMessage();
+	else
+		chat->sendMessage();
 	kdebugf2();
 }
 

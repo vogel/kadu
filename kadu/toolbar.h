@@ -78,6 +78,7 @@ class Action : public QAction
 	Q_OBJECT
 
 	private:
+		bool UsesTextLabel;
 		QValueList<ToolButton*> ToolButtons;
 		struct ToggleStateStruct
 		{
@@ -93,6 +94,10 @@ class Action : public QAction
 	public:
 		Action(const QIconSet& icon, const QString& text, const char* name,
 			QKeySequence accel = QKeySequence());
+		/**
+			set if ToolButtons uses text label.
+		**/
+		void setUsesTextLabel(bool uses);
 		ToolButton* addToToolbar(ToolBar* toolbar);
 		int addToPopupMenu(QPopupMenu* menu, bool connect_signal = true);
 		QValueList<ToolButton*> toolButtonsForUserListElements(
@@ -100,6 +105,7 @@ class Action : public QAction
 		bool isOn(const UserListElements& users);
 		void setOn(const UserListElements& users, bool on);
 		void setPixmaps(const UserListElements& users, const QPixmap& pixmap);
+		void setTexts(const UserListElements& users, const QString& text);
 
 	signals:
 		void addedToToolbar(ToolButton* button, ToolBar* toolbar,

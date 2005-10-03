@@ -53,6 +53,7 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 		AutoSend = true;
 
 	ScrollLocked = false;
+	WaitingForACK = false;
 
 	title_timer = new QTimer(this, "title_timer");
 	connect(title_timer,SIGNAL(timeout()),this,SLOT(changeTitle()));
@@ -197,12 +198,7 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	btnpart->moveDockWindow(tb3);
 	btnpart->setAcceptDockWindow(tb3, true);
 
-	sendbtn = new ToolButton(tb3, "");
-	sendbtn->setIconSet(QIconSet(icons_manager->loadIcon("SendMessage")));
-	sendbtn->setTextLabel(tr("&Send"));
-	sendbtn->setUsesTextLabel(true);
-	sendbtn->setTextPosition(ToolButton::BesideIcon);
-	connect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
+	KaduActions["sendAction"]->addToToolbar(tb3);
 
 	// END TOOLBAR 3
 
@@ -877,10 +873,10 @@ void Chat::cancelMessage()
 	Edit->setReadOnly(false);
 	Edit->setEnabled(true);
 	Edit->setFocus();
-	disconnect(sendbtn, SIGNAL(clicked()), this, SLOT(cancelMessage()));
-	connect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
-	sendbtn->setIconSet(QIconSet(icons_manager->loadIcon("SendMessage")));
-	sendbtn->setText(tr("&Send"));
+	WaitingForACK = false;
+	KaduActions["sendAction"]->setPixmaps(Users->toUserListElements(),
+		icons_manager->loadIcon("SendMessage"));
+	KaduActions["sendAction"]->setTexts(Users->toUserListElements(), tr("&Send"));
 	kdebugf2();
 }
 
@@ -1010,10 +1006,10 @@ void Chat::sendMessage()
 	{
 		Edit->setReadOnly(true);
 		Edit->setEnabled(false);
-		disconnect(sendbtn, SIGNAL(clicked()), this, SLOT(sendMessage()));
-		connect(sendbtn, SIGNAL(clicked()), this, SLOT(cancelMessage()));
-		sendbtn->setIconSet(QIconSet(icons_manager->loadIcon("CancelMessage")));
-		sendbtn->setText(tr("&Cancel"));
+		WaitingForACK = true;
+		KaduActions["sendAction"]->setPixmaps(Users->toUserListElements(),
+			icons_manager->loadIcon("CancelMessage"));
+		KaduActions["sendAction"]->setTexts(Users->toUserListElements(), tr("&Cancel"));
 	}
 
 	if (myLastFormatsLength)
@@ -1142,6 +1138,11 @@ CustomInput* Chat::edit()
 bool Chat::autoSend() const
 {
 	return AutoSend;
+}
+
+bool Chat::waitingForACK() const
+{
+	return WaitingForACK;
 }
 
 void Chat::dragEnterEvent(QDragEnterEvent *e)

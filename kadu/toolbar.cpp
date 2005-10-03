@@ -197,6 +197,14 @@ Action::Action(const QIconSet& icon, const QString& text, const char* name, QKey
 	: QAction(icon, text, accel, kadu, name)
 {
 	kdebugf();
+	UsesTextLabel = false;
+	kdebugf2();
+}
+
+void Action::setUsesTextLabel(bool uses)
+{
+	kdebugf();
+	UsesTextLabel = uses;
 	kdebugf2();
 }
 
@@ -227,8 +235,10 @@ ToolButton* Action::addToToolbar(ToolBar* toolbar)
 	kdebugf();
 	ToolButton* btn = new ToolButton(toolbar, name());
 	btn->setIconSet(iconSet());
+	btn->setTextLabel(menuText());
 	btn->setToggleButton(isToggleAction());
-	QToolTip::add(btn, menuText());
+	btn->setUsesTextLabel(UsesTextLabel);
+	btn->setTextPosition(ToolButton::BesideIcon);
 	connect(btn, SIGNAL(clicked()), this, SLOT(toolButtonClicked()));
 	connect(btn, SIGNAL(destroyed(QObject*)), this, SLOT(toolButtonDestroyed(QObject*)));
 	ToolButtons.append(btn);
@@ -317,6 +327,15 @@ void Action::setPixmaps(const UserListElements& users, const QPixmap& pixmap)
 	QValueList<ToolButton*> buttons = toolButtonsForUserListElements(users);
 	for (QValueList<ToolButton*>::iterator i = buttons.begin(); i != buttons.end(); i++)
 		(*i)->setPixmap(pixmap);
+	kdebugf2();
+}
+
+void Action::setTexts(const UserListElements& users, const QString& text)
+{
+	kdebugf();
+	QValueList<ToolButton*> buttons = toolButtonsForUserListElements(users);
+	for (QValueList<ToolButton*>::iterator i = buttons.begin(); i != buttons.end(); i++)
+		(*i)->setTextLabel(text);
 	kdebugf2();
 }
 

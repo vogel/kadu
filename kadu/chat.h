@@ -62,9 +62,9 @@ class Chat : public QMainWindow
 		ColorSelector* color_selector; /*!< okienko do wyboru koloru */
 		bool AutoSend;
 		bool ScrollLocked;
+		bool WaitingForACK;
 		QAccel* acc; /*!< zmienna potrzebna do
 				 rejestracji skrótów klawiszowych*/
-		ToolButton* sendbtn; /*!< przycisk do wysy³ania wiadomo¶ci */
 		UserBox* userbox; /*!< lista kontaktów przydatna gdy jeste¶my w
 						 konferencji */
 		QString myLastMessage;/*!< zmienna przechowuj±ca
@@ -275,6 +275,7 @@ class Chat : public QMainWindow
 		CustomInput* edit();
 
 		bool autoSend() const;
+		bool waitingForACK() const;
 
 		virtual void dragEnterEvent(QDragEnterEvent *e);
 		virtual void dropEvent(QDropEvent *e);
