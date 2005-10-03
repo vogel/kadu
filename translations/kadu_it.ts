@@ -665,18 +665,6 @@ E un rischio per la sicurezza!</translation>
         <translation>Inserisci qui il testo del messaggio da spedire</translation>
     </message>
     <message>
-        <source>Insert emoticon - enable in configuration</source>
-        <translation>Inserisci Emoticon - attiva nella configurazione</translation>
-    </message>
-    <message>
-        <source>Insert emoticon</source>
-        <translation>Inserisci emoticon</translation>
-    </message>
-    <message>
-        <source>Lookup user info</source>
-        <translation>Mostra informazioni contatto</translation>
-    </message>
-    <message>
         <source>&amp;Cancel</source>
         <translation>&amp;Annulla</translation>
     </message>
@@ -786,6 +774,42 @@ Sicuro di spedirlo comunque?</translation>
         <source>Show history</source>
         <translation>Mostra cronologia</translation>
     </message>
+    <message>
+        <source>Insert emoticon</source>
+        <translation>Inserisci emoticon</translation>
+    </message>
+    <message>
+        <source>Lookup user info</source>
+        <translation>Mostra informazioni contatto</translation>
+    </message>
+    <message>
+        <source>Insert image</source>
+        <translation>Inserisci immagine</translation>
+    </message>
+    <message>
+        <source>Bold</source>
+        <translation>Grassetto</translation>
+    </message>
+    <message>
+        <source>Italic</source>
+        <translation>Corsivo</translation>
+    </message>
+    <message>
+        <source>Underline</source>
+        <translation>Sottolineato</translation>
+    </message>
+    <message>
+        <source>Change color</source>
+        <translation>Cambia colore</translation>
+    </message>
+    <message>
+        <source>&amp;Send</source>
+        <translation>&amp;Manda</translation>
+    </message>
+    <message>
+        <source>Insert emoticon - enable in configuration</source>
+        <translation>Inserisci Emoticon - attiva nella configurazione</translation>
+    </message>
 </context>
 <context>
     <name>ChatManagerSlots</name>
@@ -891,7 +915,7 @@ Il percorso per raggiungere browser non esiste in $PATH. Devi specificarlo.</tra
     <name>DockArea</name>
     <message>
         <source>Create new toolbar</source>
-        <translation type="unfinished"></translation>
+        <translation>Crea nuovo toolbar</translation>
     </message>
 </context>
 <context>
@@ -1761,18 +1785,18 @@ Possibile incompatibilità con Kadu.</translation>
     </message>
     <message>
         <source>Delete toolbar</source>
-        <translation type="unfinished"></translation>
+        <translation>Elimina toolbar</translation>
     </message>
     <message>
         <source>Add new button</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiungi nuovo bottone</translation>
     </message>
 </context>
 <context>
     <name>ToolButton</name>
     <message>
         <source>Delete button</source>
-        <translation type="unfinished"></translation>
+        <translation>Elimina bottone</translation>
     </message>
 </context>
 <context>

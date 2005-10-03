@@ -665,18 +665,6 @@ Jest to wysoce ryzykowne!</translation>
         <translation>Tutaj wpisujesz tekst do wysłania</translation>
     </message>
     <message>
-        <source>Insert emoticon - enable in configuration</source>
-        <translation>Wstaw emotikonę - uaktywnij w konfiguracji</translation>
-    </message>
-    <message>
-        <source>Insert emoticon</source>
-        <translation>Wstaw emotikonę</translation>
-    </message>
-    <message>
-        <source>Lookup user info</source>
-        <translation>Pokaż informacje o kontakcie</translation>
-    </message>
-    <message>
         <source>&amp;Cancel</source>
         <translation>&amp;Anuluj</translation>
     </message>
@@ -785,6 +773,42 @@ Czy napewno chcesz wysłać ten obrazek?</translation>
     <message>
         <source>Show history</source>
         <translation>Pokaż historię</translation>
+    </message>
+    <message>
+        <source>Insert emoticon</source>
+        <translation>Wstaw emotikonę</translation>
+    </message>
+    <message>
+        <source>Lookup user info</source>
+        <translation>Pokaż informacje o kontakcie</translation>
+    </message>
+    <message>
+        <source>Insert image</source>
+        <translation>Wstaw obraz</translation>
+    </message>
+    <message>
+        <source>Bold</source>
+        <translation>Pogrubienie</translation>
+    </message>
+    <message>
+        <source>Italic</source>
+        <translation>Kursywa</translation>
+    </message>
+    <message>
+        <source>Underline</source>
+        <translation>Podkreślenie</translation>
+    </message>
+    <message>
+        <source>Change color</source>
+        <translation>Zmiana koloru</translation>
+    </message>
+    <message>
+        <source>&amp;Send</source>
+        <translation>&amp;Wyślij</translation>
+    </message>
+    <message>
+        <source>Insert emoticon - enable in configuration</source>
+        <translation>Wstaw emotikonę - uaktywnij w konfiguracji</translation>
     </message>
 </context>
 <context>

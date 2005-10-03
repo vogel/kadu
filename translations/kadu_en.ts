@@ -660,18 +660,6 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Insert emoticon - enable in configuration</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Insert emoticon</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Lookup user info</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Send</source>
         <translation type="unfinished"></translation>
     </message>
@@ -776,6 +764,42 @@ Do you really want to send this image?
     </message>
     <message>
         <source>Show history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert emoticon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lookup user info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Italic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Underline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Send</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert emoticon - enable in configuration</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

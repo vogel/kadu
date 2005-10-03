@@ -663,18 +663,6 @@ It&apos;s a high security risk!</source>
         <translation>Hier schreiben Sie den zu versendenden Text</translation>
     </message>
     <message>
-        <source>Insert emoticon - enable in configuration</source>
-        <translation>Smily einfügen - aktiviere in der Konfiguration</translation>
-    </message>
-    <message>
-        <source>Insert emoticon</source>
-        <translation>Smiley einfügen</translation>
-    </message>
-    <message>
-        <source>Lookup user info</source>
-        <translation>Zeige Kontakt-Informationen</translation>
-    </message>
-    <message>
         <source>&amp;Cancel</source>
         <translation>&amp;Abbrechen</translation>
     </message>
@@ -783,6 +771,42 @@ Wollen Sie diese Datei wirklich senden?</translation>
     <message>
         <source>Show history</source>
         <translation>Zeige Verlauf</translation>
+    </message>
+    <message>
+        <source>Insert emoticon</source>
+        <translation>Smiley einfügen</translation>
+    </message>
+    <message>
+        <source>Lookup user info</source>
+        <translation>Zeige Kontakt-Informationen</translation>
+    </message>
+    <message>
+        <source>Insert image</source>
+        <translation>Bild einfügen</translation>
+    </message>
+    <message>
+        <source>Bold</source>
+        <translation>Fett</translation>
+    </message>
+    <message>
+        <source>Italic</source>
+        <translation>Kursiv</translation>
+    </message>
+    <message>
+        <source>Underline</source>
+        <translation>Unterstrichen</translation>
+    </message>
+    <message>
+        <source>Change color</source>
+        <translation>Ändern Farben</translation>
+    </message>
+    <message>
+        <source>&amp;Send</source>
+        <translation>&amp;Sende</translation>
+    </message>
+    <message>
+        <source>Insert emoticon - enable in configuration</source>
+        <translation>Smily einfügen - aktiviere in der Konfiguration</translation>
     </message>
 </context>
 <context>

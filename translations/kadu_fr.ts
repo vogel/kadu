@@ -665,18 +665,6 @@ Attention danger!
         <translation>C&apos;est ici que vous saisissez le texte à envoyer</translation>
     </message>
     <message>
-        <source>Insert emoticon - enable in configuration</source>
-        <translation>Insère l&apos;emotion - Active dans la configuration</translation>
-    </message>
-    <message>
-        <source>Insert emoticon</source>
-        <translation>Insère icône d&apos;emotion</translation>
-    </message>
-    <message>
-        <source>Lookup user info</source>
-        <translation>Montre information concernant le contact</translation>
-    </message>
-    <message>
         <source>&amp;Cancel</source>
         <translation>&amp;Annule</translation>
     </message>
@@ -786,6 +774,42 @@ Souhaitez vous vraiment expédier cette image?</translation>
         <source>Show history</source>
         <translation>Montre historique</translation>
     </message>
+    <message>
+        <source>Insert emoticon</source>
+        <translation>Insère icône d&apos;emotion</translation>
+    </message>
+    <message>
+        <source>Lookup user info</source>
+        <translation>Montre information concernant le contact</translation>
+    </message>
+    <message>
+        <source>Insert image</source>
+        <translation>Insère l&apos;image</translation>
+    </message>
+    <message>
+        <source>Bold</source>
+        <translation>Surligné</translation>
+    </message>
+    <message>
+        <source>Italic</source>
+        <translation>Italique</translation>
+    </message>
+    <message>
+        <source>Underline</source>
+        <translation>Souligné</translation>
+    </message>
+    <message>
+        <source>Change color</source>
+        <translation>Changez la couleur</translation>
+    </message>
+    <message>
+        <source>&amp;Send</source>
+        <translation>&amp;Envoie</translation>
+    </message>
+    <message>
+        <source>Insert emoticon - enable in configuration</source>
+        <translation>Insère l&apos;emotion - Active dans la configuration</translation>
+    </message>
 </context>
 <context>
     <name>ChatManagerSlots</name>
@@ -891,7 +915,7 @@ Vous pouvez l&apos;ajouter dans $PATH ou indiquer l&apos;emplacement d&apos;une 
     <name>DockArea</name>
     <message>
         <source>Create new toolbar</source>
-        <translation type="unfinished"></translation>
+        <translation>Créez un nouveau barre d&apos;outil</translation>
     </message>
 </context>
 <context>
@@ -1762,18 +1786,18 @@ Peut être module incompatible avec Kadu.</translation>
     </message>
     <message>
         <source>Delete toolbar</source>
-        <translation type="unfinished"></translation>
+        <translation>Veuillez effacer le barre d&apos;outil</translation>
     </message>
     <message>
         <source>Add new button</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajoutez le nouveau bouton</translation>
     </message>
 </context>
 <context>
     <name>ToolButton</name>
     <message>
         <source>Delete button</source>
-        <translation type="unfinished"></translation>
+        <translation>Effassez le bouton</translation>
     </message>
 </context>
 <context>
