@@ -2,6 +2,7 @@ bin_PROGRAMS = kadu
 
 kadu_SOURCES = \
 about.cpp \
+action.cpp \
 chat.cpp \
 chat_manager.cpp \
 chat_manager_slots.cpp \
@@ -53,6 +54,7 @@ kadudir = $(includedir)/kadu
 
 kadu_HEADERS = \
 about.h \
+action.h \
 chat.h \
 chat_manager.h \
 chat_manager_slots.h \
@@ -100,6 +102,7 @@ updates.h
 
 BUILT_SOURCES = \
 moc/about_moc.cpp \
+moc/action_moc.cpp \
 moc/chat_moc.cpp \
 moc/chat_manager_moc.cpp \
 moc/chat_manager_slots_moc.cpp \
@@ -140,6 +143,7 @@ moc/updates_moc.cpp
 
 am_kadu_OBJECTS = \
 obj/about.$(OBJEXT) \
+obj/action.$(OBJEXT) \
 obj/chat.$(OBJEXT) \
 obj/chat_manager.$(OBJEXT) \
 obj/chat_manager_slots.$(OBJEXT) \
@@ -186,6 +190,7 @@ obj/usergroup.$(OBJEXT) \
 obj/userlistelement.$(OBJEXT) \
 obj/updates.$(OBJEXT) \
 obj/about_moc.$(OBJEXT) \
+obj/action_moc.$(OBJEXT) \
 obj/chat_moc.$(OBJEXT) \
 obj/chat_manager_moc.$(OBJEXT) \
 obj/chat_manager_slots_moc.$(OBJEXT) \

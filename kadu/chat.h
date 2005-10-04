@@ -10,7 +10,6 @@
 #include "custom_input.h"
 #include "emoticons.h"
 #include "gadu.h"
-#include "toolbar.h"
 #include "usergroup.h"
 
 class QAccel;

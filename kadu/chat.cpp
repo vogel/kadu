@@ -16,6 +16,7 @@
 #include <qtimer.h>
 #include <qvbox.h>
 
+#include "action.h"
 #include "chat.h"
 #include "chat_manager.h"
 #include "chat_message.h"

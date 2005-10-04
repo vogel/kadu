@@ -10,6 +10,7 @@
 #include <qcursor.h>
 #include <qbitmap.h>
 
+#include "action.h"
 #include "chat_manager_slots.h"
 #include "config_dialog.h"
 #include "debug.h"

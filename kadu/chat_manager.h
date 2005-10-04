@@ -5,6 +5,7 @@
 
 #include "chat.h"
 #include "chat_message.h"
+#include "toolbar.h"
 #include "usergroup.h"
 
 class ChatManagerSlots;

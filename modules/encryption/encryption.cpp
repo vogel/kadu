@@ -13,6 +13,7 @@
 #include <qmessagebox.h>
 #include <stdlib.h>
 
+#include "action.h"
 #include "chat.h"
 #include "chat_manager.h"
 #include "config_dialog.h"
