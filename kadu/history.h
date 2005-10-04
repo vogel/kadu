@@ -7,6 +7,7 @@
 #include <qmap.h>
 #include <qstring.h>
 
+#include <time.h>
 #include "gadu.h"
 
 #define HISTORYMANAGER_ENTRY_CHATSEND   0x00000001
