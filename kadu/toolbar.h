@@ -22,6 +22,9 @@ class ToolButton : public QToolButton
 	private:
 		QString ActionName;
 
+	private slots:
+		void deleteButtonClicked();
+
 	protected:
 		void mouseMoveEvent(QMouseEvent* e);
 		void contextMenuEvent(QContextMenuEvent* e);

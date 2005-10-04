@@ -24,7 +24,9 @@
 ToolButton::ToolButton(QWidget* parent, const QString& action_name)
 	: QToolButton(parent, 0)
 {
+	kdebugf();
 	ActionName = action_name;
+	kdebugf2();
 }
 
 void ToolButton::mouseMoveEvent(QMouseEvent* e)
@@ -43,10 +45,22 @@ void ToolButton::contextMenuEvent(QContextMenuEvent* e)
 {
 	kdebugf();
 	QPopupMenu* p = new QPopupMenu(this);
-	p->insertItem(tr("Delete button"), this, SLOT(deleteLater()));
+	p->insertItem(tr("Delete button"), this, SLOT(deleteButtonClicked()));
 	p->exec(QCursor::pos());
 	delete p;
 	e->accept();
+	kdebugf2();
+}
+
+void ToolButton::deleteButtonClicked()
+{
+	kdebugf();
+	ToolBar* toolbar = (ToolBar*)parent();
+	toolbar->removeChild(this); // tymczasowo usun z listy, dla writeToConfig()
+	DockArea* dockarea = (DockArea*)toolbar->area();
+	dockarea->writeToConfig();
+	toolbar->insertChild(this); // przywroc
+	deleteLater();
 	kdebugf2();
 }
 
@@ -66,6 +80,8 @@ void ToolButton::writeToConfig(QDomElement parent_element)
 ToolButtonDrag::ToolButtonDrag(ToolButton* button, QWidget* dragSource, const char* name)
 	: QTextDrag(QString::number(button->winId()), dragSource, name)
 {
+	kdebugf();
+	kdebugf2();
 }
 
 ToolBar::ToolBar(const QString& label, QMainWindow* mainWindow, QWidget* parent)
@@ -81,6 +97,8 @@ void ToolBar::addButtonClicked(int action_index)
 	kdebugf();
 	kdebug("action_index = %d\n", action_index);
 	KaduActions[KaduActions.keys()[action_index]]->addToToolbar(this);
+	DockArea* dockarea = (DockArea*)area();
+	dockarea->writeToConfig();
 	kdebugf2();
 }
 
@@ -100,9 +118,16 @@ void ToolBar::dropEvent(QDropEvent* event)
 		QString text;
 		if (QTextDrag::decode(event, text))
 		{
+			
+			ToolBar* source_toolbar = (ToolBar*)event->source();
 			// TODO: uzywanie WId moze nie byc zbyt przenosne ;)
 			// Jakis lepszy pomysl?
-			((ToolBar*)event->source())->find(text.toULong())->reparent(this, QPoint(0,0), true);
+			source_toolbar->find(text.toULong())->reparent(this, QPoint(0,0), true);
+			// zapisujemy dockarea
+			DockArea* source_dockarea = (DockArea*)source_toolbar->area();
+			source_dockarea->writeToConfig();
+			DockArea* dockarea = (DockArea*)area();
+			dockarea->writeToConfig();
 		}
 	}
 	kdebugf2();
