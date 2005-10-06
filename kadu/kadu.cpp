@@ -608,7 +608,7 @@ void Kadu::viewHistory()
 	UserBox *activeUserBox=UserBox::getActiveUserBox();
 
 	if (activeUserBox==NULL)
-	{	
+	{
 		kdebugf2();
 		return;
 	}
@@ -1341,7 +1341,7 @@ bool Kadu::close(bool quit)
  		delete emoticons;
  		delete icons_manager_ptr;
   		kdebugmf(KDEBUG_INFO, "Saved config, disconnect and ignored\n");
- 
+
 #ifdef Q_OS_MACX
 		//na koniec przywracamy domy¶ln± ikonê, je¿eli tego nie zrobimy, to pozostanie bie¿±cy status
 		setMainWindowIcon(QPixmap(dataPath("kadu.png")));
@@ -1714,6 +1714,22 @@ void Kadu::startupProcedure()
 	if (ShowMainWindowOnStart)
 		show();
 
+	if (!Docked || dontHideOnClose)
+	{
+		// je¿eli nie jeste¶my zadokowani (b±d¼ jeste¶my zadokowani na MacOSX,
+		// gdzie wtyczka dokowania póki co jest u³omna), to przywracamy
+		// na listê wszystkich anonimów, którzy w czasie poprzedniej
+		// sesji do nas zagadali, a my tych wiadomo¶ci nie odebrali¶my
+		int pendingMsgsCount = pending.count();
+		for (int i = 0; i < pendingMsgsCount; ++i)
+		{
+			UinsList list = pending[i].uins;
+			CONST_FOREACH(uin, list)
+				if (!userlist.containsUin(*uin))
+					userlist.addAnonymous(*uin);
+		}
+	}
+
 	QString path_;
 	path_ = ggPath("");
 	mkdir(path_.local8Bit().data(), 0700);
@@ -1849,7 +1865,7 @@ void Kadu::deleteOldConfigFiles()
 }
 
 void Kadu::setMainWindowIcon(const QPixmap &icon)
-{                              
+{
 	bool blocked = false;
 	emit settingMainIconBlocked(blocked);
 	if (!blocked)

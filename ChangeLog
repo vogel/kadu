@@ -11,13 +11,15 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawki w wykrywaniu ¶cie¿ki do Firefoksa na Gentoo (joi)
 * usuniête kilka drobnych wycieków pamiêci (joi)
 * poprawiona obs³uga nowej bramki Ery (Belegdol/Ron_K)
-* dodanie flagi CXXFLAGS do kompilacji modulow, poprawka wykrywania libexecinfo
-  poprawka sciezek z /usr/share na $(datadir) (pawel_p)
+* dodanie flagi CXXFLAGS do kompilacji modu³ów, poprawka wykrywania libexecinfo
+  poprawka ¶cie¿ek z /usr/share na $(datadir) (pawel_p)
 * poprawiona obs³uga bramki Orange (akasoft/joi)
 * wy³±czenie regenerowania configure/Makefile'i (joi)
-* poprawna zmiana uzytkownika i hasla w konfiguracji dla bramki Ery, 
+* poprawna zmiana u¿ytkownika i has³a w konfiguracji dla bramki Ery, 
 	poprawne zapisywanie (pawel_p)
-
+* po restarcie Kadu gdy nie jeste¶my zadokowani (b±d¼ zadokowani na Maku)
+  przywracamy na listê kontaktów anonimów, od których dostali¶my wiadomo¶ci,
+  ale ich nie odczytali¶my - zlikwidowany uci±¿liwy efekt "migaj±cej koperty" (joi)
 
 +++ wersja 0.4.1 (19.07.2005)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
