@@ -160,48 +160,49 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	grid->addRowSpacing(1, 5);
 	grid->setRowStretch(0, 2);
 
-	// TOOLBAR 1
+	if (!buttontray->loadFromConfig(this))
+	{
+		// TOOLBAR 1
+		ToolBar* tb1 = new ToolBar("Chat toolbar 1", this, this);
+		tb1->setOffset(1000);
+		tb1->show();
+		buttontray->moveDockWindow(tb1);
+		buttontray->setAcceptDockWindow(tb1, true);
+		// TODO: na razie statycznie, potem z pliku xml
+		KaduActions["autoSendAction"]->addToToolbar(tb1);
+		KaduActions["scrollLockAction"]->addToToolbar(tb1);
+		KaduActions["clearChatAction"]->addToToolbar(tb1);
+		KaduActions["showHistoryAction"]->addToToolbar(tb1);
+		if (KaduActions.contains("encryptionAction"))
+			KaduActions["encryptionAction"]->addToToolbar(tb1);
+		KaduActions["insertEmoticonAction"]->addToToolbar(tb1);
+		KaduActions["whoisAction"]->addToToolbar(tb1);
+		KaduActions["insertImageAction"]->addToToolbar(tb1);
+	}
 
-	ToolBar* tb1 = new ToolBar("Chat toolbar 1", this, this);
-	tb1->setOffset(1000);
-	tb1->show();
-	buttontray->moveDockWindow(tb1);
-	buttontray->setAcceptDockWindow(tb1, true);
+	if (!btnpart->loadFromConfig(this))
+	{
+		// TOOLBAR2
+		ToolBar* tb2 = new ToolBar("Chat toolbar 2", this, this);
+		tb2->show();
+		btnpart->moveDockWindow(tb2);
+		btnpart->setAcceptDockWindow(tb2, true);
+		// TODO: na razie statycznie, potem z pliku xml
+		KaduActions["boldAction"]->addToToolbar(tb2);
+		KaduActions["italicAction"]->addToToolbar(tb2);
+		KaduActions["underlineAction"]->addToToolbar(tb2);
+		KaduActions["colorAction"]->addToToolbar(tb2);
 
-	// TODO: na razie statycznie, potem z pliku xml
-	KaduActions["autoSendAction"]->addToToolbar(tb1);
-	KaduActions["scrollLockAction"]->addToToolbar(tb1);
-	KaduActions["clearChatAction"]->addToToolbar(tb1);
-	KaduActions["showHistoryAction"]->addToToolbar(tb1);
-	if (KaduActions.contains("encryptionAction"))
-		KaduActions["encryptionAction"]->addToToolbar(tb1);
-	KaduActions["insertEmoticonAction"]->addToToolbar(tb1);
-	KaduActions["whoisAction"]->addToToolbar(tb1);
-	KaduActions["insertImageAction"]->addToToolbar(tb1);
-
-	// TOOLBAR2
-
-	ToolBar* tb2 = new ToolBar("Chat toolbar 2", this, this);
-	tb2->show();
-	btnpart->moveDockWindow(tb2);
-	btnpart->setAcceptDockWindow(tb2, true);
-
-	KaduActions["boldAction"]->addToToolbar(tb2);
-	KaduActions["italicAction"]->addToToolbar(tb2);
-	KaduActions["underlineAction"]->addToToolbar(tb2);
-	KaduActions["colorAction"]->addToToolbar(tb2);
-
-	// TOOLBAR 3
-
-	ToolBar* tb3 = new ToolBar("Chat toolbar 3", this, this);
-	tb3->setOffset(1000);
-	tb3->show();
-	btnpart->moveDockWindow(tb3);
-	btnpart->setAcceptDockWindow(tb3, true);
-
-	KaduActions["sendAction"]->addToToolbar(tb3);
-
-	// END TOOLBAR 3
+		// TOOLBAR 3
+		ToolBar* tb3 = new ToolBar("Chat toolbar 3", this, this);
+		tb3->setOffset(1000);
+		tb3->show();
+		btnpart->moveDockWindow(tb3);
+		btnpart->setAcceptDockWindow(tb3, true);
+		// TODO: na razie statycznie, potem z pliku xml
+		KaduActions["sendAction"]->addToToolbar(tb3);
+		// END TOOLBAR 3
+	}
 
 	bodyformat = new QMimeSourceFactory();
 

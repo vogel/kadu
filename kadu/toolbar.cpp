@@ -167,6 +167,18 @@ void ToolBar::writeToConfig(QDomElement parent_element)
 	kdebugf2();
 }
 
+void ToolBar::loadFromConfig(QDomElement toolbar_element)
+{
+	kdebugf();
+	setOffset(toolbar_element.attribute("offset").toInt());
+	QDomNodeList buttons = toolbar_element.elementsByTagName("ToolButton");
+	for (unsigned int i = 0; i < buttons.count(); i++)
+	{
+		QDomElement button_elem = buttons.item(i).toElement();;
+		KaduActions[button_elem.attribute("action_name")]->addToToolbar(this);
+	}
+	kdebugf2();
+}
 
 DockArea::DockArea(Orientation o, HandlePosition h,
 			QWidget * parent, const char * name)
@@ -226,6 +238,33 @@ void DockArea::writeToConfig()
 	kdebugf2();
 }
 
+bool DockArea::loadFromConfig(QMainWindow* toolbars_parent)
+{
+	kdebugf();
+	QDomElement root_elem = xml_config_file->rootElement();
+	QDomElement toolbars_elem = xml_config_file->findElement(root_elem, "Toolbars");
+	if (!toolbars_elem.isNull())
+	{
+		QDomElement dockarea_elem = xml_config_file->findElementByProperty(
+			toolbars_elem, "DockArea", "name", name());
+		if (!dockarea_elem.isNull())
+		{
+			QDomNodeList toolbars = dockarea_elem.elementsByTagName("ToolBar");
+			for (unsigned int i = 0; i < toolbars.count(); i++)
+			{
+				ToolBar* toolbar = new ToolBar(QString(),
+					toolbars_parent, toolbars_parent);
+				toolbar->loadFromConfig(toolbars.item(i).toElement());
+				toolbar->show();
+				moveDockWindow(toolbar);
+				setAcceptDockWindow(toolbar, true);
+			}
+			return true;
+		}
+	}
+	return false;
+	kdebugf2();
+}
 
 QValueList<MainToolBar::ToolButton> MainToolBar::RegisteredToolButtons;
 MainToolBar* MainToolBar::instance=NULL;

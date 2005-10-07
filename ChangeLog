@@ -161,6 +161,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   usuniêciu przycisku, oraz dwóch obszarów po przeci±gniêciu przycisku z jednego
   toolbara do drugiego (adrian)
 * wydzielone pliki action.cpp/h (adrian)
+* zapisana konfiguracja toolbarów okna chat jest przywracana (adrian)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

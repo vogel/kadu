@@ -58,6 +58,7 @@ class ToolBar : public QToolBar
 	public:
 		ToolBar(const QString& label, QMainWindow* mainWindow, QWidget* parent);
 		void writeToConfig(QDomElement parent_element);
+		void loadFromConfig(QDomElement parent_element);
 };
 
 class DockArea : public QDockArea
@@ -74,6 +75,7 @@ class DockArea : public QDockArea
 		DockArea(Orientation o, HandlePosition h = Normal,
 			QWidget * parent = 0, const char * name = 0);
 		void writeToConfig();
+		bool loadFromConfig(QMainWindow* toolbars_parent);
 };
 
 /**
