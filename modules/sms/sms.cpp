@@ -90,6 +90,7 @@ extern "C" void sms_close()
 	ConfigDialog::removeControl("SMS", "button");
 	ConfigDialog::removeControl("SMS", "gateways");
 	ConfigDialog::removeControl("SMS", "Gateways priority");
+	ConfigDialog::removeControl("SMS", "SMS Nick");
 	ConfigDialog::removeControl("SMS", QString::null, "smsstring");
 	ConfigDialog::removeControl("SMS", "SMS custom string");
 	ConfigDialog::removeControl("SMS", "smsgrid");
