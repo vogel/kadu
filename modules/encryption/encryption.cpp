@@ -71,10 +71,10 @@ EncryptionManager::EncryptionManager(QObject *parent, const char *name) : QObjec
 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userBoxMenuPopup()));
 
 	Action* action = new Action(icons_manager->loadIcon("EncryptedChat"),
-		tr("Enable encryption for this conversation"), "encryption_action");
+		tr("Enable encryption for this conversation"), "encryptionAction");
 	connect(action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(encryptionActionActivated(const UserGroup*)));
-	KaduActions.insert("encryption_action", action);
+	KaduActions.insert("encryptionAction", action);
 
 	UserBox::userboxmenu->addItemAtPos(2,"SendPublicKey", tr("Send my public key"), this, SLOT(sendPublicKey()));
 
@@ -91,7 +91,7 @@ EncryptionManager::~EncryptionManager()
 	kdebugf();
 	int sendkeyitem = UserBox::userboxmenu->getItem(tr("Send my public key"));
 	UserBox::userboxmenu->removeItem(sendkeyitem);
-	KaduActions.remove("encryption_action");
+	KaduActions.remove("encryptionAction");
 
 	disconnect(chat_manager, SIGNAL(chatCreated(const UserGroup *)), this, SLOT(chatCreated(const UserGroup *)));
 	disconnect(gadu, SIGNAL(messageFiltering(Protocol *, UserListElements, QCString&, QByteArray&, bool&)),
@@ -176,7 +176,7 @@ void EncryptionManager::chatCreated(const UserGroup *group)
 
 	setupEncryptButton(chat, encrypt);
 	QValueList<ToolButton*> buttons =
-		KaduActions["encryption_action"]->toolButtonsForUserListElements(
+		KaduActions["encryptionAction"]->toolButtonsForUserListElements(
 			group->toUserListElements());
 	for (QValueList<ToolButton*>::iterator i = buttons.begin(); i != buttons.end(); i++)
 		(*i)->setEnabled(encryption_possible);
@@ -189,7 +189,7 @@ void EncryptionManager::setupEncryptButton(Chat* chat,bool enabled)
 	kdebugf();
 	EncryptionEnabled[chat] = enabled;
 	QValueList<ToolButton*> buttons =
-		KaduActions["encryption_action"]->toolButtonsForUserListElements(
+		KaduActions["encryptionAction"]->toolButtonsForUserListElements(
 			chat->users()->toUserListElements());
 	for (QValueList<ToolButton*>::iterator i = buttons.begin(); i != buttons.end(); i++)
 	{
@@ -265,7 +265,7 @@ void EncryptionManager::enableEncryptionBtnForUsers(UserListElements users)
 {
 	kdebugf();
 	QValueList<ToolButton*> buttons =
-		KaduActions["encryption_action"]->toolButtonsForUserListElements(users);
+		KaduActions["encryptionAction"]->toolButtonsForUserListElements(users);
 	for (QValueList<ToolButton*>::iterator i = buttons.begin(); i != buttons.end(); i++)
 		(*i)->setEnabled(true);
 	kdebugf2();
