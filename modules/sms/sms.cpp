@@ -297,6 +297,14 @@ Sms::~Sms()
 	modules_manager->moduleDecUsageCount("sms");
 }
 
+void Sms::setRecipient(const QString &phone)
+{
+	kdebugf();
+	recipient->setText(phone);
+	body->setFocus();
+	kdebugf2();
+}
+
 void Sms::updateRecipient(const QString &newtext)
 {
 	kdebugf();
