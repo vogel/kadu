@@ -162,6 +162,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   toolbara do drugiego (adrian)
 * wydzielone pliki action.cpp/h (adrian)
 * zapisana konfiguracja toolbarów okna chat jest przywracana (adrian)
+* bramka Ery obs³uguje numery zaczynaj±ce siê od 886 (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
