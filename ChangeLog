@@ -20,6 +20,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * po restarcie Kadu gdy nie jeste¶my zadokowani (b±d¼ zadokowani na Maku)
   przywracamy na listê kontaktów anonimów, od których dostali¶my wiadomo¶ci,
   ale ich nie odczytali¶my - zlikwidowany uci±¿liwy efekt "migaj±cej koperty" (joi)
+* bramka Ery obs³uguje numery zaczynaj±ce siê od 886 (joi)
 
 +++ wersja 0.4.1 (19.07.2005)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
