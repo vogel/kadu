@@ -174,8 +174,10 @@ void ToolBar::loadFromConfig(QDomElement toolbar_element)
 	QDomNodeList buttons = toolbar_element.elementsByTagName("ToolButton");
 	for (unsigned int i = 0; i < buttons.count(); i++)
 	{
-		QDomElement button_elem = buttons.item(i).toElement();;
-		KaduActions[button_elem.attribute("action_name")]->addToToolbar(this);
+		QDomElement button_elem = buttons.item(i).toElement();
+		QString action_name = button_elem.attribute("action_name");
+		if (KaduActions.contains(action_name))
+			KaduActions[action_name]->addToToolbar(this);
 	}
 	kdebugf2();
 }
