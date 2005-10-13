@@ -154,7 +154,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   u¿ytkownika (Belegdol/joi)
 * oddzielny nick do smsów (Belegdol/joi)
 * poprawiona obs³uga bramki Orange (akasoft/joi)
-* poprawna zmiana uzytkownika i hasla w konfiguracji dla bramki Ery, 
+* poprawna zmiana uzytkownika i hasla w konfiguracji dla bramki Ery,
 	poprawne zapisywanie (pawel_p)
 * wszystkie przyciski w oknie chat s± akcjami (adrian)
 * zapisywanie konfiguracji danego obszaru dokowania okna chat po dodaniu lub
@@ -163,6 +163,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * wydzielone pliki action.cpp/h (adrian)
 * zapisana konfiguracja toolbarów okna chat jest przywracana (adrian)
 * bramka Ery obs³uguje numery zaczynaj±ce siê od 886 (joi)
+* gdy rozmawiamy z anonimem, w tytule okna rozmowy nie pokazujemy jego statusu (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

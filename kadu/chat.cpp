@@ -416,7 +416,12 @@ void Chat::refreshTitle()
 	{
 		UserListElement user = *Users->constBegin();
 		if (config_file.readEntry("Look","ChatContents").isEmpty())
-			title = parse(tr("Chat with ")+"%a (%s[: %d])", user, false);
+		{
+			if (user.isAnonymous())
+				title = parse(tr("Chat with ")+"%a", user, false);
+			else
+				title = parse(tr("Chat with ")+"%a (%s[: %d])", user, false);
+		}
 		else
 			title = parse(config_file.readEntry("Look","ChatContents"), user, false);
 		setIcon(user.status("Gadu").pixmap());
