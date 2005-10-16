@@ -50,7 +50,7 @@ void UserListElement::setAddressAndPort(const QString &protocolName, const QHost
 		return;
 	}
 	setDNSName(protocolName, QString::null);
-	setProtocolData(protocolName, "IP", ip.toIPv4Address());
+	setProtocolData(protocolName, "IP", ip.ip4Addr());
 	setProtocolData(protocolName, "Port", port);
 }
 
