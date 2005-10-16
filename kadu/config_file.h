@@ -46,13 +46,13 @@ class XmlConfigFile
 		/**
 			Zwraca pierwszy element lub element typu null jesli nie znajdzie.
 		**/
-		QDomElement findElement(QDomElement parent, const QString& tag_name);
+		QDomElement findElement(QDomElement parent, const QString& tag_name) const;
 		/**
 			Zwraca pierwszy element ktorego dany atrybut ma dana wartosc
 			lub element typu null jesli nie znajdzie.
 		**/
 		QDomElement findElementByProperty(QDomElement parent, const QString& tag_name,
-			const QString& property_name, const QString& property_value);
+			const QString& property_name, const QString& property_value) const;
 		/**
 			Zwraca pierwszy element lub dodaje nowy i przypisuje do rodzica.
 		**/

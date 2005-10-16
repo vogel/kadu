@@ -7,7 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-//#include <qtoolbar.h>
 #include <qcombobox.h>
 #include <qmessagebox.h>
 
@@ -50,7 +49,7 @@ const QPixmap &IconsManager::loadIcon(const QString &name)
 	QPixmap p;
 	if (!p.load(iconPath(name)))
 		kdebugmf(KDEBUG_WARNING, "warning - pixmap '%s' cannot be loaded!\n", name.local8Bit().data());
-	icons[name] = p;
+	icons.insert(name, p);
 //	kdebugf2();
 	return icons[name];
 }
@@ -65,7 +64,7 @@ const QMovie & IconsManager::loadAnimatedIcon(const QString &name)
 		return *i;
 	}
 
-	animatedIcons[name] = QMovie(iconPath(name));
+	animatedIcons.insert(name, QMovie(iconPath(name)));
 //	kdebugf2();
 	return animatedIcons[name];
 }
@@ -88,7 +87,7 @@ void IconsManager::unregisterMenu(QMenuData *menu)
 {
 	kdebugf();
 	FOREACH(it, menus)
-		if ((*it).first==menu)
+		if ((*it).first == menu)
 		{
 			menus.remove(it);
 			break;
@@ -100,7 +99,7 @@ void IconsManager::registerMenuItem(QMenuData *menu, const QString &caption, con
 {
 	kdebugf();
 	FOREACH(it, menus)
-		if ((*it).first==menu)
+		if ((*it).first == menu)
 		{
 			(*it).second.push_front(qMakePair(caption, iconName));
 			break;
@@ -112,10 +111,10 @@ void IconsManager::unregisterMenuItem(QMenuData *menu, const QString &caption)
 {
 	kdebugf();
 	FOREACH(it, menus)
-		if ((*it).first==menu)
+		if ((*it).first == menu)
 		{
-			FOREACH(it2, (*it).second)
-				if ((*it2).first==caption)
+			CONST_FOREACH(it2, (*it).second)
+				if ((*it2).first == caption)
 				{
 					(*it).second.remove(*it2);
 					break;
@@ -128,15 +127,15 @@ void IconsManager::unregisterMenuItem(QMenuData *menu, const QString &caption)
 void IconsManager::refreshMenus()
 {
 	kdebugf();
-	FOREACH(it, menus)
+	CONST_FOREACH(it, menus)
 	{
-		QMenuData *menu=(*it).first;
+		QMenuData *menu = (*it).first;
 		for (unsigned int i = 0, count = menu->count(); i < count; ++i)
 		{
 			int id = menu->idAt(i);
 			QString t = menu->text(id);
 
-			FOREACH(it2, (*it).second)
+			CONST_FOREACH(it2, (*it).second)
 				//startsWith jest potrzebne, bo je¿eli opcja w menu ma skrót klawiszowy,
 				//to menu->text(id) zwraca napis "Nazwa opcji\tskrót klawiszowy"
 				if (t == (*it2).first || t.startsWith((*it2).first + "\t"))
@@ -155,15 +154,15 @@ void IconsManager::refreshMenus()
 void IconsManager::onApplyTabLook()
 {
 	kdebugf();
-	QString previousIconTheme=config_file.readEntry("Look", "IconTheme");
-	QComboBox *iconThemeCombo= ConfigDialog::getComboBox("Look", "Icon theme");
+	QString previousIconTheme = config_file.readEntry("Look", "IconTheme");
+	QComboBox *iconThemeCombo = ConfigDialog::getComboBox("Look", "Icon theme");
 	QString selectedTheme;
 	if (iconThemeCombo->currentText() == tr("Default"))
-		selectedTheme="default";
+		selectedTheme = "default";
 	else
-	    selectedTheme=iconThemeCombo->currentText();
+	    selectedTheme = iconThemeCombo->currentText();
 
-	if (selectedTheme!=previousIconTheme)
+	if (selectedTheme != previousIconTheme)
 	{
 		config_file.writeEntry("Look", "IconTheme", selectedTheme);
 
@@ -184,12 +183,13 @@ void IconsManager::onCreateTabLook()
 {
 	kdebugf();
 
-	QComboBox *iconThemeCombo=ConfigDialog::getComboBox("Look", "Icon theme");
+	QComboBox *iconThemeCombo = ConfigDialog::getComboBox("Look", "Icon theme");
 	iconThemeCombo->insertStringList(icons_manager->themes());
 	iconThemeCombo->setCurrentText(config_file.readEntry("Look", "IconTheme"));
 
-	if (icons_manager->themes().contains("default"))
-		iconThemeCombo->changeItem(tr("Default"), icons_manager->themes().findIndex("default"));
+	const QStringList &Themes = icons_manager->themes();
+	if (Themes.contains("default"))
+		iconThemeCombo->changeItem(tr("Default"), Themes.findIndex("default"));
 
 	QStringList pl(QStringList::split(";", config_file.readEntry("Look", "IconsPaths")));
 	ConfigDialog::getSelectPaths("Look", "Icon paths")->setPathList(pl);
@@ -222,7 +222,8 @@ void IconsManager::initModule()
 
 	ConfigDialog::registerSlotOnCreateTab("Look", icons_manager, SLOT(onCreateTabLook()));
 	ConfigDialog::registerSlotOnApplyTab("Look", icons_manager, SLOT(onApplyTabLook()));
-	ConfigDialog::connectSlot("Look", "Icon paths", SIGNAL(changed(const QStringList&)), icons_manager, SLOT(selectedPaths(const QStringList&)));
+	ConfigDialog::connectSlot("Look", "Icon paths", SIGNAL(changed(const QStringList&)),
+								icons_manager, SLOT(selectedPaths(const QStringList&)));
 	kdebugf2();
 }
 

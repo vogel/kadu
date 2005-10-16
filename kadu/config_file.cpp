@@ -45,22 +45,20 @@ void XmlConfigFile::write(const QString& f)
 	rootElement().setAttribute("last_save_time", QDateTime::currentDateTime().toString());
 	rootElement().setAttribute("last_save_version", VERSION);
 	QFile file;
-	if (f == QString::null)
-	{
+	if (f.isEmpty())
 		file.setName(ggPath("kadu.conf.xml"));
-	}
 	else
 		file.setName(f);
 	if (file.open(IO_WriteOnly | IO_Truncate))
 	{
-		kdebugm(KDEBUG_INFO, "file opened '%s'\n", (const char *)file.name().local8Bit());
+		kdebugm(KDEBUG_INFO, "file opened '%s'\n", file.name().local8Bit().data());
 		QTextStream stream(&file);
 		stream.setEncoding(QTextStream::UnicodeUTF8);		
 		stream << DomDocument.toString();
 		file.close();
 	}
 	else
-		kdebugm(KDEBUG_ERROR, "can't open '%s'\n", (const char *)file.name().local8Bit());
+		kdebugm(KDEBUG_ERROR, "can't open '%s'\n", file.name().local8Bit().data());
 	kdebugf2();
 }
 
@@ -81,14 +79,14 @@ QDomElement XmlConfigFile::rootElement()
 
 QDomElement XmlConfigFile::createElement(QDomElement parent, const QString& tag_name)
 {
-	QDomElement elem = DomDocument.createElement(tag_name);
+	const QDomElement &elem = DomDocument.createElement(tag_name);
 	parent.appendChild(elem);
 	return elem;
 }
 
-QDomElement XmlConfigFile::findElement(QDomElement parent, const QString& tag_name)
+QDomElement XmlConfigFile::findElement(QDomElement parent, const QString& tag_name) const
 {
-	QDomNodeList elems = parent.elementsByTagName(tag_name);
+	const QDomNodeList &elems = parent.elementsByTagName(tag_name);
 	if (elems.length() > 0)
 		return elems.item(0).toElement();
 	else
@@ -96,13 +94,13 @@ QDomElement XmlConfigFile::findElement(QDomElement parent, const QString& tag_na
 }
 
 QDomElement XmlConfigFile::findElementByProperty(QDomElement parent, const QString& tag_name,
-	const QString& property_name, const QString& property_value)
+	const QString& property_name, const QString& property_value) const
 {
 //	kdebugf();
-	QDomNodeList elems = parent.elementsByTagName(tag_name);
-	for (unsigned int i = 0; i < elems.length(); i++)
+	const QDomNodeList &elems = parent.elementsByTagName(tag_name);
+	for (unsigned int i = 0, len = elems.length(); i < len; ++i)
 	{
-		QDomElement e = elems.item(i).toElement();
+		const QDomElement &e = elems.item(i).toElement();
 		QString val = e.attribute(property_name);
 //		kdebug("Checking if property value \"%s\" equals \"%s\"\n",
 //			val.local8Bit().data(), property_value.local8Bit().data());
@@ -120,7 +118,7 @@ QDomElement XmlConfigFile::findElementByProperty(QDomElement parent, const QStri
 
 QDomElement XmlConfigFile::accessElement(QDomElement parent, const QString& tag_name)
 {
-	QDomElement elem = findElement(parent, tag_name);
+	const QDomElement &elem = findElement(parent, tag_name);
 	if (elem.isNull())
 		return createElement(parent, tag_name);
 	else
