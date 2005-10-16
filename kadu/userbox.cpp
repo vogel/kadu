@@ -406,12 +406,12 @@ void UserBox::maybeTip(const QPoint &c)
 	if (!config_file.readBoolEntry("General", "ShowTooltipOnUserbox"))
 		return;
 
-	QListBoxItem* item = static_cast<QListBoxItem*>(itemAt(c));
-	if(item)
+	KaduListBoxPixmap* item = static_cast<KaduListBoxPixmap*>(itemAt(c));
+	if (item)
 	{
 		QRect r(itemRect(item));
 		QString s;
-		UserListElement user = userlist->byAltNick(item->text());
+		UserListElement user = item->User;
 		UserStatus status;
 		if (user.usesProtocol("Gadu"))
 			status = user.status("Gadu");
@@ -519,12 +519,13 @@ void UserBox::refresh()
 
 	bool showBold = config_file.readBoolEntry("Look", "ShowBold");
 
-	FOREACH(user, sortHelper)
+	for (std::vector<UserListElement>::const_iterator user = sortHelper.begin(),
+		userEnd = sortHelper.end(); user != userEnd; ++user)
 	{
 		bool has_mobile = !(*user).mobile().isEmpty();
 		bool usesGadu = (*user).usesProtocol("Gadu");
-		bool bold = showBold && usesGadu ? ((*user).status("Gadu").isOnline() ||
-								(*user).status("Gadu").isBusy()) : false;
+		bool bold = showBold && usesGadu && 
+					((*user).status("Gadu").isOnline() || (*user).status("Gadu").isBusy());
 //		kdebugm(KDEBUG_INFO, "creating: %s %d\n", (*user).altNick().local8Bit().data(), usesGadu);
 		KaduListBoxPixmap *lbp;
 		if (!usesGadu)
