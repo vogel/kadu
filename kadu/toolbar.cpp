@@ -123,7 +123,13 @@ void ToolBar::dropEvent(QDropEvent* event)
 			ToolBar* source_toolbar = (ToolBar*)event->source();
 			// TODO: uzywanie WId moze nie byc zbyt przenosne ;)
 			// Jakis lepszy pomysl?
-			source_toolbar->find(text.toULong())->reparent(this, QPoint(0,0), true);
+			ToolButton* button = (ToolButton*)source_toolbar->find(text.toULong());
+			QWidget* widget = childAt(event->pos());
+			button->reparent(this, QPoint(0,0), true);
+			if (widget != NULL)
+				button->stackUnder(widget);
+			// TODO: jak natychmiat odswiezyc pozycje przyciskow w toolbarze?
+
 			// zapisujemy dockarea
 			DockArea* source_dockarea = (DockArea*)source_toolbar->area();
 			source_dockarea->writeToConfig();
