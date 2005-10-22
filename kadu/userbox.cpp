@@ -243,56 +243,56 @@ void KaduListBoxPixmap::calculateSize(const QString &text, int width, QStringLis
 		out.clear();
 		height=0;
 */
-	QStringList tmpout=QStringList::split('\n', text, true);
-	int wsize=descriptionFontMetrics->width('W'); //zdaje siê najszersza litera to 'w'
-	int initialLength=width/wsize; // spróbujmy przewidzieæ szeroko¶æ
+	QStringList tmpout = QStringList::split('\n', text, true);
+	int wsize = descriptionFontMetrics->width('W'); //'w' is the widest letter
+	int initialLength = width / wsize; // try to guess width
 
-	if (initialLength<1) //sytuacja tragiczna: nie uda³o siê ani jednego znaku zmie¶ciæ
+	if (initialLength < 1) // we are all doomed ;) there is no space fo even one letter
 	{
 		kdebugm(KDEBUG_WARNING, "no space for description!\n");
-		height=0;
-		out=QStringList();
+		height = 0;
+		out = QStringList();
 		return;
 	}
 
 	while (!tmpout.isEmpty())
 	{
-		QString curtext=tmpout.front();
-		int textlen=curtext.length();
-		int len=initialLength;
-		bool tooWide=false;
+		QString curtext = tmpout.front();
+		int textlen = curtext.length();
+		int len = initialLength;
+		bool tooWide = false;
 		while (1)
 		{
-			tooWide=(descriptionFontMetrics->width(curtext.left(len))>=width);
-			if (!tooWide && len<textlen)
-				len+=5; //przesuwamy siê po 5 znaków ¿eby by³o szybciej
+			tooWide = (descriptionFontMetrics->width(curtext.left(len)) >= width);
+			if (!tooWide && len < textlen)
+				len += 5; //moving with 5 letters to make it faster
 			else
 				break;
 		}
-		if (tooWide) //przekroczyli¶my szeroko¶æ listy
+		if (tooWide) // crossed userbox width
 		{
-			while(descriptionFontMetrics->width(curtext.left(len))>=width) //skracamy ¿eby w ogóle siê zmie¶ciæ
+			while (descriptionFontMetrics->width(curtext.left(len)) >= width) //shortening to find the widest length
 				--len;
-			tmplen=len;
-			while (len>0 && !curtext[len-1].isSpace()) //nie b±d¼my chamy i dzielmy opisy na granicach s³ów
+			tmplen = len;
+			while (len > 0 && !curtext[len-1].isSpace()) //find word boundary
 				--len;
-			if (len==0)//no ale mo¿e kto¶ wpisa³ bez spacji?
-				len=tmplen-1;
+			if (len == 0) //but maybe someone wrote it without spaces?
+				len = tmplen-1;
 		}
-		if (len<1)
+		if (len < 1)
 		{
 			kdebugm(KDEBUG_WARNING, "no space for description ! (2)\n");
-			height=0;
-			out=QStringList();
+			height = 0;
+			out = QStringList();
 			return;
 		}
-		QString next=curtext.mid(len);//przenosimy do nastêpnego wiersza
+		QString next = curtext.mid(len); //moving rest to the next line
 		out.push_back(curtext.left(len));
 		tmpout.pop_front();
 		++height;
 		if (tooWide)
 		{
-			if (next[0].isSpace())//je¿eli obcinamy na bia³ym znaku, to w nastêpnej linii ten znak nie jest potrzebny
+			if (next[0].isSpace()) // if we are breaking line at word boundary, next line can be truncated at beginning
 				tmpout.push_front(next.mid(1));
 			else
 				tmpout.push_front(next);
@@ -504,17 +504,17 @@ void UserBox::refresh()
 */
 	sort();
 
-	// Zapamiêtujemy zaznaczonych u¿ytkowników
+	// remember selected users
 	QStringList s_users;
 	for (unsigned int i = 0, count2 = count(); i < count2; ++i)
 		if (isSelected(i))
 			s_users.append(item(i)->text());
 	QString s_user = currentText();
 
-	//zapamiêtajmy po³o¿enie pionowego suwaka
+	// remember vertical scrollbar position
 	int vScrollValue = verticalScrollBar()->value();
 
-	// Czyscimy listê
+	// clearing list
 	QListBox::clear();
 
 	bool showBold = config_file.readBoolEntry("Look", "ShowBold");
@@ -524,7 +524,7 @@ void UserBox::refresh()
 	{
 		bool has_mobile = !(*user).mobile().isEmpty();
 		bool usesGadu = (*user).usesProtocol("Gadu");
-		bool bold = showBold && usesGadu && 
+		bool bold = showBold && usesGadu &&
 					((*user).status("Gadu").isOnline() || (*user).status("Gadu").isBusy());
 //		kdebugm(KDEBUG_INFO, "creating: %s %d\n", (*user).altNick().local8Bit().data(), usesGadu);
 		KaduListBoxPixmap *lbp;
@@ -543,12 +543,12 @@ void UserBox::refresh()
 		insertItem(lbp);
 	}
 
-	// Przywracamy zaznaczenie wczesniej zaznaczonych uzytkownikow
+	// restore selected users
 	CONST_FOREACH(username, s_users)
 		setSelected(findItem(*username), true);
 	setCurrentItem(findItem(s_user));
 
-	//przywracamy po³o¿enie pionowego suwaka
+	// restore vertical scrollbar position
 	verticalScrollBar()->setValue(vScrollValue);
 
 /*	}
@@ -602,7 +602,7 @@ void UserBox::initModule()
 	kdebugf();
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "General"), "GeneralTab");
 
-	// dodanie wpisow do konfiga (pierwsze uruchomienie)
+	// add some values at first run
 	QWidget w;
 	config_file.addVariable("Look", "InfoPanelBgColor", w.paletteBackgroundColor());
 	config_file.addVariable("Look", "InfoPanelFgColor", w.paletteForegroundColor());
@@ -611,7 +611,8 @@ void UserBox::initModule()
 	config_file.addVariable("Look", "AlignUserboxIconsTop", false);
 	config_file.addVariable("Look", "DescriptionColor", w.paletteForegroundColor());
 
-	if (config_file.readEntry("Look", "MultiColumnUserboxWidth").isEmpty())//operacje na czcionkach s± powolne, wystrzegamy siê ich kiedy mozemy
+	// font operations are really slow, so we are doing them only when it's necessary (at first run)
+	if (config_file.readEntry("Look", "MultiColumnUserboxWidth").isEmpty())
 		config_file.addVariable("Look", "MultiColumnUserboxWidth", int(QFontMetrics(*defaultFont).width("Imie i Nazwisko")*1.5));
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"), "LookTab");
@@ -722,8 +723,6 @@ void UserBoxMenu::restoreLook()
 	{
 		setItemEnabled(idAt(i), true);
 		setItemChecked(idAt(i), false);
-//		setItemVisible(idAt(i),true);
-// nie ma takiej funkcji w qt 3.0.*
 	}
 }
 
@@ -869,15 +868,15 @@ void UserBox::removeFilter(UserGroup *g)
 			this, SLOT(userAddedToGroup(UserListElement, bool, bool)));
 	disconnect(g, SIGNAL(userRemoved(UserListElement, bool, bool)),
 			this, SLOT(userRemovedFromGroup(UserListElement, bool, bool)));
-	if (Filters.isEmpty())//musi byæ przynajmniej jedna grupa
+	if (Filters.isEmpty()) // there must be at least one group
 		Filters.append(userlist);
 	UserGroup *last = Filters.last();
-	Filters.pop_back(); //tymczasowo usuwamy
+	Filters.pop_back(); //temorarily removing
 
 	UserListElements users;
 	CONST_FOREACH(user, *last)
 	{
-		if (VisibleUsers->contains(*user))//nie sprawdzamy pewniaków
+		if (VisibleUsers->contains(*user)) // we are not looking for contacts which are certain
 			continue;
 		bool omit = false;
 
@@ -894,14 +893,14 @@ void UserBox::removeFilter(UserGroup *g)
 			if (!(*group)->contains(*user))
 			{
 				omit = true;
-				break;//je¿eli do jakiej¶ nie nale¿y, to nie ma sensu dalej sprawdzaæ
+				break; // if belongs to any group, there is no point in checking further
 			}
 		if (omit)
 			continue;
 
 		users.append(*user);
 	}
-	Filters.append(last); //przywracamy
+	Filters.append(last); // restoring
 	VisibleUsers->addUsers(users);
 	kdebugf2();
 }
@@ -1051,7 +1050,7 @@ void UserBox::statusChanged(UserListElement elem, QString protocolName,
 void UserBox::userDataChanged(UserListElement elem, QString name, QVariant oldValue,
 					QVariant currentValue, bool massively, bool last)
 {
-	if (name != "AltNick") //inne dane nas nie interesuj±
+	if (name != "AltNick") // we are not interested in other names
 		return;
 	if (massively)
 		refreshLater();
@@ -1213,8 +1212,8 @@ inline int compareAltNick(const UserListElement &u1, const UserListElement &u2)
 
 inline int compareStatus(const UserListElement &u1, const UserListElement &u2)
 {
-	//UWAGA: wykorzystany jest fakt, ¿e sta³e w enum eUserStatus s± w "dobrej" kolejno¶ci
-	// uwa¿amy Busy i Online za równowa¿ne
+	//WARNING: we are utilizing the fact, that enums in eUserStats are in "correct" order
+	// we see Busy and Online as equal here
 	int r[] = {Online, Online, Invisible, Offline, Blocking};
 	bool u1Gadu = u1.usesProtocol("Gadu");
 	bool u2Gadu = u2.usesProtocol("Gadu");

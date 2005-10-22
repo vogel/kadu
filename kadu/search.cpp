@@ -353,7 +353,7 @@ void SearchDialog::closeEvent(QCloseEvent * e)
 void SearchDialog::resizeEvent(QResizeEvent *e)
 {
 	QWidget::resizeEvent(e);
-	results->triggerUpdate();//obej¶cie b³êdu w Qt, które nie od¶wie¿a w³a¶ciwie wyników
+	results->triggerUpdate();//workaround for bug in Qt, which do not refresh results properly
 }
 
 void SearchDialog::uinTyped(void)
