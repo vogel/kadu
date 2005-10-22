@@ -47,13 +47,16 @@ class ToolBar : public QToolBar
 {
 	Q_OBJECT
 
+	private:
+		ToolButton *dragButton;
 	private slots:
 		void addButtonClicked(int action_index);
 
 	protected:
-		void dragEnterEvent(QDragEnterEvent* event);
-		void dropEvent(QDropEvent* event);
-		void contextMenuEvent(QContextMenuEvent* e);
+		virtual void dragEnterEvent(QDragEnterEvent* event);
+		virtual void dropEvent(QDropEvent* event);
+		virtual void contextMenuEvent(QContextMenuEvent* e);
+		virtual void dragLeaveEvent(QDragLeaveEvent *e);
 
 	public:
 		ToolBar(const QString& label, QMainWindow* mainWindow, QWidget* parent);

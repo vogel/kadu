@@ -164,6 +164,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zapisana konfiguracja toolbarów okna chat jest przywracana (adrian)
 * bramka Ery obs³uguje numery zaczynaj±ce siê od 886 (joi)
 * gdy rozmawiamy z anonimem, w tytule okna rozmowy nie pokazujemy jego statusu (joi)
+* poprawki do drag'n'drop przycisków w toolbarach - przy "niedokoñczonym"
+  przenoszeniu przyciski nie pozostaj± wci¶niête (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

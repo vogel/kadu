@@ -38,7 +38,7 @@ void ToolButton::mouseMoveEvent(QMouseEvent* e)
 	{
 		QDragObject* d = new ToolButtonDrag(this, parentWidget());
 		d->dragMove();
-	}	
+	}
 //	kdebugf2();
 }
 
@@ -86,7 +86,7 @@ ToolButtonDrag::ToolButtonDrag(ToolButton* button, QWidget* dragSource, const ch
 }
 
 ToolBar::ToolBar(const QString& label, QMainWindow* mainWindow, QWidget* parent)
-	: QToolBar(label, mainWindow, parent)
+	: QToolBar(label, mainWindow, parent), dragButton(NULL)
 {
 	kdebugf();
 	setAcceptDrops(true);
@@ -106,7 +106,26 @@ void ToolBar::addButtonClicked(int action_index)
 void ToolBar::dragEnterEvent(QDragEnterEvent* event)
 {
 	kdebugf();
-	event->accept(dynamic_cast<ToolBar*>(event->source()) != NULL);
+	ToolBar* source = dynamic_cast<ToolBar*>(event->source());
+	event->accept(source != NULL);
+	if (source)
+	{
+		QString text;
+		// w trakcie dragLeave nie mo¿na sprawdziæ ¼ród³a, wiêc zapamiêtujemy go sobie
+		if (QTextDrag::decode(event, text))
+			dragButton = (ToolButton*)source->find(text.toULong());
+	}
+	kdebugf2();
+}
+
+void ToolBar::dragLeaveEvent(QDragLeaveEvent *event)
+{
+	kdebugf();
+	if (dragButton)
+	{
+		dragButton->setDown(false);
+		dragButton = NULL;
+	}
 	kdebugf2();
 }
 
@@ -119,7 +138,6 @@ void ToolBar::dropEvent(QDropEvent* event)
 		QString text;
 		if (QTextDrag::decode(event, text))
 		{
-			
 			ToolBar* source_toolbar = (ToolBar*)event->source();
 			// TODO: uzywanie WId moze nie byc zbyt przenosne ;)
 			// Jakis lepszy pomysl?
@@ -129,6 +147,13 @@ void ToolBar::dropEvent(QDropEvent* event)
 			if (widget != NULL)
 				button->stackUnder(widget);
 			// TODO: jak natychmiat odswiezyc pozycje przyciskow w toolbarze?
+			button->setDown(false);
+
+			// je¿eli upu¶cili¶my przycisk na nim samym,
+			// to symulujemy zwyk³e naci¶niêcie przycisku
+			if (button == widget)
+				button->animateClick();
+			source->dragButton = NULL;
 
 			// zapisujemy dockarea
 			DockArea* source_dockarea = (DockArea*)source_toolbar->area();
