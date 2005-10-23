@@ -30,6 +30,12 @@ ToolButton::ToolButton(QWidget* parent, const QString& action_name)
 	kdebugf2();
 }
 
+ToolButton::~ToolButton()
+{
+	kdebugf();
+	kdebugf2();
+}
+
 void ToolButton::mouseMoveEvent(QMouseEvent* e)
 {
 //	kdebugf();
@@ -85,11 +91,19 @@ ToolButtonDrag::ToolButtonDrag(ToolButton* button, QWidget* dragSource, const ch
 	kdebugf2();
 }
 
-ToolBar::ToolBar(const QString& label, QMainWindow* mainWindow, QWidget* parent)
-	: QToolBar(label, mainWindow, parent), dragButton(NULL)
+ToolBar::ToolBar(QMainWindow* parent, const QString& label)
+	: QToolBar(parent, label), dragButton(NULL)
 {
 	kdebugf();
 	setAcceptDrops(true);
+	kdebugf2();
+}
+
+
+ToolBar::~ToolBar()
+{
+	kdebugf();
+	undock();
 	kdebugf2();
 }
 
@@ -145,8 +159,12 @@ void ToolBar::dropEvent(QDropEvent* event)
 			QWidget* widget = childAt(event->pos());
 			button->reparent(this, QPoint(0,0), true);
 			if (widget != NULL)
+			{
 				button->stackUnder(widget);
-			// TODO: jak natychmiat odswiezyc pozycje przyciskow w toolbarze?
+				QBoxLayout* layout = boxLayout();
+				layout->remove(button);
+				layout->insertWidget(layout->findWidget(widget), button);
+			}
 			button->setDown(false);
 
 			// je¿eli upu¶cili¶my przycisk na nim samym,
@@ -221,6 +239,12 @@ DockArea::DockArea(Orientation o, HandlePosition h,
 	kdebugf2();
 }
 
+DockArea::~DockArea()
+{
+	kdebugf();
+	kdebugf2();
+}
+
 void DockArea::contextMenuEvent(QContextMenuEvent* e)
 {
 	kdebugf();
@@ -241,7 +265,7 @@ void DockArea::createNewToolbar()
 		if (mw != NULL)
 		{
 			kdebug("Creating new toolbar\n");
-			ToolBar* tb = new ToolBar("New toolbar", mw, mw);
+			ToolBar* tb = new ToolBar(mw, "New toolbar");
 			tb->show();
 			moveDockWindow(tb);
 			setAcceptDockWindow(tb, true);
@@ -285,8 +309,7 @@ bool DockArea::loadFromConfig(QMainWindow* toolbars_parent)
 			QDomNodeList toolbars = dockarea_elem.elementsByTagName("ToolBar");
 			for (unsigned int i = 0; i < toolbars.count(); i++)
 			{
-				ToolBar* toolbar = new ToolBar(QString(),
-					toolbars_parent, toolbars_parent);
+				ToolBar* toolbar = new ToolBar(toolbars_parent, QString());
 				toolbar->loadFromConfig(toolbars.item(i).toElement());
 				toolbar->show();
 				moveDockWindow(toolbar);

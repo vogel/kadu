@@ -163,7 +163,7 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	if (!buttontray->loadFromConfig(this))
 	{
 		// TOOLBAR 1
-		ToolBar* tb1 = new ToolBar("Chat toolbar 1", this, this);
+		ToolBar* tb1 = new ToolBar(this, "Chat toolbar 1");
 		tb1->setOffset(1000);
 		tb1->show();
 		buttontray->moveDockWindow(tb1);
@@ -183,7 +183,7 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	if (!btnpart->loadFromConfig(this))
 	{
 		// TOOLBAR2
-		ToolBar* tb2 = new ToolBar("Chat toolbar 2", this, this);
+		ToolBar* tb2 = new ToolBar(this, "Chat toolbar 2");
 		tb2->show();
 		btnpart->moveDockWindow(tb2);
 		btnpart->setAcceptDockWindow(tb2, true);
@@ -194,7 +194,7 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 		KaduActions["colorAction"]->addToToolbar(tb2);
 
 		// TOOLBAR 3
-		ToolBar* tb3 = new ToolBar("Chat toolbar 3", this, this);
+		ToolBar* tb3 = new ToolBar(this, "Chat toolbar 3");
 		tb3->setOffset(1000);
 		tb3->show();
 		btnpart->moveDockWindow(tb3);

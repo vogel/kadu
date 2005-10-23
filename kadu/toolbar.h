@@ -30,6 +30,7 @@ class ToolButton : public QToolButton
 
 	public:
 		ToolButton(QWidget* parent, const QString& action_name);
+		~ToolButton();
 		QString actionName();
 		void writeToConfig(QDomElement parent_element);
 };
@@ -49,6 +50,7 @@ class ToolBar : public QToolBar
 
 	private:
 		ToolButton *dragButton;
+
 	private slots:
 		void addButtonClicked(int action_index);
 
@@ -59,7 +61,8 @@ class ToolBar : public QToolBar
 		virtual void dragLeaveEvent(QDragLeaveEvent *e);
 
 	public:
-		ToolBar(const QString& label, QMainWindow* mainWindow, QWidget* parent);
+		ToolBar(QMainWindow* parent, const QString& label);
+		~ToolBar();
 		void writeToConfig(QDomElement parent_element);
 		void loadFromConfig(QDomElement parent_element);
 };
@@ -77,6 +80,7 @@ class DockArea : public QDockArea
 	public:
 		DockArea(Orientation o, HandlePosition h = Normal,
 			QWidget * parent = 0, const char * name = 0);
+		~DockArea();
 		void writeToConfig();
 		bool loadFromConfig(QMainWindow* toolbars_parent);
 };

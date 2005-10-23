@@ -166,6 +166,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * gdy rozmawiamy z anonimem, w tytule okna rozmowy nie pokazujemy jego statusu (joi)
 * poprawki do drag'n'drop przycisków w toolbarach - przy "niedokoñczonym"
   przenoszeniu przyciski nie pozostaj± wci¶niête (joi)
+* przy przenoszeniu przycisków miêdzy toolbarami l±duj± one tam gdzie je upu¶cili¶my,
+  kolejno¶æ przycisków jest zapamiêtywana (adrian)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
