@@ -83,7 +83,7 @@ QString EmoticonsManager::fixFileName(const QString& path,const QString& fn)
 		return fn;
 	// mo¿e ca³o¶æ lowercase?
 	if(QFile::exists(path+"/"+fn.lower()))
-		return fn.lower();	
+		return fn.lower();
 	// rozbij na nazwê i rozszerzenie
 	QString name=fn.section('.',0,0);
 	QString ext=fn.section('.',1);
@@ -197,7 +197,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor,
 		return;
 	}
 	emotsFound = true;
-	
+
 	// check in config if user wants animated emots
 	bool animated = style == EMOTS_ANIMATED;
 
@@ -239,7 +239,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor,
 
 					doc.splitElement( e_i, lastBegin, Aliases[lastEmot].alias.length() );
 					doc.setElementValue( e_i, new_text, true );
-					// our analysis will begin directly after 
+					// our analysis will begin directly after
 					// occurrence of previous emot
 					lastEmot = -1;
 					break;
@@ -296,7 +296,7 @@ QString EmoticonsManager::selectorStaticPath(int emot_num) const
 	else
 		return QString::null;
 }
-				
+
 EmoticonsManager *emoticons;
 
 EmoticonSelectorButton::EmoticonSelectorButton(
@@ -305,7 +305,7 @@ EmoticonSelectorButton::EmoticonSelectorButton(
 	: QToolButton(parent)
 {
 	EmoticonString = emoticon_string;
-	AnimPath = anim_path;	
+	AnimPath = anim_path;
 	StaticPath = static_path;
 	Movie = NULL;
 	setPixmap(QPixmap(StaticPath));
@@ -360,7 +360,7 @@ void EmoticonSelectorButton::leaveEvent(QEvent* e)
 EmoticonSelector::EmoticonSelector(QWidget *parent, const char *name, Chat * caller) : QWidget (parent, name,Qt::WType_Popup|Qt::WDestructiveClose)
 {
 	callingwidget = caller;
-	
+
 	int selector_count=emoticons->selectorCount();
 	int selector_width=(int)sqrt((double)selector_count);
 	int btn_width=0;
@@ -577,7 +577,7 @@ QString StaticTextItem::richText() const
 	it=attributes.find("src");
 	if (it!=attributes.end())
 		return *it;
-	
+
 	QString s;
 	s += "<img ";
 	it = attributes.begin();
@@ -666,37 +666,37 @@ AnimTextItem::AnimTextItem(
 	const QString& filename, const QColor& bgcolor, const QString& tip)
 	: QTextCustomItem(p)
 {
-	FileName=filename;
-	text=tip;
-	Edit=edit;
-	Label=new QLabel(Edit->viewport());
+	FileName = filename;
+	text = tip;
+	Edit = edit;
+	Label = new QLabel(Edit->viewport());
 	Edit->addChild(Label);
 	//
 	MovieCacheData md;
-	if(Movies==NULL)
-		Movies=new MoviesCache();
-	if(Movies->contains(filename))
+	if (Movies == NULL)
+		Movies = new MoviesCache();
+	if (Movies->contains(filename))
 	{
-		md=(*Movies)[filename];
-		(*Movies)[filename].count++;
-		kdebugm(KDEBUG_INFO, "Movie %s loaded from cache\n",filename.local8Bit().data());
+		++(*Movies)[filename].count;
+		md = (*Movies)[filename];
+		kdebugm(KDEBUG_INFO, "Movie %s loaded from cache\n", filename.local8Bit().data());
 	}
 	else
 	{
-		md.count=1;
-		md.movie=QMovie(filename);
-		if(SizeCheckImage==NULL)
-		    SizeCheckImage= new QImage();
+		md.count = 1;
+		md.movie = QMovie(filename);
+		if (SizeCheckImage == NULL)
+			SizeCheckImage = new QImage();
 
 		SizeCheckImage->load(filename);
-		md.size=SizeCheckImage->size();
-		Movies->insert(filename,md);
-		kdebugm(KDEBUG_INFO, "Movie %s loaded from file and cached\n",filename.local8Bit().data());
+		md.size = SizeCheckImage->size();
+		Movies->insert(filename, md);
+		kdebugm(KDEBUG_INFO, "Movie %s loaded from file and cached\n", filename.local8Bit().data());
 	}
 	//
 	Label->setMovie(md.movie);
-	width=md.size.width();
-	height=md.size.height();
+	width = md.size.width();
+	height = md.size.height();
 	QToolTip::add(Label, tip);
 	Label->resize(md.size);
 	Label->setPaletteBackgroundColor(bgcolor);
@@ -705,18 +705,18 @@ AnimTextItem::AnimTextItem(
 
 AnimTextItem::~AnimTextItem()
 {
-	kdebugf();
+	kdebugmf(KDEBUG_FUNCTION_START | KDEBUG_INFO, " %p\n", Movies);
 	delete Label;
-	MovieCacheData &md=(*Movies)[FileName];
-	md.count--;
-	if (md.count==0)
+	MovieCacheData &md = (*Movies)[FileName];
+	--md.count;
+	if (md.count == 0)
 		Movies->remove(FileName);
 	if (Movies->isEmpty())
 	{
 		delete SizeCheckImage;
 		delete Movies;
-		Movies=NULL;
-		SizeCheckImage=NULL;
+		Movies = NULL;
+		SizeCheckImage = NULL;
 	}
 	kdebugf2();
 }
@@ -729,7 +729,7 @@ void AnimTextItem::draw(
 //	kdebugm(KDEBUG_WARNING, "%s x:%d y:%d cx:%d cy:%d cw:%d ch:%d\n", text.local8Bit().data(), x, y, cx, cy, cw, ch);
 //	kdebugm(KDEBUG_WARNING, "contX:%d contY:%d contW:%d contH:%d visW:%d visH:%d\n", Edit->contentsX(), Edit->contentsY(), Edit->contentsWidth(), Edit->contentsHeight(), Edit->visibleWidth(), Edit->visibleHeight());
 //	if(EditSize==Edit->size())
-	if(EditSize == Edit->size()  &&  ch != Edit->visibleHeight())
+	if (EditSize == Edit->size()  &&  ch != Edit->visibleHeight())
 	{
 //		kdebugm(KDEBUG_WARNING, "back\n\n");
 		return;
@@ -750,7 +750,7 @@ void AnimTextItem::draw(
 /*	QPoint u(x, y - cy);
 	if (u.y() > 0)
 		u += QPoint(0, Edit->visibleHeight() - ch);
-	
+
 //	Edit->moveChild(Label, u.x(), u.y());
 	Label->move(u);*/
 	Label->show();
@@ -768,7 +768,7 @@ AnimStyleSheet::AnimStyleSheet(
 	QTextEdit* parent, const QString& path, const char* name )
 	: QStyleSheet(parent, name)
 {
-	Path=path;
+	Path = path;
 }
 
 QTextCustomItem* AnimStyleSheet::tag(
@@ -776,14 +776,14 @@ QTextCustomItem* AnimStyleSheet::tag(
 	const QString& context, const QMimeSourceFactory& factory,
 	bool emptyTag, QTextDocument* doc) const
 {
-	if (name!="img")
-		return QStyleSheet::tag(name,attr,context,factory,emptyTag,doc);
-	if (attr["animated"]=="1")
+	if (name != "img")
+		return QStyleSheet::tag(name, attr, context, factory, emptyTag, doc);
+	if (attr["animated"] == "1")
 	{
-		if (attr["emoticon"]=="1")
-			return new AnimTextItem(doc,(QTextEdit*)parent(),Path+"/"+attr["src"],QColor(attr["bgcolor"]),attr["title"]);
+		if (attr["emoticon"] == "1")
+			return new AnimTextItem(doc, (QTextEdit*)parent(), Path + "/" + attr["src"], QColor(attr["bgcolor"]), attr["title"]);
 		else
-			return new AnimTextItem(doc,(QTextEdit*)parent(),         attr["src"],QColor(attr["bgcolor"]),attr["title"]);
+			return new AnimTextItem(doc, (QTextEdit*)parent(),              attr["src"], QColor(attr["bgcolor"]), attr["title"]);
 	}
 	else
 		return new StaticTextItem(doc, attr, context, (QMimeSourceFactory&)factory);
@@ -791,10 +791,10 @@ QTextCustomItem* AnimStyleSheet::tag(
 }
 
 StaticStyleSheet::StaticStyleSheet(
-	QTextEdit* parent, const QString& path, const char* name )
+	QTextEdit* parent, const QString& path, const char* name)
 	: QStyleSheet(parent, name)
 {
-	Path=path;
+	Path = path;
 }
 
 QTextCustomItem* StaticStyleSheet::tag(
@@ -802,7 +802,7 @@ QTextCustomItem* StaticStyleSheet::tag(
 	const QString& context, const QMimeSourceFactory& factory,
 	bool emptyTag, QTextDocument* doc) const
 {
-	if (name!="img")
+	if (name != "img")
 		return QStyleSheet::tag(name,attr,context,factory,emptyTag,doc);
 	return new StaticTextItem(doc, attr, context, (QMimeSourceFactory&)factory);
 }
@@ -810,7 +810,7 @@ QTextCustomItem* StaticStyleSheet::tag(
 /** create fresh emoticons dictionary, which will allow easy finding of occurrences
     of stored emots in text
 */
-EmotsWalker::EmotsWalker() 
+EmotsWalker::EmotsWalker()
 {
 	root = new PrefixNode();
 	root -> emotIndex = -1;
@@ -818,7 +818,7 @@ EmotsWalker::EmotsWalker()
 }
 
 /** deletes entire dictionary of emots */
-EmotsWalker::~EmotsWalker() 
+EmotsWalker::~EmotsWalker()
 {
 	removeChilds( root );
 	delete root;
@@ -833,7 +833,7 @@ PrefixNode* EmotsWalker::findChild( PrefixNode* node, const QChar& c )
 	myPair.first = c;
 	// create variable 'position' with result of binary search in childs
 	// of given node
-	VAR( position, std::upper_bound ( node -> childs.begin(), node -> childs.end(), myPair ) );  
+	VAR( position, std::upper_bound ( node -> childs.begin(), node -> childs.end(), myPair ) );
 
 	if ( position != node -> childs.end() && position -> first == c )
 		return position -> second;
@@ -844,7 +844,7 @@ PrefixNode* EmotsWalker::findChild( PrefixNode* node, const QChar& c )
 /** add successor to given node with edge marked by given characted
     (building of prefix tree)
 */
-PrefixNode* EmotsWalker::insertChild( PrefixNode* node, const QChar& c ) 
+PrefixNode* EmotsWalker::insertChild( PrefixNode* node, const QChar& c )
 {
 	PrefixNode* newNode = new PrefixNode();
 	newNode -> emotIndex = -1;
@@ -858,7 +858,7 @@ PrefixNode* EmotsWalker::insertChild( PrefixNode* node, const QChar& c )
 }
 
 /** recursively delete all childs of given node */
-void EmotsWalker::removeChilds( PrefixNode* node ) 
+void EmotsWalker::removeChilds( PrefixNode* node )
 {
 	CONST_FOREACH( ch, node -> childs ) {
 		removeChilds( ch -> second );
@@ -870,12 +870,12 @@ void EmotsWalker::removeChilds( PrefixNode* node )
     number, which will be used later to notify occurrences of
     emot in analyzed text
 */
-void EmotsWalker::insertString( const QString& str, int num ) 
+void EmotsWalker::insertString( const QString& str, int num )
 {
 	PrefixNode *child, *node = root;
 	unsigned int len = str.length();
 	unsigned int pos = 0;
-  
+
 	// it adds string to prefix tree character after character
 	while ( pos < len ) {
 		child = findChild( node, str[pos] );
@@ -885,7 +885,7 @@ void EmotsWalker::insertString( const QString& str, int num )
 		++pos;
 	}
 
-	if ( node -> emotIndex == -1 ) 
+	if ( node -> emotIndex == -1 )
 		node -> emotIndex = num;
 }
 
@@ -894,7 +894,7 @@ void EmotsWalker::insertString( const QString& str, int num )
     beginning of text analysis is turned on by 'initWalking()'
     if no emot occures, -1 is returned
 */
-int EmotsWalker::checkEmotOccurrence( const QChar& c ) 
+int EmotsWalker::checkEmotOccurrence( const QChar& c )
 {
 	PrefixNode* next;
 	int result = -1, resultLen = -1;
@@ -918,7 +918,7 @@ int EmotsWalker::checkEmotOccurrence( const QChar& c )
 		else {
 			positions[i] = next;
 			++lengths[i];
-			if ( result == -1 || 
+			if ( result == -1 ||
 				( next -> emotIndex >= 0 &&
 				( next -> emotIndex < result || resultLen < lengths[i] ) ) )
 			{
@@ -930,10 +930,10 @@ int EmotsWalker::checkEmotOccurrence( const QChar& c )
 	return result;
 }
 
-/** clear internal structures responsible for analyzing text, it allows 
+/** clear internal structures responsible for analyzing text, it allows
     begin of new text analysis
 */
-void EmotsWalker::initWalking() 
+void EmotsWalker::initWalking()
 {
 	amountPositions = 0;
 }
