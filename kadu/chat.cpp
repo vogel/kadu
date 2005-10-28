@@ -116,6 +116,8 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	QToolTip::add(edt, tr("This is where you type in the text to be sent"));
 
 	DockArea* buttontray = new DockArea(Qt::Horizontal, DockArea::Normal, edtbuttontray, "chatMiddleDockArea");
+	connect(buttontray, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
+		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
 	buttontray->setMinimumHeight(20);
 	edtbuttontray->setStretchFactor(edt, 1);
 	edtbuttontray->setStretchFactor(buttontray, 50);
@@ -140,6 +142,8 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	}
 
 	DockArea* btnpart = new DockArea(Qt::Horizontal, DockArea::Normal, downpart, "chatBottomDockArea");
+	connect(btnpart, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
+		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
 	btnpart->setMinimumHeight(20);
 
 	QAccel *acc = new QAccel(this, "returnAccel");
@@ -950,6 +954,13 @@ void Chat::disconnectAcknowledgeSlots()
 	disconnect(gadu, SIGNAL(messageBoxFull(int, UinType)), this, SLOT(messageBoxFullSlot(int, UinType)));
 	disconnect(gadu, SIGNAL(messageNotDelivered(int, UinType)), this, SLOT(messageNotDeliveredSlot(int, UinType)));
 	disconnect(gadu, SIGNAL(messageAccepted(int, UinType)), this, SLOT(messageAcceptedSlot(int, UinType)));
+	kdebugf2();
+}
+
+void Chat::selectedUsersNeeded(const UserGroup*& user_group)
+{
+	kdebugf();
+	user_group = users();
 	kdebugf2();
 }
 

@@ -14,7 +14,6 @@
 
 #include "action.h"
 #include "debug.h"
-#include "chat.h" // TODO: akcje powinny byæ niezale¿ne od chat
 #include "kadu.h"
 
 Action::Action(const QIconSet& icon, const QString& text, const char* name, QKeySequence accel)
@@ -36,12 +35,10 @@ void Action::toolButtonClicked()
 {
 	kdebugf();
 	const ToolButton* button = dynamic_cast<const ToolButton*>(sender());
-	for (QWidget* w = button->parentWidget(); w != NULL; w = w->parentWidget())
-	{
-		Chat* c = dynamic_cast<Chat*>(w);
-		if (c != NULL)
-			emit activated(c->users(), button, button->isOn());
-	}
+	ToolBar* toolbar = dynamic_cast<ToolBar*>(button->parentWidget());
+	const UserGroup* users = toolbar->selectedUsers();
+	if (users != NULL)
+		emit activated(users, button, button->isOn());
 	kdebugf2();
 }
 
@@ -66,16 +63,7 @@ ToolButton* Action::addToToolbar(ToolBar* toolbar)
 	connect(btn, SIGNAL(clicked()), this, SLOT(toolButtonClicked()));
 	connect(btn, SIGNAL(destroyed(QObject*)), this, SLOT(toolButtonDestroyed(QObject*)));
 	ToolButtons.append(btn);
-	UserListElements user_list_elems;
-	for (QWidget* w = toolbar->parentWidget(); w != NULL; w = w->parentWidget())
-	{
-		Chat* c = dynamic_cast<Chat*>(w);
-		if (c != NULL)
-		{
-			user_list_elems = c->users()->toUserListElements();
-			break;
-		}
-	}
+	UserListElements user_list_elems = toolbar->selectedUsers()->toUserListElements();
 	btn->setOn(isOn(user_list_elems));
 	emit addedToToolbar(btn, toolbar, user_list_elems);
 	kdebugf2();
@@ -98,15 +86,9 @@ QValueList<ToolButton*> Action::toolButtonsForUserListElements(const UserListEle
 	QValueList<ToolButton*> buttons;
 	for (QValueList<ToolButton*>::iterator i = ToolButtons.begin(); i != ToolButtons.end(); i++)
 	{
-		for (QWidget* w = (*i)->parentWidget(); w != NULL; w = w->parentWidget())
-		{
-			Chat* c = dynamic_cast<Chat*>(w);
-			if (c != NULL)
-			{
-				if (c->users()->toUserListElements().equals(users))
-					buttons.append(*i);
-			}
-		}
+		ToolBar* toolbar = dynamic_cast<ToolBar*>((*i)->parentWidget());
+		if (toolbar->selectedUsers()->toUserListElements().equals(users))
+			buttons.append(*i);
 	}
 	kdebugf2();
 	return buttons;

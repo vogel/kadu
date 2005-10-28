@@ -139,6 +139,8 @@ class Chat : public QMainWindow
 		**/
 		void disconnectAcknowledgeSlots();
 
+		void selectedUsersNeeded(const UserGroup*& user_group);
+
 	protected:
 		/**
 			\fn virtual void closeEvent(QCloseEvent* e)

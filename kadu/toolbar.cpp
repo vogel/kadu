@@ -13,7 +13,6 @@
 #include <qtooltip.h>
 
 #include "action.h"
-#include "chat.h" // TODO: akcje powinny byæ niezale¿ne od chat
 #include "config_file.h"
 #include "debug.h"
 #include "icons_manager.h"
@@ -231,6 +230,14 @@ void ToolBar::loadFromConfig(QDomElement toolbar_element)
 	kdebugf2();
 }
 
+const UserGroup* ToolBar::selectedUsers()
+{
+	kdebugf();
+	const UserGroup* users = dynamic_cast<DockArea*>(area())->selectedUsers();
+	kdebugf2();
+	return users;
+}
+
 DockArea::DockArea(Orientation o, HandlePosition h,
 			QWidget * parent, const char * name)
 	: QDockArea(o, h, parent, name)
@@ -310,9 +317,9 @@ bool DockArea::loadFromConfig(QMainWindow* toolbars_parent)
 			for (unsigned int i = 0; i < toolbars.count(); i++)
 			{
 				ToolBar* toolbar = new ToolBar(toolbars_parent, QString());
+				moveDockWindow(toolbar);
 				toolbar->loadFromConfig(toolbars.item(i).toElement());
 				toolbar->show();
-				moveDockWindow(toolbar);
 				setAcceptDockWindow(toolbar, true);
 			}
 			return true;
@@ -320,6 +327,15 @@ bool DockArea::loadFromConfig(QMainWindow* toolbars_parent)
 	}
 	return false;
 	kdebugf2();
+}
+
+const UserGroup* DockArea::selectedUsers()
+{
+	kdebugf();
+	const UserGroup* users = NULL;
+	emit selectedUsersNeeded(users);
+	kdebugf2();
+	return users;
 }
 
 QValueList<MainToolBar::ToolButton> MainToolBar::RegisteredToolButtons;
