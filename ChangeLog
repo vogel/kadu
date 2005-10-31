@@ -170,6 +170,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   kolejno¶æ przycisków jest zapamiêtywana (adrian)
 * akcje "dodaj nowego u¿ytkownika", "zmieñ informacje o kontakcie", "konfiguracja",
   "poka¿ tylko kontakty z opisem", "poka¿ niedostêpnych" (adrian)
+* poprawiono segfault przy zaniechaniu uruchomienia kopii kadu (pawel_p)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

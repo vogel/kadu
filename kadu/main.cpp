@@ -169,13 +169,12 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "look at: http://www.kadu.net/msgs/data_dir_not_readable/\n");
 		fflush(stderr);
 
+		delete xml_config_file;
+		delete config_file_ptr;
+
 		exit(10);
 	}
 
-	ProtocolsManager::initModule();
-	UserList::initModule();
-	GroupsManager::initModule();
-	emoticons = new EmoticonsManager();
 
 	new QApplication(argc, argv);
 	defaultFontInfo = new QFontInfo(qApp->font());
@@ -208,9 +207,6 @@ int main(int argc, char *argv[])
 				delete defaultFontInfo;
 				delete emoticons;
 				delete config_file_ptr;
-				GroupsManager::closeModule();
-				UserList::closeModule();
-				ProtocolsManager::closeModule();
 				delete xml_config_file;
 				lockFile->close();
 				delete lockFile;
@@ -219,6 +215,12 @@ int main(int argc, char *argv[])
 			}
 		}
 	}
+
+	ProtocolsManager::initModule();
+	UserList::initModule();
+	GroupsManager::initModule();
+	emoticons = new EmoticonsManager();
+
 
 	IconsManager::initModule();
 	new Kadu(0, "Kadu");
