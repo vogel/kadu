@@ -20,8 +20,14 @@ class ToolButton : public QToolButton
 
 	private:
 		QString ActionName;
+		bool InOnState;
+		QIconSet OffIcon;
+		QString OffText;
+		QIconSet OnIcon;
+		QString OnText;
 
 	private slots:
+		void buttonClicked();
 		void deleteButtonClicked();
 
 	protected:
@@ -31,6 +37,13 @@ class ToolButton : public QToolButton
 	public:
 		ToolButton(QWidget* parent, const QString& action_name);
 		~ToolButton();
+		/**
+			button works just like toggled but using two shapes
+			(pictures and texts)
+		**/
+		void setOnShape(const QIconSet& icon, const QString& text);
+		bool isOn() const;
+		void setOn(bool on);
 		QString actionName();
 		void writeToConfig(QDomElement parent_element);
 };

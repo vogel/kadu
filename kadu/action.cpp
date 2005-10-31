@@ -51,21 +51,32 @@ void Action::toolButtonDestroyed(QObject* obj)
 	kdebugf2();
 }
 
+void Action::setOnShape(const QIconSet& icon, const QString& text)
+{
+	OnIcon = icon;
+	OnText = text;
+}
+
 ToolButton* Action::addToToolbar(ToolBar* toolbar)
 {
 	kdebugf();
 	ToolButton* btn = new ToolButton(toolbar, name());
 	btn->setIconSet(iconSet());
 	btn->setTextLabel(menuText());
+	btn->setOnShape(OnIcon, OnText);
 	btn->setToggleButton(isToggleAction());
 	btn->setUsesTextLabel(UsesTextLabel);
 	btn->setTextPosition(ToolButton::BesideIcon);
 	connect(btn, SIGNAL(clicked()), this, SLOT(toolButtonClicked()));
 	connect(btn, SIGNAL(destroyed(QObject*)), this, SLOT(toolButtonDestroyed(QObject*)));
 	ToolButtons.append(btn);
-	UserListElements user_list_elems = toolbar->selectedUsers()->toUserListElements();
-	btn->setOn(isOn(user_list_elems));
-	emit addedToToolbar(btn, toolbar, user_list_elems);
+	const UserGroup* user_group = toolbar->selectedUsers();
+	if (user_group != NULL)
+	{
+		UserListElements user_list_elems = user_group->toUserListElements();
+		btn->setOn(isOn(user_list_elems));
+		emit addedToToolbar(btn, toolbar, user_list_elems);
+	}
 	kdebugf2();
 	return btn;
 }

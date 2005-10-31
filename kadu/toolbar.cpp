@@ -26,12 +26,57 @@ ToolButton::ToolButton(QWidget* parent, const QString& action_name)
 {
 	kdebugf();
 	ActionName = action_name;
+	connect(this, SIGNAL(clicked()), this, SLOT(buttonClicked()));
 	kdebugf2();
 }
 
 ToolButton::~ToolButton()
 {
 	kdebugf();
+	kdebugf2();
+}
+
+void ToolButton::setOnShape(const QIconSet& icon, const QString& text)
+{
+	OffIcon = iconSet();
+	OffText = textLabel();
+	OnIcon = icon;
+	OnText = text;
+	setOn(false);
+}
+
+bool ToolButton::isOn() const
+{
+	kdebugf();
+	bool res;
+	if (OnIcon.isNull())
+		res = QToolButton::isOn();
+	else
+		res = InOnState;
+	kdebugf2();
+	return res;
+}
+
+void ToolButton::setOn(bool on)
+{
+	kdebugf();
+	if (OnIcon.isNull())
+		QToolButton::setOn(on);
+	else
+	{
+		if (on)
+		{
+			setIconSet(OnIcon);
+			setTextLabel(OnText);
+			InOnState = true;
+		}
+		else
+		{
+			setIconSet(OffIcon);
+			setTextLabel(OffText);
+			InOnState = false;
+		}
+	}
 	kdebugf2();
 }
 
@@ -55,6 +100,14 @@ void ToolButton::contextMenuEvent(QContextMenuEvent* e)
 	p->exec(QCursor::pos());
 	delete p;
 	e->accept();
+	kdebugf2();
+}
+
+void ToolButton::buttonClicked()
+{
+	kdebugf();
+	if (!OnIcon.isNull())
+		setOn(!InOnState);
 	kdebugf2();
 }
 

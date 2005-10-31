@@ -36,6 +36,7 @@ class SoundSlots : public QObject
 		void clearSoundFile();
 		void testSoundFile();
 		void selectedPaths(const QStringList& paths);
+		void muteActionActivated(const UserGroup* users, const QWidget* source, bool is_on);
 		void muteUnmuteSounds();
 		void testSamplePlaying();
 		void samplePlayingTestSamplePlayed(SoundDevice device);

@@ -16,6 +16,8 @@ class Action : public QAction
 
 	private:
 		bool UsesTextLabel;
+		QIconSet OnIcon;
+		QString OnText;
 		QValueList<ToolButton*> ToolButtons;
 		struct ToggleStateStruct
 		{
@@ -35,6 +37,11 @@ class Action : public QAction
 			set if ToolButtons uses text label.
 		**/
 		void setUsesTextLabel(bool uses);
+		/**
+			action works just like toggled but using two shapes
+			(pictures and texts)
+		**/
+		void setOnShape(const QIconSet& icon, const QString& text);
 		ToolButton* addToToolbar(ToolBar* toolbar);
 		int addToPopupMenu(QPopupMenu* menu, bool connect_signal = true);
 		QValueList<ToolButton*> toolButtonsForUserListElements(

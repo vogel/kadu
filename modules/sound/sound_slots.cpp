@@ -13,12 +13,12 @@
 #include <qgrid.h>
 #include <qmenubar.h>
 
+#include "action.h"
 #include "sound_slots.h"
 #include "debug.h"
 #include "icons_manager.h"
 #include "kadu.h"
 #include "config_dialog.h"
-#include "toolbar.h"
 
 SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name)
 {
@@ -45,6 +45,13 @@ SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name
 		icons_manager->registerMenuItem(kadu->mainMenu(), tr("Mute sounds"), "Unmute");
 		MainToolBar::registerButton("Unmute", tr("Mute sounds"), this, SLOT(muteUnmuteSounds()), 0, "mute");
 	}
+
+	Action* mute_action = new Action(icons_manager->loadIcon("Mute"),
+		tr("Mute sounds"), "muteSoundsAction");
+	mute_action->setOnShape(icons_manager->loadIcon("Unmute"), tr("Unmute sounds"));
+	connect(mute_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		this, SLOT(muteActionActivated(const UserGroup*, const QWidget*, bool)));
+	KaduActions.insert("muteSoundsAction", mute_action);
 
 	SamplePlayingTestMsgBox = NULL;
 	SamplePlayingTestSample = NULL;
@@ -129,24 +136,23 @@ void SoundSlots::onCreateTabSounds()
 	kdebugf2();
 }
 
-void SoundSlots::muteUnmuteSounds()
+void SoundSlots::muteActionActivated(const UserGroup* users, const QWidget* source, bool is_on)
 {
 	kdebugf();
-	bool mute=!sound_manager->isMuted();
-	sound_manager->setMute(mute);
-	config_file.writeEntry("Sounds", "PlaySound", !mute);
+	sound_manager->setMute(is_on);
+	config_file.writeEntry("Sounds", "PlaySound", !is_on);
 
 	if (ConfigDialog::dialogOpened())
 	{
 		QCheckBox *box=ConfigDialog::getCheckBox("Sounds", "Play sounds");
-		if (box->isChecked()==mute)
+		if (box->isChecked()==is_on)
 		{
-			box->setChecked(!mute);
-			soundPlayer(!mute, true);
+			box->setChecked(!is_on);
+			soundPlayer(!is_on, true);
 		}
 	}
 
-	if (mute)
+	if (is_on)
 	{
 		MainToolBar::refreshIcons(tr("Mute sounds"), "Mute", tr("Unmute sounds"));
 		kadu->menuBar()->changeItem(muteitem, icons_manager->loadIcon("Mute"), tr("Unmute sounds"));
@@ -157,6 +163,13 @@ void SoundSlots::muteUnmuteSounds()
 		kadu->menuBar()->changeItem(muteitem, icons_manager->loadIcon("Unmute"), tr("Mute sounds"));
 	}
 
+	kdebugf2();	
+}
+
+void SoundSlots::muteUnmuteSounds()
+{
+	kdebugf();
+	muteActionActivated(NULL, NULL, !sound_manager->isMuted());
 	kdebugf2();
 }
 
