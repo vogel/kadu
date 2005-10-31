@@ -179,6 +179,12 @@ class Kadu : public QMainWindow
 
 		void setMainWindowIcon(const QPixmap &);
 
+		void inactiveUsersActionActivated();
+		void descriptionUsersActionActivated();
+		void configurationActionActivated();
+		void editUserActionActivated(const UserGroup* users);
+		void addUserActionActivated();
+
 	signals:
 		void disconnectingNetwork();
 		void disconnectedNetwork();

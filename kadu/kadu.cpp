@@ -27,6 +27,7 @@
 #include <sys/stat.h>
 
 #include "about.h"
+#include "action.h"
 #include "chat_manager.h"
 #include "config_dialog.h"
 #include "config_file.h"
@@ -48,7 +49,6 @@
 #include "protocols_manager.h"
 #include "search.h"
 #include "tabbar.h"
-#include "toolbar.h"
 #include "updates.h"
 #include "userbox.h"
 #include "userinfo.h"
@@ -257,11 +257,29 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	MainToolBar::registerButton("ShowHideInactiveUsers", tr("Show / hide offline users"),
 							groups_manager, SLOT(changeDisplayingOffline()), -1, "offlineUsersButton");
 
+	Action* inact_users_action = new Action(icons_manager->loadIcon("ShowHideInactiveUsers"),
+		tr("Show / hide offline users"), "inactiveUsersAction");
+	connect(inact_users_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		this, SLOT(inactiveUsersActionActivated()));
+	KaduActions.insert("inactiveUsersAction", inact_users_action);
+
 	MainToolBar::registerButton("ShowOnlyDescriptionUsers", tr("Show / hide users without description"),
 							groups_manager, SLOT(changeDisplayingWithoutDescription()), -1, "withoutDescriptionUsersButton");
 
+	Action* desc_users_action = new Action(icons_manager->loadIcon("ShowOnlyDescriptionUsers"),
+		tr("Show / hide users without description"), "descriptionUsersAction");
+	connect(desc_users_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		this, SLOT(descriptionUsersActionActivated()));
+	KaduActions.insert("descriptionUsersAction", desc_users_action);
+
 	MainToolBar::registerButton("Configuration", tr("Configuration"),
 							this, SLOT(configure()), -1, "configurationButton");
+
+	Action* configuration_action = new Action(icons_manager->loadIcon("Configuration"),
+		tr("Configuration"), "configurationAction");
+	connect(configuration_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		this, SLOT(configurationActionActivated()));
+	KaduActions.insert("configurationAction", configuration_action);
 
 	MainToolBar::registerSeparator();
 
@@ -271,6 +289,12 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	MainToolBar::registerButton("EditUserInfo", tr("View / edit user info"),
 							this, SLOT(showUserInfo()), -1, "editUserButton");
 
+	Action* edit_user_action = new Action(icons_manager->loadIcon("EditUserInfo"),
+		tr("View / edit user info"), "editUserAction");
+	connect(edit_user_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		this, SLOT(editUserActionActivated(const UserGroup*)));
+	KaduActions.insert("editUserAction", edit_user_action);
+
 	MainToolBar::registerButton("LookupUserInfo", tr("Lookup in directory"),
 							this, SLOT(lookupInDirectory()), -1, "lookupUserButton");
 
@@ -278,6 +302,12 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	MainToolBar::registerButton("AddUser", tr("Add user"),
 							this, SLOT(addUserAction()), -1, "addUserButton");
+
+	Action* add_user_action = new Action(icons_manager->loadIcon("AddUser"),
+		tr("Add user"), "addUserAction");
+	connect(add_user_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		this, SLOT(addUserActionActivated()));
+	KaduActions.insert("addUserAction", add_user_action);
 
 	/* guess what */
 	createMenu();
@@ -469,7 +499,7 @@ void Kadu::popupMenu()
 
 void Kadu::configure()
 {
-	ConfigDialog::showConfigDialog(qApp);
+	configurationActionActivated();
 }
 
 void Kadu::viewHistory()
@@ -521,6 +551,34 @@ void Kadu::lookupInDirectory()
 	kdebugf2();
 }
 
+void Kadu::inactiveUsersActionActivated()
+{
+	groups_manager->changeDisplayingOffline();
+}
+
+void Kadu::descriptionUsersActionActivated()
+{
+	groups_manager->changeDisplayingWithoutDescription();
+}
+
+void Kadu::configurationActionActivated()
+{
+	ConfigDialog::showConfigDialog(qApp);
+}
+
+void Kadu::editUserActionActivated(const UserGroup* users)
+{
+	kdebugf();
+	if (users->count() == 1)
+		(new UserInfo(*users->begin(), 0, "user info"))->show();
+	kdebugf2();
+}
+
+void Kadu::addUserActionActivated()
+{
+	(new UserInfo(UserListElement(), 0, "add user"))->show();
+}
+
 void Kadu::showUserInfo()
 {
 	kdebugf();
@@ -530,9 +588,9 @@ void Kadu::showUserInfo()
 		kdebugf2();
 		return;
 	}
-	UserListElements users = activeUserBox->selectedUsers();
-	if (users.count() == 1)
-		(new UserInfo(users[0], 0, "user info"))->show();
+	UserGroup users(1);
+	users.addUsers(activeUserBox->selectedUsers());
+	editUserActionActivated(&users);
 	kdebugf2();
 }
 
@@ -558,7 +616,7 @@ void Kadu::personalInfo()
 
 void Kadu::addUserAction()
 {
-	(new UserInfo(UserListElement(), 0, "add user"))->show();
+	addUserActionActivated();
 }
 
 void Kadu::deleteHistory()
