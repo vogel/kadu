@@ -467,9 +467,9 @@ void Chat::keyPressEvent(QKeyEvent* e)
 	else if (HotKey::shortCut(e,"ShortCuts", "chat_close"))
 		close();
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_viewhistory"))
-		HistoryBox();
+		KaduActions["showistoryAction"]->activate(Users);
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
-		userWhois();
+		KaduActions["whoisAction"]->activate(Users);
 	QWidget::keyPressEvent(e);
 }
 
@@ -523,29 +523,6 @@ void Chat::closeEvent(QCloseEvent* e)
 		}
 	}
 	QWidget::closeEvent(e);
-}
-
-/* look up party's info */
-void Chat::userWhois()
-{
-	kdebugf();
-	UserListElement user;
-
-	if (!userbox)
-		user = *Users->constBegin();
-	else
-		if (userbox->currentItem() == -1)
-			user = *Users->constBegin();
-		else
-			user = Users->byAltNick(userbox->currentText());
-	if (user.usesProtocol("Gadu"))
-	{
-		UinType uin = user.ID("Gadu").toUInt();
-		SearchDialog *sd = new SearchDialog(0, QString("SearchDialog:%1").arg(uin).local8Bit().data(), uin);
-		sd->show();
-		sd->firstSearch();
-	}
-	kdebugf2();
 }
 
 void Chat::formatMessages(QValueList<ChatMessage *> &msgs)
@@ -961,6 +938,16 @@ void Chat::selectedUsersNeeded(const UserGroup*& user_group)
 {
 	kdebugf();
 	user_group = users();
+	//TODO: do przemyslenia kwestia akcji, ktore dzialaja tylko dla wybranych
+	// kontaktow z userboxa, cos w stylu:
+	/*	if (!userbox)
+		user = *Users->constBegin();
+	else
+		if (userbox->currentItem() == -1)
+			user = *Users->constBegin();
+		else
+			user = Users->byAltNick(userbox->currentText());*/
+	// tak poprzednio dzialalo "whois"
 	kdebugf2();
 }
 
@@ -1067,18 +1054,6 @@ void Chat::pruneWindow()
 		delete *it;
 	ChatMessages.erase(start, stop);
 
-	kdebugf2();
-}
-
-/* opens messages history */
-void Chat::HistoryBox()
-{
-	kdebugf();
-	UinsList uins;
-	CONST_FOREACH(user, *Users)
-		uins.append((*user).ID("Gadu").toUInt());
-	//TODO: pozbyæ siê UinsList
-	(new History(uins))->show();
 	kdebugf2();
 }
 

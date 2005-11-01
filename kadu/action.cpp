@@ -156,6 +156,13 @@ void Action::setTexts(const UserListElements& users, const QString& text)
 	kdebugf2();
 }
 
+void Action::activate(const UserGroup* users)
+{
+	kdebugf();
+	emit activated(users, NULL, false);
+	kdebugf2();
+}
+
 Actions::Actions()
 {
 }

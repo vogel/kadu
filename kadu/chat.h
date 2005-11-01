@@ -318,12 +318,6 @@ class Chat : public QMainWindow
 		void alertNewMessage();
 
 		/**
-			\fn void HistoryBox()
-			Slot wywo³ywany po naci¶niêciu przycisku historii
-		**/
-		void HistoryBox();
-
-		/**
 			\fn void sendMessage()
 			Slot wywo³ywany po naci¶niêciu przycisku
 			do wysy³ania wiadomo¶ci
@@ -438,12 +432,6 @@ class Chat : public QMainWindow
 			Slot wy¶wietlaj±cy okno z wyborem emotikonek
 		**/
 		void openEmoticonSelector(const QWidget* activating_widget);
-
-		/**
-			\fn void userWhois()
-			Slot wy¶wietlaj±cy informacje o zaznaczonym kontakcie
-		**/
-		void userWhois();
 
 		/**
 			\fn void insertImage()

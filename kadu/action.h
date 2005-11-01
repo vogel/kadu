@@ -50,6 +50,10 @@ class Action : public QAction
 		void setOn(const UserListElements& users, bool on);
 		void setPixmaps(const UserListElements& users, const QPixmap& pixmap);
 		void setTexts(const UserListElements& users, const QString& text);
+		/**
+			Activate action
+		**/
+		void activate(const UserGroup* users);
 
 	signals:
 		void addedToToolbar(ToolButton* button, ToolBar* toolbar,

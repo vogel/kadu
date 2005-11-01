@@ -15,11 +15,13 @@
 #include "config_dialog.h"
 #include "debug.h"
 #include "chat_manager.h"
+#include "history.h"
 #include "icons_manager.h"
 #include "kadu.h"
 #include "kadu_splitter.h"
 #include "misc.h"
 #include "pending_msgs.h"
+#include "search.h"
 #include "userbox.h"
 
 // TODO: zrobic ikony w zestawie zamiast sie bawic w takie sztuczki
@@ -191,7 +193,11 @@ void ChatManager::clearActionActivated(const UserGroup* users)
 void ChatManager::historyActionActivated(const UserGroup* users)
 {
 	kdebugf();
-	findChat(users)->HistoryBox();
+	UinsList uins;
+	CONST_FOREACH(user, *users)
+		uins.append((*user).ID("Gadu").toUInt());
+	//TODO: pozbyæ siê UinsList
+	(new History(uins))->show();
 	kdebugf2();
 }
 
@@ -246,7 +252,22 @@ void ChatManager::insertEmoticonActionAddedToToolbar(ToolButton* button, ToolBar
 void ChatManager::whoisActionActivated(const UserGroup* users)
 {
 	kdebugf();
-	findChat(users)->userWhois();
+	if (users->count() == 0)
+	{
+		SearchDialog* sd = new SearchDialog();
+		sd->show();
+	}
+	else
+	{
+		UserListElement user = *users->constBegin();
+		if (user.usesProtocol("Gadu"))
+		{
+			UinType uin = user.ID("Gadu").toUInt();
+			SearchDialog *sd = new SearchDialog(0, QString("SearchDialog:%1").arg(uin).local8Bit().data(), uin);
+			sd->show();
+			sd->firstSearch();
+		}
+	}
 	kdebugf2();
 }
 
