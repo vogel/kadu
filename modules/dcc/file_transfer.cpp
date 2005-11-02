@@ -24,12 +24,14 @@
 #include <netinet/in.h>
 #include <stdlib.h>
 
+#include "action.h"
 #include "chat.h"
 #include "chat_manager.h"
 #include "config_dialog.h"
 #include "debug.h"
 #include "file_transfer.h"
 #include "gadu.h"
+#include "icons_manager.h"
 #include "kadu.h"
 #include "message_box.h"
 #include "misc.h"
@@ -1004,6 +1006,12 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 	connect(UserBox::userboxmenu,SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(kaduKeyPressed(QKeyEvent*)));
 
+	Action* send_file_action = new Action(icons_manager->loadIcon("SendFile"),
+		tr("Send file"), "sendFileAction");
+	connect(send_file_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		this, SLOT(sendFileActionActivated(const UserGroup*)));
+	KaduActions.insert("sendFileAction", send_file_action);
+
 	connect(chat_manager, SIGNAL(chatCreated(const UserGroup *)), this, SLOT(chatCreated(const UserGroup *)));
 	connect(chat_manager, SIGNAL(chatDestroying(const UserGroup *)), this, SLOT(chatDestroying(const UserGroup *)));
 
@@ -1048,6 +1056,8 @@ FileTransferManager::~FileTransferManager()
 	UserBox::userboxmenu->removeItem(sendfile);
 	disconnect(UserBox::userboxmenu,SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
 	disconnect(kadu, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(kaduKeyPressed(QKeyEvent*)));
+
+	KaduActions.remove("sendFileAction");
 
 	disconnect(chat_manager, SIGNAL(chatCreated(const UserGroup *)), this, SLOT(chatCreated(const UserGroup *)));
 	disconnect(chat_manager, SIGNAL(chatDestroying(const UserGroup *)), this, SLOT(chatDestroying(const UserGroup *)));
@@ -1222,6 +1232,27 @@ void FileTransferManager::kaduKeyPressed(QKeyEvent* e)
 {
 	if (HotKey::shortCut(e,"ShortCuts", "kadu_sendfile"))
 		sendFile();
+}
+
+
+void FileTransferManager::sendFileActionActivated(const UserGroup* users)
+{
+	kdebugf();
+	if (users->count() == 0)
+	{
+		kdebugf2();
+		return;
+	}
+	QString f = selectFileToSend();
+	if (f.isEmpty())
+	{
+		kdebugf2();
+		return;
+	}
+	CONST_FOREACH(i, *users)
+		if ((*i).usesProtocol("Gadu") && (*i).ID("Gadu") != config_file.readEntry("General", "UIN"))
+			sendFile((*i).ID("Gadu").toUInt(), f);
+	kdebugf2();
 }
 
 void FileTransferManager::chatCreated(const UserGroup *group)

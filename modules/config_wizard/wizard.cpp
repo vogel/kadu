@@ -17,6 +17,7 @@
 #include <unistd.h>
 
 #include "addons.h"
+#include "action.h"
 #include "chat_manager_slots.h"
 #include "config_file.h"
 #include "debug.h"
@@ -26,7 +27,6 @@
 #include "kadu_text_browser.h"
 #include "message_box.h"
 #include "modules.h"
-#include "toolbar.h"
 #include "userbox.h"
 #include "wizard.h"
 
@@ -1307,7 +1307,8 @@ void Wizard::setColorsAndIcons()
 		newIconTheme.replace(tr("Default"), "default");
 		icons_manager->clear();
 		icons_manager->setTheme(newIconTheme);
-		MainToolBar::refreshIcons();
+		KaduIcons->refreshIcons();
+		//MainToolBar::refreshIcons();
 		UserBox::userboxmenu->refreshIcons();
 		icons_manager->refreshMenus();
 		kadu->changeAppearance();

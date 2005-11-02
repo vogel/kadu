@@ -242,6 +242,7 @@ class FileTransferManager : public QObject
 		void fileDropped(const UserGroup *group, const QString &);
 
 		void toggleFileTransferWindow();
+		void sendFileActionActivated(const UserGroup* users);
 
 	public:
 		FileTransferManager(QObject *parent = 0, const char *name = 0);
