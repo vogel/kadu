@@ -13,6 +13,7 @@ config_file.cpp \
 custom_input.cpp \
 debug.cpp \
 dnshandler.cpp \
+dockarea.cpp \
 emoticons.cpp \
 expimp.cpp \
 gadu.cpp \
@@ -41,6 +42,7 @@ status.cpp \
 tabbar.cpp \
 themes.cpp \
 toolbar.cpp \
+toolbutton.cpp \
 userbox.cpp \
 userinfo.cpp \
 userlist.cpp \
@@ -65,6 +67,7 @@ config_file.h \
 custom_input.h \
 debug.h \
 dnshandler.h \
+dockarea.h \
 emoticons.h \
 expimp.h \
 gadu.h \
@@ -92,6 +95,7 @@ status.h \
 tabbar.h \
 themes.h \
 toolbar.h \
+toolbutton.h \
 userbox.h \
 userinfo.h \
 userlist.h \
@@ -110,6 +114,7 @@ moc/color_selector_moc.cpp \
 moc/config_dialog_moc.cpp \
 moc/custom_input_moc.cpp \
 moc/dnshandler_moc.cpp \
+moc/dockarea_moc.cpp \
 moc/emoticons_moc.cpp \
 moc/expimp_moc.cpp \
 moc/gadu_moc.cpp \
@@ -133,6 +138,7 @@ moc/status_moc.cpp \
 moc/tabbar_moc.cpp \
 moc/themes_moc.cpp \
 moc/toolbar_moc.cpp \
+moc/toolbutton_moc.cpp \
 moc/userbox_moc.cpp \
 moc/userinfo_moc.cpp \
 moc/userlist_moc.cpp \
@@ -154,6 +160,7 @@ obj/config_file.$(OBJEXT) \
 obj/custom_input.$(OBJEXT) \
 obj/debug.$(OBJEXT) \
 obj/dnshandler.$(OBJEXT) \
+obj/dockarea.$(OBJEXT) \
 obj/emoticons.$(OBJEXT) \
 obj/expimp.$(OBJEXT) \
 obj/gadu.$(OBJEXT) \
@@ -182,6 +189,7 @@ obj/status.$(OBJEXT) \
 obj/tabbar.$(OBJEXT) \
 obj/themes.$(OBJEXT) \
 obj/toolbar.$(OBJEXT) \
+obj/toolbutton.$(OBJEXT) \
 obj/userbox.$(OBJEXT) \
 obj/userinfo.$(OBJEXT) \
 obj/userlist.$(OBJEXT) \
@@ -198,6 +206,7 @@ obj/color_selector_moc.$(OBJEXT) \
 obj/config_dialog_moc.$(OBJEXT) \
 obj/custom_input_moc.$(OBJEXT) \
 obj/dnshandler_moc.$(OBJEXT) \
+obj/dockarea_moc.$(OBJEXT) \
 obj/emoticons_moc.$(OBJEXT) \
 obj/expimp_moc.$(OBJEXT) \
 obj/gadu_moc.$(OBJEXT) \
@@ -221,6 +230,7 @@ obj/status_moc.$(OBJEXT) \
 obj/tabbar_moc.$(OBJEXT) \
 obj/themes_moc.$(OBJEXT) \
 obj/toolbar_moc.$(OBJEXT) \
+obj/toolbutton_moc.$(OBJEXT) \
 obj/userbox_moc.$(OBJEXT) \
 obj/userinfo_moc.$(OBJEXT) \
 obj/userlist_moc.$(OBJEXT) \

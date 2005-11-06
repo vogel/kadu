@@ -32,6 +32,7 @@
 #include "config_dialog.h"
 #include "config_file.h"
 #include "debug.h"
+#include "dockarea.h"
 #include "expimp.h"
 #include "gadu_images_manager.h"
 #include "groups_manager.h"

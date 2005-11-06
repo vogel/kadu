@@ -175,6 +175,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * akcja "wy¶lij plik" (adrian)
 * korekta t³umaczenia na jêzyk niemiecki autorstwa Manuel Wiblishauser and Jens Zettelmeyer (Ron_K)
 * konfigurowalny g³ówny toolbar (adrian)
+* wydzielone pliki dockarea.cpp/h i toolbutton.cpp/h (adrian)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

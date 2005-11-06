@@ -1,63 +1,9 @@
 #ifndef TOOLBAR_H
 #define TOOLBAR_H
 
-#include <qdockarea.h>
-#include <qdom.h>
-#include <qdragobject.h>
-#include <qmainwindow.h>
-#include <qmap.h>
-#include <qpopupmenu.h>
-#include <qstring.h>
 #include <qtoolbar.h>
-#include <qtoolbutton.h>
-#include <qvaluelist.h>
-
+#include "toolbutton.h"
 #include "usergroup.h"
-
-class ToolButton : public QToolButton
-{
-	Q_OBJECT
-
-	private:
-		QString ActionName;
-		bool InOnState;
-		QIconSet OffIcon;
-		QString OffText;
-		QIconSet OnIcon;
-		QString OnText;
-
-	private slots:
-		void buttonClicked();
-		void deleteButtonClicked();
-
-	protected:
-		void mouseMoveEvent(QMouseEvent* e);
-		void contextMenuEvent(QContextMenuEvent* e);
-
-	public:
-		ToolButton(QWidget* parent, const QString& action_name);
-		~ToolButton();
-		/**
-			button works just like toggled but using two shapes
-			(pictures and texts)
-		**/
-		void setOnShape(const QIconSet& icon, const QString& text);
-		bool isOn() const;
-		void setOn(bool on);
-		QString actionName();
-		void writeToConfig(QDomElement parent_element);
-};
-
-class ToolButtonDrag : public QTextDrag
-{
-	private:
-		ToolButton* Button;
-
-	public:
-		ToolButtonDrag(ToolButton* button, QWidget* dragSource = 0, const char* name = 0);
-};
-
-class DockArea;
 
 class ToolBar : public QToolBar
 {
@@ -89,46 +35,6 @@ class ToolBar : public QToolBar
 			Returns NULL if toolbar is no connected to user list.
 		**/
 		const UserGroup* selectedUsers();
-};
-
-class DockArea : public QDockArea
-{
-	Q_OBJECT
-
-	protected:
-		void contextMenuEvent(QContextMenuEvent* e);
-
-	private slots:
-		void createNewToolbar();
-
-	public:
-		DockArea(Orientation o, HandlePosition h = Normal,
-			QWidget * parent = 0, const char * name = 0);
-		~DockArea();
-		void writeToConfig();
-		bool loadFromConfig(QWidget* toolbars_parent);
-		/**
-			Returns list of users that will be affected by activated action.
-			It depends on where the dockarea is located. If dockarea is in chat
-			window, selected users are the users in chat. If dockarea is the
-			main window, selected users are the selected ones in contact
-			list, and so on...
-			Returns NULL if toolbar is no connected to user list.
-		**/
-		const UserGroup* selectedUsers();
-
-	signals:
-		/**
-			Signal is emited when dockarea needs to know what users
-			will be affected by activated action. It depends on
-			where the dockarea is located. If dockarea is in chat window,
-			selected users are the users in chat. If dockarea is the
-			main window, selected users are the selected ones in contact
-			list, and so on...
-			Slot should change users pointer. NULL (default) means: do not
-			execute action.
-		**/
-		void selectedUsersNeeded(const UserGroup*& users);
 };
 
 #endif

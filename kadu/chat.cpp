@@ -24,6 +24,7 @@
 #include "config_dialog.h"
 #include "custom_input.h"
 #include "debug.h"
+#include "dockarea.h"
 #include "gadu_images_manager.h"
 #include "gadu_rich_text.h"
 #include "history.h"
