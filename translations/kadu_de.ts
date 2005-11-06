@@ -46,7 +46,7 @@
     </message>
     <message>
         <source>Underline text:</source>
-        <translation>Unterstrichen:</translation>
+        <translation>Unterstreichen:</translation>
     </message>
     <message>
         <source>History</source>
@@ -142,7 +142,7 @@
     </message>
     <message>
         <source>Private status</source>
-        <translation>Status &quot;Nur für Bekannte&quot;</translation>
+        <translation>Zustand &quot;Nur für Bekannte&quot;</translation>
     </message>
     <message>
         <source>WWW error</source>
@@ -150,11 +150,11 @@
     </message>
     <message>
         <source>Web browser was not specified. Visit the configuration section</source>
-        <translation>Browser wurde nicht festgelegt. Bitte im Konfigurationsfenster angeben</translation>
+        <translation>Browser wurde nicht festgelegt. Bitte in der Konfiguration angeben</translation>
     </message>
     <message>
         <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
-        <translation>Ich kann den Browser nicht aufrufen. Überprüfen Sie, ob Ihr Browser funktioniert</translation>
+        <translation>Konnte den Browser nicht aufrufen. Überprüfen Sie, ob Ihr Browser funktioniert</translation>
     </message>
     <message>
         <source>Emoticons</source>
@@ -256,7 +256,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Multicolumn userbox</source>
-        <translation>Liste in Kollonen</translation>
+        <translation>Liste in Spalten</translation>
     </message>
     <message>
         <source>Message acknowledgements (wait for delivery)</source>
@@ -280,7 +280,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Default status</source>
-        <translation>Standard-Status</translation>
+        <translation>Standard-Zustand</translation>
     </message>
     <message>
         <source>Don&apos;t show status changes</source>
@@ -296,7 +296,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Icon paths</source>
-        <translation>Pfad zu Symbolen</translation>
+        <translation>Pfade zu Symbolen</translation>
     </message>
     <message>
         <source>Multiline description in userbox</source>
@@ -316,7 +316,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Show status button</source>
-        <translation>Zeige Zustandtaste</translation>
+        <translation>Zeige Zustandstaste</translation>
     </message>
     <message>
         <source>Max image size</source>
@@ -444,7 +444,7 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     </message>
     <message>
         <source>Displays users that are not offline using a bold font</source>
-        <translation>Zeige Benutzer, die erreichbar sind, fett an</translation>
+        <translation>Zeigt Benutzer, die erreichbar sind, fett an</translation>
     </message>
     <message>
         <source>Remember window size and position between startups</source>
@@ -553,8 +553,8 @@ It&apos;s a high security risk!</source>
 %v - revDNS, %p - port %e - email %x - max image size
 </source>
         <translation>Syntax: %s - Zustand, %d - Beschreibung, %i - IP, %n - Nick, %a - alternativer Nick, %f - Vorname
-%r - Nachname, %m - Handy, %u - UIN, %g - Gruppe, %o - gib_leerzeichen_zurück, wenn Benutzer uns nicht in der Liste hat
-%v - revDNS, %p - port %e - Email %x - maximale Bildgröße</translation>
+%r - Nachname, %m - Mobil, %u - GG-Nummer, %g - Gruppe, %o - gib_leerzeichen_zurück, wenn Benutzer uns nicht in der Liste hat
+%v - revDNS, %p - Port %e - Email %x - maximale Bildgröße</translation>
     </message>
     <message>
         <source>French</source>
@@ -562,7 +562,7 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Description font color</source>
-        <translation>Farbe der Schrift der Beschreibung</translation>
+        <translation>Schriftfarbe der Beschreibung</translation>
     </message>
     <message>
         <source>Port to connect to servers</source>
@@ -806,7 +806,7 @@ Wollen Sie diese Datei wirklich senden?</translation>
     </message>
     <message>
         <source>Insert emoticon - enable in configuration</source>
-        <translation>Smily einfügen - aktiviere in der Konfiguration</translation>
+        <translation>Smiley einfügen - aktiviere in der Konfiguration</translation>
     </message>
 </context>
 <context>
@@ -913,7 +913,7 @@ Tragen Sie den Pfad in der $PATH-Umgebungsvariablen ein oder bestimmen Sie ihn i
     <name>DockArea</name>
     <message>
         <source>Create new toolbar</source>
-        <translation type="unfinished"></translation>
+        <translation>Neue Werkzeugleiste erstellen</translation>
     </message>
 </context>
 <context>
@@ -932,7 +932,7 @@ Tragen Sie den Pfad in der $PATH-Umgebungsvariablen ein oder bestimmen Sie ihn i
     </message>
     <message>
         <source>Unable to connect, server has returned unknown data</source>
-        <translation>Verbindung nicht nöglich, Server lieferte unbekannte Daten zurück</translation>
+        <translation>Verbindung nicht möglich, Server lieferte unbekannte Daten zurück</translation>
     </message>
     <message>
         <source>Unable to connect, connection break during reading</source>
@@ -954,7 +954,7 @@ Ihr Passwort stimmt nicht!</translation>
     </message>
     <message>
         <source>Unable to connect, error of negotiation TLS</source>
-        <translation>Verbindung nicht möglich, TLS-Negotiation schlug fehl</translation>
+        <translation>Verbindung nicht möglich, TLS-Verhandlung schlug fehl</translation>
     </message>
     <message>
         <source>Connection timeout!</source>
@@ -1046,7 +1046,7 @@ Ihr Passwort stimmt nicht!</translation>
     </message>
     <message>
         <source>&amp;From:</source>
-        <translation>&amp;Vom:</translation>
+        <translation>&amp;Von:</translation>
     </message>
     <message>
         <source>day</source>
@@ -1128,7 +1128,7 @@ Ihr Passwort stimmt nicht!</translation>
     </message>
     <message>
         <source>Please close all (except main) Kadu windows</source>
-        <translation>Bitte alle Fenster (außer Kadu-Hauptfenster) schließen</translation>
+        <translation>Bitte alle Fenster (außer dem Kadu-Hauptfenster) schließen</translation>
     </message>
 </context>
 <context>
@@ -1163,7 +1163,7 @@ Ihr Passwort stimmt nicht!</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Schliessen</translation>
+        <translation>&amp;Schließen</translation>
     </message>
 </context>
 <context>
@@ -1193,7 +1193,7 @@ Ihr Passwort stimmt nicht!</translation>
     </message>
     <message>
         <source>Configuration</source>
-        <translation>Konfiguration</translation>
+        <translation>Einstellungen</translation>
     </message>
     <message>
         <source>Add user</source>
@@ -1392,7 +1392,7 @@ werden gelöscht. Sind Sie sicher?</translation>
     </message>
     <message>
         <source>Module name</source>
-        <translation>Modulename</translation>
+        <translation>Modulname</translation>
     </message>
     <message>
         <source>Module type</source>
@@ -1404,7 +1404,7 @@ werden gelöscht. Sind Sie sicher?</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Schliessen</translation>
+        <translation>&amp;Schließen</translation>
     </message>
     <message>
         <source>Dynamic</source>
@@ -1445,7 +1445,7 @@ werden gelöscht. Sind Sie sicher?</translation>
     <message>
         <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Version:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;</source>
         <translation>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Hängt ab von:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Im Konflikt 
-zu:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Bringt mit:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Autor:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Verion&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Beschreibung:&lt;/b&gt;</translation>
+mit:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Bringt mit:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Autor:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Verion&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Beschreibung:&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;</source>
@@ -1474,7 +1474,7 @@ zu:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Bringt mit:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Autor:
     </message>
     <message>
         <source>Module %1 cannot be deactivated because it is used now</source>
-        <translation>Modul %1 kann nicht deaktiviert werden, weil es jetzt benutzt wird</translation>
+        <translation>Modul %1 kann nicht deaktiviert werden, weil es gerade benutzt wird</translation>
     </message>
     <message>
         <source>Module %1 conflicts with: %2</source>
@@ -1523,7 +1523,7 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Birthyear</source>
-        <translation>Geburtstag</translation>
+        <translation>Geburtsjahr</translation>
     </message>
     <message>
         <source>City</source>
@@ -1543,7 +1543,7 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Your personal information</source>
-        <translation>Ihre persönliche Daten</translation>
+        <translation>Ihre persönlichen Daten</translation>
     </message>
     <message>
         <source>&amp;Save</source>
@@ -1555,7 +1555,7 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Schliessen</translation>
+        <translation>&amp;Schließen</translation>
     </message>
 </context>
 <context>
@@ -1609,7 +1609,7 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Birthyear</source>
-        <translation>Geburtstag</translation>
+        <translation>Geburtsjahr</translation>
     </message>
     <message>
         <source>City</source>
@@ -1711,7 +1711,7 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation>Füge hinzu</translation>
+        <translation>Hinzufügen</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -1784,18 +1784,18 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Delete toolbar</source>
-        <translation type="unfinished"></translation>
+        <translation>Werkzeugleiste löschen</translation>
     </message>
     <message>
         <source>Add new button</source>
-        <translation type="unfinished"></translation>
+        <translation>Neue Schaltfläche hinzufügen</translation>
     </message>
 </context>
 <context>
     <name>ToolButton</name>
     <message>
         <source>Delete button</source>
-        <translation type="unfinished"></translation>
+        <translation>Schaltfläche entfernen</translation>
     </message>
 </context>
 <context>
@@ -1821,7 +1821,7 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt; &lt;b&gt;(d.)&lt;/b&gt;&lt;/nobr&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;%2</source>
-        <translation>&lt;nobr&gt;&lt;i&gt;Handy:&lt;/i&gt; &lt;b&gt;%1&lt;/b&gt;&lt;/nobr&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Beschreibung:&lt;/b&gt;&lt;/br&gt;%2</translation>
+        <translation>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt; &lt;b&gt;(d.)&lt;/b&gt;&lt;/nobr&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Beschreibung:&lt;/b&gt;&lt;/br&gt;%2</translation>
     </message>
     <message>
         <source>Compares statuses</source>
@@ -1864,7 +1864,7 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Mobile</source>
-        <translation>Handy</translation>
+        <translation>Mobil</translation>
     </message>
     <message>
         <source>Address IP and Port</source>
@@ -1932,7 +1932,7 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Schliessen</translation>
+        <translation>&amp;Schließen</translation>
     </message>
     <message>
         <source>This dialog box allows you to view and edit information about the selected contact.</source>
@@ -2042,7 +2042,7 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Mobile no.</source>
-        <translation>Handy-Nr.</translation>
+        <translation>Mobil-Nr.</translation>
     </message>
     <message>
         <source>Group</source>
@@ -2090,7 +2090,7 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Schliessen</translation>
+        <translation>&amp;Schließen</translation>
     </message>
     <message>
         <source>The application encountered an internal error
@@ -2104,7 +2104,7 @@ The import userlist from file was unsuccessful</source>
     <message>
         <source>The application encountered an internal error
 The export userlist to file was unsuccessful</source>
-        <translation>Das Exportieren der Kontaktliste in die Datei ist mißlungen</translation>
+        <translation>Das Exportieren der Kontaktliste in die Datei ist misslungen</translation>
     </message>
     <message>
         <source>Your userlist has been successfully exported to server</source>
@@ -2113,7 +2113,7 @@ The export userlist to file was unsuccessful</source>
     <message>
         <source>The application encountered an internal error
 The export was unsuccessful</source>
-        <translation>Das Exportieren der Kontakliste auf den Server ist mißlungen</translation>
+        <translation>Das Exportieren der Kontakliste auf den Server ist misslungen</translation>
     </message>
     <message>
         <source>Your userlist has been successfully deleted on server</source>
@@ -2123,7 +2123,7 @@ The export was unsuccessful</source>
         <source>The application encountered an internal error
 The delete userlist on server was unsuccessful</source>
         <translation>Die Anwendung hat einen Fehler zurückgemeldet.
-Das Löschen der Kontaktliste vom Server ist mißlungen</translation>
+Das Löschen der Kontaktliste vom Server ist misslungen</translation>
     </message>
     <message>
         <source>Cannot import user list from server in offline mode</source>

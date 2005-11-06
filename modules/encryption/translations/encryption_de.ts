@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Encryption properties</source>
-        <translation>Einstellungen der Verschlüsselung</translation>
+        <translation>Verschlüsselungseinstellungen</translation>
     </message>
     <message>
         <source>Keys length</source>
@@ -30,7 +30,7 @@
     </message>
     <message>
         <source>Keys exist. Do you want to overwrite them?</source>
-        <translation>Schlüssel existiert schon. Soll er überschrieben werden?</translation>
+        <translation>Schlüssel existieren schon. Sollen sie überschrieben werden?</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -54,7 +54,7 @@
     </message>
     <message>
         <source>Disable encryption for this conversation</source>
-        <translation>Verschlüsseleung für dieses Gespräch ausschalten</translation>
+        <translation>Verschlüsselung für dieses Gespräch ausschalten</translation>
     </message>
     <message>
         <source>Enable encryption for this conversation</source>
@@ -93,7 +93,7 @@
     </message>
     <message>
         <source>Error writting the key</source>
-        <translation>Fehler beim schreiben des Schlüssels</translation>
+        <translation>Fehler beim Schreiben des Schlüssels</translation>
     </message>
     <message>
         <source>OK</source>

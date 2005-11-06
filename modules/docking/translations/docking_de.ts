@@ -3,15 +3,15 @@
     <name>@default</name>
     <message>
         <source>Start docked</source>
-        <translation>Starte minimiert</translation>
+        <translation>Starte gedockt</translation>
     </message>
     <message>
         <source>Show tooltip in tray</source>
-        <translation>Zeige Sprechblase in Ablage</translation>
+        <translation>Zeige Sprechblase im Tray</translation>
     </message>
     <message>
         <source>New message tray icon</source>
-        <translation>Ikone für eine neue Nachricht </translation>
+        <translation>Tray-Icon bei neuer Nachricht</translation>
     </message>
 </context>
 <context>
@@ -42,7 +42,7 @@ Beschreibung:
     </message>
     <message>
         <source>Static envelope</source>
-        <translation>Ein Briefumschlag</translation>
+        <translation>Statischer Briefumschlag</translation>
     </message>
     <message>
         <source>Animated envelope</source>

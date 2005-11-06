@@ -3,7 +3,7 @@
     <name>@default</name>
     <message>
         <source>Remove from taskbar (experimental)</source>
-        <translation>Entferne aus der Task-Leiste (experimentell)</translation>
+        <translation>Aus der Task-Leiste entfernen (experimentell)</translation>
     </message>
 </context>
 </TS>

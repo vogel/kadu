@@ -43,7 +43,7 @@
     </message>
     <message>
         <source>Dsp device:</source>
-        <translation>Gerät dsp:</translation>
+        <translation>DSP-Gerät:</translation>
     </message>
     <message>
         <source>Program</source>

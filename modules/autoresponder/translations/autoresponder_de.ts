@@ -7,42 +7,42 @@
     </message>
     <message>
         <source>Autoresponder options</source>
-        <translation>Optionen von Auto-Antwort </translation>
+        <translation>Auto-Antwort-Optionen</translation>
     </message>
     <message>
         <source>Autoanswer text:</source>
-        <translation>Antwort-Text:</translation>
+        <translation>Auto-Antwort-Text:</translation>
     </message>
     <message>
         <source>Thanks for your message. User is not currently available.</source>
-        <translation>Danke für die Nachricht. Benutzer ist momentan unerreichbar.</translation>
+        <translation>Danke für Ihre Nachricht. Der Benutzer ist momentan nicht erreichbar.</translation>
     </message>
     <message>
         <source>Choose status:</source>
-        <translation>Status wählen:</translation>
+        <translation>Zustand wählen:</translation>
     </message>
     <message>
         <source>Status invisible</source>
-        <translation>Status &quot;Versteckt&quot;</translation>
+        <translation>Zustand &quot;Versteckt&quot;</translation>
     </message>
     <message>
         <source>Status busy</source>
-        <translation>Status &quot;Beschäftigt&quot;</translation>
+        <translation>Zustand &quot;Beschäftigt&quot;</translation>
     </message>
     <message>
         <source>Status available</source>
-        <translation>Status &quot;Online&quot;</translation>
+        <translation>Zustand &quot;Online&quot;</translation>
     </message>
     <message>
         <source>Only for the first time</source>
-        <translation>Antworte einmal</translation>
+        <translation>Nur beim ersten Mal</translation>
     </message>
 </context>
 <context>
     <name>AutoResponder</name>
     <message>
         <source>KADU AUTORESPONDER:</source>
-        <translation>KADU AUTORESPONDER:</translation>
+        <translation>KADU AUTO-ANTWORT:</translation>
     </message>
 </context>
 </TS>

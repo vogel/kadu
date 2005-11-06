@@ -3,7 +3,7 @@
     <name>@default</name>
     <message>
         <source>Output device</source>
-        <translation>Gerät (Ausgang)</translation>
+        <translation>Ausgabe-Gerät</translation>
     </message>
     <message>
         <source>Path:</source>

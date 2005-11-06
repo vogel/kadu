@@ -7,11 +7,11 @@
     </message>
     <message>
         <source>Enable autoaway</source>
-        <translation>Schalte automatisch den &quot;Beschäftigt&quot;-Status ein</translation>
+        <translation>Automatische Abwesenheit aktivieren</translation>
     </message>
     <message>
         <source>Set status to away after </source>
-        <translation>Ändere zu &quot;Beschäftigt&quot; nach</translation>
+        <translation>Ändere Zustand auf &quot;Beschäftigt&quot; nach</translation>
     </message>
     <message>
         <source>Check idle every </source>
@@ -19,15 +19,15 @@
     </message>
     <message>
         <source>Enable autoinvisible</source>
-        <translation>Einschalten der automatischen Unsichtbarkeit</translation>
+        <translation>Automatischen Unsichtbarkeit aktivieren</translation>
     </message>
     <message>
         <source>Enable autodisconnect</source>
-        <translation>Einschalten der automatischen Trennung</translation>
+        <translation>Automatischen Trennung aktivieren</translation>
     </message>
     <message>
         <source>Set status to invisible after </source>
-        <translation>Werde unsichtbar nach </translation>
+        <translation>Setze Zustand auf &quot;Unsichtbar&quot; nach</translation>
     </message>
     <message>
         <source>Disconnect after </source>
@@ -35,11 +35,11 @@
     </message>
     <message>
         <source>Enable AutoStatus</source>
-        <translation>Automatischen Zustand einchalten</translation>
+        <translation>Automatischen Zustand einschalten</translation>
     </message>
     <message>
         <source>Autorestore status</source>
-        <translation>Zustand automatisch wiederherrstellen</translation>
+        <translation>Zustand automatisch wiederherstellen</translation>
     </message>
     <message>
         <source>Auto change status</source>
@@ -54,7 +54,7 @@
     <name>AutoAwaySlots</name>
     <message>
         <source>Don&apos;t change the description</source>
-        <translation>Ändern Sie bitte die Beschreibung nicht</translation>
+        <translation>Beschreibung nicht ändern</translation>
     </message>
     <message>
         <source>Change</source>

@@ -7,15 +7,15 @@
     </message>
     <message>
         <source>DCC IP autodetection</source>
-        <translation>Finde die IP-Adresse für DCC heraus</translation>
+        <translation>Automatische Erkennung der DCC-IP-Adresse</translation>
     </message>
     <message>
         <source>DCC IP</source>
-        <translation>IP-Adresse für DCC</translation>
+        <translation>DCC-IP</translation>
     </message>
     <message>
         <source>IP address:</source>
-        <translation>IP-Adressen:</translation>
+        <translation>IP-Adress:</translation>
     </message>
     <message>
         <source>DCC forwarding enabled</source>
@@ -39,7 +39,7 @@
     </message>
     <message>
         <source>Local TCP port:</source>
-        <translation>Locale TCP port:</translation>
+        <translation>Lokaler TCP-Port:</translation>
     </message>
 </context>
 <context>
@@ -47,23 +47,23 @@
     <message>
         <source>Couldn&apos;t create DCC socket.
 Direct connections disabled.</source>
-        <translation>Problem mit dem Öffnen des DCC-Sockets.
+        <translation>DCC-Socket konnte nicht geöffnet werden.
 Direkte Verbindungen ausgeschaltet.</translation>
     </message>
     <message>
         <source>Direct connection timeout!
 The receiver doesn&apos;t support direct connections or
 both machines are behind routers with NAT.</source>
-        <translation>Direkte Verbindung Abgelaufen!
+        <translation>Zeitüberschreitung bei Versuch eine direkte Verbindung aufzubauen!
 Empfänger unterstützt direkte Verbindungen nicht
-oder beide Computer sind hinter NAT.</translation>
+oder beide Computer sind innerhalb eines NAT-Netzwerkes.</translation>
     </message>
 </context>
 <context>
     <name>DccSocket</name>
     <message>
         <source>File has been transferred sucessfully.</source>
-        <translation>Übertragung der Datei gelungen.</translation>
+        <translation>Übertragung der Datei erfolgreich.</translation>
     </message>
     <message>
         <source>File transfer error!</source>
@@ -78,48 +78,48 @@ oder beide Computer sind hinter NAT.</translation>
 IP address (%2) differs from what GG server returned
 as his/her IP address (%3). It may be spoofing
 or he/she has port forwarding. Continue connection?</source>
-        <translation>%1 fragt hat um direkte Verbindung angefragt, doch seine/ihre
-Adresse IP (%2) ist andersals die auf dem Server-GG eingetragene,
-die da wäre (%3). Es kann sowohl Spoofing als auch 
-Port-Weiterleitung bedeuten. Soll ich trotzdem verbinden?</translation>
+        <translation>%1 bittet um eine direkte Verbindung, aber seine/ihre
+IP-Adresse (%2) stimmt nicht mit der von Server genannten
+IP-Adresse (%3) überein. Die Verbindung könnte gespoofed sein,
+oder er/sie nutzt Portweiterleitung. Verbindung zulassen?</translation>
     </message>
 </context>
 <context>
     <name>FileTransfer</name>
     <message>
         <source>Hello. I am an automatic file-transfer reminder. Could you please send me a file named %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Hallo, ich bin eine automatische Dateiübertragungs-Erinnerung. Könnten Sie mir bitte eine Datei mit dem Namen %1 schicken?</translation>
     </message>
     <message>
         <source>This option only sends a remind message to %1. The transfer will not start immediately.</source>
-        <translation type="unfinished"></translation>
+        <translation>Diese Option sendet lediglich eine Erinnerung an %1. Die Übertragung wird nicht sofort gestartet.</translation>
     </message>
     <message>
         <source>Error: message was not sent</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler: Nachricht nicht versandt</translation>
     </message>
 </context>
 <context>
     <name>FileTransferListViewItem</name>
     <message>
         <source>Frozen</source>
-        <translation type="unfinished"></translation>
+        <translation>Eingefrohren</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler</translation>
     </message>
     <message>
         <source>Wait for connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Warten auf Verbindung</translation>
     </message>
     <message>
         <source>Transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Übertragung</translation>
     </message>
     <message>
         <source>Finished</source>
-        <translation type="unfinished"></translation>
+        <translation>Beendet</translation>
     </message>
 </context>
 <context>
@@ -134,7 +134,7 @@ Port-Weiterleitung bedeuten. Soll ich trotzdem verbinden?</translation>
     </message>
     <message>
         <source>Select file location</source>
-        <translation>Wohin</translation>
+        <translation>Wählen Sie eine Datei</translation>
     </message>
     <message>
         <source>This file is not readable</source>
@@ -143,12 +143,12 @@ Port-Weiterleitung bedeuten. Soll ich trotzdem verbinden?</translation>
     <message>
         <source>User %1 wants to send us a file %2
 of size %3kB. Accept transfer?</source>
-        <translation>Benutzer %1 will Ihnen eine Datei senden %2
-von %3kB Größe. Übertragung Akzeptieren?</translation>
+        <translation>Benutzer %1 will Ihnen eine Datei %2
+mit der Größe %3kB senden. Übertragung annehmen?</translation>
     </message>
     <message>
         <source>Incoming transfer</source>
-        <translation>Ankommender Transfer</translation>
+        <translation>Ankommender Übertragung</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -160,7 +160,7 @@ von %3kB Größe. Übertragung Akzeptieren?</translation>
     </message>
     <message>
         <source>save file</source>
-        <translation>Datei Speichern</translation>
+        <translation>Datei speichern</translation>
     </message>
     <message>
         <source>File %1 already exists.</source>
@@ -172,89 +172,92 @@ von %3kB Größe. Übertragung Akzeptieren?</translation>
     </message>
     <message>
         <source>Resume</source>
-        <translation>Wiederhole</translation>
+        <translation>Fortsetzen</translation>
     </message>
     <message>
         <source>User %1 want to send you a file %2
 of size %3kB.
 This is probably a next part of %4
  What should I do?</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzer %1 will Ihnen eine Datei %2
+mit der Größe %3kB senden.
+Diese ist vermutlich der nächste Teil von %4
+Was soll ich tun?</translation>
     </message>
     <message>
         <source>Continue transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Übertragung fortsetzen</translation>
     </message>
     <message>
         <source>Save file under new name</source>
-        <translation type="unfinished"></translation>
+        <translation>Datei unter neuem Namen abspeichern</translation>
     </message>
     <message>
         <source>Ignore transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Übertragung ignorieren</translation>
     </message>
     <message>
         <source>Select another file</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen Sie eine andere Datei</translation>
     </message>
     <message>
         <source>Could not open file. Select another one.</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte Datei nicht öffnen. Wählen Sie eine andere.</translation>
     </message>
     <message>
         <source>Toggle transfers window</source>
-        <translation type="unfinished"></translation>
+        <translation>Übertragungsfenster anzeigen/verstecken</translation>
     </message>
 </context>
 <context>
     <name>FileTransferWindow</name>
     <message>
         <source>Kadu - file transfers</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu - Dateiübertragungen</translation>
     </message>
     <message>
         <source>Incoming transfers:</source>
-        <translation type="unfinished"></translation>
+        <translation>Eingehende Übertragungen:</translation>
     </message>
     <message>
         <source>Contact</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt</translation>
     </message>
     <message>
         <source>File name</source>
-        <translation type="unfinished"></translation>
+        <translation>Dateiname</translation>
     </message>
     <message>
         <source>Status</source>
-        <translation type="unfinished"></translation>
+        <translation>Zustand</translation>
     </message>
     <message>
         <source>Speed</source>
-        <translation type="unfinished"></translation>
+        <translation>Geschwindigkeit</translation>
     </message>
     <message>
         <source>Progress</source>
-        <translation type="unfinished"></translation>
+        <translation>Fortschritt</translation>
     </message>
     <message>
         <source>Full file name</source>
-        <translation type="unfinished"></translation>
+        <translation>Voller Dateiname</translation>
     </message>
     <message>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation>Beginnen</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation type="unfinished"></translation>
+        <translation>Beenden</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Entfernen</translation>
     </message>
     <message>
         <source>Outgoing transfers:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausgehende Übertragungen:</translation>
     </message>
 </context>
 </TS>

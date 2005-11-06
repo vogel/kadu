@@ -68,7 +68,7 @@ nicht versteht. Gib hier die Argumente ein, getrennt mit Komma. %n=Tel.; %m=Nach
     </message>
     <message>
         <source>Sms application was not specified. Visit the configuration section</source>
-        <translation>Programm zum verschicken von SMS nicht angegeben. Schau mal in die Konfiguration ein</translation>
+        <translation>Programm zum Verschicken von SMS nicht angegeben. Schauen Sie in den Einstellungen nach</translation>
     </message>
     <message>
         <source>Could not spawn child process. Check if the program is functional</source>
@@ -80,7 +80,7 @@ nicht versteht. Gib hier die Argumente ein, getrennt mit Komma. %n=Tel.; %m=Nach
     </message>
     <message>
         <source>The process exited normally. The SMS should be on its way</source>
-        <translation>Das versenden ist gelungen. Die SMS ist unterwegs</translation>
+        <translation>Das Versenden ist gelungen. Die SMS ist unterwegs</translation>
     </message>
     <message>
         <source>SMS not sent</source>
@@ -88,11 +88,11 @@ nicht versteht. Gib hier die Argumente ein, getrennt mit Komma. %n=Tel.; %m=Nach
     </message>
     <message>
         <source>The process exited abnormally. The SMS may not be sent</source>
-        <translation>Versenden unerwartet beendet. SMS ist wahrscheinlich nicht verschickt</translation>
+        <translation>Versenden unerwartet beendet. Die SMS wurde wahrscheinlich nicht versandt</translation>
     </message>
     <message>
         <source>The SMS was sent and should be on its way</source>
-        <translation>SMS wurde verschickt und ist unterwegs</translation>
+        <translation>Die SMS wurde versandt und ist unterwegs</translation>
     </message>
     <message>
         <source>Contact</source>
@@ -111,7 +111,7 @@ nicht versteht. Gib hier die Argumente ein, getrennt mit Komma. %n=Tel.; %m=Nach
     <name>SmsGateway</name>
     <message>
         <source>Network error. Provider gateway page is probably unavailable</source>
-        <translation>Der angegebene SMS-Gateway ist wahrscheinlich ausgeschaltet</translation>
+        <translation>Der angegebene SMS-Gateway ist wahrscheinlich nicht erreichbar</translation>
     </message>
 </context>
 <context>

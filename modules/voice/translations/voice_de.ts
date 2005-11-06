@@ -37,11 +37,11 @@
     </message>
     <message>
         <source>User %1 wants to talk with you. Do you accept it?</source>
-        <translation>Benutzer %1 will mit Ihnen reden. Wollen Sie das Gespräch anfangen?</translation>
+        <translation>Benutzer %1 will mit Ihnen reden. Wollen Sie das Gespräch beginnen?</translation>
     </message>
     <message>
         <source>Incoming voice chat</source>
-        <translation>Es kommt ein Telefonat an</translation>
+        <translation>Anruf</translation>
     </message>
     <message>
         <source>Yes</source>

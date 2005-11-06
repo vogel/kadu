@@ -3,19 +3,19 @@
     <name>@default</name>
     <message>
         <source>Horizontal position</source>
-        <translation>Position in Ebene</translation>
+        <translation>Horizontale Position</translation>
     </message>
     <message>
         <source>Vertical position</source>
-        <translation>Position in Senkblei</translation>
+        <translation>Vertikale Position</translation>
     </message>
     <message>
         <source>Transparent</source>
-        <translation>Durchsichtig</translation>
+        <translation>Transparent</translation>
     </message>
     <message>
         <source>Put the position in pixels</source>
-        <translation>Lege die Position in Pixel fest</translation>
+        <translation>Lege die Position in Pixeln fest</translation>
     </message>
     <message>
         <source>Background color</source>
@@ -31,7 +31,7 @@
     </message>
     <message>
         <source>Enable icon moving on desktop. After pressing move cursor over docking icon and then move. Press any mouse key when the icon is in right place.</source>
-        <translation>Schaltet das Verschieben des Symbols auf dem Desktop ein. Nach dem Klickt fahren Sie über das Kadu-Eindock-Symbol und verschieben Sie es. Drücken Sie irgendeine Taste der Maus, wenn sich das Kadu-Eindock-Symbol auf dem richtigen Platz befindet.</translation>
+        <translation>Schaltet das Verschieben des Symbols auf dem Desktop ein. Nach dem Klicken fahren Sie über das Kadu-Eindock-Symbol und verschieben Sie es. Drücken Sie irgendeine Taste der Maus, wenn sich das Kadu-Eindock-Symbol auf dem richtigen Platz befindet.</translation>
     </message>
 </context>
 <context>

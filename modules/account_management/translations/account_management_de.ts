@@ -50,7 +50,7 @@
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Schliessen</translation>
+        <translation>&amp;Schließen</translation>
     </message>
     <message>
         <source>Change password</source>
@@ -62,7 +62,7 @@
 Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
         <translation>Fehler in den eingegebenen Daten der Felder.
 
-Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Passwort&quot; und &quot;Neues Passwort wiederholen&quot;) sollte gleich sein!</translation>
+Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Passwort&quot; und &quot;Neues Passwort wiederholen&quot;) gleich sein!</translation>
     </message>
     <message>
         <source>Change password / email</source>
@@ -86,8 +86,8 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
     <message>
         <source>Write the newly obtained UIN and password into a clean configuration file
 This will erase your current config file contents if you have one</source>
-        <translation>Die Neue Nummer GG (UIN) und Passwort werden in die 
-Konfigurationsdatei geschrieben. Alte Datei wird überschrieben</translation>
+        <translation>Die neue GG-Nummer (UIN) und das Passwort werden in die 
+Konfigurationsdatei geschrieben. Die alte Datei wird überschrieben</translation>
     </message>
     <message>
         <source>Register user</source>
@@ -99,19 +99,19 @@ Konfigurationsdatei geschrieben. Alte Datei wird überschrieben</translation>
     </message>
     <message>
         <source>Please fill out all fields</source>
-        <translation>Fülle alle Felder aus</translation>
+        <translation>Bitte alle Felder ausfüllen</translation>
     </message>
     <message>
         <source>Registration was successful. Your new number is %1.
 Store it in a safe place along with the password.
 Now add your friends to the userlist.</source>
-        <translation>Registrierung beendet. Seine Nummer lautet: %1.
-Bewahre sie zusammen mit deinem Passwort auf einem sicheren Ort.
-Jetzt kannst du Kontakte hinzufügen.</translation>
+        <translation>Registrierung beendet. Ihre neue Nummer lautet: %1.
+Bewahren Sie sie zusammen mit Ihrem Passwort an einem sicheren Ort auf.
+Nun können Sie Kontakte hinzufügen.</translation>
     </message>
     <message>
         <source>This dialog box allows you to register a new account.</source>
-        <translation>Dieses Fenster ermöglicht Ihnen das Registrieren eines neuen Zugangs (UIN).</translation>
+        <translation>Dieses Dialog-Fenster ermöglicht Ihnen das Registrieren eines neuen Zugangs.</translation>
     </message>
     <message>
         <source>Email</source>
@@ -131,26 +131,26 @@ Jetzt kannst du Kontakte hinzufügen.</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Schliessen</translation>
+        <translation>&amp;Schließen</translation>
     </message>
     <message>
         <source>Error data typed in required fields.
 
 Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
-        <translation>Fehler in den eingegebenen Daten der Felder.
+        <translation>Fehlerhafte Daten in erfordlerlichen Feldern eingegeben.
 
-Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Passwort&quot; und &quot;Neues Passwort wiederholen&quot;) sollte gleich sein!</translation>
+Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Passwort&quot; und &quot;Neues Passwort wiederholen&quot;) gleich sein!</translation>
     </message>
     <message>
         <source>An error has occured while registration. Please try again later.</source>
-        <translation>Ein Fehler ist während der Registrierung aufgetreten. Versuchen Sie, bitte, später noch einmal.</translation>
+        <translation>Ein Fehler ist während der Registrierung aufgetreten. Bitte versuchen Sie es später noch einmal.</translation>
     </message>
 </context>
 <context>
     <name>RemindPassword</name>
     <message>
         <source>Error during remind password</source>
-        <translation>Fehler beim Erinnern des Passworts</translation>
+        <translation>Fehler beim Erinnern an das Passwort</translation>
     </message>
     <message>
         <source>OK</source>
@@ -158,7 +158,7 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
     </message>
     <message>
         <source>This dialog box allows you to ask server to remind your current password.</source>
-        <translation>Dieses Dialog ermöglicht es Ihnen, den Server um eine Passwort-Erinnerung anzusuchen.</translation>
+        <translation>Dieses Dialog-Fenster ermöglicht es Ihnen, beim Server um eine Passwort-Erinnerung anzufragen.</translation>
     </message>
     <message>
         <source>Email</source>
@@ -170,11 +170,11 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Schliessen</translation>
+        <translation>&amp;Schließen</translation>
     </message>
     <message>
         <source>Your password has been send on your email</source>
-        <translation>Ihr Passwort wird an Ihre Email geschickt</translation>
+        <translation>Ihr Passwort wird an Ihre Emai-Adressel geschickt</translation>
     </message>
     <message>
         <source>Remind password</source>
@@ -185,15 +185,15 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
     <name>Unregister</name>
     <message>
         <source>Unregister</source>
-        <translation>Deregistrieren</translation>
+        <translation>Zugang löschen</translation>
     </message>
     <message>
         <source>Unregister user</source>
-        <translation>Deregistriere Benutzer</translation>
+        <translation>Benutzer löschen</translation>
     </message>
     <message>
         <source>Please fill out all fields</source>
-        <translation>Fülle alle Felder aus</translation>
+        <translation>Bitte alle Felder ausfüllen</translation>
     </message>
     <message>
         <source>OK</source>
@@ -205,15 +205,15 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
     </message>
     <message>
         <source>Unregistation was successful. Now you don&apos;t have any GG number :(</source>
-        <translation>Unregistation war erfolgreich. Jetzt haben Sie keine GG Nummer mehr :(</translation>
+        <translation>Löschen des Zugangs war erfolgreich. Jetzt haben Sie keine GG-Nummer mehr :(</translation>
     </message>
     <message>
         <source>UIN and password</source>
-        <translation>UIN und Passwort</translation>
+        <translation>GG-Nummer und Passwort</translation>
     </message>
     <message>
         <source>UIN:</source>
-        <translation>UIN:</translation>
+        <translation>GG-Nummer:</translation>
     </message>
     <message>
         <source>Password:</source>
@@ -221,11 +221,11 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Schliessen</translation>
+        <translation>&amp;Schließen</translation>
     </message>
     <message>
         <source>An error has occured while unregistration. Please try again later.</source>
-        <translation>Ein Fehler ist während des Entfernens Ihres Zugans aufgetreten. Versuchen Sie, bitte, später noch einmal.</translation>
+        <translation>Ein Fehler ist während des Löschens Ihres Zugans aufgetreten. Bitte versuchen Sie es später noch einmal.</translation>
     </message>
     <message>
         <source>This dialog box allows you to unregister your account. Be aware of using this option. &lt;font color=&quot;red&quot;&gt;&lt;b&gt;It will permanently delete your UIN and you will not be able to use it later!&lt;/b&gt;&lt;/font&gt;</source>

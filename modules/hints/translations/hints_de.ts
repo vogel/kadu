@@ -3,7 +3,7 @@
     <name>@default</name>
     <message>
         <source>Hints</source>
-        <translation>Sprechblasen</translation>
+        <translation>Hinweise</translation>
     </message>
     <message>
         <source>Use custom syntax</source>
@@ -11,15 +11,15 @@
     </message>
     <message>
         <source>Hint syntax</source>
-        <translation>Sprechblasen-Syntax</translation>
+        <translation>Hinweis-Syntax</translation>
     </message>
     <message>
         <source>Add description to hint if exists</source>
-        <translation>Füge Beschreibung zur Sprechblase, wenn vorhanden</translation>
+        <translation>Füge Beschreibung zum Hinweis, wenn vorhanden</translation>
     </message>
     <message>
         <source>Show message content in hint</source>
-        <translation>Zeige Nachrichtinhalt in der Sprechblase</translation>
+        <translation>Zeige Nachrichteninhalt im Hinweis</translation>
     </message>
     <message>
         <source>Mouse buttons</source>
@@ -39,7 +39,7 @@
     </message>
     <message>
         <source>New chat / new message</source>
-        <translation>Neues Chat / neue Nachricht</translation>
+        <translation>Neuer Chat / neue Nachricht</translation>
     </message>
     <message>
         <source>Number of quoted characters</source>
@@ -51,15 +51,15 @@
     </message>
     <message>
         <source>New hints go</source>
-        <translation>Neue Sprechblasen</translation>
+        <translation>Neue Hinweise</translation>
     </message>
     <message>
         <source>Hints position</source>
-        <translation>Sprechblasenposition</translation>
+        <translation>Hinweis-Position</translation>
     </message>
     <message>
         <source>Own hints position</source>
-        <translation>Eigene Position der Sprechblasen</translation>
+        <translation>Eigene Position der Hinweise</translation>
     </message>
     <message>
         <source>Parameters</source>
@@ -79,7 +79,7 @@
     </message>
     <message>
         <source>Change font color</source>
-        <translation>Schriftart-Farbe ändern</translation>
+        <translation>Schriftfarbe ändern</translation>
     </message>
     <message>
         <source>Change background color</source>
@@ -95,7 +95,7 @@
     </message>
     <message>
         <source>Hint timeout</source>
-        <translation>Sprechblasen erlichen nach</translation>
+        <translation>Hinweise ausblenden nach</translation>
     </message>
     <message>
         <source>Open chat on click</source>
@@ -103,7 +103,7 @@
     </message>
     <message>
         <source>Delete pending message when user deletes hint</source>
-        <translation>Lösche nicht gelesene Nachrichten, wenn Benutzer löscht den Hinweis</translation>
+        <translation>Lösche nicht gelesene Nachrichten, wenn Benutzer den Hinweis löscht</translation>
     </message>
 </context>
 <context>
@@ -118,11 +118,11 @@
     </message>
     <message>
         <source>Delete hint</source>
-        <translation>Hints löschen</translation>
+        <translation>Hinweis löschen</translation>
     </message>
     <message>
         <source>Delete all hints</source>
-        <translation>Alle hints löschen</translation>
+        <translation>Alle Hinweise löschen</translation>
     </message>
     <message>
         <source>Auto</source>
@@ -142,7 +142,7 @@
     </message>
     <message>
         <source>Online (d.)</source>
-        <translation>Erreichbar</translation>
+        <translation>Online (Beschr.)</translation>
     </message>
     <message>
         <source>Busy</source>
@@ -154,11 +154,11 @@
     </message>
     <message>
         <source>Invisible</source>
-        <translation>Versteckt</translation>
+        <translation>Unsichtbar</translation>
     </message>
     <message>
         <source>Invisible (d.)</source>
-        <translation>Unsichtbat (Beschr.)</translation>
+        <translation>Unsichtbar (Beschr.)</translation>
     </message>
     <message>
         <source>Offline</source>
@@ -166,7 +166,7 @@
     </message>
     <message>
         <source>Offline (d.)</source>
-        <translation>Unerreichbat (Beschr.)</translation>
+        <translation>Offline (Beschr.)</translation>
     </message>
     <message>
         <source>Blocking</source>
@@ -210,7 +210,7 @@
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; changed status to &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt; änderte Status auf &lt;i&gt;%2&lt;/i&gt;</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; änderte Zustand auf &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is available&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
@@ -258,7 +258,7 @@
     </message>
     <message>
         <source>Bottom right</source>
-        <translation>Rechst unten</translation>
+        <translation>Rechts unten</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is invisible&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
@@ -273,7 +273,7 @@
     <name>HintManagerSlots</name>
     <message>
         <source>Color dialog</source>
-        <translation>Farben</translation>
+        <translation>Farbendialog</translation>
     </message>
 </context>
 </TS>

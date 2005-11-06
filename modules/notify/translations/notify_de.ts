@@ -19,7 +19,7 @@
     </message>
     <message>
         <source>Notify configuration</source>
-        <translation>Konfiguration der Benachrichtigung</translation>
+        <translation>Benachrichtigungseinstellungen</translation>
     </message>
     <message>
         <source>Connection error</source>
@@ -39,15 +39,15 @@
     </message>
     <message>
         <source>User changed status to &quot;Available&quot;</source>
-        <translation>Benutzer änderte Zustand auf &quot;erreichbar&quot;</translation>
+        <translation>Benutzer änderte Zustand auf &quot;Erreichbar&quot;</translation>
     </message>
     <message>
         <source>User changed status to &quot;Busy&quot;</source>
-        <translation>Benutzer änderte Zustand auf &quot;beschäftigt&quot;</translation>
+        <translation>Benutzer änderte Zustand auf &quot;Beschäftigt&quot;</translation>
     </message>
     <message>
         <source>User changed status to &quot;Not available&quot;</source>
-        <translation>Benutzer änderte Zustand auf &quot;unerreichbar&quot;</translation>
+        <translation>Benutzer änderte Zustand auf &quot;Unerreichbar&quot;</translation>
     </message>
     <message>
         <source>Other message</source>
@@ -56,8 +56,8 @@
     <message>
         <source>This option will supersede tooltips with users&apos; status
  changes upon establishing connection to the server</source>
-        <translation>Diese Option ersetzt Hinweis durch Benutzers 
-Zustandsänderungen während des Verbindens zum Server</translation>
+        <translation>Diese Option ersetzt Hinweise durch Zustandsänderungen
+des Benutzers während des Verbindens zum Server</translation>
     </message>
     <message>
         <source>Ignore changes right after connection to the server</source>
@@ -69,7 +69,7 @@ Zustandsänderungen während des Verbindens zum Server</translation>
     </message>
     <message>
         <source>Ignore status changes from available / busy to available / busy</source>
-        <translation>Ignoriere Zustandsänderungen von erreichbar / bschäftigt auf erreichbar / beschäftigt</translation>
+        <translation>Ignoriere Zustandsänderungen von erreichbar / beschäftigt auf erreichbar / beschäftigt</translation>
     </message>
 </context>
 </TS>

@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>SMS Era Gateway</source>
-        <translation>SMS-Gateway vom Era GSM</translation>
+        <translation>SMS-Gateway von Era GSM</translation>
     </message>
     <message>
         <source>Type of gateway</source>
@@ -66,14 +66,14 @@
     </message>
     <message>
         <source>You don&apos;t have enough tokens</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie haben nicht genügend Einheiten</translation>
     </message>
 </context>
 <context>
     <name>SmsGatewaySlots</name>
     <message>
         <source>Sponsored</source>
-        <translation type="unfinished"></translation>
+        <translation>Gesponsored</translation>
     </message>
     <message>
         <source>OmnixMultimedia</source>
