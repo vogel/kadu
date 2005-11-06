@@ -32,23 +32,11 @@ SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name
 				tr("Conection error sound")<<tr("Other message");
 
 	sound_manager->setMute(!config_file.readBoolEntry("Sounds", "PlaySound"));
-	/*if (sound_manager->isMuted())
-	{
-		muteitem= kadu->mainMenu()->insertItem(icons_manager->loadIcon("Mute"), tr("Unmute sounds"), this, SLOT(muteUnmuteSounds()), 0, -1, 3);
-		icons_manager->registerMenuItem(kadu->mainMenu(), tr("Unmute sounds"), "Mute");
-
-		MainToolBar::registerButton("Mute", tr("Unmute sounds"), this, SLOT(muteUnmuteSounds()), 0, "mute");
-	}
-	else
-	{
-		muteitem= kadu->mainMenu()->insertItem(icons_manager->loadIcon("Unmute"), tr("Mute sounds"), this, SLOT(muteUnmuteSounds()), 0, -1, 3);
-		icons_manager->registerMenuItem(kadu->mainMenu(), tr("Mute sounds"), "Unmute");
-		MainToolBar::registerButton("Unmute", tr("Mute sounds"), this, SLOT(muteUnmuteSounds()), 0, "mute");
-	}*/
 
 	Action* mute_action = new Action(icons_manager->loadIcon("Mute"),
 		tr("Mute sounds"), "muteSoundsAction");
 	mute_action->setOnShape(icons_manager->loadIcon("Unmute"), tr("Unmute sounds"));
+	//mute_action->setOn(sound_manager->isMuted());
 	connect(mute_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(muteActionActivated(const UserGroup*, const QWidget*, bool)));
 	KaduActions.insert("muteSoundsAction", mute_action);
@@ -67,7 +55,6 @@ SoundSlots::~SoundSlots()
 {
 	kdebugf();
 	kadu->mainMenu()->removeItem(muteitem);
-	//MainToolBar::unregisterButton("mute");
 	KaduActions.remove("muteSoundsAction");
 	kdebugf2();
 }
@@ -152,18 +139,6 @@ void SoundSlots::muteActionActivated(const UserGroup* users, const QWidget* sour
 			soundPlayer(!is_on, true);
 		}
 	}
-/*
-	if (is_on)
-	{
-		MainToolBar::refreshIcons(tr("Mute sounds"), "Mute", tr("Unmute sounds"));
-		kadu->menuBar()->changeItem(muteitem, icons_manager->loadIcon("Mute"), tr("Unmute sounds"));
-	}
-	else
-	{
-		MainToolBar::refreshIcons(tr("Unmute sounds"), "Unmute", tr("Mute sounds"));
-		kadu->menuBar()->changeItem(muteitem, icons_manager->loadIcon("Unmute"), tr("Mute sounds"));
-	}
-*/
 	kdebugf2();	
 }
 

@@ -68,6 +68,7 @@ class Actions : public QMap<QString, Action*>
 {
 	public:
 		Actions();
+		void refreshIcons();
 };
 
 extern Actions KaduActions;

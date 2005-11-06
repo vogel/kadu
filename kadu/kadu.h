@@ -21,7 +21,7 @@ class QPushButton;
 /**
 	G³ówne okno Kadu
 **/
-class Kadu : public QMainWindow
+class Kadu : public QWidget
 {
 	Q_OBJECT
 
@@ -46,7 +46,6 @@ class Kadu : public QMainWindow
 		bool dontHideOnClose;
 
 		void createMenu();
-		void createToolBar();
 		void createStatusPopupMenu();
 
 		void showStatusOnMenu(int);
@@ -179,6 +178,7 @@ class Kadu : public QMainWindow
 
 		void setMainWindowIcon(const QPixmap &);
 
+		void selectedUsersNeeded(const UserGroup*& users);
 		void inactiveUsersActionActivated();
 		void descriptionUsersActionActivated();
 		void configurationActionActivated();

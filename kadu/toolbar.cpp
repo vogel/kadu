@@ -143,8 +143,8 @@ ToolButtonDrag::ToolButtonDrag(ToolButton* button, QWidget* dragSource, const ch
 	kdebugf2();
 }
 
-ToolBar::ToolBar(QMainWindow* parent, const QString& label)
-	: QToolBar(parent, label), dragButton(NULL)
+ToolBar::ToolBar(QWidget* parent, const QString& label)
+	: QToolBar(NULL, label), dragButton(NULL)
 {
 	kdebugf();
 	setAcceptDrops(true);
@@ -155,7 +155,6 @@ ToolBar::ToolBar(QMainWindow* parent, const QString& label)
 ToolBar::~ToolBar()
 {
 	kdebugf();
-	undock();
 	kdebugf2();
 }
 
@@ -355,7 +354,7 @@ void DockArea::writeToConfig()
 	kdebugf2();
 }
 
-bool DockArea::loadFromConfig(QMainWindow* toolbars_parent)
+bool DockArea::loadFromConfig(QWidget* toolbars_parent)
 {
 	kdebugf();
 	QDomElement root_elem = xml_config_file->rootElement();
@@ -389,148 +388,4 @@ const UserGroup* DockArea::selectedUsers()
 	emit selectedUsersNeeded(users);
 	kdebugf2();
 	return users;
-}
-
-QValueList<MainToolBar::ToolButton> MainToolBar::RegisteredToolButtons;
-MainToolBar* MainToolBar::instance=NULL;
-
-MainToolBar::MainToolBar(QMainWindow* parent) : QToolBar(parent, "mainToolbar")
-{
-	kdebugf();
-	setCloseMode(QDockWindow::Undocked);
-	setLabel(qApp->translate("ToolBar", "Main toolbar"));
-
-	config_file.addVariable("General", "ToolBarHidden", false);
-	if (config_file.readBoolEntry("General", "ToolBarHidden"))
-		hide();
-
-	setVerticallyStretchable(true);
-	setHorizontallyStretchable(true);
-
-	createControls();
-	instance=this;
-	kdebugf2();
-}
-
-MainToolBar::~MainToolBar()
-{
-	config_file.writeEntry("General", "ToolBarHidden", isHidden());
-	instance=NULL;
-}
-
-void MainToolBar::createControls()
-{
-	kdebugf();
-	FOREACH(j, RegisteredToolButtons)
-		if ((*j).caption== "--separator--")
-			addSeparator();
-		else
-			(*j).button = new QToolButton(icons_manager->loadIcon((*j).iconname), (*j).caption,
-				QString::null, (*j).receiver, (*j).slot, this, (*j).name);
-
-	setStretchableWidget(new QWidget(this));
-	kdebugf2();
-}
-
-void MainToolBar::registerSeparator(int position)
-{
-	kdebugf();
-	if(instance!=NULL)
-		instance->clear();
-
-	ToolButton RToolButton;
-	RToolButton.caption="--separator--";
-
-	if ((RegisteredToolButtons.count()<(uint)(position+1)) || (position == -1))
-		RegisteredToolButtons.append(RToolButton);
-	else
-		RegisteredToolButtons.insert(RegisteredToolButtons.at(position), RToolButton);
-
-	if(instance!=NULL)
-		instance->createControls();
-	kdebugf2();
-}
-
-void MainToolBar::registerButton(const QString &iconname, const QString& caption,
-			QObject* receiver, const char* slot, int position, const char* name)
-{
-	kdebugf();
-	if(instance!=NULL)
-		instance->clear();
-
-	ToolButton RToolButton;
-
-	RToolButton.iconname= iconname;
-	RToolButton.caption= caption;
-	RToolButton.receiver= receiver;
-	RToolButton.slot= slot;
-	RToolButton.position= position;
-	RToolButton.name= name;
-
-	if ((RegisteredToolButtons.count()<(uint)(position+1)) || (position == -1))
-		RegisteredToolButtons.append(RToolButton);
-	else
-		RegisteredToolButtons.insert(RegisteredToolButtons.at(position), RToolButton);
-
-	if(instance!=NULL)
-		instance->createControls();
-	kdebugf2();
-}
-
-void MainToolBar::unregisterButton(const char* name)
-{
-	kdebugf();
-	if(instance!=NULL)
-		instance->clear();
-
-	FOREACH(j, RegisteredToolButtons)
-		if ((*j).name == name)
-		{
-			RegisteredToolButtons.remove(j);
-			break;
-		}
-
-	if(instance!=NULL)
-		instance->createControls();
-	kdebugf2();
-}
-
-QToolButton* MainToolBar::getButton(const char* name)
-{
-	CONST_FOREACH(j, RegisteredToolButtons)
-		if ((*j).name == name)
-			return (*j).button;
-	kdebugmf(KDEBUG_WARNING, "'%s' return NULL\n", name?name:"[null]");
-	return NULL;
-}
-
-void MainToolBar::refreshIcons(const QString &caption, const QString &newIconName, const QString &newCaption)
-{
-	kdebugf();
-	if (caption==QString::null) //wszystkie siê od¶wie¿aj±
-	{
-		FOREACH(j, RegisteredToolButtons)
-			if ((*j).caption!="--separator--")
-				(*j).button->setIconSet(icons_manager->loadIcon((*j).iconname));
-		if (kadu->isVisible())
-		{
-			kadu->hide();
-			kadu->show();
-		}
-	}
-	else
-		FOREACH(j, RegisteredToolButtons)
-			if ((*j).caption == caption)
-			{
-				if (newIconName!=QString::null)
-					(*j).iconname=newIconName;
-				(*j).button->setIconSet(icons_manager->loadIcon((*j).iconname));
-				if (newCaption!=QString::null)
-				{
-					(*j).caption=newCaption;
-					(*j).button->setTextLabel(newCaption);
-				}
-				break;
-			}
-	kdebugf2();
 }

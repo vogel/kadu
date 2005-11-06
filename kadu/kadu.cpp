@@ -104,7 +104,7 @@ void Kadu::keyPressEvent(QKeyEvent *e)
 }
 
 /* a monstrous constructor so Kadu would take longer to start up */
-Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
+Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 {
 	kdebugf();
 	Docked = false;
@@ -190,7 +190,14 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	ConfigDialog::connectSlot("Look", "Font in panel", SIGNAL(changed(const char *, const QFont&)),kaduslots, SLOT(chooseFont(const char *, const QFont&)), "panel_font_box");
 
 	QVBox *vbox=new QVBox(this, "centralBox");
-	setCentralWidget(vbox);
+	QVBoxLayout* grid = new QVBoxLayout(this);
+	grid->addWidget(vbox);
+
+	DockArea* top_dockarea = new DockArea(Qt::Horizontal, DockArea::Normal, vbox, "topDockArea");
+	connect(top_dockarea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
+		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
+	top_dockarea->setMinimumHeight(20);
+
 	QSplitter *split = new QSplitter(Qt::Vertical, vbox, "splitter");
 	QHBox* hbox1 = new QHBox(split, "firstBox");
 
@@ -253,18 +260,11 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	pending.loadFromFile();
 
-	// dodanie przyciskow do paska narzedzi
-	MainToolBar::registerButton("ShowHideInactiveUsers", tr("Show / hide offline users"),
-							groups_manager, SLOT(changeDisplayingOffline()), -1, "offlineUsersButton");
-
 	Action* inact_users_action = new Action(icons_manager->loadIcon("ShowHideInactiveUsers"),
 		tr("Show / hide offline users"), "inactiveUsersAction");
 	connect(inact_users_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(inactiveUsersActionActivated()));
 	KaduActions.insert("inactiveUsersAction", inact_users_action);
-
-	MainToolBar::registerButton("ShowOnlyDescriptionUsers", tr("Show / hide users without description"),
-							groups_manager, SLOT(changeDisplayingWithoutDescription()), -1, "withoutDescriptionUsersButton");
 
 	Action* desc_users_action = new Action(icons_manager->loadIcon("ShowOnlyDescriptionUsers"),
 		tr("Show / hide users without description"), "descriptionUsersAction");
@@ -272,22 +272,11 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		this, SLOT(descriptionUsersActionActivated()));
 	KaduActions.insert("descriptionUsersAction", desc_users_action);
 
-	MainToolBar::registerButton("Configuration", tr("Configuration"),
-							this, SLOT(configure()), -1, "configurationButton");
-
 	Action* configuration_action = new Action(icons_manager->loadIcon("Configuration"),
 		tr("Configuration"), "configurationAction");
 	connect(configuration_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(configurationActionActivated()));
 	KaduActions.insert("configurationAction", configuration_action);
-
-	MainToolBar::registerSeparator();
-
-	MainToolBar::registerButton("History", tr("View history"),
-							this, SLOT(viewHistory()), -1, "historyButton");
-
-	MainToolBar::registerButton("EditUserInfo", tr("View / edit user info"),
-							this, SLOT(showUserInfo()), -1, "editUserButton");
 
 	Action* edit_user_action = new Action(icons_manager->loadIcon("EditUserInfo"),
 		tr("View / edit user info"), "editUserAction");
@@ -295,19 +284,26 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 		this, SLOT(editUserActionActivated(const UserGroup*)));
 	KaduActions.insert("editUserAction", edit_user_action);
 
-	MainToolBar::registerButton("LookupUserInfo", tr("Lookup in directory"),
-							this, SLOT(lookupInDirectory()), -1, "lookupUserButton");
-
-	MainToolBar::registerSeparator();
-
-	MainToolBar::registerButton("AddUser", tr("Add user"),
-							this, SLOT(addUserAction()), -1, "addUserButton");
-
 	Action* add_user_action = new Action(icons_manager->loadIcon("AddUser"),
 		tr("Add user"), "addUserAction");
 	connect(add_user_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(addUserActionActivated()));
 	KaduActions.insert("addUserAction", add_user_action);
+
+	if (!top_dockarea->loadFromConfig(this))
+	{
+		ToolBar* toolbar = new ToolBar(this, "Kadu toolbar");
+		top_dockarea->moveDockWindow(toolbar);
+		top_dockarea->setAcceptDockWindow(toolbar, true);
+
+		KaduActions["inactiveUsersAction"]->addToToolbar(toolbar);
+		KaduActions["descriptionUsersAction"]->addToToolbar(toolbar);
+		KaduActions["configurationAction"]->addToToolbar(toolbar);
+		KaduActions["showHistoryAction"]->addToToolbar(toolbar);
+		KaduActions["editUserAction"]->addToToolbar(toolbar);
+		KaduActions["whoisAction"]->addToToolbar(toolbar);
+		KaduActions["addUserAction"]->addToToolbar(toolbar);
+	}
 
 	/* guess what */
 	createMenu();
@@ -351,15 +347,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 
 	split->setSizes(splitsizes);
 
-//	tworzymy pasek narzedziowy
-	createToolBar();
-	if (config_file.readEntry("General", "DockWindows") != QString::null)
-	{
-		QString dockwindows=config_file.readEntry("General", "DockWindows").replace(QRegExp("\\\\n"), "\n");
-		QTextStream stream(&dockwindows, IO_ReadOnly);
-		stream >> *this;
-	}
-
 	connect(gadu, SIGNAL(chatMsgReceived2(Protocol *, UserListElements, const QString &, time_t)),
 		this, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString &, time_t)));
 	connect(gadu, SIGNAL(connecting()), this, SLOT(connecting()));
@@ -387,16 +374,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QMainWindow(parent, name)
 	connect(&(gadu->currentStatus()), SIGNAL(goOffline(const QString &)),
 		this, SLOT(wentOffline(const QString &)));
 
-	kdebugf2();
-}
-
-void Kadu::createToolBar()
-{
-	kdebugf();
-	new MainToolBar(this);
-	setRightJustification(true);
-//	setDockEnabled(Qt::DockBottom, false);
-	setAppropriate(MainToolBar::instance, true);
 	kdebugf2();
 }
 
@@ -548,6 +525,23 @@ void Kadu::lookupInDirectory()
 		sd = new SearchDialog();
 		sd->show();
 	}
+	kdebugf2();
+}
+
+void Kadu::selectedUsersNeeded(const UserGroup*& users)
+{
+	kdebugf();
+	UserBox* activeUserBox = UserBox::activeUserBox();
+	if (activeUserBox==NULL)
+	{
+		users = NULL;
+		kdebugf2();
+		return;
+	}
+	UserGroup* user_group = new UserGroup(1);
+	user_group->addUsers(activeUserBox->selectedUsers());
+	users = user_group;
+	//TODO: Memory leak
 	kdebugf2();
 }
 
@@ -1104,14 +1098,6 @@ bool Kadu::close(bool quit)
 
 		config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));
 
-		QString dockwindows = config_file.readEntry("General", "DockWindows");
-		QTextStream stream(&dockwindows, IO_WriteOnly);
-		stream << *kadu;
-		dockwindows.replace(QRegExp("\\n"), "\\n");
-		config_file.writeEntry("General", "DockWindows", dockwindows);
-
-		delete MainToolBar::instance;
-
 		if (config_file.readNumEntry("General", "DefaultStatusIndex") == 7 || config_file.readNumEntry("General", "DefaultStatusIndex") == 8)
 		{
 			config_file.writeEntry("General", "LastStatusIndex", gadu->status().index());
@@ -1202,6 +1188,8 @@ void Kadu::createMenu()
 	MainMenu->insertItem(icons_manager->loadIcon("Exit"), tr("&Exit Kadu"), this, SLOT(quit()));
 
 	MenuBar->insertItem(tr("&Kadu"), MainMenu);
+
+	((QVBoxLayout*)layout())->insertWidget(0, MenuBar);
 
 	icons_manager->registerMenu(MainMenu);
 	icons_manager->registerMenuItem(MainMenu, tr("Manage &ignored"), "ManageIgnored");
@@ -1369,7 +1357,7 @@ bool Kadu::docked() const
 
 void Kadu::show()
 {
-	QMainWindow::show();
+	QWidget::show();
 	emit shown();
 }
 

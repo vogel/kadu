@@ -57,6 +57,8 @@ class ToolButtonDrag : public QTextDrag
 		ToolButtonDrag(ToolButton* button, QWidget* dragSource = 0, const char* name = 0);
 };
 
+class DockArea;
+
 class ToolBar : public QToolBar
 {
 	Q_OBJECT
@@ -74,7 +76,7 @@ class ToolBar : public QToolBar
 		virtual void dragLeaveEvent(QDragLeaveEvent *e);
 
 	public:
-		ToolBar(QMainWindow* parent, const QString& label);
+		ToolBar(QWidget* parent, const QString& label);
 		~ToolBar();
 		void writeToConfig(QDomElement parent_element);
 		void loadFromConfig(QDomElement parent_element);
@@ -104,7 +106,7 @@ class DockArea : public QDockArea
 			QWidget * parent = 0, const char * name = 0);
 		~DockArea();
 		void writeToConfig();
-		bool loadFromConfig(QMainWindow* toolbars_parent);
+		bool loadFromConfig(QWidget* toolbars_parent);
 		/**
 			Returns list of users that will be affected by activated action.
 			It depends on where the dockarea is located. If dockarea is in chat
@@ -127,36 +129,6 @@ class DockArea : public QDockArea
 			execute action.
 		**/
 		void selectedUsersNeeded(const UserGroup*& users);
-};
-
-/**
-	Toolbar Kadu
-**/
-class MainToolBar : public QToolBar
-{
-	private:
-		struct ToolButton
-		{
-			QString iconname;
-			QString caption, name;
-			QObject* receiver;
-			QString slot;
-			QToolButton* button;
-			int position;
-		};
-		static QValueList<ToolButton> RegisteredToolButtons;
-		void createControls();
-
-	public:
-		static MainToolBar* instance;
-		MainToolBar(QMainWindow* parent);
-		~MainToolBar();
-		static void registerButton(const QString &iconname, const QString& caption,
-			QObject* receiver, const char* slot, const int position=-1, const char* name="");
-		static void unregisterButton(const char* name);
-		static void registerSeparator(int position=-1);
-		static QToolButton* getButton(const char* name);
-		static void refreshIcons(const QString &caption=QString::null, const QString &newIconName=QString::null, const QString &newCaption=QString::null);
 };
 
 #endif

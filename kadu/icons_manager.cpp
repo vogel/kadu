@@ -10,13 +10,13 @@
 #include <qcombobox.h>
 #include <qmessagebox.h>
 
+#include "action.h"
 #include "config_dialog.h"
 #include "config_file.h"
 #include "debug.h"
 #include "icons_manager.h"
 #include "kadu.h"
 #include "misc.h"
-#include "toolbar.h"
 #include "userbox.h"
 
 IconsManager::IconsManager(const QString& name, const QString& configname)
@@ -168,7 +168,7 @@ void IconsManager::onApplyTabLook()
 
 		icons_manager->clear();
 		icons_manager->setTheme(selectedTheme);
-		MainToolBar::refreshIcons();
+		KaduActions.refreshIcons();
 		UserBox::userboxmenu->refreshIcons();
 		icons_manager->refreshMenus();
 		kadu->changeAppearance();

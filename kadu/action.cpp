@@ -167,4 +167,9 @@ Actions::Actions()
 {
 }
 
+void Actions::refreshIcons()
+{
+	//TODO: refresh icons
+}
+
 Actions KaduActions;
