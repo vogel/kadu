@@ -37,12 +37,10 @@ $(module_moc_cpp_files):
 	$(AR) rs $@ $(module_o_files)
 
 %.d: %.cpp
-	$(CXX) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) $< | \
-	sed "s,\(.*\):,$(basename $@).o $@:," > $@
+	$(CXX) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) $< | sed "s,\(.*\):,$(basename $@).o $@:," > $@
 
 %.d: %.c
-	$(CC) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)  $(CXXFLAGS) $< | \
-	sed "s,\(.*\):,$(basename $@).o $@:," > $@
+	$(CC) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)  $(CXXFLAGS) $< | sed "s,\(.*\):,$(basename $@).o $@:," > $@
 
 %.o: %.cpp
 	$(CXX) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)  $(CXXFLAGS)
@@ -115,6 +113,8 @@ module_targets = $(addprefix module_,$(shared_modules) $(static_modules))
 
 $(module_targets):
 	@dir=`echo $@ | sed s/module_//` && \
+	echo && \
+	echo -e "\033[32m>>>\033[0m Compiling $$dir module ..." && \
 	MODULE_SOURCES= && \
 	MODULE_MOC_HEADERS= && \
 	MODULE_HEADERS= && \
@@ -126,8 +126,7 @@ $(module_targets):
 	. ./$$dir/spec && \
 	MODULE_CXXFLAGS=`cat $$dir/.cxxflags` && \
 	MODULE_LDFLAGS=`cat $$dir/.ldflags` && \
-	echo && \
-	echo -e "\033[32m>>>\033[0m Compiling $$dir module [LD=$$MODULE_LDFLAGS,CXX=$$MODULE_CXXFLAGS] ..." && \
+	echo -e "    [LDFLAGS=\"$$MODULE_LDFLAGS\", CXXFLAGS=\"$$MODULE_CXXFLAGS\"]" && \
 	echo && \
 	for mod_3rdparty in $$MODULE_3RDPARTY; do \
 		$(MAKE) -C $$dir/$$mod_3rdparty CC="$(CC)" CXX="$(CXX)"; \

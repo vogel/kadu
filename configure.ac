@@ -264,8 +264,6 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 			MODULE_LDFLAGS= && \
 			MODULE_DIR=../modules/$mod && \
 			. ./modules/$mod/spec && \
-			MODULE_CXXFLAGS="$MODULE_CXXFLAGS $CXXFLAGS" && \
-			MODULE_LDFLAGS="$MODULE_LDFLAGS $LDFLAGS" && \
 			echo "MODULE_LIBS:           $MODULE_LIBS" && \
 			echo "MODULE_LIBS_PATH:      $MODULE_LIBS_PATH" && \
 			echo "MODULE_INCLUDES:       $MODULE_INCLUDES" && \
@@ -299,6 +297,21 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 					AC_MSG_ERROR([Additional module configuration command failed!]); \
 				fi; \
 			fi && \
+			
+			#removing double spaces from variables
+			while test `echo "$MODULE_CXXFLAGS" | grep "  " | wc -l` -ge 1 ; do \
+				MODULE_CXXFLAGS=`echo "$MODULE_CXXFLAGS" | sed "s/  / /g"`; \
+			done && \
+			while test `echo "$MODULE_LDFLAGS" | grep "  " | wc -l` -ge 1 ; do \
+				MODULE_LDFLAGS=`echo "$MODULE_LDFLAGS" | sed "s/  / /g"`; \
+			done && \
+			if test `echo "$MODULE_CXXFLAGS" | grep "^ .*" | wc -l` -ge 1; then \
+				MODULE_CXXFLAGS=`echo "$MODULE_CXXFLAGS" | sed "s/^ //"`; \
+			fi && \
+			if test `echo "$MODULE_LDFLAGS" | grep "^ .*" | wc -l` -ge 1; then \
+				MODULE_LDFLAGS=`echo "$MODULE_LDFLAGS" | sed "s/^ //"`; \
+			fi && \
+
 			echo -n "$MODULE_CXXFLAGS" > modules/$mod/.cxxflags && \
 			if test -z `expr " $shared_modules " : ".* \($mod\) "`; then \
 				echo -n > modules/$mod/.ldflags; \

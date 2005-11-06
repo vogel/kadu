@@ -10048,8 +10048,6 @@ echo "$as_me: error: $mod download failed!" >&2;}
 			MODULE_LDFLAGS= && \
 			MODULE_DIR=../modules/$mod && \
 			. ./modules/$mod/spec && \
-			MODULE_CXXFLAGS="$MODULE_CXXFLAGS $CXXFLAGS" && \
-			MODULE_LDFLAGS="$MODULE_LDFLAGS $LDFLAGS" && \
 			echo "MODULE_LIBS:           $MODULE_LIBS" && \
 			echo "MODULE_LIBS_PATH:      $MODULE_LIBS_PATH" && \
 			echo "MODULE_INCLUDES:       $MODULE_INCLUDES" && \
@@ -10320,6 +10318,18 @@ echo "$as_me: error: $tool not found!" >&2;}
 echo "$as_me: error: Additional module configuration command failed!" >&2;}
    { (exit 1); exit 1; }; }; \
 				fi; \
+			fi && \
+			while test `echo "$MODULE_CXXFLAGS" | grep "  " | wc -l` -ge 1 ; do \
+				MODULE_CXXFLAGS=`echo "$MODULE_CXXFLAGS" | sed "s/  / /g"`; \
+			done && \
+			while test `echo "$MODULE_LDFLAGS" | grep "  " | wc -l` -ge 1 ; do \
+				MODULE_LDFLAGS=`echo "$MODULE_LDFLAGS" | sed "s/  / /g"`; \
+			done && \
+			if test `echo "$MODULE_CXXFLAGS" | grep "^ .*" | wc -l` -ge 1; then \
+				MODULE_CXXFLAGS=`echo "$MODULE_CXXFLAGS" | sed "s/^ //"`; \
+			fi && \
+			if test `echo "$MODULE_LDFLAGS" | grep "^ .*" | wc -l` -ge 1; then \
+				MODULE_LDFLAGS=`echo "$MODULE_LDFLAGS" | sed "s/^ //"`; \
 			fi && \
 			echo -n "$MODULE_CXXFLAGS" > modules/$mod/.cxxflags && \
 			if test -z `expr " $shared_modules " : ".* \($mod\) "`; then \
