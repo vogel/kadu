@@ -1645,19 +1645,31 @@ void Kadu::readTokenValue(QPixmap tokenImage, QString &tokenValue)
 void Kadu::deleteOldConfigFiles()
 {
 	kdebugf();
+	////////////start - to be removed at 0.6-svn
 	QDir oldConfigs(ggPath(), "kadu.conf.backup.*", QDir::Name, QDir::Files);
 //	kdebugm(KDEBUG_INFO, "%d\n", oldConfigs.count());
 	if (oldConfigs.count() > 20)
-		for (unsigned int i = 0; i < oldConfigs.count() - 20; ++i)
+		for (unsigned int i = 0, max = oldConfigs.count() - 20; i < max; ++i)
 		{
 //			kdebugm(KDEBUG_DUMP, "deleting %s\n", oldConfigs[i].local8Bit().data());
 			QFile::remove(ggPath(oldConfigs[i]));
 		}
 //	kdebugm(KDEBUG_INFO, "configs deleted\n");
+	//////////stop - to be removed at 0.6-svn
+
+	QDir oldConfigs2(ggPath(), "kadu.conf.xml.backup.*", QDir::Name, QDir::Files);
+//	kdebugm(KDEBUG_INFO, "%d\n", oldConfigs2.count());
+	if (oldConfigs2.count() > 20)
+		for (unsigned int i = 0, max = oldConfigs2.count() - 20; i < max; ++i)
+		{
+//			kdebugm(KDEBUG_DUMP, "deleting %s\n", oldConfigs2[i].local8Bit().data());
+			QFile::remove(ggPath(oldConfigs2[i]));
+		}
+//	kdebugm(KDEBUG_INFO, "configs2 deleted\n");
 
 	QDir oldBacktraces(ggPath(), "kadu.backtrace.*", QDir::Name, QDir::Files);
 	if (oldBacktraces.count() > 20)
-		for (unsigned int i = 0; i < oldBacktraces.count() - 20; ++i)
+		for (unsigned int i = 0, max = oldBacktraces.count() - 20; i < max; ++i)
 		{
 //			kdebugm(KDEBUG_DUMP, "deleting %s\n", oldBacktraces[i].local8Bit().data());
 			QFile::remove(ggPath(oldBacktraces[i]));
