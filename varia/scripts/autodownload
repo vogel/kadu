@@ -35,10 +35,30 @@ for ITEM_WEBSITE in $ITEM_WEBSITES; do
 		break
 	fi
 done
+
 if test -z "$ITEM_HREFS"; then
-	echo -e "\033[31m!!!\033[0m ERROR: Downloading of $1 $2 href-file failed"
-	echo
-	exit 1
+	
+	#downloading packages for other versions of Kadu
+	#currently not used
+	if test -z "$3"; then
+		for VER in $3 $4 $5 $6 $7 $8; do
+			for ITEM_WEBSITE in $ITEM_WEBSITES; do
+				if wget -T 20 -t 2 -N $ITEM_WEBSITE/kadu-$VER-$1.href; then
+					ITEM_HREFS=`cat kadu-$KADU_VERSION-$1.href`
+					break
+				fi
+			done
+			if ! test -z "$ITEM_HREFS"; then
+				break
+			fi
+		done
+	fi
+
+	if test -z "$ITEM_HREFS"; then
+		echo -e "\033[31m!!!\033[0m ERROR: Downloading of $1 $2 href-file failed"
+		echo
+		exit 1
+	fi
 fi
 
 for ITEM_HREF in $ITEM_HREFS; do
