@@ -234,7 +234,7 @@
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is not available&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt; ma statust niedostępny&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; ma status niedostępny&lt;br/&gt; &lt;small&gt;%2&lt;/small&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; is not available</source>
