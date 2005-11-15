@@ -5,6 +5,7 @@
 #include <qstring.h>
 #include <qvaluelist.h>
 
+#include "dockarea.h"
 #include "gadu.h"
 #include "status.h"
 #include "usergroup.h"
@@ -28,6 +29,7 @@ class Kadu : public QWidget
 	private:
 		static bool Closing;
 		friend class KaduSlots;
+		DockArea* TopDockArea;
 		KaduTextBrowser* InfoPanel;
 		QMenuBar* MenuBar;
 		QPopupMenu* MainMenu;

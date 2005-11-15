@@ -32,7 +32,6 @@
 #include "config_dialog.h"
 #include "config_file.h"
 #include "debug.h"
-#include "dockarea.h"
 #include "expimp.h"
 #include "gadu_images_manager.h"
 #include "groups_manager.h"
@@ -194,10 +193,10 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 	QVBoxLayout* grid = new QVBoxLayout(this);
 	grid->addWidget(vbox);
 
-	DockArea* top_dockarea = new DockArea(Qt::Horizontal, DockArea::Normal, vbox, "topDockArea");
-	connect(top_dockarea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
+	TopDockArea = new DockArea(Qt::Horizontal, DockArea::Normal, vbox, "topDockArea");
+	connect(TopDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
-	top_dockarea->setMinimumHeight(20);
+	TopDockArea->setMinimumHeight(20);
 
 	QSplitter *split = new QSplitter(Qt::Vertical, vbox, "splitter");
 	QHBox* hbox1 = new QHBox(split, "firstBox");
@@ -290,21 +289,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 	connect(add_user_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(addUserActionActivated()));
 	KaduActions.insert("addUserAction", add_user_action);
-
-	if (!top_dockarea->loadFromConfig(this))
-	{
-		ToolBar* toolbar = new ToolBar(this, "Kadu toolbar");
-		top_dockarea->moveDockWindow(toolbar);
-		top_dockarea->setAcceptDockWindow(toolbar, true);
-
-		KaduActions["inactiveUsersAction"]->addToToolbar(toolbar);
-		KaduActions["descriptionUsersAction"]->addToToolbar(toolbar);
-		KaduActions["configurationAction"]->addToToolbar(toolbar);
-		KaduActions["showHistoryAction"]->addToToolbar(toolbar);
-		KaduActions["editUserAction"]->addToToolbar(toolbar);
-		KaduActions["whoisAction"]->addToToolbar(toolbar);
-		KaduActions["addUserAction"]->addToToolbar(toolbar);
-	}
 
 	/* guess what */
 	createMenu();
@@ -1533,6 +1517,25 @@ void Kadu::resizeEvent(QResizeEvent *)
 void Kadu::startupProcedure()
 {
 	kdebugf();
+
+	// create toolbars in startupProcedure() to include actions from modules
+	if (!TopDockArea->loadFromConfig(this))
+	{
+		ToolBar* toolbar = new ToolBar(this, "Kadu toolbar");
+		TopDockArea->moveDockWindow(toolbar);
+		TopDockArea->setAcceptDockWindow(toolbar, true);
+
+		if (KaduActions.contains("muteSoundsAction"))
+			KaduActions["muteSoundsAction"]->addToToolbar(toolbar);
+		KaduActions["inactiveUsersAction"]->addToToolbar(toolbar);
+		KaduActions["descriptionUsersAction"]->addToToolbar(toolbar);
+		KaduActions["configurationAction"]->addToToolbar(toolbar);
+		KaduActions["showHistoryAction"]->addToToolbar(toolbar);
+		KaduActions["editUserAction"]->addToToolbar(toolbar);
+		KaduActions["whoisAction"]->addToToolbar(toolbar);
+		KaduActions["addUserAction"]->addToToolbar(toolbar);
+	}
+
 	if (ShowMainWindowOnStart)
 		show();
 
