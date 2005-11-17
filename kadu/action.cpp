@@ -15,6 +15,7 @@
 #include "action.h"
 #include "debug.h"
 #include "kadu.h"
+#include "misc.h"
 
 Action::Action(const QIconSet& icon, const QString& text, const char* name, QKeySequence accel)
 	: QAction(icon, text, accel, kadu, name)
@@ -170,6 +171,33 @@ Actions::Actions()
 void Actions::refreshIcons()
 {
 	//TODO: refresh icons
+}
+
+void Actions::addDefaultToolbarAction(
+	const QString& toolbar, const QString& action, int index)
+{
+	kdebugf();
+	QStringList& actions = DefaultToolbarActions[toolbar];
+	if (index < 0)
+		actions.push_back(action);
+	else
+		actions.insert(actions.at(index), action);
+	kdebugf2();
+}
+
+void Actions::addDefaultActionsToToolbar(ToolBar* toolbar)
+{
+	kdebugf();
+	if (DefaultToolbarActions.contains(toolbar->name()))
+	{
+		const QStringList& actions = DefaultToolbarActions[toolbar->name()];
+		FOREACH(i, actions)
+		{
+			if (contains(*i))
+				(*this)[*i]->addToToolbar(toolbar);
+		}
+	}
+	kdebugf2();
 }
 
 Actions KaduActions;

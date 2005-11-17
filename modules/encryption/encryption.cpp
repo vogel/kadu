@@ -75,6 +75,7 @@ EncryptionManager::EncryptionManager(QObject *parent, const char *name) : QObjec
 	connect(action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(encryptionActionActivated(const UserGroup*)));
 	KaduActions.insert("encryptionAction", action);
+	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "encryptionAction", 4);
 
 	UserBox::userboxmenu->addItemAtPos(2,"SendPublicKey", tr("Send my public key"), this, SLOT(sendPublicKey()));
 

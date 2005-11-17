@@ -141,6 +141,21 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 		this, SLOT(sendActionActivated(const UserGroup*)));
 	KaduActions.insert("sendAction", send_action);
 
+	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "autoSendAction");
+	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "scrollLockAction");
+	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "clearChatAction");
+	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "showHistoryAction");
+	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "insertEmoticonAction");
+	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "whoisAction");
+	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "insertImageAction");
+
+	KaduActions.addDefaultToolbarAction("Chat toolbar 2", "boldAction");
+	KaduActions.addDefaultToolbarAction("Chat toolbar 2", "italicAction");
+	KaduActions.addDefaultToolbarAction("Chat toolbar 2", "underlineAction");
+	KaduActions.addDefaultToolbarAction("Chat toolbar 2", "colorAction");
+
+	KaduActions.addDefaultToolbarAction("Chat toolbar 3", "sendAction");
+
 	kdebugf2();
 }
 

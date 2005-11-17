@@ -173,16 +173,7 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 		tb1->show();
 		buttontray->moveDockWindow(tb1);
 		buttontray->setAcceptDockWindow(tb1, true);
-		// TODO: na razie statycznie, potem z pliku xml
-		KaduActions["autoSendAction"]->addToToolbar(tb1);
-		KaduActions["scrollLockAction"]->addToToolbar(tb1);
-		KaduActions["clearChatAction"]->addToToolbar(tb1);
-		KaduActions["showHistoryAction"]->addToToolbar(tb1);
-		if (KaduActions.contains("encryptionAction"))
-			KaduActions["encryptionAction"]->addToToolbar(tb1);
-		KaduActions["insertEmoticonAction"]->addToToolbar(tb1);
-		KaduActions["whoisAction"]->addToToolbar(tb1);
-		KaduActions["insertImageAction"]->addToToolbar(tb1);
+		KaduActions.addDefaultActionsToToolbar(tb1);
 	}
 
 	if (!btnpart->loadFromConfig(this))
@@ -192,21 +183,14 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 		tb2->show();
 		btnpart->moveDockWindow(tb2);
 		btnpart->setAcceptDockWindow(tb2, true);
-		// TODO: na razie statycznie, potem z pliku xml
-		KaduActions["boldAction"]->addToToolbar(tb2);
-		KaduActions["italicAction"]->addToToolbar(tb2);
-		KaduActions["underlineAction"]->addToToolbar(tb2);
-		KaduActions["colorAction"]->addToToolbar(tb2);
-
+		KaduActions.addDefaultActionsToToolbar(tb2);
 		// TOOLBAR 3
 		ToolBar* tb3 = new ToolBar(this, "Chat toolbar 3");
 		tb3->setOffset(1000);
 		tb3->show();
 		btnpart->moveDockWindow(tb3);
 		btnpart->setAcceptDockWindow(tb3, true);
-		// TODO: na razie statycznie, potem z pliku xml
-		KaduActions["sendAction"]->addToToolbar(tb3);
-		// END TOOLBAR 3
+		KaduActions.addDefaultActionsToToolbar(tb3);
 	}
 
 	bodyformat = new QMimeSourceFactory();

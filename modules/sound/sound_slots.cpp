@@ -40,6 +40,7 @@ SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name
 	connect(mute_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(muteActionActivated(const UserGroup*, const QWidget*, bool)));
 	KaduActions.insert("muteSoundsAction", mute_action);
+	KaduActions.addDefaultToolbarAction("Kadu toolbar", "muteSoundsAction", 0);
 
 	SamplePlayingTestMsgBox = NULL;
 	SamplePlayingTestSample = NULL;

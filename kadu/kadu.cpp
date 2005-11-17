@@ -290,6 +290,14 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 		this, SLOT(addUserActionActivated()));
 	KaduActions.insert("addUserAction", add_user_action);
 
+	KaduActions.addDefaultToolbarAction("Kadu toolbar", "inactiveUsersAction");
+	KaduActions.addDefaultToolbarAction("Kadu toolbar", "descriptionUsersAction");
+	KaduActions.addDefaultToolbarAction("Kadu toolbar", "configurationAction");
+	KaduActions.addDefaultToolbarAction("Kadu toolbar", "showHistoryAction");
+	KaduActions.addDefaultToolbarAction("Kadu toolbar", "editUserAction");
+	KaduActions.addDefaultToolbarAction("Kadu toolbar", "whoisAction");
+	KaduActions.addDefaultToolbarAction("Kadu toolbar", "addUserAction");
+
 	/* guess what */
 	createMenu();
 	createStatusPopupMenu();
@@ -1524,16 +1532,7 @@ void Kadu::startupProcedure()
 		ToolBar* toolbar = new ToolBar(this, "Kadu toolbar");
 		TopDockArea->moveDockWindow(toolbar);
 		TopDockArea->setAcceptDockWindow(toolbar, true);
-
-		if (KaduActions.contains("muteSoundsAction"))
-			KaduActions["muteSoundsAction"]->addToToolbar(toolbar);
-		KaduActions["inactiveUsersAction"]->addToToolbar(toolbar);
-		KaduActions["descriptionUsersAction"]->addToToolbar(toolbar);
-		KaduActions["configurationAction"]->addToToolbar(toolbar);
-		KaduActions["showHistoryAction"]->addToToolbar(toolbar);
-		KaduActions["editUserAction"]->addToToolbar(toolbar);
-		KaduActions["whoisAction"]->addToToolbar(toolbar);
-		KaduActions["addUserAction"]->addToToolbar(toolbar);
+		KaduActions.addDefaultActionsToToolbar(toolbar);
 	}
 
 	if (ShowMainWindowOnStart)

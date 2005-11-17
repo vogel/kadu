@@ -3,8 +3,10 @@
 
 #include <qaction.h>
 #include <qmainwindow.h>
+#include <qmap.h>
 #include <qpopupmenu.h>
 #include <qstring.h>
+#include <qstringlist.h>
 #include <qvaluelist.h>
 
 #include "toolbar.h"
@@ -66,9 +68,15 @@ class Action : public QAction
 
 class Actions : public QMap<QString, Action*>
 {
+	private:
+		QMap<QString, QStringList> DefaultToolbarActions;
+
 	public:
 		Actions();
 		void refreshIcons();
+		void addDefaultToolbarAction(
+			const QString& toolbar, const QString& action, int index = -1);
+		void addDefaultActionsToToolbar(ToolBar* toolbar);
 };
 
 extern Actions KaduActions;
