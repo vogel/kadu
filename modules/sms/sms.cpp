@@ -12,6 +12,7 @@
 #include <qlayout.h>
 #include <qstring.h>
 
+#include "action.h"
 #include "config_dialog.h"
 #include "config_file.h"
 #include "history.h"
@@ -442,6 +443,13 @@ SmsSlots::SmsSlots(QObject *parent, const char *name) : QObject(parent, name)
 
 	menuid=kadu->mainMenu()->insertItem(icons_manager->loadIcon("SendSms"), tr("Send SMS"), this, SLOT(onSendSms()), 0, -1, 10);
 	icons_manager->registerMenuItem(kadu->mainMenu(), tr("Send SMS"), "SendSms");
+
+	Action* send_sms_action = new Action(icons_manager->loadIcon("SendSms"),
+		tr("Send SMS"), "sendSmsAction");
+	connect(send_sms_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		this, SLOT(sendSmsActionActivated(const UserGroup*)));
+	KaduActions.insert("sendSmsAction", send_sms_action);
+
 	kdebugf2();
 }
 
@@ -451,6 +459,7 @@ SmsSlots::~SmsSlots()
 	int sendsmstem = UserBox::userboxmenu->getItem(tr("Send SMS"));
 	UserBox::userboxmenu->removeItem(sendsmstem);
 	kadu->mainMenu()->removeItem(menuid);
+	KaduActions.remove("sendSmsAction");
 	kdebugf2();
 }
 
@@ -651,6 +660,16 @@ void SmsSlots::onPopupMenuCreate()
 
 	if (user.mobile().isEmpty() || users.count() != 1)
 		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Send SMS")), false);
+	kdebugf2();
+}
+
+void SmsSlots::sendSmsActionActivated(const UserGroup* users)
+{
+	kdebugf();
+	if (users->count() == 1 && (!(*users->begin()).mobile().isEmpty()))
+		newSms((*users->begin()).altNick());
+	else
+		newSms(QString::null);
 	kdebugf2();
 }
 

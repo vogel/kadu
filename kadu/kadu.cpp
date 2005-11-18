@@ -287,7 +287,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 	Action* add_user_action = new Action(icons_manager->loadIcon("AddUser"),
 		tr("Add user"), "addUserAction");
 	connect(add_user_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-		this, SLOT(addUserActionActivated()));
+		this, SLOT(addUserActionActivated(const UserGroup*)));
 	KaduActions.insert("addUserAction", add_user_action);
 
 	KaduActions.addDefaultToolbarAction("Kadu toolbar", "inactiveUsersAction");
@@ -561,9 +561,12 @@ void Kadu::editUserActionActivated(const UserGroup* users)
 	kdebugf2();
 }
 
-void Kadu::addUserActionActivated()
+void Kadu::addUserActionActivated(const UserGroup* users)
 {
-	(new UserInfo(UserListElement(), 0, "add user"))->show();
+	if (users->count() == 1 && (*users->begin()).isAnonymous())
+		(new UserInfo(*users->begin(), 0, "add user"))->show();
+	else
+		(new UserInfo(UserListElement(), 0, "add user"))->show();
 }
 
 void Kadu::showUserInfo()
@@ -603,7 +606,9 @@ void Kadu::personalInfo()
 
 void Kadu::addUserAction()
 {
-	addUserActionActivated();
+	const UserGroup* users;
+	selectedUsersNeeded(users);
+	addUserActionActivated(users);
 }
 
 void Kadu::deleteHistory()

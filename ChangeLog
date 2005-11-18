@@ -178,6 +178,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * wydzielone pliki dockarea.cpp/h i toolbutton.cpp/h (adrian)
 * dodany do autodownloadu modu³ firewall (joi)
 * uporz±dkowana sprawa domy¶lnej zawarto¶ci toolbarów (adrian)
+* poprawne dzia³anie akcji "dodaj kontakt" dla anonimów, nowa akcja "wy¶lij sms" (adrian)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

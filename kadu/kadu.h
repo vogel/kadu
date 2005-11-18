@@ -185,7 +185,7 @@ class Kadu : public QWidget
 		void descriptionUsersActionActivated();
 		void configurationActionActivated();
 		void editUserActionActivated(const UserGroup* users);
-		void addUserActionActivated();
+		void addUserActionActivated(const UserGroup* users);
 
 	signals:
 		void disconnectingNetwork();
