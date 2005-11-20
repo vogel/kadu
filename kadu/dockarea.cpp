@@ -39,6 +39,38 @@ void DockArea::contextMenuEvent(QContextMenuEvent* e)
 	kdebugf2();
 }
 
+void DockArea::childEvent(QChildEvent* e)
+{
+	kdebugf();
+	QDockArea::childEvent(e);
+	ToolBar* toolbar = dynamic_cast<ToolBar*>(e->child());
+	if (toolbar != NULL)
+	{
+		if (e->inserted())
+		{
+			connect(toolbar, SIGNAL(destroyed()), this, SLOT(writeToConfig()));
+			connect(toolbar, SIGNAL(placeChanged(QDockWindow::Place)),
+				this, SLOT(writeToConfig()));
+		}
+	}
+	kdebugf2();
+}
+
+void DockArea::toolbarPlaceChanged()
+{
+	kdebugf();
+	const ToolBar* toolbar = dynamic_cast<const ToolBar*>(sender());
+	if (toolbar != NULL && toolbar->area() != this)
+	{
+		disconnect(toolbar, SIGNAL(destroyed()), this, SLOT(writeToConfig()));
+		disconnect(toolbar, SIGNAL(placeChanged(QDockWindow::Place)),
+				this, SLOT(writeToConfig()));
+		writeToConfig();
+		((DockArea*)toolbar->area())->writeToConfig();
+	}
+	kdebugf2();
+}
+
 void DockArea::createNewToolbar()
 {
 	kdebugf();

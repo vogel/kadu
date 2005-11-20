@@ -24,7 +24,6 @@ class ToolBar : public QToolBar
 	public:
 		ToolBar(QWidget* parent, const QString& label);
 		~ToolBar();
-		void writeToConfig(QDomElement parent_element);
 		void loadFromConfig(QDomElement parent_element);
 		/**
 			Returns list of users that will be affected by activated action.
@@ -35,6 +34,9 @@ class ToolBar : public QToolBar
 			Returns NULL if toolbar is no connected to user list.
 		**/
 		const UserGroup* selectedUsers();
+
+	public slots:
+		void writeToConfig(QDomElement parent_element);
 };
 
 #endif

@@ -12,15 +12,16 @@ class DockArea : public QDockArea
 
 	protected:
 		void contextMenuEvent(QContextMenuEvent* e);
+		void childEvent(QChildEvent* e);
 
 	private slots:
 		void createNewToolbar();
+		void toolbarPlaceChanged();
 
 	public:
 		DockArea(Orientation o, HandlePosition h = Normal,
 			QWidget * parent = 0, const char * name = 0);
 		~DockArea();
-		void writeToConfig();
 		bool loadFromConfig(QWidget* toolbars_parent);
 		/**
 			Returns list of users that will be affected by activated action.
@@ -31,6 +32,9 @@ class DockArea : public QDockArea
 			Returns NULL if toolbar is no connected to user list.
 		**/
 		const UserGroup* selectedUsers();
+
+	public slots:
+		void writeToConfig();
 
 	signals:
 		/**
