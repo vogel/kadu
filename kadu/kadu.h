@@ -119,6 +119,11 @@ class Kadu : public QWidget
 		bool docked() const;
 
 		/**
+			Set default status based on values in configuration file
+		**/
+		void setDefaultStatus();
+
+		/**
 		**/
 		void startupProcedure();
 

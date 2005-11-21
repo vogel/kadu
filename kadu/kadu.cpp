@@ -1527,6 +1527,26 @@ void Kadu::resizeEvent(QResizeEvent *)
 	QWidget::moveEvent(e);
 }*/
 
+void Kadu::setDefaultStatus()
+{
+	kdebugf();
+	QString descr = defaultdescriptions.first();
+	int statusIndex = config_file.readNumEntry("General", "DefaultStatusIndex", 7);
+	if (statusIndex == 7 || statusIndex == 8) //restore status
+	{
+		int lastStatusIndex = config_file.readNumEntry("General", "LastStatusIndex", UserStatus::index(Offline, false));
+		QString lastStatusDescription = config_file.readEntry("General", "LastStatusDescription");
+		if (statusIndex == 8 && UserStatus::isOffline(lastStatusIndex))
+			lastStatusIndex = UserStatus::index(Invisible, !lastStatusDescription.isEmpty());
+		status.setIndex(lastStatusIndex, lastStatusDescription);
+	}
+	else
+		status.setIndex(statusIndex, descr);
+	status.setFriendsOnly(config_file.readBoolEntry("General", "PrivateStatus"));
+	gadu->status().setStatus(status);
+	kdebugf2();
+}
+
 void Kadu::startupProcedure()
 {
 	kdebugf();
@@ -1551,21 +1571,7 @@ void Kadu::startupProcedure()
 
 	Updates::initModule();
 
-	QString descr = defaultdescriptions.first();
-	int statusIndex = config_file.readNumEntry("General", "DefaultStatusIndex", 7);
-	if (statusIndex == 7 || statusIndex == 8) //restore status
-	{
-		int lastStatusIndex = config_file.readNumEntry("General", "LastStatusIndex", UserStatus::index(Offline, false));
-		QString lastStatusDescription = config_file.readEntry("General", "LastStatusDescription");
-		if (statusIndex == 8 && UserStatus::isOffline(lastStatusIndex))
-			lastStatusIndex = UserStatus::index(Invisible, !lastStatusDescription.isEmpty());
-		status.setIndex(lastStatusIndex, lastStatusDescription);
-	}
-	else
-		status.setIndex(statusIndex, descr);
-	status.setFriendsOnly(config_file.readBoolEntry("General", "PrivateStatus"));
-
-	gadu->status().setStatus(status);
+	setDefaultStatus();
 
 	kdebugf2();
 }
