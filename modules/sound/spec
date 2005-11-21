@@ -6,7 +6,7 @@ MODULE_LIBS=sndfile
 MODULE_LIBS_PATH="/usr/local/lib /usr/lib"
 MODULE_CONFIGURE_CMD='
 echo -e "#include <sndfile.h>\nint main(){\n#ifdef SNDFILE_1\nprintf(\"1\\\n\");\n#else\nprintf(\"0\\\n\");\n#endif\nreturn 0;}\n" > sndfiletest.c
-$CC $MODULE_CXXFLAGS sndfiletest.c -o sndfiletest
+$CC $CXXFLAGS $MODULE_CXXFLAGS sndfiletest.c -o sndfiletest
 ret=`./sndfiletest`
 rm -f sndfiletest sndfiletest.c
 if [ "$ret" != "1" ]; then
