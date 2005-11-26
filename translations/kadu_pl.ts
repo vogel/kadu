@@ -267,6 +267,34 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <translation>Lista w kolumnach</translation>
     </message>
     <message>
+        <source>Background</source>
+        <translation>Obraz tła</translation>
+    </message>
+    <message>
+        <source>Background image options</source>
+        <translation>Opcje wybranego obrazu</translation>
+    </message>
+    <message>
+        <source>Change image size</source>
+        <translation>Zmień rozmiar</translation>
+    </message>
+    <message>
+        <source>Start at [X]</source>
+        <translation>Zacznij od [współrzędna X]</translation>
+    </message>
+    <message>
+        <source>Start at [Y]</source>
+        <translation>Zacznij od [współrzędna Y]</translation>
+    </message>
+    <message>
+        <source>Image width</source>
+        <translation>Szerokość</translation>
+    </message>
+    <message>
+        <source>Image height</source>
+        <translation>Wysokość</translation>
+    </message>
+    <message>
         <source>Message acknowledgements (wait for delivery)</source>
         <translation>Potwierdzenie wysłania wiadomości (czekaj na dostarczenie)</translation>
     </message>
