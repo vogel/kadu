@@ -1452,6 +1452,7 @@ void KaduSlots::onApplyTabGeneral()
 
 	/* I od¶wie¿ okno Kadu */
 	kadu->changeAppearance();
+	UserBox::setColorsOrBackgrounds();
 	chat_manager->changeAppearance();
 	groups_manager->refreshTabBar();
 

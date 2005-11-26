@@ -297,6 +297,8 @@ class UserBox : public QListBox, private QToolTip
 		**/
 		static UserBoxMenu *userboxmenu;
 
+		static void setColorsOrBackgrounds();
+
 		/**
 			\fn static void initModule()
 			Inicjalizuje zmienne niezbêdne do dzia³ania UserBox. Funkcja ta jest
@@ -610,6 +612,9 @@ class UserBoxSlots : public QObject
 			Od¶wierza podgl±d wszystkich elementów UserBox'a.
 		**/
 		void updatePreview();
+
+		void chooseBackgroundFile();
+		void userboxBackgroundMove(bool toggled);
 };
 
 /**
