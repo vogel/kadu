@@ -157,6 +157,18 @@ void Action::setTexts(const UserListElements& users, const QString& text)
 	kdebugf2();
 }
 
+void Action::setDockAreaGroupRestriction(const QString& dockarea_group)
+{
+	kdebugf();
+	DockAreaGroupRestriction = dockarea_group;
+	kdebugf2();
+}
+
+QString Action::dockAreaGroupRestriction()
+{
+	return DockAreaGroupRestriction;
+}
+
 void Action::activate(const UserGroup* users)
 {
 	kdebugf();

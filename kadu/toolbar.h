@@ -24,6 +24,7 @@ class ToolBar : public QToolBar
 	public:
 		ToolBar(QWidget* parent, const QString& label);
 		~ToolBar();
+		QString dockAreaGroup();
 		void loadFromConfig(QDomElement parent_element);
 		/**
 			Returns list of users that will be affected by activated action.

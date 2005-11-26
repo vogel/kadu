@@ -116,7 +116,8 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	QLabel *edt = new QLabel(tr("Edit window:"), edtbuttontray, "editLabel");
 	QToolTip::add(edt, tr("This is where you type in the text to be sent"));
 
-	DockArea* buttontray = new DockArea(Qt::Horizontal, DockArea::Normal, edtbuttontray, "chatMiddleDockArea");
+	DockArea* buttontray = new DockArea(Qt::Horizontal, DockArea::Normal, edtbuttontray,
+		"chatDockAreaGroup", "chatMiddleDockArea");
 	connect(buttontray, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
 	buttontray->setMinimumHeight(20);
@@ -142,7 +143,8 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	    PreviousMessage = "";
 	}
 
-	DockArea* btnpart = new DockArea(Qt::Horizontal, DockArea::Normal, downpart, "chatBottomDockArea");
+	DockArea* btnpart = new DockArea(Qt::Horizontal, DockArea::Normal, downpart,
+		"chatDockAreaGroup", "chatBottomDockArea");
 	connect(btnpart, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
 	btnpart->setMinimumHeight(20);

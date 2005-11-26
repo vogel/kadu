@@ -20,6 +20,7 @@ class Action : public QAction
 		bool UsesTextLabel;
 		QIconSet OnIcon;
 		QString OnText;
+		QString DockAreaGroupRestriction;
 		QValueList<ToolButton*> ToolButtons;
 		struct ToggleStateStruct
 		{
@@ -52,6 +53,13 @@ class Action : public QAction
 		void setOn(const UserListElements& users, bool on);
 		void setPixmaps(const UserListElements& users, const QPixmap& pixmap);
 		void setTexts(const UserListElements& users, const QString& text);
+		/**
+			Restrict action to one dockarea group only, for example:
+			action_1->setClassRestriction("chatDockAreaGroup")
+			to set action to be allowed in chat windows only.
+		**/
+		void setDockAreaGroupRestriction(const QString& dockarea_group);
+		QString dockAreaGroupRestriction();
 		/**
 			Activate action
 		**/

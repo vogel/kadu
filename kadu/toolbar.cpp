@@ -45,14 +45,25 @@ void ToolBar::dragEnterEvent(QDragEnterEvent* event)
 {
 	kdebugf();
 	ToolBar* source = dynamic_cast<ToolBar*>(event->source());
-	event->accept(source != NULL);
 	if (source)
 	{
 		QString text;
 		// w trakcie dragLeave nie mo¿na sprawdziæ ¼ród³a, wiêc zapamiêtujemy go sobie
 		if (QTextDrag::decode(event, text))
+		{
 			dragButton = (ToolButton*)source->find(text.toULong());
+			QString action_name = dragButton->actionName();
+			QString dockarea_group_restr =
+				KaduActions[action_name]->dockAreaGroupRestriction();
+			if (dockarea_group_restr.isNull() ||
+					dockarea_group_restr == dockAreaGroup())
+				event->accept(true);
+			else
+				event->accept(false);
+		}
 	}
+	else
+		event->accept(false);
 	kdebugf2();
 }
 
@@ -116,10 +127,14 @@ void ToolBar::contextMenuEvent(QContextMenuEvent* e)
 	int param = 0;
 	CONST_FOREACH(a, KaduActions)
 	{
-		int id = (*a)->addToPopupMenu(p2, false);
-		p2->setItemParameter(id, param);
-		p2->connectItem(id, this, SLOT(addButtonClicked(int)));
-		param++;
+		QString dockarea_group_restr = (*a)->dockAreaGroupRestriction();
+		if (dockarea_group_restr.isNull() || dockarea_group_restr == dockAreaGroup())
+		{
+			int id = (*a)->addToPopupMenu(p2, false);
+			p2->setItemParameter(id, param);
+			p2->connectItem(id, this, SLOT(addButtonClicked(int)));
+			param++;
+		}
 	}
 	p->insertItem(tr("Add new button"), p2);
 	p->exec(QCursor::pos());
@@ -140,6 +155,14 @@ void ToolBar::writeToConfig(QDomElement parent_element)
 	kdebugf2();
 }
 
+QString ToolBar::dockAreaGroup()
+{
+	kdebugf();
+	DockArea* dockarea = (DockArea*)area();
+	return dockarea->dockAreaGroup();
+	kdebugf2();
+}
+
 void ToolBar::loadFromConfig(QDomElement toolbar_element)
 {
 	kdebugf();
@@ -150,7 +173,13 @@ void ToolBar::loadFromConfig(QDomElement toolbar_element)
 		QDomElement button_elem = buttons.item(i).toElement();
 		QString action_name = button_elem.attribute("action_name");
 		if (KaduActions.contains(action_name))
-			KaduActions[action_name]->addToToolbar(this);
+		{
+			QString dockarea_group_restr =
+				KaduActions[action_name]->dockAreaGroupRestriction();
+			if (dockarea_group_restr.isNull() ||
+					dockarea_group_restr == dockAreaGroup())
+				KaduActions[action_name]->addToToolbar(this);
+		}
 	}
 	kdebugf2();
 }

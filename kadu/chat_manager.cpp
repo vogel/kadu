@@ -49,6 +49,7 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 		tr("%1 sends message").arg(config_file.readEntry("ShortCuts", "chat_newline")),
 		"autoSendAction");
 	auto_send_action->setToggleAction(true);
+	auto_send_action->setDockAreaGroupRestriction("chatDockAreaGroup");
 	connect(auto_send_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(autoSendActionActivated(const UserGroup*, const QWidget*, bool)));
 	connect(auto_send_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*,
@@ -60,12 +61,14 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 	Action* scroll_lock_action = new Action(icons_manager->loadIcon("ScrollLock"),
 		tr("Blocks scrolling"), "scrollLockAction");
 	scroll_lock_action->setToggleAction(true);
+	scroll_lock_action->setDockAreaGroupRestriction("chatDockAreaGroup");
 	connect(scroll_lock_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(scrollLockActionActivated(const UserGroup*, const QWidget*, bool)));
 	KaduActions.insert("scrollLockAction", scroll_lock_action);
 
 	Action* clear_action = new Action(icons_manager->loadIcon("ClearChat"),
 		tr("Clear messages in chat window"), "clearChatAction");
+	clear_action->setDockAreaGroupRestriction("chatDockAreaGroup");
 	connect(clear_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(clearActionActivated(const UserGroup*)));
 	KaduActions.insert("clearChatAction", clear_action);
@@ -78,6 +81,7 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 
 	Action* insert_emot_action = new Action(icons_manager->loadIcon("ChooseEmoticon"),
 		tr("Insert emoticon"), "insertEmoticonAction");
+	insert_emot_action->setDockAreaGroupRestriction("chatDockAreaGroup");
 	connect(insert_emot_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(insertEmoticonActionActivated(const UserGroup*, const QWidget*)));
 	connect(insert_emot_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*,
@@ -94,6 +98,7 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 
 	Action* insert_img_action = new Action(icons_manager->loadIcon("ChooseImage"),
 		tr("Insert image"), "insertImageAction");
+	insert_img_action->setDockAreaGroupRestriction("chatDockAreaGroup");
 	connect(insert_img_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(insertImageActionActivated(const UserGroup*)));
 	KaduActions.insert("insertImageAction", insert_img_action);
@@ -104,6 +109,7 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 	Action* bold_action = new Action(string_to_pixmap("B", font),
 		tr("Bold"), "boldAction");
 	bold_action->setToggleAction(true);
+	bold_action->setDockAreaGroupRestriction("chatDockAreaGroup");
 	connect(bold_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(boldActionActivated(const UserGroup*, const QWidget*, bool)));
 	KaduActions.insert("boldAction", bold_action);
@@ -113,6 +119,7 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 	Action* italic_action = new Action(string_to_pixmap("I", font),
 		tr("Italic"), "italicAction");
 	italic_action->setToggleAction(true);
+	italic_action->setDockAreaGroupRestriction("chatDockAreaGroup");
 	connect(italic_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(italicActionActivated(const UserGroup*, const QWidget*, bool)));
 	KaduActions.insert("italicAction", italic_action);
@@ -122,6 +129,7 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 	Action* underline_action = new Action(string_to_pixmap("U", font),
 		tr("Underline"), "underlineAction");
 	underline_action->setToggleAction(true);
+	underline_action->setDockAreaGroupRestriction("chatDockAreaGroup");
 	connect(underline_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(underlineActionActivated(const UserGroup*, const QWidget*, bool)));
 	KaduActions.insert("underlineAction", underline_action);
@@ -130,6 +138,7 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 	p.fill(Qt::black);
 	Action* color_action = new Action(p,
 		tr("Change color"), "colorAction");
+	color_action->setDockAreaGroupRestriction("chatDockAreaGroup");
 	connect(color_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(colorActionActivated(const UserGroup*, const QWidget*)));
 	KaduActions.insert("colorAction", color_action);
@@ -137,6 +146,7 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 	Action* send_action = new Action(icons_manager->loadIcon("SendMessage"),
 		tr("&Send"), "sendAction");
 	send_action->setUsesTextLabel(true);
+	send_action->setDockAreaGroupRestriction("chatDockAreaGroup");
 	connect(send_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(sendActionActivated(const UserGroup*)));
 	KaduActions.insert("sendAction", send_action);

@@ -10,6 +10,9 @@ class DockArea : public QDockArea
 {
 	Q_OBJECT
 
+	private:
+		QString DockAreaGroup;
+
 	protected:
 		void contextMenuEvent(QContextMenuEvent* e);
 		void childEvent(QChildEvent* e);
@@ -19,9 +22,11 @@ class DockArea : public QDockArea
 		void toolbarPlaceChanged();
 
 	public:
-		DockArea(Orientation o, HandlePosition h = Normal,
-			QWidget * parent = 0, const char * name = 0);
+		DockArea(Orientation o, HandlePosition h,
+			QWidget* parent, const QString& dockarea_group,
+			const char* name);
 		~DockArea();
+		QString dockAreaGroup();
 		bool loadFromConfig(QWidget* toolbars_parent);
 		/**
 			Returns list of users that will be affected by activated action.

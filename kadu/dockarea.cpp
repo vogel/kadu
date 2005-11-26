@@ -15,10 +15,11 @@
 #include "toolbar.h"
 
 DockArea::DockArea(Orientation o, HandlePosition h,
-			QWidget * parent, const char * name)
+			QWidget* parent, const QString& dockarea_group, const char* name)
 	: QDockArea(o, h, parent, name)
 {
 	kdebugf();
+	DockAreaGroup = dockarea_group;
 	kdebugf2();
 }
 
@@ -99,6 +100,13 @@ void DockArea::writeToConfig()
 		if (toolbar != NULL)
 			toolbar->writeToConfig(dockarea_elem);
 	}
+	kdebugf2();
+}
+
+QString DockArea::dockAreaGroup()
+{
+	kdebugf();
+	return DockAreaGroup;
 	kdebugf2();
 }
 

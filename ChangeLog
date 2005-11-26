@@ -182,6 +182,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zapisywanie konfiguracji toolbarów po usuniêciu toolbara, jego przesuniêciu lub
   przeniesieniu do innego pola dokuj±cego (adrian)
 * t³o listy kontaktów mo¿e byæ obrazkiem - ³ata joi'a, przerobiona przez neeo (adrian)
+* mo¿liwo¶æ przypisania akcji do konkretnej grupy pól dokuj±cych, przypisanie akcji
+  specyficznych dla okna chat do odpowiedniej grupy (adrian)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

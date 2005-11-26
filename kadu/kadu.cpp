@@ -193,7 +193,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 	QVBoxLayout* grid = new QVBoxLayout(this);
 	grid->addWidget(vbox);
 
-	TopDockArea = new DockArea(Qt::Horizontal, DockArea::Normal, vbox, "topDockArea");
+	TopDockArea = new DockArea(Qt::Horizontal, DockArea::Normal, vbox,
+		"mainDockAreaGroup", "topDockArea");
 	connect(TopDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
 	TopDockArea->setMinimumHeight(20);
