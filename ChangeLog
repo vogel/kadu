@@ -184,6 +184,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * t³o listy kontaktów mo¿e byæ obrazkiem - ³ata joi'a, przerobiona przez neeo (adrian)
 * mo¿liwo¶æ przypisania akcji do konkretnej grupy pól dokuj±cych, przypisanie akcji
   specyficznych dla okna chat do odpowiedniej grupy (adrian)
+* opcja ignorowania formatowania tekstu i obrazków od anonimów, domy¶lnie w³±czona (adrian)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

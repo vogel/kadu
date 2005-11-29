@@ -970,7 +970,14 @@ void GaduProtocol::messageReceived(int msgclass, UserListElements senders, QCStr
 		return;
 	}
 
-	mesg = formatGGMessage(mesg, formats.size(), formats.data(), senders[0].ID("Gadu").toUInt());
+	if (senders[0].isAnonymous() &&
+		config_file.readBoolEntry("Chat","IgnoreAnonymousRichtext"))
+	{
+		kdebugm(KDEBUG_INFO, "Richtext ignored from anonymous user\n");
+	}
+	else
+		mesg = formatGGMessage(mesg, formats.size(), formats.data(), senders[0].ID("Gadu").toUInt());
+
 	if (mesg.isEmpty())
 		return;
 
