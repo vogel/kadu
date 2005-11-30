@@ -197,7 +197,7 @@ void openWebBrowser(const QString &link);
 	\param sender UIN kontaktu, który ma byæ u¿yty do sformatowania wiadomo¶ci (przychodz±cej)
 	\return gotow± wiadomo¶æ sformatowan± w HTMLu.
 **/
-QString formatGGMessage(const QString &msg, int formats_length, void *formats, UinType sender);
+QString formatGGMessage(const QString &msg, unsigned int formats_length, void *formats, UinType sender);
 
 /**
 	\fn QString unformatGGMessage(const QString &msg, int &formats_length, void *&formats)
@@ -210,7 +210,7 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 	\return tre¶æ wiadomo¶ci z usuniêtymi znacznikami HTML (s± one teraz zakodowane
 			w \a formats i \a formats_length ).
 **/
-QString unformatGGMessage(const QString &msg, int &formats_length, void *&formats);
+QString unformatGGMessage(const QString &msg, unsigned int &formats_length, void *&formats);
 
 /**
 	\fn QString parse(const QString &s, const UserListElement &ule, bool escape = true)

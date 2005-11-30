@@ -898,7 +898,7 @@ class GaduProtocol : public QObject
 				z wewnêtrzn± konwersj± na cp1250 oraz z jakim¶ lepszym sposobem formatowania tekstu
 		**/
 		int sendMessageRichText(const UinsList &uins, const char *msg, unsigned char *myLastFormats,
-		 	int myLastFormatsLength);
+		 	unsigned int myLastFormatsLength);
 
 		/**
 			Wysy³a pro¶bê o przys³anie obrazka z danymi parametrami.

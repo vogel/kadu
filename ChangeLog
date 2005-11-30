@@ -5,6 +5,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
 +++ wersja 0.4.3
 * opcja ignorowania formatowania tekstu i obrazków od anonimów, domy¶lnie w³±czona (adrian)
+* poprawione 2 b³êdy w parsowaniu formatowania tekstu i obrazków 
+  (1 z nich, doprowadzaj±cy do segfaulta i wycieku du¿ej ilo¶ci danych
+  zg³oszony zosta³ przez Micha³a Gizowskiego) - UWAGA: oba b³êdy maj± du¿e
+  znaczenie dla bezpieczeñstwa (joi)
 
 +++ wersja 0.4.2 (11.10.2005)
 * poprawione od¶wie¿anie ikony w module desktop_docking (joi)

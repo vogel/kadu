@@ -1586,7 +1586,7 @@ int GaduProtocol::sendMessage(const UinsList& uins, const char* msg)
 	return seq;
 }
 
-int GaduProtocol::sendMessageRichText(const UinsList& uins, const char* msg, unsigned char* myLastFormats, int myLastFormatsLength)
+int GaduProtocol::sendMessageRichText(const UinsList& uins, const char* msg, unsigned char* myLastFormats, unsigned int myLastFormatsLength)
 {
 	kdebugf();
 	int seq;
