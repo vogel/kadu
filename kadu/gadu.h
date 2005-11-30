@@ -685,7 +685,7 @@ class GaduProtocol : public Protocol
 				z wewnêtrzn± konwersj± na cp1250 oraz z jakim¶ lepszym sposobem formatowania tekstu
 		**/
 		int sendMessageRichText(UserListElements users, const char *msg, unsigned char *myLastFormats,
-		 	int myLastFormatsLength);
+		 	unsigned int myLastFormatsLength);
 
 		/**
 			Wysy³a pro¶bê o przys³anie obrazka z danymi parametrami.

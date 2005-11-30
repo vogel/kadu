@@ -19,12 +19,13 @@
 #include "ignore.h"
 #include "userlist.h"
 
-QString formatGGMessage(const QString &msg, int formats_length, void *formats, UinType sender)
+QString formatGGMessage(const QString &msg, unsigned int formats_length, void *formats, UinType sender)
 {
 	kdebugf();
 	QString mesg, tmp;
 	bool bold, italic, underline, color, inspan;
 	char *cformats = (char *)formats;
+	char *cformats_end = cformats + formats_length;
 	struct gg_msg_richtext_format *actformat;
 	struct gg_msg_richtext_color *actcolor;
 	struct gg_msg_richtext_image* actimage;
@@ -48,14 +49,21 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 
 		(curStat.isOnline() ||	curStat.isBusy() ||
 		(curStat.isInvisible() && config_file.readBoolEntry("Chat", "ReceiveImagesDuringInvisibility")));
-	kdebugm(KDEBUG_INFO, "formats_length: %d\n", formats_length);
-	for (int i = 0; i < formats_length; ++i)
-    	    kdebugm(KDEBUG_INFO, ">>%d\n", cformats[i]);
+	kdebugm(KDEBUG_INFO, "msg: '%s'\n", msg.local8Bit().data());
+	kdebugm(KDEBUG_INFO, "formats_length: %u\n", formats_length);
+	for (unsigned int i = 0; i < formats_length; ++i)
+		kdebugm(KDEBUG_INFO, ">>%d\n", cformats[i]);
 	if (formats_length)
 	{
-		while (formats_length)
+		while (cformats < cformats_end)
 		{
 			actformat = (struct gg_msg_richtext_format *)cformats;
+			cformats += sizeof(struct gg_msg_richtext_format);
+			if (cformats > cformats_end)
+			{
+				kdebugm(KDEBUG_WARNING, "possible hacking attempt (1) - tryin' to exceed formats boundary!\n");
+				continue;
+			}
 			uint16_t tmpposition = gg_fix16(actformat->position);
 			kdebugm(KDEBUG_INFO, "position: %d, font: %d\n", tmpposition, actformat->font);
 			if (tmpposition > pos)
@@ -65,97 +73,102 @@ QString formatGGMessage(const QString &msg, int formats_length, void *formats, U
 				mesg.append(tmp);
 				pos = tmpposition;
 			}
-			else
-			{
-				if (inspan)
-					mesg.append("</span>");
-				if (actformat->font & (~GG_FONT_IMAGE))
-				{
-					inspan = true;
-					mesg.append("<span style=\"");
-					if (actformat->font & GG_FONT_BOLD)
-						mesg.append("font-weight:600;");
-					if (actformat->font & GG_FONT_ITALIC)
-						mesg.append("font-style:italic;");
-					if (actformat->font & GG_FONT_UNDERLINE)
-						mesg.append("text-decoration:underline;");
-					if (actformat->font & GG_FONT_COLOR)
-					{
-						mesg.append("color:");
-						actcolor = (struct gg_msg_richtext_color *)(cformats
-							+ sizeof(struct gg_msg_richtext_format));
-						mesg.append(QColor(actcolor->red, actcolor->green, actcolor->blue).name());
-					}
-					mesg.append("\">");
-				}
-				else
-					inspan = false;
-				cformats += sizeof(gg_msg_richtext_format);
-				formats_length -= sizeof(gg_msg_richtext_format);
-				if (actformat->font & GG_FONT_IMAGE)
-				{
-					kdebugmf(KDEBUG_INFO, "I got image probably\n");
-					actimage = (struct gg_msg_richtext_image*)(cformats);
-					uint32_t tmpsize = gg_fix32(actimage->size);
-					uint32_t tmpcrc32 = gg_fix32(actimage->crc32);
-					kdebugm(KDEBUG_INFO, "Image size: %d, crc32: %d, sender:%d\n", tmpsize, tmpcrc32, sender);
 
-					//ukrywamy siê przed spy'em i ekg2
-					if (tmpsize == 20 && (tmpcrc32 == 4567 || tmpcrc32==99))
+			if (inspan)
+				mesg.append("</span>");
+			kdebugm(KDEBUG_INFO, "format: font:%d | bold:%d italic:%d underline:%d color:%d image:%d\n",
+				actformat->font, (actformat->font & GG_FONT_BOLD) != 0, (actformat->font & GG_FONT_ITALIC) != 0,
+				(actformat->font & GG_FONT_UNDERLINE) != 0, (actformat->font & GG_FONT_COLOR) != 0,
+				(actformat->font & GG_FONT_IMAGE) != 0);
+
+			if (actformat->font & (~GG_FONT_IMAGE))
+			{
+				inspan = true;
+				mesg.append("<span style=\"");
+				if (actformat->font & GG_FONT_BOLD)
+					mesg.append("font-weight:600;");
+				if (actformat->font & GG_FONT_ITALIC)
+					mesg.append("font-style:italic;");
+				if (actformat->font & GG_FONT_UNDERLINE)
+					mesg.append("text-decoration:underline;");
+				if (actformat->font & GG_FONT_COLOR)
+				{
+					mesg.append("color:");
+					actcolor = (struct gg_msg_richtext_color *)cformats;
+					cformats += sizeof(struct gg_msg_richtext_color);
+					if (cformats > cformats_end)
 					{
-						kdebugm(KDEBUG_INFO, "%d: scanning for invisibility detected, preparing tactical nuclear missiles ;)\n", sender);
-						if (receiveImage)
-							gadu->sendImageRequest(ule, tmpsize, tmpcrc32);
+						kdebugm(KDEBUG_WARNING, "possible hacking attempt (2) - tryin' to exceed formats boundary!\n");
+						continue;
 					}
-					else if (sender!=0)
+					mesg.append(QColor(actcolor->red, actcolor->green, actcolor->blue).name());
+				}
+				mesg.append("\">");
+			}
+			else
+				inspan = false;
+			if (actformat->font & GG_FONT_IMAGE)
+			{
+				kdebugmf(KDEBUG_INFO, "I got image probably\n");
+				actimage = (struct gg_msg_richtext_image*)(cformats);
+				cformats += sizeof(struct gg_msg_richtext_image);
+				if (cformats > cformats_end)
+				{
+					kdebugm(KDEBUG_WARNING, "possible hacking attempt (3) - tryin' to exceed formats boundary!\n");
+					continue;
+				}
+				uint32_t tmpsize = gg_fix32(actimage->size);
+				uint32_t tmpcrc32 = gg_fix32(actimage->crc32);
+				kdebugm(KDEBUG_INFO, "Image size: %d, crc32: %d, sender:%d\n", tmpsize, tmpcrc32, sender);
+
+				//ukrywamy siê przed spy'em i ekg2
+				if (tmpsize == 20 && (tmpcrc32 == 4567 || tmpcrc32==99))
+				{
+					kdebugm(KDEBUG_INFO, "%d: scanning for invisibility detected, preparing tactical nuclear missiles ;)\n", sender);
+					if (receiveImage)
+						gadu->sendImageRequest(ule, tmpsize, tmpcrc32);
+				}
+				else if (sender!=0)
+				{
+					kdebugm(KDEBUG_INFO, "Someone sends us an image\n");
+					QString file_name =
+						gadu_images_manager.getSavedImageFileName(
+							tmpsize,
+							tmpcrc32);
+					if (!file_name.isEmpty())
 					{
-						kdebugm(KDEBUG_INFO, "Someone sends us an image\n");
-						QString file_name =
-							gadu_images_manager.getSavedImageFileName(
-								tmpsize,
-								tmpcrc32);
-						if (!file_name.isEmpty())
-						{
-							kdebugm(KDEBUG_INFO, "This image was already saved\n");
-							mesg.append(GaduImagesManager::imageHtml(file_name));
-						}
-						else
-						{
-							if (tmpsize<(config_file.readUnsignedNumEntry("Chat", "MaxImageSize")*1024))
-							{
-								if (receiveImage)
-								{
-									kdebugm(KDEBUG_INFO, "sending request\n");
-									gadu->sendImageRequest(ule, tmpsize, tmpcrc32);
-									mesg.append(GaduImagesManager::loadingImageHtml(
-											sender,tmpsize,tmpcrc32));
-								}
-								else
-									mesg.append(qApp->translate("@default", QT_TR_NOOP("###IMAGE BLOCKED###")));
-							}
-							else
-								mesg.append(qApp->translate("@default", QT_TR_NOOP("###IMAGE TOO BIG###")));
-						}
+						kdebugm(KDEBUG_INFO, "This image was already saved\n");
+						mesg.append(GaduImagesManager::imageHtml(file_name));
 					}
 					else
 					{
-						kdebugm(KDEBUG_INFO, "This is my message and my image\n");
-						QString file_name =
-							gadu_images_manager.getImageToSendFileName(
-								tmpsize,
-								tmpcrc32);
-						mesg.append(GaduImagesManager::imageHtml(file_name));
+						if (tmpsize<(config_file.readUnsignedNumEntry("Chat", "MaxImageSize")*1024))
+						{
+							if (receiveImage)
+							{
+								kdebugm(KDEBUG_INFO, "sending request\n");
+								gadu->sendImageRequest(ule, tmpsize, tmpcrc32);
+								mesg.append(GaduImagesManager::loadingImageHtml(
+										sender,tmpsize,tmpcrc32));
+							}
+							else
+								mesg.append(qApp->translate("@default", QT_TR_NOOP("###IMAGE BLOCKED###")));
+						}
+						else
+							mesg.append(qApp->translate("@default", QT_TR_NOOP("###IMAGE TOO BIG###")));
 					}
-					cformats += sizeof(gg_msg_richtext_image);
-					formats_length -= sizeof(gg_msg_richtext_image);
 				}
 				else
 				{
-					cformats += sizeof(gg_msg_richtext_color) * ((actformat->font & GG_FONT_COLOR) != 0);
-					formats_length -= sizeof(gg_msg_richtext_color) * ((actformat->font & GG_FONT_COLOR) != 0);
+					kdebugm(KDEBUG_INFO, "This is my message and my image\n");
+					QString file_name =
+						gadu_images_manager.getImageToSendFileName(
+							tmpsize,
+							tmpcrc32);
+					mesg.append(GaduImagesManager::imageHtml(file_name));
 				}
-			}
-		}
+			}// if (actformat->font & GG_FONT_IMAGE)
+		}//while (cformats < cformats_end)
 		if (pos < msg.length())
 		{
 			tmp = msg.mid(pos, msg.length() - pos);
@@ -217,7 +230,7 @@ QString stripHTMLFromGGMessage(const QString &msg)
  *
  * Precondition - formats_length must contain valid length of result buffer
  */
-void *allocFormantBuffer(const QValueList<struct richtext_formant> &formants, int &formats_length)
+void *allocFormantBuffer(const QValueList<struct richtext_formant> &formants, unsigned int &formats_length)
 {
 	kdebugf();
 	struct gg_msg_richtext richtext_header;
@@ -247,13 +260,13 @@ void *allocFormantBuffer(const QValueList<struct richtext_formant> &formants, in
 			tmpformats += sizeof(gg_msg_richtext_image);
 		}
 	}
-	kdebugmf(KDEBUG_INFO, "formats_length=%d, tmpformats-cformats=%d\n",
+	kdebugmf(KDEBUG_INFO, "formats_length=%u, tmpformats-cformats=%d\n",
 		formats_length, tmpformats - cformats);
 
 	return (void *)cformats;
 }
 
-QString unformatGGMessage(const QString &msg, int &formats_length, void *&formats)
+QString unformatGGMessage(const QString &msg, unsigned int &formats_length, void *&formats)
 {
 	kdebugf();
 	QString mesg, tmp;

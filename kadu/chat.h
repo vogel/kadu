@@ -68,7 +68,7 @@ class Chat : public QMainWindow
 						 konferencji */
 		QString myLastMessage;/*!< zmienna przechowuj±ca
 					nasz± ostatni± wiadomo¶æ */
-		int myLastFormatsLength; /* ?? */
+		unsigned int myLastFormatsLength; /* ?? */
 		void* myLastFormats; /* ?? */
 		int seq; /* ?? */
 		KaduSplitter *vertSplit, *horizSplit; /*!< obiekty oddzielaj±ce
