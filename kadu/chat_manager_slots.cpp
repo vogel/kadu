@@ -17,6 +17,8 @@
 #include <qtextedit.h>
 #include <qtooltip.h>
 
+#include <stdlib.h>
+
 #include "chat_manager.h"
 #include "chat_manager_slots.h"
 #include "config_dialog.h"

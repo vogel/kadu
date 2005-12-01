@@ -8,6 +8,8 @@
 #include <qvaluelist.h>
 #include <qstringlist.h>
 
+#include <time.h>
+
 #include "notify_slots.h"
 #include "protocol.h"
 #include "userlist.h"
