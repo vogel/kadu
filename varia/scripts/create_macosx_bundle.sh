@@ -1,6 +1,6 @@
 #!/bin/sh
-# destination directory, kadu.app will be created here
-# katalog docelowy, w nim zostanie utworzony katalog kadu.app
+# destination directory, Kadu.app will be created here
+# katalog docelowy, w nim zostanie utworzony katalog Kadu.app
 DEST=~/Desktop
 
 QTDIR=~/Desktop/root/qt
@@ -70,15 +70,15 @@ if [ ! -f ./playsound ]; then
 fi
 
 KADUVERSION=`cat VERSION`
-echo "log: removing old kadu.app"
-rm -rf ${DEST}/kadu.app/
-mkdir ${DEST}/kadu.app/
+echo "log: removing old Kadu.app"
+rm -rf ${DEST}/Kadu.app/
+mkdir ${DEST}/Kadu.app/
 
 echo "log: copying files"
-cp -r ${INSTALLED_DIR}/share/kadu ${DEST}/kadu.app/kadu
-cp -r ${INSTALLED_DIR}/lib/kadu ${DEST}/kadu.app/kadu
+cp -r ${INSTALLED_DIR}/share/kadu ${DEST}/Kadu.app/kadu
+cp -r ${INSTALLED_DIR}/lib/kadu ${DEST}/Kadu.app/kadu
 
-CNT_DIR=${DEST}/kadu.app/Contents
+CNT_DIR=${DEST}/Kadu.app/Contents
 mkdir ${CNT_DIR};
 
 echo "log: creating PkgInfo"
@@ -130,7 +130,7 @@ fi
 RSC_DIR=${CNT_DIR}/Resources
 mkdir ${RSC_DIR}
 cp kadu/kadu.icns $RSC_DIR/
-cp kadu/hi48-app-kadu.png ${DEST}/kadu.app/kadu/kadu.png
+cp kadu/hi48-app-kadu.png ${DEST}/Kadu.app/kadu/kadu.png
 
 FM_DIR=${CNT_DIR}/Frameworks
 mkdir ${FM_DIR}
@@ -163,12 +163,12 @@ install_name_tool -change ${SNDFILEPATH}/lib/libsndfile.1.dylib @executable_path
 install_name_tool -change ${OPENSSLPATH}/lib/libssl.${SSLVER}.dylib @executable_path/../Frameworks/libssl.${SSLVER}.dylib ./kadu
 install_name_tool -change ${OPENSSLPATH}/lib/libcrypto.${SSLVER}.dylib @executable_path/../Frameworks/libcrypto.${SSLVER}.dylib ./kadu
 
-if [ -f ${DEST}/kadu.app/kadu/modules/sound.dylib ]; then
-	install_name_tool -change ${SNDFILEPATH}/lib/libsndfile.1.dylib @executable_path/../Frameworks/libsndfile.1.dylib ${DEST}/kadu.app/kadu/modules/sound.dylib
+if [ -f ${DEST}/Kadu.app/kadu/modules/sound.dylib ]; then
+	install_name_tool -change ${SNDFILEPATH}/lib/libsndfile.1.dylib @executable_path/../Frameworks/libsndfile.1.dylib ${DEST}/Kadu.app/kadu/modules/sound.dylib
 fi
-if [ -f ${DEST}/kadu.app/kadu/modules/encryption.dylib ]; then
-	install_name_tool -change ${OPENSSLPATH}/lib/libssl.${SSLVER}.dylib @executable_path/../Frameworks/libssl.${SSLVER}.dylib ${DEST}/kadu.app/kadu/modules/encryption.dylib
-	install_name_tool -change ${OPENSSLPATH}/lib/libcrypto.${SSLVER}.dylib @executable_path/../Frameworks/libcrypto.${SSLVER}.dylib ${DEST}/kadu.app/kadu/modules/encryption.dylib
+if [ -f ${DEST}/Kadu.app/kadu/modules/encryption.dylib ]; then
+	install_name_tool -change ${OPENSSLPATH}/lib/libssl.${SSLVER}.dylib @executable_path/../Frameworks/libssl.${SSLVER}.dylib ${DEST}/Kadu.app/kadu/modules/encryption.dylib
+	install_name_tool -change ${OPENSSLPATH}/lib/libcrypto.${SSLVER}.dylib @executable_path/../Frameworks/libcrypto.${SSLVER}.dylib ${DEST}/Kadu.app/kadu/modules/encryption.dylib
 fi
 
 #if [ -f ${AOPATH}/lib/libao.2.dylib ]; then
@@ -177,11 +177,11 @@ fi
 #	mkdir -p ${FM_DIR}/ao/plugins-2
 #	cp ${AOPATH}/lib/ao/plugins-2/libmacosx.so ${FM_DIR}/ao/plugins-2/libmacosx.dylib
 #fi
-#if [ -f ${DEST}/kadu.app/kadu/modules/ao_sound.dylib ]; then
+#if [ -f ${DEST}/Kadu.app/kadu/modules/ao_sound.dylib ]; then
 #	install_name_tool -id @executable_path/../Frameworks/libao.2.dylib ${FM_DIR}/libao.2.dylib
 #fi
-#if [ -f ${DEST}/kadu.app/kadu/modules/ao_sound.dylib ]; then
-#	install_name_tool -change ${AOPATH}/lib/libao.2.dylib @executable_path/../Frameworks/libao.2.dylib ${DEST}/kadu.app/kadu/modules/ao_sound.dylib
+#if [ -f ${DEST}/Kadu.app/kadu/modules/ao_sound.dylib ]; then
+#	install_name_tool -change ${AOPATH}/lib/libao.2.dylib @executable_path/../Frameworks/libao.2.dylib ${DEST}/Kadu.app/kadu/modules/ao_sound.dylib
 #fi
 
 echo "everything done"
