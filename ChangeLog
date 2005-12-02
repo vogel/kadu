@@ -4,7 +4,8 @@ podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y. Je¶li jest
 w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
 +++ wersja 0.4.4
-
+* MacOSX: regulacja g³o¶no¶ci domy¶lnie wy³±czona (bo playsound jej nie obs³uguje),
+  domy¶lny katalog instalcji to Kadu.app, a nie kadu.app (joi) 
 
 +++ wersja 0.4.3 (30.11.2005)
 * opcja ignorowania formatowania tekstu i obrazków od anonimów, domy¶lnie w³±czona (adrian)

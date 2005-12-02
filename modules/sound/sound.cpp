@@ -196,9 +196,13 @@ SoundManager::SoundManager(const QString& name, const QString& configname)
 	ConfigDialog::addCheckBox("Sounds", "Sounds",
 			QT_TRANSLATE_NOOP("@default","Play sounds"), "PlaySound", false);
 
+	bool volCntrl = true;
+#ifdef Q_OS_MACX
+	volCntrl = false;
+#endif
 	ConfigDialog::addCheckBox("Sounds", "Sounds",
 			QT_TRANSLATE_NOOP("@default","Enable volume control (player must support it)"),
-			"VolumeControl", true);
+			"VolumeControl", volCntrl);
 	ConfigDialog::addGrid("Sounds", "Sounds", "volume", 2);
 	ConfigDialog::addLabel("Sounds", "volume", QT_TRANSLATE_NOOP("@default","Volume"));
 	ConfigDialog::addSlider("Sounds", "volume", "slider", "SoundVolume", 0, 100, 20, 50);

@@ -34,7 +34,7 @@ ExternalPlayerSlots::ExternalPlayerSlots(QObject *parent, const char *name) : QO
 	kdebugf();
 
 #ifdef Q_OS_MACX
-	config_file.addVariable("Sounds", "SoundPlayer", "/Applications/kadu.app/Contents/MacOS/playsound");
+	config_file.addVariable("Sounds", "SoundPlayer", "/Applications/Kadu.app/Contents/MacOS/playsound");
 #else
 	config_file.addVariable("Sounds", "SoundPlayer", "/usr/bin/play");
 #endif
