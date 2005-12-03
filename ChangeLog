@@ -192,6 +192,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * MacOSX: regulacja g³o¶no¶ci domy¶lnie wy³±czona (bo playsound jej nie obs³uguje),
   domy¶lny katalog instalcji to Kadu.app, a nie kadu.app (joi) 
 * dodany do autodownloadu modu³ iwait4u (joi)
+* w oknie "Wy¶lij SMS" przy wyborze "pustego" elementu w combie, w tym¿e combie
+  nie pojawia siê nick losowego u¿ytkownika (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

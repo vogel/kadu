@@ -15,6 +15,7 @@
 #include "action.h"
 #include "config_dialog.h"
 #include "config_file.h"
+#include "debug.h"
 #include "history.h"
 #include "icons_manager.h"
 #include "kadu.h"
@@ -313,6 +314,7 @@ void Sms::setRecipient(const QString &phone)
 void Sms::updateRecipient(const QString &newtext)
 {
 	kdebugf();
+//	kdebugmf(KDEBUG_FUNCTION_START | KDEBUG_INFO, "'%s' %d %d\n", newtext.local8Bit().data(), newtext.isEmpty(), userlist->containsAltNick(newtext));
 	if (newtext.isEmpty())
 	{
 		recipient->clear();
@@ -327,6 +329,11 @@ void Sms::updateRecipient(const QString &newtext)
 void Sms::updateList(const QString &newnumber)
 {
 	kdebugf();
+	if (newnumber.isEmpty())
+	{
+		kdebugmf(KDEBUG_FUNCTION_END, "end: new number is empty\n");
+		return;
+	}
 	CONST_FOREACH(user, *userlist)
 		if ((*user).mobile() == newnumber)
 		{
