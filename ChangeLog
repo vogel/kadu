@@ -191,6 +191,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   znaczenie dla bezpieczeñstwa (joi)
 * MacOSX: regulacja g³o¶no¶ci domy¶lnie wy³±czona (bo playsound jej nie obs³uguje),
   domy¶lny katalog instalcji to Kadu.app, a nie kadu.app (joi) 
+* dodany do autodownloadu modu³ iwait4u (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
