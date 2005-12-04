@@ -93,7 +93,7 @@ void ToolBar::dropEvent(QDropEvent* event)
 			ToolButton* button = (ToolButton*)source_toolbar->find(text.toULong());
 			QWidget* widget = childAt(event->pos());
 			button->reparent(this, QPoint(0,0), true);
-			if (widget != NULL)
+			if (widget != NULL && widget != button)
 			{
 				button->stackUnder(widget);
 				QBoxLayout* layout = boxLayout();
