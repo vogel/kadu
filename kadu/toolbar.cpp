@@ -133,8 +133,8 @@ void ToolBar::contextMenuEvent(QContextMenuEvent* e)
 			int id = (*a)->addToPopupMenu(p2, false);
 			p2->setItemParameter(id, param);
 			p2->connectItem(id, this, SLOT(addButtonClicked(int)));
-			param++;
 		}
+		param++;
 	}
 	p->insertItem(tr("Add new button"), p2);
 	p->exec(QCursor::pos());
