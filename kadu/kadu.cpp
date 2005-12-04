@@ -484,7 +484,7 @@ void Kadu::viewHistory()
 		return;
 	}
 	UserListElements users = activeUserBox->selectedUsers();
-	//TODO wypieprzyæ UinsList
+	//TODO: throw out UinsList as soon as possible!
 	UinsList uins;
 	CONST_FOREACH(user, users)
 		if ((*user).usesProtocol("Gadu"))
@@ -621,7 +621,7 @@ void Kadu::deleteHistory()
 		kdebugf2();
 		return;
 	}
-	//TODO wypieprzyæ UinsList
+	//TODO: throw out UinsList as soon as possible!
 	UinsList uins;
 	CONST_FOREACH(user, activeUserBox->selectedUsers())
 		if ((*user).usesProtocol("Gadu"))
@@ -1302,7 +1302,7 @@ void Kadu::userStatusChanged(UserListElement user, QString protocolName, const U
 {
 	kdebugf();
 
-	if (protocolName == "Gadu") //TODO: uogólniæ
+	if (protocolName == "Gadu") //TODO: make more general
 		history.appendStatus(user.ID("Gadu").toUInt(), user.status("Gadu"));
 	chat_manager->refreshTitlesForUser(user);
 	updateInformationPanel(user);
@@ -1403,7 +1403,7 @@ void KaduSlots::onCreateTabGeneral()
 void KaduSlots::onCreateTabLook()
 {
 	kdebugf();
-	
+
 	QComboBox *cb_qttheme=ConfigDialog::getComboBox("Look", "Qt Theme");
 	static QStringList sl_themes = QStyleFactory::keys();//to jest dosyæ kosztowna czasowo operacja
 	cb_qttheme->insertStringList(sl_themes);

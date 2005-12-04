@@ -48,7 +48,7 @@ void ToolBar::dragEnterEvent(QDragEnterEvent* event)
 	if (source)
 	{
 		QString text;
-		// w trakcie dragLeave nie mo¿na sprawdziæ ¼ród³a, wiêc zapamiêtujemy go sobie
+		// during dragLeave event we cannot check source, so we are remembering it here
 		if (QTextDrag::decode(event, text))
 		{
 			dragButton = (ToolButton*)source->find(text.toULong());
@@ -88,8 +88,7 @@ void ToolBar::dropEvent(QDropEvent* event)
 		if (QTextDrag::decode(event, text))
 		{
 			ToolBar* source_toolbar = (ToolBar*)event->source();
-			// TODO: uzywanie WId moze nie byc zbyt przenosne ;)
-			// Jakis lepszy pomysl?
+			// TODO: using WId might be not portable ;), any ideas?
 			ToolButton* button = (ToolButton*)source_toolbar->find(text.toULong());
 			QWidget* widget = childAt(event->pos());
 			button->reparent(this, QPoint(0,0), true);
@@ -102,13 +101,12 @@ void ToolBar::dropEvent(QDropEvent* event)
 			}
 			button->setDown(false);
 
-			// je¿eli upu¶cili¶my przycisk na nim samym,
-			// to symulujemy zwyk³e naci¶niêcie przycisku
+			// if we dropped button on itself, then we simulate normal click
 			if (button == widget)
 				button->animateClick();
 			source->dragButton = NULL;
 
-			// zapisujemy dockarea
+			// saving dockarea
 			DockArea* source_dockarea = (DockArea*)source_toolbar->area();
 			source_dockarea->writeToConfig();
 			DockArea* dockarea = (DockArea*)area();

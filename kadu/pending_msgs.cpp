@@ -33,7 +33,7 @@ bool PendingMsgs::pendingMsgs(UserListElement user) const
 {
 //	kdebugf();
 
-//	po co to?
+//	what is it for?
 //	if (uin == 0)
 //		return pendingMsgs();
 
@@ -84,33 +84,33 @@ void PendingMsgs::writeToFile()
 		kdebugmf(KDEBUG_ERROR, "Cannot open file kadu.msgs\n");
 		return;
 	}
-	// Najpierw zapisujemy ilosc wiadomosci
-	int t=msgs.count();
+	// first we write number of messages
+	int t = msgs.count();
 	f.writeBlock((char*)&t,sizeof(int));
-	// Teraz w petli dla kazdej wiadomosci
+	// next for each message
 	CONST_FOREACH(i, msgs)
 	{
-		// zapisujemy uiny - najpierw ilosc
+		// saving uins, first - number of
 		t=(*i).users.size();
 		f.writeBlock((char*)&t,sizeof(int));
-		// teraz dane
+		// uins
 		CONST_FOREACH(j, (*i).users)
 		{
 			UinType uin = (*j).ID("Gadu").toUInt();
 			f.writeBlock((char*)&uin, sizeof(UinType));
 		}
-		// nastepnie wiadomosc - dlugosc
+		// message size
 		t=(*i).msg.length();
 		f.writeBlock((char*)&t,sizeof(int));
-		// i tresc
+		// message content
 		QCString cmsg = codec_latin2->fromUnicode((*i).msg);
 		f.writeBlock(cmsg, cmsg.length());
-		// na koniec jeszcze klase wiadomosci
+		// message class
 		f.writeBlock((char*)&(*i).msgclass,sizeof(int));
-		// i czas
+		// and time
 		f.writeBlock((char*)&(*i).time,sizeof(time_t));
 	}
-	// I zamykamy plik
+	// close file
 	f.close();
 }
 
@@ -123,26 +123,26 @@ bool PendingMsgs::loadFromFile()
 		return false;
 	}
 
-	// Najpierw wczytujemy ilosc wiadomosci
+	// first we read number of messages
 	int msgs_size;
 	if (f.readBlock((char*)&msgs_size,sizeof(int)) <= 0) {
 		kdebugmf(KDEBUG_ERROR, "kadu.msgs is corrupted\n");
 		return false;
 	}
 
-	// Teraz w petli dla kazdej wiadomosci
+	// next for each message
 	for (int i = 0; i < msgs_size; ++i)
 	{
 		Element e;
 
-		// wczytujemy uiny - najpierw ilosc
+		// reading uins, first number of
 		int uins_size;
 		if (f.readBlock((char*)&uins_size, sizeof(int)) <= 0) {
 			--msgs_size;
 			return false;
 		}
 
-		// teraz dane
+		// uins
 		for (int j = 0; j < uins_size; ++j)
 		{
 			int uin;
@@ -153,14 +153,14 @@ bool PendingMsgs::loadFromFile()
 			e.users.append(userlist->byID("Gadu", QString::number(uin)));
 		}
 
-		// nastepnie wiadomosc - dlugosc
+		// message size
 		int msg_size;
 		if (f.readBlock((char*)&msg_size, sizeof(int)) <= 0) {
 			--msgs_size;
 			return false;
 		}
 
-		// i tresc
+		// message content
 		char *buf = new char[msg_size + 1];
 		if (f.readBlock(buf, msg_size) <= 0) {
 			--msgs_size;
@@ -171,25 +171,25 @@ bool PendingMsgs::loadFromFile()
 		e.msg = codec_latin2->toUnicode(buf);
 		delete[] buf;
 
-		// na koniec jeszcze klase wiadomosci
+		// message class
 		if (f.readBlock((char*)&e.msgclass, sizeof(int)) <= 0) {
 			--msgs_size;
 			delete [] buf;
 			return false;
 		}
 
-		// i czas
+		// and time
 		if (f.readBlock((char*)&e.time, sizeof(time_t)) <= 0) {
 			--msgs_size;
 			delete [] buf;
 			return false;
 		}
 
-		// dodajemy do listy
+		// appending to list
 		msgs.append(e);
 	}
 
-	// I zamykamy plik
+	// and closing file
 	f.close();
 	return true;
 }

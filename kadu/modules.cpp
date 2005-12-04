@@ -264,10 +264,11 @@ void ModulesManager::closeModule()
 ModulesManager::ModulesManager() : QObject(NULL, "modules_manager")
 {
 	kdebugf();
-	// wazne, aby inicjalizacja tej zmiennej wystapila przed wczytaniem
-	// modulow, bo niektore juz moga z niej korzystac, wiec dlatego
-	// przenioslem to tutaj z funkcji ModulesManagert::initModule
-	// to samo z menu - moduly powinny sie ladowac na samym koncu
+	// it's important to initiate that variable before loading modules
+	// because some of them is using that value - that's why
+	// i moved it here from ModulesManagert::initModule
+	// the same is true for menu - modules should load up at end
+	
 	modules_manager=this;
 	kadu->mainMenu()->insertItem(icons_manager->loadIcon("ManageModules"), tr("&Manage Modules"), this, SLOT(showDialog()), HotKey::shortCutFromFile("ShortCuts", "kadu_modulesmanager"), -1, 2);
 
@@ -284,8 +285,7 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager")
 		if (!moduleIsActive(*i))
 			activateModule(*i);
 
-	// za³aduj modu³y wed³ug pliku konfiguracyjnego
-	// i ew. zmiennej
+	// load modules as config file say
 	QStringList installed_list = installedModules();
 	QString loaded_str = config_file.readEntry("General", "LoadedModules");
 	QStringList loaded_list = QStringList::split(',',loaded_str);
@@ -313,8 +313,8 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager")
 					load_error = true;
 		}
 
-	// jesli nie wszystkie moduly zostaly przy starcie prawidlowo
-	// zaladowane to zapisz nowa liste zaladowanych modulow
+	// if not all modules were loaded properly
+	// save the list of modules
 	if (load_error)
 		saveLoadedModules();
 
@@ -335,9 +335,9 @@ ModulesManager::~ModulesManager()
 	CONST_FOREACH(it, Modules)
 		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", it.key().local8Bit().data(), it.data().usage_counter);
 
-	// Wyladowujemy wszystkie nieu¿ywane modu³y
-	// w pêtli iteruj±c dopóki jakikolwiek udaje
-	// siê wy³adowaæ
+	// unloading all not used modules
+	// as long as any module were unloaded
+	
 	bool deactivated;
 	do
 	{
@@ -349,8 +349,9 @@ ModulesManager::~ModulesManager()
 					deactivated = true;
 	}
 	while (deactivated);
-	// Wiêcej modu³ów nie mo¿na wy³adowaæ normalnie,
-	// je¶li jakie¶ zosta³y trzeba to zrobiæ brutalnie
+
+	// we cannot unload more modules in normal way
+	// so we are making it brutal ;)
 	QStringList active=activeModules();
 	CONST_FOREACH(i, active)
 	{

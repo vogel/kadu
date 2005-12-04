@@ -686,7 +686,7 @@ void Chat::writeMessagesFromHistory(UserListElements senders, time_t time)
 
 	date.setTime_t(time);
 
-	UinsList uins;//TODO: wypieprzyæ jak siê przerobi historiê
+	UinsList uins;//TODO: throw out UinsList as soon as possible!
 	CONST_FOREACH(user, senders)
 		uins.append((*user).ID("Gadu").toUInt());
 
@@ -808,7 +808,7 @@ void Chat::addMyMessageToHistory()
 	UinsList uins;
 	CONST_FOREACH(user, *Users)
 		uins.append((*user).ID("Gadu").toUInt());
-	//TODO: pozbyæ siê UinsList
+	//TODO: throw out UinsList as soon as possible!
 	history.addMyMessage(uins, myLastMessage);
 }
 
@@ -1050,7 +1050,7 @@ void Chat::openEmoticonSelector(const QWidget* activating_widget)
 	//bo EmoticonSelector ma ustawione flagi Qt::WDestructiveClose i Qt::WType_Popup
 	//akcj± na opuszczenie okna jest ustawienie zmiennej emoticons_selector w Chacie na NULL
 	emoticon_selector = new EmoticonSelector(NULL, "emoticon_selector", this);
-	emoticon_selector->alignTo((QWidget*)activating_widget); //TODO: konwersja obcinajaca const nie jest piekna sprawa
+	emoticon_selector->alignTo(const_cast<QWidget*>(activating_widget)); //TODO: do something about const_cast
 	emoticon_selector->show();
 }
 
@@ -1058,7 +1058,7 @@ void Chat::changeColor(const QWidget* activating_widget)
 {
 	//sytuacja podobna jak w przypadku emoticon_selectora
 	color_selector = new ColorSelector(Edit->paletteForegroundColor(), this, "color_selector");
-	color_selector->alignTo((QWidget*)activating_widget); //TODO: konwersja obcinajaca const nie jest piekna sprawa
+	color_selector->alignTo(const_cast<QWidget*>(activating_widget)); //TODO: do something about const_cast
 	color_selector->show();
 	connect(color_selector, SIGNAL(colorSelect(const QColor&)), this, SLOT(colorChanged(const QColor&)));
 	connect(color_selector, SIGNAL(aboutToClose()), this, SLOT(colorSelectorAboutToClose()));

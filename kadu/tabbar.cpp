@@ -308,10 +308,7 @@ void KaduTabBar::dropEvent(QDropEvent* e)
 		QStringList altnick_list = QStringList::split("\n", altnicks);
 		CONST_FOREACH(altnick, altnick_list)
 			userlist->byAltNick(*altnick).setData("Groups", group);
-		// bardzo niewygodne, trzeba poprawiæ writeToFile !! ta funkcja jest za wolna
-		// trzeba dodaæ mozliwo¶æ zmiany danych tylko jednego user !!
-		//
-		// Po przejsciu na xml powyzszy komentarz w zasadzie wciaz obowiazuje - Adrian
+		// too slow, we need to do something about that
 		userlist->writeToConfig();
 	}
 }

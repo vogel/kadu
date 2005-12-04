@@ -113,10 +113,10 @@ void ToolButton::deleteButtonClicked()
 {
 	kdebugf();
 	ToolBar* toolbar = (ToolBar*)parent();
-	toolbar->removeChild(this); // tymczasowo usun z listy, dla writeToConfig()
+	toolbar->removeChild(this); //temporarily remove from list, for writeToConfig()
 	DockArea* dockarea = (DockArea*)toolbar->area();
 	dockarea->writeToConfig();
-	toolbar->insertChild(this); // przywroc
+	toolbar->insertChild(this); // restore
 	deleteLater();
 	kdebugf2();
 }

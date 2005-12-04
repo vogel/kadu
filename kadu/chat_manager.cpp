@@ -24,7 +24,7 @@
 #include "search.h"
 #include "userbox.h"
 
-// TODO: zrobic ikony w zestawie zamiast sie bawic w takie sztuczki
+// TODO: make new icons for iconset instead of tricks like that
 static QPixmap string_to_pixmap(const QString& str, const QFont& font)
 {
 	QSize size = QFontMetrics(font).size(0, str);
@@ -220,7 +220,7 @@ void ChatManager::historyActionActivated(const UserGroup* users)
 	UinsList uins;
 	CONST_FOREACH(user, *users)
 		uins.append((*user).ID("Gadu").toUInt());
-	//TODO: pozbyæ siê UinsList
+	//TODO: throw out UinsList as soon as possible!
 	(new History(uins))->show();
 	kdebugf2();
 }
@@ -463,11 +463,11 @@ int ChatManager::openChat(QString initialProtocol, UserListElements users, time_
 int ChatManager::openPendingMsg(int index, ChatMessage &msg)
 {
 	kdebugf();
-	// TODO: sprawdzaæ czy pending[index] czy nie wykracza poza istniej±cy zakres
+	// TODO: check if index does not exceed boundaries
 	PendingMsgs::Element p = pending[index];
-	// otwieramy chat (jesli nie istnieje)
+	// opening chat (if it does not exist)
 	int k = openChat("Gadu", p.users, p.time);
-	// dopisujemy nowa wiadomosc do to_add
+	// appending new message
 
 	QDateTime date;
 	date.setTime_t(p.time);
@@ -475,10 +475,10 @@ int ChatManager::openPendingMsg(int index, ChatMessage &msg)
 	msg = ChatMessage(p.users[0].altNick(), p.msg, false, QDateTime::currentDateTime(), date);
 	Chats[k]->formatMessage(msg);
 
-	// kasujemy wiadomosc z pending
+	// remove message from pending
 	pending.deleteMsg(index);
-	// zwracamy indeks okna chat
 	kdebugf2();
+	// return index of opened chat window
 	return k;
 }
 

@@ -138,8 +138,6 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog * /*parent*/, const char * /*name
 PersonalInfoDialog::~PersonalInfoDialog()
 {
 	kdebugf();
-
-// @todo: ten fragment kodu powoduje zwieche, sprawdic co z nime
 	delete data;
 	saveGeometry(this, "General", "PersonalInfoDialogGeometry");
 	kdebugf2();

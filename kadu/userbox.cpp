@@ -211,13 +211,13 @@ int KaduListBoxPixmap::width(const QListBox* lb) const
 		return QMAX(pm.width(), lb->width()-20);
 /*
    joi:
-   trzeba daæ lb->width()-20, ¿eby zmie¶ci³ siê suwak - nie mo¿na pobraæ jego
-   szeroko¶ci ze stylu, bo np Keramik zwraca b³êdn± warto¶æ (=100)  (ze standardowych
-   stylów KDE tylko SGI ma szeroko¶æ >20 i na nim kadu bêdzie kiepsko wygl±daæ:( )
+   we need to use lb->width()-20 here for scrollbar - we cannot get this value
+   from Qt style, because eg Keramik returns wrong value (=100) (only one standard
+   KDE style has wider scrollbars - SGI, and Kadu will look bad on it :( )
 
-   nie mo¿na te¿ wzi±æ lb->visibleWidth(), bo gdy w jednej zak³adce mamy tyle kontaktów,
-   ¿e siê nie mieszcz± na 1 ekranie, a w drugiej tyle ¿e siê mieszcz±, to przy
-   prze³±czaniu siê z jednej zak³adki do drugiej dostajemy poziomy suwak... :|
+   as well we cannot use lb->visibleWidth(), because of one case:
+   	group A has 20 contacts, group B - 25, only 22 can be visible
+   	changing group A to B will show up horizontal scrollbar :|
 */
 }
 
@@ -225,7 +225,7 @@ int KaduListBoxPixmap::width(const QListBox* lb) const
 void KaduListBoxPixmap::calculateSize(const QString &text, int width, QStringList &out, int &height) const
 {
 //	kdebugf();
-	if (text == buf_text && width == buf_width)	//ju¿ to liczyli¶my ;)
+	if (text == buf_text && width == buf_width)	// we already computed it
 	{
 		out=buf_out;
 		height=buf_height;
@@ -794,7 +794,7 @@ void UserBoxSlots::onCreateTabLook()
 	multi=ConfigDialog::getSpinBox("Look", "Image height");
 	multi->setSuffix(" px");
 	multi->setEnabled(config_file.readBoolEntry("Look", "UserboxBackgroundMove"));
-	
+
 	updatePreview();
 	kdebugf2();
 }
@@ -1198,7 +1198,7 @@ void UserBox::userRemovedFromVisible(UserListElement elem, bool massively, bool 
 	if (massively)
 		toRemove.push_back(elem);
 	else
-		sortHelper.erase(std::remove(sortHelper.begin(), sortHelper.end(), elem), sortHelper.end());//najoptymalniejsze
+		sortHelper.erase(std::remove(sortHelper.begin(), sortHelper.end(), elem), sortHelper.end());// the most optimal
 	if (massively && last)
 	{
 		torem pred(toRemove);

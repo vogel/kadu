@@ -66,19 +66,19 @@ const QString &Themes::theme() const
 
 QString Themes::fixFileName(const QString& path, const QString& fn) const
 {
-	// sprawd¼ czy oryginalna jest ok
+	// check if original path is ok
 	if(QFile::exists(path+"/"+fn))
 		return fn;
-	// mo¿e ca³o¶æ lowercase?
+	// maybe all lowercase?
 	if(QFile::exists(path+"/"+fn.lower()))
 		return fn.lower();
-	// rozbij na nazwê i rozszerzenie
+	// split for name and extension
 	QString name=fn.section('.',0,0);
 	QString ext=fn.section('.',1);
-	// mo¿e rozszerzenie uppercase?
+	// maybe extension uppercase?
 	if(QFile::exists(path+"/"+name+"."+ext.upper()))
 		return name+"."+ext.upper();
-	// nie umiemy poprawiæ, zwracamy oryginaln±
+	// we cannot fix it, return original
 	return fn;
 }
 

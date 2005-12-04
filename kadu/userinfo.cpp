@@ -270,7 +270,7 @@ void UserInfo::setupTab2()
 		groups.append(checkBox);
 	}
 
-	//zobacz komentarz w newGroupClicked()
+	//look out comment in newGroupClicked()
 	for (int i = 0; i < 10; ++i)
 	{
 		QCheckBox *box = new QCheckBox(groupsBox);
@@ -307,7 +307,7 @@ void UserInfo::newGroupClicked()
 	groupName.toLong(&number);
 	if (number)
 	{
-		MessageBox::msg(tr("Numbers are prohibited"), true);//ze wzglêdu na format listy kontaktów...
+		MessageBox::msg(tr("Numbers are prohibited"), true);//because of gadu-gadu contact list format...
 		return;
 	}
 	if (groupName == GroupsManager::tr("All"))
@@ -321,9 +321,10 @@ void UserInfo::newGroupClicked()
 			MessageBox::wrn(tr("This group already exists!"), true);
 			return;
 		}
-//	niestety ten 2-linijkowy kod nie dzia³a - nie wiem dlaczego, ale chêtnie siê dowiem
-//	w ka¿dym razie dlatego trzeba by³o stworzyæ wcze¶niej kilka checkboksów i je ukryæ...
-//	a teraz po trochu je pokazujemy :)
+//	unfortunetly this 2-lines code does not work - don't know why
+//	so we had to create a couple of checkboxes and hide them
+//	and right now we showing em one by one
+
 //	QCheckBox *box=new QCheckBox(groupName, groupsBox);
 //	box->setChecked(true);
 
@@ -397,7 +398,7 @@ void UserInfo::updateUserlist()
 		uin = 0;
 	QString id = QString::number(uin);
 
-	//je¿eli cokolwiek wpisano w pole UIN, a nie jest to poprawna liczba, to znaczy, ¿e UIN jest b³êdny
+	// if uin field is not empty and it's not a number, then it's not a correct UIN
 	if (!e_uin->text().isEmpty() && id != e_uin->text())
 	{
 		QMessageBox::warning(this, tr("Add user problem"), tr("Bad Gadu-Gadu UIN."));
@@ -425,17 +426,17 @@ void UserInfo::updateUserlist()
 	user.setAltNick(e_altnick->text());
 	user.setMobile(e_mobile->text());
 
-	if (user.usesProtocol("Gadu")) // dotychczas by³ numer?
+	if (user.usesProtocol("Gadu")) // there was an UIN so far?
 	{
-		if (user.ID("Gadu").toUInt() != uin || e_uin->text() != id) // identyfikator GG zosta³ zmieniony
+		if (user.ID("Gadu").toUInt() != uin || e_uin->text() != id) // uin was changed
 		{
 			user.deleteProtocol("Gadu");
-			if (uin != 0) // ale móg³ zostaæ skasowany
+			if (uin != 0) // but it might be deleted
 				user.addProtocol("Gadu", QString::number(uin));
 		}
 	}
-	else // nie by³o numeru dotychczas
-		if (uin != 0) //je¿eli siê pojawi³, to dodajemy
+	else // there was no UIN so far
+		if (uin != 0) // if it was filled, then we add new protocol
 			user.addProtocol("Gadu", QString::number(uin));
 
 	QStringList l;

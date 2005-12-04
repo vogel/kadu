@@ -196,7 +196,7 @@ void UserGroup::removeUser(UserListElement ule, bool massively, bool last)
 	if (elem != NULL)
 	{
 		emit removingUser(ule, massively, last);
-		// bardzo brzydki hack :|
+		// very ugly hack :|
 		if (this == userlist && !Kadu::closing())
 			ule.setAnonymous(true);
 		else

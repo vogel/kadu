@@ -7,11 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
-//TODO i pomys³y:
-// lista protoko³ów dla userlisty?
-// u³atwiacze do wyszukiwania po altnickach/protoko³ach+idach?
-// sposób rysowania elementów listy kontaktów? mo¿e tylko parametry?
-// pó¼niej ULE::hasFeature(protocol, featurename)
+//TODO and ideas:
+// list of protocols for userlist?
+// functions for easier searching of altnicks/protocols+ids?
+// "plugins" for changing the way userboxes are painted? maybe only parameters?
+// later ULE::hasFeature(protocol, featurename)
 
 #include <qdom.h>
 #include <qfile.h>

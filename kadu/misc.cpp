@@ -349,7 +349,7 @@ QString unicode2latinUrl(const QString &buf)
 	return tmp;
 }
 
-//wygl±da magicznie, nie? :D
+//looks magically, does it? :D
 QString unicodeUrl2latinUrl(const QString &buf)
 {
 	QString tmp = buf;
@@ -542,7 +542,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 		if (i==len)
 			i=-1;
 
-//		to jest dok³adnie to samo, tyle ¿e to co wy¿ej jest duuuuu¿o szybsze
+//		this is the same, but code above is muuuuch faster
 //		i=s.find(QRegExp("%|`|\\{|\\[|'|\\}|\\]"), index);
 
 		if (i==-1)

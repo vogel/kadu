@@ -1163,7 +1163,7 @@ void HistoryManager::chatMsgReceived(Protocol *protocol, UserListElements sender
 	int occur = msg.contains(QRegExp("<img [^>]* gg_crc[^>]*>"));
 	UinType sender0 = senders[0].ID("Gadu").toUInt();
 	kdebugm(KDEBUG_INFO, "sender: %d msg: '%s' occur:%d\n", sender0, msg.local8Bit().data(), occur);
-	UinsList uins;//TODO: wywaliæ UinsList
+	UinsList uins;//TODO: throw out UinsList as soon as possible!
 	CONST_FOREACH(u, senders)
 		if ((*u).usesProtocol("Gadu"))
 			uins.append((*u).ID("Gadu").toUInt());

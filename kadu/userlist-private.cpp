@@ -13,9 +13,9 @@
 #include "misc.h"
 #include "userlist-private.h"
 
-// UWAGA: wraz ze wzrostem liczby mo¿liwych kluczy nale¿y powiêkszaæ
-// domy¶lne rozmiary s³owników na liczby pierwsze!
-// mo¿na je braæ st±d: http://doc.trolltech.com/3.3/primes.html
+// WARNING: as soon as number of keys will grow, we need to increase
+// default dictionary sizes to prime numbers!
+// we can find them here: http://doc.trolltech.com/3.3/primes.html
 ULEPrivate::ULEPrivate() : informations(31), protocols(3)
 {
 }
@@ -65,7 +65,7 @@ static QString DNSName("DNSName");
 
 void ULEPrivate::setDNSName(const QString &protocolName, const QString &dnsname)
 {
-	//uproszczona implementacja setProtocolData()
+	// simplified implementation of setProtocolData()
 	ProtocolData *protocolData = protocols.find(protocolName);
 	if (protocolData == NULL)
 		return;

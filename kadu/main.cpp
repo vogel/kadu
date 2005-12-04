@@ -34,7 +34,7 @@
 #include "message_box.h"
 #include "protocols_manager.h"
 
-//patrz komentarz w config_file.h
+//look for comment in config_file.h
 ConfigFile *config_file_ptr;
 
 Kadu *kadu;
@@ -56,7 +56,8 @@ static void kadu_signal_handler(int s)
 		QString debug_file = QString("kadu.backtrace.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
 
 		if(lockFile)
-		{ // moze sie wywalic praktycznie po wylaczeniu i to tez trzeba uwzglednic
+		{
+			// there might be another segmentation fault in this signal handler (because of total mess in memory)
 			flock(lockFileHandle, LOCK_UN);
 			kdebugm(KDEBUG_WARNING, "lock released\n");
 			lockFile->close();
@@ -109,7 +110,7 @@ static void kadu_signal_handler(int s)
 			fprintf(dbgfile, "Compile time: %s %s\n", __DATE__, __TIME__);
 			#endif
 			#ifdef __GNUC__
-				//w gcc < 3.0 nie ma __GNUC_PATCHLEVEL__
+				//in gcc < 3.0 __GNUC_PATCHLEVEL__ is not defined
 				#ifdef __GNUC_PATCHLEVEL__
 					fprintf(dbgfile, "GCC version: %d.%d.%d\n", __GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__);
 				#else
@@ -159,7 +160,7 @@ int main(int argc, char *argv[])
 	}
 #endif
 
-	//opó¼nienie uruchomienia, przydatne w GNOME
+	// delayed running, useful in gnome
 	config_file.addVariable("General", "StartDelay", 0);
 	sleep(config_file.readNumEntry("General", "StartDelay"));
 	QString data_dir = dataPath("kadu", argv[0]);
@@ -179,7 +180,7 @@ int main(int argc, char *argv[])
 	new QApplication(argc, argv);
 	defaultFontInfo = new QFontInfo(qApp->font());
 	defaultFont = new QFont(defaultFontInfo->family(), defaultFontInfo->pointSize());
-	// ³adowanie t³umaczenia
+	// loading translation
 	config_file.addVariable("General", "Language", QString(QTextCodec::locale()).mid(0,2));
 	QTranslator qt_qm(0, "Translator_qt");
 	QString lang = config_file.readEntry("General", "Language");
@@ -240,12 +241,12 @@ int main(int argc, char *argv[])
 
 	QObject::connect(qApp, SIGNAL(aboutToQuit()), kadu, SLOT(quitApplication()));
 
-	// je¶li kto¶ uruchomi³ kadu jako root to przypomnijmy mu, ¿e
-	// tak nie nale¿y postêpowaæ (leczymy nawyki z win32)
+	// if someone is running Kadu from root account, let's remind him
+	// that it's a "bad thing"(tm) ;) (usually for win32 users)
 	if (geteuid() == 0)
 		MessageBox::wrn(qApp->translate("@default", QT_TR_NOOP("Please do not run Kadu as a root!\nIt's a high security risk!")));
 	QTimer::singleShot(15000, kadu, SLOT(deleteOldConfigFiles()));
 	int ret=qApp->exec();
-//	delete qApp; czasem powoduje segfaulta na koniec
+//	delete qApp; sometimes leads to segfault
 	return ret;
 }

@@ -67,7 +67,7 @@ Ignored::Ignored(QDialog * /*parent*/, const char * /*name*/)
 	hb_uin->setSpacing(3);
 
 	QLabel *l_uinlabel = new QLabel(tr("Uin:"), hb_uin);
-	// chyba tylko po to zeby nie pokazywal sie warning kompilatora ;)
+	// that's only for disabling compiler warning? ;)
 	l_uinlabel->setAlignment(Qt::WordBreak);
 	e_uin = new QLineEdit(hb_uin);
 	hb_uin->setStretchFactor(e_uin, 1);
