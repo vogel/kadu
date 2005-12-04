@@ -172,13 +172,14 @@ void ToolBar::loadFromConfig(QDomElement toolbar_element)
 	{
 		QDomElement button_elem = buttons.item(i).toElement();
 		QString action_name = button_elem.attribute("action_name");
+		bool uses_text_label = !button_elem.attribute("uses_text_label").isNull();
 		if (KaduActions.contains(action_name))
 		{
 			QString dockarea_group_restr =
 				KaduActions[action_name]->dockAreaGroupRestriction();
 			if (dockarea_group_restr.isNull() ||
 					dockarea_group_restr == dockAreaGroup())
-				KaduActions[action_name]->addToToolbar(this);
+				KaduActions[action_name]->addToToolbar(this, uses_text_label);
 		}
 	}
 	kdebugf2();

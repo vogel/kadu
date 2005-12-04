@@ -91,6 +91,9 @@ void ToolButton::contextMenuEvent(QContextMenuEvent* e)
 {
 	kdebugf();
 	QPopupMenu* p = new QPopupMenu(this);
+	int label_menu_id =
+		p->insertItem(tr("Show text label"), this, SLOT(showTextLabelClicked()));
+	p->setItemChecked(label_menu_id, usesTextLabel());
 	p->insertItem(tr("Delete button"), this, SLOT(deleteButtonClicked()));
 	p->exec(QCursor::pos());
 	delete p;
@@ -118,6 +121,16 @@ void ToolButton::deleteButtonClicked()
 	kdebugf2();
 }
 
+void ToolButton::showTextLabelClicked()
+{
+	kdebugf();
+	setUsesTextLabel(!usesTextLabel());
+	ToolBar* toolbar = (ToolBar*)parent();
+	DockArea* dockarea = (DockArea*)toolbar->area();
+	dockarea->writeToConfig();
+	kdebugf2();
+}
+
 QString ToolButton::actionName()
 {
 	return ActionName;
@@ -128,6 +141,8 @@ void ToolButton::writeToConfig(QDomElement parent_element)
 	kdebugf();
 	QDomElement button_elem = xml_config_file->createElement(parent_element, "ToolButton");
 	button_elem.setAttribute("action_name", ActionName);
+	if (usesTextLabel())
+		button_elem.setAttribute("uses_text_label", true);
 	kdebugf2();
 }
 

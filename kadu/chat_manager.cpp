@@ -145,7 +145,6 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 
 	Action* send_action = new Action(icons_manager->loadIcon("SendMessage"),
 		tr("&Send"), "sendAction");
-	send_action->setUsesTextLabel(true);
 	send_action->setDockAreaGroupRestriction("chatDockAreaGroup");
 	connect(send_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(sendActionActivated(const UserGroup*)));
@@ -164,7 +163,7 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 	KaduActions.addDefaultToolbarAction("Chat toolbar 2", "underlineAction");
 	KaduActions.addDefaultToolbarAction("Chat toolbar 2", "colorAction");
 
-	KaduActions.addDefaultToolbarAction("Chat toolbar 3", "sendAction");
+	KaduActions.addDefaultToolbarAction("Chat toolbar 3", "sendAction", -1, true);
 
 	kdebugf2();
 }

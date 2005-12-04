@@ -20,6 +20,7 @@ class ToolButton : public QToolButton
 	private slots:
 		void buttonClicked();
 		void deleteButtonClicked();
+		void showTextLabelClicked();
 
 	protected:
 		void mouseMoveEvent(QMouseEvent* e);

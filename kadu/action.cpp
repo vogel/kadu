@@ -21,14 +21,6 @@ Action::Action(const QIconSet& icon, const QString& text, const char* name, QKey
 	: QAction(icon, text, accel, kadu, name)
 {
 	kdebugf();
-	UsesTextLabel = false;
-	kdebugf2();
-}
-
-void Action::setUsesTextLabel(bool uses)
-{
-	kdebugf();
-	UsesTextLabel = uses;
 	kdebugf2();
 }
 
@@ -58,7 +50,7 @@ void Action::setOnShape(const QIconSet& icon, const QString& text)
 	OnText = text;
 }
 
-ToolButton* Action::addToToolbar(ToolBar* toolbar)
+ToolButton* Action::addToToolbar(ToolBar* toolbar, bool uses_text_label)
 {
 	kdebugf();
 	ToolButton* btn = new ToolButton(toolbar, name());
@@ -66,7 +58,7 @@ ToolButton* Action::addToToolbar(ToolBar* toolbar)
 	btn->setTextLabel(menuText());
 	btn->setOnShape(OnIcon, OnText);
 	btn->setToggleButton(isToggleAction());
-	btn->setUsesTextLabel(UsesTextLabel);
+	btn->setUsesTextLabel(uses_text_label);
 	btn->setTextPosition(ToolButton::BesideIcon);
 	connect(btn, SIGNAL(clicked()), this, SLOT(toolButtonClicked()));
 	connect(btn, SIGNAL(destroyed(QObject*)), this, SLOT(toolButtonDestroyed(QObject*)));
@@ -186,14 +178,17 @@ void Actions::refreshIcons()
 }
 
 void Actions::addDefaultToolbarAction(
-	const QString& toolbar, const QString& action, int index)
+	const QString& toolbar, const QString& action, int index, bool uses_text_label)
 {
 	kdebugf();
-	QStringList& actions = DefaultToolbarActions[toolbar];
+	QValueList<Default>& actions = DefaultToolbarActions[toolbar];
+	Default def;
+	def.action_name = action;
+	def.uses_text_label = uses_text_label;
 	if (index < 0)
-		actions.push_back(action);
+		actions.push_back(def);
 	else
-		actions.insert(actions.at(index), action);
+		actions.insert(actions.at(index), def);
 	kdebugf2();
 }
 
@@ -202,11 +197,12 @@ void Actions::addDefaultActionsToToolbar(ToolBar* toolbar)
 	kdebugf();
 	if (DefaultToolbarActions.contains(toolbar->name()))
 	{
-		const QStringList& actions = DefaultToolbarActions[toolbar->name()];
+		const QValueList<Default>& actions = DefaultToolbarActions[toolbar->name()];
 		FOREACH(i, actions)
 		{
-			if (contains(*i))
-				(*this)[*i]->addToToolbar(toolbar);
+			if (contains((*i).action_name))
+				(*this)[(*i).action_name]->addToToolbar(toolbar,
+					(*i).uses_text_label);
 		}
 	}
 	kdebugf2();

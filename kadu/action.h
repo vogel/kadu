@@ -6,7 +6,6 @@
 #include <qmap.h>
 #include <qpopupmenu.h>
 #include <qstring.h>
-#include <qstringlist.h>
 #include <qvaluelist.h>
 
 #include "toolbar.h"
@@ -17,7 +16,6 @@ class Action : public QAction
 	Q_OBJECT
 
 	private:
-		bool UsesTextLabel;
 		QIconSet OnIcon;
 		QString OnText;
 		QString DockAreaGroupRestriction;
@@ -37,15 +35,11 @@ class Action : public QAction
 		Action(const QIconSet& icon, const QString& text, const char* name,
 			QKeySequence accel = QKeySequence());
 		/**
-			set if ToolButtons uses text label.
-		**/
-		void setUsesTextLabel(bool uses);
-		/**
 			action works just like toggled but using two shapes
 			(pictures and texts)
 		**/
 		void setOnShape(const QIconSet& icon, const QString& text);
-		ToolButton* addToToolbar(ToolBar* toolbar);
+		ToolButton* addToToolbar(ToolBar* toolbar, bool uses_text_label = false);
 		int addToPopupMenu(QPopupMenu* menu, bool connect_signal = true);
 		QValueList<ToolButton*> toolButtonsForUserListElements(
 			const UserListElements& users);
@@ -77,13 +71,19 @@ class Action : public QAction
 class Actions : public QMap<QString, Action*>
 {
 	private:
-		QMap<QString, QStringList> DefaultToolbarActions;
+		struct Default
+		{
+			QString action_name;
+			bool uses_text_label;
+		};
+		QMap< QString, QValueList<Default> > DefaultToolbarActions;
 
 	public:
 		Actions();
 		void refreshIcons();
 		void addDefaultToolbarAction(
-			const QString& toolbar, const QString& action, int index = -1);
+			const QString& toolbar, const QString& action, int index = -1,
+			bool uses_text_label = false);
 		void addDefaultActionsToToolbar(ToolBar* toolbar);
 };
 

@@ -194,6 +194,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodany do autodownloadu modu³ iwait4u (joi)
 * w oknie "Wy¶lij SMS" przy wyborze "pustego" elementu w combie, w tym¿e combie
   nie pojawia siê nick losowego u¿ytkownika (joi)
+* to czy dla danego przycisku w pasku narzêdziowym pokazuje siê tekstowa etykieta
+  jest konfigurowalne (adrian)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
