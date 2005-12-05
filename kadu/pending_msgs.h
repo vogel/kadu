@@ -3,6 +3,7 @@
 
 #include <qstring.h>
 #include <qvaluelist.h>
+#include <time.h>
 #include "usergroup.h"
 
 /**
