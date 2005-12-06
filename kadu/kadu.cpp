@@ -623,7 +623,8 @@ void Kadu::deleteHistory()
 	}
 	//TODO: throw out UinsList as soon as possible!
 	UinsList uins;
-	CONST_FOREACH(user, activeUserBox->selectedUsers())
+	UserListElements users = activeUserBox->selectedUsers();
+	CONST_FOREACH(user, users)
 		if ((*user).usesProtocol("Gadu"))
 			uins.append((*user).ID("Gadu").toUInt());
 
