@@ -573,6 +573,26 @@ class GaduProtocol : public Protocol
 
 		void currentStatusChanged(const UserStatus &status, const UserStatus &oldStatus);
 
+		/**
+
+		**/
+		void onCreateTabNetwork();
+
+		/**
+
+		**/
+		void onApplyTabNetwork();
+
+		/**
+
+		**/
+		void ifDefServerEnabled(bool value);
+
+		/**
+
+		**/
+		void useTlsEnabled(bool value);
+
 	public:
 		static void initModule();
 		static void closeModule();
@@ -847,27 +867,6 @@ class GaduProtocol : public Protocol
 		void dccVoiceChat(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, struct gg_dcc **out);
 		int dccVoiceSend(struct gg_dcc* d, char* buf, int length);
 		void setDccIpAndPort(unsigned long dcc_ip, int dcc_port);
-
-		// przeniesione z events.h
-		/**
-			@todo uprywatniæ
-		**/
-		void onCreateTabNetwork();
-
-		/**
-			@todo uprywatniæ
-		**/
-		void onApplyTabNetwork();
-
-		/**
-			@todo uprywatniæ
-		**/
-		void ifDefServerEnabled(bool value);
-
-		/**
-			@todo uprywatniæ
-		**/
-		void useTlsEnabled(bool value);
 
 	protected slots:
 		/* sloty pod³±czane do sygna³ów z klasy UserList */
