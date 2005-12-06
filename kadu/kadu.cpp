@@ -1431,10 +1431,10 @@ void KaduSlots::onApplyTabLook()
 void KaduSlots::onApplyTabGeneral()
 {
 	kdebugf();
+	QLineEdit *password = ConfigDialog::getLineEdit("General", "Password");
+	config_file.writeEntry("General", "Password", pwHash(password->text()));
 
-	QLineEdit *e_password=ConfigDialog::getLineEdit("General", "Password");
-//	e_password->setEchoMode(QLineEdit::Password);
-	config_file.writeEntry("General", "Password",pwHash(e_password->text()));
+	gadu->changeID(ConfigDialog::getLineEdit("General", "Uin")->text());
 
 	kadu->showdesc(config_file.readBoolEntry("Look", "ShowInfoPanel"));
 
