@@ -42,6 +42,7 @@ class UserlistImportExport : public QHBox {
 		void userListExported(bool ok);
 		void userListCleared(bool ok);
 		void keyPressEvent(QKeyEvent *);
+		void updateUserListCount();
 };
 
 #endif

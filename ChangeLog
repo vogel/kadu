@@ -199,6 +199,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawione parsowanie linków - * mo¿e te¿ w nim wystêpowaæ (joi)
 * próba za³o¿enia nowego profilu koñczy³a siê komunikatem "Brak numeru GG lub
   has³a" - poprawione (joi)
+* poprawione importowanie i ³±czenie list kontaktów (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

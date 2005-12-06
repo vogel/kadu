@@ -238,6 +238,8 @@ class GaduProtocol : public Protocol
 		**/
 		QTimer* PingTimer;
 
+		QTimer* SendUserListTimer;
+
 		/**
 			Okre¶la, czy lista u¿ytkowników zosta³a ju¿ wys³ana.
 
@@ -806,11 +808,7 @@ class GaduProtocol : public Protocol
 		**/
 		void sendUserList();
 
-		/**
-			wysy³a wskazan± listê u¿ytkowników na serwer
-			@see sendUserList
-		**/
-		void sendUserList(const UserList &ulist);
+		void sendUserListLater();
 
 		/**
 			Szuka ludzi w katalogu publicznym. Wyniki przychodz± za pomoca sygna³u newSearchResults.

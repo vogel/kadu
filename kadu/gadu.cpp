@@ -7,17 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qcheckbox.h>
-#include <qtimer.h>
-#include <qvgroupbox.h>
-
-//netinet/in.h na freebsd 4.x jest wybrakowane i trzeba inkludowaæ sys/types.h
-#include <sys/types.h>
-//dla htonl
-#include <netinet/in.h>
-
-#include <stdlib.h>
-
 #include "config_dialog.h"
 #include "config_file.h"
 #include "debug.h"
@@ -31,6 +20,17 @@
 #include "kadu-config.h"
 #include "message_box.h"
 #include "misc.h"
+
+//netinet/in.h na freebsd 4.x jest wybrakowane i trzeba inkludowaæ sys/types.h
+#include <sys/types.h>
+//dla htonl
+#include <netinet/in.h>
+
+#include <stdlib.h>
+
+#include <qcheckbox.h>
+#include <qtimer.h>
+#include <qvgroupbox.h>
 
 #define GG_STATUS_INVISIBLE2 0x0009 /* g³upy... */
 
@@ -349,6 +349,7 @@ GaduProtocol::GaduProtocol(const QString &id, QObject *parent, const char *name)
 
 	ProtocolID = "Gadu";
 
+	SendUserListTimer = new QTimer(this, "SendUserListTimer");
 	whileConnecting = false;
 	Sess = NULL;
 	CurrentStatus = new GaduStatus();
@@ -404,6 +405,7 @@ GaduProtocol::GaduProtocol(const QString &id, QObject *parent, const char *name)
 	connect(userlist, SIGNAL(removingProtocol(UserListElement, QString, bool, bool)),
 			this, SLOT(removingProtocol(UserListElement, QString, bool, bool)));
 
+	connect(SendUserListTimer, SIGNAL(timeout()), this, SLOT(sendUserList()));
 
 	kdebugf2();
 }
@@ -551,7 +553,7 @@ void GaduProtocol::iWantGoOffline(const QString &desc)
 
 void GaduProtocol::protocolUserDataChanged(QString protocolName, UserListElement elem,
 							QString name, QVariant oldValue, QVariant currentValue,
-							bool massively, bool last)
+							bool massively, bool /*last*/)
 {
 	kdebugf();
 	/*
@@ -559,16 +561,14 @@ void GaduProtocol::protocolUserDataChanged(QString protocolName, UserListElement
 	   musimy wiêc wys³aæ j± w ca³o¶ci (poprzez sendUserList())
 	   w takim w³a¶nie przypadku (massively==true) nie robimy nic
 	*/
-	if (massively && !last)
-		return;
 	if (protocolName != "Gadu")
 		return;
 	if (CurrentStatus->isOffline())
 		return;
 
-	if (massively) /* last == true */
+	if (massively)
 	{
-		sendUserList();
+		sendUserListLater();
 		return;
 	}
 
@@ -604,18 +604,16 @@ void GaduProtocol::protocolUserDataChanged(QString protocolName, UserListElement
 }
 
 void GaduProtocol::userDataChanged(UserListElement elem, QString name, QVariant oldValue,
-					QVariant currentValue, bool massively, bool last)
+					QVariant currentValue, bool massively, bool /*last*/)
 {
 	kdebugf();
-	if (massively && !last)
-		return;
 	if (!elem.usesProtocol("Gadu"))
 		return;
 	if (CurrentStatus->isOffline())
 		return;
 
-	if (massively) /* last == true */
-		sendUserList();
+	if (massively)
+		sendUserListLater();
 	else
 	{
 		if (name == "Anonymous")
@@ -625,72 +623,63 @@ void GaduProtocol::userDataChanged(UserListElement elem, QString name, QVariant 
 	kdebugf2();
 }
 
-void GaduProtocol::userAdded(UserListElement elem, bool massively, bool last)
+void GaduProtocol::userAdded(UserListElement elem, bool massively, bool /*last*/)
 {
-	kdebugf();
-	if (massively && !last)
-		return;
+	kdebugmf(KDEBUG_FUNCTION_START, "start: '%s' %d\n", elem.altNick().local8Bit().data(), massively/*, last*/);
 	if (!elem.usesProtocol("Gadu"))
 		return;
 	if (CurrentStatus->isOffline())
 		return;
 
-	if (massively) /* last == true */
-		sendUserList();
+	if (massively)
+		sendUserListLater();
 	else
 		if (!elem.isAnonymous())
 			gg_add_notify(Sess, elem.ID("Gadu").toUInt());
 	kdebugf2();
 }
 
-void GaduProtocol::removingUser(UserListElement elem, bool massively, bool last)
+void GaduProtocol::removingUser(UserListElement elem, bool massively, bool /*last*/)
 {
-	kdebugf();
-	if (massively && !last)
-		return;
+	kdebugmf(KDEBUG_FUNCTION_START, "start: '%s' %d\n", elem.altNick().local8Bit().data(), massively/*, last*/);
 	if (!elem.usesProtocol("Gadu"))
 		return;
 	if (CurrentStatus->isOffline())
 		return;
-
-	if (massively) /* last == true */
-		sendUserList();
+	if (massively)
+		sendUserListLater();
 	else
 		if (!elem.isAnonymous())
 			gg_remove_notify(Sess, elem.ID("Gadu").toUInt());
 	kdebugf2();
 }
 
-void GaduProtocol::protocolAdded(UserListElement elem, QString protocolName, bool massively, bool last)
+void GaduProtocol::protocolAdded(UserListElement elem, QString protocolName, bool massively, bool /*last*/)
 {
 	kdebugf();
-	if (massively && !last)
-		return;
 	if (protocolName != "Gadu")
 		return;
 	if (CurrentStatus->isOffline())
 		return;
 
-	if (massively) /* last == true */
-		sendUserList();
+	if (massively)
+		sendUserListLater();
 	else
 		if (!elem.isAnonymous())
 			gg_add_notify(Sess, elem.ID("Gadu").toUInt());
 	kdebugf2();
 }
 
-void GaduProtocol::removingProtocol(UserListElement elem, QString protocolName, bool massively, bool last)
+void GaduProtocol::removingProtocol(UserListElement elem, QString protocolName, bool massively, bool /*last*/)
 {
 	kdebugf();
-	if (massively && !last)
-		return;
 	if (protocolName != "Gadu")
 		return;
 	if (CurrentStatus->isOffline())
 		return;
 
-	if (massively) /* last == true */
-		sendUserList();
+	if (massively)
+		sendUserListLater();
 	else
 		if (!elem.isAnonymous())
 			gg_remove_notify(Sess, elem.ID("Gadu").toUInt());
@@ -1281,12 +1270,14 @@ void GaduProtocol::ackReceived(int seq, uin_t uin, int status)
 	kdebugf2();
 }
 
-void GaduProtocol::sendUserList()
+void GaduProtocol::sendUserListLater()
 {
-	sendUserList(*userlist);
+//	kdebugf();
+	SendUserListTimer->start(0, true);
+//	kdebugf2();
 }
 
-void GaduProtocol::sendUserList(const UserList &ulist)
+void GaduProtocol::sendUserList()
 {
 	kdebugf();
 	UinType *uins;
@@ -1295,7 +1286,7 @@ void GaduProtocol::sendUserList(const UserList &ulist)
 	UserListSent = true;
 
 	unsigned int j = 0;
-	CONST_FOREACH(user, ulist)
+	CONST_FOREACH(user, *userlist)
 		if ((*user).usesProtocol("Gadu") && !(*user).isAnonymous())
 			++j;
 
@@ -1310,7 +1301,7 @@ void GaduProtocol::sendUserList(const UserList &ulist)
 	types = (char *) malloc(j * sizeof(char));
 
 	j = 0;
-	CONST_FOREACH(user, ulist)
+	CONST_FOREACH(user, *userlist)
 		if ((*user).usesProtocol("Gadu") && !(*user).isAnonymous())
 		{
 			uins[j] = (*user).ID("Gadu").toUInt();

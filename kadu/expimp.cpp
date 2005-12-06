@@ -81,7 +81,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) : 
 	// end our QGroupBox
 
 	l_itemscount = new QLabel(vgb_export);
-	l_itemscount->setText(tr("%1 entries will be exported").arg(userlist->count()));
+	updateUserListCount();
 
 	// export buttons
 	QHBox *hb_exportbuttons = new QHBox(vgb_export);
@@ -120,6 +120,15 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) : 
 
  	loadGeometry(this, "General", "ImportExportDialogGeometry", 0, 30, 640, 450);
 	kdebugf2();
+}
+
+void UserlistImportExport::updateUserListCount()
+{
+	int realUserCount = 0;
+	CONST_FOREACH(user, *userlist)
+		if (!(*user).isAnonymous())
+			++realUserCount;
+	l_itemscount->setText(tr("%1 entries will be exported").arg(realUserCount));
 }
 
 UserlistImportExport::~UserlistImportExport()
@@ -191,7 +200,7 @@ void UserlistImportExport::makeUserlist()
 	userlist->addUsers(importedUserlist);
 	clearIgnored();
 	userlist->writeToConfig();
-	l_itemscount->setText(tr("%1 entries will be exported").arg(userlist->count()));
+	updateUserListCount();
 
 	kdebugf2();
 }
@@ -201,7 +210,7 @@ void UserlistImportExport::updateUserlist()
 	kdebugf();
 	userlist->merge(importedUserlist);
 	userlist->writeToConfig();
-	l_itemscount->setText(tr("%1 entries will be exported").arg(userlist->count()));
+	updateUserListCount();
 	kdebugf2();
 }
 

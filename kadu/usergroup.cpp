@@ -191,7 +191,7 @@ void UserGroup::removeUsers(QValueList<UserListElement> users)
 
 void UserGroup::removeUser(UserListElement ule, bool massively, bool last)
 {
-	kdebugf();
+	kdebugmf(KDEBUG_FUNCTION_START, "start: '%s' %d %d\n", ule.altNick().local8Bit().data(), massively, last);
 	UserListElement *elem = d->data.find(ule.key());
 	if (elem != NULL)
 	{

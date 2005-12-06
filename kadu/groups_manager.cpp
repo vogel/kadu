@@ -68,7 +68,7 @@ void GroupsManager::setTabBar(KaduTabBar *bar)
 	bar->addTab(new QTab(tr("All")));
 	bar->setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(), QFont::Bold));
 	connect(bar, SIGNAL(selected(int)), this, SLOT(tabSelected(int)));
-	connect(userlist, SIGNAL(modified()), this, SLOT(refreshTabBar()));
+	connect(userlist, SIGNAL(modified()), this, SLOT(refreshTabBarLater()));
 	connect(&refreshTimer, SIGNAL(timeout()), this, SLOT(refreshTabBar()));
 	lastId = -1;
 	refreshTabBar();
@@ -276,6 +276,8 @@ GroupsManager::GroupsManager() : GroupBar(NULL)
 	}
 	connect (userlist, SIGNAL(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)),
 			 this, SLOT(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)));
+	connect(userlist, SIGNAL(userAdded(UserListElement, bool, bool)),
+			this, SLOT(userAddedToMainUserlist(UserListElement, bool, bool)));
 	ConfigDialog::registerSlotOnApplyTab("General", this, SLOT(onApplyTabGeneral()));
 	kdebugf2();
 }
@@ -286,10 +288,21 @@ GroupsManager::~GroupsManager()
 	ConfigDialog::unregisterSlotOnApplyTab("General", this, SLOT(onApplyTabGeneral()));
 	if (GroupBar)
 		config_file.writeEntry("Look", "CurrentGroupTab", GroupBar->currentTab());
+	disconnect(userlist, SIGNAL(userAdded(UserListElement, bool, bool)),
+			this, SLOT(userAddedToMainUserlist(UserListElement, bool, bool)));
 	disconnect (userlist, SIGNAL(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)),
 			 this, SLOT(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)));
 	while (!Groups.isEmpty())
 		removeGroup(Groups.begin().key());
+	kdebugf2();
+}
+
+void GroupsManager::userAddedToMainUserlist(UserListElement elem, bool massively, bool last)
+{
+	kdebugf();
+	QStringList groups = elem.data("Groups").toStringList();
+	CONST_FOREACH(group, groups)
+		addGroup(*group)->addUser(elem, true, false);
 	kdebugf2();
 }
 
@@ -298,7 +311,15 @@ UserGroup *GroupsManager::group(const QString &name) const
 	if (name == tr("All") || name.isEmpty())
 		return userlist;
 	else
-		return Groups[name];
+	{
+		if (!Groups.contains(name))
+		{
+			kdebugm(KDEBUG_PANIC, "group %s does not exist!\n", name.local8Bit().data());
+			return NULL;
+		}
+		else
+			return Groups[name];
+	}
 }
 
 QStringList GroupsManager::groups() const
@@ -313,10 +334,10 @@ bool GroupsManager::groupExists(const QString &name)
 
 UserGroup *GroupsManager::addGroup(const QString &name)
 {
-	kdebugf();
+	kdebugmf(KDEBUG_FUNCTION_START, "start: '%s'\n", name.local8Bit().data());
 	if (Groups.contains(name))
 	{
-		kdebugf2();
+		kdebugmf(KDEBUG_FUNCTION_END, "stop: group already exists\n");
 		return Groups[name];
 	}
 	int cnt = userlist->count() / 2;

@@ -67,14 +67,14 @@ void UserList::merge(const QValueList<UserListElement> &ulist)
 			}
 		}
 
-		//kopiujemy protoko³y
+		//copying of protocols
 		QStringList protos = (*user).protocolList();
 		CONST_FOREACH(proto, protos)
 		{
 			if (!contains(*proto, (*user).ID(*proto)))
 				user2.addProtocol(*proto, (*user).ID(*proto));
 
-			//oraz dane protoko³ów
+			//and protocols data
 			UserListElement user3 = byID(*proto, (*user).ID(*proto));
 			QStringList protoDataKeys = (*user).protocolDataKeys(*proto);
 			CONST_FOREACH(key, protoDataKeys)
@@ -85,7 +85,7 @@ void UserList::merge(const QValueList<UserListElement> &ulist)
 			}
 		}
 
-		//kopiujemy dane niezwi±zane z ¿adnym protoko³em
+		//copying of non protocol data
 		QStringList dataKeys = (*user).nonProtocolDataKeys();
 		CONST_FOREACH(key, dataKeys)
 		{
@@ -93,6 +93,7 @@ void UserList::merge(const QValueList<UserListElement> &ulist)
 			if (!val.isValid() || val.isNull())
 				user2.setData(*key, (*user).data(*key));
 		}
+		user2.setAnonymous(false);
 	}
 	d->data.resize(2 * (count() + toAppend.size()));
 	addUsers(toAppend);
