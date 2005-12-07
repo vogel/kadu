@@ -171,7 +171,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 	ConfigDialog::addComboBox("Look", "Look",
 			QT_TRANSLATE_NOOP("@default","Qt Theme"));
 
-	ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Show vertical scrollbar in information panel"), "PanelVerticalScrollbar", true, QString::null, QString::null, Expert);
+	ConfigDialog::addGrid("Look", "Look", "varOpts", 2);
+		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Show status button"), "ShowStatusButton", true, QString::null, QString::null, Advanced);
+		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Display group tabs"), "DisplayGroupTabs", true, QString::null, QString::null, Expert);
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Colors"), QString::null, Advanced);
 		ConfigDialog::addVGroupBox("Look", "Colors", QT_TRANSLATE_NOOP("@default", "Main window"));
 			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Panel background color"), "InfoPanelBgColor", config_file.readColorEntry("Look","InfoPanelBgColor"), QString::null, "panel_bg_color");
@@ -182,6 +184,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Information panel"));
 		ConfigDialog::addCheckBox("Look", "Information panel", QT_TRANSLATE_NOOP("@default", "Show information panel"), "ShowInfoPanel", true);
+		ConfigDialog::addCheckBox("Look", "Information panel", QT_TRANSLATE_NOOP("@default", "Show vertical scrollbar in information panel"), "PanelVerticalScrollbar", true, QString::null, QString::null, Expert);
 		ConfigDialog::addTextEdit("Look", "Information panel", QT_TRANSLATE_NOOP("@default", "Information panel syntax:"), "PanelContents", "[#%u][, %f] %r [- %d] [ (%i)]", SyntaxText, QString::null, Expert);
 
 	ConfigDialog::connectSlot("Look", "Panel background color", SIGNAL(changed(const char *, const QColor&)), kaduslots, SLOT(chooseColor(const char *, const QColor&)), "panel_bg_color");
@@ -1420,12 +1423,24 @@ void KaduSlots::onCreateTabLook()
 void KaduSlots::onApplyTabLook()
 {
 	kdebugf();
-	QString new_style=ConfigDialog::getComboBox("Look", "Qt Theme")->currentText();
-	if(new_style!=tr("Unknown") && new_style != QApplication::style().name())
+	QString new_style = ConfigDialog::getComboBox("Look", "Qt Theme")->currentText();
+	if (new_style != tr("Unknown") && new_style != QApplication::style().name())
 	{
 		QApplication::setStyle(new_style);
 		config_file.writeEntry("Look", "QtStyle", new_style);
 	}
+	kadu->showdesc(config_file.readBoolEntry("Look", "ShowInfoPanel"));
+
+	if (config_file.readBoolEntry("Look", "ShowStatusButton"))
+		kadu->statusButton->show();
+	else
+		kadu->statusButton->hide();
+
+	/* I od¶wie¿ okno Kadu */
+	groups_manager->refreshTabBar();
+	kadu->changeAppearance();
+	UserBox::setColorsOrBackgrounds();
+	chat_manager->changeAppearance();
 	kdebugf2();
 }
 
@@ -1437,13 +1452,6 @@ void KaduSlots::onApplyTabGeneral()
 
 	gadu->changeID(ConfigDialog::getLineEdit("General", "Uin")->text());
 
-	kadu->showdesc(config_file.readBoolEntry("Look", "ShowInfoPanel"));
-
-	if (config_file.readBoolEntry("Look", "ShowStatusButton"))
-		kadu->statusButton->show();
-	else
-		kadu->statusButton->hide();
-
 	config_file.writeEntry("General", "DefaultStatusIndex",
 		ConfigDialog::getComboBox("General", "Default status", "cb_defstatus")->currentItem());
 
@@ -1451,12 +1459,6 @@ void KaduSlots::onApplyTabGeneral()
 	gadu->status().setFriendsOnly(privateStatus);
 
 	kadu->statusMenu->setItemChecked(8, privateStatus);
-
-	/* I od¶wie¿ okno Kadu */
-	kadu->changeAppearance();
-	UserBox::setColorsOrBackgrounds();
-	chat_manager->changeAppearance();
-	groups_manager->refreshTabBar();
 
 	kadu->setCaption(tr("Kadu: %1").arg((UinType)config_file.readNumEntry("General", "UIN")));
 
