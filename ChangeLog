@@ -203,6 +203,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniêty segfault przy usuwaniu ca³ej historii dla wybranego u¿ytkownika (joi)
 * poprawione od¶wie¿anie wygl±du g³ównego okna po "zastosuj" w konfiguracji
   (panel informacyjny, przycisk statusów, zak³adki grup) (joi)
+* po zablokowaniu kontaktu przestawiamy jego status na niedostêpny (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

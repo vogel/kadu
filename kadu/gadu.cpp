@@ -592,6 +592,7 @@ void GaduProtocol::protocolUserDataChanged(QString protocolName, UserListElement
 		{
 			gg_remove_notify_ex(Sess, uin, GG_USER_NORMAL);
 			gg_add_notify_ex(Sess, uin, GG_USER_BLOCKED);
+			elem.setStatus(protocolName, GaduStatus());
 		}
 		else if (!currentValue.toBool() && oldValue.toBool())
 		{
