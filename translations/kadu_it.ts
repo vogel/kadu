@@ -595,6 +595,10 @@ E un rischio per la sicurezza!</translation>
         <source>Another Kadu is running on this profile.</source>
         <translation>Altro Kadu viene usato con questo profilo.</translation>
     </message>
+    <message>
+        <source>Ignore richtext from anonymous users</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>

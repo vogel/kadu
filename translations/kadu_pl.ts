@@ -595,6 +595,10 @@ Jest to wysoce ryzykowne!</translation>
         <source>Another Kadu is running on this profile.</source>
         <translation>Kadu jest już uruchomione w tym profilu.</translation>
     </message>
+    <message>
+        <source>Ignore richtext from anonymous users</source>
+        <translation>Od nieznajomych akceptuj wyłącznie wiadomości tekstowe</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -730,7 +734,7 @@ Jest to wysoce ryzykowne!</translation>
 Do you really want to send this image?
 Some of them probably will not get it.</source>
         <translation>Rozmiar pliku jest za duży dla %1 z %2 kontaktów.
-Czy napewno chcesz wysłać ten obrazek?
+Czy na pewno chcesz wysłać ten obrazek?
 Prawdopodobnie nie zostanie on wszystkim dostarczony.</translation>
     </message>
     <message>
@@ -738,7 +742,7 @@ Prawdopodobnie nie zostanie on wszystkim dostarczony.</translation>
 Do you really want to send this image?
 </source>
         <translation>Rozmiar pliku jest za duży dla %1.
-Czy napewno chcesz wysłać ten obrazek?</translation>
+Czy na pewno chcesz wysłać ten obrazek?</translation>
     </message>
 </context>
 <context>
@@ -1235,7 +1239,7 @@ will be deleted. Are you sure?</source>
         <translation>Wybrane kontakty:
 %0
 zostaną usunięte.
-Czy napewno tego chcesz?</translation>
+Czy na pewno tego chcesz?</translation>
     </message>
 </context>
 <context>

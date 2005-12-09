@@ -596,6 +596,10 @@ Attention danger!
         <source>Another Kadu is running on this profile.</source>
         <translation>Kadu est probabalement en utilisation.</translation>
     </message>
+    <message>
+        <source>Ignore richtext from anonymous users</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>

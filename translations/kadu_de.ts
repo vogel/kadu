@@ -593,6 +593,10 @@ It&apos;s a high security risk!</source>
         <source>Display contacts that have a desciption</source>
         <translation>Zeige nur Kontakte mit Beschreibung</translation>
     </message>
+    <message>
+        <source>Ignore richtext from anonymous users</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
