@@ -626,6 +626,38 @@ E un rischio per la sicurezza!</translation>
         <source>Show / hide offline users</source>
         <translation>Mostra / nascondi contatti inattivi</translation>
     </message>
+    <message>
+        <source>Ignore richtext from anonymous users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Background image options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change image size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start at [X]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start at [Y]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image height</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1780,10 +1812,6 @@ Possibile incompatibilità con Kadu.</translation>
 <context>
     <name>ToolBar</name>
     <message>
-        <source>Main toolbar</source>
-        <translation>Toolbar principale</translation>
-    </message>
-    <message>
         <source>Delete toolbar</source>
         <translation>Elimina toolbar</translation>
     </message>
@@ -1797,6 +1825,10 @@ Possibile incompatibilità con Kadu.</translation>
     <message>
         <source>Delete button</source>
         <translation>Elimina bottone</translation>
+    </message>
+    <message>
+        <source>Show text label</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1831,6 +1863,13 @@ Possibile incompatibilità con Kadu.</translation>
     <message>
         <source>Compares nicks (&quot;altnicks&quot;)</source>
         <translation>Confronta nicks (&quot;altnnicks&quot;)</translation>
+    </message>
+</context>
+<context>
+    <name>UserBoxSlots</name>
+    <message>
+        <source>Insert image</source>
+        <translation>Inserisci immagine</translation>
     </message>
 </context>
 <context>

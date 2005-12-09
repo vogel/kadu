@@ -624,6 +624,38 @@ It&apos;s a high security risk!</source>
         <source>Show / hide offline users</source>
         <translation>Zeige / verstecke unerreichbare Kontakte</translation>
     </message>
+    <message>
+        <source>Ignore richtext from anonymous users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Background image options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change image size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start at [X]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start at [Y]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image height</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1779,10 +1811,6 @@ Vielleicht ist es kein Kadu-Modul.</translation>
 <context>
     <name>ToolBar</name>
     <message>
-        <source>Main toolbar</source>
-        <translation>Werkzeugleiste</translation>
-    </message>
-    <message>
         <source>Delete toolbar</source>
         <translation>Werkzeugleiste löschen</translation>
     </message>
@@ -1796,6 +1824,10 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     <message>
         <source>Delete button</source>
         <translation>Schaltfläche entfernen</translation>
+    </message>
+    <message>
+        <source>Show text label</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1830,6 +1862,13 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     <message>
         <source>Compares nicks (&quot;altnicks&quot;)</source>
         <translation>Vergleiche Nicknames (&quot;alternative Nicks&quot;)</translation>
+    </message>
+</context>
+<context>
+    <name>UserBoxSlots</name>
+    <message>
+        <source>Insert image</source>
+        <translation>Bild einfügen</translation>
     </message>
 </context>
 <context>

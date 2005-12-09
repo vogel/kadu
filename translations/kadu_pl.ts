@@ -654,6 +654,10 @@ Jest to wysoce ryzykowne!</translation>
         <source>Show / hide offline users</source>
         <translation>Pokaż / ukryj niedostępnych</translation>
     </message>
+    <message>
+        <source>Ignore richtext from anonymous users</source>
+        <translation>Od nieznajomych akceptuj wyłącznie wiadomości tekstowe</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -757,7 +761,7 @@ Jest to wysoce ryzykowne!</translation>
 Do you really want to send this image?
 Some of them probably will not get it.</source>
         <translation>Rozmiar pliku jest za duży dla %1 z %2 kontaktów.
-Czy napewno chcesz wysłać ten obrazek?
+Czy na pewno chcesz wysłać ten obrazek?
 Prawdopodobnie nie zostanie on wszystkim dostarczony.</translation>
     </message>
     <message>
@@ -765,7 +769,7 @@ Prawdopodobnie nie zostanie on wszystkim dostarczony.</translation>
 Do you really want to send this image?
 </source>
         <translation>Rozmiar pliku jest za duży dla %1.
-Czy napewno chcesz wysłać ten obrazek?</translation>
+Czy na pewno chcesz wysłać ten obrazek?</translation>
     </message>
     <message>
         <source>Cannot send message while being offline.</source>
@@ -1336,7 +1340,7 @@ will be deleted. Are you sure?</source>
         <translation>Wybrane kontakty:
 %0
 zostaną usunięte.
-Czy napewno tego chcesz?</translation>
+Czy na pewno tego chcesz?</translation>
     </message>
     <message>
         <source>Yes, with &amp;history</source>
@@ -1809,10 +1813,6 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
 <context>
     <name>ToolBar</name>
     <message>
-        <source>Main toolbar</source>
-        <translation>Główny pasek narzędziowy</translation>
-    </message>
-    <message>
         <source>Delete toolbar</source>
         <translation>Usuń pasek narzędziowy</translation>
     </message>
@@ -1826,6 +1826,10 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     <message>
         <source>Delete button</source>
         <translation>Usuń przyciski</translation>
+    </message>
+    <message>
+        <source>Show text label</source>
+        <translation>Etykieta tekstowa</translation>
     </message>
 </context>
 <context>
@@ -1860,6 +1864,13 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     <message>
         <source>Compares nicks (&quot;altnicks&quot;)</source>
         <translation>Porównuje pseudonimy (wyświtlaną nazwę)</translation>
+    </message>
+</context>
+<context>
+    <name>UserBoxSlots</name>
+    <message>
+        <source>Insert image</source>
+        <translation>Wstaw obraz</translation>
     </message>
 </context>
 <context>

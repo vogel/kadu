@@ -621,6 +621,38 @@ It&apos;s a high security risk!</source>
         <source>Show / hide offline users</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Ignore richtext from anonymous users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Background image options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change image size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start at [X]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start at [Y]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image height</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1765,10 +1797,6 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
 <context>
     <name>ToolBar</name>
     <message>
-        <source>Main toolbar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Delete toolbar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1781,6 +1809,10 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     <name>ToolButton</name>
     <message>
         <source>Delete button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show text label</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1815,6 +1847,13 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>Compares nicks (&quot;altnicks&quot;)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UserBoxSlots</name>
+    <message>
+        <source>Insert image</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -626,6 +626,38 @@ Attention danger!
         <source>Restore last status (change Offline to Invisible)</source>
         <translation>Veuillez restaurer le dernier statut (changement de statut de Offline à invisible)</translation>
     </message>
+    <message>
+        <source>Ignore richtext from anonymous users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Background image options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change image size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start at [X]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start at [Y]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image height</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1781,10 +1813,6 @@ Peut être module incompatible avec Kadu.</translation>
 <context>
     <name>ToolBar</name>
     <message>
-        <source>Main toolbar</source>
-        <translation>Ma barre de tâches</translation>
-    </message>
-    <message>
         <source>Delete toolbar</source>
         <translation>Veuillez effacer le barre d&apos;outil</translation>
     </message>
@@ -1798,6 +1826,10 @@ Peut être module incompatible avec Kadu.</translation>
     <message>
         <source>Delete button</source>
         <translation>Effassez le bouton</translation>
+    </message>
+    <message>
+        <source>Show text label</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1832,6 +1864,13 @@ Peut être module incompatible avec Kadu.</translation>
     <message>
         <source>Compares nicks (&quot;altnicks&quot;)</source>
         <translation>Compare des pseudo (&quot;anciens&quot;)</translation>
+    </message>
+</context>
+<context>
+    <name>UserBoxSlots</name>
+    <message>
+        <source>Insert image</source>
+        <translation>Insère l&apos;image</translation>
     </message>
 </context>
 <context>
