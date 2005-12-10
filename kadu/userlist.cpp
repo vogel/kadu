@@ -42,6 +42,7 @@ void UserList::merge(const QValueList<UserListElement> &ulist)
 {
 	kdebugf();
 	UserListElements toAppend;
+	UserListElements toUnsetAnonymous;
 
 	CONST_FOREACH(user, ulist)
 	{
@@ -93,8 +94,14 @@ void UserList::merge(const QValueList<UserListElement> &ulist)
 			if (!val.isValid() || val.isNull())
 				user2.setData(*key, (*user).data(*key));
 		}
-		user2.setAnonymous(false);
+		if (user2.isAnonymous())
+			toUnsetAnonymous.append(user2);
 	}
+
+	int i = 1, anonSize = toUnsetAnonymous.size();
+	FOREACH(user2, toUnsetAnonymous)
+		(*user2).setData("Anonymous", false, true, i++ == anonSize);
+
 	d->data.resize(2 * (count() + toAppend.size()));
 	addUsers(toAppend);
 
@@ -211,11 +218,7 @@ void UserList::setAllOffline(const QString &protocolName)
 
 void UserList::clear()
 {
-	size_type cnt = count();
-	size_type j = 1;
-	CONST_FOREACH(i, *this)
-		emit removingUser(*i, true, j++ == cnt);
-	d->data.clear();
+	removeUsers(toUserListElements());
 }
 
 

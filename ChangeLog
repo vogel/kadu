@@ -204,6 +204,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawione od¶wie¿anie wygl±du g³ównego okna po "zastosuj" w konfiguracji
   (panel informacyjny, przycisk statusów, zak³adki grup) (joi)
 * po zablokowaniu kontaktu przestawiamy jego status na niedostêpny (joi)
+* kolejne poprawki w importowaniu / kasowaniu  listy kontaktów (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

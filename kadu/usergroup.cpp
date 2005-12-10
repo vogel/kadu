@@ -116,7 +116,7 @@ UserListElement UserGroup::byKey(UserListKey key)
 
 void UserGroup::addUser(UserListElement ule, bool massively, bool last)
 {
-	kdebugf();
+	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' altNick:'%s' mass:%d\n", name(), ule.altNick().local8Bit().data(), massively);
 	if (!ule.privateData->Parents.contains(this))
 	{
 		emit addingUser(ule, massively, last);
@@ -131,7 +131,7 @@ void UserGroup::addUser(UserListElement ule, bool massively, bool last)
 
 UserListElement UserGroup::addAnonymous(const QString &protocolName, const QString &id, bool massively, bool last)
 {
-	kdebugf();
+	kdebugmf(KDEBUG_FUNCTION_START, "start: proto:'%s' id:'%s' mass:%d\n", protocolName.local8Bit().data(), id.local8Bit().data(), massively);
 	UserListElement e;
 	e.setAltNick(id);
 	e.setAnonymous(true);
@@ -143,7 +143,7 @@ UserListElement UserGroup::addAnonymous(const QString &protocolName, const QStri
 
 void UserGroup::addUsers(const UserGroup *group)
 {
-	kdebugf();
+	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' group2:'%s'\n", name(), group->name());
 	int i = 1, cnt = group->count();
 	if (cnt > 1)
 		CONST_FOREACH(user, *group)
@@ -155,7 +155,7 @@ void UserGroup::addUsers(const UserGroup *group)
 
 void UserGroup::addUsers(QValueList<UserListElement> users)
 {
-	kdebugf();
+	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s'\n", name());
 	int i = 1, cnt = users.count();
 	if (cnt > 1)
 		CONST_FOREACH(user, users)
@@ -167,7 +167,7 @@ void UserGroup::addUsers(QValueList<UserListElement> users)
 
 void UserGroup::removeUsers(const UserGroup *group)
 {
-	kdebugf();
+	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' group2:'%s'\n", name(), group->name());
 	int i = 1, cnt = group->count();
 	if (cnt > 1)
 		CONST_FOREACH(user, *group)
@@ -179,7 +179,7 @@ void UserGroup::removeUsers(const UserGroup *group)
 
 void UserGroup::removeUsers(QValueList<UserListElement> users)
 {
-	kdebugf();
+	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s'\n", name());
 	int i = 1, cnt = users.count();
 	if (cnt > 1)
 		CONST_FOREACH(user, users)
@@ -191,7 +191,7 @@ void UserGroup::removeUsers(QValueList<UserListElement> users)
 
 void UserGroup::removeUser(UserListElement ule, bool massively, bool last)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "start: '%s' %d %d\n", ule.altNick().local8Bit().data(), massively, last);
+	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' altNick:'%s' mass:%d last:%d\n", name(), ule.altNick().local8Bit().data(), massively, last);
 	UserListElement *elem = d->data.find(ule.key());
 	if (elem != NULL)
 	{

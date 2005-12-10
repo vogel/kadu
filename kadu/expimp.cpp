@@ -197,8 +197,8 @@ void UserlistImportExport::makeUserlist()
 		return;
 
 	userlist->clear();
-	userlist->addUsers(importedUserlist);
-	clearIgnored();
+	userlist->merge(importedUserlist);
+	clearIgnored();//what is it for???
 	userlist->writeToConfig();
 	updateUserListCount();
 

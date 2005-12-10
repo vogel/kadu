@@ -264,7 +264,7 @@ void GroupsManager::changeDisplayingWithoutDescription()
 	kdebugf2();
 }
 
-GroupsManager::GroupsManager() : GroupBar(NULL)
+GroupsManager::GroupsManager() : QObject(0, "groups_manager"), GroupBar(NULL)
 {
 	kdebugf();
 	CONST_FOREACH(user, *userlist)
@@ -563,23 +563,25 @@ void AnonymousUsers::userDataChangedSlot(UserListElement elem,
 		return;
 //	kdebugmf(KDEBUG_ERROR, "%s %d %d\n", elem.ID("Gadu").local8Bit().data(), currentValue.toBool(), contains(elem));
 	if (currentValue.toBool())
-		addUser(elem);
+		addUser(elem, massively, last);
 	else
-		removeUser(elem);
+		removeUser(elem, massively, last);
 }
 
 void AnonymousUsers::userAdded(UserListElement elem, bool massively, bool last)
 {
 //	kdebugmf(KDEBUG_ERROR, "%s %d %d\n", elem.ID("Gadu").local8Bit().data(), elem.isAnonymous(), contains(elem));
 	if (elem.isAnonymous())
-		addUser(elem);
+		addUser(elem, massively, last);
+	else
+		removeUser(elem, massively, last);
 }
 
 void AnonymousUsers::removingUser(UserListElement elem, bool massively, bool last)
 {
 //	kdebugmf(KDEBUG_ERROR, "%s %d %d\n", elem.ID("Gadu").local8Bit().data(), elem.isAnonymous(), contains(elem));
-	if (contains(elem))
-		removeUser(elem);
+	if (!contains(elem))
+		addUser(elem, massively, last);
 }
 
 

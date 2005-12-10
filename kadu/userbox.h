@@ -394,6 +394,12 @@ class UserBox : public QListBox, private QToolTip
 			Od¶wie¿a wszystkie UserBoksy.
 		**/
 		static void refreshAll();
+
+		/**
+			\fn static void refreshAll()
+			Od¶wie¿a wszystkie UserBoksy, ale dopiero po powrocie do pêtli zdarzeñ Qt.
+		**/
+		static void refreshAllLater();
 	public slots:
 
 		/**

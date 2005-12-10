@@ -493,7 +493,7 @@ void ChatManager::deletePendingMsgs(UserListElements users)
 			--i;
 		}
 
-	UserBox::refreshAll();
+	UserBox::refreshAllLater();
 	kdebugf2();
 }
 
@@ -525,7 +525,7 @@ void ChatManager::openPendingMsgs(UserListElements users)
 	if (stop)
 	{
 		Chats[k]->scrollMessages(messages);
-		UserBox::refreshAll();
+		UserBox::refreshAllLater();
 	}
 	else
 		k = openChat("Gadu", users, 0);
@@ -564,7 +564,7 @@ void ChatManager::openPendingMsgs()
 	{
 		kdebugmf(KDEBUG_INFO, "stopped\n");
 		Chats[k]->scrollMessages(messages);
-		UserBox::refreshAll();
+		UserBox::refreshAllLater();
 	}
 	kdebugf2();
 }

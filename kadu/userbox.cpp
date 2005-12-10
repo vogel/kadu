@@ -496,6 +496,7 @@ void UserBox::keyPressEvent(QKeyEvent *e)
 void UserBox::refresh()
 {
 	kdebugf();
+//	printBacktrace("UserBox::refresh()");
 
 /*	struct timeval t1,t2;
 	gettimeofday(&t1, NULL);
@@ -589,6 +590,13 @@ void UserBox::refreshAll()
 	kdebugf();
 	FOREACH(box, UserBoxes)
 		(*box)->refresh();
+}
+
+void UserBox::refreshAllLater()
+{
+	kdebugf();
+	FOREACH(box, UserBoxes)
+		(*box)->refreshLater();
 }
 
 void UserBox::closeModule()
@@ -829,7 +837,7 @@ void UserBoxSlots::onApplyTabLook()
 		ConfigDialog::getVGroupBox("Look", "Background image options")->setEnabled(true);
 	UserBox::setColorsOrBackgrounds();
 
-	UserBox::refreshAll();
+	UserBox::refreshAllLater();
 	kdebugf2();
 }
 
@@ -1059,7 +1067,7 @@ void UserBox::addCompareFunction(const QString &id, const QString &trDescription
 			int (*cmp)(const UserListElement &, const UserListElement &))
 {
 	comparer->CmpFunctions.append(CmpFuncDesc(id, trDescription, cmp));
-	refresh();
+	refreshLater();
 }
 
 void UserBox::removeCompareFunction(const QString &id)
@@ -1068,7 +1076,7 @@ void UserBox::removeCompareFunction(const QString &id)
 		if ((*c).id == id)
 		{
 			comparer->CmpFunctions.remove(c);
-			refresh();
+			refreshLater();
 			break;
 		}
 }
@@ -1089,7 +1097,7 @@ void UserBox::moveUpCompareFunction(const QString &id)
 			c = comparer->CmpFunctions.insert(c, d);
 			c += 2;
 			comparer->CmpFunctions.remove(c);
-			refresh();
+			refreshLater();
 			break;
 		}
 		++pos;
@@ -1114,7 +1122,7 @@ void UserBox::moveDownCompareFunction(const QString &id)
 			c = comparer->CmpFunctions.insert(c, d);
 			c -= 2;
 			comparer->CmpFunctions.remove(c);
-			refresh();
+			refreshLater();
 			break;
 		}
 		++pos;
@@ -1170,7 +1178,9 @@ void UserBox::userAddedToVisible(UserListElement elem, bool massively, bool last
 {
 	sortHelper.push_back(elem);
 
-	if ((massively && last) || !massively)
+	if (massively)
+		refreshLater();
+	else
 		refresh();
 }
 
@@ -1197,7 +1207,7 @@ class torem
 
 void UserBox::userRemovedFromVisible(UserListElement elem, bool massively, bool last)
 {
-	kdebugf();
+	kdebugmf(KDEBUG_FUNCTION_START, "start: mass:%d\n", massively);
 	if (massively)
 		toRemove.push_back(elem);
 	else
@@ -1208,14 +1218,16 @@ void UserBox::userRemovedFromVisible(UserListElement elem, bool massively, bool 
 		sortHelper.erase(std::remove_if(sortHelper.begin(), sortHelper.end(), pred), sortHelper.end());
 		toRemove.clear();
 	}
-	if ((massively && last) || !massively)
+	if (massively)
+		refreshLater();
+	else
 		refresh();
 	kdebugf2();
 }
 
 void UserBox::userAddedToGroup(UserListElement elem, bool massively, bool last)
 {
-	kdebugf();
+	kdebugmf(KDEBUG_FUNCTION_START, "start: mass:%d\n", massively);
 	const UserGroup *s = static_cast<const UserGroup *>(sender());
 	bool append = true;
 	CONST_FOREACH(group, NegativeFilters)
@@ -1250,7 +1262,7 @@ void UserBox::userAddedToGroup(UserListElement elem, bool massively, bool last)
 
 void UserBox::userRemovedFromGroup(UserListElement elem, bool massively, bool last)
 {
-	kdebugf();
+	kdebugmf(KDEBUG_FUNCTION_START, "start: mass:%d\n", massively);
 	const UserGroup *s = static_cast<const UserGroup *>(sender());
 	if (VisibleUsers->contains(elem))
 		if (massively)
