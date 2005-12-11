@@ -623,35 +623,33 @@ QVariant& ChatManager::getChatProperty(const UserGroup *group, const QString &na
 {
 	kdebugf();
 	FOREACH(addon, addons)
-		if ((*addon).users == group)
+		if (group->equals((*addon).users))
 		{
 			kdebugf2();
 			return (*addon).map[name];
 		}
 	ChatInfo info;
-	info.users = group;
+	info.users = group->toUserListElements();
 	info.map[name] = QVariant();
 	addons.push_front(info);
 	kdebugmf(KDEBUG_FUNCTION_END, "end: %s NOT found\n", name.local8Bit().data());
 	return addons[0].map[name];
-//	return addons[uins][name];
 }
 
 void ChatManager::setChatProperty(const UserGroup *group, const QString &name, const QVariant &value)
 {
 	kdebugf();
 	FOREACH(addon, addons)
-		if ((*addon).users == group)
+		if (group->equals((*addon).users))
 		{
 			(*addon).map[name] = value;
 			kdebugf2();
 			return;
 		}
 	ChatInfo info;
-	info.users = group;
+	info.users = group->toUserListElements();
 	info.map[name] = value;
 	addons.push_front(info);
-//	addons[uins][name]=value;
 	kdebugf2();
 }
 

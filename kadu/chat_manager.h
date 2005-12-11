@@ -41,7 +41,7 @@ class ChatManager : public QObject
 		**/
 		struct ChatInfo
 		{
-			const UserGroup *users;/*!< lista u¿ytkowników
+			UserListElements users;/*!< lista u¿ytkowników
 					identyfikuj±ca okno */
 			QMap<QString, QVariant> map; /*!< parametry
 							danego okna */
