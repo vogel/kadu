@@ -207,6 +207,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * kolejne poprawki w importowaniu / kasowaniu  listy kontaktów (joi)
 * poprawki w skryptach buduj±cych gdy /bin/sh nie jest linkiem do basha
   (np. w FreeBSD,PLD) (joi)
+* poprawiona aktualizacja opcji "Ikona nadej¶cia nowej wiadomo¶ci" po "zastosuj",
+  poprawione od¶wie¿anie ikonki w docku po zmianie statusu,
+  usuwanie kontrolki z okna konfiguracji przy wy³adowywaniu modu³u docking (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

@@ -60,15 +60,15 @@ DockingManager::DockingManager(QObject *parent, const char *name) : QObject(pare
 			"NewMessageIcon", toStringList(tr("Blinking envelope"), tr("Static envelope"), tr("Animated envelope")),
 			toStringList("0", "1", "2"), "0", QString::null, QString::null, Advanced);
 	ConfigDialog::registerSlotOnApplyTab("General", this, SLOT(onApplyTabGeneral()));
+	ConfigDialog::registerSlotOnApplyTab("Look", this, SLOT(onApplyTabLook()));
 	newMessageIcon = (IconType) config_file.readNumEntry("Look", "NewMessageIcon");
-	
+
 	kdebugf2();
 }
 
 void DockingManager::onApplyTabGeneral()
 {
 	kdebugf();
-	newMessageIcon = (IconType) config_file.readNumEntry("Look", "NewMessageIcon");
 	if (ConfigDialog::getCheckBox("General", "Show tooltip in tray")->isChecked())
 		defaultToolTip();
 	else
@@ -76,11 +76,25 @@ void DockingManager::onApplyTabGeneral()
 	kdebugf2();
 }
 
+void DockingManager::onApplyTabLook()
+{
+	kdebugf();
+	IconType it = (IconType) config_file.readNumEntry("Look", "NewMessageIcon");
+	if (newMessageIcon != it)
+	{
+		newMessageIcon = it;
+		changeIcon();
+	}
+	kdebugf2();
+}
+
 DockingManager::~DockingManager()
 {
 	kdebugf();
 	ConfigDialog::unregisterSlotOnApplyTab("General", this, SLOT(onApplyTabGeneral()));
+	ConfigDialog::unregisterSlotOnApplyTab("Look", this, SLOT(onApplyTabLook()));
 	ConfigDialog::removeControl("General", "Show tooltip in tray");
+	ConfigDialog::removeControl("Look", "New message tray icon");
 
 	disconnect(kadu, SIGNAL(statusPixmapChanged(const QPixmap &, const QString &)),
 		this, SLOT(statusPixmapChanged(const QPixmap &, const QString &)));
@@ -213,6 +227,7 @@ void DockingManager::statusPixmapChanged(const QPixmap &icon, const QString &ico
  	kdebugf();
 	emit trayPixmapChanged(icon, iconName);
 	defaultToolTip();
+	changeIcon();
 }
 
 QPixmap DockingManager::defaultPixmap()

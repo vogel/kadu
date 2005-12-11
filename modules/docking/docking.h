@@ -21,6 +21,7 @@ class DockingManager : public QObject
 		void pendingMessageAdded();
 		void pendingMessageDeleted();
 		void onApplyTabGeneral();
+		void onApplyTabLook();
 
 	public:
 		DockingManager(QObject *parent=0, const char *name=0);
@@ -35,7 +36,7 @@ class DockingManager : public QObject
 			kadu wiedzialo, ze jest zadokowane.
 		**/
 		void setDocked(bool docked, bool butDontHideOnClose = false);
-  
+
   	signals:
 		void trayPixmapChanged(const QPixmap& pixmap, const QString &name);
 		void trayMovieChanged(const QMovie& movie);
