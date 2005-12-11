@@ -162,7 +162,8 @@ $(module_targets):
 	if test -d translations; then \
 		cd translations && \
 		for trans in *.ts; do \
-			if [ ! -e $${trans//\ts/qm} ] || test $$trans -nt $${trans//\ts/qm}; then \
+			qm=`echo $${trans} | sed "s/\.ts/\.qm/"` && \
+			if [ ! -e $${qm} -o $$trans -nt $${qm} ]; then \
 				$(QT_LRELEASE_DIR)/lrelease $$trans; \
 			fi; \
 		done && \
