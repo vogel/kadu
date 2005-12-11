@@ -388,6 +388,9 @@ UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
 	connect(this, SIGNAL(currentChanged(QListBoxItem *)), this, SLOT(currentChangedSlot(QListBoxItem *)));
 	connect(&refreshTimer, SIGNAL(timeout()), this, SLOT(refresh()));
 
+	connect(&pending, SIGNAL(messageAdded()), this, SLOT(refreshLater()));
+	connect(&pending, SIGNAL(messageDeleted()), this, SLOT(refreshLater()));
+
 	kdebugf2();
 }
 
@@ -587,11 +590,17 @@ UserBox* UserBox::activeUserBox()
 	return NULL;
 }
 
+void UserBox::refreshLater()
+{
+	refreshTimer.start(0, true);
+}
+
 void UserBox::refreshAll()
 {
 	kdebugf();
 	FOREACH(box, UserBoxes)
 		(*box)->refresh();
+	kdebugf2();
 }
 
 void UserBox::refreshAllLater()
@@ -599,6 +608,7 @@ void UserBox::refreshAllLater()
 	kdebugf();
 	FOREACH(box, UserBoxes)
 		(*box)->refreshLater();
+	kdebugf2();
 }
 
 void UserBox::closeModule()

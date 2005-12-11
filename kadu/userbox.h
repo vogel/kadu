@@ -459,6 +459,8 @@ class UserBox : public QListBox, private QToolTip
 			bo wiêkszo¶æ (90%) sytuacji jest wykrywanych przez sam± klasê.
 		**/
 		void refresh();
+
+		void refreshLater();
 	signals:
 		/**
 			\fn void doubleClicked(UserListElement user)
@@ -562,8 +564,6 @@ class UserBox : public QListBox, private QToolTip
 			\param e wska¼nik obiektu opisuj±cego to zdarzenie.
 		**/
 		virtual void resizeEvent(QResizeEvent *);
-
-		inline void refreshLater() { refreshTimer.start(0, true); }
 };
 
 /**

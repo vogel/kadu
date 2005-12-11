@@ -599,7 +599,10 @@ void ChatManager::sendMessage(UserListElement user, UserListElements selected_us
 			}
 	}
 	if (stop)
+	{
 		Chats[k]->scrollMessages(messages);
+		UserBox::refreshAllLater();
+	}
 	else
 		k = openChat("Gadu", selected_users, 0);
 	kdebugf2();
