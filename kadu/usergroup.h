@@ -95,6 +95,13 @@ class UserGroup : public QObject
 		bool equals(UserListElements users) const;
 
 		/**
+			\fn bool equals(UserListElements users) const
+			\param users
+			Z³o¿ono¶æ O(users.count()).
+		**/
+		bool equals(const UserGroup *group) const;
+
+		/**
 			\fn UserListElement byID(const QString &protocolName, const QString &id)
 			\param protocolName identyfikator protoko³u
 			\param id identyfikator kontaktu

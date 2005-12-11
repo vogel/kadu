@@ -109,6 +109,19 @@ bool UserGroup::equals(UserListElements users) const
 	return true;
 }
 
+bool UserGroup::equals(const UserGroup *group) const
+{
+	if (this == group)
+		return true;
+	unsigned int cnt = count();
+	if (cnt != group->count())
+		return false;
+	CONST_FOREACH(user, *group)
+		if (!contains(*user))
+			return false;
+	return true;
+}
+
 UserListElement UserGroup::byKey(UserListKey key)
 {
 	return *(d->data[key]);
