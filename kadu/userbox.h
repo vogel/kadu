@@ -506,6 +506,7 @@ class UserBox : public QListBox, private QToolTip
 		void protocolUserDataChanged(QString protocolName, UserListElement elem,
 							QString name, QVariant oldValue, QVariant currentValue,
 							bool massively, bool last);
+		void removingProtocol(UserListElement elem, QString protocolName, bool massively, bool last);
 
 	private:
 		static QValueList<UserBox*> UserBoxes;

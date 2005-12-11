@@ -211,6 +211,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   poprawione od¶wie¿anie ikonki w docku po zmianie statusu,
   usuwanie kontrolki z okna konfiguracji przy wy³adowywaniu modu³u docking (joi)
 * poprawione dodawanie anonima do listy kontaktów (joi)
+* poprawione od¶wie¿anie listy kontaktów po usunieñciu numeru gg z informacji
+  o kontakcie (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

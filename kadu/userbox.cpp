@@ -365,6 +365,8 @@ UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
 			this, SLOT(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)));
 	connect(VisibleUsers, SIGNAL(protocolUserDataChanged(QString, UserListElement, QString, QVariant, QVariant, bool, bool)),
 			this, SLOT(protocolUserDataChanged(QString, UserListElement, QString, QVariant, QVariant, bool, bool)));
+	connect(VisibleUsers, SIGNAL(removingProtocol(UserListElement, QString, bool, bool)),
+			this, SLOT(removingProtocol(UserListElement, QString, bool, bool)));
 
 	VisibleUsers->addUsers(group);
 
@@ -1137,6 +1139,12 @@ void UserBox::sort()
 	std::sort(sortHelper.begin(), sortHelper.end(), *comparer);
 //	FOREACH(u, sortHelper)
 //		kdebugm(KDEBUG_ERROR, ">>%s\n", (*u).altNick().local8Bit().data());
+}
+
+void UserBox::removingProtocol(UserListElement elem, QString protocolName, bool massively, bool last)
+{
+	//_removing_ protocol, so it isn't actually removed -> refreshing _Later_ (when protocol will be removed)
+	refreshLater();
 }
 
 void UserBox::statusChanged(UserListElement elem, QString protocolName,
