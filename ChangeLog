@@ -210,6 +210,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawiona aktualizacja opcji "Ikona nadej¶cia nowej wiadomo¶ci" po "zastosuj",
   poprawione od¶wie¿anie ikonki w docku po zmianie statusu,
   usuwanie kontrolki z okna konfiguracji przy wy³adowywaniu modu³u docking (joi)
+* poprawione dodawanie anonima do listy kontaktów (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

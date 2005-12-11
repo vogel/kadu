@@ -415,9 +415,14 @@ void UserInfo::updateUserlist()
 
 	if (userlist->contains("Gadu", id) && userlist->byID("Gadu", id) != user)
 	{
-		QMessageBox::information(this, "Kadu", tr("User is already in userlist"), QMessageBox::Ok);
-		kdebugf2();
-		return;
+		if (userlist->byID("Gadu", id).isAnonymous())
+			user = userlist->byID("Gadu", id);
+		else
+		{
+			QMessageBox::information(this, "Kadu", tr("User is already in userlist"), QMessageBox::Ok);
+			kdebugf2();
+			return;
+		}
 	}
 
 	user.setFirstName(e_firstname->text());
