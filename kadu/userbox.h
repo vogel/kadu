@@ -622,6 +622,8 @@ class UserBoxSlots : public QObject
 
 		void chooseBackgroundFile();
 		void userboxBackgroundMove(bool toggled);
+	private slots:
+		void backgroundFileChanged(const QString &text);
 };
 
 /**

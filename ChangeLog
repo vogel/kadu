@@ -185,12 +185,12 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * mo¿liwo¶æ przypisania akcji do konkretnej grupy pól dokuj±cych, przypisanie akcji
   specyficznych dla okna chat do odpowiedniej grupy (adrian)
 * opcja ignorowania formatowania tekstu i obrazków od anonimów, domy¶lnie w³±czona (adrian)
-* poprawione 2 b³êdy w parsowaniu formatowania tekstu i obrazków 
+* poprawione 2 b³êdy w parsowaniu formatowania tekstu i obrazków
   (1 z nich, doprowadzaj±cy do segfaulta i wycieku du¿ej ilo¶ci danych
   zg³oszony zosta³ przez Micha³a Gizowskiego) - UWAGA: oba b³êdy maj± du¿e
   znaczenie dla bezpieczeñstwa (joi)
 * MacOSX: regulacja g³o¶no¶ci domy¶lnie wy³±czona (bo playsound jej nie obs³uguje),
-  domy¶lny katalog instalcji to Kadu.app, a nie kadu.app (joi) 
+  domy¶lny katalog instalcji to Kadu.app, a nie kadu.app (joi)
 * dodany do autodownloadu modu³ iwait4u (joi)
 * w oknie "Wy¶lij SMS" przy wyborze "pustego" elementu w combie, w tym¿e combie
   nie pojawia siê nick losowego u¿ytkownika (joi)
@@ -215,6 +215,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   o kontakcie (joi)
 * poprawione od¶wie¿anie listy kontaktów po odebraniu wiadomo¶ci (joi)
 * zapamiêtywanie rozmiarów okien / stanu szyfrowania znowu dzia³a (joi)
+* kilka poprawek dotycz±cych konfiguracji obrazka w tle listy kontaktów (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
