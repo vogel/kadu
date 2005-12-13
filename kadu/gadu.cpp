@@ -869,7 +869,7 @@ void GaduProtocol::errorSlot(GaduError err)
 			host = server->toString();
 		else
 			host = "HUB";
-		msg = QString("(") + host + ") " + msg;
+		msg = QString("(%1) %2").arg(host).arg(msg);
 		kdebugm(KDEBUG_INFO, "%s\n", msg.local8Bit().data());
 		emit connectionError(this, msg);
 	}
@@ -938,7 +938,7 @@ void GaduProtocol::messageReceived(int msgclass, UserListElements senders, QCStr
 	QDateTime datetime;
 	datetime.setTime_t(time);
 
-	bool grab=false;
+	bool grab = false;
 	emit chatMsgReceived0(this, senders, mesg, time, grab);
 	if (grab)
 		return;
@@ -1298,8 +1298,8 @@ void GaduProtocol::sendUserList()
 		return;
 	}
 
-	uins = (UinType *) malloc(j * sizeof(UinType));
-	types = (char *) malloc(j * sizeof(char));
+	uins = new UinType[j];
+	types = new char[j];
 
 	j = 0;
 	CONST_FOREACH(user, *userlist)
@@ -1319,8 +1319,8 @@ void GaduProtocol::sendUserList()
 	gg_notify_ex(Sess, uins, types, j);
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist sent\n");
 
-	free(uins);
-	free(types);
+	delete [] uins;
+	delete [] types;
 	kdebugf2();
 }
 
@@ -1935,6 +1935,7 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 			status.fromStatusNumber(e->event.notify60[nr].status, QString::null);
 		user.setStatus("Gadu", status, true, nr + 1 == cnt);
 
+#ifdef DEBUG_ENABLED
 		switch (e->event.notify60[nr].status)
 		{
 			case GG_STATUS_AVAIL:
@@ -1974,6 +1975,7 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 					e->event.notify60[nr].uin, e->event.notify60[nr].status);
 				break;
 		}
+#endif
 
 		++nr;
 	}
@@ -2077,16 +2079,15 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 
 	if (status.isOffline())
 	{
-		user.setAddressAndPort("Gadu", (unsigned int)0, 0);
-		user.setProtocolData("Gadu", "Version", 0);
-		user.setProtocolData("Gadu", "MaxImageSize", 0);
+		remote_ip = 0;
+		remote_port = 0;
+		version = 0;
+		image_size = 0;
 	}
-	else
-	{
-		user.setAddressAndPort("Gadu", ntohl(remote_ip), remote_port);
-		user.setProtocolData("Gadu", "Version", version);
-		user.setProtocolData("Gadu", "MaxImageSize", image_size);
-	}
+	user.setAddressAndPort("Gadu", ntohl(remote_ip), remote_port);
+	user.setProtocolData("Gadu", "Version", version);
+	user.setProtocolData("Gadu", "MaxImageSize", image_size);
+
 	user.refreshDNSName("Gadu");
 
 	oldStatus = user.status("Gadu");
@@ -2339,7 +2340,8 @@ UserStatus *GaduStatus::copy() const
 
 QString GaduStatus::protocolName() const
 {
-	return "Gadu";
+	static const QString protoName("Gadu");
+	return protoName;
 }
 
 GaduProtocol* gadu;
