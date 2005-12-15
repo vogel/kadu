@@ -216,6 +216,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawione od¶wie¿anie listy kontaktów po odebraniu wiadomo¶ci (joi)
 * zapamiêtywanie rozmiarów okien / stanu szyfrowania znowu dzia³a (joi)
 * kilka poprawek dotycz±cych konfiguracji obrazka w tle listy kontaktów (joi)
+* poprawki w wygl±dzie przycisków formatowania w oknie rozmowy (widoczne przede
+  wszystkim przy ciemnej kolorystyce) (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

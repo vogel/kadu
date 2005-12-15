@@ -29,9 +29,10 @@ static QPixmap string_to_pixmap(const QString& str, const QFont& font)
 {
 	QSize size = QFontMetrics(font).size(0, str);
 	QPixmap pixmap(size);
-	pixmap.fill();
+	pixmap.fill(kadu->palette().color(QPalette::Active, QColorGroup::Button));
 	QPainter* painter = new QPainter();
 	painter->begin(&pixmap);
+	painter->setPen(kadu->palette().color(QPalette::Active, QColorGroup::ButtonText));
 	painter->setFont(font);
 	painter->drawText(QRect(QPoint(0, 0), size), 0, str);
 	painter->end();
