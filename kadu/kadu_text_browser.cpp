@@ -32,7 +32,16 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 	setTextFormat(Qt::RichText);
 
 //	connect(verticalScrollBar(), SIGNAL(sliderReleased()), this, SLOT(repaint()));
+//	connect(verticalScrollBar(), SIGNAL(sliderReleased()), this, SLOT(refresh()));
+	connect(this, SIGNAL(contentsMoving(int, int)), this, SLOT(refresh()));
 	kdebugf2();
+}
+void KaduTextBrowser::refresh()
+{
+	kdebugf();
+	//sync();
+	//repaint();
+	repaintContents(false);
 }
 
 void KaduTextBrowser::maybeTip(const QPoint &c)

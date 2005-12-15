@@ -28,13 +28,14 @@ class KaduTextBrowser : public QTextBrowser, private QToolTip
 			this value stores the current highlighted link
 			for use with maybeTip(), or is null
 		**/
-		QString highlightedlink; 	
+		QString highlightedlink;
 
 	private slots:
+		void refresh();
 		void copyLinkLocation();
 		void hyperlinkClicked(const QString& link) const;
 		void linkHighlighted(const QString &);
-		
+
 	protected:
 		QPopupMenu *createPopupMenu(const QPoint &point);
 		virtual void drawContents(QPainter * p, int clipx, int clipy, int clipw, int cliph);
@@ -47,10 +48,10 @@ class KaduTextBrowser : public QTextBrowser, private QToolTip
 		/**
 			Nadpisane dla wyja¶nienia wieloznaczno¶ci
 		**/
-		void clear() 
-		{ 
+		void clear()
+		{
 			setText("");
-			//dla QT<3.2 clear() powodowa³o b³±d 
+			//dla QT<3.2 clear() powodowa³o b³±d
 		}
 		/**
 			Nadpisane dla wyja¶nienia wieloznaczno¶ci		**/
