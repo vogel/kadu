@@ -454,7 +454,7 @@ void Chat::keyPressEvent(QKeyEvent* e)
 	else if (HotKey::shortCut(e,"ShortCuts", "chat_close"))
 		close();
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_viewhistory"))
-		KaduActions["showistoryAction"]->activate(Users);
+		KaduActions["showHistoryAction"]->activate(Users);
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
 		KaduActions["whoisAction"]->activate(Users);
 	QWidget::keyPressEvent(e);

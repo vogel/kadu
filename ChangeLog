@@ -219,6 +219,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawki w wygl±dzie przycisków formatowania w oknie rozmowy (widoczne przede
   wszystkim przy ciemnej kolorystyce) (joi)
 * poprawki w od¶wie¿aniu chata / historii (np. znikaj±ce separatory) (joi)
+* poprawiony segfault gdy okno historii uruchamiane jest przy pomocy skrotu (pawel_p)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
