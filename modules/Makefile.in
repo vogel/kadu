@@ -173,6 +173,7 @@ CLEANFILES = */*.$(SO_EXT) */*.a */*.o */*_moc.cpp */*.d
 module_d_files = $(addsuffix .d,$(basename $(module_o_files)))
 
 module_targets = $(addprefix module_,$(shared_modules) $(static_modules))
+install_targets = $(addprefix install_,$(shared_modules) $(static_modules))
 subdir = modules
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/admin/mkinstalldirs
@@ -343,43 +344,46 @@ $(module_moc_cpp_files):
 %_moc.cpp: %.h
 	$(QT_MOC_DIR)/moc -o $@ $<
 
-install-data-local: uninstall-local
+make_module_dirs:
 	$(mkinstalldirs) "$(DESTDIR)$(includedir)/kadu/modules/"
 	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/modules/"
 	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/modules/translations/"
 	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/modules/data/"
 	$(mkinstalldirs) "$(DESTDIR)$(libdir)/kadu/modules/bin/"
-	@for dir in $(static_modules) $(shared_modules); do \
-		echo -e "\033[32m>>>\033[0m Installing $$dir module ..."; \
-		$(INSTALL_DATA) $$dir/$$dir.desc "$(DESTDIR)$(datadir)/kadu/modules"; \
-		$(INSTALL_DATA) $$dir/*.h "$(DESTDIR)$(includedir)/kadu/modules"; \
-		if test -d $$dir/translations; then \
-			$(INSTALL_DATA) $$dir/translations/*.qm "$(DESTDIR)$(datadir)/kadu/modules/translations/"; \
-		fi; \
-		if test -d $$dir/data; then \
-			for sub_dir in `find $$dir/data -type d | grep -v /CVS | grep -v /.svn`; do \
-				dst_dir=`echo "$$sub_dir" | sed "s,/data/,/," | sed "s,/data$$,,"`; \
-				$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/modules/data/$$dst_dir"; \
-				for new_file in `find $$sub_dir -maxdepth 1 -type f | sed "s/ /_SPACE_/g"`; do \
-					new_file=`echo "$$new_file" | sed "s/_SPACE_/ /g"`; \
-					$(INSTALL_DATA) "$$new_file" "$(DESTDIR)$(datadir)/kadu/modules/data/$$dst_dir"; \
-				done; \
+
+install-data-local: uninstall-local make_module_dirs $(install_targets)
+
+$(install_targets):
+	@dir=`echo $@ | sed s/install_//` && \
+	echo -e "\033[32m>>>\033[0m Installing $$dir module ..."; \
+	$(INSTALL_DATA) $$dir/$$dir.desc "$(DESTDIR)$(datadir)/kadu/modules"; \
+	$(INSTALL_DATA) $$dir/*.h "$(DESTDIR)$(includedir)/kadu/modules"; \
+	if test -d $$dir/translations; then \
+		$(INSTALL_DATA) $$dir/translations/*.qm "$(DESTDIR)$(datadir)/kadu/modules/translations/"; \
+	fi; \
+	if test -d $$dir/data; then \
+		for sub_dir in `find $$dir/data -type d | grep -v /CVS | grep -v /.svn`; do \
+			dst_dir=`echo "$$sub_dir" | sed "s,/data/,/," | sed "s,/data$$,,"`; \
+			$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/modules/data/$$dst_dir"; \
+			for new_file in `find $$sub_dir -maxdepth 1 -type f | sed "s/ /_SPACE_/g"`; do \
+				new_file=`echo "$$new_file" | sed "s/_SPACE_/ /g"`; \
+				$(INSTALL_DATA) "$$new_file" "$(DESTDIR)$(datadir)/kadu/modules/data/$$dst_dir"; \
 			done; \
-		fi; \
-		if test -d $$dir/bin; then \
-			for sub_dir in `find $$dir/bin -type d | grep -v /CVS | grep -v /.svn`; do \
-				dst_dir=`echo "$$sub_dir" | sed "s,/bin/,/," | sed "s,/bin$$,,"`; \
-				$(mkinstalldirs) "$(DESTDIR)$(libdir)/kadu/modules/bin/$$dst_dir"; \
-				for new_file in `find $$sub_dir -maxdepth 1 -type f | sed "s/ /_SPACE_/g"`; do \
-					new_file=`echo "$$new_file" | sed "s/_SPACE_/ /g"`; \
-					$(INSTALL_PROGRAM) "$$new_file" "$(DESTDIR)$(libdir)/kadu/modules/bin/$$dst_dir"; \
-				done; \
+		done; \
+	fi; \
+	if test -d $$dir/bin; then \
+		for sub_dir in `find $$dir/bin -type d | grep -v /CVS | grep -v /.svn`; do \
+			dst_dir=`echo "$$sub_dir" | sed "s,/bin/,/," | sed "s,/bin$$,,"`; \
+			$(mkinstalldirs) "$(DESTDIR)$(libdir)/kadu/modules/bin/$$dst_dir"; \
+			for new_file in `find $$sub_dir -maxdepth 1 -type f | sed "s/ /_SPACE_/g"`; do \
+				new_file=`echo "$$new_file" | sed "s/_SPACE_/ /g"`; \
+				$(INSTALL_PROGRAM) "$$new_file" "$(DESTDIR)$(libdir)/kadu/modules/bin/$$dst_dir"; \
 			done; \
-		fi; \
-		if test -z `expr " $(static_modules) " : ".* \($$dir\) "`; then \
-			$(INSTALL_DATA) $$dir/$$dir.$(SO_EXT) "$(DESTDIR)$(libdir)/kadu/modules/"; \
-		fi; \
-	done
+		done; \
+	fi; \
+	if test -z `expr " $(static_modules) " : ".* \($$dir\) "`; then \
+		$(INSTALL_DATA) $$dir/$$dir.$(SO_EXT) "$(DESTDIR)$(libdir)/kadu/modules/"; \
+	fi
 
 uninstall-local:
 	rm -f "$(DESTDIR)$(includedir)/kadu/modules"/*.h
