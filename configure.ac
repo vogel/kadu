@@ -5,6 +5,7 @@
 # autoconf macros
 ########################################################################
 
+
 AC_DEFUN(CHECK_PTHREAD,
 [
 	AC_CHECK_LIB(pthread,pthread_create,
@@ -402,12 +403,12 @@ AC_DEFUN(GENERATE_STATIC_MODULES_CODE,[
 
 ########################################################################
 
-AC_INIT([Kadu],[])
+m4_include([version.m4])
+AC_INIT([Kadu],VERSION_NUMBER)
 AC_COPYRIGHT([configure.ac written by A.Smarzewski])
 AC_REVISION([])
 AC_PREREQ(2.53)
 
-version=`cat VERSION`
 
 echo
 echo " ***************************************"
@@ -416,10 +417,10 @@ echo " ***************************************"
 
 AC_CONFIG_SRCDIR([kadu/kadu.cpp])
 AC_CONFIG_AUX_DIR([admin])
-AM_CONFIG_HEADER([kadu-config.h])
+AM_CONFIG_HEADER([kadu-config.tmp:kadu-config.h.in])
 AM_MAINTAINER_MODE
 AC_CANONICAL_SYSTEM
-AM_INIT_AUTOMAKE([kadu-$version],[$version])
+AM_INIT_AUTOMAKE([no-dependencies dist-bzip2])
 
 ########################################################################
 # check for programs, libraries and functions
@@ -719,14 +720,37 @@ if test -z "$enable_pheaders"; then
 	enable_pheaders=no
 fi
 if test "$enable_pheaders" = "yes"; then
-	rm -f kadu/kadu-headers.h
-	for i in kadu-config.h `ls -1 kadu | grep "\.h$"`; do
-		echo "#include \"$i\"" >> kadu/kadu-headers.h
+	rm -f kadu/kadu-headers.h2
+	for i in kadu-config.h `ls -1 kadu | grep "\.h$" | grep -v "kadu-headers.h"`; do
+		echo "#include \"$i\"" >> kadu/kadu-headers.h2
 	done
-	grep -h '#include <q[^>]*>' kadu/*.cpp | sort -u >> kadu/kadu-headers.h
+	grep -h '#include <q[^>]*>' kadu/*.cpp | sort -u >> kadu/kadu-headers.h2
+	if test -f kadu/kadu-headers.h; then
+		diff kadu/kadu-headers.h kadu/kadu-headers.h2 > /dev/null
+		# if files differ
+		if test $? != 0 ; then
+			mv kadu/kadu-headers.h2 kadu/kadu-headers.h
+		else
+			rm kadu/kadu-headers.h2
+		fi
+	else
+		mv kadu/kadu-headers.h2 kadu/kadu-headers.h
+	fi
+else
+	if test ! -f kadu/kadu-headers.h; then
+		touch kadu/kadu-headers.h
+	fi
 fi
 AC_SUBST(enable_pheaders)
 AM_CONDITIONAL(PHEADERS_ENABLED,test "$enable_pheaders" = "yes")
+
+# dependency tracking support
+AC_ARG_ENABLE(dependency-tracking,[  --disable-dependency-tracking speeds up one-time builds])
+if test -z "$enable_dependency_tracking"; then
+	enable_dependency_tracking=yes
+fi
+AC_SUBST(enable_dependency_tracking)
+#AM_CONDITIONAL(DEPENDENCY_TRACKING_DISABLED,test "$disable_dependency_tracking" = "yes")
 
 # dist-info support
 AC_ARG_ENABLE(dist-info,[  --enable-dist-info=DIST enable distribution type information, default: sources])
@@ -800,6 +824,27 @@ AC_DEFINE_UNQUOTED(DATADIR,"$prefix/share",[Data files prefix])
 AC_CONFIG_FILES([Makefile kadu/Makefile translations/Makefile varia/Makefile modules/Makefile varia/scripts/kadu-config kadu/modules_static.cpp])
 AC_OUTPUT
 
+if test ! -f kadu/deps/about.d; then
+	echo -n creating dependency tracking files...
+	for i in kadu/*.h; do
+		f="kadu/deps/`echo $i | sed 's/^kadu\/\(.*\).h$/\1/'`"
+		touch ${f}_moc.d ${f}.d
+	done
+	touch kadu/deps/main.d
+	echo done
+fi
+
+if test -f kadu-config.h; then
+	diff kadu-config.h kadu-config.tmp > /dev/null 
+	if test $? != 0 ; then
+		cp kadu-config.tmp kadu-config.h
+	fi
+else
+	cp kadu-config.tmp kadu-config.h
+fi
+
+rm -f logfile.txt
+
 echo
 echo " **************************************"
 echo " * Kadu configuration is now complete *"
@@ -812,6 +857,7 @@ echo "   Use pthread resolving in libgadu:   $with_pthread"
 echo "   Compile with debug symbols:         $enable_debug"
 echo "   System signals handling:            $enable_sig_handling"
 echo "   Precompiled headers support:        $enable_pheaders"
+echo "   Dependency tracking:                $enable_dependency_tracking"
 echo "   Link with existing libgadu:         $with_existing_libgadu"
 # Maybe it will be back when GG servers have SSL support finally
 #echo "   OpenSSL encryption support:         $have_openssl"

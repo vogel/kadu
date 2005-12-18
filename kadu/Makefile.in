@@ -39,24 +39,19 @@ build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
 ACLOCAL = @ACLOCAL@
-AMDEP_FALSE = @AMDEP_FALSE@
-AMDEP_TRUE = @AMDEP_TRUE@
 AMTAR = @AMTAR@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
 CC = @CC@
-CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CXX = @CXX@
-CXXDEPMODE = @CXXDEPMODE@
 CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DEFS = @DEFS@
-DEPDIR = @DEPDIR@
 DYNAMIC_OPT = @DYNAMIC_OPT@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
@@ -109,13 +104,7 @@ Z_LIBS = @Z_LIBS@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
 ac_ct_STRIP = @ac_ct_STRIP@
-am__fastdepCC_FALSE = @am__fastdepCC_FALSE@
-am__fastdepCC_TRUE = @am__fastdepCC_TRUE@
-am__fastdepCXX_FALSE = @am__fastdepCXX_FALSE@
-am__fastdepCXX_TRUE = @am__fastdepCXX_TRUE@
-am__include = @am__include@
 am__leading_dot = @am__leading_dot@
-am__quote = @am__quote@
 bindir = @bindir@
 build = @build@
 build_alias = @build_alias@
@@ -123,6 +112,7 @@ build_cpu = @build_cpu@
 build_os = @build_os@
 build_vendor = @build_vendor@
 datadir = @datadir@
+enable_dependency_tracking = @enable_dependency_tracking@
 enable_pheaders = @enable_pheaders@
 enabled_icon_themes = @enabled_icon_themes@
 exec_prefix = @exec_prefix@
@@ -154,6 +144,8 @@ target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
 bin_PROGRAMS = kadu
+
+LOGFILE = ../logfile.txt
 
 kadu_SOURCES = \
 about.cpp \
@@ -295,13 +287,13 @@ moc/tabbar_moc.cpp \
 moc/themes_moc.cpp \
 moc/toolbar_moc.cpp \
 moc/toolbutton_moc.cpp \
+moc/updates_moc.cpp \
 moc/userbox_moc.cpp \
 moc/userinfo_moc.cpp \
 moc/userlist_moc.cpp \
 moc/userlist-private_moc.cpp \
 moc/usergroup_moc.cpp \
-moc/userlistelement_moc.cpp \
-moc/updates_moc.cpp
+moc/userlistelement_moc.cpp
 
 
 am_kadu_OBJECTS = \
@@ -397,6 +389,8 @@ obj/userlistelement_moc.$(OBJEXT) \
 obj/updates_moc.$(OBJEXT)
 
 
+DEPS = ./deps
+
 
 ###########################################################################
 # Precompiled headers support
@@ -426,7 +420,7 @@ CLEANFILES = obj/*.o moc/*_moc.cpp $(PHEADERS_CLEANFILES)
 subdir = kadu
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/admin/mkinstalldirs
-CONFIG_HEADER = $(top_builddir)/kadu-config.h
+CONFIG_HEADER = $(top_builddir)/kadu-config.tmp
 CONFIG_CLEAN_FILES = modules_static.cpp
 bin_PROGRAMS = kadu$(EXEEXT)
 PROGRAMS = $(bin_PROGRAMS)
@@ -436,41 +430,8 @@ kadu_DEPENDENCIES = $(foreach mod,$(basename \
 	$(static_modules)),../modules/$(mod)/$(mod).a)
 
 DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)
-depcomp = $(SHELL) $(top_srcdir)/admin/depcomp
-am__depfiles_maybe = depfiles
-@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/about.Po ./$(DEPDIR)/action.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/chat.Po ./$(DEPDIR)/chat_manager.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/chat_manager_slots.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/chat_message.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/color_selector.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/config_dialog.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/config_file.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/custom_input.Po ./$(DEPDIR)/debug.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/dnshandler.Po ./$(DEPDIR)/dockarea.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/emoticons.Po ./$(DEPDIR)/expimp.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/gadu-private.Po ./$(DEPDIR)/gadu.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/gadu_images_manager.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/gadu_rich_text.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/groups_manager.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/history.Po ./$(DEPDIR)/html_document.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/http_client.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/icons_manager.Po ./$(DEPDIR)/ignore.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/kadu.Po ./$(DEPDIR)/kadu_splitter.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/kadu_text_browser.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/main.Po ./$(DEPDIR)/message_box.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/misc.Po ./$(DEPDIR)/modules.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/pending_msgs.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/personal_info.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/protocol.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/protocols_manager.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/search.Po ./$(DEPDIR)/status.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/tabbar.Po ./$(DEPDIR)/themes.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/toolbar.Po ./$(DEPDIR)/toolbutton.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/updates.Po ./$(DEPDIR)/userbox.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/usergroup.Po ./$(DEPDIR)/userinfo.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/userlist-private.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/userlist.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/userlistelement.Po
+depcomp =
+am__depfiles_maybe =
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 CXXLD = $(CXX)
@@ -528,56 +489,6 @@ mostlyclean-compile:
 
 distclean-compile:
 	-rm -f *.tab.c
-
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/about.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/action.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/chat.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/chat_manager.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/chat_manager_slots.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/chat_message.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/color_selector.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/config_dialog.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/config_file.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/custom_input.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/debug.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dnshandler.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dockarea.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/emoticons.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/expimp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gadu-private.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gadu.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gadu_images_manager.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gadu_rich_text.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/groups_manager.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/history.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/html_document.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/http_client.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/icons_manager.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ignore.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/kadu.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/kadu_splitter.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/kadu_text_browser.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/message_box.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/misc.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/modules.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pending_msgs.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/personal_info.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/protocol.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/protocols_manager.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/search.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/status.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tabbar.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/themes.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/toolbar.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/toolbutton.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/updates.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/userbox.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/usergroup.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/userinfo.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/userlist-private.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/userlist.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/userlistelement.Po@am__quote@
 uninstall-info-am:
 kaduHEADERS_INSTALL = $(INSTALL_HEADER)
 install-kaduHEADERS: $(kadu_HEADERS)
@@ -719,10 +630,9 @@ maintainer-clean-generic:
 	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 clean: clean-am
 
-clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
+clean-am: clean-binPROGRAMS clean-generic clean-local mostlyclean-am
 
 distclean: distclean-am
-	-rm -rf ./$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -746,7 +656,6 @@ install-man:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-	-rm -rf ./$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
@@ -766,7 +675,7 @@ uninstall-am: uninstall-binPROGRAMS uninstall-info-am \
 	uninstall-kaduHEADERS uninstall-local
 
 .PHONY: CTAGS GTAGS all all-am check check-am clean clean-binPROGRAMS \
-	clean-generic ctags distclean distclean-compile \
+	clean-generic clean-local ctags distclean distclean-compile \
 	distclean-generic distclean-tags distdir dvi dvi-am info \
 	info-am install install-am install-binPROGRAMS install-data \
 	install-data-am install-data-local install-exec install-exec-am \
@@ -778,6 +687,101 @@ uninstall-am: uninstall-binPROGRAMS uninstall-info-am \
 	uninstall-info-am uninstall-kaduHEADERS uninstall-local
 
 
+ ifeq ($(enable_dependency_tracking),yes)
+
+include $(DEPS)/about.d
+include $(DEPS)/about_moc.d
+include $(DEPS)/action.d
+include $(DEPS)/action_moc.d
+include $(DEPS)/chat.d
+include $(DEPS)/chat_moc.d
+include $(DEPS)/chat_manager.d
+include $(DEPS)/chat_manager_moc.d
+include $(DEPS)/chat_manager_slots.d
+include $(DEPS)/chat_manager_slots_moc.d
+include $(DEPS)/chat_message.d
+include $(DEPS)/color_selector.d
+include $(DEPS)/color_selector_moc.d
+include $(DEPS)/config_dialog.d
+include $(DEPS)/config_dialog_moc.d
+include $(DEPS)/config_file.d
+include $(DEPS)/custom_input.d
+include $(DEPS)/custom_input_moc.d
+include $(DEPS)/debug.d
+include $(DEPS)/dnshandler.d
+include $(DEPS)/dnshandler_moc.d
+include $(DEPS)/dockarea.d
+include $(DEPS)/dockarea_moc.d
+include $(DEPS)/emoticons.d
+include $(DEPS)/emoticons_moc.d
+include $(DEPS)/expimp.d
+include $(DEPS)/expimp_moc.d
+include $(DEPS)/gadu-private.d
+include $(DEPS)/gadu-private_moc.d
+include $(DEPS)/gadu.d
+include $(DEPS)/gadu_moc.d
+include $(DEPS)/gadu_images_manager.d
+include $(DEPS)/gadu_rich_text.d
+include $(DEPS)/groups_manager.d
+include $(DEPS)/groups_manager_moc.d
+include $(DEPS)/history.d
+include $(DEPS)/history_moc.d
+include $(DEPS)/html_document.d
+include $(DEPS)/http_client.d
+include $(DEPS)/http_client_moc.d
+include $(DEPS)/icons_manager.d
+include $(DEPS)/icons_manager_moc.d
+include $(DEPS)/ignore.d
+include $(DEPS)/ignore_moc.d
+include $(DEPS)/kadu.d
+include $(DEPS)/kadu_moc.d
+include $(DEPS)/kadu_splitter.d
+include $(DEPS)/kadu_text_browser.d
+include $(DEPS)/kadu_text_browser_moc.d
+include $(DEPS)/main.d
+include $(DEPS)/message_box.d
+include $(DEPS)/message_box_moc.d
+include $(DEPS)/misc.d
+include $(DEPS)/misc_moc.d
+include $(DEPS)/modules.d
+include $(DEPS)/modules_moc.d
+include $(DEPS)/pending_msgs.d
+include $(DEPS)/pending_msgs_moc.d
+include $(DEPS)/personal_info.d
+include $(DEPS)/personal_info_moc.d
+include $(DEPS)/protocol.d
+include $(DEPS)/protocol_moc.d
+include $(DEPS)/protocols_manager.d
+include $(DEPS)/protocols_manager_moc.d
+include $(DEPS)/search.d
+include $(DEPS)/search_moc.d
+include $(DEPS)/status.d
+include $(DEPS)/status_moc.d
+include $(DEPS)/tabbar.d
+include $(DEPS)/tabbar_moc.d
+include $(DEPS)/themes.d
+include $(DEPS)/themes_moc.d
+include $(DEPS)/toolbar.d
+include $(DEPS)/toolbar_moc.d
+include $(DEPS)/toolbutton.d
+include $(DEPS)/toolbutton_moc.d
+include $(DEPS)/updates.d
+include $(DEPS)/updates_moc.d
+include $(DEPS)/userbox.d
+include $(DEPS)/userbox_moc.d
+include $(DEPS)/usergroup.d
+include $(DEPS)/usergroup_moc.d
+include $(DEPS)/userinfo.d
+include $(DEPS)/userinfo_moc.d
+include $(DEPS)/userlist-private.d
+include $(DEPS)/userlist-private_moc.d
+include $(DEPS)/userlist.d
+include $(DEPS)/userlist_moc.d
+include $(DEPS)/userlistelement.d
+include $(DEPS)/userlistelement_moc.d
+
+ endif
+
 .cpp.o:
 	@echo -e "\033[32m >>> make obj/"$@" <<< \033[0m"
 	make obj/$@
@@ -785,19 +789,42 @@ uninstall-am: uninstall-binPROGRAMS uninstall-info-am \
 .cpp.obj:
 	@echo "go away ;)"
 
+ ifeq ($(enable_dependency_tracking),yes)
+
 obj/%.o: %.cpp
-@am__fastdepCXX_TRUE@	if $(CXXCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<; then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Po"; else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+	@echo generating dependency file for $<
+	@$(CXXCOMPILE) -M $< -MT "$@" > deps/`echo $@|sed "s/obj\/\(.*\).o/\1.d/"`
+	@echo '$(CXXCOMPILE) -M $< -MT "$@" > deps/`echo $@|sed "s/obj\/\(.*\).o/\1.d/"`' >> $(LOGFILE)
+	@echo compiling file $<
+	@echo $(CXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$< >> $(LOGFILE)
+	@$(CXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
 
 obj/%_moc.o: moc/%_moc.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT $@ -MD -MP -MF "$(DEPDIR)/$*_moc.Tpo" -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<; then mv -f "$(DEPDIR)/$*_moc.Tpo" "$(DEPDIR)/$*_moc.Po"; else rm -f "$(DEPDIR)/$*_moc.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+	@echo generating dependency file for $<
+	@echo '$(CXXCOMPILE) -M $< -MT "$@" > deps/`echo $@|sed "s/obj\/\(.*\).o/\1.d/"`' >> $(LOGFILE)
+	@$(CXXCOMPILE) -M $< -MT "$@" > deps/`echo $@|sed "s/obj\/\(.*\).o/\1.d/"`
+	@echo compiling file $<
+	@echo $(CXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$< >> $(LOGFILE)
+	@$(CXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+
+ else
+
+obj/%.o: %.cpp
+	@echo compiling file $<
+	@echo $(CXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$< >> $(LOGFILE)
+	@$(CXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+
+obj/%_moc.o: moc/%_moc.cpp
+	@echo compiling file $<
+	@echo $(CXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$< >> $(LOGFILE)
+	@$(CXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+
+ endif
+
+moc/%_moc.cpp: %.h
+	@echo generating $@
+	@echo $(QT_MOC_DIR)/moc -o $@ $< >> $(LOGFILE)
+	@$(QT_MOC_DIR)/moc -o $@ $<
 
 # dirty hack - leading space required because od automake "if" support
 # time to say automake goodbye?
@@ -806,17 +833,17 @@ obj/%_moc.o: moc/%_moc.cpp
 -include kadu-headers.d
 
 kadu-headers.d: kadu-headers.h
-	$(CXX) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) $< | \
-	sed "s,\(.*\):,$(basename $@).h.gch $@:," > $@
+	@echo generating dependency file for $<
+	@echo "$(CXX) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) $< | sed "s,\(.*\):,$(basename $@).h.gch $@:," > $@" >> $(LOGFILE)
+	@$(CXX) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) $< | sed "s,\(.*\):,$(basename $@).h.gch $@:," > $@
 
 %.h.gch: %.h
-	rm -f $@
-	$(CXX) -o $@ -c $< $(INCLUDES) $(AM_CPPFLAGS) $(AM_CXXFLAGS) $(module_cxxflags)  $(CXXFLAGS)
+	@echo compiling headers
+	@rm -f $@
+	@echo $(CXX) -o $@ -c $< $(INCLUDES) $(AM_CPPFLAGS) $(AM_CXXFLAGS) $(module_cxxflags)  $(CXXFLAGS) >> $(LOGFILE)
+	@$(CXX) -o $@ -c $< $(INCLUDES) $(AM_CPPFLAGS) $(AM_CXXFLAGS) $(module_cxxflags)  $(CXXFLAGS)
 
  endif
-
-moc/%_moc.cpp: %.h
-	$(QT_MOC_DIR)/moc -o $@ $<
 
 install-data-local:
 #	$(mkinstalldirs) "$(DESTDIR)/$(includedir)/kadu/"
@@ -857,6 +884,11 @@ uninstall-local:
 	rm -f "$(DESTDIR)$(datadir)/pixmaps/kadu-48.png"
 	rm -f "$(DESTDIR)$(datadir)/pixmaps/kadu.png"
 	rm -f "$(DESTDIR)$(datadir)/pixmaps/kadu-16.png"
+
+clean-local:
+	for i in deps/*.d; do \
+		echo -n > $$i; \
+	done
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

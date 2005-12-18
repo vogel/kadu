@@ -1,3 +1,4 @@
+LOGFILE = ../logfile.txt
 
 translation_ts_files = $(wildcard *.ts)
 translation_qm_files = $(addsuffix .qm,$(basename $(translation_ts_files)))
@@ -5,7 +6,9 @@ translation_qm_files = $(addsuffix .qm,$(basename $(translation_ts_files)))
 all: $(translation_qm_files)
 
 %.qm: %.ts
-	$(QT_LRELEASE_DIR)/lrelease $<
+	@echo compiling translation file $<
+	@echo "$(QT_LRELEASE_DIR)/lrelease $<" >> $(LOGFILE)
+	@$(QT_LRELEASE_DIR)/lrelease $<
 
 clean-local:
 	rm -f *.qm

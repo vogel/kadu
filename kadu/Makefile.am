@@ -1,5 +1,7 @@
 bin_PROGRAMS = kadu
 
+LOGFILE = ../logfile.txt
+
 kadu_SOURCES = \
 about.cpp \
 action.cpp \
@@ -139,13 +141,13 @@ moc/tabbar_moc.cpp \
 moc/themes_moc.cpp \
 moc/toolbar_moc.cpp \
 moc/toolbutton_moc.cpp \
+moc/updates_moc.cpp \
 moc/userbox_moc.cpp \
 moc/userinfo_moc.cpp \
 moc/userlist_moc.cpp \
 moc/userlist-private_moc.cpp \
 moc/usergroup_moc.cpp \
-moc/userlistelement_moc.cpp \
-moc/updates_moc.cpp
+moc/userlistelement_moc.cpp
 
 am_kadu_OBJECTS = \
 obj/about.$(OBJEXT) \
@@ -239,6 +241,103 @@ obj/usergroup_moc.$(OBJEXT) \
 obj/userlistelement_moc.$(OBJEXT) \
 obj/updates_moc.$(OBJEXT)
 
+DEPS=./deps
+
+ ifeq ($(enable_dependency_tracking),yes)
+
+include $(DEPS)/about.d
+include $(DEPS)/about_moc.d
+include $(DEPS)/action.d
+include $(DEPS)/action_moc.d
+include $(DEPS)/chat.d
+include $(DEPS)/chat_moc.d
+include $(DEPS)/chat_manager.d
+include $(DEPS)/chat_manager_moc.d
+include $(DEPS)/chat_manager_slots.d
+include $(DEPS)/chat_manager_slots_moc.d
+include $(DEPS)/chat_message.d
+include $(DEPS)/color_selector.d
+include $(DEPS)/color_selector_moc.d
+include $(DEPS)/config_dialog.d
+include $(DEPS)/config_dialog_moc.d
+include $(DEPS)/config_file.d
+include $(DEPS)/custom_input.d
+include $(DEPS)/custom_input_moc.d
+include $(DEPS)/debug.d
+include $(DEPS)/dnshandler.d
+include $(DEPS)/dnshandler_moc.d
+include $(DEPS)/dockarea.d
+include $(DEPS)/dockarea_moc.d
+include $(DEPS)/emoticons.d
+include $(DEPS)/emoticons_moc.d
+include $(DEPS)/expimp.d
+include $(DEPS)/expimp_moc.d
+include $(DEPS)/gadu-private.d
+include $(DEPS)/gadu-private_moc.d
+include $(DEPS)/gadu.d
+include $(DEPS)/gadu_moc.d
+include $(DEPS)/gadu_images_manager.d
+include $(DEPS)/gadu_rich_text.d
+include $(DEPS)/groups_manager.d
+include $(DEPS)/groups_manager_moc.d
+include $(DEPS)/history.d
+include $(DEPS)/history_moc.d
+include $(DEPS)/html_document.d
+include $(DEPS)/http_client.d
+include $(DEPS)/http_client_moc.d
+include $(DEPS)/icons_manager.d
+include $(DEPS)/icons_manager_moc.d
+include $(DEPS)/ignore.d
+include $(DEPS)/ignore_moc.d
+include $(DEPS)/kadu.d
+include $(DEPS)/kadu_moc.d
+include $(DEPS)/kadu_splitter.d
+include $(DEPS)/kadu_text_browser.d
+include $(DEPS)/kadu_text_browser_moc.d
+include $(DEPS)/main.d
+include $(DEPS)/message_box.d
+include $(DEPS)/message_box_moc.d
+include $(DEPS)/misc.d
+include $(DEPS)/misc_moc.d
+include $(DEPS)/modules.d
+include $(DEPS)/modules_moc.d
+include $(DEPS)/pending_msgs.d
+include $(DEPS)/pending_msgs_moc.d
+include $(DEPS)/personal_info.d
+include $(DEPS)/personal_info_moc.d
+include $(DEPS)/protocol.d
+include $(DEPS)/protocol_moc.d
+include $(DEPS)/protocols_manager.d
+include $(DEPS)/protocols_manager_moc.d
+include $(DEPS)/search.d
+include $(DEPS)/search_moc.d
+include $(DEPS)/status.d
+include $(DEPS)/status_moc.d
+include $(DEPS)/tabbar.d
+include $(DEPS)/tabbar_moc.d
+include $(DEPS)/themes.d
+include $(DEPS)/themes_moc.d
+include $(DEPS)/toolbar.d
+include $(DEPS)/toolbar_moc.d
+include $(DEPS)/toolbutton.d
+include $(DEPS)/toolbutton_moc.d
+include $(DEPS)/updates.d
+include $(DEPS)/updates_moc.d
+include $(DEPS)/userbox.d
+include $(DEPS)/userbox_moc.d
+include $(DEPS)/usergroup.d
+include $(DEPS)/usergroup_moc.d
+include $(DEPS)/userinfo.d
+include $(DEPS)/userinfo_moc.d
+include $(DEPS)/userlist-private.d
+include $(DEPS)/userlist-private_moc.d
+include $(DEPS)/userlist.d
+include $(DEPS)/userlist_moc.d
+include $(DEPS)/userlistelement.d
+include $(DEPS)/userlistelement_moc.d
+
+ endif
+
 .cpp.o:
 	@echo -e "\033[32m >>> make obj/"$@" <<< \033[0m"
 	make obj/$@
@@ -246,19 +345,43 @@ obj/updates_moc.$(OBJEXT)
 .cpp.obj:
 	@echo "go away ;)"
 
+
+ ifeq ($(enable_dependency_tracking),yes)
+
 obj/%.o: %.cpp
-@am__fastdepCXX_TRUE@	if $(CXXCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<; then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Po"; else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+	@echo generating dependency file for $<
+	@$(CXXCOMPILE) -M $< -MT "$@" > deps/`echo $@|sed "s/obj\/\(.*\).o/\1.d/"`
+	@echo '$(CXXCOMPILE) -M $< -MT "$@" > deps/`echo $@|sed "s/obj\/\(.*\).o/\1.d/"`' >> $(LOGFILE)
+	@echo compiling file $<
+	@echo $(CXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$< >> $(LOGFILE)
+	@$(CXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
 
 obj/%_moc.o: moc/%_moc.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT $@ -MD -MP -MF "$(DEPDIR)/$*_moc.Tpo" -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<; then mv -f "$(DEPDIR)/$*_moc.Tpo" "$(DEPDIR)/$*_moc.Po"; else rm -f "$(DEPDIR)/$*_moc.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+	@echo generating dependency file for $<
+	@echo '$(CXXCOMPILE) -M $< -MT "$@" > deps/`echo $@|sed "s/obj\/\(.*\).o/\1.d/"`' >> $(LOGFILE)
+	@$(CXXCOMPILE) -M $< -MT "$@" > deps/`echo $@|sed "s/obj\/\(.*\).o/\1.d/"`
+	@echo compiling file $<
+	@echo $(CXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$< >> $(LOGFILE)
+	@$(CXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+
+ else
+
+obj/%.o: %.cpp
+	@echo compiling file $<
+	@echo $(CXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$< >> $(LOGFILE)
+	@$(CXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+
+obj/%_moc.o: moc/%_moc.cpp
+	@echo compiling file $<
+	@echo $(CXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$< >> $(LOGFILE)
+	@$(CXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+
+ endif
+
+moc/%_moc.cpp: %.h
+	@echo generating $@
+	@echo $(QT_MOC_DIR)/moc -o $@ $< >> $(LOGFILE)
+	@$(QT_MOC_DIR)/moc -o $@ $<
 
 ###########################################################################
 # Precompiled headers support
@@ -277,12 +400,15 @@ endif
 -include kadu-headers.d
 
 kadu-headers.d: kadu-headers.h
-	$(CXX) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) $< | \
-	sed "s,\(.*\):,$(basename $@).h.gch $@:," > $@
+	@echo generating dependency file for $<
+	@echo "$(CXX) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) $< | sed "s,\(.*\):,$(basename $@).h.gch $@:," > $@" >> $(LOGFILE)
+	@$(CXX) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) $< | sed "s,\(.*\):,$(basename $@).h.gch $@:," > $@
 
 %.h.gch: %.h
-	rm -f $@
-	$(CXX) -o $@ -c $< $(INCLUDES) $(AM_CPPFLAGS) $(AM_CXXFLAGS) $(module_cxxflags)  $(CXXFLAGS)
+	@echo compiling headers
+	@rm -f $@
+	@echo $(CXX) -o $@ -c $< $(INCLUDES) $(AM_CPPFLAGS) $(AM_CXXFLAGS) $(module_cxxflags)  $(CXXFLAGS) >> $(LOGFILE)
+	@$(CXX) -o $@ -c $< $(INCLUDES) $(AM_CPPFLAGS) $(AM_CXXFLAGS) $(module_cxxflags)  $(CXXFLAGS)
 
  endif
 
@@ -303,8 +429,6 @@ AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT
 EXTRA_DIST = hi16-app-kadu.png hi22-app-kadu.png hi24-app-kadu.png hi32-app-kadu.png hi48-app-kadu.png kadu.desktop
 CLEANFILES = obj/*.o moc/*_moc.cpp $(PHEADERS_CLEANFILES)
 
-moc/%_moc.cpp: %.h
-	$(QT_MOC_DIR)/moc -o $@ $<
 
 install-data-local:
 #	$(mkinstalldirs) "$(DESTDIR)/$(includedir)/kadu/"
@@ -345,3 +469,8 @@ uninstall-local:
 	rm -f "$(DESTDIR)$(datadir)/pixmaps/kadu-48.png"
 	rm -f "$(DESTDIR)$(datadir)/pixmaps/kadu.png"
 	rm -f "$(DESTDIR)$(datadir)/pixmaps/kadu-16.png"
+
+clean-local:
+	for i in deps/*.d; do \
+		echo -n > $$i; \
+	done

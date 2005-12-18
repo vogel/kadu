@@ -43,25 +43,20 @@ build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
 ACLOCAL = @ACLOCAL@
-AMDEP_FALSE = @AMDEP_FALSE@
-AMDEP_TRUE = @AMDEP_TRUE@
 AMTAR = @AMTAR@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
 CC = @CC@
-CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CXX = @CXX@
-CXXDEPMODE = @CXXDEPMODE@
 
 CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DEFS = @DEFS@
-DEPDIR = @DEPDIR@
 DYNAMIC_OPT = @DYNAMIC_OPT@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
@@ -114,13 +109,7 @@ Z_LIBS = @Z_LIBS@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
 ac_ct_STRIP = @ac_ct_STRIP@
-am__fastdepCC_FALSE = @am__fastdepCC_FALSE@
-am__fastdepCC_TRUE = @am__fastdepCC_TRUE@
-am__fastdepCXX_FALSE = @am__fastdepCXX_FALSE@
-am__fastdepCXX_TRUE = @am__fastdepCXX_TRUE@
-am__include = @am__include@
 am__leading_dot = @am__leading_dot@
-am__quote = @am__quote@
 bindir = @bindir@
 build = @build@
 build_alias = @build_alias@
@@ -128,6 +117,7 @@ build_cpu = @build_cpu@
 build_os = @build_os@
 build_vendor = @build_vendor@
 datadir = @datadir@
+enable_dependency_tracking = @enable_dependency_tracking@
 enable_pheaders = @enable_pheaders@
 enabled_icon_themes = @enabled_icon_themes@
 exec_prefix = @exec_prefix@
@@ -163,6 +153,8 @@ target_vendor = @target_vendor@
 
 
 ###########################################################################
+LOGFILE = ../logfile.txt
+
 CONFIGURE_INCLUDES = $(XFREE_INCLUDES) $(QT_INCLUDES) $(OPENSSL_INCLUDES) $(GSM_INCLUDES) $(GADU_INCLUDES)
 INCLUDES = $(PHEADERS_INCLUDES) -I.. -I../kadu $(CONFIGURE_INCLUDES)
 
@@ -177,8 +169,10 @@ install_targets = $(addprefix install_,$(shared_modules) $(static_modules))
 subdir = modules
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/admin/mkinstalldirs
-CONFIG_HEADER = $(top_builddir)/kadu-config.h
+CONFIG_HEADER = $(top_builddir)/kadu-config.tmp
 CONFIG_CLEAN_FILES =
+depcomp =
+am__depfiles_maybe =
 DIST_SOURCES =
 DIST_COMMON = $(srcdir)/Makefile.in Makefile.am
 all: all-am
@@ -315,8 +309,10 @@ uninstall-am: uninstall-info-am uninstall-local
 
 # dirty hack - leading space required because od automake "if" support
 # time to say automake goodbye?
+ ifeq ($(enable_dependency_tracking),yes)
  ifneq (,$(module_d_files))
 -include $(module_d_files)
+ endif
  endif
 
 # this empty targets are specified to mark these files are not-intermediate
@@ -324,25 +320,39 @@ $(module_o_files):
 $(module_moc_cpp_files):
 
 %.$(SO_EXT): $(module_o_files)
-	$(CXX) $(SHARED_OPT) -o $@ $(module_o_files) $(module_ldflags) $(SHARED_FLAGS)
+	@echo linking module $@
+	@echo "$(CXX) $(SHARED_OPT) -o $@ $(module_o_files) $(module_ldflags) $(SHARED_FLAGS)" >> $(LOGFILE)
+	@$(CXX) $(SHARED_OPT) -o $@ $(module_o_files) $(module_ldflags) $(SHARED_FLAGS)
 
 %.a: $(module_o_files)
-	$(AR) rs $@ $(module_o_files)
+	@echo creating archive for static module $@
+	@echo "$(AR) rs $@ $(module_o_files)" >> $(LOGFILE)
+	@$(AR) rs $@ $(module_o_files)
 
 %.d: %.cpp
-	$(CXX) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) $< | sed "s,\(.*\):,$(basename $@).o $@:," > $@
+	@echo generating dependency file for $<
+	@echo '$(CXX) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) $< | sed "s,\(.*\):,$(basename $@).o $@:," > $@' >> $(LOGFILE)
+	@$(CXX) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) $< | sed "s,\(.*\):,$(basename $@).o $@:," > $@
 
 %.d: %.c
-	$(CC) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)  $(CXXFLAGS) $< | sed "s,\(.*\):,$(basename $@).o $@:," > $@
+	@echo generating dependency file for $<
+	@echo '$(CC) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)  $(CXXFLAGS) $< | sed "s,\(.*\):,$(basename $@).o $@:," > $@' >> $(LOGFILE)
+	@$(CC) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)  $(CXXFLAGS) $< | sed "s,\(.*\):,$(basename $@).o $@:," > $@
 
 %.o: %.cpp
-	$(CXX) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)  $(CXXFLAGS)
+	@echo compiling file $<
+	@echo "$(CXX) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)  $(CXXFLAGS)" >> $(LOGFILE)
+	@$(CXX) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)  $(CXXFLAGS)
 
 %.o: %.c
+	@echo compiling file $<
+	@echo "$(CC) -o $@ -c -fPIC $< $(CONFIGURE_INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS)" >> $(LOGFILE)
 	$(CC) -o $@ -c -fPIC $< $(CONFIGURE_INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS)
 
 %_moc.cpp: %.h
-	$(QT_MOC_DIR)/moc -o $@ $<
+	@echo generating $@
+	@echo "$(QT_MOC_DIR)/moc -o $@ $<" >> $(LOGFILE)
+	@$(QT_MOC_DIR)/moc -o $@ $<
 
 make_module_dirs:
 	$(mkinstalldirs) "$(DESTDIR)$(includedir)/kadu/modules/"
@@ -458,6 +468,8 @@ $(module_targets):
 		for trans in *.ts; do \
 			qm=`echo $${trans} | sed "s/\.ts/\.qm/"` && \
 			if [ ! -e $${qm} -o $$trans -nt $${qm} ]; then \
+				echo compiling translation file $$trans; \
+				echo $(QT_LRELEASE_DIR)/lrelease $$trans >> ../../$(LOGFILE); \
 				$(QT_LRELEASE_DIR)/lrelease $$trans; \
 			fi; \
 		done && \

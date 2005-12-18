@@ -2,7 +2,7 @@ dnl $Id$
 
 AC_INIT(lib/libgadu.h)
 AC_PREREQ(2.50)
-AC_CONFIG_HEADERS(config.h)
+AC_CONFIG_HEADERS(config.tmp:config.h.in)
 
 AC_SUBST(CFLAGS_LIBGADU)
 AC_SUBST(LIBS_LIBGADU)
@@ -75,18 +75,18 @@ dnl
 
 AC_DEFUN([AC_LIBGADU_DEFINE],
 [
-	sed 's/#undef __GG_LIBGADU_$1/#define __GG_LIBGADU_$1/' < lib/libgadu-config.h > lib/libgadu-config.h-
-	mv -f lib/libgadu-config.h- lib/libgadu-config.h
+	sed 's/#undef __GG_LIBGADU_$1/#define __GG_LIBGADU_$1/' < lib/libgadu-config.tmp > lib/libgadu-config.tmp-
+	mv -f lib/libgadu-config.tmp- lib/libgadu-config.tmp
 ])
 
 AC_DEFUN([AC_LIBGADU_UNDEF],
 [
-	sed 's/#undef __GG_LIBGADU_$1.*/\/* & *\//' < lib/libgadu-config.h > lib/libgadu-config.h-
-	mv -f lib/libgadu-config.h- lib/libgadu-config.h
+	sed 's/#undef __GG_LIBGADU_$1.*/\/* & *\//' < lib/libgadu-config.tmp > lib/libgadu-config.tmp-
+	mv -f lib/libgadu-config.tmp- lib/libgadu-config.tmp
 ])
 
-echo "/* Generated automatically by configure. Do not edit. */" > lib/libgadu-config.h
-cat lib/libgadu-config.h.in >> lib/libgadu-config.h
+echo "/* Generated automatically by configure. Do not edit. */" > lib/libgadu-config.tmp
+cat lib/libgadu-config.h.in >> lib/libgadu-config.tmp
 
 dnl
 dnl  Najpierw sprawdzamy te opcje, które s± wspólne dla libgadu i ekg.
@@ -105,8 +105,8 @@ if test "x$STDINT_H" = "x"; then
 	STDINT_H=libgadu-stdint.h 
 fi
 
-sed "s/#include <stdint.h>/#include <$STDINT_H>/" < lib/libgadu-config.h > lib/libgadu-config.h-
-mv -f lib/libgadu-config.h- lib/libgadu-config.h
+sed "s/#include <stdint.h>/#include <$STDINT_H>/" < lib/libgadu-config.tmp > lib/libgadu-config.tmp-
+mv -f lib/libgadu-config.tmp- lib/libgadu-config.tmp
 
 dnl SunOS
 AC_CHECK_LIB(nsl, t_accept, LIBS="$LIBS -lnsl")
@@ -300,6 +300,28 @@ LIBS_LIBGADU="$LIBS_LIBGADU $LIBS"
 AC_CONFIG_FILES(Makefile lib/Makefile examples/Makefile lib/libgadu.pc)
 
 AC_OUTPUT
+
+if test -f config.h; then
+	diff config.h config.tmp > /dev/null
+	if test $? != 0; then
+		mv config.tmp config.h
+	else
+		rm config.tmp
+	fi
+else
+	mv config.tmp config.h
+fi
+
+if test -f lib/libgadu-config.h; then
+	diff lib/libgadu-config.h lib/libgadu-config.tmp > /dev/null
+	if test $? != 0; then
+		mv lib/libgadu-config.tmp lib/libgadu-config.h
+	else
+		rm lib/libgadu-config.tmp
+	fi
+else
+	mv lib/libgadu-config.tmp lib/libgadu-config.h
+fi
 
 echo
 echo "configured options:"

@@ -9,6 +9,8 @@ endif
 
 ###########################################################################
 
+LOGFILE = ../logfile.txt
+
 CONFIGURE_INCLUDES = $(XFREE_INCLUDES) $(QT_INCLUDES) $(OPENSSL_INCLUDES) $(GSM_INCLUDES) $(GADU_INCLUDES)
 INCLUDES = $(PHEADERS_INCLUDES) -I.. -I../kadu $(CONFIGURE_INCLUDES)
 
@@ -22,8 +24,10 @@ module_d_files = $(addsuffix .d,$(basename $(module_o_files)))
 
 # dirty hack - leading space required because od automake "if" support
 # time to say automake goodbye?
+ ifeq ($(enable_dependency_tracking),yes)
  ifneq (,$(module_d_files))
 -include $(module_d_files)
+ endif
  endif
 
 # this empty targets are specified to mark these files are not-intermediate
@@ -31,25 +35,39 @@ $(module_o_files):
 $(module_moc_cpp_files):
 
 %.$(SO_EXT): $(module_o_files)
-	$(CXX) $(SHARED_OPT) -o $@ $(module_o_files) $(module_ldflags) $(SHARED_FLAGS)
+	@echo linking module $@
+	@echo "$(CXX) $(SHARED_OPT) -o $@ $(module_o_files) $(module_ldflags) $(SHARED_FLAGS)" >> $(LOGFILE)
+	@$(CXX) $(SHARED_OPT) -o $@ $(module_o_files) $(module_ldflags) $(SHARED_FLAGS)
 
 %.a: $(module_o_files)
-	$(AR) rs $@ $(module_o_files)
+	@echo creating archive for static module $@
+	@echo "$(AR) rs $@ $(module_o_files)" >> $(LOGFILE)
+	@$(AR) rs $@ $(module_o_files)
 
 %.d: %.cpp
-	$(CXX) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) $< | sed "s,\(.*\):,$(basename $@).o $@:," > $@
+	@echo generating dependency file for $<
+	@echo '$(CXX) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) $< | sed "s,\(.*\):,$(basename $@).o $@:," > $@' >> $(LOGFILE)
+	@$(CXX) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) $< | sed "s,\(.*\):,$(basename $@).o $@:," > $@
 
 %.d: %.c
-	$(CC) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)  $(CXXFLAGS) $< | sed "s,\(.*\):,$(basename $@).o $@:," > $@
+	@echo generating dependency file for $<
+	@echo '$(CC) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)  $(CXXFLAGS) $< | sed "s,\(.*\):,$(basename $@).o $@:," > $@' >> $(LOGFILE)
+	@$(CC) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)  $(CXXFLAGS) $< | sed "s,\(.*\):,$(basename $@).o $@:," > $@
 
 %.o: %.cpp
-	$(CXX) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)  $(CXXFLAGS)
+	@echo compiling file $<
+	@echo "$(CXX) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)  $(CXXFLAGS)" >> $(LOGFILE)
+	@$(CXX) -o $@ -c -fPIC $< $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags)  $(CXXFLAGS)
 
 %.o: %.c
+	@echo compiling file $<
+	@echo "$(CC) -o $@ -c -fPIC $< $(CONFIGURE_INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS)" >> $(LOGFILE)
 	$(CC) -o $@ -c -fPIC $< $(CONFIGURE_INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS)
 
 %_moc.cpp: %.h
-	$(QT_MOC_DIR)/moc -o $@ $<
+	@echo generating $@
+	@echo "$(QT_MOC_DIR)/moc -o $@ $<" >> $(LOGFILE)
+	@$(QT_MOC_DIR)/moc -o $@ $<
 
 make_module_dirs:
 	$(mkinstalldirs) "$(DESTDIR)$(includedir)/kadu/modules/"
@@ -169,6 +187,8 @@ $(module_targets):
 		for trans in *.ts; do \
 			qm=`echo $${trans} | sed "s/\.ts/\.qm/"` && \
 			if [ ! -e $${qm} -o $$trans -nt $${qm} ]; then \
+				echo compiling translation file $$trans; \
+				echo $(QT_LRELEASE_DIR)/lrelease $$trans >> ../../$(LOGFILE); \
 				$(QT_LRELEASE_DIR)/lrelease $$trans; \
 			fi; \
 		done && \

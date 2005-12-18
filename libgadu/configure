@@ -1266,7 +1266,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 
-          ac_config_headers="$ac_config_headers config.h"
+          ac_config_headers="$ac_config_headers config.tmp:config.h.in"
 
 
 
@@ -3054,8 +3054,8 @@ fi
 
 
 
-echo "/* Generated automatically by configure. Do not edit. */" > lib/libgadu-config.h
-cat lib/libgadu-config.h.in >> lib/libgadu-config.h
+echo "/* Generated automatically by configure. Do not edit. */" > lib/libgadu-config.tmp
+cat lib/libgadu-config.h.in >> lib/libgadu-config.tmp
 
 
 echo "$as_me:$LINENO: checking whether byte ordering is bigendian" >&5
@@ -3291,8 +3291,8 @@ esac
 
 if test "x$ac_cv_c_bigendian" = "xyes"; then
 
-	sed 's/#undef __GG_LIBGADU_BIGENDIAN/#define __GG_LIBGADU_BIGENDIAN/' < lib/libgadu-config.h > lib/libgadu-config.h-
-	mv -f lib/libgadu-config.h- lib/libgadu-config.h
+	sed 's/#undef __GG_LIBGADU_BIGENDIAN/#define __GG_LIBGADU_BIGENDIAN/' < lib/libgadu-config.tmp > lib/libgadu-config.tmp-
+	mv -f lib/libgadu-config.tmp- lib/libgadu-config.tmp
 
 fi
 
@@ -3401,8 +3401,8 @@ if test "x$STDINT_H" = "x"; then
 	STDINT_H=libgadu-stdint.h
 fi
 
-sed "s/#include <stdint.h>/#include <$STDINT_H>/" < lib/libgadu-config.h > lib/libgadu-config.h-
-mv -f lib/libgadu-config.h- lib/libgadu-config.h
+sed "s/#include <stdint.h>/#include <$STDINT_H>/" < lib/libgadu-config.tmp > lib/libgadu-config.tmp-
+mv -f lib/libgadu-config.tmp- lib/libgadu-config.tmp
 
 echo "$as_me:$LINENO: checking for t_accept in -lnsl" >&5
 echo $ECHO_N "checking for t_accept in -lnsl... $ECHO_C" >&6
@@ -3719,8 +3719,8 @@ if test `eval echo '${'$as_ac_var'}'` = yes; then
 #define `echo "HAVE_$ac_func" | $as_tr_cpp` 1
 _ACEOF
 
-	sed 's/#undef __GG_LIBGADU_HAVE_GETHOSTBYNAME_R/#define __GG_LIBGADU_HAVE_GETHOSTBYNAME_R/' < lib/libgadu-config.h > lib/libgadu-config.h-
-	mv -f lib/libgadu-config.h- lib/libgadu-config.h
+	sed 's/#undef __GG_LIBGADU_HAVE_GETHOSTBYNAME_R/#define __GG_LIBGADU_HAVE_GETHOSTBYNAME_R/' < lib/libgadu-config.tmp > lib/libgadu-config.tmp-
+	mv -f lib/libgadu-config.tmp- lib/libgadu-config.tmp
 
 fi
 done
@@ -3872,8 +3872,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
 	echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6
 
-	sed 's/#undef __GG_LIBGADU_HAVE_VA_COPY/#define __GG_LIBGADU_HAVE_VA_COPY/' < lib/libgadu-config.h > lib/libgadu-config.h-
-	mv -f lib/libgadu-config.h- lib/libgadu-config.h
+	sed 's/#undef __GG_LIBGADU_HAVE_VA_COPY/#define __GG_LIBGADU_HAVE_VA_COPY/' < lib/libgadu-config.tmp > lib/libgadu-config.tmp-
+	mv -f lib/libgadu-config.tmp- lib/libgadu-config.tmp
 
 
 else
@@ -3931,8 +3931,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
 	echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6
 
-	sed 's/#undef __GG_LIBGADU_HAVE___VA_COPY/#define __GG_LIBGADU_HAVE___VA_COPY/' < lib/libgadu-config.h > lib/libgadu-config.h-
-	mv -f lib/libgadu-config.h- lib/libgadu-config.h
+	sed 's/#undef __GG_LIBGADU_HAVE___VA_COPY/#define __GG_LIBGADU_HAVE___VA_COPY/' < lib/libgadu-config.tmp > lib/libgadu-config.tmp-
+	mv -f lib/libgadu-config.tmp- lib/libgadu-config.tmp
 
 
 else
@@ -4010,8 +4010,8 @@ fi;
 
 if test "x$with_c99_vsnprintf" = "xyes"; then
 
-	sed 's/#undef __GG_LIBGADU_HAVE_C99_VSNPRINTF/#define __GG_LIBGADU_HAVE_C99_VSNPRINTF/' < lib/libgadu-config.h > lib/libgadu-config.h-
-	mv -f lib/libgadu-config.h- lib/libgadu-config.h
+	sed 's/#undef __GG_LIBGADU_HAVE_C99_VSNPRINTF/#define __GG_LIBGADU_HAVE_C99_VSNPRINTF/' < lib/libgadu-config.tmp > lib/libgadu-config.tmp-
+	mv -f lib/libgadu-config.tmp- lib/libgadu-config.tmp
 
 fi
 
@@ -4055,8 +4055,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
 		echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6
 
-	sed 's/#undef __GG_LIBGADU_HAVE_C99_VSNPRINTF/#define __GG_LIBGADU_HAVE_C99_VSNPRINTF/' < lib/libgadu-config.h > lib/libgadu-config.h-
-	mv -f lib/libgadu-config.h- lib/libgadu-config.h
+	sed 's/#undef __GG_LIBGADU_HAVE_C99_VSNPRINTF/#define __GG_LIBGADU_HAVE_C99_VSNPRINTF/' < lib/libgadu-config.tmp > lib/libgadu-config.tmp-
+	mv -f lib/libgadu-config.tmp- lib/libgadu-config.tmp
 
 
 else
@@ -4754,8 +4754,8 @@ if test x"$acx_pthread_ok" = xyes; then
 		have_pthread=yes
 
 
-	sed 's/#undef __GG_LIBGADU_HAVE_PTHREAD/#define __GG_LIBGADU_HAVE_PTHREAD/' < lib/libgadu-config.h > lib/libgadu-config.h-
-	mv -f lib/libgadu-config.h- lib/libgadu-config.h
+	sed 's/#undef __GG_LIBGADU_HAVE_PTHREAD/#define __GG_LIBGADU_HAVE_PTHREAD/' < lib/libgadu-config.tmp > lib/libgadu-config.tmp-
+	mv -f lib/libgadu-config.tmp- lib/libgadu-config.tmp
 
 
         :
@@ -4824,8 +4824,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
 	echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6
 
-	sed 's/#undef __GG_LIBGADU_HAVE_LONG_LONG/#define __GG_LIBGADU_HAVE_LONG_LONG/' < lib/libgadu-config.h > lib/libgadu-config.h-
-	mv -f lib/libgadu-config.h- lib/libgadu-config.h
+	sed 's/#undef __GG_LIBGADU_HAVE_LONG_LONG/#define __GG_LIBGADU_HAVE_LONG_LONG/' < lib/libgadu-config.tmp > lib/libgadu-config.tmp-
+	mv -f lib/libgadu-config.tmp- lib/libgadu-config.tmp
 
 
 else
@@ -5035,8 +5035,8 @@ if test "x$have_openssl" = "xyes"; then
 	CFLAGS_LIBGADU="$CFLAGS_LIBGADU $OPENSSL_INCLUDES"
 	PC_REQUIRES="$PC_REQUIRES openssl"
 
-	sed 's/#undef __GG_LIBGADU_HAVE_OPENSSL/#define __GG_LIBGADU_HAVE_OPENSSL/' < lib/libgadu-config.h > lib/libgadu-config.h-
-	mv -f lib/libgadu-config.h- lib/libgadu-config.h
+	sed 's/#undef __GG_LIBGADU_HAVE_OPENSSL/#define __GG_LIBGADU_HAVE_OPENSSL/' < lib/libgadu-config.tmp > lib/libgadu-config.tmp-
+	mv -f lib/libgadu-config.tmp- lib/libgadu-config.tmp
 
 fi
 
@@ -5576,7 +5576,7 @@ do
   "lib/Makefile" ) CONFIG_FILES="$CONFIG_FILES lib/Makefile" ;;
   "examples/Makefile" ) CONFIG_FILES="$CONFIG_FILES examples/Makefile" ;;
   "lib/libgadu.pc" ) CONFIG_FILES="$CONFIG_FILES lib/libgadu.pc" ;;
-  "config.h" ) CONFIG_HEADERS="$CONFIG_HEADERS config.h" ;;
+  "config.tmp" ) CONFIG_HEADERS="$CONFIG_HEADERS config.tmp:config.h.in" ;;
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
 echo "$as_me: error: invalid argument: $ac_config_target" >&2;}
    { (exit 1); exit 1; }; };;
@@ -6204,6 +6204,28 @@ if test "$no_create" != yes; then
   $ac_cs_success || { (exit 1); exit 1; }
 fi
 
+
+if test -f config.h; then
+	diff config.h config.tmp > /dev/null
+	if test $? != 0; then
+		mv config.tmp config.h
+	else
+		rm config.tmp
+	fi
+else
+	mv config.tmp config.h
+fi
+
+if test -f lib/libgadu-config.h; then
+	diff lib/libgadu-config.h lib/libgadu-config.tmp > /dev/null
+	if test $? != 0; then
+		mv lib/libgadu-config.tmp lib/libgadu-config.h
+	else
+		rm lib/libgadu-config.tmp
+	fi
+else
+	mv lib/libgadu-config.tmp lib/libgadu-config.h
+fi
 
 echo
 echo "configured options:"

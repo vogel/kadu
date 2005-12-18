@@ -221,6 +221,13 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawki w od¶wie¿aniu chata / historii (np. znikaj±ce separatory) (joi)
 * poprawiony segfault gdy okno historii uruchamiane jest przy pomocy skrotu (pawel_p)
 * w katalogu modules make install_nazwa_modulu instaluje tylko ten wybrany modu³ (joi)
+* usprawnienia w budowaniu: po configure je¿eli nic siê nie zmieni³o w kadu-config.h,
+  modu³y nie s± powtórnie budowane, ¶ledzenie zale¿no¶ci dla core'a w przypadku u¿ywania
+  prekompilowanych nag³ówków rzeczywi¶cie dzia³a, opcja --disable-dependency-tracking
+  dzia³a dla modu³ów, czytelniejsze logi z kompilacji (w³a¶ciwe polecenia zapisywane
+  s± do kadu/logfile.txt - czyszczone przy wykonywaniu configure)
+  uwaga developerzy: przy wydawaniu nowej wersji oprócz pliku VERSION, trzeba
+  zmodyfikowaæ tak¿e version.m4 i przebudowaæ configure (./admin/configure-gen) (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
