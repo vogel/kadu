@@ -51,11 +51,11 @@ const QStringList& EmoticonsManager::themes() const
 
 void EmoticonsManager::setEmoticonsTheme(const QString& theme)
 {
-	if(ThemesList.contains(theme))
+	if (ThemesList.contains(theme))
 		config_file.writeEntry("Chat","EmoticonsTheme",theme);
 	else
 		config_file.writeEntry("Chat","EmoticonsTheme","gadu-gadu");
-	if(!loadGGEmoticonTheme())
+	if (!loadGGEmoticonTheme())
 		if(config_file.readEntry("Chat","EmoticonsTheme")!="gadu-gadu")
 		{
 			config_file.writeEntry("Chat","EmoticonsTheme","gadu-gadu");
@@ -67,9 +67,9 @@ QString EmoticonsManager::getQuoted(const QString& s, unsigned int& pos)
 {
 	QString r;
 	++pos; // eat '"'
-	while(s[pos]!="\"")
+	while (s[pos] != '"')
 	{
-		r+=s[pos];
+		r += s[pos];
 		++pos;
 	}
 	++pos; // eat '"'
@@ -79,17 +79,17 @@ QString EmoticonsManager::getQuoted(const QString& s, unsigned int& pos)
 QString EmoticonsManager::fixFileName(const QString& path,const QString& fn)
 {
 	// sprawd¼ czy oryginalna jest ok
-	if(QFile::exists(path+"/"+fn))
+	if (QFile::exists(path + "/" + fn))
 		return fn;
 	// mo¿e ca³o¶æ lowercase?
-	if(QFile::exists(path+"/"+fn.lower()))
+	if (QFile::exists(path + "/" + fn.lower()))
 		return fn.lower();
 	// rozbij na nazwê i rozszerzenie
-	QString name=fn.section('.',0,0);
-	QString ext=fn.section('.',1);
+	QString name = fn.section('.', 0, 0);
+	QString ext = fn.section('.', 1);
 	// mo¿e rozszerzenie uppercase?
-	if(QFile::exists(path+"/"+name+"."+ext.upper()))
-		return name+"."+ext.upper();
+	if (QFile::exists(path + "/" + name + "." + ext.upper()))
+		return name + "." + ext.upper();
 	// nie umiemy poprawiæ, zwracamy oryginaln±
 	return fn;
 }
@@ -97,54 +97,54 @@ QString EmoticonsManager::fixFileName(const QString& path,const QString& fn)
 bool EmoticonsManager::loadGGEmoticonThemePart(QString subdir)
 {
 	if (!subdir.isEmpty())
-		subdir+="/";
-	QString path=themePath()+"/"+subdir;
-	QFile theme_file(path+"emots.txt");
-	if(!theme_file.open(IO_ReadOnly))
+		subdir += "/";
+	QString path = themePath() + "/" + subdir;
+	QFile theme_file(path + "emots.txt");
+	if (!theme_file.open(IO_ReadOnly))
 	{
 		kdebugm(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "Error opening emots.txt file\n");
 		return false;
 	}
 	QTextStream theme_stream(&theme_file);
 	theme_stream.setCodec(codec_cp1250);
-	while(!theme_stream.atEnd())
+	while (!theme_stream.atEnd())
 	{
 		EmoticonsListItem item;
-		QString line=theme_stream.readLine();
-		unsigned int i=0;
-		bool multi=false;
+		QString line = theme_stream.readLine();
+		unsigned int i = 0;
+		bool multi = false;
 		QStringList aliases;
-		if(line[i]=='*')
+		if (line[i] == '*')
 			++i; // eat '*'
-		if(line[i]=='(')
+		if (line[i] == '(')
 		{
-			multi=true;
+			multi = true;
 			++i;
 		}
 		for(;;)
 		{
 			aliases.append(getQuoted(line, i));
-			if((!multi)||line[i]==')')
+			if((!multi) || line[i] == ')')
 				break;
 			++i; // eat ','
 		}
-		if(multi)
+		if (multi)
 			++i; // eat ')'
 		++i; // eat ','
-		item.anim=subdir+fixFileName(path,getQuoted(line,i));
-		if(i<line.length()&&line[i]==',')
+		item.anim = subdir + fixFileName(path, getQuoted(line, i));
+		if (i < line.length() && line[i] == ',')
 		{
 			++i; // eat ','
-			item.stat=subdir+fixFileName(path,getQuoted(line,i));
+			item.stat = subdir + fixFileName(path, getQuoted(line, i));
 		}
 		else
-			item.stat=item.anim;
+			item.stat = item.anim;
 		CONST_FOREACH(alias, aliases)
 		{
-			item.alias=*alias;
+			item.alias = *alias;
 			Aliases.push_back(item);
 		}
-		item.alias=aliases[0];
+		item.alias = aliases[0];
 		Selector.append(item);
 	}
 	theme_file.close();
@@ -156,7 +156,7 @@ bool EmoticonsManager::loadGGEmoticonTheme()
 {
 	Aliases.clear();
 	Selector.clear();
-	bool something_loaded=false;
+	bool something_loaded = false;
 	if (loadGGEmoticonThemePart(QString::null))
 		something_loaded = true;
 	QStringList subdirs = getSubDirs(themePath());
@@ -181,7 +181,7 @@ bool EmoticonsManager::loadGGEmoticonTheme()
 
 QString EmoticonsManager::themePath() const
 {
-	return dataPath("kadu/themes/emoticons/"+config_file.readEntry("Chat","EmoticonsTheme"));
+	return dataPath("kadu/themes/emoticons/" + config_file.readEntry("Chat","EmoticonsTheme"));
 }
 
 void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor, EmoticonsStyle style)
@@ -206,7 +206,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor,
 	for(int e_i = 0; e_i < doc.countElements(); ++e_i)
 	{
 		// emots are not expanded in html tags
-		if(doc.isTagElement(e_i))
+		if (doc.isTagElement(e_i))
 			continue;
 
 		// analyze text of this text part
@@ -275,7 +275,7 @@ int EmoticonsManager::selectorCount() const
 
 QString EmoticonsManager::selectorString(int emot_num) const
 {
-	if (emot_num>=0 && uint(emot_num)<Selector.count())
+	if (emot_num >= 0 && uint(emot_num) < Selector.count())
 		return Selector[emot_num].alias;
 	else
 		return QString::null;
@@ -283,7 +283,7 @@ QString EmoticonsManager::selectorString(int emot_num) const
 
 QString EmoticonsManager::selectorAnimPath(int emot_num) const
 {
-	if (emot_num>=0 && uint(emot_num)<Selector.count())
+	if (emot_num >= 0 && uint(emot_num) < Selector.count())
 		return themePath() + "/" + Selector[emot_num].anim;
 	else
 		return QString::null;
@@ -291,7 +291,7 @@ QString EmoticonsManager::selectorAnimPath(int emot_num) const
 
 QString EmoticonsManager::selectorStaticPath(int emot_num) const
 {
-	if (emot_num>=0 && uint(emot_num)<Selector.count())
+	if (emot_num >= 0 && uint(emot_num) < Selector.count())
 		return themePath() + "/" + Selector[emot_num].stat;
 	else
 		return QString::null;
@@ -320,7 +320,7 @@ EmoticonSelectorButton::~EmoticonSelectorButton()
 	if (Movie)
 	{
 		delete Movie;
-		Movie=NULL;
+		Movie = NULL;
 	}
 }
 
@@ -337,11 +337,11 @@ void EmoticonSelectorButton::movieUpdate()
 void EmoticonSelectorButton::enterEvent(QEvent* e)
 {
 	QToolButton::enterEvent(e);
-	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")!=EMOTS_ANIMATED)
+	if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") != EMOTS_ANIMATED)
 		return;
-	if(Movie==NULL)
+	if (Movie == NULL)
 	{
-		Movie=new QMovie(AnimPath);
+		Movie = new QMovie(AnimPath);
 		Movie->connectUpdate(this, SLOT(movieUpdate()));
 	}
 }
@@ -349,10 +349,10 @@ void EmoticonSelectorButton::enterEvent(QEvent* e)
 void EmoticonSelectorButton::leaveEvent(QEvent* e)
 {
 	QToolButton::leaveEvent(e);
-	if(Movie!=NULL)
+	if (Movie != NULL)
 	{
 		delete Movie;
-		Movie=NULL;
+		Movie = NULL;
 		setPixmap(QPixmap(StaticPath));
 	}
 }
@@ -366,19 +366,20 @@ EmoticonSelector::EmoticonSelector(QWidget *parent, const char *name, Chat * cal
 	int btn_width=0;
 	QGridLayout *grid = new QGridLayout(this, 0, selector_width, 0, 0);
 
-	for(int i=0; i<selector_count; ++i)
+	for(int i = 0; i < selector_count; ++i)
 	{
 		EmoticonSelectorButton* btn = new EmoticonSelectorButton(
-			this,emoticons->selectorString(i),
+			this, emoticons->selectorString(i),
 			emoticons->selectorAnimPath(i),
 			emoticons->selectorStaticPath(i));
-		btn_width=btn->sizeHint().width();
-		grid->addWidget(btn, i/selector_width, i%selector_width);
-		connect(btn,SIGNAL(clicked(const QString&)),this,SLOT(iconClicked(const QString&)));
+		btn_width = btn->sizeHint().width();
+		grid->addWidget(btn, i / selector_width, i % selector_width);
+		connect(btn, SIGNAL(clicked(const QString&)), this, SLOT(iconClicked(const QString&)));
 	}
 }
 
-void EmoticonSelector::closeEvent(QCloseEvent *e) {
+void EmoticonSelector::closeEvent(QCloseEvent *e)
+{
 	callingwidget->addEmoticon(QString::null);
 	QWidget::closeEvent(e);
 }
@@ -677,8 +678,9 @@ AnimTextItem::AnimTextItem(
 		Movies = new MoviesCache();
 	if (Movies->contains(filename))
 	{
-		++(*Movies)[filename].count;
-		md = (*Movies)[filename];
+		MovieCacheData &m = (*Movies)[filename];
+		++m.count;
+		md = m;
 		kdebugm(KDEBUG_INFO, "Movie %s loaded from cache\n", filename.local8Bit().data());
 	}
 	else
@@ -833,9 +835,9 @@ PrefixNode* EmotsWalker::findChild( PrefixNode* node, const QChar& c )
 	myPair.first = c;
 	// create variable 'position' with result of binary search in childs
 	// of given node
-	VAR( position, std::upper_bound ( node -> childs.begin(), node -> childs.end(), myPair ) );
+	VAR( position, std::upper_bound ( node -> childs.constBegin(), node -> childs.constEnd(), myPair ) );
 
-	if ( position != node -> childs.end() && position -> first == c )
+	if ( position != node -> childs.constEnd() && position -> first == c )
 		return position -> second;
 	else
 		return NULL;
