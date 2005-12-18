@@ -313,7 +313,7 @@ ac_includes_default="\
 #endif"
 
 ac_subdirs_all="$ac_subdirs_all libgadu"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE am__leading_dot CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT CC CFLAGS ac_ct_CC CPP EGREP PTHREAD_CPPFLAGS PTHREAD_LDFLAGS PTHREAD_LIBS Z_LIBS PNG_LIBS QT_INCLUDES QT_LIBS QT_MOC_DIR QT_LRELEASE_DIR LIBOBJS GADU_LIBS GADU_INCLUDES DYNAMIC_OPT SO_EXT SHARED_OPT SHARED_FLAGS enable_pheaders PHEADERS_ENABLED_TRUE PHEADERS_ENABLED_FALSE enable_dependency_tracking shared_modules static_modules static_modules_ldflags STATIC_MODULES_DECLS STATIC_MODULES_REGRS enabled_icon_themes MY_SUBDIRS subdirs LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE am__leading_dot CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT CC CFLAGS ac_ct_CC CPP EGREP PTHREAD_CPPFLAGS PTHREAD_LDFLAGS PTHREAD_LIBS Z_LIBS PNG_LIBS QT_INCLUDES QT_LIBS QT_MOC_DIR QT_LRELEASE_DIR LIBOBJS GADU_LIBS GADU_INCLUDES DYNAMIC_OPT SO_EXT SHARED_OPT SHARED_FLAGS enable_pheaders PHEADERS_ENABLED_TRUE PHEADERS_ENABLED_FALSE enable_dependency_tracking enable_final shared_modules static_modules static_modules_ldflags STATIC_MODULES_DECLS STATIC_MODULES_REGRS enabled_icon_themes MY_SUBDIRS subdirs LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -871,6 +871,7 @@ Optional Features:
   --disable-sig-handling  disable system signals handling
   --enable-pheaders       enable precompiled headers support
   --disable-dependency-tracking speeds up one-time builds
+  --enable-final           speeds up one-time builds
   --enable-dist-info=DIST enable distribution type information, default: sources
 
 Optional Packages:
@@ -9721,6 +9722,17 @@ fi
 
 #AM_CONDITIONAL(DEPENDENCY_TRACKING_DISABLED,test "$disable_dependency_tracking" = "yes")
 
+# final build support
+# Check whether --enable-final or --disable-final was given.
+if test "${enable_final+set}" = set; then
+  enableval="$enable_final"
+
+fi;
+if test -z "$enable_final"; then
+	enable_final=no
+fi
+
+
 # dist-info support
 # Check whether --enable-dist-info or --disable-dist-info was given.
 if test "${enable_dist_info+set}" = set; then
@@ -9823,6 +9835,45 @@ echo "$as_me: error: $mod download failed!" >&2;}
 			echo "MODULE_LDFLAGS:        $MODULE_LDFLAGS" && \
 			echo "MODULE_TOOLS:          $MODULE_TOOLS" && \
 			echo "MODULE_CONFIGURE_CMD:  $MODULE_CONFIGURE_CMD" && \
+
+			if test $enable_final == yes; then \
+				for src in $MODULE_SOURCES; do \
+					if test "`echo $src | sed 's/.*\.\(.*\)$/\1/'`" == "cpp"; then \
+						echo "#include \"$src\"" >> modules/$mod/.final2.cpp; \
+					else
+						echo "#include \"$src\"" >> modules/$mod/.final2.c; \
+					fi \
+				done && \
+				for hdr in $MODULE_MOC_HEADERS; do \
+					moc=`echo $hdr | sed "s/.h$/_moc.cpp/"`; \
+					echo "#include \"$moc\"" >> modules/$mod/.final2.cpp; \
+				done && \
+				if test -f modules/$mod/.final.cpp; then \
+					diff modules/$mod/.final.cpp modules/$mod/.final2.cpp >/dev/null; \
+					if test $? != 0 ; then \
+						mv modules/$mod/.final2.cpp modules/$mod/.final.cpp; \
+					else \
+						rm modules/$mod/.final2.cpp; \
+					fi \
+				else \
+					mv modules/$mod/.final2.cpp modules/$mod/.final.cpp; \
+				fi && \
+				if test -f modules/$mod/.final.c; then \
+					diff modules/$mod/.final.c modules/$mod/.final2.c >/dev/null; \
+					if test $? != 0 ; then \
+						mv modules/$mod/.final2.c modules/$mod/.final.c; \
+					else \
+						rm modules/$mod/.final2.c; \
+					fi \
+				else \
+					if test -f modules/$mod/.final2.c; then \
+						mv modules/$mod/.final2.c modules/$mod/.final.c; \
+					fi \
+				fi \
+			else \
+				rm -f modules/$mod/.final.cpp; \
+				rm -f modules/$mod/.final.c; \
+			fi && \
 
 			for lib in $MODULE_LIBS; do \
 
@@ -11035,6 +11086,7 @@ s,@enable_pheaders@,$enable_pheaders,;t t
 s,@PHEADERS_ENABLED_TRUE@,$PHEADERS_ENABLED_TRUE,;t t
 s,@PHEADERS_ENABLED_FALSE@,$PHEADERS_ENABLED_FALSE,;t t
 s,@enable_dependency_tracking@,$enable_dependency_tracking,;t t
+s,@enable_final@,$enable_final,;t t
 s,@shared_modules@,$shared_modules,;t t
 s,@static_modules@,$static_modules,;t t
 s,@static_modules_ldflags@,$static_modules_ldflags,;t t

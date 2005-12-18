@@ -32,7 +32,41 @@ module_d_files = $(addsuffix .d,$(basename $(module_o_files)))
 
 # this empty targets are specified to mark these files are not-intermediate
 $(module_o_files):
+$(module_src_files):
 $(module_moc_cpp_files):
+
+ ifeq ($(enable_final),yes)
+
+%.$(SO_EXT): $(module_src_files) $(module_moc_cpp_files) $(module_h_files)
+	@dir=`echo $@ | sed "s/\(.*\)\/.*/\1/"` && \
+	fincpp="$$dir/.final.cpp" && \
+	finc="$$dir/.final.c" && \
+	if test -f $$finc; then \
+		echo compiling c files for module $$dir && \
+		echo "$(CC) -o $$dir/.final.o -c -fPIC $$finc $(CONFIGURE_INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS)" >> $(LOGFILE) && \
+		$(CC) -o $$dir/.final.o -c -fPIC $$finc $(CONFIGURE_INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS); \
+		fincpp="$$fincpp $$dir/.final.o"; \
+	fi && \
+	echo compiling and linking module $$dir && \
+	echo "$(CXX) $(SHARED_OPT) -o $@ -fPIC $$fincpp $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) $(module_ldflags) $(SHARED_FLAGS)" >> $(LOGFILE) && \
+	$(CXX) $(SHARED_OPT) -o $@ -fPIC $$fincpp $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) $(module_ldflags) $(SHARED_FLAGS)
+
+%.a: $(module_src_files) $(module_moc_cpp_files) $(module_h_files)
+	@dir=`echo $@ | sed "s/\(.*\)\/.*/\1/"` && \
+	fincpp="$$dir/.final.cpp" && \
+	finc="$$dir/.final.c" && \
+	if test -f $$finc; then \
+		echo compiling c files for module $$dir && \
+		echo "$(CC) -o $$dir/.final.o -c -fPIC $$finc $(CONFIGURE_INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS)" >> $(LOGFILE) && \
+		$(CC) -o $$dir/.final.o -c -fPIC $$finc $(CONFIGURE_INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS); \
+		fincpp="$$fincpp $$dir/.final.o"; \
+	fi && \
+	echo compiling static module $$dir && \
+	$(CXX) -c -o $@.tmp -fPIC $$fincpp $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) && \
+	$(AR) rs $@ $@.tmp && \
+	rm -f $@.tmp
+
+ else
 
 %.$(SO_EXT): $(module_o_files)
 	@echo linking module $@
@@ -43,6 +77,8 @@ $(module_moc_cpp_files):
 	@echo creating archive for static module $@
 	@echo "$(AR) rs $@ $(module_o_files)" >> $(LOGFILE)
 	@$(AR) rs $@ $(module_o_files)
+
+ endif
 
 %.d: %.cpp
 	@echo generating dependency file for $<
@@ -157,7 +193,9 @@ $(module_targets):
 	moc_cpp_files="" && \
 	o_files="" && \
 	h_files="" && \
+	src_files="" && \
 	for src_file in $$MODULE_SOURCES; do \
+		src_files="$$src_files $$dir/$$src_file"; \
 		o_file=`expr $$src_file : "\(.*\)\\.c.*"`.o && \
 		o_files="$$o_files $$dir/$$o_file"; \
 	done && \
@@ -176,6 +214,7 @@ $(module_targets):
 		file_name=$$dir.a; \
 	fi && \
 	$(MAKE) "module_o_files=$$o_files" \
+		"module_src_files=$$src_files" \
 		"module_h_files=$$h_files" \
 		"module_moc_cpp_files=$$moc_cpp_files" \
 		"module_cxxflags=$$MODULE_CXXFLAGS" \

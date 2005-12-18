@@ -228,6 +228,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   s± do kadu/logfile.txt - czyszczone przy wykonywaniu configure)
   uwaga developerzy: przy wydawaniu nowej wersji oprócz pliku VERSION, trzeba
   zmodyfikowaæ tak¿e version.m4 i przebudowaæ configure (./admin/configure-gen) (joi)
+* nowa opcja configure "--enable-final" przyspieszaj±ca oko³o dwukrotnie kompilacjê,
+  ale wymagaj±ca du¿o pamiêci i nieprzydatna dla developerów (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

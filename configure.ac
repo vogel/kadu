@@ -274,6 +274,45 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 			echo "MODULE_TOOLS:          $MODULE_TOOLS" && \
 			echo "MODULE_CONFIGURE_CMD:  $MODULE_CONFIGURE_CMD" && \
 			
+			if test $enable_final == yes; then \
+				for src in $MODULE_SOURCES; do \
+					if test "`echo $src | sed 's/.*\.\(.*\)$/\1/'`" == "cpp"; then \
+						echo "#include \"$src\"" >> modules/$mod/.final2.cpp; \
+					else
+						echo "#include \"$src\"" >> modules/$mod/.final2.c; \
+					fi \
+				done && \
+				for hdr in $MODULE_MOC_HEADERS; do \
+					moc=`echo $hdr | sed "s/.h$/_moc.cpp/"`; \
+					echo "#include \"$moc\"" >> modules/$mod/.final2.cpp; \
+				done && \
+				if test -f modules/$mod/.final.cpp; then \
+					diff modules/$mod/.final.cpp modules/$mod/.final2.cpp >/dev/null; \
+					if test $? != 0 ; then \
+						mv modules/$mod/.final2.cpp modules/$mod/.final.cpp; \
+					else \
+						rm modules/$mod/.final2.cpp; \
+					fi \
+				else \
+					mv modules/$mod/.final2.cpp modules/$mod/.final.cpp; \
+				fi && \
+				if test -f modules/$mod/.final.c; then \
+					diff modules/$mod/.final.c modules/$mod/.final2.c >/dev/null; \
+					if test $? != 0 ; then \
+						mv modules/$mod/.final2.c modules/$mod/.final.c; \
+					else \
+						rm modules/$mod/.final2.c; \
+					fi \
+				else \
+					if test -f modules/$mod/.final2.c; then \
+						mv modules/$mod/.final2.c modules/$mod/.final.c; \
+					fi \
+				fi \
+			else \
+				rm -f modules/$mod/.final.cpp; \
+				rm -f modules/$mod/.final.c; \
+			fi && \
+			
 			for lib in $MODULE_LIBS; do \
 				FIND_LIBRARY([$lib],[$MODULE_LIBS_PATH],
 				[
@@ -751,6 +790,13 @@ if test -z "$enable_dependency_tracking"; then
 fi
 AC_SUBST(enable_dependency_tracking)
 #AM_CONDITIONAL(DEPENDENCY_TRACKING_DISABLED,test "$disable_dependency_tracking" = "yes")
+
+# final build support
+AC_ARG_ENABLE(final,[  --enable-final           speeds up one-time builds])
+if test -z "$enable_final"; then
+	enable_final=no
+fi
+AC_SUBST(enable_final)
 
 # dist-info support
 AC_ARG_ENABLE(dist-info,[  --enable-dist-info=DIST enable distribution type information, default: sources])

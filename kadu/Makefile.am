@@ -383,6 +383,20 @@ moc/%_moc.cpp: %.h
 	@echo $(QT_MOC_DIR)/moc -o $@ $< >> $(LOGFILE)
 	@$(QT_MOC_DIR)/moc -o $@ $<
 
+ ifeq ($(enable_final),yes)
+
+kadu$(EXEEXT): $(kadu_SOURCES) $(kadu_HEADERS) $(BUILT_SOURCES) $(kadu_DEPENDENCIES) 
+	@rm -f kadu$(EXEEXT)
+	$(CXXCOMPILE) $(AM_LDFLAGS) $(LDFLAGS) -o $@ $(kadu_LDFLAGS) final.cpp $(kadu_LDADD) $(LIBS)
+
+ else
+
+kadu$(EXEEXT): $(kadu_OBJECTS) $(kadu_DEPENDENCIES) 
+	@rm -f kadu$(EXEEXT)
+	$(CXXLINK) $(kadu_LDFLAGS) $(kadu_OBJECTS) $(kadu_LDADD) $(LIBS)
+
+ endif
+
 ###########################################################################
 # Precompiled headers support
 ###########################################################################

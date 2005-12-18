@@ -113,6 +113,7 @@ build_os = @build_os@
 build_vendor = @build_vendor@
 datadir = @datadir@
 enable_dependency_tracking = @enable_dependency_tracking@
+enable_final = @enable_final@
 enable_pheaders = @enable_pheaders@
 enabled_icon_themes = @enabled_icon_themes@
 exec_prefix = @exec_prefix@
@@ -480,9 +481,6 @@ uninstall-binPROGRAMS:
 
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
-kadu$(EXEEXT): $(kadu_OBJECTS) $(kadu_DEPENDENCIES) 
-	@rm -f kadu$(EXEEXT)
-	$(CXXLINK) $(kadu_LDFLAGS) $(kadu_OBJECTS) $(kadu_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT) core *.core
@@ -825,6 +823,20 @@ moc/%_moc.cpp: %.h
 	@echo generating $@
 	@echo $(QT_MOC_DIR)/moc -o $@ $< >> $(LOGFILE)
 	@$(QT_MOC_DIR)/moc -o $@ $<
+
+ ifeq ($(enable_final),yes)
+
+kadu$(EXEEXT): $(kadu_SOURCES) $(kadu_HEADERS) $(BUILT_SOURCES) $(kadu_DEPENDENCIES) 
+	@rm -f kadu$(EXEEXT)
+	$(CXXCOMPILE) $(AM_LDFLAGS) $(LDFLAGS) -o $@ $(kadu_LDFLAGS) final.cpp $(kadu_LDADD) $(LIBS)
+
+ else
+
+kadu$(EXEEXT): $(kadu_OBJECTS) $(kadu_DEPENDENCIES) 
+	@rm -f kadu$(EXEEXT)
+	$(CXXLINK) $(kadu_LDFLAGS) $(kadu_OBJECTS) $(kadu_LDADD) $(LIBS)
+
+ endif
 
 # dirty hack - leading space required because od automake "if" support
 # time to say automake goodbye?
