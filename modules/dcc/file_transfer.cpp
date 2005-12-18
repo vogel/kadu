@@ -1290,6 +1290,7 @@ void FileTransferManager::fileDropped(const UserGroup *group, const QString &fil
 
 void FileTransferManager::toggleFileTransferWindow()
 {
+	kdebugmf(KDEBUG_FUNCTION_START, "start: fileTransferWindow:%p\n", fileTransferWindow);
 	if (fileTransferWindow)
 	{
 		disconnect(this, SIGNAL(newFileTransfer(FileTransfer *)),
@@ -1306,10 +1307,12 @@ void FileTransferManager::toggleFileTransferWindow()
 			fileTransferWindow, SLOT(newFileTransfer(FileTransfer *)));
 		fileTransferWindow->show();
 	}
+	kdebugf2();
 }
 
 void FileTransferManager::fileTransferWindowDestroyed()
 {
+	kdebugf();
 	fileTransferWindow = 0;
 }
 
