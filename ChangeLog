@@ -230,6 +230,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   zmodyfikowaæ tak¿e version.m4 i przebudowaæ configure (./admin/configure-gen) (joi)
 * nowa opcja configure "--enable-final" przyspieszaj±ca oko³o dwukrotnie kompilacjê,
   ale wymagaj±ca du¿o pamiêci i nieprzydatna dla developerów (joi)
+* poprawione od¶wie¿anie listy kontaktów po dopisaniu komórki do danych o kontakcie,
+  poprawki w obs³udze kontaktów bez numeru gg i komórki (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

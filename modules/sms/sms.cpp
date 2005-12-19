@@ -559,7 +559,7 @@ void SmsSlots::onUserClicked(int button, QListBoxItem* /*item*/, const QPoint& /
 void SmsSlots::onUserDblClicked(UserListElement user)
 {
 	kdebugf();
-	if (!user.usesProtocol("Gadu"))
+	if (!user.usesProtocol("Gadu") && !user.mobile().isEmpty())
 		newSms(user.altNick());
 	kdebugf2();
 }

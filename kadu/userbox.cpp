@@ -535,7 +535,12 @@ void UserBox::refresh()
 //		kdebugm(KDEBUG_INFO, "creating: %s %d\n", (*user).altNick().local8Bit().data(), usesGadu);
 		KaduListBoxPixmap *lbp;
 		if (!usesGadu)
-			lbp = new KaduListBoxPixmap(icons_manager->loadIcon("Mobile"), *user, false);
+		{
+			if ((*user).mobile().isEmpty())
+				lbp = new KaduListBoxPixmap(QPixmap(), *user, false);
+			else
+				lbp = new KaduListBoxPixmap(icons_manager->loadIcon("Mobile"), *user, false);
+		}
 		else if (pending.pendingMsgs(*user))
 			lbp = new KaduListBoxPixmap(icons_manager->loadIcon("Message"), *user, bold);
 		else
@@ -1178,7 +1183,7 @@ void UserBox::statusChanged(UserListElement elem, QString protocolName,
 void UserBox::userDataChanged(UserListElement elem, QString name, QVariant oldValue,
 					QVariant currentValue, bool massively, bool last)
 {
-	if (name != "AltNick") // we are not interested in other names
+	if (name != "AltNick" && name != "Mobile") // we are not interested in other names
 		return;
 	if (massively)
 		refreshLater();
