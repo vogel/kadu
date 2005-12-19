@@ -1162,3 +1162,8 @@ void Chat::dropEvent(QDropEvent *e)
 	else
 		e->accept(false);
 }
+
+void Chat::scrollHistoryToBottom()
+{
+	body->scrollToBottom();
+}

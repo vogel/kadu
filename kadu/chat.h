@@ -91,6 +91,8 @@ class Chat : public QMainWindow
 		**/
 		void pruneWindow();
 
+		KaduTextBrowser* body; /*!< historia rozmowy, proszê NIE dawaæ dostêpu na zewn±trz do tej zmiennej */
+
 	private slots:
 
 		/**
@@ -179,8 +181,6 @@ class Chat : public QMainWindow
 		virtual void mouseReleaseEvent(QMouseEvent *e);
 
 	public:
-		// FIXME - nie powinno byc publicznych zmiennych
-		KaduTextBrowser* body; /*!< historia rozmowy */
 
 		/**
 			Konstruktor okna rozmowy
@@ -281,6 +281,8 @@ class Chat : public QMainWindow
 		virtual void dragEnterEvent(QDragEnterEvent *e);
 		virtual void dropEvent(QDropEvent *e);
 		virtual void dragMoveEvent(QDragMoveEvent *e);
+
+		void scrollHistoryToBottom();
 
 	public slots:
 
