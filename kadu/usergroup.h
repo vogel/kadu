@@ -404,6 +404,18 @@ class UserListElements : public QValueList<UserListElement>
 		UserListElements(UserListElement);
 
 		/**
+			\fn UserListElements(const UserListElements &)
+			Konstruktor kopiuj±cy
+		**/
+		UserListElements(const UserListElements &);
+
+		/**
+			\fn UserListElements(const QValueList<UserListElement> &)
+			Konstruktor inicjuj±cy siê wskazan± list±
+		**/
+		UserListElements(const QValueList<UserListElement> &);
+
+		/**
 			\fn UserListElements()
 			Standardowy konstruktor.
 		**/

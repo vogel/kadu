@@ -253,10 +253,7 @@ UserGroup::iterator UserGroup::end () const
 
 UserListElements UserGroup::toUserListElements() const
 {
-	UserListElements ules;
-	CONST_FOREACH(ule, *this)
-		ules.append(*ule);
-	return ules;
+	return d->list;
 }
 
 void UserGroup::resize(int size)
@@ -293,6 +290,14 @@ void UserListElements::sort()
 UserListElements::UserListElements(UserListElement u)
 {
 	append(u);
+}
+
+UserListElements::UserListElements(const UserListElements &u) : QValueList<UserListElement>(u)
+{
+}
+
+UserListElements::UserListElements(const QValueList<UserListElement> &u) : QValueList<UserListElement>(u)
+{
 }
 
 UserListElements::UserListElements()
