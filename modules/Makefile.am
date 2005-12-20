@@ -22,11 +22,15 @@ CXXFLAGS = @CXXFLAGS@
 
 module_d_files = $(addsuffix .d,$(basename $(module_o_files)))
 
-# dirty hack - leading space required because od automake "if" support
+# dirty hack - leading space required because of automake "if" support
 # time to say automake goodbye?
  ifeq ($(enable_dependency_tracking),yes)
  ifneq (,$(module_d_files))
+ ifeq ($(enable_final),yes)
+-include $(module_name)/.final.d
+ else
 -include $(module_d_files)
+ endif
  endif
  endif
 
@@ -37,8 +41,8 @@ $(module_moc_cpp_files):
 
  ifeq ($(enable_final),yes)
 
-%.$(SO_EXT): $(module_src_files) $(module_moc_cpp_files) $(module_h_files)
-	@dir=`echo $@ | sed "s/\(.*\)\/.*/\1/"` && \
+%.$(SO_EXT): $(module_src_files) $(module_moc_cpp_files) $(module_h_files) $(module_name)/.final.d
+	@dir="$$module_name" && \
 	fincpp="$$dir/.final.cpp" && \
 	finc="$$dir/.final.c" && \
 	if test -f $$finc; then \
@@ -51,8 +55,8 @@ $(module_moc_cpp_files):
 	echo "$(CXX) $(SHARED_OPT) -o $@ -fPIC $$fincpp $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) $(module_ldflags) $(SHARED_FLAGS)" >> $(LOGFILE) && \
 	$(CXX) $(SHARED_OPT) -o $@ -fPIC $$fincpp $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) $(module_ldflags) $(SHARED_FLAGS)
 
-%.a: $(module_src_files) $(module_moc_cpp_files) $(module_h_files)
-	@dir=`echo $@ | sed "s/\(.*\)\/.*/\1/"` && \
+%.a: $(module_src_files) $(module_moc_cpp_files) $(module_h_files) $(module_name)/.final.d
+	@dir="$$module_name" && \
 	fincpp="$$dir/.final.cpp" && \
 	finc="$$dir/.final.c" && \
 	if test -f $$finc; then \
@@ -213,7 +217,8 @@ $(module_targets):
 	if test -z `expr " $(shared_modules) " : ".* \($$dir\) "`; then \
 		file_name=$$dir.a; \
 	fi && \
-	$(MAKE) "module_o_files=$$o_files" \
+	$(MAKE) "module_name=$$dir" \
+		"module_o_files=$$o_files" \
 		"module_src_files=$$src_files" \
 		"module_h_files=$$h_files" \
 		"module_moc_cpp_files=$$moc_cpp_files" \
