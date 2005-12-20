@@ -151,6 +151,12 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 		this, SLOT(sendActionActivated(const UserGroup*)));
 	KaduActions.insert("sendAction", send_action);
 
+	Action* chat_action = new Action(icons_manager->loadIcon("OpenChat"),
+		tr("&Chat"), "chatAction");
+	connect(chat_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		this, SLOT(chatActionActivated(const UserGroup*)));
+	KaduActions.insert("chatAction", chat_action);
+
 	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "autoSendAction");
 	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "scrollLockAction");
 	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "clearChatAction");
@@ -165,6 +171,8 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 	KaduActions.addDefaultToolbarAction("Chat toolbar 2", "colorAction");
 
 	KaduActions.addDefaultToolbarAction("Chat toolbar 3", "sendAction", -1, true);
+
+	KaduActions.addDefaultToolbarAction("Search toolbar", "chatAction", -1, true);
 
 	kdebugf2();
 }
@@ -311,6 +319,14 @@ void ChatManager::sendActionActivated(const UserGroup* users)
 		chat->cancelMessage();
 	else
 		chat->sendMessage();
+	kdebugf2();
+}
+
+void ChatManager::chatActionActivated(const UserGroup* users)
+{
+	kdebugf();
+	if (users->count() > 0)
+		openChat("Gadu", users->toUserListElements(), 0);
 	kdebugf2();
 }
 

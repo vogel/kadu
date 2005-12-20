@@ -2,6 +2,7 @@
 #define KADU_SEARCH_H
 
 #include <qdialog.h>
+#include <qtoolbutton.h>
 #include <qvaluelist.h>
 
 #include "gadu.h"
@@ -33,6 +34,7 @@ class SearchDialog : public QDialog {
 		**/
 		SearchDialog(QWidget *parent=0, const char *name=0, UinType whoisSearchUin = 0);
 		~SearchDialog(void);
+		static void initModule();
 
 	private:
 		QCheckBox *only_active;
@@ -48,10 +50,6 @@ class SearchDialog : public QDialog {
 		QLabel *progress;
 		QRadioButton *r_uin;
 		QRadioButton *r_pers;
-		QPushButton *b_chat;
-		QPushButton *b_sendbtn;
-		QPushButton *b_nextbtn;
-		QPushButton *b_addbtn;
 		UinType _whoisSearchUin;
 		uint32_t seq;
 
@@ -60,6 +58,9 @@ class SearchDialog : public QDialog {
 		bool searchhidden;
 
 	public slots:
+
+		void selectedUsersNeeded(const UserGroup*& user_group);
+
 		/**
 			\fn void firstSearch(void)
 			Czy¶ci listê wyników, a nastêpnie wyszukuje w katalogu publicznym wg.
@@ -88,21 +89,11 @@ class SearchDialog : public QDialog {
 		**/
 		void newSearchResults(SearchResults& searchResults, int seq, int fromUin);
 
-		/**
-			\fn void selectionChanged(QListViewItem *)
-			Aktualizuje kod wykonywany po wci¶niêciu przycisku "Dodaj" lub "Rozmowa" na taki,
-			aby dziala³ wzglêdem bierz±cego kontaktu, a nie ostatnio wybranego.
-			\param item wska¼nik do obiektu reprezentuj±cego element listy, który wybrano.
-		**/
-		void selectionChanged(QListViewItem *item);
-
 	private slots:
 		void clearResults(void);
 		void uinTyped(void);
 		void personalDataTyped(void);
-		void AddButtonClicked();
 		void updateInfoClicked();
-		void openChat();
 
 	protected:
 		/**

@@ -60,8 +60,11 @@ ToolButton* Action::addToToolbar(ToolBar* toolbar, bool uses_text_label)
 	btn->setToggleButton(isToggleAction());
 	btn->setUsesTextLabel(uses_text_label);
 	btn->setTextPosition(ToolButton::BesideIcon);
+	btn->setAccel(accel());
 	connect(btn, SIGNAL(clicked()), this, SLOT(toolButtonClicked()));
 	connect(btn, SIGNAL(destroyed(QObject*)), this, SLOT(toolButtonDestroyed(QObject*)));
+	if (!Slot.isNull())
+		connect(btn, SIGNAL(clicked()), toolbar->area()->parent(), Slot);
 	ToolButtons.append(btn);
 	const UserGroup* user_group = toolbar->selectedUsers();
 	if (user_group != NULL)
@@ -149,6 +152,18 @@ void Action::setTexts(const UserListElements& users, const QString& text)
 	kdebugf2();
 }
 
+void Action::setEnabled(QWidget* parent, bool enabled)
+{
+	kdebugf();
+	for (QValueList<ToolButton*>::iterator i = ToolButtons.begin();
+		i != ToolButtons.end(); i++)
+	{
+		if (((ToolBar*)(*i)->parent())->area()->parent() == parent)
+			(*i)->setEnabled(enabled);
+	}
+	kdebugf2();
+}
+
 void Action::setDockAreaGroupRestriction(const QString& dockarea_group)
 {
 	kdebugf();
@@ -159,6 +174,13 @@ void Action::setDockAreaGroupRestriction(const QString& dockarea_group)
 QString Action::dockAreaGroupRestriction()
 {
 	return DockAreaGroupRestriction;
+}
+
+void Action::setSlot(const QString& slot)
+{
+	kdebugf();
+	Slot = slot;
+	kdebugf2();
 }
 
 void Action::activate(const UserGroup* users)

@@ -66,6 +66,7 @@ class ChatManager : public QObject
 		void whoisActionActivated(const UserGroup* users);
 		void insertImageActionActivated(const UserGroup* users);
 		void sendActionActivated(const UserGroup* users);
+		void chatActionActivated(const UserGroup* users);
 
 	public:
 		/**

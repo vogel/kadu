@@ -209,9 +209,10 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 	GroupBar = new KaduTabBar(hbox1, "groupbar");
 	hbox1->setStretchFactor(GroupBar, 1);
 
-	// gadu, chat
+	// gadu, chat, search
 	GaduProtocol::initModule();
 	ChatManager::initModule();
+	SearchDialog::initModule();
 
 	// userbox
 	UserBox::initModule();
@@ -301,6 +302,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 	KaduActions.addDefaultToolbarAction("Kadu toolbar", "editUserAction");
 	KaduActions.addDefaultToolbarAction("Kadu toolbar", "whoisAction");
 	KaduActions.addDefaultToolbarAction("Kadu toolbar", "addUserAction");
+	KaduActions.addDefaultToolbarAction("Search toolbar", "addUserAction", -1, true);
 
 	/* guess what */
 	createMenu();

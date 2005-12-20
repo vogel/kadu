@@ -20,9 +20,12 @@
 #include <qradiobutton.h>
 #include <qtooltip.h>
 
+#include "action.h"
 #include "chat_manager.h"
 #include "config_file.h"
 #include "debug.h"
+#include "dockarea.h"
+#include "icons_manager.h"
 #include "misc.h"
 #include "search.h"
 #include "userinfo.h"
@@ -43,30 +46,6 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	QLabel *l_gender;
 	QLabel *l_city;
 	QLabel *l_uin;
-
-	b_sendbtn = new QPushButton(tr("&Search"),this);
-	b_sendbtn->setAccel(Key_Return);
-	connect(b_sendbtn, SIGNAL(clicked()), this, SLOT(firstSearch()));
-
-	b_chat = new QPushButton(tr("&Chat"),this);
-	connect(b_chat, SIGNAL(clicked()), this, SLOT(openChat()));
-
-	b_nextbtn = new QPushButton(tr("&Next results"),this);
-	connect(b_nextbtn, SIGNAL(clicked()), this, SLOT(nextSearch()));
-
-	QPushButton *b_clrbtn;
-	b_clrbtn = new QPushButton(tr("C&lear list"),this);
-	connect(b_clrbtn, SIGNAL(clicked()), this, SLOT(clearResults()));
-
-	b_addbtn = new QPushButton(tr("&Add User"),this);
-	connect(b_addbtn, SIGNAL(clicked()), this, SLOT(AddButtonClicked()));
-
-	QHBoxLayout* CommandLayout = new QHBoxLayout(5);
-	CommandLayout->addWidget(b_sendbtn);
-	CommandLayout->addWidget(b_chat);
-	CommandLayout->addWidget(b_nextbtn);
-	CommandLayout->addWidget(b_clrbtn);
-	CommandLayout->addWidget(b_addbtn);
 
 	only_active = new QCheckBox(tr("Only active users"),this);
 
@@ -109,7 +88,6 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	progress = new QLabel(this);
 
 	results = new QListView(this);
-	connect(results, SIGNAL(doubleClicked(QListViewItem *)), this, SLOT(openChat()));
 
 	QHButtonGroup * btngrp = new QHButtonGroup(this);
 	btngrp->setTitle(tr("Search criteria"));
@@ -120,10 +98,20 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	r_uin = new QRadioButton(tr("&Uin number"),btngrp);
 	QToolTip::add(r_uin, tr("Search for this UIN exclusively"));
 
-	connect(results, SIGNAL(selectionChanged(QListViewItem *)), this, SLOT(selectionChanged(QListViewItem *)));
-
 	btngrp->insert(r_pers, 1);
 	btngrp->insert(r_uin, 2);
+
+	DockArea* dock_area = new DockArea(Qt::Horizontal, DockArea::Normal, this,
+		"searchDockAreaGroup", "searchDockArea");
+	connect(dock_area, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
+		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
+	if (!dock_area->loadFromConfig(this))
+	{
+		ToolBar* toolbar = new ToolBar(this, "Search toolbar");
+		dock_area->moveDockWindow(toolbar);
+		dock_area->setAcceptDockWindow(toolbar, true);
+		KaduActions.addDefaultActionsToToolbar(toolbar);
+	}
 
 	QGridLayout * grid = new QGridLayout (this, 7, 12, 3, 3);
 	grid->addMultiCellWidget(only_active, 0, 0, 0, 2);
@@ -141,7 +129,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	grid->addMultiCellWidget(btngrp, 3, 3, 4, 11);
 
 	grid->addMultiCellWidget(results, 5, 5, 0, 11);
-	grid->addMultiCell(CommandLayout, 6, 6, 2, 11);
+	grid->addMultiCellWidget(dock_area, 6, 6, 2, 11);
 	grid->addMultiCellWidget(progress, 6, 6, 0, 1);
 
 	grid->addColSpacing(2, 10);
@@ -182,32 +170,82 @@ SearchDialog::~SearchDialog()
 	kdebugf2();
 }
 
-void SearchDialog::selectionChanged(QListViewItem *item)
+void SearchDialog::initModule()
 {
 	kdebugf();
 
-	UinType uin;
+	Action* first_search_action = new Action(icons_manager->loadIcon("LookupUserInfo"),
+		tr("&Search"), "firstSearchAction");
+	first_search_action->setAccel(Key_Return);
+	first_search_action->setDockAreaGroupRestriction("searchDockAreaGroup");
+	first_search_action->setSlot(SLOT(firstSearch()));
+	KaduActions.insert("firstSearchAction", first_search_action);
+	KaduActions.addDefaultToolbarAction("Search toolbar", "firstSearchAction", 0, true);
 
-	disconnect(b_addbtn, SIGNAL(clicked()), 0, 0);
-	if (item)
+	Action* next_results_action = new Action(icons_manager->loadIcon("NextSearchResults"),
+		tr("&Next results"), "nextResultsAction");
+	next_results_action->setDockAreaGroupRestriction("searchDockAreaGroup");
+	next_results_action->setSlot(SLOT(nextResults()));
+	KaduActions.insert("nextResultsAction", next_results_action);
+	KaduActions.addDefaultToolbarAction("Search toolbar", "nextResultsAction", 1, true);
+
+	Action* clear_search_action = new Action(icons_manager->loadIcon("ClearSearchResults"),
+		tr("Clear results"), "clearSearchAction");
+	clear_search_action->setDockAreaGroupRestriction("searchDockAreaGroup");
+	clear_search_action->setSlot(SLOT(clearResults()));
+	KaduActions.insert("clearSearchAction", clear_search_action);
+	KaduActions.addDefaultToolbarAction("Search toolbar", "clearSearchAction", 2, true);
+
+	kdebugf2();
+}
+
+void SearchDialog::selectedUsersNeeded(const UserGroup*& user_group)
+{
+	kdebugf();
+
+	QListViewItem *selected = results->selectedItem();
+	if (!selected && results->childCount() == 1)
+		selected = results->firstChild();
+	if (!selected)
 	{
-		uin = item->text(1).toUInt();
-		if (userlist->contains("Gadu", QString::number(uin)))
-		{
-			b_addbtn->setText(tr("&Update Info"));
-			connect(b_addbtn, SIGNAL(clicked()), this, SLOT(updateInfoClicked()));
-		}
-		else
-		{
-			b_addbtn->setText(tr("&Add User"));
-			connect(b_addbtn, SIGNAL(clicked()), this, SLOT(AddButtonClicked()));
-		}
+		user_group = NULL;
+		return;
 	}
-	else
+
+	QString uin = selected->text(1);
+	QString firstname = selected->text(2);
+	QString nickname = selected->text(4);
+
+	// Build altnick. Try user nick first.
+	QString altnick = nickname;
+	// If nick is empty, try firstname+lastname.
+	if (altnick.isEmpty())
 	{
-		b_addbtn->setText(tr("&Add User"));
-		connect(b_addbtn, SIGNAL(clicked()), this, SLOT(AddButtonClicked()));
+		altnick = firstname;
+//		if (firstname.length() && lastname.length())
+//			altnick += " ";
+//		altnick += lastname;
 	}
+	// If nick is empty, use uin.
+	if (altnick.isEmpty())
+		altnick = uin;
+
+	UserListElement e;
+	bool ok;
+	e.setAnonymous(true); // TODO: check it
+	e.setFirstName(firstname);
+	e.setNickName(nickname);
+	e.setAltNick(altnick);
+	UinType uin2 = uin.toUInt(&ok);
+	if (!ok)
+		uin2 = 0;
+	if (uin2)
+		e.addProtocol("Gadu", QString::number(uin2));
+
+	UserGroup* group = new UserGroup(1);
+	group->addUser(e);
+	user_group = group;
+	
 	kdebugf2();
 }
 
@@ -252,8 +290,8 @@ void SearchDialog::firstSearch(void)
 
 	gadu->searchInPubdir(*searchRecord);
 
-	b_sendbtn->setEnabled(false);
-	b_nextbtn->setEnabled(false);
+	KaduActions["firstSearchAction"]->setEnabled(this, false);
+	KaduActions["nextResultsAction"]->setEnabled(this, false);
 
 	progress->setText(tr("Searching..."));
 	kdebugf2();
@@ -265,8 +303,8 @@ void SearchDialog::nextSearch(void)
 		return;
 	kdebugf();
 
-	b_sendbtn->setEnabled(false);
-	b_nextbtn->setEnabled(false);
+	KaduActions["firstSearchAction"]->setEnabled(this, false);
+	KaduActions["nextResultsAction"]->setEnabled(this, false);
 
 	gadu->searchNextInPubdir(*searchRecord);
 
@@ -328,12 +366,10 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 
 	if (!results->selectedItem())
 		results->setSelected(results->firstChild(), true);
-	else
-		selectionChanged(results->selectedItem());
 
 //	searchhidden = false;
-	b_sendbtn->setEnabled(true);
-	b_nextbtn->setEnabled(true);
+	KaduActions["firstSearchAction"]->setEnabled(this, true);
+	KaduActions["nextResultsAction"]->setEnabled(this, true);
 
 	if (searchResults.isEmpty())
 	{
@@ -364,52 +400,6 @@ void SearchDialog::uinTyped(void)
 void SearchDialog::personalDataTyped(void)
 {
 	r_pers->setChecked(true);
-}
-
-void SearchDialog::AddButtonClicked()
-{
-	kdebugf();
-	QListViewItem *selected = results->selectedItem();
-	if (!selected && results->childCount() == 1)
-		selected = results->firstChild();
-	if (!selected)
-	{
-		QMessageBox::information(this,tr("Add User"),
-			tr("Select user first"));
-		return;
-	}
-
-	QString uin = selected->text(1);
-	QString firstname = selected->text(2);
-	QString nickname = selected->text(4);
-
-	// Build altnick. Try user nick first.
-	QString altnick = nickname;
-	// If nick is empty, try firstname+lastname.
-	if (altnick.isEmpty())
-	{
-		altnick = firstname;
-//		if (firstname.length() && lastname.length())
-//			altnick += " ";
-//		altnick += lastname;
-	}
-	// If nick is empty, use uin.
-	if (altnick.isEmpty())
-		altnick = uin;
-
-	UserListElement e;
-	bool ok;
-	e.setFirstName(firstname);
-	e.setNickName(nickname);
-	e.setAltNick(altnick);
-	UinType uin2 = uin.toUInt(&ok);
-	if (!ok)
-		uin2 = 0;
-	if (uin2)
-		e.addProtocol("Gadu", QString::number(uin2));
-
-	(new UserInfo(e, 0, "user info"))->show();
-	kdebugf2();
 }
 
 void SearchDialog::updateInfoClicked()
@@ -446,25 +436,5 @@ void SearchDialog::updateInfoClicked()
 	ule.setFirstName(firstname);
 	ule.setNickName(nickname);
 	(new UserInfo(ule, 0, "user info"))->show();
-	kdebugf2();
-}
-
-void SearchDialog::openChat()
-{
-	kdebugf();
-	QListViewItem *selected = results->selectedItem();
-	if (!selected && results->childCount() == 1)
-		selected = results->firstChild();
-	if (!selected)
-	{
-		kdebugf2();
-		return;
-	}
-
-	UinType uin = selected->text(1).toUInt();
-	UserListElements users(userlist->byID("Gadu", QString::number(uin)));
-
-	if (uin != config_file.readUnsignedNumEntry("General", "UIN"))
-		chat_manager->openChat("Gadu", users);
 	kdebugf2();
 }

@@ -232,6 +232,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   ale wymagaj±ca du¿o pamiêci i nieprzydatna dla developerów (joi)
 * poprawione od¶wie¿anie listy kontaktów po dopisaniu komórki do danych o kontakcie,
   poprawki w obs³udze kontaktów bez numeru gg i komórki (joi)
+* akcja "rozpocznij rozmowê", drobne zmiany/rozbudowa mechanizmów akcji, konfigurowalne
+  toolbary w oknie wyszukiwania, uwaga dosz³y dwa wpisy w zestawie ikony (adrian)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

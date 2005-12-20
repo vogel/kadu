@@ -19,6 +19,7 @@ class Action : public QAction
 		QIconSet OnIcon;
 		QString OnText;
 		QString DockAreaGroupRestriction;
+		QString Slot;
 		QValueList<ToolButton*> ToolButtons;
 		struct ToggleStateStruct
 		{
@@ -48,12 +49,23 @@ class Action : public QAction
 		void setPixmaps(const UserListElements& users, const QPixmap& pixmap);
 		void setTexts(const UserListElements& users, const QString& text);
 		/**
+			Sets enabled state of all buttons in dockareas that has specified
+			parent.
+		**/
+		void setEnabled(QWidget* parent, bool enabled);
+		/**
 			Restrict action to one dockarea group only, for example:
 			action_1->setClassRestriction("chatDockAreaGroup")
 			to set action to be allowed in chat windows only.
 		**/
 		void setDockAreaGroupRestriction(const QString& dockarea_group);
 		QString dockAreaGroupRestriction();
+		/**
+			Sets slot of dockarea's parent that will be called when action
+			is activated. You should ensure that class of parent's class
+			is known using setDockAreaGroupRestriction().
+		**/
+		void setSlot(const QString& slot);
 		/**
 			Activate action
 		**/
