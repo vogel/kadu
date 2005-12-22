@@ -21,6 +21,11 @@ UserGroup::UserGroup(int size, const char *name) : QObject(NULL, name), d(new Us
 {
 }
 
+UserGroup::UserGroup(const QValueList<UserListElement> &group, const char *name) : QObject(NULL, name), d(new UserGroupData(group.size() * 2))
+{
+	addUsers(group);
+}
+
 //#include "kadu.h"
 UserGroup::~UserGroup()
 {

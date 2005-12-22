@@ -537,9 +537,7 @@ void Kadu::selectedUsersNeeded(const UserGroup*& users)
 		kdebugf2();
 		return;
 	}
-	UserGroup* user_group = new UserGroup(1);
-	user_group->addUsers(activeUserBox->selectedUsers());
-	users = user_group;
+	users = new UserGroup(activeUserBox->selectedUsers());
 	//TODO: Memory leak
 	kdebugf2();
 }
@@ -584,8 +582,7 @@ void Kadu::showUserInfo()
 		kdebugf2();
 		return;
 	}
-	UserGroup users(1);
-	users.addUsers(activeUserBox->selectedUsers());
+	UserGroup users(activeUserBox->selectedUsers());
 	editUserActionActivated(&users);
 	kdebugf2();
 }

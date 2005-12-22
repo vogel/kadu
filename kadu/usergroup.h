@@ -82,6 +82,13 @@ class UserGroup : public QObject
 		UserGroup(int size, const char *name = 0);
 
 		/**
+			\fn UserGroup(const QValueList<UserListElement> &group, const char *name = 0)
+			\param group
+			\param name nazwa grupy
+		**/
+		UserGroup(const QValueList<UserListElement> &group, const char *name = 0);
+
+		/**
 			\fn virtual ~UserGroup()
 			Zwalnia pamiêæ zwi±zan± z grup±
 		**/
