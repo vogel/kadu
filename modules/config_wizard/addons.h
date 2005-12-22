@@ -21,8 +21,8 @@
 // wygl±d paneli
 QString informationPanelSyntax[]=
 {
-	"[#%u][, %f] %r [- %d] [ (%i)]", 
-	
+	"[#%u, ][%f] %r [- %d] [ (%i)]",
+
 	"<body hspace=\"0\" vspace=\"0\"><table width=\"210\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">"
 		"<tr valign=\"top\"><td><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"> "
 		"<tr valign=\"top\"><td rowspan=\"2\" valign=\"top\" width=\"50\"><img width=\"50\" align=\"left\" "
@@ -40,12 +40,12 @@ QString informationPanelSyntax[]=
 		"[<hr><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td> <font color=\"blue\">%d</font></td></tr></table>] "
 		"[<hr><font color=\"blue\">e-mail: %e.</font>]"
 		"[<hr><font size=\"-1\" color=\"red\"><i>You are not on the list%o</i></font>] "
-		"</td></tr></table></body>", 
-	
+		"</td></tr></table></body>",
+
 	"<table><tr><td><img width=\"50\" height=\"63\" src=\"{$HOME/fotki/%u.jpg $HOME/fotki/%u.jpg}{~$HOME/fotki/%u.jpg $KADU_SHARE/modules/data/config_wizard/joi/brak.jpg}\"> "
 		"</td><td> <div align=\"left\"> [%u][<br>%a][<br>%e][<br>tel.: %m] [<br>IP: %i][<br>d: %v] "
 		"[<br>%oYou are not on the list] </div> </td> </tr> </table> <hr> %s [<br>%d]",
-	
+
 	"<table><tr><td><img width=\"32\" height=\"32\" align=\"left\" valign=\"top\" src=\"$KADU_SHARE/themes/icons/default/personalinfo.png\"></td>"
 		"<td> <div align=\"left\"> [<b>%a</b>][ (%u)] [<br>tel.: %m][<br>IP: %i][<br>%oYou are not on the list] </div></td></tr></table> <hr> <b>%s</b> [<br>%d]",
 
@@ -59,7 +59,7 @@ QString informationPanelSyntax[]=
 		"<td align=\"left\" width=\"100%\" bgcolor=\"gray77\"><font color=\"black\" size=\"2\">%m</font></td>]</tr> "
 		"<tr> [<td align=\"center\" colspan=\"2\"><font color=\"gray35\">%i:%p</font></td>] </tr> <tr> "
 		"[<td align=\"center\" colspan=\"2\"><font color=\"gray35\">%v</font></td>] </tr> </table>",
-			
+
 	"<table width=\"100%\" border=\"0\" cellpadding=\"0\" align=\"center\" bgcolor=\"gray82\">"
 		"<tr> [<td width=\"80\" align=\"right\" bgcolor=\"gray69\"><font color=\"black\" size=\"2px\" name=\"verdana\">%s</font></td> "
 		"<td align=left width=\"100%\" bgcolor=\"gray77\"><font color=\"black\" size=\"2px\" name=\"verdana\">%u</font></td>] "
@@ -70,7 +70,7 @@ QString informationPanelSyntax[]=
 		"<tr>[<td colspan=\"2\"><font color=\"gray35\">%d</font></td>]</tr> <tr> [<td align=\"center\" colspan=\"2\"><font color=\"gray35\">%i</font></td>] "
 		"</tr> <tr> [<td align=\"center\" colspan=\"2\"><font color=\"gray35\">%v</font></td>] <tr> </tr> </table> "
 		"[%o<font color=\"red\" size=\"3\" name=\"verdana\">You are not on the list</font>]",
-	
+
 	"<body background=\"$KADU_SHARE/modules/data/config_wizard/ronk2/tlo.jpg\" hspace=\"0\" vspace=\"0\">"
 		"<table width=\"160px\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr valign=\"top\"><td width=\"160px\">"
 		"<table width=\"160px\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr valign=\"top\"><td valign=top width=\"50px\">"
@@ -104,7 +104,7 @@ QString informationPanelSyntax[]=
 		"[<hr><font color=\"yellow\"><i>%v</i></font>]"
 		"[<hr><font color=\"orange\">%d</font>]"
 };
-	
+
 // nazwy wygl±dów (albo autorzy)
 QString informationPanelName[]={"Default", "RonK", "joi", "dorr", "maz", "Abaddon", "RonK2", "Ciuciu"};
 
@@ -128,7 +128,7 @@ QString hintSyntaxName[]=
 };
 
 
-/** 
+/**
 	konfiguracja kolorów dymków
 **/
 
