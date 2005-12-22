@@ -185,7 +185,7 @@ void SearchDialog::initModule()
 	Action* next_results_action = new Action(icons_manager->loadIcon("NextSearchResults"),
 		tr("&Next results"), "nextResultsAction");
 	next_results_action->setDockAreaGroupRestriction("searchDockAreaGroup");
-	next_results_action->setSlot(SLOT(nextResults()));
+	next_results_action->setSlot(SLOT(nextSearch()));
 	KaduActions.insert("nextResultsAction", next_results_action);
 	KaduActions.addDefaultToolbarAction("Search toolbar", "nextResultsAction", 1, true);
 
