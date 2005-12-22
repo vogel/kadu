@@ -216,6 +216,10 @@ void SearchDialog::selectedUsersNeeded(const UserGroup*& user_group)
 	QString firstname = selected->text(2);
 	QString nickname = selected->text(4);
 
+	bool ok;
+	if (uin.toUInt(&ok) == 0 || !ok)
+		return;
+
 	// Build altnick. Try user nick first.
 	QString altnick = nickname;
 	// If nick is empty, try firstname+lastname.
@@ -230,22 +234,19 @@ void SearchDialog::selectedUsersNeeded(const UserGroup*& user_group)
 	if (altnick.isEmpty())
 		altnick = uin;
 
-	UserListElement e;
-	bool ok;
-	e.setAnonymous(true); // TODO: check it
-	e.setFirstName(firstname);
-	e.setNickName(nickname);
-	e.setAltNick(altnick);
-	UinType uin2 = uin.toUInt(&ok);
-	if (!ok)
-		uin2 = 0;
-	if (uin2)
-		e.addProtocol("Gadu", QString::number(uin2));
+	UserListElement e = userlist->byID("Gadu", uin);
+
+	if (e.isAnonymous())
+	{
+		e.setFirstName(firstname);
+		e.setNickName(nickname);
+		e.setAltNick(altnick);
+	}
 
 	UserGroup* group = new UserGroup(1);
 	group->addUser(e);
 	user_group = group;
-	
+
 	kdebugf2();
 }
 
