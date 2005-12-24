@@ -773,7 +773,7 @@ Czy na pewno chcesz wysłać ten obrazek?</translation>
     </message>
     <message>
         <source>Cannot send message while being offline.</source>
-        <translation>Nie mogę wysłać wiadomości dopóki jesteś niepołączony.</translation>
+        <translation>Nie mogę wysłać wiadomości dopóki nie jesteś połączony.</translation>
     </message>
 </context>
 <context>
