@@ -79,7 +79,7 @@ void ToolButton::mouseMoveEvent(QMouseEvent* e)
 {
 //	kdebugf();
 	QToolButton::mouseMoveEvent(e);
-	if (e->state() & LeftButton)
+	if (e->state() & LeftButton && !toolbar()->dockArea()->blocked())
 	{
 		QDragObject* d = new ToolButtonDrag(this, parentWidget());
 		d->dragMove();
@@ -134,6 +134,11 @@ void ToolButton::showTextLabelClicked()
 QString ToolButton::actionName()
 {
 	return ActionName;
+}
+
+ToolBar* ToolButton::toolbar()
+{
+	return (ToolBar*)parent();
 }
 
 void ToolButton::writeToConfig(QDomElement parent_element)

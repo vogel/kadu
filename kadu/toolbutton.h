@@ -5,6 +5,8 @@
 #include <qdragobject.h>
 #include <qtoolbutton.h>
 
+class ToolBar;
+
 class ToolButton : public QToolButton
 {
 	Q_OBJECT
@@ -37,6 +39,7 @@ class ToolButton : public QToolButton
 		bool isOn() const;
 		void setOn(bool on);
 		QString actionName();
+		ToolBar* toolbar();
 		void writeToConfig(QDomElement parent_element);
 };
 

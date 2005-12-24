@@ -2,6 +2,7 @@
 #define TOOLBAR_H
 
 #include <qtoolbar.h>
+#include "dockarea.h"
 #include "toolbutton.h"
 #include "usergroup.h"
 
@@ -25,6 +26,7 @@ class ToolBar : public QToolBar
 		ToolBar(QWidget* parent, const QString& label);
 		~ToolBar();
 		QString dockAreaGroup();
+		DockArea* dockArea();
 		void loadFromConfig(QDomElement parent_element);
 		/**
 			Returns list of users that will be affected by activated action.

@@ -161,6 +161,11 @@ QString ToolBar::dockAreaGroup()
 	kdebugf2();
 }
 
+DockArea* ToolBar::dockArea()
+{
+	return (DockArea*)area();
+}
+
 void ToolBar::loadFromConfig(QDomElement toolbar_element)
 {
 	kdebugf();

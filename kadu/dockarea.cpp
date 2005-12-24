@@ -34,6 +34,9 @@ void DockArea::contextMenuEvent(QContextMenuEvent* e)
 	kdebugf();
 	QPopupMenu* p = new QPopupMenu(this);
 	p->insertItem(tr("Create new toolbar"), this, SLOT(createNewToolbar()));
+	int block_toolbars_id =
+		p->insertItem(tr("Block toolbars"), this, SLOT(blockToolbars()));
+	p->setItemChecked(block_toolbars_id, Blocked);
 	p->exec(QCursor::pos());
 	delete p;
 	e->accept();
@@ -84,11 +87,20 @@ void DockArea::createNewToolbar()
 	kdebugf2();
 }
 
+void DockArea::blockToolbars()
+{
+	kdebugf();
+	Blocked = !Blocked;
+	writeToConfig();
+	kdebugf2();
+}
+
 void DockArea::writeToConfig()
 {
 	kdebugf();
 	QDomElement root_elem = xml_config_file->rootElement();
 	QDomElement toolbars_elem = xml_config_file->accessElement(root_elem, "Toolbars");
+	toolbars_elem.setAttribute("blocked", Blocked);
 	QDomElement dockarea_elem = xml_config_file->accessElementByProperty(
 		toolbars_elem, "DockArea", "name", name());
 	xml_config_file->removeChildren(dockarea_elem);
@@ -117,6 +129,7 @@ bool DockArea::loadFromConfig(QWidget* toolbars_parent)
 	QDomElement toolbars_elem = xml_config_file->findElement(root_elem, "Toolbars");
 	if (!toolbars_elem.isNull())
 	{
+		Blocked = toolbars_elem.attribute("blocked").toInt();
 		QDomElement dockarea_elem = xml_config_file->findElementByProperty(
 			toolbars_elem, "DockArea", "name", name());
 		if (!dockarea_elem.isNull())
@@ -145,3 +158,10 @@ const UserGroup* DockArea::selectedUsers()
 	kdebugf2();
 	return users;
 }
+
+bool DockArea::blocked()
+{
+	return Blocked;
+}
+
+bool DockArea::Blocked = false;

@@ -11,6 +11,7 @@ class DockArea : public QDockArea
 	Q_OBJECT
 
 	private:
+		static bool Blocked;
 		QString DockAreaGroup;
 
 	protected:
@@ -19,6 +20,7 @@ class DockArea : public QDockArea
 
 	private slots:
 		void createNewToolbar();
+		void blockToolbars();
 		void toolbarPlaceChanged();
 
 	public:
@@ -37,6 +39,7 @@ class DockArea : public QDockArea
 			Returns NULL if toolbar is no connected to user list.
 		**/
 		const UserGroup* selectedUsers();
+		bool blocked();
 
 	public slots:
 		void writeToConfig();
