@@ -77,8 +77,11 @@ void HtmlDocument::insertText(const int pos,const QString &text)
 
 void HtmlDocument::parseHtml(const QString& html)
 {
+//	kdebugm(KDEBUG_FUNCTION_START | KDEBUG_INFO, "%s\n", html.local8Bit().data());
 	Element e;
 	e.tag = false;
+	int pos1, pos2;
+	int len = html.length();
 	for(unsigned int i = 0, htmllength = html.length(); i < htmllength; ++i)
 	{
 		const QChar &ch = html[i];
@@ -99,11 +102,20 @@ void HtmlDocument::parseHtml(const QString& html)
 					e.text += ch;
 					addElement(e);
 					e.tag = false;
-					e.text.truncate(0);
+					e.text = QString::null;
 				}
 				break;
 			default:
-				e.text += ch;
+				pos1 = html.find('>', i + 1);
+				if (pos1 == -1)
+					pos1 = len;
+				pos2 = html.find('<', i + 1);
+				if (pos2 == -1)
+					pos2 = len;
+				if (pos2 < pos1)
+					pos1 = pos2;
+				e.text += html.mid(i, pos1 - i);
+				i = pos1 - 1;
 		}
 	}
 	if (!e.text.isEmpty())
