@@ -240,7 +240,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * opcja blokowania przemieszczania przycisków na paskach narzêdziowych w menu
   kontekstowym pola dokuj±cego (adrian)
 * okno zmiany statusu opisowego pojawia siê w okolicach aktualnej pozycji myszki (joi)
-* optymalizacja parsowania plików z histori± od 2 do 4 razy (joi)
+* przyspieszenie parsowania plików z histori± od 2 do 4 razy (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
