@@ -1031,63 +1031,29 @@ void HistoryManager::buildIndex(const QString &mobile)
 	kdebugf2();
 }
 
-
 QStringList HistoryManager::mySplit(const QChar &sep, const QString &str)
 {
 	kdebugf();
 	QStringList strlist;
-
 	QString token;
-	unsigned int idx = 0, state = 0, strlength = str.length();
+	unsigned int idx = 0, strlength = str.length();
+	bool inString = false;
+
+	int pos1, pos2;
 	while (idx < strlength)
 	{
 		const QChar &letter = str[idx];
-		switch (state)
+		if (inString)
 		{
-			case 0:
-				if (letter == sep)
-				{
-					if (!token.isEmpty())
-						token.truncate(0);
-					else
-						strlist.append(token);
-				}
-				else if (letter == '"')
-					state = 2;
-				else
-				{
-					token.append(letter);
-					state = 1;
-				}
-				++idx;
-				break;
-			case 1:
-				if (letter != sep)
-				{
-					token.append(letter);
-					++idx;
-				}
-				else
-				{
-					strlist.append(token);
-					state = 0;
-				}
-				break;
-			case 2:
-				if (letter == '\\')
-					state = 3;
-				else
-					if (letter == '\"')
-					{
-						strlist.append(token);
-						state = 0;
-					}
-					else
-						token.append(letter);
-				++idx;
-				break;
-			case 3:
-				switch (letter)
+			pos1 = str.find('\\', idx);
+			if (pos1 == -1)
+				pos1 = strlength;
+			pos2 = str.find('"', idx);
+			if (pos2 == -1)
+				pos2 = strlength;
+			if (letter == '\\')
+			{
+				switch (str[idx + 1])
 				{
 					case 'n':
 						token.append('\n');
@@ -1096,18 +1062,54 @@ QStringList HistoryManager::mySplit(const QChar &sep, const QString &str)
 						token.append('\\');
 						break;
 					case '\"':
-						token.append('\"');
+						token.append('"');
 						break;
 					default:
 						token.append('?');
 				}
-				state = 2;
+				idx += 2;
+			}
+			else if (letter == '"')
+			{
+				strlist.append(token);
+				inString = false;
 				++idx;
-				break;
+			}
+			else if (pos1 < pos2)
+			{
+				token.append(str.mid(idx, pos1 - idx));
+				idx = pos1;
+			}
+			else
+			{
+				token.append(str.mid(idx, pos2 - idx));
+				idx = pos2;
+			}
+		}
+		else // out of the string
+		{
+			if (letter == sep)
+			{
+				if (!token.isEmpty())
+					token = QString::null;
+				else
+					strlist.append(QString::null);
+			}
+			else if (letter == '"')
+				inString = true;
+			else
+			{
+				pos1 = str.find(sep, idx);
+				if (pos1 == -1)
+					pos1 = strlength;
+				token.append(str.mid(idx, pos1 - idx));
+				strlist.append(token);
+				idx = pos1;
+				continue;
+			}
+			++idx;
 		}
 	}
-	if (state == 1)
-		strlist.append(token);
 
 	kdebugf2();
 	return strlist;
@@ -1434,13 +1436,12 @@ void History::dateChanged(QListViewItem *item)
 				item = item->nextSibling();
 			break;
 	}
-	count = history.getHistoryEntriesCount(uins);
 	if (depth < 2)
 	{
 		if (item)
 			count = ((DateListViewText *)item)->getDate().idx - start;
 		else
-			count -= start;
+			count = history.getHistoryEntriesCount(uins) - start;
 		showHistoryEntries(start, count);
 	}
 	kdebugf2();
@@ -1544,8 +1545,8 @@ void History::showHistoryEntries(int from, int count)
 
 	QValueList<HistoryEntry> entries = history.getHistoryEntries(uins, from, count);
 
-	QValueList<HistoryEntry>::const_iterator entry = entries.begin();
-	QValueList<HistoryEntry>::const_iterator lastEntry = entries.end();
+	QValueList<HistoryEntry>::const_iterator entry = entries.constBegin();
+	QValueList<HistoryEntry>::const_iterator lastEntry = entries.constEnd();
 	for(; entry != lastEntry; ++entry)
 		if ( ! (noStatus && (*entry).type & HISTORYMANAGER_ENTRY_STATUS))
 		{
