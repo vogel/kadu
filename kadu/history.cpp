@@ -1045,12 +1045,6 @@ QStringList HistoryManager::mySplit(const QChar &sep, const QString &str)
 		const QChar &letter = str[idx];
 		if (inString)
 		{
-			pos1 = str.find('\\', idx);
-			if (pos1 == -1)
-				pos1 = strlength;
-			pos2 = str.find('"', idx);
-			if (pos2 == -1)
-				pos2 = strlength;
 			if (letter == '\\')
 			{
 				switch (str[idx + 1])
@@ -1075,15 +1069,24 @@ QStringList HistoryManager::mySplit(const QChar &sep, const QString &str)
 				inString = false;
 				++idx;
 			}
-			else if (pos1 < pos2)
-			{
-				token.append(str.mid(idx, pos1 - idx));
-				idx = pos1;
-			}
 			else
 			{
-				token.append(str.mid(idx, pos2 - idx));
-				idx = pos2;
+				pos1 = str.find('\\', idx);
+				if (pos1 == -1)
+					pos1 = strlength;
+				pos2 = str.find('"', idx);
+				if (pos2 == -1)
+					pos2 = strlength;
+				if (pos1 < pos2)
+				{
+					token.append(str.mid(idx, pos1 - idx));
+					idx = pos1;
+				}
+				else
+				{
+					token.append(str.mid(idx, pos2 - idx));
+					idx = pos2;
+				}
 			}
 		}
 		else // out of the string
