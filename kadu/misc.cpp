@@ -855,7 +855,7 @@ void stringHeapSort(QStringList &c)
 	stringHeapSortHelper(c.begin(), c.end(), *(c.begin()), (uint)c.count());
 }
 
-ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * name)
+ChooseDescription::ChooseDescription(int nr, QPoint *position, QWidget * parent, const char * name)
 : QDialog(parent, name, false)
 {
 	kdebugf();
@@ -899,6 +899,8 @@ ChooseDescription::ChooseDescription ( int nr, QWidget * parent, const char * na
 	grid->addWidget(cancelbtn, 1, 2, Qt::AlignRight);
 	grid->addColSpacing(0, 200);
 
+	if (position)
+		move(*position);
 	resize(250,80);
 	kdebugf2();
 }

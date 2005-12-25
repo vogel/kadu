@@ -68,7 +68,7 @@ class ChooseDescription : public QDialog
 {
 	Q_OBJECT
 	public:
-		ChooseDescription ( int nr, QWidget * parent=0, const char * name=0);
+		ChooseDescription(int nr, QPoint *position = 0, QWidget * parent = 0, const char * name = 0);
 		virtual ~ChooseDescription();
 		void getDescription(QString &);
 
