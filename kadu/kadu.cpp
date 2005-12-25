@@ -309,6 +309,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 	createStatusPopupMenu();
 
 	connect(statusMenu, SIGNAL(aboutToHide()), this, SLOT(statusMenuAboutToHide()));
+	connect(dockMenu, SIGNAL(aboutToHide()), this, SLOT(dockMenuAboutToHide()));
 
 	dockMenu->insertSeparator();
 	dockMenu->insertItem(icons_manager->loadIcon("Exit"), tr("&Exit Kadu"), 9);
@@ -917,7 +918,7 @@ void Kadu::slotHandleState(int command)
 			status.setOnline();
 			break;
 		case 1:
-			cd = new ChooseDescription(1);
+			cd = new ChooseDescription(1, &lastPositionBeforeStatusMenuHide);
 			accepted = cd->exec() == QDialog::Accepted;
 			if (accepted)
 			{
@@ -930,7 +931,7 @@ void Kadu::slotHandleState(int command)
 			status.setBusy();
 			break;
 		case 3:
-			cd = new ChooseDescription(3);
+			cd = new ChooseDescription(3, &lastPositionBeforeStatusMenuHide);
 			accepted = cd->exec() == QDialog::Accepted;
 			if (accepted)
 			{
@@ -943,7 +944,7 @@ void Kadu::slotHandleState(int command)
 			status.setInvisible();
 			break;
 		case 5:
-			cd = new ChooseDescription(5);
+			cd = new ChooseDescription(5, &lastPositionBeforeStatusMenuHide);
 			accepted = cd->exec() == QDialog::Accepted;
 			if (accepted)
 			{
@@ -956,7 +957,7 @@ void Kadu::slotHandleState(int command)
 			status.setOffline();
 			break;
 		case 7:
-			cd = new ChooseDescription(7);
+			cd = new ChooseDescription(7, &lastPositionBeforeStatusMenuHide);
 			accepted = cd->exec() == QDialog::Accepted;
 			if (accepted)
 			{
@@ -1209,6 +1210,12 @@ void Kadu::createMenu()
 
 void Kadu::statusMenuAboutToHide()
 {
+	lastPositionBeforeStatusMenuHide = statusMenu->pos();
+}
+
+void Kadu::dockMenuAboutToHide()
+{
+	lastPositionBeforeStatusMenuHide = dockMenu->pos();
 }
 
 void Kadu::createStatusPopupMenu()

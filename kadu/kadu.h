@@ -38,6 +38,7 @@ class Kadu : public QWidget
 
 		QPopupMenu* statusMenu;
 		QPushButton* statusButton;
+		QPoint lastPositionBeforeStatusMenuHide;
 
 		UserStatus status;
 
@@ -82,6 +83,8 @@ class Kadu : public QWidget
 							bool massively, bool last);
 		void currentChanged(UserListElement);
 
+		void statusMenuAboutToHide(void);
+		void dockMenuAboutToHide(void);
 	protected:
 		void keyPressEvent(QKeyEvent *e);
 		virtual void resizeEvent(QResizeEvent *);
@@ -144,7 +147,6 @@ class Kadu : public QWidget
 		void changeAppearance();
 		void blink();
 		void showdesc(bool show = true);
-		void statusMenuAboutToHide(void);
 		virtual bool close(bool quit = false);
 		void quitApplication();
 
