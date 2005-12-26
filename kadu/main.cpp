@@ -49,13 +49,13 @@ static void kadu_signal_handler(int s)
 {
 	kdebugmf(KDEBUG_WARNING, "%d\n", s);
 
-	if (s==SIGSEGV)
+	if (s == SIGSEGV)
 	{
 		kdebugm(KDEBUG_PANIC, "Kadu crashed :(\n");
 		QString f = QString("kadu.conf.xml.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
 		QString debug_file = QString("kadu.backtrace.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
 
-		if(lockFile)
+		if (lockFile)
 		{
 			// there might be another segmentation fault in this signal handler (because of total mess in memory)
 			flock(lockFileHandle, LOCK_UN);
@@ -68,11 +68,13 @@ static void kadu_signal_handler(int s)
 		char **bt_strings;
 		int num_entries;
 		FILE *dbgfile;
-		if ((num_entries = backtrace(bt_array, 100)) < 0) {
+		if ((num_entries = backtrace(bt_array, 100)) < 0)
+		{
 			kdebugm(KDEBUG_PANIC, "could not generate backtrace\n");
 			abort();
 		}
-		if ((bt_strings = backtrace_symbols(bt_array, num_entries)) == NULL) {
+		if ((bt_strings = backtrace_symbols(bt_array, num_entries)) == NULL)
+		{
 			kdebugm(KDEBUG_PANIC, "could not get symbol names for backtrace\n");
 			abort();
 		}
@@ -129,15 +131,13 @@ static void kadu_signal_handler(int s)
 		xml_config_file->saveTo(ggPath(f.latin1()));
 		abort();
 	}
-	else if (s==SIGINT || s==SIGTERM)
+	else if (s == SIGINT || s == SIGTERM)
 		qApp->postEvent(qApp, new QEvent(QEvent::Quit));
 }
 #endif
 
 int main(int argc, char *argv[])
 {
-
-
 	xml_config_file = new XmlConfigFile();
 	config_file_ptr = new ConfigFile(ggPath(QString("kadu.conf")));
 	config_file.addVariable("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
@@ -246,7 +246,7 @@ int main(int argc, char *argv[])
 	if (geteuid() == 0)
 		MessageBox::wrn(qApp->translate("@default", QT_TR_NOOP("Please do not run Kadu as a root!\nIt's a high security risk!")));
 	QTimer::singleShot(15000, kadu, SLOT(deleteOldConfigFiles()));
-	int ret=qApp->exec();
+	int ret = qApp->exec();
 //	delete qApp; sometimes leads to segfault
 	return ret;
 }
