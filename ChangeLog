@@ -242,6 +242,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * okno zmiany statusu opisowego pojawia siê w okolicach aktualnej pozycji myszki (joi)
 * przyspieszenie parsowania plików z histori± od 2 do 4 razy (joi)
 * optymalizacje w formatowaniu wiadomo¶ci wy¶wietlanych w chacie/historii/... (joi)
+* je¿eli g³ówne okno jest zminimalizowane i klikniemy lewym przyciskiem w trayu,
+  to okno zostanie "odminimalizowane" (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

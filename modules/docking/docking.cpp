@@ -200,6 +200,12 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 			pending.openMessages();
 			return;
 		}
+		if (kadu->isMinimized())
+		{
+			kadu->showNormal();
+			kadu->setFocus();
+			return;
+		}
 		switch (kadu->isVisible())
 		{
 			case 0:
