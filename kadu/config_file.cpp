@@ -37,7 +37,7 @@ void XmlConfigFile::read()
 		DomDocument.appendChild(root);
 	}
 	kdebugf2();
-}		
+}
 
 void XmlConfigFile::write(const QString& f)
 {
@@ -53,7 +53,7 @@ void XmlConfigFile::write(const QString& f)
 	{
 		kdebugm(KDEBUG_INFO, "file opened '%s'\n", file.name().local8Bit().data());
 		QTextStream stream(&file);
-		stream.setEncoding(QTextStream::UnicodeUTF8);		
+		stream.setEncoding(QTextStream::UnicodeUTF8);
 		stream << DomDocument.toString();
 		file.close();
 	}
@@ -101,7 +101,7 @@ QDomElement XmlConfigFile::findElementByProperty(QDomElement parent, const QStri
 	for (unsigned int i = 0, len = elems.length(); i < len; ++i)
 	{
 		const QDomElement &e = elems.item(i).toElement();
-		QString val = e.attribute(property_name);
+		const QString &val = e.attribute(property_name);
 //		kdebug("Checking if property value \"%s\" equals \"%s\"\n",
 //			val.local8Bit().data(), property_value.local8Bit().data());
 		if (val == property_value)
@@ -445,7 +445,7 @@ QColor PlainConfigFile::readColorEntry(const QString &group,const QString &name,
 	{
 		if (!str.contains(','))
 			return QColor(str);
-		
+
 		//stary zapis kolorów, w 0.5.0 mo¿na bêdzie wywaliæ
 		bool ok;
 		QStringList stringlist = QStringList::split(",", str);
@@ -459,7 +459,7 @@ QColor PlainConfigFile::readColorEntry(const QString &group,const QString &name,
 	}
 }
 
-													 
+
 QFont PlainConfigFile::readFontEntry(const QString &group,const QString &name, const QFont *def) const
 {
 	QString string = getEntry(group, name);
@@ -608,7 +608,7 @@ QString ConfigFile::getEntry(const QString &group, const QString &name, bool *ok
 	}
 	if (ok)
 		*ok = false;
-	return QString::null;	
+	return QString::null;
 }
 
 void ConfigFile::writeEntry(const QString &group,const QString &name, const QString &value)
@@ -765,7 +765,7 @@ QColor ConfigFile::readColorEntry(const QString &group,const QString &name, cons
 	{
 		if (!str.contains(','))
 			return QColor(str);
-		
+
 		//stary zapis kolorów, w 0.5.0 mo¿na bêdzie wywaliæ
 		bool ok;
 		QStringList stringlist = QStringList::split(",", str);
@@ -779,7 +779,7 @@ QColor ConfigFile::readColorEntry(const QString &group,const QString &name, cons
 	}
 }
 
-													 
+
 QFont ConfigFile::readFontEntry(const QString &group,const QString &name, const QFont *def) const
 {
 	QString string = getEntry(group, name);

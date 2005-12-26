@@ -830,7 +830,7 @@ EmotsWalker::~EmotsWalker()
     edge marked by given character
     return NULL if there is none
 */
-PrefixNode* EmotsWalker::findChild( PrefixNode* node, const QChar& c )
+PrefixNode* EmotsWalker::findChild( const PrefixNode* node, const QChar& c )
 {
 	myPair.first = c;
 	// create variable 'position' with result of binary search in childs
@@ -898,7 +898,7 @@ void EmotsWalker::insertString( const QString& str, int num )
 */
 int EmotsWalker::checkEmotOccurrence( const QChar& c )
 {
-	PrefixNode* next;
+	const PrefixNode* next;
 	int result = -1, resultLen = -1;
 
 	if ( amountPositions < positions.size() ) {

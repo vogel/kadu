@@ -78,7 +78,7 @@ class EmoticonsManager
 		void expandEmoticons(HtmlDocument& text, const QColor& bgcolor,
 			EmoticonsStyle style=(EmoticonsStyle) config_file.readNumEntry("Chat", "EmoticonsStyle"));
 		/**
-		Funkcja zwraca ilo¶æ emotikonek w zestawie 
+		Funkcja zwraca ilo¶æ emotikonek w zestawie
 		**/
 		int selectorCount() const;
 		/**
@@ -108,7 +108,7 @@ extern EmoticonsManager *emoticons;
 **/
 class EmoticonSelectorButton : public QToolButton
 {
-	Q_OBJECT	
+	Q_OBJECT
 	private:
 		QString EmoticonString;
 		QString AnimPath;
@@ -130,14 +130,14 @@ class EmoticonSelectorButton : public QToolButton
 		/**
 		Konstruktor tworz±cy przycisk z emotikonk±
 		\param parent widget na którym osadzona ma byæ przycisk z emotikonk±
-		\param emoticon_string nazwa która ma byæ wy¶wietlana po najechaniu na 
+		\param emoticon_string nazwa która ma byæ wy¶wietlana po najechaniu na
 		przycisk
 		\param static_path ¶cie¿ka do statycznej emotikonki
 		\param anim_path ¶cie¿ka do animowanej emotikonki
 		**/
 		EmoticonSelectorButton(
 			QWidget* parent,const QString& emoticon_string,
-			const QString& static_path,const QString& anim_path);	
+			const QString& static_path,const QString& anim_path);
 		~EmoticonSelectorButton();
 	signals:
 		/**
@@ -171,7 +171,7 @@ class EmoticonSelector : public QWidget
 		EmoticonSelector(QWidget* parent = 0, const char *name = 0, Chat *caller = 0);
 	public slots:
 		/**
-		Slot obs³uguj±cy poprawne wy¶wietlenie listy emotikonek, wyrównanie do 
+		Slot obs³uguj±cy poprawne wy¶wietlenie listy emotikonek, wyrównanie do
 		okna wywo³uj±cego.
 		**/
 		void alignTo(QWidget* w);
@@ -255,7 +255,7 @@ class StaticStyleSheet : public QStyleSheet
 
 
 
-struct PrefixNode 
+struct PrefixNode
 {
   int emotIndex;
   QValueVector<QPair<QChar, PrefixNode*> > childs;
@@ -267,13 +267,13 @@ struct PrefixNode
 	new search is initialized by calling 'initWalking()'
 	then characters are put into analysis by 'checkEmotOccurrence(c)'
 */
-class EmotsWalker 
+class EmotsWalker
 {
 	/** dictionary is based on prefix tree */
 	PrefixNode* root;
 	QPair<QChar, PrefixNode*> myPair;
 	/** positions in prefix tree, representing current analysis of text */
-	QValueVector<PrefixNode*> positions;
+	QValueVector<const PrefixNode*> positions;
 	QValueVector<int> lengths;
 	int amountPositions;
 
@@ -282,7 +282,7 @@ class EmotsWalker
 		~EmotsWalker();
 
 	private:
-		PrefixNode* findChild( PrefixNode* node, const QChar& c );
+		PrefixNode* findChild( const PrefixNode* node, const QChar& c );
 		PrefixNode* insertChild( PrefixNode* node, const QChar& c );
 		void removeChilds( PrefixNode* node );
 
@@ -293,7 +293,7 @@ class EmotsWalker
 			emot in analyzed text
 		*/
 		void insertString( const QString& str, int num );
-		
+
 		/**
 			return number of emot, which occurre in analyzed text just
 			after adding given character (thus ending on this character)
@@ -301,9 +301,9 @@ class EmotsWalker
 			if no emot occures, -1 is returned
 		*/
 		int checkEmotOccurrence( const QChar& c );
-		
+
 		/**
-			clear internal structures responsible for analyzing text, it allows 
+			clear internal structures responsible for analyzing text, it allows
 			begin of new text analysis
 		*/
 		void initWalking();
