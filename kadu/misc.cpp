@@ -899,9 +899,24 @@ ChooseDescription::ChooseDescription(int nr, QPoint *position, QWidget * parent,
 	grid->addWidget(cancelbtn, 1, 2, Qt::AlignRight);
 	grid->addColSpacing(0, 200);
 
+	int width = 250;
+	int height = 80;
+	QSize sh = sizeHint();
+	if (sh.width() > width)
+		width = sh.width();
+	if (sh.height() > height)
+		height = sh.height();
 	if (position)
-		move(*position);
-	resize(250,80);
+	{
+		QPoint p = *position;
+		QDesktopWidget *d = QApplication::desktop();
+		if (p.x() + width + 20 >= d->width())
+			p.setX(d->width() - width - 20);
+		if (p.y() + height + 20 >= d->height())
+			p.setY(d->height() - height - 20);
+		move(p);
+	}
+	resize(width, height);
 	kdebugf2();
 }
 
