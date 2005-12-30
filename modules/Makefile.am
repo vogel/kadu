@@ -20,6 +20,8 @@ CLEANFILES = */*.$(SO_EXT) */*.a */*.o */*_moc.cpp */*.d
 
 CXXFLAGS = @CXXFLAGS@
 
+CFLAGS = @CFLAGS@
+
 module_d_files = $(addsuffix .d,$(basename $(module_o_files)))
 
 # dirty hack - leading space required because of automake "if" support
@@ -47,9 +49,9 @@ $(module_moc_cpp_files):
 	finc="$$dir/.final.c" && \
 	if test -f $$finc; then \
 		echo compiling c files for module $$dir && \
-		echo "$(CC) -o $$dir/.final.o -c -fPIC $$finc $(CONFIGURE_INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS)" >> $(LOGFILE) && \
-		$(CC) -o $$dir/.final.o -c -fPIC $$finc $(CONFIGURE_INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS); \
-		fincpp="$$fincpp $$dir/.final.o"; \
+		echo "$(CC) -o $$dir/.final.c.o -c -fPIC $$finc $(CONFIGURE_INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS)" >> $(LOGFILE) && \
+		$(CC) -o $$dir/.final.c.o -c -fPIC $$finc $(CONFIGURE_INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS); \
+		fincpp="$$fincpp $$dir/.final.c.o"; \
 	fi && \
 	echo compiling and linking module $$dir && \
 	echo "$(CXX) $(SHARED_OPT) -o $@ -fPIC $$fincpp $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) $(module_ldflags) $(SHARED_FLAGS)" >> $(LOGFILE) && \
@@ -59,16 +61,18 @@ $(module_moc_cpp_files):
 	@dir="$$module_name" && \
 	fincpp="$$dir/.final.cpp" && \
 	finc="$$dir/.final.c" && \
+	fino="$$dir/.final.cpp.o" && \
 	if test -f $$finc; then \
 		echo compiling c files for module $$dir && \
-		echo "$(CC) -o $$dir/.final.o -c -fPIC $$finc $(CONFIGURE_INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS)" >> $(LOGFILE) && \
-		$(CC) -o $$dir/.final.o -c -fPIC $$finc $(CONFIGURE_INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS); \
-		fincpp="$$fincpp $$dir/.final.o"; \
+		echo "$(CC) -o $$dir/.final.c.o -c -fPIC $$finc $(CONFIGURE_INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CFLAGS)" >> $(LOGFILE) && \
+		$(CC) -o $$dir/.final.c.o -c -fPIC $$finc $(CONFIGURE_INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CFLAGS); \
+		fino="$$fino $$dir/.final.c.o"; \
 	fi && \
 	echo compiling static module $$dir && \
-	$(CXX) -c -o $@.tmp -fPIC $$fincpp $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) && \
-	$(AR) rs $@ $@.tmp && \
-	rm -f $@.tmp
+	echo "$(CXX) -c -o $$dir/.final.cpp.o -fPIC $$fincpp $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS)" >> $(LOGFILE) && \
+	$(CXX) -c -o $$dir/.final.cpp.o -fPIC $$fincpp $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) && \
+	echo "$(AR) rs $@ $$fino" >> $(LOGFILE) && \
+	$(AR) rs $@ $$fino
 
  else
 
@@ -101,8 +105,8 @@ $(module_moc_cpp_files):
 
 %.o: %.c
 	@echo compiling file $<
-	@echo "$(CC) -o $@ -c -fPIC $< $(CONFIGURE_INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS)" >> $(LOGFILE)
-	$(CC) -o $@ -c -fPIC $< $(CONFIGURE_INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS)
+	@echo "$(CC) -o $@ -c -fPIC $< $(CONFIGURE_INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CFLAGS)" >> $(LOGFILE)
+	$(CC) -o $@ -c -fPIC $< $(CONFIGURE_INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CFLAGS)
 
 %_moc.cpp: %.h
 	@echo generating $@

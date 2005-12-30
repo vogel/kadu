@@ -468,6 +468,9 @@ AM_INIT_AUTOMAKE([no-dependencies dist-bzip2])
 user_cxxflags="$CXXFLAGS"
 CXXFLAGS="-fno-exceptions -pipe -Wall $user_cxxflags"
 
+user_cflags="$CFLAGS"
+CFLAGS="-pipe -Wall $user_cflags"
+
 # Checks for programs.
 AC_PROG_CXX
 AC_PROG_CC
@@ -708,9 +711,11 @@ fi
 if test "$enable_debug" = "yes"; then
 	AC_DEFINE(DEBUG_ENABLED,1,[Define if you want console debug output])
 	CXXFLAGS="$CXXFLAGS -ggdb"
+	CFLAGS="$CFLAGS -ggdb"
 	libgadu_CFLAGS="-ggdb"
 else
 	CXXFLAGS="$CXXFLAGS -s"
+	CFLAGS="$CFLAGS -s"
 	libgadu_CFLAGS="-DGG_DEBUG_DISABLE -s"
 fi
 
@@ -728,6 +733,7 @@ fi
 if test "$enable_macosx" = "yes"; then
 	# -s kills dynamic modules
 	CXXFLAGS="`echo $CXXFLAGS | sed 's/ -s//'`"
+	CFLAGS="`echo $CFLAGS | sed 's/ -s//'`"
 
 	LDFLAGS="$LDFLAGS -framework Carbon -framework QuickTime -lz -framework OpenGL -framework AGL"
 	DYNAMIC_OPT="-dynamic"
@@ -904,11 +910,13 @@ echo "   Compile with debug symbols:         $enable_debug"
 echo "   System signals handling:            $enable_sig_handling"
 echo "   Precompiled headers support:        $enable_pheaders"
 echo "   Dependency tracking:                $enable_dependency_tracking"
+echo "   Final build:                        $enable_final"
 echo "   Link with existing libgadu:         $with_existing_libgadu"
 # Maybe it will be back when GG servers have SSL support finally
 #echo "   OpenSSL encryption support:         $have_openssl"
 echo "   Distribution type information:      $enable_dist_info"
 echo "   Additional c++ compiler flags:      $user_cxxflags"
+echo "   Additional c   compiler flags:      $user_cflags"
 echo
 echo "   Static modules:   $static_modules"
 echo "   Shared modules:   $shared_modules"
