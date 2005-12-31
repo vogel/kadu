@@ -247,6 +247,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawki w kompilacji dla kombinacji: --enable-final, statyczny modu³,
   zawieraj±cy pliki w C (np.: encryption) (joi)
 * u¿ywamy zmiennej CFLAGS, a nie CXXFLAGS do kompilacji plików w C (joi)
+* poprawione dzia³anie opcji "Poka¿ kontakty, które s± blokowane" po restarcie Kadu (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
