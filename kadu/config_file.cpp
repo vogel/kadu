@@ -214,13 +214,13 @@ void PlainConfigFile::write() const
 		kdebugm(KDEBUG_INFO, "file opened '%s'\n", (const char *)file.name().local8Bit());
 		QTextStream stream(&file);
 		stream.setCodec(codec_latin2);
-		for(QMap<QString, QMap<QString, QString> >::const_iterator i=groups.begin(); i!=groups.end(); ++i)
+		CONST_FOREACH(i, groups)
 		{
 //			kdebugm(KDEBUG_DUMP, ">> %s\n", (const char*)i.key().local8Bit());
 			out.append(format1.arg(i.key()));
-			for(QMap<QString, QString>::const_iterator j=i.data().begin(); j!=i.data().end(); ++j)
+			CONST_FOREACH(j, i.data())
 			{
-				QString q=j.data();
+				QString q = j.data();
 				out.append(format2.arg(j.key()).arg(q.replace('\n', "\\n")));
 //				kdebugm(KDEBUG_DUMP, ">>>>> %s %s\n", (const char*)j.key().local8Bit(), (const char*)q.local8Bit());
 			}
