@@ -3,6 +3,7 @@
 
 #include <qobject.h>
 #include <qstring.h>
+#include <qdatetime.h>
 
 #include "status.h"
 
@@ -10,6 +11,8 @@ class Protocol : public QObject
 {
 	Q_OBJECT
 	protected:
+		QDateTime ConnectionTime;
+
 		QString ProtocolID;
 		QString id;
 
@@ -104,12 +107,14 @@ class Protocol : public QObject
 			@see status
 		**/
 		const UserStatus &currentStatus() const { return *CurrentStatus; }
-		
+
 		QString protocolID() const {	return ProtocolID;	}
 
 		QString ID() const {	return id;	}
-		
+
 		virtual UserStatus *newStatus() const = 0;
+
+		const QDateTime &connectionTime() const;
 
 	signals:
 
@@ -127,7 +132,7 @@ class Protocol : public QObject
 			roz³±czyli¶my siê z serwerem
 		**/
 		void disconnected();
-	
+
 		/**
 			wyst±pi³ b³±d po³±czenia
 			@param protocol protokó³

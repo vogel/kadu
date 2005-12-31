@@ -111,6 +111,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 	dontHideOnClose = false;
 	ShowMainWindowOnStart = true;
 	kadu = this;
+	StartTime = QDateTime::currentDateTime();
 
 	KaduSlots *kaduslots=new KaduSlots(this, "kaduslots");
 	UinType myUin=config_file.readNumEntry("General", "UIN");
@@ -1697,4 +1698,9 @@ void Kadu::setMainWindowIcon(const QPixmap &icon)
 	emit settingMainIconBlocked(blocked);
 	if (!blocked)
 		setIcon(icon);
+}
+
+const QDateTime &Kadu::startTime() const
+{
+	return StartTime;
 }

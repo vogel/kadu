@@ -39,6 +39,7 @@ class Kadu : public QWidget
 		QPopupMenu* statusMenu;
 		QPushButton* statusButton;
 		QPoint lastPositionBeforeStatusMenuHide;
+		QDateTime StartTime;
 
 		UserStatus status;
 
@@ -142,6 +143,8 @@ class Kadu : public QWidget
 
 		static bool closing() { return Closing; }
 		static void setClosing() { Closing = true; }
+
+		const QDateTime &startTime() const;
 	public slots:
 		void slotHandleState(int command);
 		void changeAppearance();

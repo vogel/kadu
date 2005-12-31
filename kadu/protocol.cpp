@@ -18,3 +18,8 @@ Protocol::~Protocol()
 	delete CurrentStatus;
 	delete NextStatus;
 }
+
+const QDateTime &Protocol::connectionTime() const
+{
+	return ConnectionTime;
+}

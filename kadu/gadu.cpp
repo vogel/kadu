@@ -706,6 +706,7 @@ void GaduProtocol::connectedSlot()
 {
 	kdebugf();
 	ConnectionTimeoutTimer::off();
+	ConnectionTime = QDateTime::currentDateTime();
 
 	whileConnecting = false;
 	sendUserList();
