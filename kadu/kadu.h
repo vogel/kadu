@@ -178,7 +178,7 @@ class Kadu : public QWidget
 		void manageIgnored();
 		void notifyUser();
 		void offlineToUser();
-		void dontShowDescription();
+		void hideDescription();
 		void personalInfo();
 		void quit();
 		void searchInDirectory();

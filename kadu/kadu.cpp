@@ -233,7 +233,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 	UserBox::userboxmenu->addItem(tr("Block user"), this, SLOT(blockUser()));
 	UserBox::userboxmenu->addItem(tr("Notify about user"), this, SLOT(notifyUser()));
 	UserBox::userboxmenu->addItem(tr("Offline to user"), this, SLOT(offlineToUser()));
-	UserBox::userboxmenu->addItem(tr("Hide description"), this, SLOT(dontShowDescription()));
+	UserBox::userboxmenu->addItem(tr("Hide description"), this, SLOT(hideDescription()));
 	UserBox::userboxmenu->insertSeparator();
 	UserBox::userboxmenu->addItem("RemoveFromUserlist", tr("Remove from userlist"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("ShortCuts", "kadu_deleteuser"));
 	UserBox::userboxmenu->addItem("ClearHistory", tr("Clear history"), this, SLOT(deleteHistory()));
@@ -408,7 +408,7 @@ void Kadu::popupMenu()
 	int blockuseritem = UserBox::userboxmenu->getItem(tr("Block user"));
 	int notifyuseritem = UserBox::userboxmenu->getItem(tr("Notify about user"));
 	int offlinetouseritem = UserBox::userboxmenu->getItem(tr("Offline to user"));
-	int dontshowdescriptionitem = UserBox::userboxmenu->getItem(tr("Hide description"));
+	int hidedescriptionitem = UserBox::userboxmenu->getItem(tr("Hide description"));
 
 	if (containsUserWithoutID)
 	{
@@ -416,7 +416,7 @@ void Kadu::popupMenu()
 		UserBox::userboxmenu->setItemEnabled(blockuseritem, false);
 		UserBox::userboxmenu->setItemEnabled(notifyuseritem, false);
 		UserBox::userboxmenu->setItemEnabled(offlinetouseritem, false);
-		UserBox::userboxmenu->setItemEnabled(dontshowdescriptionitem, false);
+		UserBox::userboxmenu->setItemEnabled(hidedescriptionitem, false);
 	}
 	else
 	{
@@ -446,12 +446,12 @@ void Kadu::popupMenu()
 
 		on = false;
 		CONST_FOREACH(user, users)
-			if ((*user).data("DontShowDescription").toString() == "true")
+			if ((*user).data("HideDescription").toString() == "true")
 			{
 				on = true;
 				break;
 			}
-		UserBox::userboxmenu->setItemChecked(dontshowdescriptionitem, on);
+		UserBox::userboxmenu->setItemChecked(hidedescriptionitem, on);
 
 		on = true;
 		CONST_FOREACH(user, users)
@@ -799,7 +799,7 @@ void Kadu::offlineToUser()
 	kdebugf2();
 }
 
-void Kadu::dontShowDescription()
+void Kadu::hideDescription()
 {
 	kdebugf();
 	UserBox *activeUserBox = UserBox::activeUserBox();
@@ -812,14 +812,14 @@ void Kadu::dontShowDescription()
 	UserListElements users = activeUserBox->selectedUsers();
 	bool on = true;
 	CONST_FOREACH(user, users)
-		if ((*user).data("DontShowDescription").toString() == "true")
+		if ((*user).data("HideDescription").toString() == "true")
 		{
 			on = false;
 			break;
 		}
 
 	FOREACH(user, users)
-		(*user).setData("DontShowDescription", on ? "true" : "false");
+		(*user).setData("HideDescription", on ? "true" : "false");
 
 	userlist->writeToConfig();
 	kdebugf2();
