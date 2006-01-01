@@ -106,7 +106,8 @@ void KaduListBoxPixmap::paint(QPainter *painter)
 			painter->setPen(QColor(192, 192, 0));
 		else if (User.protocolData("Gadu", "OfflineTo").toBool())
 			painter->setPen(QColor(128, 128, 128));
-		description = User.status("Gadu").description();
+		if (User.data("DontShowDescription").toString() != "true")
+			description = User.status("Gadu").description();
 	}
 
 	int itemHeight = AlignUserboxIconsTop ? lineHeight(listBox()):height(listBox());
@@ -177,7 +178,7 @@ int KaduListBoxPixmap::height(const QListBox* lb) const
 {
 //	kdebugf();
 	QString description;
-	if (User.usesProtocol("Gadu"))
+	if (User.usesProtocol("Gadu") && User.data("DontShowDescription").toString() != "true")
 		description = User.status("Gadu").description();
 	bool hasDescription = !description.isEmpty();
 
@@ -707,6 +708,8 @@ void UserBox::initModule()
 
 	ConfigDialog::connectSlot("Look", "Background", SIGNAL(textChanged(const QString &)), userboxslots, SLOT(backgroundFileChanged(const QString &)));
 
+	userlist->addPerContactNonProtocolConfigEntry("dont_show_description", "DontShowDescription");
+
 	kdebugf2();
 }
 
@@ -1183,7 +1186,7 @@ void UserBox::statusChanged(UserListElement elem, QString protocolName,
 void UserBox::userDataChanged(UserListElement elem, QString name, QVariant oldValue,
 					QVariant currentValue, bool massively, bool last)
 {
-	if (name != "AltNick" && name != "Mobile") // we are not interested in other names
+	if (name != "AltNick" && name != "Mobile" && name != "DontShowDescription") // we are not interested in other names
 		return;
 	if (massively)
 		refreshLater();

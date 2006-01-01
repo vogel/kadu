@@ -70,6 +70,12 @@ class UserList : public UserGroup
 		**/
 		void clear();
 
+		void addPerContactNonProtocolConfigEntry(const QString &attribute_name, const QString &internal_key);
+		void removePerContactNonProtocolConfigEntry(const QString &attribute_name);
+		void addPerContactProtocolConfigEntry(const QString &protocolName, const QString &attribute_name, const QString &internal_key);
+		void removePerContactProtocolConfigEntry(const QString &protocolName, const QString &attribute_name);
+
+
 	private:
 		/**
 			\fn UserList()
@@ -81,6 +87,11 @@ class UserList : public UserGroup
 			\fn ~UserList()
 		**/
 		virtual ~UserList();
+
+		QMap<QString, QString> nonProtoKeys;
+		QMap<QString, QMap<QString, QString> > protoKeys;
+
+		void initKeys();
 };
 
 extern UserList *userlist;

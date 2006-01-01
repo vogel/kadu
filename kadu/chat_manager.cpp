@@ -174,6 +174,12 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 
 	KaduActions.addDefaultToolbarAction("Search toolbar", "chatAction", -1, true);
 
+	if (config_file.readBoolEntry("Chat", "RememberPosition"))
+	{
+		userlist->addPerContactNonProtocolConfigEntry("chat_geometry", "ChatGeometry");
+		userlist->addPerContactNonProtocolConfigEntry("chat_vertical_sizes", "VerticalSizes");
+	}
+
 	kdebugf2();
 }
 
@@ -349,7 +355,13 @@ void ChatManager::unregisterChat(Chat* chat)
 		{
 			const UserGroup *users = chat->users();
 			setChatProperty(users, "Geometry", QRect(chat->pos().x(), chat->pos().y(), chat->size().width(), chat->size().height()));
-			setChatProperty(users, "VerticalSizes", toVariantList(chat->vertSplit->sizes()));
+			QValueList<int> sizes = chat->vertSplit->sizes();
+			setChatProperty(users, "VerticalSizes", toVariantList(sizes));
+			if (users->count() == 1)
+			{
+				(*users->begin()).setData("ChatGeometry", QString("%1,%2,%3,%4").arg(chat->pos().x()).arg(chat->pos().y()).arg(chat->size().width()).arg(chat->size().height()));
+				(*users->begin()).setData("VerticalSizes", QString("%1,%2").arg(sizes[0]).arg(sizes[1]));
+			}
 			if (chat->horizSplit)
 				setChatProperty(users, "HorizontalSizes", toVariantList(chat->horizSplit->sizes()));
 
@@ -433,6 +445,21 @@ int ChatManager::openChat(QString initialProtocol, UserListElements users, time_
 
 	const UserGroup *group = chat->users();
 	QRect geometry = getChatProperty(group, "Geometry").toRect();
+	if (geometry.isEmpty() && group->count() == 1)
+	{
+		QString geo_str = (*(group->constBegin())).data("ChatGeometry").toString();
+		if (!geo_str.isEmpty())
+		{
+			bool ok[4];
+			QStringList s = QStringList::split(",", geo_str);
+			geometry.setX(s[0].toInt(ok));
+			geometry.setY(s[1].toInt(ok + 1));
+			geometry.setWidth(s[2].toInt(ok + 2));
+			geometry.setHeight(s[3].toInt(ok + 3));
+			if (int(ok[0]) + ok [1] + ok [2] + ok [3] != 4)
+				geometry = QRect();
+		}
+	}
 	if (geometry.isEmpty())
 	{
 		QPoint pos = QCursor::pos();
@@ -460,6 +487,19 @@ int ChatManager::openChat(QString initialProtocol, UserListElements users, time_
 	chat->setGeometry(geometry);
 
 	QValueList<int> vertSizes = toIntList(getChatProperty(group, "VerticalSizes").toList());
+	if (vertSizes.empty() && group->count() == 1)
+	{
+		QString vert_sz_str = (*(group->constBegin())).data("VerticalSizes").toString();
+		if (!vert_sz_str.isEmpty())
+		{
+			bool ok[2];
+			QStringList s = QStringList::split(",", vert_sz_str);
+			vertSizes.append(s[0].toInt(ok));
+			vertSizes.append(s[1].toInt(ok + 1));
+			if (int(ok[0]) + ok[1] != 2)
+				vertSizes.clear();
+		}
+	}
 	if (!vertSizes.empty())
 		chat->vertSplit->setSizes(vertSizes);
 
@@ -717,6 +757,7 @@ void ChatManager::initModule()
 	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Ignore messages from anonymous users"), "IgnoreAnonymousUsers", false, QString::null, QString::null, Advanced);
 	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Ignore richtext from anonymous users"), "IgnoreAnonymousRichtext", true, QString::null, QString::null, Advanced);
 	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Receive images during invisibility"), "ReceiveImagesDuringInvisibility", true, QString::null, QString::null, Expert);
+	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Remember chat windows positions"), "RememberPosition", true, QString::null, QString::null, Expert);
 	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Block window close on new message"), "ChatCloseTimer", false, QString::null, QString::null, Advanced);
 	ConfigDialog::addSpinBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Max time to block window close"),
 			"ChatCloseTimerPeriod", 1, 5, 1, 2, QString::null, QString::null, Expert);

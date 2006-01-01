@@ -157,7 +157,7 @@ void ChatManagerSlots::onCreateTabLook()
 	ConfigDialog::getSpinBox("Look", "Interval between header removal:")->setSuffix(" min");
 
 	updatePreview();
-	
+
 	kdebugf2();
 }
 
@@ -218,6 +218,17 @@ void ChatManagerSlots::onApplyTabChat()
 	config_file.writeEntry("Chat", "WebBrowserNo", ConfigDialog::getComboBox("Chat", "Choose your browser")->currentItem());
 
 	chat_manager->changeAppearance();
+
+	if (config_file.readBoolEntry("Chat", "RememberPosition"))
+	{
+		userlist->addPerContactNonProtocolConfigEntry("chat_geometry", "ChatGeometry");
+		userlist->addPerContactNonProtocolConfigEntry("chat_vertical_sizes", "VerticalSizes");
+	}
+	else
+	{
+		userlist->removePerContactNonProtocolConfigEntry("chat_geometry");
+		userlist->removePerContactNonProtocolConfigEntry("chat_vertical_sizes");
+	}
 
 
 	kdebugf2();
@@ -388,7 +399,7 @@ void ChatManagerSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo,
 			searchPath.append("/Applications");
 			break;
 		}
-		default: 
+		default:
 		{
 			kdebugf2();
 			return;

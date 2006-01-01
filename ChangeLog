@@ -248,6 +248,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   zawieraj±cy pliki w C (np.: encryption) (joi)
 * u¿ywamy zmiennej CFLAGS, a nie CXXFLAGS do kompilacji plików w C (joi)
 * poprawione dzia³anie opcji "Poka¿ kontakty, które s± blokowane" po restarcie Kadu (joi)
+* zapisywanie do pliku konfiguracyjnego rozmiarów i pozycji okien rozmowy oraz
+  stanu szyfrowania; opcja "Nie pokazuj opisu" w menu kontekstowym kontaktu;
+  w zwi±zku z powy¿szym: rozszerzenie API userlisty o mo¿liwo¶æ zapisania
+  dowolnych danych razem z kontaktem (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

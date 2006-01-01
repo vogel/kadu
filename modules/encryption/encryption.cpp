@@ -65,6 +65,8 @@ EncryptionManager::EncryptionManager(QObject *parent, const char *name) : QObjec
 	ConfigDialog::connectSlot("Chat", "Generate keys", SIGNAL(clicked()), this, SLOT(generateMyKeys()));
 	ConfigDialog::connectSlot("Chat", "Use encryption", SIGNAL(toggled(bool)), this, SLOT(onUseEncryption(bool)));
 
+	userlist->addPerContactNonProtocolConfigEntry("encryption_enabled", "EncryptionEnabled");
+
 	connect(chat_manager, SIGNAL(chatCreated(const UserGroup *)), this, SLOT(chatCreated(const UserGroup *)));
 	connect(gadu, SIGNAL(messageFiltering(Protocol *, UserListElements, QCString&, QByteArray&, bool&)),
 			this, SLOT(receivedMessageFilter(Protocol *, UserListElements, QCString&, QByteArray&, bool&)));
@@ -166,14 +168,16 @@ void EncryptionManager::chatCreated(const UserGroup *group)
 	connect(chat, SIGNAL(messageFiltering(const UserGroup *, QCString &, bool &)),
 			this, SLOT(sendMessageFilter(const UserGroup *, QCString &, bool &)));
 
-	bool encrypt=false;
+	bool encrypt = false;
 	if (encryption_possible)
 	{
-		QVariant v=chat_manager->getChatProperty(group, "EncryptionEnabled");
+		QVariant v = chat_manager->getChatProperty(group, "EncryptionEnabled");
 		if (v.isValid())
-			encrypt=v.toBool();
+			encrypt = v.toBool();
+		else if (group->count() == 1 && (*(group->constBegin())).data("EncryptionEnabled").isValid())
+			encrypt = (*(group->constBegin())).data("EncryptionEnabled").toString() == "true";
 		else
-			encrypt=config_file.readBoolEntry("Chat", "Encryption");
+			encrypt = config_file.readBoolEntry("Chat", "Encryption");
 	}
 
 	setupEncryptButton(chat, encrypt);
@@ -208,6 +212,8 @@ void EncryptionManager::setupEncryptButton(Chat* chat,bool enabled)
 		}
 	}
 	chat_manager->setChatProperty(chat->users(), "EncryptionEnabled", QVariant(enabled));
+	if (chat->users()->count() == 1)
+		(*(chat->users()->begin())).setData("EncryptionEnabled", enabled ? "true" : "false");
 	kdebugf2();
 }
 

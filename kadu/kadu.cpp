@@ -233,6 +233,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 	UserBox::userboxmenu->addItem(tr("Block user"), this, SLOT(blockUser()));
 	UserBox::userboxmenu->addItem(tr("Notify about user"), this, SLOT(notifyUser()));
 	UserBox::userboxmenu->addItem(tr("Offline to user"), this, SLOT(offlineToUser()));
+	UserBox::userboxmenu->addItem(tr("Don't show description"), this, SLOT(dontShowDescription()));
 	UserBox::userboxmenu->insertSeparator();
 	UserBox::userboxmenu->addItem("RemoveFromUserlist", tr("Remove from userlist"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("ShortCuts", "kadu_deleteuser"));
 	UserBox::userboxmenu->addItem("ClearHistory", tr("Clear history"), this, SLOT(deleteHistory()));
@@ -407,6 +408,7 @@ void Kadu::popupMenu()
 	int blockuseritem = UserBox::userboxmenu->getItem(tr("Block user"));
 	int notifyuseritem = UserBox::userboxmenu->getItem(tr("Notify about user"));
 	int offlinetouseritem = UserBox::userboxmenu->getItem(tr("Offline to user"));
+	int dontshowdescriptionitem = UserBox::userboxmenu->getItem(tr("Don't show description"));
 
 	if (containsUserWithoutID)
 	{
@@ -414,6 +416,7 @@ void Kadu::popupMenu()
 		UserBox::userboxmenu->setItemEnabled(blockuseritem, false);
 		UserBox::userboxmenu->setItemEnabled(notifyuseritem, false);
 		UserBox::userboxmenu->setItemEnabled(offlinetouseritem, false);
+		UserBox::userboxmenu->setItemEnabled(dontshowdescriptionitem, false);
 	}
 	else
 	{
@@ -440,6 +443,15 @@ void Kadu::popupMenu()
 			}
 		UserBox::userboxmenu->setItemEnabled(offlinetouseritem, config_file.readBoolEntry("General", "PrivateStatus"));
 		UserBox::userboxmenu->setItemChecked(offlinetouseritem, on);
+
+		on = false;
+		CONST_FOREACH(user, users)
+			if ((*user).data("DontShowDescription").toString() == "true")
+			{
+				on = true;
+				break;
+			}
+		UserBox::userboxmenu->setItemChecked(dontshowdescriptionitem, on);
 
 		on = true;
 		CONST_FOREACH(user, users)
@@ -782,6 +794,32 @@ void Kadu::offlineToUser()
 	FOREACH(user, users)
 		if ((*user).usesProtocol("Gadu") && (*user).protocolData("Gadu", "OfflineTo").toBool() != !on)
 			(*user).setProtocolData("Gadu", "OfflineTo", !on);
+
+	userlist->writeToConfig();
+	kdebugf2();
+}
+
+void Kadu::dontShowDescription()
+{
+	kdebugf();
+	UserBox *activeUserBox = UserBox::activeUserBox();
+	if (activeUserBox == NULL)
+	{
+		kdebugf2();
+		return;
+	}
+
+	UserListElements users = activeUserBox->selectedUsers();
+	bool on = true;
+	CONST_FOREACH(user, users)
+		if ((*user).data("DontShowDescription").toString() == "true")
+		{
+			on = false;
+			break;
+		}
+
+	FOREACH(user, users)
+		(*user).setData("DontShowDescription", on ? "true" : "false");
 
 	userlist->writeToConfig();
 	kdebugf2();
@@ -1130,6 +1168,7 @@ bool Kadu::close(bool quit)
 //		gadu->logout();
 		GaduProtocol::closeModule();
  		ChatManager::closeModule();
+		userlist->writeToConfig();
 		GroupsManager::closeModule();
  		UserBox::closeModule();
 		UserList::closeModule();

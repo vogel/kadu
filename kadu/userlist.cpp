@@ -31,6 +31,7 @@
 
 UserList::UserList() : UserGroup(101, "userlist")
 {
+	initKeys();
 	readFromConfig();
 }
 
@@ -149,6 +150,16 @@ void UserList::readFromConfig()
 			contact_elem.attribute("alive_sound_file"));
 		e.setMessageSound((NotifyType)contact_elem.attribute("message_sound_type").toInt(),
 			contact_elem.attribute("message_sound_file"));
+
+		CONST_FOREACH(it, nonProtoKeys)
+			if (contact_elem.hasAttribute(it.key()))
+				e.setData(it.data(), contact_elem.attribute(it.key()), true);
+		CONST_FOREACH(it, protoKeys)
+			if (e.usesProtocol(it.key()))
+				CONST_FOREACH(it2, *it)
+					if (contact_elem.hasAttribute(it2.key()))
+						e.setProtocolData(it.key(), it2.data(), contact_elem.attribute(it2.key()), true);
+
 		addUser(e, true, i + 1 == cnt);
 	}
 	emit modified();
@@ -191,6 +202,23 @@ void UserList::writeToConfig()
 		contact_elem.setAttribute("alive_sound_type", type);
 		contact_elem.setAttribute("message_sound_file", (*i).messageSound(type));
 		contact_elem.setAttribute("message_sound_type", type);
+
+		CONST_FOREACH(it, nonProtoKeys)
+		{
+			const QString &val = (*i).data(it.data()).toString();
+//			kdebugmf(KDEBUG_WARNING, "%s %s %s\n", (*i).altNick().local8Bit().data(), it.key().local8Bit().data(), val.local8Bit().data());
+			if (!val.isEmpty())
+				contact_elem.setAttribute(it.key(), val);
+		}
+
+		CONST_FOREACH(it, protoKeys)
+			if ((*i).usesProtocol(it.key()))
+				CONST_FOREACH(it2, *it)
+				{
+					const QString &val = (*i).protocolData(it.key(), it2.key()).toString();
+					if (!val.isEmpty())
+						contact_elem.setAttribute(it2.key(), val);
+				}
 	}
 	xml_config_file->sync();
 }
@@ -303,6 +331,101 @@ void UserList::closeModule()
 {
 	delete userlist;
 	userlist = NULL;
+}
+
+void UserList::addPerContactNonProtocolConfigEntry(const QString &attribute_name, const QString &internal_key)
+{
+	kdebugf();
+
+	if (nonProtoKeys.find(attribute_name) != nonProtoKeys.end())
+	{
+		kdebugf2();
+		return;
+	}
+	nonProtoKeys[attribute_name] = internal_key;
+
+	QStringList keys = QStringList::split(",", config_file.readEntry("General", "NonProtoAdditionalAttributes"));
+	keys.append(attribute_name + "=" + internal_key);
+	config_file.writeEntry("General", "NonProtoAdditionalAttributes", keys.join(","));
+
+	kdebugf2();
+}
+
+void UserList::removePerContactNonProtocolConfigEntry(const QString &attribute_name)
+{
+	kdebugf();
+
+	QMap<QString, QString>::iterator it = nonProtoKeys.find(attribute_name);
+	if (it == nonProtoKeys.end())
+		return;
+	nonProtoKeys.erase(it);
+
+	QStringList keys = QStringList::split(",", config_file.readEntry("General", "NonProtoAdditionalAttributes"));
+	QStringList atts = keys.grep(attribute_name + "=");
+	CONST_FOREACH(att, atts)
+		keys.remove(*att);
+	config_file.writeEntry("General", "NonProtoAdditionalAttributes", keys.join(","));
+
+	kdebugf2();
+}
+
+void UserList::addPerContactProtocolConfigEntry(const QString &protocolName, const QString &attribute_name, const QString &internal_key)
+{
+	kdebugf();
+	QMap<QString, QString> &p = protoKeys[protocolName];
+	if (p.find(attribute_name) != p.end())
+	{
+		kdebugf2();
+		return;
+	}
+	p[attribute_name] = internal_key;
+
+	QStringList keys = QStringList::split(",", config_file.readEntry("General", "ProtoAdditionalAttributes"));
+	keys.append(protocolName + "=" + attribute_name + "=" + internal_key);
+	config_file.writeEntry("General", "ProtoAdditionalAttributes", keys.join(","));
+	kdebugf2();
+}
+
+void UserList::removePerContactProtocolConfigEntry(const QString &protocolName, const QString &attribute_name)
+{
+	kdebugf();
+	QMap<QString, QString> &p = protoKeys[protocolName];
+	QMap<QString, QString>::iterator it = p.find(attribute_name);
+	if (it != p.end())
+	{
+		kdebugf2();
+		return;
+	}
+	p.erase(it);
+
+	QStringList keys = QStringList::split(",", config_file.readEntry("General", "ProtoAdditionalAttributes"));
+	QStringList atts = keys.grep(protocolName + "=" + attribute_name + "=");
+	CONST_FOREACH(att, atts)
+		keys.remove(*att);
+	config_file.writeEntry("General", "ProtoAdditionalAttributes", keys.join(","));
+
+	kdebugf2();
+}
+
+void UserList::initKeys()
+{
+	kdebugf();
+
+	QStringList keys1 = QStringList::split(",", config_file.readEntry("General", "NonProtoAdditionalAttributes"));
+	CONST_FOREACH(it, keys1)
+	{
+		QStringList x = QStringList::split("=", *it);
+		nonProtoKeys[x[0]] = x[1];
+	}
+
+	QStringList keys2 = QStringList::split(",", config_file.readEntry("General", "ProtoAdditionalAttributes"));
+	CONST_FOREACH(it, keys2)
+	{
+		QStringList x = QStringList::split("=", *it);
+		protoKeys[x[0]][x[1]] = x[2];
+	}
+
+	kdebugf2();
 }
 
 UserList *userlist;
