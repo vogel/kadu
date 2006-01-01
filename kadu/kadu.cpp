@@ -233,7 +233,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 	UserBox::userboxmenu->addItem(tr("Block user"), this, SLOT(blockUser()));
 	UserBox::userboxmenu->addItem(tr("Notify about user"), this, SLOT(notifyUser()));
 	UserBox::userboxmenu->addItem(tr("Offline to user"), this, SLOT(offlineToUser()));
-	UserBox::userboxmenu->addItem(tr("Don't show description"), this, SLOT(dontShowDescription()));
+	UserBox::userboxmenu->addItem(tr("Hide description"), this, SLOT(dontShowDescription()));
 	UserBox::userboxmenu->insertSeparator();
 	UserBox::userboxmenu->addItem("RemoveFromUserlist", tr("Remove from userlist"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("ShortCuts", "kadu_deleteuser"));
 	UserBox::userboxmenu->addItem("ClearHistory", tr("Clear history"), this, SLOT(deleteHistory()));
@@ -408,7 +408,7 @@ void Kadu::popupMenu()
 	int blockuseritem = UserBox::userboxmenu->getItem(tr("Block user"));
 	int notifyuseritem = UserBox::userboxmenu->getItem(tr("Notify about user"));
 	int offlinetouseritem = UserBox::userboxmenu->getItem(tr("Offline to user"));
-	int dontshowdescriptionitem = UserBox::userboxmenu->getItem(tr("Don't show description"));
+	int dontshowdescriptionitem = UserBox::userboxmenu->getItem(tr("Hide description"));
 
 	if (containsUserWithoutID)
 	{
