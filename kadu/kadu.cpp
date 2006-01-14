@@ -156,7 +156,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Remove from userlist"), "kadu_deleteuser", "Del");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "View / edit user info"), "kadu_persinfo", "Ins");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "View history"), "kadu_viewhistory", "Ctrl+H");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Lookup in directory"), "kadu_searchuser", "Ctrl+F");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Search user in directory"), "kadu_searchuser", "Ctrl+F");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Show / hide offline users"), "kadu_showoffline", "F9");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Show / hide users without description"), "kadu_showonlydesc", "F10");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Configuration"), "kadu_configure", "F2");
@@ -239,7 +239,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 	UserBox::userboxmenu->addItem("ClearHistory", tr("Clear history"), this, SLOT(deleteHistory()));
 	UserBox::userboxmenu->addItem("History", tr("View history"),this,SLOT(viewHistory()),HotKey::shortCutFromFile("ShortCuts", "kadu_viewhistory"));
 	UserBox::userboxmenu->addItem("EditUserInfo", tr("View / edit user info"), this, SLOT(showUserInfo()),HotKey::shortCutFromFile("ShortCuts", "kadu_persinfo"));
-	UserBox::userboxmenu->addItem("LookupUserInfo", tr("Lookup in directory"), this, SLOT(lookupInDirectory()),HotKey::shortCutFromFile("ShortCuts", "kadu_searchuser"));
+	UserBox::userboxmenu->addItem("LookupUserInfo", tr("Search user in directory"), this, SLOT(lookupInDirectory()),HotKey::shortCutFromFile("ShortCuts", "kadu_searchuser"));
 	UserBox::userboxmenu->insertSeparator();
 	UserBox::userboxmenu->addItem(tr("About..."), this, SLOT(about()));
 
@@ -473,7 +473,7 @@ void Kadu::popupMenu()
 
 	int deletehistoryitem = UserBox::userboxmenu->getItem(tr("Clear history"));
 	int historyitem = UserBox::userboxmenu->getItem(tr("View history"));
-	int searchuser = UserBox::userboxmenu->getItem(tr("Lookup in directory"));
+	int searchuser = UserBox::userboxmenu->getItem(tr("Search user in directory"));
 	if (containsUserWithoutID || containsMe)
 	{
 		UserBox::userboxmenu->setItemEnabled(deletehistoryitem, false);
@@ -1220,7 +1220,7 @@ void Kadu::createMenu()
 
 	personalInfoMenuId=MainMenu->insertItem(icons_manager->loadIcon("PersonalInfo"), tr("Personal information"), this,SLOT(personalInfo()));
 	MainMenu->insertSeparator();
-	MainMenu->insertItem(icons_manager->loadIcon("LookupUserInfo"), tr("&Search for users"), this, SLOT(searchInDirectory()));
+	MainMenu->insertItem(icons_manager->loadIcon("LookupUserInfo"), tr("&Search user in directory"), this, SLOT(searchInDirectory()));
 	MainMenu->insertItem(icons_manager->loadIcon("ImportExport"), tr("I&mport / Export userlist"), this, SLOT(importExportUserlist()));
 	MainMenu->insertItem(icons_manager->loadIcon("AddUser"), tr("&Add user"), this, SLOT(addUserAction()),HotKey::shortCutFromFile("ShortCuts", "kadu_adduser"));
 	MainMenu->insertSeparator();

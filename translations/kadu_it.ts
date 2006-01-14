@@ -125,10 +125,6 @@
         <translation>Visualizza cronologia</translation>
     </message>
     <message>
-        <source>Lookup in directory</source>
-        <translation>Cerca nell&apos;indice</translation>
-    </message>
-    <message>
         <source>Configuration</source>
         <translation>Configurazione</translation>
     </message>
@@ -658,6 +654,18 @@ E un rischio per la sicurezza!</translation>
         <source>Image height</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Remember chat windows positions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search user in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Userbox background</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -811,10 +819,6 @@ Sicuro di spedirlo comunque?</translation>
         <translation>Inserisci emoticon</translation>
     </message>
     <message>
-        <source>Lookup user info</source>
-        <translation>Mostra informazioni contatto</translation>
-    </message>
-    <message>
         <source>Insert image</source>
         <translation>Inserisci immagine</translation>
     </message>
@@ -841,6 +845,14 @@ Sicuro di spedirlo comunque?</translation>
     <message>
         <source>Insert emoticon - enable in configuration</source>
         <translation>Inserisci Emoticon - attiva nella configurazione</translation>
+    </message>
+    <message>
+        <source>Search user in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Chat</source>
+        <translation type="unfinished">&amp;Chat</translation>
     </message>
 </context>
 <context>
@@ -948,6 +960,10 @@ Il percorso per raggiungere browser non esiste in $PATH. Devi specificarlo.</tra
     <message>
         <source>Create new toolbar</source>
         <translation>Crea nuovo toolbar</translation>
+    </message>
+    <message>
+        <source>Block toolbars</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1222,10 +1238,6 @@ La tua password è sbagliata!</translation>
         <translation>Visualizza Cronologia</translation>
     </message>
     <message>
-        <source>Lookup in directory</source>
-        <translation>Cerca nell&apos;Indice</translation>
-    </message>
-    <message>
         <source>Configuration</source>
         <translation>Configurazione</translation>
     </message>
@@ -1352,6 +1364,18 @@ saranno eliminati. Vuoi davvero?</translation>
     <message>
         <source>Show / hide offline users</source>
         <translation>Mostra / nascondi contatti inattivi</translation>
+    </message>
+    <message>
+        <source>Hide description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search user in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Search user in directory</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1609,14 +1633,6 @@ Possibile incompatibilità con Kadu.</translation>
         <translation>Risultati &amp;successivi </translation>
     </message>
     <message>
-        <source>C&amp;lear list</source>
-        <translation>&amp;Cancella lista</translation>
-    </message>
-    <message>
-        <source>&amp;Add User</source>
-        <translation>&amp;Aggiungi il contatto</translation>
-    </message>
-    <message>
         <source>Nickname</source>
         <translation>Sopranome (Nick)</translation>
     </message>
@@ -1685,32 +1701,12 @@ Possibile incompatibilità con Kadu.</translation>
         <translation>Anno di nascita</translation>
     </message>
     <message>
-        <source>Search in directory</source>
-        <translation>Ricerca nell&apos;indice</translation>
-    </message>
-    <message>
-        <source>&amp;Update Info</source>
-        <translation>A&amp;ggiornamento Info</translation>
-    </message>
-    <message>
         <source>Searching...</source>
         <translation>Ricerca...</translation>
     </message>
     <message>
         <source>Done searching</source>
         <translation>Ricerca completata</translation>
-    </message>
-    <message>
-        <source>Add User</source>
-        <translation>Aggiungi il contatto</translation>
-    </message>
-    <message>
-        <source>Select user first</source>
-        <translation>Prima scegli l&apos;utente</translation>
-    </message>
-    <message>
-        <source>&amp;Chat</source>
-        <translation>&amp;Chat</translation>
     </message>
     <message>
         <source>from</source>
@@ -1727,6 +1723,14 @@ Possibile incompatibilità con Kadu.</translation>
     <message>
         <source>There were no results of your search</source>
         <translation>isultato nullo della ricerca</translation>
+    </message>
+    <message>
+        <source>Search user in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear results</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

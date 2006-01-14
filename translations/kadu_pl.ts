@@ -129,10 +129,6 @@
         <translation>Pokaż historię</translation>
     </message>
     <message>
-        <source>Lookup in directory</source>
-        <translation>Szukaj w katalogu</translation>
-    </message>
-    <message>
         <source>Configuration</source>
         <translation>Konfiguracja</translation>
     </message>
@@ -658,6 +654,18 @@ Jest to wysoce ryzykowne!</translation>
         <source>Ignore richtext from anonymous users</source>
         <translation>Od nieznajomych akceptuj wyłącznie wiadomości tekstowe</translation>
     </message>
+    <message>
+        <source>Remember chat windows positions</source>
+        <translation>Zapamiętaj położenie okna rozmowy</translation>
+    </message>
+    <message>
+        <source>Search user in directory</source>
+        <translation>Znajdź kontakt w katalogu</translation>
+    </message>
+    <message>
+        <source>Userbox background</source>
+        <translation>Tło listy kontaktów</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -811,10 +819,6 @@ Czy na pewno chcesz wysłać ten obrazek?</translation>
         <translation>Wstaw emotikonę</translation>
     </message>
     <message>
-        <source>Lookup user info</source>
-        <translation>Pokaż informacje o kontakcie</translation>
-    </message>
-    <message>
         <source>Insert image</source>
         <translation>Wstaw obraz</translation>
     </message>
@@ -841,6 +845,14 @@ Czy na pewno chcesz wysłać ten obrazek?</translation>
     <message>
         <source>Insert emoticon - enable in configuration</source>
         <translation>Wstaw emotikonę - uaktywnij w konfiguracji</translation>
+    </message>
+    <message>
+        <source>Search user in directory</source>
+        <translation>Znajdź kontakt w katalogu</translation>
+    </message>
+    <message>
+        <source>&amp;Chat</source>
+        <translation>&amp;Rozmowa</translation>
     </message>
 </context>
 <context>
@@ -948,6 +960,10 @@ Wybrana ścieżka do przeglądarki nie istnieje w zmiennej $PATH. Musisz ją do 
     <message>
         <source>Create new toolbar</source>
         <translation>Utwórz nowy pasek narzędziowy</translation>
+    </message>
+    <message>
+        <source>Block toolbars</source>
+        <translation>Blokuj pasek narzędziowy</translation>
     </message>
 </context>
 <context>
@@ -1222,10 +1238,6 @@ Twoje hasło jest nieprawidłowe!</translation>
         <translation>Pokaż historię</translation>
     </message>
     <message>
-        <source>Lookup in directory</source>
-        <translation>Szukaj w katalogu</translation>
-    </message>
-    <message>
         <source>Configuration</source>
         <translation>Konfiguracja</translation>
     </message>
@@ -1353,6 +1365,18 @@ Czy na pewno tego chcesz?</translation>
     <message>
         <source>Show / hide offline users</source>
         <translation>Pokaż / ukryj niedostępnych</translation>
+    </message>
+    <message>
+        <source>Hide description</source>
+        <translation>Ukryj opis</translation>
+    </message>
+    <message>
+        <source>Search user in directory</source>
+        <translation>Znajdź kontakt w katalogu</translation>
+    </message>
+    <message>
+        <source>&amp;Search user in directory</source>
+        <translation>Zna&amp;jdź kontakt w katalogu</translation>
     </message>
 </context>
 <context>
@@ -1610,14 +1634,6 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
         <translation>&amp;Następne wyniki</translation>
     </message>
     <message>
-        <source>C&amp;lear list</source>
-        <translation>&amp;Wyczyść listę</translation>
-    </message>
-    <message>
-        <source>&amp;Add User</source>
-        <translation>&amp;Dodaj kontakt</translation>
-    </message>
-    <message>
         <source>Nickname</source>
         <translation>Pseudonim</translation>
     </message>
@@ -1686,32 +1702,12 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
         <translation>Rok urodzenia</translation>
     </message>
     <message>
-        <source>Search in directory</source>
-        <translation>Szukaj w katalogu</translation>
-    </message>
-    <message>
-        <source>&amp;Update Info</source>
-        <translation>&amp;Uaktualnij info</translation>
-    </message>
-    <message>
         <source>Searching...</source>
         <translation>Wyszukiwanie...</translation>
     </message>
     <message>
         <source>Done searching</source>
         <translation>Wyszukiwanie zakończone</translation>
-    </message>
-    <message>
-        <source>Add User</source>
-        <translation>Dodaj użytk.</translation>
-    </message>
-    <message>
-        <source>Select user first</source>
-        <translation>Zaznacz użytkownika</translation>
-    </message>
-    <message>
-        <source>&amp;Chat</source>
-        <translation>&amp;Rozmowa</translation>
     </message>
     <message>
         <source>from</source>
@@ -1728,6 +1724,14 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     <message>
         <source>There were no results of your search</source>
         <translation>Nie było żadnych wyników twojego poszukiwana</translation>
+    </message>
+    <message>
+        <source>Search user in directory</source>
+        <translation>Znajdź kontakt w katalogu</translation>
+    </message>
+    <message>
+        <source>Clear results</source>
+        <translation>Wyczyść rezultaty</translation>
     </message>
 </context>
 <context>

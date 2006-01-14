@@ -125,10 +125,6 @@
         <translation>Zeige Verlauf</translation>
     </message>
     <message>
-        <source>Lookup in directory</source>
-        <translation>Suche im Verzeichnis</translation>
-    </message>
-    <message>
         <source>Configuration</source>
         <translation>Einstellungen</translation>
     </message>
@@ -656,6 +652,18 @@ It&apos;s a high security risk!</source>
         <source>Image height</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Remember chat windows positions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search user in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Userbox background</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -809,10 +817,6 @@ Wollen Sie diese Datei wirklich senden?</translation>
         <translation>Smiley einfügen</translation>
     </message>
     <message>
-        <source>Lookup user info</source>
-        <translation>Zeige Kontakt-Informationen</translation>
-    </message>
-    <message>
         <source>Insert image</source>
         <translation>Bild einfügen</translation>
     </message>
@@ -839,6 +843,14 @@ Wollen Sie diese Datei wirklich senden?</translation>
     <message>
         <source>Insert emoticon - enable in configuration</source>
         <translation>Smiley einfügen - aktiviere in der Konfiguration</translation>
+    </message>
+    <message>
+        <source>Search user in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Chat</source>
+        <translation type="unfinished">&amp;Chat</translation>
     </message>
 </context>
 <context>
@@ -946,6 +958,10 @@ Tragen Sie den Pfad in der $PATH-Umgebungsvariablen ein oder bestimmen Sie ihn i
     <message>
         <source>Create new toolbar</source>
         <translation>Neue Werkzeugleiste erstellen</translation>
+    </message>
+    <message>
+        <source>Block toolbars</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1220,10 +1236,6 @@ Ihr Passwort stimmt nicht!</translation>
         <translation>Zeige Verlauf</translation>
     </message>
     <message>
-        <source>Lookup in directory</source>
-        <translation>Suche im Katalog</translation>
-    </message>
-    <message>
         <source>Configuration</source>
         <translation>Einstellungen</translation>
     </message>
@@ -1350,6 +1362,18 @@ werden gelöscht. Sind Sie sicher?</translation>
     <message>
         <source>Show / hide offline users</source>
         <translation>Zeige / Verstecke die Unerreichbaren</translation>
+    </message>
+    <message>
+        <source>Hide description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search user in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Search user in directory</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1608,14 +1632,6 @@ Vielleicht ist es kein Kadu-Modul.</translation>
         <translation>&amp;Nächstes</translation>
     </message>
     <message>
-        <source>C&amp;lear list</source>
-        <translation>Liste &amp;leeren</translation>
-    </message>
-    <message>
-        <source>&amp;Add User</source>
-        <translation>Kontakt &amp;hinzufügen</translation>
-    </message>
-    <message>
         <source>Nickname</source>
         <translation>Nick</translation>
     </message>
@@ -1684,32 +1700,12 @@ Vielleicht ist es kein Kadu-Modul.</translation>
         <translation>Geburtsjahr</translation>
     </message>
     <message>
-        <source>Search in directory</source>
-        <translation>Suche im Katalog</translation>
-    </message>
-    <message>
-        <source>&amp;Update Info</source>
-        <translation>Akt&amp;ualisiere Angaben</translation>
-    </message>
-    <message>
         <source>Searching...</source>
         <translation>Suche...</translation>
     </message>
     <message>
         <source>Done searching</source>
         <translation>Suche beendet</translation>
-    </message>
-    <message>
-        <source>Add User</source>
-        <translation>Benutzer hinzufügen</translation>
-    </message>
-    <message>
-        <source>Select user first</source>
-        <translation>Markieren Sie zuerst einen Benutzer</translation>
-    </message>
-    <message>
-        <source>&amp;Chat</source>
-        <translation>&amp;Chat</translation>
     </message>
     <message>
         <source>from</source>
@@ -1726,6 +1722,14 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     <message>
         <source>There were no results of your search</source>
         <translation>Ihre Suche verlief leider ergebnislos</translation>
+    </message>
+    <message>
+        <source>Search user in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear results</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

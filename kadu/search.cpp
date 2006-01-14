@@ -154,7 +154,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 		e_uin->setText(QString::number(_whoisSearchUin));
 	}
 	resize(450,330);
-	setCaption(tr("Search in directory"));
+	setCaption(tr("Search user in directory"));
 
 	searchRecord = new SearchRecord;
 	connect(gadu, SIGNAL(newSearchResults(SearchResults &, int, int)), this, SLOT(newSearchResults(SearchResults &, int, int)));

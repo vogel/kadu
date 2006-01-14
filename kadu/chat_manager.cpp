@@ -92,7 +92,7 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 	KaduActions.insert("insertEmoticonAction", insert_emot_action);
 
 	Action* whois_action = new Action(icons_manager->loadIcon("LookupUserInfo"),
-		tr("Lookup user info"), "whoisAction");
+		tr("Search user in directory"), "whoisAction");
 	connect(whois_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(whoisActionActivated(const UserGroup*)));
 	KaduActions.insert("whoisAction", whois_action);

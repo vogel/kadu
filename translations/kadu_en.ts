@@ -222,10 +222,6 @@ If you leave blank, default settings will be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Lookup in directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Configuration</source>
         <translation type="unfinished"></translation>
     </message>
@@ -653,6 +649,18 @@ It&apos;s a high security risk!</source>
         <source>Image height</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Remember chat windows positions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search user in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Userbox background</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -803,10 +811,6 @@ Do you really want to send this image?
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Lookup user info</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Insert image</source>
         <translation type="unfinished"></translation>
     </message>
@@ -832,6 +836,14 @@ Do you really want to send this image?
     </message>
     <message>
         <source>Insert emoticon - enable in configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search user in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Chat</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -937,6 +949,10 @@ You may add it to $PATH or specify location using Specify path option.</source>
     <name>DockArea</name>
     <message>
         <source>Create new toolbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block toolbars</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1239,10 +1255,6 @@ Your password is incorrect !</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Lookup in directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>About...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1338,6 +1350,18 @@ will be deleted. Are you sure?</source>
     </message>
     <message>
         <source>Show / hide offline users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search user in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Search user in directory</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1594,14 +1618,6 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>C&amp;lear list</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Add User</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Nickname</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1670,31 +1686,11 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Search in directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Update Info</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Searching...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Done searching</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add User</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Select user first</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Chat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1711,6 +1707,14 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>There were no results of your search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search user in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear results</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

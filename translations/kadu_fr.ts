@@ -129,10 +129,6 @@
         <translation>Montres historique</translation>
     </message>
     <message>
-        <source>Lookup in directory</source>
-        <translation>Cherche dans le catalogue</translation>
-    </message>
-    <message>
         <source>Configuration</source>
         <translation>Configuration</translation>
     </message>
@@ -658,6 +654,18 @@ Attention danger!
         <source>Image height</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Remember chat windows positions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search user in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Userbox background</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -811,10 +819,6 @@ Souhaitez vous vraiment expédier cette image?</translation>
         <translation>Insère icône d&apos;emotion</translation>
     </message>
     <message>
-        <source>Lookup user info</source>
-        <translation>Montre information concernant le contact</translation>
-    </message>
-    <message>
         <source>Insert image</source>
         <translation>Insère l&apos;image</translation>
     </message>
@@ -841,6 +845,14 @@ Souhaitez vous vraiment expédier cette image?</translation>
     <message>
         <source>Insert emoticon - enable in configuration</source>
         <translation>Insère l&apos;emotion - Active dans la configuration</translation>
+    </message>
+    <message>
+        <source>Search user in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Chat</source>
+        <translation type="unfinished">&amp;Discussion</translation>
     </message>
 </context>
 <context>
@@ -948,6 +960,10 @@ Vous pouvez l&apos;ajouter dans $PATH ou indiquer l&apos;emplacement d&apos;une 
     <message>
         <source>Create new toolbar</source>
         <translation>Créez un nouveau barre d&apos;outil</translation>
+    </message>
+    <message>
+        <source>Block toolbars</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1223,10 +1239,6 @@ Mot de passe incorrect !</translation>
         <translation>Montres historique</translation>
     </message>
     <message>
-        <source>Lookup in directory</source>
-        <translation>Cherche dans le catalogue</translation>
-    </message>
-    <message>
         <source>Configuration</source>
         <translation>Configuration</translation>
     </message>
@@ -1353,6 +1365,18 @@ serons effacés.Veuillez confirmer?</translation>
     <message>
         <source>Yes, with &amp;history</source>
         <translation>Oui, avec &amp;historique</translation>
+    </message>
+    <message>
+        <source>Hide description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search user in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Search user in directory</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1610,14 +1634,6 @@ Peut être module incompatible avec Kadu.</translation>
         <translation>&amp;Résultat suivant</translation>
     </message>
     <message>
-        <source>C&amp;lear list</source>
-        <translation>C&amp;eface liste</translation>
-    </message>
-    <message>
-        <source>&amp;Add User</source>
-        <translation>&amp;Ajoute contact</translation>
-    </message>
-    <message>
         <source>Nickname</source>
         <translation>Pseudo</translation>
     </message>
@@ -1686,32 +1702,12 @@ Peut être module incompatible avec Kadu.</translation>
         <translation>Année de naissance</translation>
     </message>
     <message>
-        <source>Search in directory</source>
-        <translation>Cherche dans le catalogue</translation>
-    </message>
-    <message>
-        <source>&amp;Update Info</source>
-        <translation>&amp;Réactualise les infos</translation>
-    </message>
-    <message>
         <source>Searching...</source>
         <translation>Recherche...</translation>
     </message>
     <message>
         <source>Done searching</source>
         <translation>Recherche terminée</translation>
-    </message>
-    <message>
-        <source>Add User</source>
-        <translation>Ajoute utilisateur</translation>
-    </message>
-    <message>
-        <source>Select user first</source>
-        <translation>Selectionne utilisateur</translation>
-    </message>
-    <message>
-        <source>&amp;Chat</source>
-        <translation>&amp;Discussion</translation>
     </message>
     <message>
         <source>from</source>
@@ -1728,6 +1724,14 @@ Peut être module incompatible avec Kadu.</translation>
     <message>
         <source>There were no results of your search</source>
         <translation>Pas de résultat de recherche</translation>
+    </message>
+    <message>
+        <source>Search user in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear results</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
