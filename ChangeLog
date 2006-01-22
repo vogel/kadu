@@ -255,6 +255,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodany do autodownloadu modu³ exec_notify (joi)
 * mo¿liwo¶æ dodawania nowych zdarzeñ do modu³u notify przez inne modu³y,
   powiadomienie o tym, ¿e kto¶ chce nam przys³aæ plik (Vogel/joi)
+* argument "handled" w sygna³ach zwi±zanych z klawiatur± w klasie Chat (adrian)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

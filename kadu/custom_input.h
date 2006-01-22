@@ -84,26 +84,32 @@ class CustomInput : public QMultiLineEdit
 		void specialKeyPressed(int key);
 
 		/**
-			\fn void keyPressed(QKeyEvent* e, CustomInput* sender)
+			\fn void keyPressed(QKeyEvent* e, CustomInput* sender, bool &handled)
 			Dowolny przycisk klawiatury zosta³ naci¶niêty.
 			Przekazany zostaje tak¿e obiekt, który wywo³a³ akcjê -
 			 czyli this
 			\param e wska¼nik do obiektu obs³uguj±cego klawisze
 			\param sender wska¼nik do obiektu, który
 			wywo³a³ ten sygna³
+			\param handled Slot osb³uguj±cy ten sygna³ powinien ten parametr ustawiæ na true,
+			je¶li zdarzenie zosta³o ju¿ obs³u¿one i ¿adne czynno¶ci zwi±zane
+			ze standardow± obs³ug± kontrolek Qt nie powinny byæ podjête.
 		**/
-		void keyPressed(QKeyEvent* e, CustomInput* sender);
+		void keyPressed(QKeyEvent* e, CustomInput* sender, bool &handled);
 
 		/**
-			\fn void keyReleased(QKeyEvent* e, CustomInput* sender)
+			\fn void keyReleased(QKeyEvent* e, CustomInput* sender, bool &handled)
 			Dowolny przycisk klawiatury zosta³ zwolniony.
 			Przekazany zostaje tak¿e obiekt, który wywo³a³ akcjê -
 			 czyli this.
 			\param e wska¼nik do obiektu obs³uguj±cego klawisze
 			\param sender wska¼nik do obiektu, który
 			wywo³a³ ten sygna³
+			\param handled Slot osb³uguj±cy ten sygna³ powinien ten parametr ustawiæ na true,
+			je¶li zdarzenie zosta³o ju¿ obs³u¿one i ¿adne czynno¶ci zwi±zane
+			ze standardow± obs³ug± kontrolek Qt nie powinny byæ podjête.
 		**/
-		void keyReleased(QKeyEvent* e, CustomInput* sender);
+		void keyReleased(QKeyEvent* e, CustomInput* sender, bool &handled);
 };
 
 #endif

@@ -24,7 +24,11 @@ CustomInput::CustomInput(QWidget* parent, const char* name)
 void CustomInput::keyPressEvent(QKeyEvent* e)
 {
 //	kdebugf();
-	emit keyPressed(e, this);
+	bool handled = false;
+	emit keyPressed(e, this, handled);
+	if (handled)
+		return;
+
 	if (autosend_enabled && ((HotKey::shortCut(e,"ShortCuts", "chat_newline")) || e->key()==Key_Enter)&& !(e->state() & ShiftButton))
 	{
 		kdebugmf(KDEBUG_INFO, "emit sendMessage()\n");
@@ -57,7 +61,8 @@ void CustomInput::keyPressEvent(QKeyEvent* e)
 			emit specialKeyPressed(CustomInput::KEY_UNDERLINE);
 			return;
 		}
-		QMultiLineEdit::keyPressEvent(e);
+		if (!handled)
+			QMultiLineEdit::keyPressEvent(e);
 	}
 	// przekazanie event'a do qwidget
 	// aby obsluzyc skroty klawiszowe (definiowane sa dla okna chat)
@@ -67,7 +72,11 @@ void CustomInput::keyPressEvent(QKeyEvent* e)
 
 void CustomInput::keyReleaseEvent(QKeyEvent* e)
 {
-	emit keyReleased(e, this);
+	bool handled = false;
+	emit keyReleased(e, this, handled);
+	if (handled)
+		return;
+
 	QWidget::keyReleaseEvent(e);
 }
 
