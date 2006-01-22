@@ -69,11 +69,11 @@ void SoundSlots::onCreateTabSounds()
 	QCheckBox *b_playinvisible= ConfigDialog::getCheckBox("Sounds", "Play chat sounds only when window is invisible");
 	QComboBox *cb_soundtheme= ConfigDialog::getComboBox("Sounds", "Sound theme");
 	cb_soundtheme->insertItem("Custom");// 0-wa pozycja
-	cb_soundtheme->insertStringList(sound_manager->themes());
+	cb_soundtheme->insertStringList(sound_manager->theme()->themes());
 	cb_soundtheme->setCurrentText(config_file.readEntry("Sounds", "SoundTheme"));
 	cb_soundtheme->changeItem(tr("Custom"), 0);// dodanie translacji
-	if (sound_manager->themes().contains("default"))
-		cb_soundtheme->changeItem(tr("default"), sound_manager->themes().findIndex("default")+1);
+	if (sound_manager->theme()->themes().contains("default"))
+		cb_soundtheme->changeItem(tr("default"), sound_manager->theme()->themes().findIndex("default")+1);
 
 	QHBox* box=ConfigDialog::getHBox("Sounds","sound_box");
 	QHBox* soundtheme=ConfigDialog::getHBox("Sounds", "sound_theme");
@@ -103,7 +103,7 @@ void SoundSlots::onCreateTabSounds()
 		clear->setEnabled(false);
 
 		CONST_FOREACH(name, soundNames)
-			soundfiles[*name] = sound_manager->themePath()+sound_manager->getThemeEntry(*name);
+			soundfiles[*name] = sound_manager->theme()->themePath()+sound_manager->theme()->getThemeEntry(*name);
 	}
 
 	QStringList::const_iterator text = soundTexts.begin();
@@ -215,7 +215,7 @@ void SoundSlots::chooseSoundTheme(const QString& string)
 		str= "Custom";
 	else if (string == tr("default"))
 		str= "default";
-	sound_manager->setTheme(str);
+	sound_manager->theme()->setTheme(str);
 
 	QPushButton *choose = ConfigDialog::getPushButton("Sounds","Choose");
 	QPushButton *clear = ConfigDialog::getPushButton("Sounds","Clear");
@@ -237,7 +237,7 @@ void SoundSlots::chooseSoundTheme(const QString& string)
 	else
 	{
 		CONST_FOREACH(name, soundNames)
-			soundfiles[*name] = sound_manager->themePath()+sound_manager->getThemeEntry(*name);
+			soundfiles[*name] = sound_manager->theme()->themePath()+sound_manager->theme()->getThemeEntry(*name);
 		choose->setEnabled(false);
 		clear->setEnabled(false);
 	}
@@ -252,16 +252,16 @@ void SoundSlots::chooseSoundTheme(const QString& string)
 void SoundSlots::selectedPaths(const QStringList& paths)
 {
 	kdebugf();
-	sound_manager->setPaths(paths);
+	sound_manager->theme()->setPaths(paths);
 	QComboBox* cb_soundtheme= ConfigDialog::getComboBox("Sounds","Sound theme");
 	QString current= cb_soundtheme->currentText();
 
 	SelectPaths* soundPath = ConfigDialog::getSelectPaths("Sounds","Sound paths");
-	soundPath->setPathList(sound_manager->additionalPaths());
+	soundPath->setPathList(sound_manager->theme()->additionalPaths());
 
 	cb_soundtheme->clear();
 	cb_soundtheme->insertItem("Custom");// 0-wa pozycja
-	cb_soundtheme->insertStringList(sound_manager->themes());
+	cb_soundtheme->insertStringList(sound_manager->theme()->themes());
 	cb_soundtheme->setCurrentText(current);
 	cb_soundtheme->changeItem(tr("Custom"), 0);// dodanie translacji
 
@@ -289,7 +289,7 @@ void SoundSlots::onApplyTabSounds()
 	if (theme == tr("default"))
 		theme= "default";
 
-	config_file.writeEntry("Sounds", "SoundPaths", sound_manager->additionalPaths().join(";"));
+	config_file.writeEntry("Sounds", "SoundPaths", sound_manager->theme()->additionalPaths().join(";"));
 	config_file.writeEntry("Sounds", "SoundTheme", theme);
 	kdebugf2();
 }
@@ -303,7 +303,7 @@ void SoundSlots::testSamplePlaying()
 	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
 		chatsound = config_file.readEntry("Sounds", "Chat_sound");
 	else
-		chatsound = sound_manager->themePath(config_file.readEntry("Sounds", "SoundTheme")) + sound_manager->getThemeEntry("Chat");
+		chatsound = sound_manager->theme()->themePath(config_file.readEntry("Sounds", "SoundTheme")) + sound_manager->theme()->getThemeEntry("Chat");
 
 	QFile file(chatsound);
 	if (!file.open(IO_ReadOnly))

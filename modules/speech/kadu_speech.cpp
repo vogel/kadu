@@ -82,7 +82,7 @@ void SpeechSlots::useDsp()
 	kdebugf2();
 }
 
-SpeechSlots::SpeechSlots(QObject *parent, const char *name) : QObject(parent, name)
+SpeechSlots::SpeechSlots(QObject *parent, const char *name) : Notifier(parent, name)
 {
 	kdebugf();
 	srand(time(NULL));
@@ -457,6 +457,18 @@ void SpeechSlots::message(const QString &/*from*/, const QString &message, const
 {
 	kdebugf();
 	say(message);
+	kdebugf2();
+}
+
+void SpeechSlots::externalEvent(const QString &notifyType, const QString &msg, const UserListElements &ules)
+{
+	kdebugf();
+
+	if (ules.count() > 0)
+		message("", msg, 0, &ules[0]);
+	else
+		message("", msg, 0, 0);
+
 	kdebugf2();
 }
 

@@ -14,12 +14,14 @@
 #include "gadu.h"
 #include "hint.h"
 #include "hint_manager_slots.h"
+#include "../notify/notify.h"
 
-class HintManager : public QFrame
+class HintManager : public Notifier
 {
 	Q_OBJECT
 
 	private:
+		QFrame *frame;
 		HintManagerSlots *hint_manager_slots;
 		QTimer *hint_timer;
 		QGridLayout *grid;
@@ -100,6 +102,7 @@ class HintManager : public QFrame
 		 * gdy UserListElement != NULL, to jego uin brany jest do tworzenia dymka (LMB np otwiera okno rozmowy z danym uinem)
 		 */
 		void message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
+		virtual void externalEvent(const QString &notifyType, const QString &msg, const UserListElements &ules);
 /*********** koniec slotów dla notify *************/
 
 		/**

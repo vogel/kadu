@@ -37,6 +37,8 @@
 #include "misc.h"
 #include "userbox.h"
 
+#include "../notify/notify.h"
+
 uint32_t gg_fix32(uint32_t);
 
 FileTransfer::FileTransfer(QObject *listener, bool listenerHasSlots, FileTransferType type, const UinType &contact,
@@ -1039,6 +1041,8 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 	toggleFileTransferWindowMenuId = mainMenu->insertItem(tr("Toggle transfers window"),
 		this, SLOT(toggleFileTransferWindow()), 0, -1, 10);
 
+	notify->registerEvent("fileTransferIncomingFile", tr("An user wants to send you a file"));
+
 	fileTransferWindow = 0;
 
 	readFromConfig();
@@ -1051,6 +1055,8 @@ FileTransferManager::~FileTransferManager()
 	kdebugf();
 
 	writeToConfig();
+
+	notify->unregisterEvent("fileTransferIncomingFile", tr("An user wants to send you a file"));
 
 	int sendfile = UserBox::userboxmenu->getItem(tr("Send file"));
 	UserBox::userboxmenu->removeItem(sendfile);
@@ -1371,6 +1377,8 @@ void FileTransferManager::needFileAccept(DccSocket *socket)
 
 	char fsize[20];
 	snprintf(fsize, sizeof(fsize), "%.1f", (float)socket->ggDccStruct()->file_info.size / 1024);
+
+	notify->notify("fileTransferIncomingFile", "Incoming file", userlist->byID("Gadu", QString::number(socket->ggDccStruct()->peer_uin)));
 
  	FileTransfer *ft = FileTransfer::search(FileTransfer::TypeReceive, socket->ggDccStruct()->peer_uin,
  		cp2unicode(socket->ggDccStruct()->file_info.filename), false);

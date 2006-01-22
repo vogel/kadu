@@ -26,14 +26,16 @@
 #define FRAME_WIDTH 1
 
 HintManager::HintManager(QWidget *parent, const char *name)
-	: QFrame(parent, name, WStyle_NoBorder | WStyle_StaysOnTop | WStyle_Tool | WX11BypassWM | WWinOwnDC)
+	: Notifier(parent, name)
 {
 	kdebugf();
 
-	setFrameStyle(QFrame::Box | QFrame::Plain);
-	setLineWidth(FRAME_WIDTH);
+	frame = new QFrame(parent, name, WStyle_NoBorder | WStyle_StaysOnTop | WStyle_Tool | WX11BypassWM | WWinOwnDC);
 
-	grid = new QGridLayout(this, 0, 0, 1, 0, "grid");
+	frame->setFrameStyle(QFrame::Box | QFrame::Plain);
+	frame->setLineWidth(FRAME_WIDTH);
+
+	grid = new QGridLayout(frame, 0, 0, 1, 0, "grid");
 	grid->setResizeMode(QLayout::Fixed);
 
 	hints.setAutoDelete(true);
@@ -183,6 +185,8 @@ HintManager::~HintManager()
 	ConfigDialog::removeControl("Hints", "New chat / new message");
 	ConfigDialog::removeTab("Hints");
 
+	delete frame;
+
 	kdebugf2();
 }
 
@@ -191,7 +195,7 @@ void HintManager::setHint(void)
 	kdebugf();
 	QPoint newPosition;
 	QPoint trayPosition;
-	QSize preferredSize = sizeHint();
+	QSize preferredSize = frame->sizeHint();
 	QSize desktopSize = QApplication::desktop()->size();
 
 	emit searchingForTrayPosition(trayPosition);
@@ -248,7 +252,7 @@ void HintManager::setHint(void)
 		else //gdy tray jest u do³u
 			newPosition.setY(trayPosition.y()-preferredSize.height());
 	}
-	move (newPosition);
+	frame->move (newPosition);
 	kdebugf2();
 }
 
@@ -261,7 +265,7 @@ void HintManager::deleteHint(unsigned int id)
 	if (hints.isEmpty())
 	{
 		hint_timer->stop();
-		hide();
+		frame->hide();
 		return;
 	}
 
@@ -362,14 +366,14 @@ void HintManager::deleteAllHints()
 	CONST_FOREACH(hint, hints)
 		grid->removeItem(*hint);
 	hints.clear();
-	hide();
+	frame->hide();
 	kdebugf2();
 }
 
 void HintManager::addHint(const QString& text, const QPixmap& pixmap, const QFont &font, const QColor &color, const QColor &bgcolor, unsigned int timeout, const UserListElements &senders)
 {
 	kdebugf();
-	hints.append(new Hint(this, text, pixmap, timeout));
+	hints.append(new Hint(frame, text, pixmap, timeout));
 	int i = hints.count()-1;
 	setGridOrigin();
 	grid->addLayout(hints.at(i), i, 0);
@@ -385,8 +389,8 @@ void HintManager::addHint(const QString& text, const QPixmap& pixmap, const QFon
 
 	if (!hint_timer->isActive())
 		hint_timer->start(1000);
-	if (isHidden())
-		show();
+	if (frame->isHidden())
+		frame->show();
 	kdebugf2();
 }
 
@@ -742,6 +746,18 @@ void HintManager::message(const QString &from, const QString &msg, const QMap<QS
 		msg2=msg;
 
 	addHint(msg2, pixmap, font, fgcolor, bgcolor, timeout, uinslist);
+
+	kdebugf2();
+}
+
+void HintManager::externalEvent(const QString &notifyType, const QString &msg, const UserListElements &ules)
+{
+	kdebugf();
+
+	if (ules.count() > 0)
+		message("", msg, 0, &ules[0]);
+	else
+		message("", msg, 0, 0);
 
 	kdebugf2();
 }

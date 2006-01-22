@@ -4,3 +4,4 @@ Description[pl]=Modu³ po³±czeñ bezpo¶rednich z obs³ug± przesy³u plików
 Author=Kadu Team,Vogel
 LoadByDefault=true
 Version=core
+Dependencies=notify

@@ -35,7 +35,7 @@ extern "C" void window_notify_close()
 	kdebugf2();
 }
 
-WindowNotify::WindowNotify(QObject *parent, const char *name) : QObject(parent, name)
+WindowNotify::WindowNotify(QObject *parent, const char *name) : Notifier(parent, name)
 {
 	kdebugf();
 
@@ -150,6 +150,18 @@ void WindowNotify::message(const QString &from, const QString &message, const QM
 						ule->altNick(),
 						qApp->translate("@default", ule->status("Gadu").name())));
 	}
+	kdebugf2();
+}
+
+void WindowNotify::externalEvent(const QString &notifyType, const QString &msg, const UserListElements &ules)
+{
+	kdebugf();
+
+	if (ules.count() > 0)
+		MessageBox::msg(ules.altNicks().join(",") + ": " + msg);
+	else
+		MessageBox::msg(msg);
+
 	kdebugf2();
 }
 

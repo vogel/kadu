@@ -4,8 +4,9 @@
 #include <qstring.h>
 
 #include "gadu.h"
+#include "../notify/notify.h"
 
-class WindowNotify : public QObject
+class WindowNotify : public Notifier
 {
 	Q_OBJECT
 	public:
@@ -23,6 +24,7 @@ class WindowNotify : public QObject
 
 		void userStatusChanged(UserListElement ule, QString protocolName, const UserStatus &oldStatus);
 		void message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
+		virtual void externalEvent(const QString &notifyType, const QString &msg, const UserListElements &ules);
 };
 
 extern WindowNotify *window_notify;

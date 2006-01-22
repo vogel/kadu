@@ -18,6 +18,7 @@
 #include "themes.h"
 #include "usergroup.h"
 #include "userlist.h"
+#include "../notify/notify.h"
 
 /**
 	Uogólniony deskryptor urz±dzenia d¼wiêkowego.
@@ -123,10 +124,11 @@ class SoundPlayThread : public QThread
 		QValueList<SndParams> list;
 };
 
-class SoundManager : public Themes
+class SoundManager : public Notifier
 {
     Q_OBJECT
 	private:
+		Themes *themes;
 		friend class SamplePlayThread;
 		friend class SampleRecordThread;
 		QTime lastsoundtime;
@@ -154,6 +156,7 @@ class SoundManager : public Themes
 		 *		"Force"           - bool (wymuszenie odtwarzania mimo wyciszenia)
 		 */
 		void message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
+		virtual void externalEvent(const QString &notifyType, const QString &msg, const UserListElements &ules);
 
 	public slots:
 		void play(const QString &path, bool force=false);
@@ -164,6 +167,9 @@ class SoundManager : public Themes
 
 		SoundManager(const QString& name, const QString& configname);
 		~SoundManager();
+
+		Themes *theme();
+
 		bool isMuted() const;
 		int timeAfterLastSound() const;
 		/**
