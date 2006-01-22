@@ -210,6 +210,7 @@ void UserGroup::removeUsers(QValueList<UserListElement> users)
 void UserGroup::removeUser(UserListElement ule, bool massively, bool last)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' altNick:'%s' mass:%d last:%d\n", name(), ule.altNick().local8Bit().data(), massively, last);
+//	printBacktrace("xxx");
 	UserListElement *elem = d->data.find(ule.key());
 	if (elem != NULL)
 	{
@@ -266,6 +267,14 @@ void UserGroup::resize(int size)
 	d->data.resize(size);
 }
 
+QStringList UserGroup::altNicks() const
+{
+	QStringList nicks;
+	CONST_FOREACH(user, d->list)
+		nicks.append((*user).altNick());
+	return nicks;
+}
+
 bool UserListElements::equals(const UserListElements &elems) const
 {
 	if (count() != elems.count())
@@ -315,4 +324,12 @@ bool UserListElements::contains(QString protocol, QString id) const
 		if ((*user).usesProtocol(protocol) && (*user).ID(protocol) == id)
 			return true;
 	return false;
+}
+
+QStringList UserListElements::altNicks() const
+{
+	QStringList nicks;
+	CONST_FOREACH(user, *this)
+		nicks.append((*user).altNick());
+	return nicks;
 }

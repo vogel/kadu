@@ -211,6 +211,7 @@ class UserGroup : public QObject
 		**/
 		void resize(int size);
 
+		QStringList altNicks() const;
 	public slots:
 		/**
 			\fn void addUser(UserListElement ule, bool massively = false, bool last = false)
@@ -461,6 +462,8 @@ class UserListElements : public QValueList<UserListElement>
 			(Z³o¿ono¶æ O(n))
 		**/
 		bool contains(UserListElement e) const { return QValueList<UserListElement>::contains(e) > 0;}
+
+		QStringList altNicks() const;
 };
 
 #endif
