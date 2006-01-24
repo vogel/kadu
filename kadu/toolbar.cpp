@@ -119,22 +119,7 @@ void ToolBar::dropEvent(QDropEvent* event)
 void ToolBar::contextMenuEvent(QContextMenuEvent* e)
 {
 	kdebugf();
-	QPopupMenu* p = new QPopupMenu(this);
-	p->insertItem(tr("Delete toolbar"), this, SLOT(deleteLater()));
-	QPopupMenu* p2 = new QPopupMenu(p);
-	int param = 0;
-	CONST_FOREACH(a, KaduActions)
-	{
-		QString dockarea_group_restr = (*a)->dockAreaGroupRestriction();
-		if (dockarea_group_restr.isNull() || dockarea_group_restr == dockAreaGroup())
-		{
-			int id = (*a)->addToPopupMenu(p2, false);
-			p2->setItemParameter(id, param);
-			p2->connectItem(id, this, SLOT(addButtonClicked(int)));
-		}
-		param++;
-	}
-	p->insertItem(tr("Add new button"), p2);
+	QPopupMenu* p = createContextMenu(this);
 	p->exec(QCursor::pos());
 	delete p;
 	e->accept();
@@ -194,4 +179,28 @@ const UserGroup* ToolBar::selectedUsers()
 	const UserGroup* users = dynamic_cast<DockArea*>(area())->selectedUsers();
 	kdebugf2();
 	return users;
+}
+
+QPopupMenu* ToolBar::createContextMenu(QWidget* parent)
+{
+	QPopupMenu* p = new QPopupMenu(parent);
+	p->insertItem(tr("Delete toolbar"), this, SLOT(deleteLater()));
+	QPopupMenu* p2 = new QPopupMenu(p);
+	int param = 0;
+	CONST_FOREACH(a, KaduActions)
+	{
+		QString dockarea_group_restr = (*a)->dockAreaGroupRestriction();
+		if (dockarea_group_restr.isNull() || dockarea_group_restr == dockAreaGroup())
+		{
+			int id = (*a)->addToPopupMenu(p2, false);
+			p2->setItemParameter(id, param);
+			p2->connectItem(id, this, SLOT(addButtonClicked(int)));
+		}
+		param++;
+	}
+	p->insertItem(tr("Add new button"), p2);
+	p->insertSeparator();
+	QPopupMenu* panel_menu = dockArea()->createContextMenu(p);
+	p->insertItem(tr("Panel menu"), panel_menu);
+	return p;
 }

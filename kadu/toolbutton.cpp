@@ -95,6 +95,9 @@ void ToolButton::contextMenuEvent(QContextMenuEvent* e)
 		p->insertItem(tr("Show text label"), this, SLOT(showTextLabelClicked()));
 	p->setItemChecked(label_menu_id, usesTextLabel());
 	p->insertItem(tr("Delete button"), this, SLOT(deleteButtonClicked()));
+	p->insertSeparator();
+	QPopupMenu* toolbar_menu = toolbar()->createContextMenu(p);
+	p->insertItem(tr("Toolbar menu"), toolbar_menu);
 	p->exec(QCursor::pos());
 	delete p;
 	e->accept();

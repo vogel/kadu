@@ -7,7 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qpopupmenu.h>
 #include <qcursor.h>
 #include "config_file.h"
 #include "debug.h"
@@ -32,11 +31,7 @@ DockArea::~DockArea()
 void DockArea::contextMenuEvent(QContextMenuEvent* e)
 {
 	kdebugf();
-	QPopupMenu* p = new QPopupMenu(this);
-	p->insertItem(tr("Create new toolbar"), this, SLOT(createNewToolbar()));
-	int block_toolbars_id =
-		p->insertItem(tr("Block toolbars"), this, SLOT(blockToolbars()));
-	p->setItemChecked(block_toolbars_id, Blocked);
+	QPopupMenu* p = createContextMenu(this);
 	p->exec(QCursor::pos());
 	delete p;
 	e->accept();
@@ -162,6 +157,18 @@ const UserGroup* DockArea::selectedUsers()
 bool DockArea::blocked()
 {
 	return Blocked;
+}
+
+QPopupMenu* DockArea::createContextMenu(QWidget* parent)
+{
+	kdebugf();
+	QPopupMenu* p = new QPopupMenu(parent);
+	p->insertItem(tr("Create new toolbar"), this, SLOT(createNewToolbar()));
+	int block_toolbars_id =
+		p->insertItem(tr("Block toolbars"), this, SLOT(blockToolbars()));
+	p->setItemChecked(block_toolbars_id, Blocked);
+	kdebugf2();
+	return p;
 }
 
 bool DockArea::Blocked = false;

@@ -2,6 +2,7 @@
 #define DOCKAREA_H
 
 #include <qdockarea.h>
+#include <qpopupmenu.h>
 #include <qstring.h>
 
 #include "usergroup.h"
@@ -40,6 +41,7 @@ class DockArea : public QDockArea
 		**/
 		const UserGroup* selectedUsers();
 		bool blocked();
+		QPopupMenu* createContextMenu(QWidget* parent);
 
 	public slots:
 		void writeToConfig();
