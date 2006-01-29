@@ -34,6 +34,7 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 //	connect(verticalScrollBar(), SIGNAL(sliderReleased()), this, SLOT(repaint()));
 //	connect(verticalScrollBar(), SIGNAL(sliderReleased()), this, SLOT(refresh()));
 	connect(this, SIGNAL(contentsMoving(int, int)), this, SLOT(refresh()));
+	connect(this, SIGNAL(textChanged()), this, SLOT(refresh()));
 	kdebugf2();
 }
 void KaduTextBrowser::refresh()
