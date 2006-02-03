@@ -34,9 +34,23 @@
 
 #define GG_STATUS_INVISIBLE2 0x0009 /* g³upy... */
 
-QValueList<QHostAddress> gg_servers;
-static const char *gg_servers_ip[9] = {"217.17.41.82", "217.17.41.83", "217.17.41.84", "217.17.41.85",
-	"217.17.41.86", "217.17.41.87", "217.17.41.88", "217.17.41.92", "217.17.41.93"};
+static QValueList<QHostAddress> gg_servers;
+
+#define GG_SERVERS_COUNT 12
+static const char *gg_servers_ip[GG_SERVERS_COUNT] = {
+	"217.17.41.82",
+	"217.17.41.83",
+	"217.17.41.84",
+	"217.17.41.85",
+	"217.17.41.86",
+	"217.17.41.87",
+	"217.17.41.88",
+	"217.17.41.92",
+	"217.17.41.93",
+	"217.17.45.133",
+	"217.17.45.143",
+	"217.17.45.144"
+};
 
 // ------------------------------------
 //              Timers
@@ -243,7 +257,7 @@ void SearchRecord::clearData()
 /* GaduProtocol */
 
 QValueList<QHostAddress> GaduProtocol::ConfigServers;
-GaduProtocolManager *gadu_protocol_manager;
+static GaduProtocolManager *gadu_protocol_manager;
 
 void GaduProtocol::closeModule()
 {
@@ -270,7 +284,7 @@ void GaduProtocol::initModule()
 //	gadu = new GaduProtocol(QString::number(config_file.readNumEntry("General", "UIN")), kadu, "gadu");
 
 	QHostAddress ip;
-	for (int i = 0; i < 9; ++i)
+	for (int i = 0; i < GG_SERVERS_COUNT; ++i)
 	{
 		ip.setAddress(QString(gg_servers_ip[i]));
 		gg_servers.append(ip);
