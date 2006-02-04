@@ -896,6 +896,7 @@ void Chat::messageAcceptedSlot(int Seq, UinType /*uin*/)
 	kdebugmf(KDEBUG_INFO, "This is my ack.\n");
 	writeMyMessage();
 	addMyMessageToHistory();
+	emit messageSentAndConfirmed(Users->toUserListElements(), myLastMessage);
 	seq = 0;
 	disconnectAcknowledgeSlots();
 	kdebugf2();
@@ -1018,6 +1019,7 @@ void Chat::sendMessage()
 	{
 		writeMyMessage();
 		addMyMessageToHistory();
+		emit messageSentAndConfirmed(Users->toUserListElements(), myLastMessage);
 	}
 
 	emit messageSent(this);

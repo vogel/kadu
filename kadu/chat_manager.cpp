@@ -442,6 +442,8 @@ int ChatManager::openChat(QString initialProtocol, UserListElements users, time_
 
 	Chat* chat = new Chat(users, 0, QString("chat:%1").arg(userNames.join(",")).local8Bit().data());
 	chat->refreshTitle();
+	connect(chat, SIGNAL(messageSentAndConfirmed(UserListElements, const QString&)),
+		this, SIGNAL(messageSentAndConfirmed(UserListElements, const QString&)));
 
 	const UserGroup *group = chat->users();
 	QRect geometry = getChatProperty(group, "Geometry").toRect();
