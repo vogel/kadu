@@ -39,10 +39,9 @@
 extern const char *colors[];
 
 Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
-	: QMainWindow(parent, name, Qt::WDestructiveClose), Users(new UserGroup(2 * usrs.count()))
+	: QMainWindow(parent, name, Qt::WDestructiveClose), Users(new UserGroup(usrs))
 {
 	kdebugf();
-	Users->addUsers(usrs);
 	QValueList<int> sizes;
 
 	setAcceptDrops(true);
@@ -480,14 +479,24 @@ QString Chat::convertCharacters(QString edit, const QColor &bgcolor, EmoticonsSt
 	// detekcja adresow url
 	doc.convertUrlsToHtml();
 
-	if (style!=EMOTS_NONE)
+	if (style != EMOTS_NONE)
 	{
 		body->mimeSourceFactory()->addFilePath(emoticons->themePath());
 		emoticons->expandEmoticons(doc, bgcolor, style);
 	}
 
 	GaduImagesManager::setBackgroundsForAnimatedImages(doc, bgcolor);
-	edit=doc.generateHtml();
+	edit = doc.generateHtml();
+
+	// workaround for bug in Qt - if there's a space after image, Qt does not show it, so we are replacing it with &nbsp;
+	// regular expression has to contain "title", because this attribute may contain ">" (as in emoticon <rotfl>) 
+	const static QRegExp emotRegExp("<img emoticon=\"([01])\" title=\"([^\"]*)\" ([^>]*)> ");
+	const static QString emotAfter ("<img emoticon=\"\\1\" title=\"\\2\" \\3>&nbsp;");
+	edit.replace(emotRegExp, emotAfter);
+	const static QRegExp imageRegExp("<img src=\"([^\"]*)\"([^>]*)> ");
+	const static QString imageAfter( "<img src=\"\\1\"\\2>&nbsp;");
+	edit.replace(imageRegExp, imageAfter);
+
 	return edit;
 }
 
