@@ -1822,6 +1822,10 @@ Vielleicht ist es kein Kadu-Modul.</translation>
         <source>Add new button</source>
         <translation>Neue Schaltfläche hinzufügen</translation>
     </message>
+    <message>
+        <source>Panel menu</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ToolButton</name>
@@ -1831,6 +1835,10 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Show text label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Toolbar menu</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -1808,6 +1808,10 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
         <source>Add new button</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Panel menu</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ToolButton</name>
@@ -1817,6 +1821,10 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>Show text label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Toolbar menu</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

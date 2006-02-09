@@ -1824,6 +1824,10 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
         <source>Add new button</source>
         <translation>Dodaj nowy przyciski</translation>
     </message>
+    <message>
+        <source>Panel menu</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ToolButton</name>
@@ -1834,6 +1838,10 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     <message>
         <source>Show text label</source>
         <translation>Etykieta tekstowa</translation>
+    </message>
+    <message>
+        <source>Toolbar menu</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
