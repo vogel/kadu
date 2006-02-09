@@ -205,6 +205,10 @@ This is probably a next part of %4
         <source>Toggle transfers window</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>An user wants to send you a file</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>FileTransferWindow</name>

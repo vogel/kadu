@@ -209,6 +209,10 @@ Co chcesz zrobić?</translation>
         <source>Toggle transfers window</source>
         <translation>Okno przesyłania plików</translation>
     </message>
+    <message>
+        <source>An user wants to send you a file</source>
+        <translation>Jakiś użytkownik chce przesłać ci plik</translation>
+    </message>
 </context>
 <context>
     <name>FileTransferWindow</name>

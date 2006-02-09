@@ -208,6 +208,10 @@ Was soll ich tun?</translation>
         <source>Toggle transfers window</source>
         <translation>Übertragungsfenster anzeigen/verstecken</translation>
     </message>
+    <message>
+        <source>An user wants to send you a file</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>FileTransferWindow</name>
