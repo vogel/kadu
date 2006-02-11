@@ -168,6 +168,8 @@ class Kadu : public QWidget
 		void about();
 		void addUserAction();
 		void blockUser();
+		void copyDescription();
+		void copyPersonalInfo();
 		void deleteHistory();
 		void deleteUsers();
 		void help();

@@ -9,6 +9,7 @@
 
 #include <qapplication.h>
 #include <qcheckbox.h>
+#include <qclipboard.h>
 #include <qcombobox.h>
 #include <qmenubar.h>
 #include <qmessagebox.h>
@@ -238,6 +239,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 	UserBox::userboxmenu->addItem("RemoveFromUserlist", tr("Remove from userlist"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("ShortCuts", "kadu_deleteuser"));
 	UserBox::userboxmenu->addItem("ClearHistory", tr("Clear history"), this, SLOT(deleteHistory()));
 	UserBox::userboxmenu->addItem("History", tr("View history"),this,SLOT(viewHistory()),HotKey::shortCutFromFile("ShortCuts", "kadu_viewhistory"));
+	UserBox::userboxmenu->addItem("CopyDescription", tr("Copy description"), this, SLOT(copyDescription()));
+	UserBox::userboxmenu->addItem("CopyPersonalInfo", tr("Copy personal info"), this, SLOT(copyPersonalInfo()));
 	UserBox::userboxmenu->addItem("EditUserInfo", tr("View / edit user info"), this, SLOT(showUserInfo()),HotKey::shortCutFromFile("ShortCuts", "kadu_persinfo"));
 	UserBox::userboxmenu->addItem("LookupUserInfo", tr("Search user in directory"), this, SLOT(lookupInDirectory()),HotKey::shortCutFromFile("ShortCuts", "kadu_searchuser"));
 	UserBox::userboxmenu->insertSeparator();
@@ -484,12 +487,69 @@ void Kadu::popupMenu()
 		UserBox::userboxmenu->setItemEnabled(searchuser, false);
 	if (users.count() != 1)
 		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("View / edit user info")), false);
+	if ((users.count() != 1) || users.first().status("Gadu").description().isEmpty())
+		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Copy description")), false);
 	kdebugf2();
 }
 
 void Kadu::configure()
 {
 	configurationActionActivated();
+}
+
+void Kadu::copyDescription()
+{
+	kdebugf();
+	UserBox *activeUserBox = UserBox::activeUserBox();
+	if (activeUserBox == NULL)
+	{
+		kdebugf2();
+		return;
+	}
+
+	QString status = activeUserBox->selectedUsers().first().status("Gadu").description();
+	if (!status.isEmpty())
+	{
+		QClipboard *clipboard = QApplication::clipboard();
+
+		clipboard->setText(status, QClipboard::Clipboard);
+		clipboard->setText(status, QClipboard::Selection);
+	}
+	kdebugf2();
+}
+
+void Kadu::copyPersonalInfo()
+{
+	kdebugf();
+	UserBox *activeUserBox = UserBox::activeUserBox();
+	if (activeUserBox == NULL)
+	{
+		kdebugf2();
+		return;
+	}
+
+	QString info;
+	UserListElements users = activeUserBox->selectedUsers();
+	CONST_FOREACH(user, users)
+	{
+		info += tr("Contact: %1 ( %2 )\n").arg((*user).altNick()).arg((*user).ID("Gadu"));
+		if (!(*user).firstName().isEmpty())
+			info += QString(tr("First name: %1\n")).arg((*user).firstName());
+		if (!(*user).lastName().isEmpty())
+			info += QString(tr("Last name: %1\n")).arg((*user).lastName());
+		if (!(*user).mobile().isEmpty())
+			info += QString(tr("Mobile: %1\n")).arg((*user).mobile());
+		info += "--\n";
+	}
+
+	if (!info.isEmpty())
+	{
+		QClipboard *clipboard = QApplication::clipboard();
+
+		clipboard->setText(info, QClipboard::Clipboard);
+		clipboard->setText(info, QClipboard::Selection);
+	}
+	kdebugf2();
 }
 
 void Kadu::viewHistory()

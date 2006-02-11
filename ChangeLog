@@ -261,6 +261,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodanie adresów 3 nowych serwerów gg (joi)
 * obej¶cie buga w Qt: je¿eli po obrazku/emotikonie jest spacja, to wymu¶my jej pokazanie (joi)
 * dodano do autodownloadu ikony glass autorstwa Mariusza Walugi (Ron_K)
+* kopiowanie opisu i danych personalnych z menu kontekstowego listy kontaktów (OBenY/joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

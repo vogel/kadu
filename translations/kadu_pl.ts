@@ -1378,6 +1378,14 @@ Czy na pewno tego chcesz?</translation>
         <source>&amp;Search user in directory</source>
         <translation>Zna&amp;jdź kontakt w katalogu</translation>
     </message>
+    <message>
+        <source>Copy description</source>
+        <translation>Kopiuj opis</translation>
+    </message>
+    <message>
+        <source>Copy personal info</source>
+        <translation>Kopiuj dane personalne</translation>
+    </message>
 </context>
 <context>
     <name>KaduSlots</name>
