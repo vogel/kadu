@@ -624,47 +624,47 @@ E un rischio per la sicurezza!</translation>
     </message>
     <message>
         <source>Ignore richtext from anonymous users</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignora richtext da anonimi utenti</translation>
     </message>
     <message>
         <source>Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Sfondo</translation>
     </message>
     <message>
         <source>Background image options</source>
-        <translation type="unfinished"></translation>
+        <translation>Opzioni immagine sfondo</translation>
     </message>
     <message>
         <source>Change image size</source>
-        <translation type="unfinished"></translation>
+        <translation>Cambia dimensione immagine</translation>
     </message>
     <message>
         <source>Start at [X]</source>
-        <translation type="unfinished"></translation>
+        <translation>Inizia da [X]</translation>
     </message>
     <message>
         <source>Start at [Y]</source>
-        <translation type="unfinished"></translation>
+        <translation>Inizia da [Y]</translation>
     </message>
     <message>
         <source>Image width</source>
-        <translation type="unfinished"></translation>
+        <translation>Larghezza immagine</translation>
     </message>
     <message>
         <source>Image height</source>
-        <translation type="unfinished"></translation>
+        <translation>Altezza immagine</translation>
     </message>
     <message>
         <source>Remember chat windows positions</source>
-        <translation type="unfinished"></translation>
+        <translation>Memorizza posizioni finestre chat</translation>
     </message>
     <message>
         <source>Search user in directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerca contatto nella cartella</translation>
     </message>
     <message>
         <source>Userbox background</source>
-        <translation type="unfinished"></translation>
+        <translation>Sfondo Lista contatti</translation>
     </message>
 </context>
 <context>
@@ -848,11 +848,11 @@ Sicuro di spedirlo comunque?</translation>
     </message>
     <message>
         <source>Search user in directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerca contatto nella cartella</translation>
     </message>
     <message>
         <source>&amp;Chat</source>
-        <translation type="unfinished">&amp;Chat</translation>
+        <translation>&amp;Chat</translation>
     </message>
 </context>
 <context>
@@ -963,7 +963,7 @@ Il percorso per raggiungere browser non esiste in $PATH. Devi specificarlo.</tra
     </message>
     <message>
         <source>Block toolbars</source>
-        <translation type="unfinished"></translation>
+        <translation>Blocca toolbars</translation>
     </message>
 </context>
 <context>
@@ -1367,15 +1367,15 @@ saranno eliminati. Vuoi davvero?</translation>
     </message>
     <message>
         <source>Hide description</source>
-        <translation type="unfinished"></translation>
+        <translation>Nascondi descrizione</translation>
     </message>
     <message>
         <source>Search user in directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerca contatto nella cartella</translation>
     </message>
     <message>
         <source>&amp;Search user in directory</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Cerca contatto nella cartella</translation>
     </message>
 </context>
 <context>
@@ -1726,11 +1726,11 @@ Possibile incompatibilità con Kadu.</translation>
     </message>
     <message>
         <source>Search user in directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerca contatto nella cartella</translation>
     </message>
     <message>
         <source>Clear results</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancella risultati</translation>
     </message>
 </context>
 <context>
@@ -1836,7 +1836,7 @@ Possibile incompatibilità con Kadu.</translation>
     </message>
     <message>
         <source>Show text label</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra testo</translation>
     </message>
     <message>
         <source>Toolbar menu</source>
