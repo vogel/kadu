@@ -798,16 +798,10 @@ void GaduProtocol::disconnectedSlot()
 void GaduProtocol::connectionTimeoutTimerSlot()
 {
 	kdebugf();
-	ConnectionTimeoutTimer::off();
-	if (Sess->state == GG_STATE_CONNECTING_HUB ||
-		Sess->state == GG_STATE_CONNECTING_GG)
-	{
-		kdebugm(KDEBUG_INFO, "Timeout, breaking connection\n");
-		errorSlot(ConnectionTimeout);
-		//emit error(ConnectionTimeout);
-		//logout();
-		//login();
-	}
+
+	kdebugm(KDEBUG_INFO, "Timeout, breaking connection\n");
+	errorSlot(ConnectionTimeout);
+
 	kdebugf2();
 }
 

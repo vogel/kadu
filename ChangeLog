@@ -264,6 +264,11 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * kopiowanie opisu i danych personalnych z menu kontekstowego listy kontaktów (OBenY/joi)
 * kopiowanie danych personalnych u¿ywa parsera Kadu (w³asn± sk³adniê mo¿na
   ustawiæ przez plik konfiguracyjny: General/CopyPersonalDataSyntax) (joi)
+* poprawiony wystêpuj±cy od dawna b³±d (gdzie¶ od 0.3.7) zwi±zany z ³±czeniem siê
+  z serwerem gg: je¿eli limit czasu ³±czenia przekraczany by³ w po³owie procedury
+  logowania, to sprawdzanie timeoutów by³o wy³±czane w nadziei, ¿e za chwilê
+  siê po³±czymy; niestety od czasu do czasu zdarza siê, ¿e serwer po tym fakcie
+  pada, a Kadu pozostawa³o niepo³±czone i nie próbowa³o nic z tym zrobiæ... (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
