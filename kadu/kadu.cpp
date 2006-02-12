@@ -507,7 +507,10 @@ void Kadu::copyDescription()
 		return;
 	}
 
-	QString status = activeUserBox->selectedUsers().first().status("Gadu").description();
+	UserListElement user = activeUserBox->selectedUsers().first();
+	QString status;
+	if (user.usesProtocol("Gadu"))
+		status = user.status("Gadu").description();
 	if (!status.isEmpty())
 	{
 		QClipboard *clipboard = QApplication::clipboard();
@@ -528,20 +531,13 @@ void Kadu::copyPersonalInfo()
 		return;
 	}
 
-	QString info;
 	UserListElements users = activeUserBox->selectedUsers();
+	QStringList infoList;
+	QString copyPersonalDataSyntax = config_file.readEntry("General", "CopyPersonalDataSyntax", tr("Contact: %a[ (%u)]\n[First name: %f\n][Last name: %r\n][Mobile: %m\n]"));
 	CONST_FOREACH(user, users)
-	{
-		info += tr("Contact: %1 ( %2 )\n").arg((*user).altNick()).arg((*user).ID("Gadu"));
-		if (!(*user).firstName().isEmpty())
-			info += QString(tr("First name: %1\n")).arg((*user).firstName());
-		if (!(*user).lastName().isEmpty())
-			info += QString(tr("Last name: %1\n")).arg((*user).lastName());
-		if (!(*user).mobile().isEmpty())
-			info += QString(tr("Mobile: %1\n")).arg((*user).mobile());
-		info += "--\n";
-	}
+		infoList.append(parse(copyPersonalDataSyntax, *user, false));
 
+	QString info = infoList.join("\n");
 	if (!info.isEmpty())
 	{
 		QClipboard *clipboard = QApplication::clipboard();
