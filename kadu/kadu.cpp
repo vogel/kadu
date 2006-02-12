@@ -487,7 +487,7 @@ void Kadu::popupMenu()
 		UserBox::userboxmenu->setItemEnabled(searchuser, false);
 	if (users.count() != 1)
 		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("View / edit user info")), false);
-	if ((users.count() != 1) || users.first().status("Gadu").description().isEmpty())
+	if ((users.count() != 1) || !users.first().usesProtocol("Gadu") || users.first().status("Gadu").description().isEmpty())
 		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Copy description")), false);
 	kdebugf2();
 }
