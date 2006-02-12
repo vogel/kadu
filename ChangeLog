@@ -269,6 +269,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   logowania, to sprawdzanie timeoutów by³o wy³±czane w nadziei, ¿e za chwilê
   siê po³±czymy; niestety od czasu do czasu zdarza siê, ¿e serwer po tym fakcie
   pada, a Kadu pozostawa³o niepo³±czone i nie próbowa³o nic z tym zrobiæ... (joi)
+* nowe zdarzenie w module notify: najechanie na kontakt na li¶cie kontaktów
+  i odczekanie sekundy - obs³ugiwane w tej chwili przez modu³ hints (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

@@ -344,13 +344,13 @@ inline bool ULEComparer::operator()(const UserListElement &e1, const UserListEle
 UserBoxMenu *UserBox::userboxmenu = NULL;
 
 UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
-	: QListBox(parent, name, f), QToolTip(viewport())
-
+	: QListBox(parent, name, f), tipAlive(false)
 {
 	kdebugf();
 	comparer = new ULEComparer();
 	VisibleUsers = new UserGroup(userlist->count() * 2, "visible_users");
 	Filters.append(group);
+
 	connect(group, SIGNAL(userAdded(UserListElement, bool, bool)),
 			this, SLOT(userAddedToGroup(UserListElement, bool, bool)));
 	connect(group, SIGNAL(userRemoved(UserListElement, bool, bool)),
@@ -392,6 +392,8 @@ UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
 	connect(&pending, SIGNAL(messageAdded()), this, SLOT(refreshLater()));
 	connect(&pending, SIGNAL(messageDeleted()), this, SLOT(refreshLater()));
 
+	connect(&tipTimer, SIGNAL(timeout()), this, SLOT(tipTimeout()));
+
 	kdebugf2();
 }
 
@@ -406,47 +408,86 @@ UserBox::~UserBox()
 	kdebugf2();
 }
 
-void UserBox::maybeTip(const QPoint &c)
-{
-	kdebugf();
-	if (!config_file.readBoolEntry("General", "ShowTooltipOnUserbox"))
-		return;
+#define TIP_TM 1000
 
-	KaduListBoxPixmap* item = static_cast<KaduListBoxPixmap*>(itemAt(c));
+void UserBox::tipTimeout()
+{
+//	kdebugf();
+	if (!lastMouseStopUser.isEmpty())
+	{
+//		kdebugm(KDEBUG_INFO, "show hint\n");
+
+		QString text = parse(tr("[<i>%t</i><br/>][<br/><b>Description:</b><br/>%d<br/><br/>][<i>Mobile:</i> <b>%m</b><br/>]"), VisibleUsers->byAltNick(lastMouseStopUser));
+
+		while (text.endsWith("<br/>"))
+			text.setLength(text.length() - 5 /* 5 == QString("<br/>").length()*/);
+		while (text.startsWith("<br/>"))
+			text = text.right(text.length() - 5 /* 5 == QString("<br/>").length()*/);
+
+		emit changeToolTip(lastMouseStop, text, true);
+		tipAlive = true;
+		tipTimer.stop();
+	}
+}
+
+void UserBox::restartTip(const QPoint &p)
+{
+//	kdebugf();
+	KaduListBoxPixmap *item = static_cast<KaduListBoxPixmap *>(itemAt(p));
 	if (item)
 	{
-		QRect r(itemRect(item));
-		QString s;
-		UserListElement user = item->User;
-		UserStatus status;
-		if (user.usesProtocol("Gadu"))
-			status = user.status("Gadu");
-		QString description = status.description();
-		QString name = qApp->translate("@default", UserStatus::name(UserStatus::index(status.status(), false)));
-
-		if (description.isEmpty())
-		{
-			if (status.isOffline() && !user.usesProtocol("Gadu"))
-				s = tr("<i>Mobile:</i> <b>%1</b>").arg(user.mobile());
-			else
-				s = tr("<nobr><i>%1</i></nobr>").arg(name);
-		}
-		else
-		{
-			HtmlDocument::escapeText(description);
-			description.replace(" ", "&nbsp;");
-			description.replace("\n", "<br/>");
-
-			s = narg(tr("<nobr><i>%1</i> <b>(d.)</b></nobr><br/><br/><b>Description:</b><br/>%2"), name, description);
-		}
-		tip(r, s);
+		if (item->User.altNick() != lastMouseStopUser)
+			hideTip();
+		lastMouseStopUser = item->User.altNick();
 	}
-	kdebugf2();
+	else
+	{
+		hideTip();
+		lastMouseStopUser = QString::null;
+	}
+	lastMouseStop = p;
+	tipTimer.start(TIP_TM);
+//	kdebugf2();
+}
+
+void UserBox::hideTip()
+{
+//	kdebugf();
+	if (tipAlive)
+	{
+		emit changeToolTip(QPoint(), QString::null, false);
+		tipAlive = false;
+		tipTimer.start(TIP_TM);
+	}
+// 	kdebugf2();
+}
+
+void UserBox::wheelEvent(QWheelEvent *e)
+{
+//	kdebugf();
+	QListBox::wheelEvent(e);
+	restartTip(e->pos());
+}
+
+void UserBox::enterEvent(QEvent *e)
+{
+//	kdebugf();
+	QListBox::enterEvent(e);
+}
+
+void UserBox::leaveEvent(QEvent *e)
+{
+//	kdebugf();
+	hideTip();
+	tipTimer.stop();
+	QListBox::leaveEvent(e);
 }
 
 void UserBox::mousePressEvent(QMouseEvent *e)
 {
 	kdebugf();
+	hideTip();
+	tipTimer.start(TIP_TM);
 	if (e->button() != RightButton)
 		QListBox::mousePressEvent(e);
 	else
@@ -469,7 +510,7 @@ void UserBox::mousePressEvent(QMouseEvent *e)
 void UserBox::mouseMoveEvent(QMouseEvent* e)
 {
 //	kdebugf();
-	if ((e->state() & LeftButton)&&itemAt(e->pos()))
+	if ((e->state() & LeftButton) && itemAt(e->pos()))
 	{
 		QString drag_text;
 		for(unsigned int i = 0, count1 = count(); i < count1; ++i)
@@ -479,19 +520,24 @@ void UserBox::mouseMoveEvent(QMouseEvent* e)
 					drag_text += "\n";
 				drag_text += item(i)->text();
 			}
-		QDragObject* d = new QTextDrag(drag_text,this);
+		QDragObject* d = new QTextDrag(drag_text, this);
 		d->dragCopy();
 	}
 	else
+	{
 		QListBox::mouseMoveEvent(e);
+		restartTip(e->pos());
+	}
 //	kdebugf2();
 }
 
 void UserBox::keyPressEvent(QKeyEvent *e)
 {
 //	kdebugf();
+	hideTip();
+	tipTimer.stop();
 	QListBox::keyPressEvent(e);
-	QWidget::keyPressEvent(e);
+//	QWidget::keyPressEvent(e);
 	QListBoxItem *i = item(currentItem());
 	if (i)
 		emit currentChanged(static_cast<KaduListBoxPixmap *>(i)->User);
@@ -593,6 +639,7 @@ UserBox* UserBox::activeUserBox()
 		}
 	}
 	kdebugmf(KDEBUG_PANIC, "return NULL!\n");
+//	printBacktrace("activeUserBox NULL");
 	return NULL;
 }
 
@@ -679,8 +726,6 @@ void UserBox::initModule()
 		ConfigDialog::addSpinBox("Look", "Background image options", QT_TRANSLATE_NOOP("@default", "Start at [Y]"), "UserboxBackgroundSY", 0, 1099, 1);
 		ConfigDialog::addSpinBox("Look", "Background image options", QT_TRANSLATE_NOOP("@default", "Image width"), "UserboxBackgroundSW", 100, 1600, 1);
 		ConfigDialog::addSpinBox("Look", "Background image options", QT_TRANSLATE_NOOP("@default", "Image height"), "UserboxBackgroundSH", 100, 1200, 1);
-
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show tooltip on userbox"), "ShowTooltipOnUserbox", true, QString::null, QString::null, Expert);
 
 	KaduListBoxPixmap::setFont(config_file.readFontEntry("Look","UserboxFont"));
 	KaduListBoxPixmap::setShowDesc(config_file.readBoolEntry("Look", "ShowDesc"));

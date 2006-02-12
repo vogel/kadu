@@ -86,6 +86,7 @@ class Notify : public QObject
 			"toBusy" - u¿ytkownik zmieni³ status na "Zaraz wracam"
 			"toInvisible" - u¿ytkownik zmieni³ status na "Ukryty"
 			"toNotAvailable" - u¿ytkownik zmieni³ status na "Niewidoczny lub Niedostêpny"
+			"UserBoxChangeToolTip"
 			"Message" - inna wiadomo¶æ
 		 *
 		 * nie trzeba definiowaæ wszystkich slotów
@@ -150,6 +151,8 @@ class Notify : public QObject
 
 		/* u¿ytkownik zmieni³ status na "Niewidoczny" lub "Niedostêpny" */
 		void userChangedStatusToNotAvailable(const QString &protocolName, UserListElement);
+
+		void userBoxChangeToolTip(const QPoint &point, const QString &text, bool show);
 
 		/* inna informacja do powiadomienia */
 		void message(const QString &from, const QString &msg, const QMap<QString, QVariant> *parameters, const UserListElement *ule);

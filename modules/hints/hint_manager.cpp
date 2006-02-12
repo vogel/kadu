@@ -29,6 +29,7 @@ HintManager::HintManager(QWidget *parent, const char *name)
 	: Notifier(parent, name)
 {
 	kdebugf();
+	tipFrame = 0;
 
 	frame = new QFrame(parent, name, WStyle_NoBorder | WStyle_StaysOnTop | WStyle_Tool | WX11BypassWM | WWinOwnDC);
 
@@ -117,6 +118,7 @@ HintManager::HintManager(QWidget *parent, const char *name)
 	config_file.addVariable("Notify", "toBusy_Hints", true);
 	config_file.addVariable("Notify", "toInvisible_Hints", false);
 	config_file.addVariable("Notify", "toNotAvailable_Hints", false);
+	config_file.addVariable("Notify", "UserBoxChangeToolTip_Hints", config_file.readBoolEntry("General", "ShowTooltipOnUserbox", true));
 	config_file.addVariable("Notify", "Message_Hints", true);
 
 	connect(this, SIGNAL(searchingForTrayPosition(QPoint &)), kadu, SIGNAL(searchingForTrayPosition(QPoint &)));
@@ -130,6 +132,7 @@ HintManager::HintManager(QWidget *parent, const char *name)
 	s["toBusy"]=SLOT(userChangedStatusToBusy(const QString &, UserListElement));
 	s["toInvisible"]=SLOT(userChangedStatusToInvisible(const QString &, UserListElement));
 	s["toNotAvailable"]=SLOT(userChangedStatusToNotAvailable(const QString &, UserListElement));
+	s["UserBoxChangeToolTip"]=SLOT(userBoxChangeToolTip(const QPoint &, const QString &, bool));
 	s["Message"]=SLOT(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *));
 	notify->registerNotifier(QT_TRANSLATE_NOOP("@default","Hints"), this, s);
 
@@ -700,6 +703,49 @@ void HintManager::userChangedStatusToNotAvailable(const QString &protocolName, U
 				config_file.readColorEntry("Hints", "HintOffline_bgcolor"),
 				config_file.readUnsignedNumEntry("Hints", "HintOffline_timeout"), ulist);
 	kdebugf2();
+}
+
+void HintManager::userBoxChangeToolTip(const QPoint &point, const QString &text, bool show)
+{
+//	kdebugf();
+	kdebugm(KDEBUG_INFO, "text: '%s', show: %d, x:%d, y:%d\n", text.local8Bit().data(), show, point.x(), point.y());
+	if (show)
+	{
+		if (tipFrame)
+			delete tipFrame;
+		tipFrame = new QFrame(0, "tip_frame", WStyle_NoBorder | WStyle_StaysOnTop | WStyle_Tool | WX11BypassWM | WWinOwnDC);
+		tipFrame->setFrameStyle(QFrame::Box | QFrame::Plain);
+		tipFrame->setLineWidth(FRAME_WIDTH);
+
+		QVBoxLayout *lay = new QVBoxLayout(tipFrame);
+		lay->setMargin(FRAME_WIDTH);
+
+		QLabel *tipLabel = new QLabel(text, tipFrame);
+		tipLabel->setTextFormat(Qt::RichText);
+		tipLabel->setAlignment(AlignVCenter | AlignLeft);
+
+		lay->addWidget(tipLabel);
+
+		tipFrame->show();
+		tipFrame->setFixedSize(tipLabel->sizeHint() + QSize(2 * FRAME_WIDTH, 2 * FRAME_WIDTH));
+
+		QPoint pos(kadu->userbox()->mapToGlobal(point) + QPoint(5, 5));
+
+		QSize preferredSize = tipFrame->sizeHint();
+		QSize desktopSize = QApplication::desktop()->size();
+		if (pos.x() + preferredSize.width() > desktopSize.width())
+			pos.setX(pos.x() - preferredSize.width() - 10);
+		if (pos.y() + preferredSize.height() > desktopSize.height())
+			pos.setY(pos.y() - preferredSize.height() - 10);
+
+		tipFrame->move(pos);
+	}
+	else
+	{
+		tipFrame->hide();
+		delete tipFrame;
+		tipFrame = 0;
+	}
 }
 
 void HintManager::message(const QString &from, const QString &msg, const QMap<QString, QVariant> *parameters, const UserListElement *ule)

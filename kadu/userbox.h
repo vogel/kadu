@@ -5,7 +5,6 @@
 #include <qpixmap.h>
 #include <qpopupmenu.h>
 #include <qtimer.h>
-#include <qtooltip.h>
 
 #include <vector>
 
@@ -18,7 +17,7 @@ class ULEComparer;
 
 /**
 	Klasa reprezentuj±ca kontakt wizualnie na li¶cie kontaktów. Opisuje ona ikonê kontaktu,
-	jego wy¶witlan± nazwê oraz ewentualny opis.
+	jego wy¶wietlan± nazwê oraz ewentualny opis.
 	\class KaduListBoxPixmap
 	\brief Klasa reprezentuj±ca kontakt wizualnie.
 **/
@@ -274,7 +273,7 @@ class UserBoxMenu : public QPopupMenu
 	\class UserBox
 	\brief Wy¶wietlana lista kontaktów.
 **/
-class UserBox : public QListBox, private QToolTip
+class UserBox : public QListBox
 {
 	Q_OBJECT
 
@@ -490,6 +489,8 @@ class UserBox : public QListBox, private QToolTip
 		**/
 		void currentChanged(UserListElement user);
 
+		void changeToolTip(const QPoint &point, const QString &text, bool show);
+
 	private slots:
 		void doubleClickedSlot(QListBoxItem *item);
 		void returnPressedSlot(QListBoxItem *item);
@@ -510,6 +511,10 @@ class UserBox : public QListBox, private QToolTip
 							bool massively, bool last);
 		void removingProtocol(UserListElement elem, QString protocolName, bool massively, bool last);
 
+		void tipTimeout();
+		void restartTip(const QPoint &p);
+		void hideTip();
+
 	private:
 		static QValueList<UserBox*> UserBoxes;
 		static UserBoxSlots *userboxslots;
@@ -526,16 +531,17 @@ class UserBox : public QListBox, private QToolTip
 		void sort();
 		QTimer refreshTimer;
 
+		QString lastMouseStopUser;
+		QPoint lastMouseStop;
+		bool tipAlive;
+		QTimer tipTimer;
+
 		friend class UserBoxSlots;
 
 	protected:
-		/**
-			\fn virtual void maybeTip(const QPoint& c)
-			Wy¶wietla dymek w danym punkcie z informacj± o kontakcie znajduj±cym siê w tym punkcie
-			wzglêdem lewego górnego rogu listy kontaktów.
-			\param c wspó³rzêdne punktu
-		**/
-		virtual void maybeTip(const QPoint&);
+		virtual void wheelEvent(QWheelEvent *e);
+		virtual void enterEvent(QEvent *);
+		virtual void leaveEvent(QEvent *);
 
 		/**
 			\fn virtual void mousePressEvent(QMouseEvent *e)
@@ -590,7 +596,7 @@ class UserBoxSlots : public QObject
 
 		/**
 			\fn void chooseColor(const char *name, const QColor& color)
-			Od¶wierza podgl±d wybranego koloru.
+			Od¶wie¿a podgl±d wybranego koloru.
 			\param name nazwa elementu, dla którego wybrano kolor.
 				\arg \c userbox_bg_color oznacza kolor t³a.
 				\arg \c userbox_font_color oznacz kolor czcionki.
@@ -600,7 +606,7 @@ class UserBoxSlots : public QObject
 
 		/**
 			\fn void chooseFont(const char *name, const QFont& font)
-			Od¶wierza podgl±d wybranej czcionki.
+			Od¶wie¿a podgl±d wybranej czcionki.
 			\param name nazwa elementu, dla którego wybrano czcionkê.
 				\arg \c userbox_font_box oznacza ogóln± czcionkê listy kontaktów.
 			\param font wybrana czcionka.
@@ -616,7 +622,7 @@ class UserBoxSlots : public QObject
 
 		/**
 			\fn void updatePreview()
-			Od¶wierza podgl±d wszystkich elementów UserBox'a.
+			Od¶wie¿a podgl±d wszystkich elementów UserBox'a.
 		**/
 		void updatePreview();
 
