@@ -211,11 +211,18 @@ int main(int argc, char *argv[])
 				delete xml_config_file;
 				lockFile->close();
 				delete lockFile;
-				delete qApp;
+//				delete qApp;
 				return 1;
 			}
 		}
 	}
+
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "General"), "GeneralTab");
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "ShortCuts"), "ShortCutsTab");
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Chat"), "ChatTab");
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"), "LookTab");
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Network"), "NetworkTab");
+	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "History"), "HistoryTab");
 
 	ProtocolsManager::initModule();
 	UserList::initModule();
