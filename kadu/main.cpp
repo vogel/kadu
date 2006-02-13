@@ -24,6 +24,7 @@
 #include "kadu.h"
 #include "kadu-config.h"
 
+#include "config_dialog.h"
 #include "config_file.h"
 #include "misc.h"
 #include "debug.h"
