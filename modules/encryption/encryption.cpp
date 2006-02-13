@@ -11,6 +11,7 @@
 #include <qfile.h>
 #include <qhgroupbox.h>
 #include <qmessagebox.h>
+#include <qtooltip.h>
 #include <stdlib.h>
 
 #include "action.h"
