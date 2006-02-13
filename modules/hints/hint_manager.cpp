@@ -21,6 +21,7 @@
 #include "kadu.h"
 #include "misc.h"
 #include "../notify/notify.h"
+#include "userbox.h"
 #include "userlist.h"
 
 #define FRAME_WIDTH 1

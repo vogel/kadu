@@ -9,6 +9,7 @@
 
 #include <qcursor.h>
 #include <qbitmap.h>
+#include <qtooltip.h>
 
 #include "action.h"
 #include "chat_manager_slots.h"
