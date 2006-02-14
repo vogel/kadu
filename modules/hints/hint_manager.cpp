@@ -727,10 +727,10 @@ void HintManager::userBoxChangeToolTip(const QPoint &point, const QString &text,
 
 		lay->addWidget(tipLabel);
 
-		tipFrame->show();
 		tipFrame->setFixedSize(tipLabel->sizeHint() + QSize(2 * FRAME_WIDTH, 2 * FRAME_WIDTH));
 
 		QPoint pos(kadu->userbox()->mapToGlobal(point) + QPoint(5, 5));
+//		kdebugm(KDEBUG_INFO, "%d %d\n", pos.x(), pos.y());
 
 		QSize preferredSize = tipFrame->sizeHint();
 		QSize desktopSize = QApplication::desktop()->size();
@@ -739,7 +739,9 @@ void HintManager::userBoxChangeToolTip(const QPoint &point, const QString &text,
 		if (pos.y() + preferredSize.height() > desktopSize.height())
 			pos.setY(pos.y() - preferredSize.height() - 10);
 
+//		kdebugm(KDEBUG_INFO, "%d %d\n", pos.x(), pos.y());
 		tipFrame->move(pos);
+		tipFrame->show();
 	}
 	else
 	{
