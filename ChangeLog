@@ -9,6 +9,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodany do autodownloadu modu³ iwait4u (joi)
 * poprawki w skryptach buduj±cych gdy /bin/sh nie jest linkiem do basha
   (np. w FreeBSD,PLD) (joi)
+* dodane do autodownloadu zestawy ikon glass16 i glass22 (dylemat/Ron_K)
 
 +++ wersja 0.4.3 (30.11.2005)
 * opcja ignorowania formatowania tekstu i obrazków od anonimów, domy¶lnie w³±czona (adrian)
