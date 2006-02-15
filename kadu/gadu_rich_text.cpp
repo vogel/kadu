@@ -126,8 +126,9 @@ QString formatGGMessage(const QString &msg, unsigned int formats_length, void *f
 				if (++number_of_images > MAX_NUMBER_OF_IMAGES)
 				{
 					kdebugm(KDEBUG_INFO, "%d: number of images in message exceeded %d, possible hacking attempt!\n", sender, MAX_NUMBER_OF_IMAGES);
-					mesg.append(qApp->translate("@default",
-						QT_TR_NOOP("###TOO MANY IMAGES###")));
+					if (number_of_images == MAX_NUMBER_OF_IMAGES + 1)
+						mesg.append(qApp->translate("@default",
+							QT_TR_NOOP("###TOO MANY IMAGES###")));
 				}
 				else if (tmpsize == 20 && (tmpcrc32 == 4567 || tmpcrc32==99))
 				{
