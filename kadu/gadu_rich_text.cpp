@@ -33,6 +33,8 @@ QString formatGGMessage(const QString &msg, unsigned int formats_length, void *f
 
 	bold = italic = underline = color = inspan = false;
 	unsigned int pos = 0;
+	const int MAX_NUMBER_OF_IMAGES = 5;
+	int number_of_images = 0;
 
 	UinsList uins(sender);
 	UserListElements users;
@@ -121,10 +123,16 @@ QString formatGGMessage(const QString &msg, unsigned int formats_length, void *f
 				uint32_t tmpcrc32 = gg_fix32(actimage->crc32);
 				kdebugm(KDEBUG_INFO, "Image size: %d, crc32: %d, sender:%d\n", tmpsize, tmpcrc32, sender);
 
-				//ukrywamy siê przed spy'em i ekg2
-				if (tmpsize == 20 && (tmpcrc32 == 4567 || tmpcrc32==99))
+				if (++number_of_images > MAX_NUMBER_OF_IMAGES)
 				{
-					kdebugm(KDEBUG_INFO, "%d: scanning for invisibility detected, preparing tactical nuclear missiles ;)\n", sender);
+					kdebugm(KDEBUG_INFO, "%d: number of images in message exceeded %d, possible hacking attempt!\n", sender, MAX_NUMBER_OF_IMAGES);
+					mesg.append(qApp->translate("@default",
+						QT_TR_NOOP("###TOO MANY IMAGES###")));
+				}
+				else if (tmpsize == 20 && (tmpcrc32 == 4567 || tmpcrc32==99))
+				{
+					// do not process spy and ekg2 special images
+					kdebugm(KDEBUG_INFO, "%d: scanning for invisibility detected, preparing tactical nuclear missles ;)\n", sender);
 					if (receiveImage)
 						gadu->sendImageRequest(ule, tmpsize, tmpcrc32);
 				}
