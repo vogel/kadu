@@ -20,6 +20,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <stdio.h>
+#include <fcntl.h>
 
 #include "kadu.h"
 #include "kadu-config.h"
@@ -59,7 +60,9 @@ static void kadu_signal_handler(int s)
 		if (lockFile)
 		{
 			// there might be another segmentation fault in this signal handler (because of total mess in memory)
-			flock(lockFileHandle, LOCK_UN);
+			lock_str->l_type = F_UNLCK;
+			fcntl(lockFileHandle, F_SETLK, lock_str);
+//			flock(lockFileHandle, LOCK_UN);
 			kdebugm(KDEBUG_WARNING, "lock released\n");
 			lockFile->close();
 			kdebugm(KDEBUG_WARNING, "lockfile closed\n");
@@ -148,6 +151,12 @@ int main(int argc, char *argv[])
 		debug_mask=atol(d);
 	gg_debug_level=debug_mask | ~255;
 
+	lock_str = (struct flock *) malloc(sizeof(struct flock));
+	lock_str->l_type = F_WRLCK;
+	lock_str->l_whence = SEEK_SET;
+	lock_str->l_start = 0;
+	lock_str->l_len = 0;
+
 #ifdef SIG_HANDLING_ENABLED
 	bool sh_enabled=true;
 	d=getenv("SIGNAL_HANDLING");
@@ -196,9 +205,11 @@ int main(int argc, char *argv[])
 	if (lockFile->open(IO_ReadWrite))
 	{
 		lockFileHandle = lockFile->handle();
-		if (flock(lockFileHandle, LOCK_EX | LOCK_NB) != 0)
+
+		if (fcntl(lockFileHandle, F_SETLK, lock_str) == -1)
+//		if (flock(lockFileHandle, LOCK_EX | LOCK_NB) != 0)
 		{
-			kdebugm(KDEBUG_WARNING, "flock: %s\n", strerror(errno));
+			kdebugm(KDEBUG_WARNING, "fcntl: %s\n", strerror(errno));
 			if (QMessageBox::warning(NULL, "Kadu",
 				qApp->translate("@default", QT_TR_NOOP("Another Kadu is running on this profile.")),
 				qApp->translate("@default", QT_TR_NOOP("Force running Kadu (not recommended).")),

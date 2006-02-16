@@ -274,6 +274,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * konfiguracja sk³adni powy¿szego (joi)
 * dodano do autodownloadu ikony glass16 i glass22 usunieto link do starego zestawu (dylemat/Ron_K)
 * limit do 5 odbieranych obrazków w jednej wiadomo¶ci (adrian)
+* u¿ywamy fcntl zamiast flock do blokowania profilu (dzia³a na NFSie) (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

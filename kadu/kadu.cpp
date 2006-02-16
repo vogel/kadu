@@ -59,6 +59,7 @@ QPopupMenu* dockMenu;
 
 int lockFileHandle;
 QFile *lockFile;
+struct flock *lock_str;
 
 const QString Kadu::SyntaxText=QT_TRANSLATE_NOOP("@default", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name\n%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n%v - revDNS, %p - port %e - email %x - max image size\n");
 bool Kadu::Closing = false;
@@ -1229,26 +1230,29 @@ bool Kadu::close(bool quit)
  		UserBox::closeModule();
 		UserList::closeModule();
 		ProtocolsManager::closeModule();
- 		delete emoticons;
- 		delete icons_manager;
-  		kdebugmf(KDEBUG_INFO, "Saved config, disconnect and ignored\n");
+		delete emoticons;
+		delete icons_manager;
+		kdebugmf(KDEBUG_INFO, "Saved config, disconnect and ignored\n");
 
 #ifdef Q_OS_MACX
 		//na koniec przywracamy domy¶ln± ikonê, je¿eli tego nie zrobimy, to pozostanie bie¿±cy status
 		setMainWindowIcon(QPixmap(dataPath("kadu.png")));
 #endif
 
-  		QWidget::close(true);
-  		flock(lockFileHandle, LOCK_UN);
-  		lockFile->close();
-  		delete lockFile;
-  		lockFile=NULL;
-  		kdebugmf(KDEBUG_INFO, "Graceful shutdown...\n");
+		QWidget::close(true);
 
- 		delete xml_config_file;
- 		delete config_file_ptr;
+		lock_str->l_type = F_UNLCK;
+		fcntl(lockFileHandle, F_SETLK, lock_str);
+//		flock(lockFileHandle, LOCK_UN);
+		lockFile->close();
+		delete lockFile;
+		lockFile=NULL;
+		kdebugmf(KDEBUG_INFO, "Graceful shutdown...\n");
 
- 		return true;
+		delete xml_config_file;
+		delete config_file_ptr;
+
+		return true;
 	}
 }
 

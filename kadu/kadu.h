@@ -249,5 +249,7 @@ extern Kadu* kadu;
 extern QPopupMenu* dockMenu;
 extern int lockFileHandle;
 extern QFile *lockFile;
+struct flock;
+extern struct flock *lock_str;
 
 #endif
