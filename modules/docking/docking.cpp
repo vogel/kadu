@@ -195,6 +195,7 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 	if (e->button() == LeftButton)
 	{
 		emit mousePressLeftButton();
+		kdebugm(KDEBUG_INFO, "minimized: %d, visible: %d\n", kadu->isMinimized(), kadu->isVisible());
 		if (pending.pendingMsgs() && e->state() != ControlButton)
 		{
 			pending.openMessages();
@@ -202,6 +203,10 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 		}
 		if (kadu->isMinimized())
 		{
+			// hide & show needed when changing desktop
+			kadu->hide();
+			kadu->show();
+
 			kadu->showNormal();
 			kadu->setFocus();
 			return;
