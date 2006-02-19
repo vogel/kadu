@@ -203,10 +203,8 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 		}
 		if (kadu->isMinimized())
 		{
-			// hide & show needed when changing desktop
+			// hide needed when changing desktop
 			kadu->hide();
-			kadu->show();
-
 			kadu->showNormal();
 			kadu->setFocus();
 			return;
