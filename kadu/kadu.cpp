@@ -169,6 +169,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 	config_file.addVariable("General", "DescriptionHeight", 60);
 
 	config_file.addVariable("Look", "UserboxFont", defaultFont);
+	config_file.addVariable("Look", "PanelFont", defaultFont);
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"), "LookTab");
 	ConfigDialog::addComboBox("Look", "Look",
