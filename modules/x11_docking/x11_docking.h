@@ -19,15 +19,16 @@ class X11TrayIcon : public QLabel
 	protected:
 		virtual void enterEvent(QEvent* e);
 		virtual void mousePressEvent(QMouseEvent* e);
+		virtual bool x11Event(XEvent *);
 
 	public slots:
 		void disableTaskbar();
 		void enableTaskbar(bool enable=true);
+		void tryToDock();
 
 	public:
 		X11TrayIcon(QWidget *parent=0, const char *name=0);
 		~X11TrayIcon();
-		void show();
 };
 
 extern X11TrayIcon* x11_tray_icon;

@@ -113,6 +113,35 @@ X11TrayIcon::X11TrayIcon(QWidget *parent, const char *name)
 	setMouseTracking(true);
 	update();
 
+	//unikamy efektu klepsydry w KDE
+	QWidget *w=new QWidget();
+	w->setGeometry(-100,-100,10,10);
+	w->show();
+	w->hide();
+	delete w;
+
+	tryToDock();
+
+#ifdef ENABLE_HIDING
+	//wy³±czamy pokazywanie Kadu na pasku zadañ
+	disableTaskbar();
+	connect(kadu, SIGNAL(shown()), this, SLOT(disableTaskbar()));
+//	connect(kadu, SIGNAL(minimized()), kadu, SLOT(hide()));
+#endif
+
+	connect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&, const QString &)), this, SLOT(setTrayPixmap(const QPixmap&, const QString &)));
+	connect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
+	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
+	connect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), this, SLOT(setTrayMovie(const QMovie &)));
+	connect(chat_manager, SIGNAL(chatCreated(const UserGroup *)), this, SLOT(chatCreatedSlot(const UserGroup *)));
+
+	kdebugf2();
+}
+
+void X11TrayIcon::tryToDock()
+{
+	kdebugf();
+
 	Display *dsp = x11Display();
 	WId win = winId();
 
@@ -120,13 +149,6 @@ X11TrayIcon::X11TrayIcon(QWidget *parent, const char *name)
 	classhint.res_name  = (char*)"kadudock";
 	classhint.res_class = (char*)"Kadu";
 	XSetClassHint(dsp, win, &classhint);
-
-	//unikamy efektu klepsydry w KDE
-	QWidget *w=new QWidget();
-	w->setGeometry(-100,-100,10,10);
-	w->show();
-	w->hide();
-	delete w;
 
 	// SPOSÓB PIERWSZY
 	// System Tray Protocol Specification
@@ -144,6 +166,8 @@ X11TrayIcon::X11TrayIcon(QWidget *parent, const char *name)
 	XFlush(dsp);
 	if (manager_window != None)
 		send_message(dsp, manager_window, SYSTEM_TRAY_REQUEST_DOCK, win, 0, 0);
+	else
+		kdebugm(KDEBUG_WARNING, "no manager_window!\n");
 
 	// SPOSÓB DRUGI
 	// Dzia³a na KDE 3.0.x i pewnie na starszych
@@ -155,26 +179,22 @@ X11TrayIcon::X11TrayIcon(QWidget *parent, const char *name)
 	r = XInternAtom(dsp, "_KDE_NET_WM_SYSTEM_TRAY_WINDOW_FOR", false);
 	XChangeProperty(dsp, win, r, XA_WINDOW, 32, 0, (uchar *)&data, 1);
 
-#ifdef ENABLE_HIDING
-	//wy³±czamy pokazywanie Kadu na pasku zadañ
-	disableTaskbar();
-	connect(kadu, SIGNAL(shown()), this, SLOT(disableTaskbar()));
-//	connect(kadu, SIGNAL(minimized()), kadu, SLOT(hide()));
-#endif
+	if (manager_window != None)
+	{
+		docking_manager->setDocked(true);
+//		show();
+		// against stupid gnome notification area!
+		QTimer::singleShot(500, this, SLOT(show()));
 
-	connect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&, const QString &)), this, SLOT(setTrayPixmap(const QPixmap&, const QString &)));
-	connect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
-	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
-	connect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), this, SLOT(setTrayMovie(const QMovie &)));
-	connect(chat_manager, SIGNAL(chatCreated(const UserGroup *)), this, SLOT(chatCreatedSlot(const UserGroup *)));
-
-	docking_manager->setDocked(true);
-
-	show();
-
-	//zapobiega pojawieniu siê 2 ikon jedna na drugiej (z kilkunastopikselowym przesuniêciem)
-	QTimer::singleShot(0, this, SLOT(repaint()));
-	QTimer::singleShot(1000, this, SLOT(repaint()));
+		// against 2 icons one above other (with a >10 pixel shift)
+		QTimer::singleShot(600, this, SLOT(repaint()));
+		QTimer::singleShot(1000, this, SLOT(repaint()));
+	}
+	else
+	{
+		// try again in 3 seconds
+		QTimer::singleShot(3000, this, SLOT(tryToDock()));
+	}
 
 	kdebugf2();
 }
@@ -262,11 +282,6 @@ void X11TrayIcon::findTrayPosition(QPoint& pos)
 	pos = mapToGlobal(QPoint(0,0));
 }
 
-void X11TrayIcon::show()
-{
-	QLabel::show();
-}
-
 void X11TrayIcon::setTrayPixmap(const QPixmap& pixmap, const QString &/*iconName*/)
 {
 	QLabel::setPixmap(pixmap);
@@ -306,6 +321,19 @@ void X11TrayIcon::enterEvent(QEvent* e)
 void X11TrayIcon::mousePressEvent(QMouseEvent * e)
 {
 	docking_manager->trayMousePressEvent(e);
+}
+
+bool X11TrayIcon::x11Event(XEvent *e)
+{
+//	kdebugmf(KDEBUG_FUNCTION_START, "%d\n", e->type);
+	// if notification area/tray/kicker/... crashes, X server sends us an event (because we requested it by XSelectInput)
+	if (e->type == ReparentNotify)
+	{
+		kdebugmf(KDEBUG_INFO, "my event (%d)!\n", e->type);
+		QTimer::singleShot(1000, this, SLOT(tryToDock()));
+		return true;
+	}
+	return false;
 }
 
 X11TrayIcon* x11_tray_icon = NULL;
