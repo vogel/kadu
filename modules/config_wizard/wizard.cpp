@@ -1323,7 +1323,7 @@ void Wizard::previewPanelTheme(int panelThemeID)
 	else 
 		panelLook = informationPanelSyntax[cb_panelTheme->currentItem()];
 
-	if (panelLook.contains("background=", false) == 0)	//to nam zapewnia odswierzenie tla jesli wczesniej byl obrazek
+	if (panelLook.contains("background=", false) == 0)	//to nam zapewnia odswie¿enie tla jesli wczesniej byl obrazek
 		infoPreview->setText("<body bgcolor=\""+config_file.readEntry("Look", "InfoPanelBgColor")+"\"></body>");	
 		
 	infoPreview->setText(parse(toDisplay(panelLook), el));
@@ -1338,6 +1338,7 @@ void Wizard::setPanelTheme()
 	kdebugf();
 	UserListElement el;
 	config_file.writeEntry("Look", "ShowInfoPanel", c_showInfoPanel->isChecked());
+	kadu->showdesc(config_file.readBoolEntry("Look", "ShowInfoPanel"));
 	config_file.writeEntry("Look", "PanelVerticalScrollbar", c_showScrolls->isChecked());
 	if (cb_panelTheme->currentItem()==int(informationPanelCount))
 		config_file.writeEntry("Look", "PanelContents", customPanel);
