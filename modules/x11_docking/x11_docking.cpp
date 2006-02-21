@@ -341,7 +341,10 @@ bool X11TrayIcon::x11Event(XEvent *e)
 		Window rootWin = RootWindow(x11Display(), 0);
 		kdebugm(KDEBUG_INFO, "type: %d, event: %d, window: %d, parent: %d, root: %d\n", e->type, e->xreparent.event, e->xreparent.window, e->xreparent.parent, rootWin);
 		if (rootWin == e->xreparent.parent)
+		{
+			docking_manager->setDocked(false);
 			tryToDockLater(1000);
+		}
 	}
 	else if (e->type == DestroyNotify) // happens only on xfce :/
 	{
