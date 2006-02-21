@@ -85,6 +85,7 @@ static bool send_message(
 
 extern "C" int x11_docking_init()
 {
+	tray_restarter = new TrayRestarter();
 	x11_tray_icon = new X11TrayIcon(NULL, "x11_tray_icon");
 #ifdef ENABLE_HIDING
 	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Remove from taskbar (experimental)"), "HideTaskbar", false, QString::null, QString::null, Expert);
@@ -97,9 +98,11 @@ extern "C" void x11_docking_close()
 #ifdef ENABLE_HIDING
 	ConfigDialog::removeControl("General", "Remove from taskbar (experimental)");
 #endif
+	delete tray_restarter;
 	delete x11_tray_icon;
 	x11_tray_icon = NULL;
 }
+
 
 X11TrayIcon::X11TrayIcon(QWidget *parent, const char *name)
 	: QLabel(parent, name, WMouseNoMask | WRepaintNoErase | WType_TopLevel | WStyle_Customize | WStyle_NoBorder | WStyle_StaysOnTop)
@@ -120,7 +123,7 @@ X11TrayIcon::X11TrayIcon(QWidget *parent, const char *name)
 	w->hide();
 	delete w;
 
-	tryToDock();
+	tryToDockLater(0);
 
 #ifdef ENABLE_HIDING
 	//wy³±czamy pokazywanie Kadu na pasku zadañ
@@ -134,8 +137,14 @@ X11TrayIcon::X11TrayIcon(QWidget *parent, const char *name)
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 	connect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), this, SLOT(setTrayMovie(const QMovie &)));
 	connect(chat_manager, SIGNAL(chatCreated(const UserGroup *)), this, SLOT(chatCreatedSlot(const UserGroup *)));
+	connect(&timer, SIGNAL(timeout()), this, SLOT(tryToDock()));
 
 	kdebugf2();
+}
+
+void X11TrayIcon::tryToDockLater(int tm)
+{
+	timer.start(tm, true);
 }
 
 void X11TrayIcon::tryToDock()
@@ -193,7 +202,7 @@ void X11TrayIcon::tryToDock()
 	else
 	{
 		// try again in 3 seconds
-		QTimer::singleShot(3000, this, SLOT(tryToDock()));
+		tryToDockLater(3000);
 	}
 
 	kdebugf2();
@@ -326,14 +335,29 @@ void X11TrayIcon::mousePressEvent(QMouseEvent * e)
 bool X11TrayIcon::x11Event(XEvent *e)
 {
 //	kdebugmf(KDEBUG_FUNCTION_START, "%d\n", e->type);
-	// if notification area/tray/kicker/... crashes, X server sends us an event (because we requested it by XSelectInput)
+	// when notification area/tray/kicker/... crashes, X server sends us an event (because we requested it by XSelectInput)
 	if (e->type == ReparentNotify)
 	{
-		kdebugmf(KDEBUG_INFO, "my event (%d)!\n", e->type);
-		QTimer::singleShot(1000, this, SLOT(tryToDock()));
-		return true;
+		Window rootWin = RootWindow(x11Display(), 0);
+		kdebugm(KDEBUG_INFO, "type: %d, event: %d, window: %d, parent: %d, root: %d\n", e->type, e->xreparent.event, e->xreparent.window, e->xreparent.parent, rootWin);
+		if (rootWin == e->xreparent.parent)
+			tryToDockLater(1000);
+	}
+	else if (e->type == DestroyNotify) // happens only on xfce :/
+	{
+		kdebugm(KDEBUG_WARNING, "wooops, window destroyed\n");
+		QTimer::singleShot(1000, tray_restarter, SLOT(restart()));
 	}
 	return false;
 }
+
+void TrayRestarter::restart()
+{
+	kdebugf();
+	delete x11_tray_icon;
+	x11_tray_icon = new X11TrayIcon(NULL, "x11_tray_icon");
+	kdebugf2();
+}
+TrayRestarter *tray_restarter = NULL;
 
 X11TrayIcon* x11_tray_icon = NULL;

@@ -3,7 +3,9 @@
 
 #include <qlabel.h>
 #include <qpixmap.h>
+#include <qtimer.h>
 #include "gadu.h"
+
 
 class X11TrayIcon : public QLabel
 {
@@ -20,11 +22,13 @@ class X11TrayIcon : public QLabel
 		virtual void enterEvent(QEvent* e);
 		virtual void mousePressEvent(QMouseEvent* e);
 		virtual bool x11Event(XEvent *);
+		QTimer timer;
 
 	public slots:
 		void disableTaskbar();
 		void enableTaskbar(bool enable=true);
 		void tryToDock();
+		void tryToDockLater(int tm);
 
 	public:
 		X11TrayIcon(QWidget *parent=0, const char *name=0);
@@ -32,5 +36,15 @@ class X11TrayIcon : public QLabel
 };
 
 extern X11TrayIcon* x11_tray_icon;
+
+
+/* INTERNAL, DO NOT USE */
+class TrayRestarter : public QObject
+{
+	Q_OBJECT
+	public slots:
+		void restart();
+};
+extern TrayRestarter *tray_restarter;
 
 #endif
