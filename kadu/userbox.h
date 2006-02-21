@@ -489,7 +489,7 @@ class UserBox : public QListBox
 		**/
 		void currentChanged(UserListElement user);
 
-		void changeToolTip(const QPoint &point, const QString &text, bool show);
+		void changeToolTip(const QPoint &point, UserListElement user, bool show);
 
 	private slots:
 		void doubleClickedSlot(QListBoxItem *item);

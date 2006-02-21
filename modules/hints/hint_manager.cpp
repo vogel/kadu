@@ -83,6 +83,12 @@ HintManager::HintManager(QWidget *parent, const char *name)
 			toStringList(tr("Top left"),tr("Top right"),tr("Bottom left"),tr("Bottom right")),
 			toStringList("0","1","2","3"), "0", QString::null, QString::null, Expert);
 
+	const QString default_hints_syntax(QT_TRANSLATE_NOOP("HintManager", "[<i>%s</i><br/>][<br/><b>Description:</b><br/>%d<br/><br/>][<i>Mobile:</i> <b>%m</b><br/>]"));
+	if (config_file.readEntry("Hints", "MouseOverUserSyntax") == default_hints_syntax || config_file.readEntry("Hints", "MouseOverUserSyntax").isEmpty())
+		config_file.writeEntry("Hints", "MouseOverUserSyntax", tr(default_hints_syntax));
+	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Hints over userlist"), QString::null, Expert);
+		ConfigDialog::addTextEdit("Hints", "Hints over userlist", QT_TRANSLATE_NOOP("@default", "Hints syntax:"), "MouseOverUserSyntax", "", Kadu::SyntaxText, QString::null, Expert);
+
 	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Parameters"), QString::null, Advanced);
 		ConfigDialog::addHBox("Hints", "Parameters", "top");
 			ConfigDialog::addCheckBox("Hints", "top", QT_TRANSLATE_NOOP("@default", "Set for all"), "SetAll", false);
@@ -133,7 +139,7 @@ HintManager::HintManager(QWidget *parent, const char *name)
 	s["toBusy"]=SLOT(userChangedStatusToBusy(const QString &, UserListElement));
 	s["toInvisible"]=SLOT(userChangedStatusToInvisible(const QString &, UserListElement));
 	s["toNotAvailable"]=SLOT(userChangedStatusToNotAvailable(const QString &, UserListElement));
-	s["UserBoxChangeToolTip"]=SLOT(userBoxChangeToolTip(const QPoint &, const QString &, bool));
+	s["UserBoxChangeToolTip"]=SLOT(userBoxChangeToolTip(const QPoint &, UserListElement, bool));
 	s["Message"]=SLOT(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *));
 	notify->registerNotifier(QT_TRANSLATE_NOOP("@default","Hints"), this, s);
 
@@ -706,12 +712,19 @@ void HintManager::userChangedStatusToNotAvailable(const QString &protocolName, U
 	kdebugf2();
 }
 
-void HintManager::userBoxChangeToolTip(const QPoint &point, const QString &text, bool show)
+void HintManager::userBoxChangeToolTip(const QPoint &point, UserListElement user, bool show)
 {
 //	kdebugf();
-	kdebugm(KDEBUG_INFO, "text: '%s', show: %d, x:%d, y:%d\n", text.local8Bit().data(), show, point.x(), point.y());
 	if (show)
 	{
+		kdebugm(KDEBUG_INFO, "user: '%s', x:%d, y:%d\n", user.altNick().local8Bit().data(), show, point.x(), point.y());
+		QString text = parse(config_file.readEntry("Hints", "MouseOverUserSyntax"), user);
+
+		while (text.endsWith("<br/>"))
+			text.setLength(text.length() - 5 /* 5 == QString("<br/>").length()*/);
+		while (text.startsWith("<br/>"))
+			text = text.right(text.length() - 5 /* 5 == QString("<br/>").length()*/);
+
 		if (tipFrame)
 			delete tipFrame;
 		tipFrame = new QFrame(0, "tip_frame", WStyle_NoBorder | WStyle_StaysOnTop | WStyle_Tool | WX11BypassWM | WWinOwnDC);
@@ -745,6 +758,7 @@ void HintManager::userBoxChangeToolTip(const QPoint &point, const QString &text,
 	}
 	else
 	{
+		kdebugm(KDEBUG_INFO, "hiding\n");
 		tipFrame->hide();
 		delete tipFrame;
 		tipFrame = 0;

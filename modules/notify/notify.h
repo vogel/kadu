@@ -152,7 +152,7 @@ class Notify : public QObject
 		/* u¿ytkownik zmieni³ status na "Niewidoczny" lub "Niedostêpny" */
 		void userChangedStatusToNotAvailable(const QString &protocolName, UserListElement);
 
-		void userBoxChangeToolTip(const QPoint &point, const QString &text, bool show);
+		void userBoxChangeToolTip(const QPoint &point, UserListElement, bool show);
 
 		/* inna informacja do powiadomienia */
 		void message(const QString &from, const QString &msg, const QMap<QString, QVariant> *parameters, const UserListElement *ule);

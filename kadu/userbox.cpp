@@ -416,15 +416,7 @@ void UserBox::tipTimeout()
 	if (!lastMouseStopUser.isEmpty())
 	{
 //		kdebugm(KDEBUG_INFO, "show hint\n");
-
-		QString text = parse(config_file.readEntry("Look", "HintsSyntax"), VisibleUsers->byAltNick(lastMouseStopUser));
-
-		while (text.endsWith("<br/>"))
-			text.setLength(text.length() - 5 /* 5 == QString("<br/>").length()*/);
-		while (text.startsWith("<br/>"))
-			text = text.right(text.length() - 5 /* 5 == QString("<br/>").length()*/);
-
-		emit changeToolTip(lastMouseStop, text, true);
+		emit changeToolTip(lastMouseStop, VisibleUsers->byAltNick(lastMouseStopUser), true);
 		tipAlive = true;
 		tipTimer.stop();
 	}
@@ -455,7 +447,7 @@ void UserBox::hideTip()
 //	kdebugf();
 	if (tipAlive)
 	{
-		emit changeToolTip(QPoint(), QString::null, false);
+		emit changeToolTip(QPoint(), VisibleUsers->byAltNick(lastMouseStopUser), false);
 		tipAlive = false;
 		tipTimer.start(TIP_TM);
 	}
@@ -714,12 +706,6 @@ void UserBox::initModule()
 				ConfigDialog::addLabel("Look", "Preview userbox", "<b>Text</b> preview", "preview_userbox");
 			ConfigDialog::addVGroupBox("Look", "othr_prvws", QT_TRANSLATE_NOOP("@default", "Preview panel"));
 				ConfigDialog::addLabel("Look", "Preview panel", "<b>Text</b> preview", "preview_panel");
-
-	const QString default_hints_syntax(QT_TRANSLATE_NOOP("UserBox", "[<i>%t</i><br/>][<br/><b>Description:</b><br/>%d<br/><br/>][<i>Mobile:</i> <b>%m</b><br/>]"));
-	if (config_file.readEntry("Look", "HintsSyntax") == default_hints_syntax || config_file.readEntry("Look", "HintsSyntax").isEmpty())
-		config_file.writeEntry("Look", "HintsSyntax", tr(default_hints_syntax));
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Hints over userlist"), QString::null, Expert);
-		ConfigDialog::addTextEdit("Look", "Hints over userlist", QT_TRANSLATE_NOOP("@default", "Hints syntax:"), "HintsSyntax", "", Kadu::SyntaxText, QString::null, Expert);
 
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Userbox background"), QString::null, Advanced);
 	ConfigDialog::addHBox("Look", "Userbox background", "userbox_background");

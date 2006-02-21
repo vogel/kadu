@@ -282,6 +282,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   - GNOME: jednopikselowa ikona (obej¶cie jakiego¶ buga w gnome)
   - gdy systray pada i zostaje ponownie uruchomiony, Kadu ponownie siê dokuje 
   (joi)
+* ka¿dy modu³ powiadamiaj±cy mo¿e sam zdecydowaæ o tym co wy¶wietli
+  po najechaniu myszk± na kontakt (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

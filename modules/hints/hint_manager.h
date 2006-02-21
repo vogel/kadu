@@ -90,7 +90,7 @@ class HintManager : public Notifier
 		/* u¿ytkownik zmieni³ status na "Niewidoczny" lub "Niedostêpny" */
 		void userChangedStatusToNotAvailable(const QString &protocolName, UserListElement);
 
-		void userBoxChangeToolTip(const QPoint &point, const QString &text, bool show);
+		void userBoxChangeToolTip(const QPoint &point, UserListElement user, bool show);
 
 		/* inna informacja do powiadomienia */
 		/* je¿eli parameters == NULL, to brane s± domy¶lne ustawienia dymków typu message
