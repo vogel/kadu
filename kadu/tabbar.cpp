@@ -120,7 +120,7 @@ QSize KaduTabBar::minimumSizeHint() const
 
 void KaduTabBar::paint(QPainter *p, QTab *t, bool selected) const
 {
-	kdebugf();
+//	kdebugf();
 	QStyle::SFlags flags = QStyle::Style_Default;
 
 	if (isEnabled() && t->isEnabled())
@@ -160,7 +160,7 @@ void KaduTabBar::paint(QPainter *p, QTab *t, bool selected) const
 		v.top() + (v.height() - h) / 2,
 		w, h), t, t->identifier() == keyboardFocusTab());
 	p->restore();
-	kdebugf2();
+//	kdebugf2();
 }
 
 int KaduTabBar::insertTab(QTab *newTab, int index)
