@@ -309,7 +309,9 @@ void aRtsPlayerRecorder::closeDevice(SoundDevice device)
 	dev->valid = dev->valid && write_all(dev->sock, tmp, strlen(tmp), 50) != -1;
 	dev->valid = dev->valid && read_line(dev->sock, tmp, 50) != -1;
 
+	kdebugm(KDEBUG_INFO, "poolmutex.lock()\n");
 	poolmutex.lock();
+	kdebugm(KDEBUG_INFO, "poolmutex.locked()\n");
 	if (!finalizing && (!dev->valid || pool.size() > 2))
 	{
 		poolmutex.unlock();
