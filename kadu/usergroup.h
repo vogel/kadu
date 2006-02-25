@@ -17,17 +17,25 @@ enum BehaviourForAnonymous {TrueForAnonymous, FalseForAnonymous};
 
 /**
 	\class UserGroup
+	Klasa odpowiedzialna za przechowywanie grup kontaktów. Daje mo¿liwo¶æ
+	bardzo szybkiego wyszukiwania oraz informowania o zdarzeniach zwi±zanych
+	z kontaktami (zmiana statusu, dodanie, usuniêcie, zmiana danych).
+	Patrz: UserList, GroupsManager, UsersWithDescription, OnlineUsers,
+	       BlockedUsers, BlockingUsers, AnonymousUsers
+	Je¿eli nie potrzebujesz informacji o zdarzeniach, lepiej u¿yæ jest klasy
+	UserListElements.
 
-	Ze wzglêdu na budowê tej klasy, parametr "last" w sygna³ach dostêpnych
-	w tej klasie, mo¿e byæ u¿ywany tylko gdy mamy absolutn± pewno¶æ, ¿e ¿aden
-	sygna³ nie utknie gdzie¶ we wnêtrzach Kadu. Dlatego te¿ bezpieczne jest
+	Parametr "last" w sygna³ach dostêpnych w tej klasie, powinien byæ u¿ywany
+	tylko gdy mamy absolutn± pewno¶æ, ¿e zmiana danych nast±pi³a dla wszystkich
+	kontaktów z tej grupy (i ani jednego wiêcej). Dlatego te¿ bezpieczne jest
 	u¿ywanie tego parametru tylko w slotach pod³±czonych do klasy UserList.
 	Je¿eli mimo to potrzebujemy skorzystaæ z parametru massively w celu wykonania
 	jakiej¶ czynno¶ci dopiero po zakoñczeniu zmian, mo¿emy pos³u¿yæ siê QTimerem
 	z czasem 0 (czyli po oddaniu sterowania pêtli zdarzeñ Qt) i jednokrotnym
 	uruchomieniem. Przyk³ad:
 	<code>
-	MojaKlasa{
+	class MojaKlasa
+	{
 		...
 		QTimer refreshTimer;
 		...
