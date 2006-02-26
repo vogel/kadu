@@ -48,7 +48,12 @@ QDateTime currentDateTime();
 QString pwHash(const QString &text);
 QString translateLanguage(const QApplication *application, const QString &locale, const bool l2n);
 void openWebBrowser(const QString &link);
+
+extern QMap<QString, QString> globalParserVariables;
 QString parse(const QString &s, const UserListElement &ule, bool escape = true);
+bool registerParserTag(const QString &name, QString (*func)(const UserListElement &));
+bool unregisterParserTag(const QString &name, QString (*func)(const UserListElement &));
+
 void stringHeapSort(QStringList &c);
 QStringList toStringList(const QString &e1, const QString &e2=QString(), const QString &e3=QString(), const QString &e4=QString(), const QString &e5=QString());
 

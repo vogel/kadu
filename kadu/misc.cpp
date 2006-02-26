@@ -74,6 +74,7 @@ QString ggPath(const QString &subpath)
 			home = pw->pw_dir;
 		else
 			home = getenv("HOME");
+		globalParserVariables["HOME"] = home;
 		char *config_dir = getenv("CONFIG_DIR");
 #ifdef Q_OS_MACX
 		if (config_dir == NULL)
@@ -86,6 +87,7 @@ QString ggPath(const QString &subpath)
 		else
 			path = QString("%1/%2/kadu/").arg(home).arg(config_dir);
 #endif
+		globalParserVariables["KADU_CONFIG"] = path;
 	}
 	return path+subpath;
 }
@@ -265,6 +267,8 @@ QString dataPath(const QString &p, const char *argv0)
 			}
 		}
 #endif
+		globalParserVariables["DATA_PATH"] = data_path;
+		globalParserVariables["LIB_PATH"] = lib_path;
 	}
 	if (data_path.isEmpty())
 	{
@@ -510,9 +514,65 @@ void openWebBrowser(const QString &link)
 }
 
 
+QMap<QString, QString> globalParserVariables;
+QMap<QString, QString (*)(const UserListElement &)> registeredTags;
+
+bool registerParserTag(const QString &name, QString (*func)(const UserListElement &))
+{
+	kdebugf();
+	if (registeredTags.contains(name))
+	{
+		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "tag %s already registered!\n", name.local8Bit().data());
+		return false;
+	}
+	else
+	{
+		registeredTags.insert(name, func);
+		kdebugf2();
+		return true;
+	}
+}
+
+bool unregisterParserTag(const QString &name, QString (*func)(const UserListElement &))
+{
+	kdebugf();
+	if (!registeredTags.contains(name))
+	{
+		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "tag %s not registered!\n", name.local8Bit().data());
+		return false;
+	}
+	else
+	{
+		registeredTags.remove(name);
+		kdebugf2();
+		return true;
+	}
+}
+
+static QString executeCmd(const QString &cmd)
+{
+	QString s(cmd);
+	s.remove(QRegExp("`|>|<"));
+	s.append(" >");
+	s.append(ggPath("execoutput"));
+
+	system(s.local8Bit());
+	QFile *f = new QFile(ggPath("execoutput"));
+	if (f->open(IO_ReadOnly))
+	{
+		s = QString(f->readAll());
+		f->close();
+		QFile::remove(ggPath("execoutput"));
+	}
+	else
+		s = QString::null;
+	delete f;
+	return s;
+}
+
 struct ParseElem
 {
-	enum {PE_STRING, PE_CHECK_NULL, PE_CHECK_FILE, PE_EXECUTE} type;
+	enum {PE_STRING, PE_CHECK_NULL, PE_CHECK_FILE, PE_EXECUTE, PE_VARIABLE, PE_ICONPATH, PE_EXTERNAL_VARIABLE, PE_EXECUTE2} type;
 	QString str;
 };
 
@@ -522,52 +582,56 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 	int index = 0, i, len = s.length();
 	QValueList<ParseElem> parseStack;
 
-	static bool searchChars[256]={false};
-	QCString slatin = unicode2latin(s);
-	searchChars[(unsigned char)'%']=true;
-	searchChars[(unsigned char)'`']=true;
-	searchChars[(unsigned char)'[']=true;
-	searchChars[(unsigned char)'{']=true;
-	searchChars[(unsigned char)'\'']=true;
-	searchChars[(unsigned char)'}']=true;
-	searchChars[(unsigned char)']']=true;
+	static bool searchChars[256] = {false};
+	const QCString slatin = unicode2latin(s);
+	searchChars[(unsigned char)'%'] = true;
+	searchChars[(unsigned char)'`'] = true;
+	searchChars[(unsigned char)'['] = true;
+	searchChars[(unsigned char)'{'] = true;
+	searchChars[(unsigned char)'\''] = true;
+	searchChars[(unsigned char)'\\'] = true;
+	searchChars[(unsigned char)'$'] = true;
+	searchChars[(unsigned char)'@'] = true;
+	searchChars[(unsigned char)'#'] = true;
+	searchChars[(unsigned char)'}'] = true;
+	searchChars[(unsigned char)']'] = true;
 
-	while (index<len)
+	while (index < len)
 	{
 		ParseElem pe1, pe;
 
-		for(i=index; i<len; ++i)
+		for(i = index; i < len; ++i)
 			if (searchChars[(unsigned char)slatin[i]])
 				break;
-		if (i==len)
-			i=-1;
+		if (i == len)
+			i = -1;
 
 //		this is the same, but code above is muuuuch faster
 //		i=s.find(QRegExp("%|`|\\{|\\[|'|\\}|\\]"), index);
 
-		if (i==-1)
+		if (i == -1)
 		{
-			pe1.type=ParseElem::PE_STRING;
-			pe1.str=s.mid(index);
+			pe1.type = ParseElem::PE_STRING;
+			pe1.str = s.mid(index);
 			parseStack.push_back(pe1);
 			break;
 		}
-		if (i!=index)
+		if (i != index)
 		{
-			pe1.type=ParseElem::PE_STRING;
-			pe1.str=s.mid(index, i-index);
+			pe1.type = ParseElem::PE_STRING;
+			pe1.str = s.mid(index, i - index);
 			parseStack.push_back(pe1);
 		}
 
-		QChar c=s[i];
-		if (c=='%')
+		const QChar &c = s[i];
+		if (c == '%')
 		{
 			++i;
-			if (i==len)
+			if (i == len)
 				break;
-			pe.type=ParseElem::PE_STRING;
+			pe.type = ParseElem::PE_STRING;
 
-			switch(slatin[i])
+			switch (slatin[i])
 			{
 				case 's':
 					++i;
@@ -586,7 +650,7 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 
 				 	if (escape)
 			 			HtmlDocument::escapeText(pe.str);
-					if(config_file.readBoolEntry("Look", "ShowMultilineDesc"))
+					if (config_file.readBoolEntry("Look", "ShowMultilineDesc"))
 					{
 						pe.str.replace("\n", "<br/>");
 						pe.str.replace(QRegExp("\\s\\s"), QString(" &nbsp;"));
@@ -619,26 +683,26 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 					break;
 				case 'n':
 					++i;
-					pe.str=ule.nickName();
-					if(escape)
+					pe.str = ule.nickName();
+					if (escape)
 						HtmlDocument::escapeText(pe.str);
 					break;
 				case 'a':
 					++i;
-					pe.str=ule.altNick();
-					if(escape)
+					pe.str = ule.altNick();
+					if (escape)
 						HtmlDocument::escapeText(pe.str);
 					break;
 				case 'f':
 					++i;
-					pe.str=ule.firstName();
-					if(escape)
+					pe.str = ule.firstName();
+					if (escape)
 						HtmlDocument::escapeText(pe.str);
 					break;
 				case 'r':
 					++i;
-					pe.str=ule.lastName();
-					if(escape)
+					pe.str = ule.lastName();
+					if (escape)
 						HtmlDocument::escapeText(pe.str);
 					break;
 				case 'm':
@@ -661,134 +725,235 @@ QString parse(const QString &s, const UserListElement &ule, bool escape)
 				case '%':
 					++i;
 				default:
-					pe.str="%";
+					pe.str = "%";
 			}
 			parseStack.push_back(pe);
 		}
-		else if (c=='[')
+		else if (c == '[')
 		{
 			++i;
-			pe.type=ParseElem::PE_CHECK_NULL;
+			pe.type = ParseElem::PE_CHECK_NULL;
 			parseStack.push_back(pe);
 		}
-		else if (c==']')
+		else if (c == ']')
 		{
 			++i;
-			bool anyNull=false;
+			bool anyNull = false;
 			while (!parseStack.empty())
 			{
-				ParseElem &pe2=parseStack.last();
-				if (pe2.type==ParseElem::PE_STRING)
+				const ParseElem &pe2 = parseStack.last();
+				if (pe2.type == ParseElem::PE_STRING)
 				{
 					if (pe2.str.isEmpty() || anyNull)
-						anyNull=true;
+						anyNull = true;
 					else
 						pe.str.prepend(pe2.str);
 					parseStack.pop_back();
 				}
-				else if (pe2.type==ParseElem::PE_CHECK_NULL)
+				else if (pe2.type == ParseElem::PE_CHECK_NULL)
 				{
 					parseStack.pop_back();
 					if (!anyNull)
 					{
-						pe.type=ParseElem::PE_STRING;
+						pe.type = ParseElem::PE_STRING;
 						parseStack.push_back(pe);
 					}
 					break;
 				}
 			}
 		}
-		else if (c=='{')
+		else if (c == '{')
 		{
 			++i;
-			pe.type=ParseElem::PE_CHECK_FILE;
+			pe.type = ParseElem::PE_CHECK_FILE;
 			parseStack.push_back(pe);
 		}
-		else if (c=='}')
+		else if (c == '}')
 		{
 			++i;
 			while (!parseStack.empty())
 			{
-				ParseElem &pe2=parseStack.last();
-				if (pe2.type==ParseElem::PE_STRING)
+				const ParseElem &pe2 = parseStack.last();
+				if (pe2.type == ParseElem::PE_STRING)
 				{
 					pe.str.prepend(pe2.str);
 					parseStack.pop_back();
 				}
-				else if (pe2.type==ParseElem::PE_CHECK_FILE)
+				else if (pe2.type == ParseElem::PE_CHECK_FILE)
 				{
-					int f=pe.str.find(' ', 0);
-					bool findexist=true;
+					int f = pe.str.find(' ', 0);
+					bool findexist = true;
 					parseStack.pop_back();
 					QString file;
-					if (f==-1)
-						file=pe.str;
+					if (f == -1)
+						file = pe.str;
 					else
-						file=pe.str.left(f);
+						file = pe.str.left(f);
 					if (!file.isEmpty())
-						if (file[0]=='~')
+						if (file[0] == '~')
 						{
-							file=file.mid(1);
-							findexist=false;
+							file = file.mid(1);
+							findexist = false;
 						}
-					pe.str=pe.str.mid(f+1);
-					if (QFile::exists(file)==findexist)
+					pe.str = pe.str.mid(f + 1);
+					if (QFile::exists(file) == findexist)
 					{
-						pe.type=ParseElem::PE_STRING;
+						pe.type = ParseElem::PE_STRING;
 						parseStack.push_back(pe);
 					}
+					break;
+				}
+				else if (pe2.type == ParseElem::PE_VARIABLE)
+				{
+					parseStack.pop_back();
+					pe.type = ParseElem::PE_STRING;
+					if (globalParserVariables.contains(pe.str))
+					{
+						kdebugm(KDEBUG_INFO, "name: %s, value: %s\n", pe.str.local8Bit().data(), globalParserVariables[pe.str].local8Bit().data());
+						pe.str = globalParserVariables[pe.str];
+					}
+					else
+					{
+						kdebugm(KDEBUG_WARNING, "variable %s undefined\n", pe.str.local8Bit().data());
+						pe.str = QString::null;
+					}
+					parseStack.push_back(pe);
+					break;
+				}
+				else if (pe2.type == ParseElem::PE_ICONPATH)
+				{
+					parseStack.pop_back();
+					pe.type = ParseElem::PE_STRING;
+					pe.str = icons_manager->iconPath(pe.str);
+					parseStack.push_back(pe);
+					break;
+				}
+				else if (pe2.type == ParseElem::PE_EXTERNAL_VARIABLE)
+				{
+					parseStack.pop_back();
+					pe.type = ParseElem::PE_STRING;
+					if (registeredTags.contains(pe.str))
+						pe.str = registeredTags[pe.str](ule);
+					else
+					{
+						kdebugm(KDEBUG_WARNING, "tag %s not registered\n", pe.str.local8Bit().data());
+						pe.str = QString::null;
+					}
+					parseStack.push_back(pe);
+					break;
+				}
+				else if (pe2.type == ParseElem::PE_EXECUTE2)
+				{
+					parseStack.pop_back();
+					pe.type = ParseElem::PE_STRING;
+					pe.str = executeCmd(pe.str);
+					parseStack.push_back(pe);
 					break;
 				}
 			}
 		}
-		else if (c=='`')
+		else if (c == '`')
 		{
 			++i;
-			pe.type=ParseElem::PE_EXECUTE;
-			parseStack.push_back(pe);
+			if (i == len || s[i] != '{')
+			{
+				pe.type = ParseElem::PE_EXECUTE;
+				parseStack.push_back(pe);
+			}
+			else
+			{
+				++i;
+				pe.type = ParseElem::PE_EXECUTE2;
+				parseStack.push_back(pe);
+			}
 		}
-		else if (c=='\'')
+		else if (c == '\'')
 		{
 			++i;
 			while (!parseStack.empty())
 			{
-				ParseElem pe2=parseStack.last();
-				if (pe2.type==ParseElem::PE_STRING)
+				const ParseElem &pe2 = parseStack.last();
+				if (pe2.type == ParseElem::PE_STRING)
 				{
 					pe.str.prepend(pe2.str);
 					parseStack.pop_back();
 				}
-				else if (pe2.type==ParseElem::PE_EXECUTE)
+				else if (pe2.type == ParseElem::PE_EXECUTE)
 				{
 					parseStack.pop_back();
-					pe.str.remove(QRegExp("`|>|<"));
-					pe.str.append(" >");
-					pe.str.append(ggPath("execoutput"));
-
-					system(pe.str.local8Bit());
-					QFile *f=new QFile(ggPath("execoutput"));
-					if (f->open(IO_ReadOnly))
-					{
-						pe.type=ParseElem::PE_STRING;
-						pe.str=QString(f->readAll());
-						parseStack.push_back(pe);
-						f->close();
-						QFile::remove(ggPath("execoutput"));
-					}
-					delete f;
+					pe.type = ParseElem::PE_STRING;
+					pe.str = executeCmd(pe.str);
+					parseStack.push_back(pe);
 					break;
 				}
+			}
+		}
+		else if (c == '\\')
+		{
+			++i;
+			if (i == len)
+				break;
+			pe.type = ParseElem::PE_STRING;
+			pe.str = s[i];
+			parseStack.push_back(pe);
+		}
+		else if (c == '$')
+		{
+			++i;
+			if (i == len || s[i] != '{')
+			{
+				pe.type = ParseElem::PE_STRING;
+				pe.str = '$';
+				parseStack.push_back(pe);
+			}
+			else
+			{
+				++i;
+				pe.type = ParseElem::PE_VARIABLE;
+				parseStack.push_back(pe);
+			}
+		}
+		else if (c == '@')
+		{
+			++i;
+			if (i == len || s[i] != '{')
+			{
+				pe.type = ParseElem::PE_STRING;
+				pe.str = '@';
+				parseStack.push_back(pe);
+			}
+			else
+			{
+				++i;
+				pe.type = ParseElem::PE_ICONPATH;
+				parseStack.push_back(pe);
+			}
+		}
+		else if (c == '#')
+		{
+			++i;
+			if (i == len || s[i] != '{')
+			{
+				pe.type = ParseElem::PE_STRING;
+				pe.str = '#';
+				parseStack.push_back(pe);
+			}
+			else
+			{
+				++i;
+				pe.type = ParseElem::PE_EXTERNAL_VARIABLE;
+				parseStack.push_back(pe);
 			}
 		}
 		else
 			kdebugm(KDEBUG_ERROR, "shit happens? %d %c %d\n", i, (char)c, (char)c);
-		index=i;
+		index = i;
 	}
 	QString ret;
 	while (!parseStack.empty())
 	{
-		ParseElem &last=parseStack.last();
-		if (last.type==ParseElem::PE_STRING)
+		const ParseElem &last = parseStack.last();
+		if (last.type == ParseElem::PE_STRING)
 			ret.prepend(last.str);
 		else
 			kdebugm(KDEBUG_WARNING, "Incorrect parse string! %d\n", last.type);
