@@ -296,6 +296,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   (joi)
 * wydzielenie parsera do oddzielnego pliku (joi)
 * ³atka dodaj±ca sygna³ przy aktywowaniu okna chat (pan_wojtas/joi)
+* style w oknie rozmowy: Kadu, Hapi, IRC, w³asny (cheester,spav,joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

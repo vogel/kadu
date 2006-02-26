@@ -24,7 +24,8 @@ class ChatMessage
 				napisana przez nas */
 	QColor backgroundColor; /*!< t³o wiadomo¶ci */
 	QColor textColor; /*!< kolor wiadomo¶ci */
-
+	QColor nickColor; /*!< kolor nicka */
+	
 
 	QMap<QString, bool> attributes; /*!<
 		Mo¿e s³u¿yæ do przechowywania informacji o tym
@@ -67,7 +68,7 @@ class ChatMessage
 		\param date data otrzymania wiadomo¶ci
 		\param sdate data wys³ania wiadomo¶ci
 	**/
-	ChatMessage(const QString &formattedMessage, const QColor &bgColor=Qt::white, const QColor &textColor=Qt::black);
+	ChatMessage(const QString &formattedMessage, const QColor &bgColor = Qt::white, const QColor &textColor = Qt::black, const QColor &nickColor = Qt::black);
 };
 
 #endif

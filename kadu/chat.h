@@ -83,6 +83,10 @@ class Chat : public QMainWindow
 		int CfgHeaderSeparatorHeight;      //jaki wysoki chcemy mieæ separator ?
 		int CfgNoHeaderInterval;        //co ile chcemy przywróciæ nag³ówek ?
 
+		QString formatStringFull;
+		QString formatStringPure;
+		QString formatStringWithoutSeparator;
+
 		time_t LastTime;
 
 		/**
@@ -223,6 +227,7 @@ class Chat : public QMainWindow
 		void formatMessage(ChatMessage &msg,
 				QColor myBgColor=QColor(), QColor usrBgColor=QColor(),
 				QColor myFontColor=QColor(), QColor usrFontColor=QColor(),
+				QColor myNickColor=QColor(), QColor usrNickColor=QColor(),
 				EmoticonsStyle style=(EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle"));
 
 		/**
@@ -488,7 +493,7 @@ class Chat : public QMainWindow
 		void messageSentAndConfirmed(UserListElements receivers, const QString& message);
 
 		void fileDropped(const UserGroup *users, const QString &fileName);
-		
+
 		void windowActivationChanged(bool b, const UserGroup *users);
 };
 

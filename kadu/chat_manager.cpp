@@ -776,7 +776,9 @@ void ChatManager::initModule()
 	config_file.addVariable("Look", "ChatUsrBgColor", QColor("#F0F0F0"));
 	config_file.addVariable("Look", "ChatMyFontColor", QColor("#000000"));
 	config_file.addVariable("Look", "ChatUsrFontColor", QColor("#000000"));
-
+	config_file.addVariable("Look", "ChatMyNickColor", QColor("#000000"));
+	config_file.addVariable("Look", "ChatUsrNickColor", QColor("#000000"));
+	
 	//naglowki wiadomosci
 	config_file.addVariable("Look", "NoHeaderRepeat", false);
 	config_file.addVariable("Look", "HeaderSeparatorHeight", 1);
@@ -786,6 +788,8 @@ void ChatManager::initModule()
 
 	config_file.addVariable("Chat", "LastImagePath", QString(getenv("HOME"))+"/");
 
+	config_file.addVariable("Look", "Style", "kadu");
+	
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"), "LookTab");
 
 	ConfigDialog::addVBox("Look", "Look", "varOpts2");//potrzebne userboksowi
@@ -798,6 +802,8 @@ void ChatManager::initModule()
 			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "User background color"), "ChatUsrBgColor", config_file.readColorEntry("Look","ChatUsrBgColor"), QString::null, "his_bg_color");
 			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "Your font color"), "ChatMyFontColor", config_file.readColorEntry("Look","ChatMyFontColor"), QString::null, "own_font_color");
 			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "User font color"), "ChatUsrFontColor", config_file.readColorEntry("Look","ChatUsrFontColor"), QString::null, "his_font_color");
+			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "Your nick color"), "ChatMyNickColor", config_file.readColorEntry("Look","ChatMyNickColor"), QString::null, "own_nick_color");
+			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "User nick color"), "ChatUsrNickColor", config_file.readColorEntry("Look","ChatUsrNickColor"), QString::null, "his_nick_color");
 
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Fonts"), QString::null, Advanced);
 		ConfigDialog::addSelectFont("Look", "Fonts", QT_TRANSLATE_NOOP("@default", "Font in chat window"), "ChatFont", defaultFont->toString(), QString::null, "chat_font_box");
@@ -807,6 +813,11 @@ void ChatManager::initModule()
 			ConfigDialog::addHBox("Look", "Chat preview", "chat_prvw");
 				ConfigDialog::addLabel("Look", "chat_prvw", QT_TRANSLATE_NOOP("@default", "<b>Me</b> 00:00:00"), "chat_me");
 				ConfigDialog::addLabel("Look", "chat_prvw", QT_TRANSLATE_NOOP("@default", "<b>Other party</b> 00:00:02"), "chat_other");
+	
+	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default","Style"));
+		ConfigDialog::addComboBox("Look", "Style", QT_TRANSLATE_NOOP("@default", "Select chat style"), "Style", toStringList("Kadu", "Hapi", "IRC", tr("Custom")), toStringList("kadu", "hapi", "irc", "custom"));
+		ConfigDialog::addTextEdit("Look", "Style", QT_TRANSLATE_NOOP("@default", "Full chat style:"), "FullStyle", QString::null,
+			QT_TRANSLATE_NOOP("@default", "Syntax:\n%1 - background color\n%2 - text font color\n%3 - nick color\n%4 - nick\n%5 - timestamp\n%6 - timestamp with server time\n%7 - message"), QString::null, Expert);
 
 	//naglowki
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Headers"), QString::null, Advanced);
@@ -845,6 +856,7 @@ void ChatManager::initModule()
 		chatslots, SLOT(chooseColor(const char *, const QColor&)), "his_font_color");
 
 	ConfigDialog::connectSlot("Look", "Font in chat window", SIGNAL(changed(const char *, const QFont&)), chatslots, SLOT(chooseFont(const char *, const QFont&)), "chat_font_box");
+	ConfigDialog::connectSlot("Look", "Select chat style", SIGNAL(activated(const QString&)), chatslots, SLOT(onChatThemeChanged(const QString&)));
 
 	chat_manager=new ChatManager(kadu, "chat_manager");
 	connect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),

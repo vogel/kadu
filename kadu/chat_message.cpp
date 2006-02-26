@@ -19,10 +19,11 @@ ChatMessage::ChatMessage(const QString &nick, const QString &unformattedMessage,
 	this->sdate=sdate;
 }
 
-ChatMessage::ChatMessage(const QString &formattedMessage, const QColor &bgColor, const QColor &txtColor)
+ChatMessage::ChatMessage(const QString &formattedMessage, const QColor &bgColor, const QColor &txtColor, const QColor &nicColor)
 {
 	needsToBeFormatted=false;
 	message=formattedMessage;
 	backgroundColor=bgColor;
 	textColor=txtColor;
+	nickColor=nicColor;
 }

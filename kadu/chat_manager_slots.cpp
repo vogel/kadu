@@ -156,9 +156,16 @@ void ChatManagerSlots::onCreateTabLook()
 	ConfigDialog::getSpinBox("Look", "Chat header separators height:")->setSuffix(" px");
 	ConfigDialog::getSpinBox("Look", "Interval between header removal:")->setSuffix(" min");
 
+	onChatThemeChanged(ConfigDialog::getComboBox("Look", "Select chat style")->currentText());
 	updatePreview();
 
 	kdebugf2();
+}
+
+void ChatManagerSlots::onChatThemeChanged(const QString &name)
+{
+	kdebugf();
+	ConfigDialog::getTextEdit("Look", "Full chat style:")->setEnabled(name == qApp->translate("Chat", "Custom"));
 }
 
 void ChatManagerSlots::onBlockClose(bool toggled)

@@ -133,6 +133,36 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 
 	connect(body, SIGNAL(mouseReleased(QMouseEvent *, KaduTextBrowser *)), Edit, SLOT(setFocus()));
 
+	QString Style = config_file.readEntry("Look", "Style");
+	if (Style == "kadu")
+	{
+		formatStringFull = "<p style=\"background-color: %1\"><img title=\"\" height=\"%8\" width=\"10000\" align=\"right\"><font color=\"%2\"><b><font color=\"%3\">%4</font> :: %6</b><br/>%7</font></p>";
+		formatStringPure = "<p style=\"background-color: %1\"><img title=\"\" height=\"%4\" width=\"10000\" align=\"right\"><font color=\"%2\">%5</font></p>";
+		formatStringWithoutSeparator = "<p style=\"background-color: %1\"><font color=\"%2\">%4</font></p>";
+	}
+	else if (Style == "hapi")
+	{
+		formatStringFull = "<p style=\"background-color: %1;\"><img title=\"\" height=\"%8\" width=\"10000\" align=\"right\">"\
+							"<table style=\"border-bottom: solid 1px black;\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" width=\"100%\">"\
+							"<tr><td align=\"left\" width=\"50%\" valign=\"bottom\"><b><font color=\"%3\">%4</font></b></td>"\
+								"<td align=\"right\" width=\"50%\"><font color=\"%2\">%6</font></td></tr></table>"\
+							"<hr/><font color=\"%2\">%7</font></p>";
+		formatStringPure = "<p style=\"background-color: %1\"><img title=\"\" height=\"%4\" width=\"10000\" align=\"right\"><font color=\"%2\">%5</font></p>";
+		formatStringWithoutSeparator = "<p style=\"background-color: %1\"><font color=\"%2\">%4</font></span></p>";
+	}
+	else if (Style == "irc")
+	{
+		formatStringFull = "<p style=\"background-color: %1\"><img title=\"\" height=\"%8\" width=\"10000\" align=\"right\"><font color=\"%2\"><b>[%5] <font color=\"%3\">%4</font>: </b> %7</font></p>";
+		formatStringPure = "<p style=\"background-color: %1\"><img title=\"\" height=\"%4\" width=\"10000\" align=\"right\"><font color=\"%2\">%5</font></p>";
+		formatStringWithoutSeparator = "<p style=\"background-color: %1\"><font color=\"%2\">%4</font></p>";
+	}
+	else
+	{
+		formatStringFull = "<p style=\"background-color: %1;\"><img title=\"\" height=\"%8\" width=\"10000\" align=\"right\">" + config_file.readEntry("Look", "FullStyle") + "</p>";
+		formatStringPure = "<p style=\"background-color: %1\"><img title=\"\" height=\"%4\" width=\"10000\" align=\"right\"><font color=\"%2\">%5</font></p>";
+		formatStringWithoutSeparator = "<p style=\"background-color: %1\"><font color=\"%2\">%4</font></p>";
+	}
+
 	// headers removal stuff
 	CfgNoHeaderRepeat = config_file.readBoolEntry("Look","NoHeaderRepeat");
 	if (CfgNoHeaderRepeat)
@@ -445,7 +475,7 @@ void Chat::windowActivationChange(bool b)
 		title_timer->stop();
 		setCaption(title_buffer);
 	}
-	
+
 	emit windowActivationChanged(b, Users);
 }
 
@@ -530,17 +560,15 @@ void Chat::formatMessages(QValueList<ChatMessage *> &msgs)
 	QColor usrBgColor=config_file.readColorEntry("Look", "ChatUsrBgColor");
 	QColor myFontColor=config_file.readColorEntry("Look", "ChatMyFontColor");
 	QColor usrFontColor=config_file.readColorEntry("Look", "ChatUsrFontColor");
+	QColor myNickColor=config_file.readColorEntry("Look", "ChatMyNickColor");
+	QColor usrNickColor=config_file.readColorEntry("Look", "ChatUsrNickColor");
 	EmoticonsStyle style=(EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle");
 	FOREACH(msg, msgs)
-		formatMessage(**msg, myBgColor, usrBgColor, myFontColor, usrFontColor, style);
+		formatMessage(**msg, myBgColor, usrBgColor, myFontColor, usrFontColor, myNickColor, usrNickColor, style);
 }
 
-void Chat::formatMessage(ChatMessage &msg, QColor myBgColor, QColor usrBgColor, QColor myFontColor, QColor usrFontColor, EmoticonsStyle style)
+void Chat::formatMessage(ChatMessage &msg, QColor myBgColor, QColor usrBgColor, QColor myFontColor, QColor usrFontColor, QColor myNickColor, QColor usrNickColor, EmoticonsStyle style)
 {
-	const static QString formatStringFull("<p style=\"background-color: %1\"><img title=\"\" height=\"%5\" width=\"10000\" align=\"right\"><font color=\"%2\"><b>%3 :: %4</b><br/>%6</font></p>");
-	const static QString formatStringPure("<p style=\"background-color: %1\"><img title=\"\" height=\"%3\" width=\"10000\" align=\"right\"><font color=\"%2\">%4</font></p>");
-	const static QString formatStringWithoutSeparator("<p style=\"background-color: %1\"><font color=\"%2\">%3</font></p>");
-
 	if (msg.isMyMessage)
 	{
 		if (myBgColor.isValid())
@@ -552,6 +580,11 @@ void Chat::formatMessage(ChatMessage &msg, QColor myBgColor, QColor usrBgColor, 
 			msg.textColor=myFontColor;
 		else
 			msg.textColor=config_file.readColorEntry("Look","ChatMyFontColor");
+
+		if (myNickColor.isValid())
+			msg.nickColor = myNickColor;
+		else
+			msg.nickColor = config_file.readColorEntry("Look","ChatMyNickColor");
 	}
 	else
 	{
@@ -564,15 +597,20 @@ void Chat::formatMessage(ChatMessage &msg, QColor myBgColor, QColor usrBgColor, 
 			msg.textColor=usrFontColor;
 		else
 			msg.textColor=config_file.readColorEntry("Look","ChatUsrFontColor");
-	}
 
-	QString date=printDateTime(msg.date);
+		if (usrNickColor.isValid())
+			msg.nickColor = usrNickColor;
+		else
+			msg.nickColor = config_file.readColorEntry("Look","ChatUsrNickColor");
+	}
+	QString date = printDateTime(msg.date);
+	QString date2 = date;
 
 	// ilo¶æ minut od 1970 roku
 	time_t CurTime = msg.date.toTime_t() / 60;
 
 	if (!msg.sdate.isNull())
-		date.append(" / S "+printDateTime(msg.sdate));
+		date2.append(" / S " + printDateTime(msg.sdate));
 
 	QString nick = msg.nick;
 	HtmlDocument::escapeText(nick);
@@ -586,6 +624,7 @@ void Chat::formatMessage(ChatMessage &msg, QColor myBgColor, QColor usrBgColor, 
 				msg.message = narg(formatStringPure,
 				msg.backgroundColor.name(),
 				msg.textColor.name(),
+				msg.nickColor.name(),
 				QString::number(CfgHeaderSeparatorHeight),
 				convertCharacters(msg.unformattedMessage, msg.backgroundColor, style));
 			}
@@ -594,6 +633,7 @@ void Chat::formatMessage(ChatMessage &msg, QColor myBgColor, QColor usrBgColor, 
 				msg.message = narg(formatStringWithoutSeparator,
 					msg.backgroundColor.name(),
 					msg.textColor.name(),
+					msg.nickColor.name(),
 					convertCharacters(msg.unformattedMessage, msg.backgroundColor, style));
 			}
 		}
@@ -602,10 +642,12 @@ void Chat::formatMessage(ChatMessage &msg, QColor myBgColor, QColor usrBgColor, 
 			msg.message = narg(formatStringFull,
 				msg.backgroundColor.name(),
 				msg.textColor.name(),
+				msg.nickColor.name(),
 				nick,
 				date,
-				QString::number(ParagraphSeparator),
-				convertCharacters(msg.unformattedMessage, msg.backgroundColor, style));
+				date2,
+				convertCharacters(msg.unformattedMessage, msg.backgroundColor, style),
+				QString::number(ParagraphSeparator));
 		}
 	}
 	else
@@ -613,10 +655,12 @@ void Chat::formatMessage(ChatMessage &msg, QColor myBgColor, QColor usrBgColor, 
 		msg.message = narg(formatStringFull,
 			msg.backgroundColor.name(),
 			msg.textColor.name(),
+			msg.nickColor.name(),
 			nick,
 			date,
-			QString::number(ParagraphSeparator),
-			convertCharacters(msg.unformattedMessage, msg.backgroundColor, style));
+			date2,
+			convertCharacters(msg.unformattedMessage, msg.backgroundColor, style),
+			QString::number(ParagraphSeparator));
 	}
 
 	msg.needsToBeFormatted = false;

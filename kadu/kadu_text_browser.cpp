@@ -174,6 +174,8 @@ void KaduTextBrowser::copy()
 	txt.remove(QRegExp("<td [^>]+>"));
 	txt.remove("</td>");
 
+	txt.remove("<hr>");
+
 	//specjalnie traktujemy obrazki, mo¿e u¿ytkownik domy¶li siê o co tu chodzi :P
 	txt.replace(QRegExp("<img gg_crc=([0-9]*) gg_sender=([0-9]*) gg_size=([0-9]*) src=[^>]+>"), "\\2-\\3-\\1-*");
 	txt.replace(QRegExp("<img src=([^>]+)>"), "\\1");

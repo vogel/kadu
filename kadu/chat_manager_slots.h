@@ -85,7 +85,7 @@ class ChatManagerSlots :public QObject
 			aby uaktualniæ podgl±d
 		**/
 		void onRemoveHeaders(bool toggled);
-
+		void onChatThemeChanged(const QString& name);
 		/**
 			\fn void chooseColor(const char* name, const QColor& color)
 			Slot jest wywo³ywany gdy zmieniono kolor,
@@ -93,6 +93,7 @@ class ChatManagerSlots :public QObject
 			\param name nazwa koloru
 			\param color kolor
 		**/
+		
 		void chooseColor(const char* name, const QColor& color);
 
 		/**
