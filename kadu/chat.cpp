@@ -438,13 +438,15 @@ void Chat::changeTitle()
 	}
 }
 
-void Chat::windowActivationChange(bool)
+void Chat::windowActivationChange(bool b)
 {
 	if (isActiveWindow() && title_timer->isActive())
 	{
 		title_timer->stop();
 		setCaption(title_buffer);
 	}
+	
+	emit windowActivationChanged(b, Users);
 }
 
 void Chat::keyPressEvent(QKeyEvent* e)

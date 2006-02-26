@@ -295,6 +295,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   - wykownywanie poleceñ mo¿e byæ zapisywane tak¿e jako `{cmd} (zamiast `cmd')
   (joi)
 * wydzielenie parsera do oddzielnego pliku (joi)
+* ³atka dodaj±ca sygna³ przy aktywowaniu okna chat (pan_wojtas/joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

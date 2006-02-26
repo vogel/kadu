@@ -488,6 +488,8 @@ class Chat : public QMainWindow
 		void messageSentAndConfirmed(UserListElements receivers, const QString& message);
 
 		void fileDropped(const UserGroup *users, const QString &fileName);
+		
+		void windowActivationChanged(bool b, const UserGroup *users);
 };
 
 #endif
