@@ -25,6 +25,7 @@
 #include "icons_manager.cpp"
 #include "ignore.cpp"
 #include "kadu.cpp"
+#include "kadu_parser.cpp"
 #include "kadu_splitter.cpp"
 #include "kadu_text_browser.cpp"
 #include "main.cpp"

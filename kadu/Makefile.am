@@ -29,6 +29,7 @@ http_client.cpp \
 icons_manager.cpp \
 ignore.cpp \
 kadu.cpp \
+kadu_parser.cpp \
 kadu_splitter.cpp \
 kadu_text_browser.cpp \
 main.cpp \
@@ -83,6 +84,7 @@ http_client.h \
 icons_manager.h \
 ignore.h \
 kadu.h \
+kadu_parser.h \
 kadu_splitter.h \
 kadu_text_browser.h \
 message_box.h \
@@ -176,6 +178,7 @@ obj/http_client.$(OBJEXT) \
 obj/icons_manager.$(OBJEXT) \
 obj/ignore.$(OBJEXT) \
 obj/kadu.$(OBJEXT) \
+obj/kadu_parser.$(OBJEXT) \
 obj/kadu_splitter.$(OBJEXT) \
 obj/kadu_text_browser.$(OBJEXT) \
 obj/main.$(OBJEXT) \
@@ -291,6 +294,7 @@ include $(DEPS)/ignore.d
 include $(DEPS)/ignore_moc.d
 include $(DEPS)/kadu.d
 include $(DEPS)/kadu_moc.d
+include $(DEPS)/kadu_parser.d
 include $(DEPS)/kadu_splitter.d
 include $(DEPS)/kadu_text_browser.d
 include $(DEPS)/kadu_text_browser_moc.d
@@ -385,13 +389,13 @@ moc/%_moc.cpp: %.h
 
  ifeq ($(enable_final),yes)
 
-kadu$(EXEEXT): $(kadu_SOURCES) $(kadu_HEADERS) $(BUILT_SOURCES) $(kadu_DEPENDENCIES) 
+kadu$(EXEEXT): $(kadu_SOURCES) $(kadu_HEADERS) $(BUILT_SOURCES) $(kadu_DEPENDENCIES)
 	@rm -f kadu$(EXEEXT)
 	$(CXXCOMPILE) $(AM_LDFLAGS) $(LDFLAGS) -o $@ $(kadu_LDFLAGS) final.cpp $(kadu_LDADD) $(LIBS)
 
  else
 
-kadu$(EXEEXT): $(kadu_OBJECTS) $(kadu_DEPENDENCIES) 
+kadu$(EXEEXT): $(kadu_OBJECTS) $(kadu_DEPENDENCIES)
 	@rm -f kadu$(EXEEXT)
 	$(CXXLINK) $(kadu_LDFLAGS) $(kadu_OBJECTS) $(kadu_LDADD) $(LIBS)
 

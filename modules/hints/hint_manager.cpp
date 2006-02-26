@@ -19,6 +19,7 @@
 #include "hint_manager_slots.h"
 #include "icons_manager.h"
 #include "kadu.h"
+#include "kadu_parser.h"
 #include "misc.h"
 #include "../notify/notify.h"
 #include "userbox.h"
@@ -538,7 +539,7 @@ void HintManager::userStatusChanged(UserListElement ule, QString protocolName, c
 	}
 
 	if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
-		addHint(parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true),
+		addHint(KaduParser::parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true),
 			ule.status(protocolName).pixmap(),
 			config_file.readFontEntry("Hints", "Hint"+stat+"_font"),
 			config_file.readColorEntry("Hints", "Hint"+stat+"_fgcolor"),
@@ -576,7 +577,7 @@ void HintManager::userChangedStatusToAvailable(const QString &protocolName, User
 		ulist.append(ule);
 
 	if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
-		addHint(parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true),
+		addHint(KaduParser::parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true),
 			ule.status(protocolName).pixmap(),
 			config_file.readFontEntry("Hints", "HintOnline_font"),
 			config_file.readColorEntry("Hints", "HintOnline_fgcolor"),
@@ -612,7 +613,7 @@ void HintManager::userChangedStatusToBusy(const QString &protocolName, UserListE
 		ulist.append(ule);
 
 	if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
-		addHint(parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true),
+		addHint(KaduParser::parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true),
 			ule.status(protocolName).pixmap(),
 			config_file.readFontEntry("Hints", "HintBusy_font"),
 			config_file.readColorEntry("Hints", "HintBusy_fgcolor"),
@@ -648,7 +649,7 @@ void HintManager::userChangedStatusToInvisible(const QString &protocolName, User
 		ulist.append(ule);
 
 	if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
-		addHint(parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true),
+		addHint(KaduParser::parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true),
 			ule.status(protocolName).pixmap(),
 			config_file.readFontEntry("Hints", "HintInvisible_font"),
 			config_file.readColorEntry("Hints", "HintInvisible_fgcolor"),
@@ -685,7 +686,7 @@ void HintManager::userChangedStatusToNotAvailable(const QString &protocolName, U
 		ulist.append(ule);
 
 	if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
-		addHint(parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true),
+		addHint(KaduParser::parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true),
 			ule.status(protocolName).pixmap(),
 			config_file.readFontEntry("Hints", "HintOffline_font"),
 			config_file.readColorEntry("Hints", "HintOffline_fgcolor"),
@@ -718,7 +719,7 @@ void HintManager::userBoxChangeToolTip(const QPoint &point, UserListElement user
 	if (show)
 	{
 		kdebugm(KDEBUG_INFO, "user: '%s', x:%d, y:%d\n", user.altNick().local8Bit().data(), show, point.x(), point.y());
-		QString text = parse(config_file.readEntry("Hints", "MouseOverUserSyntax"), user);
+		QString text = KaduParser::parse(config_file.readEntry("Hints", "MouseOverUserSyntax"), user);
 
 		while (text.endsWith("<br/>"))
 			text.setLength(text.length() - 5 /* 5 == QString("<br/>").length()*/);

@@ -24,6 +24,7 @@
 #include "gadu.h"
 #include "icons_manager.h"
 #include "kadu.h"
+#include "kadu_parser.h"
 #include "kadu_text_browser.h"
 #include "message_box.h"
 #include "modules.h"
@@ -936,7 +937,7 @@ void Wizard::createInfoPanelPage()
 			if (panelConstruction==toSave(informationPanelSyntax[i]))
 			{
 				cb_panelTheme->setCurrentItem(i);
-				infoPreview->setText(parse(toDisplay(informationPanelSyntax[i]), el));
+				infoPreview->setText(KaduParser::parse(toDisplay(informationPanelSyntax[i]), el));
 				break;
 			}
 		if (i == informationPanelCount)
@@ -944,7 +945,7 @@ void Wizard::createInfoPanelPage()
 			cb_panelTheme->insertItem(tr("Custom"));
 			cb_panelTheme->setCurrentItem(i);
 			customPanel=panelConstruction;
-			infoPreview->setText(parse(toDisplay(panelConstruction), el));
+			infoPreview->setText(KaduParser::parse(toDisplay(panelConstruction), el));
 		}
 	}
 	addPage(infoPanelPage, tr("Information panel look"));
@@ -1336,7 +1337,7 @@ void Wizard::previewPanelTheme(int panelThemeID)
 	if (panelLook.contains("background=", false) == 0)	//to nam zapewnia odswie¿enie tla jesli wczesniej byl obrazek
 		infoPreview->setText("<body bgcolor=\"" + config_file.readEntry("Look", "InfoPanelBgColor")+"\"></body>");
 
-	infoPreview->setText(parse(toDisplay(panelLook), el));
+	infoPreview->setText(KaduParser::parse(toDisplay(panelLook), el));
 	kdebugf2();
 }
 

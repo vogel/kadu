@@ -29,6 +29,7 @@
 #include "gadu_rich_text.h"
 #include "history.h"
 #include "icons_manager.h"
+#include "kadu_parser.h"
 #include "kadu_splitter.h"
 #include "kadu_text_browser.h"
 #include "message_box.h"
@@ -396,7 +397,7 @@ void Chat::refreshTitle()
 		int i = 0;
 		CONST_FOREACH(user, *Users)
 		{
-			title.append(parse(config_file.readEntry("Look","ConferenceContents"), *user, false));
+			title.append(KaduParser::parse(config_file.readEntry("Look","ConferenceContents"), *user, false));
 			if (++i < uinsSize)
 				title.append(", ");
 		}
@@ -408,12 +409,12 @@ void Chat::refreshTitle()
 		if (config_file.readEntry("Look","ChatContents").isEmpty())
 		{
 			if (user.isAnonymous())
-				title = parse(tr("Chat with ")+"%a", user, false);
+				title = KaduParser::parse(tr("Chat with ")+"%a", user, false);
 			else
-				title = parse(tr("Chat with ")+"%a (%s[: %d])", user, false);
+				title = KaduParser::parse(tr("Chat with ")+"%a (%s[: %d])", user, false);
 		}
 		else
-			title = parse(config_file.readEntry("Look","ChatContents"), user, false);
+			title = KaduParser::parse(config_file.readEntry("Look","ChatContents"), user, false);
 		setIcon(user.status("Gadu").pixmap());
 	}
 
@@ -489,7 +490,7 @@ QString Chat::convertCharacters(QString edit, const QColor &bgcolor, EmoticonsSt
 	edit = doc.generateHtml();
 
 	// workaround for bug in Qt - if there's a space after image, Qt does not show it, so we are replacing it with &nbsp;
-	// regular expression has to contain "title", because this attribute may contain ">" (as in emoticon <rotfl>) 
+	// regular expression has to contain "title", because this attribute may contain ">" (as in emoticon <rotfl>)
 	const static QRegExp emotRegExp("<img emoticon=\"([01])\" title=\"([^\"]*)\" ([^>]*)> ");
 	const static QString emotAfter ("<img emoticon=\"\\1\" title=\"\\2\" \\3>&nbsp;");
 	edit.replace(emotRegExp, emotAfter);

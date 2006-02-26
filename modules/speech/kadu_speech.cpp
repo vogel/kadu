@@ -21,6 +21,7 @@
 #include "debug.h"
 #include "kadu_speech.h"
 #include "kadu.h"
+#include "kadu_parser.h"
 #include "../notify/notify.h"
 
 extern "C" int speech_init()
@@ -326,9 +327,9 @@ void SpeechSlots::testSpeech()
 	kdebugm(KDEBUG_INFO, "%d %d %d %d\n", freq, tempo, basefreq, i);
 
 	if (isFemale(ule.firstName()))
-		say(parse(formatF, ule).arg("Test"), program, klatt, mel, arts, esd, dsp, device, freq, tempo, basefreq);
+		say(KaduParser::parse(formatF, ule).arg("Test"), program, klatt, mel, arts, esd, dsp, device, freq, tempo, basefreq);
 	else
-		say(parse(formatM, ule).arg("Test"), program, klatt, mel, arts, esd, dsp, device, freq, tempo, basefreq);
+		say(KaduParser::parse(formatM, ule).arg("Test"), program, klatt, mel, arts, esd, dsp, device, freq, tempo, basefreq);
 	kdebugf2();
 }
 
@@ -359,7 +360,7 @@ void SpeechSlots::newChat(Protocol * /*protocol*/, UserListElements senders, con
 	else
 		format=config_file.readEntry("Speech", format+"Male");
 
-	say(parse(format, ule).arg(plainMsg));
+	say(KaduParser::parse(format, ule).arg(plainMsg));
 
 	lastSpeech.restart();
 	kdebugf2();
@@ -388,7 +389,7 @@ void SpeechSlots::newMessage(Protocol * /*protocol*/, UserListElements senders, 
 	else
 		format=config_file.readEntry("Speech", format+"Male");
 
-	say(parse(format, ule).arg(plainMsg));
+	say(KaduParser::parse(format, ule).arg(plainMsg));
 
 	lastSpeech.restart();
 	kdebugf2();
@@ -419,9 +420,9 @@ void SpeechSlots::userChangedStatusToAvailable(const QString &protocolName, User
 
 	QString t;
 	if (isFemale(ule.firstName()))
-		t=parse(config_file.readEntry("Speech", "NotifyFormatFemale"), ule);
+		t = KaduParser::parse(config_file.readEntry("Speech", "NotifyFormatFemale"), ule);
 	else
-		t=parse(config_file.readEntry("Speech", "NotifyFormatMale"), ule);
+		t = KaduParser::parse(config_file.readEntry("Speech", "NotifyFormatMale"), ule);
 	t.replace("&nbsp;", " ");
 	t.replace("&lt;", "<");
 	t.replace("&gt;", ">");

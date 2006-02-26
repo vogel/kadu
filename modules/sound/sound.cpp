@@ -25,6 +25,7 @@
 #include "debug.h"
 #include "sound.h"
 #include "kadu.h"
+#include "kadu_parser.h"
 #include "misc.h"
 #include "../notify/notify.h"
 #include "sound_file.h"
@@ -386,9 +387,9 @@ void SoundManager::newMessage(Protocol * /*protocol*/, UserListElements senders,
 
 	QString messagesound;
 	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
-		messagesound=parse(config_file.readEntry("Sounds","Message_sound"), senders[0]);
+		messagesound = KaduParser::parse(config_file.readEntry("Sounds","Message_sound"), senders[0]);
 	else
-		messagesound=themes->themePath(config_file.readEntry("Sounds", "SoundTheme"))+themes->getThemeEntry("Message");
+		messagesound = themes->themePath(config_file.readEntry("Sounds", "SoundTheme"))+themes->getThemeEntry("Message");
 	if (QFile::exists(messagesound))
 	{
 		play(messagesound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
@@ -444,9 +445,9 @@ void SoundManager::userChangedStatusToAvailable(const QString &/*protocolName*/,
 
 	QString status_change_sound;
 	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
-		status_change_sound=parse(config_file.readEntry("Sounds","StatusAvailable_sound"), ule);
+		status_change_sound = KaduParser::parse(config_file.readEntry("Sounds","StatusAvailable_sound"), ule);
 	else
-		status_change_sound=themes->themePath(config_file.readEntry("Sounds", "SoundTheme"))+themes->getThemeEntry("StatusAvailable");
+		status_change_sound = themes->themePath(config_file.readEntry("Sounds", "SoundTheme"))+themes->getThemeEntry("StatusAvailable");
 	if (QFile::exists(status_change_sound))
 	{
 		play(status_change_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
@@ -473,9 +474,9 @@ void SoundManager::userChangedStatusToBusy(const QString &/*protocolName*/, User
 
 	QString status_change_sound;
 	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
-		status_change_sound=parse(config_file.readEntry("Sounds","StatusBusy_sound"), ule);
+		status_change_sound = KaduParser::parse(config_file.readEntry("Sounds","StatusBusy_sound"), ule);
 	else
-		status_change_sound=themes->themePath(config_file.readEntry("Sounds", "SoundTheme"))+themes->getThemeEntry("StatusBusy");
+		status_change_sound = themes->themePath(config_file.readEntry("Sounds", "SoundTheme"))+themes->getThemeEntry("StatusBusy");
 	if (QFile::exists(status_change_sound))
 	{
 		play(status_change_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
@@ -502,9 +503,9 @@ void SoundManager::userChangedStatusToInvisible(const QString &/*protocolName*/,
 
 	QString status_change_sound;
 	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
-		status_change_sound=parse(config_file.readEntry("Sounds","StatusInvisible_sound"), ule);
+		status_change_sound = KaduParser::parse(config_file.readEntry("Sounds","StatusInvisible_sound"), ule);
 	else
-		status_change_sound=themes->themePath(config_file.readEntry("Sounds", "SoundTheme"))+themes->getThemeEntry("StatusInvisible");
+		status_change_sound = themes->themePath(config_file.readEntry("Sounds", "SoundTheme"))+themes->getThemeEntry("StatusInvisible");
 	if (QFile::exists(status_change_sound))
 	{
 		play(status_change_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
@@ -531,9 +532,9 @@ void SoundManager::userChangedStatusToNotAvailable(const QString &/*protocolName
 
 	QString status_change_sound;
 	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
-		status_change_sound=parse(config_file.readEntry("Sounds","StatusNotAvailable_sound"), ule);
+		status_change_sound = KaduParser::parse(config_file.readEntry("Sounds","StatusNotAvailable_sound"), ule);
 	else
-		status_change_sound=themes->themePath(config_file.readEntry("Sounds", "SoundTheme"))+themes->getThemeEntry("StatusNotAvailable");
+		status_change_sound = themes->themePath(config_file.readEntry("Sounds", "SoundTheme"))+themes->getThemeEntry("StatusNotAvailable");
 	if (QFile::exists(status_change_sound))
 	{
 		play(status_change_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);

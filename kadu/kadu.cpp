@@ -41,6 +41,7 @@
 #include "ignore.h"
 #include "kadu.h"
 #include "kadu-config.h"
+#include "kadu_parser.h"
 #include "kadu_text_browser.h"
 #include "message_box.h"
 #include "misc.h"
@@ -537,7 +538,7 @@ void Kadu::copyPersonalInfo()
 	QStringList infoList;
 	QString copyPersonalDataSyntax = config_file.readEntry("General", "CopyPersonalDataSyntax", tr("Contact: %a[ (%u)]\n[First name: %f\n][Last name: %r\n][Mobile: %m\n]"));
 	CONST_FOREACH(user, users)
-		infoList.append(parse(copyPersonalDataSyntax, *user, false));
+		infoList.append(KaduParser::parse(copyPersonalDataSyntax, *user, false));
 
 	QString info = infoList.join("\n");
 	if (!info.isEmpty())
@@ -1386,7 +1387,7 @@ void Kadu::updateInformationPanel(UserListElement user)
 	if (Userbox->currentUserExists() && user == Userbox->currentUser())
 	{
 		HtmlDocument doc;
-		doc.parseHtml(parse(config_file.readEntry("Look", "PanelContents"), user));
+		doc.parseHtml(KaduParser::parse(config_file.readEntry("Look", "PanelContents"), user));
 		doc.convertUrlsToHtml();
 		if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") != EMOTS_NONE && config_file.readBoolEntry("General", "ShowEmotPanel"))
 		{
