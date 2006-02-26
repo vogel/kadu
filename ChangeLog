@@ -285,6 +285,15 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * ka¿dy modu³ powiadamiaj±cy mo¿e sam zdecydowaæ o tym co wy¶wietli
   po najechaniu myszk± na kontakt (joi)
 * poprawione wykrywanie padu traya na GNOME i XFCE (joi)
+* rozszerzona sk³adnia parsera Kadu:
+  - mo¿liwo¶æ zdefiniowania dowolnej ilo¶ci zmiennych globalnych o sk³adni ${NAZWA}
+    przyk³adowe zmienne: HOME, KADU_CONFIG, DATA_PATH, LIB_PATH
+  - @{IKONA} zwraca ¶cie¿kê do pliku o nazwie "IKONA" w bie¿±cym zestawie ikon
+  - mo¿liwo¶æ eskejpowania znaków specjalnych przy pomocy backslasha
+  - modu³y mog± dodawaæ w³asne zmienne poprzez zarejestrowanie funkcji
+    zwracaj±cej odpowiedni napis; sk³adnia: #{NAZWA}
+  - wykownywanie poleceñ mo¿e byæ zapisywane tak¿e jako `{cmd} (zamiast `cmd')
+  (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
