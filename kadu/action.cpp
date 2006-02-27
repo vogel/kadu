@@ -103,16 +103,16 @@ QValueList<ToolButton*> Action::toolButtonsForUserListElements(const UserListEle
 
 bool Action::isOn(const UserListElements& users)
 {
-	kdebugf();
+//	kdebugf();
 	for (QValueList<ToggleStateStruct>::iterator i = ToggleState.begin(); i != ToggleState.end(); i++)
 		if ((*i).elems == users)
 		{
-			kdebug("state: %i\n", (*i).state);
-			kdebugf2();
+			kdebugm(KDEBUG_INFO, "state: %i\n", (*i).state);
+//			kdebugf2();
 			return (*i).state;
 		}
+//	kdebugf2();
 	return false;
-	kdebugf2();
 }
 
 void Action::setOn(const UserListElements& users, bool on)

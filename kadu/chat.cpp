@@ -287,17 +287,18 @@ void Chat::specialKeyPressed(int key)
 
 void Chat::curPosChanged(int, int)
 {
-	int i;
-
 	kdebugf();
-	if (Edit->bold() != KaduActions["boldAction"]->isOn(Users->toUserListElements()))
-		KaduActions["boldAction"]->setOn(Users->toUserListElements(), Edit->bold());
-	if (Edit->italic() != KaduActions["italicAction"]->isOn(Users->toUserListElements()))
-		KaduActions["italicAction"]->setOn(Users->toUserListElements(), Edit->italic());
-	if (Edit->underline() != KaduActions["underlineAction"]->isOn(Users->toUserListElements()))
-		KaduActions["underlineAction"]->setOn(Users->toUserListElements(), Edit->underline());
+
+	UserListElements elems = Users->toUserListElements();
+	if (Edit->bold() != KaduActions["boldAction"]->isOn(elems))
+		KaduActions["boldAction"]->setOn(elems, Edit->bold());
+	if (Edit->italic() != KaduActions["italicAction"]->isOn(elems))
+		KaduActions["italicAction"]->setOn(elems, Edit->italic());
+	if (Edit->underline() != KaduActions["underlineAction"]->isOn(elems))
+		KaduActions["underlineAction"]->setOn(elems, Edit->underline());
 	if (Edit->color() != actcolor)
 	{
+		int i;
 		for (i = 0; i < 16; ++i)
 			if (Edit->color() == QColor(colors[i]))
 				break;
@@ -307,7 +308,7 @@ void Chat::curPosChanged(int, int)
 		else
 			actcolor = colors[i];
 		p.fill(actcolor);
-		KaduActions["colorAction"]->setPixmaps(Users->toUserListElements(), p);
+		KaduActions["colorAction"]->setPixmaps(elems, p);
 	}
 	kdebugf2();
 }
