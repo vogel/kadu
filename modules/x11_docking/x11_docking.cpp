@@ -123,7 +123,7 @@ X11TrayIcon::X11TrayIcon(QWidget *parent, const char *name)
 	w->hide();
 	delete w;
 
-	tryToDockLater(0);
+	tryToDock();
 
 #ifdef ENABLE_HIDING
 	//wy³±czamy pokazywanie Kadu na pasku zadañ
