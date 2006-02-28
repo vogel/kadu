@@ -444,7 +444,7 @@ $(PTHREAD_LDFLAGS) $(DYNAMIC_OPT) $(OPENSSL_LIBS)
 
 AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT
 
-EXTRA_DIST = hi16-app-kadu.png hi22-app-kadu.png hi24-app-kadu.png hi32-app-kadu.png hi48-app-kadu.png kadu.desktop
+EXTRA_DIST = hi16-app-kadu.png hi22-app-kadu.png hi24-app-kadu.png hi32-app-kadu.png hi48-app-kadu.png hi64-app-kadu.png hi128-app-kadu.png hi256-app-kadu.png kadu.desktop
 CLEANFILES = obj/*.o moc/*_moc.cpp $(PHEADERS_CLEANFILES)
 
 
@@ -466,6 +466,9 @@ install-data-local:
 		$(INSTALL_DATA) hi24-app-kadu.png "$(DESTDIR)$(datadir)/pixmaps/kadu-24.png"; \
 		$(INSTALL_DATA) hi32-app-kadu.png "$(DESTDIR)$(datadir)/pixmaps/kadu.png"; \
 		$(INSTALL_DATA) hi48-app-kadu.png "$(DESTDIR)$(datadir)/pixmaps/kadu-48.png"; \
+		$(INSTALL_DATA) hi64-app-kadu.png "$(DESTDIR)$(datadir)/pixmaps/kadu-64.png"; \
+		$(INSTALL_DATA) hi128-app-kadu.png "$(DESTDIR)$(datadir)/pixmaps/kadu-128.png"; \
+		$(INSTALL_DATA) hi256-app-kadu.png "$(DESTDIR)$(datadir)/pixmaps/kadu-256.png"; \
 		echo ""; \
 		echo "Icons installed to $(DESTDIR)$(datadir)/pixmaps"; \
 		echo "Link(kadu.desktop) installed to $(DESTDIR)$(datadir)/applnk/Internet"; \
@@ -489,6 +492,9 @@ uninstall-local:
 	rm -f "$(DESTDIR)$(datadir)/pixmaps/kadu-24.png"
 	rm -f "$(DESTDIR)$(datadir)/pixmaps/kadu.png"
 	rm -f "$(DESTDIR)$(datadir)/pixmaps/kadu-48.png"
+	rm -f "$(DESTDIR)$(datadir)/pixmaps/kadu-64.png"
+	rm -f "$(DESTDIR)$(datadir)/pixmaps/kadu-128.png"
+	rm -f "$(DESTDIR)$(datadir)/pixmaps/kadu-256.png"
 
 clean-local:
 	for i in deps/*.d; do \
