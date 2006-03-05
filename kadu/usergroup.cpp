@@ -134,7 +134,7 @@ UserListElement UserGroup::byKey(UserListKey key)
 
 void UserGroup::addUser(UserListElement ule, bool massively, bool last)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' altNick:'%s' mass:%d\n", name(), ule.altNick().local8Bit().data(), massively);
+	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' altNick:'%s' mass:%d last:%d\n", name(), ule.altNick().local8Bit().data(), massively, last);
 	if (!ule.privateData->Parents.contains(this))
 	{
 		emit addingUser(ule, massively, last);
