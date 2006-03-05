@@ -265,6 +265,16 @@ int main(int argc, char *argv[])
 	if (geteuid() == 0)
 		MessageBox::wrn(qApp->translate("@default", QT_TR_NOOP("Please do not run Kadu as a root!\nIt's a high security risk!")));
 	QTimer::singleShot(15000, kadu, SLOT(deleteOldConfigFiles()));
+
+	/* for testing of startup / close time */
+	char *close_after = getenv("CLOSE_AFTER");
+	if (close_after)
+	{
+		int tm = atoi(close_after);
+		if (tm > 0)
+			QTimer::singleShot(tm, kadu, SLOT(quit()));
+	}
+
 	int ret = qApp->exec();
 //	delete qApp; sometimes leads to segfault
 	return ret;
