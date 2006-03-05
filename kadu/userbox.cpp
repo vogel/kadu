@@ -531,8 +531,7 @@ void UserBox::keyPressEvent(QKeyEvent *e)
 	QListBox::keyPressEvent(e);
 //	QWidget::keyPressEvent(e);
 	QListBoxItem *i = item(currentItem());
-	if (i)
-		emit currentChanged(static_cast<KaduListBoxPixmap *>(i)->User);
+	currentChangedSlot(i);
 //	kdebugf2();
 }
 
