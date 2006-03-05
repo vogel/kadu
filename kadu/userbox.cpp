@@ -394,6 +394,7 @@ UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
 
 	connect(&tipTimer, SIGNAL(timeout()), this, SLOT(tipTimeout()));
 
+	connect(&verticalPositionTimer, SIGNAL(timeout()), this, SLOT(resetVerticalPosition()));
 	kdebugf2();
 }
 
@@ -600,11 +601,22 @@ void UserBox::refresh()
 	// restore vertical scrollbar position
 	verticalScrollBar()->setValue(vScrollValue);
 
+	// because settingCurrentItem changes vertical scrollbar position and line
+	// above doesn't prevents this, we must set position as soon as possible
+	lastVerticalPosition = vScrollValue;
+	verticalPositionTimer.start(0, true);
+
 /*	}
 	gettimeofday(&t2, NULL);
 	kdebugm(KDEBUG_INFO, "czas: %ld\n", (t2.tv_usec-t1.tv_usec)+(t2.tv_sec*1000000)-(t1.tv_sec*1000000));
 */
 	kdebugf2();
+}
+
+void UserBox::resetVerticalPosition()
+{
+	kdebugf();
+	verticalScrollBar()->setValue(lastVerticalPosition);
 }
 
 UserListElements UserBox::selectedUsers() const

@@ -277,26 +277,26 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * u¿ywamy fcntl zamiast flock do blokowania profilu (dzia³a na NFSie) (joi)
 * gdy zostawimy otwarte g³ówne okno na innym pulpicie i klikniemy na trayu,
   to Kadu przeniesie na bie¿±cy pulpit (joi)
-* rozwi±zane problemy z dokowaniem:
-  - GNOME: gdy "obszar powiadamiania" uruchamia siê pó¼niej ni¿ Kadu
-  - GNOME: jednopikselowa ikona (obej¶cie jakiego¶ buga w gnome)
-  - gdy systray pada i zostaje ponownie uruchomiony, Kadu ponownie siê dokuje
-  (joi)
+* rozwi±zane problemy z dokowaniem: (joi)
+   - GNOME: gdy "obszar powiadamiania" uruchamia siê pó¼niej ni¿ Kadu
+   - GNOME: jednopikselowa ikona (obej¶cie jakiego¶ buga w gnome)
+   - gdy systray pada i zostaje ponownie uruchomiony, Kadu ponownie siê dokuje
 * ka¿dy modu³ powiadamiaj±cy mo¿e sam zdecydowaæ o tym co wy¶wietli
   po najechaniu myszk± na kontakt (joi)
 * poprawione wykrywanie padu traya na GNOME i XFCE (joi)
-* rozszerzona sk³adnia parsera Kadu:
-  - mo¿liwo¶æ zdefiniowania dowolnej ilo¶ci zmiennych globalnych o sk³adni ${NAZWA}
-    przyk³adowe zmienne: HOME, KADU_CONFIG, DATA_PATH, LIB_PATH
-  - @{IKONA} zwraca ¶cie¿kê do pliku o nazwie "IKONA" w bie¿±cym zestawie ikon
-  - mo¿liwo¶æ eskejpowania znaków specjalnych przy pomocy backslasha
-  - modu³y mog± dodawaæ w³asne zmienne poprzez zarejestrowanie funkcji
-    zwracaj±cej odpowiedni napis; sk³adnia: #{NAZWA}
-  - wykownywanie poleceñ mo¿e byæ zapisywane tak¿e jako `{cmd} (zamiast `cmd')
-  (joi)
+* rozszerzona sk³adnia parsera Kadu: (joi)
+   - mo¿liwo¶æ zdefiniowania dowolnej ilo¶ci zmiennych globalnych o sk³adni ${NAZWA}
+     przyk³adowe zmienne: HOME, KADU_CONFIG, DATA_PATH, LIB_PATH
+   - @{IKONA} zwraca ¶cie¿kê do pliku o nazwie "IKONA" w bie¿±cym zestawie ikon
+   - mo¿liwo¶æ eskejpowania znaków specjalnych przy pomocy backslasha
+   - modu³y mog± dodawaæ w³asne zmienne poprzez zarejestrowanie funkcji
+     zwracaj±cej odpowiedni napis; sk³adnia: #{NAZWA}
+   - wykownywanie poleceñ mo¿e byæ zapisywane tak¿e jako `{cmd} (zamiast `cmd')
 * wydzielenie parsera do oddzielnego pliku (joi)
 * ³atka dodaj±ca sygna³ przy aktywowaniu okna chat (pan_wojtas/joi)
 * style w oknie rozmowy: Kadu, Hapi, IRC, w³asny (cheester,spav,joi)
+* usuniêty denerwuj±cy problem przeskakiwania listy kontaktów przy zmianie
+  czyjego¶ statusu (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

@@ -514,6 +514,7 @@ class UserBox : public QListBox
 		void tipTimeout();
 		void restartTip(const QPoint &p);
 		void hideTip();
+		void resetVerticalPosition();
 
 	private:
 		static QValueList<UserBox*> UserBoxes;
@@ -535,6 +536,9 @@ class UserBox : public QListBox
 		QPoint lastMouseStop;
 		bool tipAlive;
 		QTimer tipTimer;
+
+		QTimer verticalPositionTimer;
+		int lastVerticalPosition;
 
 		friend class UserBoxSlots;
 
