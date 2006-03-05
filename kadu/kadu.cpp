@@ -1383,9 +1383,9 @@ void Kadu::updateInformationPanel(UserListElement user)
 {
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		return;
-	kdebugmf(KDEBUG_INFO, "%s\n", user.altNick().local8Bit().data());
 	if (Userbox->currentUserExists() && user == Userbox->currentUser())
 	{
+		kdebugmf(KDEBUG_INFO, "%s\n", user.altNick().local8Bit().data());
 		HtmlDocument doc;
 		doc.parseHtml(KaduParser::parse(config_file.readEntry("Look", "PanelContents"), user));
 		doc.convertUrlsToHtml();
@@ -1397,8 +1397,8 @@ void Kadu::updateInformationPanel(UserListElement user)
 		InfoPanel->setText(doc.generateHtml());
 		if (config_file.readBoolEntry("General", "ShowEmotPanel"))
 			InfoPanel->scrollToBottom();
+		kdebugf2();
 	}
-	kdebugf2();
 }
 
 void Kadu::currentChanged(UserListElement user)
