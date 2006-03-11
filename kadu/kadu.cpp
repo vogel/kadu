@@ -1497,6 +1497,12 @@ void Kadu::show()
 	emit shown();
 }
 
+void Kadu::hide()
+{
+	emit hiding();
+	QWidget::hide();
+}
+
 void KaduSlots::onCreateTabGeneral()
 {
 	kdebugf();

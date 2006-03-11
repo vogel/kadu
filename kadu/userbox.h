@@ -515,6 +515,7 @@ class UserBox : public QListBox
 		void restartTip(const QPoint &p);
 		void hideTip();
 		void resetVerticalPosition();
+		void rememberVerticalPosition();
 
 	private:
 		static QValueList<UserBox*> UserBoxes;

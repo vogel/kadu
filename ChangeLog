@@ -299,6 +299,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   czyjego¶ statusu (joi)
 * optymalizacje w dzia³aniu przy ³±czeniu siê z serwerem; ikonka w trayu
   nie zacina siê gdy serwery natychmiastowo odrzucaj± po³±czenie (joi)
+* rozwi±zany jeszcze jeden problem z list± kontaktów: je¿eli zaznaczymy
+  sobie jaki¶ kontakt, przesuniemy suwak gdzie indziej, ukryjemy okno programu
+  i je przywrócimy, to suwak wraca na w³a¶ciw± pozycjê (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

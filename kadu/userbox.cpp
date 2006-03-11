@@ -394,7 +394,10 @@ UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
 
 	connect(&tipTimer, SIGNAL(timeout()), this, SLOT(tipTimeout()));
 
+	lastVerticalPosition = 0;
 	connect(&verticalPositionTimer, SIGNAL(timeout()), this, SLOT(resetVerticalPosition()));
+	connect(kadu, SIGNAL(shown()), this, SLOT(resetVerticalPosition()));
+	connect(kadu, SIGNAL(hiding()), this, SLOT(rememberVerticalPosition()));
 	kdebugf2();
 }
 
@@ -617,6 +620,11 @@ void UserBox::resetVerticalPosition()
 {
 	kdebugf();
 	verticalScrollBar()->setValue(lastVerticalPosition);
+}
+
+void UserBox::rememberVerticalPosition()
+{
+	lastVerticalPosition = verticalScrollBar()->value();
 }
 
 UserListElements UserBox::selectedUsers() const

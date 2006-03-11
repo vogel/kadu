@@ -55,7 +55,8 @@ class Kadu : public QWidget
 		void showStatusOnMenu(int);
 
 	public slots:
-		void show();
+		virtual void show();
+		virtual void hide();
 		void mouseButtonClicked(int, QListBoxItem *);
 		void updateInformationPanel(UserListElement);
 		void updateInformationPanel();
@@ -219,6 +220,8 @@ class Kadu : public QWidget
 			wywo³ana zosta³a funkcja show() na g³ównym oknie
 		**/
 		void shown();
+
+		void hiding();
 
 		/**
 			u¿ywany przez modu³ hints do zdobycia pozycji traya od modu³u docking
