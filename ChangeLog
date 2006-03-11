@@ -297,6 +297,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * style w oknie rozmowy: Kadu, Hapi, IRC, w³asny (cheester,spav,joi)
 * usuniêty denerwuj±cy problem przeskakiwania listy kontaktów przy zmianie
   czyjego¶ statusu (joi)
+* optymalizacje w dzia³aniu przy ³±czeniu siê z serwerem; ikonka w trayu
+  nie zacina siê gdy serwery natychmiastowo odrzucaj± po³±czenie (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

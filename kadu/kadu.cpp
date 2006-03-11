@@ -1379,6 +1379,12 @@ void Kadu::showdesc(bool show)
 		InfoPanel->QWidget::hide();
 }
 
+void Kadu::updateInformationPanel()
+{
+	if (Userbox->currentUserExists())
+		updateInformationPanel(Userbox->currentUser());
+}
+
 void Kadu::updateInformationPanel(UserListElement user)
 {
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
@@ -1403,21 +1409,28 @@ void Kadu::updateInformationPanel(UserListElement user)
 
 void Kadu::currentChanged(UserListElement user)
 {
-	QListBoxItem *item = Userbox->findItem(user.altNick(), Qt::ExactMatch);
-	if (!item || !item->isSelected())
-		return;
 	updateInformationPanel(user);
-	kdebugf2();
 }
 
-void Kadu::userStatusChanged(UserListElement user, QString protocolName, const UserStatus &/*oldstatus*/, bool /*massively*/, bool /*last*/)
+void Kadu::userStatusChanged(UserListElement user, QString protocolName, const UserStatus &/*oldstatus*/, bool massively, bool last)
 {
 	kdebugf();
 
 	if (protocolName == "Gadu") //TODO: make more general
 		history.appendStatus(user.ID("Gadu").toUInt(), user.status("Gadu"));
-	chat_manager->refreshTitlesForUser(user);
-	updateInformationPanel(user);
+	if (massively)
+	{
+		if (last)
+		{
+			chat_manager->refreshTitles();
+			updateInformationPanel();
+		}
+	}
+	else
+	{
+		chat_manager->refreshTitlesForUser(user);
+		updateInformationPanel(user);
+	}
 
 	kdebugf2();
 }
@@ -1425,14 +1438,26 @@ void Kadu::userStatusChanged(UserListElement user, QString protocolName, const U
 void Kadu::userDataChangedSlot(UserListElement elem, QString name, QVariant oldValue,
 							QVariant currentValue, bool massively, bool last)
 {
-	updateInformationPanel(elem);
+	if (massively)
+	{
+		if (last)
+			updateInformationPanel();
+	}
+	else
+		updateInformationPanel(elem);
 }
 
 void Kadu::protocolUserDataChangedSlot(QString protocolName, UserListElement elem,
 							QString name, QVariant oldValue, QVariant currentValue,
 							bool massively, bool last)
 {
-	updateInformationPanel(elem);
+	if (massively)
+	{
+		if (last)
+			updateInformationPanel();
+	}
+	else
+		updateInformationPanel(elem);
 }
 
 QMenuBar* Kadu::menuBar() const

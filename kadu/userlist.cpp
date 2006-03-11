@@ -234,11 +234,30 @@ void UserList::setAllOffline(const QString &protocolName)
 
 	QValueListIterator<UserListElement> user = begin();
 	size_type cnt = count();
+	int todo = 0;
+
+	// zliczamy najpierw kontakty, których status przestawimy - czyli takie, które maj± opis lub nie s± offline
 	for (size_type j = 1; j <= cnt; ++j, ++user)
 	{
-//		kdebugm(KDEBUG_INFO, "%s %d\n", (*user).altNick().local8Bit().data(), (*user).usesProtocol("Gadu"));
-		if ((*user).usesProtocol("Gadu"))
-			(*user).setStatus(protocolName, *s, true, j == cnt);
+		if ((*user).usesProtocol(protocolName))
+		{
+			const UserStatus &stat = (*user).status(protocolName);
+			if (!stat.isOffline() || stat.hasDescription())
+				++todo;
+		}
+	}
+
+	// a teraz przestawiamy te statusy
+	int i = 1;
+	for (size_type j = 1; j <= cnt; ++j, ++user)
+	{
+//		kdebugm(KDEBUG_INFO, "%s %d\n", (*user).altNick().local8Bit().data(), (*user).usesProtocol(protocolName));
+		if ((*user).usesProtocol(protocolName))
+		{
+			const UserStatus &stat = (*user).status(protocolName);
+			if (!stat.isOffline() || stat.hasDescription())
+				(*user).setStatus(protocolName, *s, true, i++ == todo);
+		}
 	}
 	delete s;
 	kdebugf2();

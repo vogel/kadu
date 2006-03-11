@@ -810,7 +810,26 @@ void GaduProtocol::errorSlot(GaduError err)
 	kdebugf();
 	QString msg = QString::null;
 
-	disconnectedSlot();
+	ConnectionTimeoutTimer::off();
+
+	if (PingTimer)
+	{
+		PingTimer->stop();
+		delete PingTimer;
+		PingTimer = NULL;
+	}
+
+	SocketNotifiers->stop();
+
+	if (Sess)
+	{
+		gg_logoff(Sess);
+		gg_free_session(Sess);
+		Sess = NULL;
+	}
+
+	UserListSent = false;
+
 	emit error(err);
 
 	bool continue_connecting = true;
@@ -1923,10 +1942,13 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 			continue;
 		}
 
-		user.setAddressAndPort("Gadu", ntohl(e->event.notify60[nr].remote_ip), e->event.notify60[nr].remote_port);
+		user.setProtocolData("Gadu", "DNSName", QString::null, nr + 1 == cnt);
+		user.setProtocolData("Gadu", "IP", ntohl(e->event.notify60[nr].remote_ip), nr + 1 == cnt);
+		user.setProtocolData("Gadu", "Port", e->event.notify60[nr].remote_port, nr + 1 == cnt);
 		user.refreshDNSName("Gadu");
-		user.setProtocolData("Gadu", "Version", e->event.notify60[nr].version);
-		user.setProtocolData("Gadu", "MaxImageSize", e->event.notify60[nr].image_size);
+
+		user.setProtocolData("Gadu", "Version", e->event.notify60[nr].version, true, nr + 1 == cnt);
+		user.setProtocolData("Gadu", "MaxImageSize", e->event.notify60[nr].image_size, true, nr + 1 == cnt);
 
 		oldStatus = user.status("Gadu");
 
@@ -1945,43 +1967,19 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 		user.setStatus("Gadu", status, true, nr + 1 == cnt);
 
 #ifdef DEBUG_ENABLED
+#define PRINT_STAT(str) kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, str, e->event.notify60[nr].uin);
 		switch (e->event.notify60[nr].status)
 		{
-			case GG_STATUS_AVAIL:
-				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "User %d went online\n",
-					e->event.notify60[nr].uin);
-				break;
-			case GG_STATUS_BUSY:
-				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "User %d went busy\n",
-					e->event.notify60[nr].uin);
-				break;
-			case GG_STATUS_NOT_AVAIL:
-				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "User %d went offline\n",
-					e->event.notify60[nr].uin);
-				break;
-			case GG_STATUS_BLOCKED:
-				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "User %d has blocked us\n",
-					e->event.notify60[nr].uin);
-				break;
-			case GG_STATUS_BUSY_DESCR:
-				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "User %d went busy with description\n",
-					e->event.notify60[nr].uin);
-				break;
-			case GG_STATUS_NOT_AVAIL_DESCR:
-				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "User %d went offline with description\n",
-					e->event.notify60[nr].uin);
-				break;
-			case GG_STATUS_AVAIL_DESCR:
-				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "User %d went online with description\n",
-					e->event.notify60[nr].uin);
-				break;
-			case GG_STATUS_INVISIBLE_DESCR:
-				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "User %d went invisible with description\n",
-					e->event.notify60[nr].uin);
-				break;
+			case GG_STATUS_AVAIL:			PRINT_STAT("User %d went online\n");					break;
+			case GG_STATUS_BUSY:			PRINT_STAT("User %d went busy\n");						break;
+			case GG_STATUS_NOT_AVAIL:		PRINT_STAT("User %d went offline\n");					break;
+			case GG_STATUS_BLOCKED:			PRINT_STAT("User %d has blocked us\n");					break;
+			case GG_STATUS_BUSY_DESCR:		PRINT_STAT("User %d went busy with description\n");		break;
+			case GG_STATUS_NOT_AVAIL_DESCR:	PRINT_STAT("User %d went offline with description\n");	break;
+			case GG_STATUS_AVAIL_DESCR:		PRINT_STAT("User %d went online with description\n");	break;
+			case GG_STATUS_INVISIBLE_DESCR:	PRINT_STAT("User %d went invisible with description\n");break;
 			default:
-				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Unknown status for user %d: %d\n",
-					e->event.notify60[nr].uin, e->event.notify60[nr].status);
+				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Unknown status for user %d: %d\n", e->event.notify60[nr].uin, e->event.notify60[nr].status);
 				break;
 		}
 #endif

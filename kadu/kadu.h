@@ -58,6 +58,7 @@ class Kadu : public QWidget
 		void show();
 		void mouseButtonClicked(int, QListBoxItem *);
 		void updateInformationPanel(UserListElement);
+		void updateInformationPanel();
 		void sendMessage(UserListElement elem);
 		void configure();
 
