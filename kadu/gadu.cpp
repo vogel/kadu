@@ -874,6 +874,10 @@ void GaduProtocol::errorSlot(GaduError err)
 
 		case ConnectionUnknow:
 			kdebugm(KDEBUG_INFO, "Connection broken unexpectedly!\nUnscheduled connection termination\n");
+
+			userlist->setAllOffline("Gadu");
+			CurrentStatus->setOffline(QString::null);
+			emit disconnected();
 			break;
 
 		case ConnectionTimeout:
@@ -882,6 +886,9 @@ void GaduProtocol::errorSlot(GaduError err)
 
 		case Disconnected:
 			msg = tr("Disconnection has occured");
+			userlist->setAllOffline("Gadu");
+			CurrentStatus->setOffline(QString::null);
+			emit disconnected();
 			break;
 
 		default:
