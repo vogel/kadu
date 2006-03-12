@@ -141,8 +141,14 @@ HintManager::~HintManager()
 	ConfigDialog::unregisterSlotOnApply(hint_manager_slots, SLOT(onApplyConfigDialog()));
 	ConfigDialog::unregisterSlotOnClose(hint_manager_slots, SLOT(onCloseConfigDialog()));
 
+	disconnect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
+	delete hint_timer;
+	hint_timer = 0;
+
+	hints.clear();
+
 	delete hint_manager_slots;
-	hint_manager_slots=NULL;
+	hint_manager_slots = 0;
 
 	ConfigDialog::removeControl("Hints", "Change font");
 	ConfigDialog::removeControl("Hints", "Change background color");
@@ -262,7 +268,7 @@ void HintManager::recreateLayout()
 	while ((elem=hints.first()))
 	{
 		elem->getData(text, pixmap, timeout, font, fgcolor, bgcolor);
-		
+
 		Hint *h=new Hint(this, text, pixmap, timeout);
 		h->set(font, fgcolor, bgcolor, elem->id());
 		h->setUins(elem->getUins());
@@ -756,13 +762,13 @@ void HintManager::message(const QString &from, const QString &msg, const QMap<QS
 	if (parameters!=NULL)
 	{
 		QMap<QString, QVariant>::const_iterator end=(*parameters).end();
-		
+
 		pixmap=(*parameters)["Pixmap"].toPixmap();
 		font=(*parameters)["Font"].toFont();
 		fgcolor=(*parameters)["Foreground color"].toColor();
 		bgcolor=(*parameters)["Background color"].toColor();
 		timeout=(*parameters)["Timeout"].toUInt(&ok);
-		
+
 		QMap<QString, QVariant>::const_iterator sit=(*parameters).find("ShowSource");
 		if (sit!=end)
 			showSource=sit.data().toBool();

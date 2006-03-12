@@ -5,15 +5,16 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
 +++ wersja 0.4.4
 * MacOSX: regulacja g³o¶no¶ci domy¶lnie wy³±czona (bo playsound jej nie obs³uguje),
-  domy¶lny katalog instalcji to Kadu.app, a nie kadu.app (joi) 
+  domy¶lny katalog instalcji to Kadu.app, a nie kadu.app (joi)
 * dodany do autodownloadu modu³ iwait4u (joi)
 * poprawki w skryptach buduj±cych gdy /bin/sh nie jest linkiem do basha
   (np. w FreeBSD,PLD) (joi)
 * dodane do autodownloadu zestawy ikon glass16 i glass22 (dylemat/Ron_K)
+* poprawiony segfault przy zamykaniu modu³u hints, gdy zosta³ jeszcze jaki¶ dymek (joi)
 
 +++ wersja 0.4.3 (30.11.2005)
 * opcja ignorowania formatowania tekstu i obrazków od anonimów, domy¶lnie w³±czona (adrian)
-* poprawione 2 b³êdy w parsowaniu formatowania tekstu i obrazków 
+* poprawione 2 b³êdy w parsowaniu formatowania tekstu i obrazków
   (1 z nich, doprowadzaj±cy do segfaulta i wycieku du¿ej ilo¶ci danych
   zg³oszony zosta³ przez Micha³a Gizowskiego) - UWAGA: oba b³êdy maj± du¿e
   znaczenie dla bezpieczeñstwa (joi)
@@ -30,7 +31,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   poprawka ¶cie¿ek z /usr/share na $(datadir) (pawel_p)
 * poprawiona obs³uga bramki Orange (akasoft/joi)
 * wy³±czenie regenerowania configure/Makefile'i (joi)
-* poprawna zmiana u¿ytkownika i has³a w konfiguracji dla bramki Ery, 
+* poprawna zmiana u¿ytkownika i has³a w konfiguracji dla bramki Ery,
 	poprawne zapisywanie (pawel_p)
 * po restarcie Kadu gdy nie jeste¶my zadokowani (b±d¼ zadokowani na Maku)
   przywracamy na listê kontaktów anonimów, od których dostali¶my wiadomo¶ci,
