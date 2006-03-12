@@ -157,8 +157,20 @@ HintManager::~HintManager()
 	ConfigDialog::unregisterSlotOnApplyTab("Hints", hint_manager_slots, SLOT(onApplyTabHints()));
 	ConfigDialog::unregisterSlotOnCloseTab("Hints", hint_manager_slots, SLOT(onCloseTabHints()));
 
+	delete tipFrame;
+	tipFrame = 0;
+
+	disconnect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
+	delete hint_timer;
+	hint_timer = 0;
+
+	hints.clear();
+
+	delete frame;
+	frame = 0;
+
 	delete hint_manager_slots;
-	hint_manager_slots=NULL;
+	hint_manager_slots = 0;
 
 	ConfigDialog::removeControl("Hints", "Change font");
 	ConfigDialog::removeControl("Hints", "Change background color");
@@ -173,6 +185,8 @@ HintManager::~HintManager()
 	ConfigDialog::removeControl("Hints", "Set for all");
 	ConfigDialog::removeControl("Hints", "top");
 	ConfigDialog::removeControl("Hints", "Parameters");
+	ConfigDialog::removeControl("Hints", "Hints syntax:");
+	ConfigDialog::removeControl("Hints", "Hints over userlist");
 	ConfigDialog::removeControl("Hints", "Corner");
 	ConfigDialog::removeControl("Hints", "y=");
 	ConfigDialog::removeControl("Hints", "x=");
@@ -195,8 +209,6 @@ HintManager::~HintManager()
 	ConfigDialog::removeControl("Hints", "Show message content in hint");
 	ConfigDialog::removeControl("Hints", "New chat / new message");
 	ConfigDialog::removeTab("Hints");
-
-	delete frame;
 
 	kdebugf2();
 }

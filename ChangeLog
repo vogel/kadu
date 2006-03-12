@@ -302,6 +302,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * rozwi±zany jeszcze jeden problem z list± kontaktów: je¿eli zaznaczymy
   sobie jaki¶ kontakt, przesuniemy suwak gdzie indziej, ukryjemy okno programu
   i je przywrócimy, to suwak wraca na w³a¶ciw± pozycjê (joi)
+* poprawiony segfault przy zamykaniu modu³u hints, gdy zosta³ jeszcze jaki¶ dymek (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
