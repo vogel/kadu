@@ -249,6 +249,7 @@ void UserList::setAllOffline(const QString &protocolName)
 
 	// a teraz przestawiamy te statusy
 	int i = 1;
+	user = begin();
 	for (size_type j = 1; j <= cnt; ++j, ++user)
 	{
 //		kdebugm(KDEBUG_INFO, "%s %d\n", (*user).altNick().local8Bit().data(), (*user).usesProtocol(protocolName));
