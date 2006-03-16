@@ -525,11 +525,11 @@ AC_SUBST(PTHREAD_LIBS)
 ########
 # PATHS
 ########
-QT_LIBS_PATHS="    $QTDIR/lib     /usr/lib/qt3/lib     /usr/lib/qt/lib     /usr/local/qt/lib     /usr/local/lib     /usr/lib      /usr/lib/qt     /usr/share/qt3/lib     /usr/X11R6/lib     /sw/lib        /usr/lib/qt3     /usr/X11R6/lib/qt     /usr/X11R6/lib/qt3     /usr/lib/qt3/lib64"
+QT_LIBS_PATHS="    $QTDIR/lib     /usr/lib/qt3/lib     /usr/lib/qt/lib     /usr/local/qt/lib     /usr/local/lib     /usr/lib      /usr/lib/qt     /usr/share/qt3/lib     /usr/X11R6/lib     /sw/lib        /usr/lib/qt3     /usr/X11R6/lib/qt     /usr/X11R6/lib/qt3     /usr/lib/qt3/lib64  $QTDIR/lib64"
 QT_INCLUDES_PATHS="$QTDIR/include /usr/lib/qt3/include /usr/lib/qt/include /usr/local/qt/include /usr/local/include /usr/include  /usr/include/qt /usr/share/qt3/include /usr/X11R6/include /sw/include/qt /usr/include/qt3 /usr/X11R6/include/qt /usr/X11R6/include/qt3"
 QT_TOOLS_PATHS="   $QTDIR/bin     /usr/lib/qt3/bin     /usr/lib/qt/bin     /usr/local/qt/bin     /usr/local/bin     /usr/bin      /bin            /usr/share/qt3/bin     /usr/X11R6/bin"
-PNG_LIBS_PATHS="   /usr/lib /usr/local/lib /sw/lib"
-Z_LIBS_PATHS="     /usr/lib /usr/local/lib /sw/lib"
+PNG_LIBS_PATHS="   /usr/lib64     /usr/lib             /usr/local/lib      /sw/lib"
+Z_LIBS_PATHS="     /usr/lib64     /usr/lib             /usr/local/lib      /sw/lib"
 
 
 #################
