@@ -10,6 +10,7 @@
 #include <qapplication.h>
 #include <qfile.h>
 #include <qregexp.h>
+#include <stdlib.h>
 
 #include "config_file.h"
 #include "debug.h"
