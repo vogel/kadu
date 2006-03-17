@@ -78,7 +78,7 @@ static QString executeCmd(const QString &cmd)
 
 struct ParseElem
 {
-	enum {PE_STRING, PE_CHECK_NULL, PE_CHECK_FILE, PE_EXECUTE, PE_VARIABLE, PE_ICONPATH, PE_EXTERNAL_VARIABLE, PE_EXECUTE2} type;
+	enum {PE_STRING, PE_CHECK_ALL_NOT_NULL, PE_CHECK_ANY_NULL, PE_CHECK_FILE_EXISTS, PE_CHECK_FILE_NOT_EXISTS, PE_EXECUTE, PE_VARIABLE, PE_ICONPATH, PE_EXTERNAL_VARIABLE, PE_EXECUTE2} type;
 	QString str;
 };
 
@@ -238,7 +238,15 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, bool esc
 		else if (c == '[')
 		{
 			++i;
-			pe.type = ParseElem::PE_CHECK_NULL;
+			if (i == len)
+				break;
+			if (s[i] == '!')
+			{
+				pe.type = ParseElem::PE_CHECK_ANY_NULL;
+				++i;
+			}
+			else
+				pe.type = ParseElem::PE_CHECK_ALL_NOT_NULL;
 			parseStack.push_back(pe);
 		}
 		else if (c == ']')
@@ -250,16 +258,24 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, bool esc
 				const ParseElem &pe2 = parseStack.last();
 				if (pe2.type == ParseElem::PE_STRING)
 				{
-					if (pe2.str.isEmpty() || anyNull)
-						anyNull = true;
-					else
-						pe.str.prepend(pe2.str);
+					anyNull = anyNull || pe2.str.isEmpty();
+					pe.str.prepend(pe2.str);
 					parseStack.pop_back();
 				}
-				else if (pe2.type == ParseElem::PE_CHECK_NULL)
+				else if (pe2.type == ParseElem::PE_CHECK_ALL_NOT_NULL)
 				{
 					parseStack.pop_back();
 					if (!anyNull)
+					{
+						pe.type = ParseElem::PE_STRING;
+						parseStack.push_back(pe);
+					}
+					break;
+				}
+				else if (pe2.type == ParseElem::PE_CHECK_ANY_NULL)
+				{
+					parseStack.pop_back();
+					if (anyNull)
 					{
 						pe.type = ParseElem::PE_STRING;
 						parseStack.push_back(pe);
@@ -271,7 +287,15 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, bool esc
 		else if (c == '{')
 		{
 			++i;
-			pe.type = ParseElem::PE_CHECK_FILE;
+			if (i == len)
+				break;
+			if (s[i] == '!' || s[i] == '~')
+			{
+				pe.type = ParseElem::PE_CHECK_FILE_NOT_EXISTS;
+				++i;
+			}
+			else
+				pe.type = ParseElem::PE_CHECK_FILE_EXISTS;
 			parseStack.push_back(pe);
 		}
 		else if (c == '}')
@@ -285,25 +309,18 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, bool esc
 					pe.str.prepend(pe2.str);
 					parseStack.pop_back();
 				}
-				else if (pe2.type == ParseElem::PE_CHECK_FILE)
+				else if (pe2.type == ParseElem::PE_CHECK_FILE_EXISTS || pe2.type == ParseElem::PE_CHECK_FILE_NOT_EXISTS)
 				{
-					int f = pe.str.find(' ', 0);
-					bool findexist = true;
+					int spacePos = pe.str.find(' ', 0);
 					parseStack.pop_back();
 					QString file;
-					if (f == -1)
+					if (spacePos == -1)
 						file = pe.str;
 					else
-						file = pe.str.left(f);
-					if (!file.isEmpty())
-						if (file[0] == '~')
-						{
-							file = file.mid(1);
-							findexist = false;
-						}
-					pe.str = pe.str.mid(f + 1);
-					if (QFile::exists(file) == findexist)
+						file = pe.str.left(spacePos);
+					if (QFile::exists(file) == (pe2.type == ParseElem::PE_CHECK_FILE_EXISTS))
 					{
+						pe.str = pe.str.mid(spacePos + 1);
 						pe.type = ParseElem::PE_STRING;
 						parseStack.push_back(pe);
 					}

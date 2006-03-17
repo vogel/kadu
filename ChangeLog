@@ -303,6 +303,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   sobie jaki¶ kontakt, przesuniemy suwak gdzie indziej, ukryjemy okno programu
   i je przywrócimy, to suwak wraca na w³a¶ciw± pozycjê (joi)
 * poprawiony segfault przy zamykaniu modu³u hints, gdy zosta³ jeszcze jaki¶ dymek (joi)
+* mo¿liwo¶æ zaprzeczenia sprawdzania niepusto¶ci napisów w parserze, przyk³ad:
+  [opis: %d][!brak opisu%d], do zaprzeczania przy sprawdzaniu istnienia pliku
+  mo¿na u¿yæ ! zamiast ~ (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
