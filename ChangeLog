@@ -310,6 +310,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   zmian + dostosowanie reszty Kadu do tego - ok. 5% prszyspieszenia w czasie
   uruchamiania+zamykania (joi)
 * poprawka b³êdu wprowadzonego dzieñ wcze¶niej do parsera (joi)
+* je¿eli sami przestawili¶my status na niedostêpny, to wy³±czamy autoawaya (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
