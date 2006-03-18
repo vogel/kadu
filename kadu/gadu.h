@@ -241,13 +241,6 @@ class GaduProtocol : public Protocol
 		QTimer* SendUserListTimer;
 
 		/**
-			Okre¶la, czy lista u¿ytkowników zosta³a ju¿ wys³ana.
-
-			@todo Wywaliæ, zamieniæ na connected
-		**/
-		bool UserListSent;
-
-		/**
 			Zmienna ustawiana w zale¿no¶ci od tego, czy wysy³amy listê kontaktów na serwer
 			czy te¿ usuwamy j± z tego serwera. Zakoñczenie obydwu tych czynno¶ci wywo³uje
 			sygna³ podpiêty do slotu userListReplyReceived, który w zale¿no¶ci od warto¶ci
@@ -666,13 +659,6 @@ class GaduProtocol : public Protocol
 		void connectAfterOneSecond();
 
 		/**
-			Zwraca true, je¿eli jeste¶my po³±czenie z serwerem.
-
-			@todo zmieniæ nazwê na connected
-		**/
-		bool userListSent();
-
-		/**
 			Ustawia adres IP który ma byæ przekazany do serwera GG
 			jako adres komputera, który przekierowuje do nas port DCC.
 			Zmiana jest uwzglêdniana dopiero przy ponownym po³±czeniu
@@ -917,21 +903,6 @@ class GaduProtocol : public Protocol
 		void messageRejected(int seq, UinType uin);
 
 		/**
-			otrzymano informacjê o potwierdzeniu wiadomo¶ci
-
-			@todo usun±æ
-			@see messageAccepted
-			@see messageRejected
-
-			@see messageBlocked
-			@see messageDelivered
-			@see messageQueued
-			@see messageBoxFull
-			@see messageNotDelivered
-		**/
-		void ackReceived(int seq);
-
-		/**
 			wyst±pi³ b³±d po³±czenia
 			@param err przyczyna
 			@see connectionError
@@ -975,12 +946,6 @@ class GaduProtocol : public Protocol
 			@todo zmieniæ nazwê
 		**/
 		void dccConnectionReceived(const UserListElement &user);
-
-		/**
-			martwy sygna³
-			@todo usun±æ
-		**/
-		void disconnectNetwork();
 
 		/**
 			otrzymano nowe wyniki wyszukiwania w katalogu publicznym

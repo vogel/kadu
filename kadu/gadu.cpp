@@ -369,7 +369,6 @@ GaduProtocol::GaduProtocol(const QString &id, QObject *parent, const char *name)
 	CurrentStatus = new GaduStatus();
 	NextStatus = new GaduStatus();
 	SocketNotifiers = new GaduSocketNotifiers(this, "gadu_socket_notifiers");
-	UserListSent = false;
 	PingTimer = NULL;
 	ActiveServer = NULL;
 	ServerNr = 0;
@@ -705,11 +704,6 @@ void GaduProtocol::removingProtocol(UserListElement elem, QString protocolName, 
 	kdebugf2();
 }
 
-bool GaduProtocol::userListSent()
-{
-	return UserListSent;
-}
-
 QHostAddress* GaduProtocol::activeServer()
 {
 	return ActiveServer;
@@ -784,8 +778,6 @@ void GaduProtocol::disconnectedSlot()
 		Sess = NULL;
 	}
 
-	UserListSent = false;
-
 	// du¿o bezsensownej roboty, wiêc gdy jeste¶my w trakcie wy³±czania,
 	// to jej nie wykonujemy
 	// dla ka¿dego kontaktu po ustawieniu statusu emitowane s± sygna³y,
@@ -831,8 +823,6 @@ void GaduProtocol::errorSlot(GaduError err)
 		gg_free_session(Sess);
 		Sess = NULL;
 	}
-
-	UserListSent = false;
 
 	emit error(err);
 
@@ -1285,13 +1275,11 @@ void GaduProtocol::ackReceived(int seq, uin_t uin, int status)
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message delivered (uin: %d, seq: %d)\n", uin, seq);
 			emit messageDelivered(seq, uin);
 			emit messageAccepted(seq, uin);
-			emit ackReceived(seq);
 			break;
 		case GG_ACK_QUEUED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message queued (uin: %d, seq: %d)\n", uin, seq);
 			emit messageQueued(seq, uin);
 			emit messageAccepted(seq, uin);
-			emit ackReceived(seq);
 			break;
 		case GG_ACK_MBOXFULL:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message box full (uin: %d, seq: %d)\n", uin, seq);
@@ -1322,8 +1310,6 @@ void GaduProtocol::sendUserList()
 	kdebugf();
 	UinType *uins;
 	char *types;
-
-	UserListSent = true;
 
 	unsigned int j = 0;
 	CONST_FOREACH(user, *userlist)

@@ -201,8 +201,6 @@ class Kadu : public QWidget
 		void addUserActionActivated(const UserGroup* users);
 
 	signals:
-		void disconnectingNetwork();
-		void disconnectedNetwork();
 		void keyPressed(QKeyEvent* e);
 		void statusPixmapChanged(const QPixmap &icon, const QString &icon_name);
 
