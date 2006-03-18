@@ -3,6 +3,7 @@
 
 #include <qmainwindow.h>
 #include <qstring.h>
+#include <qtimer.h>
 #include <qvaluelist.h>
 
 #include "dockarea.h"
@@ -40,6 +41,7 @@ class Kadu : public QWidget
 		QPushButton* statusButton;
 		QPoint lastPositionBeforeStatusMenuHide;
 		QDateTime StartTime;
+		QTimer updateInformationPanelTimer;
 
 		UserStatus status;
 
@@ -60,6 +62,8 @@ class Kadu : public QWidget
 		void mouseButtonClicked(int, QListBoxItem *);
 		void updateInformationPanel(UserListElement);
 		void updateInformationPanel();
+		void updateInformationPanelLater();
+
 		void sendMessage(UserListElement elem);
 		void configure();
 
@@ -76,14 +80,8 @@ class Kadu : public QWidget
 		void disconnected();
 		void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
 		void systemMessageReceived(const QString &msg);
-		void userStatusChanged(UserListElement user, QString protocolName, const UserStatus &oldstatus, bool massively, bool last);
 		void deleteOldConfigFiles();
 
-		void userDataChangedSlot(UserListElement elem, QString name, QVariant oldValue,
-							QVariant currentValue, bool massively, bool last);
-		void protocolUserDataChangedSlot(QString protocolName, UserListElement elem,
-							QString name, QVariant oldValue, QVariant currentValue,
-							bool massively, bool last);
 		void currentChanged(UserListElement);
 
 		void statusMenuAboutToHide(void);

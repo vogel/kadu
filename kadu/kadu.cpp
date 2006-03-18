@@ -341,6 +341,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		InfoPanel->QWidget::hide();
+	connect(&updateInformationPanelTimer, SIGNAL(timeout()), this, SLOT(updateInformationPanel()));
 
 	statusButton = new QPushButton(QIconSet(icons_manager->loadIcon("Offline")), tr("Offline"), vbox, "statusButton");
 	statusButton->setPopup(statusMenu);
@@ -366,12 +367,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 		this, SLOT(readTokenValue(QPixmap, QString &)));
 	connect(gadu, SIGNAL(systemMessageReceived(const QString &)), this, SLOT(systemMessageReceived(const QString &)));
 
-	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
-		this, SLOT(userStatusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
-	connect(userlist, SIGNAL(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)),
-		this, SLOT(userDataChangedSlot(UserListElement, QString, QVariant, QVariant, bool, bool)));
-	connect(userlist, SIGNAL(protocolUserDataChanged(QString, UserListElement, QString, QVariant, QVariant, bool, bool)),
-		this, SLOT(protocolUserDataChangedSlot(QString, UserListElement, QString, QVariant, QVariant, bool, bool)));
+	connect(userlist, SIGNAL(usersDataChanged(QString)), this, SLOT(updateInformationPanelLater()));
+	connect(userlist, SIGNAL(protocolUsersDataChanged(QString, QString)), this, SLOT(updateInformationPanelLater()));
+	connect(userlist, SIGNAL(usersStatusChanged(QString)), this, SLOT(updateInformationPanelLater()));
 
 	connect(&(gadu->currentStatus()), SIGNAL(goOnline(const QString &)),
 		this, SLOT(wentOnline(const QString &)));
@@ -703,7 +701,7 @@ void Kadu::deleteHistory()
 		if ((*user).usesProtocol("Gadu"))
 			uins.append((*user).ID("Gadu").toUInt());
 
-	history.removeHistory(uins);
+	history->removeHistory(uins);
 	kdebugf2();
 }
 
@@ -1229,6 +1227,7 @@ bool Kadu::close(bool quit)
  		ChatManager::closeModule();
 		userlist->writeToConfig();
 		GroupsManager::closeModule();
+		delete history;
  		UserBox::closeModule();
 		UserList::closeModule();
 		ProtocolsManager::closeModule();
@@ -1379,6 +1378,11 @@ void Kadu::showdesc(bool show)
 		InfoPanel->QWidget::hide();
 }
 
+void Kadu::updateInformationPanelLater()
+{
+	updateInformationPanelTimer.start(0, true);
+}
+
 void Kadu::updateInformationPanel()
 {
 	if (Userbox->currentUserExists())
@@ -1410,54 +1414,6 @@ void Kadu::updateInformationPanel(UserListElement user)
 void Kadu::currentChanged(UserListElement user)
 {
 	updateInformationPanel(user);
-}
-
-void Kadu::userStatusChanged(UserListElement user, QString protocolName, const UserStatus &/*oldstatus*/, bool massively, bool last)
-{
-	kdebugf();
-
-	if (protocolName == "Gadu") //TODO: make more general
-		history.appendStatus(user.ID("Gadu").toUInt(), user.status("Gadu"));
-	if (massively)
-	{
-		if (last)
-		{
-			chat_manager->refreshTitles();
-			updateInformationPanel();
-		}
-	}
-	else
-	{
-		chat_manager->refreshTitlesForUser(user);
-		updateInformationPanel(user);
-	}
-
-	kdebugf2();
-}
-
-void Kadu::userDataChangedSlot(UserListElement elem, QString name, QVariant oldValue,
-							QVariant currentValue, bool massively, bool last)
-{
-	if (massively)
-	{
-		if (last)
-			updateInformationPanel();
-	}
-	else
-		updateInformationPanel(elem);
-}
-
-void Kadu::protocolUserDataChangedSlot(QString protocolName, UserListElement elem,
-							QString name, QVariant oldValue, QVariant currentValue,
-							bool massively, bool last)
-{
-	if (massively)
-	{
-		if (last)
-			updateInformationPanel();
-	}
-	else
-		updateInformationPanel(elem);
 }
 
 QMenuBar* Kadu::menuBar() const

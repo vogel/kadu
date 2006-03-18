@@ -2,6 +2,7 @@
 #define KADU_CHAT_MANAGER_H
 
 #include <qobject.h>
+#include <qtimer.h>
 
 #include "chat.h"
 #include "chat_message.h"
@@ -47,6 +48,7 @@ class ChatManager : public QObject
 							danego okna */
 		};
 		QValueList<ChatInfo> addons; /*!< lista parametrów okien */
+		QTimer refreshTitlesTimer;
 
 	private slots:
 
@@ -213,6 +215,7 @@ class ChatManager : public QObject
 			Funkcja od¶wie¿a tytu³y wszystkich okien
 		**/
 		void refreshTitles();
+		void refreshTitlesLater();
 
 		/**
 			\fn void refreshTitlesForUser(UserListElement user)

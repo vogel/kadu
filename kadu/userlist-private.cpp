@@ -92,3 +92,8 @@ UserGroupData::~UserGroupData()
 	data.setAutoDelete(true);
 }
 
+QDict<QDict<UserGroupSet> > ULEPrivate::protocolUserDataProxy;
+QDict<UserGroupSet> ULEPrivate::userDataProxy;
+//QDict<QPtrDict<void> > ULEPrivate::addProtocolProxy;
+//QDict<QPtrDict<void> > ULEPrivate::removeProtocolProxy;
+QDict<UserGroupSet> ULEPrivate::statusChangeProxy;

@@ -299,6 +299,8 @@ class UserGroup : public QObject
 		void userDataChanged(UserListElement elem, QString name, QVariant oldValue,
 							QVariant currentValue, bool massively, bool last);
 
+		void usersDataChanged(QString name);
+
 		/**
 			\fn void protocolUserDataChanged(QString protocolName, UserListElement elem, QString name, QVariant oldValue, QVariant currentValue, bool massively, bool last)
 			\param protocolName identyfikator protoko³u
@@ -314,6 +316,8 @@ class UserGroup : public QObject
 		void protocolUserDataChanged(QString protocolName, UserListElement elem,
 							QString name, QVariant oldValue, QVariant currentValue,
 							bool massively, bool last);
+
+		void protocolUsersDataChanged(QString protocolName, QString name);
 
 		/**
 			\fn void userAdded(UserListElement elem, bool massively, bool last)
@@ -333,6 +337,8 @@ class UserGroup : public QObject
 		**/
 		void addingUser(UserListElement elem, bool massively, bool last);
 
+		void usersAdded();
+
 		/**
 			\fn void removingUser(UserListElement elem, bool massively, bool last)
 			\param elem usuwany kontakt
@@ -350,6 +356,8 @@ class UserGroup : public QObject
 			Sygna³ generowany po usuniêciu kontaktu z listy.
 		**/
 		void userRemoved(UserListElement elem, bool massively, bool last);
+
+		void usersRemoved();
 
 		/**
 			\fn void protocolAdded(UserListElement elem, QString protocolName, bool massively, bool last)
@@ -381,6 +389,8 @@ class UserGroup : public QObject
 		**/
 		void statusChanged(UserListElement elem, QString protocolName,
 							const UserStatus &oldStatus, bool massively, bool last);
+
+		void usersStatusChanged(QString protocolName);
 
 	protected:
 		UserGroupData *d;

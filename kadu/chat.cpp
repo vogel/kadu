@@ -747,7 +747,7 @@ void Chat::writeMessagesFromHistory(UserListElements senders, time_t time)
 	CONST_FOREACH(user, senders)
 		uins.append((*user).ID("Gadu").toUInt());
 
-	count = history.getHistoryEntriesCount(uins);
+	count = history->getHistoryEntriesCount(uins);
 	end = count - 1;
 
 	from = count;
@@ -759,7 +759,7 @@ void Chat::writeMessagesFromHistory(UserListElements senders, time_t time)
 		else
 			from = end - chatHistoryQuotation + 1;
 
-		entriestmp = history.getHistoryEntries(uins, from, end - from + 1, HISTORYMANAGER_ENTRY_CHATSEND
+		entriestmp = history->getHistoryEntries(uins, from, end - from + 1, HISTORYMANAGER_ENTRY_CHATSEND
 			| HISTORYMANAGER_ENTRY_MSGSEND | HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV);
 		kdebugmf(KDEBUG_INFO, "temp entries = %d\n", entriestmp.count());
 		if (time)
@@ -866,7 +866,7 @@ void Chat::addMyMessageToHistory()
 	CONST_FOREACH(user, *Users)
 		uins.append((*user).ID("Gadu").toUInt());
 	//TODO: throw out UinsList as soon as possible!
-	history.addMyMessage(uins, myLastMessage);
+	history->addMyMessage(uins, myLastMessage);
 }
 
 void Chat::clearChatWindow()

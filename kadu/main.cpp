@@ -30,6 +30,7 @@
 #include "misc.h"
 #include "debug.h"
 #include "groups_manager.h"
+#include "history.h"
 #include "icons_manager.h"
 #include "modules.h"
 #include "emoticons.h"
@@ -238,6 +239,7 @@ int main(int argc, char *argv[])
 
 	ProtocolsManager::initModule();
 	UserList::initModule();
+	history = new HistoryManager(0, "history_manager");
 	GroupsManager::initModule();
 	emoticons = new EmoticonsManager();
 

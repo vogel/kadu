@@ -490,7 +490,7 @@ BlockedUsers::BlockedUsers() : UserGroup(userlist->count() / 4, "blocked_users")
 {
 	CONST_FOREACH(user, *userlist)
 	{
-		kdebugm(KDEBUG_INFO, "%s\n", (*user).altNick().local8Bit().data());
+//		kdebugm(KDEBUG_INFO, "%s\n", (*user).altNick().local8Bit().data());
 		if ((*user).usesProtocol("Gadu") && (*user).protocolData("Gadu", "Blocking").toBool())
 			addUser(*user);
 	}

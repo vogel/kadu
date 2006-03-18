@@ -45,6 +45,8 @@ HistoryManager::HistoryManager(QObject *parent, const char *name) : QObject(pare
 	imagesTimer=new QTimer(this, "imagesTimer");
 	imagesTimer->start(1000*60);//60 sekund
 	connect(imagesTimer, SIGNAL(timeout()), this, SLOT(checkImagesTimeouts()));
+	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
+		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
 }
 
 QString HistoryManager::text2csv(const QString &text)
@@ -1181,7 +1183,7 @@ void HistoryManager::chatMsgReceived(Protocol *protocol, UserListElements sender
 	else
 	{
 		kdebugm(KDEBUG_INFO, "appending to history\n");
-		history.appendMessage(uins, sender0, msg, false, t, true, time(NULL));
+		appendMessage(uins, sender0, msg, false, t, true, time(NULL));
 	}
 	kdebugf2();
 }
@@ -1219,7 +1221,7 @@ void HistoryManager::imageReceivedAndSaved(UinType sender, uint32_t size, uint32
 			BuffMessage &msg = messages.front();
 			if (msg.counter > 0)
 				break;
-			history.appendMessage(msg.uins, msg.uins[0], msg.message, msg.own, msg.tm, true, msg.arriveTime);
+			appendMessage(msg.uins, msg.uins[0], msg.message, msg.own, msg.tm, true, msg.arriveTime);
 			messages.pop_front();
 		}
 //		kdebugm(KDEBUG_INFO, ">> msgs.size():%d\n", messages.size());
@@ -1241,7 +1243,7 @@ void HistoryManager::addMyMessage(const UinsList &senders, const QString &msg)
 		checkImageTimeout(senders[0]);
 	}
 	else
-		history.appendMessage(senders, senders[0], msg, true, 0, true, current);
+		appendMessage(senders, senders[0], msg, true, 0, true, current);
 	kdebugf2();
 }
 
@@ -1257,7 +1259,7 @@ void HistoryManager::checkImageTimeout(UinType uin)
 		if (msg.arriveTime + 60 < currentTime || msg.counter == 0)
 		{
 			kdebugm(KDEBUG_INFO, "moving message to history\n");
-			history.appendMessage(msg.uins, msg.uins[0], msg.message, msg.own, msg.tm, true, msg.arriveTime);
+			appendMessage(msg.uins, msg.uins[0], msg.message, msg.own, msg.tm, true, msg.arriveTime);
 			msgs.pop_front();
 		}
 		else
@@ -1279,6 +1281,13 @@ void HistoryManager::checkImagesTimeouts()
 	CONST_FOREACH(uin, uins)
 		checkImageTimeout(*uin);
 	kdebugf2();
+}
+
+void HistoryManager::statusChanged(UserListElement elem, QString protocolName,
+					const UserStatus &oldStatus, bool massively, bool last)
+{
+	if (protocolName == "Gadu") //TODO: make more general
+		appendStatus(elem.ID("Gadu").toUInt(), elem.status("Gadu"));
 }
 
 UinsListViewText::UinsListViewText(QListView *parent, const UinsList &uins)
@@ -1325,8 +1334,8 @@ const HistoryDate &DateListViewText::getDate() const
 History::History(UinsList uins) : QDialog(NULL, "HistoryDialog"), uins(uins), closeDemand(false), finding(false)
 {
 	kdebugf();
-	history.convHist2ekgForm(uins);
-	history.buildIndex(uins);
+	history->convHist2ekgForm(uins);
+	history->buildIndex(uins);
 
 	setCaption(tr("History"));
 	setWFlags(Qt::WDestructiveClose);
@@ -1376,7 +1385,7 @@ History::History(UinsList uins) : QDialog(NULL, "HistoryDialog"), uins(uins), cl
 	UinsListViewText *uinslvt, *selecteduinslvt = NULL;
 	QListViewItem *datelvt;
 
-	QValueList<UinsList> uinsentries = history.getUinsLists();
+	QValueList<UinsList> uinsentries = history->getUinsLists();
 
 	CONST_FOREACH(uinsentry, uinsentries)
 	{
@@ -1412,7 +1421,7 @@ void History::uinsChanged(QListViewItem *item)
 		uins = ((UinsListViewText *)item)->getUinsList();
 		if (!item->childCount())
 		{
-			dateentries = history.getHistoryDates(uins);
+			dateentries = history->getHistoryDates(uins);
 			CONST_FOREACH(dateentry, dateentries)
 				(new DateListViewText(item, *dateentry))->setExpandable(FALSE);
 		}
@@ -1444,7 +1453,7 @@ void History::dateChanged(QListViewItem *item)
 		if (item)
 			count = ((DateListViewText *)item)->getDate().idx - start;
 		else
-			count = history.getHistoryEntriesCount(uins) - start;
+			count = history->getHistoryEntriesCount(uins) - start;
 		showHistoryEntries(start, count);
 	}
 	kdebugf2();
@@ -1546,7 +1555,7 @@ void History::showHistoryEntries(int from, int count)
 
 	bool noStatus = config_file.readBoolEntry("History", "DontShowStatusChanges");
 
-	QValueList<HistoryEntry> entries = history.getHistoryEntries(uins, from, count);
+	QValueList<HistoryEntry> entries = history->getHistoryEntries(uins, from, count);
 
 	QValueList<HistoryEntry>::const_iterator entry = entries.constBegin();
 	QValueList<HistoryEntry>::const_iterator lastEntry = entries.constEnd();
@@ -1657,15 +1666,15 @@ void History::searchHistory()
 	unsigned int entriesCount;
 	QRegExp rxp;
 
-	count = history.getHistoryEntriesCount(uins);
+	count = history->getHistoryEntriesCount(uins);
 	if (findrec.fromdate.isNull())
 		start = 0;
 	else
-		start = history.getHistoryEntryIndexByDate(uins, findrec.fromdate);
+		start = history->getHistoryEntryIndexByDate(uins, findrec.fromdate);
 	if (findrec.todate.isNull())
 		end = count - 1;
 	else
-		end = history.getHistoryEntryIndexByDate(uins, findrec.todate, true);
+		end = history->getHistoryEntryIndexByDate(uins, findrec.todate, true);
 	kdebugmf(KDEBUG_INFO, "start = %d, end = %d\n", start, end);
 	if (start > end || (start == end && (start == -1 || start == count)))
 		return;
@@ -1673,9 +1682,9 @@ void History::searchHistory()
 		start = 0;
 	if (end == count)
 		--end;
-	entries = history.getHistoryEntries(uins, start, 1);
+	entries = history->getHistoryEntries(uins, start, 1);
 	fromdate = entries[0].date;
-	entries = history.getHistoryEntries(uins, end, 1);
+	entries = history->getHistoryEntries(uins, end, 1);
 	todate = entries[0].date;
 	kdebugmf(KDEBUG_INFO, "start = %s, end = %s\n",
 		fromdate.toString("dd.MM.yyyy hh:mm:ss").latin1(),
@@ -1697,7 +1706,7 @@ void History::searchHistory()
 		do
 		{
 			len = total > 1000 ? 1000 : total;
-			entries = history.getHistoryEntries(uins, findrec.actualrecord - len + 1, len);
+			entries = history->getHistoryEntries(uins, findrec.actualrecord - len + 1, len);
 			entriesCount = entries.count();
 			//ehh, szkoda, ¿e w Qt nie ma reverse iteratorów...
 			QValueList<HistoryEntry>::const_iterator entry = entries.fromLast();
@@ -1735,7 +1744,7 @@ void History::searchHistory()
 		do
 		{
 			len = total > 1000 ? 1000 : total;
-			entries = history.getHistoryEntries(uins, findrec.actualrecord, len);
+			entries = history->getHistoryEntries(uins, findrec.actualrecord, len);
 			entriesCount = entries.count();
 			i = 0;
 			CONST_FOREACH(entry, entries)
@@ -1790,7 +1799,7 @@ void History::closeEvent(QCloseEvent *e)
 void History::initModule()
 {
 	kdebugf();
-	HistorySlots *historyslots=new HistorySlots(&history, "history_slots");
+	HistorySlots *historyslots = new HistorySlots(history, "history_slots");
 
 	//do usuniecia po wydaniu 0.4
 	config_file.addVariable("History", "Logging", config_file.readEntry("General", "Logging"));
@@ -1811,9 +1820,9 @@ void History::initModule()
 	ConfigDialog::connectSlot("History", "historyslider", SIGNAL(valueChanged(int)), historyslots, SLOT(updateQuoteTimeLabel(int)));
 
 	connect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
-		&history, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
+		history, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
 	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
-		&history, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
+		history, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
 	kdebugf2();
 }
 
@@ -1997,7 +2006,7 @@ void HistorySearch::resetFromDate()
 	kdebugf();
 	QValueList<HistoryEntry> entries;
 
-	entries = history.getHistoryEntries(uins, 0, 1);
+	entries = history->getHistoryEntries(uins, 0, 1);
 	if (!entries.isEmpty())
 	{
 		from_day_cob->setCurrentItem(entries[0].date.date().day() - 1);
@@ -2015,7 +2024,7 @@ void HistorySearch::resetToDate()
 	kdebugf();
 	QValueList<HistoryEntry> entries;
 
-	entries = history.getHistoryEntries(uins, history.getHistoryEntriesCount(uins) - 1, 1);
+	entries = history->getHistoryEntries(uins, history->getHistoryEntriesCount(uins) - 1, 1);
 	if (!entries.isEmpty())
 	{
 		to_day_cob->setCurrentItem(entries[0].date.date().day() - 1);
@@ -2173,4 +2182,4 @@ void HistorySlots::updateQuoteTimeLabel(int value)
 	kdebugf2();
 }
 
-HistoryManager history(NULL, "history_manager");
+HistoryManager *history = 0;

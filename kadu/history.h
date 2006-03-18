@@ -192,6 +192,9 @@ class HistoryManager : public QObject
 		void chatMsgReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t time, bool& grab);
 		void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
 		void checkImagesTimeouts();
+		void statusChanged(UserListElement elem, QString protocolName,
+					const UserStatus &oldStatus, bool massively, bool last);
+
 	public slots:
 		void addMyMessage(const UinsList &senders, const QString &msg);
 
@@ -210,7 +213,7 @@ class HistoryManager : public QObject
 		void buildIndex(const QString &mobile = QString::null);
 };
 
-extern HistoryManager history;
+extern HistoryManager *history;
 
 class HistorySlots: public QObject
 {

@@ -91,8 +91,46 @@ QVariant UserListElement::setProtocolData(const QString &protocolName, const QSt
 		protoData->data.insert(name, new QVariant(val));
 	delete oldVal;
 
-	CONST_FOREACH (group, privateData->Parents)
-		emit (*group)->protocolUserDataChanged(protocolName, *this, name, old, val, massively, last);
+	if (massively)
+	{
+		QDict<UserGroupSet> *names = ULEPrivate::protocolUserDataProxy.find(protocolName);
+		if (!names)
+		{
+			names = new QDict<UserGroupSet>();
+			ULEPrivate::protocolUserDataProxy.insert(protocolName, names);
+		}
+		UserGroupSet *groups = names->find(name);
+		if (!groups)
+		{
+			groups = new UserGroupSet();
+			names->insert(name, groups);
+		}
+		CONST_FOREACH (group, privateData->Parents)
+		{
+			emit (*group)->protocolUserDataChanged(protocolName, *this, name, old, val, massively, last);
+			if (!groups->contains(*group))
+				groups->insert(*group);
+		}
+		if (last)
+		{
+			QPtrDictIterator<void> it(*groups);
+			while (it.current())
+			{
+				emit (static_cast<UserGroup*>(it.currentKey()))->protocolUsersDataChanged(protocolName, name);
+				++it;
+			}
+			groups->clear();
+		}
+	}
+	else
+	{
+		CONST_FOREACH (group, privateData->Parents)
+		{
+			emit (*group)->protocolUserDataChanged(protocolName, *this, name, old, val, massively, last);
+			emit (*group)->protocolUsersDataChanged(protocolName, name);
+		}
+	}
+
 	return old;
 }
 
@@ -192,8 +230,39 @@ QVariant UserListElement::setData(const QString &name, const QVariant &val, bool
 		privateData->informations.insert(name, new QVariant(val));
 	delete oldVal;
 
-	CONST_FOREACH (group, privateData->Parents)
-		emit (*group)->userDataChanged(*this, name, old, val, massively, last);
+	if (massively)
+	{
+		UserGroupSet *groups = ULEPrivate::userDataProxy.find(name);
+		if (!groups)
+		{
+			groups = new UserGroupSet();
+			ULEPrivate::userDataProxy.insert(name, groups);
+		}
+		CONST_FOREACH (group, privateData->Parents)
+		{
+			emit (*group)->userDataChanged(*this, name, old, val, massively, last);
+			if (!groups->contains(*group))
+				groups->insert(*group);
+		}
+		if (last)
+		{
+			QPtrDictIterator<void> it(*groups);
+			while (it.current())
+			{
+				emit (static_cast<UserGroup*>(it.currentKey()))->usersDataChanged(name);
+				++it;
+			}
+			groups->clear();
+		}
+	}
+	else
+	{
+		CONST_FOREACH (group, privateData->Parents)
+		{
+			emit (*group)->userDataChanged(*this, name, old, val, massively, last);
+			emit (*group)->usersDataChanged(name);
+		}
+	}
 	return old;
 }
 
@@ -303,6 +372,7 @@ void UserListElement::setDNSName(const QString &protocolName, const QString &dns
 
 void UserListElement::setStatus(const QString &protocolName, const UserStatus &status, bool massively, bool last)
 {
+//	kdebugf();
 	ProtocolData *protoData = privateData->protocols.find(protocolName);
 	if (protoData == NULL)
 	{
@@ -314,9 +384,44 @@ void UserListElement::setStatus(const QString &protocolName, const UserStatus &s
 	}
 	UserStatus *oldStatus = protoData->Stat->copy();
 	*(protoData->Stat) = status;
-	CONST_FOREACH (group, privateData->Parents)
-		emit (*group)->statusChanged(*this, protocolName, *oldStatus, massively, last);
+
+	if (massively)
+	{
+		UserGroupSet *groups = ULEPrivate::statusChangeProxy.find(protocolName);
+		if (!groups)
+		{
+			groups = new UserGroupSet();
+			ULEPrivate::statusChangeProxy.insert(protocolName, groups);
+		}
+		CONST_FOREACH (group, privateData->Parents)
+		{
+//			kdebugm(KDEBUG_INFO, "group: %p\n", *group);
+			emit (*group)->statusChanged(*this, protocolName, *oldStatus, massively, last);
+			if (!groups->contains(*group))
+				groups->insert(*group);
+		}
+		if (last)
+		{
+			QPtrDictIterator<void> it(*groups);
+			while (it.current())
+			{
+				emit (static_cast<UserGroup*>(it.currentKey()))->usersStatusChanged(protocolName);
+				++it;
+			}
+			groups->clear();
+		}
+	}
+	else
+	{
+		CONST_FOREACH (group, privateData->Parents)
+		{
+			emit (*group)->statusChanged(*this, protocolName, *oldStatus, massively, last);
+			emit (*group)->usersStatusChanged(protocolName);
+		}
+	}
+
 	delete oldStatus;
+//	kdebugf2();
 }
 
 QStringList UserListElement::protocolList() const

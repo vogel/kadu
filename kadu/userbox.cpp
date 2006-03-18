@@ -360,8 +360,7 @@ UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
 			this, SLOT(userAddedToVisible(UserListElement, bool, bool)));
 	connect(VisibleUsers, SIGNAL(userRemoved(UserListElement, bool, bool)),
 			this, SLOT(userRemovedFromVisible(UserListElement, bool, bool)));
-	connect(VisibleUsers, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
-			this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
+	connect(VisibleUsers, SIGNAL(usersStatusChanged(QString)), this, SLOT(refreshLater()));
 	connect(VisibleUsers, SIGNAL(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)),
 			this, SLOT(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)));
 	connect(VisibleUsers, SIGNAL(protocolUserDataChanged(QString, UserListElement, QString, QVariant, QVariant, bool, bool)),
@@ -1230,24 +1229,12 @@ void UserBox::removingProtocol(UserListElement elem, QString protocolName, bool 
 	refreshLater();
 }
 
-void UserBox::statusChanged(UserListElement elem, QString protocolName,
-					const UserStatus &oldStatus, bool massively, bool last)
-{
-	if (massively)
-		refreshLater();
-	else
-		refresh();
-}
-
 void UserBox::userDataChanged(UserListElement elem, QString name, QVariant oldValue,
 					QVariant currentValue, bool massively, bool last)
 {
 	if (name != "AltNick" && name != "Mobile" && name != "HideDescription") // we are not interested in other names
 		return;
-	if (massively)
-		refreshLater();
-	else
-		refresh();
+	refreshLater();
 }
 
 void UserBox::protocolUserDataChanged(QString protocolName, UserListElement elem,
@@ -1258,21 +1245,14 @@ void UserBox::protocolUserDataChanged(QString protocolName, UserListElement elem
 		return;
 	if (name != "Blocking" && name != "OfflineTo")
 		return;
-	if (massively)
-		refreshLater();
-	else
-		refresh();
+	refreshLater();
 }
 
 
 void UserBox::userAddedToVisible(UserListElement elem, bool massively, bool last)
 {
 	sortHelper.push_back(elem);
-
-	if (massively)
-		refreshLater();
-	else
-		refresh();
+	refreshLater();
 }
 
 class torem

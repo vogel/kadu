@@ -428,7 +428,7 @@ void Sms::onSmsSenderFinished(bool success)
 	if (success)
 	{
 		if (c_saveInHistory->isChecked())
-			history.appendSms(recipient->text(), body->text());
+			history->appendSms(recipient->text(), body->text());
 		QMessageBox::information(this, tr("SMS sent"), tr("The SMS was sent and should be on its way"));
 		body->clear();
 	}

@@ -502,8 +502,6 @@ class UserBox : public QListBox
 		void userAddedToGroup(UserListElement elem, bool massively, bool last);
 		void userRemovedFromGroup(UserListElement elem, bool massively, bool last);
 
-		void statusChanged(UserListElement elem, QString protocolName,
-							const UserStatus &oldStatus, bool massively, bool last);
 		void userDataChanged(UserListElement elem, QString name, QVariant oldValue,
 							QVariant currentValue, bool massively, bool last);
 		void protocolUserDataChanged(QString protocolName, UserListElement elem,

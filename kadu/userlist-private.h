@@ -4,6 +4,7 @@
 #include <qintdict.h>
 #include <qmap.h>
 #include <qobject.h>
+#include <qptrdict.h>
 #include <qshared.h>
 #include <qstring.h>
 #include <qvariant.h>
@@ -13,6 +14,14 @@
 class UserStatus;
 class UserGroup;
 class ProtocolData;
+
+class UserGroupSet : public QPtrDict<void>
+{
+	public:
+		UserGroupSet() {}
+		bool contains(UserGroup *g) {return QPtrDict<void>::find(g) != 0;}
+		void insert(UserGroup *g) { QPtrDict<void>::insert(g, (void *)1); }
+};
 
 class ULEPrivate : public QObject, public QShared
 {
@@ -24,6 +33,12 @@ class ULEPrivate : public QObject, public QShared
 		UserListKey key;
 		ULEPrivate();
 		~ULEPrivate();
+
+		static QDict<QDict<UserGroupSet> > protocolUserDataProxy; // protocolName -> (fieldName -> UserGroupSet)
+		static QDict<UserGroupSet> userDataProxy; // field name -> UserGroupSet
+//		static QDict<QPtrDict<void> > addProtocolProxy;
+//		static QDict<QPtrDict<void> > removeProtocolProxy;
+		static QDict<UserGroupSet> statusChangeProxy;
 	public slots:
 		/* potrzebne, ¿eby refreshDNSName() mia³o do czego siê pod³±czyæ
 		   inaczej mo¿e siê zdarzyæ, ¿e w³a¶ciwy obiekt ULE ju¿ nie istnieje,

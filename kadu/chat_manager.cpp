@@ -180,6 +180,8 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 		userlist->addPerContactNonProtocolConfigEntry("chat_geometry", "ChatGeometry");
 		userlist->addPerContactNonProtocolConfigEntry("chat_vertical_sizes", "VerticalSizes");
 	}
+	connect(&refreshTitlesTimer, SIGNAL(timeout()), this, SLOT(refreshTitles()));
+	connect(userlist, SIGNAL(usersStatusChanged(QString)), this, SLOT(refreshTitlesLater()));
 
 	kdebugf2();
 }
@@ -373,6 +375,11 @@ void ChatManager::unregisterChat(Chat* chat)
 			return;
 		}
 	kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "NOT found\n");
+}
+
+void ChatManager::refreshTitlesLater()
+{
+	refreshTitlesTimer.start(0, true);
 }
 
 void ChatManager::refreshTitles()
@@ -778,7 +785,7 @@ void ChatManager::initModule()
 	config_file.addVariable("Look", "ChatUsrFontColor", QColor("#000000"));
 	config_file.addVariable("Look", "ChatMyNickColor", QColor("#000000"));
 	config_file.addVariable("Look", "ChatUsrNickColor", QColor("#000000"));
-	
+
 	//naglowki wiadomosci
 	config_file.addVariable("Look", "NoHeaderRepeat", false);
 	config_file.addVariable("Look", "HeaderSeparatorHeight", 1);
@@ -789,7 +796,7 @@ void ChatManager::initModule()
 	config_file.addVariable("Chat", "LastImagePath", QString(getenv("HOME"))+"/");
 
 	config_file.addVariable("Look", "Style", "kadu");
-	
+
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"), "LookTab");
 
 	ConfigDialog::addVBox("Look", "Look", "varOpts2");//potrzebne userboksowi
@@ -813,7 +820,7 @@ void ChatManager::initModule()
 			ConfigDialog::addHBox("Look", "Chat preview", "chat_prvw");
 				ConfigDialog::addLabel("Look", "chat_prvw", QT_TRANSLATE_NOOP("@default", "<b>Me</b> 00:00:00"), "chat_me");
 				ConfigDialog::addLabel("Look", "chat_prvw", QT_TRANSLATE_NOOP("@default", "<b>Other party</b> 00:00:02"), "chat_other");
-	
+
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default","Style"));
 		ConfigDialog::addComboBox("Look", "Style", QT_TRANSLATE_NOOP("@default", "Select chat style"), "Style", toStringList("Kadu", "Hapi", "IRC", tr("Custom")), toStringList("kadu", "hapi", "irc", "custom"));
 		ConfigDialog::addTextEdit("Look", "Style", QT_TRANSLATE_NOOP("@default", "Full chat style:"), "FullStyle", QString::null,

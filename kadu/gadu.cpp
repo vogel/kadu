@@ -579,6 +579,8 @@ void GaduProtocol::protocolUserDataChanged(QString protocolName, UserListElement
 		return;
 	if (CurrentStatus->isOffline())
 		return;
+	if (name != "OfflineTo" && name != "Blocking")
+		return;
 
 	if (massively)
 	{
@@ -625,6 +627,8 @@ void GaduProtocol::userDataChanged(UserListElement elem, QString name, QVariant 
 	if (!elem.usesProtocol("Gadu"))
 		return;
 	if (CurrentStatus->isOffline())
+		return;
+	if (name != "Anonymous")
 		return;
 
 	if (massively)

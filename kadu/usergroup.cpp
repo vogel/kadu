@@ -144,6 +144,8 @@ void UserGroup::addUser(UserListElement ule, bool massively, bool last)
 		emit userAdded(ule, massively, last);
 		emit modified();
 	}
+	if (!massively || (massively && last))
+		emit usersAdded();
 	kdebugf2();
 }
 
@@ -228,6 +230,8 @@ void UserGroup::removeUser(UserListElement ule, bool massively, bool last)
 		emit userRemoved(ule, massively, last);
 		emit modified();
 	}
+	if (!massively || (massively && last))
+		emit usersRemoved();
 
 	kdebugf2();
 }
