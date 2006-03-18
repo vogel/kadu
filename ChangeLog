@@ -309,6 +309,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * nowe sygna³y w klasie UserGroup dotycz±ce zdarzeñ, emitowane po zakoñczeniu
   zmian + dostosowanie reszty Kadu do tego - ok. 5% prszyspieszenia w czasie
   uruchamiania+zamykania (joi)
+* poprawka b³êdu wprowadzonego dzieñ wcze¶niej do parsera (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

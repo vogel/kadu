@@ -311,14 +311,19 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, bool esc
 				}
 				else if (pe2.type == ParseElem::PE_CHECK_FILE_EXISTS || pe2.type == ParseElem::PE_CHECK_FILE_NOT_EXISTS)
 				{
+					// zmienna potrzebna, bo pop_back() zniszczy nam zmienn± pe2, któr± pobrali¶my przez referencjê
+					bool check_file_exists = pe2.type == ParseElem::PE_CHECK_FILE_EXISTS;
+
 					int spacePos = pe.str.find(' ', 0);
 					parseStack.pop_back();
 					QString file;
+//					kdebugm(KDEBUG_INFO, "spacePos: %d\n", spacePos);
 					if (spacePos == -1)
 						file = pe.str;
 					else
 						file = pe.str.left(spacePos);
-					if (QFile::exists(file) == (pe2.type == ParseElem::PE_CHECK_FILE_EXISTS))
+//					kdebugm(KDEBUG_INFO, "file: %s\n", file.local8Bit().data());
+					if (QFile::exists(file) == check_file_exists)
 					{
 						pe.str = pe.str.mid(spacePos + 1);
 						pe.type = ParseElem::PE_STRING;
