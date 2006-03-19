@@ -33,10 +33,18 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 
 //	connect(verticalScrollBar(), SIGNAL(sliderReleased()), this, SLOT(repaint()));
 //	connect(verticalScrollBar(), SIGNAL(sliderReleased()), this, SLOT(refresh()));
-	connect(this, SIGNAL(contentsMoving(int, int)), this, SLOT(refresh()));
-	connect(this, SIGNAL(textChanged()), this, SLOT(refresh()));
+	connect(this, SIGNAL(contentsMoving(int, int)), this, SLOT(refreshLater()));
+	connect(this, SIGNAL(textChanged()), this, SLOT(refreshLater()));
+	connect(&refreshTimer, SIGNAL(timeout()), this, SLOT(refresh()));
+	connect(this, SIGNAL(textChanged()), this, SLOT(refreshLater()));
 	kdebugf2();
 }
+
+void KaduTextBrowser::refreshLater()
+{
+	refreshTimer.start(10, true);
+}
+
 void KaduTextBrowser::refresh()
 {
 	kdebugf();

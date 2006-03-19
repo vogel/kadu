@@ -5,6 +5,7 @@
 #include <qpoint.h>
 #include <qstring.h>
 #include <qtextbrowser.h>
+#include <qtimer.h>
 #include <qtooltip.h>
 
 class QPopupMenu;
@@ -22,6 +23,7 @@ class KaduTextBrowser : public QTextBrowser, private QToolTip
 	Q_OBJECT
 
 	private:
+		QTimer refreshTimer;
 		QString anchor;
 		int level;
 		/**
@@ -32,6 +34,7 @@ class KaduTextBrowser : public QTextBrowser, private QToolTip
 
 	private slots:
 		void refresh();
+		void refreshLater();
 		void copyLinkLocation();
 		void hyperlinkClicked(const QString& link) const;
 		void linkHighlighted(const QString &);

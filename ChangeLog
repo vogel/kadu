@@ -311,6 +311,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   uruchamiania+zamykania (joi)
 * poprawka b³êdu wprowadzonego dzieñ wcze¶niej do parsera (joi)
 * je¿eli sami przestawili¶my status na niedostêpny, to wy³±czamy autoawaya (joi)
+* rozwi±zane (chyba ostatnie) problemy z zanikaniem separatorów w oknie
+  rozmowy i historii (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
