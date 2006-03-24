@@ -93,9 +93,11 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	btngrp->setTitle(tr("Search criteria"));
 	r_pers = new QRadioButton(tr("&Personal data"),btngrp);
 	r_pers->setChecked(true);
+	connect(r_pers, SIGNAL(toggled(bool)), this, SLOT(persClicked()));
 	QToolTip::add(r_pers, tr("Search using the personal data typed above (name, nickname)..."));
 
 	r_uin = new QRadioButton(tr("&Uin number"),btngrp);
+	connect(r_uin, SIGNAL(toggled(bool)), this, SLOT(uinClicked()));
 	QToolTip::add(r_uin, tr("Search for this UIN exclusively"));
 
 	btngrp->insert(r_pers, 1);
@@ -153,7 +155,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 		r_uin->setChecked(true);
 		e_uin->setText(QString::number(_whoisSearchUin));
 	}
-	resize(450,330);
+	loadGeometry(this, "General", "SearchDialogGeometry", 0, 30, 750, 350);
 	setCaption(tr("Search user in directory"));
 
 	searchRecord = new SearchRecord;
@@ -164,8 +166,8 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 SearchDialog::~SearchDialog()
 {
 	kdebugf();
-
 	disconnect(gadu, SIGNAL(newSearchResults(SearchResults&, int, int)), this, SLOT(newSearchResults(SearchResults&, int, int)));
+	saveGeometry(this, "General", "SearchDialogGeometry");
 	delete searchRecord;
 	kdebugf2();
 }
@@ -401,6 +403,17 @@ void SearchDialog::uinTyped(void)
 void SearchDialog::personalDataTyped(void)
 {
 	r_pers->setChecked(true);
+}
+
+void SearchDialog::persClicked()
+{
+	only_active->setEnabled(false);
+	only_active->setChecked(false);
+}
+
+void SearchDialog::uinClicked()
+{
+	only_active->setEnabled(true);
 }
 
 void SearchDialog::updateInfoClicked()

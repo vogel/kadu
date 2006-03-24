@@ -315,6 +315,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   rozmowy i historii (joi)
 * przy w³±czonym usuwaniu nag³ówków po wyczyszczeniu okna chat nag³ówek
   pojawia siê z powrotem (neeo/joi)
+* zapamiêtywanie rozmiaru okna "Znajd¼ kontakt w katalogu" (neeo/joi)
+* przy wyszukiwaniu po numerze odznaczamy opcjê "tylko aktywni", bo serwer
+  nie zwróci nam ¿adnych danych je¿eli kontakt jest niedostêpny (neeo/joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

@@ -93,6 +93,8 @@ class SearchDialog : public QDialog {
 		void clearResults(void);
 		void uinTyped(void);
 		void personalDataTyped(void);
+		void persClicked();
+		void uinClicked();
 		void updateInfoClicked();
 
 	protected:
