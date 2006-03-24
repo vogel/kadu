@@ -906,11 +906,8 @@ void Kadu::changeAppearance()
 void Kadu::removeUsers(UserListElements users)
 {
 	kdebugf();
-	QStringList names;
-	CONST_FOREACH(user, users)
-		names.append((*user).altNick());
 	switch (QMessageBox::warning(kadu, "Kadu",
-		tr("Selected users:\n%0\nwill be deleted. Are you sure?").arg(names.join(", ")),
+		tr("Selected users:\n%0\nwill be deleted. Are you sure?").arg(users.altNicks().join(", ")),
 		tr("&Yes"),tr("Yes, with &history"), tr("&No"), 2, 2)){
 		case 2:
 			return;

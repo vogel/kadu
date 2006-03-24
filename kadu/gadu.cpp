@@ -462,11 +462,7 @@ void GaduProtocol::iWantGoOnline(const QString &desc)
 	int friends = (NextStatus->isFriendsOnly() ? GG_STATUS_FRIENDS_MASK : 0);
 
 	if (!desc.isEmpty())
-	{
-		unsigned char *pdesc = (unsigned char *)strdup(unicode2cp(desc).data());
-		gg_change_status_descr(Sess, GG_STATUS_AVAIL_DESCR | friends, (const char *)pdesc);
-		free(pdesc);
-	}
+		gg_change_status_descr(Sess, GG_STATUS_AVAIL_DESCR | friends, unicode2cp(desc));
 	else
 		gg_change_status(Sess, GG_STATUS_AVAIL | friends);
 
@@ -492,11 +488,7 @@ void GaduProtocol::iWantGoBusy(const QString &desc)
 	int friends = (NextStatus->isFriendsOnly() ? GG_STATUS_FRIENDS_MASK : 0);
 
 	if (!desc.isEmpty())
-	{
-		unsigned char *pdesc = (unsigned char *)strdup(unicode2cp(desc).data());
-		gg_change_status_descr(Sess, GG_STATUS_BUSY_DESCR | friends, (const char *)pdesc);
-		free(pdesc);
-	}
+		gg_change_status_descr(Sess, GG_STATUS_BUSY_DESCR | friends, unicode2cp(desc));
 	else
 		gg_change_status(Sess, GG_STATUS_BUSY | friends);
 
@@ -522,11 +514,7 @@ void GaduProtocol::iWantGoInvisible(const QString &desc)
 	int friends = (NextStatus->isFriendsOnly() ? GG_STATUS_FRIENDS_MASK : 0);
 
 	if (!desc.isEmpty())
-	{
-		unsigned char *pdesc = (unsigned char *)strdup(unicode2cp(desc).data());
-		gg_change_status_descr(Sess, GG_STATUS_INVISIBLE_DESCR | friends, (const char *)pdesc);
-		free(pdesc);
-	}
+		gg_change_status_descr(Sess, GG_STATUS_INVISIBLE_DESCR | friends, unicode2cp(desc));
 	else
 		gg_change_status(Sess, GG_STATUS_INVISIBLE | friends);
 
@@ -549,11 +537,7 @@ void GaduProtocol::iWantGoOffline(const QString &desc)
 		return;
 
 	if (!desc.isEmpty())
-	{
-		unsigned char *pdesc = (unsigned char *)strdup(unicode2cp(desc).data());
-		gg_change_status_descr(Sess, GG_STATUS_NOT_AVAIL_DESCR, (const char *)pdesc);
-		free(pdesc);
-	}
+		gg_change_status_descr(Sess, GG_STATUS_NOT_AVAIL_DESCR, unicode2cp(desc));
 	else
 		gg_change_status(Sess, GG_STATUS_NOT_AVAIL);
 
