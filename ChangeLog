@@ -318,6 +318,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zapamiêtywanie rozmiaru okna "Znajd¼ kontakt w katalogu" (neeo/joi)
 * przy wyszukiwaniu po numerze odznaczamy opcjê "tylko aktywni", bo serwer
   nie zwróci nam ¿adnych danych je¿eli kontakt jest niedostêpny (neeo/joi)
+* przy wy³±czaniu Kadu (a w³a¶ciwie przy wy³adowywaniu którego¶ z modu³ów
+  *_docking) nie pokazujemy na u³amek sekundy g³ównego okna programu (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
