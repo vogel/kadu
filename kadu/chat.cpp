@@ -878,6 +878,8 @@ void Chat::clearChatWindow()
 			delete *msg;
 		ChatMessages.clear();
 		body->clear();
+		if (CfgNoHeaderRepeat)
+			LastTime = 0;
 	}
 	kdebugf2();
 }

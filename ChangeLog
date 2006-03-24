@@ -313,6 +313,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * je¿eli sami przestawili¶my status na niedostêpny, to wy³±czamy autoawaya (joi)
 * rozwi±zane (chyba ostatnie) problemy z zanikaniem separatorów w oknie
   rozmowy i historii (joi)
+* przy w³±czonym usuwaniu nag³ówków po wyczyszczeniu okna chat nag³ówek
+  pojawia siê z powrotem (neeo/joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
