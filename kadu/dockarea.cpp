@@ -141,8 +141,8 @@ bool DockArea::loadFromConfig(QWidget* toolbars_parent)
 			return true;
 		}
 	}
-	return false;
 	kdebugf2();
+	return false;
 }
 
 const UserGroup* DockArea::selectedUsers()
