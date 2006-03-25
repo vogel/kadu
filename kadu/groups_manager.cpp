@@ -269,7 +269,7 @@ GroupsManager::GroupsManager() : QObject(0, "groups_manager"), GroupBar(NULL)
 	kdebugf();
 	CONST_FOREACH(user, *userlist)
 	{
-		kdebugm(KDEBUG_INFO, "%s\n", (*user).altNick().local8Bit().data());
+//		kdebugm(KDEBUG_INFO, "%s\n", (*user).altNick().local8Bit().data());
 		QStringList groups_ = (*user).data("Groups").toStringList();
 		CONST_FOREACH(g, groups_)
 			addGroup(*g)->addUser(*user);
@@ -334,10 +334,10 @@ bool GroupsManager::groupExists(const QString &name)
 
 UserGroup *GroupsManager::addGroup(const QString &name)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "start: '%s'\n", name.local8Bit().data());
+//	kdebugmf(KDEBUG_FUNCTION_START, "start: '%s'\n", name.local8Bit().data());
 	if (Groups.contains(name))
 	{
-		kdebugmf(KDEBUG_FUNCTION_END, "stop: group already exists\n");
+//		kdebugmf(KDEBUG_FUNCTION_END, "stop: group already exists\n");
 		return Groups[name];
 	}
 	int cnt = userlist->count() / 2;
@@ -405,7 +405,7 @@ void GroupsManager::userDataChanged(UserListElement elem, QString name, QVariant
 //dodanie(usuniêcie) u¿ytkownika do grupy poprzez addUser (removeUser) powinno modyfikowaæ pole Groups
 void GroupsManager::userAdded(UserListElement elem, bool massively, bool last)
 {
-	kdebugf();
+//	kdebugf();
 	CONST_FOREACH(group, Groups)
 		if (sender() == *group)
 		{
@@ -418,12 +418,12 @@ void GroupsManager::userAdded(UserListElement elem, bool massively, bool last)
 			break;
 		}
 	refreshTabBarLater();
-	kdebugf2();
+//	kdebugf2();
 }
 
 void GroupsManager::userRemoved(UserListElement elem, bool massively, bool last)
 {
-	kdebugf();
+//	kdebugf();
 	CONST_FOREACH(group, Groups)
 		if (sender() == *group)
 		{
@@ -436,7 +436,7 @@ void GroupsManager::userRemoved(UserListElement elem, bool massively, bool last)
 			break;
 		}
 	refreshTabBarLater();
-	kdebugf2();
+//	kdebugf2();
 }
 
 UsersWithDescription::UsersWithDescription() : UserGroup(userlist->count(), "users_with_description")

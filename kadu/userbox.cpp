@@ -1259,11 +1259,13 @@ class torem
 {
 	std::vector<UserListElement>::const_iterator begin;
 	std::vector<UserListElement>::const_iterator end;
+//	std::vector<UserListElement>::const_iterator last;
 
 	public:
 	torem(const std::vector<UserListElement> &src)
 	{
 		begin = src.begin();
+//		last = begin;
 		end = src.end();
 	}
 
@@ -1272,13 +1274,21 @@ class torem
 		for(std::vector<UserListElement>::const_iterator it = begin; it != end; ++it)
 			if ((*it) == u)
 				return true;
+/*		std::vector<UserListElement>::const_iterator lastlast = last;
+		for(; last != end; ++last)
+			if ((*last) == u)
+				return true;
+		for(last = begin; last != lastlast; ++last)
+			if ((*last) == u)
+				return true;
+*/
 		return false;
 	}
 };
 
 void UserBox::userRemovedFromVisible(UserListElement elem, bool massively, bool last)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "start: mass:%d\n", massively);
+//	kdebugmf(KDEBUG_FUNCTION_START, "start: mass:%d\n", massively);
 	if (massively)
 		toRemove.push_back(elem);
 	else
@@ -1293,7 +1303,7 @@ void UserBox::userRemovedFromVisible(UserListElement elem, bool massively, bool 
 		refreshLater();
 	else
 		refresh();
-	kdebugf2();
+//	kdebugf2();
 }
 
 void UserBox::userAddedToGroup(UserListElement elem, bool massively, bool last)
@@ -1333,7 +1343,7 @@ void UserBox::userAddedToGroup(UserListElement elem, bool massively, bool last)
 
 void UserBox::userRemovedFromGroup(UserListElement elem, bool massively, bool last)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "start: mass:%d\n", massively);
+//	kdebugmf(KDEBUG_FUNCTION_START, "start: mass:%d\n", massively);
 	const UserGroup *s = static_cast<const UserGroup *>(sender());
 	if (VisibleUsers->contains(elem))
 		if (massively)
@@ -1345,7 +1355,7 @@ void UserBox::userRemovedFromGroup(UserListElement elem, bool massively, bool la
 		VisibleUsers->removeUsers(RemoveProxy[s]);
 		RemoveProxy.remove(s);
 	}
-	kdebugf2();
+//	kdebugf2();
 }
 
 const UserGroup *UserBox::visibleUsers() const

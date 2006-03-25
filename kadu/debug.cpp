@@ -15,6 +15,7 @@ int debug_mask;
 #include <qmutex.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <sys/time.h>
 
 /*
 	Poniewa¿ debug() mo¿e byæ u¿ywany w ró¿nych w±tkach,
@@ -24,12 +25,26 @@ int debug_mask;
 */
 static QMutex debug_mutex;
 
+static int last;
+static struct timeval tv;
+static struct timezone tz;
+bool showTimesInDebug = false;
+
 void _kdebug_with_mask(int mask, const char* file, const int line, const char* format,...)
 {
 	if (debug_mask & mask)
 	{
 		debug_mutex.lock();
-		fprintf(stderr, "KK <%s:%i>\t", file, line);
+
+		if (showTimesInDebug)
+		{
+			gettimeofday(&tv, &tz);
+			int x = (tv.tv_sec % 1000) * 1000000 + tv.tv_usec;
+			fprintf(stderr, "KK <%d:%06d:%09d:%s:%i>\t", tv.tv_sec, tv.tv_usec, x - last, file, line);
+			last = x;
+		}
+		else
+			fprintf(stderr, "KK <%s:%i>\t", file, line);
 
 		if (mask & KDEBUG_WARNING)
 			fprintf(stderr, "\033[34m");//niebieski

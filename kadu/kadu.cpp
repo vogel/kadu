@@ -1200,9 +1200,6 @@ bool Kadu::close(bool quit)
 			config_file.writeEntry("General", "LastStatusDescription", gadu->status().description());
 		}
 
-		xml_config_file->sync();
-		config_file.sync();
-
 		pending.writeToFile();
 		writeIgnored();
 		if (!gadu->status().isOffline())
@@ -1218,11 +1215,10 @@ bool Kadu::close(bool quit)
 				gadu->status().setOffline(config_file.readEntry("General", "DisconnectDescription"));
 			}
 		}
-//		disconnectNetwork();
-//		gadu->logout();
 		GaduProtocol::closeModule();
  		ChatManager::closeModule();
 		userlist->writeToConfig();
+		xml_config_file->sync();
 		GroupsManager::closeModule();
 		delete history;
  		UserBox::closeModule();
@@ -1659,12 +1655,6 @@ void Kadu::startupProcedure()
 
 	if (ShowMainWindowOnStart)
 		show();
-
-	QString path_;
-	path_ = ggPath(QString::null);
-	mkdir(path_.local8Bit().data(), 0700);
-	path_.append("/history/");
-	mkdir(path_.local8Bit().data(), 0700);
 
 	Updates::initModule();
 

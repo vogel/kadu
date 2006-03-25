@@ -141,16 +141,34 @@ static void kadu_signal_handler(int s)
 }
 #endif
 
+#ifdef DEBUG_ENABLED
+extern bool showTimesInDebug;
+#endif
+
 int main(int argc, char *argv[])
 {
 	xml_config_file = new XmlConfigFile();
+
+	QString path_ = ggPath(QString::null);
+	if (path_.endsWith("/kadu/") || path_.endsWith("/Kadu/")) // for profiles directory
+		mkdir(path_.left(path_.length() - 6).local8Bit().data(), 0700);
+	mkdir(path_.local8Bit().data(), 0700);
+	path_.append("/history/");
+	mkdir(path_.local8Bit().data(), 0700);
+
 	config_file_ptr = new ConfigFile(ggPath(QString("kadu.conf")));
 	config_file.addVariable("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
-	debug_mask=config_file.readNumEntry("General", "DEBUG_MASK");
+	debug_mask = config_file.readNumEntry("General", "DEBUG_MASK");
 	char *d = getenv("DEBUG_MASK");
 	if (d)
-		debug_mask=atol(d);
-	gg_debug_level=debug_mask | ~255;
+		debug_mask = atol(d);
+	gg_debug_level = debug_mask | ~255;
+
+#ifdef DEBUG_ENABLED
+	d = getenv("SHOW_TIMES");
+	if (d)
+		showTimesInDebug = atoi(d);
+#endif
 
 	lock_str = (struct flock *) malloc(sizeof(struct flock));
 	lock_str->l_type = F_WRLCK;
@@ -187,10 +205,12 @@ int main(int argc, char *argv[])
 		exit(10);
 	}
 
-
+	kdebugm(KDEBUG_INFO, "before creation of new QApplication\n");
 	new QApplication(argc, argv);
-	defaultFontInfo = new QFontInfo(qApp->font());
-	defaultFont = new QFont(defaultFontInfo->family(), defaultFontInfo->pointSize());
+	kdebugm(KDEBUG_INFO, "after creation of new QApplication\n");
+
+	defaultFont = new QFont(qApp->font());
+	defaultFontInfo = new QFontInfo(*defaultFont);
 	// loading translation
 	config_file.addVariable("General", "Language", QString(QTextCodec::locale()).mid(0,2));
 	QTranslator qt_qm(0, "Translator_qt");

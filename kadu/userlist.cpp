@@ -220,7 +220,6 @@ void UserList::writeToConfig()
 						contact_elem.setAttribute(it2.key(), val);
 				}
 	}
-	xml_config_file->sync();
 }
 
 void UserList::setAllOffline(const QString &protocolName)

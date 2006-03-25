@@ -307,7 +307,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   [opis: %d][!brak opisu%d], do zaprzeczania przy sprawdzaniu istnienia pliku
   mo¿na u¿yæ ! zamiast ~ (joi)
 * nowe sygna³y w klasie UserGroup dotycz±ce zdarzeñ, emitowane po zakoñczeniu
-  zmian + dostosowanie reszty Kadu do tego - ok. 5% prszyspieszenia w czasie
+  zmian + dostosowanie reszty Kadu do tego - ok. 5% przyspieszenia w czasie
   uruchamiania+zamykania (joi)
 * poprawka b³êdu wprowadzonego dzieñ wcze¶niej do parsera (joi)
 * je¿eli sami przestawili¶my status na niedostêpny, to wy³±czamy autoawaya (joi)
@@ -320,6 +320,15 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   nie zwróci nam ¿adnych danych je¿eli kontakt jest niedostêpny (neeo/joi)
 * przy wy³±czaniu Kadu (a w³a¶ciwie przy wy³adowywaniu którego¶ z modu³ów
   *_docking) nie pokazujemy na u³amek sekundy g³ównego okna programu (joi)
+* trochê optymalizacji zwi±zanych z uruchamianiem/zamykaniem programu
+  (kolejne 5%): zapisywanie pliku konfiguracyjnego tylko raz,
+  racjonalniejszy dostêp do czcionek (joi)
+* przy zmiennej ¶rodowiskowej SHOW_TIMES ustawionej na 1 i kompilacji
+  z --enable-debug, na konsoli dostajemy czasy ka¿dego kdebuga w formacie:
+  "ilo¶æ sekund od 1.1.1970":"ilo¶æ mikrosekund od pocz±tku sekundy":"ró¿nica
+  w mikrosekundach od ostatniego debuga" (joi)
+* przy ustawionej zmiennej CONFIG_DIR, je¿eli katalog nie istnieje, to zostanie
+  on utworzony (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

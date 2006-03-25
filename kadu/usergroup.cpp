@@ -93,7 +93,7 @@ bool UserGroup::contains(const QString &protocolName, const QString &id, Behavio
 
 bool UserGroup::contains(UserListElement elem, BehaviourForAnonymous beh) const
 {
-	kdebugf();
+//	kdebugf();
 	if (d->data.find(elem.key()) != NULL)
 		if (elem.isAnonymous())
 			return (beh == TrueForAnonymous);
@@ -134,7 +134,8 @@ UserListElement UserGroup::byKey(UserListKey key)
 
 void UserGroup::addUser(UserListElement ule, bool massively, bool last)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' altNick:'%s' mass:%d last:%d\n", name(), ule.altNick().local8Bit().data(), massively, last);
+//	if (last)
+//	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' altNick:'%s' mass:%d last:%d\n", name(), ule.altNick().local8Bit().data(), massively, last);
 	if (!ule.privateData->Parents.contains(this))
 	{
 		emit addingUser(ule, massively, last);
@@ -146,12 +147,13 @@ void UserGroup::addUser(UserListElement ule, bool massively, bool last)
 	}
 	if (!massively || (massively && last))
 		emit usersAdded();
-	kdebugf2();
+//	if (last)
+//	kdebugf2();
 }
 
 UserListElement UserGroup::addAnonymous(const QString &protocolName, const QString &id, bool massively, bool last)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "start: proto:'%s' id:'%s' mass:%d\n", protocolName.local8Bit().data(), id.local8Bit().data(), massively);
+//	kdebugmf(KDEBUG_FUNCTION_START, "start: proto:'%s' id:'%s' mass:%d\n", protocolName.local8Bit().data(), id.local8Bit().data(), massively);
 	UserListElement e;
 	e.setAltNick(id);
 	e.setAnonymous(true);
@@ -211,7 +213,7 @@ void UserGroup::removeUsers(QValueList<UserListElement> users)
 
 void UserGroup::removeUser(UserListElement ule, bool massively, bool last)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' altNick:'%s' mass:%d last:%d\n", name(), ule.altNick().local8Bit().data(), massively, last);
+//	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' altNick:'%s' mass:%d last:%d\n", name(), ule.altNick().local8Bit().data(), massively, last);
 //	printBacktrace("xxx");
 	UserListElement *elem = d->data.find(ule.key());
 	if (elem != NULL)
@@ -233,7 +235,7 @@ void UserGroup::removeUser(UserListElement ule, bool massively, bool last)
 	if (!massively || (massively && last))
 		emit usersRemoved();
 
-	kdebugf2();
+//	kdebugf2();
 }
 
 UserGroup::size_type UserGroup::count() const

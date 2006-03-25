@@ -197,7 +197,6 @@ int writeIgnored(QString filename)
 			ignored_contact_elem.setAttribute("uin", (*user).ID("Gadu"));
 		}
 	}
-	xml_config_file->sync();
 	kdebugf2();
 	return 0;
 }
