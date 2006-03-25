@@ -756,7 +756,7 @@ void Wizard::createHintsOptionsPage()
 	new QLabel(tr("Preview"), grp_hintsOptions);
 
 	preview = new QLabel (toDisplay(tr("<b>User</b> changed status to <b>Busy</b>")), grp_hintsOptions);
-	preview->setFont(QFont("sans", 10));	//<-----------------------------------
+//	preview->setFont(QFont("sans", 10));	//<-----------------------------------
 	preview->setPaletteForegroundColor(currentHints[2][1]);
 	preview->setPaletteBackgroundColor(currentHints[2][0]);
 	preview->setAlignment(Qt::AlignCenter);
@@ -766,7 +766,7 @@ void Wizard::createHintsOptionsPage()
 	new QLabel(QString::null, grp_hintsOptions);
 
 	preview2 = new QLabel (tr("<b>Error</b>: (192.168.0.1) Disconnection has occured"), grp_hintsOptions);
-	preview2->setFont(QFont("sans", 10));	//<-----------------------------------
+//	preview2->setFont(QFont("sans", 10));	//<-----------------------------------
 	preview2->setPaletteForegroundColor(currentHints[3][1]);
 	preview2->setPaletteBackgroundColor(currentHints[3][0]);
 	preview2->setAlignment(Qt::AlignCenter);
@@ -785,7 +785,7 @@ void Wizard::createHintsOptionsPage()
 
 	new QLabel(tr("Preview"), grp_hintsOptions2);
 	preview4 = new QLabel (toDisplay(hintSyntax[0]), grp_hintsOptions2);
-	preview4->setFont(QFont("sans", 10));	//<----------------------------------
+//	preview4->setFont(QFont("sans", 10));	//<----------------------------------
 	preview2->setPaletteForegroundColor(currentHints[2][1]);
 	preview2->setPaletteBackgroundColor(currentHints[2][0]);
 	preview4->setAlignment(Qt::AlignCenter);
