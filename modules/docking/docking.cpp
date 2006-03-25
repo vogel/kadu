@@ -258,7 +258,7 @@ void DockingManager::setDocked(bool docked, bool butDontHideOnClose)
 	}
 	else
 	{
-		kdebugm(KDEBUG_PANIC, "closing: %d\n", Kadu::closing());
+		kdebugm(KDEBUG_INFO, "closing: %d\n", Kadu::closing());
 		if (!Kadu::closing())
 		{
 			ConfigDialog::removeControl("General", "Start docked");
