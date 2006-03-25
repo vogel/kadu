@@ -51,6 +51,7 @@ extern "C" void encryption_close()
 EncryptionManager::EncryptionManager(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
+	config_file.addVariable("Encryption", "EncryptionKeyLength", "1024");
 	ConfigDialog::addCheckBox("Chat", "Chat",
 			QT_TRANSLATE_NOOP("@default", "Use encryption"), "Encryption", false);
 	ConfigDialog::addHGroupBox("Chat", "Chat",
