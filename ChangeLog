@@ -329,6 +329,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   w mikrosekundach od ostatniego debuga" (joi)
 * przy ustawionej zmiennej CONFIG_DIR, je¿eli katalog nie istnieje, to zostanie
   on utworzony (joi)
+* definicje styli okna rozmowy wydzielone jako klasy do chat_styles.cpp/h (adrian)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

@@ -20,6 +20,7 @@
 #include "chat.h"
 #include "chat_manager.h"
 #include "chat_message.h"
+#include "chat_styles.h"
 #include "color_selector.h"
 #include "config_dialog.h"
 #include "custom_input.h"
@@ -133,35 +134,15 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 
 	connect(body, SIGNAL(mouseReleased(QMouseEvent *, KaduTextBrowser *)), Edit, SLOT(setFocus()));
 
-	QString Style = config_file.readEntry("Look", "Style");
-	if (Style == "kadu")
-	{
-		formatStringFull = "<p style=\"background-color: %1\"><img title=\"\" height=\"%8\" width=\"10000\" align=\"right\"><font color=\"%2\"><b><font color=\"%3\">%4</font> :: %6</b><br/>%7</font></p>";
-		formatStringPure = "<p style=\"background-color: %1\"><img title=\"\" height=\"%4\" width=\"10000\" align=\"right\"><font color=\"%2\">%5</font></p>";
-		formatStringWithoutSeparator = "<p style=\"background-color: %1\"><font color=\"%2\">%4</font></p>";
-	}
-	else if (Style == "hapi")
-	{
-		formatStringFull = "<p style=\"background-color: %1;\"><img title=\"\" height=\"%8\" width=\"10000\" align=\"right\">"\
-							"<table style=\"border-bottom: solid 1px black;\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" width=\"100%\">"\
-							"<tr><td align=\"left\" width=\"50%\" valign=\"bottom\"><b><font color=\"%3\">%4</font></b></td>"\
-								"<td align=\"right\" width=\"50%\"><font color=\"%2\">%6</font></td></tr></table>"\
-							"<hr/><font color=\"%2\">%7</font></p>";
-		formatStringPure = "<p style=\"background-color: %1\"><img title=\"\" height=\"%4\" width=\"10000\" align=\"right\"><font color=\"%2\">%5</font></p>";
-		formatStringWithoutSeparator = "<p style=\"background-color: %1\"><font color=\"%2\">%4</font></span></p>";
-	}
-	else if (Style == "irc")
-	{
-		formatStringFull = "<p style=\"background-color: %1\"><img title=\"\" height=\"%8\" width=\"10000\" align=\"right\"><font color=\"%2\"><b>[%5] <font color=\"%3\">%4</font>: </b> %7</font></p>";
-		formatStringPure = "<p style=\"background-color: %1\"><img title=\"\" height=\"%4\" width=\"10000\" align=\"right\"><font color=\"%2\">%5</font></p>";
-		formatStringWithoutSeparator = "<p style=\"background-color: %1\"><font color=\"%2\">%4</font></p>";
-	}
+	QString style = config_file.readEntry("Look", "Style");
+	if (style == "kadu")
+		Style = new KaduChatStyle();
+	else if (style == "hapi")
+		Style = new HapiChatStyle();
+	else if (style == "irc")
+		Style = new IrcChatStyle();
 	else
-	{
-		formatStringFull = "<p style=\"background-color: %1;\"><img title=\"\" height=\"%8\" width=\"10000\" align=\"right\">" + config_file.readEntry("Look", "FullStyle") + "</p>";
-		formatStringPure = "<p style=\"background-color: %1\"><img title=\"\" height=\"%4\" width=\"10000\" align=\"right\"><font color=\"%2\">%5</font></p>";
-		formatStringWithoutSeparator = "<p style=\"background-color: %1\"><font color=\"%2\">%4</font></p>";
-	}
+		Style = new CustomChatStyle(config_file.readEntry("Look", "FullStyle"));
 
 	// headers removal stuff
 	CfgNoHeaderRepeat = config_file.readBoolEntry("Look","NoHeaderRepeat");
@@ -622,7 +603,7 @@ void Chat::formatMessage(ChatMessage &msg, QColor myBgColor, QColor usrBgColor, 
 		{
 			if (CfgHeaderSeparatorHeight > 0)
 			{
-				msg.message = narg(formatStringPure,
+				msg.message = narg(Style->formatStringPure(),
 				msg.backgroundColor.name(),
 				msg.textColor.name(),
 				msg.nickColor.name(),
@@ -631,7 +612,7 @@ void Chat::formatMessage(ChatMessage &msg, QColor myBgColor, QColor usrBgColor, 
 			}
 			else
 			{
-				msg.message = narg(formatStringWithoutSeparator,
+				msg.message = narg(Style->formatStringWithoutSeparator(),
 					msg.backgroundColor.name(),
 					msg.textColor.name(),
 					msg.nickColor.name(),
@@ -640,7 +621,7 @@ void Chat::formatMessage(ChatMessage &msg, QColor myBgColor, QColor usrBgColor, 
 		}
 		else
 		{
-			msg.message = narg(formatStringFull,
+			msg.message = narg(Style->formatStringFull(),
 				msg.backgroundColor.name(),
 				msg.textColor.name(),
 				msg.nickColor.name(),
@@ -653,7 +634,7 @@ void Chat::formatMessage(ChatMessage &msg, QColor myBgColor, QColor usrBgColor, 
 	}
 	else
 	{
-		msg.message = narg(formatStringFull,
+		msg.message = narg(Style->formatStringFull(),
 			msg.backgroundColor.name(),
 			msg.textColor.name(),
 			msg.nickColor.name(),

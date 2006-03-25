@@ -21,6 +21,7 @@ class QPushButton;
 class Chat;
 class ChatManager;
 class ChatMessage;
+class ChatStyle;
 class ColorSelector;
 class EmoticonSelector;
 class KaduSplitter;
@@ -83,9 +84,7 @@ class Chat : public QMainWindow
 		int CfgHeaderSeparatorHeight;      //jaki wysoki chcemy mieæ separator ?
 		int CfgNoHeaderInterval;        //co ile chcemy przywróciæ nag³ówek ?
 
-		QString formatStringFull;
-		QString formatStringPure;
-		QString formatStringWithoutSeparator;
+		ChatStyle* Style;
 
 		time_t LastTime;
 

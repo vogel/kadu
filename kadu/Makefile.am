@@ -9,6 +9,7 @@ chat.cpp \
 chat_manager.cpp \
 chat_manager_slots.cpp \
 chat_message.cpp \
+chat_styles.cpp \
 color_selector.cpp \
 config_dialog.cpp \
 config_file.cpp \
@@ -64,6 +65,7 @@ chat.h \
 chat_manager.h \
 chat_manager_slots.h \
 chat_message.h \
+chat_styles.h \
 color_selector.h \
 config_dialog.h \
 config_file.h \
@@ -158,6 +160,7 @@ obj/chat.$(OBJEXT) \
 obj/chat_manager.$(OBJEXT) \
 obj/chat_manager_slots.$(OBJEXT) \
 obj/chat_message.$(OBJEXT) \
+obj/chat_styles.$(OBJEXT) \
 obj/color_selector.$(OBJEXT) \
 obj/config_dialog.$(OBJEXT) \
 obj/config_file.$(OBJEXT) \
@@ -259,6 +262,7 @@ include $(DEPS)/chat_manager_moc.d
 include $(DEPS)/chat_manager_slots.d
 include $(DEPS)/chat_manager_slots_moc.d
 include $(DEPS)/chat_message.d
+include $(DEPS)/chat_styles.d
 include $(DEPS)/color_selector.d
 include $(DEPS)/color_selector_moc.d
 include $(DEPS)/config_dialog.d
