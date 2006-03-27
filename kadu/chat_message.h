@@ -6,6 +6,7 @@
 #include <qmap.h>
 #include <qstring.h>
 
+#include "chat_colors.h"
 #include "emoticons.h"
 
 class ChatStyle;
@@ -38,10 +39,7 @@ class ChatMessage
 	QString unformattedMessage; /*!< niesformatowana wiadomo¶æ */
 	bool isMyMessage; /*!< zmienna mowi±ca czy wiadomo¶c zosta³a
 				napisana przez nas */
-	QColor backgroundColor; /*!< t³o wiadomo¶ci */
-	QColor textColor; /*!< kolor wiadomo¶ci */
-	QColor nickColor; /*!< kolor nicka */
-	
+	ChatColors Colors;
 
 	QMap<QString, bool> attributes; /*!<
 		Mo¿e s³u¿yæ do przechowywania informacji o tym
@@ -75,7 +73,7 @@ class ChatMessage
 	**/
 	ChatMessage(const QString &nick, const QString &unformattedMessage, bool myMessage, QDateTime date, QDateTime sdate=QDateTime());
 	/**
-		\fn ChatMessage(const QString &formattedMessage, const QColor &bgColor=Qt::white, const QColor &textColor=Qt::black)
+		\fn ChatMessage(const QString &formattedMessage, const ChatColors& colors = ChatColors(Qt::white, Qt::black, Qt::black))
 		Konstruktor ustawiaj±cy sformatowan± wiadomo¶æ,
 		kolor t³a i liter wiadomo¶ci
 		\param nick nazwa u¿ytkownika
@@ -84,7 +82,8 @@ class ChatMessage
 		\param date data otrzymania wiadomo¶ci
 		\param sdate data wys³ania wiadomo¶ci
 	**/
-	ChatMessage(const QString &formattedMessage, const QColor &bgColor = Qt::white, const QColor &textColor = Qt::black, const QColor &nickColor = Qt::black);
+	ChatMessage(const QString &formattedMessage,
+		const ChatColors& colors = ChatColors(Qt::white, Qt::black, Qt::black));
 
 	void formatMessage(const ChatStyle* chat_style, const EmoticonsStyle emoticons_style,
 		bool include_header, int separator_size);

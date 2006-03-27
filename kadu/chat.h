@@ -26,7 +26,9 @@ class ColorSelector;
 class EmoticonSelector;
 class KaduSplitter;
 class KaduTextBrowser;
+class OwnChatColors;
 class UserBox;
+class UserChatColors;
 
 /** \typedef QValueList<Chat*> ChatList */
 typedef QValueList<Chat*> ChatList;
@@ -198,26 +200,23 @@ class Chat : public QMainWindow
 		**/
 		void formatMessages(QValueList<ChatMessage *> &msgs);
 		/**
-			\fn void formatMessage(ChatMessage &msg,
-				QColor myBgColor=QColor(), QColor usrBgColor=QColor(),
-				QColor myFontColor=QColor(), QColor usrFontColor=QColor(),
-				EmoticonsStyle style=(EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle"))
+			\fn void formatMessage(ChatMessage& msg,
+				const OwnChatColors* own_colors = NULL,
+				const UserChatColors* user_colors = NULL,
+				EmoticonsStyle style = (EmoticonsStyle)
+					config_file.readNumEntry("Chat","EmoticonsStyle"));
 
-			Formatuje wiadomo¶æ na html'a
-			\param msg wiadomo¶æ która bêdzie sformatowana
-			\param myBgColor kolor który bêdzie ustawiony jako t³o
-			w naszych wiadomo¶ciach
-			\param usrBgColor kolor, który bêdzie ustawiony jako t³o
-			wiadomo¶ci naszego rozmówcy
-			\param myFontColor kolor naszej czcionki
-			\param usrFontColor kolor czcionki naszego rozmówcy
-			\param style styl ikonek
+			Formats message to html
+			\param msg message to be formatted
+			\param own_colors our chat colors
+			\param user_colors user chat colors
+			\param style emoticons style
 		**/
-		void formatMessage(ChatMessage &msg,
-				QColor myBgColor=QColor(), QColor usrBgColor=QColor(),
-				QColor myFontColor=QColor(), QColor usrFontColor=QColor(),
-				QColor myNickColor=QColor(), QColor usrNickColor=QColor(),
-				EmoticonsStyle style=(EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle"));
+		void formatMessage(ChatMessage& msg,
+			const OwnChatColors* own_colors = NULL,
+			const UserChatColors* user_colors = NULL,
+			EmoticonsStyle style = (EmoticonsStyle)
+				config_file.readNumEntry("Chat","EmoticonsStyle"));
 
 		/**
 			\fn void newMessage(const QString &protocolName, UserListElements senders, const QString &msg, time_t time)

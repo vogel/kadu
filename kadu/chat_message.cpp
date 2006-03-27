@@ -15,6 +15,7 @@
 #include "misc.h"
 
 ChatMessage::ChatMessage(const QString &nick, const QString &unformattedMessage, bool myMessage, QDateTime date, QDateTime sdate)
+	: Colors(QColor(), QColor(), QColor())
 {
 	needsToBeFormatted=true;
 	this->nick=nick;
@@ -24,13 +25,11 @@ ChatMessage::ChatMessage(const QString &nick, const QString &unformattedMessage,
 	this->sdate=sdate;
 }
 
-ChatMessage::ChatMessage(const QString &formattedMessage, const QColor &bgColor, const QColor &txtColor, const QColor &nicColor)
+ChatMessage::ChatMessage(const QString &formattedMessage, const ChatColors& colors)
+	: Colors(colors)
 {
 	needsToBeFormatted=false;
 	message=formattedMessage;
-	backgroundColor=bgColor;
-	textColor=txtColor;
-	nickColor=nicColor;
 }
 
 /* convert special characters into emoticons, HTML into plain text and so forth */
@@ -76,27 +75,27 @@ void ChatMessage::formatMessage(const ChatStyle* chat_style,
 			date_str_2.append(" / S " + printDateTime(sdate));
 		HtmlDocument::escapeText(escaped_nick);
 		message = narg(chat_style->formatStringFull(),
-			backgroundColor.name(),
-			textColor.name(),
-			nickColor.name(),
+			Colors.backgroundColor().name(),
+			Colors.fontColor().name(),
+			Colors.nickColor().name(),
 			escaped_nick,
 			date_str,
 			date_str_2,
-			convertCharacters(unformattedMessage, backgroundColor, emoticons_style),
+			convertCharacters(unformattedMessage, Colors.backgroundColor(), emoticons_style),
 			QString::number(separator_size));
 	}
 	else if (separator_size > 0)
 		message = narg(chat_style->formatStringPure(),
-			backgroundColor.name(),
-			textColor.name(),
-			nickColor.name(),
+			Colors.backgroundColor().name(),
+			Colors.fontColor().name(),
+			Colors.nickColor().name(),
 			QString::number(separator_size),
-			convertCharacters(unformattedMessage, backgroundColor, emoticons_style));
+			convertCharacters(unformattedMessage, Colors.backgroundColor(), emoticons_style));
 	else
 		message = narg(chat_style->formatStringWithoutSeparator(),
-			backgroundColor.name(),
-			textColor.name(),
-			nickColor.name(),
-			convertCharacters(unformattedMessage, backgroundColor, emoticons_style));
+			Colors.backgroundColor().name(),
+			Colors.fontColor().name(),
+			Colors.nickColor().name(),
+			convertCharacters(unformattedMessage, Colors.backgroundColor(), emoticons_style));
 	needsToBeFormatted = false;
 }

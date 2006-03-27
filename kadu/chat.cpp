@@ -18,6 +18,7 @@
 
 #include "action.h"
 #include "chat.h"
+#include "chat_colors.h"
 #include "chat_manager.h"
 #include "chat_message.h"
 #include "chat_styles.h"
@@ -504,52 +505,29 @@ void Chat::closeEvent(QCloseEvent* e)
 
 void Chat::formatMessages(QValueList<ChatMessage *> &msgs)
 {
-	QColor myBgColor=config_file.readColorEntry("Look", "ChatMyBgColor");
-	QColor usrBgColor=config_file.readColorEntry("Look", "ChatUsrBgColor");
-	QColor myFontColor=config_file.readColorEntry("Look", "ChatMyFontColor");
-	QColor usrFontColor=config_file.readColorEntry("Look", "ChatUsrFontColor");
-	QColor myNickColor=config_file.readColorEntry("Look", "ChatMyNickColor");
-	QColor usrNickColor=config_file.readColorEntry("Look", "ChatUsrNickColor");
+	OwnChatColors own_colors;
+	UserChatColors user_colors;
 	EmoticonsStyle style=(EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle");
 	FOREACH(msg, msgs)
-		formatMessage(**msg, myBgColor, usrBgColor, myFontColor, usrFontColor, myNickColor, usrNickColor, style);
+		formatMessage(**msg, &own_colors, &user_colors, style);
 }
 
-void Chat::formatMessage(ChatMessage &msg, QColor myBgColor, QColor usrBgColor, QColor myFontColor, QColor usrFontColor, QColor myNickColor, QColor usrNickColor, EmoticonsStyle style)
+void Chat::formatMessage(ChatMessage &msg, const OwnChatColors* own_colors,
+	const UserChatColors* user_colors, EmoticonsStyle style)
 {
 	if (msg.isMyMessage)
 	{
-		if (myBgColor.isValid())
-			msg.backgroundColor=myBgColor;
+		if (own_colors == NULL)
+			msg.Colors = OwnChatColors();
 		else
-			msg.backgroundColor=config_file.readColorEntry("Look","ChatMyBgColor");
-
-		if (myFontColor.isValid())
-			msg.textColor=myFontColor;
-		else
-			msg.textColor=config_file.readColorEntry("Look","ChatMyFontColor");
-
-		if (myNickColor.isValid())
-			msg.nickColor = myNickColor;
-		else
-			msg.nickColor = config_file.readColorEntry("Look","ChatMyNickColor");
+			msg.Colors = *own_colors;
 	}
 	else
 	{
-		if (usrBgColor.isValid())
-			msg.backgroundColor=usrBgColor;
+		if (user_colors == NULL)
+			msg.Colors = UserChatColors();
 		else
-			msg.backgroundColor=config_file.readColorEntry("Look","ChatUsrBgColor");
-
-		if (usrFontColor.isValid())
-			msg.textColor=usrFontColor;
-		else
-			msg.textColor=config_file.readColorEntry("Look","ChatUsrFontColor");
-
-		if (usrNickColor.isValid())
-			msg.nickColor = usrNickColor;
-		else
-			msg.nickColor = config_file.readColorEntry("Look","ChatUsrNickColor");
+			msg.Colors = *user_colors;
 	}
 
 	// ilo¶æ minut od 1970 roku
@@ -596,7 +574,8 @@ void Chat::repaintMessages()
 
 		i=0;
 		CONST_FOREACH(msg, ChatMessages)
-			body->setParagraphBackgroundColor(i++, (*msg)->backgroundColor);
+			body->setParagraphBackgroundColor(i++,
+				(*msg)->Colors.backgroundColor());
 
 		if (!ScrollLocked)
 			body->scrollToBottom();
@@ -617,7 +596,8 @@ void Chat::repaintMessages()
 
 		i=ChatMessages.size()-1;
 		CONST_FOREACH(msg, ChatMessages)
-			body->setParagraphBackgroundColor(i--, (*msg)->backgroundColor);
+			body->setParagraphBackgroundColor(i--,
+				(*msg)->Colors.backgroundColor());
 	}
 
 	body->viewport()->setUpdatesEnabled(true);
