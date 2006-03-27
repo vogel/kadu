@@ -92,7 +92,7 @@ HintManager::HintManager(QWidget *parent, const char *name)
 
 	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Parameters"), QString::null, Advanced);
 		ConfigDialog::addHBox("Hints", "Parameters", "top");
-			ConfigDialog::addCheckBox("Hints", "top", QT_TRANSLATE_NOOP("@default", "Set for all"), "SetAll", false);
+			ConfigDialog::addCheckBox("Hints", "top", QT_TRANSLATE_NOOP("@default", "Set for all"), "SetAll", true);
 			ConfigDialog::addLabel("Hints", "top", QT_TRANSLATE_NOOP("@default", "<b>Text</b> preview"));
 
 		ConfigDialog::addHBox("Hints", "Parameters", "center");
