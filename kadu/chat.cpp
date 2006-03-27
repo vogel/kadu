@@ -481,40 +481,6 @@ void Chat::mouseReleaseEvent(QMouseEvent *e)
 	QWidget::mouseReleaseEvent(e);
 }
 
-/* convert special characters into emoticons, HTML into plain text and so forth */
-QString Chat::convertCharacters(QString edit, const QColor &bgcolor, EmoticonsStyle style)
-{
-	// zmieniamy windowsowe \r\n na unixowe \n
-	edit.replace("\r\n", "<br/>");
-	edit.replace("\n",   "<br/>");
-
-	HtmlDocument doc;
-	doc.parseHtml(edit);
-
-	// detekcja adresow url
-	doc.convertUrlsToHtml();
-
-	if (style != EMOTS_NONE)
-	{
-		body->mimeSourceFactory()->addFilePath(emoticons->themePath());
-		emoticons->expandEmoticons(doc, bgcolor, style);
-	}
-
-	GaduImagesManager::setBackgroundsForAnimatedImages(doc, bgcolor);
-	edit = doc.generateHtml();
-
-	// workaround for bug in Qt - if there's a space after image, Qt does not show it, so we are replacing it with &nbsp;
-	// regular expression has to contain "title", because this attribute may contain ">" (as in emoticon <rotfl>)
-	const static QRegExp emotRegExp("<img emoticon=\"([01])\" title=\"([^\"]*)\" ([^>]*)> ");
-	const static QString emotAfter ("<img emoticon=\"\\1\" title=\"\\2\" \\3>&nbsp;");
-	edit.replace(emotRegExp, emotAfter);
-	const static QRegExp imageRegExp("<img src=\"([^\"]*)\"([^>]*)> ");
-	const static QString imageAfter( "<img src=\"\\1\"\\2>&nbsp;");
-	edit.replace(imageRegExp, imageAfter);
-
-	return edit;
-}
-
 /* unregister us */
 void Chat::closeEvent(QCloseEvent* e)
 {
@@ -585,67 +551,22 @@ void Chat::formatMessage(ChatMessage &msg, QColor myBgColor, QColor usrBgColor, 
 		else
 			msg.nickColor = config_file.readColorEntry("Look","ChatUsrNickColor");
 	}
-	QString date = printDateTime(msg.date);
-	QString date2 = date;
 
 	// ilo¶æ minut od 1970 roku
 	time_t CurTime = msg.date.toTime_t() / 60;
 
-	if (!msg.sdate.isNull())
-		date2.append(" / S " + printDateTime(msg.sdate));
-
-	QString nick = msg.nick;
-	HtmlDocument::escapeText(nick);
+	if (style != EMOTS_NONE)
+		body->mimeSourceFactory()->addFilePath(emoticons->themePath());
 
 	if (CfgNoHeaderRepeat && (CurTime - LastTime <= CfgNoHeaderInterval))
 	{
 		if (PreviousMessage == msg.nick)
-		{
-			if (CfgHeaderSeparatorHeight > 0)
-			{
-				msg.message = narg(Style->formatStringPure(),
-				msg.backgroundColor.name(),
-				msg.textColor.name(),
-				msg.nickColor.name(),
-				QString::number(CfgHeaderSeparatorHeight),
-				convertCharacters(msg.unformattedMessage, msg.backgroundColor, style));
-			}
-			else
-			{
-				msg.message = narg(Style->formatStringWithoutSeparator(),
-					msg.backgroundColor.name(),
-					msg.textColor.name(),
-					msg.nickColor.name(),
-					convertCharacters(msg.unformattedMessage, msg.backgroundColor, style));
-			}
-		}
+			msg.formatMessage(Style, style, false, CfgHeaderSeparatorHeight);
 		else
-		{
-			msg.message = narg(Style->formatStringFull(),
-				msg.backgroundColor.name(),
-				msg.textColor.name(),
-				msg.nickColor.name(),
-				nick,
-				date,
-				date2,
-				convertCharacters(msg.unformattedMessage, msg.backgroundColor, style),
-				QString::number(ParagraphSeparator));
-		}
+			msg.formatMessage(Style, style, true, ParagraphSeparator);
 	}
 	else
-	{
-		msg.message = narg(Style->formatStringFull(),
-			msg.backgroundColor.name(),
-			msg.textColor.name(),
-			msg.nickColor.name(),
-			nick,
-			date,
-			date2,
-			convertCharacters(msg.unformattedMessage, msg.backgroundColor, style),
-			QString::number(ParagraphSeparator));
-	}
-
-	msg.needsToBeFormatted = false;
+		msg.formatMessage(Style, style, true, ParagraphSeparator);
 
 	PreviousMessage = msg.nick;
 	LastTime = CurTime;

@@ -14,9 +14,9 @@ class ChatStyle
 		ChatStyle(const QString& format_string_full,
 			const QString& format_string_pure,
 			const QString& format_string_without_separator);
-		const QString& formatStringFull();
-		const QString& formatStringPure();
-		const QString& formatStringWithoutSeparator();
+		const QString& formatStringFull() const;
+		const QString& formatStringPure() const;
+		const QString& formatStringWithoutSeparator() const;
 };
 
 class KaduChatStyle : public ChatStyle

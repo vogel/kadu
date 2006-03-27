@@ -8,17 +8,17 @@ ChatStyle::ChatStyle(const QString& format_string_full,
 {
 }
 
-const QString& ChatStyle::formatStringFull()
+const QString& ChatStyle::formatStringFull() const
 {
 	return FormatStringFull;
 }
 
-const QString& ChatStyle::formatStringPure()
+const QString& ChatStyle::formatStringPure() const
 {
 	return FormatStringPure;
 }
 
-const QString& ChatStyle::formatStringWithoutSeparator()
+const QString& ChatStyle::formatStringWithoutSeparator() const
 {
 	return FormatStringWithoutSeparator;
 }

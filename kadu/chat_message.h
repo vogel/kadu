@@ -6,6 +6,10 @@
 #include <qmap.h>
 #include <qstring.h>
 
+#include "emoticons.h"
+
+class ChatStyle;
+
 /**
 
 	Klasa przechowuj±ca informacje o wiadomo¶ci, która ma siê pojawiæ
@@ -15,6 +19,18 @@
 **/
 class ChatMessage
 {
+	private:
+		/**
+			\fn QString convertCharacters(QString text, const QColor &bgcolor, EmoticonsStyle style)
+			Funkcja zamienia specjalne tagi na emotikonki,
+			html na czysty tekst itp.
+			\param text tekst do konwersji
+			\param bgcolor kolor t³a
+			\param style styl emotikonek
+		**/
+		QString convertCharacters(QString text, const QColor &bgcolor, EmoticonsStyle style);
+
+
 	public:
 	QString nick;/*!< nazwa u¿ytkownika */
 	QDateTime date; /*!< data otrzymania wiadomo¶ci */
@@ -69,6 +85,9 @@ class ChatMessage
 		\param sdate data wys³ania wiadomo¶ci
 	**/
 	ChatMessage(const QString &formattedMessage, const QColor &bgColor = Qt::white, const QColor &textColor = Qt::black, const QColor &nickColor = Qt::black);
+
+	void formatMessage(const ChatStyle* chat_style, const EmoticonsStyle emoticons_style,
+		bool include_header, int separator_size);
 };
 
 #endif

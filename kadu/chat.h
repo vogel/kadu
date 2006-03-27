@@ -154,16 +154,6 @@ class Chat : public QMainWindow
 		virtual void closeEvent(QCloseEvent* e);
 
 		/**
-			\fn QString convertCharacters(QString text, const QColor &bgcolor, EmoticonsStyle style)
-			Funkcja zamienia specjalne tagi na emotikonki,
-			html na czysty tekst itp.
-			\param text tekst do konwersji
-			\param bgcolor kolor t³a
-			\param style styl emotikonek
-		**/
-		QString convertCharacters(QString text, const QColor &bgcolor, EmoticonsStyle style);
-
-		/**
 			\fn virtual void windowActivationChange(bool oldActive)
 			Funkcja steruj±ca mruganiem napisu okna
 		**/
