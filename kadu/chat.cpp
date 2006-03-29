@@ -557,48 +557,27 @@ void Chat::repaintMessages()
 
 	QString text;
 	int i;
-	if (config_file.readBoolEntry("Chat","ScrollDown"))
+
+	QValueList<ChatMessage *>::const_iterator it=ChatMessages.begin();
+	//z pierwszej wiadomo¶ci usuwamy obrazek separatora
+	if (it!=ChatMessages.end())
 	{
-		QValueList<ChatMessage *>::const_iterator it=ChatMessages.begin();
-		//z pierwszej wiadomo¶ci usuwamy obrazek separatora
-		if (it!=ChatMessages.end())
-		{
-			QString msg=(*it)->message;
-			msg.remove(QRegExp("<img title=\"\" height=\"[0-9]*\" width=\"10000\" align=\"right\">"));
-			text+=msg;
-			++it;
-		}
-		for(; it!=ChatMessages.end(); ++it)
-			text+=(*it)->message;
-		body->setText(text);
-
-		i=0;
-		CONST_FOREACH(msg, ChatMessages)
-			body->setParagraphBackgroundColor(i++,
-				(*msg)->Colors.backgroundColor());
-
-		if (!ScrollLocked)
-			body->scrollToBottom();
+		QString msg=(*it)->message;
+		msg.remove(QRegExp("<img title=\"\" height=\"[0-9]*\" width=\"10000\" align=\"right\">"));
+		text+=msg;
+		++it;
 	}
-	else
-	{
-		QValueList<ChatMessage *>::const_iterator it=ChatMessages.begin();
-		if (it!=ChatMessages.end())
-		{
-			QString msg=(*it)->message;
-			msg.remove(QRegExp("<img title=\"\" height=\"[0-9]*\" width=\"10000\" align=\"right\">"));
-			text+=msg;
-			++it;
-		}
-		for(; it!=ChatMessages.end(); ++it)
-			text=(*it)->message+text;
-		body->setText(text);
+	for(; it!=ChatMessages.end(); ++it)
+		text+=(*it)->message;
+	body->setText(text);
 
-		i=ChatMessages.size()-1;
-		CONST_FOREACH(msg, ChatMessages)
-			body->setParagraphBackgroundColor(i--,
-				(*msg)->Colors.backgroundColor());
-	}
+	i=0;
+	CONST_FOREACH(msg, ChatMessages)
+		body->setParagraphBackgroundColor(i++,
+			(*msg)->Colors.backgroundColor());
+
+	if (!ScrollLocked)
+		body->scrollToBottom();
 
 	body->viewport()->setUpdatesEnabled(true);
 	body->viewport()->repaint();

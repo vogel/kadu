@@ -335,6 +335,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * klasy ChatColors, OwnChatColors, UserChatColors (adrian)
 * usuniêta mo¿liwo¶æ wy³±czenia zapisywania rozmiaru g³ównego okna (joi)
 * poprawiony uk³ad widgetów w oknie konfiguracji przy innych poziomach ni¿ "Ekspert" (joi)
+* usuniêta zabugowana i rzadko u¿ywana opcja skrolowania wiadomo¶ci w chacie w górê (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
