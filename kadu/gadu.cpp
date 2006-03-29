@@ -301,6 +301,21 @@ void GaduProtocol::initModule()
 //zakladka "siec"
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Network"), "NetworkTab");
 
+	ConfigDialog::addVBox("Network", "Network", "dcc");
+
+	ConfigDialog::addCheckBox("Network", "Network",
+		QT_TRANSLATE_NOOP("@default", "Use proxy server"), "UseProxy", false, QString::null, QString::null, Advanced);
+
+	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "Proxy server"), QString::null, Advanced);
+	ConfigDialog::addGrid("Network", "Proxy server", "proxygrid", Expert);
+	ConfigDialog::addLineEdit("Network", "proxygrid", QT_TRANSLATE_NOOP("@default", "Host: "), "ProxyHost", "0.0.0.0", QString::null, "proxyhost");
+	ConfigDialog::addLineEdit("Network", "proxygrid",
+		QT_TRANSLATE_NOOP("@default", " Port: "), "ProxyPort", "0");
+	ConfigDialog::addLineEdit("Network", "proxygrid",
+		QT_TRANSLATE_NOOP("@default", "Username: "), "ProxyUser");
+	ConfigDialog::addLineEdit("Network", "proxygrid",
+		QT_TRANSLATE_NOOP("@default", " Password: "), "ProxyPassword");
+
 	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "Servers properties"), QString::null, Expert);
 	ConfigDialog::addGrid("Network", "Servers properties", "servergrid", Expert);
 	ConfigDialog::addCheckBox("Network", "servergrid",
@@ -320,19 +335,6 @@ void GaduProtocol::initModule()
 		QT_TRANSLATE_NOOP("@default", "Port to connect to servers"), "DefaultPort", options, values);
 
 	config_file.addVariable("Network", "TimeoutInMs", 5000);
-
-	ConfigDialog::addCheckBox("Network", "Network",
-		QT_TRANSLATE_NOOP("@default", "Use proxy server"), "UseProxy", false, QString::null, QString::null, Advanced);
-
-	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "Proxy server"), QString::null, Advanced);
-	ConfigDialog::addGrid("Network", "Proxy server", "proxygrid", Expert);
-	ConfigDialog::addLineEdit("Network", "proxygrid", QT_TRANSLATE_NOOP("@default", "Host: "), "ProxyHost", "0.0.0.0", QString::null, "proxyhost");
-	ConfigDialog::addLineEdit("Network", "proxygrid",
-		QT_TRANSLATE_NOOP("@default", " Port: "), "ProxyPort", "0");
-	ConfigDialog::addLineEdit("Network", "proxygrid",
-		QT_TRANSLATE_NOOP("@default", "Username: "), "ProxyUser");
-	ConfigDialog::addLineEdit("Network", "proxygrid",
-		QT_TRANSLATE_NOOP("@default", " Password: "), "ProxyPassword");
 
 	ConfigDialog::registerSlotOnCreateTab("Network", gadu, SLOT(onCreateTabNetwork()));
 	ConfigDialog::registerSlotOnApplyTab("Network", gadu, SLOT(onApplyTabNetwork()));

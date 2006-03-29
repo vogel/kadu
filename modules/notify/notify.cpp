@@ -82,9 +82,11 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name)
 	notify_slots=new NotifySlots(NULL, "notify_slots");
 
 	ConfigDialog::addCheckBox("Notify", "Notify",
-		QT_TRANSLATE_NOOP("@default", "Ignore changes right after connection to the server"), "NotifyIgnoreOnConnection", true, QT_TRANSLATE_NOOP("@default","This option will supersede tooltips with users' status\n changes upon establishing connection to the server"), QString::null, Advanced);
-	ConfigDialog::addCheckBox("Notify", "Notify",
 		QT_TRANSLATE_NOOP("@default", "Notify about all users"), "NotifyAboutAll", false);
+	ConfigDialog::addCheckBox("Notify", "Notify",
+		QT_TRANSLATE_NOOP("@default", "Ignore changes right after connection to the server"), "NotifyIgnoreOnConnection", true,
+		QT_TRANSLATE_NOOP("@default","This option will supersede tooltips with users' status\n changes upon establishing connection to the server"),
+		QString::null, Advanced);
 	ConfigDialog::addCheckBox("Notify", "Notify",
 		QT_TRANSLATE_NOOP("@default", "Ignore status changes from available / busy to available / busy"),
 		"IgnoreOnlineToOnline", true, QString::null, QString::null, Advanced);

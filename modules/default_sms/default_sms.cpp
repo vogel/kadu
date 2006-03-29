@@ -344,7 +344,7 @@ void SmsEraGateway::httpFinished()
 SmsGatewaySlots::SmsGatewaySlots(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
-	ConfigDialog::addVGroupBox("SMS", "SMS",
+	ConfigDialog::addVGroupBox("SMS", "sms-beginner",
 			QT_TRANSLATE_NOOP("@default", "SMS Era Gateway"));
 
 	era_types=toStringList(tr("Sponsored"), tr("OmnixMultimedia"));
@@ -420,8 +420,8 @@ static bool activated;
 void SmsGatewaySlots::onCloseTabSMS()
 {
 	kdebugf();
-	if (activated)	
-		modules_manager->moduleDecUsageCount("default_sms"); 
+	if (activated)
+		modules_manager->moduleDecUsageCount("default_sms");
 	activated=false;
 }
 
@@ -437,8 +437,8 @@ void SmsGatewaySlots::onCreateTabSMS()
 
 	e_erapassword->setText(config_file.readEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_Password"));
 	e_erauser->setText(config_file.readEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_User", "48"));
-	
-	modules_manager->moduleIncUsageCount("default_sms"); 
+
+	modules_manager->moduleIncUsageCount("default_sms");
 	activated=true;
 	kdebugf2();
 }

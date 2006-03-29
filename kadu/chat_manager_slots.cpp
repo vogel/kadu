@@ -118,13 +118,12 @@ void ChatManagerSlots::onCreateTabChat()
 	connect(browserCombo, SIGNAL(activated (int)), this, SLOT(findAndSetWebBrowser(int)));
 	connect(browserOptionsCombo, SIGNAL(activated (int)), this, SLOT(findAndSetBrowserOption(int)));
 
-	QCheckBox *c_prunechat= ConfigDialog::getCheckBox("Chat", "Automatically prune chat messages");
-	QHGroupBox *h_prune= ConfigDialog::getHGroupBox("Chat", "Message pruning");
+	onPruneChat(config_file.readBoolEntry("Chat", "ChatPrune"));
 
-	h_prune->setEnabled(c_prunechat->isChecked());
+	QCheckBox *c_foldlink = ConfigDialog::getCheckBox("Chat", "Automatically fold links");
+	QHGroupBox *h_fold = ConfigDialog::getHGroupBox("Chat", "Link folding");
+	onFoldLink(config_file.readBoolEntry("Chat", "FoldLink"));
 
-	QCheckBox *c_foldlink= ConfigDialog::getCheckBox("Chat", "Automatically fold links");
-	QHGroupBox *h_fold= ConfigDialog::getHGroupBox("Chat", "Link folding");
 	QToolTip::add(h_fold, tr("URLs longer than this value will be shown truncated to this length"));
 	QToolTip::add(c_foldlink, tr("This will show a long URL as http://www.start...end.com/\nto protect the chat window from a mess"));
 	ConfigDialog::getSpinBox("Chat", "Max image size")->setSuffix(" kB");
@@ -134,8 +133,6 @@ void ChatManagerSlots::onCreateTabChat()
 	blockCloseTime->setSuffix(" s");
 	QCheckBox *shortcutSends = ConfigDialog::getCheckBox("Chat", "\"%1\" in chat sends message by default");
 	shortcutSends->setText(shortcutSends->text().arg(config_file.readEntry("ShortCuts", "chat_newline")));
-
-	h_fold->setEnabled(c_foldlink->isChecked());
 
 	kdebugf2();
 }
@@ -182,6 +179,7 @@ void ChatManagerSlots::onFoldLink(bool toggled)
 {
 	ConfigDialog::getHGroupBox("Chat", "Link folding")->setEnabled(toggled);
 }
+
 void ChatManagerSlots::onRemoveHeaders(bool toggled)
 {
 	ConfigDialog::getSpinBox("Look", "Chat header separators height:")->setEnabled(toggled);

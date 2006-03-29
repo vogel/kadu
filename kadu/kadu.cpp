@@ -125,14 +125,15 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 	ConfigDialog::addLineEdit("General", "User data", QT_TRANSLATE_NOOP("@default", "Password"), "Password", QString::null);
 	ConfigDialog::addLineEdit("General", "User data", QT_TRANSLATE_NOOP("@default", "Nick"), "Nick", tr("Me"));
 	ConfigDialog::addComboBox("General", "General", QT_TRANSLATE_NOOP("@default", "Set language:"));
-	ConfigDialog::addGrid("General", "General", "grid", 2);
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Restore window geometry"), "SaveGeometry", true, QT_TRANSLATE_NOOP("@default", "Remember window size and position between startups"), QString::null, Advanced);
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Check for updates"), "CheckUpdates", true, QT_TRANSLATE_NOOP("@default", "Automatically checks whether a new version is available"), QString::null, Advanced);
+	ConfigDialog::addGrid("General", "General", "grid-beginner", 2, QString::null, Beginner);
+	ConfigDialog::addGrid("General", "General", "grid-advanced", 2, QString::null, Advanced);
+	ConfigDialog::addGrid("General", "General", "grid-expert", 2, QString::null, Expert);
 
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Private status"), "PrivateStatus", false, QT_TRANSLATE_NOOP("@default", "When enabled, you're visible only to users on your list"));
+	ConfigDialog::addCheckBox("General", "grid-beginner", QT_TRANSLATE_NOOP("@default", "Private status"), "PrivateStatus", false, QT_TRANSLATE_NOOP("@default", "When enabled, you're visible only to users on your list"));
 
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show emoticons in panel"), "ShowEmotPanel", false, QString::null, QString::null, Advanced);
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show emoticons in history"), "ShowEmotHist", false, QString::null, QString::null, Advanced);
+	ConfigDialog::addCheckBox("General", "grid-advanced", QT_TRANSLATE_NOOP("@default", "Check for updates"), "CheckUpdates", true, QT_TRANSLATE_NOOP("@default", "Automatically checks whether a new version is available"), QString::null, Advanced);
+	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Show emoticons in panel"), "ShowEmotPanel", false, QString::null, QString::null, Expert);
+	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Show emoticons in history"), "ShowEmotHist", false, QString::null, QString::null, Expert);
 	config_file.addVariable("General", "ParagraphSeparator", 4);
 #ifdef DEBUG_ENABLED
 	ConfigDialog::addLineEdit("General", "General", QT_TRANSLATE_NOOP("@default", "Debugging mask"), "DEBUG_MASK",
@@ -176,9 +177,12 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 	ConfigDialog::addComboBox("Look", "Look",
 			QT_TRANSLATE_NOOP("@default","Qt Theme"));
 
-	ConfigDialog::addGrid("Look", "Look", "varOpts", 2);
-		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Show status button"), "ShowStatusButton", true, QString::null, QString::null, Advanced);
-		ConfigDialog::addCheckBox("Look", "varOpts", QT_TRANSLATE_NOOP("@default", "Display group tabs"), "DisplayGroupTabs", true, QString::null, QString::null, Expert);
+	ConfigDialog::addGrid("Look", "Look", "varOpts-beginner", 2, QString::null, Beginner);
+	ConfigDialog::addGrid("Look", "Look", "varOpts-advanced", 2, QString::null, Advanced);
+	ConfigDialog::addGrid("Look", "Look", "varOpts-expert", 2, QString::null, Expert);
+
+		ConfigDialog::addCheckBox("Look", "varOpts-advanced", QT_TRANSLATE_NOOP("@default", "Show status button"), "ShowStatusButton", true, QString::null, QString::null, Advanced);
+		ConfigDialog::addCheckBox("Look", "varOpts-expert", QT_TRANSLATE_NOOP("@default", "Display group tabs"), "DisplayGroupTabs", true, QString::null, QString::null, Expert);
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Colors"), QString::null, Advanced);
 		ConfigDialog::addVGroupBox("Look", "Colors", QT_TRANSLATE_NOOP("@default", "Main window"));
 			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Panel background color"), "InfoPanelBgColor", config_file.readColorEntry("Look","InfoPanelBgColor"), QString::null, "panel_bg_color");
@@ -1180,17 +1184,14 @@ bool Kadu::close(bool quit)
 		delete defaultFontInfo;
 		delete defaultFont;
 
-		if (config_file.readBoolEntry("General", "SaveGeometry"))
+		if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		{
-			if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
-			{
-				config_file.writeEntry("General", "UserBoxHeight", Userbox->size().height());
-				config_file.writeEntry("General", "DescriptionHeight", InfoPanel->size().height());
-			}
-			if (config_file.readBoolEntry("Look", "ShowStatusButton"))
-				config_file.writeEntry("General", "UserBoxHeight", Userbox->size().height());
-			saveGeometry(this, "General", "Geometry");
+			config_file.writeEntry("General", "UserBoxHeight", Userbox->size().height());
+			config_file.writeEntry("General", "DescriptionHeight", InfoPanel->size().height());
 		}
+		if (config_file.readBoolEntry("Look", "ShowStatusButton"))
+			config_file.writeEntry("General", "UserBoxHeight", Userbox->size().height());
+		saveGeometry(this, "General", "Geometry");
 
 		config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));
 

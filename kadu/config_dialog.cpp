@@ -405,10 +405,10 @@ void ConfigDialog::createTabAndWidgets(const QString& tab)
 
 	FOREACH(i, Tabs[tab])
 		createWidget(i);
-		
+
 	FOREACH(j, SlotsOnCreateTab[tab])
 		connect(this, SIGNAL(createTab()), (*j).receiver, (*j).slot);
-	
+
 	emit createTab();
 
 	FOREACH(j, SlotsOnCreateTab[tab])
@@ -432,7 +432,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 {
 	kdebugf();
 
-			     
+
 	ConfigDialog::appHandle=application;
 	setWFlags(Qt::WDestructiveClose);
 
@@ -579,8 +579,10 @@ void ConfigDialog::updateUserLevel(QMapConstIterator<QString,
 			continue;
 		if ((*i).userLevelRequired <= userLevel)
 			(*i).entireWidget->show();
+//			(*i).entireWidget->setEnabled(true);
 		else
 			(*i).entireWidget->hide();
+//			(*i).entireWidget->setEnabled(false);
 	}
 
 	kdebugf2();

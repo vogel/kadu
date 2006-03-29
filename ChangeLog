@@ -333,6 +333,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * formatowanie wiadomo¶ci wydzielone jako funkcja formatMessage
   w klasie ChatMessage (adrian)
 * klasy ChatColors, OwnChatColors, UserChatColors (adrian)
+* usuniêta mo¿liwo¶æ wy³±czenia zapisywania rozmiaru g³ównego okna (joi)
+* poprawiony uk³ad widgetów w oknie konfiguracji przy innych poziomach ni¿ "Ekspert" (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

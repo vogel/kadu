@@ -54,7 +54,7 @@ DockingManager::DockingManager(QObject *parent, const char *name) : QObject(pare
 	connect(dockMenu, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
 	connect(this, SIGNAL(mousePressMidButton()), &pending, SLOT(openMessages()));
 
-	ConfigDialog::addCheckBox("General", "grid", QT_TRANSLATE_NOOP("@default", "Show tooltip in tray"),
+	ConfigDialog::addCheckBox("General", "grid-advanced", QT_TRANSLATE_NOOP("@default", "Show tooltip in tray"),
 			"ShowTooltipInTray", true, QString::null, QString::null, Advanced);
 	ConfigDialog::addComboBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "New message tray icon"),
 			"NewMessageIcon", toStringList(tr("Blinking envelope"), tr("Static envelope"), tr("Animated envelope")),
@@ -251,8 +251,8 @@ void DockingManager::setDocked(bool docked, bool butDontHideOnClose)
 	{
 		changeIcon();
 		defaultToolTip();
-		ConfigDialog::addCheckBox("General", "grid",
-			QT_TRANSLATE_NOOP("@default", "Start docked"), "RunDocked", false, QString::null, QString::null, Advanced);
+		ConfigDialog::addCheckBox("General", "grid-beginner",
+			QT_TRANSLATE_NOOP("@default", "Start docked"), "RunDocked", false, QString::null, QString::null, Beginner);
 		if (config_file.readBoolEntry("General", "RunDocked"))
 			kadu->setShowMainWindowOnStart(false);
 	}

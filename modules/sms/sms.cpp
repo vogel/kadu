@@ -26,8 +26,19 @@
 extern "C" int sms_init()
 {
 	kdebugf();
-
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "SMS"), "SMSTab");
+
+	ConfigDialog::addVBox("SMS", "SMS", "sms-beginner");
+
+	ConfigDialog::addHGroupBox("SMS", "SMS",
+			QT_TRANSLATE_NOOP("@default", "Gateways priority"), QString::null, Advanced);
+	ConfigDialog::addListBox("SMS", "Gateways priority", "gateways");
+	ConfigDialog::addVBox("SMS", "Gateways priority", "button");
+	ConfigDialog::addPushButton("SMS", "button", QT_TRANSLATE_NOOP("@default", "Up"));
+	ConfigDialog::addPushButton("SMS", "button", QT_TRANSLATE_NOOP("@default", "Down"));
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys",
+			QT_TRANSLATE_NOOP("@default", "Send SMS"), "kadu_sendsms", "Ctrl+S");
+
 	ConfigDialog::addVGroupBox("SMS", "SMS",
 			QT_TRANSLATE_NOOP("@default", "SMS options"), QString::null, Expert);
 	ConfigDialog::addCheckBox("SMS", "SMS options",
@@ -42,14 +53,6 @@ extern "C" int sms_init()
 	ConfigDialog::addLineEdit("SMS", "SMS options",
 			QT_TRANSLATE_NOOP("@default", "SMS Nick"), "SmsNick");
 	config_file.addVariable("SMS", "SmsNick", config_file.readEntry("General", "Nick"));
-	ConfigDialog::addHGroupBox("SMS", "SMS",
-			QT_TRANSLATE_NOOP("@default", "Gateways priority"), QString::null, Advanced);
-	ConfigDialog::addListBox("SMS", "Gateways priority", "gateways");
-	ConfigDialog::addVBox("SMS", "Gateways priority", "button");
-	ConfigDialog::addPushButton("SMS", "button", QT_TRANSLATE_NOOP("@default", "Up"));
-	ConfigDialog::addPushButton("SMS", "button", QT_TRANSLATE_NOOP("@default", "Down"));
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys",
-			QT_TRANSLATE_NOOP("@default", "Send SMS"), "kadu_sendsms", "Ctrl+S");
 
 
 	smsslots=new SmsSlots(NULL, "smsslots");
