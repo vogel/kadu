@@ -876,7 +876,7 @@ AC_DEFINE_UNQUOTED(DATADIR,"$prefix/share",[Data files prefix])
 AC_CONFIG_FILES([Makefile kadu/Makefile translations/Makefile varia/Makefile modules/Makefile varia/scripts/kadu-config kadu/modules_static.cpp])
 AC_OUTPUT
 
-if test ! -f kadu/deps/about.d; then
+#if test ! -f kadu/deps/about.d; then
 	echo -n creating dependency tracking files...
 	for i in kadu/*.h; do
 		f="kadu/deps/`echo $i | sed 's/^kadu\/\(.*\).h$/\1/'`"
@@ -884,7 +884,7 @@ if test ! -f kadu/deps/about.d; then
 	done
 	touch kadu/deps/main.d
 	echo done
-fi
+#fi
 
 if test -f kadu-config.h; then
 	diff kadu-config.h kadu-config.tmp > /dev/null 
