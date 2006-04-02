@@ -305,6 +305,9 @@ install-data-local: uninstall-local
 	$(INSTALL_DATA) themes/emoticons/gadu-gadu/2/*.gif "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/2/"
 	$(INSTALL_DATA) themes/emoticons/gadu-gadu/2/*.GIF "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/2/"
 	$(INSTALL_DATA) themes/emoticons/gadu-gadu/2/emots.txt "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/2/"
+	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/3/"
+	$(INSTALL_DATA) themes/emoticons/gadu-gadu/3/*.gif "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/3/"
+	$(INSTALL_DATA) themes/emoticons/gadu-gadu/3/*.txt "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/3/"
 
 	$(mkinstalldirs) "$(DESTDIR)$(bindir)/"	
 	$(INSTALL_SCRIPT) scripts/kadu-mozilla "$(DESTDIR)$(bindir)/"
@@ -315,6 +318,7 @@ uninstall-local:
 	rm -rf "$(DESTDIR)$(datadir)/kadu/themes/icons"/*
 	rm -f "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/1"/*
 	rm -f "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/2"/*
+	rm -f "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/3"/*
 	rm -f "$(DESTDIR)$(bindir)/kadu-mozilla"
 	rm -f "$(DESTDIR)$(bindir)/kadu-config"
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
