@@ -7,12 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <qapplication.h>
+#include <qfile.h>
+#include <qlayout.h>
+#include <qmessagebox.h>
+#include <qpushbutton.h>
 #include <qvbox.h>
 #include <qvgroupbox.h>
-#include <qpushbutton.h>
-#include <qmessagebox.h>
-#include <qfile.h>
-#include <qapplication.h>
 
 #include "config_file.h"
 #include "debug.h"

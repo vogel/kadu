@@ -7,11 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qvbox.h>
 #include <qlabel.h>
-#include <qvgroupbox.h>
-#include <qpushbutton.h>
+#include <qlayout.h>
 #include <qmessagebox.h>
+#include <qpushbutton.h>
+#include <qvbox.h>
+#include <qvgroupbox.h>
 
 #include "change_password.h"
 #include "debug.h"

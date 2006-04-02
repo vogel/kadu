@@ -16,6 +16,7 @@
 #include <qgrid.h>
 #include <qhgroupbox.h>
 #include <qhbuttongroup.h>
+#include <qlayout.h>
 #include <qlistbox.h>
 #include <qlistview.h>
 #include <qradiobutton.h>

@@ -11,6 +11,7 @@
 #include <qdns.h>
 #include <qhbox.h>
 #include <qlabel.h>
+#include <qlayout.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qtabwidget.h>

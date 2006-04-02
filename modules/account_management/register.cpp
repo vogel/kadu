@@ -9,10 +9,11 @@
 
 #include <qvbox.h>
 #include <qapplication.h>
-#include <qtooltip.h>
+#include <qlayout.h>
 #include <qmessagebox.h>
 #include <qvgroupbox.h>
 #include <qpushbutton.h>
+#include <qtooltip.h>
 
 #include "config_file.h"
 #include "debug.h"

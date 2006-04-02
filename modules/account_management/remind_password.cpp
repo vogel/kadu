@@ -7,10 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qvbox.h>
 #include <qlabel.h>
-#include <qvgroupbox.h>
+#include <qlayout.h>
 #include <qpushbutton.h>
+#include <qvbox.h>
+#include <qvgroupbox.h>
 
 #include "config_file.h"
 #include "debug.h"

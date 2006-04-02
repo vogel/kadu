@@ -4,9 +4,11 @@
 #include <qhbox.h>
 #include "gadu.h"
 
+class LayoutHelper;
 class QComboBox;
 class QLineEdit;
 class QPushButton;
+class QResizeEvent;
 
 /**
 	\class PersonalInfoDialog

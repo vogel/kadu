@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <qlabel.h>
+#include <qlayout.h>
 #include <qlistview.h>
 #include <qpushbutton.h>
 #include <qsimplerichtext.h>

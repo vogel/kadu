@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <qlabel.h>
+#include <qlayout.h>
 #include <qpushbutton.h>
 #include <qtabwidget.h>
 #include <qtextbrowser.h>
