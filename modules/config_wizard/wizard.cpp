@@ -422,13 +422,13 @@ void Wizard::createGGCurrentNumberPage()
 
 	new QLabel(tr("Gadu-gadu number"), grp_haveNumber);
 	l_ggNumber = new QLineEdit(grp_haveNumber);
-	l_ggNumber->setText(config_file.readEntry("General", "UIN", "0"));
+	l_ggNumber->setText(config_file.readEntry("General", "UIN"));
 	new QLabel(tr("Gadu-gadu password"),grp_haveNumber);
 	l_ggPassword = new QLineEdit(grp_haveNumber);
 	l_ggPassword->setEchoMode(QLineEdit::Password);
 	l_ggPassword->setText(pwHash(config_file.readEntry("General", "Password")));
 	c_importContacts = new QCheckBox(tr("Import contacts"), grp_haveNumber);
-	c_importContacts->setChecked(false);
+	c_importContacts->setChecked(true);
 
 	addPage(ggCurrentNumberPage, tr("Gadu-gadu account"));
 	kdebugf2();
