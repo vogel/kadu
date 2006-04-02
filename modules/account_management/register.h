@@ -9,6 +9,9 @@
 #include <qevent.h>
 #include "gadu.h"
 
+class LayoutHelper;
+class QResizeEvent;
+
 /**
 	Dialog umo¿liwiaj±cy rejestracjê nowego u¿ytkownika
 **/
@@ -24,6 +27,7 @@ class Register : public QHBox {
 		QLabel *status;
 		UinType uin;
 		QCheckBox *cb_updateconfig;
+		LayoutHelper *layoutHelper;
 
 		void ask();
 		void createConfig();
@@ -35,6 +39,8 @@ class Register : public QHBox {
 	public slots:
 		void registered(bool ok, UinType uin);
 
+	protected:
+		virtual void resizeEvent(QResizeEvent *);
 };
 
 #endif

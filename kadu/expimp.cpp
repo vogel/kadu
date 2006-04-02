@@ -10,6 +10,7 @@
 #include <qlabel.h>
 #include <qlistview.h>
 #include <qpushbutton.h>
+#include <qsimplerichtext.h>
 #include <qvbox.h>
 #include <qvgroupbox.h>
 
@@ -22,10 +23,16 @@
 #include "misc.h"
 #include "userlist.h"
 
+void UserlistImportExport::resizeEvent(QResizeEvent *e)
+{
+	layoutHelper->resizeLabels();
+}
+
 UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopLevel|WDestructiveClose)
 {
 	kdebugf();
 	setCaption(tr("Import / export userlist"));
+	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
 	QVBox *left=new QVBox(this);
@@ -118,6 +125,8 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) : 
 	connect(gadu, SIGNAL(userListImported(bool, QValueList<UserListElement>)), this, SLOT(userListImported(bool, QValueList<UserListElement>)));
 	// end connect
 
+	layoutHelper = new LayoutHelper();
+	layoutHelper->addLabel(l_info);
  	loadGeometry(this, "General", "ImportExportDialogGeometry", 0, 30, 640, 450);
 	kdebugf2();
 }
@@ -135,6 +144,7 @@ UserlistImportExport::~UserlistImportExport()
 {
 	kdebugf();
 	saveGeometry(this, "General", "ImportExportDialogGeometry");
+	delete layoutHelper;
 	kdebugf2();
 }
 

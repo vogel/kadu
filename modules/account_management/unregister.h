@@ -8,6 +8,9 @@
 #include <qcheckbox.h>
 #include <qevent.h>
 
+class LayoutHelper;
+class QResizeEvent;
+
 class Unregister : public QHBox {
 	Q_OBJECT
 
@@ -19,16 +22,19 @@ class Unregister : public QHBox {
 		QLineEdit *uin, *pwd;
 		QLabel *status;
 		QCheckBox *updateconfig;
+		LayoutHelper *layoutHelper;
 
 		void deleteConfig();
 
 	private slots:
 		void doUnregister();
 		void keyPressEvent(QKeyEvent *);
-	
+
 	public slots:
 		void unregistered(bool ok);
 
+	protected:
+		virtual void resizeEvent(QResizeEvent *);
 };
 
 #endif

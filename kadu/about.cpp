@@ -38,24 +38,24 @@ About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopL
 	kdebugf();
 	// set window properties and flags
 	setCaption(tr("About"));
-	setMinimumSize(400, 300);
+	layout()->setResizeMode(QLayout::Minimum);
 	// end set window properties and flags
-	
+
 	// create main QLabel widgets (icon and app info)
 	QVBox *left=new QVBox(this);
 	left->setMargin(10);
 	left->setSpacing(10);
-	
+
 	QLabel *l_icon = new QLabel(left);
 	l_icon->setPixmap(icons_manager->loadIcon("AboutIcon"));
 
 	QWidget *blank=new QWidget(left);
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
-	
+
 	QVBox *center=new QVBox(this);
 	center->setMargin(10);
 	center->setSpacing(10);
-	
+
 	QHBox *texts = new QHBox(center);
 	QLabel *l_info = new QLabel(texts);
 	l_info->setText(QString("<span style=\"font-size: 12pt\">Kadu %1 <br />(c) 2001-2006 Kadu Team</span>").arg(VERSION));
@@ -66,11 +66,11 @@ About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopL
 
 	new KaduLink(texts);
 	// end create main QLabel widgets (icon and app info)
-	
+
 	// our TabWidget
 	QTabWidget *tw_about = new QTabWidget(center);
 	// end our TabWidget
-	
+
 	// create our info widgets
 	// authors
 	QTextBrowser *tb_authors = new QTextBrowser(tw_about);
@@ -78,35 +78,35 @@ About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopL
 	tb_authors->setTextFormat(Qt::PlainText);
 	tb_authors->setWordWrap(QTextEdit::NoWrap);
 	tb_authors->setText(loadFile("AUTHORS"));
-	
+
 	// authors
 	QTextBrowser *tb_thanks = new QTextBrowser(tw_about);
 	tb_thanks->setFrameStyle(QFrame::NoFrame);
 	tb_thanks->setTextFormat(Qt::PlainText);
 	tb_thanks->setWordWrap(QTextEdit::NoWrap);
 	tb_thanks->setText(loadFile("THANKS"));
-	
+
 	// license
 	QTextBrowser *tb_license = new QTextBrowser(tw_about);
 	tb_license->setFrameStyle(QFrame::NoFrame);
 	tb_license->setTextFormat(Qt::PlainText);
 	tb_license->setWordWrap(QTextEdit::NoWrap);
 	tb_license->setText(loadFile("COPYING"));
-	
+
 	// changelog
 	QTextBrowser *tb_changelog = new QTextBrowser(tw_about);
 	tb_changelog->setFrameStyle(QFrame::NoFrame);
 	tb_changelog->setTextFormat(Qt::PlainText);
 	tb_changelog->setWordWrap(QTextEdit::NoWrap);
 	tb_changelog->setText(loadFile("ChangeLog"));
-	
+
 	// add tabs
 	tw_about->addTab(tb_authors, tr("A&uthors"));
 	tw_about->addTab(tb_thanks, tr("&Thanks"));
-	tw_about->addTab(tb_license, tr("&License")); 
-	tw_about->addTab(tb_changelog, tr("&ChangeLog")); 
+	tw_about->addTab(tb_license, tr("&License"));
+	tw_about->addTab(tb_changelog, tr("&ChangeLog"));
 	// end create our info widgets
-	
+
 	// close button
 	QHBox *bottom=new QHBox(center);
 	QWidget *blank2=new QWidget(bottom);
@@ -115,6 +115,8 @@ About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopL
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 	// end close button
 
+	layoutHelper = new LayoutHelper();
+	layoutHelper->addLabel(l_info);
 	loadGeometry(this, "General", "AboutGeometry", 0, 30, 640, 420);
 	kdebugf2();
 }
@@ -123,6 +125,7 @@ About::~About()
 {
 	kdebugf();
 	saveGeometry(this, "General", "AboutGeometry");
+	delete layoutHelper;
 	kdebugf2();
 }
 
@@ -148,4 +151,9 @@ QString About::loadFile(const QString &name)
 	file.close();
 	kdebugf2();
 	return data;
+}
+
+void About::resizeEvent(QResizeEvent *e)
+{
+	layoutHelper->resizeLabels();
 }

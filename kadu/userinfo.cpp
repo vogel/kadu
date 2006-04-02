@@ -29,11 +29,17 @@
 
 CreateNotifier UserInfo::createNotifier;
 
+void UserInfo::resizeEvent(QResizeEvent *e)
+{
+	layoutHelper->resizeLabels();
+}
+
 UserInfo::UserInfo(UserListElement user, QDialog* parent, const char *name)
 	: QHBox(parent, name), user(user)
 {
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose|Qt::WShowModal);
+	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
 	QVBox *left = new QVBox(this);
@@ -90,6 +96,9 @@ UserInfo::UserInfo(UserListElement user, QDialog* parent, const char *name)
 	connect(pb_addapply, SIGNAL(clicked()), this, SLOT(updateUserlist()));
 
 	createNotifier.notify(this);
+
+	layoutHelper = new LayoutHelper();
+	layoutHelper->addLabel(l_info);
 
 	loadGeometry(this, "General", "ManageUsersDialogGeometry", 0, 30, 380, 450);
 	kdebugf2();
@@ -375,6 +384,7 @@ UserInfo::~UserInfo()
 	kdebugf();
 	saveGeometry(this, "General", "ManageUsersDialogGeometry");
 	delete dns;
+	delete layoutHelper;
 	kdebugf2();
 }
 

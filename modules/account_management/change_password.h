@@ -5,6 +5,9 @@
 #include <qlineedit.h>
 #include <qevent.h>
 
+class LayoutHelper;
+class QResizeEvent;
+
 class ChangePassword : public QHBox {
 	Q_OBJECT
 	public:
@@ -13,12 +16,15 @@ class ChangePassword : public QHBox {
 
 	private:
 		QLineEdit *emailedit, *newpwd, *newpwd2;
+		LayoutHelper *layoutHelper;
 
 	private slots:
 		void start();
 		void passwordChanged(bool ok);
 		void keyPressEvent(QKeyEvent *);
 
+	protected:
+		virtual void resizeEvent(QResizeEvent *);
 };
 
 #endif

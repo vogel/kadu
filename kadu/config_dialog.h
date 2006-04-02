@@ -128,6 +128,9 @@ class SelectFont : public QHBox
 		QLineEdit *fontEdit;
 };
 
+class LayoutHelper;
+class QResizeEvent;
+
 class SelectPaths : public QHBox
 {
 	Q_OBJECT
@@ -138,6 +141,10 @@ class SelectPaths : public QHBox
 		QPushButton *pb_add, *pb_change, *pb_remove;
 		QLineEdit *pathEdit;
 		QPushButton *pb_choose;
+		LayoutHelper *layoutHelper;
+
+		virtual void resizeEvent(QResizeEvent *);
+
 	protected slots:
 		void okButton();
 		void cancelButton();
@@ -147,6 +154,7 @@ class SelectPaths : public QHBox
 		void choosePath();
 		void closeEvent(QCloseEvent *e);
 		void keyPressEvent(QKeyEvent *e);
+
 	public:
 		SelectPaths(QWidget *parent =0, const char* name =0);
 		~SelectPaths();
@@ -244,10 +252,10 @@ class ConfigDialog : public QVBox
 			QValueList<QVariant> additionalParams;
 			QValueListIterator<RegisteredControl> parentControl;
 			QWidget *widget;
-			
+
 			//w przypadku kontrolek sk³adaj±cych siê z kilku mniejszych,
 			// wska¼nik na rodzica, w przypadku pojedynczej kontrolki == widget
-			QWidget *entireWidget; 
+			QWidget *entireWidget;
 
 			int nrOfControls;
 			UserLevel userLevelRequired;
@@ -272,7 +280,7 @@ class ConfigDialog : public QVBox
 		    Dodaje kontrolkê do listy
 		**/
 		static bool addControl(const QString& groupname, ConfigDialog::RegisteredControl& control);
-		
+
 		void createWidget(QValueListIterator <RegisteredControl> control);
 		void createTabAndWidgets(const QString& tab);
 

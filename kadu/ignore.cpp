@@ -11,6 +11,7 @@
 #include <qlineedit.h>
 #include <qlistbox.h>
 #include <qpushbutton.h>
+#include <qsimplerichtext.h>
 #include <qvbox.h>
 #include <qvgroupbox.h>
 
@@ -24,14 +25,21 @@
 
 QValueList<UserListElements> ignored;
 
-Ignored::Ignored(QDialog * /*parent*/, const char * /*name*/)
+void Ignored::resizeEvent(QResizeEvent *e)
+{
+	layoutHelper->resizeLabels();
+}
+
+Ignored::Ignored(QDialog *parent, const char *name) : QHBox(parent, name)
 {
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Manage ignored users"));
+	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
 	QVBox *left=new QVBox(this);
+	//left->layout()->setResizeMode(QLayout::Minimum);
 	left->setMargin(10);
 	left->setSpacing(10);
 
@@ -86,6 +94,10 @@ Ignored::Ignored(QDialog * /*parent*/, const char * /*name*/)
 	connect(pb_del, SIGNAL(clicked()), this, SLOT(remove()));
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 
+	layoutHelper = new LayoutHelper();
+	layoutHelper->addLabel(l_info);
+	layoutHelper->addLabel(l_uin);
+
  	loadGeometry(this, "General", "IgnoredDialogGeometry", 0, 30, 330, 350);
 	kdebugf2();
 }
@@ -94,6 +106,7 @@ Ignored::~Ignored()
 {
 	kdebugf();
 	saveGeometry(this, "General", "IgnoredDialogGeometry");
+	delete layoutHelper;
 	kdebugf2();
 }
 

@@ -6,9 +6,13 @@
 
 #include "usergroup.h"
 
+class LayoutHelper;
+class QLabel;
 class QLineEdit;
 class QListBox;
 class QDialog;
+class QResizeEvent;
+class QSimpleRichText;
 
 /**
 	Dialog umo¿liwiaj±cy zarz±dzanie list± ignorowanych
@@ -23,12 +27,15 @@ class Ignored : public QHBox
 	private:
 		QListBox *lb_list;
 		QLineEdit *e_uin;
+		LayoutHelper *layoutHelper;
 
 	private slots:
 		void remove();
 		void add();
 		void getList();
 		void keyPressEvent(QKeyEvent *);
+	protected:
+		virtual void resizeEvent(QResizeEvent *);
 };
 
 int readIgnored();

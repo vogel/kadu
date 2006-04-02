@@ -5,15 +5,18 @@
 #include <qlineedit.h>
 #include <qevent.h>
 
+class LayoutHelper;
+class QResizeEvent;
+
 class RemindPassword : public QHBox
 {
 	Q_OBJECT
 
 	private:
 		QLineEdit* EmailEdit;
+		LayoutHelper *layoutHelper;
 
 	private slots:
-
 		void start();
 		void reminded(bool ok);
 		void keyPressEvent(QKeyEvent *);
@@ -21,6 +24,9 @@ class RemindPassword : public QHBox
 	public:
 		RemindPassword(QDialog *parent = 0, const char *name = 0);
 		~RemindPassword();
+
+	protected:
+		virtual void resizeEvent(QResizeEvent *);
 };
 
 #endif

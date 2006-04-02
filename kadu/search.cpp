@@ -138,6 +138,8 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	grid->addColSpacing(5, 10);
 	grid->addColSpacing(9, 10);
 
+	grid->setResizeMode(QLayout::Minimum);
+
 	results->addColumn(tr("Status"));
 	results->addColumn(tr("Uin"));
 	results->addColumn(tr("Name"));

@@ -67,6 +67,7 @@ Register::Register(QDialog * /*parent*/, const char * /*name*/)
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Register user"));
+	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
 	QVBox *left=new QVBox(this);
@@ -127,6 +128,9 @@ Register::Register(QDialog * /*parent*/, const char * /*name*/)
 	connect(pb_register, SIGNAL(clicked()), this, SLOT(doRegister()));
 	connect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registered(bool, UinType)));
 
+	layoutHelper = new LayoutHelper();
+	layoutHelper->addLabel(l_info);
+
  	loadGeometry(this, "General", "RegisterDialogGeometry", 0, 30, 400, 400);
 	kdebugf2();
 }
@@ -135,7 +139,13 @@ Register::~Register()
 {
 	kdebugf();
 	saveGeometry(this, "General", "RegisterDialogGeometry");
+	delete layoutHelper;
 	kdebugf2();
+}
+
+void Register::resizeEvent(QResizeEvent *e)
+{
+	layoutHelper->resizeLabels();
 }
 
 void Register::keyPressEvent(QKeyEvent *ke_event)

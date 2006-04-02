@@ -1832,6 +1832,7 @@ SelectPaths::SelectPaths(QWidget *parent, const char* name) : QHBox(parent, name
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose|Qt::WShowModal);
 	setCaption(tr("Select paths"));
+	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
 	QVBox *left=new QVBox(this, "left");
@@ -1896,6 +1897,8 @@ SelectPaths::SelectPaths(QWidget *parent, const char* name) : QHBox(parent, name
 	connect(pb_add, SIGNAL(clicked()), this, SLOT(addPath()));
 	connect(pb_remove, SIGNAL(clicked()), this, SLOT(deletePath()));
 
+	layoutHelper = new LayoutHelper();
+	layoutHelper->addLabel(l_info);
 	loadGeometry(this, "General", "SelectPathDialogGeometry", 0, 30, 330, 330);
 	kdebugf2();
 }
@@ -2025,4 +2028,11 @@ void SelectPaths::keyPressEvent(QKeyEvent *e)
 SelectPaths::~SelectPaths()
 {
 	kdebugf();
+	delete layoutHelper;
 }
+
+void SelectPaths::resizeEvent(QResizeEvent *e)
+{
+	layoutHelper->resizeLabels();
+}
+

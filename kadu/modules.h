@@ -21,7 +21,7 @@ class Library : public QObject
 	private:
 		QString FileName;
 		void* Handle;
-		
+
 	public:
 		/**
 			\fn Library(const QString& file_name)
@@ -67,6 +67,7 @@ struct ModuleInfo
 	bool load_by_def; /*!< Czy modu³ jest domy¶lnie ³adowany, czy nie? */
 };
 
+class LayoutHelper;
 /**
 	Klasa reprezentuj±ca okno dialogowe, s³u¿±ce do ³adowanie i wy³adowywania modu³ów.
 	£adowanie/wy³adowywanie, oraz inne operacje na modu³ach z poziomu C++ dokonywane
@@ -78,11 +79,12 @@ struct ModuleInfo
 class ModulesDialog : public QHBox
 {
 	Q_OBJECT
-	
+
 	private:
 		QListView* lv_modules;
 		QLabel* l_moduleinfo;
-		
+		LayoutHelper *layoutHelper;
+
 	private slots:
 		void loadItem();
 		void unloadItem();
@@ -91,7 +93,7 @@ class ModulesDialog : public QHBox
 		void getInfo();
 		void refreshList();
 		void keyPressEvent(QKeyEvent *);
-	
+
 	public:
 		/**
 			\fn ModulesDialog()
@@ -99,6 +101,8 @@ class ModulesDialog : public QHBox
 		**/
 		ModulesDialog();
 		~ModulesDialog();
+	protected:
+		virtual void resizeEvent(QResizeEvent *);
 };
 
 /**
@@ -146,7 +150,7 @@ class ModulesManager : public QObject
 			Lista aktywnych modu³ów
 			statycznych b±d¼ zewnêtrznych.
 		**/
-		QMap<QString,Module> Modules;	
+		QMap<QString,Module> Modules;
 		/**
 		**/
 		ModulesDialog* Dialog;
@@ -180,7 +184,7 @@ class ModulesManager : public QObject
 			generowany przez configure.
 		**/
 		void registerStaticModules();
-		
+
 		/**
 			Skupia wszystkie t³umaczenia w jednej hierarchii
 		**/
@@ -188,8 +192,8 @@ class ModulesManager : public QObject
 
 	private slots:
 		void dialogDestroyed();
-	
-	public:	
+
+	public:
 		/**
 			\fn static void initModule()
 			Inicjalizuje obs³ugê modu³ów. Metoda ta wywo³ywana jest przy starcie Kadu, przez jego rdzeñ.
@@ -299,7 +303,7 @@ class ModulesManager : public QObject
 			\return true, je¶li modu³ konfliktuje, false je¶li nie.
 		**/
 		bool conflictsWithLoaded(const QString &module_name, const ModuleInfo& module_info) const;
-		
+
 	public slots:
 		/**
 			\fn bool activateModule(const QString& module_name)
@@ -316,7 +320,7 @@ class ModulesManager : public QObject
 			Deaktywuje modu³ statyczny lub deaktywuje i usuwa z pamiêci modu³ zewnêtrzny.
 			\param module_name nazwa modu³u.
 			\return true je¶li dezaktywacja przebieg³a bezproblemowo, false w przeciwnym wypadku.
-		**/		
+		**/
 		bool deactivateModule(const QString& module_name, bool force=false);
 
 		/**

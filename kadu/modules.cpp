@@ -69,11 +69,17 @@ QString Library::error()
 	return QString(dlerror());
 }
 
-ModulesDialog::ModulesDialog()
+void ModulesDialog::resizeEvent(QResizeEvent *e)
+{
+	layoutHelper->resizeLabels();
+}
+
+ModulesDialog::ModulesDialog() : QHBox(0, "modules_dialog")
 {
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Manage Modules"));
+	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
 	QVBox *left=new QVBox(this);
@@ -125,7 +131,10 @@ ModulesDialog::ModulesDialog()
 	connect(lv_modules, SIGNAL(selectionChanged()), this, SLOT(itemsChanging()));
 	connect(lv_modules, SIGNAL(doubleClicked(QListViewItem *)), this, SLOT(moduleAction(QListViewItem *)));
 
- 	loadGeometry(this, "General", "ModulesDialogGeometry", 0, 30, 600, 620);
+	layoutHelper = new LayoutHelper();
+	layoutHelper->addLabel(l_info);
+	layoutHelper->addLabel(l_moduleinfo);
+	loadGeometry(this, "General", "ModulesDialogGeometry", 0, 30, 600, 620);
 	refreshList();
 	kdebugf2();
 }
@@ -134,6 +143,7 @@ ModulesDialog::~ModulesDialog()
 {
 	kdebugf();
 	saveGeometry(this, "General", "ModulesDialogGeometry");
+	delete layoutHelper;
 	kdebugf2();
 }
 
@@ -242,6 +252,7 @@ void ModulesDialog::getInfo()
 				tr("<br/><b>Author: </b>") + info.author +
 				tr("<br/><b>Version: </b>") + info.version +
 				tr("<br/><b>Description: </b>") + info.description);
+	layoutHelper->textChanged(l_moduleinfo);
 	kdebugf2();
 }
 
@@ -268,7 +279,7 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager")
 	// because some of them is using that value - that's why
 	// i moved it here from ModulesManagert::initModule
 	// the same is true for menu - modules should load up at end
-	
+
 	modules_manager=this;
 	kadu->mainMenu()->insertItem(icons_manager->loadIcon("ManageModules"), tr("&Manage Modules"), this, SLOT(showDialog()), HotKey::shortCutFromFile("ShortCuts", "kadu_modulesmanager"), -1, 2);
 
@@ -337,7 +348,7 @@ ModulesManager::~ModulesManager()
 
 	// unloading all not used modules
 	// as long as any module were unloaded
-	
+
 	bool deactivated;
 	do
 	{

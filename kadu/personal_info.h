@@ -31,6 +31,7 @@ class PersonalInfoDialog : public QHBox
 		enum DialogState { READY, READING, WRITING };
 		DialogState State;
 		SearchRecord *data;
+		LayoutHelper *layoutHelper;
 
 	private slots:
 		void saveButtonClicked();
@@ -57,6 +58,9 @@ class PersonalInfoDialog : public QHBox
 			Trzeci parametr w tym przypadku jest pomijany.
 		**/
 		void fillFields(SearchResults& searchResults, int seq, int);
+
+	protected:
+		virtual void resizeEvent(QResizeEvent *);
 };
 
 #endif

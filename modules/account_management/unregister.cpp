@@ -26,6 +26,7 @@ Unregister::Unregister(QDialog * /*parent*/, const char * /*name*/)
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Unregister user"));
+	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
 	QVBox *left=new QVBox(this);
@@ -77,6 +78,9 @@ Unregister::Unregister(QDialog * /*parent*/, const char * /*name*/)
 	connect(pb_unregister, SIGNAL(clicked()), this, SLOT(doUnregister()));
 	connect(gadu, SIGNAL(unregistered(bool)), this, SLOT(unregistered(bool)));
 
+	layoutHelper = new LayoutHelper();
+	layoutHelper->addLabel(l_info);
+
  	loadGeometry(this, "General", "UnregisterDialogGeometry", 0, 30, 355, 340);
 	kdebugf2();
 }
@@ -85,7 +89,13 @@ Unregister::~Unregister()
 {
 	kdebugf();
 	saveGeometry(this, "General", "UnregisterDialogGeometry");
+	delete layoutHelper;
 	kdebugf2();
+}
+
+void Unregister::resizeEvent(QResizeEvent *e)
+{
+	layoutHelper->resizeLabels();
 }
 
 void Unregister::keyPressEvent(QKeyEvent *ke_event)

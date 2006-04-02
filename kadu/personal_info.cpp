@@ -24,6 +24,7 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog * /*parent*/, const char * /*name
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Personal Information"));
+	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
 	QVBox *left=new QVBox(this);
@@ -131,6 +132,9 @@ PersonalInfoDialog::PersonalInfoDialog(QDialog * /*parent*/, const char * /*name
 	data = new SearchRecord();
 	reloadInfo();
 
+	layoutHelper = new LayoutHelper();
+	layoutHelper->addLabel(l_info);
+
  	loadGeometry(this, "General", "PersonalInfoDialogGeometry", 0, 30, 460, 280);
 	kdebugf2();
 }
@@ -140,7 +144,13 @@ PersonalInfoDialog::~PersonalInfoDialog()
 	kdebugf();
 	delete data;
 	saveGeometry(this, "General", "PersonalInfoDialogGeometry");
+	delete layoutHelper;
 	kdebugf2();
+}
+
+void PersonalInfoDialog::resizeEvent(QResizeEvent *e)
+{
+	layoutHelper->resizeLabels();
 }
 
 void PersonalInfoDialog::keyPressEvent(QKeyEvent *ke_event)

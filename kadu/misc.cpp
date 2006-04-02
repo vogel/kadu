@@ -9,6 +9,7 @@
 
 #include <qapplication.h>
 #include <qcombobox.h>
+#include <qlabel.h>
 #include <qlayout.h>
 #include <qlineedit.h>
 #include <qmessagebox.h>
@@ -16,6 +17,7 @@
 #include <qprocess.h>
 #include <qpushbutton.h>
 #include <qregexp.h>
+#include <qsimplerichtext.h>
 #include <qtextcodec.h>
 
 //getpwuid
@@ -887,4 +889,58 @@ void printBacktrace(const QString &header)
 	fprintf(stderr, "backtrace not available\n");
 #endif
 	fflush(stderr);
+}
+
+LayoutHelper::LayoutHelper()
+{
+}
+
+LayoutHelper::~LayoutHelper()
+{
+	while (!riches.isEmpty())
+	{
+		delete riches.last();
+		riches.pop_back();
+	}
+}
+
+void LayoutHelper::addLabel(QLabel *label)
+{
+	labels.push_back(label);
+	riches.push_back(new QSimpleRichText(label->text(), label->font()));
+}
+
+void LayoutHelper::resizeLabels()
+{
+	QValueList<QLabel *>::iterator l = labels.begin(), lend = labels.end();
+	QValueList<QSimpleRichText *>::iterator r = riches.begin();
+
+	while (l != lend)
+	{
+		if ((*l)->isVisible())
+		{
+			(*r)->setWidth((*l)->width());
+			(*l)->setMinimumHeight((*r)->height());
+		}
+		++l;
+		++r;
+	}
+}
+
+void LayoutHelper::textChanged(QLabel *label)
+{
+	QValueList<QLabel *>::iterator l = labels.begin(), lend = labels.end();
+	QValueList<QSimpleRichText *>::iterator r = riches.begin();
+
+	while (l != lend)
+	{
+		if ((*l) == label)
+		{
+			delete *r;
+			*r = new QSimpleRichText(label->text(), label->font());
+			break;
+		}
+		++l;
+		++r;
+	}
 }

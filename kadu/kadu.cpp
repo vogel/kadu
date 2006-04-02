@@ -201,9 +201,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 
 	ConfigDialog::connectSlot("Look", "Font in panel", SIGNAL(changed(const char *, const QFont&)),kaduslots, SLOT(chooseFont(const char *, const QFont&)), "panel_font_box");
 
-	QVBox *vbox=new QVBox(this, "centralBox");
-	QVBoxLayout* grid = new QVBoxLayout(this);
-	grid->addWidget(vbox);
+	QVBox *vbox = new QVBox(this, "centralBox");
+	QVBoxLayout *mainLay = new QVBoxLayout(this);
+	mainLay->addWidget(vbox);
 
 	TopDockArea = new DockArea(Qt::Horizontal, DockArea::Normal, vbox,
 		"mainDockAreaGroup", "topDockArea");
@@ -383,6 +383,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 		this, SLOT(wentInvisible(const QString &)));
 	connect(&(gadu->currentStatus()), SIGNAL(goOffline(const QString &)),
 		this, SLOT(wentOffline(const QString &)));
+
+	mainLay->setResizeMode(QLayout::Minimum);
 
 	kdebugf2();
 }

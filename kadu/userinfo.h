@@ -7,6 +7,7 @@
 #include "userlistelement.h"
 #include "misc.h"
 
+class LayoutHelper;
 class QCheckBox;
 class QDns;
 class QLineEdit;
@@ -67,6 +68,7 @@ class UserInfo : public QHBox
 		QValueList<QCheckBox *> hiddenCheckBoxes;
 		QLineEdit *newGroup;
 		QVBox *groupsBox;
+		LayoutHelper *layoutHelper;
 
 		void keyPressEvent(QKeyEvent *);
 
@@ -88,6 +90,8 @@ class UserInfo : public QHBox
 			Tworzy trzeci± zak³adkê.
 		**/
 		void setupTab3();
+
+		virtual void resizeEvent(QResizeEvent *);
 
 	public slots:
 		/**
