@@ -9,6 +9,10 @@
         <source>###IMAGE TOO BIG###</source>
         <translation>###IMAGIGINE TROPPO GRANDE###</translation>
     </message>
+    <message>
+        <source>###TOO MANY IMAGES###</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>@default</name>
@@ -75,10 +79,6 @@
     <message>
         <source>Log messages</source>
         <translation>Conserva messaggi</translation>
-    </message>
-    <message>
-        <source>Restore window geometry</source>
-        <translation>Ripristina dimensioni finestra</translation>
     </message>
     <message>
         <source>Check for updates</source>
@@ -183,10 +183,6 @@
     <message>
         <source>Reduce the number of visible messages to</source>
         <translation>Riduci il numero di messaggi visibili a</translation>
-    </message>
-    <message>
-        <source>Scroll chat window downward, not upward</source>
-        <translation>Scorri il testo chat verso il basso</translation>
     </message>
     <message>
         <source>Flash chat title on new message</source>
@@ -443,10 +439,6 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <translation>Visualizza contatti attivi con grassetto</translation>
     </message>
     <message>
-        <source>Remember window size and position between startups</source>
-        <translation>Memorizza le dimensioni e posizioni delle finestre dopo restart</translation>
-    </message>
-    <message>
         <source>Automatically checks whether a new version is available</source>
         <translation>Controlla se é disponibile la nuova versione del programma</translation>
     </message>
@@ -475,10 +467,6 @@ E un rischio per la sicurezza!</translation>
     <message>
         <source>Align icon next to contact name</source>
         <translation>prima asocia l&apos;icona al nome del contatto</translation>
-    </message>
-    <message>
-        <source>Show tooltip on userbox</source>
-        <translation>Visalizza fumetti nella lista contatti</translation>
     </message>
     <message>
         <source>Number of kept descriptions</source>
@@ -666,6 +654,41 @@ E un rischio per la sicurezza!</translation>
         <source>Userbox background</source>
         <translation>Sfondo Lista contatti</translation>
     </message>
+    <message>
+        <source>Your nick color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User nick color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select chat style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Full chat style:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syntax:
+%1 - background color
+%2 - text font color
+%3 - nick color
+%4 - nick
+%5 - timestamp
+%6 - timestamp with server time
+%7 - message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -783,6 +806,10 @@ Sicuro di spedirlo comunque?</translation>
         <source>Cannot send message while being offline.</source>
         <translation>Non si può mandare messaggio mentre sei fuori linea.</translation>
     </message>
+    <message>
+        <source>Custom</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ChatManager</name>
@@ -853,6 +880,10 @@ Sicuro di spedirlo comunque?</translation>
     <message>
         <source>&amp;Chat</source>
         <translation>&amp;Chat</translation>
+    </message>
+    <message>
+        <source>Custom</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1377,6 +1408,22 @@ saranno eliminati. Vuoi davvero?</translation>
         <source>&amp;Search user in directory</source>
         <translation>&amp;Cerca contatto nella cartella</translation>
     </message>
+    <message>
+        <source>Copy description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy personal info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contact: %a[ (%u)]
+[First name: %f
+][Last name: %r
+][Mobile: %m
+]</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KaduSlots</name>
@@ -1856,18 +1903,6 @@ Possibile incompatibilità con Kadu.</translation>
 </context>
 <context>
     <name>UserBox</name>
-    <message>
-        <source>&lt;i&gt;Mobile:&lt;/i&gt; &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation>&lt;i&gt;Cell:&lt;/i&gt; &lt;b&gt;%1&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt;&lt;/nobr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt; &lt;b&gt;(d.)&lt;/b&gt;&lt;/nobr&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;%2</source>
-        <translation>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt; &lt;b&gt;(desc)&lt;/b&gt;&lt;/nobr&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Descrizione:&lt;/b&gt;&lt;br/&gt;%2</translation>
-    </message>
     <message>
         <source>Compares statuses</source>
         <translation>Confronta i status</translation>

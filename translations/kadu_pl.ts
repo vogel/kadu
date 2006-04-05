@@ -9,6 +9,10 @@
         <source>###IMAGE TOO BIG###</source>
         <translation>###ZDJĘCIE ZA DUŻE###</translation>
     </message>
+    <message>
+        <source>###TOO MANY IMAGES###</source>
+        <translation>###ZBYT DUŻO OBRAZKÓW###</translation>
+    </message>
 </context>
 <context>
     <name>@default</name>
@@ -79,10 +83,6 @@
     <message>
         <source>Log messages</source>
         <translation>Zapisuj wiadomości</translation>
-    </message>
-    <message>
-        <source>Restore window geometry</source>
-        <translation>Przywróć kształt okna</translation>
     </message>
     <message>
         <source>Check for updates</source>
@@ -191,10 +191,6 @@
     <message>
         <source>Reduce the number of visible messages to</source>
         <translation>Zmniejsz ilość widocznych wiadomości do: </translation>
-    </message>
-    <message>
-        <source>Scroll chat window downward, not upward</source>
-        <translation>Przewijaj okno rozmowy w dół</translation>
     </message>
     <message>
         <source>Flash chat title on new message</source>
@@ -475,10 +471,6 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <translation>Wyświetla kontakty, które są aktywne używając pogrubionej czcionki</translation>
     </message>
     <message>
-        <source>Remember window size and position between startups</source>
-        <translation>Pamietaj rozmiar i pozycje okien po restarcie</translation>
-    </message>
-    <message>
         <source>Automatically checks whether a new version is available</source>
         <translation>Automatyczne sprawdzanie czy nowa wersja jest dostępna</translation>
     </message>
@@ -503,10 +495,6 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
 It&apos;s a high security risk!</source>
         <translation>Proszę nie uruchamiać Kadu jako root!
 Jest to wysoce ryzykowne!</translation>
-    </message>
-    <message>
-        <source>Show tooltip on userbox</source>
-        <translation>Włącz dymki w liście kontaktów</translation>
     </message>
     <message>
         <source>Number of kept descriptions</source>
@@ -666,6 +654,48 @@ Jest to wysoce ryzykowne!</translation>
         <source>Userbox background</source>
         <translation>Tło listy kontaktów</translation>
     </message>
+    <message>
+        <source>Your nick color</source>
+        <translation>Kolor twojego pseudonimu</translation>
+    </message>
+    <message>
+        <source>User nick color</source>
+        <translation>Kolor pseudonimu kontaktu</translation>
+    </message>
+    <message>
+        <source>Style</source>
+        <translation>Styl okna rozmowy</translation>
+    </message>
+    <message>
+        <source>Select chat style</source>
+        <translation>Wybierz styl okna rozmowy</translation>
+    </message>
+    <message>
+        <source>Full chat style:</source>
+        <translation>Edytor własnego stylu:</translation>
+    </message>
+    <message>
+        <source>Syntax:
+%1 - background color
+%2 - text font color
+%3 - nick color
+%4 - nick
+%5 - timestamp
+%6 - timestamp with server time
+%7 - message</source>
+        <translation>Składnia:
+%1 - kolor tła
+%2 - kolor czcionki
+%3 - kolor pseudonimu
+%4 - pseudonim
+%5 - czas wysłania wiadomości
+%6 - czas wysłania wiadomości z serwera
+%7 - wiadomość</translation>
+    </message>
+    <message>
+        <source>Chat</source>
+        <translation>Rozmowa</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -783,6 +813,10 @@ Czy na pewno chcesz wysłać ten obrazek?</translation>
         <source>Cannot send message while being offline.</source>
         <translation>Nie mogę wysłać wiadomości dopóki nie jesteś połączony.</translation>
     </message>
+    <message>
+        <source>Custom</source>
+        <translation>Własny</translation>
+    </message>
 </context>
 <context>
     <name>ChatManager</name>
@@ -854,6 +888,10 @@ Czy na pewno chcesz wysłać ten obrazek?</translation>
         <source>&amp;Chat</source>
         <translation>&amp;Rozmowa</translation>
     </message>
+    <message>
+        <source>Custom</source>
+        <translation>Własny</translation>
+    </message>
 </context>
 <context>
     <name>ChatManagerSlots</name>
@@ -867,11 +905,11 @@ Czy na pewno chcesz wysłać ten obrazek?</translation>
     </message>
     <message>
         <source>Open in new tab</source>
-        <translation>Otwórz w nowej zakładce</translation>
+        <translation>Otwórz na nowej karcie</translation>
     </message>
     <message>
         <source>Open in background tab</source>
-        <translation>Otwórz w nowej zakładce w tle</translation>
+        <translation>Otwórz na nowej karcie w tle</translation>
     </message>
     <message>
         <source>URLs longer than this value will be shown truncated to this length</source>
@@ -1386,6 +1424,18 @@ Czy na pewno tego chcesz?</translation>
         <source>Copy personal info</source>
         <translation>Kopiuj dane personalne</translation>
     </message>
+    <message>
+        <source>Contact: %a[ (%u)]
+[First name: %f
+][Last name: %r
+][Mobile: %m
+]</source>
+        <translation>Kontakt: %a[ (%u)]
+[Imię: %f
+][Nazwisko: %r
+][Telefon: %m
+]</translation>
+    </message>
 </context>
 <context>
     <name>KaduSlots</name>
@@ -1865,18 +1915,6 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
 </context>
 <context>
     <name>UserBox</name>
-    <message>
-        <source>&lt;i&gt;Mobile:&lt;/i&gt; &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation>&lt;i&gt;Telefon:&lt;/i&gt; &lt;b&gt;%1&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt;&lt;/nobr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt; &lt;b&gt;(d.)&lt;/b&gt;&lt;/nobr&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;%2</source>
-        <translation>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt; &lt;b&gt;(z opisem)&lt;/b&gt;&lt;/nobr&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Opis:&lt;/b&gt;&lt;br/&gt;%2</translation>
-    </message>
     <message>
         <source>Compares statuses</source>
         <translation>Porównaj statusy</translation>

@@ -9,6 +9,10 @@
         <source>###IMAGE TOO BIG###</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>###TOO MANY IMAGES###</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>@default</name>
@@ -78,10 +82,6 @@
     </message>
     <message>
         <source>Reduce the number of visible messages to</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Scroll chat window downward, not upward</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -195,10 +195,6 @@ If you leave blank, default settings will be used.</source>
     </message>
     <message>
         <source>Log messages</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Restore window geometry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -442,10 +438,6 @@ If you leave blank, default settings will be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Remember window size and position between startups</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Automatically checks whether a new version is available</source>
         <translation type="unfinished"></translation>
     </message>
@@ -472,10 +464,6 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Align icon next to contact name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show tooltip on userbox</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -661,6 +649,41 @@ It&apos;s a high security risk!</source>
         <source>Userbox background</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Your nick color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User nick color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select chat style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Full chat style:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syntax:
+%1 - background color
+%2 - text font color
+%3 - nick color
+%4 - nick
+%5 - timestamp
+%6 - timestamp with server time
+%7 - message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -775,6 +798,10 @@ Do you really want to send this image?
         <source>Cannot send message while being offline.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Custom</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ChatManager</name>
@@ -844,6 +871,10 @@ Do you really want to send this image?
     </message>
     <message>
         <source>&amp;Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1364,6 +1395,22 @@ will be deleted. Are you sure?</source>
         <source>&amp;Search user in directory</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Copy description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy personal info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contact: %a[ (%u)]
+[First name: %f
+][Last name: %r
+][Mobile: %m
+]</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KaduSlots</name>
@@ -1841,18 +1888,6 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
 </context>
 <context>
     <name>UserBox</name>
-    <message>
-        <source>&lt;i&gt;Mobile:&lt;/i&gt; &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt;&lt;/nobr&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;nobr&gt;&lt;i&gt;%1&lt;/i&gt; &lt;b&gt;(d.)&lt;/b&gt;&lt;/nobr&gt;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;%2</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Compares statuses</source>
         <translation type="unfinished"></translation>
