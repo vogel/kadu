@@ -342,7 +342,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   zmiany has³a, wyrejestrowania konta zrobione obej¶cie b³êdu w Qt, dziêki któremu
   mo¿na by³o zmniejszyæ rozmiar okna poni¿ej minimalnego rozmiaru (joi)
 * dodano nowe emotikony autorstwa Mariusza Walugi  uzupelniajace kompatybilnosc z GG7
-  Licencja GPL szczegoly w pliku czytaj.txt
+  Licencja GPL szczegoly w pliku czytaj.txt (Ron_K)
+* stary zestaw emotikon w autodownloadzie (Ron_K)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
