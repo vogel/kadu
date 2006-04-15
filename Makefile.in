@@ -115,6 +115,7 @@ datadir = @datadir@
 enable_dependency_tracking = @enable_dependency_tracking@
 enable_final = @enable_final@
 enable_pheaders = @enable_pheaders@
+enabled_emoticon_themes = @enabled_emoticon_themes@
 enabled_icon_themes = @enabled_icon_themes@
 exec_prefix = @exec_prefix@
 host = @host@

@@ -313,7 +313,7 @@ ac_includes_default="\
 #endif"
 
 ac_subdirs_all="$ac_subdirs_all libgadu"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE am__leading_dot CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT CC CFLAGS ac_ct_CC CPP EGREP PTHREAD_CPPFLAGS PTHREAD_LDFLAGS PTHREAD_LIBS Z_LIBS PNG_LIBS QT_INCLUDES QT_LIBS QT_MOC_DIR QT_LRELEASE_DIR LIBOBJS GADU_LIBS GADU_INCLUDES DYNAMIC_OPT SO_EXT SHARED_OPT SHARED_FLAGS enable_pheaders PHEADERS_ENABLED_TRUE PHEADERS_ENABLED_FALSE enable_dependency_tracking enable_final shared_modules static_modules static_modules_ldflags STATIC_MODULES_DECLS STATIC_MODULES_REGRS enabled_icon_themes MY_SUBDIRS subdirs LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE am__leading_dot CXX CXXFLAGS LDFLAGS CPPFLAGS ac_ct_CXX EXEEXT OBJEXT CC CFLAGS ac_ct_CC CPP EGREP PTHREAD_CPPFLAGS PTHREAD_LDFLAGS PTHREAD_LIBS Z_LIBS PNG_LIBS QT_INCLUDES QT_LIBS QT_MOC_DIR QT_LRELEASE_DIR LIBOBJS GADU_LIBS GADU_INCLUDES DYNAMIC_OPT SO_EXT SHARED_OPT SHARED_FLAGS enable_pheaders PHEADERS_ENABLED_TRUE PHEADERS_ENABLED_FALSE enable_dependency_tracking enable_final shared_modules static_modules static_modules_ldflags STATIC_MODULES_DECLS STATIC_MODULES_REGRS enabled_icon_themes enabled_emoticon_themes MY_SUBDIRS subdirs LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -10319,6 +10319,61 @@ echo "$as_me: error: $i_t download failed!" >&2;}
 
 
 
+# Emoticon themes support
+
+	available_emoticon_themes=
+	cd varia/themes/emoticons
+	for dir in *; do \
+		if test -f $dir/1/emots.txt; then \
+			available_emoticon_themes="$available_emoticon_themes $dir"; \
+		fi; \
+	done
+	for file in *.web; do \
+		dir=`basename $file .web`; \
+		if test ! -f $dir/1/emots.txt; then \
+			available_emoticon_themes="$available_emoticon_themes $dir"; \
+		fi; \
+	done
+	cd ../../..
+
+
+	enabled_emoticon_themes=
+	disabled_emoticon_themes=
+	. ./.config; \
+	for e_t in $available_emoticon_themes; do \
+		echo "option=\$emoticons_$e_t" > .temp; \
+		. ./.temp; \
+		if test -z "$option"; then \
+			option=y; \
+		fi; \
+		case "$option" in
+			y) enabled_emoticon_themes="$enabled_emoticon_themes $e_t";; \
+			*) disabled_emoticon_themes="$disabled_emoticon_themes $e_t";; \
+		esac; \
+	done; \
+	rm .temp
+
+
+	echo
+	echo " **************************************************"
+	echo " * Configuring emoticon themes, please wait . . . *"
+	echo " **************************************************"
+	for e_t in $enabled_emoticon_themes; do \
+		if test -f varia/themes/emoticons/$e_t.web; then \
+			if test -f varia/themes/emoticons/$e_t/.autodownloaded -o ! -f varia/themes/emoticons/$e_t/1/emots.txt; then \
+				cd varia/themes/emoticons; \
+				if ! ../../scripts/autodownload $e_t "emoticon theme"; then \
+					{ { echo "$as_me:$LINENO: error: $e_t download failed!" >&5
+echo "$as_me: error: $e_t download failed!" >&2;}
+   { (exit 1); exit 1; }; }; \
+				fi; \
+				cd ../../..; \
+			fi; \
+		fi; \
+	done
+
+
+
 #
 MY_SUBDIRS="$MY_SUBDIRS modules kadu translations varia"
 
@@ -11099,6 +11154,7 @@ s,@static_modules_ldflags@,$static_modules_ldflags,;t t
 s,@STATIC_MODULES_DECLS@,$STATIC_MODULES_DECLS,;t t
 s,@STATIC_MODULES_REGRS@,$STATIC_MODULES_REGRS,;t t
 s,@enabled_icon_themes@,$enabled_icon_themes,;t t
+s,@enabled_emoticon_themes@,$enabled_emoticon_themes,;t t
 s,@MY_SUBDIRS@,$MY_SUBDIRS,;t t
 s,@subdirs@,$subdirs,;t t
 s,@LTLIBOBJS@,$LTLIBOBJS,;t t
@@ -12435,6 +12491,9 @@ echo "   Disabled modules: $disabled_modules"
 echo
 echo "   Enabled icon themes:  $enabled_icon_themes"
 echo "   Disabled icon themes: $disabled_icon_themes"
+echo
+echo "   Enabled emoticon themes:  $enabled_emoticon_themes"
+echo "   Disabled emoticon themes: $disabled_emoticon_themes"
 echo
 echo " Run make now (Linux) or gmake (FreeBSD and others) to compile Kadu."
 echo

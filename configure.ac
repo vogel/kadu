@@ -196,6 +196,23 @@ AC_DEFUN(FIND_AVAILABLE_ICON_THEMES,[
 	cd ../../..
 ])
 
+AC_DEFUN(FIND_AVAILABLE_EMOTICON_THEMES,[
+	available_emoticon_themes=
+	cd varia/themes/emoticons
+	for dir in *; do \
+		if test -f $dir/1/emots.txt; then \
+			available_emoticon_themes="$available_emoticon_themes $dir"; \
+		fi; \
+	done
+	for file in *.web; do \
+		dir=`basename $file .web`; \
+		if test ! -f $dir/1/emots.txt; then \
+			available_emoticon_themes="$available_emoticon_themes $dir"; \
+		fi; \
+	done
+	cd ../../..
+])
+
 AC_DEFUN(CHECK_MODULES_CONFIGURATION,[
 	static_modules=
 	shared_modules=
@@ -229,6 +246,24 @@ AC_DEFUN(CHECK_ICON_THEMES_CONFIGURATION,[
 		case "$option" in
 			y) enabled_icon_themes="$enabled_icon_themes $i_t";; \
 			*) disabled_icon_themes="$disabled_icon_themes $i_t";; \
+		esac; \
+	done; \
+	rm .temp
+])
+
+AC_DEFUN(CHECK_EMOTICON_THEMES_CONFIGURATION,[
+	enabled_emoticon_themes=
+	disabled_emoticon_themes=
+	. ./.config; \
+	for e_t in $available_emoticon_themes; do \
+		echo "option=\$emoticons_$e_t" > .temp; \
+		. ./.temp; \
+		if test -z "$option"; then \
+			option=y; \
+		fi; \
+		case "$option" in
+			y) enabled_emoticon_themes="$enabled_emoticon_themes $e_t";; \
+			*) disabled_emoticon_themes="$disabled_emoticon_themes $e_t";; \
 		esac; \
 	done; \
 	rm .temp
@@ -421,6 +456,24 @@ AC_DEFUN(PROCESS_ICON_THEMES,[
 				cd varia/themes/icons; \
 				if ! ../../scripts/autodownload $i_t "icon theme"; then \
 					AC_MSG_ERROR([$i_t download failed!]); \
+				fi; \
+				cd ../../..; \
+			fi; \
+		fi; \
+	done
+])
+
+AC_DEFUN(PROCESS_EMOTICON_THEMES,[
+	echo
+	echo " **************************************************"
+	echo " * Configuring emoticon themes, please wait . . . *"
+	echo " **************************************************"
+	for e_t in $enabled_emoticon_themes; do \
+		if test -f varia/themes/emoticons/$e_t.web; then \
+			if test -f varia/themes/emoticons/$e_t/.autodownloaded -o ! -f varia/themes/emoticons/$e_t/1/emots.txt; then \
+				cd varia/themes/emoticons; \
+				if ! ../../scripts/autodownload $e_t "emoticon theme"; then \
+					AC_MSG_ERROR([$e_t download failed!]); \
 				fi; \
 				cd ../../..; \
 			fi; \
@@ -839,6 +892,12 @@ CHECK_ICON_THEMES_CONFIGURATION()
 PROCESS_ICON_THEMES()
 AC_SUBST(enabled_icon_themes)
 
+# Emoticon themes support
+FIND_AVAILABLE_EMOTICON_THEMES()
+CHECK_EMOTICON_THEMES_CONFIGURATION()
+PROCESS_EMOTICON_THEMES()
+AC_SUBST(enabled_emoticon_themes)
+
 #
 MY_SUBDIRS="$MY_SUBDIRS modules kadu translations varia"
 AC_SUBST(MY_SUBDIRS)
@@ -924,6 +983,9 @@ echo "   Disabled modules: $disabled_modules"
 echo
 echo "   Enabled icon themes:  $enabled_icon_themes"
 echo "   Disabled icon themes: $disabled_icon_themes"
+echo
+echo "   Enabled emoticon themes:  $enabled_emoticon_themes"
+echo "   Disabled emoticon themes: $disabled_emoticon_themes"
 echo
 echo " Run make now (Linux) or gmake (FreeBSD and others) to compile Kadu."
 echo

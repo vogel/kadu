@@ -12,18 +12,23 @@ install-data-local: uninstall-local
 		$(INSTALL_DATA) themes/icons/$$i_t/* "$(DESTDIR)$(datadir)/kadu/themes/icons/$$i_t"; \
 	done
 
-	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/themes/emoticons/"	
-	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/"
-	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/1/"	
-	$(INSTALL_DATA) themes/emoticons/gadu-gadu/1/*.gif "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/1/"
-	$(INSTALL_DATA) themes/emoticons/gadu-gadu/1/*.txt "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/1/"
-	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/2/"	
-	$(INSTALL_DATA) themes/emoticons/gadu-gadu/2/*.gif "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/2/"
-	$(INSTALL_DATA) themes/emoticons/gadu-gadu/2/*.txt "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/2/"
-	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/3/"
-	$(INSTALL_DATA) themes/emoticons/gadu-gadu/3/*.gif "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/3/"
-	$(INSTALL_DATA) themes/emoticons/gadu-gadu/3/*.GIF "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/3/"
-	$(INSTALL_DATA) themes/emoticons/gadu-gadu/3/*.txt "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/3/"
+	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/themes/emoticons/"
+	@for e_t in $(enabled_emoticon_themes); do \
+		echo -e "\033[32m>>>\033[0m Installing $$e_t emoticon theme ..."; \
+		$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/themes/emoticons/$$e_t"; \
+		cd themes/emoticons/$$e_t; \
+		e_dirs=""; \
+		for e_d in *; do \
+			if test -d $$e_d; then \
+				e_dirs="$$e_dirs $$e_d"; \
+			fi; \
+		done; \
+		cd ../../..; \
+		for e_d in $$e_dirs; do \
+			$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/themes/emoticons/$$e_t/$$e_d"; \
+			$(INSTALL_DATA) themes/emoticons/$$e_t/$$e_d/* "$(DESTDIR)$(datadir)/kadu/themes/emoticons/$$e_t/$$e_d"; \
+		done; \
+	done
 
 	$(mkinstalldirs) "$(DESTDIR)$(bindir)/"	
 	$(INSTALL_SCRIPT) scripts/kadu-mozilla "$(DESTDIR)$(bindir)/"
@@ -32,8 +37,9 @@ install-data-local: uninstall-local
 uninstall-local:
 	rm -f "$(DESTDIR)$(datadir)/kadu/themes/sounds/default"/*
 	rm -rf "$(DESTDIR)$(datadir)/kadu/themes/icons"/*
-	rm -f "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/1"/*
-	rm -f "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/2"/*
-	rm -f "$(DESTDIR)$(datadir)/kadu/themes/emoticons/gadu-gadu/3"/*
+	rm -rf "$(DESTDIR)$(datadir)/kadu/themes/emoticons"/*
 	rm -f "$(DESTDIR)$(bindir)/kadu-mozilla"
 	rm -f "$(DESTDIR)$(bindir)/kadu-config"
+
+#				$(INSTALL_DATA) $$e_d/* "$(DESTDIR)$(datadir)/kadu/themes/emoticons/$$e_t/$$e_d"; \
+#
