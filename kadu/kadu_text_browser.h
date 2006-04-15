@@ -31,6 +31,7 @@ class KaduTextBrowser : public QTextBrowser, private QToolTip
 			for use with maybeTip(), or is null
 		**/
 		QString highlightedlink;
+		QString image;
 
 	private slots:
 		void refresh();
@@ -38,6 +39,7 @@ class KaduTextBrowser : public QTextBrowser, private QToolTip
 		void copyLinkLocation();
 		void hyperlinkClicked(const QString& link) const;
 		void linkHighlighted(const QString &);
+		void saveImage();
 
 	protected:
 		QPopupMenu *createPopupMenu(const QPoint &point);
@@ -61,6 +63,10 @@ class KaduTextBrowser : public QTextBrowser, private QToolTip
 
 		void setFont(const QFont& f) 	{ QTextBrowser::setFont(f); }
 		void setMargin(int width);
+		/**
+			Returns path to image at position point, or null if there's no image.
+		**/
+		QString imageAt(const QPoint &point);
 
 	public slots:
 		virtual void copy();

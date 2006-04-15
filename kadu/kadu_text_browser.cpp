@@ -11,10 +11,15 @@
 #include <qclipboard.h>
 #include <qpopupmenu.h>
 #include <qregexp.h>
+#include <qdialog.h>
+#include <qfile.h>
+#include <private/qrichtext_p.h>
 
 #include "debug.h"
 #include "kadu_text_browser.h"
 #include "misc.h"
+#include "config_dialog.h"
+#include "message_box.h"
 
 KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 	: QTextBrowser(parent, name),QToolTip(viewport()),level(0)
@@ -85,11 +90,16 @@ QPopupMenu *KaduTextBrowser::createPopupMenu(const QPoint &point)
 	kdebugf();
 	anchor = anchorAt(point);
 	anchor.replace("%2520", "%20");//obej¶cie b³êdu w Qt, patrz HtmlDocument::convertUrlsToHtml()
+	image = imageAt(point);
+	if (!image.isEmpty())
+		kdebugm(KDEBUG_INFO, "image: %s\n", image.local8Bit().data());
 
 	QPopupMenu* popupmenu = QTextBrowser::createPopupMenu(point);
 
 	if (!anchor.isEmpty())
 		popupmenu->insertItem(tr("Copy link &location"), this, SLOT(copyLinkLocation()), CTRL+Key_L, -1, 0);
+	else if (!image.isNull())
+		popupmenu->insertItem(tr("&Save image..."), this, SLOT(saveImage()));
 
 	kdebugf2();
 	return popupmenu;
@@ -208,4 +218,101 @@ void KaduTextBrowser::contentsMouseReleaseEvent(QMouseEvent *e)
 	kdebugf();
 	emit mouseReleased(e, this);
 	QTextBrowser::contentsMouseReleaseEvent(e);
+}
+
+QString KaduTextBrowser::imageAt(const QPoint &point)
+{
+	// this function uses Qt private API (QTextCursor), because there's no way
+	// to do it with public API (strange bugs in Qt :()
+	kdebugf();
+	static QRegExp imgExp("^<!--StartFragment-->(<.+>)?(/.*\\.\\w{3,4})$");
+	bool ok = false;
+	QTextCursor *c = textCursor();
+	QTextDocument *doc = c->document();
+
+	c->place(point, doc->firstParagraph()); // places cursor _near_ specified point
+	if (c->paragraph())
+	{
+//		kdebugm(KDEBUG_INFO, "point.x()=%d c->x()=%d\n", point.x(), c->x());
+		// if cursor is set _after_ image
+		if (point.x() < c->x())
+		{
+//			kdebugm(KDEBUG_INFO, "point.x() < c->x()\n");
+			QTextCursor endCur(*c);
+			c->gotoPreviousLetter();
+//			kdebugm(KDEBUG_INFO, "point.x()=%d c->x()=%d\n", point.x(), c->x());
+			if (ok = (c->x() < point.x()))
+			{
+//				kdebugm(KDEBUG_INFO, "c0->x() < point.x()\n");
+				doc->setSelectionStart(1, *c);
+				doc->setSelectionEnd(1, endCur);
+			}
+		}
+		else // cursor is set _on_ or __before__ image
+		{
+//			kdebugm(KDEBUG_INFO, "point.x() >= c->x()\n");
+			doc->setSelectionStart(1, *c);
+			int tries = 0;
+			do
+			{
+				c->gotoNextLetter();
+//				kdebugm(KDEBUG_INFO, "point.x()=%d c->x()=%d\n", point.x(), c->x());
+				if (ok = (point.x() < c->x()))
+				{
+//					kdebugm(KDEBUG_INFO, "point.x() < c2->x()\n");
+					doc->setSelectionEnd(1, *c);
+				}
+				++tries;
+			} while (!ok && tries < 2);
+		}
+//		kdebugm(KDEBUG_INFO, "ok: %d\n", ok);
+		if (ok && imgExp.search(doc->selectedText (1, true)) != -1)
+		{
+			removeSelection(1);
+			kdebugf2();
+			return imgExp.cap(2);
+		}
+		removeSelection(1);
+	}
+	kdebugf2();
+	return QString::null;
+}
+
+void KaduTextBrowser::saveImage()
+{
+	kdebugf();
+	QFileDialog *fd = new QFileDialog(this);
+	int fdResult;
+	QString fileExt = '.' + image.section('.', -1);
+
+	fd->setMode(QFileDialog::AnyFile);
+	fd->setDir(config_file.readEntry("Chat", "LastImagePath"));
+	fd->setFilter(QString("%1 (*%2)").arg(qApp->translate("ImageDialog", "Images"), fileExt));
+	fd->setSelection(image.section('/', -1));
+	fd->setCaption(tr("Save image"));
+	while ((fdResult = fd->exec()) == QFileDialog::Accepted
+		&& QFile::exists(fd->selectedFile())
+		&& !MessageBox::ask(tr("File already exists. Overwrite?")));
+	if (fdResult == QFileDialog::Accepted)
+	{
+		QFile dst((fd->selectedFile().endsWith(fileExt)) ? fd->selectedFile() : fd->selectedFile() + fileExt);
+		QFile src(image);
+		if (dst.open(IO_WriteOnly))
+		{
+			if (src.open(IO_ReadOnly))
+			{
+				char buffer[1024];
+				Q_LONG len;
+				while (!src.atEnd() && (len = src.readBlock(buffer, sizeof(buffer))) > 0
+					&& dst.writeBlock(buffer, len) != -1);
+				src.close();
+			}
+			config_file.writeEntry("Chat", "LastImagePath", fd->dirPath());
+			dst.close();
+		}
+		else
+			MessageBox::wrn(tr("Cannot save image: %1").arg(dst.errorString()));
+	}
+	delete fd;
+	kdebugf2();
 }
