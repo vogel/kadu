@@ -1223,7 +1223,7 @@ void FileTransferManager::userboxMenuPopup()
 
 		CONST_FOREACH(user, users)
 			if ((*user).usesProtocol("Gadu") &&
-			    (*user).ID("Gadu").toUInt() != config_file.readNumEntry("General","UIN"))
+			    (*user).ID("Gadu").toUInt() != config_file.readUnsignedNumEntry("General","UIN"))
 			{
 				anyOk = true;
 				break;
