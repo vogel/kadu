@@ -41,7 +41,6 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 	connect(this, SIGNAL(contentsMoving(int, int)), this, SLOT(refreshLater()));
 	connect(this, SIGNAL(textChanged()), this, SLOT(refreshLater()));
 	connect(&refreshTimer, SIGNAL(timeout()), this, SLOT(refresh()));
-	connect(this, SIGNAL(textChanged()), this, SLOT(refreshLater()));
 	kdebugf2();
 }
 
