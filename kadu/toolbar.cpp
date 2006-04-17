@@ -133,7 +133,7 @@ void ToolBar::writeToConfig(QDomElement parent_element)
 		parent_element, "ToolBar");
 	toolbar_elem.setAttribute("offset", offset());
 	QObjectList* l = queryList("ToolButton");
-	for (QObjectList::iterator i = l->begin(); i != l->end(); i++)
+	CONST_FOREACH(i, *l)
 		((ToolButton*)(*i))->writeToConfig(toolbar_elem);
 	kdebugf2();
 }
@@ -155,10 +155,15 @@ void ToolBar::loadFromConfig(QDomElement toolbar_element)
 {
 	kdebugf();
 	setOffset(toolbar_element.attribute("offset").toInt());
-	QDomNodeList buttons = toolbar_element.elementsByTagName("ToolButton");
-	for (unsigned int i = 0; i < buttons.count(); i++)
+
+	for (QDomNode n = toolbar_element.firstChild(); !n.isNull(); n = n.nextSibling())
 	{
-		QDomElement button_elem = buttons.item(i).toElement();
+		const QDomElement &button_elem = n.toElement();
+		if (button_elem.isNull())
+			continue;
+		if (button_elem.tagName() != "ToolButton")
+			continue;
+
 		QString action_name = button_elem.attribute("action_name");
 		bool uses_text_label = !button_elem.attribute("uses_text_label").isNull();
 		if (KaduActions.contains(action_name))
@@ -173,7 +178,7 @@ void ToolBar::loadFromConfig(QDomElement toolbar_element)
 	kdebugf2();
 }
 
-const UserGroup* ToolBar::selectedUsers()
+const UserGroup* ToolBar::selectedUsers() const
 {
 	kdebugf();
 	const UserGroup* users = dynamic_cast<DockArea*>(area())->selectedUsers();

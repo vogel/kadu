@@ -28,7 +28,7 @@ void Action::toolButtonClicked()
 {
 	kdebugf();
 	const ToolButton* button = dynamic_cast<const ToolButton*>(sender());
-	ToolBar* toolbar = dynamic_cast<ToolBar*>(button->parentWidget());
+	const ToolBar* toolbar = dynamic_cast<ToolBar*>(button->parentWidget());
 	const UserGroup* users = toolbar->selectedUsers();
 	if (users != NULL)
 		emit activated(users, button, button->isOn());
@@ -91,10 +91,10 @@ QValueList<ToolButton*> Action::toolButtonsForUserListElements(const UserListEle
 {
 	kdebugf();
 	QValueList<ToolButton*> buttons;
-	for (QValueList<ToolButton*>::iterator i = ToolButtons.begin(); i != ToolButtons.end(); i++)
+	CONST_FOREACH(i, ToolButtons)
 	{
-		ToolBar* toolbar = dynamic_cast<ToolBar*>((*i)->parentWidget());
-		if (toolbar->selectedUsers()->toUserListElements().equals(users))
+		const ToolBar* toolbar = dynamic_cast<ToolBar*>((*i)->parentWidget());
+		if (toolbar->selectedUsers()->equals(users))
 			buttons.append(*i);
 	}
 	kdebugf2();
@@ -104,7 +104,7 @@ QValueList<ToolButton*> Action::toolButtonsForUserListElements(const UserListEle
 bool Action::isOn(const UserListElements& users)
 {
 //	kdebugf();
-	for (QValueList<ToggleStateStruct>::iterator i = ToggleState.begin(); i != ToggleState.end(); i++)
+	CONST_FOREACH(i, ToggleState)
 		if ((*i).elems == users)
 		{
 			kdebugm(KDEBUG_INFO, "state: %i\n", (*i).state);
@@ -119,9 +119,9 @@ void Action::setOn(const UserListElements& users, bool on)
 {
 	kdebugf();
 	QValueList<ToolButton*> buttons = toolButtonsForUserListElements(users);
-	for (QValueList<ToolButton*>::iterator i = buttons.begin(); i != buttons.end(); i++)
+	CONST_FOREACH(i, buttons)
 		(*i)->setOn(on);
-	for (QValueList<ToggleStateStruct>::iterator i = ToggleState.begin(); i != ToggleState.end(); i++)
+	for (QValueList<ToggleStateStruct>::iterator i = ToggleState.begin(), end = ToggleState.end(); i != end; ++i)
 		if ((*i).elems == users)
 		{
 			(*i).state = on;
@@ -138,7 +138,7 @@ void Action::setPixmaps(const UserListElements& users, const QPixmap& pixmap)
 {
 	kdebugf();
 	QValueList<ToolButton*> buttons = toolButtonsForUserListElements(users);
-	for (QValueList<ToolButton*>::iterator i = buttons.begin(); i != buttons.end(); i++)
+	CONST_FOREACH(i, buttons)
 		(*i)->setPixmap(pixmap);
 	kdebugf2();
 }
@@ -147,7 +147,7 @@ void Action::setTexts(const UserListElements& users, const QString& text)
 {
 	kdebugf();
 	QValueList<ToolButton*> buttons = toolButtonsForUserListElements(users);
-	for (QValueList<ToolButton*>::iterator i = buttons.begin(); i != buttons.end(); i++)
+	CONST_FOREACH(i, buttons)
 		(*i)->setTextLabel(text);
 	kdebugf2();
 }
@@ -155,8 +155,7 @@ void Action::setTexts(const UserListElements& users, const QString& text)
 void Action::setEnabled(QWidget* parent, bool enabled)
 {
 	kdebugf();
-	for (QValueList<ToolButton*>::iterator i = ToolButtons.begin();
-		i != ToolButtons.end(); i++)
+	CONST_FOREACH(i, ToolButtons)
 	{
 		if (((ToolBar*)(*i)->parent())->area()->parent() == parent)
 			(*i)->setEnabled(enabled);
@@ -220,7 +219,7 @@ void Actions::addDefaultActionsToToolbar(ToolBar* toolbar)
 	if (DefaultToolbarActions.contains(toolbar->name()))
 	{
 		const QValueList<Default>& actions = DefaultToolbarActions[toolbar->name()];
-		FOREACH(i, actions)
+		CONST_FOREACH(i, actions)
 		{
 			if (contains((*i).action_name))
 				(*this)[(*i).action_name]->addToToolbar(toolbar,

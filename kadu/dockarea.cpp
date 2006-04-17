@@ -129,12 +129,18 @@ bool DockArea::loadFromConfig(QWidget* toolbars_parent)
 			toolbars_elem, "DockArea", "name", name());
 		if (!dockarea_elem.isNull())
 		{
-			QDomNodeList toolbars = dockarea_elem.elementsByTagName("ToolBar");
-			for (unsigned int i = 0; i < toolbars.count(); i++)
+
+			for (QDomNode n = dockarea_elem.firstChild(); !n.isNull(); n = n.nextSibling())
 			{
+				const QDomElement &toolbar_elem = n.toElement();
+				if (toolbar_elem.isNull())
+					continue;
+				if (toolbar_elem.tagName() != "ToolBar")
+					continue;
+
 				ToolBar* toolbar = new ToolBar(toolbars_parent, QString());
 				moveDockWindow(toolbar);
-				toolbar->loadFromConfig(toolbars.item(i).toElement());
+				toolbar->loadFromConfig(toolbar_elem);
 				toolbar->show();
 				setAcceptDockWindow(toolbar, true);
 			}

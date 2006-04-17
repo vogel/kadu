@@ -36,7 +36,7 @@ class ToolBar : public QToolBar
 			list, and so on...
 			Returns NULL if toolbar is no connected to user list.
 		**/
-		const UserGroup* selectedUsers();
+		const UserGroup* selectedUsers() const;
 		QPopupMenu* createContextMenu(QWidget* parent);
 
 	public slots:
