@@ -86,21 +86,28 @@ QDomElement XmlConfigFile::createElement(QDomElement parent, const QString& tag_
 
 QDomElement XmlConfigFile::findElement(QDomElement parent, const QString& tag_name) const
 {
-	const QDomNodeList &elems = parent.elementsByTagName(tag_name);
-	if (elems.length() > 0)
-		return elems.item(0).toElement();
-	else
-		return QDomNode().toElement();
+	for (QDomNode n = parent.firstChild(); !n.isNull(); n = n.nextSibling())
+	{
+		const QDomElement &e = n.toElement();
+		if (e.isNull())
+			continue;
+		if (e.tagName() == tag_name)
+			return e;
+	}
+	return QDomNode().toElement();
 }
 
 QDomElement XmlConfigFile::findElementByProperty(QDomElement parent, const QString& tag_name,
 	const QString& property_name, const QString& property_value) const
 {
 //	kdebugf();
-	const QDomNodeList &elems = parent.elementsByTagName(tag_name);
-	for (unsigned int i = 0, len = elems.length(); i < len; ++i)
+	for (QDomNode n = parent.firstChild(); !n.isNull(); n = n.nextSibling())
 	{
-		const QDomElement &e = elems.item(i).toElement();
+		const QDomElement &e = n.toElement();
+		if (e.isNull())
+			continue;
+		if (e.tagName() != tag_name)
+			continue;
 		const QString &val = e.attribute(property_name);
 //		kdebug("Checking if property value \"%s\" equals \"%s\"\n",
 //			val.local8Bit().data(), property_value.local8Bit().data());
@@ -564,7 +571,7 @@ void ConfigFile::sync() const
 
 bool ConfigFile::changeEntry(const QString &group, const QString &name, const QString &value)
 {
-//	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::changeEntry(%s, %s, %s) %p\n", (const char *)group.local8Bit(), (const char *)name.local8Bit(), (const char *)value.local8Bit(), this);
+//	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::changeEntry(%s, %s, %s) %p\n", group.local8Bit().data(), name.local8Bit().data(), value.local8Bit().data(), this);
 	QDomElement root_elem = xml_config_file->rootElement();
 	QDomElement deprecated_elem = xml_config_file->accessElement(root_elem, "Deprecated");
 	QDomElement config_file_elem = xml_config_file->accessElementByProperty(
@@ -580,7 +587,7 @@ bool ConfigFile::changeEntry(const QString &group, const QString &name, const QS
 
 QString ConfigFile::getEntry(const QString &group, const QString &name, bool *ok) const
 {
-//	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::getEntry(%s, %s) %p\n", (const char *)group.local8Bit(), (const char *)name.local8Bit(), this);
+//	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::getEntry(%s, %s) %p\n", group.local8Bit().data(), name.local8Bit().data(), this);
 	QDomElement root_elem = xml_config_file->rootElement();
 	QDomElement deprecated_elem = xml_config_file->findElement(root_elem, "Deprecated");
 	if (!deprecated_elem.isNull())

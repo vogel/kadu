@@ -347,6 +347,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * mechanizm autodownloadu zestawów emotikonów (Ron_K, adrian)
 * mo¿liwo¶æ zapisania obrazka z okna rozmowy przez wybranie opcji w menu
   kontekstowym (montor,joi)
+* optymalizacje w kodzie dotycz±cym XMLowego pliku konfiguracyjnego - skrócenie
+  czasu uruchamiania+zamykania o ok. 8% (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
