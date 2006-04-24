@@ -19,7 +19,7 @@ class Action : public QAction
 		QIconSet OnIcon;
 		QString OnText;
 		QString DockAreaGroupRestriction;
-		QString Slot;
+		const char *Slot;
 		QValueList<ToolButton*> ToolButtons;
 		struct ToggleStateStruct
 		{
@@ -65,7 +65,7 @@ class Action : public QAction
 			is activated. You should ensure that class of parent's class
 			is known using setDockAreaGroupRestriction().
 		**/
-		void setSlot(const QString& slot);
+		void setSlot(const char *slot);
 		/**
 			Activate action
 		**/

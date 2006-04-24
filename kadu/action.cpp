@@ -18,7 +18,7 @@
 #include "misc.h"
 
 Action::Action(const QIconSet& icon, const QString& text, const char* name, QKeySequence accel)
-	: QAction(icon, text, accel, kadu, name)
+	: QAction(icon, text, accel, kadu, name), Slot(0)
 {
 	kdebugf();
 	kdebugf2();
@@ -63,7 +63,7 @@ ToolButton* Action::addToToolbar(ToolBar* toolbar, bool uses_text_label)
 	btn->setAccel(accel());
 	connect(btn, SIGNAL(clicked()), this, SLOT(toolButtonClicked()));
 	connect(btn, SIGNAL(destroyed(QObject*)), this, SLOT(toolButtonDestroyed(QObject*)));
-	if (!Slot.isNull())
+	if (Slot)
 		connect(btn, SIGNAL(clicked()), toolbar->area()->parent(), Slot);
 	ToolButtons.append(btn);
 	const UserGroup* user_group = toolbar->selectedUsers();
@@ -175,7 +175,7 @@ QString Action::dockAreaGroupRestriction()
 	return DockAreaGroupRestriction;
 }
 
-void Action::setSlot(const QString& slot)
+void Action::setSlot(const char *slot)
 {
 	kdebugf();
 	Slot = slot;

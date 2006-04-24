@@ -113,7 +113,7 @@ class SelectFont : public QHBox
 {
 	Q_OBJECT
 	public:
-		SelectFont(const QString &text, const QFont &def_val, QWidget *parent = 0,  const char *name = 0, const char *tip = 0);
+		SelectFont(const char *text, const QFont &def_val, QWidget *parent = 0,  const char *name = 0, const char *tip = 0);
 		const QFont &font() const;
 	public slots:
 		void setFont(const QFont &font);

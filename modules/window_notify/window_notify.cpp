@@ -101,8 +101,8 @@ void WindowNotify::userStatusChanged(UserListElement ule, QString protocolName, 
 
 	MessageBox::msg(narg(tr("<b>%1</b> changed status from <i>%2</i> to <i>%3</i>"),
 					ule.altNick(),
-					qApp->translate("@default", oldStatus.name()),
-					qApp->translate("@default", ule.status("Gadu").name())));
+					qApp->translate("@default", oldStatus.name().ascii()),
+					qApp->translate("@default", ule.status("Gadu").name().ascii())));
 	kdebugf2();
 }
 
@@ -112,7 +112,7 @@ void WindowNotify::userChangedStatusToAvailable(const QString &protocolName, Use
 
 	MessageBox::msg(narg(tr("<b>%1</b> changed status to <i>%2</i><br/> <small>%3</small>"),
 					ule.altNick(),
-					qApp->translate("@default", ule.status("Gadu").name()),
+					qApp->translate("@default", ule.status("Gadu").name().ascii()),
 					QStyleSheet::escape(ule.status("Gadu").description())));
 	kdebugf2();
 }
@@ -148,7 +148,7 @@ void WindowNotify::message(const QString &from, const QString &message, const QM
 		MessageBox::msg(narg(tr("<b>From %1: %2</b> changed status to <i>%3</i>"),
 						from,
 						ule->altNick(),
-						qApp->translate("@default", ule->status("Gadu").name())));
+						qApp->translate("@default", ule->status("Gadu").name().ascii())));
 	}
 	kdebugf2();
 }

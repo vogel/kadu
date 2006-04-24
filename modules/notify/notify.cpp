@@ -69,7 +69,7 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name)
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "Mouse over user"));
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "Other message"));
 
-	connect(gadu, SIGNAL(connectionError(Protocol *, const QString &)), this, notifySignals["ConnError"]);
+	connect(gadu, SIGNAL(connectionError(Protocol *, const QString &)), this, notifySignals["ConnError"].ascii());
 	connect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
 			this, SLOT(probablyNewMessage(Protocol *, UserListElements, const QString&, time_t, bool&)));
 	connect(gadu, SIGNAL(chatMsgReceived2(Protocol *, UserListElements, const QString&, time_t)),
@@ -149,7 +149,7 @@ Notify::~Notify()
 	ConfigDialog::removeControl("Notify", "Notify about all users");
 	ConfigDialog::removeControl("Notify", "Ignore changes right after connection to the server");
 
-	disconnect(gadu, SIGNAL(connectionError(Protocol *, const QString &)), this, notifySignals["ConnError"]);
+	disconnect(gadu, SIGNAL(connectionError(Protocol *, const QString &)), this, notifySignals["ConnError"].ascii());
 	disconnect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
 			this, SLOT(probablyNewMessage(Protocol *, UserListElements, const QString&, time_t, bool&)));
 	disconnect(gadu, SIGNAL(chatMsgReceived2(Protocol *, UserListElements, const QString&, time_t)),
@@ -258,7 +258,7 @@ void Notify::addConfigColumn(const QString &name, const QMap<QString, QString> &
 	{
 		QCString entry = ((*it) + "_" + name).utf8();
 		QCString wname = (name + (*it)).utf8();
-		ConfigDialog::addCheckBox("Notify", s[1], " ", entry, false, QString::null, wname);
+		ConfigDialog::addCheckBox("Notify", s[1], " ", entry, false, 0, wname);
 		if (!notifierSlots.contains(*it))
 			notify_slots->registerDisabledControl(wname);
 		s.append(entry);
@@ -268,7 +268,7 @@ void Notify::addConfigColumn(const QString &name, const QMap<QString, QString> &
 	{
 		QCString entry = ((*it).name + "_" + name).utf8();
 		QCString wname = (name + (*it).name).utf8();
-		ConfigDialog::addCheckBox("Notify", s[1], " ", entry, false, QString::null, wname);
+		ConfigDialog::addCheckBox("Notify", s[1], " ", entry, false, 0, wname);
 		s.append(entry);
 		s.append(wname);
 	}
@@ -322,7 +322,7 @@ void Notify::addConfigRow(const QString &name, const char *description)
 		QCString parent = s[1]; // name_vbox
 		QCString entry = (name + "_" + it.key()).utf8();
 		QCString wname = (it.key() + name).utf8();
-		ConfigDialog::addCheckBox("Notify", parent, " ", entry, false, QString::null, wname);
+		ConfigDialog::addCheckBox("Notify", parent, " ", entry, false, 0, wname);
 		s.append(entry);
 		s.append(wname);
 	}
@@ -401,9 +401,9 @@ void Notify::updateConnections()
 			if (config_file.readBoolEntry("Notify", signalName + "_" + notifierName) != connection.second)
 			{
 				if (connection.second)
-					disconnect(this, notifySignals[signalName], notifier.notifier, connection.first);
+					disconnect(this, notifySignals[signalName].ascii(), notifier.notifier, connection.first.ascii());
 				else
-					connect(this, notifySignals[signalName], notifier.notifier, connection.first);
+					connect(this, notifySignals[signalName].ascii(), notifier.notifier, connection.first.ascii());
 				connection.second = !connection.second;
 			}
 		}
@@ -456,7 +456,7 @@ void Notify::connectSlot(const QString &notifierName, const QString &slotName)
 	NotifierSlots &notifier = notifiers[notifierName];
 	if (notifier.notifierSlots[slotName].second == false)
 	{
-		connect(this, notifySignals[slotName], notifier.notifier, notifier.notifierSlots[slotName].first);
+		connect(this, notifySignals[slotName].ascii(), notifier.notifier, notifier.notifierSlots[slotName].first.ascii());
 		notifier.notifierSlots[slotName].second = true;
 	}
 	else
@@ -470,7 +470,7 @@ void Notify::disconnectSlot(const QString &notifierName, const QString &slotName
 	NotifierSlots &notifier = notifiers[notifierName];
 	if (notifier.notifierSlots[slotName].second == true)
 	{
-		disconnect(this, notifySignals[slotName], notifier.notifier, notifier.notifierSlots[slotName].first);
+		disconnect(this, notifySignals[slotName].ascii(), notifier.notifier, notifier.notifierSlots[slotName].first.ascii());
 		notifier.notifierSlots[slotName].second = false;
 	}
 	else
@@ -487,10 +487,10 @@ void Notify::emitMessage(const QString &from, const QString &to, const QString &
 		if (notifiers[to].notifierSlots.contains("Message"))
 		{
 			connect(this, SIGNAL(privateMessage(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *)),
-					notifiers[to].notifier, notifiers[to].notifierSlots["Message"].first);
+					notifiers[to].notifier, notifiers[to].notifierSlots["Message"].first.ascii());
 			emit privateMessage(from, msg, parameters, ule);
 			disconnect(this, SIGNAL(privateMessage(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *)),
-					notifiers[to].notifier, notifiers[to].notifierSlots["Message"].first);
+					notifiers[to].notifier, notifiers[to].notifierSlots["Message"].first.ascii());
 		}
 	kdebugf2();
 }

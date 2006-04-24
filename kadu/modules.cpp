@@ -375,7 +375,7 @@ ModulesManager::~ModulesManager()
 
 QTranslator* ModulesManager::loadModuleTranslation(const QString& module_name)
 {
-	QTranslator* translator=new QTranslator(translators, "Translator_"+module_name);
+	QTranslator* translator = new QTranslator(translators, "module_translator");
 	if (translator->load(dataPath("kadu/modules/translations/"+module_name+QString("_") + config_file.readEntry("General", "Language", QTextCodec::locale())), "."))
 	{
 		qApp->installTranslator(translator);

@@ -23,7 +23,7 @@ class ToolBar : public QToolBar
 		virtual void dragLeaveEvent(QDragLeaveEvent *e);
 
 	public:
-		ToolBar(QWidget* parent, const QString& label);
+		ToolBar(QWidget* parent, const char *name);
 		~ToolBar();
 		QString dockAreaGroup();
 		DockArea* dockArea();

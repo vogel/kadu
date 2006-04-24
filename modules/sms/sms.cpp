@@ -49,7 +49,7 @@ extern "C" int sms_init()
 	ConfigDialog::addCheckBox("SMS", "smsgrid",
 			QT_TRANSLATE_NOOP("@default", "SMS custom string"), "UseCustomString", false ,
 			QT_TRANSLATE_NOOP("@default", "Check this box if your sms application doesn't understand arguments: number \"message\"\nArguments should be separated with spaces. %n argument is converted to number, %m to message"));
-	ConfigDialog::addLineEdit("SMS", "smsgrid", 0, "SmsString", QString::null, QString::null, "smsstring");
+	ConfigDialog::addLineEdit("SMS", "smsgrid", 0, "SmsString", QString::null, 0, "smsstring");
 	ConfigDialog::addLineEdit("SMS", "SMS options",
 			QT_TRANSLATE_NOOP("@default", "SMS Nick"), "SmsNick");
 	config_file.addVariable("SMS", "SmsNick", config_file.readEntry("General", "Nick"));

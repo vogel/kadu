@@ -94,7 +94,7 @@ HintManager::HintManager(QWidget *parent, const char *name)
 	ConfigDialog::addHBox("Hints", "Hints", "hints-hbox");
 		ConfigDialog::addVRadioGroup("Hints", "hints-hbox", QT_TRANSLATE_NOOP("@default", "New hints go"), "NewHintUnder",
 			toStringList(tr("Auto"),tr("On top"),tr("On bottom")),
-			toStringList("0", "1", "2"), "0", QString::null, 0, Expert);
+			toStringList("0", "1", "2"), "0", 0, 0, Expert);
 
 		ConfigDialog::addVGroupBox("Hints", "hints-hbox", QT_TRANSLATE_NOOP("@default","Hints position"), 0, Expert);
 			ConfigDialog::addCheckBox("Hints", "Hints position", QT_TRANSLATE_NOOP("@default", "Own hints position"), "UseUserPosition", false);
@@ -109,7 +109,7 @@ HintManager::HintManager(QWidget *parent, const char *name)
 
 	const QString default_hints_syntax(QT_TRANSLATE_NOOP("HintManager", "[<i>%s</i><br/>][<br/><b>Description:</b><br/>%d<br/><br/>][<i>Mobile:</i> <b>%m</b><br/>]"));
 	if (config_file.readEntry("Hints", "MouseOverUserSyntax") == default_hints_syntax || config_file.readEntry("Hints", "MouseOverUserSyntax").isEmpty())
-		config_file.writeEntry("Hints", "MouseOverUserSyntax", tr(default_hints_syntax));
+		config_file.writeEntry("Hints", "MouseOverUserSyntax", tr(default_hints_syntax.ascii()));
 	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Hints over userlist"), 0, Expert);
 		ConfigDialog::addTextEdit("Hints", "Hints over userlist", QT_TRANSLATE_NOOP("@default", "Hints syntax:"), "MouseOverUserSyntax", QString::null, Kadu::SyntaxText, 0, Expert);
 
@@ -561,7 +561,7 @@ void HintManager::userStatusChanged(UserListElement ule, QString protocolName, c
 		if (ule.status(protocolName).hasDescription() && config_file.readBoolEntry("Hints","NotifyHintDescription"))
 			addHint(narg(tr("<b>%1</b> changed status to <i>%2</i><br/> <small>%3</small>"),
 				QStyleSheet::escape(ule.altNick()),
-				qApp->translate("@default", ule.status("Gadu").name()),
+				qApp->translate("@default", ule.status("Gadu").name().ascii()),
 				QStyleSheet::escape(ule.status("Gadu").description())),
 				ule.status(protocolName).pixmap(),
 				config_file.readFontEntry("Hints", "Hint"+stat+"D_font"),
@@ -571,7 +571,7 @@ void HintManager::userStatusChanged(UserListElement ule, QString protocolName, c
 		else
 			addHint(narg(tr("<b>%1</b> changed status to <i>%2</i>"),
 				QStyleSheet::escape(ule.altNick()),
-				qApp->translate("@default", ule.status(protocolName).name())),
+				qApp->translate("@default", ule.status(protocolName).name().ascii())),
 				ule.status(protocolName).pixmap(),
 				config_file.readFontEntry("Hints", "Hint"+stat+"_font"),
 				config_file.readColorEntry("Hints", "Hint"+stat+"_fgcolor"),

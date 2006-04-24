@@ -16,8 +16,8 @@
 #include "misc.h"
 #include "toolbar.h"
 
-ToolBar::ToolBar(QWidget* parent, const QString& label)
-	: QToolBar(NULL, label), dragButton(NULL)
+ToolBar::ToolBar(QWidget* parent, const char *name)
+	: QToolBar(NULL, name), dragButton(NULL)
 {
 	kdebugf();
 	setAcceptDrops(true);

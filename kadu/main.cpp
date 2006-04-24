@@ -90,7 +90,8 @@ static void kadu_signal_handler(int s)
 		fprintf(stderr, "======= END OF BACKTRACE  ======\n");
 		fflush(stderr);
 
-		dbgfile = fopen(ggPath(debug_file), "w");
+		QCString p(ggPath(debug_file).local8Bit());
+		dbgfile = fopen(p.data(), "w");
 		if (dbgfile)
 		{
 			fprintf(dbgfile, "======= BEGIN OF BACKTRACE =====\n");

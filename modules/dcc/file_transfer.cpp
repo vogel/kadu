@@ -276,7 +276,7 @@ void FileTransfer::start(bool restore)
 
 		QString message(
 			tr("Hello. I am an automatic file-transfer reminder. Could you please send me a file named %1?"));
-		if (gadu->currentStatus().isOffline() || !gadu->sendMessage(recv, message.arg(QUrl(FileName).fileName())) == -1)
+		if (gadu->currentStatus().isOffline() || !gadu->sendMessage(recv, unicode2cp(message.arg(QUrl(FileName).fileName()))) == -1)
 			MessageBox::wrn(tr("Error: message was not sent"));
 	}
 }
@@ -1158,7 +1158,7 @@ QString FileTransferManager::selectFileToSend()
 	{
 		f = QFileDialog::getOpenFileName(
 			config_file.readEntry("Network", "LastUploadDirectory"),
-			QString::null, 0, tr("open file"), tr("Select file location"));
+			QString::null, 0, "open file", tr("Select file location"));
 		fi.setFile(f);
 		if (f != QString::null && !fi.isReadable())
 			MessageBox::msg(tr("This file is not readable"), true);
@@ -1445,7 +1445,7 @@ void FileTransferManager::needFileAccept(DccSocket *socket)
 		if (!haveFileName || fileName.isEmpty())
 			fileName = QFileDialog::getSaveFileName(config_file.readEntry("Network", "LastDownloadDirectory")
 				+ cp2unicode(socket->ggDccStruct()->file_info.filename),
-				QString::null, 0, tr("save file"), tr("Select file location"));
+				QString::null, 0, "save file", tr("Select file location"));
 
 		if (fileName.isEmpty())
 		{

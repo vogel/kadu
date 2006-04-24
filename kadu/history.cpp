@@ -1907,7 +1907,7 @@ HistorySearch::HistorySearch(QWidget *parent, UinsList uins) : QDialog(parent), 
 	status_hgb = new QHGroupBox(tr("Status"), this);
 	status_cob = new QComboBox(status_hgb);
 	for (i = 0; i < 4; ++i)
-		status_cob->insertItem(qApp->translate("@default", UserStatus::name(i * 2)));
+		status_cob->insertItem(qApp->translate("@default", UserStatus::name(i * 2).ascii()));
 
 	reverse_chb = new QCheckBox(tr("&Reverse find"), this);
 

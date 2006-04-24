@@ -239,7 +239,7 @@ void UserInfo::setupTab1()
 		}
 		else
 			e_ver->setText(tr("(Unknown)"));
-		e_status->setText(tr(user.status("Gadu").name()));
+		e_status->setText(tr(user.status("Gadu").name().ascii()));
 		tw_main->setTabIconSet(vgb_general, user.status("Gadu").pixmap());
 
 		if (user.hasIP("Gadu"))

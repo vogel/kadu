@@ -19,7 +19,7 @@
 **/
 
 // wygl±d paneli
-QString informationPanelSyntax[]=
+const char *informationPanelSyntax[]=
 {
 	"[#%u, ][%f] %r [- %d] [ (%i)]",
 
@@ -106,7 +106,7 @@ QString informationPanelSyntax[]=
 };
 
 // nazwy wygl±dów (albo autorzy)
-QString informationPanelName[]={"Default", "RonK", "joi", "dorr", "maz", "Abaddon", "RonK2", "Ciuciu"};
+const char *informationPanelName[]={"Default", "RonK", "joi", "dorr", "maz", "Abaddon", "RonK2", "Ciuciu"};
 
 
 /**
@@ -114,14 +114,14 @@ QString informationPanelName[]={"Default", "RonK", "joi", "dorr", "maz", "Abaddo
 **/
 
 // sk³adnie dymków
-QString hintSyntax[]=
+const char *hintSyntax[]=
 {
 	"<b>%n</b> changed status to <b>%s</b>",
 	"<b>%n</b> status ::: <b>%s</b>[<br> desc ::: <i>%d</i>]"
 };
 
 // nazwy sk³adni
-QString hintSyntaxName[]=
+const char *hintSyntaxName[]=
 {
 	"Default",
 	"Ciuciu"
@@ -134,7 +134,7 @@ QString hintSyntaxName[]=
 
 //kolory dymków. sk³adnia: bc, fc
 //bc - background color, fc - font color
-QString hintColors[][2]=
+const char *hintColors[][2]=
 {
 	{"#f0f0f0", "#000000"},
 	{"#ffffff", "#000000"},
@@ -144,7 +144,7 @@ QString hintColors[][2]=
 };
 
 //nazwy kolorów
-QString hintColorsNames[]=
+const char *hintColorsNames[]=
 {
 	"Default",
 	"Black and white",
@@ -160,7 +160,7 @@ QString hintColorsNames[]=
 
 //kolory kadu. sk³adnia: chat_my_bc, chat_my_fc,chat_usr_bc, chat_usr_fc, info_panel_bc, info_panel_fc, userbox_bc, userbox_fc
 //bc - background color, fc - font color
-QString kaduColors[][8]=
+const char *kaduColors[][8]=
 {
 	{"#e0e0e0", "#000000", "#f0f0f0", "#000000", "#e6e7e6", "#000000", "#ffffff", "#000000"},
 	{"#444444", "#c7d2ff", "#000839", "#d8d8d8", "#505050", "#aaff00", "#000000", "#b2b3ff"},
@@ -168,7 +168,7 @@ QString kaduColors[][8]=
 	{"#3c5366", "#808999", "#35495a", "#808999", "#3c5366", "#808999", "#3c5366", "#808999"}
 };
 
-QString kaduColorNames[]=
+const char *kaduColorNames[]=
 {
 	"Default",
 	"Dark grey",

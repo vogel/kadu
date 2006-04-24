@@ -138,7 +138,7 @@ bool DockArea::loadFromConfig(QWidget* toolbars_parent)
 				if (toolbar_elem.tagName() != "ToolBar")
 					continue;
 
-				ToolBar* toolbar = new ToolBar(toolbars_parent, QString());
+				ToolBar* toolbar = new ToolBar(toolbars_parent, "");
 				moveDockWindow(toolbar);
 				toolbar->loadFromConfig(toolbar_elem);
 				toolbar->show();

@@ -163,7 +163,7 @@ void HintManagerSlots::clicked_ChangeFgColor()
 {
 	kdebugf();
 	QLabel *preview=ConfigDialog::getLabel("Hints", "<b>Text</b> preview");
-	QColor color = QColorDialog::getColor(preview->paletteForegroundColor(), 0, tr("Color dialog"));
+	QColor color = QColorDialog::getColor(preview->paletteForegroundColor(), 0, "Color dialog");
 	if (color.isValid())
 	{
 		preview->setPaletteForegroundColor(color);
@@ -180,7 +180,7 @@ void HintManagerSlots::clicked_ChangeBgColor()
 {
 	kdebugf();
 	QLabel *preview=ConfigDialog::getLabel("Hints", "<b>Text</b> preview");
-	QColor color = QColorDialog::getColor(preview->paletteBackgroundColor(), 0, tr("Color dialog"));
+	QColor color = QColorDialog::getColor(preview->paletteBackgroundColor(), 0, "Color dialog");
 	if (color.isValid())
 	{
 		preview->setPaletteBackgroundColor(color);

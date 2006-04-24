@@ -592,7 +592,7 @@ void Kadu::lookupInDirectory()
 		UserListElement user = *(users.constBegin());
 		if (user.usesProtocol("Gadu"))
 		{
-			sd = new SearchDialog(0, tr("User info"), user.ID("Gadu").toUInt());
+			sd = new SearchDialog(0, "User info", user.ID("Gadu").toUInt());
 			sd->show();
 			sd->firstSearch();
 		}
@@ -1339,11 +1339,12 @@ void Kadu::createStatusPopupMenu()
 		s->setIndex(i, ".");
 		pix = s->pixmap();
 		icon = QIconSet(pix);
-		statusMenu->insertItem(icon, qApp->translate("@default", UserStatus::name(i)), i);
-		dockMenu->insertItem(icon, qApp->translate("@default", UserStatus::name(i)), i);
+		QString statusName = qApp->translate("@default", UserStatus::name(i).ascii());
+		statusMenu->insertItem(icon, statusName, i);
+		dockMenu->insertItem(icon, statusName, i);
 
-		icons_manager->registerMenuItem(statusMenu, qApp->translate("@default", UserStatus::name(i)), UserStatus::toString(s->status(), s->hasDescription()));
-		icons_manager->registerMenuItem(dockMenu, qApp->translate("@default", UserStatus::name(i)), UserStatus::toString(s->status(), s->hasDescription()));
+		icons_manager->registerMenuItem(statusMenu, statusName, UserStatus::toString(s->status(), s->hasDescription()));
+		icons_manager->registerMenuItem(dockMenu, statusName, UserStatus::toString(s->status(), s->hasDescription()));
 	}
 	delete s;
 
@@ -1486,7 +1487,7 @@ void KaduSlots::onCreateTabGeneral()
 	QComboBox* cb_defstatus = ConfigDialog::getComboBox("General", "Default status", "cb_defstatus");
 	cb_defstatus->clear();
 	for (int i = 0; i < max; ++i)
-		cb_defstatus->insertItem(qApp->translate("@default", UserStatus::name(i)));
+		cb_defstatus->insertItem(qApp->translate("@default", UserStatus::name(i).ascii()));
 	cb_defstatus->insertItem(qApp->translate("@default", "Restore last status"));
 	cb_defstatus->insertItem(qApp->translate("@default", "Restore last status (change Offline to Invisible)"));
 	cb_defstatus->setCurrentItem(statusIndex);
@@ -1712,7 +1713,7 @@ void Kadu::showStatusOnMenu(int statusNr)
 	statusMenu->setItemChecked(8, gadu->status().isFriendsOnly());
 	dockMenu->setItemChecked(8, gadu->status().isFriendsOnly());
 
-	statusButton->setText(qApp->translate("@default", gadu->status().name()));
+	statusButton->setText(qApp->translate("@default", gadu->status().name().ascii()));
 	statusMenu->setItemEnabled(7, statusNr != 6);
 	dockMenu->setItemEnabled(7, statusNr != 6);
 	QPixmap pix = gadu->status().pixmap();

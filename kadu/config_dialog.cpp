@@ -127,7 +127,7 @@ void ConfigDialog::createWidget(QValueListIterator <RegisteredControl> i)
 			case CONFIG_CHECKBOX:
 			{
 				QCheckBox* check=new QCheckBox(appHandle->translate("@default",(*i).caption), parent, (*i).name);
-				check->setChecked((*i).config->readBoolEntry((*i).group, (*i).entry, (*i).defaultS));
+				check->setChecked((*i).config->readBoolEntry((*i).group, (*i).entry, (*i).defaultS == "true"));
 				(*i).widget=check;
 				(*i).entireWidget = (*i).widget;
 				if ((*i).tip)
@@ -526,7 +526,7 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 
 
 	if (currentTab.isEmpty())
-		currentTab = config_file.readEntry("General", "ConfigDialogLastTab", QT_TRANSLATE_NOOP("@default", "General"));
+		currentTab = config_file.readEntry("General", "ConfigDialogLastTab", QT_TRANSLATE_NOOP("@default", "General")).ascii();
 	bool found = false;
 	CONST_FOREACH(tab, TabNames)
 		if (found = ((*tab) == currentTab))
@@ -1834,7 +1834,7 @@ void HotKey::setShortCut(const QKeySequence& shortcut)
 	return setText(shortcut);
 }
 
-SelectFont::SelectFont(const QString &text, const QFont &val, QWidget *parent, const char *name, const char *tip)
+SelectFont::SelectFont(const char *text, const QFont &val, QWidget *parent, const char *name, const char *tip)
 	: QHBox(parent, name)
 {
 	kdebugf();
@@ -1881,7 +1881,7 @@ ColorButton::ColorButton(const QColor &color, QWidget *parent, const char* name)
 
 void ColorButton::onClick()
 {
-	QColor color = QColorDialog::getColor(this->color(), this, tr("Color dialog"));
+	QColor color = QColorDialog::getColor(this->color(), this, "Color dialog");
 	setColor(color);
 	if (color.isValid())
 		emit changed(name(), color);

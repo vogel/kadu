@@ -582,7 +582,7 @@ ChooseDescription::ChooseDescription(int nr, QPoint *position, QWidget * parent,
 	while (defaultdescriptions.count()>config_file.readUnsignedNumEntry("General", "NumberOfDescriptions"))
 		defaultdescriptions.pop_back();
 
-  	desc = new QComboBox(TRUE,this,gadu->status().description());
+  	desc = new QComboBox(TRUE, this, "description");
 	desc->insertStringList(defaultdescriptions);
 
 	QLineEdit *ss = new QLineEdit(this, "LineEdit");

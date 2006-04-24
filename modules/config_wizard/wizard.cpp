@@ -1231,7 +1231,7 @@ void Wizard::setHints()
 	else
 	{
 		if (cb_hintsType->currentItem() == int(hintCount))
-			config_file.writeEntry("Hints", "NotifyHintSyntax", tr(customHint));
+			config_file.writeEntry("Hints", "NotifyHintSyntax", tr(customHint.ascii()));
 		else
 			config_file.writeEntry("Hints", "NotifyHintSyntax", tr(hintSyntax[cb_hintsType->currentItem()]));
 	}

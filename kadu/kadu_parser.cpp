@@ -142,7 +142,7 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, bool esc
 				case 's':
 					++i;
 					if (ule.usesProtocol("Gadu"))
-						pe.str = qApp->translate("@default", ule.status("Gadu").name());
+						pe.str = qApp->translate("@default", ule.status("Gadu").name().ascii());
 					break;
 				case 't':
 					++i;
