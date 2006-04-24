@@ -88,7 +88,7 @@ extern "C" int x11_docking_init()
 	tray_restarter = new TrayRestarter();
 	x11_tray_icon = new X11TrayIcon(NULL, "x11_tray_icon");
 #ifdef ENABLE_HIDING
-	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Remove from taskbar (experimental)"), "HideTaskbar", false, QString::null, QString::null, Expert);
+	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Remove from taskbar (experimental)"), "HideTaskbar", false, 0, 0, Expert);
 #endif
 	return 0;
 }

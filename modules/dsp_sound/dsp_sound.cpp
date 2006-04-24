@@ -24,13 +24,13 @@
 extern "C" int dsp_sound_init()
 {
 	kdebugf();
-		
+
 	oss_player_slots=new OSSPlayerSlots(NULL, "oss_player_slots");
 
 	ConfigDialog::addHGroupBox("Sounds", "Sounds",
-			QT_TRANSLATE_NOOP("@default","Output device"), QString::null, Advanced);
-	ConfigDialog::addLineEdit("Sounds", "Output device", 
-			QT_TRANSLATE_NOOP("@default","Path:"), "OutputDevice", "/dev/dsp", QString::null, "device_path");
+			QT_TRANSLATE_NOOP("@default","Output device"), 0, Advanced);
+	ConfigDialog::addLineEdit("Sounds", "Output device",
+			QT_TRANSLATE_NOOP("@default","Path:"), "OutputDevice", "/dev/dsp", 0, "device_path");
 	kdebugf2();
 	return 0;
 }
@@ -58,7 +58,7 @@ struct OSSSoundDevice
 int OSSPlayerSlots::write_all(int fd, const char *data, int length, int chunksize)
 {
 	int res = 0, written = 0;
-	
+
 	while (written < length) {
 		int towrite = (chunksize < length - written) ? chunksize : length - written;
 		res = write(fd, data + written, towrite);
@@ -198,7 +198,7 @@ void OSSPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chann
 			(caps&DSP_CAP_MMAP)!=0, (caps&DSP_CAP_MULTI)!=0, (caps&DSP_CAP_BIND)!=0);
 #endif
 	}
-	
+
 
 	kdebugm(KDEBUG_FUNCTION_END, "Setup successful, fd=%d maxbuf=%d\n", fd, maxbufsize);
 	OSSSoundDevice* dev = new OSSSoundDevice;
@@ -248,7 +248,7 @@ void OSSPlayerSlots::playSample(SoundDevice device, const int16_t* data, int len
 		if (ioctl(dev->fd, SNDCTL_DSP_SYNC, 0) < 0)
 		{
 			kdebugm(KDEBUG_ERROR, "SNDCTL_DSP_SYNC error (%s, %d)\n", strerror(errno), errno);
-			result = false;	
+			result = false;
 		}
 	}
 	kdebugf2();

@@ -1041,7 +1041,7 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 	toggleFileTransferWindowMenuId = mainMenu->insertItem(tr("Toggle transfers window"),
 		this, SLOT(toggleFileTransferWindow()), 0, -1, 10);
 
-	notify->registerEvent("fileTransferIncomingFile", tr("An user wants to send you a file"));
+	notify->registerEvent("fileTransferIncomingFile",  QT_TRANSLATE_NOOP("@default", "An user wants to send you a file"));
 
 	fileTransferWindow = 0;
 
@@ -1056,7 +1056,7 @@ FileTransferManager::~FileTransferManager()
 
 	writeToConfig();
 
-	notify->unregisterEvent("fileTransferIncomingFile", tr("An user wants to send you a file"));
+	notify->unregisterEvent("fileTransferIncomingFile");
 
 	int sendfile = UserBox::userboxmenu->getItem(tr("Send file"));
 	UserBox::userboxmenu->removeItem(sendfile);

@@ -57,18 +57,18 @@ HintManager::HintManager(QWidget *parent, const char *name)
 		ConfigDialog::addComboBox("Hints", "Mouse buttons", QT_TRANSLATE_NOOP("@default", "Middle button"), "MiddleButton", options, values, "3");
 		ConfigDialog::addComboBox("Hints", "Mouse buttons", QT_TRANSLATE_NOOP("@default", "Right button"), "RightButton", options, values, "2");
 
-	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "New chat / new message"), QString::null, Advanced);
+	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "New chat / new message"), 0, Advanced);
 		ConfigDialog::addCheckBox("Hints", "New chat / new message", QT_TRANSLATE_NOOP("@default", "Show message content in hint"), "ShowContentMessage", true);
 		ConfigDialog::addCheckBox("Hints", "New chat / new message", QT_TRANSLATE_NOOP("@default", "Delete pending message when user deletes hint"), "DeletePendingMsgWhenHintDeleted", false);
 		ConfigDialog::addSpinBox("Hints", "New chat / new message", QT_TRANSLATE_NOOP("@default", "Number of quoted characters"), "CiteSign", 10, 1000, 1, 50);
 
-	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Status change"), QString::null, Advanced);
+	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Status change"), 0, Advanced);
 		ConfigDialog::addCheckBox("Hints", "Status change", QT_TRANSLATE_NOOP("@default", "Open chat on click"), "OpenChatOnClick", false);
 		ConfigDialog::addCheckBox("Hints", "Status change", QT_TRANSLATE_NOOP("@default", "Add description to hint if exists"), "NotifyHintDescription", false);
-		ConfigDialog::addCheckBox("Hints", "Status change", QT_TRANSLATE_NOOP("@default", "Use custom syntax"), "NotifyHintUseSyntax", false, QString::null, QString::null, Expert);
-		ConfigDialog::addLineEdit("Hints", "Status change", QT_TRANSLATE_NOOP("@default", "Hint syntax"), "NotifyHintSyntax", QString::null, Kadu::SyntaxText, QString::null, Expert);
+		ConfigDialog::addCheckBox("Hints", "Status change", QT_TRANSLATE_NOOP("@default", "Use custom syntax"), "NotifyHintUseSyntax", false, 0, 0, Expert);
+		ConfigDialog::addLineEdit("Hints", "Status change", QT_TRANSLATE_NOOP("@default", "Hint syntax"), "NotifyHintSyntax", QString::null, Kadu::SyntaxText, 0, Expert);
 
-	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Parameters"), QString::null, Advanced);
+	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Parameters"), 0, Advanced);
 		ConfigDialog::addHBox("Hints", "Parameters", "top");
 			ConfigDialog::addCheckBox("Hints", "top", QT_TRANSLATE_NOOP("@default", "Set for all"), "SetAll", true);
 			ConfigDialog::addLabel("Hints", "top", QT_TRANSLATE_NOOP("@default", "<b>Text</b> preview"));
@@ -83,8 +83,8 @@ HintManager::HintManager(QWidget *parent, const char *name)
 			ConfigDialog::addVRadioGroup("Hints", "center", QT_TRANSLATE_NOOP("@default", "Hint type"), "LastSelected", options2, values2, "0");
 
 			ConfigDialog::addVBox("Hints", "center", "bottom");
-				ConfigDialog::addLabel("Hints", "bottom", QString::null, "stretcher2");
-				ConfigDialog::addLabel("Hints", "bottom", QString::null, "stretcher3");
+				ConfigDialog::addLabel("Hints", "bottom", 0, "stretcher2");
+				ConfigDialog::addLabel("Hints", "bottom", 0, "stretcher3");
 
 				ConfigDialog::addSpinBox("Hints", "bottom", QT_TRANSLATE_NOOP("@default","Hint timeout"), "LastTimeout", -2048, 2048, 1, 10);
 				ConfigDialog::addPushButton("Hints", "bottom", QT_TRANSLATE_NOOP("@default", "Change font color"));
@@ -94,9 +94,9 @@ HintManager::HintManager(QWidget *parent, const char *name)
 	ConfigDialog::addHBox("Hints", "Hints", "hints-hbox");
 		ConfigDialog::addVRadioGroup("Hints", "hints-hbox", QT_TRANSLATE_NOOP("@default", "New hints go"), "NewHintUnder",
 			toStringList(tr("Auto"),tr("On top"),tr("On bottom")),
-			toStringList("0","1","2"),"0", QString::null, QString::null, Expert);
+			toStringList("0", "1", "2"), "0", QString::null, 0, Expert);
 
-		ConfigDialog::addVGroupBox("Hints", "hints-hbox", QT_TRANSLATE_NOOP("@default","Hints position"), QString::null, Expert);
+		ConfigDialog::addVGroupBox("Hints", "hints-hbox", QT_TRANSLATE_NOOP("@default","Hints position"), 0, Expert);
 			ConfigDialog::addCheckBox("Hints", "Hints position", QT_TRANSLATE_NOOP("@default", "Own hints position"), "UseUserPosition", false);
 
 			ConfigDialog::addVBox("Hints", "Hints position", "coords");
@@ -105,13 +105,13 @@ HintManager::HintManager(QWidget *parent, const char *name)
 
 		ConfigDialog::addVRadioGroup("Hints", "hints-hbox", QT_TRANSLATE_NOOP("@default", "Corner"), "Corner",
 			toStringList(tr("Top left"),tr("Top right"),tr("Bottom left"),tr("Bottom right")),
-			toStringList("0","1","2","3"), "0", QString::null, QString::null, Expert);
+			toStringList("0","1","2","3"), "0", 0, 0, Expert);
 
 	const QString default_hints_syntax(QT_TRANSLATE_NOOP("HintManager", "[<i>%s</i><br/>][<br/><b>Description:</b><br/>%d<br/><br/>][<i>Mobile:</i> <b>%m</b><br/>]"));
 	if (config_file.readEntry("Hints", "MouseOverUserSyntax") == default_hints_syntax || config_file.readEntry("Hints", "MouseOverUserSyntax").isEmpty())
 		config_file.writeEntry("Hints", "MouseOverUserSyntax", tr(default_hints_syntax));
-	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Hints over userlist"), QString::null, Expert);
-		ConfigDialog::addTextEdit("Hints", "Hints over userlist", QT_TRANSLATE_NOOP("@default", "Hints syntax:"), "MouseOverUserSyntax", "", Kadu::SyntaxText, QString::null, Expert);
+	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Hints over userlist"), 0, Expert);
+		ConfigDialog::addTextEdit("Hints", "Hints over userlist", QT_TRANSLATE_NOOP("@default", "Hints syntax:"), "MouseOverUserSyntax", QString::null, Kadu::SyntaxText, 0, Expert);
 
 	hint_manager_slots = new HintManagerSlots(NULL, "hint_manager_slots");
 	ConfigDialog::registerSlotOnCreateTab("Hints", hint_manager_slots, SLOT(onCreateTabHints()));
@@ -176,8 +176,8 @@ HintManager::~HintManager()
 	ConfigDialog::removeControl("Hints", "Change background color");
 	ConfigDialog::removeControl("Hints", "Change font color");
 	ConfigDialog::removeControl("Hints", "Hint timeout");
-	ConfigDialog::removeControl("Hints", QString::null, "stretcher3");
-	ConfigDialog::removeControl("Hints", QString::null, "stretcher2");
+	ConfigDialog::removeControl("Hints", 0, "stretcher3");
+	ConfigDialog::removeControl("Hints", 0, "stretcher2");
 	ConfigDialog::removeControl("Hints", "bottom");
 	ConfigDialog::removeControl("Hints", "Hint type");
 	ConfigDialog::removeControl("Hints", "center");

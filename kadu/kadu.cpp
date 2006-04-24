@@ -62,7 +62,7 @@ int lockFileHandle;
 QFile *lockFile;
 struct flock *lock_str;
 
-const QString Kadu::SyntaxText=QT_TRANSLATE_NOOP("@default", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name\n%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n%v - revDNS, %p - port %e - email %x - max image size\n");
+const char *Kadu::SyntaxText = QT_TRANSLATE_NOOP("@default", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name\n%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n%v - revDNS, %p - port %e - email %x - max image size\n");
 bool Kadu::Closing = false;
 
 void Kadu::keyPressEvent(QKeyEvent *e)
@@ -122,33 +122,34 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "General"), "GeneralTab");
 	ConfigDialog::addHGroupBox("General", "General", QT_TRANSLATE_NOOP("@default", "User data"));
 	ConfigDialog::addLineEdit("General", "User data", QT_TRANSLATE_NOOP("@default", "Uin"), "UIN");
-	ConfigDialog::addLineEdit("General", "User data", QT_TRANSLATE_NOOP("@default", "Password"), "Password", QString::null);
+	ConfigDialog::addLineEdit("General", "User data", QT_TRANSLATE_NOOP("@default", "Password"), "Password");
 	ConfigDialog::addLineEdit("General", "User data", QT_TRANSLATE_NOOP("@default", "Nick"), "Nick", tr("Me"));
 	ConfigDialog::addComboBox("General", "General", QT_TRANSLATE_NOOP("@default", "Set language:"));
-	ConfigDialog::addGrid("General", "General", "grid-beginner", 2, QString::null, Beginner);
-	ConfigDialog::addGrid("General", "General", "grid-advanced", 2, QString::null, Advanced);
-	ConfigDialog::addGrid("General", "General", "grid-expert", 2, QString::null, Expert);
+	ConfigDialog::addGrid("General", "General", "grid-beginner", 2, 0, Beginner);
+	ConfigDialog::addGrid("General", "General", "grid-advanced", 2, 0, Advanced);
+	ConfigDialog::addGrid("General", "General", "grid-expert", 2, 0, Expert);
 
 	ConfigDialog::addCheckBox("General", "grid-beginner", QT_TRANSLATE_NOOP("@default", "Private status"), "PrivateStatus", false, QT_TRANSLATE_NOOP("@default", "When enabled, you're visible only to users on your list"));
 
-	ConfigDialog::addCheckBox("General", "grid-advanced", QT_TRANSLATE_NOOP("@default", "Check for updates"), "CheckUpdates", true, QT_TRANSLATE_NOOP("@default", "Automatically checks whether a new version is available"), QString::null, Advanced);
-	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Show emoticons in panel"), "ShowEmotPanel", false, QString::null, QString::null, Expert);
-	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Show emoticons in history"), "ShowEmotHist", false, QString::null, QString::null, Expert);
+	ConfigDialog::addCheckBox("General", "grid-advanced", QT_TRANSLATE_NOOP("@default", "Check for updates"), "CheckUpdates", true, QT_TRANSLATE_NOOP("@default", "Automatically checks whether a new version is available"), 0, Advanced);
+	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Show emoticons in panel"), "ShowEmotPanel", false, 0, 0, Expert);
+	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Show emoticons in history"), "ShowEmotHist", false, 0, 0, Expert);
 	config_file.addVariable("General", "ParagraphSeparator", 4);
 #ifdef DEBUG_ENABLED
 	ConfigDialog::addLineEdit("General", "General", QT_TRANSLATE_NOOP("@default", "Debugging mask"), "DEBUG_MASK",
-		QString::null, QString::null, QString::null, Expert);
+		QString::null, 0, 0, Expert);
 #endif
 
 	ConfigDialog::addVGroupBox("General", "General", "Status");
-	ConfigDialog::addComboBox("General", "Status", QT_TRANSLATE_NOOP("@default", "Default status"), QString::null, "cb_defstatus");
+	ConfigDialog::addComboBox("General", "Status", QT_TRANSLATE_NOOP("@default", "Default status"), 0, "cb_defstatus");
 	ConfigDialog::addCheckBox("General", "Status", QT_TRANSLATE_NOOP("@default", "On shutdown, set current description"), "DisconnectWithCurrentDescription");
 	ConfigDialog::connectSlot("General", "On shutdown, set current description", SIGNAL(toggled(bool)), kaduslots, SLOT(updateStatus(bool)));
 
 	ConfigDialog::addHBox("General", "Status", "discstatus");
 	ConfigDialog::addCheckBox("General", "discstatus", QT_TRANSLATE_NOOP("@default", "On shutdown, set description:"), "DisconnectWithDescription", false);
-	ConfigDialog::addLineEdit("General", "discstatus", QString::null, "DisconnectDescription", QString::null, QString::null, "e_defaultstatus");
-	ConfigDialog::addSpinBox("General", "Status", QT_TRANSLATE_NOOP("@default", "Number of kept descriptions"), "NumberOfDescriptions", 1, 30, 1, 4, QString::null, QString::null, Advanced);
+	ConfigDialog::addLineEdit("General", "discstatus", 0, "DisconnectDescription", QString::null, 0, "e_defaultstatus");
+//	ConfigDialog::addSpinBox("General", "Status", QT_TRANSLATE_NOOP("@default", "Number of kept descriptions"), "NumberOfDescriptions", 1, 30, 1, 4, 0, 0, Advanced);
+	ConfigDialog::addSpinBox("General", "Status", QT_TRANSLATE_NOOP("@default", "Number of kept descriptions"), "NumberOfDescriptions", 1, 30, 1, 4, 0, 0, Advanced);
 
 	ConfigDialog::registerSlotOnCreateTab("General", kaduslots, SLOT(onCreateTabGeneral()));
 	ConfigDialog::registerSlotOnCreateTab("Look", kaduslots, SLOT(onCreateTabLook()));
@@ -177,24 +178,24 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 	ConfigDialog::addComboBox("Look", "Look",
 			QT_TRANSLATE_NOOP("@default","Qt Theme"));
 
-	ConfigDialog::addGrid("Look", "Look", "varOpts-beginner", 2, QString::null, Beginner);
-	ConfigDialog::addGrid("Look", "Look", "varOpts-advanced", 2, QString::null, Advanced);
-	ConfigDialog::addGrid("Look", "Look", "varOpts-expert", 2, QString::null, Expert);
+	ConfigDialog::addGrid("Look", "Look", "varOpts-beginner", 2, 0, Beginner);
+	ConfigDialog::addGrid("Look", "Look", "varOpts-advanced", 2, 0, Advanced);
+	ConfigDialog::addGrid("Look", "Look", "varOpts-expert", 2, 0, Expert);
 
-		ConfigDialog::addCheckBox("Look", "varOpts-advanced", QT_TRANSLATE_NOOP("@default", "Show status button"), "ShowStatusButton", true, QString::null, QString::null, Advanced);
-		ConfigDialog::addCheckBox("Look", "varOpts-expert", QT_TRANSLATE_NOOP("@default", "Display group tabs"), "DisplayGroupTabs", true, QString::null, QString::null, Expert);
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Colors"), QString::null, Advanced);
+		ConfigDialog::addCheckBox("Look", "varOpts-advanced", QT_TRANSLATE_NOOP("@default", "Show status button"), "ShowStatusButton", true, 0, 0, Advanced);
+		ConfigDialog::addCheckBox("Look", "varOpts-expert", QT_TRANSLATE_NOOP("@default", "Display group tabs"), "DisplayGroupTabs", true, 0, 0, Expert);
+	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Colors"), 0, Advanced);
 		ConfigDialog::addVGroupBox("Look", "Colors", QT_TRANSLATE_NOOP("@default", "Main window"));
-			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Panel background color"), "InfoPanelBgColor", config_file.readColorEntry("Look","InfoPanelBgColor"), QString::null, "panel_bg_color");
-			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Panel font color"), "InfoPanelFgColor", config_file.readColorEntry("Look","InfoPanelFgColor"), QString::null, "panel_font_color");
+			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Panel background color"), "InfoPanelBgColor", config_file.readColorEntry("Look","InfoPanelBgColor"), 0, "panel_bg_color");
+			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Panel font color"), "InfoPanelFgColor", config_file.readColorEntry("Look","InfoPanelFgColor"), 0, "panel_font_color");
 
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Fonts"), QString::null, Advanced);
-		ConfigDialog::addSelectFont("Look", "Fonts", QT_TRANSLATE_NOOP("@default", "Font in panel"), "PanelFont", defaultFont->toString(), QString::null, "panel_font_box");
+	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Fonts"), 0, Advanced);
+		ConfigDialog::addSelectFont("Look", "Fonts", QT_TRANSLATE_NOOP("@default", "Font in panel"), "PanelFont", defaultFont->toString(), 0, "panel_font_box");
 
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Information panel"));
 		ConfigDialog::addCheckBox("Look", "Information panel", QT_TRANSLATE_NOOP("@default", "Show information panel"), "ShowInfoPanel", true);
-		ConfigDialog::addCheckBox("Look", "Information panel", QT_TRANSLATE_NOOP("@default", "Show vertical scrollbar in information panel"), "PanelVerticalScrollbar", true, QString::null, QString::null, Expert);
-		ConfigDialog::addTextEdit("Look", "Information panel", QT_TRANSLATE_NOOP("@default", "Information panel syntax:"), "PanelContents", "[#%u, ][%f] %r [- %d] [ (%i)]", SyntaxText, QString::null, Expert);
+		ConfigDialog::addCheckBox("Look", "Information panel", QT_TRANSLATE_NOOP("@default", "Show vertical scrollbar in information panel"), "PanelVerticalScrollbar", true, 0, 0, Expert);
+		ConfigDialog::addTextEdit("Look", "Information panel", QT_TRANSLATE_NOOP("@default", "Information panel syntax:"), "PanelContents", "[#%u, ][%f] %r [- %d] [ (%i)]", SyntaxText, 0, Expert);
 
 	ConfigDialog::connectSlot("Look", "Panel background color", SIGNAL(changed(const char *, const QColor&)), kaduslots, SLOT(chooseColor(const char *, const QColor&)), "panel_bg_color");
 	ConfigDialog::connectSlot("Look", "Panel font color", SIGNAL(changed(const char *, const QColor&)), kaduslots, SLOT(chooseColor(const char *, const QColor&)), "panel_font_color");
@@ -1474,7 +1475,7 @@ void KaduSlots::onCreateTabGeneral()
 	config_file.readEntry("General", "Language", QTextCodec::locale()),true));
 
 	QCheckBox *b_disconnectdesc= ConfigDialog::getCheckBox("General", "On shutdown, set description:");
-	QLineEdit *e_disconnectdesc= ConfigDialog::getLineEdit("General", QString::null, "e_defaultstatus");
+	QLineEdit *e_disconnectdesc= ConfigDialog::getLineEdit("General", 0, "e_defaultstatus");
 	e_disconnectdesc->setMaxLength(GG_STATUS_DESCR_MAXSIZE);
 	e_disconnectdesc->setEnabled(b_disconnectdesc->isChecked());
 	connect(b_disconnectdesc, SIGNAL(toggled(bool)), e_disconnectdesc, SLOT(setEnabled(bool)));
@@ -1601,7 +1602,7 @@ void KaduSlots::updateStatus(bool current)
 {
 	kdebugf();
  	QCheckBox *cb_setdesc = ConfigDialog::getCheckBox("General", "On shutdown, set description:");
- 	QLineEdit *e_defaultstatus = ConfigDialog::getLineEdit("General", QString::null, "e_defaultstatus");
+ 	QLineEdit *e_defaultstatus = ConfigDialog::getLineEdit("General", 0, "e_defaultstatus");
 
 	cb_setdesc->setEnabled(!current);
 	e_defaultstatus->setEnabled(!current && cb_setdesc->isChecked());

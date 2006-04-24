@@ -331,7 +331,7 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager")
 
 	ConfigDialog::addTab("ShortCuts", "ShortCutsTab");
 	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", "Define keys");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QString("&Manage Modules").remove("&"), "kadu_modulesmanager", "F4");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Manage Modules", "kadu_modulesmanager", "F4");
 
 	CONST_FOREACH(it, Modules)
 		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", it.key().local8Bit().data(), it.data().usage_counter);

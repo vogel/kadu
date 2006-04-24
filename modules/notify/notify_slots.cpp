@@ -21,8 +21,8 @@ void NotifySlots::onCreateTabNotify()
 {
 	kdebugf();
 
-	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
-	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
+	QListBox *e_availusers = ConfigDialog::getListBox("Notify", "available");
+	QListBox *e_notifies = ConfigDialog::getListBox("Notify", "track");
 	CONST_FOREACH(user, *userlist)
 	{
 		if ((*user).usesProtocol("Gadu") && !(*user).isAnonymous())
@@ -37,7 +37,7 @@ void NotifySlots::onCreateTabNotify()
 	e_availusers->setSelectionMode(QListBox::Extended);
 	e_notifies->setSelectionMode(QListBox::Extended);
 
-	QCheckBox *b_notifyall= ConfigDialog::getCheckBox("Notify", "Notify about all users");
+	QCheckBox *b_notifyall = ConfigDialog::getCheckBox("Notify", "Notify about all users");
 	QGrid *panebox = ConfigDialog::getGrid("Notify","listboxy");
 
 	if (config_file.readBoolEntry("Notify", "NotifyAboutAll"))
@@ -54,12 +54,12 @@ void NotifySlots::onCreateTabNotify()
 	kdebugf2();
 }
 
-void NotifySlots::onApplyTabHints()
+void NotifySlots::onApplyTabNotify()
 {
 	kdebugf();
 	unsigned int i;
-	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
-	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
+	QListBox *e_availusers = ConfigDialog::getListBox("Notify", "available");
+	QListBox *e_notifies = ConfigDialog::getListBox("Notify", "track");
 
 	unsigned int count = e_notifies->count();
 	for (i = 0; i < count; ++i)
@@ -83,14 +83,14 @@ NotifySlots::~NotifySlots()
 	kdebugf2();
 }
 
-void NotifySlots::registerDisabledControl(const QString &name)
+void NotifySlots::registerDisabledControl(const QCString &name)
 {
 	kdebugf();
 	disabledControls.append(name);
 	kdebugf2();
 }
 
-void NotifySlots::unregisterDisabledControl(const QString &name)
+void NotifySlots::unregisterDisabledControl(const QCString &name)
 {
 	kdebugf();
 	disabledControls.remove(name);
@@ -99,7 +99,7 @@ void NotifySlots::unregisterDisabledControl(const QString &name)
 
 void NotifySlots::ifNotifyAll(bool toggled)
 {
-	ConfigDialog::getGrid("Notify","listboxy")->setEnabled(!toggled);
+	ConfigDialog::getGrid("Notify", "listboxy")->setEnabled(!toggled);
 }
 
 void NotifySlots::_Left2(QListBoxItem *)
@@ -115,8 +115,8 @@ void NotifySlots::_Right2(QListBoxItem *)
 void NotifySlots::_Left(void)
 {
 	kdebugf();
-	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
-	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
+	QListBox *e_availusers = ConfigDialog::getListBox("Notify", "available");
+	QListBox *e_notifies = ConfigDialog::getListBox("Notify", "track");
 	QStringList tomove;
 	unsigned int i, count = e_notifies->count();
 
@@ -137,8 +137,8 @@ void NotifySlots::_Left(void)
 void NotifySlots::_Right(void)
 {
 	kdebugf();
-	QListBox *e_availusers= ConfigDialog::getListBox("Notify", "available");
-	QListBox *e_notifies= ConfigDialog::getListBox("Notify", "track");
+	QListBox *e_availusers = ConfigDialog::getListBox("Notify", "available");
+	QListBox *e_notifies = ConfigDialog::getListBox("Notify", "track");
 	QStringList tomove;
 	unsigned int i, count = e_availusers->count();
 

@@ -57,7 +57,7 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name)
 
 	//pierwsza kolumna - nazwy
 	ConfigDialog::addVBox("Notify", "Notify configuration", "names");
-	ConfigDialog::addLabel("Notify", "names", QString::null);
+	ConfigDialog::addLabel("Notify", "names", 0);
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "Connection error"));
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "New chat"));
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "New message"));
@@ -86,10 +86,10 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name)
 	ConfigDialog::addCheckBox("Notify", "Notify",
 		QT_TRANSLATE_NOOP("@default", "Ignore changes right after connection to the server"), "NotifyIgnoreOnConnection", true,
 		QT_TRANSLATE_NOOP("@default","This option will supersede tooltips with users' status\n changes upon establishing connection to the server"),
-		QString::null, Advanced);
+		0, Advanced);
 	ConfigDialog::addCheckBox("Notify", "Notify",
 		QT_TRANSLATE_NOOP("@default", "Ignore status changes from available / busy to available / busy"),
-		"IgnoreOnlineToOnline", true, QString::null, QString::null, Advanced);
+		"IgnoreOnlineToOnline", true, 0, 0, Advanced);
 
 	ConfigDialog::addGrid("Notify", "Notify" ,"listboxy",3);
 
@@ -98,22 +98,22 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name)
 			ConfigDialog::addListBox("Notify", "listbox1","available");
 
 		ConfigDialog::addGrid("Notify", "listboxy", "listbox2", 1);
-			ConfigDialog::addPushButton("Notify", "listbox2", QString::null, "AddToNotifyList",QString::null,"forward");
-			ConfigDialog::addPushButton("Notify", "listbox2", QString::null, "RemoveFromNotifyList",QString::null,"back");
+			ConfigDialog::addPushButton("Notify", "listbox2", 0, "AddToNotifyList", 0, "forward");
+			ConfigDialog::addPushButton("Notify", "listbox2", 0, "RemoveFromNotifyList", 0, "back");
 
 		ConfigDialog::addGrid("Notify", "listboxy", "listbox3", 1);
 			ConfigDialog::addLabel("Notify", "listbox3", QT_TRANSLATE_NOOP("@default", "Tracked"));
 			ConfigDialog::addListBox("Notify", "listbox3", "track");
 
-	ConfigDialog::connectSlot("Notify", QString::null, SIGNAL(clicked()), notify_slots, SLOT(_Right()), "forward");
-	ConfigDialog::connectSlot("Notify", QString::null, SIGNAL(clicked()), notify_slots, SLOT(_Left()), "back");
+	ConfigDialog::connectSlot("Notify", 0, SIGNAL(clicked()), notify_slots, SLOT(_Right()), "forward");
+	ConfigDialog::connectSlot("Notify", 0, SIGNAL(clicked()), notify_slots, SLOT(_Left()), "back");
 	ConfigDialog::connectSlot("Notify", "available", SIGNAL(doubleClicked(QListBoxItem *)),
 		notify_slots, SLOT(_Right2(QListBoxItem *)));
 	ConfigDialog::connectSlot("Notify", "track", SIGNAL(doubleClicked(QListBoxItem *)),
 		notify_slots, SLOT(_Left2(QListBoxItem *)));
 
 	ConfigDialog::registerSlotOnCreateTab("Notify", notify_slots, SLOT(onCreateTabNotify()));
-	ConfigDialog::registerSlotOnApplyTab("Notify", notify_slots, SLOT(onApplyTabHints()));
+	ConfigDialog::registerSlotOnApplyTab("Notify", notify_slots, SLOT(onApplyTabNotify()));
 	ConfigDialog::registerSlotOnApplyTab("Notify", this, SLOT(updateConnections()));
 
 	kdebugf2();
@@ -123,22 +123,22 @@ Notify::~Notify()
 {
 	kdebugf();
 
-	ConfigDialog::disconnectSlot("Notify", QString::null, SIGNAL(clicked()), notify_slots, SLOT(_Right()), "forward");
-	ConfigDialog::disconnectSlot("Notify", QString::null, SIGNAL(clicked()), notify_slots, SLOT(_Left()), "back");
+	ConfigDialog::disconnectSlot("Notify", 0, SIGNAL(clicked()), notify_slots, SLOT(_Right()), "forward");
+	ConfigDialog::disconnectSlot("Notify", 0, SIGNAL(clicked()), notify_slots, SLOT(_Left()), "back");
 	ConfigDialog::disconnectSlot("Notify", "available", SIGNAL(doubleClicked(QListBoxItem *)),
 		notify_slots, SLOT(_Right2(QListBoxItem *)));
 	ConfigDialog::disconnectSlot("Notify", "track", SIGNAL(doubleClicked(QListBoxItem *)),
 		notify_slots, SLOT(_Left2(QListBoxItem *)));
 
 	ConfigDialog::unregisterSlotOnCreateTab("Notify", notify_slots, SLOT(onCreateTabNotify()));
-	ConfigDialog::unregisterSlotOnApplyTab("Notify", notify_slots, SLOT(onApplyTabHints()));
+	ConfigDialog::unregisterSlotOnApplyTab("Notify", notify_slots, SLOT(onApplyTabNotify()));
 	ConfigDialog::unregisterSlotOnApplyTab("Notify", this, SLOT(updateConnections()));
 
 			ConfigDialog::removeControl("Notify", "track");
 			ConfigDialog::removeControl("Notify", "Tracked");
 		ConfigDialog::removeControl("Notify", "listbox3");
-			ConfigDialog::removeControl("Notify", QString::null, "back");
-			ConfigDialog::removeControl("Notify", QString::null, "forward");
+			ConfigDialog::removeControl("Notify", 0, "back");
+			ConfigDialog::removeControl("Notify", 0, "forward");
 		ConfigDialog::removeControl("Notify", "listbox2");
 			ConfigDialog::removeControl("Notify", "available");
 			ConfigDialog::removeControl("Notify", "Available");
@@ -168,7 +168,7 @@ Notify::~Notify()
 	}
 
 	//pierwsza kolumna - nazwy
-	ConfigDialog::removeControl("Notify", QString::null);
+	ConfigDialog::removeControl("Notify", 0);
 	ConfigDialog::removeControl("Notify", "Connection error");
 	ConfigDialog::removeControl("Notify", "New chat");
 	ConfigDialog::removeControl("Notify", "New message");
@@ -248,81 +248,141 @@ void Notify::probablyNewMessage(Protocol *protocol, UserListElements senders, co
 void Notify::addConfigColumn(const QString &name, const QMap<QString, QString> &notifierSlots)
 {
 	kdebugf();
-	ConfigDialog::addVBox("Notify", "Notify configuration", name+"_vbox");
-	ConfigDialog::addLabel("Notify", name+"_vbox", name);
+	QValueList<QCString> s;
+	s.append(name.utf8()); // we've got to remember all those strings, because ConfigDialog won't copy them
+	s.append(name.utf8() + "_vbox");
+	ConfigDialog::addVBox("Notify", "Notify configuration", s[1]);
+	ConfigDialog::addLabel("Notify", s[1], s[0]);
 
 	CONST_FOREACH(it, eventNames)
 	{
-		ConfigDialog::addCheckBox("Notify", name+"_vbox", " ", (*it)+"_"+name, false, "", name+(*it));
+		QCString entry = ((*it) + "_" + name).utf8();
+		QCString wname = (name + (*it)).utf8();
+		ConfigDialog::addCheckBox("Notify", s[1], " ", entry, false, QString::null, wname);
 		if (!notifierSlots.contains(*it))
-			notify_slots->registerDisabledControl(name+(*it));
+			notify_slots->registerDisabledControl(wname);
+		s.append(entry);
+		s.append(wname);
 	}
-	CONST_FOREACH(it, notifyEventsNames)
+	CONST_FOREACH(it, notifyEvents)
 	{
-		ConfigDialog::addCheckBox("Notify", name+"_vbox", "", (*it).first+"_"+name, false, "", name+(*it).first);
+		QCString entry = ((*it).name + "_" + name).utf8();
+		QCString wname = (name + (*it).name).utf8();
+		ConfigDialog::addCheckBox("Notify", s[1], " ", entry, false, QString::null, wname);
+		s.append(entry);
+		s.append(wname);
 	}
+	strs[name] = s;
 	kdebugf2();
 }
 
 void Notify::removeConfigColumn(const QString &name, const QMap<QString, QPair<QString, bool> > &notifierSlots)
 {
 	kdebugf();
+	const QValueList<QCString> &s = strs[name];
 
+	QValueListConstIterator<QCString> strit = s.constBegin();
+	++strit; ++strit; // omit name and name_vbox
 	CONST_FOREACH(it, eventNames)
 	{
-		ConfigDialog::removeControl("Notify", " ", name+(*it));
+		++strit; // omit entry
+		ConfigDialog::removeControl("Notify", " ", *strit); // use wname
 		if (!notifierSlots.contains(*it))
-			notify_slots->unregisterDisabledControl(name+(*it));
+			notify_slots->unregisterDisabledControl(*strit);
+		++strit;
 	}
-	CONST_FOREACH(it, notifyEventsNames)
+	CONST_FOREACH(it, notifyEvents)
 	{
-		ConfigDialog::removeControl("Notify", " ", name+(*it).first);
+		++strit; // omit entry
+		ConfigDialog::removeControl("Notify", " ", *strit); // use wname
+		++strit;
 	}
 
-	ConfigDialog::removeControl("Notify", name);
-	ConfigDialog::removeControl("Notify", name+"_vbox");
+	ConfigDialog::removeControl("Notify", s[0]); // name
+	ConfigDialog::removeControl("Notify", s[1]); // name_vbox
+	strs.remove(name);
 	kdebugf2();
 }
 
-void Notify::addConfigRow(const QString &name, const QString &description)
+void Notify::addConfigRow(const QString &name, const char *description)
 {
 	kdebugf();
-	notifyEventsNames.append(qMakePair(name, description));
+	NotifyEvent event;
+	event.name = name;
+	event.description = description;
+	event.wname = ("label_" + name).utf8();
 
-	ConfigDialog::addLabel("Notify", "names", description, QString("label_") + name);
+	notifyEvents.append(event);
+
+	ConfigDialog::addLabel("Notify", "names", event.description, event.wname);
 
 	CONST_FOREACH(it, notifiers)
 	{
-		ConfigDialog::addCheckBox("Notify", it.key() + "_vbox", " ", name + "_" + it.key(), false, "", it.key() + name);
+		QValueList<QCString> &s = strs[it.key()];
+		QCString parent = s[1]; // name_vbox
+		QCString entry = (name + "_" + it.key()).utf8();
+		QCString wname = (it.key() + name).utf8();
+		ConfigDialog::addCheckBox("Notify", parent, " ", entry, false, QString::null, wname);
+		s.append(entry);
+		s.append(wname);
 	}
 	kdebugf2();
 }
 
-void Notify::removeConfigRow(const QString &name, const QString &description)
+void Notify::removeConfigRow(const QString &name)
 {
 	kdebugf();
-	notifyEventsNames.remove(qMakePair(name, description));
-
-	ConfigDialog::removeControl("Notify", tr(description), QString("label_") + name);
-
-	CONST_FOREACH(it, notifiers)
+	NotifyEvent event;
+	FOREACH(it, notifyEvents)// look for matching event
+		if ((*it).name == name)
+		{
+			event = *it;
+			notifyEvents.remove(it);
+			break;
+		}
+	if (event.name.isEmpty())
 	{
-		ConfigDialog::removeControl("Notify", " ", it.key() + name);
+		kdebugmf(KDEBUG_FUNCTION_END | KDEBUG_ERROR, "event '%s' not found\n", name.local8Bit().data());
+		return;
+	}
+
+	ConfigDialog::removeControl("Notify", event.description, event.wname);
+
+	if (!notifiers.isEmpty())
+	{
+		// find index of correct wname, because we are going to use it
+		QString notifierName = notifiers.constBegin().key();
+		QValueList<QCString> &s = strs[notifierName];
+		int wname_idx = s.findIndex((notifierName + name).utf8());
+		if (wname_idx < 1) // 0 not allowed, look below (wname_idx - 1)
+		{
+			kdebugmf(KDEBUG_FUNCTION_END | KDEBUG_ERROR, "event name (%s) not found!? (%d)\n", name.local8Bit().data(), wname_idx);
+			return;
+		}
+
+		CONST_FOREACH(it, notifiers)
+		{
+			QValueList<QCString> &s = strs[it.key()]; // strings for that notifier
+			ConfigDialog::removeControl("Notify", " ", s[wname_idx]);
+			QValueList<QCString>::iterator sit = s.at(wname_idx - 1), sit2 = sit; //iterators of entry, wname+1
+			++sit2; ++sit2;
+			s.erase(sit, sit2);
+		}
 	}
 	kdebugf2();
 }
 
-void Notify::registerEvent(const QString &name, const QString &description)
+void Notify::registerEvent(const QString &name, const char *description)
 {
 	kdebugf();
 	addConfigRow(name, description);
 	kdebugf2();
 }
 
-void Notify::unregisterEvent(const QString &name, const QString &description)
+void Notify::unregisterEvent(const QString &name)
 {
 	kdebugf();
-	removeConfigRow(name, description);
+	removeConfigRow(name);
 	kdebugf2();
 }
 
@@ -344,7 +404,7 @@ void Notify::updateConnections()
 					disconnect(this, notifySignals[signalName], notifier.notifier, connection.first);
 				else
 					connect(this, notifySignals[signalName], notifier.notifier, connection.first);
-				connection.second =! connection.second;
+				connection.second = !connection.second;
 			}
 		}
 	}
@@ -363,10 +423,10 @@ void Notify::registerNotifier(const QString &name, Notifier *notifier,
 
 		unregisterNotifier(name);
 	}
-	notifiers[name]=NotifierSlots(notifier, notifierSlots);
+	notifiers[name] = NotifierSlots(notifier, notifierSlots);
 
 	CONST_FOREACH(i, notifySignals)
-		if (config_file.readBoolEntry("Notify", i.key()+"_"+name) && notifierSlots.contains(i.key()))
+		if (config_file.readBoolEntry("Notify", i.key() + "_" + name) && notifierSlots.contains(i.key()))
 			connectSlot(name, i.key());
 	addConfigColumn(name, notifierSlots);
 	kdebugf2();
@@ -380,11 +440,11 @@ void Notify::unregisterNotifier(const QString &name)
 		kdebugm(KDEBUG_WARNING, "WARNING: '%s' not registered!\n", name.local8Bit().data());
 		return;
 	}
-	NotifierSlots notifier=notifiers[name];
+	NotifierSlots notifier = notifiers[name];
 	removeConfigColumn(name, notifier.notifierSlots);
 
 	CONST_FOREACH(i, notifySignals)
-		if (config_file.readBoolEntry("Notify", i.key()+"_"+name) && notifier.notifierSlots.contains(i.key()))
+		if (config_file.readBoolEntry("Notify", i.key() + "_" + name) && notifier.notifierSlots.contains(i.key()))
 			disconnectSlot(name, i.key());
 	notifiers.remove(name);
 	kdebugf2();
@@ -393,11 +453,11 @@ void Notify::unregisterNotifier(const QString &name)
 void Notify::connectSlot(const QString &notifierName, const QString &slotName)
 {
 	kdebugf();
-	NotifierSlots &notifier=notifiers[notifierName];
-	if (notifier.notifierSlots[slotName].second==false)
+	NotifierSlots &notifier = notifiers[notifierName];
+	if (notifier.notifierSlots[slotName].second == false)
 	{
 		connect(this, notifySignals[slotName], notifier.notifier, notifier.notifierSlots[slotName].first);
-		notifier.notifierSlots[slotName].second=true;
+		notifier.notifierSlots[slotName].second = true;
 	}
 	else
 		kdebugm(KDEBUG_WARNING, "WARNING: slot already connected ('%s' '%s')!\n", notifierName.local8Bit().data(), slotName.local8Bit().data());
@@ -407,11 +467,11 @@ void Notify::connectSlot(const QString &notifierName, const QString &slotName)
 void Notify::disconnectSlot(const QString &notifierName, const QString &slotName)
 {
 	kdebugf();
-	NotifierSlots &notifier=notifiers[notifierName];
-	if (notifier.notifierSlots[slotName].second==true)
+	NotifierSlots &notifier = notifiers[notifierName];
+	if (notifier.notifierSlots[slotName].second == true)
 	{
 		disconnect(this, notifySignals[slotName], notifier.notifier, notifier.notifierSlots[slotName].first);
-		notifier.notifierSlots[slotName].second=false;
+		notifier.notifierSlots[slotName].second = false;
 	}
 	else
 		kdebugm(KDEBUG_WARNING, "WARNING: slot not connected ('%s' '%s')!\n", notifierName.local8Bit().data(), slotName.local8Bit().data());
@@ -440,9 +500,9 @@ QStringList Notify::notifiersList() const
 	return QStringList(notifiers.keys());
 }
 
-const QValueList<QPair<QString, QString> > &Notify::externalNotifyTypes()
+const QValueList<Notify::NotifyEvent> &Notify::externalNotifyTypes()
 {
-	return notifyEventsNames;
+	return notifyEvents;
 }
 
 Notify::NotifierSlots::NotifierSlots() : notifier(NULL)
@@ -453,7 +513,7 @@ Notify::NotifierSlots::NotifierSlots(Notifier *o, const QMap<QString, QString> &
 {
 	kdebugf();
 	CONST_FOREACH(i, notifierSlots)
-		this->notifierSlots[i.key()]=qMakePair(i.data(), false);
+		this->notifierSlots[i.key()] = qMakePair(i.data(), false);
 	kdebugf2();
 }
 
@@ -466,5 +526,5 @@ void Notify::notify(const QString &notifyType, const QString &msg, const UserLis
 	kdebugf2();
 }
 
-Notify *notify=NULL;
-NotifySlots *notify_slots=NULL;
+Notify *notify = 0;
+NotifySlots *notify_slots = 0;

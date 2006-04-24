@@ -31,7 +31,7 @@ extern "C" int sms_init()
 	ConfigDialog::addVBox("SMS", "SMS", "sms-beginner");
 
 	ConfigDialog::addHGroupBox("SMS", "SMS",
-			QT_TRANSLATE_NOOP("@default", "Gateways priority"), QString::null, Advanced);
+			QT_TRANSLATE_NOOP("@default", "Gateways priority"), 0, Advanced);
 	ConfigDialog::addListBox("SMS", "Gateways priority", "gateways");
 	ConfigDialog::addVBox("SMS", "Gateways priority", "button");
 	ConfigDialog::addPushButton("SMS", "button", QT_TRANSLATE_NOOP("@default", "Up"));
@@ -40,7 +40,7 @@ extern "C" int sms_init()
 			QT_TRANSLATE_NOOP("@default", "Send SMS"), "kadu_sendsms", "Ctrl+S");
 
 	ConfigDialog::addVGroupBox("SMS", "SMS",
-			QT_TRANSLATE_NOOP("@default", "SMS options"), QString::null, Expert);
+			QT_TRANSLATE_NOOP("@default", "SMS options"), 0, Expert);
 	ConfigDialog::addCheckBox("SMS", "SMS options",
 			QT_TRANSLATE_NOOP("@default", "Use built-in SMS application"), "BuiltInApp", true);
 	ConfigDialog::addLineEdit("SMS", "SMS options",
@@ -49,7 +49,7 @@ extern "C" int sms_init()
 	ConfigDialog::addCheckBox("SMS", "smsgrid",
 			QT_TRANSLATE_NOOP("@default", "SMS custom string"), "UseCustomString", false ,
 			QT_TRANSLATE_NOOP("@default", "Check this box if your sms application doesn't understand arguments: number \"message\"\nArguments should be separated with spaces. %n argument is converted to number, %m to message"));
-	ConfigDialog::addLineEdit("SMS", "smsgrid", QString::null, "SmsString", QString::null, QString::null, "smsstring");
+	ConfigDialog::addLineEdit("SMS", "smsgrid", 0, "SmsString", QString::null, QString::null, "smsstring");
 	ConfigDialog::addLineEdit("SMS", "SMS options",
 			QT_TRANSLATE_NOOP("@default", "SMS Nick"), "SmsNick");
 	config_file.addVariable("SMS", "SmsNick", config_file.readEntry("General", "Nick"));
@@ -96,12 +96,13 @@ extern "C" void sms_close()
 	ConfigDialog::removeControl("SMS", "gateways");
 	ConfigDialog::removeControl("SMS", "Gateways priority");
 	ConfigDialog::removeControl("SMS", "SMS Nick");
-	ConfigDialog::removeControl("SMS", QString::null, "smsstring");
+	ConfigDialog::removeControl("SMS", 0, "smsstring");
 	ConfigDialog::removeControl("SMS", "SMS custom string");
 	ConfigDialog::removeControl("SMS", "smsgrid");
 	ConfigDialog::removeControl("SMS", "Custom SMS application");
 	ConfigDialog::removeControl("SMS", "Use built-in SMS application");
 	ConfigDialog::removeControl("SMS", "SMS options");
+	ConfigDialog::removeControl("SMS", "sms-beginner");
 	ConfigDialog::removeTab("SMS");
 
 	QObject::disconnect(kadu->userbox(), SIGNAL(doubleClicked(UserListElement)),
@@ -480,7 +481,7 @@ void SmsSlots::onSmsBuildInCheckToggle(bool value)
 
 	QLineEdit *e_smsapp= ConfigDialog::getLineEdit("SMS", "Custom SMS application");
 	QCheckBox *b_smscustomconf= ConfigDialog::getCheckBox("SMS", "SMS custom string");
-	QLineEdit *e_smsconf= ConfigDialog::getLineEdit("SMS",QString::null,"smsstring");
+	QLineEdit *e_smsconf= ConfigDialog::getLineEdit("SMS", 0, "smsstring");
 
 	((QHBox*)(e_smsapp->parent()))->setEnabled(!value);
 	b_smscustomconf->setEnabled(!value);
@@ -495,7 +496,7 @@ void SmsSlots::onCreateTabSMS()
 	QCheckBox *b_smsbuildin= ConfigDialog::getCheckBox("SMS", "Use built-in SMS application");
 	QLineEdit *e_smsapp= ConfigDialog::getLineEdit("SMS", "Custom SMS application");
 	QCheckBox *b_smscustomconf= ConfigDialog::getCheckBox("SMS", "SMS custom string");
-	QLineEdit *e_smsconf= ConfigDialog::getLineEdit("SMS",QString::null,"smsstring");
+	QLineEdit *e_smsconf= ConfigDialog::getLineEdit("SMS", 0, "smsstring");
 
 	if (b_smsbuildin->isChecked())
 	{

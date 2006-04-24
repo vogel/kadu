@@ -37,7 +37,16 @@ class Notify : public QObject
 		QMap<QString, NotifierSlots> notifiers; //nazwa powiadamiacza("Hints") -> obiekt powiadomienia
 		QMap<QString, QString> notifySignals; //nazwa sygna³u("NewMessage") -> sygna³ (SIGNAL(newMessage(...)))
 		QStringList eventNames;
-		QValueList<QPair<QString, QString> > notifyEventsNames;
+
+		class NotifyEvent
+		{
+			public:
+				QString name;
+				QCString wname;
+				const char *description;
+		};
+		QValueList<NotifyEvent> notifyEvents;
+		QMap<QString, QValueList<QCString> > strs;
 
 		/*
 		 * dodaje kolumnê checkboksów w konfiguracji,
@@ -48,8 +57,8 @@ class Notify : public QObject
 		/* usuwa kolumnê checkboksów z konfiguracji */
 		void removeConfigColumn(const QString &name, const QMap<QString, QPair<QString, bool> > &notifierSlots);
 
-		void addConfigRow(const QString &name, const QString &description);
-		void removeConfigRow(const QString &name, const QString &description);
+		void addConfigRow(const QString &name, const char *description);
+		void removeConfigRow(const QString &name);
 
 	private slots:
 		/* pomocniczy slot */
@@ -98,11 +107,11 @@ class Notify : public QObject
 		 */
 		void unregisterNotifier(const QString &name);
 
-		void registerEvent(const QString &name, const QString &description);
-		void unregisterEvent(const QString &name, const QString &description);
+		void registerEvent(const QString &name, const char *description);
+		void unregisterEvent(const QString &name);
 
 		QStringList notifiersList() const;
-		const QValueList<QPair<QString, QString> > &externalNotifyTypes();
+		const QValueList<Notify::NotifyEvent> &externalNotifyTypes();
 
 	public slots:
 		/*

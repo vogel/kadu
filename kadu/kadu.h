@@ -139,7 +139,7 @@ class Kadu : public QWidget
 			w zwi±zku z tym, ¿e opis sk³adni dla parsera jest u¿ywany w kilku miejscach
 			dodane zosta³o to pole, ¿eby nie trzeba by³o zmieniaæ tekstu w kilku miejscach
 		**/
-		static const QString SyntaxText;
+		static const char *SyntaxText;
 
 		static bool closing() { return Closing; }
 		static void setClosing() { Closing = true; }

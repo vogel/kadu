@@ -701,36 +701,36 @@ void UserBox::initModule()
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"), "LookTab");
 
 	ConfigDialog::addCheckBox("Look", "varOpts-beginner", QT_TRANSLATE_NOOP("@default", "Show description in userbox"), "ShowDesc", true);
-	ConfigDialog::addCheckBox("Look", "varOpts-beginner", QT_TRANSLATE_NOOP("@default", "Multiline description in userbox"), "ShowMultilineDesc", true, QString::null, QString::null, Advanced);
-	ConfigDialog::addCheckBox("Look", "varOpts-advanced", QT_TRANSLATE_NOOP("@default", "Align icon next to contact name"), "AlignUserboxIconsTop", config_file.readBoolEntry("Look", "AlignUserboxIconsTop"), QString::null, QString::null, Advanced);
-	ConfigDialog::addCheckBox("Look", "varOpts-expert", QT_TRANSLATE_NOOP("@default", "Show available users in bold"), "ShowBold", true, QT_TRANSLATE_NOOP("@default","Displays users that are not offline using a bold font"), QString::null, Expert);
+	ConfigDialog::addCheckBox("Look", "varOpts-beginner", QT_TRANSLATE_NOOP("@default", "Multiline description in userbox"), "ShowMultilineDesc", true, 0, 0, Advanced);
+	ConfigDialog::addCheckBox("Look", "varOpts-advanced", QT_TRANSLATE_NOOP("@default", "Align icon next to contact name"), "AlignUserboxIconsTop", config_file.readBoolEntry("Look", "AlignUserboxIconsTop"), 0, 0, Advanced);
+	ConfigDialog::addCheckBox("Look", "varOpts-expert", QT_TRANSLATE_NOOP("@default", "Show available users in bold"), "ShowBold", true, QT_TRANSLATE_NOOP("@default","Displays users that are not offline using a bold font"), 0, Expert);
 
-	ConfigDialog::addVGroupBox("Look", "varOpts2", QT_TRANSLATE_NOOP("@default", "Columns"), QString::null, Advanced);
+	ConfigDialog::addVGroupBox("Look", "varOpts2", QT_TRANSLATE_NOOP("@default", "Columns"), 0, Advanced);
 	ConfigDialog::addCheckBox("Look", "Columns", QT_TRANSLATE_NOOP("@default", "Multicolumn userbox"), "MultiColumnUserbox", false);
 	ConfigDialog::addSpinBox("Look", "Columns", QT_TRANSLATE_NOOP("@default", "Userbox width when multi column"), "MultiColumnUserboxWidth", 1, 1000, 1);
 
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Colors"), QString::null, Advanced);
+	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Colors"), 0, Advanced);
 		ConfigDialog::addVGroupBox("Look", "Colors", QT_TRANSLATE_NOOP("@default", "Main window"));
-			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Userbox background color"), "UserboxBgColor", config_file.readColorEntry("Look","UserboxBgColor"), QString::null, "userbox_bg_color");
-			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Userbox font color"), "UserboxFgColor", config_file.readColorEntry("Look","UserboxFgColor"), QString::null, "userbox_font_color");
-			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Description font color"), "DescriptionColor", config_file.readColorEntry("Look","DescriptionColor"), QString::null, "userbox_desc_color");
+			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Userbox background color"), "UserboxBgColor", QColor(), 0, "userbox_bg_color");
+			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Userbox font color"), "UserboxFgColor", QColor(), 0, "userbox_font_color");
+			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Description font color"), "DescriptionColor", QColor(), 0, "userbox_desc_color");
 
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Fonts"), QString::null, Advanced);
-		ConfigDialog::addSelectFont("Look", "Fonts", QT_TRANSLATE_NOOP("@default", "Font in userbox"), "UserboxFont", defaultFont->toString(), QString::null, "userbox_font_box");
+	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Fonts"), 0, Advanced);
+		ConfigDialog::addSelectFont("Look", "Fonts", QT_TRANSLATE_NOOP("@default", "Font in userbox"), "UserboxFont", defaultFont->toString(), 0, "userbox_font_box");
 
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Previews"), QString::null, Advanced);
+	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Previews"), 0, Advanced);
 		ConfigDialog::addHBox("Look", "Previews", "othr_prvws");
 			ConfigDialog::addVGroupBox("Look", "othr_prvws", QT_TRANSLATE_NOOP("@default", "Preview userbox"));
 				ConfigDialog::addLabel("Look", "Preview userbox", "<b>Text</b> preview", "preview_userbox");
 			ConfigDialog::addVGroupBox("Look", "othr_prvws", QT_TRANSLATE_NOOP("@default", "Preview panel"));
 				ConfigDialog::addLabel("Look", "Preview panel", "<b>Text</b> preview", "preview_panel");
 
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Userbox background"), QString::null, Advanced);
+	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Userbox background"), 0, Advanced);
 	ConfigDialog::addHBox("Look", "Userbox background", "userbox_background");
-	ConfigDialog::addLineEdit("Look", "userbox_background", QT_TRANSLATE_NOOP("@default", "Background"), "UserboxBackground", QString::null, "Background Path");
-	ConfigDialog::addPushButton("Look", "userbox_background", "", "OpenFile", "", "userbox_background_fileopen");
+	ConfigDialog::addLineEdit("Look", "userbox_background", QT_TRANSLATE_NOOP("@default", "Background"), "UserboxBackground", 0, "Background Path");
+	ConfigDialog::addPushButton("Look", "userbox_background", 0, "OpenFile", 0, "userbox_background_fileopen");
 
-	ConfigDialog::addVGroupBox("Look", "Userbox background", QT_TRANSLATE_NOOP("@default", "Background image options"), QString::null, Expert);
+	ConfigDialog::addVGroupBox("Look", "Userbox background", QT_TRANSLATE_NOOP("@default", "Background image options"), 0, Expert);
 		ConfigDialog::addCheckBox("Look", "Background image options", QT_TRANSLATE_NOOP("@default", "Change image size"), "UserboxBackgroundMove", false);
 		ConfigDialog::addSpinBox("Look", "Background image options", QT_TRANSLATE_NOOP("@default", "Start at [X]"), "UserboxBackgroundSX", 0, 1499, 1);
 		ConfigDialog::addSpinBox("Look", "Background image options", QT_TRANSLATE_NOOP("@default", "Start at [Y]"), "UserboxBackgroundSY", 0, 1099, 1);
@@ -757,7 +757,7 @@ void UserBox::initModule()
 
 	ConfigDialog::connectSlot("Look", "Multicolumn userbox", SIGNAL(toggled(bool)), userboxslots, SLOT(onMultiColumnUserbox(bool)));
 
-	ConfigDialog::connectSlot("Look", "", SIGNAL(clicked()), userboxslots, SLOT(chooseBackgroundFile()), "userbox_background_fileopen");
+	ConfigDialog::connectSlot("Look", 0, SIGNAL(clicked()), userboxslots, SLOT(chooseBackgroundFile()), "userbox_background_fileopen");
 
 	ConfigDialog::connectSlot("Look", "Change image size", SIGNAL(toggled(bool)), userboxslots, SLOT(userboxBackgroundMove(bool)));
 

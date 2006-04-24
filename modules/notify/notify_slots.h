@@ -3,18 +3,20 @@
 
 #include <qobject.h>
 #include <qlistbox.h>
-#include <qstringlist.h>
-#include <qstring.h>
+//#include <qstringlist.h>
+//#include <qstring.h>
+#include <qcstring.h>
+#include <qvaluelist.h>
 
 class NotifySlots : public QObject
 {
 	Q_OBJECT
 	private:
-		QStringList disabledControls;
+		QValueList<QCString> disabledControls;
 
 	public slots:
 		void onCreateTabNotify();
-		void onApplyTabHints();
+		void onApplyTabNotify();
 
 		void _Left();
 		void _Right();
@@ -24,8 +26,8 @@ class NotifySlots : public QObject
 	public:
 		NotifySlots(QObject *parent=0, const char *name=0);
 		~NotifySlots();
-		void registerDisabledControl(const QString &name);
-		void unregisterDisabledControl(const QString &name);
+		void registerDisabledControl(const QCString &name);
+		void unregisterDisabledControl(const QCString &name);
 };
 
 #endif

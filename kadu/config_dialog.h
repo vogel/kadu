@@ -1,6 +1,7 @@
 #ifndef CONFIG_DIALOG_H
 #define CONFIG_DIALOG_H
 
+#include <qasciidict.h>
 #include <qdict.h>
 #include <qhbox.h>
 #include <qkeysequence.h>
@@ -112,7 +113,7 @@ class SelectFont : public QHBox
 {
 	Q_OBJECT
 	public:
-		SelectFont(const QString &text, const QFont &def_val, QWidget *parent = 0,  const char *name = 0, const QString &tip = QString::null);
+		SelectFont(const QString &text, const QFont &def_val, QWidget *parent = 0,  const char *name = 0, const char *tip = 0);
 		const QFont &font() const;
 	public slots:
 		void setFont(const QFont &font);
@@ -224,29 +225,29 @@ class ConfigDialog : public QVBox
 
 		struct ElementConnections
 		{
-			ElementConnections(QString signal, const QObject *receiver, QString slot);
+			ElementConnections(const char *signal, const QObject *receiver, const char *slot);
 			ElementConnections();
-			QString signal;
+			const char *signal;
 			const QObject* receiver;
-			QString slot;
+			const char *slot;
 			bool operator== (const ElementConnections& r) const;
 		};
 		struct RegisteredControl
 		{
 			RegisteredControlType type;
 			RegisteredControl(RegisteredControlType t = CONFIG_NULL,
-				const QString &groupname = QString::null,
-				const QString &parent = QString::null,
-				const QString &caption = QString::null,
-				const QString &name = QString::null,
+				const char *groupname = 0,
+				const char *parent = 0,
+				const char *caption = 0,
+				const char *name = 0,
 				const UserLevel userLevelRequired = Beginner);
-			QString parent;
-			QString name;
-			QString caption;
-			QString group;
-			QString entry;
+			const char *parent;
+			const char *name;
+			const char *caption;
+			const char *group;
+			const char *entry;
 			QString defaultS;
-			QString tip;
+			const char *tip;
 
 			//dodatkowe dane
 			QValueList<QVariant> additionalParams;
@@ -264,14 +265,14 @@ class ConfigDialog : public QVBox
 			QValueList <ElementConnections> ConnectedSlots;
 		};
 
-		static QMap<QString, QValueList <ElementConnections> > SlotsOnCreateTab;
-		static QMap<QString, QValueList <ElementConnections> >SlotsOnCloseTab;
-		static QMap<QString, QValueList <ElementConnections> >SlotsOnApplyTab;
+		static QAsciiDict<QValueList <ElementConnections> > SlotsOnCreateTab;
+		static QAsciiDict<QValueList <ElementConnections> > SlotsOnCloseTab;
+		static QAsciiDict<QValueList <ElementConnections> > SlotsOnApplyTab;
 		static QApplication* appHandle;
 
-		static QMap<QString, QValueList <RegisteredControl> > Tabs;
-		static QStringList TabNames;
-		static QMap<QString, int> TabSizes;
+		static QAsciiDict<QValueList <RegisteredControl> > Tabs;
+		static QValueList<const char *> TabNames;
+		static QAsciiDict<int> TabSizes;
 		static QDict<QSignal> tabChangesIn, tabChangesOut;//jakie¶ lepsze nazwy by siê przyda³y ;)
 
 
@@ -279,10 +280,10 @@ class ConfigDialog : public QVBox
 		/**
 		    Dodaje kontrolkê do listy
 		**/
-		static bool addControl(const QString& groupname, ConfigDialog::RegisteredControl& control);
+		static bool addControl(const char *groupname, ConfigDialog::RegisteredControl& control);
 
 		void createWidget(QValueListIterator <RegisteredControl> control);
-		void createTabAndWidgets(const QString& tab);
+		void createTabAndWidgets(const char *tab);
 
 	public:
 		/**
@@ -312,14 +313,14 @@ class ConfigDialog : public QVBox
 			Nazwa kontrolki ustawiona jest na "name".
 		**/
  		static void addCheckBox(
-				const QString& groupname, const QString& parent, const QString& caption,
-			    const QString& entry, const bool defaultS = false, const QString &tip = QString::null,
-				const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+			    const char *entry, const bool defaultS = false, const char *tip = 0,
+				const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 		static void addCheckBox(ConfigFile* config,
-				const QString& groupname, const QString& parent, const QString& caption,
-			    const QString& entry, const bool defaultS = false, const QString &tip = QString::null,
-				const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+			    const char *entry, const bool defaultS = false, const char *tip = 0,
+				const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 
 		/**
@@ -331,14 +332,14 @@ class ConfigDialog : public QVBox
 			Nazwa kontrolki ustawiona jest na "name".
 		**/
 		static void addColorButton(
-				const QString& groupname, const QString& parent, const QString& caption,
-				const QString &entry, const QColor& color, const QString& tip = QString::null,
-				const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+				const char *entry, const QColor& color, const char *tip = 0,
+				const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 		static void addColorButton(ConfigFile *config,
-				const QString& groupname, const QString& parent, const QString& caption,
-				const QString &entry, const QColor& color, const QString& tip = QString::null,
-				const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+				const char *entry, const QColor& color, const char *tip = 0,
+				const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 
 		/**
@@ -349,8 +350,8 @@ class ConfigDialog : public QVBox
 			Nazwa kontrolki ustawiona jest na "name".
 		**/
 		static void addComboBox(
-				const QString& groupname, const QString& parent, const QString& caption,
-			    const QString& tip = QString::null, const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+			    const char *tip = 0, const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 
 		/**
@@ -368,14 +369,14 @@ class ConfigDialog : public QVBox
 			Nazwa kontrolki ustawiona jest na "name".
 		**/
 		static void addComboBox(
-				const QString& groupname, const QString& parent, const QString& caption,
-				const QString &entry, const QStringList &options, const QStringList &values,
-				const QString &defaultS = QString::null, const QString& tip = QString::null, const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+				const char *entry, const QStringList &options, const QStringList &values,
+				const QString &defaultS = QString::null, const char *tip = 0, const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 		static void addComboBox(ConfigFile* config,
-				const QString& groupname, const QString& parent, const QString& caption,
-				const QString &entry, const QStringList &options, const QStringList &values,
-				const QString &defaultS = QString::null, const QString& tip = QString::null, const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+				const char *entry, const QStringList &options, const QStringList &values,
+				const QString &defaultS = QString::null, const char *tip = 0, const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 
 		/**
@@ -387,8 +388,8 @@ class ConfigDialog : public QVBox
 		**/
 
 		static void addGrid(
-				const QString& groupname, const QString& parent, const QString& caption,
-				const int nrColumns = 3, const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+				const int nrColumns = 3, const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 
 		/**
@@ -399,8 +400,8 @@ class ConfigDialog : public QVBox
 		**/
 
 		static void addHBox(
-				const QString& groupname, const QString& parent, const QString& caption,
-				const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+				const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 
 		/**
@@ -411,8 +412,8 @@ class ConfigDialog : public QVBox
 		**/
 
 		static void addHGroupBox(
-				const QString& groupname, const QString& parent, const QString& caption,
-				const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+				const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 
 
@@ -433,14 +434,14 @@ class ConfigDialog : public QVBox
 		**/
 
 		static void addHotKeyEdit(
-				const QString& groupname, const QString& parent, const QString& caption,
-			    const QString& entry, const QString& defaultS = QString::null, const QString& tip = QString::null,
-				const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+			    const char *entry, const QString& defaultS = QString::null, const char *tip = 0,
+				const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 		static void addHotKeyEdit(ConfigFile* config,
-				const QString& groupname, const QString& parent, const QString& caption,
-			    const QString& entry, const QString& defaultS = QString::null, const QString& tip = QString::null,
-				const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+			    const char *entry, const QString& defaultS = QString::null, const char *tip = 0,
+				const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 
 		/**
@@ -458,14 +459,14 @@ class ConfigDialog : public QVBox
 			Nazwa kontrolki ustawiona jest na "name".
 		**/
 		static void addHRadioGroup(
-				const QString& groupname, const QString& parent, const QString& caption,
-				const QString &entry, const QStringList &options, const QStringList &values,
-				const QString &defaultS = QString::null, const QString& tip = QString::null, const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+				const char *entry, const QStringList &options, const QStringList &values,
+				const QString &defaultS = QString::null, const char *tip = 0, const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 		static void addHRadioGroup(ConfigFile* config,
-				const QString& groupname, const QString& parent, const QString& caption,
-				const QString &entry, const QStringList &options, const QStringList &values,
-				const QString &defaultS = QString::null, const QString& tip = QString::null, const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+				const char *entry, const QStringList &options, const QStringList &values,
+				const QString &defaultS = QString::null, const char *tip = 0, const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 
 		/**
@@ -476,8 +477,8 @@ class ConfigDialog : public QVBox
 		**/
 
 		static void addLabel(
-				const QString& groupname, const QString& parent, const QString& caption,
-				const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+				const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 
 		/**
@@ -497,14 +498,14 @@ class ConfigDialog : public QVBox
 		**/
 
 		static void addLineEdit(
-				const QString& groupname, const QString& parent, const QString& caption,
-			    const QString& entry, const QString& defaultS = QString::null, const QString& tip = QString::null,
-				const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+			    const char *entry, const QString& defaultS = QString::null, const char *tip = 0,
+				const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 		static void addLineEdit(ConfigFile* config,
-				const QString& groupname, const QString& parent, const QString& caption,
-			    const QString& entry, const QString& defaultS = QString::null, const QString& tip = QString::null,
-				const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+			    const char *entry, const QString& defaultS = QString::null, const char *tip = 0,
+				const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 
 
@@ -518,8 +519,8 @@ class ConfigDialog : public QVBox
 		**/
 
 		static void addLineEdit2(
-				const QString& groupname, const QString& parent, const QString& caption,
-			    const QString& defaultS = QString::null, const QString& tip = QString::null, const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+			    const QString& defaultS = QString::null, const char *tip = 0, const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 
 		/**
@@ -539,14 +540,14 @@ class ConfigDialog : public QVBox
 		**/
 
 		static void addTextEdit(
-				const QString& groupname, const QString& parent, const QString& caption,
-			    const QString& entry, const QString& defaultS = QString::null, const QString& tip = QString::null,
-				const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+			    const char *entry, const QString& defaultS = QString::null, const char *tip = 0,
+				const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 		static void addTextEdit(ConfigFile* config,
-				const QString& groupname, const QString& parent, const QString& caption,
-			    const QString& entry, const QString& defaultS = QString::null, const QString& tip = QString::null,
-				const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+			    const char *entry, const QString& defaultS = QString::null, const char *tip = 0,
+				const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 
 
@@ -559,8 +560,8 @@ class ConfigDialog : public QVBox
 		**/
 
 		static void addListBox(
-				const QString& groupname, const QString& parent, const QString& caption,
-				const QString& tip = QString::null, const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+				const char *tip = 0, const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 
 		/**
@@ -572,8 +573,8 @@ class ConfigDialog : public QVBox
 		**/
 
 		static void addListView(
-				const QString& groupname, const QString& parent, const QString& caption,
-				const QString& tip = QString::null, const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+				const char *tip = 0, const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 
 		/**
@@ -586,8 +587,8 @@ class ConfigDialog : public QVBox
 		**/
 
 		static void addPushButton(
-				const QString& groupname, const QString& parent, const QString& caption,
-			    const QString& iconFilename = QString::null, const QString& tip = QString::null, const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+			    const QString& iconFilename = QString::null, const char *tip = 0, const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 
 		/**
@@ -605,16 +606,16 @@ class ConfigDialog : public QVBox
 			Nazwa kontrolki ustawiona jest na "name".
 		**/
 		static void addRadioGroup(
-				const QString& groupname, const QString& parent, const QString& caption,
-				const QString &entry, const QStringList &options, const QStringList &values,
+				const char *groupname, const char *parent, const char *caption,
+				const char *entry, const QStringList &options, const QStringList &values,
 				int strips, Orientation orientation,
-				const QString &defaultS = QString::null, const QString& tip = QString::null, const QString& name = QString::null,
+				const QString &defaultS = QString::null, const char *tip = 0, const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 		static void addRadioGroup(ConfigFile* config,
-				const QString& groupname, const QString& parent, const QString& caption,
-				const QString &entry, const QStringList &options, const QStringList &values,
+				const char *groupname, const char *parent, const char *caption,
+				const char *entry, const QStringList &options, const QStringList &values,
 				int strips, Orientation orientation,
-				const QString &defaultS = QString::null, const QString& tip = QString::null, const QString& name = QString::null,
+				const QString &defaultS = QString::null, const char *tip = 0, const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 
 		/**
@@ -634,14 +635,14 @@ class ConfigDialog : public QVBox
 		**/
 
 		static void addSelectFont(
-				const QString& groupname, const QString& parent, const QString& caption,
-				const QString& entry, const QString& defaultS = QString::null, const QString &tip = QString::null,
-				const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+				const char *entry, const QString& defaultS = QString::null, const char *tip = 0,
+				const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 		static void addSelectFont(ConfigFile *config,
-				const QString& groupname, const QString& parent, const QString& caption,
-				const QString& entry, const QString& defaultS = QString::null, const QString &tip = QString::null,
-				const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+				const char *entry, const QString& defaultS = QString::null, const char *tip = 0,
+				const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 
 		/**
@@ -652,8 +653,8 @@ class ConfigDialog : public QVBox
 		**/
 
 		static void addSelectPaths(
-				const QString& groupname, const QString& parent, const QString& caption,
-				const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+				const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 
 		/**
@@ -674,16 +675,16 @@ class ConfigDialog : public QVBox
 		**/
 
 		static void addSlider(
-				const QString& groupname, const QString& parent, const QString& caption,
-			    const QString& entry, const int minValue = 0, const int maxValue = 100,
-			    const int pageStep = 1, const int value = 50, const QString& tip = QString::null,
-				const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+			    const char *entry, const int minValue = 0, const int maxValue = 100,
+			    const int pageStep = 1, const int value = 50, const char *tip = 0,
+				const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 		static void addSlider(ConfigFile* config,
-				const QString& groupname, const QString& parent, const QString& caption,
-			    const QString& entry, const int minValue = 0, const int maxValue = 100,
-			    const int pageStep = 1, const int value = 50, const QString& tip = QString::null,
-				const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+			    const char *entry, const int minValue = 0, const int maxValue = 100,
+			    const int pageStep = 1, const int value = 50, const char *tip = 0,
+				const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 
 
@@ -705,23 +706,23 @@ class ConfigDialog : public QVBox
 		**/
 
 		static void addSpinBox(
-				const QString& groupname, const QString& parent, const QString& caption,
-			    const QString& entry, const int minValue = 0, const int maxValue = 100,
-				const int step = 1, const int value = 50, const QString& tip = QString::null,
-				const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+			    const char *entry, const int minValue = 0, const int maxValue = 100,
+				const int step = 1, const int value = 50, const char *tip = 0,
+				const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 		static void addSpinBox(ConfigFile* config,
-				const QString& groupname, const QString& parent, const QString& caption,
-			    const QString& entry, const int minValue = 0, const int maxValue = 100,
-				const int step = 1, const int value = 50, const QString& tip = QString::null,
-				const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+			    const char *entry, const int minValue = 0, const int maxValue = 100,
+				const int step = 1, const int value = 50, const char *tip = 0,
+				const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 
 		/**
 		    Dodaje zak³adkê o nazwie "caption"
 		    @param iconname nazwa ikony z zestawu lub ¶cie¿ka do pliku
 		**/
-		static void addTab(const QString& caption, const QString& iconFilename = QString::null,
+		static void addTab(const char *caption, const QString& iconFilename = QString::null,
 			UserLevel userLevelRequired = Beginner);
 
 		/**
@@ -732,8 +733,8 @@ class ConfigDialog : public QVBox
 		**/
 
 		static void addVBox(
-				const QString& groupname, const QString& parent, const QString& caption,
-				const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+				const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 
 		/**
@@ -744,8 +745,8 @@ class ConfigDialog : public QVBox
 		**/
 
 		static void addVGroupBox(
-				const QString& groupname, const QString& parent, const QString& caption,
-				const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+				const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 
 		/**
@@ -763,147 +764,147 @@ class ConfigDialog : public QVBox
 			Nazwa kontrolki ustawiona jest na "name".
 		**/
 		static void addVRadioGroup(
-				const QString& groupname, const QString& parent, const QString& caption,
-				const QString &entry, const QStringList &options, const QStringList &values,
-				const QString &defaultS = QString::null, const QString& tip = QString::null, const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+				const char *entry, const QStringList &options, const QStringList &values,
+				const QString &defaultS = QString::null, const char *tip = 0, const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 		static void addVRadioGroup(ConfigFile* config,
-				const QString& groupname, const QString& parent, const QString& caption,
-				const QString &entry, const QStringList &options, const QStringList &values,
-				const QString &defaultS = QString::null, const QString& tip = QString::null, const QString& name = QString::null,
+				const char *groupname, const char *parent, const char *caption,
+				const char *entry, const QStringList &options, const QStringList &values,
+				const QString &defaultS = QString::null, const char *tip = 0, const char *name = 0,
 				UserLevel userLevelRequired = Beginner);
 
 		/**
 		    Pobiera wska¼nik do kontrolki ButtonGroup(groupname, caption, name)
 			je¿eli okno konfiguracji jest zamkniête zwraca NULL
 		**/
-		static QButtonGroup* getButtonGroup(const QString& groupname, const QString& caption, const QString& name = QString::null);
+		static QButtonGroup* getButtonGroup(const char *groupname, const char *caption, const char *name = 0);
 
 		/**
 		    Pobiera wska¼nik do kontrolki CheckBox(groupname, caption, name)
 			je¿eli okno konfiguracji jest zamkniête zwraca NULL
 		**/
-		static QCheckBox*   getCheckBox(const QString& groupname, const QString& caption, const QString& name = QString::null);
+		static QCheckBox*   getCheckBox(const char *groupname, const char *caption, const char *name = 0);
 
 		/**
 		    Pobiera wska¼nik do kontrolki ColorButton(groupname, caption, name)
 			je¿eli okno konfiguracji jest zamkniête zwraca NULL
 		**/
-		static ColorButton* getColorButton(const QString& groupname, const QString& caption, const QString& name = QString::null);
+		static ColorButton* getColorButton(const char *groupname, const char *caption, const char *name = 0);
 
 		/**
 		    Pobiera wska¼nik do kontrolki ComboBox(groupname, caption, name)
 			je¿eli okno konfiguracji jest zamkniête zwraca NULL
 		**/
-		static QComboBox*   getComboBox(const QString& groupname, const QString& caption, const QString& name = QString::null);
+		static QComboBox*   getComboBox(const char *groupname, const char *caption, const char *name = 0);
 
 		/**
 		    Pobiera wska¼nik do kontrolki Grid(groupname, caption, name)
 			je¿eli okno konfiguracji jest zamkniête zwraca NULL
 		**/
-		static QGrid*       getGrid(const QString& groupname, const QString& caption, const QString& name = QString::null);
+		static QGrid*       getGrid(const char *groupname, const char *caption, const char *name = 0);
 
 		/**
 		    Pobiera wska¼nik do kontrolki HBox(groupname, caption, name)
 			je¿eli okno konfiguracji jest zamkniête zwraca NULL
 		**/
-		static QHBox* 	    getHBox(const QString& groupname, const QString& caption, const QString& name = QString::null);
+		static QHBox* 	    getHBox(const char *groupname, const char *caption, const char *name = 0);
 
 		/**
 		    Pobiera wska¼nik do kontrolki HGroupBox(groupname, caption, name)
 			je¿eli okno konfiguracji jest zamkniête zwraca NULL
 		**/
-		static QHGroupBox*  getHGroupBox(const QString& groupname, const QString& caption, const QString& name = QString::null);
+		static QHGroupBox*  getHGroupBox(const char *groupname, const char *caption, const char *name = 0);
 
 		/**
 		    Pobiera wska¼nik do kontrolki HButtonGroup(groupname, caption, name)
 			je¿eli okno konfiguracji jest zamkniête zwraca NULL
 		**/
-		static QHButtonGroup* getHButtonGroup(const QString& groupname, const QString& caption, const QString& name = QString::null);
+		static QHButtonGroup* getHButtonGroup(const char *groupname, const char *caption, const char *name = 0);
 
 		/**
 		    Pobiera wska¼nik do kontrolki HotKeyEdit(groupname, caption, name)
 			je¿eli okno konfiguracji jest zamkniête zwraca NULL
 		**/
-		static HotKey* 	    getHotKeyEdit(const QString& groupname, const QString& caption, const QString& name = QString::null);
+		static HotKey* 	    getHotKeyEdit(const char *groupname, const char *caption, const char *name = 0);
 
 		/**
 		    Pobiera wska¼nik do kontrolki LineEdit(groupname, caption, name)
 			je¿eli okno konfiguracji jest zamkniête zwraca NULL
 		**/
-		static QLineEdit*   getLineEdit(const QString& groupname, const QString& caption, const QString& name = QString::null);
+		static QLineEdit*   getLineEdit(const char *groupname, const char *caption, const char *name = 0);
 
 		/**
 		    Pobiera wska¼nik do kontrolki TextEdit(groupname, caption, name)
 			je¿eli okno konfiguracji jest zamkniête zwraca NULL
 		**/
-		static QTextEdit*   getTextEdit(const QString& groupname, const QString& caption, const QString& name = QString::null);
+		static QTextEdit*   getTextEdit(const char *groupname, const char *caption, const char *name = 0);
 
 		/**
 		    Pobiera wska¼nik do kontrolki Label(groupname, caption, name)
 			je¿eli okno konfiguracji jest zamkniête zwraca NULL
 		**/
-		static QLabel*      getLabel(const QString& groupname, const QString& caption, const QString& name = QString::null);
+		static QLabel*      getLabel(const char *groupname, const char *caption, const char *name = 0);
 
 		/**
 		    Pobiera wska¼nik do kontrolki ListBox(groupname, caption, name)
 			je¿eli okno konfiguracji jest zamkniête zwraca NULL
 		**/
-		static QListBox*    getListBox(const QString& groupname, const QString& caption, const QString& name = QString::null);
+		static QListBox*    getListBox(const char *groupname, const char *caption, const char *name = 0);
 
 		/**
 		    Pobiera wska¼nik do kontrolki ListView(groupname, caption, name)
 			je¿eli okno konfiguracji jest zamkniête zwraca NULL
 		**/
-		static QListView*   getListView(const QString& groupname, const QString& caption, const QString& name = QString::null);
+		static QListView*   getListView(const char *groupname, const char *caption, const char *name = 0);
 
 		/**
 		    Pobiera wska¼nik do kontrolki PushButton(groupname, caption, name)
 			je¿eli okno konfiguracji jest zamkniête zwraca NULL
 		**/
-		static QPushButton* getPushButton(const QString& groupname, const QString& caption, const QString& name = QString::null);
+		static QPushButton* getPushButton(const char *groupname, const char *caption, const char *name = 0);
 
 		/**
 		    Pobiera wska¼nik do kontrolki SelectFont(groupname, caption, name)
 			je¿eli okno konfiguracji jest zamkniête zwraca NULL
 		**/
-		static SelectFont* getSelectFont(const QString& groupname, const QString& caption, const QString& name = QString::null);
+		static SelectFont* getSelectFont(const char *groupname, const char *caption, const char *name = 0);
 
 		/**
 		    Pobiera wska¼nik do kontrolki SelectPaths(groupname, caption, name)
 			je¿eli okno konfiguracji jest zamkniête zwraca NULL
 		**/
-		static SelectPaths* getSelectPaths(const QString& groupname, const QString& caption, const QString& name = QString::null);
+		static SelectPaths* getSelectPaths(const char *groupname, const char *caption, const char *name = 0);
 
 		/**
 		    Pobiera wska¼nik do kontrolki Slider(groupname, caption, name)
 			je¿eli okno konfiguracji jest zamkniête zwraca NULL
 		**/
-		static QSlider*     getSlider(const QString& groupname, const QString& caption, const QString& name = QString::null);
+		static QSlider*     getSlider(const char *groupname, const char *caption, const char *name = 0);
 
 		/**
 		    Pobiera wska¼nik do kontrolki SpinBox(groupname, caption, name)
 			je¿eli okno konfiguracji jest zamkniête zwraca NULL
 		**/
-		static QSpinBox*    getSpinBox(const QString& groupname, const QString& caption, const QString& name = QString::null);
+		static QSpinBox*    getSpinBox(const char *groupname, const char *caption, const char *name = 0);
 
 		/**
 		    Pobiera wska¼nik do kontrolki VBox(groupname, caption, name)
 			je¿eli okno konfiguracji jest zamkniête zwraca NULL
 		**/
-		static QVBox*  	    getVBox(const QString& groupname, const QString& caption, const QString& name = QString::null);
+		static QVBox*  	    getVBox(const char *groupname, const char *caption, const char *name = 0);
 
 		/**
 		    Pobiera wska¼nik do kontrolki VGroupBox(groupname, caption, name)
 			je¿eli okno konfiguracji jest zamkniête zwraca NULL
 		**/
-		static QVGroupBox*  getVGroupBox(const QString& groupname, const QString& caption, const QString& name = QString::null);
+		static QVGroupBox*  getVGroupBox(const char *groupname, const char *caption, const char *name = 0);
 
 		/**
 		    Pobiera wska¼nik do kontrolki VButtonGroup(groupname, caption, name)
 			je¿eli okno konfiguracji jest zamkniête zwraca NULL
 		**/
-		static QVButtonGroup* getVButtonGroup(const QString& groupname, const QString& caption, const QString& name = QString::null);
+		static QVButtonGroup* getVButtonGroup(const char *groupname, const char *caption, const char *name = 0);
 
 		/**
 		    W przypadku kontrolki zawieraj±cej kilka mniejszych (z czego jedn± z nich zwraca jedna z funkcji getXXX)
@@ -912,57 +913,57 @@ class ConfigDialog : public QVBox
 			UWAGA: nie wolno rzutowaæ zwracanego wska¼nika na ¿adn± klasê dziedzicz±c± pod QWidget!
 			(np. addSpinBox dodaje QHBox zawieraj±c± QLabel i QSpinBox, getSpinBox() zwróci SpinBoksa, getEntireWidget QHBoksa())
 		**/
-		static QWidget* getEntireWidget(const QString& groupname, const QString& caption, const QString& name = QString::null);
+		static QWidget* getEntireWidget(const char *groupname, const char *caption, const char *name = 0);
 
 		/**
 		    Pobiera wska¼nik do kontrolki Widget(groupname, caption, name)
 			je¿eli okno konfiguracji jest zamkniête zwraca NULL
 		**/
-		static QWidget* widget(const QString& groupname, const QString& caption, const QString& name = QString::null);
+		static QWidget* widget(const char *groupname, const char *caption, const char *name = 0);
 
 		/**
 			zwraca informacjê czy kontrolka (groupname, caption, name) jest w konfiguracji
 			przy okazji przekazuj±c jej iterator je¿eli control != 0
 		**/
-		static bool controlExists(const QString& groupname, const QString& caption, const QString& name = QString::null, QValueListConstIterator<RegisteredControl> *control = 0);
+		static bool controlExists(const char *groupname, const char *caption, const char *name = 0, QValueListConstIterator<RegisteredControl> *control = 0);
 
 		/**
 			zwraca informacjê czy kontrolka (groupname, caption, name) jest w konfiguracji
 			przy okazji przekazuj±c jej iterator je¿eli control != 0
 		**/
-		static bool controlExists(const QString& groupname, const QString& caption, const QString& name, QValueListIterator<RegisteredControl> *control);
+		static bool controlExists(const char *groupname, const char *caption, const char *name, QValueListIterator<RegisteredControl> *control);
 
 		/**
 		    Wyszukuje pozycjê zak³adki "name",
 			zwraca przez parametry jej iterator oraz informacjê o znalezieniu je¿eli found != 0
 		**/
-		static void tab(const QString &name, QValueListConstIterator<RegisteredControl> &ret, bool *found = 0);
+		static void tab(const char *name, QValueListConstIterator<RegisteredControl> &ret, bool *found = 0);
 
 		/**
 		    Wyszukuje pozycjê zak³adki "name",
 			zwraca przez parametry jej iterator oraz informacjê o znalezieniu je¿eli found != 0
 		**/
-		static void tab(const QString &name, QValueListIterator<RegisteredControl> &ret, bool *found = 0);
+		static void tab(const char *name, QValueListIterator<RegisteredControl> &ret, bool *found = 0);
 
 		/**
 			Pod³±cza slot "slot" obiektu "receiver"
 			pod sygna³ "signal" kontrolki (groupname, caption, name)
 		**/
-		static void connectSlot(const QString& groupname, const QString& caption, const char* signal,
-			    const QObject* receiver, const char* slot,const QString& name = QString::null);
+		static void connectSlot(const char *groupname, const char *caption, const char* signal,
+			    const QObject* receiver, const char* slot,const char *name = 0);
 
 		/**
 			Od³±cza slot "slot" obiektu "receiver"
 			od sygna³u "signal" kontrolki (groupname, caption, name)
 		**/
-		static void disconnectSlot(const QString& groupname, const QString& caption, const char* signal,
-			    const QObject* receiver, const char* slot,const QString& name = QString::null);
+		static void disconnectSlot(const char *groupname, const char *caption, const char* signal,
+			    const QObject* receiver, const char* slot,const char *name = 0);
 
 		/**
 			Rejestruje slot "slot" obiektu "receiver",
 			który jest wywo³ywany przytworzeniu zakladki
 		**/
-		static void registerSlotOnCreateTab(const QString& tab, const QObject* receiver, const char* slot);
+		static void registerSlotOnCreateTab(const char *tab, const QObject* receiver, const char* slot);
 
 
 		/**
@@ -970,32 +971,32 @@ class ConfigDialog : public QVBox
 			który jest wywo³ywany przytworzeniu zakladki
 		**/
 
-		static void unregisterSlotOnCreateTab(const QString& tab, const QObject* receiver, const char* slot);
+		static void unregisterSlotOnCreateTab(const char *tab, const QObject* receiver, const char* slot);
 
 
 		/**
 			Rejestruje slot "slot" obiektu "receiver",
 			który jest wywo³ywany przy zamykaniu okna konfiguracji
 		**/
-		static void registerSlotOnCloseTab(const QString& tab, const QObject* receiver, const char* slot);
+		static void registerSlotOnCloseTab(const char *tab, const QObject* receiver, const char* slot);
 
 		/**
 			Wyrejestrowuje slot "slot" obiektu "receiver",
 			który jest wywo³ywany przy zamykaniu okna konfiguracji
 		**/
-		static void unregisterSlotOnCloseTab(const QString& tab, const QObject* receiver, const char* slot);
+		static void unregisterSlotOnCloseTab(const char *tab, const QObject* receiver, const char* slot);
 
 		/**
 			Rejestruje slot "slot" obiektu "receiver",
 			który jest wywo³ywany przy zapisywaniu konfiguracji
 		**/
-		static void registerSlotOnApplyTab(const QString& tab, const QObject* receiver, const char* slot);
+		static void registerSlotOnApplyTab(const char *tab, const QObject* receiver, const char* slot);
 
 		/**
 			Wyrejestrowuje slot "slot" obiektu "receiver",
 			który jest wywo³ywany przy zapisywaniu konfiguracji
 		**/
-		static void unregisterSlotOnApplyTab(const QString& tab, const QObject* receiver, const char* slot);
+		static void unregisterSlotOnApplyTab(const char *tab, const QObject* receiver, const char* slot);
 
 		/**
 			Rejestruje 2 sloty obiektu "receiver", które s±
@@ -1003,7 +1004,7 @@ class ConfigDialog : public QVBox
 			slotIn - przy zmianie aktywnej zak³adki na "name" (mo¿e byæ == 0)
 			slotOut - przy zmianie aktywnej zak³adki z "name" na inn± (mo¿e byæ == 0)
 		**/
-		static void registerSlotsOnTabChange(const QString &name, const QObject *receiver, const char *slotIn, const char *slotOut);
+		static void registerSlotsOnTabChange(const char *name, const QObject *receiver, const char *slotIn, const char *slotOut);
 
 		/**
 			Wyrejestrowuje 2 sloty obiektu "receiver", które s±
@@ -1011,22 +1012,22 @@ class ConfigDialog : public QVBox
 			slotIn - przy zmianie aktywnej zak³adki na "name" (mo¿e byæ == 0)
 			slotOut - przy zmianie aktywnej zak³adki z "name" na inn± (mo¿e byæ == 0)
 		**/
-		static void unregisterSlotsOnTabChange(const QString &name, const QObject *receiver, const char *slotIn, const char *slotOut);
+		static void unregisterSlotsOnTabChange(const char *name, const QObject *receiver, const char *slotIn, const char *slotOut);
 
 		/**
 		    Usuwa kontrolkê z zak³adki "groupname", o etykiecie "caption" i nazwie "name".
 		**/
-		static void removeControl(const QString& groupname, const QString& caption, const QString& name = QString::null);
+		static void removeControl(const char *groupname, const char *caption, const char *name = 0);
 
 		/**
 		    Usuwa zak³adkê o nazwie caption
 		**/
-		static bool removeTab(const QString& caption);
+		static bool removeTab(const char *caption);
 
 		/**
 			Zwraca prawdê je¿eli zak³adka znajduje siê w konfiguracji
 		**/
-		static bool tabExists(const QString& caption);
+		static bool tabExists(const char *caption);
 
 		static bool dialogOpened();
 		static void closeDialog();
@@ -1041,10 +1042,9 @@ class ConfigDialog : public QVBox
 		QPushButton* okButton;
 		QPushButton* applyButton;
 		QPushButton* cancelButton;
-		static QString currentTab;
+		static QCString currentTab;
 		virtual void keyPressEvent(QKeyEvent *e);
-		void updateUserLevel(QMapConstIterator<QString,
-			QValueList<ConfigDialog::RegisteredControl> > tab);
+		void updateUserLevel(const QValueList<ConfigDialog::RegisteredControl> &tab);
 
 
 

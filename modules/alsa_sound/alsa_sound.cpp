@@ -212,7 +212,7 @@ snd_pcm_t *ALSAPlayerSlots::alsa_open (const char *device, int channels, int sam
 ALSAPlayerSlots::ALSAPlayerSlots(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
-	
+
 	connect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice&)),
 			this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice&)));
 	connect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
@@ -225,9 +225,9 @@ ALSAPlayerSlots::ALSAPlayerSlots(QObject *parent, const char *name) : QObject(pa
 		this, SLOT(setFlushingEnabled(SoundDevice, bool)));
 
 	ConfigDialog::addHGroupBox("Sounds", "Sounds",
-			QT_TRANSLATE_NOOP("@default","Output device"), QString::null, Advanced);
-	ConfigDialog::addLineEdit("Sounds", "Output device", 
-			QT_TRANSLATE_NOOP("@default","ALSA device:"), "ALSAOutputDevice", "default", QString::null,"device_path");
+			QT_TRANSLATE_NOOP("@default", "Output device"), 0, Advanced);
+	ConfigDialog::addLineEdit("Sounds", "Output device",
+			QT_TRANSLATE_NOOP("@default", "ALSA device:"), "ALSAOutputDevice", "default", 0, "device_path");
 
 	kdebugf2();
 }
@@ -390,7 +390,7 @@ void ALSAPlayerSlots::playSample(SoundDevice device, const int16_t* data, int le
 	else
 		kdebugmf(KDEBUG_ERROR, "device closed!\n");
 }
-	
+
 void ALSAPlayerSlots::recordSample(SoundDevice device, int16_t* data, int length, bool& result)
 {
 //	kdebugf();

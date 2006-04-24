@@ -1810,10 +1810,10 @@ void History::initModule()
 	ConfigDialog::addSpinBox("History", "Message citation in chat window", QT_TRANSLATE_NOOP("@default", "Count:"), "ChatHistoryCitation", 0, 200, 1, 10);
 	ConfigDialog::addLabel("History", "Message citation in chat window", QT_TRANSLATE_NOOP("@default", "Don't cite messages older than:"));
 	ConfigDialog::addSlider("History", "Message citation in chat window", "historyslider", "ChatHistoryQuotationTime", -744, -1, 24, -336);
-	ConfigDialog::addLabel("History", "Message citation in chat window", QString::null, "dayhour");
+	ConfigDialog::addLabel("History", "Message citation in chat window", 0, "dayhour");
 	ConfigDialog::addCheckBox("History", "History", QT_TRANSLATE_NOOP("@default", "Log messages"), "Logging", true);
-	ConfigDialog::addCheckBox("History", "History", QT_TRANSLATE_NOOP("@default", "Don't show status changes"), "DontShowStatusChanges", false, QString::null, QString::null, Advanced);
-	ConfigDialog::addCheckBox("History", "History", QT_TRANSLATE_NOOP("@default", "Don't save status changes"), "DontSaveStatusChanges", true, QString::null, QString::null, Advanced);
+	ConfigDialog::addCheckBox("History", "History", QT_TRANSLATE_NOOP("@default", "Don't show status changes"), "DontShowStatusChanges", false, 0, 0, Advanced);
+	ConfigDialog::addCheckBox("History", "History", QT_TRANSLATE_NOOP("@default", "Don't save status changes"), "DontSaveStatusChanges", true, 0, 0, Advanced);
 
 	ConfigDialog::registerSlotOnCreateTab("History", historyslots, SLOT(onCreateTabHistory()));
 	ConfigDialog::registerSlotOnApplyTab("History", historyslots, SLOT(onApplyTabHistory()));
@@ -2162,7 +2162,7 @@ HistorySlots::HistorySlots(QObject *parent, const char *name) : QObject(parent, 
 void HistorySlots::onCreateTabHistory()
 {
 	kdebugf();
-	QLabel *l_qtimeinfo=(QLabel*)(ConfigDialog::widget("History", QString::null, "dayhour"));
+	QLabel *l_qtimeinfo=(QLabel*)(ConfigDialog::widget("History", 0, "dayhour"));
 	l_qtimeinfo->setAlignment(Qt::AlignHCenter);
 	updateQuoteTimeLabel(config_file.readNumEntry("History", "ChatHistoryQuotationTime"));
 	kdebugf2();
@@ -2177,7 +2177,7 @@ void HistorySlots::onApplyTabHistory()
 void HistorySlots::updateQuoteTimeLabel(int value)
 {
 	kdebugf();
-	ConfigDialog::getLabel("History", QString::null, "dayhour") ->
+	ConfigDialog::getLabel("History", 0, "dayhour") ->
 			setText(tr("%1 day(s) %2 hour(s)").arg(-value / 24).arg((-value) % 24));
 	kdebugf2();
 }

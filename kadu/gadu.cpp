@@ -304,11 +304,11 @@ void GaduProtocol::initModule()
 	ConfigDialog::addVBox("Network", "Network", "dcc");
 
 	ConfigDialog::addCheckBox("Network", "Network",
-		QT_TRANSLATE_NOOP("@default", "Use proxy server"), "UseProxy", false, QString::null, QString::null, Advanced);
+		QT_TRANSLATE_NOOP("@default", "Use proxy server"), "UseProxy", false, 0, 0, Advanced);
 
-	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "Proxy server"), QString::null, Advanced);
+	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "Proxy server"), 0, Advanced);
 	ConfigDialog::addGrid("Network", "Proxy server", "proxygrid", Expert);
-	ConfigDialog::addLineEdit("Network", "proxygrid", QT_TRANSLATE_NOOP("@default", "Host: "), "ProxyHost", "0.0.0.0", QString::null, "proxyhost");
+	ConfigDialog::addLineEdit("Network", "proxygrid", QT_TRANSLATE_NOOP("@default", "Host: "), "ProxyHost", "0.0.0.0", 0, "proxyhost");
 	ConfigDialog::addLineEdit("Network", "proxygrid",
 		QT_TRANSLATE_NOOP("@default", " Port: "), "ProxyPort", "0");
 	ConfigDialog::addLineEdit("Network", "proxygrid",
@@ -316,7 +316,7 @@ void GaduProtocol::initModule()
 	ConfigDialog::addLineEdit("Network", "proxygrid",
 		QT_TRANSLATE_NOOP("@default", " Password: "), "ProxyPassword");
 
-	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "Servers properties"), QString::null, Expert);
+	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "Servers properties"), 0, Expert);
 	ConfigDialog::addGrid("Network", "Servers properties", "servergrid", Expert);
 	ConfigDialog::addCheckBox("Network", "servergrid",
 		QT_TRANSLATE_NOOP("@default", "Use default servers"), "isDefServers", true);
@@ -325,7 +325,7 @@ void GaduProtocol::initModule()
 		QT_TRANSLATE_NOOP("@default", "Use TLSv1"), "UseTLS", false);
 #endif
 	ConfigDialog::addLineEdit("Network", "Servers properties",
-		QT_TRANSLATE_NOOP("@default", "IP addresses:"), "Server", QString::null, QString::null, "server");
+		QT_TRANSLATE_NOOP("@default", "IP addresses:"), "Server", 0, 0, "server");
 
 	config_file.addVariable("Network", "DefaultPort", 0);
 	QStringList options, values;
