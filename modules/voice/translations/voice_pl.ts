@@ -54,11 +54,11 @@ rozmowę głosową. Akceptujesz?</translation>
     </message>
     <message>
         <source>Opening DSP Encoder failed.</source>
-        <translation>Otwarcie kodera DSP nie udane.</translation>
+        <translation>Otwarcie kodera DSP nieudane.</translation>
     </message>
     <message>
         <source>Opening sound device failed.</source>
-        <translation>Otwarcie urządzenia dźwięku nie udane.</translation>
+        <translation>Otwarcie urządzenia dźwięku nieudane.</translation>
     </message>
     <message>
         <source>Testing GSM Encoding. Please talk now (3 seconds).</source>
