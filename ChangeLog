@@ -353,6 +353,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   a nie QString, bo i tak bêd± one t³umaczone (a co za tym idzie rzutowane na char *);
   przy okazji binarka kadu zmala³a o 50 kB (joi)
 * poprawiona wywrotka przy wy³adowywaniu modu³u dcc (joi)
+* ======= FEATURE FREEZE ======= (adrian)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
