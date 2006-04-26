@@ -223,6 +223,9 @@ QString KaduTextBrowser::imageAt(const QPoint &point)
 	// this function uses Qt private API (QTextCursor), because there's no way
 	// to do it with public API (strange bugs in Qt :()
 	kdebugf();
+//	kdebugm(KDEBUG_INFO, "point.y()=%d  contentsHeight()=%d\n", point.y(), contentsHeight());
+	if (point.y() > contentsHeight()) // certainly no image - it prevents invalid results
+		return QString::null;
 	static QRegExp imgExp("^<!--StartFragment-->(<.+>)?(/.*\\.\\w{3,4})$");
 	bool ok = false;
 	QTextCursor *c = textCursor();

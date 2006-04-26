@@ -354,6 +354,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   przy okazji binarka kadu zmala³a o 50 kB (joi)
 * poprawiona wywrotka przy wy³adowywaniu modu³u dcc (joi)
 * ======= FEATURE FREEZE ======= (adrian)
+* poprawka b³êdu przy zapisywaniu obrazka z chata - je¿eli okno nie by³o
+  wype³nione tekstem i kliknê³o siê poni¿ej obrazka (na tle), to w menu
+  kontekstowym dostêpna by³a opcja zapisu obrazka (montor/joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
