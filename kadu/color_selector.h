@@ -7,6 +7,8 @@
 
 class QCloseEvent;
 
+extern const char colors[16][8];
+
 /**
 	\class ColoSelectorButton
 	\brief Klasa do wyboru koloru za pomoc± przycisku

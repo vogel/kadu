@@ -39,8 +39,6 @@
 #include "search.h"
 #include "userbox.h"
 
-extern const char *colors[];
-
 Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	: QMainWindow(parent, name, Qt::WDestructiveClose), Users(new UserGroup(usrs))
 {

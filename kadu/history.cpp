@@ -1939,7 +1939,7 @@ HistorySearch::HistorySearch(QWidget *parent, UinsList uins) : QDialog(parent), 
 	kdebugf2();
 }
 
-int daysForMonth[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+static const int daysForMonth[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 void HistorySearch::correctFromDays(int index)
 {
