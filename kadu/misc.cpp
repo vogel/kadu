@@ -453,13 +453,14 @@ QString pwHash(const QString &text)
 
 QString translateLanguage(const QApplication *application, const QString &locale, const bool l2n)
 {
-	static const char *local[] = {"en",
+	static const char local[][3] = {"en",
 		"de",
 		"fr",
 		"it",
 		"pl",  0};
 
-	static const char *name[] ={QT_TR_NOOP("English"),
+	static const char name[][sizeof("English") + 1 /*length of the longest + 1*/] = {
+		QT_TR_NOOP("English"),
 		QT_TR_NOOP("German"),
 		QT_TR_NOOP("French"),
 		QT_TR_NOOP("Italian"),
