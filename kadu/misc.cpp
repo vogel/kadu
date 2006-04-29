@@ -459,7 +459,7 @@ QString translateLanguage(const QApplication *application, const QString &locale
 		"it",
 		"pl",  0};
 
-	static const char name[][sizeof("English") + 1 /*length of the longest + 1*/] = {
+	static const char name[][sizeof("English") /*length of the longest*/] = {
 		QT_TR_NOOP("English"),
 		QT_TR_NOOP("German"),
 		QT_TR_NOOP("French"),
