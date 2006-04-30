@@ -142,12 +142,34 @@ static void kadu_signal_handler(int s)
 }
 #endif
 
+void kaduQtMessageHandler(QtMsgType type, const char *msg)
+{
+	switch (type)
+	{
+		case QtDebugMsg:
+			fprintf(stderr, "Debug: %s\n", msg);
+			fflush(stderr);
+			break;
+		case QtWarningMsg:
+			fprintf(stderr, "\033[34mWarning: %s\033[0m\n", msg);
+			fflush(stderr);
+			printBacktrace();
+			break;
+		case QtFatalMsg:
+			fprintf(stderr, "\033[31;1mFatal: %s\033[0m\n", msg);
+			fflush(stderr);
+			printBacktrace();
+			abort();
+	}
+}
+
 #ifdef DEBUG_ENABLED
 extern bool showTimesInDebug;
 #endif
 
 int main(int argc, char *argv[])
 {
+	qInstallMsgHandler(kaduQtMessageHandler);
 	xml_config_file = new XmlConfigFile();
 
 	QString path_ = ggPath(QString::null);
