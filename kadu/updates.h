@@ -15,7 +15,7 @@ class Updates : public QObject
 	Q_OBJECT
 	public:
 		static void initModule();
-		static void deactivateModule();
+		static void closeModule();
 
 	private slots:
 		void gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op);

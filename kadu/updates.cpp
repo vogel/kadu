@@ -69,7 +69,7 @@ void Updates::initModule()
 	kdebugf2();
 }
 
-void Updates::deactivateModule()
+void Updates::closeModule()
 {
 	kdebugf();
 	if (instance)

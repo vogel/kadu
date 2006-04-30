@@ -1180,7 +1180,7 @@ bool Kadu::close(bool quit)
 		ConfigDialog::closeDialog();
 		ModulesManager::closeModule();
 
-		Updates::deactivateModule();
+		Updates::closeModule();
 		delete defaultFontInfo;
 		delete defaultFont;
 
