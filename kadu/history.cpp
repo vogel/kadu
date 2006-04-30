@@ -1796,16 +1796,42 @@ void History::closeEvent(QCloseEvent *e)
 		e->accept();
 }
 
+HistorySlots *History::historyslots;
+
+void History::closeModule()
+{
+	kdebugf();
+
+	disconnect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
+		history, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
+	disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
+		history, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
+
+	ConfigDialog::disconnectSlot("History", "historyslider", SIGNAL(valueChanged(int)), historyslots, SLOT(updateQuoteTimeLabel(int)));
+	ConfigDialog::unregisterSlotOnCreateTab("History", historyslots, SLOT(onCreateTabHistory()));
+	ConfigDialog::unregisterSlotOnApplyTab("History", historyslots, SLOT(onApplyTabHistory()));
+
+	ConfigDialog::removeControl("History", "Don't save status changes");
+	ConfigDialog::removeControl("History", "Don't show status changes");
+	ConfigDialog::removeControl("History", "Log messages");
+	ConfigDialog::removeControl("History", 0, "dayhour");
+	ConfigDialog::removeControl("History", "historyslider");
+	ConfigDialog::removeControl("History", "Don't cite messages older than:");
+	ConfigDialog::removeControl("History", "Count:");
+	ConfigDialog::removeControl("History", "Message citation in chat window");
+
+	delete historyslots;
+	historyslots = 0;
+	delete history;
+	history = 0;
+	kdebugf2();
+}
+
 void History::initModule()
 {
 	kdebugf();
-	HistorySlots *historyslots = new HistorySlots(history, "history_slots");
+	historyslots = new HistorySlots(history, "history_slots");
 
-	//do usuniecia po wydaniu 0.4
-	config_file.addVariable("History", "Logging", config_file.readEntry("General", "Logging"));
-	//
-
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "History"), "HistoryTab");
 	ConfigDialog::addVGroupBox("History", "History", QT_TRANSLATE_NOOP("@default","Message citation in chat window"));
 	ConfigDialog::addSpinBox("History", "Message citation in chat window", QT_TRANSLATE_NOOP("@default", "Count:"), "ChatHistoryCitation", 0, 200, 1, 10);
 	ConfigDialog::addLabel("History", "Message citation in chat window", QT_TRANSLATE_NOOP("@default", "Don't cite messages older than:"));

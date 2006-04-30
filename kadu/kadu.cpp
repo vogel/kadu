@@ -116,10 +116,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 	kadu = this;
 	StartTime = QDateTime::currentDateTime();
 
-	KaduSlots *kaduslots=new KaduSlots(this, "kaduslots");
-	UinType myUin=config_file.readNumEntry("General", "UIN");
+	kaduslots = new KaduSlots(this, "kaduslots");
+	UinType myUin = config_file.readNumEntry("General", "UIN");
 
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "General"), "GeneralTab");
 	ConfigDialog::addHGroupBox("General", "General", QT_TRANSLATE_NOOP("@default", "User data"));
 	ConfigDialog::addLineEdit("General", "User data", QT_TRANSLATE_NOOP("@default", "Uin"), "UIN");
 	ConfigDialog::addLineEdit("General", "User data", QT_TRANSLATE_NOOP("@default", "Password"), "Password");
@@ -156,7 +155,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 	ConfigDialog::registerSlotOnApplyTab("Look", kaduslots, SLOT(onApplyTabLook()));
 	ConfigDialog::registerSlotOnApplyTab("General", kaduslots, SLOT(onApplyTabGeneral()));
 
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "ShortCuts"), "ShortCutsTab");
 	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", QT_TRANSLATE_NOOP("@default", "Define keys"));
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Remove from userlist"), "kadu_deleteuser", "Del");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "View / edit user info"), "kadu_persinfo", "Ins");
@@ -174,7 +172,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 	config_file.addVariable("Look", "UserboxFont", defaultFont);
 	config_file.addVariable("Look", "PanelFont", defaultFont);
 
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"), "LookTab");
 	ConfigDialog::addComboBox("Look", "Look",
 			QT_TRANSLATE_NOOP("@default","Qt Theme"));
 
@@ -1219,18 +1216,127 @@ bool Kadu::close(bool quit)
 				gadu->status().setOffline(config_file.readEntry("General", "DisconnectDescription"));
 			}
 		}
-		GaduProtocol::closeModule();
+		disconnect(gadu, SIGNAL(chatMsgReceived2(Protocol *, UserListElements, const QString &, time_t)),
+				this, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString &, time_t)));
+		disconnect(gadu, SIGNAL(connecting()), this, SLOT(connecting()));
+		disconnect(gadu, SIGNAL(connected()), this, SLOT(connected()));
+		disconnect(gadu, SIGNAL(disconnected()), this, SLOT(disconnected()));
+		disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
+				this, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
+		disconnect(gadu, SIGNAL(needTokenValue(QPixmap, QString &)),
+				this, SLOT(readTokenValue(QPixmap, QString &)));
+		disconnect(gadu, SIGNAL(systemMessageReceived(const QString &)), this, SLOT(systemMessageReceived(const QString &)));
+
+		disconnect(userlist, SIGNAL(usersDataChanged(QString)), this, SLOT(updateInformationPanelLater()));
+		disconnect(userlist, SIGNAL(protocolUsersDataChanged(QString, QString)), this, SLOT(updateInformationPanelLater()));
+		disconnect(userlist, SIGNAL(usersStatusChanged(QString)), this, SLOT(updateInformationPanelLater()));
+
+		disconnect(&(gadu->currentStatus()), SIGNAL(goOnline(const QString &)),
+				this, SLOT(wentOnline(const QString &)));
+		disconnect(&(gadu->currentStatus()), SIGNAL(goBusy(const QString &)),
+				this, SLOT(wentBusy(const QString &)));
+		disconnect(&(gadu->currentStatus()), SIGNAL(goInvisible(const QString &)),
+				this, SLOT(wentInvisible(const QString &)));
+		disconnect(&(gadu->currentStatus()), SIGNAL(goOffline(const QString &)),
+				this, SLOT(wentOffline(const QString &)));
+
+		History::closeModule();
+
+		disconnect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(popupMenu()));
+		disconnect(Userbox, SIGNAL(rightButtonPressed(QListBoxItem *, const QPoint &)),
+					UserBox::userboxmenu, SLOT(show(QListBoxItem *)));
+		disconnect(Userbox, SIGNAL(doubleClicked(UserListElement)), this, SLOT(sendMessage(UserListElement)));
+		disconnect(Userbox, SIGNAL(returnPressed(UserListElement)), this, SLOT(sendMessage(UserListElement)));
+		disconnect(Userbox, SIGNAL(mouseButtonClicked(int, QListBoxItem *, const QPoint &)),
+					this, SLOT(mouseButtonClicked(int, QListBoxItem *)));
+		disconnect(Userbox, SIGNAL(currentChanged(UserListElement)), this, SLOT(currentChanged(UserListElement)));
+
+ 		UserBox::closeModule();
  		ChatManager::closeModule();
+		GaduProtocol::closeModule();
 		userlist->writeToConfig();
 		xml_config_file->sync();
 		GroupsManager::closeModule();
-		delete history;
- 		UserBox::closeModule();
 		UserList::closeModule();
 		ProtocolsManager::closeModule();
 		delete emoticons;
-		delete icons_manager;
-		kdebugmf(KDEBUG_INFO, "Saved config, disconnect and ignored\n");
+		IconsManager::closeModule();
+
+		ConfigDialog::disconnectSlot("Look", "Panel background color", SIGNAL(changed(const char *, const QColor&)), kaduslots, SLOT(chooseColor(const char *, const QColor&)), "panel_bg_color");
+		ConfigDialog::disconnectSlot("Look", "Panel font color", SIGNAL(changed(const char *, const QColor&)), kaduslots, SLOT(chooseColor(const char *, const QColor&)), "panel_font_color");
+		ConfigDialog::disconnectSlot("Look", "Font in panel", SIGNAL(changed(const char *, const QFont&)),kaduslots, SLOT(chooseFont(const char *, const QFont&)), "panel_font_box");
+
+			ConfigDialog::removeControl("Look", "Information panel syntax:");
+			ConfigDialog::removeControl("Look", "Show vertical scrollbar in information panel");
+			ConfigDialog::removeControl("Look", "Show information panel");
+		ConfigDialog::removeControl("Look", "Information panel");
+
+			ConfigDialog::removeControl("Look", "Font in panel", "panel_font_box");
+		ConfigDialog::removeControl("Look", "Fonts");
+
+				ConfigDialog::removeControl("Look", "Panel font color", "panel_font_color");
+				ConfigDialog::removeControl("Look", "Panel background color", "panel_bg_color");
+			ConfigDialog::removeControl("Look", "Main window");
+		ConfigDialog::removeControl("Look", "Colors");
+			ConfigDialog::removeControl("Look", "Display group tabs");
+			ConfigDialog::removeControl("Look", "Show status button");
+
+		ConfigDialog::removeControl("Look", "varOpts-expert");
+		ConfigDialog::removeControl("Look", "varOpts-advanced");
+		ConfigDialog::removeControl("Look", "varOpts-beginner");
+
+		ConfigDialog::removeControl("Look", "Qt Theme");
+
+		ConfigDialog::removeControl("ShortCuts", "Add user");
+		ConfigDialog::removeControl("ShortCuts", "Configuration");
+		ConfigDialog::removeControl("ShortCuts", "Show / hide users without description");
+		ConfigDialog::removeControl("ShortCuts", "Show / hide offline users");
+		ConfigDialog::removeControl("ShortCuts", "Search user in directory");
+		ConfigDialog::removeControl("ShortCuts", "View history");
+		ConfigDialog::removeControl("ShortCuts", "View / edit user info");
+		ConfigDialog::removeControl("ShortCuts", "Remove from userlist");
+		ConfigDialog::removeControl("ShortCuts", "Define keys");
+
+		ConfigDialog::unregisterSlotOnCreateTab("General", kaduslots, SLOT(onCreateTabGeneral()));
+		ConfigDialog::unregisterSlotOnCreateTab("Look", kaduslots, SLOT(onCreateTabLook()));
+		ConfigDialog::unregisterSlotOnApplyTab("Look", kaduslots, SLOT(onApplyTabLook()));
+		ConfigDialog::unregisterSlotOnApplyTab("General", kaduslots, SLOT(onApplyTabGeneral()));
+
+		ConfigDialog::removeControl("General", "Number of kept descriptions");
+		ConfigDialog::removeControl("General", 0, "e_defaultstatus");
+		ConfigDialog::removeControl("General", "On shutdown, set description:");
+		ConfigDialog::removeControl("General", "discstatus");
+
+		ConfigDialog::disconnectSlot("General", "On shutdown, set current description", SIGNAL(toggled(bool)), kaduslots, SLOT(updateStatus(bool)));
+		ConfigDialog::removeControl("General", "On shutdown, set current description");
+		ConfigDialog::removeControl("General", "Default status", "cb_defstatus");
+		ConfigDialog::removeControl("General", "Status");
+
+#ifdef DEBUG_ENABLED
+		ConfigDialog::removeControl("General", "Debugging mask");
+#endif
+		ConfigDialog::removeControl("General", "Show emoticons in history");
+		ConfigDialog::removeControl("General", "Show emoticons in panel");
+		ConfigDialog::removeControl("General", "Check for updates");
+
+		ConfigDialog::removeControl("General", "Private status");
+
+
+		ConfigDialog::removeControl("General", "grid-expert");
+		ConfigDialog::removeControl("General", "grid-advanced");
+		ConfigDialog::removeControl("General", "grid-beginner");
+		ConfigDialog::removeControl("General", "Set language:");
+		ConfigDialog::removeControl("General", "Nick");
+		ConfigDialog::removeControl("General", "Password");
+		ConfigDialog::removeControl("General", "Uin");
+		ConfigDialog::removeControl("General", "User data");
+
+		ConfigDialog::removeTab("History");
+		ConfigDialog::removeTab("Network");
+		ConfigDialog::removeTab("Look");
+		ConfigDialog::removeTab("Chat");
+		ConfigDialog::removeTab("ShortCuts");
+		ConfigDialog::removeTab("General");
 
 #ifdef Q_OS_MACX
 		//na koniec przywracamy domy¶ln± ikonê, je¿eli tego nie zrobimy, to pozostanie bie¿±cy status

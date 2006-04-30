@@ -77,11 +77,11 @@ void GroupsManager::setTabBar(KaduTabBar *bar)
 	if (configTab >= 0 && configTab < GroupBar -> count())
 		((QTabBar*) GroupBar) -> setCurrentTab(configTab);
 
-	//do wywalenia w 0.6
+	//to be removed in 0.6
 	config_file.addVariable("General", "ShowOffline", config_file.readBoolEntry("General", "ShowHideInactive", true));
 	config_file.addVariable("General", "ShowWithoutDescription", !config_file.readBoolEntry("General", "ShowOnlyDescriptionUsers", false));
 	config_file.addVariable("ShortCuts", "kadu_showoffline", config_file.readEntry("ShortCuts", "kadu_showinactive", "F9"));
-
+	//end
 
 	ConfigDialog::addCheckBox("General", "grid-advanced", QT_TRANSLATE_NOOP("@default", "Show offline contacts"), "ShowOffline", true, QT_TRANSLATE_NOOP("@default", "Display contacts who are offline"), 0, Advanced);
 	ConfigDialog::addCheckBox("General", "grid-advanced", QT_TRANSLATE_NOOP("@default", "Show contacts without description"), "ShowWithoutDescription", true, QT_TRANSLATE_NOOP("@default", "Display contacts that don't have a description"), 0, Advanced);
@@ -279,12 +279,18 @@ GroupsManager::GroupsManager() : QObject(0, "groups_manager"), GroupBar(NULL)
 	connect(userlist, SIGNAL(userAdded(UserListElement, bool, bool)),
 			this, SLOT(userAddedToMainUserlist(UserListElement, bool, bool)));
 	ConfigDialog::registerSlotOnApplyTab("General", this, SLOT(onApplyTabGeneral()));
+
 	kdebugf2();
 }
 
 GroupsManager::~GroupsManager()
 {
 	kdebugf();
+	ConfigDialog::removeControl("General", "Show offline contacts");
+	ConfigDialog::removeControl("General", "Show contacts without description");
+	ConfigDialog::removeControl("General", "Show contacts that you are blocking");
+	ConfigDialog::removeControl("General", "Show contacts that are blocking you");
+
 	ConfigDialog::unregisterSlotOnApplyTab("General", this, SLOT(onApplyTabGeneral()));
 	if (GroupBar)
 		config_file.writeEntry("Look", "CurrentGroupTab", GroupBar->currentTab());

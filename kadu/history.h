@@ -75,6 +75,7 @@ class DateListViewText : public QListViewItem {
 	Okno historii rozmowy
 **/
 class KaduTextBrowser;
+class HistorySlots;
 
 class History : public QDialog {
 	Q_OBJECT
@@ -82,6 +83,7 @@ class History : public QDialog {
 	public:
 		History(UinsList uins);
 		static void initModule();
+		static void closeModule();
 
 	public slots:
 		void uinsChanged(QListViewItem *item);
@@ -107,6 +109,7 @@ class History : public QDialog {
 		bool finding;
 		QValueList<HistoryDate> dateentries;
 		int ParagraphSeparator;
+		static HistorySlots *historyslots;
 };
 
 class HistorySearch : public QDialog {

@@ -51,6 +51,7 @@ QDict<QSignal> ConfigDialog::tabChangesOut;
 
 static inline bool streq(const char *s1, const char *s2)
 {
+//	kdebugm(KDEBUG_INFO, ">>> '%s' | '%s'\n", s1, s2);
 	return s1 == s2 || (s1 && s2 && (strcmp(s1, s2) == 0));
 }
 
@@ -719,6 +720,8 @@ void ConfigDialog::addCheckBox(const char *groupname,
 	addCheckBox(&config_file, groupname, parent, caption, entry, defaultS, tip, name, userLevelRequired);
 }
 
+#define WARN_ABOUT_EXISTING kdebugm(KDEBUG_WARNING, "%s/%s/%s already exists\n", groupname, caption, name)
+
 void ConfigDialog::addCheckBox(ConfigFile* config, const char *groupname,
 			const char *parent, const char *caption,
 			const char *entry, const bool defaultS, const char *tip, const char *name,
@@ -734,6 +737,8 @@ void ConfigDialog::addCheckBox(ConfigFile* config, const char *groupname,
 		if (addControl(groupname,c))
 			c.config->addVariable(groupname, entry, defaultS);
 	}
+	else
+		WARN_ABOUT_EXISTING;
 }
 
 
@@ -751,6 +756,8 @@ void ConfigDialog::addColorButton(ConfigFile *config, const char *groupname,
 		c.tip=tip;
 		addControl(groupname,c);
 	}
+	else
+		WARN_ABOUT_EXISTING;
 }
 
 void ConfigDialog::addColorButton(const char *groupname,
@@ -773,6 +780,8 @@ void ConfigDialog::addComboBox(const char *groupname,
 		c.tip=tip;
 		addControl(groupname,c);
 	}
+	else
+		WARN_ABOUT_EXISTING;
 }
 
 void ConfigDialog::addComboBox(const char *groupname,
@@ -801,6 +810,8 @@ void ConfigDialog::addComboBox(ConfigFile* config, const char *groupname,
 		c.additionalParams.append(QVariant(values));
 		addControl(groupname,c);
 	}
+	else
+		WARN_ABOUT_EXISTING;
 }
 
 
@@ -814,6 +825,8 @@ void ConfigDialog::addGrid(const char *groupname,
 		c.defaultS=QString::number(nrColumns);
 		addControl(groupname,c);
 	}
+	else
+		WARN_ABOUT_EXISTING;
 }
 
 void ConfigDialog::addHBox(const char *groupname,
@@ -825,8 +838,9 @@ void ConfigDialog::addHBox(const char *groupname,
 		RegisteredControl c(CONFIG_HBOX, groupname, parent, caption, name, userLevelRequired);
 		addControl(groupname,c);
 	}
+	else
+		WARN_ABOUT_EXISTING;
 }
-
 
 void ConfigDialog::addHGroupBox(const char *groupname,
 	const char *parent, const char *caption, const char *name,
@@ -837,6 +851,8 @@ void ConfigDialog::addHGroupBox(const char *groupname,
 		RegisteredControl c(CONFIG_HGROUPBOX, groupname, parent, caption, name, userLevelRequired);
 		addControl(groupname,c);
 	}
+	else
+		WARN_ABOUT_EXISTING;
 }
 
 void ConfigDialog::addHRadioGroup(
@@ -866,6 +882,8 @@ void ConfigDialog::addHRadioGroup(ConfigFile* config,
 		c.additionalParams.append(QVariant(values));
 		addControl(groupname,c);
 	}
+	else
+		WARN_ABOUT_EXISTING;
 }
 
 void ConfigDialog::addHotKeyEdit(const char *groupname,
@@ -894,6 +912,8 @@ void ConfigDialog::addHotKeyEdit(ConfigFile* config, const char *groupname,
 		// jej podawaæ przy czytaniu z pliku conf
 			config->addVariable(groupname, entry, defaultS);
 	}
+	else
+		WARN_ABOUT_EXISTING;
 }
 
 void ConfigDialog::addLineEdit2(const char *groupname,
@@ -908,6 +928,8 @@ void ConfigDialog::addLineEdit2(const char *groupname,
 		c.tip=tip;
 		addControl(groupname,c);
 	}
+	else
+		WARN_ABOUT_EXISTING;
 }
 
 void ConfigDialog::addLineEdit(const char *groupname,
@@ -935,6 +957,8 @@ void ConfigDialog::addLineEdit(ConfigFile* config, const char *groupname,
 		if (addControl(groupname,c))
 			c.config->addVariable(groupname, entry, defaultS);
 	}
+	else
+		WARN_ABOUT_EXISTING;
 }
 
 void ConfigDialog::addRadioGroup(
@@ -968,6 +992,8 @@ void ConfigDialog::addRadioGroup(ConfigFile* config,
 		c.additionalParams.append(QVariant((int)orientation));
 		addControl(groupname,c);
 	}
+	else
+		WARN_ABOUT_EXISTING;
 }
 
 void ConfigDialog::addTextEdit(const char *groupname,
@@ -994,6 +1020,8 @@ void ConfigDialog::addTextEdit(ConfigFile* config, const char *groupname,
 		if (addControl(groupname,c))
 			c.config->addVariable(groupname, entry, defaultS);
 	}
+	else
+		WARN_ABOUT_EXISTING;
 }
 
 void ConfigDialog::addLabel(const char *groupname,
@@ -1005,6 +1033,8 @@ void ConfigDialog::addLabel(const char *groupname,
 		RegisteredControl c(CONFIG_LABEL, groupname, parent, caption, name, userLevelRequired);
 		addControl(groupname,c);
 	}
+	else
+		WARN_ABOUT_EXISTING;
 }
 
 
@@ -1018,6 +1048,8 @@ void ConfigDialog::addListBox(const char *groupname,
 		c.tip=tip;
 		addControl(groupname,c);
 	}
+	else
+		WARN_ABOUT_EXISTING;
 }
 
 void ConfigDialog::addListView(const char *groupname,
@@ -1030,6 +1062,8 @@ void ConfigDialog::addListView(const char *groupname,
 		c.tip=tip;
 		addControl(groupname,c);
 	}
+	else
+		WARN_ABOUT_EXISTING;
 }
 
 void ConfigDialog::addPushButton(const char *groupname,
@@ -1044,6 +1078,8 @@ void ConfigDialog::addPushButton(const char *groupname,
 		c.tip=tip;
 		addControl(groupname,c);
 	}
+	else
+		WARN_ABOUT_EXISTING;
 }
 
 void ConfigDialog::addSelectPaths(const char *groupname,
@@ -1055,6 +1091,8 @@ void ConfigDialog::addSelectPaths(const char *groupname,
 		RegisteredControl c(CONFIG_SELECTPATHS, groupname, parent, caption, name, userLevelRequired);
 		addControl(groupname,c);
 	}
+	else
+		WARN_ABOUT_EXISTING;
 }
 
 void ConfigDialog::addSlider(const char *groupname,
@@ -1086,6 +1124,8 @@ void ConfigDialog::addSlider(ConfigFile* config, const char *groupname,
 		if (addControl(groupname,c))
 			c.config->addVariable(groupname, entry, value);
 	}
+	else
+		WARN_ABOUT_EXISTING;
 }
 
 void ConfigDialog::addSpinBox(const char *groupname,
@@ -1116,6 +1156,8 @@ void ConfigDialog::addSpinBox(ConfigFile* config, const char *groupname,
 		if (addControl(groupname,c))
 			c.config->addVariable(groupname, entry, value);
 	}
+	else
+		WARN_ABOUT_EXISTING;
 }
 
 void ConfigDialog::addVBox(const char *groupname,
@@ -1127,6 +1169,8 @@ void ConfigDialog::addVBox(const char *groupname,
 		RegisteredControl c(CONFIG_VBOX, groupname, parent, caption, name, userLevelRequired);
 		addControl(groupname,c);
 	}
+	else
+		WARN_ABOUT_EXISTING;
 }
 
 void ConfigDialog::addVGroupBox(const char *groupname,
@@ -1138,6 +1182,8 @@ void ConfigDialog::addVGroupBox(const char *groupname,
 		RegisteredControl c(CONFIG_VGROUPBOX, groupname, parent, caption, name, userLevelRequired);
 		addControl(groupname,c);
 	}
+	else
+		WARN_ABOUT_EXISTING;
 }
 
 void ConfigDialog::addVRadioGroup(
@@ -1167,6 +1213,8 @@ void ConfigDialog::addVRadioGroup(ConfigFile* config,
 		c.additionalParams.append(QVariant(values));
 		addControl(groupname,c);
 	}
+	else
+		WARN_ABOUT_EXISTING;
 }
 
 void ConfigDialog::addSelectFont(const char *groupname, const char *parent,
@@ -1193,6 +1241,8 @@ void ConfigDialog::addSelectFont(ConfigFile *config, const char *groupname, cons
 		if (addControl(groupname,c))
 			c.config->addVariable(groupname, entry, defaultS);
 	}
+	else
+		WARN_ABOUT_EXISTING;
 }
 
 ConfigDialog::RegisteredControl::RegisteredControl(RegisteredControlType t,
@@ -1281,8 +1331,19 @@ void ConfigDialog::registerSlotOnCreateTab(const char *tab, const QObject* recei
 void ConfigDialog::unregisterSlotOnCreateTab(const char *tab, const QObject* receiver, const char* name)
 {
 	kdebugf();
-	if (SlotsOnCreateTab.find(tab) != 0)
-		SlotsOnCreateTab[tab]->remove(SlotsOnCreateTab[tab]->find(ElementConnections(0, receiver, name)));
+	QValueList<ElementConnections> *cons = SlotsOnCreateTab.find(tab);
+	if (cons != 0)
+	{
+		cons->remove(cons->find(ElementConnections(0, receiver, name)));
+		if (cons->isEmpty())
+		{
+			SlotsOnCreateTab.remove(tab);
+			delete cons;
+		}
+	}
+	else
+		kdebugm(KDEBUG_WARNING, "no such tab (%s)\n", tab);
+
 	kdebugf2();
 }
 
@@ -1298,8 +1359,18 @@ void ConfigDialog::registerSlotOnCloseTab(const char *tab, const QObject* receiv
 void ConfigDialog::unregisterSlotOnCloseTab(const char *tab, const QObject* receiver, const char* name)
 {
 	kdebugf();
-	if (SlotsOnCloseTab.find(tab) != 0)
-		SlotsOnCloseTab[tab]->remove(SlotsOnCloseTab[tab]->find(ElementConnections(0, receiver, name)));
+	QValueList<ElementConnections> *cons = SlotsOnCloseTab.find(tab);
+	if (cons != 0)
+	{
+		cons->remove(cons->find(ElementConnections(0, receiver, name)));
+		if (cons->isEmpty())
+		{
+			SlotsOnCloseTab.remove(tab);
+			delete cons;
+		}
+	}
+	else
+		kdebugm(KDEBUG_WARNING, "no such tab (%s)\n", tab);
 	kdebugf2();
 }
 
@@ -1315,8 +1386,19 @@ void ConfigDialog::registerSlotOnApplyTab(const char *tab, const QObject* receiv
 void ConfigDialog::unregisterSlotOnApplyTab(const char *tab, const QObject* receiver, const char* name)
 {
 	kdebugf();
-	if (SlotsOnApplyTab.find(tab) != 0)
-		SlotsOnApplyTab[tab]->remove(SlotsOnApplyTab[tab]->find(ElementConnections(0, receiver, name)));
+	QValueList<ElementConnections> *cons = SlotsOnApplyTab.find(tab);
+	if (cons != 0)
+	{
+//		kdebugm(KDEBUG_INFO, "found: %d\n", cons->find(ElementConnections(0, receiver, name)) != cons->end());
+		cons->remove(cons->find(ElementConnections(0, receiver, name)));
+		if (cons->isEmpty())
+		{
+			SlotsOnApplyTab.remove(tab);
+			delete cons;
+		}
+	}
+	else
+		kdebugm(KDEBUG_WARNING, "no such tab (%s)\n", tab);
 	kdebugf2();
 }
 
@@ -1510,9 +1592,15 @@ void ConfigDialog::removeControl(const char *groupname, const char *caption, con
 		return;
 	}
 
-	if ((*control).nrOfControls != 0)
+	int numberOfSubcontrols = (*control).nrOfControls;
+	if (numberOfSubcontrols != 0)
 	{
-		kdebugm(KDEBUG_ERROR, "Container not empty: %d %s %s %s\n", (*control).nrOfControls, groupname, caption, name);
+		kdebugm(KDEBUG_ERROR, "Container %s/%s/%s not empty: %d \n", groupname, caption, name, numberOfSubcontrols);
+#ifdef DEBUG_ENABLED
+		++control;
+		for (int i = 0; i < numberOfSubcontrols; ++i, ++control)
+			kdebugm(KDEBUG_ERROR, ">>> %s/%s/%s\n", (*control).group, (*control).parent, (*control).caption);
+#endif
 		return;
 	}
 
@@ -1537,9 +1625,11 @@ bool ConfigDialog::removeTab(const char *caption)
 
 	if ((*curControl).nrOfControls == 0)
 	{
-		Tabs.remove(caption);
+		delete Tabs.take(caption);
+
 		TabNames.remove(caption);
-		TabSizes.remove(caption);
+
+		delete TabSizes.take(caption);
 //		kdebugf2();
 		return true;
 	}
@@ -1622,7 +1712,7 @@ bool ConfigDialog::addControl(const char *groupname, ConfigDialog::RegisteredCon
 	else
 	{
 //		kdebugf2();
-//		kdebugm(KDEBUG_INFO, "counter != 1\n");
+		kdebugm(KDEBUG_WARNING, "counter != 1 for %s/%s/%s/%s\n", groupname, control.parent, control.caption, control.name);
 		return false;
 	}
 }

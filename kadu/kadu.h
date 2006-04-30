@@ -30,6 +30,7 @@ class Kadu : public QWidget
 	private:
 		static bool Closing;
 		friend class KaduSlots;
+		KaduSlots *kaduslots;
 		DockArea* TopDockArea;
 		KaduTextBrowser* InfoPanel;
 		QMenuBar* MenuBar;

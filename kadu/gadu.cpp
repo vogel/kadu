@@ -261,11 +261,40 @@ static GaduProtocolManager *gadu_protocol_manager;
 
 void GaduProtocol::closeModule()
 {
+	kdebugf();
+	ConfigDialog::disconnectSlot("Network", "Use default servers", SIGNAL(toggled(bool)),
+		gadu, SLOT(ifDefServerEnabled(bool)));
+
+	ConfigDialog::unregisterSlotOnCreateTab("Network", gadu, SLOT(onCreateTabNetwork()));
+	ConfigDialog::unregisterSlotOnApplyTab("Network", gadu, SLOT(onApplyTabNetwork()));
+
+	ConfigDialog::removeControl("Network", "Port to connect to servers");
+	ConfigDialog::removeControl("Network", "IP addresses:", "server");
+#ifdef HAVE_OPENSSL
+	ConfigDialog::removeControl("Network", "Use TLSv1");
+#endif
+
+	ConfigDialog::removeControl("Network", "Use default servers");
+	ConfigDialog::removeControl("Network", "servergrid");
+	ConfigDialog::removeControl("Network", "Servers properties");
+
+	ConfigDialog::removeControl("Network", " Password: ");
+	ConfigDialog::removeControl("Network", "Username: ");
+	ConfigDialog::removeControl("Network", " Port: ");
+	ConfigDialog::removeControl("Network", "Host: ", "proxyhost");
+	ConfigDialog::removeControl("Network", "proxygrid");
+	ConfigDialog::removeControl("Network", "Proxy server");
+
+	ConfigDialog::removeControl("Network", "Use proxy server");
+
+	ConfigDialog::removeControl("Network", "dcc");
+
 	protocols_manager->unregisterProtocol("Gadu");
 	delete gadu_protocol_manager;
 	gadu_protocol_manager = NULL;
 	delete gadu;
 	gadu = NULL;
+	kdebugf2();
 }
 
 void GaduProtocol::changeID(const QString &newID)
@@ -299,8 +328,6 @@ void GaduProtocol::initModule()
 	//  Okno dialogowe - czê¶æ kodu przejdzie do klasy Protocol
 	// ---------------------------------------------------------
 //zakladka "siec"
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Network"), "NetworkTab");
-
 	ConfigDialog::addVBox("Network", "Network", "dcc");
 
 	ConfigDialog::addCheckBox("Network", "Network",

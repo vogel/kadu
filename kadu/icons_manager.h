@@ -34,6 +34,7 @@ class IconsManager : public Themes
 		const QMovie & loadAnimatedIcon(const QString &name);
 
 		static void initModule();
+		static void closeModule();
 		
 		void registerMenu(QMenuData *menu);
 		void unregisterMenu(QMenuData *menu);

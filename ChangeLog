@@ -357,6 +357,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka b³êdu przy zapisywaniu obrazka z chata - je¿eli okno nie by³o
   wype³nione tekstem i kliknê³o siê poni¿ej obrazka (na tle), to w menu
   kontekstowym dostêpna by³a opcja zapisu obrazka (montor/joi)
+* usuniête kilka niewielkich wycieków pamiêci + ogólne sprz±tanie w ConfigDialogu (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

@@ -299,6 +299,11 @@ int main(int argc, char *argv[])
 	}
 
 	int ret = qApp->exec();
-//	delete qApp; sometimes leads to segfault
+	kdebugm(KDEBUG_INFO, "after exec\n");
+	qApp->removeTranslator(&qt_qm);
+	qApp->removeTranslator(&kadu_qm);
+
+//	delete qApp; //sometimes leads to segfault
+	kdebugm(KDEBUG_INFO, "exiting main\n");
 	return ret;
 }

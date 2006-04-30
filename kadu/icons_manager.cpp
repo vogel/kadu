@@ -212,10 +212,6 @@ void IconsManager::initModule()
 
 	icons_manager->setTheme(config_file.readEntry("Look","IconTheme"));
 
-	ConfigDialog::addTab("General", "GeneralTab");
-	ConfigDialog::addTab("ShortCuts", "ShortCutsTab");
-	ConfigDialog::addTab("Chat", "ChatTab");
-	ConfigDialog::addTab("Look", "LookTab");
 	ConfigDialog::addHBox("Look", "Look", "icon_theme");
 	ConfigDialog::addComboBox("Look", "icon_theme", QT_TRANSLATE_NOOP("@default","Icon theme"));
 	ConfigDialog::addSelectPaths("Look", "icon_theme", QT_TRANSLATE_NOOP("@default","Icon paths"));
@@ -224,6 +220,23 @@ void IconsManager::initModule()
 	ConfigDialog::registerSlotOnApplyTab("Look", icons_manager, SLOT(onApplyTabLook()));
 	ConfigDialog::connectSlot("Look", "Icon paths", SIGNAL(changed(const QStringList&)),
 								icons_manager, SLOT(selectedPaths(const QStringList&)));
+	kdebugf2();
+}
+
+void IconsManager::closeModule()
+{
+	kdebugf();
+	ConfigDialog::disconnectSlot("Look", "Icon paths", SIGNAL(changed(const QStringList&)),
+								icons_manager, SLOT(selectedPaths(const QStringList&)));
+	ConfigDialog::unregisterSlotOnCreateTab("Look", icons_manager, SLOT(onCreateTabLook()));
+	ConfigDialog::unregisterSlotOnApplyTab("Look", icons_manager, SLOT(onApplyTabLook()));
+
+	ConfigDialog::removeControl("Look", "Icon paths");
+	ConfigDialog::removeControl("Look", "Icon theme");
+	ConfigDialog::removeControl("Look", "icon_theme");
+
+	delete icons_manager;
+	icons_manager = 0;
 	kdebugf2();
 }
 
