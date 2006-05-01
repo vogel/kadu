@@ -19,6 +19,7 @@ class KaduTabBar;
 class UserBox;
 class KaduTextBrowser;
 class QPushButton;
+class KaduSlots;
 
 /**
 	G³ówne okno Kadu
