@@ -222,7 +222,7 @@ Co chcesz zrobić?</translation>
     </message>
     <message>
         <source>Incoming transfers:</source>
-        <translation>Transfer przychodzacy:</translation>
+        <translation>Transfer przychodzący:</translation>
     </message>
     <message>
         <source>Contact</source>
