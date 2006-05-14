@@ -45,9 +45,14 @@ void delIgnored(UserListElements uins);
 bool isIgnored(UserListElements uins);
 void clearIgnored();
 
-// Ominiecie bledu w gcc 3.2
+// workaround for bug in gcc 3.2
+#ifdef __GNUC__
+#if __GNUC__ == 3 && __GNUC_MINOR__ == 2
 static QValueList<UserListElements> ignored_gcc32_bug;
+#endif
+#endif
 ////////////////////////////
+
 extern QValueList<UserListElements> ignored;
 
 #endif
