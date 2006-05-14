@@ -626,7 +626,9 @@ bool ModulesManager::activateModule(const QString& module_name)
 		m.lib = new Library(libPath("kadu/modules/" + module_name + "." SO_EXT));
 		if (!m.lib->load())
 		{
-			MessageBox::msg(narg(tr("Cannot load %1 module library.:\n%2"), module_name, m.lib->error()));
+			QString err = m.lib->error();
+			MessageBox::msg(narg(tr("Cannot load %1 module library.:\n%2"), module_name, err));
+			kdebugm(KDEBUG_ERROR, "cannot load %s because of: %s\n", module_name.local8Bit().data(), err.local8Bit().data());
 			delete m.lib;
 			kdebugf2();
 			return false;
