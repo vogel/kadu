@@ -1,7 +1,6 @@
 #ifndef ACTION_H
 #define ACTION_H
 
-#include <qaction.h>
 #include <qmainwindow.h>
 #include <qmap.h>
 #include <qpopupmenu.h>
@@ -11,11 +10,15 @@
 #include "toolbar.h"
 #include "usergroup.h"
 
-class Action : public QAction
+class Action : public QObject
 {
 	Q_OBJECT
 
 	private:
+		QIconSet Icon;
+		QString Text;
+		QKeySequence Accel;
+		bool ToggleAction;
 		QIconSet OnIcon;
 		QString OnText;
 		QString DockAreaGroupRestriction;
@@ -35,6 +38,7 @@ class Action : public QAction
 	public:
 		Action(const QIconSet& icon, const QString& text, const char* name,
 			QKeySequence accel = QKeySequence());
+		void setToggleAction(bool toggle);
 		/**
 			action works just like toggled but using two shapes
 			(pictures and texts)

@@ -360,6 +360,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniête kilka niewielkich wycieków pamiêci + ogólne sprz±tanie w ConfigDialogu (joi)
 * przechwytujemy b³êdy, które wy³apuje Qt i kolorujemy je wraz z pokazaniem
   backtrace'a (joi)
+* klasa Action nie dziedziczy ju¿ z QAction, co rozwi±zuje problem ze skrótami
+  klawiszowymi (montor/adrian)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

@@ -14,13 +14,16 @@
 
 #include "action.h"
 #include "debug.h"
-#include "kadu.h"
 #include "misc.h"
 
 Action::Action(const QIconSet& icon, const QString& text, const char* name, QKeySequence accel)
-	: QAction(icon, text, accel, kadu, name), Slot(0)
+	: QObject(NULL, name), Slot(0)
 {
 	kdebugf();
+	Icon = icon;
+	Text = text;
+	Accel = accel;
+	ToggleAction = false;
 	kdebugf2();
 }
 
@@ -44,23 +47,32 @@ void Action::toolButtonDestroyed(QObject* obj)
 	kdebugf2();
 }
 
+void Action::setToggleAction(bool toggle)
+{
+	kdebugf();
+	ToggleAction = toggle;
+	kdebugf2();
+}
+
 void Action::setOnShape(const QIconSet& icon, const QString& text)
 {
+	kdebugf();
 	OnIcon = icon;
 	OnText = text;
+	kdebugf2();
 }
 
 ToolButton* Action::addToToolbar(ToolBar* toolbar, bool uses_text_label)
 {
 	kdebugf();
 	ToolButton* btn = new ToolButton(toolbar, name());
-	btn->setIconSet(iconSet());
-	btn->setTextLabel(menuText());
+	btn->setIconSet(Icon);
+	btn->setTextLabel(Text);
 	btn->setOnShape(OnIcon, OnText);
-	btn->setToggleButton(isToggleAction());
+	btn->setToggleButton(ToggleAction);
 	btn->setUsesTextLabel(uses_text_label);
 	btn->setTextPosition(ToolButton::BesideIcon);
-	btn->setAccel(accel());
+	btn->setAccel(Accel);
 	connect(btn, SIGNAL(clicked()), this, SLOT(toolButtonClicked()));
 	connect(btn, SIGNAL(destroyed(QObject*)), this, SLOT(toolButtonDestroyed(QObject*)));
 	if (Slot)
@@ -80,7 +92,7 @@ ToolButton* Action::addToToolbar(ToolBar* toolbar, bool uses_text_label)
 int Action::addToPopupMenu(QPopupMenu* menu, bool connect_signal)
 {
 	kdebugf();
-	int id = menu->insertItem(iconSet(), menuText());
+	int id = menu->insertItem(Icon, Text);
 	if (connect_signal)
 		menu->connectItem(id, this, SIGNAL(activated()));
 	kdebugf2();
