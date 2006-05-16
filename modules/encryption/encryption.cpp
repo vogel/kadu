@@ -198,7 +198,12 @@ void EncryptionManager::encryptionButtonClicked()
 void EncryptionManager::receivedMessageFilter(const UinsList& senders, QCString& msg, QByteArray& formats, bool& stop)
 {
 	kdebugf();
-	if (!strncmp(msg, "-----BEGIN RSA PUBLIC KEY-----", 20))
+	if (msg.length() < 30)
+	{
+		kdebugf2();
+		return;
+	}
+	if (!strncmp(msg, "-----BEGIN RSA PUBLIC KEY-----", 30))
 	{
 		(new SavePublicKey(senders[0], msg, NULL))->show();
 		stop = true;
