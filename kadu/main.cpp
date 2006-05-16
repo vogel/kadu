@@ -48,12 +48,19 @@ Kadu *kadu;
 #ifdef HAVE_EXECINFO
 #include <execinfo.h>
 #endif
+static int sigsegvCount = 0;
 static void kadu_signal_handler(int s)
 {
 	kdebugmf(KDEBUG_WARNING, "%d\n", s);
+	if (sigsegvCount > 1)
+	{
+		kdebugmf(KDEBUG_WARNING, "sigsegv recursion: %d\n", sigsegvCount);
+		abort();
+	}
 
 	if (s == SIGSEGV)
 	{
+		++sigsegvCount;
 		kdebugm(KDEBUG_PANIC, "Kadu crashed :(\n");
 		QString f = QString("kadu.conf.xml.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
 		QString debug_file = QString("kadu.backtrace.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
