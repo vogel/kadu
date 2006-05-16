@@ -192,7 +192,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Information panel"));
 		ConfigDialog::addCheckBox("Look", "Information panel", QT_TRANSLATE_NOOP("@default", "Show information panel"), "ShowInfoPanel", true);
 		ConfigDialog::addCheckBox("Look", "Information panel", QT_TRANSLATE_NOOP("@default", "Show vertical scrollbar in information panel"), "PanelVerticalScrollbar", true, 0, 0, Expert);
-		ConfigDialog::addTextEdit("Look", "Information panel", QT_TRANSLATE_NOOP("@default", "Information panel syntax:"), "PanelContents", "[#%u, ][%f] %r [- %d] [ (%i)]", SyntaxText, 0, Expert);
+		ConfigDialog::addTextEdit("Look", "Information panel", QT_TRANSLATE_NOOP("@default", "Information panel syntax:"), "PanelContents", "<table><tr><td><img width=\"32\" height=\"32\" align=\"left\" valign=\"top\" src=\"@{ManageUsersWindowIcon}\"></td>\n<td> <div align=\"left\"> [<b>%a</b>][ (%u)] [<br>tel.: %m][<br>IP: %i][<br>%oYou are not on the list] </div></td></tr></table> <hr> <b>%s</b> [<br>%d]", SyntaxText, 0, Expert);
 
 	ConfigDialog::connectSlot("Look", "Panel background color", SIGNAL(changed(const char *, const QColor&)), kaduslots, SLOT(chooseColor(const char *, const QColor&)), "panel_bg_color");
 	ConfigDialog::connectSlot("Look", "Panel font color", SIGNAL(changed(const char *, const QColor&)), kaduslots, SLOT(chooseColor(const char *, const QColor&)), "panel_font_color");

@@ -363,6 +363,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * klasa Action nie dziedziczy ju¿ z QAction, co rozwi±zuje problem ze skrótami
   klawiszowymi (montor/adrian)
 * poprawka wywrotki w module encryption gdy dostajemy od serwera wiadomo¶æ o d³ugo¶ci 0 (joi)
+* przestawiona domy¶lna sk³adnia panelu informacyjnego na sk³adniê Dorregaraya (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
