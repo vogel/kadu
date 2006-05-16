@@ -9,7 +9,7 @@
 
 #include "protocol.h"
 
-Protocol::Protocol(const QString &id, QObject *parent, const char *name) : QObject(parent, name), id(id)
+Protocol::Protocol(const QString &id, QObject *parent, const char *name) : QObject(parent, name), id(id), CurrentStatus(0), NextStatus(0)
 {
 }
 
