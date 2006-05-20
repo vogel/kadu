@@ -372,6 +372,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * default_sms, bramka Ery: okienko z ilo¶ci± pozosta³ych smsów, pole podpis
   doklejane jest do tre¶ci wiadomo¶ci, poprawione komunikaty o b³êdach, 
   usuniête polskie znaki z wiadomo¶ci (neeo/joi)
+* szereg usprawnieñ dotycz±cych sprawdzania poprawno¶ci wpisanych danych
+  w oknie szukania kontaktów w katalogu (neeo/joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

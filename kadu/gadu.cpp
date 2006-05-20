@@ -1420,7 +1420,7 @@ void GaduProtocol::searchNextInPubdir(SearchRecord& searchRecord)
 		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)unicode2cp(searchRecord.NickName).data());
 	if (!searchRecord.City.isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)unicode2cp(searchRecord.City).data());
-	if (!searchRecord.BirthYearFrom.isEmpty() && !searchRecord.BirthYearTo.isEmpty())
+	if (!searchRecord.BirthYearFrom.isEmpty())
 	{
 		QString bufYear = searchRecord.BirthYearFrom + " " + searchRecord.BirthYearTo;
 		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)unicode2cp(bufYear).data());
@@ -1439,8 +1439,7 @@ void GaduProtocol::searchNextInPubdir(SearchRecord& searchRecord)
 	if (searchRecord.Active)
 		gg_pubdir50_add(req, GG_PUBDIR50_ACTIVE, GG_PUBDIR50_ACTIVE_TRUE);
 
-	QString s = QString::number(searchRecord.FromUin);
-	gg_pubdir50_add(req, GG_PUBDIR50_START, s.local8Bit());
+	gg_pubdir50_add(req, GG_PUBDIR50_START, QString::number(searchRecord.FromUin).local8Bit());
 
 	searchRecord.Seq = gg_pubdir50(Sess, req);
 	gg_pubdir50_free(req);

@@ -19,6 +19,7 @@
 #include <qpushbutton.h>
 #include <qradiobutton.h>
 #include <qtooltip.h>
+#include <qvalidator.h>
 
 #include "action.h"
 #include "chat_manager.h"
@@ -48,6 +49,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	QLabel *l_uin;
 
 	only_active = new QCheckBox(tr("Only active users"),this);
+	connect(only_active, SIGNAL(clicked()), this, SLOT(personalDataTyped()));
 
 	l_nick = new QLabel(tr("Nickname"),this);
 	e_nick = new QLineEdit(this);
@@ -58,7 +60,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	c_gender->insertItem(" ", 0);
 	c_gender->insertItem(tr("Male"), 1);
 	c_gender->insertItem(tr("Female"), 2);
-	connect(c_gender, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
+	connect(c_gender, SIGNAL(activated(const QString &)), this, SLOT(personalDataTyped()));
 
 	l_name = new QLabel(tr("Name"),this);
 	e_name = new QLineEdit(this);
@@ -71,9 +73,15 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	l_byr = new QLabel(tr("Birthyear"),this);
 	l_byrFrom = new QLabel(tr("from"),this);
 	e_byrFrom = new QLineEdit(this);
+	e_byrFrom->setMaxLength(4);
+	e_byrFrom->setValidator(new QIntValidator(1, 2100, this));
 	connect(e_byrFrom, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
+	connect(e_byrFrom, SIGNAL(textChanged(const QString &)), this, SLOT(byrFromDataTyped()));
 	l_byrTo = new QLabel(tr("to"),this);
 	e_byrTo = new QLineEdit(this);
+	e_byrTo->setEnabled(false);
+	e_byrTo->setMaxLength(4);
+	e_byrTo->setValidator(new QIntValidator(1, 2100, this));
 	connect(e_byrTo, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
 	l_city = new QLabel(tr("City"),this);
@@ -83,14 +91,15 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	QGroupBox * qgrp1 = new QGroupBox(2, Qt::Horizontal, tr("Uin"), this);
 	l_uin = new QLabel(tr("Uin"),qgrp1);
 	e_uin = new QLineEdit(qgrp1);
+	e_uin->setMaxLength(8);
+	e_uin->setValidator(new QIntValidator(1, 99999999, this));
 	connect(e_uin, SIGNAL(textChanged(const QString &)), this, SLOT(uinTyped()));
 
 	progress = new QLabel(this);
 
 	results = new QListView(this);
 
-	QHButtonGroup * btngrp = new QHButtonGroup(this);
-	btngrp->setTitle(tr("Search criteria"));
+	QHButtonGroup * btngrp = new QHButtonGroup(tr("Search criteria"), this);
 	r_pers = new QRadioButton(tr("&Personal data"),btngrp);
 	r_pers->setChecked(true);
 	connect(r_pers, SIGNAL(toggled(bool)), this, SLOT(persClicked()));
@@ -99,9 +108,6 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	r_uin = new QRadioButton(tr("&Uin number"),btngrp);
 	connect(r_uin, SIGNAL(toggled(bool)), this, SLOT(uinClicked()));
 	QToolTip::add(r_uin, tr("Search for this UIN exclusively"));
-
-	btngrp->insert(r_pers, 1);
-	btngrp->insert(r_uin, 2);
 
 	DockArea* dock_area = new DockArea(Qt::Horizontal, DockArea::Normal, this,
 		"searchDockAreaGroup", "searchDockArea");
@@ -150,6 +156,9 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	results->setResizeMode(QListView::AllColumns);
 	for (int i = 1; i < 5; ++i)
 		results->setColumnWidthMode(i, QListView::Maximum);
+		
+	KaduActions["nextResultsAction"]->setEnabled(this, false);
+	KaduActions["clearSearchAction"]->setEnabled(this, false);
 
 //	searchhidden = false;
 	if (_whoisSearchUin)
@@ -207,10 +216,10 @@ void SearchDialog::selectedUsersNeeded(const UserGroup*& user_group)
 	kdebugf();
 
 	QListViewItem *selected = results->selectedItem();
-	if (!selected && results->childCount() == 1)
-		selected = results->firstChild();
 	if (!selected)
 	{
+		if (results->childCount() == 1)
+			selected = results->firstChild();
 		user_group = NULL;
 		return;
 	}
@@ -223,19 +232,13 @@ void SearchDialog::selectedUsersNeeded(const UserGroup*& user_group)
 	if (uin.toUInt(&ok) == 0 || !ok)
 		return;
 
-	// Build altnick. Try user nick first.
-	QString altnick = nickname;
-	// If nick is empty, try firstname+lastname.
-	if (altnick.isEmpty())
-	{
+	QString altnick;
+	if (!nickname.isEmpty()) // Build altnick. Trying user nick first.
+		altnick = nickname;
+	else if (!firstname.isEmpty()) // If nick is empty, try firstname.
 		altnick = firstname;
-//		if (firstname.length() && lastname.length())
-//			altnick += " ";
-//		altnick += lastname;
-	}
-	// If nick is empty, use uin.
-	if (altnick.isEmpty())
-		altnick = uin;
+	else
+		altnick = uin; // If above are empty, use uin.
 
 	UserListElement e = userlist->byID("Gadu", uin);
 
@@ -256,6 +259,7 @@ void SearchDialog::selectedUsersNeeded(const UserGroup*& user_group)
 void SearchDialog::clearResults(void)
 {
 	results->clear();
+	KaduActions["clearSearchAction"]->setEnabled(this, false);
 }
 
 void SearchDialog::firstSearch(void)
@@ -272,6 +276,9 @@ void SearchDialog::firstSearch(void)
 		searchRecord->reqLastName(e_surname->text());
 		searchRecord->reqNickName(e_nick->text());
 		searchRecord->reqCity(e_city->text());
+		if (((e_byrTo->text().isEmpty()) && (!e_byrFrom->text().isEmpty()))
+		    || ((e_byrTo->text().toUShort()) < (e_byrFrom->text().toUShort())))
+			e_byrTo->setText(e_byrFrom->text());
 		searchRecord->reqBirthYear(e_byrFrom->text(), e_byrTo->text());
 
 		switch (c_gender->currentItem())
@@ -283,14 +290,12 @@ void SearchDialog::firstSearch(void)
 				searchRecord->reqGender(true);
 				break;
 		}
-
+		
+		if (only_active->isChecked())
+			searchRecord->reqActive();
 	}
-	else
-		if (r_uin->isChecked())
-			searchRecord->reqUin(e_uin->text());
-
-	if (only_active->isChecked())
-		searchRecord->reqActive();
+	else if (r_uin->isChecked())
+		searchRecord->reqUin(e_uin->text());
 
 	gadu->searchInPubdir(*searchRecord);
 
@@ -373,7 +378,6 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 
 //	searchhidden = false;
 	KaduActions["firstSearchAction"]->setEnabled(this, true);
-	KaduActions["nextResultsAction"]->setEnabled(this, true);
 
 	if (searchResults.isEmpty())
 	{
@@ -381,6 +385,13 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 		QMessageBox::information(this, tr("No results"),
 			tr("There were no results of your search"));
 //		searchhidden = false;
+	}
+	else
+	{
+		if (r_pers->isChecked())
+			KaduActions["nextResultsAction"]->setEnabled(this, true);
+
+		KaduActions["clearSearchAction"]->setEnabled(this, true);
 	}
 	kdebugf2();
 }
@@ -404,17 +415,32 @@ void SearchDialog::uinTyped(void)
 void SearchDialog::personalDataTyped(void)
 {
 	r_pers->setChecked(true);
+	KaduActions["nextResultsAction"]->setEnabled(this, false);
+}
+
+void SearchDialog::byrFromDataTyped(void)
+{
+	if (e_byrFrom->text().isEmpty())
+	{
+		e_byrTo->setText(QString::null);
+		e_byrTo->setEnabled(false);
+	}
+	else
+	{
+		e_byrTo->setEnabled(true);
+	}
 }
 
 void SearchDialog::persClicked()
 {
-	only_active->setEnabled(false);
+	only_active->setEnabled(true);
 	only_active->setChecked(false);
 }
 
 void SearchDialog::uinClicked()
 {
-	only_active->setEnabled(true);
+	only_active->setEnabled(false);
+	KaduActions["nextResultsAction"]->setEnabled(this, false);
 }
 
 void SearchDialog::updateInfoClicked()
