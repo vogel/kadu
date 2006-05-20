@@ -139,6 +139,8 @@ enum GaduError
 	ConnectionCannotWrite,
 	ConnectionIncorrectPassword,
 	ConnectionTlsError,
+	ConnectionIntruderError,
+	ConnectionUnavailableError,
 	ConnectionUnknow,
 	ConnectionTimeout,
 	Disconnected

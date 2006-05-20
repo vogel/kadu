@@ -878,6 +878,16 @@ void GaduProtocol::errorSlot(GaduError err)
 		case ConnectionTlsError:
 			msg = tr("Unable to connect, error of negotiation TLS");
 			break;
+			
+		case ConnectionIntruderError:
+			msg = tr("To many connection attempts with bad password!");
+			continue_connecting = false;
+			MessageBox::wrn(tr("Connection will be stoped\nTo many attempts with bad password"));
+			break;
+			
+		case ConnectionUnavailableError:
+			msg = tr("Unable to connect, servers are down");
+			break;
 
 		case ConnectionUnknow:
 			kdebugm(KDEBUG_INFO, "Connection broken unexpectedly!\nUnscheduled connection termination\n");
