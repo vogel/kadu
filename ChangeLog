@@ -369,6 +369,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * uproszczenie kodu sprawdzaj±cego poprawno¶æ numeru gg w oknie danych o kontakcie (neeo/joi)
 * aktualizacja libgadu do wersji 20060518 + zmiany w Kadu dotycz±ce obs³ugi
   nowych b³êdów zwracanych przez libgadu (neeo/joi)
+* default_sms, bramka Ery: okienko z ilo¶ci± pozosta³ych smsów, pole podpis
+  doklejane jest do tre¶ci wiadomo¶ci, poprawione komunikaty o b³êdach, 
+  usuniête polskie znaki z wiadomo¶ci (neeo/joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

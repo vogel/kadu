@@ -25,8 +25,12 @@
         <translation>Bramka zwróciła dziwną odpowiedź. SMS prawdopodobnie nie został wysłany.</translation>
     </message>
     <message>
+	<source>Number of SMS' left on Sponsored Era Gateway: </source>
+	<translation>Liczba pozostałych SMSów na sponsorowanej bramce Ery: </translation>
+    </message>
+    <message>
         <source>Error: </source>
-        <translation>Błąd:</translation>
+        <translation>Błąd: </translation>
     </message>
     <message>
         <source>No error</source>

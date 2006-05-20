@@ -266,24 +266,21 @@ void SmsEraGateway::send(const QString& number,const QString& message, const QSt
 	Http.setHost("www.eraomnix.pl");
 
 	QString path;
-	QString post_data="login="+config_file.readEntry("SMS","EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_User")+
-	    "&password="+config_file.readEntry("SMS","EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_Password")+
-//	DO SPRAWDZENIA CZY TO POMAGA
-//	    "&numbers="+number+ "&message="+unicodeUrl2latinUrl(Http.encode(message))+
-//	    "&contact="+contact+ "&signature="+unicodeUrl2latinUrl(Http.encode(signature))+
-	    "&numbers="+number+ "&message="+message+
-	    "&contact="+contact+ "&signature="+signature+
-	    "&success=http://moj.serwer.pl/ok.html&failure=http://moj.serwer.pl/blad.html";
-
-	QString gateway= config_file.readEntry("SMS", "EraGateway");
+	QString gateway = config_file.readEntry("SMS", "EraGateway");
+	QString post_data = "login=" + config_file.readEntry("SMS","EraGateway_" + gateway + "_User") +
+	    "&password=" + config_file.readEntry("SMS","EraGateway_" + gateway + "_Password") +
+	    "&number=48" + number + "&message=" + unicode2std(signature) + ": " + unicode2std(message) + "&mms=no" +
+	    "&success=OK&failure=ERROR";
 
 	if (gateway == "Sponsored")
 	{
-	    path= "msg/api/do/tinker/sponsored";
-	    post_data.replace(post_data.find("&numbers="),9, "&number=48");
+		path= "msg/api/do/tinker/sponsored";
 	}
 	else if (gateway == "OmnixMultimedia")
+	{
 		path= "msg/api/do/tinker/omnix";
+		post_data.replace("&number=48", "&numbers=");
+	}
 	else
 	{
 		emit finished(false);
@@ -308,11 +305,17 @@ void SmsEraGateway::httpRedirected(QString link)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "link: %s\n", link.local8Bit().data());
 	QWidget* p=(QWidget*)(parent()->parent());
-	if (link.find("ok.html")> 0)
-		emit finished(true);
-	else if (link.find("blad.html")> 0)
+	if (link.find("OK")> 0)
 	{
-		QMessageBox::critical(p, "SMS", tr("Error: ")+ SmsEraGateway::errorNumber(link.remove(link.find("http://moj.serwer.pl/blad.html?X-ERA-error="), 43).toInt()));
+		if (config_file.readEntry("SMS", "EraGateway") == "Sponsored")
+			QMessageBox::information(p, "SMS", tr("Number of SMS' left on Sponsored Era Gateway: ")+ link.remove("http://www.eraomnix.pl/msg/api/do/tinker/OK?X-ERA-error=0&X-ERA-counter="), QMessageBox::Ok);
+		emit finished(true);
+	}
+	else if (link.find("ERROR")> 0)
+	{
+		link.remove("http://www.eraomnix.pl/msg/api/do/tinker/ERROR?X-ERA-error=");
+		link.remove(link.find("&X-ERA-counter="), 17);
+		QMessageBox::critical(p, "SMS", tr("Error: ")+ SmsEraGateway::errorNumber(link.toInt()));
 		emit finished(false);
 	}
 	else
@@ -410,8 +413,10 @@ void SmsGatewaySlots::onApplyTabSMS()
 
 	QLineEdit *e_erauser= ConfigDialog::getLineEdit("SMS", "User ID (48xxxxxxxxx)");
 	QLineEdit *e_erapassword= ConfigDialog::getLineEdit("SMS", "Password");
-	config_file.writeEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_Password", e_erapassword->text());
-	config_file.writeEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_User", e_erauser->text());
+	QString gateway= config_file.readEntry("SMS", "EraGateway");
+
+	config_file.writeEntry("SMS", "EraGateway_"+ gateway+ "_Password", e_erapassword->text());
+	config_file.writeEntry("SMS", "EraGateway_"+ gateway+ "_User", e_erauser->text());
 	kdebugf2();
 }
 
@@ -435,8 +440,8 @@ void SmsGatewaySlots::onCreateTabSMS()
 	QLineEdit *e_erapassword= ConfigDialog::getLineEdit("SMS", "Password");
 	e_erapassword->setEchoMode(QLineEdit::Password);
 
-	e_erapassword->setText(config_file.readEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_Password"));
-	e_erauser->setText(config_file.readEntry("SMS", "EraGateway_"+config_file.readEntry("SMS", "EraGateway")+"_User", "48"));
+	e_erapassword->setText(config_file.readEntry("SMS", "EraGateway_"+ actualEraGateway+ "_Password"));
+	e_erauser->setText(config_file.readEntry("SMS", "EraGateway_"+ actualEraGateway+ "_User", "48"));
 
 	modules_manager->moduleIncUsageCount("default_sms");
 	activated=true;
