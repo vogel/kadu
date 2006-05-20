@@ -16,6 +16,7 @@
 #include <qpushbutton.h>
 #include <qtabwidget.h>
 #include <qmessagebox.h>
+#include <qvalidator.h>
 #include <qvbox.h>
 #include <qvgroupbox.h>
 
@@ -58,19 +59,6 @@ UserInfo::UserInfo(UserListElement user, QDialog* parent, const char *name)
 	QLabel *l_info = new QLabel(center);
 	l_info->setText(tr("This dialog box allows you to view and edit information about the selected contact."));
 	l_info->setAlignment(Qt::WordBreak);
-
-	bool addUser = !userlist->contains(user, FalseForAnonymous);
-	if (addUser)
-	{
-		setCaption(tr("Add user"));
-		l_icon->setPixmap(icons_manager->loadIcon("AddUserWindowIcon"));
-	}
-	else
-	{
-		setCaption(tr("User info on %1").arg(user.altNick()));
-		l_icon->setPixmap(icons_manager->loadIcon("ManageUsersWindowIcon"));
-	}
-
 	// end create main QLabel widgets (icon and app info)
 
 	tw_main = new QTabWidget(center);
@@ -80,15 +68,24 @@ UserInfo::UserInfo(UserListElement user, QDialog* parent, const char *name)
 	setupTab2();
 	setupTab3();
 
-	// buttons
+	// create buttons and fill icon and app info
 	QHBox *bottom = new QHBox(center);
 	QWidget *w_blankwidget = new QWidget(bottom);
 	bottom->setSpacing(5);
 	w_blankwidget->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
-	if (addUser)
+
+	if (!userlist->contains(user, FalseForAnonymous))
+	{
+		setCaption(tr("Add user"));
+		l_icon->setPixmap(icons_manager->loadIcon("AddUserWindowIcon"));
 		pb_addapply = new QPushButton(icons_manager->loadIcon("AddUserButton"), tr("Add"), bottom, "add");
+	}
 	else
+	{
+		setCaption(tr("User info on %1").arg(user.altNick()));
+		l_icon->setPixmap(icons_manager->loadIcon("ManageUsersWindowIcon"));
 		pb_addapply = new QPushButton(icons_manager->loadIcon("UpdateUserButton"), tr("Update"), bottom, "update");
+	}
 
 	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	// end buttons
@@ -127,6 +124,8 @@ void UserInfo::setupTab1()
 
 	new QLabel(tr("Uin"), vb_uin);
 	e_uin = new QLineEdit(vb_uin);
+	e_uin->setMaxLength(8);
+	e_uin->setValidator(new QIntValidator(1, 99999999, this));
 	new QLabel(tr("Status"), vb_state);
 	QLineEdit *e_status = new QLineEdit(vb_state);
 	// end UIN and STATUS
@@ -403,19 +402,10 @@ void UserInfo::resultsReady()
 void UserInfo::updateUserlist()
 {
 	kdebugf();
-	bool ok;
-	UinType uin = e_uin->text().toUInt(&ok);
-	if (!ok)
-		uin = 0;
-	QString id = QString::number(uin);
-
-	// if uin field is not empty and it's not a number, then it's not a correct UIN
-	if (!e_uin->text().isEmpty() && id != e_uin->text())
-	{
-		QMessageBox::warning(this, tr("Add user problem"), tr("Bad Gadu-Gadu UIN."));
-		kdebugf2();
-		return;
-	}
+	
+	QString id = QString::number(0);
+	if (!e_uin->text().isEmpty())
+		id = e_uin->text();
 
 	if (e_altnick->text().isEmpty())
 	{
@@ -444,16 +434,16 @@ void UserInfo::updateUserlist()
 
 	if (user.usesProtocol("Gadu")) // there was an UIN so far?
 	{
-		if (user.ID("Gadu").toUInt() != uin || e_uin->text() != id) // uin was changed
+		if (user.ID("Gadu") != id) // uin was changed
 		{
 			user.deleteProtocol("Gadu");
-			if (uin != 0) // but it might be deleted
-				user.addProtocol("Gadu", QString::number(uin));
+			if (id.toUInt() != 0) // but it might be deleted
+				user.addProtocol("Gadu", id);
 		}
 	}
 	else // there was no UIN so far
-		if (uin != 0) // if it was filled, then we add new protocol
-			user.addProtocol("Gadu", QString::number(uin));
+		if (id.toUInt() != 0) // if it was filled, then we add new protocol
+			user.addProtocol("Gadu", id);
 
 	QStringList l;
 	CONST_FOREACH(checkbox, groups)

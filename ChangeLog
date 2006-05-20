@@ -366,6 +366,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * przestawiona domy¶lna sk³adnia panelu informacyjnego na sk³adniê Dorregaraya (joi)
 * menu zmiany statusu, po klikniêciu na trayu, pojawia siê 10 pikseli od miesca
   klikniêcia (a nie dok³adnie w) (joi)
+* uproszczenie kodu sprawdzaj±cego poprawno¶æ numeru gg w oknie danych o kontakcie (neeo/joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
