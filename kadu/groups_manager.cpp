@@ -483,10 +483,10 @@ OnlineUsers::~OnlineUsers()
 void OnlineUsers::statusChangedSlot(UserListElement elem, QString protocolName,
 							const UserStatus &oldStatus, bool massively, bool last)
 {
-	if ((oldStatus.isOnline() || oldStatus.isBusy()) ==
-			(elem.status(protocolName).isOnline() || elem.status(protocolName).isBusy()))
+	if ((oldStatus.isOnline() || oldStatus.isInvisible() || oldStatus.isBusy()) ==
+			(elem.status(protocolName).isOnline() || elem.status(protocolName).isInvisible() || elem.status(protocolName).isBusy()))
 		return;
-	if (oldStatus.isOnline() || oldStatus.isBusy())
+	if (oldStatus.isOnline() || oldStatus.isInvisible() || oldStatus.isBusy())
 		removeUser(elem);
 	else
 		addUser(elem);

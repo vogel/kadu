@@ -364,7 +364,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   klawiszowymi (montor/adrian)
 * poprawka wywrotki w module encryption gdy dostajemy od serwera wiadomo¶æ o d³ugo¶ci 0 (joi)
 * przestawiona domy¶lna sk³adnia panelu informacyjnego na sk³adniê Dorregaraya (joi)
-* menu zmiany statusu, po klikniêciu na trayu, pojawia siê 10 pikseli od miesca
+* menu zmiany statusu, po klikniêciu na trayu, pojawia siê 10 pikseli od miejsca
   klikniêcia (a nie dok³adnie w) (joi)
 * uproszczenie kodu sprawdzaj±cego poprawno¶æ numeru gg w oknie danych o kontakcie (neeo/joi)
 * aktualizacja libgadu do wersji 20060518 + zmiany w Kadu dotycz±ce obs³ugi
@@ -374,6 +374,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   usuniête polskie znaki z wiadomo¶ci (neeo/joi)
 * szereg usprawnieñ dotycz±cych sprawdzania poprawno¶ci wpisanych danych
   w oknie szukania kontaktów w katalogu (neeo/joi)
+* przy wybraniu opcji "ukryj niedostêpnych" pokazujemy na ukrytych (Shinjin/joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
