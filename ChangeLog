@@ -375,6 +375,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * szereg usprawnieñ dotycz±cych sprawdzania poprawno¶ci wpisanych danych
   w oknie szukania kontaktów w katalogu (neeo/joi)
 * przy wybraniu opcji "ukryj niedostêpnych" pokazujemy ukrytych (Shinjin/joi)
+* poprawione dzia³anie funkcji unicode2std i unicode2latinUrl (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

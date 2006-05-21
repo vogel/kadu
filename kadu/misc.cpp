@@ -311,48 +311,48 @@ QCString unicode2latin(const QString &buf)
 QString unicode2std(const QString &buf)
 {
 	QString tmp = buf;
-	tmp.replace("\\x0119", "e");
-	tmp.replace("\\x00f3", "o");
-	tmp.replace("\\x0105", "a");
-	tmp.replace("\\x015b", "s");
-	tmp.replace("\\x0142", "l");
-	tmp.replace("\\x017c", "z");
-	tmp.replace("\\x017a", "z");
-	tmp.replace("\\x0107", "c");
-	tmp.replace("\\x0144", "n");
-	tmp.replace("\\x0118", "E");
-	tmp.replace("\\x00d3", "O");
-	tmp.replace("\\x0104", "A");
-	tmp.replace("\\x015a", "S");
-	tmp.replace("\\x0141", "L");
-	tmp.replace("\\x017b", "Z");
-	tmp.replace("\\x0179", "Z");
-	tmp.replace("\\x0106", "C");
-	tmp.replace("\\x0143", "N");
+	tmp.replace(QChar(0x0119), 'e');
+	tmp.replace(QChar(0x00f3), 'o');
+	tmp.replace(QChar(0x0105), 'a');
+	tmp.replace(QChar(0x015b), 's');
+	tmp.replace(QChar(0x0142), 'l');
+	tmp.replace(QChar(0x017c), 'z');
+	tmp.replace(QChar(0x017a), 'z');
+	tmp.replace(QChar(0x0107), 'c');
+	tmp.replace(QChar(0x0144), 'n');
+	tmp.replace(QChar(0x0118), 'E');
+	tmp.replace(QChar(0x00d3), 'O');
+	tmp.replace(QChar(0x0104), 'A');
+	tmp.replace(QChar(0x015a), 'S');
+	tmp.replace(QChar(0x0141), 'L');
+	tmp.replace(QChar(0x017b), 'Z');
+	tmp.replace(QChar(0x0179), 'Z');
+	tmp.replace(QChar(0x0106), 'C');
+	tmp.replace(QChar(0x0143), 'N');
 	return tmp;
 }
 
 QString unicode2latinUrl(const QString &buf)
 {
 	QString tmp = buf;
-	tmp.replace("\\x0119", "%EA");
-	tmp.replace("\\x00f3", "%F3");
-	tmp.replace("\\x0105", "%B1");
-	tmp.replace("\\x015b", "%B6");
-	tmp.replace("\\x0142", "%B3");
-	tmp.replace("\\x017c", "%BF");
-	tmp.replace("\\x017a", "%BC");
-	tmp.replace("\\x0107", "%E6");
-	tmp.replace("\\x0144", "%F1");
-	tmp.replace("\\x0118", "%CA");
-	tmp.replace("\\x00d3", "%D3");
-	tmp.replace("\\x0104", "%A1");
-	tmp.replace("\\x015a", "%A6");
-	tmp.replace("\\x0141", "%A3");
-	tmp.replace("\\x017b", "%AF");
-	tmp.replace("\\x0179", "%AC");
-	tmp.replace("\\x0106", "%C3");
-	tmp.replace("\\x0143", "%D1");
+	tmp.replace(QChar(0x0119), "%EA");
+	tmp.replace(QChar(0x00f3), "%F3");
+	tmp.replace(QChar(0x0105), "%B1");
+	tmp.replace(QChar(0x015b), "%B6");
+	tmp.replace(QChar(0x0142), "%B3");
+	tmp.replace(QChar(0x017c), "%BF");
+	tmp.replace(QChar(0x017a), "%BC");
+	tmp.replace(QChar(0x0107), "%E6");
+	tmp.replace(QChar(0x0144), "%F1");
+	tmp.replace(QChar(0x0118), "%CA");
+	tmp.replace(QChar(0x00d3), "%D3");
+	tmp.replace(QChar(0x0104), "%A1");
+	tmp.replace(QChar(0x015a), "%A6");
+	tmp.replace(QChar(0x0141), "%A3");
+	tmp.replace(QChar(0x017b), "%AF");
+	tmp.replace(QChar(0x0179), "%AC");
+	tmp.replace(QChar(0x0106), "%C3");
+	tmp.replace(QChar(0x0143), "%D1");
 	return tmp;
 }
 
