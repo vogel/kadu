@@ -50,9 +50,7 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	emoticon_selector = NULL;
 	color_selector = NULL;
 
-	AutoSend = false;
-	if (config_file.readBoolEntry("Chat","AutoSend"))
-		AutoSend = true;
+	AutoSend = config_file.readBoolEntry("Chat", "AutoSend");
 
 	ScrollLocked = false;
 	WaitingForACK = false;
