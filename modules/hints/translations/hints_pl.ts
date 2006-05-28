@@ -105,6 +105,14 @@
         <source>Delete pending message when user deletes hint</source>
         <translation>Usuń wiadomość kiedy usuwam dymek</translation>
     </message>
+    <message>
+        <source>Hints over userlist</source>
+        <translation>Dymek nad listą kontaktów</translation>
+    </message>
+    <message>
+        <source>Hints syntax:</source>
+        <translation>Składnia dymka:</translation>
+    </message>
 </context>
 <context>
     <name>HintManager</name>
@@ -268,12 +276,9 @@
         <source>&lt;b&gt;%1&lt;/b&gt; is invisible</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; ma status ukryty</translation>
     </message>
-</context>
-<context>
-    <name>HintManagerSlots</name>
     <message>
-        <source>Color dialog</source>
-        <translation>Kolory</translation>
+        <source>[&lt;i&gt;%s&lt;/i&gt;&lt;br/&gt;][&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;%d&lt;br/&gt;&lt;br/&gt;][&lt;i&gt;Mobile:&lt;/i&gt; &lt;b&gt;%m&lt;/b&gt;&lt;br/&gt;]</source>
+        <translation>[&lt;i&gt;%s&lt;/i&gt;&lt;br/&gt;][&lt;br/&gt;&lt;b&gt;Opis:&lt;/b&gt;&lt;br/&gt;%d&lt;br/&gt;&lt;br/&gt;][&lt;i&gt;Telefon:&lt;/i&gt; &lt;b&gt;%m&lt;/b&gt;&lt;br/&gt;]</translation>
     </message>
 </context>
 </TS>

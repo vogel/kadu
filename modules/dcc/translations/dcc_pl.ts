@@ -41,6 +41,10 @@
         <source>Local TCP port:</source>
         <translation>Lokalny port TCP: </translation>
     </message>
+    <message>
+        <source>An user wants to send you a file</source>
+        <translation>Jakiś użytkownik chce przesłać ci plik</translation>
+    </message>
 </context>
 <context>
     <name>DccManager</name>
@@ -130,10 +134,6 @@ Kontynuować połączenie?</translation>
         <translation>Wyślij plik</translation>
     </message>
     <message>
-        <source>open file</source>
-        <translation>otwórz plik</translation>
-    </message>
-    <message>
         <source>Select file location</source>
         <translation>Wybierz lokalizację pliku</translation>
     </message>
@@ -208,10 +208,6 @@ Co chcesz zrobić?</translation>
     <message>
         <source>Toggle transfers window</source>
         <translation>Okno przesyłania plików</translation>
-    </message>
-    <message>
-        <source>An user wants to send you a file</source>
-        <translation>Jakiś użytkownik chce przesłać ci plik</translation>
     </message>
 </context>
 <context>

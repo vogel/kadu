@@ -71,5 +71,9 @@ des Benutzers während des Verbindens zum Server</translation>
         <source>Ignore status changes from available / busy to available / busy</source>
         <translation>Ignoriere Zustandsänderungen von erreichbar / beschäftigt auf erreichbar / beschäftigt</translation>
     </message>
+    <message>
+        <source>Mouse over user</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

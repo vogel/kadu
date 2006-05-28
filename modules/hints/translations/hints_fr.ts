@@ -105,6 +105,14 @@
         <source>Delete pending message when user deletes hint</source>
         <translation>Élimines le message quand j&apos;élimine le fumé</translation>
     </message>
+    <message>
+        <source>Hints over userlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hints syntax:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HintManager</name>
@@ -268,12 +276,9 @@
         <source>&lt;b&gt;%1&lt;/b&gt; is invisible</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; is invisible</translation>
     </message>
-</context>
-<context>
-    <name>HintManagerSlots</name>
     <message>
-        <source>Color dialog</source>
-        <translation>Kolory</translation>
+        <source>[&lt;i&gt;%s&lt;/i&gt;&lt;br/&gt;][&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;%d&lt;br/&gt;&lt;br/&gt;][&lt;i&gt;Mobile:&lt;/i&gt; &lt;b&gt;%m&lt;/b&gt;&lt;br/&gt;]</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

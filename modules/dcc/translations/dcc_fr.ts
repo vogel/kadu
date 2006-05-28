@@ -41,6 +41,10 @@
         <source>Local TCP port:</source>
         <translation>Port local TCP: </translation>
     </message>
+    <message>
+        <source>An user wants to send you a file</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DccManager</name>
@@ -129,10 +133,6 @@ ou lui/elle a transmit. Continuez la connexion ?</translation>
         <translation>Veuillez expédier le fichier</translation>
     </message>
     <message>
-        <source>open file</source>
-        <translation>ouvre le fichier</translation>
-    </message>
-    <message>
         <source>Select file location</source>
         <translation>Selectionnez l&apos;emplacement du fichier</translation>
     </message>
@@ -203,10 +203,6 @@ This is probably a next part of %4
     </message>
     <message>
         <source>Toggle transfers window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>An user wants to send you a file</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

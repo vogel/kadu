@@ -935,13 +935,6 @@ You may add it to $PATH or specify location using Specify path option.</source>
     </message>
 </context>
 <context>
-    <name>ColorButton</name>
-    <message>
-        <source>Color dialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>ConfigDialog</name>
     <message>
         <source>Cancel</source>
@@ -1044,6 +1037,19 @@ Your password is incorrect !</source>
     </message>
     <message>
         <source>Please change your email in &quot;Change password / email&quot; window. Leave new password field blank.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To many connection attempts with bad password!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection will be stoped
+To many attempts with bad password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, servers are down</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1306,10 +1312,6 @@ Your password is incorrect !</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>User info</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Yes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1411,6 +1413,10 @@ will be deleted. Are you sure?</source>
 ]</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>You are not on the list</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KaduSlots</name>
@@ -1438,6 +1444,22 @@ will be deleted. Are you sure?</source>
     <name>KaduTextBrowser</name>
     <message>
         <source>Copy link &amp;location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Save image...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File already exists. Overwrite?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot save image: %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2032,10 +2054,6 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>Numbers are prohibited</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bad Gadu-Gadu UIN.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

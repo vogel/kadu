@@ -73,5 +73,9 @@ lors de la première  connexion de Kadu avec le serveur
         <source>Ignore status changes from available / busy to available / busy</source>
         <translation>Ignore les changements de statuts accessible / occoupé en accessible / occoupé</translation>
     </message>
+    <message>
+        <source>Mouse over user</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

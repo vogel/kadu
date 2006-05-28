@@ -952,13 +952,6 @@ Wybrana ścieżka do przeglądarki nie istnieje w zmiennej $PATH. Musisz ją do 
     </message>
 </context>
 <context>
-    <name>ColorButton</name>
-    <message>
-        <source>Color dialog</source>
-        <translation>Kolory</translation>
-    </message>
-</context>
-<context>
     <name>ConfigDialog</name>
     <message>
         <source>Cancel</source>
@@ -1063,6 +1056,20 @@ Twoje hasło jest nieprawidłowe!</translation>
     <message>
         <source>Please change your email in &quot;Change password / email&quot; window. Leave new password field blank.</source>
         <translation>Zmień swój e-mail w oknie &quot;Zmień hasło / e-mail&quot;. Pole nowe hasło pozostaw puste.</translation>
+    </message>
+    <message>
+        <source>To many connection attempts with bad password!</source>
+        <translation>Zbyt wiele razy usiłowałeś się połączyć podając błędne hasło!</translation>
+    </message>
+    <message>
+        <source>Connection will be stoped
+To many attempts with bad password</source>
+        <translation>Połączenie zostało przerwane
+Zbyt wiele razy usiłowałeś się połączyćc podając błędne hasło</translation>
+    </message>
+    <message>
+        <source>Unable to connect, servers are down</source>
+        <translation>Połączenie nie możliwe, serwery są niedostępne</translation>
     </message>
 </context>
 <context>
@@ -1296,10 +1303,6 @@ Twoje hasło jest nieprawidłowe!</translation>
         <translation>&amp;Zakończ Kadu</translation>
     </message>
     <message>
-        <source>User info</source>
-        <translation>Informacje o kontakcie</translation>
-    </message>
-    <message>
         <source>&amp;Yes</source>
         <translation>&amp;Tak</translation>
     </message>
@@ -1436,6 +1439,10 @@ Czy na pewno tego chcesz?</translation>
 ][Telefon: %m
 ]</translation>
     </message>
+    <message>
+        <source>You are not on the list</source>
+        <translation>Nie ma cię na liście</translation>
+    </message>
 </context>
 <context>
     <name>KaduSlots</name>
@@ -1464,6 +1471,22 @@ Czy na pewno tego chcesz?</translation>
     <message>
         <source>Copy link &amp;location</source>
         <translation>Kopiuj &amp;adres odnośnika</translation>
+    </message>
+    <message>
+        <source>&amp;Save image...</source>
+        <translation>&amp;Zapisz obrazek...</translation>
+    </message>
+    <message>
+        <source>Save image</source>
+        <translation>Zapisz obrazek</translation>
+    </message>
+    <message>
+        <source>File already exists. Overwrite?</source>
+        <translation>Plik już istnieje. Nadpisać?</translation>
+    </message>
+    <message>
+        <source>Cannot save image: %1</source>
+        <translation>Nie można zapisać obrazka: %1</translation>
     </message>
 </context>
 <context>
@@ -1884,7 +1907,7 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     </message>
     <message>
         <source>Panel menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Menu paska narzędziowego</translation>
     </message>
 </context>
 <context>
@@ -1899,7 +1922,7 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     </message>
     <message>
         <source>Toolbar menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Menu paska narzędziowego</translation>
     </message>
 </context>
 <context>
@@ -2060,10 +2083,6 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     <message>
         <source>Numbers are prohibited</source>
         <translation>Numery są zakazane</translation>
-    </message>
-    <message>
-        <source>Bad Gadu-Gadu UIN.</source>
-        <translation>Zły nr Gadu-Gadu.</translation>
     </message>
 </context>
 <context>

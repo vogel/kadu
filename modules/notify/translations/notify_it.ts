@@ -71,5 +71,9 @@ durante primo colegamento Kadu con serwer</translation>
         <source>Ignore status changes from available / busy to available / busy</source>
         <translation>Ignora i cambiament dello status da disponibile / occupato a disponibile / occupato</translation>
     </message>
+    <message>
+        <source>Mouse over user</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

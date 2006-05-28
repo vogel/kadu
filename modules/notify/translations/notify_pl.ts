@@ -71,5 +71,9 @@ przy pierwszym połaczeniu sie Kadu z serwerem</translation>
         <source>Ignore status changes from available / busy to available / busy</source>
         <translation>Ignoruj zmianę statusów z dostępny / zajęty na dostępny / zajęty</translation>
     </message>
+    <message>
+        <source>Mouse over user</source>
+        <translation>Kursor myszy nad kontaktem</translation>
+    </message>
 </context>
 </TS>

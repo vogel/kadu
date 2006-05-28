@@ -41,6 +41,10 @@
         <source>Local TCP port:</source>
         <translation>Porta TCP locale:</translation>
     </message>
+    <message>
+        <source>An user wants to send you a file</source>
+        <translation type="unfinished">Un contatto vuole trasferire un file per te</translation>
+    </message>
 </context>
 <context>
     <name>DccManager</name>
@@ -130,10 +134,6 @@ ha port forwarding attivato. Continuare connessione ?
         <translation>Manda un file</translation>
     </message>
     <message>
-        <source>open file</source>
-        <translation>apri file</translation>
-    </message>
-    <message>
         <source>Select file location</source>
         <translation>Selezioni percorso del file</translation>
     </message>
@@ -208,10 +208,6 @@ Cosa vuoi fare?</translation>
     <message>
         <source>Toggle transfers window</source>
         <translation>Finestra trasferimenti files</translation>
-    </message>
-    <message>
-        <source>An user wants to send you a file</source>
-        <translation>Un contatto vuole trasferire un file per te</translation>
     </message>
 </context>
 <context>

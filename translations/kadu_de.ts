@@ -943,13 +943,6 @@ Tragen Sie den Pfad in der $PATH-Umgebungsvariablen ein oder bestimmen Sie ihn i
     </message>
 </context>
 <context>
-    <name>ColorButton</name>
-    <message>
-        <source>Color dialog</source>
-        <translation>Farben-Dialog</translation>
-    </message>
-</context>
-<context>
     <name>ConfigDialog</name>
     <message>
         <source>Cancel</source>
@@ -1054,6 +1047,19 @@ Ihr Passwort stimmt nicht!</translation>
     <message>
         <source>Please change your email in &quot;Change password / email&quot; window. Leave new password field blank.</source>
         <translation>Ändern Sie Ihre Email-Adresse im &quot;Passwort / Email ändern&quot;-Fenster. Lassen Sie das Feld &quot;Neues Passwort&quot; leer.</translation>
+    </message>
+    <message>
+        <source>To many connection attempts with bad password!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection will be stoped
+To many attempts with bad password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, servers are down</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1287,10 +1293,6 @@ Ihr Passwort stimmt nicht!</translation>
         <translation>Kadu &amp;verlassen</translation>
     </message>
     <message>
-        <source>User info</source>
-        <translation>Kontakt-Informationen</translation>
-    </message>
-    <message>
         <source>&amp;Yes</source>
         <translation>&amp;Ja</translation>
     </message>
@@ -1422,6 +1424,10 @@ werden gelöscht. Sind Sie sicher?</translation>
 ]</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>You are not on the list</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KaduSlots</name>
@@ -1450,6 +1456,22 @@ werden gelöscht. Sind Sie sicher?</translation>
     <message>
         <source>Copy link &amp;location</source>
         <translation>Kopiere &amp;Linkadresse</translation>
+    </message>
+    <message>
+        <source>&amp;Save image...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File already exists. Overwrite?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot save image: %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2047,10 +2069,6 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     <message>
         <source>Numbers are prohibited</source>
         <translation>Zahlen sind nicht erlaubt</translation>
-    </message>
-    <message>
-        <source>Bad Gadu-Gadu UIN.</source>
-        <translation>Falsche GG-Nummer (UIN).</translation>
     </message>
 </context>
 <context>

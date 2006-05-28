@@ -41,6 +41,10 @@
         <source>Local TCP port:</source>
         <translation>Lokaler TCP-Port:</translation>
     </message>
+    <message>
+        <source>An user wants to send you a file</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DccManager</name>
@@ -129,10 +133,6 @@ oder er/sie nutzt Portweiterleitung. Verbindung zulassen?</translation>
         <translation>Sende Datei</translation>
     </message>
     <message>
-        <source>open file</source>
-        <translation>Öffne Datei</translation>
-    </message>
-    <message>
         <source>Select file location</source>
         <translation>Wählen Sie eine Datei</translation>
     </message>
@@ -207,10 +207,6 @@ Was soll ich tun?</translation>
     <message>
         <source>Toggle transfers window</source>
         <translation>Übertragungsfenster anzeigen/verstecken</translation>
-    </message>
-    <message>
-        <source>An user wants to send you a file</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

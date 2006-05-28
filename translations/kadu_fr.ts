@@ -945,13 +945,6 @@ Vous pouvez l&apos;ajouter dans $PATH ou indiquer l&apos;emplacement d&apos;une 
     </message>
 </context>
 <context>
-    <name>ColorButton</name>
-    <message>
-        <source>Color dialog</source>
-        <translation>Couleurs</translation>
-    </message>
-</context>
-<context>
     <name>ConfigDialog</name>
     <message>
         <source>Cancel</source>
@@ -1057,6 +1050,19 @@ Mot de passe incorrect !</translation>
     <message>
         <source>Please change your email in &quot;Change password / email&quot; window. Leave new password field blank.</source>
         <translation>Change votre adresse e-Mail dans la fenêtre &quot;Change mot de passe / e-Mail&quot;. Le champs de mot de passe nouveau vide.</translation>
+    </message>
+    <message>
+        <source>To many connection attempts with bad password!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection will be stoped
+To many attempts with bad password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, servers are down</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1290,10 +1296,6 @@ Mot de passe incorrect !</translation>
         <translation>&amp;Sortir de  Kadu</translation>
     </message>
     <message>
-        <source>User info</source>
-        <translation>Informations concernant le contact</translation>
-    </message>
-    <message>
         <source>&amp;Yes</source>
         <translation>&amp;Oui</translation>
     </message>
@@ -1425,6 +1427,10 @@ serons effacés.Veuillez confirmer?</translation>
 ]</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>You are not on the list</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KaduSlots</name>
@@ -1453,6 +1459,22 @@ serons effacés.Veuillez confirmer?</translation>
     <message>
         <source>Copy link &amp;location</source>
         <translation>Veuillez copier l&apos;adresse du &amp;lien</translation>
+    </message>
+    <message>
+        <source>&amp;Save image...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File already exists. Overwrite?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot save image: %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2049,10 +2071,6 @@ Peut être module incompatible avec Kadu.</translation>
     <message>
         <source>Numbers are prohibited</source>
         <translation>Les numéros sont interdit</translation>
-    </message>
-    <message>
-        <source>Bad Gadu-Gadu UIN.</source>
-        <translation>Mauvais UIN de Gadu-Gadu.</translation>
     </message>
 </context>
 <context>

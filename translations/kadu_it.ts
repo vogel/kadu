@@ -945,13 +945,6 @@ Il percorso per raggiungere browser non esiste in $PATH. Devi specificarlo.</tra
     </message>
 </context>
 <context>
-    <name>ColorButton</name>
-    <message>
-        <source>Color dialog</source>
-        <translation>Colori</translation>
-    </message>
-</context>
-<context>
     <name>ConfigDialog</name>
     <message>
         <source>Cancel</source>
@@ -1056,6 +1049,19 @@ La tua password è sbagliata!</translation>
     <message>
         <source>Please change your email in &quot;Change password / email&quot; window. Leave new password field blank.</source>
         <translation>Cambiare indirizzo e-mail in &quot;Cambia password / email&quot;. Lasciare vuoto il campo nuova password.</translation>
+    </message>
+    <message>
+        <source>To many connection attempts with bad password!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection will be stoped
+To many attempts with bad password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect, servers are down</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1289,10 +1295,6 @@ La tua password è sbagliata!</translation>
         <translation>&amp;Termina Kadu</translation>
     </message>
     <message>
-        <source>User info</source>
-        <translation>Info contatto</translation>
-    </message>
-    <message>
         <source>&amp;Yes</source>
         <translation>&amp;Sì</translation>
     </message>
@@ -1424,6 +1426,10 @@ saranno eliminati. Vuoi davvero?</translation>
 ]</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>You are not on the list</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KaduSlots</name>
@@ -1452,6 +1458,22 @@ saranno eliminati. Vuoi davvero?</translation>
     <message>
         <source>Copy link &amp;location</source>
         <translation>Copy link &amp;location</translation>
+    </message>
+    <message>
+        <source>&amp;Save image...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File already exists. Overwrite?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot save image: %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2048,10 +2070,6 @@ Possibile incompatibilità con Kadu.</translation>
     <message>
         <source>Numbers are prohibited</source>
         <translation>I numeri sono proibiti</translation>
-    </message>
-    <message>
-        <source>Bad Gadu-Gadu UIN.</source>
-        <translation>Numero GG non valido.</translation>
     </message>
 </context>
 <context>
