@@ -348,29 +348,34 @@ void ALSAPlayerSlots::playSample(SoundDevice device, const int16_t* data, int le
 	if (result)
 	{
 		int res, written = 0;
-		int nullCount = 0;
+		int availErrorsCount = 0;
 		while (written < length)
 		{
 			snd_pcm_wait(dev->player, 100);
 			int towrite = (length - written) / (2 * dev->channels);
 			int avail = snd_pcm_avail_update(dev->player);
-			if (avail < towrite)
-				towrite = avail;
 
-			if (avail == 0)
-				++nullCount;
+			if (avail <= 0)
+			{
+				kdebugm(KDEBUG_WARNING, "avail: %d\n", avail);
+				++availErrorsCount;
+				avail = 0;
+			}
 			else
-				nullCount = 0;
+				availErrorsCount = 0;
 
-			if (nullCount > 10)
+			if (availErrorsCount > 10)
 			{
 				result = false;
 				break;
 			}
 
+			if (avail < towrite)
+				towrite = avail;
+
 			kdebugm(KDEBUG_INFO, "writing %p %p %d %d\n", dev->player, cdata + written, towrite, written);
 			res = snd_pcm_writei(dev->player, cdata + written, towrite);
-			kdebugm(KDEBUG_INFO, "req:%d ret:%d\n", towrite, res);
+			kdebugm(KDEBUG_INFO, "requested:%d written:%d\n", towrite, res);
 			if (res == -EAGAIN || res == -EINVAL)
 				//nie wiem dlaczego trzeba to robiæ tak¿e przy EINVAL, ale to dzia³a...
 				continue;
@@ -400,29 +405,34 @@ void ALSAPlayerSlots::recordSample(SoundDevice device, int16_t* data, int length
 	if (result)
 	{
 		int res, reed = 0;
-		int nullCount = 0;
+		int availErrorsCount = 0;
 		while (reed < length)
 		{
 			snd_pcm_wait(dev->recorder, 100);
 			int toread = (length - reed) / (2 * dev->channels);
 			int avail = snd_pcm_avail_update(dev->recorder);
-			if (avail < toread)
-				toread = avail;
 
-			if (avail == 0)
-				++nullCount;
+			if (avail <= 0)
+			{
+				kdebugm(KDEBUG_WARNING, "avail: %d\n", avail);
+				++availErrorsCount;
+				avail = 0;
+			}
 			else
-				nullCount = 0;
+				availErrorsCount = 0;
 
-			if (nullCount > 10)
+			if (availErrorsCount > 10)
 			{
 				result = false;
 				break;
 			}
 
+			if (avail < toread)
+				toread = avail;
+
 			kdebugm(KDEBUG_INFO, "reading %p %p %d %d\n", dev->recorder, cdata + reed, toread, reed);
 			res = snd_pcm_readi(dev->recorder, cdata + reed, toread);
-			kdebugm(KDEBUG_INFO, "req:%d ret:%d\n", toread, res);
+			kdebugm(KDEBUG_INFO, "requested:%d read:%d\n", toread, res);
 			if (res == -EAGAIN || res == -EINVAL)
 				//nie wiem dlaczego trzeba to robiæ tak¿e przy EINVAL, ale to dzia³a...
 				continue;
