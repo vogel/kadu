@@ -70,7 +70,7 @@ class UserStatus : public QObject
 			Operator kopiuj±cy.
 			\param copyMe obiekt który chcemy skopiowaæ.
 		**/
-		void operator = (const UserStatus &copyMe);
+		UserStatus &operator = (const UserStatus &copyMe);
 
 		/**
 			\fn bool operator == (const UserStatus &compare) const

@@ -26,12 +26,13 @@
 
 QValueList<UserListElements> ignored;
 
-void Ignored::resizeEvent(QResizeEvent *e)
+void Ignored::resizeEvent(QResizeEvent * /*e*/)
 {
 	layoutHelper->resizeLabels();
 }
 
-Ignored::Ignored(QDialog *parent, const char *name) : QHBox(parent, name)
+Ignored::Ignored(QDialog *parent, const char *name) : QHBox(parent, name),
+	lb_list(0), e_uin(0), layoutHelper(new LayoutHelper())
 {
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose);
@@ -95,7 +96,6 @@ Ignored::Ignored(QDialog *parent, const char *name) : QHBox(parent, name)
 	connect(pb_del, SIGNAL(clicked()), this, SLOT(remove()));
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 
-	layoutHelper = new LayoutHelper();
 	layoutHelper->addLabel(l_info);
 	layoutHelper->addLabel(l_uin);
 
@@ -193,7 +193,7 @@ void delIgnored(UserListElements users)
 	ignored.remove(users);
 }
 
-int writeIgnored(QString filename)
+int writeIgnored(QString /*filename*/)
 {
 	kdebugf();
 	QDomElement ignored_elem =

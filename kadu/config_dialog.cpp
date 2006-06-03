@@ -56,7 +56,7 @@ static inline bool streq(const char *s1, const char *s2)
 }
 
 ConfigDialog::ElementConnections::ElementConnections()
-	: receiver(NULL)
+	: signal(0), receiver(NULL), slot(0)
 {
 }
 
@@ -451,10 +451,11 @@ void ConfigDialog::createTabAndWidgets(const char *tab)
 
 
 
-ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const char *name) : QVBox(parent, name)
+ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const char *name) : QVBox(parent, name), box(0),
+	userLevel(static_cast<UserLevel>(config_file.readNumEntry("General", "UserLevel"))),
+	listBox(0), view(0), okButton(0), applyButton(0), cancelButton(0)
 {
 	kdebugf();
-
 
 	ConfigDialog::appHandle=application;
 	setWFlags(Qt::WDestructiveClose);
@@ -500,8 +501,6 @@ ConfigDialog::ConfigDialog(QApplication *application, QWidget *parent, const cha
 	QHBox *bottom = new QHBox(this, "buttons");
 	bottom->setMargin(10);
 	bottom->setSpacing(5);
-
-	userLevel = static_cast<UserLevel>(config_file.readNumEntry("General", "UserLevel"));
 
 	new QLabel(tr("User experience level:"), bottom);
 	QComboBox *userLevelComboBox = new QComboBox(bottom);
@@ -1246,21 +1245,15 @@ void ConfigDialog::addSelectFont(ConfigFile *config, const char *groupname, cons
 }
 
 ConfigDialog::RegisteredControl::RegisteredControl(RegisteredControlType t,
-	const char *groupname,
-	const char *parent,
-	const char *caption,
-	const char *name,
-	const UserLevel userLevelRequired)
+	const char *groupname_,
+	const char *parent_,
+	const char *caption_,
+	const char *name_,
+	const UserLevel userLevelRequired_) : type(t), parent(parent_), name(name_), caption(caption_),
+		group(groupname_), entry(0), defaultS(), tip(0), additionalParams(), parentControl(),
+		widget(0), entireWidget(0), nrOfControls(0), userLevelRequired(userLevelRequired_),
+		config(0), ConnectedSlots()
 {
-	this->type = t;
-	this->group = groupname;
-	this->parent = parent;
-	this->caption = caption;
-	this->name = name;
-	this->widget = 0;
-	this->nrOfControls = 0;
-	this->config = 0;
-	this->userLevelRequired = userLevelRequired;
 }
 
 void ConfigDialog::connectSlot(const char *groupname, const char *caption,

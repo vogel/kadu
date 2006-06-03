@@ -17,6 +17,7 @@ class HintProperties
 		QColor fgcolor;
 		QColor bgcolor;
 		unsigned int timeout;
+		HintProperties();
 };
 
 class HintManagerSlots : public QObject

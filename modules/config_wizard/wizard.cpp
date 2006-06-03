@@ -63,10 +63,10 @@ extern "C" void config_wizard_close()
 }
 
 WizardStarter::WizardStarter(QObject *parent, const char *name)
-	: QObject(parent, name)
+	: QObject(parent, name),
+	menuPos(kadu->mainMenu()->insertItem(icons_manager->loadIcon("ConfigurationWizard"),
+		tr("Configuration Wizard"), this, SLOT(start()), 0, -1, 0))
 {
-	menuPos = kadu->mainMenu()->insertItem(icons_manager->loadIcon("ConfigurationWizard"),
-		tr("Configuration Wizard"), this, SLOT(start()), 0, -1, 0);
 }
 
 WizardStarter::~WizardStarter()
@@ -88,7 +88,22 @@ void WizardStarter::start()
 }
 
 Wizard::Wizard(QWidget *parent, const char *name, bool modal)
-	: QWizard(parent, name, modal)
+	: QWizard(parent, name, modal),
+	noNewAccount(false), welcomePage(0), ggNumberSelect(0), ggCurrentNumberPage(0),
+	ggNewNumberPage(0), languagePage(0), chatOptionsPage(0), wwwOptionsPage(0),
+	soundOptionsPage(0), generalOptionsPage(0), greetingsPage(0), hintsOptionsPage(0),
+	colorsPage(0), qtStylePage(0), infoPanelPage(0), rb_haveNumber(0), rb_dontHaveNumber(0),
+	l_ggNumber(0), l_ggPassword(0), l_ggNewPasssword(0), l_ggNewPassswordRetyped(0),
+	l_email(0), l_customBrowser(0), c_importContacts(0), c_waitForDelivery(0),
+	c_enterSendsMessage(0), c_openOnNewMessage(0), c_flashTitleOnNewMessage(0),
+	c_ignoreAnonyms(0), c_logMessages(0), c_logStatusChanges(0), c_privateStatus(0),
+	c_showBlocked(0), c_showBlocking(0), c_startDocked(0), c_enableSounds(0),
+	c_playWhilstChatting(0), c_playWhenInvisible(0), c_showInfoPanel(0), c_showScrolls(0),
+	cb_browser(0), cb_browserOptions(0), cb_hintsTheme(0), cb_hintsType(0),
+	cb_colorTheme(0), cb_iconTheme(0), cb_qtTheme(0), cb_panelTheme(0), cb_soundModule(0),
+	preview(0), preview2(0), preview4(0), iconPreview(0), iconPreview2(0),
+	iconPreview3(0), iconPreview4(0), moduleInfo(0), customHint(), customPanel(),
+	infoPreview(0), registerAccount(0)
 {
 	kdebugf();
 	setCaption(tr("Kadu Wizard"));
@@ -125,7 +140,6 @@ Wizard::Wizard(QWidget *parent, const char *name, bool modal)
 	connect(cancelButton(), SIGNAL(clicked()), this, SLOT(cancelClicked()));
 
 	helpButton()->hide();
-	noNewAccount = false;
 
 	kdebugf2();
 }

@@ -15,10 +15,9 @@
 
 DockArea::DockArea(Orientation o, HandlePosition h,
 			QWidget* parent, const QString& dockarea_group, const char* name)
-	: QDockArea(o, h, parent, name)
+	: QDockArea(o, h, parent, name), DockAreaGroup(dockarea_group)
 {
 	kdebugf();
-	DockAreaGroup = dockarea_group;
 	kdebugf2();
 }
 

@@ -16,7 +16,7 @@
 #include "misc.h"
 #include "toolbar.h"
 
-ToolBar::ToolBar(QWidget* parent, const char *name)
+ToolBar::ToolBar(QWidget* /*parent*/, const char *name)
 	: QToolBar(NULL, name), dragButton(NULL)
 {
 	kdebugf();
@@ -67,7 +67,7 @@ void ToolBar::dragEnterEvent(QDragEnterEvent* event)
 	kdebugf2();
 }
 
-void ToolBar::dragLeaveEvent(QDragLeaveEvent *event)
+void ToolBar::dragLeaveEvent(QDragLeaveEvent * /*event*/)
 {
 	kdebugf();
 	if (dragButton)

@@ -34,7 +34,7 @@ class KaduLink : public QLabel
 		}
 };
 
-About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopLevel|WDestructiveClose)
+About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopLevel|WDestructiveClose), layoutHelper(new LayoutHelper())
 {
 	kdebugf();
 	// set window properties and flags
@@ -116,7 +116,6 @@ About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopL
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 	// end close button
 
-	layoutHelper = new LayoutHelper();
 	layoutHelper->addLabel(l_info);
 	loadGeometry(this, "General", "AboutGeometry", 0, 30, 640, 420);
 	kdebugf2();
@@ -154,7 +153,7 @@ QString About::loadFile(const QString &name)
 	return data;
 }
 
-void About::resizeEvent(QResizeEvent *e)
+void About::resizeEvent(QResizeEvent * /*e*/)
 {
 	layoutHelper->resizeLabels();
 }

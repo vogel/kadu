@@ -19,8 +19,8 @@
 #include "misc.h"
 #include "userbox.h"
 
-IconsManager::IconsManager(const QString& name, const QString& configname)
-	:Themes(name, configname, "icons_manager")
+IconsManager::IconsManager(const QString& name, const QString& configname) :
+	Themes(name, configname, "icons_manager"), icons(), animatedIcons(), menus()
 {
 	kdebugf();
 	kdebugf2();

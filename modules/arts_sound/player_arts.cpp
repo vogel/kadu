@@ -25,7 +25,7 @@
 #include <qtimer.h>
 #include "arts_connector/common.c"
 
-aRtsDevice::aRtsDevice() : process(NULL), sock(-1), no(-1), valid(true)
+aRtsDevice::aRtsDevice() : mutex(), inUse(), process(0), sock(-1), no(-1), valid(true)
 {
 }
 
@@ -76,7 +76,7 @@ void aRtsDevice::deleteLater2()
 extern "C" int arts_sound_init()
 {
 	kdebugf();
-	arts_player_recorder = new aRtsPlayerRecorder(NULL, "arts_player_recorder");
+	arts_player_recorder = new aRtsPlayerRecorder(0, "arts_player_recorder");
 	kdebugf2();
 	return 0;
 }
@@ -89,12 +89,11 @@ extern "C" void arts_sound_close()
 	kdebugf2();
 }
 
-aRtsPlayerRecorder::aRtsPlayerRecorder(QObject *parent, const char *name) : QObject(parent, name)
+aRtsPlayerRecorder::aRtsPlayerRecorder(QObject *parent, const char *name) : QObject(parent, name),
+	poolmutex(), busymutex(), pool(), busy(), num(0), finalizing(false)
 {
 	kdebugf();
-	num = 0;
 	srandom(time(NULL));
-	finalizing = false;
 
 	connect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice&)),
 		this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice&)));

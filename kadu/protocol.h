@@ -42,7 +42,7 @@ class Protocol : public QObject
 		UserStatus *NextStatus;
 
 	public:
-		Protocol(const QString &id, QObject *parent = 0, const char *name = 0);
+		Protocol(const QString &proto, const QString &id, QObject *parent = 0, const char *name = 0);
 		virtual ~Protocol();
 
 		/**
@@ -139,6 +139,9 @@ class Protocol : public QObject
 			@param reason napis do wy¶wietlenia dla u¿ytkownika
 		**/
 		void connectionError(Protocol *protocol, const QString &reason);
+	private:
+		Protocol(const Protocol &) {}
+		virtual Protocol &operator=(const Protocol &){return *this;}
 };
 
 #endif

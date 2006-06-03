@@ -37,6 +37,7 @@ struct HistoryEntry {
 	QString ip;
 	QString description;
 	QString mobile;
+	HistoryEntry();
 };
 
 struct HistoryFindRec {
@@ -46,11 +47,13 @@ struct HistoryFindRec {
 	QString data;
 	bool reverse;
 	int actualrecord;
+	HistoryFindRec();
 };
 
 struct HistoryDate {
 	QDateTime date;
 	uint idx;
+	HistoryDate();
 };
 
 class UinsListViewText : public QListViewItem {

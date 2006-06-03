@@ -14,6 +14,10 @@
 #include "html_document.h"
 #include "misc.h"
 
+HtmlDocument::HtmlDocument() : Elements()
+{
+}
+
 void HtmlDocument::escapeText(QString& text)
 {
 	//UWAGA: &amp; MUSI byæ na pocz±tku!

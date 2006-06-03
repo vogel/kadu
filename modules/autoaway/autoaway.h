@@ -44,7 +44,7 @@ class AutoAwayTimer : private QTimer
 		AutoAwayTimer(QObject *parent = 0, const char *name=0);
 		QString changeDescription(const QString &oldDescription);
 		
-		bool didChangeStatus;	
+		bool didChangeStatus;
 		bool didChangeDescription;
 
 		enum DescAction {NOTHING=0, REPLACE=1, PREPEND=2, APPEND=3} action;

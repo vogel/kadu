@@ -21,7 +21,6 @@ class UserlistImportExport : public QHBox {
 		UserlistImportExport(QWidget *parent=NULL, const char *name=NULL);
 		~UserlistImportExport();
 	private:
-		int ret;
 		QPushButton *pb_fetch;
 		QValueList<UserListElement> importedUserlist;
 		QPushButton *pb_send;

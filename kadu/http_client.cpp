@@ -14,7 +14,9 @@
 #include "http_client.h"
 #include "misc.h"
 
-HttpClient::HttpClient()
+HttpClient::HttpClient() :
+		Socket(), Host(), Referer(), Path(), Data(), PostData(), StatusCode(0),
+		HeaderParsed(false), ContentLength(0), ContentLengthNotFound(false), Cookies()
 {
 	kdebugf();
 	connect(&Socket, SIGNAL(connected()), this, SLOT(onConnected()));

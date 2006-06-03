@@ -36,6 +36,7 @@ class EmoticonsManager
 			QString alias;
 			QString anim;
 			QString stat;
+			EmoticonsListItem();
 		};
 		QValueVector<EmoticonsListItem> Aliases;
 		QValueList<EmoticonsListItem> Selector;
@@ -209,6 +210,7 @@ class AnimTextItem : public QTextCustomItem
 			QMovie movie;
 			QSize size;
 			int count;
+			MovieCacheData();
 		};
 		typedef QMap<QString,MovieCacheData> MoviesCache;
 		static MoviesCache* Movies;
@@ -257,8 +259,9 @@ class StaticStyleSheet : public QStyleSheet
 
 struct PrefixNode
 {
-  int emotIndex;
-  QValueVector<QPair<QChar, PrefixNode*> > childs;
+	int emotIndex;
+	QValueVector<QPair<QChar, PrefixNode*> > childs;
+	PrefixNode();
 };
 
 /**

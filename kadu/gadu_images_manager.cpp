@@ -13,6 +13,18 @@
 #include "icons_manager.h"
 #include "misc.h"
 
+GaduImagesManager::ImageToSend::ImageToSend() : size(0), crc32(0), file_name(), lastSent(), data(0)
+{
+}
+
+GaduImagesManager::SavedImage::SavedImage() : size(0), crc32(0), file_name()
+{
+}
+
+GaduImagesManager::GaduImagesManager() : ImagesToSend(), SavedImages()
+{
+}
+
 void GaduImagesManager::setBackgroundsForAnimatedImages(HtmlDocument &doc, const QColor &col)
 {
 	static QString anim("<img bgcolor=\"\" animated=\"1\"");

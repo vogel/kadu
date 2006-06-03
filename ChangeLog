@@ -378,6 +378,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawione dzia³anie funkcji unicode2std i unicode2latinUrl (joi)
 * poprawka wywrotki w alsa_sound (u mnie gdy gra amarok 1.4 przez xine
   z wyj¶ciem alsa) (joi)
+* szereg poprawek (~200), które wynik³y z zastosowania do kompilacji flag
+  -Wextra -Weffc++: niezainicjowane lub nieu¿ywane zmienne, zabezpieczenia przed
+  niew³a¶ciwym u¿yciem - brak konstruktorów kopiuj±cych, operatorów przypisania (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

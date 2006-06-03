@@ -37,7 +37,8 @@ extern "C" void wmaker_docking_close()
 }
 
 WMakerTrayIcon::WMakerTrayIcon(QWidget *parent, const char *name)
-	: QLabel(parent, name, WMouseNoMask | WRepaintNoErase | WType_TopLevel | WStyle_Customize | WStyle_NoBorder | WStyle_StaysOnTop)
+	: QLabel(parent, name, WMouseNoMask | WRepaintNoErase | WType_TopLevel | WStyle_Customize | WStyle_NoBorder | WStyle_StaysOnTop),
+	WMakerMasterWidget(0)
 {
 	kdebugf();
 	setBackgroundMode(X11ParentRelative);

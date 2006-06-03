@@ -27,7 +27,8 @@
 #include "userlist.h"
 
 MigrationDialog::MigrationDialog()
-	: QDialog(NULL, NULL, true), ShouldRestart(false), SettingsDirMigrationConfirmed(false)
+	: QDialog(NULL, NULL, true), ShouldRestart(false), SettingsDirMigrationConfirmed(false),
+	ProgressListView(0), FinishLabel(0), FinishButton(0)
 {
 	resize(500, 300);
 	setCaption(tr("Migration"));

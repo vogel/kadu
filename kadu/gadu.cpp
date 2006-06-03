@@ -148,22 +148,24 @@ QStringList UinsList::toStringList() const
 	return list;
 }
 
-SearchResult::SearchResult()
+SearchResult::SearchResult() :
+	Uin(), First(), Last(), Nick(), Born(), City(),
+	FamilyName(), FamilyCity(), Gender(0), Stat()
 {
 }
 
-SearchResult::SearchResult(const SearchResult& copyFrom)
+SearchResult::SearchResult(const SearchResult& copyFrom) : 
+	Uin(copyFrom.Uin), 
+	First(copyFrom.First),
+	Last(copyFrom.Last),
+	Nick(copyFrom.Nick),
+	Born(copyFrom.Born),
+	City(copyFrom.City),
+	FamilyName(copyFrom.FamilyName),
+	FamilyCity(copyFrom.FamilyCity),
+	Gender(copyFrom.Gender),
+	Stat(copyFrom.Stat)
 {
-	Uin = copyFrom.Uin;
-	First = copyFrom.First;
-	Last = copyFrom.Last;
-	Nick = copyFrom.Nick;
-	Born = copyFrom.Born;
-	City = copyFrom.City;
-	FamilyName = copyFrom.FamilyName;
-	FamilyCity = copyFrom.FamilyCity;
-	Gender = copyFrom.Gender;
-	Stat = copyFrom.Stat;
 }
 
 void SearchResult::setData(const char *uin, const char *first, const char *last, const char *nick, const char *born,
@@ -187,10 +189,11 @@ void SearchResult::setData(const char *uin, const char *first, const char *last,
 	kdebugf2();
 }
 
-SearchRecord::SearchRecord()
+SearchRecord::SearchRecord() :
+	Seq(0), FromUin(0), Uin(), FirstName(), LastName(), NickName(),
+	City(), BirthYearFrom(), BirthYearTo(), Gender(0), Active(false)
 {
 	kdebugf();
-	clearData();
 	kdebugf2();
 }
 
@@ -386,21 +389,17 @@ void GaduProtocol::initModule()
 	kdebugf2();
 }
 
-GaduProtocol::GaduProtocol(const QString &id, QObject *parent, const char *name) : Protocol(id, parent, name)
+GaduProtocol::GaduProtocol(const QString &id, QObject *parent, const char *name) : Protocol("Gadu", id, parent, name),
+		Mode(Register), DataUin(0), DataEmail(), DataPassword(), DataNewPassword(), TokenId(), TokenValue(),
+		ServerNr(0), ActiveServer(0), LoginParams(), Sess(0), whileConnecting(false), DccExternalIP(),
+		SocketNotifiers(new GaduSocketNotifiers(this, "gadu_socket_notifiers")), PingTimer(0),
+		SendUserListTimer(new QTimer(this, "SendUserListTimer")), 
+		UserListClear(false), ImportReply()
 {
 	kdebugf();
 
-	ProtocolID = "Gadu";
-
-	SendUserListTimer = new QTimer(this, "SendUserListTimer");
-	whileConnecting = false;
-	Sess = NULL;
 	CurrentStatus = new GaduStatus();
 	NextStatus = new GaduStatus();
-	SocketNotifiers = new GaduSocketNotifiers(this, "gadu_socket_notifiers");
-	PingTimer = NULL;
-	ActiveServer = NULL;
-	ServerNr = 0;
 
 	connect(NextStatus, SIGNAL(goOnline(const QString &)), this, SLOT(iWantGoOnline(const QString &)));
 	connect(NextStatus, SIGNAL(goBusy(const QString &)), this, SLOT(iWantGoBusy(const QString &)));
@@ -467,7 +466,7 @@ UserStatus *GaduProtocol::newStatus() const
 	return new GaduStatus();
 }
 
-void GaduProtocol::currentStatusChanged(const UserStatus &status, const UserStatus &oldStatus)
+void GaduProtocol::currentStatusChanged(const UserStatus &/*status*/, const UserStatus &/*oldStatus*/)
 {
 	if (userlist->contains("Gadu", QString::number(LoginParams.uin)))
 		userlist->byID("Gadu", QString::number(LoginParams.uin)).setStatus("Gadu", *CurrentStatus);
@@ -2258,9 +2257,10 @@ GaduStatus::~GaduStatus()
 {
 }
 
-void GaduStatus::operator = (const UserStatus &copyMe)
+GaduStatus &GaduStatus::operator = (const UserStatus &copyMe)
 {
 	setStatus(copyMe);
+	return *this;
 }
 
 QPixmap GaduStatus::pixmap(eUserStatus stat, bool hasDescription, bool mobile) const

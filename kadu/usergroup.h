@@ -406,10 +406,10 @@ class UserGroup : public QObject
 
 	private:
 		/* standardowy konstruktor kopiuj±cy zepsu³by obiekt ¼ród³owy */
-		UserGroup(const UserGroup &) {}
+		UserGroup(const UserGroup &) : QObject(0,0), d(0) {}
 
 		/* standardowy operator kopiowania zepsu³by obiekt ¼ród³owy */
- 		virtual void operator = (const UserGroup &) {}
+ 		virtual UserGroup &operator = (const UserGroup &) {return *this;}
 
 		/* nie da siê porównywaæ obiektów tej klasy */
 		bool operator==(const UserGroup &) const {return false;}

@@ -121,7 +121,7 @@ extern "C" void sms_close()
 /********** SmsImageDialog **********/
 
 SmsImageDialog::SmsImageDialog(QDialog* parent, const QByteArray& image)
-	: QDialog (parent, "SmsImageDialog")
+	: QDialog (parent, "SmsImageDialog"), code_edit(0)
 {
 	kdebugf();
 
@@ -157,7 +157,7 @@ void SmsImageDialog::onReturnPressed()
 /********** SmsGateway **********/
 
 SmsGateway::SmsGateway(QObject* parent, const char *name)
-	: QObject(parent, name)
+	: QObject(parent, name), State(SMS_LOADING_PAGE), Number(), Signature(), Message(), Http()
 {
 	QObject::connect(&Http, SIGNAL(finished()), this, SLOT(httpFinished()));
 	QObject::connect(&Http, SIGNAL(redirected(QString)), this, SLOT(httpRedirected(QString)));
@@ -175,9 +175,8 @@ void SmsGateway::httpError()
 /********** SmsSender **********/
 
 SmsSender::SmsSender(QObject* parent, const char *name)
-	: QObject(parent, name)
+	: QObject(parent, name), Gateway(0)
 {
-	Gateway=NULL;
 }
 
 SmsSender::~SmsSender()
@@ -234,7 +233,9 @@ void SmsSender::send(const QString& number,const QString& message, const QString
 
 /********** Sms **********/
 
-Sms::Sms(const QString& altnick, QDialog* parent, const char *name) : QDialog (parent, name)
+Sms::Sms(const QString& altnick, QDialog* parent, const char *name) : QDialog (parent, name),
+	body(0), recipient(0), list(0), smslen(0), l_contact(0), e_contact(0), l_signature(0), 
+	e_signature(0), b_send(0), c_saveInHistory(0), smsProcess(0), Sender()
 {
 	kdebugf();
 	QGridLayout * grid = new QGridLayout(this, 3, 4, 10, 3);
@@ -446,7 +447,8 @@ void Sms::onSmsSenderFinished(bool success)
 	kdebugf2();
 }
 
-SmsSlots::SmsSlots(QObject *parent, const char *name) : QObject(parent, name)
+SmsSlots::SmsSlots(QObject *parent, const char *name) : QObject(parent, name),
+	menuid(0), gateways()
 {
 	kdebugf();
 	UserBox::userboxmenu->addItemAtPos(2, "SendSms", tr("Send SMS"), this, SLOT(onSendSmsToUser()),

@@ -288,7 +288,7 @@ class UserBox : public QListBox
 		**/
 		UserBox(UserGroup *group = userlist, QWidget* parent = 0, const char* name = 0, WFlags f = 0);
 
-		~UserBox();
+		virtual ~UserBox();
 
 		/**
 			\var static UserBoxMenu *userboxmenu
@@ -361,7 +361,7 @@ class UserBox : public QListBox
 			public:
  				CmpFuncDesc(QString i, QString d, int (*f)(const UserListElement &, const UserListElement &))
  					: id(i), description(d), func(f) {}
- 				CmpFuncDesc(){}
+ 				CmpFuncDesc() : id(), description(), func(0){}
 
 				QString id;
 				QString description;

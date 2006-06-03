@@ -13,11 +13,10 @@
 #include "misc.h"
 #include "themes.h"
 
-Themes::Themes(const QString& themename, const QString& configname, const char *name) : QObject(NULL, name)
+Themes::Themes(const QString& themename, const QString& configname, const char *name)
+	: QObject(NULL, name), ThemesList(), ThemesPaths(), additional(),
+	ConfigName(configname), Name(themename), ActualTheme("Custom"), entries()
 {
-	Name= themename;
-	ConfigName= configname;
-	ActualTheme="Custom";
 }
 
 QStringList Themes::getSubDirs(const QString& path) const

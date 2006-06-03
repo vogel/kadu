@@ -46,6 +46,7 @@ class ChatManager : public QObject
 					identyfikuj±ca okno */
 			QMap<QString, QVariant> map; /*!< parametry
 							danego okna */
+			ChatInfo() : users(), map() {}
 		};
 		QValueList<ChatInfo> addons; /*!< lista parametrów okien */
 		QTimer refreshTitlesTimer;

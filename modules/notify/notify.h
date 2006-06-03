@@ -44,6 +44,7 @@ class Notify : public QObject
 				QString name;
 				QCString wname;
 				const char *description;
+				NotifyEvent() : name(), wname(), description(0){}
 		};
 		QValueList<NotifyEvent> notifyEvents;
 		QMap<QString, QValueList<QCString> > strs;

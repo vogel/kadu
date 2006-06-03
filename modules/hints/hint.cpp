@@ -12,14 +12,12 @@
 #include "debug.h"
 #include "config_file.h"
 
-Hint::Hint(QWidget *parent, const QString& text, const QPixmap& pixmap, unsigned int timeout) : QHBoxLayout(0, "Hint")
+Hint::Hint(QWidget *parent, const QString& text, const QPixmap& pixmap, unsigned int timeout) :
+	QHBoxLayout(0, "Hint"), icon(0), label(0), bcolor(), secs(timeout), ident(0), users()
 {
 	kdebugf();
 	if (timeout==0)
 		kdebugm(KDEBUG_INFO|KDEBUG_ERROR, "Hint error: timeout==0! text: %s\n", text.local8Bit().data());
-
-	secs = timeout;
-	ident = 0;
 
 	setResizeMode(QLayout::Fixed);
 
@@ -31,8 +29,6 @@ Hint::Hint(QWidget *parent, const QString& text, const QPixmap& pixmap, unsigned
 		icon->installEventFilter(this);
 		addWidget(icon);
 	}
-	else
-		icon = NULL;
 
 	label = new QLabel(" " + QString(text).replace(" ", "&nbsp;"), parent, "Label");
 	label->setTextFormat(Qt::RichText);

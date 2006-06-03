@@ -11,7 +11,8 @@
 #include "misc.h"
 #include "protocols_manager.h"
 
-ProtocolsManager::ProtocolsManager() : QObject(NULL, "protocols_manager")
+ProtocolsManager::ProtocolsManager() : QObject(NULL, "protocols_manager"),
+	protocolDescriptions(), protocols()
 {
 }
 

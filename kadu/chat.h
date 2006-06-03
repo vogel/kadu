@@ -65,8 +65,6 @@ class Chat : public QMainWindow
 		bool AutoSend;
 		bool ScrollLocked;
 		bool WaitingForACK;
-		QAccel* acc; /*!< zmienna potrzebna do
-				 rejestracji skrótów klawiszowych*/
 		UserBox* userbox; /*!< lista kontaktów przydatna gdy jeste¶my w
 						 konferencji */
 		QString myLastMessage;/*!< zmienna przechowuj±ca

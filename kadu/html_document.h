@@ -16,6 +16,7 @@ class HtmlDocument
 		{
 			QString text;
 			bool tag;
+			Element() : text(), tag(false) {}
 		};
 		QValueList<Element> Elements;
 		void addElement(Element e);
@@ -23,6 +24,8 @@ class HtmlDocument
 	public:
 		static void escapeText(QString& text);
 		static void unescapeText(QString& text);
+
+		HtmlDocument();
 
 		/**
 			Dodaje podany tekst do listy elementów jako

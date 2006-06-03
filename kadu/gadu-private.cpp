@@ -18,11 +18,9 @@
 #include "misc.h"
 #include "userlist.h"
 
-SocketNotifiers::SocketNotifiers(int fd, QObject *parent, const char *name) : QObject(parent, name)
+SocketNotifiers::SocketNotifiers(int fd, QObject *parent, const char *name) : QObject(parent, name), Fd(fd), Snr(0), Snw(0)
 {
 	kdebugf();
-	Fd = fd;
-	Snr = Snw = NULL;
 	kdebugf2();
 }
 
@@ -94,10 +92,9 @@ void SocketNotifiers::recreateSocketNotifiers()
 /* PubdirSocketNotifiers */
 
 PubdirSocketNotifiers::PubdirSocketNotifiers(struct gg_http *h, QObject *parent, const char *name)
-	: SocketNotifiers(h->fd, parent, name)
+	: SocketNotifiers(h->fd, parent, name), H(h)
 {
 	kdebugf();
-	H = h;
 	kdebugf2();
 }
 
@@ -190,7 +187,7 @@ void PubdirSocketNotifiers::socketEvent()
 /* TokenSocketNotifier */
 
 TokenSocketNotifiers::TokenSocketNotifiers(QObject *parent, const char *name)
-	: SocketNotifiers(0, parent, name)
+	: SocketNotifiers(0, parent, name), H(0)
 {
 	kdebugf();
 	kdebugf2();
@@ -316,11 +313,10 @@ void TokenSocketNotifiers::socketEvent()
 
 /* GaduSocketNotifiers */
 
-GaduSocketNotifiers::GaduSocketNotifiers(QObject *parent, const char *name) : SocketNotifiers(0, parent, name)
+GaduSocketNotifiers::GaduSocketNotifiers(QObject *parent, const char *name) :
+	SocketNotifiers(0, parent, name), Sess(0), socketEventCalls(0)
 {
 	kdebugf();
-	Sess = 0;
-	socketEventCalls = 0;
 	kdebugf2();
 }
 

@@ -17,6 +17,10 @@ ChatStyle::ChatStyle(const QString& format_string_full,
 {
 }
 
+ChatStyle::~ChatStyle()
+{
+}
+
 const QString& ChatStyle::formatStringFull() const
 {
 	return FormatStringFull;

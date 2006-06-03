@@ -13,12 +13,12 @@
 #include "misc.h"
 
 KaduSplitter::KaduSplitter(QWidget* parent, const char* name)
-	: QSplitter (parent, name)
+	: QSplitter (parent, name), textbrowsers()
 {
 }
 
 KaduSplitter::KaduSplitter(Orientation o, QWidget* parent, const char* name)
-	: QSplitter(o,parent,name)
+	: QSplitter(o,parent,name), textbrowsers()
 {
 }
 

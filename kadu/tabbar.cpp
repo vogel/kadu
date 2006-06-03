@@ -23,12 +23,10 @@
 struct QTabPrivate;
 
 KaduTabBar::KaduTabBar(QWidget *parent, const char *name)
-	: QTabBar(parent, name)
+	: QTabBar(parent, name), lstatic2(new QPtrList<QTab>), vertscrolls(false), upB(0), downB(0)
 {
 	kdebugf();
 	setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred));
-	lstatic2 = new QPtrList<QTab>;
-	vertscrolls = FALSE;
 	upB = new QToolButton(UpArrow, this, "qt_up_btn");
 	connect(upB, SIGNAL(clicked()), this, SLOT(scrollTabsVert()));
 	upB->hide();

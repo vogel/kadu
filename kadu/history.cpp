@@ -40,9 +40,8 @@ enum {
 	HISTORYMANAGER_SMS_WITHOUT_NICK
 };
 
-HistoryManager::HistoryManager(QObject *parent, const char *name) : QObject(parent, name)
+HistoryManager::HistoryManager(QObject *parent, const char *name) : QObject(parent, name), bufferedMessages(), imagesTimer(new QTimer(this, "imagesTimer"))
 {
-	imagesTimer=new QTimer(this, "imagesTimer");
 	imagesTimer->start(1000*60);//60 sekund
 	connect(imagesTimer, SIGNAL(timeout()), this, SLOT(checkImagesTimeouts()));
 	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
@@ -1162,7 +1161,7 @@ int HistoryManager::getHistoryEntryIndexByDate(const UinsList &uins, const QDate
 	return start;
 }
 
-void HistoryManager::chatMsgReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t t, bool& /*grab*/)
+void HistoryManager::chatMsgReceived(Protocol * /*protocol*/, UserListElements senders, const QString& msg, time_t t, bool& /*grab*/)
 {
 	if (!config_file.readBoolEntry("History", "Logging"))
 		return;
@@ -1284,7 +1283,7 @@ void HistoryManager::checkImagesTimeouts()
 }
 
 void HistoryManager::statusChanged(UserListElement elem, QString protocolName,
-					const UserStatus &oldStatus, bool massively, bool last)
+					const UserStatus & /*oldStatus*/, bool /*massively*/, bool /*last*/)
 {
 	if (protocolName == "Gadu") //TODO: make more general
 		appendStatus(elem.ID("Gadu").toUInt(), elem.status("Gadu"));
@@ -1331,7 +1330,9 @@ const HistoryDate &DateListViewText::getDate() const
 	return date;
 }
 
-History::History(UinsList uins) : QDialog(NULL, "HistoryDialog"), uins(uins), closeDemand(false), finding(false)
+History::History(UinsList uins) : QDialog(NULL, "HistoryDialog"), uinslv(0), body(0),
+	uins(uins), start(0), findrec(), closeDemand(false), finding(false), dateentries(),
+	ParagraphSeparator(config_file.readNumEntry("General", "ParagraphSeparator"))
 {
 	kdebugf();
 	history->convHist2ekgForm(uins);
@@ -1356,7 +1357,7 @@ History::History(UinsList uins) : QDialog(NULL, "HistoryDialog"), uins(uins), cl
 		body->setStyleSheet(new AnimStyleSheet(body, emoticons->themePath()));
 	else
 		body->setStyleSheet(new StaticStyleSheet(body,emoticons->themePath()));
-	ParagraphSeparator=config_file.readNumEntry("General", "ParagraphSeparator");
+
 	body->setMargin(ParagraphSeparator);
 
 	QHBox *btnbox = new QHBox(vbox, "btnbox");
@@ -1852,7 +1853,11 @@ void History::initModule()
 	kdebugf2();
 }
 
-HistorySearch::HistorySearch(QWidget *parent, UinsList uins) : QDialog(parent), uins(uins)
+HistorySearch::HistorySearch(QWidget *parent, UinsList uins) : QDialog(parent),
+		from_hgb(0), to_hgb(0), phrase_hgb(0), status_hgb(0), from_chb(0), to_chb(0), reverse_chb(0),
+		from_day_cob(0), from_month_cob(0), from_year_cob(0), from_hour_cob(0), from_min_cob(0),
+		to_day_cob(0), to_month_cob(0), to_year_cob(0), to_hour_cob(0), to_min_cob(0), status_cob(0),
+		phrase_edit(0), criteria_bg(0), phrase_rb(0), status_rb(0), numslist(), uins(uins)
 {
 	kdebugf();
 	setCaption(tr("Search history"));
@@ -2206,6 +2211,21 @@ void HistorySlots::updateQuoteTimeLabel(int value)
 	ConfigDialog::getLabel("History", 0, "dayhour") ->
 			setText(tr("%1 day(s) %2 hour(s)").arg(-value / 24).arg((-value) % 24));
 	kdebugf2();
+}
+
+HistoryEntry::HistoryEntry() :
+	type(0), uin(0), nick(), date(), sdate(),
+	message(), status(0), ip(), description(), mobile()
+{
+}
+
+HistoryFindRec::HistoryFindRec() :
+	fromdate(), todate(), type(0), data(), reverse(false), actualrecord()
+{
+}
+
+HistoryDate::HistoryDate() : date(), idx(0)
+{
 }
 
 HistoryManager *history = 0;

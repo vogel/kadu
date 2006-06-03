@@ -48,7 +48,8 @@ extern "C" void encryption_close()
 	encryption_manager=NULL;
 }
 
-EncryptionManager::EncryptionManager(QObject *parent, const char *name) : QObject(parent, name)
+EncryptionManager::EncryptionManager(QObject *parent, const char *name) : QObject(parent, name),
+	EncryptionEnabled()
 {
 	kdebugf();
 	config_file.addVariable("Encryption", "EncryptionKeyLength", "1024");

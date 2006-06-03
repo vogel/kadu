@@ -94,9 +94,8 @@ class SampleRecordThread : public QObject, public QThread
 class SndParams
 {
 	public:
-		SndParams(QString fm, bool volCntrl=false, float vol=1);
+		SndParams(QString fm = QString::null, bool volCntrl = false, float vol = 1);
 		SndParams(const SndParams &p);
-		SndParams();
 
 		QString filename;
 		bool volumeControl;

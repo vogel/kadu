@@ -264,7 +264,9 @@ void GroupsManager::changeDisplayingWithoutDescription()
 	kdebugf2();
 }
 
-GroupsManager::GroupsManager() : QObject(0, "groups_manager"), GroupBar(NULL)
+GroupsManager::GroupsManager() : QObject(0, "groups_manager"),
+		Groups(), GroupBar(0), lastId(-1), currentGroup(), showBlocked(true),
+		showBlocking(true), showOffline(true), showWithoutDescription(true), refreshTimer()
 {
 	kdebugf();
 	CONST_FOREACH(user, *userlist)
@@ -303,7 +305,7 @@ GroupsManager::~GroupsManager()
 	kdebugf2();
 }
 
-void GroupsManager::userAddedToMainUserlist(UserListElement elem, bool massively, bool last)
+void GroupsManager::userAddedToMainUserlist(UserListElement elem, bool /*massively*/, bool /*last*/)
 {
 	kdebugf();
 	QStringList groups = elem.data("Groups").toStringList();
@@ -386,7 +388,7 @@ void GroupsManager::removeGroup(const QString &name)
 }
 
 void GroupsManager::userDataChanged(UserListElement elem, QString name, QVariant oldValue,
-							QVariant currentValue, bool massively, bool last)
+							QVariant currentValue, bool /*massively*/, bool /*last*/)
 {
 //dodanie(usuniêcie) u¿ytkownika do grupy poprzez zmianê pola Groups powinno aktualizowaæ UserGrupê
 	if (name != "Groups")
@@ -409,7 +411,7 @@ void GroupsManager::userDataChanged(UserListElement elem, QString name, QVariant
 }
 
 //dodanie(usuniêcie) u¿ytkownika do grupy poprzez addUser (removeUser) powinno modyfikowaæ pole Groups
-void GroupsManager::userAdded(UserListElement elem, bool massively, bool last)
+void GroupsManager::userAdded(UserListElement elem, bool /*massively*/, bool /*last*/)
 {
 //	kdebugf();
 	CONST_FOREACH(group, Groups)
@@ -427,7 +429,7 @@ void GroupsManager::userAdded(UserListElement elem, bool massively, bool last)
 //	kdebugf2();
 }
 
-void GroupsManager::userRemoved(UserListElement elem, bool massively, bool last)
+void GroupsManager::userRemoved(UserListElement elem, bool /*massively*/, bool /*last*/)
 {
 //	kdebugf();
 	CONST_FOREACH(group, Groups)
@@ -458,7 +460,7 @@ UsersWithDescription::~UsersWithDescription()
 }
 
 void UsersWithDescription::statusChangedSlot(UserListElement elem, QString protocolName,
-							const UserStatus &oldStatus, bool massively, bool last)
+							const UserStatus &oldStatus, bool /*massively*/, bool /*last*/)
 {
 	if (oldStatus.hasDescription() == elem.status(protocolName).hasDescription())
 		return;
@@ -481,7 +483,7 @@ OnlineUsers::~OnlineUsers()
 }
 
 void OnlineUsers::statusChangedSlot(UserListElement elem, QString protocolName,
-							const UserStatus &oldStatus, bool massively, bool last)
+							const UserStatus &oldStatus, bool /*massively*/, bool /*last*/)
 {
 	if ((oldStatus.isOnline() || oldStatus.isInvisible() || oldStatus.isBusy()) ==
 			(elem.status(protocolName).isOnline() || elem.status(protocolName).isInvisible() || elem.status(protocolName).isBusy()))
@@ -511,8 +513,8 @@ BlockedUsers::~BlockedUsers()
 }
 
 void BlockedUsers::protocolUserDataChangedSlot(QString protocolName, UserListElement elem,
-							QString name, QVariant oldValue, QVariant currentValue,
-							bool massively, bool last)
+							QString name, QVariant /*oldValue*/, QVariant currentValue,
+							bool /*massively*/, bool /*last*/)
 {
 	if (protocolName != "Gadu")
 		return;
@@ -537,7 +539,7 @@ BlockingUsers::~BlockingUsers()
 }
 
 void BlockingUsers::statusChangedSlot(UserListElement elem, QString protocolName,
-							const UserStatus &oldStatus, bool massively, bool last)
+							const UserStatus &oldStatus, bool /*massively*/, bool /*last*/)
 {
 	if (!oldStatus.isBlocking() && elem.status(protocolName).isBlocking())
 		addUser(elem);

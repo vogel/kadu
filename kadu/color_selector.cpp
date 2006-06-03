@@ -18,13 +18,12 @@
 const char colors[16][8] = {"#FF0000", "#A00000", "#00FF00", "#00A000", "#0000FF", "#0000A0", "#FFFF00",
 	"#A0A000", "#FF00FF", "#A000A0", "#00FFFF", "#00A0A0", "#FFFFFF", "#A0A0A0", "#808080", "#000000"};
 
-ColorSelectorButton::ColorSelectorButton(QWidget* parent, const QColor& qcolor, int width, const char *name) : QPushButton(parent, name)
+ColorSelectorButton::ColorSelectorButton(QWidget* parent, const QColor& qcolor, int width, const char *name) : QPushButton(parent, name), color(qcolor)
 {
 #define WIDTH1 15
 #define BORDER1 3
 	QPixmap p(WIDTH1*width+(width-1)*(BORDER1*2), WIDTH1);
 	p.fill(qcolor);
-	color = qcolor;
 	setPixmap(p);
 //	setAutoRaise(true);
 	setMouseTracking(true);

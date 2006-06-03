@@ -63,7 +63,9 @@ void Register::createConfig()
 	kdebugf2();
 }
 
-Register::Register(QDialog * /*parent*/, const char * /*name*/)
+Register::Register(QDialog *parent, const char *name) : QHBox(parent, name),
+	pwd(0), pwd2(0), mailedit(0), status(0), uin(0), cb_updateconfig(0),
+	layoutHelper(new LayoutHelper())
 {
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose);
@@ -129,7 +131,6 @@ Register::Register(QDialog * /*parent*/, const char * /*name*/)
 	connect(pb_register, SIGNAL(clicked()), this, SLOT(doRegister()));
 	connect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registered(bool, UinType)));
 
-	layoutHelper = new LayoutHelper();
 	layoutHelper->addLabel(l_info);
 
  	loadGeometry(this, "General", "RegisterDialogGeometry", 0, 30, 400, 400);
@@ -144,7 +145,7 @@ Register::~Register()
 	kdebugf2();
 }
 
-void Register::resizeEvent(QResizeEvent *e)
+void Register::resizeEvent(QResizeEvent * /*e*/)
 {
 	layoutHelper->resizeLabels();
 }

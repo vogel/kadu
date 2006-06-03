@@ -65,6 +65,7 @@ struct ModuleInfo
 	QString author; /*!< Autor modu³u. */
 	QString version; /*!< Wersja modu³u. */
 	bool load_by_def; /*!< Czy modu³ jest domy¶lnie ³adowany, czy nie? */
+	ModuleInfo();
 };
 
 class LayoutHelper;
@@ -145,6 +146,7 @@ class ModulesManager : public QObject
 			QTranslator* translator; /*!< Wska¼nik do obiektu t³umacz±cego dla tego modu³u. */
 			ModuleInfo info; /*!< Informacje o module. */
 			int usage_counter; /*!< Licznik u¿ycia modu³u. */
+			Module();
 		};
 		/**
 			Lista aktywnych modu³ów

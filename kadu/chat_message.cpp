@@ -14,22 +14,16 @@
 #include "gadu_images_manager.h"
 #include "misc.h"
 
-ChatMessage::ChatMessage(const QString &nick, const QString &unformattedMessage, bool myMessage, QDateTime date, QDateTime sdate)
-	: Colors(QColor(), QColor(), QColor())
+ChatMessage::ChatMessage(const QString &nick_, const QString &unformattedMessage_, bool myMessage, QDateTime date_, QDateTime sdate_)
+	: nick(nick_), date(date_), sdate(sdate_), unformattedMessage(unformattedMessage_), isMyMessage(myMessage),
+	Colors(QColor(), QColor(), QColor()), attributes(), needsToBeFormatted(true), message()
 {
-	needsToBeFormatted=true;
-	this->nick=nick;
-	this->unformattedMessage=unformattedMessage;
-	this->isMyMessage=myMessage;
-	this->date=date;
-	this->sdate=sdate;
 }
 
 ChatMessage::ChatMessage(const QString &formattedMessage, const ChatColors& colors)
-	: Colors(colors)
+	: nick(), date(), sdate(), unformattedMessage(), isMyMessage(true),
+	Colors(colors), attributes(), needsToBeFormatted(false), message(formattedMessage)
 {
-	needsToBeFormatted=false;
-	message=formattedMessage;
 }
 
 /* convert special characters into emoticons, HTML into plain text and so forth */

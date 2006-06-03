@@ -12,7 +12,7 @@
 #include "debug.h"
 
 CustomInput::CustomInput(QWidget* parent, const char* name)
-	: QMultiLineEdit(parent, name)
+	: QMultiLineEdit(parent, name), autosend_enabled(true)
 {
 	kdebugf();
 	QStyleSheet *style=styleSheet();

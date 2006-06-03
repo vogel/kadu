@@ -37,11 +37,11 @@ extern "C" void docking_close()
 	docking_manager = NULL;
 }
 
-DockingManager::DockingManager(QObject *parent, const char *name) : QObject(parent, name)
+DockingManager::DockingManager(QObject *parent, const char *name) : QObject(parent, name),
+	newMessageIcon ((IconType) config_file.readNumEntry("Look", "NewMessageIcon")),
+	icon_timer(new QTimer(this, "icon_timer")), blink(false)
 {
 	kdebugf();
-	icon_timer = new QTimer(this, "icon_timer");
-	blink = false;
 	connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
 
 	connect(kadu, SIGNAL(statusPixmapChanged(const QPixmap &, const QString &)),
@@ -61,7 +61,6 @@ DockingManager::DockingManager(QObject *parent, const char *name) : QObject(pare
 			toStringList("0", "1", "2"), "0", 0, 0, Advanced);
 	ConfigDialog::registerSlotOnApplyTab("General", this, SLOT(onApplyTabGeneral()));
 	ConfigDialog::registerSlotOnApplyTab("Look", this, SLOT(onApplyTabLook()));
-	newMessageIcon = (IconType) config_file.readNumEntry("Look", "NewMessageIcon");
 
 	kdebugf2();
 }

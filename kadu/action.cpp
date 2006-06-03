@@ -17,13 +17,10 @@
 #include "misc.h"
 
 Action::Action(const QIconSet& icon, const QString& text, const char* name, QKeySequence accel)
-	: QObject(NULL, name), Slot(0)
+	: QObject(NULL, name), Icon(icon), Text(text), Accel(accel), ToggleAction(false),
+		OnIcon(), OnText(), DockAreaGroupRestriction(), Slot(0), ToolButtons(), ToggleState()
 {
 	kdebugf();
-	Icon = icon;
-	Text = text;
-	Accel = accel;
-	ToggleAction = false;
 	kdebugf2();
 }
 
@@ -139,9 +136,7 @@ void Action::setOn(const UserListElements& users, bool on)
 			(*i).state = on;
 			return;
 		}
-	ToggleStateStruct s;
-	s.elems = users;
-	s.state = on;
+	ToggleStateStruct s(users, on);
 	ToggleState.push_back(s);
 	kdebugf2();
 }
@@ -201,7 +196,7 @@ void Action::activate(const UserGroup* users)
 	kdebugf2();
 }
 
-Actions::Actions()
+Actions::Actions() : QMap<QString, Action *>(), DefaultToolbarActions()
 {
 }
 
@@ -215,9 +210,7 @@ void Actions::addDefaultToolbarAction(
 {
 	kdebugf();
 	QValueList<Default>& actions = DefaultToolbarActions[toolbar];
-	Default def;
-	def.action_name = action;
-	def.uses_text_label = uses_text_label;
+	Default def(action, uses_text_label);
 	if (index < 0)
 		actions.push_back(def);
 	else
@@ -239,6 +232,22 @@ void Actions::addDefaultActionsToToolbar(ToolBar* toolbar)
 		}
 	}
 	kdebugf2();
+}
+
+Actions::Default::Default(QString action_name_, bool uses_text_label_) : action_name(action_name_), uses_text_label(uses_text_label_)
+{
+}
+
+Actions::Default::Default() : action_name(), uses_text_label(false)
+{
+}
+
+Action::ToggleStateStruct::ToggleStateStruct(UserListElements elems_, bool state_) : elems(elems_), state(state_)
+{
+}
+
+Action::ToggleStateStruct::ToggleStateStruct() : elems(), state(false)
+{
 }
 
 Actions KaduActions;

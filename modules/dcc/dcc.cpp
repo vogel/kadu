@@ -51,14 +51,11 @@ extern "C" void dcc_close()
 
 int DccSocket::Count = 0;
 
-DccSocket::DccSocket(struct gg_dcc* dcc_sock)
+DccSocket::DccSocket(struct gg_dcc* dcc_sock) : QObject(0, 0),
+	readSocketNotifier(0), writeSocketNotifier(0), dccsock(dcc_sock),
+	dccevent(0), in_watchDcc(false), State(DCC_SOCKET_TRANSFERRING)
 {
 	kdebugf();
-	dccsock = dcc_sock;
-	dccevent = NULL;
-	readSocketNotifier = writeSocketNotifier = NULL;
-	State = DCC_SOCKET_TRANSFERRING;
-	in_watchDcc = false;
 	++Count;
 	kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_INFO, "dcc sockets count = %d\n", Count);
 }
@@ -285,7 +282,9 @@ int DccSocket::count()
 }
 
 
-DccManager::DccManager(QObject *parent, const char *name) : QObject(parent, name)
+DccManager::DccManager(QObject *parent, const char *name) : QObject(parent, name),
+	DccSock(0), DCCReadSocketNotifier(0), DCCWriteSocketNotifier(0), TimeoutTimer(),
+	requests(), DccEnabled(false)
 {
 	kdebugf();
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Send file"), "kadu_sendfile", "F8");
@@ -307,11 +306,6 @@ DccManager::DccManager(QObject *parent, const char *name) : QObject(parent, name
 
 	ConfigDialog::registerSlotOnCreateTab("Network", this, SLOT(configDialogCreated()));
 	ConfigDialog::registerSlotOnApplyTab("Network", this, SLOT(configDialogApply()));
-
-	DccSock = NULL;
-	DCCReadSocketNotifier = NULL;
-	DCCWriteSocketNotifier = NULL;
-
 
 	connect(&TimeoutTimer, SIGNAL(timeout()), this, SLOT(timeout()));
 

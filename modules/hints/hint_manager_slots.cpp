@@ -21,7 +21,12 @@
 #include "debug.h"
 #include "misc.h"
 
-HintManagerSlots::HintManagerSlots(QObject *parent, const char *name) : QObject(parent, name)
+HintProperties::HintProperties() : font(), fgcolor(), bgcolor(), timeout(0)
+{
+}
+
+HintManagerSlots::HintManagerSlots(QObject *parent, const char *name) : QObject(parent, name),
+	config_opts_prefixes(), currentOptionPrefix(), config_hint_properties()
 {
 	kdebugf();
 	ConfigDialog::connectSlot("Hints", "Show message content in hint", SIGNAL(toggled(bool)), this, SLOT(toggled_ShowMessageContent(bool)));

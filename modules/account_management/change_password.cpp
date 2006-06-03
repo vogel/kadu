@@ -21,7 +21,8 @@
 #include "gadu.h"
 #include "config_file.h"
 
-ChangePassword::ChangePassword(QDialog * /*parent*/, const char * /*name*/)
+ChangePassword::ChangePassword(QDialog *parent, const char *name) : QHBox(parent, name),
+	emailedit(0), newpwd(0), newpwd2(0), layoutHelper(new LayoutHelper())
 {
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose);
@@ -82,14 +83,13 @@ ChangePassword::ChangePassword(QDialog * /*parent*/, const char * /*name*/)
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 	connect(pb_ok, SIGNAL(clicked()), this, SLOT(start()));
 
- 	layoutHelper = new LayoutHelper();
 	layoutHelper->addLabel(l_info);
 	loadGeometry(this, "General", "ChangePasswordDialogGeometry", 0, 30, 355, 350);
 	connect(gadu, SIGNAL(passwordChanged(bool)), this, SLOT(passwordChanged(bool)));
 	kdebugf2();
 }
 
-void ChangePassword::resizeEvent(QResizeEvent *e)
+void ChangePassword::resizeEvent(QResizeEvent * /*e*/)
 {
 	layoutHelper->resizeLabels();
 }

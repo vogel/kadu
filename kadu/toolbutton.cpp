@@ -17,10 +17,11 @@
 #include "toolbutton.h"
 
 ToolButton::ToolButton(QWidget* parent, const QString& action_name)
-	: QToolButton(parent, 0)
+	: QToolButton(parent, 0), ActionName(action_name), InOnState(false),
+	OffIcon(), OffText(), OnIcon(), OnText()
+
 {
 	kdebugf();
-	ActionName = action_name;
 	connect(this, SIGNAL(clicked()), this, SLOT(buttonClicked()));
 	kdebugf2();
 }
@@ -155,7 +156,7 @@ void ToolButton::writeToConfig(QDomElement parent_element)
 }
 
 ToolButtonDrag::ToolButtonDrag(ToolButton* button, QWidget* dragSource, const char* name)
-	: QTextDrag(QString::number(button->winId()), dragSource, name)
+	: QTextDrag(QString::number(button->winId()), dragSource, name), Button(0)
 {
 	kdebugf();
 	kdebugf2();

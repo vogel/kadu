@@ -27,12 +27,11 @@
 
 #define FRAME_WIDTH 1
 
-HintManager::HintManager(QWidget *parent, const char *name)
-	: Notifier(parent, name)
+HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, name),
+	frame(0), hint_manager_slots(0), hint_timer(new QTimer(this, "hint_timer")),
+	grid(0), hints(), tipFrame(0)
 {
 	kdebugf();
-	tipFrame = 0;
-
 	frame = new QFrame(parent, name, WStyle_NoBorder | WStyle_StaysOnTop | WStyle_Tool | WX11BypassWM | WWinOwnDC);
 
 	frame->setFrameStyle(QFrame::Box | QFrame::Plain);
@@ -43,7 +42,6 @@ HintManager::HintManager(QWidget *parent, const char *name)
 
 	hints.setAutoDelete(true);
 
-	hint_timer = new QTimer(this, "hint_timer");
 	connect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
 
 /* Zak³adka konfiguracyjna */
@@ -534,7 +532,7 @@ void HintManager::connectionError(Protocol *, const QString &message)
 	kdebugf2();
 }
 
-void HintManager::userStatusChanged(UserListElement ule, QString protocolName, const UserStatus &oldStatus)
+void HintManager::userStatusChanged(UserListElement ule, QString protocolName, const UserStatus &/*oldStatus*/)
 {
 	kdebugf();
 
@@ -826,7 +824,7 @@ void HintManager::message(const QString &from, const QString &msg, const QMap<QS
 	kdebugf2();
 }
 
-void HintManager::externalEvent(const QString &notifyType, const QString &msg, const UserListElements &ules)
+void HintManager::externalEvent(const QString &/*notifyType*/, const QString &msg, const UserListElements &ules)
 {
 	kdebugf();
 

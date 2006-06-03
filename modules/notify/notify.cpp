@@ -35,7 +35,8 @@ extern "C" void notify_close()
 	kdebugf2();
 }
 
-Notify::Notify(QObject *parent, const char *name) : QObject(parent, name)
+Notify::Notify(QObject *parent, const char *name) : QObject(parent, name),
+	notifiers(), notifySignals(), eventNames(), notifyEvents(), strs()
 {
 	kdebugf();
 	eventNames<<"ConnError"<<"NewChat"<<"NewMessage"<<"StatusChanged"<<"toAvailable"<<
@@ -193,7 +194,7 @@ Notify::~Notify()
 }
 
 void Notify::statusChanged(UserListElement elem, QString protocolName,
-					const UserStatus &oldStatus, bool massively, bool last)
+					const UserStatus &oldStatus, bool massively, bool /*last*/)
 {
 	kdebugf();
 
@@ -505,11 +506,11 @@ const QValueList<Notify::NotifyEvent> &Notify::externalNotifyTypes()
 	return notifyEvents;
 }
 
-Notify::NotifierSlots::NotifierSlots() : notifier(NULL)
+Notify::NotifierSlots::NotifierSlots() : notifier(NULL), notifierSlots()
 {
 }
 
-Notify::NotifierSlots::NotifierSlots(Notifier *o, const QMap<QString, QString> &notifierSlots) : notifier(o)
+Notify::NotifierSlots::NotifierSlots(Notifier *n, const QMap<QString, QString> &notifierSlots) : notifier(n), notifierSlots()
 {
 	kdebugf();
 	CONST_FOREACH(i, notifierSlots)

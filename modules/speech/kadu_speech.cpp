@@ -83,7 +83,7 @@ void SpeechSlots::useDsp()
 	kdebugf2();
 }
 
-SpeechSlots::SpeechSlots(QObject *parent, const char *name) : Notifier(parent, name)
+SpeechSlots::SpeechSlots(QObject *parent, const char *name) : Notifier(parent, name), lastSpeech()
 {
 	kdebugf();
 	srand(time(NULL));
@@ -409,7 +409,7 @@ void SpeechSlots::connectionError(Protocol *, const QString &message)
 	kdebugf2();
 }
 
-void SpeechSlots::userChangedStatusToAvailable(const QString &protocolName, UserListElement ule)
+void SpeechSlots::userChangedStatusToAvailable(const QString &/*protocolName*/, UserListElement ule)
 {
 	kdebugf();
 	if (lastSpeech.elapsed()<1500)
@@ -461,7 +461,7 @@ void SpeechSlots::message(const QString &/*from*/, const QString &message, const
 	kdebugf2();
 }
 
-void SpeechSlots::externalEvent(const QString &notifyType, const QString &msg, const UserListElements &ules)
+void SpeechSlots::externalEvent(const QString &/*notifyType*/, const QString &msg, const UserListElements &ules)
 {
 	kdebugf();
 

@@ -43,7 +43,7 @@ static QPixmap string_to_pixmap(const QString& str, const QFont& font)
 }
 
 ChatManager::ChatManager(QObject* parent, const char* name)
-	: QObject(parent, name)
+	: QObject(parent, name), Chats(), addons(), refreshTitlesTimer()
 {
 	kdebugf();
 
@@ -206,7 +206,7 @@ ChatManager::~ChatManager()
 	kdebugf2();
 }
 
-void ChatManager::autoSendActionAddedToToolbar(ToolButton* button, ToolBar* toolbar,
+void ChatManager::autoSendActionAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*/,
 	const UserListElements& users)
 {
 	kdebugf();
@@ -214,14 +214,14 @@ void ChatManager::autoSendActionAddedToToolbar(ToolButton* button, ToolBar* tool
 	kdebugf2();
 }
 
-void ChatManager::autoSendActionActivated(const UserGroup* users, const QWidget* source, bool is_on)
+void ChatManager::autoSendActionActivated(const UserGroup* users, const QWidget* /*source*/, bool is_on)
 {
 	kdebugf();
 	findChat(users)->setAutoSend(is_on);
 	kdebugf2();
 }
 
-void ChatManager::scrollLockActionActivated(const UserGroup* users, const QWidget* source, bool is_on)
+void ChatManager::scrollLockActionActivated(const UserGroup* users, const QWidget* /*source*/, bool is_on)
 {
 	kdebugf();
 	findChat(users)->setScrollLocked(is_on);
@@ -246,21 +246,21 @@ void ChatManager::historyActionActivated(const UserGroup* users)
 	kdebugf2();
 }
 
-void ChatManager::boldActionActivated(const UserGroup* users, const QWidget* source, bool is_on)
+void ChatManager::boldActionActivated(const UserGroup* users, const QWidget* /*source*/, bool is_on)
 {
 	kdebugf();
 	findChat(users)->edit()->setBold(is_on);
 	kdebugf2();
 }
 
-void ChatManager::italicActionActivated(const UserGroup* users, const QWidget* source, bool is_on)
+void ChatManager::italicActionActivated(const UserGroup* users, const QWidget* /*source*/, bool is_on)
 {
 	kdebugf();
 	findChat(users)->edit()->setItalic(is_on);
 	kdebugf2();
 }
 
-void ChatManager::underlineActionActivated(const UserGroup* users, const QWidget* source, bool is_on)
+void ChatManager::underlineActionActivated(const UserGroup* users, const QWidget* /*source*/, bool is_on)
 {
 	kdebugf();
 	findChat(users)->edit()->setUnderline(is_on);
@@ -281,8 +281,8 @@ void ChatManager::insertEmoticonActionActivated(const UserGroup* users, const QW
 	kdebugf2();
 }
 
-void ChatManager::insertEmoticonActionAddedToToolbar(ToolButton* button, ToolBar* toolbar,
-	const UserListElements& users)
+void ChatManager::insertEmoticonActionAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*/,
+	const UserListElements& /*users*/)
 {
 	kdebugf();
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") == EMOTS_NONE)
@@ -428,7 +428,7 @@ Chat* ChatManager::findChat(UserListElements users) const
 	return NULL;
 }
 
-int ChatManager::openChat(QString initialProtocol, UserListElements users, time_t time)
+int ChatManager::openChat(QString /*initialProtocol*/, UserListElements users, time_t time)
 {
 	kdebugf();
 	emit chatOpen(users);

@@ -25,10 +25,11 @@ extern "C" void autoresponder_close()
 	autoresponder = NULL;
 }
 
-AutoResponder::AutoResponder(QObject *parent, const char *name) : QObject(parent, name), replied(userlist->count() / 2, "replied_(autoresponder)")
+AutoResponder::AutoResponder(QObject *parent, const char *name) : QObject(parent, name),
+	config(new ConfigFile(ggPath("autoresponder.conf"))),
+	replied(userlist->count() / 2, "replied_(autoresponder)")
 {
 	kdebugf();
-	config = new ConfigFile(ggPath("autoresponder.conf"));
 	connect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
 		this, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
 	connect(chat_manager, SIGNAL(chatCreated(const UserGroup *)), this, SLOT(chatOpened(const UserGroup *)));
@@ -66,7 +67,7 @@ AutoResponder::~AutoResponder()
 	kdebugf2();
 }
 
-void AutoResponder::chatMsgReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t /*time*/, bool &/*grab*/)
+void AutoResponder::chatMsgReceived(Protocol * /*protocol*/, UserListElements senders, const QString& msg, time_t /*time*/, bool &/*grab*/)
 {
 	kdebugf();
 	if (msg.left(5) != "KADU ")

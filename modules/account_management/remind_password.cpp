@@ -21,7 +21,8 @@
 #include "misc.h"
 #include "remind_password.h"
 
-RemindPassword::RemindPassword(QDialog * /*parent*/, const char * /*name*/)
+RemindPassword::RemindPassword(QDialog *parent, const char *name) : QHBox(parent, name),
+	EmailEdit(0), layoutHelper(new LayoutHelper())
 {
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose);
@@ -71,7 +72,6 @@ RemindPassword::RemindPassword(QDialog * /*parent*/, const char * /*name*/)
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 	connect(pb_ok, SIGNAL(clicked()), this, SLOT(start()));
 
- 	layoutHelper = new LayoutHelper();
 	layoutHelper->addLabel(l_info);
 
 	loadGeometry(this, "General", "RemindPasswordDialogGeometry", 0, 30, 355, 200);
@@ -87,7 +87,7 @@ RemindPassword::~RemindPassword()
 	kdebugf2();
 }
 
-void RemindPassword::resizeEvent(QResizeEvent *e)
+void RemindPassword::resizeEvent(QResizeEvent * /*e*/)
 {
 	layoutHelper->resizeLabels();
 }

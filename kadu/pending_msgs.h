@@ -30,6 +30,7 @@ class PendingMsgs : public QObject
 			QString msg; /*!< Tre¶æ wiadomo¶ci. */
 			int msgclass; /*!< Klasa wiadomo¶ci. */
 			time_t time; /*!< Czas, w którym nadano wiadomo¶æ. */
+			Element();
 		};
 
 	private:

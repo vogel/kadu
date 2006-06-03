@@ -200,6 +200,7 @@ struct attrib_formant
 {
 	QString name;
 	QString value;
+	attrib_formant() : name(), value() {}
 };
 
 struct richtext_formant

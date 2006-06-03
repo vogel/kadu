@@ -181,7 +181,7 @@ QString UserListElement::ID(const QString &protocolName) const
 	return protoData->ID;
 }
 
-UserListElement::UserListElement(const UserListElement &copyMe) : QObject(NULL, 0)
+UserListElement::UserListElement(const UserListElement &copyMe) : QObject(NULL, 0), privateData(0)
 {
 //	kdebugf();
 	copyMe.privateData->ref();
@@ -189,10 +189,9 @@ UserListElement::UserListElement(const UserListElement &copyMe) : QObject(NULL, 
 //	kdebugf2();
 }
 
-UserListElement::UserListElement() : QObject(NULL, 0)
+UserListElement::UserListElement() : QObject(NULL, 0), privateData(new ULEPrivate())
 {
 //	kdebugf();
-	privateData = new ULEPrivate();
 	privateData->key = used ++;
 //	kdebugf2();
 }
@@ -205,7 +204,7 @@ UserListElement::~UserListElement()
 //	kdebugf2();
 }
 
-void UserListElement::operator = (const UserListElement &copyMe)
+UserListElement &UserListElement::operator = (const UserListElement &copyMe)
 {
 //	kdebugf();
 //	printBacktrace("ULE::=\n");
@@ -214,6 +213,7 @@ void UserListElement::operator = (const UserListElement &copyMe)
 	privateData = copyMe.privateData;
 	privateData->ref();
 //	kdebugf2();
+	return *this;
 }
 
 QVariant UserListElement::setData(const QString &name, const QVariant &val, bool massively, bool last)

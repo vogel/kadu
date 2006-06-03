@@ -65,7 +65,7 @@ class ProtocolData : public QObject {
 		ProtocolData();
 		ProtocolData(const ProtocolData &);
 		virtual ~ProtocolData();
-		void operator = (const ProtocolData &copyMe);
+		ProtocolData &operator = (const ProtocolData &copyMe);
 };
 
 #endif

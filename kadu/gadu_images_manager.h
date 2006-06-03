@@ -19,6 +19,7 @@ class GaduImagesManager
 			QString file_name;
 			QDateTime lastSent;
 			char *data;
+			ImageToSend();
 		};
 		QMap<QPair<uint32_t, uint32_t>, ImageToSend> ImagesToSend;//size,crc32 -> 
 
@@ -27,10 +28,12 @@ class GaduImagesManager
 			uint32_t size;
 			uint32_t crc32;
 			QString file_name;
+			SavedImage();
 		};
 		QValueList<SavedImage> SavedImages;
 
 	public:
+		GaduImagesManager();
 		static void setBackgroundsForAnimatedImages(HtmlDocument &doc, const QColor &col);
 		
 		static QString loadingImageHtml(UinType uin, uint32_t size, uint32_t crc32);

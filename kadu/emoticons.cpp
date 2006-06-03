@@ -21,11 +21,15 @@
 
 #define IMG_Y_OFFSET 2
 
-EmoticonsManager::EmoticonsManager()
+EmoticonsManager::EmoticonsListItem::EmoticonsListItem() : alias(), anim(), stat()
 {
-	ThemesList=getSubDirs(dataPath("kadu/themes/emoticons"));
+}
+
+EmoticonsManager::EmoticonsManager() : ThemesList(getSubDirs(dataPath("kadu/themes/emoticons"))),
+		Aliases(), Selector(), walker(0)
+
+{
 	ThemesList.remove(".");
-	walker = NULL;
 }
 
 EmoticonsManager::~EmoticonsManager()
@@ -300,14 +304,11 @@ QString EmoticonsManager::selectorStaticPath(int emot_num) const
 EmoticonsManager *emoticons;
 
 EmoticonSelectorButton::EmoticonSelectorButton(
-	QWidget* parent,const QString& emoticon_string,
-	const QString& anim_path,const QString& static_path)
-	: QToolButton(parent)
+	QWidget* parent, const QString& emoticon_string,
+	const QString& anim_path, const QString& static_path)
+	: QToolButton(parent), EmoticonString(emoticon_string),
+		AnimPath(anim_path), StaticPath(static_path), Movie(0)
 {
-	EmoticonString = emoticon_string;
-	AnimPath = anim_path;
-	StaticPath = static_path;
-	Movie = NULL;
 	setPixmap(QPixmap(StaticPath));
 	setAutoRaise(true);
 	setMouseTracking(true);
@@ -357,13 +358,12 @@ void EmoticonSelectorButton::leaveEvent(QEvent* e)
 	}
 }
 
-EmoticonSelector::EmoticonSelector(QWidget *parent, const char *name, Chat * caller) : QWidget (parent, name,Qt::WType_Popup|Qt::WDestructiveClose)
+EmoticonSelector::EmoticonSelector(QWidget *parent, const char *name, Chat * caller) :
+	QWidget (parent, name, Qt::WType_Popup | Qt::WDestructiveClose), callingwidget(caller)
 {
-	callingwidget = caller;
-
-	int selector_count=emoticons->selectorCount();
-	int selector_width=(int)sqrt((double)selector_count);
-	int btn_width=0;
+	int selector_count = emoticons->selectorCount();
+	int selector_width = (int)sqrt((double)selector_count);
+	int btn_width = 0;
 	QGridLayout *grid = new QGridLayout(this, 0, selector_width, 0, 0);
 
 	for(int i = 0; i < selector_count; ++i)
@@ -457,7 +457,7 @@ static inline int scale( int value, QPainter *painter )
 
 struct QPixmapInt
 {
-	QPixmapInt() : ref( 0 ) {}
+	QPixmapInt() : pm(), ref( 0 ) {}
 	QPixmap pm;
 	int	    ref;
 	Q_DUMMY_COMPARISON_OPERATOR(QPixmapInt)
@@ -465,9 +465,9 @@ struct QPixmapInt
 
 static QMap<QString, QPixmapInt> *pixmap_map = 0;
 
-StaticTextItem::StaticTextItem( QTextDocument *p, const QMap<QString, QString> &attr, const QString& context,
-			QMimeSourceFactory &factory )
-    : QTextCustomItem( p )
+StaticTextItem::StaticTextItem(QTextDocument *p, const QMap<QString, QString> &attr, const QString& context,
+			QMimeSourceFactory &factory)
+    : QTextCustomItem(p), reg(0), pm(), place(PlaceInline), tmpwidth(0), tmpheight(0), attributes(attr), imgId()
 {
 	width = height = 0;
 	if ( attr.contains("width") )
@@ -475,7 +475,6 @@ StaticTextItem::StaticTextItem( QTextDocument *p, const QMap<QString, QString> &
 	if ( attr.contains("height") )
 		height = attr["height"].toInt();
 
-	reg = 0;
 	QString imageName = attr["src"];
 
 	if (!imageName)
@@ -542,7 +541,6 @@ StaticTextItem::StaticTextItem( QTextDocument *p, const QMap<QString, QString> &
 	if ( pm.isNull() && (width*height)==0 )
 		width = height = 50;
 
-	place = PlaceInline;
 	if ( attr["align"] == "left" )
 		place = PlaceLeft;
 	else if ( attr["align"] == "right" )
@@ -550,8 +548,6 @@ StaticTextItem::StaticTextItem( QTextDocument *p, const QMap<QString, QString> &
 
 	tmpwidth = width;
 	tmpheight = height;
-
-	attributes = attr;
 }
 
 StaticTextItem::~StaticTextItem()
@@ -662,15 +658,17 @@ void StaticTextItem::draw( QPainter* p, int x, int y, int cx, int cy, int cw, in
 	}
 }
 
+AnimTextItem::MovieCacheData::MovieCacheData() : movie(), size(), count(0)
+{
+}
+
 AnimTextItem::AnimTextItem(
 	QTextDocument *p, QTextEdit* edit,
 	const QString& filename, const QColor& bgcolor, const QString& tip)
-	: QTextCustomItem(p)
+	: QTextCustomItem(p), Edit(edit), Label(new QLabel(edit->viewport())),
+	EditSize(), text(tip), FileName(filename)
+
 {
-	FileName = filename;
-	text = tip;
-	Edit = edit;
-	Label = new QLabel(Edit->viewport());
 	Edit->addChild(Label);
 	//
 	MovieCacheData md;
@@ -724,8 +722,8 @@ AnimTextItem::~AnimTextItem()
 }
 
 void AnimTextItem::draw(
-	QPainter* p, int x, int y, int cx, int cy,
-	int cw, int ch, const QColorGroup& /*cg*/,
+	QPainter* /*p*/, int x, int y, int /*cx*/, int cy,
+	int /*cw*/, int ch, const QColorGroup& /*cg*/,
 	bool /*selected*/ )
 {
 //	kdebugm(KDEBUG_WARNING, "%s x:%d y:%d cx:%d cy:%d cw:%d ch:%d\n", text.local8Bit().data(), x, y, cx, cy, cw, ch);
@@ -768,9 +766,8 @@ AnimTextItem::MoviesCache* AnimTextItem::Movies=NULL;
 
 AnimStyleSheet::AnimStyleSheet(
 	QTextEdit* parent, const QString& path, const char* name )
-	: QStyleSheet(parent, name)
+	: QStyleSheet(parent, name), Path(path)
 {
-	Path = path;
 }
 
 QTextCustomItem* AnimStyleSheet::tag(
@@ -794,9 +791,8 @@ QTextCustomItem* AnimStyleSheet::tag(
 
 StaticStyleSheet::StaticStyleSheet(
 	QTextEdit* parent, const QString& path, const char* name)
-	: QStyleSheet(parent, name)
+	: QStyleSheet(parent, name), Path(path)
 {
-	Path = path;
 }
 
 QTextCustomItem* StaticStyleSheet::tag(
@@ -809,13 +805,15 @@ QTextCustomItem* StaticStyleSheet::tag(
 	return new StaticTextItem(doc, attr, context, (QMimeSourceFactory&)factory);
 }
 
+PrefixNode::PrefixNode() : emotIndex(-1), childs()
+{
+}
+
 /** create fresh emoticons dictionary, which will allow easy finding of occurrences
     of stored emots in text
 */
-EmotsWalker::EmotsWalker()
+EmotsWalker::EmotsWalker() : root(new PrefixNode()), myPair(), positions(), lengths(), amountPositions(0)
 {
-	root = new PrefixNode();
-	root -> emotIndex = -1;
 	myPair.second = NULL;
 }
 
@@ -849,7 +847,6 @@ PrefixNode* EmotsWalker::findChild( const PrefixNode* node, const QChar& c )
 PrefixNode* EmotsWalker::insertChild( PrefixNode* node, const QChar& c )
 {
 	PrefixNode* newNode = new PrefixNode();
-	newNode -> emotIndex = -1;
 
 	// create child with new node
 	VAR( newPair, qMakePair( c, newNode ) );

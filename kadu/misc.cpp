@@ -575,7 +575,7 @@ void stringHeapSort(QStringList &c)
 }
 
 ChooseDescription::ChooseDescription(int nr, QPoint *position, QWidget * parent, const char * name)
-: QDialog(parent, name, false)
+	: QDialog(parent, name, false), desc(0), l_yetlen(0)
 {
 	kdebugf();
 	setCaption(tr("Select description"));
@@ -672,7 +672,7 @@ void ChooseDescription::updateYetLen(const QString& text)
 }
 
 ImageWidget::ImageWidget(QWidget *parent)
-	: QWidget(parent, "ImageWidget")
+	: QWidget(parent, "ImageWidget"), Image()
 {
 }
 
@@ -708,7 +708,7 @@ void ImageWidget::paintEvent(QPaintEvent *)
 // -----------------------
 
 TokenDialog::TokenDialog(QPixmap tokenImage, QDialog *parent, const char *name)
-	: QDialog(parent, name)
+	: QDialog(parent, name), tokenedit(0)
 {
 	kdebugf();
 	QGridLayout *grid = new QGridLayout(this, 3, 2, 6, 5);
@@ -892,7 +892,7 @@ void printBacktrace(const QString &header)
 	fflush(stderr);
 }
 
-LayoutHelper::LayoutHelper()
+LayoutHelper::LayoutHelper() : labels(), riches()
 {
 }
 

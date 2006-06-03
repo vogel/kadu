@@ -72,7 +72,7 @@ WindowNotify::~WindowNotify()
 	kdebugf2();
 }
 
-void WindowNotify::newChat(const QString &protocolName, UserListElements senders, const QString &msg, time_t /*t*/)
+void WindowNotify::newChat(const QString &/*protocolName*/, UserListElements senders, const QString &msg, time_t /*t*/)
 {
 	kdebugf();
 	MessageBox::msg(narg(tr("Chat with <b>%1</b><br/> <small>%2</small>"),
@@ -80,7 +80,7 @@ void WindowNotify::newChat(const QString &protocolName, UserListElements senders
 	kdebugf2();
 }
 
-void WindowNotify::newMessage(const QString &protocolName, UserListElements senders, const QString &msg, time_t /*t*/, bool &/*grab*/)
+void WindowNotify::newMessage(const QString &/*protocolName*/, UserListElements senders, const QString &msg, time_t /*t*/, bool &/*grab*/)
 {
 	kdebugf();
 	MessageBox::msg(narg(tr("New message from <b>%1</b><br/> <small>%2</small>"),
@@ -95,7 +95,7 @@ void WindowNotify::connectionError(Protocol *, const QString &message)
 	kdebugf2();
 }
 
-void WindowNotify::userStatusChanged(UserListElement ule, QString protocolName, const UserStatus &oldStatus)
+void WindowNotify::userStatusChanged(UserListElement ule, QString /*protocolName*/, const UserStatus &oldStatus)
 {
 	kdebugf();
 
@@ -106,7 +106,7 @@ void WindowNotify::userStatusChanged(UserListElement ule, QString protocolName, 
 	kdebugf2();
 }
 
-void WindowNotify::userChangedStatusToAvailable(const QString &protocolName, UserListElement ule)
+void WindowNotify::userChangedStatusToAvailable(const QString &/*protocolName*/, UserListElement ule)
 {
 	kdebugf();
 
@@ -153,7 +153,7 @@ void WindowNotify::message(const QString &from, const QString &message, const QM
 	kdebugf2();
 }
 
-void WindowNotify::externalEvent(const QString &notifyType, const QString &msg, const UserListElements &ules)
+void WindowNotify::externalEvent(const QString &/*notifyType*/, const QString &msg, const UserListElements &ules)
 {
 	kdebugf();
 

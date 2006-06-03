@@ -22,7 +22,8 @@
 #include "message_box.h"
 
 KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
-	: QTextBrowser(parent, name), QToolTip(viewport()), level(0)
+	: QTextBrowser(parent, name), QToolTip(viewport()),
+	refreshTimer(), anchor(), level(0), highlightedlink(), image()
 {
 	kdebugf();
 

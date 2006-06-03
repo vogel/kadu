@@ -10,29 +10,27 @@
 #include "debug.h"
 #include "status.h"
 
-UserStatus::UserStatus() : QObject(NULL, 0)
+UserStatus::UserStatus() : QObject(NULL, 0), Changed(false),
+	Stat(Offline), Description(), FriendsOnly(false)
 {
-	Stat = Offline;
-	Description = QString::null;
-	FriendsOnly = false;
 }
 
-UserStatus::UserStatus(const UserStatus &copyMe) : QObject(NULL, 0)
+UserStatus::UserStatus(const UserStatus &copyMe) : QObject(NULL, 0),
+	Changed(false), Stat(copyMe.Stat), Description(copyMe.Description),
+	FriendsOnly(copyMe.FriendsOnly)
 {
-	Stat = copyMe.Stat;
-	Description = copyMe.Description;
-	FriendsOnly = copyMe.FriendsOnly;
 }
 
 UserStatus::~UserStatus()
 {
 }
 
-void UserStatus::operator = (const UserStatus &copyMe)
+UserStatus &UserStatus::operator = (const UserStatus &copyMe)
 {
 	Stat = copyMe.Stat;
 	Description = copyMe.Description;
 	FriendsOnly = copyMe.FriendsOnly;
+	return *this;
 }
 
 bool UserStatus::operator == (const UserStatus &compare) const

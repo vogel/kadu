@@ -71,8 +71,7 @@ class SmsGatewaySlots: public QObject
 	private:
 		QStringList era_types;
 		QStringList era_values;
-		QString actualEraGateway;			
-		bool createdTab;
+		QString actualEraGateway;
 	public slots:
 		void onCreateTabSMS();
 		void onCloseTabSMS();

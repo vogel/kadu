@@ -48,13 +48,10 @@ void KaduListBoxPixmap::setFont(const QFont &f)
 	kdebugf2();
 }
 
-KaduListBoxPixmap::KaduListBoxPixmap(const QPixmap &pix, UserListElement user, bool bold)
-	: QListBoxItem(), User(user)
+KaduListBoxPixmap::KaduListBoxPixmap(const QPixmap &pix, UserListElement user, bool bold_)
+	: QListBoxItem(), User(user), pm(pix), bold(bold_), buf_text(), buf_width(-1), buf_out(), buf_height(-1)
 {
-	buf_width=-1;
-	pm = pix;
 	setText(user.altNick());
-	setBold(bold);
 }
 
 void KaduListBoxPixmap::setMyUIN(UinType u)
@@ -326,6 +323,7 @@ class ULEComparer
 	public:
 		inline bool operator()(const UserListElement &e1, const UserListElement &e2) const;
 		QValueList<UserBox::CmpFuncDesc> CmpFunctions;
+		ULEComparer() : CmpFunctions() {}
 };
 
 inline bool ULEComparer::operator()(const UserListElement &e1, const UserListElement &e2) const
@@ -344,11 +342,12 @@ inline bool ULEComparer::operator()(const UserListElement &e1, const UserListEle
 UserBoxMenu *UserBox::userboxmenu = NULL;
 
 UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
-	: QListBox(parent, name, f), tipAlive(false)
+	: QListBox(parent, name, f), VisibleUsers(new UserGroup(userlist->count() * 2, "visible_users")),
+	Filters(), NegativeFilters(), sortHelper(), toRemove(), AppendProxy(), RemoveProxy(), comparer(new ULEComparer()),
+	refreshTimer(), lastMouseStopUser(), lastMouseStop(), tipAlive(false), tipTimer(), 
+	verticalPositionTimer(), lastVerticalPosition(0)
 {
 	kdebugf();
-	comparer = new ULEComparer();
-	VisibleUsers = new UserGroup(userlist->count() * 2, "visible_users");
 	Filters.append(group);
 
 	connect(group, SIGNAL(userAdded(UserListElement, bool, bool)),
@@ -393,7 +392,6 @@ UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
 
 	connect(&tipTimer, SIGNAL(timeout()), this, SLOT(tipTimeout()));
 
-	lastVerticalPosition = 0;
 	connect(&verticalPositionTimer, SIGNAL(timeout()), this, SLOT(resetVerticalPosition()));
 	connect(kadu, SIGNAL(shown()), this, SLOT(resetVerticalPosition()));
 	connect(kadu, SIGNAL(hiding()), this, SLOT(rememberVerticalPosition()));
@@ -838,7 +836,7 @@ void UserBox::currentChangedSlot(QListBoxItem *item)
 		emit currentChanged(static_cast<KaduListBoxPixmap *>(item)->User);
 }
 
-UserBoxMenu::UserBoxMenu(QWidget *parent, const char *name): QPopupMenu(parent, name)
+UserBoxMenu::UserBoxMenu(QWidget *parent, const char *name) : QPopupMenu(parent, name), iconNames()
 {
 	connect(this, SIGNAL(aboutToHide()), this, SLOT(restoreLook()));
 }
@@ -1270,23 +1268,23 @@ void UserBox::sort()
 //		kdebugm(KDEBUG_ERROR, ">>%s\n", (*u).altNick().local8Bit().data());
 }
 
-void UserBox::removingProtocol(UserListElement elem, QString protocolName, bool massively, bool last)
+void UserBox::removingProtocol(UserListElement /*elem*/, QString /*protocolName*/, bool /*massively*/, bool /*last*/)
 {
 	//_removing_ protocol, so it isn't actually removed -> refreshing _Later_ (when protocol will be removed)
 	refreshLater();
 }
 
-void UserBox::userDataChanged(UserListElement elem, QString name, QVariant oldValue,
-					QVariant currentValue, bool massively, bool last)
+void UserBox::userDataChanged(UserListElement /*elem*/, QString name, QVariant /*oldValue*/,
+					QVariant /*currentValue*/, bool /*massively*/, bool /*last*/)
 {
 	if (name != "AltNick" && name != "Mobile" && name != "HideDescription") // we are not interested in other names
 		return;
 	refreshLater();
 }
 
-void UserBox::protocolUserDataChanged(QString protocolName, UserListElement elem,
-					QString name, QVariant oldValue, QVariant currentValue,
-					bool massively, bool last)
+void UserBox::protocolUserDataChanged(QString protocolName, UserListElement /*elem*/,
+					QString name, QVariant /*oldValue*/, QVariant /*currentValue*/,
+					bool /*massively*/, bool /*last*/)
 {
 	if (protocolName != "Gadu")
 		return;
@@ -1296,7 +1294,7 @@ void UserBox::protocolUserDataChanged(QString protocolName, UserListElement elem
 }
 
 
-void UserBox::userAddedToVisible(UserListElement elem, bool massively, bool last)
+void UserBox::userAddedToVisible(UserListElement elem, bool /*massively*/, bool /*last*/)
 {
 	sortHelper.push_back(elem);
 	refreshLater();
@@ -1309,11 +1307,9 @@ class torem
 //	std::vector<UserListElement>::const_iterator last;
 
 	public:
-	torem(const std::vector<UserListElement> &src)
+	torem(const std::vector<UserListElement> &src) : begin(src.begin()), end(src.end())
 	{
-		begin = src.begin();
 //		last = begin;
-		end = src.end();
 	}
 
 	inline bool operator()(const UserListElement &u) const

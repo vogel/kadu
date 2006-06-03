@@ -28,7 +28,7 @@ class ProtocolsManager : public QObject
 			
 			ProtocolDescription(const QString &id, const QString &name, ProtocolManager *manager)
 				: protocolID(id), Name(name), Manager(manager) {}
-			ProtocolDescription(){}
+			ProtocolDescription() : protocolID(), Name(), Manager(0) {}
 			ProtocolDescription(const ProtocolDescription &c) 
 				: protocolID(c.protocolID), Name(c.Name), Manager(c.Manager) {}
 		};

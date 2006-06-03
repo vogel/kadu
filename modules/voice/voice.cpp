@@ -41,10 +41,9 @@ extern "C" void voice_close()
 }
 
 VoiceChatDialog::VoiceChatDialog(DccSocket *socket)
-	: QDialog (NULL, "voice_chat_dialog"), Socket(socket)
+	: QDialog (NULL, "voice_chat_dialog"), Socket(socket), chatFinished(false)
 {
 	kdebugf();
-	chatFinished = false;
 	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Voice chat"));
 	resize(200, 100);
@@ -106,10 +105,9 @@ void VoiceChatDialog::sendDataToAll(char *data, int length)
 		gadu->dccVoiceSend(i.key()->ggDccStruct(), data, length);
 }
 
-PlayThread::PlayThread(): wsem(32)
+PlayThread::PlayThread() : QObject(0, 0), QThread(), wsem(32), samples(), samplesMutex(), end(false)
 {
 	wsem += 32; //mo¿e byæ max 32 próbek w kolejce
-	end = false;
 }
 
 void PlayThread::run()
@@ -202,9 +200,8 @@ void PlayThread::addGsmSample(char *data, int length)
 	kdebugf2();
 }
 
-RecordThread::RecordThread()
+RecordThread::RecordThread() : QObject(0, 0), QThread(), end(false)
 {
-	end = false;
 }
 
 void RecordThread::run()
@@ -281,7 +278,10 @@ void VoiceManager::free()
 	kdebugf2();
 }
 
-VoiceManager::VoiceManager(QObject *parent, const char *name) : QObject(parent, name)
+VoiceManager::VoiceManager(QObject *parent, const char *name) : QObject(parent, name),
+	GsmEncodingTestMsgBox(0), GsmEncodingTestDevice(0),	GsmEncodingTestHandle(0),
+	GsmEncodingTestSample(0), GsmEncodingTestFrames(0), GsmEncodingTestCurrFrame(0),
+	device(0), playThread(0), recordThread(0), voice_enc(0), voice_dec(0), direct()
 {
 	kdebugf();
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys",
@@ -292,13 +292,6 @@ VoiceManager::VoiceManager(QObject *parent, const char *name) : QObject(parent, 
 	ConfigDialog::addCheckBox("Sounds", "Voice chat", QT_TRANSLATE_NOOP("@default", "Cut-off optimization (faster but degrades quality)"), "CutGSM", false, 0, 0, Expert);
 	ConfigDialog::connectSlot("Sounds", "Test GSM Encoding", SIGNAL(clicked()), this, SLOT(testGsmEncoding()));
 
-	GsmEncodingTestMsgBox = NULL;
-	GsmEncodingTestDevice = NULL;
-	GsmEncodingTestSample = NULL;
-
-	voice_enc = voice_dec = NULL;
-	playThread = NULL;
-	recordThread = NULL;
 	UserBox::userboxmenu->addItemAtPos(2,"VoiceChat", tr("Voice chat"), this,
 		SLOT(makeVoiceChat()), HotKey::shortCutFromFile("ShortCuts", "kadu_voicechat"));
 	connect(UserBox::userboxmenu, SIGNAL(popup()),

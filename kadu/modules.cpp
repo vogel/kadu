@@ -37,16 +37,14 @@
 	#define SO_EXT_LEN 2
 #endif
 
-Library::Library(const QString& file_name)
+Library::Library(const QString& file_name) : FileName(file_name), Handle(0)
 {
-	FileName = file_name;
-	Handle = NULL;
 }
 
 Library::~Library()
 {
 	kdebugf();
-	if (Handle != NULL)
+	if (Handle != 0)
 		dlclose(Handle);
 	kdebugf2();
 }
@@ -54,13 +52,13 @@ Library::~Library()
 bool Library::load()
 {
 	Handle = dlopen(FileName.local8Bit().data(), RTLD_NOW | RTLD_GLOBAL);
-	return (Handle != NULL);
+	return (Handle != 0);
 }
 
 void* Library::resolve(const QString& symbol_name)
 {
-	if (Handle == NULL)
-		return NULL;
+	if (Handle == 0)
+		return 0;
 	return dlsym(Handle, symbol_name.local8Bit().data());
 }
 
@@ -69,12 +67,18 @@ QString Library::error()
 	return QString(dlerror());
 }
 
-void ModulesDialog::resizeEvent(QResizeEvent *e)
+ModuleInfo::ModuleInfo() : depends(), conflicts(), provides(),
+	description(), author(), version(), load_by_def(false)
+{
+}
+
+void ModulesDialog::resizeEvent(QResizeEvent * /*e*/)
 {
 	layoutHelper->resizeLabels();
 }
 
-ModulesDialog::ModulesDialog() : QHBox(0, "modules_dialog")
+ModulesDialog::ModulesDialog() : QHBox(0, "modules_dialog"),
+	lv_modules(0), l_moduleinfo(0), layoutHelper(new LayoutHelper())
 {
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose);
@@ -131,7 +135,6 @@ ModulesDialog::ModulesDialog() : QHBox(0, "modules_dialog")
 	connect(lv_modules, SIGNAL(selectionChanged()), this, SLOT(itemsChanging()));
 	connect(lv_modules, SIGNAL(doubleClicked(QListViewItem *)), this, SLOT(moduleAction(QListViewItem *)));
 
-	layoutHelper = new LayoutHelper();
 	layoutHelper->addLabel(l_info);
 	layoutHelper->addLabel(l_moduleinfo);
 	loadGeometry(this, "General", "ModulesDialogGeometry", 0, 30, 600, 620);
@@ -262,6 +265,10 @@ void ModulesDialog::keyPressEvent(QKeyEvent *ke_event)
 		close();
 }
 
+ModulesManager::Module::Module() : lib(0), close(0), translator(0), info(), usage_counter(0)
+{
+}
+
 void ModulesManager::initModule()
 {
 	new ModulesManager();
@@ -272,24 +279,20 @@ void ModulesManager::closeModule()
 	delete modules_manager;
 }
 
-ModulesManager::ModulesManager() : QObject(NULL, "modules_manager")
+ModulesManager::ModulesManager() : QObject(NULL, "modules_manager"),
+	StaticModules(), Modules(), Dialog(0), translators(new QObject(this, "translators"))
 {
 	kdebugf();
 	// it's important to initiate that variable before loading modules
 	// because some of them is using that value - that's why
 	// i moved it here from ModulesManagert::initModule
 	// the same is true for menu - modules should load up at end
-
 	modules_manager=this;
+
 	kadu->mainMenu()->insertItem(icons_manager->loadIcon("ManageModules"), tr("&Manage Modules"), this, SLOT(showDialog()), HotKey::shortCutFromFile("ShortCuts", "kadu_modulesmanager"), -1, 2);
 
 	icons_manager->registerMenuItem(kadu->mainMenu(), tr("&Manage Modules"), "ManageModules");
-	translators=new QObject(this, "translators");
 
-
-	//
-	Dialog=NULL;
-	//
 	registerStaticModules();
 	QStringList static_list=staticModules();
 	CONST_FOREACH(i, static_list)

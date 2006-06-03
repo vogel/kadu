@@ -40,25 +40,22 @@
 #include "userbox.h"
 
 Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
-	: QMainWindow(parent, name, Qt::WDestructiveClose), Users(new UserGroup(usrs))
+	: QMainWindow(parent, name, Qt::WDestructiveClose), ChatMessages(), Users(new UserGroup(usrs)),
+	index(0), title_buffer(), title_timer(new QTimer(this, "title_timer")), actcolor(), Edit(0),
+	bodyformat(new QMimeSourceFactory()), emoticon_selector(0), color_selector(0),
+	AutoSend(config_file.readBoolEntry("Chat", "AutoSend")), ScrollLocked(false),
+	WaitingForACK(false), userbox(0), myLastMessage(), myLastFormatsLength(0),
+	myLastFormats(0), seq(0), vertSplit(0), horizSplit(0),
+	ParagraphSeparator(config_file.readNumEntry("General", "ParagraphSeparator")),
+	lastMsgTime(), PreviousMessage(), CfgNoHeaderRepeat(config_file.readBoolEntry("Look","NoHeaderRepeat")),
+	CfgHeaderSeparatorHeight(0), CfgNoHeaderInterval(0), Style(0), LastTime(0), body(0)
 {
 	kdebugf();
 	QValueList<int> sizes;
 
 	setAcceptDrops(true);
 
-	emoticon_selector = NULL;
-	color_selector = NULL;
-
-	AutoSend = config_file.readBoolEntry("Chat", "AutoSend");
-
-	ScrollLocked = false;
-	WaitingForACK = false;
-
-	title_timer = new QTimer(this, "title_timer");
 	connect(title_timer,SIGNAL(timeout()),this,SLOT(changeTitle()));
-
-	ParagraphSeparator=config_file.readNumEntry("General", "ParagraphSeparator");
 
 	/* register us in the chats registry... */
 	index=chat_manager->registerChat(this);
@@ -71,10 +68,7 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 		body = new KaduTextBrowser(horizSplit, "body");
 	}
 	else
-	{
-		horizSplit=NULL;
 		body = new KaduTextBrowser(vertSplit, "body");
-	}
 
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_ANIMATED)
 		body->setStyleSheet(new AnimStyleSheet(body,emoticons->themePath()));
@@ -105,8 +99,6 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 		sizes.append(1);
 		horizSplit->setSizes(sizes);
 	}
-	else
-		userbox = NULL;
 
 	QVBox *downpart = new QVBox(vertSplit, "downpartBox");
 	QHBox *edtbuttontray = new QHBox(downpart, "edtbuttontrayBox");
@@ -142,7 +134,6 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 		Style = new CustomChatStyle(config_file.readEntry("Look", "FullStyle"));
 
 	// headers removal stuff
-	CfgNoHeaderRepeat = config_file.readBoolEntry("Look","NoHeaderRepeat");
 	if (CfgNoHeaderRepeat)
 	{
 	    CfgHeaderSeparatorHeight = config_file.readNumEntry("Look","HeaderSeparatorHeight");
@@ -202,8 +193,6 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 		btnpart->setAcceptDockWindow(tb3, true);
 		KaduActions.addDefaultActionsToToolbar(tb3);
 	}
-
-	bodyformat = new QMimeSourceFactory();
 
 	body->setMimeSourceFactory(bodyformat);
 	body->setTextFormat(Qt::RichText);
@@ -675,7 +664,7 @@ void Chat::writeMessagesFromHistory(UserListElements senders, time_t time)
 }
 
 /* invoked from outside when new message arrives, this is the window to the world */
-void Chat::newMessage(const QString &protocolName, UserListElements senders, const QString &msg, time_t time)
+void Chat::newMessage(const QString &/*protocolName*/, UserListElements senders, const QString &msg, time_t time)
 {
 	QValueList<ChatMessage *> messages;
 	QDateTime date;

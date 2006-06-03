@@ -28,6 +28,8 @@ class Action : public QObject
 		{
 			UserListElements elems;
 			bool state;
+			ToggleStateStruct(UserListElements elems, bool state);
+			ToggleStateStruct();
 		};
 		QValueList<ToggleStateStruct> ToggleState;
 
@@ -82,6 +84,9 @@ class Action : public QObject
 			is_on jest zawsze ustawione na false jesli akcja nie jest typu "toggle".
 		**/
 		void activated(const UserGroup* users, const QWidget* source, bool is_on);
+	private:
+		Action(const Action &) {}
+		Action &operator=(const Action &){return *this;}
 };
 
 class Actions : public QMap<QString, Action*>
@@ -91,6 +96,8 @@ class Actions : public QMap<QString, Action*>
 		{
 			QString action_name;
 			bool uses_text_label;
+			Default(QString action_name, bool uses_text_label);
+			Default();
 		};
 		QMap< QString, QValueList<Default> > DefaultToolbarActions;
 

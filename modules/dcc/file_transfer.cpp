@@ -41,9 +41,12 @@
 
 uint32_t gg_fix32(uint32_t);
 
-FileTransfer::FileTransfer(QObject *listener, bool listenerHasSlots, FileTransferType type, const UinType &contact,
-	const QString &fileName)
-	: Socket(0), Type(type), Contact(contact), FileName(fileName), connectionTimeoutTimer(0), updateFileInfoTimer(0)
+FileTransfer::FileTransfer(QObject *listener, bool listenerHasSlots,
+	FileTransferType type, const UinType &contact, const QString &fileName) :
+	QObject(0, 0), listeners(), Socket(0), Type(type), Status(StatusFrozen), 
+	Contact(contact), FileName(fileName), GaduFileName(), connectionTimeoutTimer(0),
+	updateFileInfoTimer(0), FileSize(0), TransferedSize(0), PrevTransferedSize(0),
+	Speed(0), dccFinished(false), direct(false)
 {
 	kdebugf();
 
@@ -54,13 +57,6 @@ FileTransfer::FileTransfer(QObject *listener, bool listenerHasSlots, FileTransfe
 	}
 
 	AllTransfers.insert(AllTransfers.begin(), this);
-
-	Status = StatusFrozen;
-	FileSize = 0;
-	TransferedSize = 0;
-	PrevTransferedSize = 0;
-	Speed = 0;
-	dccFinished = false;
 
 	emit newFileTransfer(this);
 	emit fileTransferStatusChanged(this);
@@ -796,7 +792,10 @@ void FileTransferListViewItem::fileTransferDestroying(FileTransfer *)
 }
 
 FileTransferWindow::FileTransferWindow(QWidget *parent, const char *name)
-	: QSplitter(Qt::Vertical, parent, name)
+	: QSplitter(Qt::Vertical, parent, name),
+	incomingBox(0), outgoingBox(0), incoming(0), outgoing(0),
+	currentListViewItem(0), popupMenu(0), startMenuId(0),
+	stopMenuId(0), removeMenuId(0)
 {
 	kdebugf();
 
@@ -996,7 +995,8 @@ void FileTransferWindow::fileTransferDestroying(FileTransfer *)
 {
 }
 
-FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QObject(parent, name)
+FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QObject(parent, name),
+	fileTransferWindow(0), toggleFileTransferWindowMenuId(0)
 {
 	kdebugf();
 	config_file.addVariable("Network", "LastUploadDirectory", QString(getenv("HOME")) + "/");
@@ -1042,8 +1042,6 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 		this, SLOT(toggleFileTransferWindow()), 0, -1, 10);
 
 	notify->registerEvent("fileTransferIncomingFile",  QT_TRANSLATE_NOOP("@default", "An user wants to send you a file"));
-
-	fileTransferWindow = 0;
 
 	readFromConfig();
 

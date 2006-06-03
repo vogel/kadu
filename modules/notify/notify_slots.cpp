@@ -71,7 +71,7 @@ void NotifySlots::onApplyTabNotify()
 	kdebugf2();
 }
 
-NotifySlots::NotifySlots(QObject *parent, const char *name) : QObject(parent, name)
+NotifySlots::NotifySlots(QObject *parent, const char *name) : QObject(parent, name), disabledControls()
 {
 	kdebugf();
 	kdebugf2();

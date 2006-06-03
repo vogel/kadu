@@ -20,7 +20,11 @@
 #include "kadu.h"
 #include "config_dialog.h"
 
-SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name)
+SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name),
+	muteitem(0), soundfiles(), soundNames(), soundTexts(),
+	SamplePlayingTestMsgBox(0), SamplePlayingTestDevice(0), SamplePlayingTestSample(0),
+	SampleRecordingTestMsgBox(0), SampleRecordingTestDevice(0), SampleRecordingTestSample(0),
+	FullDuplexTestMsgBox(0), FullDuplexTestDevice(0), FullDuplexTestSample(0)
 {
 	kdebugf();
 
@@ -41,13 +45,6 @@ SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name
 		this, SLOT(muteActionActivated(const UserGroup*, const QWidget*, bool)));
 	KaduActions.insert("muteSoundsAction", mute_action);
 	KaduActions.addDefaultToolbarAction("Kadu toolbar", "muteSoundsAction", 0);
-
-	SamplePlayingTestMsgBox = NULL;
-	SamplePlayingTestSample = NULL;
-	SampleRecordingTestMsgBox = NULL;
-	SampleRecordingTestSample = NULL;
-	FullDuplexTestMsgBox = NULL;
-	FullDuplexTestSample = NULL;
 
 	kdebugf2();
 }
@@ -125,7 +122,7 @@ void SoundSlots::onCreateTabSounds()
 	kdebugf2();
 }
 
-void SoundSlots::muteActionActivated(const UserGroup* users, const QWidget* source, bool is_on)
+void SoundSlots::muteActionActivated(const UserGroup* /*users*/, const QWidget* /*source*/, bool is_on)
 {
 	kdebugf();
 	sound_manager->setMute(is_on);

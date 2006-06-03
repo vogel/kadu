@@ -105,7 +105,7 @@ extern "C" void x11_docking_close()
 
 
 X11TrayIcon::X11TrayIcon(QWidget *parent, const char *name)
-	: QLabel(parent, name, WMouseNoMask | WRepaintNoErase | WType_TopLevel | WStyle_Customize | WStyle_NoBorder | WStyle_StaysOnTop)
+	: QLabel(parent, name, WMouseNoMask | WRepaintNoErase | WType_TopLevel | WStyle_Customize | WStyle_NoBorder | WStyle_StaysOnTop), timer()
 {
 	kdebugf();
 	setBackgroundMode(X11ParentRelative);

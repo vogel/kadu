@@ -24,12 +24,15 @@
 #include "misc.h"
 #include "userlist.h"
 
-void UserlistImportExport::resizeEvent(QResizeEvent *e)
+void UserlistImportExport::resizeEvent(QResizeEvent * /*e*/)
 {
 	layoutHelper->resizeLabels();
 }
 
-UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopLevel|WDestructiveClose)
+UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) :
+	QHBox(parent, name, WType_TopLevel | WDestructiveClose),
+	pb_fetch(0), importedUserlist(), pb_send(0), pb_delete(0), pb_tofile(0),
+	l_itemscount(0), layoutHelper(new LayoutHelper()), lv_userlist(0)
 {
 	kdebugf();
 	setCaption(tr("Import / export userlist"));
@@ -126,7 +129,6 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) : 
 	connect(gadu, SIGNAL(userListImported(bool, QValueList<UserListElement>)), this, SLOT(userListImported(bool, QValueList<UserListElement>)));
 	// end connect
 
-	layoutHelper = new LayoutHelper();
 	layoutHelper->addLabel(l_info);
  	loadGeometry(this, "General", "ImportExportDialogGeometry", 0, 30, 640, 450);
 	kdebugf2();

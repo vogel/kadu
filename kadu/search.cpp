@@ -32,11 +32,12 @@
 #include "userinfo.h"
 
 SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearchUin)
-: QDialog (parent, name, FALSE, Qt::WDestructiveClose)
+	: QDialog (parent, name, FALSE, Qt::WDestructiveClose),
+	only_active(0), e_uin(0), e_name(0), e_nick(0), e_byrFrom(0), e_byrTo(0), e_surname(0),
+	c_gender(0), e_city(0), results(0), progress(0), r_uin(0), r_pers(0), _whoisSearchUin(whoisSearchUin),
+	seq(0), searchRecord(new SearchRecord()), searchhidden(false)
 {
 	kdebugf();
-
-	_whoisSearchUin = whoisSearchUin;
 
 	QLabel *l_name;
 	QLabel *l_nick;
@@ -169,7 +170,6 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	loadGeometry(this, "General", "SearchDialogGeometry", 0, 30, 750, 350);
 	setCaption(tr("Search user in directory"));
 
-	searchRecord = new SearchRecord;
 	connect(gadu, SIGNAL(newSearchResults(SearchResults &, int, int)), this, SLOT(newSearchResults(SearchResults &, int, int)));
 	kdebugf2();
 }

@@ -20,11 +20,10 @@ Updates *Updates::instance = NULL;
 bool Updates::UpdateChecked = false;
 QDateTime Updates::LastUpdateCheck;
 
-Updates::Updates(UinType uin)
+Updates::Updates(UinType uin) : query(QString("update.php?uin=%1&version=%2").arg(uin).arg(QString(VERSION))), op(0)
 {
 	kdebugf();
 	qInitNetworkProtocols();
-	query = QString("update.php?uin=%1&version=%2").arg(uin).arg(QString(VERSION));
 	op = new QUrlOperator("http://www.kadu.net");
 	kdebugf2();
 }
@@ -33,7 +32,6 @@ Updates::~Updates()
 {
 	kdebugf();
 	delete op;
-	instance=NULL;
 }
 
 void Updates::run()
@@ -73,7 +71,10 @@ void Updates::closeModule()
 {
 	kdebugf();
 	if (instance)
-		delete instance;
+	{
+		instance->deleteLater();
+		instance = 0;
+	}
 	kdebugf2();
 }
 
@@ -107,6 +108,6 @@ void Updates::gotUpdatesInfo(const QByteArray &data, QNetworkOperation * /*op*/)
 	disconnect(gadu, SIGNAL(connected()), this, SLOT(run()));
 	UpdateChecked = true;
 	config_file.writeEntry("General", "LastUpdateCheck", QDateTime(QDate(1970, 1, 1)).secsTo(QDateTime::currentDateTime()));
-	deleteLater();
+	closeModule();
 	kdebugf2();
 }

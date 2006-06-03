@@ -14,7 +14,7 @@
 #include "config_file.h"
 #include "misc.h"
 
-XmlConfigFile::XmlConfigFile()
+XmlConfigFile::XmlConfigFile() : DomDocument()
 {
 	read();
 }
@@ -158,9 +158,22 @@ XmlConfigFile* xml_config_file = NULL;
 
 
 
-PlainConfigFile::PlainConfigFile(const QString &filename) : filename(filename),activeGroup(NULL)
+PlainConfigFile::PlainConfigFile(const QString &filename) : filename(filename), groups(), activeGroupName(), activeGroup(0)
 {
 	read();
+}
+
+PlainConfigFile::PlainConfigFile(const PlainConfigFile &c) : filename(c.filename), groups(c.groups), activeGroupName(), activeGroup(0)
+{
+}
+
+PlainConfigFile &PlainConfigFile::operator=(const PlainConfigFile &c)
+{
+	filename = c.filename;
+	groups = c.groups;
+	activeGroupName = QString::null;
+	activeGroup = 0;
+	return *this;
 }
 
 void PlainConfigFile::read()
@@ -560,7 +573,7 @@ void PlainConfigFile::addVariable(const QString &group, const QString &name, con
 
 
 
-ConfigFile::ConfigFile(const QString &filename) : filename(filename),activeGroup(NULL)
+ConfigFile::ConfigFile(const QString &filename) : filename(filename)
 {
 }
 

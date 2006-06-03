@@ -42,10 +42,11 @@ extern "C" void desktop_docking_close()
 }
 
 DesktopDockWindow::DesktopDockWindow(QWidget *parent, const char *name)
-	: QLabel(parent, name, WMouseNoMask | WRepaintNoErase | WType_TopLevel | WStyle_Customize | WStyle_NoBorder | WStyle_StaysOnTop | WX11BypassWM)
+	: QLabel(parent, name, WMouseNoMask | WRepaintNoErase | WType_TopLevel | WStyle_Customize | WStyle_NoBorder | WStyle_StaysOnTop | WX11BypassWM),
+	menuPos(0), separatorPos(0), isMoving(false)
+
 {
 	kdebugf();
-	isMoving = false;
 	QPixmap DesktopDockPixmap=docking_manager->defaultPixmap();	/*ustawia ikonke na starcie - nie uzywam bo moze byc jak z defaultToolTip()*/
 	QDesktopWidget *fullDesktop = QApplication::desktop();	/* ekran */
 
@@ -183,7 +184,7 @@ void DesktopDockWindow::setToolTip(const QString& statusText)
 	QToolTip::add(this, statusText);
 }
 
-void DesktopDockWindow::setPixmap(const QPixmap& DockPixmap, const QString &iconName)
+void DesktopDockWindow::setPixmap(const QPixmap& DockPixmap, const QString & /*iconName*/)
 {
 	QLabel::setPixmap(DockPixmap);
 	repaint();

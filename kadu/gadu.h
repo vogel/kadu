@@ -61,7 +61,7 @@ class GaduStatus : public UserStatus
 		GaduStatus();
 		virtual ~GaduStatus();
 
-		void operator = (const UserStatus &copyMe);
+		GaduStatus &operator = (const UserStatus &copyMe);
 
 		virtual QPixmap pixmap(eUserStatus status, bool has_desc, bool mobile) const;
 
@@ -346,6 +346,8 @@ class GaduProtocol : public Protocol
 			@see gotToken
 		**/
 		void doChangePassword();
+		GaduProtocol(const GaduProtocol &) : Protocol(QString::null, QString::null) {}
+		GaduProtocol &operator=(const GaduProtocol &){return *this;}
 
 	private slots:
 

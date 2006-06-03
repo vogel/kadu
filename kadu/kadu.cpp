@@ -107,16 +107,18 @@ void Kadu::keyPressEvent(QKeyEvent *e)
 }
 
 /* a monstrous constructor so Kadu would take longer to start up */
-Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
+Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
+	kaduslots(new KaduSlots(this, "kaduslots")),
+	TopDockArea(0), InfoPanel(0), MenuBar(0), MainMenu(0), GroupBar(0),
+	Userbox(0), statusMenu(0), statusButton(), lastPositionBeforeStatusMenuHide(),
+	StartTime(QDateTime::currentDateTime()), updateInformationPanelTimer(),
+	status(), ShowMainWindowOnStart(true), DoBlink(false), BlinkOn(false),
+	Docked(false), dontHideOnClose(false), personalInfoMenuId(-1)
 {
 	kdebugf();
-	Docked = false;
-	dontHideOnClose = false;
-	ShowMainWindowOnStart = true;
 	kadu = this;
-	StartTime = QDateTime::currentDateTime();
+	blinktimer = 0;
 
-	kaduslots = new KaduSlots(this, "kaduslots");
 	UinType myUin = config_file.readNumEntry("General", "UIN");
 
 	ConfigDialog::addHGroupBox("General", "General", QT_TRANSLATE_NOOP("@default", "User data"));
@@ -257,13 +259,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name)
 
 	// history, hints
 	History::initModule();
-
-	// blinktimer = NULL; zamieniamy na(powod: patrz plik events.cpp)
-	blinktimer = NULL;
-
-	/* blinker */
-	BlinkOn = false;
-	DoBlink = false;
 
 	loadGeometry(this, "General", "Geometry", 0, 30, 145, 465);
 

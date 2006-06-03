@@ -10,7 +10,7 @@
 #include "dnshandler.h"
 #include "debug.h"
 
-DNSHandler::DNSHandler(const QString &marker, const QHostAddress &address) : marker(marker)
+DNSHandler::DNSHandler(const QString &marker, const QHostAddress &address) : DNSResolver(), marker(marker)
 {
 	kdebugf();
 //	kdebugm(KDEBUG_WARNING, ">>>>>>>>>>%s\n", marker.local8Bit().data());

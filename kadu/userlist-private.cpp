@@ -16,7 +16,8 @@
 // WARNING: as soon as number of keys will grow, we need to increase
 // default dictionary sizes to prime numbers!
 // we can find them here: http://doc.trolltech.com/3.3/primes.html
-ULEPrivate::ULEPrivate() : informations(31), protocols(3)
+ULEPrivate::ULEPrivate() : informations(31), protocols(3),
+	Parents(), key(0)
 {
 }
 
@@ -26,14 +27,12 @@ ULEPrivate::~ULEPrivate()
 	protocols.setAutoDelete(true);
 }
 
-ProtocolData::ProtocolData(const QString &/*protocolName*/, const QString &id) : data(31)
+ProtocolData::ProtocolData(const QString &/*protocolName*/, const QString &id) : ID(id), Stat(new GaduStatus()), data(31)
 {
-	ID = id;
-	Stat = new GaduStatus();
 	//Stat = ProtocolManager::newStatus(protocolName);
 }
 
-ProtocolData::ProtocolData() : Stat(new UserStatus()), data(31)
+ProtocolData::ProtocolData() : ID(), Stat(new UserStatus()), data(31)
 {
 }
 
@@ -43,22 +42,19 @@ ProtocolData::~ProtocolData()
 	data.setAutoDelete(true);
 }
 
-ProtocolData::ProtocolData(const ProtocolData &s)
+ProtocolData::ProtocolData(const ProtocolData &s) : ID(s.ID), Stat(s.Stat->copy()), data(s.data)
 {
 	kdebugf();
-	ID = s.ID;
-	delete Stat;
- 	Stat = s.Stat->copy();
-	data = s.data;
 }
 
-void ProtocolData::operator=(const ProtocolData &s)
+ProtocolData &ProtocolData::operator=(const ProtocolData &s)
 {
 	kdebugf();
 	ID = s.ID;
 	delete Stat;
  	Stat = s.Stat->copy();
 	data = s.data;
+	return *this;
 }
 
 static QString DNSName("DNSName");
@@ -83,7 +79,7 @@ void ULEPrivate::setDNSName(const QString &protocolName, const QString &dnsname)
 	delete old;
 }
 
-UserGroupData::UserGroupData(int size) : data(size)
+UserGroupData::UserGroupData(int size) : data(size), list()
 {
 }
 

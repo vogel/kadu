@@ -52,13 +52,10 @@ extern "C" void sound_close()
 }
 
 SamplePlayThread::SamplePlayThread(SoundDevice device)
-	: PlayingSemaphore(1), SampleSemaphore(1)
+	: Device(device), Sample(0), SampleLen(0), Stopped(false),
+	PlayingSemaphore(1), SampleSemaphore(1)
 {
 	kdebugf();
-	Device = device;
-	Sample = NULL;
-	SampleLen = 0;
-	Stopped = false;
 	PlayingSemaphore++;
 	kdebugf2();
 }
@@ -114,13 +111,10 @@ void SamplePlayThread::stop()
 }
 
 SampleRecordThread::SampleRecordThread(SoundDevice device)
-	: RecordingSemaphore(1), SampleSemaphore(1)
+	: Device(device), Sample(0), SampleLen(0), Stopped(false),
+	RecordingSemaphore(1), SampleSemaphore(1)
 {
 	kdebugf();
-	Device = device;
-	Sample = NULL;
-	SampleLen = 0;
-	Stopped = false;
 	RecordingSemaphore++;
 	kdebugf2();
 }
@@ -175,17 +169,15 @@ void SampleRecordThread::stop()
 	kdebugf2();
 }
 
-SoundManager::SoundManager(const QString& name, const QString& configname)
+SoundManager::SoundManager(const QString& name, const QString& configname) : Notifier(),
+	themes(new Themes(name, configname, "sound_manager")),
+	lastsoundtime(), mute(false), PlayingThreads(), RecordingThreads(),
+	play_thread(new SoundPlayThread()), simple_player_count(0)
 {
 	kdebugf();
 
-	themes = new Themes(name, configname, "sound_manager");
-
-	simple_player_count = 0;
-	mute = false;
 	lastsoundtime.start();
 
-	play_thread = new SoundPlayThread();
 	play_thread->start();
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default","Sounds"), "SoundsTab");
@@ -585,7 +577,7 @@ void SoundManager::message(const QString &, const QString &message, const QMap<Q
 	kdebugf2();
 }
 
-void SoundManager::externalEvent(const QString &notifyType, const QString &msg, const UserListElements &ules)
+void SoundManager::externalEvent(const QString &/*notifyType*/, const QString &msg, const UserListElements &ules)
 {
 	kdebugf();
 
@@ -744,11 +736,10 @@ void SoundManager::play(const QString &path, bool volCntrl, double vol)
 	kdebugf2();
 }
 
-SoundPlayThread::SoundPlayThread()
+SoundPlayThread::SoundPlayThread() : QThread(),
+	mutex(), semaphore(new QSemaphore(100)), end(false), list()
 {
-	semaphore = new QSemaphore(100);
 	(*semaphore) += 100;
-	end = false;
 }
 
 SoundPlayThread::~SoundPlayThread()
@@ -837,9 +828,5 @@ SndParams::SndParams(QString fm, bool volCntrl, float vol) :
 
 SndParams::SndParams(const SndParams &p) : filename(p.filename),
 						volumeControl(p.volumeControl), volume(p.volume)
-{
-}
-
-SndParams::SndParams()
 {
 }

@@ -86,6 +86,8 @@ class PlainConfigFile {
 		QMap<QString, QMap<QString, QString> > groups;
 		mutable QString activeGroupName;
 		mutable QMap<QString, QString> *activeGroup;
+		PlainConfigFile(const PlainConfigFile &);
+		PlainConfigFile &operator=(const PlainConfigFile &);
 
 	public:
 		/**
@@ -361,10 +363,6 @@ class ConfigFile {
 		QString getEntry(const QString &group, const QString &name, bool *ok = 0) const;
 
 		QString filename;
-		QMap<QString, QMap<QString, QString> > groups;
-		mutable QString activeGroupName;
-		mutable QMap<QString, QString> *activeGroup;
-
 	public:
 		/**
 			Otwiera plik filename i go wczytuje

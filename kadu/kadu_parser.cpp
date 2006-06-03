@@ -39,7 +39,7 @@ bool KaduParser::registerTag(const QString &name, QString (*func)(const UserList
 	}
 }
 
-bool KaduParser::unregisterTag(const QString &name, QString (*func)(const UserListElement &))
+bool KaduParser::unregisterTag(const QString &name, QString (* /*func*/)(const UserListElement &))
 {
 	kdebugf();
 	if (!registeredTags.contains(name))
@@ -80,6 +80,7 @@ struct ParseElem
 {
 	enum {PE_STRING, PE_CHECK_ALL_NOT_NULL, PE_CHECK_ANY_NULL, PE_CHECK_FILE_EXISTS, PE_CHECK_FILE_NOT_EXISTS, PE_EXECUTE, PE_VARIABLE, PE_ICONPATH, PE_EXTERNAL_VARIABLE, PE_EXECUTE2} type;
 	QString str;
+	ParseElem() : type(PE_STRING), str() {}
 };
 
 QString KaduParser::parse(const QString &s, const UserListElement &ule, bool escape)

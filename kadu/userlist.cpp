@@ -29,7 +29,8 @@
 #include "userlist.h"
 #include "userlist-private.h"
 
-UserList::UserList() : UserGroup(101, "userlist")
+UserList::UserList() : UserGroup(101, "userlist"),
+	nonProtoKeys(), protoKeys()
 {
 	initKeys();
 	readFromConfig();

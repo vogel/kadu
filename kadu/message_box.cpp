@@ -24,9 +24,9 @@ const int MessageBox::YES      = 4;  // 00100
 const int MessageBox::NO       = 8;  // 01000
 const int MessageBox::PROGRESS = 16; // 10000
 
-MessageBox::MessageBox(const QString& message1,int components,bool modal)
-	: QDialog(NULL,NULL,modal,WType_TopLevel|WStyle_Customize|WStyle_DialogBorder|WStyle_Title|WStyle_SysMenu|WDestructiveClose),
-	message(message1)
+MessageBox::MessageBox(const QString& message1, int components, bool modal)
+	: QDialog(NULL, NULL, modal, WType_TopLevel | WStyle_Customize | WStyle_DialogBorder | WStyle_Title | WStyle_SysMenu | WDestructiveClose),
+	Progress(0), _pixmap(0), _grid(0), message(message1)
 {
 	kdebugf();
 	

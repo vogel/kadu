@@ -63,7 +63,7 @@ class UserListElement : public QObject
 			Operator kopiuj±cy. Dane bêd± dzielone.
 			\param copyMe obiekt klasy UserListElement który bêdzie skopiowany.
 		**/
-		void operator = (const UserListElement &copyMe);
+		UserListElement &operator = (const UserListElement &copyMe);
 
 		inline bool operator==(const UserListElement &u) const {	return key() == u.key();	}
 

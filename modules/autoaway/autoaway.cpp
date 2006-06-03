@@ -64,27 +64,23 @@ extern "C" void autoaway_close()
 	kdebugf2();
 }
 
-AutoAwayTimer::AutoAwayTimer(QObject* parent, const char *name) : QTimer(parent, name), idleTime(0)
+AutoAwayTimer::AutoAwayTimer(QObject* parent, const char *name) : QTimer(parent, name),
+	didChangeStatus(false), didChangeDescription(false),
+	action((DescAction)config_file.readNumEntry("General", "AutoChangeDescription")),
+	actionText(config_file.readEntry("General", "AutoStatusText")),
+	checkInterval(config_file.readNumEntry("General", "AutoAwayCheckTime")),
+	autoAwayTime(config_file.readNumEntry("General", "AutoAwayTime")),
+	autoDisconnectTime(config_file.readNumEntry("General", "AutoDisconnectTime")),
+	autoInvisibleTime(config_file.readNumEntry("General", "AutoInvisibleTime")),
+	autoAwayEnabled(config_file.readBoolEntry("General", "AutoAway")),
+	autoInvisibleEnabled(config_file.readBoolEntry("General", "AutoInvisible")),
+	autoDisconnectEnabled(config_file.readBoolEntry("General", "AutoDisconnect")),
+	restoreStatus(config_file.readBoolEntry("General", "AutoRestoreStatus")),
+	oldStatus(), idleTime(0)
 {
-	didChangeStatus = false;
-	didChangeDescription = false;
-	action = (DescAction)config_file.readNumEntry("General", "AutoChangeDescription");
-	actionText = config_file.readEntry("General", "AutoStatusText");
-	checkInterval = config_file.readNumEntry("General","AutoAwayCheckTime");
-
-	autoAwayTime = config_file.readNumEntry("General","AutoAwayTime");
-	autoDisconnectTime = config_file.readNumEntry("General","AutoDisconnectTime");
-	autoInvisibleTime = config_file.readNumEntry("General","AutoInvisibleTime");
-
-	autoAwayEnabled = config_file.readBoolEntry("General","AutoAway");
-	autoInvisibleEnabled = config_file.readBoolEntry("General","AutoInvisible");
-	autoDisconnectEnabled = config_file.readBoolEntry("General","AutoDisconnect");
-
-	restoreStatus = config_file.readBoolEntry("General","AutoRestoreStatus");
-
 	qApp->installEventFilter(this);
 	connect(this, SIGNAL(timeout()), SLOT(checkIdleTime()));
-	start(config_file.readNumEntry("General", "AutoAwayCheckTime")*1000, TRUE);
+	start(config_file.readNumEntry("General", "AutoAwayCheckTime") * 1000, TRUE);
 }
 
 // jesli wciskamy klawisze lub poruszamy myszk± w obrêbie okna programu to zerujemy czas nieaktywno¶ci

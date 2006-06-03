@@ -16,7 +16,11 @@
 #include "pending_msgs.h"
 #include "userlist.h"
 
-PendingMsgs::PendingMsgs(QObject *parent, const char *name): QObject(parent, name)
+PendingMsgs::Element::Element() : users(), proto(), msg(), msgclass(0), time(0)
+{
+}
+
+PendingMsgs::PendingMsgs(QObject *parent, const char *name) : QObject(parent, name), msgs()
 {
 }
 

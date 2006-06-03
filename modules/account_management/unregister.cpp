@@ -22,7 +22,8 @@
 #include "misc.h"
 #include "unregister.h"
 
-Unregister::Unregister(QDialog * /*parent*/, const char * /*name*/)
+Unregister::Unregister(QDialog *parent, const char *name) : QHBox(parent, name),
+	uin(0), pwd(0), status(0), updateconfig(0), layoutHelper(new LayoutHelper())
 {
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose);
@@ -79,7 +80,6 @@ Unregister::Unregister(QDialog * /*parent*/, const char * /*name*/)
 	connect(pb_unregister, SIGNAL(clicked()), this, SLOT(doUnregister()));
 	connect(gadu, SIGNAL(unregistered(bool)), this, SLOT(unregistered(bool)));
 
-	layoutHelper = new LayoutHelper();
 	layoutHelper->addLabel(l_info);
 
  	loadGeometry(this, "General", "UnregisterDialogGeometry", 0, 30, 355, 340);
@@ -94,7 +94,7 @@ Unregister::~Unregister()
 	kdebugf2();
 }
 
-void Unregister::resizeEvent(QResizeEvent *e)
+void Unregister::resizeEvent(QResizeEvent * /*e*/)
 {
 	layoutHelper->resizeLabels();
 }

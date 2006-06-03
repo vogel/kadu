@@ -42,7 +42,7 @@ extern "C" void default_sms_close()
 /********** SmsOrangeGateway **********/
 
 SmsOrangeGateway::SmsOrangeGateway(QObject* parent, const char *name)
-	: SmsGateway(parent, name)
+	: SmsGateway(parent, name), Token()
 {
 	modules_manager->moduleIncUsageCount("default_sms");
 }
@@ -258,7 +258,7 @@ SmsEraGateway::~SmsEraGateway()
 	modules_manager->moduleDecUsageCount("default_sms");
 }
 
-void SmsEraGateway::send(const QString& number,const QString& message, const QString& contact, const QString& signature)
+void SmsEraGateway::send(const QString& number, const QString& message, const QString& /*contact*/, const QString& signature)
 {
 	kdebugf();
 	Number=number;
@@ -344,7 +344,8 @@ void SmsEraGateway::httpFinished()
 {
 }
 
-SmsGatewaySlots::SmsGatewaySlots(QObject *parent, const char *name) : QObject(parent, name)
+SmsGatewaySlots::SmsGatewaySlots(QObject *parent, const char *name) :
+	QObject(parent, name), era_types(), era_values(), actualEraGateway()
 {
 	kdebugf();
 	ConfigDialog::addVGroupBox("SMS", "sms-beginner",
