@@ -113,19 +113,19 @@ aRtsPlayerRecorder::~aRtsPlayerRecorder()
 	aRtsDevice *dev;
 	finalizing = true;
 
-	// mordujemy wszystkie procesy, które zawis³y
+	// we are killing all processes which hung
 	busymutex.lock();
 	while (!busy.empty())
 	{
 		dev = busy.last();
 		busy.pop_back();
 
-		//przez chwilê nie potrzebujemy muteksa, a bêdzie on potrzebny przy zamykaniu urz±dzenia
+		// for a moment we don't need mutex, but as it will be needed in closing device function, we release it
 		busymutex.unlock();
 		dev->process->tryTerminate();
 		QTimer::singleShot(5000, dev->process, SLOT(kill()));
 
-		//czekamy a¿ w±tek korzystaj±cy z urz±dzenia go zwolni
+		// we are waiting for another thread to release that device
 		dev->inUse.lock();
 		dev->inUse.unlock();
 		busymutex.lock();
@@ -141,7 +141,7 @@ aRtsPlayerRecorder::~aRtsPlayerRecorder()
 	disconnect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, int16_t*, int, bool&)),
 		this, SLOT(recordSample(SoundDevice, int16_t*, int, bool&)));
 
-	// a teraz te które s± w puli wolnych urz±dzeñ
+	// and now those which are in free devices pool
 	poolmutex.lock();
 	while (!pool.empty())
 	{
@@ -204,12 +204,12 @@ void aRtsPlayerRecorder::openDevice(SoundDeviceType type, int sample_rate, int c
 		}
 		kdebugm(KDEBUG_INFO, "writing to stdin\n");
 		dev->process->writeToStdin(QString("%1 %2 %3\n").arg(config_file.readNumEntry("General", "UIN")).arg(pass).arg(num));
-		//UWAGA: writeToStdin dostarcza dane w pêtli zdarzeñ Qt
+		//WARNING: writeToStdin provides data in Qt event loop!
 
 		kdebugm(KDEBUG_INFO, "waiting for new line from arts_connector\n");
 		while (dev->valid && !dev->process->canReadLineStdout())
 		{
-			//dajemy szansê zakoñczyæ siê procesowi (processExited musi zablokowaæ urz±dzenie)
+			// give a chance to end thread (processExited must lock dev->mutex)
 //			kdebugm(KDEBUG_INFO, "releasing lock\n");
 			dev->mutex.unlock();
 			usleep(100000);//0.1 s

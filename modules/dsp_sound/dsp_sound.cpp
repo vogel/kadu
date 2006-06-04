@@ -143,8 +143,8 @@ void OSSPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chann
 		return;
 	}
 
-	//UWAGA: parametry FORMAT, CHANNELS i SPEED musz± byæ ustawianie w takiej
-	//kolejno¶ci ze wzglêdu na kompatybilno¶æ z niektórymi (starymi) kartami
+	// WARNING: parameters FORMAT, CHANNELS, SPEED must be set in that order
+	// because of compatibility with some (old) soundcards
 	kdebugm(KDEBUG_INFO, "Setting format\n");
 	value = AFMT_S16_LE;
 	if(ioctl(fd, SNDCTL_DSP_SETFMT, &value)<0)
@@ -244,7 +244,7 @@ void OSSPlayerSlots::playSample(SoundDevice device, const int16_t* data, int len
 
 	if (dev->flushing)
 	{
-		// czekaj na zakoñczenie odtwarzania
+		// wait for end of playing
 		if (ioctl(dev->fd, SNDCTL_DSP_SYNC, 0) < 0)
 		{
 			kdebugm(KDEBUG_ERROR, "SNDCTL_DSP_SYNC error (%s, %d)\n", strerror(errno), errno);

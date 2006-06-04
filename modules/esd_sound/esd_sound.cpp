@@ -192,7 +192,7 @@ void ESDPlayer::setFlushingEnabled(SoundDevice device, bool /*enabled*/)
 		kdebugf2();
 		return;
 	}
-	//implementacja tego bêdzie pó¼niej ;)
+	// unimplemented
 	kdebugf2();
 }
 

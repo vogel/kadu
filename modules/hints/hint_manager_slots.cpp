@@ -46,7 +46,7 @@ HintManagerSlots::HintManagerSlots(QObject *parent, const char *name) : QObject(
 					"HintBlocking"<<"HintNewChat"<<"HintNewMessage"<<"HintError"<<"HintMessage";
 	CONST_FOREACH(prefix, config_opts_prefixes)
 	{
-		//wczytanie starego configa
+		//old configuration
 		HintProperties prop=HintProperties::fromString(config_file.readEntry("Hints", *prefix));
 		config_file.addVariable("Hints", (*prefix)+"_font", prop.font);
 		config_file.addVariable("Hints", (*prefix)+"_fgcolor", prop.fgcolor);
@@ -86,7 +86,7 @@ void HintManagerSlots::onCreateTabHints()
 
 	toggled_UseOwnPosition(config_file.readBoolEntry("Hints", "UseUserPosition"));
 	toggled_SetAll(config_file.readBoolEntry("Hints", "SetAll"));
-	
+
 	config_hint_properties.clear();
 
 	CONST_FOREACH(prefix, config_opts_prefixes)
@@ -96,11 +96,11 @@ void HintManagerSlots::onCreateTabHints()
 		prop.fgcolor=config_file.readColorEntry("Hints", (*prefix)+"_fgcolor");
 		prop.bgcolor=config_file.readColorEntry("Hints", (*prefix)+"_bgcolor");
 		prop.timeout=config_file.readUnsignedNumEntry("Hints", (*prefix)+"_timeout");
-		
+
 		config_hint_properties[*prefix]=prop;
 	}
 	currentOptionPrefix.truncate(0);
-	
+
 	QVButtonGroup *group=ConfigDialog::getVButtonGroup("Hints", "Hint type");
 	clicked_HintType(group->id(group->selected()));
 
@@ -110,7 +110,7 @@ void HintManagerSlots::onCreateTabHints()
 void HintManagerSlots::onApplyTabHints()
 {
 	kdebugf();
-	
+
 	CONST_FOREACH(prop, config_hint_properties)
 	{
 		config_file.writeEntry("Hints", prop.key()+"_font", prop.data().font);
@@ -136,12 +136,12 @@ void HintManagerSlots::clicked_HintType(int id)
 	currentOptionPrefix=config_opts_prefixes[id];
 	QLabel *preview=ConfigDialog::getLabel("Hints", "<b>Text</b> preview");
 	HintProperties prop=config_hint_properties[currentOptionPrefix];
-	
+
 	preview->setPaletteBackgroundColor(prop.bgcolor);
 	preview->setPaletteForegroundColor(prop.fgcolor);
 	preview->setFont(prop.font);
 	ConfigDialog::getSpinBox("Hints", "Hint timeout")->setValue(prop.timeout);
-	
+
 	kdebugf2();
 }
 
@@ -160,7 +160,7 @@ void HintManagerSlots::clicked_ChangeFont()
 		else
 			config_hint_properties[currentOptionPrefix].font = font;
 	}
-	
+
 	kdebugf2();
 }
 
@@ -251,17 +251,17 @@ HintProperties HintProperties::fromString(const QString &oldstring)
 		prop.font=QFont(slist[0], slist[1].toInt());
 	else
 		prop.font=QApplication::font();
-	
+
 	if (s>=3)
 		prop.fgcolor=QColor(slist[2]);
 	else
 		prop.fgcolor=QColor("#000000");
-	
+
 	if (s>=4)
 		prop.bgcolor=QColor(slist[3]);
 	else
 		prop.bgcolor=QColor("#F0F0F0");
-	
+
 	if (s>=5)
 	{
 		prop.timeout=slist[4].toUInt();

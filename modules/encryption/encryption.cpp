@@ -31,7 +31,7 @@ extern "C"
 #include "simlite.h"
 };
 
-// uzywamy mkdir z sys/stat.h - nie ma w Qt mozliwosci ustawienia praw do kat.
+// for mkdir
 #include <sys/stat.h>
 
 EncryptionManager* encryption_manager;
@@ -87,7 +87,7 @@ EncryptionManager::EncryptionManager(QObject *parent, const char *name) : QObjec
 
 	sim_key_path = strdup(ggPath("keys/").local8Bit());
 
-	// uzywamy mkdir z sys/stat.h - nie ma w QT mozliwosci ustawienia praw do kat.
+	// use mkdir from sys/stat.h - there's no easy way to set permissions through Qt
 	mkdir(ggPath("keys").local8Bit().data(), 0700);
 
 	kdebugf2();

@@ -44,7 +44,6 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 
 	connect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
 
-/* Zak³adka konfiguracyjna */
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Hints"), "HintsTab");
 
 	QStringList options=toStringList(tr("Nothing"),tr("Open chat"),tr("Delete hint"),tr("Delete all hints"));
@@ -240,38 +239,38 @@ void HintManager::setHint(void)
 				break;
 		};
 
-		if (newPosition.x()<0) //gdy hinty wyje¿d¿aj± poza ekran w lewo
+		if (newPosition.x() < 0) // when hints go out of the screen (on left)
 			newPosition.setX(0);
-		if (newPosition.y()<0) //gdy hinty wyje¿d¿aj± poza ekran u góry
+		if (newPosition.y() < 0) //when hints go out of the screen (on top)
 			newPosition.setY(0);
 
-		if (newPosition.x()+preferredSize.width()>=desktopSize.width()) //gdy hinty wyje¿d¿aj± poza ekran w prawo
-			newPosition.setX(desktopSize.width()-preferredSize.width());
-		if (newPosition.y()+preferredSize.height()>=desktopSize.height()) //gdy hinty wyje¿d¿aj± poza ekran u do³u
-			newPosition.setY(desktopSize.height()-preferredSize.height());
+		if (newPosition.x() + preferredSize.width() > =desktopSize.width()) //when hints go out of the screen (on right)
+			newPosition.setX(desktopSize.width() - preferredSize.width());
+		if (newPosition.y() + preferredSize.height() >= desktopSize.height()) //when hints go out of the screen (on bottom)
+			newPosition.setY(desktopSize.height() - preferredSize.height());
 	}
 	else
 	{
-		//takie "dziwne" przypadki mog± wyst±piæ przy automatycznym chowaniu panelu
-		if (trayPosition.x()<0)
+		// those "strange" cases happens when "automatic panel hiding" is in use
+		if (trayPosition.x() < 0)
 			trayPosition.setX(0);
-		else if (trayPosition.x()>desktopSize.width())
-			trayPosition.setX(desktopSize.width()-2);
-		if (trayPosition.y()<0)
+		else if (trayPosition.x() > desktopSize.width())
+			trayPosition.setX(desktopSize.width() - 2);
+		if (trayPosition.y() < 0)
 			trayPosition.setY(0);
-		else if (trayPosition.y()>desktopSize.height())
-			trayPosition.setY(desktopSize.height()-2);
+		else if (trayPosition.y() > desktopSize.height())
+			trayPosition.setY(desktopSize.height() - 2);
 
 
-		if (trayPosition.x() < desktopSize.width()/2) // gdy tray jest z lewej
-			newPosition.setX(trayPosition.x()+32);
-		else //gdy tray jest z prawej
-			newPosition.setX(trayPosition.x()-preferredSize.width());
+		if (trayPosition.x() < desktopSize.width() / 2) // tray is on left
+			newPosition.setX(trayPosition.x() + 32);
+		else // tray is on right
+			newPosition.setX(trayPosition.x() - preferredSize.width());
 
-		if (trayPosition.y() < desktopSize.height()/2) //gdy tray jest u góry
-			newPosition.setY(trayPosition.y()+32);
-		else //gdy tray jest u do³u
-			newPosition.setY(trayPosition.y()-preferredSize.height());
+		if (trayPosition.y() < desktopSize.height() / 2) // tray is on top
+			newPosition.setY(trayPosition.y() + 32);
+		else // tray is on bottom
+			newPosition.setY(trayPosition.y() - preferredSize.height());
 	}
 	frame->move (newPosition);
 	kdebugf2();

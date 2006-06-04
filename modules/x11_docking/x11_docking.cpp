@@ -26,6 +26,7 @@
 #include <X11/Xutil.h>
 #include <X11/Xatom.h>
 
+// this is experimental option
 //#define ENABLE_HIDING
 
 extern Time qt_x_time;
@@ -116,7 +117,7 @@ X11TrayIcon::X11TrayIcon(QWidget *parent, const char *name)
 	setMouseTracking(true);
 	update();
 
-	//unikamy efektu klepsydry w KDE
+	// avoid "hourglass effect" in KDE
 	QWidget *w=new QWidget();
 	w->setGeometry(-100,-100,10,10);
 	w->show();
@@ -126,7 +127,7 @@ X11TrayIcon::X11TrayIcon(QWidget *parent, const char *name)
 	tryToDock();
 
 #ifdef ENABLE_HIDING
-	//wy³±czamy pokazywanie Kadu na pasku zadañ
+	// disable Kadu icon on taskbar
 	disableTaskbar();
 	connect(kadu, SIGNAL(shown()), this, SLOT(disableTaskbar()));
 //	connect(kadu, SIGNAL(minimized()), kadu, SLOT(hide()));
@@ -159,9 +160,9 @@ void X11TrayIcon::tryToDock()
 	classhint.res_class = (char*)"Kadu";
 	XSetClassHint(dsp, win, &classhint);
 
-	// SPOSÓB PIERWSZY
+	// 1. way
 	// System Tray Protocol Specification
-	// Dzia³a pod KDE 3.1 i GNOME 2.x
+	// works on KDE 3.1 i GNOME 2.x
 	Screen *screen = XDefaultScreenOfDisplay(dsp);
 	int screen_id = XScreenNumberOfScreen(screen);
 	char buf[32];
@@ -178,9 +179,9 @@ void X11TrayIcon::tryToDock()
 	else
 		kdebugm(KDEBUG_WARNING, "no manager_window!\n");
 
-	// SPOSÓB DRUGI
-	// Dzia³a na KDE 3.0.x i pewnie na starszych
-	// oraz pod GNOME 1.x
+	// 2. way
+	// works on KDE 3.0.x and probably older
+	// and GNOME 1.x
 	int r;
 	int data = 1;
 	r = XInternAtom(dsp, "KWM_DOCKWINDOW", false);

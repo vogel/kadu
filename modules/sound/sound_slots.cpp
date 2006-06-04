@@ -65,10 +65,10 @@ void SoundSlots::onCreateTabSounds()
 	QGrid *g_volume= ConfigDialog::getGrid("Sounds","volume");
 	QCheckBox *b_playinvisible= ConfigDialog::getCheckBox("Sounds", "Play chat sounds only when window is invisible");
 	QComboBox *cb_soundtheme= ConfigDialog::getComboBox("Sounds", "Sound theme");
-	cb_soundtheme->insertItem("Custom");// 0-wa pozycja
+	cb_soundtheme->insertItem("Custom");// 0 position
 	cb_soundtheme->insertStringList(sound_manager->theme()->themes());
 	cb_soundtheme->setCurrentText(config_file.readEntry("Sounds", "SoundTheme"));
-	cb_soundtheme->changeItem(tr("Custom"), 0);// dodanie translacji
+	cb_soundtheme->changeItem(tr("Custom"), 0);// and now add translation
 	if (sound_manager->theme()->themes().contains("default"))
 		cb_soundtheme->changeItem(tr("default"), sound_manager->theme()->themes().findIndex("default")+1);
 
@@ -137,7 +137,7 @@ void SoundSlots::muteActionActivated(const UserGroup* /*users*/, const QWidget* 
 			soundPlayer(!is_on, true);
 		}
 	}
-	kdebugf2();	
+	kdebugf2();
 }
 
 void SoundSlots::muteUnmuteSounds()
@@ -257,10 +257,10 @@ void SoundSlots::selectedPaths(const QStringList& paths)
 	soundPath->setPathList(sound_manager->theme()->additionalPaths());
 
 	cb_soundtheme->clear();
-	cb_soundtheme->insertItem("Custom");// 0-wa pozycja
+	cb_soundtheme->insertItem("Custom");// 0 position
 	cb_soundtheme->insertStringList(sound_manager->theme()->themes());
 	cb_soundtheme->setCurrentText(current);
-	cb_soundtheme->changeItem(tr("Custom"), 0);// dodanie translacji
+	cb_soundtheme->changeItem(tr("Custom"), 0);// and now add translation
 
 	if (paths.contains("default"))
 		cb_soundtheme->changeItem(tr("default"), paths.findIndex("default")+1);
@@ -308,8 +308,7 @@ void SoundSlots::testSamplePlaying()
 		MessageBox::wrn(tr("Opening test sample file failed."));
 		return;
 	}
-	// alokujemy jeden int16_t wiêcej w razie gdyby file.size() nie
-	// by³o wielokrotno¶ci± sizeof(int16_t)
+	// we are allocating 1 more word just in case of file.size() % sizeof(int16_t) != 0
 	SamplePlayingTestSample = new int16_t[file.size() / sizeof(int16_t) + 1];
 	if (file.readBlock((char*)SamplePlayingTestSample, file.size()) != (unsigned)file.size())
 	{
@@ -367,7 +366,7 @@ void SoundSlots::testSampleRecording()
 		MessageBox::wrn(tr("Opening sound device failed."));
 		return;
 	}
-	SampleRecordingTestSample = new int16_t[8000 * 3];//3 sekundy 16-bitowego d¼wiêku o czêstotliwo¶ci próbkowania 8000Hz
+	SampleRecordingTestSample = new int16_t[8000 * 3];//3 seconds of 16-bit sound with 8000Hz frequency
 
 	sound_manager->enableThreading(SampleRecordingTestDevice);
 	sound_manager->setFlushingEnabled(SampleRecordingTestDevice, true);

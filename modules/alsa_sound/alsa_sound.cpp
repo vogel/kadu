@@ -57,13 +57,13 @@ snd_pcm_t *ALSAPlayerSlots::alsa_open (const char *device, int channels, int sam
 	alsa_period_size = 512;
 	alsa_buffer_frames = 3 * alsa_period_size;
 
-	//tylko podczas otwierania urz±dzenia potrzebne jest nam zachowanie nieblokuj±ce
+	// we need non-blocking behaviour only while opening device
 	if ((err = snd_pcm_open (&alsa_dev, device, play?SND_PCM_STREAM_PLAYBACK:SND_PCM_STREAM_CAPTURE, SND_PCM_NONBLOCK)) < 0)
 	{
 		kdebugm(KDEBUG_WARNING, "cannot open audio device \"%s\" (%s)\n", device, snd_strerror (err));
 		return NULL;
 	}
-	//dlatego jak tylko uda siê otworzyæ urz±dzenie, natychmiast przestawiamy siê w tryb blokuj±cy
+	// so after open we are immediately setting device to blocking mode
 	snd_pcm_nonblock(alsa_dev, 0);
 	kdebugm(KDEBUG_INFO, "device opened\n");
 
@@ -377,7 +377,7 @@ void ALSAPlayerSlots::playSample(SoundDevice device, const int16_t* data, int le
 			res = snd_pcm_writei(dev->player, cdata + written, towrite);
 			kdebugm(KDEBUG_INFO, "requested:%d written:%d\n", towrite, res);
 			if (res == -EAGAIN || res == -EINVAL)
-				//nie wiem dlaczego trzeba to robiæ tak¿e przy EINVAL, ale to dzia³a...
+				// don't know why it is needed when we get EINVAL, but it works...
 				continue;
 			if (res < 0)
 			{
@@ -434,7 +434,7 @@ void ALSAPlayerSlots::recordSample(SoundDevice device, int16_t* data, int length
 			res = snd_pcm_readi(dev->recorder, cdata + reed, toread);
 			kdebugm(KDEBUG_INFO, "requested:%d read:%d\n", toread, res);
 			if (res == -EAGAIN || res == -EINVAL)
-				//nie wiem dlaczego trzeba to robiæ tak¿e przy EINVAL, ale to dzia³a...
+				// don't know why it is needed when we get EINVAL, but it works...
 				continue;
 			if (res < 0)
 			{
