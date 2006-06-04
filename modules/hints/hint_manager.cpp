@@ -244,7 +244,7 @@ void HintManager::setHint(void)
 		if (newPosition.y() < 0) //when hints go out of the screen (on top)
 			newPosition.setY(0);
 
-		if (newPosition.x() + preferredSize.width() > =desktopSize.width()) //when hints go out of the screen (on right)
+		if (newPosition.x() + preferredSize.width() >= desktopSize.width()) //when hints go out of the screen (on right)
 			newPosition.setX(desktopSize.width() - preferredSize.width());
 		if (newPosition.y() + preferredSize.height() >= desktopSize.height()) //when hints go out of the screen (on bottom)
 			newPosition.setY(desktopSize.height() - preferredSize.height());
