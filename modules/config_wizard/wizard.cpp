@@ -596,9 +596,8 @@ void Wizard::createSoundOptionsPage()
 								"Browse installed sound modules and choose the best for you."),
 							soundModuleOptions);
 	moduleInfo->setFrameStyle(QFrame::Plain);
-	moduleInfo->setAlignment(Qt::WordBreak | Qt::DontClip);
+	moduleInfo->setAlignment(Qt::WordBreak);
 	moduleInfo->setFixedWidth(300);
-	moduleInfo->setAutoResize(true);
 
 	if (modules_manager->moduleIsLoaded("alsa_sound"))
 	{	
