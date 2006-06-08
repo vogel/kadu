@@ -88,6 +88,19 @@ UserGroupData::~UserGroupData()
 	data.setAutoDelete(true);
 }
 
+void ULEPrivate::closeModule()
+{
+#ifdef DEBUG_ENABLED
+	// do it only for valgrind
+	userDataProxy.setAutoDelete(true);
+	userDataProxy.clear();
+	statusChangeProxy.setAutoDelete(true);
+	statusChangeProxy.clear();
+	protocolUserDataProxy.setAutoDelete(true);
+	protocolUserDataProxy.clear();
+#endif
+}
+
 QDict<QDict<UserGroupSet> > ULEPrivate::protocolUserDataProxy;
 QDict<UserGroupSet> ULEPrivate::userDataProxy;
 //QDict<QPtrDict<void> > ULEPrivate::addProtocolProxy;

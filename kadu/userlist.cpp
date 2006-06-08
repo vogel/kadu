@@ -351,6 +351,7 @@ void UserList::closeModule()
 {
 	delete userlist;
 	userlist = NULL;
+	ULEPrivate::closeModule();
 }
 
 void UserList::addPerContactNonProtocolConfigEntry(const QString &attribute_name, const QString &internal_key)

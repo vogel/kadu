@@ -227,6 +227,7 @@ Chat::~Chat()
 		delete userbox;
 	delete bodyformat;
 	delete Users;
+	delete Style;
 
 	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed: index %d\n", index);
 }

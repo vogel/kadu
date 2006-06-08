@@ -135,6 +135,7 @@ void ToolBar::writeToConfig(QDomElement parent_element)
 	QObjectList* l = queryList("ToolButton");
 	CONST_FOREACH(i, *l)
 		((ToolButton*)(*i))->writeToConfig(toolbar_elem);
+	delete l;
 	kdebugf2();
 }
 

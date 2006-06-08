@@ -39,6 +39,7 @@ class ULEPrivate : public QObject, public QShared
 //		static QDict<QPtrDict<void> > addProtocolProxy;
 //		static QDict<QPtrDict<void> > removeProtocolProxy;
 		static QDict<UserGroupSet> statusChangeProxy;
+		static void closeModule();
 	public slots:
 		/* potrzebne, ¿eby refreshDNSName() mia³o do czego siê pod³±czyæ
 		   inaczej mo¿e siê zdarzyæ, ¿e w³a¶ciwy obiekt ULE ju¿ nie istnieje,

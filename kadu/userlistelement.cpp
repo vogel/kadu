@@ -97,6 +97,7 @@ QVariant UserListElement::setProtocolData(const QString &protocolName, const QSt
 		if (!names)
 		{
 			names = new QDict<UserGroupSet>();
+			names->setAutoDelete(true);
 			ULEPrivate::protocolUserDataProxy.insert(protocolName, names);
 		}
 		UserGroupSet *groups = names->find(name);
