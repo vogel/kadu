@@ -383,6 +383,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   niew³a¶ciwym u¿yciem - brak konstruktorów kopiuj±cych, operatorów przypisania (joi)
 * usuniête kilka drobnych wycieków pamiêci (joi)
 * drobne optymalizacje w formatowaniu wiadomo¶ci gdy wy³±czone jest usuwanie nag³ówków (neeo/joi)
+* nie mo¿na otworzyæ okna rozmowy:
+  - z samym sob± z poziomu okna wyszukiwania w katalogu
+  - z kontaktem, który ma tylko numer telefonu przy pomocy przycisku w g³ównym toolbarze
+  (neeo/joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

@@ -299,8 +299,7 @@ void ChatManager::whoisActionActivated(const UserGroup* users)
 	kdebugf();
 	if (users->count() == 0)
 	{
-		SearchDialog* sd = new SearchDialog();
-		sd->show();
+		(new SearchDialog())->show();
 	}
 	else
 	{
@@ -337,7 +336,19 @@ void ChatManager::sendActionActivated(const UserGroup* users)
 void ChatManager::chatActionActivated(const UserGroup* users)
 {
 	kdebugf();
-	if (users->count() > 0)
+	bool ContainsBad = false;
+	QString MyGGUIN = QString::number(config_file.readNumEntry("General", "UIN"));
+	
+	CONST_FOREACH(user, (*users))
+	{
+		if (!(*user).usesProtocol("Gadu") || (*user).ID("Gadu") == MyGGUIN)
+		{
+			ContainsBad = true;
+			break;
+		}
+	}
+	
+	if ((users->count() > 0) && (!ContainsBad))
 		openChat("Gadu", users->toUserListElements(), 0);
 	kdebugf2();
 }
