@@ -150,8 +150,8 @@ void ChatManagerSlots::onCreateTabLook()
 	s_noHeadersInterval->setEnabled(b_noHeadersRepeat->isChecked());
 
 	//dodanie suffiksu w spinboksach
-	ConfigDialog::getSpinBox("Look", "Chat header separators height:")->setSuffix(" px");
-	ConfigDialog::getSpinBox("Look", "Interval between header removal:")->setSuffix(" min");
+	s_headersSeparatorHeight->setSuffix(" px");
+	s_noHeadersInterval->setSuffix(" min");
 
 	onChatThemeChanged(ConfigDialog::getComboBox("Look", "Select chat style")->currentText());
 	updatePreview();

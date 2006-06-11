@@ -516,24 +516,21 @@ void Chat::formatMessage(ChatMessage &msg, const OwnChatColors* own_colors,
 			msg.Colors = *user_colors;
 	}
 
-	// ilo¶æ minut od 1970 roku
-	time_t CurTime = msg.date.toTime_t() / 60;
-
 	if (style != EMOTS_NONE)
 		body->mimeSourceFactory()->addFilePath(emoticons->themePath());
 
-	if (CfgNoHeaderRepeat && (CurTime - LastTime <= CfgNoHeaderInterval))
+	if (CfgNoHeaderRepeat)
 	{
-		if (PreviousMessage == msg.nick)
+		time_t CurTime = msg.date.toTime_t(); // ilo¶æ sekund od 1970 roku
+		if ((CurTime - LastTime <= (CfgNoHeaderInterval * 60)) && (PreviousMessage == msg.nick))
 			msg.formatMessage(Style, style, false, CfgHeaderSeparatorHeight);
 		else
 			msg.formatMessage(Style, style, true, ParagraphSeparator);
+		PreviousMessage = msg.nick;
+		LastTime = CurTime;
 	}
 	else
 		msg.formatMessage(Style, style, true, ParagraphSeparator);
-
-	PreviousMessage = msg.nick;
-	LastTime = CurTime;
 }
 
 void Chat::repaintMessages()
