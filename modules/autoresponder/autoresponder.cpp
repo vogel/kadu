@@ -12,6 +12,7 @@
 #include "config_dialog.h"
 #include "debug.h"
 #include "gadu.h"
+#include "kadu_parser.h"
 
 extern "C" int autoresponder_init()
 {
@@ -39,7 +40,7 @@ AutoResponder::AutoResponder(QObject *parent, const char *name) : QObject(parent
 	ConfigDialog::addLineEdit(config, "Autoresponder","Autoresponder options",
 		QT_TRANSLATE_NOOP("@default", "Autoanswer text:"),
 		"Autotext",
-		QT_TRANSLATE_NOOP("@default", "Thanks for your message. User is not currently available."));
+		tr("Thanks for your message %a. I'm not available right now."), Kadu::SyntaxText);
 	ConfigDialog::addLabel("Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP( "@default","Choose status:" ));
 	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP( "@default","Status invisible" ),"StatusInvisible",false );
 	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP( "@default","Status busy" ),"StatusBusy",true );
@@ -95,7 +96,7 @@ void AutoResponder::chatMsgReceived(Protocol * /*protocol*/, UserListElements se
 		if (respond)
 		{
 			gadu->sendMessage(senders, unicode2cp(tr("KADU AUTORESPONDER:")+"\n"+
-						config->readEntry("Autoresponder", "Autotext")));
+						KaduParser::parse(config->readEntry("Autoresponder", "Autotext"), senders[0])));
 			CONST_FOREACH(sender, senders)
 				replied.addUser(*sender);	//doda kolesi do listy (jednego jak jeden albo wszystkich z konferencji
 		}

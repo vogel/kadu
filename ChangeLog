@@ -387,6 +387,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   - z samym sob± z poziomu okna wyszukiwania w katalogu
   - z kontaktem, który ma tylko numer telefonu przy pomocy przycisku w g³ównym toolbarze
   (neeo/joi)
+* autoresponder korzysta z parsera Kadu (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
