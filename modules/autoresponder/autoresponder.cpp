@@ -12,6 +12,7 @@
 #include "config_dialog.h"
 #include "debug.h"
 #include "gadu.h"
+#include "kadu.h"
 #include "kadu_parser.h"
 
 extern "C" int autoresponder_init()
