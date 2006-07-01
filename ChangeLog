@@ -388,7 +388,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   - z kontaktem, który ma tylko numer telefonu przy pomocy przycisku w g³ównym toolbarze
   (neeo/joi)
 * autoresponder korzysta z parsera Kadu (joi)
-* nowe emotikony Penguins stare odesz³y do lamusa (Ron_K)
+* nowe emotikony "Penguins" - stare odesz³y do lamusa (Ron_K)
+* kilka poprawek zwi±zanych z nowymi emotikonami (joi)
+
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
   w oknie konfiguracji (adrian)

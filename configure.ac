@@ -202,12 +202,16 @@ AC_DEFUN(FIND_AVAILABLE_EMOTICON_THEMES,[
 	for dir in *; do \
 		if test -f $dir/1/emots.txt; then \
 			available_emoticon_themes="$available_emoticon_themes $dir"; \
+		elif test -f $dir/emots.txt; then \
+			available_emoticon_themes="$available_emoticon_themes $dir"; \
 		fi; \
 	done
 	for file in *.web; do \
 		dir=`basename $file .web`; \
 		if test ! -f $dir/1/emots.txt; then \
-			available_emoticon_themes="$available_emoticon_themes $dir"; \
+			if test ! -f $dir/emots.txt; then \
+				available_emoticon_themes="$available_emoticon_themes $dir"; \
+			fi; \
 		fi; \
 	done
 	cd ../../..

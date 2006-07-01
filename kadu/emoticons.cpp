@@ -58,11 +58,11 @@ void EmoticonsManager::setEmoticonsTheme(const QString& theme)
 	if (ThemesList.contains(theme))
 		config_file.writeEntry("Chat","EmoticonsTheme",theme);
 	else
-		config_file.writeEntry("Chat","EmoticonsTheme","default");
+		config_file.writeEntry("Chat","EmoticonsTheme", "penguins");
 	if (!loadGGEmoticonTheme())
-		if(config_file.readEntry("Chat","EmoticonsTheme")!="default")
+		if(config_file.readEntry("Chat","EmoticonsTheme") != "penguins")
 		{
-			config_file.writeEntry("Chat","EmoticonsTheme","default");
+			config_file.writeEntry("Chat","EmoticonsTheme", "penguins");
 			loadGGEmoticonTheme();
 		}
 }

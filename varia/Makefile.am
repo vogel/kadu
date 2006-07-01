@@ -28,6 +28,9 @@ install-data-local: uninstall-local
 			$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/themes/emoticons/$$e_t/$$e_d"; \
 			$(INSTALL_DATA) themes/emoticons/$$e_t/$$e_d/* "$(DESTDIR)$(datadir)/kadu/themes/emoticons/$$e_t/$$e_d"; \
 		done; \
+		if test -z "$$e_dirs"; then \
+			$(INSTALL_DATA) themes/emoticons/$$e_t/* "$(DESTDIR)$(datadir)/kadu/themes/emoticons/$$e_t/"; \
+		fi; \
 	done
 
 	$(mkinstalldirs) "$(DESTDIR)$(bindir)/"	
