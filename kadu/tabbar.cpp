@@ -307,7 +307,7 @@ void KaduTabBar::dropEvent(QDropEvent* e)
 		if (group == GroupsManager::tr("All"))
 			group = QString::null;
 		QStringList altnick_list = QStringList::split("\n", altnicks);
-		kdebugm(KDEBUG_WARNING, "altnicks: %s, group:%s\n", altnicks.local8Bit().data(), group.local8Bit().data());
+//		kdebugm(KDEBUG_WARNING, "altnicks: %s, group:%s\n", altnicks.local8Bit().data(), group.local8Bit().data());
 
 		QPopupMenu menu(this);
 		menu.insertItem(tr("Add to group %1").arg(group), 2);
