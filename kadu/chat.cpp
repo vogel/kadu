@@ -60,7 +60,10 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	/* register us in the chats registry... */
 	index=chat_manager->registerChat(this);
 
-	vertSplit = new KaduSplitter(Qt::Vertical, this, "vertSplit");
+	QVBox *central = new QVBox(this, "central");
+	central->setMargin(3);
+	setCentralWidget(central);
+	vertSplit = new KaduSplitter(Qt::Vertical, central, "vertSplit");
 
 	if (Users->count() > 1)
 	{
@@ -161,10 +164,6 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	sizes.append(2);
 	vertSplit->setSizes(sizes);
 
-	QGridLayout *grid = new QGridLayout (this, 5, 4, 3, 3, "main_grid_layout");
-	grid->addMultiCellWidget(vertSplit, 0, 4, 0, 3);
-	grid->addRowSpacing(1, 5);
-	grid->setRowStretch(0, 2);
 
 	if (!buttontray->loadFromConfig(this))
 	{
