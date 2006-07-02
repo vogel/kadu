@@ -393,6 +393,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * automatyczne usuwanie zakoñczonych transferów z "okna przesy³ania plików" (Vogel/joi)
 * poprawiona obs³uga skrótów klawiszowych w oknie rozmowy (joi)
 * drobne optymalizacje (neeo/joi)
+* poprawka wywrotki przy pierwszym wej¶ciu do konfiguracji je¿eli locale ustawione
+  by³y na inne ni¿: pl|de|it|en|fr (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
