@@ -448,7 +448,10 @@ void UserBox::hideTip()
 //	kdebugf();
 	if (tipAlive)
 	{
-		emit changeToolTip(QPoint(), VisibleUsers->byAltNick(lastMouseStopUser), false);
+		if (VisibleUsers->containsAltNick(lastMouseStopUser))
+			emit changeToolTip(QPoint(), VisibleUsers->byAltNick(lastMouseStopUser), false);
+		else
+			emit changeToolTip(QPoint(), UserListElement(), false);
 		tipAlive = false;
 		tipTimer.start(TIP_TM);
 	}
@@ -1296,6 +1299,7 @@ void UserBox::protocolUserDataChanged(QString protocolName, UserListElement /*el
 
 void UserBox::userAddedToVisible(UserListElement elem, bool /*massively*/, bool /*last*/)
 {
+	lastMouseStopUser = QString::null;
 	sortHelper.push_back(elem);
 	refreshLater();
 }
@@ -1332,6 +1336,7 @@ class torem
 void UserBox::userRemovedFromVisible(UserListElement elem, bool massively, bool last)
 {
 //	kdebugmf(KDEBUG_FUNCTION_START, "start: mass:%d\n", massively);
+	lastMouseStopUser = QString::null;
 	if (massively)
 		toRemove.push_back(elem);
 	else

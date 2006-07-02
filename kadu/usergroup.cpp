@@ -46,6 +46,7 @@ UserListElement UserGroup::byAltNick(const QString& altnick)
 		if ((*i).altNick() == altnick)
 			return *i;
 	kdebugm(KDEBUG_WARNING, "%s not found, creating ULE\n", altnick.local8Bit().data());
+//	printBacktrace("ule nout found");
 	UserListElement *newElem = new UserListElement();
 	newElem->setAltNick(altnick);
 	newElem->setAnonymous(true);
