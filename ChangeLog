@@ -397,6 +397,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   by³y na inne ni¿: pl|de|it|en|fr (joi)
 * usuniêcie, pojawiaj±cego siê na konsoli, ostrze¿enia od Qt przy otworzeniu okna rozmowy (joi)
 * poprawione przenoszenie (drag and drop) kontaktów pomiêdzy grupami (joi)
+* mo¿liwo¶æ dodania (a nie tylko przeniesienia) u¿ytkownika do grupy przy pomocy "drag and drop" (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

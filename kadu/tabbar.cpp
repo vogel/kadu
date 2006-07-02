@@ -304,10 +304,34 @@ void KaduTabBar::dropEvent(QDropEvent* e)
 				return;
 			group = text;
 		}
+		if (group == GroupsManager::tr("All"))
+			group = QString::null;
 		QStringList altnick_list = QStringList::split("\n", altnicks);
-		QStringList groups(group);
-		CONST_FOREACH(altnick, altnick_list)
-			userlist->byAltNick(*altnick).setData("Groups", groups);
+		kdebugm(KDEBUG_WARNING, "altnicks: %s, group:%s\n", altnicks.local8Bit().data(), group.local8Bit().data());
+
+		QPopupMenu menu(this);
+		menu.insertItem(tr("Add to group %1").arg(group), 2);
+		menu.insertItem(tr("Move to group %1").arg(group), 1);
+		int menuret = -1;
+		if (group.isEmpty() || (menuret = menu.exec(QCursor::pos())) == 1)
+		{
+			QStringList groups;
+			if (!group.isEmpty())
+				groups.append(group);
+			CONST_FOREACH(altnick, altnick_list)
+				userlist->byAltNick(*altnick).setData("Groups", groups);
+		}
+		else if (menuret == 2)
+		{
+			CONST_FOREACH(altnick, altnick_list)
+			{
+				UserListElement u = userlist->byAltNick(*altnick);
+				QStringList newGroups = u.data("Groups").toStringList();
+				newGroups << group;
+				u.setData("Groups", newGroups);
+			}
+		}
+
 		// too slow, we need to do something about that
 		userlist->writeToConfig();
 	}
