@@ -269,7 +269,7 @@ void SmsEraGateway::send(const QString& number, const QString& message, const QS
 	QString gateway = config_file.readEntry("SMS", "EraGateway");
 	QString post_data = "login=" + config_file.readEntry("SMS","EraGateway_" + gateway + "_User") +
 	    "&password=" + config_file.readEntry("SMS","EraGateway_" + gateway + "_Password") +
-	    "&number=48" + number + "&message=" + unicode2std(signature) + ": " + unicode2std(message) + "&mms=no" +
+	    "&number=48" + number + "&message=" + unicode2std(signature) + ":" + unicode2std(message) + "&mms=no" +
 	    "&success=OK&failure=ERROR";
 
 	if (gateway == "Sponsored")
