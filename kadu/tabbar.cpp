@@ -280,6 +280,7 @@ void KaduTabBar::dragEnterEvent(QDragEnterEvent* e)
 	kdebugf();
 	e->accept(QTextDrag::canDecode(e) &&
 		dynamic_cast<UserBox*>(e->source()));
+	kdebugf2();
 }
 
 void KaduTabBar::dropEvent(QDropEvent* e)
@@ -304,9 +305,11 @@ void KaduTabBar::dropEvent(QDropEvent* e)
 			group = text;
 		}
 		QStringList altnick_list = QStringList::split("\n", altnicks);
+		QStringList groups(group);
 		CONST_FOREACH(altnick, altnick_list)
-			userlist->byAltNick(*altnick).setData("Groups", group);
+			userlist->byAltNick(*altnick).setData("Groups", groups);
 		// too slow, we need to do something about that
 		userlist->writeToConfig();
 	}
+	kdebugf2();
 }
