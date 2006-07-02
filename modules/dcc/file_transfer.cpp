@@ -41,19 +41,21 @@
 
 uint32_t gg_fix32(uint32_t);
 
-FileTransfer::FileTransfer(QObject *listener, bool listenerHasSlots,
+FileTransfer::FileTransfer(FileTransferManager *listener,
 	FileTransferType type, const UinType &contact, const QString &fileName) :
-	QObject(0, 0), listeners(), Socket(0), Type(type), Status(StatusFrozen), 
+	QObject(0, 0), mainListener(listener), listeners(), Socket(0), Type(type), Status(StatusFrozen),
 	Contact(contact), FileName(fileName), GaduFileName(), connectionTimeoutTimer(0),
 	updateFileInfoTimer(0), FileSize(0), TransferedSize(0), PrevTransferedSize(0),
 	Speed(0), dccFinished(false), direct(false)
 {
 	kdebugf();
 
-	if (listener)
+	if (mainListener)
 	{
-		connectSignals(listener, listenerHasSlots);
-		listeners.push_back(qMakePair(listener, listenerHasSlots));
+		connectSignals(mainListener, false);
+
+		connect(this, SIGNAL(fileTransferFinished(FileTransfer *, bool)),
+			mainListener, SLOT(fileTransferFinishedSlot(FileTransfer *, bool)));
 	}
 
 	AllTransfers.insert(AllTransfers.begin(), this);
@@ -71,12 +73,14 @@ FileTransfer::~FileTransfer()
 	Status = StatusFinished;
 	Speed = 0;
 
-	emit fileTransferFinished(this, dccFinished);
 	emit fileTransferStatusChanged(this);
 	emit fileTransferDestroying(this);
 
 	FOREACH(i, listeners)
 		disconnectSignals((*i).first, (*i).second);
+
+	if (mainListener)
+		disconnectSignals(mainListener, false);
 
 	if (Socket)
 		Transfers.remove(Socket);
@@ -106,13 +110,13 @@ FileTransfer::~FileTransfer()
 }
 
 FileTransfer * FileTransfer::search(FileTransferType type, const UinType &contact, const QString &fileName,
-	bool fullFileName)
+	FileNameType fileNameType)
 {
 	kdebugf();
 
 	FOREACH(i, AllTransfers)
 		if ((*i)->Type == type && (*i)->Contact == contact)
-			if (fullFileName)
+			if (fileNameType == FileNameFull)
 			{
 				if ((*i)->FileName == fileName)
 					return *i;
@@ -202,7 +206,7 @@ void FileTransfer::removeListener(QObject *listener, bool listenerHasSlots)
 	listeners.remove(qMakePair(listener, listenerHasSlots));
 }
 
-void FileTransfer::start(bool restore)
+void FileTransfer::start(StartType startType)
 {
 	kdebugf();
 
@@ -261,7 +265,7 @@ void FileTransfer::start(bool restore)
 		prepareFileInfo();
 
 		UserListElement ule = userlist->byID("Gadu", QString::number(Contact));
-		if (restore)
+		if (startType == StartRestore)
 		{
 			MessageBox::msg(
 				tr("This option only sends a remind message to %1. The transfer will not start immediately.")
@@ -277,7 +281,7 @@ void FileTransfer::start(bool restore)
 	}
 }
 
-void FileTransfer::stop()
+void FileTransfer::stop(StopType stopType)
 {
 	kdebugf();
 
@@ -306,6 +310,9 @@ void FileTransfer::stop()
 	{
 		Status = StatusFrozen;
 		emit fileTransferStatusChanged(this);
+
+		if (stopType == StopFinally)
+			emit fileTransferFinished(this, false);
 	}
 }
 
@@ -679,13 +686,13 @@ QDomElement FileTransfer::toDomElement(const QDomElement &root)
 	return dom;
 }
 
-FileTransfer * FileTransfer::fromDomElement(const QDomElement &dom, QObject *listener, bool listenerHasSlots)
+FileTransfer * FileTransfer::fromDomElement(const QDomElement &dom, FileTransferManager *listener)
 {
 	FileTransferType Type = static_cast<FileTransferType>(dom.attribute("Type").toULong());
 	UinType Contact = static_cast<UinType>(dom.attribute("Contact").toULong());
 	QString FileName = dom.attribute("FileName");
 
-	FileTransfer *ft = new FileTransfer(listener, listenerHasSlots, Type, Contact, FileName);
+	FileTransfer *ft = new FileTransfer(listener, Type, Contact, FileName);
 	ft->GaduFileName = dom.attribute("GaduFileName");
 	ft->FileSize = dom.attribute("FileSize").toULong();
 	ft->TransferedSize = dom.attribute("TransferedSize").toULong();
@@ -839,6 +846,7 @@ FileTransferWindow::FileTransferWindow(QWidget *parent, const char *name)
 	startMenuId = popupMenu->insertItem(tr("Start"), this, SLOT(startTransferClicked()));
 	stopMenuId = popupMenu->insertItem(tr("Stop"), this, SLOT(stopTransferClicked()));
 	removeMenuId = popupMenu->insertItem(tr("Remove"), this, SLOT(removeTransferClicked()));
+	removeCompletedMenuId = popupMenu->insertItem(tr("Remove completed"), this, SLOT(removeCompletedClicked()));
 
 	loadGeometry(this, "General", "TransferWindowGeometry", 200, 200, 500, 300);
 
@@ -942,7 +950,7 @@ void FileTransferWindow::startTransferClicked()
 	if (!currentListViewItem)
 		return;
 
-	currentListViewItem->fileTransfer()->start(true);
+	currentListViewItem->fileTransfer()->start(FileTransfer::StartRestore);
 }
 
 void FileTransferWindow::stopTransferClicked()
@@ -963,10 +971,19 @@ void FileTransferWindow::removeTransferClicked()
 	if (ft->status() != FileTransfer::StatusFinished)
 		if (!MessageBox::ask("Are you sure you want to remove this transfer?"))
 			return;
+		else
+			ft->stop(FileTransfer::StopFinally);
 
  	currentListViewItem = 0;
 
 	delete ft;
+}
+
+void FileTransferWindow::removeCompletedClicked()
+{
+	FOREACH(i, FileTransfer::AllTransfers)
+		if ((*i)->status() == FileTransfer::StatusFinished)
+			(*i)->deleteLater();
 }
 
 void FileTransferWindow::newFileTransfer(FileTransfer *ft)
@@ -987,7 +1004,7 @@ void FileTransferWindow::fileTransferStatusChanged(FileTransfer *)
 {
 }
 
-void FileTransferWindow::fileTransferFinished(FileTransfer *, bool)
+void FileTransferWindow::fileTransferFinished(FileTransfer *fileTransfer, bool ok)
 {
 }
 
@@ -1111,7 +1128,10 @@ void FileTransferManager::readFromConfig()
 	QDomNodeList ft_list = fts_elem.elementsByTagName("FileTransfer");
 	FileTransfer *ft;
 	for (unsigned int i = 0; i < ft_list.count(); i++)
-		ft = FileTransfer::fromDomElement(ft_list.item(i).toElement(), this, false);
+	{
+		ft = FileTransfer::fromDomElement(ft_list.item(i).toElement(), this);
+		connect(ft, SIGNAL(fileTransferFinished(FileTransfer *, bool)), this, SLOT(fileTransferFinishedSlot(FileTransfer *, bool)));
+	}
 
 	kdebugf2();
 }
@@ -1136,7 +1156,7 @@ void FileTransferManager::sendFile(UinType receiver, const QString &filename)
 
 	FileTransfer * ft = FileTransfer::search(FileTransfer::TypeSend, receiver, filename);
 	if (!ft)
-		ft = new FileTransfer(this, false, FileTransfer::TypeSend, receiver, filename);
+		ft = new FileTransfer(this, FileTransfer::TypeSend, receiver, filename);
 
 	if (!fileTransferWindow)
 		toggleFileTransferWindow();
@@ -1314,6 +1334,12 @@ void FileTransferManager::toggleFileTransferWindow()
 	kdebugf2();
 }
 
+void FileTransferManager::fileTransferFinishedSlot(FileTransfer *fileTransfer, bool ok)
+{
+	if (ok && config_file.readBoolEntry("Network", "RemoveCompletedTransfers"))
+		fileTransfer->deleteLater();
+}
+
 void FileTransferManager::fileTransferWindowDestroyed()
 {
 	kdebugf();
@@ -1379,7 +1405,7 @@ void FileTransferManager::needFileAccept(DccSocket *socket)
 	notify->notify("fileTransferIncomingFile", "Incoming file", userlist->byID("Gadu", QString::number(socket->ggDccStruct()->peer_uin)));
 
  	FileTransfer *ft = FileTransfer::search(FileTransfer::TypeReceive, socket->ggDccStruct()->peer_uin,
- 		cp2unicode(socket->ggDccStruct()->file_info.filename), false);
+ 		cp2unicode(socket->ggDccStruct()->file_info.filename), FileTransfer::FileNameGadu);
 
 	if (ft)
 	{
@@ -1493,7 +1519,7 @@ void FileTransferManager::needFileAccept(DccSocket *socket)
 		 		fileName);
 
 			if (!ft)
-				ft = new FileTransfer(this, false, FileTransfer::TypeReceive, socket->ggDccStruct()->peer_uin, fileName);
+				ft = new FileTransfer(this, FileTransfer::TypeReceive, socket->ggDccStruct()->peer_uin, fileName);
 
 			ft->setSocket(socket);
 			if (!fileTransferWindow)

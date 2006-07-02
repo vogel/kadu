@@ -17,6 +17,7 @@
 class QLabel;
 class QProgressBar;
 class QVBoxLayout;
+class FileTransferManager;
 
 class FileTransfer : public QObject
 {
@@ -44,6 +45,21 @@ class FileTransfer : public QObject
 			ErrorDccTooManyConnections
 		};
 
+		enum StartType {
+			StartNew,
+			StartRestore
+		};
+
+		enum StopType {
+			StopTemporary,
+			StopFinally
+		};
+
+		enum FileNameType {
+			FileNameFull,
+			FileNameGadu
+		};
+
 	private:
 		static QMap<DccSocket*, FileTransfer*> Transfers;
 
@@ -51,6 +67,7 @@ class FileTransfer : public QObject
 		static QValueList<FileTransfer *> AllTransfers;
 
 	private:
+		QObject *mainListener;
 		QValueList<QPair<QObject *, bool> > listeners;
 
 		DccSocket* Socket;
@@ -84,15 +101,15 @@ class FileTransfer : public QObject
 		void updateFileInfo();
 
 	public:
-		FileTransfer(QObject *listener, bool listenerHasSlots, FileTransferType type, const UinType &contact,
+		FileTransfer(FileTransferManager *listener, FileTransferType type, const UinType &contact,
 			const QString &fileName);
 		~FileTransfer();
 
 		void addListener(QObject * const listener, bool listenerHasSlots);
 		void removeListener(QObject * const listener, bool listenerHasSlots);
 
-		void start(bool restore = false);
-		void stop();
+		void start(StartType startType = StartNew);
+		void stop(StopType stopType = StopTemporary);
 
 		void setSocket(DccSocket* Socket);
 
@@ -100,11 +117,11 @@ class FileTransfer : public QObject
 		static FileTransfer * byUin(UinType);
 		static FileTransfer * byUinAndStatus(UinType, FileTransferStatus);
 		static FileTransfer * search(FileTransferType type, const UinType &contact, const QString &fileName,
-			bool fullFileName = true);
+			FileNameType fileNameType = FileNameFull);
 		static void destroyAll();
 
 		QDomElement toDomElement(const QDomElement &root);
-		static FileTransfer * fromDomElement(const QDomElement &dom, QObject *listener, bool listenerHasSlots);
+		static FileTransfer * fromDomElement(const QDomElement &dom, FileTransferManager *listener);
 
 		FileTransferType type();
 		FileTransferStatus status();
@@ -184,6 +201,7 @@ class FileTransferWindow : public QSplitter
 		int startMenuId;
 		int stopMenuId;
 		int removeMenuId;
+		int removeCompletedMenuId;
 
 	protected:
 		virtual void keyPressEvent(QKeyEvent *e);
@@ -198,6 +216,7 @@ class FileTransferWindow : public QSplitter
 		void startTransferClicked();
 		void stopTransferClicked();
 		void removeTransferClicked();
+		void removeCompletedClicked();
 
 	public slots:
 		void newFileTransfer(FileTransfer *);
@@ -252,6 +271,7 @@ class FileTransferManager : public QObject
 		void writeToConfig();
 
 	private slots:
+		void fileTransferFinishedSlot(FileTransfer *fileTransfer, bool ok);
 		void fileTransferWindowDestroyed();
 
 	public slots:
