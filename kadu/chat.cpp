@@ -207,6 +207,9 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 		this, SLOT(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)));
 
 	Edit->setFocus();
+	
+	Edit->installEventFilter(this);
+	
 	kdebugf2();
 }
 
@@ -448,7 +451,7 @@ void Chat::windowActivationChange(bool b)
 	emit windowActivationChanged(b, Users);
 }
 
-void Chat::keyPressEvent(QKeyEvent* e)
+bool Chat::keyPressEventHandled(QKeyEvent *e)
 {
 	if (HotKey::shortCut(e,"ShortCuts", "chat_clear"))
 		clearChatWindow();
@@ -458,14 +461,38 @@ void Chat::keyPressEvent(QKeyEvent* e)
 		KaduActions["showHistoryAction"]->activate(Users);
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
 		KaduActions["whoisAction"]->activate(Users);
-	QWidget::keyPressEvent(e);
+	else
+		return false;
+	return true;
+}
+
+void Chat::keyPressEvent(QKeyEvent* e)
+{
+	kdebugf();
+	if (keyPressEventHandled(e))
+		e->accept();
+	else
+		QMainWindow::keyPressEvent(e);
+	kdebugf2();
+}
+
+bool Chat::eventFilter(QObject *watched, QEvent *ev)
+{
+//	kdebugmf(KDEBUG_INFO|KDEBUG_FUNCTION_START, "watched: %p, Edit: %p, ev->type():%d, KeyPress:%d\n", watched, Edit, ev->type(), QEvent::KeyPress);
+	if (watched != Edit || ev->type() != QEvent::KeyPress)
+		return QMainWindow::eventFilter(watched, ev);
+	kdebugf();
+	QKeyEvent *e = static_cast<QKeyEvent *>(ev);
+	if (keyPressEventHandled(e))
+		return true;
+	return QMainWindow::eventFilter(watched, ev);
 }
 
 void Chat::mouseReleaseEvent(QMouseEvent *e)
 {
 	kdebugf();
 	Edit->setFocus();
-	QWidget::mouseReleaseEvent(e);
+	QMainWindow::mouseReleaseEvent(e);
 }
 
 /* unregister us */
@@ -486,7 +513,7 @@ void Chat::closeEvent(QCloseEvent* e)
 			}
 		}
 	}
-	QWidget::closeEvent(e);
+	QMainWindow::closeEvent(e);
 }
 
 void Chat::formatMessages(QValueList<ChatMessage *> &msgs)

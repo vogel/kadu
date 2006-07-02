@@ -172,6 +172,8 @@ class Chat : public QMainWindow
 			\param e wska¼nik do obiektu obs³uguj±cego klawisze
 		**/
 		virtual void mouseReleaseEvent(QMouseEvent *e);
+		
+		bool keyPressEventHandled(QKeyEvent *);
 
 	public:
 
@@ -274,6 +276,7 @@ class Chat : public QMainWindow
 		virtual void dragMoveEvent(QDragMoveEvent *e);
 
 		void scrollHistoryToBottom();
+		virtual bool eventFilter(QObject *watched, QEvent *e);
 
 	public slots:
 
