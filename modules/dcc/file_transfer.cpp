@@ -977,6 +977,7 @@ void FileTransferWindow::removeTransferClicked()
  	currentListViewItem = 0;
 
 	delete ft;
+	setActiveWindow();
 }
 
 void FileTransferWindow::removeCompletedClicked()
