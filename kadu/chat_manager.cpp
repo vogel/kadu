@@ -336,20 +336,23 @@ void ChatManager::sendActionActivated(const UserGroup* users)
 void ChatManager::chatActionActivated(const UserGroup* users)
 {
 	kdebugf();
-	bool ContainsBad = false;
-	QString MyGGUIN = QString::number(config_file.readNumEntry("General", "UIN"));
-	
-	CONST_FOREACH(user, (*users))
+	if (users->count() > 0)
 	{
-		if (!(*user).usesProtocol("Gadu") || (*user).ID("Gadu") == MyGGUIN)
-		{
-			ContainsBad = true;
-			break;
-		}
-	}
+		bool ContainsBad = false;
+		QString MyGGUIN = QString::number(config_file.readNumEntry("General", "UIN"));
 	
-	if ((users->count() > 0) && (!ContainsBad))
-		openChat("Gadu", users->toUserListElements(), 0);
+		CONST_FOREACH(user, (*users))
+		{
+			if (!(*user).usesProtocol("Gadu") || (*user).ID("Gadu") == MyGGUIN)
+			{
+				ContainsBad = true;
+				break;
+			}
+		}
+	
+		if (!ContainsBad)
+			openChat("Gadu", users->toUserListElements(), 0);
+	}
 	kdebugf2();
 }
 

@@ -392,6 +392,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * kilka poprawek zwi±zanych z nowymi emotikonami (joi)
 * automatyczne usuwanie zakoñczonych transferów z "okna przesy³ania plików" (Vogel/joi)
 * poprawiona obs³uga skrótów klawiszowych w oknie rozmowy (joi)
+* drobne optymalizacje (neeo/joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
