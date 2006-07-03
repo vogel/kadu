@@ -137,6 +137,10 @@
         <translation>Dodaj kontakt</translation>
     </message>
     <message>
+        <source>Add selected user</source>
+        <translation>Dodaj wybrany kontakt</translation>
+    </message>
+    <message>
         <source>Default status</source>
         <translation>Status domyślny</translation>
     </message>
@@ -649,6 +653,10 @@ Jest to wysoce ryzykowne!</translation>
     <message>
         <source>Search user in directory</source>
         <translation>Znajdź kontakt w katalogu</translation>
+    </message>
+    <message>
+        <source>Search this user in directory</source>
+        <translation>Znajdź wybrany kontakt w katalogu</translation>
     </message>
     <message>
         <source>Userbox background</source>

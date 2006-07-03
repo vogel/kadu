@@ -91,6 +91,7 @@ class SearchDialog : public QDialog {
 
 	private slots:
 		void clearResults(void);
+		void addSearchedActionActivated(const UserGroup*);
 		void uinTyped(void);
 		void personalDataTyped(void);
 		void byrFromDataTyped(void);

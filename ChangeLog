@@ -398,6 +398,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniêcie, pojawiaj±cego siê na konsoli, ostrze¿enia od Qt przy otworzeniu okna rozmowy (joi)
 * poprawione przenoszenie (drag and drop) kontaktów pomiêdzy grupami (joi)
 * mo¿liwo¶æ dodania (a nie tylko przeniesienia) u¿ytkownika do grupy przy pomocy "drag and drop" (joi)
+* b³êdy w toolbarach: akcja "Wyszukaj w katalogu" odpalana z g³ównego toolbara
+  nie powinna szukaæ w katalogu aktualnie wybranego u¿ytkowika; w oknie szukania
+  klikniêcie na "dodaj kontakt" dla numeru, który ju¿ mamy na li¶cie kontaktów
+  powoduje otwarcie pustego okna (neeo/joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

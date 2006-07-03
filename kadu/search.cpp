@@ -31,6 +31,8 @@
 #include "search.h"
 #include "userinfo.h"
 
+Action* add_searched_action;
+
 SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearchUin)
 	: QDialog (parent, name, FALSE, Qt::WDestructiveClose),
 	only_active(0), e_uin(0), e_name(0), e_nick(0), e_byrFrom(0), e_byrTo(0), e_surname(0),
@@ -158,8 +160,12 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	for (int i = 1; i < 5; ++i)
 		results->setColumnWidthMode(i, QListView::Maximum);
 		
+	connect(add_searched_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		this, SLOT(addSearchedActionActivated(const UserGroup*)));
+		
 	KaduActions["nextResultsAction"]->setEnabled(this, false);
 	KaduActions["clearSearchAction"]->setEnabled(this, false);
+	KaduActions["addSearchedAction"]->setEnabled(this, false);
 
 //	searchhidden = false;
 	if (_whoisSearchUin)
@@ -167,7 +173,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 		r_uin->setChecked(true);
 		e_uin->setText(QString::number(_whoisSearchUin));
 	}
-	loadGeometry(this, "General", "SearchDialogGeometry", 0, 30, 750, 350);
+	loadGeometry(this, "General", "SearchDialogGeometry", 0, 30, 800, 350);
 	setCaption(tr("Search user in directory"));
 
 	connect(gadu, SIGNAL(newSearchResults(SearchResults &, int, int)), this, SLOT(newSearchResults(SearchResults &, int, int)));
@@ -207,6 +213,12 @@ void SearchDialog::initModule()
 	clear_search_action->setSlot(SLOT(clearResults()));
 	KaduActions.insert("clearSearchAction", clear_search_action);
 	KaduActions.addDefaultToolbarAction("Search toolbar", "clearSearchAction", 2, true);
+
+	add_searched_action = new Action(icons_manager->loadIcon("AddUser"),
+		tr("Add selected user"), "addSearchedAction");
+	add_searched_action->setDockAreaGroupRestriction("searchDockAreaGroup");
+	KaduActions.insert("addSearchedAction", add_searched_action);
+	KaduActions.addDefaultToolbarAction("Search toolbar", "addSearchedAction", 3, true);
 
 	kdebugf2();
 }
@@ -259,7 +271,18 @@ void SearchDialog::selectedUsersNeeded(const UserGroup*& user_group)
 void SearchDialog::clearResults(void)
 {
 	results->clear();
+	KaduActions["addSearchedAction"]->setEnabled(this, false);
 	KaduActions["clearSearchAction"]->setEnabled(this, false);
+}
+
+void SearchDialog::addSearchedActionActivated(const UserGroup* users)
+{
+	kdebugf();	
+	if ((*users->begin()).isAnonymous())
+		(new UserInfo(*users->begin(), 0, "add user"))->show();
+	else
+		(new UserInfo(*users->begin(), 0, "user info"))->show();
+	kdebugf2();
 }
 
 void SearchDialog::firstSearch(void)
@@ -301,6 +324,7 @@ void SearchDialog::firstSearch(void)
 
 	KaduActions["firstSearchAction"]->setEnabled(this, false);
 	KaduActions["nextResultsAction"]->setEnabled(this, false);
+	KaduActions["addSearchedAction"]->setEnabled(this, false);
 
 	progress->setText(tr("Searching..."));
 	kdebugf2();
@@ -314,6 +338,7 @@ void SearchDialog::nextSearch(void)
 
 	KaduActions["firstSearchAction"]->setEnabled(this, false);
 	KaduActions["nextResultsAction"]->setEnabled(this, false);
+	KaduActions["addSearchedAction"]->setEnabled(this, false);
 
 	gadu->searchNextInPubdir(*searchRecord);
 
@@ -392,6 +417,7 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 			KaduActions["nextResultsAction"]->setEnabled(this, true);
 
 		KaduActions["clearSearchAction"]->setEnabled(this, true);
+		KaduActions["addSearchedAction"]->setEnabled(this, true);
 	}
 	kdebugf2();
 }

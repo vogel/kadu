@@ -161,7 +161,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Remove from userlist"), "kadu_deleteuser", "Del");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "View / edit user info"), "kadu_persinfo", "Ins");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "View history"), "kadu_viewhistory", "Ctrl+H");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Search user in directory"), "kadu_searchuser", "Ctrl+F");
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Search this user in directory"), "kadu_searchuser", "Ctrl+F");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Show / hide offline users"), "kadu_showoffline", "F9");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Show / hide users without description"), "kadu_showonlydesc", "F10");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Configuration"), "kadu_configure", "F2");
@@ -250,7 +250,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	UserBox::userboxmenu->addItem("CopyDescription", tr("Copy description"), this, SLOT(copyDescription()));
 	UserBox::userboxmenu->addItem("CopyPersonalInfo", tr("Copy personal info"), this, SLOT(copyPersonalInfo()));
 	UserBox::userboxmenu->addItem("EditUserInfo", tr("View / edit user info"), this, SLOT(showUserInfo()),HotKey::shortCutFromFile("ShortCuts", "kadu_persinfo"));
-	UserBox::userboxmenu->addItem("LookupUserInfo", tr("Search user in directory"), this, SLOT(lookupInDirectory()),HotKey::shortCutFromFile("ShortCuts", "kadu_searchuser"));
+	UserBox::userboxmenu->addItem("LookupUserInfo", tr("Search this user in directory"), this, SLOT(lookupInDirectory()),HotKey::shortCutFromFile("ShortCuts", "kadu_searchuser"));
 	UserBox::userboxmenu->insertSeparator();
 	UserBox::userboxmenu->addItem(tr("About..."), this, SLOT(about()));
 
@@ -297,18 +297,25 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 
 	Action* add_user_action = new Action(icons_manager->loadIcon("AddUser"),
 		tr("Add user"), "addUserAction");
+	add_user_action->setDockAreaGroupRestriction("mainDockAreaGroup");
 	connect(add_user_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(addUserActionActivated(const UserGroup*)));
 	KaduActions.insert("addUserAction", add_user_action);
+	
+	Action* open_search_action = new Action(icons_manager->loadIcon("LookupUserInfo"),
+		tr("Search user in directory"), "openSearchAction");
+	open_search_action->setDockAreaGroupRestriction("mainDockAreaGroup");
+	connect(open_search_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		this, SLOT(searchInDirectory()));
+	KaduActions.insert("openSearchAction", open_search_action);
 
 	KaduActions.addDefaultToolbarAction("Kadu toolbar", "inactiveUsersAction");
 	KaduActions.addDefaultToolbarAction("Kadu toolbar", "descriptionUsersAction");
 	KaduActions.addDefaultToolbarAction("Kadu toolbar", "configurationAction");
 	KaduActions.addDefaultToolbarAction("Kadu toolbar", "showHistoryAction");
 	KaduActions.addDefaultToolbarAction("Kadu toolbar", "editUserAction");
-	KaduActions.addDefaultToolbarAction("Kadu toolbar", "whoisAction");
+	KaduActions.addDefaultToolbarAction("Kadu toolbar", "openSearchAction");
 	KaduActions.addDefaultToolbarAction("Kadu toolbar", "addUserAction");
-	KaduActions.addDefaultToolbarAction("Search toolbar", "addUserAction", -1, true);
 
 	/* guess what */
 	createMenu();
@@ -477,7 +484,7 @@ void Kadu::popupMenu()
 
 	int deletehistoryitem = UserBox::userboxmenu->getItem(tr("Clear history"));
 	int historyitem = UserBox::userboxmenu->getItem(tr("View history"));
-	int searchuser = UserBox::userboxmenu->getItem(tr("Search user in directory"));
+	int searchuser = UserBox::userboxmenu->getItem(tr("Search this user in directory"));
 	if (containsUserWithoutID || containsMe)
 	{
 		UserBox::userboxmenu->setItemEnabled(deletehistoryitem, false);
@@ -638,10 +645,9 @@ void Kadu::editUserActionActivated(const UserGroup* users)
 
 void Kadu::addUserActionActivated(const UserGroup* users)
 {
-	if (users->count() == 1 && (*users->begin()).isAnonymous())
-		(new UserInfo(*users->begin(), 0, "add user"))->show();
-	else
-		(new UserInfo(UserListElement(), 0, "add user"))->show();
+	kdebugf();
+	(new UserInfo(UserListElement(), 0, "add user"))->show();
+	kdebugf2();
 }
 
 void Kadu::showUserInfo()
@@ -1287,7 +1293,7 @@ bool Kadu::close(bool quit)
 		ConfigDialog::removeControl("ShortCuts", "Configuration");
 		ConfigDialog::removeControl("ShortCuts", "Show / hide users without description");
 		ConfigDialog::removeControl("ShortCuts", "Show / hide offline users");
-		ConfigDialog::removeControl("ShortCuts", "Search user in directory");
+		ConfigDialog::removeControl("ShortCuts", "Search this user in directory");
 		ConfigDialog::removeControl("ShortCuts", "View history");
 		ConfigDialog::removeControl("ShortCuts", "View / edit user info");
 		ConfigDialog::removeControl("ShortCuts", "Remove from userlist");
