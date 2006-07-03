@@ -16,6 +16,7 @@
 #include <qtoolbutton.h>
 
 #include "debug.h"
+#include "groups_manager.h"
 #include "misc.h"
 #include "tabbar.h"
 #include "userbox.h"
