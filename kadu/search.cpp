@@ -31,8 +31,6 @@
 #include "search.h"
 #include "userinfo.h"
 
-Action* add_searched_action;
-
 SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearchUin)
 	: QDialog (parent, name, FALSE, Qt::WDestructiveClose),
 	only_active(0), e_uin(0), e_name(0), e_nick(0), e_byrFrom(0), e_byrTo(0), e_surname(0),
@@ -160,7 +158,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	for (int i = 1; i < 5; ++i)
 		results->setColumnWidthMode(i, QListView::Maximum);
 		
-	connect(add_searched_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+	connect(KaduActions["addSearchedAction"], SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(addSearchedActionActivated(const UserGroup*)));
 		
 	KaduActions["nextResultsAction"]->setEnabled(this, false);
@@ -214,7 +212,7 @@ void SearchDialog::initModule()
 	KaduActions.insert("clearSearchAction", clear_search_action);
 	KaduActions.addDefaultToolbarAction("Search toolbar", "clearSearchAction", 2, true);
 
-	add_searched_action = new Action(icons_manager->loadIcon("AddUser"),
+	Action* add_searched_action = new Action(icons_manager->loadIcon("AddUser"),
 		tr("Add selected user"), "addSearchedAction");
 	add_searched_action->setDockAreaGroupRestriction("searchDockAreaGroup");
 	KaduActions.insert("addSearchedAction", add_searched_action);
