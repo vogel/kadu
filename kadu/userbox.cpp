@@ -37,6 +37,8 @@ bool KaduListBoxPixmap::MultiColumn;
 int  KaduListBoxPixmap::MultiColumnWidth;
 QColor KaduListBoxPixmap::descColor;
 
+static bool brokenStringCompare;
+
 void KaduListBoxPixmap::setFont(const QFont &f)
 {
 	kdebugf();
@@ -370,7 +372,10 @@ UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
 	VisibleUsers->addUsers(group);
 
 	addCompareFunction("Status", tr("Compares statuses"), compareStatus);
-	addCompareFunction("AltNick", tr("Compares nicks (\"altnicks\")"), compareAltNick);
+	if (brokenStringCompare)
+		addCompareFunction("AltNick", tr("Compares nicks (\"altnicks\") case insesitive"), compareAltNickCaseInsesitive);
+	else
+		addCompareFunction("AltNick", tr("Compares nicks (\"altnicks\")"), compareAltNick);
 
 	if (!userboxmenu)
 		userboxmenu= new UserBoxMenu(this);
@@ -812,6 +817,10 @@ void UserBox::initModule()
 	ConfigDialog::connectSlot("Look", "Background", SIGNAL(textChanged(const QString &)), userboxslots, SLOT(backgroundFileChanged(const QString &)));
 
 	userlist->addPerContactNonProtocolConfigEntry("hide_description", "HideDescription");
+
+	brokenStringCompare = (QString("a").localeAwareCompare(QString("B")) > 0);
+	if (brokenStringCompare)
+		fprintf(stderr, "There's something wrong with native string compare function. Applying workaround (slower).\n");
 
 	kdebugf2();
 }
@@ -1442,6 +1451,11 @@ UserListElement UserBox::currentUser() const
 inline int compareAltNick(const UserListElement &u1, const UserListElement &u2)
 {
 	return u1.altNick().localeAwareCompare(u2.altNick());
+}
+
+inline int compareAltNickCaseInsesitive(const UserListElement &u1, const UserListElement &u2)
+{
+	return u1.altNick().lower().localeAwareCompare(u2.altNick().lower());
 }
 
 inline int compareStatus(const UserListElement &u1, const UserListElement &u2)

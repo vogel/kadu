@@ -397,11 +397,14 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   by³y na inne ni¿: pl|de|it|en|fr (joi)
 * usuniêcie, pojawiaj±cego siê na konsoli, ostrze¿enia od Qt przy otworzeniu okna rozmowy (joi)
 * poprawione przenoszenie (drag and drop) kontaktów pomiêdzy grupami (joi)
-* mo¿liwo¶æ dodania (a nie tylko przeniesienia) u¿ytkownika do grupy przy pomocy "drag and drop" (joi)
+* mo¿liwo¶æ dodania (a nie tylko przeniesienia) u¿ytkownika do grupy przy pomocy
+  "drag and drop" (joi)
 * b³êdy w toolbarach: akcja "Wyszukaj w katalogu" odpalana z g³ównego toolbara
   nie powinna szukaæ w katalogu aktualnie wybranego u¿ytkowika; w oknie szukania
   klikniêcie na "dodaj kontakt" dla numeru, który ju¿ mamy na li¶cie kontaktów
   powoduje otwarcie pustego okna (neeo/joi)
+* obej¶cie zepsutego (?) libca na FreeBSD - sortowanie listy kontaktów bez
+  uwzglêdniania wielko¶ci liter (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

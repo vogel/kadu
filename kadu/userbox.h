@@ -642,6 +642,13 @@ class UserBoxSlots : public QObject
 int compareAltNick(const UserListElement &u1, const UserListElement &u2);
 
 /**
+	\fn int compareAltNickCaseInsesitive(const UserListElement &u1, const UserListElement &u2)
+	Funkcja porównuj±ca AltNicki metod± QString::localeAwareCompare(), wcze¶niej robi±ca lower(),
+	a wiêc wolniejsza od compareAltNick
+**/
+int compareAltNickCaseInsesitive(const UserListElement &u1, const UserListElement &u2);
+
+/**
 	\fn int compareStatus(const UserListElement &u1, const UserListElement &u2)
 	Funkcja porównuj±ca statusy w protokole Gadu-Gadu. Uwa¿a status "dostêpny" i "zajêty" za równowa¿ne.
 **/
