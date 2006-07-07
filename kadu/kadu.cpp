@@ -190,7 +190,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Fonts"), 0, Advanced);
 		ConfigDialog::addSelectFont("Look", "Fonts", QT_TRANSLATE_NOOP("@default", "Font in panel"), "PanelFont", defaultFont->toString(), 0, "panel_font_box");
-
+	
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Information panel"));
 		ConfigDialog::addCheckBox("Look", "Information panel", QT_TRANSLATE_NOOP("@default", "Show information panel"), "ShowInfoPanel", true);
 		ConfigDialog::addCheckBox("Look", "Information panel", QT_TRANSLATE_NOOP("@default", "Show vertical scrollbar in information panel"), "PanelVerticalScrollbar", true, 0, 0, Expert);
@@ -202,19 +202,20 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 
 	ConfigDialog::connectSlot("Look", "Font in panel", SIGNAL(changed(const char *, const QFont&)),kaduslots, SLOT(chooseFont(const char *, const QFont&)), "panel_font_box");
 
-	QVBox *vbox = new QVBox(this, "centralBox");
-	QVBoxLayout *mainLay = new QVBoxLayout(this);
-	mainLay->addWidget(vbox);
-
-	TopDockArea = new DockArea(Qt::Horizontal, DockArea::Normal, vbox,
+	MainLayout = new QVBoxLayout(this);
+	
+	TopDockArea = new DockArea(Qt::Horizontal, DockArea::Normal, this,
 		"mainDockAreaGroup", "topDockArea");
 	connect(TopDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
 	TopDockArea->setMinimumHeight(20);
-
-	QSplitter *split = new QSplitter(Qt::Vertical, vbox, "splitter");
+	MainLayout->addWidget (TopDockArea);
+	
+	QSplitter *split = new QSplitter(Qt::Vertical, this, "splitter");
+	MainLayout->addWidget (split);
+	
 	QHBox* hbox1 = new QHBox(split, "firstBox");
-
+	
 	// groupbar
 	GroupBar = new KaduTabBar(hbox1, "groupbar");
 	hbox1->setStretchFactor(GroupBar, 1);
@@ -348,7 +349,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 		InfoPanel->QWidget::hide();
 	connect(&updateInformationPanelTimer, SIGNAL(timeout()), this, SLOT(updateInformationPanel()));
 
-	statusButton = new QPushButton(QIconSet(icons_manager->loadIcon("Offline")), tr("Offline"), vbox, "statusButton");
+	statusButton = new QPushButton(QIconSet(icons_manager->loadIcon("Offline")), tr("Offline"), this, "statusButton");
+	MainLayout->addWidget (statusButton);
 	statusButton->setPopup(statusMenu);
 
 	if (!config_file.readBoolEntry("Look", "ShowStatusButton"))
@@ -385,9 +387,14 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	connect(&(gadu->currentStatus()), SIGNAL(goOffline(const QString &)),
 		this, SLOT(wentOffline(const QString &)));
 
-	mainLay->setResizeMode(QLayout::Minimum);
+	MainLayout->setResizeMode(QLayout::Minimum);
 
 	kdebugf2();
+}
+
+QVBoxLayout* Kadu::mainLayout() const
+{
+	return MainLayout;
 }
 
 void Kadu::popupMenu()
@@ -1377,7 +1384,8 @@ Kadu::~Kadu(void)
 void Kadu::createMenu()
 {
 	kdebugf();
-	MenuBar = new QMenuBar(this, "MenuBar");
+	QVBox *vbox = new QVBox(this, "menubarvbox");
+	MenuBar = new QMenuBar(vbox, "MenuBar");
 
 	MainMenu = new QPopupMenu(this, "MainMenu");
 	MainMenu->insertItem(icons_manager->loadIcon("ManageIgnored"), tr("Manage &ignored"), this, SLOT(manageIgnored()));
@@ -1397,9 +1405,9 @@ void Kadu::createMenu()
 	MainMenu->insertItem(icons_manager->loadIcon("Exit"), tr("&Exit Kadu"), this, SLOT(quit()));
 
 	MenuBar->insertItem(tr("&Kadu"), MainMenu);
-
-	((QVBoxLayout*)layout())->insertWidget(0, MenuBar);
-
+	vbox->setMinimumSize(MenuBar->minimumSizeHint());
+	MainLayout->insertWidget(0, vbox);
+	
 	icons_manager->registerMenu(MainMenu);
 	icons_manager->registerMenuItem(MainMenu, tr("Manage &ignored"), "ManageIgnored");
 	icons_manager->registerMenuItem(MainMenu, tr("&Configuration"), "Configuration");

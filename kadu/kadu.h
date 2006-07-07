@@ -38,6 +38,7 @@ class Kadu : public QWidget
 		QPopupMenu* MainMenu;
 		KaduTabBar* GroupBar;
 		UserBox* Userbox;
+		QVBoxLayout *MainLayout;
 
 		QPopupMenu* statusMenu;
 		QPushButton* statusButton;
@@ -119,6 +120,12 @@ class Kadu : public QWidget
 		**/
 		UserBox* userbox() const;
 
+		/**
+			Zwraca wska¼nik na g³ówny layout w obiekcie, teraz jest to QVBoxLayout.
+			(hint) U¿ywaj±c nale¿y badaæ nazwy i klasy obiektów GUI dostêpnych przez ten obiekt.
+		**/
+		QVBoxLayout* mainLayout() const;
+		
 		/**
 			Zwraca true je¶li kadu jest zadokowane.
 		**/
