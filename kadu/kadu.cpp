@@ -1405,7 +1405,7 @@ void Kadu::createMenu()
 	MainMenu->insertItem(icons_manager->loadIcon("Exit"), tr("&Exit Kadu"), this, SLOT(quit()));
 
 	MenuBar->insertItem(tr("&Kadu"), MainMenu);
-	vbox->setMinimumSize(MenuBar->minimumSizeHint());
+//	vbox->setMinimumSize(MenuBar->minimumSizeHint());
 	MainLayout->insertWidget(0, vbox);
 	
 	icons_manager->registerMenu(MainMenu);
