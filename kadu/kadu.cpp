@@ -208,7 +208,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 		"mainDockAreaGroup", "topDockArea");
 	connect(TopDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
-	TopDockArea->setMinimumHeight(20);
 	MainLayout->addWidget (TopDockArea);
 	
 	QSplitter *split = new QSplitter(Qt::Vertical, this, "splitter");
@@ -1384,10 +1383,10 @@ Kadu::~Kadu(void)
 void Kadu::createMenu()
 {
 	kdebugf();
-	QVBox *vbox = new QVBox(this, "menubarvbox");
-	MenuBar = new QMenuBar(vbox, "MenuBar");
+	menuBox = new QVBox(this, "menubarvbox");
+	MenuBar = new QMenuBar(menuBox, "MenuBar");
 
-	MainMenu = new QPopupMenu(this, "MainMenu");
+	MainMenu = new QPopupMenu(MenuBar, "MainMenu");
 	MainMenu->insertItem(icons_manager->loadIcon("ManageIgnored"), tr("Manage &ignored"), this, SLOT(manageIgnored()));
 	MainMenu->insertItem(icons_manager->loadIcon("Configuration"), tr("&Configuration"), this, SLOT(configure()),HotKey::shortCutFromFile("ShortCuts", "kadu_configure"));
 	MainMenu->insertSeparator();
@@ -1405,8 +1404,7 @@ void Kadu::createMenu()
 	MainMenu->insertItem(icons_manager->loadIcon("Exit"), tr("&Exit Kadu"), this, SLOT(quit()));
 
 	MenuBar->insertItem(tr("&Kadu"), MainMenu);
-//	vbox->setMinimumSize(MenuBar->minimumSizeHint());
-	MainLayout->insertWidget(0, vbox);
+	MainLayout->insertWidget(0, menuBox);
 	
 	icons_manager->registerMenu(MainMenu);
 	icons_manager->registerMenuItem(MainMenu, tr("Manage &ignored"), "ManageIgnored");
@@ -1730,9 +1728,11 @@ KaduSlots::KaduSlots(QObject *parent, const char *name) : QObject(parent, name)
 {
 }
 
-void Kadu::resizeEvent(QResizeEvent *)
+void Kadu::resizeEvent(QResizeEvent *e)
 {
-//	Userbox->all_refresh();
+//	kdebugm(KDEBUG_WARNING, "MenuBar->h4w(%d):%d, MenuBar->height():%d, MenuBar->sizeHint().height():%d\n", width(), MenuBar->heightForWidth(width()), MenuBar->height(), MenuBar->sizeHint().height());
+	menuBox->setMaximumHeight(MenuBar->heightForWidth(width()));
+	QWidget::resizeEvent(e);
 }
 
 /*void Kadu::moveEvent(QMoveEvent *e)

@@ -39,6 +39,7 @@ class Kadu : public QWidget
 		KaduTabBar* GroupBar;
 		UserBox* Userbox;
 		QVBoxLayout *MainLayout;
+		QVBox *menuBox;
 
 		QPopupMenu* statusMenu;
 		QPushButton* statusButton;
