@@ -15,6 +15,7 @@
 class QFile;
 class QListBoxItem;
 class QMenuBar;
+class QVBox;
 class KaduTabBar;
 class UserBox;
 class KaduTextBrowser;

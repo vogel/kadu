@@ -9,12 +9,14 @@
 
 #include <qcursor.h>
 #include <qobjectlist.h>
+#include <qmessagebox.h>
 #include "action.h"
 #include "config_file.h"
 #include "debug.h"
 #include "dockarea.h"
 #include "misc.h"
 #include "toolbar.h"
+#include "kadu.h"
 
 ToolBar::ToolBar(QWidget* /*parent*/, const char *name)
 	: QToolBar(NULL, name), dragButton(NULL)

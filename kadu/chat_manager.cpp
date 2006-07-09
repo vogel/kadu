@@ -24,6 +24,7 @@
 #include "pending_msgs.h"
 #include "search.h"
 #include "userbox.h"
+#include "ignore.h"
 
 // TODO: make new icons for iconset instead of tricks like that
 static QPixmap string_to_pixmap(const QString& str, const QFont& font)
