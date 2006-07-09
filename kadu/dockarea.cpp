@@ -77,6 +77,7 @@ void DockArea::createNewToolbar()
 	ToolBar* tb = new ToolBar(NULL, "New toolbar");
 	tb->show();
 	moveDockWindow(tb);
+	tb->setOrientation(orientation());
 	setAcceptDockWindow(tb, true);
 	writeToConfig();
 	kdebugf2();
@@ -140,6 +141,7 @@ bool DockArea::loadFromConfig(QWidget* toolbars_parent)
 
 				ToolBar* toolbar = new ToolBar(toolbars_parent, "");
 				moveDockWindow(toolbar);
+				toolbar->setOrientation(orientation());
 				toolbar->loadFromConfig(toolbar_elem);
 				toolbar->show();
 				setAcceptDockWindow(toolbar, true);

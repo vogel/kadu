@@ -412,6 +412,10 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   + poprawki 2 segfaultów (neeo,joi)
 * nowa akcja: ignoruj u¿ytkownika/konferencjê (neeo,joi)
 * kolejne poprawki zwi±zane z layoutem g³ównego okna (joi)
+* pe³na dowolno¶æ w umieszcaniu toolbarów w oknie rozmowy (zamiast tylko na ¶rodku
+  i na dole), po usuniêciu toolbara przestrzeñ po nim znika, etykietkê z napisem
+  "Okno edycji:" mo¿na usun±æ ustawiaj±c zmienn± Chat/ShowEditWindowLabel w pliku
+  konfiguracyjnym (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

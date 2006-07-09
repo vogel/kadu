@@ -51,6 +51,7 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	CfgHeaderSeparatorHeight(0), CfgNoHeaderInterval(0), Style(0), LastTime(0), body(0)
 {
 	kdebugf();
+	const int minimumDockAreaSize = 3;
 	QValueList<int> sizes;
 
 	setAcceptDrops(true);
@@ -60,18 +61,40 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	/* register us in the chats registry... */
 	index=chat_manager->registerChat(this);
 
-	QVBox *central = new QVBox(this, "central");
-	central->setMargin(3);
-	setCentralWidget(central);
+	QHBox *horizontalBox = new QHBox(this, "horizontalBox");
+	setCentralWidget(horizontalBox);
+
+	DockArea *leftDockArea = new DockArea(Qt::Vertical, DockArea::Normal, horizontalBox,
+		"chatDockAreaGroup", "chatLeftDockArea");
+	connect(leftDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
+		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
+	leftDockArea->setMinimumWidth(minimumDockAreaSize);
+
+	QVBox *central = new QVBox(horizontalBox, "central");
+	horizontalBox->setStretchFactor(central, 50);
+
+	DockArea *rightDockArea = new DockArea(Qt::Vertical, DockArea::Normal, horizontalBox,
+		"chatDockAreaGroup", "chatRightDockArea");
+	connect(rightDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
+		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
+	rightDockArea->setMinimumWidth(minimumDockAreaSize);
+
 	vertSplit = new KaduSplitter(Qt::Vertical, central, "vertSplit");
+	
+	QVBox *topArea = new QVBox(vertSplit, "topArea");
+	DockArea *topDockArea = new DockArea(Qt::Horizontal, DockArea::Normal, topArea,
+		"chatDockAreaGroup", "chatTopDockArea");
+	connect(topDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
+		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
+	topDockArea->setMinimumHeight(minimumDockAreaSize);
 
 	if (Users->count() > 1)
 	{
-		horizSplit = new KaduSplitter(Qt::Horizontal, vertSplit, "horizSplit");
+		horizSplit = new KaduSplitter(Qt::Horizontal, topArea, "horizSplit");
 		body = new KaduTextBrowser(horizSplit, "body");
 	}
 	else
-		body = new KaduTextBrowser(vertSplit, "body");
+		body = new KaduTextBrowser(topArea, "body");
 
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_ANIMATED)
 		body->setStyleSheet(new AnimStyleSheet(body,emoticons->themePath()));
@@ -106,15 +129,18 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	QVBox *downpart = new QVBox(vertSplit, "downpartBox");
 	QHBox *edtbuttontray = new QHBox(downpart, "edtbuttontrayBox");
 
-	QLabel *edt = new QLabel(tr("Edit window:"), edtbuttontray, "editLabel");
-	QToolTip::add(edt, tr("This is where you type in the text to be sent"));
+	if (config_file.readBoolEntry("Chat", "ShowEditWindowLabel", true))
+	{
+		QLabel *edt = new QLabel(tr("Edit window:"), edtbuttontray, "editLabel");
+		QToolTip::add(edt, tr("This is where you type in the text to be sent"));
+		edtbuttontray->setStretchFactor(edt, 1);
+	}
 
 	DockArea* buttontray = new DockArea(Qt::Horizontal, DockArea::Normal, edtbuttontray,
 		"chatDockAreaGroup", "chatMiddleDockArea");
 	connect(buttontray, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
-	buttontray->setMinimumHeight(20);
-	edtbuttontray->setStretchFactor(edt, 1);
+	buttontray->setMinimumHeight(minimumDockAreaSize);
 	edtbuttontray->setStretchFactor(buttontray, 50);
 
 	Edit = new CustomInput(downpart, "edit");
@@ -149,7 +175,7 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 		"chatDockAreaGroup", "chatBottomDockArea");
 	connect(btnpart, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
-	btnpart->setMinimumHeight(20);
+	btnpart->setMinimumHeight(minimumDockAreaSize);
 
 	QAccel *acc = new QAccel(this, "returnAccel");
 	acc->connectItem(acc->insertItem(Key_Return + CTRL), this, SLOT(sendMessage()));
@@ -164,6 +190,9 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	sizes.append(2);
 	vertSplit->setSizes(sizes);
 
+	topDockArea->loadFromConfig(this);
+	leftDockArea->loadFromConfig(this);
+	rightDockArea->loadFromConfig(this);
 
 	if (!buttontray->loadFromConfig(this))
 	{
