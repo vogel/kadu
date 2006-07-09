@@ -485,13 +485,12 @@ OnlineUsers::~OnlineUsers()
 void OnlineUsers::statusChangedSlot(UserListElement elem, QString protocolName,
 							const UserStatus &oldStatus, bool /*massively*/, bool /*last*/)
 {
-	if ((oldStatus.isOnline() || oldStatus.isInvisible() || oldStatus.isBusy()) ==
-			(elem.status(protocolName).isOnline() || elem.status(protocolName).isInvisible() || elem.status(protocolName).isBusy()))
+	if (!oldStatus.isOffline() == !elem.status(protocolName).isOffline())
 		return;
-	if (oldStatus.isOnline() || oldStatus.isInvisible() || oldStatus.isBusy())
-		removeUser(elem);
-	else
+	if (oldStatus.isOffline())
 		addUser(elem);
+	else
+		removeUser(elem);
 }
 
 BlockedUsers::BlockedUsers() : UserGroup(userlist->count() / 4, "blocked_users")
