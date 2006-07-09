@@ -106,6 +106,12 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 		this, SLOT(insertImageActionActivated(const UserGroup*)));
 	KaduActions.insert("insertImageAction", insert_img_action);
 
+	Action* ignore_user_action = new Action(icons_manager->loadIcon("ManageIgnored"),
+		tr("Ignore user"), "ignoreUserAction");
+	connect(ignore_user_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		this, SLOT(ignoreUserActionActivated(const UserGroup*)));
+	KaduActions.insert("ignoreUserAction", ignore_user_action);
+	
 	QFont font;
 
 	font.setBold(true);
@@ -313,6 +319,23 @@ void ChatManager::whoisActionActivated(const UserGroup* users)
 			sd->firstSearch();
 		}
 	}
+	kdebugf2();
+}
+
+void ChatManager::ignoreUserActionActivated(const UserGroup* users)
+{
+	kdebugf();
+	UserListElements u = users->toUserListElements();
+	if (isIgnored(u))
+		delIgnored(u);
+	else
+	{
+		addIgnored(u);
+		Chat *c = findChat(users);
+		if (c)
+			c->close();
+	}
+	writeIgnored();
 	kdebugf2();
 }
 

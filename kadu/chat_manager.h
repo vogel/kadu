@@ -67,6 +67,7 @@ class ChatManager : public QObject
 		void insertEmoticonActionAddedToToolbar(ToolButton* button, ToolBar* toolbar,
 			const UserListElements& users);
 		void whoisActionActivated(const UserGroup* users);
+		void ignoreUserActionActivated(const UserGroup* users);
 		void insertImageActionActivated(const UserGroup* users);
 		void sendActionActivated(const UserGroup* users);
 		void chatActionActivated(const UserGroup* users);
