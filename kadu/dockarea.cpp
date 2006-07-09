@@ -40,11 +40,12 @@ void DockArea::contextMenuEvent(QContextMenuEvent* e)
 void DockArea::childEvent(QChildEvent* e)
 {
 	kdebugf();
+	kdebugm(KDEBUG_INFO, "child:%p inserted:%d removed:%d\n", e->child(), e->inserted(), e->removed());
 	QDockArea::childEvent(e);
-	ToolBar* toolbar = dynamic_cast<ToolBar*>(e->child());
-	if (toolbar != NULL)
+	if (e->inserted())
 	{
-		if (e->inserted())
+		ToolBar* toolbar = dynamic_cast<ToolBar*>(e->child());
+		if (toolbar != NULL)
 		{
 			connect(toolbar, SIGNAL(destroyed()), this, SLOT(writeToConfig()));
 			connect(toolbar, SIGNAL(placeChanged(QDockWindow::Place)),

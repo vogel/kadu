@@ -15,6 +15,7 @@ class ToolBar : public QToolBar
 
 	private slots:
 		void addButtonClicked(int action_index);
+		void deleteToolbar(void);
 
 	protected:
 		virtual void dragEnterEvent(QDragEnterEvent* event);

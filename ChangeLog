@@ -408,6 +408,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka skalowania g³ównego okna - menu potrafi³o zas³oniæ toolbar (pinkworm/joi)
 * drobna optymalizacja w okre¶laniu listy dostêpnych kontaktów i zmiana
   w traktowaniu kontaktów blokuj±cych - uznajemy ich za dostêpnych (tak jak w 0.4.x) (neeo/joi)
+* przed usuniêciem toolbara pytamy siê czy u¿ytkownik naprawdê chce go usun±æ 
+  + poprawki 2 segfaultów (neeo,joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

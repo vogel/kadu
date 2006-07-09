@@ -119,7 +119,12 @@ void ToolBar::dropEvent(QDropEvent* event)
 void ToolBar::contextMenuEvent(QContextMenuEvent* e)
 {
 	kdebugf();
-	QPopupMenu* p = createContextMenu(this);
+
+	//NOTE: parent MUST be dockArea(), NOT this, because when user is choosing "remove toolbar",
+	//      it calls deleteLater(), which is invoked _before_ exec returns! so QPopupMenu would
+	//      be deleted when exec returns!
+	QPopupMenu* p = createContextMenu(dockArea()); 
+
 	p->exec(QCursor::pos());
 	delete p;
 	e->accept();
@@ -190,7 +195,7 @@ const UserGroup* ToolBar::selectedUsers() const
 QPopupMenu* ToolBar::createContextMenu(QWidget* parent)
 {
 	QPopupMenu* p = new QPopupMenu(parent);
-	p->insertItem(tr("Delete toolbar"), this, SLOT(deleteLater()));
+	p->insertItem(tr("Delete toolbar"), this, SLOT(deleteToolbar()));
 	QPopupMenu* p2 = new QPopupMenu(p);
 	int param = 0;
 	CONST_FOREACH(a, KaduActions)
@@ -209,4 +214,12 @@ QPopupMenu* ToolBar::createContextMenu(QWidget* parent)
 	QPopupMenu* panel_menu = dockArea()->createContextMenu(p);
 	p->insertItem(tr("Panel menu"), panel_menu);
 	return p;
+}
+
+void ToolBar::deleteToolbar()
+{
+	kdebugf();
+	if (QMessageBox::question(kadu, tr("Remove toolbar?"), tr("Remove toolbar?"), tr("Yes"), tr("No"), QString::null, 1, 1) == 0)
+		deleteLater();
+	kdebugf2();
 }
