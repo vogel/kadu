@@ -5,4 +5,5 @@ Author=Kadu Team
 Dependencies=sound
 Provides=sound_driver
 Conflicts=sound_driver
+LoadByDefault=true
 Version=core
