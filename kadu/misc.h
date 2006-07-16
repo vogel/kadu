@@ -84,7 +84,7 @@ class ChooseDescription : public QDialog
 
 class ImageWidget : public QWidget
 {
-	Q_OBJECT
+//	Q_OBJECT
 
 	private:
 		QImage Image;

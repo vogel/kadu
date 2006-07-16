@@ -55,7 +55,7 @@ class UinsList : public QValueList<UinType>
 
 class GaduStatus : public UserStatus
 {
-	Q_OBJECT
+//	Q_OBJECT
 
 	public:
 		GaduStatus();
