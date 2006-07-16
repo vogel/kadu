@@ -416,6 +416,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   i na dole), po usuniêciu toolbara przestrzeñ po nim znika, etykietkê z napisem
   "Okno edycji:" mo¿na usun±æ ustawiaj±c zmienn± Chat/ShowEditWindowLabel w pliku
   konfiguracyjnym (joi)
+* dopisane do rotacji 3 nowe adresy serwerów gg (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

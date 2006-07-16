@@ -36,7 +36,7 @@
 
 static QValueList<QHostAddress> gg_servers;
 
-#define GG_SERVERS_COUNT 12
+#define GG_SERVERS_COUNT 15
 static const char *gg_servers_ip[GG_SERVERS_COUNT] = {
 	"217.17.41.82",
 	"217.17.41.83",
@@ -49,7 +49,10 @@ static const char *gg_servers_ip[GG_SERVERS_COUNT] = {
 	"217.17.41.93",
 	"217.17.45.133",
 	"217.17.45.143",
-	"217.17.45.144"
+	"217.17.45.144",
+	"217.17.45.145",
+	"217.17.45.146",
+	"217.17.45.147"
 };
 
 // ------------------------------------
