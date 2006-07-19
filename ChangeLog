@@ -417,6 +417,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   "Okno edycji:" mo¿na usun±æ ustawiaj±c zmienn± Chat/ShowEditWindowLabel w pliku
   konfiguracyjnym (joi)
 * dopisane do rotacji 3 nowe adresy serwerów gg (joi)
+* dodane do autodownloadu 3 modu³y: filtering, powerkadu, profiles (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
