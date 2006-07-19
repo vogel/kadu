@@ -12,6 +12,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodane do autodownloadu zestawy ikon glass16 i glass22 (dylemat/Ron_K)
 * poprawiony segfault przy zamykaniu modu³u hints, gdy zosta³ jeszcze jaki¶ dymek (joi)
 * poprawka wywrotki w module encryption gdy dostajemy od serwera wiadomo¶æ o d³ugo¶ci 0 (joi)
+* dodany do autodownloadu modu³ profiles (joi)
 
 +++ wersja 0.4.3 (30.11.2005)
 * opcja ignorowania formatowania tekstu i obrazków od anonimów, domy¶lnie w³±czona (adrian)
