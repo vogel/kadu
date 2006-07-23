@@ -16,6 +16,9 @@
 
 //rename
 #include <stdio.h>
+//strerror
+#include <string.h>
+#include <errno.h>
 
 XmlConfigFile::XmlConfigFile() : DomDocument()
 {
@@ -62,10 +65,17 @@ void XmlConfigFile::write(const QString& f)
 		stream.setEncoding(QTextStream::UnicodeUTF8);
 		stream << DomDocument.toString();
 		file.close();
-		rename(tmpFileName.local8Bit().data(), fileName.local8Bit().data());
+		if (rename(tmpFileName.local8Bit().data(), fileName.local8Bit().data()) == -1)
+		{
+			fprintf(stderr, "cannot rename '%s' to '%s': %s\n", tmpFileName.local8Bit().data(), fileName.local8Bit().data(), strerror(errno));
+			fflush(stderr);
+		}
 	}
 	else
-		kdebugm(KDEBUG_ERROR, "can't open '%s'\n", file.name().local8Bit().data());
+	{
+		fprintf(stderr, "cannot open '%s': %s\n", file.name().local8Bit().data(), file.errorString().local8Bit().data());
+		fflush(stderr);
+	}
 	kdebugf2();
 }
 
