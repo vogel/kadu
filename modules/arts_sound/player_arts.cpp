@@ -172,7 +172,7 @@ void aRtsPlayerRecorder::openDevice(SoundDeviceType type, int sample_rate, int c
 	sock = socket(PF_LOCAL, SOCK_STREAM, 0);
 	if (sock == -1)
 	{
-		kdebugm(KDEBUG_ERROR, "sock()==-1 %d %s\n", errno, strerror(errno));
+		fprintf(stderr, "arts_sound: socket failed: %s\n", strerror(errno));
 		device = NULL;
 		kdebugf2();
 		return;

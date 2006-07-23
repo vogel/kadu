@@ -420,6 +420,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodane do autodownloadu 3 modu³y: filtering, powerkadu, profiles (joi)
 * zapisywanie konfiguracji do tymczasowego pliku, a pó¼niej zmiana nazwy na docelowy,
   ¿eby unikn±æ wyczyszczenia pliku w przypadku segfaulta (joi)
+* w przypadku problemów z otwarciem plików konfiguracyjnych lub dostêpu do karty d¼wiêkowej,
+  wypisujemy komunikaty o b³êdach tak¿e gdy --enable-debug jest wy³±czone (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

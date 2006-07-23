@@ -129,16 +129,16 @@ void OSSPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chann
 		flags = O_RDWR;
 
 	int fd = open(sdev.local8Bit().data(), flags);
-	if (fd<0)
+	if (fd < 0)
 	{
-		kdebugm(KDEBUG_ERROR, "Error opening device (%s, %d)\n", strerror(errno), errno);
+		fprintf(stderr, "Error opening device (%s, %d)\n", strerror(errno), errno);
 		return;
 	}
 
 	kdebugm(KDEBUG_INFO, "Resetting\n");
-	if (ioctl(fd, SNDCTL_DSP_RESET, 0)<0)
+	if (ioctl(fd, SNDCTL_DSP_RESET, 0) < 0)
 	{
-		kdebugm(KDEBUG_ERROR, "Error resetting (%s, %d)\n", strerror(errno), errno);
+		fprintf(stderr, "Error resetting (%s, %d)\n", strerror(errno), errno);
 		close(fd);
 		return;
 	}
@@ -147,43 +147,43 @@ void OSSPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chann
 	// because of compatibility with some (old) soundcards
 	kdebugm(KDEBUG_INFO, "Setting format\n");
 	value = AFMT_S16_LE;
-	if(ioctl(fd, SNDCTL_DSP_SETFMT, &value)<0)
+	if (ioctl(fd, SNDCTL_DSP_SETFMT, &value) < 0)
 	{
-		kdebugm(KDEBUG_ERROR, "Error setting format (%s, %d)\n", strerror(errno), errno);
+		fprintf(stderr, "Error setting format (%s, %d)\n", strerror(errno), errno);
 		close(fd);
 		return;
 	}
 
 	kdebugm(KDEBUG_INFO, "Setting channels\n");
 	value = channels;
-	if(ioctl(fd, SNDCTL_DSP_CHANNELS, &value)<0)
+	if (ioctl(fd, SNDCTL_DSP_CHANNELS, &value) < 0)
 	{
-		kdebugm(KDEBUG_ERROR, "Error setting channels (%s, %d)\n", strerror(errno), errno);
+		fprintf(stderr, "Error setting channels (%s, %d)\n", strerror(errno), errno);
 		close(fd);
 		return;
 	}
 
 	kdebugm(KDEBUG_INFO, "Setting speed\n");
 	value = sample_rate;
-	if(ioctl(fd, SNDCTL_DSP_SPEED, &value)<0)
+	if (ioctl(fd, SNDCTL_DSP_SPEED, &value) < 0)
 	{
-		kdebugm(KDEBUG_ERROR, "Error setting speed (%s, %d)\n", strerror(errno), errno);
+		fprintf(stderr, "Error setting speed (%s, %d)\n", strerror(errno), errno);
 		close(fd);
 		return;
 	}
 
 	kdebugm(KDEBUG_INFO, "getting buffer size\n");
-	if (ioctl(fd, SNDCTL_DSP_GETBLKSIZE, &maxbufsize)<0)
+	if (ioctl(fd, SNDCTL_DSP_GETBLKSIZE, &maxbufsize) < 0)
 	{
-		kdebugm(KDEBUG_ERROR, "Error getting max buffer size (%s, %d)\n", strerror(errno), errno);
+		fprintf(stderr, "Error getting max buffer size (%s, %d)\n", strerror(errno), errno);
 		close(fd);
 		return;
 	}
 
 	kdebugm(KDEBUG_INFO, "checking capabilities\n");
-	if (ioctl(fd, SNDCTL_DSP_GETCAPS, &caps)<0)
+	if (ioctl(fd, SNDCTL_DSP_GETCAPS, &caps) < 0)
 	{
-		kdebugm(KDEBUG_ERROR, "Error getting capabilities (%s, %d)\n", strerror(errno), errno);
+		fprintf(stderr, "Error getting capabilities (%s, %d)\n", strerror(errno), errno);
 		close(fd);
 		return;
 	}
@@ -247,7 +247,7 @@ void OSSPlayerSlots::playSample(SoundDevice device, const int16_t* data, int len
 		// wait for end of playing
 		if (ioctl(dev->fd, SNDCTL_DSP_SYNC, 0) < 0)
 		{
-			kdebugm(KDEBUG_ERROR, "SNDCTL_DSP_SYNC error (%s, %d)\n", strerror(errno), errno);
+			fprintf(stderr, "SNDCTL_DSP_SYNC error (%s, %d)\n", strerror(errno), errno);
 			result = false;
 		}
 	}

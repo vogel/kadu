@@ -356,7 +356,7 @@ void SoundManager::newChat(Protocol * /*protocol*/, UserListElements /*senders*/
 		lastsoundtime.restart();
 	}
 	else
-		kdebugm(KDEBUG_WARNING, "file (%s) not found\n", chatsound.local8Bit().data());
+		fprintf(stderr, "file (%s) not found\n", chatsound.local8Bit().data());
 	kdebugf2();
 }
 
@@ -388,7 +388,7 @@ void SoundManager::newMessage(Protocol * /*protocol*/, UserListElements senders,
 		lastsoundtime.restart();
 	}
 	else
-		kdebugm(KDEBUG_WARNING, "file (%s) not found\n", messagesound.local8Bit().data());
+		fprintf(stderr, "file (%s) not found\n", messagesound.local8Bit().data());
 	kdebugf2();
 }
 
@@ -417,7 +417,7 @@ void SoundManager::connectionError(Protocol *, const QString &/*message*/)
 		lastsoundtime.restart();
 	}
 	else
-		kdebugm(KDEBUG_WARNING, "file (%s) not found\n", conn_error_sound.local8Bit().data());
+		fprintf(stderr, "file (%s) not found\n", conn_error_sound.local8Bit().data());
 	kdebugf2();
 }
 
@@ -446,7 +446,7 @@ void SoundManager::userChangedStatusToAvailable(const QString &/*protocolName*/,
 		lastsoundtime.restart();
 	}
 	else
-		kdebugm(KDEBUG_WARNING, "file (%s) not found\n", status_change_sound.local8Bit().data());
+		fprintf(stderr, "file (%s) not found\n", status_change_sound.local8Bit().data());
 	kdebugf2();
 }
 
@@ -475,7 +475,7 @@ void SoundManager::userChangedStatusToBusy(const QString &/*protocolName*/, User
 		lastsoundtime.restart();
 	}
 	else
-		kdebugm(KDEBUG_WARNING, "file (%s) not found\n", status_change_sound.local8Bit().data());
+		fprintf(stderr, "file (%s) not found\n", status_change_sound.local8Bit().data());
 	kdebugf2();
 }
 
@@ -504,7 +504,7 @@ void SoundManager::userChangedStatusToInvisible(const QString &/*protocolName*/,
 		lastsoundtime.restart();
 	}
 	else
-		kdebugm(KDEBUG_WARNING, "file (%s) not found\n", status_change_sound.local8Bit().data());
+		fprintf(stderr, "file (%s) not found\n", status_change_sound.local8Bit().data());
 	kdebugf2();
 }
 
@@ -533,7 +533,7 @@ void SoundManager::userChangedStatusToNotAvailable(const QString &/*protocolName
 		lastsoundtime.restart();
 	}
 	else
-		kdebugm(KDEBUG_WARNING, "file (%s) not found\n", status_change_sound.local8Bit().data());
+		fprintf(stderr, "file (%s) not found\n", status_change_sound.local8Bit().data());
 	kdebugf2();
 }
 
@@ -573,7 +573,7 @@ void SoundManager::message(const QString &, const QString &message, const QMap<Q
 		lastsoundtime.restart();
 	}
 	else
-		kdebugm(KDEBUG_WARNING, "file (%s) not found\n", message_sound.local8Bit().data());
+		fprintf(stderr, "file (%s) not found\n", message_sound.local8Bit().data());
 	kdebugf2();
 }
 
@@ -613,7 +613,7 @@ void SoundManager::play(const QString &path, bool force)
 	if (QFile::exists(path))
 		play(path, volCntrl, vol);
 	else
-		kdebugm(KDEBUG_WARNING, "file (%s) not found\n", path.local8Bit().data());
+		fprintf(stderr, "file (%s) not found\n", path.local8Bit().data());
 	kdebugf2();
 }
 
@@ -790,7 +790,7 @@ bool SoundPlayThread::play(const char *path, bool volumeControl, float volume)
 
 	if (!sound->isOk())
 	{
-		kdebugmf(KDEBUG_ERROR, "sound is not ok?\n");
+		fprintf(stderr, "broken sound file?\n");
 		delete sound;
 		return false;
 	}

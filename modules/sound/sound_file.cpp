@@ -20,7 +20,7 @@ SoundFile::SoundFile(const char *path):length(0),data(NULL),channels(-1),speed(0
 	SNDFILE *f = sf_open(path, SFM_READ, &info);
 	if (!f)
 	{
-		kdebugmf(KDEBUG_ERROR, "cannot open file '%s'\n", path);
+		fprintf(stderr, "cannot open file '%s'\n", path);
 		return;
 	}
 	kdebugm(KDEBUG_INFO, "frames:\t\t%lld\n", info.frames);
