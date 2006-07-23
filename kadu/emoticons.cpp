@@ -197,6 +197,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor,
 
 	if (!emotsFound && getSubDirs(dataPath("kadu/themes/emoticons")).isEmpty())
 	{
+		fprintf(stderr, "no emoticons in %s\n", dataPath("kadu/themes/emoticons").local8Bit().data());
 		kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "end: NO EMOTICONS!\n");
 		return;
 	}

@@ -33,12 +33,16 @@ void XmlConfigFile::read()
 		if (DomDocument.setContent(&file))
 			kdebugm(KDEBUG_INFO, "xml configuration file loaded");
 		else
-			kdebugm(KDEBUG_ERROR, "error reading or parsing xml configuration file");
+		{
+			fprintf(stderr, "error reading or parsing xml configuration file\n");
+			fflush(stderr);
+		}
 		file.close();
 	}
 	else
 	{
-		kdebugm(KDEBUG_ERROR, "error opening xml configuration file, creating empty document");
+		fprintf(stderr, "error opening xml configuration file (%s), creating empty document\n", file.errorString().local8Bit().data());
+		fflush(stderr);
 		QDomElement root = DomDocument.createElement( "Kadu" );
 		DomDocument.appendChild(root);
 	}
@@ -267,7 +271,10 @@ void PlainConfigFile::write() const
 		file.close();
 	}
 	else
-		kdebugm(KDEBUG_ERROR, "can't open '%s'\n", (const char *)file.name().local8Bit());
+	{
+		fprintf(stderr, "cannot open '%s': %s\n", file.name().local8Bit().data(), file.errorString().local8Bit().data());
+		fflush(stderr);
+	}
 
 /*	}
 	gettimeofday(&t2, NULL);
