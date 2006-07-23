@@ -654,7 +654,7 @@ UserBox* UserBox::activeUserBox()
 			return *box;
 		}
 	}
-	kdebugmf(KDEBUG_PANIC, "return NULL!\n");
+	kdebugmf(KDEBUG_WARNING, "return NULL!\n");
 //	printBacktrace("activeUserBox NULL");
 	return NULL;
 }
