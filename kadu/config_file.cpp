@@ -14,6 +14,9 @@
 #include "config_file.h"
 #include "misc.h"
 
+//rename
+#include <stdio.h>
+
 XmlConfigFile::XmlConfigFile() : DomDocument()
 {
 	read();
@@ -45,10 +48,13 @@ void XmlConfigFile::write(const QString& f)
 	rootElement().setAttribute("last_save_time", QDateTime::currentDateTime().toString());
 	rootElement().setAttribute("last_save_version", VERSION);
 	QFile file;
+	QString fileName, tmpFileName;
 	if (f.isEmpty())
-		file.setName(ggPath("kadu.conf.xml"));
+		fileName = ggPath("kadu.conf.xml");
 	else
-		file.setName(f);
+		fileName = f;
+	tmpFileName = fileName + ".tmp"; // saving to another file to avoid truncation of output file when segfault occurs :|
+	file.setName(tmpFileName);
 	if (file.open(IO_WriteOnly | IO_Truncate))
 	{
 		kdebugm(KDEBUG_INFO, "file opened '%s'\n", file.name().local8Bit().data());
@@ -56,6 +62,7 @@ void XmlConfigFile::write(const QString& f)
 		stream.setEncoding(QTextStream::UnicodeUTF8);
 		stream << DomDocument.toString();
 		file.close();
+		rename(tmpFileName.local8Bit().data(), fileName.local8Bit().data());
 	}
 	else
 		kdebugm(KDEBUG_ERROR, "can't open '%s'\n", file.name().local8Bit().data());

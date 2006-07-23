@@ -418,6 +418,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   konfiguracyjnym (joi)
 * dopisane do rotacji 3 nowe adresy serwerów gg (joi)
 * dodane do autodownloadu 3 modu³y: filtering, powerkadu, profiles (joi)
+* zapisywanie konfiguracji do tymczasowego pliku, a pó¼niej zmiana nazwy na docelowy,
+  ¿eby unikn±æ wyczyszczenia pliku w przypadku segfaulta (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
