@@ -779,6 +779,8 @@ void Chat::clearChatWindow()
 		body->clear();
 		if (CfgNoHeaderRepeat)
 			LastTime = 0;
+		setActiveWindow();
+		Edit->setFocus();
 	}
 	kdebugf2();
 }
