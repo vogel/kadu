@@ -426,6 +426,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   dzia³ania, zamykania i wyrzuca te dane na konsolê, u¿yteczne razem ze zmienn±
   CLOSE_AFTER (czas w milisekundach, po którym program zostanie zamkniêty) (joi)
 * niewielka poprawka do skryptu configure, pomagaj±ca w kompilacji na OpenBSD (Prezu/joi)
+* nowa akcja: "Blokuj kontakt" (neeo/joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

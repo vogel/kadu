@@ -113,6 +113,12 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 		this, SLOT(ignoreUserActionActivated(const UserGroup*)));
 	KaduActions.insert("ignoreUserAction", ignore_user_action);
 	
+	Action* block_user_action = new Action(icons_manager->loadIcon("Blocking"),
+		tr("Block user"), "blockUserAction");
+	connect(block_user_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		this, SLOT(blockUserActionActivated(const UserGroup*)));
+	KaduActions.insert("blockUserAction", block_user_action);
+	
 	QFont font;
 
 	font.setBold(true);
@@ -326,17 +332,35 @@ void ChatManager::whoisActionActivated(const UserGroup* users)
 void ChatManager::ignoreUserActionActivated(const UserGroup* users)
 {
 	kdebugf();
-	UserListElements u = users->toUserListElements();
-	if (isIgnored(u))
-		delIgnored(u);
-	else
+	if (users->count() > 0)
 	{
-		addIgnored(u);
-		Chat *c = findChat(users);
-		if (c)
-			c->close();
+		UserListElements u = users->toUserListElements();
+		if (isIgnored(u))
+			delIgnored(u);
+		else
+		{
+			addIgnored(u);
+			Chat *c = findChat(users);
+			if (c)
+				c->close();
+		}
+		writeIgnored();
 	}
-	writeIgnored();
+	kdebugf2();
+}
+
+void ChatManager::blockUserActionActivated(const UserGroup* users)
+{
+	kdebugf();
+	if (users->count() > 0)
+	{
+		FOREACH(user, (*users))
+		{
+			if ((*user).usesProtocol("Gadu"))
+				(*user).setProtocolData("Gadu", "Blocking", !((*user).protocolData("Gadu", "Blocking").toBool()));
+		}
+		userlist->writeToConfig();
+	}
 	kdebugf2();
 }
 
