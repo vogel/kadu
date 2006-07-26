@@ -206,4 +206,8 @@ void printBacktrace(const QString &header = QString::null);
 
 #define CONST_FOREACH(i,c) for(VAR(i, (c).constBegin()), _kadu__##i##__end = (c).constEnd(); i!=_kadu__##i##__end; ++i)
 
+// private
+extern long long int startTime, beforeExecTime, endingTime, exitingTime;
+extern bool measureTime;
+
 #endif

@@ -21,6 +21,7 @@
 #include <sys/types.h>
 #include <stdio.h>
 #include <fcntl.h>
+#include <sys/time.h>
 
 #include "kadu.h"
 #include "kadu-config.h"
@@ -32,6 +33,7 @@
 #include "groups_manager.h"
 #include "history.h"
 #include "icons_manager.h"
+#include "misc.h"
 #include "modules.h"
 #include "emoticons.h"
 #include "message_box.h"
@@ -176,6 +178,11 @@ extern bool showTimesInDebug;
 
 int main(int argc, char *argv[])
 {
+	struct timeval tv;
+	struct timezone tz;
+	gettimeofday(&tv, &tz);
+	startTime = (tv.tv_sec % 1000) * 1000000 + tv.tv_usec;
+
 	qInstallMsgHandler(kaduQtMessageHandler);
 	xml_config_file = new XmlConfigFile();
 
@@ -323,14 +330,30 @@ int main(int argc, char *argv[])
 	if (close_after)
 	{
 		int tm = atoi(close_after);
-		if (tm > 0)
+		if (tm >= 0)
 			QTimer::singleShot(tm, kadu, SLOT(quit()));
+	}
+
+	/* for testing of startup / close time */
+	measureTime = getenv("MEASURE_TIME") != 0;
+
+	if (measureTime)
+	{
+		gettimeofday(&tv, &tz);
+		beforeExecTime = (tv.tv_sec % 1000) * 1000000 + tv.tv_usec;
 	}
 
 	int ret = qApp->exec();
 	kdebugm(KDEBUG_INFO, "after exec\n");
 	qApp->removeTranslator(&qt_qm);
 	qApp->removeTranslator(&kadu_qm);
+
+	if (measureTime)
+	{
+		gettimeofday(&tv, &tz);
+		exitingTime = (tv.tv_sec % 1000) * 1000000 + tv.tv_usec;
+		fprintf(stderr, "init time:%ld, run time:%ld, ending time:%ld\n", beforeExecTime - startTime, endingTime - beforeExecTime, exitingTime - endingTime);
+	}
 
 //	delete qApp; //sometimes leads to segfault
 	kdebugm(KDEBUG_INFO, "exiting main\n");

@@ -45,6 +45,9 @@ QFontInfo *defaultFontInfo;
 QTextCodec *codec_cp1250 = QTextCodec::codecForName("CP1250");
 QTextCodec *codec_latin2 = QTextCodec::codecForName("ISO8859-2");
 
+long long int startTime = 0, beforeExecTime = 0, endingTime = 0, exitingTime = 0;
+bool measureTime = false;
+
 void saveGeometry(const QWidget *w, const QString &section, const QString &name)
 {
 	QRect geom;

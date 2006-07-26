@@ -22,6 +22,7 @@
 #include <sys/file.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <sys/time.h>
 #include <netinet/in.h>
 #include <time.h>
 #include <stdlib.h>
@@ -753,6 +754,13 @@ void Kadu::about()
 void Kadu::quit()
 {
 	kdebugf();
+	if (measureTime)
+	{
+		struct timeval tv;
+		struct timezone tz;
+		gettimeofday(&tv, &tz);
+		endingTime = (tv.tv_sec % 1000) * 1000000 + tv.tv_usec;
+	}
 	close(true);
 }
 

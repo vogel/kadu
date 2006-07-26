@@ -422,6 +422,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   ¿eby unikn±æ wyczyszczenia pliku w przypadku segfaulta (joi)
 * w przypadku problemów z otwarciem plików konfiguracyjnych lub dostêpu do karty d¼wiêkowej,
   wypisujemy komunikaty o b³êdach tak¿e gdy --enable-debug jest wy³±czone (joi)
+* gdy ustawiona jest zmienna ¶rodowiskowa MEASURE_TIME, Kadu mierzy czas uruchomienia,
+  dzia³ania, zamykania i wyrzuca te dane na konsolê, u¿yteczne razem ze zmienn±
+  CLOSE_AFTER (czas w milisekundach, po którym program zostanie zamkniêty) (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
