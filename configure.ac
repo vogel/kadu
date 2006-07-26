@@ -102,7 +102,7 @@ AC_DEFUN(FIND_HEADER,[
 AC_DEFUN(FIND_LIBRARY,[
 	AC_MSG_CHECKING([if lib$1 is in system directories])
 	save_CFLAGS="$CFLAGS"
-	CFLAGS="$CFLAGS $5 -l$1"
+	CFLAGS="$CFLAGS $5 -l$1 -lstdc++ -lm"
 	AC_TRY_LINK([],
 	[
 		return 0;
@@ -117,7 +117,7 @@ AC_DEFUN(FIND_LIBRARY,[
 		FILE_DIR=
 		for dir in $with_libs $2
 		do
-			CFLAGS="$save_CFLAGS $5 -L$dir -l$1"
+			CFLAGS="$save_CFLAGS $5 -L$dir -l$1 -lstdc++ -lm"
 			AC_TRY_LINK([],
 			[
 				return 0;

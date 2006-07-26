@@ -4276,7 +4276,7 @@ if test "$with_png_checking" = "yes"; then
 	echo "$as_me:$LINENO: checking if libpng is in system directories" >&5
 echo $ECHO_N "checking if libpng is in system directories... $ECHO_C" >&6
 	save_CFLAGS="$CFLAGS"
-	CFLAGS="$CFLAGS  -lpng"
+	CFLAGS="$CFLAGS  -lpng -lstdc++ -lm"
 	cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
@@ -4335,7 +4335,7 @@ echo $ECHO_N "checking if libpng is in specified directories: $with_libs $PNG_LI
 		FILE_DIR=
 		for dir in $with_libs $PNG_LIBS_PATHS
 		do
-			CFLAGS="$save_CFLAGS  -L$dir -lpng"
+			CFLAGS="$save_CFLAGS  -L$dir -lpng -lstdc++ -lm"
 			cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
@@ -4413,7 +4413,7 @@ echo "${ECHO_T}libpng not found - checking for zlib first" >&6
 	echo "$as_me:$LINENO: checking if libz is in system directories" >&5
 echo $ECHO_N "checking if libz is in system directories... $ECHO_C" >&6
 	save_CFLAGS="$CFLAGS"
-	CFLAGS="$CFLAGS  -lz"
+	CFLAGS="$CFLAGS  -lz -lstdc++ -lm"
 	cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
@@ -4472,7 +4472,7 @@ echo $ECHO_N "checking if libz is in specified directories: $with_libs $Z_LIBS_P
 		FILE_DIR=
 		for dir in $with_libs $Z_LIBS_PATHS
 		do
-			CFLAGS="$save_CFLAGS  -L$dir -lz"
+			CFLAGS="$save_CFLAGS  -L$dir -lz -lstdc++ -lm"
 			cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
@@ -4557,7 +4557,7 @@ echo "${ECHO_T}zlib found - checking for libpng once again" >&6
 	echo "$as_me:$LINENO: checking if libpng is in system directories" >&5
 echo $ECHO_N "checking if libpng is in system directories... $ECHO_C" >&6
 	save_CFLAGS="$CFLAGS"
-	CFLAGS="$CFLAGS $Z_LIBS -lm -lpng"
+	CFLAGS="$CFLAGS $Z_LIBS -lm -lpng -lstdc++ -lm"
 	cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
@@ -4616,7 +4616,7 @@ echo $ECHO_N "checking if libpng is in specified directories: $with_libs $PNG_LI
 		FILE_DIR=
 		for dir in $with_libs $PNG_LIBS_PATHS
 		do
-			CFLAGS="$save_CFLAGS $Z_LIBS -lm -L$dir -lpng"
+			CFLAGS="$save_CFLAGS $Z_LIBS -lm -L$dir -lpng -lstdc++ -lm"
 			cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
@@ -4806,7 +4806,7 @@ QT_LIBS="-lqt-mt"
 	echo "$as_me:$LINENO: checking if libqt-mt is in system directories" >&5
 echo $ECHO_N "checking if libqt-mt is in system directories... $ECHO_C" >&6
 	save_CFLAGS="$CFLAGS"
-	CFLAGS="$CFLAGS $PNG_LIBS $PTHREAD_LDFLAGS $PTHREAD_LIBS -lqt-mt"
+	CFLAGS="$CFLAGS $PNG_LIBS $PTHREAD_LDFLAGS $PTHREAD_LIBS -lqt-mt -lstdc++ -lm"
 	cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
@@ -4865,7 +4865,7 @@ echo $ECHO_N "checking if libqt-mt is in specified directories: $with_libs $QT_L
 		FILE_DIR=
 		for dir in $with_libs $QT_LIBS_PATHS
 		do
-			CFLAGS="$save_CFLAGS $PNG_LIBS $PTHREAD_LDFLAGS $PTHREAD_LIBS -L$dir -lqt-mt"
+			CFLAGS="$save_CFLAGS $PNG_LIBS $PTHREAD_LDFLAGS $PTHREAD_LIBS -L$dir -lqt-mt -lstdc++ -lm"
 			cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
@@ -9443,7 +9443,7 @@ rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
 	echo "$as_me:$LINENO: checking if libgadu is in system directories" >&5
 echo $ECHO_N "checking if libgadu is in system directories... $ECHO_C" >&6
 	save_CFLAGS="$CFLAGS"
-	CFLAGS="$CFLAGS  -lgadu"
+	CFLAGS="$CFLAGS  -lgadu -lstdc++ -lm"
 	cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
@@ -9502,7 +9502,7 @@ echo $ECHO_N "checking if libgadu is in specified directories: $with_libs $with_
 		FILE_DIR=
 		for dir in $with_libs $with_existing_libgadu $with_existing_libgadu/lib
 		do
-			CFLAGS="$save_CFLAGS  -L$dir -lgadu"
+			CFLAGS="$save_CFLAGS  -L$dir -lgadu -lstdc++ -lm"
 			cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
@@ -9886,7 +9886,7 @@ echo "$as_me: error: $mod download failed!" >&2;}
 	echo "$as_me:$LINENO: checking if lib$lib is in system directories" >&5
 echo $ECHO_N "checking if lib$lib is in system directories... $ECHO_C" >&6
 	save_CFLAGS="$CFLAGS"
-	CFLAGS="$CFLAGS $MODULE_LDFLAGS -l$lib"
+	CFLAGS="$CFLAGS $MODULE_LDFLAGS -l$lib -lstdc++ -lm"
 	cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
@@ -9945,7 +9945,7 @@ echo $ECHO_N "checking if lib$lib is in specified directories: $with_libs $MODUL
 		FILE_DIR=
 		for dir in $with_libs $MODULE_LIBS_PATH
 		do
-			CFLAGS="$save_CFLAGS $MODULE_LDFLAGS -L$dir -l$lib"
+			CFLAGS="$save_CFLAGS $MODULE_LDFLAGS -L$dir -l$lib -lstdc++ -lm"
 			cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
