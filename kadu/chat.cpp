@@ -91,6 +91,7 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	if (Users->count() > 1)
 	{
 		horizSplit = new KaduSplitter(Qt::Horizontal, topArea, "horizSplit");
+		horizSplit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 		body = new KaduTextBrowser(horizSplit, "body");
 	}
 	else
@@ -117,7 +118,6 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 		userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
 		userbox->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
 		userbox->QListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
-
 		connect(userbox, SIGNAL(rightButtonPressed(QListBoxItem *, const QPoint &)),
 		UserBox::userboxmenu, SLOT(show(QListBoxItem *)));
 
@@ -184,11 +184,6 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	acc->connectItem(acc->insertItem(Key_PageUp + SHIFT), this, SLOT(pageUp()));
 	acc = new QAccel(this, "pageDownAccel");
 	acc->connectItem(acc->insertItem(Key_PageDown + SHIFT), this, SLOT(pageDown()));
-
-	sizes.clear();
-	sizes.append(3);
-	sizes.append(2);
-	vertSplit->setSizes(sizes);
 
 	topDockArea->loadFromConfig(this);
 	leftDockArea->loadFromConfig(this);

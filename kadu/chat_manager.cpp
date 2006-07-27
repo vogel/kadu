@@ -573,12 +573,18 @@ int ChatManager::openChat(QString /*initialProtocol*/, UserListElements users, t
 			QStringList s = QStringList::split(",", vert_sz_str);
 			vertSizes.append(s[0].toInt(ok));
 			vertSizes.append(s[1].toInt(ok + 1));
-			if (int(ok[0]) + ok[1] != 2)
+			if (!(ok[0] && ok[1]))
 				vertSizes.clear();
 		}
 	}
-	if (!vertSizes.empty())
-		chat->vertSplit->setSizes(vertSizes);
+	
+	if (vertSizes.empty())
+	{
+		int h = chat->height() / 3;
+		vertSizes.append(h * 2);
+		vertSizes.append(h);
+	}
+	chat->vertSplit->setSizes(vertSizes);
 
 	if (chat->horizSplit)
 	{
