@@ -431,6 +431,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawne ustalenie proporcji w oknie rozmowy + poprawka wygl±du okna konferencji (montor/joi)
 * poprawna inicjalizacja przy ca³kowicie pustym pliku konfiguracyjnym (Juzef/joi)
 * notify: przy wybranej opcji "Powiadamiaj o wszystkich kontaktach" pomijamy siebie (Juzef,neeo/joi)
+* je¿eli nie podamy kryteriów, szukanie w katalogu publicznym jest niemo¿liwe (Vogel,neeo/joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

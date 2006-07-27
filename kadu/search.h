@@ -57,6 +57,8 @@ class SearchDialog : public QDialog {
 
 		bool searchhidden;
 
+		bool isPersonalDataEmpty() const;
+
 	public slots:
 
 		void selectedUsersNeeded(const UserGroup*& user_group);

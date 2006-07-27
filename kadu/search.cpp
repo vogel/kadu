@@ -161,6 +161,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	connect(KaduActions["addSearchedAction"], SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(addSearchedActionActivated(const UserGroup*)));
 		
+	KaduActions["firstSearchAction"]->setEnabled(this, false);
 	KaduActions["nextResultsAction"]->setEnabled(this, false);
 	KaduActions["clearSearchAction"]->setEnabled(this, false);
 	KaduActions["addSearchedAction"]->setEnabled(this, false);
@@ -171,6 +172,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 		r_uin->setChecked(true);
 		e_uin->setText(QString::number(_whoisSearchUin));
 	}
+
 	loadGeometry(this, "General", "SearchDialogGeometry", 0, 30, 800, 350);
 	setCaption(tr("Search user in directory"));
 
@@ -434,36 +436,39 @@ void SearchDialog::resizeEvent(QResizeEvent *e)
 void SearchDialog::uinTyped(void)
 {
 	r_uin->setChecked(true);
+
+	KaduActions["firstSearchAction"]->setEnabled(this, !e_uin->text().isEmpty());
 }
 
 void SearchDialog::personalDataTyped(void)
 {
 	r_pers->setChecked(true);
+
+	KaduActions["firstSearchAction"]->setEnabled(this, !isPersonalDataEmpty());
 	KaduActions["nextResultsAction"]->setEnabled(this, false);
 }
 
 void SearchDialog::byrFromDataTyped(void)
 {
-	if (e_byrFrom->text().isEmpty())
-	{
+	bool b = e_byrFrom->text().isEmpty();
+	e_byrTo->setEnabled(!b);
+	if (b)
 		e_byrTo->setText(QString::null);
-		e_byrTo->setEnabled(false);
-	}
-	else
-	{
-		e_byrTo->setEnabled(true);
-	}
 }
 
 void SearchDialog::persClicked()
 {
 	only_active->setEnabled(true);
 	only_active->setChecked(false);
+
+	KaduActions["firstSearchAction"]->setEnabled(this, !isPersonalDataEmpty());
 }
 
 void SearchDialog::uinClicked()
 {
 	only_active->setEnabled(false);
+
+	KaduActions["firstSearchAction"]->setEnabled(this, !e_uin->text().isEmpty());
 	KaduActions["nextResultsAction"]->setEnabled(this, false);
 }
 
@@ -502,4 +507,15 @@ void SearchDialog::updateInfoClicked()
 	ule.setNickName(nickname);
 	(new UserInfo(ule, 0, "user info"))->show();
 	kdebugf2();
+}
+
+bool SearchDialog::isPersonalDataEmpty() const
+{
+	return
+		e_name->text().isEmpty() &&
+		e_nick->text().isEmpty() &&
+		e_byrFrom->text().isEmpty() &&
+		e_surname->text().isEmpty() &&
+		c_gender->currentItem() == 0 &&
+		e_city->text().isEmpty();
 }
