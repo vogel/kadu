@@ -429,6 +429,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * nowa akcja: "Blokuj kontakt" (neeo/joi)
 * czyszczenie okna rozmowy nie powoduje ju¿ ukradniêcie focusu (Juzef/joi)
 * poprawne ustalenie proporcji w oknie rozmowy + poprawka wygl±du okna konferencji (montor/joi)
+* poprawna inicjalizacja przy ca³kowicie pustym pliku konfiguracyjnym (Juzef/joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

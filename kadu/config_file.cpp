@@ -38,6 +38,12 @@ void XmlConfigFile::read()
 			fflush(stderr);
 		}
 		file.close();
+
+		if (DomDocument.documentElement().tagName() != "Kadu")
+		{
+			QDomElement root = DomDocument.createElement( "Kadu" );
+			DomDocument.appendChild(root);
+		}
 	}
 	else
 	{
