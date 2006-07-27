@@ -209,6 +209,10 @@ void Notify::statusChanged(UserListElement elem, QString protocolName,
 		kdebugmf(KDEBUG_FUNCTION_END, "end: not notifying user AND not notifying all users\n");
 		return;
 	}
+	
+	if (elem.ID("Gadu") == config_file.readEntry("General", "UIN") &&
+	    config_file.readBoolEntry("Notify", "NotifyAboutAll"))
+		return;
 
 	if (config_file.readBoolEntry("Notify", "IgnoreOnlineToOnline"))
 		if (elem.status("Gadu").isOnline() || elem.status("Gadu").isBusy())

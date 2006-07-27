@@ -430,6 +430,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * czyszczenie okna rozmowy nie powoduje ju¿ ukradniêcie focusu (Juzef/joi)
 * poprawne ustalenie proporcji w oknie rozmowy + poprawka wygl±du okna konferencji (montor/joi)
 * poprawna inicjalizacja przy ca³kowicie pustym pliku konfiguracyjnym (Juzef/joi)
+* notify: przy wybranej opcji "Powiadamiaj o wszystkich kontaktach" pomijamy siebie (Juzef,neeo/joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
