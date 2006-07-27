@@ -912,8 +912,8 @@ int EmotsWalker::checkEmotOccurrence( const QChar& c )
 	for (int i = amountPositions - 1; i >= 0; --i) {
 		next = findChild( positions[i], c );
 		if ( next == NULL ) {
-			lengths[i] = lengths[amountPositions - 1];
-			positions[i] = positions[--amountPositions];
+			lengths[i] = lengths[--amountPositions];
+			positions[i] = positions[amountPositions];
 		}
 		else {
 			positions[i] = next;
