@@ -2432,9 +2432,23 @@ void GaduImagesManager::addImageToSend(const QString& file_name, uint32_t& size,
 	img.file_name = file_name;
 	img.data = new char[img.size];
 	kdebugm(KDEBUG_INFO, "Reading file\n");
-	unsigned int ret = f.readBlock(img.data, img.size);
-	if (ret != img.size)
-		kdebugm(KDEBUG_ERROR, "ret:%d != %d:img.size\n", ret, img.size);
+
+	unsigned int readBytes = 0;
+	int tmp;
+	while (readBytes < img.size)
+	{
+		tmp = f.readBlock(img.data + readBytes, img.size - readBytes);
+		if (tmp >= 0)
+			readBytes += tmp;
+		else
+		{
+			fprintf(stderr, "%s\n", f.errorString().local8Bit().data());
+			delete [] img.data;
+			f.close();
+			return;
+		}
+	}
+
 	f.close();
 	img.crc32 = gg_crc32(0, (const unsigned char*)img.data, img.size);
 	kdebugm(KDEBUG_INFO, "Inserting into images to send: filename=%s, size=%i, crc32=%i\n\n", img.file_name.local8Bit().data(), img.size, img.crc32);
@@ -2461,9 +2475,23 @@ void GaduImagesManager::sendImage(UinType uin, uint32_t size, uint32_t crc32)
 			}
 			i.data = new char[i.size];
 			kdebugm(KDEBUG_INFO, "Reading file\n");
-			unsigned int ret = f.readBlock(i.data, i.size);
-			if (ret != i.size)
-				kdebugm(KDEBUG_ERROR, "ret:%d != %d:img.size\n", ret, i.size);
+
+			unsigned int readBytes = 0;
+			int tmp;
+			while (readBytes < i.size)
+			{
+				tmp = f.readBlock(i.data + readBytes, i.size - readBytes);
+				if (tmp >= 0)
+					readBytes += tmp;
+				else
+				{
+					fprintf(stderr, "%s\n", f.errorString().local8Bit().data());
+					delete [] i.data;
+					f.close();
+					return;
+				}
+			}
+
 			f.close();
 		}
 
