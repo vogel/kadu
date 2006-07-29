@@ -1,11 +1,5 @@
 /* kadu-config.h.in.  Generated from configure.ac by autoheader.  */
 
-/* Executable files prefix */
-#undef BINDIR
-
-/* Data files prefix */
-#undef DATADIR
-
 /* Define if you want console debug output */
 #undef DEBUG_ENABLED
 

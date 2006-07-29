@@ -249,14 +249,16 @@ QString dataPath(const QString &p, const char *argv0)
 #else
 		QString datadir(DATADIR);
 		QString bindir(BINDIR);
+		QString libdir(LIBDIR);
 
 		//je¿eli ¶cie¿ki nie koñcz± siê na /share i /bin oraz gdy bez tych koñcówek
 		//¶cie¿ki siê nie pokrywaj±, to znaczy ¿e kto¶ ustawi³ rêcznie DATADIR lub BINDIR
-		if (!datadir.endsWith("/share") || !bindir.endsWith("/bin") ||
-			(datadir.left(datadir.length() - 6) != bindir.left(bindir.length() - 4)))
+		if (!datadir.endsWith("/share") || !bindir.endsWith("/bin") || !libdir.endsWith("/lib") || 
+			datadir.left(datadir.length() - 6) != bindir.left(bindir.length() - 4) ||
+			bindir.left(bindir.length() - 4) != libdir.left(libdir.length() - 4))
 		{
 			data_path = datadir + "/";
-			lib_path = datadir + "../lib/";
+			lib_path = libdir + "/";
 		}
 		else
 		{
@@ -264,7 +266,7 @@ QString dataPath(const QString &p, const char *argv0)
 			if (findMe(argv0, cpath, 1024) == NULL)
 			{
 				data_path = datadir + "/";
-				lib_path = datadir + "../lib/";
+				lib_path = libdir + "/";
 			}
 			else
 			{

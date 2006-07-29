@@ -10408,21 +10408,6 @@ fi
 # finalize configure
 ########################################################################
 
-if test "$prefix" = "NONE"; then
-	prefix="/usr/local";
-fi
-
-
-cat >>confdefs.h <<_ACEOF
-#define BINDIR "$prefix/bin"
-_ACEOF
-
-
-cat >>confdefs.h <<_ACEOF
-#define DATADIR "$prefix/share"
-_ACEOF
-
-
                                                                       ac_config_files="$ac_config_files Makefile kadu/Makefile translations/Makefile varia/Makefile modules/Makefile varia/scripts/kadu-config kadu/modules_static.cpp"
 
 cat >confcache <<\_ACEOF

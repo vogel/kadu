@@ -450,7 +450,7 @@ $(PTHREAD_LIBS) $(PNG_LIBS) $(QT_LIBS)
 kadu_LDFLAGS = \
 $(PTHREAD_LDFLAGS) $(DYNAMIC_OPT) $(OPENSSL_LIBS)
 
-AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT
+AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT -DDATADIR=\"$(datadir)\" -DLIBDIR=\"$(libdir)\" -DBINDIR=\"$(bindir)\"
 
 EXTRA_DIST = hi16-app-kadu.png hi22-app-kadu.png hi24-app-kadu.png hi32-app-kadu.png hi48-app-kadu.png hi64-app-kadu.png hi128-app-kadu.png hi256-app-kadu.png kadu.desktop
 CLEANFILES = obj/*.o moc/*_moc.cpp $(PHEADERS_CLEANFILES)
