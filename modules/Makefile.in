@@ -437,7 +437,7 @@ $(install_targets):
 		done; \
 	fi; \
 	if test -z `expr " $(static_modules) " : ".* \($$dir\) "`; then \
-		$(INSTALL_DATA) $$dir/$$dir.$(SO_EXT) "$(DESTDIR)$(libdir)/kadu/modules/"; \
+		$(INSTALL_PROGRAM) $$dir/$$dir.$(SO_EXT) "$(DESTDIR)$(libdir)/kadu/modules/"; \
 	fi
 
 uninstall-local:

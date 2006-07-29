@@ -435,6 +435,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawna obs³uga b³êdów odczytu obrazków do wys³ania (joi)
 * poprawna obs³uga opcji configure: --libdir --datadir --bindir (ustawiane przez
   m.in. przez rpmbuild) (joi)
+* zachowujemy uprawnienia do plików .so przy instalacji modu³ów (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
