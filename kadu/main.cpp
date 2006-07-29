@@ -352,7 +352,7 @@ int main(int argc, char *argv[])
 	{
 		gettimeofday(&tv, &tz);
 		exitingTime = (tv.tv_sec % 1000) * 1000000 + tv.tv_usec;
-		fprintf(stderr, "init time:%ld, run time:%ld, ending time:%ld\n", beforeExecTime - startTime, endingTime - beforeExecTime, exitingTime - endingTime);
+		fprintf(stderr, "init time:%lld, run time:%lld, ending time:%lld\n", beforeExecTime - startTime, endingTime - beforeExecTime, exitingTime - endingTime);
 	}
 
 //	delete qApp; //sometimes leads to segfault
