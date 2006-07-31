@@ -73,7 +73,7 @@ des Benutzers während des Verbindens zum Server</translation>
     </message>
     <message>
         <source>Mouse over user</source>
-        <translation type="unfinished"></translation>
+        <translation>Maus über Kontakt</translation>
     </message>
 </context>
 </TS>

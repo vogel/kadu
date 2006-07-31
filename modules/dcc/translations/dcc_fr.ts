@@ -45,6 +45,10 @@
         <source>An user wants to send you a file</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Remove completed transfers from transfers list</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DccManager</name>
@@ -254,6 +258,10 @@ This is probably a next part of %4
     </message>
     <message>
         <source>Outgoing transfers:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove completed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

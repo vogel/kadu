@@ -647,10 +647,6 @@ E un rischio per la sicurezza!</translation>
         <translation>Memorizza posizioni finestre chat</translation>
     </message>
     <message>
-        <source>Search user in directory</source>
-        <translation>Cerca contatto nella cartella</translation>
-    </message>
-    <message>
         <source>Userbox background</source>
         <translation>Sfondo Lista contatti</translation>
     </message>
@@ -687,6 +683,10 @@ E un rischio per la sicurezza!</translation>
     </message>
     <message>
         <source>Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search this user in directory</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -874,16 +874,24 @@ Sicuro di spedirlo comunque?</translation>
         <translation>Inserisci Emoticon - attiva nella configurazione</translation>
     </message>
     <message>
-        <source>Search user in directory</source>
-        <translation>Cerca contatto nella cartella</translation>
-    </message>
-    <message>
         <source>&amp;Chat</source>
         <translation>&amp;Chat</translation>
     </message>
     <message>
         <source>Custom</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search this user in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore user</source>
+        <translation>Ignora contatto</translation>
+    </message>
+    <message>
+        <source>Block user</source>
+        <translation>Blocca contatto</translation>
     </message>
 </context>
 <context>
@@ -1430,6 +1438,10 @@ saranno eliminati. Vuoi davvero?</translation>
         <source>You are not on the list</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Search this user in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KaduSlots</name>
@@ -1451,6 +1463,14 @@ saranno eliminati. Vuoi davvero?</translation>
     <message>
         <source>Name of new group:</source>
         <translation>Nome del nuovo gruppo:</translation>
+    </message>
+    <message>
+        <source>Add to group %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move to group %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1801,6 +1821,10 @@ Possibile incompatibilità con Kadu.</translation>
         <source>Clear results</source>
         <translation>Cancella risultati</translation>
     </message>
+    <message>
+        <source>Add selected user</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SelectFont</name>
@@ -1896,6 +1920,18 @@ Possibile incompatibilità con Kadu.</translation>
         <source>Panel menu</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Remove toolbar?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation>Sì</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation>No</translation>
+    </message>
 </context>
 <context>
     <name>ToolButton</name>
@@ -1932,6 +1968,10 @@ Possibile incompatibilità con Kadu.</translation>
     <message>
         <source>Compares nicks (&quot;altnicks&quot;)</source>
         <translation>Confronta nicks (&quot;altnnicks&quot;)</translation>
+    </message>
+    <message>
+        <source>Compares nicks (&quot;altnicks&quot;) case insensitive</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

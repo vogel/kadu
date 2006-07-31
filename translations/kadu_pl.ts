@@ -137,10 +137,6 @@
         <translation>Dodaj kontakt</translation>
     </message>
     <message>
-        <source>Add selected user</source>
-        <translation>Dodaj wybrany kontakt</translation>
-    </message>
-    <message>
         <source>Default status</source>
         <translation>Status domyślny</translation>
     </message>
@@ -651,10 +647,6 @@ Jest to wysoce ryzykowne!</translation>
         <translation>Zapamiętaj położenie okna rozmowy</translation>
     </message>
     <message>
-        <source>Search user in directory</source>
-        <translation>Znajdź kontakt w katalogu</translation>
-    </message>
-    <message>
         <source>Search this user in directory</source>
         <translation>Znajdź wybrany kontakt w katalogu</translation>
     </message>
@@ -889,16 +881,24 @@ Czy na pewno chcesz wysłać ten obrazek?</translation>
         <translation>Wstaw emotikonę - uaktywnij w konfiguracji</translation>
     </message>
     <message>
-        <source>Search user in directory</source>
-        <translation>Znajdź kontakt w katalogu</translation>
-    </message>
-    <message>
         <source>&amp;Chat</source>
         <translation>&amp;Rozmowa</translation>
     </message>
     <message>
         <source>Custom</source>
         <translation>Własny</translation>
+    </message>
+    <message>
+        <source>Search this user in directory</source>
+        <translation>Znajdź wybrany kontakt w katalogu</translation>
+    </message>
+    <message>
+        <source>Ignore user</source>
+        <translation>Ignoruj kontakt</translation>
+    </message>
+    <message>
+        <source>Block user</source>
+        <translation>Blokuj kontakt</translation>
     </message>
 </context>
 <context>
@@ -1451,6 +1451,10 @@ Czy na pewno tego chcesz?</translation>
         <source>You are not on the list</source>
         <translation>Nie ma cię na liście</translation>
     </message>
+    <message>
+        <source>Search this user in directory</source>
+        <translation>Znajdź wybrany kontakt w katalogu</translation>
+    </message>
 </context>
 <context>
     <name>KaduSlots</name>
@@ -1472,6 +1476,14 @@ Czy na pewno tego chcesz?</translation>
     <message>
         <source>Name of new group:</source>
         <translation>Nazwa nowej grupy</translation>
+    </message>
+    <message>
+        <source>Add to group %1</source>
+        <translation>Dodaj do grupy %1</translation>
+    </message>
+    <message>
+        <source>Move to group %1</source>
+        <translation>Przesuń do grupy %1</translation>
     </message>
 </context>
 <context>
@@ -1822,6 +1834,10 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
         <source>Clear results</source>
         <translation>Wyczyść rezultaty</translation>
     </message>
+    <message>
+        <source>Add selected user</source>
+        <translation>Dodaj wybrany kontakt</translation>
+    </message>
 </context>
 <context>
     <name>SelectFont</name>
@@ -1917,6 +1933,18 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
         <source>Panel menu</source>
         <translation>Menu paska narzędziowego</translation>
     </message>
+    <message>
+        <source>Remove toolbar?</source>
+        <translation>Usunąć pasek narzędziowy?</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation>Tak</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation>Nie</translation>
+    </message>
 </context>
 <context>
     <name>ToolButton</name>
@@ -1953,6 +1981,10 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     <message>
         <source>Compares nicks (&quot;altnicks&quot;)</source>
         <translation>Porównuje pseudonimy (wyświtlaną nazwę)</translation>
+    </message>
+    <message>
+        <source>Compares nicks (&quot;altnicks&quot;) case insensitive</source>
+        <translation>Porównuje pseudonimy (wyświtlaną nazwę) bez względu na wielkość liter</translation>
     </message>
 </context>
 <context>

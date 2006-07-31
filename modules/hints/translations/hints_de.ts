@@ -107,11 +107,11 @@
     </message>
     <message>
         <source>Hints over userlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Hinweise über Kontaktliste</translation>
     </message>
     <message>
         <source>Hints syntax:</source>
-        <translation type="unfinished"></translation>
+        <translation>Syntax für Hinweise:</translation>
     </message>
 </context>
 <context>
@@ -278,7 +278,7 @@
     </message>
     <message>
         <source>[&lt;i&gt;%s&lt;/i&gt;&lt;br/&gt;][&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;%d&lt;br/&gt;&lt;br/&gt;][&lt;i&gt;Mobile:&lt;/i&gt; &lt;b&gt;%m&lt;/b&gt;&lt;br/&gt;]</source>
-        <translation type="unfinished"></translation>
+        <translation>[&lt;i&gt;%s&lt;/i&gt;&lt;br/&gt;][&lt;br/&gt;&lt;b&gt;Beschreibung:&lt;/b&gt;&lt;br/&gt;%d&lt;br/&gt;&lt;br/&gt;][&lt;i&gt;Handy:&lt;/i&gt; &lt;b&gt;%m&lt;/b&gt;&lt;br/&gt;]</translation>
     </message>
 </context>
 </TS>

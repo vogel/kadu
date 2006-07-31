@@ -642,10 +642,6 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Search user in directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Userbox background</source>
         <translation type="unfinished"></translation>
     </message>
@@ -682,6 +678,10 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search this user in directory</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -866,15 +866,23 @@ Do you really want to send this image?
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Search user in directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Chat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Custom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search this user in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block user</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1417,6 +1425,10 @@ will be deleted. Are you sure?</source>
         <source>You are not on the list</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Search this user in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KaduSlots</name>
@@ -1437,6 +1449,14 @@ will be deleted. Are you sure?</source>
     </message>
     <message>
         <source>Name of new group:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to group %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move to group %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1786,6 +1806,10 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
         <source>Clear results</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Add selected user</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SelectFont</name>
@@ -1881,6 +1905,18 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
         <source>Panel menu</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Remove toolbar?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ToolButton</name>
@@ -1916,6 +1952,10 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>Compares nicks (&quot;altnicks&quot;)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compares nicks (&quot;altnicks&quot;) case insensitive</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -14,10 +14,6 @@
         <translation>Auto-Antwort-Text:</translation>
     </message>
     <message>
-        <source>Thanks for your message. User is not currently available.</source>
-        <translation>Danke für Ihre Nachricht. Der Benutzer ist momentan nicht erreichbar.</translation>
-    </message>
-    <message>
         <source>Choose status:</source>
         <translation>Zustand wählen:</translation>
     </message>
@@ -43,6 +39,10 @@
     <message>
         <source>KADU AUTORESPONDER:</source>
         <translation>KADU AUTO-ANTWORT:</translation>
+    </message>
+    <message>
+        <source>Thanks for your message %a. I&apos;m not available right now.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

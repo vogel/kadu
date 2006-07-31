@@ -373,7 +373,7 @@ UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
 
 	addCompareFunction("Status", tr("Compares statuses"), compareStatus);
 	if (brokenStringCompare)
-		addCompareFunction("AltNick", tr("Compares nicks (\"altnicks\") case insesitive"), compareAltNickCaseInsesitive);
+		addCompareFunction("AltNick", tr("Compares nicks (\"altnicks\") case insensitive"), compareAltNickCaseInsesitive);
 	else
 		addCompareFunction("AltNick", tr("Compares nicks (\"altnicks\")"), compareAltNick);
 

@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>###TOO MANY IMAGES###</source>
-        <translation type="unfinished"></translation>
+        <translation>###ZU VIELE BILDER###</translation>
     </message>
 </context>
 <context>
@@ -610,67 +610,63 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Ignore richtext from anonymous users</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignoriere formatierten Text von unbekannten</translation>
     </message>
     <message>
         <source>Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Hintergrund</translation>
     </message>
     <message>
         <source>Background image options</source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellung für&apos;s Hintergrundbild</translation>
     </message>
     <message>
         <source>Change image size</source>
-        <translation type="unfinished"></translation>
+        <translation>Größe des Bildes ändern</translation>
     </message>
     <message>
         <source>Start at [X]</source>
-        <translation type="unfinished"></translation>
+        <translation>Beginne bei [X]</translation>
     </message>
     <message>
         <source>Start at [Y]</source>
-        <translation type="unfinished"></translation>
+        <translation>Beginne bei [Y]</translation>
     </message>
     <message>
         <source>Image width</source>
-        <translation type="unfinished"></translation>
+        <translation>Bildbreite</translation>
     </message>
     <message>
         <source>Image height</source>
-        <translation type="unfinished"></translation>
+        <translation>Bildhöhe</translation>
     </message>
     <message>
         <source>Remember chat windows positions</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Search user in directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Position des Chatfensters speichern</translation>
     </message>
     <message>
         <source>Userbox background</source>
-        <translation type="unfinished"></translation>
+        <translation>Hintergrund für Kontaktliste</translation>
     </message>
     <message>
         <source>Your nick color</source>
-        <translation type="unfinished"></translation>
+        <translation>Ihre Nick-Farbe</translation>
     </message>
     <message>
         <source>User nick color</source>
-        <translation type="unfinished"></translation>
+        <translation>Nich-Farbe des Kontaktes</translation>
     </message>
     <message>
         <source>Style</source>
-        <translation type="unfinished"></translation>
+        <translation>Stil</translation>
     </message>
     <message>
         <source>Select chat style</source>
-        <translation type="unfinished"></translation>
+        <translation>Wähle Stil für Chat</translation>
     </message>
     <message>
         <source>Full chat style:</source>
-        <translation type="unfinished"></translation>
+        <translation>Voller Chat-Stil:</translation>
     </message>
     <message>
         <source>Syntax:
@@ -681,10 +677,21 @@ It&apos;s a high security risk!</source>
 %5 - timestamp
 %6 - timestamp with server time
 %7 - message</source>
-        <translation type="unfinished"></translation>
+        <translation>Syntax:
+%1 - Hintergrundfarbe
+%2 - Textfarbe
+%3 - Nick-Farbe
+%4 - Nick
+%5 - Zeit
+%6 - Zeit mit Serverzeit
+%7 - Nachricht</translation>
     </message>
     <message>
         <source>Chat</source>
+        <translation>Chat</translation>
+    </message>
+    <message>
+        <source>Search this user in directory</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -763,7 +770,7 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>User&apos;s message box is full. Message has not been delivered.</source>
-        <translation>Die Nachrichtenbox ist voll. Ihre Nachricht wurde nicht zugestellt.</translation>
+        <translation>Die Nachrichtenbox des Gegenübers ist voll. Ihre Nachricht wurde nicht zugestellt.</translation>
     </message>
     <message>
         <source>Message has not been delivered.</source>
@@ -806,7 +813,7 @@ Wollen Sie diese Datei wirklich senden?</translation>
     </message>
     <message>
         <source>Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>Besonderes</translation>
     </message>
 </context>
 <context>
@@ -872,15 +879,23 @@ Wollen Sie diese Datei wirklich senden?</translation>
         <translation>Smiley einfügen - aktiviere in der Konfiguration</translation>
     </message>
     <message>
-        <source>Search user in directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Chat</source>
-        <translation type="unfinished">&amp;Chat</translation>
+        <translation>&amp;Chat</translation>
     </message>
     <message>
         <source>Custom</source>
+        <translation>Besonderes</translation>
+    </message>
+    <message>
+        <source>Search this user in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore user</source>
+        <translation>Kontakt ignorieren</translation>
+    </message>
+    <message>
+        <source>Block user</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -985,7 +1000,7 @@ Tragen Sie den Pfad in der $PATH-Umgebungsvariablen ein oder bestimmen Sie ihn i
     </message>
     <message>
         <source>Block toolbars</source>
-        <translation type="unfinished"></translation>
+        <translation>Werkzeugleisten blockieren</translation>
     </message>
 </context>
 <context>
@@ -1050,16 +1065,17 @@ Ihr Passwort stimmt nicht!</translation>
     </message>
     <message>
         <source>To many connection attempts with bad password!</source>
-        <translation type="unfinished"></translation>
+        <translation>Zu viele Verbindungsversuche mit falschem Passwort!</translation>
     </message>
     <message>
         <source>Connection will be stoped
 To many attempts with bad password</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindung wird angehalten
+Zu viele Verbindungsversuche mit falschem Passwort</translation>
     </message>
     <message>
         <source>Unable to connect, servers are down</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindung nicht möglich, Server sind offline</translation>
     </message>
 </context>
 <context>
@@ -1310,7 +1326,7 @@ To many attempts with bad password</source>
     </message>
     <message>
         <source>Block user</source>
-        <translation>Blocke Kontakt</translation>
+        <translation>Kontakt blockieren</translation>
     </message>
     <message>
         <source>Notify about user</source>
@@ -1342,7 +1358,7 @@ To many attempts with bad password</source>
     </message>
     <message>
         <source>&amp;Search for users</source>
-        <translation>&amp;Suche Kontakt</translation>
+        <translation>&amp;Suche nach Kontakten</translation>
     </message>
     <message>
         <source>&amp;Add user</source>
@@ -1394,27 +1410,27 @@ werden gelöscht. Sind Sie sicher?</translation>
     </message>
     <message>
         <source>Show / hide offline users</source>
-        <translation>Zeige / Verstecke die Unerreichbaren</translation>
+        <translation>Zeige / Verstecke unerreichbare Kontakte</translation>
     </message>
     <message>
         <source>Hide description</source>
-        <translation type="unfinished"></translation>
+        <translation>Beschreibung verstecken</translation>
     </message>
     <message>
         <source>Search user in directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Suche nach Kontakt im Verzeichnis</translation>
     </message>
     <message>
         <source>&amp;Search user in directory</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Suche nach Kontakt im Verzeichnis</translation>
     </message>
     <message>
         <source>Copy description</source>
-        <translation type="unfinished"></translation>
+        <translation>Beschreibung kopieren</translation>
     </message>
     <message>
         <source>Copy personal info</source>
-        <translation type="unfinished"></translation>
+        <translation>Persönliche Daten kopieren</translation>
     </message>
     <message>
         <source>Contact: %a[ (%u)]
@@ -1422,10 +1438,18 @@ werden gelöscht. Sind Sie sicher?</translation>
 ][Last name: %r
 ][Mobile: %m
 ]</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt: %a[ (%u)]
+[Vorname: %f
+][Nachname: %r
+][Handy: %m
+]</translation>
     </message>
     <message>
         <source>You are not on the list</source>
+        <translation>Sie sind nicht auf der Liste</translation>
+    </message>
+    <message>
+        <source>Search this user in directory</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1450,6 +1474,14 @@ werden gelöscht. Sind Sie sicher?</translation>
         <source>Name of new group:</source>
         <translation>Name der neuen Gruppe:</translation>
     </message>
+    <message>
+        <source>Add to group %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move to group %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KaduTextBrowser</name>
@@ -1459,19 +1491,19 @@ werden gelöscht. Sind Sie sicher?</translation>
     </message>
     <message>
         <source>&amp;Save image...</source>
-        <translation type="unfinished"></translation>
+        <translation>Bild &amp;speichern...</translation>
     </message>
     <message>
         <source>Save image</source>
-        <translation type="unfinished"></translation>
+        <translation>Bild speichern</translation>
     </message>
     <message>
         <source>File already exists. Overwrite?</source>
-        <translation type="unfinished"></translation>
+        <translation>Datei existiert bereits. Überschreiben?</translation>
     </message>
     <message>
         <source>Cannot save image: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kann Datei: %1 nicht speichern</translation>
     </message>
 </context>
 <context>
@@ -1794,10 +1826,14 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Search user in directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Suche nach Kontakt im Verzeichnis</translation>
     </message>
     <message>
         <source>Clear results</source>
+        <translation>Ergebnisse löschen</translation>
+    </message>
+    <message>
+        <source>Add selected user</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1893,7 +1929,19 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Panel menu</source>
+        <translation>Panel-Menü</translation>
+    </message>
+    <message>
+        <source>Remove toolbar?</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation>Ja</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation>Nein</translation>
     </message>
 </context>
 <context>
@@ -1904,11 +1952,11 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Show text label</source>
-        <translation type="unfinished"></translation>
+        <translation>Textfläche zeigen</translation>
     </message>
     <message>
         <source>Toolbar menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Werkzeugleiste</translation>
     </message>
 </context>
 <context>
@@ -1931,6 +1979,10 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     <message>
         <source>Compares nicks (&quot;altnicks&quot;)</source>
         <translation>Vergleiche Nicknames (&quot;alternative Nicks&quot;)</translation>
+    </message>
+    <message>
+        <source>Compares nicks (&quot;altnicks&quot;) case insensitive</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

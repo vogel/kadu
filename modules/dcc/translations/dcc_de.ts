@@ -43,6 +43,10 @@
     </message>
     <message>
         <source>An user wants to send you a file</source>
+        <translation>Ein Kontakt will Ihnen eine Datei senden</translation>
+    </message>
+    <message>
+        <source>Remove completed transfers from transfers list</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -258,6 +262,10 @@ Was soll ich tun?</translation>
     <message>
         <source>Outgoing transfers:</source>
         <translation>Ausgehende Übertragungen:</translation>
+    </message>
+    <message>
+        <source>Remove completed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

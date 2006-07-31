@@ -14,10 +14,6 @@
         <translation>Tekst autoodpowiedzi: </translation>
     </message>
     <message>
-        <source>Thanks for your message. User is not currently available.</source>
-        <translation>Dziękuję za wiadomość. Jestem w tej chwili niedostepny.</translation>
-    </message>
-    <message>
         <source>Choose status:</source>
         <translation>Wybór statusu:</translation>
     </message>
@@ -43,6 +39,10 @@
     <message>
         <source>KADU AUTORESPONDER:</source>
         <translation>KADU AUTOODPOWIEDŹ:</translation>
+    </message>
+    <message>
+        <source>Thanks for your message %a. I&apos;m not available right now.</source>
+        <translation>Dziękuje z wiadomość %a. Jestem niedostępny w tej chwili.</translation>
     </message>
 </context>
 </TS>

@@ -45,6 +45,10 @@
         <source>An user wants to send you a file</source>
         <translation>Jakiś użytkownik chce przesłać ci plik</translation>
     </message>
+    <message>
+        <source>Remove completed transfers from transfers list</source>
+        <translation>Usuń skończone transfery z listy</translation>
+    </message>
 </context>
 <context>
     <name>DccManager</name>
@@ -259,6 +263,10 @@ Co chcesz zrobić?</translation>
     <message>
         <source>Outgoing transfers:</source>
         <translation>Transfer wychodzący:</translation>
+    </message>
+    <message>
+        <source>Remove completed</source>
+        <translation>Usuń skończone</translation>
     </message>
 </context>
 </TS>

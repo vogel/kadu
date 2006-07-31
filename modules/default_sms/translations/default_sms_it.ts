@@ -68,6 +68,10 @@
         <source>You don&apos;t have enough tokens</source>
         <translation>Non hai sufficente quantita crediti</translation>
     </message>
+    <message>
+        <source>Number of SMS&apos; left on Sponsored Era Gateway: </source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SmsGatewaySlots</name>
