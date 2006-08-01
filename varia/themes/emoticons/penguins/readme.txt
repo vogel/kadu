@@ -1,20 +1,21 @@
-Pinguins 1.0 - zestaw emotikon do Kadu
+Penguins 1.0 - zestaw emotikon do Kadu
 
 Licencja: GPL
 
 
 Autorzy:
 
-Emotikony jako pingwinki wymyœli³a:
+Pomys³ pingwinków jako emotikony do Kadu:
 Teresa Waluga
 
 Wykonanie:
 
-Kamil Dziedzic, (arvenil)  kamil at kleczka dot pl
+Kamil Dziedzic, (arvenil)  kamil at klecza dot pl
 	glupek.gif, _glupek.gif
 	killer.gif, _killer.gif
+	krzywy.gif
 	piwo.gif, _piwo.gif
-	soczek.gif, _soczek
+	soczek.gif, _soczek.gif
 	stop.gif, _stop.gif
 	uczen.gif, _uczen.gif
 
@@ -163,6 +164,5 @@ Karolina Weiss (karolina) (linuxozaurus) karolina_enternauta at wp dot pl
 	prezent.gif, _prezent.gif
 	telefon.gif, _telefon.gif
 
-Hubert Wrzesiñski (bercik_w) bercikw at gmail dot com
-	krzywy.gif
+Hubert Wrzesiñki (bercik_w) bercikw at gmail dot com
 	nie_powiem.gif
