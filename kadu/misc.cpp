@@ -492,10 +492,8 @@ QString translateLanguage(const QApplication *application, const QString &locale
 void openWebBrowser(const QString &link)
 {
 	kdebugf();
-	QProcess *browser;
-	QStringList args;
 
-	QString webBrowser=config_file.readEntry("Chat","WebBrowser");
+	QString webBrowser = config_file.readEntry("Chat","WebBrowser");
 	if (webBrowser.isEmpty())
 	{
 		QMessageBox::warning(0, qApp->translate("@default", QT_TR_NOOP("WWW error")),
@@ -504,16 +502,16 @@ void openWebBrowser(const QString &link)
 		return;
 	}
 	if (!webBrowser.contains("%1"))
-		webBrowser.append(" \"%1\"");
+		webBrowser.append(" \"" + unicode2latinUrl(link) + "\"");
+	else
+		webBrowser.replace("%1", unicode2latinUrl(link));
 
-	webBrowser.replace("%1", unicode2latinUrl(link));
-
-	args=toStringList("sh", "-c", webBrowser);
+	QStringList args = toStringList("sh", "-c", webBrowser);
 
 	CONST_FOREACH(i, args)
 		kdebugmf(KDEBUG_INFO, "%s\n", (*i).local8Bit().data());
-	browser = new QProcess(qApp);
-	browser->setArguments(args);
+
+	QProcess *browser = new QProcess(args, qApp);
 	QObject::connect(browser, SIGNAL(processExited()), browser, SLOT(deleteLater()));
 
 	if (!browser->start())
