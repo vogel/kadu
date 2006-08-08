@@ -1927,7 +1927,7 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     </message>
     <message>
         <source>Add new button</source>
-        <translation>Dodaj nowy przyciski</translation>
+        <translation>Dodaj nowy przycisk</translation>
     </message>
     <message>
         <source>Panel menu</source>
@@ -1950,7 +1950,7 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     <name>ToolButton</name>
     <message>
         <source>Delete button</source>
-        <translation>Usuń przyciski</translation>
+        <translation>Usuń przycisk</translation>
     </message>
     <message>
         <source>Show text label</source>
