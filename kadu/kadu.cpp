@@ -136,6 +136,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	ConfigDialog::addCheckBox("General", "grid-advanced", QT_TRANSLATE_NOOP("@default", "Check for updates"), "CheckUpdates", true, QT_TRANSLATE_NOOP("@default", "Automatically checks whether a new version is available"), 0, Advanced);
 	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Show emoticons in panel"), "ShowEmotPanel", false, 0, 0, Expert);
 	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Show emoticons in history"), "ShowEmotHist", false, 0, 0, Expert);
+	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Allow executing commands by parser"), "AllowExecutingFromParser", false, 0, 0, Expert);
 	config_file.addVariable("General", "ParagraphSeparator", 4);
 #ifdef DEBUG_ENABLED
 	ConfigDialog::addLineEdit("General", "General", QT_TRANSLATE_NOOP("@default", "Debugging mask"), "DEBUG_MASK",
@@ -1331,6 +1332,7 @@ bool Kadu::close(bool quit)
 #ifdef DEBUG_ENABLED
 		ConfigDialog::removeControl("General", "Debugging mask");
 #endif
+		ConfigDialog::removeControl("General", "Allow executing commands by parser");
 		ConfigDialog::removeControl("General", "Show emoticons in history");
 		ConfigDialog::removeControl("General", "Show emoticons in panel");
 		ConfigDialog::removeControl("General", "Check for updates");

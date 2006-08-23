@@ -57,6 +57,12 @@ bool KaduParser::unregisterTag(const QString &name, QString (* /*func*/)(const U
 
 static QString executeCmd(const QString &cmd)
 {
+	if (!config_file.readBoolEntry("General", "AllowExecutingFromParser", false))
+	{
+		fprintf(stderr, "executing commands from parser disabled\n");
+		fflush(stderr);
+		return QString::null;
+	}
 	QString s(cmd);
 	s.remove(QRegExp("`|>|<"));
 	s.append(" >");

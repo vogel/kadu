@@ -436,7 +436,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawna obs³uga opcji configure: --libdir --datadir --bindir (ustawiane przez
   m.in. przez rpmbuild) (joi)
 * zachowujemy uprawnienia do plików .so przy instalacji modu³ów (joi)
-* aktualizacja gnuconfig (joi)
+* aktualizacja gnuconfig do wersji 2006.08.14 (joi)
+* opcja umo¿liwiaj±ca w³±czenie obs³ugi uruchamiania poleceñ w parserze
+  (domy¶lnie wy³±czona) (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
