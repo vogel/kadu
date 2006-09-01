@@ -373,7 +373,7 @@ UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
 
 	addCompareFunction("Status", tr("Compares statuses"), compareStatus);
 	if (brokenStringCompare)
-		addCompareFunction("AltNick", tr("Compares nicks (\"altnicks\") case insensitive"), compareAltNickCaseInsesitive);
+		addCompareFunction("AltNick", tr("Compares nicks (\"altnicks\") case insensitive"), compareAltNickCaseInsensitive);
 	else
 		addCompareFunction("AltNick", tr("Compares nicks (\"altnicks\")"), compareAltNick);
 
@@ -1453,7 +1453,7 @@ inline int compareAltNick(const UserListElement &u1, const UserListElement &u2)
 	return u1.altNick().localeAwareCompare(u2.altNick());
 }
 
-inline int compareAltNickCaseInsesitive(const UserListElement &u1, const UserListElement &u2)
+inline int compareAltNickCaseInsensitive(const UserListElement &u1, const UserListElement &u2)
 {
 	return u1.altNick().lower().localeAwareCompare(u2.altNick().lower());
 }
