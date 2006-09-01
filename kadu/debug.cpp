@@ -40,7 +40,7 @@ void _kdebug_with_mask(int mask, const char* file, const int line, const char* f
 		{
 			gettimeofday(&tv, &tz);
 			int x = (tv.tv_sec % 1000) * 1000000 + tv.tv_usec;
-			fprintf(stderr, "KK <%d:%06d:%09d:%s:%i>\t", tv.tv_sec, tv.tv_usec, x - last, file, line);
+			fprintf(stderr, "KK <%ld:%06ld:%09d:%s:%i>\t", tv.tv_sec, tv.tv_usec, x - last, file, line);
 			last = x;
 		}
 		else
