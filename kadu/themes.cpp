@@ -28,7 +28,7 @@ QStringList Themes::getSubDirs(const QString& path) const
 	dirs.remove("..");
 	CONST_FOREACH(dir, dirs)
 	{
-		QFile s(path+"/"+(*dir)+"/"+ConfigName);
+		QFile s(path + '/' + (*dir) + '/' + ConfigName);
 		if (s.exists())
 			subdirs.append(*dir);
 	}
@@ -66,17 +66,17 @@ const QString &Themes::theme() const
 QString Themes::fixFileName(const QString& path, const QString& fn) const
 {
 	// check if original path is ok
-	if(QFile::exists(path+"/"+fn))
+	if(QFile::exists(path + '/' + fn))
 		return fn;
 	// maybe all lowercase?
-	if(QFile::exists(path+"/"+fn.lower()))
+	if(QFile::exists(path + '/' + fn.lower()))
 		return fn.lower();
 	// split for name and extension
 	QString name=fn.section('.',0,0);
 	QString ext=fn.section('.',1);
 	// maybe extension uppercase?
-	if(QFile::exists(path+"/"+name+"."+ext.upper()))
-		return name+"."+ext.upper();
+	if(QFile::exists(path + '/' + name + '.' + ext.upper()))
+		return name + '.' + ext.upper();
 	// we cannot fix it, return original
 	return fn;
 }
@@ -91,7 +91,7 @@ void Themes::setPaths(const QStringList& paths)
 	QFile s;
 	CONST_FOREACH(it, temp)
 	{
-		s.setName((*it)+"/"+ConfigName);
+		s.setName((*it) + '/' + ConfigName);
 		if (s.exists())
 		{
 			if (paths.findIndex(*it)!=-1)
@@ -113,10 +113,10 @@ QStringList Themes::defaultKaduPathsWithThemes() const
 	default2 = getSubDirs(ggPath(Name));
 
 	FOREACH(it, default1)
-		*it = dataPath("kadu/themes/" + Name + "/" + (*it) + "/");
+		*it = dataPath("kadu/themes/" + Name + '/' + (*it) + '/');
 
 	FOREACH(it, default2)
-		*it = ggPath(Name)+"/" + (*it) + "/";
+		*it = ggPath(Name) + '/' + (*it) + '/';
 
 	return default1 + default2;
 }

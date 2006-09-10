@@ -420,7 +420,7 @@ void ChatManagerSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo,
 	kdebugm(KDEBUG_INFO, "search path: %s\n", searchPath.join(" ").local8Bit().data());
 	while (!browserFound && dir!=endDir)
 	{
-		testPath=(*dir)+"/"+browserName;
+		testPath = (*dir) + '/' + browserName;
 		if (QFile::exists(testPath))
 		{
 			if (selectedBrowser==1) //konqueror

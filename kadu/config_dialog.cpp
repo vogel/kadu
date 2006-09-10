@@ -1118,7 +1118,7 @@ void ConfigDialog::addSlider(ConfigFile* config, const char *groupname,
 		c.config=config;
 		c.entry=entry;
 		c.tip=tip;
-		c.defaultS=QString::number(minValue)+","+QString::number(maxValue)+","+QString::number(pageStep)+","+QString::number(value);
+		c.defaultS = QString::number(minValue) + ',' + QString::number(maxValue) + ',' + QString::number(pageStep) + ',' + QString::number(value);
 
 		if (addControl(groupname,c))
 			c.config->addVariable(groupname, entry, value);
@@ -1150,7 +1150,7 @@ void ConfigDialog::addSpinBox(ConfigFile* config, const char *groupname,
 		c.config=config;
 		c.entry=entry;
 		c.tip=tip;
-		c.defaultS=QString::number(minValue)+","+QString::number(maxValue)+","+QString::number(step)+","+QString::number(value);
+		c.defaultS = QString::number(minValue) + ',' + QString::number(maxValue) + ',' + QString::number(step) + ',' + QString::number(value);
 
 		if (addControl(groupname,c))
 			c.config->addVariable(groupname, entry, value);
@@ -2087,8 +2087,8 @@ void SelectPaths::addPath()
 	if (!dirtoadd.isEmpty())
 		if (dir.cd(dirtoadd))
 		{
-			if (dirtoadd.right(1) != "/")
-				dirtoadd+="/";
+			if (!dirtoadd.endsWith("/"))
+				dirtoadd += '/';
 			if (!pathListBox->findItem(dirtoadd, Qt::ExactMatch))
 				pathListBox->insertItem(dirtoadd);
 		}
@@ -2107,8 +2107,8 @@ void SelectPaths::replacePath()
 		if (dir.cd(dirtochange))
 			if (pathListBox->isSelected(pathListBox->currentItem()))
 			{
-				if (dirtochange.right(1) != "/")
-					dirtochange+="/";
+				if (!dirtochange.endsWith("/"))
+					dirtochange += '/';
 				if (!pathListBox->findItem(dirtochange, Qt::ExactMatch))
 					pathListBox->changeItem(dirtochange, pathListBox->currentItem());
 				pathListBox->setSelected(pathListBox->currentItem(), true);

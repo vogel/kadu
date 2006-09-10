@@ -83,17 +83,17 @@ QString EmoticonsManager::getQuoted(const QString& s, unsigned int& pos)
 QString EmoticonsManager::fixFileName(const QString& path,const QString& fn)
 {
 	// sprawd¼ czy oryginalna jest ok
-	if (QFile::exists(path + "/" + fn))
+	if (QFile::exists(path + '/' + fn))
 		return fn;
 	// mo¿e ca³o¶æ lowercase?
-	if (QFile::exists(path + "/" + fn.lower()))
+	if (QFile::exists(path + '/' + fn.lower()))
 		return fn.lower();
 	// rozbij na nazwê i rozszerzenie
 	QString name = fn.section('.', 0, 0);
 	QString ext = fn.section('.', 1);
 	// mo¿e rozszerzenie uppercase?
-	if (QFile::exists(path + "/" + name + "." + ext.upper()))
-		return name + "." + ext.upper();
+	if (QFile::exists(path + '/' + name + '.' + ext.upper()))
+		return name + '.' + ext.upper();
 	// nie umiemy poprawiæ, zwracamy oryginaln±
 	return fn;
 }
@@ -101,8 +101,8 @@ QString EmoticonsManager::fixFileName(const QString& path,const QString& fn)
 bool EmoticonsManager::loadGGEmoticonThemePart(QString subdir)
 {
 	if (!subdir.isEmpty())
-		subdir += "/";
-	QString path = themePath() + "/" + subdir;
+		subdir += '/';
+	QString path = themePath() + '/' + subdir;
 	QFile theme_file(path + "emots.txt");
 	if (!theme_file.open(IO_ReadOnly))
 	{
@@ -289,7 +289,7 @@ QString EmoticonsManager::selectorString(int emot_num) const
 QString EmoticonsManager::selectorAnimPath(int emot_num) const
 {
 	if (emot_num >= 0 && uint(emot_num) < Selector.count())
-		return themePath() + "/" + Selector[emot_num].anim;
+		return themePath() + '/' + Selector[emot_num].anim;
 	else
 		return QString::null;
 }
@@ -297,7 +297,7 @@ QString EmoticonsManager::selectorAnimPath(int emot_num) const
 QString EmoticonsManager::selectorStaticPath(int emot_num) const
 {
 	if (emot_num >= 0 && uint(emot_num) < Selector.count())
-		return themePath() + "/" + Selector[emot_num].stat;
+		return themePath() + '/' + Selector[emot_num].stat;
 	else
 		return QString::null;
 }
@@ -580,13 +580,13 @@ QString StaticTextItem::richText() const
 	s += "<img ";
 	it = attributes.begin();
 	for ( ; it != attributes.end(); ++it ) {
-		s += it.key() + "=";
+		s += it.key() + '=';
 		if ( (*it).find( ' ' ) != -1 )
-			s += "\"" + *it + "\"" + " ";
+			s += '"' + *it + "\" ";
 		else
-			s += *it + " ";
+			s += *it + ' ';
 	}
-	s += ">";
+	s += '>';
 	return s;
 }
 
@@ -781,7 +781,7 @@ QTextCustomItem* AnimStyleSheet::tag(
 	if (attr["animated"] == "1")
 	{
 		if (attr["emoticon"] == "1")
-			return new AnimTextItem(doc, (QTextEdit*)parent(), Path + "/" + attr["src"], QColor(attr["bgcolor"]), attr["title"]);
+			return new AnimTextItem(doc, (QTextEdit*)parent(), Path + '/' + attr["src"], QColor(attr["bgcolor"]), attr["title"]);
 		else
 			return new AnimTextItem(doc, (QTextEdit*)parent(),              attr["src"], QColor(attr["bgcolor"]), attr["title"]);
 	}

@@ -261,7 +261,7 @@ void Notify::addConfigColumn(const QString &name, const QMap<QString, QString> &
 
 	CONST_FOREACH(it, eventNames)
 	{
-		QCString entry = ((*it) + "_" + name).utf8();
+		QCString entry = ((*it) + '_' + name).utf8();
 		QCString wname = (name + (*it)).utf8();
 		ConfigDialog::addCheckBox("Notify", s[1], " ", entry, false, 0, wname);
 		if (!notifierSlots.contains(*it))
@@ -271,7 +271,7 @@ void Notify::addConfigColumn(const QString &name, const QMap<QString, QString> &
 	}
 	CONST_FOREACH(it, notifyEvents)
 	{
-		QCString entry = ((*it).name + "_" + name).utf8();
+		QCString entry = ((*it).name + '_' + name).utf8();
 		QCString wname = (name + (*it).name).utf8();
 		ConfigDialog::addCheckBox("Notify", s[1], " ", entry, false, 0, wname);
 		s.append(entry);
@@ -325,7 +325,7 @@ void Notify::addConfigRow(const QString &name, const char *description)
 	{
 		QValueList<QCString> &s = strs[it.key()];
 		QCString parent = s[1]; // name_vbox
-		QCString entry = (name + "_" + it.key()).utf8();
+		QCString entry = (name + '_' + it.key()).utf8();
 		QCString wname = (it.key() + name).utf8();
 		ConfigDialog::addCheckBox("Notify", parent, " ", entry, false, 0, wname);
 		s.append(entry);
@@ -403,7 +403,7 @@ void Notify::updateConnections()
 		{
 			QString signalName = j.key();
 			QPair<QString, bool> &connection = j.data();
-			if (config_file.readBoolEntry("Notify", signalName + "_" + notifierName) != connection.second)
+			if (config_file.readBoolEntry("Notify", signalName + '_' + notifierName) != connection.second)
 			{
 				if (connection.second)
 					disconnect(this, notifySignals[signalName].ascii(), notifier.notifier, connection.first.ascii());
@@ -431,7 +431,7 @@ void Notify::registerNotifier(const QString &name, Notifier *notifier,
 	notifiers[name] = NotifierSlots(notifier, notifierSlots);
 
 	CONST_FOREACH(i, notifySignals)
-		if (config_file.readBoolEntry("Notify", i.key() + "_" + name) && notifierSlots.contains(i.key()))
+		if (config_file.readBoolEntry("Notify", i.key() + '_' + name) && notifierSlots.contains(i.key()))
 			connectSlot(name, i.key());
 	addConfigColumn(name, notifierSlots);
 	kdebugf2();
@@ -449,7 +449,7 @@ void Notify::unregisterNotifier(const QString &name)
 	removeConfigColumn(name, notifier.notifierSlots);
 
 	CONST_FOREACH(i, notifySignals)
-		if (config_file.readBoolEntry("Notify", i.key() + "_" + name) && notifier.notifierSlots.contains(i.key()))
+		if (config_file.readBoolEntry("Notify", i.key() + '_' + name) && notifier.notifierSlots.contains(i.key()))
 			disconnectSlot(name, i.key());
 	notifiers.remove(name);
 	kdebugf2();
@@ -526,7 +526,7 @@ void Notify::notify(const QString &notifyType, const QString &msg, const UserLis
 {
 	kdebugf();
 	CONST_FOREACH(i, notifiers)
-		if (config_file.readBoolEntry("Notify", notifyType + "_" + i.key()))
+		if (config_file.readBoolEntry("Notify", notifyType + '_' + i.key()))
 			(*i).notifier->externalEvent(notifyType, msg, ules);
 	kdebugf2();
 }

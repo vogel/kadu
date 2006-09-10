@@ -1424,7 +1424,7 @@ void GaduProtocol::searchNextInPubdir(SearchRecord& searchRecord)
 		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)unicode2cp(searchRecord.City).data());
 	if (!searchRecord.BirthYearFrom.isEmpty())
 	{
-		QString bufYear = searchRecord.BirthYearFrom + " " + searchRecord.BirthYearTo;
+		QString bufYear = searchRecord.BirthYearFrom + ' ' + searchRecord.BirthYearTo;
 		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)unicode2cp(bufYear).data());
 	}
 
@@ -1748,25 +1748,25 @@ QString GaduProtocol::userListToString(const UserList& userList) const
 	CONST_FOREACH(i, userList)
 		if (!(*i).isAnonymous() && ((*i).usesProtocol("Gadu") || !(*i).mobile().isEmpty()))
 		{
-			contacts += (*i).firstName();					contacts += ";";
-			contacts += (*i).lastName();					contacts += ";";
-			contacts += (*i).nickName();					contacts += ";";
-			contacts += (*i).altNick();						contacts += ";";
-			contacts += (*i).mobile();						contacts += ";";
-			contacts += (*i).data("Groups").toStringList().join(";");	contacts += ";";
+			contacts += (*i).firstName();					contacts += ';';
+			contacts += (*i).lastName();					contacts += ';';
+			contacts += (*i).nickName();					contacts += ';';
+			contacts += (*i).altNick();						contacts += ';';
+			contacts += (*i).mobile();						contacts += ';';
+			contacts += (*i).data("Groups").toStringList().join(";");	contacts += ';';
 			if ((*i).usesProtocol("Gadu"))
-				contacts += (*i).ID("Gadu");				contacts += ";";
-			contacts += (*i).email();						contacts += ";";
+				contacts += (*i).ID("Gadu");				contacts += ';';
+			contacts += (*i).email();						contacts += ';';
 			file = (*i).aliveSound(type);
-			contacts += QString::number(type);				contacts += ";";
-			contacts += file;								contacts += ";";
+			contacts += QString::number(type);				contacts += ';';
+			contacts += file;								contacts += ';';
 			file = (*i).messageSound(type);
-			contacts += QString::number(type);				contacts += ";";
-			contacts += file;								contacts += ";";
+			contacts += QString::number(type);				contacts += ';';
+			contacts += file;								contacts += ';';
 			if ((*i).usesProtocol("Gadu"))
 				contacts += QString::number((*i).protocolData("Gadu", "OfflineTo").toBool());
-			contacts += ";";
-			contacts += (*i).homePhone();					//contacts += ";";
+			contacts += ';';
+			contacts += (*i).homePhone();					//contacts += ';';
 			contacts += "\r\n";
 		}
 

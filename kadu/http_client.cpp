@@ -29,7 +29,7 @@ void HttpClient::onConnected()
 {
 	kdebugf();
 	QString query = PostData.isEmpty() ? "GET": "POST";
-	query += " ";
+	query += ' ';
 
 	if (Path.left(7) != "http://" && config_file.readBoolEntry("Network", "UseProxy"))
 		query += "http://" + Host;
@@ -51,7 +51,7 @@ void HttpClient::onConnected()
 		query += "Cookie: ";
 		CONST_FOREACH(it, Cookies)
 		{
-			query += it.key() + "=" + it.data();
+			query += it.key() + '=' + it.data();
 			++it;
 			if (it != Cookies.end())
 				query += "; ";

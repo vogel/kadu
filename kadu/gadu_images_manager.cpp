@@ -153,7 +153,7 @@ QString GaduImagesManager::saveImage(UinType sender, uint32_t size, uint32_t crc
 	SavedImage img;
 	img.size = size;
 	img.crc32 = crc32;
-	img.file_name = path + "/" + file_name;
+	img.file_name = path + '/' + file_name;
 	QFile f(img.file_name);
 	f.open(IO_WriteOnly);
 	f.writeBlock(data,size);

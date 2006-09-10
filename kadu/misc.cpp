@@ -257,16 +257,16 @@ QString dataPath(const QString &p, const char *argv0)
 			datadir.left(datadir.length() - 6) != bindir.left(bindir.length() - 4) ||
 			bindir.left(bindir.length() - 4) != libdir.left(libdir.length() - 4))
 		{
-			data_path = datadir + "/";
-			lib_path = libdir + "/";
+			data_path = datadir + '/';
+			lib_path = libdir + '/';
 		}
 		else
 		{
 			char cpath[1024];
 			if (findMe(argv0, cpath, 1024) == NULL)
 			{
-				data_path = datadir + "/";
-				lib_path = libdir + "/";
+				data_path = datadir + '/';
+				lib_path = libdir + '/';
 			}
 			else
 			{
@@ -502,7 +502,7 @@ void openWebBrowser(const QString &link)
 		return;
 	}
 	if (!webBrowser.contains("%1"))
-		webBrowser.append(" \"" + unicode2latinUrl(link) + "\"");
+		webBrowser.append(" \"" + unicode2latinUrl(link) + '"');
 	else
 		webBrowser.replace("%1", unicode2latinUrl(link));
 
@@ -594,7 +594,7 @@ ChooseDescription::ChooseDescription(int nr, QPoint *position, QWidget * parent,
 	desc->setLineEdit(ss);
 	ss->setMaxLength(GG_STATUS_DESCR_MAXSIZE);
 
-	l_yetlen = new QLabel(" "+QString::number(GG_STATUS_DESCR_MAXSIZE - desc->currentText().length()),this);
+	l_yetlen = new QLabel(' ' + QString::number(GG_STATUS_DESCR_MAXSIZE - desc->currentText().length()), this);
 	connect(desc, SIGNAL(textChanged(const QString&)), this, SLOT(updateYetLen(const QString&)));
 
 	QPixmap pix;
@@ -672,7 +672,7 @@ void ChooseDescription::cancelbtnPressed()
 
 void ChooseDescription::updateYetLen(const QString& text)
 {
-	l_yetlen->setText(" "+QString::number(GG_STATUS_DESCR_MAXSIZE - text.length()));
+	l_yetlen->setText(' ' + QString::number(GG_STATUS_DESCR_MAXSIZE - text.length()));
 }
 
 ImageWidget::ImageWidget(QWidget *parent)

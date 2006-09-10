@@ -373,7 +373,7 @@ void Chat::insertImage()
 			kdebugf2();
 			return;
 		}
-		Edit->insert(QString("[IMAGE ") + selectedFile + "]");
+		Edit->insert(QString("[IMAGE ") + selectedFile + ']');
 	}
 	else
 		delete id;

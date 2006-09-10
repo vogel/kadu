@@ -977,7 +977,7 @@ void ChatManager::initModule()
 
 	config_file.addVariable("Look", "ChatFont", defaultFont);
 
-	config_file.addVariable("Chat", "LastImagePath", QString(getenv("HOME"))+"/");
+	config_file.addVariable("Chat", "LastImagePath", QString(getenv("HOME")) + '/');
 
 	config_file.addVariable("Look", "Style", "kadu");
 

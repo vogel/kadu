@@ -384,7 +384,7 @@ void PlainConfigFile::writeEntry(const QString &group,const QString &name, const
 
 void PlainConfigFile::writeEntry(const QString &group,const QString &name, const QFont &value)
 {
-	changeEntry(group, name, value.family()+","+QString::number(value.pointSize()));
+	changeEntry(group, name, value.family() + ',' + QString::number(value.pointSize()));
 }
 
 void PlainConfigFile::writeEntry(const QString &group,const QString &name, const QPoint &value)
@@ -704,7 +704,7 @@ void ConfigFile::writeEntry(const QString &group,const QString &name, const QCol
 
 void ConfigFile::writeEntry(const QString &group,const QString &name, const QFont &value)
 {
-	changeEntry(group, name, value.family()+","+QString::number(value.pointSize()));
+	changeEntry(group, name, value.family() + ',' + QString::number(value.pointSize()));
 }
 
 void ConfigFile::writeEntry(const QString &group,const QString &name, const QPoint &value)

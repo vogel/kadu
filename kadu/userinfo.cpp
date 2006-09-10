@@ -229,9 +229,9 @@ void UserInfo::setupTab1()
 			e_addr->setText(tr("(Unknown)"));
 
 		if (user.port("Gadu"))
-			e_addr->setText(e_addr->text() + ":" + QString::number(user.port("Gadu")));
+			e_addr->setText(e_addr->text() + ':' + QString::number(user.port("Gadu")));
 		else
-			e_addr->setText(e_addr->text() + ":" + tr("(Unknown)"));
+			e_addr->setText(e_addr->text() + ':' + tr("(Unknown)"));
 
 		if (user.protocolData("Gadu", "Version").toUInt())
 		{

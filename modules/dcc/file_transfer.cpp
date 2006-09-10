@@ -1017,8 +1017,8 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 	fileTransferWindow(0), toggleFileTransferWindowMenuId(0)
 {
 	kdebugf();
-	config_file.addVariable("Network", "LastUploadDirectory", QString(getenv("HOME")) + "/");
-	config_file.addVariable("Network", "LastDownloadDirectory", QString(getenv("HOME")) + "/");
+	config_file.addVariable("Network", "LastUploadDirectory", QString(getenv("HOME")) + '/');
+	config_file.addVariable("Network", "LastDownloadDirectory", QString(getenv("HOME")) + '/');
 
 	UserBox::userboxmenu->addItemAtPos(1, "SendFile", tr("Send file"),
 		this, SLOT(sendFile()),
@@ -1184,7 +1184,7 @@ QString FileTransferManager::selectFileToSend()
 	}
 	while (f != QString::null && !fi.isReadable());
 	if (f != QString::null && fi.isReadable())
-		config_file.writeEntry("Network", "LastUploadDirectory", fi.dirPath()+"/");
+		config_file.writeEntry("Network", "LastUploadDirectory", fi.dirPath() + '/');
 
 	return f;
 }
@@ -1479,7 +1479,7 @@ void FileTransferManager::needFileAccept(DccSocket *socket)
 			return;
 		}
 
-		config_file.writeEntry("Network", "LastDownloadDirectory", QFileInfo(fileName).dirPath() + "/");
+		config_file.writeEntry("Network", "LastDownloadDirectory", QFileInfo(fileName).dirPath() + '/');
 		fi.setFile(fileName);
 
 		if (!haveFileName && fi.exists() && fi.size() < socket->ggDccStruct()->file_info.size)
