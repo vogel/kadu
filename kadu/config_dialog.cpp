@@ -753,7 +753,8 @@ void ConfigDialog::addColorButton(ConfigFile *config, const char *groupname,
 		c.entry=entry;
 		c.defaultS=color.name();
 		c.tip=tip;
-		addControl(groupname,c);
+		if (addControl(groupname,c))
+			c.config->addVariable(groupname, entry, color.name());
 	}
 	else
 		WARN_ABOUT_EXISTING;
@@ -807,7 +808,8 @@ void ConfigDialog::addComboBox(ConfigFile* config, const char *groupname,
 		c.defaultS=defaultS;
 		c.additionalParams.append(QVariant(options));
 		c.additionalParams.append(QVariant(values));
-		addControl(groupname,c);
+		if (addControl(groupname,c))
+			c.config->addVariable(groupname, entry, defaultS);
 	}
 	else
 		WARN_ABOUT_EXISTING;
@@ -879,7 +881,8 @@ void ConfigDialog::addHRadioGroup(ConfigFile* config,
 		c.defaultS=defaultS;
 		c.additionalParams.append(QVariant(options));
 		c.additionalParams.append(QVariant(values));
-		addControl(groupname,c);
+		if (addControl(groupname,c))
+			c.config->addVariable(groupname, entry, defaultS);
 	}
 	else
 		WARN_ABOUT_EXISTING;
@@ -989,7 +992,8 @@ void ConfigDialog::addRadioGroup(ConfigFile* config,
 		c.additionalParams.append(QVariant(values));
 		c.additionalParams.append(QVariant(strips));
 		c.additionalParams.append(QVariant((int)orientation));
-		addControl(groupname,c);
+		if (addControl(groupname,c))
+			c.config->addVariable(groupname, entry, defaultS);
 	}
 	else
 		WARN_ABOUT_EXISTING;
@@ -1210,7 +1214,8 @@ void ConfigDialog::addVRadioGroup(ConfigFile* config,
 		c.defaultS=defaultS;
 		c.additionalParams.append(QVariant(options));
 		c.additionalParams.append(QVariant(values));
-		addControl(groupname,c);
+		if (addControl(groupname,c))
+			c.config->addVariable(groupname, entry, defaultS);
 	}
 	else
 		WARN_ABOUT_EXISTING;

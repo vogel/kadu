@@ -743,8 +743,6 @@ void UserBox::initModule()
 	kdebugf();
 	// add some values at first run
 	QWidget w;
-	config_file.addVariable("Look", "InfoPanelBgColor", w.paletteBackgroundColor());
-	config_file.addVariable("Look", "InfoPanelFgColor", w.paletteForegroundColor());
 	config_file.addVariable("Look", "UserboxBgColor", w.paletteBackgroundColor());
 	config_file.addVariable("Look", "UserboxFgColor", w.paletteForegroundColor());
 	config_file.addVariable("Look", "AlignUserboxIconsTop", false);

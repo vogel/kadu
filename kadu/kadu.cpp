@@ -122,6 +122,10 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 
 	UinType myUin = config_file.readNumEntry("General", "UIN");
 
+	QWidget w;
+	config_file.addVariable("Look", "InfoPanelBgColor", w.paletteBackgroundColor());
+	config_file.addVariable("Look", "InfoPanelFgColor", w.paletteForegroundColor());
+
 	ConfigDialog::addHGroupBox("General", "General", QT_TRANSLATE_NOOP("@default", "User data"));
 	ConfigDialog::addLineEdit("General", "User data", QT_TRANSLATE_NOOP("@default", "Uin"), "UIN");
 	ConfigDialog::addLineEdit("General", "User data", QT_TRANSLATE_NOOP("@default", "Password"), "Password");

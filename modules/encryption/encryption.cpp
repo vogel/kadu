@@ -52,13 +52,12 @@ EncryptionManager::EncryptionManager(QObject *parent, const char *name) : QObjec
 	EncryptionEnabled()
 {
 	kdebugf();
-	config_file.addVariable("Encryption", "EncryptionKeyLength", "1024");
 	ConfigDialog::addCheckBox("Chat", "Chat",
 			QT_TRANSLATE_NOOP("@default", "Use encryption"), "Encryption", false);
 	ConfigDialog::addHGroupBox("Chat", "Chat",
 			QT_TRANSLATE_NOOP("@default", "Encryption properties"));
 	ConfigDialog::addComboBox("Chat", "Encryption properties",
-			QT_TRANSLATE_NOOP("@default", "Keys length"), "EncryptionKeyLength", QStringList("1024"), QStringList("1024"));
+			QT_TRANSLATE_NOOP("@default", "Keys length"), "EncryptionKeyLength", QStringList("1024"), QStringList("1024"), "1024");
 	ConfigDialog::addPushButton("Chat", "Encryption properties",
 			QT_TRANSLATE_NOOP("@default", "Generate keys"));
 	ConfigDialog::addColorButton("Chat", "Encryption properties",
