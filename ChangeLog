@@ -444,6 +444,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * przy imporcie listy kontaktów prawid³owo do³±czamy dane osób, które u nas
   wystêpuj± jako tzw. "anonimy" (czyli np. gdy odezwa³y siê do nas przy pustej
   li¶cie kontaktów) (joi)
+* poprawiony b³±d niezapisywania siê ostatniego statusu na czystym profilu (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

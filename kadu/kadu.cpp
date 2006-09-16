@@ -172,6 +172,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	//zaladowanie wartosci domyslnych (pierwsze uruchomienie)
 	config_file.addVariable("General", "UserBoxHeight", 300);
 	config_file.addVariable("General", "DescriptionHeight", 60);
+	config_file.addVariable("General", "DefaultStatusIndex", 7);
 
 	config_file.addVariable("Look", "UserboxFont", defaultFont);
 	config_file.addVariable("Look", "PanelFont", defaultFont);
@@ -1605,7 +1606,7 @@ void KaduSlots::onCreateTabGeneral()
 	e_disconnectdesc->setEnabled(b_disconnectdesc->isChecked());
 	connect(b_disconnectdesc, SIGNAL(toggled(bool)), e_disconnectdesc, SLOT(setEnabled(bool)));
 
-	int statusIndex = config_file.readNumEntry("General", "DefaultStatusIndex", 7);
+	int statusIndex = config_file.readNumEntry("General", "DefaultStatusIndex");
 
 	int max = UserStatus::initCount();
 	QComboBox* cb_defstatus = ConfigDialog::getComboBox("General", "Default status", "cb_defstatus");
@@ -1755,7 +1756,7 @@ void Kadu::setDefaultStatus()
 {
 	kdebugf();
 	QString descr = defaultdescriptions.first();
-	int statusIndex = config_file.readNumEntry("General", "DefaultStatusIndex", 7);
+	int statusIndex = config_file.readNumEntry("General", "DefaultStatusIndex");
 	if (statusIndex == 7 || statusIndex == 8) //restore status
 	{
 		int lastStatusIndex = config_file.readNumEntry("General", "LastStatusIndex", UserStatus::index(Offline, false));
