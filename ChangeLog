@@ -441,6 +441,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   (domy¶lnie wy³±czona) (joi)
 * poprawiony b³±d wy¶wietlania (w dymkach nad list± kontaktów) danych dla innych
   kontaktów, w przypadku gdy jest kilka o tej samej warto¶ci pola 'wy¶wietl' (joi)
+* przy imporcie listy kontaktów prawid³owo do³±czamy dane osób, które u nas
+  wystêpuj± jako tzw. "anonimy" (czyli np. gdy odezwa³y siê do nas przy pustej
+  li¶cie kontaktów) (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

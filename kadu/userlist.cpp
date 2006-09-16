@@ -97,7 +97,28 @@ void UserList::merge(const QValueList<UserListElement> &ulist)
 				user2.setData(*key, (*user).data(*key));
 		}
 		if (user2.isAnonymous())
+		{
+			user2.setAltNick((*user).altNick());
+			user2.setEmail((*user).email());
+			user2.setHomePhone((*user).homePhone());
+			user2.setNotify((*user).notify());
+			user2.setMobile((*user).mobile());
+			user2.setNickName((*user).nickName());
+			user2.setLastName((*user).lastName());
+			user2.setFirstName((*user).firstName());
+			user2.setData("Groups", (*user).data("Groups"));
+			
+			NotifyType nt;
+			QString path;
+			
+			path = user2.aliveSound(nt);
+			user2.setAliveSound(nt, path);
+
+			path = user2.messageSound(nt);
+			user2.setMessageSound(nt, path);
+
 			toUnsetAnonymous.append(user2);
+		}
 	}
 
 	int i = 1, anonSize = toUnsetAnonymous.size();
