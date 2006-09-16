@@ -439,6 +439,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * aktualizacja gnuconfig do wersji 2006.08.14 (joi)
 * opcja umo¿liwiaj±ca w³±czenie obs³ugi uruchamiania poleceñ w parserze
   (domy¶lnie wy³±czona) (joi)
+* poprawiony b³±d wy¶wietlania (w dymkach nad list± kontaktów) danych dla innych
+  kontaktów, w przypadku gdy jest kilka o tej samej warto¶ci pola 'wy¶wietl' (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

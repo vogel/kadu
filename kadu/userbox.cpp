@@ -36,6 +36,7 @@ bool KaduListBoxPixmap::ShowMultilineDesc;
 bool KaduListBoxPixmap::MultiColumn;
 int  KaduListBoxPixmap::MultiColumnWidth;
 QColor KaduListBoxPixmap::descColor;
+UserListElement UserBox::nullElement;
 
 static bool brokenStringCompare;
 
@@ -346,7 +347,7 @@ UserBoxMenu *UserBox::userboxmenu = NULL;
 UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
 	: QListBox(parent, name, f), VisibleUsers(new UserGroup(userlist->count() * 2, "visible_users")),
 	Filters(), NegativeFilters(), sortHelper(), toRemove(), AppendProxy(), RemoveProxy(), comparer(new ULEComparer()),
-	refreshTimer(), lastMouseStopUser(), lastMouseStop(), tipAlive(false), tipTimer(), 
+	refreshTimer(), lastMouseStopUser(nullElement), lastMouseStop(), tipAlive(false), tipTimer(), 
 	verticalPositionTimer(), lastVerticalPosition(0)
 {
 	kdebugf();
@@ -419,10 +420,10 @@ UserBox::~UserBox()
 void UserBox::tipTimeout()
 {
 //	kdebugf();
-	if (!lastMouseStopUser.isEmpty())
+	if (lastMouseStopUser != nullElement)
 	{
 //		kdebugm(KDEBUG_INFO, "show hint\n");
-		emit changeToolTip(lastMouseStop, VisibleUsers->byAltNick(lastMouseStopUser), true);
+		emit changeToolTip(lastMouseStop, lastMouseStopUser, true);
 		tipAlive = true;
 		tipTimer.stop();
 	}
@@ -434,14 +435,14 @@ void UserBox::restartTip(const QPoint &p)
 	KaduListBoxPixmap *item = static_cast<KaduListBoxPixmap *>(itemAt(p));
 	if (item)
 	{
-		if (item->User.altNick() != lastMouseStopUser)
+		if (item->User != lastMouseStopUser)
 			hideTip();
-		lastMouseStopUser = item->User.altNick();
+		lastMouseStopUser = item->User;
 	}
 	else
 	{
 		hideTip();
-		lastMouseStopUser = QString::null;
+		lastMouseStopUser = nullElement;
 	}
 	lastMouseStop = p;
 	tipTimer.start(TIP_TM);
@@ -453,10 +454,10 @@ void UserBox::hideTip()
 //	kdebugf();
 	if (tipAlive)
 	{
-		if (VisibleUsers->containsAltNick(lastMouseStopUser))
-			emit changeToolTip(QPoint(), VisibleUsers->byAltNick(lastMouseStopUser), false);
+		if (VisibleUsers->contains(lastMouseStopUser))
+			emit changeToolTip(QPoint(), lastMouseStopUser, false);
 		else
-			emit changeToolTip(QPoint(), UserListElement(), false);
+			emit changeToolTip(QPoint(), nullElement, false);
 		tipAlive = false;
 		tipTimer.start(TIP_TM);
 	}
@@ -1308,7 +1309,7 @@ void UserBox::protocolUserDataChanged(QString protocolName, UserListElement /*el
 
 void UserBox::userAddedToVisible(UserListElement elem, bool /*massively*/, bool /*last*/)
 {
-	lastMouseStopUser = QString::null;
+	lastMouseStopUser = nullElement;
 	sortHelper.push_back(elem);
 	refreshLater();
 }
@@ -1345,7 +1346,7 @@ class torem
 void UserBox::userRemovedFromVisible(UserListElement elem, bool massively, bool last)
 {
 //	kdebugmf(KDEBUG_FUNCTION_START, "start: mass:%d\n", massively);
-	lastMouseStopUser = QString::null;
+	lastMouseStopUser = nullElement;
 	if (massively)
 		toRemove.push_back(elem);
 	else

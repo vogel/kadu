@@ -531,7 +531,8 @@ class UserBox : public QListBox
 		void sort();
 		QTimer refreshTimer;
 
-		QString lastMouseStopUser;
+		UserListElement lastMouseStopUser;
+		static UserListElement nullElement;
 		QPoint lastMouseStop;
 		bool tipAlive;
 		QTimer tipTimer;
