@@ -55,16 +55,21 @@ const QStringList& EmoticonsManager::themes() const
 
 void EmoticonsManager::setEmoticonsTheme(const QString& theme)
 {
+	kdebugmf(KDEBUG_FUNCTION_START | KDEBUG_INFO, "theme: %s\n", theme.local8Bit().data());
 	if (ThemesList.contains(theme))
-		config_file.writeEntry("Chat","EmoticonsTheme",theme);
+		config_file.writeEntry("Chat", "EmoticonsTheme", theme);
 	else
-		config_file.writeEntry("Chat","EmoticonsTheme", "penguins");
+		config_file.writeEntry("Chat", "EmoticonsTheme", "penguins");
 	if (!loadGGEmoticonTheme())
-		if(config_file.readEntry("Chat","EmoticonsTheme") != "penguins")
+	{
+		config_file.writeEntry("Chat", "EmoticonsTheme", "penguins");
+		if (!loadGGEmoticonTheme() && ThemesList.size() > 0)
 		{
-			config_file.writeEntry("Chat","EmoticonsTheme", "penguins");
+			config_file.writeEntry("Chat", "EmoticonsTheme", ThemesList[0]);
 			loadGGEmoticonTheme();
 		}
+	}
+	kdebugf2();
 }
 
 QString EmoticonsManager::getQuoted(const QString& s, unsigned int& pos)
@@ -158,6 +163,7 @@ bool EmoticonsManager::loadGGEmoticonThemePart(QString subdir)
 
 bool EmoticonsManager::loadGGEmoticonTheme()
 {
+	kdebugf();
 	Aliases.clear();
 	Selector.clear();
 	bool something_loaded = false;
@@ -179,7 +185,7 @@ bool EmoticonsManager::loadGGEmoticonTheme()
 		CONST_FOREACH( item, Aliases )
 			walker -> insertString( item -> alias.lower(), i++ );
 	}
-
+	kdebugmf(KDEBUG_FUNCTION_END | KDEBUG_INFO, "loaded: %d\n", something_loaded);
 	return something_loaded;
 }
 
@@ -194,6 +200,12 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor,
 
 	static bool emotsFound = false;
 	const static QString emotTemplate("<img emoticon=\"1\" title=\"%1\" src=\"%2\" bgcolor=\"%3\" animated=\"%4\"/>");
+
+	if (!walker)
+	{
+		kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "end: EMOTICONS NOT LOADED!\n");
+		return;
+	}
 
 	if (!emotsFound && getSubDirs(dataPath("kadu/themes/emoticons")).isEmpty())
 	{
