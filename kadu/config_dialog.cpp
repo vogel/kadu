@@ -1853,6 +1853,7 @@ QKeySequence HotKey::shortCutFromFile(const QString& groupname, const QString &n
 
 bool HotKey::shortCut(QKeyEvent *e,const QString& groupname, const QString &name)
 {
+//	kdebugm(KDEBUG_INFO, "cf:'%s' keyEvent:'%s' %d\n", config_file.readEntry(groupname, name).local8Bit().data(), keyEventToString(e).local8Bit().data(), config_file.readEntry(groupname, name)==keyEventToString(e));
 	return config_file.readEntry(groupname, name)==keyEventToString(e);
 }
 

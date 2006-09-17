@@ -68,6 +68,7 @@ bool Kadu::Closing = false;
 
 void Kadu::keyPressEvent(QKeyEvent *e)
 {
+//	kdebugf();
 	if (e->key() == Key_Escape)
 	{
 		if (Docked)
@@ -105,6 +106,7 @@ void Kadu::keyPressEvent(QKeyEvent *e)
 	emit keyPressed(e);
 
 	QWidget::keyPressEvent(e);
+//	kdebugf2();
 }
 
 /* a monstrous constructor so Kadu would take longer to start up */
