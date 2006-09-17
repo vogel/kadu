@@ -553,6 +553,8 @@ class UserBox : public QListBox
 			\param e wska¼nik obiektu opisuj±cego to zdarzenie.
 		**/
 		virtual void mousePressEvent(QMouseEvent *e);
+		
+		virtual void mouseReleaseEvent(QMouseEvent *e);
 
 		/**
 			\fn virtual void mouseMoveEvent(QMouseEvent* e)

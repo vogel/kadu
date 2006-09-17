@@ -770,7 +770,7 @@ void HintManager::userBoxChangeToolTip(const QPoint &point, UserListElement user
 	{
 		kdebugm(KDEBUG_INFO, "hiding\n");
 		tipFrame->hide();
-		delete tipFrame;
+		tipFrame->deleteLater();
 		tipFrame = 0;
 	}
 }

@@ -489,7 +489,7 @@ void UserBox::mousePressEvent(QMouseEvent *e)
 {
 	kdebugf();
 	hideTip();
-	tipTimer.start(TIP_TM);
+	tipTimer.stop();
 	if (e->button() != RightButton)
 		QListBox::mousePressEvent(e);
 	else
@@ -507,6 +507,12 @@ void UserBox::mousePressEvent(QMouseEvent *e)
 		}
 	}
 	kdebugf2();
+}
+
+void UserBox::mouseReleaseEvent(QMouseEvent *e)
+{
+	QListBox::mouseReleaseEvent(e);
+	restartTip(e->pos());
 }
 
 void UserBox::mouseMoveEvent(QMouseEvent* e)
