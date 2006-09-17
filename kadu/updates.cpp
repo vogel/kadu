@@ -93,17 +93,10 @@ void Updates::gotUpdatesInfo(const QByteArray &data, QNetworkOperation * /*op*/)
 			return;
 		}
 		
-		char buf[32];
-		for (unsigned i = 0; i < size; ++i)
-			buf[i] = data[i];
-		buf[size] = 0;
-		QString newestversion = buf;
-
-		kdebugmf(KDEBUG_INFO, "%s\n", buf);
-
-		if (ifNewerVersion(newestversion))
+		QString* newestversion = new QString(data);
+		if (ifNewerVersion(*newestversion))
 			QMessageBox::information(kadu, tr("Update information"),
-				tr("The newest Kadu version is %1").arg(newestversion), QMessageBox::Ok);
+				tr("The newest Kadu version is %1").arg(*newestversion), QMessageBox::Ok);
 	}
 	disconnect(gadu, SIGNAL(connected()), this, SLOT(run()));
 	UpdateChecked = true;
