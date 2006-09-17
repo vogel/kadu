@@ -1278,9 +1278,9 @@ bool Kadu::close(bool quit)
  		UserBox::closeModule();
  		ChatManager::closeModule();
 		GaduProtocol::closeModule();
-		userlist->writeToConfig();
-		xml_config_file->sync();
+		userlist->writeToConfig();//writeToConfig must be before GroupsManager::closeModule, because GM::cM removes all groups from userlist
 		GroupsManager::closeModule();
+		xml_config_file->sync();
 		UserList::closeModule();
 		ProtocolsManager::closeModule();
 		delete emoticons;
