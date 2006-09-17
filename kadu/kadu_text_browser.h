@@ -32,6 +32,7 @@ class KaduTextBrowser : public QTextBrowser, private QToolTip
 		**/
 		QString highlightedlink;
 		QString image;
+		bool trueTransparency;
 
 	private slots:
 		void refresh();
@@ -40,6 +41,8 @@ class KaduTextBrowser : public QTextBrowser, private QToolTip
 		void hyperlinkClicked(const QString& link) const;
 		void linkHighlighted(const QString &);
 		void saveImage();
+		void verticalSliderPressedSlot();
+		void verticalSliderReleasedSlot();
 
 	protected:
 		QPopupMenu *createPopupMenu(const QPoint &point);
@@ -67,6 +70,12 @@ class KaduTextBrowser : public QTextBrowser, private QToolTip
 			Returns path to image at position point, or null if there's no image.
 		**/
 		QString imageAt(const QPoint &point);
+
+		/**
+			default: false
+		**/
+		void setTrueTransparency(bool);
+		bool isTrueTransparencyEnabled() const;
 
 	public slots:
 		virtual void copy();

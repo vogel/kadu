@@ -17,6 +17,7 @@
 #include "chat.h"
 #include "debug.h"
 #include "emoticons.h"
+#include "kadu_text_browser.h"
 #include "misc.h"
 
 #define IMG_Y_OFFSET 2
@@ -633,6 +634,8 @@ static void qrt_createSelectionPixmap( const QColorGroup &cg )
 
 void StaticTextItem::draw( QPainter* p, int x, int y, int cx, int cy, int cw, int ch, const QColorGroup& cg, bool selected )
 {
+//	kdebugm(KDEBUG_DUMP, "x:%d, y:%d, cx:%d, cy:%d, cw:%d, ch:%d, placement:%d, PlaceInline:%d, xpos:%d, ypos:%d\n",
+//		x, y, cx, cy, cw, ch, placement(), PlaceInline, xpos, ypos);
 	if ( placement() != PlaceInline ) {
 		x = xpos;
 		y = ypos;
@@ -656,9 +659,9 @@ void StaticTextItem::draw( QPainter* p, int x, int y, int cx, int cy, int cw, in
 		return;
 
 	if ( placement() == PlaceInline )
-		p->drawPixmap( x , y + IMG_Y_OFFSET, pm );
+		p->drawPixmap( x , y + (!attributes["src"].isEmpty() ? IMG_Y_OFFSET : 0), pm );
 	else
-		p->drawPixmap( cx , cy + IMG_Y_OFFSET, pm, cx - x, cy + IMG_Y_OFFSET - y, cw, ch );
+		p->drawPixmap( cx , cy + (!attributes["src"].isEmpty() ? IMG_Y_OFFSET : 0), pm, cx - x, cy - y, cw, ch );
 
 	if ( selected && placement() == PlaceInline && is_printer( p ) ) {
 #if defined(Q_WS_X11)
@@ -671,48 +674,132 @@ void StaticTextItem::draw( QPainter* p, int x, int y, int cx, int cy, int cw, in
 	}
 }
 
-AnimTextItem::MovieCacheData::MovieCacheData() : movie(), size(), count(0)
+AnimTextItem::MovieCacheData::MovieCacheData(const QString &fileName) : movie(fileName), size(), count(1), runCount(0)
 {
+}
+
+bool AnimatedLabel::mustPause = false;
+AnimatedLabel::AnimatedLabel(AnimTextItem::MovieCacheData *data, const QString &tip, bool imageBackground,
+	QScrollView *view, bool trueTransparency, const char *name) : QLabel(view->viewport(), name/*, WNoAutoErase*/),
+	movieData(data), scrollView(view), tip(tip), imageBackground(imageBackground), paused(true), lastX(0), lastY(0),
+	trueTransparency(trueTransparency)
+{
+//	kdebugf();
+	setMovie(movieData->movie);
+	if (movieData->runCount == 0)
+		movieData->movie.pause();
+	if (trueTransparency)
+		setBackgroundMode(Qt::NoBackground);
+//	kdebugf2();
+}
+
+AnimatedLabel::~AnimatedLabel()
+{
+	pauseMovie();
+}
+
+void AnimatedLabel::unpauseMovie()
+{
+	if (paused && !mustPause)
+	{
+		++movieData->runCount;
+		movie()->unpause();
+		paused = false;
+	}
+}
+
+void AnimatedLabel::pauseMovie()
+{
+	if (!paused)
+	{
+		if (--movieData->runCount == 0)
+			movie()->pause();
+		paused = true;
+	}
+}
+
+void AnimatedLabel::paintEvent(QPaintEvent *e)
+{
+//	kdebugf();
+//	kdebugm(KDEBUG_INFO, "tip:%15s, count:%2d, runCount:%5d, y:%4d, visH:%4d, contY:%4d, contH:%4d, heigth:%2d %d %d\n", tip.local8Bit().data(), movieData->count, movieData->runCount, y(), scrollView->visibleHeight(), scrollView->contentsY(), scrollView->contentsHeight(), height(), y() > scrollView->visibleHeight(), y() + height() < 0);
+	if (y() > scrollView->visibleHeight() || y() + height() < 0)
+	{
+//		kdebugm(KDEBUG_INFO, "hiding %s\n", tip.local8Bit().data());
+		pauseMovie();
+		hide();
+	}
+	else
+	{
+		if (mustPause)
+			pauseMovie();
+		else
+			unpauseMovie();
+
+		if (trueTransparency)
+		{
+			const QBitmap *mask = movie()->framePixmap().mask();
+			if (mask)
+				setMask(*mask);
+
+			QLabel::paintEvent(e);
+		}
+		else
+		{
+			QPainter paint;
+			setUpdatesEnabled(false);
+			paint.begin(this);
+
+			const QPixmap *bg = static_cast<QWidget *>(parent())->backgroundPixmap();
+			if (bg)
+				paint.drawTiledPixmap(0, 0, width(), height(), *bg, (lastX%bg->width()), (lastY%bg->height()));
+
+			paint.drawPixmap(0, 0, movie()->framePixmap());
+
+			paint.end();
+			setUpdatesEnabled(true);
+		}
+	}
+//	kdebugm(KDEBUG_INFO, "tip: %s\n", tip.local8Bit().data());
+//	kdebugf2();
 }
 
 AnimTextItem::AnimTextItem(
 	QTextDocument *p, QTextEdit* edit,
 	const QString& filename, const QColor& bgcolor, const QString& tip)
-	: QTextCustomItem(p), Edit(edit), Label(new QLabel(edit->viewport())),
+	: QTextCustomItem(p), Edit(edit), Label(0),
 	EditSize(), text(tip), FileName(filename)
 
 {
-	Edit->addChild(Label);
-	//
-	MovieCacheData md;
+	MovieCacheData *md;
 	if (Movies == NULL)
 		Movies = new MoviesCache();
 	if (Movies->contains(filename))
 	{
-		MovieCacheData &m = (*Movies)[filename];
-		++m.count;
-		md = m;
+		md = (*Movies)[filename];
+		++md->count;
 		kdebugm(KDEBUG_INFO, "Movie %s loaded from cache\n", filename.local8Bit().data());
 	}
 	else
 	{
-		md.count = 1;
-		md.movie = QMovie(filename);
+		md = new MovieCacheData(filename);
 		if (SizeCheckImage == NULL)
 			SizeCheckImage = new QImage();
 
 		SizeCheckImage->load(filename);
-		md.size = SizeCheckImage->size();
+		md->size = SizeCheckImage->size();
 		Movies->insert(filename, md);
 		kdebugm(KDEBUG_INFO, "Movie %s loaded from file and cached\n", filename.local8Bit().data());
 	}
-	//
-	Label->setMovie(md.movie);
-	width = md.size.width();
-	height = md.size.height();
+	bool imageBG = edit->paper().pixmap() != 0;
+	Label = new AnimatedLabel(md, tip, imageBG, edit, static_cast<KaduTextBrowser*>(Edit)->isTrueTransparencyEnabled());
+	Edit->addChild(Label);
+
+	width = md->size.width();
+	height = md->size.height();
 	QToolTip::add(Label, tip);
-	Label->resize(md.size);
-	Label->setPaletteBackgroundColor(bgcolor);
+	Label->resize(md->size);
+	if (!imageBG)
+		Label->setPaletteBackgroundColor(bgcolor);
 	Label->hide();
 }
 
@@ -720,10 +807,13 @@ AnimTextItem::~AnimTextItem()
 {
 	kdebugmf(KDEBUG_FUNCTION_START | KDEBUG_INFO, " %p\n", Movies);
 	delete Label;
-	MovieCacheData &md = (*Movies)[FileName];
-	--md.count;
-	if (md.count == 0)
+	MovieCacheData *md = (*Movies)[FileName];
+	--md->count;
+	if (md->count == 0)
+	{
 		Movies->remove(FileName);
+		delete md;
+	}
 	if (Movies->isEmpty())
 	{
 		delete SizeCheckImage;
@@ -735,8 +825,8 @@ AnimTextItem::~AnimTextItem()
 }
 
 void AnimTextItem::draw(
-	QPainter* /*p*/, int x, int y, int /*cx*/, int cy,
-	int /*cw*/, int ch, const QColorGroup& /*cg*/,
+	QPainter* /*p*/, int x, int y, int cx, int cy,
+	int cw, int ch, const QColorGroup& /*cg*/,
 	bool /*selected*/ )
 {
 //	kdebugm(KDEBUG_WARNING, "%s x:%d y:%d cx:%d cy:%d cw:%d ch:%d\n", text.local8Bit().data(), x, y, cx, cy, cw, ch);
@@ -754,11 +844,15 @@ void AnimTextItem::draw(
 
 	EditSize = Edit->size();
 
+	Label->lastX = x;
 	// +IMG_Y_OFFSET dla lepszego efektu optycznego - emotikony s± bardziej wy¶rodkowane
 	if (y - cy > 0)
-		Label->move(x, y - cy + Edit->visibleHeight() - ch + IMG_Y_OFFSET);
+		Label->lastY = y - cy + Edit->visibleHeight() - ch + IMG_Y_OFFSET;
 	else
-		Label->move(x, y - cy + IMG_Y_OFFSET);
+		Label->lastY = y - cy + IMG_Y_OFFSET;
+	Label->move(Label->lastX, Label->lastY);
+	Label->lastY += Edit->contentsY();
+//	kdebugm(KDEBUG_WARNING, "%s, lastX:%d, lastY:%d\n", text.local8Bit().data(), Label->lastX, Label->lastY);
 
 /*	QPoint u(x, y - cy);
 	if (u.y() > 0)
@@ -766,6 +860,10 @@ void AnimTextItem::draw(
 
 //	Edit->moveChild(Label, u.x(), u.y());
 	Label->move(u);*/
+
+	if (Label->movieData->movie.framePixmap().isNull() && !Label->movieData->movie.running())
+		Label->movieData->movie.step();
+	Label->unpauseMovie();
 	Label->show();
 }
 

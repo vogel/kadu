@@ -80,7 +80,7 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	rightDockArea->setMinimumWidth(minimumDockAreaSize);
 
 	vertSplit = new KaduSplitter(Qt::Vertical, central, "vertSplit");
-	
+
 	QVBox *topArea = new QVBox(vertSplit, "topArea");
 	DockArea *topDockArea = new DockArea(Qt::Horizontal, DockArea::Normal, topArea,
 		"chatDockAreaGroup", "chatTopDockArea");
@@ -101,13 +101,18 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 		body->setStyleSheet(new AnimStyleSheet(body,emoticons->themePath()));
 	else
 		body->setStyleSheet(new StaticStyleSheet(body,emoticons->themePath()));
+//	body->setTrueTransparency(true);
 
 	body->setMargin(ParagraphSeparator);
 	body->setMinimumSize(QSize(100,100));
 	body->setFont(config_file.readFontEntry("Look","ChatFont"));
 
 	// background color of chat
-	body->setPaper(QBrush(config_file.readColorEntry("Look","ChatBgColor")));
+	QString bgImage = KaduParser::parse(config_file.readEntry("Look", "ChatBgImage"), usrs[0]);
+	QBrush brush(config_file.readColorEntry("Look", "ChatBgColor"));
+	if (!bgImage.isEmpty() && QFile::exists(bgImage))
+		brush.setPixmap(QPixmap(bgImage));
+	body->setPaper(brush);
 
 //	QPoint pos = QCursor::pos();
 
@@ -230,9 +235,9 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 		this, SLOT(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)));
 
 	Edit->setFocus();
-	
+
 	Edit->installEventFilter(this);
-	
+
 	kdebugf2();
 }
 
@@ -605,9 +610,9 @@ void Chat::repaintMessages()
 	body->setText(text);
 
 	i=0;
-	CONST_FOREACH(msg, ChatMessages)
-		body->setParagraphBackgroundColor(i++,
-			(*msg)->Colors.backgroundColor());
+	if (body->paper().pixmap() == 0)
+		CONST_FOREACH(msg, ChatMessages)
+			body->setParagraphBackgroundColor(i++, (*msg)->Colors.backgroundColor());
 
 	if (!ScrollLocked)
 		body->scrollToBottom();

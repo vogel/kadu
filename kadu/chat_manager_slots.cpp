@@ -548,4 +548,16 @@ void ChatManagerSlots::findAndSetBrowserOption(int selectedOption)
 	kdebugf2();
 }
 
+void ChatManagerSlots::chooseBackgroundFile()
+{
+	QLineEdit *bg_path = ConfigDialog::getLineEdit("Look", "Chat background image");
+	QWidget w;
+	ImageDialog *bg_dlg = new ImageDialog(&w);
+	bg_dlg->setDir(bg_path->text());
+	bg_dlg->setCaption(tr("Insert image"));
+	if (bg_dlg->exec() == QDialog::Accepted)
+		bg_path->setText(bg_dlg->selectedFile());
+	delete bg_dlg;
+}
+
 ChatManagerSlots* ChatManager::chatslots=NULL;

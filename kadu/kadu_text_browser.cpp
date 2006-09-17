@@ -9,6 +9,7 @@
 
 #include <qapplication.h>
 #include <qclipboard.h>
+#include <qobjectlist.h>
 #include <qpopupmenu.h>
 #include <qregexp.h>
 #include <qdialog.h>
@@ -16,6 +17,7 @@
 #include <private/qrichtext_p.h>
 
 #include "debug.h"
+#include "emoticons.h"
 #include "kadu_text_browser.h"
 #include "misc.h"
 #include "config_dialog.h"
@@ -23,7 +25,7 @@
 
 KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 	: QTextBrowser(parent, name), QToolTip(viewport()),
-	refreshTimer(), anchor(), level(0), highlightedlink(), image()
+	refreshTimer(), anchor(), level(0), highlightedlink(), image(), trueTransparency(false)
 {
 	kdebugf();
 
@@ -42,7 +44,45 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 	connect(this, SIGNAL(contentsMoving(int, int)), this, SLOT(refreshLater()));
 	connect(this, SIGNAL(textChanged()), this, SLOT(refreshLater()));
 	connect(&refreshTimer, SIGNAL(timeout()), this, SLOT(refresh()));
+
+	connect(this, SIGNAL(verticalSliderPressed()), this, SLOT(verticalSliderPressedSlot()));
+	connect(this, SIGNAL(verticalSliderReleased()), this, SLOT(verticalSliderReleasedSlot()));
+
 	kdebugf2();
+}
+
+void KaduTextBrowser::verticalSliderPressedSlot()
+{
+	AnimatedLabel::mustPause = true;
+
+	const QObjectList *objs = viewport()->children();
+	if (objs)
+		CONST_FOREACH(i, *objs)
+			if ((*i)->inherits("AnimatedLabel"))
+			{
+				AnimatedLabel *lab = static_cast<AnimatedLabel *>(*i);
+				lab->pauseMovie();
+			}
+}
+
+void KaduTextBrowser::verticalSliderReleasedSlot()
+{
+	AnimatedLabel::mustPause = false;
+
+	const QObjectList *objs = viewport()->children();
+	if (objs)
+		CONST_FOREACH(i, *objs)
+			if ((*i)->inherits("AnimatedLabel"))
+			{
+				AnimatedLabel *lab = static_cast<AnimatedLabel *>(*i);
+				if (lab->isVisible())
+				{
+//					kdebugm(KDEBUG_INFO, "%s visible\n", lab->tip.local8Bit().data());
+					lab->unpauseMovie();
+				}
+//				else
+//					kdebugm(KDEBUG_INFO, "%s is NOT visible\n", lab->tip.local8Bit().data());
+			}
 }
 
 void KaduTextBrowser::refreshLater()
@@ -317,4 +357,14 @@ void KaduTextBrowser::saveImage()
 	}
 	delete fd;
 	kdebugf2();
+}
+
+void KaduTextBrowser::setTrueTransparency(bool b)
+{
+	trueTransparency = b;
+}
+
+bool KaduTextBrowser::isTrueTransparencyEnabled() const
+{
+	return trueTransparency;
 }

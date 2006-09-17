@@ -7,6 +7,7 @@
 #include <qstringlist.h>
 #include <qtoolbutton.h>
 #include <qvaluevector.h>
+#include <qlabel.h>
 
 #include "config_file.h"
 #include "html_document.h"
@@ -16,6 +17,7 @@ class EmotsWalker;
 class QImage;
 class QLabel;
 class QTextEdit;
+class QScrollView;
 
 enum EmoticonsStyle
 {
@@ -201,21 +203,25 @@ class StaticTextItem : public QTextCustomItem
 		QString imgId;
 };
 
+class AnimatedLabel;
+
 class AnimTextItem : public QTextCustomItem
 {
-	private:
-		static QImage* SizeCheckImage;
+	public:
 		struct MovieCacheData
 		{
 			QMovie movie;
 			QSize size;
 			int count;
-			MovieCacheData();
+			int runCount;
+			MovieCacheData(const QString &fileName);
 		};
-		typedef QMap<QString,MovieCacheData> MoviesCache;
+	private:
+		static QImage* SizeCheckImage;
+		typedef QMap<QString,MovieCacheData*> MoviesCache;
 		static MoviesCache* Movies;
 		QTextEdit* Edit;
-		QLabel* Label;
+		AnimatedLabel* Label;
 		QSize EditSize;
 		QString text;
 		QString FileName;
@@ -229,6 +235,30 @@ class AnimTextItem : public QTextCustomItem
 			int cw, int ch, const QColorGroup& cg,
 			bool selected );
 		virtual QString richText() const;
+
+};
+
+class AnimatedLabel : public QLabel
+{
+	Q_OBJECT
+	public:
+	AnimTextItem::MovieCacheData *movieData;
+	QScrollView *scrollView;
+	QString tip;
+	static bool mustPause;
+	bool imageBackground;
+	bool paused;
+	int lastX, lastY;
+	bool trueTransparency;
+	public:
+		AnimatedLabel(AnimTextItem::MovieCacheData *data, const QString &tip, bool imageBackground,
+						QScrollView *view, bool trueTransparency = false, const char *name = 0);
+		~AnimatedLabel();
+	public slots:
+		void unpauseMovie();
+		void pauseMovie();
+	protected:
+		virtual void paintEvent(QPaintEvent *e);
 };
 
 class AnimStyleSheet : public QStyleSheet

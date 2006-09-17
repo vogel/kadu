@@ -105,6 +105,8 @@ class ChatManagerSlots :public QObject
 		**/
 		void chooseFont(const char* name, const QFont& font);
 
+		void chooseBackgroundFile();
+
 		/**
 			\fn void findAndSetWebBrowser(int selectedBrowser)
 			Slot jest wywo³ywany gdy wybrano z listy przegl±darkê

@@ -799,6 +799,8 @@ void ChatManager::closeModule()
 	disconnect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
 		chat_manager, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
 
+	ConfigDialog::disconnectSlot("Look", 0, SIGNAL(clicked()), chatslots, SLOT(chooseBackgroundFile()), "chat_background_fileopen");
+
 	ConfigDialog::disconnectSlot("Look", "Font in chat window", SIGNAL(changed(const char *, const QFont&)), chatslots, SLOT(chooseFont(const char *, const QFont&)), "chat_font_box");
 	ConfigDialog::disconnectSlot("Look", "Select chat style", SIGNAL(activated(const QString&)), chatslots, SLOT(onChatThemeChanged(const QString&)));
 
@@ -822,6 +824,11 @@ void ChatManager::closeModule()
 	ConfigDialog::unregisterSlotOnCreateTab("Look", chatslots, SLOT(onCreateTabLook()));
 	ConfigDialog::unregisterSlotOnApplyTab("Chat", chatslots, SLOT(onApplyTabChat()));
 	ConfigDialog::unregisterSlotOnApplyTab("Look", chatslots, SLOT(onApplyTabLook()));
+
+	ConfigDialog::removeControl("Look", 0, "chat_background_fileopen");
+	ConfigDialog::removeControl("Look", "Chat background image");
+	ConfigDialog::removeControl("Look", "chat_background");
+	ConfigDialog::removeControl("Look", "Chat background");
 
 			ConfigDialog::removeControl("Look", "syntax:");
 			ConfigDialog::removeControl("Look", "Conference window title prefix:");
@@ -1020,6 +1027,11 @@ void ChatManager::initModule()
 			ConfigDialog::addLineEdit("Look", "conference", QT_TRANSLATE_NOOP("@default", "Conference window title prefix:"), "ConferencePrefix", QString::null, QT_TRANSLATE_NOOP("@default", "This text will be before syntax.\nIf you leave blank, default settings will be used."));
 			ConfigDialog::addLineEdit("Look", "conference", QT_TRANSLATE_NOOP("@default", "syntax:"), "ConferenceContents", "%a (%s[: %d])", Kadu::SyntaxText);
 
+	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Chat background (experimental)"), 0, Expert);
+	ConfigDialog::addHBox("Look", "Chat background (experimental)", "chat_background");
+	ConfigDialog::addLineEdit("Look", "chat_background", QT_TRANSLATE_NOOP("@default", "Chat background image"), "ChatBgImage", 0, Kadu::SyntaxText);
+	ConfigDialog::addPushButton("Look", "chat_background", 0, "OpenFile", 0, "chat_background_fileopen");
+
 	config_file.addVariable("Chat", "EmoticonsStyle", EMOTS_ANIMATED);
 	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
 
@@ -1046,6 +1058,8 @@ void ChatManager::initModule()
 
 	ConfigDialog::connectSlot("Look", "Font in chat window", SIGNAL(changed(const char *, const QFont&)), chatslots, SLOT(chooseFont(const char *, const QFont&)), "chat_font_box");
 	ConfigDialog::connectSlot("Look", "Select chat style", SIGNAL(activated(const QString&)), chatslots, SLOT(onChatThemeChanged(const QString&)));
+
+	ConfigDialog::connectSlot("Look", 0, SIGNAL(clicked()), chatslots, SLOT(chooseBackgroundFile()), "chat_background_fileopen");
 
 	chat_manager=new ChatManager(kadu, "chat_manager");
 	connect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
