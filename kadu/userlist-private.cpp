@@ -66,14 +66,17 @@ void ULEPrivate::setDNSName(const QString &protocolName, const QString &dnsname)
 	if (protocolData == NULL)
 		return;
 	QVariant *old = protocolData->data[DNSName];
-	if (old && dnsname == old->toString())
-		return;
 	if (old)
+	{
+		if (dnsname == old->toString())
+			return;
 		protocolData->data.replace(DNSName, new QVariant(dnsname));
+	}
 	else
+	{
 		protocolData->data.insert(DNSName, new QVariant(dnsname));
-	if (!old)
 		old = new QVariant();
+	}
 	CONST_FOREACH (group, Parents)
 		emit (*group)->protocolUserDataChanged(protocolName, userlist->byKey(key), DNSName, *old, dnsname, false, false);
 	delete old;
