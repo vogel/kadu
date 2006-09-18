@@ -455,6 +455,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   poprawione problemy ze znikaniem separatorów w oknie rozmowy,
   mo¿liwo¶æ ustawienia obrazka w tle oknie rozmowy - na razie oznaczone
   jako eksperymentalna (joi)
+* drobne optymalizacje (neeo)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
