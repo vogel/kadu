@@ -109,8 +109,8 @@ About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopL
 	// end create our info widgets
 
 	// close button
-	QHBox *bottom=new QHBox(center);
-	QWidget *blank2=new QWidget(bottom);
+	QHBox *bottom = new QHBox(center);
+	QWidget *blank2 = new QWidget(bottom);
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
@@ -138,7 +138,6 @@ void About::keyPressEvent(QKeyEvent *ke_event)
 QString About::loadFile(const QString &name)
 {
 	kdebugf();
-	QString data;
 	QFile file(dataPath("kadu/" + name));
 	if (!file.open(IO_ReadOnly))
 	{
@@ -147,7 +146,7 @@ QString About::loadFile(const QString &name)
 	}
 	QTextStream str(&file);
 	str.setCodec(codec_latin2);
-	data = str.read();
+	QString data = str.read();
 	file.close();
 	kdebugf2();
 	return data;
