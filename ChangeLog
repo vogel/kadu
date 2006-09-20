@@ -374,7 +374,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   usuniête polskie znaki z wiadomo¶ci (neeo/joi)
 * szereg usprawnieñ dotycz±cych sprawdzania poprawno¶ci wpisanych danych
   w oknie szukania kontaktów w katalogu (neeo/joi)
-* przy wybraniu opcji "ukryj niedostêpnych" pokazujemy ukrytych (Shinjin/joi)
+* przy wybraniu opcji "ukryj niedostêpnych" pokazujemy ukrytych (Kubi¶/joi)
 * poprawione dzia³anie funkcji unicode2std i unicode2latinUrl (joi)
 * poprawka wywrotki w alsa_sound (u mnie pojawia³a siê gdy gra³ amarok 1.4
   przez xine z wyj¶ciem alsa) (joi)
@@ -456,6 +456,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   mo¿liwo¶æ ustawienia obrazka w tle oknie rozmowy - na razie oznaczone
   jako eksperymentalna (joi)
 * drobne optymalizacje (neeo)
+* nowe pule numerów telefonów u wszystkich operatorów (neeo)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
@@ -911,7 +912,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   z którym bêdzie ³±czyæ siê kadu (joi)
 * dodana mo¿liwo¶æ ustawienia w pliku konfiguracyjnym timeoutu dla po³±czeñ (joi)
 * default_sms->bramka idei: obs³uga braku aktywowanej us³ugi,
-  sms: pole podpis wymagane (Shinjin/joi)
+  sms: pole podpis wymagane (Kubi¶/joi)
 * bramka ery obs³uguje nowy prefix Heyah: 889 (gringo/joi)
 * przy logowaniu nie wysy³amy do serwera informacji o zmianie statusu
   w przypadku gdy nie musimy obchodziæ b³êdu serwera (joi)
