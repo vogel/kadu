@@ -106,6 +106,7 @@ QString EmoticonsManager::fixFileName(const QString& path,const QString& fn)
 
 bool EmoticonsManager::loadGGEmoticonThemePart(QString subdir)
 {
+	kdebugf();
 	if (!subdir.isEmpty())
 		subdir += '/';
 	QString path = themePath() + '/' + subdir;
