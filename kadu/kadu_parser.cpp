@@ -21,7 +21,7 @@
 #include "userlistelement.h"
 
 QMap<QString, QString> KaduParser::globalVariables;
-QMap<QString, QString (*)(const UserListElement &)> registeredTags;
+static QMap<QString, QString (*)(const UserListElement &)> registeredTags;
 
 bool KaduParser::registerTag(const QString &name, QString (*func)(const UserListElement &))
 {

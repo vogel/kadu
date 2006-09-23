@@ -598,14 +598,16 @@ ChooseDescription::ChooseDescription(int nr, QPoint *position, QWidget * parent,
 	connect(desc, SIGNAL(textChanged(const QString&)), this, SLOT(updateYetLen(const QString&)));
 
 	QPixmap pix;
+	const char *iconName;
 	switch (nr)
 	{
-		case 1: pix = icons_manager->loadIcon("OnlineWithDescription");	break;
-		case 3: pix = icons_manager->loadIcon("BusyWithDescription");	break;
-		case 5: pix = icons_manager->loadIcon("InvisibleWithDescription");break;
-		case 7: pix = icons_manager->loadIcon("OfflineWithDescription");	break;
-		default:pix = icons_manager->loadIcon("OfflineWithDescription");
+		case 1: iconName = "OnlineWithDescription";		break;
+		case 3: iconName = "BusyWithDescription";		break;
+		case 5: iconName = "InvisibleWithDescription";	break;
+		case 7:
+		default:iconName = "OfflineWithDescription";
 	}
+	pix = icons_manager->loadIcon(iconName);
 
 	QPushButton *okbtn = new QPushButton(QIconSet(pix), tr("&OK"), this);
 	QPushButton *cancelbtn = new QPushButton(tr("&Cancel"), this);
@@ -823,27 +825,27 @@ QString narg(const QString &s, const QString **tab, int count)
 {
 	kdebugf();
 	QString out;
-	const QChar *d=s.unicode();
-	const QChar *dend=d+s.length();
-	int j=0;
-	char maxc='0'+count;
-	if (count>9)
+	const QChar *d = s.unicode();
+	const QChar *dend = d + s.length();
+	int j = 0;
+	char maxc = '0' + count;
+	if (count > 9)
 		return QString::null;
 
-	while (d!=dend)
+	while (d != dend)
 	{
-		if (*d=='%' && d+1<dend && *(d+1)>='1' && *(d+1)<=maxc)
+		if (*d == '%' && d + 1 < dend && *(d + 1) >= '1' && *(d + 1) <= maxc)
 		{
-			out.append(QString(d-j, j));
-			d++;
-			out.append(*(tab[*d-'1']));
-			j=0;
+			out.append(QConstString(d - j, j).string());
+			++d;
+			out.append(*(tab[*d - '1']));
+			j = 0;
 		}
 		else
-			j++;
-		d++;
+			++j;
+		++d;
 	}
-	out.append(QString(d-j, j));
+	out.append(QConstString(d - j, j).string());
 //	kdebugm(KDEBUG_DUMP, "out: '%s'\n", out.local8Bit().data());
 	kdebugf2();
 
