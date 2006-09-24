@@ -29,7 +29,6 @@ QString formatGGMessage(const QString &msg, unsigned int formats_length, void *f
 	struct gg_msg_richtext_format *actformat;
 	struct gg_msg_richtext_color *actcolor;
 	struct gg_msg_richtext_image* actimage;
-	UserListElement ule = userlist->byID("Gadu", QString::number(sender));
 
 	bold = italic = underline = color = inspan = false;
 	unsigned int pos = 0;
@@ -133,9 +132,9 @@ QString formatGGMessage(const QString &msg, unsigned int formats_length, void *f
 				else if (tmpsize == 20 && (tmpcrc32 == 4567 || tmpcrc32==99))
 				{
 					// do not process spy and ekg2 special images
-					kdebugm(KDEBUG_INFO, "%d: scanning for invisibility detected, preparing tactical nuclear missles ;)\n", sender);
+					kdebugm(KDEBUG_INFO, "%d: scanning for invisibility detected, preparing tactical nuclear missiles ;)\n", sender);
 					if (receiveImage)
-						gadu->sendImageRequest(ule, tmpsize, tmpcrc32);
+						gadu->sendImageRequest(user, tmpsize, tmpcrc32);
 				}
 				else if (sender!=0)
 				{
@@ -156,7 +155,7 @@ QString formatGGMessage(const QString &msg, unsigned int formats_length, void *f
 							if (receiveImage)
 							{
 								kdebugm(KDEBUG_INFO, "sending request\n");
-								gadu->sendImageRequest(ule, tmpsize, tmpcrc32);
+								gadu->sendImageRequest(user, tmpsize, tmpcrc32);
 								mesg.append(GaduImagesManager::loadingImageHtml(
 										sender,tmpsize,tmpcrc32));
 							}
@@ -210,7 +209,7 @@ struct richtext_formant
 	struct gg_msg_richtext_image image;
 };
 
-QString stripHTMLFromGGMessage(const QString &msg)
+static QString stripHTMLFromGGMessage(const QString &msg)
 {
 	kdebugf();
 	QRegExp regexp;
@@ -240,7 +239,7 @@ QString stripHTMLFromGGMessage(const QString &msg)
  *
  * Precondition - formats_length must contain valid length of result buffer
  */
-void *allocFormantBuffer(const QValueList<struct richtext_formant> &formants, unsigned int &formats_length)
+static void *allocFormantBuffer(const QValueList<struct richtext_formant> &formants, unsigned int &formats_length)
 {
 	kdebugf();
 	struct gg_msg_richtext richtext_header;
