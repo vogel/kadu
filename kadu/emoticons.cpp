@@ -112,7 +112,7 @@ QString EmoticonsManager::fixFileName(const QString& path,const QString& fn)
 
 bool EmoticonsManager::loadGGEmoticonThemePart(QString subdir)
 {
-	kdebugf();
+	kdebugmf(KDEBUG_FUNCTION_START, "subdir: %s\n", subdir.local8Bit().data());
 	if (!subdir.isEmpty())
 		subdir += '/';
 	QString path = themePath() + '/' + subdir;
@@ -128,6 +128,7 @@ bool EmoticonsManager::loadGGEmoticonThemePart(QString subdir)
 	{
 		EmoticonsListItem item;
 		QString line = theme_stream.readLine();
+		kdebugm(KDEBUG_DUMP, "> %s\n", line.local8Bit().data());
 		unsigned int lineLength = line.length();
 		unsigned int i = 0;
 		bool multi = false;
