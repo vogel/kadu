@@ -457,6 +457,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   jako eksperymentalna (joi)
 * drobne optymalizacje (neeo)
 * nowe pule numerów telefonów u wszystkich operatorów (neeo)
+* w katalogach modu³ów tworz± siê Makefile'e (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
