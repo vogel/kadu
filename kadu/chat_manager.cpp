@@ -828,7 +828,7 @@ void ChatManager::closeModule()
 	ConfigDialog::removeControl("Look", 0, "chat_background_fileopen");
 	ConfigDialog::removeControl("Look", "Chat background image");
 	ConfigDialog::removeControl("Look", "chat_background");
-	ConfigDialog::removeControl("Look", "Chat background");
+	ConfigDialog::removeControl("Look", "Chat background (experimental)");
 
 			ConfigDialog::removeControl("Look", "syntax:");
 			ConfigDialog::removeControl("Look", "Conference window title prefix:");
