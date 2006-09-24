@@ -312,7 +312,7 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 			echo "MODULE_LDFLAGS:        $MODULE_LDFLAGS" && \
 			echo "MODULE_TOOLS:          $MODULE_TOOLS" && \
 			echo "MODULE_CONFIGURE_CMD:  $MODULE_CONFIGURE_CMD" && \
-			echo -e "all:\n\t cd ..; make module_$mod; cd $mod\n\ninstall:\n\tcd ..; make module_$mod install_$mod; cd $mod\nclean:\n\trm -f *.o *.d *.so *.a *_moc.cpp translations/*.qm\n" > modules/$mod/Makefile && \
+			echo -e "all:\n\t cd ..; make module_$mod; cd $mod\n\ninstall:\n\tcd ..; make module_$mod install_$mod; cd $mod\n\nclean:\n\trm -f *.o *.d *.so *.a *_moc.cpp .final.d .final.cpp.o .final.c.o\n\ndistclean: clean\n\trm -f .cxxflags .ldflags .final.cpp .final.c translations/*.qm\n" > modules/$mod/Makefile && \
 			
 			if test $enable_final == yes; then \
 				for src in $MODULE_SOURCES; do \

@@ -16,7 +16,7 @@ INCLUDES = $(PHEADERS_INCLUDES) -I.. -I../kadu $(CONFIGURE_INCLUDES)
 
 AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT -DDATADIR=\"$(datadir)\" -DLIBDIR=\"$(libdir)\" -DBINDIR=\"$(bindir)\"
 
-CLEANFILES = */*.$(SO_EXT) */*.a */*.o */*_moc.cpp */*.d
+CLEANFILES = */*.$(SO_EXT) */*.a */*.o */*_moc.cpp */*.d */.final.d
 
 CXXFLAGS = @CXXFLAGS@
 
@@ -221,6 +221,7 @@ $(module_targets):
 	if test -z `expr " $(shared_modules) " : ".* \($$dir\) "`; then \
 		file_name=$$dir.a; \
 	fi && \
+	$(MAKE) $$moc_cpp_files && \
 	$(MAKE) "module_name=$$dir" \
 		"module_o_files=$$o_files" \
 		"module_src_files=$$src_files" \
