@@ -459,7 +459,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * nowe pule numerów telefonów u wszystkich operatorów (neeo)
 * budowanie: w katalogach modu³ów tworz± siê proste Makefile'e (cele: all,
   install, clean, distclean) (joi)
-* budowanie: poprawa b³êdu tworzenia plików zale¿no¶ci przy --enable-final (joi)
+* budowanie: poprawa b³êdu tworzenia pustych plików zale¿no¶ci przy --enable-final (joi)
 * poprawiony b³±d usuwania tekstu <span style=""></span> z tre¶ci wiadomo¶ci (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
