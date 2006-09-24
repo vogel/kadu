@@ -308,7 +308,7 @@ class EmotsWalker
 	/** positions in prefix tree, representing current analysis of text */
 	QValueVector<const PrefixNode*> positions;
 	QValueVector<int> lengths;
-	int amountPositions;
+	unsigned int amountPositions;
 
 	public:
 		EmotsWalker();
