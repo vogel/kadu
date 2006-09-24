@@ -77,12 +77,18 @@ QString EmoticonsManager::getQuoted(const QString& s, unsigned int& pos)
 {
 	QString r;
 	++pos; // eat '"'
-	while (s[pos] != '"')
+
+	int pos2 = s.find('"', pos);
+	if (pos2 >= 0)
 	{
-		r += s[pos];
-		++pos;
+		r = s.mid(pos, uint(pos2) - pos);
+		pos = uint(pos2) + 1;// eat '"'
 	}
-	++pos; // eat '"'
+	else
+	{
+		r = s.mid(pos);
+		pos = s.length();
+	}
 	return r;
 }
 
@@ -122,12 +128,13 @@ bool EmoticonsManager::loadGGEmoticonThemePart(QString subdir)
 	{
 		EmoticonsListItem item;
 		QString line = theme_stream.readLine();
+		unsigned int lineLength = line.length();
 		unsigned int i = 0;
 		bool multi = false;
 		QStringList aliases;
-		if (line[i] == '*')
+		if (i < lineLength && line[i] == '*')
 			++i; // eat '*'
-		if (line[i] == '(')
+		if (i < lineLength && line[i] == '(')
 		{
 			multi = true;
 			++i;
@@ -135,7 +142,7 @@ bool EmoticonsManager::loadGGEmoticonThemePart(QString subdir)
 		for(;;)
 		{
 			aliases.append(getQuoted(line, i));
-			if((!multi) || line[i] == ')')
+			if (!multi || i >= lineLength || line[i] == ')')
 				break;
 			++i; // eat ','
 		}
@@ -143,7 +150,7 @@ bool EmoticonsManager::loadGGEmoticonThemePart(QString subdir)
 			++i; // eat ')'
 		++i; // eat ','
 		item.anim = subdir + fixFileName(path, getQuoted(line, i));
-		if (i < line.length() && line[i] == ',')
+		if (i < lineLength && line[i] == ',')
 		{
 			++i; // eat ','
 			item.stat = subdir + fixFileName(path, getQuoted(line, i));
