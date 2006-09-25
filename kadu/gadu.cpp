@@ -125,17 +125,17 @@ UinsList::UinsList(UinType uin)
 	append(uin);
 }
 
-UinsList::UinsList (const QString &uins)
+UinsList::UinsList(const QString &uins)
 {
-	QStringList list = QStringList::split (",", uins);
+	QStringList list = QStringList::split(",", uins);
 	CONST_FOREACH(it, list)
-		append ((*it).toUInt ());
+		append((*it).toUInt());
 }
 
-UinsList::UinsList (const QStringList &list)
+UinsList::UinsList(const QStringList &list)
 {
 	CONST_FOREACH(it, list)
-		append ((*it).toUInt ());
+		append((*it).toUInt());
 }
 
 void UinsList::sort()
@@ -214,7 +214,8 @@ void SearchRecord::reqFirstName(const QString& firstName)
 	FirstName = firstName;
 }
 
-void SearchRecord::reqLastName(const QString& lastName) {
+void SearchRecord::reqLastName(const QString& lastName)
+{
 	LastName = lastName;
 }
 
