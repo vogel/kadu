@@ -340,10 +340,11 @@ void ChatManager::ignoreUserActionActivated(const UserGroup* users)
 		else
 		{
 			addIgnored(u);
-			Chat *c = findChat(users);
+			Chat *c = findChat(u);
 			if (c)
 				c->close();
 		}
+		kadu->userbox()->refresh();
 		writeIgnored();
 	}
 	kdebugf2();
@@ -354,11 +355,27 @@ void ChatManager::blockUserActionActivated(const UserGroup* users)
 	kdebugf();
 	if (users->count() > 0)
 	{
+		bool was_blocking = false; // true, if we blocked at least one user
+
 		FOREACH(user, (*users))
 		{
 			if ((*user).usesProtocol("Gadu"))
-				(*user).setProtocolData("Gadu", "Blocking", !((*user).protocolData("Gadu", "Blocking").toBool()));
+			{
+				bool blocked = (*user).protocolData("Gadu", "Blocking").toBool();
+				(*user).setProtocolData("Gadu", "Blocking", !(blocked));
+				if (blocked)
+					was_blocking = true;
+			}
 		}
+		
+		if (was_blocking) // if we were blocking, we also close the chat
+		{
+			UserListElements u = users->toUserListElements();
+			Chat *c = findChat(u);
+			if (c)
+				c->close();
+		}
+
 		userlist->writeToConfig();
 	}
 	kdebugf2();
