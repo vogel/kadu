@@ -460,6 +460,7 @@ void SearchDialog::persClicked()
 {
 	only_active->setEnabled(true);
 	only_active->setChecked(false);
+	e_nick->setFocus();
 
 	KaduActions["firstSearchAction"]->setEnabled(this, !isPersonalDataEmpty());
 }
@@ -467,6 +468,7 @@ void SearchDialog::persClicked()
 void SearchDialog::uinClicked()
 {
 	only_active->setEnabled(false);
+	e_uin->setFocus();
 
 	KaduActions["firstSearchAction"]->setEnabled(this, !e_uin->text().isEmpty());
 	KaduActions["nextResultsAction"]->setEnabled(this, false);
