@@ -363,7 +363,7 @@ void ChatManager::blockUserActionActivated(const UserGroup* users)
 			{
 				bool blocked = (*user).protocolData("Gadu", "Blocking").toBool();
 				(*user).setProtocolData("Gadu", "Blocking", !(blocked));
-				if (blocked)
+				if (blocked && (!was_blocking))
 					was_blocking = true;
 			}
 		}
