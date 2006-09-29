@@ -270,19 +270,6 @@ class GaduProtocol : public Protocol
 		void setupProxy();
 
 		/**
-			Metoda wywo³ywana w razie roz³±czenie siê z serwerem. Wywo³ywana przez iWantGoOffline
-			albo przez connectionTimeoutTimerSlot. Wywo³uje disconnectedSlot, który z kolei
-			emituje sygna³ disconnected
-
-			@see disconnected
-			@see disconnectedSlot
-			@see connectionTimeoutTimerSlot
-			@see iWantGoOffline
-			@todo Wywaliæ i zast±piæ wywo³aniami disconnectedSlot?
-		**/
-		void logout();
-
-		/**
 			Za pomoc± klasy TokenSocketNotifiers metoda pobiera z serwera GaduGadu token wraz
 			z identyfikatorem. Pobrany token jest obs³ugiwany za pomoc± slota gotToken,
 			który pobiera warto¶æ tokena emituj±c sygna³ needTokenValue i nastêpnie wywo³uj±c

@@ -462,6 +462,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * budowanie: poprawa b³êdu tworzenia pustych plików zale¿no¶ci przy --enable-final (joi)
 * poprawiony b³±d usuwania tekstu <span style=""></span> z tre¶ci wiadomo¶ci (joi)
 * poprawione akcje ignorowania i blokowania (neeo)
+* usuniêta, zgodnie z TODO, metoda GaduProtocol::logout() (neeo)
+* drobna optymalizacja w GaduProtocol (neeo)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

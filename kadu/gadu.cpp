@@ -559,14 +559,12 @@ void GaduProtocol::iWantGoOffline(const QString &desc)
 {
 	kdebugf();
 
-	if (CurrentStatus->isOffline() && whileConnecting)
+	if (CurrentStatus->isOffline())
 	{
-		logout();//ustawia m.in. whileConnecting na false
+		if (whileConnecting)
+			whileConnecting = false;
 		return;
 	}
-
-	if (CurrentStatus->isOffline())
-		return;
 
 	if (!desc.isEmpty())
 		gg_change_status_descr(Sess, GG_STATUS_NOT_AVAIL_DESCR, unicode2cp(desc));
@@ -575,7 +573,7 @@ void GaduProtocol::iWantGoOffline(const QString &desc)
 
 
 	CurrentStatus->setStatus(*NextStatus);
-	logout();
+	disconnectedSlot();
 
 	kdebugf2();
 }
@@ -743,7 +741,7 @@ void GaduProtocol::connectedSlot()
 	ServerNr = 0;
 	PingTimer = new QTimer(NULL, "PingTimer");
 	connect(PingTimer, SIGNAL(timeout()), this, SLOT(pingNetwork()));
-	PingTimer->start(60000, TRUE);
+	PingTimer->start(60000);
 
 	CurrentStatus->setStatus(*NextStatus);
 	emit connected();
@@ -1038,7 +1036,6 @@ void GaduProtocol::pingNetwork()
 {
 	kdebugf();
 	gg_ping(Sess);
-	PingTimer->start(60000, TRUE);
 	kdebugf2();
 }
 
@@ -1164,16 +1161,6 @@ void GaduProtocol::login()
 		disconnectedSlot();
 		emit error(Disconnected);
 	}
-
-	kdebugf2();
-}
-
-void GaduProtocol::logout()
-{
-	kdebugf();
-
-	whileConnecting = false;
-	disconnectedSlot();
 
 	kdebugf2();
 }
