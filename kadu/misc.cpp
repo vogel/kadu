@@ -100,11 +100,52 @@ QString ggPath(const QString &subpath)
 
 //stat,getcwd
 #include <unistd.h>
+#include <sys/types.h>
 #include <sys/stat.h>
 //getenv
 #include <stdlib.h>
-//memcpy,strcat,strchr
+//memcpy,strcat,strchr,strerror
 #include <string.h>
+
+#include <errno.h>
+/*
+	sprawdza czy wskazana ¶cie¿ka jest linkiem symbolicznym	i je¿eli jest,
+	to próbuje wyci±gn±æ ¶cie¿kê na któr± wskazuje ten link
+	zwraca b³±d tylko gdy wyst±pi jaki¶ b³±d przy wywo³ywaniu readlink (co wskazuje na jaki¶ powa¿ny b³±d)
+	uwaga: je¿eli pliku nie ma, to funkcja zwraca _sukces_, bo plik nie jest linkiem
+ */
+static bool delinkify(char *path, int maxlen)
+{
+	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", path);
+	struct stat st;
+	if (lstat(path, &st) == -1)
+	{
+		kdebugf2();
+		return true;
+	}
+	kdebugm(KDEBUG_INFO, "mode: %o\n", st.st_mode);
+	if (!S_ISLNK(st.st_mode))
+	{
+		kdebugf2();
+		return true;
+	}
+	char *path2 = new char[maxlen];
+	ssize_t bytesFilled = readlink(path, path2, maxlen - 1);
+	if (bytesFilled == -1)
+	{
+		fprintf(stderr, "readlink error: '%s'\n", strerror(errno));
+		fflush(stderr);
+		delete [] path2;
+		kdebugf2();
+		return false;
+	}
+	path2[bytesFilled] = 0;
+	memcpy(path, path2, bytesFilled + 1);
+	delete [] path2;
+	kdebugf2();
+	return true;
+}
+
 /*
 	funkcja poszukuje binarki programu na podstawie argv[0] oraz zmiennej PATH
 	je¿eli j± znajdzie, to zapisuje ¶cie¿kê pod adres wskazany przez path
@@ -124,101 +165,125 @@ static char *findMe(const char *argv0, char *path, int len)
 	int l;
 
 
-	if (argv0[0]=='.' && argv0[1]=='/') //¶cie¿ka wzglêdem bie¿±cego katalogu (./)
+	if (argv0[0] == '.' && argv0[1] == '/') //¶cie¿ka wzglêdem bie¿±cego katalogu (./)
 	{
-		if (getcwd(path, len-2)==NULL)
+		if (getcwd(path, len - 2) == NULL)
 		{
-			path[0]=0;
+			path[0] = 0;
 			kdebugf2();
 			return NULL;
 		}
-		strncat(path, argv0+1, len-1);
-		path[len-1]=0;
-		lastslash=strrchr(path, '/');
-		lastslash[1]=0;
-		kdebugf2();
-		return path;
-	}
-
-	if (argv0[0]=='.' && argv0[1]=='.' && argv0[2]=='/') //¶cie¿ka wzglêdem bie¿±cego katalogu (../)
-	{
-		if (getcwd(path, len-2)==NULL)
+		strncat(path, argv0 + 1, len - 1);
+		path[len - 1] = 0;
+		if (!delinkify(path, len))
 		{
-			path[0]=0;
 			kdebugf2();
 			return NULL;
 		}
-		strncat(path, "/", len-1);
-		strncat(path, argv0, len-1);
-		path[len-1]=0;
-		lastslash=strrchr(path, '/');
-		lastslash[1]=0;
+		lastslash = strrchr(path, '/');
+		lastslash[1] = 0;
 		kdebugf2();
 		return path;
 	}
 
-	if (argv0[0]=='/') //¶cie¿ka bezwzglêdna
+	if (argv0[0] == '.' && argv0[1] == '.' && argv0[2] == '/') //¶cie¿ka wzglêdem bie¿±cego katalogu (../)
 	{
-		strncpy(path, argv0, len-1);
-		path[len-1]=0;
-		lastslash=strrchr(path, '/');
-		lastslash[1]=0;
-		kdebugf2();
-		return path;
-	}
-
-	previous=getenv("PATH"); //szukamy we wszystkich katalogach, które s± w PATH
-	while((current=strchr(previous, ':')))
-	{
-		l=current-previous;
-		if (l>len-2)
+		if (getcwd(path, len - 2)==NULL)
 		{
-			path[0]=0;
+			path[0] = 0;
+			kdebugf2();
+			return NULL;
+		}
+		strncat(path, "/", len - 1);
+		strncat(path, argv0, len - 1);
+		path[len - 1] = 0;
+		if (!delinkify(path, len))
+		{
+			kdebugf2();
+			return NULL;
+		}
+		lastslash = strrchr(path, '/');
+		lastslash[1] = 0;
+		kdebugf2();
+		return path;
+	}
+
+	if (argv0[0] == '/') //¶cie¿ka bezwzglêdna
+	{
+		strncpy(path, argv0, len - 1);
+		path[len - 1] = 0;
+		if (!delinkify(path, len))
+		{
+			kdebugf2();
+			return NULL;
+		}
+		lastslash = strrchr(path, '/');
+		lastslash[1] = 0;
+		kdebugf2();
+		return path;
+	}
+
+	previous = getenv("PATH"); //szukamy we wszystkich katalogach, które s± w PATH
+	while((current = strchr(previous, ':')))
+	{
+		l = current - previous;
+		if (l > len - 2)
+		{
+			path[0] = 0;
 			kdebugf2();
 			return NULL;
 		}
 
 		memcpy(path, previous, l);
-		path[l]='/';
-		path[l+1]=0;
+		path[l] = '/';
+		path[l + 1] = 0;
 		strncat(path, argv0, len);
-		path[len-1]=0;
-		if (stat(path, &buf)!=-1)
+		path[len - 1] = 0;
+		if (!delinkify(path, len))
 		{
-			if (path[l-1]=='/')
-				path[l]=0;
+			kdebugf2();
+			return NULL;
+		}
+		if (stat(path, &buf) != -1)
+		{
+			if (path[l - 1] == '/')
+				path[l] = 0;
 			else
-				path[l+1]=0;
+				path[l + 1] = 0;
 			kdebugf2();
 			return path;
 		}
-		previous=current+1;
+		previous = current + 1;
 	}
 	//nie znale¼li¶my dot±d (bo szukali¶my ':'), wiêc mo¿e w pozosta³ej czê¶ci co¶ siê znajdzie?
-	strncpy(path, previous, len-2);
-	path[len-2]=0;
+	strncpy(path, previous, len - 2);
+	path[len - 2] = 0;
 
-	l=strlen(path);
-	path[l]='/';
-	path[l+1]=0;
+	l = strlen(path);
+	path[l] = '/';
+	path[l + 1] = 0;
 	strncat(path, argv0, len);
-	path[len-1]=0;
-	if (stat(path, &buf)!=-1)
+	path[len - 1] = 0;
+	if (!delinkify(path, len))
 	{
-		if (path[l-1]=='/')
-			path[l]=0;
+		kdebugf2();
+		return NULL;
+	}
+	if (stat(path, &buf) != -1)
+	{
+		if (path[l - 1] == '/')
+			path[l] = 0;
 		else
-			path[l+1]=0;
+			path[l + 1] = 0;
 		kdebugf2();
 		return path;
 	}
 	else
 	{
-		path[0]=0;
+		path[0] = 0;
 		kdebugf2();
 		return NULL;
 	}
-	kdebugf2();
 }
 
 static QString lib_path;
@@ -253,7 +318,7 @@ QString dataPath(const QString &p, const char *argv0)
 
 		//je¿eli ¶cie¿ki nie koñcz± siê na /share i /bin oraz gdy bez tych koñcówek
 		//¶cie¿ki siê nie pokrywaj±, to znaczy ¿e kto¶ ustawi³ rêcznie DATADIR lub BINDIR
-		if (!datadir.endsWith("/share") || !bindir.endsWith("/bin") || !libdir.endsWith("/lib") || 
+		if (!datadir.endsWith("/share") || !bindir.endsWith("/bin") || !libdir.endsWith("/lib") ||
 			datadir.left(datadir.length() - 6) != bindir.left(bindir.length() - 4) ||
 			bindir.left(bindir.length() - 4) != libdir.left(libdir.length() - 4))
 		{

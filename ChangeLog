@@ -464,6 +464,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawione akcje ignorowania i blokowania (neeo)
 * usuniêta, zgodnie z TODO, metoda GaduProtocol::logout() (neeo)
 * drobna optymalizacja w GaduProtocol (neeo)
+* poprawiona obs³uga sytuacji gdy Kadu uruchamiane jest przez link symboliczny
+  (np. gdy wrzuci siê Kadu do autostartu w KDE) (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
