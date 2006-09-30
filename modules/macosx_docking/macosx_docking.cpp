@@ -20,6 +20,10 @@
 #include "kadu.h"
 #include "misc.h"
 
+/**
+ * @ingroup macosx_docking
+ * @{
+ */
 MacOSXDocking::MacOSXDocking(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
@@ -88,3 +92,6 @@ extern "C" void macosx_docking_close()
 }
 
 MacOSXDocking *mac_docking;
+
+/** @} */
+

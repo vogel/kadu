@@ -19,6 +19,10 @@
 #include "userlist.h"
 #include "misc.h"
 
+/**
+ * @ingroup window_notify
+ * @{
+ */
 extern "C" int window_notify_init()
 {
 	kdebugf();
@@ -166,3 +170,6 @@ void WindowNotify::externalEvent(const QString &/*notifyType*/, const QString &m
 }
 
 WindowNotify *window_notify=NULL;
+
+/** @} */
+

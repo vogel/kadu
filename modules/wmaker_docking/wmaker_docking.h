@@ -4,6 +4,10 @@
 #include <qlabel.h>
 #include <qpixmap.h>
 
+/**
+ * @defgroup wmaker_docking WindowMaker docking
+ * @{
+ */
 class WMakerTrayIcon : public QLabel
 {
 	Q_OBJECT
@@ -28,5 +32,7 @@ class WMakerTrayIcon : public QLabel
 };
 
 extern WMakerTrayIcon* wmaker_tray_icon;
+
+/** @} */
 
 #endif

@@ -23,6 +23,10 @@
 #include "sms.h"
 #include "userbox.h"
 
+/**
+ * @ingroup sms
+ * @{
+ */
 extern "C" int sms_init()
 {
 	kdebugf();
@@ -687,3 +691,6 @@ void SmsSlots::sendSmsActionActivated(const UserGroup* users)
 }
 
 SmsSlots *smsslots;
+
+/** @} */
+

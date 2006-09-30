@@ -20,6 +20,10 @@
 #include "kadu.h"
 #include "config_dialog.h"
 
+/**
+ * @ingroup sound
+ * @{
+ */
 SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name),
 	muteitem(0), soundfiles(), soundNames(), soundTexts(),
 	SamplePlayingTestMsgBox(0), SamplePlayingTestDevice(0), SamplePlayingTestSample(0),
@@ -471,3 +475,6 @@ void SoundSlots::closeFullDuplexTest()
 	FullDuplexTestMsgBox = NULL;
 	kdebugf2();
 }
+
+/** @} */
+

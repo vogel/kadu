@@ -19,6 +19,11 @@
 #include "usergroup.h"
 #include "userlist.h"
 #include "../notify/notify.h"
+/**
+ * @defgroup sound Sound
+ * The sound module.
+ * @{
+ */
 
 /**
 	Uogólniony deskryptor urz±dzenia d¼wiêkowego.
@@ -344,5 +349,6 @@ class SoundManager : public Notifier
 };
 
 extern SoundManager* sound_manager;
+/** @} */
 
 #endif

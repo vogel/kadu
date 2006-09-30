@@ -14,6 +14,10 @@
 #include "protocol.h"
 #include "userlist.h"
 
+/**
+ * @defgroup notify Notify
+ * @{
+ */
 class Notifier : public QObject {
 	public:
 		Notifier(QObject *parent = 0, const char *name = 0) : QObject(parent, name) {};
@@ -174,5 +178,7 @@ class Notify : public QObject
 
 extern Notify *notify;
 extern NotifySlots *notify_slots;
+
+/** @} */
 
 #endif

@@ -8,6 +8,9 @@
 #include <qcstring.h>
 #include <qvaluelist.h>
 
+/** @ingroup notify
+ * @{
+ */
 class NotifySlots : public QObject
 {
 	Q_OBJECT
@@ -29,5 +32,7 @@ class NotifySlots : public QObject
 		void registerDisabledControl(const QCString &name);
 		void unregisterDisabledControl(const QCString &name);
 };
+
+/** @} */
 
 #endif

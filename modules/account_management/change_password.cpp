@@ -21,6 +21,9 @@
 #include "gadu.h"
 #include "config_file.h"
 
+/** @ingroup account_management
+ * @{
+ */
 ChangePassword::ChangePassword(QDialog *parent, const char *name) : QHBox(parent, name),
 	emailedit(0), newpwd(0), newpwd2(0), layoutHelper(new LayoutHelper())
 {
@@ -141,4 +144,6 @@ void ChangePassword::passwordChanged(bool ok)
 	}
 	kdebugf2();
 }
+
+/** @} */
 

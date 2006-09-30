@@ -13,6 +13,10 @@
 #include "sound_file.h"
 #include "debug.h"
 
+/**
+ * @ingroup sound
+ * @{
+ */
 SoundFile::SoundFile(const char *path):length(0),data(NULL),channels(-1),speed(0)
 {
 	SF_INFO info;
@@ -98,3 +102,6 @@ bool SoundFile::isOk()
 {
 	return (length!=0);
 }
+
+/** @} */
+

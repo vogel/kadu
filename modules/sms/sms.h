@@ -20,7 +20,10 @@
 #include "http_client.h"
 #include "misc.h"
 #include "userlist.h"
-
+/**
+ * @defgroup sms SMS
+ * @{
+ */
 class SmsImageDialog : public QDialog
 {
 	Q_OBJECT
@@ -159,5 +162,7 @@ class SmsSlots: public QObject
 };
 
 extern SmsSlots *smsslots;
+
+/** @} */
 
 #endif

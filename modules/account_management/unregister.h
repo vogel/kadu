@@ -10,7 +10,9 @@
 
 class LayoutHelper;
 class QResizeEvent;
-
+/** @ingroup account_management
+ * @{
+ */
 class Unregister : public QHBox {
 	Q_OBJECT
 
@@ -36,6 +38,6 @@ class Unregister : public QHBox {
 	protected:
 		virtual void resizeEvent(QResizeEvent *);
 };
-
+/** @} */
 #endif
 

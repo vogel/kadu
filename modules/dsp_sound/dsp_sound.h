@@ -5,6 +5,10 @@
 #include <qstringlist.h>
 #include "../sound/sound.h"
 
+/**
+ * @defgroup dsp_sound DSP sound
+ * @{
+ */
 class OSSPlayerSlots : public QObject
 {
 	Q_OBJECT
@@ -26,5 +30,7 @@ class OSSPlayerSlots : public QObject
 };
 
 extern OSSPlayerSlots *oss_player_slots;
+
+/** @} */
 
 #endif

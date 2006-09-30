@@ -4,6 +4,10 @@
 #include <qstring.h>
 #include "../sound/sound.h"
 
+/**
+ * @defgroup esd_sound ESD sound
+ * @{
+ */
 class ESDPlayer : public QObject
 {
 	Q_OBJECT
@@ -19,6 +23,8 @@ class ESDPlayer : public QObject
 };
 
 extern ESDPlayer *esd_player;
+
+/** @} */
 
 #endif
 

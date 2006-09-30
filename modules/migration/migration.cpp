@@ -26,6 +26,10 @@
 #include "message_box.h"
 #include "userlist.h"
 
+/**
+ * @ingroup migration
+ * @{
+ */
 MigrationDialog::MigrationDialog()
 	: QDialog(NULL, NULL, true), ShouldRestart(false), SettingsDirMigrationConfirmed(false),
 	ProgressListView(0), FinishLabel(0), FinishButton(0)
@@ -431,4 +435,6 @@ extern "C" void migration_close()
 
 	kdebugf2();
 }
+
+/** @} */
 

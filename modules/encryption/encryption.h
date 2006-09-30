@@ -5,6 +5,10 @@
 #include "chat.h"
 #include "misc.h"
 
+/**
+ * @defgroup encryption Encryption
+ * @{
+ */
 class EncryptionManager : public QObject
 {
 	Q_OBJECT
@@ -45,5 +49,6 @@ class SavePublicKey : public QDialog {
 		void yesClicked();
 };
 
+/** @} */
 
 #endif

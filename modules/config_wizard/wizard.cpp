@@ -31,6 +31,10 @@
 #include "userbox.h"
 #include "wizard.h"
 
+/**
+ * @ingroup config_wizard
+ * @{
+ */
 unsigned int informationPanelCount = sizeof(informationPanelSyntax) / sizeof(informationPanelSyntax[0]);
 unsigned int hintCount = sizeof(hintSyntax) / sizeof(hintSyntax[0]);
 unsigned int hintColorCount = sizeof(hintColors) / sizeof(hintColors[0]);
@@ -1491,3 +1495,6 @@ void Wizard::addScrolls(bool enableScrolls)
 
 Wizard *startWizardObj = NULL;
 WizardStarter *wizardStarter = NULL;
+
+/** @} */
+

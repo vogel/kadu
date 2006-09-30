@@ -15,6 +15,10 @@
 #include "debug.h"
 #include "../sound/sound.h"
 
+/**
+ * @ingroup esd_sound
+ * @{
+ */
 extern "C" int esd_sound_init()
 {
 	kdebugf();
@@ -197,3 +201,6 @@ void ESDPlayer::setFlushingEnabled(SoundDevice device, bool /*enabled*/)
 }
 
 ESDPlayer *esd_player;
+
+/** @} */
+

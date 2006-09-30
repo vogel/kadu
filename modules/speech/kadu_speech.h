@@ -8,6 +8,10 @@
 #include "userlist.h"
 #include "../notify/notify.h"
 
+/**
+ * @defgroup speech Speech
+ * @{
+ */
 class SpeechSlots : public Notifier
 {
 	Q_OBJECT
@@ -42,5 +46,7 @@ class SpeechSlots : public Notifier
 };
 
 extern SpeechSlots *speech_slots;
+
+/** @} */
 
 #endif

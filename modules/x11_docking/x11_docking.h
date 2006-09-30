@@ -6,7 +6,10 @@
 #include <qtimer.h>
 #include "gadu.h"
 
-
+/**
+ * @defgroup x11_docking X11 docking
+ * @{
+ */
 class X11TrayIcon : public QLabel
 {
 	Q_OBJECT
@@ -46,5 +49,7 @@ class TrayRestarter : public QObject
 		void restart();
 };
 extern TrayRestarter *tray_restarter;
+
+/** @} */
 
 #endif

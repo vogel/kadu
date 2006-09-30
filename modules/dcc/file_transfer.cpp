@@ -39,6 +39,10 @@
 
 #include "../notify/notify.h"
 
+/**
+ * @ingroup dcc
+ * @{
+ */
 uint32_t gg_fix32(uint32_t);
 
 FileTransfer::FileTransfer(FileTransferManager *listener,
@@ -1588,3 +1592,6 @@ void FileTransferManager::socketDestroying(DccSocket* socket)
 }
 
 FileTransferManager* file_transfer_manager = NULL;
+
+/** @} */
+

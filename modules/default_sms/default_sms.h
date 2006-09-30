@@ -3,6 +3,9 @@
 
 #include "../sms/sms.h"
 
+/** @defgroup default_sms Default SMS
+ * @{
+ */
 class SmsOrangeGateway : public SmsGateway
 {
 	Q_OBJECT
@@ -80,5 +83,7 @@ class SmsGatewaySlots: public QObject
 };
 
 extern SmsGatewaySlots* sms_gateway_slots;
+
+/** @} */
 
 #endif

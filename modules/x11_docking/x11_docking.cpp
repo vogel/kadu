@@ -26,6 +26,10 @@
 #include <X11/Xutil.h>
 #include <X11/Xatom.h>
 
+/**
+ * @ingroup x11_docking
+ * @{
+ */
 // this is experimental option
 //#define ENABLE_HIDING
 
@@ -365,3 +369,6 @@ void TrayRestarter::restart()
 TrayRestarter *tray_restarter = NULL;
 
 X11TrayIcon* x11_tray_icon = NULL;
+
+/** @} */
+

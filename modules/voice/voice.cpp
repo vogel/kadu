@@ -28,6 +28,10 @@
 #include "gadu.h"
 #include "message_box.h"
 
+/**
+ * @ingroup voice
+ * @{
+ */
 extern "C" int voice_init()
 {
 	voice_manager = new VoiceManager(NULL, "voice_manager");
@@ -770,3 +774,6 @@ void VoiceManager::setState(DccSocket *socket)
 
 QMap<DccSocket *, VoiceChatDialog *> VoiceChatDialog::Dialogs;
 VoiceManager *voice_manager = NULL;
+
+/** @} */
+

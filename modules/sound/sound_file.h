@@ -2,7 +2,9 @@
 #define KADU_SOUNDFILE_H
 
 #include "../../kadu-stdint.h"
-
+/** @ingroup sound
+ * @{
+ */
 class SoundFile
 {
 	//klasa automagicznie przy pomocy libsndfile konwertuje wszystko na d¼wiêk 16 bitowy
@@ -18,4 +20,5 @@ class SoundFile
 	void setVolume(float vol);
 	static void setVolume(int16_t *data, int length, float vol);
 };
+/** @} */
 #endif

@@ -14,6 +14,10 @@
 #include "config_dialog.h"
 #include <stdlib.h>
 
+/**
+ * @ingroup ext_sound
+ * @{
+ */
 extern "C" int ext_sound_init()
 {
 	kdebugf();
@@ -110,4 +114,6 @@ void ExternalPlayerSlots::choosePlayerFile()
 }
 
 ExternalPlayerSlots *external_player_slots;
+
+/** @} */
 

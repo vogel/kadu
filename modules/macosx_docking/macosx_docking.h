@@ -3,6 +3,10 @@
 
 #include <qobject.h>
 
+/**
+ * @defgroup mac_os_docking MacOS docking
+ * @{
+ */
 class MacOSXDocking : public QObject
 {
 	Q_OBJECT
@@ -17,6 +21,8 @@ class MacOSXDocking : public QObject
 };
 
 extern MacOSXDocking *mac_docking;
+
+/** @} */
 
 #endif
 

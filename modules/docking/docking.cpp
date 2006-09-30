@@ -24,6 +24,10 @@
 #include "status.h"
 #include "misc.h"
 
+/**
+ * @ingroup docking
+ * @{
+ */
 extern "C" int docking_init()
 {
 	docking_manager = new DockingManager(NULL, "docking_manager");
@@ -282,3 +286,6 @@ void DockingManager::setDocked(bool docked, bool butDontHideOnClose)
 }
 
 DockingManager* docking_manager = NULL;
+
+/** @} */
+

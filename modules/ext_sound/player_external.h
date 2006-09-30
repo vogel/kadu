@@ -3,6 +3,10 @@
 #include <qobject.h>
 #include <qstring.h>
 
+/**
+ * @defgroup ext_sound Ext sound
+ * @{
+ */
 class ExternalPlayerSlots : public QObject
 {
 	Q_OBJECT
@@ -16,5 +20,7 @@ class ExternalPlayerSlots : public QObject
 };
 
 extern ExternalPlayerSlots *external_player_slots;
+
+/** @} */
 
 #endif

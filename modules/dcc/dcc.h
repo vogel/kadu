@@ -9,6 +9,10 @@
 
 class QSocketNotifier;
 
+/**
+ * @defgroup dcc Dcc
+ * @{
+ */
 enum dccSocketState {
 	DCC_SOCKET_TRANSFERRING,
 	DCC_SOCKET_CONNECTION_BROKEN,
@@ -114,5 +118,7 @@ class DccManager : public QObject
 };
 
 extern DccManager* dcc_manager;
+
+/** @} */
 
 #endif

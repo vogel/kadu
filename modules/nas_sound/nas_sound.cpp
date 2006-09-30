@@ -13,6 +13,10 @@
 #include "debug.h"
 #include <qapplication.h>
 
+/**
+ * @ingroup nas_sound
+ * @{
+ */
 #ifdef INTERNAL_QT_SOUND_SUPPORT
 #include <qsound.h>
 #else
@@ -120,3 +124,6 @@ void NASPlayerSlots::dataReceived()
 }
 
 NASPlayerSlots *nas_player_slots;
+
+/** @} */
+

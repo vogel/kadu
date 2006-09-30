@@ -21,6 +21,10 @@
 #include "dsp_sound.h"
 #include "config_dialog.h"
 
+/**
+ * @ingroup dsp_sound
+ * @{
+ */
 extern "C" int dsp_sound_init()
 {
 	kdebugf();
@@ -300,3 +304,6 @@ int OSSPlayerSlots::read_all(int fd, char *buffer, int count)
 }
 
 OSSPlayerSlots *oss_player_slots;
+
+/** @} */
+

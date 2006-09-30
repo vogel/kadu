@@ -24,6 +24,10 @@
 #include "kadu_parser.h"
 #include "../notify/notify.h"
 
+/**
+ * @ingroup speech
+ * @{
+ */
 extern "C" int speech_init()
 {
 	kdebugf();
@@ -497,4 +501,6 @@ void SpeechSlots::chooseSpeechProgram()
 }
 
 SpeechSlots *speech_slots;
+
+/** @} */
 

@@ -17,6 +17,10 @@
 #include "debug.h"
 #include "modules.h"
 
+/**
+ * @ingroup default_sms
+ * @{
+ */
 extern "C" int default_sms_init()
 {
 	kdebugf();
@@ -477,3 +481,6 @@ SmsGateway* SmsGatewaySlots::isValidEra(const QString& number, QObject* parent)
 }
 
 SmsGatewaySlots* sms_gateway_slots;
+
+/** @} */
+

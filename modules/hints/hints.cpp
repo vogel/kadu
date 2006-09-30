@@ -10,6 +10,10 @@
 #include "hint_manager.h"
 #include "debug.h"
 
+/**
+ * @ingroup hints
+ * @{
+ */
 extern "C" int hints_init()
 {
 	kdebugf();
@@ -29,3 +33,6 @@ extern "C" void hints_close()
 	
 	kdebugf2();
 }
+
+/** @} */
+

@@ -25,6 +25,10 @@
 #include <qtimer.h>
 #include "arts_connector/common.c"
 
+/**
+ * @ingroup arts_sound
+ * @{
+ */
 aRtsDevice::aRtsDevice() : mutex(), inUse(), process(0), sock(-1), no(-1), valid(true)
 {
 }
@@ -410,3 +414,6 @@ void aRtsPlayerRecorder::setFlushingEnabled(SoundDevice device, bool enabled)
 }
 
 aRtsPlayerRecorder *arts_player_recorder;
+
+/** @} */
+

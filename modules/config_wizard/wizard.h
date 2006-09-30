@@ -15,6 +15,10 @@
 #include "chat.h"
 #include "misc.h"
 
+/**
+ * @defgroup config_wizard Config wizard
+ * @{
+ */
 class Wizard : public QWizard
 {
     Q_OBJECT
@@ -113,5 +117,7 @@ class WizardStarter : public QObject
 
 extern WizardStarter *wizardStarter;
 extern Wizard *startWizardObj;
+
+/** @} */
 
 #endif

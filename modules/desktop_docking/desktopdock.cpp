@@ -19,6 +19,10 @@
 #include "debug.h"
 #include "kadu.h"
 
+/**
+ * @ingroup desktop_docking
+ * @{
+ */
 extern "C" int desktop_docking_init()
 {
 	kdebugf();
@@ -262,3 +266,6 @@ void DesktopDockWindow::updateMenu(bool b)
 }
 
 DesktopDockWindow *desktop_dock_window;
+
+/** }@ */
+

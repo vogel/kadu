@@ -21,6 +21,10 @@
 #include "misc.h"
 #include "remind_password.h"
 
+/**
+ * @ingroup account_management
+ * @{
+ */
 RemindPassword::RemindPassword(QDialog *parent, const char *name) : QHBox(parent, name),
 	EmailEdit(0), layoutHelper(new LayoutHelper())
 {
@@ -117,3 +121,6 @@ void RemindPassword::reminded(bool ok)
 	close();
 	kdebugf2();
 }
+
+/** @} */
+

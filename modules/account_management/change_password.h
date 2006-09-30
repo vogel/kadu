@@ -7,7 +7,9 @@
 
 class LayoutHelper;
 class QResizeEvent;
-
+/** @ingroup account_management
+ * @{
+ */
 class ChangePassword : public QHBox {
 	Q_OBJECT
 	public:
@@ -26,5 +28,5 @@ class ChangePassword : public QHBox {
 	protected:
 		virtual void resizeEvent(QResizeEvent *);
 };
-
+/** @} */
 #endif

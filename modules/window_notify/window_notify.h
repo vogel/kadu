@@ -6,6 +6,10 @@
 #include "gadu.h"
 #include "../notify/notify.h"
 
+/**
+ * @defgroup window_notify Window notify
+ * @{
+ */
 class WindowNotify : public Notifier
 {
 	Q_OBJECT
@@ -28,5 +32,7 @@ class WindowNotify : public Notifier
 };
 
 extern WindowNotify *window_notify;
+
+/** @} */
 
 #endif

@@ -2,7 +2,10 @@
 #define ACC_MAN_H
 
 #include <qobject.h>
-
+/**
+ * @defgroup account_management "Account management"
+ * @{
+ */
 class AccountManagement : public QObject
 {
 	Q_OBJECT
@@ -24,5 +27,5 @@ class AccountManagement : public QObject
 };
 
 extern AccountManagement *account_management;
-
+/** @} */
 #endif

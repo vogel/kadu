@@ -19,6 +19,9 @@ class QProgressBar;
 class QVBoxLayout;
 class FileTransferManager;
 
+/** @ingroup dcc
+ * @{
+ */
 class FileTransfer : public QObject
 {
 	Q_OBJECT
@@ -291,5 +294,7 @@ class FileTransferManager : public QObject
 };
 
 extern FileTransferManager* file_transfer_manager;
+
+/** @} */
 
 #endif

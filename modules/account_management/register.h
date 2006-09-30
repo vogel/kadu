@@ -14,6 +14,8 @@ class QResizeEvent;
 
 /**
 	Dialog umo¿liwiaj±cy rejestracjê nowego u¿ytkownika
+	@ingroup account_management
+	@{
 **/
 class Register : public QHBox {
 	Q_OBJECT
@@ -42,5 +44,5 @@ class Register : public QHBox {
 	protected:
 		virtual void resizeEvent(QResizeEvent *);
 };
-
+/** @} */
 #endif

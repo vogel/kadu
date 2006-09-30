@@ -34,6 +34,11 @@ extern "C"
 // for mkdir
 #include <sys/stat.h>
 
+/**
+ * @ingroup encryption
+ * @{
+ */
+
 EncryptionManager* encryption_manager;
 
 extern "C" int encryption_init()
@@ -423,3 +428,6 @@ void SavePublicKey::yesClicked()
 
 	kdebugf2();
 }
+
+/** @} */
+

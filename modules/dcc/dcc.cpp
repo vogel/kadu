@@ -32,6 +32,10 @@
 #include "message_box.h"
 #include "userlist.h"
 
+/**
+ * @ingroup dcc
+ * @{
+ */
 extern "C" int dcc_init()
 {
 	kdebugf();
@@ -662,3 +666,6 @@ void DccManager::callbackReceived(DccSocket *sock)
 }
 
 DccManager* dcc_manager = NULL;
+
+/** @} */
+

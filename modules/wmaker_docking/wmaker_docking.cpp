@@ -22,6 +22,10 @@
 #include <X11/Xutil.h>
 #include <X11/Xatom.h>
 
+/**
+ * @ingroup wmaker_docking
+ * @{
+ */
 extern Time qt_x_time;
 
 extern "C" int wmaker_docking_init()
@@ -159,3 +163,6 @@ void WMakerTrayIcon::mousePressEvent(QMouseEvent * e)
 }
 
 WMakerTrayIcon* wmaker_tray_icon = NULL;
+
+/** @} */
+

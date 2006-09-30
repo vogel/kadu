@@ -6,6 +6,9 @@
 #include "message_box.h"
 #include "sound.h"
 
+/** @ingroup sound
+ * @{
+ */
 class SoundSlots : public QObject
 {
 	Q_OBJECT
@@ -52,4 +55,5 @@ class SoundSlots : public QObject
 		~SoundSlots();
 };
 
+/** @} */
 #endif

@@ -4,6 +4,10 @@
 #include <qlabel.h>
 #include <qpixmap.h>
 
+/**
+ * @defgroup docking Docking
+ * @{
+ */
 class DockingManager : public QObject
 {
 	Q_OBJECT
@@ -48,5 +52,7 @@ class DockingManager : public QObject
 };
 
 extern DockingManager* docking_manager;
+
+/** @} */
 
 #endif

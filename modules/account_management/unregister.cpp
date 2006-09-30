@@ -22,6 +22,10 @@
 #include "misc.h"
 #include "unregister.h"
 
+/**
+ * @ingroup account_management
+ * @{
+ */
 Unregister::Unregister(QDialog *parent, const char *name) : QHBox(parent, name),
 	uin(0), pwd(0), status(0), updateconfig(0), layoutHelper(new LayoutHelper())
 {
@@ -147,4 +151,6 @@ void Unregister::deleteConfig() {
 
 	kdebugf2();
 }
+
+/** @} */
 

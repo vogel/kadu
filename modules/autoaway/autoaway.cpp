@@ -26,6 +26,10 @@
 #include "message_box.h"
 #include "misc.h"
 
+/**
+ * @ingroup autoaway
+ * @{
+ */
 AutoAwayTimer *autoaway_object=NULL;
 AutoAwaySlots *autoawayslots=NULL;
 
@@ -483,3 +487,6 @@ AutoAwaySlots::~AutoAwaySlots()
 	ConfigDialog::removeControl("General", "AutoStatus Description");
 	kdebugf2();
 }
+
+/** @} */
+

@@ -27,6 +27,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+/**
+ * @ingroup account_management
+ * @{
+ */
 void Register::createConfig()
 {
 	kdebugf();
@@ -213,3 +217,6 @@ void Register::ask() {
 		}
 	kdebugf2();
 }
+
+/** @} */
+

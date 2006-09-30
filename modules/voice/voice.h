@@ -16,6 +16,10 @@ extern "C" {
 class PlayThread;
 class RecordThread;
 
+/**
+ * @defgroup voice Voice
+ * @{
+ */
 struct gsm_sample
 {
 	char *data;
@@ -133,5 +137,7 @@ class RecordThread : public QObject, public QThread
 };
 
 extern VoiceManager *voice_manager;
+
+/** @} */
 
 #endif

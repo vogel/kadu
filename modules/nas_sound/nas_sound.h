@@ -3,7 +3,10 @@
 #include <qobject.h>
 #include <qstring.h>
 #include <qglobal.h>
-
+/**
+ * @defgroup nas_sound NAS sound
+ * @{
+ */
 #ifdef Q_OS_WIN
 #define INTERNAL_QT_SOUND_SUPPORT
 #endif
@@ -37,5 +40,7 @@ class NASPlayerSlots : public QObject
 };
 
 extern NASPlayerSlots *nas_player_slots;
+
+/** @} */
 
 #endif

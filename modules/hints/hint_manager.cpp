@@ -25,6 +25,10 @@
 #include "userbox.h"
 #include "userlist.h"
 
+/**
+ * @ingroup hints
+ * @{
+ */
 #define FRAME_WIDTH 1
 
 HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, name),
@@ -836,3 +840,6 @@ void HintManager::externalEvent(const QString &/*notifyType*/, const QString &ms
 }
 
 HintManager *hint_manager=NULL;
+
+/** @} */
+

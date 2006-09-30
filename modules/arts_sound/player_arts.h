@@ -7,7 +7,10 @@
 #include "../sound/sound.h"
 
 class QProcess;
-
+/**
+ * @defgroup arts_sound aRts Sound
+ * @{
+ */
 class aRtsDevice : public QObject
 {
 	Q_OBJECT
@@ -49,5 +52,7 @@ class aRtsPlayerRecorder : public QObject
 
 
 extern aRtsPlayerRecorder *arts_player_recorder;
+
+/** @} */
 
 #endif

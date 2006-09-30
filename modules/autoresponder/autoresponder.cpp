@@ -15,6 +15,10 @@
 #include "kadu.h"
 #include "kadu_parser.h"
 
+/**
+ * @ingroup autoresponder
+ * @{
+ */
 extern "C" int autoresponder_init()
 {
 	autoresponder = new AutoResponder(NULL, "autoresponder");
@@ -113,3 +117,6 @@ void AutoResponder::chatOpened(const UserGroup *group)
 }
 
 AutoResponder* autoresponder;
+
+/** @} */
+

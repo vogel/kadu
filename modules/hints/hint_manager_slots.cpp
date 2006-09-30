@@ -21,6 +21,10 @@
 #include "debug.h"
 #include "misc.h"
 
+/**
+ * @ingroup hints
+ * @{
+ */
 HintProperties::HintProperties() : font(), fgcolor(), bgcolor(), timeout(0)
 {
 }
@@ -274,3 +278,6 @@ HintProperties HintProperties::fromString(const QString &oldstring)
 	kdebugf2();
 	return prop;
 }
+
+/** @} */
+

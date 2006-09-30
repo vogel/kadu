@@ -19,6 +19,9 @@
 #include "remind_password.h"
 #include "account_management.h"
 
+/** @ingroup account_management
+ * @{
+ */
 extern "C" int account_management_init()
 {
 	kdebugf();
@@ -88,3 +91,6 @@ void AccountManagement::changePassword()
 }
 
 AccountManagement *account_management=NULL;
+
+/** @} */
+

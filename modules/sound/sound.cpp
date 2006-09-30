@@ -32,6 +32,10 @@
 
 #include "sound_slots.h"
 
+/**
+ * @ingroup sound
+ * @{
+ */
 SoundManager* sound_manager=NULL;
 SoundSlots* sound_slots;
 
@@ -830,3 +834,6 @@ SndParams::SndParams(const SndParams &p) : filename(p.filename),
 						volumeControl(p.volumeControl), volume(p.volume)
 {
 }
+
+/** @} */
+

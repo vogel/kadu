@@ -15,6 +15,10 @@
 #include "debug.h"
 #include "../sound/sound.h"
 
+/**
+ * @ingroup alsa_sound
+ * @{
+ */
 struct ALSADevice
 {
 	snd_pcm_t *player;
@@ -484,3 +488,6 @@ void ALSAPlayerSlots::setFlushingEnabled(SoundDevice device, bool /*enabled*/)
 }
 
 ALSAPlayerSlots *alsa_player_slots;
+
+/** @} */
+

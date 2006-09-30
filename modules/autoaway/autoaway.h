@@ -7,7 +7,10 @@
 #include <qevent.h>
 
 #include "gadu.h"
-
+/**
+ * @defgroup autoaway Autoaway
+ * @{
+ */
 class AutoAwaySlots : public QObject
 {
 	Q_OBJECT
@@ -64,5 +67,7 @@ class AutoAwayTimer : private QTimer
 		GaduStatus oldStatus;
 		int idleTime;
 };
+
+/** @} */
 
 #endif

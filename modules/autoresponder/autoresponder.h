@@ -7,7 +7,10 @@
 #include "misc.h"
 #include "protocol.h"
 #include "usergroup.h"
-
+/**
+ * @defgroup autoresponder Autoresponder
+ * @{
+ */
 class AutoResponder : public QObject
 {
 	Q_OBJECT
@@ -24,5 +27,7 @@ class AutoResponder : public QObject
 };
 
 extern AutoResponder* autoresponder;
+
+/** @} */
 
 #endif

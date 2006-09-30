@@ -6,6 +6,10 @@
 #include <qlabel.h>
 #include <qpushbutton.h>
 
+/**
+ * @defgroup migration Migration
+ * @{
+ */
 class MigrationDialog : public QDialog
 {
 	Q_OBJECT
@@ -38,5 +42,7 @@ class MigrationDialog : public QDialog
 		~MigrationDialog();
 		void migrate();
 };
+
+/** @} */
 
 #endif

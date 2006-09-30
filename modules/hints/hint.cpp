@@ -12,6 +12,10 @@
 #include "debug.h"
 #include "config_file.h"
 
+/**
+ * @ingroup hints
+ * @{
+ */
 Hint::Hint(QWidget *parent, const QString& text, const QPixmap& pixmap, unsigned int timeout) :
 	QHBoxLayout(0, "Hint"), icon(0), label(0), bcolor(), secs(timeout), ident(0), users()
 {
@@ -162,4 +166,6 @@ void Hint::getData(QString &text, QPixmap &pixmap, unsigned int &timeout, QFont 
 	fgcolor=label->paletteForegroundColor();
 	bgcolor=bcolor;
 }
+
+/** @} */
 

@@ -6,6 +6,9 @@
 
 /* DesktopDockWindow - ikonka dokujaca */
 
+/** @defgroup desktopdock Desktop docking
+ * @{
+ */
 class DesktopDockWindow : public QLabel
 {
 	Q_OBJECT
@@ -34,4 +37,7 @@ class DesktopDockWindow : public QLabel
 };
 
 extern DesktopDockWindow *desktop_dock_window;
+
+/** @} */
+
 #endif
