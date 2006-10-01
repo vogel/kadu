@@ -157,8 +157,8 @@ SearchResult::SearchResult() :
 {
 }
 
-SearchResult::SearchResult(const SearchResult& copyFrom) : 
-	Uin(copyFrom.Uin), 
+SearchResult::SearchResult(const SearchResult& copyFrom) :
+	Uin(copyFrom.Uin),
 	First(copyFrom.First),
 	Last(copyFrom.Last),
 	Nick(copyFrom.Nick),
@@ -397,7 +397,7 @@ GaduProtocol::GaduProtocol(const QString &id, QObject *parent, const char *name)
 		Mode(Register), DataUin(0), DataEmail(), DataPassword(), DataNewPassword(), TokenId(), TokenValue(),
 		ServerNr(0), ActiveServer(0), LoginParams(), Sess(0), whileConnecting(false), DccExternalIP(),
 		SocketNotifiers(new GaduSocketNotifiers(this, "gadu_socket_notifiers")), PingTimer(0),
-		SendUserListTimer(new QTimer(this, "SendUserListTimer")), 
+		SendUserListTimer(new QTimer(this, "SendUserListTimer")),
 		UserListClear(false), ImportReply()
 {
 	kdebugf();
@@ -823,23 +823,7 @@ void GaduProtocol::errorSlot(GaduError err)
 	kdebugf();
 	QString msg = QString::null;
 
-	ConnectionTimeoutTimer::off();
-
-	if (PingTimer)
-	{
-		PingTimer->stop();
-		delete PingTimer;
-		PingTimer = NULL;
-	}
-
-	SocketNotifiers->stop();
-
-	if (Sess)
-	{
-		gg_logoff(Sess);
-		gg_free_session(Sess);
-		Sess = NULL;
-	}
+	disconnectedSlot();
 
 	emit error(err);
 
@@ -882,23 +866,19 @@ void GaduProtocol::errorSlot(GaduError err)
 		case ConnectionTlsError:
 			msg = tr("Unable to connect, error of negotiation TLS");
 			break;
-			
+
 		case ConnectionIntruderError:
 			msg = tr("To many connection attempts with bad password!");
 			continue_connecting = false;
 			MessageBox::wrn(tr("Connection will be stoped\nTo many attempts with bad password"));
 			break;
-			
+
 		case ConnectionUnavailableError:
 			msg = tr("Unable to connect, servers are down");
 			break;
 
 		case ConnectionUnknow:
 			kdebugm(KDEBUG_INFO, "Connection broken unexpectedly!\nUnscheduled connection termination\n");
-
-			userlist->setAllOffline("Gadu");
-			CurrentStatus->setOffline(QString::null);
-			emit disconnected();
 			break;
 
 		case ConnectionTimeout:
@@ -907,9 +887,6 @@ void GaduProtocol::errorSlot(GaduError err)
 
 		case Disconnected:
 			msg = tr("Disconnection has occured");
-			userlist->setAllOffline("Gadu");
-			CurrentStatus->setOffline(QString::null);
-			emit disconnected();
 			break;
 
 		default:

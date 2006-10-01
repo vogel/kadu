@@ -298,7 +298,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniêty denerwuj±cy problem przeskakiwania listy kontaktów przy zmianie
   czyjego¶ statusu (joi)
 * optymalizacje w dzia³aniu przy ³±czeniu siê z serwerem; ikonka w trayu
-  nie zacina siê gdy serwery natychmiastowo odrzucaj± po³±czenie (joi)
+  nie zacina siê gdy serwery natychmiastowo odrzucaj± po³±czenie (pó¼niej wycofane) (joi)
 * rozwi±zany jeszcze jeden problem z list± kontaktów: je¿eli zaznaczymy
   sobie jaki¶ kontakt, przesuniemy suwak gdzie indziej, ukryjemy okno programu
   i je przywrócimy, to suwak wraca na w³a¶ciw± pozycjê (joi)
@@ -466,6 +466,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * drobna optymalizacja w GaduProtocol (neeo)
 * poprawiona obs³uga sytuacji gdy Kadu uruchamiane jest przez link symboliczny
   (np. gdy wrzuci siê Kadu do autostartu w KDE) (joi)
+* wycofanie zmian (z 11 i 12 marca) w obs³udze b³êdów po³±czenia, które powodowa³y,
+  ¿e Kadu nie zauwa¿a³o, ¿e serwer zerwa³ po³±czenie (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
