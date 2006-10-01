@@ -562,7 +562,10 @@ void GaduProtocol::iWantGoOffline(const QString &desc)
 	if (CurrentStatus->isOffline())
 	{
 		if (whileConnecting)
+		{
 			whileConnecting = false;
+			disconnectedSlot();
+		}
 		return;
 	}
 
