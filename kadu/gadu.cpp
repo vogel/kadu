@@ -860,7 +860,7 @@ void GaduProtocol::errorSlot(GaduError err)
 		case ConnectionIncorrectPassword:
 			msg = tr("Unable to connect, incorrect password");
 			continue_connecting = false;
-			MessageBox::wrn(tr("Connection will be stoped\nYour password is incorrect !"));
+			MessageBox::wrn(tr("Connection will be stopped\nYour password is incorrect!"));
 			break;
 
 		case ConnectionTlsError:
@@ -868,9 +868,9 @@ void GaduProtocol::errorSlot(GaduError err)
 			break;
 
 		case ConnectionIntruderError:
-			msg = tr("To many connection attempts with bad password!");
+			msg = tr("Too many connection attempts with bad password!");
 			continue_connecting = false;
-			MessageBox::wrn(tr("Connection will be stoped\nTo many attempts with bad password"));
+			MessageBox::wrn(tr("Connection will be stopped\nToo many attempts with bad password"));
 			break;
 
 		case ConnectionUnavailableError:
@@ -890,7 +890,7 @@ void GaduProtocol::errorSlot(GaduError err)
 			break;
 
 		default:
-			kdebugm(KDEBUG_WARNING, "Unhandled error?\n");
+			kdebugm(KDEBUG_ERROR, "Unhandled error? (%d)\n", int(err));
 			break;
 	}
 
