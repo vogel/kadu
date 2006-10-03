@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "gadu.h"
+#include "misc.h"
 #include "userlistelement.h"
 
 class QFontMetrics;
