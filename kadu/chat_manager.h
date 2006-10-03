@@ -24,21 +24,22 @@ class ChatManager : public QObject
 	Q_OBJECT
 
 	private:
-		ChatList Chats;/*!< lista okien*/
+		ChatList Chats; /*!< lista okien*/
 
 		static ChatManagerSlots *chatslots;
+
 		/**
-		\fn int openPendingMsg(int index, ChatMessage &msg)
-		Funkcja otwieraj±ca zakolejkowan± wiadomo¶æ
-		\param index nr wiadomo¶ci z kolejki
-		\param msg wiadomo¶æ z kolejki
-		\return zwracany jest nr okna w którym zosta³a otwarta wiadomo¶æ
+			\fn int openPendingMsg(int index, ChatMessage &msg)
+			Funkcja otwieraj±ca zakolejkowan± wiadomo¶æ
+			\param index nr wiadomo¶ci z kolejki
+			\param msg wiadomo¶æ z kolejki
+			\return zwracany jest nr okna w którym zosta³a otwarta wiadomo¶æ
 		**/
 		int openPendingMsg(int index, ChatMessage &msg);
 
 		/**
-		\struct ChatInfo
-		Struktura przechowuje informacje o danym oknie
+			\struct ChatInfo
+			Struktura przechowuje informacje o danym oknie
 		**/
 		struct ChatInfo
 		{
@@ -75,10 +76,10 @@ class ChatManager : public QObject
 
 	public:
 		/**
-		\fn ChatManager(QObject* parent=NULL, const char* name=NULL)
-		Konstruktor tworz±cy obiekt zarz±dzaj±cy oknami
-		\param parent rodzic okna
-		\param name nazwa obiektu
+			\fn ChatManager(QObject* parent=NULL, const char* name=NULL)
+			Konstruktor tworz±cy obiekt zarz±dzaj±cy oknami
+			\param parent rodzic okna
+			\param name nazwa obiektu
 		**/
 		ChatManager(QObject* parent=NULL, const char* name=NULL);
 
@@ -86,13 +87,7 @@ class ChatManager : public QObject
 			\fn ~ChatManager()
 			Destruktor zamyka wszystkie otwarte okna
 		**/
-
 		~ChatManager();
-
-		/**
-			\fn const ChatList& chats() const
-			Funkcja zwraca liste otwartych okien Chat
-		**/
 
 		/**
 			\fn static void initModule()
@@ -100,8 +95,16 @@ class ChatManager : public QObject
 		**/
 		static void initModule();
 
+		/**
+			\fn static void closeModule()
+			Wyrejestrowuje opcje modu³u z okna konfiguracji
+		**/
 		static void closeModule();
 
+		/**
+			\fn const ChatList& chats() const
+			Funkcja zwraca listê otwartych okien Chat
+		**/
 		const ChatList& chats() const;
 
 		/**

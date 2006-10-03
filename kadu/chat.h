@@ -58,12 +58,12 @@ class Chat : public QMainWindow
 		QColor actcolor; /*!< zmienna przechowuj±ca aktualny kolor */
 
 		CustomInput* Edit; /*!< okno do wpisywania wiadomo¶ci */
-		QMimeSourceFactory *bodyformat; /*!< zmienna ustawiaj±cy format */
+		QMimeSourceFactory *bodyformat; /*!< zmienna ustawiaj±ca format */
 		EmoticonSelector* emoticon_selector; /*!< okienko do
 							wyboru emotikonek */
 		ColorSelector* color_selector; /*!< okienko do wyboru koloru */
-		bool AutoSend;
-		bool ScrollLocked;
+		bool AutoSend; /*!< okre¶la czy Return powoduje wys³anie wiadomo¶ci */
+		bool ScrollLocked; /*!< blokuje przewijanie okna rozmowy */
 		bool WaitingForACK;
 		UserBox* userbox; /*!< lista kontaktów przydatna gdy jeste¶my w
 						 konferencji */
@@ -74,17 +74,17 @@ class Chat : public QMainWindow
 		int seq; /* ?? */
 		KaduSplitter *vertSplit, *horizSplit; /*!< obiekty oddzielaj±ce
 							 kontrolki od siebie */
-		int ParagraphSeparator; /* odstêp miêdzy kolejnymi wypowiedziami */
+		int ParagraphSeparator; /*!< odstêp miêdzy kolejnymi wypowiedziami */
 
 		QDateTime lastMsgTime; /*!< czas ostatniej wiadomo¶ci */
 
 		//pomijanie nag³ówków w wiadomo¶ciach
 		QString PreviousMessage;           //pamiêtamy od kogo by³a ostatnia wiadomo¶æ
-		bool CfgNoHeaderRepeat;         //czy chcemy w ogóle u¿ywaæ okrojonych nag³ówków ?
-		int CfgHeaderSeparatorHeight;      //jaki wysoki chcemy mieæ separator ?
-		int CfgNoHeaderInterval;        //co ile chcemy przywróciæ nag³ówek ?
+		bool CfgNoHeaderRepeat; /*!< okre¶la czy u¿ywamy usuwania nag³ówków */
+		int CfgHeaderSeparatorHeight; /*!< wysoko¶æ separatora nag³ówków */
+		int CfgNoHeaderInterval; /*!< interwa³ po jakim przywracany jest nag³ówek */
 
-		ChatStyle* Style;
+		ChatStyle* Style; /*!< styl okna rozmowy */
 
 		time_t LastTime;
 
@@ -266,9 +266,19 @@ class Chat : public QMainWindow
 		**/
 		const QString& title() const;
 
+		/**
+			\fn CustonInput* edit()
+			Zwraca wska¼nik do okna wpisywania wiadomo¶ci
+		**/
 		CustomInput* edit();
 
+		/**
+			\fn bool autoSend() const
+			Zwraca warto¶æ okre¶laj±c±, czy Return powoduje
+			wys³anie wiadomo¶ci.
+		**/
 		bool autoSend() const;
+
 		bool waitingForACK() const;
 
 		virtual void dragEnterEvent(QDragEnterEvent *e);
@@ -446,7 +456,7 @@ class Chat : public QMainWindow
 
 		/**
 			\fn void messageFiltering(const UserGroup *users, QCString& msg, bool& stop)
-			Sygnal daje mozliwosc operowania na wiadomoci
+			Sygnal daje mozliwosc operowania na wiadomosci
 			ktora ma byc wyslana do serwera juz w jej docelowej
 			formie po konwersji z unicode i innymi zabiegami.
 			Tresc wiadomosci mozna zmienic podmieniajac wskaznik
@@ -481,8 +491,20 @@ class Chat : public QMainWindow
 		**/
 		void messageSentAndConfirmed(UserListElements receivers, const QString& message);
 
+		/**
+			\fn void fileDropped(const UserGroup *users, const QString& fileName)
+			Sygna³ jest emitowany, gdy w oknie Chat
+			upuszczono plik.
+			\param users lista u¿ytkowników
+			\param fileName nazwa pliku
+		**/
 		void fileDropped(const UserGroup *users, const QString &fileName);
 
+		/**
+			\fn void windowActivationChanged(bool b, const UserGroup* users)
+			\param b ??
+			\param users lista u¿ytkowników
+		**/
 		void windowActivationChanged(bool b, const UserGroup *users);
 };
 
