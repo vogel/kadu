@@ -37,9 +37,9 @@ void UserInfo::resizeEvent(QResizeEvent * /*e*/)
 }
 
 UserInfo::UserInfo(UserListElement user, QDialog* parent, const char *name)
-	: QHBox(parent, name), user(user), e_firstname(0), e_lastname(0), e_nickname(0), 
-	e_altnick(0), e_mobile(0), e_uin(0), e_addr(0), e_ver(0), e_email(0), e_dnsname(0), 
-	c_blocking(0), c_offtouser(0), c_notify(0), pb_addapply(0), tw_main(0), vgb_general(0), 
+	: QHBox(parent, name), User(user), e_firstname(0), e_lastname(0), e_nickname(0),
+	e_altnick(0), e_mobile(0), e_uin(0), e_addr(0), e_ver(0), e_email(0), e_dnsname(0),
+	c_blocking(0), c_offtouser(0), c_notify(0), pb_addapply(0), tw_main(0), vgb_general(0),
 	dns(0), groups(), hiddenCheckBoxes(), newGroup(0), groupsBox(0), layoutHelper(new LayoutHelper())
 {
 	kdebugf();
@@ -77,7 +77,7 @@ UserInfo::UserInfo(UserListElement user, QDialog* parent, const char *name)
 	bottom->setSpacing(5);
 	w_blankwidget->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
-	if (!userlist->contains(user, FalseForAnonymous))
+	if (!userlist->contains(User, FalseForAnonymous))
 	{
 		setCaption(tr("Add user"));
 		l_icon->setPixmap(icons_manager->loadIcon("AddUserWindowIcon"));
@@ -85,7 +85,7 @@ UserInfo::UserInfo(UserListElement user, QDialog* parent, const char *name)
 	}
 	else
 	{
-		setCaption(tr("User info on %1").arg(user.altNick()));
+		setCaption(tr("User info on %1").arg(User.altNick()));
 		l_icon->setPixmap(icons_manager->loadIcon("ManageUsersWindowIcon"));
 		pb_addapply = new QPushButton(icons_manager->loadIcon("UpdateUserButton"), tr("Update"), bottom, "update");
 	}
@@ -191,7 +191,7 @@ void UserInfo::setupTab1()
 	// Protocol Version
 	QHBox *hb_protversion = new QHBox(vgb_general);
 	QVBox *vb_protversion = new QVBox(hb_protversion);
-	QVBox *vb_empty = new QVBox(hb_protversion);
+	QVBox *vb_empty = new QVBox(hb_protversion, "space_for_advanced_userlist");
 	hb_protversion->setSpacing(3);
 	vb_protversion->setSpacing(3);
 	vb_empty->setSpacing(3);
@@ -213,46 +213,46 @@ void UserInfo::setupTab1()
 	e_ver->setReadOnly(true);
 	e_dnsname->setReadOnly(true);
 
-	e_nickname->setText(user.nickName());
-	e_altnick->setText(user.altNick());
-	e_firstname->setText(user.firstName());
-	e_lastname->setText(user.lastName());
-	e_mobile->setText(user.mobile());
-	e_email->setText(user.email());
+	e_nickname->setText(User.nickName());
+	e_altnick->setText(User.altNick());
+	e_firstname->setText(User.firstName());
+	e_lastname->setText(User.lastName());
+	e_mobile->setText(User.mobile());
+	e_email->setText(User.email());
 
-	if (user.usesProtocol("Gadu"))
+	if (User.usesProtocol("Gadu"))
 	{
-		e_uin->setText(user.ID("Gadu"));
-		if (user.hasIP("Gadu"))
-			e_addr->setText(user.IP("Gadu").toString());
+		e_uin->setText(User.ID("Gadu"));
+		if (User.hasIP("Gadu"))
+			e_addr->setText(User.IP("Gadu").toString());
 		else
 			e_addr->setText(tr("(Unknown)"));
 
-		if (user.port("Gadu"))
-			e_addr->setText(e_addr->text() + ':' + QString::number(user.port("Gadu")));
+		if (User.port("Gadu"))
+			e_addr->setText(e_addr->text() + ':' + QString::number(User.port("Gadu")));
 		else
 			e_addr->setText(e_addr->text() + ':' + tr("(Unknown)"));
 
-		if (user.protocolData("Gadu", "Version").toUInt())
+		if (User.protocolData("Gadu", "Version").toUInt())
 		{
-			s_temp.sprintf("0x%02x", user.protocolData("Gadu", "Version").toUInt() & 0x0000ffff);
+			s_temp.sprintf("0x%02x", User.protocolData("Gadu", "Version").toUInt() & 0x0000ffff);
 			e_ver->setText(s_temp);
 		}
 		else
 			e_ver->setText(tr("(Unknown)"));
-		e_status->setText(tr(user.status("Gadu").name().ascii()));
-		tw_main->setTabIconSet(vgb_general, user.status("Gadu").pixmap());
+		e_status->setText(tr(User.status("Gadu").name().ascii()));
+		tw_main->setTabIconSet(vgb_general, User.status("Gadu").pixmap());
 
-		if (user.hasIP("Gadu"))
+		if (User.hasIP("Gadu"))
 		{
-			if (user.DNSName("Gadu").isEmpty())
+			if (User.DNSName("Gadu").isEmpty())
 			{
-				dns->setLabel(user.IP("Gadu"));
+				dns->setLabel(User.IP("Gadu"));
 				dns->setRecordType(QDns::Ptr);
 				connect(dns, SIGNAL(resultsReady()), this, SLOT(resultsReady()));
 			}
 			else
-				e_dnsname->setText(user.DNSName("Gadu"));
+				e_dnsname->setText(User.DNSName("Gadu"));
 		}
 	}
 
@@ -269,7 +269,7 @@ void UserInfo::setupTab2()
 
 	QStringList allGroups = groups_manager->groups();
 
-	QStringList userGroups = user.data("Groups").toStringList();
+	QStringList userGroups = User.data("Groups").toStringList();
 
 	groupsBox = new QVBox(groupsTab);
 	groupsBox->setSpacing(3);
@@ -370,12 +370,12 @@ void UserInfo::setupTab3()
 	if (!config_file.readBoolEntry("General", "PrivateStatus"))
 		c_offtouser->setEnabled(false);
 
-	if (user.usesProtocol("Gadu"))
+	if (User.usesProtocol("Gadu"))
 	{
-		c_blocking->setChecked(user.protocolData("Gadu", "Blocking").toBool());
-		c_offtouser->setChecked(user.protocolData("Gadu", "OfflineTo").toBool());
+		c_blocking->setChecked(User.protocolData("Gadu", "Blocking").toBool());
+		c_offtouser->setChecked(User.protocolData("Gadu", "OfflineTo").toBool());
 	}
-	c_notify->setChecked(user.notify());
+	c_notify->setChecked(User.notify());
 	// end Misc options
 
 	kdebugf2();
@@ -404,7 +404,7 @@ void UserInfo::resultsReady()
 void UserInfo::updateUserlist()
 {
 	kdebugf();
-	
+
 	QString id = QString::number(0);
 	if (!e_uin->text().isEmpty())
 		id = e_uin->text();
@@ -416,10 +416,10 @@ void UserInfo::updateUserlist()
 		return;
 	}
 
-	if (userlist->contains("Gadu", id) && userlist->byID("Gadu", id) != user)
+	if (userlist->contains("Gadu", id) && userlist->byID("Gadu", id) != User)
 	{
 		if (userlist->byID("Gadu", id).isAnonymous())
-			user = userlist->byID("Gadu", id);
+			User = userlist->byID("Gadu", id);
 		else
 		{
 			QMessageBox::information(this, "Kadu", tr("User is already in userlist"), QMessageBox::Ok);
@@ -428,41 +428,43 @@ void UserInfo::updateUserlist()
 		}
 	}
 
-	user.setFirstName(e_firstname->text());
-	user.setLastName(e_lastname->text());
-	user.setNickName(e_nickname->text());
-	user.setAltNick(e_altnick->text());
-	user.setMobile(e_mobile->text());
+	User.setFirstName(e_firstname->text());
+	User.setLastName(e_lastname->text());
+	User.setNickName(e_nickname->text());
+	User.setAltNick(e_altnick->text());
+	User.setMobile(e_mobile->text());
 
-	if (user.usesProtocol("Gadu")) // there was an UIN so far?
+	if (User.usesProtocol("Gadu")) // there was an UIN so far?
 	{
-		if (user.ID("Gadu") != id) // uin was changed
+		if (User.ID("Gadu") != id) // uin was changed
 		{
-			user.deleteProtocol("Gadu");
+			User.deleteProtocol("Gadu");
 			if (id.toUInt() != 0) // but it might be deleted
-				user.addProtocol("Gadu", id);
+				User.addProtocol("Gadu", id);
 		}
 	}
 	else // there was no UIN so far
 		if (id.toUInt() != 0) // if it was filled, then we add new protocol
-			user.addProtocol("Gadu", id);
+			User.addProtocol("Gadu", id);
 
 	QStringList l;
 	CONST_FOREACH(checkbox, groups)
 		if ((*checkbox)->isChecked())
 			l.append((*checkbox)->text());
-	user.setData("Groups", l);
+	User.setData("Groups", l);
 
-	user.setEmail(e_email->text());
-	user.setNotify(c_notify->isChecked());
-	if (user.usesProtocol("Gadu"))
+	User.setEmail(e_email->text());
+	User.setNotify(c_notify->isChecked());
+	if (User.usesProtocol("Gadu"))
 	{
-		user.setProtocolData("Gadu", "OfflineTo", c_offtouser->isChecked());
-		user.setProtocolData("Gadu", "Blocking", c_blocking->isChecked());
+		User.setProtocolData("Gadu", "OfflineTo", c_offtouser->isChecked());
+		User.setProtocolData("Gadu", "Blocking", c_blocking->isChecked());
 	}
-	user.setAnonymous(false);
-	if (!userlist->contains(user))
-		userlist->addUser(user);
+	User.setAnonymous(false);
+	if (!userlist->contains(User))
+		userlist->addUser(User);
+
+	emit updateClicked(this);
 
 	userlist->writeToConfig();
 	close(true);

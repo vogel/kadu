@@ -399,6 +399,10 @@ class UserBox : public QListBox
 			Od¶wie¿a wszystkie UserBoksy, ale dopiero po powrocie do pêtli zdarzeñ Qt.
 		**/
 		static void refreshAllLater();
+
+		static const QValueList<UserBox *> &userboxes() {return UserBoxes;}
+
+		static CreateNotifier createNotifier;
 	public slots:
 
 		/**
@@ -443,14 +447,14 @@ class UserBox : public QListBox
 			Przesuwa funkcjê porównuj±c± o identyfikatorze id wy¿ej w kolejno¶ci sprawdzania.
 			\param id identyfikator funkcji porównuj±cej
 		**/
-		void moveUpCompareFunction(const QString &id);
+		bool moveUpCompareFunction(const QString &id);
 
 		/**
 			\fn void moveDownCompareFunction(const QString &id)
 			Przesuwa funkcjê porównuj±c± o identyfikatorze id ni¿ej w kolejno¶ci sprawdzania.
 			\param id identyfikator funkcji porównuj±cej
 		**/
- 		void moveDownCompareFunction(const QString &id);
+ 		bool moveDownCompareFunction(const QString &id);
 
 		/**
 			\fn void refresh()
@@ -553,7 +557,7 @@ class UserBox : public QListBox
 			\param e wska¼nik obiektu opisuj±cego to zdarzenie.
 		**/
 		virtual void mousePressEvent(QMouseEvent *e);
-		
+
 		virtual void mouseReleaseEvent(QMouseEvent *e);
 
 		/**

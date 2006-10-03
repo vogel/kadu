@@ -44,8 +44,11 @@ class UserInfo : public QHBox
 		UserInfo(UserListElement user, QDialog* parent = 0, const char *name = 0);
 		~UserInfo();
 
+		QTabWidget *tabs() {return tw_main;}
+		UserListElement user() const {return User;}
+
 	private:
-		UserListElement user;
+		UserListElement User;
 		QLineEdit *e_firstname;
 		QLineEdit *e_lastname;
 		QLineEdit *e_nickname;
@@ -112,6 +115,8 @@ class UserInfo : public QHBox
 			wci¶niêto przycisk tworzenia nowej grupy
 		**/
 		void newGroupClicked();
+	signals:
+		void updateClicked(UserInfo *);
 };
 
 #endif

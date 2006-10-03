@@ -343,11 +343,12 @@ inline bool ULEComparer::operator()(const UserListElement &e1, const UserListEle
 }
 
 UserBoxMenu *UserBox::userboxmenu = NULL;
+CreateNotifier UserBox::createNotifier;
 
 UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
 	: QListBox(parent, name, f), VisibleUsers(new UserGroup(userlist->count() * 2, "visible_users")),
 	Filters(), NegativeFilters(), sortHelper(), toRemove(), AppendProxy(), RemoveProxy(), comparer(new ULEComparer()),
-	refreshTimer(), lastMouseStopUser(nullElement), lastMouseStop(), tipAlive(false), tipTimer(), 
+	refreshTimer(), lastMouseStopUser(nullElement), lastMouseStop(), tipAlive(false), tipTimer(),
 	verticalPositionTimer(), lastVerticalPosition(0)
 {
 	kdebugf();
@@ -1227,15 +1228,17 @@ void UserBox::removeCompareFunction(const QString &id)
 		}
 }
 
-void UserBox::moveUpCompareFunction(const QString &id)
+bool UserBox::moveUpCompareFunction(const QString &id)
 {
 	kdebugf();
 	CmpFuncDesc d;
 	int pos = 0;
+	bool found = false;
 	FOREACH(c, comparer->CmpFunctions)
 	{
 		if ((*c).id == id)
 		{
+			found = true;
 			if (pos == 0)
 				break;
 			d = *c;
@@ -1249,18 +1252,21 @@ void UserBox::moveUpCompareFunction(const QString &id)
 		++pos;
 	}
 	kdebugf2();
+	return found;
 }
 
-void UserBox::moveDownCompareFunction(const QString &id)
+bool UserBox::moveDownCompareFunction(const QString &id)
 {
 	kdebugf();
 	CmpFuncDesc d;
 	int pos = 0;
 	int cnt = comparer->CmpFunctions.count();
+	bool found = false;
 	FOREACH(c, comparer->CmpFunctions)
 	{
 		if ((*c).id == id)
 		{
+			found = true;
 			if (pos == cnt - 1)
 				break;
 			d = *c;
@@ -1274,6 +1280,7 @@ void UserBox::moveDownCompareFunction(const QString &id)
 		++pos;
 	}
 	kdebugf2();
+	return found;
 }
 
 void UserBox::sort()
