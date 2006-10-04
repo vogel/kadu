@@ -18,7 +18,7 @@ class ColorSelectorButton : public QPushButton
 	Q_OBJECT
 
 	private:
-		QColor color;/*!< kolor czcionki */
+		QColor color; /*!< kolor czcionki */
 
 	private slots:
 		/**
@@ -31,6 +31,10 @@ class ColorSelectorButton : public QPushButton
 		/**
 			\fn ColorSelectorButton(QWidget* parent, const QColor& qcolor, int width=1, const char *name=0)
 			Konstruktor tworz±cy okno do wyboru koloru
+			\param parent rodzic okna
+			\param qcolor kolor
+			\param width
+			\param name nazwa obiektu
 		**/
 		ColorSelectorButton(QWidget* parent, const QColor& qcolor, int width=1, const char *name=0);
 
@@ -43,7 +47,7 @@ class ColorSelectorButton : public QPushButton
 };
 
 /**
-	\clas ColorSelector
+	\class ColorSelector
 	\brief Klasa do wyboru kolorów
 **/
 class ColorSelector : public QWidget
@@ -54,6 +58,7 @@ class ColorSelector : public QWidget
 		/**
 			\fn void iconClicked(const QColor& color);
 			Slot obs³uguj±cy wybranie koloru
+			\param color wybrany kolor
 		**/
 		void iconClicked(const QColor& color);
 
@@ -68,6 +73,9 @@ class ColorSelector : public QWidget
 		/**
 			\fn ColorSelector(const QColor &defColor, QWidget* parent = 0, const char* name = 0)
 			Konstruktor obiektu do wyboru kolorów
+			\param defColor
+			\param parent rodzic okna
+			\param name nazwa obiektu
 		**/
 		ColorSelector(const QColor &defColor, QWidget* parent = 0, const char* name = 0);
 

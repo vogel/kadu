@@ -22,8 +22,10 @@ class ChatManagerSlots :public QObject
 			Od¶wie¿enie wygl±du
 		**/
 		void updatePreview();
+
 	public:
 		/**
+			\fn ChatManagerSlots(QObject* parent=0, const char* name=0)
 			Konstruktor obiektu
 			\param parent rodzic obiektu
 			\param name nazwa obiektu
@@ -37,19 +39,23 @@ class ChatManagerSlots :public QObject
 		**/
 		void onCreateTabChat();
 
-		void onCreateTabLook();
 		/**
-			\fn void onApplyConfigDialog()
+			\fn void onCreateTabLook()
+			Slot jest wywo³ywany gdy otwierana jest zakladka Wyglad
+		**/
+		void onCreateTabLook();
+
+		/**
+			\fn void onApplyTabChat()
 			Slot jest wywo³ywany gdy zamykane jest okno konfiguracji
 		**/
 		void onApplyTabChat();
 
 		/**
-			\fn void onApplyConfigDialog()
+			\fn void onApplyTabLook()
 			Slot jest wywo³ywany gdy zamykane jest okno konfiguracji
 		**/
 		void onApplyTabLook();
-
 
 		/**
 			\fn void chooseEmoticonsStyle(int index)
@@ -68,6 +74,8 @@ class ChatManagerSlots :public QObject
 
 		/**
 			\fn void onFoldLink(bool toggled)
+			Slot jest wywo³ywany gdy w³±czono/wy³±czono zawijanie linków,
+			aby uaktualniæ podgl±d
 			\param toggled
 		**/
 		void onFoldLink(bool toggled);
@@ -81,11 +89,21 @@ class ChatManagerSlots :public QObject
 		void onBlockClose(bool toggled);
 
 		/**
+			\fn void onRemoveHeaders(bool toggled)
 			Slot jest wywo³ywany gdy w³±czono/wy³±czono wy¶wietlanie nag³ówków,
 			aby uaktualniæ podgl±d
+			\param toggled
 		**/
 		void onRemoveHeaders(bool toggled);
+
+		/**
+			\fn void onChatThemeChanged(const QString& name)
+			Slot jest wywo³ywany po zmianie stylu okna Chat,
+			aby uaktualniæ podgl±d
+			\param name nazwa stylu
+		**/
 		void onChatThemeChanged(const QString& name);
+
 		/**
 			\fn void chooseColor(const char* name, const QColor& color)
 			Slot jest wywo³ywany gdy zmieniono kolor,
@@ -93,7 +111,6 @@ class ChatManagerSlots :public QObject
 			\param name nazwa koloru
 			\param color kolor
 		**/
-		
 		void chooseColor(const char* name, const QColor& color);
 
 		/**
@@ -105,6 +122,10 @@ class ChatManagerSlots :public QObject
 		**/
 		void chooseFont(const char* name, const QFont& font);
 
+		/**
+			\fn void chooseBackgroundFile()
+			Slot jest wywo³ywany aby wybraæ obraz t³a dla okna Chat
+		**/
 		void chooseBackgroundFile();
 
 		/**
@@ -116,7 +137,7 @@ class ChatManagerSlots :public QObject
 
 		/**
 			\fn void findAndSetBrowserOption(int selectedOption)
-			Slot jest wywo³ywany gdy aktywowane pole do wpisania opcji
+			Slot jest wywo³ywany gdy aktywowano pole do wpisania opcji
 			\param selectedOption wybrana opcja
 		**/
 		void findAndSetBrowserOption(int selectedOption);
