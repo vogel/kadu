@@ -14,17 +14,30 @@ class QResizeEvent;
 
 /**
 	Dialog umo¿liwiaj±cy import / export listy kontaktów z serwera GG
+	\class UserlistImportExport
+	\brief Import / Export userlisty
 **/
 class UserlistImportExport : public QHBox {
 	Q_OBJECT
 	public:
+		/**
+			Konstruktor okna importu / exportu
+			\fn UserlistImportExport(QWidget *parent=NULL, const char *name=NULL)
+			\param parent rodzic okna
+			\param name nazwa obiektu
+		**/
 		UserlistImportExport(QWidget *parent=NULL, const char *name=NULL);
+
+		/**
+			\fn ~UserlistImportExport()
+			Destruktor okna importu / exportu
+		**/
 		~UserlistImportExport();
 	private:
-		QPushButton *pb_fetch;
+		QPushButton *pb_fetch; /*!< przycisk pobierania listy */
 		QValueList<UserListElement> importedUserlist;
-		QPushButton *pb_send;
-		QPushButton *pb_delete;
+		QPushButton *pb_send; /*!< przycisk wysy³ania listy */
+		QPushButton *pb_delete; /*!< przycisk kasuj±cy listê */
 		QPushButton *pb_tofile;
 		QLabel *l_itemscount;
 		LayoutHelper *layoutHelper;
@@ -49,4 +62,3 @@ class UserlistImportExport : public QHBox {
 };
 
 #endif
-

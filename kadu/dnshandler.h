@@ -18,18 +18,24 @@ class DNSHandler : public QObject
 
 	public:
 		/**
-			\fn DNSHandler(const QHostAddress &addr);
+			\fn DNSHandler(const QString &marker, const QHostAddress &addr)
 			Konstruktor wywo³uj±cy zapytanie o domenê dla danego adresu IP.
+			\param marker znacznik (np. identyfikator protoko³u)
 			\param addr adres IP
 		**/
 		DNSHandler(const QString &marker, const QHostAddress &addr);
+
+		/**
+			\fn ~DNSHandler()
+			Destruktor klasy
+		**/
 		~DNSHandler();
 
 		static int counter; /*!< licznik obiektów tej klasy */
 
 	private:
 		QDns DNSResolver; /*!< obiekt zajmuj±cy siê translacj± adresu na nazwê domeny */
-		QString marker;
+		QString marker; /*!< znacznik (np. identyfikator protoko³u) */
 
 	private slots:
 		/**
@@ -40,8 +46,9 @@ class DNSHandler : public QObject
 
 	signals:
 		/**
-			\fn void result(const QString &hostname)
+			\fn void result(const QString &marker, const QString &hostname)
 			Sygna³ emitowany, gdy proces t³umaczenia zosta³ zakoñczony.
+			\param marker znacznik (np. identyfikator protoko³u)
 			\param hostname nazwa domeny odpowiadaj±ca adresowi IP o który pytano
 		**/
 		void result(const QString &marker, const QString &hostname);
