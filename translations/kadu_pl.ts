@@ -1475,7 +1475,7 @@ Czy na pewno tego chcesz?</translation>
     </message>
     <message>
         <source>Name of new group:</source>
-        <translation>Nazwa nowej grupy</translation>
+        <translation>Nazwa nowej grupy:</translation>
     </message>
     <message>
         <source>Add to group %1</source>
@@ -1976,15 +1976,15 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     <name>UserBox</name>
     <message>
         <source>Compares statuses</source>
-        <translation>Porównaj statusy</translation>
+        <translation>Porównuje statusy</translation>
     </message>
     <message>
         <source>Compares nicks (&quot;altnicks&quot;)</source>
-        <translation>Porównuje pseudonimy (wyświtlaną nazwę)</translation>
+        <translation>Porównuje pseudonimy (wyświetlaną nazwę)</translation>
     </message>
     <message>
         <source>Compares nicks (&quot;altnicks&quot;) case insensitive</source>
-        <translation>Porównuje pseudonimy (wyświtlaną nazwę) bez względu na wielkość liter</translation>
+        <translation>Porównuje pseudonimy (wyświetlaną nazwę) bez względu na wielkość liter</translation>
     </message>
 </context>
 <context>
