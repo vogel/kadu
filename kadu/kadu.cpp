@@ -1869,6 +1869,7 @@ void Kadu::readTokenValue(QPixmap tokenImage, QString &tokenValue)
 	delete td;
 }
 
+extern char SystemUserName[];
 void Kadu::deleteOldConfigFiles()
 {
 	kdebugf();
@@ -1902,6 +1903,15 @@ void Kadu::deleteOldConfigFiles()
 			QFile::remove(ggPath(oldBacktraces[i]));
 		}
 //	kdebugm(KDEBUG_INFO, "bts deleted\n");
+
+	QDir oldDebugs("/tmp/", QString("kadu-%1-*.dbg").arg(SystemUserName), QDir::Name, QDir::Files);
+	if (oldDebugs.count() > 5)
+		for (unsigned int i = 0, max = oldDebugs.count() - 5; i < max; ++i)
+		{
+//			kdebugm(KDEBUG_DUMP, "deleting %s\n", oldDebugs[i].local8Bit().data());
+			QFile::remove("/tmp/" + oldDebugs[i]);
+		}
+//	kdebugm(KDEBUG_INFO, "debugs deleted\n");
 	kdebugf2();
 }
 

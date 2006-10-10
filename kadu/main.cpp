@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <sys/time.h>
+#include <pwd.h>
 
 #include "kadu.h"
 #include "kadu-config.h"
@@ -175,11 +176,13 @@ void kaduQtMessageHandler(QtMsgType type, const char *msg)
 #ifdef DEBUG_ENABLED
 extern bool showTimesInDebug;
 #endif
+char SystemUserName[100];
 
 int main(int argc, char *argv[])
 {
 	struct timeval tv;
 	struct timezone tz;
+	time_t startTimeT = time(0);
 	gettimeofday(&tv, &tz);
 	startTime = (tv.tv_sec % 1000) * 1000000 + tv.tv_usec;
 
@@ -200,6 +203,34 @@ int main(int argc, char *argv[])
 	if (d)
 		debug_mask = atol(d);
 	gg_debug_level = debug_mask | ~255;
+	
+	config_file.addVariable("General", "SaveStdErr", false);
+	bool saveStdErr = config_file.readBoolEntry("General", "SaveStdErr");
+	d = getenv("SAVE_STDERR");
+	if (d)
+		saveStdErr = strcmp(d, "1") == 0;
+	if (saveStdErr)
+	{
+		char path[1024];
+		struct tm *t = localtime(&startTimeT);
+		struct passwd *p = getpwuid(geteuid());
+		strncpy(SystemUserName, p->pw_name, 99);
+		SystemUserName[99] = 0;
+		if (t && p)
+		{
+			sprintf(path, "/tmp/kadu-%s-%04d-%02d-%02d-%02d-%02d-%02d.dbg", SystemUserName, 1900 + t->tm_year, 1 + t->tm_mon, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
+			if (freopen(path, "a", stderr) == 0)
+				perror("freopen");
+			else
+			{
+				if (chmod(path, 0600) != 0)
+				{
+					fclose(stderr);
+					fprintf(stdout, "fatal error: can't chmod output logfile (%s)\n", path);
+				}
+			}
+		}
+	}
 
 #ifdef DEBUG_ENABLED
 	d = getenv("SHOW_TIMES");

@@ -468,6 +468,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   (np. gdy wrzuci siê Kadu do autostartu w KDE) (joi)
 * wycofanie zmian (z 11 i 12 marca) w obs³udze b³êdów po³±czenia, które powodowa³y,
   ¿e Kadu nie zauwa¿a³o, ¿e serwer zerwa³ po³±czenie (joi)
+* dodanie mo¿liwo¶ci zapisywania logów do pliku w /tmp, a nie na konsolê -
+  opcja SaveStdErr w sekcji General + mo¿liwo¶æ zmiany tej warto¶ci
+  przez zmienn± ¶rodowiskow± SAVE_STDERR (0 lub 1) (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
