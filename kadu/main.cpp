@@ -214,10 +214,10 @@ int main(int argc, char *argv[])
 		char path[1024];
 		struct tm *t = localtime(&startTimeT);
 		struct passwd *p = getpwuid(geteuid());
-		strncpy(SystemUserName, p->pw_name, 99);
-		SystemUserName[99] = 0;
 		if (t && p)
 		{
+			strncpy(SystemUserName, p->pw_name, 99);
+			SystemUserName[99] = 0;
 			sprintf(path, "/tmp/kadu-%s-%04d-%02d-%02d-%02d-%02d-%02d.dbg", SystemUserName, 1900 + t->tm_year, 1 + t->tm_mon, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
 			if (freopen(path, "a", stderr) == 0)
 				perror("freopen");
