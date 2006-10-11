@@ -218,16 +218,13 @@ int main(int argc, char *argv[])
 		{
 			strncpy(SystemUserName, p->pw_name, 99);
 			SystemUserName[99] = 0;
-			sprintf(path, "/tmp/kadu-%s-%04d-%02d-%02d-%02d-%02d-%02d.dbg", SystemUserName, 1900 + t->tm_year, 1 + t->tm_mon, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
-			if (freopen(path, "a", stderr) == 0)
-				perror("freopen");
-			else
+			sprintf(path, "/tmp/kadu-%s-%04d-%02d-%02d-%02d-%02d-%02d-%ld.dbg", SystemUserName, 1900 + t->tm_year, 1 + t->tm_mon, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec, tv.tv_usec);
+			if (freopen(path, "wx", stderr) == 0)
+				fprintf(stdout, "freopen: %s\n", strerror(errno));
+			else if (fchmod(fileno(stderr), 0600) != 0)
 			{
-				if (chmod(path, 0600) != 0)
-				{
-					fclose(stderr);
-					fprintf(stdout, "fatal error: can't chmod output logfile (%s)\n", path);
-				}
+				fclose(stderr);
+				fprintf(stdout, "can't chmod output logfile (%s)!\n", path);
 			}
 		}
 	}
