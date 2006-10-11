@@ -59,6 +59,7 @@ void _kdebug_with_mask(int mask, const char* file, const int line, const char* f
 		va_end(args);
 		if (mask & (KDEBUG_PANIC|KDEBUG_ERROR|KDEBUG_WARNING))
 			fprintf(stderr, "\033[0m");
+		fflush(stderr);
 		debug_mutex.unlock();
 	}
 }
