@@ -689,6 +689,18 @@ Attention danger!
         <source>Search this user in directory</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Chat background (experimental)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat background image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow executing commands by parser</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -936,6 +948,10 @@ You may add it to $PATH or specify location using Specify path option.</source>
         <translation>Le navigateur que vous avez choisi n&apos;a pas été trouvé ! La voie d&apos;accès n&apos;existe pas dans la variable de $PATH.
 Vous pouvez l&apos;ajouter dans $PATH ou indiquer l&apos;emplacement d&apos;une option spécifique de localisation de navigateur.</translation>
     </message>
+    <message>
+        <source>Insert image</source>
+        <translation type="unfinished">Insère l&apos;image</translation>
+    </message>
 </context>
 <context>
     <name>ChooseDescription</name>
@@ -1029,12 +1045,6 @@ Vous pouvez l&apos;ajouter dans $PATH ou indiquer l&apos;emplacement d&apos;une 
         <translation>Connexion impossible, mot de passe incorrect</translation>
     </message>
     <message>
-        <source>Connection will be stoped
-Your password is incorrect !</source>
-        <translation>Connexion sera interrompue
-Mot de passe incorrect !</translation>
-    </message>
-    <message>
         <source>Unable to connect, error of negotiation TLS</source>
         <translation>Connexion impossible, erreur négotiation TLS</translation>
     </message>
@@ -1060,16 +1070,21 @@ Mot de passe incorrect !</translation>
         <translation>Change votre adresse e-Mail dans la fenêtre &quot;Change mot de passe / e-Mail&quot;. Le champs de mot de passe nouveau vide.</translation>
     </message>
     <message>
-        <source>To many connection attempts with bad password!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Connection will be stoped
-To many attempts with bad password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Unable to connect, servers are down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection will be stopped
+Your password is incorrect!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Too many connection attempts with bad password!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection will be stopped
+Too many attempts with bad password</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

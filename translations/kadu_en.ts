@@ -684,6 +684,18 @@ It&apos;s a high security risk!</source>
         <source>Search this user in directory</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Chat background (experimental)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat background image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow executing commands by parser</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -926,6 +938,10 @@ to protect the chat window from a mess</source>
 You may add it to $PATH or specify location using Specify path option.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Insert image</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ChooseDescription</name>
@@ -1019,11 +1035,6 @@ You may add it to $PATH or specify location using Specify path option.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Connection will be stoped
-Your password is incorrect !</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Unable to connect, error of negotiation TLS</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1048,16 +1059,21 @@ Your password is incorrect !</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>To many connection attempts with bad password!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Connection will be stoped
-To many attempts with bad password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Unable to connect, servers are down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection will be stopped
+Your password is incorrect!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Too many connection attempts with bad password!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection will be stopped
+Too many attempts with bad password</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

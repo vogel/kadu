@@ -694,6 +694,18 @@ It&apos;s a high security risk!</source>
         <source>Search this user in directory</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Chat background (experimental)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat background image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow executing commands by parser</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -941,6 +953,10 @@ You may add it to $PATH or specify location using Specify path option.</source>
         <translation>Ich kann den gewählten Browser nicht finden. Der Pfad zu ihm ist nicht in der $PATH-Umgebungsvariablen enthalten.
 Tragen Sie den Pfad in der $PATH-Umgebungsvariablen ein oder bestimmen Sie ihn in der kadu-Konfiguration.</translation>
     </message>
+    <message>
+        <source>Insert image</source>
+        <translation type="unfinished">Bild einfügen</translation>
+    </message>
 </context>
 <context>
     <name>ChooseDescription</name>
@@ -1034,12 +1050,6 @@ Tragen Sie den Pfad in der $PATH-Umgebungsvariablen ein oder bestimmen Sie ihn i
         <translation>Verbindung nicht möglich. Falsches Passwort</translation>
     </message>
     <message>
-        <source>Connection will be stoped
-Your password is incorrect !</source>
-        <translation>Verbindung wird angehalten
-Ihr Passwort stimmt nicht!</translation>
-    </message>
-    <message>
         <source>Unable to connect, error of negotiation TLS</source>
         <translation>Verbindung nicht möglich, TLS-Verhandlung schlug fehl</translation>
     </message>
@@ -1064,18 +1074,22 @@ Ihr Passwort stimmt nicht!</translation>
         <translation>Ändern Sie Ihre Email-Adresse im &quot;Passwort / Email ändern&quot;-Fenster. Lassen Sie das Feld &quot;Neues Passwort&quot; leer.</translation>
     </message>
     <message>
-        <source>To many connection attempts with bad password!</source>
-        <translation>Zu viele Verbindungsversuche mit falschem Passwort!</translation>
-    </message>
-    <message>
-        <source>Connection will be stoped
-To many attempts with bad password</source>
-        <translation>Verbindung wird angehalten
-Zu viele Verbindungsversuche mit falschem Passwort</translation>
-    </message>
-    <message>
         <source>Unable to connect, servers are down</source>
         <translation>Verbindung nicht möglich, Server sind offline</translation>
+    </message>
+    <message>
+        <source>Connection will be stopped
+Your password is incorrect!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Too many connection attempts with bad password!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection will be stopped
+Too many attempts with bad password</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

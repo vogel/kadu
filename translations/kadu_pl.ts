@@ -696,6 +696,18 @@ Jest to wysoce ryzykowne!</translation>
         <source>Chat</source>
         <translation>Rozmowa</translation>
     </message>
+    <message>
+        <source>Chat background (experimental)</source>
+        <translation>Tło okna rozmowy (eksperymentalne)</translation>
+    </message>
+    <message>
+        <source>Chat background image</source>
+        <translation>Obraz tła</translation>
+    </message>
+    <message>
+        <source>Allow executing commands by parser</source>
+        <translation>Zezwól na wykonywanie zewnętrznych poleceń przez parser</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -943,6 +955,10 @@ You may add it to $PATH or specify location using Specify path option.</source>
         <translation>&lt;B&gt;&lt;CENTER&gt;Nie można znaleźć wybranej przeglądarki!&lt;/CENTER&gt;&lt;/B&gt;
 Wybrana ścieżka do przeglądarki nie istnieje w zmiennej $PATH. Musisz ją do niej dodać lub podać ścieżkę do przeglądarki wybierająć jako przeglądarkę &quot;Specyficzna lokalizacja&quot;.</translation>
     </message>
+    <message>
+        <source>Insert image</source>
+        <translation>Wstaw obraz</translation>
+    </message>
 </context>
 <context>
     <name>ChooseDescription</name>
@@ -1036,12 +1052,6 @@ Wybrana ścieżka do przeglądarki nie istnieje w zmiennej $PATH. Musisz ją do 
         <translation>Połączenia niemożliwe, nieprawidłowe hasło</translation>
     </message>
     <message>
-        <source>Connection will be stoped
-Your password is incorrect !</source>
-        <translation>Połączenie zostało przerwane
-Twoje hasło jest nieprawidłowe!</translation>
-    </message>
-    <message>
         <source>Unable to connect, error of negotiation TLS</source>
         <translation>Połączenie niemożliwe, błąd negocjacji TLS</translation>
     </message>
@@ -1066,18 +1076,24 @@ Twoje hasło jest nieprawidłowe!</translation>
         <translation>Zmień swój e-mail w oknie &quot;Zmień hasło / e-mail&quot;. Pole nowe hasło pozostaw puste.</translation>
     </message>
     <message>
-        <source>To many connection attempts with bad password!</source>
-        <translation>Zbyt wiele razy usiłowałeś się połączyć podając błędne hasło!</translation>
-    </message>
-    <message>
-        <source>Connection will be stoped
-To many attempts with bad password</source>
-        <translation>Połączenie zostało przerwane
-Zbyt wiele razy usiłowałeś się połączyćc podając błędne hasło</translation>
-    </message>
-    <message>
         <source>Unable to connect, servers are down</source>
         <translation>Połączenie nie możliwe, serwery są niedostępne</translation>
+    </message>
+    <message>
+        <source>Connection will be stopped
+Your password is incorrect!</source>
+        <translation>Połączenie zostanie przerwane
+Twoje hasło jest niepoprawne!</translation>
+    </message>
+    <message>
+        <source>Too many connection attempts with bad password!</source>
+        <translation>Zbyt wiele połączeń z użyciem błędnego hasła!</translation>
+    </message>
+    <message>
+        <source>Connection will be stopped
+Too many attempts with bad password</source>
+        <translation>Połączenie zostanie przerwane
+Zbyt wiele prób połączeń z niepoprawnym hasłem</translation>
     </message>
 </context>
 <context>

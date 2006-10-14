@@ -689,6 +689,18 @@ E un rischio per la sicurezza!</translation>
         <source>Search this user in directory</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Chat background (experimental)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat background image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow executing commands by parser</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -936,6 +948,10 @@ You may add it to $PATH or specify location using Specify path option.</source>
         <translation>&lt;B&gt;&lt;CENTER&gt;Browser specificato non trovato&lt;/CENTER&gt;&lt;/B&gt;
 Il percorso per raggiungere browser non esiste in $PATH. Devi specificarlo.</translation>
     </message>
+    <message>
+        <source>Insert image</source>
+        <translation type="unfinished">Inserisci immagine</translation>
+    </message>
 </context>
 <context>
     <name>ChooseDescription</name>
@@ -1029,12 +1045,6 @@ Il percorso per raggiungere browser non esiste in $PATH. Devi specificarlo.</tra
         <translation>Impossibile collegarsi, password errata</translation>
     </message>
     <message>
-        <source>Connection will be stoped
-Your password is incorrect !</source>
-        <translation>Connessione interrotta
-La tua password è sbagliata!</translation>
-    </message>
-    <message>
         <source>Unable to connect, error of negotiation TLS</source>
         <translation>Impossibile collegarsi, errore in fase di negoziazione TLS</translation>
     </message>
@@ -1059,16 +1069,21 @@ La tua password è sbagliata!</translation>
         <translation>Cambiare indirizzo e-mail in &quot;Cambia password / email&quot;. Lasciare vuoto il campo nuova password.</translation>
     </message>
     <message>
-        <source>To many connection attempts with bad password!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Connection will be stoped
-To many attempts with bad password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Unable to connect, servers are down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection will be stopped
+Your password is incorrect!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Too many connection attempts with bad password!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection will be stopped
+Too many attempts with bad password</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
