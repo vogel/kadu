@@ -471,6 +471,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodanie mo¿liwo¶ci zapisywania logów do pliku w /tmp, a nie na konsolê -
   opcja SaveStdErr w sekcji General + mo¿liwo¶æ zmiany tej warto¶ci
   przez zmienn± ¶rodowiskow± SAVE_STDERR (0 lub 1) (joi)
+* poprawione wykrywanie ¶cie¿ki do firefoksa na ubuntu (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
