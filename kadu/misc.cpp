@@ -690,7 +690,6 @@ QString stripHTMLFromGGMessage(const QString &msg)
 	regexp.setPattern("<font (face=\"(\\S)+\"\\s)?(size=\"\\d{1,2}\"(\\s)?)?(style=\"font-size:\\d{1,2}pt\"(\\s)?)?>");
 	mesg.replace(regexp, "");
 	mesg.replace(QRegExp("</font>"), "");
-	HtmlDocument::unescapeText(mesg);
 
 	return mesg;
 }
@@ -928,6 +927,7 @@ QString unformatGGMessage(const QString &msg, unsigned int &formats_length, void
 	else
 		formats = NULL;
 
+	HtmlDocument::unescapeText(mesg);
 	kdebugmf(KDEBUG_INFO|KDEBUG_FUNCTION_END, "\n%s\n", unicode2latin(mesg).data());
 	return mesg;
 }
