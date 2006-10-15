@@ -18,6 +18,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodane nowe pule numerów u wszystkich operatorów (neeo)
 * poprawa obs³ugi b³êdów dla bramki Ery (neeo)
 * poprawiony b³±d usuwania tekstu <span style=""></span> z tre¶ci wiadomo¶ci (joi)
+* aktualizacja gnuconfig do wersji 2006.08.14 (joi)
 
 +++ wersja 0.4.3 (30.11.2005)
 * opcja ignorowania formatowania tekstu i obrazków od anonimów, domy¶lnie w³±czona (adrian)
