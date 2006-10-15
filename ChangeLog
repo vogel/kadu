@@ -21,6 +21,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * aktualizacja gnuconfig do wersji 2006.08.14 (joi)
 * niewielka poprawka do skryptu configure, pomagaj±ca w kompilacji na OpenBSD (Prezu/joi)
 * dopisane do rotacji 6 nowych adresów serwerów gg (joi)
+* poprawione wykrywanie ¶cie¿ki do firefoksa na ubuntu (joi)
 
 +++ wersja 0.4.3 (30.11.2005)
 * opcja ignorowania formatowania tekstu i obrazków od anonimów, domy¶lnie w³±czona (adrian)

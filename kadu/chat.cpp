@@ -2143,6 +2143,9 @@ void ChatSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo, QCombo
 				if (QFile::exists("/usr/lib/" + (*dir) + "mozilla-firefox-xremote-client"))
 					//jeste¶my na debianie, gdzie zmienili nazwê skryptu, grrr :|
 					browserName = "mozilla-firefox-xremote-client";
+				else if (QFile::exists("/usr/lib/" + (*dir) + "firefox-xremote-client"))
+					//albo na ubuntu, gdzie tak¿e zmienili nazwê skryptu!
+					browserName = "firefox-xremote-client";
 			}
 
 			searchPath.append("/usr/lib/MozillaFirefox");
