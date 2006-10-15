@@ -437,7 +437,9 @@ enum gg_failure_t {
 	GG_FAILURE_PASSWORD,		/* nieprawid³owe has³o */
 	GG_FAILURE_404, 		/* XXX nieu¿ywane */
 	GG_FAILURE_TLS,			/* b³±d negocjacji TLS */
-	GG_FAILURE_NEED_EMAIL 		/* serwer roz³±czy³ nas z pro¶b± o zmianê emaila */
+	GG_FAILURE_NEED_EMAIL, 		/* serwer roz³±czy³ nas z pro¶b± o zmianê emaila */
+	GG_FAILURE_INTRUDER,		/* za du¿o prób po³±czenia siê z nieprawid³owym has³em */
+	GG_FAILURE_UNAVAILABLE		/* serwery s± wy³±czone */
 };
 
 /*
@@ -944,7 +946,7 @@ int gg_image_queue_remove(struct gg_session *s, struct gg_image_queue *q, int fr
 #define GG_DEFAULT_TIMEOUT 30
 #define GG_HAS_AUDIO_MASK 0x40000000
 #define GG_ERA_OMNIX_MASK 0x04000000
-#define GG_LIBGADU_VERSION "20050718"
+#define GG_LIBGADU_VERSION "20060518"
 
 #define GG_DEFAULT_DCC_PORT 1550
 

@@ -14,6 +14,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka wywrotki w module encryption gdy dostajemy od serwera wiadomo¶æ o d³ugo¶ci 0 (joi)
 * dodany do autodownloadu modu³ profiles (joi)
 * poprawna obs³uga b³êdów odczytu obrazków do wys³ania (joi)
+* uaktualnienie libgadu do najnowszej wersji (neeo)
 
 +++ wersja 0.4.3 (30.11.2005)
 * opcja ignorowania formatowania tekstu i obrazków od anonimów, domy¶lnie w³±czona (adrian)
