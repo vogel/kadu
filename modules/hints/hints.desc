@@ -6,3 +6,4 @@ Dependencies=notify
 Provides=notify_method
 LoadByDefault=true
 Version=core
+Base=true

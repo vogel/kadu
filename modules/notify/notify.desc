@@ -3,3 +3,4 @@ Description=Notification module
 Description[pl]=Modu³ powiadamiania u¿ytkownika o zdarzeniach
 Author=Kadu Team
 Version=core
+Base=true

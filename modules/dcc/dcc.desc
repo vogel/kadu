@@ -5,3 +5,4 @@ Author=Kadu Team,Vogel
 LoadByDefault=true
 Version=core
 Dependencies=notify
+Base=true

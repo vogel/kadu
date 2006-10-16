@@ -5,3 +5,4 @@ Author=Kadu Team
 Dependencies=
 LoadByDefault=true
 Version=core
+Base=true

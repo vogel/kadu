@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <qapplication.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 #include <qlistview.h>
 #include <qpopupmenu.h>
@@ -125,7 +126,10 @@ ModulesDialog::ModulesDialog() : QHBox(0, "modules_dialog"),
 
 	// buttons
 	QHBox *bottom=new QHBox(center);
-	QWidget *blank2=new QWidget(bottom);
+	hideBaseModules = new QCheckBox(tr("Hide base modules"), bottom);
+	hideBaseModules->setChecked(config_file.readBoolEntry("General", "HideBaseModules"));
+	connect(hideBaseModules, SIGNAL(clicked()), this, SLOT(refreshList()));
+	QWidget *blank2 = new QWidget(bottom);
 	bottom->setSpacing(5);
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
@@ -145,6 +149,7 @@ ModulesDialog::ModulesDialog() : QHBox(0, "modules_dialog"),
 ModulesDialog::~ModulesDialog()
 {
 	kdebugf();
+	config_file.writeEntry("General", "HideBaseModules", hideBaseModules->isChecked());
 	saveGeometry(this, "General", "ModulesDialogGeometry");
 	delete layoutHelper;
 	kdebugf2();
@@ -202,11 +207,15 @@ void ModulesDialog::refreshList()
 	lv_modules->clear();
 
 	QStringList moduleList = modules_manager->staticModules();
+	ModuleInfo info;
+	bool hideBase = hideBaseModules->isChecked();
 	CONST_FOREACH(module, moduleList)
 	{
-		ModuleInfo info;
 		if (modules_manager->moduleInfo(*module,info))
-			new QListViewItem(lv_modules, *module, info.version, tr("Static"), tr("Loaded"));
+		{
+			if (!info.base || !hideBase)
+				new QListViewItem(lv_modules, *module, info.version, tr("Static"), tr("Loaded"));
+		}
 		else
 			new QListViewItem(lv_modules, *module, QString::null, tr("Static"), tr("Loaded"));
 	}
@@ -214,9 +223,11 @@ void ModulesDialog::refreshList()
 	moduleList = modules_manager->loadedModules();
 	CONST_FOREACH(module, moduleList)
 	{
-		ModuleInfo info;
 		if (modules_manager->moduleInfo(*module,info))
-			new QListViewItem(lv_modules, *module, info.version, tr("Dynamic"), tr("Loaded"));
+		{
+			if (!info.base || !hideBase)
+				new QListViewItem(lv_modules, *module, info.version, tr("Dynamic"), tr("Loaded"));
+		}
 		else
 			new QListViewItem(lv_modules, *module, QString::null, tr("Dynamic"), tr("Loaded"));
 	}
@@ -224,9 +235,11 @@ void ModulesDialog::refreshList()
 	moduleList = modules_manager->unloadedModules();
 	CONST_FOREACH(module, moduleList)
 	{
-		ModuleInfo info;
 		if (modules_manager->moduleInfo(*module,info))
-			new QListViewItem(lv_modules, *module, info.version, tr("Dynamic"), tr("Not loaded"));
+		{
+			if (!info.base || !hideBase)
+				new QListViewItem(lv_modules, *module, info.version, tr("Dynamic"), tr("Not loaded"));
+		}
 		else
 			new QListViewItem(lv_modules, *module, QString::null, tr("Dynamic"), tr("Not loaded"));
 	}
@@ -289,6 +302,7 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager"),
 	// the same is true for menu - modules should load up at end
 	modules_manager=this;
 
+	config_file.addVariable("General", "HideBaseModules", true);
 	kadu->mainMenu()->insertItem(icons_manager->loadIcon("ManageModules"), tr("&Manage Modules"), this, SLOT(showDialog()), HotKey::shortCutFromFile("ShortCuts", "kadu_modulesmanager"), -1, 2);
 
 	icons_manager->registerMenuItem(kadu->mainMenu(), tr("&Manage Modules"), "ManageModules");
@@ -520,6 +534,7 @@ bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info) co
 		desc_file.readEntry("Module", "Provides"));
 
 	info.load_by_def = desc_file.readBoolEntry("Module", "LoadByDefault");
+	info.base = desc_file.readBoolEntry("Module", "Base");
 
 	return true;
 }

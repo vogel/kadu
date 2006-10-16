@@ -5,3 +5,4 @@ Author=Kadu Team
 Dependencies=dcc sound
 LoadByDefault=true
 Version=core
+Base=true

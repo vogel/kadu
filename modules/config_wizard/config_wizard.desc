@@ -5,3 +5,4 @@ Author=Dorregaray
 Dependencies=account_management
 LoadByDefault=true
 Version=core
+Base=true

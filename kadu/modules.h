@@ -6,6 +6,7 @@
 #include <qstring.h>
 #include <qstringlist.h>
 
+class QCheckBox;
 class QLabel;
 class QListView;
 class QListViewItem;
@@ -65,6 +66,7 @@ struct ModuleInfo
 	QString author; /*!< Autor modu³u. */
 	QString version; /*!< Wersja modu³u. */
 	bool load_by_def; /*!< Czy modu³ jest domy¶lnie ³adowany, czy nie? */
+	bool base; /*!< Czy modu³ nale¿y do modu³ów podstawowych? */
 	ModuleInfo();
 };
 
@@ -85,6 +87,7 @@ class ModulesDialog : public QHBox
 		QListView* lv_modules;
 		QLabel* l_moduleinfo;
 		LayoutHelper *layoutHelper;
+		QCheckBox *hideBaseModules;
 
 	private slots:
 		void loadItem();
