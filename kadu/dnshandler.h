@@ -9,7 +9,7 @@
 /**
 	T³umaczy adres IP na nazwê domeny (DNS). Kiedy proces zostanie zakoñczony,
 	emituje odpowiedni sygna³ zawieraj±cy informacjê o nazwie domeny.
-	\class DnsHandler
+	\class DNSHandler
 	\brief Klasa t³umacz±ca adres IP na nazwê domeny.
 **/
 class DNSHandler : public QObject
