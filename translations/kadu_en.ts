@@ -1600,6 +1600,10 @@ will be deleted. Are you sure?</source>
         <source>&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Hide base modules</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ModulesManager</name>

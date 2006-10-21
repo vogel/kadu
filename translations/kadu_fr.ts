@@ -1613,6 +1613,10 @@ serons effacés.Veuillez confirmer?</translation>
         <source>&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;</source>
         <translation>&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;</translation>
     </message>
+    <message>
+        <source>Hide base modules</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ModulesManager</name>
