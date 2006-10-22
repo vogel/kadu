@@ -196,6 +196,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Panel background color"), "InfoPanelBgColor", config_file.readColorEntry("Look","InfoPanelBgColor"), 0, "panel_bg_color");
 			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Panel font color"), "InfoPanelFgColor", config_file.readColorEntry("Look","InfoPanelFgColor"), 0, "panel_font_color");
 
+	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Previews"), 0, Advanced);
+
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Fonts"), 0, Advanced);
 		ConfigDialog::addSelectFont("Look", "Fonts", QT_TRANSLATE_NOOP("@default", "Font in panel"), "PanelFont", defaultFont->toString(), 0, "panel_font_box");
 	
