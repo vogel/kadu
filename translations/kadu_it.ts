@@ -559,10 +559,6 @@ E un rischio per la sicurezza!</translation>
         <translation>&quot;%1&quot; manda messaggio automaticamente</translation>
     </message>
     <message>
-        <source>Headers</source>
-        <translation>Intestazioni</translation>
-    </message>
-    <message>
         <source>Remove chat header repetitions</source>
         <translation>Rimuovi intestazioni ripetitive nella finestra chat</translation>
     </message>
@@ -699,6 +695,14 @@ E un rischio per la sicurezza!</translation>
     </message>
     <message>
         <source>Allow executing commands by parser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message headers &amp;&amp; separators</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message separators height:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

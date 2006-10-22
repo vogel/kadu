@@ -563,10 +563,6 @@ Attention danger!
         <translation>Kadu est probabalement en utilisation.</translation>
     </message>
     <message>
-        <source>Headers</source>
-        <translation>En-têtes</translation>
-    </message>
-    <message>
         <source>Remove chat header repetitions</source>
         <translation>Enlevez les en-têtes à répétitions dans la fenêtre du chat</translation>
     </message>
@@ -699,6 +695,14 @@ Attention danger!
     </message>
     <message>
         <source>Allow executing commands by parser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message headers &amp;&amp; separators</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message separators height:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

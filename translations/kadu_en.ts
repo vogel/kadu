@@ -554,10 +554,6 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Headers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Remove chat header repetitions</source>
         <translation type="unfinished"></translation>
     </message>
@@ -694,6 +690,14 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Allow executing commands by parser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message headers &amp;&amp; separators</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message separators height:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

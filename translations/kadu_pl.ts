@@ -587,10 +587,6 @@ Jest to wysoce ryzykowne!</translation>
         <translation>&quot;%1&quot; domyślnie wysyła wiadomość</translation>
     </message>
     <message>
-        <source>Headers</source>
-        <translation>Nagłówki</translation>
-    </message>
-    <message>
         <source>Remove chat header repetitions</source>
         <translation>Usuń powtarzające się nagłówki w oknie rozmowy</translation>
     </message>
@@ -707,6 +703,14 @@ Jest to wysoce ryzykowne!</translation>
     <message>
         <source>Allow executing commands by parser</source>
         <translation>Zezwól na wykonywanie zewnętrznych poleceń przez parser</translation>
+    </message>
+    <message>
+        <source>Message headers &amp;&amp; separators</source>
+        <translation>Nagłówki i separatory w wiadomościach</translation>
+    </message>
+    <message>
+        <source>Message separators height:</source>
+        <translation>Wysokość separatorów:</translation>
     </message>
 </context>
 <context>
