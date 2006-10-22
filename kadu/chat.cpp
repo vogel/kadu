@@ -893,7 +893,7 @@ void Chat::insertImage()
 			kdebugf2();
 			return;
 		}
-		
+
 		if (f.size() >= (1 << 18)) // 256kB
 		{
 			MessageBox::wrn(tr("This file is too big (%1 >= %2)").arg(f.size()).arg(1<<18), true);
@@ -1272,7 +1272,7 @@ void Chat::writeMessagesFromHistory(UinsList senders, time_t time)
 		kdebugmf(KDEBUG_INFO, "entries = %d\n", entries.count());
 		end = from - 1;
 	}
-	
+
 	unsigned int entryCount = entries.count();
 	if (entryCount < chatHistoryQuotation)
 		from = 0;
@@ -2132,19 +2132,21 @@ void ChatSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo, QCombo
 		{
 			browserName="mozilla-xremote-client";
 
-			QStringList dirList=QDir("/usr/lib").entryList("firefox*", QDir::All, QDir::Name|QDir::Reversed);
-			CONST_FOREACH(dir, dirList)
-				searchPath.append("/usr/lib/"+(*dir));
-
-			dirList=QDir("/usr/lib").entryList("mozilla-firefox*", QDir::All, QDir::Name|QDir::Reversed);
+			QStringList dirList = QDir("/usr/lib").entryList("mozilla-firefox*", QDir::All, QDir::Name|QDir::Reversed);
 			CONST_FOREACH(dir, dirList)
 			{
 				searchPath.append("/usr/lib/" + (*dir));
-				if (QFile::exists("/usr/lib/" + (*dir) + "mozilla-firefox-xremote-client"))
+				if (QFile::exists("/usr/lib/" + (*dir) + "/mozilla-firefox-xremote-client"))
 					//jeste¶my na debianie, gdzie zmienili nazwê skryptu, grrr :|
 					browserName = "mozilla-firefox-xremote-client";
-				else if (QFile::exists("/usr/lib/" + (*dir) + "firefox-xremote-client"))
-					//albo na ubuntu, gdzie tak¿e zmienili nazwê skryptu!
+			}
+
+			dirList = QDir("/usr/lib").entryList("firefox*", QDir::All, QDir::Name|QDir::Reversed);
+			CONST_FOREACH(dir, dirList)
+			{
+				searchPath.append("/usr/lib/" + (*dir));
+				if (QFile::exists("/usr/lib/" + (*dir) + "/firefox-xremote-client"))
+					//jeste¶my na ubuntu, gdzie tak¿e zmienili nazwê skryptu!
 					browserName = "firefox-xremote-client";
 			}
 
