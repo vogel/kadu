@@ -143,7 +143,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Show emoticons in panel"), "ShowEmotPanel", false, 0, 0, Expert);
 	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Show emoticons in history"), "ShowEmotHist", false, 0, 0, Expert);
 	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Allow executing commands by parser"), "AllowExecutingFromParser", false, 0, 0, Expert);
-	config_file.addVariable("General", "ParagraphSeparator", 4);
 #ifdef DEBUG_ENABLED
 	ConfigDialog::addLineEdit("General", "General", QT_TRANSLATE_NOOP("@default", "Debugging mask"), "DEBUG_MASK",
 		QString::null, 0, 0, Expert);

@@ -46,7 +46,7 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	AutoSend(config_file.readBoolEntry("Chat", "AutoSend")), ScrollLocked(false),
 	WaitingForACK(false), userbox(0), myLastMessage(), myLastFormatsLength(0),
 	myLastFormats(0), seq(0), vertSplit(0), horizSplit(0),
-	ParagraphSeparator(config_file.readNumEntry("General", "ParagraphSeparator")),
+	ParagraphSeparator(config_file.readNumEntry("Look", "ParagraphSeparator")),
 	lastMsgTime(), PreviousMessage(), CfgNoHeaderRepeat(config_file.readBoolEntry("Look","NoHeaderRepeat")),
 	CfgHeaderSeparatorHeight(0), CfgNoHeaderInterval(0), Style(0), LastTime(0), body(0)
 {

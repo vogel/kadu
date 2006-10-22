@@ -853,10 +853,11 @@ void ChatManager::closeModule()
 		ConfigDialog::removeControl("Look", "Chat window title syntax:");
 	ConfigDialog::removeControl("Look", "Other");
 
+		ConfigDialog::removeControl("Look", "Message separators height:");
 		ConfigDialog::removeControl("Look", "Interval between header removal:");
 		ConfigDialog::removeControl("Look", "Chat header separators height:");
 		ConfigDialog::removeControl("Look", "Remove chat header repetitions");
-	ConfigDialog::removeControl("Look", "Headers");
+	ConfigDialog::removeControl("Look", "Message headers && separators");
 
 		ConfigDialog::removeControl("Look", "Full chat style:");
 		ConfigDialog::removeControl("Look", "Select chat style");
@@ -1033,10 +1034,11 @@ void ChatManager::initModule()
 			QT_TRANSLATE_NOOP("@default", "Syntax:\n%1 - background color\n%2 - text font color\n%3 - nick color\n%4 - nick\n%5 - timestamp\n%6 - timestamp with server time\n%7 - message"), 0, Expert);
 
 	//naglowki
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Headers"), 0, Advanced);
-		ConfigDialog::addCheckBox("Look", "Headers", QT_TRANSLATE_NOOP("@default", "Remove chat header repetitions"), "NoHeaderRepeat", true, 0, 0, Advanced);
-		ConfigDialog::addSpinBox("Look", "Headers", QT_TRANSLATE_NOOP("@default", "Chat header separators height:"), "HeaderSeparatorHeight", 0, config_file.readNumEntry("General", "ParagraphSeparator"), 1, 1, 0, 0, Expert);
-		ConfigDialog::addSpinBox("Look", "Headers", QT_TRANSLATE_NOOP("@default", "Interval between header removal:"), "NoHeaderInterval", 1, 1439, 1, 10, 0, 0, Expert);
+	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Message headers && separators"), 0, Advanced);
+		ConfigDialog::addCheckBox("Look", "Message headers && separators", QT_TRANSLATE_NOOP("@default", "Remove chat header repetitions"), "NoHeaderRepeat", true, 0, 0, Advanced);
+		ConfigDialog::addSpinBox("Look",  "Message headers && separators", QT_TRANSLATE_NOOP("@default", "Chat header separators height:"), "HeaderSeparatorHeight", 0, 100, 1, 1, 0, 0, Expert);
+		ConfigDialog::addSpinBox("Look",  "Message headers && separators", QT_TRANSLATE_NOOP("@default", "Interval between header removal:"), "NoHeaderInterval", 1, 1439, 1, 10, 0, 0, Expert);
+		ConfigDialog::addSpinBox("Look",  "Message headers && separators", QT_TRANSLATE_NOOP("@default", "Message separators height:"), "ParagraphSeparator", 0, 100, 1, 4, 0, 0, Advanced);
 
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Other"), 0, Expert);
 		ConfigDialog::addLineEdit("Look", "Other", QT_TRANSLATE_NOOP("@default", "Chat window title syntax:"), "ChatContents", QString::null, Kadu::SyntaxText, 0, Expert);

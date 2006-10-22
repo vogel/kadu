@@ -14,21 +14,24 @@ class ChatStyle
 	private:
 		QString FormatStringFull; /*!< ³añcuch opisuj±cy pe³en styl */
 		QString FormatStringPure; /*!< ³añcuch opisuj±cy styl bez nag³ówka */
-		QString FormatStringWithoutSeparator; /*!< ³añcuch opisuj±cy styl bez separatora */
 
 	public:
 		/**
 			Konstruktor stylu okna rozmowy
 			\fn ChatStyle(const QString& format_string_full,
-				const QString& format_string_pure,
-				const QString& format_string_without_separator)
+				const QString& format_string_pure)
 			\param format_string_full pe³ny styl okna
 			\param format_string_pure styl bez nag³ówka
-			\param format_string_without_separator styl bez separatora
 		**/
 		ChatStyle(const QString& format_string_full,
-			const QString& format_string_pure,
-			const QString& format_string_without_separator);
+			const QString& format_string_pure);
+
+		/**
+			Konstruktor stylu okna rozmowy
+			\fn ChatStyle(const QString& format_string_full)
+			\param format_string_full pe³ny styl okna
+		**/
+		ChatStyle(const QString& format_string_full);
 
 		/**
 			\fn const QString& formatStringFull() const
@@ -41,12 +44,6 @@ class ChatStyle
 			Zwraca ³añcuch dla stylu bez nag³ówka
 		**/
 		const QString& formatStringPure() const;
-
-		/**
-			\fn const QString& formatStringWithoutSeparator() const
-			Zwraca ³añcuch dla stylu bez separatora
-		**/
-		const QString& formatStringWithoutSeparator() const;
 
 		/**
 			Destruktor styli w oknie Chat

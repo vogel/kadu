@@ -1332,7 +1332,7 @@ const HistoryDate &DateListViewText::getDate() const
 
 History::History(UinsList uins) : QDialog(NULL, "HistoryDialog"), uinslv(0), body(0),
 	uins(uins), start(0), findrec(), closeDemand(false), finding(false), dateentries(),
-	ParagraphSeparator(config_file.readNumEntry("General", "ParagraphSeparator"))
+	ParagraphSeparator(config_file.readNumEntry("Look", "ParagraphSeparator"))
 {
 	kdebugf();
 	history->convHist2ekgForm(uins);

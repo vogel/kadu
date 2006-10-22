@@ -60,6 +60,7 @@ QString ChatMessage::convertCharacters(QString edit, const QColor &bgcolor, Emot
 void ChatMessage::formatMessage(const ChatStyle* chat_style,
 	const EmoticonsStyle emoticons_style, bool include_header, int separator_size)
 {
+	QString fmt;
 	if (include_header)
 	{
 		QString escaped_nick = nick;
@@ -68,28 +69,32 @@ void ChatMessage::formatMessage(const ChatStyle* chat_style,
 		if (!sdate.isNull())
 			date_str_2.append(" / S " + printDateTime(sdate));
 		HtmlDocument::escapeText(escaped_nick);
-		message = narg(chat_style->formatStringFull(),
+		fmt = chat_style->formatStringFull();
+		if (separator_size > 0)
+			fmt.replace("<kadu:separator/>", QString("<img title=\"\" height=\"%1\" width=\"10000\" align=\"right\">").arg(separator_size));
+		else
+			fmt.remove("<kadu:separator/>");
+		message = narg(fmt,
 			Colors.backgroundColor().name(),
 			Colors.fontColor().name(),
 			Colors.nickColor().name(),
 			escaped_nick,
 			date_str,
 			date_str_2,
-			convertCharacters(unformattedMessage, Colors.backgroundColor(), emoticons_style),
-			QString::number(separator_size));
+			convertCharacters(unformattedMessage, Colors.backgroundColor(), emoticons_style));
 	}
-	else if (separator_size > 0)
-		message = narg(chat_style->formatStringPure(),
-			Colors.backgroundColor().name(),
-			Colors.fontColor().name(),
-			Colors.nickColor().name(),
-			QString::number(separator_size),
-			convertCharacters(unformattedMessage, Colors.backgroundColor(), emoticons_style));
 	else
-		message = narg(chat_style->formatStringWithoutSeparator(),
+	{
+		fmt = chat_style->formatStringPure();
+		if (separator_size > 0)
+			fmt.replace("<kadu:separator/>", QString("<img title=\"\" height=\"%1\" width=\"10000\" align=\"right\">").arg(separator_size));
+		else
+			fmt.remove("<kadu:separator/>");
+		message = narg(fmt,
 			Colors.backgroundColor().name(),
 			Colors.fontColor().name(),
 			Colors.nickColor().name(),
 			convertCharacters(unformattedMessage, Colors.backgroundColor(), emoticons_style));
+	}
 	needsToBeFormatted = false;
 }

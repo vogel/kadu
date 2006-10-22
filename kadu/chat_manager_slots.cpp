@@ -146,12 +146,15 @@ void ChatManagerSlots::onCreateTabLook()
 	QSpinBox *s_headersSeparatorHeight= ConfigDialog::getSpinBox("Look", "Chat header separators height:");
 	QSpinBox *s_noHeadersInterval= ConfigDialog::getSpinBox("Look", "Interval between header removal:");
 
+	QSpinBox *s_SeparatorHeight= ConfigDialog::getSpinBox("Look", "Message separators height:");
+
 	s_headersSeparatorHeight->setEnabled(b_noHeadersRepeat->isChecked());
 	s_noHeadersInterval->setEnabled(b_noHeadersRepeat->isChecked());
 
 	//dodanie suffiksu w spinboksach
 	s_headersSeparatorHeight->setSuffix(" px");
 	s_noHeadersInterval->setSuffix(" min");
+	s_SeparatorHeight->setSuffix(" px");
 
 	onChatThemeChanged(ConfigDialog::getComboBox("Look", "Select chat style")->currentText());
 	updatePreview();
