@@ -366,21 +366,23 @@ void ChatManagerSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo,
 		}
 		case 4:	//firefox
 		{
-			browserName="mozilla-xremote-client";
+			browserName = "mozilla-xremote-client";
 
-			QStringList dirList=QDir("/usr/lib").entryList("firefox*", QDir::All, QDir::Name|QDir::Reversed);
-			CONST_FOREACH(dir, dirList)
-				searchPath.append("/usr/lib/"+(*dir));
-
-			dirList=QDir("/usr/lib").entryList("mozilla-firefox*", QDir::All, QDir::Name|QDir::Reversed);
+			QStringList dirList = QDir("/usr/lib").entryList("mozilla-firefox*", QDir::All, QDir::Name|QDir::Reversed);
 			CONST_FOREACH(dir, dirList)
 			{
 				searchPath.append("/usr/lib/" + (*dir));
-				if (QFile::exists("/usr/lib/" + (*dir) + "mozilla-firefox-xremote-client"))
+				if (QFile::exists("/usr/lib/" + (*dir) + "/mozilla-firefox-xremote-client"))
 					//jeste¶my na debianie, gdzie zmienili nazwê skryptu, grrr :|
 					browserName = "mozilla-firefox-xremote-client";
-				else if (QFile::exists("/usr/lib/" + (*dir) + "firefox-xremote-client"))
-					//albo na ubuntu, gdzie tak¿e zmienili nazwê skryptu!
+			}
+
+			dirList = QDir("/usr/lib").entryList("firefox*", QDir::All, QDir::Name|QDir::Reversed);
+			CONST_FOREACH(dir, dirList)
+			{
+				searchPath.append("/usr/lib/" + (*dir));
+				if (QFile::exists("/usr/lib/" + (*dir) + "/firefox-xremote-client"))
+					//jeste¶my na ubuntu, gdzie tak¿e zmienili nazwê skryptu!
 					browserName = "firefox-xremote-client";
 			}
 
