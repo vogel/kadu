@@ -1628,7 +1628,7 @@ Czy na pewno tego chcesz?</translation>
     </message>
     <message>
         <source>Hide base modules</source>
-        <translation>Ukryj standardowe modułu</translation>
+        <translation>Ukryj standardowe moduły</translation>
     </message>
 </context>
 <context>
