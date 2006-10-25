@@ -16,13 +16,19 @@
 #include "toolbar.h"
 #include "toolbutton.h"
 
-ToolButton::ToolButton(QWidget* parent, const QString& action_name)
+ToolButton::ToolButton(QWidget* parent, const QString& action_name, Action::ActionType Type)
 	: QToolButton(parent, 0), ActionName(action_name), InOnState(false),
-	OffIcon(), OffText(), OnIcon(), OnText()
+	OffIcon(), OffText(), OnIcon(), OnText(), IsEnabled(true), Type(Type)
 
 {
 	kdebugf();
 	connect(this, SIGNAL(clicked()), this, SLOT(buttonClicked()));
+
+	// ignore signal on global actions - they are always active
+
+	if ((Type & Action::TypeGlobal) == 0)
+		connect(parent, SIGNAL(placeChanged(QDockWindow::Place)), this, SLOT(toolbarPlaceChanged(QDockWindow::Place)));
+
 	kdebugf2();
 }
 
@@ -30,6 +36,25 @@ ToolButton::~ToolButton()
 {
 	kdebugf();
 	kdebugf2();
+}
+
+void ToolButton::setEnabled(bool enabled)
+{
+	// TODO: refactor in 0.6
+	// isEnabled is internal enabled state, it is used to save enabled state when action goes floating and then docked again
+
+	IsEnabled = enabled;
+
+	if (((Type & Action::TypeGlobal) != 0) || !enabled)
+		QToolButton::setEnabled(IsEnabled);
+	else
+	{
+		ToolBar *toolBar = dynamic_cast<ToolBar *>(parent());
+		if (toolBar->place() == QDockWindow::InDock)
+			QToolButton::setEnabled(toolBar->dockArea()->supportsAction(Type));
+		else
+			QToolButton::setEnabled(false);
+	}
 }
 
 void ToolButton::setOnShape(const QIconSet& icon, const QString& text)
@@ -132,6 +157,13 @@ void ToolButton::showTextLabelClicked()
 	ToolBar* toolbar = (ToolBar*)parent();
 	DockArea* dockarea = (DockArea*)toolbar->area();
 	dockarea->writeToConfig();
+	kdebugf2();
+}
+
+void ToolButton::toolbarPlaceChanged(QDockWindow::Place p)
+{
+	kdebugf();
+	setEnabled(IsEnabled);
 	kdebugf2();
 }
 

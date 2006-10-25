@@ -111,7 +111,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	QToolTip::add(r_uin, tr("Search for this UIN exclusively"));
 
 	DockArea* dock_area = new DockArea(Qt::Horizontal, DockArea::Normal, this,
-		"searchDockAreaGroup", "searchDockArea");
+		"searchDockArea", Action::TypeGlobal | Action::TypeUser | Action::TypeSearch);
 	connect(dock_area, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
 	if (!dock_area->loadFromConfig(this))
@@ -157,10 +157,10 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	results->setResizeMode(QListView::AllColumns);
 	for (int i = 1; i < 5; ++i)
 		results->setColumnWidthMode(i, QListView::Maximum);
-		
+
 	connect(KaduActions["addSearchedAction"], SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(addSearchedActionActivated(const UserGroup*)));
-		
+
 	KaduActions["firstSearchAction"]->setEnabled(this, false);
 	KaduActions["nextResultsAction"]->setEnabled(this, false);
 	KaduActions["clearSearchAction"]->setEnabled(this, false);
@@ -194,29 +194,25 @@ void SearchDialog::initModule()
 	kdebugf();
 
 	Action* first_search_action = new Action(icons_manager->loadIcon("LookupUserInfo"),
-		tr("&Search"), "firstSearchAction", Key_Return);
-	first_search_action->setDockAreaGroupRestriction("searchDockAreaGroup");
+		tr("&Search"), "firstSearchAction", Action::TypeSearch, Key_Return);
 	first_search_action->setSlot(SLOT(firstSearch()));
 	KaduActions.insert("firstSearchAction", first_search_action);
 	KaduActions.addDefaultToolbarAction("Search toolbar", "firstSearchAction", 0, true);
 
 	Action* next_results_action = new Action(icons_manager->loadIcon("NextSearchResults"),
-		tr("&Next results"), "nextResultsAction");
-	next_results_action->setDockAreaGroupRestriction("searchDockAreaGroup");
+		tr("&Next results"), "nextResultsAction", Action::TypeSearch);
 	next_results_action->setSlot(SLOT(nextSearch()));
 	KaduActions.insert("nextResultsAction", next_results_action);
 	KaduActions.addDefaultToolbarAction("Search toolbar", "nextResultsAction", 1, true);
 
 	Action* clear_search_action = new Action(icons_manager->loadIcon("ClearSearchResults"),
-		tr("Clear results"), "clearSearchAction");
-	clear_search_action->setDockAreaGroupRestriction("searchDockAreaGroup");
+		tr("Clear results"), "clearSearchAction", Action::TypeSearch);
 	clear_search_action->setSlot(SLOT(clearResults()));
 	KaduActions.insert("clearSearchAction", clear_search_action);
 	KaduActions.addDefaultToolbarAction("Search toolbar", "clearSearchAction", 2, true);
 
 	Action* add_searched_action = new Action(icons_manager->loadIcon("AddUser"),
-		tr("Add selected user"), "addSearchedAction");
-	add_searched_action->setDockAreaGroupRestriction("searchDockAreaGroup");
+		tr("Add selected user"), "addSearchedAction", Action::TypeSearch);
 	KaduActions.insert("addSearchedAction", add_searched_action);
 	KaduActions.addDefaultToolbarAction("Search toolbar", "addSearchedAction", 3, true);
 
@@ -277,7 +273,7 @@ void SearchDialog::clearResults(void)
 
 void SearchDialog::addSearchedActionActivated(const UserGroup* users)
 {
-	kdebugf();	
+	kdebugf();
 	if ((*users->begin()).isAnonymous())
 		(new UserInfo(*users->begin(), 0, "add user"))->show();
 	else
@@ -313,7 +309,7 @@ void SearchDialog::firstSearch(void)
 				searchRecord->reqGender(true);
 				break;
 		}
-		
+
 		if (only_active->isChecked())
 			searchRecord->reqActive();
 	}

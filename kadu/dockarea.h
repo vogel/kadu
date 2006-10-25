@@ -13,7 +13,7 @@ class DockArea : public QDockArea
 
 	private:
 		static bool Blocked;
-		QString DockAreaGroup;
+		int SupportedActions;
 
 	protected:
 		void contextMenuEvent(QContextMenuEvent* e);
@@ -26,10 +26,9 @@ class DockArea : public QDockArea
 
 	public:
 		DockArea(Orientation o, HandlePosition h,
-			QWidget* parent, const QString& dockarea_group,
-			const char* name);
+			QWidget* parent,
+			const char* name, int supportedActions);
 		~DockArea();
-		QString dockAreaGroup();
 		bool loadFromConfig(QWidget* toolbars_parent);
 		/**
 			Returns list of users that will be affected by activated action.
@@ -42,6 +41,8 @@ class DockArea : public QDockArea
 		const UserGroup* selectedUsers();
 		bool blocked();
 		QPopupMenu* createContextMenu(QWidget* parent);
+
+		bool supportsAction(int actionType);
 
 	public slots:
 		void writeToConfig();

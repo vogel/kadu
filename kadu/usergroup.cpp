@@ -117,6 +117,8 @@ bool UserGroup::equals(UserListElements users) const
 
 bool UserGroup::equals(const UserGroup *group) const
 {
+	if (NULL == group)
+		return false;
 	if (this == group)
 		return true;
 	unsigned int cnt = count();

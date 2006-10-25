@@ -42,7 +42,7 @@ SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name
 	sound_manager->setMute(!config_file.readBoolEntry("Sounds", "PlaySound"));
 
 	Action* mute_action = new Action(icons_manager->loadIcon("Unmute"),
-		tr("Mute sounds"), "muteSoundsAction");
+		tr("Mute sounds"), "muteSoundsAction", Action::TypeGlobal);
 	mute_action->setOnShape(icons_manager->loadIcon("Mute"), tr("Unmute sounds"));
 	//mute_action->setOn(sound_manager->isMuted());
 	connect(mute_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),

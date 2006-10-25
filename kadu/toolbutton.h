@@ -5,6 +5,8 @@
 #include <qdragobject.h>
 #include <qtoolbutton.h>
 
+#include "action.h"
+
 class ToolBar;
 
 class ToolButton : public QToolButton
@@ -19,18 +21,25 @@ class ToolButton : public QToolButton
 		QIconSet OnIcon;
 		QString OnText;
 
+		bool IsEnabled;
+		Action::ActionType Type;
+
 	private slots:
 		void buttonClicked();
 		void deleteButtonClicked();
 		void showTextLabelClicked();
+		void toolbarPlaceChanged(QDockWindow::Place p);
 
 	protected:
 		void mouseMoveEvent(QMouseEvent* e);
 		void contextMenuEvent(QContextMenuEvent* e);
 
 	public:
-		ToolButton(QWidget* parent, const QString& action_name);
+		ToolButton(QWidget* parent, const QString& action_name, Action::ActionType actionType);
 		~ToolButton();
+
+		void setEnabled(bool enabled);
+
 		/**
 			button works just like toggled but using two shapes
 			(pictures and texts)

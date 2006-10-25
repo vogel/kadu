@@ -55,13 +55,9 @@ void ToolBar::dragEnterEvent(QDragEnterEvent* event)
 		{
 			dragButton = (ToolButton*)source->find(text.toULong());
 			QString action_name = dragButton->actionName();
-			QString dockarea_group_restr =
-				KaduActions[action_name]->dockAreaGroupRestriction();
-			if (dockarea_group_restr.isNull() ||
-					dockarea_group_restr == dockAreaGroup())
-				event->accept(true);
-			else
-				event->accept(false);
+
+			// REVIEW: maybe we should remove it, accept by default and possibly turn off the button at once
+			event->accept(dockArea()->supportsAction(KaduActions[action_name]->actionType()));
 		}
 	}
 	else
@@ -125,7 +121,7 @@ void ToolBar::contextMenuEvent(QContextMenuEvent* e)
 	//NOTE: parent MUST be dockArea(), NOT this, because when user is choosing "remove toolbar",
 	//      it calls deleteLater(), which is invoked _before_ exec returns! so QPopupMenu would
 	//      be deleted when exec returns!
-	QPopupMenu* p = createContextMenu(dockArea()); 
+	QPopupMenu* p = createContextMenu(dockArea());
 
 	p->exec(QCursor::pos());
 	delete p;
@@ -143,14 +139,6 @@ void ToolBar::writeToConfig(QDomElement parent_element)
 	CONST_FOREACH(i, *l)
 		((ToolButton*)(*i))->writeToConfig(toolbar_elem);
 	delete l;
-	kdebugf2();
-}
-
-QString ToolBar::dockAreaGroup()
-{
-	kdebugf();
-	DockArea* dockarea = (DockArea*)area();
-	return dockarea->dockAreaGroup();
 	kdebugf2();
 }
 
@@ -176,10 +164,7 @@ void ToolBar::loadFromConfig(QDomElement toolbar_element)
 		bool uses_text_label = !button_elem.attribute("uses_text_label").isNull();
 		if (KaduActions.contains(action_name))
 		{
-			QString dockarea_group_restr =
-				KaduActions[action_name]->dockAreaGroupRestriction();
-			if (dockarea_group_restr.isNull() ||
-					dockarea_group_restr == dockAreaGroup())
+			if (dockArea()->supportsAction(KaduActions[action_name]->actionType()))
 				KaduActions[action_name]->addToToolbar(this, uses_text_label);
 		}
 	}
@@ -189,7 +174,16 @@ void ToolBar::loadFromConfig(QDomElement toolbar_element)
 const UserGroup* ToolBar::selectedUsers() const
 {
 	kdebugf();
-	const UserGroup* users = dynamic_cast<DockArea*>(area())->selectedUsers();
+	DockArea *dockArea = dynamic_cast<DockArea*>(area());
+	const UserGroup* users;
+
+	// dont segfault on floating toolbars
+
+	if (dockArea)
+		users = dockArea->selectedUsers();
+	else
+		users = NULL;
+
 	kdebugf2();
 	return users;
 }
@@ -202,8 +196,7 @@ QPopupMenu* ToolBar::createContextMenu(QWidget* parent)
 	int param = 0;
 	CONST_FOREACH(a, KaduActions)
 	{
-		QString dockarea_group_restr = (*a)->dockAreaGroupRestriction();
-		if (dockarea_group_restr.isNull() || dockarea_group_restr == dockAreaGroup())
+		if (dockArea()->supportsAction((*a)->actionType()))
 		{
 			int id = (*a)->addToPopupMenu(p2, false);
 			p2->setItemParameter(id, param);

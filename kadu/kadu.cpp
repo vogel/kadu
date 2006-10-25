@@ -200,7 +200,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Fonts"), 0, Advanced);
 		ConfigDialog::addSelectFont("Look", "Fonts", QT_TRANSLATE_NOOP("@default", "Font in panel"), "PanelFont", defaultFont->toString(), 0, "panel_font_box");
-	
+
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Information panel"));
 		ConfigDialog::addCheckBox("Look", "Information panel", QT_TRANSLATE_NOOP("@default", "Show information panel"), "ShowInfoPanel", true);
 		ConfigDialog::addCheckBox("Look", "Information panel", QT_TRANSLATE_NOOP("@default", "Show vertical scrollbar in information panel"), "PanelVerticalScrollbar", true, 0, 0, Expert);
@@ -213,18 +213,18 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	ConfigDialog::connectSlot("Look", "Font in panel", SIGNAL(changed(const char *, const QFont&)),kaduslots, SLOT(chooseFont(const char *, const QFont&)), "panel_font_box");
 
 	MainLayout = new QVBoxLayout(this);
-	
+
 	TopDockArea = new DockArea(Qt::Horizontal, DockArea::Normal, this,
-		"mainDockAreaGroup", "topDockArea");
+		"topDockArea", Action::TypeGlobal | Action::TypeUser | Action::TypeUserList);
 	connect(TopDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
 	MainLayout->addWidget (TopDockArea);
-	
+
 	QSplitter *split = new QSplitter(Qt::Vertical, this, "splitter");
 	MainLayout->addWidget (split);
-	
+
 	QHBox* hbox1 = new QHBox(split, "firstBox");
-	
+
 	// groupbar
 	GroupBar = new KaduTabBar(hbox1, "groupbar");
 	hbox1->setStretchFactor(GroupBar, 1);
@@ -282,39 +282,37 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	pending.loadFromFile();
 
 	Action* inact_users_action = new Action(icons_manager->loadIcon("ShowHideInactiveUsers"),
-		tr("Show / hide offline users"), "inactiveUsersAction");
+		tr("Show / hide offline users"), "inactiveUsersAction", Action::TypeUserList);
 	connect(inact_users_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(inactiveUsersActionActivated()));
 	KaduActions.insert("inactiveUsersAction", inact_users_action);
 
 	Action* desc_users_action = new Action(icons_manager->loadIcon("ShowOnlyDescriptionUsers"),
-		tr("Show / hide users without description"), "descriptionUsersAction");
+		tr("Show / hide users without description"), "descriptionUsersAction", Action::TypeUserList);
 	connect(desc_users_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(descriptionUsersActionActivated()));
 	KaduActions.insert("descriptionUsersAction", desc_users_action);
 
 	Action* configuration_action = new Action(icons_manager->loadIcon("Configuration"),
-		tr("Configuration"), "configurationAction");
+		tr("Configuration"), "configurationAction", Action::TypeGlobal);
 	connect(configuration_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(configurationActionActivated()));
 	KaduActions.insert("configurationAction", configuration_action);
 
 	Action* edit_user_action = new Action(icons_manager->loadIcon("EditUserInfo"),
-		tr("View / edit user info"), "editUserAction");
+		tr("View / edit user info"), "editUserAction", Action::TypeUser);
 	connect(edit_user_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(editUserActionActivated(const UserGroup*)));
 	KaduActions.insert("editUserAction", edit_user_action);
 
 	Action* add_user_action = new Action(icons_manager->loadIcon("AddUser"),
-		tr("Add user"), "addUserAction");
-	add_user_action->setDockAreaGroupRestriction("mainDockAreaGroup");
+		tr("Add user"), "addUserAction", Action::TypeGlobal);
 	connect(add_user_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(addUserActionActivated(const UserGroup*)));
 	KaduActions.insert("addUserAction", add_user_action);
-	
+
 	Action* open_search_action = new Action(icons_manager->loadIcon("LookupUserInfo"),
-		tr("Search user in directory"), "openSearchAction");
-	open_search_action->setDockAreaGroupRestriction("mainDockAreaGroup");
+		tr("Search user in directory"), "openSearchAction", Action::TypeUser);
 	connect(open_search_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(searchInDirectory()));
 	KaduActions.insert("openSearchAction", open_search_action);
@@ -1423,7 +1421,7 @@ void Kadu::createMenu()
 
 	MenuBar->insertItem(tr("&Kadu"), MainMenu);
 	MainLayout->insertWidget(0, menuBox);
-	
+
 	icons_manager->registerMenu(MainMenu);
 	icons_manager->registerMenuItem(MainMenu, tr("Manage &ignored"), "ManageIgnored");
 	icons_manager->registerMenuItem(MainMenu, tr("&Configuration"), "Configuration");

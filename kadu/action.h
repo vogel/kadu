@@ -7,12 +7,24 @@
 #include <qstring.h>
 #include <qvaluelist.h>
 
-#include "toolbar.h"
 #include "usergroup.h"
+
+class ToolButton;
+class ToolBar;
 
 class Action : public QObject
 {
 	Q_OBJECT
+
+	public:
+		enum ActionType {
+			TypeGlobal		= 0x0001, //!< actions with TypeGlobal type does not require access to user list or anything window-dependend
+			TypeUser		= 0x0002, //!< actions with TypeUser type requires access to one or more users from user list
+			TypeChat		= 0x0004, //!< actions with TypeChat type requires access to chat window
+			TypeSearch		= 0x0008, //!< actions with TypeSearch type requires access to search window
+			TypeUserList	= 0x0010, //!< actions with TypeUserList type requires access to user list widget
+			TypeAll			= 0xFFFF  //!< TypeAll is used to set masks for all types of actions
+		};
 
 	private:
 		QIconSet Icon;
@@ -21,7 +33,6 @@ class Action : public QObject
 		bool ToggleAction;
 		QIconSet OnIcon;
 		QString OnText;
-		QString DockAreaGroupRestriction;
 		const char *Slot;
 		QValueList<ToolButton*> ToolButtons;
 		struct ToggleStateStruct
@@ -32,6 +43,7 @@ class Action : public QObject
 			ToggleStateStruct();
 		};
 		QValueList<ToggleStateStruct> ToggleState;
+		ActionType Type;
 
 	private slots:
 		void toolButtonClicked();
@@ -39,7 +51,7 @@ class Action : public QObject
 
 	public:
 		Action(const QIconSet& icon, const QString& text, const char* name,
-			QKeySequence accel = QKeySequence());
+			ActionType Type, QKeySequence accel = QKeySequence());
 		void setToggleAction(bool toggle);
 		/**
 			action works just like toggled but using two shapes
@@ -60,13 +72,6 @@ class Action : public QObject
 		**/
 		void setEnabled(QWidget* parent, bool enabled);
 		/**
-			Restrict action to one dockarea group only, for example:
-			action_1->setClassRestriction("chatDockAreaGroup")
-			to set action to be allowed in chat windows only.
-		**/
-		void setDockAreaGroupRestriction(const QString& dockarea_group);
-		QString dockAreaGroupRestriction();
-		/**
 			Sets slot of dockarea's parent that will be called when action
 			is activated. You should ensure that class of parent's class
 			is known using setDockAreaGroupRestriction().
@@ -76,6 +81,8 @@ class Action : public QObject
 			Activate action
 		**/
 		void activate(const UserGroup* users);
+
+		ActionType actionType();
 
 	signals:
 		void addedToToolbar(ToolButton* button, ToolBar* toolbar,

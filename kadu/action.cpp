@@ -15,10 +15,12 @@
 #include "action.h"
 #include "debug.h"
 #include "misc.h"
+#include "toolbar.h"
+#include "toolbutton.h"
 
-Action::Action(const QIconSet& icon, const QString& text, const char* name, QKeySequence accel)
+Action::Action(const QIconSet& icon, const QString& text, const char* name, ActionType Type, QKeySequence accel)
 	: QObject(NULL, name), Icon(icon), Text(text), Accel(accel), ToggleAction(false),
-		OnIcon(), OnText(), DockAreaGroupRestriction(), Slot(0), ToolButtons(), ToggleState()
+		OnIcon(), OnText(), Slot(0), ToolButtons(), ToggleState(), Type(Type)
 {
 	kdebugf();
 	kdebugf2();
@@ -30,8 +32,14 @@ void Action::toolButtonClicked()
 	const ToolButton* button = dynamic_cast<const ToolButton*>(sender());
 	const ToolBar* toolbar = dynamic_cast<ToolBar*>(button->parentWidget());
 	const UserGroup* users = toolbar->selectedUsers();
-	if (users != NULL)
-		emit activated(users, button, button->isOn());
+
+	/**
+		Don't check if users == NULL, now it is not neccesary.
+		Either action dont need users field (with ActionType == TypeGlobal) or it cannot be activated when users == NULL
+		(ActionType != TypeGlobal) - it is possible only when action's toolbar is floating - action's button is disabled.
+	**/
+
+	activated(users, button, button->isOn());
 	kdebugf2();
 }
 
@@ -62,7 +70,8 @@ void Action::setOnShape(const QIconSet& icon, const QString& text)
 ToolButton* Action::addToToolbar(ToolBar* toolbar, bool uses_text_label)
 {
 	kdebugf();
-	ToolButton* btn = new ToolButton(toolbar, name());
+
+	ToolButton* btn = new ToolButton(toolbar, name(), Type);
 	btn->setIconSet(Icon);
 	btn->setTextLabel(Text);
 	btn->setOnShape(OnIcon, OnText);
@@ -74,6 +83,7 @@ ToolButton* Action::addToToolbar(ToolBar* toolbar, bool uses_text_label)
 	connect(btn, SIGNAL(destroyed(QObject*)), this, SLOT(toolButtonDestroyed(QObject*)));
 	if (Slot)
 		connect(btn, SIGNAL(clicked()), toolbar->area()->parent(), Slot);
+
 	ToolButtons.append(btn);
 	const UserGroup* user_group = toolbar->selectedUsers();
 	if (user_group != NULL)
@@ -170,18 +180,6 @@ void Action::setEnabled(QWidget* parent, bool enabled)
 	kdebugf2();
 }
 
-void Action::setDockAreaGroupRestriction(const QString& dockarea_group)
-{
-	kdebugf();
-	DockAreaGroupRestriction = dockarea_group;
-	kdebugf2();
-}
-
-QString Action::dockAreaGroupRestriction()
-{
-	return DockAreaGroupRestriction;
-}
-
 void Action::setSlot(const char *slot)
 {
 	kdebugf();
@@ -194,6 +192,12 @@ void Action::activate(const UserGroup* users)
 	kdebugf();
 	emit activated(users, NULL, false);
 	kdebugf2();
+}
+
+Action::ActionType Action::actionType()
+{
+	kdebugf();
+	return Type;
 }
 
 Actions::Actions() : QMap<QString, Action *>(), DefaultToolbarActions()

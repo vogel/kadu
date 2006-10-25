@@ -50,9 +50,8 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 
 	Action* auto_send_action = new Action(icons_manager->loadIcon("AutoSendMessage"),
 		tr("%1 sends message").arg(config_file.readEntry("ShortCuts", "chat_newline")),
-		"autoSendAction");
+		"autoSendAction", Action::TypeChat);
 	auto_send_action->setToggleAction(true);
-	auto_send_action->setDockAreaGroupRestriction("chatDockAreaGroup");
 	connect(auto_send_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(autoSendActionActivated(const UserGroup*, const QWidget*, bool)));
 	connect(auto_send_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*,
@@ -62,29 +61,26 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 	KaduActions.insert("autoSendAction", auto_send_action);
 
 	Action* scroll_lock_action = new Action(icons_manager->loadIcon("ScrollLock"),
-		tr("Blocks scrolling"), "scrollLockAction");
+		tr("Blocks scrolling"), "scrollLockAction", Action::TypeChat);
 	scroll_lock_action->setToggleAction(true);
-	scroll_lock_action->setDockAreaGroupRestriction("chatDockAreaGroup");
 	connect(scroll_lock_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(scrollLockActionActivated(const UserGroup*, const QWidget*, bool)));
 	KaduActions.insert("scrollLockAction", scroll_lock_action);
 
 	Action* clear_action = new Action(icons_manager->loadIcon("ClearChat"),
-		tr("Clear messages in chat window"), "clearChatAction");
-	clear_action->setDockAreaGroupRestriction("chatDockAreaGroup");
+		tr("Clear messages in chat window"), "clearChatAction", Action::TypeChat);
 	connect(clear_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(clearActionActivated(const UserGroup*)));
 	KaduActions.insert("clearChatAction", clear_action);
 
 	Action* history_action = new Action(icons_manager->loadIcon("History"),
-		tr("Show history"), "showHistoryAction");
+		tr("Show history"), "showHistoryAction", Action::TypeUser);
 	connect(history_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(historyActionActivated(const UserGroup*)));
 	KaduActions.insert("showHistoryAction", history_action);
 
 	Action* insert_emot_action = new Action(icons_manager->loadIcon("ChooseEmoticon"),
-		tr("Insert emoticon"), "insertEmoticonAction");
-	insert_emot_action->setDockAreaGroupRestriction("chatDockAreaGroup");
+		tr("Insert emoticon"), "insertEmoticonAction", Action::TypeChat);
 	connect(insert_emot_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(insertEmoticonActionActivated(const UserGroup*, const QWidget*)));
 	connect(insert_emot_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*,
@@ -94,38 +90,35 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 	KaduActions.insert("insertEmoticonAction", insert_emot_action);
 
 	Action* whois_action = new Action(icons_manager->loadIcon("LookupUserInfo"),
-		tr("Search this user in directory"), "whoisAction");
-	whois_action->setDockAreaGroupRestriction("chatDockAreaGroup");
+		tr("Search this user in directory"), "whoisAction", Action::TypeUser);
 	connect(whois_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(whoisActionActivated(const UserGroup*)));
 	KaduActions.insert("whoisAction", whois_action);
 
 	Action* insert_img_action = new Action(icons_manager->loadIcon("ChooseImage"),
-		tr("Insert image"), "insertImageAction");
-	insert_img_action->setDockAreaGroupRestriction("chatDockAreaGroup");
+		tr("Insert image"), "insertImageAction", Action::TypeChat);
 	connect(insert_img_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(insertImageActionActivated(const UserGroup*)));
 	KaduActions.insert("insertImageAction", insert_img_action);
 
 	Action* ignore_user_action = new Action(icons_manager->loadIcon("ManageIgnored"),
-		tr("Ignore user"), "ignoreUserAction");
+		tr("Ignore user"), "ignoreUserAction", Action::TypeUser);
 	connect(ignore_user_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(ignoreUserActionActivated(const UserGroup*)));
 	KaduActions.insert("ignoreUserAction", ignore_user_action);
-	
+
 	Action* block_user_action = new Action(icons_manager->loadIcon("Blocking"),
-		tr("Block user"), "blockUserAction");
+		tr("Block user"), "blockUserAction", Action::TypeUser);
 	connect(block_user_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(blockUserActionActivated(const UserGroup*)));
 	KaduActions.insert("blockUserAction", block_user_action);
-	
+
 	QFont font;
 
 	font.setBold(true);
 	Action* bold_action = new Action(string_to_pixmap("B", font),
-		tr("Bold"), "boldAction");
+		tr("Bold"), "boldAction", Action::TypeChat);
 	bold_action->setToggleAction(true);
-	bold_action->setDockAreaGroupRestriction("chatDockAreaGroup");
 	connect(bold_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(boldActionActivated(const UserGroup*, const QWidget*, bool)));
 	KaduActions.insert("boldAction", bold_action);
@@ -133,9 +126,8 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 	font.setBold(false);
 	font.setItalic(true);
 	Action* italic_action = new Action(string_to_pixmap("I", font),
-		tr("Italic"), "italicAction");
+		tr("Italic"), "italicAction", Action::TypeChat);
 	italic_action->setToggleAction(true);
-	italic_action->setDockAreaGroupRestriction("chatDockAreaGroup");
 	connect(italic_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(italicActionActivated(const UserGroup*, const QWidget*, bool)));
 	KaduActions.insert("italicAction", italic_action);
@@ -143,9 +135,8 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 	font.setItalic(false);
 	font.setUnderline(true);
 	Action* underline_action = new Action(string_to_pixmap("U", font),
-		tr("Underline"), "underlineAction");
+		tr("Underline"), "underlineAction", Action::TypeChat);
 	underline_action->setToggleAction(true);
-	underline_action->setDockAreaGroupRestriction("chatDockAreaGroup");
 	connect(underline_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(underlineActionActivated(const UserGroup*, const QWidget*, bool)));
 	KaduActions.insert("underlineAction", underline_action);
@@ -153,21 +144,19 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 	QPixmap p(12, 12);
 	p.fill(Qt::black);
 	Action* color_action = new Action(p,
-		tr("Change color"), "colorAction");
-	color_action->setDockAreaGroupRestriction("chatDockAreaGroup");
+		tr("Change color"), "colorAction", Action::TypeChat);
 	connect(color_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(colorActionActivated(const UserGroup*, const QWidget*)));
 	KaduActions.insert("colorAction", color_action);
 
 	Action* send_action = new Action(icons_manager->loadIcon("SendMessage"),
-		tr("&Send"), "sendAction");
-	send_action->setDockAreaGroupRestriction("chatDockAreaGroup");
+		tr("&Send"), "sendAction", Action::TypeChat);
 	connect(send_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(sendActionActivated(const UserGroup*)));
 	KaduActions.insert("sendAction", send_action);
 
 	Action* chat_action = new Action(icons_manager->loadIcon("OpenChat"),
-		tr("&Chat"), "chatAction");
+		tr("&Chat"), "chatAction", Action::TypeUser);
 	connect(chat_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(chatActionActivated(const UserGroup*)));
 	KaduActions.insert("chatAction", chat_action);
@@ -406,7 +395,7 @@ void ChatManager::chatActionActivated(const UserGroup* users)
 	{
 		bool ContainsBad = false;
 		QString MyGGUIN = QString::number(config_file.readNumEntry("General", "UIN"));
-	
+
 		CONST_FOREACH(user, (*users))
 		{
 			if (!(*user).usesProtocol("Gadu") || (*user).ID("Gadu") == MyGGUIN)
@@ -415,7 +404,7 @@ void ChatManager::chatActionActivated(const UserGroup* users)
 				break;
 			}
 		}
-	
+
 		if (!ContainsBad)
 			openChat("Gadu", users->toUserListElements(), 0);
 	}
@@ -594,7 +583,7 @@ int ChatManager::openChat(QString /*initialProtocol*/, UserListElements users, t
 				vertSizes.clear();
 		}
 	}
-	
+
 	if (vertSizes.empty())
 	{
 		int h = chat->height() / 3;

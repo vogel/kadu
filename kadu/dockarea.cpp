@@ -14,8 +14,9 @@
 #include "toolbar.h"
 
 DockArea::DockArea(Orientation o, HandlePosition h,
-			QWidget* parent, const QString& dockarea_group, const char* name)
-	: QDockArea(o, h, parent, name), DockAreaGroup(dockarea_group)
+			QWidget* parent, const char* name,
+			int supportedActions)
+	: QDockArea(o, h, parent, name), SupportedActions(supportedActions)
 {
 	kdebugf();
 	kdebugf2();
@@ -111,13 +112,6 @@ void DockArea::writeToConfig()
 	kdebugf2();
 }
 
-QString DockArea::dockAreaGroup()
-{
-	kdebugf();
-	return DockAreaGroup;
-	kdebugf2();
-}
-
 bool DockArea::loadFromConfig(QWidget* toolbars_parent)
 {
 	kdebugf();
@@ -177,6 +171,11 @@ QPopupMenu* DockArea::createContextMenu(QWidget* parent)
 	p->setItemChecked(block_toolbars_id, Blocked);
 	kdebugf2();
 	return p;
+}
+
+bool DockArea::supportsAction(int actionType)
+{
+	return (SupportedActions & actionType) != 0;
 }
 
 bool DockArea::Blocked = false;

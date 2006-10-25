@@ -238,7 +238,7 @@ void SmsSender::send(const QString& number,const QString& message, const QString
 /********** Sms **********/
 
 Sms::Sms(const QString& altnick, QDialog* parent, const char *name) : QDialog (parent, name),
-	body(0), recipient(0), list(0), smslen(0), l_contact(0), e_contact(0), l_signature(0), 
+	body(0), recipient(0), list(0), smslen(0), l_contact(0), e_contact(0), l_signature(0),
 	e_signature(0), b_send(0), c_saveInHistory(0), smsProcess(0), Sender()
 {
 	kdebugf();
@@ -462,7 +462,7 @@ SmsSlots::SmsSlots(QObject *parent, const char *name) : QObject(parent, name),
 	icons_manager->registerMenuItem(kadu->mainMenu(), tr("Send SMS"), "SendSms");
 
 	Action* send_sms_action = new Action(icons_manager->loadIcon("SendSms"),
-		tr("Send SMS"), "sendSmsAction");
+		tr("Send SMS"), "sendSmsAction", Action::TypeGlobal);
 	connect(send_sms_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(sendSmsActionActivated(const UserGroup*)));
 	KaduActions.insert("sendSmsAction", send_sms_action);

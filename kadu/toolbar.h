@@ -6,6 +6,8 @@
 #include "toolbutton.h"
 #include "usergroup.h"
 
+class ToolButton;
+
 class ToolBar : public QToolBar
 {
 	Q_OBJECT
@@ -26,7 +28,6 @@ class ToolBar : public QToolBar
 	public:
 		ToolBar(QWidget* parent, const char *name);
 		~ToolBar();
-		QString dockAreaGroup();
 		DockArea* dockArea();
 		void loadFromConfig(QDomElement parent_element);
 		/**
