@@ -39,7 +39,8 @@ void ToolBar::addButtonClicked(int action_index)
 	kdebug("action_index = %d\n", action_index);
 	KaduActions[KaduActions.keys()[action_index]]->addToToolbar(this);
 	DockArea* dockarea = (DockArea*)area();
-	dockarea->writeToConfig();
+	if (dockarea != NULL)
+		dockarea->writeToConfig();
 	kdebugf2();
 }
 
@@ -196,7 +197,11 @@ QPopupMenu* ToolBar::createContextMenu(QWidget* parent)
 	int param = 0;
 	CONST_FOREACH(a, KaduActions)
 	{
-		if (dockArea()->supportsAction((*a)->actionType()))
+		if (
+			(dockArea() != NULL &&
+				dockArea()->supportsAction((*a)->actionType())) ||
+			(dockArea() == NULL &&
+				((*a)->actionType() & Action::TypeGlobal) != 0))
 		{
 			int id = (*a)->addToPopupMenu(p2, false);
 			p2->setItemParameter(id, param);

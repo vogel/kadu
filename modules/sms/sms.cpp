@@ -683,7 +683,8 @@ void SmsSlots::onPopupMenuCreate()
 void SmsSlots::sendSmsActionActivated(const UserGroup* users)
 {
 	kdebugf();
-	if (users->count() == 1 && (!(*users->begin()).mobile().isEmpty()))
+	if (users != NULL && users->count() == 1 &&
+			(!(*users->begin()).mobile().isEmpty()))
 		newSms((*users->begin()).altNick());
 	else
 		newSms(QString::null);

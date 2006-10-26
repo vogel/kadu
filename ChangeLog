@@ -475,6 +475,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * domy¶lnie w³±czona opcja ukrywania podstawowych modu³ów w oknie mened¿era modu³ów (joi)
 * dodana mo¿liwo¶æ ustawienia wysoko¶ci separatorów w oknie rozmowy (joi)
 * zaaplikowana ³ata Vogela porz±dkuj±ca konfigurowalne toolbary (adrian)
+* poprawiono kilka b³êdów zwi±zanych z p³ywaj±cymi toolbarami (adrian)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
