@@ -382,6 +382,15 @@ void MigrationDialog::xmlConfigFilesMigration()
 	dir.setNameFilter("*.conf");
 	for (unsigned int i = 0, dircnt = dir.count(); i < dircnt; ++i)
 		xmlConfigFileMigration(dir[i]);
+
+	QStringList modules = QStringList::split(",", config_file.readEntry("General", "LoadedModules"));
+	if (modules.grep("_sound").count() > 1) // ext_sound & some other sound module
+	{
+		modules.remove("ext_sound");
+		config_file.writeEntry("General", "LoadedModules", modules.join(","));
+		config_file.writeEntry("General", "UnloadedModules", config_file.readEntry("General", "UnloadedModules") + ",ext_sound");
+	}
+
 	xml_config_file->sync();
 	setItemComplete(item, tr("Step 4: Config files migrated to kadu.conf.xml"),
 		tr("Configuration files migrated to kadu.conf.xml.\n"

@@ -479,6 +479,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * alsa_sound: wymuszamy rozpoczêcie nagrywania, bo od alsy 1.0.12 lub 1.0.13
   jest to konieczne (inaczej nic nie nagramy) (joi)
 * migracja znowu dzia³a (przez 7 miesiêcy nikt tego nie zauwa¿y³!) (joi)
+* jako ¿e od 0.5 modu³ ext_sound koliduje z innymi modu³ami d¼wiêkowymi,
+  to wy³±czamy go przy migracji, dziêki czemu przy nastêpnym uruchomieniu
+  nie dostaniemy brzydkiej wiadomo¶ci o konflikcie modu³ów (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
