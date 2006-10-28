@@ -189,13 +189,6 @@ int main(int argc, char *argv[])
 	qInstallMsgHandler(kaduQtMessageHandler);
 	xml_config_file = new XmlConfigFile();
 
-	QString path_ = ggPath(QString::null);
-	if (path_.endsWith("/kadu/") || path_.endsWith("/Kadu/")) // for profiles directory
-		mkdir(path_.left(path_.length() - 6).local8Bit().data(), 0700);
-	mkdir(path_.local8Bit().data(), 0700);
-	path_.append("/history/");
-	mkdir(path_.local8Bit().data(), 0700);
-
 	config_file_ptr = new ConfigFile(ggPath(QString("kadu.conf")));
 	config_file.addVariable("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
 	debug_mask = config_file.readNumEntry("General", "DEBUG_MASK");
@@ -203,7 +196,7 @@ int main(int argc, char *argv[])
 	if (d)
 		debug_mask = atol(d);
 	gg_debug_level = debug_mask | ~255;
-	
+
 	config_file.addVariable("General", "SaveStdErr", false);
 	bool saveStdErr = config_file.readBoolEntry("General", "SaveStdErr");
 	d = getenv("SAVE_STDERR");

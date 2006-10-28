@@ -478,6 +478,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawiono kilka b³êdów zwi±zanych z p³ywaj±cymi toolbarami (adrian)
 * alsa_sound: wymuszamy rozpoczêcie nagrywania, bo od alsy 1.0.12 lub 1.0.13
   jest to konieczne (inaczej nic nie nagramy) (joi)
+* migracja znowu dzia³a (przez 7 miesiêcy nikt tego nie zauwa¿y³!) (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

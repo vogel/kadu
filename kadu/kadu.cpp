@@ -1793,6 +1793,13 @@ void Kadu::startupProcedure()
 	if (ShowMainWindowOnStart)
 		show();
 
+	QString path_ = ggPath(QString::null);
+	if (path_.endsWith("/kadu/") || path_.endsWith("/Kadu/")) // for profiles directory
+		mkdir(path_.left(path_.length() - 6).local8Bit().data(), 0700);
+	mkdir(path_.local8Bit().data(), 0700);
+	path_.append("/history/");
+	mkdir(path_.local8Bit().data(), 0700);
+
 	Updates::initModule();
 
 	setDefaultStatus();
