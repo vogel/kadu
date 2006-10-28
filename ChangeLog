@@ -476,6 +476,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodana mo¿liwo¶æ ustawienia wysoko¶ci separatorów w oknie rozmowy (joi)
 * zaaplikowana ³ata Vogela porz±dkuj±ca konfigurowalne toolbary (adrian)
 * poprawiono kilka b³êdów zwi±zanych z p³ywaj±cymi toolbarami (adrian)
+* alsa_sound: wymuszamy rozpoczêcie nagrywania, bo od alsy 1.0.12 lub 1.0.13
+  jest to konieczne (inaczej nic nie nagramy) (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

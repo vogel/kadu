@@ -24,7 +24,8 @@ struct ALSADevice
 	snd_pcm_t *player;
 	snd_pcm_t *recorder;
 	int channels;
-	ALSADevice() : player(NULL), recorder(NULL), channels(-1)
+	bool recorderStarted;
+	ALSADevice() : player(NULL), recorder(NULL), channels(-1), recorderStarted(false)
 	{
 	}
 };
@@ -371,13 +372,22 @@ void ALSAPlayerSlots::playSample(SoundDevice device, const int16_t* data, int le
 		int availErrorsCount = 0;
 		while (written < length)
 		{
-			snd_pcm_wait(dev->player, 100);
+			if ((res = snd_pcm_wait(dev->player, 100)) < 0)
+				xrun_recovery(dev->player, res);
+			kdebugm(KDEBUG_DUMP, "snd_pcm_wait(player): %d\n", res);
 			int towrite = (length - written) / (2 * dev->channels);
 			int avail = snd_pcm_avail_update(dev->player);
+			kdebugm(KDEBUG_DUMP, "snd_pcm_avail_update(player): %d\n", avail);
+			if (avail < 0)
+			{
+				xrun_recovery(dev->player, avail);
+				avail = snd_pcm_avail_update(dev->player);
+				kdebugm(KDEBUG_DUMP, "snd_pcm_avail_update(player): %d\n", avail);
+			}
 
 			if (avail <= 0)
 			{
-				kdebugm(KDEBUG_WARNING, "avail: %d\n", avail);
+				kdebugm(KDEBUG_WARNING, "player avail error: %d\n", avail);
 				++availErrorsCount;
 				avail = 0;
 			}
@@ -393,9 +403,9 @@ void ALSAPlayerSlots::playSample(SoundDevice device, const int16_t* data, int le
 			if (avail < towrite)
 				towrite = avail;
 
-			kdebugm(KDEBUG_INFO, "writing %p %p %d %d\n", dev->player, cdata + written, towrite, written);
+			kdebugm(KDEBUG_DUMP, "playing %d frames, bytes already played: %d\n", towrite, written);
 			res = snd_pcm_writei(dev->player, cdata + written, towrite);
-			kdebugm(KDEBUG_INFO, "requested:%d written:%d\n", towrite, res);
+			kdebugm(KDEBUG_DUMP, "played: %d\n", res);
 			if (res == -EAGAIN || res == -EINVAL)
 				// don't know why it is needed when we get EINVAL, but it works...
 				continue;
@@ -425,17 +435,34 @@ void ALSAPlayerSlots::recordSample(SoundDevice device, int16_t* data, int length
 	char *cdata = (char *)data;
 	if (result)
 	{
+		if (!dev->recorderStarted)
+		{
+			kdebugm(KDEBUG_INFO, "starting recording\n");
+			// explicitly start recording, because on newer alsa (1.0.12 or 1.0.13)
+			// snd_pcm_avail_update() returns 0 if device is not started
+			if (snd_pcm_start(dev->recorder) == 0)
+				dev->recorderStarted = true;
+		}
 		int res, reed = 0;
 		int availErrorsCount = 0;
 		while (reed < length)
 		{
-			snd_pcm_wait(dev->recorder, 100);
+			if ((res = snd_pcm_wait(dev->recorder, 100)) < 0)
+				xrun_recovery(dev->recorder, res);
+			kdebugm(KDEBUG_DUMP, "snd_pcm_wait(recorder): %d\n", res);
 			int toread = (length - reed) / (2 * dev->channels);
 			int avail = snd_pcm_avail_update(dev->recorder);
+			kdebugm(KDEBUG_DUMP, "snd_pcm_avail_update(recorder): %d\n", avail);
+			if (avail < 0)
+			{
+				xrun_recovery(dev->recorder, avail);
+				avail = snd_pcm_avail_update(dev->recorder);
+				kdebugm(KDEBUG_DUMP, "snd_pcm_avail_update(recorder): %d\n", avail);
+			}
 
 			if (avail <= 0)
 			{
-				kdebugm(KDEBUG_WARNING, "avail: %d\n", avail);
+				kdebugm(KDEBUG_WARNING, "recorder avail error: %d\n", avail);
 				++availErrorsCount;
 				avail = 0;
 			}
@@ -451,9 +478,9 @@ void ALSAPlayerSlots::recordSample(SoundDevice device, int16_t* data, int length
 			if (avail < toread)
 				toread = avail;
 
-			kdebugm(KDEBUG_INFO, "reading %p %p %d %d\n", dev->recorder, cdata + reed, toread, reed);
+			kdebugm(KDEBUG_DUMP, "recording %d frames, bytes already recorded: %d\n", toread, reed);
 			res = snd_pcm_readi(dev->recorder, cdata + reed, toread);
-			kdebugm(KDEBUG_INFO, "requested:%d read:%d\n", toread, res);
+			kdebugm(KDEBUG_DUMP, "recorded: %d\n", res);
 			if (res == -EAGAIN || res == -EINVAL)
 				// don't know why it is needed when we get EINVAL, but it works...
 				continue;
