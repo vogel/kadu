@@ -35,7 +35,7 @@ wersji Kadu. Czy chcesz importować swoje ustawienia z:
 (backup will be a good idea) or leave it for other applications.</source>
         <translation>Proces migracji ukończony. Możesz usunąć katalog:
 %1
-(zrobienie kopi zapasowej będzie dobrym pomysłem)
+(zrobienie kopii zapasowej będzie dobrym pomysłem)
 lub pozostawić go dla innch aplikacji.</translation>
     </message>
     <message>
@@ -63,7 +63,7 @@ lub pozostawić go dla innch aplikacji.</translation>
 Możesz teraz usunąć:
 %1
 %2
-(Zrobienie kopi zapasowej to dobry pomysł).</translation>
+(Zrobienie kopii zapasowej to dobry pomysł).</translation>
     </message>
     <message>
         <source>Step 3: Migrating ignored list to kadu.conf.xml</source>
@@ -80,7 +80,7 @@ You can remove %1 now
         <translation>Lista ignorowanych kontaktów przeniesiona do kadu.conf.xml
 Możesz teraz usunąć:
 %1
-(Zrobienie kopi zapasowej to dobry pomysł).</translation>
+(Zrobienie kopii zapasowej to dobry pomysł).</translation>
     </message>
     <message>
         <source>Step 4: Migrating config files to kadu.conf.xml</source>
@@ -94,7 +94,7 @@ You can remove following files now:
         <translation>Pliki konfiguracyjne przeniesione do kadu.conf.xml
 Możesz teraz usunąć nastepujące pliki:
 %1
-(Zrobienie kopi zapasowej to dobry pomysł).</translation>
+(Zrobienie kopii zapasowej to dobry pomysł).</translation>
     </message>
     <message>
         <source>Migration complete. Kadu will be closed now.
