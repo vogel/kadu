@@ -89,10 +89,7 @@ ToolButton* Action::addToToolbar(ToolBar* toolbar, bool uses_text_label)
 	ToolButtons.append(btn);
 	const UserGroup* user_group = toolbar->selectedUsers();
 	if (user_group != NULL)
-	{
-		UserListElements user_list_elems = user_group->toUserListElements();
-		emit addedToToolbar(btn, toolbar, user_list_elems);
-	}
+		emit addedToToolbar(user_group, btn, toolbar);
 	kdebugf2();
 	return btn;
 }

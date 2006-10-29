@@ -80,10 +80,8 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 		tr("Insert emoticon"), "insertEmoticonAction", Action::TypeChat);
 	connect(insert_emot_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(insertEmoticonActionActivated(const UserGroup*, const QWidget*)));
-	connect(insert_emot_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*,
-			const UserListElements&)),
-		this, SLOT(insertEmoticonActionAddedToToolbar(ToolButton*, ToolBar*,
-			const UserListElements&)));
+	connect(insert_emot_action, SIGNAL(addedToToolbar(const UserGroup*, ToolButton*, ToolBar*)),
+		this, SLOT(insertEmoticonActionAddedToToolbar(const UserGroup*, ToolButton*, ToolBar*)));
 	KaduActions.insert("insertEmoticonAction", insert_emot_action);
 
 	Action* whois_action = new Action(icons_manager->loadIcon("LookupUserInfo"),
@@ -275,8 +273,8 @@ void ChatManager::insertEmoticonActionActivated(const UserGroup* users, const QW
 	kdebugf2();
 }
 
-void ChatManager::insertEmoticonActionAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*/,
-	const UserListElements& /*users*/)
+void ChatManager::insertEmoticonActionAddedToToolbar(const UserGroup* /*users*/,
+	ToolButton* button, ToolBar* /*toolbar*/)
 {
 	kdebugf();
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") == EMOTS_NONE)

@@ -83,6 +83,8 @@ EncryptionManager::EncryptionManager(QObject *parent, const char *name) : QObjec
 		tr("Enable encryption for this conversation"), "encryptionAction", Action::TypeChat);
 	connect(action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(encryptionActionActivated(const UserGroup*)));
+	connect(action, SIGNAL(addedToToolbar(const UserGroup*, ToolButton*, ToolBar*)),
+		this, SLOT(chatCreated(const UserGroup*)));
 	KaduActions.insert("encryptionAction", action);
 	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "encryptionAction", 4);
 

@@ -63,8 +63,7 @@ class ChatManager : public QObject
 		void underlineActionActivated(const UserGroup* users, const QWidget* source, bool is_on);
 		void colorActionActivated(const UserGroup* users, const QWidget* source);
 		void insertEmoticonActionActivated(const UserGroup* users, const QWidget* source);
-		void insertEmoticonActionAddedToToolbar(ToolButton* button, ToolBar* toolbar,
-			const UserListElements& users);
+		void insertEmoticonActionAddedToToolbar(const UserGroup*, ToolButton* button, ToolBar* toolbar);
 		void whoisActionActivated(const UserGroup* users);
 		void ignoreUserActionActivated(const UserGroup* users);
 		void blockUserActionActivated(const UserGroup* users);

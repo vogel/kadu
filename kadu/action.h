@@ -79,8 +79,8 @@ class Action : public QObject
 		ActionType actionType();
 
 	signals:
-		void addedToToolbar(ToolButton* button, ToolBar* toolbar,
-			const UserListElements& users);
+		void addedToToolbar(const UserGroup* users, ToolButton* button, ToolBar* toolbar);
+
 		/**
 			is_on jest zawsze ustawione na false jesli akcja nie jest typu "toggle".
 		**/
