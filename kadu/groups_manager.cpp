@@ -11,6 +11,7 @@
 #include "config_file.h"
 #include "debug.h"
 #include "groups_manager.h"
+#include "action.h"
 #include "kadu.h"
 #include "misc.h"
 #include "tabbar.h"
@@ -243,6 +244,8 @@ void GroupsManager::changeDisplayingBlocked()
 void GroupsManager::changeDisplayingOffline()
 {
 	kdebugf();
+	if (KaduActions["inactiveUsersAction"])
+		KaduActions["inactiveUsersAction"]->setAllOn(showOffline);
 	showOffline = !showOffline;
 	if (showOffline)
 		kadu->userbox()->removeFilter(onlineUsers);
@@ -255,6 +258,8 @@ void GroupsManager::changeDisplayingOffline()
 void GroupsManager::changeDisplayingWithoutDescription()
 {
 	kdebugf();
+	if (KaduActions["descriptionUsersAction"])
+		KaduActions["descriptionUsersAction"]->setAllOn(showWithoutDescription);
 	showWithoutDescription = !showWithoutDescription;
 	if (showWithoutDescription)
 		kadu->userbox()->removeFilter(usersWithDescription);

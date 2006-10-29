@@ -20,7 +20,7 @@
 
 Action::Action(const QIconSet& icon, const QString& text, const char* name, ActionType Type, QKeySequence accel)
 	: QObject(NULL, name), Icon(icon), Text(text), Accel(accel), ToggleAction(false),
-		OnIcon(), OnText(), Slot(0), ToolButtons(), ToggleState(), Type(Type)
+		OnIcon(), OnText(), Slot(0), ToolButtons(), ToggleState(false), Type(Type)
 {
 	kdebugf();
 	kdebugf2();
@@ -79,6 +79,8 @@ ToolButton* Action::addToToolbar(ToolBar* toolbar, bool uses_text_label)
 	btn->setUsesTextLabel(uses_text_label);
 	btn->setTextPosition(ToolButton::BesideIcon);
 	btn->setAccel(Accel);
+	if(ToggleAction || !OnIcon.isNull())
+		btn->setOn(newButtonState);
 	connect(btn, SIGNAL(clicked()), this, SLOT(toolButtonClicked()));
 	connect(btn, SIGNAL(destroyed(QObject*)), this, SLOT(toolButtonDestroyed(QObject*)));
 	if (Slot)
@@ -89,7 +91,6 @@ ToolButton* Action::addToToolbar(ToolBar* toolbar, bool uses_text_label)
 	if (user_group != NULL)
 	{
 		UserListElements user_list_elems = user_group->toUserListElements();
-		btn->setOn(isOn(user_list_elems));
 		emit addedToToolbar(btn, toolbar, user_list_elems);
 	}
 	kdebugf2();
@@ -122,16 +123,12 @@ QValueList<ToolButton*> Action::toolButtonsForUserListElements(const UserListEle
 
 bool Action::isOn(const UserListElements& users)
 {
-//	kdebugf();
-	CONST_FOREACH(i, ToggleState)
-		if ((*i).elems == users)
-		{
-			kdebugm(KDEBUG_INFO, "state: %i\n", (*i).state);
-//			kdebugf2();
-			return (*i).state;
-		}
-//	kdebugf2();
+	kdebugf();
+	QValueList<ToolButton*> buttons = toolButtonsForUserListElements(users);
+	if(!buttons.empty())
+		return (*buttons.begin())->isOn();
 	return false;
+	kdebugf2();
 }
 
 void Action::setOn(const UserListElements& users, bool on)
@@ -140,14 +137,15 @@ void Action::setOn(const UserListElements& users, bool on)
 	QValueList<ToolButton*> buttons = toolButtonsForUserListElements(users);
 	CONST_FOREACH(i, buttons)
 		(*i)->setOn(on);
-	for (QValueList<ToggleStateStruct>::iterator i = ToggleState.begin(), end = ToggleState.end(); i != end; ++i)
-		if ((*i).elems == users)
-		{
-			(*i).state = on;
-			return;
-		}
-	ToggleStateStruct s(users, on);
-	ToggleState.push_back(s);
+	kdebugf2();
+}
+
+void Action::setAllOn(bool on)
+{
+	kdebugf();
+	CONST_FOREACH(i, ToolButtons)
+		(*i)->setOn(on);
+	ToggleState = on;
 	kdebugf2();
 }
 
@@ -243,14 +241,6 @@ Actions::Default::Default(QString action_name_, bool uses_text_label_) : action_
 }
 
 Actions::Default::Default() : action_name(), uses_text_label(false)
-{
-}
-
-Action::ToggleStateStruct::ToggleStateStruct(UserListElements elems_, bool state_) : elems(elems_), state(state_)
-{
-}
-
-Action::ToggleStateStruct::ToggleStateStruct() : elems(), state(false)
 {
 }
 

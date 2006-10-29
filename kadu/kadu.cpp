@@ -283,12 +283,16 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 
 	Action* inact_users_action = new Action(icons_manager->loadIcon("ShowHideInactiveUsers"),
 		tr("Show / hide offline users"), "inactiveUsersAction", Action::TypeUserList);
+	inact_users_action->setToggleAction(true);
+	inact_users_action->setAllOn(!config_file.readBoolEntry("General", "ShowOffline"));
 	connect(inact_users_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(inactiveUsersActionActivated()));
 	KaduActions.insert("inactiveUsersAction", inact_users_action);
 
 	Action* desc_users_action = new Action(icons_manager->loadIcon("ShowOnlyDescriptionUsers"),
 		tr("Show / hide users without description"), "descriptionUsersAction", Action::TypeUserList);
+	desc_users_action->setToggleAction(true);
+	desc_users_action->setAllOn(!config_file.readBoolEntry("General", "ShowWithoutDescription"));
 	connect(desc_users_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(descriptionUsersActionActivated()));
 	KaduActions.insert("descriptionUsersAction", desc_users_action);

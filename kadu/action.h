@@ -22,7 +22,7 @@ class Action : public QObject
 			TypeUser		= 0x0002, //!< actions with TypeUser type requires access to one or more users from user list
 			TypeChat		= 0x0004, //!< actions with TypeChat type requires access to chat window
 			TypeSearch		= 0x0008, //!< actions with TypeSearch type requires access to search window
-			TypeUserList	= 0x0010, //!< actions with TypeUserList type requires access to user list widget
+			TypeUserList		= 0x0010, //!< actions with TypeUserList type requires access to user list widget
 			TypeAll			= 0xFFFF  //!< TypeAll is used to set masks for all types of actions
 		};
 
@@ -35,14 +35,7 @@ class Action : public QObject
 		QString OnText;
 		const char *Slot;
 		QValueList<ToolButton*> ToolButtons;
-		struct ToggleStateStruct
-		{
-			UserListElements elems;
-			bool state;
-			ToggleStateStruct(UserListElements elems, bool state);
-			ToggleStateStruct();
-		};
-		QValueList<ToggleStateStruct> ToggleState;
+		bool ToggleState;
 		ActionType Type;
 
 	private slots:
@@ -64,6 +57,7 @@ class Action : public QObject
 			const UserListElements& users);
 		bool isOn(const UserListElements& users);
 		void setOn(const UserListElements& users, bool on);
+		void setAllOn(bool on);
 		void setPixmaps(const UserListElements& users, const QPixmap& pixmap);
 		void setTexts(const UserListElements& users, const QString& text);
 		/**

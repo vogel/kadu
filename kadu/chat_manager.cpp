@@ -52,12 +52,9 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 		tr("%1 sends message").arg(config_file.readEntry("ShortCuts", "chat_newline")),
 		"autoSendAction", Action::TypeChat);
 	auto_send_action->setToggleAction(true);
+	auto_send_action->setAllOn(config_file.readBoolEntry("Chat", "AutoSend"));
 	connect(auto_send_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(autoSendActionActivated(const UserGroup*, const QWidget*, bool)));
-	connect(auto_send_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*,
-			const UserListElements&)),
-		this, SLOT(autoSendActionAddedToToolbar(ToolButton*, ToolBar*,
-			const UserListElements&)));
 	KaduActions.insert("autoSendAction", auto_send_action);
 
 	Action* scroll_lock_action = new Action(icons_manager->loadIcon("ScrollLock"),
@@ -209,18 +206,12 @@ ChatManager::~ChatManager()
 	kdebugf2();
 }
 
-void ChatManager::autoSendActionAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*/,
-	const UserListElements& users)
-{
-	kdebugf();
-	button->setOn(findChat(users)->autoSend());
-	kdebugf2();
-}
-
 void ChatManager::autoSendActionActivated(const UserGroup* users, const QWidget* /*source*/, bool is_on)
 {
 	kdebugf();
 	findChat(users)->setAutoSend(is_on);
+	KaduActions["AutoSendAction"]->setAllOn(is_on);
+	config_file.writeEntry("Chat", "AutoSend", is_on);
 	kdebugf2();
 }
 
