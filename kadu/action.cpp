@@ -123,12 +123,12 @@ QValueList<ToolButton*> Action::toolButtonsForUserListElements(const UserListEle
 
 bool Action::isOn(const UserListElements& users)
 {
-	kdebugf();
+//	kdebugf();
 	QValueList<ToolButton*> buttons = toolButtonsForUserListElements(users);
 	if(!buttons.empty())
 		return (*buttons.begin())->isOn();
 	return false;
-	kdebugf2();
+//	kdebugf2();
 }
 
 void Action::setOn(const UserListElements& users, bool on)
