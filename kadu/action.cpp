@@ -80,7 +80,7 @@ ToolButton* Action::addToToolbar(ToolBar* toolbar, bool uses_text_label)
 	btn->setTextPosition(ToolButton::BesideIcon);
 	btn->setAccel(Accel);
 	if(ToggleAction || !OnIcon.isNull())
-		btn->setOn(newButtonState);
+		btn->setOn(ToggleState);
 	connect(btn, SIGNAL(clicked()), this, SLOT(toolButtonClicked()));
 	connect(btn, SIGNAL(destroyed(QObject*)), this, SLOT(toolButtonDestroyed(QObject*)));
 	if (Slot)
