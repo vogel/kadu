@@ -1204,6 +1204,7 @@ bool Kadu::close(bool quit)
 	else
 	{
 		Closing = true;
+		xml_config_file->makeBackup();
 		ConfigDialog::closeDialog();
 		ModulesManager::closeModule();
 
@@ -1805,6 +1806,8 @@ void Kadu::startupProcedure()
 	mkdir(path_.local8Bit().data(), 0700);
 
 	Updates::initModule();
+
+	xml_config_file->makeBackup();
 
 	setDefaultStatus();
 

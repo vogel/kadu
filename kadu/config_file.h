@@ -35,6 +35,9 @@ class XmlConfigFile
 			Zapisuje do wybranego pliku kopiê konfiguracji
 		**/
 		void saveTo(const QString &filename);
+		
+		void makeBackup();
+
 		/**
 			Zwraca glowny element konfiguracji
 		**/

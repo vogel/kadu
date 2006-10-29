@@ -27,11 +27,36 @@ XmlConfigFile::XmlConfigFile() : DomDocument()
 
 void XmlConfigFile::read()
 {
-	QFile file(ggPath("kadu.conf.xml"));
-	if (file.open(IO_ReadOnly))
+	kdebugf();
+	QFile file;
+	QDir backups(ggPath(), "kadu.conf.xml.backup.*", QDir::Name, QDir::Files);
+	QStringList files("kadu.conf.xml");
+	files += backups.entryList();
+	bool fileOpened(false);
+
+	CONST_FOREACH(fileName, files)
+	{
+		file.setName(ggPath(*fileName));
+		fileOpened = file.open(IO_ReadOnly);
+		if (fileOpened && file.size() > 0)
+		{
+			kdebugm(KDEBUG_INFO, "file %s opened!\n", file.name().local8Bit().data());
+			break;
+		}
+		if (fileOpened) // && file.size() == 0
+		{
+			kdebugm(KDEBUG_INFO, "config file (%s) is empty, looking for backup\n", file.name().local8Bit().data());
+			file.close();
+			fileOpened = false;
+		}
+		else
+			kdebugm(KDEBUG_INFO, "config file (%s) not opened, looking for backup\n", file.name().local8Bit().data());
+	}
+	
+	if (fileOpened)
 	{
 		if (DomDocument.setContent(&file))
-			kdebugm(KDEBUG_INFO, "xml configuration file loaded");
+			kdebugm(KDEBUG_INFO, "xml configuration file loaded\n");
 		else
 		{
 			fprintf(stderr, "error reading or parsing xml configuration file\n");
@@ -97,6 +122,12 @@ void XmlConfigFile::sync()
 void XmlConfigFile::saveTo(const QString &f)
 {
 	write(f);
+}
+
+void XmlConfigFile::makeBackup()
+{
+	QString f = QString("kadu.conf.xml.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
+	write(ggPath(f));
 }
 
 QDomElement XmlConfigFile::rootElement()
