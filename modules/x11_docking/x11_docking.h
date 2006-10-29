@@ -20,12 +20,15 @@ class X11TrayIcon : public QLabel
 		void setTrayTooltip(const QString& tooltip);
 		void findTrayPosition(QPoint& pos);
 		void chatCreatedSlot(const UserGroup *group);
+		void undockAndTryToDock();
 
 	protected:
 		virtual void enterEvent(QEvent* e);
 		virtual void mousePressEvent(QMouseEvent* e);
 		virtual bool x11Event(XEvent *);
 		QTimer timer;
+		QTimer undockTimer;
+		void undockAndTryToDockLater(int tm);
 
 	public slots:
 		void disableTaskbar();

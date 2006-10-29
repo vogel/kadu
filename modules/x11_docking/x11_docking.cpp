@@ -143,6 +143,7 @@ X11TrayIcon::X11TrayIcon(QWidget *parent, const char *name)
 	connect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), this, SLOT(setTrayMovie(const QMovie &)));
 	connect(chat_manager, SIGNAL(chatCreated(const UserGroup *)), this, SLOT(chatCreatedSlot(const UserGroup *)));
 	connect(&timer, SIGNAL(timeout()), this, SLOT(tryToDock()));
+	connect(&undockTimer, SIGNAL(timeout()), this, SLOT(undockAndTryToDock()));
 
 	kdebugf2();
 }
@@ -346,10 +347,8 @@ bool X11TrayIcon::x11Event(XEvent *e)
 		Window rootWin = RootWindow(x11Display(), 0);
 		kdebugm(KDEBUG_INFO, "type: %d, event: %d, window: %d, parent: %d, root: %d\n", e->type, e->xreparent.event, e->xreparent.window, e->xreparent.parent, rootWin);
 		if (rootWin == e->xreparent.parent)
-		{
-			docking_manager->setDocked(false);
-			tryToDockLater(1000);
-		}
+			// try not to show main window on session logout when kicker/etc... closes before kadu
+			undockAndTryToDockLater(1000);
 	}
 	else if (e->type == DestroyNotify) // happens only on xfce :/
 	{
@@ -357,6 +356,21 @@ bool X11TrayIcon::x11Event(XEvent *e)
 		QTimer::singleShot(1000, tray_restarter, SLOT(restart()));
 	}
 	return false;
+}
+
+void X11TrayIcon::undockAndTryToDockLater(int tm)
+{
+	kdebugf();
+	undockTimer.start(tm, true);
+	kdebugf2();
+}
+
+void X11TrayIcon::undockAndTryToDock()
+{
+	kdebugf();
+	docking_manager->setDocked(false);
+	tryToDockLater(500);
+	kdebugf2();
 }
 
 void TrayRestarter::restart()

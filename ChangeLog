@@ -485,6 +485,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zaaplikowana ³ata montora, poprawiaj±ca dzia³anie akcji typu toggle (neeo)
 * poprawki w akcjach ukrywaj±cych kontakty niedostêpne i bez opisu,
   oraz akcji wysy³ania wiadomo¶ci (neeo)
+* nie pokazujemy g³ównego okna programu przy zamykaniu sesji gdy tacka systemowa
+  / obszar powiadamiania / itp. wy³±cza siê przed Kadu (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
