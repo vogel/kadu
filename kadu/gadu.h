@@ -222,7 +222,7 @@ class GaduProtocol : public Protocol
 		/** Sesja po³±czenia - wymagane przez bibliotekê libgadu **/
 		gg_session* Sess;
 
-		/** liczba odebranych obrazków **/
+		/** liczba ¿±dañ obrazków wys³anych w ci±gu ostatniej minuty**/
 		unsigned int sendImageRequests;
 
 		/** czy jeste¶my w trakcie ³±czenia siê z serwerem **/
