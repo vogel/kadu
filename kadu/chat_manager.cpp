@@ -85,7 +85,7 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 	KaduActions.insert("insertEmoticonAction", insert_emot_action);
 
 	Action* whois_action = new Action(icons_manager->loadIcon("LookupUserInfo"),
-		tr("Search this user in directory"), "whoisAction", Action::TypeUser);
+		tr("Search this user in directory"), "whoisAction", Action::TypeChat);
 	connect(whois_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(whoisActionActivated(const UserGroup*)));
 	KaduActions.insert("whoisAction", whois_action);
@@ -208,7 +208,7 @@ void ChatManager::autoSendActionActivated(const UserGroup* users, const QWidget*
 {
 	kdebugf();
 	findChat(users)->setAutoSend(is_on);
-	KaduActions["AutoSendAction"]->setAllOn(is_on);
+	KaduActions["autoSendAction"]->setAllOn(is_on);
 	config_file.writeEntry("Chat", "AutoSend", is_on);
 	kdebugf2();
 }
@@ -310,7 +310,7 @@ void ChatManager::whoisActionActivated(const UserGroup* users)
 void ChatManager::ignoreUserActionActivated(const UserGroup* users)
 {
 	kdebugf();
-	if (users->count() > 0)
+	if (users != NULL && users->count() > 0)
 	{
 		UserListElements u = users->toUserListElements();
 		if (isIgnored(u))
@@ -331,7 +331,7 @@ void ChatManager::ignoreUserActionActivated(const UserGroup* users)
 void ChatManager::blockUserActionActivated(const UserGroup* users)
 {
 	kdebugf();
-	if (users->count() > 0)
+	if (users != NULL && users->count() > 0)
 	{
 		bool was_blocking = false; // true, if we blocked at least one user
 
@@ -380,7 +380,7 @@ void ChatManager::sendActionActivated(const UserGroup* users)
 void ChatManager::chatActionActivated(const UserGroup* users)
 {
 	kdebugf();
-	if (users->count() > 0)
+	if (users != NULL && users->count() > 0)
 	{
 		bool ContainsBad = false;
 		QString MyGGUIN = QString::number(config_file.readNumEntry("General", "UIN"));
@@ -886,6 +886,8 @@ void ChatManager::closeModule()
 	ConfigDialog::removeControl("Chat", "checkboxes-advanced");
 	ConfigDialog::removeControl("Chat", "checkboxes-expert");
 
+	ConfigDialog::removeControl("Chat", "Limit number of images received per minute");
+
 	ConfigDialog::removeControl("Chat", "Max image size");
 
 	ConfigDialog::removeControl("Chat", "Custom Web browser");
@@ -938,6 +940,9 @@ void ChatManager::initModule()
 
 	ConfigDialog::addSpinBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Max image size"),
 			"MaxImageSize", 0, 255, 5, 20);
+
+	ConfigDialog::addSpinBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Limit number of images received per minute"),
+			"MaxImageRequests", 0, 120, 1, 15, 0, 0, Advanced);
 
 	ConfigDialog::addVBox("Chat", "Chat", "checkboxes-beginner", 0, Beginner);
 	ConfigDialog::addVBox("Chat", "Chat", "checkboxes-advanced", 0, Advanced);

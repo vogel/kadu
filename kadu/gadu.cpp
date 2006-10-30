@@ -395,10 +395,9 @@ void GaduProtocol::initModule()
 
 GaduProtocol::GaduProtocol(const QString &id, QObject *parent, const char *name) : Protocol("Gadu", id, parent, name),
 		Mode(Register), DataUin(0), DataEmail(), DataPassword(), DataNewPassword(), TokenId(), TokenValue(),
-		ServerNr(0), ActiveServer(0), LoginParams(), Sess(0), whileConnecting(false), DccExternalIP(),
-		SocketNotifiers(new GaduSocketNotifiers(this, "gadu_socket_notifiers")), PingTimer(0),
-		SendUserListTimer(new QTimer(this, "SendUserListTimer")),
-		UserListClear(false), ImportReply()
+		ServerNr(0), ActiveServer(0), LoginParams(), Sess(0), sendImageRequests(0), whileConnecting(false),
+		DccExternalIP(), SocketNotifiers(new GaduSocketNotifiers(this, "gadu_socket_notifiers")), PingTimer(0),
+		SendUserListTimer(new QTimer(this, "SendUserListTimer")), UserListClear(false), ImportReply()
 {
 	kdebugf();
 
@@ -743,7 +742,7 @@ void GaduProtocol::connectedSlot()
 	/* jezeli sie rozlaczymy albo stracimy polaczenie, proces laczenia sie z serwerami zaczyna sie od poczatku */
 	ServerNr = 0;
 	PingTimer = new QTimer(NULL, "PingTimer");
-	connect(PingTimer, SIGNAL(timeout()), this, SLOT(pingNetwork()));
+	connect(PingTimer, SIGNAL(timeout()), this, SLOT(everyMinuteActions()));
 	PingTimer->start(60000);
 
 	CurrentStatus->setStatus(*NextStatus);
@@ -1012,10 +1011,11 @@ void GaduProtocol::messageReceived(int msgclass, UserListElements senders, QCStr
 		emit chatMsgReceived2(this, senders, mesg, time);
 }
 
-void GaduProtocol::pingNetwork()
+void GaduProtocol::everyMinuteActions()
 {
 	kdebugf();
 	gg_ping(Sess);
+	sendImageRequests = 0;
 	kdebugf2();
 }
 
@@ -1347,8 +1347,12 @@ bool GaduProtocol::sendImageRequest(UserListElement user,int size,uint32_t crc32
 {
 	kdebugf();
 	int res = 1;
-	if (user.usesProtocol("Gadu"))
+	if ((user.usesProtocol("Gadu")) &&
+	    (sendImageRequests <= config_file.readUnsignedNumEntry("Chat", "MaxImageRequests")))
+	{
 		res = gg_image_request(Sess, user.ID("Gadu").toUInt(), size, crc32);
+		sendImageRequests++;
+	}
 	kdebugf2();
 	return (res == 0);
 }

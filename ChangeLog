@@ -491,6 +491,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   to próbujemy otworzyæ ostatni backup; zaraz po uruchomieniu i tu¿ przed procedur±
   zamkniêcia robimy kopiê pliku konfiguracyjnego (joi)
 * przycisk szyfrowania ustawia poprawny stan po dodaniu do okna rozmowy (neeo)
+* konfigurowalna liczba obrazków odbieranych w ci±gu minuty (Juzef,neeo)
+* poprawione zasiêgi niektórych akcji (neeo)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

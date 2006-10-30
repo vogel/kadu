@@ -222,6 +222,9 @@ class GaduProtocol : public Protocol
 		/** Sesja po³±czenia - wymagane przez bibliotekê libgadu **/
 		gg_session* Sess;
 
+		/** liczba odebranych obrazków **/
+		unsigned int sendImageRequests;
+
 		/** czy jeste¶my w trakcie ³±czenia siê z serwerem **/
 		bool whileConnecting;
 
@@ -458,9 +461,10 @@ class GaduProtocol : public Protocol
 		void messageReceived(int, UserListElements, QCString& msg, time_t, QByteArray &formats);
 
 		/**
-			Co pewien czas pinguje serwer.
+			Wykonuje zadania co minutê - pinguje sieæ i zeruje licznik
+			odebranych obrazków (je¶li jeste¶my po³±czeni).
 		**/
-		void pingNetwork();
+		void everyMinuteActions();
 
 		/**
 			Obs³uguje otrzymanie nowych wyników wyszukiwania z serwera. Emituje newSearchResults.

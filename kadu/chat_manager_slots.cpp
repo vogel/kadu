@@ -238,7 +238,7 @@ void ChatManagerSlots::onApplyTabChat()
 		userlist->removePerContactNonProtocolConfigEntry("chat_vertical_sizes");
 	}
 
-	KaduActions["AutoSendAction"]->setAllOn(config_file.readBoolEntry("chat", "AutoSend"));
+	KaduActions["autoSendAction"]->setAllOn(config_file.readBoolEntry("Chat", "AutoSend"));
 
 	kdebugf2();
 }

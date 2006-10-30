@@ -316,7 +316,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	KaduActions.insert("addUserAction", add_user_action);
 
 	Action* open_search_action = new Action(icons_manager->loadIcon("LookupUserInfo"),
-		tr("Search user in directory"), "openSearchAction", Action::TypeUser);
+		tr("Search user in directory"), "openSearchAction", Action::TypeGlobal);
 	connect(open_search_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(searchInDirectory()));
 	KaduActions.insert("openSearchAction", open_search_action);
@@ -656,7 +656,7 @@ void Kadu::configurationActionActivated()
 void Kadu::editUserActionActivated(const UserGroup* users)
 {
 	kdebugf();
-	if (users->count() == 1)
+	if (users != NULL && users->count() == 1)
 		(new UserInfo(*users->begin(), 0, "user info"))->show();
 	kdebugf2();
 }

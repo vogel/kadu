@@ -111,7 +111,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	QToolTip::add(r_uin, tr("Search for this UIN exclusively"));
 
 	DockArea* dock_area = new DockArea(Qt::Horizontal, DockArea::Normal, this,
-		"searchDockArea", Action::TypeGlobal | Action::TypeUser | Action::TypeSearch);
+		"searchDockArea", Action::Action::TypeUser | Action::TypeSearch);
 	connect(dock_area, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
 	if (!dock_area->loadFromConfig(this))
