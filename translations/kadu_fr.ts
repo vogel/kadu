@@ -705,6 +705,10 @@ Attention danger!
         <source>Message separators height:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Limit number of images received per minute</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -907,6 +911,10 @@ Souhaitez vous vraiment expédier cette image?</translation>
     </message>
     <message>
         <source>Block user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Anonymous users will be unblocked after restarting Kadu</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

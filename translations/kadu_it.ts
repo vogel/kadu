@@ -705,6 +705,10 @@ E un rischio per la sicurezza!</translation>
         <source>Message separators height:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Limit number of images received per minute</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -908,6 +912,10 @@ Sicuro di spedirlo comunque?</translation>
     <message>
         <source>Block user</source>
         <translation>Blocca contatto</translation>
+    </message>
+    <message>
+        <source>Anonymous users will be unblocked after restarting Kadu</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

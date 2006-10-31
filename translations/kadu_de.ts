@@ -710,6 +710,10 @@ It&apos;s a high security risk!</source>
         <source>Message separators height:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Limit number of images received per minute</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -912,6 +916,10 @@ Wollen Sie diese Datei wirklich senden?</translation>
     </message>
     <message>
         <source>Block user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Anonymous users will be unblocked after restarting Kadu</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

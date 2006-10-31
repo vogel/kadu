@@ -712,6 +712,10 @@ Jest to wysoce ryzykowne!</translation>
         <source>Message separators height:</source>
         <translation>Wysokość separatorów:</translation>
     </message>
+    <message>
+        <source>Limit number of images received per minute</source>
+        <translation>Limit liczby odbieranych obrazków na minutę</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -915,6 +919,10 @@ Czy na pewno chcesz wysłać ten obrazek?</translation>
     <message>
         <source>Block user</source>
         <translation>Blokuj kontakt</translation>
+    </message>
+    <message>
+        <source>Anonymous users will be unblocked after restarting Kadu</source>
+        <translation>Anonimowe kontakty będą odblkowane po restarcie Kadu</translation>
     </message>
 </context>
 <context>
