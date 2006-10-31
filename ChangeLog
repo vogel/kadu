@@ -493,10 +493,13 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * przycisk szyfrowania ustawia poprawny stan po dodaniu do okna rozmowy (neeo)
 * konfigurowalna liczba obrazków odbieranych w ci±gu minuty (Juzef,neeo)
 * poprawione zasiêgi niektórych akcji (neeo)
-* poprawka poprawki w module encryption (neeo)
-* poprawione zachowanie akcji w oknie wyszukiwania (neeo)
+* poprawka poprawki w module encryption - wiadomo¶ci by³y szyfrowane dwukrotnie (neeo)
+* poprawione zachowanie akcji w oknie wyszukiwania - akcje otrzymuj± poprawny
+  stan po dodaniu do toolbara (neeo)
 * przy blokowaniu anonimowych kontaktów pojawia sie komunikat informacyjny (neeo)
-* poprawiona implementacja akcji blokuj±cej (neeo)
+* zmienione dzia³anie akcji blokuj±cej dla kilku kontaktów - odblokowanie 
+  nastêpuje wy³±cznie, gdy wszyscy byli zablokowani, w przeciwnym wypadku
+  niezablokowane kontakty zostaj± zablokowane (neeo)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
