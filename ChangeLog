@@ -496,6 +496,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka poprawki w module encryption (neeo)
 * poprawione zachowanie akcji w oknie wyszukiwania (neeo)
 * przy blokowaniu anonimowych kontaktów pojawia sie komunikat informacyjny (neeo)
+* poprawiona implementacja akcji blokuj±cej (neeo)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

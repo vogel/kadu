@@ -334,31 +334,30 @@ void ChatManager::blockUserActionActivated(const UserGroup* users)
 	kdebugf();
 	if (users->count() > 0)
 	{
-		bool was_blocking = false; // true, if we blocked at least one user
+		bool on = true;
 		bool blocked_anonymous = false; // true, if we blocked at least one anonymous user
 
-		FOREACH(user, (*users))
-		{
-			if ((*user).usesProtocol("Gadu"))
+		CONST_FOREACH(user, (*users))
+			if (!(*user).usesProtocol("Gadu") || !(*user).protocolData("Gadu", "Blocking").toBool())
 			{
-				bool blocked = (*user).protocolData("Gadu", "Blocking").toBool();
-				(*user).setProtocolData("Gadu", "Blocking", !(blocked));
-				if (!blocked)
-				{
-					if (!was_blocking)
-						was_blocking = true;
-					if (((*user).isAnonymous()) && (!blocked_anonymous))
-						blocked_anonymous = true;
-				}
+				on = false;
+				break;
 			}
-		}
-		
-		if (blocked_anonymous)
-			QMessageBox::information(kadu, "Block user",
-			    tr("Anonymous users will be unblocked after restarting Kadu"), QMessageBox::Ok);
-		
-		if (was_blocking) // if we were blocking, we also close the chat
+
+		FOREACH(user, (*users))
+			if ((*user).usesProtocol("Gadu") && (*user).protocolData("Gadu", "Blocking").toBool() != !on)
+			{
+				(*user).setProtocolData("Gadu", "Blocking", !on);
+				if ((!on) && (!blocked_anonymous) && ((*user).isAnonymous()))
+					blocked_anonymous = true;
+			}
+
+		if (!on) // if we were blocking, we also close the chat (and show info if blocked anonymous)
 		{
+			if (blocked_anonymous)
+				QMessageBox::information(kadu, "Block user",
+					tr("Anonymous users will be unblocked after restarting Kadu"), QMessageBox::Ok);
+
 			UserListElements u = users->toUserListElements();
 			Chat *c = findChat(u);
 			if (c)
