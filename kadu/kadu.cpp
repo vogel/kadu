@@ -656,7 +656,7 @@ void Kadu::configurationActionActivated()
 void Kadu::editUserActionActivated(const UserGroup* users)
 {
 	kdebugf();
-	if (users != NULL && users->count() == 1)
+	if (users->count() == 1)
 		(new UserInfo(*users->begin(), 0, "user info"))->show();
 	kdebugf2();
 }

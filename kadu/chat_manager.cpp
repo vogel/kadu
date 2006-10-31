@@ -310,7 +310,7 @@ void ChatManager::whoisActionActivated(const UserGroup* users)
 void ChatManager::ignoreUserActionActivated(const UserGroup* users)
 {
 	kdebugf();
-	if (users != NULL && users->count() > 0)
+	if (users->count() > 0)
 	{
 		UserListElements u = users->toUserListElements();
 		if (isIgnored(u))
@@ -331,7 +331,7 @@ void ChatManager::ignoreUserActionActivated(const UserGroup* users)
 void ChatManager::blockUserActionActivated(const UserGroup* users)
 {
 	kdebugf();
-	if (users != NULL && users->count() > 0)
+	if (users->count() > 0)
 	{
 		bool was_blocking = false; // true, if we blocked at least one user
 
@@ -380,7 +380,7 @@ void ChatManager::sendActionActivated(const UserGroup* users)
 void ChatManager::chatActionActivated(const UserGroup* users)
 {
 	kdebugf();
-	if (users != NULL && users->count() > 0)
+	if (users->count() > 0)
 	{
 		bool ContainsBad = false;
 		QString MyGGUIN = QString::number(config_file.readNumEntry("General", "UIN"));
