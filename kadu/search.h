@@ -6,6 +6,7 @@
 #include <qvaluelist.h>
 
 #include "gadu.h"
+#include "toolbar.h"
 
 class QCheckBox;
 class QComboBox;
@@ -100,6 +101,8 @@ class SearchDialog : public QDialog {
 		void persClicked();
 		void uinClicked();
 		void updateInfoClicked();
+		void actionAddedToToolbar(ToolButton*, ToolBar*);
+		void actionsAddedToToolbar(ToolButton*, ToolBar*);
 
 	protected:
 		/**

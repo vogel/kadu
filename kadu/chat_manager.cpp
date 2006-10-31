@@ -151,7 +151,7 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 	KaduActions.insert("sendAction", send_action);
 
 	Action* chat_action = new Action(icons_manager->loadIcon("OpenChat"),
-		tr("&Chat"), "chatAction", Action::TypeUser);
+		tr("&Chat"), "chatAction", Action::TypeUserList);
 	connect(chat_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(chatActionActivated(const UserGroup*)));
 	KaduActions.insert("chatAction", chat_action);

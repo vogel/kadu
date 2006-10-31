@@ -80,6 +80,7 @@ class Action : public QObject
 
 	signals:
 		void addedToToolbar(const UserGroup* users, ToolButton* button, ToolBar* toolbar);
+		void addedToToolbar(ToolButton* button, ToolBar* toolbar);
 
 		/**
 			is_on jest zawsze ustawione na false jesli akcja nie jest typu "toggle".

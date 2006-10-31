@@ -111,7 +111,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	QToolTip::add(r_uin, tr("Search for this UIN exclusively"));
 
 	DockArea* dock_area = new DockArea(Qt::Horizontal, DockArea::Normal, this,
-		"searchDockArea", Action::Action::TypeUser | Action::TypeSearch);
+		"searchDockArea", Action::TypeUserList | Action::TypeSearch);
 	connect(dock_area, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
 	if (!dock_area->loadFromConfig(this))
@@ -160,11 +160,23 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 
 	connect(KaduActions["addSearchedAction"], SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(addSearchedActionActivated(const UserGroup*)));
+	connect(KaduActions["addSearchedAction"], SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
+		this, SLOT(actionAddedToToolbar(ToolButton*, ToolBar*)));
+	connect(KaduActions["clearSearchAction"], SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
+		this, SLOT(actionAddedToToolbar(ToolButton*, ToolBar*)));
+	connect(KaduActions["firstSearchAction"], SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
+		this, SLOT(actionsAddedToToolbar(ToolButton*, ToolBar*)));
+	connect(KaduActions["nextResultsAction"], SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
+		this, SLOT(actionsAddedToToolbar(ToolButton*, ToolBar*)));
 
 	KaduActions["firstSearchAction"]->setEnabled(this, false);
 	KaduActions["nextResultsAction"]->setEnabled(this, false);
 	KaduActions["clearSearchAction"]->setEnabled(this, false);
 	KaduActions["addSearchedAction"]->setEnabled(this, false);
+	
+	connect(KaduActions["chatAction"], SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
+		this, SLOT(actionAddedToToolbar(ToolButton*, ToolBar*)));
+	KaduActions["chatAction"]->setEnabled(this, false);
 
 //	searchhidden = false;
 	if (_whoisSearchUin)
@@ -269,6 +281,7 @@ void SearchDialog::clearResults(void)
 	results->clear();
 	KaduActions["addSearchedAction"]->setEnabled(this, false);
 	KaduActions["clearSearchAction"]->setEnabled(this, false);
+	KaduActions["chatAction"]->setEnabled(this, false);
 }
 
 void SearchDialog::addSearchedActionActivated(const UserGroup* users)
@@ -321,6 +334,7 @@ void SearchDialog::firstSearch(void)
 	KaduActions["firstSearchAction"]->setEnabled(this, false);
 	KaduActions["nextResultsAction"]->setEnabled(this, false);
 	KaduActions["addSearchedAction"]->setEnabled(this, false);
+	KaduActions["chatAction"]->setEnabled(this, false);
 
 	progress->setText(tr("Searching..."));
 	kdebugf2();
@@ -335,6 +349,7 @@ void SearchDialog::nextSearch(void)
 	KaduActions["firstSearchAction"]->setEnabled(this, false);
 	KaduActions["nextResultsAction"]->setEnabled(this, false);
 	KaduActions["addSearchedAction"]->setEnabled(this, false);
+	KaduActions["chatAction"]->setEnabled(this, false);
 
 	gadu->searchNextInPubdir(*searchRecord);
 
@@ -414,6 +429,7 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 
 		KaduActions["clearSearchAction"]->setEnabled(this, true);
 		KaduActions["addSearchedAction"]->setEnabled(this, true);
+		KaduActions["chatAction"]->setEnabled(this, true);
 	}
 	kdebugf2();
 }
@@ -504,6 +520,22 @@ void SearchDialog::updateInfoClicked()
 	ule.setFirstName(firstname);
 	ule.setNickName(nickname);
 	(new UserInfo(ule, 0, "user info"))->show();
+	kdebugf2();
+}
+
+void SearchDialog::actionAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*/)
+{
+	kdebugf();
+	if (!results->selectedItem())
+		button->setEnabled(false);
+	kdebugf2();
+}
+
+void SearchDialog::actionsAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*/)
+{
+	kdebugf();
+	if (isPersonalDataEmpty())
+		button->setEnabled(false);
 	kdebugf2();
 }
 

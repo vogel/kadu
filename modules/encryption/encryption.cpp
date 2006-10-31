@@ -84,7 +84,7 @@ EncryptionManager::EncryptionManager(QObject *parent, const char *name) : QObjec
 	connect(action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(encryptionActionActivated(const UserGroup*)));
 	connect(action, SIGNAL(addedToToolbar(const UserGroup*, ToolButton*, ToolBar*)),
-		this, SLOT(chatCreated(const UserGroup*)));
+		this, SLOT(setupEncrypt(const UserGroup*)));
 	KaduActions.insert("encryptionAction", action);
 	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "encryptionAction", 4);
 
@@ -163,6 +163,13 @@ void EncryptionManager::onUseEncryption(bool toggled)
 
 void EncryptionManager::chatCreated(const UserGroup *group)
 {
+	Chat* chat = chat_manager->findChat(group);
+	connect(chat, SIGNAL(messageFiltering(const UserGroup *, QCString &, bool &)),
+			this, SLOT(sendMessageFilter(const UserGroup *, QCString &, bool &)));
+}
+
+void EncryptionManager::setupEncrypt(const UserGroup *group)
+{
 	kdebugf();
 	QString keyfile_path;
 	keyfile_path.append(ggPath("keys/"));
@@ -171,10 +178,6 @@ void EncryptionManager::chatCreated(const UserGroup *group)
 	QFileInfo keyfile(keyfile_path);
 	bool encryption_possible =
 		(keyfile.permission(QFileInfo::ReadUser) && group->count() == 1);
-
-	Chat* chat = chat_manager->findChat(group);
-	connect(chat, SIGNAL(messageFiltering(const UserGroup *, QCString &, bool &)),
-			this, SLOT(sendMessageFilter(const UserGroup *, QCString &, bool &)));
 
 	bool encrypt = false;
 	if (encryption_possible)
@@ -188,7 +191,7 @@ void EncryptionManager::chatCreated(const UserGroup *group)
 			encrypt = config_file.readBoolEntry("Chat", "Encryption");
 	}
 
-	setupEncryptButton(chat, encrypt);
+	setupEncryptButton(chat_manager->findChat(group), encrypt);
 	QValueList<ToolButton*> buttons =
 		KaduActions["encryptionAction"]->toolButtonsForUserListElements(
 			group->toUserListElements());

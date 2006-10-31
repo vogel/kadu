@@ -21,6 +21,7 @@ class EncryptionManager : public QObject
 		void receivedMessageFilter(Protocol *protocol, UserListElements senders,
 								QCString& msg, QByteArray& formats, bool& stop);
 		void sendMessageFilter(const UserGroup *users, QCString &msg, bool &stop);
+		void setupEncrypt(const UserGroup *group);
 		void chatCreated(const UserGroup *group);
 
 		void generateMyKeys();

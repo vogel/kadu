@@ -493,6 +493,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * przycisk szyfrowania ustawia poprawny stan po dodaniu do okna rozmowy (neeo)
 * konfigurowalna liczba obrazków odbieranych w ci±gu minuty (Juzef,neeo)
 * poprawione zasiêgi niektórych akcji (neeo)
+* poprawka poprawki w module encryption (neeo)
+* poprawione zachowanie akcji w oknie wyszukiwania (neeo)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

@@ -65,7 +65,7 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	setCentralWidget(horizontalBox);
 
 	DockArea *leftDockArea = new DockArea(Qt::Vertical, DockArea::Normal, horizontalBox,
-		"\"chatLeftDockArea", Action::TypeGlobal | Action::TypeUser | Action::TypeChat | Action::TypeUserList);
+		"\"chatLeftDockArea", Action::TypeGlobal | Action::TypeUser | Action::TypeChat);
 	connect(leftDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
 	leftDockArea->setMinimumWidth(minimumDockAreaSize);
@@ -73,10 +73,8 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	QVBox *central = new QVBox(horizontalBox, "central");
 	horizontalBox->setStretchFactor(central, 50);
 
-	DockArea *rightDockArea = new DockArea(Qt::Vertical, DockArea::Normal,
-		horizontalBox, "chatRightDockArea",
-		Action::TypeGlobal | Action::TypeUser |
-		Action::TypeChat | Action::TypeUserList);
+	DockArea *rightDockArea = new DockArea(Qt::Vertical, DockArea::Normal, horizontalBox, 
+		"chatRightDockArea", Action::TypeGlobal | Action::TypeUser | Action::TypeChat);
 	connect(rightDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
 	rightDockArea->setMinimumWidth(minimumDockAreaSize);
@@ -84,10 +82,8 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	vertSplit = new KaduSplitter(Qt::Vertical, central, "vertSplit");
 
 	QVBox *topArea = new QVBox(vertSplit, "topArea");
-	DockArea *topDockArea = new DockArea(Qt::Horizontal, DockArea::Normal,
-		topArea, "chatTopDockArea",
-		Action::TypeGlobal | Action::TypeUser |
-		Action::TypeChat | Action::TypeUserList);
+	DockArea *topDockArea = new DockArea(Qt::Horizontal, DockArea::Normal, topArea,
+		"chatTopDockArea", Action::TypeGlobal | Action::TypeUser | Action::TypeChat);
 	connect(topDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
 	topDockArea->setMinimumHeight(minimumDockAreaSize);
@@ -181,7 +177,7 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	}
 
 	DockArea* btnpart = new DockArea(Qt::Horizontal, DockArea::Normal, downpart,
-		"chatBottomDockArea", Action::TypeGlobal | Action::TypeUser | Action::TypeChat | Action::TypeUserList);
+		"chatBottomDockArea", Action::TypeGlobal | Action::TypeUser | Action::TypeChat);
 	connect(btnpart, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
 	btnpart->setMinimumHeight(minimumDockAreaSize);
