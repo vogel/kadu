@@ -10,6 +10,7 @@
 #include <qcursor.h>
 #include <qbitmap.h>
 #include <qtooltip.h>
+#include <qmessagebox.h>
 
 #include "action.h"
 #include "chat_manager_slots.h"
@@ -334,6 +335,7 @@ void ChatManager::blockUserActionActivated(const UserGroup* users)
 	if (users->count() > 0)
 	{
 		bool was_blocking = false; // true, if we blocked at least one user
+		bool blocked_anonymous = false; // true, if we blocked at least one anonymous user
 
 		FOREACH(user, (*users))
 		{
@@ -341,10 +343,19 @@ void ChatManager::blockUserActionActivated(const UserGroup* users)
 			{
 				bool blocked = (*user).protocolData("Gadu", "Blocking").toBool();
 				(*user).setProtocolData("Gadu", "Blocking", !(blocked));
-				if (blocked && (!was_blocking))
-					was_blocking = true;
+				if (!blocked)
+				{
+					if (!was_blocking)
+						was_blocking = true;
+					if (((*user).isAnonymous()) && (!blocked_anonymous))
+						blocked_anonymous = true;
+				}
 			}
 		}
+		
+		if (blocked_anonymous)
+			QMessageBox::information(kadu, "Block user",
+			    tr("Anonymous users will be unblocked after restarting Kadu"), QMessageBox::Ok);
 		
 		if (was_blocking) // if we were blocking, we also close the chat
 		{
