@@ -440,6 +440,7 @@ void Kadu::popupMenu()
 	int hidedescriptionitem = UserBox::userboxmenu->getItem(tr("Hide description"));
 	int deletehistoryitem = UserBox::userboxmenu->getItem(tr("Clear history"));
 	int historyitem = UserBox::userboxmenu->getItem(tr("View history"));
+	int chatitem = UserBox::userboxmenu->getItem(tr("Open chat window"));
 
 	if (containsUserWithoutID)
 	{
@@ -450,6 +451,7 @@ void Kadu::popupMenu()
 		UserBox::userboxmenu->setItemEnabled(hidedescriptionitem, false);
 		UserBox::userboxmenu->setItemEnabled(deletehistoryitem, false);
 		UserBox::userboxmenu->setItemEnabled(historyitem, false);
+		UserBox::userboxmenu->setItemEnabled(chatitem, false);
 	}
 	else
 	{
@@ -501,12 +503,11 @@ void Kadu::popupMenu()
 			UserBox::userboxmenu->setItemEnabled(ignoreuseritem, false);
 			UserBox::userboxmenu->setItemEnabled(blockuseritem, false);
 			UserBox::userboxmenu->setItemEnabled(offlinetouseritem, false);
+			UserBox::userboxmenu->setItemEnabled(chatitem, false);
 		}
 	}
 
 	int searchuser = UserBox::userboxmenu->getItem(tr("Search this user in directory"));
-	if (containsUserWithoutID || containsMe)
-		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Open chat window")), false);
 	if (users.count() != 1 || !firstUser.usesProtocol("Gadu"))
 		UserBox::userboxmenu->setItemEnabled(searchuser, false);
 	if (users.count() != 1)
