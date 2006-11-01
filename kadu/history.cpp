@@ -30,6 +30,7 @@
 #include "history.h"
 #include "kadu.h"
 #include "kadu_text_browser.h"
+#include "html_document.h"
 #include "misc.h"
 
 enum {
@@ -149,12 +150,15 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 	UinType uin = 0;
 	int offs;
 
+	QString html_msg = msg;
+	HtmlDocument::escapeText(html_msg);
+
 	convSms2ekgForm();
 
 	linelist.append("smssend");
 	linelist.append(mobile);
 	linelist.append(QString::number(time(NULL)));
-	linelist.append(text2csv(msg));
+	linelist.append(text2csv(html_msg));
 
 	CONST_FOREACH(i, *userlist)
 		if ((*i).mobile() == mobile)
