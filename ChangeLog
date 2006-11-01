@@ -501,6 +501,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   nastêpuje wy³±cznie, gdy wszyscy byli zablokowani, w przeciwnym wypadku
   niezablokowane kontakty zostaj± zablokowane (neeo)
 * poprawny zapis w historii wiadomo¶ci SMS zawieraj±cych znaki <> (montor/neeo)
+* pozycje "Wyczy¶æ historiê" i "Poka¿ historiê" nie s± blokowane dla nas samych
+  w popupie na li¶cie kontaktów (montor/neeo)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
