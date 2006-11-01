@@ -467,6 +467,7 @@ void UserInfo::updateUserlist()
 	emit updateClicked(this);
 
 	userlist->writeToConfig();
+	xml_config_file->sync();
 	close(true);
 	kdebugf2();
 }
