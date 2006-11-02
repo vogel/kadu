@@ -1335,8 +1335,7 @@ const HistoryDate &DateListViewText::getDate() const
 }
 
 History::History(UinsList uins) : QDialog(NULL, "HistoryDialog"), uinslv(0), body(0),
-	uins(uins), start(0), findrec(), closeDemand(false), finding(false), dateentries(),
-	ParagraphSeparator(config_file.readNumEntry("Look", "ParagraphSeparator"))
+	uins(uins), start(0), findrec(), closeDemand(false), finding(false), dateentries()
 {
 	kdebugf();
 	history->convHist2ekgForm(uins);
@@ -1362,7 +1361,7 @@ History::History(UinsList uins) : QDialog(NULL, "HistoryDialog"), uinslv(0), bod
 	else
 		body->setStyleSheet(new StaticStyleSheet(body,emoticons->themePath()));
 
-	body->setMargin(ParagraphSeparator);
+	body->setMargin(4);
 
 	QHBox *btnbox = new QHBox(vbox, "btnbox");
 	QPushButton *searchbtn = new QPushButton(tr("&Find"), btnbox, "searchbtn");
@@ -1487,7 +1486,7 @@ void History::formatHistoryEntry(QString &text, const HistoryEntry &entry, QStri
 
 	const static QString format("<p style=\"background-color: %1\"><img title=\"\" height=\"%3\" width=\"10000\" align=\"right\"><font color=\"%2\"><b>");
 
-	text.append(format.arg(bgcolor).arg(textcolor).arg(ParagraphSeparator));
+	text.append(format.arg(bgcolor).arg(textcolor).arg(4));
 	paracolors.append(bgcolor);
 
 	if (entry.type == HISTORYMANAGER_ENTRY_SMSSEND)
