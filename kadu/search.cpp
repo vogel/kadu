@@ -161,13 +161,13 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	connect(KaduActions["addSearchedAction"], SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(addSearchedActionActivated(const UserGroup*)));
 	connect(KaduActions["addSearchedAction"], SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
-		this, SLOT(actionAddedToToolbar(ToolButton*, ToolBar*)));
+		this, SLOT(actionsAddedToToolbar(ToolButton*, ToolBar*)));
 	connect(KaduActions["clearSearchAction"], SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
-		this, SLOT(actionAddedToToolbar(ToolButton*, ToolBar*)));
+		this, SLOT(actionsAddedToToolbar(ToolButton*, ToolBar*)));
 	connect(KaduActions["firstSearchAction"], SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
-		this, SLOT(actionsAddedToToolbar(ToolButton*, ToolBar*)));
+		this, SLOT(firstSearchActionAddedToToolbar(ToolButton*, ToolBar*)));
 	connect(KaduActions["nextResultsAction"], SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
-		this, SLOT(actionsAddedToToolbar(ToolButton*, ToolBar*)));
+		this, SLOT(nextResultsActionAddedToToolbar(ToolButton*, ToolBar*)));
 
 	KaduActions["firstSearchAction"]->setEnabled(this, false);
 	KaduActions["nextResultsAction"]->setEnabled(this, false);
@@ -175,7 +175,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	KaduActions["addSearchedAction"]->setEnabled(this, false);
 	
 	connect(KaduActions["chatAction"], SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
-		this, SLOT(actionAddedToToolbar(ToolButton*, ToolBar*)));
+		this, SLOT(actionsAddedToToolbar(ToolButton*, ToolBar*)));
 	KaduActions["chatAction"]->setEnabled(this, false);
 
 //	searchhidden = false;
@@ -523,7 +523,7 @@ void SearchDialog::updateInfoClicked()
 	kdebugf2();
 }
 
-void SearchDialog::actionAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*/)
+void SearchDialog::actionsAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*/)
 {
 	kdebugf();
 	if (!results->selectedItem())
@@ -531,10 +531,18 @@ void SearchDialog::actionAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*/
 	kdebugf2();
 }
 
-void SearchDialog::actionsAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*/)
+void SearchDialog::firstSearchActionAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*/)
 {
 	kdebugf();
-	if (isPersonalDataEmpty())
+	if ((r_pers->isChecked() && isPersonalDataEmpty()) || (r_uin->isChecked() && e_uin->text().isEmpty()))
+		button->setEnabled(false);
+	kdebugf2();
+}
+
+void SearchDialog::nextResultsActionAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*/)
+{
+	kdebugf();
+	if (r_uin->isChecked() || isPersonalDataEmpty() || !results->selectedItem())
 		button->setEnabled(false);
 	kdebugf2();
 }
