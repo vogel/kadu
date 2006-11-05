@@ -163,12 +163,12 @@ void kaduQtMessageHandler(QtMsgType type, const char *msg)
 		case QtWarningMsg:
 			fprintf(stderr, "\033[34mWarning: %s\033[0m\n", msg);
 			fflush(stderr);
-			printBacktrace();
+			printBacktrace("warning from Qt (above)");
 			break;
 		case QtFatalMsg:
 			fprintf(stderr, "\033[31;1mFatal: %s\033[0m\n", msg);
 			fflush(stderr);
-			printBacktrace();
+			printBacktrace("fatal error from Qt (above)");
 			abort();
 	}
 }
