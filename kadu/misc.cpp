@@ -939,7 +939,10 @@ QString narg(const QString &s, const QString &arg1, const QString &arg2, const Q
 
 void printBacktrace(const QString &header)
 {
-	fprintf(stderr, "\nbacktrace: '%s'\n", header.local8Bit().data());
+	if (header.isEmpty())
+		fprintf(stderr, "\nbacktrace:\n");
+	else
+		fprintf(stderr, "\nbacktrace: ('%s')\n", header.local8Bit().data());
 #ifdef HAVE_EXECINFO
 	void *bt_array[100];
 	char **bt_strings;
