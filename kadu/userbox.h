@@ -396,7 +396,7 @@ class UserBox : public QListBox
 		static void refreshAll();
 
 		/**
-			\fn static void refreshAll()
+			\fn static void refreshAllLater()
 			Od¶wie¿a wszystkie UserBoksy, ale dopiero po powrocie do pêtli zdarzeñ Qt.
 		**/
 		static void refreshAllLater();
