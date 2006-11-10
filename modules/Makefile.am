@@ -124,6 +124,9 @@ install-data-local: uninstall-local make_module_dirs $(install_targets)
 
 $(install_targets):
 	@dir=`echo $@ | sed s/install_//` && \
+	if [ ! -d "$(DESTDIR)$(includedir)/kadu/modules/" ]; then \
+		make make_module_dirs; \
+	fi && \
 	echo -e "\033[32m>>>\033[0m Installing $$dir module ..."; \
 	$(INSTALL_DATA) $$dir/$$dir.desc "$(DESTDIR)$(datadir)/kadu/modules"; \
 	$(INSTALL_DATA) $$dir/*.h "$(DESTDIR)$(includedir)/kadu/modules"; \
