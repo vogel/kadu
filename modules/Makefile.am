@@ -124,16 +124,25 @@ install-data-local: uninstall-local make_module_dirs $(install_targets)
 
 $(install_targets):
 	@dir=`echo $@ | sed s/install_//` && \
-	if [ ! -d "$(DESTDIR)$(includedir)/kadu/modules/" ]; then \
-		make make_module_dirs; \
-	fi && \
 	echo -e "\033[32m>>>\033[0m Installing $$dir module ..."; \
+	if [ ! -d "$(DESTDIR)$(datadir)/kadu/modules/" ]; then \
+		$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/modules/"; \
+	fi && \
 	$(INSTALL_DATA) $$dir/$$dir.desc "$(DESTDIR)$(datadir)/kadu/modules"; \
+	if [ ! -d "$(DESTDIR)$(includedir)/kadu/modules/" ]; then \
+		$(mkinstalldirs) "$(DESTDIR)$(includedir)/kadu/modules/"; \
+	fi && \
 	$(INSTALL_DATA) $$dir/*.h "$(DESTDIR)$(includedir)/kadu/modules"; \
 	if test -d $$dir/translations; then \
+		if [ ! -d "$(DESTDIR)$(datadir)/kadu/modules/translations/" ]; then \
+			$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/modules/translations/"; \
+		fi; \
 		$(INSTALL_DATA) $$dir/translations/*.qm "$(DESTDIR)$(datadir)/kadu/modules/translations/"; \
 	fi; \
 	if test -d $$dir/data; then \
+		if [ ! -d "$(DESTDIR)$(datadir)/kadu/modules/data/" ]; then \
+			$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/modules/data/"; \
+		fi; \
 		for sub_dir in `find $$dir/data -type d | grep -v /CVS | grep -v /.svn`; do \
 			dst_dir=`echo "$$sub_dir" | sed "s,/data/,/," | sed "s,/data$$,,"`; \
 			$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/modules/data/$$dst_dir"; \
@@ -144,6 +153,9 @@ $(install_targets):
 		done; \
 	fi; \
 	if test -d $$dir/bin; then \
+		if [ ! -d "$(DESTDIR)$(libdir)/kadu/modules/bin/" ]; then \
+			$(mkinstalldirs) "$(DESTDIR)$(libdir)/kadu/modules/bin/"; \
+		fi; \
 		for sub_dir in `find $$dir/bin -type d | grep -v /CVS | grep -v /.svn`; do \
 			dst_dir=`echo "$$sub_dir" | sed "s,/bin/,/," | sed "s,/bin$$,,"`; \
 			$(mkinstalldirs) "$(DESTDIR)$(libdir)/kadu/modules/bin/$$dst_dir"; \
@@ -154,6 +166,9 @@ $(install_targets):
 		done; \
 	fi; \
 	if test -z `expr " $(static_modules) " : ".* \($$dir\) "`; then \
+		if [ ! -d "$(DESTDIR)$(libdir)/kadu/modules/" ]; then \
+			$(mkinstalldirs) "$(DESTDIR)$(libdir)/kadu/modules/"; \
+		fi; \
 		$(INSTALL_PROGRAM) $$dir/$$dir.$(SO_EXT) "$(DESTDIR)$(libdir)/kadu/modules/"; \
 	fi
 
