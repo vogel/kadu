@@ -507,6 +507,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * 0.5.0-rc1
 * poprawka instalacji modu³ów przy make install_nazwamodu³u gdy katalogi docelowe
   jeszcze nie istniej± (joi)
+* poprawka parsera Kadu, który usuwa³ wszystkie znaki przed ']}, je¿eli
+  nie by³o wcze¶niej (odpowiednio) znaków `[{ (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
