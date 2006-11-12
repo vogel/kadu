@@ -509,6 +509,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   jeszcze nie istniej± (joi)
 * poprawka parsera Kadu, który usuwa³ wszystkie znaki przed ']}, je¿eli
   nie by³o wcze¶niej (odpowiednio) znaków `[{ (joi)
+* wysoko¶æ pola edycji w oknie rozmowy nie zmienia siê przy zmianie rozmiaru
+  ca³ego okna (FuKu/joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

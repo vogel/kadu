@@ -134,6 +134,8 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	QVBox *downpart = new QVBox(vertSplit, "downpartBox");
 	QHBox *edtbuttontray = new QHBox(downpart, "edtbuttontrayBox");
 
+	vertSplit->setResizeMode(downpart, QSplitter::KeepSize);
+
 	if (config_file.readBoolEntry("Chat", "ShowEditWindowLabel", true))
 	{
 		QLabel *edt = new QLabel(tr("Edit window:"), edtbuttontray, "editLabel");
