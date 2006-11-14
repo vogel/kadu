@@ -567,15 +567,14 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, bool esc
 	}
 	QString ret;
 	QString p;
-	while (!parseStack.empty())
+	CONST_FOREACH(it, parseStack)
 	{
-		const ParseElem &last = parseStack.last();
-		if (last.type != ParseElem::PE_STRING)
-			kdebugm(KDEBUG_WARNING, "Incorrect parse string! %d\n", last.type);
+		if ((*it).type != ParseElem::PE_STRING)
+			kdebugm(KDEBUG_WARNING, "Incorrect parse string! %d\n", (*it).type);
 
-		switch (last.type)
+		switch ((*it).type)
 		{
-			case ParseElem::PE_STRING:					p = last.str;	break;
+			case ParseElem::PE_STRING:					p = (*it).str;	break;
 			case ParseElem::PE_EXTERNAL_VARIABLE:		p = "#{";		break;
 			case ParseElem::PE_ICONPATH:				p = "@{";		break;
 			case ParseElem::PE_VARIABLE:				p = "${";		break;
@@ -586,8 +585,7 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, bool esc
 			case ParseElem::PE_EXECUTE:					p = '`';		break;
 			case ParseElem::PE_EXECUTE2:				p = "`{";		break;
 		}
-		ret.prepend(p);
-		parseStack.pop_back();
+		ret += p;
 	}
 	kdebugm(KDEBUG_DUMP, "%s\n", ret.local8Bit().data());
 	return ret;
