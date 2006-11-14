@@ -566,27 +566,27 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, bool esc
 		index = i;
 	}
 	QString ret;
+	QString p;
 	while (!parseStack.empty())
 	{
 		const ParseElem &last = parseStack.last();
-		if (last.type == ParseElem::PE_STRING)
-			ret.prepend(last.str);
-		else
-		{
+		if (last.type != ParseElem::PE_STRING)
 			kdebugm(KDEBUG_WARNING, "Incorrect parse string! %d\n", last.type);
-			switch (last.type)
-			{
-				case ParseElem::PE_EXTERNAL_VARIABLE:		ret.prepend("#{");	break;
-				case ParseElem::PE_ICONPATH:				ret.prepend("@{");	break;
-				case ParseElem::PE_VARIABLE:				ret.prepend("${");	break;
-				case ParseElem::PE_EXECUTE:					ret.prepend('`');	break;
-				case ParseElem::PE_EXECUTE2:				ret.prepend("`{");	break;
-				case ParseElem::PE_CHECK_FILE_EXISTS:		ret.prepend('{');	break;
-				case ParseElem::PE_CHECK_FILE_NOT_EXISTS:	ret.prepend("{!");	break;
-				case ParseElem::PE_CHECK_ALL_NOT_NULL:		ret.prepend('[');	break;
-				case ParseElem::PE_CHECK_ANY_NULL:			ret.prepend("[!");	break;
-			}
+
+		switch (last.type)
+		{
+			case ParseElem::PE_STRING:					p = last.str;	break;
+			case ParseElem::PE_EXTERNAL_VARIABLE:		p = "#{";		break;
+			case ParseElem::PE_ICONPATH:				p = "@{";		break;
+			case ParseElem::PE_VARIABLE:				p = "${";		break;
+			case ParseElem::PE_CHECK_FILE_EXISTS:		p = '{';		break;
+			case ParseElem::PE_CHECK_FILE_NOT_EXISTS:	p = "{!";		break;
+			case ParseElem::PE_CHECK_ALL_NOT_NULL:		p = '[';		break;
+			case ParseElem::PE_CHECK_ANY_NULL:			p = "[!";		break;
+			case ParseElem::PE_EXECUTE:					p = '`';		break;
+			case ParseElem::PE_EXECUTE2:				p = "`{";		break;
 		}
+		ret.prepend(p);
 		parseStack.pop_back();
 	}
 	kdebugm(KDEBUG_DUMP, "%s\n", ret.local8Bit().data());
