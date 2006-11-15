@@ -215,7 +215,7 @@ class GaduProtocol : public Protocol
 		/** Numer serwera, do którego obiekt ostatnio próbowa³ siê pod³±czyæ. **/
 		unsigned int ServerNr;
 		/** Adres serwera, do którego obiekt jest pod³±czony. **/
-		QHostAddress* ActiveServer;
+		QHostAddress ActiveServer;
 
 		/** Parametry logowania - wymagane przez bibliotekê libgadu **/
 		struct gg_login_params LoginParams;
@@ -593,9 +593,9 @@ class GaduProtocol : public Protocol
 		void changeID(const QString &id);
 		/**
 			Zwraca serwer z którym jeste¶my po³±czeni lub do którego siê w³a¶nie ³±czymy.
-			NULL = hub.
+			isNull() = hub.
 		**/
-		QHostAddress* activeServer();
+		QHostAddress activeServer();
 
 		/**
 			Konwertuje listê u¿ytkowników do postaci ³añcucha.

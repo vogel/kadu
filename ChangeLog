@@ -511,6 +511,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   nie by³o wcze¶niej (odpowiednio) znaków `[{ (joi)
 * wysoko¶æ pola edycji w oknie rozmowy nie zmienia siê przy zmianie rozmiaru
   ca³ego okna (FuKu/joi)
+* poprawka wywrotki gdy w trakcie szukania serwera w konfiguracji zostanie zmieniona
+  lista serwerów (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

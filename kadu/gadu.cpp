@@ -395,7 +395,7 @@ void GaduProtocol::initModule()
 
 GaduProtocol::GaduProtocol(const QString &id, QObject *parent, const char *name) : Protocol("Gadu", id, parent, name),
 		Mode(Register), DataUin(0), DataEmail(), DataPassword(), DataNewPassword(), TokenId(), TokenValue(),
-		ServerNr(0), ActiveServer(0), LoginParams(), Sess(0), sendImageRequests(0), whileConnecting(false),
+		ServerNr(0), ActiveServer(), LoginParams(), Sess(0), sendImageRequests(0), whileConnecting(false),
 		DccExternalIP(), SocketNotifiers(new GaduSocketNotifiers(this, "gadu_socket_notifiers")), PingTimer(0),
 		SendUserListTimer(new QTimer(this, "SendUserListTimer")), UserListClear(false), ImportReply()
 {
@@ -720,7 +720,7 @@ void GaduProtocol::removingProtocol(UserListElement elem, QString protocolName, 
 	kdebugf2();
 }
 
-QHostAddress* GaduProtocol::activeServer()
+QHostAddress GaduProtocol::activeServer()
 {
 	return ActiveServer;
 }
@@ -895,10 +895,10 @@ void GaduProtocol::errorSlot(GaduError err)
 
 	if (msg != QString::null)
 	{
-		QHostAddress* server = activeServer();
+		QHostAddress server = activeServer();
 		QString host;
-		if (server != NULL)
-			host = server->toString();
+		if (!server.isNull())
+			host = server.toString();
 		else
 			host = "HUB";
 		msg = QString("(%1) %2").arg(host).arg(msg);
@@ -1075,27 +1075,27 @@ void GaduProtocol::login()
 		LoginParams.external_port = 0;
 	}
 
-	if (!ConfigServers.isEmpty() && !config_file.readBoolEntry("Network", "isDefServers") && ConfigServers[ServerNr].ip4Addr())
+	if (!ConfigServers.isEmpty() && !config_file.readBoolEntry("Network", "isDefServers"))
 	{
-		ActiveServer = &ConfigServers[ServerNr];
-		++ServerNr;
 		if (ServerNr >= ConfigServers.count())
 			ServerNr = 0;
+		
+		ActiveServer = ConfigServers[ServerNr++];
 	}
 	else
 	{
-		if (ServerNr)
-			ActiveServer = &gg_servers[ServerNr - 1];
-		else
-			ActiveServer = NULL;
-		++ServerNr;
 		if (ServerNr > gg_servers.count())
 			ServerNr = 0;
+		if (ServerNr > 0)
+			ActiveServer = gg_servers[ServerNr - 1];
+		else
+			ActiveServer = QHostAddress();
+		++ServerNr;
 	}
 
-	if (ActiveServer != NULL)
+	if (!ActiveServer.isNull())
 	{
-		LoginParams.server_addr = htonl(ActiveServer->ip4Addr());
+		LoginParams.server_addr = htonl(ActiveServer.ip4Addr());
 		LoginParams.server_port = config_file.readNumEntry("Network", "DefaultPort");
 	}
 	else
