@@ -75,8 +75,8 @@ rm -rf ${DEST}/Kadu.app/
 mkdir ${DEST}/Kadu.app/
 
 echo "log: copying files"
-cp -r ${INSTALLED_DIR}/share/kadu ${DEST}/Kadu.app/kadu
-cp -r ${INSTALLED_DIR}/lib/kadu ${DEST}/Kadu.app/kadu
+cp -r ${INSTALLED_DIR}/share/kadu ${DEST}/Kadu.app
+cp -r ${INSTALLED_DIR}/lib/kadu ${DEST}/Kadu.app
 
 CNT_DIR=${DEST}/Kadu.app/Contents
 mkdir ${CNT_DIR};
