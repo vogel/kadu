@@ -313,18 +313,33 @@ void ChatManager::ignoreUserActionActivated(const UserGroup* users)
 	kdebugf();
 	if (users->count() > 0)
 	{
-		UserListElements u = users->toUserListElements();
-		if (isIgnored(u))
-			delIgnored(u);
-		else
+		bool ContainsBad = false;
+		QString MyGGUIN = QString::number(config_file.readNumEntry("General", "UIN"));
+
+		CONST_FOREACH(user, (*users))
 		{
-			addIgnored(u);
-			Chat *c = findChat(u);
-			if (c)
-				c->close();
+			if (!(*user).usesProtocol("Gadu") || (*user).ID("Gadu") == MyGGUIN)
+			{
+				ContainsBad = true;
+				break;
+			}
 		}
-		kadu->userbox()->refresh();
-		writeIgnored();
+
+		if (!ContainsBad)
+		{
+			UserListElements u = users->toUserListElements();
+			if (isIgnored(u))
+				delIgnored(u);
+			else
+			{
+				addIgnored(u);
+				Chat *c = findChat(u);
+				if (c)
+					c->close();
+			}
+			kadu->userbox()->refresh();
+			writeIgnored();
+		}
 	}
 	kdebugf2();
 }
@@ -336,6 +351,7 @@ void ChatManager::blockUserActionActivated(const UserGroup* users)
 	{
 		bool on = true;
 		bool blocked_anonymous = false; // true, if we blocked at least one anonymous user
+		QString MyGGUIN = QString::number(config_file.readNumEntry("General", "UIN"));
 
 		CONST_FOREACH(user, (*users))
 			if (!(*user).usesProtocol("Gadu") || !(*user).protocolData("Gadu", "Blocking").toBool())
@@ -345,7 +361,7 @@ void ChatManager::blockUserActionActivated(const UserGroup* users)
 			}
 
 		FOREACH(user, (*users))
-			if ((*user).usesProtocol("Gadu") && (*user).protocolData("Gadu", "Blocking").toBool() != !on)
+			if ((*user).usesProtocol("Gadu") && (*user).ID("Gadu") != MyGGUIN && (*user).protocolData("Gadu", "Blocking").toBool() != !on)
 			{
 				(*user).setProtocolData("Gadu", "Blocking", !on);
 				if ((!on) && (!blocked_anonymous) && ((*user).isAnonymous()))
