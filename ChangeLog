@@ -515,6 +515,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   lista serwerów (joi)
 * poprawione budowanie paczki na MacOSX (joi)
 * akcje nie umo¿liwiaj± blokowania i ignorowania nas samych (neeo)
+* poprawione wykrywanie przegl±darki Safari na MacOSX (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

@@ -469,6 +469,8 @@ void ChatManagerSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo,
 					continue;
 				}
 			}
+			else if (selectedBrowser == 7) //safari
+				path = "open " + testPath;
 			else
 				path=testPath;
 			browserPath->setText(path);
@@ -542,8 +544,6 @@ void ChatManagerSlots::setBrowserOption(int selectedOption, QLineEdit *browserPa
 			browserPathEdit->setText(browserPath);
 			break;
 		}
-		case 7:		//Safari - mac
-			browserPathEdit->setText("open /Applications/Safari.app %1");
 	}
 	kdebugf2();
 }
