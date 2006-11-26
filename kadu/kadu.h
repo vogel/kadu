@@ -49,6 +49,7 @@ class Kadu : public QWidget
 		QTimer updateInformationPanelTimer;
 
 		UserStatus status;
+		UserGroup *selectedUsers; //don't touch!
 
 		bool ShowMainWindowOnStart;
 		bool DoBlink;

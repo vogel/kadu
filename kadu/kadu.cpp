@@ -115,7 +115,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	TopDockArea(0), InfoPanel(0), MenuBar(0), MainMenu(0), GroupBar(0),
 	Userbox(0), statusMenu(0), statusButton(), lastPositionBeforeStatusMenuHide(),
 	StartTime(QDateTime::currentDateTime()), updateInformationPanelTimer(),
-	status(), ShowMainWindowOnStart(true), DoBlink(false), BlinkOn(false),
+	status(), selectedUsers(new UserGroup(userlist->count() / 2)),
+	ShowMainWindowOnStart(true), DoBlink(false), BlinkOn(false),
 	Docked(false), dontHideOnClose(false), personalInfoMenuId(-1)
 {
 	kdebugf();
@@ -632,8 +633,9 @@ void Kadu::selectedUsersNeeded(const UserGroup*& users)
 		kdebugf2();
 		return;
 	}
-	users = new UserGroup(activeUserBox->selectedUsers());
-	//TODO: Memory leak
+	selectedUsers->clear();
+	selectedUsers->addUsers(activeUserBox->selectedUsers());
+	users = selectedUsers;
 	kdebugf2();
 }
 
@@ -1413,6 +1415,7 @@ Kadu::~Kadu(void)
 		delete a;
 	}
 #endif
+	delete selectedUsers;
 
 	kdebugf2();
 }

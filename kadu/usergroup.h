@@ -220,6 +220,8 @@ class UserGroup : public QObject
 		void resize(int size);
 
 		QStringList altNicks() const;
+		
+		void clear();
 	public slots:
 		/**
 			\fn void addUser(UserListElement ule, bool massively = false, bool last = false)

@@ -276,6 +276,11 @@ void UserGroup::resize(int size)
 	d->data.resize(size);
 }
 
+void UserGroup::clear()
+{
+	removeUsers(toUserListElements());
+}
+
 QStringList UserGroup::altNicks() const
 {
 	QStringList nicks;
