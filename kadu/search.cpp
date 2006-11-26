@@ -231,6 +231,21 @@ void SearchDialog::initModule()
 	kdebugf2();
 }
 
+void SearchDialog::closeModule()
+{
+#if DEBUG_ENABLED
+	// for valgrind
+	QStringList searchActions;
+	searchActions << "firstSearchAction" << "nextResultsAction" << "clearSearchAction" << "addSearchedAction";
+	CONST_FOREACH(act, searchActions)
+	{
+		Action *a = KaduActions[*act];
+		KaduActions.remove(*act);
+		delete a;
+	}
+#endif
+}
+
 void SearchDialog::selectedUsersNeeded(const UserGroup*& user_group)
 {
 	kdebugf();

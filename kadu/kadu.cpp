@@ -1280,6 +1280,7 @@ bool Kadu::close(bool quit)
 
  		UserBox::closeModule();
  		ChatManager::closeModule();
+		SearchDialog::closeModule();
 		GaduProtocol::closeModule();
 		userlist->writeToConfig();//writeToConfig must be before GroupsManager::closeModule, because GM::cM removes all groups from userlist
 		GroupsManager::closeModule();
@@ -1397,6 +1398,22 @@ void Kadu::quitApplication()
 Kadu::~Kadu(void)
 {
 	kdebugf();
+
+#if DEBUG_ENABLED
+	// for valgrind
+	QStringList mainActions;
+	mainActions << "inactiveUsersAction" << "descriptionUsersAction"
+				<< "configurationAction" << "editUserAction"
+				<< "addUserAction" << "openSearchAction";
+
+	CONST_FOREACH(act, mainActions)
+	{
+		Action *a = KaduActions[*act];
+		KaduActions.remove(*act);
+		delete a;
+	}
+#endif
+
 	kdebugf2();
 }
 

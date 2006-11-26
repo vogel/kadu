@@ -202,6 +202,23 @@ ChatManager::~ChatManager()
 	disconnect(&refreshTitlesTimer, SIGNAL(timeout()), this, SLOT(refreshTitles()));
 	disconnect(userlist, SIGNAL(usersStatusChanged(QString)), this, SLOT(refreshTitlesLater()));
 	closeAllWindows();
+
+#if DEBUG_ENABLED
+	// for valgrind
+	QStringList chatActions;
+	chatActions << "autoSendAction" << "scrollLockAction" << "clearChatAction"
+				<< "showHistoryAction" << "insertEmoticonAction" << "whoisAction"
+				<< "insertImageAction" << "ignoreUserAction" << "blockUserAction"
+				<< "boldAction" << "italicAction" << "underlineAction"
+				<< "colorAction" << "sendAction" << "chatAction";
+	CONST_FOREACH(act, chatActions)
+	{
+		Action *a = KaduActions[*act];
+		KaduActions.remove(*act);
+		delete a;
+	}
+#endif
+
 	kdebugf2();
 }
 

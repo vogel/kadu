@@ -36,6 +36,7 @@ class SearchDialog : public QDialog {
 		SearchDialog(QWidget *parent=0, const char *name=0, UinType whoisSearchUin = 0);
 		~SearchDialog(void);
 		static void initModule();
+		static void closeModule();
 
 	private:
 		QCheckBox *only_active;
