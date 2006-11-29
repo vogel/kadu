@@ -74,7 +74,6 @@ void DockArea::toolbarPlaceChanged()
 void DockArea::createNewToolbar()
 {
 	kdebugf();
-	kdebug("Creating new toolbar\n");
 	ToolBar* tb = new ToolBar(NULL, "New toolbar");
 	tb->show();
 	moveDockWindow(tb);
