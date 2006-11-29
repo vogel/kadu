@@ -54,6 +54,7 @@ class SearchDialog : public QDialog {
 		QRadioButton *r_pers;
 		UinType _whoisSearchUin;
 		uint32_t seq;
+		UserGroup *selectedUsers;
 
 		SearchRecord *searchRecord;
 

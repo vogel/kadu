@@ -35,7 +35,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	: QDialog (parent, name, FALSE, Qt::WDestructiveClose),
 	only_active(0), e_uin(0), e_name(0), e_nick(0), e_byrFrom(0), e_byrTo(0), e_surname(0),
 	c_gender(0), e_city(0), results(0), progress(0), r_uin(0), r_pers(0), _whoisSearchUin(whoisSearchUin),
-	seq(0), searchRecord(new SearchRecord()), searchhidden(false)
+	seq(0), selectedUsers(new UserGroup(1)), searchRecord(new SearchRecord()), searchhidden(false)
 {
 	kdebugf();
 
@@ -199,6 +199,7 @@ SearchDialog::~SearchDialog()
 	disconnect(gadu, SIGNAL(newSearchResults(SearchResults&, int, int)), this, SLOT(newSearchResults(SearchResults&, int, int)));
 	saveGeometry(this, "General", "SearchDialogGeometry");
 	delete searchRecord;
+	delete selectedUsers;
 	kdebugf2();
 }
 
@@ -285,10 +286,9 @@ void SearchDialog::selectedUsersNeeded(const UserGroup*& user_group)
 		e.setAltNick(altnick);
 	}
 
-	UserGroup* group = new UserGroup(1);
-	group->addUser(e);
-	user_group = group;
-	//TODO: leak
+	selectedUsers->clear();
+	selectedUsers->addUser(e);
+	user_group = selectedUsers;
 
 	kdebugf2();
 }
