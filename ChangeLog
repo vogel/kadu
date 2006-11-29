@@ -519,6 +519,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniêty niewielki wyciek pamiêci przy ka¿dej akcji wywo³ywanej przez
   przycisk z g³ównego okna (joi)
 * poprawka wywrotki przy usuwaniu przycisku z toolbara wyci±gniêtego poza okno (joi)
+* poprawka wywrotki w oknie szukania w katalogu przy naci¶niêciu "rozmowa" lub
+  "dodaj wybrany kontakt" gdy ¿adna pozycja nie jest zaznaczona (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

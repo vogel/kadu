@@ -105,6 +105,7 @@ class SearchDialog : public QDialog {
 		void actionsAddedToToolbar(ToolButton*, ToolBar*);
 		void firstSearchActionAddedToToolbar(ToolButton*, ToolBar*);
 		void nextResultsActionAddedToToolbar(ToolButton*, ToolBar*);
+		void selectionChanged();
 
 	protected:
 		/**

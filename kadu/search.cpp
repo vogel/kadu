@@ -99,6 +99,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	progress = new QLabel(this);
 
 	results = new QListView(this);
+	connect(results, SIGNAL(selectionChanged()), this, SLOT(selectionChanged()));
 
 	QHButtonGroup * btngrp = new QHButtonGroup(tr("Search criteria"), this);
 	r_pers = new QRadioButton(tr("&Personal data"),btngrp);
@@ -173,7 +174,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	KaduActions["nextResultsAction"]->setEnabled(this, false);
 	KaduActions["clearSearchAction"]->setEnabled(this, false);
 	KaduActions["addSearchedAction"]->setEnabled(this, false);
-	
+
 	connect(KaduActions["chatAction"], SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
 		this, SLOT(actionsAddedToToolbar(ToolButton*, ToolBar*)));
 	KaduActions["chatAction"]->setEnabled(this, false);
@@ -287,6 +288,7 @@ void SearchDialog::selectedUsersNeeded(const UserGroup*& user_group)
 	UserGroup* group = new UserGroup(1);
 	group->addUser(e);
 	user_group = group;
+	//TODO: leak
 
 	kdebugf2();
 }
@@ -571,4 +573,12 @@ bool SearchDialog::isPersonalDataEmpty() const
 		e_surname->text().isEmpty() &&
 		c_gender->currentItem() == 0 &&
 		e_city->text().isEmpty();
+}
+
+void SearchDialog::selectionChanged()
+{
+	//kdebugmf(KDEBUG_FUNCTION_START, "%p\n", );
+	bool enableActions = results->selectedItem() != 0;
+	KaduActions["addSearchedAction"]->setEnabled(this, enableActions);
+	KaduActions["chatAction"]->setEnabled(this, enableActions);
 }
