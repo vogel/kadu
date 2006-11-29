@@ -35,8 +35,7 @@ ToolBar::~ToolBar()
 
 void ToolBar::addButtonClicked(int action_index)
 {
-	kdebugf();
-	kdebug("action_index = %d\n", action_index);
+	kdebugmf(KDEBUG_FUNCTION_START | KDEBUG_INFO, "action_index = %d\n", action_index);
 	KaduActions[KaduActions.keys()[action_index]]->addToToolbar(this);
 	DockArea* dockarea = (DockArea*)area();
 	if (dockarea != NULL)
@@ -211,8 +210,11 @@ QPopupMenu* ToolBar::createContextMenu(QWidget* parent)
 	}
 	p->insertItem(tr("Add new button"), p2);
 	p->insertSeparator();
-	QPopupMenu* panel_menu = dockArea()->createContextMenu(p);
-	p->insertItem(tr("Panel menu"), panel_menu);
+	if (dockArea())
+	{
+		QPopupMenu* panel_menu = dockArea()->createContextMenu(p);
+		p->insertItem(tr("Panel menu"), panel_menu);
+	}
 	return p;
 }
 

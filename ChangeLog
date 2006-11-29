@@ -370,7 +370,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * aktualizacja libgadu do wersji 20060518 + zmiany w Kadu dotycz±ce obs³ugi
   nowych b³êdów zwracanych przez libgadu (neeo/joi)
 * default_sms, bramka Ery: okienko z ilo¶ci± pozosta³ych smsów, pole podpis
-  doklejane jest do tre¶ci wiadomo¶ci, poprawione komunikaty o b³êdach, 
+  doklejane jest do tre¶ci wiadomo¶ci, poprawione komunikaty o b³êdach,
   usuniête polskie znaki z wiadomo¶ci (neeo/joi)
 * szereg usprawnieñ dotycz±cych sprawdzania poprawno¶ci wpisanych danych
   w oknie szukania kontaktów w katalogu (neeo/joi)
@@ -408,7 +408,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka skalowania g³ównego okna - menu potrafi³o zas³oniæ toolbar (pinkworm/joi)
 * drobna optymalizacja w okre¶laniu listy dostêpnych kontaktów i zmiana
   w traktowaniu kontaktów blokuj±cych - uznajemy ich za dostêpnych (tak jak w 0.4.x) (neeo/joi)
-* przed usuniêciem toolbara pytamy siê czy u¿ytkownik naprawdê chce go usun±æ 
+* przed usuniêciem toolbara pytamy siê czy u¿ytkownik naprawdê chce go usun±æ
   + poprawki 2 segfaultów (neeo,joi)
 * nowa akcja: ignoruj u¿ytkownika/konferencjê (neeo,joi)
 * kolejne poprawki zwi±zane z layoutem g³ównego okna (joi)
@@ -497,7 +497,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawione zachowanie akcji w oknie wyszukiwania - akcje otrzymuj± poprawny
   stan po dodaniu do toolbara (neeo)
 * przy blokowaniu anonimowych kontaktów pojawia sie komunikat informacyjny (neeo)
-* zmienione dzia³anie akcji blokuj±cej dla kilku kontaktów - odblokowanie 
+* zmienione dzia³anie akcji blokuj±cej dla kilku kontaktów - odblokowanie
   nastêpuje wy³±cznie, gdy wszyscy byli zablokowani, w przeciwnym wypadku
   niezablokowane kontakty zostaj± zablokowane (neeo)
 * poprawny zapis w historii wiadomo¶ci SMS zawieraj±cych znaki <> (montor/neeo)
@@ -518,6 +518,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawione wykrywanie przegl±darki Safari na MacOSX (joi)
 * usuniêty niewielki wyciek pamiêci przy ka¿dej akcji wywo³ywanej przez
   przycisk z g³ównego okna (joi)
+* poprawka wywrotki przy usuwaniu przycisku z toolbara wyci±gniêtego poza okno (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
