@@ -731,7 +731,7 @@ void HintManager::userBoxChangeToolTip(const QPoint &point, UserListElement user
 //	kdebugf();
 	if (show)
 	{
-		kdebugm(KDEBUG_INFO, "user: '%s', x:%d, y:%d\n", user.altNick().local8Bit().data(), show, point.x(), point.y());
+		kdebugm(KDEBUG_INFO, "user: '%s', show: %d, x:%d, y:%d\n", user.altNick().local8Bit().data(), show, point.x(), point.y());
 		QString text = KaduParser::parse(config_file.readEntry("Hints", "MouseOverUserSyntax"), user);
 
 		while (text.endsWith("<br/>"))

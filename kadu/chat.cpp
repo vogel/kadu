@@ -662,7 +662,7 @@ void Chat::writeMessagesFromHistory(UserListElements senders, time_t time)
 
 		entriestmp = history->getHistoryEntries(uins, from, end - from + 1, HISTORYMANAGER_ENTRY_CHATSEND
 			| HISTORYMANAGER_ENTRY_MSGSEND | HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV);
-		kdebugmf(KDEBUG_INFO, "temp entries = %d\n", entriestmp.count());
+		kdebugmf(KDEBUG_INFO, "temp entries = %lu\n", entriestmp.count());
 		if (time)
 		{
 			QValueList<HistoryEntry>::iterator it = entriestmp.begin();
@@ -685,7 +685,7 @@ void Chat::writeMessagesFromHistory(UserListElements senders, time_t time)
 		}
 		if (!entriestmp.isEmpty())
 			entries = entriestmp + entries;
-		kdebugmf(KDEBUG_INFO, "entries = %d\n", entries.count());
+		kdebugmf(KDEBUG_INFO, "entries = %lu\n", entries.count());
 		end = from - 1;
 	}
 

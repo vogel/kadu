@@ -169,7 +169,7 @@ void GroupsManager::refreshTabBar()
 		if ((*group)->count() != 0)
 			group_list.append(group.key());
 
-	kdebugm(KDEBUG_INFO, "%i groups found: %s\n", group_list.count(), group_list.join(",").local8Bit().data());
+	kdebugm(KDEBUG_INFO, "%lu groups found: %s\n", group_list.count(), group_list.join(",").local8Bit().data());
 
 	/* usuwamy wszystkie niepotrzebne zakladki - od tylu,
 	   bo indeksy sie przesuwaja po usunieciu */

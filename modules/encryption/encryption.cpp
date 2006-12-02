@@ -256,7 +256,7 @@ void EncryptionManager::receivedMessageFilter(Protocol *protocol,
 	kdebugm(KDEBUG_INFO, "Decrypting encrypted message...(%d)\n", msg.length());
 	const char* msg_c = msg;
 	char* decoded = sim_message_decrypt((const unsigned char*)msg_c, senders[0].ID(protocol->protocolID()).toUInt());
-	kdebugm(KDEBUG_DUMP, "Decrypted message is(len:%d): %s\n", decoded ? strlen(decoded) : 0, decoded);
+	kdebugm(KDEBUG_DUMP, "Decrypted message is(len:%lu): %s\n", decoded ? strlen(decoded) : 0, decoded);
 	if (decoded != NULL)
 	{
 		msg = decoded;

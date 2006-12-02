@@ -1258,7 +1258,7 @@ void HistoryManager::checkImageTimeout(UinType uin)
 	while (!msgs.isEmpty())
 	{
 		BuffMessage &msg = msgs.front();
-		kdebugm(KDEBUG_INFO, "arriveTime:%d current:%d counter:%d\n", msg.arriveTime, currentTime, msg.counter);
+		kdebugm(KDEBUG_INFO, "arriveTime:%ld current:%ld counter:%d\n", msg.arriveTime, currentTime, msg.counter);
 		if (msg.arriveTime + 60 < currentTime || msg.counter == 0)
 		{
 			kdebugm(KDEBUG_INFO, "moving message to history\n");

@@ -27,7 +27,7 @@ SoundFile::SoundFile(const char *path):length(0),data(NULL),channels(-1),speed(0
 		fprintf(stderr, "cannot open file '%s'\n", path);
 		return;
 	}
-	kdebugm(KDEBUG_INFO, "frames:\t\t%lld\n", info.frames);
+	kdebugm(KDEBUG_INFO, "frames:\t\t%lu\n", info.frames);
 	kdebugm(KDEBUG_INFO, "samplerate:\t%d\n", info.samplerate);
 	kdebugm(KDEBUG_INFO, "channels:\t%d\n", info.channels);
 	kdebugm(KDEBUG_INFO, "format:\t\t0x%x\n", info.format);

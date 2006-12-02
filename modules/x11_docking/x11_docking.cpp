@@ -345,7 +345,7 @@ bool X11TrayIcon::x11Event(XEvent *e)
 	if (e->type == ReparentNotify)
 	{
 		Window rootWin = RootWindow(x11Display(), 0);
-		kdebugm(KDEBUG_INFO, "type: %d, event: %d, window: %d, parent: %d, root: %d\n", e->type, e->xreparent.event, e->xreparent.window, e->xreparent.parent, rootWin);
+		kdebugm(KDEBUG_INFO, "type: %d, event: %ld, window: %ld, parent: %ld, root: %ld\n", e->type, e->xreparent.event, e->xreparent.window, e->xreparent.parent, rootWin);
 		if (rootWin == e->xreparent.parent)
 			// try not to show main window on session logout when kicker/etc... closes before kadu
 			undockAndTryToDockLater(1000);

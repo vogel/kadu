@@ -268,7 +268,7 @@ static void *allocFormantBuffer(const QValueList<struct richtext_formant> &forma
 			tmpformats += sizeof(gg_msg_richtext_image);
 		}
 	}
-	kdebugmf(KDEBUG_INFO, "formats_length=%u, tmpformats-cformats=%d\n",
+	kdebugmf(KDEBUG_INFO, "formats_length=%u, tmpformats-cformats=%ld\n",
 		formats_length, tmpformats - cformats);
 
 	return (void *)cformats;

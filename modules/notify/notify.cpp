@@ -162,7 +162,7 @@ Notify::~Notify()
 
 	if (!notifiers.isEmpty())
 	{
-		kdebugm(KDEBUG_WARNING, "WARNING: not unregistered notifiers found! (%d)\n", notifiers.size());
+		kdebugm(KDEBUG_WARNING, "WARNING: not unregistered notifiers found! (%lu)\n", notifiers.size());
 		QValueList<QString> notifierNames = notifiers.keys();
 		CONST_FOREACH(name, notifierNames)
 			unregisterNotifier(*name);
