@@ -1511,7 +1511,7 @@ Czy na pewno tego chcesz?</translation>
     </message>
     <message>
         <source>Move to group %1</source>
-        <translation>Przesuń do grupy %1</translation>
+        <translation>Przenieś do grupy %1</translation>
     </message>
 </context>
 <context>
