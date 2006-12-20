@@ -1796,7 +1796,7 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     </message>
     <message>
         <source>City</source>
-        <translation>Miasto</translation>
+        <translation>Miejscowość</translation>
     </message>
     <message>
         <source>Uin</source>
