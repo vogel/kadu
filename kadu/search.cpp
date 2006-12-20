@@ -118,6 +118,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	if (!dock_area->loadFromConfig(this))
 	{
 		ToolBar* toolbar = new ToolBar(this, "Search toolbar");
+		toolbar->setOffset(1000);
 		dock_area->moveDockWindow(toolbar);
 		dock_area->setAcceptDockWindow(toolbar, true);
 		KaduActions.addDefaultActionsToToolbar(toolbar);
@@ -139,7 +140,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	grid->addMultiCellWidget(btngrp, 3, 3, 4, 11);
 
 	grid->addMultiCellWidget(results, 5, 5, 0, 11);
-	grid->addMultiCellWidget(dock_area, 6, 6, 2, 11);
+	grid->addMultiCellWidget(dock_area, 6, 6, 0, 11);
 	grid->addMultiCellWidget(progress, 6, 6, 0, 1);
 
 	grid->addColSpacing(2, 10);
