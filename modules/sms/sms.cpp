@@ -242,7 +242,7 @@ Sms::Sms(const QString& altnick, QDialog* parent, const char *name) : QDialog (p
 	e_signature(0), b_send(0), c_saveInHistory(0), smsProcess(0), Sender()
 {
 	kdebugf();
-	QGridLayout * grid = new QGridLayout(this, 3, 4, 10, 3);
+	QGridLayout * grid = new QGridLayout(this, 3, 4, 10, 7);
 
 	setWFlags(WDestructiveClose);
 
@@ -250,6 +250,7 @@ Sms::Sms(const QString& altnick, QDialog* parent, const char *name) : QDialog (p
 	grid->addMultiCellWidget(body, 1, 1, 0, 3);
 	body->setWordWrap(QMultiLineEdit::WidgetWidth);
 	body->setFont(config_file.readFontEntry("Look","ChatFont"));
+	body->setTabChangesFocus(true);
 	QObject::connect(body, SIGNAL(textChanged()), this, SLOT(updateCounter()));
 
 	recipient = new QLineEdit(this);
@@ -274,26 +275,28 @@ Sms::Sms(const QString& altnick, QDialog* parent, const char *name) : QDialog (p
 	QLabel *recilabel = new QLabel(tr("Recipient"), this);
 	grid->addWidget(recilabel, 0, 0);
 
-	smslen = new QLabel("0", this);
-	grid->addWidget(smslen, 3, 0);
-	c_saveInHistory = new QCheckBox(tr("Save SMS in history"), this);
-	c_saveInHistory->setChecked(true);
-	grid->addWidget(c_saveInHistory, 3, 1);
-
-	b_send = new QPushButton(this);
-	b_send->setText(tr("Send"));
-	b_send->setMaximumWidth(200);
-	grid->addWidget(b_send, 3, 3, Qt::AlignRight);
-
 	l_contact= new QLabel(tr("Contact"), this);
-	grid->addWidget(l_contact, 4, 0);
+	grid->addWidget(l_contact, 3, 0);
 	e_contact= new QLineEdit(this);
-	grid->addWidget(e_contact, 4, 1);
+	grid->addWidget(e_contact, 3, 1);
+
+	smslen = new QLabel("0", this);
+	grid->addWidget(smslen, 3, 3, Qt::AlignRight);
 
 	l_signature= new QLabel(tr("Signature"), this);
-	grid->addWidget(l_signature, 5, 0);
+	grid->addWidget(l_signature, 4, 0);
 	e_signature= new QLineEdit(config_file.readEntry("SMS", "SmsNick"), this);
-	grid->addWidget(e_signature, 5, 1);
+	grid->addWidget(e_signature, 4, 1);
+
+	c_saveInHistory = new QCheckBox(tr("Save SMS in history"), this);
+	c_saveInHistory->setChecked(true);
+	grid->addMultiCellWidget(c_saveInHistory, 5, 5, 0, 1);
+
+	b_send = new QPushButton(this);
+	b_send->setIconSet(icons_manager->loadIcon("SendSMSButton"));
+	b_send->setText(tr("Send"));
+	b_send->setMaximumWidth(200);
+	grid->addWidget(b_send, 5, 3, Qt::AlignRight);
 
 	if (altnick.isEmpty())
 		recipient->setFocus();
