@@ -116,63 +116,71 @@ void UserInfo::setupTab1()
 
 	// info panel
 
-	// UIN and STATUS
-	QHBox *hb_uinstate = new QHBox(vgb_general);
-	QVBox *vb_uin = new QVBox(hb_uinstate);
-	QVBox *vb_state = new QVBox(hb_uinstate);
-	hb_uinstate->setSpacing(3);
+	// UIN and disp
+	QHBox *hb_uindisp = new QHBox(vgb_general);
+	QVBox *vb_uin = new QVBox(hb_uindisp);
+	QVBox *vb_disp = new QVBox(hb_uindisp);
+	hb_uindisp->setSpacing(3);
 	vb_uin->setSpacing(3);
-	vb_state->setSpacing(3);
+	vb_disp->setSpacing(3);
 
 	new QLabel(tr("Uin"), vb_uin);
 	e_uin = new QLineEdit(vb_uin);
 	e_uin->setMaxLength(8);
 	e_uin->setValidator(new QIntValidator(1, 99999999, this));
-	new QLabel(tr("Status"), vb_state);
-	QLineEdit *e_status = new QLineEdit(vb_state);
-	// end UIN and STATUS
 
-	// Nick and Disp. nick
-	QHBox *hb_dispnick = new QHBox(vgb_general);
-	QVBox *vb_nick = new QVBox(hb_dispnick);
-	QVBox *vb_disp = new QVBox(hb_dispnick);
-	hb_dispnick->setSpacing(3);
-	vb_nick->setSpacing(3);
-	vb_disp->setSpacing(3);
-
-	new QLabel(tr("Nickname"), vb_nick);
-	e_nickname = new QLineEdit(vb_nick);
 	new QLabel(tr("AltNick"), vb_disp);
 	e_altnick = new QLineEdit(vb_disp);
-	// end Nick and Disp. nick
+	// end UIN and disp
 
-	// Name and Surname
-	QHBox *hb_namesurname = new QHBox(vgb_general);
-	QVBox *vb_name = new QVBox(hb_namesurname);
-	QVBox *vb_surname = new QVBox(hb_namesurname);
-	hb_namesurname->setSpacing(3);
+
+	// name and nick
+	QHBox *hb_namenick = new QHBox(vgb_general);
+	QVBox *vb_name = new QVBox(hb_namenick);
+	QVBox *vb_nick = new QVBox(hb_namenick);
+	hb_namenick->setSpacing(3);
 	vb_name->setSpacing(3);
-	vb_surname->setSpacing(3);
+	vb_nick->setSpacing(3);
 
 	new QLabel(tr("First name"), vb_name);
 	e_firstname = new QLineEdit(vb_name);
+	new QLabel(tr("Nickname"), vb_nick);
+	e_nickname = new QLineEdit(vb_nick);
+	// end name and nick
+
+	// Surname & mobile
+	QHBox *hb_surnamemobile = new QHBox(vgb_general);
+	QVBox *vb_surname = new QVBox(hb_surnamemobile);
+	QVBox *vb_mobile = new QVBox(hb_surnamemobile);
+	hb_surnamemobile->setSpacing(3);
+	vb_surname->setSpacing(3);
+	vb_mobile->setSpacing(3);
+
 	new QLabel(tr("Surname"), vb_surname);
 	e_lastname = new QLineEdit(vb_surname);
-	// end Name and Surname
-
-	// Mobile and Email
-	QHBox *hb_mobileemail = new QHBox(vgb_general);
-	QVBox *vb_mobile = new QVBox(hb_mobileemail);
-	QVBox *vb_email = new QVBox(hb_mobileemail);
-	hb_mobileemail->setSpacing(3);
-	vb_mobile->setSpacing(3);
-	vb_email->setSpacing(3);
 
 	new QLabel(tr("Mobile"), vb_mobile);
 	e_mobile = new QLineEdit(vb_mobile);
+	// end Surname & mobile
+
+	// Email
+	QHBox *hb_email = new QHBox(vgb_general);
+	QVBox *vb_email = new QVBox(hb_email);
+	QVBox *vb_empty = new QVBox(hb_email, "space_for_advanced_userlist");
+	hb_email->setSpacing(3);
+	vb_email->setSpacing(3);
+	vb_empty->setSpacing(3);
+
 	new QLabel(tr("Email"), vb_email);
 	e_email = new QLineEdit(vb_email);
-	// end Mobile and Email
+	hb_email->setStretchFactor(vb_email, 1);
+	hb_email->setStretchFactor(vb_empty, 1);
+	// end Email
+
+	QFrame *line1 = new QFrame(vgb_general);
+	line1->setFrameShape(QFrame::HLine);
+	line1->setFrameShadow(QFrame::Sunken);
+	line1->setFrameShape(QFrame::HLine);
 
 	// IP and DNS
 	QHBox *hb_ipdns = new QHBox(vgb_general);
@@ -184,23 +192,29 @@ void UserInfo::setupTab1()
 
 	new QLabel(tr("Address IP and Port"), vb_ip);
 	e_addr = new QLineEdit(vb_ip);
+	e_addr->setBackgroundMode(PaletteButton);
+
 	new QLabel(tr("DNS name"), vb_dns);
 	e_dnsname = new QLineEdit(vb_dns);
+	
+	e_dnsname->setBackgroundMode(PaletteButton);
 	// end IP and DNS
 
-	// Protocol Version
-	QHBox *hb_protversion = new QHBox(vgb_general);
-	QVBox *vb_protversion = new QVBox(hb_protversion);
-	QVBox *vb_empty = new QVBox(hb_protversion, "space_for_advanced_userlist");
-	hb_protversion->setSpacing(3);
+	// Protocol Version and status
+	QHBox *hb_protversionstate = new QHBox(vgb_general);
+	QVBox *vb_protversion = new QVBox(hb_protversionstate);
+	QVBox *vb_state = new QVBox(hb_protversionstate);
+	hb_protversionstate->setSpacing(3);
 	vb_protversion->setSpacing(3);
-	vb_empty->setSpacing(3);
+	vb_state->setSpacing(3);
 	new QLabel(tr("Protocol version"), vb_protversion);
 	e_ver = new QLineEdit(vb_protversion);
+	e_ver->setBackgroundMode(PaletteButton);
 
-	hb_protversion->setStretchFactor(vb_protversion, 1);
-	hb_protversion->setStretchFactor(vb_empty, 1);
-	// end Protocol Version
+	new QLabel(tr("Status"), vb_state);
+	QLineEdit *e_status = new QLineEdit(vb_state);
+	e_status->setBackgroundMode(PaletteButton);
+	// end Protocol Version and status
 
 	if (gadu->currentStatus().isOffline())
 		e_status->setText(tr("(Unknown)"));
