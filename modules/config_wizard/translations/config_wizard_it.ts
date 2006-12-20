@@ -465,9 +465,9 @@ You UIN is: </source>
     <message>
         <source>
 Account configuration was saved.
-Press Next to continue</source>
+Press Ok to continue</source>
         <translation>Configurazione account è stata salvata.
-Premi Avanti per continuare</translation>
+Premi Ok per continuare</translation>
     </message>
     <message>
         <source>&lt;h3&gt;Please enter your valid e-mail address and password you want to secure your new Gadu-gadu number&lt;/h3&gt;

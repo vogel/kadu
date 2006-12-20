@@ -466,7 +466,7 @@ Ihre GG-Nummer (UIN) lautet:</translation>
     <message>
         <source>
 Account configuration was saved.
-Press Next to continue</source>
+Press Ok to continue</source>
         <translation>
 Einstellungen des Accounts wurden gespeichert.
 Klicken Sie bitte auf &quot;Weiter&quot;</translation>

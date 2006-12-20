@@ -465,7 +465,7 @@ Votre VIN numero Kadu est :</translation>
     <message>
         <source>
 Account configuration was saved.
-Press Next to continue</source>
+Press Ok to continue</source>
         <translation>Votre configuration a été enregistrée.
 Appuyer suivant pour continuer</translation>
     </message>

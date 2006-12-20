@@ -340,7 +340,7 @@ void Wizard::registeredAccount(bool ok, UinType uin)
 		config_file.writeEntry("General", "Password", pwHash(l_ggNewPasssword->text()));
 		gadu->changeID(QString::number(uin));
 		gadu->status().setOnline();	//jak zarejestrowal to od razu sie laczy
-		MessageBox::msg(tr("Registration was successful.\nYou UIN is: ")+QString::number(int(uin))+tr("\nAccount configuration was saved.\nPress Next to continue"));
+		MessageBox::msg(tr("Registration was successful.\nYou UIN is: ")+QString::number(int(uin))+tr("\nAccount configuration was saved.\nPress Ok to continue"));
 		registered = true;
 	}
 	else
