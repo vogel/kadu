@@ -306,6 +306,7 @@ void ChatManagerSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo,
 	*/
 	QString prevBrowser=browserPath->text();
 	browserOptionsCombo->setEnabled(false);	//blokujemy combo
+	browserOptionsCombo->clear(); //czyscimy combo z opcjami
 
 	if (selectedBrowser==0)
 	{
@@ -484,7 +485,9 @@ void ChatManagerSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo,
 		MessageBox::msg(tr("I didn't find the browser you selected! The path to it doesn't exists in $PATH variable. \nYou may add it to $PATH or specify location using Specify path option."));
 		browserCombo->setCurrentItem(0);	//ustawiamy na default
 		browserOptionsCombo->clear();	//czyscimy opcje
+		browserOptionsCombo->setEnabled(false); //wylaczamy combo z opcjami
 		browserPath->setText(prevBrowser);
+		browserPath->setReadOnly(false); //wlaczamy mozliwosc edycji
 //		browserPath->clear(); 	//no i czyscimy LineEdita
 	}
 	kdebugf2();
