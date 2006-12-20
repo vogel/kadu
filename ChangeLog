@@ -527,6 +527,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka b³êdu mo¿liwo¶ci utworzenia grupy z³o¿onej z samych cyfr,
   z przecinkiem lub ¶rednikiem przy przeci±gniêciu kontaktu na pasek zak³adek (joi)
 * niewielkie poprawki w wygl±dzie okna wysy³ania smsów (joi)
+* niewielkie poprawki w wygl±dzie okna szukania w katalogu publicznym (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

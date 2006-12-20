@@ -49,9 +49,6 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	QLabel *l_city;
 	QLabel *l_uin;
 
-	only_active = new QCheckBox(tr("Only active users"),this);
-	connect(only_active, SIGNAL(clicked()), this, SLOT(personalDataTyped()));
-
 	l_nick = new QLabel(tr("Nickname"),this);
 	e_nick = new QLineEdit(this);
 	connect(e_nick, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
@@ -89,6 +86,9 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	e_city = new QLineEdit(this);
 	connect(e_city, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
+	only_active = new QCheckBox(tr("Only active users"),this);
+	connect(only_active, SIGNAL(clicked()), this, SLOT(personalDataTyped()));
+
 	QGroupBox * qgrp1 = new QGroupBox(2, Qt::Horizontal, tr("Uin"), this);
 	l_uin = new QLabel(tr("Uin"),qgrp1);
 	e_uin = new QLineEdit(qgrp1);
@@ -124,8 +124,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 		KaduActions.addDefaultActionsToToolbar(toolbar);
 	}
 
-	QGridLayout * grid = new QGridLayout (this, 7, 12, 3, 3);
-	grid->addMultiCellWidget(only_active, 0, 0, 0, 2);
+	QGridLayout * grid = new QGridLayout (this, 7, 12, 7, 5);
 	grid->addWidget(l_nick, 1, 0, Qt::AlignRight); grid->addWidget(e_nick, 1, 1);
 	grid->addWidget(l_gender, 2, 0, Qt::AlignRight); grid->addWidget(c_gender, 2, 1);
 	grid->addWidget(l_name, 1, 3, Qt::AlignRight); grid->addWidget(e_name, 1, 4);
@@ -134,6 +133,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	grid->addWidget(l_byrFrom, 1, 7, Qt::AlignRight); grid->addWidget(e_byrFrom, 1, 8);
 	grid->addWidget(l_byrTo, 2, 7, Qt::AlignRight); grid->addWidget(e_byrTo, 2, 8);
 	grid->addWidget(l_city, 1, 10, Qt::AlignRight); grid->addWidget(e_city, 1, 11);
+	grid->addMultiCellWidget(only_active, 2, 2, 10, 11);
 
 	grid->addMultiCellWidget(qgrp1, 3, 3, 0, 3);
 
