@@ -296,14 +296,16 @@ void KaduTabBar::dropEvent(QDropEvent* e)
 		else
 		{
 			bool ok;
-			QStringList list;
-			for (int i = 0, count2 = count(); i < count2; ++i)
-				list << tabAt(i)->text();
-			QString text = QInputDialog::getItem(tr("Add new group"), tr("Name of new group:"),
-				list, 0, true, &ok, 0);
-			if (!ok || text.isEmpty())
-				return;
-			group = text;
+			QString text;
+			do
+			{
+				text = QInputDialog::getText(tr("Add new group"), tr("Name of new group:"), QLineEdit::Normal, text, &ok);
+				if (!ok)
+					return;
+				if (UserInfo::acceptableGroupName(text))
+					group = text;
+			}
+			while (group.isEmpty());
 		}
 		if (group == GroupsManager::tr("All"))
 			group = QString::null;

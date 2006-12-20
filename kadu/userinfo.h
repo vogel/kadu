@@ -46,6 +46,7 @@ class UserInfo : public QHBox
 
 		QTabWidget *tabs() {return tw_main;}
 		UserListElement user() const {return User;}
+		static bool acceptableGroupName(const QString &groupName);
 
 	private:
 		UserListElement User;

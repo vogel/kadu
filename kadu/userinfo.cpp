@@ -298,32 +298,57 @@ void UserInfo::setupTab2()
 	kdebugf2();
 }
 
-void UserInfo::newGroupClicked()
+bool UserInfo::acceptableGroupName(const QString &groupName)
 {
 	kdebugf();
-	QString groupName = newGroup->text();
 	if (groupName.isEmpty())
-		return;
+	{
+		kdebugf2();
+		return false;
+	}
 	if (groupName.contains(","))
 	{
 		MessageBox::msg(tr("'%1' is prohibited").arg(','), true);
-		return;
+		kdebugf2();
+		return false;
 	}
 	if (groupName.contains(";"))
 	{
 		MessageBox::msg(tr("'%1' is prohibited").arg(';'), true);
-		return;
+		kdebugf2();
+		return false;
 	}
 	bool number;
 	groupName.toLong(&number);
 	if (number)
 	{
 		MessageBox::msg(tr("Numbers are prohibited"), true);//because of gadu-gadu contact list format...
-		return;
+		kdebugf2();
+		return false;
 	}
 	if (groupName == GroupsManager::tr("All"))
 	{
 		MessageBox::msg(tr("This group already exists!"), true);
+		kdebugf2();
+		return false;
+	}
+	if (groups_manager->groupExists(groupName))
+	{
+		MessageBox::wrn(tr("This group already exists!"), true);
+		kdebugf2();
+		return false;
+	}
+	kdebugf2();
+	return true;
+}
+
+void UserInfo::newGroupClicked()
+{
+	kdebugf();
+	QString groupName = newGroup->text();
+	if (!acceptableGroupName(groupName))
+	{
+		kdebugf2();
 		return;
 	}
 	CONST_FOREACH(checkbox, groups)
@@ -332,6 +357,7 @@ void UserInfo::newGroupClicked()
 			MessageBox::wrn(tr("This group already exists!"), true);
 			return;
 		}
+
 //	unfortunetly this 2-lines code does not work - don't know why
 //	so we had to create a couple of checkboxes and hide them
 //	and right now we showing em one by one

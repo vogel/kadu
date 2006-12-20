@@ -523,7 +523,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   "dodaj wybrany kontakt" gdy ¿adna pozycja nie jest zaznaczona (joi)
 * usuniêty niewielki wyciek pamiêci przy ka¿dej akcji wywo³ywanej przez
   przycisk z okna szukania w katalogu publicznym (joi)
-* poprawionych kilka drobnych b³êdów przy wyborze przegl±darki www (arvenil/joi)
+* poprawione kilka drobnych b³êdów przy wyborze przegl±darki www (arvenil/joi)
+* poprawka b³êdu mo¿liwo¶ci utworzenia grupy z³o¿onej z samych cyfr,
+  z przecinkiem lub ¶rednikiem przy przeci±gniêciu kontaktu na pasek zak³adek (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików
