@@ -2130,7 +2130,7 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     </message>
     <message>
         <source>This dialog box allows you to view and edit information about the selected contact.</source>
-        <translation>To okno dialogowe pozwala redagować informacje o wybranym kontakcie.</translation>
+        <translation>To okno dialogowe pozwala edytować informacje o wybranym kontakcie.</translation>
     </message>
     <message>
         <source>Groups</source>
