@@ -20,6 +20,7 @@
 #include "misc.h"
 #include "tabbar.h"
 #include "userbox.h"
+#include "userinfo.h"
 
 struct QTabPrivate;
 
