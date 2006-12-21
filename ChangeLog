@@ -528,6 +528,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   z przecinkiem lub ¶rednikiem przy przeci±gniêciu kontaktu na pasek zak³adek (joi)
 * niewielkie poprawki w wygl±dzie okien: wysy³ania smsów, szukania w katalogu publicznym,
   informacji o kontakcie (joi)
+* przy okre¶laniu kiedy ma siê pojawiæ dymek nad list± kontaktów, olewamy
+  zdarzenia zatrzymania/ruszenia rolk± w myszce, maj±ce ¼ród³o poza list±
+  kontaktów (gdy Qt jednak decyduje siê nam je przekazaæ) (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

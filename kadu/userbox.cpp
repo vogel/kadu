@@ -469,7 +469,15 @@ void UserBox::wheelEvent(QWheelEvent *e)
 {
 //	kdebugf();
 	QListBox::wheelEvent(e);
-	restartTip(e->pos());
+
+	// if event source (e->globalPos()) is inside this widget (QRect(...))
+	if (QRect(mapToGlobal(QPoint(0,0)), size()).contains(e->globalPos()))
+		restartTip(e->pos());
+	else
+	{
+		hideTip();
+		tipTimer.stop();
+	}
 }
 
 void UserBox::enterEvent(QEvent *e)
