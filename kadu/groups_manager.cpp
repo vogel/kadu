@@ -14,6 +14,7 @@
 #include "action.h"
 #include "kadu.h"
 #include "misc.h"
+#include "pending_msgs.h"
 #include "tabbar.h"
 #include "userbox.h"
 #include "userlist.h"
