@@ -534,6 +534,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * gdy nie ma za³adowanego ¿adnego z modu³ów *_docking lub gdy za³adowany jest
   macosx_docking, to anonimowe kontakty z nadchodz±cymi wiadomo¶ciami znowu
   wy¶wietlane s± na li¶cie kontaktów (joi)
+* autoresponder: domy¶lnie w³±czona opcja ignorowania konferencji (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

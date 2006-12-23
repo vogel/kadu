@@ -46,11 +46,12 @@ AutoResponder::AutoResponder(QObject *parent, const char *name) : QObject(parent
 		QT_TRANSLATE_NOOP("@default", "Autoanswer text:"),
 		"Autotext",
 		tr("Thanks for your message %a. I'm not available right now."), Kadu::SyntaxText);
-	ConfigDialog::addLabel("Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP( "@default","Choose status:" ));
-	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP( "@default","Status invisible" ),"StatusInvisible",false );
-	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP( "@default","Status busy" ),"StatusBusy",true );
-	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP( "@default","Status available" ),"StatusAvailable",false );
-	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP( "@default","Only for the first time" ),"OnlyFirstTime",true );
+	ConfigDialog::addLabel("Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP("@default","Choose status:"));
+	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP("@default", "Status invisible"), "StatusInvisible", false);
+	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP("@default", "Status busy"), "StatusBusy", true);
+	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP("@default", "Status available"), "StatusAvailable",false);
+	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP("@default", "Only for the first time"), "OnlyFirstTime", true);
+	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP("@default", "Respond to conferences"), "RespondConf", false);
 	kdebugf2();
 }
 
@@ -60,6 +61,7 @@ AutoResponder::~AutoResponder()
 	disconnect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
 		this, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
 	disconnect(chat_manager, SIGNAL(chatCreated(const UserGroup *)), this, SLOT(chatOpened(const UserGroup *)));
+	ConfigDialog::removeControl("Autoresponder", "Respond to conferences");
 	ConfigDialog::removeControl("Autoresponder", "Choose status:");
 	ConfigDialog::removeControl("Autoresponder", "Status invisible");
 	ConfigDialog::removeControl("Autoresponder", "Status busy");
@@ -76,36 +78,46 @@ AutoResponder::~AutoResponder()
 void AutoResponder::chatMsgReceived(Protocol * /*protocol*/, UserListElements senders, const QString& msg, time_t /*time*/, bool &/*grab*/)
 {
 	kdebugf();
-	if (msg.left(5) != "KADU ")
+	if (msg.left(5) == "KADU ")
 	{
-		bool was = false;					//to pamieta czy okienko juz otwarte czy nie
-		if (replied.count() != 0)
-			CONST_FOREACH(sender, senders)
-				if (replied.contains(*sender))
-					was = true;						//jak bylo to bylo=true
-
-		bool respond = config->readBoolEntry("Autoresponder", "StatusInvisible") &&
-					gadu->status().isInvisible();
-
-		if (!respond)
-			respond = config->readBoolEntry("Autoresponder", "StatusBusy") &&
-					gadu->status().isBusy();;
-
-		if (!respond)
-			respond = config->readBoolEntry("Autoresponder", "StatusAvailable") &&
-					gadu->status().isOnline();
-
-		if (config->readBoolEntry("Autoresponder", "OnlyFirstTime") && was)
-			respond = false;			//to zablokuje odpisanie na wiadomosc
-
-		if (respond)
-		{
-			gadu->sendMessage(senders, unicode2cp(tr("KADU AUTORESPONDER:")+"\n"+
-						KaduParser::parse(config->readEntry("Autoresponder", "Autotext"), senders[0])));
-			CONST_FOREACH(sender, senders)
-				replied.addUser(*sender);	//doda kolesi do listy (jednego jak jeden albo wszystkich z konferencji
-		}
+		kdebugf2();
+		return;
 	}
+	bool respConf = config_file.readBoolEntry("Autoresponder", "RespondConf");
+	if (!respConf && senders.size() > 1)
+	{
+		kdebugf2();
+		return;
+	}
+
+	bool was = false;					//to pamieta czy okienko juz otwarte czy nie
+	if (replied.count() != 0)
+		CONST_FOREACH(sender, senders)
+			if (replied.contains(*sender))
+				was = true;						//jak bylo to bylo=true
+
+	bool respond = config->readBoolEntry("Autoresponder", "StatusInvisible") &&
+				gadu->status().isInvisible();
+
+	if (!respond)
+		respond = config->readBoolEntry("Autoresponder", "StatusBusy") &&
+				gadu->status().isBusy();;
+
+	if (!respond)
+		respond = config->readBoolEntry("Autoresponder", "StatusAvailable") &&
+				gadu->status().isOnline();
+
+	if (config->readBoolEntry("Autoresponder", "OnlyFirstTime") && was)
+		respond = false;			//to zablokuje odpisanie na wiadomosc
+
+	if (respond)
+	{
+		gadu->sendMessage(senders, unicode2cp(tr("KADU AUTORESPONDER:")+"\n"+
+						KaduParser::parse(config->readEntry("Autoresponder", "Autotext"), senders[0])));
+		CONST_FOREACH(sender, senders)
+			replied.addUser(*sender);	//doda kolesi do listy (jednego jak jeden albo wszystkich z konferencji
+	}
+
 	kdebugf2();
 }
 
