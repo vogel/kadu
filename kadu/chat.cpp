@@ -65,7 +65,7 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	setCentralWidget(horizontalBox);
 
 	DockArea *leftDockArea = new DockArea(Qt::Vertical, DockArea::Normal, horizontalBox,
-		"\"chatLeftDockArea", Action::TypeGlobal | Action::TypeUser | Action::TypeChat);
+		"chatLeftDockArea", Action::TypeGlobal | Action::TypeUser | Action::TypeChat);
 	connect(leftDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
 	leftDockArea->setMinimumWidth(minimumDockAreaSize);
@@ -73,7 +73,7 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	QVBox *central = new QVBox(horizontalBox, "central");
 	horizontalBox->setStretchFactor(central, 50);
 
-	DockArea *rightDockArea = new DockArea(Qt::Vertical, DockArea::Normal, horizontalBox, 
+	DockArea *rightDockArea = new DockArea(Qt::Vertical, DockArea::Normal, horizontalBox,
 		"chatRightDockArea", Action::TypeGlobal | Action::TypeUser | Action::TypeChat);
 	connect(rightDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
