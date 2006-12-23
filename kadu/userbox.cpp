@@ -394,8 +394,8 @@ UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
 	connect(this, SIGNAL(currentChanged(QListBoxItem *)), this, SLOT(currentChangedSlot(QListBoxItem *)));
 	connect(&refreshTimer, SIGNAL(timeout()), this, SLOT(refresh()));
 
-	connect(&pending, SIGNAL(messageAdded()), this, SLOT(refreshLater()));
-	connect(&pending, SIGNAL(messageDeleted()), this, SLOT(refreshLater()));
+	connect(&pending, SIGNAL(messageFromUserAdded(UserListElement)), this, SLOT(messageFromUserAdded(UserListElement)));
+	connect(&pending, SIGNAL(messageFromUserDeleted(UserListElement)), this, SLOT(messageFromUserAdded(UserListElement)));
 
 	connect(&tipTimer, SIGNAL(timeout()), this, SLOT(tipTimeout()));
 
@@ -694,6 +694,18 @@ void UserBox::refreshAllLater()
 	FOREACH(box, UserBoxes)
 		(*box)->refreshLater();
 	kdebugf2();
+}
+
+void UserBox::messageFromUserAdded(UserListElement elem)
+{
+	if (visibleUsers()->contains(elem))
+		refreshLater();
+}
+
+void UserBox::messageFromUserDeleted(UserListElement elem)
+{
+	if (visibleUsers()->contains(elem))
+		refreshLater();
 }
 
 void UserBox::closeModule()
@@ -1127,7 +1139,7 @@ void UserBox::removeFilter(UserGroup *g)
 	if (Filters.isEmpty()) // there must be at least one group
 		Filters.append(userlist);
 	UserGroup *last = Filters.last();
-	Filters.pop_back(); //temorarily removing
+	Filters.pop_back(); //temporarily removing
 
 	UserListElements users;
 	CONST_FOREACH(user, *last)
@@ -1328,6 +1340,7 @@ void UserBox::protocolUserDataChanged(QString protocolName, UserListElement /*el
 
 void UserBox::userAddedToVisible(UserListElement elem, bool /*massively*/, bool /*last*/)
 {
+//	kdebugmf(KDEBUG_FUNCTION_START, "start: mass:\n", massively);
 	lastMouseStopUser = nullElement;
 	sortHelper.push_back(elem);
 	refreshLater();
@@ -1387,6 +1400,7 @@ void UserBox::userAddedToGroup(UserListElement elem, bool massively, bool last)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "start: mass:%d\n", massively);
 	const UserGroup *s = static_cast<const UserGroup *>(sender());
+//	kdebugm(KDEBUG_INFO, "sender name: '%s'\n", s->name());
 	bool append = true;
 	CONST_FOREACH(group, NegativeFilters)
 		if ((*group)->contains(elem))
@@ -1422,6 +1436,12 @@ void UserBox::userRemovedFromGroup(UserListElement elem, bool massively, bool la
 {
 //	kdebugmf(KDEBUG_FUNCTION_START, "start: mass:%d\n", massively);
 	const UserGroup *s = static_cast<const UserGroup *>(sender());
+//	kdebugm(KDEBUG_INFO, "sender name: '%s'\n", s->name());
+	if (s == userlist) //HACK :/ ignore removal of user from main userlist, because userlist didn't really removed that user... (look at UserGroup::removeUser())
+	{
+//		kdebugf2();
+		return;
+	}
 	if (VisibleUsers->contains(elem))
 		if (massively)
 			RemoveProxy[s].append(elem);

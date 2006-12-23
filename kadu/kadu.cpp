@@ -266,7 +266,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	UserBox::userboxmenu->addItem(tr("About..."), this, SLOT(about()));
 
 	groups_manager->setTabBar(GroupBar);
-	Userbox->applyNegativeFilter(anonymousUsers);
+	setDocked(Docked, dontHideOnClose);
 
 	// history, hints
 	History::initModule();
@@ -1592,6 +1592,16 @@ void Kadu::setDocked(bool docked, bool dontHideOnClose1)
 {
 	Docked = docked;
 	dontHideOnClose = dontHideOnClose1;
+	if (Docked && !dontHideOnClose)
+	{
+		Userbox->removeNegativeFilter(anonymousUsersWithoutMessages);
+		Userbox->applyNegativeFilter(anonymousUsers);
+	}
+	else
+	{
+		Userbox->removeNegativeFilter(anonymousUsers);
+		Userbox->applyNegativeFilter(anonymousUsersWithoutMessages);
+	}
 }
 
 bool Kadu::docked() const

@@ -27,10 +27,11 @@ PendingMsgs::PendingMsgs(QObject *parent, const char *name) : QObject(parent, na
 void PendingMsgs::deleteMsg(int index)
 {
 	kdebugm(KDEBUG_INFO, "PendingMsgs::(pre)deleteMsg(%d), count=%d\n", index, count());
+	UserListElement e = msgs[index].users[0];
 	msgs.remove(msgs.at(index));
 	writeToFile();
 	kdebugm(KDEBUG_INFO, "PendingMsgs::deleteMsg(%d), count=%d\n", index, count());
-	emit messageDeleted();
+	emit messageFromUserDeleted(e);
 }
 
 bool PendingMsgs::pendingMsgs(UserListElement user) const
@@ -76,7 +77,7 @@ void PendingMsgs::addMsg(QString protocolName, UserListElements users, QString m
 	e.time = time;
 	msgs.append(e);
 	writeToFile();
-	emit messageAdded();
+	emit messageFromUserAdded(users[0]);
 }
 
 void PendingMsgs::writeToFile()

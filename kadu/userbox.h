@@ -520,6 +520,9 @@ class UserBox : public QListBox
 		void resetVerticalPosition();
 		void rememberVerticalPosition();
 
+		void messageFromUserAdded(UserListElement elem);
+		void messageFromUserDeleted(UserListElement elem);
+
 	private:
 		static QValueList<UserBox*> UserBoxes;
 		static UserBoxSlots *userboxslots;

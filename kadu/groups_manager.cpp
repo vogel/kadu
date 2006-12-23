@@ -27,6 +27,7 @@ void GroupsManager::initModule()
 	blockedUsers = new BlockedUsers();
 	blockingUsers = new BlockingUsers();
 	anonymousUsers = new AnonymousUsers();
+	anonymousUsersWithoutMessages = new AnonymousUsersWithoutMessages();
 	kdebugf2();
 }
 
@@ -42,6 +43,7 @@ void GroupsManager::closeModule()
 	userbox->removeFilter(onlineUsers);
 	userbox->removeFilter(usersWithDescription);
 	userbox->removeNegativeFilter(anonymousUsers);
+	userbox->removeNegativeFilter(anonymousUsersWithoutMessages);
 
 	delete usersWithDescription;
 	usersWithDescription = NULL;
@@ -57,6 +59,10 @@ void GroupsManager::closeModule()
 
 	delete anonymousUsers;
 	anonymousUsers = NULL;
+
+	delete anonymousUsersWithoutMessages;
+	anonymousUsersWithoutMessages = NULL;
+
 	kdebugf2();
 }
 
@@ -602,10 +608,92 @@ void AnonymousUsers::removingUser(UserListElement elem, bool massively, bool las
 		addUser(elem, massively, last);
 }
 
+AnonymousUsersWithoutMessages::AnonymousUsersWithoutMessages() : UserGroup(userlist->count() / 4, "anonymous_users_without_messages")
+{
+	connect(userlist, SIGNAL(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)),
+			this, SLOT(userDataChangedSlot(UserListElement, QString, QVariant, QVariant, bool, bool)));
+	connect(userlist, SIGNAL(userAdded(UserListElement, bool, bool)),
+			this, SLOT(userAdded(UserListElement, bool, bool)));
+
+	connect(userlist, SIGNAL(removingUser(UserListElement, bool, bool)),
+			this, SLOT(removingUser(UserListElement, bool, bool)));
+
+	connect(&pending, SIGNAL(messageFromUserAdded(UserListElement)),
+			this, SLOT(messageFromUserAdded(UserListElement)));
+	connect(&pending, SIGNAL(messageFromUserDeleted(UserListElement)),
+			this, SLOT(messageFromUserDeleted(UserListElement)));
+}
+
+AnonymousUsersWithoutMessages::~AnonymousUsersWithoutMessages()
+{
+	disconnect(userlist, SIGNAL(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)),
+			this, SLOT(userDataChangedSlot(UserListElement, QString, QVariant, QVariant, bool, bool)));
+	disconnect(userlist, SIGNAL(userAdded(UserListElement, bool, bool)),
+			this, SLOT(userAdded(UserListElement, bool, bool)));
+
+	disconnect(userlist, SIGNAL(removingUser(UserListElement, bool, bool)),
+			this, SLOT(removingUser(UserListElement, bool, bool)));
+
+	disconnect(&pending, SIGNAL(messageFromUserAdded(UserListElement)),
+			this, SLOT(messageFromUserAdded(UserListElement)));
+	disconnect(&pending, SIGNAL(messageFromUserDeleted(UserListElement)),
+			this, SLOT(messageFromUserDeleted(UserListElement)));
+}
+
+static inline bool withoutMessages(const UserListElement &e)
+{
+	return !pending.pendingMsgs(e);
+}
+
+void AnonymousUsersWithoutMessages::userDataChangedSlot(UserListElement elem,
+							QString name, QVariant oldValue, QVariant currentValue,
+							bool massively, bool last)
+{
+	if (name != "Anonymous")
+		return;
+//	kdebugmf(KDEBUG_WARNING, "%s %d %d %d\n", elem.ID("Gadu").local8Bit().data(), currentValue.toBool(), contains(elem), withoutMessages(elem));
+
+	if (currentValue.toBool() && withoutMessages(elem))
+		addUser(elem, massively, last);
+	else
+		removeUser(elem, massively, last);
+}
+
+void AnonymousUsersWithoutMessages::userAdded(UserListElement elem, bool massively, bool last)
+{
+//	kdebugmf(KDEBUG_ERROR, "%s %d %d\n", elem.ID("Gadu").local8Bit().data(), elem.isAnonymous(), contains(elem));
+
+	if (elem.isAnonymous() && withoutMessages(elem))
+		addUser(elem, massively, last);
+	else
+		removeUser(elem, massively, last);
+}
+
+void AnonymousUsersWithoutMessages::removingUser(UserListElement elem, bool massively, bool last)
+{
+//	kdebugmf(KDEBUG_WARNING, "%s %d %d %d\n", elem.ID("Gadu").local8Bit().data(), elem.isAnonymous(), contains(elem), withoutMessages(elem));
+
+	if (withoutMessages(elem))
+		addUser(elem, massively, last);
+	else
+		removeUser(elem, massively, last);
+}
+
+void AnonymousUsersWithoutMessages::messageFromUserAdded(UserListElement elem)
+{
+	removeUser(elem);
+}
+
+void AnonymousUsersWithoutMessages::messageFromUserDeleted(UserListElement elem)
+{
+	if (elem.isAnonymous() && withoutMessages(elem))
+		addUser(elem);
+}
 
 BlockedUsers *blockedUsers;
 BlockingUsers *blockingUsers;
 UsersWithDescription *usersWithDescription;
 OnlineUsers *onlineUsers;
 AnonymousUsers *anonymousUsers;
+AnonymousUsersWithoutMessages *anonymousUsersWithoutMessages;
 GroupsManager *groups_manager = NULL;

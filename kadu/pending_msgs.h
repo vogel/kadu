@@ -115,16 +115,16 @@ class PendingMsgs : public QObject
 
 	signals:
 		/**
-			\fn void messageAdded()
+			\fn void messageFromUserAdded(UserListElement user)
 			Sygna³ ten emitowany jest, gdy nowa wiadomo¶æ zosta³a dodana do kolejki.
 		**/
-		void messageAdded();
+		void messageFromUserAdded(UserListElement user);
 
 		/**
-			\fn void messageDeleted()
-			Sygna³ ten emitowany jest, gdy dowolna wiadomo¶æ zosta³a usuniêta z kolejki.
+			\fn void messageFromUserDeleted(UserListElement user)
+			Sygna³ ten emitowany jest, gdy wiadomo¶æ od u¿ytkownika user zosta³a usuniêta z kolejki.
 		**/
-		void messageDeleted();
+		void messageFromUserDeleted(UserListElement user);
 };
 
 extern PendingMsgs pending;

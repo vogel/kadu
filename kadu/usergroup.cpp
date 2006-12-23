@@ -221,6 +221,7 @@ void UserGroup::removeUser(UserListElement ule, bool massively, bool last)
 	UserListElement *elem = d->data.find(ule.key());
 	if (elem != NULL)
 	{
+//		kdebugm(KDEBUG_INFO, "user found\n");
 		emit removingUser(ule, massively, last);
 		// very ugly hack :|
 		if (this == userlist && !Kadu::closing())

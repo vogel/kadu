@@ -250,4 +250,27 @@ class AnonymousUsers : public UserGroup
 };
 extern AnonymousUsers *anonymousUsers;
 
+/**
+	\class AnonymousUsersWithoutMessages
+	Klasa grupuj±ca kontakty anonimowe, nie maj±ce wiadomo¶ci do odebrania
+	automatycznie synchronizuj±ca siê z g³ówn± list± kontaktów
+**/
+class AnonymousUsersWithoutMessages : public UserGroup
+{
+	Q_OBJECT
+	public:
+		AnonymousUsersWithoutMessages();
+		virtual ~AnonymousUsersWithoutMessages();
+	private slots:
+		void messageFromUserAdded(UserListElement elem);
+		void messageFromUserDeleted(UserListElement elem);
+
+		void userDataChangedSlot(UserListElement elem,
+							QString name, QVariant oldValue, QVariant currentValue,
+							bool massively, bool last);
+		void userAdded(UserListElement elem, bool massively, bool last);
+		void removingUser(UserListElement elem, bool massively, bool last);
+};
+extern AnonymousUsersWithoutMessages *anonymousUsersWithoutMessages;
+
 #endif
