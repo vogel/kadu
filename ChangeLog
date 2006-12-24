@@ -536,6 +536,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   wy¶wietlane s± na li¶cie kontaktów (joi)
 * autoresponder: domy¶lnie w³±czona opcja ignorowania konferencji (joi)
 * MacOSX: ³adniejsza ikonka aplikacji (MAX/joi)
+* blokowanie pasków narzêdziowych dzia³a jak powinno - nie da siê zrobiæ nic (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

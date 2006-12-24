@@ -4,6 +4,7 @@
 #include <qdockarea.h>
 #include <qpopupmenu.h>
 #include <qstring.h>
+#include <qvaluelist.h>
 
 #include "usergroup.h"
 
@@ -14,6 +15,8 @@ class DockArea : public QDockArea
 	private:
 		static bool Blocked;
 		int SupportedActions;
+		void setBlockToolbars(bool);
+		static QValueList<DockArea *> AllDockAreas;
 
 	protected:
 		void contextMenuEvent(QContextMenuEvent* e);
@@ -39,7 +42,7 @@ class DockArea : public QDockArea
 			Returns NULL if toolbar is no connected to user list.
 		**/
 		const UserGroup* selectedUsers();
-		bool blocked();
+		static bool blocked();
 		QPopupMenu* createContextMenu(QWidget* parent);
 
 		bool supportsAction(int actionType);

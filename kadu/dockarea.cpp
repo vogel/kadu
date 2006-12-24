@@ -19,12 +19,14 @@ DockArea::DockArea(Orientation o, HandlePosition h,
 	: QDockArea(o, h, parent, name), SupportedActions(supportedActions)
 {
 	kdebugf();
+	AllDockAreas.append(this);
 	kdebugf2();
 }
 
 DockArea::~DockArea()
 {
 	kdebugf();
+	AllDockAreas.remove(this);
 	kdebugf2();
 }
 
@@ -32,7 +34,7 @@ void DockArea::contextMenuEvent(QContextMenuEvent* e)
 {
 	kdebugf();
 	QPopupMenu* p = createContextMenu(this);
-	p->exec(QCursor::pos());
+	p->exec(QCursor::pos() + QPoint(10, 10));
 	delete p;
 	e->accept();
 	kdebugf2();
@@ -83,11 +85,26 @@ void DockArea::createNewToolbar()
 	kdebugf2();
 }
 
+void DockArea::setBlockToolbars(bool b)
+{
+	kdebugf();
+	Blocked = b;
+	QPtrList<QDockWindow> l = dockWindowList();
+	uint wcount = l.count();
+	for (uint i = 0; i < wcount; ++i)
+		l.at(i)->setMovingEnabled(!Blocked);
+	kdebugf2();
+}
+
 void DockArea::blockToolbars()
 {
 	kdebugf();
 	Blocked = !Blocked;
-	writeToConfig();
+	CONST_FOREACH(DockArea, AllDockAreas)
+	{
+		(*DockArea)->setBlockToolbars(Blocked);
+		(*DockArea)->writeToConfig();
+	}
 	kdebugf2();
 }
 
@@ -118,12 +135,11 @@ bool DockArea::loadFromConfig(QWidget* toolbars_parent)
 	QDomElement toolbars_elem = xml_config_file->findElement(root_elem, "Toolbars");
 	if (!toolbars_elem.isNull())
 	{
-		Blocked = toolbars_elem.attribute("blocked").toInt();
+		setBlockToolbars(toolbars_elem.attribute("blocked").toInt());
 		QDomElement dockarea_elem = xml_config_file->findElementByProperty(
 			toolbars_elem, "DockArea", "name", name());
 		if (!dockarea_elem.isNull())
 		{
-
 			for (QDomNode n = dockarea_elem.firstChild(); !n.isNull(); n = n.nextSibling())
 			{
 				const QDomElement &toolbar_elem = n.toElement();
@@ -164,7 +180,8 @@ QPopupMenu* DockArea::createContextMenu(QWidget* parent)
 {
 	kdebugf();
 	QPopupMenu* p = new QPopupMenu(parent);
-	p->insertItem(tr("Create new toolbar"), this, SLOT(createNewToolbar()));
+	if (!blocked())
+		p->insertItem(tr("Create new toolbar"), this, SLOT(createNewToolbar()));
 	int block_toolbars_id =
 		p->insertItem(tr("Block toolbars"), this, SLOT(blockToolbars()));
 	p->setItemChecked(block_toolbars_id, Blocked);
@@ -177,4 +194,5 @@ bool DockArea::supportsAction(int actionType)
 	return (SupportedActions & actionType) != 0;
 }
 
-bool DockArea::Blocked = false;
+bool DockArea::Blocked = true;
+QValueList<DockArea *> DockArea::AllDockAreas;

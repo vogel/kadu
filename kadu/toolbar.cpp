@@ -23,6 +23,7 @@ ToolBar::ToolBar(QWidget* /*parent*/, const char *name)
 {
 	kdebugf();
 	setAcceptDrops(true);
+	setMovingEnabled(!DockArea::blocked());
 	kdebugf2();
 }
 
@@ -118,14 +119,20 @@ void ToolBar::contextMenuEvent(QContextMenuEvent* e)
 {
 	kdebugf();
 
-	//NOTE: parent MUST be dockArea(), NOT this, because when user is choosing "remove toolbar",
-	//      it calls deleteLater(), which is invoked _before_ exec returns! so QPopupMenu would
-	//      be deleted when exec returns!
-	QPopupMenu* p = createContextMenu(dockArea());
+	if (DockArea::blocked())
+		e->ignore();
+	else
+	{
+		//NOTE: parent MUST be dockArea(), NOT this, because when user is choosing "remove toolbar",
+		//      it calls deleteLater(), which is invoked _before_ exec returns! so QPopupMenu would
+		//      be deleted when exec returns!
+		QPopupMenu* p = createContextMenu(dockArea());
 
-	p->exec(QCursor::pos());
-	delete p;
-	e->accept();
+		p->exec(QCursor::pos() + QPoint(10,10));
+		delete p;
+		e->accept();
+	}
+
 	kdebugf2();
 }
 
