@@ -11,6 +11,7 @@
 #include "config_file.h"
 #include "debug.h"
 #include "dockarea.h"
+#include "misc.h"
 #include "toolbar.h"
 
 DockArea::DockArea(Orientation o, HandlePosition h,
