@@ -1030,7 +1030,7 @@ Wybrana ścieżka do przeglądarki nie istnieje w zmiennej $PATH. Musisz ją do 
     </message>
     <message>
         <source>Block toolbars</source>
-        <translation>Blokuj pasek narzędziowy</translation>
+        <translation>Blokuj paski narzędziowe</translation>
     </message>
 </context>
 <context>
