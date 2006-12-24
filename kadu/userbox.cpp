@@ -919,7 +919,7 @@ void UserBoxMenu::show(QListBoxItem *item)
 		return;
 
 	emit popup();
-	exec(QCursor::pos());
+	exec(QCursor::pos() + QPoint(10, 10));
 }
 
 void UserBoxMenu::refreshIcons()
