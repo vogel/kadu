@@ -94,7 +94,7 @@ if ! tar -x${TAR_OPTION}f "$ITEM_HREF_NAME"; then
 	exit 1
 fi
 if ! test -d "$1"; then
-	ITEM_HREF_NAME_WITHOUT_EXT=`expr "$ITEM_HREF_NAME" : '\([^.]\+\)\..*'`
+	ITEM_HREF_NAME_WITHOUT_EXT=`echo "$ITEM_HREF_NAME" | cut -d. -f1`
 	if test -d "$ITEM_HREF_NAME_WITHOUT_EXT"; then
 		mv "$ITEM_HREF_NAME_WITHOUT_EXT" "$1"
 	else
