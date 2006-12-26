@@ -540,6 +540,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka kompatybilno¶ci autodownloadu ze starymi shellami (m.in. na MacOSX) -
   autodownload wywraca³ siê na starym zestawie emotikon (joi)
 * dodany skrypt u³atwiaj±cy tworzenie Universal Binary dla MacOSX (MAX, joi)
+* 0.5.0-rc2
+* poprawiony b³±d w oknie wyszukiwania, umo¿liwiaj±cy odblokowanie akcji szukania
+  bez wcze¶niejszego wype³nienia kryteriów (neeo)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

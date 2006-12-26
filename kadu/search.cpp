@@ -431,7 +431,8 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 		results->setSelected(results->firstChild(), true);
 
 //	searchhidden = false;
-	KaduActions["firstSearchAction"]->setEnabled(this, true);
+	if ((r_pers->isChecked() && !isPersonalDataEmpty()) || (r_uin->isChecked() && !e_uin->text().isEmpty()))
+		KaduActions["firstSearchAction"]->setEnabled(this, true);
 
 	if (searchResults.isEmpty())
 	{
@@ -442,7 +443,7 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 	}
 	else
 	{
-		if (r_pers->isChecked())
+		if (r_pers->isChecked() && !isPersonalDataEmpty())
 			KaduActions["nextResultsAction"]->setEnabled(this, true);
 
 		KaduActions["clearSearchAction"]->setEnabled(this, true);
