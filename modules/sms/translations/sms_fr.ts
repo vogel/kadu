@@ -121,6 +121,14 @@ est fonctionnel</translation>
         <source>Enter text from the picture:</source>
         <translation>Veuillez reproduire le texte d&apos;image:</translation>
     </message>
+    <message>
+        <source>Ok</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Annule</translation>
+    </message>
 </context>
 <context>
     <name>SmsSender</name>

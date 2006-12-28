@@ -120,6 +120,14 @@ e scrivi la stringa corretta. I parametri devono essere separati da spazio. Il p
         <source>Enter text from the picture:</source>
         <translation>Inserire il testo dall&apos;immagine:</translation>
     </message>
+    <message>
+        <source>Ok</source>
+        <translation>Ok</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Annulla</translation>
+    </message>
 </context>
 <context>
     <name>SmsSender</name>

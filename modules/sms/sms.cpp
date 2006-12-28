@@ -133,12 +133,19 @@ SmsImageDialog::SmsImageDialog(QDialog* parent, const QByteArray& image)
 	QLabel* label=new QLabel(tr("Enter text from the picture:"), this);
 	code_edit=new QLineEdit(this);
 
-	QGridLayout *grid = new QGridLayout(this, 2, 2, 10, 10);
+	QGridLayout *grid = new QGridLayout(this, 3, 2, 10, 10);
 	grid->addMultiCellWidget(image_widget, 0, 0, 0, 1);
 	grid->addWidget(label, 1, 0);
 	grid->addWidget(code_edit, 1, 1);
+	QHBox *buttons = new QHBox(this);
+	buttons->setSpacing(10);
+	QPushButton *okButton = new QPushButton(tr("Ok"), buttons);
+	QPushButton *cancelButton = new QPushButton(tr("Cancel"), buttons);
+	grid->addMultiCellWidget(buttons, 2, 2, 0, 1);
 
 	connect(code_edit, SIGNAL(returnPressed()), this, SLOT(onReturnPressed()));
+	connect(okButton, SIGNAL(clicked()), this, SLOT(onReturnPressed()));
+	connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
 	kdebugf2();
 }
 

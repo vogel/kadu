@@ -543,6 +543,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * 0.5.0-rc2
 * poprawiony b³±d w oknie wyszukiwania, umo¿liwiaj±cy odblokowanie akcji szukania
   bez wcze¶niejszego wype³nienia kryteriów (neeo)
+* przyciski "Ok" i "Anuluj" w oknie wpisywania tokena przy wysy³aniu smsów
+  do Orange (joi)
 
 +++ wersja 0.4.0 (16.04.2005)
 * patch kida, poprawiaj±cy wygl±d okna zarz±dzania ¶cie¿kami do plików

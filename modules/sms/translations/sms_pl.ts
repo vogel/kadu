@@ -120,6 +120,14 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
         <source>Enter text from the picture:</source>
         <translation>Wpisz tekst z obrazka:</translation>
     </message>
+    <message>
+        <source>Ok</source>
+        <translation>Ok</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Anuluj</translation>
+    </message>
 </context>
 <context>
     <name>SmsSender</name>

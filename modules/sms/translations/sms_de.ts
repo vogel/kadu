@@ -120,6 +120,14 @@ nicht versteht. Gib hier die Argumente ein, getrennt mit Komma. %n=Tel.; %m=Nach
         <source>Enter text from the picture:</source>
         <translation>Lese den Text vom Bild ab und gib ihn hier ein:</translation>
     </message>
+    <message>
+        <source>Ok</source>
+        <translation>Ok</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Abbrechen</translation>
+    </message>
 </context>
 <context>
     <name>SmsSender</name>
