@@ -163,7 +163,8 @@ void kaduQtMessageHandler(QtMsgType type, const char *msg)
 		case QtWarningMsg:
 			fprintf(stderr, "\033[34mWarning: %s\033[0m\n", msg);
 			fflush(stderr);
-			printBacktrace("warning from Qt (above)");
+			if (strstr(msg, "no mimesource for") == 0)
+				printBacktrace("warning from Qt (above)");
 			break;
 		case QtFatalMsg:
 			fprintf(stderr, "\033[31;1mFatal: %s\033[0m\n", msg);
@@ -378,6 +379,7 @@ int main(int argc, char *argv[])
 	}
 
 //	delete qApp; //sometimes leads to segfault
+//	qApp = 0;
 	kdebugm(KDEBUG_INFO, "exiting main\n");
 	return ret;
 }
