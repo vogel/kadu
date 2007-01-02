@@ -36,7 +36,7 @@
 
 static QValueList<QHostAddress> gg_servers;
 
-#define GG_SERVERS_COUNT 15
+#define GG_SERVERS_COUNT 17
 static const char *gg_servers_ip[GG_SERVERS_COUNT] = {
 	"217.17.41.82",
 	"217.17.41.83",
@@ -52,7 +52,9 @@ static const char *gg_servers_ip[GG_SERVERS_COUNT] = {
 	"217.17.45.144",
 	"217.17.45.145",
 	"217.17.45.146",
-	"217.17.45.147"
+	"217.17.45.147",
+	"217.17.45.151",
+	"217.17.45.152"
 };
 
 // ------------------------------------
@@ -310,6 +312,16 @@ void GaduProtocol::changeID(const QString &newID)
 		id = newID;
 }
 
+static inline int getRand(int min, int max)
+{
+	int i = int((double(rand()) / RAND_MAX) * (max - min)) + min;
+	if (i < min)
+		i = min;
+	if (i > max)
+		i = max;
+	return i;
+}
+
 void GaduProtocol::initModule()
 {
 	kdebugf();
@@ -324,6 +336,15 @@ void GaduProtocol::initModule()
 	{
 		ip.setAddress(QString(gg_servers_ip[i]));
 		gg_servers.append(ip);
+	}
+	srand(time(NULL));
+	for (int i = 0; i < GG_SERVERS_COUNT * 2; ++i)
+	{
+		int idx1 = getRand(0, GG_SERVERS_COUNT - 1);
+		int idx2 = getRand(0, GG_SERVERS_COUNT - 1);
+		QHostAddress a = gg_servers[idx1];
+		gg_servers[idx1] = gg_servers[idx2];
+		gg_servers[idx2] = a;
 	}
 
 	gg_proxy_host = NULL;
@@ -450,6 +471,10 @@ GaduProtocol::GaduProtocol(const QString &id, QObject *parent, const char *name)
 			this, SLOT(removingProtocol(UserListElement, QString, bool, bool)));
 
 	connect(SendUserListTimer, SIGNAL(timeout()), this, SLOT(sendUserList()));
+
+	useLastServer = lastServerIP.setAddress(config_file.readEntry("Network", "LastServerIP"));
+	lastServerPort = config_file.readNumEntry("Network", "LastServerPort");
+	lastTriedServerPort = config_file.readNumEntry("Network", "DefaultPort");
 
 	kdebugf2();
 }
@@ -650,9 +675,8 @@ void GaduProtocol::userDataChanged(UserListElement elem, QString name, QVariant 
 		sendUserListLater();
 	else
 	{
-		if (name == "Anonymous")
-			if (!currentValue.toBool() && oldValue.toBool())
-				gg_add_notify(Sess, elem.ID("Gadu").toUInt());
+		if (!currentValue.toBool() && oldValue.toBool())
+			gg_add_notify(Sess, elem.ID("Gadu").toUInt());
 	}
 	kdebugf2();
 }
@@ -738,6 +762,12 @@ void GaduProtocol::connectedSlot()
 
 	whileConnecting = false;
 	sendUserList();
+
+	lastServerIP = QHostAddress(ntohl(Sess->server_addr));
+	lastServerPort = Sess->port;
+	useLastServer = true;
+	config_file.writeEntry("Network", "LastServerIP", lastServerIP.toString());
+	config_file.writeEntry("Network", "LastServerPort", lastServerPort);
 
 	/* jezeli sie rozlaczymy albo stracimy polaczenie, proces laczenia sie z serwerami zaczyna sie od poczatku */
 	ServerNr = 0;
@@ -1075,17 +1105,30 @@ void GaduProtocol::login()
 		LoginParams.external_port = 0;
 	}
 
-	if (!ConfigServers.isEmpty() && !config_file.readBoolEntry("Network", "isDefServers"))
+	int server_port;
+	int default_port = config_file.readNumEntry("Network", "DefaultPort");
+	bool connectionSequenceRestarted = false;
+	if (useLastServer)
 	{
-		if (ServerNr >= ConfigServers.count())
+		useLastServer = false;
+		ActiveServer = lastServerIP;
+		server_port = lastServerPort;
+		lastTriedServerPort = lastServerPort;
+	}
+	else if (!ConfigServers.isEmpty() && !config_file.readBoolEntry("Network", "isDefServers"))
+	{
+		connectionSequenceRestarted = ServerNr >= ConfigServers.count();
+		if (connectionSequenceRestarted)
 			ServerNr = 0;
-		
+
 		ActiveServer = ConfigServers[ServerNr++];
 	}
 	else
 	{
-		if (ServerNr > gg_servers.count())
+		connectionSequenceRestarted = ServerNr > gg_servers.count();
+		if (connectionSequenceRestarted)
 			ServerNr = 0;
+
 		if (ServerNr > 0)
 			ActiveServer = gg_servers[ServerNr - 1];
 		else
@@ -1093,13 +1136,28 @@ void GaduProtocol::login()
 		++ServerNr;
 	}
 
+	if (connectionSequenceRestarted)
+	{
+		if (lastTriedServerPort == 0)
+			server_port = GG_HTTPS_PORT;
+		else if (default_port == 0)
+			server_port = 0;
+		else
+			server_port = default_port;
+		lastTriedServerPort = server_port;
+	}
+	else
+		server_port = lastTriedServerPort;
+
 	if (!ActiveServer.isNull())
 	{
+		kdebugm(KDEBUG_INFO, "port: %d\n", server_port);
 		LoginParams.server_addr = htonl(ActiveServer.ip4Addr());
-		LoginParams.server_port = config_file.readNumEntry("Network", "DefaultPort");
+		LoginParams.server_port = server_port;
 	}
 	else
 	{
+		kdebugm(KDEBUG_INFO, "trying hub\n");
 		LoginParams.server_addr = 0;
 		LoginParams.server_port = 0;
 	}
@@ -1112,13 +1170,8 @@ void GaduProtocol::login()
 	if (LoginParams.tls)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "using TLS\n");
-		LoginParams.server_port = 0;
-		if (config_file.readBoolEntry("Network", "isDefServers"))
-			LoginParams.server_addr = 0;
 		LoginParams.server_port = 443;
 	}
-	else
-		LoginParams.server_port = config_file.readNumEntry("Network", "DefaultPort");
 
 	ConnectionTimeoutTimer::on();
 	ConnectionTimeoutTimer::connectTimeoutRoutine(this, SLOT(connectionTimeoutTimerSlot()));

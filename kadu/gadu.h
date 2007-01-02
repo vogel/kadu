@@ -217,6 +217,17 @@ class GaduProtocol : public Protocol
 		/** Adres serwera, do którego obiekt jest pod³±czony. **/
 		QHostAddress ActiveServer;
 
+		/** IP serwera, do którego uda³o siê pod³±czyæ ostatnim razem **/
+		QHostAddress lastServerIP;
+
+		/** port serwera, do którego uda³o siê pod³±czyæ ostatnim razem **/
+		int lastServerPort;
+
+		/** czy w procedurze ³±czenia mamy korzystaæ z informacji o IP/portu ostatniego serwera? **/
+		bool useLastServer;
+
+		int lastTriedServerPort;
+
 		/** Parametry logowania - wymagane przez bibliotekê libgadu **/
 		struct gg_login_params LoginParams;
 		/** Sesja po³±czenia - wymagane przez bibliotekê libgadu **/
