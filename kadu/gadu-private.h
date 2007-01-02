@@ -18,6 +18,8 @@ struct gg_session;
 //             Notifiers
 // ------------------------------------
 
+#pragma GCC visibility push(hidden)
+
 class SocketNotifiers : public QObject
 {
 	Q_OBJECT
@@ -140,5 +142,7 @@ class GaduProtocolManager : public ProtocolManager
 	public:
 		virtual Protocol *newInstance(const QString &id);
 };
+
+#pragma GCC visibility pop
 
 #endif

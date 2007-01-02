@@ -15,6 +15,8 @@ class UserStatus;
 class UserGroup;
 class ProtocolData;
 
+#pragma GCC visibility push(hidden)
+
 class UserGroupSet : public QPtrDict<void>
 {
 	public:
@@ -68,5 +70,7 @@ class ProtocolData : public QObject {
 		virtual ~ProtocolData();
 		ProtocolData &operator = (const ProtocolData &copyMe);
 };
+
+#pragma GCC visibility pop
 
 #endif

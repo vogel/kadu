@@ -10,6 +10,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   - losujemy kolejno¶æ ³±czenia siê z serwerami
   - gdy nie uda siê po³±czyæ na porcie 8074, próbujemy na 443
   - dodane do rotacji 2 nowe serwery
+* wykorzystujemy w³a¶ciwo¶æ gcc 4 i ukrywamy symbole, które nie maj± prawa
+  byæ u¿ywane przez modu³y (joi)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
