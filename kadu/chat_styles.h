@@ -15,6 +15,9 @@ class ChatStyle
 		QString FormatStringFull; /*!< ³añcuch opisuj±cy pe³en styl */
 		QString FormatStringPure; /*!< ³añcuch opisuj±cy styl bez nag³ówka */
 
+		bool noServerTime; /*!< czy czas serwera powinien byæ usuwany */
+		int noServerTimeDiff; /*!< maksymalna ró¿nica czasu dla której usuwamy */
+
 	public:
 		/**
 			Konstruktor stylu okna rozmowy
@@ -44,6 +47,20 @@ class ChatStyle
 			Zwraca ³añcuch dla stylu bez nag³ówka
 		**/
 		const QString& formatStringPure() const;
+
+		/**
+			\fn const bool noServerTimes() const
+			Zwraca warto¶æ okre¶laj±c±, czy czas serwera powinien
+			byæ usuwany dla wiadomo¶ci przychodz±cych.
+		**/
+		const bool noServerTimes() const;
+
+		/**
+			\fn const int noServerTimesDiff() const
+			Zwraca maksymaln± ró¿nicê czasu, dla której czas
+			serwera powinien byæ pomijany.
+		**/
+		const int noServerTimesDiff() const;
 
 		/**
 			Destruktor styli w oknie Chat

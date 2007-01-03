@@ -67,7 +67,9 @@ void ChatMessage::formatMessage(const ChatStyle* chat_style,
 		QString date_str = printDateTime(date);
 		QString date_str_2 = date_str;
 		if (!sdate.isNull())
-			date_str_2.append(" / S " + printDateTime(sdate));
+			if (!chat_style->noServerTimes() || 
+		    	    (abs(date.toTime_t()-sdate.toTime_t()))>chat_style->noServerTimesDiff())
+				date_str_2.append(" / S " + printDateTime(sdate));
 		HtmlDocument::escapeText(escaped_nick);
 		fmt = chat_style->formatStringFull();
 		if (separator_size > 0)

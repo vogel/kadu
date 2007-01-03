@@ -96,6 +96,14 @@ class ChatManagerSlots :public QObject
 		**/
 		void onRemoveHeaders(bool toggled);
 
+
+		/**
+			\fn void onRemoveServerTime(bool toggled)
+			Slot jest wywo³ywany gdy w³±czono/wy³±czono usuwanie czasu serwera
+			\param toggled
+		**/
+		void onRemoveServerTime(bool toggled);
+
 		/**
 			\fn void onChatThemeChanged(const QString& name)
 			Slot jest wywo³ywany po zmianie stylu okna Chat,

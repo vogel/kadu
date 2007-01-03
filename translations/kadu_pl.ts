@@ -599,6 +599,18 @@ Jest to wysoce ryzykowne!</translation>
         <translation>Czas, pomiędzy którym nagłówek będzie usuwany: </translation>
     </message>
     <message>
+	<source>Server time</source>
+	<translation>Czas serwera</translation>
+    </message>
+    <message>
+	<source>Remove server time</source>
+	<translation>Usuwaj czas serwera</translation>
+    </message>
+    <message>
+	<source>Maximum time difference</source>
+	<translation>Maksymalna różnica czasu</translation>
+    </message>
+    <message>
         <source>On shutdown, set current description</source>
         <translation>Wyłączając ustaw bieżący opis</translation>
     </message>

@@ -156,6 +156,12 @@ void ChatManagerSlots::onCreateTabLook()
 	s_noHeadersInterval->setSuffix(" min");
 	s_SeparatorHeight->setSuffix(" px");
 
+	//opcja usuwania czasu z serwera
+	QSpinBox *s_noServerTimeDiff= ConfigDialog::getSpinBox("Look", "Maximum time difference");
+	
+	s_noServerTimeDiff->setEnabled(ConfigDialog::getCheckBox("Look", "Remove server time")->isChecked());
+	s_noServerTimeDiff->setSuffix(" s");
+
 	onChatThemeChanged(ConfigDialog::getComboBox("Look", "Select chat style")->currentText());
 	updatePreview();
 
@@ -187,6 +193,11 @@ void ChatManagerSlots::onRemoveHeaders(bool toggled)
 {
 	ConfigDialog::getSpinBox("Look", "Chat header separators height:")->setEnabled(toggled);
 	ConfigDialog::getSpinBox("Look", "Interval between header removal:")->setEnabled(toggled);
+}
+
+void ChatManagerSlots::onRemoveServerTime(bool toggled)
+{
+	ConfigDialog::getSpinBox("Look", "Maximum time difference")->setEnabled(toggled);
 }
 
 void ChatManagerSlots::onApplyTabLook()

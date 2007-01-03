@@ -849,6 +849,8 @@ void ChatManager::closeModule()
 
 	ConfigDialog::disconnectSlot("Look", "Remove chat header repetitions", SIGNAL(toggled(bool)), chatslots, SLOT(onRemoveHeaders(bool)));
 
+	ConfigDialog::disconnectSlot("Look", "Remove server time", SIGNAL(toggled(bool)), chatslots, SLOT(onRemoveServerTime(bool)));
+
 	ConfigDialog::disconnectSlot("Look", "Your background color", SIGNAL(changed(const char *, const QColor&)),
 		chatslots, SLOT(chooseColor(const char *, const QColor&)), "own_bg_color");
 	ConfigDialog::disconnectSlot("Look", "User background color", SIGNAL(changed(const char *, const QColor&)),
@@ -879,6 +881,10 @@ void ChatManager::closeModule()
 		ConfigDialog::removeControl("Look", "Chat header separators height:");
 		ConfigDialog::removeControl("Look", "Remove chat header repetitions");
 	ConfigDialog::removeControl("Look", "Message headers && separators");
+
+		ConfigDialog::removeControl("Look", "Maximum time difference");
+		ConfigDialog::removeControl("Look", "Remove server time");
+	ConfigDialog::removeControl("Look", "Server time");
 
 		ConfigDialog::removeControl("Look", "Full chat style:");
 		ConfigDialog::removeControl("Look", "Select chat style");
@@ -1026,6 +1032,10 @@ void ChatManager::initModule()
 	config_file.addVariable("Look", "HeaderSeparatorHeight", 1);
 	config_file.addVariable("Look", "NoHeaderInterval", "10");
 
+	//czas serwera
+	config_file.addVariable("Look", "NoServerTime", false);
+	config_file.addVariable("Look", "NoServerTimeDiff", 5);
+
 	config_file.addVariable("Look", "ChatFont", defaultFont);
 
 	config_file.addVariable("Chat", "LastImagePath", QString(getenv("HOME")) + '/');
@@ -1066,6 +1076,11 @@ void ChatManager::initModule()
 		ConfigDialog::addSpinBox("Look",  "Message headers && separators", QT_TRANSLATE_NOOP("@default", "Interval between header removal:"), "NoHeaderInterval", 1, 1439, 1, 10, 0, 0, Expert);
 		ConfigDialog::addSpinBox("Look",  "Message headers && separators", QT_TRANSLATE_NOOP("@default", "Message separators height:"), "ParagraphSeparator", 0, 100, 1, 4, 0, 0, Advanced);
 
+	//czas serwera
+	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Server time"), 0, Advanced);
+		ConfigDialog::addCheckBox("Look", "Server time", QT_TRANSLATE_NOOP("@default", "Remove server time"), "NoServerTime", true, 0, 0, Advanced);
+		ConfigDialog::addSpinBox("Look", "Server time", QT_TRANSLATE_NOOP("@default", "Maximum time difference"), "NoServerTimeDiff", 0, 60, 1, 0, 0, 0, Advanced);
+
 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Other"), 0, Expert);
 		ConfigDialog::addLineEdit("Look", "Other", QT_TRANSLATE_NOOP("@default", "Chat window title syntax:"), "ChatContents", QString::null, Kadu::SyntaxText, 0, Expert);
 		ConfigDialog::addHBox("Look", "Other", "conference", 0, Expert);
@@ -1091,6 +1106,8 @@ void ChatManager::initModule()
 	ConfigDialog::connectSlot("Chat", "Block window close on new message", SIGNAL(toggled(bool)), chatslots, SLOT(onBlockClose(bool)));
 
 	ConfigDialog::connectSlot("Look", "Remove chat header repetitions", SIGNAL(toggled(bool)), chatslots, SLOT(onRemoveHeaders(bool)));
+
+	ConfigDialog::connectSlot("Look", "Remove server time", SIGNAL(toggled(bool)), chatslots, SLOT(onRemoveServerTime(bool)));
 
 	ConfigDialog::connectSlot("Look", "Your background color", SIGNAL(changed(const char *, const QColor&)),
 		chatslots, SLOT(chooseColor(const char *, const QColor&)), "own_bg_color");
