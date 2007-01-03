@@ -735,7 +735,7 @@ void ConfigFile::writeEntry(const QString &group,const QString &name, const QCol
 
 void ConfigFile::writeEntry(const QString &group,const QString &name, const QFont &value)
 {
-	changeEntry(group, name, value.family() + ',' + QString::number(value.pointSize()));
+	changeEntry(group, name, value.toString());
 }
 
 void ConfigFile::writeEntry(const QString &group,const QString &name, const QPoint &value)
@@ -864,20 +864,10 @@ QColor ConfigFile::readColorEntry(const QString &group,const QString &name, cons
 QFont ConfigFile::readFontEntry(const QString &group,const QString &name, const QFont *def) const
 {
 	QString string = getEntry(group, name);
-	QStringList stringlist;
 	QFont font;
-	bool ok;
-
-	if (string == QString::null)
-		return def ? *def : QApplication::font();
-	stringlist = QStringList::split(",", string);
-	if (stringlist.count() < 2)
-		return def ? *def : QApplication::font();
-	font.setFamily(stringlist[0]);
-	font.setPointSize(stringlist[1].toInt(&ok));
-	if (!ok)
-		return def ? *def : QApplication::font();
-	return font;
+	if(font.fromString(string))
+		return font;
+	return def ? *def : QApplication::font();
 }
 
 QPoint ConfigFile::readPointEntry(const QString &group,const QString &name, const QPoint *def) const
