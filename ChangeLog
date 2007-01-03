@@ -12,6 +12,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   - dodane do rotacji 2 nowe serwery
 * wykorzystujemy w³a¶ciwo¶æ gcc 4 i ukrywamy symbole, które nie maj± prawa
   byæ u¿ywane przez modu³y (joi)
+* nie pokazujemy okna z komunikatem o zablokowanym profilu, tylko
+  pokazujemy g³ówne okno programu (joi)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

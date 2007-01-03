@@ -1969,3 +1969,12 @@ const QDateTime &Kadu::startTime() const
 {
 	return StartTime;
 }
+
+void Kadu::customEvent(QCustomEvent *e)
+{
+	if (int(e->type()) == 4321)
+		show();
+//		QTimer::singleShot(0, this, SLOT(show()));
+	else
+		QWidget::customEvent(e);
+}

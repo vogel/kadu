@@ -21,6 +21,7 @@ class UserBox;
 class KaduTextBrowser;
 class QPushButton;
 class KaduSlots;
+class QCustomEvent;
 
 /**
 	G³ówne okno Kadu
@@ -95,6 +96,7 @@ class Kadu : public QWidget
 	protected:
 		void keyPressEvent(QKeyEvent *e);
 		virtual void resizeEvent(QResizeEvent *);
+		virtual void customEvent(QCustomEvent *);
 //		virtual void moveEvent(QMoveEvent *);
 
 	public:

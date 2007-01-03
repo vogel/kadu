@@ -23,6 +23,7 @@
 #include <fcntl.h>
 #include <sys/time.h>
 #include <pwd.h>
+#include <signal.h>
 
 #include "kadu.h"
 #include "kadu-config.h"
@@ -147,6 +148,11 @@ static void kadu_signal_handler(int s)
 		xml_config_file->saveTo(ggPath(f.latin1()));
 		abort();
 	}
+	else if (s == SIGUSR1)
+	{
+		kdebugm(KDEBUG_INFO, "ok, got a signal to show up\n");
+		qApp->postEvent(kadu, new QCustomEvent(4321));
+	}
 	else if (s == SIGINT || s == SIGTERM)
 		qApp->postEvent(qApp, new QEvent(QEvent::Quit));
 }
@@ -246,6 +252,7 @@ int main(int argc, char *argv[])
 		signal(SIGSEGV, kadu_signal_handler);
 		signal(SIGINT, kadu_signal_handler);
 		signal(SIGTERM, kadu_signal_handler);
+		signal(SIGUSR1, kadu_signal_handler);
 	}
 #endif
 
@@ -291,8 +298,16 @@ int main(int argc, char *argv[])
 //		if (flock(lockFileHandle, LOCK_EX | LOCK_NB) != 0)
 		{
 			kdebugm(KDEBUG_WARNING, "fcntl: %s\n", strerror(errno));
-			if (QMessageBox::warning(NULL, "Kadu",
-				qApp->translate("@default", QT_TR_NOOP("Another Kadu is running on this profile.")),
+			bool gotPID = fcntl(lockFileHandle, F_GETLK, lock_str) != -1;
+			if (gotPID)
+			{
+				kdebugm(KDEBUG_INFO, "l_type: %d, l_pid: %d\n", lock_str->l_type, lock_str->l_pid);
+				kill(lock_str->l_pid, SIGUSR1);
+			}
+			else
+				kdebugm(KDEBUG_WARNING, "cannot get information about lock: %s\n", strerror(errno));
+			if (gotPID || QMessageBox::warning(NULL, "Kadu",
+				qApp->translate("@default", QT_TR_NOOP("Another Kadu is running on this profile but I cannot get its process ID.")),
 				qApp->translate("@default", QT_TR_NOOP("Force running Kadu (not recommended).")),
 				qApp->translate("@default", QT_TR_NOOP("Quit.")), 0, 1, 1) == 1)
 			{
