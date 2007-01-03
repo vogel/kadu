@@ -33,16 +33,16 @@
 	Sk³adnia jak w printf.
 */
 #ifdef DEBUG_ENABLED
-#define kdebug(format,args...) \
-	_kdebug_with_mask(KDEBUG_ALL,__FILE__,__LINE__,format,##args)
-#define kdebugm(mask,format,args...) \
-	_kdebug_with_mask(mask,__FILE__,__LINE__,format,##args)
-#define kdebugmf(mask,format,args...) \
-	_kdebug_with_mask(mask,__FILE__,__LINE__,"%s: " format,__PRETTY_FUNCTION__,##args)
+#define kdebug(format, args...) \
+	_kdebug_with_mask(KDEBUG_ALL, __FILE__, __LINE__, format, ##args)
+#define kdebugm(mask, format, args...) \
+	_kdebug_with_mask(mask, __FILE__, __LINE__, format, ##args)
+#define kdebugmf(mask, format, args...) \
+	_kdebug_with_mask(mask, __FILE__, __LINE__, "%s: " format, __PRETTY_FUNCTION__, ##args)
 #else
-#define kdebug(format,args...)
-#define kdebugm(mask,format,args...)
-#define kdebugmf(mask,format,args...)
+#define kdebug(format, args...)
+#define kdebugm(mask, format, args...)
+#define kdebugmf(mask, format, args...)
 #endif
 
 
@@ -56,16 +56,16 @@
 	dzia³anie programu.
 */	
 #define kdebugf() \
-	kdebugm(KDEBUG_FUNCTION_START, "%s\n",__PRETTY_FUNCTION__)
+	kdebugm(KDEBUG_FUNCTION_START, "%s\n", __PRETTY_FUNCTION__)
 
 #define kdebugf2() \
-	kdebugm(KDEBUG_FUNCTION_END, "%s end\n",__PRETTY_FUNCTION__)
+	kdebugm(KDEBUG_FUNCTION_END, "%s end\n", __PRETTY_FUNCTION__)
 
 /*
 	Funkcja pomocnicza. Nie u¿ywaæ.
 */
 #ifdef DEBUG_ENABLED
-void _kdebug_with_mask(int mask, const char* file,const int line,const char* format,...);
+void _kdebug_with_mask(int mask, const char *file, const int line, const char *format, ...) __attribute__((format (printf, 4, 5)));
 #endif
 extern int debug_mask;
 
