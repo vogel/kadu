@@ -44,8 +44,8 @@ WindowNotify::WindowNotify(QObject *parent, const char *name) : Notifier(parent,
 	kdebugf();
 
 	QMap<QString, QString> s;
-	s["NewChat"]=SLOT(newChat(const QString &, UserListElements, const QString &, time_t));
-	s["NewMessage"]=SLOT(newMessage(const QString &, UserListElements, const QString &, time_t, bool &));
+	s["NewChat"]=SLOT(newChat(Protocol *, UserListElements, const QString &, time_t));
+	s["NewMessage"]=SLOT(newMessage(Protocol *, UserListElements, const QString &, time_t, bool &));
 	s["ConnError"]=SLOT(connectionError(Protocol *, const QString &));
 	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const QString &, UserListElement));
 	s["toBusy"]=SLOT(userChangedStatusToBusy(const QString &, UserListElement));
@@ -76,7 +76,7 @@ WindowNotify::~WindowNotify()
 	kdebugf2();
 }
 
-void WindowNotify::newChat(const QString &/*protocolName*/, UserListElements senders, const QString &msg, time_t /*t*/)
+void WindowNotify::newChat(Protocol * /*protocol*/, UserListElements senders, const QString &msg, time_t /*t*/)
 {
 	kdebugf();
 	MessageBox::msg(narg(tr("Chat with <b>%1</b><br/> <small>%2</small>"),
@@ -84,7 +84,7 @@ void WindowNotify::newChat(const QString &/*protocolName*/, UserListElements sen
 	kdebugf2();
 }
 
-void WindowNotify::newMessage(const QString &/*protocolName*/, UserListElements senders, const QString &msg, time_t /*t*/, bool &/*grab*/)
+void WindowNotify::newMessage(Protocol * /*protocol*/, UserListElements senders, const QString &msg, time_t /*t*/, bool &/*grab*/)
 {
 	kdebugf();
 	MessageBox::msg(narg(tr("New message from <b>%1</b><br/> <small>%2</small>"),
