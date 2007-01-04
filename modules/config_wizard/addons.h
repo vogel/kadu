@@ -116,8 +116,8 @@ const char *informationPanelName[]={"Default", "RonK", "joi", "dorr", "maz", "Ab
 // sk³adnie dymków
 const char *hintSyntax[]=
 {
-	"<b>%n</b> changed status to <b>%s</b>",
-	"<b>%n</b> status ::: <b>%s</b>[<br> desc ::: <i>%d</i>]"
+	"<b>%a</b> changed status to <b>%s</b>",
+	"<b>%a</b> status ::: <b>%s</b>[<br> desc ::: <i>%d</i>]"
 };
 
 // nazwy sk³adni
