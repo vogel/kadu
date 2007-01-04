@@ -4,6 +4,7 @@ podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y. Je¶li jest
 w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
 +++ wersja 0.5.1-svn
+* window_notify: powiadamianie o nowej rozmowie i nowej wiadomo¶ci znowu dzia³a (joi)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
