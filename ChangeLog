@@ -21,6 +21,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   kontaktami (FuKu,neeo)
 * nowa pozycja w menu kontaktu, pozwalaj±ca na otwarcie w przegl±darce
   linku z opisu (neeo)
+* mo¿liwo¶æ parsowania opisu statusu przez parser Kadu (Dorregaray/neeo)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

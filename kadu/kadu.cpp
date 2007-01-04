@@ -154,6 +154,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	ConfigDialog::addComboBox("General", "Status", QT_TRANSLATE_NOOP("@default", "Default status"), 0, "cb_defstatus");
 	ConfigDialog::addCheckBox("General", "Status", QT_TRANSLATE_NOOP("@default", "On shutdown, set current description"), "DisconnectWithCurrentDescription");
 	ConfigDialog::connectSlot("General", "On shutdown, set current description", SIGNAL(toggled(bool)), kaduslots, SLOT(updateStatus(bool)));
+	ConfigDialog::addCheckBox("General", "Status", QT_TRANSLATE_NOOP("@default", "Use KaduParser to parse status"), "ParseStatus", false);
 
 	ConfigDialog::addHBox("General", "Status", "discstatus");
 	ConfigDialog::addCheckBox("General", "discstatus", QT_TRANSLATE_NOOP("@default", "On shutdown, set description:"), "DisconnectWithDescription", false);
@@ -1070,6 +1071,8 @@ void Kadu::slotHandleState(int command)
 	ChooseDescription *cd;
 	QString desc;
 	bool accepted = true;
+	UserListElement ule = userlist->byID("Gadu", config_file.readEntry("General", "UIN"));
+	bool parse = config_file.readBoolEntry("General", "ParseStatus", false);
 
 	status.setStatus(gadu->status());
 	switch (command)
@@ -1083,6 +1086,8 @@ void Kadu::slotHandleState(int command)
 			if (accepted)
 			{
 				cd->getDescription(desc);
+				if (parse) 
+					desc = KaduParser::parse(desc, ule, true);
 				status.setOnline(desc);
 			}
 			delete cd;
@@ -1096,6 +1101,8 @@ void Kadu::slotHandleState(int command)
 			if (accepted)
 			{
 				cd->getDescription(desc);
+				if (parse) 
+					desc = KaduParser::parse(desc, ule, true);
 				status.setBusy(desc);
 			}
 			delete cd;
@@ -1109,6 +1116,8 @@ void Kadu::slotHandleState(int command)
 			if (accepted)
 			{
 				cd->getDescription(desc);
+				if (parse) 
+					desc = KaduParser::parse(desc, ule, true);
 				status.setInvisible(desc);
 			}
 			delete cd;
@@ -1122,6 +1131,8 @@ void Kadu::slotHandleState(int command)
 			if (accepted)
 			{
 				cd->getDescription(desc);
+				if (parse) 
+					desc = KaduParser::parse(desc, ule, true);
 				status.setOffline(desc);
 			}
 			delete cd;
@@ -1372,6 +1383,7 @@ bool Kadu::close(bool quit)
 		ConfigDialog::removeControl("General", "On shutdown, set description:");
 		ConfigDialog::removeControl("General", "discstatus");
 
+		ConfigDialog::removeControl("General", "Use KaduParser to parse status");
 		ConfigDialog::disconnectSlot("General", "On shutdown, set current description", SIGNAL(toggled(bool)), kaduslots, SLOT(updateStatus(bool)));
 		ConfigDialog::removeControl("General", "On shutdown, set current description");
 		ConfigDialog::removeControl("General", "Default status", "cb_defstatus");
