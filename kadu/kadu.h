@@ -183,6 +183,7 @@ class Kadu : public QWidget
 		void addUserAction();
 		void blockUser();
 		void copyDescription();
+		void openDescriptionLink();
 		void copyPersonalInfo();
 		void deleteHistory();
 		void deleteUsers();

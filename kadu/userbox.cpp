@@ -343,6 +343,7 @@ inline bool ULEComparer::operator()(const UserListElement &e1, const UserListEle
 }
 
 UserBoxMenu *UserBox::userboxmenu = NULL;
+UserBoxMenu *UserBox::management = NULL;
 CreateNotifier UserBox::createNotifier;
 
 UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
@@ -380,7 +381,9 @@ UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
 		addCompareFunction("AltNick", tr("Compares nicks (\"altnicks\")"), compareAltNick);
 
 	if (!userboxmenu)
-		userboxmenu= new UserBoxMenu(this);
+		userboxmenu = new UserBoxMenu(this);
+	if (!management)
+		management = new UserBoxMenu(userboxmenu);
 	UserBoxes.append(this);
 
 	if (config_file.readBoolEntry("Look", "MultiColumnUserbox"))

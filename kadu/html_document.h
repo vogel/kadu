@@ -4,6 +4,8 @@
 #include <qstring.h>
 #include <qvaluelist.h>
 
+class QRegExp;
+
 /**
 	Klasa reprezentuj±ca dokument html. Przechowuje
 	listê elementów. Element mo¿e byæ tagiem html
@@ -101,6 +103,12 @@ class HtmlDocument
 			np. "www.kadu.net" i zmienia je w linki html.
 		**/
 		void convertUrlsToHtml();
+
+		/**
+			Wyra¿enie regularne przydatne w poszukiwaniu
+			adresów www (i innych).
+		**/
+		static QRegExp* url_regexp;
 };
 
 #endif

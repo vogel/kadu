@@ -16,6 +16,8 @@
 
 HtmlDocument::HtmlDocument() : Elements()
 {
+	if (!url_regexp)
+		url_regexp = new QRegExp(latin2unicode((const unsigned char *)"(http://|https://|www\\.|ftp://|ftp\\.|gg:|sftp://|smb://|file:/|rsync://|mailto:|svn://|svn\\+ssh://)[a-zA-Z0-9ÍÛ±∂≥øºÊÒ ”°¶£Ø¨∆—\\*\\-\\._/~?=&#\\+%\\(\\):;,!@\\\\]*"));
 }
 
 void HtmlDocument::escapeText(QString& text)
@@ -190,19 +192,19 @@ void HtmlDocument::splitElement(int& index,int start,int length)
 	e.text=e.text.mid(start,length);
 }
 
+QRegExp* HtmlDocument::url_regexp = NULL;
+
 void HtmlDocument::convertUrlsToHtml()
 {
-//	QRegExp url_regexp("(http://|https://|www\\.|ftp://|ftp\\.|sftp://|smb://|file:/|rsync://|mailto:)[a-zA-Z0-9\\-\\._/~?=&#\\+%:;,!@\\\\]+");
-	QRegExp url_regexp(latin2unicode((const unsigned char *)"(http://|https://|www\\.|ftp://|ftp\\.|gg:|sftp://|smb://|file:/|rsync://|mailto:|svn://|svn\\+ssh://)[a-zA-Z0-9ÍÛ±∂≥øºÊÒ ”°¶£Ø¨∆—\\*\\-\\._/~?=&#\\+%\\(\\):;,!@\\\\]*"));
 	for(int i = 0; i < countElements(); ++i)
 	{
 		if(isTagElement(i))
 			continue;
 		QString text=elementText(i);
-		int p=url_regexp.search(text);
+		int p=url_regexp->search(text);
 		if (p < 0)
 			continue;
-		int l=url_regexp.matchedLength();
+		int l=url_regexp->matchedLength();
 		QString link;
 		int lft = config_file.readNumEntry("Chat","LinkFoldTreshold");
 		QString link2=text.mid(p,l);

@@ -1468,8 +1468,16 @@ Czy na pewno tego chcesz?</translation>
         <translation>Zna&amp;jdź kontakt w katalogu</translation>
     </message>
     <message>
+        <source>User management</source>
+        <translation>Zarządzanie kontaktami</translation>
+    </message>
+    <message>
         <source>Copy description</source>
         <translation>Kopiuj opis</translation>
+    </message>
+    <message>
+        <source>Open description link in browser</source>
+        <translation>Otwórz odnośnik z opisu w przeglądarce</translation>
     </message>
     <message>
         <source>Copy personal info</source>

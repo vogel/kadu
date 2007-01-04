@@ -38,6 +38,7 @@
 #include "gadu_images_manager.h"
 #include "groups_manager.h"
 #include "history.h"
+#include "html_document.h"
 #include "icons_manager.h"
 #include "ignore.h"
 #include "kadu.h"
@@ -242,6 +243,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(popupMenu()));
 	connect(Userbox, SIGNAL(rightButtonPressed(QListBoxItem *, const QPoint &)),
 		UserBox::userboxmenu, SLOT(show(QListBoxItem *)));
+	connect(UserBox::management, SIGNAL(aboutToShow()), this, SLOT(popupMenu()));
 	connect(Userbox, SIGNAL(doubleClicked(UserListElement)), this, SLOT(sendMessage(UserListElement)));
 	connect(Userbox, SIGNAL(returnPressed(UserListElement)), this, SLOT(sendMessage(UserListElement)));
 	connect(Userbox, SIGNAL(mouseButtonClicked(int, QListBoxItem *, const QPoint &)),
@@ -249,21 +251,24 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	connect(Userbox, SIGNAL(currentChanged(UserListElement)), this, SLOT(currentChanged(UserListElement)));
 	UserBox::userboxmenu->addItem("OpenChat", tr("Open chat window") ,this, SLOT(openChat()));
 	UserBox::userboxmenu->insertSeparator();
-	UserBox::userboxmenu->addItem(tr("Ignore user"), this, SLOT(ignoreUser()));
-	UserBox::userboxmenu->addItem(tr("Block user"), this, SLOT(blockUser()));
-	UserBox::userboxmenu->addItem(tr("Notify about user"), this, SLOT(notifyUser()));
-	UserBox::userboxmenu->addItem(tr("Offline to user"), this, SLOT(offlineToUser()));
-	UserBox::userboxmenu->addItem(tr("Hide description"), this, SLOT(hideDescription()));
-	UserBox::userboxmenu->insertSeparator();
-	UserBox::userboxmenu->addItem("RemoveFromUserlist", tr("Remove from userlist"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("ShortCuts", "kadu_deleteuser"));
-	UserBox::userboxmenu->addItem("ClearHistory", tr("Clear history"), this, SLOT(deleteHistory()));
 	UserBox::userboxmenu->addItem("History", tr("View history"),this,SLOT(viewHistory()),HotKey::shortCutFromFile("ShortCuts", "kadu_viewhistory"));
 	UserBox::userboxmenu->addItem("CopyDescription", tr("Copy description"), this, SLOT(copyDescription()));
+	UserBox::userboxmenu->addItem("OpenDescriptionLink", tr("Open description link in browser"), this, SLOT(openDescriptionLink()));
 	UserBox::userboxmenu->addItem("CopyPersonalInfo", tr("Copy personal info"), this, SLOT(copyPersonalInfo()));
-	UserBox::userboxmenu->addItem("EditUserInfo", tr("View / edit user info"), this, SLOT(showUserInfo()),HotKey::shortCutFromFile("ShortCuts", "kadu_persinfo"));
 	UserBox::userboxmenu->addItem("LookupUserInfo", tr("Search this user in directory"), this, SLOT(lookupInDirectory()),HotKey::shortCutFromFile("ShortCuts", "kadu_searchuser"));
 	UserBox::userboxmenu->insertSeparator();
-	UserBox::userboxmenu->addItem(tr("About..."), this, SLOT(about()));
+	
+	UserBox::management->addItem(tr("Ignore user"), this, SLOT(ignoreUser()));
+	UserBox::management->addItem(tr("Block user"), this, SLOT(blockUser()));
+	UserBox::management->addItem(tr("Notify about user"), this, SLOT(notifyUser()));
+	UserBox::management->addItem(tr("Offline to user"), this, SLOT(offlineToUser()));
+	UserBox::management->addItem(tr("Hide description"), this, SLOT(hideDescription()));
+	UserBox::management->insertSeparator();
+	UserBox::management->addItem("RemoveFromUserlist", tr("Remove from userlist"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("ShortCuts", "kadu_deleteuser"));
+	UserBox::management->addItem(tr("Clear history"),  this, SLOT(deleteHistory()));
+	UserBox::management->addItem("EditUserInfo", tr("View / edit user info"), this, SLOT(showUserInfo()),HotKey::shortCutFromFile("ShortCuts", "kadu_persinfo"));
+	
+	UserBox::userboxmenu->insertItem(tr("User management"), UserBox::management);
 
 	groups_manager->setTabBar(GroupBar);
 	setDocked(Docked, dontHideOnClose);
@@ -434,12 +439,12 @@ void Kadu::popupMenu()
 			containsMe = true;
 	}
 
-	int ignoreuseritem = UserBox::userboxmenu->getItem(tr("Ignore user"));
-	int blockuseritem = UserBox::userboxmenu->getItem(tr("Block user"));
-	int notifyuseritem = UserBox::userboxmenu->getItem(tr("Notify about user"));
-	int offlinetouseritem = UserBox::userboxmenu->getItem(tr("Offline to user"));
-	int hidedescriptionitem = UserBox::userboxmenu->getItem(tr("Hide description"));
-	int deletehistoryitem = UserBox::userboxmenu->getItem(tr("Clear history"));
+	int ignoreuseritem = UserBox::management->getItem(tr("Ignore user"));
+	int blockuseritem = UserBox::management->getItem(tr("Block user"));
+	int notifyuseritem = UserBox::management->getItem(tr("Notify about user"));
+	int offlinetouseritem = UserBox::management->getItem(tr("Offline to user"));
+	int hidedescriptionitem = UserBox::management->getItem(tr("Hide description"));
+	int deletehistoryitem = UserBox::management->getItem(tr("Clear history"));
 	int historyitem = UserBox::userboxmenu->getItem(tr("View history"));
 	int chatitem = UserBox::userboxmenu->getItem(tr("Open chat window"));
 
@@ -508,13 +513,15 @@ void Kadu::popupMenu()
 		}
 	}
 
-	int searchuser = UserBox::userboxmenu->getItem(tr("Search this user in directory"));
-	if (users.count() != 1 || !firstUser.usesProtocol("Gadu"))
-		UserBox::userboxmenu->setItemEnabled(searchuser, false);
 	if (users.count() != 1)
-		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("View / edit user info")), false);
-	if ((users.count() != 1) || !users.first().usesProtocol("Gadu") || users.first().status("Gadu").description().isEmpty())
+		UserBox::userboxmenu->setItemEnabled(UserBox::management->getItem(tr("View / edit user info")), false);
+	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu"))
+		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Search this user in directory")), false);
+	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu") || firstUser.status("Gadu").description().isEmpty())
 		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Copy description")), false);
+	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu") || firstUser.status("Gadu").description().isEmpty() ||
+		firstUser.status("Gadu").description().find(*HtmlDocument::url_regexp) == -1)
+		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Open description link in browser")), false);
 	kdebugf2();
 }
 
@@ -543,6 +550,34 @@ void Kadu::copyDescription()
 
 		clipboard->setText(status, QClipboard::Clipboard);
 		clipboard->setText(status, QClipboard::Selection);
+	}
+	kdebugf2();
+}
+
+void Kadu::openDescriptionLink()
+{
+	kdebugf();
+	UserBox *activeUserBox = UserBox::activeUserBox();
+	if (activeUserBox == NULL)
+	{
+		kdebugf2();
+		return;
+	}
+
+	UserListElement user = activeUserBox->selectedUsers().first();
+	QString status;
+	if (user.usesProtocol("Gadu"))
+		status = user.status("Gadu").description();
+	if (!status.isEmpty())
+	{
+		int idx_start = status.find(*HtmlDocument::url_regexp);
+		if (idx_start >= 0)
+		{
+			int idx_stop = status.find(QRegExp("\\s"), idx_start);
+			if (idx_stop <= idx_start)
+				idx_stop = status.length();
+			openWebBrowser(status.mid(idx_start, (idx_stop - idx_start)));
+		}
 	}
 	kdebugf2();
 }

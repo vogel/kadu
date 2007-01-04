@@ -296,6 +296,12 @@ class UserBox : public QListBox
 			Wska¼nik do menu kontekstowego listy kontaktów.
 		**/
 		static UserBoxMenu *userboxmenu;
+		
+		/**
+			\var static UserBoxMenu *management
+			Wska¼nik do menu zarz±dzania kontaktami.
+		**/
+		static UserBoxMenu *management;
 
 		static void setColorsOrBackgrounds();
 
