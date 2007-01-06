@@ -5,7 +5,6 @@
 # autoconf macros
 ########################################################################
 
-
 AC_DEFUN(CHECK_PTHREAD,
 [
 	AC_CHECK_LIB(pthread,pthread_create,
@@ -101,34 +100,34 @@ AC_DEFUN(FIND_HEADER,[
 # $5 - additional flags
 AC_DEFUN(FIND_LIBRARY,[
 	AC_MSG_CHECKING([if lib$1 is in system directories])
-	save_CFLAGS="$CFLAGS"
-	CFLAGS="$CFLAGS $5 -l$1 -lstdc++ -lm"
+	save_CXXFLAGS="$CXXFLAGS"
+	CXXFLAGS="$CXXFLAGS $5 -l$1"
 	AC_TRY_LINK([],
 	[
 		return 0;
 	],[
-		CFLAGS="$save_CFLAGS"
+		CXXFLAGS="$save_CXXFLAGS"
 		AC_MSG_RESULT([yes])
 	],[
-		CFLAGS="$save_CFLAGS"
+		CXXFLAGS="$save_CXXFLAGS"
 		AC_MSG_RESULT([no])
 
 		AC_MSG_CHECKING([if lib$1 is in specified directories: $with_libs $2])
 		FILE_DIR=
 		for dir in $with_libs $2
 		do
-			CFLAGS="$save_CFLAGS $5 -L$dir -l$1 -lstdc++ -lm"
+			CXXFLAGS="$save_CXXFLAGS $5 -L$dir -l$1"
 			AC_TRY_LINK([],
 			[
 				return 0;
 			],[
-				CFLAGS="$save_CFLAGS"
+				CXXFLAGS="$save_CXXFLAGS"
 				FILE_DIR=$dir
 				AC_MSG_RESULT([found in $FILE_DIR])
 				$3
 				break
 			],[
-				CFLAGS="$save_CFLAGS"
+				CXXFLAGS="$save_CXXFLAGS"
 			])
 		done
 		if test -z "$FILE_DIR";
@@ -505,7 +504,7 @@ AC_INIT([Kadu],VERSION_NUMBER)
 AC_COPYRIGHT([configure.ac written by A.Smarzewski])
 AC_REVISION([])
 AC_PREREQ(2.53)
-
+AC_LANG(C++)
 
 echo
 echo " ***************************************"
@@ -659,8 +658,8 @@ AC_SUBST(QT_LIBS)
 
 
 AC_MSG_CHECKING(for Qt version)
-save_CFLAGS="$CFLAGS"
-CFLAGS="$QT_INCLUDES"
+save_CXXFLAGS="$CXXFLAGS"
+CXXFLAGS="$QT_INCLUDES"
 AC_TRY_LINK(
 [
 	#include <qglobal.h>
@@ -679,7 +678,7 @@ AC_TRY_LINK(
 	AC_MSG_RESULT(bad)
 	AC_MSG_ERROR([Your Qt version is not appropiate! Get Qt >= 3.2 and < 4.0])
 ])
-CFLAGS="$save_CFLAGS"
+CXXFLAGS="$save_CXXFLAGS"
 
 #################
 # QT MOC
