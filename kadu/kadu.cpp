@@ -521,7 +521,7 @@ void Kadu::popupMenu()
 	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu") || firstUser.status("Gadu").description().isEmpty())
 		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Copy description")), false);
 	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu") || firstUser.status("Gadu").description().isEmpty() ||
-		firstUser.status("Gadu").description().find(*HtmlDocument::url_regexp) == -1)
+		firstUser.status("Gadu").description().find(HtmlDocument::urlRegExp()) == -1)
 		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Open description link in browser")), false);
 	kdebugf2();
 }
@@ -571,7 +571,7 @@ void Kadu::openDescriptionLink()
 		status = user.status("Gadu").description();
 	if (!status.isEmpty())
 	{
-		int idx_start = status.find(*HtmlDocument::url_regexp);
+		int idx_start = status.find(HtmlDocument::urlRegExp());
 		if (idx_start >= 0)
 		{
 			int idx_stop = status.find(QRegExp("\\s"), idx_start);

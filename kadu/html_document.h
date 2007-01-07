@@ -22,6 +22,7 @@ class HtmlDocument
 		};
 		QValueList<Element> Elements;
 		void addElement(Element e);
+		static QRegExp* url_regexp;
 
 	public:
 		static void escapeText(QString& text);
@@ -108,7 +109,7 @@ class HtmlDocument
 			Wyra¿enie regularne przydatne w poszukiwaniu
 			adresów www (i innych).
 		**/
-		static QRegExp* url_regexp;
+		static const QRegExp &urlRegExp();
 };
 
 #endif

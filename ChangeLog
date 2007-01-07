@@ -25,6 +25,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * domy¶lna sk³adnia dymków korzysta z pola Wy¶wietlane (arvenil/neeo)
 * window_notify: powiadamianie o nowej rozmowie i nowej wiadomo¶ci znowu dzia³a (joi)
 * configure: przy szukaniu bibliotek u¿ywamy $CXX, a nie $CC (joi)
+* poprawka wywrotki przy naci¶niêciu prawego przycisku na li¶cie kontaktów
+  w specyficznych okoliczno¶ciach (joi)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
