@@ -3,4 +3,4 @@ MODULE_MOC_HEADERS=nas_sound.h
 MODULE_INCLUDES="audio/soundlib.h audio/audiolib.h"
 MODULE_INCLUDES_PATH="/usr/include/ /usr/X11R6/include/"
 MODULE_LIBS=audio
-MODULE_LIBS_PATH="/usr/X11R6/lib /usr/lib"
+MODULE_LIBS_PATH="/usr/X11R6/lib64 /usr/lib64 /usr/X11R6/lib /usr/lib"
