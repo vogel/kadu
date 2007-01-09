@@ -137,14 +137,11 @@ class FileTransfer : public QObject
 		long long int fileSize();
 		long long int transferedSize();
 
-		void finished();
+		void finished(bool successfull);
 
 		void needFileInfo();
 		void connectionBroken();
 		void dccError();
-		void noneEvent();
-		void dccDone();
-		void setState();
 
 	signals:
 		void newFileTransfer(FileTransfer *);
@@ -253,8 +250,6 @@ class FileTransferManager : public QObject
 		void dccError(DccSocket* socket);
 		void needFileAccept(DccSocket* socket);
 		void needFileInfo(DccSocket* socket);
-		void noneEvent(DccSocket* socket);
-		void dccDone(DccSocket* socket);
 		void setState(DccSocket* socket);
 		void socketDestroying(DccSocket* socket);
 

@@ -359,7 +359,7 @@ void FileTransfer::needFileInfo()
 	if (FileName.isEmpty())
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Abort transfer\n");
-		Socket->setState(DCC_SOCKET_TRANSFER_DISCARDED);
+		Socket->discardFile();
 
 		Status = StatusFrozen;
 		emit fileTransferStatusChanged(this);
@@ -425,24 +425,6 @@ void FileTransfer::dccError()
 			GG_SESSION_DCC_SEND, true
 		);
 	}
-}
-
-void FileTransfer::noneEvent()
-{
-	kdebugf();
-}
-
-void FileTransfer::dccDone()
-{
-	kdebugf();
-}
-
-void FileTransfer::setState()
-{
-	kdebugf();
-
-	Speed = 0;
-	finished();
 }
 
 void FileTransfer::setSocket(DccSocket *socket)
@@ -534,7 +516,7 @@ long long int FileTransfer::transferedSize()
 	return TransferedSize;
 }
 
-void FileTransfer::finished()
+void FileTransfer::finished(bool successfull)
 {
 	kdebugf();
 
@@ -559,7 +541,9 @@ void FileTransfer::finished()
 
 	Speed = 0;
 
-	emit fileTransferFinished(this, TransferedSize == FileSize && FileSize != 0);
+	successfull = successfull && TransferedSize == FileSize && FileSize != 0;
+
+	emit fileTransferFinished(this, successfull);
 	emit fileTransferStatusChanged(this);
 }
 
@@ -1050,10 +1034,6 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 		this, SLOT(needFileAccept(DccSocket*)));
 	connect(dcc_manager, SIGNAL(needFileInfo(DccSocket*)),
 		this, SLOT(needFileInfo(DccSocket*)));
-	connect(dcc_manager, SIGNAL(noneEvent(DccSocket*)),
-		this, SLOT(noneEvent(DccSocket*)));
-	connect(dcc_manager, SIGNAL(dccDone(DccSocket*)),
-		this, SLOT(dccDone(DccSocket*)));
 	connect(dcc_manager, SIGNAL(setState(DccSocket*)),
 		this, SLOT(setState(DccSocket*)));
 	connect(dcc_manager, SIGNAL(socketDestroying(DccSocket*)),
@@ -1099,10 +1079,6 @@ FileTransferManager::~FileTransferManager()
 		this, SLOT(needFileAccept(DccSocket*)));
 	disconnect(dcc_manager, SIGNAL(needFileInfo(DccSocket*)),
 		this, SLOT(needFileInfo(DccSocket*)));
-	disconnect(dcc_manager, SIGNAL(noneEvent(DccSocket*)),
-		this, SLOT(noneEvent(DccSocket*)));
-	disconnect(dcc_manager, SIGNAL(dccDone(DccSocket*)),
-		this, SLOT(dccDone(DccSocket*)));
 	disconnect(dcc_manager, SIGNAL(setState(DccSocket*)),
 		this, SLOT(setState(DccSocket*)));
 
@@ -1341,8 +1317,17 @@ void FileTransferManager::toggleFileTransferWindow()
 
 void FileTransferManager::fileTransferFinishedSlot(FileTransfer *fileTransfer, bool ok)
 {
+	QString message;
+
 	if (ok && config_file.readBoolEntry("Network", "RemoveCompletedTransfers"))
 		fileTransfer->deleteLater();
+
+	if (ok)
+		message = tr("File has been transferred sucessfully.");
+	else
+		message = tr("File transfer error!");
+
+	MessageBox::msg(message);
 }
 
 void FileTransferManager::fileTransferWindowDestroyed()
@@ -1442,7 +1427,7 @@ void FileTransferManager::needFileAccept(DccSocket *socket)
 
 			case 2: // ignore transfer
 				kdebugmf(KDEBUG_INFO, "discarded\n");
-				socket->setState(DCC_SOCKET_TRANSFER_DISCARDED);
+				socket->discardFile();
 				return;
 		}
 	}
@@ -1460,7 +1445,7 @@ void FileTransferManager::needFileAccept(DccSocket *socket)
 		if (answer == 1)
 		{
 			kdebugmf(KDEBUG_INFO, "discarded\n");
-			socket->setState(DCC_SOCKET_TRANSFER_DISCARDED);
+			socket->discardFile();
 			return;
 		}
 	}
@@ -1479,7 +1464,7 @@ void FileTransferManager::needFileAccept(DccSocket *socket)
 		if (fileName.isEmpty())
 		{
 			kdebugmf(KDEBUG_INFO, "discarded\n");
-			socket->setState(DCC_SOCKET_TRANSFER_DISCARDED);
+			socket->discardFile();
 			return;
 		}
 
@@ -1537,41 +1522,13 @@ void FileTransferManager::needFileAccept(DccSocket *socket)
 	}
 }
 
-void FileTransferManager::noneEvent(DccSocket* socket)
-{
-	kdebugf();
-
-	FileTransfer *ft = FileTransfer::bySocket(socket);
-	if (ft)
-		ft->noneEvent();
-	else
-		kdebugm(KDEBUG_INFO, "not my socket\n");
-
-	kdebugf2();
-}
-
-void FileTransferManager::dccDone(DccSocket* socket)
-{
-	kdebugf();
-
-	FileTransfer *ft = FileTransfer::bySocket(socket);
-	if (ft)
-		ft->dccDone();
-	else
-		kdebugm(KDEBUG_INFO, "not my socket\n");
-
-	kdebugf2();
-}
-
 void FileTransferManager::setState(DccSocket* socket)
 {
 	kdebugf();
 
 	FileTransfer *ft = FileTransfer::bySocket(socket);
 	if (ft != NULL)
-	{
-		ft->setState();
-	}
+		ft->finished(socket->state() == DCC_SOCKET_TRANSFER_FINISHED);
 	else
 		kdebugm(KDEBUG_INFO, "not my socket\n");
 

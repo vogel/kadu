@@ -39,7 +39,7 @@ class DccSocket : public QObject
 	protected slots:
 		void dccDataReceived();
 		void dccDataSent();
-	
+
 	public:
 		DccSocket(struct gg_dcc* dcc_sock);
 		~DccSocket();
@@ -50,6 +50,9 @@ class DccSocket : public QObject
 		int state() const;
 		static int count();
 		virtual void setState(int pstate);
+
+		void acceptFile();
+		void discardFile();
 
 	signals:
 		void dccFinished(DccSocket* dcc);
@@ -64,7 +67,7 @@ class DccManager : public QObject
 		gg_dcc* DccSock;
 		QSocketNotifier* DCCReadSocketNotifier;
 		QSocketNotifier* DCCWriteSocketNotifier;
-		
+
 		QTimer TimeoutTimer;
 		void watchDcc();
 		QMap<UinType, int> requests;

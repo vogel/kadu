@@ -245,6 +245,18 @@ void DccSocket::watchDcc(int /*check*/)
 	kdebugf2();
 }
 
+void DccSocket::acceptFile()
+{
+	kdebugf();
+}
+
+void DccSocket::discardFile()
+{
+	kdebugf();
+
+	setState(DCC_SOCKET_TRANSFER_DISCARDED);
+}
+
 void DccSocket::setState(int pstate)
 {
 	kdebugf();
@@ -254,14 +266,8 @@ void DccSocket::setState(int pstate)
 
 	switch (State)
 	{
-		case DCC_SOCKET_TRANSFER_FINISHED:
-			MessageBox::msg(tr("File has been transferred sucessfully."));
-			break;
 		case DCC_SOCKET_TRANSFER_DISCARDED:
 			kdebugm(KDEBUG_INFO, "state: DCC_SOCKET_TRANSFER_DISCARDED\n");
-			break;
-		case DCC_SOCKET_TRANSFER_ERROR:
-			MessageBox::msg(tr("File transfer error!"));
 			break;
 		case DCC_SOCKET_CONNECTION_BROKEN:
 			kdebugm(KDEBUG_INFO, "state: DCC_SOCKET_CONNECTION_BROKEN\n");
