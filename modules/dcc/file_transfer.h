@@ -8,7 +8,6 @@
 #include <qstring.h>
 #include <qvaluelist.h>
 #include <qmap.h>
-#include <qsplitter.h>
 #include <qpopupmenu.h>
 #include <qdom.h>
 #include <qvbox.h>
@@ -16,6 +15,7 @@
 
 class QLabel;
 class QProgressBar;
+class QScrollView;
 class QVBoxLayout;
 class FileTransferManager;
 
@@ -151,30 +151,29 @@ class FileTransfer : public QObject
 		void fileTransferDestroying(FileTransfer *);
 };
 
-class FileTransferListView : public QListView
-{
-	Q_OBJECT
+class FileTransferWindow;
 
-	protected:
-		virtual void keyPressEvent(QKeyEvent *e);
-
-	public:
-		FileTransferListView(QWidget *parent, char *name = 0);
-};
-
-class FileTransferListViewItem : public QObject, public QListViewItem
+class FileTransferWidget : public QFrame
 {
 	Q_OBJECT
 
 	private:
 		FileTransfer *ft;
 
-	protected:
-		virtual void keyPressEvent(QKeyEvent *e);
+		QLabel *description;
+		QLabel *status;
+		QProgressBar *progress;
+		QPushButton *pauseButton;
+		QPushButton *continueButton;
+
+	private slots:
+		void remove();
+		void pauseTransfer();
+		void continueTransfer();
 
 	public:
-		FileTransferListViewItem(QListView *parent, FileTransfer *);
-		virtual ~FileTransferListViewItem();
+		FileTransferWidget(QWidget *parent = 0, FileTransfer * = 0);
+		virtual ~FileTransferWidget();
 
 		FileTransfer *fileTransfer();
 
@@ -186,37 +185,27 @@ class FileTransferListViewItem : public QObject, public QListViewItem
 		void fileTransferDestroying(FileTransfer *);
 };
 
-class FileTransferWindow : public QSplitter
+class FileTransferWindow : public QFrame
 {
 	Q_OBJECT
 
 	private:
-		QVBox *incomingBox;
-		QVBox *outgoingBox;
-		QListView *incoming;
-		QListView *outgoing;
-		FileTransferListViewItem *currentListViewItem;
+		QScrollView *scrollView;
 
-		QPopupMenu *popupMenu;
-		int startMenuId;
-		int stopMenuId;
-		int removeMenuId;
-		int removeCompletedMenuId;
+		QFrame *frame;
+		QVBoxLayout *transfersLayout;
+		QMap<FileTransfer *, FileTransferWidget *> map;
 
 	protected:
 		virtual void keyPressEvent(QKeyEvent *e);
+		void contentsChanged();
 
 	public:
 		FileTransferWindow(QWidget *parent = 0, const char *name = 0);
 		virtual ~FileTransferWindow();
 
 	private slots:
-		void listItemClicked(QListViewItem *lvi, const QPoint &, int);
-
-		void startTransferClicked();
-		void stopTransferClicked();
-		void removeTransferClicked();
-		void removeCompletedClicked();
+		void clearClicked();
 
 	public slots:
 		void newFileTransfer(FileTransfer *);

@@ -314,9 +314,6 @@ void FileTransfer::stop(StopType stopType)
 	{
 		Status = StatusFrozen;
 		emit fileTransferStatusChanged(this);
-
-		if (stopType == StopFinally)
-			emit fileTransferFinished(this, false);
 	}
 }
 
@@ -696,34 +693,81 @@ FileTransfer * FileTransfer::fromDomElement(const QDomElement &dom, FileTransfer
 QValueList<FileTransfer *> FileTransfer::AllTransfers;
 QMap<DccSocket*, FileTransfer*> FileTransfer::Transfers;
 
-FileTransferListView::FileTransferListView(QWidget *parent, char *name)
-	: QListView(parent, name)
-{
-}
-
-void FileTransferListView::keyPressEvent(QKeyEvent *e)
-{
-	e->ignore();
-}
-
-FileTransferListViewItem::FileTransferListViewItem(QListView *parent, FileTransfer *ft)
-	: QObject(parent), QListViewItem(parent), ft(ft)
+FileTransferWidget::FileTransferWidget(QWidget *parent, FileTransfer *ft)
+	: QFrame(parent), ft(ft)
 {
 	kdebugf();
 
 	ft->addListener(this, true);
 
-	QUrl url(ft->fileName());
+	setBackgroundMode(Qt::PaletteBase, Qt::PaletteBase);
+	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+	setMinimumSize(QSize(100, 100));
+
+	setFrameStyle(QFrame::Box | QFrame::Sunken);
+	setLineWidth(1);
+
+	QGridLayout *layout = new QGridLayout(this, 3, 4, 2);
+	layout->setMargin(10);
+	layout->setColStretch(0, 1);
+	layout->setColStretch(1, 20);
+	layout->setColStretch(2, 20);
+
+	QLabel *icon = new QLabel(this);
+	icon->setBackgroundMode(Qt::PaletteBase, Qt::PaletteBase);
+	layout->addMultiCellWidget(icon, 0, 2, 0, 0);
+
+	description = new QLabel(this);
+	description->setBackgroundMode(Qt::PaletteBase, Qt::PaletteBase);
+	description->setScaledContents(true);
+	layout->addMultiCellWidget(description, 0, 0, 1, 2);
+
+	progress = new QProgressBar(100, this);
+	progress->setBackgroundMode(Qt::PaletteBase, Qt::PaletteBase);
+	layout->addMultiCellWidget(progress, 1, 1, 1, 2);
+
+	status = new QLabel(this);
+	status->setBackgroundMode(Qt::PaletteBase, Qt::PaletteBase);
+	layout->addWidget(status, 2, 1);
+
+	QHBox *buttons = new QHBox(this);
+	buttons->setBackgroundMode(Qt::PaletteBase, Qt::PaletteBase);
+	buttons->setSpacing(2);
+	layout->addWidget(buttons, 2, 2, Qt::AlignRight);
+
+	pauseButton = new QPushButton(tr("Pause"), buttons);
+	pauseButton->hide();
+	connect(pauseButton, SIGNAL(clicked()), this, SLOT(pauseTransfer()));
+
+	continueButton = new QPushButton(tr("Continue"), buttons);
+	continueButton->hide();
+	connect(continueButton, SIGNAL(clicked()), this, SLOT(continueTransfer()));
+
+	QPushButton *deleteThis = new QPushButton(tr("Remove"), buttons);
+	connect(deleteThis, SIGNAL(clicked()), this, SLOT(remove()));
 
 	UserListElement ule = userlist->byID("Gadu", QString::number(ft->contact()));
-	setText(0, ule.altNick());
-	setText(1, url.fileName());
-	setText(5, ft->fileName());
 
-	newFileTransfer(ft);
+	QUrl url(ft->fileName());
+
+	if (ft->type() == FileTransfer::TypeSend)
+	{
+		icon->setPixmap(icons_manager->loadIcon("FileTransferSend"));
+		description->setText(tr("<b>File</b> %1 <b>to</b> %2").arg(url.fileName()).arg(ule.altNick()));
+	}
+	else
+	{
+		icon->setPixmap(icons_manager->loadIcon("FileTransferReceive"));
+		description->setText(tr("<b>File</b> %1 <b>from</b> %2").arg(url.fileName()).arg(ule.altNick()));
+	}
+
+	fileTransferStatusChanged(ft);
+
+	show();
 }
 
-FileTransferListViewItem::~FileTransferListViewItem()
+FileTransferWidget::~FileTransferWidget()
 {
 	kdebugf();
 
@@ -731,125 +775,152 @@ FileTransferListViewItem::~FileTransferListViewItem()
 		ft->removeListener(this, true);
 }
 
-void FileTransferListViewItem::keyPressEvent(QKeyEvent *e)
+FileTransfer * FileTransferWidget::fileTransfer()
 {
-	e->ignore();
-}
+	kdebugf();
 
-FileTransfer * FileTransferListViewItem::fileTransfer()
-{
 	return ft;
 }
 
-void FileTransferListViewItem::newFileTransfer(FileTransfer *)
+void FileTransferWidget::remove()
 {
-	fileTransferStatusChanged(ft);
+	kdebugf();
+
+	if (ft->status() != FileTransfer::StatusFinished)
+		if (!MessageBox::ask("Are you sure you want to remove this transfer?"))
+			return;
+		else
+			ft->stop(FileTransfer::StopFinally);
+
+	// it will destroy widget too, see FileTransferWidget::fileTransferDestroying
+	delete ft;
 }
 
-void FileTransferListViewItem::fileTransferFailed(FileTransfer *, FileTransfer::FileTransferError)
+void FileTransferWidget::pauseTransfer()
 {
-	setText(2, tr("Error"));
+	ft->stop();
 }
 
-void FileTransferListViewItem::fileTransferStatusChanged(FileTransfer *ft)
+void FileTransferWidget::continueTransfer()
 {
+	ft->start(FileTransfer::StartRestore);
+}
+
+void FileTransferWidget::newFileTransfer(FileTransfer *)
+{
+	kdebugf();
+}
+
+void FileTransferWidget::fileTransferFailed(FileTransfer *, FileTransfer::FileTransferError)
+{
+	kdebugf();
+
+	status->setText(tr("<b>Error</b>"));
+
+	pauseButton->hide();
+	continueButton->show();
+}
+
+void FileTransferWidget::fileTransferStatusChanged(FileTransfer *ft)
+{
+	progress->setProgress(ft->percent());
+
 	switch (ft->status())
 	{
 		case FileTransfer::StatusFrozen:
-			setText(2, tr("Frozen"));
+			status->setText(tr("<b>Frozen</b>"));
+			pauseButton->hide();
+			continueButton->show();
 			break;
 		case FileTransfer::StatusWaitForConnection:
-			setText(2, tr("Wait for connection"));
+			status->setText(tr("<b>Wait for connection</b>"));
 			break;
 		case FileTransfer::StatusTransfer:
-			setText(2, tr("Transfer"));
+			status->setText(tr("<b>Transfer</b>: %1 kB/s").arg(QString::number(ft->speed())));
+			pauseButton->show();
+			continueButton->hide();
 			break;
 		case FileTransfer::StatusFinished:
-			setText(2, tr("Finished"));
+			status->setText(tr("<b>Finished</b>"));
 			break;
+
+		default:
+			pauseButton->hide();
+			continueButton->hide();
 	}
-
-	setText(3, QString::number(ft->speed()) + " kB/s");
-	setText(4, QString::number(ft->percent()) + " %");
 }
 
-void FileTransferListViewItem::fileTransferFinished(FileTransfer *, bool)
+void FileTransferWidget::fileTransferFinished(FileTransfer *, bool)
 {
-	setText(2, tr("Finished"));
-	setText(3, "");
-	setText(4, "100%");
+	kdebugf();
+
+	progress->setProgress(ft->percent());
+
+	status->setText(tr("Finished"));
+
+	pauseButton->hide();
+	continueButton->hide();
 }
 
-void FileTransferListViewItem::fileTransferDestroying(FileTransfer *)
+void FileTransferWidget::fileTransferDestroying(FileTransfer *)
 {
+	kdebugf();
+
 	ft = 0;
 	deleteLater();
 }
 
 FileTransferWindow::FileTransferWindow(QWidget *parent, const char *name)
-	: QSplitter(Qt::Vertical, parent, name),
-	incomingBox(0), outgoingBox(0), incoming(0), outgoing(0),
-	currentListViewItem(0), popupMenu(0), startMenuId(0),
-	stopMenuId(0), removeMenuId(0)
+	: QFrame(parent, name)
 {
 	kdebugf();
+
+	setMinimumSize(QSize(100, 100));
 
 	setWFlags(Qt::WDestructiveClose);
 
 	setCaption(tr("Kadu - file transfers"));
 
-	incomingBox = new QVBox(this);
-	incomingBox->setSpacing(5);
-	incomingBox->setMargin(2);
+	QGridLayout *mainGrid = new QGridLayout(this, 1, 1);
+	mainGrid->setSpacing(2);
+	mainGrid->setMargin(2);
 
-	new QLabel(tr("Incoming transfers:"), incomingBox);
-	incoming = new FileTransferListView(incomingBox);
-	incoming->addColumn(tr("Contact"));
-	incoming->addColumn(tr("File name"));
-	incoming->addColumn(tr("Status"));
-	incoming->addColumn(tr("Speed"));
-	incoming->addColumn(tr("Progress"));
-	incoming->addColumn(tr("Full file name"));
+	scrollView = new QScrollView(this);
+	scrollView->setResizePolicy(QScrollView::AutoOneFit);
 
-	connect(incoming, SIGNAL(rightButtonClicked(QListViewItem *, const QPoint &, int)),
-		this, SLOT(listItemClicked(QListViewItem *, const QPoint &, int)));
+	mainGrid->addWidget(scrollView, 0, 0);
+	scrollView->move(0, 0);
 
-	outgoingBox = new QVBox(this);
-	outgoingBox->setSpacing(5);
-	outgoingBox->setMargin(2);
+	frame = new QFrame(scrollView->viewport());
 
-	new QLabel(tr("Outgoing transfers:"), outgoingBox);
-	outgoing = new FileTransferListView(outgoingBox);
-	outgoing->addColumn(tr("Contact"));
-	outgoing->addColumn(tr("File name"));
-	outgoing->addColumn(tr("Status"));
-	outgoing->addColumn(tr("Speed"));
-	outgoing->addColumn(tr("Progress"));
-	outgoing->addColumn(tr("Full file name"));
+ 	frame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-	connect(outgoing, SIGNAL(rightButtonClicked(QListViewItem *, const QPoint &, int)),
-		this, SLOT(listItemClicked(QListViewItem *, const QPoint &, int)));
+	transfersLayout = new QVBoxLayout(frame, 0, 1);
+	transfersLayout->setDirection(QBoxLayout::Up);
 
-	popupMenu = new QPopupMenu(this);
-	startMenuId = popupMenu->insertItem(tr("Start"), this, SLOT(startTransferClicked()));
-	stopMenuId = popupMenu->insertItem(tr("Stop"), this, SLOT(stopTransferClicked()));
-	removeMenuId = popupMenu->insertItem(tr("Remove"), this, SLOT(removeTransferClicked()));
-	removeCompletedMenuId = popupMenu->insertItem(tr("Remove completed"), this, SLOT(removeCompletedClicked()));
+	scrollView->addChild(frame, 0, 0);
+
+	QHBox *buttonBox = new QHBox(this);
+	buttonBox->setMargin(2);
+	buttonBox->setSpacing(2);
+
+	mainGrid->addWidget(buttonBox, 1, 0, Qt::AlignRight);
+
+	QPushButton *cleanButton = new QPushButton(tr("Clean"), buttonBox);
+	connect(cleanButton, SIGNAL(clicked()), this, SLOT(clearClicked()));
+
+	QPushButton *hideButton = new QPushButton(tr("Hide"), buttonBox);
+	connect(hideButton, SIGNAL(clicked()), this, SLOT(close()));
 
 	loadGeometry(this, "General", "TransferWindowGeometry", 200, 200, 500, 300);
-
-	QValueList<int> splitsizes;
-	splitsizes.append(config_file.readNumEntry("General", "IncomingTransfersHeight", -1));
-	splitsizes.append(config_file.readNumEntry("General", "OutgoingTransfersHeight"));
-
-	if (splitsizes[0] != -1)
-		setSizes(splitsizes);
 
 	CONST_FOREACH(i, FileTransfer::AllTransfers)
 	{
 		(*i)->addListener(this, true);
 		newFileTransfer(*i);
 	}
+
+	contentsChanged();
 
 	kdebugf2();
 }
@@ -861,17 +932,7 @@ FileTransferWindow::~FileTransferWindow()
 	CONST_FOREACH(i, FileTransfer::AllTransfers)
 		(*i)->removeListener(this, true);
 
-	disconnect(incoming, SIGNAL(rightButtonClicked(QListViewItem *, const QPoint &, int)),
-		this, SLOT(listItemClicked(QListViewItem *, const QPoint &, int)));
-	disconnect(outgoing, SIGNAL(rightButtonClicked(QListViewItem *, const QPoint &, int)),
-		this, SLOT(listItemClicked(QListViewItem *, const QPoint &, int)));
-
-	if (config_file.readBoolEntry("General", "SaveGeometry"))
-	{
-		saveGeometry(this, "General", "TransferWindowGeometry");
-		config_file.writeEntry("General", "IncomingTransfersHeight", incomingBox->size().height());
-		config_file.writeEntry("General", "OutgoingTransfersHeight", outgoingBox->size().height());
-	}
+	saveGeometry(this, "General", "TransferWindowGeometry");
 
 	kdebugf2();
 }
@@ -880,109 +941,46 @@ void FileTransferWindow::keyPressEvent(QKeyEvent *e)
 {
 	if (e->key() == Qt::Key_Escape)
 	{
-		hide();
-		e->accept();
-	}
-	else if (e->key() == Qt::Key_Delete)
-	{
-		if (incoming->hasFocus())
-			currentListViewItem = dynamic_cast<FileTransferListViewItem *>(incoming->selectedItem());
-		else if (outgoing->hasFocus())
-			currentListViewItem = dynamic_cast<FileTransferListViewItem *>(outgoing->selectedItem());
-		else
-			currentListViewItem = 0;
-		removeTransferClicked();
+		close();
 		e->accept();
 	}
 	else
-		QSplitter::keyPressEvent(e);
+		QFrame::keyPressEvent(e);
 }
 
-void FileTransferWindow::listItemClicked(QListViewItem *lvi, const QPoint &pos, int)
-{
-	if (!lvi)
-		return;
-
-	if (gadu->currentStatus().isOffline())
-	{
-		popupMenu->setItemEnabled(startMenuId, false);
-		popupMenu->setItemEnabled(stopMenuId, false);
-	}
-
-	currentListViewItem = dynamic_cast<FileTransferListViewItem *>(lvi);
-
-	switch (currentListViewItem->fileTransfer()->status())
-	{
-		case FileTransfer::StatusFrozen:
-			popupMenu->setItemEnabled(startMenuId, DccSocket::count() < 8);
-			popupMenu->setItemEnabled(stopMenuId, false);
-			break;
-
-		case FileTransfer::StatusWaitForConnection:
-		case FileTransfer::StatusTransfer:
-			popupMenu->setItemEnabled(startMenuId, false);
-			popupMenu->setItemEnabled(stopMenuId, true);
-			break;
-
-		case FileTransfer::StatusFinished:
-			popupMenu->setItemEnabled(startMenuId, false);
-			popupMenu->setItemEnabled(stopMenuId, false);
-			break;
-	}
-
-	popupMenu->popup(pos);
-}
-
-void FileTransferWindow::startTransferClicked()
-{
-	if (!currentListViewItem)
-		return;
-
-	currentListViewItem->fileTransfer()->start(FileTransfer::StartRestore);
-}
-
-void FileTransferWindow::stopTransferClicked()
-{
-	if (!currentListViewItem)
-		return;
-
-	currentListViewItem->fileTransfer()->stop();
-}
-
-void FileTransferWindow::removeTransferClicked()
-{
-	if (!currentListViewItem)
-		return;
-
-	FileTransfer *ft = currentListViewItem->fileTransfer();
-
-	if (ft->status() != FileTransfer::StatusFinished)
-		if (!MessageBox::ask("Are you sure you want to remove this transfer?"))
-			return;
-		else
-			ft->stop(FileTransfer::StopFinally);
-
- 	currentListViewItem = 0;
-
-	delete ft;
-	setActiveWindow();
-}
-
-void FileTransferWindow::removeCompletedClicked()
+void FileTransferWindow::clearClicked()
 {
 	FOREACH(i, FileTransfer::AllTransfers)
 		if ((*i)->status() == FileTransfer::StatusFinished)
 			(*i)->deleteLater();
 }
 
+void FileTransferWindow::contentsChanged()
+{
+	kdebugf();
+
+	QSize boxSize = frame->sizeHint();
+
+	frame->setMinimumHeight(boxSize.height());
+	frame->setMaximumHeight(boxSize.height());
+
+	// workaround
+	// without this sometimes this scroll to strange positions
+	int y = scrollView->contentsY();
+	scrollView->scrollBy(0, -y);
+	frame->setGeometry(0, 0, frame->width(), boxSize.height());
+	scrollView->scrollBy(0, y);
+}
+
 void FileTransferWindow::newFileTransfer(FileTransfer *ft)
 {
 	kdebugf();
 
-	if (ft->type() == FileTransfer::TypeSend)
-		new FileTransferListViewItem(outgoing, ft);
-	else
-		new FileTransferListViewItem(incoming, ft);
+	FileTransferWidget *ftm = new FileTransferWidget(frame, ft);
+	transfersLayout->addWidget(ftm);
+	map.insert(ft, ftm);
+
+	contentsChanged();
 }
 
 void FileTransferWindow::fileTransferFailed(FileTransfer *, FileTransfer::FileTransferError)
@@ -997,8 +995,17 @@ void FileTransferWindow::fileTransferFinished(FileTransfer *fileTransfer, bool o
 {
 }
 
-void FileTransferWindow::fileTransferDestroying(FileTransfer *)
+void FileTransferWindow::fileTransferDestroying(FileTransfer *ft)
 {
+	kdebugf();
+
+	if (map.contains(ft))
+	{
+		transfersLayout->remove(map[ft]);
+		map.remove(ft);
+
+		contentsChanged();
+	}
 }
 
 FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QObject(parent, name),
@@ -1300,6 +1307,8 @@ void FileTransferManager::toggleFileTransferWindow()
 	{
 		disconnect(this, SIGNAL(newFileTransfer(FileTransfer *)),
 			fileTransferWindow, SLOT(newFileTransfer(FileTransfer *)));
+		disconnect(this, SIGNAL(fileTransferDestroying(FileTransfer *)),
+			fileTransferWindow, SLOT(fileTransferDestroying(FileTransfer *)));
 		disconnect(fileTransferWindow, SIGNAL(destroyed()), this, SLOT(fileTransferWindowDestroyed()));
 		delete fileTransferWindow;
 		fileTransferWindow = 0;
@@ -1310,6 +1319,8 @@ void FileTransferManager::toggleFileTransferWindow()
 		connect(fileTransferWindow, SIGNAL(destroyed()), this, SLOT(fileTransferWindowDestroyed()));
 		connect(this, SIGNAL(newFileTransfer(FileTransfer *)),
 			fileTransferWindow, SLOT(newFileTransfer(FileTransfer *)));
+		connect(this, SIGNAL(fileTransferDestroying(FileTransfer *)),
+			fileTransferWindow, SLOT(fileTransferDestroying(FileTransfer *)));
 		fileTransferWindow->show();
 	}
 	kdebugf2();
