@@ -22,16 +22,19 @@ class HintManager : public Notifier
 
 	private:
 		QFrame *frame;
+		QVBoxLayout *layout;
 		HintManagerSlots *hint_manager_slots;
 		QTimer *hint_timer;
-		QGridLayout *grid;
 		QPtrList<Hint> hints;
 		QFrame *tipFrame;
 
 		/**
 			ustala róg, od którego bêdzie liczona pozycja grupy dymków
 		**/
-		void setGridOrigin();
+		void setLayoutDirection();
+
+		void processButtonPress(const QString &buttonName, Hint *hint);
+		void deleteHint(Hint *hint);
 
 	private slots:
 		/**
@@ -50,19 +53,19 @@ class HintManager : public Notifier
 			na dymku o numerze id klikniêto lewym przyciskiem myszy
 			w zale¿no¶ci od konfiguracji otwierana jest nowa rozmowa, dymek jest kasowany lub kasowane s± wszystkie
 		**/
-		void leftButtonSlot(unsigned int id);
+		void leftButtonSlot(Hint *hint);
 
 		/**
 			na dymku o numerze id klikniêto prawym przyciskiem myszy
 			w zale¿no¶ci od konfiguracji otwierana jest nowa rozmowa, dymek jest kasowany lub kasowane s± wszystkie
 		**/
-		void rightButtonSlot(unsigned int id);
+		void rightButtonSlot(Hint *hint);
 
 		/**
 			na dymku o numerze id klikniêto ¶rodkowym przyciskiem myszy
 			w zale¿no¶ci od konfiguracji otwierana jest nowa rozmowa, dymek jest kasowany lub kasowane s± wszystkie
 		**/
-		void midButtonSlot(unsigned int id);
+		void midButtonSlot(Hint *hint);
 
 	public slots:
 /*********** sloty dla notify ************/
@@ -118,15 +121,10 @@ class HintManager : public Notifier
 		void addHint(const QString &text, const QPixmap &pixmap, const QFont &font, const QColor &fgcolor, const QColor &bgcolor, unsigned int timeout, const UserListElements &senders = UserListElements());
 
 		/**
-			usuwa dymek o numerze id
-		**/
-		void deleteHint(unsigned int id);
-
-		/**
 			je¿eli dymek dotyczy³ konkrentej osoby lub grupy osób, to otwierane jest okno chatu
 			dymek jest kasowany
 		**/
-		void openChat(unsigned int id);
+		void openChat(Hint *hint);
 
 		/**
 			usuwa wszystkie dymki

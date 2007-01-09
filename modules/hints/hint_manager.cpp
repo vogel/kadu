@@ -33,18 +33,17 @@
 
 HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, name),
 	frame(0), hint_manager_slots(0), hint_timer(new QTimer(this, "hint_timer")),
-	grid(0), hints(), tipFrame(0)
+	hints(), tipFrame(0)
 {
 	kdebugf();
 	frame = new QFrame(parent, name, WStyle_NoBorder | WStyle_StaysOnTop | WStyle_Tool | WX11BypassWM | WWinOwnDC);
 
+	frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	frame->setFrameStyle(QFrame::Box | QFrame::Plain);
 	frame->setLineWidth(FRAME_WIDTH);
 
-	grid = new QGridLayout(frame, 0, 0, 1, 0, "grid");
-	grid->setResizeMode(QLayout::Fixed);
-
-	hints.setAutoDelete(true);
+	layout = new QVBoxLayout(frame, FRAME_WIDTH, 0, "grid");
+	layout->setResizeMode(QLayout::Fixed);
 
 	connect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
 
@@ -217,8 +216,17 @@ HintManager::~HintManager()
 void HintManager::setHint(void)
 {
 	kdebugf();
+
+	if (hints.isEmpty())
+	{
+		hint_timer->stop();
+		frame->hide();
+		return;
+	}
+
 	QPoint newPosition;
 	QPoint trayPosition;
+
 	QSize preferredSize = frame->sizeHint();
 	QSize desktopSize = QApplication::desktop()->size();
 
@@ -276,110 +284,94 @@ void HintManager::setHint(void)
 		else // tray is on bottom
 			newPosition.setY(trayPosition.y() - preferredSize.height());
 	}
-	frame->move (newPosition);
+
+	frame->setGeometry(newPosition.x(), newPosition.y(), preferredSize.width(), preferredSize.height());
+
 	kdebugf2();
 }
 
-void HintManager::deleteHint(unsigned int id)
+void HintManager::deleteHint(Hint *hint)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "id=%d\n", id);
+	kdebugf();
 
-	grid->removeItem(hints.at(id));
-	hints.remove(id);
-	if (hints.isEmpty())
-	{
-		hint_timer->stop();
-		frame->hide();
-		return;
-	}
+	layout->remove(hint);
+	hints.remove(hint);
+	hint->deleteLater();
 
-	unsigned int i = 0;
-	CONST_FOREACH(hint, hints)
-		(*hint)->setId(i++);
-
-	setHint();
 	kdebugf2();
 }
 
 void HintManager::oneSecond(void)
 {
 	kdebugf();
+
+	bool removed = false;
 	for (unsigned int i = 0; i < hints.count(); ++i)
-		if (!(hints.at(i)->nextSecond()))
-			deleteHint(i--);
+	{
+		hints.at(i)->nextSecond();
+
+		if (hints.at(i)->isDeprecated())
+		{
+			deleteHint(hints.at(i));
+			removed = true;
+		}
+	}
+
+	if (removed)
+		setHint();
+
 	kdebugf2();
 }
 
-void HintManager::leftButtonSlot(unsigned int id)
+void HintManager::processButtonPress(const QString &buttonName, Hint *hint)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "%d\n", id);
-	switch(config_file.readNumEntry("Hints", "LeftButton"))
+	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", buttonName.ascii());
+
+	switch(config_file.readNumEntry("Hints", buttonName))
 	{
 		case 1:
-			openChat(id);
+			openChat(hint);
 			break;
-		case 2:
-			if(config_file.readBoolEntry("Hints", "DeletePendingMsgWhenHintDeleted"))
-				chat_manager->deletePendingMsgs(hints.at(id)->getUsers());
 
-			deleteHint(id);
+		case 2:
+			if (config_file.readBoolEntry("Hints", "DeletePendingMsgWhenHintDeleted"))
+				chat_manager->deletePendingMsgs(hint->getUsers());
+			deleteHint(hint);
+			setHint();
 			break;
+
 		case 3:
 			deleteAllHints();
+			setHint();
 			break;
 	}
+
 	kdebugf2();
 }
 
-void HintManager::rightButtonSlot(unsigned int id)
+void HintManager::leftButtonSlot(Hint *hint)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "%d\n", id);
-	switch(config_file.readNumEntry("Hints", "RightButton"))
-	{
-		case 1:
-			openChat(id);
-			break;
-		case 2:
-			if(config_file.readBoolEntry("Hints", "DeletePendingMsgWhenHintDeleted"))
-				chat_manager->deletePendingMsgs(hints.at(id)->getUsers());
-
-			deleteHint(id);
-			break;
-		case 3:
-			deleteAllHints();
-			break;
-	}
-	kdebugf2();
+	processButtonPress("LeftButton", hint);
 }
 
-void HintManager::midButtonSlot(unsigned int id)
+void HintManager::rightButtonSlot(Hint *hint)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "%d\n", id);
-	switch(config_file.readNumEntry("Hints", "MiddleButton"))
-	{
-		case 1:
-			openChat(id);
-			break;
-		case 2:
-			if(config_file.readBoolEntry("Hints", "DeletePendingMsgWhenHintDeleted"))
-				chat_manager->deletePendingMsgs(hints.at(id)->getUsers());
-
-			deleteHint(id);
-			break;
-		case 3:
-			deleteAllHints();
-			break;
-	}
-	kdebugf2();
+	processButtonPress("RightButton", hint);
 }
 
-void HintManager::openChat(unsigned int id)
+void HintManager::midButtonSlot(Hint *hint)
+{
+	processButtonPress("MiddleButton", hint);
+}
+
+void HintManager::openChat(Hint *hint)
 {
 	kdebugf();
-	UserListElements senders = hints.at(id)->getUsers();
+	UserListElements senders = hint->getUsers();
 	if (!senders.isEmpty())
 		chat_manager->openPendingMsgs(senders);
-	deleteHint(id);
+	deleteHint(hint);
+	setHint();
 	kdebugf2();
 }
 
@@ -387,28 +379,37 @@ void HintManager::deleteAllHints()
 {
 	kdebugf();
 	hint_timer->stop();
-	CONST_FOREACH(hint, hints)
-		grid->removeItem(*hint);
-	hints.clear();
+
+	Hint *toDelete = hints.first();
+	while (toDelete)
+	{
+		deleteHint(toDelete);
+		toDelete = hints.current();
+	}
+
 	frame->hide();
+
 	kdebugf2();
 }
 
 void HintManager::addHint(const QString& text, const QPixmap& pixmap, const QFont &font, const QColor &color, const QColor &bgcolor, unsigned int timeout, const UserListElements &senders)
 {
-	kdebugf();
-	hints.append(new Hint(frame, text, pixmap, timeout));
-	int i = hints.count()-1;
-	setGridOrigin();
-	grid->addLayout(hints.at(i), i, 0);
-	hints.at(i)->set(font, color, bgcolor, i);
+ 	kdebugf();
+
+	Hint *hint = new Hint(frame, text, pixmap, timeout);
+	hint->set(font, color, bgcolor);
+
+	hints.append(hint);
+
+	setLayoutDirection();
+	layout->addWidget(hint);
 
 	if (!senders.isEmpty())
-		hints.at(i)->setUsers(senders);
+		hint->setUsers(senders);
 
-	connect(hints.at(i), SIGNAL(leftButtonClicked(unsigned int)), this, SLOT(leftButtonSlot(unsigned int)));
-	connect(hints.at(i), SIGNAL(rightButtonClicked(unsigned int)), this, SLOT(rightButtonSlot(unsigned int)));
-	connect(hints.at(i), SIGNAL(midButtonClicked(unsigned int)), this, SLOT(midButtonSlot(unsigned int)));
+	connect(hint, SIGNAL(leftButtonClicked(Hint *)), this, SLOT(leftButtonSlot(Hint *)));
+	connect(hint, SIGNAL(rightButtonClicked(Hint *)), this, SLOT(rightButtonSlot(Hint *)));
+	connect(hint, SIGNAL(midButtonClicked(Hint *)), this, SLOT(midButtonSlot(Hint *)));
 	setHint();
 
 	if (!hint_timer->isActive())
@@ -419,7 +420,7 @@ void HintManager::addHint(const QString& text, const QPixmap& pixmap, const QFon
 }
 
 
-void HintManager::setGridOrigin()
+void HintManager::setLayoutDirection()
 {
 	kdebugf();
 	QPoint trayPosition;
@@ -430,23 +431,23 @@ void HintManager::setGridOrigin()
 			if (trayPosition.isNull() || config_file.readBoolEntry("Hints","UseUserPosition"))
 			{
 				if (config_file.readNumEntry("Hints","HintsPositionY") < QApplication::desktop()->size().height()/2)
-					grid->setOrigin(QGridLayout::TopLeft);
+					layout->setDirection(QBoxLayout::Down);
 				else
-					grid->setOrigin(QGridLayout::BottomLeft);
+					layout->setDirection(QBoxLayout::Up);
 			}
 			else
 			{
 				if (trayPosition.y() < QApplication::desktop()->size().height()/2)
-					grid->setOrigin(QGridLayout::TopLeft);
+					layout->setDirection(QBoxLayout::Down);
 				else
-					grid->setOrigin(QGridLayout::BottomLeft);
+					layout->setDirection(QBoxLayout::Up);
 			}
 			break;
 		case 1:
-			grid->setOrigin(QGridLayout::BottomLeft);
+			layout->setDirection(QBoxLayout::Up);
 			break;
 		case 2:
-			grid->setOrigin(QGridLayout::TopLeft);
+			layout->setDirection(QBoxLayout::Down);
 			break;
 	}
 	kdebugf2();

@@ -17,154 +17,135 @@
  * @{
  */
 Hint::Hint(QWidget *parent, const QString& text, const QPixmap& pixmap, unsigned int timeout) :
-	QHBoxLayout(0, "Hint"), icon(0), label(0), bcolor(), secs(timeout), ident(0), users()
+	QWidget(parent, "Hint"), vbox(0), callbacksBox(0), icon(0), label(0), bcolor(), secs(timeout), users()
 {
 	kdebugf();
 	if (timeout==0)
 		kdebugm(KDEBUG_INFO|KDEBUG_ERROR, "Hint error: timeout==0! text: %s\n", text.local8Bit().data());
 
-	setResizeMode(QLayout::Fixed);
+	createLabels(text, pixmap);
 
-	if (!pixmap.isNull())
-	{
-		icon = new QLabel(parent, "Icon");
-		icon->setPixmap(pixmap);
-		icon->hide();
-		icon->installEventFilter(this);
-		addWidget(icon);
-	}
+	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-	label = new QLabel(" " + QString(text).replace(" ", "&nbsp;"), parent, "Label");
-	label->setTextFormat(Qt::RichText);
-	label->setAlignment(AlignVCenter | Qt::AlignLeft);
-	label->hide();
-	label->installEventFilter(this);
-	addWidget(label, 1);
+	hide();
+
 	kdebugf2();
 }
 
-bool Hint::nextSecond(void)
+void Hint::createLabels(const QString &text, const QPixmap &pixmap)
+{
+	vbox = new QVBoxLayout(this);
+	vbox->setSpacing(2);
+	vbox->setMargin(1);
+	vbox->setResizeMode(QLayout::FreeResize);
+
+	labels = new QHBoxLayout();
+	vbox->addLayout(labels);
+
+	if (!pixmap.isNull())
+	{
+		icon = new QLabel(this, "Icon");
+		icon->setPixmap(pixmap);
+		icon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Ignored);
+		labels->addWidget(icon);
+	}
+
+	label = new QLabel(this, "Label");
+	label->setTextFormat(Qt::RichText);
+	label->setText(" " + QString(text).replace(" ", "&nbsp;").replace("\n", "<br />"));
+	label->setAlignment(AlignVCenter | Qt::AlignLeft);
+	labels->addWidget(label);
+}
+
+void Hint::close()
+{
+	hintClosing = true;
+	deleteLater();
+	emit deleting(this);
+}
+
+void Hint::nextSecond(void)
 {
 	if (secs==0)
 		kdebugm(KDEBUG_ERROR, "ERROR: secs == 0 !\n");
 	else if (secs>2000000000)
 		kdebugm(KDEBUG_WARNING, "WARNING: secs > 2 000 000 000 !\n");
 	--secs;
-	return secs>0;
 }
 
-void Hint::setShown(bool show)
+bool Hint::isDeprecated()
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "show=%d\n", show);
+	return secs == 0;
+}
 
-	if (show)
-	{
-		if (icon != NULL)
-			icon->show();
-		label->show();
-	}
+void Hint::setShown(bool doShow)
+{
+	kdebugmf(KDEBUG_FUNCTION_START, "show=%d\n", doShow);
+
+	if (doShow)
+		show();
 	kdebugf2();
 }
 
-void Hint::set(const QFont &font, const QColor &color, const QColor &bgcolor, unsigned int id, bool show)
+void Hint::set(const QFont &font, const QColor &color, const QColor &bgcolor, bool doShow)
 {
-	kdebugf();
+ 	kdebugf();
 
-	ident = id;
-	label->setFont(font);
-	if (icon != NULL)
-	{
-		icon->setPaletteBackgroundColor(bgcolor);
-		if (show)
-			icon->show();
-	}
-	label->setPaletteForegroundColor(color);
+	setPaletteForegroundColor(color);
+	setPaletteBackgroundColor(bgcolor);
+
 	bcolor = bgcolor;
-	label->setPaletteBackgroundColor(bcolor);
-	if (show)
-		label->show();
+
+	if (doShow)
+		show();
+
 	kdebugf2();
 }
 
-bool Hint::eventFilter(QObject *obj, QEvent *ev)
+void Hint::mousePressEvent(QMouseEvent * event)
 {
-	if (obj == label || (icon != NULL && obj == icon))
+	switch (event->button())
 	{
-		switch (ev->type())
-		{
-			case QEvent::Enter:
-				enter();
-				return true;
-				break;
-			case QEvent::Leave:
-				leave();
-				return true;
-				break;
-			case QEvent::MouseButtonPress:
-			{
-				switch ((dynamic_cast<QMouseEvent*>(ev))->button())
-				{
-					case Qt::LeftButton:
-						emit leftButtonClicked(ident);
-						return true;
-						break;
-					case Qt::RightButton:
-						emit rightButtonClicked(ident);
-						return true;
-						break;
-					case Qt::MidButton:
-						emit midButtonClicked(ident);
-						return true;
-						break;
-					default:
-						return false;
-						break;
-				}
-			}
-			default:
-				return false;
-				break;
-		}
+		case Qt::LeftButton:
+			emit leftButtonClicked(this);
+			break;
+
+		case Qt::RightButton:
+			emit rightButtonClicked(this);
+			break;
+
+		case Qt::MidButton:
+			emit midButtonClicked(this);
+			break;
+
+		default:
+			break;
 	}
-	else
-		return QHBoxLayout::eventFilter(obj, ev);
 }
 
-void Hint::enter(void)
+void Hint::enterEvent(QEvent *)
 {
-	if (icon != NULL)
-		icon->setPaletteBackgroundColor(bcolor.light());
-	label->setPaletteBackgroundColor(bcolor.light());
+	setPaletteBackgroundColor(bcolor.light());
 }
 
-void Hint::leave(void)
+void Hint::leaveEvent(QEvent *)
 {
-	if (icon != NULL)
-		icon->setPaletteBackgroundColor(bcolor);
-	label->setPaletteBackgroundColor(bcolor);
-}
-
-Hint::~Hint(void)
-{
-	kdebugmf(KDEBUG_FUNCTION_START, "id=%d\n", ident);
-
-	if (icon != NULL)
-		icon->deleteLater();
-	label->deleteLater();
-	kdebugf2();
+	setPaletteBackgroundColor(bcolor);
 }
 
 void Hint::getData(QString &text, QPixmap &pixmap, unsigned int &timeout, QFont &font, QColor &fgcolor, QColor &bgcolor)
 {
-	text=label->text().remove(" ");
+	text = label->text().remove(" ");
+
 	if (icon)
-		pixmap=*(icon->pixmap());
+		pixmap = *(icon->pixmap());
 	else
-		pixmap=QPixmap();
-	timeout=secs;
-	font=label->font();
-	fgcolor=label->paletteForegroundColor();
-	bgcolor=bcolor;
+		pixmap = QPixmap();
+
+	timeout = secs;
+	font = label->font();
+	fgcolor = label->paletteForegroundColor();
+	bgcolor = bcolor;
 }
 
 /** @} */

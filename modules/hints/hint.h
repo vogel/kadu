@@ -13,41 +13,43 @@
 
 #include "gadu.h"
 
-class Hint : public QHBoxLayout
+class Hint : public QWidget
 {
 	Q_OBJECT
 
 	private:
+		QVBoxLayout *vbox;
+
+		QHBoxLayout *labels;
+		QHBoxLayout *callbacksBox;
+
 		QLabel *icon;
 		QLabel *label;
 		QColor bcolor; //kolor t³a
 		unsigned int secs;
-		unsigned int ident; //identyfikator
 		UserListElements users;
-		void enter();//rozja¶nia dymek (t³o)
-		void leave();//ustawia domy¶lny kolor t³a
+
+		bool hintClosing;
+
+		void createLabels(const QString &text, const QPixmap &pixmap);
+
+	private slots:
+		void close();
+
+	protected:
+		virtual void mousePressEvent(QMouseEvent * event);
+		virtual void enterEvent(QEvent *event);
+		virtual void leaveEvent(QEvent *event);
 
 	public:
 		Hint(QWidget *parent, const QString &text, const QPixmap &pixmap, unsigned int timeout);
-		~Hint();
 		/**
 			zwraca listê uinów dotycz±cych tego dymka
 		**/
 		UserListElements getUsers() const { return users; }
 
-		/**
-			zwraca identyfikator dymka
-		**/
-		unsigned int id() const {return ident;}
-
 		void getData(QString &text, QPixmap &pixmap, unsigned int &timeout, QFont &font, QColor &fgcolor, QColor &bgcolor);
-
-	protected:
-		/**
-			przy najechaniu myszk± uruchamia enter(), przy opuszczeniu myszk± dymka uruchamia leave()
-			przy naci¶niêciu którego¶ przycisku myszy, emituje odpowiedni sygna³ *ButtonClicked(uint)
-		**/
-		bool eventFilter(QObject *obj, QEvent *ev);
+		bool isDeprecated();
 
 	public slots:
 		/**
@@ -55,7 +57,7 @@ class Hint : public QHBoxLayout
 			zwraca true je¿eli jeszcze pozosta³ czas
 			false, gdy czas siê skoñczy³
 		**/
-		bool nextSecond();
+		void nextSecond();
 		/**
 			gdy show==true pokazuje dymek
 		**/
@@ -68,20 +70,17 @@ class Hint : public QHBoxLayout
 			id - identyfikator dymka
 			show - czy pokazaæ (teraz)
 		**/
-		void set(const QFont &font, const QColor &fgcolor, const QColor &bgcolor, unsigned int id, bool show = true);
-		/**
-			ustawia identyfikator
-		**/
-		void setId(unsigned int id) {ident = id;}
+		void set(const QFont &font, const QColor &fgcolor, const QColor &bgcolor, bool doShow = true);
 		/**
 			ustawia listê uinów dotycz±cych tego dymka
 		**/
 		void setUsers(const UserListElements &i) { users = i; };
 
 	signals:
-		void leftButtonClicked(unsigned int id);
-		void rightButtonClicked(unsigned int id);
-		void midButtonClicked(unsigned int id);
+		void leftButtonClicked(Hint *hint);
+		void rightButtonClicked(Hint *hint);
+		void midButtonClicked(Hint *hint);
+		void deleting(Hint *hint);
 };
 
 #endif
