@@ -209,7 +209,7 @@ void Notify::statusChanged(UserListElement elem, QString protocolName,
 		kdebugmf(KDEBUG_FUNCTION_END, "end: not notifying user AND not notifying all users\n");
 		return;
 	}
-	
+
 	if (elem.ID("Gadu") == config_file.readEntry("General", "UIN") &&
 	    config_file.readBoolEntry("Notify", "NotifyAboutAll"))
 		return;
@@ -250,7 +250,7 @@ void Notify::probablyNewMessage(Protocol *protocol, UserListElements senders, co
 	kdebugf2();
 }
 
-void Notify::addConfigColumn(const QString &name, const QMap<QString, QString> &notifierSlots)
+void Notify::addConfigColumn(const QString &name, const QMap<QString, QString> &notifierSlots, CallbackCapacity callbackCapacity)
 {
 	kdebugf();
 	QValueList<QCString> s;
@@ -274,6 +274,8 @@ void Notify::addConfigColumn(const QString &name, const QMap<QString, QString> &
 		QCString entry = ((*it).name + '_' + name).utf8();
 		QCString wname = (name + (*it).name).utf8();
 		ConfigDialog::addCheckBox("Notify", s[1], " ", entry, false, 0, wname);
+		if ((callbackCapacity == CallbackNotSupported) && ((*it).callbackRequirement == CallbackNotRequired))
+			notify_slots->registerDisabledControl(wname);
 		s.append(entry);
 		s.append(wname);
 	}
@@ -309,12 +311,13 @@ void Notify::removeConfigColumn(const QString &name, const QMap<QString, QPair<Q
 	kdebugf2();
 }
 
-void Notify::addConfigRow(const QString &name, const char *description)
+void Notify::addConfigRow(const QString &name, const char *description, CallbackRequirement callbackRequirement)
 {
 	kdebugf();
 	NotifyEvent event;
 	event.name = name;
 	event.description = description;
+	event.callbackRequirement = callbackRequirement;
 	event.wname = ("label_" + name).utf8();
 
 	notifyEvents.append(event);
@@ -328,6 +331,8 @@ void Notify::addConfigRow(const QString &name, const char *description)
 		QCString entry = (name + '_' + it.key()).utf8();
 		QCString wname = (it.key() + name).utf8();
 		ConfigDialog::addCheckBox("Notify", parent, " ", entry, false, 0, wname);
+		if ((callbackRequirement == CallbackRequired) && ((*it).notifier->callbackCapacity() == CallbackNotSupported))
+			notify_slots->registerDisabledControl(wname);
 		s.append(entry);
 		s.append(wname);
 	}
@@ -377,10 +382,10 @@ void Notify::removeConfigRow(const QString &name)
 	kdebugf2();
 }
 
-void Notify::registerEvent(const QString &name, const char *description)
+void Notify::registerEvent(const QString &name, const char *description, CallbackRequirement callbackRequirement)
 {
 	kdebugf();
-	addConfigRow(name, description);
+	addConfigRow(name, description, callbackRequirement);
 	kdebugf2();
 }
 
@@ -433,7 +438,7 @@ void Notify::registerNotifier(const QString &name, Notifier *notifier,
 	CONST_FOREACH(i, notifySignals)
 		if (config_file.readBoolEntry("Notify", i.key() + '_' + name) && notifierSlots.contains(i.key()))
 			connectSlot(name, i.key());
-	addConfigColumn(name, notifierSlots);
+	addConfigColumn(name, notifierSlots, notifier->callbackCapacity());
 	kdebugf2();
 }
 
@@ -522,12 +527,39 @@ Notify::NotifierSlots::NotifierSlots(Notifier *n, const QMap<QString, QString> &
 	kdebugf2();
 }
 
-void Notify::notify(const QString &notifyType, const QString &msg, const UserListElements &ules)
+void Notify::notify(Notification *notification)
 {
 	kdebugf();
+	QString notifyType = notification->type();
+	bool foundNotifier = false;
+	bool foundNotifierWithCallbackSupported = notification->getCallbacks().count() == 0;
+
 	CONST_FOREACH(i, notifiers)
 		if (config_file.readBoolEntry("Notify", notifyType + '_' + i.key()))
-			(*i).notifier->externalEvent(notifyType, msg, ules);
+		{
+			(*i).notifier->externalEvent(notification);
+			foundNotifier = true;
+			foundNotifierWithCallbackSupported = true;
+		}
+
+	if (!foundNotifierWithCallbackSupported)
+		CONST_FOREACH(i, notifiers)
+		{
+			if ((*i).notifier->callbackCapacity() == CallbackSupported)
+			{
+				(*i).notifier->externalEvent(notification);
+				foundNotifier = true;
+				foundNotifierWithCallbackSupported = true;
+				break;
+			}
+		}
+
+	if (!foundNotifier)
+		notification->callbackDiscard();
+
+	if (!foundNotifierWithCallbackSupported)
+		MessageBox::wrn(tr("Unable to find notifier for %1 event").arg(notification->type()), true);
+
 	kdebugf2();
 }
 

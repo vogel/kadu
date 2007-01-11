@@ -108,7 +108,7 @@ class HintManager : public Notifier
 		 * gdy UserListElement != NULL, to jego uin brany jest do tworzenia dymka (LMB np otwiera okno rozmowy z danym uinem)
 		 */
 		void message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
-		virtual void externalEvent(const QString &notifyType, const QString &msg, const UserListElements &ules);
+		virtual void externalEvent(Notification *notification);
 /*********** koniec slotów dla notify *************/
 
 		/**

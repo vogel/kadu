@@ -1052,7 +1052,7 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 	toggleFileTransferWindowMenuId = mainMenu->insertItem(tr("Toggle transfers window"),
 		this, SLOT(toggleFileTransferWindow()), 0, -1, 10);
 
-	notify->registerEvent("fileTransferIncomingFile",  QT_TRANSLATE_NOOP("@default", "An user wants to send you a file"));
+// 	notify->registerEvent("fileTransferIncomingFile",  QT_TRANSLATE_NOOP("@default", "An user wants to send you a file"));
 
 	readFromConfig();
 
@@ -1065,7 +1065,7 @@ FileTransferManager::~FileTransferManager()
 
 	writeToConfig();
 
-	notify->unregisterEvent("fileTransferIncomingFile");
+// 	notify->unregisterEvent("fileTransferIncomingFile");
 
 	int sendfile = UserBox::userboxmenu->getItem(tr("Send file"));
 	UserBox::userboxmenu->removeItem(sendfile);
@@ -1432,7 +1432,7 @@ void FileTransferManager::needFileAccept(DccSocket *socket)
 	char fsize[20];
 	snprintf(fsize, sizeof(fsize), "%.1f", (float)socket->ggDccStruct()->file_info.size / 1024);
 
-	notify->notify("fileTransferIncomingFile", "Incoming file", userlist->byID("Gadu", QString::number(socket->ggDccStruct()->peer_uin)));
+// 	notify->notify("fileTransferIncomingFile", "Incoming file", userlist->byID("Gadu", QString::number(socket->ggDccStruct()->peer_uin)));
 
  	FileTransfer *ft = FileTransfer::search(FileTransfer::TypeReceive, socket->ggDccStruct()->peer_uin,
  		cp2unicode(socket->ggDccStruct()->file_info.filename), FileTransfer::FileNameGadu);

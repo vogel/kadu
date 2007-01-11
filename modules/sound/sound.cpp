@@ -581,9 +581,12 @@ void SoundManager::message(const QString &, const QString &message, const QMap<Q
 	kdebugf2();
 }
 
-void SoundManager::externalEvent(const QString &/*notifyType*/, const QString &msg, const UserListElements &ules)
+void SoundManager::externalEvent(Notification *notification)
 {
 	kdebugf();
+
+	UserListElements ules = notification->userListElements();
+	QString msg = notification->text();
 
 	if (ules.count() > 0)
 		message("", msg, 0, &ules[0]);

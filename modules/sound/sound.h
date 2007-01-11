@@ -160,7 +160,7 @@ class SoundManager : public Notifier
 		 *		"Force"           - bool (wymuszenie odtwarzania mimo wyciszenia)
 		 */
 		void message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
-		virtual void externalEvent(const QString &notifyType, const QString &msg, const UserListElements &ules);
+		virtual void externalEvent(Notification *notification);
 
 	public slots:
 		void play(const QString &path, bool force=false);

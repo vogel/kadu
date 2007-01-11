@@ -11,8 +11,19 @@
 #include <time.h>
 
 #include "notify_slots.h"
+#include "notification.h"
 #include "protocol.h"
 #include "userlist.h"
+
+enum CallbackRequirement {
+	CallbackRequired,
+	CallbackNotRequired
+};
+
+enum CallbackCapacity {
+	CallbackSupported,
+	CallbackNotSupported
+};
 
 /**
  * @defgroup notify Notify
@@ -22,7 +33,8 @@ class Notifier : public QObject {
 	public:
 		Notifier(QObject *parent = 0, const char *name = 0) : QObject(parent, name) {};
 		virtual ~Notifier() {};
-		virtual void externalEvent(const QString &notifyType, const QString &msg, const UserListElements &ules) = 0;
+		virtual CallbackCapacity callbackCapacity() { return CallbackNotSupported; }
+		virtual void externalEvent(Notification *notification) = 0;
 };
 
 class Notify : public QObject
@@ -47,8 +59,9 @@ class Notify : public QObject
 			public:
 				QString name;
 				QCString wname;
+				CallbackRequirement callbackRequirement;
 				const char *description;
-				NotifyEvent() : name(), wname(), description(0){}
+				NotifyEvent() : name(), wname(), callbackRequirement(CallbackNotRequired), description(0){}
 		};
 		QValueList<NotifyEvent> notifyEvents;
 		QMap<QString, QValueList<QCString> > strs;
@@ -57,12 +70,12 @@ class Notify : public QObject
 		 * dodaje kolumnê checkboksów w konfiguracji,
 		 * na podstawie notifierSlots decyduje czy dodaæ checkboksa aktywnego czy nie
 		 */
-		void addConfigColumn(const QString &name, const QMap<QString, QString> &notifierSlots);
+		void addConfigColumn(const QString &name, const QMap<QString, QString> &notifierSlots, CallbackCapacity callbackCapacity);
 
 		/* usuwa kolumnê checkboksów z konfiguracji */
 		void removeConfigColumn(const QString &name, const QMap<QString, QPair<QString, bool> > &notifierSlots);
 
-		void addConfigRow(const QString &name, const char *description);
+		void addConfigRow(const QString &name, const char *description, CallbackRequirement callbackRequirement);
 		void removeConfigRow(const QString &name);
 
 	private slots:
@@ -112,7 +125,7 @@ class Notify : public QObject
 		 */
 		void unregisterNotifier(const QString &name);
 
-		void registerEvent(const QString &name, const char *description);
+		void registerEvent(const QString &name, const char *description, CallbackRequirement callbackRequirement);
 		void unregisterEvent(const QString &name);
 
 		QStringList notifiersList() const;
@@ -137,7 +150,7 @@ class Notify : public QObject
 		void statusChanged(UserListElement elem, QString protocolName,
 							const UserStatus &oldStatus, bool massively, bool last);
 
-		void notify(const QString &notifyType, const QString &msg, const UserListElements &ules = UserListElements());
+		void notify(Notification *notification);
 
 	signals:
 	//UWAGA: razem ze zmianami nazw/parametrów tych sygna³ów nale¿y aktualizowaæ wpisy w konstruktorze Notify

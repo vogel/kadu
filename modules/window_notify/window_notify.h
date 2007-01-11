@@ -28,7 +28,7 @@ class WindowNotify : public Notifier
 
 		void userStatusChanged(UserListElement ule, QString protocolName, const UserStatus &oldStatus);
 		void message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
-		virtual void externalEvent(const QString &notifyType, const QString &msg, const UserListElements &ules);
+		virtual void externalEvent(Notification *notification);
 };
 
 extern WindowNotify *window_notify;

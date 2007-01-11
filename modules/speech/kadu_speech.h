@@ -30,7 +30,7 @@ class SpeechSlots : public Notifier
 		void userChangedStatusToNotAvailable(const QString &protocolName, UserListElement);
 
 		void message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
-		virtual void externalEvent(const QString &notifyType, const QString &msg, const UserListElements &ules);
+		virtual void externalEvent(Notification *notification);
 
 		void say(const QString &s, const QString &path=QString::null,
 					bool klatt=false, bool melodie=false,

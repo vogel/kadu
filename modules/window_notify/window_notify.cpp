@@ -157,9 +157,12 @@ void WindowNotify::message(const QString &from, const QString &message, const QM
 	kdebugf2();
 }
 
-void WindowNotify::externalEvent(const QString &/*notifyType*/, const QString &msg, const UserListElements &ules)
+void WindowNotify::externalEvent(Notification *notification)
 {
 	kdebugf();
+
+	UserListElements ules = notification->userListElements();
+	QString msg = notification->text();
 
 	if (ules.count() > 0)
 		MessageBox::msg(ules.altNicks().join(",") + ": " + msg);
