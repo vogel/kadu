@@ -256,6 +256,8 @@ int main(int argc, char *argv[])
 	}
 #endif
 
+	signal(SIGPIPE, SIG_IGN);
+
 	// delayed running, useful in gnome
 	config_file.addVariable("General", "StartDelay", 0);
 	sleep(config_file.readNumEntry("General", "StartDelay"));
