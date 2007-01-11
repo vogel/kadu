@@ -17,6 +17,8 @@ class WindowNotify : public Notifier
 		WindowNotify(QObject *parent=0, const char *name=0);
 		~WindowNotify();
 
+		virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
+
 	public slots:
 		void newChat(Protocol *protocol, UserListElements senders, const QString &msg, time_t t);
 		void newMessage(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool &grab);

@@ -7,14 +7,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qmap.h>
 #include <qapplication.h>
+#include <qhbox.h>
+#include <qlayout.h>
+#include <qmap.h>
+#include <qpushbutton.h>
 #include <qstylesheet.h>
 
 #include "window_notify.h"
 #include "debug.h"
 #include "config_file.h"
+#include "icons_manager.h"
 #include "../notify/notify.h"
+#include "../notify/notification.h"
 #include "message_box.h"
 #include "userlist.h"
 #include "misc.h"
@@ -37,6 +42,74 @@ extern "C" void window_notify_close()
 	delete window_notify;
 	window_notify=NULL;
 	kdebugf2();
+}
+
+class NotificationWindow : public QDialog {
+
+	Notification *notification;
+
+	void addButton(QWidget *parent, const QString &caption, const QString &slot);
+
+public:
+
+	NotificationWindow(Notification *notification);
+
+};
+
+NotificationWindow::NotificationWindow(Notification *notification)
+	: QDialog(NULL, NULL, false, WType_TopLevel | WStyle_Customize | WStyle_DialogBorder | WStyle_Title | WStyle_SysMenu | WDestructiveClose),
+	  notification(notification)
+{
+	kdebugf();
+
+	setCaption(notification->title());
+
+	QVBoxLayout* vbox = new QVBoxLayout(this, 0);
+	vbox->setMargin(20);
+	vbox->setSpacing(20);
+
+	QHBoxLayout* hboxlabels = new QHBoxLayout(vbox);
+	QHBox* labels = new QHBox(this);
+	labels->setSpacing(10);
+	hboxlabels->addWidget(labels, 0, AlignCenter);
+
+	if (!notification->icon().isNull())
+	{
+		QLabel *i = new QLabel(labels);
+		i->setPixmap(icons_manager->loadIcon(notification->icon()));
+	}
+
+	QLabel* l = new QLabel(labels);
+	l->setText(notification->text());
+	vbox->addWidget(l, 0, AlignCenter);
+
+	QHBoxLayout* hboxbuttons = new QHBoxLayout(vbox);
+	QHBox* buttons = new QHBox(this);
+	buttons->setSpacing(20);
+	hboxbuttons->addWidget(buttons, 0, AlignCenter);
+
+	const QValueList<QPair<QString, QString> > callbacks = notification->getCallbacks();
+
+	if (callbacks.size())
+	{
+		FOREACH (i, callbacks)
+			addButton(buttons, tr((*i).first), (*i).second);
+	}
+	else
+		addButton(buttons, tr("Ok"), SLOT(callbackAccept()));
+
+	connect(notification, SIGNAL(closed()), this, SLOT(close()));
+
+	buttons->setMaximumSize(buttons->sizeHint());
+	kdebugf2();
+}
+
+void NotificationWindow::addButton(QWidget *parent, const QString &caption, const QString &slot)
+{
+	QPushButton *button = new QPushButton(parent);
+	button->setText(caption);
+	connect(button, SIGNAL(clicked()), notification, slot);
+	connect(button, SIGNAL(clicked()), notification, SLOT(clearDefaultCallback()));
 }
 
 WindowNotify::WindowNotify(QObject *parent, const char *name) : Notifier(parent, name)
@@ -161,13 +234,8 @@ void WindowNotify::externalEvent(Notification *notification)
 {
 	kdebugf();
 
-	UserListElements ules = notification->userListElements();
-	QString msg = notification->text();
-
-	if (ules.count() > 0)
-		MessageBox::msg(ules.altNicks().join(",") + ": " + msg);
-	else
-		MessageBox::msg(msg);
+	NotificationWindow *nw = new NotificationWindow(notification);
+	nw->show();
 
 	kdebugf2();
 }
