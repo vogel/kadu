@@ -275,7 +275,7 @@ void Notify::addConfigColumn(const QString &name, const QMap<QString, QString> &
 		QCString entry = ((*it).name + '_' + name).utf8();
 		QCString wname = (name + (*it).name).utf8();
 		ConfigDialog::addCheckBox("Notify", s[1], " ", entry, false, 0, wname);
-		if ((callbackCapacity == CallbackNotSupported) && ((*it).callbackRequirement == CallbackNotRequired))
+		if ((callbackCapacity == CallbackNotSupported) && ((*it).callbackRequirement == CallbackRequired))
 			notify_slots->registerDisabledControl(wname);
 		s.append(entry);
 		s.append(wname);
