@@ -29,6 +29,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   w specyficznych okoliczno¶ciach (joi)
 * refaktoryzacja modu³u hints (Vogel)
 * nowe okno przesy³ania plików (Vogel)
+* usuniêty b³±d zwi±zany z SIGPIPE przy transferze plików w dcc (bardzo rzadko wystêpuj±cy) (Vogel)
 * obs³uga wywo³añ zwrotnych w notify (Vogel)
 * obs³uga wywo³añ zwrotnych w window_notify (Vogel)
 * modu³ dcc korzysta z wywo³añ zwrotnych w notify (Vogel)
