@@ -31,6 +31,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * nowe okno przesy³ania plików (Vogel)
 * obs³uga wywo³añ zwrotnych w notify (Vogel)
 * obs³uga wywo³añ zwrotnych w window_notify (Vogel)
+* modu³ dcc korzysta z wywo³añ zwrotnych w notify (Vogel)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

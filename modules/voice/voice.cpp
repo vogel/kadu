@@ -306,8 +306,8 @@ VoiceManager::VoiceManager(QObject *parent, const char *name) : QObject(parent, 
 		this, SLOT(connectionBroken(DccSocket*)));
 	connect(dcc_manager, SIGNAL(dccError(DccSocket*)),
 		this, SLOT(dccError(DccSocket*)));
-	connect(dcc_manager, SIGNAL(dccEvent(DccSocket*)),
-		this, SLOT(dccEvent(DccSocket*)));
+	connect(dcc_manager, SIGNAL(dccEvent(DccSocket*,bool&)),
+		this, SLOT(dccEvent(DccSocket*,bool&)));
 	connect(dcc_manager, SIGNAL(socketDestroying(DccSocket*)),
 		this, SLOT(socketDestroying(DccSocket*)));
 	connect(dcc_manager, SIGNAL(setState(DccSocket*)),
@@ -336,8 +336,8 @@ VoiceManager::~VoiceManager()
 		this, SLOT(connectionBroken(DccSocket*)));
 	disconnect(dcc_manager, SIGNAL(dccError(DccSocket*)),
 		this, SLOT(dccError(DccSocket*)));
-	disconnect(dcc_manager, SIGNAL(dccEvent(DccSocket*)),
-		this, SLOT(dccEvent(DccSocket*)));
+	disconnect(dcc_manager, SIGNAL(dccEvent(DccSocket*,bool&)),
+		this, SLOT(dccEvent(DccSocket*,bool&)));
 	disconnect(dcc_manager, SIGNAL(socketDestroying(DccSocket*)),
 		this, SLOT(socketDestroying(DccSocket*)));
 	VoiceChatDialog::destroyAll();
@@ -699,7 +699,7 @@ void VoiceManager::dccError(DccSocket *socket)
 	kdebugf2();
 }
 
-void VoiceManager::dccEvent(DccSocket *socket)
+void VoiceManager::dccEvent(DccSocket *socket, bool &lock)
 {
 	int len;
 	UinType peer_uin;

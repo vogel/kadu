@@ -240,7 +240,7 @@ class FileTransferManager : public QObject
 		void kaduKeyPressed(QKeyEvent* e);
 		void connectionBroken(DccSocket* socket);
 
-		void dccEvent(DccSocket *socket);
+		void dccEvent(DccSocket *socket, bool &lock);
 		void dccError(DccSocket* socket);
 
 		void setState(DccSocket* socket);
@@ -257,6 +257,11 @@ class FileTransferManager : public QObject
 	public:
 		FileTransferManager(QObject *parent = 0, const char *name = 0);
 		virtual ~FileTransferManager();
+
+		void acceptFile(FileTransfer *ft, DccSocket *socket, QString fileName, bool resume = false);
+		void discardFile(DccSocket *socket);
+
+		void showFileTransferWindow();
 
 		void readFromConfig();
 		void writeToConfig();

@@ -32,7 +32,6 @@ class DccSocket : public QObject
 		QSocketNotifier* writeSocketNotifier;
 		struct gg_dcc* dccsock;
 		struct gg_event* dccevent;
-		bool in_watchDcc;
 		int State;
 		static int Count;
 
@@ -45,8 +44,12 @@ class DccSocket : public QObject
 		~DccSocket();
 		struct gg_dcc* ggDccStruct() const;
 		struct gg_event* ggDccEvent() const;
+
 		virtual void initializeNotifiers();
-		virtual void watchDcc(int check);
+		void enableNotifiers();
+		void disableNotifiers();
+
+		virtual void watchDcc();
 		int state() const;
 		static int count();
 		virtual void setState(int pstate);
@@ -105,7 +108,7 @@ class DccManager : public QObject
 		bool dccEnabled() const;
 
 	signals:
-		void dccEvent(DccSocket* socket);
+		void dccEvent(DccSocket* socket, bool &lock);
 		void connectionBroken(DccSocket* socket);
 		void dccError(DccSocket* socket);
 		void dccDone(DccSocket* socket);

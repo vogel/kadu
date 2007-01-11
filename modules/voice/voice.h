@@ -62,7 +62,7 @@ class VoiceManager : public QObject
 		gsm voice_enc;
 		gsm voice_dec;
 		QValueList<UinType> direct;
-		
+
 		void resetCoder();
 		void resetDecoder();
 		void askAcceptVoiceChat(DccSocket *socket);
@@ -78,7 +78,7 @@ class VoiceManager : public QObject
 		void makeVoiceChat();
 		void connectionBroken(DccSocket *socket);
 		void dccError(DccSocket *socket);
-		void dccEvent(DccSocket *socket);
+		void dccEvent(DccSocket *socket, bool &lock);
 		void socketDestroying(DccSocket *socket);
 		void setState(DccSocket *socket);
 
@@ -111,10 +111,10 @@ class PlayThread : public QObject, public QThread
 		QSemaphore wsem;
 		void waitForData(); //czeka na nowe dane
 		void moreData(); //daje znaæ, ¿e s± nowe dane
-		
+
 		QValueList<struct gsm_sample> samples;
 		QMutex samplesMutex; // chroni dostêp do samples
-		
+
 		bool end;
 //		QMutex endMutex; //chroni dostêp do end
 };

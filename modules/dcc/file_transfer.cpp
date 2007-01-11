@@ -30,6 +30,7 @@
 #include "config_dialog.h"
 #include "debug.h"
 #include "file_transfer.h"
+#include "file_transfer_notifications.h"
 #include "gadu.h"
 #include "icons_manager.h"
 #include "kadu.h"
@@ -1035,8 +1036,8 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 
 	connect(dcc_manager, SIGNAL(connectionBroken(DccSocket*)),
 		this, SLOT(connectionBroken(DccSocket*)));
-	connect(dcc_manager, SIGNAL(dccEvent(DccSocket*)),
-		this, SLOT(dccEvent(DccSocket*)));
+	connect(dcc_manager, SIGNAL(dccEvent(DccSocket*, bool&)),
+		this, SLOT(dccEvent(DccSocket*, bool&)));
 	connect(dcc_manager, SIGNAL(dccError(DccSocket*)),
 		this, SLOT(dccError(DccSocket*)));
 	connect(dcc_manager, SIGNAL(needFileAccept(DccSocket*)),
@@ -1052,7 +1053,8 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 	toggleFileTransferWindowMenuId = mainMenu->insertItem(tr("Toggle transfers window"),
 		this, SLOT(toggleFileTransferWindow()), 0, -1, 10);
 
-// 	notify->registerEvent("fileTransferIncomingFile",  QT_TRANSLATE_NOOP("@default", "An user wants to send you a file"));
+	notify->registerEvent("fileTransferIncomingFile",  QT_TRANSLATE_NOOP("@default", "An user wants to send you a file"), CallbackRequired);
+	notify->registerEvent("fileTransferFinishedNotification", QT_TRANSLATE_NOOP("@default", "File transfer was finished"), CallbackNotRequired);
 
 	readFromConfig();
 
@@ -1065,7 +1067,8 @@ FileTransferManager::~FileTransferManager()
 
 	writeToConfig();
 
-// 	notify->unregisterEvent("fileTransferIncomingFile");
+ 	notify->unregisterEvent("fileTransferIncomingFile");
+	notify->unregisterEvent("fileTransferFinishedNotification");
 
 	int sendfile = UserBox::userboxmenu->getItem(tr("Send file"));
 	UserBox::userboxmenu->removeItem(sendfile);
@@ -1082,8 +1085,8 @@ FileTransferManager::~FileTransferManager()
 
 	disconnect(dcc_manager, SIGNAL(connectionBroken(DccSocket*)),
 		this, SLOT(connectionBroken(DccSocket*)));
-	disconnect(dcc_manager, SIGNAL(dccEvent(DccSocket*)),
-		this, SLOT(dccEvent(DccSocket*)));
+	disconnect(dcc_manager, SIGNAL(dccEvent(DccSocket*,bool&)),
+		this, SLOT(dccEvent(DccSocket*,bool&)));
 	disconnect(dcc_manager, SIGNAL(dccError(DccSocket*)),
 		this, SLOT(dccError(DccSocket*)));
 	disconnect(dcc_manager, SIGNAL(needFileAccept(DccSocket*)),
@@ -1304,6 +1307,12 @@ void FileTransferManager::fileDropped(const UserGroup *group, const QString &fil
 			sendFile((*i).ID("Gadu").toUInt(), fileName);
 }
 
+void FileTransferManager::showFileTransferWindow()
+{
+	if (!fileTransferWindow)
+		toggleFileTransferWindow();
+}
+
 void FileTransferManager::toggleFileTransferWindow()
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "start: fileTransferWindow:%p\n", fileTransferWindow);
@@ -1342,7 +1351,11 @@ void FileTransferManager::fileTransferFinishedSlot(FileTransfer *fileTransfer, b
 	else
 		message = tr("File transfer error!");
 
-	MessageBox::msg(message);
+	Notification *fileTransferFinishedNotification = new Notification("fileTransferFinishedNotification", "SendFile", UserListElements());
+	fileTransferFinishedNotification->setTitle(tr("File transfer finished"));
+	fileTransferFinishedNotification->setText(message);
+
+	notify->notify(fileTransferFinishedNotification);
 }
 
 void FileTransferManager::fileTransferWindowDestroyed()
@@ -1365,7 +1378,7 @@ void FileTransferManager::connectionBroken(DccSocket* socket)
 	kdebugf2();
 }
 
-void FileTransferManager::dccEvent(DccSocket *socket)
+void FileTransferManager::dccEvent(DccSocket *socket, bool &lock)
 {
 	kdebugf();
 
@@ -1374,7 +1387,9 @@ void FileTransferManager::dccEvent(DccSocket *socket)
 		case GG_EVENT_DCC_NEED_FILE_ACK:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEED_FILE_ACK! uin:%d peer_uin:%d\n",
 				socket->ggDccStruct()->uin, socket->ggDccStruct()->peer_uin);
+			socket->disableNotifiers();
 			needFileAccept(socket);
+			lock = true;
 			break;
 
 		case GG_EVENT_DCC_NEED_FILE_INFO:
@@ -1422,80 +1437,74 @@ void FileTransferManager::needFileInfo(DccSocket* socket)
 
 void FileTransferManager::needFileAccept(DccSocket *socket)
 {
+	kdebugf();
+
 	QString fileName;
 	QString question;
-	int answer;
 
-	bool haveFileName = false;
-	bool resume = false;
-
-	char fsize[20];
-	snprintf(fsize, sizeof(fsize), "%.1f", (float)socket->ggDccStruct()->file_info.size / 1024);
-
-// 	notify->notify("fileTransferIncomingFile", "Incoming file", userlist->byID("Gadu", QString::number(socket->ggDccStruct()->peer_uin)));
+	QString fileSize = QString("%1").arg((float)(socket->ggDccStruct()->file_info.size / 1024), 0, 'f', 2);
 
  	FileTransfer *ft = FileTransfer::search(FileTransfer::TypeReceive, socket->ggDccStruct()->peer_uin,
  		cp2unicode(socket->ggDccStruct()->file_info.filename), FileTransfer::FileNameGadu);
 
-	if (ft)
-	{
-		question = narg(tr("User %1 want to send you a file %2\nof size %3kB.\n"
-		                   "This is probably a next part of %4\n What should I do?"),
-			userlist->byID("Gadu", QString::number(socket->ggDccStruct()->peer_uin)).altNick(),
-			cp2unicode(socket->ggDccStruct()->file_info.filename),
-			QString(fsize),
-			ft->fileName()
-		);
+	NewFileTransferNotification *newFileTransferNotification;
 
-		answer = QMessageBox::question(0, tr("Incoming transfer"), question,
-			tr("Continue transfer"),
-			tr("Save file under new name"),
-			tr("Ignore transfer")
-		);
+ 	if (ft)
+ 	{
+		newFileTransferNotification = new NewFileTransferNotification(ft, socket,
+			userlist->byID("Gadu", QString::number(socket->ggDccStruct()->peer_uin)), FileTransfer::StartRestore);
 
-		switch (answer)
-		{
-			case 0: // continue
-				fileName = ft->fileName();
-				haveFileName = true;
-				resume = true;
-				break;
-
-			case 1: // save under new name
-				ft = 0;
-				break;
-
-			case 2: // ignore transfer
-				kdebugmf(KDEBUG_INFO, "discarded\n");
-				socket->discard();
-				return;
-		}
+ 		question = narg(tr("User %1 want to send you a file %2\nof size %3kB.\n"
+ 		                   "This is probably a next part of %4\n What should I do?"),
+ 			userlist->byID("Gadu", QString::number(socket->ggDccStruct()->peer_uin)).altNick(),
+ 			cp2unicode(socket->ggDccStruct()->file_info.filename),
+			fileSize,
+ 			ft->fileName()
+ 		);
 	}
 	else
 	{
-		question = narg(tr("User %1 wants to send us a file %2\nof size %3kB. Accept transfer?"),
-			userlist->byID("Gadu", QString::number(socket->ggDccStruct()->peer_uin)).altNick(),
-			cp2unicode(socket->ggDccStruct()->file_info.filename),
-			QString(fsize)
+		newFileTransferNotification = new NewFileTransferNotification(ft, socket,
+			userlist->byID("Gadu", QString::number(socket->ggDccStruct()->peer_uin)), FileTransfer::StartNew);
+
+ 		question = narg(tr("User %1 wants to send us a file %2\nof size %3kB. Accept transfer?"),
+ 			userlist->byID("Gadu", QString::number(socket->ggDccStruct()->peer_uin)).altNick(),
+ 			cp2unicode(socket->ggDccStruct()->file_info.filename),
+			fileSize
 		);
-
-		answer = QMessageBox::information(0, tr("Incoming transfer"), question, tr("Yes"), tr("No"),
-			QString::null, 0, 1);
-
-		if (answer == 1)
-		{
-			kdebugmf(KDEBUG_INFO, "discarded\n");
-			socket->discard();
-			return;
-		}
 	}
+
+	newFileTransferNotification->setText(question);
+	newFileTransferNotification->setTitle("Incoming transfer");
+
+	notify->notify(newFileTransferNotification);
+
+	kdebugf2();
+}
+
+void FileTransferManager::acceptFile(FileTransfer *ft, DccSocket *socket, QString fileName, bool resume)
+{
+	kdebugf();
+
+	bool haveFileName = !fileName.isNull();
 
 	QFileInfo fi;
 
-	kdebugmf(KDEBUG_INFO, "accepted\n");
-
 	while (true)
 	{
+		if (socket == NULL)
+		{
+			kdebugm(KDEBUG_INFO, "socket is null");
+			return;
+		}
+
+		if (socket->ggDccStruct() == NULL)
+		{
+			kdebugm(KDEBUG_INFO, "socket ggDccStruct is null");
+			socket->discard();
+			socket->enableNotifiers();
+			return;
+		}
 		if (!haveFileName || fileName.isEmpty())
 			fileName = QFileDialog::getSaveFileName(config_file.readEntry("Network", "LastDownloadDirectory")
 				+ cp2unicode(socket->ggDccStruct()->file_info.filename),
@@ -1505,15 +1514,18 @@ void FileTransferManager::needFileAccept(DccSocket *socket)
 		{
 			kdebugmf(KDEBUG_INFO, "discarded\n");
 			socket->discard();
+			socket->enableNotifiers();
 			return;
 		}
+
+		socket->enableNotifiers();
 
 		config_file.writeEntry("Network", "LastDownloadDirectory", QFileInfo(fileName).dirPath() + '/');
 		fi.setFile(fileName);
 
 		if (!haveFileName && fi.exists() && fi.size() < socket->ggDccStruct()->file_info.size)
 		{
-			question.truncate(0);
+			QString question;
 			question = tr("File %1 already exists.").arg(fileName);
 
 			switch (QMessageBox::question(0, tr("save file"), question, tr("Overwrite"), tr("Resume"),
@@ -1552,14 +1564,25 @@ void FileTransferManager::needFileAccept(DccSocket *socket)
 				ft = new FileTransfer(this, FileTransfer::TypeReceive, socket->ggDccStruct()->peer_uin, fileName);
 
 			ft->setSocket(socket);
-			if (!fileTransferWindow)
-				toggleFileTransferWindow();
+			showFileTransferWindow();
 
 			ft->start();
 
 			break;
 		}
 	}
+
+	kdebugf2();
+}
+
+void FileTransferManager::discardFile(DccSocket *socket)
+{
+	kdebugf();
+
+	socket->discard();
+	socket->enableNotifiers();
+
+	kdebugf2();
 }
 
 void FileTransferManager::setState(DccSocket* socket)

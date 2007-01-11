@@ -57,7 +57,7 @@ int DccSocket::Count = 0;
 
 DccSocket::DccSocket(struct gg_dcc* dcc_sock) : QObject(0, 0),
 	readSocketNotifier(0), writeSocketNotifier(0), dccsock(dcc_sock),
-	dccevent(0), in_watchDcc(false), State(DCC_SOCKET_TRANSFERRING)
+	dccevent(0), State(DCC_SOCKET_TRANSFERRING)
 {
 	kdebugf();
 	++Count;
@@ -119,34 +119,43 @@ void DccSocket::initializeNotifiers()
 	kdebugf2();
 }
 
+void DccSocket::enableNotifiers()
+{
+	readSocketNotifier->setEnabled(true);
+	if (dccsock->check & GG_CHECK_WRITE)
+		writeSocketNotifier->setEnabled(true);
+}
+
+void DccSocket::disableNotifiers()
+{
+	readSocketNotifier->setEnabled(false);
+	writeSocketNotifier->setEnabled(false);
+}
+
 void DccSocket::dccDataReceived()
 {
-	if (!in_watchDcc)
-		watchDcc(GG_CHECK_READ);
+	disableNotifiers();
+	watchDcc();
 }
 
 void DccSocket::dccDataSent()
 {
-	kdebugf();
-	writeSocketNotifier->setEnabled(false);
-	if (dccsock->check & GG_CHECK_WRITE)
-		watchDcc(GG_CHECK_WRITE);
-	kdebugf2();
+	disableNotifiers();
+	watchDcc();
 }
 
-void DccSocket::watchDcc(int /*check*/)
+void DccSocket::watchDcc()
 {
 	kdebugf();
 	UserListElements users;
 	bool spoofingAttempt, insane, unbidden;
 	UserListElement peer;
 
-	in_watchDcc = true;
-
 	if (!(dccevent = gadu->dccWatchFd(dccsock)))
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Connection broken unexpectedly!\n");
 		emit dcc_manager->connectionBroken(this);
+		enableNotifiers();
 		return;
 	}
 
@@ -203,7 +212,7 @@ void DccSocket::watchDcc(int /*check*/)
 				setState(DCC_SOCKET_CONNECTION_BROKEN);
 			gadu->freeEvent(dccevent);
 			dccevent = NULL;
-			in_watchDcc = false;
+			enableNotifiers();
 			return;
 		case GG_EVENT_DCC_DONE:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_DONE\n");
@@ -211,16 +220,14 @@ void DccSocket::watchDcc(int /*check*/)
 			emit dcc_manager->dccDone(this);
 			gadu->freeEvent(dccevent);
 			dccevent = NULL;
-			in_watchDcc = false;
+			enableNotifiers();
 			return;
 		default:
 			break;
 	}
 
-	emit dcc_manager->dccEvent(this);
-
-	if (dccsock->check & GG_CHECK_WRITE)
-		writeSocketNotifier->setEnabled(true);
+	bool lock = false;
+	emit dcc_manager->dccEvent(this, lock);
 
 	if (dccevent)
 	{
@@ -228,7 +235,9 @@ void DccSocket::watchDcc(int /*check*/)
 		dccevent = NULL;
 	}
 
-	in_watchDcc = false;
+	if (!lock)
+		enableNotifiers();
+
 	kdebugf2();
 }
 

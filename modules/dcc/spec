@@ -1,2 +1,2 @@
-MODULE_SOURCES="dcc.cpp file_transfer.cpp"
-MODULE_MOC_HEADERS="dcc.h file_transfer.h"
+MODULE_SOURCES="dcc.cpp file_transfer.cpp file_transfer_notifications.cpp"
+MODULE_MOC_HEADERS="dcc.h file_transfer.h file_transfer_notifications.h"
