@@ -16,6 +16,7 @@
 #include "misc.h"
 #include "notify.h"
 #include "notify_slots.h"
+#include "message_box.h"
 #include "userbox.h"
 
 extern "C" int notify_init()
