@@ -277,6 +277,7 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 	echo " ******************************************"
 	echo " * Configuring modules, please wait . . . *"
 	echo " ******************************************"
+	langs="pl en de fr"
 	static_modules_ldflags=
 	static_modules_cxxflags=
 	for mod in $static_modules $shared_modules; do \
@@ -311,7 +312,18 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 			echo "MODULE_LDFLAGS:        $MODULE_LDFLAGS" && \
 			echo "MODULE_TOOLS:          $MODULE_TOOLS" && \
 			echo "MODULE_CONFIGURE_CMD:  $MODULE_CONFIGURE_CMD" && \
-			echo -e "all:\n\tmake -C .. module_$mod\n\ninstall:\n\tmake -C .. module_$mod install_$mod\n\nclean:\n\trm -f *.o *.d *.so *.dylib *.a *_moc.cpp .final.d .final.cpp.o .final.c.o\n\ndistclean: clean\n\trm -f .cxxflags .ldflags .final.cpp .final.c translations/*.qm Makefile\n" > modules/$mod/Makefile && \
+			echo -e "all:" > modules/$mod/Makefile && \
+			echo -e "\tmake -C .. module_$mod\n" >> modules/$mod/Makefile && \
+			echo -e "install:" >> modules/$mod/Makefile && \
+			echo -e "\tmake -C .. module_$mod install_$mod\n" >> modules/$mod/Makefile && \
+			echo -e "clean:" >> modules/$mod/Makefile && \
+			echo -e "\trm -f *.o *.d *.so *.dylib *.a *_moc.cpp .final.d .final.cpp.o .final.c.o\n" >> modules/$mod/Makefile && \
+			echo -e "distclean: clean" >> modules/$mod/Makefile && \
+			echo -e "\trm -f .cxxflags .ldflags .final.cpp .final.c translations/*.qm Makefile\n" >> modules/$mod/Makefile && \
+			echo -e "update-translations:" >> modules/$mod/Makefile && \
+			for i in $langs; do \
+				echo -e "\tlupdate ${MODULE_SOURCES} -ts translations/${mod}_${i}.ts" >> modules/$mod/Makefile; \
+			done && \
 			
 			if test $enable_final == yes; then \
 				for src in $MODULE_SOURCES; do \
