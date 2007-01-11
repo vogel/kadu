@@ -4830,7 +4830,7 @@ int
 main ()
 {
 
-			char* data;
+			void* data;
 			backtrace(&data, 100);
 
   ;
@@ -4908,7 +4908,7 @@ int
 main ()
 {
 
-			char* data;
+			void* data;
 			backtrace(&data, 100);
 
   ;

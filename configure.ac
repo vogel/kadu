@@ -42,7 +42,7 @@ AC_DEFUN(TRY_LINK_EXECINFO,[
 	[
 		#include <execinfo.h>
 	],[
-			char* data;
+			void* data;
 			backtrace(&data, 100);
 	],[
 		$1
