@@ -5,6 +5,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
 +++ wersja 0.5.1-svn
 * window_notify: powiadamianie o nowej rozmowie i nowej wiadomo¶ci znowu dzia³a (joi)
+* usuniêty b³±d zwi±zany z SIGPIPE przy transferze plików w dcc (bardzo rzadko wystêpuj±cy) (Vogel)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
