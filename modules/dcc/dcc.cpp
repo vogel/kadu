@@ -189,24 +189,11 @@ void DccSocket::watchDcc(int /*check*/)
 				//emit dcc_manager->tranferDiscarded(this);
 			}
 			break;
-		case GG_EVENT_NONE:
-			emit dcc_manager->noneEvent(this);
-			break;
 		case GG_EVENT_DCC_CALLBACK:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_CALLBACK! uin:%d peer_uin:%d\n",
 				dccsock->uin, dccsock->peer_uin);
 			dcc_manager->cancelTimeout();
 			dcc_manager->callbackReceived(this);
-			break;
-		case GG_EVENT_DCC_NEED_FILE_ACK:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEED_FILE_ACK! uin:%d peer_uin:%d\n",
-				dccsock->uin, dccsock->peer_uin);
-			emit dcc_manager->needFileAccept(this);
-			break;
-		case GG_EVENT_DCC_NEED_FILE_INFO:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEED_FILE_INFO! uin:%d peer_uin:%d\n",
-				dccsock->uin, dccsock->peer_uin);
-			emit dcc_manager->needFileInfo(this);
 			break;
 		case GG_EVENT_DCC_ERROR:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_ERROR\n");
@@ -245,12 +232,7 @@ void DccSocket::watchDcc(int /*check*/)
 	kdebugf2();
 }
 
-void DccSocket::acceptFile()
-{
-	kdebugf();
-}
-
-void DccSocket::discardFile()
+void DccSocket::discard()
 {
 	kdebugf();
 

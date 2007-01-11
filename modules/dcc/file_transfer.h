@@ -231,14 +231,18 @@ class FileTransferManager : public QObject
 
 		QString selectFileToSend();
 
+		void needFileAccept(DccSocket* socket);
+		void needFileInfo(DccSocket* socket);
+
 	private slots:
 		void userboxMenuPopup();
 		void sendFile();
 		void kaduKeyPressed(QKeyEvent* e);
 		void connectionBroken(DccSocket* socket);
+
+		void dccEvent(DccSocket *socket);
 		void dccError(DccSocket* socket);
-		void needFileAccept(DccSocket* socket);
-		void needFileInfo(DccSocket* socket);
+
 		void setState(DccSocket* socket);
 		void socketDestroying(DccSocket* socket);
 

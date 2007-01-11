@@ -51,8 +51,7 @@ class DccSocket : public QObject
 		static int count();
 		virtual void setState(int pstate);
 
-		void acceptFile();
-		void discardFile();
+		void discard();
 
 	signals:
 		void dccFinished(DccSocket* dcc);
@@ -109,9 +108,6 @@ class DccManager : public QObject
 		void dccEvent(DccSocket* socket);
 		void connectionBroken(DccSocket* socket);
 		void dccError(DccSocket* socket);
-		void needFileAccept(DccSocket* socket);
-		void needFileInfo(DccSocket* socket);
-		void noneEvent(DccSocket* socket);
 		void dccDone(DccSocket* socket);
 		void setState(DccSocket* socket);
 		void socketDestroying(DccSocket* socket);
