@@ -35,7 +35,7 @@ void DockArea::contextMenuEvent(QContextMenuEvent* e)
 {
 	kdebugf();
 	QPopupMenu* p = createContextMenu(this);
-	p->exec(QCursor::pos() + QPoint(10, 10));
+	showPopupMenu(p);
 	delete p;
 	e->accept();
 	kdebugf2();

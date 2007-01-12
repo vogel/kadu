@@ -127,8 +127,7 @@ void ToolBar::contextMenuEvent(QContextMenuEvent* e)
 		//      it calls deleteLater(), which is invoked _before_ exec returns! so QPopupMenu would
 		//      be deleted when exec returns!
 		QPopupMenu* p = createContextMenu(dockArea());
-
-		p->exec(QCursor::pos() + QPoint(10,10));
+		showPopupMenu(p);
 		delete p;
 		e->accept();
 	}

@@ -127,7 +127,7 @@ void ToolButton::contextMenuEvent(QContextMenuEvent* e)
 		p->insertSeparator();
 		QPopupMenu* toolbar_menu = toolbar()->createContextMenu(p);
 		p->insertItem(tr("Toolbar menu"), toolbar_menu);
-		p->exec(QCursor::pos() + QPoint(10, 10));
+		showPopupMenu(p);
 		delete p;
 		e->accept();
 	}

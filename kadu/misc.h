@@ -12,6 +12,7 @@
 class QComboBox;
 class QLineEdit;
 class QMenuData;
+class QPopupMenu;
 
 /*
 	Zmienia ¶cie¿kê relatywn± do katalogu z ustawieniami gg
@@ -54,6 +55,8 @@ QStringList toStringList(const QString &e1, const QString &e2=QString(), const Q
 
 void saveGeometry(const QWidget *w, const QString &section, const QString &name);
 void loadGeometry(QWidget *w, const QString &section, const QString &name, int defaultX, int defaultY, int defaultWidth, int defaultHeight);
+
+int showPopupMenu(QPopupMenu *menu);
 
 //usuwa znaki nowego wiersza, tagi htmla (wszystko co da siê dopasowaæ jako <.*>)
 QString toPlainText(const QString &text);
