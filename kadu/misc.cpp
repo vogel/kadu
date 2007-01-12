@@ -14,6 +14,7 @@
 #include <qlineedit.h>
 #include <qmessagebox.h>
 #include <qpainter.h>
+#include <qpopupmenu.h>
 #include <qprocess.h>
 #include <qpushbutton.h>
 #include <qregexp.h>
@@ -1018,4 +1019,26 @@ void LayoutHelper::textChanged(QLabel *label)
 		++l;
 		++r;
 	}
+}
+
+int showPopupMenu(QPopupMenu *menu)
+{
+	kdebugf();
+	QSize desktopSize = QApplication::desktop()->size();
+	QSize menuSizeHint = menu->sizeHint();
+	QPoint p = QCursor::pos();
+//	kdebugm(KDEBUG_INFO, "p:%d,%d menuSize:%d,%d desktop:%d,%d\n", p.x(), p.y(), menuSizeHint.width(), menuSizeHint.height(), desktopSize.width(), desktopSize.height());
+	if (p.y() + menuSizeHint.height() >= desktopSize.height())
+		p.setY(p.y() - menuSizeHint.height() - 10);
+	else
+		p.setY(p.y() + 10);
+	if (p.x() + menuSizeHint.width() >= desktopSize.width())
+		p.setX(p.x() - menuSizeHint.width() - 10);
+	else
+		p.setX(p.x() + 10);
+//	kdebugm(KDEBUG_INFO, "new_p:%d,%d\n", p.x(), p.y());
+
+	int r = menu->exec(p);
+	kdebugf2();
+	return r;
 }
