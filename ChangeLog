@@ -37,6 +37,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka wywkrywania execinfo (obs³uga backtrace'ów) po ostatnich zabawach
   z configure (joi)
 * w Makefile'ach modu³ów nowy cel: update-translations (joi)
+* nowa opcja configure: --disable-autodownload, wy³±czaj±ca (uwaga, niespodzianka!)
+  autodownload (joi)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

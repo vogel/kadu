@@ -1332,6 +1332,7 @@ Optional Features:
   --disable-dependency-tracking speeds up one-time builds
   --enable-final           speeds up one-time builds
   --enable-dist-info=DIST enable distribution type information, default: sources
+  --disable-autodownload  disable automatic download of modules/icons/emoticons
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -10289,6 +10290,16 @@ cat >>confdefs.h <<_ACEOF
 _ACEOF
 
 
+# autodownload support
+# Check whether --enable-autodownload was given.
+if test "${enable_autodownload+set}" = set; then
+  enableval=$enable_autodownload;
+fi
+
+if test -z "$enable_autodownload"; then
+	enable_autodownload=yes
+fi
+
 # OpenSSL support
 # Maybe it will be back when GG servers have SSL support finally
 #AC_CHECK_OPENSSL
@@ -10308,12 +10319,14 @@ _ACEOF
 			available_modules="$available_modules $dir"; \
 		fi; \
 	done
-	for file in *.web; do \
-		dir=`basename $file .web`; \
-		if test ! -f $dir/spec; then \
-			available_modules="$available_modules $dir"; \
-		fi; \
-	done
+	if test $enable_autodownload = "yes" ; then \
+		for file in *.web; do \
+			dir=`basename $file .web`; \
+			if test ! -f $dir/spec; then \
+				available_modules="$available_modules $dir"; \
+			fi; \
+		done; \
+	fi
 	cd ..
 
 
@@ -10340,19 +10353,20 @@ _ACEOF
 	echo " ******************************************"
 	echo " * Configuring modules, please wait . . . *"
 	echo " ******************************************"
-	langs="pl en de fr"
 	static_modules_ldflags=
 	static_modules_cxxflags=
 	for mod in $static_modules $shared_modules; do \
-		if test -f modules/$mod.web; then \
-			if test -f modules/$mod/.autodownloaded -o ! -f modules/$mod/spec; then \
-				cd modules; \
-				if ! ../varia/scripts/autodownload $mod module; then \
-					{ { echo "$as_me:$LINENO: error: $mod download failed!" >&5
+		if test $enable_autodownload = "yes" ; then \
+			if test -f modules/$mod.web; then \
+				if test -f modules/$mod/.autodownloaded -o ! -f modules/$mod/spec; then \
+					cd modules; \
+					if ! ../varia/scripts/autodownload $mod module; then \
+						{ { echo "$as_me:$LINENO: error: $mod download failed!" >&5
 echo "$as_me: error: $mod download failed!" >&2;}
    { (exit 1); exit 1; }; }; \
+					fi; \
+					cd ..; \
 				fi; \
-				cd ..; \
 			fi; \
 		fi; \
 		if test -f modules/$mod/spec; then \
@@ -10386,9 +10400,11 @@ echo "$as_me: error: $mod download failed!" >&2;}
 			echo -e "distclean: clean" >> modules/$mod/Makefile && \
 			echo -e "\trm -f .cxxflags .ldflags .final.cpp .final.c translations/*.qm Makefile\n" >> modules/$mod/Makefile && \
 			echo -e "update-translations:" >> modules/$mod/Makefile && \
-			for i in $langs; do \
-				echo -e "\tlupdate ${MODULE_SOURCES} -ts translations/${mod}_${i}.ts" >> modules/$mod/Makefile; \
-			done && \
+			if test -d "modules/$mod/translations" ; then \
+				for i in modules/$mod/translations/*.ts; do \
+					echo -e "\tlupdate ${MODULE_SOURCES} -ts translations/`basename $i`" >> modules/$mod/Makefile; \
+				done; \
+			fi && \
 
 			if test $enable_final == yes; then \
 				for src in $MODULE_SOURCES; do \
@@ -10811,12 +10827,14 @@ echo "${ECHO_T}ok" >&6; }
 			available_icon_themes="$available_icon_themes $dir"; \
 		fi; \
 	done
-	for file in *.web; do \
-		dir=`basename $file .web`; \
-		if test ! -f $dir/icons.conf; then \
-			available_icon_themes="$available_icon_themes $dir"; \
-		fi; \
-	done
+	if test $enable_autodownload = "yes" ; then \
+		for file in *.web; do \
+			dir=`basename $file .web`; \
+			if test ! -f $dir/icons.conf; then \
+				available_icon_themes="$available_icon_themes $dir"; \
+			fi; \
+		done; \
+	fi
 	cd ../../..
 
 
@@ -10841,19 +10859,21 @@ echo "${ECHO_T}ok" >&6; }
 	echo " **********************************************"
 	echo " * Configuring icon themes, please wait . . . *"
 	echo " **********************************************"
-	for i_t in $enabled_icon_themes; do \
-		if test -f varia/themes/icons/$i_t.web; then \
-			if test -f varia/themes/icons/$i_t/.autodownloaded -o ! -f varia/themes/icons/$i_t/icons.conf; then \
-				cd varia/themes/icons; \
-				if ! ../../scripts/autodownload $i_t "icon theme"; then \
-					{ { echo "$as_me:$LINENO: error: $i_t download failed!" >&5
+	if test $enable_autodownload = "yes" ; then \
+		for i_t in $enabled_icon_themes; do \
+			if test -f varia/themes/icons/$i_t.web; then \
+				if test -f varia/themes/icons/$i_t/.autodownloaded -o ! -f varia/themes/icons/$i_t/icons.conf; then \
+					cd varia/themes/icons; \
+					if ! ../../scripts/autodownload $i_t "icon theme"; then \
+						{ { echo "$as_me:$LINENO: error: $i_t download failed!" >&5
 echo "$as_me: error: $i_t download failed!" >&2;}
    { (exit 1); exit 1; }; }; \
+					fi; \
+					cd ../../..; \
 				fi; \
-				cd ../../..; \
 			fi; \
-		fi; \
-	done
+		done; \
+	fi
 
 
 
@@ -10868,14 +10888,16 @@ echo "$as_me: error: $i_t download failed!" >&2;}
 			available_emoticon_themes="$available_emoticon_themes $dir"; \
 		fi; \
 	done
-	for file in *.web; do \
-		dir=`basename $file .web`; \
-		if test ! -f $dir/1/emots.txt; then \
-			if test ! -f $dir/emots.txt; then \
-				available_emoticon_themes="$available_emoticon_themes $dir"; \
+	if test $enable_autodownload = "yes" ; then \
+		for file in *.web; do \
+			dir=`basename $file .web`; \
+			if test ! -f $dir/1/emots.txt; then \
+				if test ! -f $dir/emots.txt; then \
+					available_emoticon_themes="$available_emoticon_themes $dir"; \
+				fi; \
 			fi; \
-		fi; \
-	done
+		done; \
+	fi
 	cd ../../..
 
 
@@ -10900,19 +10922,21 @@ echo "$as_me: error: $i_t download failed!" >&2;}
 	echo " **************************************************"
 	echo " * Configuring emoticon themes, please wait . . . *"
 	echo " **************************************************"
-	for e_t in $enabled_emoticon_themes; do \
-		if test -f varia/themes/emoticons/$e_t.web; then \
-			if test -f varia/themes/emoticons/$e_t/.autodownloaded -o ! -f varia/themes/emoticons/$e_t/1/emots.txt; then \
-				cd varia/themes/emoticons; \
-				if ! ../../scripts/autodownload $e_t "emoticon theme"; then \
-					{ { echo "$as_me:$LINENO: error: $e_t download failed!" >&5
+	if test $enable_autodownload = "yes" ; then \
+		for e_t in $enabled_emoticon_themes; do \
+			if test -f varia/themes/emoticons/$e_t.web; then \
+				if test -f varia/themes/emoticons/$e_t/.autodownloaded -o ! -f varia/themes/emoticons/$e_t/1/emots.txt; then \
+					cd varia/themes/emoticons; \
+					if ! ../../scripts/autodownload $e_t "emoticon theme"; then \
+						{ { echo "$as_me:$LINENO: error: $e_t download failed!" >&5
 echo "$as_me: error: $e_t download failed!" >&2;}
    { (exit 1); exit 1; }; }; \
+					fi; \
+					cd ../../..; \
 				fi; \
-				cd ../../..; \
 			fi; \
-		fi; \
-	done
+		done; \
+	fi
 
 
 

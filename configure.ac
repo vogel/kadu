@@ -145,7 +145,7 @@ AC_DEFUN(FIND_TOOL,[
 	AC_MSG_CHECKING([if $1 tool is available])
 	TOOL_DIRS=
 	tmp_TOOL_DIR=
-	for dir in $with_apps `echo $PATH | sed "s/:/ /g"` 
+	for dir in $with_apps `echo $PATH | sed "s/:/ /g"`
 	do
 		if test -x $dir/$1; then
 			tmp_TOOL_DIR=$dir
@@ -158,7 +158,7 @@ AC_DEFUN(FIND_TOOL,[
 		AC_MSG_RESULT([not found])
 		m4_if($2,,AC_MSG_ERROR([$1 not found!]))
 		$2
-	fi	
+	fi
 ])
 
 AC_DEFUN(FIND_AVAILABLE_MODULES,[
@@ -169,12 +169,14 @@ AC_DEFUN(FIND_AVAILABLE_MODULES,[
 			available_modules="$available_modules $dir"; \
 		fi; \
 	done
-	for file in *.web; do \
-		dir=`basename $file .web`; \
-		if test ! -f $dir/spec; then \
-			available_modules="$available_modules $dir"; \
-		fi; \
-	done
+	if test $enable_autodownload = "yes" ; then \
+		for file in *.web; do \
+			dir=`basename $file .web`; \
+			if test ! -f $dir/spec; then \
+				available_modules="$available_modules $dir"; \
+			fi; \
+		done; \
+	fi
 	cd ..
 ])
 
@@ -186,12 +188,14 @@ AC_DEFUN(FIND_AVAILABLE_ICON_THEMES,[
 			available_icon_themes="$available_icon_themes $dir"; \
 		fi; \
 	done
-	for file in *.web; do \
-		dir=`basename $file .web`; \
-		if test ! -f $dir/icons.conf; then \
-			available_icon_themes="$available_icon_themes $dir"; \
-		fi; \
-	done
+	if test $enable_autodownload = "yes" ; then \
+		for file in *.web; do \
+			dir=`basename $file .web`; \
+			if test ! -f $dir/icons.conf; then \
+				available_icon_themes="$available_icon_themes $dir"; \
+			fi; \
+		done; \
+	fi
 	cd ../../..
 ])
 
@@ -205,14 +209,16 @@ AC_DEFUN(FIND_AVAILABLE_EMOTICON_THEMES,[
 			available_emoticon_themes="$available_emoticon_themes $dir"; \
 		fi; \
 	done
-	for file in *.web; do \
-		dir=`basename $file .web`; \
-		if test ! -f $dir/1/emots.txt; then \
-			if test ! -f $dir/emots.txt; then \
-				available_emoticon_themes="$available_emoticon_themes $dir"; \
+	if test $enable_autodownload = "yes" ; then \
+		for file in *.web; do \
+			dir=`basename $file .web`; \
+			if test ! -f $dir/1/emots.txt; then \
+				if test ! -f $dir/emots.txt; then \
+					available_emoticon_themes="$available_emoticon_themes $dir"; \
+				fi; \
 			fi; \
-		fi; \
-	done
+		done; \
+	fi
 	cd ../../..
 ])
 
@@ -277,17 +283,18 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 	echo " ******************************************"
 	echo " * Configuring modules, please wait . . . *"
 	echo " ******************************************"
-	langs="pl en de fr"
 	static_modules_ldflags=
 	static_modules_cxxflags=
 	for mod in $static_modules $shared_modules; do \
-		if test -f modules/$mod.web; then \
-			if test -f modules/$mod/.autodownloaded -o ! -f modules/$mod/spec; then \
-				cd modules; \
-				if ! ../varia/scripts/autodownload $mod module; then \
-					AC_MSG_ERROR([$mod download failed!]); \
+		if test $enable_autodownload = "yes" ; then \
+			if test -f modules/$mod.web; then \
+				if test -f modules/$mod/.autodownloaded -o ! -f modules/$mod/spec; then \
+					cd modules; \
+					if ! ../varia/scripts/autodownload $mod module; then \
+						AC_MSG_ERROR([$mod download failed!]); \
+					fi; \
+					cd ..; \
 				fi; \
-				cd ..; \
 			fi; \
 		fi; \
 		if test -f modules/$mod/spec; then \
@@ -321,10 +328,12 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 			echo -e "distclean: clean" >> modules/$mod/Makefile && \
 			echo -e "\trm -f .cxxflags .ldflags .final.cpp .final.c translations/*.qm Makefile\n" >> modules/$mod/Makefile && \
 			echo -e "update-translations:" >> modules/$mod/Makefile && \
-			for i in $langs; do \
-				echo -e "\tlupdate ${MODULE_SOURCES} -ts translations/${mod}_${i}.ts" >> modules/$mod/Makefile; \
-			done && \
-			
+			if test -d "modules/$mod/translations" ; then \
+				for i in modules/$mod/translations/*.ts; do \
+					echo -e "\tlupdate ${MODULE_SOURCES} -ts translations/`basename $i`" >> modules/$mod/Makefile; \
+				done; \
+			fi && \
+
 			if test $enable_final == yes; then \
 				for src in $MODULE_SOURCES; do \
 					if test "`echo $src | sed 's/.*\.\(.*\)$/\1/'`" == "cpp"; then \
@@ -363,7 +372,7 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 				rm -f modules/$mod/.final.cpp; \
 				rm -f modules/$mod/.final.c; \
 			fi && \
-			
+
 			for lib in $MODULE_LIBS; do \
 				FIND_LIBRARY([$lib],[$MODULE_LIBS_PATH],
 				[
@@ -388,7 +397,7 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 					AC_MSG_ERROR([Additional module configuration command failed!]); \
 				fi; \
 			fi && \
-			
+
 			#removing double spaces from variables
 			while test `echo "$MODULE_CXXFLAGS" | grep "  " | wc -l` -ge 1 ; do \
 				MODULE_CXXFLAGS=`echo "$MODULE_CXXFLAGS" | sed "s/  / /g"`; \
@@ -454,7 +463,7 @@ AC_DEFUN(CHECK_MODULES_DEPENDENCIES,[
 	if test -n "$static_modules"; then \
 		BROWSE_MODULES([$static_modules],[$static_modules],[static])
 	fi; \
-	
+
 	if test -n "$shared_modules"; then \
 		BROWSE_MODULES([$shared_modules],[$static_modules $shared_modules],[shared])
 	fi; \
@@ -466,17 +475,19 @@ AC_DEFUN(PROCESS_ICON_THEMES,[
 	echo " **********************************************"
 	echo " * Configuring icon themes, please wait . . . *"
 	echo " **********************************************"
-	for i_t in $enabled_icon_themes; do \
-		if test -f varia/themes/icons/$i_t.web; then \
-			if test -f varia/themes/icons/$i_t/.autodownloaded -o ! -f varia/themes/icons/$i_t/icons.conf; then \
-				cd varia/themes/icons; \
-				if ! ../../scripts/autodownload $i_t "icon theme"; then \
-					AC_MSG_ERROR([$i_t download failed!]); \
+	if test $enable_autodownload = "yes" ; then \
+		for i_t in $enabled_icon_themes; do \
+			if test -f varia/themes/icons/$i_t.web; then \
+				if test -f varia/themes/icons/$i_t/.autodownloaded -o ! -f varia/themes/icons/$i_t/icons.conf; then \
+					cd varia/themes/icons; \
+					if ! ../../scripts/autodownload $i_t "icon theme"; then \
+						AC_MSG_ERROR([$i_t download failed!]); \
+					fi; \
+					cd ../../..; \
 				fi; \
-				cd ../../..; \
 			fi; \
-		fi; \
-	done
+		done; \
+	fi
 ])
 
 AC_DEFUN(PROCESS_EMOTICON_THEMES,[
@@ -484,17 +495,19 @@ AC_DEFUN(PROCESS_EMOTICON_THEMES,[
 	echo " **************************************************"
 	echo " * Configuring emoticon themes, please wait . . . *"
 	echo " **************************************************"
-	for e_t in $enabled_emoticon_themes; do \
-		if test -f varia/themes/emoticons/$e_t.web; then \
-			if test -f varia/themes/emoticons/$e_t/.autodownloaded -o ! -f varia/themes/emoticons/$e_t/1/emots.txt; then \
-				cd varia/themes/emoticons; \
-				if ! ../../scripts/autodownload $e_t "emoticon theme"; then \
-					AC_MSG_ERROR([$e_t download failed!]); \
+	if test $enable_autodownload = "yes" ; then \
+		for e_t in $enabled_emoticon_themes; do \
+			if test -f varia/themes/emoticons/$e_t.web; then \
+				if test -f varia/themes/emoticons/$e_t/.autodownloaded -o ! -f varia/themes/emoticons/$e_t/1/emots.txt; then \
+					cd varia/themes/emoticons; \
+					if ! ../../scripts/autodownload $e_t "emoticon theme"; then \
+						AC_MSG_ERROR([$e_t download failed!]); \
+					fi; \
+					cd ../../..; \
 				fi; \
-				cd ../../..; \
 			fi; \
-		fi; \
-	done
+		done; \
+	fi
 ])
 
 AC_DEFUN(GENERATE_STATIC_MODULES_CODE,[
@@ -506,7 +519,7 @@ AC_DEFUN(GENERATE_STATIC_MODULES_CODE,[
 	for mod in $static_modules; do \
 		STATIC_MODULES_DECLS="$STATIC_MODULES_DECLS extern \"C\" int ${mod}_init(void); extern \"C\" void ${mod}_close(void);"; \
 		STATIC_MODULES_REGRS="$STATIC_MODULES_REGRS registerStaticModule(\"${mod}\",${mod}_init,${mod}_close);"; \
-	done	
+	done
 ])
 
 ########################################################################
@@ -560,14 +573,14 @@ AC_ARG_WITH(apps,       [  --with-apps="DIRS"      search for apps in DIRS])
 
 AC_CHECK_HEADERS([execinfo.h],
 [
-	AC_MSG_CHECKING([if execinfo is in libc]) 
+	AC_MSG_CHECKING([if execinfo is in libc])
 	TRY_LINK_EXECINFO(
 	[
 		AC_MSG_RESULT([yes])
 		AC_DEFINE(HAVE_EXECINFO,1,[Define if you want execinfo support])
 	],[
 		AC_MSG_RESULT([no])
-		AC_MSG_CHECKING([if execinfo is in libexecinfo]) 
+		AC_MSG_CHECKING([if execinfo is in libexecinfo])
 		save_LDLAGS="$LDLAGS"
 		LDFLAGS="$LDFLAGS -lexecinfo"
 		TRY_LINK_EXECINFO(
@@ -576,8 +589,8 @@ AC_CHECK_HEADERS([execinfo.h],
 			AC_DEFINE(HAVE_EXECINFO,1,[Define if you want execinfo support])
 		],[
 			AC_MSG_RESULT([no])
-			LDFLAGS="$save_LDLAGS"			 
-		])	  
+			LDFLAGS="$save_LDLAGS"
+		])
 	])
 ])
 
@@ -685,7 +698,7 @@ AC_TRY_LINK(
 ],
 [
 	AC_MSG_RESULT(ok)
-	
+
 ],[
 	AC_MSG_RESULT(bad)
 	AC_MSG_ERROR([Your Qt version is not appropiate! Get Qt >= 3.2 and < 4.0])
@@ -880,6 +893,12 @@ if test -z "$enable_dist_info"; then
 fi
 AC_DEFINE_UNQUOTED(DIST_TYPE,"$enable_dist_info",[Define distribution type of this copy of application])
 
+# autodownload support
+AC_ARG_ENABLE(autodownload,[  --disable-autodownload  disable automatic download of modules/icons/emoticons])
+if test -z "$enable_autodownload"; then
+	enable_autodownload=yes
+fi
+
 # OpenSSL support
 # Maybe it will be back when GG servers have SSL support finally
 #AC_CHECK_OPENSSL
@@ -955,7 +974,7 @@ AC_OUTPUT
 #fi
 
 if test -f kadu-config.h; then
-	diff kadu-config.h kadu-config.tmp > /dev/null 
+	diff kadu-config.h kadu-config.tmp > /dev/null
 	if test $? != 0 ; then
 		cp kadu-config.tmp kadu-config.h
 	fi
@@ -972,7 +991,7 @@ echo " **************************************"
 echo
 echo " Kadu $version was configured using options specified below:"
 echo
-echo "   Installation prefix:                [[$prefix]]" 
+echo "   Installation prefix:                [[$prefix]]"
 echo "   Use pthread resolving in libgadu:   $with_pthread"
 echo "   Compile with debug symbols:         $enable_debug"
 echo "   System signals handling:            $enable_sig_handling"
