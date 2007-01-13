@@ -145,6 +145,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Show emoticons in panel"), "ShowEmotPanel", false, 0, 0, Expert);
 	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Show emoticons in history"), "ShowEmotHist", false, 0, 0, Expert);
 	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Allow executing commands by parser"), "AllowExecutingFromParser", false, 0, 0, Expert);
+	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Always show anonymous contacts with messages"), "ShowAnonymousWithMsgs", false, 0, 0, Expert);
 #ifdef DEBUG_ENABLED
 	ConfigDialog::addLineEdit("General", "General", QT_TRANSLATE_NOOP("@default", "Debugging mask"), "DEBUG_MASK",
 		QString::null, 0, 0, Expert);
@@ -258,7 +259,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	UserBox::userboxmenu->addItem("CopyPersonalInfo", tr("Copy personal info"), this, SLOT(copyPersonalInfo()));
 	UserBox::userboxmenu->addItem("LookupUserInfo", tr("Search this user in directory"), this, SLOT(lookupInDirectory()),HotKey::shortCutFromFile("ShortCuts", "kadu_searchuser"));
 	UserBox::userboxmenu->insertSeparator();
-	
+
 	UserBox::management->addItem(tr("Ignore user"), this, SLOT(ignoreUser()));
 	UserBox::management->addItem(tr("Block user"), this, SLOT(blockUser()));
 	UserBox::management->addItem(tr("Notify about user"), this, SLOT(notifyUser()));
@@ -268,7 +269,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	UserBox::management->addItem("RemoveFromUserlist", tr("Remove from userlist"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("ShortCuts", "kadu_deleteuser"));
 	UserBox::management->addItem(tr("Clear history"),  this, SLOT(deleteHistory()));
 	UserBox::management->addItem("EditUserInfo", tr("View / edit user info"), this, SLOT(showUserInfo()),HotKey::shortCutFromFile("ShortCuts", "kadu_persinfo"));
-	
+
 	UserBox::userboxmenu->insertItem(tr("User management"), UserBox::management);
 
 	groups_manager->setTabBar(GroupBar);
@@ -1086,7 +1087,7 @@ void Kadu::slotHandleState(int command)
 			if (accepted)
 			{
 				cd->getDescription(desc);
-				if (parse) 
+				if (parse)
 					desc = KaduParser::parse(desc, ule, true);
 				status.setOnline(desc);
 			}
@@ -1101,7 +1102,7 @@ void Kadu::slotHandleState(int command)
 			if (accepted)
 			{
 				cd->getDescription(desc);
-				if (parse) 
+				if (parse)
 					desc = KaduParser::parse(desc, ule, true);
 				status.setBusy(desc);
 			}
@@ -1116,7 +1117,7 @@ void Kadu::slotHandleState(int command)
 			if (accepted)
 			{
 				cd->getDescription(desc);
-				if (parse) 
+				if (parse)
 					desc = KaduParser::parse(desc, ule, true);
 				status.setInvisible(desc);
 			}
@@ -1131,7 +1132,7 @@ void Kadu::slotHandleState(int command)
 			if (accepted)
 			{
 				cd->getDescription(desc);
-				if (parse) 
+				if (parse)
 					desc = KaduParser::parse(desc, ule, true);
 				status.setOffline(desc);
 			}
@@ -1392,6 +1393,7 @@ bool Kadu::close(bool quit)
 #ifdef DEBUG_ENABLED
 		ConfigDialog::removeControl("General", "Debugging mask");
 #endif
+		ConfigDialog::removeControl("General", "Always show anonymous contacts with messages");
 		ConfigDialog::removeControl("General", "Allow executing commands by parser");
 		ConfigDialog::removeControl("General", "Show emoticons in history");
 		ConfigDialog::removeControl("General", "Show emoticons in panel");
@@ -1639,15 +1641,15 @@ void Kadu::setDocked(bool docked, bool dontHideOnClose1)
 {
 	Docked = docked;
 	dontHideOnClose = dontHideOnClose1;
-	if (Docked && !dontHideOnClose)
-	{
-		Userbox->removeNegativeFilter(anonymousUsersWithoutMessages);
-		Userbox->applyNegativeFilter(anonymousUsers);
-	}
-	else
+	if (config_file.readBoolEntry("General", "ShowAnonymousWithMsgs") || !Docked || dontHideOnClose)
 	{
 		Userbox->removeNegativeFilter(anonymousUsers);
 		Userbox->applyNegativeFilter(anonymousUsersWithoutMessages);
+	}
+	else
+	{
+		Userbox->removeNegativeFilter(anonymousUsersWithoutMessages);
+		Userbox->applyNegativeFilter(anonymousUsers);
 	}
 }
 
@@ -1768,6 +1770,9 @@ void KaduSlots::onApplyTabGeneral()
 
 	QComboBox *cb_language= ConfigDialog::getComboBox("General", "Set language:");
 	config_file.writeEntry("General", "Language", translateLanguage(qApp, cb_language->currentText(),false));
+
+	//refresh
+	kadu->setDocked(kadu->Docked, kadu->dontHideOnClose);
 
 #ifdef DEBUG_ENABLED
 	debug_mask=config_file.readNumEntry("General", "DEBUG_MASK");
