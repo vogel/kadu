@@ -42,6 +42,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawione pozycjonowanie menu kontekstowych (gdy menu otwiera³o siê przy
   krawêdzi, wybierana by³a od razu pierwsza z brzegu pozycja) (joi)
 * ustawiania czcionek w module hints znowu dzia³a (Vogel)
+* dodano kilka brakuj±cych plików nag³ówkowych w ró¿nych miejscach (Vogel)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

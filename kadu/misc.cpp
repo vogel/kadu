@@ -9,6 +9,7 @@
 
 #include <qapplication.h>
 #include <qcombobox.h>
+#include <qcursor.h>
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qlineedit.h>
