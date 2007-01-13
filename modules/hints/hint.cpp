@@ -91,6 +91,8 @@ void Hint::set(const QFont &font, const QColor &color, const QColor &bgcolor, bo
 {
  	kdebugf();
 
+	label->setFont(font);
+
 	setPaletteForegroundColor(color);
 	setPaletteBackgroundColor(bgcolor);
 
