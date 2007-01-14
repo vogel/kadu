@@ -45,6 +45,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodano kilka brakuj±cych plików nag³ówkowych w ró¿nych miejscach (Vogel)
 * opcja pozwalaj±ca w³±czyæ pokazywanie na li¶cie kontaktów anonimów
   z nieodebranymi wiadomo¶ciami (joi)
+* w oknie "O programie" pokazujemy dok³adniesz± informacjê o wersji (joi)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
