@@ -899,6 +899,13 @@ if test -z "$enable_autodownload"; then
 	enable_autodownload=yes
 fi
 
+if test -f SNAPSHOT; then
+	snapshot=yes
+else
+	snapshot=no
+fi
+AC_SUBST(snapshot)
+
 # OpenSSL support
 # Maybe it will be back when GG servers have SSL support finally
 #AC_CHECK_OPENSSL

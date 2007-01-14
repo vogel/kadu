@@ -720,6 +720,7 @@ PHEADERS_ENABLED_TRUE
 PHEADERS_ENABLED_FALSE
 enable_dependency_tracking
 enable_final
+snapshot
 shared_modules
 static_modules
 static_modules_ldflags
@@ -10300,6 +10301,13 @@ if test -z "$enable_autodownload"; then
 	enable_autodownload=yes
 fi
 
+if test -f SNAPSHOT; then
+	snapshot=yes
+else
+	snapshot=no
+fi
+
+
 # OpenSSL support
 # Maybe it will be back when GG servers have SSL support finally
 #AC_CHECK_OPENSSL
@@ -11779,6 +11787,7 @@ PHEADERS_ENABLED_TRUE!$PHEADERS_ENABLED_TRUE$ac_delim
 PHEADERS_ENABLED_FALSE!$PHEADERS_ENABLED_FALSE$ac_delim
 enable_dependency_tracking!$enable_dependency_tracking$ac_delim
 enable_final!$enable_final$ac_delim
+snapshot!$snapshot$ac_delim
 shared_modules!$shared_modules$ac_delim
 static_modules!$static_modules$ac_delim
 static_modules_ldflags!$static_modules_ldflags$ac_delim
@@ -11791,7 +11800,7 @@ subdirs!$subdirs$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 17; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 18; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5

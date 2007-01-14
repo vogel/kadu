@@ -153,7 +153,8 @@ moc/userinfo_moc.cpp \
 moc/userlist_moc.cpp \
 moc/userlist-private_moc.cpp \
 moc/usergroup_moc.cpp \
-moc/userlistelement_moc.cpp
+moc/userlistelement_moc.cpp \
+version.cpp
 
 am_kadu_OBJECTS = \
 obj/about.$(OBJEXT) \
@@ -208,6 +209,7 @@ obj/userlist-private.$(OBJEXT) \
 obj/usergroup.$(OBJEXT) \
 obj/userlistelement.$(OBJEXT) \
 obj/updates.$(OBJEXT) \
+obj/version.$(OBJEXT) \
 obj/about_moc.$(OBJEXT) \
 obj/action_moc.$(OBJEXT) \
 obj/chat_moc.$(OBJEXT) \
@@ -407,6 +409,22 @@ kadu$(EXEEXT): $(kadu_OBJECTS) $(kadu_DEPENDENCIES)
 	@rm -f kadu$(EXEEXT)
 	$(CXXLINK) $(kadu_LDFLAGS) $(kadu_OBJECTS) $(kadu_LDADD) $(LIBS)
 
+ endif
+
+ ifeq ($(snapshot),yes)
+version.cpp: ../SNAPSHOT
+	@echo "const char *detailed_version = \"`cat ../SNAPSHOT`\";" > $@;
+ else
+version.cpp: $(kadu_SOURCES) *.h ../modules/*/*.h ../modules/*/*.cpp ../libgadu/lib/*.c ../libgadu/lib/*.h
+	@core_ver=`svnversion -n .`; \
+	mod_ver=`svnversion -n ../modules`; \
+	lg_ver=`svnversion -n ../libgadu`; \
+	if [ "$$core_ver" != "$$mod_ver" -o "$$core_ver" != "$$lg_ver" -o "$$mod_ver" != "$$lg_ver" ]; then \
+		ver="core:$$core_ver modules:$$mod_ver libgadu:$$lg_ver"; \
+	else \
+		ver="$$core_ver"; \
+	fi; \
+	echo "const char *detailed_version = \"$$ver\";" | diff -q - $@ >/dev/null 2>/dev/null || echo "const char *detailed_version = \"$$ver\";" > $@;
  endif
 
 ###########################################################################

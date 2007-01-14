@@ -149,6 +149,7 @@ psdir = @psdir@
 sbindir = @sbindir@
 shared_modules = @shared_modules@
 sharedstatedir = @sharedstatedir@
+snapshot = @snapshot@
 static_modules = @static_modules@
 static_modules_ldflags = @static_modules_ldflags@
 subdirs = @subdirs@

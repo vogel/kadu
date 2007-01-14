@@ -213,4 +213,6 @@ void printBacktrace(const QString &header = QString::null);
 extern long long int startTime, beforeExecTime, endingTime, exitingTime;
 extern bool measureTime;
 
+extern const char *detailed_version;
+
 #endif
