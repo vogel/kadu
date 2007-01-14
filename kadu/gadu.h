@@ -112,6 +112,7 @@ struct SearchRecord
 	QString BirthYearTo;
 	int Gender;
 	bool Active;
+	bool IgnoreResults;
 
 	SearchRecord();
 	virtual ~SearchRecord();
@@ -819,6 +820,14 @@ class GaduProtocol : public Protocol
 			@see searchInPubdir
 		**/
 		void searchNextInPubdir(SearchRecord& searchRecord);
+
+		/**
+			Zatrzymuje wyszukiwanie.
+
+			@param searchRecord dane u¿yte w wyszukiwaniu
+			@see searchInPubdir
+		**/
+		void stopSearchInPubdir(SearchRecord& searchRecord);
 
 		/**
 			Pobiera informacje o danych osobowych z katalogu publicznego.

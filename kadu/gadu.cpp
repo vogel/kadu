@@ -195,8 +195,8 @@ void SearchResult::setData(const char *uin, const char *first, const char *last,
 }
 
 SearchRecord::SearchRecord() :
-	Seq(0), FromUin(0), Uin(), FirstName(), LastName(), NickName(),
-	City(), BirthYearFrom(), BirthYearTo(), Gender(0), Active(false)
+	Seq(0), FromUin(0), Uin(), FirstName(), LastName(), NickName(), City(), 
+	BirthYearFrom(), BirthYearTo(), Gender(0), Active(false), IgnoreResults(false)
 {
 	kdebugf();
 	kdebugf2();
@@ -260,6 +260,7 @@ void SearchRecord::clearData()
 	BirthYearTo.truncate(0);
 	Gender = 0;
 	Active = false;
+	IgnoreResults = false;
 	kdebugf2();
 }
 
@@ -1471,6 +1472,13 @@ void GaduProtocol::searchNextInPubdir(SearchRecord& searchRecord)
 
 	searchRecord.Seq = gg_pubdir50(Sess, req);
 	gg_pubdir50_free(req);
+	kdebugf2();
+}
+
+void GaduProtocol::stopSearchInPubdir(SearchRecord &searchRecord)
+{
+	kdebugf();
+	searchRecord.IgnoreResults = true;
 	kdebugf2();
 }
 

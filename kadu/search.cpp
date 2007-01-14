@@ -166,11 +166,14 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 		this, SLOT(actionsAddedToToolbar(ToolButton*, ToolBar*)));
 	connect(KaduActions["clearSearchAction"], SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
 		this, SLOT(actionsAddedToToolbar(ToolButton*, ToolBar*)));
+	connect(KaduActions["stopSearchAction"], SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
+		this, SLOT(stopSearchActionAddedToToolbar(ToolButton*, ToolBar*)));
 	connect(KaduActions["firstSearchAction"], SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
 		this, SLOT(firstSearchActionAddedToToolbar(ToolButton*, ToolBar*)));
 	connect(KaduActions["nextResultsAction"], SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
 		this, SLOT(nextResultsActionAddedToToolbar(ToolButton*, ToolBar*)));
 
+	KaduActions["stopSearchAction"]->setEnabled(this, false);
 	KaduActions["firstSearchAction"]->setEnabled(this, false);
 	KaduActions["nextResultsAction"]->setEnabled(this, false);
 	KaduActions["clearSearchAction"]->setEnabled(this, false);
@@ -208,6 +211,12 @@ void SearchDialog::initModule()
 {
 	kdebugf();
 
+	Action* stop_search_action = new Action(icons_manager->loadIcon("CloseWindow"),
+		tr("Stop"), "stopSearchAction", Action::TypeSearch);
+	stop_search_action->setSlot(SLOT(stopSearch()));
+	KaduActions.insert("stopSearchAction", stop_search_action);
+	KaduActions.addDefaultToolbarAction("Search toolbar", "stopSearchAction", 2, true);
+
 	Action* first_search_action = new Action(icons_manager->loadIcon("LookupUserInfo"),
 		tr("&Search"), "firstSearchAction", Action::TypeSearch, Key_Return);
 	first_search_action->setSlot(SLOT(firstSearch()));
@@ -224,12 +233,12 @@ void SearchDialog::initModule()
 		tr("Clear results"), "clearSearchAction", Action::TypeSearch);
 	clear_search_action->setSlot(SLOT(clearResults()));
 	KaduActions.insert("clearSearchAction", clear_search_action);
-	KaduActions.addDefaultToolbarAction("Search toolbar", "clearSearchAction", 2, true);
+	KaduActions.addDefaultToolbarAction("Search toolbar", "clearSearchAction", 3, true);
 
 	Action* add_searched_action = new Action(icons_manager->loadIcon("AddUser"),
 		tr("Add selected user"), "addSearchedAction", Action::TypeSearch);
 	KaduActions.insert("addSearchedAction", add_searched_action);
-	KaduActions.addDefaultToolbarAction("Search toolbar", "addSearchedAction", 3, true);
+	KaduActions.addDefaultToolbarAction("Search toolbar", "addSearchedAction", 4, true);
 
 	kdebugf2();
 }
@@ -239,7 +248,7 @@ void SearchDialog::closeModule()
 #if DEBUG_ENABLED
 	// for valgrind
 	QStringList searchActions;
-	searchActions << "firstSearchAction" << "nextResultsAction" << "clearSearchAction" << "addSearchedAction";
+	searchActions << "stopSearchAction" << "firstSearchAction" << "nextResultsAction" << "clearSearchAction" << "addSearchedAction";
 	CONST_FOREACH(act, searchActions)
 	{
 		Action *a = KaduActions[*act];
@@ -312,6 +321,24 @@ void SearchDialog::addSearchedActionActivated(const UserGroup* users)
 	kdebugf2();
 }
 
+void SearchDialog::stopSearch(void)
+{
+	kdebugf();
+	gadu->stopSearchInPubdir(*searchRecord);
+	KaduActions["stopSearchAction"]->setEnabled(this, false);
+	if ((r_pers->isChecked() && !isPersonalDataEmpty()) || (r_uin->isChecked() && !e_uin->text().isEmpty()))
+		KaduActions["firstSearchAction"]->setEnabled(this, true);
+	if (results->selectedItem()) {
+		if (r_pers->isChecked() && !isPersonalDataEmpty())
+			KaduActions["nextResultsAction"]->setEnabled(this, true);
+
+		KaduActions["clearSearchAction"]->setEnabled(this, true);
+		KaduActions["addSearchedAction"]->setEnabled(this, true);
+		KaduActions["chatAction"]->setEnabled(this, true);
+	}
+	kdebugf2();
+}
+
 void SearchDialog::firstSearch(void)
 {
 	kdebugf();
@@ -349,6 +376,7 @@ void SearchDialog::firstSearch(void)
 
 	gadu->searchInPubdir(*searchRecord);
 
+	KaduActions["stopSearchAction"]->setEnabled(this, true);
 	KaduActions["firstSearchAction"]->setEnabled(this, false);
 	KaduActions["nextResultsAction"]->setEnabled(this, false);
 	KaduActions["addSearchedAction"]->setEnabled(this, false);
@@ -364,6 +392,7 @@ void SearchDialog::nextSearch(void)
 		return;
 	kdebugf();
 
+	KaduActions["stopSearchAction"]->setEnabled(this, true);
 	KaduActions["firstSearchAction"]->setEnabled(this, false);
 	KaduActions["nextResultsAction"]->setEnabled(this, false);
 	KaduActions["addSearchedAction"]->setEnabled(this, false);
@@ -382,7 +411,7 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 	QListViewItem *qlv = NULL;
 	QPixmap pix;
 
-	if (seq != searchRecord->Seq)
+	if ((seq != searchRecord->Seq) || searchRecord->IgnoreResults)
 		return;
 
 	searchRecord->FromUin = fromUin;
@@ -433,6 +462,7 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 //	searchhidden = false;
 	if ((r_pers->isChecked() && !isPersonalDataEmpty()) || (r_uin->isChecked() && !e_uin->text().isEmpty()))
 		KaduActions["firstSearchAction"]->setEnabled(this, true);
+	KaduActions["stopSearchAction"]->setEnabled(this, false);
 
 	if (searchResults.isEmpty())
 	{
@@ -547,6 +577,14 @@ void SearchDialog::actionsAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*
 	kdebugf();
 	if (!results->selectedItem())
 		button->setEnabled(false);
+	kdebugf2();
+}
+
+void SearchDialog::stopSearchActionAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*/)
+{
+	kdebugf();
+	// FIXME - przycisk powinien byc aktywny, jesli jestesmy w trakcie szukania...
+	button->setEnabled(false);
 	kdebugf2();
 }
 

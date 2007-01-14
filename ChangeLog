@@ -48,6 +48,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * w oknie "O programie" pokazujemy dok³adniesz± informacjê o wersji (joi)
 * przy wy³±czaniu programu zapamiêtujemy listê otwartych okien rozmowy,
   a przy nastêpnym uruchomieniu odtwarzamy je (joi)
+* nowa akcja umo¿liwiaj±ca zatrzymanie wyszukiwania w katalogu (neeo)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

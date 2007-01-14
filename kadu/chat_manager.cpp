@@ -24,6 +24,7 @@
 #include "misc.h"
 #include "pending_msgs.h"
 #include "search.h"
+#include "protocols_manager.h"
 #include "userbox.h"
 #include "ignore.h"
 

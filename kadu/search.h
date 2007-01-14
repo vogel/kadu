@@ -67,6 +67,13 @@ class SearchDialog : public QDialog {
 		void selectedUsersNeeded(const UserGroup*& user_group);
 
 		/**
+			\fn void stopSearch(void)
+			Zatrzymuje aktualne wyszukiwanie. Je¶li w pó¼niejszym czasie zwrócone
+			zostan± jakie¶ wyniki, bêd± one zignorowane.
+		**/
+		void stopSearch(void);
+
+		/**
 			\fn void firstSearch(void)
 			Czy¶ci listê wyników, a nastêpnie wyszukuje w katalogu publicznym wg.
 			podanych w oknie danych. Wy¶wietla tylko ograniczon± ich liczbê, ze wzglêdu
@@ -104,6 +111,7 @@ class SearchDialog : public QDialog {
 		void uinClicked();
 		void updateInfoClicked();
 		void actionsAddedToToolbar(ToolButton*, ToolBar*);
+		void stopSearchActionAddedToToolbar(ToolButton*, ToolBar*);
 		void firstSearchActionAddedToToolbar(ToolButton*, ToolBar*);
 		void nextResultsActionAddedToToolbar(ToolButton*, ToolBar*);
 		void selectionChanged();
