@@ -113,7 +113,7 @@ echo "<?xml version='1.0' encoding='UTF-8'?>
 	<key>NSAppleScriptEnabled</key>
 	<false/>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright 2001-2006 Kadu Team</string>
+	<string>Copyright 2001-2007 Kadu Team</string>
 </dict>
 </plist>" >> ${CNT_DIR}/Info.plist
 

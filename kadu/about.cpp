@@ -59,7 +59,7 @@ About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopL
 
 	QHBox *texts = new QHBox(center);
 	QLabel *l_info = new QLabel(texts);
-	l_info->setText(QString("<span style=\"font-size: 12pt\">Kadu %1 %2<br />(c) 2001-2006 Kadu Team</span>").arg(VERSION)
+	l_info->setText(QString("<span style=\"font-size: 12pt\">Kadu %1 %2<br />(c) 2001-2007 Kadu Team</span>").arg(VERSION)
 			.arg(strlen(detailed_version) > 0 ? ("(" + QString(detailed_version) + ")") : QString::null));
 	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 
