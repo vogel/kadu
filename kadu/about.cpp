@@ -63,8 +63,8 @@ About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopL
 			.arg(strlen(detailed_version) > 0 ? ("(" + QString(detailed_version) + ")") : QString::null));
 	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 
-	QWidget *blank3 = new QWidget(texts);
-	blank3->setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum));
+//	QWidget *blank3 = new QWidget(texts);
+//	blank3->setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum));
 
 	new KaduLink(texts);
 	// end create main QLabel widgets (icon and app info)
