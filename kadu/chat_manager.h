@@ -136,6 +136,9 @@ class ChatManager : public QObject
 		**/
 		QVariant& getChatProperty(const UserGroup *group, const QString &name);
 
+		void loadOpenedWindows();
+		void saveOpenedWindows();
+
 	public slots:
 
 		/**
@@ -158,7 +161,7 @@ class ChatManager : public QObject
 			z historii ma sie pojawic w oknie.
 			\return zwracany jest numer otwartego okna
 		**/
-		int openChat(QString initialProtocol, UserListElements users, time_t time = 0);
+		int openChat(Protocol *initialProtocol, UserListElements users, time_t time = 0);
 
 		/**
 			\fn void openPendingMsgs(UserListElements users)

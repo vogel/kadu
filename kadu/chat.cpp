@@ -1131,3 +1131,9 @@ void Chat::scrollHistoryToBottom()
 {
 	body->scrollToBottom();
 }
+
+Protocol *Chat::currentProtocol()
+{
+	//FIXME
+	return gadu;
+}

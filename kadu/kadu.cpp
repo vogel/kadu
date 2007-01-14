@@ -407,6 +407,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 		this, SLOT(wentOffline(const QString &)));
 
 	MainLayout->setResizeMode(QLayout::Minimum);
+	chat_manager->loadOpenedWindows();
 
 	kdebugf2();
 }

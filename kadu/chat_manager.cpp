@@ -196,11 +196,72 @@ void ChatManager::closeAllWindows()
 	kdebugf2();
 }
 
+void ChatManager::loadOpenedWindows()
+{
+	kdebugf();
+	QDomElement root_elem = xml_config_file->rootElement();
+	QDomElement chats_elem = xml_config_file->findElement(root_elem, "ChatWindows");
+	if (!chats_elem.isNull())
+	{
+		for (QDomNode win = chats_elem.firstChild(); !win.isNull(); win = win.nextSibling())
+		{
+			const QDomElement &window_elem = win.toElement();
+			if (window_elem.isNull())
+				continue;
+			if (window_elem.tagName() != "Window")
+				continue;
+			QString protocolId = window_elem.attribute("protocol");
+			QString accountId = window_elem.attribute("id");
+			UserListElements users;
+			for (QDomNode contact = window_elem.firstChild(); !contact.isNull(); contact = contact.nextSibling())
+			{
+				const QDomElement &contact_elem = contact.toElement();
+				if (contact_elem.isNull())
+					continue;
+				if (contact_elem.tagName() != "Contact")
+					continue;
+				QString id = contact_elem.attribute("id");
+				users.append(userlist->byID(protocolId, id));
+			}
+			Protocol *protocol = protocols_manager->byID(protocolId, accountId);
+			if (protocol)
+				openChat(protocol, users);
+			else
+				kdebugm(KDEBUG_WARNING, "protocol %s/%s not found!\n", protocolId.local8Bit().data(), accountId.local8Bit().data());
+		}
+	}
+	kdebugf2();
+}
+
+void ChatManager::saveOpenedWindows()
+{
+	kdebugf();
+	QDomElement root_elem = xml_config_file->rootElement();
+	QDomElement chats_elem = xml_config_file->accessElement(root_elem, "ChatWindows");
+	xml_config_file->removeChildren(chats_elem);
+	CONST_FOREACH(chat, Chats)
+	{
+		QDomElement window_elem = xml_config_file->createElement(chats_elem, "Window");
+		Protocol *protocol = (*chat)->currentProtocol();
+		QString protoId = protocol->protocolID();
+		window_elem.setAttribute("protocol", protoId);
+		window_elem.setAttribute("id", protocol->ID());
+		const UserGroup *users = (*chat)->users();
+		CONST_FOREACH(user, *users)
+		{
+			QDomElement user_elem = xml_config_file->createElement(window_elem, "Contact");
+ 			user_elem.setAttribute("id", (*user).ID(protoId));
+		}
+	}
+	kdebugf2();
+}
+
 ChatManager::~ChatManager()
 {
 	kdebugf();
 	disconnect(&refreshTitlesTimer, SIGNAL(timeout()), this, SLOT(refreshTitles()));
 	disconnect(userlist, SIGNAL(usersStatusChanged(QString)), this, SLOT(refreshTitlesLater()));
+
 	closeAllWindows();
 
 #if DEBUG_ENABLED
@@ -438,7 +499,7 @@ void ChatManager::chatActionActivated(const UserGroup* users)
 		}
 
 		if (!ContainsBad)
-			openChat("Gadu", users->toUserListElements(), 0);
+			openChat(gadu, users->toUserListElements(), 0);
 	}
 	kdebugf2();
 }
@@ -529,7 +590,7 @@ Chat* ChatManager::findChat(UserListElements users) const
 	return NULL;
 }
 
-int ChatManager::openChat(QString /*initialProtocol*/, UserListElements users, time_t time)
+int ChatManager::openChat(Protocol * /*initialProtocol*/, UserListElements users, time_t time)
 {
 	kdebugf();
 	emit chatOpen(users);
@@ -644,7 +705,7 @@ int ChatManager::openPendingMsg(int index, ChatMessage &msg)
 	// TODO: check if index does not exceed boundaries
 	PendingMsgs::Element p = pending[index];
 	// opening chat (if it does not exist)
-	int k = openChat("Gadu", p.users, p.time);
+	int k = openChat(gadu, p.users, p.time);
 	// appending new message
 
 	QDateTime date;
@@ -706,7 +767,7 @@ void ChatManager::openPendingMsgs(UserListElements users)
 		UserBox::refreshAllLater();
 	}
 	else
-		k = openChat("Gadu", users, 0);
+		k = openChat(gadu, users, 0);
 	kdebugf2();
 }
 
@@ -782,7 +843,7 @@ void ChatManager::sendMessage(UserListElement user, UserListElements selected_us
 		UserBox::refreshAllLater();
 	}
 	else
-		k = openChat("Gadu", selected_users, 0);
+		k = openChat(gadu, selected_users, 0);
 	kdebugf2();
 }
 
@@ -957,6 +1018,8 @@ void ChatManager::closeModule()
 	ConfigDialog::removeControl("ShortCuts", "New line / send message:");
 //	ConfigDialog::removeControl("ShortCuts", "Define keys");
 
+	chat_manager->saveOpenedWindows();
+
 	delete chatslots;
 	chatslots = 0;
 	delete chat_manager;
@@ -1123,9 +1186,10 @@ void ChatManager::initModule()
 
 	ConfigDialog::connectSlot("Look", 0, SIGNAL(clicked()), chatslots, SLOT(chooseBackgroundFile()), "chat_background_fileopen");
 
-	chat_manager=new ChatManager(kadu, "chat_manager");
+	chat_manager = new ChatManager(kadu, "chat_manager");
 	connect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
 		chat_manager, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
+
 	kdebugf2();
 }
 
