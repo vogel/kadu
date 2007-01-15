@@ -448,7 +448,8 @@ void Sms::onSmsSenderFinished(bool success)
 	{
 		if (c_saveInHistory->isChecked())
 			history->appendSms(recipient->text(), body->text());
-		QMessageBox::information(this, tr("SMS sent"), tr("The SMS was sent and should be on its way"));
+		if (QMessageBox::question(this, tr("SMS sent"), tr("The SMS was sent and should be on its way.\nDo you want to send next message?"), tr("Yes"), tr("No"), QString::null, 1, 1) == 1)
+			deleteLater();
 		body->clear();
 	}
 	b_send->setEnabled(true);
