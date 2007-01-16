@@ -51,8 +51,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * nowa akcja umo¿liwiaj±ca zatrzymanie wyszukiwania w katalogu (neeo)
 * mo¿liwo¶æ zamkniêcia okna wysy³ania SMS z poziomu informacji o pomy¶lnym
   przes³aniu wiadomo¶ci (neeo)
-* przycisk wysy³ania wiadomo¶ci w oknie rozmowy jest zablokowany, je¶li pole 
+* przycisk wysy³ania wiadomo¶ci w oknie rozmowy jest zablokowany, je¶li pole
   edycji jest puste (neeo)
+* usuniête po³±czenie do nieistniej±cych slotów w dcc (Vogel)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

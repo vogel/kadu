@@ -1040,10 +1040,6 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 		this, SLOT(dccEvent(DccSocket*, bool&)));
 	connect(dcc_manager, SIGNAL(dccError(DccSocket*)),
 		this, SLOT(dccError(DccSocket*)));
-	connect(dcc_manager, SIGNAL(needFileAccept(DccSocket*)),
-		this, SLOT(needFileAccept(DccSocket*)));
-	connect(dcc_manager, SIGNAL(needFileInfo(DccSocket*)),
-		this, SLOT(needFileInfo(DccSocket*)));
 	connect(dcc_manager, SIGNAL(setState(DccSocket*)),
 		this, SLOT(setState(DccSocket*)));
 	connect(dcc_manager, SIGNAL(socketDestroying(DccSocket*)),
@@ -1089,10 +1085,6 @@ FileTransferManager::~FileTransferManager()
 		this, SLOT(dccEvent(DccSocket*,bool&)));
 	disconnect(dcc_manager, SIGNAL(dccError(DccSocket*)),
 		this, SLOT(dccError(DccSocket*)));
-	disconnect(dcc_manager, SIGNAL(needFileAccept(DccSocket*)),
-		this, SLOT(needFileAccept(DccSocket*)));
-	disconnect(dcc_manager, SIGNAL(needFileInfo(DccSocket*)),
-		this, SLOT(needFileInfo(DccSocket*)));
 	disconnect(dcc_manager, SIGNAL(setState(DccSocket*)),
 		this, SLOT(setState(DccSocket*)));
 
