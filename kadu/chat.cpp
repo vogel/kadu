@@ -525,8 +525,9 @@ void Chat::editTextChanged()
 	kdebugf();
 	QValueList<ToolButton*> buttons = 
 		KaduActions["sendAction"]->toolButtonsForUserListElements(Users->toUserListElements());
-	for (QValueList<ToolButton*>::iterator i = buttons.begin(); i != buttons.end(); i++)
-		(*i)->setEnabled(!Edit->text().isEmpty());
+	bool buttonsEnabled = !Edit->text().isEmpty();
+	CONST_FOREACH(i, buttons)
+		(*i)->setEnabled(buttonsEnabled);
 	kdebugf2();
 }
 
