@@ -193,9 +193,8 @@ void EncryptionManager::setupEncrypt(const UserGroup *group)
 
 	setupEncryptButton(chat_manager->findChat(group), encrypt);
 	QValueList<ToolButton*> buttons =
-		KaduActions["encryptionAction"]->toolButtonsForUserListElements(
-			group->toUserListElements());
-	for (QValueList<ToolButton*>::iterator i = buttons.begin(); i != buttons.end(); i++)
+		KaduActions["encryptionAction"]->toolButtonsForUserListElements(group->toUserListElements());
+	CONST_FOREACH(i, buttons)
 		(*i)->setEnabled(encryption_possible);
 
 	kdebugf2();
@@ -208,7 +207,7 @@ void EncryptionManager::setupEncryptButton(Chat* chat,bool enabled)
 	QValueList<ToolButton*> buttons =
 		KaduActions["encryptionAction"]->toolButtonsForUserListElements(
 			chat->users()->toUserListElements());
-	for (QValueList<ToolButton*>::iterator i = buttons.begin(); i != buttons.end(); i++)
+	CONST_FOREACH(i, buttons)
 	{
 		QToolTip::remove(*i);
 		if (enabled)
