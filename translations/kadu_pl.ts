@@ -599,24 +599,20 @@ Jest to wysoce ryzykowne!</translation>
         <translation>Czas, pomiędzy którym nagłówek będzie usuwany: </translation>
     </message>
     <message>
-	<source>Server time</source>
-	<translation>Czas serwera</translation>
+        <source>Server time</source>
+        <translation>Czas serwera</translation>
     </message>
     <message>
-	<source>Remove server time</source>
-	<translation>Usuwaj czas serwera</translation>
+        <source>Remove server time</source>
+        <translation>Usuwaj czas serwera</translation>
     </message>
     <message>
-	<source>Maximum time difference</source>
-	<translation>Maksymalna różnica czasu</translation>
+        <source>Maximum time difference</source>
+        <translation>Maksymalna różnica czasu</translation>
     </message>
     <message>
         <source>On shutdown, set current description</source>
         <translation>Wyłączając ustaw bieżący opis</translation>
-    </message>
-    <message>
-        <source>Another Kadu is running on this profile.</source>
-        <translation>Kadu jest już uruchomione w tym profilu.</translation>
     </message>
     <message>
         <source>Restore last status</source>
@@ -714,7 +710,7 @@ Jest to wysoce ryzykowne!</translation>
     </message>
     <message>
         <source>Allow executing commands by parser</source>
-        <translation>Zezwól na wykonywanie zewnętrznych poleceń przez parser</translation>
+        <translation>Zezwól na wykonywanie poleceń przez parser</translation>
     </message>
     <message>
         <source>Message headers &amp;&amp; separators</source>
@@ -727,6 +723,18 @@ Jest to wysoce ryzykowne!</translation>
     <message>
         <source>Limit number of images received per minute</source>
         <translation>Limit liczby odbieranych obrazków na minutę</translation>
+    </message>
+    <message>
+        <source>Use KaduParser to parse status</source>
+        <translation>Użyj parsera Kadu do analizowania składni statusu</translation>
+    </message>
+    <message>
+        <source>Another Kadu is running on this profile but I cannot get its process ID.</source>
+        <translation>Inne Kadu działa już na tym profilu, ale nie udało się znaleźć identyfikatora jego procesu.</translation>
+    </message>
+    <message>
+        <source>Always show anonymous contacts with messages</source>
+        <translation type="unfinished">Zawsze pokazuj anonimowe kontakty z wiadomościami</translation>
     </message>
 </context>
 <context>
@@ -1383,10 +1391,6 @@ Zbyt wiele prób połączeń z niepoprawnym hasłem</translation>
         <translation>Wyczyść historię</translation>
     </message>
     <message>
-        <source>About...</source>
-        <translation>O programie...</translation>
-    </message>
-    <message>
         <source>Manage &amp;ignored</source>
         <translation>Zarządzaj i&amp;gnorowanymi</translation>
     </message>
@@ -1889,6 +1893,10 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     <message>
         <source>Add selected user</source>
         <translation>Dodaj wybrany kontakt</translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation>Stop</translation>
     </message>
 </context>
 <context>

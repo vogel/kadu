@@ -49,6 +49,10 @@
         <source>Remove completed transfers from transfers list</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>File transfer was finished</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DccManager</name>
@@ -69,14 +73,6 @@ oppure entrambe le macchine sono dietro router con NAT.</translation>
 </context>
 <context>
     <name>DccSocket</name>
-    <message>
-        <source>File has been transferred sucessfully.</source>
-        <translation>Il trasferimento del file completato con successo.</translation>
-    </message>
-    <message>
-        <source>File transfer error!</source>
-        <translation>Errore trasferimento di file!</translation>
-    </message>
     <message>
         <source>Couldn&apos;t open file!</source>
         <translation>Problemi con apertura file!</translation>
@@ -109,29 +105,6 @@ ha port forwarding attivato. Continuare connessione ?
     </message>
 </context>
 <context>
-    <name>FileTransferListViewItem</name>
-    <message>
-        <source>Frozen</source>
-        <translation>Congelato</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation>Errore</translation>
-    </message>
-    <message>
-        <source>Wait for connection</source>
-        <translation>In attesa di connessione</translation>
-    </message>
-    <message>
-        <source>Transfer</source>
-        <translation>Trasferimento</translation>
-    </message>
-    <message>
-        <source>Finished</source>
-        <translation>Finito</translation>
-    </message>
-</context>
-<context>
     <name>FileTransferManager</name>
     <message>
         <source>Send file</source>
@@ -150,18 +123,6 @@ ha port forwarding attivato. Continuare connessione ?
 of size %3kB. Accept transfer?</source>
         <translation>Contatto %1 manda il file %2
 di %3kB. Accetti trasferimento ?</translation>
-    </message>
-    <message>
-        <source>Incoming transfer</source>
-        <translation>Trasferimento entrante</translation>
-    </message>
-    <message>
-        <source>Yes</source>
-        <translation>Sì</translation>
-    </message>
-    <message>
-        <source>No</source>
-        <translation>No</translation>
     </message>
     <message>
         <source>save file</source>
@@ -190,18 +151,6 @@ Probbabilmente è la parte successiva di %4
 Cosa vuoi fare?</translation>
     </message>
     <message>
-        <source>Continue transfer</source>
-        <translation>Cintinuare trasferimento</translation>
-    </message>
-    <message>
-        <source>Save file under new name</source>
-        <translation>Salvare file con nhuovo nome</translation>
-    </message>
-    <message>
-        <source>Ignore transfer</source>
-        <translation>Ignorare trasferimento</translation>
-    </message>
-    <message>
         <source>Select another file</source>
         <translation>Scegli altro file</translation>
     </message>
@@ -213,6 +162,65 @@ Cosa vuoi fare?</translation>
         <source>Toggle transfers window</source>
         <translation>Finestra trasferimenti files</translation>
     </message>
+    <message>
+        <source>File has been transferred sucessfully.</source>
+        <translation type="unfinished">Il trasferimento del file completato con successo.</translation>
+    </message>
+    <message>
+        <source>File transfer error!</source>
+        <translation type="unfinished">Errore trasferimento di file!</translation>
+    </message>
+    <message>
+        <source>File transfer finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FileTransferWidget</name>
+    <message>
+        <source>Pause</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished">Rimuovi</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;File&lt;/b&gt; %1 &lt;b&gt;to&lt;/b&gt; %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;File&lt;/b&gt; %1 &lt;b&gt;from&lt;/b&gt; %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Error&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Frozen&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Wait for connection&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Transfer&lt;/b&gt;: %1 kB/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Finished&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finished</source>
+        <translation type="unfinished">Finito</translation>
+    </message>
 </context>
 <context>
     <name>FileTransferWindow</name>
@@ -221,51 +229,11 @@ Cosa vuoi fare?</translation>
         <translation>Kadu - Trasferimenti files</translation>
     </message>
     <message>
-        <source>Incoming transfers:</source>
-        <translation>Trasferimenti in entrata:</translation>
+        <source>Clean</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Contact</source>
-        <translation>Colegamento</translation>
-    </message>
-    <message>
-        <source>File name</source>
-        <translation>Nome file</translation>
-    </message>
-    <message>
-        <source>Status</source>
-        <translation>Status</translation>
-    </message>
-    <message>
-        <source>Speed</source>
-        <translation>Velocità</translation>
-    </message>
-    <message>
-        <source>Progress</source>
-        <translation>Progresso</translation>
-    </message>
-    <message>
-        <source>Full file name</source>
-        <translation>Nome file completo</translation>
-    </message>
-    <message>
-        <source>Start</source>
-        <translation>Inizia</translation>
-    </message>
-    <message>
-        <source>Stop</source>
-        <translation>Ferma</translation>
-    </message>
-    <message>
-        <source>Remove</source>
-        <translation>Rimuovi</translation>
-    </message>
-    <message>
-        <source>Outgoing transfers:</source>
-        <translation>Trasferimenti in uscita:</translation>
-    </message>
-    <message>
-        <source>Remove completed</source>
+        <source>Hide</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

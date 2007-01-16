@@ -570,10 +570,6 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Another Kadu is running on this profile.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Restore last status</source>
         <translation type="unfinished"></translation>
     </message>
@@ -702,6 +698,30 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Limit number of images received per minute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Server time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove server time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum time difference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use KaduParser to parse status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Another Kadu is running on this profile but I cannot get its process ID.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Always show anonymous contacts with messages</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1328,10 +1348,6 @@ Too many attempts with bad password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>About...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Offline</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1455,6 +1471,14 @@ will be deleted. Are you sure?</source>
     </message>
     <message>
         <source>Search this user in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open description link in browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User management</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1840,6 +1864,10 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>Add selected user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

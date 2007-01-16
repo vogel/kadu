@@ -33,6 +33,10 @@
         <source>Only for the first time</source>
         <translation>Wyślij odpowiedź tylko raz</translation>
     </message>
+    <message>
+        <source>Respond to conferences</source>
+        <translation>Odpowiadaj w konferencjach</translation>
+    </message>
 </context>
 <context>
     <name>AutoResponder</name>

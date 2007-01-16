@@ -91,10 +91,6 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
         <translation>Proces zakończony nieprawidłowo. SMS mógł nie zostać wysłany.</translation>
     </message>
     <message>
-        <source>The SMS was sent and should be on its way.\nDo you want to send next message?</source>
-        <translation>SMS został wysłany i powinien być już w drodze.\nCzy chcesz wysłać następną wiadomość?</translation>
-    </message>
-    <message>
         <source>Yes</source>
         <translation>Tak</translation>
     </message>
@@ -113,6 +109,12 @@ Zaznacz i wpisz w to pole poprawny ciąg. Argumenty oddziel spacjami. Argument %
     <message>
         <source>Save SMS in history</source>
         <translation>Zapisz SMS w historii</translation>
+    </message>
+    <message>
+        <source>The SMS was sent and should be on its way.
+Do you want to send next message?</source>
+        <translation>SMS został wysłany i prawdopodobnie jest w drodze.
+Chcesz wysłać następną wiadomość?</translation>
     </message>
 </context>
 <context>

@@ -78,4 +78,11 @@ lors de la première  connexion de Kadu avec le serveur
         <translation type="unfinished"></translation>
     </message>
 </context>
+<context>
+    <name>Notify</name>
+    <message>
+        <source>Unable to find notifier for %1 event</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>

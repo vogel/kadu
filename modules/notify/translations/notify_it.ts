@@ -76,4 +76,11 @@ durante primo colegamento Kadu con serwer</translation>
         <translation type="unfinished"></translation>
     </message>
 </context>
+<context>
+    <name>Notify</name>
+    <message>
+        <source>Unable to find notifier for %1 event</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>

@@ -91,10 +91,6 @@ nicht versteht. Gib hier die Argumente ein, getrennt mit Komma. %n=Tel.; %m=Nach
         <translation>Versenden unerwartet beendet. Die SMS wurde wahrscheinlich nicht versandt</translation>
     </message>
     <message>
-        <source>The SMS was sent and should be on its way</source>
-        <translation>Die SMS wurde versandt und ist unterwegs</translation>
-    </message>
-    <message>
         <source>Contact</source>
         <translation>Kontakt</translation>
     </message>
@@ -105,6 +101,19 @@ nicht versteht. Gib hier die Argumente ein, getrennt mit Komma. %n=Tel.; %m=Nach
     <message>
         <source>Save SMS in history</source>
         <translation>SMS im Verlauf speichern</translation>
+    </message>
+    <message>
+        <source>The SMS was sent and should be on its way.
+Do you want to send next message?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

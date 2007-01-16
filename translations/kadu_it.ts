@@ -575,10 +575,6 @@ E un rischio per la sicurezza!</translation>
         <translation>Quando spento, utilizza attuale descrizione</translation>
     </message>
     <message>
-        <source>Another Kadu is running on this profile.</source>
-        <translation>Altro Kadu usa questo profilo.</translation>
-    </message>
-    <message>
         <source>Restore last status</source>
         <translation>Rispristina l&apos;ultimo status</translation>
     </message>
@@ -707,6 +703,30 @@ E un rischio per la sicurezza!</translation>
     </message>
     <message>
         <source>Limit number of images received per minute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Server time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove server time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum time difference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use KaduParser to parse status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Another Kadu is running on this profile but I cannot get its process ID.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Always show anonymous contacts with messages</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1362,10 +1382,6 @@ Too many attempts with bad password</source>
         <translation>Cancella Cronologia</translation>
     </message>
     <message>
-        <source>About...</source>
-        <translation>Informazioni su...</translation>
-    </message>
-    <message>
         <source>Manage &amp;ignored</source>
         <translation>Gestione contatti &amp;ignorati</translation>
     </message>
@@ -1467,6 +1483,14 @@ saranno eliminati. Vuoi davvero?</translation>
     </message>
     <message>
         <source>Search this user in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open description link in browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User management</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1854,6 +1878,10 @@ Possibile incompatibilità con Kadu.</translation>
     </message>
     <message>
         <source>Add selected user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

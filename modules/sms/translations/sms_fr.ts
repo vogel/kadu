@@ -92,10 +92,6 @@ est fonctionnel</translation>
         <translation>Processus terminé anormallement. SMS n&apos;a pas été envoyé</translation>
     </message>
     <message>
-        <source>The SMS was sent and should be on its way</source>
-        <translation>SMS a été envoyé et est en route</translation>
-    </message>
-    <message>
         <source>Contact</source>
         <translation>Contact</translation>
     </message>
@@ -106,6 +102,19 @@ est fonctionnel</translation>
     <message>
         <source>Save SMS in history</source>
         <translation>Enregistre SMS dans l&apos;historique</translation>
+    </message>
+    <message>
+        <source>The SMS was sent and should be on its way.
+Do you want to send next message?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -91,10 +91,6 @@ e scrivi la stringa corretta. I parametri devono essere separati da spazio. Il p
         <translation>Il processo SMS terminato con errore. Lo SMS non può essere trasmesso</translation>
     </message>
     <message>
-        <source>The SMS was sent and should be on its way</source>
-        <translation>Il SMS è stato trasmesso e dovrebbe essere in viaggio</translation>
-    </message>
-    <message>
         <source>Contact</source>
         <translation>Contatto</translation>
     </message>
@@ -105,6 +101,19 @@ e scrivi la stringa corretta. I parametri devono essere separati da spazio. Il p
     <message>
         <source>Save SMS in history</source>
         <translation>Salva SMS nello storico</translation>
+    </message>
+    <message>
+        <source>The SMS was sent and should be on its way.
+Do you want to send next message?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

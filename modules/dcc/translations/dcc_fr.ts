@@ -49,6 +49,10 @@
         <source>Remove completed transfers from transfers list</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>File transfer was finished</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DccManager</name>
@@ -69,14 +73,6 @@ Les deux machines sont situées derrière le routeur avec NAT.</translation>
 </context>
 <context>
     <name>DccSocket</name>
-    <message>
-        <source>File has been transferred sucessfully.</source>
-        <translation>Transfère du paquet réussi.</translation>
-    </message>
-    <message>
-        <source>File transfer error!</source>
-        <translation>Erreur lors de transmission du paquet!</translation>
-    </message>
     <message>
         <source>Couldn&apos;t open file!</source>
         <translation>Problème ouverture de fichier!</translation>
@@ -108,29 +104,6 @@ ou lui/elle a transmit. Continuez la connexion ?</translation>
     </message>
 </context>
 <context>
-    <name>FileTransferListViewItem</name>
-    <message>
-        <source>Frozen</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Wait for connection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Transfer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Finished</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>FileTransferManager</name>
     <message>
         <source>Send file</source>
@@ -149,18 +122,6 @@ ou lui/elle a transmit. Continuez la connexion ?</translation>
 of size %3kB. Accept transfer?</source>
         <translation>Utilisateur %1souhaite vous envoyer le fichier %2
 de dimension %3kB.Acceptez vous ce transfert?</translation>
-    </message>
-    <message>
-        <source>Incoming transfer</source>
-        <translation>Transfert arrivé</translation>
-    </message>
-    <message>
-        <source>Yes</source>
-        <translation>Oui</translation>
-    </message>
-    <message>
-        <source>No</source>
-        <translation>Non</translation>
     </message>
     <message>
         <source>save file</source>
@@ -186,18 +147,6 @@ This is probably a next part of %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Continue transfer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Save file under new name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ignore transfer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Select another file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -209,6 +158,65 @@ This is probably a next part of %4
         <source>Toggle transfers window</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>File has been transferred sucessfully.</source>
+        <translation type="unfinished">Transfère du paquet réussi.</translation>
+    </message>
+    <message>
+        <source>File transfer error!</source>
+        <translation type="unfinished">Erreur lors de transmission du paquet!</translation>
+    </message>
+    <message>
+        <source>File transfer finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FileTransferWidget</name>
+    <message>
+        <source>Pause</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;File&lt;/b&gt; %1 &lt;b&gt;to&lt;/b&gt; %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;File&lt;/b&gt; %1 &lt;b&gt;from&lt;/b&gt; %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Error&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Frozen&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Wait for connection&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Transfer&lt;/b&gt;: %1 kB/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Finished&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finished</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>FileTransferWindow</name>
@@ -217,51 +225,11 @@ This is probably a next part of %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Incoming transfers:</source>
+        <source>Clean</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Contact</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Speed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Progress</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Full file name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Stop</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Outgoing transfers:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove completed</source>
+        <source>Hide</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

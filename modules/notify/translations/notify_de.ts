@@ -76,4 +76,11 @@ des Benutzers während des Verbindens zum Server</translation>
         <translation>Maus über Kontakt</translation>
     </message>
 </context>
+<context>
+    <name>Notify</name>
+    <message>
+        <source>Unable to find notifier for %1 event</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>

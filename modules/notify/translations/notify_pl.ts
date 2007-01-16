@@ -76,4 +76,11 @@ przy pierwszym połaczeniu sie Kadu z serwerem</translation>
         <translation>Kursor myszy nad kontaktem</translation>
     </message>
 </context>
+<context>
+    <name>Notify</name>
+    <message>
+        <source>Unable to find notifier for %1 event</source>
+        <translation>Nie znaleziono powiadomienia dla zdarzenia %1</translation>
+    </message>
+</context>
 </TS>

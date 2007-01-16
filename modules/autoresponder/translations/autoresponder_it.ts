@@ -33,6 +33,10 @@
         <source>Only for the first time</source>
         <translation>Rispondi solo una volta</translation>
     </message>
+    <message>
+        <source>Respond to conferences</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AutoResponder</name>

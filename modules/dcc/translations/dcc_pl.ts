@@ -49,6 +49,10 @@
         <source>Remove completed transfers from transfers list</source>
         <translation>Usuń skończone transfery z listy</translation>
     </message>
+    <message>
+        <source>File transfer was finished</source>
+        <translation>Transfer pliku będzie zakończony</translation>
+    </message>
 </context>
 <context>
     <name>DccManager</name>
@@ -69,14 +73,6 @@ plików lub oba komputery są za NAT-em.</translation>
 </context>
 <context>
     <name>DccSocket</name>
-    <message>
-        <source>File has been transferred sucessfully.</source>
-        <translation>Transfer pliku zakończony pomyślnie.</translation>
-    </message>
-    <message>
-        <source>File transfer error!</source>
-        <translation>Błąd podczas transmisji pliku!</translation>
-    </message>
     <message>
         <source>Couldn&apos;t open file!</source>
         <translation>Problem z otworzeniem pliku!</translation>
@@ -109,29 +105,6 @@ Kontynuować połączenie?</translation>
     </message>
 </context>
 <context>
-    <name>FileTransferListViewItem</name>
-    <message>
-        <source>Frozen</source>
-        <translation>Zamrożony</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation>Błąd</translation>
-    </message>
-    <message>
-        <source>Wait for connection</source>
-        <translation>Oczekiwanie na połączenie</translation>
-    </message>
-    <message>
-        <source>Transfer</source>
-        <translation>Transfer</translation>
-    </message>
-    <message>
-        <source>Finished</source>
-        <translation>Zakończony</translation>
-    </message>
-</context>
-<context>
     <name>FileTransferManager</name>
     <message>
         <source>Send file</source>
@@ -150,18 +123,6 @@ Kontynuować połączenie?</translation>
 of size %3kB. Accept transfer?</source>
         <translation>Użytkownik %1  chciałby przesłać Tobie plik %2
 o rozmiarze %3kB. Akceptujesz?</translation>
-    </message>
-    <message>
-        <source>Incoming transfer</source>
-        <translation>Transfer przychodzący</translation>
-    </message>
-    <message>
-        <source>Yes</source>
-        <translation>Tak</translation>
-    </message>
-    <message>
-        <source>No</source>
-        <translation>Nie</translation>
     </message>
     <message>
         <source>save file</source>
@@ -190,18 +151,6 @@ Jest prawdopodobnie następną częścią z %4
 Co chcesz zrobić?</translation>
     </message>
     <message>
-        <source>Continue transfer</source>
-        <translation>Kontynuuj przesyłanie</translation>
-    </message>
-    <message>
-        <source>Save file under new name</source>
-        <translation>Zapisz plik pod nową nazwą</translation>
-    </message>
-    <message>
-        <source>Ignore transfer</source>
-        <translation>Ignoruj przesyłanie</translation>
-    </message>
-    <message>
         <source>Select another file</source>
         <translation>Wybierz inny plik</translation>
     </message>
@@ -213,6 +162,65 @@ Co chcesz zrobić?</translation>
         <source>Toggle transfers window</source>
         <translation>Okno przesyłania plików</translation>
     </message>
+    <message>
+        <source>File has been transferred sucessfully.</source>
+        <translation>Transfer pliku zakończony pomyślnie.</translation>
+    </message>
+    <message>
+        <source>File transfer error!</source>
+        <translation>Błąd podczas transmisji pliku!</translation>
+    </message>
+    <message>
+        <source>File transfer finished</source>
+        <translation>Transfer pliku zakończony</translation>
+    </message>
+</context>
+<context>
+    <name>FileTransferWidget</name>
+    <message>
+        <source>Pause</source>
+        <translation>Zatrzymaj</translation>
+    </message>
+    <message>
+        <source>Continue</source>
+        <translation>Kontynuuj</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation>Usuń</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;File&lt;/b&gt; %1 &lt;b&gt;to&lt;/b&gt; %2</source>
+        <translation>&lt;b&gt;Plik&lt;/b&gt; %1 &lt;b&gt;do&lt;/b&gt; %2</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;File&lt;/b&gt; %1 &lt;b&gt;from&lt;/b&gt; %2</source>
+        <translation>&lt;b&gt;Plik&lt;/b&gt; %1 &lt;b&gt;od&lt;/b&gt; %2</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Error&lt;/b&gt;</source>
+        <translation>&lt;b&gt;Błąd&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Frozen&lt;/b&gt;</source>
+        <translation>&lt;b&gt;Zamrożony&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Wait for connection&lt;/b&gt;</source>
+        <translation>&lt;b&gt;Czekam na połączenie&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Transfer&lt;/b&gt;: %1 kB/s</source>
+        <translation>&lt;b&gt;Transfer&lt;/b&gt;: %1 kB/s</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Finished&lt;/b&gt;</source>
+        <translation>&lt;b&gt;Zakończony&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Finished</source>
+        <translation>Zakończony</translation>
+    </message>
 </context>
 <context>
     <name>FileTransferWindow</name>
@@ -221,52 +229,12 @@ Co chcesz zrobić?</translation>
         <translation>Kadu - Przesyłanie pliku</translation>
     </message>
     <message>
-        <source>Incoming transfers:</source>
-        <translation>Transfer przychodzący:</translation>
+        <source>Clean</source>
+        <translation>Czyść</translation>
     </message>
     <message>
-        <source>Contact</source>
-        <translation>Połączenie</translation>
-    </message>
-    <message>
-        <source>File name</source>
-        <translation>Nazwa pliku</translation>
-    </message>
-    <message>
-        <source>Status</source>
-        <translation>Status</translation>
-    </message>
-    <message>
-        <source>Speed</source>
-        <translation>Prędkość</translation>
-    </message>
-    <message>
-        <source>Progress</source>
-        <translation>Postęp</translation>
-    </message>
-    <message>
-        <source>Full file name</source>
-        <translation>Pełna nazwa pliku</translation>
-    </message>
-    <message>
-        <source>Start</source>
-        <translation>Start</translation>
-    </message>
-    <message>
-        <source>Stop</source>
-        <translation>Stop</translation>
-    </message>
-    <message>
-        <source>Remove</source>
-        <translation>Usuń</translation>
-    </message>
-    <message>
-        <source>Outgoing transfers:</source>
-        <translation>Transfer wychodzący:</translation>
-    </message>
-    <message>
-        <source>Remove completed</source>
-        <translation>Usuń skończone</translation>
+        <source>Hide</source>
+        <translation>Ukryj</translation>
     </message>
 </context>
 </TS>
