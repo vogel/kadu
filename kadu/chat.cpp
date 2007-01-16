@@ -232,9 +232,16 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	connect(Edit, SIGNAL(cursorPositionChanged(int, int)), this, SLOT(curPosChanged(int, int)));
 	connect(Edit, SIGNAL(sendMessage()), this, SLOT(sendMessage()));
 	connect(Edit, SIGNAL(specialKeyPressed(int)), this, SLOT(specialKeyPressed(int)));
+	connect(Edit, SIGNAL(textChanged()), this, SLOT(editTextChanged()));
 
 	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)),
 		this, SLOT(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)));
+
+	editTextChanged(); // slot ustawia poprawny stan przycisku Send (tutaj - blokuje)
+
+	connect(KaduActions["sendAction"], SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
+		this, SLOT(sendActionAddedToToolbar(ToolButton*, ToolBar*)));
+
 
 	Edit->setFocus();
 
@@ -399,6 +406,13 @@ void Chat::imageReceivedAndSaved(UinType sender,uint32_t size,uint32_t crc32,con
 	kdebugf2();
 }
 
+void Chat::sendActionAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*/)
+{
+	kdebugf();
+	button->setEnabled(!Edit->text().isEmpty());
+	kdebugf2();
+}
+
 void Chat::changeAppearance()
 {
 	kdebugf();
@@ -503,6 +517,16 @@ void Chat::keyPressEvent(QKeyEvent* e)
 		e->accept();
 	else
 		QMainWindow::keyPressEvent(e);
+	kdebugf2();
+}
+
+void Chat::editTextChanged()
+{
+	kdebugf();
+	QValueList<ToolButton*> buttons = 
+		KaduActions["sendAction"]->toolButtonsForUserListElements(Users->toUserListElements());
+	for (QValueList<ToolButton*>::iterator i = buttons.begin(); i != buttons.end(); i++)
+		(*i)->setEnabled(!Edit->text().isEmpty());
 	kdebugf2();
 }
 

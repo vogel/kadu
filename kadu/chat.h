@@ -11,6 +11,7 @@
 #include "emoticons.h"
 #include "gadu.h"
 #include "usergroup.h"
+#include "toolbar.h"
 
 class QAccel;
 class QHBox;
@@ -145,6 +146,8 @@ class Chat : public QMainWindow
 		void disconnectAcknowledgeSlots();
 
 		void selectedUsersNeeded(const UserGroup*& user_group);
+
+		void sendActionAddedToToolbar(ToolButton*, ToolBar*);
 
 	protected:
 		/**
@@ -310,6 +313,14 @@ class Chat : public QMainWindow
 			\param emot ikonka np. <lol>
 		**/
 		void addEmoticon(QString);
+
+		/**
+			\fn void editTextChanged()
+			Slot jest wywo³ywany, gdy zmieni³a siê zawarto¶æ
+			pola edycji wiadomo¶ci. Ustawia poprawny stan przycisku
+			akcji sendAction w oknie rozmowy.
+		**/
+		void editTextChanged();
 
 		/**
 			\fn void scrollMessages(const QValueList<ChatMessage *> &)
