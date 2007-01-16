@@ -51,6 +51,7 @@
 #include "userlist.cpp"
 #include "userlistelement.cpp"
 #include "userlist-private.cpp"
+#include "version.cpp"
 #include "moc/about_moc.cpp"
 #include "moc/action_moc.cpp"
 #include "moc/chat_manager_moc.cpp"
