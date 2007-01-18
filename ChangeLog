@@ -54,6 +54,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * przycisk wysy³ania wiadomo¶ci w oknie rozmowy jest zablokowany, je¶li pole
   edycji jest puste (neeo)
 * usuniête po³±czenie do nieistniej±cych slotów w dcc (Vogel)
+* w oknie "O programie..." kursor zmienia siê na ³apkê po najechaniu
+  nad link strony Kadu (Prezu/neeo)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

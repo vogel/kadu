@@ -14,6 +14,7 @@
 #include <qtextbrowser.h>
 #include <qtextedit.h>
 #include <qvbox.h>
+#include <qcursor.h>
 
 #include "about.h"
 #include "debug.h"
@@ -26,6 +27,8 @@ class KaduLink : public QLabel
 		KaduLink(QWidget *parent) : QLabel(parent)
 		{
 			setText("<a href=\"http://www.kadu.net/\">www.kadu.net</a>");
+			setCursor(QCursor(Qt::PointingHandCursor));
+			setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed));
 		}
 	protected:
 		virtual void mousePressEvent(QMouseEvent *)
