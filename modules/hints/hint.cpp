@@ -7,23 +7,67 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <qpushbutton.h>
 
 #include "hint.h"
 #include "debug.h"
 #include "config_file.h"
+#include "icons_manager.h"
+#include "misc.h"
+#include "../notify/notification.h"
 
 /**
  * @ingroup hints
  * @{
  */
 Hint::Hint(QWidget *parent, const QString& text, const QPixmap& pixmap, unsigned int timeout) :
-	QWidget(parent, "Hint"), vbox(0), callbacksBox(0), icon(0), label(0), bcolor(), secs(timeout), users()
+	QWidget(parent, "Hint"), vbox(0), callbacksBox(0), icon(0), label(0), bcolor(), secs(timeout), users(), notification(0),
+	haveCallbacks(false)
 {
 	kdebugf();
 	if (timeout==0)
 		kdebugm(KDEBUG_INFO|KDEBUG_ERROR, "Hint error: timeout==0! text: %s\n", text.local8Bit().data());
 
 	createLabels(text, pixmap);
+
+	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+	hide();
+
+	kdebugf2();
+}
+
+Hint::Hint(QWidget *parent, Notification *notification)
+	: QWidget(parent, "Hint"), vbox(0), callbacksBox(0), icon(0), label(0), bcolor(), secs(2), users(), notification(notification),
+	  haveCallbacks(true)
+{
+	kdebugf();
+
+	createLabels(notification->text(), icons_manager->loadIcon(notification->icon()));
+
+	callbacksBox = new QHBoxLayout();
+	vbox->addLayout(callbacksBox);
+
+	const QValueList<QPair<QString, const char *> > callbacks = notification->getCallbacks();
+	if (notification->getCallbacks().count())
+	{
+		callbacksBox->addStretch(10);
+
+		FOREACH(i, callbacks)
+		{
+			QPushButton *button = new QPushButton((*i).first, this);
+			connect(button, SIGNAL(clicked()), notification, (*i).second);
+			connect(button, SIGNAL(clicked()), notification, SLOT(clearDefaultCallback()));
+
+			callbacksBox->addWidget(button);
+			callbacksBox->addStretch(1);
+		}
+
+		callbacksBox->addStretch(9);
+	}
+
+	connect(label, SIGNAL(linkClicked(const QString &)), this, SLOT(linkClicked(const QString &)));
+	connect(notification, SIGNAL(closed()), this, SLOT(notificationClosed()));
 
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
@@ -57,25 +101,32 @@ void Hint::createLabels(const QString &text, const QPixmap &pixmap)
 	labels->addWidget(label);
 }
 
-void Hint::close()
+void Hint::notificationClosed()
 {
-	hintClosing = true;
-	deleteLater();
-	emit deleting(this);
+	emit closing(this);
+}
+
+bool Hint::requireManualClosing()
+{
+	return haveCallbacks;
 }
 
 void Hint::nextSecond(void)
 {
-	if (secs==0)
-		kdebugm(KDEBUG_ERROR, "ERROR: secs == 0 !\n");
-	else if (secs>2000000000)
-		kdebugm(KDEBUG_WARNING, "WARNING: secs > 2 000 000 000 !\n");
-	--secs;
+	if (!haveCallbacks)
+	{
+		if (secs==0)
+			kdebugm(KDEBUG_ERROR, "ERROR: secs == 0 !\n");
+		else if (secs>2000000000)
+			kdebugm(KDEBUG_WARNING, "WARNING: secs > 2 000 000 000 !\n");
+
+		--secs;
+	}
 }
 
 bool Hint::isDeprecated()
 {
-	return secs == 0;
+	return (!haveCallbacks) && secs == 0;
 }
 
 void Hint::setShown(bool doShow)
@@ -148,6 +199,18 @@ void Hint::getData(QString &text, QPixmap &pixmap, unsigned int &timeout, QFont 
 	font = label->font();
 	fgcolor = label->paletteForegroundColor();
 	bgcolor = bcolor;
+}
+
+void Hint::acceptNotification()
+{
+	if (notification)
+		notification->callbackAccept();
+}
+
+void Hint::discardNotification()
+{
+	if (notification)
+		notification->callbackDiscard();
 }
 
 /** @} */

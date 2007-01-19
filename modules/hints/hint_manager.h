@@ -34,7 +34,6 @@ class HintManager : public Notifier
 		void setLayoutDirection();
 
 		void processButtonPress(const QString &buttonName, Hint *hint);
-		void deleteHint(Hint *hint);
 
 	private slots:
 		/**
@@ -66,6 +65,9 @@ class HintManager : public Notifier
 			w zale¿no¶ci od konfiguracji otwierana jest nowa rozmowa, dymek jest kasowany lub kasowane s± wszystkie
 		**/
 		void midButtonSlot(Hint *hint);
+
+		void deleteHint(Hint *hint);
+		void deleteHintAndUpdate(Hint *hint);
 
 	public slots:
 /*********** sloty dla notify ************/
@@ -119,6 +121,7 @@ class HintManager : public Notifier
 			pozosta³e funkcje pokazuj±ce dymki s± tylko opakowaniami na t± funkcjê
 		**/
 		void addHint(const QString &text, const QPixmap &pixmap, const QFont &font, const QColor &fgcolor, const QColor &bgcolor, unsigned int timeout, const UserListElements &senders = UserListElements());
+		void addHint(Notification *notification);
 
 		/**
 			je¿eli dymek dotyczy³ konkrentej osoby lub grupy osób, to otwierane jest okno chatu
@@ -141,6 +144,8 @@ class HintManager : public Notifier
 	public:
 		HintManager(QWidget *parent=0, const char *name=0);
 		~HintManager();
+
+		virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
 };
 
 extern HintManager *hint_manager;

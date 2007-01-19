@@ -13,6 +13,8 @@
 
 #include "gadu.h"
 
+class Notification;
+
 class Hint : public QWidget
 {
 	Q_OBJECT
@@ -29,12 +31,14 @@ class Hint : public QWidget
 		unsigned int secs;
 		UserListElements users;
 
-		bool hintClosing;
+		Notification *notification;
+
+		bool haveCallbacks;
 
 		void createLabels(const QString &text, const QPixmap &pixmap);
 
 	private slots:
-		void close();
+		void notificationClosed();
 
 	protected:
 		virtual void mousePressEvent(QMouseEvent * event);
@@ -43,12 +47,14 @@ class Hint : public QWidget
 
 	public:
 		Hint(QWidget *parent, const QString &text, const QPixmap &pixmap, unsigned int timeout);
+		Hint(QWidget *parent, Notification *notification);
 		/**
 			zwraca listê uinów dotycz±cych tego dymka
 		**/
 		UserListElements getUsers() const { return users; }
 
 		void getData(QString &text, QPixmap &pixmap, unsigned int &timeout, QFont &font, QColor &fgcolor, QColor &bgcolor);
+		bool requireManualClosing();
 		bool isDeprecated();
 
 	public slots:
@@ -76,11 +82,14 @@ class Hint : public QWidget
 		**/
 		void setUsers(const UserListElements &i) { users = i; };
 
+		void acceptNotification();
+		void discardNotification();
+
 	signals:
 		void leftButtonClicked(Hint *hint);
 		void rightButtonClicked(Hint *hint);
 		void midButtonClicked(Hint *hint);
-		void deleting(Hint *hint);
+		void closing(Hint *hint);
 };
 
 #endif

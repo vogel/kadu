@@ -57,6 +57,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * w oknie "O programie..." kursor zmienia siê na ³apkê po najechaniu
   nad link strony Kadu (Prezu/neeo)
 * QString -> const char * w wywo³aniach zwrotnych w notyfikacjach (Vogel)
+* obs³uga wywo³añ zwrotnych w hints (Vogel)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

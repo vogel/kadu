@@ -294,11 +294,17 @@ void HintManager::deleteHint(Hint *hint)
 {
 	kdebugf();
 
-	layout->remove(hint);
 	hints.remove(hint);
+	layout->remove(hint);
 	hint->deleteLater();
 
 	kdebugf2();
+}
+
+void HintManager::deleteHintAndUpdate(Hint *hint)
+{
+	deleteHint(hint);
+	setHint();
 }
 
 void HintManager::oneSecond(void)
@@ -330,14 +336,20 @@ void HintManager::processButtonPress(const QString &buttonName, Hint *hint)
 	switch(config_file.readNumEntry("Hints", buttonName))
 	{
 		case 1:
-			openChat(hint);
+			if (!hint->requireManualClosing())
+				openChat(hint);
+
+			hint->acceptNotification();
 			break;
 
 		case 2:
 			if (config_file.readBoolEntry("Hints", "DeletePendingMsgWhenHintDeleted"))
 				chat_manager->deletePendingMsgs(hint->getUsers());
-			deleteHint(hint);
-			setHint();
+
+			hint->discardNotification();
+
+			if (!hint->requireManualClosing())
+				deleteHintAndUpdate(hint);
 			break;
 
 		case 3:
@@ -370,8 +382,7 @@ void HintManager::openChat(Hint *hint)
 	UserListElements senders = hint->getUsers();
 	if (!senders.isEmpty())
 		chat_manager->openPendingMsgs(senders);
-	deleteHint(hint);
-	setHint();
+	deleteHintAndUpdate(hint);
 	kdebugf2();
 }
 
@@ -383,11 +394,17 @@ void HintManager::deleteAllHints()
 	Hint *toDelete = hints.first();
 	while (toDelete)
 	{
-		deleteHint(toDelete);
-		toDelete = hints.current();
+		if (!toDelete->requireManualClosing())
+		{
+			deleteHint(toDelete);
+			toDelete = hints.current();
+		}
+		else
+			toDelete = hints.next();
 	}
 
-	frame->hide();
+	if (hints.isEmpty())
+		frame->hide();
 
 	kdebugf2();
 }
@@ -419,6 +436,32 @@ void HintManager::addHint(const QString& text, const QPixmap& pixmap, const QFon
 	kdebugf2();
 }
 
+void HintManager::addHint(Notification *notification)
+{
+	kdebugf();
+
+	Hint *hint = new Hint(frame, notification);
+	hint->set(config_file.readFontEntry("Hints", "HintMessage_font"), config_file.readColorEntry("Hints", "HintMessage_fgcolor"),
+		config_file.readColorEntry("Hints", "HintMessage_bgcolor"));
+
+	hints.append(hint);
+
+	setLayoutDirection();
+	layout->addWidget(hint);
+
+	connect(hint, SIGNAL(leftButtonClicked(Hint *)), this, SLOT(leftButtonSlot(Hint *)));
+	connect(hint, SIGNAL(rightButtonClicked(Hint *)), this, SLOT(rightButtonSlot(Hint *)));
+	connect(hint, SIGNAL(midButtonClicked(Hint *)), this, SLOT(midButtonSlot(Hint *)));
+	connect(hint, SIGNAL(closing(Hint *)), this, SLOT(deleteHintAndUpdate(Hint *)));
+	setHint();
+
+	if (!hint_timer->isActive())
+		hint_timer->start(1000);
+	if (frame->isHidden())
+		frame->show();
+
+	kdebugf2();
+}
 
 void HintManager::setLayoutDirection()
 {
@@ -832,13 +875,7 @@ void HintManager::externalEvent(Notification *notification)
 {
 	kdebugf();
 
-	UserListElements ules = notification->userListElements();
-	QString msg = notification->text();
-
-	if (ules.count() > 0)
-		message("", msg, 0, &ules[0]);
-	else
-		message("", msg, 0, 0);
+	addHint(notification);
 
 	kdebugf2();
 }
