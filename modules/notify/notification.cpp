@@ -31,12 +31,12 @@ void Notification::clearCallbacks()
 	Callbacks.clear();
 }
 
-void Notification::addCallback(const QString &caption, const QString &slot)
+void Notification::addCallback(const QString &caption, const char *slot)
 {
 	Callbacks.append(qMakePair(caption, slot));
 }
 
-void Notification::setDefaultCallback(int timeout, const QString &defaultSlot)
+void Notification::setDefaultCallback(int timeout, const char *defaultSlot)
 {
 	DefaultCallbackTimer = new QTimer(this);
 	connect(DefaultCallbackTimer, SIGNAL(timeout()), this, defaultSlot);
@@ -102,7 +102,7 @@ QString Notification::icon()
 	return Icon;
 }
 
-const QValueList<QPair<QString, QString> > & Notification::getCallbacks()
+const QValueList<QPair<QString, const char *> > & Notification::getCallbacks()
 {
 	return Callbacks;
 }

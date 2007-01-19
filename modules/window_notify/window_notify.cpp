@@ -88,7 +88,7 @@ NotificationWindow::NotificationWindow(Notification *notification)
 	buttons->setSpacing(20);
 	hboxbuttons->addWidget(buttons, 0, AlignCenter);
 
-	const QValueList<QPair<QString, QString> > callbacks = notification->getCallbacks();
+	const QValueList<QPair<QString, const char *> > callbacks = notification->getCallbacks();
 
 	if (callbacks.size())
 	{

@@ -33,7 +33,7 @@ private:
 	QString Text;
 	QString Icon;
 
-	QValueList<QPair<QString, QString> > Callbacks;
+	QValueList<QPair<QString, const char *> > Callbacks;
 	QTimer *DefaultCallbackTimer;
 
 public:
@@ -44,9 +44,9 @@ public:
 	void close();
 
 	void clearCallbacks();
-	void addCallback(const QString &caption, const QString &slot);
+	void addCallback(const QString &caption, const char *slot);
 
-	void setDefaultCallback(int timeout, const QString &slot);
+	void setDefaultCallback(int timeout, const char *slot);
 
 	QString type();
 	UserListElements userListElements();
@@ -60,7 +60,7 @@ public:
 	void setIcon(const QString &icon);
 	QString icon();
 
-	const QValueList<QPair<QString, QString> > & getCallbacks();
+	const QValueList<QPair<QString, const char *> > & getCallbacks();
 
 public slots:
 	virtual void callbackAccept();
