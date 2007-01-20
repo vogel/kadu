@@ -4,7 +4,7 @@
 #include <qdialog.h>
 #include <qmap.h>
 
-class QGridLayout;
+class QHBox;
 class QLabel;
 
 /**
@@ -18,9 +18,11 @@ class MessageBox : public QDialog
 
 	private:
 		static QMap<QString,MessageBox*> Boxes;
-		QLabel * _pixmap;
-		QGridLayout * _grid;
+		QHBox* labels;
+		QLabel * icon;
 		QString message;
+
+		void addButton(QWidget *parent, const QString &caption, const char *slot);
 
 	private slots:
 		void okClicked();
@@ -38,10 +40,9 @@ class MessageBox : public QDialog
 		static const int YES;
 		static const int NO;
 		//
-		MessageBox(const QString& message,int components = 0, bool modal=false);
+		MessageBox(const QString& message, int components = 0, bool modal = false, const QString &iconName = QString::null);
 		~MessageBox();
 
-		void setIcon(const QPixmap & pixmap);
 		//
 		/**
 			Informuje u¿ytkownika o wykonywanej przez

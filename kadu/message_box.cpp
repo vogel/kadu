@@ -22,59 +22,49 @@ const int MessageBox::CANCEL   = 2;  // 00010
 const int MessageBox::YES      = 4;  // 00100
 const int MessageBox::NO       = 8;  // 01000
 
-MessageBox::MessageBox(const QString& message1, int components, bool modal)
+MessageBox::MessageBox(const QString& message, int components, bool modal, const QString &iconName)
 	: QDialog(NULL, NULL, modal, WType_TopLevel | WStyle_Customize | WStyle_DialogBorder | WStyle_Title | WStyle_SysMenu | WDestructiveClose),
-	_pixmap(0), _grid(0), message(message1)
+	message(message)
 {
 	kdebugf();
 
-	_pixmap = 0;
-	_grid=new QGridLayout(this,1,2);
+	QVBoxLayout* vbox = new QVBoxLayout(this, 0);
+	vbox->setMargin(10);
+	vbox->setSpacing(10);
 
-	QVBoxLayout* vbox=new QVBoxLayout(0);
-	_grid->addLayout(vbox,0,1);
-	vbox->setMargin(20);
-	vbox->setSpacing(20);
+	QHBoxLayout* hboxlabels = new QHBoxLayout(vbox);
+	labels = new QHBox(this);
+	labels->setSpacing(10);
+	hboxlabels->addWidget(labels, 0, AlignCenter);
 
+	if (!iconName.isEmpty())
+	{
+		icon = new QLabel(labels);
+		icon->setPixmap(icons_manager->loadIcon(iconName));
+		vbox->addWidget(icon, 0, AlignCenter);
+	}
+
+	QLabel* label = new QLabel(labels);
 	if (!message.isEmpty())
-	{
-		QLabel* l=new QLabel(this);
-		l->setText(message);
-		vbox->addWidget(l,0,AlignCenter);
-	}
+		label->setText(message);
+	vbox->addWidget(label, 0, AlignCenter);
 
-	QHBoxLayout* hbox=new QHBoxLayout(vbox);
-	QHBox* buttons=new QHBox(this);
+	QHBoxLayout* hboxbuttons = new QHBoxLayout(vbox);
+	QHBox* buttons = new QHBox(this);
 	buttons->setSpacing(20);
-	hbox->addWidget(buttons,0,AlignCenter);
+	hboxbuttons->addWidget(buttons, 0, AlignCenter);
 
-	if (components&OK)
-	{
-		QPushButton* b=new QPushButton(buttons);
-		b->setText(tr("&OK"));
-		connect(b,SIGNAL(clicked()),this,SLOT(okClicked()));
-	}
+	if (components & OK)
+		addButton(buttons, tr("&OK"), SLOT(okClicked()));
 
-	if (components&YES)
-	{
-		QPushButton* b=new QPushButton(buttons);
-		b->setText(tr("&Yes"));
-		connect(b,SIGNAL(clicked()),this,SLOT(yesClicked()));
-	}
+	if (components & YES)
+		addButton(buttons, tr("&Yes"), SLOT(yesClicked()));
 
-	if (components&NO)
-	{
-		QPushButton* b=new QPushButton(buttons);
-		b->setText(tr("&No"));
-		connect(b,SIGNAL(clicked()),this,SLOT(noClicked()));
-	}
+	if (components & NO)
+		addButton(buttons, tr("&No"), SLOT(noClicked()));
 
-	if (components&CANCEL)
-	{
-		QPushButton* b=new QPushButton(buttons);
-		b->setText(tr("&Cancel"));
-		connect(b,SIGNAL(clicked()),this,SLOT(cancelClicked()));
-	}
+	if (components & CANCEL)
+		addButton(buttons, tr("&Cancel"), SLOT(cancelClicked()));
 
 	buttons->setMaximumSize(buttons->sizeHint());
 	kdebugf2();
@@ -86,19 +76,16 @@ MessageBox::~MessageBox()
 		Boxes.remove(message);
 }
 
+void MessageBox::addButton(QWidget *parent, const QString &caption, const char *slot)
+{
+	QPushButton* b = new QPushButton(parent);
+	b->setText(caption);
+	connect(b, SIGNAL(clicked()), this, slot);
+}
+
 void MessageBox::closeEvent(QCloseEvent* e)
 {
 	e->ignore();
-}
-
-void MessageBox::setIcon(const QPixmap & pixmap)
-{
-	if (_pixmap == 0)
-	{
-		_pixmap = new QLabel(this);
-		_pixmap->setPixmap(pixmap);
-		_grid->addWidget(_pixmap,0,0);
-	}
 }
 
 void MessageBox::okClicked()
@@ -127,7 +114,7 @@ void MessageBox::noClicked()
 
 void MessageBox::status(const QString& message)
 {
-	MessageBox* m=new MessageBox(message);
+	MessageBox* m = new MessageBox(message);
 	m->show();
 	Boxes.insert(message,m);
 	qApp->processEvents();
@@ -135,7 +122,8 @@ void MessageBox::status(const QString& message)
 
 void MessageBox::msg(const QString& message,bool modal)
 {
-	MessageBox* m=new MessageBox(message,OK,modal);
+	MessageBox* m = new MessageBox(message, OK, modal);
+
 	if (modal)
 		m->exec();
 	else
@@ -144,8 +132,8 @@ void MessageBox::msg(const QString& message,bool modal)
 
 void MessageBox::wrn(const QString& message,bool modal)
 {
-	MessageBox* m=new MessageBox(message,OK,modal);
-	m->setIcon(icons_manager->loadIcon("Warning"));
+	MessageBox* m = new MessageBox(message, OK, modal, "Warning");
+
 	if (modal)
 		m->exec();
 	else
@@ -154,8 +142,8 @@ void MessageBox::wrn(const QString& message,bool modal)
 
 bool MessageBox::ask(const QString& message)
 {
-	MessageBox* m=new MessageBox(message,YES|NO,true);
-	return (m->exec()==Accepted);
+	MessageBox* m = new MessageBox(message, YES|NO, true);
+	return (m->exec() == Accepted);
 }
 
 void MessageBox::close(const QString& message)
