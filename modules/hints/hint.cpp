@@ -129,16 +129,7 @@ bool Hint::isDeprecated()
 	return (!haveCallbacks) && secs == 0;
 }
 
-void Hint::setShown(bool doShow)
-{
-	kdebugmf(KDEBUG_FUNCTION_START, "show=%d\n", doShow);
-
-	if (doShow)
-		show();
-	kdebugf2();
-}
-
-void Hint::set(const QFont &font, const QColor &color, const QColor &bgcolor, bool doShow)
+void Hint::set(const QFont &font, const QColor &color, const QColor &bgcolor)
 {
  	kdebugf();
 
@@ -148,9 +139,6 @@ void Hint::set(const QFont &font, const QColor &color, const QColor &bgcolor, bo
 	setPaletteBackgroundColor(bgcolor);
 
 	bcolor = bgcolor;
-
-	if (doShow)
-		show();
 
 	kdebugf2();
 }

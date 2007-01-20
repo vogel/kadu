@@ -65,18 +65,13 @@ class Hint : public QWidget
 		**/
 		void nextSecond();
 		/**
-			gdy show==true pokazuje dymek
-		**/
-		void setShown(bool show);
-		/**
 			ustawia parametry dymka
 			font - czcionka
 			fgcolor - kolor czcionki
 			bgcolor - kolor t³a
 			id - identyfikator dymka
-			show - czy pokazaæ (teraz)
 		**/
-		void set(const QFont &font, const QColor &fgcolor, const QColor &bgcolor, bool doShow = true);
+		void set(const QFont &font, const QColor &fgcolor, const QColor &bgcolor);
 		/**
 			ustawia listê uinów dotycz±cych tego dymka
 		**/
