@@ -65,13 +65,12 @@ NotificationWindow::NotificationWindow(Notification *notification)
 	setCaption(notification->title());
 
 	QVBoxLayout* vbox = new QVBoxLayout(this, 0);
-	vbox->setMargin(20);
-	vbox->setSpacing(20);
+	vbox->setMargin(10);
+	vbox->setSpacing(10);
 
-	QHBoxLayout* hboxlabels = new QHBoxLayout(vbox);
 	QHBox* labels = new QHBox(this);
 	labels->setSpacing(10);
-	hboxlabels->addWidget(labels, 0, AlignCenter);
+	vbox->addWidget(labels, 0, AlignCenter);
 
 	if (!notification->icon().isNull())
 	{
@@ -83,10 +82,9 @@ NotificationWindow::NotificationWindow(Notification *notification)
 	l->setText(notification->text());
 	vbox->addWidget(l, 0, AlignCenter);
 
-	QHBoxLayout* hboxbuttons = new QHBoxLayout(vbox);
 	QHBox* buttons = new QHBox(this);
 	buttons->setSpacing(20);
-	hboxbuttons->addWidget(buttons, 0, AlignCenter);
+	vbox->addWidget(buttons, 0, AlignCenter);
 
 	const QValueList<QPair<QString, const char *> > callbacks = notification->getCallbacks();
 

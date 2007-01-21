@@ -60,7 +60,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * obs³uga wywo³añ zwrotnych w hints (Vogel)
 * usuniêto nieu¿ywan± nigdzie metodê setShown z klasy Hint a tak¿e parametr show z metody set (Vogel)
 * usuniêto nieu¿ywan± nigdzie funkcjê progress z klasy MessageBox (Vogel)
-* ³adniejsze okno MessageBox
+* ³adniejsze okno MessageBox (Vogel)
+* kilka poprawek w MessageBox i w window_notify (Vogel)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
