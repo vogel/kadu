@@ -80,7 +80,6 @@ NotificationWindow::NotificationWindow(Notification *notification)
 
 	QLabel* l = new QLabel(labels);
 	l->setText(notification->text());
-	vbox->addWidget(l, 0, AlignCenter);
 
 	QHBox* buttons = new QHBox(this);
 	buttons->setSpacing(20);

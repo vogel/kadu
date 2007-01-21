@@ -46,7 +46,6 @@ MessageBox::MessageBox(const QString& message, int components, bool modal, const
 	QLabel* label = new QLabel(labels);
 	if (!message.isEmpty())
 		label->setText(message);
-	vbox->addWidget(label, 0, AlignCenter);
 
 	QHBoxLayout* hboxbuttons = new QHBoxLayout(vbox);
 	QHBox* buttons = new QHBox(this);
