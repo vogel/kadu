@@ -66,7 +66,6 @@ Hint::Hint(QWidget *parent, Notification *notification)
 		callbacksBox->addStretch(9);
 	}
 
-	connect(label, SIGNAL(linkClicked(const QString &)), this, SLOT(linkClicked(const QString &)));
 	connect(notification, SIGNAL(closed()), this, SLOT(notificationClosed()));
 
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
