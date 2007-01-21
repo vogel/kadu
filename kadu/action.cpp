@@ -83,6 +83,7 @@ ToolButton* Action::addToToolbar(ToolBar* toolbar, bool uses_text_label)
 		btn->setOn(ToggleState);
 	connect(btn, SIGNAL(clicked()), this, SLOT(toolButtonClicked()));
 	connect(btn, SIGNAL(destroyed(QObject*)), this, SLOT(toolButtonDestroyed(QObject*)));
+	connect(this, SIGNAL(destroyed()), btn, SLOT(deleteLater()));
 	if (Slot)
 		connect(btn, SIGNAL(clicked()), toolbar->area()->parent(), Slot);
 

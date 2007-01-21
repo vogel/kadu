@@ -5,6 +5,8 @@
 #include "chat.h"
 #include "misc.h"
 
+class Action;
+
 /**
  * @defgroup encryption Encryption
  * @{
@@ -16,6 +18,7 @@ class EncryptionManager : public QObject
 	private:
 		QMap<Chat*,bool> EncryptionEnabled;
 		void setupEncryptButton(Chat* chat,bool enabled);
+		Action* action;
 
 	private slots:
 		void receivedMessageFilter(Protocol *protocol, UserListElements senders,

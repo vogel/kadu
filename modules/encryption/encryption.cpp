@@ -79,7 +79,7 @@ EncryptionManager::EncryptionManager(QObject *parent, const char *name) : QObjec
 			this, SLOT(receivedMessageFilter(Protocol *, UserListElements, QCString&, QByteArray&, bool&)));
 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userBoxMenuPopup()));
 
-	Action* action = new Action(icons_manager->loadIcon("EncryptedChat"),
+	action = new Action(icons_manager->loadIcon("EncryptedChat"),
 		tr("Enable encryption for this conversation"), "encryptionAction", Action::TypeChat);
 	connect(action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(encryptionActionActivated(const UserGroup*)));
@@ -119,6 +119,7 @@ EncryptionManager::~EncryptionManager()
 	ConfigDialog::removeControl("Chat", "Keys length");
 	ConfigDialog::removeControl("Chat", "Encryption properties");
 	ConfigDialog::removeControl("Chat", "Use encryption");
+	delete action;
 	kdebugf2();
 }
 
