@@ -497,7 +497,7 @@ OnlineUsers::~OnlineUsers()
 void OnlineUsers::statusChangedSlot(UserListElement elem, QString protocolName,
 							const UserStatus &oldStatus, bool /*massively*/, bool /*last*/)
 {
-	if (!oldStatus.isOffline() == !elem.status(protocolName).isOffline())
+	if (oldStatus.isOffline() == elem.status(protocolName).isOffline())
 		return;
 	if (oldStatus.isOffline())
 		addUser(elem);
