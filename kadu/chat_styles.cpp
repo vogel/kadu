@@ -13,16 +13,18 @@
 ChatStyle::ChatStyle(const QString& format_string_full,
 			const QString& format_string_pure)
 	: FormatStringFull(format_string_full),
-	  FormatStringPure(format_string_pure)
+	  FormatStringPure(format_string_pure),
+	  noServerTime(config_file.readBoolEntry("Look", "NoServerTime")),
+	  noServerTimeDiff(config_file.readNumEntry("Look", "NoServerTimeDiff"))
 {
 }
 
 ChatStyle::ChatStyle(const QString& format_string_full)
 	: FormatStringFull(format_string_full),
-	  FormatStringPure("<p style=\"background-color: %1\"><kadu:separator/><font color=\"%2\">%4</font></p>")
+	  FormatStringPure("<p style=\"background-color: %1\"><kadu:separator/><font color=\"%2\">%4</font></p>"),
+	  noServerTime(config_file.readBoolEntry("Look", "NoServerTime")),
+	  noServerTimeDiff(config_file.readNumEntry("Look", "NoServerTimeDiff"))
 {
-	noServerTime = config_file.readBoolEntry("Look", "NoServerTime");
-	noServerTimeDiff = config_file.readNumEntry("Look", "NoServerTimeDiff");
 }
 
 ChatStyle::~ChatStyle()
