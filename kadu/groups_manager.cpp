@@ -484,6 +484,11 @@ void UsersWithDescription::statusChangedSlot(UserListElement elem, QString proto
 
 OnlineUsers::OnlineUsers() : UserGroup(userlist->count(), "online_users")
 {
+	// users with cellphone numbers only are online
+        CONST_FOREACH(user, *userlist)
+                if (!(*user).usesProtocol("Gadu")) // FIXME: should be protocol independant
+                        addUser(*user);
+
 	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
 			this, SLOT(statusChangedSlot(UserListElement, QString, const UserStatus &, bool, bool)));
 }
