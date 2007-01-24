@@ -164,7 +164,8 @@ void kadu_realtime_signal(int sig, siginfo_t *info, void *)
 	if (sig != OPEN_CHAT_SIGNAL)
 		return;
 	int ggnum = info->si_value.sival_int;
-	qApp->postEvent(kadu, new OpenGGChatEvent(ggnum));
+	if (ggnum > 0)
+		qApp->postEvent(kadu, new OpenGGChatEvent(ggnum));
 }
 
 #endif
@@ -209,7 +210,11 @@ int main(int argc, char *argv[])
 	qInstallMsgHandler(kaduQtMessageHandler);
 	xml_config_file = new XmlConfigFile();
 	if (argc > 1)
+	{
 		ggnumber = QString(argv[1]).remove("gg:").remove("/").toInt();
+		if (ggnumber < 0)
+			ggnumber = 0;
+	}
 
 	config_file_ptr = new ConfigFile(ggPath(QString("kadu.conf")));
 	config_file.addVariable("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
