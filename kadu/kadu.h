@@ -1,6 +1,7 @@
 #ifndef KADU_H
 #define KADU_H
 
+#include <qevent.h>
 #include <qmainwindow.h>
 #include <qstring.h>
 #include <qtimer.h>
@@ -21,7 +22,6 @@ class UserBox;
 class KaduTextBrowser;
 class QPushButton;
 class KaduSlots;
-class QCustomEvent;
 
 /**
 	G³ówne okno Kadu
@@ -130,7 +130,7 @@ class Kadu : public QWidget
 			(hint) U¿ywaj±c nale¿y badaæ nazwy i klasy obiektów GUI dostêpnych przez ten obiekt.
 		**/
 		QVBoxLayout* mainLayout() const;
-		
+
 		/**
 			Zwraca true je¶li kadu jest zadokowane.
 		**/
@@ -258,6 +258,15 @@ class KaduSlots : public QObject
 		void chooseFont(const char *name, const QFont& font);
 		void updatePreview();
 		void updateStatus(bool);
+};
+
+class OpenGGChatEvent : public QCustomEvent
+{
+	public:
+	OpenGGChatEvent(int num) : QCustomEvent(5432), Number(num) {}
+	int number() const { return Number; }
+	private:
+	int Number;
 };
 
 extern Kadu* kadu;

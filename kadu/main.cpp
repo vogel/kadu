@@ -52,6 +52,8 @@ Kadu *kadu;
 #ifdef HAVE_EXECINFO
 #include <execinfo.h>
 #endif
+#define OPEN_CHAT_SIGNAL (SIGRTMIN + 7)
+
 static int sigsegvCount = 0;
 static void kadu_signal_handler(int s)
 {
@@ -156,6 +158,15 @@ static void kadu_signal_handler(int s)
 	else if (s == SIGINT || s == SIGTERM)
 		qApp->postEvent(qApp, new QEvent(QEvent::Quit));
 }
+
+void kadu_realtime_signal(int sig, siginfo_t *info, void *)
+{
+	if (sig != OPEN_CHAT_SIGNAL)
+		return;
+	int ggnum = info->si_value.sival_int;
+	qApp->postEvent(kadu, new OpenGGChatEvent(ggnum));
+}
+
 #endif
 
 void kaduQtMessageHandler(QtMsgType type, const char *msg)
@@ -187,6 +198,7 @@ char SystemUserName[100];
 
 int main(int argc, char *argv[])
 {
+	int ggnumber(0);
 	struct timeval tv;
 	struct timezone tz;
 	time_t startTimeT = time(0);
@@ -196,6 +208,8 @@ int main(int argc, char *argv[])
 //	debug_mask = -1;
 	qInstallMsgHandler(kaduQtMessageHandler);
 	xml_config_file = new XmlConfigFile();
+	if (argc > 1)
+		ggnumber = QString(argv[1]).remove("gg:").remove("/").toInt();
 
 	config_file_ptr = new ConfigFile(ggPath(QString("kadu.conf")));
 	config_file.addVariable("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
@@ -254,6 +268,11 @@ int main(int argc, char *argv[])
 		signal(SIGTERM, kadu_signal_handler);
 		signal(SIGUSR1, kadu_signal_handler);
 		signal(SIGPIPE, SIG_IGN);
+		struct sigaction action;
+		action.sa_sigaction = kadu_realtime_signal;
+		sigemptyset(&action.sa_mask);
+		action.sa_flags = SA_SIGINFO;
+		sigaction(OPEN_CHAT_SIGNAL, &action, 0);
 	}
 #endif
 
@@ -299,14 +318,30 @@ int main(int argc, char *argv[])
 //		if (flock(lockFileHandle, LOCK_EX | LOCK_NB) != 0)
 		{
 			kdebugm(KDEBUG_WARNING, "fcntl: %s\n", strerror(errno));
+#ifdef SIG_HANDLING_ENABLED
 			bool gotPID = fcntl(lockFileHandle, F_GETLK, lock_str) != -1;
-			if (gotPID)
+			if (sh_enabled)
 			{
-				kdebugm(KDEBUG_INFO, "l_type: %d, l_pid: %d\n", lock_str->l_type, lock_str->l_pid);
-				kill(lock_str->l_pid, SIGUSR1);
+				if (gotPID)
+				{
+					kdebugm(KDEBUG_INFO, "l_type: %d, l_pid: %d\n", lock_str->l_type, lock_str->l_pid);
+					if (ggnumber)
+					{
+						sigval_t v;
+						v.sival_int = ggnumber;
+						sigqueue(lock_str->l_pid, OPEN_CHAT_SIGNAL, v);
+					}
+					else
+						kill(lock_str->l_pid, SIGUSR1);
+				}
+				else
+					kdebugm(KDEBUG_WARNING, "cannot get information about lock: %s\n", strerror(errno));
 			}
 			else
-				kdebugm(KDEBUG_WARNING, "cannot get information about lock: %s\n", strerror(errno));
+				gotPID = false;
+#else
+			bool gotPID(false);
+#endif
 			if (gotPID || QMessageBox::warning(NULL, "Kadu",
 				qApp->translate("@default", QT_TR_NOOP("Another Kadu is running on this profile but I cannot get its process ID.")),
 				qApp->translate("@default", QT_TR_NOOP("Force running Kadu (not recommended).")),
@@ -363,6 +398,8 @@ int main(int argc, char *argv[])
 	if (geteuid() == 0)
 		MessageBox::wrn(qApp->translate("@default", QT_TR_NOOP("Please do not run Kadu as a root!\nIt's a high security risk!")));
 	QTimer::singleShot(15000, kadu, SLOT(deleteOldConfigFiles()));
+	if (ggnumber)
+		qApp->postEvent(kadu, new OpenGGChatEvent(ggnumber));
 
 	/* for testing of startup / close time */
 	char *close_after = getenv("CLOSE_AFTER");

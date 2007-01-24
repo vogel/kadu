@@ -63,6 +63,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * ³adniejsze okno MessageBox (Vogel)
 * kilka poprawek w MessageBox i w window_notify (Vogel)
 * modu³ encryption przy wy³adowaniu usuwa przycisk szyfrowania z okna Chat (Prezu/neeo)
+* uruchomienie Kadu z parametrem numer, gg:numer, gg:/numer, gg://numer, itd.
+  spowoduje otwarcie okna rozmowy ze wskazanym numerem, TAK¯E gdy Kadu jest
+  ju¿ uruchomione (joi)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

@@ -2028,6 +2028,11 @@ void Kadu::customEvent(QCustomEvent *e)
 	if (int(e->type()) == 4321)
 		show();
 //		QTimer::singleShot(0, this, SLOT(show()));
+	else if (int(e->type()) == 5432)
+	{
+		OpenGGChatEvent *ev = static_cast<OpenGGChatEvent *>(e);
+		chat_manager->openChat(gadu, userlist->byID("Gadu", QString::number(ev->number())));
+	}
 	else
 		QWidget::customEvent(e);
 }
