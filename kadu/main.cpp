@@ -253,10 +253,9 @@ int main(int argc, char *argv[])
 		signal(SIGINT, kadu_signal_handler);
 		signal(SIGTERM, kadu_signal_handler);
 		signal(SIGUSR1, kadu_signal_handler);
+		signal(SIGPIPE, SIG_IGN);
 	}
 #endif
-
-	signal(SIGPIPE, SIG_IGN);
 
 	// delayed running, useful in gnome
 	config_file.addVariable("General", "StartDelay", 0);
