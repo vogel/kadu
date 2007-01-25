@@ -67,6 +67,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   spowoduje otwarcie okna rozmowy ze wskazanym numerem, TAK¯E gdy Kadu jest
   ju¿ uruchomione (joi)
 * przy ukrywaniu niedostêpnych, konkakty z samym numerem telefonu s± pokazywane (neeo)
+* zmiana nazwy wewnêtrznego katalogu kadu na kadu-core (joi)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

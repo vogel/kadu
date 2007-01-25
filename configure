@@ -579,7 +579,7 @@ PACKAGE_VERSION='0.6.0-svn'
 PACKAGE_STRING='Kadu 0.6.0-svn'
 PACKAGE_BUGREPORT=''
 
-ac_unique_file="kadu/kadu.cpp"
+ac_unique_file="kadu-core/kadu.cpp"
 # Factoring default headers for most tests.
 ac_includes_default="\
 #include <stdio.h>
@@ -10220,25 +10220,25 @@ if test -z "$enable_pheaders"; then
 	enable_pheaders=no
 fi
 if test "$enable_pheaders" = "yes"; then
-	rm -f kadu/kadu-headers.h2
-	for i in kadu-config.h `ls -1 kadu | grep "\.h$" | grep -v "kadu-headers.h" | grep -v "pending_events.h"`; do
-		echo "#include \"$i\"" >> kadu/kadu-headers.h2
+	rm -f kadu-core/kadu-headers.h2
+	for i in kadu-config.h `ls -1 kadu-core | grep "\.h$" | grep -v "kadu-headers.h" | grep -v "pending_events.h"`; do
+		echo "#include \"$i\"" >> kadu-core/kadu-headers.h2
 	done
-	grep -h '#include <q[^>]*>' kadu/*.cpp | sort -u >> kadu/kadu-headers.h2
-	if test -f kadu/kadu-headers.h; then
-		diff kadu/kadu-headers.h kadu/kadu-headers.h2 > /dev/null
+	grep -h '#include <q[^>]*>' kadu-core/*.cpp | sort -u >> kadu-core/kadu-headers.h2
+	if test -f kadu-core/kadu-headers.h; then
+		diff kadu-core/kadu-headers.h kadu-core/kadu-headers.h2 > /dev/null
 		# if files differ
 		if test $? != 0 ; then
-			mv kadu/kadu-headers.h2 kadu/kadu-headers.h
+			mv kadu-core/kadu-headers.h2 kadu-core/kadu-headers.h
 		else
-			rm kadu/kadu-headers.h2
+			rm kadu-core/kadu-headers.h2
 		fi
 	else
-		mv kadu/kadu-headers.h2 kadu/kadu-headers.h
+		mv kadu-core/kadu-headers.h2 kadu-core/kadu-headers.h
 	fi
 else
-	if test ! -f kadu/kadu-headers.h; then
-		touch kadu/kadu-headers.h
+	if test ! -f kadu-core/kadu-headers.h; then
+		touch kadu-core/kadu-headers.h
 	fi
 fi
 
@@ -10949,7 +10949,7 @@ echo "$as_me: error: $e_t download failed!" >&2;}
 
 
 #
-MY_SUBDIRS="$MY_SUBDIRS modules kadu translations varia"
+MY_SUBDIRS="$MY_SUBDIRS modules kadu-core translations varia"
 
 
 
@@ -10976,7 +10976,7 @@ fi
 # finalize configure
 ########################################################################
 
-ac_config_files="$ac_config_files Makefile kadu/Makefile translations/Makefile varia/Makefile modules/Makefile varia/scripts/kadu-config kadu/modules_static.cpp"
+ac_config_files="$ac_config_files Makefile kadu-core/Makefile translations/Makefile varia/Makefile modules/Makefile varia/scripts/kadu-config kadu-core/modules_static.cpp"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -11574,12 +11574,12 @@ do
     "kadu-config.tmp") CONFIG_HEADERS="$CONFIG_HEADERS kadu-config.tmp:kadu-config.h.in" ;;
     "$ac_stdint_h") CONFIG_COMMANDS="$CONFIG_COMMANDS $ac_stdint_h" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
-    "kadu/Makefile") CONFIG_FILES="$CONFIG_FILES kadu/Makefile" ;;
+    "kadu-core/Makefile") CONFIG_FILES="$CONFIG_FILES kadu-core/Makefile" ;;
     "translations/Makefile") CONFIG_FILES="$CONFIG_FILES translations/Makefile" ;;
     "varia/Makefile") CONFIG_FILES="$CONFIG_FILES varia/Makefile" ;;
     "modules/Makefile") CONFIG_FILES="$CONFIG_FILES modules/Makefile" ;;
     "varia/scripts/kadu-config") CONFIG_FILES="$CONFIG_FILES varia/scripts/kadu-config" ;;
-    "kadu/modules_static.cpp") CONFIG_FILES="$CONFIG_FILES kadu/modules_static.cpp" ;;
+    "kadu-core/modules_static.cpp") CONFIG_FILES="$CONFIG_FILES kadu-core/modules_static.cpp" ;;
 
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
 echo "$as_me: error: invalid argument: $ac_config_target" >&2;}
@@ -12953,13 +12953,13 @@ echo "$as_me: error: $ac_sub_configure failed for $ac_dir" >&2;}
 fi
 
 
-#if test ! -f kadu/deps/about.d; then
+#if test ! -f kadu-core/deps/about.d; then
 	echo -n creating dependency tracking files...
-	for i in kadu/*.h; do
-		f="kadu/deps/`echo $i | sed 's/^kadu\/\(.*\).h$/\1/'`"
+	for i in kadu-core/*.h; do
+		f="kadu-core/deps/`echo $i | sed 's/^kadu-core\/\(.*\).h$/\1/'`"
 		touch ${f}_moc.d ${f}.d
 	done
-	touch kadu/deps/main.d
+	touch kadu-core/deps/main.d
 	echo done
 #fi
 

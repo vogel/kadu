@@ -536,7 +536,7 @@ echo " ***************************************"
 echo " * Configuring Kadu, please wait . . . *"
 echo " ***************************************"
 
-AC_CONFIG_SRCDIR([kadu/kadu.cpp])
+AC_CONFIG_SRCDIR([kadu-core/kadu.cpp])
 AC_CONFIG_AUX_DIR([admin])
 AM_CONFIG_HEADER([kadu-config.tmp:kadu-config.h.in])
 AM_MAINTAINER_MODE
@@ -847,25 +847,25 @@ if test -z "$enable_pheaders"; then
 	enable_pheaders=no
 fi
 if test "$enable_pheaders" = "yes"; then
-	rm -f kadu/kadu-headers.h2
-	for i in kadu-config.h `ls -1 kadu | grep "\.h$" | grep -v "kadu-headers.h" | grep -v "pending_events.h"`; do
-		echo "#include \"$i\"" >> kadu/kadu-headers.h2
+	rm -f kadu-core/kadu-headers.h2
+	for i in kadu-config.h `ls -1 kadu-core | grep "\.h$" | grep -v "kadu-headers.h" | grep -v "pending_events.h"`; do
+		echo "#include \"$i\"" >> kadu-core/kadu-headers.h2
 	done
-	grep -h '#include <q[^>]*>' kadu/*.cpp | sort -u >> kadu/kadu-headers.h2
-	if test -f kadu/kadu-headers.h; then
-		diff kadu/kadu-headers.h kadu/kadu-headers.h2 > /dev/null
+	grep -h '#include <q[^>]*>' kadu-core/*.cpp | sort -u >> kadu-core/kadu-headers.h2
+	if test -f kadu-core/kadu-headers.h; then
+		diff kadu-core/kadu-headers.h kadu-core/kadu-headers.h2 > /dev/null
 		# if files differ
 		if test $? != 0 ; then
-			mv kadu/kadu-headers.h2 kadu/kadu-headers.h
+			mv kadu-core/kadu-headers.h2 kadu-core/kadu-headers.h
 		else
-			rm kadu/kadu-headers.h2
+			rm kadu-core/kadu-headers.h2
 		fi
 	else
-		mv kadu/kadu-headers.h2 kadu/kadu-headers.h
+		mv kadu-core/kadu-headers.h2 kadu-core/kadu-headers.h
 	fi
 else
-	if test ! -f kadu/kadu-headers.h; then
-		touch kadu/kadu-headers.h
+	if test ! -f kadu-core/kadu-headers.h; then
+		touch kadu-core/kadu-headers.h
 	fi
 fi
 AC_SUBST(enable_pheaders)
@@ -941,7 +941,7 @@ PROCESS_EMOTICON_THEMES()
 AC_SUBST(enabled_emoticon_themes)
 
 #
-MY_SUBDIRS="$MY_SUBDIRS modules kadu translations varia"
+MY_SUBDIRS="$MY_SUBDIRS modules kadu-core translations varia"
 AC_SUBST(MY_SUBDIRS)
 
 
@@ -967,16 +967,16 @@ fi
 # finalize configure
 ########################################################################
 
-AC_CONFIG_FILES([Makefile kadu/Makefile translations/Makefile varia/Makefile modules/Makefile varia/scripts/kadu-config kadu/modules_static.cpp])
+AC_CONFIG_FILES([Makefile kadu-core/Makefile translations/Makefile varia/Makefile modules/Makefile varia/scripts/kadu-config kadu-core/modules_static.cpp])
 AC_OUTPUT
 
-#if test ! -f kadu/deps/about.d; then
+#if test ! -f kadu-core/deps/about.d; then
 	echo -n creating dependency tracking files...
-	for i in kadu/*.h; do
-		f="kadu/deps/`echo $i | sed 's/^kadu\/\(.*\).h$/\1/'`"
+	for i in kadu-core/*.h; do
+		f="kadu-core/deps/`echo $i | sed 's/^kadu-core\/\(.*\).h$/\1/'`"
 		touch ${f}_moc.d ${f}.d
 	done
-	touch kadu/deps/main.d
+	touch kadu-core/deps/main.d
 	echo done
 #fi
 

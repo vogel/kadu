@@ -438,7 +438,7 @@ AM_CPPFLAGS = $(PTHREAD_CPPFLAGS) -DQT_THREAD_SUPPORT -D_REENTRANT -DDATADIR=\"$
 
 EXTRA_DIST = hi16-app-kadu.png hi22-app-kadu.png hi24-app-kadu.png hi32-app-kadu.png hi48-app-kadu.png hi64-app-kadu.png hi128-app-kadu.png hi256-app-kadu.png kadu.desktop
 CLEANFILES = obj/*.o moc/*_moc.cpp $(PHEADERS_CLEANFILES)
-subdir = kadu
+subdir = kadu-core
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/admin/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/kadu-config.tmp
@@ -472,7 +472,7 @@ all: $(BUILT_SOURCES)
 .SUFFIXES: .cpp .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu  kadu/Makefile
+	  $(AUTOMAKE) --gnu  kadu-core/Makefile
 Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
 modules_static.cpp: $(top_builddir)/config.status modules_static.cpp.in

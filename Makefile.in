@@ -361,7 +361,7 @@ distcleancheck_listfiles = find . -type f -print
 distdir: $(DISTFILES)
 	$(am__remove_distdir)
 	mkdir $(distdir)
-	$(mkinstalldirs) $(distdir)/admin $(distdir)/kadu $(distdir)/varia/scripts
+	$(mkinstalldirs) $(distdir)/admin $(distdir)/kadu-core $(distdir)/varia/scripts
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \
@@ -587,7 +587,7 @@ kadu-headers:
 	@echo
 	@echo -e "\033[32m>>>\033[0m Precompiling headers ..."
 	@echo
-	$(MAKE) -C kadu kadu-headers.h.gch
+	$(MAKE) -C kadu-core kadu-headers.h.gch
 	@echo
 	@echo -e "\033[32m>>>\033[0m Precompiled headers ready."
 	@echo

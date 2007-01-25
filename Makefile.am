@@ -22,7 +22,7 @@ kadu-headers:
 	@echo
 	@echo -e "\033[32m>>>\033[0m Precompiling headers ..."
 	@echo
-	$(MAKE) -C kadu kadu-headers.h.gch
+	$(MAKE) -C kadu-core kadu-headers.h.gch
 	@echo
 	@echo -e "\033[32m>>>\033[0m Precompiled headers ready."
 	@echo
