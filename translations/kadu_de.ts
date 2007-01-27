@@ -74,7 +74,7 @@
     </message>
     <message>
         <source>Nick</source>
-        <translation>Nick</translation>
+        <translation>Benutzername</translation>
     </message>
     <message>
         <source>Log messages</source>
@@ -536,7 +536,7 @@ It&apos;s a high security risk!</source>
 %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %v - revDNS, %p - port %e - email %x - max image size
 </source>
-        <translation>Syntax: %s - Zustand, %d - Beschreibung, %i - IP, %n - Nick, %a - alternativer Nick, %f - Vorname
+        <translation>Syntax: %s - Zustand, %d - Beschreibung, %i - IP, %n - Benutzername, %a - aternativer Benutzername, %f - Vorname
 %r - Nachname, %m - Mobil, %u - GG-Nummer, %g - Gruppe, %o - gib_leerzeichen_zurück, wenn Benutzer uns nicht in der Liste hat
 %v - revDNS, %p - Port %e - Email %x - maximale Bildgröße</translation>
     </message>
@@ -642,11 +642,11 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Your nick color</source>
-        <translation>Ihre Nick-Farbe</translation>
+        <translation>Farbe für deinen Benutzernamen</translation>
     </message>
     <message>
         <source>User nick color</source>
-        <translation>Nich-Farbe des Kontaktes</translation>
+        <translation>Farbe für den Benutzernamen des Kontaktes</translation>
     </message>
     <message>
         <source>Style</source>
@@ -672,8 +672,8 @@ It&apos;s a high security risk!</source>
         <translation>Syntax:
 %1 - Hintergrundfarbe
 %2 - Textfarbe
-%3 - Nick-Farbe
-%4 - Nick
+%3 - Farbe des Benutzernamens
+%4 - Benutzername
 %5 - Zeit
 %6 - Zeit mit Serverzeit
 %7 - Nachricht</translation>
@@ -684,31 +684,31 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Search this user in directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Suche diesen Benutzer im Katalog</translation>
     </message>
     <message>
         <source>Chat background (experimental)</source>
-        <translation type="unfinished"></translation>
+        <translation>Hintergrund für Chat (experimentell)</translation>
     </message>
     <message>
         <source>Chat background image</source>
-        <translation type="unfinished"></translation>
+        <translation>Wechsle Hintergrundbild</translation>
     </message>
     <message>
         <source>Allow executing commands by parser</source>
-        <translation type="unfinished"></translation>
+        <translation>Erlaube dem Parser das Ausführen von Befehlen</translation>
     </message>
     <message>
         <source>Message headers &amp;&amp; separators</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachrichtenkopf &amp;&amp; Trenner</translation>
     </message>
     <message>
         <source>Message separators height:</source>
-        <translation type="unfinished"></translation>
+        <translation>Höhe des Trenners zwischen Nachrichten:</translation>
     </message>
     <message>
         <source>Limit number of images received per minute</source>
-        <translation type="unfinished"></translation>
+        <translation>Begrenze zahl der zu empfangenden Bilder auf X pro Minute</translation>
     </message>
     <message>
         <source>Server time</source>
@@ -723,15 +723,15 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Always show anonymous contacts with messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Use KaduParser to parse status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Another Kadu is running on this profile but I cannot get its process ID.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Always show anonymous contacts with messages</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -928,7 +928,7 @@ Wollen Sie diese Datei wirklich senden?</translation>
     </message>
     <message>
         <source>Search this user in directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Suche diesen Benutzer im Verzeichnis</translation>
     </message>
     <message>
         <source>Ignore user</source>
@@ -936,11 +936,11 @@ Wollen Sie diese Datei wirklich senden?</translation>
     </message>
     <message>
         <source>Block user</source>
-        <translation type="unfinished"></translation>
+        <translation>Blockiere Benutzer</translation>
     </message>
     <message>
         <source>Anonymous users will be unblocked after restarting Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation>Anonyme benutzer werden nach dem Kadu-Neustart nicht mehr blockiert</translation>
     </message>
 </context>
 <context>
@@ -987,7 +987,7 @@ Tragen Sie den Pfad in der $PATH-Umgebungsvariablen ein oder bestimmen Sie ihn i
     </message>
     <message>
         <source>Insert image</source>
-        <translation type="unfinished">Bild einfügen</translation>
+        <translation>Bild einfügen</translation>
     </message>
 </context>
 <context>
@@ -1112,16 +1112,18 @@ Tragen Sie den Pfad in der $PATH-Umgebungsvariablen ein oder bestimmen Sie ihn i
     <message>
         <source>Connection will be stopped
 Your password is incorrect!</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindung wird beendet
+Dein Passwort stimmt nicht!</translation>
     </message>
     <message>
         <source>Too many connection attempts with bad password!</source>
-        <translation type="unfinished"></translation>
+        <translation>Zu viele Verbindungsversuche mit falschem Passwort!</translation>
     </message>
     <message>
         <source>Connection will be stopped
 Too many attempts with bad password</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindung wird beendet
+Zu viel Versuche mit falschem Passwort</translation>
     </message>
 </context>
 <context>
@@ -1492,7 +1494,7 @@ werden gelöscht. Sind Sie sicher?</translation>
     </message>
     <message>
         <source>Search this user in directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Suche diesen Benutzer im Verzeichnis</translation>
     </message>
     <message>
         <source>Open description link in browser</source>
@@ -1526,11 +1528,11 @@ werden gelöscht. Sind Sie sicher?</translation>
     </message>
     <message>
         <source>Add to group %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Füge zur Gruppe %1 hinzu</translation>
     </message>
     <message>
         <source>Move to group %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Verschiebe zu Gruppe %1</translation>
     </message>
 </context>
 <context>
@@ -1660,7 +1662,7 @@ mit:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Bringt mit:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Autor
     </message>
     <message>
         <source>Hide base modules</source>
-        <translation type="unfinished"></translation>
+        <translation>Verstecke Standardmodule</translation>
     </message>
 </context>
 <context>
@@ -1710,7 +1712,7 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Nickname</source>
-        <translation>Nick</translation>
+        <translation>Benutzername</translation>
     </message>
     <message>
         <source>Name</source>
@@ -1788,7 +1790,7 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Nickname</source>
-        <translation>Nick</translation>
+        <translation>Benutzername</translation>
     </message>
     <message>
         <source>Name</source>
@@ -1832,7 +1834,7 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Search using the personal data typed above (name, nickname)...</source>
-        <translation>Suche nach Personen mit den oben angegebenen Daten (Name, Nick)...</translation>
+        <translation>Suche nach Personen mit den oben angegebenen Daten (Name, Benutzername)...</translation>
     </message>
     <message>
         <source>&amp;Uin number</source>
@@ -1888,7 +1890,7 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Add selected user</source>
-        <translation type="unfinished"></translation>
+        <translation>Füge ausgewählten Benutzer hinzu</translation>
     </message>
     <message>
         <source>Stop</source>
@@ -1991,7 +1993,7 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Remove toolbar?</source>
-        <translation type="unfinished"></translation>
+        <translation>Toolbar entfernen?</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -2036,11 +2038,11 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Compares nicks (&quot;altnicks&quot;)</source>
-        <translation>Vergleiche Nicknames (&quot;alternative Nicks&quot;)</translation>
+        <translation>Vergleiche Benutzernamen (&quot;alternative Benutzernamen&quot;)</translation>
     </message>
     <message>
         <source>Compares nicks (&quot;altnicks&quot;) case insensitive</source>
-        <translation type="unfinished"></translation>
+        <translation>Vergleiche Benutzernamen (&quot;alternative Benutzernamen&quot;) als Kleinbuchstaben</translation>
     </message>
 </context>
 <context>
@@ -2066,11 +2068,11 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Nickname</source>
-        <translation>Nick</translation>
+        <translation>Benutzername</translation>
     </message>
     <message>
         <source>AltNick</source>
-        <translation>Alternativ-Nick</translation>
+        <translation>Alternativer Benutzername</translation>
     </message>
     <message>
         <source>First name</source>
@@ -2146,7 +2148,7 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Altnick field cannot be empty.</source>
-        <translation>Das Feld &quot;Alternativ-Nick&quot; darf nicht leer sein.</translation>
+        <translation>Das Feld &quot;Alternativer Benutzername&quot; darf nicht leer sein.</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -2240,11 +2242,11 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Nickname</source>
-        <translation>Nick</translation>
+        <translation>Benutzername</translation>
     </message>
     <message>
         <source>Disp. nick</source>
-        <translation>Zeige Nick</translation>
+        <translation>Zeige den Benutzernamen</translation>
     </message>
     <message>
         <source>Name</source>

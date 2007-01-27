@@ -1,7 +1,7 @@
 #!/bin/bash
 
-$QTDIR/bin/lupdate -noobsolete -verbose ../kadu/*.cpp -ts kadu_it.ts
-$QTDIR/bin/lupdate -noobsolete -verbose ../kadu/*.cpp -ts kadu_pl.ts
-$QTDIR/bin/lupdate -noobsolete -verbose ../kadu/*.cpp -ts kadu_en.ts
-$QTDIR/bin/lupdate -noobsolete -verbose ../kadu/*.cpp -ts kadu_de.ts
-$QTDIR/bin/lupdate -noobsolete -verbose ../kadu/*.cpp -ts kadu_fr.ts
+$QTDIR/bin/lupdate -noobsolete -verbose ../kadu-core/*.cpp -ts kadu_it.ts
+$QTDIR/bin/lupdate -noobsolete -verbose ../kadu-core/*.cpp -ts kadu_pl.ts
+$QTDIR/bin/lupdate -noobsolete -verbose ../kadu-core/*.cpp -ts kadu_en.ts
+$QTDIR/bin/lupdate -noobsolete -verbose ../kadu-core/*.cpp -ts kadu_de.ts
+$QTDIR/bin/lupdate -noobsolete -verbose ../kadu-core/*.cpp -ts kadu_fr.ts
