@@ -33,10 +33,6 @@
         <source>Only for the first time</source>
         <translation>Nur beim ersten Mal</translation>
     </message>
-    <message>
-        <source>Respond to conferences</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>AutoResponder</name>
@@ -46,7 +42,7 @@
     </message>
     <message>
         <source>Thanks for your message %a. I&apos;m not available right now.</source>
-        <translation type="unfinished"></translation>
+        <translation>Danke für die Nachricht %a. Ich bin momentan nicht erreichbar.</translation>
     </message>
 </context>
 </TS>

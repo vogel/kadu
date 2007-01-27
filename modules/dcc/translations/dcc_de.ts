@@ -47,7 +47,7 @@
     </message>
     <message>
         <source>Remove completed transfers from transfers list</source>
-        <translation type="unfinished"></translation>
+        <translation>Entferne fertige Übertragungen aus der Liste</translation>
     </message>
     <message>
         <source>File transfer was finished</source>
@@ -163,11 +163,11 @@ Was soll ich tun?</translation>
     </message>
     <message>
         <source>File has been transferred sucessfully.</source>
-        <translation type="unfinished">Übertragung der Datei erfolgreich.</translation>
+        <translation>Übertragung der Datei erfolgreich.</translation>
     </message>
     <message>
         <source>File transfer error!</source>
-        <translation type="unfinished">Fehler beim Übertragen der Datei!</translation>
+        <translation>Fehler beim Übertragen der Datei!</translation>
     </message>
     <message>
         <source>File transfer finished</source>
@@ -186,7 +186,7 @@ Was soll ich tun?</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished">Entfernen</translation>
+        <translation>Entfernen</translation>
     </message>
     <message>
         <source>&lt;b&gt;File&lt;/b&gt; %1 &lt;b&gt;to&lt;/b&gt; %2</source>
@@ -218,7 +218,7 @@ Was soll ich tun?</translation>
     </message>
     <message>
         <source>Finished</source>
-        <translation type="unfinished">Beendet</translation>
+        <translation>Beendet</translation>
     </message>
 </context>
 <context>

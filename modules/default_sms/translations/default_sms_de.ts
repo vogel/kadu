@@ -70,7 +70,7 @@
     </message>
     <message>
         <source>Number of SMS&apos; left on Sponsored Era Gateway: </source>
-        <translation type="unfinished"></translation>
+        <translation>Die Zahl der gratis SMS auf im Era-Netz wurde überschritten: </translation>
     </message>
 </context>
 <context>
