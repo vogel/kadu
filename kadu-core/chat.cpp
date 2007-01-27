@@ -48,7 +48,7 @@ Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
 	myLastFormats(0), seq(0), vertSplit(0), horizSplit(0),
 	ParagraphSeparator(config_file.readNumEntry("Look", "ParagraphSeparator")),
 	lastMsgTime(), PreviousMessage(), CfgNoHeaderRepeat(config_file.readBoolEntry("Look","NoHeaderRepeat")),
-	CfgHeaderSeparatorHeight(0), CfgNoHeaderInterval(0), Style(0), LastTime(0), body(0)
+	CfgHeaderSeparatorHeight(0), CfgNoHeaderInterval(0), Style(0), LastTime(0), body(0), activationCount(0)
 {
 	kdebugf();
 	const int minimumDockAreaSize = 3;
@@ -523,7 +523,7 @@ void Chat::keyPressEvent(QKeyEvent* e)
 void Chat::editTextChanged()
 {
 	kdebugf();
-	QValueList<ToolButton*> buttons = 
+	QValueList<ToolButton*> buttons =
 		KaduActions["sendAction"]->toolButtonsForUserListElements(Users->toUserListElements());
 	bool buttonsEnabled = !Edit->text().isEmpty();
 	CONST_FOREACH(i, buttons)
@@ -1161,4 +1161,19 @@ Protocol *Chat::currentProtocol()
 {
 	//FIXME
 	return gadu;
+}
+
+void Chat::makeActive()
+{
+	kdebugf();
+	QWidget *win = this;
+	while (win->parent()) //for tabs module
+		win = static_cast<QWidget *>(win->parent());
+	win->setActiveWindow();
+	// workaround for kwin which sometimes don't make window active when it's requested right after "unminimization"
+	if (!win->isActiveWindow() && activationCount++ < 20)
+		QTimer::singleShot(100, this, SLOT(makeActive()));
+	else
+		activationCount = 0;
+	kdebugf2();
 }

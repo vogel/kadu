@@ -96,6 +96,7 @@ class Chat : public QMainWindow
 		void pruneWindow();
 
 		KaduTextBrowser* body; /*!< historia rozmowy, proszê NIE dawaæ dostêpu na zewn±trz do tej zmiennej */
+		int activationCount;
 
 	private slots:
 
@@ -457,6 +458,8 @@ class Chat : public QMainWindow
 			Slot wklejaj±cy obrazek do okna rozmowy (wybór obrazka)
 		**/
 		void insertImage();
+
+		void makeActive();
 
 	signals:
 		/**

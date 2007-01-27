@@ -68,6 +68,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   ju¿ uruchomione (joi)
 * przy ukrywaniu niedostêpnych, konkakty z samym numerem telefonu s± pokazywane (neeo)
 * zmiana nazwy wewnêtrznego katalogu kadu na kadu-core (joi)
+* przy podwójnym klikniêciu na li¶cie kontaktów, przywrócenie focusu oknu rozmowy,
+  gdy jest ono zminimalizowane (joi)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

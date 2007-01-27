@@ -600,12 +600,19 @@ int ChatManager::openChat(Protocol * /*initialProtocol*/, UserListElements users
 	{
 		if ((*chat)->users()->equals(users))
 		{
+			QWidget *win = *chat;
+			kdebugm(KDEBUG_INFO, "parent: %p\n", win->parent());
+			while (win->parent()) // for tabs module
+			{
+				kdebugm(KDEBUG_INFO, "parent type: %s\n", win->parent()->className());
+				win = static_cast<QWidget *>(win->parent());
+			}
 #if QT_VERSION >= 0x030300
 			if (qstrcmp(qVersion(), "3.3") >= 0) // dodatkowe zabezpieczenie przed idiotami u¿ywaj±cymi opcji --force przy instalacji pakietów
-				(*chat)->setWindowState((*chat)->windowState() & ~WindowMinimized);
+				win->setWindowState(win->windowState() & ~WindowMinimized | WindowActive);
 #endif
-			(*chat)->raise();
-			(*chat)->setActiveWindow();
+			win->raise();
+			(*chat)->makeActive();
 			return i;
 		}
 		++i;
@@ -695,6 +702,7 @@ int ChatManager::openChat(Protocol * /*initialProtocol*/, UserListElements users
 
 	chat->show();
 	chat->writeMessagesFromHistory(users, time);
+	chat->makeActive();
 	emit chatCreated(group);
 	kdebugf2();
 	return Chats.count() - 1;
