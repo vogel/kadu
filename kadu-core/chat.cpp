@@ -39,8 +39,9 @@
 #include "search.h"
 #include "userbox.h"
 
-Chat::Chat(UserListElements usrs, QWidget* parent, const char* name)
-	: QMainWindow(parent, name, Qt::WDestructiveClose), ChatMessages(), Users(new UserGroup(usrs)),
+Chat::Chat(Protocol *initialProtocol, UserListElements usrs, QWidget* parent, const char* name)
+	: QMainWindow(parent, name, Qt::WDestructiveClose), ChatMessages(), CurrentProtocol(initialProtocol),
+	Users(new UserGroup(usrs)),
 	index(0), title_buffer(), title_timer(new QTimer(this, "title_timer")), actcolor(), Edit(0),
 	bodyformat(new QMimeSourceFactory()), emoticon_selector(0), color_selector(0),
 	AutoSend(config_file.readBoolEntry("Chat", "AutoSend")), ScrollLocked(false),
@@ -461,7 +462,7 @@ void Chat::refreshTitle()
 		}
 		else
 			title = KaduParser::parse(config_file.readEntry("Look","ChatContents"), user, false);
-		setIcon(user.status("Gadu").pixmap());
+		setIcon(user.status(currentProtocol()->protocolID()).pixmap());
 	}
 
 	title.replace("<br/>", " ");
@@ -938,7 +939,7 @@ void Chat::sendMessage()
 
 	emit messageSendRequested(this);
 
-	if (gadu->currentStatus().isOffline())
+	if (currentProtocol()->currentStatus().isOffline())
 	{
 		QMessageBox::critical(this, tr("Send message error"),
 			tr("Cannot send message while being offline."));
@@ -992,15 +993,18 @@ void Chat::sendMessage()
 		KaduActions["sendAction"]->setTexts(Users->toUserListElements(), tr("&Cancel"));
 	}
 
-	if (myLastFormatsLength)
-		seq = gadu->sendMessageRichText(Users->toUserListElements(), msg, (unsigned char *)myLastFormats, myLastFormatsLength);
-	else
-		seq = gadu->sendMessage(Users->toUserListElements(), msg);
+	if (currentProtocol() == gadu)
+	{
+		if (myLastFormatsLength)
+			seq = gadu->sendMessageRichText(Users->toUserListElements(), msg, (unsigned char *)myLastFormats, myLastFormatsLength);
+		else
+			seq = gadu->sendMessage(Users->toUserListElements(), msg);
+	}
 
 	if (myLastFormats)
 		delete [](char *)myLastFormats;
 
- 	if (config_file.readBoolEntry("Chat","MessageAcks"))
+ 	if (config_file.readBoolEntry("Chat", "MessageAcks"))
 		connectAcknowledgeSlots();
 	else
 	{
@@ -1159,8 +1163,7 @@ void Chat::scrollHistoryToBottom()
 
 Protocol *Chat::currentProtocol()
 {
-	//FIXME
-	return gadu;
+	return CurrentProtocol;
 }
 
 void Chat::makeActive()

@@ -51,6 +51,7 @@ class Chat : public QMainWindow
 		QValueList<ChatMessage *> ChatMessages; /*!< wiadomo¶ci wpisane
 							w oknie rozmowy */
 
+		Protocol *CurrentProtocol;
 		UserGroup *Users; /*!< lista u¿ytkowników w danym oknie */
 		int index;	/*!< nr okna (z chat menad¿era) */
 		QString title_buffer; /*!< tytu³ okna */
@@ -188,7 +189,7 @@ class Chat : public QMainWindow
 			\param parent rodzic okna
 			\param name nazwa obiektu
 		**/
-		Chat(UserListElements usrs, QWidget* parent = 0, const char* name = 0);
+		Chat(Protocol *initialProtocol, UserListElements usrs, QWidget* parent = 0, const char* name = 0);
 
 		/**
 			\fn ~Chat()

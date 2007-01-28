@@ -591,7 +591,7 @@ Chat* ChatManager::findChat(UserListElements users) const
 	return NULL;
 }
 
-int ChatManager::openChat(Protocol * /*initialProtocol*/, UserListElements users, time_t time)
+int ChatManager::openChat(Protocol *initialProtocol, UserListElements users, time_t time)
 {
 	kdebugf();
 	emit chatOpen(users);
@@ -622,7 +622,7 @@ int ChatManager::openChat(Protocol * /*initialProtocol*/, UserListElements users
 		userNames.append((*user).altNick());
 	userNames.sort();
 
-	Chat* chat = new Chat(users, 0, QString("chat:%1").arg(userNames.join(",")).local8Bit().data());
+	Chat* chat = new Chat(initialProtocol, users, 0, QString("chat:%1").arg(userNames.join(",")).local8Bit().data());
 	chat->refreshTitle();
 	connect(chat, SIGNAL(messageSentAndConfirmed(UserListElements, const QString&)),
 		this, SIGNAL(messageSentAndConfirmed(UserListElements, const QString&)));
