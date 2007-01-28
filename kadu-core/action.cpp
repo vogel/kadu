@@ -212,6 +212,12 @@ void Actions::addDefaultToolbarAction(
 	kdebugf();
 	QValueList<Default>& actions = DefaultToolbarActions[toolbar];
 	Default def(action, uses_text_label);
+	if (index >= static_cast<int>(actions.size()))
+	{
+		kdebugm(KDEBUG_ERROR, "requested action index (%d) >= actions size (%lu)!\n", index, actions.size());
+		printBacktrace("requested action index >= actions size!");
+		index = -1;
+	}
 	if (index < 0)
 		actions.push_back(def);
 	else

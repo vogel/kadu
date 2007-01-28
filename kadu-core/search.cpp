@@ -211,12 +211,6 @@ void SearchDialog::initModule()
 {
 	kdebugf();
 
-	Action* stop_search_action = new Action(icons_manager->loadIcon("CloseWindow"),
-		tr("Stop"), "stopSearchAction", Action::TypeSearch);
-	stop_search_action->setSlot(SLOT(stopSearch()));
-	KaduActions.insert("stopSearchAction", stop_search_action);
-	KaduActions.addDefaultToolbarAction("Search toolbar", "stopSearchAction", 2, true);
-
 	Action* first_search_action = new Action(icons_manager->loadIcon("LookupUserInfo"),
 		tr("&Search"), "firstSearchAction", Action::TypeSearch, Key_Return);
 	first_search_action->setSlot(SLOT(firstSearch()));
@@ -228,6 +222,12 @@ void SearchDialog::initModule()
 	next_results_action->setSlot(SLOT(nextSearch()));
 	KaduActions.insert("nextResultsAction", next_results_action);
 	KaduActions.addDefaultToolbarAction("Search toolbar", "nextResultsAction", 1, true);
+
+	Action* stop_search_action = new Action(icons_manager->loadIcon("CloseWindow"),
+		tr("Stop"), "stopSearchAction", Action::TypeSearch);
+	stop_search_action->setSlot(SLOT(stopSearch()));
+	KaduActions.insert("stopSearchAction", stop_search_action);
+	KaduActions.addDefaultToolbarAction("Search toolbar", "stopSearchAction", 2, true);
 
 	Action* clear_search_action = new Action(icons_manager->loadIcon("ClearSearchResults"),
 		tr("Clear results"), "clearSearchAction", Action::TypeSearch);

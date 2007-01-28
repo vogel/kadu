@@ -70,6 +70,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zmiana nazwy wewnêtrznego katalogu kadu na kadu-core (joi)
 * przy podwójnym klikniêciu na li¶cie kontaktów, przywrócenie focusu oknu rozmowy,
   gdy jest ono zminimalizowane (joi)
+* poprawka wywrotki przy dodawaniu akcji "zatrzymania wyszukiwania w katalogu" (joi)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
