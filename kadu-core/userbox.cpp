@@ -858,7 +858,7 @@ void UserBox::resizeEvent(QResizeEvent *r)
 {
 //	kdebugf();
 	QListBox::resizeEvent(r);
-	refreshLater();
+	triggerUpdate(true);
 }
 
 void UserBox::doubleClickedSlot(QListBoxItem *item)
