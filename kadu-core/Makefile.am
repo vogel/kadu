@@ -397,36 +397,6 @@ moc/%_moc.cpp: %.h
 	@echo $(QT_MOC_DIR)/moc -o $@ $< >> $(LOGFILE)
 	@$(QT_MOC_DIR)/moc -o $@ $<
 
- ifeq ($(enable_final),yes)
-
-kadu$(EXEEXT): $(kadu_SOURCES) $(kadu_HEADERS) $(BUILT_SOURCES) $(kadu_DEPENDENCIES)
-	@rm -f kadu$(EXEEXT)
-	$(CXXCOMPILE) $(AM_LDFLAGS) $(LDFLAGS) -o $@ $(kadu_LDFLAGS) final.cpp $(kadu_LDADD) $(LIBS)
-
- else
-
-kadu$(EXEEXT): $(kadu_OBJECTS) $(kadu_DEPENDENCIES)
-	@rm -f kadu$(EXEEXT)
-	$(CXXLINK) $(kadu_LDFLAGS) $(kadu_OBJECTS) $(kadu_LDADD) $(LIBS)
-
- endif
-
- ifeq ($(snapshot),yes)
-version.cpp: ../SNAPSHOT
-	@echo "const char *detailed_version = \"`cat ../SNAPSHOT`\";" > $@;
- else
-version.cpp: $(kadu_SOURCES) *.h ../modules/*/*.h ../modules/*/*.cpp ../libgadu/lib/*.c ../libgadu/lib/*.h
-	@core_ver=`svnversion -n .`; \
-	mod_ver=`svnversion -n ../modules`; \
-	lg_ver=`svnversion -n ../libgadu`; \
-	if [ "$$core_ver" != "$$mod_ver" -o "$$core_ver" != "$$lg_ver" -o "$$mod_ver" != "$$lg_ver" ]; then \
-		ver="core:$$core_ver modules:$$mod_ver libgadu:$$lg_ver"; \
-	else \
-		ver="$$core_ver"; \
-	fi; \
-	echo "const char *detailed_version = \"$$ver\";" | diff -q - $@ >/dev/null 2>/dev/null || echo "const char *detailed_version = \"$$ver\";" > $@;
- endif
-
 ###########################################################################
 # Precompiled headers support
 ###########################################################################
@@ -435,6 +405,7 @@ if PHEADERS_ENABLED
 PHEADERS_INCLUDES = -I.. -include kadu-headers.h
 PHEADERS_CLEANFILES = *.h.gch
 AM_CXXFLAGS = -fPIC
+kadu_ADDITIONAL_DEPS = kadu-headers.h.gch
 endif
 
 # dirty hack - leading space required because od automake "if" support
@@ -456,7 +427,39 @@ kadu-headers.d: kadu-headers.h
 
  endif
 
+
 ###########################################################################
+
+ ifeq ($(enable_final),yes)
+
+kadu$(EXEEXT): $(kadu_ADDITIONAL_DEPS) $(kadu_SOURCES) $(kadu_HEADERS) $(BUILT_SOURCES) $(kadu_DEPENDENCIES)
+	@rm -f kadu$(EXEEXT)
+	$(CXXCOMPILE) $(AM_LDFLAGS) $(LDFLAGS) -o $@ $(kadu_LDFLAGS) final.cpp $(kadu_LDADD) $(LIBS)
+
+ else
+
+kadu$(EXEEXT): $(kadu_ADDITIONAL_DEPS) $(kadu_OBJECTS) $(kadu_DEPENDENCIES)
+	@rm -f kadu$(EXEEXT)
+	$(CXXLINK) $(kadu_LDFLAGS) $(kadu_OBJECTS) $(kadu_LDADD) $(LIBS)
+
+ endif
+
+ ifeq ($(snapshot),yes)
+version.cpp: ../SNAPSHOT
+	@echo "const char *detailed_version = \"`cat ../SNAPSHOT`\";" > $@;
+ else
+version.cpp: $(kadu_SOURCES) *.h ../modules/*/*.h ../modules/*/*.cpp ../libgadu/lib/*.c ../libgadu/lib/*.h
+	@core_ver=`svnversion -n .`; \
+	mod_ver=`svnversion -n ../modules`; \
+	lg_ver=`svnversion -n ../libgadu`; \
+	if [ "$$core_ver" != "$$mod_ver" -o "$$core_ver" != "$$lg_ver" -o "$$mod_ver" != "$$lg_ver" ]; then \
+		ver="core:$$core_ver modules:$$mod_ver libgadu:$$lg_ver"; \
+	else \
+		ver="$$core_ver"; \
+	fi; \
+	echo "const char *detailed_version = \"$$ver\";" | diff -q - $@ >/dev/null 2>/dev/null || echo "const char *detailed_version = \"$$ver\";" > $@;
+ endif
+
 
 INCLUDES = $(PHEADERS_INCLUDES) $(XFREE_INCLUDES) $(QT_INCLUDES) $(OPENSSL_INCLUDES) $(GADU_INCLUDES)
 

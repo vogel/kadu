@@ -419,9 +419,8 @@ DEPS = ./deps
 @PHEADERS_ENABLED_TRUE@PHEADERS_INCLUDES = -I.. -include kadu-headers.h
 @PHEADERS_ENABLED_TRUE@PHEADERS_CLEANFILES = *.h.gch
 @PHEADERS_ENABLED_TRUE@AM_CXXFLAGS = -fPIC
+@PHEADERS_ENABLED_TRUE@kadu_ADDITIONAL_DEPS = kadu-headers.h.gch
 
-
-###########################################################################
 INCLUDES = $(PHEADERS_INCLUDES) $(XFREE_INCLUDES) $(QT_INCLUDES) $(OPENSSL_INCLUDES) $(GADU_INCLUDES)
 
 kadu_LDADD = \
@@ -847,15 +846,36 @@ moc/%_moc.cpp: %.h
 	@echo $(QT_MOC_DIR)/moc -o $@ $< >> $(LOGFILE)
 	@$(QT_MOC_DIR)/moc -o $@ $<
 
+# dirty hack - leading space required because od automake "if" support
+# time to say automake goodbye?
+ ifeq ($(enable_pheaders),yes)
+
+-include kadu-headers.d
+
+kadu-headers.d: kadu-headers.h
+	@echo generating dependency file for $<
+	@echo "$(CXX) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) $< | sed "s,\(.*\):,$(basename $@).h.gch $@:," > $@" >> $(LOGFILE)
+	@$(CXX) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) $< | sed "s,\(.*\):,$(basename $@).h.gch $@:," > $@
+
+%.h.gch: %.h
+	@echo compiling headers
+	@rm -f $@
+	@echo $(CXX) -o $@ -c $< $(INCLUDES) $(AM_CPPFLAGS) $(AM_CXXFLAGS) $(module_cxxflags)  $(CXXFLAGS) >> $(LOGFILE)
+	@$(CXX) -o $@ -c $< $(INCLUDES) $(AM_CPPFLAGS) $(AM_CXXFLAGS) $(module_cxxflags)  $(CXXFLAGS)
+
+ endif
+
+###########################################################################
+
  ifeq ($(enable_final),yes)
 
-kadu$(EXEEXT): $(kadu_SOURCES) $(kadu_HEADERS) $(BUILT_SOURCES) $(kadu_DEPENDENCIES)
+kadu$(EXEEXT): $(kadu_ADDITIONAL_DEPS) $(kadu_SOURCES) $(kadu_HEADERS) $(BUILT_SOURCES) $(kadu_DEPENDENCIES)
 	@rm -f kadu$(EXEEXT)
 	$(CXXCOMPILE) $(AM_LDFLAGS) $(LDFLAGS) -o $@ $(kadu_LDFLAGS) final.cpp $(kadu_LDADD) $(LIBS)
 
  else
 
-kadu$(EXEEXT): $(kadu_OBJECTS) $(kadu_DEPENDENCIES)
+kadu$(EXEEXT): $(kadu_ADDITIONAL_DEPS) $(kadu_OBJECTS) $(kadu_DEPENDENCIES)
 	@rm -f kadu$(EXEEXT)
 	$(CXXLINK) $(kadu_LDFLAGS) $(kadu_OBJECTS) $(kadu_LDADD) $(LIBS)
 
@@ -875,25 +895,6 @@ version.cpp: $(kadu_SOURCES) *.h ../modules/*/*.h ../modules/*/*.cpp ../libgadu/
 		ver="$$core_ver"; \
 	fi; \
 	echo "const char *detailed_version = \"$$ver\";" | diff -q - $@ >/dev/null 2>/dev/null || echo "const char *detailed_version = \"$$ver\";" > $@;
- endif
-
-# dirty hack - leading space required because od automake "if" support
-# time to say automake goodbye?
- ifeq ($(enable_pheaders),yes)
-
--include kadu-headers.d
-
-kadu-headers.d: kadu-headers.h
-	@echo generating dependency file for $<
-	@echo "$(CXX) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) $< | sed "s,\(.*\):,$(basename $@).h.gch $@:," > $@" >> $(LOGFILE)
-	@$(CXX) -M $(INCLUDES) $(AM_CPPFLAGS) $(module_cxxflags) $(CXXFLAGS) $< | sed "s,\(.*\):,$(basename $@).h.gch $@:," > $@
-
-%.h.gch: %.h
-	@echo compiling headers
-	@rm -f $@
-	@echo $(CXX) -o $@ -c $< $(INCLUDES) $(AM_CPPFLAGS) $(AM_CXXFLAGS) $(module_cxxflags)  $(CXXFLAGS) >> $(LOGFILE)
-	@$(CXX) -o $@ -c $< $(INCLUDES) $(AM_CPPFLAGS) $(AM_CXXFLAGS) $(module_cxxflags)  $(CXXFLAGS)
-
  endif
 
 install-data-local:
