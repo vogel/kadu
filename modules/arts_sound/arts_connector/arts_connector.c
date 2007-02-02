@@ -161,7 +161,7 @@ int main()
 	socklen_t len;
 	struct sockaddr_un unix_sock_name;
 	unsigned long long int pass, p;
-	int lsock, err, sock, end, buflen, i;
+	int lsock, err, sock, end, buflen;
 	int uin, channels, rate, enabled, length, offset, num, type;
 
 	memset(devices, 0, MAXDEV*sizeof(struct aRtsSoundDevice *));
@@ -259,7 +259,7 @@ int main()
 
 	while (!end)
 	{
-		struct aRtsSoundDevice *tmpdev; int devno;
+		int devno;
 		alarm(60 * 60); //po godzinie siê wy³±czamy
 		buflen = read_line(sock, buffer, BUFSIZE);
 		end = (buflen == -1);
