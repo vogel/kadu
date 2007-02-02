@@ -196,6 +196,25 @@ class OnlineUsers : public UserGroup
 extern OnlineUsers *onlineUsers;
 
 /**
+	\class OfflineUsers
+	Klasa grupuj±ca kontakty o statusie "niedostêpny",
+	automatycznie synchronizuj±ca siê z g³ówn± list± kontaktów
+**/
+class OfflineUsers : public UserGroup
+{
+	Q_OBJECT
+	public:
+		OfflineUsers();
+		virtual ~OfflineUsers();
+	private slots:
+		void statusChangedSlot(UserListElement elem, QString protocolName,
+					    const UserStatus &oldStatus, bool massively, bool last);
+		void userChangedSlot(UserListElement elem, bool massively, bool last);
+		void protocolAddedOrRemoved(UserListElement elem, QString protocolName, bool massively, bool last);
+};
+extern OfflineUsers *offlineUsers;
+
+/**
 	\class BlockedUsers
 	Klasa grupuj±ca kontakty, które s± blokowane,
 	automatycznie synchronizuj±ca siê z g³ówn± list± kontaktów
