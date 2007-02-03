@@ -529,7 +529,7 @@ OfflineUsers::OfflineUsers() : UserGroup(userlist->count(), "offline_users")
 		}
 		else // doesn't use any proto -> so can't be offline
 			offline = false;
-		
+
 		if (offline)
 			addUser(*user);
 	}
@@ -553,7 +553,7 @@ OfflineUsers::~OfflineUsers()
 	disconnect(userlist, SIGNAL(protocolAdded(UserListElement, QString, bool, bool)),
 			this, SLOT(protocolAddedOrRemoved(UserListElement, QString, bool, bool)));
 	disconnect(userlist, SIGNAL(removingProtocol(UserListElement, QString, bool, bool)),
-			this, SLOT(protocolAddedOrremoved(UserListElement, QString, bool, bool)));
+			this, SLOT(protocolAddedOrRemoved(UserListElement, QString, bool, bool)));
 }
 
 
