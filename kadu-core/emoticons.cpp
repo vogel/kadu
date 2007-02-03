@@ -20,6 +20,7 @@
 #include "kadu_text_browser.h"
 #include "misc.h"
 
+#define IMG_X_OFFSET 0
 #define IMG_Y_OFFSET 2
 
 EmoticonsManager::EmoticonsListItem::EmoticonsListItem() : alias(), anim(), stat()
@@ -854,14 +855,23 @@ void AnimTextItem::draw(
 	EditSize = Edit->size();
 
 	Label->lastX = x;
+	if (x - cx > 0)
+		Label->lastX = x - cx + Edit->visibleWidth() - cw + IMG_X_OFFSET;
+	else
+		Label->lastX = x - cx + IMG_X_OFFSET;
+
+
 	// +IMG_Y_OFFSET dla lepszego efektu optycznego - emotikony s± bardziej wy¶rodkowane
 	if (y - cy > 0)
 		Label->lastY = y - cy + Edit->visibleHeight() - ch + IMG_Y_OFFSET;
 	else
 		Label->lastY = y - cy + IMG_Y_OFFSET;
 	Label->move(Label->lastX, Label->lastY);
+
+	Label->lastX += Edit->contentsX();
 	Label->lastY += Edit->contentsY();
 //	kdebugm(KDEBUG_WARNING, "%s, lastX:%d, lastY:%d\n", text.local8Bit().data(), Label->lastX, Label->lastY);
+
 
 /*	QPoint u(x, y - cy);
 	if (u.y() > 0)

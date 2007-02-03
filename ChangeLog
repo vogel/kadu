@@ -76,6 +76,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * przy od¶wie¿aniu listy kontaktów, je¿eli pozycja ¿adnego z kontaktów siê nie
   zmieni³a, to od¶wie¿enie wykonujemy du¿o sprytniej, co zaoszczêdza czasu i
   mrugniêcia listy kontaktów (joi)
+* prawid³owe pozycjonowanie animowanych emotikon/obrazków w przypadku
+  przesuwania poziomego scrollbara (joi)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
