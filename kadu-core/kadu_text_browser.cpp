@@ -96,6 +96,7 @@ void KaduTextBrowser::refresh()
 	//sync();
 	//repaint();
 	repaintContents(false);
+	kdebugf2();
 }
 
 void KaduTextBrowser::maybeTip(const QPoint &c)

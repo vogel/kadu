@@ -20,7 +20,6 @@
 #include "kadu_text_browser.h"
 #include "misc.h"
 
-#define IMG_X_OFFSET 0
 #define IMG_Y_OFFSET 2
 
 EmoticonsManager::EmoticonsListItem::EmoticonsListItem() : alias(), anim(), stat()
@@ -839,27 +838,25 @@ void AnimTextItem::draw(
 	int cw, int ch, const QColorGroup& /*cg*/,
 	bool /*selected*/ )
 {
-//	kdebugm(KDEBUG_WARNING, "%s x:%d y:%d cx:%d cy:%d cw:%d ch:%d\n", text.local8Bit().data(), x, y, cx, cy, cw, ch);
-//	kdebugm(KDEBUG_WARNING, "contX:%d contY:%d contW:%d contH:%d visW:%d visH:%d\n", Edit->contentsX(), Edit->contentsY(), Edit->contentsWidth(), Edit->contentsHeight(), Edit->visibleWidth(), Edit->visibleHeight());
+//	kdebugm(KDEBUG_WARNING, "%d\n", int(QRect(x, y, width, height).intersects(QRect(cx, cy, cw, ch))));
+	if (!QRect(x, y, width, height).intersects(QRect(cx, cy, cw, ch)))
+		return;
+
+//	kdebugm(KDEBUG_WARNING, "%20s x:%4d cx:%4d cw:%4d contX:%4d contW:%4d visW:%4d\n", text.local8Bit().data(), x, cx, cw, Edit->contentsX(), Edit->contentsWidth(), Edit->visibleWidth());
+//	kdebugm(KDEBUG_WARNING, "%20s y:%4d cy:%4d ch:%4d contY:%4d contH:%4d visH:%4d\n", text.local8Bit().data(), y, cy, ch, Edit->contentsY(), Edit->contentsHeight(), Edit->visibleHeight());
+
 //	if(EditSize==Edit->size())
 	if (EditSize == Edit->size()  &&  ch != Edit->visibleHeight())
 	{
 //		kdebugm(KDEBUG_WARNING, "back\n\n");
 		return;
 	}
-//	else
-//		kdebugm(KDEBUG_WARNING, "\n");
 //	if(Label->isVisible()&&EditSize==Edit->size())
 //		return;
 
 	EditSize = Edit->size();
 
-	Label->lastX = x;
-	if (x - cx > 0)
-		Label->lastX = x - cx + Edit->visibleWidth() - cw + IMG_X_OFFSET;
-	else
-		Label->lastX = x - cx + IMG_X_OFFSET;
-
+	Label->lastX = x - Edit->contentsX();
 
 	// +IMG_Y_OFFSET dla lepszego efektu optycznego - emotikony s± bardziej wy¶rodkowane
 	if (y - cy > 0)
