@@ -27,13 +27,12 @@ class KaduListBoxPixmap : public QListBoxItem
 	public:
 		/**
 			\fn KaduListBoxPixmap(const QPixmap &pix, UserListElement user, bool bold = false)
-			Konstruktor dodaj±cy kontakt do listy z podan± ikon±.
-			\param pix ikona wy¶wietlana obok kontaktu.
+			Konstruktor dodaj±cy kontakt do listy.
 			\param user kontakt, z którego bêd± pobierane dane do wy¶wietlenia
 			\param bold warto¶æ logiczna informuj±ca o tym, czy nazwa kontaktu
 				ma byæ wy¶wietlana pogrubion± czcionk±.
 		**/
-		KaduListBoxPixmap(const QPixmap &pix, UserListElement user, bool bold = false);
+		KaduListBoxPixmap(UserListElement user, bool bold = false);
 
 		/**
 			\fn bool isBold() const
@@ -54,6 +53,8 @@ class KaduListBoxPixmap : public QListBoxItem
 			\param lb obiekt reprezentuj±cy wy¶wietlany kontakt.
 		**/
 		int width(const QListBox *lb) const;
+
+		void refreshPixmap();
 
 		const UserListElement User;
 	protected:
@@ -97,8 +98,11 @@ class KaduListBoxPixmap : public QListBoxItem
 			\param text nowa nazwa do wy¶wietlenia.
 		**/
 		void changeText(const QString &text);
+
 		friend class UserBox;
 		friend class UserBoxSlots;
+
+		static QPixmap pixmapForUser(const UserListElement &user);
 
 		/*funkcje wprowadzone ¿eby zaoszczêdziæ na odwo³aniach do pliku konfiguracyjnego*/
 		/**
@@ -296,7 +300,7 @@ class UserBox : public QListBox
 			Wska¼nik do menu kontekstowego listy kontaktów.
 		**/
 		static UserBoxMenu *userboxmenu;
-		
+
 		/**
 			\var static UserBoxMenu *management
 			Wska¼nik do menu zarz±dzania kontaktami.

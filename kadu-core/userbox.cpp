@@ -51,8 +51,9 @@ void KaduListBoxPixmap::setFont(const QFont &f)
 	kdebugf2();
 }
 
-KaduListBoxPixmap::KaduListBoxPixmap(const QPixmap &pix, UserListElement user, bool bold_)
-	: QListBoxItem(), User(user), pm(pix), bold(bold_), buf_text(), buf_width(-1), buf_out(), buf_height(-1)
+KaduListBoxPixmap::KaduListBoxPixmap(UserListElement user, bool bold_)
+	: QListBoxItem(), User(user), pm(pixmapForUser(user)), bold(bold_),
+		buf_text(), buf_width(-1), buf_out(), buf_height(-1)
 {
 	setText(user.altNick());
 }
@@ -321,6 +322,34 @@ void KaduListBoxPixmap::changeText(const QString &text)
 	setText(text);
 }
 
+QPixmap KaduListBoxPixmap::pixmapForUser(const UserListElement &user)
+{
+	bool has_mobile = !user.mobile().isEmpty();
+	bool usesGadu = user.usesProtocol("Gadu");
+	if (!usesGadu)
+	{
+		if (has_mobile)
+			return icons_manager->loadIcon("Mobile");
+		else
+			return QPixmap();
+	}
+	else if (pending.pendingMsgs(user))
+		return icons_manager->loadIcon("Message");
+	else
+	{
+		const QPixmap &pix = user.status("Gadu").pixmap(has_mobile);
+		if (!pix.isNull())
+			return pix;
+		else
+			return icons_manager->loadIcon("Online");
+	}
+}
+
+void KaduListBoxPixmap::refreshPixmap()
+{
+	pm = pixmapForUser(User);
+}
+
 class ULEComparer
 {
 	public:
@@ -575,63 +604,67 @@ void UserBox::refresh()
 	{
 */
 	sort();
-
-	// remember selected users
-	QStringList s_users;
-	for (unsigned int i = 0, count2 = count(); i < count2; ++i)
-		if (isSelected(i))
-			s_users.append(item(i)->text());
-	QString s_user = currentText();
-
-	// remember vertical scrollbar position
-	int vScrollValue = verticalScrollBar()->value();
-
-	// clearing list
-	QListBox::clear();
-
-	bool showBold = config_file.readBoolEntry("Look", "ShowBold");
-
-	for (std::vector<UserListElement>::const_iterator user = sortHelper.begin(),
-		userEnd = sortHelper.end(); user != userEnd; ++user)
+	uint Count = count();
+	bool doRefresh = sortHelper.size() != Count;
+	if (!doRefresh)
 	{
-		bool has_mobile = !(*user).mobile().isEmpty();
-		bool usesGadu = (*user).usesProtocol("Gadu");
-		bool bold = showBold && usesGadu &&
-					((*user).status("Gadu").isOnline() || (*user).status("Gadu").isBusy());
-//		kdebugm(KDEBUG_INFO, "creating: %s %d\n", (*user).altNick().local8Bit().data(), usesGadu);
-		KaduListBoxPixmap *lbp;
-		if (!usesGadu)
+//		kdebugm(KDEBUG_INFO, "checking if order changed\n");
+		int i = 0;
+		for (std::vector<UserListElement>::const_iterator user = sortHelper.begin(),
+			userEnd = sortHelper.end(); user != userEnd; ++user)
 		{
-			if ((*user).mobile().isEmpty())
-				lbp = new KaduListBoxPixmap(QPixmap(), *user, false);
-			else
-				lbp = new KaduListBoxPixmap(icons_manager->loadIcon("Mobile"), *user, false);
+			doRefresh = ((*user) != static_cast<KaduListBoxPixmap *>(item(i++))->User);
+			if (doRefresh)
+				break;
 		}
-		else if (pending.pendingMsgs(*user))
-			lbp = new KaduListBoxPixmap(icons_manager->loadIcon("Message"), *user, bold);
-		else
-		{
-			const QPixmap &pix = (*user).status("Gadu").pixmap(has_mobile);
-			if (!pix.isNull())
-				lbp = new KaduListBoxPixmap(pix, *user, bold);
-			else
-				lbp = new KaduListBoxPixmap(icons_manager->loadIcon("Online"), *user, bold);
-		}
-		insertItem(lbp);
+		if (!doRefresh)
+			for (unsigned int i = 0; i < Count; ++i)
+				static_cast<KaduListBoxPixmap *>(item(i))->refreshPixmap();
 	}
+	kdebugm(KDEBUG_INFO, "do real refresh: %d\n", doRefresh);
+	if (!doRefresh)
+		triggerUpdate(true);
+	else
+	{
+		// remember selected users
+		QStringList s_users;
+		for (unsigned int i = 0, count2 = count(); i < count2; ++i)
+			if (isSelected(i))
+				s_users.append(item(i)->text());
+		QString s_user = currentText();
 
-	// restore selected users
-	CONST_FOREACH(username, s_users)
-		setSelected(findItem(*username), true);
-	setCurrentItem(findItem(s_user));
+		// remember vertical scrollbar position
+		int vScrollValue = verticalScrollBar()->value();
 
-	// restore vertical scrollbar position
-	verticalScrollBar()->setValue(vScrollValue);
+		// clearing list
+		QListBox::clear();
 
-	// because settingCurrentItem changes vertical scrollbar position and line
-	// above doesn't prevents this, we must set position as soon as possible
-	lastVerticalPosition = vScrollValue;
-	verticalPositionTimer.start(0, true);
+		bool showBold = config_file.readBoolEntry("Look", "ShowBold");
+
+		for (std::vector<UserListElement>::const_iterator user = sortHelper.begin(),
+			userEnd = sortHelper.end(); user != userEnd; ++user)
+		{
+			bool usesGadu = (*user).usesProtocol("Gadu");
+			bool bold = showBold && usesGadu &&
+						((*user).status("Gadu").isOnline() || (*user).status("Gadu").isBusy());
+	//		kdebugm(KDEBUG_INFO, "creating: %s %d\n", (*user).altNick().local8Bit().data(), usesGadu);
+			KaduListBoxPixmap *lbp = new KaduListBoxPixmap(*user, bold);
+			insertItem(lbp);
+		}
+
+		// restore selected users
+		CONST_FOREACH(username, s_users)
+			setSelected(findItem(*username), true);
+		setCurrentItem(findItem(s_user));
+
+		// restore vertical scrollbar position
+		verticalScrollBar()->setValue(vScrollValue);
+
+		// because settingCurrentItem changes vertical scrollbar position and line
+		// above doesn't prevents this, we must set position as soon as possible
+		lastVerticalPosition = vScrollValue;
+		verticalPositionTimer.start(0, true);
+	}
 
 /*	}
 	gettimeofday(&t2, NULL);

@@ -73,6 +73,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka wywrotki przy dodawaniu akcji "zatrzymania wyszukiwania w katalogu" (joi)
 * optymalizacja od¶wie¿ania listy kontaktów przy zmianie rozmiarów okna (joi)
 * ukrywanie niedostêpnych uniezale¿nione od u¿ywanych protoko³ów (neeo)
+* przy od¶wie¿aniu listy kontaktów, je¿eli pozycja ¿adnego z kontaktów siê nie
+  zmieni³a, to od¶wie¿enie wykonujemy du¿o sprytniej, co zaoszczêdza czasu i
+  mrugniêcia listy kontaktów (joi)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
