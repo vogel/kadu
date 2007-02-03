@@ -799,7 +799,7 @@ void Chat::addMyMessageToHistory()
 void Chat::clearChatWindow()
 {
 	kdebugf();
-	if (MessageBox::ask(tr("Chat window will be cleared. Continue?")))
+	if (!config_file.readBoolEntry("Chat", "ConfirmChatClear") || MessageBox::ask(tr("Chat window will be cleared. Continue?")))
 	{
 		FOREACH(msg, ChatMessages)
 			delete *msg;

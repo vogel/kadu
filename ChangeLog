@@ -78,6 +78,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   mrugniêcia listy kontaktów (joi)
 * prawid³owe pozycjonowanie animowanych emotikon/obrazków w przypadku
   przesuwania poziomego scrollbara (joi)
+* dodana opcja w konfiguracji (na poziomie zaawansowanym), umo¿liwiaj±ca wy³±czenie
+  potwierdzania czyszczenia okna Chat (neeo)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

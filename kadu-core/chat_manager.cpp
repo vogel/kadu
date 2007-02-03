@@ -993,6 +993,7 @@ void ChatManager::closeModule()
 	ConfigDialog::removeControl("Chat", "Max time to block window close");
 	ConfigDialog::removeControl("Chat", "Remember chat windows positions");
 	ConfigDialog::removeControl("Chat", "Receive images during invisibility");
+	ConfigDialog::removeControl("Chat", "Confirm clearing chat window");
 	ConfigDialog::removeControl("Chat", "Block window close on new message");
 	ConfigDialog::removeControl("Chat", "Ignore richtext from anonymous users");
 	ConfigDialog::removeControl("Chat", "Ignore messages from anonymous users");
@@ -1076,6 +1077,7 @@ void ChatManager::initModule()
 	ConfigDialog::addCheckBox("Chat", "checkboxes-advanced", QT_TRANSLATE_NOOP("@default", "Ignore messages from anonymous users"), "IgnoreAnonymousUsers", false, 0, 0, Advanced);
 	ConfigDialog::addCheckBox("Chat", "checkboxes-advanced", QT_TRANSLATE_NOOP("@default", "Ignore richtext from anonymous users"), "IgnoreAnonymousRichtext", true, 0, 0, Advanced);
 	ConfigDialog::addCheckBox("Chat", "checkboxes-advanced", QT_TRANSLATE_NOOP("@default", "Block window close on new message"), "ChatCloseTimer", false, 0, 0, Advanced);
+	ConfigDialog::addCheckBox("Chat", "checkboxes-advanced", QT_TRANSLATE_NOOP("@default", "Confirm clearing chat window"), "ConfirmChatClear", true, 0, 0, Advanced);
 	ConfigDialog::addCheckBox("Chat", "checkboxes-expert", QT_TRANSLATE_NOOP("@default", "Receive images during invisibility"), "ReceiveImagesDuringInvisibility", true, 0, 0, Expert);
 	ConfigDialog::addCheckBox("Chat", "checkboxes-expert", QT_TRANSLATE_NOOP("@default", "Remember chat windows positions"), "RememberPosition", true, 0, 0, Expert);
 	ConfigDialog::addSpinBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Max time to block window close"),
