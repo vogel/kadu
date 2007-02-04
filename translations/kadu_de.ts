@@ -883,10 +883,6 @@ Wollen Sie diese Datei wirklich senden?</translation>
         <translation>Leere Verlauf im Chatfenster</translation>
     </message>
     <message>
-        <source>Show history</source>
-        <translation>Zeige Verlauf</translation>
-    </message>
-    <message>
         <source>Insert emoticon</source>
         <translation>Smiley einfügen</translation>
     </message>

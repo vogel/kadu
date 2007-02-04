@@ -885,10 +885,6 @@ Czy na pewno chcesz wysłać ten obrazek?</translation>
         <translation>Wyczyść wiadomości w historii rozmowy</translation>
     </message>
     <message>
-        <source>Show history</source>
-        <translation>Pokaż historię</translation>
-    </message>
-    <message>
         <source>Insert emoticon</source>
         <translation>Wstaw emotikonę</translation>
     </message>

@@ -878,10 +878,6 @@ Sicuro di spedirlo comunque?</translation>
         <translation>Cancella cronologia</translation>
     </message>
     <message>
-        <source>Show history</source>
-        <translation>Mostra cronologia</translation>
-    </message>
-    <message>
         <source>Insert emoticon</source>
         <translation>Inserisci emoticon</translation>
     </message>

@@ -80,6 +80,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   przesuwania poziomego scrollbara (joi)
 * dodana opcja w konfiguracji (na poziomie zaawansowanym), umo¿liwiaj±ca wy³±czenie
   potwierdzania czyszczenia okna Chat (neeo)
+* nowy modu³ "history", akcja pokazuj±ca dialog historii przeniesiona do modu³u (adrian)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

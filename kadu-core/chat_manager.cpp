@@ -72,12 +72,6 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 		this, SLOT(clearActionActivated(const UserGroup*)));
 	KaduActions.insert("clearChatAction", clear_action);
 
-	Action* history_action = new Action(icons_manager->loadIcon("History"),
-		tr("Show history"), "showHistoryAction", Action::TypeUser);
-	connect(history_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-		this, SLOT(historyActionActivated(const UserGroup*)));
-	KaduActions.insert("showHistoryAction", history_action);
-
 	Action* insert_emot_action = new Action(icons_manager->loadIcon("ChooseEmoticon"),
 		tr("Insert emoticon"), "insertEmoticonAction", Action::TypeChat);
 	connect(insert_emot_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
@@ -161,7 +155,6 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "autoSendAction");
 	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "scrollLockAction");
 	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "clearChatAction");
-	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "showHistoryAction");
 	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "insertEmoticonAction");
 	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "whoisAction");
 	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "insertImageAction");
@@ -269,7 +262,7 @@ ChatManager::~ChatManager()
 	// for valgrind
 	QStringList chatActions;
 	chatActions << "autoSendAction" << "scrollLockAction" << "clearChatAction"
-				<< "showHistoryAction" << "insertEmoticonAction" << "whoisAction"
+				<< "insertEmoticonAction" << "whoisAction"
 				<< "insertImageAction" << "ignoreUserAction" << "blockUserAction"
 				<< "boldAction" << "italicAction" << "underlineAction"
 				<< "colorAction" << "sendAction" << "chatAction";
@@ -304,17 +297,6 @@ void ChatManager::clearActionActivated(const UserGroup* users)
 {
 	kdebugf();
 	findChat(users)->clearChatWindow();
-	kdebugf2();
-}
-
-void ChatManager::historyActionActivated(const UserGroup* users)
-{
-	kdebugf();
-	UinsList uins;
-	CONST_FOREACH(user, *users)
-		uins.append((*user).ID("Gadu").toUInt());
-	//TODO: throw out UinsList as soon as possible!
-	(new History(uins))->show();
 	kdebugf2();
 }
 

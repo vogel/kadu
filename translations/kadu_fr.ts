@@ -878,10 +878,6 @@ Souhaitez vous vraiment expédier cette image?</translation>
         <translation>Efface la fenêtre du chat</translation>
     </message>
     <message>
-        <source>Show history</source>
-        <translation>Montre historique</translation>
-    </message>
-    <message>
         <source>Insert emoticon</source>
         <translation>Insère icône d&apos;emotion</translation>
     </message>

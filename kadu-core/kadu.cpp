@@ -332,7 +332,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	KaduActions.addDefaultToolbarAction("Kadu toolbar", "inactiveUsersAction");
 	KaduActions.addDefaultToolbarAction("Kadu toolbar", "descriptionUsersAction");
 	KaduActions.addDefaultToolbarAction("Kadu toolbar", "configurationAction");
-	KaduActions.addDefaultToolbarAction("Kadu toolbar", "showHistoryAction");
 	KaduActions.addDefaultToolbarAction("Kadu toolbar", "editUserAction");
 	KaduActions.addDefaultToolbarAction("Kadu toolbar", "openSearchAction");
 	KaduActions.addDefaultToolbarAction("Kadu toolbar", "addUserAction");
