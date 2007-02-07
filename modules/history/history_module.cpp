@@ -13,6 +13,7 @@
 #include "chat_manager.h"
 #include "debug.h"
 #include "history.h"
+#include "history_dialog.h"
 #include "icons_manager.h"
 #include "misc.h"
 
@@ -64,7 +65,7 @@ void HistoryModule::historyActionActivated(const UserGroup* users)
 	CONST_FOREACH(user, *users)
 		uins.append((*user).ID("Gadu").toUInt());
 	//TODO: throw out UinsList as soon as possible!
-	(new History(uins))->show();
+	(new HistoryDialog(uins))->show();
 	kdebugf2();
 }
 

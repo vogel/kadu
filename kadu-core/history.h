@@ -74,46 +74,6 @@ class DateListViewText : public QListViewItem {
 		HistoryDate date;
 };
 
-/**
-	Okno historii rozmowy
-**/
-class KaduTextBrowser;
-class HistorySlots;
-
-class History : public QDialog {
-	Q_OBJECT
-
-	public:
-		History(UinsList uins);
-		static void initModule();
-		static void closeModule();
-
-	public slots:
-		void uinsChanged(QListViewItem *item);
-		void dateChanged(QListViewItem *item);
-		void searchBtnClicked();
-		void searchNextBtnClicked();
-		void searchPrevBtnClicked();
-
-	protected:
-		void formatHistoryEntry(QString &text, const HistoryEntry &entry, QStringList &paracolors);
-		void showHistoryEntries(int from, int count);
-		void setDateListViewText(const QDateTime &datetime);
-		void searchHistory();
-		static const QString &gaduStatus2symbol(unsigned int status);
-		void closeEvent(QCloseEvent *e);
-
-		QListView *uinslv;
-		KaduTextBrowser* body;
-		UinsList uins;
-		int start;
-		HistoryFindRec findrec;
-		bool closeDemand;
-		bool finding;
-		QValueList<HistoryDate> dateentries;
-		static HistorySlots *historyslots;
-};
-
 class HistorySearch : public QDialog {
 	Q_OBJECT
 	public:
@@ -147,6 +107,17 @@ class HistorySearch : public QDialog {
 		void resetToDate();
 };
 
+class HistorySlots: public QObject
+{
+	Q_OBJECT
+	public:
+		HistorySlots(QObject *parent=0, const char *name=0);
+	public slots:
+		void onCreateTabHistory();
+		void onApplyTabHistory();
+		void updateQuoteTimeLabel(int);
+};
+
 /**
 	Menad¿er historii
 **/
@@ -155,6 +126,8 @@ class HistoryManager : public QObject
 	Q_OBJECT
 
 	public:
+		static void initModule();
+		static void closeModule();
 		HistoryManager(QObject *parent=0, const char *name=0);
 		int getHistoryEntriesCount(const UinsList &uins);
 		int getHistoryEntriesCount(const QString &mobile = QString::null);
@@ -166,6 +139,7 @@ class HistoryManager : public QObject
 		static QStringList mySplit(const QChar &sep, const QString &str);
 
 	private:
+		static HistorySlots *historyslots;
 		QString text2csv(const QString &text);
 		int getHistoryEntriesCountPrivate(const QString &filename) const;
 		uint getHistoryDate(QTextStream &stream);
@@ -219,16 +193,5 @@ class HistoryManager : public QObject
 };
 
 extern HistoryManager *history;
-
-class HistorySlots: public QObject
-{
-	Q_OBJECT
-	public:
-		HistorySlots(QObject *parent=0, const char *name=0);
-	public slots:
-		void onCreateTabHistory();
-		void onApplyTabHistory();
-		void updateQuoteTimeLabel(int);
-};
 
 #endif

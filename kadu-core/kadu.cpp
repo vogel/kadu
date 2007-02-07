@@ -276,7 +276,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	setDocked(Docked, dontHideOnClose);
 
 	// history, hints
-	History::initModule();
+	HistoryManager::initModule();
 
 	loadGeometry(this, "General", "Geometry", 0, 30, 145, 465);
 
@@ -622,12 +622,8 @@ void Kadu::viewHistory()
 		return;
 	}
 	UserListElements users = activeUserBox->selectedUsers();
-	//TODO: throw out UinsList as soon as possible!
-	UinsList uins;
-	CONST_FOREACH(user, users)
-		if ((*user).usesProtocol("Gadu"))
-			uins.append((*user).ID("Gadu").toUInt());
-	(new History(uins))->show();
+	UserGroup user_group(users);
+	KaduActions["showHistoryAction"]->activate(&user_group);
 	kdebugf2();
 }
 
@@ -1316,7 +1312,7 @@ bool Kadu::close(bool quit)
 		disconnect(&(gadu->currentStatus()), SIGNAL(goOffline(const QString &)),
 				this, SLOT(wentOffline(const QString &)));
 
-		History::closeModule();
+		HistoryManager::closeModule();
 
 		disconnect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(popupMenu()));
 		disconnect(Userbox, SIGNAL(rightButtonPressed(QListBoxItem *, const QPoint &)),

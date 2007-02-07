@@ -1,2 +1,2 @@
-MODULE_SOURCES="history_module.cpp"
-MODULE_MOC_HEADERS="history_module.h"
+MODULE_SOURCES="history_module.cpp history_dialog.cpp"
+MODULE_MOC_HEADERS="history_module.h history_dialog.h"
