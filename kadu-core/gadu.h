@@ -1039,7 +1039,8 @@ class GaduProtocol : public Protocol
 			nadawca nie jest ignorowany, itp)
 			Tre¶æ zdeszyfrowana i zdekodowana do unicode.
 			Je¶li który¶ ze slotów sygna³u chatMsgReceived1 ustawi zmienn±
-			grab na true to sygna³ chatReceived2 nie zostanie wygenerowany.
+			grab na true to sygna³ chatMsgReceived2 nie zostanie wygenerowany.
+			Wówczas wygenerowany zostanie sygna³ chatMsgReceived3.
 			Je¶li natomiast zmienna grab zostanie ustawiona przez slot
 			chatMsgReceived0, to ¿adna czynno¶æ zwi±zana z obs³ug± tego
 			zdarzenia nie zostanie podjêta (tj. wy¶wietlanie wiadomo¶ci
@@ -1049,6 +1050,7 @@ class GaduProtocol : public Protocol
 		void chatMsgReceived0(Protocol *protocol, UserListElements senders, const QString& msg, time_t time, bool& grab);
 		void chatMsgReceived1(Protocol *protocol, UserListElements senders, const QString& msg, time_t time, bool& grab);
 		void chatMsgReceived2(Protocol *protocol, UserListElements senders, const QString& msg, time_t time);
+		void chatMsgReceived3(Protocol *protocol, UserListElements senders, const QString& msg, time_t time);
 
 		/**
 			Wywo³ywane, gdy chcemy odczytaæ token z obrazka

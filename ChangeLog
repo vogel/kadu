@@ -82,6 +82,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   potwierdzania czyszczenia okna Chat (neeo)
 * nowy modu³ "history", akcja pokazuj±ca dialog historii przeniesiona do modu³u (adrian)
 * dialog historii przeniesiony do modu³u "history" (adrian)
+* nowy sygna³ emitowany po obs³u¿eniu przychodz±cej wiadomo¶ci (uzi18/neeo)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
