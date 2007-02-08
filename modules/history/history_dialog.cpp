@@ -21,6 +21,47 @@
 #include <qsplitter.h>
 #include <qvbox.h>
 
+UinsListViewText::UinsListViewText(QListView *parent, const UinsList &uins)
+	: QListViewItem(parent), uins(uins)
+{
+//	kdebugf();
+	QString name;
+
+	if (uins.isEmpty())
+		setText(0, "SMS");
+	else
+	{
+		uint i = 0, uinsCount = uins.count();
+		CONST_FOREACH(uin, uins)
+		{
+			if (userlist->contains("Gadu", QString::number(*uin)))
+				name.append(userlist->byID("Gadu", QString::number(*uin)).altNick());
+			else
+				name.append(QString::number(*uin));
+			if (i++ < uinsCount - 1)
+				name.append(",");
+		}
+		setText(0, name);
+	}
+//	kdebugf2();
+}
+
+const UinsList &UinsListViewText::getUinsList() const
+{
+	return uins;
+}
+
+DateListViewText::DateListViewText(QListViewItem *parent, const HistoryDate &date)
+	: QListViewItem(parent), date(date)
+{
+	setText(0, date.date.toString("yyyy.MM.dd"));
+}
+
+const HistoryDate &DateListViewText::getDate() const
+{
+	return date;
+}
+
 HistoryDialog::HistoryDialog(UinsList uins) : QDialog(NULL, "HistoryDialog"), uinslv(0), body(0),
 	uins(uins), start(0), findrec(), closeDemand(false), finding(false), dateentries()
 {
@@ -276,8 +317,7 @@ void HistoryDialog::searchBtnClicked()
 {
 	kdebugf();
 
-	HistorySearch *hs;
-	hs = new HistorySearch(this, uins);
+	HistorySearchDialog* hs = new HistorySearchDialog(this, uins);
 //	hs->resetBtnClicked();
 	hs->setDialogValues(findrec);
 	if (hs->exec() == QDialog::Accepted)

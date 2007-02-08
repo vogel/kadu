@@ -4,10 +4,29 @@
 #include <qdialog.h>
 #include "gadu.h"
 #include "history.h"
+#include "history_search_dialog.h"
 
 class KaduTextBrowser;
 class QListView;
 class QListViewItem;
+
+class UinsListViewText : public QListViewItem {
+	public:
+		UinsListViewText(QListView *parent, const UinsList &uins);
+		const UinsList &getUinsList() const;
+
+	private:
+		UinsList uins;
+};
+
+class DateListViewText : public QListViewItem {
+	public:
+		DateListViewText(QListViewItem *parent, const HistoryDate &date);
+		const HistoryDate &getDate() const;
+
+	private:
+		HistoryDate date;
+};
 
 /**
 	History dialog
