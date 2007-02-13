@@ -53,18 +53,6 @@
         <translation>Podkreślony:</translation>
     </message>
     <message>
-        <source>History</source>
-        <translation>Historia</translation>
-    </message>
-    <message>
-        <source>Count:</source>
-        <translation>Ilość:</translation>
-    </message>
-    <message>
-        <source>Don&apos;t show status changes</source>
-        <translation>Nie pokazuj zmian statusu</translation>
-    </message>
-    <message>
         <source>User data</source>
         <translation>Dane użytkownika</translation>
     </message>
@@ -79,10 +67,6 @@
     <message>
         <source>Nick</source>
         <translation>Pseudonim: </translation>
-    </message>
-    <message>
-        <source>Log messages</source>
-        <translation>Zapisuj wiadomości</translation>
     </message>
     <message>
         <source>Check for updates</source>
@@ -327,10 +311,6 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <translation>Wielolinijkowy opis w liście kontaktów</translation>
     </message>
     <message>
-        <source>Don&apos;t save status changes</source>
-        <translation>Nie zapisuj zmian statusu</translation>
-    </message>
-    <message>
         <source>Force running Kadu (not recommended).</source>
         <translation>Uruchom mimo to (nie zalecane).</translation>
     </message>
@@ -433,14 +413,6 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     <message>
         <source>Preview panel</source>
         <translation>Podgląd panelu informacyjnego</translation>
-    </message>
-    <message>
-        <source>Message citation in chat window</source>
-        <translation>Cytowanie wiadomości w oknie rozmowy</translation>
-    </message>
-    <message>
-        <source>Don&apos;t cite messages older than:</source>
-        <translation>Nie cytuj wiadomości starszych niż:</translation>
     </message>
     <message>
         <source>Show vertical scrollbar in information panel</source>
@@ -1144,13 +1116,6 @@ Zbyt wiele prób połączeń z niepoprawnym hasłem</translation>
     <message>
         <source>No</source>
         <translation>Nie</translation>
-    </message>
-</context>
-<context>
-    <name>HistorySlots</name>
-    <message>
-        <source>%1 day(s) %2 hour(s)</source>
-        <translation>dni: %1 godzin: %2</translation>
     </message>
 </context>
 <context>

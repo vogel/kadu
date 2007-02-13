@@ -275,9 +275,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	groups_manager->setTabBar(GroupBar);
 	setDocked(Docked, dontHideOnClose);
 
-	// history, hints
-	HistoryManager::initModule();
-
 	loadGeometry(this, "General", "Geometry", 0, 30, 145, 465);
 
 	readIgnored();
@@ -1312,8 +1309,6 @@ bool Kadu::close(bool quit)
 		disconnect(&(gadu->currentStatus()), SIGNAL(goOffline(const QString &)),
 				this, SLOT(wentOffline(const QString &)));
 
-		HistoryManager::closeModule();
-
 		disconnect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(popupMenu()));
 		disconnect(Userbox, SIGNAL(rightButtonPressed(QListBoxItem *, const QPoint &)),
 					UserBox::userboxmenu, SLOT(show(QListBoxItem *)));
@@ -1407,7 +1402,6 @@ bool Kadu::close(bool quit)
 		ConfigDialog::removeControl("General", "Uin");
 		ConfigDialog::removeControl("General", "User data");
 
-		ConfigDialog::removeTab("History");
 		ConfigDialog::removeTab("Network");
 		ConfigDialog::removeTab("Look");
 		ConfigDialog::removeTab("Chat");

@@ -46,17 +46,6 @@ struct HistoryDate {
 	HistoryDate();
 };
 
-class HistorySlots: public QObject
-{
-	Q_OBJECT
-	public:
-		HistorySlots(QObject *parent=0, const char *name=0);
-	public slots:
-		void onCreateTabHistory();
-		void onApplyTabHistory();
-		void updateQuoteTimeLabel(int);
-};
-
 /**
 	Menad¿er historii
 **/
@@ -65,8 +54,6 @@ class HistoryManager : public QObject
 	Q_OBJECT
 
 	public:
-		static void initModule();
-		static void closeModule();
 		HistoryManager(QObject *parent=0, const char *name=0);
 		int getHistoryEntriesCount(const UinsList &uins);
 		int getHistoryEntriesCount(const QString &mobile = QString::null);
@@ -78,7 +65,6 @@ class HistoryManager : public QObject
 		static QStringList mySplit(const QChar &sep, const QString &str);
 
 	private:
-		static HistorySlots *historyslots;
 		QString text2csv(const QString &text);
 		int getHistoryEntriesCountPrivate(const QString &filename) const;
 		uint getHistoryDate(QTextStream &stream);

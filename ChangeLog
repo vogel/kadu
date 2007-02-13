@@ -84,6 +84,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dialog historii przeniesiony do modu³u "history" (adrian)
 * nowy sygna³ emitowany po obs³u¿eniu przychodz±cej wiadomo¶ci (uzi18/neeo)
 * dialog wyszukiwania w historii przeniesiony do modu³u "history" (adrian)
+* definicja zak³adki historii w konfiguracji przeniesiona do modu³u "history" (adrian)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

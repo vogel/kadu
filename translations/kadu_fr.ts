@@ -53,18 +53,6 @@
         <translation>Souligné:</translation>
     </message>
     <message>
-        <source>History</source>
-        <translation>Historique</translation>
-    </message>
-    <message>
-        <source>Count:</source>
-        <translation>Nombre:</translation>
-    </message>
-    <message>
-        <source>Don&apos;t show status changes</source>
-        <translation>Sans visionnage du changement de  statut</translation>
-    </message>
-    <message>
         <source>User data</source>
         <translation>Données utilisateur</translation>
     </message>
@@ -79,10 +67,6 @@
     <message>
         <source>Nick</source>
         <translation>Pseudo </translation>
-    </message>
-    <message>
-        <source>Log messages</source>
-        <translation>Enregistre message</translation>
     </message>
     <message>
         <source>Check for updates</source>
@@ -299,10 +283,6 @@ Si ce champs reste vide les paramettres par default seront utilisés.</translati
         <translation>Description multiligne dans la liste de contacts</translation>
     </message>
     <message>
-        <source>Don&apos;t save status changes</source>
-        <translation>N&apos;enregistre pas le changement de statut</translation>
-    </message>
-    <message>
         <source>Force running Kadu (not recommended).</source>
         <translation>Activation Kadu malgré tout (non conseillée).</translation>
     </message>
@@ -405,14 +385,6 @@ Si ce champs reste vide les paramettres par default seront utilisés.</translati
     <message>
         <source>Preview panel</source>
         <translation>Visionnage de pannel d&apos;information</translation>
-    </message>
-    <message>
-        <source>Message citation in chat window</source>
-        <translation>Citation de massage dans la fenêtre du chat</translation>
-    </message>
-    <message>
-        <source>Don&apos;t cite messages older than:</source>
-        <translation>Ne cite pas des message moins recent que:</translation>
     </message>
     <message>
         <source>Show vertical scrollbar in information panel</source>
@@ -1136,13 +1108,6 @@ Too many attempts with bad password</source>
     <message>
         <source>No</source>
         <translation>Non</translation>
-    </message>
-</context>
-<context>
-    <name>HistorySlots</name>
-    <message>
-        <source>%1 day(s) %2 hour(s)</source>
-        <translation>jours: %1 heures: %2</translation>
     </message>
 </context>
 <context>

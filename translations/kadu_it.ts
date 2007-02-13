@@ -53,14 +53,6 @@
         <translation>Sottolineato:</translation>
     </message>
     <message>
-        <source>History</source>
-        <translation>Cronologia</translation>
-    </message>
-    <message>
-        <source>Count:</source>
-        <translation>Quantità:</translation>
-    </message>
-    <message>
         <source>User data</source>
         <translation>Dati dell&apos;utente</translation>
     </message>
@@ -75,10 +67,6 @@
     <message>
         <source>Nick</source>
         <translation>Nickname</translation>
-    </message>
-    <message>
-        <source>Log messages</source>
-        <translation>Conserva messaggi</translation>
     </message>
     <message>
         <source>Check for updates</source>
@@ -275,10 +263,6 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
         <translation>Tedesco</translation>
     </message>
     <message>
-        <source>Don&apos;t show status changes</source>
-        <translation>Non visualizza cambiamenti dello status</translation>
-    </message>
-    <message>
         <source>Show description in userbox</source>
         <translation>Mostar descrizione nel panello contatti</translation>
     </message>
@@ -293,10 +277,6 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     <message>
         <source>Multiline description in userbox</source>
         <translation>Descrizione multilinea nella Lista contatti</translation>
-    </message>
-    <message>
-        <source>Don&apos;t save status changes</source>
-        <translation>Non memorizzi cambiamenti di status</translation>
     </message>
     <message>
         <source>Force running Kadu (not recommended).</source>
@@ -401,14 +381,6 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     <message>
         <source>Preview panel</source>
         <translation>Anteprima panello</translation>
-    </message>
-    <message>
-        <source>Message citation in chat window</source>
-        <translation>Citazione messaggi nella finestra chat</translation>
-    </message>
-    <message>
-        <source>Don&apos;t cite messages older than:</source>
-        <translation>Non visualizza messagi più vecchi di:</translation>
     </message>
     <message>
         <source>Show vertical scrollbar in information panel</source>
@@ -1135,13 +1107,6 @@ Too many attempts with bad password</source>
     <message>
         <source>No</source>
         <translation>No</translation>
-    </message>
-</context>
-<context>
-    <name>HistorySlots</name>
-    <message>
-        <source>%1 day(s) %2 hour(s)</source>
-        <translation>%1 giorno(i) %2 ora(e)</translation>
     </message>
 </context>
 <context>

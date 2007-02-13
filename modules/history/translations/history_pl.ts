@@ -1,5 +1,36 @@
 <!DOCTYPE TS><TS>
 <context>
+    <name>@default</name>
+    <message>
+        <source>History</source>
+        <translation>Historia</translation>
+    </message>
+    <message>
+        <source>Count:</source>
+        <translation>Ilość:</translation>
+    </message>
+    <message>
+        <source>Message citation in chat window</source>
+        <translation>Cytowanie wiadomości w oknie rozmowy</translation>
+    </message>
+    <message>
+        <source>Don&apos;t cite messages older than:</source>
+        <translation>Nie cytuj wiadomości starszych niż:</translation>
+    </message>
+    <message>
+        <source>Log messages</source>
+        <translation>Zapisuj wiadomości</translation>
+    </message>
+    <message>
+        <source>Don&apos;t show status changes</source>
+        <translation>Nie pokazuj zmian statusu</translation>
+    </message>
+    <message>
+        <source>Don&apos;t save status changes</source>
+        <translation>Nie zapisuj zmian statusu</translation>
+    </message>
+</context>
+<context>
     <name>HistoryModule</name>
     <message>
         <source>Show history</source>
@@ -114,6 +145,13 @@
     <message>
         <source>&amp;Cancel</source>
         <translation>&amp;Anuluj</translation>
+    </message>
+</context>
+<context>
+    <name>HistorySlots</name>
+    <message>
+        <source>%1 day(s) %2 hour(s)</source>
+        <translation>dni: %1 godzin: %2</translation>
     </message>
 </context>
 </TS>

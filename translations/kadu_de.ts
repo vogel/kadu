@@ -53,14 +53,6 @@
         <translation>Unterstreichen:</translation>
     </message>
     <message>
-        <source>History</source>
-        <translation>Verlauf</translation>
-    </message>
-    <message>
-        <source>Count:</source>
-        <translation>Anzahl:</translation>
-    </message>
-    <message>
         <source>User data</source>
         <translation>Benutzerdaten</translation>
     </message>
@@ -75,10 +67,6 @@
     <message>
         <source>Nick</source>
         <translation>Benutzername</translation>
-    </message>
-    <message>
-        <source>Log messages</source>
-        <translation>Archiviere Nachrichten</translation>
     </message>
     <message>
         <source>Check for updates</source>
@@ -275,10 +263,6 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
         <translation>Standard-Zustand</translation>
     </message>
     <message>
-        <source>Don&apos;t show status changes</source>
-        <translation>Keine Zustandsänderungen anzeigen</translation>
-    </message>
-    <message>
         <source>Show description in userbox</source>
         <translation>Zeige  Beschreibung in der Kontaktliste</translation>
     </message>
@@ -293,10 +277,6 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     <message>
         <source>Multiline description in userbox</source>
         <translation>Mehrzeilige Beschreibung in der Kontaktliste</translation>
-    </message>
-    <message>
-        <source>Don&apos;t save status changes</source>
-        <translation>Zustandsänderungen nicht speichern</translation>
     </message>
     <message>
         <source>Force running Kadu (not recommended).</source>
@@ -401,14 +381,6 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     <message>
         <source>Preview panel</source>
         <translation>Vorheriger Panel</translation>
-    </message>
-    <message>
-        <source>Message citation in chat window</source>
-        <translation>Verlauf im Chatfenster anzeigen</translation>
-    </message>
-    <message>
-        <source>Don&apos;t cite messages older than:</source>
-        <translation>Keine Nachrichten anzeigen, die älter sind als:</translation>
     </message>
     <message>
         <source>Show vertical scrollbar in information panel</source>
@@ -1142,13 +1114,6 @@ Zu viel Versuche mit falschem Passwort</translation>
     <message>
         <source>No</source>
         <translation>Nein</translation>
-    </message>
-</context>
-<context>
-    <name>HistorySlots</name>
-    <message>
-        <source>%1 day(s) %2 hour(s)</source>
-        <translation>%1 Tage %2 Stunden</translation>
     </message>
 </context>
 <context>

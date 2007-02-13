@@ -166,18 +166,6 @@ If you leave blank, default settings will be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>History</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Count:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Don&apos;t show status changes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>User data</source>
         <translation type="unfinished"></translation>
     </message>
@@ -191,10 +179,6 @@ If you leave blank, default settings will be used.</source>
     </message>
     <message>
         <source>Nick</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Log messages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -291,10 +275,6 @@ If you leave blank, default settings will be used.</source>
     </message>
     <message>
         <source>Multiline description in userbox</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Don&apos;t save status changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -399,14 +379,6 @@ If you leave blank, default settings will be used.</source>
     </message>
     <message>
         <source>Preview panel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Message citation in chat window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Don&apos;t cite messages older than:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1167,84 +1139,6 @@ Too many attempts with bad password</source>
     </message>
     <message>
         <source>No</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>HistorySearch</name>
-    <message>
-        <source>Search history</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;From:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>day</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>month</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>year</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>hour</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>minute</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;To:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Find Criteria</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Pattern</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pattern</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Reverse find</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Find</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reset</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>HistorySlots</name>
-    <message>
-        <source>%1 day(s) %2 hour(s)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

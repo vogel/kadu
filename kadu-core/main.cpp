@@ -33,7 +33,6 @@
 #include "misc.h"
 #include "debug.h"
 #include "groups_manager.h"
-#include "history.h"
 #include "icons_manager.h"
 #include "misc.h"
 #include "modules.h"
@@ -371,11 +370,9 @@ int main(int argc, char *argv[])
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Chat"), "ChatTab");
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"), "LookTab");
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Network"), "NetworkTab");
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "History"), "HistoryTab");
 
 	ProtocolsManager::initModule();
 	UserList::initModule();
-	history = new HistoryManager(0, "history_manager");
 	GroupsManager::initModule();
 	emoticons = new EmoticonsManager();
 
