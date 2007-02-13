@@ -25,6 +25,7 @@ class HistoryModule : public QObject
 
 	private slots:
 		void historyActionActivated(const UserGroup* users);
+		void chatCreated(const UserGroup *group, time_t time);
 
 	public:
 		HistoryModule();

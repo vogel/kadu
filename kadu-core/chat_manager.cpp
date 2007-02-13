@@ -17,7 +17,6 @@
 #include "config_dialog.h"
 #include "debug.h"
 #include "chat_manager.h"
-#include "history.h"
 #include "icons_manager.h"
 #include "kadu.h"
 #include "kadu_splitter.h"
@@ -683,9 +682,9 @@ int ChatManager::openChat(Protocol *initialProtocol, UserListElements users, tim
 	}
 
 	chat->show();
-	chat->writeMessagesFromHistory(users, time);
 	chat->makeActive();
 	emit chatCreated(group);
+	emit chatCreated(group, time);
 	kdebugf2();
 	return Chats.count() - 1;
 }

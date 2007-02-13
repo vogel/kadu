@@ -156,8 +156,7 @@ class ChatManager : public QObject
 			Funkcja otwiera nowe okno Chat z wymienionymi rozmowcami.
 			\param initialProtocol protokó³ pocz±tkowy
 			\param users lista u¿ytkowników identyfikuj±cych okno
-			\param time parametr sluzy do sprawdzenia ile wiadomosci
-			z historii ma sie pojawic w oknie.
+			\param time time of pending message that created a chat or 0 if not applicable
 			\return zwracany jest numer otwartego okna
 		**/
 		int openChat(Protocol *initialProtocol, UserListElements users, time_t time = 0);
@@ -254,6 +253,14 @@ class ChatManager : public QObject
 			\param group lista u¿ytkowników, z którymi tworzymy nowy chat
 		**/
 		void chatCreated(const UserGroup *group);
+
+		/**
+			\fn void chatCreated(const UserGroup *group)
+		 	Sygna³ ten jest wysy³any po utworzeniu nowego okna chat
+			\param group lista u¿ytkowników, z którymi tworzymy nowy chat
+			\param time time of pending message that created a chat or 0 if not applicable
+		**/
+		void chatCreated(const UserGroup *group, time_t time);
 
 		/**
 			\fn void chatDestroying(const UserGroup *group)

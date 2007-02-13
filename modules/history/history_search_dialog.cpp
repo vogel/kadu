@@ -12,7 +12,7 @@
 #include "config_file.h"
 #include "debug.h"
 #include "history.h"
-#include <qapp.h>
+#include <qapplication.h>
 #include <qcheckbox.h>
 #include <qcombobox.h>
 #include <qhbox.h>

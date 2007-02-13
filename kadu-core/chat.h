@@ -234,14 +234,6 @@ class Chat : public QMainWindow
 		void newMessage(const QString &protocolName, UserListElements senders, const QString &msg, time_t time);
 
 		/**
-			\fn void writeMessagesFromHistory(UserListElements senders, time_t time)
-			Wpisuje do okna historiê rozmowy
-			\param senders lista u¿ytkowników identyfikuj±cych okno
-			\param time ..
-		**/
-		void writeMessagesFromHistory(UserListElements senders, time_t time);
-
-		/**
 			\fn const UserGroup *users() const
 			Zwraca listê numerów rozmowców.
 		**/

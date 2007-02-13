@@ -88,6 +88,8 @@ HistoryModule::HistoryModule() : QObject(NULL, "history")
 		history, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
 	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
 		history, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
+	connect(chat_manager, SIGNAL(chatCreated(const UserGroup*, time_t)),
+		this, SLOT(chatCreated(const UserGroup*, time_t)));
 
 	Action* history_action = new Action(icons_manager->loadIcon("History"),
 		tr("Show history"), "showHistoryAction", Action::TypeUser);
@@ -111,6 +113,8 @@ HistoryModule::~HistoryModule()
 		history, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
 	disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
 		history, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
+	disconnect(chat_manager, SIGNAL(chatCreated(const UserGroup*, time_t)),
+		this, SLOT(chatCreated(const UserGroup*, time_t)));
 
 	ConfigDialog::disconnectSlot("History", "historyslider", SIGNAL(valueChanged(int)), historyslots, SLOT(updateQuoteTimeLabel(int)));
 	ConfigDialog::unregisterSlotOnCreateTab("History", historyslots, SLOT(onCreateTabHistory()));
@@ -142,6 +146,93 @@ void HistoryModule::historyActionActivated(const UserGroup* users)
 		uins.append((*user).ID("Gadu").toUInt());
 	//TODO: throw out UinsList as soon as possible!
 	(new HistoryDialog(uins))->show();
+	kdebugf2();
+}
+
+void HistoryModule::chatCreated(const UserGroup *group, time_t time)
+{
+	kdebugf();
+	Chat* chat = chat_manager->findChat(group);
+	UserListElements senders = group->toUserListElements();
+
+	QValueList<HistoryEntry> entries;
+	QValueList<HistoryEntry> entriestmp;
+	QDateTime date;
+	unsigned int from, end, count;
+
+	date.setTime_t(time);
+
+	UinsList uins;//TODO: throw out UinsList as soon as possible!
+	CONST_FOREACH(user, senders)
+		uins.append((*user).ID("Gadu").toUInt());
+
+	count = history->getHistoryEntriesCount(uins);
+	end = count - 1;
+
+	from = count;
+	unsigned int chatHistoryQuotation=config_file.readUnsignedNumEntry("History", "ChatHistoryCitation");
+	while (from >= 1 && entries.count() < chatHistoryQuotation)
+	{
+		if (end < chatHistoryQuotation)
+			from = 0;
+		else
+			from = end - chatHistoryQuotation + 1;
+
+		entriestmp = history->getHistoryEntries(uins, from, end - from + 1, HISTORYMANAGER_ENTRY_CHATSEND
+			| HISTORYMANAGER_ENTRY_MSGSEND | HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV);
+		kdebugmf(KDEBUG_INFO, "temp entries = %lu\n", entriestmp.count());
+		if (time)
+		{
+			QValueList<HistoryEntry>::iterator it = entriestmp.begin();
+			while (it != entriestmp.end())
+			{
+				if ((*it).type == HISTORYMANAGER_ENTRY_CHATRCV
+					|| (*it).type == HISTORYMANAGER_ENTRY_MSGRCV)
+				{
+					kdebugmf(KDEBUG_INFO, "%s %s\n",
+						date.toString("dd.MM.yyyy hh:mm:ss").local8Bit().data(),
+						(*it).sdate.toString("dd.MM.yyyy hh:mm:ss").local8Bit().data());
+					if (date <= (*it).sdate)
+						it = entriestmp.remove(it);
+					else
+						++it;
+				}
+				else
+					++it;
+			}
+		}
+		if (!entriestmp.isEmpty())
+			entries = entriestmp + entries;
+		kdebugmf(KDEBUG_INFO, "entries = %lu\n", entries.count());
+		end = from - 1;
+	}
+
+	unsigned int entryCount = entries.count();
+	if (entryCount < chatHistoryQuotation)
+		from = 0;
+	else
+		from = entryCount - chatHistoryQuotation;
+
+	QValueList<ChatMessage *> messages;
+
+	int quotTime = config_file.readNumEntry("History","ChatHistoryQuotationTime");
+	QString myNick = config_file.readEntry("General","Nick");
+
+	QValueListConstIterator<HistoryEntry> entry = entries.at(from);
+	QValueListConstIterator<HistoryEntry> entriesEnd = entries.end();
+	for (; entry!=entriesEnd; ++entry)
+		if ((*entry).date.secsTo(QDateTime::currentDateTime()) <= -quotTime * 3600)
+		{
+			ChatMessage *msg;
+			if ((*entry).type == HISTORYMANAGER_ENTRY_MSGSEND || (*entry).type == HISTORYMANAGER_ENTRY_CHATSEND)
+				msg = new ChatMessage(myNick, (*entry).message, true, (*entry).date);
+			else
+				msg = new ChatMessage((*entry).nick, (*entry).message, false, (*entry).date, (*entry).sdate);
+			messages.append(msg);
+		}
+	chat->formatMessages(messages);
+	if (!messages.empty())
+		chat->scrollMessages(messages);
 	kdebugf2();
 }
 
