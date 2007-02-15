@@ -1084,7 +1084,7 @@ void Wizard::setSoundOptions()
 	//jak wybrany modul != zaden to probuje zaladowac
 	if ((cb_soundModule->currentText() != tr("None")) && (!modules_manager->moduleIsLoaded(cb_soundModule->currentText())))
 		modules_manager->activateModule(cb_soundModule->currentText());
-
+	modules_manager->saveLoadedModules(); 
 	kdebugf2();
 }
 

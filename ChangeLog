@@ -86,6 +86,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dialog wyszukiwania w historii przeniesiony do modu³u "history" (adrian)
 * definicja zak³adki historii w konfiguracji przeniesiona do modu³u "history" (adrian)
 * cytowanie wiadomo¶ci w oknie rozmowy przeniesione do modu³u "history" (adrian)
+* poprawka zapisywania modu³u d¼wiêkowego wybranego z poziomu wizarda (Dorregaray/joi)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
