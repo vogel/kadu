@@ -8,6 +8,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniêty b³±d zwi±zany z SIGPIPE przy transferze plików w dcc (bardzo rzadko wystêpuj±cy) (Vogel)
 * poprawione pozycjonowanie menu kontekstowych (gdy menu otwiera³o siê przy
   krawêdzi, wybierana by³a od razu pierwsza z brzegu pozycja) (joi)
+* poprawka zapisywania modu³u d¼wiêkowego wybranego z poziomu wizarda (Dorregaray/joi)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
