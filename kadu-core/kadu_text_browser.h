@@ -49,6 +49,7 @@ class KaduTextBrowser : public QTextBrowser, private QToolTip
 		virtual void drawContents(QPainter * p, int clipx, int clipy, int clipw, int cliph);
 		virtual void maybeTip(const QPoint&);
 		virtual void contentsMouseReleaseEvent(QMouseEvent * e);
+		virtual void contentsWheelEvent(QWheelEvent * e);
 
 	public:
 		KaduTextBrowser(QWidget *parent = 0, const char *name = 0);
@@ -86,6 +87,12 @@ class KaduTextBrowser : public QTextBrowser, private QToolTip
 			Przekazany zostaje tak¿e obiekt, który wywo³a³ akcjê - czyli this.
 		**/
 		void mouseReleased(QMouseEvent *e, KaduTextBrowser *sender);
+
+		/**
+			U¿yto rolki myszy
+			Przekazany zostaje tak¿e obiekt, który wywo³a³ akcjê - czyli this.
+		**/
+		void wheel(QWheelEvent *e, KaduTextBrowser *sender);
 };
 
 #endif

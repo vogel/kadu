@@ -260,6 +260,13 @@ void KaduTextBrowser::contentsMouseReleaseEvent(QMouseEvent *e)
 	QTextBrowser::contentsMouseReleaseEvent(e);
 }
 
+void KaduTextBrowser::contentsWheelEvent(QWheelEvent *e)
+{
+	kdebugf();
+	emit wheel(e, this);
+	QTextBrowser::contentsWheelEvent(e);
+}
+
 QString KaduTextBrowser::imageAt(const QPoint &point)
 {
 	// this function uses Qt private API (QTextCursor), because there's no way
