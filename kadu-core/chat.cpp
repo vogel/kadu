@@ -158,8 +158,8 @@ Chat::Chat(Protocol *initialProtocol, UserListElements usrs, QWidget* parent, co
 	Edit->setPaper(QBrush(config_file.readColorEntry("Look","ChatTextBgColor")));
 	Edit->setAutosend(AutoSend);
 
-	connect(body, SIGNAL(mouseReleased(QMouseEvent *, KaduTextBrowser *)), Edit, SLOT(setFocus()));
-	connect(body, SIGNAL(wheel(QWheelEvent *, KaduTextBrowser *)), Edit, SLOT(setFocus()));
+	connect(body, SIGNAL(mouseReleased(QMouseEvent *)), Edit, SLOT(setFocus()));
+	connect(body, SIGNAL(wheel(QWheelEvent *)), Edit, SLOT(setFocus()));
 
 	QString style = config_file.readEntry("Look", "Style");
 	if (style == "kadu")

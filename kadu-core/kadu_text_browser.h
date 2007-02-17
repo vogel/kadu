@@ -84,15 +84,15 @@ class KaduTextBrowser : public QTextBrowser, private QToolTip
 	signals:
 		/**
 			Dowolny przycisk myszy zosta³ zwolniony
-			Przekazany zostaje tak¿e obiekt, który wywo³a³ akcjê - czyli this.
+			sender() - obiekt, który wygenerowa³ zdarzenie
 		**/
-		void mouseReleased(QMouseEvent *e, KaduTextBrowser *sender);
+		void mouseReleased(QMouseEvent *e);
 
 		/**
 			U¿yto rolki myszy
-			Przekazany zostaje tak¿e obiekt, który wywo³a³ akcjê - czyli this.
+			sender() - obiekt, który wygenerowa³ zdarzenie
 		**/
-		void wheel(QWheelEvent *e, KaduTextBrowser *sender);
+		void wheel(QWheelEvent *e);
 };
 
 #endif

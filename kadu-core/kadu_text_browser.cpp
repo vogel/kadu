@@ -256,14 +256,14 @@ void KaduTextBrowser::copy()
 void KaduTextBrowser::contentsMouseReleaseEvent(QMouseEvent *e)
 {
 	kdebugf();
-	emit mouseReleased(e, this);
+	emit mouseReleased(e);
 	QTextBrowser::contentsMouseReleaseEvent(e);
 }
 
 void KaduTextBrowser::contentsWheelEvent(QWheelEvent *e)
 {
 	kdebugf();
-	emit wheel(e, this);
+	emit wheel(e);
 	QTextBrowser::contentsWheelEvent(e);
 }
 
