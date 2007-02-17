@@ -80,7 +80,7 @@ class Notify : public QObject
 
 	private slots:
 		/* pomocniczy slot */
-		void newChatSlot(Protocol *protocol, UserListElements senders, const QString &msg, time_t t);
+		void newChatSlot(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool grabbed);
 		/* pomocniczy slot */
 		void probablyNewMessage(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool &grab);
 

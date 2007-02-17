@@ -74,8 +74,8 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name),
 	connect(gadu, SIGNAL(connectionError(Protocol *, const QString &)), this, notifySignals["ConnError"].ascii());
 	connect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
 			this, SLOT(probablyNewMessage(Protocol *, UserListElements, const QString&, time_t, bool&)));
-	connect(gadu, SIGNAL(chatMsgReceived2(Protocol *, UserListElements, const QString&, time_t)),
-			this, SLOT(newChatSlot(Protocol *, UserListElements, const QString&, time_t)));
+	connect(gadu, SIGNAL(chatMsgReceived2(Protocol *, UserListElements, const QString&, time_t, bool)),
+			this, SLOT(newChatSlot(Protocol *, UserListElements, const QString&, time_t, bool)));
 	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
 		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
 	connect(kadu->userbox(), SIGNAL(changeToolTip(const QPoint &, UserListElement, bool)),
@@ -154,8 +154,8 @@ Notify::~Notify()
 	disconnect(gadu, SIGNAL(connectionError(Protocol *, const QString &)), this, notifySignals["ConnError"].ascii());
 	disconnect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
 			this, SLOT(probablyNewMessage(Protocol *, UserListElements, const QString&, time_t, bool&)));
-	disconnect(gadu, SIGNAL(chatMsgReceived2(Protocol *, UserListElements, const QString&, time_t)),
-			this, SLOT(newChatSlot(Protocol *, UserListElements, const QString&, time_t)));
+	disconnect(gadu, SIGNAL(chatMsgReceived2(Protocol *, UserListElements, const QString&, time_t, bool)),
+			this, SLOT(newChatSlot(Protocol *, UserListElements, const QString&, time_t, bool)));
 	disconnect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
 		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
 	disconnect(kadu->userbox(), SIGNAL(changeToolTip(const QPoint &, UserListElement, bool)),
@@ -235,11 +235,14 @@ void Notify::statusChanged(UserListElement elem, QString protocolName,
 	kdebugf2();
 }
 
-void Notify::newChatSlot(Protocol *protocol, UserListElements senders, const QString &msg, time_t t)
+void Notify::newChatSlot(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool grabbed)
 {
-	kdebugf();//sygnatury trochê siê ró¿ni±, wiêc ten slot musi byæ...
-	emit newChat(protocol, senders, msg, t);
-	kdebugf2();
+	if (!grabbed)
+	{
+		kdebugf();//sygnatury trochê siê ró¿ni±, wiêc ten slot musi byæ...
+		emit newChat(protocol, senders, msg, t);
+		kdebugf2();
+	}
 }
 
 void Notify::probablyNewMessage(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool &grab)

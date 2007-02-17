@@ -1038,10 +1038,7 @@ void GaduProtocol::messageReceived(int msgclass, UserListElements senders, QCStr
 			senders[0].ID("Gadu").toUInt(), (const char *)mesg.local8Bit());
 
 	emit chatMsgReceived1(this, senders, mesg, time, grab);
-	if (grab)
-		emit chatMsgReceived3(this, senders, mesg, time);
-	else
-		emit chatMsgReceived2(this, senders, mesg, time);
+	emit chatMsgReceived2(this, senders, mesg, time, grab);
 }
 
 void GaduProtocol::everyMinuteActions()

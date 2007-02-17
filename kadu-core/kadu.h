@@ -76,7 +76,7 @@ class Kadu : public QWidget
 
 	private slots:
 		void openChat();
-		void chatMsgReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t time);
+		void chatMsgReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t time, bool grabbed);
 
 		void wentOnline(const QString &);
 		void wentBusy(const QString &);

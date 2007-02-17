@@ -378,8 +378,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 
 	split->setSizes(splitsizes);
 
-	connect(gadu, SIGNAL(chatMsgReceived2(Protocol *, UserListElements, const QString &, time_t)),
-		this, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString &, time_t)));
+	connect(gadu, SIGNAL(chatMsgReceived2(Protocol *, UserListElements, const QString &, time_t, bool)),
+		this, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString &, time_t, bool)));
 	connect(gadu, SIGNAL(connecting()), this, SLOT(connecting()));
 	connect(gadu, SIGNAL(connected()), this, SLOT(connected()));
 	connect(gadu, SIGNAL(disconnected()), this, SLOT(disconnected()));
@@ -1178,9 +1178,15 @@ void Kadu::connecting()
 	kdebugf2();
 }
 
-void Kadu::chatMsgReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t time)
+void Kadu::chatMsgReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t time, bool grabbed)
 {
 	kdebugf();
+	if (grabbed)
+	{
+		kdebugf2();
+		return;
+	}
+
 	pending.addMsg(protocol->protocolID(), senders, msg, GG_CLASS_CHAT, time);
 
 	if (config_file.readBoolEntry("General","AutoRaise"))
@@ -1285,8 +1291,8 @@ bool Kadu::close(bool quit)
 				gadu->status().setOffline(config_file.readEntry("General", "DisconnectDescription"));
 			}
 		}
-		disconnect(gadu, SIGNAL(chatMsgReceived2(Protocol *, UserListElements, const QString &, time_t)),
-				this, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString &, time_t)));
+		disconnect(gadu, SIGNAL(chatMsgReceived2(Protocol *, UserListElements, const QString &, time_t, bool)),
+				this, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString &, time_t, bool)));
 		disconnect(gadu, SIGNAL(connecting()), this, SLOT(connecting()));
 		disconnect(gadu, SIGNAL(connected()), this, SLOT(connected()));
 		disconnect(gadu, SIGNAL(disconnected()), this, SLOT(disconnected()));
