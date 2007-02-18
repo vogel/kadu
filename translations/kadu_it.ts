@@ -109,10 +109,6 @@
         <translation>Rimuovi dalla lista dei contatti</translation>
     </message>
     <message>
-        <source>View history</source>
-        <translation>Visualizza cronologia</translation>
-    </message>
-    <message>
         <source>Configuration</source>
         <translation>Configurazione</translation>
     </message>
@@ -297,10 +293,6 @@ Se lasciate lo spazio vuoto, sarà inserita la stringa predefinita.</translation
     <message>
         <source>Show emoticons in panel</source>
         <translation>Visualizza emoticons nell panello</translation>
-    </message>
-    <message>
-        <source>Show emoticons in history</source>
-        <translation>Visualizza emoticons nello storico</translation>
     </message>
     <message>
         <source>Colors</source>
@@ -1177,10 +1169,6 @@ Too many attempts with bad password</source>
         <translation>Rimuovi dalla lista dei contatti</translation>
     </message>
     <message>
-        <source>View history</source>
-        <translation>Visualizza Cronologia</translation>
-    </message>
-    <message>
         <source>Configuration</source>
         <translation>Configurazione</translation>
     </message>
@@ -1227,10 +1215,6 @@ Too many attempts with bad password</source>
     <message>
         <source>Offline to user</source>
         <translation>Inaccessibile per contatto</translation>
-    </message>
-    <message>
-        <source>Clear history</source>
-        <translation>Cancella Cronologia</translation>
     </message>
     <message>
         <source>Manage &amp;ignored</source>

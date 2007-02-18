@@ -109,10 +109,6 @@
         <translation>Usuń z listy kontaktów</translation>
     </message>
     <message>
-        <source>View history</source>
-        <translation>Pokaż historię</translation>
-    </message>
-    <message>
         <source>Configuration</source>
         <translation>Konfiguracja</translation>
     </message>
@@ -329,10 +325,6 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     <message>
         <source>Show emoticons in panel</source>
         <translation>Pokaż emotikony w panelu informacyjnym</translation>
-    </message>
-    <message>
-        <source>Show emoticons in history</source>
-        <translation>Pokaż emotikony w historii</translation>
     </message>
     <message>
         <source>Colors</source>
@@ -1186,10 +1178,6 @@ Zbyt wiele prób połączeń z niepoprawnym hasłem</translation>
         <translation>Usuń z listy kontaktów</translation>
     </message>
     <message>
-        <source>View history</source>
-        <translation>Pokaż historię</translation>
-    </message>
-    <message>
         <source>Configuration</source>
         <translation>Konfiguracja</translation>
     </message>
@@ -1236,10 +1224,6 @@ Zbyt wiele prób połączeń z niepoprawnym hasłem</translation>
     <message>
         <source>Offline to user</source>
         <translation>Niedostępny dla kontaktu</translation>
-    </message>
-    <message>
-        <source>Clear history</source>
-        <translation>Wyczyść historię</translation>
     </message>
     <message>
         <source>Manage &amp;ignored</source>

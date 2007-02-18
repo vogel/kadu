@@ -29,6 +29,18 @@
         <source>Don&apos;t save status changes</source>
         <translation>Zustandsänderungen nicht speichern</translation>
     </message>
+    <message>
+        <source>View history</source>
+        <translation>Zeige Verlauf</translation>
+    </message>
+    <message>
+        <source>Show emoticons in history</source>
+        <translation>Zeige Smilies im Verlauf</translation>
+    </message>
+    <message>
+        <source>Clear history</source>
+        <translation>Verlauf leeren</translation>
+    </message>
 </context>
 <context>
     <name>HistoryModule</name>

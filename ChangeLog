@@ -88,6 +88,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * cytowanie wiadomo¶ci w oknie rozmowy przeniesione do modu³u "history" (adrian)
 * poprawka zapisywania modu³u d¼wiêkowego wybranego z poziomu wizarda (Dorregaray/joi)
 * u¿ycie rolki myszy w oknie rozmowy nie powoduje przeniesienia focusu z pola edycji (Arvenil/neeo)
+* opcje menu kontekstowego oraz obs³uga skrótów zwi±zanych z histori± przeniesione
+  do modu³u "history" (adrian)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

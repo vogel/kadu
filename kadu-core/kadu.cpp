@@ -37,7 +37,6 @@
 #include "expimp.h"
 #include "gadu_images_manager.h"
 #include "groups_manager.h"
-#include "history.h"
 #include "html_document.h"
 #include "icons_manager.h"
 #include "ignore.h"
@@ -91,8 +90,6 @@ void Kadu::keyPressEvent(QKeyEvent *e)
 		if (Userbox->selectedUsers().count() == 1)
 			showUserInfo();
 	}
-	else if (HotKey::shortCut(e,"ShortCuts", "kadu_viewhistory"))
-		viewHistory();
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
 		lookupInDirectory();
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_showoffline"))
@@ -143,7 +140,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 
 	ConfigDialog::addCheckBox("General", "grid-advanced", QT_TRANSLATE_NOOP("@default", "Check for updates"), "CheckUpdates", true, QT_TRANSLATE_NOOP("@default", "Automatically checks whether a new version is available"), 0, Advanced);
 	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Show emoticons in panel"), "ShowEmotPanel", false, 0, 0, Expert);
-	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Show emoticons in history"), "ShowEmotHist", false, 0, 0, Expert);
 	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Allow executing commands by parser"), "AllowExecutingFromParser", false, 0, 0, Expert);
 	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Always show anonymous contacts with messages"), "ShowAnonymousWithMsgs", false, 0, 0, Expert);
 #ifdef DEBUG_ENABLED
@@ -171,7 +167,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", QT_TRANSLATE_NOOP("@default", "Define keys"));
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Remove from userlist"), "kadu_deleteuser", "Del");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "View / edit user info"), "kadu_persinfo", "Ins");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "View history"), "kadu_viewhistory", "Ctrl+H");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Search this user in directory"), "kadu_searchuser", "Ctrl+F");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Show / hide offline users"), "kadu_showoffline", "F9");
 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Show / hide users without description"), "kadu_showonlydesc", "F10");
@@ -253,7 +248,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	connect(Userbox, SIGNAL(currentChanged(UserListElement)), this, SLOT(currentChanged(UserListElement)));
 	UserBox::userboxmenu->addItem("OpenChat", tr("Open chat window") ,this, SLOT(openChat()));
 	UserBox::userboxmenu->insertSeparator();
-	UserBox::userboxmenu->addItem("History", tr("View history"),this,SLOT(viewHistory()),HotKey::shortCutFromFile("ShortCuts", "kadu_viewhistory"));
 	UserBox::userboxmenu->addItem("CopyDescription", tr("Copy description"), this, SLOT(copyDescription()));
 	UserBox::userboxmenu->addItem("OpenDescriptionLink", tr("Open description link in browser"), this, SLOT(openDescriptionLink()));
 	UserBox::userboxmenu->addItem("CopyPersonalInfo", tr("Copy personal info"), this, SLOT(copyPersonalInfo()));
@@ -267,7 +261,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	UserBox::management->addItem(tr("Hide description"), this, SLOT(hideDescription()));
 	UserBox::management->insertSeparator();
 	UserBox::management->addItem("RemoveFromUserlist", tr("Remove from userlist"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("ShortCuts", "kadu_deleteuser"));
-	UserBox::management->addItem(tr("Clear history"),  this, SLOT(deleteHistory()));
 	UserBox::management->addItem("EditUserInfo", tr("View / edit user info"), this, SLOT(showUserInfo()),HotKey::shortCutFromFile("ShortCuts", "kadu_persinfo"));
 
 	UserBox::userboxmenu->insertItem(tr("User management"), UserBox::management);
@@ -443,8 +436,6 @@ void Kadu::popupMenu()
 	int notifyuseritem = UserBox::management->getItem(tr("Notify about user"));
 	int offlinetouseritem = UserBox::management->getItem(tr("Offline to user"));
 	int hidedescriptionitem = UserBox::management->getItem(tr("Hide description"));
-	int deletehistoryitem = UserBox::management->getItem(tr("Clear history"));
-	int historyitem = UserBox::userboxmenu->getItem(tr("View history"));
 	int chatitem = UserBox::userboxmenu->getItem(tr("Open chat window"));
 
 	if (containsUserWithoutID)
@@ -454,8 +445,6 @@ void Kadu::popupMenu()
 		UserBox::userboxmenu->setItemEnabled(notifyuseritem, false);
 		UserBox::userboxmenu->setItemEnabled(offlinetouseritem, false);
 		UserBox::userboxmenu->setItemEnabled(hidedescriptionitem, false);
-		UserBox::userboxmenu->setItemEnabled(deletehistoryitem, false);
-		UserBox::userboxmenu->setItemEnabled(historyitem, false);
 		UserBox::userboxmenu->setItemEnabled(chatitem, false);
 	}
 	else
@@ -608,22 +597,6 @@ void Kadu::copyPersonalInfo()
 	kdebugf2();
 }
 
-void Kadu::viewHistory()
-{
-	kdebugf();
-	UserBox *activeUserBox = UserBox::activeUserBox();
-
-	if (activeUserBox == NULL)
-	{
-		kdebugf2();
-		return;
-	}
-	UserListElements users = activeUserBox->selectedUsers();
-	UserGroup user_group(users);
-	KaduActions["showHistoryAction"]->activate(&user_group);
-	kdebugf2();
-}
-
 void Kadu::lookupInDirectory()
 {
 	kdebugf();
@@ -738,26 +711,6 @@ void Kadu::addUserAction()
 	const UserGroup* users;
 	selectedUsersNeeded(users);
 	addUserActionActivated(users);
-}
-
-void Kadu::deleteHistory()
-{
-	kdebugf();
-	UserBox *activeUserBox = UserBox::activeUserBox();
-	if (activeUserBox == NULL)
-	{
-		kdebugf2();
-		return;
-	}
-	//TODO: throw out UinsList as soon as possible!
-	UinsList uins;
-	UserListElements users = activeUserBox->selectedUsers();
-	CONST_FOREACH(user, users)
-		if ((*user).usesProtocol("Gadu"))
-			uins.append((*user).ID("Gadu").toUInt());
-
-	history->removeHistory(uins);
-	kdebugf2();
 }
 
 void Kadu::manageIgnored()
@@ -1366,7 +1319,6 @@ bool Kadu::close(bool quit)
 		ConfigDialog::removeControl("ShortCuts", "Show / hide users without description");
 		ConfigDialog::removeControl("ShortCuts", "Show / hide offline users");
 		ConfigDialog::removeControl("ShortCuts", "Search this user in directory");
-		ConfigDialog::removeControl("ShortCuts", "View history");
 		ConfigDialog::removeControl("ShortCuts", "View / edit user info");
 		ConfigDialog::removeControl("ShortCuts", "Remove from userlist");
 		ConfigDialog::removeControl("ShortCuts", "Define keys");
@@ -1392,7 +1344,6 @@ bool Kadu::close(bool quit)
 #endif
 		ConfigDialog::removeControl("General", "Always show anonymous contacts with messages");
 		ConfigDialog::removeControl("General", "Allow executing commands by parser");
-		ConfigDialog::removeControl("General", "Show emoticons in history");
 		ConfigDialog::removeControl("General", "Show emoticons in panel");
 		ConfigDialog::removeControl("General", "Check for updates");
 

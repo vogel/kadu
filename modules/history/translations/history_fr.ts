@@ -29,6 +29,18 @@
         <source>Don&apos;t save status changes</source>
         <translation>N&apos;enregistre pas le changement de statut</translation>
     </message>
+    <message>
+        <source>View history</source>
+        <translation>Montres historique</translation>
+    </message>
+    <message>
+        <source>Show emoticons in history</source>
+        <translation>Montre les icônes d&apos;émotion dans le historique</translation>
+    </message>
+    <message>
+        <source>Clear history</source>
+        <translation>Efface historique</translation>
+    </message>
 </context>
 <context>
     <name>HistoryModule</name>

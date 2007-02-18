@@ -198,10 +198,6 @@ If you leave blank, default settings will be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>View history</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Configuration</source>
         <translation type="unfinished"></translation>
     </message>
@@ -295,10 +291,6 @@ If you leave blank, default settings will be used.</source>
     </message>
     <message>
         <source>Show emoticons in panel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show emoticons in history</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -842,10 +834,6 @@ Do you really want to send this image?
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show history</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Insert emoticon</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1089,45 +1077,6 @@ Too many attempts with bad password</source>
     </message>
 </context>
 <context>
-    <name>History</name>
-    <message>
-        <source>History</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Find</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Find &amp;next</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Find &amp;previous</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Online</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Busy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Invisible</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Offline</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Uins</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>HistoryManager</name>
     <message>
         <source>Clear history?</source>
@@ -1231,14 +1180,6 @@ Too many attempts with bad password</source>
     </message>
     <message>
         <source>Remove from userlist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Clear history</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>View history</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

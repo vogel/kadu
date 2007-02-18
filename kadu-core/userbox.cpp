@@ -926,6 +926,11 @@ int UserBoxMenu::addItem(const QString &iconname, const QString &text, const QOb
 	return insertItem( QIconSet(icons_manager->loadIcon(iconname)) , text, receiver, member, accel, id);
 }
 
+int UserBoxMenu::addItemAtPos(int index, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel, int id)
+{
+	return insertItem(text, receiver, member, accel, id, index);
+}
+
 int UserBoxMenu::addItemAtPos(int index,const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel, int id)
 {
 	iconNames.append(qMakePair(text,iconname));

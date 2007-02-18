@@ -109,10 +109,6 @@
         <translation>Lösche aus der Kontaktliste</translation>
     </message>
     <message>
-        <source>View history</source>
-        <translation>Zeige Verlauf</translation>
-    </message>
-    <message>
         <source>Configuration</source>
         <translation>Einstellungen</translation>
     </message>
@@ -297,10 +293,6 @@ Wenn das Feld leer bleibt, wird die Standardeinstellung benutzt.</translation>
     <message>
         <source>Show emoticons in panel</source>
         <translation>Zeige Smilies im Panel</translation>
-    </message>
-    <message>
-        <source>Show emoticons in history</source>
-        <translation>Zeige Smilies im Verlauf</translation>
     </message>
     <message>
         <source>Colors</source>
@@ -1184,10 +1176,6 @@ Zu viel Versuche mit falschem Passwort</translation>
         <translation>Lösche aus der Kontaktliste</translation>
     </message>
     <message>
-        <source>View history</source>
-        <translation>Zeige Verlauf</translation>
-    </message>
-    <message>
         <source>Configuration</source>
         <translation>Einstellungen</translation>
     </message>
@@ -1234,10 +1222,6 @@ Zu viel Versuche mit falschem Passwort</translation>
     <message>
         <source>Offline to user</source>
         <translation>Unerreichbar für Kontakt</translation>
-    </message>
-    <message>
-        <source>Clear history</source>
-        <translation>Verlauf leeren</translation>
     </message>
     <message>
         <source>Manage &amp;ignored</source>

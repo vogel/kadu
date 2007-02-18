@@ -109,10 +109,6 @@
         <translation>Efface de la liste de contacts</translation>
     </message>
     <message>
-        <source>View history</source>
-        <translation>Montres historique</translation>
-    </message>
-    <message>
         <source>Configuration</source>
         <translation>Configuration</translation>
     </message>
@@ -301,10 +297,6 @@ Si ce champs reste vide les paramettres par default seront utilisés.</translati
     <message>
         <source>Show emoticons in panel</source>
         <translation>Montre les icônes d&apos;émotion dans le pannel d&apos;information</translation>
-    </message>
-    <message>
-        <source>Show emoticons in history</source>
-        <translation>Montre les icônes d&apos;émotion dans le historique</translation>
     </message>
     <message>
         <source>Colors</source>
@@ -1178,10 +1170,6 @@ Too many attempts with bad password</source>
         <translation>Efface de la liste de contacts</translation>
     </message>
     <message>
-        <source>View history</source>
-        <translation>Montres historique</translation>
-    </message>
-    <message>
         <source>Configuration</source>
         <translation>Configuration</translation>
     </message>
@@ -1228,10 +1216,6 @@ Too many attempts with bad password</source>
     <message>
         <source>Offline to user</source>
         <translation>Indisponible pour ce contact</translation>
-    </message>
-    <message>
-        <source>Clear history</source>
-        <translation>Efface historique</translation>
     </message>
     <message>
         <source>Manage &amp;ignored</source>

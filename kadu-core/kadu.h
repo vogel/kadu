@@ -185,7 +185,6 @@ class Kadu : public QWidget
 		void copyDescription();
 		void openDescriptionLink();
 		void copyPersonalInfo();
-		void deleteHistory();
 		void deleteUsers();
 		void help();
 		void hideKadu();
@@ -200,7 +199,6 @@ class Kadu : public QWidget
 		void quit();
 		void searchInDirectory();
 		void showUserInfo();
-		void viewHistory();
 		void popupMenu();
 
 		// odczytuje z obrazka tekst i zapisuje go w drugim parametrze

@@ -2,6 +2,7 @@
 #define HISTORY_MODULE_H
 
 #include <qobject.h>
+#include "usergroup.h"
 
 class UserGroup;
 
@@ -26,6 +27,10 @@ class HistoryModule : public QObject
 	private slots:
 		void historyActionActivated(const UserGroup* users);
 		void chatCreated(const UserGroup *group, time_t time);
+		void messageSentAndConfirmed(UserListElements receivers, const QString& message);
+		void viewHistory();
+		void deleteHistory();
+		void userboxMenuPopup();
 
 	public:
 		HistoryModule();

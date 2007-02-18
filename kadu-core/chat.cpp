@@ -29,7 +29,6 @@
 #include "dockarea.h"
 #include "gadu_images_manager.h"
 #include "gadu_rich_text.h"
-#include "history.h"
 #include "icons_manager.h"
 #include "kadu_parser.h"
 #include "kadu_splitter.h"
@@ -503,8 +502,6 @@ bool Chat::keyPressEventHandled(QKeyEvent *e)
 		clearChatWindow();
 	else if (HotKey::shortCut(e,"ShortCuts", "chat_close"))
 		close();
-	else if (HotKey::shortCut(e,"ShortCuts", "kadu_viewhistory"))
-		KaduActions["showHistoryAction"]->activate(Users);
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
 		KaduActions["whoisAction"]->activate(Users);
 	else
@@ -704,15 +701,6 @@ void Chat::writeMyMessage()
 	kdebugf2();
 }
 
-void Chat::addMyMessageToHistory()
-{
-	UinsList uins;
-	CONST_FOREACH(user, *Users)
-		uins.append((*user).ID("Gadu").toUInt());
-	//TODO: throw out UinsList as soon as possible!
-	history->addMyMessage(uins, myLastMessage);
-}
-
 void Chat::clearChatWindow()
 {
 	kdebugf();
@@ -800,7 +788,6 @@ void Chat::messageAcceptedSlot(int Seq, UinType /*uin*/)
 		return;
 	kdebugmf(KDEBUG_INFO, "This is my ack.\n");
 	writeMyMessage();
-	addMyMessageToHistory();
 	emit messageSentAndConfirmed(Users->toUserListElements(), myLastMessage);
 	seq = 0;
 	disconnectAcknowledgeSlots();
@@ -926,7 +913,6 @@ void Chat::sendMessage()
 	else
 	{
 		writeMyMessage();
-		addMyMessageToHistory();
 		emit messageSentAndConfirmed(Users->toUserListElements(), myLastMessage);
 	}
 
@@ -1073,7 +1059,7 @@ void Chat::dropEvent(QDropEvent *e)
 		e->accept(false);
 }
 
-void Chat::scrollHistoryToBottom()
+void Chat::scrollMessagesToBottom()
 {
 	body->scrollToBottom();
 }

@@ -108,12 +108,6 @@ class Chat : public QMainWindow
 		void changeColor(const QWidget* activating_widget);
 
 		/**
-			\fn void addMyMessageToHistory()
-			Slot dodaje wys³an± wiadomo¶æ do historii rozmowy
-		**/
-		void addMyMessageToHistory();
-
-		/**
 			\fn void pageUp()
 			Slot przewijaj±cy historiê rozmowy w górê
 		**/
@@ -282,7 +276,7 @@ class Chat : public QMainWindow
 		virtual void dropEvent(QDropEvent *e);
 		virtual void dragMoveEvent(QDragMoveEvent *e);
 
-		void scrollHistoryToBottom();
+		void scrollMessagesToBottom();
 		virtual bool eventFilter(QObject *watched, QEvent *e);
 
 		Protocol *currentProtocol();

@@ -17,6 +17,7 @@
 #include "history_dialog.h"
 #include "icons_manager.h"
 #include "misc.h"
+#include "userbox.h"
 
 extern "C" int history_init()
 {
@@ -84,6 +85,9 @@ HistoryModule::HistoryModule() : QObject(NULL, "history")
 	ConfigDialog::registerSlotOnApplyTab("History", historyslots, SLOT(onApplyTabHistory()));
 	ConfigDialog::connectSlot("History", "historyslider", SIGNAL(valueChanged(int)), historyslots, SLOT(updateQuoteTimeLabel(int)));
 
+	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Show emoticons in history"), "ShowEmotHist", false, 0, 0, Expert);
+	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "View history"), "kadu_viewhistory", "Ctrl+H");
+
 	connect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
 		history, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
 	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
@@ -100,12 +104,22 @@ HistoryModule::HistoryModule() : QObject(NULL, "history")
 	KaduActions.addDefaultToolbarAction("Kadu toolbar", "showHistoryAction", 4);
 	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "showHistoryAction", 3);
 
+	UserBox::userboxmenu->addItemAtPos(5, "History", tr("View history"), this, SLOT(viewHistory()), HotKey::shortCutFromFile("ShortCuts", "kadu_viewhistory"));
+	UserBox::management->addItemAtPos(7, tr("Clear history"),  this, SLOT(deleteHistory()));
+	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
+
 	kdebugf2();
 }
 
 HistoryModule::~HistoryModule()
 {
 	kdebugf();
+
+	int history_item = UserBox::userboxmenu->getItem(tr("View history"));
+	int delete_history_item = UserBox::management->getItem(tr("Clear history"));
+	UserBox::userboxmenu->removeItem(history_item);
+	UserBox::userboxmenu->removeItem(delete_history_item);
+	disconnect(UserBox::userboxmenu,SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
 
 	KaduActions.remove("showHistoryAction");
 
@@ -115,6 +129,9 @@ HistoryModule::~HistoryModule()
 		history, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
 	disconnect(chat_manager, SIGNAL(chatCreated(const UserGroup*, time_t)),
 		this, SLOT(chatCreated(const UserGroup*, time_t)));
+
+	ConfigDialog::removeControl("General", "Show emoticons in history");
+	ConfigDialog::removeControl("ShortCuts", "View history");
 
 	ConfigDialog::disconnectSlot("History", "historyslider", SIGNAL(valueChanged(int)), historyslots, SLOT(updateQuoteTimeLabel(int)));
 	ConfigDialog::unregisterSlotOnCreateTab("History", historyslots, SLOT(onCreateTabHistory()));
@@ -153,6 +170,8 @@ void HistoryModule::chatCreated(const UserGroup *group, time_t time)
 {
 	kdebugf();
 	Chat* chat = chat_manager->findChat(group);
+	connect(chat, SIGNAL(messageSentAndConfirmed(UserListElements, const QString&)),
+		this, SLOT(messageSentAndConfirmed(UserListElements, const QString&)));
 	UserListElements senders = group->toUserListElements();
 
 	QValueList<HistoryEntry> entries;
@@ -234,6 +253,68 @@ void HistoryModule::chatCreated(const UserGroup *group, time_t time)
 	if (!messages.empty())
 		chat->scrollMessages(messages);
 	kdebugf2();
+}
+
+void HistoryModule::messageSentAndConfirmed(UserListElements receivers, const QString& message)
+{
+	UinsList uins;
+	CONST_FOREACH(user, receivers)
+		uins.append((*user).ID("Gadu").toUInt());
+	//TODO: throw out UinsList as soon as possible!
+	history->addMyMessage(uins, message);
+}
+
+void HistoryModule::viewHistory()
+{
+	kdebugf();
+	UserBox *activeUserBox = UserBox::activeUserBox();
+
+	if (activeUserBox == NULL)
+	{
+		kdebugf2();
+		return;
+	}
+	UserListElements users = activeUserBox->selectedUsers();
+	UserGroup user_group(users);
+	KaduActions["showHistoryAction"]->activate(&user_group);
+	kdebugf2();
+}
+
+void HistoryModule::deleteHistory()
+{
+	kdebugf();
+	UserBox *activeUserBox = UserBox::activeUserBox();
+	if (activeUserBox == NULL)
+	{
+		kdebugf2();
+		return;
+	}
+	//TODO: throw out UinsList as soon as possible!
+	UinsList uins;
+	UserListElements users = activeUserBox->selectedUsers();
+	CONST_FOREACH(user, users)
+		if ((*user).usesProtocol("Gadu"))
+			uins.append((*user).ID("Gadu").toUInt());
+
+	history->removeHistory(uins);
+	kdebugf2();
+}
+
+void HistoryModule::userboxMenuPopup()
+{
+	UserListElements users = UserBox::activeUserBox()->selectedUsers();
+	int history_item = UserBox::userboxmenu->getItem(tr("View history"));
+	int delete_history_item = UserBox::management->getItem(tr("Clear history"));
+
+	bool any_ok = false;
+	CONST_FOREACH(user, users)
+		if ((*user).usesProtocol("Gadu") && (*user).ID("Gadu").toUInt() != config_file.readUnsignedNumEntry("General","UIN"))
+		{
+			any_ok = true;
+			break;
+		}
+	UserBox::userboxmenu->setItemEnabled(history_item, any_ok);
+	UserBox::userboxmenu->setItemEnabled(delete_history_item, any_ok);
 }
 
 HistoryModule* history_module = NULL;

@@ -247,6 +247,18 @@ class UserBoxMenu : public QPopupMenu
 		int addItem(const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
 
 		/**
+			\fn int addItemAtPos(int index, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1)
+			Dodaje nowy element do menu.
+			\param index pozycja (licz±c od 0) na której znale¼æ ma siê nowy element.
+			\param text napis dla nowego elementu.
+			\param receiver obiekt odbieraj±cy sygna³ wybrania elementu z menu.
+			\param member SLOT obiektu \a receiver który zostanie wykonany po wybraniu elementu z menu.
+			\param accel skrót klawiaturowy dla tego elementu. Domy¶lnie brak.
+			\param id Unikatowa liczba identyfikuj±ca nowy element. Domy¶lnie pierwsza wolna.
+		**/
+		int addItemAtPos(int index, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
+
+		/**
 			\fn int addItemAtPos(int index,const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1)
 			Dodaje nowy element do menu.
 			\param index pozycja (licz±c od 0) na której znale¼æ ma siê nowy element.
