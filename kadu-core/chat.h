@@ -99,6 +99,10 @@ class Chat : public QMainWindow
 		KaduTextBrowser* body; /*!< historia rozmowy, proszê NIE dawaæ dostêpu na zewn±trz do tej zmiennej */
 		int activationCount;
 
+		unsigned int newMessagesNum; /*!< liczba nowych wiadomo¶ci w oknie rozmowy */
+		bool showNewMessagesNum;
+		bool blinkChatTitle;
+
 	private slots:
 
 		/**
@@ -281,6 +285,12 @@ class Chat : public QMainWindow
 
 		Protocol *currentProtocol();
 
+		unsigned int getNewMessagesNum() const;
+		void setShowNewMessagesNum(bool toggled);
+		bool getShowNewMessagesNum() const;
+		void setBlinkChatTitle(bool toggled);
+		bool getBlinkChatTitle() const;
+
 	public slots:
 
 		/**
@@ -351,6 +361,13 @@ class Chat : public QMainWindow
 			\see setTitle
 		**/
 		void changeTitle();
+
+		/**
+			\fn void showNewMessagesNumInTitle()
+			Slot pokazuj±cy liczbê nowych wiadomo¶ci w tytule okna
+			\see setTitle
+		**/
+		void showNewMessagesNumInTitle();
 
 		/**
 			\fn void curPosChanged(int para, int pos)

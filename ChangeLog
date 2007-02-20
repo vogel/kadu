@@ -90,6 +90,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * u¿ycie rolki myszy w oknie rozmowy nie powoduje przeniesienia focusu z pola edycji (Arvenil/neeo)
 * opcje menu kontekstowego oraz obs³uga skrótów zwi±zanych z histori± przeniesione
   do modu³u "history" (adrian)
+* tytu³ okna Chat pokazuje liczbê oczekuj±cych wiadomo¶ci (micha³,neeo)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

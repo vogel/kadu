@@ -978,6 +978,7 @@ void ChatManager::closeModule()
 	ConfigDialog::removeControl("Chat", "Block window close on new message");
 	ConfigDialog::removeControl("Chat", "Ignore richtext from anonymous users");
 	ConfigDialog::removeControl("Chat", "Ignore messages from anonymous users");
+	ConfigDialog::removeControl("Chat", "Show number of new messages in chat title");
 	ConfigDialog::removeControl("Chat", "Flash chat title on new message");
 	ConfigDialog::removeControl("Chat", "\"%1\" in chat sends message by default");
 	ConfigDialog::removeControl("Chat", "Message acknowledgements (wait for delivery)");
@@ -1055,6 +1056,7 @@ void ChatManager::initModule()
 	ConfigDialog::addCheckBox("Chat", "checkboxes-beginner", QT_TRANSLATE_NOOP("@default", "Message acknowledgements (wait for delivery)"), "MessageAcks", true);
 	ConfigDialog::addCheckBox("Chat", "checkboxes-advanced", QT_TRANSLATE_NOOP("@default", "\"%1\" in chat sends message by default"), "AutoSend", true, 0, 0, Advanced);
 	ConfigDialog::addCheckBox("Chat", "checkboxes-advanced", QT_TRANSLATE_NOOP("@default", "Flash chat title on new message"), "BlinkChatTitle", true, 0, 0, Advanced);
+	ConfigDialog::addCheckBox("Chat", "checkboxes-advanced", QT_TRANSLATE_NOOP("@default", "Show number of new messages in chat title"), "NewMessagesInChatTitle", false, 0, 0, Advanced);
 	ConfigDialog::addCheckBox("Chat", "checkboxes-advanced", QT_TRANSLATE_NOOP("@default", "Ignore messages from anonymous users"), "IgnoreAnonymousUsers", false, 0, 0, Advanced);
 	ConfigDialog::addCheckBox("Chat", "checkboxes-advanced", QT_TRANSLATE_NOOP("@default", "Ignore richtext from anonymous users"), "IgnoreAnonymousRichtext", true, 0, 0, Advanced);
 	ConfigDialog::addCheckBox("Chat", "checkboxes-advanced", QT_TRANSLATE_NOOP("@default", "Block window close on new message"), "ChatCloseTimer", false, 0, 0, Advanced);

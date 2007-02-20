@@ -48,7 +48,9 @@ Chat::Chat(Protocol *initialProtocol, UserListElements usrs, QWidget* parent, co
 	myLastFormats(0), seq(0), vertSplit(0), horizSplit(0),
 	ParagraphSeparator(config_file.readNumEntry("Look", "ParagraphSeparator")),
 	lastMsgTime(), PreviousMessage(), CfgNoHeaderRepeat(config_file.readBoolEntry("Look","NoHeaderRepeat")),
-	CfgHeaderSeparatorHeight(0), CfgNoHeaderInterval(0), Style(0), LastTime(0), body(0), activationCount(0)
+	CfgHeaderSeparatorHeight(0), CfgNoHeaderInterval(0), Style(0), LastTime(0), body(0), activationCount(0),
+	newMessagesNum(0), showNewMessagesNum(config_file.readBoolEntry("Chat","NewMessagesInChatTitle")),
+	blinkChatTitle(config_file.readBoolEntry("Chat","BlinkChatTitle"))
 {
 	kdebugf();
 	const int minimumDockAreaSize = 3;
@@ -322,6 +324,31 @@ void Chat::curPosChanged(int, int)
 	kdebugf2();
 }
 
+unsigned int Chat::getNewMessagesNum() const
+{
+	return newMessagesNum;
+}
+
+void Chat::setShowNewMessagesNum(bool toggled)
+{
+	showNewMessagesNum = toggled;
+}
+
+bool Chat::getShowNewMessagesNum() const
+{
+	return showNewMessagesNum;
+}
+
+void Chat::setBlinkChatTitle(bool toggled)
+{
+	blinkChatTitle = toggled;
+}
+
+bool Chat::getBlinkChatTitle() const
+{
+	return blinkChatTitle;
+}
+
 void Chat::pageUp()
 {
 	body->scrollBy(0, (body->height() * -2) / 3);
@@ -468,29 +495,52 @@ void Chat::refreshTitle()
 	title.replace("<br/>", " ");
 	title.replace("&nbsp;", " ");
 
-	setCaption(title);
 	title_buffer = title;
+
+	if (!showNewMessagesNum || (newMessagesNum == 0)) // if we don't have new messages or don't want them to be shown
+		setCaption(title_buffer);
+	else
+		showNewMessagesNumInTitle();
+
 	kdebugf2();
 }
 
 void Chat::changeTitle()
 {
-	if(!isActiveWindow())
+	if (!isActiveWindow())
 	{
-		if (caption() != title_buffer)
-			setCaption(title_buffer);
+		if (!caption().contains(title_buffer) || !blinkChatTitle)
+		{
+			if (!showNewMessagesNum) // if we don't show number od new messages waiting
+				setCaption(title_buffer);
+			else
+				showNewMessagesNumInTitle();
+		}
 		else
-			setCaption(QString().fill(' ', title_buffer.length()));
-		title_timer->start(500,TRUE);
+		{
+			setCaption(QString().fill(' ', (title_buffer.length()+5)));
+		}
+
+		if (blinkChatTitle) // timer will not be started, if configuration option was changed
+			title_timer->start(500,TRUE);
 	}
+}
+
+void Chat::showNewMessagesNumInTitle()
+{
+	if (!isActiveWindow())
+		setCaption("[" + QString().setNum(newMessagesNum) + "] " + title_buffer);
 }
 
 void Chat::windowActivationChange(bool b)
 {
-	if (isActiveWindow() && title_timer->isActive())
+	if (isActiveWindow())
 	{
-		title_timer->stop();
 		setCaption(title_buffer);
+		newMessagesNum = 0;
+		
+		if (title_timer->isActive())
+			title_timer->stop();
 	}
 
 	emit windowActivationChanged(b, Users);
@@ -674,9 +724,19 @@ void Chat::newMessage(const QString &/*protocolName*/, UserListElements senders,
 
 void Chat::alertNewMessage()
 {
-	if (config_file.readBoolEntry("Chat","BlinkChatTitle"))
-		if (!isActiveWindow() && !title_timer->isActive())
-			changeTitle();
+	if (!isActiveWindow())
+	{
+		newMessagesNum++;
+
+		if (blinkChatTitle)
+		{
+			if (!title_timer->isActive())
+				changeTitle(); // blinking is able to show new messages also...
+		}
+		else if (showNewMessagesNum) // ... so we check this condition as 'else'
+			showNewMessagesNumInTitle();
+	}
+
 	lastMsgTime = QDateTime::currentDateTime();
 }
 

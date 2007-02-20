@@ -249,6 +249,22 @@ void ChatManagerSlots::onApplyTabChat()
 		userlist->removePerContactNonProtocolConfigEntry("chat_vertical_sizes");
 	}
 
+	bool msgTitle = config_file.readBoolEntry("Chat","NewMessagesInChatTitle");
+	bool blnTitle = config_file.readBoolEntry("Chat","BlinkChatTitle");
+	CONST_FOREACH(chat, chat_manager->chats()) // set options for all chats...
+	{
+		(*chat)->setShowNewMessagesNum(msgTitle);
+		(*chat)->setBlinkChatTitle(blnTitle);
+
+		unsigned int newMsgs = (*chat)->getNewMessagesNum();
+
+		// for chats with waiting messages we also trigger apropriate slots...
+		if (blnTitle && (newMsgs > 0)) 
+			(*chat)->changeTitle();
+		else if (msgTitle && (newMsgs > 0))
+			(*chat)->showNewMessagesNumInTitle();
+	}
+
 	KaduActions["autoSendAction"]->setAllOn(config_file.readBoolEntry("Chat", "AutoSend"));
 
 	kdebugf2();
