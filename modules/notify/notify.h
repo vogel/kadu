@@ -15,25 +15,56 @@
 #include "protocol.h"
 #include "userlist.h"
 
+
+/**
+ * @defgroup notify Notify
+ * @{
+ */
+
+/**
+	@enum CallbackRequirement
+	Okre¶la, czy dane zdarzenie wymaga podjêcia od u¿ytkownika akcji innej ni¿ domy¶lne zaakceptowanie/odrzucenie.
+ **/
 enum CallbackRequirement {
 	CallbackRequired,
 	CallbackNotRequired
 };
 
+/**
+	@enum CallbackCapacity
+	Okre¶la, czy dany notifikator potrafi obs³u¿yæ zdarzenia wymagajace od u¿ytkownika akcji innej ni¿ domy¶lne zaakceptowanie/odrzucenie.
+ **/
 enum CallbackCapacity {
 	CallbackSupported,
 	CallbackNotSupported
 };
 
 /**
- * @defgroup notify Notify
- * @{
- */
+	@class Notifier
+	@brief Klasa abstrakcyjna opisuj±ca notifikator.
+
+	Notifykatory zajmuj± siê wy¶wietlaniem lub informowaniem w inny sposób u¿ytkownika o wystêpuj±cych
+	w programie zdarzeniach (nowa rozmowa, nowy transfer pliku, b³±d...).
+
+	Notyfikatory mogê umo¿liwiaæ u¿ytkownikowi podjêcie akcji jak odebranie lub zignorownie rozmowy,
+	odebranie pliku, kontynuacje odbierania pliku i inne. Niektóry notifikatory nie bêd±
+	implementowaæ akcji, dlatego te¿ niektóre zdarzenia nie mog± byæ przez nie obs³ugiwane.
+ **/
 class Notifier : public QObject {
 	public:
 		Notifier(QObject *parent = 0, const char *name = 0) : QObject(parent, name) {};
 		virtual ~Notifier() {};
+
+		/**
+			Okre¶la, czy notifikator poradzi sobie ze zdarzeniami wymagajacymi podjêcia akcji.
+		 **/
 		virtual CallbackCapacity callbackCapacity() { return CallbackNotSupported; }
+
+		/**
+			Metoda informuj±ca notifikator o nowym zdarzeniu. Zdarzenie mo¿e wywo³aæ
+			sygna³ closed(), po którym notyfikator musi przestaæ informowaæ u¿ytkownika
+			o danym zdarzeniu (na przyk³ad, musi zamkn±æ skojarzone ze zdarzeniem okno).
+		 **/
 		virtual void externalEvent(Notification *notification) = 0;
 };
 
