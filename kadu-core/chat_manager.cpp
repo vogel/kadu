@@ -516,8 +516,10 @@ void ChatManager::unregisterChat(Chat* chat)
 				setChatProperty(users, "HorizontalSizes", toVariantList(chat->horizSplit->sizes()));
 
 			emit chatDestroying(users);
+			emit chatDestroying(chat);
 			Chats.remove(curChat);
 			emit chatDestroyed(users);
+			emit chatDestroyed(chat);
 			kdebugf2();
 			return;
 		}
@@ -685,6 +687,8 @@ int ChatManager::openChat(Protocol *initialProtocol, UserListElements users, tim
 	chat->makeActive();
 	emit chatCreated(group);
 	emit chatCreated(group, time);
+	emit chatCreated(chat);
+	emit chatCreated(chat, time);
 	kdebugf2();
 	return Chats.count() - 1;
 }

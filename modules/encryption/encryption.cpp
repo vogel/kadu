@@ -74,7 +74,7 @@ EncryptionManager::EncryptionManager(QObject *parent, const char *name) : QObjec
 
 	userlist->addPerContactNonProtocolConfigEntry("encryption_enabled", "EncryptionEnabled");
 
-	connect(chat_manager, SIGNAL(chatCreated(const UserGroup *)), this, SLOT(chatCreated(const UserGroup *)));
+	connect(chat_manager, SIGNAL(chatCreated(Chat *)), this, SLOT(chatCreated(Chat *)));
 	connect(gadu, SIGNAL(messageFiltering(Protocol *, UserListElements, QCString&, QByteArray&, bool&)),
 			this, SLOT(receivedMessageFilter(Protocol *, UserListElements, QCString&, QByteArray&, bool&)));
 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userBoxMenuPopup()));
@@ -105,7 +105,7 @@ EncryptionManager::~EncryptionManager()
 	UserBox::userboxmenu->removeItem(sendkeyitem);
 	KaduActions.remove("encryptionAction");
 
-	disconnect(chat_manager, SIGNAL(chatCreated(const UserGroup *)), this, SLOT(chatCreated(const UserGroup *)));
+	disconnect(chat_manager, SIGNAL(chatCreated(Chat *)), this, SLOT(chatCreated(Chat *)));
 	disconnect(gadu, SIGNAL(messageFiltering(Protocol *, UserListElements, QCString&, QByteArray&, bool&)),
 			this, SLOT(receivedMessageFilter(Protocol *, UserListElements, QCString&, QByteArray&, bool&)));
 	disconnect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userBoxMenuPopup()));
@@ -162,9 +162,8 @@ void EncryptionManager::onUseEncryption(bool toggled)
 	ConfigDialog::getHGroupBox("Chat", "Encryption properties")->setEnabled(toggled);
 }
 
-void EncryptionManager::chatCreated(const UserGroup *group)
+void EncryptionManager::chatCreated(Chat *chat)
 {
-	Chat* chat = chat_manager->findChat(group);
 	connect(chat, SIGNAL(messageFiltering(const UserGroup *, QCString &, bool &)),
 			this, SLOT(sendMessageFilter(const UserGroup *, QCString &, bool &)));
 }

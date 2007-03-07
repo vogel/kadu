@@ -226,9 +226,6 @@ class FileTransferManager : public QObject
 
 		int toggleFileTransferWindowMenuId;
 
-		void handleCreatedChat(Chat *);
-		void handleDestroyingChat(Chat *);
-
 		QString selectFileToSend();
 
 		void needFileAccept(DccSocket* socket);
@@ -246,8 +243,8 @@ class FileTransferManager : public QObject
 		void setState(DccSocket* socket);
 		void socketDestroying(DccSocket* socket);
 
-		void chatCreated(const UserGroup *group);
-		void chatDestroying(const UserGroup *group);
+		void chatCreated(Chat *chat);
+		void chatDestroying(Chat *chat);
 
 		void fileDropped(const UserGroup *group, const QString &);
 

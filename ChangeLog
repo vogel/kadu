@@ -91,6 +91,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * opcje menu kontekstowego oraz obs³uga skrótów zwi±zanych z histori± przeniesione
   do modu³u "history" (adrian)
 * tytu³ okna Chat pokazuje liczbê oczekuj±cych wiadomo¶ci (micha³,neeo)
+* nowe sygna³y w chat_manager: chatCreated(Chat *), chatCreated(Chat *, time_t), chatDestroying(Chat *),
+  chatDestroyed(Chat *) i ich wykorzystanie tam, gdzie jest to przydatne (Vogel)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

@@ -92,8 +92,8 @@ HistoryModule::HistoryModule() : QObject(NULL, "history")
 		history, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
 	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
 		history, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
-	connect(chat_manager, SIGNAL(chatCreated(const UserGroup*, time_t)),
-		this, SLOT(chatCreated(const UserGroup*, time_t)));
+	connect(chat_manager, SIGNAL(chatCreated(Chat *, time_t)),
+		this, SLOT(chatCreated(Chat*, time_t)));
 
 	Action* history_action = new Action(icons_manager->loadIcon("History"),
 		tr("Show history"), "showHistoryAction", Action::TypeUser);
@@ -127,8 +127,8 @@ HistoryModule::~HistoryModule()
 		history, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
 	disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
 		history, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
-	disconnect(chat_manager, SIGNAL(chatCreated(const UserGroup*, time_t)),
-		this, SLOT(chatCreated(const UserGroup*, time_t)));
+	disconnect(chat_manager, SIGNAL(chatCreated(Chat *, time_t)),
+		this, SLOT(chatCreated(Chat *, time_t)));
 
 	ConfigDialog::removeControl("General", "Show emoticons in history");
 	ConfigDialog::removeControl("ShortCuts", "View history");
@@ -166,13 +166,12 @@ void HistoryModule::historyActionActivated(const UserGroup* users)
 	kdebugf2();
 }
 
-void HistoryModule::chatCreated(const UserGroup *group, time_t time)
+void HistoryModule::chatCreated(Chat *chat, time_t time)
 {
 	kdebugf();
-	Chat* chat = chat_manager->findChat(group);
 	connect(chat, SIGNAL(messageSentAndConfirmed(UserListElements, const QString&)),
 		this, SLOT(messageSentAndConfirmed(UserListElements, const QString&)));
-	UserListElements senders = group->toUserListElements();
+	UserListElements senders = chat->users()->toUserListElements();
 
 	QValueList<HistoryEntry> entries;
 	QValueList<HistoryEntry> entriestmp;
@@ -199,7 +198,7 @@ void HistoryModule::chatCreated(const UserGroup *group, time_t time)
 
 		entriestmp = history->getHistoryEntries(uins, from, end - from + 1, HISTORYMANAGER_ENTRY_CHATSEND
 			| HISTORYMANAGER_ENTRY_MSGSEND | HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV);
-		kdebugmf(KDEBUG_INFO, "temp entries = %lu\n", entriestmp.count());
+		kdebugmf(KDEBUG_INFO, "temp entries = %u\n", entriestmp.count());
 		if (time)
 		{
 			QValueList<HistoryEntry>::iterator it = entriestmp.begin();
@@ -222,7 +221,7 @@ void HistoryModule::chatCreated(const UserGroup *group, time_t time)
 		}
 		if (!entriestmp.isEmpty())
 			entries = entriestmp + entries;
-		kdebugmf(KDEBUG_INFO, "entries = %lu\n", entries.count());
+		kdebugmf(KDEBUG_INFO, "entries = %u\n", entries.count());
 		end = from - 1;
 	}
 

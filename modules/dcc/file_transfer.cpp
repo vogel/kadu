@@ -1028,11 +1028,11 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 		this, SLOT(sendFileActionActivated(const UserGroup*)));
 	KaduActions.insert("sendFileAction", send_file_action);
 
-	connect(chat_manager, SIGNAL(chatCreated(const UserGroup *)), this, SLOT(chatCreated(const UserGroup *)));
-	connect(chat_manager, SIGNAL(chatDestroying(const UserGroup *)), this, SLOT(chatDestroying(const UserGroup *)));
+	connect(chat_manager, SIGNAL(chatCreated(Chat *)), this, SLOT(chatCreated(Chat *)));
+	connect(chat_manager, SIGNAL(chatDestroying(Chat *)), this, SLOT(chatDestroying(Chat *)));
 
 	FOREACH(it, chat_manager->chats())
-		handleCreatedChat(*it);
+		chatCreated(*it);
 
 	connect(dcc_manager, SIGNAL(connectionBroken(DccSocket*)),
 		this, SLOT(connectionBroken(DccSocket*)));
@@ -1073,11 +1073,11 @@ FileTransferManager::~FileTransferManager()
 
 	KaduActions.remove("sendFileAction");
 
-	disconnect(chat_manager, SIGNAL(chatCreated(const UserGroup *)), this, SLOT(chatCreated(const UserGroup *)));
-	disconnect(chat_manager, SIGNAL(chatDestroying(const UserGroup *)), this, SLOT(chatDestroying(const UserGroup *)));
+	disconnect(chat_manager, SIGNAL(chatCreated(Chat *)), this, SLOT(chatCreated(Chat *)));
+	disconnect(chat_manager, SIGNAL(chatDestroying(Chat *)), this, SLOT(chatDestroying(Chat *)));
 
 	FOREACH(it, chat_manager->chats())
-		handleDestroyingChat(*it);
+		chatDestroying(*it);
 
 	disconnect(dcc_manager, SIGNAL(connectionBroken(DccSocket*)),
 		this, SLOT(connectionBroken(DccSocket*)));
@@ -1266,27 +1266,13 @@ void FileTransferManager::sendFileActionActivated(const UserGroup* users)
 	kdebugf2();
 }
 
-void FileTransferManager::chatCreated(const UserGroup *group)
-{
-	kdebugf();
-	Chat* chat = chat_manager->findChat(group);
-	handleCreatedChat(chat);
-}
-
-void FileTransferManager::chatDestroying(const UserGroup *group)
-{
-	kdebugf();
-	Chat* chat = chat_manager->findChat(group);
-	handleDestroyingChat(chat);
-}
-
-void FileTransferManager::handleCreatedChat(Chat *chat)
+void FileTransferManager::chatCreated(Chat *chat)
 {
 	connect(chat, SIGNAL(fileDropped(const UserGroup *, const QString &)),
 		this, SLOT(fileDropped(const UserGroup *, const QString &)));
 }
 
-void FileTransferManager::handleDestroyingChat(Chat *chat)
+void FileTransferManager::chatDestroying(Chat *chat)
 {
 	disconnect(chat, SIGNAL(fileDropped(const UserGroup *, const QString &)),
 		this, SLOT(fileDropped(const UserGroup *, const QString &)));

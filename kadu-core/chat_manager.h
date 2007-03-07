@@ -253,6 +253,7 @@ class ChatManager : public QObject
 			\param group lista u¿ytkowników, z którymi tworzymy nowy chat
 		**/
 		void chatCreated(const UserGroup *group);
+		void chatCreated(Chat *chat);
 
 		/**
 			\fn void chatCreated(const UserGroup *group)
@@ -261,6 +262,7 @@ class ChatManager : public QObject
 			\param time time of pending message that created a chat or 0 if not applicable
 		**/
 		void chatCreated(const UserGroup *group, time_t time);
+		void chatCreated(Chat *chat, time_t time);
 
 		/**
 			\fn void chatDestroying(const UserGroup *group)
@@ -268,6 +270,7 @@ class ChatManager : public QObject
 			\param group lista u¿ytkownikówów, którzy wystêpuj± w tym chacie
 		**/
 		void chatDestroying(const UserGroup *group);
+		void chatDestroying(Chat *chat);
 
 		/**
 			\fn void chatDestroyed(const UserGroup *group)
@@ -276,6 +279,7 @@ class ChatManager : public QObject
 			wystêpowa³y w tym chacie
 		**/
 		void chatDestroyed(const UserGroup *group);
+		void chatDestroyed(Chat *chat);
 
 		/**
 			\fn void chatOpen(UserListElements users)

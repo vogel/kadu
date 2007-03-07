@@ -141,7 +141,7 @@ X11TrayIcon::X11TrayIcon(QWidget *parent, const char *name)
 	connect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 	connect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), this, SLOT(setTrayMovie(const QMovie &)));
-	connect(chat_manager, SIGNAL(chatCreated(const UserGroup *)), this, SLOT(chatCreatedSlot(const UserGroup *)));
+	connect(chat_manager, SIGNAL(chatCreated(Chat *)), this, SLOT(chatCreatedSlot(Chat *)));
 	connect(&timer, SIGNAL(timeout()), this, SLOT(tryToDock()));
 	connect(&undockTimer, SIGNAL(timeout()), this, SLOT(undockAndTryToDock()));
 
@@ -214,18 +214,12 @@ void X11TrayIcon::tryToDock()
 	kdebugf2();
 }
 
-void X11TrayIcon::chatCreatedSlot(const UserGroup *group)
+void X11TrayIcon::chatCreatedSlot(Chat *chat)
 {
 	kdebugf();
-	Chat *c=chat_manager->findChat(group);
-	if (!c)
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "chat is null\n");
-		return;
-	}
 
 	Display *dsp = x11Display();
-	WId win = c->winId();
+	WId win = chat->winId();
 
 	XClassHint classhint;
 	classhint.res_name  = (char*)"kadu-chat";
@@ -285,7 +279,7 @@ X11TrayIcon::~X11TrayIcon()
 	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&, const QString &)), this, SLOT(setTrayPixmap(const QPixmap&, const QString &)));
 	disconnect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
-	disconnect(chat_manager, SIGNAL(chatCreated(const UserGroup *)), this, SLOT(chatCreatedSlot(const UserGroup *)));
+	disconnect(chat_manager, SIGNAL(chatCreated(Chat *)), this, SLOT(chatCreatedSlot(Chat *)));
 
 	docking_manager->setDocked(false);
 
