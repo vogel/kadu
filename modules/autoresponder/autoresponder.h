@@ -11,6 +11,9 @@
  * @defgroup autoresponder Autoresponder
  * @{
  */
+
+class Chat;
+
 class AutoResponder : public QObject
 {
 	Q_OBJECT
@@ -21,7 +24,7 @@ class AutoResponder : public QObject
 		~AutoResponder();
 	public slots:
 		void chatMsgReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t time, bool& grab);
-		void chatOpened(const UserGroup *group);
+		void chatOpened(Chat *chat);
 	public:
 		UserGroup replied;		/* tu beda przechowywane uiny tych ktorzy sie odezwali do nas */
 };

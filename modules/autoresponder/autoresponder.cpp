@@ -38,7 +38,7 @@ AutoResponder::AutoResponder(QObject *parent, const char *name) : QObject(parent
 	kdebugf();
 	connect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
 		this, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
-	connect(chat_manager, SIGNAL(chatCreated(const UserGroup *)), this, SLOT(chatOpened(const UserGroup *)));
+	connect(chat_manager, SIGNAL(chatCreated(Chat *)), this, SLOT(chatOpened(Chat *)));
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Autoresponder"), "AutoresponderTab");
 	ConfigDialog::addVGroupBox( "Autoresponder", "Autoresponder", QT_TRANSLATE_NOOP( "@default", "Autoresponder options" ));
@@ -60,7 +60,7 @@ AutoResponder::~AutoResponder()
 	kdebugf();
 	disconnect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
 		this, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
-	disconnect(chat_manager, SIGNAL(chatCreated(const UserGroup *)), this, SLOT(chatOpened(const UserGroup *)));
+	disconnect(chat_manager, SIGNAL(chatCreated(Chat *)), this, SLOT(chatOpened(Chat *)));
 	ConfigDialog::removeControl("Autoresponder", "Respond to conferences");
 	ConfigDialog::removeControl("Autoresponder", "Choose status:");
 	ConfigDialog::removeControl("Autoresponder", "Status invisible");
@@ -121,8 +121,10 @@ void AutoResponder::chatMsgReceived(Protocol * /*protocol*/, UserListElements se
 	kdebugf2();
 }
 
-void AutoResponder::chatOpened(const UserGroup *group)
+void AutoResponder::chatOpened(Chat *chat)
 {
+	const UserGroup *group = chat->users();
+
 	CONST_FOREACH(sender, *group)
 		if (replied.contains(*sender))
 			replied.removeUser(*sender);

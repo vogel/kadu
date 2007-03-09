@@ -248,38 +248,26 @@ class ChatManager : public QObject
 	signals:
 
 		/**
-			\fn void chatCreated(const UserGroup *group)
+			\fn void chatCreated(Chat *chat)
 		 	Sygna³ ten jest wysy³any po utworzeniu nowego okna chat
-			\param group lista u¿ytkowników, z którymi tworzymy nowy chat
+			\param chat nowe okno chat
 		**/
-		void chatCreated(const UserGroup *group);
 		void chatCreated(Chat *chat);
 
 		/**
 			\fn void chatCreated(const UserGroup *group)
 		 	Sygna³ ten jest wysy³any po utworzeniu nowego okna chat
-			\param group lista u¿ytkowników, z którymi tworzymy nowy chat
+			\param chat nowe okno chat
 			\param time time of pending message that created a chat or 0 if not applicable
 		**/
-		void chatCreated(const UserGroup *group, time_t time);
 		void chatCreated(Chat *chat, time_t time);
 
 		/**
 			\fn void chatDestroying(const UserGroup *group)
 		 	Sygna³ ten jest wysy³any przed zamnkniêciem okna chat
-			\param group lista u¿ytkownikówów, którzy wystêpuj± w tym chacie
+			\param chat zamykane okno
 		**/
-		void chatDestroying(const UserGroup *group);
 		void chatDestroying(Chat *chat);
-
-		/**
-			\fn void chatDestroyed(const UserGroup *group)
-		 	Sygna³ ten jest wysy³any po zamnkniêciem okna chat
-			\param group lista u¿ytkowników, którzy
-			wystêpowa³y w tym chacie
-		**/
-		void chatDestroyed(const UserGroup *group);
-		void chatDestroyed(Chat *chat);
 
 		/**
 			\fn void chatOpen(UserListElements users)
