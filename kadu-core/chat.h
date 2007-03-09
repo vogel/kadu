@@ -526,6 +526,8 @@ class Chat : public QMainWindow
 			\param users lista u¿ytkowników
 		**/
 		void windowActivationChanged(bool b, const UserGroup *users);
+
+		void messageReceived(Chat *);
 };
 
 #endif

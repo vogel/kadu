@@ -574,7 +574,6 @@ Chat* ChatManager::findChat(UserListElements users) const
 int ChatManager::openChat(Protocol *initialProtocol, UserListElements users, time_t time)
 {
 	kdebugf();
-	emit chatOpen(users);
 	unsigned int i = 0;
 	CONST_FOREACH(chat, Chats)
 	{
@@ -593,6 +592,7 @@ int ChatManager::openChat(Protocol *initialProtocol, UserListElements users, tim
 #endif
 			win->raise();
 			(*chat)->makeActive();
+			emit chatOpen(*chat);
 			return i;
 		}
 		++i;
@@ -684,6 +684,7 @@ int ChatManager::openChat(Protocol *initialProtocol, UserListElements users, tim
 	chat->makeActive();
 	emit chatCreated(chat);
 	emit chatCreated(chat, time);
+	emit chatOpen(chat);
 	kdebugf2();
 	return Chats.count() - 1;
 }

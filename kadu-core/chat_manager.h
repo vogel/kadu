@@ -273,9 +273,9 @@ class ChatManager : public QObject
 			\fn void chatOpen(UserListElements users)
 			Sygna³ ten jest wysy³aniy podczas ka¿dej próby
 			otwarcia nowego okna chat nawet je¶li ju¿ taki istnieje
-			\param users lista u¿ytkowników
+			\param chat otwarte okno
 		**/
-		void chatOpen(UserListElements users);
+		void chatOpen(Chat *chat);
 
 		/**
 			\fn void messageSentAndConfirmed(UserListElements receivers, const QString& message)

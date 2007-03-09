@@ -538,7 +538,7 @@ void Chat::windowActivationChange(bool b)
 	{
 		setCaption(title_buffer);
 		newMessagesNum = 0;
-		
+
 		if (title_timer->isActive())
 			title_timer->stop();
 	}
@@ -720,6 +720,8 @@ void Chat::newMessage(const QString &/*protocolName*/, UserListElements senders,
 	messages.append(message);
 
 	scrollMessages(messages);
+
+	emit messageReceived(this);
 }
 
 void Chat::alertNewMessage()
