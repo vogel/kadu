@@ -6,14 +6,54 @@
 #include <qtimer.h>
 #include <qevent.h>
 
+#include "status_changer.h"
 #include "gadu.h"
+
 /**
  * @defgroup autoaway Autoaway
  * @{
  */
+class AutoAwayStatusChanger : public StatusChanger
+{
+	Q_OBJECT
+
+public:
+	enum ChangeStatusTo {
+		NoChangeStatus,
+		ChangeStatusToBusy,
+		ChangeStatusToInvisible,
+		ChangeStatusToOffline
+	};
+
+	enum ChangeDescriptionTo {
+		NoChangeDescription,
+		ChangeDescriptionReplace,
+		ChangeDescriptionPrepend,
+		ChangeDescriptionAppend
+	};
+
+private:
+	ChangeStatusTo changeStatusTo;
+	ChangeDescriptionTo changeDescriptionTo;
+	QString descriptionAddon;
+
+public:
+	AutoAwayStatusChanger();
+	virtual ~AutoAwayStatusChanger();
+
+	virtual void changeStatus(UserStatus &status);
+
+	void setChangeStatusTo(ChangeStatusTo newChangeStatusTo);
+	void setChangeDescriptionTo(ChangeDescriptionTo newChangeDescriptionTo, const QString &newDescriptionAddon);
+
+};
+
 class AutoAwaySlots : public QObject
 {
 	Q_OBJECT
+
+	AutoAwayStatusChanger *autoAwayStatusChanger;
+
 	public:
 		AutoAwaySlots(QObject *parent=0, const char *name=0);
 		~AutoAwaySlots();
@@ -43,15 +83,12 @@ class AutoAwayTimer : private QTimer
 
 	private:
 		friend class AutoAwaySlots;
-			
-		AutoAwayTimer(QObject *parent = 0, const char *name=0);
-		QString changeDescription(const QString &oldDescription);
-		
-		bool didChangeStatus;
-		bool didChangeDescription;
 
-		enum DescAction {NOTHING=0, REPLACE=1, PREPEND=2, APPEND=3} action;
-		QString actionText;
+		AutoAwayTimer(AutoAwayStatusChanger *autoAwayStatusChanger, QObject *parent = 0, const char *name=0);
+		QString changeDescription(const QString &oldDescription);
+
+		AutoAwayStatusChanger *autoAwayStatusChanger;
+
 		int checkInterval;
 
 		int autoAwayTime;
@@ -61,8 +98,6 @@ class AutoAwayTimer : private QTimer
 		bool autoAwayEnabled;
 		bool autoInvisibleEnabled;
 		bool autoDisconnectEnabled;
-		
-		bool restoreStatus;
 
 		GaduStatus oldStatus;
 		int idleTime;

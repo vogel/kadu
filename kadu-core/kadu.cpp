@@ -51,6 +51,7 @@
 #include "personal_info.h"
 #include "protocols_manager.h"
 #include "search.h"
+#include "status_changer.h"
 #include "tabbar.h"
 #include "updates.h"
 #include "userbox.h"
@@ -227,6 +228,15 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	// groupbar
 	GroupBar = new KaduTabBar(hbox1, "groupbar");
 	hbox1->setStretchFactor(GroupBar, 1);
+
+	StatusChangerManager::initModule();
+	connect(status_changer_manager, SIGNAL(statusChanged(UserStatus)), this, SLOT(changeStatus(UserStatus)));
+
+	userStatusChanger = new UserStatusChanger();
+	splitStatusChanger = new SplitStatusChanger(GG_STATUS_DESCR_MAXSIZE);
+
+	status_changer_manager->registerStatusChanger(userStatusChanger);
+	status_changer_manager->registerStatusChanger(splitStatusChanger);
 
 	// gadu, chat, search
 	GaduProtocol::initModule();
@@ -1097,22 +1107,21 @@ void Kadu::slotHandleState(int command)
 		return;
 	}
 
-	bool stop = false;
-	emit changingStatus(status, stop);
-	if (!stop)
-	{
-		gadu->status().setStatus(status);
-
-		if (status.isOffline())
-		{
-			statusMenu->setItemEnabled(7, false);
-			dockMenu->setItemEnabled(7, false);
-		}
-	}
-	else
-		status.setStatus(gadu->status());
+	userStatusChanger->userStatusSet(status);
 
 	kdebugf2();
+}
+
+void Kadu::changeStatus(UserStatus newStatus)
+{
+	status.setStatus(newStatus);
+	gadu->writeableStatus().setStatus(status);
+
+	if (status.isOffline())
+	{
+		statusMenu->setItemEnabled(7, false);
+		dockMenu->setItemEnabled(7, false);
+	}
 }
 
 void Kadu::connecting()
@@ -1236,12 +1245,14 @@ bool Kadu::close(bool quit)
 			if (config_file.readBoolEntry("General", "DisconnectWithCurrentDescription"))
 			{
 				kdebugmf(KDEBUG_INFO, "Set status NOT_AVAIL_DESCR with current description(%s)\n", gadu->status().description().data());
-				gadu->status().setOffline(gadu->status().description());
+
+				setOffline(gadu->status().description());
 			}
 			else if (config_file.readBoolEntry("General", "DisconnectWithDescription"))
 			{
 				kdebugmf(KDEBUG_INFO, "Set status NOT_AVAIL_DESCR with disconnect description(%s)\n", config_file.readEntry("General", "DisconnectDescription").local8Bit().data());
-				gadu->status().setOffline(config_file.readEntry("General", "DisconnectDescription"));
+
+				setOffline(config_file.readEntry("General", "DisconnectDescription"));
 			}
 		}
 		disconnect(gadu, SIGNAL(chatMsgReceived2(Protocol *, UserListElements, const QString &, time_t, bool)),
@@ -1274,11 +1285,22 @@ bool Kadu::close(bool quit)
 		disconnect(Userbox, SIGNAL(doubleClicked(UserListElement)), this, SLOT(sendMessage(UserListElement)));
 		disconnect(Userbox, SIGNAL(returnPressed(UserListElement)), this, SLOT(sendMessage(UserListElement)));
 		disconnect(Userbox, SIGNAL(mouseButtonClicked(int, QListBoxItem *, const QPoint &)),
-					this, SLOT(mouseButtonClicked(int, QListBoxItem *)));
+				this, SLOT(mouseButtonClicked(int, QListBoxItem *)));
 		disconnect(Userbox, SIGNAL(currentChanged(UserListElement)), this, SLOT(currentChanged(UserListElement)));
 
- 		UserBox::closeModule();
- 		ChatManager::closeModule();
+		status_changer_manager->unregisterStatusChanger(splitStatusChanger);
+		status_changer_manager->unregisterStatusChanger(userStatusChanger);
+
+		delete splitStatusChanger;
+		splitStatusChanger = 0;
+
+		delete userStatusChanger;
+		userStatusChanger = 0;
+
+		StatusChangerManager::closeModule();
+
+		UserBox::closeModule();
+		ChatManager::closeModule();
 		SearchDialog::closeModule();
 		GaduProtocol::closeModule();
 		userlist->writeToConfig();//writeToConfig must be before GroupsManager::closeModule, because GM::cM removes all groups from userlist
@@ -1348,7 +1370,6 @@ bool Kadu::close(bool quit)
 		ConfigDialog::removeControl("General", "Check for updates");
 
 		ConfigDialog::removeControl("General", "Private status");
-
 
 		ConfigDialog::removeControl("General", "grid-expert");
 		ConfigDialog::removeControl("General", "grid-advanced");
@@ -1617,6 +1638,17 @@ void Kadu::hide()
 	QWidget::hide();
 }
 
+void Kadu::refreshPrivateStatusFromConfigFile()
+{
+	bool privateStatus = config_file.readBoolEntry("General", "PrivateStatus");
+
+	UserStatus status = gadu->status();
+	status.setFriendsOnly(privateStatus);
+	userStatusChanger->userStatusSet(status);
+
+	statusMenu->setItemChecked(8, privateStatus);
+}
+
 void KaduSlots::onCreateTabGeneral()
 {
 	kdebugf();
@@ -1708,11 +1740,7 @@ void KaduSlots::onApplyTabGeneral()
 	config_file.writeEntry("General", "DefaultStatusIndex",
 		ConfigDialog::getComboBox("General", "Default status", "cb_defstatus")->currentItem());
 
-	bool privateStatus = config_file.readBoolEntry("General", "PrivateStatus");
-	gadu->status().setFriendsOnly(privateStatus);
-
-	kadu->statusMenu->setItemChecked(8, privateStatus);
-
+	kadu->refreshPrivateStatusFromConfigFile();
 	kadu->setCaption(tr("Kadu: %1").arg((UinType)config_file.readNumEntry("General", "UIN")));
 
 	QComboBox *cb_language= ConfigDialog::getComboBox("General", "Set language:");
@@ -1805,8 +1833,10 @@ void Kadu::setDefaultStatus()
 	}
 	else
 		status.setIndex(statusIndex, descr);
+
 	status.setFriendsOnly(config_file.readBoolEntry("General", "PrivateStatus"));
-	gadu->status().setStatus(status);
+	userStatusChanger->userStatusSet(status);
+
 	kdebugf2();
 }
 
@@ -1837,6 +1867,7 @@ void Kadu::startupProcedure()
 
 	xml_config_file->makeBackup();
 
+	status_changer_manager->enable();
 	setDefaultStatus();
 
 	kdebugf2();
@@ -1983,4 +2014,44 @@ void Kadu::customEvent(QCustomEvent *e)
 	}
 	else
 		QWidget::customEvent(e);
+}
+
+void Kadu::setOnline(const QString &description)
+{
+	UserStatus status;
+
+	status.setStatus(gadu->status());
+	status.setOnline(description);
+
+	userStatusChanger->userStatusSet(status);
+}
+
+void Kadu::setBusy(const QString &description)
+{
+	UserStatus status;
+
+	status.setStatus(gadu->status());
+	status.setBusy(description);
+
+	userStatusChanger->userStatusSet(status);
+}
+
+void Kadu::setInvisible(const QString &description)
+{
+	UserStatus status;
+
+	status.setStatus(gadu->status());
+	status.setInvisible(description);
+
+	userStatusChanger->userStatusSet(status);
+}
+
+void Kadu::setOffline(const QString &description)
+{
+	UserStatus status;
+
+	status.setStatus(gadu->status());
+	status.setOffline(description);
+
+	userStatusChanger->userStatusSet(status);
 }

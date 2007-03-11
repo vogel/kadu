@@ -97,6 +97,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   chatDestroying(const UserGroup) i wszystkie chatDestroyed() (Vogel)
 * sygna³y w chat_manager: chatOpen(UserListElements) -> chatOpen(Chat *), dodano sygna³
   Chat::messageReceived(Chat *) (Vogel)
+* zmiana sposobu modyfikacji statusu, klasa StatusChanger, zablokowanie mo¿liwo¶ci
+  zmiany poprzez gadu->status(), dodano kadu->setOnline() i podobne
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

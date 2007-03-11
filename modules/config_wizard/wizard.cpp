@@ -339,7 +339,7 @@ void Wizard::registeredAccount(bool ok, UinType uin)
 		config_file.writeEntry("General", "UIN", (int)uin);
 		config_file.writeEntry("General", "Password", pwHash(l_ggNewPasssword->text()));
 		gadu->changeID(QString::number(uin));
-		gadu->status().setOnline();	//jak zarejestrowal to od razu sie laczy
+		kadu->setOnline();	//jak zarejestrowal to od razu sie laczy
 		MessageBox::msg(tr("Registration was successful.\nYou UIN is: ")+QString::number(int(uin))+tr("\nAccount configuration was saved.\nPress Ok to continue"));
 		registered = true;
 	}
@@ -367,7 +367,7 @@ void Wizard::tryImport()
 		if (gadu->status().isOffline())
 		{
 			connect(gadu, SIGNAL(connected()), wizardStarter, SLOT(connected()));
-			gadu->status().setOnline();	//kaze sie polaczyc i podpina sie pod sygnal polaczenia sie z siecia
+			kadu->setOnline();	//kaze sie polaczyc i podpina sie pod sygnal polaczenia sie z siecia
 		}	//jak polaczony to bez cyrkow robi import
 		else if (!gadu->doImportUserList())
 		{
@@ -1084,7 +1084,7 @@ void Wizard::setSoundOptions()
 	//jak wybrany modul != zaden to probuje zaladowac
 	if ((cb_soundModule->currentText() != tr("None")) && (!modules_manager->moduleIsLoaded(cb_soundModule->currentText())))
 		modules_manager->activateModule(cb_soundModule->currentText());
-	modules_manager->saveLoadedModules(); 
+	modules_manager->saveLoadedModules();
 	kdebugf2();
 }
 

@@ -10,6 +10,11 @@
 class Protocol : public QObject
 {
 	Q_OBJECT
+
+	private:
+		UserStatus &writeableStatus() { return *NextStatus; }
+		friend class Kadu;
+
 	protected:
 		QDateTime ConnectionTime;
 
@@ -98,7 +103,7 @@ class Protocol : public QObject
 
 			@see currentStatus
 		**/
-		UserStatus &status() { return *NextStatus; }
+		const UserStatus &status() { return *NextStatus; }
 
 		/**
 			Rzeczywisty aktualny status. Mo¿na go wykorzystaæ tylko w trybie do odczytu (pobranie

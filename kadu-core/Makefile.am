@@ -44,6 +44,7 @@ protocol.cpp \
 protocols_manager.cpp \
 search.cpp \
 status.cpp \
+status_changer.cpp \
 tabbar.cpp \
 themes.cpp \
 toolbar.cpp \
@@ -100,6 +101,7 @@ protocol.h \
 protocols_manager.h \
 search.h \
 status.h \
+status_changer.h \
 tabbar.h \
 themes.h \
 toolbar.h \
@@ -143,6 +145,7 @@ moc/protocol_moc.cpp \
 moc/protocols_manager_moc.cpp \
 moc/search_moc.cpp \
 moc/status_moc.cpp \
+moc/status_changer_moc.cpp \
 moc/tabbar_moc.cpp \
 moc/themes_moc.cpp \
 moc/toolbar_moc.cpp \
@@ -198,6 +201,7 @@ obj/protocol.$(OBJEXT) \
 obj/protocols_manager.$(OBJEXT) \
 obj/search.$(OBJEXT) \
 obj/status.$(OBJEXT) \
+obj/status_changer.$(OBJEXT) \
 obj/tabbar.$(OBJEXT) \
 obj/themes.$(OBJEXT) \
 obj/toolbar.$(OBJEXT) \
@@ -240,6 +244,7 @@ obj/protocol_moc.$(OBJEXT) \
 obj/protocols_manager_moc.$(OBJEXT) \
 obj/search_moc.$(OBJEXT) \
 obj/status_moc.$(OBJEXT) \
+obj/status_changer_moc.$(OBJEXT) \
 obj/tabbar_moc.$(OBJEXT) \
 obj/themes_moc.$(OBJEXT) \
 obj/toolbar_moc.$(OBJEXT) \
@@ -327,6 +332,8 @@ include $(DEPS)/search.d
 include $(DEPS)/search_moc.d
 include $(DEPS)/status.d
 include $(DEPS)/status_moc.d
+include $(DEPS)/status_changer.d
+include $(DEPS)/status_changer_moc.d
 include $(DEPS)/tabbar.d
 include $(DEPS)/tabbar_moc.d
 include $(DEPS)/themes.d

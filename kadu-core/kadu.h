@@ -22,6 +22,8 @@ class UserBox;
 class KaduTextBrowser;
 class QPushButton;
 class KaduSlots;
+class UserStatusChanger;
+class SplitStatusChanger;
 
 /**
 	G³ówne okno Kadu
@@ -52,6 +54,9 @@ class Kadu : public QWidget
 		UserStatus status;
 		UserGroup *selectedUsers; //don't touch!
 
+		UserStatusChanger *userStatusChanger;
+		SplitStatusChanger *splitStatusChanger;
+
 		bool ShowMainWindowOnStart;
 		bool DoBlink;
 		bool BlinkOn;
@@ -74,6 +79,11 @@ class Kadu : public QWidget
 		void sendMessage(UserListElement elem);
 		void configure();
 
+		void setOnline(const QString &description = QString::null);
+		void setBusy(const QString &description = QString::null);
+		void setInvisible(const QString &description = QString::null);
+		void setOffline(const QString &description = QString::null);
+
 	private slots:
 		void openChat();
 		void chatMsgReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t time, bool grabbed);
@@ -93,6 +103,9 @@ class Kadu : public QWidget
 
 		void statusMenuAboutToHide(void);
 		void dockMenuAboutToHide(void);
+
+		void changeStatus(UserStatus status);
+
 	protected:
 		void keyPressEvent(QKeyEvent *e);
 		virtual void resizeEvent(QResizeEvent *);
@@ -159,6 +172,8 @@ class Kadu : public QWidget
 		static void setClosing() { Closing = true; }
 
 		const QDateTime &startTime() const;
+		void refreshPrivateStatusFromConfigFile();
+
 	public slots:
 		void slotHandleState(int command);
 		void changeAppearance();
@@ -216,14 +231,6 @@ class Kadu : public QWidget
 	signals:
 		void keyPressed(QKeyEvent* e);
 		void statusPixmapChanged(const QPixmap &icon, const QString &icon_name);
-
-		/**
-			U¿ytkownik chce zmieniæ status. Je¶li jest to status
-			bezopisowy, to zmienna sigDesc bêdzie równa QString::null.
-			Je¶li zostanie ustawiona zmienna stop, to status nie
-			bêdzie zmieniony.
-		**/
-		void changingStatus(UserStatus &, bool &stop);
 
 		/**
 			wywo³ana zosta³a funkcja show() na g³ównym oknie

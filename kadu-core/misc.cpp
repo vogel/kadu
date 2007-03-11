@@ -655,13 +655,15 @@ ChooseDescription::ChooseDescription(int nr, QPoint *position, QWidget * parent,
 		defaultdescriptions.pop_back();
 
   	desc = new QComboBox(TRUE, this, "description");
+	desc->setSizeLimit(30);
 	desc->insertStringList(defaultdescriptions);
 
 	QLineEdit *ss = new QLineEdit(this, "LineEdit");
 	desc->setLineEdit(ss);
-	ss->setMaxLength(GG_STATUS_DESCR_MAXSIZE);
 
-	l_yetlen = new QLabel(' ' + QString::number(GG_STATUS_DESCR_MAXSIZE - desc->currentText().length()), this);
+	l_yetlen = new QLabel(this);
+	updateYetLen(desc->currentText());
+
 	connect(desc, SIGNAL(textChanged(const QString&)), this, SLOT(updateYetLen(const QString&)));
 
 	QPixmap pix;
@@ -679,11 +681,10 @@ ChooseDescription::ChooseDescription(int nr, QPoint *position, QWidget * parent,
 	QPushButton *okbtn = new QPushButton(QIconSet(pix), tr("&OK"), this);
 	QPushButton *cancelbtn = new QPushButton(tr("&Cancel"), this);
 
-
 	QObject::connect(okbtn, SIGNAL(clicked()), this, SLOT(okbtnPressed()));
 	QObject::connect(cancelbtn, SIGNAL(clicked()), this, SLOT(cancelbtnPressed()));
 
-	QGridLayout *grid = new QGridLayout(this, 2, 2);
+	QGridLayout *grid = new QGridLayout(this, 2, 2, 5, 10);
 
 	grid->addMultiCellWidget(desc, 0, 0, 0, 2);
 	grid->addWidget(l_yetlen, 1, 0);
@@ -741,7 +742,11 @@ void ChooseDescription::cancelbtnPressed()
 
 void ChooseDescription::updateYetLen(const QString& text)
 {
-	l_yetlen->setText(' ' + QString::number(GG_STATUS_DESCR_MAXSIZE - text.length()));
+	int length = text.length();
+	int count = (length - 10) / (GG_STATUS_DESCR_MAXSIZE - 10);
+	int rest = (count + 1) * (GG_STATUS_DESCR_MAXSIZE - 10) - length + 10;
+
+	l_yetlen->setText(' ' + QString::number(rest) + " (" + QString::number(count) + ")");
 }
 
 ImageWidget::ImageWidget(QWidget *parent)
