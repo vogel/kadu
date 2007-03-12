@@ -99,6 +99,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   Chat::messageReceived(Chat *) (Vogel)
 * zmiana sposobu modyfikacji statusu, klasa StatusChanger, zablokowanie mo¿liwo¶ci
   zmiany poprzez gadu->status(), dodano kadu->setOnline() i podobne (Vogel)
+* kosmetyka w hints (Vogel)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

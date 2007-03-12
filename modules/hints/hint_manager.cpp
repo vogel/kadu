@@ -496,9 +496,16 @@ void HintManager::setLayoutDirection()
 	kdebugf2();
 }
 
-void HintManager::newChat(Protocol * /*protocol*/, UserListElements senders, const QString &msg, time_t /*t*/)
+void HintManager::showNewMessage(const QString &configurationDirective, const QString &title,
+	const QString &contentTitle, UserListElements senders, const QString &msg)
 {
 	kdebugf();
+
+	const QFont font = config_file.readFontEntry("Hints", configurationDirective + "_font");
+	const QColor fgcolor = config_file.readColorEntry("Hints", configurationDirective + "_fgcolor");
+	const QColor bgcolor = config_file.readColorEntry("Hints", configurationDirective + "_bgcolor");
+	const unsigned int timeout = config_file.readUnsignedNumEntry("Hints",  configurationDirective + "_timeout");
+
 	if (config_file.readBoolEntry("Hints", "ShowContentMessage"))
 	{
 		unsigned int citeSign=config_file.readUnsignedNumEntry("Hints","CiteSign");
@@ -507,23 +514,21 @@ void HintManager::newChat(Protocol * /*protocol*/, UserListElements senders, con
 			cite = msg;
 		else
 			cite = msg.left(citeSign)+"...";
-		addHint(narg(tr("Chat with <b>%1</b><br/> <small>%2</small>"),
+		addHint(narg(tr(contentTitle),
 			QStyleSheet::escape(senders[0].altNick()), cite),
-			icons_manager->loadIcon("Message"),
-			config_file.readFontEntry("Hints", "HintNewChat_font"),
-			config_file.readColorEntry("Hints", "HintNewChat_fgcolor"),
-			config_file.readColorEntry("Hints", "HintNewChat_bgcolor"),
-			config_file.readUnsignedNumEntry("Hints", "HintNewChat_timeout"),
-			senders);
+			icons_manager->loadIcon("Message"), font, fgcolor, bgcolor, timeout, senders);
 	}
 	else
-		addHint(tr("Chat with <b>%1</b>").arg(QStyleSheet::escape(senders[0].altNick())),
-			icons_manager->loadIcon("Message"),
-			config_file.readFontEntry("Hints", "HintNewChat_font"),
-			config_file.readColorEntry("Hints", "HintNewChat_fgcolor"),
-			config_file.readColorEntry("Hints", "HintNewChat_bgcolor"),
-			config_file.readUnsignedNumEntry("Hints", "HintNewChat_timeout"),
-			senders);
+		addHint(tr(title).arg(QStyleSheet::escape(senders[0].altNick())),
+			icons_manager->loadIcon("Message"), font, fgcolor, bgcolor, timeout, senders);
+
+	kdebugf2();
+}
+
+void HintManager::newChat(Protocol * /*protocol*/, UserListElements senders, const QString &msg, time_t /*t*/)
+{
+	kdebugf();
+	showNewMessage("HintNewChat", "Chat with <b>%1</b>", "Chat with <b>%1</b><br/> <small>%2</small>", senders, msg);
 	kdebugf2();
 }
 
@@ -538,32 +543,7 @@ void HintManager::newMessage(Protocol * /*protocol*/, UserListElements senders, 
 	}
 
 	if (!chat->isActiveWindow())
-	{
-		if (config_file.readBoolEntry("Hints", "ShowContentMessage"))
-		{
-			unsigned int citeSign=config_file.readUnsignedNumEntry("Hints","CiteSign");
-			QString cite;
-			if (msg.length() <= citeSign)
-				cite = msg;
-			else
-				cite = msg.left(citeSign)+"...";
-			addHint(narg(tr("New message from <b>%1</b><br/> <small>%2</small>"),
-				QStyleSheet::escape(senders[0].altNick()), cite),
-				icons_manager->loadIcon("Message"),
-				config_file.readFontEntry("Hints", "HintNewMessage_font"),
-				config_file.readColorEntry("Hints", "HintNewMessage_fgcolor"),
-				config_file.readColorEntry("Hints", "HintNewMessage_bgcolor"),
-				config_file.readUnsignedNumEntry("Hints", "HintNewMessage_timeout"));
-		}
-		else
-			addHint(tr("New message from <b>%1</b>")
-				.arg(QStyleSheet::escape(senders[0].altNick())),
-				icons_manager->loadIcon("Message"),
-				config_file.readFontEntry("Hints", "HintNewMessage_font"),
-				config_file.readColorEntry("Hints", "HintNewMessage_fgcolor"),
-				config_file.readColorEntry("Hints", "HintNewMessage_bgcolor"),
-				config_file.readUnsignedNumEntry("Hints", "HintNewMessage_timeout"));
-	}
+		showNewMessage("HintNewMessage", "New message from <b>%1</b>", "New message from <b>%1</b><br/> <small>%2</small>", senders, msg);
 
 	kdebugf2();
 }

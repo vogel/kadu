@@ -35,6 +35,8 @@ class HintManager : public Notifier
 
 		void processButtonPress(const QString &buttonName, Hint *hint);
 
+		void showNewMessage(const QString &configurationDirective, const QString &title, const QString &contentTitle, UserListElements senders, const QString &msg);
+
 	private slots:
 		/**
 			minê³a sekunda: aktualizuje czasy wszystkich dymków
