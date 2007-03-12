@@ -436,6 +436,16 @@ void HintManager::addHint(const QString& text, const QPixmap& pixmap, const QFon
 	kdebugf2();
 }
 
+void HintManager::addHint(const QString &text, const QPixmap &pixmap, const QString &configurationDirective, const UserListElements &senders)
+{
+	const QFont font = config_file.readFontEntry("Hints", configurationDirective + "_font");
+	const QColor fgcolor = config_file.readColorEntry("Hints", configurationDirective + "_fgcolor");
+	const QColor bgcolor = config_file.readColorEntry("Hints", configurationDirective + "_bgcolor");
+	const unsigned int timeout = config_file.readUnsignedNumEntry("Hints",  configurationDirective + "_timeout");
+
+	addHint(text, pixmap, font, fgcolor, bgcolor, timeout, senders);
+}
+
 void HintManager::addHint(Notification *notification)
 {
 	kdebugf();
@@ -501,11 +511,6 @@ void HintManager::showNewMessage(const QString &configurationDirective, const QS
 {
 	kdebugf();
 
-	const QFont font = config_file.readFontEntry("Hints", configurationDirective + "_font");
-	const QColor fgcolor = config_file.readColorEntry("Hints", configurationDirective + "_fgcolor");
-	const QColor bgcolor = config_file.readColorEntry("Hints", configurationDirective + "_bgcolor");
-	const unsigned int timeout = config_file.readUnsignedNumEntry("Hints",  configurationDirective + "_timeout");
-
 	if (config_file.readBoolEntry("Hints", "ShowContentMessage"))
 	{
 		unsigned int citeSign=config_file.readUnsignedNumEntry("Hints","CiteSign");
@@ -516,11 +521,11 @@ void HintManager::showNewMessage(const QString &configurationDirective, const QS
 			cite = msg.left(citeSign)+"...";
 		addHint(narg(tr(contentTitle),
 			QStyleSheet::escape(senders[0].altNick()), cite),
-			icons_manager->loadIcon("Message"), font, fgcolor, bgcolor, timeout, senders);
+			icons_manager->loadIcon("Message"), configurationDirective, senders);
 	}
 	else
 		addHint(tr(title).arg(QStyleSheet::escape(senders[0].altNick())),
-			icons_manager->loadIcon("Message"), font, fgcolor, bgcolor, timeout, senders);
+			icons_manager->loadIcon("Message"), configurationDirective, senders);
 
 	kdebugf2();
 }
@@ -551,11 +556,7 @@ void HintManager::newMessage(Protocol * /*protocol*/, UserListElements senders, 
 void HintManager::connectionError(Protocol *, const QString &message)
 {
 	kdebugf();
-	addHint(tr("<b>Error:</b> %1").arg(message), icons_manager->loadIcon("Blocking"),
-		config_file.readFontEntry("Hints", "HintError_font"),
-		config_file.readColorEntry("Hints", "HintError_fgcolor"),
-		config_file.readColorEntry("Hints", "HintError_bgcolor"),
-		config_file.readUnsignedNumEntry("Hints", "HintError_timeout"));
+	addHint(tr("<b>Error:</b> %1").arg(message), icons_manager->loadIcon("Blocking"), "HintError");
 	kdebugf2();
 }
 
@@ -577,31 +578,19 @@ void HintManager::userStatusChanged(UserListElement ule, QString protocolName, c
 
 	if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
 		addHint(KaduParser::parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true),
-			ule.status(protocolName).pixmap(),
-			config_file.readFontEntry("Hints", "Hint"+stat+"_font"),
-			config_file.readColorEntry("Hints", "Hint"+stat+"_fgcolor"),
-			config_file.readColorEntry("Hints", "Hint"+stat+"_bgcolor"),
-			config_file.readUnsignedNumEntry("Hints", "Hint"+stat+"_timeout"), ulist);
+			ule.status(protocolName).pixmap(), "Hint"+stat, ulist);
 	else
 		if (ule.status(protocolName).hasDescription() && config_file.readBoolEntry("Hints","NotifyHintDescription"))
 			addHint(narg(tr("<b>%1</b> changed status to <i>%2</i><br/> <small>%3</small>"),
 				QStyleSheet::escape(ule.altNick()),
 				qApp->translate("@default", ule.status("Gadu").name().ascii()),
 				QStyleSheet::escape(ule.status("Gadu").description())),
-				ule.status(protocolName).pixmap(),
-				config_file.readFontEntry("Hints", "Hint"+stat+"D_font"),
-				config_file.readColorEntry("Hints", "Hint"+stat+"D_fgcolor"),
-				config_file.readColorEntry("Hints", "Hint"+stat+"D_bgcolor"),
-				config_file.readUnsignedNumEntry("Hints", "Hint"+stat+"D_timeout"), ulist);
+				ule.status(protocolName).pixmap(), "Hint"+stat+"D", ulist);
 		else
 			addHint(narg(tr("<b>%1</b> changed status to <i>%2</i>"),
 				QStyleSheet::escape(ule.altNick()),
 				qApp->translate("@default", ule.status(protocolName).name().ascii())),
-				ule.status(protocolName).pixmap(),
-				config_file.readFontEntry("Hints", "Hint"+stat+"_font"),
-				config_file.readColorEntry("Hints", "Hint"+stat+"_fgcolor"),
-				config_file.readColorEntry("Hints", "Hint"+stat+"_bgcolor"),
-				config_file.readUnsignedNumEntry("Hints", "Hint"+stat+"_timeout"), ulist);
+				ule.status(protocolName).pixmap(),"Hint"+stat, ulist);
 	kdebugf2();
 }
 
@@ -615,29 +604,17 @@ void HintManager::userChangedStatusToAvailable(const QString &protocolName, User
 
 	if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
 		addHint(KaduParser::parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true),
-			ule.status(protocolName).pixmap(),
-			config_file.readFontEntry("Hints", "HintOnline_font"),
-			config_file.readColorEntry("Hints", "HintOnline_fgcolor"),
-			config_file.readColorEntry("Hints", "HintOnline_bgcolor"),
-			config_file.readUnsignedNumEntry("Hints", "HintOnline_timeout"), ulist);
+			ule.status(protocolName).pixmap(),"HintOnline", ulist);
 	else
 		if (ule.status(protocolName).hasDescription() && config_file.readBoolEntry("Hints","NotifyHintDescription"))
 			addHint(narg(tr("<b>%1</b> is available<br/> <small>%2</small>"),
 				QStyleSheet::escape(ule.altNick()),
 				QStyleSheet::escape(ule.status(protocolName).description())),
-				ule.status(protocolName).pixmap(),
-				config_file.readFontEntry("Hints", "HintOnlineD_font"),
-				config_file.readColorEntry("Hints", "HintOnlineD_fgcolor"),
-				config_file.readColorEntry("Hints", "HintOnlineD_bgcolor"),
-				config_file.readUnsignedNumEntry("Hints", "HintOnlineD_timeout"), ulist);
+				ule.status(protocolName).pixmap(),"HintOnlineD", ulist);
 		else
 			addHint(tr("<b>%1</b> is available")
 				.arg(QStyleSheet::escape(ule.altNick())),
-				ule.status(protocolName).pixmap(),
-				config_file.readFontEntry("Hints", "HintOnline_font"),
-				config_file.readColorEntry("Hints", "HintOnline_fgcolor"),
-				config_file.readColorEntry("Hints", "HintOnline_bgcolor"),
-				config_file.readUnsignedNumEntry("Hints", "HintOnline_timeout"), ulist);
+				ule.status(protocolName).pixmap(),"HintOnline",ulist);
 	kdebugf2();
 }
 
@@ -651,29 +628,17 @@ void HintManager::userChangedStatusToBusy(const QString &protocolName, UserListE
 
 	if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
 		addHint(KaduParser::parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true),
-			ule.status(protocolName).pixmap(),
-			config_file.readFontEntry("Hints", "HintBusy_font"),
-			config_file.readColorEntry("Hints", "HintBusy_fgcolor"),
-			config_file.readColorEntry("Hints", "HintBusy_bgcolor"),
-			config_file.readUnsignedNumEntry("Hints", "HintBusy_timeout"), ulist);
+			ule.status(protocolName).pixmap(),"HintBusy", ulist);
 	else
 		if (ule.status(protocolName).hasDescription() && config_file.readBoolEntry("Hints","NotifyHintDescription"))
 			addHint(narg(tr("<b>%1</b> is busy<br/> <small>%2</small>"),
 				QStyleSheet::escape(ule.altNick()),
 				QStyleSheet::escape(ule.status(protocolName).description())),
-				ule.status(protocolName).pixmap(),
-				config_file.readFontEntry("Hints", "HintBusyD_font"),
-				config_file.readColorEntry("Hints", "HintBusyD_fgcolor"),
-				config_file.readColorEntry("Hints", "HintBusyD_bgcolor"),
-				config_file.readUnsignedNumEntry("Hints", "HintBusyD_timeout"), ulist);
+				ule.status(protocolName).pixmap(),"HintBusyD", ulist);
 		else
 			addHint(tr("<b>%1</b> is busy")
 				.arg(QStyleSheet::escape(ule.altNick())),
-				ule.status(protocolName).pixmap(),
-				config_file.readFontEntry("Hints", "HintBusy_font"),
-				config_file.readColorEntry("Hints", "HintBusy_fgcolor"),
-				config_file.readColorEntry("Hints", "HintBusy_bgcolor"),
-				config_file.readUnsignedNumEntry("Hints", "HintBusy_timeout"), ulist);
+				ule.status(protocolName).pixmap(),"HintBusy", ulist);
 	kdebugf2();
 }
 
@@ -687,29 +652,17 @@ void HintManager::userChangedStatusToInvisible(const QString &protocolName, User
 
 	if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
 		addHint(KaduParser::parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true),
-			ule.status(protocolName).pixmap(),
-			config_file.readFontEntry("Hints", "HintInvisible_font"),
-			config_file.readColorEntry("Hints", "HintInvisible_fgcolor"),
-			config_file.readColorEntry("Hints", "HintInvisible_bgcolor"),
-			config_file.readUnsignedNumEntry("Hints", "HintInvisible_timeout"), ulist);
+			ule.status(protocolName).pixmap(),"HintInvisible", ulist);
 	else
 		if (ule.status(protocolName).hasDescription() && config_file.readBoolEntry("Hints","NotifyHintDescription"))
 			addHint(narg(tr("<b>%1</b> is invisible<br/> <small>%2</small>"),
 				QStyleSheet::escape(ule.altNick()),
 				QStyleSheet::escape(ule.status("Gadu").description())),
-				ule.status(protocolName).pixmap(),
-				config_file.readFontEntry("Hints", "HintInvisibleD_font"),
-				config_file.readColorEntry("Hints", "HintInvisibleD_fgcolor"),
-				config_file.readColorEntry("Hints", "HintInvisibleD_bgcolor"),
-				config_file.readUnsignedNumEntry("Hints", "HintInvisibleD_timeout"), ulist);
+				ule.status(protocolName).pixmap(),"HintInvisibleD", ulist);
 		else
 			addHint(tr("<b>%1</b> is invisible")
 				.arg(QStyleSheet::escape(ule.altNick())),
-				ule.status(protocolName).pixmap(),
-				config_file.readFontEntry("Hints", "HintInvisible_font"),
-				config_file.readColorEntry("Hints", "HintInvisible_fgcolor"),
-				config_file.readColorEntry("Hints", "HintInvisible_bgcolor"),
-				config_file.readUnsignedNumEntry("Hints", "HintInvisible_timeout"), ulist);
+				ule.status(protocolName).pixmap(),"HintInvisible", ulist);
 	kdebugf2();
 }
 
@@ -724,29 +677,17 @@ void HintManager::userChangedStatusToNotAvailable(const QString &protocolName, U
 
 	if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
 		addHint(KaduParser::parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true),
-			ule.status(protocolName).pixmap(),
-			config_file.readFontEntry("Hints", "HintOffline_font"),
-			config_file.readColorEntry("Hints", "HintOffline_fgcolor"),
-			config_file.readColorEntry("Hints", "HintOffline_bgcolor"),
-			config_file.readUnsignedNumEntry("Hints", "HintOffline_timeout"), ulist);
+			ule.status(protocolName).pixmap(),"HintOffline", ulist);
 	else
 		if (ule.status(protocolName).hasDescription() && config_file.readBoolEntry("Hints","NotifyHintDescription"))
 			addHint(narg(tr("<b>%1</b> is not available<br/> <small>%2</small>"),
 				QStyleSheet::escape(ule.altNick()),
 				QStyleSheet::escape(ule.status(protocolName).description())),
-				ule.status(protocolName).pixmap(),
-				config_file.readFontEntry("Hints", "HintOfflineD_font"),
-				config_file.readColorEntry("Hints", "HintOfflineD_fgcolor"),
-				config_file.readColorEntry("Hints", "HintOfflineD_bgcolor"),
-				config_file.readUnsignedNumEntry("Hints", "HintOfflineD_timeout"), ulist);
+				ule.status(protocolName).pixmap(),"HintOfflineD", ulist);
 		else
 			addHint(tr("<b>%1</b> is not available")
 				.arg(QStyleSheet::escape(ule.altNick())),
-				ule.status(protocolName).pixmap(),
-				config_file.readFontEntry("Hints", "HintOffline_font"),
-				config_file.readColorEntry("Hints", "HintOffline_fgcolor"),
-				config_file.readColorEntry("Hints", "HintOffline_bgcolor"),
-				config_file.readUnsignedNumEntry("Hints", "HintOffline_timeout"), ulist);
+				ule.status(protocolName).pixmap(),"HintOffline", ulist);
 	kdebugf2();
 }
 

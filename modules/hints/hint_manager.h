@@ -123,6 +123,7 @@ class HintManager : public Notifier
 			pozosta³e funkcje pokazuj±ce dymki s± tylko opakowaniami na t± funkcjê
 		**/
 		void addHint(const QString &text, const QPixmap &pixmap, const QFont &font, const QColor &fgcolor, const QColor &bgcolor, unsigned int timeout, const UserListElements &senders = UserListElements());
+		void addHint(const QString &text, const QPixmap &pixmap, const QString &configurationDirective, const UserListElements &senders = UserListElements());
 		void addHint(Notification *notification);
 
 		/**
