@@ -145,6 +145,8 @@ class SoundManager : public Notifier
 		virtual void connectNotify(const char *signal);
 		virtual void disconnectNotify(const char *signal);
 
+		void playSound(const QString &soundName);
+
 	private slots:
 		void newChat(Protocol *protocol, UserListElements senders, const QString &msg, time_t t);
 		void newMessage(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool &grab);

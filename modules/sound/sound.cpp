@@ -335,209 +335,84 @@ void SoundManager::setMute(const bool& enable)
 	mute = enable;
 }
 
-void SoundManager::newChat(Protocol * /*protocol*/, UserListElements /*senders*/, const QString &/*msg*/, time_t /*t*/)
+void SoundManager::playSound(const QString &soundName)
 {
-	kdebugf();
 	if (isMuted())
 	{
 		kdebugmf(KDEBUG_FUNCTION_END, "end: muted\n");
 		return;
 	}
-	if (timeAfterLastSound()<500)
+
+	if (timeAfterLastSound() < 500)
 	{
 		kdebugmf(KDEBUG_FUNCTION_END, "end: too often, exiting\n");
 		return;
 	}
 
-	QString chatsound;
+	QString sound;
 	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
-		chatsound=config_file.readEntry("Sounds", "Chat_sound");
+		sound = config_file.readEntry("Sounds", soundName + "_sound");
 	else
-		chatsound=themes->themePath(config_file.readEntry("Sounds", "SoundTheme"))+themes->getThemeEntry("Chat");
-	if (QFile::exists(chatsound))
+		sound = themes->themePath(config_file.readEntry("Sounds", "SoundTheme")) + themes->getThemeEntry(soundName);
+
+	if (QFile::exists(sound))
 	{
-		play(chatsound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
+		play(sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0 * config_file.readDoubleNumEntry("Sounds", "SoundVolume") / 100);
 		lastsoundtime.restart();
 	}
 	else
-		fprintf(stderr, "file (%s) not found\n", chatsound.local8Bit().data());
+		fprintf(stderr, "file (%s) not found\n", sound.local8Bit().data());
+}
+
+void SoundManager::newChat(Protocol * /*protocol*/, UserListElements /*senders*/, const QString &/*msg*/, time_t /*t*/)
+{
+	kdebugf();
+	playSound("Chat");
 	kdebugf2();
 }
 
 void SoundManager::newMessage(Protocol * /*protocol*/, UserListElements senders, const QString &/*msg*/, time_t /*t*/, bool &/*grab*/)
 {
 	kdebugf();
-	if (isMuted())
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "end: muted\n");
-		return;
-	}
-	if (timeAfterLastSound()<500)
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "end: too often, exiting\n");
-		return;
-	}
-
 	if (config_file.readBoolEntry("Sounds", "PlaySoundChatInvisible") && chat_manager->findChat(senders)->isActiveWindow())
 		return;
 
-	QString messagesound;
-	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
-		messagesound = KaduParser::parse(config_file.readEntry("Sounds","Message_sound"), senders[0]);
-	else
-		messagesound = themes->themePath(config_file.readEntry("Sounds", "SoundTheme"))+themes->getThemeEntry("Message");
-	if (QFile::exists(messagesound))
-	{
-		play(messagesound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
-		lastsoundtime.restart();
-	}
-	else
-		fprintf(stderr, "file (%s) not found\n", messagesound.local8Bit().data());
+	playSound("Message");
 	kdebugf2();
 }
 
 void SoundManager::connectionError(Protocol *, const QString &/*message*/)
 {
 	kdebugf();
-	if (isMuted())
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "end: muted\n");
-		return;
-	}
-	if (timeAfterLastSound()<500)
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "end: too often, exiting\n");
-		return;
-	}
-
-	QString conn_error_sound;
-	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
-		conn_error_sound=config_file.readEntry("Sounds","ConnectionError_sound");
-	else
-		conn_error_sound=themes->themePath(config_file.readEntry("Sounds", "SoundTheme"))+themes->getThemeEntry("ConnectionError");
-	if (QFile::exists(conn_error_sound))
-	{
-		play(conn_error_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
-		lastsoundtime.restart();
-	}
-	else
-		fprintf(stderr, "file (%s) not found\n", conn_error_sound.local8Bit().data());
+	playSound("ConnectionError");
 	kdebugf2();
 }
 
 void SoundManager::userChangedStatusToAvailable(const QString &/*protocolName*/, UserListElement ule)
 {
 	kdebugf();
-	if (isMuted())
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "end: muted\n");
-		return;
-	}
-	if (timeAfterLastSound()<500)
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "end: too often, exiting\n");
-		return;
-	}
-
-	QString status_change_sound;
-	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
-		status_change_sound = KaduParser::parse(config_file.readEntry("Sounds","StatusAvailable_sound"), ule);
-	else
-		status_change_sound = themes->themePath(config_file.readEntry("Sounds", "SoundTheme"))+themes->getThemeEntry("StatusAvailable");
-	if (QFile::exists(status_change_sound))
-	{
-		play(status_change_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
-		lastsoundtime.restart();
-	}
-	else
-		fprintf(stderr, "file (%s) not found\n", status_change_sound.local8Bit().data());
+	playSound("StatusAvailable");
 	kdebugf2();
 }
 
 void SoundManager::userChangedStatusToBusy(const QString &/*protocolName*/, UserListElement ule)
 {
 	kdebugf();
-	if (isMuted())
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "end: muted\n");
-		return;
-	}
-	if (timeAfterLastSound()<500)
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "end: too often, exiting\n");
-		return;
-	}
-
-	QString status_change_sound;
-	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
-		status_change_sound = KaduParser::parse(config_file.readEntry("Sounds","StatusBusy_sound"), ule);
-	else
-		status_change_sound = themes->themePath(config_file.readEntry("Sounds", "SoundTheme"))+themes->getThemeEntry("StatusBusy");
-	if (QFile::exists(status_change_sound))
-	{
-		play(status_change_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
-		lastsoundtime.restart();
-	}
-	else
-		fprintf(stderr, "file (%s) not found\n", status_change_sound.local8Bit().data());
+	playSound("StatusBusy");
 	kdebugf2();
 }
 
 void SoundManager::userChangedStatusToInvisible(const QString &/*protocolName*/, UserListElement ule)
 {
 	kdebugf();
-	if (isMuted())
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "end: muted\n");
-		return;
-	}
-	if (timeAfterLastSound()<500)
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "end: too often, exiting\n");
-		return;
-	}
-
-	QString status_change_sound;
-	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
-		status_change_sound = KaduParser::parse(config_file.readEntry("Sounds","StatusInvisible_sound"), ule);
-	else
-		status_change_sound = themes->themePath(config_file.readEntry("Sounds", "SoundTheme"))+themes->getThemeEntry("StatusInvisible");
-	if (QFile::exists(status_change_sound))
-	{
-		play(status_change_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
-		lastsoundtime.restart();
-	}
-	else
-		fprintf(stderr, "file (%s) not found\n", status_change_sound.local8Bit().data());
+	playSound("StatusInvisible");
 	kdebugf2();
 }
 
 void SoundManager::userChangedStatusToNotAvailable(const QString &/*protocolName*/, UserListElement ule)
 {
 	kdebugf();
-	if (isMuted())
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "end: muted\n");
-		return;
-	}
-	if (timeAfterLastSound()<500)
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "end: too often, exiting\n");
-		return;
-	}
-
-	QString status_change_sound;
-	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
-		status_change_sound = KaduParser::parse(config_file.readEntry("Sounds","StatusNotAvailable_sound"), ule);
-	else
-		status_change_sound = themes->themePath(config_file.readEntry("Sounds", "SoundTheme"))+themes->getThemeEntry("StatusNotAvailable");
-	if (QFile::exists(status_change_sound))
-	{
-		play(status_change_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
-		lastsoundtime.restart();
-	}
-	else
-		fprintf(stderr, "file (%s) not found\n", status_change_sound.local8Bit().data());
+	playSound("StatusNotAvailable");
 	kdebugf2();
 }
 
