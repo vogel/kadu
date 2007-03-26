@@ -848,7 +848,7 @@ if test -z "$enable_pheaders"; then
 fi
 if test "$enable_pheaders" = "yes"; then
 	rm -f kadu-core/kadu-headers.h2
-	for i in kadu-config.h `ls -1 kadu-core | grep "\.h$" | grep -v "kadu-headers.h" | grep -v "pending_events.h"`; do
+	for i in kadu-config.h `ls -1 kadu-core | grep "\.h$" | grep -v "kadu-headers.h"`; do
 		echo "#include \"$i\"" >> kadu-core/kadu-headers.h2
 	done
 	grep -h '#include <q[^>]*>' kadu-core/*.cpp | sort -u >> kadu-core/kadu-headers.h2

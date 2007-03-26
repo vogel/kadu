@@ -782,6 +782,8 @@ include $(DEPS)/search.d
 include $(DEPS)/search_moc.d
 include $(DEPS)/status.d
 include $(DEPS)/status_moc.d
+include $(DEPS)/status_changer.d
+include $(DEPS)/status_changer_moc.d
 include $(DEPS)/tabbar.d
 include $(DEPS)/tabbar_moc.d
 include $(DEPS)/themes.d
