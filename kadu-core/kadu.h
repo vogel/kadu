@@ -246,6 +246,8 @@ class Kadu : public QWidget
 		void searchingForTrayPosition(QPoint &point);
 
 		void settingMainIconBlocked(bool &);
+
+		void removingUsers(UserListElements users);
 };
 
 class KaduSlots : public QObject

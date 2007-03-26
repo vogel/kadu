@@ -9,6 +9,8 @@
 
 #include "history_module.h"
 
+#include <qmessagebox.h>
+
 #include "action.h"
 #include "chat_manager.h"
 #include "config_dialog.h"
@@ -16,6 +18,7 @@
 #include "history.h"
 #include "history_dialog.h"
 #include "icons_manager.h"
+#include "kadu.h"
 #include "misc.h"
 #include "userbox.h"
 
@@ -94,6 +97,8 @@ HistoryModule::HistoryModule() : QObject(NULL, "history")
 		history, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
 	connect(chat_manager, SIGNAL(chatCreated(Chat *, time_t)),
 		this, SLOT(chatCreated(Chat*, time_t)));
+	connect(kadu, SIGNAL(removingUsers(UserListElements)),
+		this, SLOT(removingUsers(UserListElements)));
 
 	Action* history_action = new Action(icons_manager->loadIcon("History"),
 		tr("Show history"), "showHistoryAction", Action::TypeUser);
@@ -129,6 +134,8 @@ HistoryModule::~HistoryModule()
 		history, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
 	disconnect(chat_manager, SIGNAL(chatCreated(Chat *, time_t)),
 		this, SLOT(chatCreated(Chat *, time_t)));
+	disconnect(kadu, SIGNAL(removingUsers(UserListElements)),
+		this, SLOT(removingUsers(UserListElements)));
 
 	ConfigDialog::removeControl("General", "Show emoticons in history");
 	ConfigDialog::removeControl("ShortCuts", "View history");
@@ -314,6 +321,29 @@ void HistoryModule::userboxMenuPopup()
 		}
 	UserBox::userboxmenu->setItemEnabled(history_item, any_ok);
 	UserBox::userboxmenu->setItemEnabled(delete_history_item, any_ok);
+}
+
+void HistoryModule::removingUsers(UserListElements users)
+{
+	kdebugf();
+	if (QMessageBox::warning(kadu, "Kadu",
+		tr("The following users are selected to delete:\n%0\nDo you want to remove history as well?").arg(users.altNicks().join(", ")),
+		QMessageBox::Yes, QMessageBox::No) != QMessageBox::Yes)
+	{
+		return;
+	}
+	CONST_FOREACH(user, users)
+	{
+		QString fname;
+		if ((*user).usesProtocol("Gadu"))
+		{
+			fname = ggPath("history/") + (*user).ID("Gadu");
+			kdebugmf(KDEBUG_INFO, "deleting %s\n", (const char *)fname.local8Bit());
+			QFile::remove(fname);
+			QFile::remove(fname + ".idx");
+		}
+	}
+	kdebugf2();
 }
 
 HistoryModule* history_module = NULL;

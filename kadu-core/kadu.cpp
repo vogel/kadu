@@ -931,25 +931,13 @@ void Kadu::changeAppearance()
 void Kadu::removeUsers(UserListElements users)
 {
 	kdebugf();
-	switch (QMessageBox::warning(kadu, "Kadu",
+	if (QMessageBox::warning(kadu, "Kadu",
 		tr("Selected users:\n%0\nwill be deleted. Are you sure?").arg(users.altNicks().join(", ")),
-		tr("&Yes"),tr("Yes, with &history"), tr("&No"), 2, 2)){
-		case 2:
-			return;
-		case 1:
-			CONST_FOREACH(user, users)
-			{
-				QString fname;
-				// cut&paste z history.cpp, bez tego by by³o gorsze lub takie same kombinowanie
-				if ((*user).usesProtocol("Gadu")){
-					fname = ggPath("history/") + (*user).ID("Gadu");
-					kdebugmf(KDEBUG_INFO, "deleting %s\n", (const char *)fname.local8Bit());
-					QFile::remove(fname);
-					QFile::remove(fname + ".idx");
-				}
-			}
+		QMessageBox::Yes, QMessageBox::No) != QMessageBox::Yes)
+	{
+		return;
 	}
-
+	emit removingUsers(users);
 	userlist->removeUsers(users);
 	userlist->writeToConfig();
 	kdebugf2();

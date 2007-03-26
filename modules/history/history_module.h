@@ -32,6 +32,7 @@ class HistoryModule : public QObject
 		void viewHistory();
 		void deleteHistory();
 		void userboxMenuPopup();
+		void removingUsers(UserListElements users);
 
 	public:
 		HistoryModule();
