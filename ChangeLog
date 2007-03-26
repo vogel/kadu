@@ -102,6 +102,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * kosmetyka w hints (Vogel)
 * kosmetyka w sound (Vogel)
 * opcjonalne usuwanie historii podczas usuwania kontaktu przeniesione do modu³u "history" (adrian)
+* usuniêto nieu¿ywane i nieaktualne pending_events.cpp/h (adrian)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
