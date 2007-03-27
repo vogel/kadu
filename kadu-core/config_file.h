@@ -26,7 +26,7 @@ class XmlConfigFile
 		/**
 			Wczytuje plik konfiguracyjny z dysku
 		**/
-		void read();		
+		void read();
 		/**
 			Zapisuje na dysk zawarto¶æ konfiguracji
 		**/
@@ -35,7 +35,7 @@ class XmlConfigFile
 			Zapisuje do wybranego pliku kopiê konfiguracji
 		**/
 		void saveTo(const QString &filename);
-		
+
 		void makeBackup();
 
 		/**
@@ -104,12 +104,12 @@ class PlainConfigFile {
 		/**
 			Zapisuje na dysk zawarto¶æ konfiguracji
 		**/
-		void sync() const;		
+		void sync() const;
 		/**
 			Zwraca ca³± sekcjê "name"
 		**/
 		QMap<QString, QString>& getGroupSection(const QString& name);
-		
+
 		/**
 			Zwraca listê sekcji
 		**/
@@ -275,6 +275,12 @@ class PlainConfigFile {
 		**/
 		QPoint readPointEntry(const QString &group,const QString &name, const QPoint *def = 0L) const;
 		/**
+			Usuwa pole "name" z grupy "group"
+			@param group nazwa grupy
+			@param name nazwa pola w grupie
+		**/
+		void removeVariable(const QString &group, const QString &name);
+		/**
 			Tworzy pole "name" w grupie "group" je¶li ono nie istnieje
 			i ustawia warto¶æ na "value"
 			@param group nazwa grupy
@@ -374,7 +380,7 @@ class ConfigFile {
 		/**
 			Zapisuje na dysk zawarto¶æ konfiguracji
 		**/
-		void sync() const;		
+		void sync() const;
 		/**
 			Zapisuje warto¶æ "value" do grupy "group" w pole "name"
 			@param group nazwa grupy
@@ -535,6 +541,12 @@ class ConfigFile {
 			jest warto¶æ "def"
 		**/
 		QPoint readPointEntry(const QString &group,const QString &name, const QPoint *def = 0L) const;
+		/**
+			Usuwa pole "name" z grupy "group"
+			@param group nazwa grupy
+			@param name nazwa pola w grupie
+		**/
+		void removeVariable(const QString &group, const QString &name);
 		/**
 			Tworzy pole "name" w grupie "group" je¶li ono nie istnieje
 			i ustawia warto¶æ na "value"

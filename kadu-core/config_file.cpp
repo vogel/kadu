@@ -52,7 +52,7 @@ void XmlConfigFile::read()
 		else
 			kdebugm(KDEBUG_INFO, "config file (%s) not opened, looking for backup\n", file.name().local8Bit().data());
 	}
-	
+
 	if (fileOpened)
 	{
 		if (DomDocument.setContent(&file))
@@ -560,6 +560,18 @@ QFont PlainConfigFile::readFontEntry(const QString &group,const QString &name, c
 	return font;
 }
 
+void PlainConfigFile::removeVariable(const QString &group, const QString &name)
+{
+	if (activeGroupName != group)
+	{
+		activeGroupName = group;
+		activeGroup = &(groups[group]);
+	}
+
+	if (activeGroup->contains(name))
+		activeGroup->remove(name);
+}
+
 QPoint PlainConfigFile::readPointEntry(const QString &group,const QString &name, const QPoint *def) const
 {
 	QString string = getEntry(group, name);
@@ -888,6 +900,19 @@ QPoint ConfigFile::readPointEntry(const QString &group,const QString &name, cons
 	point.setX(x);
 	point.setY(y);
 	return point;
+}
+
+void ConfigFile::removeVariable(const QString &group, const QString &name)
+{
+	QDomElement root_elem = xml_config_file->rootElement();
+	QDomElement deprecated_elem = xml_config_file->accessElement(root_elem, "Deprecated");
+	QDomElement config_file_elem = xml_config_file->accessElementByProperty(
+		deprecated_elem, "ConfigFile", "name", filename.section("/", -1));
+	QDomElement group_elem = xml_config_file->accessElementByProperty(
+		config_file_elem, "Group", "name", group);
+	QDomElement entry_elem = xml_config_file->accessElementByProperty(
+		group_elem, "Entry", "name", name);
+	group_elem.removeChild(entry_elem);
 }
 
 void ConfigFile::addVariable(const QString &group, const QString &name, const QString &defvalue)
