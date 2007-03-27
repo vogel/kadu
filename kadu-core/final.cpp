@@ -21,7 +21,6 @@
 #include "gadu-private.cpp"
 #include "gadu_rich_text.cpp"
 #include "groups_manager.cpp"
-#include "history.cpp"
 #include "html_document.cpp"
 #include "http_client.cpp"
 #include "icons_manager.cpp"

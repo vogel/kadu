@@ -389,6 +389,11 @@ int main(int argc, char *argv[])
 #endif
 	kadu->setMainWindowIcon(pix);
 
+	QString path_ = ggPath(QString::null);
+	if (path_.endsWith("/kadu/") || path_.endsWith("/Kadu/")) // for profiles directory
+		mkdir(path_.left(path_.length() - 6).local8Bit().data(), 0700);
+	mkdir(path_.local8Bit().data(), 0700);
+
 	ModulesManager::initModule();
 
 	kadu->startupProcedure();

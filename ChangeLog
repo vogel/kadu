@@ -110,6 +110,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * sygna³y chatActivated(Chat *) w Chat i ChatManager, usuniêto sygna³ Chat::windowActivationChanged() (Vogel)
 * VRadioBox -> ComboBox w wyborze typu dymka w konfiguracji notify (Vogel)
 * zmiana nazw notyfikacji w module dcc (Vogel)
+* pliki history.cpp/h przeniesiono do modu³u "history" - zakoñczono wydzielanie (adrian)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

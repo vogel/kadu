@@ -180,7 +180,6 @@ gadu-private.cpp \
 gadu_images_manager.cpp \
 gadu_rich_text.cpp \
 groups_manager.cpp \
-history.cpp \
 html_document.cpp \
 http_client.cpp \
 icons_manager.cpp \
@@ -238,7 +237,6 @@ gadu-private.h \
 gadu_images_manager.h \
 gadu_rich_text.h \
 groups_manager.h \
-history.h \
 html_document.h \
 http_client.h \
 icons_manager.h \
@@ -286,7 +284,6 @@ moc/expimp_moc.cpp \
 moc/gadu_moc.cpp \
 moc/gadu-private_moc.cpp \
 moc/groups_manager_moc.cpp \
-moc/history_moc.cpp \
 moc/http_client_moc.cpp \
 moc/icons_manager_moc.cpp \
 moc/ignore_moc.cpp \
@@ -339,7 +336,6 @@ obj/gadu-private.$(OBJEXT) \
 obj/gadu_images_manager.$(OBJEXT) \
 obj/gadu_rich_text.$(OBJEXT) \
 obj/groups_manager.$(OBJEXT) \
-obj/history.$(OBJEXT) \
 obj/html_document.$(OBJEXT) \
 obj/http_client.$(OBJEXT) \
 obj/icons_manager.$(OBJEXT) \
@@ -386,7 +382,6 @@ obj/expimp_moc.$(OBJEXT) \
 obj/gadu_moc.$(OBJEXT) \
 obj/gadu-private_moc.$(OBJEXT) \
 obj/groups_manager_moc.$(OBJEXT) \
-obj/history_moc.$(OBJEXT) \
 obj/http_client_moc.$(OBJEXT) \
 obj/icons_manager_moc.$(OBJEXT) \
 obj/ignore_moc.$(OBJEXT) \
@@ -748,8 +743,6 @@ include $(DEPS)/gadu_images_manager.d
 include $(DEPS)/gadu_rich_text.d
 include $(DEPS)/groups_manager.d
 include $(DEPS)/groups_manager_moc.d
-include $(DEPS)/history.d
-include $(DEPS)/history_moc.d
 include $(DEPS)/html_document.d
 include $(DEPS)/http_client.d
 include $(DEPS)/http_client_moc.d

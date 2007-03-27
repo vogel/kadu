@@ -16,7 +16,7 @@
 #include "config_dialog.h"
 #include "config_file.h"
 #include "debug.h"
-#include "history.h"
+#include "../history/history.h"
 #include "icons_manager.h"
 #include "kadu.h"
 #include "modules.h"

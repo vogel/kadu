@@ -10,6 +10,8 @@
 #include "history_module.h"
 
 #include <qmessagebox.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 #include "action.h"
 #include "chat_manager.h"
@@ -70,6 +72,10 @@ HistorySlots* HistoryModule::historyslots;
 HistoryModule::HistoryModule() : QObject(NULL, "history")
 {
 	kdebugf();
+
+	QString path_ = ggPath(QString::null);
+	path_.append("/history/");
+	mkdir(path_.local8Bit().data(), 0700);
 
 	history = new HistoryManager(0, "history_manager");
 	historyslots = new HistorySlots(history, "history_slots");
