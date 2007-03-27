@@ -66,6 +66,12 @@ class Notifier : public QObject {
 			o danym zdarzeniu (na przyk³ad, musi zamkn±æ skojarzone ze zdarzeniem okno).
 		 **/
 		virtual void externalEvent(Notification *notification) = 0;
+
+		/**
+			Kopiuje konfiguracje jednego zdarzenia do drugiego.
+			U¿ywane przy przej¶ciu z 0.5 na 0.6 - po 0.6 zostanie usuniête.
+		 **/
+		virtual void copyConfiguration(const QString &fromEvent, const QString &toEvent) = 0;
 };
 
 class Notify : public QObject
@@ -139,7 +145,6 @@ class Notify : public QObject
 			"NewChat" - nowa rozmowa
 			"NewMessage" - nowa wiadomo¶æ
 			"ConnError" - b³±d po³±czenia
-			"StatusChanged" - zmiana statusu ogólna
 			"toAvailable" - u¿ytkownik zmieni³ status na "Dostêpny"
 			"toBusy" - u¿ytkownik zmieni³ status na "Zaraz wracam"
 			"toInvisible" - u¿ytkownik zmieni³ status na "Ukryty"
@@ -194,9 +199,6 @@ class Notify : public QObject
 
 		/* b³±d po³±czenia */
 		void connectionError(Protocol *protocol, const QString &message);
-
-		/* u¿ytkownik zmieni³ status */
-		void userStatusChanged(UserListElement elem, QString protocolName, const UserStatus &oldStatus);
 
 		/* u¿ytkownik zmieni³ status na "Dostêpny" */
 		void userChangedStatusToAvailable(const QString &protocolName, UserListElement);

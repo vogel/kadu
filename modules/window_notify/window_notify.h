@@ -19,6 +19,8 @@ class WindowNotify : public Notifier
 
 		virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
 
+		void copyConfiguration(const QString &fromEvent, const QString &toEvent) {}
+
 	public slots:
 		void newChat(Protocol *protocol, UserListElements senders, const QString &msg, time_t t);
 		void newMessage(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool &grab);
@@ -28,7 +30,6 @@ class WindowNotify : public Notifier
 		void userChangedStatusToInvisible(const QString &protocolName, UserListElement);
 		void userChangedStatusToNotAvailable(const QString &protocolName, UserListElement);
 
-		void userStatusChanged(UserListElement ule, QString protocolName, const UserStatus &oldStatus);
 		void message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
 		virtual void externalEvent(Notification *notification);
 };

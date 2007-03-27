@@ -37,6 +37,9 @@ class HintManager : public Notifier
 
 		void showNewMessage(const QString &configurationDirective, const QString &title, const QString &contentTitle, UserListElements senders, const QString &msg);
 
+		// TODO: usun±æ w 0.6
+		void realCopyConfiguration(const QString &fromHint, const QString &toHint);
+
 	private slots:
 		/**
 			minê³a sekunda: aktualizuje czasy wszystkich dymków
@@ -82,9 +85,6 @@ class HintManager : public Notifier
 		/* b³±d po³±czenia */
 		void connectionError(Protocol *protocol, const QString &message);
 
-		/* u¿ytkownik zmieni³ status */
-		void userStatusChanged(UserListElement ule, QString protocolName, const UserStatus &oldStatus);
-
 		/* u¿ytkownik zmieni³ status na "Dostêpny" */
 		void userChangedStatusToAvailable(const QString &protocolName, UserListElement);
 
@@ -113,6 +113,7 @@ class HintManager : public Notifier
 		 */
 		void message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
 		virtual void externalEvent(Notification *notification);
+		virtual void copyConfiguration(const QString &fromEvent, const QString &toEvent);
 /*********** koniec slotów dla notify *************/
 
 		/**

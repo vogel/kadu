@@ -134,7 +134,6 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 	s["NewChat"]=SLOT(newChat(Protocol *, UserListElements, const QString &, time_t));
 	s["NewMessage"]=SLOT(newMessage(Protocol *, UserListElements, const QString &, time_t, bool &));
 	s["ConnError"]=SLOT(connectionError(Protocol *, const QString &));
-	s["StatusChanged"] = SLOT(userStatusChanged(UserListElement, QString, const UserStatus &));
 	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const QString &, UserListElement));
 	s["toBusy"]=SLOT(userChangedStatusToBusy(const QString &, UserListElement));
 	s["toInvisible"]=SLOT(userChangedStatusToInvisible(const QString &, UserListElement));
@@ -559,40 +558,6 @@ void HintManager::connectionError(Protocol *, const QString &message)
 	kdebugf2();
 }
 
-void HintManager::userStatusChanged(UserListElement ule, QString protocolName, const UserStatus &/*oldStatus*/)
-{
-	kdebugf();
-
-	UserListElements ulist;
-	if (config_file.readBoolEntry("Hints", "OpenChatOnClick", false))
-		ulist.append(ule);
-
-	QString stat;
-	switch (ule.status(protocolName).status())
-	{
-		case Online: stat = "Online"; break;
-		case Busy: stat = "Busy"; break;
-		default: stat = "Offline";
-	}
-
-	if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
-		addHint(KaduParser::parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true),
-			ule.status(protocolName).pixmap(), "Hint"+stat, ulist);
-	else
-		if (ule.status(protocolName).hasDescription() && config_file.readBoolEntry("Hints","NotifyHintDescription"))
-			addHint(narg(tr("<b>%1</b> changed status to <i>%2</i><br/> <small>%3</small>"),
-				QStyleSheet::escape(ule.altNick()),
-				qApp->translate("@default", ule.status("Gadu").name().ascii()),
-				QStyleSheet::escape(ule.status("Gadu").description())),
-				ule.status(protocolName).pixmap(), "Hint"+stat+"D", ulist);
-		else
-			addHint(narg(tr("<b>%1</b> changed status to <i>%2</i>"),
-				QStyleSheet::escape(ule.altNick()),
-				qApp->translate("@default", ule.status(protocolName).name().ascii())),
-				ule.status(protocolName).pixmap(),"Hint"+stat, ulist);
-	kdebugf2();
-}
-
 void HintManager::userChangedStatusToAvailable(const QString &protocolName, UserListElement ule)
 {
 	kdebugf();
@@ -798,6 +763,18 @@ void HintManager::externalEvent(Notification *notification)
 	addHint(notification);
 
 	kdebugf2();
+}
+
+void HintManager::copyConfiguration(const QString &fromEvent, const QString &toEvent)
+{
+}
+
+void HintManager::realCopyConfiguration(const QString &fromHint, const QString &toHint)
+{
+	config_file.writeEntry("Hints", toHint + "_font", config_file.readFontEntry("Hints", fromHint + "_font"));
+	config_file.writeEntry("Hints", toHint + "_fgcolor", config_file.readColorEntry("Hints", fromHint + "_fgcolor"));
+	config_file.writeEntry("Hints", toHint + "_bgcolor", config_file.readColorEntry("Hints", fromHint + "_bgcolor"));
+	config_file.writeEntry("Hints", toHint + "_timeout", (int) config_file.readUnsignedNumEntry("Hints",  fromHint + "_timeout"));
 }
 
 HintManager *hint_manager=NULL;

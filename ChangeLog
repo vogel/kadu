@@ -112,6 +112,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zmiana nazw notyfikacji w module dcc (Vogel)
 * pliki history.cpp/h przeniesiono do modu³u "history" - zakoñczono wydzielanie (adrian)
 * hints: usuniêto podzia³ na zmianê statusu w zale¿no¶ci od istnienia opisu (Vogel)
+* notify: usuniêto nadmierny sygna³ StatusChanged (zast±piony przez 4 inne) (Vogel)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

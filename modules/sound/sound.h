@@ -147,6 +147,8 @@ class SoundManager : public Notifier
 
 		void playSound(const QString &soundName);
 
+		void copyConfiguration(const QString &fromEvent, const QString &toEvent) {}
+
 	private slots:
 		void newChat(Protocol *protocol, UserListElements senders, const QString &msg, time_t t);
 		void newMessage(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool &grab);

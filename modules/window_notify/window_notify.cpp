@@ -122,7 +122,6 @@ WindowNotify::WindowNotify(QObject *parent, const char *name) : Notifier(parent,
 	s["toInvisible"]=SLOT(userChangedStatusToInvisible(const QString &, UserListElement));
 	s["toNotAvailable"]=SLOT(userChangedStatusToNotAvailable(const QString &, UserListElement));
 
-	s["StatusChanged"]=SLOT(userStatusChanged(UserListElement, QString, const UserStatus &));
 	s["Message"]=SLOT(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *));
 
 	config_file.addVariable("Notify", "NewChat_Window", false);
@@ -166,17 +165,6 @@ void WindowNotify::connectionError(Protocol *, const QString &message)
 {
 	kdebugf();
 	MessageBox::msg(tr("<b>Error:</b> %1").arg(message));
-	kdebugf2();
-}
-
-void WindowNotify::userStatusChanged(UserListElement ule, QString /*protocolName*/, const UserStatus &oldStatus)
-{
-	kdebugf();
-
-	MessageBox::msg(narg(tr("<b>%1</b> changed status from <i>%2</i> to <i>%3</i>"),
-					ule.altNick(),
-					qApp->translate("@default", oldStatus.name().ascii()),
-					qApp->translate("@default", ule.status("Gadu").name().ascii())));
 	kdebugf2();
 }
 

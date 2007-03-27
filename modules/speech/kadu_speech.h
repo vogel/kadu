@@ -20,6 +20,9 @@ class SpeechSlots : public Notifier
 	public:
 		SpeechSlots(QObject *parent=0, const char *name=0);
 		~SpeechSlots();
+
+		void copyConfiguration(const QString &fromEvent, const QString &toEvent) {}
+
 	private slots:
 		void newChat(Protocol *protocol, UserListElements senders, const QString &msg, time_t t);
 		void newMessage(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool &grab);

@@ -40,13 +40,12 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name),
 	notifiers(), notifySignals(), eventNames(), notifyEvents(), strs()
 {
 	kdebugf();
-	eventNames<<"ConnError"<<"NewChat"<<"NewMessage"<<"StatusChanged"<<"toAvailable"<<
+	eventNames<<"ConnError"<<"NewChat"<<"NewMessage"<<"toAvailable"<<
 				"toBusy"<<"toInvisible"<<"toNotAvailable"<<"UserBoxChangeToolTip"<<"Message";
 
 	notifySignals["NewChat"]=			QString(SIGNAL(newChat(Protocol *, UserListElements, const QString &, time_t)));
 	notifySignals["NewMessage"]=		QString(SIGNAL(newMessage(Protocol *, UserListElements, const QString &, time_t, bool &)));
 	notifySignals["ConnError"]=			QString(SIGNAL(connectionError(Protocol *, const QString &)));
-	notifySignals["StatusChanged"]=		QString(SIGNAL(userStatusChanged(UserListElement, QString, const UserStatus &)));
 	notifySignals["toAvailable"]=		QString(SIGNAL(userChangedStatusToAvailable(const QString &, UserListElement)));
 	notifySignals["toBusy"]=			QString(SIGNAL(userChangedStatusToBusy(const QString &, UserListElement)));
 	notifySignals["toInvisible"]=		QString(SIGNAL(userChangedStatusToInvisible(const QString &, UserListElement)));
@@ -63,7 +62,6 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name),
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "Connection error"));
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "New chat"));
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "New message"));
-	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "User is changing status"));
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "User changed status to \"Available\""));
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "User changed status to \"Busy\""));
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "User changed status to \"Invisible\""));
@@ -163,7 +161,7 @@ Notify::~Notify()
 
 	if (!notifiers.isEmpty())
 	{
-		kdebugm(KDEBUG_WARNING, "WARNING: not unregistered notifiers found! (%lu)\n", notifiers.size());
+		kdebugm(KDEBUG_WARNING, "WARNING: not unregistered notifiers found! (%u)\n", notifiers.size());
 		QValueList<QString> notifierNames = notifiers.keys();
 		CONST_FOREACH(name, notifierNames)
 			unregisterNotifier(*name);
@@ -174,7 +172,6 @@ Notify::~Notify()
 	ConfigDialog::removeControl("Notify", "Connection error");
 	ConfigDialog::removeControl("Notify", "New chat");
 	ConfigDialog::removeControl("Notify", "New message");
-	ConfigDialog::removeControl("Notify", "User is changing status");
 	ConfigDialog::removeControl("Notify", "User changed status to \"Available\"");
 	ConfigDialog::removeControl("Notify", "User changed status to \"Busy\"");
 	ConfigDialog::removeControl("Notify", "User changed status to \"Invisible\"");
@@ -219,8 +216,6 @@ void Notify::statusChanged(UserListElement elem, QString protocolName,
 		if (elem.status("Gadu").isOnline() || elem.status("Gadu").isBusy())
 			if (oldStatus.isOnline() || oldStatus.isBusy())
 				return;
-
-	emit userStatusChanged(elem, protocolName, oldStatus);
 
 	switch (elem.status("Gadu").status())
 	{
@@ -438,6 +433,24 @@ void Notify::registerNotifier(const QString &name, Notifier *notifier,
 		unregisterNotifier(name);
 	}
 	notifiers[name] = NotifierSlots(notifier, notifierSlots);
+
+	// TODO: remove after 0.6 release
+	if (config_file.readBoolEntry("Notify", "StatusChanged_" + name, false))
+	{
+		QStringList addToMe;
+		addToMe << "toAvailable" << "toBusy" << "toInvisible" << "toNotAvailable";
+
+		CONST_FOREACH(i, addToMe)
+		{
+			if (!config_file.readBoolEntry("Notify", *i + '_' + name) && notifierSlots.contains(*i))
+			{
+				notifier->copyConfiguration("StatusChanged", *i);
+				config_file.writeEntry("Notify", *i + '_' + name, true);
+			}
+		}
+
+		config_file.removeVariable("Notify", "StatusChanged_" + name);
+	}
 
 	CONST_FOREACH(i, notifySignals)
 		if (config_file.readBoolEntry("Notify", i.key() + '_' + name) && notifierSlots.contains(i.key()))
