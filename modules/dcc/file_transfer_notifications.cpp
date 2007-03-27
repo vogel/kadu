@@ -23,7 +23,7 @@
 
 NewFileTransferNotification::NewFileTransferNotification(FileTransfer *ft, DccSocket *socket, const UserListElements &userListElements,
 	FileTransfer::StartType startType)
-	: Notification("fileTransferIncomingFile", "SendFile", userListElements), ft(ft), socket(socket), fileName("")
+	: Notification("FileTransfer/IncomingFile", "SendFile", userListElements), ft(ft), socket(socket), fileName("")
 {
 	if (startType == FileTransfer::StartRestore)
 	{

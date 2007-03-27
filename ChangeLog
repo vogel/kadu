@@ -109,6 +109,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * parametry UserListElements -> const UserListElements & w klasie Chat i ChatManager (Vogel)
 * sygna³y chatActivated(Chat *) w Chat i ChatManager, usuniêto sygna³ Chat::windowActivationChanged() (Vogel)
 * VRadioBox -> ComboBox w wyborze typu dymka w konfiguracji notify (Vogel)
+* zmiana nazw notyfikacji w module dcc (Vogel)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
