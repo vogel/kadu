@@ -159,7 +159,7 @@ class ChatManager : public QObject
 			\param time time of pending message that created a chat or 0 if not applicable
 			\return zwracany jest numer otwartego okna
 		**/
-		int openChat(Protocol *initialProtocol, UserListElements users, time_t time = 0);
+		int openChat(Protocol *initialProtocol, const UserListElements &users, time_t time = 0);
 
 		/**
 			\fn void openPendingMsgs(UserListElements users)
@@ -253,6 +253,8 @@ class ChatManager : public QObject
 			\param chat nowe okno chat
 		**/
 		void chatCreated(Chat *chat);
+
+		void chatActivated(Chat *);
 
 		/**
 			\fn void chatCreated(const UserGroup *group)

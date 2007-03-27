@@ -38,7 +38,7 @@
 #include "search.h"
 #include "userbox.h"
 
-Chat::Chat(Protocol *initialProtocol, UserListElements usrs, QWidget* parent, const char* name)
+Chat::Chat(Protocol *initialProtocol, const UserListElements &usrs, QWidget* parent, const char* name)
 	: QMainWindow(parent, name, Qt::WDestructiveClose), ChatMessages(), CurrentProtocol(initialProtocol),
 	Users(new UserGroup(usrs)),
 	index(0), title_buffer(), title_timer(new QTimer(this, "title_timer")), actcolor(), Edit(0),
@@ -541,9 +541,10 @@ void Chat::windowActivationChange(bool b)
 
 		if (title_timer->isActive())
 			title_timer->stop();
-	}
 
-	emit windowActivationChanged(b, Users);
+		if (!b)
+			emit chatActivated(this);
+	}
 }
 
 bool Chat::keyPressEventHandled(QKeyEvent *e)

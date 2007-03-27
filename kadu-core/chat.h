@@ -187,7 +187,7 @@ class Chat : public QMainWindow
 			\param parent rodzic okna
 			\param name nazwa obiektu
 		**/
-		Chat(Protocol *initialProtocol, UserListElements usrs, QWidget* parent = 0, const char* name = 0);
+		Chat(Protocol *initialProtocol, const UserListElements &usrs, QWidget* parent = 0, const char* name = 0);
 
 		/**
 			\fn ~Chat()
@@ -520,12 +520,7 @@ class Chat : public QMainWindow
 		**/
 		void fileDropped(const UserGroup *users, const QString &fileName);
 
-		/**
-			\fn void windowActivationChanged(bool b, const UserGroup* users)
-			\param b ??
-			\param users lista u¿ytkowników
-		**/
-		void windowActivationChanged(bool b, const UserGroup *users);
+		void chatActivated(Chat *);
 
 		void messageReceived(Chat *);
 };

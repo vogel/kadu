@@ -571,7 +571,7 @@ Chat* ChatManager::findChat(UserListElements users) const
 	return NULL;
 }
 
-int ChatManager::openChat(Protocol *initialProtocol, UserListElements users, time_t time)
+int ChatManager::openChat(Protocol *initialProtocol, const UserListElements &users, time_t time)
 {
 	kdebugf();
 	unsigned int i = 0;
@@ -606,6 +606,7 @@ int ChatManager::openChat(Protocol *initialProtocol, UserListElements users, tim
 	chat->refreshTitle();
 	connect(chat, SIGNAL(messageSentAndConfirmed(UserListElements, const QString&)),
 		this, SIGNAL(messageSentAndConfirmed(UserListElements, const QString&)));
+	connect(chat, SIGNAL(chatActivated(Chat *)), this, SIGNAL(chatActivated(Chat *)));
 
 	const UserGroup *group = chat->users();
 	QRect geometry = getChatProperty(group, "Geometry").toRect();
@@ -685,6 +686,7 @@ int ChatManager::openChat(Protocol *initialProtocol, UserListElements users, tim
 	emit chatCreated(chat);
 	emit chatCreated(chat, time);
 	emit chatOpen(chat);
+	emit chatActivated(chat);
 	kdebugf2();
 	return Chats.count() - 1;
 }
