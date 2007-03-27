@@ -195,7 +195,7 @@ void SearchResult::setData(const char *uin, const char *first, const char *last,
 }
 
 SearchRecord::SearchRecord() :
-	Seq(0), FromUin(0), Uin(), FirstName(), LastName(), NickName(), City(), 
+	Seq(0), FromUin(0), Uin(), FirstName(), LastName(), NickName(), City(),
 	BirthYearFrom(), BirthYearTo(), Gender(0), Active(false), IgnoreResults(false)
 {
 	kdebugf();
@@ -2301,23 +2301,26 @@ GaduStatus &GaduStatus::operator = (const UserStatus &copyMe)
 
 QPixmap GaduStatus::pixmap(eUserStatus stat, bool hasDescription, bool mobile) const
 {
-//	kdebugf();
+	return icons_manager->loadIcon(pixmapName(stat, hasDescription, mobile));
+}
 
+QString GaduStatus::pixmapName(eUserStatus stat, bool hasDescription, bool mobile) const
+{
 	QString add = (hasDescription ? "WithDescription" : QString::null);
 	add.append(mobile ? (!hasDescription) ? "WithMobile" : "Mobile" : "");
 
 	switch (stat)
 	{
 		case Online:
-			return icons_manager->loadIcon(QString("Online").append(add));
+			return QString("Online").append(add);
 		case Busy:
-			return icons_manager->loadIcon(QString("Busy").append(add));
+			return QString("Busy").append(add);
 		case Invisible:
-			return icons_manager->loadIcon(QString("Invisible").append(add));
+			return QString("Invisible").append(add);
 		case Blocking:
-			return icons_manager->loadIcon(QString("Blocking"));
+			return QString("Blocking");
 		default:
-			return icons_manager->loadIcon(QString("Offline").append(add));
+			return QString("Offline").append(add);
 	}
 }
 

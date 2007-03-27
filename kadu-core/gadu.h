@@ -64,6 +64,7 @@ class GaduStatus : public UserStatus
 		GaduStatus &operator = (const UserStatus &copyMe);
 
 		virtual QPixmap pixmap(eUserStatus status, bool has_desc, bool mobile) const;
+		virtual QString pixmapName(eUserStatus status, bool has_desc, bool mobile) const;
 
 		int toStatusNumber() const;
 		static int toStatusNumber(eUserStatus status, bool has_desc);

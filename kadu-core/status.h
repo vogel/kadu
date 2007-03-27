@@ -187,6 +187,14 @@ class UserStatus : public QObject
 		virtual QPixmap pixmap(bool mobile = false) const;
 
 		/**
+			\fn virtual QString pixmap(bool mobile = false) const
+			Zwraca nazwê ikonki reprezentuj±cej ten status.
+			\param mobile informuje czy ikona ma zawieraæ element telefonu komórkowego. Domy¶lnie FALSE.
+			\return nazwa pixmapy reprezentuj±cej ikonê.
+		**/
+		virtual QString pixmapName(bool mobile = false) const;
+
+		/**
 			\fn virtual QPixmap pixmap(const UserStatus &stat, bool mobile = false) const
 			Zwraca ikonê reprezentuj±c± dany status.
 			\param stat status którego ikonê nale¿y zwróciæ
@@ -194,6 +202,15 @@ class UserStatus : public QObject
 			\return pixmapê reprezentuj±c± ikonê.
 		**/
 		virtual QPixmap pixmap(const UserStatus &, bool mobile = false) const;
+
+		/**
+			\fn virtual QString pixmap(bool mobile = false) const
+			Zwraca nazwê ikonki reprezentuj±cej dany status.
+			\param stat status którego ikonê nale¿y zwróciæ
+			\param mobile informuje czy ikona ma zawieraæ element telefonu komórkowego. Domy¶lnie FALSE.
+			\return nazwa pixmapy reprezentuj±cej ikonê.
+		**/
+		virtual QString pixmapName(const UserStatus &, bool mobile = false) const;
 
 		/**
 			\fn virtual QPixmap pixmap(eUserStatus stat, bool has_desc, bool mobile = false) const
@@ -204,6 +221,16 @@ class UserStatus : public QObject
 			\return pixmapê reprezentuj±c± ikonê.
 		**/
 		virtual QPixmap pixmap(eUserStatus stat, bool has_desc, bool mobile = false) const;
+
+		/**
+			\fn virtual QString pixmap(bool mobile = false) const
+			Zwraca nazwê ikonki reprezentuj±c± dany status.
+			\param stat status w postaci enumeracyjnej którego ikonê nale¿y zwróciæ
+			\param has_desc informuje, czy jest to odmiana statusu z opisem.
+			\param mobile informuje czy ikona ma zawieraæ element telefonu komórkowego. Domy¶lnie FALSE.
+			\return nazwa pixmapy reprezentuj±cej ikonê.
+		**/
+		virtual QString pixmapName(eUserStatus stat, bool has_desc, bool mobile = false) const;
 
 		/**
 			\fn static eUserStatus fromString(const QString& stat)

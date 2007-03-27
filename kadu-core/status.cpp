@@ -50,20 +50,33 @@ UserStatus *UserStatus::copy() const
 
 QPixmap UserStatus::pixmap(bool mobile) const
 {
-//	kdebugf();
 	return pixmap(Stat, hasDescription(), mobile);
+}
+
+QString UserStatus::pixmapName(bool mobile) const
+{
+	return pixmapName(Stat, hasDescription(), mobile);
 }
 
 QPixmap UserStatus::pixmap(const UserStatus &stat, bool mobile) const
 {
-//	kdebugf();
 	return pixmap(stat.status(), stat.hasDescription(), mobile);
+}
+
+QString UserStatus::pixmapName(const UserStatus &stat, bool mobile) const
+{
+	return pixmapName(stat.status(), stat.hasDescription(), mobile);
 }
 
 QPixmap UserStatus::pixmap(eUserStatus /*stat*/, bool /*desc*/, bool /*mobile*/) const
 {
-//	kdebugf();
 	static QPixmap result;
+	return result;
+}
+
+QString UserStatus::pixmapName(eUserStatus /*stat*/, bool /*desc*/, bool /*mobile*/) const
+{
+	static QString result;
 	return result;
 }
 
