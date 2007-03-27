@@ -80,7 +80,7 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 					tr("Invisible")<<tr("Invisible (d.)")<<tr("Offline")<<tr("Offline (d.)")<<
 					tr("Blocking")<<tr("New chat")<<tr("New message in chat")<<tr("Error")<<tr("Other message");
 			values2<<"0"<<"1"<<"2"<<"3"<<"4"<<"5"<<"6"<<"7"<<"8"<<"9"<<"10"<<"11"<<"12";
-			ConfigDialog::addVRadioGroup("Hints", "center", QT_TRANSLATE_NOOP("@default", "Hint type"), "LastSelected", options2, values2, "0");
+			ConfigDialog::addComboBox("Hints", "center", QT_TRANSLATE_NOOP("@default", "Hint type"), "LastSelected", options2, values2, "0");
 
 			ConfigDialog::addVBox("Hints", "center", "bottom");
 				ConfigDialog::addLabel("Hints", "bottom", 0, "stretcher2");

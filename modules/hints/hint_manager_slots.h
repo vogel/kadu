@@ -12,7 +12,7 @@ class HintProperties
 {
 	public:
 		static HintProperties fromString(const QString &oldstring);
-	
+
 		QFont font;
 		QColor fgcolor;
 		QColor bgcolor;
@@ -31,23 +31,23 @@ class HintManagerSlots : public QObject
 		void onCreateTabHints();
 		void onApplyTabHints();
 		void onCloseTabHints();
-		
+
 		void toggled_ShowMessageContent(bool);
 		void toggled_UseNotifySyntax(bool);
 		void toggled_UseOwnPosition(bool);
 		void toggled_SetAll(bool);
-		
-		void clicked_HintType(int id);
+
+		void activated_HintType(int id);
 		void clicked_ChangeFont();
 		void clicked_ChangeFgColor();
 		void clicked_ChangeBgColor();
-		
+
 		void changed_Timeout(int value);
 
 	private:
 		QStringList config_opts_prefixes;
 		QString currentOptionPrefix;
-		QMap<QString, HintProperties> config_hint_properties;
+		QMap<QString, HintProperties> hintProperties;
 };
 
 #endif

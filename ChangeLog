@@ -107,7 +107,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodano metodê removeVariable(const QString &group, const QString &name) w klasie ConfigFile (Vogel)
 * dodano mo¿liwo¶æ sortowania UserListElements (operator <) (Vogel)
 * parametry UserListElements -> const UserListElements & w klasie Chat i ChatManager (Vogel)
-* sygna³y chatActivated(Chat *) w Chat i ChatManager, usuniêto sygna³ Chat::windowActivationChanged()
+* sygna³y chatActivated(Chat *) w Chat i ChatManager, usuniêto sygna³ Chat::windowActivationChanged() (Vogel)
+* VRadioBox -> ComboBox w wyborze typu dymka w konfiguracji notify (Vogel)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
