@@ -76,10 +76,9 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 		ConfigDialog::addHBox("Hints", "Parameters", "center");
 			QStringList options2;
 			QStringList values2;
-			options2<<tr("Online")<<tr("Online (d.)")<<tr("Busy")<<tr("Busy (d.)")<<
-					tr("Invisible")<<tr("Invisible (d.)")<<tr("Offline")<<tr("Offline (d.)")<<
+			options2<<tr("Online")<<tr("Busy")<<tr("Invisible")<<tr("Offline")<<
 					tr("Blocking")<<tr("New chat")<<tr("New message in chat")<<tr("Error")<<tr("Other message");
-			values2<<"0"<<"1"<<"2"<<"3"<<"4"<<"5"<<"6"<<"7"<<"8"<<"9"<<"10"<<"11"<<"12";
+			values2<<"0"<<"1"<<"2"<<"3"<<"4"<<"5"<<"6"<<"7"<<"8";
 			ConfigDialog::addComboBox("Hints", "center", QT_TRANSLATE_NOOP("@default", "Hint type"), "LastSelected", options2, values2, "0");
 
 			ConfigDialog::addVBox("Hints", "center", "bottom");
@@ -610,7 +609,7 @@ void HintManager::userChangedStatusToAvailable(const QString &protocolName, User
 			addHint(narg(tr("<b>%1</b> is available<br/> <small>%2</small>"),
 				QStyleSheet::escape(ule.altNick()),
 				QStyleSheet::escape(ule.status(protocolName).description())),
-				ule.status(protocolName).pixmap(),"HintOnlineD", ulist);
+				ule.status(protocolName).pixmap(),"HintOnline", ulist);
 		else
 			addHint(tr("<b>%1</b> is available")
 				.arg(QStyleSheet::escape(ule.altNick())),
@@ -634,7 +633,7 @@ void HintManager::userChangedStatusToBusy(const QString &protocolName, UserListE
 			addHint(narg(tr("<b>%1</b> is busy<br/> <small>%2</small>"),
 				QStyleSheet::escape(ule.altNick()),
 				QStyleSheet::escape(ule.status(protocolName).description())),
-				ule.status(protocolName).pixmap(),"HintBusyD", ulist);
+				ule.status(protocolName).pixmap(),"HintBusy", ulist);
 		else
 			addHint(tr("<b>%1</b> is busy")
 				.arg(QStyleSheet::escape(ule.altNick())),
@@ -658,7 +657,7 @@ void HintManager::userChangedStatusToInvisible(const QString &protocolName, User
 			addHint(narg(tr("<b>%1</b> is invisible<br/> <small>%2</small>"),
 				QStyleSheet::escape(ule.altNick()),
 				QStyleSheet::escape(ule.status("Gadu").description())),
-				ule.status(protocolName).pixmap(),"HintInvisibleD", ulist);
+				ule.status(protocolName).pixmap(),"HintInvisible", ulist);
 		else
 			addHint(tr("<b>%1</b> is invisible")
 				.arg(QStyleSheet::escape(ule.altNick())),
@@ -683,7 +682,7 @@ void HintManager::userChangedStatusToNotAvailable(const QString &protocolName, U
 			addHint(narg(tr("<b>%1</b> is not available<br/> <small>%2</small>"),
 				QStyleSheet::escape(ule.altNick()),
 				QStyleSheet::escape(ule.status(protocolName).description())),
-				ule.status(protocolName).pixmap(),"HintOfflineD", ulist);
+				ule.status(protocolName).pixmap(),"HintOffline", ulist);
 		else
 			addHint(tr("<b>%1</b> is not available")
 				.arg(QStyleSheet::escape(ule.altNick())),
