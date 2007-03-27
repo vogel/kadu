@@ -348,3 +348,22 @@ QStringList UserListElements::altNicks() const
 		nicks.append((*user).altNick());
 	return nicks;
 }
+
+bool UserListElements::operator < (const UserListElements &compareTo) const
+{
+	if (count() < compareTo.count())
+		return true;
+
+	if (count() > compareTo.count())
+		return false;
+
+	for (unsigned int i = 0; i < count(); i++)
+	{
+		if (*at(i) < *compareTo.at(i))
+			return true;
+		if (*compareTo.at(i) < *at(i))
+			return false;
+	}
+
+	return false;
+}

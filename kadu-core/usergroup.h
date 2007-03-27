@@ -220,7 +220,7 @@ class UserGroup : public QObject
 		void resize(int size);
 
 		QStringList altNicks() const;
-		
+
 		void clear();
 	public slots:
 		/**
@@ -484,6 +484,8 @@ class UserListElements : public QValueList<UserListElement>
 		bool contains(UserListElement e) const { return QValueList<UserListElement>::contains(e) > 0;}
 
 		QStringList altNicks() const;
+
+		bool operator < (const UserListElements &) const;
 };
 
 #endif

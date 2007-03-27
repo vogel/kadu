@@ -105,6 +105,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniêto nieu¿ywane i nieaktualne pending_events.cpp/h (adrian)
 * dodano metody pixmapName() w klasie Status
 * dodano metodê removeVariable(const QString &group, const QString &name) w klasie ConfigFile
+* dodano mo¿liwo¶æ sortowania UserListElements (operator <)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
