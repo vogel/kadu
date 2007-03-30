@@ -14,9 +14,10 @@
 #include "gadu.h"
 #include "hint.h"
 #include "hint_manager_slots.h"
+#include "userbox.h"
 #include "../notify/notify.h"
 
-class HintManager : public Notifier
+class HintManager : public Notifier, public ToolTipClass
 {
 	Q_OBJECT
 
@@ -39,6 +40,7 @@ class HintManager : public Notifier
 
 		// TODO: usun±æ w 0.6
 		void realCopyConfiguration(const QString &fromHint, const QString &toHint);
+		void import_0_5_0_Configuration();
 
 	private slots:
 		/**
@@ -97,8 +99,6 @@ class HintManager : public Notifier
 		/* u¿ytkownik zmieni³ status na "Niewidoczny" lub "Niedostêpny" */
 		void userChangedStatusToNotAvailable(const QString &protocolName, UserListElement);
 
-		void userBoxChangeToolTip(const QPoint &point, UserListElement user, bool show);
-
 		/* inna informacja do powiadomienia */
 		/* je¿eli parameters == NULL, to brane s± domy¶lne ustawienia dymków typu message
 		 * w przeciwnym razie z mapy brane s± nastêpuj±ce warto¶ci:
@@ -150,6 +150,10 @@ class HintManager : public Notifier
 		~HintManager();
 
 		virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
+
+		virtual void showToolTip(const QPoint &, const UserListElement &);
+		virtual void hideToolTip();
+
 };
 
 extern HintManager *hint_manager;

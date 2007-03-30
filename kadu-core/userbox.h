@@ -17,6 +17,86 @@ class UserBoxSlots;
 class ULEComparer;
 
 /**
+	Klasa zdolna do pokazywania ToolTipów nad oknem kontaktów.
+ **/
+class ToolTipClass
+{
+
+public:
+
+	ToolTipClass() {};
+	virtual ~ToolTipClass() {};
+
+	/**
+		Pokazuje tooltip w punkcie point na temat kontaktu user.
+
+		@param point punkt, w którym ma siê pojawiæ tooltip
+		@param user u¿ytkownik, którego dotyczy informacja
+	 **/
+	virtual void showToolTip(const QPoint &point, const UserListElement &user) = 0;
+	/**
+		Ukrywa tooltip (je¿eli by³ pokazany)
+	 **/
+	virtual void hideToolTip() = 0;
+
+};
+
+/**
+	Menad¿er klas wy¶wietlaj±cych tooltipy. Rejestruje klasy i pozwala na wybór jednej z nich w oknie konfiguracyjnym,
+ **/
+class ToolTipClassManager
+{
+	QMap<QString, ToolTipClass *> ToolTipClasses;
+	QString ToolTipClassName;
+	ToolTipClass *CurrentToolTipClass;
+
+public:
+
+	ToolTipClassManager();
+	virtual ~ToolTipClassManager();
+
+	/**
+		Rejestruje now± klasê do pokazywania tooltipów pod odpowiedni± nazw±.
+		Zarejestrowane klasy pojawiaj± siê w oknie konfiguracji.
+
+		@param toolTipClassName nazwa rejestrowanej klasy
+		@param toolTipClass obiekt rejestrowanej klasy
+	 **/
+	void registerToolTipClass(const QString &toolTipClassName, ToolTipClass *toolTipClass);
+	/**
+		Wyrejestrowuje klasê do pokazywania tooltipów pod odpowiedni± nazw±.
+
+		@param toolTipClassName nazwa wyrejestrowanej klasy
+	 **/
+	void unregisterToolTipClass(const QString &toolTipClassName);
+
+	/**
+		Zwraca listê nazw zarejestrowanych klas do pokazywania tooltipów.
+	 **/
+	QStringList getToolTipClasses();
+	/**
+		Wybiera klasê, która ma przej±æ wy¶wietlanie tooltipów.
+	 **/
+	void useToolTipClass(const QString &toolTipClassName);
+
+	/**
+		Pokazuje tooltip w punkcie point na temat kontaktu user.
+
+		@param point punkt, w którym ma siê pojawiæ tooltip
+		@param user u¿ytkownik, którego dotyczy informacja
+		@return true, gdy tooltip zosta³ pokazany (klasa do obs³ugi jest za³adowana)
+	 **/
+	bool showToolTip(const QPoint &point, const UserListElement &user);
+	/**
+		Ukrywa tooltip (je¿eli by³ pokazany)
+
+		@return true, gdy tooltip zosta³ ukryty (klasa do obs³ugi jest za³adowana)
+	 **/
+	bool hideToolTip();
+
+};
+
+/**
 	Klasa reprezentuj±ca kontakt wizualnie na li¶cie kontaktów. Opisuje ona ikonê kontaktu,
 	jego wy¶wietlan± nazwê oraz ewentualny opis.
 	\class KaduListBoxPixmap
@@ -516,8 +596,6 @@ class UserBox : public QListBox
 		**/
 		void currentChanged(UserListElement user);
 
-		void changeToolTip(const QPoint &point, UserListElement user, bool show);
-
 	private slots:
 		void doubleClickedSlot(QListBoxItem *item);
 		void returnPressedSlot(QListBoxItem *item);
@@ -538,7 +616,7 @@ class UserBox : public QListBox
 
 		void tipTimeout();
 		void restartTip(const QPoint &p);
-		void hideTip();
+		void hideTip(bool waitForAnother = true);
 		void resetVerticalPosition();
 		void rememberVerticalPosition();
 
@@ -564,7 +642,6 @@ class UserBox : public QListBox
 		UserListElement lastMouseStopUser;
 		static UserListElement nullElement;
 		QPoint lastMouseStop;
-		bool tipAlive;
 		QTimer tipTimer;
 
 		QTimer verticalPositionTimer;
@@ -686,5 +763,7 @@ int compareAltNickCaseInsensitive(const UserListElement &u1, const UserListEleme
 	Funkcja porównuj±ca statusy w protokole Gadu-Gadu. Uwa¿a status "dostêpny" i "zajêty" za równowa¿ne.
 **/
 int compareStatus(const UserListElement &u1, const UserListElement &u2);
+
+extern ToolTipClassManager *tool_tip_class_manager;
 
 #endif

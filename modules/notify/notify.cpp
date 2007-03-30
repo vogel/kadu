@@ -41,7 +41,7 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name),
 {
 	kdebugf();
 	eventNames<<"ConnError"<<"NewChat"<<"NewMessage"<<"toAvailable"<<
-				"toBusy"<<"toInvisible"<<"toNotAvailable"<<"UserBoxChangeToolTip"<<"Message";
+				"toBusy"<<"toInvisible"<<"toNotAvailable"<<"Message";
 
 	notifySignals["NewChat"]=			QString(SIGNAL(newChat(Protocol *, UserListElements, const QString &, time_t)));
 	notifySignals["NewMessage"]=		QString(SIGNAL(newMessage(Protocol *, UserListElements, const QString &, time_t, bool &)));
@@ -50,7 +50,6 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name),
 	notifySignals["toBusy"]=			QString(SIGNAL(userChangedStatusToBusy(const QString &, UserListElement)));
 	notifySignals["toInvisible"]=		QString(SIGNAL(userChangedStatusToInvisible(const QString &, UserListElement)));
 	notifySignals["toNotAvailable"]=	QString(SIGNAL(userChangedStatusToNotAvailable(const QString &, UserListElement)));
-	notifySignals["UserBoxChangeToolTip"]=QString(SIGNAL(userBoxChangeToolTip(const QPoint &, UserListElement, bool)));
 	notifySignals["Message"]=			QString(SIGNAL(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *)));
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Notify"), "NotifyTab");
@@ -66,7 +65,6 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name),
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "User changed status to \"Busy\""));
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "User changed status to \"Invisible\""));
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "User changed status to \"Not available\""));
-	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "Mouse over user"));
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "Other message"));
 
 	connect(gadu, SIGNAL(connectionError(Protocol *, const QString &)), this, notifySignals["ConnError"].ascii());
@@ -76,8 +74,6 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name),
 			this, SLOT(newChatSlot(Protocol *, UserListElements, const QString&, time_t, bool)));
 	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
 		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
-	connect(kadu->userbox(), SIGNAL(changeToolTip(const QPoint &, UserListElement, bool)),
-			this, SIGNAL(userBoxChangeToolTip(const QPoint &, UserListElement, bool)));
 
 	notify_slots=new NotifySlots(NULL, "notify_slots");
 
@@ -156,8 +152,6 @@ Notify::~Notify()
 			this, SLOT(newChatSlot(Protocol *, UserListElements, const QString&, time_t, bool)));
 	disconnect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
 		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
-	disconnect(kadu->userbox(), SIGNAL(changeToolTip(const QPoint &, UserListElement, bool)),
-			this, SIGNAL(userBoxChangeToolTip(const QPoint &, UserListElement, bool)));
 
 	if (!notifiers.isEmpty())
 	{
@@ -176,7 +170,6 @@ Notify::~Notify()
 	ConfigDialog::removeControl("Notify", "User changed status to \"Busy\"");
 	ConfigDialog::removeControl("Notify", "User changed status to \"Invisible\"");
 	ConfigDialog::removeControl("Notify", "User changed status to \"Not available\"");
-	ConfigDialog::removeControl("Notify", "Mouse over user");
 	ConfigDialog::removeControl("Notify", "Other message");
 
 	ConfigDialog::removeControl("Notify", "names");

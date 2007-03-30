@@ -31,7 +31,7 @@
  */
 #define FRAME_WIDTH 1
 
-HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, name),
+HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, name), ToolTipClass(),
 	frame(0), hint_manager_slots(0), hint_timer(new QTimer(this, "hint_timer")),
 	hints(), tipFrame(0)
 {
@@ -125,7 +125,6 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 	config_file.addVariable("Notify", "toBusy_Hints", true);
 	config_file.addVariable("Notify", "toInvisible_Hints", false);
 	config_file.addVariable("Notify", "toNotAvailable_Hints", false);
-	config_file.addVariable("Notify", "UserBoxChangeToolTip_Hints", config_file.readBoolEntry("General", "ShowTooltipOnUserbox", true));
 	config_file.addVariable("Notify", "Message_Hints", true);
 
 	connect(this, SIGNAL(searchingForTrayPosition(QPoint &)), kadu, SIGNAL(searchingForTrayPosition(QPoint &)));
@@ -138,9 +137,12 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 	s["toBusy"]=SLOT(userChangedStatusToBusy(const QString &, UserListElement));
 	s["toInvisible"]=SLOT(userChangedStatusToInvisible(const QString &, UserListElement));
 	s["toNotAvailable"]=SLOT(userChangedStatusToNotAvailable(const QString &, UserListElement));
-	s["UserBoxChangeToolTip"]=SLOT(userBoxChangeToolTip(const QPoint &, UserListElement, bool));
 	s["Message"]=SLOT(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *));
+
 	notify->registerNotifier(QT_TRANSLATE_NOOP("@default","Hints"), this, s);
+	tool_tip_class_manager->registerToolTipClass("Hints", this);
+
+	import_0_5_0_Configuration();
 
 	kdebugf2();
 }
@@ -148,7 +150,10 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 HintManager::~HintManager()
 {
 	kdebugf();
+
+	tool_tip_class_manager->unregisterToolTipClass("Hints");
 	notify->unregisterNotifier("Hints");
+
 	disconnect(this, SIGNAL(searchingForTrayPosition(QPoint &)), kadu, SIGNAL(searchingForTrayPosition(QPoint &)));
 
 	ConfigDialog::unregisterSlotOnCreateTab("Hints", hint_manager_slots, SLOT(onCreateTabHints()));
@@ -655,57 +660,62 @@ void HintManager::userChangedStatusToNotAvailable(const QString &protocolName, U
 	kdebugf2();
 }
 
-void HintManager::userBoxChangeToolTip(const QPoint &point, UserListElement user, bool show)
+void HintManager::showToolTip(const QPoint &point, const UserListElement &user)
 {
-//	kdebugf();
-	if (show)
+	kdebugf();
+
+	QString text = KaduParser::parse(config_file.readEntry("Hints", "MouseOverUserSyntax"), user);
+
+	while (text.endsWith("<br/>"))
+		text.setLength(text.length() - 5 /* 5 == QString("<br/>").length()*/);
+	while (text.startsWith("<br/>"))
+		text = text.right(text.length() - 5 /* 5 == QString("<br/>").length()*/);
+
+	if (tipFrame)
+		delete tipFrame;
+
+	tipFrame = new QFrame(0, "tip_frame", WStyle_NoBorder | WStyle_StaysOnTop | WStyle_Tool | WX11BypassWM | WWinOwnDC);
+	tipFrame->setFrameStyle(QFrame::Box | QFrame::Plain);
+	tipFrame->setLineWidth(FRAME_WIDTH);
+
+	QVBoxLayout *lay = new QVBoxLayout(tipFrame);
+	lay->setMargin(FRAME_WIDTH);
+
+	QLabel *tipLabel = new QLabel(text, tipFrame);
+	tipLabel->setTextFormat(Qt::RichText);
+	tipLabel->setAlignment(AlignVCenter | AlignLeft);
+
+	lay->addWidget(tipLabel);
+
+	tipFrame->setFixedSize(tipLabel->sizeHint() + QSize(2 * FRAME_WIDTH, 2 * FRAME_WIDTH));
+
+	QPoint pos(kadu->userbox()->mapToGlobal(point) + QPoint(5, 5));
+
+	QSize preferredSize = tipFrame->sizeHint();
+	QSize desktopSize = QApplication::desktop()->size();
+	if (pos.x() + preferredSize.width() > desktopSize.width())
+		pos.setX(pos.x() - preferredSize.width() - 10);
+	if (pos.y() + preferredSize.height() > desktopSize.height())
+		pos.setY(pos.y() - preferredSize.height() - 10);
+
+	tipFrame->move(pos);
+	tipFrame->show();
+
+	kdebugf2();
+}
+
+void HintManager::hideToolTip()
+{
+	kdebugf();
+
+	if (tipFrame)
 	{
-		kdebugm(KDEBUG_INFO, "user: '%s', show: %d, x:%d, y:%d\n", user.altNick().local8Bit().data(), show, point.x(), point.y());
-		QString text = KaduParser::parse(config_file.readEntry("Hints", "MouseOverUserSyntax"), user);
-
-		while (text.endsWith("<br/>"))
-			text.setLength(text.length() - 5 /* 5 == QString("<br/>").length()*/);
-		while (text.startsWith("<br/>"))
-			text = text.right(text.length() - 5 /* 5 == QString("<br/>").length()*/);
-
-		if (tipFrame)
-			delete tipFrame;
-		tipFrame = new QFrame(0, "tip_frame", WStyle_NoBorder | WStyle_StaysOnTop | WStyle_Tool | WX11BypassWM | WWinOwnDC);
-		tipFrame->setFrameStyle(QFrame::Box | QFrame::Plain);
-		tipFrame->setLineWidth(FRAME_WIDTH);
-
-		QVBoxLayout *lay = new QVBoxLayout(tipFrame);
-		lay->setMargin(FRAME_WIDTH);
-
-		QLabel *tipLabel = new QLabel(text, tipFrame);
-		tipLabel->setTextFormat(Qt::RichText);
-		tipLabel->setAlignment(AlignVCenter | AlignLeft);
-
-		lay->addWidget(tipLabel);
-
-		tipFrame->setFixedSize(tipLabel->sizeHint() + QSize(2 * FRAME_WIDTH, 2 * FRAME_WIDTH));
-
-		QPoint pos(kadu->userbox()->mapToGlobal(point) + QPoint(5, 5));
-//		kdebugm(KDEBUG_INFO, "%d %d\n", pos.x(), pos.y());
-
-		QSize preferredSize = tipFrame->sizeHint();
-		QSize desktopSize = QApplication::desktop()->size();
-		if (pos.x() + preferredSize.width() > desktopSize.width())
-			pos.setX(pos.x() - preferredSize.width() - 10);
-		if (pos.y() + preferredSize.height() > desktopSize.height())
-			pos.setY(pos.y() - preferredSize.height() - 10);
-
-//		kdebugm(KDEBUG_INFO, "%d %d\n", pos.x(), pos.y());
-		tipFrame->move(pos);
-		tipFrame->show();
-	}
-	else
-	{
-		kdebugm(KDEBUG_INFO, "hiding\n");
 		tipFrame->hide();
 		tipFrame->deleteLater();
 		tipFrame = 0;
 	}
+
+	kdebugf2();
 }
 
 void HintManager::message(const QString &from, const QString &msg, const QMap<QString, QVariant> *parameters, const UserListElement *ule)
@@ -775,6 +785,16 @@ void HintManager::realCopyConfiguration(const QString &fromHint, const QString &
 	config_file.writeEntry("Hints", toHint + "_fgcolor", config_file.readColorEntry("Hints", fromHint + "_fgcolor"));
 	config_file.writeEntry("Hints", toHint + "_bgcolor", config_file.readColorEntry("Hints", fromHint + "_bgcolor"));
 	config_file.writeEntry("Hints", toHint + "_timeout", (int) config_file.readUnsignedNumEntry("Hints",  fromHint + "_timeout"));
+}
+
+void HintManager::import_0_5_0_Configuration()
+{
+	if (config_file.readBoolEntry("Notify", "UserBoxChangeToolTip_Hints", false))
+	{
+		config_file.writeEntry("Look", "UserboxToolTipStyle", "Hints");
+		tool_tip_class_manager->useToolTipClass("Hints");
+		config_file.removeVariable("Notify", "UserBoxChangeToolTip_Hints");
+	}
 }
 
 HintManager *hint_manager=NULL;

@@ -11,6 +11,7 @@
 
 #include <qapplication.h>
 #include <qcursor.h>
+#include <qcombobox.h>
 #include <qdragobject.h>
 #include <qpainter.h>
 #include <qspinbox.h>
@@ -39,6 +40,84 @@ QColor KaduListBoxPixmap::descColor;
 UserListElement UserBox::nullElement;
 
 static bool brokenStringCompare;
+
+ToolTipClassManager::ToolTipClassManager()
+	: CurrentToolTipClass(0)
+{
+	kdebugf();
+}
+
+ToolTipClassManager::~ToolTipClassManager()
+{
+	kdebugf();
+
+	if (CurrentToolTipClass)
+		CurrentToolTipClass->hideToolTip();
+}
+
+void ToolTipClassManager::registerToolTipClass(const QString &toolTipClassName, ToolTipClass *toolTipClass)
+{
+	ToolTipClasses[toolTipClassName] = toolTipClass;
+
+	if (ToolTipClassName == toolTipClassName)
+		CurrentToolTipClass = toolTipClass;
+}
+
+void ToolTipClassManager::unregisterToolTipClass(const QString &toolTipClassName)
+{
+	kdebugf();
+
+	if (ToolTipClassName == toolTipClassName && CurrentToolTipClass)
+	{
+		CurrentToolTipClass->hideToolTip();
+		CurrentToolTipClass = 0;
+	}
+
+	if (ToolTipClasses.contains(ToolTipClassName))
+		ToolTipClasses.remove(ToolTipClassName);
+}
+
+QStringList ToolTipClassManager::getToolTipClasses()
+{
+	return ToolTipClasses.keys();
+}
+
+void ToolTipClassManager::useToolTipClass(const QString &toolTipClassName)
+{
+	kdebugf();
+
+	if (CurrentToolTipClass)
+		CurrentToolTipClass->hideToolTip();
+
+	ToolTipClassName = toolTipClassName;
+
+	if (ToolTipClasses.contains(ToolTipClassName))
+		CurrentToolTipClass = ToolTipClasses[ToolTipClassName];
+	else
+		CurrentToolTipClass = 0;
+}
+
+bool ToolTipClassManager::showToolTip(const QPoint &where, const UserListElement &who)
+{
+	if (CurrentToolTipClass)
+	{
+		CurrentToolTipClass->showToolTip(where, who);
+		return true;
+	}
+
+	return false;
+}
+
+bool ToolTipClassManager::hideToolTip()
+{
+	if (CurrentToolTipClass)
+	{
+		CurrentToolTipClass->hideToolTip();
+		return true;
+	}
+
+	return false;
+}
 
 void KaduListBoxPixmap::setFont(const QFont &f)
 {
@@ -378,7 +457,7 @@ CreateNotifier UserBox::createNotifier;
 UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
 	: QListBox(parent, name, f), VisibleUsers(new UserGroup(userlist->count() * 2, "visible_users")),
 	Filters(), NegativeFilters(), sortHelper(), toRemove(), AppendProxy(), RemoveProxy(), comparer(new ULEComparer()),
-	refreshTimer(), lastMouseStopUser(nullElement), lastMouseStop(), tipAlive(false), tipTimer(),
+	refreshTimer(), lastMouseStopUser(nullElement), lastMouseStop(), tipTimer(),
 	verticalPositionTimer(), lastVerticalPosition(0)
 {
 	kdebugf();
@@ -452,12 +531,9 @@ UserBox::~UserBox()
 
 void UserBox::tipTimeout()
 {
-//	kdebugf();
 	if (lastMouseStopUser != nullElement)
 	{
-//		kdebugm(KDEBUG_INFO, "show hint\n");
-		emit changeToolTip(lastMouseStop, lastMouseStopUser, true);
-		tipAlive = true;
+		tool_tip_class_manager->showToolTip(lastMouseStop, lastMouseStopUser);
 		tipTimer.stop();
 	}
 }
@@ -482,19 +558,14 @@ void UserBox::restartTip(const QPoint &p)
 //	kdebugf2();
 }
 
-void UserBox::hideTip()
+void UserBox::hideTip(bool waitForAnother)
 {
-//	kdebugf();
-	if (tipAlive)
-	{
-		if (VisibleUsers->contains(lastMouseStopUser))
-			emit changeToolTip(QPoint(), lastMouseStopUser, false);
-		else
-			emit changeToolTip(QPoint(), nullElement, false);
-		tipAlive = false;
+	tool_tip_class_manager->hideToolTip();
+
+	if (waitForAnother)
 		tipTimer.start(TIP_TM);
-	}
-// 	kdebugf2();
+	else
+		tipTimer.stop();
 }
 
 void UserBox::wheelEvent(QWheelEvent *e)
@@ -506,10 +577,7 @@ void UserBox::wheelEvent(QWheelEvent *e)
 	if (QRect(mapToGlobal(QPoint(0,0)), size()).contains(e->globalPos()))
 		restartTip(e->pos());
 	else
-	{
-		hideTip();
-		tipTimer.stop();
-	}
+		hideTip(false);
 }
 
 void UserBox::enterEvent(QEvent *e)
@@ -521,16 +589,14 @@ void UserBox::enterEvent(QEvent *e)
 void UserBox::leaveEvent(QEvent *e)
 {
 //	kdebugf();
-	hideTip();
-	tipTimer.stop();
+	hideTip(false);
 	QListBox::leaveEvent(e);
 }
 
 void UserBox::mousePressEvent(QMouseEvent *e)
 {
 	kdebugf();
-	hideTip();
-	tipTimer.stop();
+	hideTip(false);
 	if (e->button() != RightButton)
 		QListBox::mousePressEvent(e);
 	else
@@ -583,8 +649,7 @@ void UserBox::mouseMoveEvent(QMouseEvent* e)
 void UserBox::keyPressEvent(QKeyEvent *e)
 {
 //	kdebugf();
-	hideTip();
-	tipTimer.stop();
+	hideTip(false);
 	QListBox::keyPressEvent(e);
 //	QWidget::keyPressEvent(e);
 	QListBoxItem *i = item(currentItem());
@@ -798,12 +863,23 @@ void UserBox::closeModule()
 	ConfigDialog::removeControl("Look", "Align icon next to contact name");
 	ConfigDialog::removeControl("Look", "Multiline description in userbox");
 	ConfigDialog::removeControl("Look", "Show description in userbox");
+
+	ConfigDialog::removeControl("Look", "Tooltip style");
+	ConfigDialog::removeControl("Look", "Userbox");
+
+	delete tool_tip_class_manager;
+	tool_tip_class_manager = 0;
+
 	kdebugf2();
 }
 
 void UserBox::initModule()
 {
 	kdebugf();
+
+	tool_tip_class_manager = new ToolTipClassManager();
+	tool_tip_class_manager->useToolTipClass(config_file.readEntry("Look", "UserboxToolTipStyle"));
+
 	// add some values at first run
 	QWidget w;
 	config_file.addVariable("Look", "UserboxBgColor", w.paletteBackgroundColor());
@@ -851,6 +927,12 @@ void UserBox::initModule()
 		ConfigDialog::addSpinBox("Look", "Background image options", QT_TRANSLATE_NOOP("@default", "Start at [Y]"), "UserboxBackgroundSY", 0, 1099, 1);
 		ConfigDialog::addSpinBox("Look", "Background image options", QT_TRANSLATE_NOOP("@default", "Image width"), "UserboxBackgroundSW", 100, 1600, 1);
 		ConfigDialog::addSpinBox("Look", "Background image options", QT_TRANSLATE_NOOP("@default", "Image height"), "UserboxBackgroundSH", 100, 1200, 1);
+
+	QStringList options;
+	QStringList values;
+
+	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Userbox tooltips"), 0);
+	ConfigDialog::addComboBox("Look", "Userbox tooltips", QT_TRANSLATE_NOOP("@default", "Tooltip style"), "UserboxToolTipStyle", options, values, "Hints", 0);
 
 	KaduListBoxPixmap::setFont(config_file.readFontEntry("Look","UserboxFont"));
 	KaduListBoxPixmap::setShowDesc(config_file.readBoolEntry("Look", "ShowDesc"));
@@ -1007,6 +1089,20 @@ void UserBoxSlots::onCreateTabLook()
 	multi->setSuffix(" px");
 	multi->setEnabled(config_file.readBoolEntry("Look", "UserboxBackgroundMove"));
 
+	QStringList options;
+	QStringList values;
+	options << tr("None");
+	values << "";
+
+	QStringList toolTipClasses = tool_tip_class_manager->getToolTipClasses();
+	CONST_FOREACH(toolTipClass, toolTipClasses)
+	{
+		options << tr(*toolTipClass);
+		values << *toolTipClass;
+	}
+
+	ConfigDialog::changeComboBoxParams("Look", "Tooltip style", options, values);
+
 	updatePreview();
 	kdebugf2();
 }
@@ -1031,6 +1127,8 @@ void UserBoxSlots::onApplyTabLook()
 	KaduListBoxPixmap::setMultiColumnWidth(config_file.readNumEntry("Look", "MultiColumnUserboxWidth", 230));
 	KaduListBoxPixmap::setMyUIN(config_file.readNumEntry("General", "UIN"));
 	KaduListBoxPixmap::setDescriptionColor(config_file.readColorEntry("Look", "DescriptionColor"));
+
+	tool_tip_class_manager->useToolTipClass(config_file.readEntry("Look", "UserboxToolTipStyle"));
 
 	UserBox::setColorsOrBackgrounds();
 
@@ -1551,3 +1649,5 @@ inline int compareStatus(const UserListElement &u1, const UserListElement &u2)
 	else
 		return int(u2Gadu) - int(u1Gadu);
 }
+
+ToolTipClassManager *tool_tip_class_manager = 0;
