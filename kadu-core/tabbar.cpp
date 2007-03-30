@@ -315,7 +315,10 @@ void KaduTabBar::dropEvent(QDropEvent* e)
 
 		QPopupMenu menu(this);
 		menu.insertItem(tr("Add to group %1").arg(group), 2);
-		menu.insertItem(tr("Move to group %1").arg(group), 1);
+
+		if (tab(currentTab())->text() != GroupsManager::tr("All"))
+			menu.insertItem(tr("Move to group %1").arg(group), 1);
+
 		int menuret = -1;
 		if (group.isEmpty() || (menuret = showPopupMenu(&menu)) == 1)
 		{
