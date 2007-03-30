@@ -380,6 +380,17 @@ class ConfigDialog : public QVBox
 				UserLevel userLevelRequired = Beginner);
 
 		/**
+			Zmienia listê warto¶ci kontrolki CombboBox
+
+			@param groupname nazwa zak³adki
+			@param caption tekst kontrolki
+			@param options nowa lista opcji wy¶wietlanych
+			@param values nowa lista warto¶ci zapisywanych w konfiguracji
+			@param name nazwa kontrolki
+		 **/
+		static void changeComboBoxParams(const char *groupname, const char *caption, const QStringList &options, const QStringList &values, const char *name = 0);
+
+		/**
 		    Dodaje kontrolkê do zak³adki "groupname",
 			Rodzicem kontrolki jest kontrolka "parent".
 			Ustawia text kontrolki na "caption".

@@ -815,6 +815,23 @@ void ConfigDialog::addComboBox(ConfigFile* config, const char *groupname,
 		WARN_ABOUT_EXISTING;
 }
 
+void ConfigDialog::changeComboBoxParams(const char *groupname, const char *caption, const QStringList &options, const QStringList &values, const char *name)
+{
+	QValueListIterator<RegisteredControl> control;
+	if (!controlExists(groupname, caption, name, &control))
+		return;
+
+	(*control).additionalParams.clear();
+
+	(*control).additionalParams.append(QVariant(options));
+	(*control).additionalParams.append(QVariant(values));
+
+	QComboBox *combo = dynamic_cast<QComboBox *>((*control).widget);
+
+	combo->clear();
+	combo->insertStringList(options);
+	combo->setCurrentItem(values.findIndex((*control).config->readEntry((*control).group, (*control).entry, (*control).defaultS)));
+}
 
 void ConfigDialog::addGrid(const char *groupname,
 			const char *parent, const char *caption, const int nrColumns, const char *name,
@@ -1524,7 +1541,7 @@ bool ConfigDialog::controlExists(const char *groupname, const char *caption, con
 {
 	bool ok;
 	QValueListIterator<RegisteredControl> curControl;
-//	kdebugm(KDEBUG_INFO, "looking for: cpt:%s nm:%s\n", caption, name);
+// 	kdebugm(KDEBUG_INFO, "looking for: grp: %s, cpt:%s nm:%s\n", groupname, caption, name);
 	tab(groupname, curControl, &ok);
 
 	if (!ok)
@@ -1536,10 +1553,10 @@ bool ConfigDialog::controlExists(const char *groupname, const char *caption, con
 	int lastItem = *(TabSizes[groupname]);
 	for (int j = 1; j <= lastItem; ++j, ++curControl)
 	{
-//		kdebugm(KDEBUG_INFO, "cpt:%s nm:%s\n", (*curControl).caption, (*curControl).name);
+// 		kdebugm(KDEBUG_INFO, "cpt:%s nm:%s\n", (*curControl).caption, (*curControl).name);
 		if (streq((*curControl).caption, caption) && streq((*curControl).name, name))
 		{
-//			kdebugm(KDEBUG_INFO, "found\n");
+// 			kdebugm(KDEBUG_INFO, "found\n");
 			if (control)
 				*control = curControl;
 			return true;
@@ -1668,6 +1685,7 @@ QWidget* ConfigDialog::widget(const char *groupname, const char *caption, const 
 
 	kdebugm(KDEBUG_PANIC, "Warning: there is no \\%s\\%s\\%s\\ control\n", groupname, caption, name);
 	printBacktrace("no widget, will crash probably");
+
 	return NULL;
 }
 
