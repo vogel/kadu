@@ -1272,6 +1272,13 @@ int GaduProtocol::sendMessage(UserListElements users, const char* msg)
 	return seq;
 }
 
+int GaduProtocol::sendMessage(UserListElement user, const char* msg)
+{
+	UserListElements users(user);
+
+	return sendMessage(users, msg);
+}
+
 int GaduProtocol::sendMessageRichText(UserListElements users, const char* msg, unsigned char* myLastFormats, unsigned int myLastFormatsLength)
 {
 	kdebugf();

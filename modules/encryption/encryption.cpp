@@ -332,13 +332,16 @@ void EncryptionManager::userBoxMenuPopup()
 	QFileInfo keyfile(keyfile_path);
 
 	UserListElements users = activeUserBox->selectedUsers();
-	UserListElement user = users[0];
+	unsigned int myUin = config_file.readUnsignedNumEntry("General", "UIN");
 
-	bool sendKeyEnabled = user.usesProtocol("Gadu") &&
-			keyfile.permission(QFileInfo::ReadUser) &&
-			(users.count() == 1) &&
-			!gadu->currentStatus().isOffline() &&
-			config_file.readUnsignedNumEntry("General", "UIN") != user.ID("Gadu").toUInt();
+	bool sendKeyEnabled = false;
+	if (keyfile.permission(QFileInfo::ReadUser) && !gadu->currentStatus().isOffline())
+		CONST_FOREACH(user, users)
+			if ((*user).usesProtocol("Gadu") && myUin != (*user).ID("Gadu").toUInt())
+			{
+				sendKeyEnabled = true;
+				break;
+			}
 
 	UserBox::userboxmenu->setItemEnabled(sendkeyitem, sendKeyEnabled);
 	kdebugf2();
@@ -367,8 +370,14 @@ void EncryptionManager::sendPublicKey()
 		mykey = t.read();
 		keyfile.close();
 		QCString tmp(mykey.local8Bit());
-		UserListElements users(activeUserBox->selectedUsers()[0]);
-		gadu->sendMessage(users, tmp.data());
+
+		unsigned int myUin = config_file.readUnsignedNumEntry("General", "UIN");
+
+		UserListElements users = activeUserBox->selectedUsers();
+		CONST_FOREACH(user, users)
+			if ((*user).usesProtocol("Gadu") && myUin != (*user).ID("Gadu").toUInt())
+				gadu->sendMessage(*user, tmp.data());
+
 		QMessageBox::information(kadu, "Kadu",
 			tr("Your public key has been sent"), tr("OK"), QString::null, 0);
 	}

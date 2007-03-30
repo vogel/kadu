@@ -686,6 +686,15 @@ class GaduProtocol : public Protocol
 			@todo zmieniæ na sendMessage(const UinsList &, QString &) z wewnêtrzn± konwersj± na cp1250
 		**/
 		int sendMessage(UserListElements users, const char *msg);
+		/**
+			Wysy³a wiadomo¶æ bez formatowania tekstu. Zwracany jest numer sekwencyjny wiadomo¶ci, je¶li
+			przypadkiem by¶my chcieli ¶ledziæ jej potwierdzenie.
+
+			@param user u¿ytkownikó, do którygo wysy³amy wiadomo¶æ
+			@param msg wiadomo¶æ, któr± wysy³amy - musi byæ podana w postaci cp1250
+			@todo zmieniæ na sendMessage(const UinsList &, QString &) z wewnêtrzn± konwersj± na cp1250
+		**/
+		int sendMessage(UserListElement user, const char *msg);
 
 		/**
 			Wysy³a wiadomo¶æ z formatowaniem tekstu. Je¶li adresatów jest wiêcej ni¿ jeden, to wysy³ana
