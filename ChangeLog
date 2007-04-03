@@ -117,7 +117,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * notify: wyrzucenie ShowUserBoxTooltip poza modu³ notify, konfiguracja przeniesiona do zak³adki 'Wygl±d' (Vogel)
 * encryption: poprawiono b³±d [0000586] - mo¿liwo¶æ wys³ania klucza do kilku kontaktów naraz (Vogel)
 * core: poprawiono b³±d [0000518] - przeci±ganie kontaktu z "Wszyscy" do innej grupy blokuje opcjê "Przesuñ do grupy" (Vogel)
-* klasa KaduParser stworzona z przestrzeni nazw KaduParser
+* klasa KaduParser stworzona z przestrzeni nazw KaduParser (Vogel)
+* klasa KaduParser ma mo¿liwo¶æ parsowania stringów z wykorzystaniem dwóch obiektów ze zmiennymi (UserListElement i dowolny pochodny od QObject) (Vogel)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

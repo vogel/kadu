@@ -22,6 +22,7 @@
 
 QMap<QString, QString> KaduParser::globalVariables;
 QMap<QString, QString (*)(const UserListElement &)> KaduParser::registeredTags;
+QMap<QString, QString (*)(const QObject * const)> KaduParser::registeredObjectTags;
 
 bool KaduParser::registerTag(const QString &name, QString (*func)(const UserListElement &))
 {
@@ -55,6 +56,38 @@ bool KaduParser::unregisterTag(const QString &name, QString (* /*func*/)(const U
 	}
 }
 
+bool KaduParser::registerObjectTag(const QString &name, ObjectTagCallback func)
+{
+	kdebugf();
+	if (registeredObjectTags.contains(name))
+	{
+		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "tag %s already registered!\n", name.local8Bit().data());
+		return false;
+	}
+	else
+	{
+		registeredObjectTags.insert(name, func);
+		kdebugf2();
+		return true;
+	}
+}
+
+bool KaduParser::unregisterObjectTag(const QString &name, ObjectTagCallback)
+{
+	kdebugf();
+	if (!registeredObjectTags.contains(name))
+	{
+		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "tag %s not registered!\n", name.local8Bit().data());
+		return false;
+	}
+	else
+	{
+		registeredObjectTags.remove(name);
+		kdebugf2();
+		return true;
+	}
+}
+
 QString KaduParser::executeCmd(const QString &cmd)
 {
 	kdebugf();
@@ -79,6 +112,11 @@ QString KaduParser::executeCmd(const QString &cmd)
 }
 
 QString KaduParser::parse(const QString &s, const UserListElement &ule, bool escape)
+{
+	return parse(s, ule, 0, escape);
+}
+
+QString KaduParser::parse(const QString &s, const UserListElement &ule, const QObject * const object, bool escape)
 {
 	kdebugmf(KDEBUG_DUMP, "%s escape=%i\n", s.local8Bit().data(), escape);
 	int index = 0, i, len = s.length();
@@ -412,6 +450,8 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, bool esc
 						pe.type = ParseElem::PE_STRING;
 						if (registeredTags.contains(pe.str))
 							pe.str = registeredTags[pe.str](ule);
+						else if (object && registeredObjectTags.contains(pe.str))
+							pe.str = registeredObjectTags[pe.str](object);
 						else
 						{
 							kdebugm(KDEBUG_WARNING, "tag %s not registered\n", pe.str.local8Bit().data());

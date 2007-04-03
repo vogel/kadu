@@ -4,6 +4,7 @@
 #include <qmap.h>
 #include <qstring.h>
 
+class QObject;
 class UserListElement;
 
 class KaduParser
@@ -31,7 +32,10 @@ private:
 		ParseElem() : type(PE_STRING), str() {}
 	};
 
+	typedef QString (*ObjectTagCallback)(const QObject * const);
+
 	static QMap<QString, QString (*)(const UserListElement &)> registeredTags;
+	static QMap<QString, ObjectTagCallback> registeredObjectTags;
 
 	static QString executeCmd(const QString &cmd);
 
@@ -39,8 +43,12 @@ public:
 
 	static QMap<QString, QString> globalVariables;
 	static QString parse(const QString &s, const UserListElement &ule, bool escape = true);
+	static QString parse(const QString &s, const UserListElement &ule, const QObject * const object, bool escape = true);
 	static bool registerTag(const QString &name, QString (*func)(const UserListElement &));
 	static bool unregisterTag(const QString &name, QString (*func)(const UserListElement &));
+
+	static bool registerObjectTag(const QString &name, ObjectTagCallback);
+	static bool unregisterObjectTag(const QString &name, ObjectTagCallback);
 
 };
 
