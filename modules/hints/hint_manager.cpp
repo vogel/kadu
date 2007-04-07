@@ -452,11 +452,15 @@ void HintManager::addHint(Notification *notification)
 {
 	kdebugf();
 
+	// TODO: fix this
+	QColor fgDefaultColor(0x00, 0x00, 0x00);
+	QColor bgDefaultColor(0xf0, 0xf0, 0xf0);
+
 	Hint *hint = new Hint(frame, notification);
 	hint->set(
 		config_file.readFontEntry("Hints", "Event_" + notification->type() + "_font"),
-		config_file.readColorEntry("Hints", "Event_" + notification->type() + "_fgcolor"),
-		config_file.readColorEntry("Hints", "Event_" + notification->type() + "_bgcolor")
+		config_file.readColorEntry("Hints", "Event_" + notification->type() + "_fgcolor", &fgDefaultColor),
+		config_file.readColorEntry("Hints", "Event_" + notification->type() + "_bgcolor", &bgDefaultColor)
 	);
 
 	hints.append(hint);
