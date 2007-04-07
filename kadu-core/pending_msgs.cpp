@@ -192,6 +192,8 @@ bool PendingMsgs::loadFromFile()
 
 		// appending to list
 		msgs.append(e);
+
+		emit messageFromUserAdded(e.users[0]);
 	}
 
 	// and closing file
@@ -199,7 +201,8 @@ bool PendingMsgs::loadFromFile()
 	return true;
 }
 
-void PendingMsgs::openMessages() {
+void PendingMsgs::openMessages()
+{
 	chat_manager->openPendingMsgs();
 }
 
