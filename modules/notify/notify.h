@@ -146,7 +146,6 @@ class Notify : public QObject
 		 * nazwy sygna³ów:
 			"NewChat" - nowa rozmowa
 			"NewMessage" - nowa wiadomo¶æ
-			"ConnError" - b³±d po³±czenia
 			"toAvailable" - u¿ytkownik zmieni³ status na "Dostêpny"
 			"toBusy" - u¿ytkownik zmieni³ status na "Zaraz wracam"
 			"toInvisible" - u¿ytkownik zmieni³ status na "Ukryty"

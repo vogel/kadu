@@ -24,6 +24,7 @@ class ToolBar : public QToolBar
 		virtual void dropEvent(QDropEvent* event);
 		virtual void contextMenuEvent(QContextMenuEvent* e);
 		virtual void dragLeaveEvent(QDragLeaveEvent *e);
+		virtual void moveEvent(QMoveEvent *e);
 
 	public:
 		ToolBar(QWidget* parent, const char *name);

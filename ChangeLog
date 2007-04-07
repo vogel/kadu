@@ -121,6 +121,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * klasa KaduParser ma mo¿liwo¶æ parsowania stringów z wykorzystaniem dwóch obiektów ze zmiennymi (UserListElement i dowolny pochodny od QObject) (Vogel)
 * notyfikacja "B³±d po³±czenia" zamieniona w klasê pochodn± od Notification (Vogel)
 * hints: poprawione domy¶lne kolory dymków (Vogel)
+* toolbars: poprawiono b³±d [0000538] - wyrównywanie toolbarów do prawej strony okna (Vogel)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

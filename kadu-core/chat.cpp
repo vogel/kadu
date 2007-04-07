@@ -203,7 +203,7 @@ Chat::Chat(Protocol *initialProtocol, const UserListElements &usrs, QWidget* par
 	{
 		// TOOLBAR 1
 		ToolBar* tb1 = new ToolBar(this, "Chat toolbar 1");
-		tb1->setOffset(1000);
+		tb1->setOffset(10000);
 		tb1->show();
 		buttontray->moveDockWindow(tb1);
 		buttontray->setAcceptDockWindow(tb1, true);
@@ -220,7 +220,7 @@ Chat::Chat(Protocol *initialProtocol, const UserListElements &usrs, QWidget* par
 		KaduActions.addDefaultActionsToToolbar(tb2);
 		// TOOLBAR 3
 		ToolBar* tb3 = new ToolBar(this, "Chat toolbar 3");
-		tb3->setOffset(1000);
+		tb3->setOffset(10000);
 		tb3->show();
 		btnpart->moveDockWindow(tb3);
 		btnpart->setAcceptDockWindow(tb3, true);

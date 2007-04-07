@@ -44,6 +44,18 @@ void ToolBar::addButtonClicked(int action_index)
 	kdebugf2();
 }
 
+void ToolBar::moveEvent(QMoveEvent *e)
+{
+	if (offset() != 10000)
+	{
+		QWidget *parent = parentWidget();
+		if (parent && e->pos().x() != 0 && parent->width() == e->pos().x() + width() + 1)
+			setOffset(10000);
+	}
+
+	QToolBar::moveEvent(e);
+}
+
 void ToolBar::dragEnterEvent(QDragEnterEvent* event)
 {
 	kdebugf();
