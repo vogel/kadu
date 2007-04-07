@@ -66,7 +66,6 @@
 #include "moc/gadu_moc.cpp"
 #include "moc/gadu-private_moc.cpp"
 #include "moc/groups_manager_moc.cpp"
-#include "moc/history_moc.cpp"
 #include "moc/http_client_moc.cpp"
 #include "moc/icons_manager_moc.cpp"
 #include "moc/ignore_moc.cpp"
