@@ -67,7 +67,7 @@ QString Notification::type()
 	return Type;
 }
 
-UserListElements Notification::userListElements()
+const UserListElements &Notification::userListElements()
 {
 	return Ule;
 }

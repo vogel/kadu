@@ -93,6 +93,8 @@ SpeechSlots::SpeechSlots(QObject *parent, const char *name) : Notifier(parent, n
 	srand(time(NULL));
 	lastSpeech.start();
 
+	import_0_5_0_Configuration();
+
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default","Speech"), "SpeechTab");
 
 	ConfigDialog::addCheckBox("Speech", "Speech",
@@ -154,7 +156,7 @@ SpeechSlots::SpeechSlots(QObject *parent, const char *name) : Notifier(parent, n
 
 	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Connection error:"),
-			"ConnectionError", SpeechSlots::tr("Connection error - %1"), Kadu::SyntaxText, 0, Advanced);
+			"ConnectionError_Syntax", SpeechSlots::tr("Connection error - #{error}"), Kadu::SyntaxText, 0, Advanced);
 
 	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Message too long (male):"),
@@ -175,7 +177,6 @@ SpeechSlots::SpeechSlots(QObject *parent, const char *name) : Notifier(parent, n
 	QMap<QString, QString> s;
 	s["NewChat"]=SLOT(newChat(Protocol *, UserListElements, const QString &, time_t));
 	s["NewMessage"]=SLOT(newMessage(Protocol *, UserListElements, const QString &, time_t, bool &));
-	s["ConnError"]=SLOT(connectionError(Protocol *, const QString &));
 	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const QString &, UserListElement));
 	s["toBusy"]=SLOT(userChangedStatusToBusy(const QString &, UserListElement));
 	s["toInvisible"]=SLOT(userChangedStatusToInvisible(const QString &, UserListElement));
@@ -241,6 +242,16 @@ SpeechSlots::~SpeechSlots()
 	ConfigDialog::removeControl("Speech", "Say only when chat window is not active");
 	ConfigDialog::removeTab("Speech");
 	kdebugf2();
+}
+
+void SpeechSlots::import_0_5_0_Configuration()
+{
+	QString entry = config_file.readEntry("Speech", "ConnectionError", "");
+
+	if (entry != "")
+		config_file.writeEntry("Speech", "ConnectionError_Syntax", entry.replace("%1", "#{error}"));
+
+	config_file.removeVariable("Speech", "ConnectionError");
 }
 
 void SpeechSlots::say(const QString &s, const QString &path,
@@ -399,20 +410,6 @@ void SpeechSlots::newMessage(Protocol * /*protocol*/, UserListElements senders, 
 	kdebugf2();
 }
 
-void SpeechSlots::connectionError(Protocol *, const QString &message)
-{
-	kdebugf();
-	if (lastSpeech.elapsed()<1500)
-	{
-		kdebugf2();
-		return;
-	}
-
-	say(config_file.readEntry("Speech", "ConnectionError").arg(message));
-	lastSpeech.restart();
-	kdebugf2();
-}
-
 void SpeechSlots::userChangedStatusToAvailable(const QString &/*protocolName*/, UserListElement ule)
 {
 	kdebugf();
@@ -469,13 +466,22 @@ void SpeechSlots::externalEvent(Notification *notification)
 {
 	kdebugf();
 
-	UserListElements ules = notification->userListElements();
-	QString msg = notification->text();
+	if (lastSpeech.elapsed() < 1500)
+	{
+		kdebugf2();
+		return;
+	}
 
-	if (ules.count() > 0)
-		message("", msg, 0, &ules[0]);
+	QString text;
+
+	QString syntax = config_file.readEntry("Speech", notification->type() + "_Syntax", "");
+	if (syntax == "")
+		text = notification->text();
 	else
-		message("", msg, 0, 0);
+		text = KaduParser::parse(syntax, notification->userListElements()[0], notification);
+
+	say(text);
+	lastSpeech.restart();
 
 	kdebugf2();
 }

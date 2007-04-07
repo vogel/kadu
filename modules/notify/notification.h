@@ -135,7 +135,7 @@ public:
 
 		@return lista kontaktów powi±zana ze zdarzeniem
 	 **/
-	UserListElements userListElements();
+	const UserListElements &userListElements();
 
 	/**
 		Ustawia tytu³ zdarzenia.

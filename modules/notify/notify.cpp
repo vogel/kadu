@@ -11,6 +11,7 @@
 #include "chat_manager.h"
 #include "config_dialog.h"
 #include "config_file.h"
+#include "connection_error_notification.h"
 #include "debug.h"
 #include "kadu.h"
 #include "misc.h"
@@ -40,12 +41,11 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name),
 	notifiers(), notifySignals(), eventNames(), notifyEvents(), strs()
 {
 	kdebugf();
-	eventNames<<"ConnError"<<"NewChat"<<"NewMessage"<<"toAvailable"<<
+	eventNames<<"NewChat"<<"NewMessage"<<"toAvailable"<<
 				"toBusy"<<"toInvisible"<<"toNotAvailable"<<"Message";
 
 	notifySignals["NewChat"]=			QString(SIGNAL(newChat(Protocol *, UserListElements, const QString &, time_t)));
 	notifySignals["NewMessage"]=		QString(SIGNAL(newMessage(Protocol *, UserListElements, const QString &, time_t, bool &)));
-	notifySignals["ConnError"]=			QString(SIGNAL(connectionError(Protocol *, const QString &)));
 	notifySignals["toAvailable"]=		QString(SIGNAL(userChangedStatusToAvailable(const QString &, UserListElement)));
 	notifySignals["toBusy"]=			QString(SIGNAL(userChangedStatusToBusy(const QString &, UserListElement)));
 	notifySignals["toInvisible"]=		QString(SIGNAL(userChangedStatusToInvisible(const QString &, UserListElement)));
@@ -58,7 +58,6 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name),
 	//pierwsza kolumna - nazwy
 	ConfigDialog::addVBox("Notify", "Notify configuration", "names");
 	ConfigDialog::addLabel("Notify", "names", 0);
-	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "Connection error"));
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "New chat"));
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "New message"));
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "User changed status to \"Available\""));
@@ -67,7 +66,7 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name),
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "User changed status to \"Not available\""));
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "Other message"));
 
-	connect(gadu, SIGNAL(connectionError(Protocol *, const QString &)), this, notifySignals["ConnError"].ascii());
+	connect(gadu, SIGNAL(connectionError(Protocol *, const QString &)), this, SLOT(connectionError(Protocol *, const QString &)));
 	connect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
 			this, SLOT(probablyNewMessage(Protocol *, UserListElements, const QString&, time_t, bool&)));
 	connect(gadu, SIGNAL(chatMsgReceived2(Protocol *, UserListElements, const QString&, time_t, bool)),
@@ -112,12 +111,16 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name),
 	ConfigDialog::registerSlotOnApplyTab("Notify", notify_slots, SLOT(onApplyTabNotify()));
 	ConfigDialog::registerSlotOnApplyTab("Notify", this, SLOT(updateConnections()));
 
+	ConnectionErrorNotification::registerEvent(this);
+
 	kdebugf2();
 }
 
 Notify::~Notify()
 {
 	kdebugf();
+
+	ConnectionErrorNotification::unregisterEvent(this);
 
 	ConfigDialog::disconnectSlot("Notify", 0, SIGNAL(clicked()), notify_slots, SLOT(_Right()), "forward");
 	ConfigDialog::disconnectSlot("Notify", 0, SIGNAL(clicked()), notify_slots, SLOT(_Left()), "back");
@@ -145,7 +148,7 @@ Notify::~Notify()
 	ConfigDialog::removeControl("Notify", "Notify about all users");
 	ConfigDialog::removeControl("Notify", "Ignore changes right after connection to the server");
 
-	disconnect(gadu, SIGNAL(connectionError(Protocol *, const QString &)), this, notifySignals["ConnError"].ascii());
+	disconnect(gadu, SIGNAL(connectionError(Protocol *, const QString &)), this, SLOT(connectionError(Protocol *, const QString &)));
 	disconnect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
 			this, SLOT(probablyNewMessage(Protocol *, UserListElements, const QString&, time_t, bool&)));
 	disconnect(gadu, SIGNAL(chatMsgReceived2(Protocol *, UserListElements, const QString&, time_t, bool)),
@@ -163,7 +166,6 @@ Notify::~Notify()
 
 	//pierwsza kolumna - nazwy
 	ConfigDialog::removeControl("Notify", 0);
-	ConfigDialog::removeControl("Notify", "Connection error");
 	ConfigDialog::removeControl("Notify", "New chat");
 	ConfigDialog::removeControl("Notify", "New message");
 	ConfigDialog::removeControl("Notify", "User changed status to \"Available\"");
@@ -239,6 +241,16 @@ void Notify::probablyNewMessage(Protocol *protocol, UserListElements senders, co
 	Chat* chat = chat_manager->findChat(senders);
 	if (chat != NULL)
 		emit newMessage(protocol, senders, msg, t, grab);
+	kdebugf2();
+}
+
+void Notify::connectionError(Protocol *protocol, const QString &message)
+{
+	kdebugf();
+
+	ConnectionErrorNotification *connectionErrorNotification = new ConnectionErrorNotification(message);
+	notify(connectionErrorNotification);
+
 	kdebugf2();
 }
 
@@ -443,6 +455,12 @@ void Notify::registerNotifier(const QString &name, Notifier *notifier,
 		}
 
 		config_file.removeVariable("Notify", "StatusChanged_" + name);
+	}
+
+	if (config_file.readBoolEntry("Notify", "ConnError_" + name, false))
+	{
+		config_file.writeEntry("Notify", "ConnectionError_" + name, true);
+		config_file.removeVariable("Notify", "ConnError_" + name);
 	}
 
 	CONST_FOREACH(i, notifySignals)

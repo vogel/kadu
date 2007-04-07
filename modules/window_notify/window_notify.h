@@ -24,7 +24,6 @@ class WindowNotify : public Notifier
 	public slots:
 		void newChat(Protocol *protocol, UserListElements senders, const QString &msg, time_t t);
 		void newMessage(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool &grab);
-		void connectionError(Protocol *protocol, const QString &message);
 		void userChangedStatusToAvailable(const QString &protocolName, UserListElement);
 		void userChangedStatusToBusy(const QString &protocolName, UserListElement);
 		void userChangedStatusToInvisible(const QString &protocolName, UserListElement);

@@ -133,6 +133,8 @@ class Notify : public QObject
 		 */
 		void disconnectSlot(const QString &notifierName, const QString &slotName);
 
+		void connectionError(Protocol *protocol, const QString &message);
+
 	public:
 		Notify(QObject *parent=0, const char *name=0);
 		~Notify();
@@ -195,9 +197,6 @@ class Notify : public QObject
 
 		/* nowa wiadomo¶æ w oknie chat */
 		void newMessage(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool &grab);
-
-		/* b³±d po³±czenia */
-		void connectionError(Protocol *protocol, const QString &message);
 
 		/* u¿ytkownik zmieni³ status na "Dostêpny" */
 		void userChangedStatusToAvailable(const QString &protocolName, UserListElement);

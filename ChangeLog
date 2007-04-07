@@ -119,6 +119,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * core: poprawiono b³±d [0000518] - przeci±ganie kontaktu z "Wszyscy" do innej grupy blokuje opcjê "Przesuñ do grupy" (Vogel)
 * klasa KaduParser stworzona z przestrzeni nazw KaduParser (Vogel)
 * klasa KaduParser ma mo¿liwo¶æ parsowania stringów z wykorzystaniem dwóch obiektów ze zmiennymi (UserListElement i dowolny pochodny od QObject) (Vogel)
+* notyfikacja "B³±d po³±czenia" zamieniona w klasê pochodn± od Notification (Vogel)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

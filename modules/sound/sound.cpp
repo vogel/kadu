@@ -245,7 +245,6 @@ SoundManager::SoundManager(const QString& name, const QString& configname) : Not
 	QMap<QString, QString> s;
 	s["NewChat"]=SLOT(newChat(Protocol *, UserListElements, const QString &, time_t));
 	s["NewMessage"]=SLOT(newMessage(Protocol *, UserListElements, const QString &, time_t, bool &));
-	s["ConnError"]=SLOT(connectionError(Protocol *, const QString &));
 	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const QString &, UserListElement));
 	s["toBusy"]=SLOT(userChangedStatusToBusy(const QString &, UserListElement));
 	s["toInvisible"]=SLOT(userChangedStatusToInvisible(const QString &, UserListElement));
@@ -381,13 +380,6 @@ void SoundManager::newMessage(Protocol * /*protocol*/, UserListElements senders,
 	kdebugf2();
 }
 
-void SoundManager::connectionError(Protocol *, const QString &/*message*/)
-{
-	kdebugf();
-	playSound("ConnectionError");
-	kdebugf2();
-}
-
 void SoundManager::userChangedStatusToAvailable(const QString &/*protocolName*/, UserListElement ule)
 {
 	kdebugf();
@@ -460,13 +452,7 @@ void SoundManager::externalEvent(Notification *notification)
 {
 	kdebugf();
 
-	UserListElements ules = notification->userListElements();
-	QString msg = notification->text();
-
-	if (ules.count() > 0)
-		message("", msg, 0, &ules[0]);
-	else
-		message("", msg, 0, 0);
+	playSound(notification->type());
 
 	kdebugf2();
 }

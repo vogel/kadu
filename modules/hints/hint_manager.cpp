@@ -119,7 +119,7 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 
 	config_file.addVariable("Notify", "NewChat_Hints", true);
 	config_file.addVariable("Notify", "NewMessage_Hints", true);
-	config_file.addVariable("Notify", "ConnError_Hints", true);
+// 	config_file.addVariable("Notify", "ConnError_Hints", true);
 	config_file.addVariable("Notify", "ChangingStatus_Hints", false);
 	config_file.addVariable("Notify", "toAvailable_Hints", true);
 	config_file.addVariable("Notify", "toBusy_Hints", true);
@@ -132,7 +132,6 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 	QMap<QString, QString> s;
 	s["NewChat"]=SLOT(newChat(Protocol *, UserListElements, const QString &, time_t));
 	s["NewMessage"]=SLOT(newMessage(Protocol *, UserListElements, const QString &, time_t, bool &));
-	s["ConnError"]=SLOT(connectionError(Protocol *, const QString &));
 	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const QString &, UserListElement));
 	s["toBusy"]=SLOT(userChangedStatusToBusy(const QString &, UserListElement));
 	s["toInvisible"]=SLOT(userChangedStatusToInvisible(const QString &, UserListElement));
@@ -454,8 +453,11 @@ void HintManager::addHint(Notification *notification)
 	kdebugf();
 
 	Hint *hint = new Hint(frame, notification);
-	hint->set(config_file.readFontEntry("Hints", "HintMessage_font"), config_file.readColorEntry("Hints", "HintMessage_fgcolor"),
-		config_file.readColorEntry("Hints", "HintMessage_bgcolor"));
+	hint->set(
+		config_file.readFontEntry("Hints", "Event_" + notification->type() + "_font"),
+		config_file.readColorEntry("Hints", "Event_" + notification->type() + "_fgcolor"),
+		config_file.readColorEntry("Hints", "Event_" + notification->type() + "_bgcolor")
+	);
 
 	hints.append(hint);
 
@@ -553,13 +555,6 @@ void HintManager::newMessage(Protocol * /*protocol*/, UserListElements senders, 
 	if (!chat->isActiveWindow())
 		showNewMessage("HintNewMessage", "New message from <b>%1</b>", "New message from <b>%1</b><br/> <small>%2</small>", senders, msg);
 
-	kdebugf2();
-}
-
-void HintManager::connectionError(Protocol *, const QString &message)
-{
-	kdebugf();
-	addHint(tr("<b>Error:</b> %1").arg(message), icons_manager->loadIcon("Blocking"), "HintError");
 	kdebugf2();
 }
 
@@ -795,6 +790,28 @@ void HintManager::import_0_5_0_Configuration()
 		tool_tip_class_manager->useToolTipClass("Hints");
 		config_file.removeVariable("Notify", "UserBoxChangeToolTip_Hints");
 	}
+
+	import_0_5_0_Configuration_fromTo("HintError", "ConnectionError");
+}
+
+void HintManager::import_0_5_0_Configuration_fromTo(const QString &from, const QString &to)
+{
+	if (config_file.readNumEntry("Hints", from + "_timeout", -1) == -1)
+		return;
+
+// TODO: fix it, dont use real QColor instances here
+	QColor fgDefaultColor(0x00, 0x00, 0x00);
+	QColor bgDefaultColor(0xf0, 0xf0, 0xf0);
+
+	config_file.addVariable("Hints", QString("Event_") + to + "_font", config_file.readFontEntry("Hints", from + "_font"));
+	config_file.addVariable("Hints", QString("Event_") + to + "_fgcolor", config_file.readColorEntry("Hints", from + "_fgcolor", &fgDefaultColor));
+	config_file.addVariable("Hints", QString("Event_") + to + "_bgcolor", config_file.readColorEntry("Hints", from + "_bgcolor", &bgDefaultColor));
+	config_file.addVariable("Hints", QString("Event_") + to + "_timeout", config_file.readNumEntry("Hints", from + "_timeout", 10));
+
+	config_file.removeVariable("Hints", from + "_font");
+	config_file.removeVariable("Hints", from + "_fgcolor");
+	config_file.removeVariable("Hints", from + "_bgcolor");
+	config_file.removeVariable("Hints", from + "_timeout");
 }
 
 HintManager *hint_manager=NULL;

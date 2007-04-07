@@ -9,11 +9,13 @@
 
 #include <qpushbutton.h>
 
-#include "hint.h"
-#include "debug.h"
 #include "config_file.h"
+#include "debug.h"
+#include "hint.h"
 #include "icons_manager.h"
+#include "kadu_parser.h"
 #include "misc.h"
+
 #include "../notify/notification.h"
 
 /**
@@ -38,12 +40,22 @@ Hint::Hint(QWidget *parent, const QString& text, const QPixmap& pixmap, unsigned
 }
 
 Hint::Hint(QWidget *parent, Notification *notification)
-	: QWidget(parent, "Hint"), vbox(0), callbacksBox(0), icon(0), label(0), bcolor(), secs(2), users(), notification(notification),
-	  haveCallbacks(true)
+	: QWidget(parent, "Hint"), vbox(0), callbacksBox(0), icon(0), label(0), bcolor(), users(), notification(notification),
+	  haveCallbacks(notification->getCallbacks().count() != 0)
 {
 	kdebugf();
 
-	createLabels(notification->text(), icons_manager->loadIcon(notification->icon()));
+	secs = config_file.readNumEntry("Hints", "Event_" + notification->type() + "_timeout", 2);
+
+	QString text;
+
+	QString syntax = config_file.readEntry("Hints", notification->type() + "_Syntax", "");
+	if (syntax == "")
+		text = notification->text();
+	else
+		text = KaduParser::parse(syntax, UserListElement(), notification);
+
+	createLabels(text, icons_manager->loadIcon(notification->icon()));
 
 	callbacksBox = new QHBoxLayout();
 	vbox->addLayout(callbacksBox);
