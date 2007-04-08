@@ -384,11 +384,15 @@ void MigrationDialog::xmlConfigFilesMigration()
 		xmlConfigFileMigration(dir[i]);
 
 	QStringList modules = QStringList::split(",", config_file.readEntry("General", "LoadedModules"));
-	if (modules.grep("_sound").count() > 1) // ext_sound & some other sound module
+	QString unload(QString::null);
+	if ((modules.grep("_sound").count() > 1) && (modules.remove("ext_sound") == 1)) // ext_sound and other sound modules
+		unload.append(",ext_sound");
+	if (modules.remove("migration") == 1) // migration module
+		unload.append(",migration");
+	if (!unload.isEmpty()) // if we unloaded any of unwanted modules we write changes to config_file
 	{
-		modules.remove("ext_sound");
 		config_file.writeEntry("General", "LoadedModules", modules.join(","));
-		config_file.writeEntry("General", "UnloadedModules", config_file.readEntry("General", "UnloadedModules") + ",ext_sound");
+		config_file.writeEntry("General", "UnloadedModules", config_file.readEntry("General", "UnloadedModules") + unload);
 	}
 
 	xml_config_file->sync();
