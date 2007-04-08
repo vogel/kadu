@@ -123,6 +123,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * hints: poprawione domy¶lne kolory dymków (Vogel)
 * toolbars: poprawiono b³±d [0000538] - wyrównywanie toolbarów do prawej strony okna (Vogel)
 * poprawiono b³±d [0000549] - anonimowy kontakt wy¶wietla siê tak¿e po ponownym w³±czeniu kadu, je¿eli poprzednio wiadomo¶æ nie zosta³a odebrana (Vogel)
+* kompilacja Kadu: poprawka po ostatnich zmianach, kompilacja z --enable-final znowu dzia³a (White Eagle/neeo)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
