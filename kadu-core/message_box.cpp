@@ -32,20 +32,20 @@ MessageBox::MessageBox(const QString& message, int components, bool modal, const
 	vbox->setMargin(10);
 	vbox->setSpacing(10);
 
-	labels = new QHBox(this);
-	labels->setSpacing(10);
-	vbox->addWidget(labels, 0, AlignCenter);
+	QHBoxLayout* hboxlabels = new QHBoxLayout(vbox);
 
 	if (!iconName.isEmpty())
 	{
-		icon = new QLabel(labels);
+		icon = new QLabel(this);
 		icon->setPixmap(icons_manager->loadIcon(iconName));
-		vbox->addWidget(icon, 0, AlignCenter);
+		hboxlabels->addWidget(icon, 0, AlignCenter);
 	}
 
-	QLabel* label = new QLabel(labels);
+	QLabel* label = new QLabel(this);
 	if (!message.isEmpty())
 		label->setText(message);
+
+	hboxlabels->addWidget(label, 0, AlignCenter);
 
 	QHBoxLayout* hboxbuttons = new QHBoxLayout(vbox);
 	QHBox* buttons = new QHBox(this);

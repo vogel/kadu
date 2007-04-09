@@ -18,7 +18,6 @@ class MessageBox : public QDialog
 
 	private:
 		static QMap<QString,MessageBox*> Boxes;
-		QHBox* labels;
 		QLabel * icon;
 		QString message;
 
