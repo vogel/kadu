@@ -11,6 +11,7 @@
 #include <qlayout.h>
 #include <qlistview.h>
 #include <qpushbutton.h>
+#include <qmessagebox.h>
 #include <qsimplerichtext.h>
 #include <qvbox.h>
 #include <qvgroupbox.h>
@@ -272,27 +273,27 @@ void UserlistImportExport::startExportTransfer()
 void UserlistImportExport::ExportToFile(void)
 {
 	kdebugf();
-	QString contacts;
 	pb_send->setEnabled(false);
 	pb_delete->setEnabled(false);
 	pb_tofile->setEnabled(false);
 
-	QString fname = QFileDialog::getSaveFileName("/", QString::null,this);
+	QString fname = QFileDialog::getSaveFileName(QString(getenv("HOME")), QString::null, this);
 	if (!fname.isEmpty())
 	{
-		contacts = gadu->userListToString(*userlist);
-
 		QFile file(fname);
-		if (file.open(IO_WriteOnly))
+		if ((!file.exists()) || (QMessageBox::question(this, tr("Overwrite file?"), tr("File exists. Are you sure you want to overwrite it?"), tr("Yes"), tr("No"), QString::null, 1, 1) == 0))
 		{
-			QTextStream stream(&file);
-			stream.setCodec(codec_latin2);
-			stream << contacts;
-			file.close();
-			MessageBox::msg(tr("Your userlist has been successfully exported to file"));
+			if (file.open(IO_WriteOnly))
+			{
+				QTextStream stream(&file);
+				stream.setCodec(codec_latin2);
+				stream << gadu->userListToString(*userlist);
+				file.close();
+				MessageBox::msg(tr("Your userlist has been successfully exported to file"));
+			}
+			else
+				MessageBox::wrn(tr("The application encountered an internal error\nThe export userlist to file was unsuccessful"));
 		}
-		else
-			MessageBox::wrn(tr("The application encountered an internal error\nThe export userlist to file was unsuccessful"));
 	}
 
 	pb_send->setEnabled(true);
