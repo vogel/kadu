@@ -29,10 +29,6 @@ class SpeechSlots : public Notifier
 	private slots:
 		void newChat(Protocol *protocol, UserListElements senders, const QString &msg, time_t t);
 		void newMessage(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool &grab);
-		void userChangedStatusToAvailable(const QString &protocolName, UserListElement);
-		void userChangedStatusToBusy(const QString &protocolName, UserListElement);
-		void userChangedStatusToInvisible(const QString &protocolName, UserListElement);
-		void userChangedStatusToNotAvailable(const QString &protocolName, UserListElement);
 
 		void message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
 		virtual void externalEvent(Notification *notification);

@@ -41,7 +41,7 @@ class HintManager : public Notifier, public ToolTipClass
 		// TODO: usun±æ w 0.6
 		void realCopyConfiguration(const QString &fromHint, const QString &toHint);
 		void import_0_5_0_Configuration();
-		void import_0_5_0_Configuration_fromTo(const QString &from, const QString &to);
+		void import_0_5_0_Configuration_fromTo(const QString &from, const QString &to, const QString &syntax = QString::null);
 
 	private slots:
 		/**
@@ -84,18 +84,6 @@ class HintManager : public Notifier, public ToolTipClass
 
 		/* nowa wiadomo¶æ w oknie chat */
 		void newMessage(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool &grab);
-
-		/* u¿ytkownik zmieni³ status na "Dostêpny" */
-		void userChangedStatusToAvailable(const QString &protocolName, UserListElement);
-
-		/* u¿ytkownik zmieni³ status na "Zaraz wracam" */
-		void userChangedStatusToBusy(const QString &protocolName, UserListElement);
-
-		/* u¿ytkownik zmieni³ status na "Niewidoczny" */
-		void userChangedStatusToInvisible(const QString &protocolName, UserListElement);
-
-		/* u¿ytkownik zmieni³ status na "Niewidoczny" lub "Niedostêpny" */
-		void userChangedStatusToNotAvailable(const QString &protocolName, UserListElement);
 
 		/* inna informacja do powiadomienia */
 		/* je¿eli parameters == NULL, to brane s± domy¶lne ustawienia dymków typu message

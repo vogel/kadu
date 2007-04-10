@@ -35,7 +35,6 @@ HintManagerSlots::HintManagerSlots(QObject *parent, const char *name) : QObject(
 {
 	kdebugf();
 	ConfigDialog::connectSlot("Hints", "Show message content in hint", SIGNAL(toggled(bool)), this, SLOT(toggled_ShowMessageContent(bool)));
-	ConfigDialog::connectSlot("Hints", "Use custom syntax", SIGNAL(toggled(bool)), this, SLOT(toggled_UseNotifySyntax(bool)));
 	ConfigDialog::connectSlot("Hints", "Own hints position", SIGNAL(toggled(bool)), this, SLOT(toggled_UseOwnPosition(bool)));
 	ConfigDialog::connectSlot("Hints", "Set for all", SIGNAL(toggled(bool)), this, SLOT(toggled_SetAll(bool)));
 	ConfigDialog::connectSlot("Hints", "Hint type", SIGNAL(activated(int)), this, SLOT(activated_HintType(int)));
@@ -46,7 +45,7 @@ HintManagerSlots::HintManagerSlots(QObject *parent, const char *name) : QObject(
 
 	ConfigDialog::connectSlot("Hints", "Hint timeout", SIGNAL(valueChanged(int)), this, SLOT(changed_Timeout(int)));
 
-	config_opts_prefixes<<"HintOnline"<<"HintBusy"<<"HintInvisible"<<"HintOffline"<<
+	config_opts_prefixes<<"Event_StatusChanged/ToOnline"<<"Event_StatusChanged/ToBusy"<<"Event_StatusChanged/ToInvisible"<<"Event_StatusChanged/ToOffline"<<
 					"HintBlocking"<<"HintNewChat"<<"HintNewMessage"<<"Event_ConnectionError"<<"HintMessage";
 	CONST_FOREACH(prefix, config_opts_prefixes)
 	{
@@ -65,7 +64,6 @@ HintManagerSlots::~HintManagerSlots()
 {
 	kdebugf();
 	ConfigDialog::disconnectSlot("Hints", "Show message content in hint", SIGNAL(toggled(bool)), this, SLOT(toggled_ShowMessageContent(bool)));
-	ConfigDialog::disconnectSlot("Hints", "Use custom syntax", SIGNAL(toggled(bool)), this, SLOT(toggled_UseNotifySyntax(bool)));
 	ConfigDialog::disconnectSlot("Hints", "Own hints position", SIGNAL(toggled(bool)), this, SLOT(toggled_UseOwnPosition(bool)));
 	ConfigDialog::disconnectSlot("Hints", "Set for all", SIGNAL(toggled(bool)), this, SLOT(toggled_SetAll(bool)));
 
@@ -86,7 +84,6 @@ void HintManagerSlots::onCreateTabHints()
 	ConfigDialog::getLabel("Hints", "<b>Text</b> preview")->setAlignment(Qt::AlignCenter);;
 
 	toggled_ShowMessageContent(config_file.readBoolEntry("Hints", "ShowContentMessage"));
-	toggled_UseNotifySyntax(config_file.readBoolEntry("Hints", "NotifyHintUseSyntax"));
 
 	toggled_UseOwnPosition(config_file.readBoolEntry("Hints", "UseUserPosition"));
 	toggled_SetAll(config_file.readBoolEntry("Hints", "SetAll"));
@@ -122,6 +119,17 @@ void HintManagerSlots::onApplyTabHints()
 		config_file.writeEntry("Hints", prop.key()+"_bgcolor", prop.data().bgcolor);
 		config_file.writeEntry("Hints", prop.key()+"_timeout", (int)prop.data().timeout);
 	}
+
+	// TODO: do it properly
+	QString syntax = config_file.readEntry("Hints","NotifyHintSyntax");
+	if (syntax != "")
+	{
+		config_file.writeEntry("Hints",  "Event_StatusChanged/ToOnline_syntax", syntax);
+		config_file.writeEntry("Hints",  "Event_StatusChanged/ToBusy_syntax", syntax);
+		config_file.writeEntry("Hints",  "Event_StatusChanged/ToInvisible_syntax", syntax);
+		config_file.writeEntry("Hints",  "Event_StatusChanged/ToOffline_syntax", syntax);
+	}
+
 	kdebugf2();
 }
 
@@ -222,13 +230,6 @@ void HintManagerSlots::toggled_ShowMessageContent(bool val)
 {
 	kdebugf();
 	ConfigDialog::getSpinBox("Hints", "Number of quoted characters")->setEnabled(val);
-	kdebugf2();
-}
-
-void HintManagerSlots::toggled_UseNotifySyntax(bool val)
-{
-	kdebugf();
-	ConfigDialog::getLineEdit("Hints", "Hint syntax")->setEnabled(val);
 	kdebugf2();
 }
 

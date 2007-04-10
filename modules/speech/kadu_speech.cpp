@@ -177,19 +177,10 @@ SpeechSlots::SpeechSlots(QObject *parent, const char *name) : Notifier(parent, n
 	QMap<QString, QString> s;
 	s["NewChat"]=SLOT(newChat(Protocol *, UserListElements, const QString &, time_t));
 	s["NewMessage"]=SLOT(newMessage(Protocol *, UserListElements, const QString &, time_t, bool &));
-	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const QString &, UserListElement));
-	s["toBusy"]=SLOT(userChangedStatusToBusy(const QString &, UserListElement));
-	s["toInvisible"]=SLOT(userChangedStatusToInvisible(const QString &, UserListElement));
-	s["toNotAvailable"]=SLOT(userChangedStatusToNotAvailable(const QString &, UserListElement));
 	s["Message"]=SLOT(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *));
 
 	config_file.addVariable("Notify", "NewChat_Speech", true);
 	config_file.addVariable("Notify", "NewMessage_Speech", false);
-	config_file.addVariable("Notify", "ConnError_Speech", false);
-	config_file.addVariable("Notify", "toAvailable_Speech", false);
-	config_file.addVariable("Notify", "toBusy_Speech", false);
-	config_file.addVariable("Notify", "toInvisible_Speech", false);
-	config_file.addVariable("Notify", "toNotAvailable_Speech", false);
 	config_file.addVariable("Notify", "Message_Speech", true);
 
 	notify->registerNotifier(QT_TRANSLATE_NOOP("@default","Speech"), this, s);
@@ -246,12 +237,32 @@ SpeechSlots::~SpeechSlots()
 
 void SpeechSlots::import_0_5_0_Configuration()
 {
-	QString entry = config_file.readEntry("Speech", "ConnectionError", "");
+	QString entry;
 
+	entry = config_file.readEntry("Speech", "ConnectionError", "");
 	if (entry != "")
 		config_file.writeEntry("Speech", "ConnectionError_Syntax", entry.replace("%1", "#{error}"));
-
 	config_file.removeVariable("Speech", "ConnectionError");
+
+	entry = config_file.readEntry("Speech", "NotifyFormatFemale", "");
+	if (entry != "")
+	{
+		config_file.writeEntry("Speech", "StatusChanged/ToOnline_SyntaxFemale", entry);
+		config_file.writeEntry("Speech", "StatusChanged/ToBusy_Syntax/Female", entry);
+		config_file.writeEntry("Speech", "StatusChanged/ToInvisible_Syntax/Female", entry);
+		config_file.writeEntry("Speech", "StatusChanged/ToOffline_Syntax/Female", entry);
+	}
+	config_file.removeVariable("Speech", "NotifyFormatFemale");
+
+	entry = config_file.readEntry("Speech", "NotifyFormatMale", "");
+	if (entry != "")
+	{
+		config_file.writeEntry("Speech", "StatusChanged/ToOnline_Syntax/Male", entry);
+		config_file.writeEntry("Speech", "StatusChanged/ToBusy_Syntax/Male", entry);
+		config_file.writeEntry("Speech", "StatusChanged/ToInvisible_Syntax/Male", entry);
+		config_file.writeEntry("Speech", "StatusChanged/ToOffline_Syntax/Male", entry);
+	}
+	config_file.removeVariable("Speech", "NotifyFormatMale");
 }
 
 void SpeechSlots::say(const QString &s, const QString &path,
@@ -410,51 +421,6 @@ void SpeechSlots::newMessage(Protocol * /*protocol*/, UserListElements senders, 
 	kdebugf2();
 }
 
-void SpeechSlots::userChangedStatusToAvailable(const QString &/*protocolName*/, UserListElement ule)
-{
-	kdebugf();
-	if (lastSpeech.elapsed()<1500)
-	{
-		kdebugf2();
-		return;
-	}
-
-	QString t;
-	if (isFemale(ule.firstName()))
-		t = KaduParser::parse(config_file.readEntry("Speech", "NotifyFormatFemale"), ule);
-	else
-		t = KaduParser::parse(config_file.readEntry("Speech", "NotifyFormatMale"), ule);
-	t.replace("&nbsp;", " ");
-	t.replace("&lt;", "<");
-	t.replace("&gt;", ">");
-	t.replace("&amp;", "&");
-	say(t);
-	lastSpeech.restart();
-
-	kdebugf2();
-}
-
-void SpeechSlots::userChangedStatusToBusy(const QString &protocolName, UserListElement ule)
-{
-	kdebugf();
-	userChangedStatusToAvailable(protocolName, ule);
-	kdebugf2();
-}
-
-void SpeechSlots::userChangedStatusToInvisible(const QString &protocolName, UserListElement ule)
-{
-	kdebugf();
-	userChangedStatusToAvailable(protocolName, ule);
-	kdebugf2();
-}
-
-void SpeechSlots::userChangedStatusToNotAvailable(const QString &protocolName, UserListElement ule)
-{
-	kdebugf();
-	userChangedStatusToAvailable(protocolName, ule);
-	kdebugf2();
-}
-
 void SpeechSlots::message(const QString &/*from*/, const QString &message, const QMap<QString, QVariant> * /*parameters*/, const UserListElement * /*ule*/)
 {
 	kdebugf();
@@ -473,12 +439,30 @@ void SpeechSlots::externalEvent(Notification *notification)
 	}
 
 	QString text;
+	QString sex;
 
-	QString syntax = config_file.readEntry("Speech", notification->type() + "_Syntax", "");
+	UserListElement ule;
+	if (notification->userListElements().count())
+	{
+		ule = notification->userListElements()[0];
+		if (isFemale(ule.firstName()))
+			sex = "/Female";
+		else
+			sex = "/Male";
+	}
+
+	QString syntax = config_file.readEntry("Speech", notification->type() + "_Syntax" + sex, "");
 	if (syntax == "")
 		text = notification->text();
 	else
-		text = KaduParser::parse(syntax, notification->userListElements()[0], notification);
+	{
+		text = KaduParser::parse(syntax, ule, notification);
+	}
+
+	text.replace("&nbsp;", " ");
+	text.replace("&lt;", "<");
+	text.replace("&gt;", ">");
+	text.replace("&amp;", "&");
 
 	say(text);
 	lastSpeech.restart();

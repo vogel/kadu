@@ -18,6 +18,7 @@
 #include "notify.h"
 #include "notify_slots.h"
 #include "message_box.h"
+#include "status_changed_notification.h"
 #include "userbox.h"
 
 extern "C" int notify_init()
@@ -41,15 +42,10 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name),
 	notifiers(), notifySignals(), eventNames(), notifyEvents(), strs()
 {
 	kdebugf();
-	eventNames<<"NewChat"<<"NewMessage"<<"toAvailable"<<
-				"toBusy"<<"toInvisible"<<"toNotAvailable"<<"Message";
+	eventNames<<"NewChat"<<"NewMessage"<<"Message";
 
 	notifySignals["NewChat"]=			QString(SIGNAL(newChat(Protocol *, UserListElements, const QString &, time_t)));
 	notifySignals["NewMessage"]=		QString(SIGNAL(newMessage(Protocol *, UserListElements, const QString &, time_t, bool &)));
-	notifySignals["toAvailable"]=		QString(SIGNAL(userChangedStatusToAvailable(const QString &, UserListElement)));
-	notifySignals["toBusy"]=			QString(SIGNAL(userChangedStatusToBusy(const QString &, UserListElement)));
-	notifySignals["toInvisible"]=		QString(SIGNAL(userChangedStatusToInvisible(const QString &, UserListElement)));
-	notifySignals["toNotAvailable"]=	QString(SIGNAL(userChangedStatusToNotAvailable(const QString &, UserListElement)));
 	notifySignals["Message"]=			QString(SIGNAL(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *)));
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Notify"), "NotifyTab");
@@ -60,10 +56,6 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name),
 	ConfigDialog::addLabel("Notify", "names", 0);
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "New chat"));
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "New message"));
-	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "User changed status to \"Available\""));
-	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "User changed status to \"Busy\""));
-	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "User changed status to \"Invisible\""));
-	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "User changed status to \"Not available\""));
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "Other message"));
 
 	connect(gadu, SIGNAL(connectionError(Protocol *, const QString &)), this, SLOT(connectionError(Protocol *, const QString &)));
@@ -112,6 +104,7 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name),
 	ConfigDialog::registerSlotOnApplyTab("Notify", this, SLOT(updateConnections()));
 
 	ConnectionErrorNotification::registerEvent(this);
+	StatusChangedNotification::registerEvents(this);
 
 	kdebugf2();
 }
@@ -120,6 +113,7 @@ Notify::~Notify()
 {
 	kdebugf();
 
+	StatusChangedNotification::unregisterEvents(this);
 	ConnectionErrorNotification::unregisterEvent(this);
 
 	ConfigDialog::disconnectSlot("Notify", 0, SIGNAL(clicked()), notify_slots, SLOT(_Right()), "forward");
@@ -168,10 +162,6 @@ Notify::~Notify()
 	ConfigDialog::removeControl("Notify", 0);
 	ConfigDialog::removeControl("Notify", "New chat");
 	ConfigDialog::removeControl("Notify", "New message");
-	ConfigDialog::removeControl("Notify", "User changed status to \"Available\"");
-	ConfigDialog::removeControl("Notify", "User changed status to \"Busy\"");
-	ConfigDialog::removeControl("Notify", "User changed status to \"Invisible\"");
-	ConfigDialog::removeControl("Notify", "User changed status to \"Not available\"");
 	ConfigDialog::removeControl("Notify", "Other message");
 
 	ConfigDialog::removeControl("Notify", "names");
@@ -212,15 +202,22 @@ void Notify::statusChanged(UserListElement elem, QString protocolName,
 			if (oldStatus.isOnline() || oldStatus.isBusy())
 				return;
 
+	QString changedTo = "";
 	switch (elem.status("Gadu").status())
 	{
-		case Online:	emit userChangedStatusToAvailable(protocolName, elem); break;
-		case Busy:		emit userChangedStatusToBusy(protocolName, elem); break;
-		case Invisible:	emit userChangedStatusToInvisible(protocolName, elem); break;
-		case Offline:	emit userChangedStatusToNotAvailable(protocolName, elem); break;
+		case Online:	changedTo = "ToOnline"; break;
+		case Busy:		changedTo = "ToBusy"; break;
+		case Invisible:	changedTo = "ToInvisible"; break;
+		case Offline:	changedTo = "ToOFfline"; break;
 		default:
-			;//jeszcze jest status "blokowany", który nie jest tu obs³ugiwany
+			return;
 	}
+
+	UserListElements elems;
+	elems.append(elem);
+
+	StatusChangedNotification *statusChangedNotification = new StatusChangedNotification(changedTo, elems);
+	notify(statusChangedNotification);
 
 	kdebugf2();
 }
@@ -426,6 +423,15 @@ void Notify::updateConnections()
 	kdebugf2();
 }
 
+void Notify::import_connection_from_0_5_0(const QString &notifierName, const QString &oldConnectionName, const QString &newConnectionName)
+{
+	if (config_file.readBoolEntry("Notify", oldConnectionName + "_" + notifierName, false))
+	{
+		config_file.writeEntry("Notify", newConnectionName + "_" + notifierName, true);
+		config_file.removeVariable("Notify", oldConnectionName + "_" + notifierName);
+	}
+}
+
 void Notify::registerNotifier(const QString &name, Notifier *notifier,
 							const QMap<QString, QString> &notifierSlots)
 {
@@ -457,11 +463,11 @@ void Notify::registerNotifier(const QString &name, Notifier *notifier,
 		config_file.removeVariable("Notify", "StatusChanged_" + name);
 	}
 
-	if (config_file.readBoolEntry("Notify", "ConnError_" + name, false))
-	{
-		config_file.writeEntry("Notify", "ConnectionError_" + name, true);
-		config_file.removeVariable("Notify", "ConnError_" + name);
-	}
+	import_connection_from_0_5_0(name, "ConnError", "ConnectionError");
+	import_connection_from_0_5_0(name, "toAvailable", "StatusChanged/ToOnline");
+	import_connection_from_0_5_0(name, "toBusy", "StatusChanged/ToBusy");
+	import_connection_from_0_5_0(name, "toInvisible", "StatusChanged/ToInvisible");
+	import_connection_from_0_5_0(name, "toOffline", "StatusChanged/ToOffline");
 
 	CONST_FOREACH(i, notifySignals)
 		if (config_file.readBoolEntry("Notify", i.key() + '_' + name) && notifierSlots.contains(i.key()))

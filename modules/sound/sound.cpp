@@ -180,6 +180,8 @@ SoundManager::SoundManager(const QString& name, const QString& configname) : Not
 {
 	kdebugf();
 
+	import_0_5_0_configuration();
+
 	lastsoundtime.start();
 
 	play_thread->start();
@@ -245,19 +247,10 @@ SoundManager::SoundManager(const QString& name, const QString& configname) : Not
 	QMap<QString, QString> s;
 	s["NewChat"]=SLOT(newChat(Protocol *, UserListElements, const QString &, time_t));
 	s["NewMessage"]=SLOT(newMessage(Protocol *, UserListElements, const QString &, time_t, bool &));
-	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const QString &, UserListElement));
-	s["toBusy"]=SLOT(userChangedStatusToBusy(const QString &, UserListElement));
-	s["toInvisible"]=SLOT(userChangedStatusToInvisible(const QString &, UserListElement));
-	s["toNotAvailable"]=SLOT(userChangedStatusToNotAvailable(const QString &, UserListElement));
 	s["Message"]=SLOT(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *));
 
 	config_file.addVariable("Notify", "NewChat_Sound", true);
 	config_file.addVariable("Notify", "NewMessage_Sound", true);
-	config_file.addVariable("Notify", "ConnError_Sound", true);
-	config_file.addVariable("Notify", "toAvailable_Sound", true);
-	config_file.addVariable("Notify", "toBusy_Sound", true);
-	config_file.addVariable("Notify", "toInvisible_Sound", false);
-	config_file.addVariable("Notify", "toNotAvailable_Sound", false);
 	config_file.addVariable("Notify", "Message_Sound", true);
 
 	notify->registerNotifier(QT_TRANSLATE_NOOP("@default","Sound"), this, s);
@@ -319,6 +312,17 @@ SoundManager::~SoundManager()
 	kdebugf2();
 }
 
+void SoundManager::import_0_5_0_configuration()
+{
+	if (config_file.readEntry("Sounds", "StatusChanged/ToOnline_sound", "foobar") == "foobar")
+	{
+		config_file.writeEntry("Sounds", "StatusChanged/ToOnline_sound", config_file.readEntry("Sounds", "StatusAvailable_sound"));
+		config_file.writeEntry("Sounds", "StatusChanged/ToBusy_sound", config_file.readEntry("Sounds", "StatusBusy_sound"));
+		config_file.writeEntry("Sounds", "StatusChanged/ToInvisible_sound", config_file.readEntry("Sounds", "StatusInvisible_sound"));
+		config_file.writeEntry("Sounds", "StatusChanged/ToOffline_sound", config_file.readEntry("Sounds", "StatusNotAvailable_sound"));
+	}
+}
+
 Themes *SoundManager::theme()
 {
 	return themes;
@@ -377,34 +381,6 @@ void SoundManager::newMessage(Protocol * /*protocol*/, UserListElements senders,
 		return;
 
 	playSound("Message");
-	kdebugf2();
-}
-
-void SoundManager::userChangedStatusToAvailable(const QString &/*protocolName*/, UserListElement ule)
-{
-	kdebugf();
-	playSound("StatusAvailable");
-	kdebugf2();
-}
-
-void SoundManager::userChangedStatusToBusy(const QString &/*protocolName*/, UserListElement ule)
-{
-	kdebugf();
-	playSound("StatusBusy");
-	kdebugf2();
-}
-
-void SoundManager::userChangedStatusToInvisible(const QString &/*protocolName*/, UserListElement ule)
-{
-	kdebugf();
-	playSound("StatusInvisible");
-	kdebugf2();
-}
-
-void SoundManager::userChangedStatusToNotAvailable(const QString &/*protocolName*/, UserListElement ule)
-{
-	kdebugf();
-	playSound("StatusNotAvailable");
 	kdebugf2();
 }
 

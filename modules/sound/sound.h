@@ -149,13 +149,11 @@ class SoundManager : public Notifier
 
 		void copyConfiguration(const QString &fromEvent, const QString &toEvent) {}
 
+		void import_0_5_0_configuration();
+
 	private slots:
 		void newChat(Protocol *protocol, UserListElements senders, const QString &msg, time_t t);
 		void newMessage(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool &grab);
-		void userChangedStatusToAvailable(const QString &protocolName, UserListElement);
-		void userChangedStatusToBusy(const QString &protocolName, UserListElement);
-		void userChangedStatusToInvisible(const QString &protocolName, UserListElement);
-		void userChangedStatusToNotAvailable(const QString &protocolName, UserListElement);
 
 		/* from i ule s± ignorowane, message wskazuje na plik z d¼wiêkiem do odtworzenia
 		 * je¿eli message==QString::null, to odtwarzany jest standardowy d¼wiêk dla tego typu

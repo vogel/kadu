@@ -32,8 +32,8 @@ SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name
 {
 	kdebugf();
 
-	soundNames<<"Chat"<<"Message"<<"StatusAvailable"<<"StatusBusy"<<"StatusInvisible"<<
-			"StatusNotAvailable"<<"ConnectionError"<<"OtherMessage";
+	soundNames<<"Chat"<<"Message"<<"StatusChanged/ToOnline"<<"StatusChanged/ToBusy"<<"StatusChanged/ToInvisible"<<
+			"StatusChanged/ToOffline"<<"ConnectionError"<<"OtherMessage";
 
 	soundTexts<<tr("Chat sound")<<tr("Message sound")<<tr("Status available sound")<<
 				tr("Status busy sound")<<tr("Status invisible sound")<<tr("Status not available sound")<<

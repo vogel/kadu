@@ -116,21 +116,10 @@ WindowNotify::WindowNotify(QObject *parent, const char *name) : Notifier(parent,
 	QMap<QString, QString> s;
 	s["NewChat"]=SLOT(newChat(Protocol *, UserListElements, const QString &, time_t));
 	s["NewMessage"]=SLOT(newMessage(Protocol *, UserListElements, const QString &, time_t, bool &));
-	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const QString &, UserListElement));
-	s["toBusy"]=SLOT(userChangedStatusToBusy(const QString &, UserListElement));
-	s["toInvisible"]=SLOT(userChangedStatusToInvisible(const QString &, UserListElement));
-	s["toNotAvailable"]=SLOT(userChangedStatusToNotAvailable(const QString &, UserListElement));
-
 	s["Message"]=SLOT(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *));
 
 	config_file.addVariable("Notify", "NewChat_Window", false);
 	config_file.addVariable("Notify", "NewMessage_Window", false);
-	config_file.addVariable("Notify", "ConnError_Window", false);
-	config_file.addVariable("Notify", "ChangingStatus_Window", false);
-	config_file.addVariable("Notify", "toAvailable_Window", false);
-	config_file.addVariable("Notify", "toBusy_Window", false);
-	config_file.addVariable("Notify", "toInvisible_Window", false);
-	config_file.addVariable("Notify", "toNotAvailable_Window", false);
 	config_file.addVariable("Notify", "Message_Window", false);
 
 	notify->registerNotifier(QT_TRANSLATE_NOOP("@default", "Window"), this, s);
@@ -157,38 +146,6 @@ void WindowNotify::newMessage(Protocol * /*protocol*/, UserListElements senders,
 	kdebugf();
 	MessageBox::msg(narg(tr("New message from <b>%1</b><br/> <small>%2</small>"),
 			senders[0].altNick(), msg));
-	kdebugf2();
-}
-
-void WindowNotify::userChangedStatusToAvailable(const QString &/*protocolName*/, UserListElement ule)
-{
-	kdebugf();
-
-	MessageBox::msg(narg(tr("<b>%1</b> changed status to <i>%2</i><br/> <small>%3</small>"),
-					ule.altNick(),
-					qApp->translate("@default", ule.status("Gadu").name().ascii()),
-					QStyleSheet::escape(ule.status("Gadu").description())));
-	kdebugf2();
-}
-
-void WindowNotify::userChangedStatusToBusy(const QString &protocolName, UserListElement ule)
-{
-	kdebugf();
-	userChangedStatusToAvailable(protocolName, ule);
-	kdebugf2();
-}
-
-void WindowNotify::userChangedStatusToInvisible(const QString &protocolName, UserListElement ule)
-{
-	kdebugf();
-	userChangedStatusToAvailable(protocolName, ule);
-	kdebugf2();
-}
-
-void WindowNotify::userChangedStatusToNotAvailable(const QString &protocolName, UserListElement ule)
-{
-	kdebugf();
-	userChangedStatusToAvailable(protocolName, ule);
 	kdebugf2();
 }
 

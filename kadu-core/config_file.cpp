@@ -262,6 +262,7 @@ void PlainConfigFile::read()
 				QString name = line.section('=', 0, 0);
 				QString value = line.right(line.length()-name.length()-1).replace("\\n", "\n");
 				name = name.stripWhiteSpace();
+
 				if (line.contains('=') >= 1 && !name.isEmpty() && !value.isEmpty())
 					(*activeGroup)[name]=value;
 			}

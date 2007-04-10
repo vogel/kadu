@@ -115,6 +115,8 @@ class Notify : public QObject
 		void addConfigRow(const QString &name, const char *description, CallbackRequirement callbackRequirement);
 		void removeConfigRow(const QString &name);
 
+		void import_connection_from_0_5_0(const QString &notifierName, const QString &oldConnectionName, const QString &newConnectionName);
+
 	private slots:
 		/* pomocniczy slot */
 		void newChatSlot(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool grabbed);
@@ -146,10 +148,6 @@ class Notify : public QObject
 		 * nazwy sygna³ów:
 			"NewChat" - nowa rozmowa
 			"NewMessage" - nowa wiadomo¶æ
-			"toAvailable" - u¿ytkownik zmieni³ status na "Dostêpny"
-			"toBusy" - u¿ytkownik zmieni³ status na "Zaraz wracam"
-			"toInvisible" - u¿ytkownik zmieni³ status na "Ukryty"
-			"toNotAvailable" - u¿ytkownik zmieni³ status na "Niewidoczny lub Niedostêpny"
 			"Message" - inna wiadomo¶æ
 		 *
 		 * nie trzeba definiowaæ wszystkich slotów
@@ -196,18 +194,6 @@ class Notify : public QObject
 
 		/* nowa wiadomo¶æ w oknie chat */
 		void newMessage(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool &grab);
-
-		/* u¿ytkownik zmieni³ status na "Dostêpny" */
-		void userChangedStatusToAvailable(const QString &protocolName, UserListElement);
-
-		/* u¿ytkownik zmieni³ status na "Zaraz wracam" */
-		void userChangedStatusToBusy(const QString &protocolName, UserListElement);
-
-		/* u¿ytkownik zmieni³ status na "Niewidoczny" */
-		void userChangedStatusToInvisible(const QString &protocolName, UserListElement);
-
-		/* u¿ytkownik zmieni³ status na "Niewidoczny" lub "Niedostêpny" */
-		void userChangedStatusToNotAvailable(const QString &protocolName, UserListElement);
 
 		/* inna informacja do powiadomienia */
 		void message(const QString &from, const QString &msg, const QMap<QString, QVariant> *parameters, const UserListElement *ule);

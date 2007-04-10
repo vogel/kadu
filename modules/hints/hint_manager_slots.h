@@ -33,7 +33,6 @@ class HintManagerSlots : public QObject
 		void onCloseTabHints();
 
 		void toggled_ShowMessageContent(bool);
-		void toggled_UseNotifySyntax(bool);
 		void toggled_UseOwnPosition(bool);
 		void toggled_SetAll(bool);
 

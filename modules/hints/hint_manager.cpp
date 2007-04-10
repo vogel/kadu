@@ -119,12 +119,6 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 
 	config_file.addVariable("Notify", "NewChat_Hints", true);
 	config_file.addVariable("Notify", "NewMessage_Hints", true);
-// 	config_file.addVariable("Notify", "ConnError_Hints", true);
-	config_file.addVariable("Notify", "ChangingStatus_Hints", false);
-	config_file.addVariable("Notify", "toAvailable_Hints", true);
-	config_file.addVariable("Notify", "toBusy_Hints", true);
-	config_file.addVariable("Notify", "toInvisible_Hints", false);
-	config_file.addVariable("Notify", "toNotAvailable_Hints", false);
 	config_file.addVariable("Notify", "Message_Hints", true);
 
 	connect(this, SIGNAL(searchingForTrayPosition(QPoint &)), kadu, SIGNAL(searchingForTrayPosition(QPoint &)));
@@ -132,10 +126,6 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 	QMap<QString, QString> s;
 	s["NewChat"]=SLOT(newChat(Protocol *, UserListElements, const QString &, time_t));
 	s["NewMessage"]=SLOT(newMessage(Protocol *, UserListElements, const QString &, time_t, bool &));
-	s["toAvailable"]=SLOT(userChangedStatusToAvailable(const QString &, UserListElement));
-	s["toBusy"]=SLOT(userChangedStatusToBusy(const QString &, UserListElement));
-	s["toInvisible"]=SLOT(userChangedStatusToInvisible(const QString &, UserListElement));
-	s["toNotAvailable"]=SLOT(userChangedStatusToNotAvailable(const QString &, UserListElement));
 	s["Message"]=SLOT(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *));
 
 	notify->registerNotifier(QT_TRANSLATE_NOOP("@default","Hints"), this, s);
@@ -562,103 +552,6 @@ void HintManager::newMessage(Protocol * /*protocol*/, UserListElements senders, 
 	kdebugf2();
 }
 
-void HintManager::userChangedStatusToAvailable(const QString &protocolName, UserListElement ule)
-{
-	kdebugf();
-
-	UserListElements ulist;
-	if (config_file.readBoolEntry("Hints", "OpenChatOnClick", false))
-		ulist.append(ule);
-
-	if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
-		addHint(KaduParser::parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true),
-			ule.status(protocolName).pixmap(),"HintOnline", ulist);
-	else
-		if (ule.status(protocolName).hasDescription() && config_file.readBoolEntry("Hints","NotifyHintDescription"))
-			addHint(narg(tr("<b>%1</b> is available<br/> <small>%2</small>"),
-				QStyleSheet::escape(ule.altNick()),
-				QStyleSheet::escape(ule.status(protocolName).description())),
-				ule.status(protocolName).pixmap(),"HintOnline", ulist);
-		else
-			addHint(tr("<b>%1</b> is available")
-				.arg(QStyleSheet::escape(ule.altNick())),
-				ule.status(protocolName).pixmap(),"HintOnline",ulist);
-	kdebugf2();
-}
-
-void HintManager::userChangedStatusToBusy(const QString &protocolName, UserListElement ule)
-{
-	kdebugf();
-
-	UserListElements ulist;
-	if (config_file.readBoolEntry("Hints", "OpenChatOnClick", false))
-		ulist.append(ule);
-
-	if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
-		addHint(KaduParser::parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true),
-			ule.status(protocolName).pixmap(),"HintBusy", ulist);
-	else
-		if (ule.status(protocolName).hasDescription() && config_file.readBoolEntry("Hints","NotifyHintDescription"))
-			addHint(narg(tr("<b>%1</b> is busy<br/> <small>%2</small>"),
-				QStyleSheet::escape(ule.altNick()),
-				QStyleSheet::escape(ule.status(protocolName).description())),
-				ule.status(protocolName).pixmap(),"HintBusy", ulist);
-		else
-			addHint(tr("<b>%1</b> is busy")
-				.arg(QStyleSheet::escape(ule.altNick())),
-				ule.status(protocolName).pixmap(),"HintBusy", ulist);
-	kdebugf2();
-}
-
-void HintManager::userChangedStatusToInvisible(const QString &protocolName, UserListElement ule)
-{
-	kdebugf();
-
-	UserListElements ulist;
-	if (config_file.readBoolEntry("Hints", "OpenChatOnClick", false))
-		ulist.append(ule);
-
-	if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
-		addHint(KaduParser::parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true),
-			ule.status(protocolName).pixmap(),"HintInvisible", ulist);
-	else
-		if (ule.status(protocolName).hasDescription() && config_file.readBoolEntry("Hints","NotifyHintDescription"))
-			addHint(narg(tr("<b>%1</b> is invisible<br/> <small>%2</small>"),
-				QStyleSheet::escape(ule.altNick()),
-				QStyleSheet::escape(ule.status("Gadu").description())),
-				ule.status(protocolName).pixmap(),"HintInvisible", ulist);
-		else
-			addHint(tr("<b>%1</b> is invisible")
-				.arg(QStyleSheet::escape(ule.altNick())),
-				ule.status(protocolName).pixmap(),"HintInvisible", ulist);
-	kdebugf2();
-}
-
-
-void HintManager::userChangedStatusToNotAvailable(const QString &protocolName, UserListElement ule)
-{
-	kdebugf();
-
-	UserListElements ulist;
-	if (config_file.readBoolEntry("Hints", "OpenChatOnClick", false))
-		ulist.append(ule);
-
-	if (config_file.readBoolEntry("Hints","NotifyHintUseSyntax"))
-		addHint(KaduParser::parse(config_file.readEntry("Hints","NotifyHintSyntax"), ule, true),
-			ule.status(protocolName).pixmap(),"HintOffline", ulist);
-	else
-		if (ule.status(protocolName).hasDescription() && config_file.readBoolEntry("Hints","NotifyHintDescription"))
-			addHint(narg(tr("<b>%1</b> is not available<br/> <small>%2</small>"),
-				QStyleSheet::escape(ule.altNick()),
-				QStyleSheet::escape(ule.status(protocolName).description())),
-				ule.status(protocolName).pixmap(),"HintOffline", ulist);
-		else
-			addHint(tr("<b>%1</b> is not available")
-				.arg(QStyleSheet::escape(ule.altNick())),
-				ule.status(protocolName).pixmap(),"HintOffline", ulist);
-	kdebugf2();
-}
-
 void HintManager::showToolTip(const QPoint &point, const UserListElement &user)
 {
 	kdebugf();
@@ -795,10 +688,16 @@ void HintManager::import_0_5_0_Configuration()
 		config_file.removeVariable("Notify", "UserBoxChangeToolTip_Hints");
 	}
 
+	QString syntax = config_file.readEntry("Hints","NotifyHintSyntax");
+
 	import_0_5_0_Configuration_fromTo("HintError", "ConnectionError");
+	import_0_5_0_Configuration_fromTo("HintOnline", "StatusChanged/ToOnline", syntax);
+	import_0_5_0_Configuration_fromTo("HintBusy", "StatusChanged/ToBusy", syntax);
+	import_0_5_0_Configuration_fromTo("HintInvisible", "StatusChanged/ToInvisible", syntax);
+	import_0_5_0_Configuration_fromTo("HintOffline", "StatusChanged/ToOffline", syntax);
 }
 
-void HintManager::import_0_5_0_Configuration_fromTo(const QString &from, const QString &to)
+void HintManager::import_0_5_0_Configuration_fromTo(const QString &from, const QString &to, const QString &syntax)
 {
 	if (config_file.readNumEntry("Hints", from + "_timeout", -1) == -1)
 		return;
@@ -811,6 +710,9 @@ void HintManager::import_0_5_0_Configuration_fromTo(const QString &from, const Q
 	config_file.addVariable("Hints", QString("Event_") + to + "_fgcolor", config_file.readColorEntry("Hints", from + "_fgcolor", &fgDefaultColor));
 	config_file.addVariable("Hints", QString("Event_") + to + "_bgcolor", config_file.readColorEntry("Hints", from + "_bgcolor", &bgDefaultColor));
 	config_file.addVariable("Hints", QString("Event_") + to + "_timeout", config_file.readNumEntry("Hints", from + "_timeout", 10));
+
+	if (QString::null != syntax && syntax != "")
+		config_file.writeEntry("Hints",  QString("Event_") + to + "_syntax", syntax);
 
 	config_file.removeVariable("Hints", from + "_font");
 	config_file.removeVariable("Hints", from + "_fgcolor");

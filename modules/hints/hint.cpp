@@ -49,11 +49,18 @@ Hint::Hint(QWidget *parent, Notification *notification)
 
 	QString text;
 
-	QString syntax = config_file.readEntry("Hints", notification->type() + "_Syntax", "");
+	QString syntax = config_file.readEntry("Hints", "Event_" + notification->type() + "_syntax", "");
 	if (syntax == "")
 		text = notification->text();
 	else
-		text = KaduParser::parse(syntax, UserListElement(), notification);
+	{
+		UserListElement ule;
+		if (notification->userListElements().count())
+			ule = notification->userListElements()[0];
+
+		kdebug("syntax is: %s, text is: %s\n", syntax.ascii(), notification->text().ascii());
+		text = KaduParser::parse(syntax, ule, notification);
+	}
 
 	createLabels(text, icons_manager->loadIcon(notification->icon()));
 

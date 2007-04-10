@@ -127,6 +127,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * migration: po udanej migracji, modu³ przestaje byæ ³adowany (uzi18,neeo)
 * potwierdzanie nadpisania pliku wybranego przy eksporcie listy kontaktów (neeo)
 * message_box: poprawiono tworzenie okna, nie ma b³êdów Qt (Vogel)
+* notyfikacje "Zmiana statusu na..." zamieniona w klasê pochodn± od Notification (Vogel)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
