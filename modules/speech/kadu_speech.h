@@ -19,6 +19,7 @@ class SpeechSlots : public Notifier
 		QTime lastSpeech;
 
 		void import_0_5_0_Configuration();
+		void import_0_5_0_ConfigurationFromTo(const QString &from, const QString &to);
 
 	public:
 		SpeechSlots(QObject *parent=0, const char *name=0);
@@ -27,9 +28,6 @@ class SpeechSlots : public Notifier
 		void copyConfiguration(const QString &fromEvent, const QString &toEvent) {}
 
 	private slots:
-		void newChat(Protocol *protocol, UserListElements senders, const QString &msg, time_t t);
-		void newMessage(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool &grab);
-
 		void message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
 		virtual void externalEvent(Notification *notification);
 

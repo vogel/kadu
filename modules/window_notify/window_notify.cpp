@@ -53,6 +53,7 @@ class NotificationWindow : public QDialog {
 public:
 
 	NotificationWindow(Notification *notification);
+	virtual ~NotificationWindow();
 
 };
 
@@ -61,6 +62,8 @@ NotificationWindow::NotificationWindow(Notification *notification)
 	  notification(notification)
 {
 	kdebugf();
+
+	notification->acquire();
 
 	setCaption(notification->title());
 
@@ -95,10 +98,15 @@ NotificationWindow::NotificationWindow(Notification *notification)
 	else
 		addButton(buttons, tr("Ok"), SLOT(callbackAccept()));
 
-	connect(notification, SIGNAL(closed()), this, SLOT(close()));
+	connect(notification, SIGNAL(closed(Notification *)), this, SLOT(close()));
 
 	buttons->setMaximumSize(buttons->sizeHint());
 	kdebugf2();
+}
+
+NotificationWindow::~NotificationWindow()
+{
+	notification->release();
 }
 
 void NotificationWindow::addButton(QWidget *parent, const QString &caption, const QString &slot)
@@ -114,8 +122,8 @@ WindowNotify::WindowNotify(QObject *parent, const char *name) : Notifier(parent,
 	kdebugf();
 
 	QMap<QString, QString> s;
-	s["NewChat"]=SLOT(newChat(Protocol *, UserListElements, const QString &, time_t));
-	s["NewMessage"]=SLOT(newMessage(Protocol *, UserListElements, const QString &, time_t, bool &));
+// 	s["NewChat"]=SLOT(newChat(Protocol *, UserListElements, const QString &, time_t));
+// 	s["NewMessage"]=SLOT(newMessage(Protocol *, UserListElements, const QString &, time_t, bool &));
 	s["Message"]=SLOT(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *));
 
 	config_file.addVariable("Notify", "NewChat_Window", false);
@@ -130,22 +138,6 @@ WindowNotify::~WindowNotify()
 {
 	kdebugf();
 	notify->unregisterNotifier("Window");
-	kdebugf2();
-}
-
-void WindowNotify::newChat(Protocol * /*protocol*/, UserListElements senders, const QString &msg, time_t /*t*/)
-{
-	kdebugf();
-	MessageBox::msg(narg(tr("Chat with <b>%1</b><br/> <small>%2</small>"),
-			senders[0].altNick(),msg));
-	kdebugf2();
-}
-
-void WindowNotify::newMessage(Protocol * /*protocol*/, UserListElements senders, const QString &msg, time_t /*t*/, bool &/*grab*/)
-{
-	kdebugf();
-	MessageBox::msg(narg(tr("New message from <b>%1</b><br/> <small>%2</small>"),
-			senders[0].altNick(), msg));
 	kdebugf2();
 }
 

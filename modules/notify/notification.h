@@ -80,10 +80,13 @@ private:
 
 	QString Title;
 	QString Text;
+	QString Details;
 	QString Icon;
 
 	QValueList<QPair<QString, const char *> > Callbacks;
 	QTimer *DefaultCallbackTimer;
+
+	int ReferencesCount;
 
 public:
 
@@ -98,6 +101,18 @@ public:
 	 **/
 	Notification(const QString &type, const QString &icon, const UserListElements &userListElements);
 	virtual ~Notification();
+
+	/**
+		Wywo³ywane przez notyfikator, który zajmuje siê danym zdarzeniem.
+	 **/
+	void acquire();
+	/**
+		Wywo³ywane przez notyfikator, który przestaje zajmowaæ siê danym zdarzeniem.
+		Gdy ¿aden notyfikator nie zajmuje siê danym zdarzeniem, zdarzenie jest zwalniane.
+		Wystêpuje to na przyk³ad w przypadku modu³ów d¼wiêkowych czy modu³u hints, gdy
+		dymek zniknie po up³ywie okre¶lonego czasu a nie przez zdarzenie wywo³ane przez u¿ytkownika.
+	 **/
+	void release();
 
 	/**
 		Zamyka zdarzenie. Wywo³uje sygna³ closed() i usuwa obiekt.
@@ -160,6 +175,15 @@ public:
 	QString text();
 
 	/**
+		Ustawia szczegó³y zdarzenia (jak na przyk³ad tekst wiadomo¶ci).
+	 **/
+	void setDetails(const QString &details);
+	/**
+		Szczegó³y zdarzenia
+	 **/
+	QString details();
+
+	/**
 		Ustawia ikonê zdarzenia.
 	 **/
 	void setIcon(const QString &icon);
@@ -196,7 +220,7 @@ signals:
 	/**
 		Sygna³ wysylany przy zamykaniu zdarzenia, po wyborze przez u¿ytkownika dowolnej akcji.
 	 **/
-	void closed();
+	void closed(Notification *);
 
 };
 

@@ -1,15 +1,17 @@
 #ifndef HINT_MANAGER_H
 #define HINT_MANAGER_H
 
-#include <qframe.h>
-#include <qtimer.h>
-#include <qlayout.h>
-#include <qstring.h>
-#include <qfont.h>
 #include <qcolor.h>
+#include <qfont.h>
+#include <qframe.h>
+#include <qlayout.h>
+#include <qmap.h>
+#include <qpair.h>
 #include <qpixmap.h>
-#include <qptrlist.h>
 #include <qpoint.h>
+#include <qptrlist.h>
+#include <qstring.h>
+#include <qtimer.h>
 
 #include "gadu.h"
 #include "hint.h"
@@ -29,6 +31,8 @@ class HintManager : public Notifier, public ToolTipClass
 		QPtrList<Hint> hints;
 		QFrame *tipFrame;
 
+		QMap<QPair<UserListElements, QString>, Hint *> linkedHints;
+
 		/**
 			ustala róg, od którego bêdzie liczona pozycja grupy dymków
 		**/
@@ -41,7 +45,8 @@ class HintManager : public Notifier, public ToolTipClass
 		// TODO: usun±æ w 0.6
 		void realCopyConfiguration(const QString &fromHint, const QString &toHint);
 		void import_0_5_0_Configuration();
-		void import_0_5_0_Configuration_fromTo(const QString &from, const QString &to, const QString &syntax = QString::null);
+		void import_0_5_0_Configuration_fromTo(const QString &from, const QString &to,
+			const QString &syntax = QString::null, const QString &detailSyntax = QString::null);
 
 	private slots:
 		/**
@@ -77,13 +82,10 @@ class HintManager : public Notifier, public ToolTipClass
 		void deleteHint(Hint *hint);
 		void deleteHintAndUpdate(Hint *hint);
 
+		void notificationClosed(Notification *notification);
+
 	public slots:
 /*********** sloty dla notify ************/
-		/* nowa rozmowa */
-		void newChat(Protocol *protocol, UserListElements senders, const QString &msg, time_t t);
-
-		/* nowa wiadomo¶æ w oknie chat */
-		void newMessage(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool &grab);
 
 		/* inna informacja do powiadomienia */
 		/* je¿eli parameters == NULL, to brane s± domy¶lne ustawienia dymków typu message
@@ -111,7 +113,7 @@ class HintManager : public Notifier, public ToolTipClass
 		**/
 		void addHint(const QString &text, const QPixmap &pixmap, const QFont &font, const QColor &fgcolor, const QColor &bgcolor, unsigned int timeout, const UserListElements &senders = UserListElements());
 		void addHint(const QString &text, const QPixmap &pixmap, const QString &configurationDirective, const UserListElements &senders = UserListElements());
-		void addHint(Notification *notification);
+		Hint *addHint(Notification *notification);
 
 		/**
 			je¿eli dymek dotyczy³ konkrentej osoby lub grupy osób, to otwierane jest okno chatu

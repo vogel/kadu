@@ -63,7 +63,6 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 		ConfigDialog::addSpinBox("Hints", "New chat / new message", QT_TRANSLATE_NOOP("@default", "Number of quoted characters"), "CiteSign", 10, 1000, 1, 50);
 
 	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Status change"), 0, Advanced);
-		ConfigDialog::addCheckBox("Hints", "Status change", QT_TRANSLATE_NOOP("@default", "Open chat on click"), "OpenChatOnClick", false);
 		ConfigDialog::addCheckBox("Hints", "Status change", QT_TRANSLATE_NOOP("@default", "Add description to hint if exists"), "NotifyHintDescription", false);
 		ConfigDialog::addCheckBox("Hints", "Status change", QT_TRANSLATE_NOOP("@default", "Use custom syntax"), "NotifyHintUseSyntax", false, 0, 0, Expert);
 		ConfigDialog::addLineEdit("Hints", "Status change", QT_TRANSLATE_NOOP("@default", "Hint syntax"), "NotifyHintSyntax", QString::null, Kadu::SyntaxText, 0, Expert);
@@ -117,15 +116,13 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 	ConfigDialog::registerSlotOnApplyTab("Hints", hint_manager_slots, SLOT(onApplyTabHints()));
 	ConfigDialog::registerSlotOnCloseTab("Hints", hint_manager_slots, SLOT(onCloseTabHints()));
 
-	config_file.addVariable("Notify", "NewChat_Hints", true);
-	config_file.addVariable("Notify", "NewMessage_Hints", true);
-	config_file.addVariable("Notify", "Message_Hints", true);
+// 	config_file.addVariable("Notify", "NewChat_Hints", true);
+// 	config_file.addVariable("Notify", "NewMessage_Hints", true);
+// 	config_file.addVariable("Notify", "Message_Hints", true);
 
 	connect(this, SIGNAL(searchingForTrayPosition(QPoint &)), kadu, SIGNAL(searchingForTrayPosition(QPoint &)));
 
 	QMap<QString, QString> s;
-	s["NewChat"]=SLOT(newChat(Protocol *, UserListElements, const QString &, time_t));
-	s["NewMessage"]=SLOT(newMessage(Protocol *, UserListElements, const QString &, time_t, bool &));
 	s["Message"]=SLOT(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *));
 
 	notify->registerNotifier(QT_TRANSLATE_NOOP("@default","Hints"), this, s);
@@ -194,7 +191,6 @@ HintManager::~HintManager()
 	ConfigDialog::removeControl("Hints", "Hint syntax");
 	ConfigDialog::removeControl("Hints", "Use custom syntax");
 	ConfigDialog::removeControl("Hints", "Add description to hint if exists");
-	ConfigDialog::removeControl("Hints", "Open chat on click");
 	ConfigDialog::removeControl("Hints", "Status change");
 	ConfigDialog::removeControl("Hints", "Number of quoted characters");
 	ConfigDialog::removeControl("Hints", "Delete pending message when user deletes hint");
@@ -328,9 +324,7 @@ void HintManager::processButtonPress(const QString &buttonName, Hint *hint)
 	switch(config_file.readNumEntry("Hints", buttonName))
 	{
 		case 1:
-			if (!hint->requireManualClosing())
-				openChat(hint);
-
+			openChat(hint);
 			hint->acceptNotification();
 			break;
 
@@ -339,9 +333,7 @@ void HintManager::processButtonPress(const QString &buttonName, Hint *hint)
 				chat_manager->deletePendingMsgs(hint->getUsers());
 
 			hint->discardNotification();
-
-			if (!hint->requireManualClosing())
-				deleteHintAndUpdate(hint);
+			deleteHintAndUpdate(hint);
 			break;
 
 		case 3:
@@ -438,9 +430,11 @@ void HintManager::addHint(const QString &text, const QPixmap &pixmap, const QStr
 	addHint(text, pixmap, font, fgcolor, bgcolor, timeout, senders);
 }
 
-void HintManager::addHint(Notification *notification)
+Hint *HintManager::addHint(Notification *notification)
 {
 	kdebugf();
+
+	connect(notification, SIGNAL(closed(Notification *)), this, SLOT(notificationClosed(Notification *)));
 
 	// TODO: fix this
 	QColor fgDefaultColor(0x00, 0x00, 0x00);
@@ -470,6 +464,8 @@ void HintManager::addHint(Notification *notification)
 		frame->show();
 
 	kdebugf2();
+
+	return hint;
 }
 
 void HintManager::setLayoutDirection()
@@ -502,53 +498,6 @@ void HintManager::setLayoutDirection()
 			layout->setDirection(QBoxLayout::Down);
 			break;
 	}
-	kdebugf2();
-}
-
-void HintManager::showNewMessage(const QString &configurationDirective, const QString &title,
-	const QString &contentTitle, UserListElements senders, const QString &msg)
-{
-	kdebugf();
-
-	if (config_file.readBoolEntry("Hints", "ShowContentMessage"))
-	{
-		unsigned int citeSign=config_file.readUnsignedNumEntry("Hints","CiteSign");
-		QString cite;
-		if (msg.length() <= citeSign)
-			cite = msg;
-		else
-			cite = msg.left(citeSign)+"...";
-		addHint(narg(tr(contentTitle),
-			QStyleSheet::escape(senders[0].altNick()), cite),
-			icons_manager->loadIcon("Message"), configurationDirective, senders);
-	}
-	else
-		addHint(tr(title).arg(QStyleSheet::escape(senders[0].altNick())),
-			icons_manager->loadIcon("Message"), configurationDirective, senders);
-
-	kdebugf2();
-}
-
-void HintManager::newChat(Protocol * /*protocol*/, UserListElements senders, const QString &msg, time_t /*t*/)
-{
-	kdebugf();
-	showNewMessage("HintNewChat", "Chat with <b>%1</b>", "Chat with <b>%1</b><br/> <small>%2</small>", senders, msg);
-	kdebugf2();
-}
-
-void HintManager::newMessage(Protocol * /*protocol*/, UserListElements senders, const QString &msg, time_t /*t*/, bool &/*grab*/)
-{
-	kdebugf();
-	Chat* chat=chat_manager->findChat(senders);
-	if (chat==NULL)
-	{
-		kdebugmf(KDEBUG_ERROR|KDEBUG_FUNCTION_END, "end: chat==NULL!\n");
-		return;
-	}
-
-	if (!chat->isActiveWindow())
-		showNewMessage("HintNewMessage", "New message from <b>%1</b>", "New message from <b>%1</b><br/> <small>%2</small>", senders, msg);
-
 	kdebugf2();
 }
 
@@ -662,9 +611,34 @@ void HintManager::externalEvent(Notification *notification)
 {
 	kdebugf();
 
-	addHint(notification);
+	if (notification->details() == "")
+	{
+		addHint(notification);
+
+		kdebugf2();
+		return;
+	}
+
+	const UserListElements &ules = notification->userListElements();
+	if (linkedHints.count(qMakePair(ules, notification->type())))
+	{
+		Hint *linkedHint = linkedHints[qMakePair(ules, notification->type())];
+		linkedHint->addDetail(notification->details());
+	}
+	else
+	{
+		Hint *linkedHint = addHint(notification);
+		linkedHints[qMakePair(ules, notification->type())] = linkedHint;
+	}
 
 	kdebugf2();
+}
+
+void HintManager::notificationClosed(Notification *notification)
+{
+	const UserListElements &ules = notification->userListElements();
+	if (linkedHints.count(qMakePair(ules, notification->type())))
+		linkedHints.remove(qMakePair(ules, notification->type()));
 }
 
 void HintManager::copyConfiguration(const QString &fromEvent, const QString &toEvent)
@@ -695,9 +669,11 @@ void HintManager::import_0_5_0_Configuration()
 	import_0_5_0_Configuration_fromTo("HintBusy", "StatusChanged/ToBusy", syntax);
 	import_0_5_0_Configuration_fromTo("HintInvisible", "StatusChanged/ToInvisible", syntax);
 	import_0_5_0_Configuration_fromTo("HintOffline", "StatusChanged/ToOffline", syntax);
+	import_0_5_0_Configuration_fromTo("HintNewChat", "NewChat");
+	import_0_5_0_Configuration_fromTo("HintNewMessage", "NewMessage");
 }
 
-void HintManager::import_0_5_0_Configuration_fromTo(const QString &from, const QString &to, const QString &syntax)
+void HintManager::import_0_5_0_Configuration_fromTo(const QString &from, const QString &to, const QString &syntax, const QString &detailSyntax)
 {
 	if (config_file.readNumEntry("Hints", from + "_timeout", -1) == -1)
 		return;
@@ -713,6 +689,8 @@ void HintManager::import_0_5_0_Configuration_fromTo(const QString &from, const Q
 
 	if (QString::null != syntax && syntax != "")
 		config_file.writeEntry("Hints",  QString("Event_") + to + "_syntax", syntax);
+	if (QString::null != detailSyntax && detailSyntax != "")
+		config_file.writeEntry("Hints",  QString("Event_") + to + "_detailSyntax", detailSyntax);
 
 	config_file.removeVariable("Hints", from + "_font");
 	config_file.removeVariable("Hints", from + "_fgcolor");

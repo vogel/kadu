@@ -135,24 +135,45 @@ SpeechSlots::SpeechSlots(QObject *parent, const char *name) : Notifier(parent, n
 
 	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Chat format (male):"),
-			"ChatFormatMale", SpeechSlots::tr("man %a wrote %1"), Kadu::SyntaxText, 0, Advanced);
+			"NewChat_Syntax/Male", SpeechSlots::tr("man %a wrote %1"), Kadu::SyntaxText, 0, Advanced);
 	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Chat format (female):"),
-			"ChatFormatFemale", SpeechSlots::tr("woman %a wrote %1"), Kadu::SyntaxText, 0, Advanced);
+			"NewChat_Syntax/Female", SpeechSlots::tr("woman %a wrote %1"), Kadu::SyntaxText, 0, Advanced);
 
 	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Message format (male):"),
-			"MessageFormatMale", SpeechSlots::tr("man %a wrote %1"), Kadu::SyntaxText, 0, Advanced);
+			"NewMessage_Syntax/Male", SpeechSlots::tr("man %a wrote %1"), Kadu::SyntaxText, 0, Advanced);
 	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Message format (female):"),
-			"MessageFormatFemale", SpeechSlots::tr("woman %a wrote %1"), Kadu::SyntaxText, 0, Advanced);
+			"NewMessage_Syntax/Female", SpeechSlots::tr("woman %a wrote %1"), Kadu::SyntaxText, 0, Advanced);
 
 	ConfigDialog::addLineEdit("Speech", "Speech",
-			QT_TRANSLATE_NOOP("@default","Notify format (male):"),
-			"NotifyFormatMale", SpeechSlots::tr("man %a changed status to %s %d"), Kadu::SyntaxText, 0, Advanced);
+			QT_TRANSLATE_NOOP("@default","Status changed to online (male):"),
+			"StatusChanged/ToOnline_Syntax/Male", SpeechSlots::tr("man %a changed status to %s %d"), Kadu::SyntaxText, 0, Advanced);
 	ConfigDialog::addLineEdit("Speech", "Speech",
-			QT_TRANSLATE_NOOP("@default","Notify format (female):"),
-			"NotifyFormatFemale", SpeechSlots::tr("woman %a changed status to %s %d"), Kadu::SyntaxText, 0, Advanced);
+			QT_TRANSLATE_NOOP("@default","Status changed to online (female):"),
+			"StatusChanged/ToOnline_Syntax/Female", SpeechSlots::tr("woman %a changed status to %s %d"), Kadu::SyntaxText, 0, Advanced);
+
+	ConfigDialog::addLineEdit("Speech", "Speech",
+			QT_TRANSLATE_NOOP("@default","Status changed to busy (male):"),
+			"StatusChanged/ToBusy_Syntax/Male", SpeechSlots::tr("man %a changed status to %s %d"), Kadu::SyntaxText, 0, Advanced);
+	ConfigDialog::addLineEdit("Speech", "Speech",
+			QT_TRANSLATE_NOOP("@default","Status changed to busy (female):"),
+			"StatusChanged/ToBusy_Syntax/Female", SpeechSlots::tr("woman %a changed status to %s %d"), Kadu::SyntaxText, 0, Advanced);
+
+	ConfigDialog::addLineEdit("Speech", "Speech",
+			QT_TRANSLATE_NOOP("@default","Status changed to invisible (male):"),
+			"StatusChanged/ToInvisible_Syntax/Male", SpeechSlots::tr("man %a changed status to %s %d"), Kadu::SyntaxText, 0, Advanced);
+	ConfigDialog::addLineEdit("Speech", "Speech",
+			QT_TRANSLATE_NOOP("@default","Status changed to invisible (female):"),
+			"StatusChanged/ToInvisible_Syntax/Female", SpeechSlots::tr("woman %a changed status to %s %d"), Kadu::SyntaxText, 0, Advanced);
+
+	ConfigDialog::addLineEdit("Speech", "Speech",
+			QT_TRANSLATE_NOOP("@default","Status changed to offline (male):"),
+			"StatusChanged/ToOffline_Syntax/Male", SpeechSlots::tr("man %a changed status to %s %d"), Kadu::SyntaxText, 0, Advanced);
+	ConfigDialog::addLineEdit("Speech", "Speech",
+			QT_TRANSLATE_NOOP("@default","Status changed to offline (female):"),
+			"StatusChanged/ToOffline_Syntax/Female", SpeechSlots::tr("woman %a changed status to %s %d"), Kadu::SyntaxText, 0, Advanced);
 
 	ConfigDialog::addLineEdit("Speech", "Speech",
 			QT_TRANSLATE_NOOP("@default","Connection error:"),
@@ -175,12 +196,10 @@ SpeechSlots::SpeechSlots(QObject *parent, const char *name) : Notifier(parent, n
 	ConfigDialog::registerSlotOnCreateTab("Speech", this, SLOT(onCreateTabSpeech()));
 
 	QMap<QString, QString> s;
-	s["NewChat"]=SLOT(newChat(Protocol *, UserListElements, const QString &, time_t));
-	s["NewMessage"]=SLOT(newMessage(Protocol *, UserListElements, const QString &, time_t, bool &));
 	s["Message"]=SLOT(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *));
 
-	config_file.addVariable("Notify", "NewChat_Speech", true);
-	config_file.addVariable("Notify", "NewMessage_Speech", false);
+// 	config_file.addVariable("Notify", "NewChat_Speech", true);
+// 	config_file.addVariable("Notify", "NewMessage_Speech", false);
 	config_file.addVariable("Notify", "Message_Speech", true);
 
 	notify->registerNotifier(QT_TRANSLATE_NOOP("@default","Speech"), this, s);
@@ -235,6 +254,19 @@ SpeechSlots::~SpeechSlots()
 	kdebugf2();
 }
 
+void SpeechSlots::import_0_5_0_ConfigurationFromTo(const QString &from, const QString &to)
+{
+	QString entry = config_file.readEntry("Speech", from + "Female", "");
+	if (entry != "")
+		config_file.writeEntry("Speech", from + "_Syntax/Female", entry);
+	config_file.removeVariable("Speech", from + "Female");
+
+	entry = config_file.readEntry("Speech", to + "Male", "");
+	if (entry != "")
+		config_file.writeEntry("Speech", to + "_Syntax/Male", entry);
+	config_file.removeVariable("Speech", to + "Male");
+}
+
 void SpeechSlots::import_0_5_0_Configuration()
 {
 	QString entry;
@@ -247,7 +279,7 @@ void SpeechSlots::import_0_5_0_Configuration()
 	entry = config_file.readEntry("Speech", "NotifyFormatFemale", "");
 	if (entry != "")
 	{
-		config_file.writeEntry("Speech", "StatusChanged/ToOnline_SyntaxFemale", entry);
+		config_file.writeEntry("Speech", "StatusChanged/ToOnline_Syntax/Female", entry);
 		config_file.writeEntry("Speech", "StatusChanged/ToBusy_Syntax/Female", entry);
 		config_file.writeEntry("Speech", "StatusChanged/ToInvisible_Syntax/Female", entry);
 		config_file.writeEntry("Speech", "StatusChanged/ToOffline_Syntax/Female", entry);
@@ -263,6 +295,9 @@ void SpeechSlots::import_0_5_0_Configuration()
 		config_file.writeEntry("Speech", "StatusChanged/ToOffline_Syntax/Male", entry);
 	}
 	config_file.removeVariable("Speech", "NotifyFormatMale");
+
+	import_0_5_0_ConfigurationFromTo("NewChat", "NewChat");
+	import_0_5_0_ConfigurationFromTo("NewMessage", "NewMessage");
 }
 
 void SpeechSlots::say(const QString &s, const QString &path,
@@ -359,68 +394,6 @@ void SpeechSlots::testSpeech()
 	kdebugf2();
 }
 
-void SpeechSlots::newChat(Protocol * /*protocol*/, UserListElements senders, const QString &msg, time_t /*t*/)
-{
-	kdebugf();
-	if (lastSpeech.elapsed()<1500)
-	{
-		kdebugf2();
-		return;
-	}
-
-	Chat* chatWin= chat_manager->findChat(senders);
-	if (config_file.readBoolEntry("Speech","SayWhenWinNotActive") && chatWin)
-		if (chatWin->isActiveWindow())
-			return;
-	QString plainMsg=toPlainText(msg);
-	QString format;
-	UserListElement ule = senders[0];
-
-	if (plainMsg.length()>config_file.readUnsignedNumEntry("Speech", "MaxLength"))
-		format="MsgTooLong";
-	else
-		format="MessageFormat";
-
-	if (isFemale(ule.firstName()))
-		format=config_file.readEntry("Speech", format+"Female");
-	else
-		format=config_file.readEntry("Speech", format+"Male");
-
-	say(KaduParser::parse(format, ule).arg(plainMsg));
-
-	lastSpeech.restart();
-	kdebugf2();
-}
-
-void SpeechSlots::newMessage(Protocol * /*protocol*/, UserListElements senders, const QString &msg, time_t /*t*/, bool &/*grab*/)
-{
-	kdebugf();
-	if (lastSpeech.elapsed() < 1500)
-	{
-		kdebugf2();
-		return;
-	}
-
-	QString plainMsg=toPlainText(msg);
-	QString format;
-	UserListElement ule = senders[0];
-
-	if (plainMsg.length()>config_file.readUnsignedNumEntry("Speech", "MaxLength"))
-		format="MsgTooLong";
-	else
-		format="MessageFormat";
-
-	if (isFemale(ule.firstName()))
-		format=config_file.readEntry("Speech", format+"Female");
-	else
-		format=config_file.readEntry("Speech", format+"Male");
-
-	say(KaduParser::parse(format, ule).arg(plainMsg));
-
-	lastSpeech.restart();
-	kdebugf2();
-}
-
 void SpeechSlots::message(const QString &/*from*/, const QString &message, const QMap<QString, QVariant> * /*parameters*/, const UserListElement * /*ule*/)
 {
 	kdebugf();
@@ -456,7 +429,11 @@ void SpeechSlots::externalEvent(Notification *notification)
 		text = notification->text();
 	else
 	{
-		text = KaduParser::parse(syntax, ule, notification);
+		QString details = notification->details();
+		if (details.length() > config_file.readUnsignedNumEntry("Speech", "MaxLength"))
+			syntax = config_file.readEntry("Speech", "MsgTooLong" + sex);
+
+		text = KaduParser::parse(syntax, ule, notification).arg(details);
 	}
 
 	text.replace("&nbsp;", " ");

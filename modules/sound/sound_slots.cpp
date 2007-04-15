@@ -32,7 +32,7 @@ SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name
 {
 	kdebugf();
 
-	soundNames<<"Chat"<<"Message"<<"StatusChanged/ToOnline"<<"StatusChanged/ToBusy"<<"StatusChanged/ToInvisible"<<
+	soundNames<<"NewChat"<<"NewMessage"<<"StatusChanged/ToOnline"<<"StatusChanged/ToBusy"<<"StatusChanged/ToInvisible"<<
 			"StatusChanged/ToOffline"<<"ConnectionError"<<"OtherMessage";
 
 	soundTexts<<tr("Chat sound")<<tr("Message sound")<<tr("Status available sound")<<
@@ -303,9 +303,9 @@ void SoundSlots::testSamplePlaying()
 		return;
 	QString chatsound;
 	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
-		chatsound = config_file.readEntry("Sounds", "Chat_sound");
+		chatsound = config_file.readEntry("Sounds", "NewChat_sound");
 	else
-		chatsound = sound_manager->theme()->themePath(config_file.readEntry("Sounds", "SoundTheme")) + sound_manager->theme()->getThemeEntry("Chat");
+		chatsound = sound_manager->theme()->themePath(config_file.readEntry("Sounds", "SoundTheme")) + sound_manager->theme()->getThemeEntry("NewChat");
 
 	QFile file(chatsound);
 	if (!file.open(IO_ReadOnly))

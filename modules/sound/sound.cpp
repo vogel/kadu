@@ -245,12 +245,10 @@ SoundManager::SoundManager(const QString& name, const QString& configname) : Not
 	themes->setTheme(config_file.readEntry("Sounds","SoundTheme"));
 
 	QMap<QString, QString> s;
-	s["NewChat"]=SLOT(newChat(Protocol *, UserListElements, const QString &, time_t));
-	s["NewMessage"]=SLOT(newMessage(Protocol *, UserListElements, const QString &, time_t, bool &));
 	s["Message"]=SLOT(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *));
 
-	config_file.addVariable("Notify", "NewChat_Sound", true);
-	config_file.addVariable("Notify", "NewMessage_Sound", true);
+// 	config_file.addVariable("Notify", "NewChat_Sound", true);
+// 	config_file.addVariable("Notify", "NewMessage_Sound", true);
 	config_file.addVariable("Notify", "Message_Sound", true);
 
 	notify->registerNotifier(QT_TRANSLATE_NOOP("@default","Sound"), this, s);
@@ -320,6 +318,9 @@ void SoundManager::import_0_5_0_configuration()
 		config_file.writeEntry("Sounds", "StatusChanged/ToBusy_sound", config_file.readEntry("Sounds", "StatusBusy_sound"));
 		config_file.writeEntry("Sounds", "StatusChanged/ToInvisible_sound", config_file.readEntry("Sounds", "StatusInvisible_sound"));
 		config_file.writeEntry("Sounds", "StatusChanged/ToOffline_sound", config_file.readEntry("Sounds", "StatusNotAvailable_sound"));
+
+		config_file.writeEntry("Sounds", "NewChat_sound", config_file.readEntry("Sounds", "Chat_sound"));
+		config_file.writeEntry("Sounds", "NewMessage_sound", config_file.readEntry("Sounds", "Message_sound"));
 	}
 }
 
@@ -365,23 +366,6 @@ void SoundManager::playSound(const QString &soundName)
 	}
 	else
 		fprintf(stderr, "file (%s) not found\n", sound.local8Bit().data());
-}
-
-void SoundManager::newChat(Protocol * /*protocol*/, UserListElements /*senders*/, const QString &/*msg*/, time_t /*t*/)
-{
-	kdebugf();
-	playSound("Chat");
-	kdebugf2();
-}
-
-void SoundManager::newMessage(Protocol * /*protocol*/, UserListElements senders, const QString &/*msg*/, time_t /*t*/, bool &/*grab*/)
-{
-	kdebugf();
-	if (config_file.readBoolEntry("Sounds", "PlaySoundChatInvisible") && chat_manager->findChat(senders)->isActiveWindow())
-		return;
-
-	playSound("Message");
-	kdebugf2();
 }
 
 void SoundManager::message(const QString &, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *)

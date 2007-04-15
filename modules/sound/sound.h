@@ -152,9 +152,6 @@ class SoundManager : public Notifier
 		void import_0_5_0_configuration();
 
 	private slots:
-		void newChat(Protocol *protocol, UserListElements senders, const QString &msg, time_t t);
-		void newMessage(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool &grab);
-
 		/* from i ule s± ignorowane, message wskazuje na plik z d¼wiêkiem do odtworzenia
 		 * je¿eli message==QString::null, to odtwarzany jest standardowy d¼wiêk dla tego typu
 		 * je¿eli mapa jest!=NULL brane s± z niej nastêpuj±ce warto¶ci:

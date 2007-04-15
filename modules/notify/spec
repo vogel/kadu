@@ -1,2 +1,2 @@
-MODULE_SOURCES="notify.cpp notify_slots.cpp notification.cpp connection_error_notification.cpp status_changed_notification.cpp"
-MODULE_MOC_HEADERS="notify.h notify_slots.h notification.h connection_error_notification.h status_changed_notification.h"
+MODULE_SOURCES="notify.cpp notify_slots.cpp notification.cpp connection_error_notification.cpp status_changed_notification.cpp new_message_notification.cpp"
+MODULE_MOC_HEADERS="notify.h notify_slots.h notification.h connection_error_notification.h status_changed_notification.h new_message_notification.h"

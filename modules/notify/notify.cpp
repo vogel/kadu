@@ -15,6 +15,7 @@
 #include "debug.h"
 #include "kadu.h"
 #include "misc.h"
+#include "new_message_notification.h"
 #include "notify.h"
 #include "notify_slots.h"
 #include "message_box.h"
@@ -42,10 +43,8 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name),
 	notifiers(), notifySignals(), eventNames(), notifyEvents(), strs()
 {
 	kdebugf();
-	eventNames<<"NewChat"<<"NewMessage"<<"Message";
+	eventNames<<"Message";
 
-	notifySignals["NewChat"]=			QString(SIGNAL(newChat(Protocol *, UserListElements, const QString &, time_t)));
-	notifySignals["NewMessage"]=		QString(SIGNAL(newMessage(Protocol *, UserListElements, const QString &, time_t, bool &)));
 	notifySignals["Message"]=			QString(SIGNAL(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *)));
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Notify"), "NotifyTab");
@@ -54,8 +53,6 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name),
 	//pierwsza kolumna - nazwy
 	ConfigDialog::addVBox("Notify", "Notify configuration", "names");
 	ConfigDialog::addLabel("Notify", "names", 0);
-	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "New chat"));
-	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "New message"));
 	ConfigDialog::addLabel("Notify", "names", QT_TRANSLATE_NOOP("@default", "Other message"));
 
 	connect(gadu, SIGNAL(connectionError(Protocol *, const QString &)), this, SLOT(connectionError(Protocol *, const QString &)));
@@ -103,6 +100,7 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name),
 	ConfigDialog::registerSlotOnApplyTab("Notify", notify_slots, SLOT(onApplyTabNotify()));
 	ConfigDialog::registerSlotOnApplyTab("Notify", this, SLOT(updateConnections()));
 
+	MessageNotification::registerEvents(this);
 	ConnectionErrorNotification::registerEvent(this);
 	StatusChangedNotification::registerEvents(this);
 
@@ -115,6 +113,7 @@ Notify::~Notify()
 
 	StatusChangedNotification::unregisterEvents(this);
 	ConnectionErrorNotification::unregisterEvent(this);
+	MessageNotification::unregisterEvents(this);
 
 	ConfigDialog::disconnectSlot("Notify", 0, SIGNAL(clicked()), notify_slots, SLOT(_Right()), "forward");
 	ConfigDialog::disconnectSlot("Notify", 0, SIGNAL(clicked()), notify_slots, SLOT(_Left()), "back");
@@ -160,8 +159,6 @@ Notify::~Notify()
 
 	//pierwsza kolumna - nazwy
 	ConfigDialog::removeControl("Notify", 0);
-	ConfigDialog::removeControl("Notify", "New chat");
-	ConfigDialog::removeControl("Notify", "New message");
 	ConfigDialog::removeControl("Notify", "Other message");
 
 	ConfigDialog::removeControl("Notify", "names");
@@ -224,20 +221,22 @@ void Notify::statusChanged(UserListElement elem, QString protocolName,
 
 void Notify::newChatSlot(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool grabbed)
 {
+	kdebugf();
+
 	if (!grabbed)
-	{
-		kdebugf();//sygnatury trochê siê ró¿ni±, wiêc ten slot musi byæ...
-		emit newChat(protocol, senders, msg, t);
-		kdebugf2();
-	}
+		notify(new MessageNotification(MessageNotification::NewChat, senders, msg));
+
+	kdebugf2();
 }
 
 void Notify::probablyNewMessage(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool &grab)
 {
 	kdebugf();
-	Chat* chat = chat_manager->findChat(senders);
-	if (chat != NULL)
-		emit newMessage(protocol, senders, msg, t, grab);
+
+	Chat *chat = chat_manager->findChat(senders);
+	if (chat && !chat->isActiveWindow())
+		notify(new MessageNotification(MessageNotification::NewMessage, senders, msg));
+
 	kdebugf2();
 }
 
@@ -568,6 +567,8 @@ void Notify::notify(Notification *notification)
 	bool foundNotifier = false;
 	bool foundNotifierWithCallbackSupported = notification->getCallbacks().count() == 0;
 
+	notification->acquire();
+
 	CONST_FOREACH(i, notifiers)
 		if (config_file.readBoolEntry("Notify", notifyType + '_' + i.key()))
 		{
@@ -590,6 +591,8 @@ void Notify::notify(Notification *notification)
 
 	if (!foundNotifier)
 		notification->callbackDiscard();
+
+	notification->release();
 
 	if (!foundNotifierWithCallbackSupported)
 		MessageBox::wrn(tr("Unable to find notifier for %1 event").arg(notification->type()), true);

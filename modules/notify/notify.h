@@ -15,6 +15,7 @@
 #include "protocol.h"
 #include "userlist.h"
 
+class MessageNotification;
 
 /**
  * @defgroup notify Notify
@@ -118,6 +119,7 @@ class Notify : public QObject
 		void import_connection_from_0_5_0(const QString &notifierName, const QString &oldConnectionName, const QString &newConnectionName);
 
 	private slots:
+
 		/* pomocniczy slot */
 		void newChatSlot(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool grabbed);
 		/* pomocniczy slot */
@@ -146,8 +148,6 @@ class Notify : public QObject
 		 * name bêdzie u¿yte w oknie konfiguracji (nale¿y podawaæ angielsk± nazwê)
 		 * slots to mapa odwzoruj±ca nazwy sygna³ów na sloty w obiekcie notifier
 		 * nazwy sygna³ów:
-			"NewChat" - nowa rozmowa
-			"NewMessage" - nowa wiadomo¶æ
 			"Message" - inna wiadomo¶æ
 		 *
 		 * nie trzeba definiowaæ wszystkich slotów
@@ -188,12 +188,6 @@ class Notify : public QObject
 
 	signals:
 	//UWAGA: razem ze zmianami nazw/parametrów tych sygna³ów nale¿y aktualizowaæ wpisy w konstruktorze Notify
-
-		/* nowa rozmowa */
-		void newChat(Protocol *protocol, UserListElements senders, const QString &msg, time_t t);
-
-		/* nowa wiadomo¶æ w oknie chat */
-		void newMessage(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool &grab);
 
 		/* inna informacja do powiadomienia */
 		void message(const QString &from, const QString &msg, const QMap<QString, QVariant> *parameters, const UserListElement *ule);

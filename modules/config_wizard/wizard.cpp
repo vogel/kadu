@@ -742,32 +742,36 @@ void Wizard::createHintsOptionsPage()
 	cb_hintsTheme->insertItem(tr("Current")); //wlasne ustawienie
 	cb_hintsTheme->setCurrentItem(i);
 	//teraz musimy je zapamietac
-	currentHints[0][0] = config_file.readEntry("Hints", "HintBlocking_bgcolor", "#f0f0f0");
+
+	// TODO:
+	// nieaktualne
+	// trza bêdzie poprawiæ
+// 	currentHints[0][0] = config_file.readEntry("Hints", "HintBlocking_bgcolor", "#f0f0f0");
 // 	currentHints[1][0] = config_file.readEntry("Hints", "HintBusyD_bgcolor", "#f0f0f0");
-	currentHints[2][0] = config_file.readEntry("Hints", "HintBusy_bgcolor", "#f0f0f0");
-	currentHints[3][0] = config_file.readEntry("Hints", "HintError_bgcolor", "#f0f0f0");
+// 	currentHints[2][0] = config_file.readEntry("Hints", "HintBusy_bgcolor", "#f0f0f0");
+// 	currentHints[3][0] = config_file.readEntry("Hints", "HintError_bgcolor", "#f0f0f0");
 // 	currentHints[4][0] = config_file.readEntry("Hints", "HintInvisibleD_bgcolor", "#f0f0f0");
-	currentHints[5][0] = config_file.readEntry("Hints", "HintInvisible_bgcolor", "#f0f0f0");
-	currentHints[6][0] = config_file.readEntry("Hints", "HintMessage_bgcolor", "#f0f0f0");
-	currentHints[7][0] = config_file.readEntry("Hints", "HintNewChat_bgcolor", "#f0f0f0");
-	currentHints[8][0] = config_file.readEntry("Hints", "HintNewMessage_bgcolor", "#f0f0f0");
+// 	currentHints[5][0] = config_file.readEntry("Hints", "HintInvisible_bgcolor", "#f0f0f0");
+// 	currentHints[6][0] = config_file.readEntry("Hints", "HintMessage_bgcolor", "#f0f0f0");
+// 	currentHints[7][0] = config_file.readEntry("Hints", "HintNewChat_bgcolor", "#f0f0f0");
+// 	currentHints[8][0] = config_file.readEntry("Hints", "HintNewMessage_bgcolor", "#f0f0f0");
 // 	currentHints[9][0] = config_file.readEntry("Hints", "HintOfflineD_bgcolor", "#f0f0f0");
-	currentHints[10][0] = config_file.readEntry("Hints", "HintOffline_bgcolor", "#f0f0f0");
+// 	currentHints[10][0] = config_file.readEntry("Hints", "HintOffline_bgcolor", "#f0f0f0");
 // 	currentHints[11][0] = config_file.readEntry("Hints", "HintOnlineD_bgcolor", "#f0f0f0");
-	currentHints[12][0] = config_file.readEntry("Hints", "HintOnline_bgcolor", "#f0f0f0");
-	currentHints[0][1] = config_file.readEntry("Hints", "HintBlocking_fgcolor", "#000000");
+// 	currentHints[12][0] = config_file.readEntry("Hints", "HintOnline_bgcolor", "#f0f0f0");
+// 	currentHints[0][1] = config_file.readEntry("Hints", "HintBlocking_fgcolor", "#000000");
 // 	currentHints[1][1] = config_file.readEntry("Hints", "HintBusyD_fgcolor", "#000000");
-	currentHints[2][1] = config_file.readEntry("Hints", "HintBusy_fgcolor", "#000000");
-	currentHints[3][1] = config_file.readEntry("Hints", "HintError_fgcolor", "#000000");
+// 	currentHints[2][1] = config_file.readEntry("Hints", "HintBusy_fgcolor", "#000000");
+// 	currentHints[3][1] = config_file.readEntry("Hints", "HintError_fgcolor", "#000000");
 // 	currentHints[4][1] = config_file.readEntry("Hints", "HintInvisibleD_fgcolor", "#000000");
-	currentHints[5][1] = config_file.readEntry("Hints", "HintInvisible_fgcolor", "#000000");
-	currentHints[6][1] = config_file.readEntry("Hints", "HintMessage_fgcolor", "#000000");
-	currentHints[7][1] = config_file.readEntry("Hints", "HintNewChat_fgcolor", "#000000");
-	currentHints[8][1] = config_file.readEntry("Hints", "HintNewMessage_fgcolor", "#000000");
+// 	currentHints[5][1] = config_file.readEntry("Hints", "HintInvisible_fgcolor", "#000000");
+// 	currentHints[6][1] = config_file.readEntry("Hints", "HintMessage_fgcolor", "#000000");
+// 	currentHints[7][1] = config_file.readEntry("Hints", "HintNewChat_fgcolor", "#000000");
+// 	currentHints[8][1] = config_file.readEntry("Hints", "HintNewMessage_fgcolor", "#000000");
 // 	currentHints[9][1] = config_file.readEntry("Hints", "HintOfflineD_fgcolor", "#000000");
-	currentHints[10][1] = config_file.readEntry("Hints", "HintOffline_fgcolor", "#000000");
+// 	currentHints[10][1] = config_file.readEntry("Hints", "HintOffline_fgcolor", "#000000");
 // 	currentHints[11][1] = config_file.readEntry("Hints", "HintOnlineD_fgcolor", "#000000");
-	currentHints[12][1] = config_file.readEntry("Hints", "HintOnline_fgcolor", "#000000");
+// 	currentHints[12][1] = config_file.readEntry("Hints", "HintOnline_fgcolor", "#000000");
 
 
 	new QLabel(tr("Preview"), grp_hintsOptions);
@@ -1174,71 +1178,72 @@ void Wizard::setHints()
 {
 	kdebugf();
 
-	if (cb_hintsTheme->currentText() == tr("Current"))
-	{
-		config_file.writeEntry("Hints", "HintBlocking_bgcolor", currentHints[0][0]);
+	// TODO: nieaktualne, poprawiæ
+// 	if (cb_hintsTheme->currentText() == tr("Current"))
+// 	{
+// 		config_file.writeEntry("Hints", "HintBlocking_bgcolor", currentHints[0][0]);
 // 		config_file.writeEntry("Hints", "HintBusyD_bgcolor", currentHints[1][0]);
-		config_file.writeEntry("Hints", "HintBusy_bgcolor", currentHints[2][0]);
-		config_file.writeEntry("Hints", "HintError_bgcolor", currentHints[3][0]);
+// 		config_file.writeEntry("Hints", "HintBusy_bgcolor", currentHints[2][0]);
+// 		config_file.writeEntry("Hints", "HintError_bgcolor", currentHints[3][0]);
 // 		config_file.writeEntry("Hints", "HintInvisibleD_bgcolor", currentHints[4][0]);
-		config_file.writeEntry("Hints", "HintInvisible_bgcolor", currentHints[5][0]);
-		config_file.writeEntry("Hints", "HintMessage_bgcolor", currentHints[6][0]);
-		config_file.writeEntry("Hints", "HintNewChat_bgcolor", currentHints[7][0]);
-		config_file.writeEntry("Hints", "HintNewMessage_bgcolor", currentHints[8][0]);
+// 		config_file.writeEntry("Hints", "HintInvisible_bgcolor", currentHints[5][0]);
+// 		config_file.writeEntry("Hints", "HintMessage_bgcolor", currentHints[6][0]);
+// 		config_file.writeEntry("Hints", "HintNewChat_bgcolor", currentHints[7][0]);
+// 		config_file.writeEntry("Hints", "HintNewMessage_bgcolor", currentHints[8][0]);
 // 		config_file.writeEntry("Hints", "HintOfflineD_bgcolor", currentHints[9][0]);
-		config_file.writeEntry("Hints", "HintOffline_bgcolor", currentHints[10][0]);
+// 		config_file.writeEntry("Hints", "HintOffline_bgcolor", currentHints[10][0]);
 // 		config_file.writeEntry("Hints", "HintOnlineD_bgcolor", currentHints[11][0]);
-		config_file.writeEntry("Hints", "HintOnline_bgcolor", currentHints[12][0]);
+// 		config_file.writeEntry("Hints", "HintOnline_bgcolor", currentHints[12][0]);
 
-		config_file.writeEntry("Hints", "HintBlocking_fgcolor", currentHints[0][1]);
+// 		config_file.writeEntry("Hints", "HintBlocking_fgcolor", currentHints[0][1]);
 // 		config_file.writeEntry("Hints", "HintBusyD_fgcolor", currentHints[1][1]);
-		config_file.writeEntry("Hints", "HintBusy_fgcolor", currentHints[2][1]);
-		config_file.writeEntry("Hints", "HintError_fgcolor", currentHints[3][1]);
+// 		config_file.writeEntry("Hints", "HintBusy_fgcolor", currentHints[2][1]);
+// 		config_file.writeEntry("Hints", "HintError_fgcolor", currentHints[3][1]);
 // 		config_file.writeEntry("Hints", "HintInvisibleD_fgcolor", currentHints[4][1]);
-		config_file.writeEntry("Hints", "HintInvisible_fgcolor", currentHints[5][1]);
-		config_file.writeEntry("Hints", "HintMessage_fgcolor", currentHints[6][1]);
-		config_file.writeEntry("Hints", "HintNewChat_fgcolor", currentHints[7][1]);
-		config_file.writeEntry("Hints", "HintNewMessage_fgcolor", currentHints[8][1]);
+// 		config_file.writeEntry("Hints", "HintInvisible_fgcolor", currentHints[5][1]);
+// 		config_file.writeEntry("Hints", "HintMessage_fgcolor", currentHints[6][1]);
+// 		config_file.writeEntry("Hints", "HintNewChat_fgcolor", currentHints[7][1]);
+// 		config_file.writeEntry("Hints", "HintNewMessage_fgcolor", currentHints[8][1]);
 // 		config_file.writeEntry("Hints", "HintOfflineD_fgcolor", currentHints[9][1]);
-		config_file.writeEntry("Hints", "HintOffline_fgcolor", currentHints[10][1]);
+// 		config_file.writeEntry("Hints", "HintOffline_fgcolor", currentHints[10][1]);
 // 		config_file.writeEntry("Hints", "HintOnlineD_fgcolor", currentHints[11][1]);
-		config_file.writeEntry("Hints", "HintOnline_fgcolor", currentHints[12][1]);
-	}
-	else
-	{
-		QColor bg_color, fg_color;
-		bg_color = preview->paletteBackgroundColor();
-		fg_color = preview->paletteForegroundColor();
+// 		config_file.writeEntry("Hints", "HintOnline_fgcolor", currentHints[12][1]);
+// 	}
+// 	else
+// 	{
+// 		QColor bg_color, fg_color;
+// 		bg_color = preview->paletteBackgroundColor();
+// 		fg_color = preview->paletteForegroundColor();
 
-		config_file.writeEntry("Hints", "HintBlocking_bgcolor", bg_color);
+// 		config_file.writeEntry("Hints", "HintBlocking_bgcolor", bg_color);
 // 		config_file.writeEntry("Hints", "HintBusyD_bgcolor", bg_color);
-		config_file.writeEntry("Hints", "HintBusy_bgcolor", bg_color);
-		config_file.writeEntry("Hints", "HintError_bgcolor", bg_color);
+// 		config_file.writeEntry("Hints", "HintBusy_bgcolor", bg_color);
+// 		config_file.writeEntry("Hints", "HintError_bgcolor", bg_color);
 // 		config_file.writeEntry("Hints", "HintInvisibleD_bgcolor", bg_color);
-		config_file.writeEntry("Hints", "HintInvisible_bgcolor", bg_color);
-		config_file.writeEntry("Hints", "HintMessage_bgcolor", bg_color);
-		config_file.writeEntry("Hints", "HintNewChat_bgcolor", bg_color);
-		config_file.writeEntry("Hints", "HintNewMessage_bgcolor", bg_color);
+// 		config_file.writeEntry("Hints", "HintInvisible_bgcolor", bg_color);
+// 		config_file.writeEntry("Hints", "HintMessage_bgcolor", bg_color);
+// 		config_file.writeEntry("Hints", "HintNewChat_bgcolor", bg_color);
+// 		config_file.writeEntry("Hints", "HintNewMessage_bgcolor", bg_color);
 // 		config_file.writeEntry("Hints", "HintOfflineD_bgcolor", bg_color);
-		config_file.writeEntry("Hints", "HintOffline_bgcolor", bg_color);
+// 		config_file.writeEntry("Hints", "HintOffline_bgcolor", bg_color);
 // 		config_file.writeEntry("Hints", "HintOnlineD_bgcolor", bg_color);
-		config_file.writeEntry("Hints", "HintOnline_bgcolor", bg_color);
+// 		config_file.writeEntry("Hints", "HintOnline_bgcolor", bg_color);
 
-		config_file.writeEntry("Hints", "HintBlocking_fgcolor", fg_color);
+// 		config_file.writeEntry("Hints", "HintBlocking_fgcolor", fg_color);
 // 		config_file.writeEntry("Hints", "HintBusyD_fgcolor", fg_color);
-		config_file.writeEntry("Hints", "HintBusy_fgcolor", fg_color);
-		config_file.writeEntry("Hints", "HintError_fgcolor", fg_color);
+// 		config_file.writeEntry("Hints", "HintBusy_fgcolor", fg_color);
+// 		config_file.writeEntry("Hints", "HintError_fgcolor", fg_color);
 // 		config_file.writeEntry("Hints", "HintInvisibleD_fgcolor", fg_color);
-		config_file.writeEntry("Hints", "HintInvisible_fgcolor", fg_color);
-		config_file.writeEntry("Hints", "HintMessage_fgcolor", fg_color);
-		config_file.writeEntry("Hints", "HintNewChat_fgcolor", fg_color);
-		config_file.writeEntry("Hints", "HintNewMessage_fgcolor", fg_color);
+// 		config_file.writeEntry("Hints", "HintInvisible_fgcolor", fg_color);
+// 		config_file.writeEntry("Hints", "HintMessage_fgcolor", fg_color);
+// 		config_file.writeEntry("Hints", "HintNewChat_fgcolor", fg_color);
+// 		config_file.writeEntry("Hints", "HintNewMessage_fgcolor", fg_color);
 // 		config_file.writeEntry("Hints", "HintOfflineD_fgcolor", fg_color);
-		config_file.writeEntry("Hints", "HintOffline_fgcolor", fg_color);
+// 		config_file.writeEntry("Hints", "HintOffline_fgcolor", fg_color);
 // 		config_file.writeEntry("Hints", "HintOnlineD_fgcolor", fg_color);
-		config_file.writeEntry("Hints", "HintOnline_fgcolor", fg_color);
-	}
-	config_file.writeEntry("Hints", "NotifyHintUseSyntax", true);
+// 		config_file.writeEntry("Hints", "HintOnline_fgcolor", fg_color);
+// 	}
+// 	config_file.writeEntry("Hints", "NotifyHintUseSyntax", true);
 
 	if (cb_hintsType->currentItem() == 0)
 	{

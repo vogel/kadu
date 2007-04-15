@@ -10,6 +10,7 @@
  * @defgroup window_notify Window notify
  * @{
  */
+
 class WindowNotify : public Notifier
 {
 	Q_OBJECT
@@ -22,9 +23,6 @@ class WindowNotify : public Notifier
 		void copyConfiguration(const QString &fromEvent, const QString &toEvent) {}
 
 	public slots:
-		void newChat(Protocol *protocol, UserListElements senders, const QString &msg, time_t t);
-		void newMessage(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool &grab);
-
 		void message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
 		virtual void externalEvent(Notification *notification);
 };

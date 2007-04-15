@@ -46,7 +46,7 @@ HintManagerSlots::HintManagerSlots(QObject *parent, const char *name) : QObject(
 	ConfigDialog::connectSlot("Hints", "Hint timeout", SIGNAL(valueChanged(int)), this, SLOT(changed_Timeout(int)));
 
 	config_opts_prefixes<<"Event_StatusChanged/ToOnline"<<"Event_StatusChanged/ToBusy"<<"Event_StatusChanged/ToInvisible"<<"Event_StatusChanged/ToOffline"<<
-					"HintBlocking"<<"HintNewChat"<<"HintNewMessage"<<"Event_ConnectionError"<<"HintMessage";
+					"HintBlocking"<<"Event_NewChat"<<"Event_NewMessage"<<"Event_ConnectionError"<<"HintMessage";
 	CONST_FOREACH(prefix, config_opts_prefixes)
 	{
 		//old configuration

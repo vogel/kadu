@@ -9,10 +9,12 @@
 
 #include <qtimer.h>
 
+#include "debug.h"
+
 #include "notification.h"
 
 Notification::Notification(const QString &type, const QString &icon, const UserListElements &userListElements)
-	: Type(type), Ule(userListElements), Title(""), Text(""), Icon(icon), DefaultCallbackTimer(0)
+	: Type(type), Ule(userListElements), Title(""), Text(""), Icon(icon), DefaultCallbackTimer(0), ReferencesCount(0)
 {
 }
 
@@ -20,9 +22,26 @@ Notification::~Notification()
 {
 }
 
+void Notification::acquire()
+{
+	kdebugf();
+
+	ReferencesCount++;
+}
+
+void Notification::release()
+{
+	kdebugf();
+
+	ReferencesCount--;
+
+	if (ReferencesCount <= 0)
+		close();
+}
+
 void Notification::close()
 {
-	emit closed();
+	emit closed(this);
 	deleteLater();
 }
 
@@ -90,6 +109,16 @@ void Notification::setText(const QString &text)
 QString Notification::text()
 {
 	return Text;
+}
+
+void Notification::setDetails(const QString &details)
+{
+	Details = details;
+}
+
+QString Notification::details()
+{
+	return Details;
 }
 
 void Notification::setIcon(const QString &icon)
