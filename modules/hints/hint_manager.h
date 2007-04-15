@@ -85,34 +85,10 @@ class HintManager : public Notifier, public ToolTipClass
 		void notificationClosed(Notification *notification);
 
 	public slots:
-/*********** sloty dla notify ************/
-
-		/* inna informacja do powiadomienia */
-		/* je¿eli parameters == NULL, to brane s± domy¶lne ustawienia dymków typu message
-		 * w przeciwnym razie z mapy brane s± nastêpuj±ce warto¶ci:
-		 *		"Pixmap"           - QPixmap
-		 *		"Font"             - QFont
-		 *		"Foreground color" - QColor
-		 *		"Background color" - QColor
-		 *		"Timeout"          - unsigned int
-		 *		"ShowSource"       - bool
-		 * je¿eli która¶ z warto¶ci jest nieokre¶lona, to dla niej brana jest warto¶æ domy¶lna
-		 * gdy UserListElement != NULL, to jego uin brany jest do tworzenia dymka (LMB np otwiera okno rozmowy z danym uinem)
-		 */
-		void message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
-		virtual void externalEvent(Notification *notification);
-		virtual void copyConfiguration(const QString &fromEvent, const QString &toEvent);
-/*********** koniec slotów dla notify *************/
 
 		/**
-			pokazuje nowy dymek o tre¶ci "text", obrazku "pixmap",
-			czcionk± "font" o kolorze "fgcolor", tle "bgcolor",
-			czasie zaniku "timeout" (sekund), dotycz±cy "senders"
-
-			pozosta³e funkcje pokazuj±ce dymki s± tylko opakowaniami na t± funkcjê
+			Pokazuje dymek zwi±zany z notyfikacj±.
 		**/
-		void addHint(const QString &text, const QPixmap &pixmap, const QFont &font, const QColor &fgcolor, const QColor &bgcolor, unsigned int timeout, const UserListElements &senders = UserListElements());
-		void addHint(const QString &text, const QPixmap &pixmap, const QString &configurationDirective, const UserListElements &senders = UserListElements());
 		Hint *addHint(Notification *notification);
 
 		/**
@@ -138,9 +114,12 @@ class HintManager : public Notifier, public ToolTipClass
 		~HintManager();
 
 		virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
+		virtual void notify(Notification *notification);
 
 		virtual void showToolTip(const QPoint &, const UserListElement &);
 		virtual void hideToolTip();
+
+		virtual void copyConfiguration(const QString &fromEvent, const QString &toEvent);
 
 };
 

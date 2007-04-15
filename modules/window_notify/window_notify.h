@@ -14,17 +14,16 @@
 class WindowNotify : public Notifier
 {
 	Q_OBJECT
+
 	public:
 		WindowNotify(QObject *parent=0, const char *name=0);
 		~WindowNotify();
 
+		virtual void notify(Notification *notification);
+
 		virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
 
 		void copyConfiguration(const QString &fromEvent, const QString &toEvent) {}
-
-	public slots:
-		void message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
-		virtual void externalEvent(Notification *notification);
 };
 
 extern WindowNotify *window_notify;

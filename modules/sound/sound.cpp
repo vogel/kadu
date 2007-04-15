@@ -244,14 +244,11 @@ SoundManager::SoundManager(const QString& name, const QString& configname) : Not
 	themes->setPaths(QStringList::split(";", config_file.readEntry("Sounds", "SoundPaths")));
 	themes->setTheme(config_file.readEntry("Sounds","SoundTheme"));
 
-	QMap<QString, QString> s;
-	s["Message"]=SLOT(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *));
-
 // 	config_file.addVariable("Notify", "NewChat_Sound", true);
 // 	config_file.addVariable("Notify", "NewMessage_Sound", true);
-	config_file.addVariable("Notify", "Message_Sound", true);
+// 	config_file.addVariable("Notify", "Message_Sound", true);
 
-	notify->registerNotifier(QT_TRANSLATE_NOOP("@default","Sound"), this, s);
+	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default","Sound"), this);
 	kdebugf2();
 }
 
@@ -296,7 +293,7 @@ SoundManager::~SoundManager()
 	ConfigDialog::removeControl("Sounds", "Play sounds");
 	ConfigDialog::removeTab("Sounds");
 
-	notify->unregisterNotifier("Sound");
+	notification_manager->unregisterNotifier("Sound");
 
 	play_thread->wait(2000);
 	if (play_thread->running())
@@ -368,47 +365,7 @@ void SoundManager::playSound(const QString &soundName)
 		fprintf(stderr, "file (%s) not found\n", sound.local8Bit().data());
 }
 
-void SoundManager::message(const QString &, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *)
-{
-	kdebugf();
-	bool force=false;
-	if (parameters)
-	{
-		QMap<QString, QVariant>::const_iterator end=(*parameters).end();
-		QMap<QString, QVariant>::const_iterator fit=(*parameters).find("Force");
-		if (fit!=end)
-			force=fit.data().toBool();
-	}
-
-	if (isMuted() && !force)
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "end: muted\n");
-		return;
-	}
-	if (timeAfterLastSound()<500)
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "end: too often, exiting\n");
-		return;
-	}
-
-	QString message_sound;
-	if (message!=QString::null)
-		message_sound=message;
-	else if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
-		message_sound=config_file.readEntry("Sounds","OtherMessage_sound");
-	else
-		message_sound=themes->themePath(config_file.readEntry("Sounds", "SoundTheme"))+themes->getThemeEntry("OtherMessage");
-	if (QFile::exists(message_sound))
-	{
-		play(message_sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100);
-		lastsoundtime.restart();
-	}
-	else
-		fprintf(stderr, "file (%s) not found\n", message_sound.local8Bit().data());
-	kdebugf2();
-}
-
-void SoundManager::externalEvent(Notification *notification)
+void SoundManager::notify(Notification *notification)
 {
 	kdebugf();
 

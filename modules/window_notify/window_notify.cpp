@@ -121,42 +121,22 @@ WindowNotify::WindowNotify(QObject *parent, const char *name) : Notifier(parent,
 {
 	kdebugf();
 
-	QMap<QString, QString> s;
-// 	s["NewChat"]=SLOT(newChat(Protocol *, UserListElements, const QString &, time_t));
-// 	s["NewMessage"]=SLOT(newMessage(Protocol *, UserListElements, const QString &, time_t, bool &));
-	s["Message"]=SLOT(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *));
-
 	config_file.addVariable("Notify", "NewChat_Window", false);
 	config_file.addVariable("Notify", "NewMessage_Window", false);
 	config_file.addVariable("Notify", "Message_Window", false);
 
-	notify->registerNotifier(QT_TRANSLATE_NOOP("@default", "Window"), this, s);
+	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default", "Window"), this);
 	kdebugf2();
 }
 
 WindowNotify::~WindowNotify()
 {
 	kdebugf();
-	notify->unregisterNotifier("Window");
+	notification_manager->unregisterNotifier("Window");
 	kdebugf2();
 }
 
-void WindowNotify::message(const QString &from, const QString &message, const QMap<QString, QVariant> * /*parameters*/, const UserListElement *ule)
-{
-	kdebugf();
-	if (ule==NULL)
-		MessageBox::msg(narg(tr("<b>From %1:</b>%2"), from, message));
-	else
-	{
-		MessageBox::msg(narg(tr("<b>From %1: %2</b> changed status to <i>%3</i>"),
-						from,
-						ule->altNick(),
-						qApp->translate("@default", ule->status("Gadu").name().ascii())));
-	}
-	kdebugf2();
-}
-
-void WindowNotify::externalEvent(Notification *notification)
+void WindowNotify::notify(Notification *notification)
 {
 	kdebugf();
 

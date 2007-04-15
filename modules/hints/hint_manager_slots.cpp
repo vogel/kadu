@@ -17,6 +17,9 @@
 #include <qvbuttongroup.h>
 
 #include "hint_manager_slots.h"
+
+#include "../notify/notify.h"
+
 #include "config_dialog.h"
 #include "config_file.h"
 #include "debug.h"
@@ -31,7 +34,7 @@ HintProperties::HintProperties() : font(), fgcolor(), bgcolor(), timeout(0)
 }
 
 HintManagerSlots::HintManagerSlots(QObject *parent, const char *name) : QObject(parent, name),
-	config_opts_prefixes(), currentOptionPrefix(), hintProperties()
+	currentNotifyEvent(), hintProperties()
 {
 	kdebugf();
 	ConfigDialog::connectSlot("Hints", "Show message content in hint", SIGNAL(toggled(bool)), this, SLOT(toggled_ShowMessageContent(bool)));
@@ -44,18 +47,6 @@ HintManagerSlots::HintManagerSlots(QObject *parent, const char *name) : QObject(
 	ConfigDialog::connectSlot("Hints", "Change font", SIGNAL(clicked()), this, SLOT(clicked_ChangeFont()));
 
 	ConfigDialog::connectSlot("Hints", "Hint timeout", SIGNAL(valueChanged(int)), this, SLOT(changed_Timeout(int)));
-
-	config_opts_prefixes<<"Event_StatusChanged/ToOnline"<<"Event_StatusChanged/ToBusy"<<"Event_StatusChanged/ToInvisible"<<"Event_StatusChanged/ToOffline"<<
-					"HintBlocking"<<"Event_NewChat"<<"Event_NewMessage"<<"Event_ConnectionError"<<"HintMessage";
-	CONST_FOREACH(prefix, config_opts_prefixes)
-	{
-		//old configuration
-		HintProperties prop=HintProperties::fromString(config_file.readEntry("Hints", *prefix));
-		config_file.addVariable("Hints", (*prefix)+"_font", prop.font);
-		config_file.addVariable("Hints", (*prefix)+"_fgcolor", prop.fgcolor);
-		config_file.addVariable("Hints", (*prefix)+"_bgcolor", prop.bgcolor);
-		config_file.addVariable("Hints", (*prefix)+"_timeout", (int)prop.timeout);
-	}
 
 	kdebugf2();
 }
@@ -90,17 +81,21 @@ void HintManagerSlots::onCreateTabHints()
 
 	hintProperties.clear();
 
-	CONST_FOREACH(prefix, config_opts_prefixes)
+	QColor fgDefaultColor(0x00, 0x00, 0x00);
+	QColor bgDefaultColor(0xf0, 0xf0, 0xf0);
+
+	CONST_FOREACH(notifyEvent, notification_manager->notifyEvents())
 	{
 		HintProperties prop;
-		prop.font=config_file.readFontEntry("Hints", (*prefix)+"_font");
-		prop.fgcolor=config_file.readColorEntry("Hints", (*prefix)+"_fgcolor");
-		prop.bgcolor=config_file.readColorEntry("Hints", (*prefix)+"_bgcolor");
-		prop.timeout=config_file.readUnsignedNumEntry("Hints", (*prefix)+"_timeout");
+		const QString &eventName = (*notifyEvent).name;
 
-		hintProperties[*prefix]=prop;
+		prop.font = config_file.readFontEntry("Hints", QString("Event_") + eventName + "_font");
+		prop.fgcolor = config_file.readColorEntry("Hints", QString("Event_") + eventName+"_fgcolor", &fgDefaultColor);
+		prop.bgcolor = config_file.readColorEntry("Hints", QString("Event_") + eventName + "_bgcolor", &bgDefaultColor);
+		prop.timeout = config_file.readUnsignedNumEntry("Hints", QString("Event_") + eventName + "_timeout", 10);
+
+		hintProperties[eventName] = prop;
 	}
-	currentOptionPrefix.truncate(0);
 
 	QComboBox *group = ConfigDialog::getComboBox("Hints", "Hint type");
 	activated_HintType(group->currentItem());
@@ -112,12 +107,14 @@ void HintManagerSlots::onApplyTabHints()
 {
 	kdebugf();
 
-	CONST_FOREACH(prop, hintProperties)
+	CONST_FOREACH(hintProperty, hintProperties)
 	{
-		config_file.writeEntry("Hints", prop.key()+"_font", prop.data().font);
-		config_file.writeEntry("Hints", prop.key()+"_fgcolor", prop.data().fgcolor);
-		config_file.writeEntry("Hints", prop.key()+"_bgcolor", prop.data().bgcolor);
-		config_file.writeEntry("Hints", prop.key()+"_timeout", (int)prop.data().timeout);
+		const QString &eventName = hintProperty.key();
+
+		config_file.writeEntry("Hints", QString("Event_") + eventName + "_font", hintProperty.data().font);
+		config_file.writeEntry("Hints", QString("Event_") + eventName + "_fgcolor", hintProperty.data().fgcolor);
+		config_file.writeEntry("Hints", QString("Event_") + eventName + "_bgcolor", hintProperty.data().bgcolor);
+		config_file.writeEntry("Hints", QString("Event_") + eventName + "_timeout", (int)hintProperty.data().timeout);
 	}
 
 	// TODO: do it properly
@@ -147,10 +144,12 @@ void HintManagerSlots::activated_HintType(int id)
 	if (id == -1)
  		return;
 
-	currentOptionPrefix = config_opts_prefixes[id];
+	QComboBox *combo = ConfigDialog::getComboBox("Hints", "Hint type");
+
+	currentNotifyEvent = combo->currentText();
 
 	QLabel *preview = ConfigDialog::getLabel("Hints", "<b>Text</b> preview");
-	HintProperties hintProperty = hintProperties[currentOptionPrefix];
+	HintProperties hintProperty = hintProperties[currentNotifyEvent];
 
 	preview->setPaletteBackgroundColor(hintProperty.bgcolor);
 	preview->setPaletteForegroundColor(hintProperty.fgcolor);
@@ -173,7 +172,7 @@ void HintManagerSlots::clicked_ChangeFont()
 			FOREACH(hintProperty, hintProperties)
 				hintProperty.data().font = font;
 		else
-			hintProperties[currentOptionPrefix].font = font;
+			hintProperties[currentNotifyEvent].font = font;
 	}
 
 	kdebugf2();
@@ -191,7 +190,7 @@ void HintManagerSlots::clicked_ChangeFgColor()
 			FOREACH(hintProperty, hintProperties)
 				hintProperty.data().fgcolor = color;
 		else
-			hintProperties[currentOptionPrefix].fgcolor = color;
+			hintProperties[currentNotifyEvent].fgcolor = color;
 	}
 	kdebugf2();
 }
@@ -208,7 +207,7 @@ void HintManagerSlots::clicked_ChangeBgColor()
 			FOREACH(hintProperty, hintProperties)
 				hintProperty.data().bgcolor = color;
 		else
-			hintProperties[currentOptionPrefix].bgcolor = color;
+			hintProperties[currentNotifyEvent].bgcolor = color;
 	}
 	kdebugf2();
 }
@@ -221,7 +220,7 @@ void HintManagerSlots::changed_Timeout(int value)
 		FOREACH(hintProperty, hintProperties)
 			hintProperty.data().timeout = value;
 	else
-		hintProperties[currentOptionPrefix].timeout=value;
+		hintProperties[currentNotifyEvent].timeout=value;
 
 	kdebugf2();
 }

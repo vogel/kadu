@@ -144,13 +144,13 @@ public:
 
 		@return typ zdarzenia
 	 **/
-	QString type();
+	QString type() const;
 	/**
 		Lista kontaktów powi±zana ze zdarzeniem/
 
 		@return lista kontaktów powi±zana ze zdarzeniem
 	 **/
-	const UserListElements &userListElements();
+	const UserListElements &userListElements() const;
 
 	/**
 		Ustawia tytu³ zdarzenia.
@@ -161,7 +161,7 @@ public:
 
 		@return tytu³ zdarzenia
 	 **/
-	QString title();
+	QString title() const;
 
 	/**
 		Ustawia tre¶æ zdarzenia.
@@ -172,7 +172,7 @@ public:
 
 		@return tre¶æ zdarzenia
 	 **/
-	QString text();
+	QString text() const;
 
 	/**
 		Ustawia szczegó³y zdarzenia (jak na przyk³ad tekst wiadomo¶ci).
@@ -181,7 +181,7 @@ public:
 	/**
 		Szczegó³y zdarzenia
 	 **/
-	QString details();
+	QString details() const;
 
 	/**
 		Ustawia ikonê zdarzenia.
@@ -192,7 +192,7 @@ public:
 
 		@return ikona zdarzenia
 	 **/
-	QString icon();
+	QString icon() const;
 
 	/**
 		Lista akcji.

@@ -25,11 +25,11 @@ class SpeechSlots : public Notifier
 		SpeechSlots(QObject *parent=0, const char *name=0);
 		~SpeechSlots();
 
+		virtual void notify(Notification *notification);
+
 		void copyConfiguration(const QString &fromEvent, const QString &toEvent) {}
 
 	private slots:
-		void message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
-		virtual void externalEvent(Notification *notification);
 
 		void say(const QString &s, const QString &path=QString::null,
 					bool klatt=false, bool melodie=false,

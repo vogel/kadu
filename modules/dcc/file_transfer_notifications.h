@@ -35,7 +35,6 @@ private slots:
 
 	void callbackAcceptAsNew();
 
-
 public slots:
 
 	virtual void callbackAccept();

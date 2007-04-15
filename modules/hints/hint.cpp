@@ -22,35 +22,13 @@
  * @ingroup hints
  * @{
  */
-Hint::Hint(QWidget *parent, const QString& text, const QPixmap& pixmap, unsigned int timeout) :
-	QWidget(parent, "Hint"), vbox(0), callbacksBox(0), icon(0), label(0), bcolor(), secs(timeout), startSecs(timeout), users(), notification(0),
-	haveCallbacks(false)
-{
-	kdebugf();
-	if (timeout==0)
-		kdebugm(KDEBUG_INFO|KDEBUG_ERROR, "Hint error: timeout==0! text: %s\n", text.local8Bit().data());
-
-	QString escapedText = text;
-	escapedText.replace(" ", "&nbsp;").replace("\n", "<br />");
-
-	createLabels(pixmap);
-	label->setText(" " + escapedText);
-
-	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-
-	hide();
-
-	kdebugf2();
-}
-
 Hint::Hint(QWidget *parent, Notification *notification)
-	: QWidget(parent, "Hint"), vbox(0), callbacksBox(0), icon(0), label(0), bcolor(), users(), notification(notification),
+	: QWidget(parent, "Hint"), vbox(0), callbacksBox(0), icon(0), label(0), bcolor(), notification(notification),
 	  haveCallbacks(notification->getCallbacks().count() != 0)
 {
 	kdebugf();
 
 	notification->acquire();
-	users = notification->userListElements();
 
 	if (notification->details() != "")
 		details.append(notification->details());
@@ -85,7 +63,13 @@ Hint::Hint(QWidget *parent, Notification *notification)
 
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-	hide();
+	QString configurationDirective = "Event_" + notification->type();
+	label->setFont(config_file.readFontEntry("Hints", configurationDirective + "_font"));
+	setPaletteForegroundColor(config_file.readColorEntry("Hints", configurationDirective + "_fgcolor"));
+	bcolor = config_file.readColorEntry("Hints", configurationDirective + "_bgcolor");
+	setPaletteBackgroundColor(bcolor);
+
+	show();
 
 	kdebugf2();
 }
@@ -94,8 +78,8 @@ Hint::~Hint()
 {
 	kdebugf();
 
-	if (notification)
-		notification->release();
+	disconnect(notification, SIGNAL(closed(Notification *)), this, SLOT(notificationClosed()));
+	notification->release();
 
 	kdebugf2();
 }
@@ -209,20 +193,17 @@ void Hint::addDetail(const QString &detail)
 	updateText();
 }
 
-void Hint::set(const QFont &font, const QColor &color, const QColor &bgcolor)
+bool Hint::hasUsers() const
 {
- 	kdebugf();
+	if (notification->userListElements().count() == 0)
+		return false;
 
-	label->setFont(font);
+	return true;
+}
 
-	setPaletteForegroundColor(color);
-	setPaletteBackgroundColor(bgcolor);
-
-	bcolor = bgcolor;
-
-	show();
-
-	kdebugf2();
+const UserListElements & Hint::getUsers() const
+{
+	return notification->userListElements();
 }
 
 void Hint::mousePressEvent(QMouseEvent * event)
@@ -273,14 +254,12 @@ void Hint::getData(QString &text, QPixmap &pixmap, unsigned int &timeout, QFont 
 
 void Hint::acceptNotification()
 {
-	if (notification)
-		notification->callbackAccept();
+	notification->callbackAccept();
 }
 
 void Hint::discardNotification()
 {
-	if (notification)
-		notification->callbackDiscard();
+	notification->callbackDiscard();
 }
 
 /** @} */

@@ -44,8 +44,7 @@ class HintManagerSlots : public QObject
 		void changed_Timeout(int value);
 
 	private:
-		QStringList config_opts_prefixes;
-		QString currentOptionPrefix;
+		QString currentNotifyEvent;
 		QMap<QString, HintProperties> hintProperties;
 };
 

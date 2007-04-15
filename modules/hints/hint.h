@@ -32,7 +32,6 @@ class Hint : public QWidget
 		QColor bcolor; //kolor t³a
 		unsigned int secs;
 		unsigned int startSecs;
-		UserListElements users;
 
 		Notification *notification;
 		QStringList details;
@@ -53,20 +52,17 @@ class Hint : public QWidget
 		virtual void leaveEvent(QEvent *event);
 
 	public:
-		Hint(QWidget *parent, const QString &text, const QPixmap &pixmap, unsigned int timeout);
 		Hint(QWidget *parent, Notification *notification);
 		virtual ~Hint();
-
-		/**
-			zwraca listê uinów dotycz±cych tego dymka
-		**/
-		UserListElements getUsers() const { return users; }
 
 		void getData(QString &text, QPixmap &pixmap, unsigned int &timeout, QFont &font, QColor &fgcolor, QColor &bgcolor);
 		bool requireManualClosing();
 		bool isDeprecated();
 
 		void addDetail(const QString &detail);
+
+		bool hasUsers() const;
+		const UserListElements & getUsers() const;
 
 	public slots:
 		/**
@@ -75,18 +71,6 @@ class Hint : public QWidget
 			false, gdy czas siê skoñczy³
 		**/
 		void nextSecond();
-		/**
-			ustawia parametry dymka
-			font - czcionka
-			fgcolor - kolor czcionki
-			bgcolor - kolor t³a
-			id - identyfikator dymka
-		**/
-		void set(const QFont &font, const QColor &fgcolor, const QColor &bgcolor);
-		/**
-			ustawia listê uinów dotycz±cych tego dymka
-		**/
-		void setUsers(const UserListElements &i) { users = i; };
 
 		void acceptNotification();
 		void discardNotification();

@@ -195,14 +195,11 @@ SpeechSlots::SpeechSlots(QObject *parent, const char *name) : Notifier(parent, n
 
 	ConfigDialog::registerSlotOnCreateTab("Speech", this, SLOT(onCreateTabSpeech()));
 
-	QMap<QString, QString> s;
-	s["Message"]=SLOT(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *));
-
 // 	config_file.addVariable("Notify", "NewChat_Speech", true);
 // 	config_file.addVariable("Notify", "NewMessage_Speech", false);
-	config_file.addVariable("Notify", "Message_Speech", true);
+// 	config_file.addVariable("Notify", "Message_Speech", true);
 
-	notify->registerNotifier(QT_TRANSLATE_NOOP("@default","Speech"), this, s);
+	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default","Speech"), this);
 
 	kdebugf2();
 }
@@ -210,7 +207,7 @@ SpeechSlots::SpeechSlots(QObject *parent, const char *name) : Notifier(parent, n
 SpeechSlots::~SpeechSlots()
 {
 	kdebugf();
-	notify->unregisterNotifier("Speech");
+	notification_manager->unregisterNotifier("Speech");
 
 	ConfigDialog::unregisterSlotOnCreateTab("Speech", this, SLOT(onCreateTabSpeech()));
 
@@ -394,14 +391,7 @@ void SpeechSlots::testSpeech()
 	kdebugf2();
 }
 
-void SpeechSlots::message(const QString &/*from*/, const QString &message, const QMap<QString, QVariant> * /*parameters*/, const UserListElement * /*ule*/)
-{
-	kdebugf();
-	say(message);
-	kdebugf2();
-}
-
-void SpeechSlots::externalEvent(Notification *notification)
+void SpeechSlots::notify(Notification *notification)
 {
 	kdebugf();
 

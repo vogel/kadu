@@ -32,12 +32,11 @@ SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name
 {
 	kdebugf();
 
-	soundNames<<"NewChat"<<"NewMessage"<<"StatusChanged/ToOnline"<<"StatusChanged/ToBusy"<<"StatusChanged/ToInvisible"<<
-			"StatusChanged/ToOffline"<<"ConnectionError"<<"OtherMessage";
-
-	soundTexts<<tr("Chat sound")<<tr("Message sound")<<tr("Status available sound")<<
-				tr("Status busy sound")<<tr("Status invisible sound")<<tr("Status not available sound")<<
-				tr("Conection error sound")<<tr("Other message");
+	CONST_FOREACH(notifyEvent, notification_manager->notifyEvents())
+	{
+		soundTexts << tr((*notifyEvent).description);
+		soundNames << tr((*notifyEvent).name);
+	}
 
 	sound_manager->setMute(!config_file.readBoolEntry("Sounds", "PlaySound"));
 

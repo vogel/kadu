@@ -81,12 +81,12 @@ void Notification::clearDefaultCallback()
 	}
 }
 
-QString Notification::type()
+QString Notification::type() const
 {
 	return Type;
 }
 
-const UserListElements &Notification::userListElements()
+const UserListElements &Notification::userListElements() const
 {
 	return Ule;
 }
@@ -96,7 +96,7 @@ void Notification::setTitle(const QString &title)
 	Title = title;
 }
 
-QString Notification::title()
+QString Notification::title() const
 {
 	return Title;
 }
@@ -106,7 +106,7 @@ void Notification::setText(const QString &text)
 	Text = text;
 }
 
-QString Notification::text()
+QString Notification::text() const
 {
 	return Text;
 }
@@ -116,7 +116,7 @@ void Notification::setDetails(const QString &details)
 	Details = details;
 }
 
-QString Notification::details()
+QString Notification::details() const
 {
 	return Details;
 }
@@ -126,7 +126,7 @@ void Notification::setIcon(const QString &icon)
 	Icon = icon;
 }
 
-QString Notification::icon()
+QString Notification::icon() const
 {
 	return Icon;
 }

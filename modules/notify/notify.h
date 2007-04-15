@@ -66,7 +66,7 @@ class Notifier : public QObject {
 			sygna³ closed(), po którym notyfikator musi przestaæ informowaæ u¿ytkownika
 			o danym zdarzeniu (na przyk³ad, musi zamkn±æ skojarzone ze zdarzeniem okno).
 		 **/
-		virtual void externalEvent(Notification *notification) = 0;
+		virtual void notify(Notification *notification) = 0;
 
 		/**
 			Kopiuje konfiguracje jednego zdarzenia do drugiego.
@@ -79,18 +79,7 @@ class Notify : public QObject
 {
 	Q_OBJECT
 	private:
-		class NotifierSlots
-		{
-			public:
-			NotifierSlots();
-			NotifierSlots(Notifier *notifier, const QMap<QString, QString> &notifierSlots);
-
-			Notifier *notifier; //obiekt "nas³uchuj±cy" na zdarzenia
-			QMap<QString, QPair<QString, bool> > notifierSlots; //nazwa sygna³u("NewMessage") -> para<slot (SLOT(mójSlotMessage)), czy po³±czony>
-		};
-		QMap<QString, NotifierSlots> notifiers; //nazwa powiadamiacza("Hints") -> obiekt powiadomienia
-		QMap<QString, QString> notifySignals; //nazwa sygna³u("NewMessage") -> sygna³ (SIGNAL(newMessage(...)))
-		QStringList eventNames;
+		QMap<QString, Notifier *> notifiers; //nazwa powiadamiacza("Hints") -> obiekt powiadomienia
 
 		class NotifyEvent
 		{
@@ -101,17 +90,17 @@ class Notify : public QObject
 				const char *description;
 				NotifyEvent() : name(), wname(), callbackRequirement(CallbackNotRequired), description(0){}
 		};
-		QValueList<NotifyEvent> notifyEvents;
+		QValueList<NotifyEvent> NotifyEvents;
 		QMap<QString, QValueList<QCString> > strs;
 
 		/*
 		 * dodaje kolumnê checkboksów w konfiguracji,
 		 * na podstawie notifierSlots decyduje czy dodaæ checkboksa aktywnego czy nie
 		 */
-		void addConfigColumn(const QString &name, const QMap<QString, QString> &notifierSlots, CallbackCapacity callbackCapacity);
+		void addConfigColumn(const QString &name, CallbackCapacity callbackCapacity);
 
 		/* usuwa kolumnê checkboksów z konfiguracji */
-		void removeConfigColumn(const QString &name, const QMap<QString, QPair<QString, bool> > &notifierSlots);
+		void removeConfigColumn(const QString &name);
 
 		void addConfigRow(const QString &name, const char *description, CallbackRequirement callbackRequirement);
 		void removeConfigRow(const QString &name);
@@ -120,40 +109,18 @@ class Notify : public QObject
 
 	private slots:
 
-		/* pomocniczy slot */
 		void newChatSlot(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool grabbed);
-		/* pomocniczy slot */
 		void probablyNewMessage(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool &grab);
-
-		/*
-		 * ³±czy odpowiedni sygna³ z notifierName (np.: Window, Hint, Sound)
-		 * ze slotem slotName (np.: NewChat, ConnError)
-		 */
-		void connectSlot(const QString &notifierName, const QString &slotName);
-
-		/*
-		 * roz³±cza odpowiedni sygna³ z notifierName (np.: Window, Hint, Sound)
-		 * od slotu slotName (np.: NewChat, ConnError)
-		 */
-		void disconnectSlot(const QString &notifierName, const QString &slotName);
-
 		void connectionError(Protocol *protocol, const QString &message);
+		void statusChanged(UserListElement elem, QString protocolName, const UserStatus &oldStatus, bool massively, bool last);
 
 	public:
 		Notify(QObject *parent=0, const char *name=0);
 		~Notify();
 
-		/*
-		 * rejestruje obiekt, który chce otrzymywaæ informacje o zdarzeniach
-		 * name bêdzie u¿yte w oknie konfiguracji (nale¿y podawaæ angielsk± nazwê)
-		 * slots to mapa odwzoruj±ca nazwy sygna³ów na sloty w obiekcie notifier
-		 * nazwy sygna³ów:
-			"Message" - inna wiadomo¶æ
-		 *
-		 * nie trzeba definiowaæ wszystkich slotów
-		 */
-		void registerNotifier(const QString &name, Notifier *notifier,
-							const QMap<QString, QString> &notifierSlots);
+		void notify(Notification *notification);
+
+		void registerNotifier(const QString &name, Notifier *notifier);
 		/*
 		 * wyrejestrowuje obiekt
 		 */
@@ -163,41 +130,11 @@ class Notify : public QObject
 		void unregisterEvent(const QString &name);
 
 		QStringList notifiersList() const;
-		const QValueList<Notify::NotifyEvent> &externalNotifyTypes();
+		const QValueList<Notify::NotifyEvent> &notifyEvents();
 
-	public slots:
-		/*
-		 * aktualizuje wszystkie po³±czenia
-		 * wywo³ywany po zmianie konfiguracji dotycz±cej obs³ugi
-		 */
-		void updateConnections();
-
-		/*
-		 * emituje sygna³ message
-		 *  je¿eli to==QString::null, to wysy³a do wszystkich, którzy s± zaznaczeni w konfiguracji
-		 *  je¿eli to!=QString::null, to wysy³a tylko do jednego
-		 * Notifier decyduje, których argumentów u¿yæ
-		 */
-		void emitMessage(const QString &from, const QString &to, const QString &message=QString(), const QMap<QString, QVariant> *parameters=NULL, const UserListElement *ule=NULL);
-
-		/* obs³uga zmian statusów */
-		void statusChanged(UserListElement elem, QString protocolName,
-							const UserStatus &oldStatus, bool massively, bool last);
-
-		void notify(Notification *notification);
-
-	signals:
-	//UWAGA: razem ze zmianami nazw/parametrów tych sygna³ów nale¿y aktualizowaæ wpisy w konstruktorze Notify
-
-		/* inna informacja do powiadomienia */
-		void message(const QString &from, const QString &msg, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
-
-	signals:
-		/* do u¿ytku wewnêtrznego */
-		void privateMessage(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
 };
 
-extern Notify *notify;
+extern Notify *notification_manager;
 extern NotifySlots *notify_slots;
 
 /** @} */

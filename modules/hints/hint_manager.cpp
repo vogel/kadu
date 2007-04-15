@@ -75,9 +75,13 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 		ConfigDialog::addHBox("Hints", "Parameters", "center");
 			QStringList options2;
 			QStringList values2;
-			options2<<tr("Online")<<tr("Busy")<<tr("Invisible")<<tr("Offline")<<
-					tr("Blocking")<<tr("New chat")<<tr("New message in chat")<<tr("Error")<<tr("Other message");
-			values2<<"0"<<"1"<<"2"<<"3"<<"4"<<"5"<<"6"<<"7"<<"8";
+
+			CONST_FOREACH(notifyEvent, notification_manager->notifyEvents())
+			{
+				options2 << tr((*notifyEvent).name); // change to description
+				values2 << tr((*notifyEvent).name);
+			}
+
 			ConfigDialog::addComboBox("Hints", "center", QT_TRANSLATE_NOOP("@default", "Hint type"), "LastSelected", options2, values2, "0");
 
 			ConfigDialog::addVBox("Hints", "center", "bottom");
@@ -116,16 +120,9 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 	ConfigDialog::registerSlotOnApplyTab("Hints", hint_manager_slots, SLOT(onApplyTabHints()));
 	ConfigDialog::registerSlotOnCloseTab("Hints", hint_manager_slots, SLOT(onCloseTabHints()));
 
-// 	config_file.addVariable("Notify", "NewChat_Hints", true);
-// 	config_file.addVariable("Notify", "NewMessage_Hints", true);
-// 	config_file.addVariable("Notify", "Message_Hints", true);
-
 	connect(this, SIGNAL(searchingForTrayPosition(QPoint &)), kadu, SIGNAL(searchingForTrayPosition(QPoint &)));
 
-	QMap<QString, QString> s;
-	s["Message"]=SLOT(message(const QString &, const QString &, const QMap<QString, QVariant> *, const UserListElement *));
-
-	notify->registerNotifier(QT_TRANSLATE_NOOP("@default","Hints"), this, s);
+	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default","Hints"), this);
 	tool_tip_class_manager->registerToolTipClass("Hints", this);
 
 	import_0_5_0_Configuration();
@@ -137,8 +134,11 @@ HintManager::~HintManager()
 {
 	kdebugf();
 
+// 	/*FOREACH*/(hint, hints)
+// 		delete (*hint);
+
 	tool_tip_class_manager->unregisterToolTipClass("Hints");
-	notify->unregisterNotifier("Hints");
+	notification_manager->unregisterNotifier("Hints");
 
 	disconnect(this, SIGNAL(searchingForTrayPosition(QPoint &)), kadu, SIGNAL(searchingForTrayPosition(QPoint &)));
 
@@ -329,7 +329,7 @@ void HintManager::processButtonPress(const QString &buttonName, Hint *hint)
 			break;
 
 		case 2:
-			if (config_file.readBoolEntry("Hints", "DeletePendingMsgWhenHintDeleted"))
+			if (hint->hasUsers() && config_file.readBoolEntry("Hints", "DeletePendingMsgWhenHintDeleted"))
 				chat_manager->deletePendingMsgs(hint->getUsers());
 
 			hint->discardNotification();
@@ -363,10 +363,15 @@ void HintManager::midButtonSlot(Hint *hint)
 void HintManager::openChat(Hint *hint)
 {
 	kdebugf();
-	UserListElements senders = hint->getUsers();
+
+	if (!hint->hasUsers())
+		return;
+
+	const UserListElements & senders = hint->getUsers();
 	if (!senders.isEmpty())
 		chat_manager->openPendingMsgs(senders);
 	deleteHintAndUpdate(hint);
+
 	kdebugf2();
 }
 
@@ -393,60 +398,13 @@ void HintManager::deleteAllHints()
 	kdebugf2();
 }
 
-void HintManager::addHint(const QString& text, const QPixmap& pixmap, const QFont &font, const QColor &color, const QColor &bgcolor, unsigned int timeout, const UserListElements &senders)
-{
- 	kdebugf();
-
-	Hint *hint = new Hint(frame, text, pixmap, timeout);
-	hint->set(font, color, bgcolor);
-
-	hints.append(hint);
-
-	setLayoutDirection();
-	layout->addWidget(hint);
-
-	if (!senders.isEmpty())
-		hint->setUsers(senders);
-
-	connect(hint, SIGNAL(leftButtonClicked(Hint *)), this, SLOT(leftButtonSlot(Hint *)));
-	connect(hint, SIGNAL(rightButtonClicked(Hint *)), this, SLOT(rightButtonSlot(Hint *)));
-	connect(hint, SIGNAL(midButtonClicked(Hint *)), this, SLOT(midButtonSlot(Hint *)));
-	setHint();
-
-	if (!hint_timer->isActive())
-		hint_timer->start(1000);
-	if (frame->isHidden())
-		frame->show();
-	kdebugf2();
-}
-
-void HintManager::addHint(const QString &text, const QPixmap &pixmap, const QString &configurationDirective, const UserListElements &senders)
-{
-	const QFont font = config_file.readFontEntry("Hints", configurationDirective + "_font");
-	const QColor fgcolor = config_file.readColorEntry("Hints", configurationDirective + "_fgcolor");
-	const QColor bgcolor = config_file.readColorEntry("Hints", configurationDirective + "_bgcolor");
-	const unsigned int timeout = config_file.readUnsignedNumEntry("Hints",  configurationDirective + "_timeout");
-
-	addHint(text, pixmap, font, fgcolor, bgcolor, timeout, senders);
-}
-
 Hint *HintManager::addHint(Notification *notification)
 {
 	kdebugf();
 
 	connect(notification, SIGNAL(closed(Notification *)), this, SLOT(notificationClosed(Notification *)));
 
-	// TODO: fix this
-	QColor fgDefaultColor(0x00, 0x00, 0x00);
-	QColor bgDefaultColor(0xf0, 0xf0, 0xf0);
-
 	Hint *hint = new Hint(frame, notification);
-	hint->set(
-		config_file.readFontEntry("Hints", "Event_" + notification->type() + "_font"),
-		config_file.readColorEntry("Hints", "Event_" + notification->type() + "_fgcolor", &fgDefaultColor),
-		config_file.readColorEntry("Hints", "Event_" + notification->type() + "_bgcolor", &bgDefaultColor)
-	);
-
 	hints.append(hint);
 
 	setLayoutDirection();
@@ -559,55 +517,7 @@ void HintManager::hideToolTip()
 	kdebugf2();
 }
 
-void HintManager::message(const QString &from, const QString &msg, const QMap<QString, QVariant> *parameters, const UserListElement *ule)
-{
-	kdebugf();
-	UserListElements uinslist;
-	if (ule != NULL)
-		uinslist.append(*ule);
-
-	QString msg2;
-	QPixmap pixmap;
-	QFont font;
-	QColor fgcolor,bgcolor;
-	unsigned int timeout=0;
-	bool ok;
-	bool showSource=true;
-	if (parameters!=NULL)
-	{
-		QMap<QString, QVariant>::const_iterator end=(*parameters).end();
-
-		pixmap=(*parameters)["Pixmap"].toPixmap();
-		font=(*parameters)["Font"].toFont();
-		fgcolor=(*parameters)["Foreground color"].toColor();
-		bgcolor=(*parameters)["Background color"].toColor();
-		timeout=(*parameters)["Timeout"].toUInt(&ok);
-
-		QMap<QString, QVariant>::const_iterator sit=(*parameters).find("ShowSource");
-		if (sit!=end)
-			showSource=sit.data().toBool();
-	}
-	if (pixmap.isNull())
-		pixmap=icons_manager->loadIcon("Message");
-	if (font==qApp->font())
-		font=config_file.readFontEntry("Hints", "HintMessage_font");
-	if (!fgcolor.isValid())
-		fgcolor=config_file.readColorEntry("Hints", "HintMessage_fgcolor");
-	if (!bgcolor.isValid())
-		bgcolor=config_file.readColorEntry("Hints", "HintMessage_bgcolor");
-	if (timeout==0 || !ok)
-		timeout=config_file.readUnsignedNumEntry("Hints", "HintMessage_timeout");
-	if (!from.isEmpty() && showSource)
-		msg2=narg(tr("From <b>%1</b>: %2"), from, msg);
-	else
-		msg2=msg;
-
-	addHint(msg2, pixmap, font, fgcolor, bgcolor, timeout, uinslist);
-
-	kdebugf2();
-}
-
-void HintManager::externalEvent(Notification *notification)
+void HintManager::notify(Notification *notification)
 {
 	kdebugf();
 

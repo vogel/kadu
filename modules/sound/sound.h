@@ -151,15 +151,6 @@ class SoundManager : public Notifier
 
 		void import_0_5_0_configuration();
 
-	private slots:
-		/* from i ule s± ignorowane, message wskazuje na plik z d¼wiêkiem do odtworzenia
-		 * je¿eli message==QString::null, to odtwarzany jest standardowy d¼wiêk dla tego typu
-		 * je¿eli mapa jest!=NULL brane s± z niej nastêpuj±ce warto¶ci:
-		 *		"Force"           - bool (wymuszenie odtwarzania mimo wyciszenia)
-		 */
-		void message(const QString &from, const QString &message, const QMap<QString, QVariant> *parameters, const UserListElement *ule);
-		virtual void externalEvent(Notification *notification);
-
 	public slots:
 		void play(const QString &path, bool force=false);
 		void play(const QString &path, bool volCntrl, double vol);
@@ -169,6 +160,8 @@ class SoundManager : public Notifier
 
 		SoundManager(const QString& name, const QString& configname);
 		~SoundManager();
+
+		virtual void notify(Notification *notification);
 
 		Themes *theme();
 

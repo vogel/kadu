@@ -1049,8 +1049,8 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 	toggleFileTransferWindowMenuId = mainMenu->insertItem(tr("Toggle transfers window"),
 		this, SLOT(toggleFileTransferWindow()), 0, -1, 10);
 
-	notify->registerEvent("FileTransfer/IncomingFile",  QT_TRANSLATE_NOOP("@default", "An user wants to send you a file"), CallbackRequired);
-	notify->registerEvent("FileTransfer/FinishedNotification", QT_TRANSLATE_NOOP("@default", "File transfer was finished"), CallbackNotRequired);
+	notification_manager->registerEvent("FileTransfer/IncomingFile",  QT_TRANSLATE_NOOP("@default", "An user wants to send you a file"), CallbackRequired);
+	notification_manager->registerEvent("FileTransfer/FinishedNotification", QT_TRANSLATE_NOOP("@default", "File transfer was finished"), CallbackNotRequired);
 
 	readFromConfig();
 
@@ -1063,8 +1063,8 @@ FileTransferManager::~FileTransferManager()
 
 	writeToConfig();
 
- 	notify->unregisterEvent("FileTransfer/IncomingFile");
-	notify->unregisterEvent("FileTransfer/FinishedNotification");
+ 	notification_manager->unregisterEvent("FileTransfer/IncomingFile");
+	notification_manager->unregisterEvent("FileTransfer/FinishedNotification");
 
 	int sendfile = UserBox::userboxmenu->getItem(tr("Send file"));
 	UserBox::userboxmenu->removeItem(sendfile);
@@ -1333,7 +1333,7 @@ void FileTransferManager::fileTransferFinishedSlot(FileTransfer *fileTransfer, b
 	fileTransferFinishedNotification->setTitle(tr("File transfer finished"));
 	fileTransferFinishedNotification->setText(message);
 
-	notify->notify(fileTransferFinishedNotification);
+	notification_manager->notify(fileTransferFinishedNotification);
 }
 
 void FileTransferManager::fileTransferWindowDestroyed()
@@ -1455,7 +1455,7 @@ void FileTransferManager::needFileAccept(DccSocket *socket)
 	newFileTransferNotification->setText(question);
 	newFileTransferNotification->setTitle("Incoming transfer");
 
-	notify->notify(newFileTransferNotification);
+	notification_manager->notify(newFileTransferNotification);
 
 	kdebugf2();
 }
