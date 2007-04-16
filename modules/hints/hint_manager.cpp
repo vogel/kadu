@@ -134,9 +134,6 @@ HintManager::~HintManager()
 {
 	kdebugf();
 
-// 	/*FOREACH*/(hint, hints)
-// 		delete (*hint);
-
 	tool_tip_class_manager->unregisterToolTipClass("Hints");
 	notification_manager->unregisterNotifier("Hints");
 

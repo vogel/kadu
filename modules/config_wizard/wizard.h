@@ -23,6 +23,25 @@ class Wizard : public QWizard
 {
     Q_OBJECT
 
+		enum HintType {
+			HintConnectionError,
+			HintNewChat,
+			HintNewMessage,
+			HintStatusChangedToOnline,
+			HintStatusChangedToBusy,
+			HintStatusChangedToInvisible,
+			HintStatusChangedToOffline
+		};
+
+		enum ColorType {
+			ColorForeground = 0,
+			ColorBackground = 1
+		};
+
+		QString currentColors[8];	//tu przechowujemy aktualny zestaw kolorow
+		QString currentHints[13][2]; //a tu aktualne kolorki hintow
+		bool registered;	//potrzebne przy blokowaniu/odblokowywaniu przyciska Dalej
+
 	public:
 		Wizard(QWidget *parent = 0, const char *name = 0, bool modal = false);
 		~Wizard();
@@ -57,7 +76,7 @@ class Wizard : public QWizard
 			*c_logMessages, *c_logStatusChanges, *c_privateStatus, *c_showBlocked, *c_showBlocking, *c_startDocked, *c_enableSounds, *c_playWhilstChatting,
 			*c_playWhenInvisible, *c_showInfoPanel, *c_showScrolls;
 		QComboBox *cb_browser, *cb_browserOptions, *cb_hintsTheme, *cb_hintsType, *cb_colorTheme, *cb_iconTheme, *cb_qtTheme, *cb_panelTheme, *cb_soundModule;
-		QLabel *preview, *preview2, *preview4, *iconPreview, *iconPreview2, *iconPreview3, *iconPreview4, *moduleInfo;
+		QLabel *previewHintStatusChangedToBusy, *previewHintConnectionError, *previewHintStatusChangedSyntax, *iconPreview, *iconPreview2, *iconPreview3, *iconPreview4, *moduleInfo;
 		QString customHint, customPanel;
 		KaduTextBrowser *infoPreview;
 		QPushButton *registerAccount;

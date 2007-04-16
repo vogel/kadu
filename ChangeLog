@@ -130,6 +130,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * notyfikacje "Zmiana statusu na..." zamieniona w klasê pochodn± od Notification (Vogel)
 * notyfikacje "Nowa wiadomo¶æ/rozmowa" zamienione w klasy pochodne od Notification, grupowanie wiadomo¶ci w dymkach (Vogel)
 * porz±dki po ostatnich zmianach w notyfikacjach, czê¶æ pierwsza (Vogel)
+* config_wizard: porz±dki po ostatnich zmianach w notyfikacjach, czê¶æ druga (Vogel)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

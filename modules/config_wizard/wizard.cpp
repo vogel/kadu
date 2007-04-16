@@ -39,9 +39,6 @@ unsigned int informationPanelCount = sizeof(informationPanelSyntax) / sizeof(inf
 unsigned int hintCount = sizeof(hintSyntax) / sizeof(hintSyntax[0]);
 unsigned int hintColorCount = sizeof(hintColors) / sizeof(hintColors[0]);
 unsigned int kaduColorCount = sizeof(kaduColors) / sizeof(kaduColors[0]);
-QString currentColors[8];	//tu przechowujemy aktualny zestaw kolorow
-QString currentHints[13][2]; //a tu aktualne kolorki hintow
-bool registered = false;	//potrzebne przy blokowaniu/odblokowywaniu przyciska Dalej
 
 extern "C" int config_wizard_init()
 {
@@ -93,7 +90,7 @@ void WizardStarter::start()
 
 Wizard::Wizard(QWidget *parent, const char *name, bool modal)
 	: QWizard(parent, name, modal),
-	noNewAccount(false), welcomePage(0), ggNumberSelect(0), ggCurrentNumberPage(0),
+	registered(false), noNewAccount(false), welcomePage(0), ggNumberSelect(0), ggCurrentNumberPage(0),
 	ggNewNumberPage(0), languagePage(0), chatOptionsPage(0), wwwOptionsPage(0),
 	soundOptionsPage(0), generalOptionsPage(0), greetingsPage(0), hintsOptionsPage(0),
 	colorsPage(0), qtStylePage(0), infoPanelPage(0), rb_haveNumber(0), rb_dontHaveNumber(0),
@@ -105,7 +102,7 @@ Wizard::Wizard(QWidget *parent, const char *name, bool modal)
 	c_playWhilstChatting(0), c_playWhenInvisible(0), c_showInfoPanel(0), c_showScrolls(0),
 	cb_browser(0), cb_browserOptions(0), cb_hintsTheme(0), cb_hintsType(0),
 	cb_colorTheme(0), cb_iconTheme(0), cb_qtTheme(0), cb_panelTheme(0), cb_soundModule(0),
-	preview(0), preview2(0), preview4(0), iconPreview(0), iconPreview2(0),
+	previewHintStatusChangedToBusy(0), previewHintConnectionError(0), previewHintStatusChangedSyntax(0), iconPreview(0), iconPreview2(0),
 	iconPreview3(0), iconPreview4(0), moduleInfo(0), customHint(), customPanel(),
 	infoPreview(0), registerAccount(0)
 {
@@ -743,56 +740,41 @@ void Wizard::createHintsOptionsPage()
 	cb_hintsTheme->setCurrentItem(i);
 	//teraz musimy je zapamietac
 
-	// TODO:
-	// nieaktualne
-	// trza bêdzie poprawiæ
-// 	currentHints[0][0] = config_file.readEntry("Hints", "HintBlocking_bgcolor", "#f0f0f0");
-// 	currentHints[1][0] = config_file.readEntry("Hints", "HintBusyD_bgcolor", "#f0f0f0");
-// 	currentHints[2][0] = config_file.readEntry("Hints", "HintBusy_bgcolor", "#f0f0f0");
-// 	currentHints[3][0] = config_file.readEntry("Hints", "HintError_bgcolor", "#f0f0f0");
-// 	currentHints[4][0] = config_file.readEntry("Hints", "HintInvisibleD_bgcolor", "#f0f0f0");
-// 	currentHints[5][0] = config_file.readEntry("Hints", "HintInvisible_bgcolor", "#f0f0f0");
-// 	currentHints[6][0] = config_file.readEntry("Hints", "HintMessage_bgcolor", "#f0f0f0");
-// 	currentHints[7][0] = config_file.readEntry("Hints", "HintNewChat_bgcolor", "#f0f0f0");
-// 	currentHints[8][0] = config_file.readEntry("Hints", "HintNewMessage_bgcolor", "#f0f0f0");
-// 	currentHints[9][0] = config_file.readEntry("Hints", "HintOfflineD_bgcolor", "#f0f0f0");
-// 	currentHints[10][0] = config_file.readEntry("Hints", "HintOffline_bgcolor", "#f0f0f0");
-// 	currentHints[11][0] = config_file.readEntry("Hints", "HintOnlineD_bgcolor", "#f0f0f0");
-// 	currentHints[12][0] = config_file.readEntry("Hints", "HintOnline_bgcolor", "#f0f0f0");
-// 	currentHints[0][1] = config_file.readEntry("Hints", "HintBlocking_fgcolor", "#000000");
-// 	currentHints[1][1] = config_file.readEntry("Hints", "HintBusyD_fgcolor", "#000000");
-// 	currentHints[2][1] = config_file.readEntry("Hints", "HintBusy_fgcolor", "#000000");
-// 	currentHints[3][1] = config_file.readEntry("Hints", "HintError_fgcolor", "#000000");
-// 	currentHints[4][1] = config_file.readEntry("Hints", "HintInvisibleD_fgcolor", "#000000");
-// 	currentHints[5][1] = config_file.readEntry("Hints", "HintInvisible_fgcolor", "#000000");
-// 	currentHints[6][1] = config_file.readEntry("Hints", "HintMessage_fgcolor", "#000000");
-// 	currentHints[7][1] = config_file.readEntry("Hints", "HintNewChat_fgcolor", "#000000");
-// 	currentHints[8][1] = config_file.readEntry("Hints", "HintNewMessage_fgcolor", "#000000");
-// 	currentHints[9][1] = config_file.readEntry("Hints", "HintOfflineD_fgcolor", "#000000");
-// 	currentHints[10][1] = config_file.readEntry("Hints", "HintOffline_fgcolor", "#000000");
-// 	currentHints[11][1] = config_file.readEntry("Hints", "HintOnlineD_fgcolor", "#000000");
-// 	currentHints[12][1] = config_file.readEntry("Hints", "HintOnline_fgcolor", "#000000");
+	currentHints[HintConnectionError][ColorBackground] = config_file.readEntry("Hints", "Event_ConnectionError_bgcolor", "#f0f0f0");
+	currentHints[HintConnectionError][ColorForeground] = config_file.readEntry("Hints", "Event_ConnectionError_fgcolor", "#000000");
+	currentHints[HintNewChat][ColorBackground] = config_file.readEntry("Hints", "Event_NewChat_bgcolor", "#f0f0f0");
+	currentHints[HintNewChat][ColorForeground] = config_file.readEntry("Hints", "Event_NewChat_fgcolor", "#000000");
+	currentHints[HintNewMessage][ColorBackground] = config_file.readEntry("Hints", "Event_NewMessage_bgcolor", "#f0f0f0");
+	currentHints[HintNewMessage][ColorForeground] = config_file.readEntry("Hints", "Event_NewMessage_fgcolor", "#000000");
+	currentHints[HintStatusChangedToOnline][ColorBackground] = config_file.readEntry("Hints", "Event_StatusChanged/ToOnline_bgcolor", "#f0f0f0");
+	currentHints[HintStatusChangedToOnline][ColorForeground] = config_file.readEntry("Hints", "Event_StatusChanged/ToOnline_fgcolor", "#000000");
+	currentHints[HintStatusChangedToBusy][ColorBackground] = config_file.readEntry("Hints", "Event_StatusChanged/ToBusy_bgcolor", "#f0f0f0");
+	currentHints[HintStatusChangedToBusy][ColorForeground] = config_file.readEntry("Hints", "Event_StatusChanged/ToBusy_fgcolor", "#000000");
+	currentHints[HintStatusChangedToInvisible][ColorBackground] = config_file.readEntry("Hints", "Event_StatusChanged/ToInvisible_bgcolor", "#f0f0f0");
+	currentHints[HintStatusChangedToInvisible][ColorForeground] = config_file.readEntry("Hints", "Event_StatusChanged/ToInvisible_fgcolor", "#000000");
+	currentHints[HintStatusChangedToOffline][ColorBackground] = config_file.readEntry("Hints", "Event_StatusChanged/ToOffline_bgcolor", "#f0f0f0");
+	currentHints[HintStatusChangedToOffline][ColorForeground] = config_file.readEntry("Hints", "Event_StatusChanged/ToOffline_fgcolor", "#000000");
 
 
 	new QLabel(tr("Preview"), grp_hintsOptions);
 
-	preview = new QLabel (toDisplay(tr("<b>User</b> changed status to <b>Busy</b>")), grp_hintsOptions);
+	previewHintStatusChangedToBusy = new QLabel (toDisplay(tr("<b>User</b> changed status to <b>Busy</b>")), grp_hintsOptions);
 //	preview->setFont(QFont("sans", 10));	//<-----------------------------------
-	preview->setPaletteForegroundColor(currentHints[2][1]);
-	preview->setPaletteBackgroundColor(currentHints[2][0]);
-	preview->setAlignment(Qt::AlignCenter);
-	preview->setFixedWidth(260);
-	preview->setAutoResize(true);
+	previewHintStatusChangedToBusy->setPaletteForegroundColor(currentHints[HintStatusChangedToBusy][ColorForeground]);
+	previewHintStatusChangedToBusy->setPaletteBackgroundColor(currentHints[HintStatusChangedToBusy][ColorBackground]);
+	previewHintStatusChangedToBusy->setAlignment(Qt::AlignCenter);
+	previewHintStatusChangedToBusy->setFixedWidth(260);
+	previewHintStatusChangedToBusy->setAutoResize(true);
 
 	new QLabel(QString::null, grp_hintsOptions);
 
-	preview2 = new QLabel (tr("<b>Error</b>: (192.168.0.1) Disconnection has occured"), grp_hintsOptions);
+	previewHintConnectionError = new QLabel (tr("<b>Error</b>: (192.168.0.1) Disconnection has occured"), grp_hintsOptions);
 //	preview2->setFont(QFont("sans", 10));	//<-----------------------------------
-	preview2->setPaletteForegroundColor(currentHints[3][1]);
-	preview2->setPaletteBackgroundColor(currentHints[3][0]);
-	preview2->setAlignment(Qt::AlignCenter);
-	preview2->setFixedWidth(260);
-	preview2->setAutoResize(true);
+	previewHintConnectionError->setPaletteForegroundColor(currentHints[HintConnectionError][ColorForeground]);
+	previewHintConnectionError->setPaletteBackgroundColor(currentHints[HintConnectionError][ColorBackground]);
+	previewHintConnectionError->setAlignment(Qt::AlignCenter);
+	previewHintConnectionError->setFixedWidth(260);
+	previewHintConnectionError->setAutoResize(true);
 
 	QGroupBox *grp_hintsOptions2 = new QGroupBox(tr("Hints construction"), hintsOptionsPage);
 	grp_hintsOptions2->setInsideMargin(10);
@@ -805,18 +787,18 @@ void Wizard::createHintsOptionsPage()
 		cb_hintsType->insertItem(tr(hintSyntaxName[i]));
 
 	new QLabel(tr("Preview"), grp_hintsOptions2);
-	preview4 = new QLabel (toDisplay(hintSyntax[0]), grp_hintsOptions2);
+	previewHintStatusChangedSyntax = new QLabel (toDisplay(hintSyntax[0]), grp_hintsOptions2);
 //	preview4->setFont(QFont("sans", 10));	//<----------------------------------
-	preview2->setPaletteForegroundColor(currentHints[2][1]);
-	preview2->setPaletteBackgroundColor(currentHints[2][0]);
-	preview4->setAlignment(Qt::AlignCenter);
-	preview4->setFixedWidth(260);
-	preview4->setAutoResize(true);
+	previewHintStatusChangedSyntax->setPaletteForegroundColor(currentHints[HintStatusChangedToBusy][ColorForeground]);
+	previewHintStatusChangedSyntax->setPaletteBackgroundColor(currentHints[HintStatusChangedToBusy][ColorBackground]);
+	previewHintStatusChangedSyntax->setAlignment(Qt::AlignCenter);
+	previewHintStatusChangedSyntax->setFixedWidth(260);
+	previewHintStatusChangedSyntax->setAutoResize(true);
 
 	connect(cb_hintsTheme, SIGNAL(activated(int)), this, SLOT(previewHintsTheme(int)));
 	connect(cb_hintsType, SIGNAL(activated(int)), this, SLOT(previewHintsType(int)));
 
-	QString hintConstruction = config_file.readEntry("Hints", "NotifyHintSyntax");
+	QString hintConstruction = config_file.readEntry("Hints", "Event_StatusChanged/ToBusy_syntax");
 	if (!hintConstruction.isEmpty())
 	{
 		unsigned int i;
@@ -824,7 +806,7 @@ void Wizard::createHintsOptionsPage()
 			if (hintConstruction == hintSyntax[i])
 			{
 				cb_hintsType->setCurrentItem(i);
-				preview4->setText(toDisplay(hintSyntax[i]));
+				previewHintStatusChangedSyntax->setText(toDisplay(hintSyntax[i]));
 				break;
 			}
 		if (i == hintCount)
@@ -832,7 +814,7 @@ void Wizard::createHintsOptionsPage()
 			cb_hintsType->insertItem(tr("Custom"));
 			cb_hintsType->setCurrentItem(i);
 			customHint=hintConstruction;
-			preview4->setText(toDisplay(hintConstruction));
+			previewHintStatusChangedSyntax->setText(toDisplay(hintConstruction));
 		}
 	}
 
@@ -1142,21 +1124,21 @@ void Wizard::previewHintsTheme(int hintsThemeID)
 {
 	if (cb_hintsTheme->currentText() == tr("Current"))
 	{
-		preview->setPaletteForegroundColor(QColor(currentHints[2][1]));
-		preview->setPaletteBackgroundColor(QColor(currentHints[2][0]));
-		preview2->setPaletteForegroundColor(QColor(currentHints[3][1]));
-		preview2->setPaletteBackgroundColor(QColor(currentHints[3][0]));
-		preview4->setPaletteForegroundColor(QColor(currentHints[2][1]));
-		preview4->setPaletteBackgroundColor(QColor(currentHints[2][0]));
+		previewHintStatusChangedToBusy->setPaletteForegroundColor(QColor(currentHints[HintStatusChangedToBusy][ColorForeground]));
+		previewHintStatusChangedToBusy->setPaletteBackgroundColor(QColor(currentHints[HintStatusChangedToBusy][ColorBackground]));
+		previewHintConnectionError->setPaletteForegroundColor(QColor(currentHints[HintConnectionError][ColorForeground]));
+		previewHintConnectionError->setPaletteBackgroundColor(QColor(currentHints[HintConnectionError][ColorBackground]));
+		previewHintStatusChangedSyntax->setPaletteForegroundColor(QColor(currentHints[HintStatusChangedToBusy][ColorForeground]));
+		previewHintStatusChangedSyntax->setPaletteBackgroundColor(QColor(currentHints[HintStatusChangedToBusy][ColorBackground]));
 	}
 	else
 	{
-		preview->setPaletteForegroundColor(QColor(hintColors[hintsThemeID][1]));
-		preview->setPaletteBackgroundColor(QColor(hintColors[hintsThemeID][0]));
-		preview2->setPaletteForegroundColor(QColor(hintColors[hintsThemeID][1]));
-		preview2->setPaletteBackgroundColor(QColor(hintColors[hintsThemeID][0]));
-		preview4->setPaletteForegroundColor(QColor(hintColors[hintsThemeID][1]));
-		preview4->setPaletteBackgroundColor(QColor(hintColors[hintsThemeID][0]));
+		previewHintStatusChangedToBusy->setPaletteForegroundColor(QColor(hintColors[hintsThemeID][ColorForeground]));
+		previewHintStatusChangedToBusy->setPaletteBackgroundColor(QColor(hintColors[hintsThemeID][ColorBackground]));
+		previewHintConnectionError->setPaletteForegroundColor(QColor(hintColors[hintsThemeID][ColorForeground]));
+		previewHintConnectionError->setPaletteBackgroundColor(QColor(hintColors[hintsThemeID][ColorBackground]));
+		previewHintStatusChangedSyntax->setPaletteForegroundColor(QColor(hintColors[hintsThemeID][ColorForeground]));
+		previewHintStatusChangedSyntax->setPaletteBackgroundColor(QColor(hintColors[hintsThemeID][ColorBackground]));
 	}
 }
 
@@ -1166,9 +1148,9 @@ void Wizard::previewHintsTheme(int hintsThemeID)
 void Wizard::previewHintsType(int hintsTypeID)
 {
 	if (hintsTypeID == int(hintCount))
-		preview4->setText(toDisplay(customHint));
+		previewHintStatusChangedSyntax->setText(toDisplay(customHint));
 	else
-		preview4->setText(toDisplay(hintSyntax[hintsTypeID]));
+		previewHintStatusChangedSyntax->setText(toDisplay(hintSyntax[hintsTypeID]));
 }
 
 /**
@@ -1179,84 +1161,60 @@ void Wizard::setHints()
 	kdebugf();
 
 	// TODO: nieaktualne, poprawiæ
-// 	if (cb_hintsTheme->currentText() == tr("Current"))
-// 	{
-// 		config_file.writeEntry("Hints", "HintBlocking_bgcolor", currentHints[0][0]);
-// 		config_file.writeEntry("Hints", "HintBusyD_bgcolor", currentHints[1][0]);
-// 		config_file.writeEntry("Hints", "HintBusy_bgcolor", currentHints[2][0]);
-// 		config_file.writeEntry("Hints", "HintError_bgcolor", currentHints[3][0]);
-// 		config_file.writeEntry("Hints", "HintInvisibleD_bgcolor", currentHints[4][0]);
-// 		config_file.writeEntry("Hints", "HintInvisible_bgcolor", currentHints[5][0]);
-// 		config_file.writeEntry("Hints", "HintMessage_bgcolor", currentHints[6][0]);
-// 		config_file.writeEntry("Hints", "HintNewChat_bgcolor", currentHints[7][0]);
-// 		config_file.writeEntry("Hints", "HintNewMessage_bgcolor", currentHints[8][0]);
-// 		config_file.writeEntry("Hints", "HintOfflineD_bgcolor", currentHints[9][0]);
-// 		config_file.writeEntry("Hints", "HintOffline_bgcolor", currentHints[10][0]);
-// 		config_file.writeEntry("Hints", "HintOnlineD_bgcolor", currentHints[11][0]);
-// 		config_file.writeEntry("Hints", "HintOnline_bgcolor", currentHints[12][0]);
-
-// 		config_file.writeEntry("Hints", "HintBlocking_fgcolor", currentHints[0][1]);
-// 		config_file.writeEntry("Hints", "HintBusyD_fgcolor", currentHints[1][1]);
-// 		config_file.writeEntry("Hints", "HintBusy_fgcolor", currentHints[2][1]);
-// 		config_file.writeEntry("Hints", "HintError_fgcolor", currentHints[3][1]);
-// 		config_file.writeEntry("Hints", "HintInvisibleD_fgcolor", currentHints[4][1]);
-// 		config_file.writeEntry("Hints", "HintInvisible_fgcolor", currentHints[5][1]);
-// 		config_file.writeEntry("Hints", "HintMessage_fgcolor", currentHints[6][1]);
-// 		config_file.writeEntry("Hints", "HintNewChat_fgcolor", currentHints[7][1]);
-// 		config_file.writeEntry("Hints", "HintNewMessage_fgcolor", currentHints[8][1]);
-// 		config_file.writeEntry("Hints", "HintOfflineD_fgcolor", currentHints[9][1]);
-// 		config_file.writeEntry("Hints", "HintOffline_fgcolor", currentHints[10][1]);
-// 		config_file.writeEntry("Hints", "HintOnlineD_fgcolor", currentHints[11][1]);
-// 		config_file.writeEntry("Hints", "HintOnline_fgcolor", currentHints[12][1]);
-// 	}
-// 	else
-// 	{
-// 		QColor bg_color, fg_color;
-// 		bg_color = preview->paletteBackgroundColor();
-// 		fg_color = preview->paletteForegroundColor();
-
-// 		config_file.writeEntry("Hints", "HintBlocking_bgcolor", bg_color);
-// 		config_file.writeEntry("Hints", "HintBusyD_bgcolor", bg_color);
-// 		config_file.writeEntry("Hints", "HintBusy_bgcolor", bg_color);
-// 		config_file.writeEntry("Hints", "HintError_bgcolor", bg_color);
-// 		config_file.writeEntry("Hints", "HintInvisibleD_bgcolor", bg_color);
-// 		config_file.writeEntry("Hints", "HintInvisible_bgcolor", bg_color);
-// 		config_file.writeEntry("Hints", "HintMessage_bgcolor", bg_color);
-// 		config_file.writeEntry("Hints", "HintNewChat_bgcolor", bg_color);
-// 		config_file.writeEntry("Hints", "HintNewMessage_bgcolor", bg_color);
-// 		config_file.writeEntry("Hints", "HintOfflineD_bgcolor", bg_color);
-// 		config_file.writeEntry("Hints", "HintOffline_bgcolor", bg_color);
-// 		config_file.writeEntry("Hints", "HintOnlineD_bgcolor", bg_color);
-// 		config_file.writeEntry("Hints", "HintOnline_bgcolor", bg_color);
-
-// 		config_file.writeEntry("Hints", "HintBlocking_fgcolor", fg_color);
-// 		config_file.writeEntry("Hints", "HintBusyD_fgcolor", fg_color);
-// 		config_file.writeEntry("Hints", "HintBusy_fgcolor", fg_color);
-// 		config_file.writeEntry("Hints", "HintError_fgcolor", fg_color);
-// 		config_file.writeEntry("Hints", "HintInvisibleD_fgcolor", fg_color);
-// 		config_file.writeEntry("Hints", "HintInvisible_fgcolor", fg_color);
-// 		config_file.writeEntry("Hints", "HintMessage_fgcolor", fg_color);
-// 		config_file.writeEntry("Hints", "HintNewChat_fgcolor", fg_color);
-// 		config_file.writeEntry("Hints", "HintNewMessage_fgcolor", fg_color);
-// 		config_file.writeEntry("Hints", "HintOfflineD_fgcolor", fg_color);
-// 		config_file.writeEntry("Hints", "HintOffline_fgcolor", fg_color);
-// 		config_file.writeEntry("Hints", "HintOnlineD_fgcolor", fg_color);
-// 		config_file.writeEntry("Hints", "HintOnline_fgcolor", fg_color);
-// 	}
-// 	config_file.writeEntry("Hints", "NotifyHintUseSyntax", true);
-
-	if (cb_hintsType->currentItem() == 0)
+	if (cb_hintsTheme->currentText() == tr("Current"))
 	{
-		config_file.writeEntry("Hints", "NotifyHintUseSyntax", false);
-		config_file.writeEntry("Hints", "NotifyHintSyntax", QString::null);
+		config_file.writeEntry("Hints", "Event_ConnectionError_bgcolor", currentHints[HintConnectionError][ColorBackground]);
+		config_file.writeEntry("Hints", "Event_ConnectionError_fgcolor", currentHints[HintConnectionError][ColorForeground]);
+		config_file.writeEntry("Hints", "Event_NewChat_bgcolor", currentHints[HintNewChat][ColorBackground]);
+		config_file.writeEntry("Hints", "Event_NewChat_fgcolor", currentHints[HintNewChat][ColorForeground]);
+		config_file.writeEntry("Hints", "Event_NewMessage_bgcolor", currentHints[HintNewMessage][ColorBackground]);
+		config_file.writeEntry("Hints", "Event_NewMessage_fgcolor", currentHints[HintNewMessage][ColorForeground]);
+		config_file.writeEntry("Hints", "Event_StatusChanged/ToOnline_bgcolor", currentHints[HintStatusChangedToOnline][ColorBackground]);
+		config_file.writeEntry("Hints", "Event_StatusChanged/ToOnline_fgcolor", currentHints[HintStatusChangedToOnline][ColorForeground]);
+		config_file.writeEntry("Hints", "Event_StatusChanged/ToBusy_bgcolor", currentHints[HintStatusChangedToBusy][ColorBackground]);
+		config_file.writeEntry("Hints", "Event_StatusChanged/ToBusy_fgcolor", currentHints[HintStatusChangedToBusy][ColorForeground]);
+		config_file.writeEntry("Hints", "Event_StatusChanged/ToInvisible_bgcolor", currentHints[HintStatusChangedToInvisible][ColorBackground]);
+		config_file.writeEntry("Hints", "Event_StatusChanged/ToInvisible_fgcolor", currentHints[HintStatusChangedToInvisible][ColorForeground]);
+		config_file.writeEntry("Hints", "Event_StatusChanged/ToOffline_bgcolor", currentHints[HintStatusChangedToOffline][ColorBackground]);
+		config_file.writeEntry("Hints", "Event_StatusChanged/ToOffline_fgcolor", currentHints[HintStatusChangedToOffline][ColorForeground]);
 	}
 	else
 	{
-		if (cb_hintsType->currentItem() == int(hintCount))
-			config_file.writeEntry("Hints", "NotifyHintSyntax", tr(customHint.ascii()));
-		else
-			config_file.writeEntry("Hints", "NotifyHintSyntax", tr(hintSyntax[cb_hintsType->currentItem()]));
+		QColor bg_color, fg_color;
+		bg_color = previewHintStatusChangedToBusy->paletteBackgroundColor();
+		fg_color = previewHintStatusChangedToBusy->paletteForegroundColor();
+
+		config_file.writeEntry("Hints", "Event_ConnectionError_bgcolor", bg_color);
+		config_file.writeEntry("Hints", "Event_ConnectionError_fgcolor", fg_color);
+		config_file.writeEntry("Hints", "Event_NewChat_bgcolor", bg_color);
+		config_file.writeEntry("Hints", "Event_NewChat_fgcolor", fg_color);
+		config_file.writeEntry("Hints", "Event_NewMessage_bgcolor", bg_color);
+		config_file.writeEntry("Hints", "Event_NewMessage_fgcolor", fg_color);
+		config_file.writeEntry("Hints", "Event_StatusChanged/ToOnline_bgcolor", bg_color);
+		config_file.writeEntry("Hints", "Event_StatusChanged/ToOnline_fgcolor", fg_color);
+		config_file.writeEntry("Hints", "Event_StatusChanged/ToBusy_bgcolor", bg_color);
+		config_file.writeEntry("Hints", "Event_StatusChanged/ToBusy_fgcolor", fg_color);
+		config_file.writeEntry("Hints", "Event_StatusChanged/ToInvisible_bgcolor", bg_color);
+		config_file.writeEntry("Hints", "Event_StatusChanged/ToInvisible_fgcolor", fg_color);
+		config_file.writeEntry("Hints", "Event_StatusChanged/ToOffline_bgcolor", bg_color);
+		config_file.writeEntry("Hints", "Event_StatusChanged/ToOffline_fgcolor", fg_color);
 	}
+
+	QString syntax(QString::null);
+
+	if (cb_hintsType->currentItem() != 0)
+		if (cb_hintsType->currentItem() == int(hintCount))
+			syntax = tr(customHint.ascii());
+		else
+			syntax = tr(hintSyntax[cb_hintsType->currentItem()]);
+
+	// TODO: remove this line after 0.6 is stable
+	config_file.writeEntry("Hints", "NotifyHintSyntax", syntax);
+	config_file.writeEntry("Hints", "Event_StatusChanged/ToOnline_syntax", syntax);
+	config_file.writeEntry("Hints", "Event_StatusChanged/ToBusy_syntax", syntax);
+	config_file.writeEntry("Hints", "Event_StatusChanged/ToInvisible_syntax", syntax);
+	config_file.writeEntry("Hints", "Event_StatusChanged/ToOffline_syntax", syntax);
+
 	kdebugf2();
 }
 

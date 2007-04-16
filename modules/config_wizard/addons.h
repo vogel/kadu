@@ -132,15 +132,15 @@ const char *hintSyntaxName[]=
 	konfiguracja kolorów dymków
 **/
 
-//kolory dymków. sk³adnia: bc, fc
+//kolory dymków. sk³adnia: fc, bc
 //bc - background color, fc - font color
 const char *hintColors[][2]=
 {
-	{"#f0f0f0", "#000000"},
-	{"#ffffff", "#000000"},
-	{"#2b2b2b", "#aa0000"},
-	{"#000080", "#FFFFFF"},
-	{"#3c5366", "#808999"}
+	{"#000000", "#f0f0f0"},
+	{"#000000", "#ffffff"},
+	{"#aa0000", "#2b2b2b"},
+	{"#FFFFFF", "#000080"},
+	{"#808999", "#3c5366"}
 };
 
 //nazwy kolorów
