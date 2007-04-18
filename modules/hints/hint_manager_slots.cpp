@@ -94,7 +94,9 @@ void HintManagerSlots::onCreateTabHints()
 		prop.bgcolor = config_file.readColorEntry("Hints", QString("Event_") + eventName + "_bgcolor", &bgDefaultColor);
 		prop.timeout = config_file.readUnsignedNumEntry("Hints", QString("Event_") + eventName + "_timeout", 10);
 
-		hintProperties[eventName] = prop;
+		prop.eventName = eventName;
+
+		hintProperties[(*notifyEvent).description] = prop;
 	}
 
 	QStringList options;
@@ -102,7 +104,7 @@ void HintManagerSlots::onCreateTabHints()
 
 	CONST_FOREACH(notifyEvent, notification_manager->notifyEvents())
 	{
-		options << tr((*notifyEvent).name); // change to description
+		options << tr((*notifyEvent).description);
 		values << tr((*notifyEvent).name);
 	}
 
@@ -120,7 +122,7 @@ void HintManagerSlots::onApplyTabHints()
 
 	CONST_FOREACH(hintProperty, hintProperties)
 	{
-		const QString &eventName = hintProperty.key();
+		const QString &eventName = (*hintProperty).eventName;
 
 		config_file.writeEntry("Hints", QString("Event_") + eventName + "_font", hintProperty.data().font);
 		config_file.writeEntry("Hints", QString("Event_") + eventName + "_fgcolor", hintProperty.data().fgcolor);

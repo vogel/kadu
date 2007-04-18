@@ -17,12 +17,15 @@ class HintProperties
 		QColor fgcolor;
 		QColor bgcolor;
 		unsigned int timeout;
+
 		HintProperties();
+		QString eventName;
 };
 
 class HintManagerSlots : public QObject
 {
 	Q_OBJECT
+
 	public:
 		HintManagerSlots(QObject *parent=0, const char *name=0);
 		~HintManagerSlots();
