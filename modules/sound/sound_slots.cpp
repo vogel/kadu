@@ -32,12 +32,6 @@ SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name
 {
 	kdebugf();
 
-	CONST_FOREACH(notifyEvent, notification_manager->notifyEvents())
-	{
-		soundTexts << tr((*notifyEvent).description);
-		soundNames << tr((*notifyEvent).name);
-	}
-
 	sound_manager->setMute(!config_file.readBoolEntry("Sounds", "PlaySound"));
 
 	mute_action = new Action(icons_manager->loadIcon("Unmute"),
@@ -63,6 +57,16 @@ SoundSlots::~SoundSlots()
 void SoundSlots::onCreateTabSounds()
 {
 	kdebugf();
+
+	soundTexts.clear();
+	soundNames.clear();
+
+	CONST_FOREACH(notifyEvent, notification_manager->notifyEvents())
+	{
+		soundTexts << tr((*notifyEvent).description);
+		soundNames << tr((*notifyEvent).name);
+	}
+
 	QCheckBox *b_playsound= ConfigDialog::getCheckBox("Sounds", "Play sounds");
 	QCheckBox *b_volumectrl= ConfigDialog::getCheckBox("Sounds", "Enable volume control (player must support it)");
 	QGrid *g_volume= ConfigDialog::getGrid("Sounds","volume");
