@@ -97,6 +97,17 @@ void HintManagerSlots::onCreateTabHints()
 		hintProperties[eventName] = prop;
 	}
 
+	QStringList options;
+	QStringList values;
+
+	CONST_FOREACH(notifyEvent, notification_manager->notifyEvents())
+	{
+		options << tr((*notifyEvent).name); // change to description
+		values << tr((*notifyEvent).name);
+	}
+
+	ConfigDialog::changeComboBoxParams("Hints", "Hint type", options, values);
+
 	QComboBox *group = ConfigDialog::getComboBox("Hints", "Hint type");
 	activated_HintType(group->currentItem());
 
@@ -119,13 +130,10 @@ void HintManagerSlots::onApplyTabHints()
 
 	// TODO: do it properly
 	QString syntax = config_file.readEntry("Hints","NotifyHintSyntax");
-	if (syntax != "")
-	{
-		config_file.writeEntry("Hints",  "Event_StatusChanged/ToOnline_syntax", syntax);
-		config_file.writeEntry("Hints",  "Event_StatusChanged/ToBusy_syntax", syntax);
-		config_file.writeEntry("Hints",  "Event_StatusChanged/ToInvisible_syntax", syntax);
-		config_file.writeEntry("Hints",  "Event_StatusChanged/ToOffline_syntax", syntax);
-	}
+	config_file.writeEntry("Hints",  "Event_StatusChanged/ToOnline_syntax", syntax);
+	config_file.writeEntry("Hints",  "Event_StatusChanged/ToBusy_syntax", syntax);
+	config_file.writeEntry("Hints",  "Event_StatusChanged/ToInvisible_syntax", syntax);
+	config_file.writeEntry("Hints",  "Event_StatusChanged/ToOffline_syntax", syntax);
 
 	kdebugf2();
 }

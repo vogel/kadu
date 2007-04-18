@@ -64,7 +64,6 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 
 	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Status change"), 0, Advanced);
 		ConfigDialog::addCheckBox("Hints", "Status change", QT_TRANSLATE_NOOP("@default", "Add description to hint if exists"), "NotifyHintDescription", false);
-		ConfigDialog::addCheckBox("Hints", "Status change", QT_TRANSLATE_NOOP("@default", "Use custom syntax"), "NotifyHintUseSyntax", false, 0, 0, Expert);
 		ConfigDialog::addLineEdit("Hints", "Status change", QT_TRANSLATE_NOOP("@default", "Hint syntax"), "NotifyHintSyntax", QString::null, Kadu::SyntaxText, 0, Expert);
 
 	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Parameters"), 0, Advanced);
@@ -73,16 +72,9 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 			ConfigDialog::addLabel("Hints", "top", QT_TRANSLATE_NOOP("@default", "<b>Text</b> preview"));
 
 		ConfigDialog::addHBox("Hints", "Parameters", "center");
-			QStringList options2;
-			QStringList values2;
+			QStringList empty;
 
-			CONST_FOREACH(notifyEvent, notification_manager->notifyEvents())
-			{
-				options2 << tr((*notifyEvent).name); // change to description
-				values2 << tr((*notifyEvent).name);
-			}
-
-			ConfigDialog::addComboBox("Hints", "center", QT_TRANSLATE_NOOP("@default", "Hint type"), "LastSelected", options2, values2, "0");
+			ConfigDialog::addComboBox("Hints", "center", QT_TRANSLATE_NOOP("@default", "Hint type"), "LastSelected", empty, empty, "0");
 
 			ConfigDialog::addVBox("Hints", "center", "bottom");
 				ConfigDialog::addLabel("Hints", "bottom", 0, "stretcher2");
@@ -186,7 +178,6 @@ HintManager::~HintManager()
 	ConfigDialog::removeControl("Hints", "Left button");
 	ConfigDialog::removeControl("Hints", "Mouse buttons");
 	ConfigDialog::removeControl("Hints", "Hint syntax");
-	ConfigDialog::removeControl("Hints", "Use custom syntax");
 	ConfigDialog::removeControl("Hints", "Add description to hint if exists");
 	ConfigDialog::removeControl("Hints", "Status change");
 	ConfigDialog::removeControl("Hints", "Number of quoted characters");

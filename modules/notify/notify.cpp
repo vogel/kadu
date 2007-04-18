@@ -274,6 +274,7 @@ void Notify::removeConfigColumn(const QString &name)
 	CONST_FOREACH(it, NotifyEvents)
 	{
 		++strit; // omit entry
+		notify_slots->unregisterDisabledControl((name + (*it).name).utf8());
 		ConfigDialog::removeControl("Notify", " ", *strit); // use wname
 		++strit;
 	}
@@ -347,6 +348,7 @@ void Notify::removeConfigRow(const QString &name)
 		{
 			QValueList<QCString> &s = strs[it.key()]; // strings for that notifier
 			ConfigDialog::removeControl("Notify", " ", s[wname_idx]);
+			notify_slots->unregisterDisabledControl((it.key() + name).utf8());
 			QValueList<QCString>::iterator sit = s.at(wname_idx - 1), sit2 = sit; //iterators of entry, wname+1
 			++sit2; ++sit2;
 			s.erase(sit, sit2);
