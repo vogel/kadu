@@ -80,7 +80,8 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 				ConfigDialog::addLabel("Hints", "bottom", 0, "stretcher2");
 				ConfigDialog::addLabel("Hints", "bottom", 0, "stretcher3");
 
-				ConfigDialog::addSpinBox("Hints", "bottom", QT_TRANSLATE_NOOP("@default","Hint timeout"), "LastTimeout", -2048, 2048, 1, 10);
+				ConfigDialog::addSpinBox("Hints", "bottom", QT_TRANSLATE_NOOP("@default","Hint timeout"), "LastTimeout", 0, 2048, 1, 10);
+
 				ConfigDialog::addPushButton("Hints", "bottom", QT_TRANSLATE_NOOP("@default", "Change font color"));
 				ConfigDialog::addPushButton("Hints", "bottom", QT_TRANSLATE_NOOP("@default", "Change background color"));
 				ConfigDialog::addPushButton("Hints", "bottom", QT_TRANSLATE_NOOP("@default", "Change font"));

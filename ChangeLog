@@ -133,6 +133,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * config_wizard: porz±dki po ostatnich zmianach w notyfikacjach, czê¶æ druga (Vogel)
 * hints: porz±dki po ostatnich zmianach w notyfikacjach, czê¶æ trzecia (Vogel)
 * sound: porz±dki po ostatnich zmianach w notyfikacjach, czê¶æ czwarta (Vogel)
+* hints: lepsza kontrolka do ustawiania czasu znikania (Vogel)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

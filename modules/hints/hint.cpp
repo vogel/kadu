@@ -195,10 +195,7 @@ void Hint::addDetail(const QString &detail)
 
 bool Hint::hasUsers() const
 {
-	if (notification->userListElements().count() == 0)
-		return false;
-
-	return true;
+	return notification->userListElements().count() != 0;
 }
 
 const UserListElements & Hint::getUsers() const

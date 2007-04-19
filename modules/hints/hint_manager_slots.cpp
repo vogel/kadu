@@ -71,7 +71,9 @@ HintManagerSlots::~HintManagerSlots()
 void HintManagerSlots::onCreateTabHints()
 {
 	kdebugf();
-	ConfigDialog::getSpinBox("Hints", "Hint timeout")->setSuffix(" s");
+	QSpinBox *hintTimeout = ConfigDialog::getSpinBox("Hints", "Hint timeout");
+	hintTimeout->setSuffix(" s");
+	hintTimeout->setSpecialValueText(tr("Dont hide"));
 	ConfigDialog::getLabel("Hints", "<b>Text</b> preview")->setAlignment(Qt::AlignCenter);;
 
 	toggled_ShowMessageContent(config_file.readBoolEntry("Hints", "ShowContentMessage"));
