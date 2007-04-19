@@ -124,6 +124,7 @@ WindowNotify::WindowNotify(QObject *parent, const char *name) : Notifier(parent,
 	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default", "Window"), this);
 
 	config_file.addVariable("Notify", "ConnectionError_Window", true);
+	config_file.addVariable("Notify", "FileTransfer/IncomingFile_Window", true);
 
 	kdebugf2();
 }
