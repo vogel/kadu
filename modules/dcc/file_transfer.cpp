@@ -1050,7 +1050,7 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 		this, SLOT(toggleFileTransferWindow()), 0, -1, 10);
 
 	notification_manager->registerEvent("FileTransfer/IncomingFile",  QT_TRANSLATE_NOOP("@default", "An user wants to send you a file"), CallbackRequired);
-	notification_manager->registerEvent("FileTransfer/FinishedNotification", QT_TRANSLATE_NOOP("@default", "File transfer was finished"), CallbackNotRequired);
+	notification_manager->registerEvent("FileTransfer/Finished", QT_TRANSLATE_NOOP("@default", "File transfer was finished"), CallbackNotRequired);
 
 	readFromConfig();
 
@@ -1064,7 +1064,7 @@ FileTransferManager::~FileTransferManager()
 	writeToConfig();
 
  	notification_manager->unregisterEvent("FileTransfer/IncomingFile");
-	notification_manager->unregisterEvent("FileTransfer/FinishedNotification");
+	notification_manager->unregisterEvent("FileTransfer/Finished");
 
 	int sendfile = UserBox::userboxmenu->getItem(tr("Send file"));
 	UserBox::userboxmenu->removeItem(sendfile);
@@ -1329,7 +1329,7 @@ void FileTransferManager::fileTransferFinishedSlot(FileTransfer *fileTransfer, b
 	else
 		message = tr("File transfer error!");
 
-	Notification *fileTransferFinishedNotification = new Notification("FileTransfer/FinishedNotification", "SendFile", UserListElements());
+	Notification *fileTransferFinishedNotification = new Notification("FileTransfer/Finished", "SendFile", UserListElements());
 	fileTransferFinishedNotification->setTitle(tr("File transfer finished"));
 	fileTransferFinishedNotification->setText(message);
 

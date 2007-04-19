@@ -195,11 +195,9 @@ SpeechSlots::SpeechSlots(QObject *parent, const char *name) : Notifier(parent, n
 
 	ConfigDialog::registerSlotOnCreateTab("Speech", this, SLOT(onCreateTabSpeech()));
 
-// 	config_file.addVariable("Notify", "NewChat_Speech", true);
-// 	config_file.addVariable("Notify", "NewMessage_Speech", false);
-// 	config_file.addVariable("Notify", "Message_Speech", true);
+	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default", "Speech"), this);
 
-	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default","Speech"), this);
+	config_file.addVariable("Notify", "NewChat_Speech", true);
 
 	kdebugf2();
 }

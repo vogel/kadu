@@ -244,11 +244,14 @@ SoundManager::SoundManager(const QString& name, const QString& configname) : Not
 	themes->setPaths(QStringList::split(";", config_file.readEntry("Sounds", "SoundPaths")));
 	themes->setTheme(config_file.readEntry("Sounds","SoundTheme"));
 
-// 	config_file.addVariable("Notify", "NewChat_Sound", true);
-// 	config_file.addVariable("Notify", "NewMessage_Sound", true);
-// 	config_file.addVariable("Notify", "Message_Sound", true);
+	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default", "Sound"), this);
 
-	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default","Sound"), this);
+	config_file.addVariable("Notify", "ConnectionError_Sound", true);
+	config_file.addVariable("Notify", "NewChat_Sound", true);
+	config_file.addVariable("Notify", "NewMessage_Sound", true);
+	config_file.addVariable("Notify", "StatusChanged/ToOnline_Sound", true);
+	config_file.addVariable("Notify", "StatusChanged/ToBusy_Sound", true);
+
 	kdebugf2();
 }
 

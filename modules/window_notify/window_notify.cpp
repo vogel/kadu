@@ -121,11 +121,10 @@ WindowNotify::WindowNotify(QObject *parent, const char *name) : Notifier(parent,
 {
 	kdebugf();
 
-	config_file.addVariable("Notify", "NewChat_Window", false);
-	config_file.addVariable("Notify", "NewMessage_Window", false);
-	config_file.addVariable("Notify", "Message_Window", false);
-
 	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default", "Window"), this);
+
+	config_file.addVariable("Notify", "ConnectionError_Window", true);
+
 	kdebugf2();
 }
 
