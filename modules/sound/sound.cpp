@@ -207,10 +207,6 @@ SoundManager::SoundManager(const QString& name, const QString& configname) : Not
 	ConfigDialog::addSelectPaths("Sounds", "sound_theme",
 			QT_TRANSLATE_NOOP("@default","Sound paths"));
 
-	ConfigDialog::addCheckBox("Sounds", "Sounds",
-			QT_TRANSLATE_NOOP("@default","Play chat sounds only when window is invisible"),
-			"PlaySoundChatInvisible", true, 0, 0, Advanced);
-
 	ConfigDialog::addHBox("Sounds", "Sounds", "sound_box");
 	ConfigDialog::addListView("Sounds", "sound_box", "sound_files");
 	ConfigDialog::addVBox("Sounds", "sound_box", "util_box");
@@ -285,7 +281,6 @@ SoundManager::~SoundManager()
 	ConfigDialog::removeControl("Sounds", "util_box");
 	ConfigDialog::removeControl("Sounds", "sound_files");
 	ConfigDialog::removeControl("Sounds", "sound_box");
-	ConfigDialog::removeControl("Sounds", "Play chat sounds only when window is invisible");
 	ConfigDialog::removeControl("Sounds", "Sound paths");
 	ConfigDialog::removeControl("Sounds", "Sound theme");
 	ConfigDialog::removeControl("Sounds", "sound_theme");

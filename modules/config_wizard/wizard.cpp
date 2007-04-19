@@ -99,7 +99,7 @@ Wizard::Wizard(QWidget *parent, const char *name, bool modal)
 	c_enterSendsMessage(0), c_openOnNewMessage(0), c_flashTitleOnNewMessage(0),
 	c_ignoreAnonyms(0), c_logMessages(0), c_logStatusChanges(0), c_privateStatus(0),
 	c_showBlocked(0), c_showBlocking(0), c_startDocked(0), c_enableSounds(0),
-	c_playWhilstChatting(0), c_playWhenInvisible(0), c_showInfoPanel(0), c_showScrolls(0),
+	c_playWhilstChatting(0), c_showInfoPanel(0), c_showScrolls(0),
 	cb_browser(0), cb_browserOptions(0), cb_hintsTheme(0), cb_hintsType(0),
 	cb_colorTheme(0), cb_iconTheme(0), cb_qtTheme(0), cb_panelTheme(0), cb_soundModule(0),
 	previewHintStatusChangedToBusy(0), previewHintConnectionError(0), previewHintStatusChangedSyntax(0), iconPreview(0), iconPreview2(0),
@@ -667,11 +667,9 @@ void Wizard::createSoundOptionsPage()
 
 	c_enableSounds = new QCheckBox (tr("Play sounds"), grp_soundOptions);
 	c_playWhilstChatting = new QCheckBox (tr("Play sounds from a person whilst chatting"), grp_soundOptions);
-	c_playWhenInvisible = new QCheckBox (tr("Play chat sounds only when window is invisible"), grp_soundOptions);
 
 	c_enableSounds->setChecked(config_file.readBoolEntry("Sounds", "PlaySound", true));
 	c_playWhilstChatting->setChecked(config_file.readBoolEntry("Sounds", "PlaySoundChat", true));
-	c_playWhenInvisible->setChecked(config_file.readBoolEntry("Sounds", "PlaySoundChatInvisible", true));
 
 	addPage(soundOptionsPage, tr("Sound"));
 	kdebugf2();
@@ -1057,7 +1055,6 @@ void Wizard::setSoundOptions()
 	kdebugf();
 	config_file.writeEntry("Sounds", "PlaySound", c_enableSounds->isChecked());
 	config_file.writeEntry("Sounds", "PlaySoundChat", c_playWhilstChatting->isChecked());
-	config_file.writeEntry("Sounds", "PlaySoundChatInvisible", c_playWhenInvisible->isChecked());
 
 	if (modules_manager->moduleIsLoaded("alsa_sound") && (cb_soundModule->currentText() != "alsa_sound")) modules_manager->deactivateModule("alsa_sound", false);
 	else if (modules_manager->moduleIsLoaded("ao_sound") && (cb_soundModule->currentText() != "ao_sound")) modules_manager->deactivateModule("ao_sound", false);

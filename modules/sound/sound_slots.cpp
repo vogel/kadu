@@ -70,7 +70,6 @@ void SoundSlots::onCreateTabSounds()
 	QCheckBox *b_playsound= ConfigDialog::getCheckBox("Sounds", "Play sounds");
 	QCheckBox *b_volumectrl= ConfigDialog::getCheckBox("Sounds", "Enable volume control (player must support it)");
 	QGrid *g_volume= ConfigDialog::getGrid("Sounds","volume");
-	QCheckBox *b_playinvisible= ConfigDialog::getCheckBox("Sounds", "Play chat sounds only when window is invisible");
 	QComboBox *cb_soundtheme= ConfigDialog::getComboBox("Sounds", "Sound theme");
 	cb_soundtheme->insertItem("Custom");// 0 position
 	cb_soundtheme->insertStringList(sound_manager->theme()->themes());
@@ -120,7 +119,6 @@ void SoundSlots::onCreateTabSounds()
 	soundPlayer(b_playsound->isChecked());
 
 	g_volume->setEnabled(b_playsound->isChecked() && b_volumectrl->isChecked());
-	b_playinvisible->setEnabled(b_playsound->isChecked());
 
 	connect(b_volumectrl, SIGNAL(toggled(bool)), g_volume, SLOT(setEnabled(bool)));
 
@@ -160,14 +158,12 @@ void SoundSlots::soundPlayer(bool value, bool toolbarChanged)
 {
 	kdebugf();
 	QCheckBox *b_volumectrl= ConfigDialog::getCheckBox("Sounds", "Enable volume control (player must support it)");
-	QCheckBox *b_playinvisible= ConfigDialog::getCheckBox("Sounds", "Play chat sounds only when window is invisible");
 
 	ConfigDialog::getHBox("Sounds","sound_box")->setEnabled(value);
 	ConfigDialog::getHBox("Sounds","sound_theme")->setEnabled(value);
 
 	b_volumectrl->setEnabled(value);
 	ConfigDialog::getGrid("Sounds","volume")->setEnabled(value && b_volumectrl->isChecked());
-	b_playinvisible->setEnabled(value);
 	if (value==sound_manager->isMuted() && !toolbarChanged)
 		muteUnmuteSounds();
 	kdebugf2();

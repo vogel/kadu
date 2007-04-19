@@ -74,7 +74,7 @@ class Wizard : public QWizard
 		QLineEdit *l_ggNumber, *l_ggPassword, *l_ggNewPasssword, *l_ggNewPassswordRetyped, *l_email, *l_customBrowser;
 		QCheckBox *c_importContacts, *c_waitForDelivery, *c_enterSendsMessage, *c_openOnNewMessage, *c_flashTitleOnNewMessage, *c_ignoreAnonyms,
 			*c_logMessages, *c_logStatusChanges, *c_privateStatus, *c_showBlocked, *c_showBlocking, *c_startDocked, *c_enableSounds, *c_playWhilstChatting,
-			*c_playWhenInvisible, *c_showInfoPanel, *c_showScrolls;
+			*c_showInfoPanel, *c_showScrolls;
 		QComboBox *cb_browser, *cb_browserOptions, *cb_hintsTheme, *cb_hintsType, *cb_colorTheme, *cb_iconTheme, *cb_qtTheme, *cb_panelTheme, *cb_soundModule;
 		QLabel *previewHintStatusChangedToBusy, *previewHintConnectionError, *previewHintStatusChangedSyntax, *iconPreview, *iconPreview2, *iconPreview3, *iconPreview4, *moduleInfo;
 		QString customHint, customPanel;

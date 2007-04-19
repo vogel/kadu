@@ -62,6 +62,9 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name),
 	ConfigDialog::addCheckBox("Notify", "Notify",
 		QT_TRANSLATE_NOOP("@default", "Notify about all users"), "NotifyAboutAll", false);
 	ConfigDialog::addCheckBox("Notify", "Notify",
+			QT_TRANSLATE_NOOP("@default","Notify about new messages only when window is inactive"),
+			"NewMessageOnlyIfInactive", true, 0, 0, Advanced);
+	ConfigDialog::addCheckBox("Notify", "Notify",
 		QT_TRANSLATE_NOOP("@default", "Ignore changes right after connection to the server"), "NotifyIgnoreOnConnection", true,
 		QT_TRANSLATE_NOOP("@default","This option will supersede tooltips with users' status\n changes upon establishing connection to the server"),
 		0, Advanced);
@@ -224,8 +227,10 @@ void Notify::probablyNewMessage(Protocol *protocol, UserListElements senders, co
 {
 	kdebugf();
 
+	bool alwaysNotify = !config_file.readBoolEntry("Notify", "NewMessageOnlyIfInactive");
+
 	Chat *chat = chat_manager->findChat(senders);
-	if (chat && !chat->isActiveWindow())
+	if (chat && (alwaysNotify || !chat->isActiveWindow()))
 		notify(new MessageNotification(MessageNotification::NewMessage, senders, msg));
 
 	kdebugf2();

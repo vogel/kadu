@@ -135,6 +135,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * sound: porz±dki po ostatnich zmianach w notyfikacjach, czê¶æ czwarta (Vogel)
 * hints: lepsza kontrolka do ustawiania czasu znikania (Vogel)
 * porz±dki po ostatnich zmianach w notyfikacjach, czê¶æ pi±ta, domy¶lne warto¶ci (Vogel)
+* przesuniêcie opcji 'informuj o nowej wiadomo¶ci tylko gdy okno nieaktywne' z sound do notify (Vogel)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
