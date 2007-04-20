@@ -139,6 +139,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * niepotrzebne opcje w popupie na li¶cie kontaktów s± ukrywane, a nie blokowane (neeo)
 * ma³a reorganizacja popupu: "Poka¿/zmieñ informacje o kontakcie" wróci³o do g³ównego menu (neeo)
 * encryption: ukryto mo¿liwo¶æ wys³ania klucza dla nas samych i kontaktów nieu¿ywaj±cych protoko³u Gadu (neeo)
+* dcc: wysy³anie plików jest ukrywane z popupu dla nas samych i kontaktów, które nie korzystaj± z protoko³u Gadu (neeo)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

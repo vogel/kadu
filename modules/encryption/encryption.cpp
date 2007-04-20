@@ -331,12 +331,12 @@ void EncryptionManager::userBoxMenuPopup()
 	keyfile_path.append(".pem");
 	QFileInfo keyfile(keyfile_path);
 
-	UserListElements users = activeUserBox->selectedUsers();
-	unsigned int myUin = config_file.readUnsignedNumEntry("General", "UIN");
-
 	bool sendKeyEnabled = true;
 	if (keyfile.permission(QFileInfo::ReadUser) && !gadu->currentStatus().isOffline())
 	{
+		unsigned int myUin = config_file.readUnsignedNumEntry("General", "UIN");
+		UserListElements users = activeUserBox->selectedUsers();
+
 		CONST_FOREACH(user, users)
 			if (!(*user).usesProtocol("Gadu") || (*user).ID("Gadu").toUInt() == myUin)
 			{

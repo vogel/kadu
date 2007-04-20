@@ -1216,26 +1216,28 @@ void FileTransferManager::userboxMenuPopup()
 {
 	kdebugf();
 
+	UserBox *activeUserBox = UserBox::activeUserBox();
+	if (activeUserBox == NULL)
+		return;
+
 	int sendfile = UserBox::userboxmenu->getItem(tr("Send file"));
 	bool dccEnabled = config_file.readBoolEntry("Network", "AllowDCC");
-	bool anyOk = false;
+	bool dccKeyEnabled = true;
 
-	UserBox *activeUserBox = UserBox::activeUserBox();
-
-	if (dccEnabled && activeUserBox)
+	if (dccEnabled)
 	{
+		unsigned int myUin = config_file.readUnsignedNumEntry("General", "UIN");
 		UserListElements users = activeUserBox->selectedUsers();
 
 		CONST_FOREACH(user, users)
-			if ((*user).usesProtocol("Gadu") &&
-			    (*user).ID("Gadu").toUInt() != config_file.readUnsignedNumEntry("General","UIN"))
+			if (!(*user).usesProtocol("Gadu") || (*user).ID("Gadu").toUInt() == myUin)
 			{
-				anyOk = true;
+				dccKeyEnabled = false;
 				break;
 			}
 	}
 
-	UserBox::userboxmenu->setItemVisible(sendfile, anyOk && dccEnabled);
+	UserBox::userboxmenu->setItemVisible(sendfile, dccKeyEnabled && dccEnabled);
 	kdebugf2();
 }
 
