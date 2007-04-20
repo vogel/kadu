@@ -657,7 +657,7 @@ void VoiceManager::userBoxMenuPopup()
 		config_file.readBoolEntry("Network", "AllowDCC") &&
 		(user.status("Gadu").isOnline() || user.status("Gadu").isBusy()));
 
-	UserBox::userboxmenu->setItemEnabled(voicechat, enable);
+	UserBox::userboxmenu->setItemVisible(voicechat, enable);
 	kdebugf2();
 }
 

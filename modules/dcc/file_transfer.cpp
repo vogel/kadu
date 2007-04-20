@@ -1235,7 +1235,7 @@ void FileTransferManager::userboxMenuPopup()
 			}
 	}
 
-	UserBox::userboxmenu->setItemEnabled(sendfile, anyOk && dccEnabled);
+	UserBox::userboxmenu->setItemVisible(sendfile, anyOk && dccEnabled);
 	kdebugf2();
 }
 

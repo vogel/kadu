@@ -325,8 +325,8 @@ void HistoryModule::userboxMenuPopup()
 			any_ok = true;
 			break;
 		}
-	UserBox::userboxmenu->setItemEnabled(history_item, any_ok);
-	UserBox::userboxmenu->setItemEnabled(delete_history_item, any_ok);
+	UserBox::userboxmenu->setItemVisible(history_item, any_ok);
+	UserBox::userboxmenu->setItemVisible(delete_history_item, any_ok);
 }
 
 void HistoryModule::removingUsers(UserListElements users)

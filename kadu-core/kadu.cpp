@@ -262,6 +262,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	UserBox::userboxmenu->addItem("OpenDescriptionLink", tr("Open description link in browser"), this, SLOT(openDescriptionLink()));
 	UserBox::userboxmenu->addItem("CopyPersonalInfo", tr("Copy personal info"), this, SLOT(copyPersonalInfo()));
 	UserBox::userboxmenu->addItem("LookupUserInfo", tr("Search this user in directory"), this, SLOT(lookupInDirectory()),HotKey::shortCutFromFile("ShortCuts", "kadu_searchuser"));
+	UserBox::userboxmenu->addItem("EditUserInfo", tr("View / edit user info"), this, SLOT(showUserInfo()),HotKey::shortCutFromFile("ShortCuts", "kadu_persinfo"));
 	UserBox::userboxmenu->insertSeparator();
 
 	UserBox::management->addItem(tr("Ignore user"), this, SLOT(ignoreUser()));
@@ -271,7 +272,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	UserBox::management->addItem(tr("Hide description"), this, SLOT(hideDescription()));
 	UserBox::management->insertSeparator();
 	UserBox::management->addItem("RemoveFromUserlist", tr("Remove from userlist"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("ShortCuts", "kadu_deleteuser"));
-	UserBox::management->addItem("EditUserInfo", tr("View / edit user info"), this, SLOT(showUserInfo()),HotKey::shortCutFromFile("ShortCuts", "kadu_persinfo"));
 
 	UserBox::userboxmenu->insertItem(tr("User management"), UserBox::management);
 
@@ -450,12 +450,12 @@ void Kadu::popupMenu()
 
 	if (containsUserWithoutID)
 	{
-		UserBox::userboxmenu->setItemEnabled(ignoreuseritem, false);
-		UserBox::userboxmenu->setItemEnabled(blockuseritem, false);
-		UserBox::userboxmenu->setItemEnabled(notifyuseritem, false);
-		UserBox::userboxmenu->setItemEnabled(offlinetouseritem, false);
-		UserBox::userboxmenu->setItemEnabled(hidedescriptionitem, false);
-		UserBox::userboxmenu->setItemEnabled(chatitem, false);
+		UserBox::userboxmenu->setItemVisible(ignoreuseritem, false);
+		UserBox::userboxmenu->setItemVisible(blockuseritem, false);
+		UserBox::userboxmenu->setItemVisible(notifyuseritem, false);
+		UserBox::userboxmenu->setItemVisible(offlinetouseritem, false);
+		UserBox::userboxmenu->setItemVisible(hidedescriptionitem, false);
+		UserBox::userboxmenu->setItemVisible(chatitem, false);
 	}
 	else
 	{
@@ -480,7 +480,7 @@ void Kadu::popupMenu()
 				on = false;
 				break;
 			}
-		UserBox::userboxmenu->setItemEnabled(offlinetouseritem, config_file.readBoolEntry("General", "PrivateStatus"));
+		UserBox::userboxmenu->setItemVisible(offlinetouseritem, config_file.readBoolEntry("General", "PrivateStatus"));
 		UserBox::userboxmenu->setItemChecked(offlinetouseritem, on);
 
 		on = false;
@@ -499,27 +499,27 @@ void Kadu::popupMenu()
 				on = false;
 				break;
 			}
-		UserBox::userboxmenu->setItemEnabled(notifyuseritem, !config_file.readBoolEntry("Notify", "NotifyAboutAll"));
+		UserBox::userboxmenu->setItemVisible(notifyuseritem, !config_file.readBoolEntry("Notify", "NotifyAboutAll"));
 		UserBox::userboxmenu->setItemChecked(notifyuseritem, on);
 
 		if (containsMe)
 		{
-			UserBox::userboxmenu->setItemEnabled(ignoreuseritem, false);
-			UserBox::userboxmenu->setItemEnabled(blockuseritem, false);
-			UserBox::userboxmenu->setItemEnabled(offlinetouseritem, false);
-			UserBox::userboxmenu->setItemEnabled(chatitem, false);
+			UserBox::userboxmenu->setItemVisible(ignoreuseritem, false);
+			UserBox::userboxmenu->setItemVisible(blockuseritem, false);
+			UserBox::userboxmenu->setItemVisible(offlinetouseritem, false);
+			UserBox::userboxmenu->setItemVisible(chatitem, false);
 		}
 	}
 
 	if (users.count() != 1)
-		UserBox::userboxmenu->setItemEnabled(UserBox::management->getItem(tr("View / edit user info")), false);
+		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("View / edit user info")), false);
 	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu"))
-		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Search this user in directory")), false);
+		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Search this user in directory")), false);
 	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu") || firstUser.status("Gadu").description().isEmpty())
-		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Copy description")), false);
+		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Copy description")), false);
 	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu") || firstUser.status("Gadu").description().isEmpty() ||
 		firstUser.status("Gadu").description().find(HtmlDocument::urlRegExp()) == -1)
-		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Open description link in browser")), false);
+		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Open description link in browser")), false);
 	kdebugf2();
 }
 

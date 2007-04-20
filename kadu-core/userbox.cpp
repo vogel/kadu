@@ -1031,7 +1031,7 @@ void UserBoxMenu::restoreLook()
 {
 	for (unsigned int i = 0, count2 = count(); i < count2; ++i)
 	{
-		setItemEnabled(idAt(i), true);
+		setItemVisible(idAt(i), true);
 		setItemChecked(idAt(i), false);
 	}
 }

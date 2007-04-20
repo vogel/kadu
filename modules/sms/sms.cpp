@@ -687,7 +687,7 @@ void SmsSlots::onPopupMenuCreate()
 	UserListElement user = users[0];
 
 	if (user.mobile().isEmpty() || users.count() != 1)
-		UserBox::userboxmenu->setItemEnabled(UserBox::userboxmenu->getItem(tr("Send SMS")), false);
+		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Send SMS")), false);
 	kdebugf2();
 }
 

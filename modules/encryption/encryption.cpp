@@ -343,7 +343,7 @@ void EncryptionManager::userBoxMenuPopup()
 				break;
 			}
 
-	UserBox::userboxmenu->setItemEnabled(sendkeyitem, sendKeyEnabled);
+	UserBox::userboxmenu->setItemVisible(sendkeyitem, sendKeyEnabled);
 	kdebugf2();
 }
 
