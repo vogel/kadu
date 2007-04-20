@@ -940,7 +940,7 @@ void UserBox::initModule()
 	KaduListBoxPixmap::setShowMultilineDesc(config_file.readBoolEntry("Look", "ShowMultilineDesc"));
 	KaduListBoxPixmap::setMultiColumn(config_file.readBoolEntry("Look", "MultiColumnUserbox"));
 	KaduListBoxPixmap::setMultiColumnWidth(config_file.readNumEntry("Look", "MultiColumnUserboxWidth", 230));
-	KaduListBoxPixmap::setMyUIN(config_file.readNumEntry("General", "UIN"));
+	KaduListBoxPixmap::setMyUIN(config_file.readUnsignedNumEntry("General", "UIN"));
 	KaduListBoxPixmap::setDescriptionColor(config_file.readColorEntry("Look", "DescriptionColor"));
 
 	userboxslots= new UserBoxSlots();
@@ -1125,7 +1125,7 @@ void UserBoxSlots::onApplyTabLook()
 	KaduListBoxPixmap::setShowMultilineDesc(config_file.readBoolEntry("Look", "ShowMultilineDesc"));
 	KaduListBoxPixmap::setMultiColumn(config_file.readBoolEntry("Look", "MultiColumnUserbox"));
 	KaduListBoxPixmap::setMultiColumnWidth(config_file.readNumEntry("Look", "MultiColumnUserboxWidth", 230));
-	KaduListBoxPixmap::setMyUIN(config_file.readNumEntry("General", "UIN"));
+	KaduListBoxPixmap::setMyUIN(config_file.readUnsignedNumEntry("General", "UIN"));
 	KaduListBoxPixmap::setDescriptionColor(config_file.readColorEntry("Look", "DescriptionColor"));
 
 	tool_tip_class_manager->useToolTipClass(config_file.readEntry("Look", "UserboxToolTipStyle"));

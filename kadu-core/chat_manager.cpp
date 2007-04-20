@@ -374,7 +374,7 @@ void ChatManager::ignoreUserActionActivated(const UserGroup* users)
 	if (users->count() > 0)
 	{
 		bool ContainsBad = false;
-		QString MyGGUIN = QString::number(config_file.readNumEntry("General", "UIN"));
+		QString MyGGUIN = QString::number(config_file.readUnsignedNumEntry("General", "UIN"));
 
 		CONST_FOREACH(user, (*users))
 		{
@@ -411,7 +411,7 @@ void ChatManager::blockUserActionActivated(const UserGroup* users)
 	{
 		bool on = true;
 		bool blocked_anonymous = false; // true, if we blocked at least one anonymous user
-		QString MyGGUIN = QString::number(config_file.readNumEntry("General", "UIN"));
+		QString MyGGUIN = QString::number(config_file.readUnsignedNumEntry("General", "UIN"));
 
 		CONST_FOREACH(user, (*users))
 			if (!(*user).usesProtocol("Gadu") || !(*user).protocolData("Gadu", "Blocking").toBool())
@@ -469,7 +469,7 @@ void ChatManager::chatActionActivated(const UserGroup* users)
 	if (users->count() > 0)
 	{
 		bool ContainsBad = false;
-		QString MyGGUIN = QString::number(config_file.readNumEntry("General", "UIN"));
+		QString MyGGUIN = QString::number(config_file.readUnsignedNumEntry("General", "UIN"));
 
 		CONST_FOREACH(user, (*users))
 		{

@@ -122,7 +122,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	kadu = this;
 	blinktimer = 0;
 
-	UinType myUin = config_file.readNumEntry("General", "UIN");
+	UinType myUin = config_file.readUnsignedNumEntry("General", "UIN");
 
 	QWidget w;
 	config_file.addVariable("Look", "InfoPanelBgColor", w.paletteBackgroundColor());
@@ -432,7 +432,7 @@ void Kadu::popupMenu()
 
 	bool containsMe = false;
 	bool containsUserWithoutID = false;
-	QString myGGUIN = QString::number(config_file.readNumEntry("General", "UIN"));
+	QString myGGUIN = QString::number(config_file.readUnsignedNumEntry("General", "UIN"));
 	CONST_FOREACH(user, users)
 	{
 		if (!containsUserWithoutID && !(*user).usesProtocol("Gadu"))
@@ -1729,7 +1729,7 @@ void KaduSlots::onApplyTabGeneral()
 		ConfigDialog::getComboBox("General", "Default status", "cb_defstatus")->currentItem());
 
 	kadu->refreshPrivateStatusFromConfigFile();
-	kadu->setCaption(tr("Kadu: %1").arg((UinType)config_file.readNumEntry("General", "UIN")));
+	kadu->setCaption(tr("Kadu: %1").arg((UinType)config_file.readUnsignedNumEntry("General", "UIN")));
 
 	QComboBox *cb_language= ConfigDialog::getComboBox("General", "Set language:");
 	config_file.writeEntry("General", "Language", translateLanguage(qApp, cb_language->currentText(),false));
