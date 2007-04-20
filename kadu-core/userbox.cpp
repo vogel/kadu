@@ -1056,10 +1056,10 @@ void UserBoxMenu::refreshIcons()
 		CONST_FOREACH(it, iconNames)
 			if (t.startsWith((*it).first))
 			{
-				bool enabled=isItemEnabled(id);
-				bool checked=isItemChecked(id);
+				bool visible = isItemVisible(id);
+				bool checked = isItemChecked(id);
 				changeItem(id, icons_manager->loadIcon((*it).second), t);
-				setItemEnabled(id, enabled);
+				setItemVisible(id, visible);
 				setItemChecked(id, checked);
 			}
 	}

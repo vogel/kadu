@@ -141,9 +141,11 @@ void IconsManager::refreshMenus()
 				if (t == (*it2).first || t.startsWith((*it2).first + "\t"))
 				{
 					bool enabled = menu->isItemEnabled(id);
+					bool visible = menu->isItemVisible(id);
 					bool checked = menu->isItemChecked(id);
 					menu->changeItem(id, loadIcon((*it2).second), t);
 					menu->setItemEnabled(id, enabled);
+					menu->setItemVisible(id, visible);
 					menu->setItemChecked(id, checked);
 				}
 		}
