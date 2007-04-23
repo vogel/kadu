@@ -102,26 +102,34 @@ void ToolBar::dropEvent(QDropEvent* event)
 			// TODO: using WId might be not portable ;), any ideas?
 			ToolButton* button = (ToolButton*)source_toolbar->find(text.toULong());
 			QWidget* widget = childAt(event->pos());
-			button->reparent(this, QPoint(0,0), true);
-			if (widget != NULL && widget != button)
+
+			if ((source_toolbar == this) || !hasAction(button->actionName()))
 			{
-				button->stackUnder(widget);
-				QBoxLayout* layout = boxLayout();
-				layout->remove(button);
-				layout->insertWidget(layout->findWidget(widget), button);
+				button->reparent(this, QPoint(0,0), true);
+				if (widget != NULL && widget != button)
+				{
+					button->stackUnder(widget);
+					QBoxLayout* layout = boxLayout();
+					layout->remove(button);
+					layout->insertWidget(layout->findWidget(widget), button);
+				}
 			}
+
 			button->setDown(false);
 
-			// if we dropped button on itself, then we simulate normal click
+			// if we dropped button on itself, then we simulate normal click...
 			if (button == widget)
 				button->animateClick();
-			source->dragButton = NULL;
+			// else, we have to save dockareas
+			else
+			{
+				DockArea* source_dockarea = (DockArea*)source_toolbar->area();
+				source_dockarea->writeToConfig();
+				DockArea* dockarea = (DockArea*)area();
+				dockarea->writeToConfig();
+			}
 
-			// saving dockarea
-			DockArea* source_dockarea = (DockArea*)source_toolbar->area();
-			source_dockarea->writeToConfig();
-			DockArea* dockarea = (DockArea*)area();
-			dockarea->writeToConfig();
+			source->dragButton = NULL;
 		}
 	}
 	kdebugf2();
