@@ -141,6 +141,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * encryption: ukryto mo¿liwo¶æ wys³ania klucza dla nas samych i kontaktów nieu¿ywaj±cych protoko³u Gadu (neeo)
 * dcc: wysy³anie plików jest ukrywane z popupu dla nas samych i kontaktów, które nie korzystaj± z protoko³u Gadu (neeo)
 * uniemo¿liwiono dwukrotne dodanie akcji do tego samego paska narzêdziowego (neeo)
+* aktualizacja do najnowszej wersji libgadu, zawieraj±cej poprawki w resolverze (neeo)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

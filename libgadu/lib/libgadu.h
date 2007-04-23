@@ -888,6 +888,7 @@ extern unsigned long gg_local_ip;
 
 #ifdef __GG_LIBGADU_HAVE_PTHREAD
 int gg_resolve_pthread(int *fd, void **resolver, const char *hostname);
+void gg_resolve_pthread_cleanup(void *resolver, int kill);
 #endif
 
 #ifdef _WIN32
@@ -946,7 +947,7 @@ int gg_image_queue_remove(struct gg_session *s, struct gg_image_queue *q, int fr
 #define GG_DEFAULT_TIMEOUT 30
 #define GG_HAS_AUDIO_MASK 0x40000000
 #define GG_ERA_OMNIX_MASK 0x04000000
-#define GG_LIBGADU_VERSION "20060518"
+#define GG_LIBGADU_VERSION "20070423"
 
 #define GG_DEFAULT_DCC_PORT 1550
 

@@ -4,7 +4,7 @@
  *  (C) Copyright 2001-2006 Wojtek Kaniewski <wojtekka@irc.pl>
  *                          Robert J. Wo¼ny <speedy@ziew.org>
  *                          Arkadiusz Mi¶kiewicz <arekm@pld-linux.org>
- *                          Adam Wysocki <gophi@ekg.apcoh.org>
+ *                          Adam Wysocki <gophi@ekg.chmurka.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License Version
@@ -834,8 +834,7 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 			sess->pid = -1;
 #else
 			if (sess->resolver) {
-				pthread_cancel(*((pthread_t*) sess->resolver));
-				free(sess->resolver);
+				gg_resolve_pthread_cleanup(sess->resolver, 0);
 				sess->resolver = NULL;
 			}
 #endif
