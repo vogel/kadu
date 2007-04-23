@@ -70,7 +70,7 @@ void ToolBar::dragEnterEvent(QDragEnterEvent* event)
 			QString action_name = dragButton->actionName();
 
 			// REVIEW: maybe we should remove it, accept by default and possibly turn off the button at once
-			event->accept(dockArea()->supportsAction(KaduActions[action_name]->actionType()));
+			event->accept(((source == this) || !hasAction(action_name)) && dockArea()->supportsAction(KaduActions[action_name]->actionType()));
 		}
 	}
 	else
@@ -103,16 +103,13 @@ void ToolBar::dropEvent(QDropEvent* event)
 			ToolButton* button = (ToolButton*)source_toolbar->find(text.toULong());
 			QWidget* widget = childAt(event->pos());
 
-			if ((source_toolbar == this) || !hasAction(button->actionName()))
+			button->reparent(this, QPoint(0,0), true);
+			if (widget != NULL && widget != button)
 			{
-				button->reparent(this, QPoint(0,0), true);
-				if (widget != NULL && widget != button)
-				{
-					button->stackUnder(widget);
-					QBoxLayout* layout = boxLayout();
-					layout->remove(button);
-					layout->insertWidget(layout->findWidget(widget), button);
-				}
+				button->stackUnder(widget);
+				QBoxLayout* layout = boxLayout();
+				layout->remove(button);
+				layout->insertWidget(layout->findWidget(widget), button);
 			}
 
 			button->setDown(false);
