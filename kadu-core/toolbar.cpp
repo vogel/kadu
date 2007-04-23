@@ -160,6 +160,23 @@ void ToolBar::writeToConfig(QDomElement parent_element)
 	kdebugf2();
 }
 
+bool ToolBar::hasAction(QString action_name)
+{
+	kdebugf();
+	QObjectList* actns = queryList("ToolButton");
+	bool hasActn = false;
+
+	CONST_FOREACH(i, *actns)
+		if (((ToolButton*)(*i))->actionName() == action_name)
+		{
+			hasActn = true;
+			break;
+		}
+
+	return hasActn;
+	kdebugf2();
+}
+
 DockArea* ToolBar::dockArea()
 {
 	return (DockArea*)area();
@@ -214,11 +231,11 @@ QPopupMenu* ToolBar::createContextMenu(QWidget* parent)
 	int param = 0;
 	CONST_FOREACH(a, KaduActions)
 	{
-		if (
-			(dockArea() != NULL &&
+		if (!hasAction((*a)->name()) &&
+			((dockArea() != NULL &&
 				dockArea()->supportsAction((*a)->actionType())) ||
 			(dockArea() == NULL &&
-				((*a)->actionType() & Action::TypeGlobal) != 0))
+				((*a)->actionType() & Action::TypeGlobal) != 0)))
 		{
 			int id = (*a)->addToPopupMenu(p2, false);
 			p2->setItemParameter(id, param);

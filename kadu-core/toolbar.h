@@ -41,6 +41,7 @@ class ToolBar : public QToolBar
 		**/
 		const UserGroup* selectedUsers() const;
 		QPopupMenu* createContextMenu(QWidget* parent);
+		bool hasAction(QString action_name);
 
 	public slots:
 		void writeToConfig(QDomElement parent_element);
