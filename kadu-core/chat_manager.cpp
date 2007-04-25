@@ -574,6 +574,16 @@ Chat* ChatManager::findChat(UserListElements users) const
 int ChatManager::openChat(Protocol *initialProtocol, const UserListElements &users, time_t time)
 {
 	kdebugf();
+
+	int myUin = config_file.readNumEntry("General", "UIN");
+
+	CONST_FOREACH(user, users)
+		if ((*user).ID("Gadu") == myUin)
+		{
+			kdebugf2();
+			return -1;
+		}
+
 	unsigned int i = 0;
 	CONST_FOREACH(chat, Chats)
 	{
@@ -699,6 +709,9 @@ int ChatManager::openPendingMsg(int index, ChatMessage &msg)
 	int k = openChat(gadu, p.users, p.time);
 	// appending new message
 
+	if (k < 0)
+		return k;
+
 	QDateTime date;
 	date.setTime_t(p.time);
 
@@ -745,6 +758,10 @@ void ChatManager::openPendingMsgs(UserListElements users)
 			{
 				ChatMessage *msg = new ChatMessage(QString::null);
 				k = openPendingMsg(i, *msg);
+
+				if (k < 0)
+					return;
+
 				messages.append(msg);
 
 				--i;
@@ -784,6 +801,10 @@ void ChatManager::openPendingMsgs()
 
 				ChatMessage *msg = new ChatMessage(QString::null);
 				k = openPendingMsg(i, *msg);
+
+				if (k < 0)
+					return;
+
 				messages.append(msg);
 
 				--i;
@@ -822,6 +843,10 @@ void ChatManager::sendMessage(UserListElement user, UserListElements selected_us
 
 				ChatMessage *msg = new ChatMessage(QString::null);
 				k = openPendingMsg(i, *msg);
+
+				if (k < 0)
+					return;
+
 				messages.append(msg);
 
 				--i;
