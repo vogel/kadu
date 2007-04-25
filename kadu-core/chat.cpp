@@ -534,6 +534,8 @@ void Chat::showNewMessagesNumInTitle()
 
 void Chat::windowActivationChange(bool b)
 {
+	kdebugf();
+
 	if (isActiveWindow())
 	{
 		setCaption(title_buffer);
@@ -545,6 +547,8 @@ void Chat::windowActivationChange(bool b)
 		if (!b)
 			emit chatActivated(this);
 	}
+
+	kdebugf2();
 }
 
 bool Chat::keyPressEventHandled(QKeyEvent *e)
@@ -1132,6 +1136,7 @@ Protocol *Chat::currentProtocol()
 	return CurrentProtocol;
 }
 
+// TODO: do dupy, zmieniæ przed 0.6
 void Chat::makeActive()
 {
 	kdebugf();

@@ -46,6 +46,7 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 	layout->setResizeMode(QLayout::Fixed);
 
 	connect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
+	connect(chat_manager, SIGNAL(chatActivated(Chat *)), this, SLOT(chatActivated(Chat *)));
 
 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Hints"), "HintsTab");
 
@@ -60,6 +61,7 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "New chat / new message"), 0, Advanced);
 		ConfigDialog::addCheckBox("Hints", "New chat / new message", QT_TRANSLATE_NOOP("@default", "Show message content in hint"), "ShowContentMessage", true);
 		ConfigDialog::addCheckBox("Hints", "New chat / new message", QT_TRANSLATE_NOOP("@default", "Delete pending message when user deletes hint"), "DeletePendingMsgWhenHintDeleted", false);
+		ConfigDialog::addCheckBox("Hints", "New chat / new message", QT_TRANSLATE_NOOP("@default", "Close hint after activating window"), "CloseHintAfterChatActivation", true);
 		ConfigDialog::addSpinBox("Hints", "New chat / new message", QT_TRANSLATE_NOOP("@default", "Number of quoted characters"), "CiteSign", 10, 1000, 1, 50);
 
 	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Status change"), 0, Advanced);
@@ -149,6 +151,7 @@ HintManager::~HintManager()
 	delete tipFrame;
 	tipFrame = 0;
 
+	disconnect(chat_manager, SIGNAL(chatActivated(Chat *)), this, SLOT(chatActivated(Chat *)));
 	disconnect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
 	delete hint_timer;
 	hint_timer = 0;
@@ -192,6 +195,7 @@ HintManager::~HintManager()
 	ConfigDialog::removeControl("Hints", "Add description to hint if exists");
 	ConfigDialog::removeControl("Hints", "Status change");
 	ConfigDialog::removeControl("Hints", "Number of quoted characters");
+	ConfigDialog::removeControl("Hints", "Close hint after activating window");
 	ConfigDialog::removeControl("Hints", "Delete pending message when user deletes hint");
 	ConfigDialog::removeControl("Hints", "Show message content in hint");
 	ConfigDialog::removeControl("Hints", "New chat / new message");
@@ -372,6 +376,27 @@ void HintManager::openChat(Hint *hint)
 	deleteHintAndUpdate(hint);
 
 	kdebugf2();
+}
+
+void HintManager::chatActivated(Chat *chat)
+{
+	if (!config_file.readBoolEntry("Hints", "CloseHintAfterChatActivation"))
+		return;
+
+	QPair<UserListElements, QString> newChat = qMakePair(chat->users()->toUserListElements(), QString("NewChat"));
+	QPair<UserListElements, QString> newMessage = qMakePair(chat->users()->toUserListElements(), QString("NewMessage"));
+
+	if (linkedHints.count(newChat))
+	{
+		linkedHints[newChat]->close();
+		linkedHints.remove(newChat);
+	}
+
+	if (linkedHints.count(newMessage))
+	{
+		linkedHints[newMessage]->close();
+		linkedHints.remove(newMessage);
+	}
 }
 
 void HintManager::deleteAllHints()

@@ -686,7 +686,6 @@ int ChatManager::openChat(Protocol *initialProtocol, const UserListElements &use
 	emit chatCreated(chat);
 	emit chatCreated(chat, time);
 	emit chatOpen(chat);
-	emit chatActivated(chat);
 	kdebugf2();
 	return Chats.count() - 1;
 }

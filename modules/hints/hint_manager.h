@@ -19,6 +19,8 @@
 #include "userbox.h"
 #include "../notify/notify.h"
 
+class Chat;
+
 class HintManager : public Notifier, public ToolTipClass
 {
 	Q_OBJECT
@@ -84,8 +86,6 @@ class HintManager : public Notifier, public ToolTipClass
 
 		void notificationClosed(Notification *notification);
 
-	public slots:
-
 		/**
 			Pokazuje dymek zwi±zany z notyfikacj±.
 		**/
@@ -96,6 +96,8 @@ class HintManager : public Notifier, public ToolTipClass
 			dymek jest kasowany
 		**/
 		void openChat(Hint *hint);
+
+		void chatActivated(Chat *chat);
 
 		/**
 			usuwa wszystkie dymki
