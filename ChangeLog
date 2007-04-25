@@ -143,6 +143,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * uniemo¿liwiono dwukrotne dodanie akcji do tego samego paska narzêdziowego (neeo)
 * aktualizacja do najnowszej wersji libgadu, zawieraj±cej poprawki w resolverze (neeo)
 * hints: autoznikanie dymków po odebraniu wiadomo¶ci, na razie ¼le dzia³a z opcj± automatycznego otwierania okna przy otrzymaniu nowej wiadomo¶ci (Vogel)
+* dcc: drobna poprawka, dzia³a nieco lepiej (Vogel)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

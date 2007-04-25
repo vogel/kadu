@@ -47,7 +47,6 @@ class DccSocket : public QObject
 
 		virtual void initializeNotifiers();
 		void enableNotifiers();
-		void disableNotifiers();
 
 		virtual void watchDcc();
 		int state() const;

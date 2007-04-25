@@ -126,21 +126,15 @@ void DccSocket::enableNotifiers()
 		writeSocketNotifier->setEnabled(true);
 }
 
-void DccSocket::disableNotifiers()
-{
-	readSocketNotifier->setEnabled(false);
-	writeSocketNotifier->setEnabled(false);
-}
-
 void DccSocket::dccDataReceived()
 {
-	disableNotifiers();
+	readSocketNotifier->setEnabled(false);
 	watchDcc();
 }
 
 void DccSocket::dccDataSent()
 {
-	disableNotifiers();
+	writeSocketNotifier->setEnabled(false);
 	watchDcc();
 }
 
@@ -155,7 +149,6 @@ void DccSocket::watchDcc()
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Connection broken unexpectedly!\n");
 		emit dcc_manager->connectionBroken(this);
-		enableNotifiers();
 		return;
 	}
 
@@ -212,7 +205,7 @@ void DccSocket::watchDcc()
 				setState(DCC_SOCKET_CONNECTION_BROKEN);
 			gadu->freeEvent(dccevent);
 			dccevent = NULL;
-			enableNotifiers();
+			readSocketNotifier->setEnabled(true);
 			return;
 		case GG_EVENT_DCC_DONE:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_DONE\n");
@@ -220,7 +213,7 @@ void DccSocket::watchDcc()
 			emit dcc_manager->dccDone(this);
 			gadu->freeEvent(dccevent);
 			dccevent = NULL;
-			enableNotifiers();
+			readSocketNotifier->setEnabled(true);
 			return;
 		default:
 			break;
@@ -236,7 +229,11 @@ void DccSocket::watchDcc()
 	}
 
 	if (!lock)
-		enableNotifiers();
+	{
+		readSocketNotifier->setEnabled(true);
+		if (dccsock->check & GG_CHECK_WRITE)
+			writeSocketNotifier->setEnabled(true);
+	}
 
 	kdebugf2();
 }

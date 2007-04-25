@@ -1367,7 +1367,6 @@ void FileTransferManager::dccEvent(DccSocket *socket, bool &lock)
 		case GG_EVENT_DCC_NEED_FILE_ACK:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEED_FILE_ACK! uin:%d peer_uin:%d\n",
 				socket->ggDccStruct()->uin, socket->ggDccStruct()->peer_uin);
-			socket->disableNotifiers();
 			needFileAccept(socket);
 			lock = true;
 			break;
@@ -1482,9 +1481,9 @@ void FileTransferManager::acceptFile(FileTransfer *ft, DccSocket *socket, QStrin
 		{
 			kdebugm(KDEBUG_INFO, "socket ggDccStruct is null");
 			socket->discard();
-			socket->enableNotifiers();
 			return;
 		}
+
 		if (!haveFileName || fileName.isEmpty())
 			fileName = QFileDialog::getSaveFileName(config_file.readEntry("Network", "LastDownloadDirectory")
 				+ cp2unicode(socket->ggDccStruct()->file_info.filename),
@@ -1494,11 +1493,8 @@ void FileTransferManager::acceptFile(FileTransfer *ft, DccSocket *socket, QStrin
 		{
 			kdebugmf(KDEBUG_INFO, "discarded\n");
 			socket->discard();
-			socket->enableNotifiers();
 			return;
 		}
-
-		socket->enableNotifiers();
 
 		config_file.writeEntry("Network", "LastDownloadDirectory", QFileInfo(fileName).dirPath() + '/');
 		fi.setFile(fileName);
@@ -1547,6 +1543,7 @@ void FileTransferManager::acceptFile(FileTransfer *ft, DccSocket *socket, QStrin
 			showFileTransferWindow();
 
 			ft->start();
+			socket->enableNotifiers();
 
 			break;
 		}
@@ -1558,10 +1555,7 @@ void FileTransferManager::acceptFile(FileTransfer *ft, DccSocket *socket, QStrin
 void FileTransferManager::discardFile(DccSocket *socket)
 {
 	kdebugf();
-
 	socket->discard();
-	socket->enableNotifiers();
-
 	kdebugf2();
 }
 
