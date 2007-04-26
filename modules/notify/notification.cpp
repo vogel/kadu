@@ -14,12 +14,17 @@
 #include "notification.h"
 
 Notification::Notification(const QString &type, const QString &icon, const UserListElements &userListElements)
-	: Type(type), Ule(userListElements), Title(""), Text(""), Icon(icon), DefaultCallbackTimer(0), ReferencesCount(0)
+	: Type(type), Ule(userListElements), Title(""), Text(""), Icon(icon), DefaultCallbackTimer(0), ReferencesCount(0), Closing(false)
 {
 }
 
 Notification::~Notification()
 {
+	if (DefaultCallbackTimer)
+	{
+		delete DefaultCallbackTimer;
+		DefaultCallbackTimer = 0;
+	}
 }
 
 void Notification::acquire()
@@ -41,8 +46,14 @@ void Notification::release()
 
 void Notification::close()
 {
-	emit closed(this);
-	deleteLater();
+	kdebugf();
+
+	if (!Closing)
+	{
+		Closing = true;
+		emit closed(this);
+		deleteLater();
+	}
 }
 
 void Notification::clearCallbacks()

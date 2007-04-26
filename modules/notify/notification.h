@@ -87,6 +87,7 @@ private:
 	QTimer *DefaultCallbackTimer;
 
 	int ReferencesCount;
+	bool Closing;
 
 public:
 
