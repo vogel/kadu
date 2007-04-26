@@ -1499,7 +1499,7 @@ void FileTransferManager::acceptFile(FileTransfer *ft, DccSocket *socket, QStrin
 		config_file.writeEntry("Network", "LastDownloadDirectory", QFileInfo(fileName).dirPath() + '/');
 		fi.setFile(fileName);
 
-		if (!haveFileName && fi.exists() && fi.size() < socket->ggDccStruct()->file_info.size)
+		if (!haveFileName && fi.exists())
 		{
 			QString question;
 			question = tr("File %1 already exists.").arg(fileName);

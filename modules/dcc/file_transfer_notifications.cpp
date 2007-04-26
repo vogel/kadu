@@ -46,21 +46,27 @@ NewFileTransferNotification::NewFileTransferNotification(FileTransfer *ft, DccSo
 
 void NewFileTransferNotification::callbackAccept()
 {
+	kdebugf();
+
 	if (Continue)
 		file_transfer_manager->acceptFile(ft, socket, ft->fileName(), true);
 	else
-		file_transfer_manager->acceptFile(ft, socket, "");
+		file_transfer_manager->acceptFile(ft, socket, QString::null);
 	close();
 }
 
 void NewFileTransferNotification::callbackAcceptAsNew()
 {
-	file_transfer_manager->acceptFile(ft, socket, "");
+	kdebugf();
+
+	file_transfer_manager->acceptFile(ft, socket, QString::null);
 	close();
 }
 
 void NewFileTransferNotification::callbackDiscard()
 {
+	kdebugf();
+
 	file_transfer_manager->discardFile(socket);
 	close();
 }

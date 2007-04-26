@@ -111,30 +111,44 @@ struct gg_event* DccSocket::ggDccEvent() const
 void DccSocket::initializeNotifiers()
 {
 	kdebugf();
+
 	readSocketNotifier = new QSocketNotifier(dccsock->fd, QSocketNotifier::Read, this);
+	readSocketNotifier->setEnabled(false);
 	QObject::connect(readSocketNotifier, SIGNAL(activated(int)), this, SLOT(dccDataReceived()));
 
 	writeSocketNotifier = new QSocketNotifier(dccsock->fd, QSocketNotifier::Write, this);
+	writeSocketNotifier->setEnabled(false);
 	QObject::connect(writeSocketNotifier, SIGNAL(activated(int)), this, SLOT(dccDataSent()));
+
+	enableNotifiers();
+
 	kdebugf2();
 }
 
 void DccSocket::enableNotifiers()
 {
-	readSocketNotifier->setEnabled(true);
+	if (dccsock->check & GG_CHECK_READ)
+		readSocketNotifier->setEnabled(true);
+
 	if (dccsock->check & GG_CHECK_WRITE)
 		writeSocketNotifier->setEnabled(true);
 }
 
-void DccSocket::dccDataReceived()
+void DccSocket::disableNotifiers()
 {
 	readSocketNotifier->setEnabled(false);
+	writeSocketNotifier->setEnabled(false);
+}
+
+void DccSocket::dccDataReceived()
+{
+	disableNotifiers();
 	watchDcc();
 }
 
 void DccSocket::dccDataSent()
 {
-	writeSocketNotifier->setEnabled(false);
+	disableNotifiers();
 	watchDcc();
 }
 
@@ -205,7 +219,7 @@ void DccSocket::watchDcc()
 				setState(DCC_SOCKET_CONNECTION_BROKEN);
 			gadu->freeEvent(dccevent);
 			dccevent = NULL;
-			readSocketNotifier->setEnabled(true);
+			enableNotifiers();
 			return;
 		case GG_EVENT_DCC_DONE:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_DONE\n");
@@ -213,7 +227,7 @@ void DccSocket::watchDcc()
 			emit dcc_manager->dccDone(this);
 			gadu->freeEvent(dccevent);
 			dccevent = NULL;
-			readSocketNotifier->setEnabled(true);
+			enableNotifiers();
 			return;
 		default:
 			break;
@@ -229,11 +243,7 @@ void DccSocket::watchDcc()
 	}
 
 	if (!lock)
-	{
-		readSocketNotifier->setEnabled(true);
-		if (dccsock->check & GG_CHECK_WRITE)
-			writeSocketNotifier->setEnabled(true);
-	}
+		enableNotifiers();
 
 	kdebugf2();
 }
@@ -248,8 +258,7 @@ void DccSocket::discard()
 void DccSocket::setState(int pstate)
 {
 	kdebugf();
-	readSocketNotifier->setEnabled(false);
-	writeSocketNotifier->setEnabled(false);
+	disableNotifiers();
 	State = pstate;
 
 	switch (State)
