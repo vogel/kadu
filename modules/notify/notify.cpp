@@ -199,7 +199,7 @@ void Notify::statusChanged(UserListElement elem, QString protocolName,
 		case Online:	changedTo = "ToOnline"; break;
 		case Busy:		changedTo = "ToBusy"; break;
 		case Invisible:	changedTo = "ToInvisible"; break;
-		case Offline:	changedTo = "ToOFfline"; break;
+		case Offline:	changedTo = "ToOffline"; break;
 		default:
 			return;
 	}
