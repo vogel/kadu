@@ -65,7 +65,6 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 		ConfigDialog::addSpinBox("Hints", "New chat / new message", QT_TRANSLATE_NOOP("@default", "Number of quoted characters"), "CiteSign", 10, 1000, 1, 50);
 
 	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Status change"), 0, Advanced);
-		ConfigDialog::addCheckBox("Hints", "Status change", QT_TRANSLATE_NOOP("@default", "Add description to hint if exists"), "NotifyHintDescription", false);
 		ConfigDialog::addLineEdit("Hints", "Status change", QT_TRANSLATE_NOOP("@default", "Hint syntax"), "NotifyHintSyntax", QString::null, Kadu::SyntaxText, 0, Expert);
 
 	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Parameters"), 0, Advanced);
@@ -192,7 +191,6 @@ HintManager::~HintManager()
 	ConfigDialog::removeControl("Hints", "Left button");
 	ConfigDialog::removeControl("Hints", "Mouse buttons");
 	ConfigDialog::removeControl("Hints", "Hint syntax");
-	ConfigDialog::removeControl("Hints", "Add description to hint if exists");
 	ConfigDialog::removeControl("Hints", "Status change");
 	ConfigDialog::removeControl("Hints", "Number of quoted characters");
 	ConfigDialog::removeControl("Hints", "Close hint after activating window");
