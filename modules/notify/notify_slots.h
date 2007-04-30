@@ -14,8 +14,6 @@
 class NotifySlots : public QObject
 {
 	Q_OBJECT
-	private:
-		QValueList<QCString> disabledControls;
 
 	public slots:
 		void onCreateTabNotify();
@@ -26,11 +24,11 @@ class NotifySlots : public QObject
 		void _Left2(QListBoxItem *item);
 		void _Right2(QListBoxItem *item);
 		void ifNotifyAll(bool toggled);
+
 	public:
 		NotifySlots(QObject *parent=0, const char *name=0);
 		~NotifySlots();
-		void registerDisabledControl(const QCString &name);
-		void unregisterDisabledControl(const QCString &name);
+
 };
 
 /** @} */

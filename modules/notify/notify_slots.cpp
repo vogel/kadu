@@ -45,12 +45,6 @@ void NotifySlots::onCreateTabNotify()
 
 	connect(b_notifyall, SIGNAL(toggled(bool)), this, SLOT(ifNotifyAll(bool)));
 
-	CONST_FOREACH(name, disabledControls)
-	{
-		ConfigDialog::getCheckBox("Notify", " ", *name)->setDisabled(true);
-		ConfigDialog::getCheckBox("Notify", " ", *name)->setDown(true);
-	}
-
 	kdebugf2();
 }
 
@@ -71,7 +65,7 @@ void NotifySlots::onApplyTabNotify()
 	kdebugf2();
 }
 
-NotifySlots::NotifySlots(QObject *parent, const char *name) : QObject(parent, name), disabledControls()
+NotifySlots::NotifySlots(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
 	kdebugf2();
@@ -80,20 +74,6 @@ NotifySlots::NotifySlots(QObject *parent, const char *name) : QObject(parent, na
 NotifySlots::~NotifySlots()
 {
 	kdebugf();
-	kdebugf2();
-}
-
-void NotifySlots::registerDisabledControl(const QCString &name)
-{
-	kdebugf();
-	disabledControls.append(name);
-	kdebugf2();
-}
-
-void NotifySlots::unregisterDisabledControl(const QCString &name)
-{
-	kdebugf();
-	disabledControls.remove(name);
 	kdebugf2();
 }
 

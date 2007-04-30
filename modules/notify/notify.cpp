@@ -260,8 +260,6 @@ void Notify::addConfigColumn(const QString &name, CallbackCapacity callbackCapac
 		QCString entry = ((*it).name + '_' + name).utf8();
 		QCString wname = (name + (*it).name).utf8();
 		ConfigDialog::addCheckBox("Notify", s[1], " ", entry, false, 0, wname);
-		if ((callbackCapacity == CallbackNotSupported) && ((*it).callbackRequirement == CallbackRequired))
-			notify_slots->registerDisabledControl(wname);
 		s.append(entry);
 		s.append(wname);
 	}
@@ -279,7 +277,6 @@ void Notify::removeConfigColumn(const QString &name)
 	CONST_FOREACH(it, NotifyEvents)
 	{
 		++strit; // omit entry
-		notify_slots->unregisterDisabledControl((name + (*it).name).utf8());
 		ConfigDialog::removeControl("Notify", " ", *strit); // use wname
 		++strit;
 	}
@@ -310,8 +307,6 @@ void Notify::addConfigRow(const QString &name, const char *description, Callback
 		QCString entry = (name + '_' + it.key()).utf8();
 		QCString wname = (it.key() + name).utf8();
 		ConfigDialog::addCheckBox("Notify", parent, " ", entry, false, 0, wname);
-		if ((callbackRequirement == CallbackRequired) && ((*it)->callbackCapacity() == CallbackNotSupported))
-			notify_slots->registerDisabledControl(wname);
 		s.append(entry);
 		s.append(wname);
 	}
@@ -353,7 +348,6 @@ void Notify::removeConfigRow(const QString &name)
 		{
 			QValueList<QCString> &s = strs[it.key()]; // strings for that notifier
 			ConfigDialog::removeControl("Notify", " ", s[wname_idx]);
-			notify_slots->unregisterDisabledControl((it.key() + name).utf8());
 			QValueList<QCString>::iterator sit = s.at(wname_idx - 1), sit2 = sit; //iterators of entry, wname+1
 			++sit2; ++sit2;
 			s.erase(sit, sit2);
@@ -463,7 +457,7 @@ void Notify::notify(Notification *notification)
 		{
 			(*i)->notify(notification);
 			foundNotifier = true;
-			foundNotifierWithCallbackSupported = true;
+			foundNotifierWithCallbackSupported = foundNotifierWithCallbackSupported || ((*i)->callbackCapacity() == CallbackSupported);
 		}
 
 	if (!foundNotifierWithCallbackSupported)
