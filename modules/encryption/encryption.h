@@ -29,10 +29,8 @@ class EncryptionManager : public QObject
 
 		void generateMyKeys();
 		void sendPublicKey();
-		void onUseEncryption(bool toggled);
 		void encryptionActionActivated(const UserGroup* users);
 		void userBoxMenuPopup();
-		void createConfigDialogSlot();
 
 	public:
 		EncryptionManager(QObject *parent=0, const char *name=0);

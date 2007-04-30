@@ -57,20 +57,22 @@ EncryptionManager::EncryptionManager(QObject *parent, const char *name) : QObjec
 	EncryptionEnabled()
 {
 	kdebugf();
-	ConfigDialog::addCheckBox("Chat", "Chat",
-			QT_TRANSLATE_NOOP("@default", "Use encryption"), "Encryption", false);
-	ConfigDialog::addHGroupBox("Chat", "Chat",
+	ConfigDialog::addVGroupBox("Chat", "Chat",
 			QT_TRANSLATE_NOOP("@default", "Encryption properties"));
-	ConfigDialog::addComboBox("Chat", "Encryption properties",
+	ConfigDialog::addCheckBox("Chat", "Encryption properties",
+			QT_TRANSLATE_NOOP("@default", "Encrypt by default"), "Encryption", false);
+	ConfigDialog::addCheckBox("Chat", "Encryption properties",
+			QT_TRANSLATE_NOOP("@default", "Encrypt after receive encrypted message"), "EncryptAfterReceiveEncryptedMessage", false);
+	ConfigDialog::addHBox("Chat", "Encryption properties", "key_generator");
+	ConfigDialog::addComboBox("Chat", "key_generator",
 			QT_TRANSLATE_NOOP("@default", "Keys length"), "EncryptionKeyLength", QStringList("1024"), QStringList("1024"), "1024");
-	ConfigDialog::addPushButton("Chat", "Encryption properties",
+	ConfigDialog::addPushButton("Chat", "key_generator",
 			QT_TRANSLATE_NOOP("@default", "Generate keys"));
-	ConfigDialog::addColorButton("Chat", "Encryption properties",
+
+	ConfigDialog::addColorButton("Look", "Chat window",
 			QT_TRANSLATE_NOOP("@default", "Color of encrypted messages"), "EncryptionColor", QColor("#0000FF"));
 
-	ConfigDialog::registerSlotOnCreateTab("Chat", this,SLOT(createConfigDialogSlot()));
 	ConfigDialog::connectSlot("Chat", "Generate keys", SIGNAL(clicked()), this, SLOT(generateMyKeys()));
-	ConfigDialog::connectSlot("Chat", "Use encryption", SIGNAL(toggled(bool)), this, SLOT(onUseEncryption(bool)));
 
 	userlist->addPerContactNonProtocolConfigEntry("encryption_enabled", "EncryptionEnabled");
 
@@ -81,6 +83,7 @@ EncryptionManager::EncryptionManager(QObject *parent, const char *name) : QObjec
 
 	action = new Action(icons_manager->loadIcon("EncryptedChat"),
 		tr("Enable encryption for this conversation"), "encryptionAction", Action::TypeChat);
+	action->setToggleAction(true);
 	connect(action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(encryptionActionActivated(const UserGroup*)));
 	connect(action, SIGNAL(addedToToolbar(const UserGroup*, ToolButton*, ToolBar*)),
@@ -111,23 +114,15 @@ EncryptionManager::~EncryptionManager()
 	disconnect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userBoxMenuPopup()));
 
 	ConfigDialog::disconnectSlot("Chat", "Generate keys", SIGNAL(clicked()), this, SLOT(generateMyKeys()));
-	ConfigDialog::disconnectSlot("Chat", "Use encryption", SIGNAL(toggled(bool)), this, SLOT(onUseEncryption(bool)));
-	ConfigDialog::unregisterSlotOnCreateTab("Chat", this, SLOT(createConfigDialogSlot()));
 
-	ConfigDialog::removeControl("Chat", "Color of encrypted messages");
+	ConfigDialog::removeControl("Look", "Color of encrypted messages");
 	ConfigDialog::removeControl("Chat", "Generate keys");
 	ConfigDialog::removeControl("Chat", "Keys length");
+	ConfigDialog::removeControl("Chat", "key_generator");
+	ConfigDialog::removeControl("Chat", "Encrypt after receive encrypted message");
+	ConfigDialog::removeControl("Chat", "Encrypt by default");
 	ConfigDialog::removeControl("Chat", "Encryption properties");
-	ConfigDialog::removeControl("Chat", "Use encryption");
 	delete action;
-	kdebugf2();
-}
-
-void EncryptionManager::createConfigDialogSlot()
-{
-	kdebugf();
-	ConfigDialog::getHGroupBox("Chat", "Encryption properties")
-			->setEnabled(ConfigDialog::getCheckBox("Chat", "Use encryption")->isChecked());
 	kdebugf2();
 }
 
@@ -157,11 +152,6 @@ void EncryptionManager::generateMyKeys()
 	kdebugf2();
 }
 
-void EncryptionManager::onUseEncryption(bool toggled)
-{
-	ConfigDialog::getHGroupBox("Chat", "Encryption properties")->setEnabled(toggled);
-}
-
 void EncryptionManager::chatCreated(Chat *chat)
 {
 	connect(chat, SIGNAL(messageFiltering(const UserGroup *, QCString &, bool &)),
@@ -185,7 +175,7 @@ void EncryptionManager::setupEncrypt(const UserGroup *group)
 		QVariant v = chat_manager->getChatProperty(group, "EncryptionEnabled");
 		if (v.isValid())
 			encrypt = v.toBool();
-		else if (group->count() == 1 && (*(group->constBegin())).data("EncryptionEnabled").isValid())
+		else if ((*(group->constBegin())).data("EncryptionEnabled").isValid())
 			encrypt = (*(group->constBegin())).data("EncryptionEnabled").toString() == "true";
 		else
 			encrypt = config_file.readBoolEntry("Chat", "Encryption");
@@ -214,11 +204,13 @@ void EncryptionManager::setupEncryptButton(Chat* chat,bool enabled)
 		{
 			QToolTip::add(*i, tr("Disable encryption for this conversation"));
 			(*i)->setPixmap(icons_manager->loadIcon("EncryptedChat"));
+			(*i)->setOn(true);
 		}
 		else
 		{
 			QToolTip::add(*i, tr("Enable encryption for this conversation"));
 			(*i)->setPixmap(icons_manager->loadIcon("DecryptedChat"));
+			(*i)->setOn(false);
 		}
 	}
 	chat_manager->setChatProperty(chat->users(), "EncryptionEnabled", QVariant(enabled));
@@ -266,7 +258,7 @@ void EncryptionManager::receivedMessageFilter(Protocol *protocol,
 		format.font = GG_FONT_COLOR;
 		gg_msg_richtext_color color;
 
-		QColor new_color= config_file.readColorEntry("Chat", "EncryptionColor");
+		QColor new_color= config_file.readColorEntry("Look", "EncryptionColor");
 		color.red = new_color.red();
 		color.green = new_color.green();
 		color.blue = new_color.blue();
@@ -280,6 +272,19 @@ void EncryptionManager::receivedMessageFilter(Protocol *protocol,
 		dst += sizeof(color);
 		memcpy(dst, formats.data(), formats.size());
 		formats = new_formats;
+		
+		Chat* chat=chat_manager->findChat(senders);
+		if (config_file.readBoolEntry("Chat", "EncryptAfterReceiveEncryptedMessage"))
+		{
+			if (chat)
+				setupEncryptButton(chat_manager->findChat(senders), true);
+			else
+			{
+				UserGroup userGroup(senders);
+				chat_manager->setChatProperty(&userGroup, "EncryptionEnabled", QVariant(true));
+				senders[0].setData("EncryptionEnabled", "true");
+			}
+		}
 	}
 	kdebugf2();
 }

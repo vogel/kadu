@@ -2,12 +2,16 @@
 <context>
     <name>@default</name>
     <message>
-        <source>Use encryption</source>
-        <translation>Użyj szyfrowania</translation>
-    </message>
-    <message>
         <source>Encryption properties</source>
         <translation>Właściwości szyfrowania</translation>
+    </message>
+    <message>
+        <source>Encrypt by default</source>
+        <translation>Domyślnie szyfruj</translation>
+    </message>
+    <message>
+        <source>Encrypt after receive encrypted message</source>
+        <translation>Szyfruj po otrzymaniu zaszyfrowanej wiadomości</translation>
     </message>
     <message>
         <source>Keys length</source>

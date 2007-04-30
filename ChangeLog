@@ -147,6 +147,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawiono b³±d [0000617]: blokowanie mo¿liwo¶ci otwarcia okna rozmowy z samym sob± (Vogel)
 * notify: poprawiono mo¿liw± wywrotkê przy dwukrotnym zamykaniu tej samej notyfikacji (Vogel)
 * dcc: poprawki konsultowane z dru¿yn± libgadu, nie powinno byæ ju¿ problemów z transferami kadu - kadu (Vogel)
+* encryption: szyfrowanie w³±czone domy¶lnie + autow³±czanie szyfrowania po zainicjowaniu go z drugiej strony (Arvenil/Vogel)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
