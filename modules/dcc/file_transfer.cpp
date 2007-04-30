@@ -1153,37 +1153,24 @@ void FileTransferManager::sendFile(UinType receiver, const QString &filename)
 	kdebugf2();
 }
 
-QString FileTransferManager::selectFileToSend()
+QStringList FileTransferManager::selectFilesToSend()
 {
-	kdebugf();
-
-	QString f;
-	QFileInfo fi;
-	do
-	{
-		f = QFileDialog::getOpenFileName(
-			config_file.readEntry("Network", "LastUploadDirectory"),
-			QString::null, 0, "open file", tr("Select file location"));
-		fi.setFile(f);
-		if (f != QString::null && !fi.isReadable())
-			MessageBox::msg(tr("This file is not readable"), true);
-	}
-	while (f != QString::null && !fi.isReadable());
-	if (f != QString::null && fi.isReadable())
-		config_file.writeEntry("Network", "LastUploadDirectory", fi.dirPath() + '/');
-
-	return f;
+	return QFileDialog::getOpenFileNames(
+		QString::null,
+		config_file.readEntry("Network", "LastUploadDirectory"),
+		0, "open file", tr("Select file location"));
 }
 
 void FileTransferManager::sendFile(UinType receiver)
 {
 	kdebugf();
 
-	QString f = selectFileToSend();
-	if (f.isEmpty())
+	QStringList f = selectFilesToSend();
+	if (!f.count())
 		return;
 
-	sendFile(receiver, f);
+	CONST_FOREACH(file, f)
+		sendFile(receiver, *file);
 
 	kdebugf2();
 }
@@ -1200,14 +1187,15 @@ void FileTransferManager::sendFile()
 		return;
 	}
 
-	QString f = selectFileToSend();
-	if (f.isEmpty())
+	QStringList f = selectFilesToSend();
+	if (!f.count())
 		return;
 
 	users = activeUserBox->selectedUsers();
 	CONST_FOREACH(i, users)
-		if ((*i).usesProtocol("Gadu") && (*i).ID("Gadu") != config_file.readEntry("General", "UIN"))
-			sendFile((*i).ID("Gadu").toUInt(), f);
+		CONST_FOREACH(file, f)
+			if ((*i).usesProtocol("Gadu") && (*i).ID("Gadu") != config_file.readEntry("General", "UIN"))
+				sendFile((*i).ID("Gadu").toUInt(), *file);
 
 	kdebugf2();
 }
@@ -1250,21 +1238,17 @@ void FileTransferManager::kaduKeyPressed(QKeyEvent* e)
 
 void FileTransferManager::sendFileActionActivated(const UserGroup* users)
 {
-	kdebugf();
-	if (users->count() == 0)
-	{
-		kdebugf2();
+	if (!users->count())
 		return;
-	}
-	QString f = selectFileToSend();
-	if (f.isEmpty())
-	{
-		kdebugf2();
+
+	QStringList f = selectFilesToSend();
+	if (!f.count())
 		return;
-	}
+
 	CONST_FOREACH(i, *users)
-		if ((*i).usesProtocol("Gadu") && (*i).ID("Gadu") != config_file.readEntry("General", "UIN"))
-			sendFile((*i).ID("Gadu").toUInt(), f);
+		CONST_FOREACH(file, f)
+			if ((*i).usesProtocol("Gadu") && (*i).ID("Gadu") != config_file.readEntry("General", "UIN"))
+				sendFile((*i).ID("Gadu").toUInt(), *file);
 	kdebugf2();
 }
 

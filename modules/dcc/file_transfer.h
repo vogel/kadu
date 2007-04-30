@@ -226,7 +226,7 @@ class FileTransferManager : public QObject
 
 		int toggleFileTransferWindowMenuId;
 
-		QString selectFileToSend();
+		QStringList selectFilesToSend();
 
 		void needFileAccept(DccSocket* socket);
 		void needFileInfo(DccSocket* socket);
