@@ -231,6 +231,8 @@ class FileTransferManager : public QObject
 		void needFileAccept(DccSocket* socket);
 		void needFileInfo(DccSocket* socket);
 
+		void sendFile(const UserListElements users);
+
 	private slots:
 		void userboxMenuPopup();
 		void sendFile();

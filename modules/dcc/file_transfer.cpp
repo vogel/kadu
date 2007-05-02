@@ -1137,11 +1137,19 @@ void FileTransferManager::writeToConfig()
 	kdebugf2();
 }
 
+QStringList FileTransferManager::selectFilesToSend()
+{
+	return QFileDialog::getOpenFileNames(
+		QString::null,
+		config_file.readEntry("Network", "LastUploadDirectory"),
+		0, "open file", tr("Select file location"));
+}
+
 void FileTransferManager::sendFile(UinType receiver, const QString &filename)
 {
 	kdebugf();
 
-	FileTransfer * ft = FileTransfer::search(FileTransfer::TypeSend, receiver, filename);
+	FileTransfer *ft = FileTransfer::search(FileTransfer::TypeSend, receiver, filename);
 	if (!ft)
 		ft = new FileTransfer(this, FileTransfer::TypeSend, receiver, filename);
 
@@ -1153,23 +1161,18 @@ void FileTransferManager::sendFile(UinType receiver, const QString &filename)
 	kdebugf2();
 }
 
-QStringList FileTransferManager::selectFilesToSend()
-{
-	return QFileDialog::getOpenFileNames(
-		QString::null,
-		config_file.readEntry("Network", "LastUploadDirectory"),
-		0, "open file", tr("Select file location"));
-}
-
 void FileTransferManager::sendFile(UinType receiver)
 {
 	kdebugf();
 
-	QStringList f = selectFilesToSend();
-	if (!f.count())
+	QStringList files = selectFilesToSend();
+	if (!files.count())
+	{
+		kdebugf2();
 		return;
+	}
 
-	CONST_FOREACH(file, f)
+	CONST_FOREACH(file, files)
 		sendFile(receiver, *file);
 
 	kdebugf2();
@@ -1180,22 +1183,39 @@ void FileTransferManager::sendFile()
 	kdebugf();
 
 	UserBox *activeUserBox = UserBox::activeUserBox();
-	UserListElements users;
-	if (activeUserBox == NULL)
+	if (activeUserBox)
+		sendFile(activeUserBox->selectedUsers());
+
+	kdebugf2();
+}
+
+void FileTransferManager::sendFileActionActivated(const UserGroup* users)
+{
+	kdebugf();
+
+	if (users->count())
+		sendFile(users->toUserListElements());
+
+	kdebugf2();
+}
+
+void FileTransferManager::sendFile(const UserListElements users)
+{
+	kdebugf();
+
+	QStringList files = selectFilesToSend();
+	if (!files.count())
 	{
 		kdebugf2();
 		return;
 	}
 
-	QStringList f = selectFilesToSend();
-	if (!f.count())
-		return;
+	unsigned int myUin = config_file.readUnsignedNumEntry("General", "UIN");
 
-	users = activeUserBox->selectedUsers();
-	CONST_FOREACH(i, users)
-		CONST_FOREACH(file, f)
-			if ((*i).usesProtocol("Gadu") && (*i).ID("Gadu") != config_file.readEntry("General", "UIN"))
-				sendFile((*i).ID("Gadu").toUInt(), *file);
+	CONST_FOREACH(user, users)
+		CONST_FOREACH(file, files)
+			if ((*user).usesProtocol("Gadu") && (*user).ID("Gadu") != myUin)
+				sendFile((*user).ID("Gadu").toUInt(), *file);
 
 	kdebugf2();
 }
@@ -1206,7 +1226,10 @@ void FileTransferManager::userboxMenuPopup()
 
 	UserBox *activeUserBox = UserBox::activeUserBox();
 	if (activeUserBox == NULL)
+	{
+		kdebugf2();
 		return;
+	}
 
 	int sendfile = UserBox::userboxmenu->getItem(tr("Send file"));
 	bool dccEnabled = config_file.readBoolEntry("Network", "AllowDCC");
@@ -1233,23 +1256,6 @@ void FileTransferManager::kaduKeyPressed(QKeyEvent* e)
 {
 	if (HotKey::shortCut(e,"ShortCuts", "kadu_sendfile"))
 		sendFile();
-}
-
-
-void FileTransferManager::sendFileActionActivated(const UserGroup* users)
-{
-	if (!users->count())
-		return;
-
-	QStringList f = selectFilesToSend();
-	if (!f.count())
-		return;
-
-	CONST_FOREACH(i, *users)
-		CONST_FOREACH(file, f)
-			if ((*i).usesProtocol("Gadu") && (*i).ID("Gadu") != config_file.readEntry("General", "UIN"))
-				sendFile((*i).ID("Gadu").toUInt(), *file);
-	kdebugf2();
 }
 
 void FileTransferManager::chatCreated(Chat *chat)
