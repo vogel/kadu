@@ -499,12 +499,12 @@ Jest to wysoce ryzykowne!</translation>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
 %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
-%v - revDNS, %p - port %e - email %x - max image size
+%h - gg version, %v - revDNS, %p - port %e - email %x - max image size
 </source>
         <translation>Składnia: %s - status, %d - opis, %i - IP, %n - nick, %a - wyświetl,
 %f - imię, %r - nazwisko, %m - telefon, %u - nr GG, %g - grupa, 
 %o - zwraca spację jeżeli kontakt nie ma cię na liście, %v - DNS, 
-%p - port %e - email, %x - max rozmiar obrazka</translation>
+%h - wersja gg, %p - port %e - email, %x - max rozmiar obrazka</translation>
     </message>
     <message>
         <source>Debugging mask</source>

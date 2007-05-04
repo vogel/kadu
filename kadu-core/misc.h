@@ -50,6 +50,8 @@ QString pwHash(const QString &text);
 QString translateLanguage(const QApplication *application, const QString &locale, const bool l2n);
 void openWebBrowser(const QString &link);
 
+QString versionToName(const unsigned int version);
+
 void stringHeapSort(QStringList &c);
 QStringList toStringList(const QString &e1, const QString &e2=QString(), const QString &e3=QString(), const QString &e4=QString(), const QString &e5=QString());
 

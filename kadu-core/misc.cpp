@@ -588,6 +588,30 @@ void openWebBrowser(const QString &link)
 	kdebugf2();
 }
 
+QString versionToName(const unsigned int version)
+{
+	kdebugf();
+	QString name;
+
+	switch (version)
+	{
+		case 0x20: name = "GG 6.0b129"; break;
+		case 0x21: name = "GG 6.0b133"; break;
+		case 0x22: name = "GG 6.0b140"; break;
+		case 0x24: name = "GG 6.1b155/7.6b1359"; break;
+		case 0x25: name = "GG 7.0b1"; break;
+		case 0x26: name = "GG 7.0b20"; break;
+		case 0x27: name = "GG 7.0b22"; break;
+		case 0x28: name = "GG 7.5b2201"; break;
+		case 0x29: name = "GG 7.6b1688"; break;
+		case 0x2a: name = "GG 7.7b3315"; break;
+		default: name = "Unknown"; break;
+	}
+
+	return name;
+	kdebugf2();
+}
+
 //internal usage
 static void stringHeapSortPushDown( QString* heap, int first, int last )
 {

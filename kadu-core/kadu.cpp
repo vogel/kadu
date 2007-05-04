@@ -64,7 +64,7 @@ int lockFileHandle;
 QFile *lockFile;
 struct flock *lock_str;
 
-const char *Kadu::SyntaxText = QT_TRANSLATE_NOOP("@default", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name\n%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n%v - revDNS, %p - port %e - email %x - max image size\n");
+const char *Kadu::SyntaxText = QT_TRANSLATE_NOOP("@default", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name\n%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n%h - gg version, %v - revDNS, %p - port %e - email %x - max image size\n");
 bool Kadu::Closing = false;
 
 void Kadu::keyPressEvent(QKeyEvent *e)

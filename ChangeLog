@@ -151,6 +151,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dcc: poprawiono b³±d [0000380]: d¼wiêki w kadu dla zdarzeñ zwi±zanych z transferami plików (Vogel)
 * dcc: mo¿liwo¶æ wys³ania kilku plików na raz z menu (Vogel)
 * dcc: drobne optymalizacje (neeo)
+* wersja GG: prezentowana w oknie infromacji o kontakcie, oraz dostêpna przez parser (neeo)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

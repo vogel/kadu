@@ -219,6 +219,11 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 					if (ule.usesProtocol("Gadu"))
 						pe.str = ule.ID("Gadu");
 					break;
+				case 'h':
+					++i;
+					if (ule.protocolData("Gadu", "Version").toUInt() && !ule.status("Gadu").isOffline())
+						pe.str = versionToName(ule.protocolData("Gadu", "Version").toUInt() & 0x0000ffff);
+					break;
 				case 'n':
 					++i;
 					pe.str = ule.nickName();

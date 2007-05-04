@@ -219,7 +219,6 @@ void UserInfo::setupTab1()
 	if (gadu->currentStatus().isOffline())
 		e_status->setText(tr("(Unknown)"));
 
-	QString s_temp;
 	dns = new QDns();
 
 	e_status->setReadOnly(true);
@@ -247,13 +246,16 @@ void UserInfo::setupTab1()
 		else
 			e_addr->setText(e_addr->text() + ':' + tr("(Unknown)"));
 
-		if (User.protocolData("Gadu", "Version").toUInt())
+		unsigned int version = (User.protocolData("Gadu", "Version").toUInt() & 0x0000ffff);
+		if (version)
 		{
-			s_temp.sprintf("0x%02x", User.protocolData("Gadu", "Version").toUInt() & 0x0000ffff);
-			e_ver->setText(s_temp);
+			QString s_temp;
+			s_temp.sprintf("0x%02x", version);
+			e_ver->setText(s_temp + " (" + versionToName(version) + ")");
 		}
 		else
 			e_ver->setText(tr("(Unknown)"));
+
 		e_status->setText(tr(User.status("Gadu").name().ascii()));
 		tw_main->setTabIconSet(vgb_general, User.status("Gadu").pixmap());
 
