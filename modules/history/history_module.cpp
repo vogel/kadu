@@ -116,7 +116,7 @@ HistoryModule::HistoryModule() : QObject(NULL, "history")
 	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "showHistoryAction", 3);
 
 	UserBox::userboxmenu->addItemAtPos(5, "History", tr("View history"), this, SLOT(viewHistory()), HotKey::shortCutFromFile("ShortCuts", "kadu_viewhistory"));
-	UserBox::management->addItemAtPos(7, tr("Clear history"),  this, SLOT(deleteHistory()));
+	UserBox::management->addItemAtPos(7, "ClearHistory", tr("Clear history"),  this, SLOT(deleteHistory()));
 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
 
 	kdebugf2();
