@@ -113,7 +113,7 @@ QValueList<ToolButton*> Action::toolButtonsForUserListElements(const UserListEle
 	CONST_FOREACH(i, ToolButtons)
 	{
 		const ToolBar* toolbar = dynamic_cast<ToolBar*>((*i)->parentWidget());
-		if (toolbar->selectedUsers()->equals(users))
+		if (toolbar->selectedUsers() && toolbar->selectedUsers()->equals(users))
 			buttons.append(*i);
 	}
 	kdebugf2();
