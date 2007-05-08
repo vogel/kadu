@@ -563,20 +563,19 @@ void Kadu::openDescriptionLink()
 	}
 
 	UserListElement user = activeUserBox->selectedUsers().first();
-	QString status;
+
 	if (user.usesProtocol("Gadu"))
-		status = user.status("Gadu").description();
-	if (!status.isEmpty())
 	{
-		int idx_start = status.find(HtmlDocument::urlRegExp());
-		if (idx_start >= 0)
+		QString status = user.status("Gadu").description();
+		if (!status.isEmpty())
 		{
-			int idx_stop = status.find(QRegExp("\\s"), idx_start);
-			if (idx_stop <= idx_start)
-				idx_stop = status.length();
-			openWebBrowser(status.mid(idx_start, (idx_stop - idx_start)));
+			QRegExp url = HtmlDocument::urlRegExp();
+			int idx_start = url.search(status);
+			if (idx_start >= 0)
+				openWebBrowser(status.mid(idx_start, url.matchedLength()));
 		}
 	}
+
 	kdebugf2();
 }
 
