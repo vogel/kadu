@@ -933,15 +933,14 @@ void Kadu::changeAppearance()
 void Kadu::removeUsers(UserListElements users)
 {
 	kdebugf();
-	if (QMessageBox::warning(kadu, "Kadu",
+	if (users.count() && QMessageBox::warning(kadu, "Kadu",
 		tr("Selected users:\n%0\nwill be deleted. Are you sure?").arg(users.altNicks().join(", ")),
-		QMessageBox::Yes, QMessageBox::No) != QMessageBox::Yes)
+		QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes)
 	{
-		return;
+		emit removingUsers(users);
+		userlist->removeUsers(users);
+		userlist->writeToConfig();
 	}
-	emit removingUsers(users);
-	userlist->removeUsers(users);
-	userlist->writeToConfig();
 	kdebugf2();
 }
 

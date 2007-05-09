@@ -156,6 +156,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * akcja dodaj±ca kontakt wype³nia mo¿liwe pola przy dodawaniu anonimów (neeo)
 * poprawiono segfault w oknie chat przy wyci±gniêtej akcji wysy³ania wiadomo¶ci (neeo)
 * drobna optymalizacja otwierania odno¶nika z opisu kontaktu (neeo)
+* skrót klawiszowy usuwaj±cy kontakty nie zadzia³a, gdy ¿aden kontakt nie zosta³ wybrany (neeo)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
