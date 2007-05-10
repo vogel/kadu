@@ -212,8 +212,8 @@ void HtmlDocument::convertUrlsToHtml()
 		if (p < 0)
 			continue;
 
-		unsigned int l = r.matchedLength();
-		unsigned int lft = config_file.readUnsignedNumEntry("Chat","LinkFoldTreshold");
+		int l = r.matchedLength();
+		int lft = config_file.readNumEntry("Chat","LinkFoldTreshold");
 
 		QString link2 = text.mid(p, l);
 		link2.replace("%20", "%2520"); //obej¶cie buga w operze :|, która nie potrafi otworzyæ linka ze spacj±
