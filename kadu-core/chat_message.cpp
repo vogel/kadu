@@ -36,8 +36,9 @@ QString ChatMessage::convertCharacters(QString edit, const QColor &bgcolor, Emot
 	HtmlDocument doc;
 	doc.parseHtml(edit);
 
-	// detekcja adresow url
+	// detekcja adresow url i email
 	doc.convertUrlsToHtml();
+	doc.convertMailToHtml();
 
 	if (style != EMOTS_NONE)
 		emoticons->expandEmoticons(doc, bgcolor, style);

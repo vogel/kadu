@@ -258,6 +258,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	connect(Userbox, SIGNAL(currentChanged(UserListElement)), this, SLOT(currentChanged(UserListElement)));
 	UserBox::userboxmenu->addItem("OpenChat", tr("Open chat window") ,this, SLOT(openChat()));
 	UserBox::userboxmenu->insertSeparator();
+	UserBox::userboxmenu->addItem("WriteEmail", tr("Write email message"), this, SLOT(writeMail()));
 	UserBox::userboxmenu->addItem("CopyDescription", tr("Copy description"), this, SLOT(copyDescription()));
 	UserBox::userboxmenu->addItem("OpenDescriptionLink", tr("Open description link in browser"), this, SLOT(openDescriptionLink()));
 	UserBox::userboxmenu->addItem("CopyPersonalInfo", tr("Copy personal info"), this, SLOT(copyPersonalInfo()));
@@ -520,6 +521,8 @@ void Kadu::popupMenu()
 	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu") || firstUser.status("Gadu").description().isEmpty() ||
 		firstUser.status("Gadu").description().find(HtmlDocument::urlRegExp()) == -1)
 		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Open description link in browser")), false);
+	if ((users.count() != 1) || firstUser.email().isEmpty() || firstUser.email().find(HtmlDocument::mailRegExp()) == -1)
+		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Write email message")), false);
 	kdebugf2();
 }
 
@@ -576,6 +579,22 @@ void Kadu::openDescriptionLink()
 		}
 	}
 
+	kdebugf2();
+}
+
+void Kadu::writeMail()
+{
+	kdebugf();
+	UserBox *activeUserBox = UserBox::activeUserBox();
+	if (!activeUserBox)
+	{
+		kdebugf2();
+		return;
+	}
+
+	UserListElement user = activeUserBox->selectedUsers().first();
+	if (!user.email().isEmpty())
+		openMailClient(user.email());
 	kdebugf2();
 }
 
@@ -750,7 +769,7 @@ void Kadu::searchInDirectory()
 
 void Kadu::help()
 {
-	openWebBrowser("http://www.kadu.net/doc.php");
+	openWebBrowser("http://www.kadu.net/w/Kadu:Pomoc");
 }
 
 void Kadu::about()
@@ -1557,6 +1576,7 @@ void Kadu::updateInformationPanel(UserListElement user)
 		HtmlDocument doc;
 		doc.parseHtml(KaduParser::parse(config_file.readEntry("Look", "PanelContents"), user));
 		doc.convertUrlsToHtml();
+		doc.convertMailToHtml();
 		if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") != EMOTS_NONE && config_file.readBoolEntry("General", "ShowEmotPanel"))
 		{
 			InfoPanel->mimeSourceFactory()->addFilePath(emoticons->themePath());

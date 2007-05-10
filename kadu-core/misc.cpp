@@ -588,6 +588,39 @@ void openWebBrowser(const QString &link)
 	kdebugf2();
 }
 
+void openMailClient(const QString &mail)
+{
+	kdebugf();
+
+	QString mailClient = config_file.readEntry("Chat", "MailClient");
+	if (mailClient.isEmpty())
+	{
+		QMessageBox::warning(0, qApp->translate("@default", QT_TR_NOOP("Mail error")),
+			qApp->translate("@default", QT_TR_NOOP("Mail client was not specified. Visit the configuration section")));
+		kdebugmf(KDEBUG_INFO, "Mail client NOT specified.\n");
+		return;
+	}
+
+	if (mailClient.contains("%1"))
+		mailClient.replace("%1", mail);
+	else
+		mailClient.append(" \"" + mail + '"');
+
+	QStringList args = toStringList("sh", "-c", mailClient);
+
+	CONST_FOREACH(arg, args)
+		kdebugmf(KDEBUG_INFO, "%s\n", (*arg).local8Bit().data());
+
+	QProcess *mailer = new QProcess(args, qApp);
+	QObject::connect(mailer, SIGNAL(processExited()), mailer, SLOT(deleteLater()));
+
+	if (!mailer->start())
+		QMessageBox::critical(0, qApp->translate("@default", QT_TR_NOOP("Mail error")),
+			qApp->translate("@default", QT_TR_NOOP("Could not spawn Mail client process. Check if the Mail client is functional")));
+
+	kdebugf2();
+}
+
 QString versionToName(const unsigned int version)
 {
 	kdebugf();

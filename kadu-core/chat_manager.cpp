@@ -1018,6 +1018,10 @@ void ChatManager::closeModule()
 
 	ConfigDialog::removeControl("Chat", "Max image size");
 
+	ConfigDialog::removeControl("Chat", "Custom Mail client");
+	ConfigDialog::removeControl("Chat", "Choose your mail client");
+	ConfigDialog::removeControl("Chat", "Mail client");
+
 	ConfigDialog::removeControl("Chat", "Custom Web browser");
 	ConfigDialog::removeControl("Chat", "Browser options");
 	ConfigDialog::removeControl("Chat", "Choose your browser");
@@ -1067,6 +1071,10 @@ void ChatManager::initModule()
 	ConfigDialog::addComboBox("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Choose your browser"));
 	ConfigDialog::addComboBox("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Browser options"));
 	ConfigDialog::addLineEdit("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Custom Web browser"), "WebBrowser", 0, QT_TRANSLATE_NOOP("@default", "%1 - Url clicked in chat window"));
+
+	ConfigDialog::addVGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Mail client"), 0, Beginner);
+	ConfigDialog::addComboBox("Chat", "Mail client", QT_TRANSLATE_NOOP("@default", "Choose your mail client"));
+	ConfigDialog::addLineEdit("Chat", "Mail client", QT_TRANSLATE_NOOP("@default", "Custom Mail client"), "MailClient", 0, QT_TRANSLATE_NOOP("@default", "%1 - mail clicked in chat window"));
 
 	ConfigDialog::addSpinBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Max image size"),
 			"MaxImageSize", 0, 255, 5, 20);

@@ -48,7 +48,9 @@ QString timestamp(time_t = 0);
 QDateTime currentDateTime();
 QString pwHash(const QString &text);
 QString translateLanguage(const QApplication *application, const QString &locale, const bool l2n);
+
 void openWebBrowser(const QString &link);
+void openMailClient(const QString &mail);
 
 QString versionToName(const unsigned int version);
 

@@ -167,10 +167,15 @@ void KaduTextBrowser::drawContents(QPainter * p, int clipx, int clipy, int clipw
 
 void KaduTextBrowser::hyperlinkClicked(const QString &link) const
 {
-	if (link.startsWith("www."))
-		openWebBrowser("http://" + link);
-	else
-		openWebBrowser(link);
+	if (link.find(HtmlDocument::urlRegExp()) != -1)
+	{
+		if (link.startsWith("www."))
+			openWebBrowser("http://" + link);
+		else
+			openWebBrowser(link);
+	}
+	else if (link.find(HtmlDocument::mailRegExp()) != -1)
+		openMailClient(link);
 }
 
 void KaduTextBrowser::copy()

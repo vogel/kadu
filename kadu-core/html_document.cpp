@@ -195,7 +195,7 @@ QRegExp* HtmlDocument::url_regexp = NULL;
 const QRegExp &HtmlDocument::urlRegExp()
 {
 	if (!url_regexp)
-		url_regexp = new QRegExp(latin2unicode((const unsigned char *)"(http://|https://|www\\.|ftp://|ftp\\.|gg:|sftp://|smb://|file:/|rsync://|mailto:|svn://|svn\\+ssh://)[a-zA-Z0-9ÍÛ±∂≥øºÊÒ ”°¶£Ø¨∆—\\*\\-\\._/~?=&#\\+%\\(\\):;,!@\\\\]*"));
+		url_regexp = new QRegExp(latin2unicode((const unsigned char *)"(http://|https://|www\\.|ftp://|ftp\\.|gg:|sftp://|smb://|file:/|rsync://|svn://|svn\\+ssh://)[a-zA-Z0-9ÍÛ±∂≥øºÊÒ ”°¶£Ø¨∆—\\*\\-\\._/~?=&#\\+%\\(\\):;,!@\\\\]*"));
 	return *url_regexp;
 }
 
@@ -206,20 +206,54 @@ void HtmlDocument::convertUrlsToHtml()
 	{
 		if(isTagElement(i))
 			continue;
-		QString text=elementText(i);
+
+		QString text = elementText(i);
 		int p = r.search(text);
 		if (p < 0)
 			continue;
-		int l = r.matchedLength();
+
+		unsigned int l = r.matchedLength();
+		unsigned int lft = config_file.readUnsignedNumEntry("Chat","LinkFoldTreshold");
+
+		QString link2 = text.mid(p, l);
+		link2.replace("%20", "%2520"); //obej∂cie buga w operze :|, ktÛra nie potrafi otworzyÊ linka ze spacj±
+
 		QString link;
-		int lft = config_file.readNumEntry("Chat","LinkFoldTreshold");
-		QString link2=text.mid(p,l);
-		link2.replace("%20", "%2520");//obej∂cie buga w operze :|, ktÛra nie potrafi otworzyÊ linka ze spacj±
-		if (l-p > lft && config_file.readBoolEntry("Chat","FoldLink"))
-			link="<a href=\""+link2+"\">"+text.mid(p,p+(lft/2))+"..."+text.mid(l-(lft/2),lft/2)+"</a>";
+		if ((l - p > lft) && config_file.readBoolEntry("Chat", "FoldLink"))
+			link = "<a href=\"" + link2 + "\">" + text.mid(p, p+(lft/2)) + "..." + text.mid(l-(lft/2), lft/2) + "</a>";
 		else
-			link="<a href=\""+link2+"\">"+text.mid(p,l)+"</a>";
-		splitElement(i,p,l);
-		setElementValue(i,link,true);
+			link = "<a href=\"" + link2 + "\">" + link2 + "</a>";
+
+		splitElement(i, p, l);
+		setElementValue(i, link, true);
+	}
+}
+
+QRegExp *HtmlDocument::mail_regexp = NULL;
+
+const QRegExp &HtmlDocument::mailRegExp()
+{
+	if (!mail_regexp)
+		mail_regexp = new QRegExp(latin2unicode((const unsigned char *)"[a-zA-Z0-9_\\.\\-]+@[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,3}"));
+	return *mail_regexp;
+}
+
+void HtmlDocument::convertMailToHtml()
+{
+	QRegExp m = mailRegExp();
+	for (int i = 0; i < countElements(); ++i)
+	{
+		if (isTagElement(i))
+			continue;
+
+		QString text = elementText(i);
+		int p = m.search(text);
+		if (p < 0)
+			continue;
+		unsigned int l = m.matchedLength();
+		QString mail = text.mid(p, l);
+		
+		splitElement(i, p, l);
+		setElementValue(i, "<a href=\"" + mail + "\">" + mail + "</a>", true);
 	}
 }

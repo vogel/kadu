@@ -199,6 +199,7 @@ class Kadu : public QWidget
 		void blockUser();
 		void copyDescription();
 		void openDescriptionLink();
+		void writeMail();
 		void copyPersonalInfo();
 		void deleteUsers();
 		void help();

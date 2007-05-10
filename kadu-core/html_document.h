@@ -23,6 +23,7 @@ class HtmlDocument
 		QValueList<Element> Elements;
 		void addElement(Element e);
 		static QRegExp* url_regexp;
+		static QRegExp* mail_regexp;
 
 	public:
 		static void escapeText(QString& text);
@@ -99,6 +100,7 @@ class HtmlDocument
 			indeks wydzielonego elementu by³ aktualny.
 		**/
 		void splitElement(int& index, int start, int length);
+
 		/**
 			Skanuje tekst w poszukiwaniu adresów www,
 			np. "www.kadu.net" i zmienia je w linki html.
@@ -106,10 +108,22 @@ class HtmlDocument
 		void convertUrlsToHtml();
 
 		/**
+			Skanuje tekst w poszukiwaniu adresów email
+			i zamienia je w linki html.
+		**/
+		void convertMailToHtml();
+
+		/**
 			Wyra¿enie regularne przydatne w poszukiwaniu
 			adresów www (i innych).
 		**/
 		static const QRegExp &urlRegExp();
+
+		/**
+			Wyra¿enie regularne przydatne w poszukiwaniu
+			adresów email.
+		**/
+		static const QRegExp &mailRegExp();
 };
 
 #endif

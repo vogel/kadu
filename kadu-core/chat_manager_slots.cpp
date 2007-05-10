@@ -32,6 +32,122 @@ ChatManagerSlots::ChatManagerSlots(QObject* parent, const char* name)
 {
 }
 
+void ChatManagerSlots::setMailPath(int mailNumber)
+{
+	kdebugf();
+
+	QLineEdit *mailPathEdit = ConfigDialog::getLineEdit("Chat", "Custom Mail client");
+
+	switch (mailNumber)
+	{
+		case 0:
+		{
+			mailPathEdit->setBackgroundMode(PaletteBase);
+			mailPathEdit->setReadOnly(false);
+			return;
+		}
+		case 1:
+		{
+			mailPathEdit->setText("kmail %1");
+			mailPathEdit->setBackgroundMode(PaletteButton);
+			mailPathEdit->setReadOnly(true);
+			break;
+		}
+		case 2:
+		{
+			mailPathEdit->setText("thunderbird -compose mailto:%1");
+			mailPathEdit->setBackgroundMode(PaletteButton);
+			mailPathEdit->setReadOnly(true);
+			break;
+		}
+		case 3:
+		{
+			mailPathEdit->setText("seamonkey -compose mailto:%1");
+			mailPathEdit->setBackgroundMode(PaletteButton);
+			mailPathEdit->setReadOnly(true);
+			break;
+		}
+		default:
+			return;
+	}
+
+	findMailClient(mailNumber);
+		
+	kdebugf2();
+}
+
+void ChatManagerSlots::findMailClient(const unsigned int mailNumber)
+{
+	kdebugf();
+	QStringList searchPath = QStringList::split(":", QString(getenv("PATH")));
+	QString mailClient;
+	switch (mailNumber)
+	{
+		case 1:
+		{
+			searchPath.append("/opt/kde/bin");
+			searchPath.append("/opt/kde3/bin");
+			mailClient = "kmail";
+			break;
+		}
+		case 2:
+		{
+			searchPath.append("/usr/local/Mozilla");
+			searchPath.append("/usr/local/mozilla");
+			searchPath.append("/usr/local/Thunderbird");
+			searchPath.append("/usr/local/thunderbird");
+			searchPath.append("/opt/thunderbird");
+			mailClient = "thunderbird";
+			break;
+		}
+		case 3:
+		{
+			searchPath.append("/usr/local/Mozilla");
+			searchPath.append("/usr/local/mozilla");
+			searchPath.append("/usr/local/Seamonkey");
+			searchPath.append("/usr/local/seamonkey");
+			searchPath.append("/opt/seamonkey");
+			mailClient = "seamonkey";
+			break;
+		}
+		default:
+			return;
+	}
+
+	QString mailClientPath;
+	CONST_FOREACH(path, searchPath)
+	{
+		if (QFile::exists((*path) + '/' + mailClient))
+		{
+			mailClientPath = (*path);
+			break;
+		}
+	}
+
+	if (mailClientPath.isEmpty())
+	{
+		MessageBox::msg(tr("Selected mail client was not found in your system. The path to it doesn't exist in $PATH variable.\nYou may add it to $PATH or specify location using Specify path option"));
+
+		ConfigDialog::getComboBox("Chat", "Choose your mail client")->setCurrentItem(0);
+		setMailPath(0);
+
+		return;
+	}
+
+	QLineEdit *mailPathEdit = ConfigDialog::getLineEdit("Chat", "Custom Mail client");
+	mailPathEdit->setText(mailClientPath + '/' + mailPathEdit->text());
+
+	kdebugf2();
+}
+
+void ChatManagerSlots::setMailClients(QComboBox *mailCombo)
+{
+	mailCombo->insertItem(tr("Specify path"));
+	mailCombo->insertItem("KMail");
+	mailCombo->insertItem("Thunderbird");
+	mailCombo->insertItem("SeaMonkey");
+}
+
 void ChatManagerSlots::initBrowserOptions(QComboBox *browserCombo, QComboBox *browserOptionsCombo, QLineEdit *browserPath)
 {
 	/*
@@ -93,8 +209,18 @@ void ChatManagerSlots::initBrowserOptions(QComboBox *browserCombo, QComboBox *br
 			break;
 		}
 	}
+
 	browserPath->setText(config_file.readEntry("Chat", "WebBrowser"));//potrzebne dla modu³u start_wizard
-	browserPath->setReadOnly(browserCombo->currentItem()!=0);
+	if (browserCombo->currentItem() != 0)
+	{
+		browserPath->setReadOnly(true);
+		browserPath->setBackgroundMode(PaletteButton);
+	}
+	else
+	{
+		browserPath->setReadOnly(false);
+		browserPath->setBackgroundMode(PaletteBase);
+	}
 	kdebugf2();
 }
 
@@ -117,6 +243,15 @@ void ChatManagerSlots::onCreateTabChat()
 	//podpiecie pod zmiane w combo
 	connect(browserCombo, SIGNAL(activated (int)), this, SLOT(findAndSetWebBrowser(int)));
 	connect(browserOptionsCombo, SIGNAL(activated (int)), this, SLOT(findAndSetBrowserOption(int)));
+
+	//ustawienie pól w combo wyboru klienta poczty i podpiêcie pod zmianê
+	QComboBox *mailCombo = ConfigDialog::getComboBox("Chat", "Choose your mail client");
+	setMailClients(mailCombo);
+	connect(mailCombo, SIGNAL(activated(int)), this, SLOT(setMailPath(int)));
+	//ustawienie wybranego klienta w combo i wpisanie jego ¶cie¿ki do pola edycji
+	unsigned int mailClientNo = config_file.readUnsignedNumEntry("Chat", "MailClientNo", 0);
+	mailCombo->setCurrentItem(mailClientNo);
+	setMailPath(mailClientNo);
 
 	onPruneChat(config_file.readBoolEntry("Chat", "ChatPrune"));
 
@@ -235,6 +370,7 @@ void ChatManagerSlots::onApplyTabChat()
 	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
 
 	config_file.writeEntry("Chat", "WebBrowserNo", ConfigDialog::getComboBox("Chat", "Choose your browser")->currentItem());
+	config_file.writeEntry("Chat", "MailClientNo", ConfigDialog::getComboBox("Chat", "Choose your mail client")->currentItem());
 
 	chat_manager->changeAppearance();
 
@@ -331,17 +467,20 @@ void ChatManagerSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo,
 
 		UWAGA2: w tej funkcji NIE WOLNO korzystaæ z klasy ConfigDialog
 	*/
-	QString prevBrowser=browserPath->text();
 	browserOptionsCombo->setEnabled(false);	//blokujemy combo
 	browserOptionsCombo->clear(); //czyscimy combo z opcjami
 
 	if (selectedBrowser==0)
 	{
 		browserPath->setReadOnly(false);
+		browserPath->setBackgroundMode(PaletteBase);
 		return;
 	}
 	else
+	{
 		browserPath->setReadOnly(true);
+		browserPath->setBackgroundMode(PaletteButton);
+	}
 
 	QString homePath=getenv("HOME");
 	QString browserName;
@@ -513,8 +652,8 @@ void ChatManagerSlots::findBrowser(int selectedBrowser, QComboBox *browserCombo,
 		browserCombo->setCurrentItem(0);	//ustawiamy na default
 		browserOptionsCombo->clear();	//czyscimy opcje
 		browserOptionsCombo->setEnabled(false); //wylaczamy combo z opcjami
-		browserPath->setText(prevBrowser);
 		browserPath->setReadOnly(false); //wlaczamy mozliwosc edycji
+		browserPath->setBackgroundMode(PaletteBase); //ustawiamy kolor
 //		browserPath->clear(); 	//no i czyscimy LineEdita
 	}
 	kdebugf2();

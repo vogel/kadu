@@ -177,5 +177,26 @@ class ChatManagerSlots :public QObject
 			\param chosenBrowser
 		**/
 		static void setBrowserOption(int selectedOption, QLineEdit *browserPathEdit, int chosenBrowser);
+
+		/**
+			\fn void setMailPath(int mailNumber)
+			Slot ustawia odpowiedni wpis dla wybranego klienta pocztowego
+			\param mailNumber numer wybranego klienta
+		**/
+		void setMailPath(int mailNumber);
+
+		/**
+			\fn static void setMailClients(QComboBox *mailClient)
+			Slot tworzy listê programów pocztowych
+			\param mailClient
+		**/
+		static void setMailClients(QComboBox *mailClient);
+
+		/**
+			\fn void findMailClient(const unsigned int mailNumber)
+			Slot próbuje znale¼æ plik binarny wybranego klienta pocztowego
+			\param mailNumber numer wybranego klienta
+		**/
+		void findMailClient(const unsigned int mailNumber);
 };
 #endif
