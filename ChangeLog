@@ -159,6 +159,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * skrót klawiszowy usuwaj±cy kontakty nie zadzia³a, gdy ¿aden kontakt nie zosta³ wybrany (neeo)
 * mo¿liwo¶æ zdefiniowania klienta pocztowego, do obs³ugi adresów email (neeo)
 * drobne optymalizacje przy wyborze przegl±darki i wyszukiwaniu URLi (neeo)
+* system budowania zaktualizowany do autotools 1.9 z 1.7 (Vogel)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
