@@ -1139,7 +1139,7 @@ void UserBoxSlots::onApplyTabLook()
 void UserBox::setColorsOrBackgrounds()
 {
 	QString s = config_file.readEntry("Look", "UserboxBackground");
-	if (s.isEmpty())
+	if (s.isEmpty() || !QFile::exists(s))
 	{
 		for(QValueList<UserBox*>::iterator i = UserBoxes.begin(); i != UserBoxes.end(); ++i)
 		{
