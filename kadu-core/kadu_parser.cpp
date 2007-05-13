@@ -181,6 +181,11 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 					if (ule.usesProtocol("Gadu"))
 						pe.str = ule.status("Gadu").name();
 					break;
+				case 'q':
+					++i;
+					if (ule.usesProtocol("Gadu"))
+						pe.str = ule.status("Gadu").pixmapName();
+					break;
 				case 'd':
 					++i;
 					if (ule.usesProtocol("Gadu"))
