@@ -161,6 +161,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * drobne optymalizacje przy wyborze przegl±darki i wyszukiwaniu URLi (neeo)
 * system budowania zaktualizowany do autotools 1.9 z 1.7 (Vogel)
 * zmienna 'q' do wykorzystania w parserze: nazwa ikonki statusu kontaktu (Vogel)
+* drobne poprawki przy zmianie zestawu ikon (neeo)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

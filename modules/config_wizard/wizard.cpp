@@ -63,11 +63,12 @@ extern "C" void config_wizard_close()
 	kdebugf2();
 }
 
-WizardStarter::WizardStarter(QObject *parent, const char *name)
-	: QObject(parent, name),
-	menuPos(kadu->mainMenu()->insertItem(icons_manager->loadIcon("ConfigurationWizard"),
-		tr("Configuration Wizard"), this, SLOT(start()), 0, -1, 0))
+WizardStarter::WizardStarter(QObject *parent, const char *name) : QObject(parent, name)
 {
+	QPopupMenu *MainMenu = kadu->mainMenu();
+
+	menuPos = MainMenu->insertItem(icons_manager->loadIcon("ConfigurationWizard"), tr("Configuration Wizard"), this, SLOT(start()), 0, -1, 0);
+	icons_manager->registerMenuItem(MainMenu, tr("Configuration Wizard"), "ConfigurationWizard");
 }
 
 WizardStarter::~WizardStarter()

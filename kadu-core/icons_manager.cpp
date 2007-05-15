@@ -172,6 +172,7 @@ void IconsManager::onApplyTabLook()
 		icons_manager->setTheme(selectedTheme);
 		KaduActions.refreshIcons();
 		UserBox::userboxmenu->refreshIcons();
+		UserBox::management->refreshIcons();
 		icons_manager->refreshMenus();
 		kadu->changeAppearance();
 		QMessageBox::information(0, tr("Icons"), tr("Please close all (except main) Kadu windows"));

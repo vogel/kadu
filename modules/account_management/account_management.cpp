@@ -49,10 +49,10 @@ AccountManagement::AccountManagement()
 	changeMenuId=MainMenu->insertItem(icons_manager->loadIcon("ChangePassMail"),tr("&Change password / email"), this, SLOT(changePassword()), 0, -1, index);
 	remindMenuId=MainMenu->insertItem(icons_manager->loadIcon("RemindPass"),tr("Remind &password"), this, SLOT(remindPassword()), 0, -1, index);
 
-	icons_manager->registerMenuItem(kadu->mainMenu(), tr("Unregister user"), "UnregisterUser");
-	icons_manager->registerMenuItem(kadu->mainMenu(), tr("Register &new user"), "RegisterUser");
-	icons_manager->registerMenuItem(kadu->mainMenu(), tr("&Change password / email"), "ChangePassMail");
-	icons_manager->registerMenuItem(kadu->mainMenu(), tr("Remind &password"), "ChangePass");
+	icons_manager->registerMenuItem(MainMenu, tr("Unregister user"), "UnregisterUser");
+	icons_manager->registerMenuItem(MainMenu, tr("Register &new user"), "RegisterUser");
+	icons_manager->registerMenuItem(MainMenu, tr("&Change password / email"), "ChangePassMail");
+	icons_manager->registerMenuItem(MainMenu, tr("Remind &password"), "RemindPass");
 
 	kdebugf2();
 }
