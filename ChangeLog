@@ -162,6 +162,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * system budowania zaktualizowany do autotools 1.9 z 1.7 (Vogel)
 * zmienna 'q' do wykorzystania w parserze: nazwa ikonki statusu kontaktu (Vogel)
 * drobne poprawki przy zmianie zestawu ikon (neeo)
+* grupy s± kasowane zaraz po usuniêciu z nich ostatniego u¿ytkownika (neeo)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

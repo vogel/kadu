@@ -86,8 +86,8 @@ void GroupsManager::setTabBar(KaduTabBar *bar)
 	refreshTabBar();
 
 	int configTab = config_file.readNumEntry( "Look", "CurrentGroupTab" );
-	if (configTab >= 0 && configTab < GroupBar -> count())
-		((QTabBar*) GroupBar) -> setCurrentTab(configTab);
+	if (configTab >= 0 && configTab < GroupBar->count())
+		((QTabBar*) GroupBar)->setCurrentTab(configTab);
 
 	//to be removed in 0.6
 	config_file.addVariable("General", "ShowOffline", config_file.readBoolEntry("General", "ShowHideInactive", true));
@@ -151,7 +151,7 @@ void GroupsManager::setActiveGroup(const QString& name)
 
 QString GroupsManager::currentGroupName() const
 {
-	if (currentGroup.isEmpty())
+	if (currentGroup.isEmpty() || group(currentGroup)->count() == 0)
 		return tr("All");
 	else
 		return currentGroup;
@@ -175,11 +175,7 @@ void GroupsManager::refreshTabBar()
 	}
 
 	/* budujemy listê grup */
-	QStringList group_list;
-	CONST_FOREACH(group, Groups)
-		if ((*group)->count() != 0)
-			group_list.append(group.key());
-
+	QStringList group_list = groups();
 	kdebugm(KDEBUG_INFO, "%lu groups found: %s\n", group_list.count(), group_list.join(",").local8Bit().data());
 
 	/* usuwamy wszystkie niepotrzebne zakladki - od tylu,
@@ -296,6 +292,8 @@ GroupsManager::GroupsManager() : QObject(0, "groups_manager"),
 			 this, SLOT(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)));
 	connect(userlist, SIGNAL(userAdded(UserListElement, bool, bool)),
 			this, SLOT(userAddedToMainUserlist(UserListElement, bool, bool)));
+	connect(userlist, SIGNAL(userRemoved(UserListElement, bool, bool)),
+			this, SLOT(userRemovedFromMainUserlist(UserListElement, bool, bool)));
 	ConfigDialog::registerSlotOnApplyTab("General", this, SLOT(onApplyTabGeneral()));
 
 	kdebugf2();
@@ -312,6 +310,8 @@ GroupsManager::~GroupsManager()
 	ConfigDialog::unregisterSlotOnApplyTab("General", this, SLOT(onApplyTabGeneral()));
 	if (GroupBar)
 		config_file.writeEntry("Look", "CurrentGroupTab", GroupBar->currentTab());
+	disconnect(userlist, SIGNAL(userRemoved(UserListElement, bool, bool)),
+			this, SLOT(userRemovedFromMainUserlist(UserListElement, bool, bool)));
 	disconnect(userlist, SIGNAL(userAdded(UserListElement, bool, bool)),
 			this, SLOT(userAddedToMainUserlist(UserListElement, bool, bool)));
 	disconnect (userlist, SIGNAL(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)),
@@ -327,6 +327,15 @@ void GroupsManager::userAddedToMainUserlist(UserListElement elem, bool /*massive
 	QStringList groups = elem.data("Groups").toStringList();
 	CONST_FOREACH(group, groups)
 		addGroup(*group)->addUser(elem, true, false);
+	kdebugf2();
+}
+
+void GroupsManager::userRemovedFromMainUserlist(UserListElement elem, bool /*massively*/, bool /*last*/)
+{
+	kdebugf();
+	QStringList groups = elem.data("Groups").toStringList();
+	CONST_FOREACH(grp, groups)
+		addGroup(*grp)->removeUser(elem, true, false);
 	kdebugf2();
 }
 
@@ -397,6 +406,7 @@ void GroupsManager::removeGroup(const QString &name)
 	disconnect(group, SIGNAL(userRemoved(UserListElement, bool, bool)),
 				this, SLOT(userRemoved(UserListElement, bool, bool)));
 
+	setActiveGroup(currentGroupName());
 	Groups.remove(name);
 	group->deleteLater();
 	refreshTabBarLater();
@@ -413,8 +423,14 @@ void GroupsManager::userDataChanged(UserListElement elem, QString name, QVariant
 	QStringList oldGroups = oldValue.toStringList();
 	QStringList newGroups = currentValue.toStringList();
 	CONST_FOREACH(v, oldGroups)
+	{
 		if (!newGroups.contains(*v)) //usuniêcie z grupy
 			group(*v)->removeUser(elem);
+
+		if (group(*v)->count() == 0)
+			removeGroup(*v);
+	}
+
 	CONST_FOREACH(v, newGroups)
 		if (!oldGroups.contains(*v)) //dodanie grupy
 		{

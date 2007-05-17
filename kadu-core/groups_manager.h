@@ -138,6 +138,7 @@ class GroupsManager : public QObject
 		void userDataChanged(UserListElement elem, QString name, QVariant oldValue,
 							QVariant currentValue, bool massively, bool last);
 		void userAddedToMainUserlist(UserListElement elem, bool massively, bool last);
+		void userRemovedFromMainUserlist(UserListElement elem, bool massively, bool last);
 
 		void userAdded(UserListElement elem, bool massively, bool last);
 		void userRemoved(UserListElement elem, bool massively, bool last);
