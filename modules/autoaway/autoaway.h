@@ -89,18 +89,18 @@ class AutoAwayTimer : private QTimer
 
 		AutoAwayStatusChanger *autoAwayStatusChanger;
 
-		int checkInterval;
+		unsigned int checkInterval;
 
-		int autoAwayTime;
-		int autoDisconnectTime;
-		int autoInvisibleTime;
+		unsigned int autoAwayTime;
+		unsigned int autoDisconnectTime;
+		unsigned int autoInvisibleTime;
 
 		bool autoAwayEnabled;
 		bool autoInvisibleEnabled;
 		bool autoDisconnectEnabled;
 
 		GaduStatus oldStatus;
-		int idleTime;
+		unsigned int idleTime;
 };
 
 /** @} */

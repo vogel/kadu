@@ -147,10 +147,10 @@ void AutoAwayStatusChanger::setChangeDescriptionTo(ChangeDescriptionTo newChange
 
 AutoAwayTimer::AutoAwayTimer(AutoAwayStatusChanger *autoAwayStatusChanger, QObject* parent, const char *name) : QTimer(parent, name),
 	autoAwayStatusChanger(autoAwayStatusChanger),
-	checkInterval(config_file.readNumEntry("General", "AutoAwayCheckTime")),
-	autoAwayTime(config_file.readNumEntry("General", "AutoAwayTime")),
-	autoDisconnectTime(config_file.readNumEntry("General", "AutoDisconnectTime")),
-	autoInvisibleTime(config_file.readNumEntry("General", "AutoInvisibleTime")),
+	checkInterval(config_file.readUnsignedNumEntry("General", "AutoAwayCheckTime")),
+	autoAwayTime(config_file.readUnsignedNumEntry("General", "AutoAwayTime")),
+	autoDisconnectTime(config_file.readUnsignedNumEntry("General", "AutoDisconnectTime")),
+	autoInvisibleTime(config_file.readUnsignedNumEntry("General", "AutoInvisibleTime")),
 	autoAwayEnabled(config_file.readBoolEntry("General", "AutoAway")),
 	autoInvisibleEnabled(config_file.readBoolEntry("General", "AutoInvisible")),
 	autoDisconnectEnabled(config_file.readBoolEntry("General", "AutoDisconnect")),
@@ -172,18 +172,21 @@ bool AutoAwayTimer::eventFilter(QObject *o, QEvent *e)
 //metoda wywo³ywana co sekundê(mo¿liwa zmiana w konfiguracji) w celu sprawdzenia czy mamy zmieniæ status
 void AutoAwayTimer::checkIdleTime()
 {
-	const static int INTCOUNT=16;
-	static unsigned long interrupts[INTCOUNT]={0};
-	unsigned long currentInterrupts[INTCOUNT]={0};
+	kdebugf();
+
+	const static int INTCOUNT = 16;
+	static unsigned long interrupts[INTCOUNT] = {0};
+	unsigned long currentInterrupts[INTCOUNT] = {0};
 
 	static QPoint MousePosition(0, 0);
 	QPoint currentMousePosition;
 
 	currentMousePosition = QCursor::pos();
 	if (currentMousePosition != MousePosition)
+	{
+		MousePosition = currentMousePosition;
 		idleTime = 0;
-
-	MousePosition = currentMousePosition;
+	}
 
 //	sprawdzenie czy wzrosla liczba obsluzonych przerwan klawiatury lub myszki
 	QFile f("/proc/interrupts");
@@ -202,11 +205,11 @@ void AutoAwayTimer::checkIdleTime()
 			{
 				strlist = QStringList::split(" ", line);
 
-				intNum=strlist[0];
+				intNum = strlist[0];
 				intNum.truncate(intNum.length()-1);
-				interrupt=intNum.toUInt();
+				interrupt = intNum.toUInt();
 				if (interrupt>=0 && interrupt<INTCOUNT)
-					currentInterrupts[interrupt]=strlist[1].toULong();
+					currentInterrupts[interrupt] = strlist[1].toULong();
 			}
 		}
 		f.close();
@@ -232,6 +235,8 @@ void AutoAwayTimer::checkIdleTime()
 		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::NoChangeStatus);
 
 	start(checkInterval * 1000, TRUE);
+
+	kdebugf2();
 }
 
 void AutoAwaySlots::on()
@@ -242,7 +247,7 @@ void AutoAwaySlots::on()
 
 void AutoAwaySlots::off()
 {
-	if (autoaway_object/* && !autoaway_object->didChangeStatus*/)
+	if (autoaway_object /*&& !autoaway_object->didChangeStatus*/)
 	{
 		delete autoaway_object;
 		autoaway_object = NULL;
@@ -289,14 +294,14 @@ void AutoAwaySlots::onCreateTabGeneral()
 	connect(b_autoaway, SIGNAL(toggled(bool)), this, SLOT(checkAutoInvisibleTime(bool)));
 	connect(b_autoinvisible, SIGNAL(toggled(bool)), this, SLOT(checkAutoDisconnectTime(bool)));
 	/* tylko czy to zadziala :P */
-	ConfigDialog::getSpinBox("General", "Set status to away after ")->setSuffix(" s");
-	ConfigDialog::getSpinBox("General", "Set status to invisible after ")->setSuffix(" s");
-	ConfigDialog::getSpinBox("General", "Disconnect after ")->setSuffix(" s");
-	ConfigDialog::getSpinBox("General", "Check idle every ")->setSuffix(" s");
+	autoawaySpin->setSuffix(" s");
+	invisibleSpin->setSuffix(" s");
+	disconnectSpin->setSuffix(" s");
+	autoawayTime->setSuffix(" s");
 
 	QLineEdit *autoStatusText = ConfigDialog::getLineEdit("General", "Auto change status");
 	autoStatusText->setMaxLength(70);
-	QString str=autoStatusText->text();
+	QString str = autoStatusText->text();
 
 	QLabel *autoStatusTextLength = ConfigDialog::getLabel("General", "0");
 	autoStatusTextLength->setText(QString::number(GG_STATUS_DESCR_MAXSIZE - str.length()));
@@ -315,15 +320,15 @@ void AutoAwaySlots::onApplyTabGeneral()
 
 	if (autoaway_object)
 	{
-		autoaway_object->checkInterval=config_file.readNumEntry("General","AutoAwayCheckTime");
+		autoaway_object->checkInterval = config_file.readNumEntry("General","AutoAwayCheckTime");
 
-		autoaway_object->autoAwayTime=config_file.readNumEntry("General","AutoAwayTime");
-		autoaway_object->autoDisconnectTime=config_file.readNumEntry("General","AutoDisconnectTime");
-		autoaway_object->autoInvisibleTime=config_file.readNumEntry("General","AutoInvisibleTime");
+		autoaway_object->autoAwayTime = config_file.readNumEntry("General","AutoAwayTime");
+		autoaway_object->autoDisconnectTime = config_file.readNumEntry("General","AutoDisconnectTime");
+		autoaway_object->autoInvisibleTime = config_file.readNumEntry("General","AutoInvisibleTime");
 
-		autoaway_object->autoAwayEnabled=config_file.readBoolEntry("General","AutoAway");
-		autoaway_object->autoInvisibleEnabled=config_file.readBoolEntry("General","AutoInvisible");
-		autoaway_object->autoDisconnectEnabled=config_file.readBoolEntry("General","AutoDisconnect");
+		autoaway_object->autoAwayEnabled = config_file.readBoolEntry("General","AutoAway");
+		autoaway_object->autoInvisibleEnabled = config_file.readBoolEntry("General","AutoInvisible");
+		autoaway_object->autoDisconnectEnabled = config_file.readBoolEntry("General","AutoDisconnect");
 	}
 
 	if (config_file.readBoolEntry("General", "AutoChange"))
@@ -336,8 +341,8 @@ void AutoAwaySlots::onApplyTabGeneral()
 
 void AutoAwaySlots::changeAutoInvisibleTime(int i)
 {
-	QSpinBox *invisibleSpin= ConfigDialog::getSpinBox("General", "Set status to invisible after ");
-	if (invisibleSpin->value()<i)
+	QSpinBox *invisibleSpin = ConfigDialog::getSpinBox("General", "Set status to invisible after ");
+	if (invisibleSpin->value() < i)
 		invisibleSpin->setValue(i);
 }
 
@@ -446,7 +451,7 @@ AutoAwaySlots::~AutoAwaySlots()
 
 	status_changer_manager->unregisterStatusChanger(autoAwayStatusChanger);
 	delete autoAwayStatusChanger;
-	autoAwayStatusChanger = 0;
+	autoAwayStatusChanger = NULL;
 
 	ConfigDialog::removeControl("General", "Check idle every ");
 	ConfigDialog::removeControl("General", "Enable AutoStatus");
