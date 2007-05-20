@@ -290,10 +290,10 @@ void UserStatus::setStatus(const UserStatus& stat)
 
 void UserStatus::setIndex(int index, const QString& desc)
 {
-	if (index % 2 == 0)
-		setStatus(static_cast<eUserStatus>(index >> 1), QString::null);
-	else
-		setStatus(static_cast<eUserStatus>(index >> 1), desc);
+// 	if (index % 2 == 0)
+// 		setStatus(static_cast<eUserStatus>(index >> 1), QString::null);
+// 	else
+	setStatus(static_cast<eUserStatus>(index >> 1), desc);
 }
 
 void UserStatus::setStatus(eUserStatus stat, const QString& desc)

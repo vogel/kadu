@@ -57,12 +57,6 @@ class ChatManagerSlots :public QObject
 		**/
 		void onApplyTabLook();
 
-		/**
-			\fn void chooseEmoticonsStyle(int index)
-			Slot jest wywo³ywany gdy wybierany jest styl ikonek
-			\param index nr stylu emotikonek
-		**/
-		void chooseEmoticonsStyle(int index);
 
 		/**
 			\fn void onPruneChat(bool toggled)
@@ -120,15 +114,6 @@ class ChatManagerSlots :public QObject
 			\param color kolor
 		**/
 		void chooseColor(const char* name, const QColor& color);
-
-		/**
-			\fn void chooseFont(const char* name, const QFont& font)
-			Slot jest wywo³ywany gdy zmieniono czcionke,
-			aby uaktualniæ podgl±d
-			\param name nazwa czcionki
-			\param font czcionka
-		**/
-		void chooseFont(const char* name, const QFont& font);
 
 		/**
 			\fn void chooseBackgroundFile()

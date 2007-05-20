@@ -23,12 +23,13 @@
 #include "chat_message.h"
 #include "chat_styles.h"
 #include "color_selector.h"
-#include "config_dialog.h"
+// #include "config_dialog.h"
 #include "custom_input.h"
 #include "debug.h"
 #include "dockarea.h"
 #include "gadu_images_manager.h"
 #include "gadu_rich_text.h"
+#include "hot_key.h"
 #include "icons_manager.h"
 #include "kadu_parser.h"
 #include "kadu_splitter.h"
@@ -561,7 +562,7 @@ bool Chat::keyPressEventHandled(QKeyEvent *e)
 		KaduActions["whoisAction"]->activate(Users);
 	else
 		return false;
-	return true;
+// 	return true;
 }
 
 void Chat::keyPressEvent(QKeyEvent* e)

@@ -576,26 +576,6 @@ class GaduProtocol : public Protocol
 
 		void currentStatusChanged(const UserStatus &status, const UserStatus &oldStatus);
 
-		/**
-
-		**/
-		void onCreateTabNetwork();
-
-		/**
-
-		**/
-		void onApplyTabNetwork();
-
-		/**
-
-		**/
-		void ifDefServerEnabled(bool value);
-
-		/**
-
-		**/
-		void useTlsEnabled(bool value);
-
 	public:
 		static void initModule();
 		static void closeModule();

@@ -13,11 +13,13 @@
 #include <qcombobox.h>
 #include <qmenubar.h>
 #include <qmessagebox.h>
+#include <qpushbutton.h>
 #include <qregexp.h>
 #include <qsplitter.h>
 #include <qstyle.h>
 #include <qstylefactory.h>
 #include <qtextcodec.h>
+#include <qvbox.h>
 
 #include <sys/file.h>
 #include <sys/types.h>
@@ -31,12 +33,13 @@
 #include "about.h"
 #include "action.h"
 #include "chat_manager.h"
-#include "config_dialog.h"
+#include "configuration_window.h"
 #include "config_file.h"
 #include "debug.h"
 #include "expimp.h"
 #include "gadu_images_manager.h"
 #include "groups_manager.h"
+#include "hot_key.h"
 #include "html_document.h"
 #include "icons_manager.h"
 #include "ignore.h"
@@ -110,7 +113,6 @@ void Kadu::keyPressEvent(QKeyEvent *e)
 
 /* a monstrous constructor so Kadu would take longer to start up */
 Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
-	kaduslots(new KaduSlots(this, "kaduslots")),
 	TopDockArea(0), InfoPanel(0), MenuBar(0), MainMenu(0), GroupBar(0),
 	Userbox(0), statusMenu(0), statusButton(), lastPositionBeforeStatusMenuHide(),
 	StartTime(QDateTime::currentDateTime()), updateInformationPanelTimer(),
@@ -128,89 +130,19 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	config_file.addVariable("Look", "InfoPanelBgColor", w.paletteBackgroundColor());
 	config_file.addVariable("Look", "InfoPanelFgColor", w.paletteForegroundColor());
 
-	ConfigDialog::addHGroupBox("General", "General", QT_TRANSLATE_NOOP("@default", "User data"));
-	ConfigDialog::addLineEdit("General", "User data", QT_TRANSLATE_NOOP("@default", "Uin"), "UIN");
-	ConfigDialog::addLineEdit("General", "User data", QT_TRANSLATE_NOOP("@default", "Password"), "Password");
-	ConfigDialog::addLineEdit("General", "User data", QT_TRANSLATE_NOOP("@default", "Nick"), "Nick", tr("Me"));
-	ConfigDialog::addComboBox("General", "General", QT_TRANSLATE_NOOP("@default", "Set language:"));
-	ConfigDialog::addGrid("General", "General", "grid-beginner", 2, 0, Beginner);
-	ConfigDialog::addGrid("General", "General", "grid-advanced", 2, 0, Advanced);
-	ConfigDialog::addGrid("General", "General", "grid-expert", 2, 0, Expert);
-
-	ConfigDialog::addCheckBox("General", "grid-beginner", QT_TRANSLATE_NOOP("@default", "Private status"), "PrivateStatus", false, QT_TRANSLATE_NOOP("@default", "When enabled, you're visible only to users on your list"));
-
-	ConfigDialog::addCheckBox("General", "grid-advanced", QT_TRANSLATE_NOOP("@default", "Check for updates"), "CheckUpdates", true, QT_TRANSLATE_NOOP("@default", "Automatically checks whether a new version is available"), 0, Advanced);
-	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Show emoticons in panel"), "ShowEmotPanel", false, 0, 0, Expert);
-	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Allow executing commands by parser"), "AllowExecutingFromParser", false, 0, 0, Expert);
-	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Always show anonymous contacts with messages"), "ShowAnonymousWithMsgs", false, 0, 0, Expert);
-#ifdef DEBUG_ENABLED
-	ConfigDialog::addLineEdit("General", "General", QT_TRANSLATE_NOOP("@default", "Debugging mask"), "DEBUG_MASK",
-		QString::null, 0, 0, Expert);
-#endif
-
-	ConfigDialog::addVGroupBox("General", "General", "Status");
-	ConfigDialog::addComboBox("General", "Status", QT_TRANSLATE_NOOP("@default", "Default status"), 0, "cb_defstatus");
-	ConfigDialog::addCheckBox("General", "Status", QT_TRANSLATE_NOOP("@default", "On shutdown, set current description"), "DisconnectWithCurrentDescription");
-	ConfigDialog::connectSlot("General", "On shutdown, set current description", SIGNAL(toggled(bool)), kaduslots, SLOT(updateStatus(bool)));
-	ConfigDialog::addCheckBox("General", "Status", QT_TRANSLATE_NOOP("@default", "Use KaduParser to parse status"), "ParseStatus", false);
-
-	ConfigDialog::addHBox("General", "Status", "discstatus");
-	ConfigDialog::addCheckBox("General", "discstatus", QT_TRANSLATE_NOOP("@default", "On shutdown, set description:"), "DisconnectWithDescription", false);
-	ConfigDialog::addLineEdit("General", "discstatus", 0, "DisconnectDescription", QString::null, 0, "e_defaultstatus");
-//	ConfigDialog::addSpinBox("General", "Status", QT_TRANSLATE_NOOP("@default", "Number of kept descriptions"), "NumberOfDescriptions", 1, 30, 1, 4, 0, 0, Advanced);
-	ConfigDialog::addSpinBox("General", "Status", QT_TRANSLATE_NOOP("@default", "Number of kept descriptions"), "NumberOfDescriptions", 1, 30, 1, 4, 0, 0, Advanced);
-
-	ConfigDialog::registerSlotOnCreateTab("General", kaduslots, SLOT(onCreateTabGeneral()));
-	ConfigDialog::registerSlotOnCreateTab("Look", kaduslots, SLOT(onCreateTabLook()));
-	ConfigDialog::registerSlotOnApplyTab("Look", kaduslots, SLOT(onApplyTabLook()));
-	ConfigDialog::registerSlotOnApplyTab("General", kaduslots, SLOT(onApplyTabGeneral()));
-
-	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", QT_TRANSLATE_NOOP("@default", "Define keys"));
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Remove from userlist"), "kadu_deleteuser", "Del");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "View / edit user info"), "kadu_persinfo", "Ins");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Search this user in directory"), "kadu_searchuser", "Ctrl+F");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Show / hide offline users"), "kadu_showoffline", "F9");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Show / hide users without description"), "kadu_showonlydesc", "F10");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Configuration"), "kadu_configure", "F2");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Add user"), "kadu_adduser", "Ctrl+N");
-
 	//zaladowanie wartosci domyslnych (pierwsze uruchomienie)
 	config_file.addVariable("General", "UserBoxHeight", 300);
 	config_file.addVariable("General", "DescriptionHeight", 60);
-	config_file.addVariable("General", "DefaultStatusIndex", 7);
+	config_file.addVariable("General", "StartupStatus", "LastStatus");
+	config_file.addVariable("General", "StartupLastDescription", true);
 
 	config_file.addVariable("Look", "UserboxFont", defaultFont);
 	config_file.addVariable("Look", "PanelFont", defaultFont);
 
-	ConfigDialog::addComboBox("Look", "Look",
-			QT_TRANSLATE_NOOP("@default","Qt Theme"));
-
-	ConfigDialog::addGrid("Look", "Look", "varOpts-beginner", 2, 0, Beginner);
-	ConfigDialog::addGrid("Look", "Look", "varOpts-advanced", 2, 0, Advanced);
-	ConfigDialog::addGrid("Look", "Look", "varOpts-expert", 2, 0, Expert);
-
-		ConfigDialog::addCheckBox("Look", "varOpts-advanced", QT_TRANSLATE_NOOP("@default", "Show status button"), "ShowStatusButton", true, 0, 0, Advanced);
-		ConfigDialog::addCheckBox("Look", "varOpts-expert", QT_TRANSLATE_NOOP("@default", "Display group tabs"), "DisplayGroupTabs", true, 0, 0, Expert);
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Colors"), 0, Advanced);
-		ConfigDialog::addVGroupBox("Look", "Colors", QT_TRANSLATE_NOOP("@default", "Main window"));
-			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Panel background color"), "InfoPanelBgColor", config_file.readColorEntry("Look","InfoPanelBgColor"), 0, "panel_bg_color");
-			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Panel font color"), "InfoPanelFgColor", config_file.readColorEntry("Look","InfoPanelFgColor"), 0, "panel_font_color");
-
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Previews"), 0, Advanced);
-
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Fonts"), 0, Advanced);
-		ConfigDialog::addSelectFont("Look", "Fonts", QT_TRANSLATE_NOOP("@default", "Font in panel"), "PanelFont", defaultFont->toString(), 0, "panel_font_box");
-
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Information panel"));
-		ConfigDialog::addCheckBox("Look", "Information panel", QT_TRANSLATE_NOOP("@default", "Show information panel"), "ShowInfoPanel", true);
-		ConfigDialog::addCheckBox("Look", "Information panel", QT_TRANSLATE_NOOP("@default", "Show vertical scrollbar in information panel"), "PanelVerticalScrollbar", true, 0, 0, Expert);
-		config_file.writeEntry("Look", "PanelContents", config_file.readEntry("Look", "PanelContents", "<table><tr><td><img width=\"32\" height=\"32\" align=\"left\" valign=\"top\" src=\"@{ManageUsersWindowIcon}\"></td>\n<td> <div align=\"left\"> [<b>%a</b>][ (%u)] [<br>tel.: %m][<br>IP: %i][<br>%oYou are not on the list] </div></td></tr></table> <hr> <b>%s</b> [<br>%d]").replace("You are not on the list", tr("You are not on the list")));
-		ConfigDialog::addTextEdit("Look", "Information panel", QT_TRANSLATE_NOOP("@default", "Information panel syntax:"), "PanelContents", "", SyntaxText, 0, Expert);
-
-	ConfigDialog::connectSlot("Look", "Panel background color", SIGNAL(changed(const char *, const QColor&)), kaduslots, SLOT(chooseColor(const char *, const QColor&)), "panel_bg_color");
-	ConfigDialog::connectSlot("Look", "Panel font color", SIGNAL(changed(const char *, const QColor&)), kaduslots, SLOT(chooseColor(const char *, const QColor&)), "panel_font_color");
-
-	ConfigDialog::connectSlot("Look", "Font in panel", SIGNAL(changed(const char *, const QFont&)),kaduslots, SLOT(chooseFont(const char *, const QFont&)), "panel_font_box");
+	config_file.addVariable("Look", "PanelContents", QString(
+		"<table><tr><td><img width=\"32\" height=\"32\" align=\"left\" valign=\"top\" src=\"@{ManageUsersWindowIcon}\"></td>\n"
+		"<td> <div align=\"left\"> [<b>%a</b>][ (%u)] [<br>tel.: %m][<br>IP: %i][<br>%o") + tr("You are not on the list") +
+		"] </div></td></tr></table> <hr> <b>%s</b> [<br>%d]");
 
 	MainLayout = new QVBoxLayout(this);
 
@@ -408,6 +340,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 
 	MainLayout->setResizeMode(QLayout::Minimum);
 	chat_manager->loadOpenedWindows();
+
+	ConfigurationWindow::initModule();
+	connect(configuration_window, SIGNAL(configurationUpdated()), this, SLOT(configurationUpdated()));
 
 	kdebugf2();
 }
@@ -682,7 +617,7 @@ void Kadu::descriptionUsersActionActivated()
 
 void Kadu::configurationActionActivated()
 {
-	ConfigDialog::showConfigDialog(qApp);
+	configuration_window->show();
 }
 
 void Kadu::editUserActionActivated(const UserGroup* users)
@@ -931,16 +866,27 @@ void Kadu::hideDescription()
 void Kadu::changeAppearance()
 {
 	kdebugf();
+
+	QApplication::setStyle(config_file.readEntry("Look", "QtStyle"));
+
 	GroupBar->setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(),75));
 
-	InfoPanel->setPaletteBackgroundColor(config_file.readColorEntry("Look", "InfoPanelBgColor"));
-	InfoPanel->setPaletteForegroundColor(config_file.readColorEntry("Look", "InfoPanelFgColor"));
-	InfoPanel->QTextEdit::setFont(config_file.readFontEntry("Look", "PanelFont"));
+	if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
+	{
+		InfoPanel->show();
+		InfoPanel->setPaletteBackgroundColor(config_file.readColorEntry("Look", "InfoPanelBgColor"));
+		InfoPanel->setPaletteForegroundColor(config_file.readColorEntry("Look", "InfoPanelFgColor"));
+		InfoPanel->QTextEdit::setFont(config_file.readFontEntry("Look", "PanelFont"));
 
-	if (config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
-		InfoPanel->setVScrollBarMode(QScrollView::Auto);
+		if (config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
+			InfoPanel->setVScrollBarMode(QScrollView::Auto);
+		else
+			InfoPanel->setVScrollBarMode(QScrollView::AlwaysOff);
+	}
 	else
-		InfoPanel->setVScrollBarMode(QScrollView::AlwaysOff);
+		dynamic_cast<QWidget *>(InfoPanel)->hide();
+
+	kadu->statusButton->setShown(config_file.readBoolEntry("Look", "ShowStatusButton"));
 
 	const UserStatus &stat = gadu->currentStatus();
 	QPixmap pix = stat.pixmap();
@@ -1222,7 +1168,7 @@ bool Kadu::close(bool quit)
 	{
 		Closing = true;
 		xml_config_file->makeBackup();
-		ConfigDialog::closeDialog();
+		ConfigurationWindow::closeModule();
 		ModulesManager::closeModule();
 
 		Updates::closeModule();
@@ -1240,29 +1186,20 @@ bool Kadu::close(bool quit)
 
 		config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));
 
-		if (config_file.readNumEntry("General", "DefaultStatusIndex") == 7 || config_file.readNumEntry("General", "DefaultStatusIndex") == 8)
-		{
+		if (config_file.readEntry("General", "StartupStatus") == "LastStatus")
 			config_file.writeEntry("General", "LastStatusIndex", gadu->status().index());
+
+		if (config_file.readBoolEntry("General", "StartupLastDescription"))
 			config_file.writeEntry("General", "LastStatusDescription", gadu->status().description());
-		}
 
 		pending.writeToFile();
 		writeIgnored();
 		if (!gadu->status().isOffline())
-		{
 			if (config_file.readBoolEntry("General", "DisconnectWithCurrentDescription"))
-			{
-				kdebugmf(KDEBUG_INFO, "Set status NOT_AVAIL_DESCR with current description(%s)\n", gadu->status().description().data());
-
 				setOffline(gadu->status().description());
-			}
-			else if (config_file.readBoolEntry("General", "DisconnectWithDescription"))
-			{
-				kdebugmf(KDEBUG_INFO, "Set status NOT_AVAIL_DESCR with disconnect description(%s)\n", config_file.readEntry("General", "DisconnectDescription").local8Bit().data());
-
+			else
 				setOffline(config_file.readEntry("General", "DisconnectDescription"));
-			}
-		}
+
 		disconnect(gadu, SIGNAL(chatMsgReceived2(Protocol *, UserListElements, const QString &, time_t, bool)),
 				this, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString &, time_t, bool)));
 		disconnect(gadu, SIGNAL(connecting()), this, SLOT(connecting()));
@@ -1318,81 +1255,6 @@ bool Kadu::close(bool quit)
 		ProtocolsManager::closeModule();
 		delete emoticons;
 		IconsManager::closeModule();
-
-		ConfigDialog::disconnectSlot("Look", "Panel background color", SIGNAL(changed(const char *, const QColor&)), kaduslots, SLOT(chooseColor(const char *, const QColor&)), "panel_bg_color");
-		ConfigDialog::disconnectSlot("Look", "Panel font color", SIGNAL(changed(const char *, const QColor&)), kaduslots, SLOT(chooseColor(const char *, const QColor&)), "panel_font_color");
-		ConfigDialog::disconnectSlot("Look", "Font in panel", SIGNAL(changed(const char *, const QFont&)),kaduslots, SLOT(chooseFont(const char *, const QFont&)), "panel_font_box");
-
-			ConfigDialog::removeControl("Look", "Information panel syntax:");
-			ConfigDialog::removeControl("Look", "Show vertical scrollbar in information panel");
-			ConfigDialog::removeControl("Look", "Show information panel");
-		ConfigDialog::removeControl("Look", "Information panel");
-
-			ConfigDialog::removeControl("Look", "Font in panel", "panel_font_box");
-		ConfigDialog::removeControl("Look", "Fonts");
-
-				ConfigDialog::removeControl("Look", "Panel font color", "panel_font_color");
-				ConfigDialog::removeControl("Look", "Panel background color", "panel_bg_color");
-			ConfigDialog::removeControl("Look", "Main window");
-		ConfigDialog::removeControl("Look", "Colors");
-			ConfigDialog::removeControl("Look", "Display group tabs");
-			ConfigDialog::removeControl("Look", "Show status button");
-
-		ConfigDialog::removeControl("Look", "varOpts-expert");
-		ConfigDialog::removeControl("Look", "varOpts-advanced");
-		ConfigDialog::removeControl("Look", "varOpts-beginner");
-
-		ConfigDialog::removeControl("Look", "Qt Theme");
-
-		ConfigDialog::removeControl("ShortCuts", "Add user");
-		ConfigDialog::removeControl("ShortCuts", "Configuration");
-		ConfigDialog::removeControl("ShortCuts", "Show / hide users without description");
-		ConfigDialog::removeControl("ShortCuts", "Show / hide offline users");
-		ConfigDialog::removeControl("ShortCuts", "Search this user in directory");
-		ConfigDialog::removeControl("ShortCuts", "View / edit user info");
-		ConfigDialog::removeControl("ShortCuts", "Remove from userlist");
-		ConfigDialog::removeControl("ShortCuts", "Define keys");
-
-		ConfigDialog::unregisterSlotOnCreateTab("General", kaduslots, SLOT(onCreateTabGeneral()));
-		ConfigDialog::unregisterSlotOnCreateTab("Look", kaduslots, SLOT(onCreateTabLook()));
-		ConfigDialog::unregisterSlotOnApplyTab("Look", kaduslots, SLOT(onApplyTabLook()));
-		ConfigDialog::unregisterSlotOnApplyTab("General", kaduslots, SLOT(onApplyTabGeneral()));
-
-		ConfigDialog::removeControl("General", "Number of kept descriptions");
-		ConfigDialog::removeControl("General", 0, "e_defaultstatus");
-		ConfigDialog::removeControl("General", "On shutdown, set description:");
-		ConfigDialog::removeControl("General", "discstatus");
-
-		ConfigDialog::removeControl("General", "Use KaduParser to parse status");
-		ConfigDialog::disconnectSlot("General", "On shutdown, set current description", SIGNAL(toggled(bool)), kaduslots, SLOT(updateStatus(bool)));
-		ConfigDialog::removeControl("General", "On shutdown, set current description");
-		ConfigDialog::removeControl("General", "Default status", "cb_defstatus");
-		ConfigDialog::removeControl("General", "Status");
-
-#ifdef DEBUG_ENABLED
-		ConfigDialog::removeControl("General", "Debugging mask");
-#endif
-		ConfigDialog::removeControl("General", "Always show anonymous contacts with messages");
-		ConfigDialog::removeControl("General", "Allow executing commands by parser");
-		ConfigDialog::removeControl("General", "Show emoticons in panel");
-		ConfigDialog::removeControl("General", "Check for updates");
-
-		ConfigDialog::removeControl("General", "Private status");
-
-		ConfigDialog::removeControl("General", "grid-expert");
-		ConfigDialog::removeControl("General", "grid-advanced");
-		ConfigDialog::removeControl("General", "grid-beginner");
-		ConfigDialog::removeControl("General", "Set language:");
-		ConfigDialog::removeControl("General", "Nick");
-		ConfigDialog::removeControl("General", "Password");
-		ConfigDialog::removeControl("General", "Uin");
-		ConfigDialog::removeControl("General", "User data");
-
-		ConfigDialog::removeTab("Network");
-		ConfigDialog::removeTab("Look");
-		ConfigDialog::removeTab("Chat");
-		ConfigDialog::removeTab("ShortCuts");
-		ConfigDialog::removeTab("General");
 
 #ifdef Q_OS_MACX
 		//na koniec przywracamy domy¶ln± ikonê, je¿eli tego nie zrobimy, to pozostanie bie¿±cy status
@@ -1618,16 +1480,16 @@ void Kadu::setDocked(bool docked, bool dontHideOnClose1)
 {
 	Docked = docked;
 	dontHideOnClose = dontHideOnClose1;
-	if (config_file.readBoolEntry("General", "ShowAnonymousWithMsgs") || !Docked || dontHideOnClose)
-	{
-		Userbox->removeNegativeFilter(anonymousUsers);
-		Userbox->applyNegativeFilter(anonymousUsersWithoutMessages);
-	}
-	else
-	{
-		Userbox->removeNegativeFilter(anonymousUsersWithoutMessages);
-		Userbox->applyNegativeFilter(anonymousUsers);
-	}
+// 	if (config_file.readBoolEntry("General", "ShowAnonymousWithMsgs") || !Docked || dontHideOnClose)
+// 	{
+	Userbox->removeNegativeFilter(anonymousUsers);
+	Userbox->applyNegativeFilter(anonymousUsersWithoutMessages);
+// 	}
+// 	else
+// 	{
+// 		Userbox->removeNegativeFilter(anonymousUsersWithoutMessages);
+// 		Userbox->applyNegativeFilter(anonymousUsers);
+// 	}
 }
 
 bool Kadu::docked() const
@@ -1658,160 +1520,29 @@ void Kadu::refreshPrivateStatusFromConfigFile()
 	statusMenu->setItemChecked(8, privateStatus);
 }
 
-void KaduSlots::onCreateTabGeneral()
+void Kadu::configurationUpdated()
 {
-	kdebugf();
-	QLineEdit *e_password=ConfigDialog::getLineEdit("General", "Password");
-	e_password->setEchoMode(QLineEdit::Password);
-	e_password->setText(pwHash(config_file.readEntry("General", "Password")));
+	refreshPrivateStatusFromConfigFile();
 
-	QComboBox *cb_language= ConfigDialog::getComboBox("General", "Set language:");
-
-	QDir locale(dataPath("kadu/translations/"), "kadu_*.qm");
-	QStringList files=locale.entryList();
-
-	FOREACH(file, files)
-		*file = translateLanguage(qApp, (*file).mid(5, (*file).length()-8), true);
-	cb_language->insertStringList(files);
-	cb_language->setCurrentText(translateLanguage(qApp,
-	config_file.readEntry("General", "Language", QTextCodec::locale()),true));
-
-	QCheckBox *b_disconnectdesc= ConfigDialog::getCheckBox("General", "On shutdown, set description:");
-	QLineEdit *e_disconnectdesc= ConfigDialog::getLineEdit("General", 0, "e_defaultstatus");
-	e_disconnectdesc->setMaxLength(GG_STATUS_DESCR_MAXSIZE);
-	e_disconnectdesc->setEnabled(b_disconnectdesc->isChecked());
-	connect(b_disconnectdesc, SIGNAL(toggled(bool)), e_disconnectdesc, SLOT(setEnabled(bool)));
-
-	int statusIndex = config_file.readNumEntry("General", "DefaultStatusIndex");
-
-	int max = UserStatus::initCount();
-	QComboBox* cb_defstatus = ConfigDialog::getComboBox("General", "Default status", "cb_defstatus");
-	cb_defstatus->clear();
-	for (int i = 0; i < max; ++i)
-		cb_defstatus->insertItem(qApp->translate("@default", UserStatus::name(i).ascii()));
-	cb_defstatus->insertItem(qApp->translate("@default", "Restore last status"));
-	cb_defstatus->insertItem(qApp->translate("@default", "Restore last status (change Offline to Invisible)"));
-	cb_defstatus->setCurrentItem(statusIndex);
-
-
-	updateStatus(config_file.readBoolEntry("General", "DisconnectWithCurrentDescription"));
-	kdebugf2();
-}
-
-void KaduSlots::onCreateTabLook()
-{
-	kdebugf();
-
-	QComboBox *cb_qttheme=ConfigDialog::getComboBox("Look", "Qt Theme");
-	static QStringList sl_themes = QStyleFactory::keys();//to jest dosyæ kosztowna czasowo operacja
-	cb_qttheme->insertStringList(sl_themes);
-	if(!sl_themes.contains(QApplication::style().name()))
-		cb_qttheme->setCurrentText(tr("Unknown"));
-	else
-		cb_qttheme->setCurrentText(QApplication::style().name());
-
-	updatePreview();
-	kdebugf2();
-}
-
-void KaduSlots::onApplyTabLook()
-{
-	kdebugf();
-	QString new_style = ConfigDialog::getComboBox("Look", "Qt Theme")->currentText();
-	if (new_style != tr("Unknown") && new_style != QApplication::style().name())
-	{
-		QApplication::setStyle(new_style);
-		config_file.writeEntry("Look", "QtStyle", new_style);
-	}
-	kadu->showdesc(config_file.readBoolEntry("Look", "ShowInfoPanel"));
-
-	if (config_file.readBoolEntry("Look", "ShowStatusButton"))
-		kadu->statusButton->show();
-	else
-		kadu->statusButton->hide();
-
-	/* I od¶wie¿ okno Kadu */
+	changeAppearance();
+	updateInformationPanel();
 	groups_manager->refreshTabBar();
-	kadu->changeAppearance();
+	chat_manager->configurationUpdated();
 	UserBox::setColorsOrBackgrounds();
-	chat_manager->changeAppearance();
-	kdebugf2();
-}
 
-void KaduSlots::onApplyTabGeneral()
-{
-	kdebugf();
-	QLineEdit *password = ConfigDialog::getLineEdit("General", "Password");
-	config_file.writeEntry("General", "Password", pwHash(password->text()));
+	Userbox->configurationUpdated();
+	groups_manager->configurationUpdated();
+	icons_manager->configurationUpdated();
+	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
 
-	gadu->changeID(ConfigDialog::getLineEdit("General", "Uin")->text());
-
-	config_file.writeEntry("General", "DefaultStatusIndex",
-		ConfigDialog::getComboBox("General", "Default status", "cb_defstatus")->currentItem());
-
-	kadu->refreshPrivateStatusFromConfigFile();
+	gadu->changeID(config_file.readEntry("General", "UIN"));
 	kadu->setCaption(tr("Kadu: %1").arg((UinType)config_file.readUnsignedNumEntry("General", "UIN")));
-
-	QComboBox *cb_language= ConfigDialog::getComboBox("General", "Set language:");
-	config_file.writeEntry("General", "Language", translateLanguage(qApp, cb_language->currentText(),false));
-
-	//refresh
 	kadu->setDocked(kadu->Docked, kadu->dontHideOnClose);
 
 #ifdef DEBUG_ENABLED
-	debug_mask=config_file.readNumEntry("General", "DEBUG_MASK");
-	gg_debug_level=debug_mask | ~255;
+	debug_mask = config_file.readNumEntry("General", "DEBUG_MASK");
+	gg_debug_level = debug_mask | ~255;
 #endif
-
-	kdebugf2();
-}
-
-void KaduSlots::chooseColor(const char *name, const QColor& color)
-{
-	kdebugf();
-	QLabel *preview= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "preview_panel");
-	if (QString(name)=="panel_bg_color")
-		preview->setPaletteBackgroundColor(color);
-	else if (QString(name)=="panel_font_color")
-		preview->setPaletteBackgroundColor(color);
-	else
-		kdebugmf(KDEBUG_ERROR, "label '%s' not known\n", name);
-	kdebugf2();
-}
-
-void KaduSlots::chooseFont(const char *name, const QFont& font)
-{
-	kdebugf();
-	QLabel *preview= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "preview_panel");
-	if (QString(name)=="panel_font_box")
-		preview->setFont(font);
-	kdebugf2();
-}
-
-void KaduSlots::updatePreview()
-{
-	kdebugf();
-	QLabel *preview= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "preview_panel");
-	preview->setFont(config_file.readFontEntry("Look", "PanelFont"));
-	preview->setPaletteForegroundColor(config_file.readColorEntry("Look", "InfoPanelFgColor"));
-	preview->setPaletteBackgroundColor(config_file.readColorEntry("Look", "InfoPanelBgColor"));
-	preview->setAlignment(Qt::AlignLeft);
-	kdebugf2();
-}
-
-void KaduSlots::updateStatus(bool current)
-{
-	kdebugf();
- 	QCheckBox *cb_setdesc = ConfigDialog::getCheckBox("General", "On shutdown, set description:");
- 	QLineEdit *e_defaultstatus = ConfigDialog::getLineEdit("General", 0, "e_defaultstatus");
-
-	cb_setdesc->setEnabled(!current);
-	e_defaultstatus->setEnabled(!current && cb_setdesc->isChecked());
-	kdebugf2();
-}
-
-KaduSlots::KaduSlots(QObject *parent, const char *name) : QObject(parent, name)
-{
 }
 
 void Kadu::resizeEvent(QResizeEvent *e)
@@ -1821,28 +1552,32 @@ void Kadu::resizeEvent(QResizeEvent *e)
 	QWidget::resizeEvent(e);
 }
 
-/*void Kadu::moveEvent(QMoveEvent *e)
-{
-//	kdebugmf(KDEBUG_INFO, "%d %d %d %d\n", x(), y(), width(), height());
-	QWidget::moveEvent(e);
-}*/
-
 void Kadu::setDefaultStatus()
 {
 	kdebugf();
-	QString descr = defaultdescriptions.first();
-	int statusIndex = config_file.readNumEntry("General", "DefaultStatusIndex");
-	if (statusIndex == 7 || statusIndex == 8) //restore status
-	{
-		int lastStatusIndex = config_file.readNumEntry("General", "LastStatusIndex", UserStatus::index(Offline, false));
-		QString lastStatusDescription = config_file.readEntry("General", "LastStatusDescription");
-		if (statusIndex == 8 && UserStatus::isOffline(lastStatusIndex))
-			lastStatusIndex = UserStatus::index(Invisible, !lastStatusDescription.isEmpty());
-		status.setIndex(lastStatusIndex, lastStatusDescription);
-	}
-	else
-		status.setIndex(statusIndex, descr);
 
+	QString description;
+	QString startupStatus = config_file.readEntry("General", "StartupStatus");
+
+	if (config_file.readBoolEntry("General", "StartupLastDescription"))
+		description = config_file.readEntry("General", "LastStatusDescription");
+	else
+		description = config_file.readEntry("General", "StartupDescription");
+
+	int statusIndex;
+
+	if (startupStatus == "LastStatus")
+		statusIndex = config_file.readNumEntry("General", "LastStatusIndex", UserStatus::index(Offline, false));
+	else if (startupStatus == "Online")
+		statusIndex = 1;
+	else if (startupStatus == "Busy")
+		statusIndex = 3;
+	else if (startupStatus == "Invisible")
+		statusIndex = 5;
+	else if (startupStatus == "Offline")
+		statusIndex = 6;
+
+	status.setIndex(statusIndex, description);
 	status.setFriendsOnly(config_file.readBoolEntry("General", "PrivateStatus"));
 	userStatusChanger->userStatusSet(status);
 

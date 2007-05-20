@@ -163,6 +163,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zmienna 'q' do wykorzystania w parserze: nazwa ikonki statusu kontaktu (Vogel)
 * drobne poprawki przy zmianie zestawu ikon (neeo)
 * grupy s± kasowane zaraz po usuniêciu z nich ostatniego u¿ytkownika (neeo)
+* nowe okno konfiguracji - wstêp (Vogel)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

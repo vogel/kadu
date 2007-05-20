@@ -20,7 +20,7 @@
 
 #include "autoaway.h"
 #include "config_file.h"
-#include "config_dialog.h"
+// #include "config_dialog.h"
 #include "debug.h"
 #include "kadu.h"
 #include "message_box.h"
@@ -41,8 +41,8 @@ extern "C" int autoaway_init()
 	if (!gadu->status().isOffline())
 		autoawayslots->on();
 
-	ConfigDialog::registerSlotOnCreateTab("General", autoawayslots, SLOT(onCreateTabGeneral()));
-	ConfigDialog::registerSlotOnApplyTab("General", autoawayslots, SLOT(onApplyTabGeneral()));
+// 	ConfigDialog::registerSlotOnCreateTab("General", autoawayslots, SLOT(onCreateTabGeneral()));
+// 	ConfigDialog::registerSlotOnApplyTab("General", autoawayslots, SLOT(onApplyTabGeneral()));
 
 	QObject::connect(gadu, SIGNAL(disconnected()), autoawayslots, SLOT(off()));
 	QObject::connect(gadu, SIGNAL(connected()), autoawayslots, SLOT(on()));
@@ -59,8 +59,8 @@ extern "C" void autoaway_close()
 	QObject::disconnect(gadu, SIGNAL(disconnected()), autoawayslots, SLOT(off()));
 	QObject::disconnect(gadu, SIGNAL(connected()), autoawayslots, SLOT(on()));
 
-	ConfigDialog::unregisterSlotOnCreateTab("General", autoawayslots, SLOT(onCreateTabGeneral()));
-	ConfigDialog::unregisterSlotOnApplyTab("General", autoawayslots, SLOT(onApplyTabGeneral()));
+// 	ConfigDialog::unregisterSlotOnCreateTab("General", autoawayslots, SLOT(onCreateTabGeneral()));
+// 	ConfigDialog::unregisterSlotOnApplyTab("General", autoawayslots, SLOT(onApplyTabGeneral()));
 
 	delete autoawayslots;
 	autoawayslots=NULL;
@@ -258,55 +258,57 @@ void AutoAwaySlots::onCreateTabGeneral()
 {
 	kdebugf();
 
-	QHBox *awygrp = ConfigDialog::getHBox("General", "times");
-	QHBox *awygrp2 = ConfigDialog::getHBox("General", "enables");
-	QHGroupBox *awygrp3 = ConfigDialog::getHGroupBox("General", "AutoStatus Description");
-	QCheckBox *b_autostatus = ConfigDialog::getCheckBox("General", "Enable AutoStatus");
-	QCheckBox *b_autoaway = ConfigDialog::getCheckBox("General", "Enable autoaway");
-	QCheckBox *b_autoinvisible = ConfigDialog::getCheckBox("General", "Enable autoinvisible");
-	QCheckBox *b_autodisconnect = ConfigDialog::getCheckBox("General", "Enable autodisconnect");
+// 	QHBox *awygrp = ConfigDialog::getHBox("General", "times");
+// 	QHBox *awygrp2 = ConfigDialog::getHBox("General", "enables");
+// 	QHGroupBox *awygrp3 = ConfigDialog::getHGroupBox("General", "AutoStatus Description");
+// 	QCheckBox *b_autostatus = ConfigDialog::getCheckBox("General", "Enable AutoStatus");
+// 	QCheckBox *b_autoaway = ConfigDialog::getCheckBox("General", "Enable autoaway");
+// 	QCheckBox *b_autoinvisible = ConfigDialog::getCheckBox("General", "Enable autoinvisible");
+// 	QCheckBox *b_autodisconnect = ConfigDialog::getCheckBox("General", "Enable autodisconnect");
 	/* wylaczenie AutoStatus wyszarza wszystko */
-	awygrp->setEnabled(b_autostatus->isChecked());
-	awygrp2->setEnabled(b_autostatus->isChecked());
-	awygrp3->setEnabled(b_autostatus->isChecked());
-	QSpinBox *autoawayTime = ConfigDialog::getSpinBox("General", "Check idle every ");
-	autoawayTime->setEnabled(b_autostatus->isChecked());
+// 	awygrp->setEnabled(b_autostatus->isChecked());
+// 	awygrp2->setEnabled(b_autostatus->isChecked());
+// 	awygrp3->setEnabled(b_autostatus->isChecked());
+// 	QSpinBox *autoawayTime = ConfigDialog::getSpinBox("General", "Check idle every ");
+// 	autoawayTime->setEnabled(b_autostatus->isChecked());
 	/* wyszarzanie SpinBoxow przy wlaczonym AutoStatus */
-	QSpinBox *autoawaySpin = ConfigDialog::getSpinBox("General", "Set status to away after ");
-	autoawaySpin->setEnabled(b_autoaway->isChecked());
-	QSpinBox *invisibleSpin = ConfigDialog::getSpinBox("General", "Set status to invisible after ");
-	invisibleSpin->setEnabled(b_autoinvisible->isChecked());
-	QSpinBox *disconnectSpin = ConfigDialog::getSpinBox("General", "Disconnect after ");
-	disconnectSpin->setEnabled(b_autodisconnect->isChecked());
+// 	QSpinBox *autoawaySpin = ConfigDialog::getSpinBox("General", "Set status to away after ");
+// 	autoawaySpin->setEnabled(b_autoaway->isChecked());
+// 	QSpinBox *invisibleSpin = ConfigDialog::getSpinBox("General", "Set status to invisible after ");
+// 	invisibleSpin->setEnabled(b_autoinvisible->isChecked());
+// 	QSpinBox *disconnectSpin = ConfigDialog::getSpinBox("General", "Disconnect after ");
+// 	disconnectSpin->setEnabled(b_autodisconnect->isChecked());
 	/* podpinanie sie do slotow zmiany dostepnosci */
-	connect(b_autostatus, SIGNAL(toggled(bool)), awygrp, SLOT(setEnabled(bool)));
-	connect(b_autostatus, SIGNAL(toggled(bool)), awygrp2, SLOT(setEnabled(bool)));
-	connect(b_autostatus, SIGNAL(toggled(bool)), awygrp3, SLOT(setEnabled(bool)));
-	connect(b_autostatus, SIGNAL(toggled(bool)), autoawayTime, SLOT(setEnabled(bool)));
-	connect(b_autoaway, SIGNAL(toggled(bool)), autoawaySpin, SLOT(setEnabled(bool)));
-	connect(b_autoinvisible, SIGNAL(toggled(bool)), invisibleSpin, SLOT(setEnabled(bool)));
-	connect(b_autodisconnect, SIGNAL(toggled(bool)), disconnectSpin, SLOT(setEnabled(bool)));
+// 	connect(b_autostatus, SIGNAL(toggled(bool)), awygrp, SLOT(setEnabled(bool)));
+// 	connect(b_autostatus, SIGNAL(toggled(bool)), awygrp2, SLOT(setEnabled(bool)));
+// 	connect(b_autostatus, SIGNAL(toggled(bool)), awygrp3, SLOT(setEnabled(bool)));
+// 	connect(b_autostatus, SIGNAL(toggled(bool)), autoawayTime, SLOT(setEnabled(bool)));
+// 	connect(b_autoaway, SIGNAL(toggled(bool)), autoawaySpin, SLOT(setEnabled(bool)));
+// 	connect(b_autoinvisible, SIGNAL(toggled(bool)), invisibleSpin, SLOT(setEnabled(bool)));
+// 	connect(b_autodisconnect, SIGNAL(toggled(bool)), disconnectSpin, SLOT(setEnabled(bool)));
 	/* podpinanie sie pod zmiane SpinBoxow */
-	connect(autoawaySpin, SIGNAL(valueChanged(int)), this, SLOT(changeAutoInvisibleTime(int)));
-	connect(invisibleSpin, SIGNAL(valueChanged(int)), this, SLOT(changeAutoDisconnectTime(int)));
-	connect(disconnectSpin, SIGNAL(valueChanged(int)), this, SLOT(correctAutoDisconnectTime(int)));
+// 	connect(autoawaySpin, SIGNAL(valueChanged(int)), this, SLOT(changeAutoInvisibleTime(int)));
+// 	connect(invisibleSpin, SIGNAL(valueChanged(int)), this, SLOT(changeAutoDisconnectTime(int)));
+// 	connect(disconnectSpin, SIGNAL(valueChanged(int)), this, SLOT(correctAutoDisconnectTime(int)));
 	/* jeszcze jedno podpinanie pod checkboxy */
-	connect(b_autoaway, SIGNAL(toggled(bool)), this, SLOT(checkAutoInvisibleTime(bool)));
-	connect(b_autoinvisible, SIGNAL(toggled(bool)), this, SLOT(checkAutoDisconnectTime(bool)));
+// 	connect(b_autoaway, SIGNAL(toggled(bool)), this, SLOT(checkAutoInvisibleTime(bool)));
+// 	connect(b_autoinvisible, SIGNAL(toggled(bool)), this, SLOT(checkAutoDisconnectTime(bool)));
 	/* tylko czy to zadziala :P */
-	autoawaySpin->setSuffix(" s");
-	invisibleSpin->setSuffix(" s");
-	disconnectSpin->setSuffix(" s");
-	autoawayTime->setSuffix(" s");
 
-	QLineEdit *autoStatusText = ConfigDialog::getLineEdit("General", "Auto change status");
-	autoStatusText->setMaxLength(70);
-	QString str = autoStatusText->text();
+// 	autoawaySpin->setSuffix(" s");
+// 	invisibleSpin->setSuffix(" s");
+// 	disconnectSpin->setSuffix(" s");
+// 	autoawayTime->setSuffix(" s");
 
-	QLabel *autoStatusTextLength = ConfigDialog::getLabel("General", "0");
-	autoStatusTextLength->setText(QString::number(GG_STATUS_DESCR_MAXSIZE - str.length()));
-	connect(autoStatusText, SIGNAL(textChanged(const QString&)), this, SLOT(setTextLength(const QString&)));
-	kdebugf2();
+
+// 	QLineEdit *autoStatusText = ConfigDialog::getLineEdit("General", "Auto change status");
+// 	autoStatusText->setMaxLength(70);
+// 	QString str = autoStatusText->text();
+
+// 	QLabel *autoStatusTextLength = ConfigDialog::getLabel("General", "0");
+// 	autoStatusTextLength->setText(QString::number(GG_STATUS_DESCR_MAXSIZE - str.length()));
+// 	connect(autoStatusText, SIGNAL(textChanged(const QString&)), this, SLOT(setTextLength(const QString&)));
+// 	kdebugf2();
 }
 
 void AutoAwaySlots::onApplyTabGeneral()
@@ -341,108 +343,108 @@ void AutoAwaySlots::onApplyTabGeneral()
 
 void AutoAwaySlots::changeAutoInvisibleTime(int i)
 {
-	QSpinBox *invisibleSpin = ConfigDialog::getSpinBox("General", "Set status to invisible after ");
-	if (invisibleSpin->value() < i)
-		invisibleSpin->setValue(i);
+// 	QSpinBox *invisibleSpin = ConfigDialog::getSpinBox("General", "Set status to invisible after ");
+// 	if (invisibleSpin->value() < i)
+// 		invisibleSpin->setValue(i);
 }
 
 void AutoAwaySlots::changeAutoDisconnectTime(int i)
 {
-	QSpinBox *disconnectSpin = ConfigDialog::getSpinBox("General", "Disconnect after ");
-	if (disconnectSpin->value() < i)
-		disconnectSpin->setValue(i);
+// 	QSpinBox *disconnectSpin = ConfigDialog::getSpinBox("General", "Disconnect after ");
+// 	if (disconnectSpin->value() < i)
+// 		disconnectSpin->setValue(i);
 	/* 	dodana reakcja na wpisanie wartosci mniejszej niz jest w away
 		mozna to zalatwic w osobnej funkcji zeby bylo ladniej ale niech na razie tak bedzie */
-	QSpinBox *awaySpin = ConfigDialog::getSpinBox("General", "Set status to away after ");
-	QSpinBox *invisibleSpin = ConfigDialog::getSpinBox("General", "Set status to invisible after ");
-	if ((invisibleSpin->value() < awaySpin->value()) && awaySpin->isEnabled())
-		invisibleSpin->setValue(awaySpin->value());
+// 	QSpinBox *awaySpin = ConfigDialog::getSpinBox("General", "Set status to away after ");
+// 	QSpinBox *invisibleSpin = ConfigDialog::getSpinBox("General", "Set status to invisible after ");
+// 	if ((invisibleSpin->value() < awaySpin->value()) && awaySpin->isEnabled())
+// 		invisibleSpin->setValue(awaySpin->value());
 }
 
 void AutoAwaySlots::correctAutoDisconnectTime(int)
 {
-	QSpinBox *invisibleSpin = ConfigDialog::getSpinBox("General", "Set status to invisible after ");
-	QSpinBox *disconnectSpin = ConfigDialog::getSpinBox("General", "Disconnect after ");
-	if ((disconnectSpin->value() < invisibleSpin->value()) && invisibleSpin->isEnabled())
-		disconnectSpin->setValue(invisibleSpin->value());
+// 	QSpinBox *invisibleSpin = ConfigDialog::getSpinBox("General", "Set status to invisible after ");
+// 	QSpinBox *disconnectSpin = ConfigDialog::getSpinBox("General", "Disconnect after ");
+// 	if ((disconnectSpin->value() < invisibleSpin->value()) && invisibleSpin->isEnabled())
+// 		disconnectSpin->setValue(invisibleSpin->value());
 }
 
 void AutoAwaySlots::checkAutoInvisibleTime(bool b)
 {
-	if (b)
-	{
-		QSpinBox *awaySpin = ConfigDialog::getSpinBox("General", "Set status to away after ");
-		QSpinBox *invisibleSpin = ConfigDialog::getSpinBox("General", "Set status to invisible after ");
-		if ((invisibleSpin->value() < awaySpin->value()) && awaySpin->isEnabled())
-			invisibleSpin->setValue(awaySpin->value());
-	}
+// 	if (b)
+// 	{
+// 		QSpinBox *awaySpin = ConfigDialog::getSpinBox("General", "Set status to away after ");
+// 		QSpinBox *invisibleSpin = ConfigDialog::getSpinBox("General", "Set status to invisible after ");
+// 		if ((invisibleSpin->value() < awaySpin->value()) && awaySpin->isEnabled())
+// 			invisibleSpin->setValue(awaySpin->value());
+// 	}
 }
 
 void AutoAwaySlots::checkAutoDisconnectTime(bool b)
 {
-	if (b)
-	{
-		QSpinBox *invisibleSpin = ConfigDialog::getSpinBox("General", "Set status to invisible after ");
-		QSpinBox *disconnectSpin = ConfigDialog::getSpinBox("General", "Disconnect after ");
-		if ((disconnectSpin->value() < invisibleSpin->value()) && invisibleSpin->isEnabled())
-			disconnectSpin->setValue(invisibleSpin->value());
-	}
+// 	if (b)
+// 	{
+// 		QSpinBox *invisibleSpin = ConfigDialog::getSpinBox("General", "Set status to invisible after ");
+// 		QSpinBox *disconnectSpin = ConfigDialog::getSpinBox("General", "Disconnect after ");
+// 		if ((disconnectSpin->value() < invisibleSpin->value()) && invisibleSpin->isEnabled())
+// 			disconnectSpin->setValue(invisibleSpin->value());
+// 	}
 }
 
 void AutoAwaySlots::setTextLength(const QString &str)
 {
-	QLabel *autoStatusTextLength = ConfigDialog::getLabel("General", "0");
-	autoStatusTextLength->setText(QString::number(GG_STATUS_DESCR_MAXSIZE - str.length()));
+// 	QLabel *autoStatusTextLength = ConfigDialog::getLabel("General", "0");
+// 	autoStatusTextLength->setText(QString::number(GG_STATUS_DESCR_MAXSIZE - str.length()));
 }
 
 AutoAwaySlots::AutoAwaySlots(QObject *parent, const char *name) : QObject(parent, name)
 {
-	kdebugf();
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "General"), "GeneralTab");
-
-	ConfigDialog::addHGroupBox("General", "General", "AutoStatus");
-	ConfigDialog::addHBox("General", "AutoStatus", "autoStatus");
-	ConfigDialog::addVBox("General", "autoStatus", "enables");
-	ConfigDialog::addCheckBox("General", "enables",
-			QT_TRANSLATE_NOOP("@default", "Enable autoaway"), "AutoAway", false);
-	ConfigDialog::addCheckBox("General", "enables",
-			QT_TRANSLATE_NOOP("@default", "Enable autoinvisible"), "AutoInvisible", false);
-	ConfigDialog::addCheckBox("General", "enables",
-			QT_TRANSLATE_NOOP("@default", "Enable autodisconnect"), "AutoDisconnect", false);
-	ConfigDialog::addVBox("General", "autoStatus", "times", 0, Advanced);
-	ConfigDialog::addSpinBox("General", "times",
-			QT_TRANSLATE_NOOP("@default", "Set status to away after "), "AutoAwayTime", 1, 10000, 1, 180);
-	ConfigDialog::addSpinBox("General", "times",
-			QT_TRANSLATE_NOOP("@default", "Set status to invisible after "), "AutoInvisibleTime", 1, 10000, 1, 600);
-	ConfigDialog::addSpinBox("General", "times",
-			QT_TRANSLATE_NOOP("@default", "Disconnect after "), "AutoDisconnectTime", 1, 10000, 1, 1800);
-	ConfigDialog::addCheckBox("General", "Status",
-			QT_TRANSLATE_NOOP("@default", "Enable AutoStatus"), "AutoChange", false);
-	ConfigDialog::addSpinBox("General", "Status",
-			QT_TRANSLATE_NOOP("@default", "Check idle every "), "AutoAwayCheckTime", 1, 10000, 1, 5, 0, 0, Expert);
-	ConfigDialog::addHGroupBox("General", "General",
-			QT_TRANSLATE_NOOP("@default", "AutoStatus Description"), 0, Advanced);
-	ConfigDialog::addHBox("General", "AutoStatus Description", "first");
-	ConfigDialog::addLineEdit("General", "first",
-			QT_TRANSLATE_NOOP("@default", "Auto change status"), "AutoStatusText");
-	ConfigDialog::addHBox("General", "AutoStatus Description", "second");
-	ConfigDialog::addLabel("General", "second", "0");
-
-	ConfigDialog::addComboBox("General", "second", " ", "AutoChangeDescription",
-		toStringList(	tr("Don't change the description"), 	//NOTHING
-						tr("Change"),							//REPLACE
-						tr("Add in front of description"),		//PREPEND
-						tr("Add at the back of description")),	//APPEND
-		toStringList("0","1","2","3"), "0");
-
-	autoAwayStatusChanger = new AutoAwayStatusChanger();
-	autoAwayStatusChanger->setChangeDescriptionTo(
-		(AutoAwayStatusChanger::ChangeDescriptionTo)config_file.readNumEntry("General", "AutoChangeDescription"),
-		config_file.readEntry("General", "AutoStatusText")
-	);
-	status_changer_manager->registerStatusChanger(autoAwayStatusChanger);
-
-	kdebugf2();
+// 	kdebugf();
+// 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "General"), "GeneralTab");
+//
+// 	ConfigDialog::addHGroupBox("General", "General", "AutoStatus");
+// 	ConfigDialog::addHBox("General", "AutoStatus", "autoStatus");
+// 	ConfigDialog::addVBox("General", "autoStatus", "enables");
+// 	ConfigDialog::addCheckBox("General", "enables",
+// 			QT_TRANSLATE_NOOP("@default", "Enable autoaway"), "AutoAway", false);
+// 	ConfigDialog::addCheckBox("General", "enables",
+// 			QT_TRANSLATE_NOOP("@default", "Enable autoinvisible"), "AutoInvisible", false);
+// 	ConfigDialog::addCheckBox("General", "enables",
+// 			QT_TRANSLATE_NOOP("@default", "Enable autodisconnect"), "AutoDisconnect", false);
+// 	ConfigDialog::addVBox("General", "autoStatus", "times", 0, Advanced);
+// 	ConfigDialog::addSpinBox("General", "times",
+// 			QT_TRANSLATE_NOOP("@default", "Set status to away after "), "AutoAwayTime", 1, 10000, 1, 180);
+// 	ConfigDialog::addSpinBox("General", "times",
+// 			QT_TRANSLATE_NOOP("@default", "Set status to invisible after "), "AutoInvisibleTime", 1, 10000, 1, 600);
+// 	ConfigDialog::addSpinBox("General", "times",
+// 			QT_TRANSLATE_NOOP("@default", "Disconnect after "), "AutoDisconnectTime", 1, 10000, 1, 1800);
+// 	ConfigDialog::addCheckBox("General", "Status",
+// 			QT_TRANSLATE_NOOP("@default", "Enable AutoStatus"), "AutoChange", false);
+// 	ConfigDialog::addSpinBox("General", "Status",
+// 			QT_TRANSLATE_NOOP("@default", "Check idle every "), "AutoAwayCheckTime", 1, 10000, 1, 5, 0, 0, Expert);
+// 	ConfigDialog::addHGroupBox("General", "General",
+// 			QT_TRANSLATE_NOOP("@default", "AutoStatus Description"), 0, Advanced);
+// 	ConfigDialog::addHBox("General", "AutoStatus Description", "first");
+// 	ConfigDialog::addLineEdit("General", "first",
+// 			QT_TRANSLATE_NOOP("@default", "Auto change status"), "AutoStatusText");
+// 	ConfigDialog::addHBox("General", "AutoStatus Description", "second");
+// 	ConfigDialog::addLabel("General", "second", "0");
+//
+// 	ConfigDialog::addComboBox("General", "second", " ", "AutoChangeDescription",
+// 		toStringList(	tr("Don't change the description"), 	//NOTHING
+// 						tr("Change"),							//REPLACE
+// 						tr("Add in front of description"),		//PREPEND
+// 						tr("Add at the back of description")),	//APPEND
+// 		toStringList("0","1","2","3"), "0");
+//
+// 	autoAwayStatusChanger = new AutoAwayStatusChanger();
+// 	autoAwayStatusChanger->setChangeDescriptionTo(
+// 		(AutoAwayStatusChanger::ChangeDescriptionTo)config_file.readNumEntry("General", "AutoChangeDescription"),
+// 		config_file.readEntry("General", "AutoStatusText")
+// 	);
+// 	status_changer_manager->registerStatusChanger(autoAwayStatusChanger);
+//
+// 	kdebugf2();
 }
 
 AutoAwaySlots::~AutoAwaySlots()
@@ -453,24 +455,24 @@ AutoAwaySlots::~AutoAwaySlots()
 	delete autoAwayStatusChanger;
 	autoAwayStatusChanger = NULL;
 
-	ConfigDialog::removeControl("General", "Check idle every ");
-	ConfigDialog::removeControl("General", "Enable AutoStatus");
-	ConfigDialog::removeControl("General", "Set status to away after ");
-	ConfigDialog::removeControl("General", "Set status to invisible after ");
-	ConfigDialog::removeControl("General", "Disconnect after ");
-	ConfigDialog::removeControl("General", "times");
-	ConfigDialog::removeControl("General", "Enable autoaway");
-	ConfigDialog::removeControl("General", "Enable autoinvisible");
-	ConfigDialog::removeControl("General", "Enable autodisconnect");
-	ConfigDialog::removeControl("General", "enables");
-	ConfigDialog::removeControl("General", "autoStatus");
-	ConfigDialog::removeControl("General", "AutoStatus");
-	ConfigDialog::removeControl("General", "Auto change status");
-	ConfigDialog::removeControl("General", " ");
-	ConfigDialog::removeControl("General", "0");
-	ConfigDialog::removeControl("General", "first");
-	ConfigDialog::removeControl("General", "second");
-	ConfigDialog::removeControl("General", "AutoStatus Description");
+// 	ConfigDialog::removeControl("General", "Check idle every ");
+// 	ConfigDialog::removeControl("General", "Enable AutoStatus");
+// 	ConfigDialog::removeControl("General", "Set status to away after ");
+// 	ConfigDialog::removeControl("General", "Set status to invisible after ");
+// 	ConfigDialog::removeControl("General", "Disconnect after ");
+// 	ConfigDialog::removeControl("General", "times");
+// 	ConfigDialog::removeControl("General", "Enable autoaway");
+// 	ConfigDialog::removeControl("General", "Enable autoinvisible");
+// 	ConfigDialogd::removeControl("General", "Enable autodisconnect");
+// 	ConfigDialog::removeControl("General", "enables");
+// 	ConfigDialog::removeControl("General", "autoStatus");
+// 	ConfigDialog::removeControl("General", "AutoStatus");
+// 	ConfigDialog::removeControl("General", "Auto change status");
+// 	ConfigDialog::removeControl("General", " ");
+// 	ConfigDialog::removeControl("General", "0");
+// 	ConfigDialog::removeControl("General", "first");
+// 	ConfigDialog::removeControl("General", "second");
+// 	ConfigDialog::removeControl("General", "AutoStatus Description");
 	kdebugf2();
 }
 

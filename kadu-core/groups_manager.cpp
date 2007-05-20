@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "config_dialog.h"
+// #include "config_dialog.h"
 #include "config_file.h"
 #include "debug.h"
 #include "groups_manager.h"
@@ -89,18 +89,8 @@ void GroupsManager::setTabBar(KaduTabBar *bar)
 	if (configTab >= 0 && configTab < GroupBar->count())
 		((QTabBar*) GroupBar)->setCurrentTab(configTab);
 
-	//to be removed in 0.6
-	config_file.addVariable("General", "ShowOffline", config_file.readBoolEntry("General", "ShowHideInactive", true));
-	config_file.addVariable("General", "ShowWithoutDescription", !config_file.readBoolEntry("General", "ShowOnlyDescriptionUsers", false));
-	config_file.addVariable("ShortCuts", "kadu_showoffline", config_file.readEntry("ShortCuts", "kadu_showinactive", "F9"));
-	//end
-
-	ConfigDialog::addCheckBox("General", "grid-advanced", QT_TRANSLATE_NOOP("@default", "Show offline contacts"), "ShowOffline", true, QT_TRANSLATE_NOOP("@default", "Display contacts who are offline"), 0, Advanced);
-	ConfigDialog::addCheckBox("General", "grid-advanced", QT_TRANSLATE_NOOP("@default", "Show contacts without description"), "ShowWithoutDescription", true, QT_TRANSLATE_NOOP("@default", "Display contacts that don't have a description"), 0, Advanced);
-	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Show contacts that you are blocking"), "ShowBlocked", true, 0, 0, Expert);
-	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Show contacts that are blocking you"), "ShowBlocking", true, 0, 0, Expert);
-
 	//najpierw ustawiamy odwrotnie, a pó¼niej robimy x=!x;
+	// TODO: gówniana metoda, poprawiæ
 	showBlocked = !config_file.readBoolEntry("General", "ShowBlocked");
 	showBlocking = !config_file.readBoolEntry("General", "ShowBlocking");
 	showOffline = !config_file.readBoolEntry("General", "ShowOffline");
@@ -176,7 +166,7 @@ void GroupsManager::refreshTabBar()
 
 	/* budujemy listê grup */
 	QStringList group_list = groups();
-	kdebugm(KDEBUG_INFO, "%lu groups found: %s\n", group_list.count(), group_list.join(",").local8Bit().data());
+	kdebugm(KDEBUG_INFO, "%u groups found: %s\n", group_list.count(), group_list.join(",").local8Bit().data());
 
 	/* usuwamy wszystkie niepotrzebne zakladki - od tylu,
 	   bo indeksy sie przesuwaja po usunieciu */
@@ -210,9 +200,8 @@ void GroupsManager::refreshTabBar()
 	kdebugf2();
 }
 
-void GroupsManager::onApplyTabGeneral()
+void GroupsManager::configurationUpdated()
 {
-	kdebugf();
 	if (config_file.readBoolEntry("General", "ShowBlocking") != showBlocking)
 		changeDisplayingBlocking();
 	if (config_file.readBoolEntry("General", "ShowBlocked") != showBlocked)
@@ -221,7 +210,6 @@ void GroupsManager::onApplyTabGeneral()
 		changeDisplayingOffline();
 	if (config_file.readBoolEntry("General", "ShowWithoutDescription") != showWithoutDescription)
 		changeDisplayingWithoutDescription();
-	kdebugf2();
 }
 
 void GroupsManager::changeDisplayingBlocking()
@@ -294,7 +282,7 @@ GroupsManager::GroupsManager() : QObject(0, "groups_manager"),
 			this, SLOT(userAddedToMainUserlist(UserListElement, bool, bool)));
 	connect(userlist, SIGNAL(userRemoved(UserListElement, bool, bool)),
 			this, SLOT(userRemovedFromMainUserlist(UserListElement, bool, bool)));
-	ConfigDialog::registerSlotOnApplyTab("General", this, SLOT(onApplyTabGeneral()));
+// 	ConfigDialog::registerSlotOnApplyTab("General", this, SLOT(onApplyTabGeneral()));
 
 	kdebugf2();
 }
@@ -302,12 +290,7 @@ GroupsManager::GroupsManager() : QObject(0, "groups_manager"),
 GroupsManager::~GroupsManager()
 {
 	kdebugf();
-	ConfigDialog::removeControl("General", "Show offline contacts");
-	ConfigDialog::removeControl("General", "Show contacts without description");
-	ConfigDialog::removeControl("General", "Show contacts that you are blocking");
-	ConfigDialog::removeControl("General", "Show contacts that are blocking you");
 
-	ConfigDialog::unregisterSlotOnApplyTab("General", this, SLOT(onApplyTabGeneral()));
 	if (GroupBar)
 		config_file.writeEntry("Look", "CurrentGroupTab", GroupBar->currentTab());
 	disconnect(userlist, SIGNAL(userRemoved(UserListElement, bool, bool)),

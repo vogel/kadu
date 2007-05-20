@@ -20,7 +20,6 @@
 #include "emoticons.h"
 #include "kadu_text_browser.h"
 #include "misc.h"
-#include "config_dialog.h"
 #include "message_box.h"
 
 KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)

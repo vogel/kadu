@@ -28,7 +28,6 @@
 #include "kadu.h"
 #include "kadu-config.h"
 
-#include "config_dialog.h"
 #include "config_file.h"
 #include "misc.h"
 #include "debug.h"
@@ -364,12 +363,6 @@ int main(int argc, char *argv[])
 			}
 		}
 	}
-
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "General"), "GeneralTab");
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "ShortCuts"), "ShortCutsTab");
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Chat"), "ChatTab");
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Look"), "LookTab");
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Network"), "NetworkTab");
 
 	ProtocolsManager::initModule();
 	UserList::initModule();

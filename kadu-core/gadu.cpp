@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "config_dialog.h"
+// #include "config_dialog.h"
 #include "config_file.h"
 #include "debug.h"
 #include "gadu.h"
@@ -272,32 +272,6 @@ static GaduProtocolManager *gadu_protocol_manager;
 void GaduProtocol::closeModule()
 {
 	kdebugf();
-	ConfigDialog::disconnectSlot("Network", "Use default servers", SIGNAL(toggled(bool)),
-		gadu, SLOT(ifDefServerEnabled(bool)));
-
-	ConfigDialog::unregisterSlotOnCreateTab("Network", gadu, SLOT(onCreateTabNetwork()));
-	ConfigDialog::unregisterSlotOnApplyTab("Network", gadu, SLOT(onApplyTabNetwork()));
-
-	ConfigDialog::removeControl("Network", "Port to connect to servers");
-	ConfigDialog::removeControl("Network", "IP addresses:", "server");
-#ifdef HAVE_OPENSSL
-	ConfigDialog::removeControl("Network", "Use TLSv1");
-#endif
-
-	ConfigDialog::removeControl("Network", "Use default servers");
-	ConfigDialog::removeControl("Network", "servergrid");
-	ConfigDialog::removeControl("Network", "Servers properties");
-
-	ConfigDialog::removeControl("Network", " Password: ");
-	ConfigDialog::removeControl("Network", "Username: ");
-	ConfigDialog::removeControl("Network", " Port: ");
-	ConfigDialog::removeControl("Network", "Host: ", "proxyhost");
-	ConfigDialog::removeControl("Network", "proxygrid");
-	ConfigDialog::removeControl("Network", "Proxy server");
-
-	ConfigDialog::removeControl("Network", "Use proxy server");
-
-	ConfigDialog::removeControl("Network", "dcc");
 
 	protocols_manager->unregisterProtocol("Gadu");
 	delete gadu_protocol_manager;
@@ -352,55 +326,8 @@ void GaduProtocol::initModule()
 	gg_proxy_username = NULL;
 	gg_proxy_password = NULL;
 
-
-	// ---------------------------------------------------------
-	//  Okno dialogowe - czê¶æ kodu przejdzie do klasy Protocol
-	// ---------------------------------------------------------
-//zakladka "siec"
-	ConfigDialog::addVBox("Network", "Network", "dcc");
-
-	ConfigDialog::addCheckBox("Network", "Network",
-		QT_TRANSLATE_NOOP("@default", "Use proxy server"), "UseProxy", false, 0, 0, Advanced);
-
-	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "Proxy server"), 0, Advanced);
-	ConfigDialog::addGrid("Network", "Proxy server", "proxygrid", Expert);
-	ConfigDialog::addLineEdit("Network", "proxygrid", QT_TRANSLATE_NOOP("@default", "Host: "), "ProxyHost", "0.0.0.0", 0, "proxyhost");
-	ConfigDialog::addLineEdit("Network", "proxygrid",
-		QT_TRANSLATE_NOOP("@default", " Port: "), "ProxyPort", "0");
-	ConfigDialog::addLineEdit("Network", "proxygrid",
-		QT_TRANSLATE_NOOP("@default", "Username: "), "ProxyUser");
-	ConfigDialog::addLineEdit("Network", "proxygrid",
-		QT_TRANSLATE_NOOP("@default", " Password: "), "ProxyPassword");
-
-	ConfigDialog::addVGroupBox("Network", "Network", QT_TRANSLATE_NOOP("@default", "Servers properties"), 0, Expert);
-	ConfigDialog::addGrid("Network", "Servers properties", "servergrid", Expert);
-	ConfigDialog::addCheckBox("Network", "servergrid",
-		QT_TRANSLATE_NOOP("@default", "Use default servers"), "isDefServers", true);
-#ifdef HAVE_OPENSSL
-	ConfigDialog::addCheckBox("Network", "servergrid",
-		QT_TRANSLATE_NOOP("@default", "Use TLSv1"), "UseTLS", false);
-#endif
-	ConfigDialog::addLineEdit("Network", "Servers properties",
-		QT_TRANSLATE_NOOP("@default", "IP addresses:"), "Server", 0, 0, "server");
-
 	config_file.addVariable("Network", "DefaultPort", 0);
-	QStringList options, values;
-	options << tr("Automatic") << "8074" << "443";
-	values << "0" << "8074" << "443";
-	ConfigDialog::addComboBox("Network", "Servers properties",
-		QT_TRANSLATE_NOOP("@default", "Port to connect to servers"), "DefaultPort", options, values);
-
 	config_file.addVariable("Network", "TimeoutInMs", 5000);
-
-	ConfigDialog::registerSlotOnCreateTab("Network", gadu, SLOT(onCreateTabNetwork()));
-	ConfigDialog::registerSlotOnApplyTab("Network", gadu, SLOT(onApplyTabNetwork()));
-
-	ConfigDialog::connectSlot("Network", "Use default servers", SIGNAL(toggled(bool)),
-		gadu, SLOT(ifDefServerEnabled(bool)));
-#ifdef HAVE_OPENSSL
-	ConfigDialog::connectSlot("Network", "Use TLSv1", SIGNAL(toggled(bool)),
-		gadu, SLOT(useTlsEnabled(bool)));
-#endif
 
 	defaultdescriptions = QStringList::split("<-->", config_file.readEntry("General","DefaultDescription", tr("I am busy.")), true);
 
@@ -1079,7 +1006,7 @@ void GaduProtocol::login()
 	LoginParams.async = 1;
 
 	// maksymalny rozmiar grafiki w kb
-	LoginParams.image_size = config_file.readNumEntry("Chat", "MaxImageSize", 20);
+	LoginParams.image_size = config_file.readBoolEntry("Chat", "ReceiveImages", true) ? 255 : 0;
 
 	setupProxy();
 
@@ -2223,73 +2150,6 @@ void GaduProtocol::setDccIpAndPort(unsigned long dcc_ip, int dcc_port)
 {
 	gg_dcc_ip = dcc_ip;
 	gg_dcc_port = dcc_port;
-}
-
-void GaduProtocol::onCreateTabNetwork()
-{
-	kdebugf();
-
-	QVGroupBox *g_proxy = ConfigDialog::getVGroupBox("Network", "Proxy server");
-	QCheckBox *b_useproxy= ConfigDialog::getCheckBox("Network", "Use proxy server");
-	ConfigDialog::getLineEdit("Network"," Password: ")->setEchoMode(QLineEdit::Password);
-
-#ifdef HAVE_OPENSSL
-	QCheckBox *b_tls= ConfigDialog::getCheckBox("Network", "Use TLSv1");
-#endif
-	QWidget *serverbox = ConfigDialog::getEntireWidget("Network", "IP addresses:","server");
-	QCheckBox* b_defaultserver= ConfigDialog::getCheckBox("Network", "Use default servers");
-
-	g_proxy->setEnabled(b_useproxy->isChecked());
-
-	serverbox->setEnabled(!b_defaultserver->isChecked());
-
-	connect(b_useproxy, SIGNAL(toggled(bool)), g_proxy, SLOT(setEnabled(bool)));
-
-	kdebugf2();
-}
-
-void GaduProtocol::onApplyTabNetwork()
-{
-	kdebugf();
-
-	QLineEdit *e_servers=ConfigDialog::getLineEdit("Network", "IP addresses:", "server");
-
-	QStringList tmpservers,server;
-	QValueList<QHostAddress> servers;
-	QHostAddress ip;
-	bool ipok;
-
-	tmpservers = QStringList::split(";", e_servers->text());
-	CONST_FOREACH(tmpserver, tmpservers)
-	{
-		ipok = ip.setAddress(*tmpserver);
-		if (!ipok)
-			continue;
-		servers.append(ip);
-		server.append(ip.toString());
-	}
-	config_file.writeEntry("Network","Server",server.join(";"));
-	ConfigServers = servers;
-	ServerNr = 0;
-	changeID(QString::number(config_file.readUnsignedNumEntry("General", "UIN")));
-
-	kdebugf2();
-}
-
-void GaduProtocol::ifDefServerEnabled(bool value)
-{
-	kdebugf();
-	ConfigDialog::getEntireWidget("Network", "IP addresses:","server")->setEnabled(!value);
-	kdebugf2();
-}
-
-void GaduProtocol::useTlsEnabled(bool value)
-{
-#ifdef HAVE_OPENSSL
-	kdebugf();
-	ConfigDialog::getEntireWidget("Network", "Port to connect to servers")->setEnabled(!value);
-	kdebugf2();
-#endif
 }
 
 GaduStatus::GaduStatus()

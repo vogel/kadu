@@ -11,7 +11,7 @@
 #include <qmessagebox.h>
 
 #include "action.h"
-#include "config_dialog.h"
+// #include "config_dialog.h"
 #include "config_file.h"
 #include "debug.h"
 #include "icons_manager.h"
@@ -153,51 +153,16 @@ void IconsManager::refreshMenus()
 	kdebugf2();
 }
 
-void IconsManager::onApplyTabLook()
+// TODO: clear it!
+void IconsManager::configurationUpdated()
 {
-	kdebugf();
-	QString previousIconTheme = config_file.readEntry("Look", "IconTheme");
-	QComboBox *iconThemeCombo = ConfigDialog::getComboBox("Look", "Icon theme");
-	QString selectedTheme;
-	if (iconThemeCombo->currentText() == tr("Default"))
-		selectedTheme = "default";
-	else
-	    selectedTheme = iconThemeCombo->currentText();
-
-	if (selectedTheme != previousIconTheme)
-	{
-		config_file.writeEntry("Look", "IconTheme", selectedTheme);
-
-		icons_manager->clear();
-		icons_manager->setTheme(selectedTheme);
-		KaduActions.refreshIcons();
-		UserBox::userboxmenu->refreshIcons();
-		UserBox::management->refreshIcons();
-		icons_manager->refreshMenus();
-		kadu->changeAppearance();
-		QMessageBox::information(0, tr("Icons"), tr("Please close all (except main) Kadu windows"));
-	}
-
-	config_file.writeEntry("Look", "IconsPaths", icons_manager->additionalPaths().join(";"));
-	kdebugf2();
-}
-
-void IconsManager::onCreateTabLook()
-{
-	kdebugf();
-
-	QComboBox *iconThemeCombo = ConfigDialog::getComboBox("Look", "Icon theme");
-	iconThemeCombo->insertStringList(icons_manager->themes());
-	iconThemeCombo->setCurrentText(config_file.readEntry("Look", "IconTheme"));
-
-	const QStringList &Themes = icons_manager->themes();
-	if (Themes.contains("default"))
-		iconThemeCombo->changeItem(tr("Default"), Themes.findIndex("default"));
-
-	QStringList pl(QStringList::split(";", config_file.readEntry("Look", "IconsPaths")));
-	ConfigDialog::getSelectPaths("Look", "Icon paths")->setPathList(pl);
-
-	kdebugf2();
+	icons_manager->clear();
+	icons_manager->setTheme(config_file.readEntry("Look", "IconTheme"));
+	KaduActions.refreshIcons();
+	UserBox::userboxmenu->refreshIcons();
+	UserBox::management->refreshIcons();
+	icons_manager->refreshMenus();
+	kadu->changeAppearance();
 }
 
 void IconsManager::initModule()
@@ -215,49 +180,15 @@ void IconsManager::initModule()
 
 	icons_manager->setTheme(config_file.readEntry("Look","IconTheme"));
 
-	ConfigDialog::addHBox("Look", "Look", "icon_theme");
-	ConfigDialog::addComboBox("Look", "icon_theme", QT_TRANSLATE_NOOP("@default","Icon theme"));
-	ConfigDialog::addSelectPaths("Look", "icon_theme", QT_TRANSLATE_NOOP("@default","Icon paths"));
-
-	ConfigDialog::registerSlotOnCreateTab("Look", icons_manager, SLOT(onCreateTabLook()));
-	ConfigDialog::registerSlotOnApplyTab("Look", icons_manager, SLOT(onApplyTabLook()));
-	ConfigDialog::connectSlot("Look", "Icon paths", SIGNAL(changed(const QStringList&)),
-								icons_manager, SLOT(selectedPaths(const QStringList&)));
 	kdebugf2();
 }
 
 void IconsManager::closeModule()
 {
 	kdebugf();
-	ConfigDialog::disconnectSlot("Look", "Icon paths", SIGNAL(changed(const QStringList&)),
-								icons_manager, SLOT(selectedPaths(const QStringList&)));
-	ConfigDialog::unregisterSlotOnCreateTab("Look", icons_manager, SLOT(onCreateTabLook()));
-	ConfigDialog::unregisterSlotOnApplyTab("Look", icons_manager, SLOT(onApplyTabLook()));
-
-	ConfigDialog::removeControl("Look", "Icon paths");
-	ConfigDialog::removeControl("Look", "Icon theme");
-	ConfigDialog::removeControl("Look", "icon_theme");
 
 	delete icons_manager;
 	icons_manager = 0;
-	kdebugf2();
-}
-
-void IconsManager::selectedPaths(const QStringList& paths)
-{
-	kdebugf();
-	setPaths(paths);
-	QComboBox* iconThemeCombo = ConfigDialog::getComboBox("Look","Icon theme");
-	QString current = iconThemeCombo->currentText();
-
-	ConfigDialog::getSelectPaths("Look","Icon paths")->setPathList(additionalPaths());
-
-	iconThemeCombo->clear();
-	iconThemeCombo->insertStringList(themes());
-	iconThemeCombo->setCurrentText(current);
-
-	if (paths.contains("default"))
-		iconThemeCombo->changeItem(tr("Default"), paths.findIndex("default"));
 	kdebugf2();
 }
 

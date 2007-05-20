@@ -7,9 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "config_dialog.h"
 #include "custom_input.h"
 #include "debug.h"
+#include "hot_key.h"
 
 CustomInput::CustomInput(QWidget* parent, const char* name)
 	: QMultiLineEdit(parent, name), autosend_enabled(true)
@@ -57,27 +57,27 @@ void CustomInput::keyPressEvent(QKeyEvent* e)
 			kdebugf2();
 			return;
 		}
-		if (HotKey::shortCut(e,"ShortCuts", "chat_bold"))
-		{
-			emit specialKeyPressed(CustomInput::KEY_BOLD);
-			e->accept();
-			kdebugf2();
-			return;
-		}
-		else if (HotKey::shortCut(e,"ShortCuts", "chat_italic"))
-		{
-			emit specialKeyPressed(CustomInput::KEY_ITALIC);
-			e->accept();
-			kdebugf2();
-			return;
-		}
-		else if (HotKey::shortCut(e,"ShortCuts", "chat_underline"))
-		{
-			emit specialKeyPressed(CustomInput::KEY_UNDERLINE);
-			e->accept();
-			kdebugf2();
-			return;
-		}
+// 		if (HotKey::shortCut(e,"ShortCuts", "chat_bold"))
+// 		{
+// 			emit specialKeyPressed(CustomInput::KEY_BOLD);
+// 			e->accept();
+// 			kdebugf2();
+// 			return;
+// 		}
+// 		else if (HotKey::shortCut(e,"ShortCuts", "chat_italic"))
+// 		{
+// 			emit specialKeyPressed(CustomInput::KEY_ITALIC);
+// 			e->accept();
+// 			kdebugf2();
+// 			return;
+// 		}
+// 		else if (HotKey::shortCut(e,"ShortCuts", "chat_underline"))
+// 		{
+// 			emit specialKeyPressed(CustomInput::KEY_UNDERLINE);
+// 			e->accept();
+// 			kdebugf2();
+// 			return;
+// 		}
 	}
 	QMultiLineEdit::keyPressEvent(e);
 	kdebugf2();

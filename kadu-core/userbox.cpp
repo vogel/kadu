@@ -17,7 +17,7 @@
 #include <qspinbox.h>
 #include <qvgroupbox.h>
 
-#include "config_dialog.h"
+// #include "config_dialog.h"
 #include "config_file.h"
 #include "debug.h"
 #include "html_document.h"
@@ -812,60 +812,11 @@ void UserBox::messageFromUserDeleted(UserListElement elem)
 void UserBox::closeModule()
 {
 	kdebugf();
-	ConfigDialog::disconnectSlot("Look", "Userbox background color", SIGNAL(changed(const char *, const QColor&)), userboxslots, SLOT(chooseColor(const char *, const QColor&)), "userbox_bg_color");
-	ConfigDialog::disconnectSlot("Look", "Userbox font color", SIGNAL(changed(const char *, const QColor&)), userboxslots, SLOT(chooseColor(const char *, const QColor&)), "userbox_font_color");
-	ConfigDialog::disconnectSlot("Look", "Font in userbox", SIGNAL(changed(const char *, const QFont&)), userboxslots, SLOT(chooseFont(const char *, const QFont&)), "userbox_font_box");
-	ConfigDialog::disconnectSlot("Look", "Multicolumn userbox", SIGNAL(toggled(bool)), userboxslots, SLOT(onMultiColumnUserbox(bool)));
-	ConfigDialog::disconnectSlot("Look", 0, SIGNAL(clicked()), userboxslots, SLOT(chooseBackgroundFile()), "userbox_background_fileopen");
-	ConfigDialog::disconnectSlot("Look", "Change image size", SIGNAL(toggled(bool)), userboxslots, SLOT(userboxBackgroundMove(bool)));
-	ConfigDialog::disconnectSlot("Look", "Background", SIGNAL(textChanged(const QString &)), userboxslots, SLOT(backgroundFileChanged(const QString &)));
 
-	ConfigDialog::unregisterSlotOnCreateTab("Look", userboxslots, SLOT(onCreateTabLook()));
-	ConfigDialog::unregisterSlotOnApplyTab("Look", userboxslots, SLOT(onApplyTabLook()));
 	delete KaduListBoxPixmap::descriptionFontMetrics;
 	KaduListBoxPixmap::descriptionFontMetrics = 0;
 	delete userboxslots;
 	userboxslots = 0;
-
-		ConfigDialog::removeControl("Look", "Image height");
-		ConfigDialog::removeControl("Look", "Image width");
-		ConfigDialog::removeControl("Look", "Start at [Y]");
-		ConfigDialog::removeControl("Look", "Start at [X]");
-		ConfigDialog::removeControl("Look", "Change image size");
-	ConfigDialog::removeControl("Look", "Background image options");
-
-	ConfigDialog::removeControl("Look", 0, "userbox_background_fileopen");
-	ConfigDialog::removeControl("Look", "Background");
-	ConfigDialog::removeControl("Look", "userbox_background");
-	ConfigDialog::removeControl("Look", "Userbox background");
-
-				ConfigDialog::removeControl("Look", "<b>Text</b> preview", "preview_panel");
-			ConfigDialog::removeControl("Look", "Preview panel");
-				ConfigDialog::removeControl("Look", "<b>Text</b> preview", "preview_userbox");
-			ConfigDialog::removeControl("Look", "Preview userbox");
-		ConfigDialog::removeControl("Look", "othr_prvws");
-//	ConfigDialog::removeControl("Look", "Previews");
-
-		ConfigDialog::removeControl("Look", "Font in userbox", "userbox_font_box");
-//	ConfigDialog::removeControl("Look", "Fonts");
-
-			ConfigDialog::removeControl("Look", "Description font color", "userbox_desc_color");
-			ConfigDialog::removeControl("Look", "Userbox font color", "userbox_font_color");
-			ConfigDialog::removeControl("Look", "Userbox background color", "userbox_bg_color");
-//		ConfigDialog::removeControl("Look", "Main window");
-//	ConfigDialog::removeControl("Look", "Colors");
-
-	ConfigDialog::removeControl("Look", "Userbox width when multi column");
-	ConfigDialog::removeControl("Look", "Multicolumn userbox");
-	ConfigDialog::removeControl("Look", "Columns");
-
-	ConfigDialog::removeControl("Look", "Show available users in bold");
-	ConfigDialog::removeControl("Look", "Align icon next to contact name");
-	ConfigDialog::removeControl("Look", "Multiline description in userbox");
-	ConfigDialog::removeControl("Look", "Show description in userbox");
-
-	ConfigDialog::removeControl("Look", "Tooltip style");
-	ConfigDialog::removeControl("Look", "Userbox");
 
 	delete tool_tip_class_manager;
 	tool_tip_class_manager = 0;
@@ -891,48 +842,21 @@ void UserBox::initModule()
 	if (config_file.readEntry("Look", "MultiColumnUserboxWidth").isEmpty())
 		config_file.addVariable("Look", "MultiColumnUserboxWidth", int(QFontMetrics(*defaultFont).width("Imie i Nazwisko")*1.5));
 
-	ConfigDialog::addCheckBox("Look", "varOpts-beginner", QT_TRANSLATE_NOOP("@default", "Show description in userbox"), "ShowDesc", true);
-	ConfigDialog::addCheckBox("Look", "varOpts-beginner", QT_TRANSLATE_NOOP("@default", "Multiline description in userbox"), "ShowMultilineDesc", true, 0, 0, Advanced);
-	ConfigDialog::addCheckBox("Look", "varOpts-advanced", QT_TRANSLATE_NOOP("@default", "Align icon next to contact name"), "AlignUserboxIconsTop", config_file.readBoolEntry("Look", "AlignUserboxIconsTop"), 0, 0, Advanced);
-	ConfigDialog::addCheckBox("Look", "varOpts-expert", QT_TRANSLATE_NOOP("@default", "Show available users in bold"), "ShowBold", true, QT_TRANSLATE_NOOP("@default","Displays users that are not offline using a bold font"), 0, Expert);
 
-	ConfigDialog::addVGroupBox("Look", "varOpts2", QT_TRANSLATE_NOOP("@default", "Columns"), 0, Advanced);
-	ConfigDialog::addCheckBox("Look", "Columns", QT_TRANSLATE_NOOP("@default", "Multicolumn userbox"), "MultiColumnUserbox", false);
-	ConfigDialog::addSpinBox("Look", "Columns", QT_TRANSLATE_NOOP("@default", "Userbox width when multi column"), "MultiColumnUserboxWidth", 1, 1000, 1);
+// 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Userbox background"), 0, Advanced);
+// 	ConfigDialog::addHBox("Look", "Userbox background", "userbox_background");
+// 	ConfigDialog::addLineEdit("Look", "userbox_background", QT_TRANSLATE_NOOP("@default", "Background"), "UserboxBackground", 0, "Background Path");
+// 	ConfigDialog::addPushButton("Look", "userbox_background", 0, "OpenFile", 0, "userbox_background_fileopen");
 
-//	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Colors"), 0, Advanced);
-//		ConfigDialog::addVGroupBox("Look", "Colors", QT_TRANSLATE_NOOP("@default", "Main window"));
-			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Userbox background color"), "UserboxBgColor", QColor(), 0, "userbox_bg_color");
-			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Userbox font color"), "UserboxFgColor", QColor(), 0, "userbox_font_color");
-			ConfigDialog::addColorButton("Look", "Main window", QT_TRANSLATE_NOOP("@default", "Description font color"), "DescriptionColor", QColor(), 0, "userbox_desc_color");
-
-//	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Fonts"), 0, Advanced);
-		ConfigDialog::addSelectFont("Look", "Fonts", QT_TRANSLATE_NOOP("@default", "Font in userbox"), "UserboxFont", defaultFont->toString(), 0, "userbox_font_box");
-
-//	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Previews"), 0, Advanced);
-		ConfigDialog::addHBox("Look", "Previews", "othr_prvws");
-			ConfigDialog::addVGroupBox("Look", "othr_prvws", QT_TRANSLATE_NOOP("@default", "Preview userbox"));
-				ConfigDialog::addLabel("Look", "Preview userbox", "<b>Text</b> preview", "preview_userbox");
-			ConfigDialog::addVGroupBox("Look", "othr_prvws", QT_TRANSLATE_NOOP("@default", "Preview panel"));
-				ConfigDialog::addLabel("Look", "Preview panel", "<b>Text</b> preview", "preview_panel");
-
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Userbox background"), 0, Advanced);
-	ConfigDialog::addHBox("Look", "Userbox background", "userbox_background");
-	ConfigDialog::addLineEdit("Look", "userbox_background", QT_TRANSLATE_NOOP("@default", "Background"), "UserboxBackground", 0, "Background Path");
-	ConfigDialog::addPushButton("Look", "userbox_background", 0, "OpenFile", 0, "userbox_background_fileopen");
-
-	ConfigDialog::addVGroupBox("Look", "Userbox background", QT_TRANSLATE_NOOP("@default", "Background image options"), 0, Expert);
-		ConfigDialog::addCheckBox("Look", "Background image options", QT_TRANSLATE_NOOP("@default", "Change image size"), "UserboxBackgroundMove", false);
-		ConfigDialog::addSpinBox("Look", "Background image options", QT_TRANSLATE_NOOP("@default", "Start at [X]"), "UserboxBackgroundSX", 0, 1499, 1);
-		ConfigDialog::addSpinBox("Look", "Background image options", QT_TRANSLATE_NOOP("@default", "Start at [Y]"), "UserboxBackgroundSY", 0, 1099, 1);
-		ConfigDialog::addSpinBox("Look", "Background image options", QT_TRANSLATE_NOOP("@default", "Image width"), "UserboxBackgroundSW", 100, 1600, 1);
-		ConfigDialog::addSpinBox("Look", "Background image options", QT_TRANSLATE_NOOP("@default", "Image height"), "UserboxBackgroundSH", 100, 1200, 1);
+// 	ConfigDialog::addVGroupBox("Look", "Userbox background", QT_TRANSLATE_NOOP("@default", "Background image options"), 0, Expert);
+// 		ConfigDialog::addCheckBox("Look", "Background image options", QT_TRANSLATE_NOOP("@default", "Change image size"), "UserboxBackgroundMove", false);
+// 		ConfigDialog::addSpinBox("Look", "Background image options", QT_TRANSLATE_NOOP("@default", "Start at [X]"), "UserboxBackgroundSX", 0, 1499, 1);
+// 		ConfigDialog::addSpinBox("Look", "Background image options", QT_TRANSLATE_NOOP("@default", "Start at [Y]"), "UserboxBackgroundSY", 0, 1099, 1);
+// 		ConfigDialog::addSpinBox("Look", "Background image options", QT_TRANSLATE_NOOP("@default", "Image width"), "UserboxBackgroundSW", 100, 1600, 1);
+// 		ConfigDialog::addSpinBox("Look", "Background image options", QT_TRANSLATE_NOOP("@default", "Image height"), "UserboxBackgroundSH", 100, 1200, 1);
 
 	QStringList options;
 	QStringList values;
-
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Userbox tooltips"), 0);
-	ConfigDialog::addComboBox("Look", "Userbox tooltips", QT_TRANSLATE_NOOP("@default", "Tooltip style"), "UserboxToolTipStyle", options, values, "Hints", 0);
 
 	KaduListBoxPixmap::setFont(config_file.readFontEntry("Look","UserboxFont"));
 	KaduListBoxPixmap::setShowDesc(config_file.readBoolEntry("Look", "ShowDesc"));
@@ -944,21 +868,6 @@ void UserBox::initModule()
 	KaduListBoxPixmap::setDescriptionColor(config_file.readColorEntry("Look", "DescriptionColor"));
 
 	userboxslots= new UserBoxSlots();
-	ConfigDialog::registerSlotOnCreateTab("Look", userboxslots, SLOT(onCreateTabLook()));
-	ConfigDialog::registerSlotOnApplyTab("Look", userboxslots, SLOT(onApplyTabLook()));
-
-	ConfigDialog::connectSlot("Look", "Userbox background color", SIGNAL(changed(const char *, const QColor&)), userboxslots, SLOT(chooseColor(const char *, const QColor&)), "userbox_bg_color");
-	ConfigDialog::connectSlot("Look", "Userbox font color", SIGNAL(changed(const char *, const QColor&)), userboxslots, SLOT(chooseColor(const char *, const QColor&)), "userbox_font_color");
-
-	ConfigDialog::connectSlot("Look", "Font in userbox", SIGNAL(changed(const char *, const QFont&)), userboxslots, SLOT(chooseFont(const char *, const QFont&)), "userbox_font_box");
-
-	ConfigDialog::connectSlot("Look", "Multicolumn userbox", SIGNAL(toggled(bool)), userboxslots, SLOT(onMultiColumnUserbox(bool)));
-
-	ConfigDialog::connectSlot("Look", 0, SIGNAL(clicked()), userboxslots, SLOT(chooseBackgroundFile()), "userbox_background_fileopen");
-
-	ConfigDialog::connectSlot("Look", "Change image size", SIGNAL(toggled(bool)), userboxslots, SLOT(userboxBackgroundMove(bool)));
-
-	ConfigDialog::connectSlot("Look", "Background", SIGNAL(textChanged(const QString &)), userboxslots, SLOT(backgroundFileChanged(const QString &)));
 
 	userlist->addPerContactNonProtocolConfigEntry("hide_description", "HideDescription");
 
@@ -1070,54 +979,34 @@ void UserBoxSlots::onCreateTabLook()
 {
 	kdebugf();
 
-	QSpinBox *multi = ConfigDialog::getSpinBox("Look", "Userbox width when multi column");
-	multi->setSuffix(" px");
-	multi->setEnabled(config_file.readBoolEntry("Look", "MultiColumnUserbox"));
+// 	backgroundFileChanged(config_file.readEntry("Look", "UserboxBackground"));
 
-	backgroundFileChanged(config_file.readEntry("Look", "UserboxBackground"));
+// 	multi = ConfigDialog::getSpinBox("Look", "Start at [X]");
+// 	multi->setSuffix(" px");
+// 	multi->setEnabled(config_file.readBoolEntry("Look", "UserboxBackgroundMove"));
+// 	multi=ConfigDialog::getSpinBox("Look", "Start at [Y]");
+// 	multi->setSuffix(" px");
+// 	multi->setEnabled(config_file.readBoolEntry("Look", "UserboxBackgroundMove"));
+// 	multi=ConfigDialog::getSpinBox("Look", "Image width");
+// 	multi->setSuffix(" px");
+// 	multi->setEnabled(config_file.readBoolEntry("Look", "UserboxBackgroundMove"));
+// 	multi=ConfigDialog::getSpinBox("Look", "Image height");
+// 	multi->setSuffix(" px");
+// 	multi->setEnabled(config_file.readBoolEntry("Look", "UserboxBackgroundMove"));
 
-	multi = ConfigDialog::getSpinBox("Look", "Start at [X]");
-	multi->setSuffix(" px");
-	multi->setEnabled(config_file.readBoolEntry("Look", "UserboxBackgroundMove"));
-	multi=ConfigDialog::getSpinBox("Look", "Start at [Y]");
-	multi->setSuffix(" px");
-	multi->setEnabled(config_file.readBoolEntry("Look", "UserboxBackgroundMove"));
-	multi=ConfigDialog::getSpinBox("Look", "Image width");
-	multi->setSuffix(" px");
-	multi->setEnabled(config_file.readBoolEntry("Look", "UserboxBackgroundMove"));
-	multi=ConfigDialog::getSpinBox("Look", "Image height");
-	multi->setSuffix(" px");
-	multi->setEnabled(config_file.readBoolEntry("Look", "UserboxBackgroundMove"));
-
-	QStringList options;
-	QStringList values;
-	options << tr("None");
-	values << "";
-
-	QStringList toolTipClasses = tool_tip_class_manager->getToolTipClasses();
-	CONST_FOREACH(toolTipClass, toolTipClasses)
-	{
-		options << tr(*toolTipClass);
-		values << *toolTipClass;
-	}
-
-	ConfigDialog::changeComboBoxParams("Look", "Tooltip style", options, values);
-
-	updatePreview();
 	kdebugf2();
 }
 
-void UserBoxSlots::onApplyTabLook()
+void UserBox::configurationUpdated()
 {
 	kdebugf();
-	UserBox *userbox = kadu->userbox();
 
 	if (config_file.readBoolEntry("Look", "MultiColumnUserbox"))
-		userbox->setColumnMode(QListBox::FitToWidth);
+		setColumnMode(QListBox::FitToWidth);
 	else
-		userbox->setColumnMode(1);
+		setColumnMode(1);
 
-	userbox->QListBox::setFont(config_file.readFontEntry("Look", "UserboxFont"));
+	QListBox::setFont(config_file.readFontEntry("Look", "UserboxFont"));
 
 	KaduListBoxPixmap::setFont(config_file.readFontEntry("Look","UserboxFont"));
 	KaduListBoxPixmap::setShowDesc(config_file.readBoolEntry("Look", "ShowDesc"));
@@ -1176,68 +1065,16 @@ void UserBox::setColorsOrBackgrounds()
 	}
 }
 
-void UserBoxSlots::backgroundFileChanged(const QString &text)
-{
-	QVGroupBox *opts = ConfigDialog::getVGroupBox("Look", "Background image options");
-	opts->setEnabled(!text.stripWhiteSpace().isEmpty());
-}
-
 void UserBoxSlots::chooseBackgroundFile()
 {
-	QLineEdit *bg_path = ConfigDialog::getLineEdit("Look", "Background");
-	QWidget w;
-	ImageDialog *bg_dlg = new ImageDialog(&w);
-	bg_dlg->setDir(bg_path->text());
-	bg_dlg->setCaption(tr("Insert image"));
-	if (bg_dlg->exec() == QDialog::Accepted)
-		bg_path->setText(bg_dlg->selectedFile());
-	delete bg_dlg;
-}
-
-void UserBoxSlots::userboxBackgroundMove(bool toggled)
-{
-	ConfigDialog::getSpinBox("Look", "Start at [X]")->setEnabled(toggled);
-	ConfigDialog::getSpinBox("Look", "Start at [Y]")->setEnabled(toggled);
-	ConfigDialog::getSpinBox("Look", "Image width")->setEnabled(toggled);
-	ConfigDialog::getSpinBox("Look", "Image height")->setEnabled(toggled);
-}
-
-void UserBoxSlots::chooseColor(const char *name, const QColor &color)
-{
-	kdebugf();
-	QLabel *preview= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "preview_userbox");
-	if (QString(name)=="userbox_bg_color")
-		preview->setPaletteBackgroundColor(color);
-	else if (QString(name)=="userbox_font_color")
-		preview->setPaletteBackgroundColor(color);
-	else
-		kdebugmf(KDEBUG_ERROR, "label '%s' not known\n", name);
-	kdebugf2();
-}
-
-void UserBoxSlots::chooseFont(const char *name, const QFont &font)
-{
-	kdebugf();
-	QLabel *preview= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "preview_userbox");
-	if (QString(name)=="userbox_font_box")
-		preview->setFont(font);
-	kdebugf2();
-}
-
-void UserBoxSlots::updatePreview()
-{
-	kdebugf();
-	QLabel *preview= ConfigDialog::getLabel("Look", "<b>Text</b> preview", "preview_userbox");
-	preview->setFont(config_file.readFontEntry("Look", "UserboxFont"));
-	preview->setPaletteForegroundColor(config_file.readColorEntry("Look", "UserboxFgColor"));
-	preview->setPaletteBackgroundColor(config_file.readColorEntry("Look", "UserboxBgColor"));
-	preview->setAlignment(Qt::AlignLeft);
-	kdebugf2();
-}
-
-void UserBoxSlots::onMultiColumnUserbox(bool toggled)
-{
-	ConfigDialog::getSpinBox("Look", "Userbox width when multi column")->setEnabled(toggled);
+// 	QLineEdit *bg_path = ConfigDialog::getLineEdit("Look", "Background");
+// 	QWidget w;
+// 	ImageDialog *bg_dlg = new ImageDialog(&w);
+// 	bg_dlg->setDir(bg_path->text());
+// 	bg_dlg->setCaption(tr("Insert image"));
+// 	if (bg_dlg->exec() == QDialog::Accepted)
+// 		bg_path->setText(bg_dlg->selectedFile());
+// 	delete bg_dlg;
 }
 
 QValueList<UserBox *> UserBox::UserBoxes;

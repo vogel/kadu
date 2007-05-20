@@ -21,7 +21,7 @@
 
 #include "chat_manager.h"
 #include "chat_manager_slots.h"
-#include "config_dialog.h"
+// #include "config_dialog.h"
 #include "config_file.h"
 #include "debug.h"
 #include "message_box.h"
@@ -34,46 +34,46 @@ ChatManagerSlots::ChatManagerSlots(QObject* parent, const char* name)
 
 void ChatManagerSlots::setMailPath(int mailNumber)
 {
-	kdebugf();
+// 	kdebugf();
 
-	QLineEdit *mailPathEdit = ConfigDialog::getLineEdit("Chat", "Custom Mail client");
+// 	QLineEdit *mailPathEdit = ConfigDialog::getLineEdit("Chat", "Custom Mail client");
 
-	switch (mailNumber)
-	{
-		case 0:
-		{
-			mailPathEdit->setBackgroundMode(PaletteBase);
-			mailPathEdit->setReadOnly(false);
-			return;
-		}
-		case 1:
-		{
-			mailPathEdit->setText("kmail %1");
-			mailPathEdit->setBackgroundMode(PaletteButton);
-			mailPathEdit->setReadOnly(true);
-			break;
-		}
-		case 2:
-		{
-			mailPathEdit->setText("thunderbird -compose mailto:%1");
-			mailPathEdit->setBackgroundMode(PaletteButton);
-			mailPathEdit->setReadOnly(true);
-			break;
-		}
-		case 3:
-		{
-			mailPathEdit->setText("seamonkey -compose mailto:%1");
-			mailPathEdit->setBackgroundMode(PaletteButton);
-			mailPathEdit->setReadOnly(true);
-			break;
-		}
-		default:
-			return;
-	}
+// 	switch (mailNumber)
+// 	{
+// 		case 0:
+// 		{
+// 			mailPathEdit->setBackgroundMode(PaletteBase);
+// 			mailPathEdit->setReadOnly(false);
+// 			return;
+// 		}
+// 		case 1:
+// 		{
+// 			mailPathEdit->setText("kmail %1");
+// 			mailPathEdit->setBackgroundMode(PaletteButton);
+// 			mailPathEdit->setReadOnly(true);
+// 			break;
+// 		}
+// 		case 2:
+// 		{
+// 			mailPathEdit->setText("thunderbird -compose mailto:%1");
+// 			mailPathEdit->setBackgroundMode(PaletteButton);
+// 			mailPathEdit->setReadOnly(true);
+// 			break;
+// 		}
+// 		case 3:
+// 		{
+// 			mailPathEdit->setText("seamonkey -compose mailto:%1");
+// 			mailPathEdit->setBackgroundMode(PaletteButton);
+// 			mailPathEdit->setReadOnly(true);
+// 			break;
+// 		}
+// 		default:
+// 			return;
+// 	}
 
-	findMailClient(mailNumber);
-		
-	kdebugf2();
+// 	findMailClient(mailNumber);
+
+// 	kdebugf2();
 }
 
 void ChatManagerSlots::findMailClient(const unsigned int mailNumber)
@@ -128,14 +128,14 @@ void ChatManagerSlots::findMailClient(const unsigned int mailNumber)
 	{
 		MessageBox::msg(tr("Selected mail client was not found in your system. The path to it doesn't exist in $PATH variable.\nYou may add it to $PATH or specify location using Specify path option"));
 
-		ConfigDialog::getComboBox("Chat", "Choose your mail client")->setCurrentItem(0);
-		setMailPath(0);
+// 		ConfigDialog::getComboBox("Chat", "Choose your mail client")->setCurrentItem(0);
+// 		setMailPath(0);
 
 		return;
 	}
 
-	QLineEdit *mailPathEdit = ConfigDialog::getLineEdit("Chat", "Custom Mail client");
-	mailPathEdit->setText(mailClientPath + '/' + mailPathEdit->text());
+// 	QLineEdit *mailPathEdit = ConfigDialog::getLineEdit("Chat", "Custom Mail client");
+// 	mailPathEdit->setText(mailClientPath + '/' + mailPathEdit->text());
 
 	kdebugf2();
 }
@@ -227,47 +227,44 @@ void ChatManagerSlots::initBrowserOptions(QComboBox *browserCombo, QComboBox *br
 void ChatManagerSlots::onCreateTabChat()
 {
 	kdebugf();
-	QComboBox* cb_emoticons_theme= ConfigDialog::getComboBox("Chat", "Emoticons theme");
-	cb_emoticons_theme->insertStringList(emoticons->themes());
-	cb_emoticons_theme->setCurrentText(config_file.readEntry("Chat", "EmoticonsTheme"));
 
-	if ((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") == EMOTS_NONE)
-		(cb_emoticons_theme)->setEnabled(false);
+// 	if ((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") == EMOTS_NONE)
+// 		(cb_emoticons_theme)->setEnabled(false);
 
 	//ustawienie pól w combo wyboru przegladarki
-	QComboBox *browserCombo= ConfigDialog::getComboBox("Chat", "Choose your browser");
-	QComboBox *browserOptionsCombo=ConfigDialog::getComboBox("Chat", "Browser options");
-	QLineEdit *browserPath= ConfigDialog::getLineEdit("Chat", "Custom Web browser");
-	initBrowserOptions(browserCombo, browserOptionsCombo, browserPath);
+// 	QComboBox *browserCombo= ConfigDialog::getComboBox("Chat", "Choose your browser");
+// 	QComboBox *browserOptionsCombo=ConfigDialog::getComboBox("Chat", "Browser options");
+// 	QLineEdit *browserPath= ConfigDialog::getLineEdit("Chat", "Custom Web browser");
+// 	initBrowserOptions(browserCombo, browserOptionsCombo, browserPath);
 
 	//podpiecie pod zmiane w combo
-	connect(browserCombo, SIGNAL(activated (int)), this, SLOT(findAndSetWebBrowser(int)));
-	connect(browserOptionsCombo, SIGNAL(activated (int)), this, SLOT(findAndSetBrowserOption(int)));
+// 	connect(browserCombo, SIGNAL(activated (int)), this, SLOT(findAndSetWebBrowser(int)));
+// 	connect(browserOptionsCombo, SIGNAL(activated (int)), this, SLOT(findAndSetBrowserOption(int)));
 
 	//ustawienie pól w combo wyboru klienta poczty i podpiêcie pod zmianê
-	QComboBox *mailCombo = ConfigDialog::getComboBox("Chat", "Choose your mail client");
-	setMailClients(mailCombo);
-	connect(mailCombo, SIGNAL(activated(int)), this, SLOT(setMailPath(int)));
+// 	QComboBox *mailCombo = ConfigDialog::getComboBox("Chat", "Choose your mail client");
+// 	setMailClients(mailCombo);
+// 	connect(mailCombo, SIGNAL(activated(int)), this, SLOT(setMailPath(int)));
 	//ustawienie wybranego klienta w combo i wpisanie jego ¶cie¿ki do pola edycji
 	unsigned int mailClientNo = config_file.readUnsignedNumEntry("Chat", "MailClientNo", 0);
-	mailCombo->setCurrentItem(mailClientNo);
+// 	mailCombo->setCurrentItem(mailClientNo);
 	setMailPath(mailClientNo);
 
 	onPruneChat(config_file.readBoolEntry("Chat", "ChatPrune"));
 
-	QCheckBox *c_foldlink = ConfigDialog::getCheckBox("Chat", "Automatically fold links");
-	QHGroupBox *h_fold = ConfigDialog::getHGroupBox("Chat", "Link folding");
+// 	QCheckBox *c_foldlink = ConfigDialog::getCheckBox("Chat", "Automatically fold links");
+// 	QHGroupBox *h_fold = ConfigDialog::getHGroupBox("Chat", "Link folding");
 	onFoldLink(config_file.readBoolEntry("Chat", "FoldLink"));
 
-	QToolTip::add(h_fold, tr("URLs longer than this value will be shown truncated to this length"));
-	QToolTip::add(c_foldlink, tr("This will show a long URL as http://www.start...end.com/\nto protect the chat window from a mess"));
-	ConfigDialog::getSpinBox("Chat", "Max image size")->setSuffix(" kB");
+// 	QToolTip::add(h_fold, tr("URLs longer than this value will be shown truncated to this length"));
+// 	QToolTip::add(c_foldlink, tr("This will show a long URL as http://www.start...end.com/\nto protect the chat window from a mess"));
+// 	ConfigDialog::getSpinBox("Chat", "Max image size")->setSuffix(" kB");
 
-	QSpinBox *blockCloseTime=ConfigDialog::getSpinBox("Chat", "Max time to block window close");
-	blockCloseTime->setEnabled(config_file.readBoolEntry("Chat", "ChatCloseTimer"));
-	blockCloseTime->setSuffix(" s");
-	QCheckBox *shortcutSends = ConfigDialog::getCheckBox("Chat", "\"%1\" in chat sends message by default");
-	shortcutSends->setText(shortcutSends->text().arg(config_file.readEntry("ShortCuts", "chat_newline")));
+// 	QSpinBox *blockCloseTime=ConfigDialog::getSpinBox("Chat", "Max time to block window close");
+// 	blockCloseTime->setEnabled(config_file.readBoolEntry("Chat", "ChatCloseTimer"));
+// 	blockCloseTime->setSuffix(" s");
+// 	QCheckBox *shortcutSends = ConfigDialog::getCheckBox("Chat", "\"%1\" in chat sends message by default");
+// 	shortcutSends->setText(shortcutSends->text().arg(config_file.readEntry("ShortCuts", "chat_newline")));
 
 	kdebugf2();
 }
@@ -276,29 +273,29 @@ void ChatManagerSlots::onCreateTabLook()
 {
 	kdebugf();
 	//deaktywacja opcji wylaczenia separatorow
-	QCheckBox *b_noHeadersRepeat= ConfigDialog::getCheckBox("Look", "Remove chat header repetitions");
+// 	QCheckBox *b_noHeadersRepeat= ConfigDialog::getCheckBox("Look", "Remove chat header repetitions");
 
-	QSpinBox *s_headersSeparatorHeight= ConfigDialog::getSpinBox("Look", "Chat header separators height:");
-	QSpinBox *s_noHeadersInterval= ConfigDialog::getSpinBox("Look", "Interval between header removal:");
+// 	QSpinBox *s_headersSeparatorHeight= ConfigDialog::getSpinBox("Look", "Chat header separators height:");
+// 	QSpinBox *s_noHeadersInterval= ConfigDialog::getSpinBox("Look", "Interval between header removal:");
 
-	QSpinBox *s_SeparatorHeight= ConfigDialog::getSpinBox("Look", "Message separators height:");
+// 	QSpinBox *s_SeparatorHeight= ConfigDialog::getSpinBox("Look", "Message separators height:");
 
-	s_headersSeparatorHeight->setEnabled(b_noHeadersRepeat->isChecked());
-	s_noHeadersInterval->setEnabled(b_noHeadersRepeat->isChecked());
+// 	s_headersSeparatorHeight->setEnabled(b_noHeadersRepeat->isChecked());
+// 	s_noHeadersInterval->setEnabled(b_noHeadersRepeat->isChecked());
 
 	//dodanie suffiksu w spinboksach
-	s_headersSeparatorHeight->setSuffix(" px");
-	s_noHeadersInterval->setSuffix(" min");
-	s_SeparatorHeight->setSuffix(" px");
+// 	s_headersSeparatorHeight->setSuffix(" px");
+// 	s_noHeadersInterval->setSuffix(" min");
+// 	s_SeparatorHeight->setSuffix(" px");
 
 	//opcja usuwania czasu z serwera
-	QSpinBox *s_noServerTimeDiff= ConfigDialog::getSpinBox("Look", "Maximum time difference");
-	
-	s_noServerTimeDiff->setEnabled(ConfigDialog::getCheckBox("Look", "Remove server time")->isChecked());
-	s_noServerTimeDiff->setSuffix(" s");
+// 	QSpinBox *s_noServerTimeDiff= ConfigDialog::getSpinBox("Look", "Maximum time difference");
 
-	onChatThemeChanged(ConfigDialog::getComboBox("Look", "Select chat style")->currentText());
-	updatePreview();
+// 	s_noServerTimeDiff->setEnabled(ConfigDialog::getCheckBox("Look", "Remove server time")->isChecked());
+// 	s_noServerTimeDiff->setSuffix(" s");
+
+// 	onChatThemeChanged(ConfigDialog::getComboBox("Look", "Select chat style")->currentText());
+// 	updatePreview();
 
 	kdebugf2();
 }
@@ -306,33 +303,33 @@ void ChatManagerSlots::onCreateTabLook()
 void ChatManagerSlots::onChatThemeChanged(const QString &name)
 {
 	kdebugf();
-	ConfigDialog::getTextEdit("Look", "Full chat style:")->setEnabled(name == qApp->translate("Chat", "Custom"));
+// 	ConfigDialog::getTextEdit("Look", "Full chat style:")->setEnabled(name == qApp->translate("Chat", "Custom"));
 }
 
 void ChatManagerSlots::onBlockClose(bool toggled)
 {
-	ConfigDialog::getSpinBox("Chat", "Max time to block window close")->setEnabled(toggled);
+// 	ConfigDialog::getSpinBox("Chat", "Max time to block window close")->setEnabled(toggled);
 }
 
 void ChatManagerSlots::onPruneChat(bool toggled)
 {
-	ConfigDialog::getHGroupBox("Chat", "Message pruning")->setEnabled(toggled);
+// 	ConfigDialog::getHGroupBox("Chat", "Message pruning")->setEnabled(toggled);
 }
 
 void ChatManagerSlots::onFoldLink(bool toggled)
 {
-	ConfigDialog::getHGroupBox("Chat", "Link folding")->setEnabled(toggled);
+// 	ConfigDialog::getHGroupBox("Chat", "Link folding")->setEnabled(toggled);
 }
 
 void ChatManagerSlots::onRemoveHeaders(bool toggled)
 {
-	ConfigDialog::getSpinBox("Look", "Chat header separators height:")->setEnabled(toggled);
-	ConfigDialog::getSpinBox("Look", "Interval between header removal:")->setEnabled(toggled);
+// 	ConfigDialog::getSpinBox("Look", "Chat header separators height:")->setEnabled(toggled);
+// 	ConfigDialog::getSpinBox("Look", "Interval between header removal:")->setEnabled(toggled);
 }
 
 void ChatManagerSlots::onRemoveServerTime(bool toggled)
 {
-	ConfigDialog::getSpinBox("Look", "Maximum time difference")->setEnabled(toggled);
+// 	ConfigDialog::getSpinBox("Look", "Maximum time difference")->setEnabled(toggled);
 }
 
 void ChatManagerSlots::onApplyTabLook()
@@ -349,112 +346,53 @@ void ChatManagerSlots::onApplyTabLook()
 	TYLKO sam± sk³adnie)
 */
 
-	QLineEdit *e_chatsyntax= ConfigDialog::getLineEdit("Look", "Chat window title syntax:");
-	QLineEdit *e_conferenceprefix= ConfigDialog::getLineEdit("Look", "Conference window title prefix:");
+// 	QLineEdit *e_chatsyntax= ConfigDialog::getLineEdit("Look", "Chat window title syntax:");
+// 	QLineEdit *e_conferenceprefix= ConfigDialog::getLineEdit("Look", "Conference window title prefix:");
 
-	if (e_chatsyntax->text() == tr("Chat with ")+"%a (%s[: %d])" || e_chatsyntax->text() == "Chat with %a (%s[: %d])")
-		config_file.writeEntry("Look", "ChatContents", QString::null);
+// 	if (e_chatsyntax->text() == tr("Chat with ")+"%a (%s[: %d])" || e_chatsyntax->text() == "Chat with %a (%s[: %d])")
+// 		config_file.writeEntry("Look", "ChatContents", QString::null);
 
-	if (e_conferenceprefix->text() == tr("Conference with ") || e_conferenceprefix->text() == "Conference with ")
-		config_file.writeEntry("Look", "ConferencePrefix", QString::null);
+// 	if (e_conferenceprefix->text() == tr("Conference with ") || e_conferenceprefix->text() == "Conference with ")
+// 		config_file.writeEntry("Look", "ConferencePrefix", QString::null);
 
 	kdebugf2();
 }
 
 void ChatManagerSlots::onApplyTabChat()
 {
-	kdebugf();
-
-	QComboBox* cb_emoticons_theme= ConfigDialog::getComboBox("Chat", "Emoticons theme");
-	config_file.writeEntry("Chat", "EmoticonsTheme",cb_emoticons_theme->currentText());
-	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
-
-	config_file.writeEntry("Chat", "WebBrowserNo", ConfigDialog::getComboBox("Chat", "Choose your browser")->currentItem());
-	config_file.writeEntry("Chat", "MailClientNo", ConfigDialog::getComboBox("Chat", "Choose your mail client")->currentItem());
-
-	chat_manager->changeAppearance();
-
-	if (config_file.readBoolEntry("Chat", "RememberPosition"))
-	{
-		userlist->addPerContactNonProtocolConfigEntry("chat_geometry", "ChatGeometry");
-		userlist->addPerContactNonProtocolConfigEntry("chat_vertical_sizes", "VerticalSizes");
-	}
-	else
-	{
-		userlist->removePerContactNonProtocolConfigEntry("chat_geometry");
-		userlist->removePerContactNonProtocolConfigEntry("chat_vertical_sizes");
-	}
-
-	bool msgTitle = config_file.readBoolEntry("Chat","NewMessagesInChatTitle");
-	bool blnTitle = config_file.readBoolEntry("Chat","BlinkChatTitle");
-	CONST_FOREACH(chat, chat_manager->chats()) // set options for all chats...
-	{
-		(*chat)->setShowNewMessagesNum(msgTitle);
-		(*chat)->setBlinkChatTitle(blnTitle);
-
-		unsigned int newMsgs = (*chat)->getNewMessagesNum();
-
-		// for chats with waiting messages we also trigger apropriate slots...
-		if (blnTitle && (newMsgs > 0)) 
-			(*chat)->changeTitle();
-		else if (msgTitle && (newMsgs > 0))
-			(*chat)->showNewMessagesNumInTitle();
-	}
-
-	KaduActions["autoSendAction"]->setAllOn(config_file.readBoolEntry("Chat", "AutoSend"));
-
-	kdebugf2();
 }
 
 void ChatManagerSlots::chooseColor(const char* name, const QColor& color)
 {
 	kdebugf();
-	QLabel *preview1= ConfigDialog::getLabel("Look", "<b>Me</b> 00:00:00", "chat_me");
-	QLabel *preview2= ConfigDialog::getLabel("Look", "<b>Other party</b> 00:00:02", "chat_other");
-	if (QString(name)=="own_bg_color")
-		preview1->setPaletteBackgroundColor(color);
-	else if (QString(name)=="his_bg_color")
-		preview2->setPaletteBackgroundColor(color);
-	else if (QString(name)=="own_font_color")
-		preview1->setPaletteForegroundColor(color);
-	else if (QString(name)=="his_font_color")
-		preview2->setPaletteForegroundColor(color);
-	else
-		kdebugm(KDEBUG_ERROR, "chooseColor: label '%s' not known!\n", name);
+// 	QLabel *preview1= ConfigDialog::getLabel("Look", "<b>Me</b> 00:00:00", "chat_me");
+// 	QLabel *preview2= ConfigDialog::getLabel("Look", "<b>Other party</b> 00:00:02", "chat_other");
+// 	if (QString(name)=="own_bg_color")
+// 		preview1->setPaletteBackgroundColor(color);
+// 	else if (QString(name)=="his_bg_color")
+// 		preview2->setPaletteBackgroundColor(color);
+// 	else if (QString(name)=="own_font_color")
+// 		preview1->setPaletteForegroundColor(color);
+// 	else if (QString(name)=="his_font_color")
+// 		preview2->setPaletteForegroundColor(color);
+// 	else
+// 		kdebugm(KDEBUG_ERROR, "chooseColor: label '%s' not known!\n", name);
 	kdebugf2();
-}
-
-void ChatManagerSlots::chooseFont(const char* name, const QFont& font)
-{
-	kdebugf();
-	QLabel *preview1= ConfigDialog::getLabel("Look", "<b>Me</b> 00:00:00", "chat_me");
-	QLabel *preview2= ConfigDialog::getLabel("Look", "<b>Other party</b> 00:00:02", "chat_other");
-	if (QString(name)=="chat_font_box")
-	{
-		preview1->setFont(font);
-		preview2->setFont(font);
-	}
-	kdebugf2();
-}
-
-void ChatManagerSlots::chooseEmoticonsStyle(int index)
-{
-	ConfigDialog::getComboBox("Chat","Emoticons theme")->setEnabled(index!=0);
 }
 
 void ChatManagerSlots::updatePreview()
 {
 	kdebugf();
-	QLabel *preview1= ConfigDialog::getLabel("Look", "<b>Me</b> 00:00:00", "chat_me");
-	QLabel *preview2= ConfigDialog::getLabel("Look", "<b>Other party</b> 00:00:02", "chat_other");
-	preview1->setFont(config_file.readFontEntry("Look", "ChatFont"));
-	preview1->setPaletteForegroundColor(config_file.readColorEntry("Look", "ChatMyFontColor"));
-	preview1->setPaletteBackgroundColor(config_file.readColorEntry("Look", "ChatMyBgColor"));
-	preview1->setAlignment(Qt::AlignLeft);
-	preview2->setFont(config_file.readFontEntry("Look", "ChatFont"));
-	preview2->setPaletteForegroundColor(config_file.readColorEntry("Look", "ChatUsrFontColor"));
-	preview2->setPaletteBackgroundColor(config_file.readColorEntry("Look", "ChatUsrBgColor"));
-	preview2->setAlignment(Qt::AlignLeft);
+// 	QLabel *preview1= ConfigDialog::getLabel("Look", "<b>Me</b> 00:00:00", "chat_me");
+// 	QLabel *preview2= ConfigDialog::getLabel("Look", "<b>Other party</b> 00:00:02", "chat_other");
+// 	preview1->setFont(config_file.readFontEntry("Look", "ChatFont"));
+// 	preview1->setPaletteForegroundColor(config_file.readColorEntry("Look", "ChatMyFontColor"));
+// 	preview1->setPaletteBackgroundColor(config_file.readColorEntry("Look", "ChatMyBgColor"));
+// 	preview1->setAlignment(Qt::AlignLeft);
+// 	preview2->setFont(config_file.readFontEntry("Look", "ChatFont"));
+// 	preview2->setPaletteForegroundColor(config_file.readColorEntry("Look", "ChatUsrFontColor"));
+// 	preview2->setPaletteBackgroundColor(config_file.readColorEntry("Look", "ChatUsrBgColor"));
+// 	preview2->setAlignment(Qt::AlignLeft);
 	kdebugf2();
 }
 
@@ -663,10 +601,10 @@ void ChatManagerSlots::findAndSetWebBrowser(int selectedBrowser)
 {
 	kdebugf();
 
-	QComboBox *browserCombo=ConfigDialog::getComboBox("Chat", "Choose your browser");
-	QComboBox *browserOptionsCombo=ConfigDialog::getComboBox("Chat", "Browser options");
-	QLineEdit *browserPath= ConfigDialog::getLineEdit("Chat", "Custom Web browser");
-	findBrowser(selectedBrowser, browserCombo, browserOptionsCombo, browserPath);
+// 	QComboBox *browserCombo=ConfigDialog::getComboBox("Chat", "Choose your browser");
+// 	QComboBox *browserOptionsCombo=ConfigDialog::getComboBox("Chat", "Browser options");
+// 	QLineEdit *browserPath= ConfigDialog::getLineEdit("Chat", "Custom Web browser");
+// 	findBrowser(selectedBrowser, browserCombo, browserOptionsCombo, browserPath);
 
 	kdebugf2();
 }
@@ -674,7 +612,7 @@ void ChatManagerSlots::findAndSetWebBrowser(int selectedBrowser)
 void ChatManagerSlots::setBrowserOption(int selectedOption, QLineEdit *browserPathEdit, int chosenBrowser)
 {
 	kdebugf();
-	/*
+	/*3
 		UWAGA: w tej funkcji NIE WOLNO korzystaæ z klasy ConfigDialog
 	*/
 	QString browserPath=browserPathEdit->text();
@@ -720,22 +658,22 @@ void ChatManagerSlots::setBrowserOption(int selectedOption, QLineEdit *browserPa
 void ChatManagerSlots::findAndSetBrowserOption(int selectedOption)
 {
 	kdebugf();
-	setBrowserOption(selectedOption,
-		ConfigDialog::getLineEdit("Chat", "Custom Web browser"),
-		ConfigDialog::getComboBox("Chat", "Choose your browser")->currentItem());
+// 	setBrowserOption(selectedOption,
+// 		ConfigDialog::getLineEdit("Chat", "Custom Web browser"),
+// 		ConfigDialog::getComboBox("Chat", "Choose your browser")->currentItem());
 	kdebugf2();
 }
 
 void ChatManagerSlots::chooseBackgroundFile()
 {
-	QLineEdit *bg_path = ConfigDialog::getLineEdit("Look", "Chat background image");
-	QWidget w;
-	ImageDialog *bg_dlg = new ImageDialog(&w);
-	bg_dlg->setDir(bg_path->text());
-	bg_dlg->setCaption(tr("Insert image"));
-	if (bg_dlg->exec() == QDialog::Accepted)
-		bg_path->setText(bg_dlg->selectedFile());
-	delete bg_dlg;
+// 	QLineEdit *bg_path = ConfigDialog::getLineEdit("Look", "Chat background image");
+// 	QWidget w;
+// 	ImageDialog *bg_dlg = new ImageDialog(&w);
+// 	bg_dlg->setDir(bg_path->text());
+// 	bg_dlg->setCaption(tr("Insert image"));
+// 	if (bg_dlg->exec() == QDialog::Accepted)
+// 		bg_path->setText(bg_dlg->selectedFile());
+// 	delete bg_dlg;
 }
 
 ChatManagerSlots* ChatManager::chatslots=NULL;

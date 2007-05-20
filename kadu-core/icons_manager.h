@@ -35,12 +35,15 @@ class IconsManager : public Themes
 
 		static void initModule();
 		static void closeModule();
-		
+
 		void registerMenu(QMenuData *menu);
 		void unregisterMenu(QMenuData *menu);
-		
+
 		void registerMenuItem(QMenuData *menu, const QString &caption, const QString &iconName);
 		void unregisterMenuItem(QMenuData *menu, const QString &caption);
+
+		void configurationUpdated();
+
 	public slots:
 		void clear();
 		void refreshMenus();
@@ -48,13 +51,9 @@ class IconsManager : public Themes
 	private:
 		QMap<QString, QPixmap> icons;
 		QMap<QString, QMovie> animatedIcons;
-		
+
 		QValueList<QPair<QMenuData *, QValueList<QPair<QString, QString> > > > menus;
 
-	private slots:
-		void selectedPaths(const QStringList& paths);
-		void onCreateTabLook();
-		void onApplyTabLook();
 };
 
 extern IconsManager *icons_manager;

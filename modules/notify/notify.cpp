@@ -9,7 +9,7 @@
 
 #include "chat.h"
 #include "chat_manager.h"
-#include "config_dialog.h"
+// #include "config_dialog.h"
 #include "config_file.h"
 #include "connection_error_notification.h"
 #include "debug.h"
@@ -44,12 +44,12 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name),
 {
 	kdebugf();
 
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Notify"), "NotifyTab");
-	ConfigDialog::addHGroupBox("Notify", "Notify", QT_TRANSLATE_NOOP("@default", "Notify configuration"));
+// 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Notify"), "NotifyTab");
+// 	ConfigDialog::addHGroupBox("Notify", "Notify", QT_TRANSLATE_NOOP("@default", "Notify configuration"));
 
 	//pierwsza kolumna - nazwy
-	ConfigDialog::addVBox("Notify", "Notify configuration", "names");
-	ConfigDialog::addLabel("Notify", "names", 0);
+// 	ConfigDialog::addVBox("Notify", "Notify configuration", "names");
+// 	ConfigDialog::addLabel("Notify", "names", 0);
 
 	connect(gadu, SIGNAL(connectionError(Protocol *, const QString &)), this, SLOT(connectionError(Protocol *, const QString &)));
 	connect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
@@ -59,44 +59,44 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name),
 	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
 		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
 
-	ConfigDialog::addCheckBox("Notify", "Notify",
-		QT_TRANSLATE_NOOP("@default", "Notify about all users"), "NotifyAboutAll", false);
-	ConfigDialog::addCheckBox("Notify", "Notify",
-			QT_TRANSLATE_NOOP("@default","Notify about new messages only when window is inactive"),
-			"NewMessageOnlyIfInactive", true, 0, 0, Advanced);
-	ConfigDialog::addCheckBox("Notify", "Notify",
-		QT_TRANSLATE_NOOP("@default", "Ignore changes right after connection to the server"), "NotifyIgnoreOnConnection", true,
-		QT_TRANSLATE_NOOP("@default","This option will supersede tooltips with users' status\n changes upon establishing connection to the server"),
-		0, Advanced);
-	ConfigDialog::addCheckBox("Notify", "Notify",
-		QT_TRANSLATE_NOOP("@default", "Ignore status changes from available / busy to available / busy"),
-		"IgnoreOnlineToOnline", true, 0, 0, Advanced);
+// 	ConfigDialog::addCheckBox("Notify", "Notify",
+// 		QT_TRANSLATE_NOOP("@default", "Notify about all users"), "NotifyAboutAll", false);
+// 	ConfigDialog::addCheckBox("Notify", "Notify",
+// 			QT_TRANSLATE_NOOP("@default","Notify about new messages only when window is inactive"),
+// 			"NewMessageOnlyIfInactive", true, 0, 0, Advanced);
+// 	ConfigDialog::addCheckBox("Notify", "Notify",
+// 		QT_TRANSLATE_NOOP("@default", "Ignore changes right after connection to the server"), "NotifyIgnoreOnConnection", true,
+// 		QT_TRANSLATE_NOOP("@default","This option will supersede tooltips with users' status\n changes upon establishing connection to the server"),
+// 		0, Advanced);
+// 	ConfigDialog::addCheckBox("Notify", "Notify",
+// 		QT_TRANSLATE_NOOP("@default", "Ignore status changes from available / busy to available / busy"),
+// 		"IgnoreOnlineToOnline", true, 0, 0, Advanced);
 
-	ConfigDialog::addGrid("Notify", "Notify" ,"listboxy",3);
+// 	ConfigDialog::addGrid("Notify", "Notify" ,"listboxy",3);
 
-		ConfigDialog::addGrid("Notify", "listboxy", "listbox1", 1);
-			ConfigDialog::addLabel("Notify", "listbox1", QT_TRANSLATE_NOOP("@default", "Available"));
-			ConfigDialog::addListBox("Notify", "listbox1","available");
+// 		ConfigDialog::addGrid("Notify", "listboxy", "listbox1", 1);
+// 			ConfigDialog::addLabel("Notify", "listbox1", QT_TRANSLATE_NOOP("@default", "Available"));
+// 			ConfigDialog::addListBox("Notify", "listbox1","available");
 
-		ConfigDialog::addGrid("Notify", "listboxy", "listbox2", 1);
-			ConfigDialog::addPushButton("Notify", "listbox2", 0, "AddToNotifyList", 0, "forward");
-			ConfigDialog::addPushButton("Notify", "listbox2", 0, "RemoveFromNotifyList", 0, "back");
+// 		ConfigDialog::addGrid("Notify", "listboxy", "listbox2", 1);
+// 			ConfigDialog::addPushButton("Notify", "listbox2", 0, "AddToNotifyList", 0, "forward");
+// 			ConfigDialog::addPushButton("Notify", "listbox2", 0, "RemoveFromNotifyList", 0, "back");
 
-		ConfigDialog::addGrid("Notify", "listboxy", "listbox3", 1);
-			ConfigDialog::addLabel("Notify", "listbox3", QT_TRANSLATE_NOOP("@default", "Tracked"));
-			ConfigDialog::addListBox("Notify", "listbox3", "track");
+// 		ConfigDialog::addGrid("Notify", "listboxy", "listbox3", 1);
+// 			ConfigDialog::addLabel("Notify", "listbox3", QT_TRANSLATE_NOOP("@default", "Tracked"));
+// 			ConfigDialog::addListBox("Notify", "listbox3", "track");
 
 	notify_slots = new NotifySlots();
 
-	ConfigDialog::connectSlot("Notify", 0, SIGNAL(clicked()), notify_slots, SLOT(_Right()), "forward");
-	ConfigDialog::connectSlot("Notify", 0, SIGNAL(clicked()), notify_slots, SLOT(_Left()), "back");
-	ConfigDialog::connectSlot("Notify", "available", SIGNAL(doubleClicked(QListBoxItem *)),
-		notify_slots, SLOT(_Right2(QListBoxItem *)));
-	ConfigDialog::connectSlot("Notify", "track", SIGNAL(doubleClicked(QListBoxItem *)),
-		notify_slots, SLOT(_Left2(QListBoxItem *)));
+// 	ConfigDialog::connectSlot("Notify", 0, SIGNAL(clicked()), notify_slots, SLOT(_Right()), "forward");
+// 	ConfigDialog::connectSlot("Notify", 0, SIGNAL(clicked()), notify_slots, SLOT(_Left()), "back");
+// 	ConfigDialog::connectSlot("Notify", "available", SIGNAL(doubleClicked(QListBoxItem *)),
+// 		notify_slots, SLOT(_Right2(QListBoxItem *)));
+// 	ConfigDialog::connectSlot("Notify", "track", SIGNAL(doubleClicked(QListBoxItem *)),
+// 		notify_slots, SLOT(_Left2(QListBoxItem *)));
 
-	ConfigDialog::registerSlotOnCreateTab("Notify", notify_slots, SLOT(onCreateTabNotify()));
-	ConfigDialog::registerSlotOnApplyTab("Notify", notify_slots, SLOT(onApplyTabNotify()));
+// 	ConfigDialog::registerSlotOnCreateTab("Notify", notify_slots, SLOT(onCreateTabNotify()));
+// 	ConfigDialog::registerSlotOnApplyTab("Notify", notify_slots, SLOT(onApplyTabNotify()));
 
 	MessageNotification::registerEvents(this);
 	ConnectionErrorNotification::registerEvent(this);
@@ -113,30 +113,30 @@ Notify::~Notify()
 	ConnectionErrorNotification::unregisterEvent(this);
 	MessageNotification::unregisterEvents(this);
 
-	ConfigDialog::disconnectSlot("Notify", 0, SIGNAL(clicked()), notify_slots, SLOT(_Right()), "forward");
-	ConfigDialog::disconnectSlot("Notify", 0, SIGNAL(clicked()), notify_slots, SLOT(_Left()), "back");
-	ConfigDialog::disconnectSlot("Notify", "available", SIGNAL(doubleClicked(QListBoxItem *)),
-		notify_slots, SLOT(_Right2(QListBoxItem *)));
-	ConfigDialog::disconnectSlot("Notify", "track", SIGNAL(doubleClicked(QListBoxItem *)),
-		notify_slots, SLOT(_Left2(QListBoxItem *)));
+// 	ConfigDialog::disconnectSlot("Notify", 0, SIGNAL(clicked()), notify_slots, SLOT(_Right()), "forward");
+// 	ConfigDialog::disconnectSlot("Notify", 0, SIGNAL(clicked()), notify_slots, SLOT(_Left()), "back");
+// 	ConfigDialog::disconnectSlot("Notify", "available", SIGNAL(doubleClicked(QListBoxItem *)),
+// 		notify_slots, SLOT(_Right2(QListBoxItem *)));
+// 	ConfigDialog::disconnectSlot("Notify", "track", SIGNAL(doubleClicked(QListBoxItem *)),
+// 		notify_slots, SLOT(_Left2(QListBoxItem *)));
 
-	ConfigDialog::unregisterSlotOnCreateTab("Notify", notify_slots, SLOT(onCreateTabNotify()));
-	ConfigDialog::unregisterSlotOnApplyTab("Notify", notify_slots, SLOT(onApplyTabNotify()));
+// 	ConfigDialog::unregisterSlotOnCreateTab("Notify", notify_slots, SLOT(onCreateTabNotify()));
+// 	ConfigDialog::unregisterSlotOnApplyTab("Notify", notify_slots, SLOT(onApplyTabNotify()));
 
-			ConfigDialog::removeControl("Notify", "track");
-			ConfigDialog::removeControl("Notify", "Tracked");
-		ConfigDialog::removeControl("Notify", "listbox3");
-			ConfigDialog::removeControl("Notify", 0, "back");
-			ConfigDialog::removeControl("Notify", 0, "forward");
-		ConfigDialog::removeControl("Notify", "listbox2");
-			ConfigDialog::removeControl("Notify", "available");
-			ConfigDialog::removeControl("Notify", "Available");
-		ConfigDialog::removeControl("Notify", "listbox1");
-	ConfigDialog::removeControl("Notify", "listboxy");
+// 			ConfigDialog::removeControl("Notify", "track");
+// 			ConfigDialog::removeControl("Notify", "Tracked");
+// 		ConfigDialog::removeControl("Notify", "listbox3");
+// 			ConfigDialog::removeControl("Notify", 0, "back");
+// 			ConfigDialog::removeControl("Notify", 0, "forward");
+// 		ConfigDialog::removeControl("Notify", "listbox2");
+// 			ConfigDialog::removeControl("Notify", "available");
+// 			ConfigDialog::removeControl("Notify", "Available");
+// 		ConfigDialog::removeControl("Notify", "listbox1");
+// 	ConfigDialog::removeControl("Notify", "listboxy");
 
-	ConfigDialog::removeControl("Notify", "Ignore status changes from available / busy to available / busy");
-	ConfigDialog::removeControl("Notify", "Notify about all users");
-	ConfigDialog::removeControl("Notify", "Ignore changes right after connection to the server");
+// 	ConfigDialog::removeControl("Notify", "Ignore status changes from available / busy to available / busy");
+// 	ConfigDialog::removeControl("Notify", "Notify about all users");
+// 	ConfigDialog::removeControl("Notify", "Ignore changes right after connection to the server");
 
 	disconnect(gadu, SIGNAL(connectionError(Protocol *, const QString &)), this, SLOT(connectionError(Protocol *, const QString &)));
 	disconnect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
@@ -155,11 +155,11 @@ Notify::~Notify()
 	}
 
 	//pierwsza kolumna - nazwy
-	ConfigDialog::removeControl("Notify", 0);
+// 	ConfigDialog::removeControl("Notify", 0);
 
-	ConfigDialog::removeControl("Notify", "names");
-	ConfigDialog::removeControl("Notify", "Notify configuration");
-	ConfigDialog::removeTab("Notify");
+// 	ConfigDialog::removeControl("Notify", "names");
+// 	ConfigDialog::removeControl("Notify", "Notify configuration");
+// 	ConfigDialog::removeTab("Notify");
 
 	delete notify_slots;
 	notify_slots = NULL;
@@ -252,14 +252,14 @@ void Notify::addConfigColumn(const QString &name, CallbackCapacity callbackCapac
 	QValueList<QCString> s;
 	s.append(name.utf8()); // we've got to remember all those strings, because ConfigDialog won't copy them
 	s.append(name.utf8() + "_vbox");
-	ConfigDialog::addVBox("Notify", "Notify configuration", s[1]);
-	ConfigDialog::addLabel("Notify", s[1], s[0]);
+// 	ConfigDialog::addVBox("Notify", "Notify configuration", s[1]);
+// 	ConfigDialog::addLabel("Notify", s[1], s[0]);
 
 	CONST_FOREACH(it, NotifyEvents)
 	{
 		QCString entry = ((*it).name + '_' + name).utf8();
 		QCString wname = (name + (*it).name).utf8();
-		ConfigDialog::addCheckBox("Notify", s[1], " ", entry, false, 0, wname);
+// 		ConfigDialog::addCheckBox("Notify", s[1], " ", entry, false, 0, wname);
 		s.append(entry);
 		s.append(wname);
 	}
@@ -277,12 +277,12 @@ void Notify::removeConfigColumn(const QString &name)
 	CONST_FOREACH(it, NotifyEvents)
 	{
 		++strit; // omit entry
-		ConfigDialog::removeControl("Notify", " ", *strit); // use wname
+// 		ConfigDialog::removeControl("Notify", " ", *strit); // use wname
 		++strit;
 	}
 
-	ConfigDialog::removeControl("Notify", s[0]); // name
-	ConfigDialog::removeControl("Notify", s[1]); // name_vbox
+// 	ConfigDialog::removeControl("Notify", s[0]); // name
+// 	ConfigDialog::removeControl("Notify", s[1]); // name_vbox
 	strs.remove(name);
 	kdebugf2();
 }
@@ -298,7 +298,7 @@ void Notify::addConfigRow(const QString &name, const char *description, Callback
 
 	NotifyEvents.append(event);
 
-	ConfigDialog::addLabel("Notify", "names", event.description, event.wname);
+// 	ConfigDialog::addLabel("Notify", "names", event.description, event.wname);
 
 	CONST_FOREACH(it, notifiers)
 	{
@@ -306,7 +306,7 @@ void Notify::addConfigRow(const QString &name, const char *description, Callback
 		QCString parent = s[1]; // name_vbox
 		QCString entry = (name + '_' + it.key()).utf8();
 		QCString wname = (it.key() + name).utf8();
-		ConfigDialog::addCheckBox("Notify", parent, " ", entry, false, 0, wname);
+// 		ConfigDialog::addCheckBox("Notify", parent, " ", entry, false, 0, wname);
 		s.append(entry);
 		s.append(wname);
 	}
@@ -330,7 +330,7 @@ void Notify::removeConfigRow(const QString &name)
 		return;
 	}
 
-	ConfigDialog::removeControl("Notify", event.description, event.wname);
+// 	ConfigDialog::removeControl("Notify", event.description, event.wname);
 
 	if (!notifiers.isEmpty())
 	{
@@ -347,7 +347,7 @@ void Notify::removeConfigRow(const QString &name)
 		CONST_FOREACH(it, notifiers)
 		{
 			QValueList<QCString> &s = strs[it.key()]; // strings for that notifier
-			ConfigDialog::removeControl("Notify", " ", s[wname_idx]);
+// 			ConfigDialog::removeControl("Notify", " ", s[wname_idx]);
 			QValueList<QCString>::iterator sit = s.at(wname_idx - 1), sit2 = sit; //iterators of entry, wname+1
 			++sit2; ++sit2;
 			s.erase(sit, sit2);

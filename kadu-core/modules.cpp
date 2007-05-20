@@ -20,9 +20,10 @@
 
 #include <dlfcn.h>
 
-#include "config_dialog.h"
+// #include "config_dialog.h"
 #include "config_file.h"
 #include "debug.h"
+#include "hot_key.h"
 #include "icons_manager.h"
 #include "kadu.h"
 #include "message_box.h"
@@ -346,9 +347,6 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager"),
 	if (load_error)
 		saveLoadedModules();
 
-//	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", QT_TRANSLATE_NOOP("@default", "Define keys"));
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", "Manage Modules", "kadu_modulesmanager", "F4");
-
 	CONST_FOREACH(it, Modules)
 		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", it.key().local8Bit().data(), it.data().usage_counter);
 
@@ -358,8 +356,6 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager"),
 ModulesManager::~ModulesManager()
 {
 	kdebugf();
-
-	ConfigDialog::removeControl("ShortCuts", "Manage Modules");
 
 	CONST_FOREACH(it, Modules)
 		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", it.key().local8Bit().data(), it.data().usage_counter);

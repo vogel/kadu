@@ -11,13 +11,14 @@
 #include <qfile.h>
 #include <qhgroupbox.h>
 #include <qmessagebox.h>
+#include <qpushbutton.h>
 #include <qtooltip.h>
 #include <stdlib.h>
 
 #include "action.h"
 #include "chat.h"
 #include "chat_manager.h"
-#include "config_dialog.h"
+// #include "config_dialog.h"
 #include "debug.h"
 #include "encryption.h"
 #include "gadu.h"
@@ -57,22 +58,22 @@ EncryptionManager::EncryptionManager(QObject *parent, const char *name) : QObjec
 	EncryptionEnabled()
 {
 	kdebugf();
-	ConfigDialog::addVGroupBox("Chat", "Chat",
-			QT_TRANSLATE_NOOP("@default", "Encryption properties"));
-	ConfigDialog::addCheckBox("Chat", "Encryption properties",
-			QT_TRANSLATE_NOOP("@default", "Encrypt by default"), "Encryption", false);
-	ConfigDialog::addCheckBox("Chat", "Encryption properties",
-			QT_TRANSLATE_NOOP("@default", "Encrypt after receive encrypted message"), "EncryptAfterReceiveEncryptedMessage", false);
-	ConfigDialog::addHBox("Chat", "Encryption properties", "key_generator");
-	ConfigDialog::addComboBox("Chat", "key_generator",
-			QT_TRANSLATE_NOOP("@default", "Keys length"), "EncryptionKeyLength", QStringList("1024"), QStringList("1024"), "1024");
-	ConfigDialog::addPushButton("Chat", "key_generator",
-			QT_TRANSLATE_NOOP("@default", "Generate keys"));
+// 	ConfigDialog::addVGroupBox("Chat", "Chat",
+// 			QT_TRANSLATE_NOOP("@default", "Encryption properties"));
+// 	ConfigDialog::addCheckBox("Chat", "Encryption properties",
+// 			QT_TRANSLATE_NOOP("@default", "Encrypt by default"), "Encryption", false);
+// 	ConfigDialog::addCheckBox("Chat", "Encryption properties",
+// 			QT_TRANSLATE_NOOP("@default", "Encrypt after receive encrypted message"), "EncryptAfterReceiveEncryptedMessage", false);
+// 	ConfigDialog::addHBox("Chat", "Encryption properties", "key_generator");
+// 	ConfigDialog::addComboBox("Chat", "key_generator",
+// 			QT_TRANSLATE_NOOP("@default", "Keys length"), "EncryptionKeyLength", QStringList("1024"), QStringList("1024"), "1024");
+// 	ConfigDialog::addPushButton("Chat", "key_generator",
+// 			QT_TRANSLATE_NOOP("@default", "Generate keys"));
 
-	ConfigDialog::addColorButton("Look", "Chat window",
-			QT_TRANSLATE_NOOP("@default", "Color of encrypted messages"), "EncryptionColor", QColor("#0000FF"));
+// 	ConfigDialog::addColorButton("Look", "Chat window",
+// 			QT_TRANSLATE_NOOP("@default", "Color of encrypted messages"), "EncryptionColor", QColor("#0000FF"));
 
-	ConfigDialog::connectSlot("Chat", "Generate keys", SIGNAL(clicked()), this, SLOT(generateMyKeys()));
+// 	ConfigDialog::connectSlot("Chat", "Generate keys", SIGNAL(clicked()), this, SLOT(generateMyKeys()));
 
 	userlist->addPerContactNonProtocolConfigEntry("encryption_enabled", "EncryptionEnabled");
 
@@ -113,15 +114,15 @@ EncryptionManager::~EncryptionManager()
 			this, SLOT(receivedMessageFilter(Protocol *, UserListElements, QCString&, QByteArray&, bool&)));
 	disconnect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userBoxMenuPopup()));
 
-	ConfigDialog::disconnectSlot("Chat", "Generate keys", SIGNAL(clicked()), this, SLOT(generateMyKeys()));
+// 	ConfigDialog::disconnectSlot("Chat", "Generate keys", SIGNAL(clicked()), this, SLOT(generateMyKeys()));
 
-	ConfigDialog::removeControl("Look", "Color of encrypted messages");
-	ConfigDialog::removeControl("Chat", "Generate keys");
-	ConfigDialog::removeControl("Chat", "Keys length");
-	ConfigDialog::removeControl("Chat", "key_generator");
-	ConfigDialog::removeControl("Chat", "Encrypt after receive encrypted message");
-	ConfigDialog::removeControl("Chat", "Encrypt by default");
-	ConfigDialog::removeControl("Chat", "Encryption properties");
+// 	ConfigDialog::removeControl("Look", "Color of encrypted messages");
+// 	ConfigDialog::removeControl("Chat", "Generate keys");
+// 	ConfigDialog::removeControl("Chat", "Keys length");
+// 	ConfigDialog::removeControl("Chat", "key_generator");
+// 	ConfigDialog::removeControl("Chat", "Encrypt after receive encrypted message");
+// 	ConfigDialog::removeControl("Chat", "Encrypt by default");
+// 	ConfigDialog::removeControl("Chat", "Encryption properties");
 	delete action;
 	kdebugf2();
 }
@@ -247,7 +248,7 @@ void EncryptionManager::receivedMessageFilter(Protocol *protocol,
 	kdebugm(KDEBUG_INFO, "Decrypting encrypted message...(%d)\n", msg.length());
 	const char* msg_c = msg;
 	char* decoded = sim_message_decrypt((const unsigned char*)msg_c, senders[0].ID(protocol->protocolID()).toUInt());
-	kdebugm(KDEBUG_DUMP, "Decrypted message is(len:%lu): %s\n", decoded ? strlen(decoded) : 0, decoded);
+	kdebugm(KDEBUG_DUMP, "Decrypted message is(len:%u): %s\n", decoded ? strlen(decoded) : 0, decoded);
 	if (decoded != NULL)
 	{
 		msg = decoded;
@@ -272,7 +273,7 @@ void EncryptionManager::receivedMessageFilter(Protocol *protocol,
 		dst += sizeof(color);
 		memcpy(dst, formats.data(), formats.size());
 		formats = new_formats;
-		
+
 		Chat* chat=chat_manager->findChat(senders);
 		if (config_file.readBoolEntry("Chat", "EncryptAfterReceiveEncryptedMessage"))
 		{

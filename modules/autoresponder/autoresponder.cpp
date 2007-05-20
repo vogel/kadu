@@ -9,7 +9,7 @@
 #include "autoresponder.h"
 #include "chat.h"
 #include "chat_manager.h"
-#include "config_dialog.h"
+// #include "config_dialog.h"
 #include "debug.h"
 #include "gadu.h"
 #include "kadu.h"
@@ -40,18 +40,18 @@ AutoResponder::AutoResponder(QObject *parent, const char *name) : QObject(parent
 		this, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
 	connect(chat_manager, SIGNAL(chatCreated(Chat *)), this, SLOT(chatOpened(Chat *)));
 
-	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Autoresponder"), "AutoresponderTab");
-	ConfigDialog::addVGroupBox( "Autoresponder", "Autoresponder", QT_TRANSLATE_NOOP( "@default", "Autoresponder options" ));
-	ConfigDialog::addLineEdit(config, "Autoresponder","Autoresponder options",
-		QT_TRANSLATE_NOOP("@default", "Autoanswer text:"),
-		"Autotext",
-		tr("Thanks for your message %a. I'm not available right now."), Kadu::SyntaxText);
-	ConfigDialog::addLabel("Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP("@default","Choose status:"));
-	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP("@default", "Status invisible"), "StatusInvisible", false);
-	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP("@default", "Status busy"), "StatusBusy", true);
-	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP("@default", "Status available"), "StatusAvailable",false);
-	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP("@default", "Only for the first time"), "OnlyFirstTime", true);
-	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP("@default", "Respond to conferences"), "RespondConf", false);
+// 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Autoresponder"), "AutoresponderTab");
+// 	ConfigDialog::addVGroupBox( "Autoresponder", "Autoresponder", QT_TRANSLATE_NOOP( "@default", "Autoresponder options" ));
+// 	ConfigDialog::addLineEdit(config, "Autoresponder","Autoresponder options",
+// 		QT_TRANSLATE_NOOP("@default", "Autoanswer text:"),
+// 		"Autotext",
+// 		tr("Thanks for your message %a. I'm not available right now."), Kadu::SyntaxText);
+// 	ConfigDialog::addLabel("Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP("@default","Choose status:"));
+// 	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP("@default", "Status invisible"), "StatusInvisible", false);
+// 	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP("@default", "Status busy"), "StatusBusy", true);
+// 	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP("@default", "Status available"), "StatusAvailable",false);
+// 	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP("@default", "Only for the first time"), "OnlyFirstTime", true);
+// 	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP("@default", "Respond to conferences"), "RespondConf", false);
 	kdebugf2();
 }
 
@@ -61,15 +61,15 @@ AutoResponder::~AutoResponder()
 	disconnect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
 		this, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
 	disconnect(chat_manager, SIGNAL(chatCreated(Chat *)), this, SLOT(chatOpened(Chat *)));
-	ConfigDialog::removeControl("Autoresponder", "Respond to conferences");
-	ConfigDialog::removeControl("Autoresponder", "Choose status:");
-	ConfigDialog::removeControl("Autoresponder", "Status invisible");
-	ConfigDialog::removeControl("Autoresponder", "Status busy");
-	ConfigDialog::removeControl("Autoresponder", "Status available");
-	ConfigDialog::removeControl("Autoresponder", "Autoanswer text:");
-	ConfigDialog::removeControl("Autoresponder", "Only for the first time");
-	ConfigDialog::removeControl("Autoresponder", "Autoresponder options");
-	ConfigDialog::removeTab("Autoresponder");
+// 	ConfigDialog::removeControl("Autoresponder", "Respond to conferences");
+// 	ConfigDialog::removeControl("Autoresponder", "Choose status:");
+// 	ConfigDialog::removeControl("Autoresponder", "Status invisible");
+// 	ConfigDialog::removeControl("Autoresponder", "Status busy");
+// 	ConfigDialog::removeControl("Autoresponder", "Status available");
+// 	ConfigDialog::removeControl("Autoresponder", "Autoanswer text:");
+// 	ConfigDialog::removeControl("Autoresponder", "Only for the first time");
+// 	ConfigDialog::removeControl("Autoresponder", "Autoresponder options");
+// 	ConfigDialog::removeTab("Autoresponder");
 	config->sync();
 	delete config;
 	kdebugf2();

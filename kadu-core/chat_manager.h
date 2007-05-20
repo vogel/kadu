@@ -138,6 +138,8 @@ class ChatManager : public QObject
 		void loadOpenedWindows();
 		void saveOpenedWindows();
 
+		void configurationUpdated();
+
 	public slots:
 
 		/**

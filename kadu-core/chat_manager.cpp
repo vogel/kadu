@@ -14,7 +14,7 @@
 
 #include "action.h"
 #include "chat_manager_slots.h"
-#include "config_dialog.h"
+// #include "config_dialog.h"
 #include "debug.h"
 #include "chat_manager.h"
 #include "icons_manager.h"
@@ -913,133 +913,6 @@ void ChatManager::closeModule()
 	kdebugf();
 	disconnect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
 		chat_manager, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
-
-	ConfigDialog::disconnectSlot("Look", 0, SIGNAL(clicked()), chatslots, SLOT(chooseBackgroundFile()), "chat_background_fileopen");
-
-	ConfigDialog::disconnectSlot("Look", "Font in chat window", SIGNAL(changed(const char *, const QFont&)), chatslots, SLOT(chooseFont(const char *, const QFont&)), "chat_font_box");
-	ConfigDialog::disconnectSlot("Look", "Select chat style", SIGNAL(activated(const QString&)), chatslots, SLOT(onChatThemeChanged(const QString&)));
-
-	ConfigDialog::disconnectSlot("Chat", "Emoticons:", SIGNAL(activated(int)), chatslots, SLOT(chooseEmoticonsStyle(int)));
-	ConfigDialog::disconnectSlot("Chat", "Automatically prune chat messages", SIGNAL(toggled(bool)), chatslots, SLOT(onPruneChat(bool)));
-	ConfigDialog::disconnectSlot("Chat", "Automatically fold links", SIGNAL(toggled(bool)), chatslots, SLOT(onFoldLink(bool)));
-	ConfigDialog::disconnectSlot("Chat", "Block window close on new message", SIGNAL(toggled(bool)), chatslots, SLOT(onBlockClose(bool)));
-
-	ConfigDialog::disconnectSlot("Look", "Remove chat header repetitions", SIGNAL(toggled(bool)), chatslots, SLOT(onRemoveHeaders(bool)));
-
-	ConfigDialog::disconnectSlot("Look", "Remove server time", SIGNAL(toggled(bool)), chatslots, SLOT(onRemoveServerTime(bool)));
-
-	ConfigDialog::disconnectSlot("Look", "Your background color", SIGNAL(changed(const char *, const QColor&)),
-		chatslots, SLOT(chooseColor(const char *, const QColor&)), "own_bg_color");
-	ConfigDialog::disconnectSlot("Look", "User background color", SIGNAL(changed(const char *, const QColor&)),
-		chatslots, SLOT(chooseColor(const char *, const QColor&)), "his_bg_color");
-	ConfigDialog::disconnectSlot("Look", "Your font color", SIGNAL(changed(const char *, const QColor&)),
-		chatslots, SLOT(chooseColor(const char *, const QColor&)), "own_font_color");
-	ConfigDialog::disconnectSlot("Look", "User font color", SIGNAL(changed(const char *, const QColor&)),
-		chatslots, SLOT(chooseColor(const char *, const QColor&)), "his_font_color");
-
-	ConfigDialog::unregisterSlotOnCreateTab("Chat", chatslots, SLOT(onCreateTabChat()));
-	ConfigDialog::unregisterSlotOnCreateTab("Look", chatslots, SLOT(onCreateTabLook()));
-	ConfigDialog::unregisterSlotOnApplyTab("Chat", chatslots, SLOT(onApplyTabChat()));
-	ConfigDialog::unregisterSlotOnApplyTab("Look", chatslots, SLOT(onApplyTabLook()));
-
-	ConfigDialog::removeControl("Look", 0, "chat_background_fileopen");
-	ConfigDialog::removeControl("Look", "Chat background image");
-	ConfigDialog::removeControl("Look", "chat_background");
-	ConfigDialog::removeControl("Look", "Chat background (experimental)");
-
-			ConfigDialog::removeControl("Look", "syntax:");
-			ConfigDialog::removeControl("Look", "Conference window title prefix:");
-		ConfigDialog::removeControl("Look", "conference");
-		ConfigDialog::removeControl("Look", "Chat window title syntax:");
-	ConfigDialog::removeControl("Look", "Other");
-
-		ConfigDialog::removeControl("Look", "Message separators height:");
-		ConfigDialog::removeControl("Look", "Interval between header removal:");
-		ConfigDialog::removeControl("Look", "Chat header separators height:");
-		ConfigDialog::removeControl("Look", "Remove chat header repetitions");
-	ConfigDialog::removeControl("Look", "Message headers && separators");
-
-		ConfigDialog::removeControl("Look", "Maximum time difference");
-		ConfigDialog::removeControl("Look", "Remove server time");
-	ConfigDialog::removeControl("Look", "Server time");
-
-		ConfigDialog::removeControl("Look", "Full chat style:");
-		ConfigDialog::removeControl("Look", "Select chat style");
-	ConfigDialog::removeControl("Look", "Style");
-
-				ConfigDialog::removeControl("Look", "<b>Other party</b> 00:00:02", "chat_other");
-				ConfigDialog::removeControl("Look", "<b>Me</b> 00:00:00", "chat_me");
-			ConfigDialog::removeControl("Look", "chat_prvw");
-		ConfigDialog::removeControl("Look", "Chat preview");
-	ConfigDialog::removeControl("Look", "Previews");
-
-		ConfigDialog::removeControl("Look", "Font in chat window", "chat_font_box");
-//	ConfigDialog::removeControl("Look", "Fonts");
-
-			ConfigDialog::removeControl("Look", "User nick color", "his_nick_color");
-			ConfigDialog::removeControl("Look", "Your nick color", "own_nick_color");
-			ConfigDialog::removeControl("Look", "User font color", "his_font_color");
-			ConfigDialog::removeControl("Look", "Your font color", "own_font_color");
-			ConfigDialog::removeControl("Look", "User background color", "his_bg_color");
-			ConfigDialog::removeControl("Look", "Your background color", "own_bg_color");
-			ConfigDialog::removeControl("Look", "Text edit background color", "text_bg_color");
-			ConfigDialog::removeControl("Look", "Chat window background color", "bg_color");
-		ConfigDialog::removeControl("Look", "Chat window");
-//	ConfigDialog::removeControl("Look", "Colors");
-
-	ConfigDialog::removeControl("Look", "varOpts2");
-
-	ConfigDialog::removeControl("Chat", "Automatically fold links longer than");
-	ConfigDialog::removeControl("Chat", "Link folding");
-	ConfigDialog::removeControl("Chat", "Automatically fold links");
-
-	ConfigDialog::removeControl("Chat", "Reduce the number of visible messages to");
-	ConfigDialog::removeControl("Chat", "Message pruning");
-	ConfigDialog::removeControl("Chat", "Automatically prune chat messages");
-
-	ConfigDialog::removeControl("Chat", "Max time to block window close");
-	ConfigDialog::removeControl("Chat", "Remember chat windows positions");
-	ConfigDialog::removeControl("Chat", "Receive images during invisibility");
-	ConfigDialog::removeControl("Chat", "Confirm clearing chat window");
-	ConfigDialog::removeControl("Chat", "Block window close on new message");
-	ConfigDialog::removeControl("Chat", "Ignore richtext from anonymous users");
-	ConfigDialog::removeControl("Chat", "Ignore messages from anonymous users");
-	ConfigDialog::removeControl("Chat", "Show number of new messages in chat title");
-	ConfigDialog::removeControl("Chat", "Flash chat title on new message");
-	ConfigDialog::removeControl("Chat", "\"%1\" in chat sends message by default");
-	ConfigDialog::removeControl("Chat", "Message acknowledgements (wait for delivery)");
-	ConfigDialog::removeControl("Chat", "Open chat window on new message");
-
-	ConfigDialog::removeControl("Chat", "checkboxes-beginner");
-	ConfigDialog::removeControl("Chat", "checkboxes-advanced");
-	ConfigDialog::removeControl("Chat", "checkboxes-expert");
-
-	ConfigDialog::removeControl("Chat", "Limit number of images received per minute");
-
-	ConfigDialog::removeControl("Chat", "Max image size");
-
-	ConfigDialog::removeControl("Chat", "Custom Mail client");
-	ConfigDialog::removeControl("Chat", "Choose your mail client");
-	ConfigDialog::removeControl("Chat", "Mail client");
-
-	ConfigDialog::removeControl("Chat", "Custom Web browser");
-	ConfigDialog::removeControl("Chat", "Browser options");
-	ConfigDialog::removeControl("Chat", "Choose your browser");
-	ConfigDialog::removeControl("Chat", "WWW options");
-
-	ConfigDialog::removeControl("Chat", "Emoticons theme");
-
-	ConfigDialog::removeControl("Chat", "Emoticons:");
-	ConfigDialog::removeControl("Chat", "Emoticons");
-
-	ConfigDialog::removeControl("ShortCuts", "Underline text:");
-	ConfigDialog::removeControl("ShortCuts", "Italic text:");
-	ConfigDialog::removeControl("ShortCuts", "Bold text:");
-	ConfigDialog::removeControl("ShortCuts", "Close Chat:");
-	ConfigDialog::removeControl("ShortCuts", "Clear Chat:");
-	ConfigDialog::removeControl("ShortCuts", "New line / send message:");
-//	ConfigDialog::removeControl("ShortCuts", "Define keys");
-
 	chat_manager->saveOpenedWindows();
 
 	delete chatslots;
@@ -1053,60 +926,29 @@ void ChatManager::initModule()
 {
 	kdebugf();
 
-//	ConfigDialog::addVGroupBox("ShortCuts", "ShortCuts", QT_TRANSLATE_NOOP("@default", "Define keys"));
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "New line / send message:"), "chat_newline", "Return");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Clear Chat:"), "chat_clear", "F9");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Close Chat:"), "chat_close", "Esc");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Bold text:"), "chat_bold", "Ctrl+B");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Italic text:"), "chat_italic", "Ctrl+I");
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Underline text:"), "chat_underline", "Ctrl+U");
+// 	ConfigDialog::addVGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Emoticons"), 0, Beginner);
 
-	ConfigDialog::addVGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Emoticons"), 0, Beginner);
-	ConfigDialog::addComboBox("Chat", "Emoticons", QT_TRANSLATE_NOOP("@default", "Emoticons:"),
-			"EmoticonsStyle", toStringList(tr("None"), tr("Static"), tr("Animated")), toStringList("0", "1", "2"), "2");
+// 	ConfigDialog::addVGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "WWW options"), 0, Beginner);
+// 	ConfigDialog::addComboBox("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Choose your browser"));
+// 	ConfigDialog::addComboBox("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Browser options"));
+// 	ConfigDialog::addLineEdit("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Custom Web browser"), "WebBrowser", 0, QT_TRANSLATE_NOOP("@default", "%1 - Url clicked in chat window"));
 
-	ConfigDialog::addComboBox("Chat", "Emoticons", QT_TRANSLATE_NOOP("@default", "Emoticons theme"));
+// 	ConfigDialog::addVGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Mail client"), 0, Beginner);
+// 	ConfigDialog::addComboBox("Chat", "Mail client", QT_TRANSLATE_NOOP("@default", "Choose your mail client"));
+// 	ConfigDialog::addLineEdit("Chat", "Mail client", QT_TRANSLATE_NOOP("@default", "Custom Mail client"), "MailClient", 0, QT_TRANSLATE_NOOP("@default", "%1 - mail clicked in chat window"));
 
-	ConfigDialog::addVGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "WWW options"), 0, Beginner);
-	ConfigDialog::addComboBox("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Choose your browser"));
-	ConfigDialog::addComboBox("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Browser options"));
-	ConfigDialog::addLineEdit("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Custom Web browser"), "WebBrowser", 0, QT_TRANSLATE_NOOP("@default", "%1 - Url clicked in chat window"));
+// 	ConfigDialog::addSpinBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Limit number of images received per minute"),
+// 			"MaxImageRequests", 0, 120, 1, 15, 0, 0, Advanced);
 
-	ConfigDialog::addVGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Mail client"), 0, Beginner);
-	ConfigDialog::addComboBox("Chat", "Mail client", QT_TRANSLATE_NOOP("@default", "Choose your mail client"));
-	ConfigDialog::addLineEdit("Chat", "Mail client", QT_TRANSLATE_NOOP("@default", "Custom Mail client"), "MailClient", 0, QT_TRANSLATE_NOOP("@default", "%1 - mail clicked in chat window"));
+// 	ConfigDialog::addVBox("Chat", "Chat", "checkboxes-beginner", 0, Beginner);
+// 	ConfigDialog::addVBox("Chat", "Chat", "checkboxes-advanced", 0, Advanced);
+// 	ConfigDialog::addVBox("Chat", "Chat", "checkboxes-expert", 0, Expert);
 
-	ConfigDialog::addSpinBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Max image size"),
-			"MaxImageSize", 0, 255, 5, 20);
-
-	ConfigDialog::addSpinBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Limit number of images received per minute"),
-			"MaxImageRequests", 0, 120, 1, 15, 0, 0, Advanced);
-
-	ConfigDialog::addVBox("Chat", "Chat", "checkboxes-beginner", 0, Beginner);
-	ConfigDialog::addVBox("Chat", "Chat", "checkboxes-advanced", 0, Advanced);
-	ConfigDialog::addVBox("Chat", "Chat", "checkboxes-expert", 0, Expert);
-
-	ConfigDialog::addCheckBox("Chat", "checkboxes-beginner", QT_TRANSLATE_NOOP("@default", "Open chat window on new message"), "OpenChatOnMessage", false);
-	ConfigDialog::addCheckBox("Chat", "checkboxes-beginner", QT_TRANSLATE_NOOP("@default", "Message acknowledgements (wait for delivery)"), "MessageAcks", true);
-	ConfigDialog::addCheckBox("Chat", "checkboxes-advanced", QT_TRANSLATE_NOOP("@default", "\"%1\" in chat sends message by default"), "AutoSend", true, 0, 0, Advanced);
-	ConfigDialog::addCheckBox("Chat", "checkboxes-advanced", QT_TRANSLATE_NOOP("@default", "Flash chat title on new message"), "BlinkChatTitle", true, 0, 0, Advanced);
-	ConfigDialog::addCheckBox("Chat", "checkboxes-advanced", QT_TRANSLATE_NOOP("@default", "Show number of new messages in chat title"), "NewMessagesInChatTitle", false, 0, 0, Advanced);
-	ConfigDialog::addCheckBox("Chat", "checkboxes-advanced", QT_TRANSLATE_NOOP("@default", "Ignore messages from anonymous users"), "IgnoreAnonymousUsers", false, 0, 0, Advanced);
-	ConfigDialog::addCheckBox("Chat", "checkboxes-advanced", QT_TRANSLATE_NOOP("@default", "Ignore richtext from anonymous users"), "IgnoreAnonymousRichtext", true, 0, 0, Advanced);
-	ConfigDialog::addCheckBox("Chat", "checkboxes-advanced", QT_TRANSLATE_NOOP("@default", "Block window close on new message"), "ChatCloseTimer", false, 0, 0, Advanced);
-	ConfigDialog::addCheckBox("Chat", "checkboxes-advanced", QT_TRANSLATE_NOOP("@default", "Confirm clearing chat window"), "ConfirmChatClear", true, 0, 0, Advanced);
-	ConfigDialog::addCheckBox("Chat", "checkboxes-expert", QT_TRANSLATE_NOOP("@default", "Receive images during invisibility"), "ReceiveImagesDuringInvisibility", true, 0, 0, Expert);
-	ConfigDialog::addCheckBox("Chat", "checkboxes-expert", QT_TRANSLATE_NOOP("@default", "Remember chat windows positions"), "RememberPosition", true, 0, 0, Expert);
-	ConfigDialog::addSpinBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Max time to block window close"),
-			"ChatCloseTimerPeriod", 1, 5, 1, 2, 0, 0, Expert);
-
-	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Automatically prune chat messages"), "ChatPrune", true, 0, 0, Advanced);
-	ConfigDialog::addHGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Message pruning"), 0, Advanced);
-	ConfigDialog::addSpinBox("Chat", "Message pruning", QT_TRANSLATE_NOOP("@default", "Reduce the number of visible messages to"), "ChatPruneLen", 1,255,1,20);
-
-	ConfigDialog::addCheckBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Automatically fold links"), "FoldLink", false, 0, 0, Advanced);
-	ConfigDialog::addHGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Link folding"), 0, Advanced);
-	ConfigDialog::addSpinBox("Chat", "Link folding", QT_TRANSLATE_NOOP("@default", "Automatically fold links longer than"), "LinkFoldTreshold", 1,500,1,50);
+// 	ConfigDialog::addCheckBox("Chat", "checkboxes-advanced", QT_TRANSLATE_NOOP("@default", "Ignore messages from anonymous users"), "IgnoreAnonymousUsers", false, 0, 0, Advanced);
+// 	ConfigDialog::addCheckBox("Chat", "checkboxes-advanced", QT_TRANSLATE_NOOP("@default", "Ignore richtext from anonymous users"), "IgnoreAnonymousRichtext", true, 0, 0, Advanced);
+// 	ConfigDialog::addCheckBox("Chat", "checkboxes-expert", QT_TRANSLATE_NOOP("@default", "Remember chat windows positions"), "RememberPosition", true, 0, 0, Expert);
+// 	ConfigDialog::addSpinBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Max time to block window close"),
+// 			"ChatCloseTimerPeriod", 1, 5, 1, 2, 0, 0, Expert);
 
 // pierwsze uruchomienie kadu
 	config_file.addVariable("Look", "ChatBgColor", QColor("#ffffff"));
@@ -1133,90 +975,115 @@ void ChatManager::initModule()
 
 	config_file.addVariable("Look", "Style", "kadu");
 
-	ConfigDialog::addVBox("Look", "Look", "varOpts2");//potrzebne userboksowi
-
-//	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Colors"), 0, Advanced);
-		ConfigDialog::addVGroupBox("Look", "Colors", QT_TRANSLATE_NOOP("@default", "Chat window"));
-			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "Chat window background color"), "ChatBgColor", QColor(), 0, "bg_color");
-			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "Text edit background color"), "ChatTextBgColor", QColor(), 0, "text_bg_color");
-			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "Your background color"), "ChatMyBgColor", QColor(), 0, "own_bg_color");
-			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "User background color"), "ChatUsrBgColor", QColor(), 0, "his_bg_color");
-			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "Your font color"), "ChatMyFontColor", QColor(), 0, "own_font_color");
-			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "User font color"), "ChatUsrFontColor", QColor(), 0, "his_font_color");
-			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "Your nick color"), "ChatMyNickColor", QColor(), 0, "own_nick_color");
-			ConfigDialog::addColorButton("Look", "Chat window", QT_TRANSLATE_NOOP("@default", "User nick color"), "ChatUsrNickColor", QColor(), 0, "his_nick_color");
-
-//	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Fonts"), 0, Advanced);
-		ConfigDialog::addSelectFont("Look", "Fonts", QT_TRANSLATE_NOOP("@default", "Font in chat window"), "ChatFont", defaultFont->toString(), 0, "chat_font_box");
-
 //	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Previews"), 0, Advanced);
-		ConfigDialog::addVGroupBox("Look", "Previews", QT_TRANSLATE_NOOP("@default", "Chat preview"));
-			ConfigDialog::addHBox("Look", "Chat preview", "chat_prvw");
-				ConfigDialog::addLabel("Look", "chat_prvw", QT_TRANSLATE_NOOP("@default", "<b>Me</b> 00:00:00"), "chat_me");
-				ConfigDialog::addLabel("Look", "chat_prvw", QT_TRANSLATE_NOOP("@default", "<b>Other party</b> 00:00:02"), "chat_other");
+// 		ConfigDialog::addVGroupBox("Look", "Previews", QT_TRANSLATE_NOOP("@default", "Chat preview"));
+// 			ConfigDialog::addHBox("Look", "Chat preview", "chat_prvw");
+// 				ConfigDialog::addLabel("Look", "chat_prvw", QT_TRANSLATE_NOOP("@default", "<b>Me</b> 00:00:00"), "chat_me");
+// 				ConfigDialog::addLabel("Look", "chat_prvw", QT_TRANSLATE_NOOP("@default", "<b>Other party</b> 00:00:02"), "chat_other");
 
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default","Style"));
-		ConfigDialog::addComboBox("Look", "Style", QT_TRANSLATE_NOOP("@default", "Select chat style"), "Style", toStringList("Kadu", "Hapi", "IRC", tr("Custom")), toStringList("kadu", "hapi", "irc", "custom"));
-		ConfigDialog::addTextEdit("Look", "Style", QT_TRANSLATE_NOOP("@default", "Full chat style:"), "FullStyle", 0,
-			QT_TRANSLATE_NOOP("@default", "Syntax:\n%1 - background color\n%2 - text font color\n%3 - nick color\n%4 - nick\n%5 - timestamp\n%6 - timestamp with server time\n%7 - message"), 0, Expert);
+// 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default","Style"));
+// 		ConfigDialog::addComboBox("Look", "Style", QT_TRANSLATE_NOOP("@default", "Select chat style"), "Style", toStringList("Kadu", "Hapi", "IRC", tr("Custom")), toStringList("kadu", "hapi", "irc", "custom"));
+// 		ConfigDialog::addTextEdit("Look", "Style", QT_TRANSLATE_NOOP("@default", "Full chat style:"), "FullStyle", 0,
+// 			QT_TRANSLATE_NOOP("@default", "Syntax:\n%1 - background color\n%2 - text font color\n%3 - nick color\n%4 - nick\n%5 - timestamp\n%6 - timestamp with server time\n%7 - message"), 0, Expert);
 
 	//naglowki
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Message headers && separators"), 0, Advanced);
-		ConfigDialog::addCheckBox("Look", "Message headers && separators", QT_TRANSLATE_NOOP("@default", "Remove chat header repetitions"), "NoHeaderRepeat", true, 0, 0, Advanced);
-		ConfigDialog::addSpinBox("Look",  "Message headers && separators", QT_TRANSLATE_NOOP("@default", "Chat header separators height:"), "HeaderSeparatorHeight", 0, 100, 1, 1, 0, 0, Expert);
-		ConfigDialog::addSpinBox("Look",  "Message headers && separators", QT_TRANSLATE_NOOP("@default", "Interval between header removal:"), "NoHeaderInterval", 1, 1439, 1, 10, 0, 0, Expert);
-		ConfigDialog::addSpinBox("Look",  "Message headers && separators", QT_TRANSLATE_NOOP("@default", "Message separators height:"), "ParagraphSeparator", 0, 100, 1, 4, 0, 0, Advanced);
+// 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Message headers && separators"), 0, Advanced);
+// 		ConfigDialog::addCheckBox("Look", "Message headers && separators", QT_TRANSLATE_NOOP("@default", "Remove chat header repetitions"), "NoHeaderRepeat", true, 0, 0, Advanced);
+// 		ConfigDialog::addSpinBox("Look",  "Message headers && separators", QT_TRANSLATE_NOOP("@default", "Chat header separators height:"), "HeaderSeparatorHeight", 0, 100, 1, 1, 0, 0, Expert);
+// 		ConfigDialog::addSpinBox("Look",  "Message headers && separators", QT_TRANSLATE_NOOP("@default", "Interval between header removal:"), "NoHeaderInterval", 1, 1439, 1, 10, 0, 0, Expert);
+// 		ConfigDialog::addSpinBox("Look",  "Message headers && separators", QT_TRANSLATE_NOOP("@default", "Message separators height:"), "ParagraphSeparator", 0, 100, 1, 4, 0, 0, Advanced);
 
 	//czas serwera
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Server time"), 0, Advanced);
-		ConfigDialog::addCheckBox("Look", "Server time", QT_TRANSLATE_NOOP("@default", "Remove server time"), "NoServerTime", true, 0, 0, Advanced);
-		ConfigDialog::addSpinBox("Look", "Server time", QT_TRANSLATE_NOOP("@default", "Maximum time difference"), "NoServerTimeDiff", 0, 60, 1, 0, 0, 0, Advanced);
+// 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Server time"), 0, Advanced);
+// 		ConfigDialog::addCheckBox("Look", "Server time", QT_TRANSLATE_NOOP("@default", "Remove server time"), "NoServerTime", true, 0, 0, Advanced);
+// 		ConfigDialog::addSpinBox("Look", "Server time", QT_TRANSLATE_NOOP("@default", "Maximum time difference"), "NoServerTimeDiff", 0, 60, 1, 0, 0, 0, Advanced);
 
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Other"), 0, Expert);
-		ConfigDialog::addLineEdit("Look", "Other", QT_TRANSLATE_NOOP("@default", "Chat window title syntax:"), "ChatContents", QString::null, Kadu::SyntaxText, 0, Expert);
-		ConfigDialog::addHBox("Look", "Other", "conference", 0, Expert);
-			ConfigDialog::addLineEdit("Look", "conference", QT_TRANSLATE_NOOP("@default", "Conference window title prefix:"), "ConferencePrefix", QString::null, QT_TRANSLATE_NOOP("@default", "This text will be before syntax.\nIf you leave blank, default settings will be used."));
-			ConfigDialog::addLineEdit("Look", "conference", QT_TRANSLATE_NOOP("@default", "syntax:"), "ConferenceContents", "%a (%s[: %d])", Kadu::SyntaxText);
+// 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Other"), 0, Expert);
+// 		ConfigDialog::addLineEdit("Look", "Other", QT_TRANSLATE_NOOP("@default", "Chat window title syntax:"), "ChatContents", QString::null, Kadu::SyntaxText, 0, Expert);
+// 		ConfigDialog::addHBox("Look", "Other", "conference", 0, Expert);
+// 			ConfigDialog::addLineEdit("Look", "conference", QT_TRANSLATE_NOOP("@default", "Conference window title prefix:"), "ConferencePrefix", QString::null, QT_TRANSLATE_NOOP("@default", "This text will be before syntax.\nIf you leave blank, default settings will be used."));
+// 			ConfigDialog::addLineEdit("Look", "conference", QT_TRANSLATE_NOOP("@default", "syntax:"), "ConferenceContents", "%a (%s[: %d])", Kadu::SyntaxText);
 
-	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Chat background (experimental)"), 0, Expert);
-	ConfigDialog::addHBox("Look", "Chat background (experimental)", "chat_background");
-	ConfigDialog::addLineEdit("Look", "chat_background", QT_TRANSLATE_NOOP("@default", "Chat background image"), "ChatBgImage", 0, Kadu::SyntaxText);
-	ConfigDialog::addPushButton("Look", "chat_background", 0, "OpenFile", 0, "chat_background_fileopen");
+// 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Chat background (experimental)"), 0, Expert);
+// 	ConfigDialog::addHBox("Look", "Chat background (experimental)", "chat_background");
+// 	ConfigDialog::addLineEdit("Look", "chat_background", QT_TRANSLATE_NOOP("@default", "Chat background image"), "ChatBgImage", 0, Kadu::SyntaxText);
+// 	ConfigDialog::addPushButton("Look", "chat_background", 0, "OpenFile", 0, "chat_background_fileopen");
 
 	config_file.addVariable("Chat", "EmoticonsStyle", EMOTS_ANIMATED);
 	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
 
 	chatslots =new ChatManagerSlots(kadu, "chat_slots");
-	ConfigDialog::registerSlotOnCreateTab("Chat", chatslots, SLOT(onCreateTabChat()));
-	ConfigDialog::registerSlotOnCreateTab("Look", chatslots, SLOT(onCreateTabLook()));
-	ConfigDialog::registerSlotOnApplyTab("Chat", chatslots,SLOT(onApplyTabChat()));
-	ConfigDialog::registerSlotOnApplyTab("Look", chatslots,SLOT(onApplyTabLook()));
-	ConfigDialog::connectSlot("Chat", "Emoticons:", SIGNAL(activated(int)), chatslots, SLOT(chooseEmoticonsStyle(int)));
-	ConfigDialog::connectSlot("Chat", "Automatically prune chat messages", SIGNAL(toggled(bool)), chatslots, SLOT(onPruneChat(bool)));
-	ConfigDialog::connectSlot("Chat", "Automatically fold links", SIGNAL(toggled(bool)), chatslots, SLOT(onFoldLink(bool)));
-	ConfigDialog::connectSlot("Chat", "Block window close on new message", SIGNAL(toggled(bool)), chatslots, SLOT(onBlockClose(bool)));
+// 	ConfigDialog::registerSlotOnCreateTab("Chat", chatslots, SLOT(onCreateTabChat()));
+// 	ConfigDialog::registerSlotOnCreateTab("Look", chatslots, SLOT(onCreateTabLook()));
+// 	ConfigDialog::registerSlotOnApplyTab("Chat", chatslots,SLOT(onApplyTabChat()));
+// 	ConfigDialog::registerSlotOnApplyTab("Look", chatslots,SLOT(onApplyTabLook()));
+// 	ConfigDialog::connectSlot("Chat", "Emoticons:", SIGNAL(activated(int)), chatslots, SLOT(chooseEmoticonsStyle(int)));
+// 	ConfigDialog::connectSlot("Chat", "Automatically prune chat messages", SIGNAL(toggled(bool)), chatslots, SLOT(onPruneChat(bool)));
+// 	ConfigDialog::connectSlot("Chat", "Automatically fold links", SIGNAL(toggled(bool)), chatslots, SLOT(onFoldLink(bool)));
+// 	ConfigDialog::connectSlot("Chat", "Block window close on new message", SIGNAL(toggled(bool)), chatslots, SLOT(onBlockClose(bool)));
 
-	ConfigDialog::connectSlot("Look", "Remove chat header repetitions", SIGNAL(toggled(bool)), chatslots, SLOT(onRemoveHeaders(bool)));
+// 	ConfigDialog::connectSlot("Look", "Remove chat header repetitions", SIGNAL(toggled(bool)), chatslots, SLOT(onRemoveHeaders(bool)));
 
-	ConfigDialog::connectSlot("Look", "Remove server time", SIGNAL(toggled(bool)), chatslots, SLOT(onRemoveServerTime(bool)));
+// 	ConfigDialog::connectSlot("Look", "Remove server time", SIGNAL(toggled(bool)), chatslots, SLOT(onRemoveServerTime(bool)));
 
-	ConfigDialog::connectSlot("Look", "Your background color", SIGNAL(changed(const char *, const QColor&)),
-		chatslots, SLOT(chooseColor(const char *, const QColor&)), "own_bg_color");
-	ConfigDialog::connectSlot("Look", "User background color", SIGNAL(changed(const char *, const QColor&)),
-		chatslots, SLOT(chooseColor(const char *, const QColor&)), "his_bg_color");
-	ConfigDialog::connectSlot("Look", "Your font color", SIGNAL(changed(const char *, const QColor&)),
-		chatslots, SLOT(chooseColor(const char *, const QColor&)), "own_font_color");
-	ConfigDialog::connectSlot("Look", "User font color", SIGNAL(changed(const char *, const QColor&)),
-		chatslots, SLOT(chooseColor(const char *, const QColor&)), "his_font_color");
+// 	ConfigDialog::connectSlot("Look", "Your background color", SIGNAL(changed(const char *, const QColor&)),
+// 		chatslots, SLOT(chooseColor(const char *, const QColor&)), "own_bg_color");
+// 	ConfigDialog::connectSlot("Look", "User background color", SIGNAL(changed(const char *, const QColor&)),
+// 		chatslots, SLOT(chooseColor(const char *, const QColor&)), "his_bg_color");
+// 	ConfigDialog::connectSlot("Look", "Your font color", SIGNAL(changed(const char *, const QColor&)),
+// 		chatslots, SLOT(chooseColor(const char *, const QColor&)), "own_font_color");
+// 	ConfigDialog::connectSlot("Look", "User font color", SIGNAL(changed(const char *, const QColor&)),
+// 		chatslots, SLOT(chooseColor(const char *, const QColor&)), "his_font_color");
 
-	ConfigDialog::connectSlot("Look", "Font in chat window", SIGNAL(changed(const char *, const QFont&)), chatslots, SLOT(chooseFont(const char *, const QFont&)), "chat_font_box");
-	ConfigDialog::connectSlot("Look", "Select chat style", SIGNAL(activated(const QString&)), chatslots, SLOT(onChatThemeChanged(const QString&)));
+// 	ConfigDialog::connectSlot("Look", "Font in chat window", SIGNAL(changed(const char *, const QFont&)), chatslots, SLOT(chooseFont(const char *, const QFont&)), "chat_font_box");
+// 	ConfigDialog::connectSlot("Look", "Select chat style", SIGNAL(activated(const QString&)), chatslots, SLOT(onChatThemeChanged(const QString&)));
 
-	ConfigDialog::connectSlot("Look", 0, SIGNAL(clicked()), chatslots, SLOT(chooseBackgroundFile()), "chat_background_fileopen");
+// 	ConfigDialog::connectSlot("Look", 0, SIGNAL(clicked()), chatslots, SLOT(chooseBackgroundFile()), "chat_background_fileopen");
 
 	chat_manager = new ChatManager(kadu, "chat_manager");
 	connect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
 		chat_manager, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
+
+	kdebugf2();
+}
+
+void ChatManager::configurationUpdated()
+{
+	kdebugf();
+
+// 	config_file.writeEntry("Chat", "WebBrowserNo", ConfigDialog::getComboBox("Chat", "Choose your browser")->currentItem());
+// 	config_file.writeEntry("Chat", "MailClientNo", ConfigDialog::getComboBox("Chat", "Choose your mail client")->currentItem());
+
+	changeAppearance();
+
+	if (config_file.readBoolEntry("Chat", "RememberPosition"))
+	{
+		userlist->addPerContactNonProtocolConfigEntry("chat_geometry", "ChatGeometry");
+		userlist->addPerContactNonProtocolConfigEntry("chat_vertical_sizes", "VerticalSizes");
+	}
+	else
+	{
+		userlist->removePerContactNonProtocolConfigEntry("chat_geometry");
+		userlist->removePerContactNonProtocolConfigEntry("chat_vertical_sizes");
+	}
+
+	bool msgTitle = config_file.readBoolEntry("Chat","NewMessagesInChatTitle");
+	bool blnTitle = config_file.readBoolEntry("Chat","BlinkChatTitle");
+	CONST_FOREACH(chat, Chats) // set options for all chats...
+	{
+		(*chat)->setShowNewMessagesNum(msgTitle);
+		(*chat)->setBlinkChatTitle(blnTitle);
+
+		unsigned int newMsgs = (*chat)->getNewMessagesNum();
+
+		// for chats with waiting messages we also trigger apropriate slots...
+		if (blnTitle && (newMsgs > 0))
+			(*chat)->changeTitle();
+		else if (msgTitle && (newMsgs > 0))
+			(*chat)->showNewMessagesNumInTitle();
+	}
+
+	KaduActions["autoSendAction"]->setAllOn(config_file.readBoolEntry("Chat", "AutoSend"));
 
 	kdebugf2();
 }

@@ -23,7 +23,8 @@
 #include "userlist.h"
 #include "config_file.h"
 #include "debug.h"
-#include "config_dialog.h"
+// #include "config_dialog.h"
+#include "hot_key.h"
 #include "kadu.h"
 #include "gadu.h"
 #include "message_box.h"
@@ -288,13 +289,13 @@ VoiceManager::VoiceManager(QObject *parent, const char *name) : QObject(parent, 
 	device(0), playThread(0), recordThread(0), voice_enc(0), voice_dec(0), direct()
 {
 	kdebugf();
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys",
-			QT_TRANSLATE_NOOP("@default", "Voice chat"), "kadu_voicechat", "F7");
-	ConfigDialog::addVGroupBox("Sounds", "Sounds", QT_TRANSLATE_NOOP("@default","Voice chat"));
-	ConfigDialog::addPushButton("Sounds", "Voice chat", QT_TRANSLATE_NOOP("@default","Test GSM Encoding"));
-	ConfigDialog::addCheckBox("Sounds", "Voice chat", QT_TRANSLATE_NOOP("@default", "Faster compression algorithm (degrades quality)"), "FastGSM", false, 0, 0, Expert);
-	ConfigDialog::addCheckBox("Sounds", "Voice chat", QT_TRANSLATE_NOOP("@default", "Cut-off optimization (faster but degrades quality)"), "CutGSM", false, 0, 0, Expert);
-	ConfigDialog::connectSlot("Sounds", "Test GSM Encoding", SIGNAL(clicked()), this, SLOT(testGsmEncoding()));
+// 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys",
+// 			QT_TRANSLATE_NOOP("@default", "Voice chat"), "kadu_voicechat", "F7");
+// 	ConfigDialog::addVGroupBox("Sounds", "Sounds", QT_TRANSLATE_NOOP("@default","Voice chat"));
+// 	ConfigDialog::addPushButton("Sounds", "Voice chat", QT_TRANSLATE_NOOP("@default","Test GSM Encoding"));
+// 	ConfigDialog::addCheckBox("Sounds", "Voice chat", QT_TRANSLATE_NOOP("@default", "Faster compression algorithm (degrades quality)"), "FastGSM", false, 0, 0, Expert);
+// 	ConfigDialog::addCheckBox("Sounds", "Voice chat", QT_TRANSLATE_NOOP("@default", "Cut-off optimization (faster but degrades quality)"), "CutGSM", false, 0, 0, Expert);
+// 	ConfigDialog::connectSlot("Sounds", "Test GSM Encoding", SIGNAL(clicked()), this, SLOT(testGsmEncoding()));
 
 	UserBox::userboxmenu->addItemAtPos(2,"VoiceChat", tr("Voice chat"), this,
 		SLOT(makeVoiceChat()), HotKey::shortCutFromFile("ShortCuts", "kadu_voicechat"));
@@ -318,12 +319,12 @@ VoiceManager::VoiceManager(QObject *parent, const char *name) : QObject(parent, 
 VoiceManager::~VoiceManager()
 {
 	kdebugf();
-	ConfigDialog::disconnectSlot("Sounds", "Test GSM Encoding", SIGNAL(clicked()), this, SLOT(testGsmEncoding()));
-	ConfigDialog::removeControl("Sounds", "Cut-off optimization (faster but degrades quality)");
-	ConfigDialog::removeControl("Sounds", "Faster compression algorithm (degrades quality)");
-	ConfigDialog::removeControl("Sounds", "Test GSM Encoding");
-	ConfigDialog::removeControl("Sounds", "Voice chat");
-	ConfigDialog::removeControl("ShortCuts", "Voice chat");
+// 	ConfigDialog::disconnectSlot("Sounds", "Test GSM Encoding", SIGNAL(clicked()), this, SLOT(testGsmEncoding()));
+// 	ConfigDialog::removeControl("Sounds", "Cut-off optimization (faster but degrades quality)");
+// 	ConfigDialog::removeControl("Sounds", "Faster compression algorithm (degrades quality)");
+// 	ConfigDialog::removeControl("Sounds", "Test GSM Encoding");
+// 	ConfigDialog::removeControl("Sounds", "Voice chat");
+// 	ConfigDialog::removeControl("ShortCuts", "Voice chat");
 	int voice_chat_item = UserBox::userboxmenu->getItem(tr("Voice chat"));
 	UserBox::userboxmenu->removeItem(voice_chat_item);
 	disconnect(UserBox::userboxmenu,SIGNAL(popup()),
@@ -358,10 +359,10 @@ void VoiceManager::testGsmEncoding()
 	}
 	int value = 1;
 	gsm_option(GsmEncodingTestHandle, GSM_OPT_VERBOSE, &value);
-	if (ConfigDialog::getCheckBox("Sounds", "Faster compression algorithm (degrades quality)")->isChecked())
-		gsm_option(GsmEncodingTestHandle, GSM_OPT_FAST, &value);
-	if (ConfigDialog::getCheckBox("Sounds", "Cut-off optimization (faster but degrades quality)")->isChecked())
-		gsm_option(GsmEncodingTestHandle, GSM_OPT_LTP_CUT, &value);
+// 	if (ConfigDialog::getCheckBox("Sounds", "Faster compression algorithm (degrades quality)")->isChecked())
+// 		gsm_option(GsmEncodingTestHandle, GSM_OPT_FAST, &value);
+// 	if (ConfigDialog::getCheckBox("Sounds", "Cut-off optimization (faster but degrades quality)")->isChecked())
+// 		gsm_option(GsmEncodingTestHandle, GSM_OPT_LTP_CUT, &value);
 
 	GsmEncodingTestDevice = sound_manager->openDevice(PLAY_AND_RECORD, 8000);
 	if (GsmEncodingTestDevice == NULL)

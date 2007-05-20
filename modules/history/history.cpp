@@ -22,7 +22,7 @@
 #include <qvbox.h>
 #include <qvbuttongroup.h>
 
-#include "config_dialog.h"
+// #include "config_dialog.h"
 #include "config_file.h"
 #include "debug.h"
 #include "emoticons.h"

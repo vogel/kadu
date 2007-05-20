@@ -22,10 +22,12 @@
 #include <sys/un.h>
 #include <netinet/in.h>
 
-#include "config_dialog.h"
+// #include "config_dialog.h"
+#include "config_file.h"
 #include "dcc.h"
 #include "debug.h"
 #include "file_transfer.h"
+#include "hot_key.h"
 #include "ignore.h"
 #include "misc.h"
 #include "kadu.h"
@@ -294,26 +296,26 @@ DccManager::DccManager(QObject *parent, const char *name) : QObject(parent, name
 	requests(), DccEnabled(false)
 {
 	kdebugf();
-	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Send file"), "kadu_sendfile", "F8");
+// 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "Send file"), "kadu_sendfile", "F8");
 
-	ConfigDialog::addCheckBox("Network", "dcc", QT_TRANSLATE_NOOP("@default", "DCC enabled"), "AllowDCC", false);
-	ConfigDialog::addCheckBox("Network", "dcc", QT_TRANSLATE_NOOP("@default", "Remove completed transfers from transfers list"), "RemoveCompletedTransfers", true);
-	ConfigDialog::addCheckBox("Network", "dcc", QT_TRANSLATE_NOOP("@default", "DCC IP autodetection"), "DccIpDetect", true, 0, 0, Advanced);
+// 	ConfigDialog::addCheckBox("Network", "dcc", QT_TRANSLATE_NOOP("@default", "DCC enabled"), "AllowDCC", false);
+// 	ConfigDialog::addCheckBox("Network", "dcc", QT_TRANSLATE_NOOP("@default", "Remove completed transfers from transfers list"), "RemoveCompletedTransfers", true);
+// 	ConfigDialog::addCheckBox("Network", "dcc", QT_TRANSLATE_NOOP("@default", "DCC IP autodetection"), "DccIpDetect", true, 0, 0, Advanced);
 
-	ConfigDialog::addVGroupBox("Network", "dcc", QT_TRANSLATE_NOOP("@default", "DCC IP"), 0, Advanced);
-	ConfigDialog::addLineEdit("Network", "DCC IP", QT_TRANSLATE_NOOP("@default", "IP address:"), "DccIP");
-	ConfigDialog::addCheckBox("Network", "dcc", QT_TRANSLATE_NOOP("@default", "DCC forwarding enabled"), "DccForwarding", false, 0, 0, Advanced);
+// 	ConfigDialog::addVGroupBox("Network", "dcc", QT_TRANSLATE_NOOP("@default", "DCC IP"), 0, Advanced);
+// 	ConfigDialog::addLineEdit("Network", "DCC IP", QT_TRANSLATE_NOOP("@default", "IP address:"), "DccIP");
+// 	ConfigDialog::addCheckBox("Network", "dcc", QT_TRANSLATE_NOOP("@default", "DCC forwarding enabled"), "DccForwarding", false, 0, 0, Advanced);
 
-	ConfigDialog::addVGroupBox("Network", "dcc", QT_TRANSLATE_NOOP("@default", "DCC forwarding properties"), 0, Advanced);
-	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", QT_TRANSLATE_NOOP("@default", "External IP address:"), "ExternalIP");
-	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", QT_TRANSLATE_NOOP("@default", "External TCP port:"), "ExternalPort", "1550");
-	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", QT_TRANSLATE_NOOP("@default", "Local TCP port:"), "LocalPort", "1550");
+// 	ConfigDialog::addVGroupBox("Network", "dcc", QT_TRANSLATE_NOOP("@default", "DCC forwarding properties"), 0, Advanced);
+// 	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", QT_TRANSLATE_NOOP("@default", "External IP address:"), "ExternalIP");
+// 	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", QT_TRANSLATE_NOOP("@default", "External TCP port:"), "ExternalPort", "1550");
+// 	ConfigDialog::addLineEdit("Network", "DCC forwarding properties", QT_TRANSLATE_NOOP("@default", "Local TCP port:"), "LocalPort", "1550");
 
-	ConfigDialog::connectSlot("Network", "DCC enabled", SIGNAL(toggled(bool)), this, SLOT(ifDccEnabled(bool)));
-	ConfigDialog::connectSlot("Network", "DCC IP autodetection", SIGNAL(toggled(bool)), this, SLOT(ifDccIpEnabled(bool)));
+// 	ConfigDialog::connectSlot("Network", "DCC enabled", SIGNAL(toggled(bool)), this, SLOT(ifDccEnabled(bool)));
+// 	ConfigDialog::connectSlot("Network", "DCC IP autodetection", SIGNAL(toggled(bool)), this, SLOT(ifDccIpEnabled(bool)));
 
-	ConfigDialog::registerSlotOnCreateTab("Network", this, SLOT(configDialogCreated()));
-	ConfigDialog::registerSlotOnApplyTab("Network", this, SLOT(configDialogApply()));
+// 	ConfigDialog::registerSlotOnCreateTab("Network", this, SLOT(configDialogCreated()));
+// 	ConfigDialog::registerSlotOnApplyTab("Network", this, SLOT(configDialogApply()));
 
 	connect(&TimeoutTimer, SIGNAL(timeout()), this, SLOT(timeout()));
 
@@ -327,26 +329,26 @@ DccManager::DccManager(QObject *parent, const char *name) : QObject(parent, name
 DccManager::~DccManager()
 {
 	kdebugf();
-	ConfigDialog::disconnectSlot("Network", "DCC enabled", SIGNAL(toggled(bool)), this, SLOT(ifDccEnabled(bool)));
-	ConfigDialog::disconnectSlot("Network", "DCC IP autodetection", SIGNAL(toggled(bool)), this, SLOT(ifDccIpEnabled(bool)));
+// 	ConfigDialog::disconnectSlot("Network", "DCC enabled", SIGNAL(toggled(bool)), this, SLOT(ifDccEnabled(bool)));
+// 	ConfigDialog::disconnectSlot("Network", "DCC IP autodetection", SIGNAL(toggled(bool)), this, SLOT(ifDccIpEnabled(bool)));
 
-	ConfigDialog::unregisterSlotOnCreateTab("Network", this, SLOT(configDialogCreated()));
-	ConfigDialog::unregisterSlotOnApplyTab("Network", this, SLOT(configDialogApply()));
+// 	ConfigDialog::unregisterSlotOnCreateTab("Network", this, SLOT(configDialogCreated()));
+// 	ConfigDialog::unregisterSlotOnApplyTab("Network", this, SLOT(configDialogApply()));
 
-	ConfigDialog::removeControl("Network", "DCC enabled");
-	ConfigDialog::removeControl("Network", "Remove completed transfers from transfers list");
-	ConfigDialog::removeControl("Network", "DCC IP autodetection");
+// 	ConfigDialog::removeControl("Network", "DCC enabled");
+// 	ConfigDialog::removeControl("Network", "Remove completed transfers from transfers list");
+// 	ConfigDialog::removeControl("Network", "DCC IP autodetection");
 
-	ConfigDialog::removeControl("Network", "IP address:");
-	ConfigDialog::removeControl("Network", "DCC forwarding enabled");
-	ConfigDialog::removeControl("Network", "DCC IP");
+// 	ConfigDialog::removeControl("Network", "IP address:");
+// 	ConfigDialog::removeControl("Network", "DCC forwarding enabled");
+// 	ConfigDialog::removeControl("Network", "DCC IP");
 
-	ConfigDialog::removeControl("Network", "External IP address:");
-	ConfigDialog::removeControl("Network", "External TCP port:");
-	ConfigDialog::removeControl("Network", "Local TCP port:");
-	ConfigDialog::removeControl("Network", "DCC forwarding properties");
+// 	ConfigDialog::removeControl("Network", "External IP address:");
+// 	ConfigDialog::removeControl("Network", "External TCP port:");
+// 	ConfigDialog::removeControl("Network", "Local TCP port:");
+// 	ConfigDialog::removeControl("Network", "DCC forwarding properties");
 
-	ConfigDialog::removeControl("ShortCuts", "Send file");
+// 	ConfigDialog::removeControl("ShortCuts", "Send file");
 
 	disconnect(gadu, SIGNAL(connecting()), this, SLOT(setupDcc()));
 	disconnect(gadu, SIGNAL(disconnected()), this, SLOT(closeDcc()));
@@ -539,17 +541,17 @@ void DccManager::ifDccEnabled(bool dccEnabled)
 {
 	kdebugf();
 
-	QCheckBox *autodetectIP = ConfigDialog::getCheckBox("Network", "DCC IP autodetection");
-	QCheckBox *removeCompleted = ConfigDialog::getCheckBox("Network", "Remove completed transfers from transfers list");
-	QVGroupBox *dccIP = ConfigDialog::getVGroupBox("Network", "DCC IP");
-	QCheckBox *forwarding = ConfigDialog::getCheckBox("Network", "DCC forwarding enabled");
-	QVGroupBox *forwardingProperties = ConfigDialog::getVGroupBox("Network", "DCC forwarding properties");
+// 	QCheckBox *autodetectIP = ConfigDialog::getCheckBox("Network", "DCC IP autodetection");
+// 	QCheckBox *removeCompleted = ConfigDialog::getCheckBox("Network", "Remove completed transfers from transfers list");
+// 	QVGroupBox *dccIP = ConfigDialog::getVGroupBox("Network", "DCC IP");
+// 	QCheckBox *forwarding = ConfigDialog::getCheckBox("Network", "DCC forwarding enabled");
+// 	QVGroupBox *forwardingProperties = ConfigDialog::getVGroupBox("Network", "DCC forwarding properties");
 
-	autodetectIP->setEnabled(dccEnabled);
-	removeCompleted->setEnabled(dccEnabled);
-	dccIP->setEnabled(!autodetectIP->isChecked() && dccEnabled);
-	forwarding->setEnabled(dccEnabled);
-	forwardingProperties->setEnabled(forwarding->isChecked() && dccEnabled);
+// 	autodetectIP->setEnabled(dccEnabled);
+// 	removeCompleted->setEnabled(dccEnabled);
+// 	dccIP->setEnabled(!autodetectIP->isChecked() && dccEnabled);
+// 	forwarding->setEnabled(dccEnabled);
+// 	forwardingProperties->setEnabled(forwarding->isChecked() && dccEnabled);
 
 	kdebugf2();
 }
@@ -557,26 +559,26 @@ void DccManager::ifDccEnabled(bool dccEnabled)
 void DccManager::ifDccIpEnabled(bool autodetect)
 {
 	kdebugf();
-	ConfigDialog::getVGroupBox("Network", "DCC IP")->setEnabled(!autodetect);
+// 	ConfigDialog::getVGroupBox("Network", "DCC IP")->setEnabled(!autodetect);
 	kdebugf2();
 }
 
 void DccManager::configDialogCreated()
 {
 	kdebugf();
-	QCheckBox *dccEnabled = ConfigDialog::getCheckBox("Network", "DCC enabled");
-	QCheckBox *removeCompleted = ConfigDialog::getCheckBox("Network", "Remove completed transfers from transfers list");
-	QCheckBox *autodetectIP = ConfigDialog::getCheckBox("Network", "DCC IP autodetection");
-	QVGroupBox *dccIP = ConfigDialog::getVGroupBox("Network", "DCC IP");
-	QVGroupBox *forwardingProperties = ConfigDialog::getVGroupBox("Network", "DCC forwarding properties");
-	QCheckBox *forwarding = ConfigDialog::getCheckBox("Network", "DCC forwarding enabled");
+// 	QCheckBox *dccEnabled = ConfigDialog::getCheckBox("Network", "DCC enabled");
+// 	QCheckBox *removeCompleted = ConfigDialog::getCheckBox("Network", "Remove completed transfers from transfers list");
+// 	QCheckBox *autodetectIP = ConfigDialog::getCheckBox("Network", "DCC IP autodetection");
+// 	QVGroupBox *dccIP = ConfigDialog::getVGroupBox("Network", "DCC IP");
+// 	QVGroupBox *forwardingProperties = ConfigDialog::getVGroupBox("Network", "DCC forwarding properties");
+// 	QCheckBox *forwarding = ConfigDialog::getCheckBox("Network", "DCC forwarding enabled");
 
-	autodetectIP->setEnabled(dccEnabled->isChecked());
-	removeCompleted->setEnabled(dccEnabled->isChecked());
-	dccIP->setEnabled(!autodetectIP->isChecked() && dccEnabled->isChecked());
-	forwarding->setEnabled(dccEnabled->isChecked());
-	forwardingProperties->setEnabled(dccEnabled->isChecked() && forwarding->isChecked());
-	connect(forwarding, SIGNAL(toggled(bool)), forwardingProperties, SLOT(setEnabled(bool)));
+// 	autodetectIP->setEnabled(dccEnabled->isChecked());
+// 	removeCompleted->setEnabled(dccEnabled->isChecked());
+// 	dccIP->setEnabled(!autodetectIP->isChecked() && dccEnabled->isChecked());
+// 	forwarding->setEnabled(dccEnabled->isChecked());
+// 	forwardingProperties->setEnabled(dccEnabled->isChecked() && forwarding->isChecked());
+// 	connect(forwarding, SIGNAL(toggled(bool)), forwardingProperties, SLOT(setEnabled(bool)));
 	kdebugf2();
 }
 

@@ -21,7 +21,6 @@ class KaduTabBar;
 class UserBox;
 class KaduTextBrowser;
 class QPushButton;
-class KaduSlots;
 class UserStatusChanger;
 class SplitStatusChanger;
 
@@ -34,8 +33,6 @@ class Kadu : public QWidget
 
 	private:
 		static bool Closing;
-		friend class KaduSlots;
-		KaduSlots *kaduslots;
 		DockArea* TopDockArea;
 		KaduTextBrowser* InfoPanel;
 		QMenuBar* MenuBar;
@@ -105,6 +102,8 @@ class Kadu : public QWidget
 		void dockMenuAboutToHide(void);
 
 		void changeStatus(UserStatus status);
+
+		void configurationUpdated();
 
 	protected:
 		void keyPressEvent(QKeyEvent *e);
@@ -249,23 +248,6 @@ class Kadu : public QWidget
 		void settingMainIconBlocked(bool &);
 
 		void removingUsers(UserListElements users);
-};
-
-class KaduSlots : public QObject
-{
-	Q_OBJECT
-
-	public:
-		KaduSlots(QObject *parent=0, const char *name=0);
-	public slots:
-		void onCreateTabGeneral();
-		void onCreateTabLook();
-		void onApplyTabLook();
-		void onApplyTabGeneral();
-		void chooseColor(const char *name, const QColor& color);
-		void chooseFont(const char *name, const QFont& font);
-		void updatePreview();
-		void updateStatus(bool);
 };
 
 class OpenGGChatEvent : public QCustomEvent

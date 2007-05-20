@@ -29,7 +29,7 @@ AC_DEFUN(CHECK_PTHREAD,
 			PTHREAD_LIBS=
 		],[
 			AC_MSG_RESULT(no)
-			AC_MSG_ERROR([Your system is not supporting pthreads!])
+			AC_MSG_ERROR([Your system does not support pthreads!])
 		])
 		CPPFLAGS="$save_CPPFLAGS"
 	])

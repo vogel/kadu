@@ -18,7 +18,7 @@
 #include "debug.h"
 #include "config_file.h"
 #include "kadu.h"
-#include "config_dialog.h"
+// #include "config_dialog.h"
 #include "chat_manager.h"
 #include "chat.h"
 
@@ -93,7 +93,7 @@ extern "C" int x11_docking_init()
 	tray_restarter = new TrayRestarter();
 	x11_tray_icon = new X11TrayIcon(NULL, "x11_tray_icon");
 #ifdef ENABLE_HIDING
-	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Remove from taskbar (experimental)"), "HideTaskbar", false, 0, 0, Expert);
+// 	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Remove from taskbar (experimental)"), "HideTaskbar", false, 0, 0, Expert);
 #endif
 	return 0;
 }
@@ -101,7 +101,7 @@ extern "C" int x11_docking_init()
 extern "C" void x11_docking_close()
 {
 #ifdef ENABLE_HIDING
-	ConfigDialog::removeControl("General", "Remove from taskbar (experimental)");
+// 	ConfigDialog::removeControl("General", "Remove from taskbar (experimental)");
 #endif
 	delete tray_restarter;
 	delete x11_tray_icon;

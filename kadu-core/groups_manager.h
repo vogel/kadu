@@ -85,6 +85,8 @@ class GroupsManager : public QObject
 		**/
 		QString currentGroupName() const;
 
+		void configurationUpdated();
+
 	public slots:
 
 		/**
@@ -144,8 +146,6 @@ class GroupsManager : public QObject
 		void userRemoved(UserListElement elem, bool massively, bool last);
 
 		void tabSelected(int id);
-
-		void onApplyTabGeneral();
 
 	private:
 		GroupsManager();

@@ -13,7 +13,6 @@
 
 #include <fcntl.h>
 
-#include "config_dialog.h"
 #include "debug.h"
 #include "file_transfer.h"
 #include "message_box.h"

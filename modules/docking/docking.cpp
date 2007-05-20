@@ -15,7 +15,7 @@
 #include <qtimer.h>
 
 #include "config_file.h"
-#include "config_dialog.h"
+// #include "config_dialog.h"
 #include "docking.h"
 #include "debug.h"
 #include "icons_manager.h"
@@ -58,13 +58,13 @@ DockingManager::DockingManager(QObject *parent, const char *name) : QObject(pare
 	connect(dockMenu, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
 	connect(this, SIGNAL(mousePressMidButton()), &pending, SLOT(openMessages()));
 
-	ConfigDialog::addCheckBox("General", "grid-advanced", QT_TRANSLATE_NOOP("@default", "Show tooltip in tray"),
-			"ShowTooltipInTray", true, 0, 0, Advanced);
-	ConfigDialog::addComboBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "New message tray icon"),
-			"NewMessageIcon", toStringList(tr("Blinking envelope"), tr("Static envelope"), tr("Animated envelope")),
-			toStringList("0", "1", "2"), "0", 0, 0, Advanced);
-	ConfigDialog::registerSlotOnApplyTab("General", this, SLOT(onApplyTabGeneral()));
-	ConfigDialog::registerSlotOnApplyTab("Look", this, SLOT(onApplyTabLook()));
+// 	ConfigDialog::addCheckBox("General", "grid-advanced", QT_TRANSLATE_NOOP("@default", "Show tooltip in tray"),
+// 			"ShowTooltipInTray", true, 0, 0, Advanced);
+// 	ConfigDialog::addComboBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "New message tray icon"),
+// 			"NewMessageIcon", toStringList(tr("Blinking envelope"), tr("Static envelope"), tr("Animated envelope")),
+// 			toStringList("0", "1", "2"), "0", 0, 0, Advanced);
+// 	ConfigDialog::registerSlotOnApplyTab("General", this, SLOT(onApplyTabGeneral()));
+// 	ConfigDialog::registerSlotOnApplyTab("Look", this, SLOT(onApplyTabLook()));
 
 	kdebugf2();
 }
@@ -72,10 +72,10 @@ DockingManager::DockingManager(QObject *parent, const char *name) : QObject(pare
 void DockingManager::onApplyTabGeneral()
 {
 	kdebugf();
-	if (ConfigDialog::getCheckBox("General", "Show tooltip in tray")->isChecked())
-		defaultToolTip();
-	else
-		emit trayTooltipChanged(QString::null);
+// 	if (ConfigDialog::getCheckBox("General", "Show tooltip in tray")->isChecked())
+// 		defaultToolTip();
+// 	else
+// 		emit trayTooltipChanged(QString::null);
 	kdebugf2();
 }
 
@@ -94,10 +94,10 @@ void DockingManager::onApplyTabLook()
 DockingManager::~DockingManager()
 {
 	kdebugf();
-	ConfigDialog::unregisterSlotOnApplyTab("General", this, SLOT(onApplyTabGeneral()));
-	ConfigDialog::unregisterSlotOnApplyTab("Look", this, SLOT(onApplyTabLook()));
-	ConfigDialog::removeControl("General", "Show tooltip in tray");
-	ConfigDialog::removeControl("Look", "New message tray icon");
+// 	ConfigDialog::unregisterSlotOnApplyTab("General", this, SLOT(onApplyTabGeneral()));
+// 	ConfigDialog::unregisterSlotOnApplyTab("Look", this, SLOT(onApplyTabLook()));
+// 	ConfigDialog::removeControl("General", "Show tooltip in tray");
+// 	ConfigDialog::removeControl("Look", "New message tray icon");
 
 	disconnect(kadu, SIGNAL(statusPixmapChanged(const QPixmap &, const QString &)),
 		this, SLOT(statusPixmapChanged(const QPixmap &, const QString &)));
@@ -254,15 +254,15 @@ void DockingManager::setDocked(bool docked, bool butDontHideOnClose)
 	{
 		changeIcon();
 		defaultToolTip();
-		ConfigDialog::addCheckBox("General", "grid-beginner",
-			QT_TRANSLATE_NOOP("@default", "Start docked"), "RunDocked", false, 0, 0, Beginner);
+// 		ConfigDialog::addCheckBox("General", "grid-beginner",
+// 			QT_TRANSLATE_NOOP("@default", "Start docked"), "RunDocked", false, 0, 0, Beginner);
 		if (config_file.readBoolEntry("General", "RunDocked"))
 			kadu->setShowMainWindowOnStart(false);
 	}
 	else
 	{
 		kdebugm(KDEBUG_INFO, "closing: %d\n", Kadu::closing());
-		ConfigDialog::removeControl("General", "Start docked");
+// 		ConfigDialog::removeControl("General", "Start docked");
 		if (!Kadu::closing())
 			kadu->show();
 	}

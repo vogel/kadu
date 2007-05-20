@@ -10,7 +10,6 @@
 #include <sys/time.h>
 
 #include "alsa_sound.h"
-#include "config_dialog.h"
 #include "config_file.h"
 #include "debug.h"
 #include "../sound/sound.h"
@@ -245,10 +244,10 @@ ALSAPlayerSlots::ALSAPlayerSlots(QObject *parent, const char *name) : QObject(pa
 	connect(sound_manager, SIGNAL(setFlushingEnabledImpl(SoundDevice, bool)),
 		this, SLOT(setFlushingEnabled(SoundDevice, bool)));
 
-	ConfigDialog::addHGroupBox("Sounds", "Sounds",
-			QT_TRANSLATE_NOOP("@default", "Output device"), 0, Advanced);
-	ConfigDialog::addLineEdit("Sounds", "Output device",
-			QT_TRANSLATE_NOOP("@default", "ALSA device:"), "ALSAOutputDevice", "default", 0, "device_path");
+// 	ConfigDialog::addHGroupBox("Sounds", "Sounds",
+// 			QT_TRANSLATE_NOOP("@default", "Output device"), 0, Advanced);
+// 	ConfigDialog::addLineEdit("Sounds", "Output device",
+// 			QT_TRANSLATE_NOOP("@default", "ALSA device:"), "ALSAOutputDevice", "default", 0, "device_path");
 
 	kdebugf2();
 }
@@ -257,8 +256,8 @@ ALSAPlayerSlots::~ALSAPlayerSlots()
 {
 	kdebugf();
 
-	ConfigDialog::removeControl("Sounds", "ALSA device:", "device_path");
-	ConfigDialog::removeControl("Sounds", "Output device");
+// 	ConfigDialog::removeControl("Sounds", "ALSA device:", "device_path");
+// 	ConfigDialog::removeControl("Sounds", "Output device");
 
 	disconnect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice&)),
 			this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice&)));

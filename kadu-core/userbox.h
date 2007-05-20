@@ -506,6 +506,9 @@ class UserBox : public QListBox
 		static const QValueList<UserBox *> &userboxes() {return UserBoxes;}
 
 		static CreateNotifier createNotifier;
+
+		void configurationUpdated();
+
 	public slots:
 
 		/**
@@ -695,54 +698,8 @@ class UserBoxSlots : public QObject
 {
 	Q_OBJECT
 	public slots:
-		/**
-			\fn void onCreateTabLook()
-			Obs³uguje sekcjê UserBox podczas otwierania okna konfiguracji.
-		**/
 		void onCreateTabLook();
-
-		/**
-			\fn void onDestroyConfigDialog()
-			Obs³uguje sekcjê UserBox podczas zamykania okna konfiguracji.
-		**/
-		void onApplyTabLook();
-
-		/**
-			\fn void chooseColor(const char *name, const QColor& color)
-			Od¶wie¿a podgl±d wybranego koloru.
-			\param name nazwa elementu, dla którego wybrano kolor.
-				\arg \c userbox_bg_color oznacza kolor t³a.
-				\arg \c userbox_font_color oznacz kolor czcionki.
-			\param color wybrany kolor.
-		**/
-		void chooseColor(const char *name, const QColor& color);
-
-		/**
-			\fn void chooseFont(const char *name, const QFont& font)
-			Od¶wie¿a podgl±d wybranej czcionki.
-			\param name nazwa elementu, dla którego wybrano czcionkê.
-				\arg \c userbox_font_box oznacza ogóln± czcionkê listy kontaktów.
-			\param font wybrana czcionka.
-		**/
-		void chooseFont(const char *name, const QFont& font);
-
-		/**
-			\fn void onMultiColumnUserbox(bool toggled)
-			W³±cza b±d¼ wy³±cza kontrolkê szeroko¶ci kolumny listy kontaktów, w zale¿no¶ci od podanego argumentu.
-			\param togglet warto¶æ logiczna informuj±ca, czy kontrolka ma byæ w³±czona czy wy³±czona.
-		**/
-		void onMultiColumnUserbox(bool toggled);
-
-		/**
-			\fn void updatePreview()
-			Od¶wie¿a podgl±d wszystkich elementów UserBox'a.
-		**/
-		void updatePreview();
-
 		void chooseBackgroundFile();
-		void userboxBackgroundMove(bool toggled);
-	private slots:
-		void backgroundFileChanged(const QString &text);
 };
 
 /**

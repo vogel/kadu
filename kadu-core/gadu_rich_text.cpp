@@ -150,7 +150,9 @@ QString formatGGMessage(const QString &msg, unsigned int formats_length, void *f
 					}
 					else
 					{
-						if (tmpsize<(config_file.readUnsignedNumEntry("Chat", "MaxImageSize")*1024))
+						int size = config_file.readBoolEntry("Chat", "ReceiveImages") ? 255 : 0;
+
+						if (tmpsize < size * 1024)
 						{
 							if (receiveImage)
 							{

@@ -19,7 +19,7 @@
 #include "../sound/sound_file.h"
 #include "debug.h"
 #include "dsp_sound.h"
-#include "config_dialog.h"
+// #include "config_dialog.h"
 
 /**
  * @ingroup dsp_sound
@@ -31,10 +31,10 @@ extern "C" int dsp_sound_init()
 
 	oss_player_slots=new OSSPlayerSlots(NULL, "oss_player_slots");
 
-	ConfigDialog::addHGroupBox("Sounds", "Sounds",
-			QT_TRANSLATE_NOOP("@default","Output device"), 0, Advanced);
-	ConfigDialog::addLineEdit("Sounds", "Output device",
-			QT_TRANSLATE_NOOP("@default","Path:"), "OutputDevice", "/dev/dsp", 0, "device_path");
+// 	ConfigDialog::addHGroupBox("Sounds", "Sounds",
+// 			QT_TdRANSLATE_NOOP("@default","Output device"), 0, Advanced);
+// 	ConfigDialog::addLineEdit("Sounds", "Output device",
+// 			QT_TRANSLATE_NOOP("@default","Path:"), "OutputDevice", "/dev/dsp", 0, "device_path");
 	kdebugf2();
 	return 0;
 }
@@ -43,8 +43,8 @@ extern "C" void dsp_sound_close()
 {
 	kdebugf();
 
-	ConfigDialog::removeControl("Sounds", "Path:", "device_path");
-	ConfigDialog::removeControl("Sounds", "Output device");
+// 	ConfigDialog::removeControl("Sounds", "Path:", "device_path");
+// 	ConfigDialog::removeControl("Sounds", "Output device");
 	delete oss_player_slots;
 	oss_player_slots=NULL;
 	kdebugf2();
