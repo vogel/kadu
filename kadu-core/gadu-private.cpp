@@ -508,7 +508,7 @@ void GaduSocketNotifiers::socketEvent()
 		connectionFailed(e->event.failure);
 
 	else if (e->type == GG_EVENT_DISCONNECT)
-		emit disconnected();
+		emit serverDisconnected();
 
 	else if (e->type == GG_EVENT_NONE)
 		kdebugm (KDEBUG_NETWORK, "GG_EVENT_NONE\n");

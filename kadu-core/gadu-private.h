@@ -125,7 +125,12 @@ class GaduSocketNotifiers : public SocketNotifiers
 			TODO: zmieniæ nazwê.
 		**/
 		void dccConnectionReceived(const UserListElement &);
-		void disconnected();
+
+		/**
+			Sygna³ jest emitowany, gdy serwer przerwa³ po³±czenie
+		**/
+		void serverDisconnected();
+
 		void error(GaduError);
 		void imageReceived(UinType, uint32_t, uint32_t, const QString &filename, const char *data);
 		void imageRequestReceived(UinType, uint32_t, uint32_t);

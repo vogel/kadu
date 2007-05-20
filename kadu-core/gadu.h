@@ -443,6 +443,13 @@ class GaduProtocol : public Protocol
 		void disconnectedSlot();
 
 		/**
+			Slot wywo³ywany po zerwaniu po³±czenia przez serwer. Wywo³uje disconnectedSlot(),
+			oraz dodatkowo zmienia NextStatus.
+		**/
+		void socketDisconnectedSlot();
+
+
+		/**
 			Slot wywo³ywany po przekroczeniu czasu po³±czenia. Próbuje po³aczyæ ponownie.
 		**/
 		void connectionTimeoutTimerSlot();

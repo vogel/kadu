@@ -362,7 +362,7 @@ GaduProtocol::GaduProtocol(const QString &id, QObject *parent, const char *name)
 	connect(SocketNotifiers, SIGNAL(connected()), this, SLOT(connectedSlot()));
 	connect(SocketNotifiers, SIGNAL(dccConnectionReceived(const UserListElement&)),
 		this, SIGNAL(dccConnectionReceived(const UserListElement&)));
-	connect(SocketNotifiers, SIGNAL(disconnected()), this, SLOT(disconnectedSlot()));
+	connect(SocketNotifiers, SIGNAL(serverDisconnected()), this, SLOT(socketDisconnectedSlot()));
 	connect(SocketNotifiers, SIGNAL(error(GaduError)), this, SLOT(errorSlot(GaduError)));
 	connect(SocketNotifiers, SIGNAL(imageReceived(UinType, uint32_t, uint32_t, const QString &, const char *)),
 		this, SLOT(imageReceived(UinType, uint32_t, uint32_t, const QString &, const char *)));
@@ -762,6 +762,16 @@ void GaduProtocol::disconnectedSlot()
 
 	CurrentStatus->setOffline(QString::null);
 	emit disconnected();
+	kdebugf2();
+}
+
+void GaduProtocol::socketDisconnectedSlot()
+{
+	kdebugf();
+
+	NextStatus->setOffline(QString::null);
+	disconnectedSlot();
+
 	kdebugf2();
 }
 
