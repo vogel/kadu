@@ -1,0 +1,375 @@
+<configuration-ui>
+	<section name="Kadu">
+		<tab name="Kadu">
+			<group-box name="Language">
+				<combo-box caption="Language" config-section="General" config-item="Language" id="languages" />
+			</group-box>
+
+			<group-box name="Updates">
+				<check-box caption="Check for updates" config-section="General" config-item="CheckUpdates" />
+			</group-box>
+		</tab>
+	</section>
+
+	<section name="Account">
+		<tab name="Gadu-Gadu">
+			<group-box name="User data">
+				<line-edit caption="UIN" config-section="General" config-item="UIN" />
+				<gg-password-edit caption="Password" config-section="General" config-item="Password" />
+				<line-edit caption="Nick" config-section="General" config-item="Nick" />
+			</group-box>
+		</tab>
+
+		<tab name="Advanced">
+			<group-box name="Servers properties">
+				<check-box caption="Use default servers" config-section="Network" config-item="isDefServers" />
+				<line-edit caption="IP Addresses" config-section="Network" config-item="Server" />
+				<combo-box caption="Port to connect to servers (list)" config-section="Network" config-item="DefaultPort">
+					<item value="0" caption="Automatic" />
+					<item value="8074" caption="8074" />
+					<item value="443" caption="443" />
+				</combo-box>
+			</group-box>
+
+			<group-box name="Proxy Server">
+				<check-box caption="Use proxy server" config-section="Network" config-item="UseProxy" />
+				<line-edit caption="Host" config-section="Network" config-item="ProxyHost" />
+				<line-edit caption="Port" config-section="Network" config-item="ProxyPort" />
+				<line-edit caption="Username" config-section="Network" config-item="ProxyUser" />
+				<line-edit caption="Password" config-section="Network" config-item="ProxyPassword" id="proxyPassword" />
+			</group-box>
+		</tab>
+	</section>
+
+	<section name="Contacts">
+		<tab name="General">
+			<group-box name="Filters">
+				<check-box caption="Show offline contacts" config-section="General" config-item="ShowOffline" />
+<!-- 				<check-box caption="Show contacts that don't have a description" config-section="General" config-item="ShowWithoutDescription" /> -->
+				<check-box caption="Show contacts that you are blocking" config-section="General" config-item="ShowBlocked" />
+				<check-box caption="Show contacts that are blocking you" config-section="General" config-item="ShowBlocking" />
+			</group-box>
+
+<!-- 			<group-box name="Anonymous"> -->
+<!-- 				<check-box caption="Always show anonymous contacts with messages" config-section="General" config-item="ShowAnonymousWithMsgs" /> -->
+<!-- 			</group-box> -->
+		</tab>
+	</section>
+
+	<section name="Status">
+		<tab name="General">
+			<group-box name="General">
+				<check-box caption="Private status" config-section="General" config-item="PrivateStatus" />
+			</group-box>
+
+			<group-box name="Descirption">
+				<combo-box caption="On startup, set" config-section="General" config-item="StartupStatus" id="startupStatus">
+					<item value="LastStatus" caption="Last status" />
+					<item value="Online" caption="Online" />
+					<item value="Busy" caption="Busy" />
+					<item value="Invisible" caption="Invisible" />
+					<item value="Offline" caption="Offline" />
+				</combo-box>
+				<check-box caption="On statup, set last description" config-section="General" config-item="StartupLastDescription" id="onStartupSetLastDescription" />
+				<line-edit caption="On statup, set description" config-section="General" config-item="StartupDescription" id="onStartupSetDescription" />
+				<check-box caption="On shutdown, keep current description" config-section="General" config-item="DisconnectWithCurrentDescription" id="disconnectWithCurrentDescription" />
+				<line-edit caption="On shutdown, set description" config-section="General" config-item="DisconnectDescription" id="disconnectDescription" />
+				<spin-box caption="Number of kept descriptions" config-section="General" config-item="NumberOfDescriptions" min-value="1" max-value="30" step="1" />
+			</group-box>
+		</tab>
+
+		<tab name="Advanced">
+			<group-box name="Parser">
+				<check-box caption="Use KaduParser to parse status" config-section="General" config-item="ParseStatus" />
+			</group-box>
+		</tab>
+	</section>
+
+	<section name="Look">
+		<tab name="General">
+			<group-box name="General">
+				<combo-box caption="Theme" config-section="Look" config-item="QtStyle" id="qtThemes" />
+				<combo-box caption="Icon theme" config-section="Look" config-item="IconTheme" id="iconThemes" />
+				<path-list-edit caption="Icon paths" config-section="Look" config-item="IconsPaths" id="iconPaths" />
+<!-- 	poni¿sze idzie do x11_docking			 -->
+<!-- 				<line-edit caption="New message tray icon (list)" config-section="General" config-item="NewMsgTrayIcon" /> -->
+				<check-box caption="Show status button" config-section="Look" config-item="ShowStatusButton" />
+			</group-box>
+			<group-box name="Emoticons">
+				<combo-box caption="Emoticons" config-section="Chat" config-item="EmoticonsStyle">
+					<item value="2" caption="Animated" />
+					<item value="1" caption="Static" />
+					<item value="0" caption="None" />
+				</combo-box>
+				<combo-box caption="Emoticons theme" config-section="Chat" config-item="EmoticonsTheme" id="emoticonThemes" />
+				<path-list-edit caption="Emiticons paths" config-section="" config-item="" id="emoticonsPaths" />
+			</group-box>
+		</tab>
+
+		<tab name="Colors">
+			<group-box name="Chat">
+				<color-button caption="Chat window background color" config-section="Look" config-item="ChatBgColor" />
+				<color-button caption="Text edit background color" config-section="Look" config-item="ChatTextBgColor" />
+				<color-button caption="Your background color" config-section="Look" config-item="ChatMyBgColor" />
+				<color-button caption="User background color" config-section="Look" config-item="ChatUsrBgColor" />
+				<color-button caption="Your font color" config-section="Look" config-item="ChatMyFontColor" />
+				<color-button caption="User font color" config-section="Look" config-item="ChatUsrFontColor" />
+				<color-button caption="Your nick color" config-section="Look" config-item="ChatMyNickColor" />
+				<color-button caption="User nick color" config-section="Look" config-item="ChatUsrNickColor" />
+			</group-box>
+
+			<group-box name="Userbox">
+				<color-button caption="Userbox background color" config-section="Look" config-item="UserboxBgColor" />
+				<color-button caption="Userbox font color" config-section="Look" config-item="UserboxFgColor" />
+				<color-button caption="Description font color" config-section="Look" config-item="DescriptionColor" />
+			</group-box>
+
+			<group-box name="Information Panel">
+				<color-button caption="Panel background color" config-section="Look" config-item="InfoPanelBgColor" />
+				<color-button caption="Panel font color" config-section="Look" config-item="InfoPanelFgColor" />
+			</group-box>
+        </tab>
+
+		<tab name="Fonts">
+			<group-box name="Fonts">
+				<select-font caption="Font in chat window" config-section="Look" config-item="ChatFont" />
+				<select-font caption="Font in userbox" config-section="Look" config-item="UserboxFont" />
+				<select-font caption="Font in panel" config-section="Look" config-item="PanelFont" />
+			</group-box>
+        </tab>
+
+		<tab name="Chat">
+			<group-box name="Window title">
+				<check-box caption="Flash chat title on new message" config-section="Chat" config-item="BlinkChatTitle" />
+				<check-box caption="Show number of new messages on chat title" config-section="Chat" config-item="NewMessagesInChatTitle" />
+			</group-box>
+
+			<group-box name="Message pruning">
+				<check-box caption="Automatically prune chat messages" config-section="Chat" config-item="ChatPrune" id="chatPrune" />
+				<spin-box caption="Reduce the number of visible messages to" config-section="Chat" config-item="ChatPruneLen" min-value="1" max-value="255" step="1" id="chatPruneLen" />
+			</group-box>
+
+			<group-box name="Link folding">
+				<check-box caption="Automatically fold links" config-section="Chat" config-item="FoldLink" id="foldLink" />
+				<spin-box caption="Fold links longer than" config-section="Chat" config-item="LinkFoldTreshold" min-value="1" max-value="500" step="1" id="linkFoldTreshold" />
+			</group-box>
+<!--
+			<group-box name="Style">
+				<check-box caption="Select chat style (list)" config-section="General" config-item="SelectChatStyle" />
+			</group-box>-->
+
+			<group-box name="Preview">
+			</group-box>
+		</tab>
+
+		<tab name="Userbox">
+			<group-box name="General">
+				<check-box caption="Display group tabs" config-section="Look" config-item="DisplayGroupTabs" />
+				<check-box caption="Show available contacts in bold" config-section="Look" config-item="ShowBold" />
+				<combo-box caption="Align contact icon to" config-section="Look" config-item="AlignUserboxIconsTop">
+					<item value="true" caption="Top" />
+					<item value="false" caption="Center" />
+				</combo-box>
+				<combo-box caption="Tool tip style" config-section="Look" config-item="UserboxToolTipStyle" id="toolTipClasses" />
+			</group-box>
+
+			<group-box name="Descriptions">
+				<check-box caption="Show descritpion" config-section="Look" config-item="ShowDesc" id="showDescription" />
+				<check-box caption="Multiline description" config-section="Look" config-item="ShowMultilineDesc" id="multilineDescription" />
+			</group-box>
+
+            <group-box name="Columns">
+				<check-box caption="Multicolumn userbox" config-section="Look" config-item="MultiColumnUserbox" id="multiColumnUserbox" />
+				<spin-box caption="Userbox width when multi column" config-section="Look" config-item="MultiColumnUserboxWidth" min-value="1" max-value="1000" step="1" id="multiColumnUserboxWidget" suffix=" px" />
+			</group-box>
+<!--
+			<group-box name="Preview">
+			</group-box>-->
+		</tab>
+
+		<tab name="Information Panel">
+			<group-box name="General">
+				<check-box caption="Show information panel" config-section="Look" config-item="ShowInfoPanel" id="showInformationPanel" />
+				<check-box caption="Show vertical scrollbar" config-section="Look" config-item="PanelVerticalScrollbar" id="showVerticalScrollbar" />
+				<check-box caption="Show emoticons in panel" config-section="General" config-item="ShowEmotPanel" id="showEmoticonsInPanel" />
+			</group-box>
+
+			<group-box name="Syntax">
+				<syntax-editor caption="Syntax" config-section="Dupa" config-item="Dupa" syntax-group="infopanel" />
+			</group-box>
+		</tab>
+	</section>
+
+<!-- 	<section name="Notify"> -->
+<!-- to zostawcie mi na razie ca³kowicie - Vogel		 -->
+<!-- 	</section> -->
+
+<!--	<section name="History">
+		<tab name="General">
+			<group-box name="General">
+				<check-box caption="Log messages" config-section="General" config-item="LogMessages" />
+				<check-box caption="Don't show status changes" config-section="General" config-item="NotShowStatusChanges" />
+				<check-box caption="Don't save status cahnges" config-section="General" config-item="NotSaveStatusChanges" />
+			</group-box>
+
+			<group-box name="Message citation in chat window">
+				<spin-box caption="Count" config-section="Look" config-item="Count" min-value="1" max-value="1000" step="1" />
+			</group-box>
+		</tab>
+	</section>-->
+
+<!--	<section name="SMS">
+		<tab name="General">
+			<group-box name="General">
+				<check-box caption="Use built-in SMS application" config-section="General" config-item="UseKaduSMS" />
+				<line-edit caption="Custom SMS application" config-section="General" config-item="UseCustomSMS" />
+				<line-edit caption="SMS custom string" config-section="General" config-item="SMSCustomString" />
+				<line-edit caption="SMS nick" config-section="General" config-item="SMSNick" />
+			</group-box>
+
+			<group-box name="Gateways priority">
+			</group-box>
+		</tab>
+	</section>-->
+
+	<section name="Shortcuts">
+		<tab name="Main">
+			<group-box name="Shortcuts">
+				<hot-key-edit caption="Remove from userlist" config-section="ShortCuts" config-item="kadu_deleteuser" />
+				<hot-key-edit caption="View / edit user info" config-section="ShortCuts" config-item="kadu_persinfo" />
+				<hot-key-edit caption="Search this user in directory" config-section="ShortCuts" config-item="kadu_searchuser" />
+				<hot-key-edit caption="Show / hide offline users" config-section="ShortCuts" config-item="kadu_showoffline" />
+				<hot-key-edit caption="Show / hide users without description" config-section="ShortCuts" config-item="kadu_showonlydesc" />
+				<hot-key-edit caption="Configuration" config-section="ShortCuts" config-item="kadu_configure" />
+				<hot-key-edit caption="Add user" config-section="ShortCuts" config-item="kadu_adduser" />
+				<hot-key-edit caption="New line / send message" config-section="ShortCuts" config-item="chat_newline" />
+				<hot-key-edit caption="Clear Chat" config-section="ShortCuts" config-item="chat_clear" />
+				<hot-key-edit caption="Close chat" config-section="ShortCuts" config-item="chat_close" />
+				<hot-key-edit caption="Bold text" config-section="ShortCuts" config-item="chat_bold" />
+				<hot-key-edit caption="Italic text" config-section="ShortCuts" config-item="chat_italic" />
+				<hot-key-edit caption="Underline text" config-section="ShortCuts" config-item="chat_underline" />
+				<hot-key-edit caption="Manage modules" config-section="ShortCuts" config-item="kadu_modulesmanager" />
+			</group-box>
+		</tab>
+	</section>
+
+<!--	<section name="File transfers &amp; voice chats">
+		<tab name="General">
+			<group-box name="General">
+				<check-box caption="File transfers &amp; voice chats enabled" config-section="General" config-item="DCCEnabled" />
+				<check-box caption="Remove completed transfers from transfers list" config-section="General" config-item="RemoveCompletedTransfersFormTransfersList" />
+			</group-box>
+		</tab>
+
+		<tab name="Advanced">
+			<group-box name="IP">
+				<check-box caption="DCC IP autodetection" config-section="General" config-item="DCCIPAuto" />
+				<line-edit caption="IP address" config-section="General" config-item="DCCIPAddress" />
+			</group-box>
+
+			<group-box name="Forwarding">
+				<check-box caption="DCC forwarding enabled" config-section="General" config-item="DCCForwardingEnabled" />
+				<line-edit caption="External IP address" config-section="General" config-item="ExternalIPAddress" />
+				<line-edit caption="External TCP port" config-section="General" config-item="ExternalTCPPort" />
+				<line-edit caption="Local TCP port" config-section="General" config-item="LocalTCPPorts" />
+			</group-box>
+		</tab>
+	</section>-->
+
+	<section name="Chat">
+		<tab name="Behaviour">
+			<group-box name="Behaviour">
+				<check-box caption="Open chat window on new message" config-section="Chat" config-item="OpenChatOnMessage" />
+				<check-box caption="Wait for message delivery" config-section="Chat" config-item="MessageAcks" />
+				<check-box caption="'Enter' in chat send message" config-section="Chat" config-item="AutoSend" />
+				<check-box caption="Confirm clearing chat window" config-section="Chat" config-item="ConfirmChatClear" />
+			</group-box>
+
+			<group-box name="Closing">
+				<check-box caption="Block window close on new message" config-section="Chat" config-item="ChatCloseTimer" id="chatCloseTimer" />
+				<spin-box caption="Max time to block window close" config-section="Chat" config-item="ChatCloseTimerPeriod" min-value="1" max-value="30" step="1" id="chatCloseTimerPeriod" />
+			</group-box>
+		</tab>
+
+		<tab name="Images">
+			<group-box name="Images">
+				<check-box caption="Receive images" config-section="Chat" config-item="ReceiveImages" id="receiveImages" />
+				<check-box caption="Receive images during invisibility" config-section="Chat" config-item="RecevieImagesDuringInvisibility" id="receiveImagesDuringInvisibility" />
+			</group-box>
+		</tab>
+
+		<tab name="WWW">
+			<group-box name="WWW browser">
+				<combo-box caption="Choose your browser" config-section="General" config-item="ChooseYourBrowser" />
+				<combo-box caption="Browser options" config-section="General" config-item="BrowserOptions" />
+				<line-edit caption="Custom browser" config-section="General" config-item="CustomBrowser" />
+			</group-box>
+		</tab>
+	</section>
+
+	<section name="Advanced">
+
+		<tab name="Kadu">
+			<group-box name="Parser">
+				<check-box caption="Allow executing commands by parser" config-section="General" config-item="AllowExecutingFromParser" />
+			</group-box>
+			<group-box name="Debugging">
+				<line-edit caption="Debugging mask" config-section="General" config-item="DEBUG_MASK" />
+			</group-box>
+		</tab>
+
+		<tab name="Status">
+				<check-box caption="User KaduParser to parse status" config-section="General" config-item="ParseStatus" />
+		</tab>
+
+		<tab name="Chat">
+			<group-box name="Headers and separators">
+				<check-box caption="Remove chat header repetitions" config-section="General" config-item="RemoveChatHeaderRepetitions" />
+				<spin-box caption="Chat header separators height" config-section="Look" config-item="ChatHeaderSeparatorsHeight" min-value="1" max-value="1000" step="1" />
+				<spin-box caption="Interval between header removal" config-section="Look" config-item="IntervalBetweenHeaderRemoval" min-value="1" max-value="1000" step="1" />
+			</group-box>
+
+			<group-box name="Server time">
+				<check-box caption="Remove server time" config-section="General" config-item="RemoveServerTime" id="removeServerTime" />
+				<spin-box caption="Maximum time difference" config-section="Look" config-item="MaxTimeDifference" min-value="1" max-value="1000" step="1" id="maxTimeDifference" />
+			</group-box>
+
+			<group-box name="Advanced">
+				<line-edit caption="Full chat style" config-section="General" config-item="FullChatStyle" />
+				<line-edit caption="Chat background image (experimental) (button)" config-section="General" config-item="ChatBgImg" />
+			</group-box>
+
+			<group-box name="Window title">
+				<line-edit caption="Chat window title syntax" config-section="General" config-item="ChatWindowTitleSyntax" />
+				<line-edit caption="Conference window title prefix" config-section="General" config-item="ConferencePrefix" />
+				<line-edit caption="Conference window title syntax" config-section="General" config-item="ConferenceSyntax" />
+			</group-box>
+		</tab>
+
+		<tab name="Userbox">
+
+			<group-box name="Userbox background">
+				<line-edit caption="Userbox background image (button)" config-section="General" config-item="UserboxBgImg" />
+				<check-box caption="Change image size" config-section="General" config-item="ChangeImgSize" />
+				<spin-box caption="Start at [X]" config-section="Look" config-item="StartAtX" min-value="1" max-value="1000" step="1" />
+				<spin-box caption="Start at [Y]" config-section="Look" config-item="StartAtY" min-value="1" max-value="1000" step="1" />
+				<spin-box caption="Image width" config-section="Look" config-item="ImgWidth" min-value="1" max-value="1000" step="1" />
+				<spin-box caption="Image height" config-section="Look" config-item="ImgHeight" min-value="1" max-value="1000" step="1" />
+			</group-box>
+		</tab>
+
+		<tab name="Information panel">
+			<group-box name="Syntax">
+				<line-edit caption="Information panel syntax" config-section="General" config-item="InformationPanelSyntax" />
+			</group-box>
+		</tab>
+
+		<tab name="Images">
+			<group-box name="Images">
+<!-- 				<spin-box caption="Max image size" config-section="General" config-item="MaxImageSize" min-value="1" max-value="255" step="1" /> -->
+				<spin-box caption="Limit numbers of image recevied per minute" config-section="General" config-item="ImagesLimit" min-value="1" max-value="30" step="1" />
+			</group-box>
+		</tab>
+	</section>
+
+</configuration-ui>
