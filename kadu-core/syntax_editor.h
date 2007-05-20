@@ -1,23 +1,30 @@
 #ifndef SYNTAX_EDITOR_H
 #define SYNTAX_EDITOR_H
 
-#include <qcombobox.h>
-
-// #include <qwidget.h>
-// #include <qcheckbox.h>
-// #include <qtextedit.h>
-// #include <qlabel.h>
-// #include <qpushbutton.h>
-// #include <qtextedit.h>
-// #include <qlineedit.h>
-// #include <qstringlist.h>
-// #include <qstring.h>
-// #include <qcombobox.h>
+#include <qvbox.h>
 
 #include "kadu_text_browser.h"
 #include "userlistelement.h"
 
+class QComboBox;
+class QLineEdit;
 class QPushButton;
+
+struct SyntaxInfo
+{
+	bool global;
+};
+
+class SyntaxList : public QMap<QString, SyntaxInfo>
+{
+	QString category;
+
+public:
+	SyntaxList(const QString &category);
+	void reload();
+
+	bool updateSyntax(const QString &name, const QString &syntax);
+};
 
 class SyntaxEditor : public QWidget
 {
@@ -25,10 +32,13 @@ class SyntaxEditor : public QWidget
 
 	UserListElement example;
 
-	QComboBox *syntaxList;
+	SyntaxList *syntaxList;
+	QComboBox *syntaxListCombo;
+	QPushButton *deleteButton;
+
 	KaduTextBrowser *previewPanel;
 
-	QString syntaxGroup;
+	QString category;
 
 	void updateSyntaxList();
 
@@ -40,40 +50,13 @@ public:
 	SyntaxEditor(QWidget *parent = 0, char *name = 0);
 	virtual ~SyntaxEditor();
 
-	void setSyntaxGroup(const QString &syntaxGroup);
-};
-/*
-class InfoPanelSyntaxList
-{
-    public:
-	InfoPanelSyntaxList();
-	~InfoPanelSyntaxList();
-	QStringList names();
-	QString syntax(QString fileName);
-	QString syntax(int index);
-	QString name(int index);
-	QString fileName(int index);
+	void setCurrentSyntax(const QString &syntax);
 	QString currentSyntax();
-	QString toDisplay(const QString s);
-	QString generateFileName(const QString s);
 
-	bool deleteSyntax(int idx);
-	bool saveSyntax(const QString fileName, const QString name, const QString syntax, bool scrolls);
-	bool import();
-	bool containsFile(QString fileName);
-	bool containsName(QString name);
-	int currentIndex();
-	void changeFileName(int idx, QString newFileName);
+	void setCategory(const QString &category);
+};
 
-    private:
-	void readDefaultPanelSyntaxNameList(QStringList &result, QStringList &files);
-	void readCustomPanelSyntaxNameList(QStringList &result, QStringList &files);
-
-	QStringList fileList;
-	QStringList nameList;
-};*/
-
-class InfoPanelEditor : public QWidget
+class SyntaxEditorWindow : public QVBox
 {
 	Q_OBJECT
 
@@ -81,36 +64,10 @@ class InfoPanelEditor : public QWidget
 	QTextEdit *editor;
 	KaduTextBrowser *previewPanel;
 
-    public:
-    	InfoPanelEditor(QWidget* parent=0, const char *name=0);
-    	~InfoPanelEditor();
+public:
+	SyntaxEditorWindow(QWidget* parent=0, const char *name=0);
+	~SyntaxEditorWindow();
 
-    	void display(int idx);
-    	void setSyntax(int idx);
-	void onApplyTab(int idx);
-
-    private:
-// 	KaduTextBrowser *infoPreview;
-// 	QCheckBox *c_showScrolls;
-	QPushButton *b_preview;
-	QPushButton *b_ok;
-	QPushButton *b_cancel;
-	QPushButton *b_apply;
-
-
-// 	QLineEdit *t_name;
-// 	QLineEdit *t_fileName;
-	int index;
-	bool canSave(QString name, QString fileName);
-	bool save();
-
-    public slots:
-	void previewPanelTheme();
-// 	void addScrolls(bool);
-	void ok();
-	void apply();
-	void cancel();
-	void updateFileName(const QString &s);
 };
 
 #endif // SYNTAX_EDITOR

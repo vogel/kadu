@@ -302,8 +302,17 @@ void ConfigurationWindow::import_0_5_0_configuration()
 			        break;
 		}
 		config_file.writeEntry("General", "StartupStaus", startupStatus);
-		config_file.removeVariable("General", "DefaultStatusIndex");
 	}
+	config_file.removeVariable("General", "DefaultStatusIndex");
+
+	QString infoPanelSyntax = config_file.readEntry("Look", "PanelContents", "nothing");
+	if (infoPanelSyntax != "nothing")
+	{
+		config_file.writeEntry("Look", "InfoPanelSyntaxFile", "custom");
+		SyntaxList infoPanelList("infopanel");
+		infoPanelList.updateSyntax("custom", infoPanelSyntax);
+	}
+	config_file.removeVariable("Look", "PanelContents");
 }
 
 void ConfigurationWindow::onChangeStartupStatus(int index)
@@ -422,7 +431,6 @@ void ConfigurationWindow::appendUiSectionFromDom(QDomNode sectionNode)
 	if (!sectionNode.isElement())
 	{
 		kdebugf2();
-		kdebug("isElement failed\n");
 		return;
 	}
 
@@ -430,7 +438,6 @@ void ConfigurationWindow::appendUiSectionFromDom(QDomNode sectionNode)
 	if (sectionElement.tagName() != "section")
 	{
 		kdebugf2();
-		kdebug("tagName failed\n");
 		return;
 	}
 
@@ -723,7 +730,7 @@ void ConfigLineEdit::createWidgets()
 
 	QLabel *label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
 
-	layout->addWidget(label, numRows, 0, Qt::AlignRight | Qt::AlignTop);
+	layout->addWidget(label, numRows, 0, Qt::AlignRight);
 	layout->addWidget(this, numRows, 1);
 }
 
@@ -813,7 +820,7 @@ void ConfigSpinBox::createWidgets()
 
 	QLabel *label = new QLabel(this, widgetCaption + ":", parentConfigGroupBox->widget());
 
-	layout->addWidget(label, numRows, 0, Qt::AlignRight | Qt::AlignTop);
+	layout->addWidget(label, numRows, 0, Qt::AlignRight);
 	layout->addWidget(this, numRows, 1);
 }
 
@@ -882,7 +889,7 @@ void ConfigComboBox::createWidgets()
 
 	QLabel *label = new QLabel(this, widgetCaption + ":", parentConfigGroupBox->widget());
 
-	layout->addWidget(label, numRows, 0, Qt::AlignRight | Qt::AlignTop);
+	layout->addWidget(label, numRows, 0, Qt::AlignRight);
 	layout->addWidget(this, numRows, 1);
 
 	clear();
@@ -943,7 +950,7 @@ void ConfigHotKeyEdit::createWidgets()
 
 	QLabel *label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
 
-	layout->addWidget(label, numRows, 0, Qt::AlignRight | Qt::AlignTop);
+	layout->addWidget(label, numRows, 0, Qt::AlignRight);
 	layout->addWidget(this, numRows, 1);
 }
 
@@ -977,7 +984,7 @@ void ConfigPathListEdit::createWidgets()
 
 	QLabel *label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
 
-	layout->addWidget(label, numRows, 0, Qt::AlignRight | Qt::AlignTop);
+	layout->addWidget(label, numRows, 0, Qt::AlignRight);
 	layout->addWidget(this, numRows, 1);
 }
 
@@ -1011,7 +1018,7 @@ void ConfigColorButton::createWidgets()
 
 	QLabel *label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
 
-	layout->addWidget(label, numRows, 0, Qt::AlignRight | Qt::AlignTop);
+	layout->addWidget(label, numRows, 0, Qt::AlignRight);
 	layout->addWidget(this, numRows, 1);
 }
 
@@ -1045,7 +1052,7 @@ void ConfigSelectFont::createWidgets()
 
 	QLabel *label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
 
-	layout->addWidget(label, numRows, 0, Qt::AlignRight | Qt::AlignTop);
+	layout->addWidget(label, numRows, 0, Qt::AlignRight);
 	layout->addWidget(this, numRows, 1);
 }
 
@@ -1086,26 +1093,24 @@ void ConfigSyntaxEditor::createWidgets()
 
 void ConfigSyntaxEditor::loadConfiguration()
 {
-// 	setFont(config_file.readFontEntry(section, item));
+	setCurrentSyntax(config_file.readEntry(section, item));
 }
 
 void ConfigSyntaxEditor::saveConfiguration()
 {
-// 	config_file.writeEntry(section, item, font());
+	config_file.writeEntry(section, item, currentSyntax());
 }
 
 bool ConfigSyntaxEditor::fromDomElement(QDomElement domElement)
 {
-	QString syntaxGroup = domElement.attribute("syntax-group");
-	if (syntaxGroup.isEmpty())
+	QString category = domElement.attribute("category");
+	if (category.isEmpty())
 		return false;
 
-	setSyntaxGroup(syntaxGroup);
+	setCategory(category);
 
 	return ConfigWidgetValue::fromDomElement(domElement);
 }
-
-// 		ConfigDialog::addTextEdit("Look", "Information panel", QT_TRANSLATE_NOOP("@default", "Information panel syntax:"), "PanelContents", "", SyntaxText, 0, Expert);
 
 #ifdef HAVE_OPENSSL
 // 	ConfigDialog::addCheckBox("Network", "servergrid",

@@ -195,7 +195,7 @@
 			</group-box>
 
 			<group-box name="Syntax">
-				<syntax-editor caption="Syntax" config-section="Dupa" config-item="Dupa" syntax-group="infopanel" />
+				<syntax-editor caption="Syntax" config-section="Look" config-item="InfoPanelSyntaxFile" category="infopanel" />
 			</group-box>
 		</tab>
 	</section>
