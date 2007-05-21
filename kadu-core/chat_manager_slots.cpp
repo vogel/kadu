@@ -67,6 +67,13 @@ void ChatManagerSlots::setMailPath(int mailNumber)
 // 			mailPathEdit->setReadOnly(true);
 // 			break;
 // 		}
+//		case 4:
+//		{
+//			mailPathEdit->setText("evolution mailto:%1");
+//			mailPathEdit->setBackgroundMode(PaletteButton);
+//			mailPathEdit->setReadOnly(true);
+//			break;
+//		}
 // 		default:
 // 			return;
 // 	}
@@ -81,6 +88,8 @@ void ChatManagerSlots::findMailClient(const unsigned int mailNumber)
 	kdebugf();
 	QStringList searchPath = QStringList::split(":", QString(getenv("PATH")));
 	QString mailClient;
+	QString mailClientAlt; // nazwa alternatywna, przydatna gdy dystrybucja zmieni³a nazwê binarki
+
 	switch (mailNumber)
 	{
 		case 1:
@@ -98,6 +107,7 @@ void ChatManagerSlots::findMailClient(const unsigned int mailNumber)
 			searchPath.append("/usr/local/thunderbird");
 			searchPath.append("/opt/thunderbird");
 			mailClient = "thunderbird";
+			mailClientAlt = "mozilla-thunderbird"; // debian i pochodne
 			break;
 		}
 		case 3:
@@ -110,6 +120,14 @@ void ChatManagerSlots::findMailClient(const unsigned int mailNumber)
 			mailClient = "seamonkey";
 			break;
 		}
+		case 4:
+		{
+			searchPath.append("/opt/evolution");
+			searchPath.append("/usr/local/evolution");
+			searchPath.append("/usr/local/Evolution");
+			mailClient = "evolution";
+			break;
+		}
 		default:
 			return;
 	}
@@ -117,7 +135,7 @@ void ChatManagerSlots::findMailClient(const unsigned int mailNumber)
 	QString mailClientPath;
 	CONST_FOREACH(path, searchPath)
 	{
-		if (QFile::exists((*path) + '/' + mailClient))
+		if (QFile::exists((*path) + '/' + mailClient) || (!mailClientAlt.isEmpty() && QFile::exists((*path) + '/' + mailClientAlt)))
 		{
 			mailClientPath = (*path);
 			break;
@@ -146,6 +164,7 @@ void ChatManagerSlots::setMailClients(QComboBox *mailCombo)
 	mailCombo->insertItem("KMail");
 	mailCombo->insertItem("Thunderbird");
 	mailCombo->insertItem("SeaMonkey");
+	mailCombo->insertItem("Evolution");
 }
 
 void ChatManagerSlots::initBrowserOptions(QComboBox *browserCombo, QComboBox *browserOptionsCombo, QLineEdit *browserPath)
