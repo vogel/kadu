@@ -601,10 +601,15 @@ void openMailClient(const QString &mail)
 		return;
 	}
 
+	QString email = mail;
+
+	if (email.startsWith("mailto:"))
+		email.remove(0, 7); // usuwamy "mailto:", je¶li zosta³o dodane jako fragment adresu
+
 	if (mailClient.contains("%1"))
-		mailClient.replace("%1", mail);
+		mailClient.replace("%1", email);
 	else
-		mailClient.append(" \"" + mail + '"');
+		mailClient.append(" \"" + email + '"');
 
 	QStringList args = toStringList("sh", "-c", mailClient);
 
