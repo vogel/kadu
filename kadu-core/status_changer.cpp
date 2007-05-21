@@ -202,11 +202,9 @@ void StatusChangerManager::unregisterStatusChanger(StatusChanger *statusChanger)
 
 	if (statusChangers.remove(statusChanger))
 	{
-		kdebug("removed!!\n");
+		disconnect(statusChanger, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
+		statusChanged();
 	}
-
-	disconnect(statusChanger, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
-	statusChanged();
 
 	kdebugf2();
 }
