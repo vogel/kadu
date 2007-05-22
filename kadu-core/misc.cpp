@@ -13,7 +13,6 @@
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qlineedit.h>
-#include <qmessagebox.h>
 #include <qpainter.h>
 #include <qpopupmenu.h>
 #include <qprocess.h>
@@ -36,6 +35,7 @@
 #include "icons_manager.h"
 #include "kadu-config.h"
 #include "kadu_parser.h"
+#include "message_box.h"
 #include "misc.h"
 #include "userlistelement.h"
 
@@ -563,8 +563,7 @@ void openWebBrowser(const QString &link)
 	QString webBrowser = config_file.readEntry("Chat","WebBrowser");
 	if (webBrowser.isEmpty())
 	{
-		QMessageBox::warning(0, qApp->translate("@default", QT_TR_NOOP("WWW error")),
-			qApp->translate("@default", QT_TR_NOOP("Web browser was not specified. Visit the configuration section")));
+		MessageBox::msg(qApp->translate("@default", QT_TR_NOOP("Web browser was not specified. Visit the configuration section")), false, "Warning");
 		kdebugmf(KDEBUG_INFO, "Web browser NOT specified.\n");
 		return;
 	}
@@ -582,8 +581,7 @@ void openWebBrowser(const QString &link)
 	QObject::connect(browser, SIGNAL(processExited()), browser, SLOT(deleteLater()));
 
 	if (!browser->start())
-		QMessageBox::critical(0, qApp->translate("@default", QT_TR_NOOP("WWW error")),
-			qApp->translate("@default", QT_TR_NOOP("Could not spawn Web browser process. Check if the Web browser is functional")));
+		MessageBox::msg(qApp->translate("@default", QT_TR_NOOP("Could not spawn Web browser process. Check if the Web browser is functional")), false, "Warning");
 
 	kdebugf2();
 }
@@ -595,8 +593,7 @@ void openMailClient(const QString &mail)
 	QString mailClient = config_file.readEntry("Chat", "MailClient");
 	if (mailClient.isEmpty())
 	{
-		QMessageBox::warning(0, qApp->translate("@default", QT_TR_NOOP("Mail error")),
-			qApp->translate("@default", QT_TR_NOOP("Mail client was not specified. Visit the configuration section")));
+		MessageBox::msg(qApp->translate("@default", QT_TR_NOOP("Mail client was not specified. Visit the configuration section")), false, "Warning");
 		kdebugmf(KDEBUG_INFO, "Mail client NOT specified.\n");
 		return;
 	}
@@ -620,8 +617,7 @@ void openMailClient(const QString &mail)
 	QObject::connect(mailer, SIGNAL(processExited()), mailer, SLOT(deleteLater()));
 
 	if (!mailer->start())
-		QMessageBox::critical(0, qApp->translate("@default", QT_TR_NOOP("Mail error")),
-			qApp->translate("@default", QT_TR_NOOP("Could not spawn Mail client process. Check if the Mail client is functional")));
+		MessageBox::msg(qApp->translate("@default", QT_TR_NOOP("Could not spawn Mail client process. Check if the Mail client is functional")), false, "Warning");
 
 	kdebugf2();
 }

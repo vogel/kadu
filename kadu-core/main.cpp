@@ -396,7 +396,7 @@ int main(int argc, char *argv[])
 	// if someone is running Kadu from root account, let's remind him
 	// that it's a "bad thing"(tm) ;) (usually for win32 users)
 	if (geteuid() == 0)
-		MessageBox::wrn(qApp->translate("@default", QT_TR_NOOP("Please do not run Kadu as a root!\nIt's a high security risk!")));
+		MessageBox::msg(qApp->translate("@default", QT_TR_NOOP("Please do not run Kadu as a root!\nIt's a high security risk!")), false, "Warning");
 	QTimer::singleShot(15000, kadu, SLOT(deleteOldConfigFiles()));
 	if (ggnumber)
 		qApp->postEvent(kadu, new OpenGGChatEvent(ggnumber));
