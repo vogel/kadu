@@ -349,7 +349,7 @@ bool UserInfo::acceptableGroupName(const QString &groupName)
 	}
 	if (groups_manager->groupExists(groupName))
 	{
-		MessageBox::wrn(tr("This group already exists!"), true);
+		MessageBox::msg(tr("This group already exists!"), true, "Warning");
 		kdebugf2();
 		return false;
 	}
@@ -369,7 +369,7 @@ void UserInfo::newGroupClicked()
 	CONST_FOREACH(checkbox, groups)
 		if ((*checkbox)->text() == groupName)
 		{
-			MessageBox::wrn(tr("This group already exists!"), true);
+			MessageBox::msg(tr("This group already exists!"), true, "Warning", this);
 			return;
 		}
 
@@ -452,7 +452,7 @@ void UserInfo::updateUserlist()
 
 	if (e_altnick->text().isEmpty())
 	{
-		MessageBox::wrn(tr("Altnick field cannot be empty."), false, this);
+		MessageBox::msg(tr("Altnick field cannot be empty."), false, "Warning", this);
 		kdebugf2();
 		return;
 	}
@@ -463,7 +463,7 @@ void UserInfo::updateUserlist()
 			User = userlist->byID("Gadu", id);
 		else
 		{
-			MessageBox::msg(tr("User is already in userlist"), false, QString::null, this);
+			MessageBox::msg(tr("User is already in userlist"), false, "Warning", this);
 			kdebugf2();
 			return;
 		}

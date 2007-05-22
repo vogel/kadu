@@ -10,7 +10,6 @@
 #include <qvbox.h>
 #include <qapplication.h>
 #include <qlayout.h>
-#include <qmessagebox.h>
 #include <qvgroupbox.h>
 #include <qpushbutton.h>
 #include <qtooltip.h>
@@ -18,6 +17,7 @@
 #include "config_file.h"
 #include "debug.h"
 #include "icons_manager.h"
+#include "message_box.h"
 #include "misc.h"
 #include "register.h"
 
@@ -165,16 +165,14 @@ void Register::doRegister() {
 
 	if (pwd->text() != pwd2->text())
 	{
-		QMessageBox::information(0, tr("Register user"),
-				tr("Error data typed in required fields.\n\nPasswords typed in "
-				"both fields (\"New password\" and \"Retype new password\") "
-				"should be the same!"), tr("OK"), 0, 0, 1);
+		MessageBox::msg(tr("Error data typed in required fields.\n\nPasswords typed in "
+			"both fields (\"New password\" and \"Retype new password\") should be the same!"), false, "Warning", this);
 		return;
 	}
 
 	if (pwd->text().isEmpty())
 	{
-		QMessageBox::warning(this, "Kadu", tr("Please fill out all fields"), tr("OK"), 0, 0, 1);
+		MessageBox::msg(tr("Please fill out all fields"), false, "Warning", this);
 		return;
 	}
 
@@ -194,14 +192,13 @@ void Register::registered(bool ok, UinType uin)
 	if (ok)
 	{
 		this->uin = uin;
-		QMessageBox::information(this, "Kadu", tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(uin), tr("OK"), 0, 0, 1);
+		MessageBox::msg(tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(uin), false, "NotifyTab", this);
 		ask();
 		close();
 	}
 	else
 	{
-		QMessageBox::warning(0, tr("Register user"),
-				tr("An error has occured while registration. Please try again later."), tr("OK"), 0, 0, 1);
+		MessageBox::msg(tr("An error has occured while registration. Please try again later."), false, "Warning", this);
 		setEnabled(true);
 	}
 	kdebugf2();

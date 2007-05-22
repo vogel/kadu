@@ -283,7 +283,7 @@ void FileTransfer::start(StartType startType)
 		QString message(
 			tr("Hello. I am an automatic file-transfer reminder. Could you please send me a file named %1?"));
 		if (gadu->currentStatus().isOffline() || !gadu->sendMessage(recv, unicode2cp(message.arg(QUrl(FileName).fileName()))) == -1)
-			MessageBox::wrn(tr("Error: message was not sent"));
+			MessageBox::msg(tr("Error: message was not sent"), false, "Warning");
 	}
 }
 
@@ -1519,7 +1519,7 @@ void FileTransferManager::acceptFile(FileTransfer *ft, DccSocket *socket, QStrin
 			flags |= O_CREAT | O_TRUNC;
 
 		if ((socket->ggDccStruct()->file_fd = open(fileName.local8Bit().data(), flags, 0600)) == -1)
-			MessageBox::wrn(tr("Could not open file. Select another one."));
+			MessageBox::msg(tr("Could not open file. Select another one."), false, "Warning");
 		else
 		{
 			socket->ggDccStruct()->offset = fi.size();

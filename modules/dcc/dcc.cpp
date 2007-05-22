@@ -438,7 +438,7 @@ void DccManager::dccSent()
 
 void DccManager::timeout()
 {
-	MessageBox::wrn(tr("Direct connection timeout!\nThe receiver doesn't support direct connections or\nboth machines are behind routers with NAT."));
+	MessageBox::msg(tr("Direct connection timeout!\nThe receiver doesn't support direct connections or\nboth machines are behind routers with NAT."), false, "Warning");
 }
 
 void DccManager::startTimeout()
@@ -469,7 +469,7 @@ void DccManager::setupDcc()
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Couldn't bind DCC socket.\n");
 
-		MessageBox::wrn(tr("Couldn't create DCC socket.\nDirect connections disabled."));
+		MessageBox::msg(tr("Couldn't create DCC socket.\nDirect connections disabled."), false, "Warning");
 		kdebugf2();
 		return;
 	}

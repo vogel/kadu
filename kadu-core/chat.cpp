@@ -10,7 +10,6 @@
 #include <qaccel.h>
 #include <qdragobject.h>
 #include <qlabel.h>
-#include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <qregexp.h>
 #include <qtimer.h>
@@ -374,7 +373,7 @@ void Chat::insertImage()
 		delete id;id = NULL;
 		if (!f.isReadable())
 		{
-			MessageBox::wrn(tr("This file is not readable"), true);
+			MessageBox::msg(tr("This file is not readable"), true, "Warning", this);
 			QTimer::singleShot(0, this, SLOT(insertImage()));
 			kdebugf2();
 			return;
@@ -382,7 +381,7 @@ void Chat::insertImage()
 
 		if (f.size() >= (1 << 18)) // 256kB
 		{
-			MessageBox::wrn(tr("This file is too big (%1 >= %2)").arg(f.size()).arg(1<<18), true);
+			MessageBox::msg(tr("This file is too big (%1 >= %2)").arg(f.size()).arg(1<<18), true, "Warning", this);
 			QTimer::singleShot(0, this, SLOT(insertImage()));
 			kdebugf2();
 			return;
@@ -822,7 +821,7 @@ void Chat::messageBlockedSlot(int Seq, UinType /*uin*/)
 	if (seq != Seq)
 		return;
 	kdebugmf(KDEBUG_INFO, "This is my ack.\n");
-	MessageBox::wrn(tr("Your message has been blocked by server. Message has not been delivered."), true);
+	MessageBox::msg(tr("Your message has been blocked by server. Message has not been delivered."), true, "Warning", this);
 	cancelMessage();
 	kdebugf2();
 }
@@ -833,7 +832,7 @@ void Chat::messageBoxFullSlot(int Seq, UinType /*uin*/)
 	if (seq != Seq)
 		return;
 	kdebugmf(KDEBUG_INFO, "This is my ack.\n");
-	MessageBox::wrn(tr("User's message box is full. Message has not been delivered."), true);
+	MessageBox::msg(tr("User's message box is full. Message has not been delivered."), true, "Warning", this);
 	cancelMessage();
 	kdebugf2();
 }
@@ -844,7 +843,7 @@ void Chat::messageNotDeliveredSlot(int Seq, UinType /*uin*/)
 	if (seq != Seq)
 		return;
 	kdebugmf(KDEBUG_INFO, "This is my ack.\n");
-	MessageBox::wrn(tr("Message has not been delivered."), true);
+	MessageBox::msg(tr("Message has not been delivered."), true, "Warning", this);
 	cancelMessage();
 	kdebugf2();
 }
@@ -913,8 +912,7 @@ void Chat::sendMessage()
 
 	if (currentProtocol()->currentStatus().isOffline())
 	{
-		QMessageBox::critical(this, tr("Send message error"),
-			tr("Cannot send message while being offline."));
+		MessageBox::msg(tr("Cannot send message while being offline."), false, "Warning", this);
 		kdebugmf(KDEBUG_FUNCTION_END, "not connected!\n");
 		return;
 	}
@@ -933,7 +931,7 @@ void Chat::sendMessage()
 
 	if (mesg.length() >= 2000)
 	{
-		MessageBox::wrn(tr("Message too long (%1>=%2)").arg(mesg.length()).arg(2000));
+		MessageBox::msg(tr("Message too long (%1>=%2)").arg(mesg.length()).arg(2000), false, "Warning", this);
 		kdebugmf(KDEBUG_FUNCTION_END, "end: message too long\n");
 		return;
 	}
@@ -950,7 +948,7 @@ void Chat::sendMessage()
 
 	if (msg.length() >= 2000)
 	{
-		MessageBox::wrn(tr("Filtered message too long (%1>=%2)").arg(msg.length()).arg(2000));
+		MessageBox::msg(tr("Filtered message too long (%1>=%2)").arg(msg.length()).arg(2000), false, "Warning", this);
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filtered message too long\n");
 		return;
 	}

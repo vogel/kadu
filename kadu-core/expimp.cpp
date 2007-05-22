@@ -183,7 +183,7 @@ void UserlistImportExport::fromfile()
 			}
 		}
 		else
-			MessageBox::wrn(tr("The application encountered an internal error\nThe import userlist from file was unsuccessful"));
+			MessageBox::msg(tr("The application encountered an internal error\nThe import userlist from file was unsuccessful"), false, "Warning", this);
 	}
 	kdebugf2();
 }
@@ -193,7 +193,7 @@ void UserlistImportExport::startImportTransfer()
 	kdebugf();
 	if (gadu->currentStatus().isOffline())
 	{
-		MessageBox::wrn(tr("Cannot import user list from server in offline mode"));
+		MessageBox::msg(tr("Cannot import user list from server in offline mode"), false, "Warning", this);
 		return;
 	}
 
@@ -255,7 +255,7 @@ void UserlistImportExport::startExportTransfer()
 
 	if (gadu->currentStatus().isOffline())
 	{
-		MessageBox::wrn(tr("Cannot export user list to server in offline mode"));
+		MessageBox::msg(tr("Cannot export user list to server in offline mode"), false, "Warning", this);
 		kdebugf2();
 		return;
 	}
@@ -291,7 +291,7 @@ void UserlistImportExport::ExportToFile(void)
 				MessageBox::msg(tr("Your userlist has been successfully exported to file"));
 			}
 			else
-				MessageBox::wrn(tr("The application encountered an internal error\nThe export userlist to file was unsuccessful"));
+				MessageBox::msg(tr("The application encountered an internal error\nThe export userlist to file was unsuccessful"), false, "Warning", this);
 		}
 	}
 
@@ -307,7 +307,7 @@ void UserlistImportExport::clean()
 
 	if (gadu->currentStatus().isOffline())
 	{
-		MessageBox::wrn(tr("Cannot clear user list on server in offline mode"));
+		MessageBox::msg(tr("Cannot clear user list on server in offline mode"), false, "Warning", this);
 		kdebugf2();
 		return;
 	}
@@ -327,7 +327,7 @@ void UserlistImportExport::userListExported(bool ok)
 	if (ok)
 		MessageBox::msg(tr("Your userlist has been successfully exported to server"));
 	else
-		MessageBox::wrn(tr("The application encountered an internal error\nThe export was unsuccessful"));
+		MessageBox::msg(tr("The application encountered an internal error\nThe export was unsuccessful"), false, "Warning", this);
 
 	pb_send->setEnabled(true);
 	pb_delete->setEnabled(true);
@@ -341,7 +341,7 @@ void UserlistImportExport::userListCleared(bool ok)
 	if (ok)
 		MessageBox::msg(tr("Your userlist has been successfully deleted on server"));
 	else
-		MessageBox::wrn(tr("The application encountered an internal error\nThe delete userlist on server was unsuccessful"));
+		MessageBox::msg(tr("The application encountered an internal error\nThe delete userlist on server was unsuccessful"), false, "Warning", this);
 
 	pb_send->setEnabled(true);
 	pb_delete->setEnabled(true);

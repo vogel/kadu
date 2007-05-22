@@ -10,7 +10,6 @@
 #include <qapplication.h>
 #include <qfile.h>
 #include <qlayout.h>
-#include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <qvbox.h>
 #include <qvgroupbox.h>
@@ -19,6 +18,7 @@
 #include "debug.h"
 #include "gadu.h"
 #include "icons_manager.h"
+#include "message_box.h"
 #include "misc.h"
 #include "unregister.h"
 
@@ -114,7 +114,7 @@ void Unregister::doUnregister() {
 
 	if (!uin->text().toUInt() || pwd->text().isEmpty())
 	{
-		QMessageBox::warning(this, "Kadu", tr("Please fill out all fields"), tr("OK"), 0, 0, 1);
+		MessageBox::msg(tr("Please fill out all fields"), false, "Warning", this);
 		return;
 	}
 
@@ -129,13 +129,12 @@ void Unregister::unregistered(bool ok)
 	kdebugf();
 	if (ok)
 	{
-		QMessageBox::information(this, "Kadu", tr("Unregistation was successful. Now you don't have any GG number :("));
+		MessageBox::msg(tr("Unregistation was successful. Now you don't have any GG number :("), false, "NotifyTab", this);
 		close();
 	}
 	else
 	{
-		QMessageBox::warning(0, tr("Unregister user"),
-				tr("An error has occured while unregistration. Please try again later."), tr("OK"), 0, 0, 1);
+		MessageBox::msg(tr("An error has occured while unregistration. Please try again later."), false, "Warning", this);
 		setEnabled(true);
 	}
 	kdebugf2();

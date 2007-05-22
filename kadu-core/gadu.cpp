@@ -827,7 +827,7 @@ void GaduProtocol::errorSlot(GaduError err)
 		case ConnectionIncorrectPassword:
 			msg = tr("Unable to connect, incorrect password");
 			continue_connecting = false;
-			MessageBox::wrn(tr("Connection will be stopped\nYour password is incorrect!"));
+			MessageBox::msg(tr("Connection will be stopped\nYour password is incorrect!"), false, "Warning");
 			break;
 
 		case ConnectionTlsError:
@@ -837,7 +837,7 @@ void GaduProtocol::errorSlot(GaduError err)
 		case ConnectionIntruderError:
 			msg = tr("Too many connection attempts with bad password!");
 			continue_connecting = false;
-			MessageBox::wrn(tr("Connection will be stopped\nToo many attempts with bad password"));
+			MessageBox::msg(tr("Connection will be stopped\nToo many attempts with bad password"), false, "Warning");
 			break;
 
 		case ConnectionUnavailableError:
@@ -1002,7 +1002,7 @@ void GaduProtocol::login()
 	kdebugf();
 	if (ID() == "0" || ID().isEmpty() || config_file.readEntry("General", "Password").isEmpty())
 	{
-		MessageBox::wrn(tr("UIN or password not set!"));
+		MessageBox::msg(tr("UIN or password not set!"), false, "Warning");
 		NextStatus->setOffline();
 		kdebugmf(KDEBUG_FUNCTION_END, "end: uin or password not set\n");
 		return;

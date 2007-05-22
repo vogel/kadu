@@ -467,7 +467,7 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 	if (searchResults.isEmpty())
 	{
 		kdebugmf(KDEBUG_INFO, "No results. Exit.\n");
-		MessageBox::msg(tr("There were no results of your search"), false, QString::null, this);
+		MessageBox::msg(tr("There were no results of your search"), false, "NotifyTab", this);
 //		searchhidden = false;
 	}
 	else

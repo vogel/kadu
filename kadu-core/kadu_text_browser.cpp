@@ -365,7 +365,7 @@ void KaduTextBrowser::saveImage()
 			dst.close();
 		}
 		else
-			MessageBox::wrn(tr("Cannot save image: %1").arg(dst.errorString()));
+			MessageBox::msg(tr("Cannot save image: %1").arg(dst.errorString()), false, "Warning");
 	}
 	delete fd;
 	kdebugf2();

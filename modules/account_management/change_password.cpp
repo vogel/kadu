@@ -9,7 +9,6 @@
 
 #include <qlabel.h>
 #include <qlayout.h>
-#include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <qvbox.h>
 #include <qvgroupbox.h>
@@ -17,6 +16,7 @@
 #include "change_password.h"
 #include "debug.h"
 #include "icons_manager.h"
+#include "message_box.h"
 #include "misc.h"
 #include "gadu.h"
 #include "config_file.h"
@@ -117,10 +117,8 @@ void ChangePassword::start()
 
 	if (newpwd->text() != newpwd2->text())
 	{
-		QMessageBox::information(0, tr("Change password"),
-				tr("Error data typed in required fields.\n\nPasswords typed in "
-				"both fields (\"New password\" and \"Retype new password\") "
-				"should be the same!"), tr("OK"), 0, 0, 1);
+		MessageBox::msg(tr("Error data typed in required fields.\n\nPasswords typed in "
+			"both fields (\"New password\" and \"Retype new password\") should be the same!"), false, "Warning", this);
 		return;
 	}
 

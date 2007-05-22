@@ -431,7 +431,7 @@ void ChatManager::blockUserActionActivated(const UserGroup* users)
 		if (!on) // if we were blocking, we also close the chat (and show info if blocked anonymous)
 		{
 			if (blocked_anonymous)
-				MessageBox::msg(tr("Anonymous users will be unblocked after restarting Kadu"), false, QString::null, kadu);
+				MessageBox::msg(tr("Anonymous users will be unblocked after restarting Kadu"), false, "NotifyTab", kadu);
 
 			UserListElements u = users->toUserListElements();
 			Chat *c = findChat(u);
