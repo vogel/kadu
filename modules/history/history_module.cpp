@@ -9,7 +9,6 @@
 
 #include "history_module.h"
 
-#include <qmessagebox.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 
@@ -23,6 +22,7 @@
 #include "icons_manager.h"
 #include "kadu.h"
 #include "misc.h"
+#include "message_box.h"
 #include "userbox.h"
 
 extern "C" int history_init()
@@ -333,15 +333,12 @@ void HistoryModule::userboxMenuPopup()
 void HistoryModule::removingUsers(UserListElements users)
 {
 	kdebugf();
-	if (QMessageBox::warning(kadu, "Kadu",
-		tr("The following users are selected to delete:\n%0\nDo you want to remove history as well?").arg(users.altNicks().join(", ")),
-		QMessageBox::Yes, QMessageBox::No) != QMessageBox::Yes)
-	{
+	if (MessageBox::ask(tr("The following users were deleted:\n%0\nDo you want to remove history as well?").arg(users.altNicks().join(", ")), "Warning", kadu))
 		return;
-	}
+
+	QString fname;
 	CONST_FOREACH(user, users)
 	{
-		QString fname;
 		if ((*user).usesProtocol("Gadu"))
 		{
 			fname = ggPath("history/") + (*user).ID("Gadu");

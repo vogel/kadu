@@ -9,11 +9,11 @@
 
 #include <qcursor.h>
 #include <qobjectlist.h>
-#include <qmessagebox.h>
 #include "action.h"
 #include "config_file.h"
 #include "debug.h"
 #include "dockarea.h"
+#include "message_box.h"
 #include "misc.h"
 #include "toolbar.h"
 #include "kadu.h"
@@ -261,7 +261,7 @@ QPopupMenu* ToolBar::createContextMenu(QWidget* parent)
 void ToolBar::deleteToolbar()
 {
 	kdebugf();
-	if (QMessageBox::question(kadu, tr("Remove toolbar?"), tr("Remove toolbar?"), tr("Yes"), tr("No"), QString::null, 1, 1) == 0)
+	if (MessageBox::ask(tr("Remove toolbar?"), "Warning", this))
 		deleteLater();
 	kdebugf2();
 }

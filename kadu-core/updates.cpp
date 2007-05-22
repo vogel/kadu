@@ -7,13 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qmessagebox.h>
 #include <qnetwork.h>
 #include <qurloperator.h>
 
 #include "config_file.h"
 #include "debug.h"
 #include "kadu.h"
+#include "message_box.h"
 #include "updates.h"
 
 Updates *Updates::instance = NULL;
@@ -95,8 +95,7 @@ void Updates::gotUpdatesInfo(const QByteArray &data, QNetworkOperation * /*op*/)
 		
 		QString newestversion(data);
 		if (ifNewerVersion(newestversion))
-			QMessageBox::information(kadu, tr("Update information"),
-				tr("The newest Kadu version is %1").arg(newestversion), QMessageBox::Ok);
+			MessageBox::msg(tr("The newest Kadu version is %1").arg(newestversion), false, QString::null, kadu);
 	}
 	disconnect(gadu, SIGNAL(connected()), this, SLOT(run()));
 	UpdateChecked = true;

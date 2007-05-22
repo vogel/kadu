@@ -12,7 +12,6 @@
 #include <qclipboard.h>
 #include <qcombobox.h>
 #include <qmenubar.h>
-#include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <qregexp.h>
 #include <qsplitter.h>
@@ -898,9 +897,7 @@ void Kadu::changeAppearance()
 void Kadu::removeUsers(UserListElements users)
 {
 	kdebugf();
-	if (users.count() && QMessageBox::warning(kadu, "Kadu",
-		tr("Selected users:\n%0\nwill be deleted. Are you sure?").arg(users.altNicks().join(", ")),
-		QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes)
+	if (users.count() && MessageBox::ask(tr("Selected users:\n%0\nwill be deleted. Are you sure?").arg(users.altNicks().join(", ")), "Warning", kadu))
 	{
 		emit removingUsers(users);
 		userlist->removeUsers(users);

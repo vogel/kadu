@@ -22,8 +22,8 @@ const int MessageBox::CANCEL   = 2;  // 00010
 const int MessageBox::YES      = 4;  // 00100
 const int MessageBox::NO       = 8;  // 01000
 
-MessageBox::MessageBox(const QString& message, int components, bool modal, const QString &iconName)
-	: QDialog(NULL, NULL, modal, WType_TopLevel | WStyle_Customize | WStyle_DialogBorder | WStyle_Title | WStyle_SysMenu | WDestructiveClose),
+MessageBox::MessageBox(const QString& message, int components, bool modal, const QString &iconName, QWidget *parent)
+	: QDialog(parent, NULL, modal, WType_TopLevel | WStyle_Customize | WStyle_DialogBorder | WStyle_Title | WStyle_SysMenu | WDestructiveClose),
 	message(message)
 {
 	kdebugf();
@@ -118,9 +118,9 @@ void MessageBox::status(const QString& message)
 	qApp->processEvents();
 }
 
-void MessageBox::msg(const QString& message,bool modal)
+void MessageBox::msg(const QString& message, bool modal, const QString& iconName, QWidget *parent)
 {
-	MessageBox* m = new MessageBox(message, OK, modal);
+	MessageBox* m = new MessageBox(message, OK, modal, iconName, parent);
 
 	if (modal)
 		m->exec();
@@ -128,9 +128,9 @@ void MessageBox::msg(const QString& message,bool modal)
 		m->show();
 }
 
-void MessageBox::wrn(const QString& message,bool modal)
+void MessageBox::wrn(const QString& message, bool modal, QWidget *parent)
 {
-	MessageBox* m = new MessageBox(message, OK, modal, "Warning");
+	MessageBox* m = new MessageBox(message, OK, modal, "Warning", parent);
 
 	if (modal)
 		m->exec();
@@ -138,9 +138,9 @@ void MessageBox::wrn(const QString& message,bool modal)
 		m->show();
 }
 
-bool MessageBox::ask(const QString& message)
+bool MessageBox::ask(const QString& message, const QString& iconName, QWidget *parent)
 {
-	MessageBox* m = new MessageBox(message, YES|NO, true);
+	MessageBox* m = new MessageBox(message, YES|NO, true, iconName, parent);
 	return (m->exec() == Accepted);
 }
 

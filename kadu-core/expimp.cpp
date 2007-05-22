@@ -11,7 +11,6 @@
 #include <qlayout.h>
 #include <qlistview.h>
 #include <qpushbutton.h>
-#include <qmessagebox.h>
 #include <qsimplerichtext.h>
 #include <qvbox.h>
 #include <qvgroupbox.h>
@@ -281,7 +280,7 @@ void UserlistImportExport::ExportToFile(void)
 	if (!fname.isEmpty())
 	{
 		QFile file(fname);
-		if ((!file.exists()) || (QMessageBox::question(this, tr("Overwrite file?"), tr("File exists. Are you sure you want to overwrite it?"), tr("Yes"), tr("No"), QString::null, 1, 1) == 0))
+		if ((!file.exists()) || (MessageBox::ask(tr("File exists. Are you sure you want to overwrite it?"), QString::null, this)))
 		{
 			if (file.open(IO_WriteOnly))
 			{

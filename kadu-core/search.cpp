@@ -15,7 +15,6 @@
 #include <qlayout.h>
 #include <qlineedit.h>
 #include <qlistview.h>
-#include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <qradiobutton.h>
 #include <qtooltip.h>
@@ -27,6 +26,7 @@
 #include "debug.h"
 #include "dockarea.h"
 #include "icons_manager.h"
+#include "message_box.h"
 #include "misc.h"
 #include "search.h"
 #include "userinfo.h"
@@ -467,8 +467,7 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 	if (searchResults.isEmpty())
 	{
 		kdebugmf(KDEBUG_INFO, "No results. Exit.\n");
-		QMessageBox::information(this, tr("No results"),
-			tr("There were no results of your search"));
+		MessageBox::msg(tr("There were no results of your search"), false, QString::null, this);
 //		searchhidden = false;
 	}
 	else

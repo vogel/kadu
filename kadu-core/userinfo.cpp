@@ -15,7 +15,6 @@
 #include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qtabwidget.h>
-#include <qmessagebox.h>
 #include <qvalidator.h>
 #include <qvbox.h>
 #include <qvgroupbox.h>
@@ -453,7 +452,7 @@ void UserInfo::updateUserlist()
 
 	if (e_altnick->text().isEmpty())
 	{
-		QMessageBox::warning(this, tr("Add user problem"), tr("Altnick field cannot be empty."));
+		MessageBox::wrn(tr("Altnick field cannot be empty."), false, this);
 		kdebugf2();
 		return;
 	}
@@ -464,7 +463,7 @@ void UserInfo::updateUserlist()
 			User = userlist->byID("Gadu", id);
 		else
 		{
-			QMessageBox::information(this, "Kadu", tr("User is already in userlist"), QMessageBox::Ok);
+			MessageBox::msg(tr("User is already in userlist"), false, QString::null, this);
 			kdebugf2();
 			return;
 		}

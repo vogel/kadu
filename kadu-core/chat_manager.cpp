@@ -10,7 +10,6 @@
 #include <qcursor.h>
 #include <qbitmap.h>
 #include <qtooltip.h>
-#include <qmessagebox.h>
 
 #include "action.h"
 #include "chat_manager_slots.h"
@@ -20,6 +19,7 @@
 #include "icons_manager.h"
 #include "kadu.h"
 #include "kadu_splitter.h"
+#include "message_box.h"
 #include "misc.h"
 #include "pending_msgs.h"
 #include "search.h"
@@ -431,8 +431,7 @@ void ChatManager::blockUserActionActivated(const UserGroup* users)
 		if (!on) // if we were blocking, we also close the chat (and show info if blocked anonymous)
 		{
 			if (blocked_anonymous)
-				QMessageBox::information(kadu, "Block user",
-					tr("Anonymous users will be unblocked after restarting Kadu"), QMessageBox::Ok);
+				MessageBox::msg(tr("Anonymous users will be unblocked after restarting Kadu"), false, QString::null, kadu);
 
 			UserListElements u = users->toUserListElements();
 			Chat *c = findChat(u);

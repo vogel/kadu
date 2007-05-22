@@ -18,7 +18,7 @@ class MessageBox : public QDialog
 
 	private:
 		static QMap<QString,MessageBox*> Boxes;
-		QLabel * icon;
+		QLabel *icon;
 		QString message;
 
 		void addButton(QWidget *parent, const QString &caption, const char *slot);
@@ -39,7 +39,7 @@ class MessageBox : public QDialog
 		static const int YES;
 		static const int NO;
 		//
-		MessageBox(const QString& message, int components = 0, bool modal = false, const QString &iconName = QString::null);
+		MessageBox(const QString& message, int components = 0, bool modal = false, const QString &iconName = QString::null, QWidget *parent = 0);
 		~MessageBox();
 
 		//
@@ -60,17 +60,17 @@ class MessageBox : public QDialog
 			u¿ytkownika. Zwraca true je¶li wybra³ "Tak"
 			lub false je¶li wybra³ "Nie".
 		**/
-		static bool ask(const QString& message);
+		static bool ask(const QString& message, const QString& iconName = QString::null, QWidget *parent = 0);
 		/**
 			Przekazuje u¿ytkownikowi informacjê. Tworzy
 			dialog z przyciskiem: "OK" zamykaj±cy okno.
 			Nie blokuje wykonywania programu.
 		**/
-		static void msg(const QString& message,bool modal=false);
+		static void msg(const QString& message, bool modal=false, const QString& iconName = QString::null, QWidget *parent = 0);
 		/**
 			Jak wy¿ej, ale w formie ostrze¿enia
 		**/
-		static void wrn(const QString& message,bool modal=false);
+		static void wrn(const QString& message, bool modal=false, QWidget *parent = 0);
 		/**
 			Zamyka dialog, który zosta³ stworzony za
 			pomoc± funkcji status z t± sam± wiadomo¶ci±
