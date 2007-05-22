@@ -156,13 +156,13 @@ void MigrationDialog::settingsDirMigration()
 		{
 			kdebugm(KDEBUG_ERROR, "error migrating data. exit status: %i\n",
 				copy_process.exitStatus());
-			MessageBox::wrn(tr("Error migrating data!"));
+			MessageBox::msg(tr("Error migrating data!"), false, "Warning");
 		}
 	}
 	else
 	{
 		kdebugm(KDEBUG_ERROR, "cannot start migration process\n");
-		MessageBox::wrn(tr("Cannot start migration process!"));
+		MessageBox::msg(tr("Cannot start migration process!"), false, "Warning");
 	}
 	kdebugf2();
 	return;

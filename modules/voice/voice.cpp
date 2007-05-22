@@ -245,7 +245,7 @@ int VoiceManager::setup()
 		device = sound_manager->openDevice(PLAY_AND_RECORD, 8000);
 		if (device == NULL)
 		{
-			MessageBox::wrn(tr("Opening sound device failed."));
+			MessageBox::msg(tr("Opening sound device failed."), false, "Warning");
 			return -1;
 		}
 		sound_manager->setFlushingEnabled(device, false);
@@ -354,7 +354,7 @@ void VoiceManager::testGsmEncoding()
 	GsmEncodingTestHandle = gsm_create();
 	if (GsmEncodingTestHandle == 0)
 	{
-		MessageBox::wrn(tr("Opening DSP Encoder failed."));
+		MessageBox::msg(tr("Opening DSP Encoder failed."), false, "Warning");
 		return;
 	}
 	int value = 1;
@@ -367,7 +367,7 @@ void VoiceManager::testGsmEncoding()
 	GsmEncodingTestDevice = sound_manager->openDevice(PLAY_AND_RECORD, 8000);
 	if (GsmEncodingTestDevice == NULL)
 	{
-		MessageBox::wrn(tr("Opening sound device failed."));
+		MessageBox::msg(tr("Opening sound device failed."), false, "Warning");
 		return;
 	}
 	sound_manager->enableThreading(GsmEncodingTestDevice);

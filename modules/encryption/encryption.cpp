@@ -10,7 +10,6 @@
 #include <qcheckbox.h>
 #include <qfile.h>
 #include <qhgroupbox.h>
-#include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <qtooltip.h>
 #include <stdlib.h>
@@ -138,18 +137,16 @@ void EncryptionManager::generateMyKeys()
 	QFileInfo keyfile(keyfile_path);
 
 	if (keyfile.permission(QFileInfo::WriteUser))
-		if(QMessageBox::warning(0, "Kadu",
-			tr("Keys exist. Do you want to overwrite them?"),
-			tr("Yes"), tr("No"),QString::null, 0, 1)==1)
+		if(MessageBox::ask(tr("Keys exist. Do you want to overwrite them?"), false, "Warning")
 				return;
 
 	if (sim_key_generate(myUin) < 0)
 	{
-		QMessageBox::critical(0, "Kadu", tr("Error generating keys"), tr("OK"), QString::null, 0);
+		MessageBox::msg(tr("Error generating keys"), false, "Warning");
 		return;
 	}
 
-	QMessageBox::information(0, "Kadu", tr("Keys have been generated and written"), tr("OK"), QString::null, 0);
+	MessageBox::msg(tr("Keys have been generated and written"), false, "NotifyTab");
 	kdebugf2();
 }
 
@@ -311,7 +308,7 @@ void EncryptionManager::sendMessageFilter(const UserGroup *users, QCString &msg,
 		{
 			kdebugm(KDEBUG_ERROR, "sim_message_encrypt returned NULL! sim_errno=%d sim_strerror=%s\n", sim_errno, sim_strerror(sim_errno));
 			stop = true;
-			MessageBox::wrn(tr("Cannot encrypt message. sim_message_encrypt returned: \"%1\" (sim_errno=%2)").arg(sim_strerror(sim_errno)).arg(sim_errno), true);
+			MessageBox::msg(tr("Cannot encrypt message. sim_message_encrypt returned: \"%1\" (sim_errno=%2)").arg(sim_strerror(sim_errno)).arg(sim_errno), true, "Warning");
 		}
 		else
 		{
@@ -385,8 +382,7 @@ void EncryptionManager::sendPublicKey()
 		CONST_FOREACH(user, users)
 			gadu->sendMessage(*user, tmp.data());
 
-		QMessageBox::information(kadu, "Kadu",
-			tr("Your public key has been sent"), tr("OK"), QString::null, 0);
+		MessageBox::msg(tr("Your public key has been sent"), false, "NotifyTab", kadu);
 	}
 	kdebugf2();
 }
@@ -432,7 +428,7 @@ void SavePublicKey::yesClicked()
 
 	if (!(keyfile.open(IO_WriteOnly)))
 	{
-		QMessageBox::critical(this, tr("Error"), tr("Error writting the key"), tr("OK"), QString::null, 0);
+		MessageBox::msg(tr("Error writting the key"), false, "Warning", this);
 		kdebugmf(KDEBUG_ERROR, "Error opening key file %s\n", (const char *)keyfile_path.local8Bit());
 		return;
 	}

@@ -309,14 +309,14 @@ void SoundSlots::testSamplePlaying()
 	QFile file(chatsound);
 	if (!file.open(IO_ReadOnly))
 	{
-		MessageBox::wrn(tr("Opening test sample file failed."));
+		MessageBox::msg(tr("Opening test sample file failed."), false, "Warning");
 		return;
 	}
 	// we are allocating 1 more word just in case of file.size() % sizeof(int16_t) != 0
 	SamplePlayingTestSample = new int16_t[file.size() / sizeof(int16_t) + 1];
 // 	if (file.readBlock((char*)SamplePlayingTestSample, file.size()) != (unsigned)file.size())
 // 	{
-// 		MessageBox::wrn(tr("Reading test sample file failed."));
+// 		MessageBox::msg(tr("Reading test sample file failed."), false, "Warning");
 // 		file.close();
 // 		delete[] SamplePlayingTestSample;
 // 		SamplePlayingTestSample = NULL;
@@ -327,7 +327,7 @@ void SoundSlots::testSamplePlaying()
 	SamplePlayingTestDevice = sound_manager->openDevice(PLAY_ONLY, 11025);
 	if (SamplePlayingTestDevice == NULL)
 	{
-		MessageBox::wrn(tr("Opening sound device failed."));
+		MessageBox::msg(tr("Opening sound device failed."), false, "Warning");
 		delete[] SamplePlayingTestSample;
 		SamplePlayingTestSample = NULL;
 		return;
@@ -367,7 +367,7 @@ void SoundSlots::testSampleRecording()
 	SampleRecordingTestDevice = sound_manager->openDevice(RECORD_ONLY, 8000);
 	if (SampleRecordingTestDevice == NULL)
 	{
-		MessageBox::wrn(tr("Opening sound device failed."));
+		MessageBox::msg(tr("Opening sound device failed."), false, "Warning");
 		return;
 	}
 	SampleRecordingTestSample = new int16_t[8000 * 3];//3 seconds of 16-bit sound with 8000Hz frequency
@@ -397,7 +397,7 @@ void SoundSlots::sampleRecordingTestSampleRecorded(SoundDevice device)
 		if (device == NULL)
 		{
 			delete[] SampleRecordingTestSample;
-			MessageBox::wrn(tr("Cannot open sound device for playing!"));
+			MessageBox::msg(tr("Cannot open sound device for playing!"), false, "Warning");
 			kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "end: cannot open play device\n");
 			return;
 		}
@@ -437,7 +437,7 @@ void SoundSlots::testFullDuplex()
 	FullDuplexTestDevice = sound_manager->openDevice(PLAY_AND_RECORD, 8000);
 	if (FullDuplexTestDevice == NULL)
 	{
-		MessageBox::wrn(tr("Opening sound device failed."));
+		MessageBox::msg(tr("Opening sound device failed."), false, "Warning");
 		return;
 	}
 	FullDuplexTestSample = new int16_t[8000];

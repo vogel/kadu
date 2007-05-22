@@ -478,7 +478,7 @@ void Notify::notify(Notification *notification)
 	notification->release();
 
 	if (!foundNotifierWithCallbackSupported)
-		MessageBox::wrn(tr("Unable to find notifier for %1 event").arg(notification->type()), true);
+		MessageBox::msg(tr("Unable to find notifier for %1 event").arg(notification->type()), true, "Warning");
 
 	kdebugf2();
 }

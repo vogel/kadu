@@ -20,6 +20,7 @@
 #include "hot_key.h"
 #include "icons_manager.h"
 #include "kadu.h"
+#include "message_box.cpp"
 #include "modules.h"
 #include "sms.h"
 #include "userbox.h"
@@ -179,7 +180,7 @@ SmsGateway::SmsGateway(QObject* parent, const char *name)
 void SmsGateway::httpError()
 {
 	kdebugf();
-	QMessageBox::critical((QDialog*)(parent()->parent()), "SMS", tr("Network error. Provider gateway page is probably unavailable"));
+	MessageBox::msg(tr("Network error. Provider gateway page is probably unavailable"), false, "Warning", (QDialog*)(parent()->parent()));
 	emit finished(false);
 	kdebugf2();
 }
@@ -216,14 +217,14 @@ void SmsSender::send(const QString& number,const QString& message, const QString
 		Number=Number.right(9);
 	if (Number.length()!=9)
 	{
-		QMessageBox::critical((QWidget*)parent(), "SMS", tr("Mobile number is incorrect"));
+		MessageBox::msg(tr("Mobile number is incorrect"), false, "Warning", (QWidget*)parent());
 		emit finished(false);
 		kdebugf2();
 		return;
 	}
 	if (signature.isEmpty())
 	{
-		QMessageBox::critical((QWidget*)parent(), "SMS", tr("Signature can't be empty"));
+		MessageBox::msg(tr("Signature can't be empty"), false, "Warning", (QWidget*)parent());
 		emit finished(false);
 		kdebugf2();
 		return;
@@ -232,7 +233,7 @@ void SmsSender::send(const QString& number,const QString& message, const QString
 
 	if (Gateway==NULL)
 	{
-		QMessageBox::critical((QWidget*)parent(),"SMS", tr("Mobile number is incorrect or gateway is not available"));
+		MessageBox::msg(tr("Mobile number is incorrect or gateway is not available"), false, "Warning", (QWidget*)parent());
 		emit finished(false);
 		kdebugf2();
 		return;
@@ -384,7 +385,7 @@ void Sms::sendSms(void)
 	{
 		if (config_file.readEntry("SMS","SmsApp").isEmpty())
 		{
-			QMessageBox::warning(this, tr("SMS error"), tr("Sms application was not specified. Visit the configuration section") );
+			MessageBox::msg(tr("Sms application was not specified. Visit the configuration section"), false, "Warning", this);
 			kdebugm(KDEBUG_WARNING, "SMS application NOT specified. Exit.\n");
 			return;
 		}
@@ -410,7 +411,7 @@ void Sms::sendSms(void)
 		}
 
 		if (!smsProcess->start())
-			QMessageBox::critical(this, tr("SMS error"), tr("Could not spawn child process. Check if the program is functional") );
+			MessageBox::msg(tr("Could not spawn child process. Check if the program is functional"), false, "Warning", this);
 		QObject::connect(smsProcess, SIGNAL(processExited()), this, SLOT(smsSigHandler()));
 	}
 	kdebugf2();
@@ -420,9 +421,9 @@ void Sms::smsSigHandler()
 {
 	kdebugf();
 	if (smsProcess->normalExit())
-		QMessageBox::information(this, tr("SMS sent"), tr("The process exited normally. The SMS should be on its way"));
+		MessageBox::msg(tr("The process exited normally. The SMS should be on its way"), false, "NotifyTab", this);
 	else
-		QMessageBox::warning(this, tr("SMS not sent"), tr("The process exited abnormally. The SMS may not be sent"));
+		MessageBox::msg(tr("The process exited abnormally. The SMS may not be sent"), false, "Warning", this);
 	delete smsProcess;
 	smsProcess = NULL;
 
@@ -449,7 +450,7 @@ void Sms::onSmsSenderFinished(bool success)
 	{
 		if (c_saveInHistory->isChecked())
 			history->appendSms(recipient->text(), body->text());
-		if (QMessageBox::question(this, tr("SMS sent"), tr("The SMS was sent and should be on its way.\nDo you want to send next message?"), tr("Yes"), tr("No"), QString::null, 1, 1) == 1)
+		if (MessageBox::ask(tr("The SMS was sent and should be on its way.\nDo you want to send next message?"), false, "NotifyTab", this)
 			deleteLater();
 		body->clear();
 	}

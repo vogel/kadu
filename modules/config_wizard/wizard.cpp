@@ -314,7 +314,7 @@ void Wizard::setGaduAccount()
 	}
 	if (l_ggNewPasssword->text().isEmpty())
 	{
-		MessageBox::wrn(tr("Please fill all fields"));
+		MessageBox::msg(tr("Please fill all fields"), false, "Warning");
 		isOk = false;
 	}
 	if (isOk)
@@ -343,7 +343,7 @@ void Wizard::registeredAccount(bool ok, UinType uin)
 	}
 	else
 	{
-		MessageBox::wrn(tr("An error has occured while registration. Please try again later."));
+		MessageBox::msg(tr("An error has occured while registration. Please try again later."), false, "Warning");
 		registerAccount->setEnabled(true);
 	}
 	disconnect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registeredAccount(bool, UinType)));
