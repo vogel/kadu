@@ -136,9 +136,8 @@ void EncryptionManager::generateMyKeys()
 	keyfile_path.append(".pem");
 	QFileInfo keyfile(keyfile_path);
 
-	if (keyfile.permission(QFileInfo::WriteUser))
-		if(MessageBox::ask(tr("Keys exist. Do you want to overwrite them?"), false, "Warning")
-				return;
+	if (keyfile.permission(QFileInfo::WriteUser) && !MessageBox::ask(tr("Keys exist. Do you want to overwrite them?"), "Warning"))
+		return;
 
 	if (sim_key_generate(myUin) < 0)
 	{

@@ -450,7 +450,7 @@ void Sms::onSmsSenderFinished(bool success)
 	{
 		if (c_saveInHistory->isChecked())
 			history->appendSms(recipient->text(), body->text());
-		if (MessageBox::ask(tr("The SMS was sent and should be on its way.\nDo you want to send next message?"), false, "NotifyTab", this)
+		if (!MessageBox::ask(tr("The SMS was sent and should be on its way.\nDo you want to send next message?"), "NotifyTab", this))
 			deleteLater();
 		body->clear();
 	}

@@ -128,16 +128,6 @@ void MessageBox::msg(const QString& message, bool modal, const QString& iconName
 		m->show();
 }
 
-void MessageBox::wrn(const QString& message, bool modal, QWidget *parent)
-{
-	MessageBox* m = new MessageBox(message, OK, modal, "Warning", parent);
-
-	if (modal)
-		m->exec();
-	else
-		m->show();
-}
-
 bool MessageBox::ask(const QString& message, const QString& iconName, QWidget *parent)
 {
 	MessageBox* m = new MessageBox(message, YES|NO, true, iconName, parent);

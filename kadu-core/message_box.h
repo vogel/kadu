@@ -43,6 +43,7 @@ class MessageBox : public QDialog
 		~MessageBox();
 
 		//
+
 		/**
 			Informuje u¿ytkownika o wykonywanej przez
 			program czynno¶ci. Tworzy dialog zawieraj±cy
@@ -53,6 +54,7 @@ class MessageBox : public QDialog
 			Wywo³uje QApplication::processEvents().
 		**/
 		static void status(const QString& message);
+
 		/**
 			Zadaje u¿ytkownikowi pytanie. Tworzy dialog
 			z dwoma przyciskami: "Tak" i "Nie". Blokuje
@@ -61,16 +63,14 @@ class MessageBox : public QDialog
 			lub false je¶li wybra³ "Nie".
 		**/
 		static bool ask(const QString& message, const QString& iconName = QString::null, QWidget *parent = 0);
+
 		/**
 			Przekazuje u¿ytkownikowi informacjê. Tworzy
 			dialog z przyciskiem: "OK" zamykaj±cy okno.
 			Nie blokuje wykonywania programu.
 		**/
 		static void msg(const QString& message, bool modal=false, const QString& iconName = QString::null, QWidget *parent = 0);
-		/**
-			Jak wy¿ej, ale w formie ostrze¿enia
-		**/
-		static void wrn(const QString& message, bool modal=false, QWidget *parent = 0);
+
 		/**
 			Zamyka dialog, który zosta³ stworzony za
 			pomoc± funkcji status z t± sam± wiadomo¶ci±
