@@ -192,7 +192,7 @@ void Register::registered(bool ok, UinType uin)
 	if (ok)
 	{
 		this->uin = uin;
-		MessageBox::msg(tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(uin), false, "NotifyTab", this);
+		MessageBox::msg(tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(uin), false, "Information", this);
 		ask();
 		close();
 	}

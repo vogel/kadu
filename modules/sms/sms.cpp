@@ -421,7 +421,7 @@ void Sms::smsSigHandler()
 {
 	kdebugf();
 	if (smsProcess->normalExit())
-		MessageBox::msg(tr("The process exited normally. The SMS should be on its way"), false, "NotifyTab", this);
+		MessageBox::msg(tr("The process exited normally. The SMS should be on its way"), false, "Information", this);
 	else
 		MessageBox::msg(tr("The process exited abnormally. The SMS may not be sent"), false, "Warning", this);
 	delete smsProcess;
@@ -450,7 +450,7 @@ void Sms::onSmsSenderFinished(bool success)
 	{
 		if (c_saveInHistory->isChecked())
 			history->appendSms(recipient->text(), body->text());
-		if (!MessageBox::ask(tr("The SMS was sent and should be on its way.\nDo you want to send next message?"), "NotifyTab", this))
+		if (!MessageBox::ask(tr("The SMS was sent and should be on its way.\nDo you want to send next message?"), "Information", this))
 			deleteLater();
 		body->clear();
 	}

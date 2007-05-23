@@ -145,7 +145,7 @@ void EncryptionManager::generateMyKeys()
 		return;
 	}
 
-	MessageBox::msg(tr("Keys have been generated and written"), false, "NotifyTab");
+	MessageBox::msg(tr("Keys have been generated and written"), false, "Information");
 	kdebugf2();
 }
 
@@ -381,7 +381,7 @@ void EncryptionManager::sendPublicKey()
 		CONST_FOREACH(user, users)
 			gadu->sendMessage(*user, tmp.data());
 
-		MessageBox::msg(tr("Your public key has been sent"), false, "NotifyTab", kadu);
+		MessageBox::msg(tr("Your public key has been sent"), false, "Information", kadu);
 	}
 	kdebugf2();
 }

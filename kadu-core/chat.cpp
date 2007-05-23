@@ -912,7 +912,7 @@ void Chat::sendMessage()
 
 	if (currentProtocol()->currentStatus().isOffline())
 	{
-		MessageBox::msg(tr("Cannot send message while being offline."), false, "Warning", this);
+		MessageBox::msg(tr("Cannot send message while being offline."), false, "Critical", this);
 		kdebugmf(KDEBUG_FUNCTION_END, "not connected!\n");
 		return;
 	}

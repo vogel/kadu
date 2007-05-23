@@ -95,7 +95,7 @@ void Updates::gotUpdatesInfo(const QByteArray &data, QNetworkOperation * /*op*/)
 		
 		QString newestversion(data);
 		if (ifNewerVersion(newestversion))
-			MessageBox::msg(tr("The newest Kadu version is %1").arg(newestversion), false, "NotifyTab", kadu);
+			MessageBox::msg(tr("The newest Kadu version is %1").arg(newestversion), false, "Information", kadu);
 	}
 	disconnect(gadu, SIGNAL(connected()), this, SLOT(run()));
 	UpdateChecked = true;

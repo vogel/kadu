@@ -129,12 +129,12 @@ void Unregister::unregistered(bool ok)
 	kdebugf();
 	if (ok)
 	{
-		MessageBox::msg(tr("Unregistation was successful. Now you don't have any GG number :("), false, "NotifyTab", this);
+		MessageBox::msg(tr("Unregistation was successful. Now you don't have any GG number :("), false, "Information", this);
 		close();
 	}
 	else
 	{
-		MessageBox::msg(tr("An error has occured while unregistration. Please try again later."), false, "Warning", this);
+		MessageBox::msg(tr("An error has occured while unregistration. Please try again later."), false, "Critical", this);
 		setEnabled(true);
 	}
 	kdebugf2();

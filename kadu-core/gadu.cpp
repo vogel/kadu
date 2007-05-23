@@ -809,7 +809,7 @@ void GaduProtocol::errorSlot(GaduError err)
 			msg = tr("Please change your email in \"Change password / email\" window. "
 				"Leave new password field blank.");
 			continue_connecting = false;
-			MessageBox::msg(msg);
+			MessageBox::msg(msg, false, "Warning");
 			break;
 
 		case ConnectionInvalidData:
@@ -827,7 +827,7 @@ void GaduProtocol::errorSlot(GaduError err)
 		case ConnectionIncorrectPassword:
 			msg = tr("Unable to connect, incorrect password");
 			continue_connecting = false;
-			MessageBox::msg(tr("Connection will be stopped\nYour password is incorrect!"), false, "Warning");
+			MessageBox::msg(tr("Connection will be stopped\nYour password is incorrect!"), false, "Critical");
 			break;
 
 		case ConnectionTlsError:
@@ -837,7 +837,7 @@ void GaduProtocol::errorSlot(GaduError err)
 		case ConnectionIntruderError:
 			msg = tr("Too many connection attempts with bad password!");
 			continue_connecting = false;
-			MessageBox::msg(tr("Connection will be stopped\nToo many attempts with bad password"), false, "Warning");
+			MessageBox::msg(tr("Connection will be stopped\nToo many attempts with bad password"), false, "Critical");
 			break;
 
 		case ConnectionUnavailableError:

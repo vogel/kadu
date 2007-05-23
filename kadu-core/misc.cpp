@@ -581,7 +581,7 @@ void openWebBrowser(const QString &link)
 	QObject::connect(browser, SIGNAL(processExited()), browser, SLOT(deleteLater()));
 
 	if (!browser->start())
-		MessageBox::msg(qApp->translate("@default", QT_TR_NOOP("Could not spawn Web browser process. Check if the Web browser is functional")), false, "Warning");
+		MessageBox::msg(qApp->translate("@default", QT_TR_NOOP("Could not spawn Web browser process. Check if the Web browser is functional")), false, "Critical");
 
 	kdebugf2();
 }
@@ -617,7 +617,7 @@ void openMailClient(const QString &mail)
 	QObject::connect(mailer, SIGNAL(processExited()), mailer, SLOT(deleteLater()));
 
 	if (!mailer->start())
-		MessageBox::msg(qApp->translate("@default", QT_TR_NOOP("Could not spawn Mail client process. Check if the Mail client is functional")), false, "Warning");
+		MessageBox::msg(qApp->translate("@default", QT_TR_NOOP("Could not spawn Mail client process. Check if the Mail client is functional")), false, "Critical");
 
 	kdebugf2();
 }

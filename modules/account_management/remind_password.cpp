@@ -115,9 +115,9 @@ void RemindPassword::reminded(bool ok)
 {
 	kdebugf();
 	if (ok)
-		MessageBox::msg(tr("Your password has been send on your email"), false, "NotifyTab", this);
+		MessageBox::msg(tr("Your password has been send on your email"), false, "Information", this);
 	else
-		MessageBox::msg(tr("Error during remind password"), false, "Warning", this);
+		MessageBox::msg(tr("Error during remind password"), false, "Critical", this);
 	close();
 	kdebugf2();
 }

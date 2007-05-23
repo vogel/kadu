@@ -183,7 +183,7 @@ void UserlistImportExport::fromfile()
 			}
 		}
 		else
-			MessageBox::msg(tr("The application encountered an internal error\nThe import userlist from file was unsuccessful"), false, "Warning", this);
+			MessageBox::msg(tr("The application encountered an internal error\nThe import userlist from file was unsuccessful"), false, "Critical", this);
 	}
 	kdebugf2();
 }
@@ -193,7 +193,7 @@ void UserlistImportExport::startImportTransfer()
 	kdebugf();
 	if (gadu->currentStatus().isOffline())
 	{
-		MessageBox::msg(tr("Cannot import user list from server in offline mode"), false, "Warning", this);
+		MessageBox::msg(tr("Cannot import user list from server in offline mode"), false, "Critical", this);
 		return;
 	}
 
@@ -255,7 +255,7 @@ void UserlistImportExport::startExportTransfer()
 
 	if (gadu->currentStatus().isOffline())
 	{
-		MessageBox::msg(tr("Cannot export user list to server in offline mode"), false, "Warning", this);
+		MessageBox::msg(tr("Cannot export user list to server in offline mode"), false, "Critical", this);
 		kdebugf2();
 		return;
 	}
@@ -288,10 +288,10 @@ void UserlistImportExport::ExportToFile(void)
 				stream.setCodec(codec_latin2);
 				stream << gadu->userListToString(*userlist);
 				file.close();
-				MessageBox::msg(tr("Your userlist has been successfully exported to file"));
+				MessageBox::msg(tr("Your userlist has been successfully exported to file"), false, "Information", this);
 			}
 			else
-				MessageBox::msg(tr("The application encountered an internal error\nThe export userlist to file was unsuccessful"), false, "Warning", this);
+				MessageBox::msg(tr("The application encountered an internal error\nThe export userlist to file was unsuccessful"), false, "Critical", this);
 		}
 	}
 
@@ -307,7 +307,7 @@ void UserlistImportExport::clean()
 
 	if (gadu->currentStatus().isOffline())
 	{
-		MessageBox::msg(tr("Cannot clear user list on server in offline mode"), false, "Warning", this);
+		MessageBox::msg(tr("Cannot clear user list on server in offline mode"), false, "Critical", this);
 		kdebugf2();
 		return;
 	}
@@ -325,9 +325,9 @@ void UserlistImportExport::userListExported(bool ok)
 {
 	kdebugf();
 	if (ok)
-		MessageBox::msg(tr("Your userlist has been successfully exported to server"));
+		MessageBox::msg(tr("Your userlist has been successfully exported to server"), false, "Information", this);
 	else
-		MessageBox::msg(tr("The application encountered an internal error\nThe export was unsuccessful"), false, "Warning", this);
+		MessageBox::msg(tr("The application encountered an internal error\nThe export was unsuccessful"), false, "Critical", this);
 
 	pb_send->setEnabled(true);
 	pb_delete->setEnabled(true);
@@ -339,9 +339,9 @@ void UserlistImportExport::userListCleared(bool ok)
 {
 	kdebugf();
 	if (ok)
-		MessageBox::msg(tr("Your userlist has been successfully deleted on server"));
+		MessageBox::msg(tr("Your userlist has been successfully deleted on server"), false, "Infromation", this);
 	else
-		MessageBox::msg(tr("The application encountered an internal error\nThe delete userlist on server was unsuccessful"), false, "Warning", this);
+		MessageBox::msg(tr("The application encountered an internal error\nThe delete userlist on server was unsuccessful"), false, "Critical", this);
 
 	pb_send->setEnabled(true);
 	pb_delete->setEnabled(true);

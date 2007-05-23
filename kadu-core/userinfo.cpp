@@ -323,13 +323,13 @@ bool UserInfo::acceptableGroupName(const QString &groupName)
 	}
 	if (groupName.contains(","))
 	{
-		MessageBox::msg(tr("'%1' is prohibited").arg(','), true);
+		MessageBox::msg(tr("'%1' is prohibited").arg(','), true, "Warning");
 		kdebugf2();
 		return false;
 	}
 	if (groupName.contains(";"))
 	{
-		MessageBox::msg(tr("'%1' is prohibited").arg(';'), true);
+		MessageBox::msg(tr("'%1' is prohibited").arg(';'), true, "Warning");
 		kdebugf2();
 		return false;
 	}
@@ -337,17 +337,11 @@ bool UserInfo::acceptableGroupName(const QString &groupName)
 	groupName.toLong(&number);
 	if (number)
 	{
-		MessageBox::msg(tr("Numbers are prohibited"), true);//because of gadu-gadu contact list format...
+		MessageBox::msg(tr("Numbers are prohibited"), true, "Warning");//because of gadu-gadu contact list format...
 		kdebugf2();
 		return false;
 	}
-	if (groupName == GroupsManager::tr("All"))
-	{
-		MessageBox::msg(tr("This group already exists!"), true);
-		kdebugf2();
-		return false;
-	}
-	if (groups_manager->groupExists(groupName))
+	if (groupName == GroupsManager::tr("All") || groups_manager->groupExists(groupName))
 	{
 		MessageBox::msg(tr("This group already exists!"), true, "Warning");
 		kdebugf2();
@@ -382,7 +376,7 @@ void UserInfo::newGroupClicked()
 
 	if (hiddenCheckBoxes.isEmpty())
 	{
-		MessageBox::msg(tr("You can't add so many groups at one stroke. Close this dialog and open one more time."), true);
+		MessageBox::msg(tr("You can't add so many groups at one stroke. Close this dialog and open one more time."), true, "Warning", this);
 		return;
 	}
 	QCheckBox *box = hiddenCheckBoxes.first();
