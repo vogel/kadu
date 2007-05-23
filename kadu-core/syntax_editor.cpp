@@ -12,6 +12,7 @@
 #include <qdir.h>
 #include <qfile.h>
 #include <qgroupbox.h>
+#include <qinputdialog.h>
 #include <qlayout.h>
 #include <qlineedit.h>
 #include <qmap.h>
@@ -24,6 +25,7 @@
 #include "icons_manager.h"
 #include "kadu.h"
 #include "kadu_parser.h"
+#include "message_box.h"
 #include "misc.h"
 
 #include "syntax_editor.h"
@@ -32,6 +34,31 @@ SyntaxList::SyntaxList(const QString &category)
 	: category(category)
 {
 	reload();
+}
+
+QString SyntaxList::readSyntax(const QString &category, const QString &name)
+{
+	QString path;
+	QFile syntaxFile;
+	path = dataPath("kadu") + "/syntax/" + category + "/" + name + ".syntax";
+
+	syntaxFile.setName(path);
+	if (!syntaxFile.open(IO_ReadOnly))
+	{
+		path = ggPath() + "/syntax/" + category + "/" + name + ".syntax";
+
+		syntaxFile.setName(path);
+		if (!syntaxFile.open(IO_ReadOnly))
+			return QString();
+	}
+
+	QString result;
+	QTextStream stream(&syntaxFile);
+	stream.setEncoding(QTextStream::UnicodeUTF8);
+	result = stream.read();
+	syntaxFile.close();
+
+	return result;
 }
 
 void SyntaxList::reload()
@@ -69,6 +96,14 @@ void SyntaxList::reload()
 		if (fi.isReadable() && !contains(*file))
 			insert(fi.baseName(), info);
 	}
+
+	if (count() == 0)
+	{
+		info.global = false;
+		insert("custom", info);
+
+		updateSyntax("custom", "");
+	}
 }
 
 bool SyntaxList::updateSyntax(const QString &name, const QString &syntax)
@@ -95,7 +130,70 @@ bool SyntaxList::updateSyntax(const QString &name, const QString &syntax)
 	stream << syntax;
 	syntaxFile.close();
 
+	SyntaxInfo info;
+	info.global = false;
+	insert(name, info);
+
+	emit updated();
+
 	return true;
+}
+
+QString SyntaxList::readSyntax(const QString &name)
+{
+	if (!contains(name))
+		return QString();
+
+	SyntaxInfo info = *(find(name));
+	QString path;
+	if (info.global)
+		path = dataPath("kadu") + "/syntax/" + category + "/" + name + ".syntax";
+	else
+		path = ggPath() + "/syntax/" + category + "/" + name + ".syntax";
+
+	QFile syntaxFile;
+	syntaxFile.setName(path);
+	if (!syntaxFile.open(IO_ReadOnly))
+		return QString();
+
+	QString result;
+	QTextStream stream(&syntaxFile);
+	stream.setEncoding(QTextStream::UnicodeUTF8);
+	result = stream.read();
+	syntaxFile.close();
+
+	return result;
+}
+
+bool SyntaxList::deleteSyntax(const QString &name)
+{
+	if (!contains(name))
+		return false;
+
+	SyntaxInfo info = *(find(name));
+	if (info.global)
+		return false;
+
+	QString path = ggPath() + "/syntax/" + category + "/" + name + ".syntax";
+	QFile file;
+	file.setName(path);
+
+	if (!file.remove())
+		return false;
+
+	remove(name);
+	emit updated();
+
+	return true;
+}
+
+bool SyntaxList::isGlobal(const QString &name)
+{
+	if (!contains(name))
+		return false;
+
+	SyntaxInfo info = *(find(name));
+	return info.global;
 }
 
 SyntaxEditor::SyntaxEditor(QWidget *parent, char *name)
@@ -139,6 +237,11 @@ SyntaxEditor::SyntaxEditor(QWidget *parent, char *name)
 
 SyntaxEditor::~SyntaxEditor()
 {
+	if (syntaxList)
+	{
+		delete syntaxList;
+		syntaxList = 0;
+	}
 }
 
 void SyntaxEditor::setCurrentSyntax(const QString &syntax)
@@ -160,8 +263,20 @@ void SyntaxEditor::setCategory(const QString &category)
 
 void SyntaxEditor::editClicked()
 {
-	SyntaxEditorWindow *editor = new SyntaxEditorWindow();
+	SyntaxEditorWindow *editor = new SyntaxEditorWindow(syntaxList, syntaxListCombo->currentText());
+	connect(editor, SIGNAL(updated(const QString &)), this, SLOT(setCurrentSyntax(const QString &)));
 	editor->show();
+}
+
+void SyntaxEditor::deleteClicked()
+{
+	if (!syntaxList)
+		return;
+
+	if (syntaxList->deleteSyntax(currentSyntax()))
+		setCurrentSyntax(*(syntaxList->keys().begin()));
+	else
+		MessageBox::msg(tr("Unable to remove syntax: %1").arg(currentSyntax()), true, "Warning");
 }
 
 void SyntaxEditor::syntaxChanged(const QString &newSyntax)
@@ -193,10 +308,9 @@ void SyntaxEditor::syntaxChanged(const QString &newSyntax)
 
 	content.replace(QRegExp("%o"),  " ");
 
-	// to nam zapewnia odswieżenie tla jesli wczesniej byl obrazek
+	// to nam zapewnia odswie�enie tla jesli wczesniej byl obrazek
 	// TODO: fix it
-	if (previewPanel->text().contains("background=", false) == 0)
-		previewPanel->setText("<body bgcolor=\"" + config_file.readEntry("Look", "InfoPanelBgColor") + "\"></body>");
+	previewPanel->setText("<body bgcolor=\"" + config_file.readEntry("Look", "InfoPanelBgColor") + "\"></body>");
 	previewPanel->setText(KaduParser::parse(content, example));
 
 	deleteButton->setEnabled(!info.global);
@@ -211,26 +325,43 @@ void SyntaxEditor::updateSyntaxList()
 
 	syntaxListCombo->clear();
 	syntaxListCombo->insertStringList(syntaxList->keys());
+
+	connect(syntaxList, SIGNAL(updated()), this, SLOT(syntaxListUpdated()));
 }
 
-SyntaxEditorWindow::SyntaxEditorWindow(QWidget* parent, const char *name)
-	: QVBox(parent, name)
+void SyntaxEditor::syntaxListUpdated()
+{
+	syntaxListCombo->clear();
+	syntaxListCombo->insertStringList(syntaxList->keys());
+}
+
+SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &syntaxName, QWidget* parent, const char *name)
+	: QVBox(parent, name), syntaxList(syntaxList), syntaxName(syntaxName)
 {
 	setCaption(tr("Kadu syntax editor"));
 
 	setMargin(10);
 	setSpacing(5);
 
-	QGroupBox *syntax = new QGroupBox(tr("Syntax"), this);
-	syntax->setInsideMargin(10);
-	syntax->setColumns(2);
-	syntax->adjustSize();
+	QFrame *syntax = new QFrame(this);
+
+	QGridLayout *layout = new QGridLayout(syntax);
+	layout->setColStretch(0, 2);
+	layout->setColStretch(1, 1);
+	layout->setSpacing(5);
 
 	editor = new QTextEdit(syntax);
 	editor->setTextFormat(Qt::PlainText);
+	editor->setText(syntaxList->readSyntax(syntaxName));
 	QToolTip::add(editor, kadu->SyntaxText);
+	layout->addMultiCellWidget(editor, 0, 1, 0, 0);
 
 	previewPanel = new KaduTextBrowser(syntax);
+	layout->addWidget(previewPanel, 0, 1);
+
+	QPushButton *preview = new QPushButton(tr("preview"), syntax);
+	connect(preview, SIGNAL(clicked()), this, SLOT(refreshPreview()));
+	layout->addWidget(preview, 1, 1);
 
 	QHBox *buttons = new QHBox(this);
 	buttons->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
@@ -240,19 +371,92 @@ SyntaxEditorWindow::SyntaxEditorWindow(QWidget* parent, const char *name)
 	QPushButton *saveSyntax = new QPushButton(icons_manager->loadIcon("OkWindowButton"), tr("Save"), buttons);
 	QPushButton *saveAsSyntax = new QPushButton(icons_manager->loadIcon("OkWindowButton"), tr("Save as.."), buttons);
 	QPushButton *cancel = new QPushButton(icons_manager->loadIcon("CloseWindowButton"), tr("Cancel"), buttons);
+
+	if (syntaxList->isGlobal(syntaxName))
+		saveSyntax->setDisabled(true);
+	else
+		connect(saveSyntax, SIGNAL(clicked()), this, SLOT(save()));
+
+	connect(saveAsSyntax, SIGNAL(clicked()), this, SLOT(saveAs()));
+	connect(cancel, SIGNAL(clicked()), this, SLOT(close()));
+
+	loadGeometry(this, "Look", "SyntaxEditorGeometry", 0, 30, 790, 480);
+
+	refreshPreview();
 }
 
 SyntaxEditorWindow::~SyntaxEditorWindow()
 {
+	saveGeometry(this, "Look", "SyntaxEditorGeometry");
 }
 
-// void SyntaxEditorWindow::previewPanelTheme()
-// {
-// 	kdebugf();
-//
-// 	if (t_editor->text().contains("background=", false) == 0)	//to nam zapewnia odswieżenie tla jesli wczesniej byl obrazek
-// 		infoPreview->setText("<body bgcolor=\"" + config_file.readEntry("Look", "InfoPanelBgColor")+"\"></body>");
-//
-// 	infoPreview->setText(kadu->infoPanelSyntaxList->toDisplay(t_editor->text()));
-// 	kdebugf2();
-// }
+void SyntaxEditorWindow::refreshPreview()
+{
+	// TODO: fix it
+	previewPanel->setText("<body bgcolor=\"" + config_file.readEntry("Look", "InfoPanelBgColor")+"\"></body>");
+
+	UserListElement example;
+	UserStatus status;
+	status.setBusy(qApp->translate("@default", "Description"));
+
+	example.addProtocol("Gadu", "999999");
+	example.setStatus("Gadu", status);
+	example.setFirstName(qApp->translate("@default", "Mark"));
+	example.setLastName(qApp->translate("@default", "Smith"));
+	example.setNickName(qApp->translate("@default", "Jimbo"));
+	example.setAltNick(qApp->translate("@default", "Jimbo"));
+	example.setMobile("+48123456789");
+	example.setEmail("jimbo@mail.server.net");
+	example.setHomePhone("+481234567890");
+	example.setAddressAndPort("Gadu", QHostAddress(2130706433), 80);
+	example.setDNSName("Gadu", "host.server.net");
+
+	QString content = editor->text();
+	content.replace(QRegExp("%o"),  " ");
+
+	previewPanel->setText(KaduParser::parse(content, example));
+}
+
+void SyntaxEditorWindow::save()
+{
+	syntaxList->updateSyntax(syntaxName, editor->text());
+	emit updated(syntaxName);
+	close();
+}
+
+void SyntaxEditorWindow::saveAs()
+{
+	QString newSyntaxName = syntaxName;
+	bool ok;
+
+	while (true)
+	{
+		newSyntaxName = QInputDialog::getText(tr("New syntax name"), tr("Enter new syntax name"), QLineEdit::Normal, newSyntaxName, &ok);
+		if (!ok)
+			return;
+
+		if (newSyntaxName.isEmpty())
+			continue;
+
+		if (newSyntaxName == syntaxName)
+			break;
+
+		if (!syntaxList->contains(newSyntaxName))
+			break;
+
+		if (syntaxList->isGlobal(newSyntaxName))
+		{
+			MessageBox::msg(tr("Syntax %1 already exists and cannot be modified").arg(newSyntaxName), true, "Warning");
+			continue;
+		}
+		else
+		{
+			if (MessageBox::ask(tr("Overwrite %1 syntax?").arg(newSyntaxName)))
+				break;
+		}
+	}
+
+	syntaxList->updateSyntax(newSyntaxName, editor->text());
+	emit updated(newSyntaxName);
+	close();
+}

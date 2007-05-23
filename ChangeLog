@@ -168,6 +168,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * nowe okno konfiguracji: poprawiona zmiana sk³adni panelu informacyjnego (Vogel)
 * nowy predefiniowany klient pocztowy (Evolution) oraz poprawka wykrywania
   Thunderbirda na Debianie i pochodnych (White Eagle,neeo)
+* nowe okno konfiguracji: pe³na edycja s³adni panelu informacyjnego (Vogel)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

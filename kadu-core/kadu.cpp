@@ -138,11 +138,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	config_file.addVariable("Look", "UserboxFont", defaultFont);
 	config_file.addVariable("Look", "PanelFont", defaultFont);
 
-	config_file.addVariable("Look", "PanelContents", QString(
-		"<table><tr><td><img width=\"32\" height=\"32\" align=\"left\" valign=\"top\" src=\"@{ManageUsersWindowIcon}\"></td>\n"
-		"<td> <div align=\"left\"> [<b>%a</b>][ (%u)] [<br>tel.: %m][<br>IP: %i][<br>%o") + tr("You are not on the list") +
-		"] </div></td></tr></table> <hr> <b>%s</b> [<br>%d]");
-
 	MainLayout = new QVBoxLayout(this);
 
 	TopDockArea = new DockArea(Qt::Horizontal, DockArea::Normal, this,
@@ -342,6 +337,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 
 	ConfigurationWindow::initModule();
 	connect(configuration_window, SIGNAL(configurationUpdated()), this, SLOT(configurationUpdated()));
+
+	configurationUpdated();
 
 	kdebugf2();
 }
@@ -1433,7 +1430,7 @@ void Kadu::updateInformationPanel(UserListElement user)
 	{
 		kdebugmf(KDEBUG_INFO, "%s\n", user.altNick().local8Bit().data());
 		HtmlDocument doc;
-		doc.parseHtml(KaduParser::parse(config_file.readEntry("Look", "PanelContents"), user));
+		doc.parseHtml(KaduParser::parse(InfoPanelSyntax, user));
 		doc.convertUrlsToHtml();
 		doc.convertMailToHtml();
 		if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") != EMOTS_NONE && config_file.readBoolEntry("General", "ShowEmotPanel"))
@@ -1522,7 +1519,6 @@ void Kadu::configurationUpdated()
 	refreshPrivateStatusFromConfigFile();
 
 	changeAppearance();
-	updateInformationPanel();
 	groups_manager->refreshTabBar();
 	chat_manager->configurationUpdated();
 	UserBox::setColorsOrBackgrounds();
@@ -1535,6 +1531,10 @@ void Kadu::configurationUpdated()
 	gadu->changeID(config_file.readEntry("General", "UIN"));
 	kadu->setCaption(tr("Kadu: %1").arg((UinType)config_file.readUnsignedNumEntry("General", "UIN")));
 	kadu->setDocked(kadu->Docked, kadu->dontHideOnClose);
+
+	InfoPanelSyntax = SyntaxList::readSyntax("infopanel", config_file.readEntry("Look", "InfoPanelSyntaxFile"));
+	InfoPanel->setText("<body bgcolor=\"" + config_file.readEntry("Look", "InfoPanelBgColor") + "\"></body>");
+	updateInformationPanel();
 
 #ifdef DEBUG_ENABLED
 	debug_mask = config_file.readNumEntry("General", "DEBUG_MASK");

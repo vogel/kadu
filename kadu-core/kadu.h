@@ -35,6 +35,7 @@ class Kadu : public QWidget
 		static bool Closing;
 		DockArea* TopDockArea;
 		KaduTextBrowser* InfoPanel;
+		QString InfoPanelSyntax;
 		QMenuBar* MenuBar;
 		QPopupMenu* MainMenu;
 		KaduTabBar* GroupBar;
