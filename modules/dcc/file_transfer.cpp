@@ -1046,8 +1046,7 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 	connect(dcc_manager, SIGNAL(socketDestroying(DccSocket*)),
 		this, SLOT(socketDestroying(DccSocket*)));
 
-	QPopupMenu *mainMenu = kadu->mainMenu();
-	toggleFileTransferWindowMenuId = mainMenu->insertItem(tr("Toggle transfers window"),
+	toggleFileTransferWindowMenuId = (kadu->mainMenu())->insertItem(icons_manager->loadIcon("SendFileWindow"), tr("Toggle transfers window"),
 		this, SLOT(toggleFileTransferWindow()), 0, -1, 10);
 
 	notification_manager->registerEvent("FileTransfer/IncomingFile",  QT_TRANSLATE_NOOP("@default", "An user wants to send you a file"), CallbackRequired);
@@ -1091,8 +1090,7 @@ FileTransferManager::~FileTransferManager()
 
 	FileTransfer::destroyAll();
 
-	QPopupMenu *mainMenu = kadu->mainMenu();
-	mainMenu->removeItem(toggleFileTransferWindowMenuId);
+	(kadu->mainMenu())->removeItem(toggleFileTransferWindowMenuId);
 
 	if (fileTransferWindow)
 	{
