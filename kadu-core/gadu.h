@@ -667,38 +667,10 @@ class GaduProtocol : public Protocol
 			Wysy³a wiadomo¶æ bez formatowania tekstu. Je¶li adresatów jest wiêcej ni¿ jeden, to wysy³ana
 			jest wiadomo¶æ konferencyjna. Zwracany jest numer sekwencyjny wiadomo¶ci, je¶li
 			przypadkiem by¶my chcieli ¶ledziæ jej potwierdzenie.
-
 			@param users lista u¿ytkowników, do których wysy³amy wiadomo¶æ
-			@param msg wiadomo¶æ, któr± wysy³amy - musi byæ podana w postaci cp1250
-			@todo zmieniæ na sendMessage(const UinsList &, QString &) z wewnêtrzn± konwersj± na cp1250
+			@param mesg wiadomo¶æ, któr± wysy³amy - kodowanie zmieniane wewn±trz
 		**/
-		int sendMessage(UserListElements users, const char *msg);
-		/**
-			Wysy³a wiadomo¶æ bez formatowania tekstu. Zwracany jest numer sekwencyjny wiadomo¶ci, je¶li
-			przypadkiem by¶my chcieli ¶ledziæ jej potwierdzenie.
-
-			@param user u¿ytkownikó, do którygo wysy³amy wiadomo¶æ
-			@param msg wiadomo¶æ, któr± wysy³amy - musi byæ podana w postaci cp1250
-			@todo zmieniæ na sendMessage(const UinsList &, QString &) z wewnêtrzn± konwersj± na cp1250
-		**/
-		int sendMessage(UserListElement user, const char *msg);
-
-		/**
-			Wysy³a wiadomo¶æ z formatowaniem tekstu. Je¶li adresatów jest wiêcej ni¿ jeden, to wysy³ana
-			jest wiadomo¶æ konferencyjna. Zwracany jest numer sekwencyjny wiadomo¶ci, je¶li
-			przypadkiem by¶my chcieli ¶ledziæ jej potwierdzenie.
-
-			@param users lista u¿ytkowników, do których wysy³amy wiadomo¶æ
-			@param msg wiadomo¶æ, któr± wysy³amy - musi byæ podana w postaci cp1250
-			@param myLastFormats formatowanie tekstu
-			@param myLastFormatsLength ilo¶c znaczników formatuj±cych
-
-			@todo zmieniæ na sendMessageRichText(const UinsList &, QString &, ...)
-				z wewnêtrzn± konwersj± na cp1250 oraz z jakim¶ lepszym sposobem formatowania tekstu
-		**/
-		int sendMessageRichText(UserListElements users, const char *msg, unsigned char *myLastFormats,
-		 	unsigned int myLastFormatsLength);
-
+		int sendMessage(UserListElements users, const QString &mesg);
 		/**
 			Wysy³a pro¶bê o przys³anie obrazka z danymi parametrami.
 

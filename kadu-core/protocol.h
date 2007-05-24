@@ -6,6 +6,7 @@
 #include <qdatetime.h>
 
 #include "status.h"
+#include "usergroup.h"
 
 class Protocol : public QObject
 {
@@ -120,6 +121,23 @@ class Protocol : public QObject
 		virtual UserStatus *newStatus() const = 0;
 
 		const QDateTime &connectionTime() const;
+	public slots:
+		/**
+			Wysy³a wiadomo¶æ bez formatowania tekstu. Je¶li adresatów jest wiêcej ni¿ jeden, to wysy³ana
+			jest wiadomo¶æ konferencyjna. Zwracany jest numer sekwencyjny wiadomo¶ci, je¶li
+			przypadkiem by¶my chcieli ¶ledziæ jej potwierdzenie.
+			@param users lista u¿ytkowników, do których wysy³amy wiadomo¶æ
+			@param mesg wiadomo¶æ, któr± wysy³amy - kodowanie zmieniane wewn±trz
+		**/
+		virtual int sendMessage(UserListElements users, const QString &mesg) = 0;
+		/**
+			Wysy³a wiadomo¶æ bez formatowania tekstu. Zwracany jest numer sekwencyjny wiadomo¶ci, je¶li
+			przypadkiem by¶my chcieli ¶ledziæ jej potwierdzenie.
+			@param users lista u¿ytkowników, do których wysy³amy wiadomo¶æ
+			@param mesg wiadomo¶æ, któr± wysy³amy - kodowanie zmieniane wewn±trz
+		**/
+		int sendMessage(UserListElement user, const QString &mesg);
+
 
 	signals:
 
@@ -144,6 +162,21 @@ class Protocol : public QObject
 			@param reason napis do wy¶wietlenia dla u¿ytkownika
 		**/
 		void connectionError(Protocol *protocol, const QString &reason);
+
+		/**
+			\fn void messageFiltering(const UserGroup *users, QCString& msg, bool& stop)
+			Sygnal daje mozliwosc operowania na wiadomosci
+			ktora ma byc wyslana do serwera juz w jej docelowej
+			formie po konwersji z unicode i innymi zabiegami.
+			Tresc wiadomosci mozna zmienic podmieniajac wskaznik
+			msg na nowy bufor i zwalniajac stary (za pomoca free).
+			Mozna tez przerwac dalsza jej obrobke ustawiajac
+			wskaznik stop na true.
+			\param users lista u¿ytkowników
+			\param msg wiadomo¶æ
+			\param stop zakoñczenie dalszej obróbki sygna³u
+		**/
+		void sendMessageFiltering(const UserListElements users, QString &msg, bool &stop);
 	private:
 		Protocol(const Protocol &) {}
 		virtual Protocol &operator=(const Protocol &){return *this;}

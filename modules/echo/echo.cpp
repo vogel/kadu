@@ -45,7 +45,7 @@ void Echo::chatMsgReceived(Protocol *protocol, UserListElements senders, const Q
 	if (msg.left(5) != "KADU ")
 	{
 		QString resp = QString("KADU ECHO: ") + msg;
-		gadu->sendMessage(senders, unicode2cp(resp));
+		gadu->sendMessage(senders, resp);
 	}
 	kdebugf2();
 }

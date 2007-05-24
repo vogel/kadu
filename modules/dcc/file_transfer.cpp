@@ -282,7 +282,7 @@ void FileTransfer::start(StartType startType)
 
 		QString message(
 			tr("Hello. I am an automatic file-transfer reminder. Could you please send me a file named %1?"));
-		if (gadu->currentStatus().isOffline() || !gadu->sendMessage(recv, unicode2cp(message.arg(QUrl(FileName).fileName()))) == -1)
+		if (gadu->currentStatus().isOffline() || !gadu->sendMessage(recv, message.arg(QUrl(FileName).fileName())) == -1)
 			MessageBox::msg(tr("Error: message was not sent"), false, "Warning");
 	}
 }

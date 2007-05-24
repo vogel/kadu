@@ -37,6 +37,7 @@
 #include "misc.h"
 #include "search.h"
 #include "userbox.h"
+#include "protocol.h"
 
 Chat::Chat(Protocol *initialProtocol, const UserListElements &usrs, QWidget* parent, const char* name)
 	: QMainWindow(parent, name, Qt::WDestructiveClose), ChatMessages(), CurrentProtocol(initialProtocol),
@@ -44,8 +45,7 @@ Chat::Chat(Protocol *initialProtocol, const UserListElements &usrs, QWidget* par
 	index(0), title_buffer(), title_timer(new QTimer(this, "title_timer")), actcolor(), Edit(0),
 	bodyformat(new QMimeSourceFactory()), emoticon_selector(0), color_selector(0),
 	AutoSend(config_file.readBoolEntry("Chat", "AutoSend")), ScrollLocked(false),
-	WaitingForACK(false), userbox(0), myLastMessage(), myLastFormatsLength(0),
-	myLastFormats(0), seq(0), vertSplit(0), horizSplit(0),
+	WaitingForACK(false), userbox(0), myLastMessage(), seq(0), vertSplit(0), horizSplit(0),
 	ParagraphSeparator(config_file.readNumEntry("Look", "ParagraphSeparator")),
 	lastMsgTime(), PreviousMessage(), CfgNoHeaderRepeat(config_file.readBoolEntry("Look","NoHeaderRepeat")),
 	CfgHeaderSeparatorHeight(0), CfgNoHeaderInterval(0), Style(0), LastTime(0), body(0), activationCount(0),
@@ -917,42 +917,6 @@ void Chat::sendMessage()
 		return;
 	}
 
-	QString mesg = Edit->text();
-	mesg.replace("\n", "\r\n");
-	mesg = unformatGGMessage(mesg, myLastFormatsLength, myLastFormats);
-	myLastMessage = mesg;
-	if (myLastFormatsLength)
-		myLastMessage = formatGGMessage(myLastMessage, myLastFormatsLength - sizeof(struct gg_msg_richtext),
-			(void *)((char *)(myLastFormats) + sizeof(struct gg_msg_richtext)),0);
-	else
-		HtmlDocument::escapeText(myLastMessage);
-	kdebugmf(KDEBUG_INFO, "\n%s\n", (const char *)unicode2latin(myLastMessage));
-	myLastMessage.replace("\r\n", "\n");
-
-	if (mesg.length() >= 2000)
-	{
-		MessageBox::msg(tr("Message too long (%1>=%2)").arg(mesg.length()).arg(2000), false, "Warning", this);
-		kdebugmf(KDEBUG_FUNCTION_END, "end: message too long\n");
-		return;
-	}
-
-	QCString msg = unicode2cp(mesg);
-
-	bool stop = false;
-	emit messageFiltering(Users, msg, stop);
-	if (stop)
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "end: filter stopped processing\n");
-		return;
-	}
-
-	if (msg.length() >= 2000)
-	{
-		MessageBox::msg(tr("Filtered message too long (%1>=%2)").arg(msg.length()).arg(2000), false, "Warning", this);
-		kdebugmf(KDEBUG_FUNCTION_END, "end: filtered message too long\n");
-		return;
-	}
-
 	if (config_file.readBoolEntry("Chat","MessageAcks"))
 	{
 		Edit->setReadOnly(true);
@@ -962,17 +926,14 @@ void Chat::sendMessage()
 			icons_manager->loadIcon("CancelMessage"));
 		KaduActions["sendAction"]->setTexts(Users->toUserListElements(), tr("&Cancel"));
 	}
+	QString message = Edit->text();
+	seq = currentProtocol()->sendMessage(Users->toUserListElements(), message);
 
-	if (currentProtocol() == gadu)
+	if (!seq)
 	{
-		if (myLastFormatsLength)
-			seq = gadu->sendMessageRichText(Users->toUserListElements(), msg, (unsigned char *)myLastFormats, myLastFormatsLength);
-		else
-			seq = gadu->sendMessage(Users->toUserListElements(), msg);
+		cancelMessage();
+		return;
 	}
-
-	if (myLastFormats)
-		delete [](char *)myLastFormats;
 
  	if (config_file.readBoolEntry("Chat", "MessageAcks"))
 		connectAcknowledgeSlots();
@@ -984,6 +945,11 @@ void Chat::sendMessage()
 
 	emit messageSent(this);
 	kdebugf2();
+}
+
+void Chat::setLastMessage(const QString &msg)
+{
+	myLastMessage = msg;
 }
 
 /* prunes messages */

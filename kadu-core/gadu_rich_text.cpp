@@ -240,16 +240,16 @@ static QString stripHTMLFromGGMessage(const QString &msg)
  *
  * Precondition - formats_length must contain valid length of result buffer
  */
-static void *allocFormantBuffer(const QValueList<struct richtext_formant> &formants, unsigned int &formats_length)
+static unsigned char *allocFormantBuffer(const QValueList<struct richtext_formant> &formants, unsigned int &formats_length)
 {
 	kdebugf();
 	struct gg_msg_richtext richtext_header;
-	char *cformats, *tmpformats;
+	unsigned char *cformats, *tmpformats;
 
 	richtext_header.flag = 2;
 	richtext_header.length = gg_fix16(formats_length);
 	formats_length += sizeof(struct gg_msg_richtext);
-	cformats = new char[formats_length];
+	cformats = new unsigned char[formats_length];
 	tmpformats = cformats;
 	memcpy(tmpformats, &richtext_header, sizeof(struct gg_msg_richtext));
 	tmpformats += sizeof(struct gg_msg_richtext);
@@ -270,13 +270,13 @@ static void *allocFormantBuffer(const QValueList<struct richtext_formant> &forma
 			tmpformats += sizeof(gg_msg_richtext_image);
 		}
 	}
-	kdebugmf(KDEBUG_INFO, "formats_length=%u, tmpformats-cformats=%ld\n",
+	kdebugmf(KDEBUG_INFO, "formats_length=%u, tmpformats-cformats=%d\n",
 		formats_length, tmpformats - cformats);
 
-	return (void *)cformats;
+	return cformats;
 }
 
-QString unformatGGMessage(const QString &msg, unsigned int &formats_length, void *&formats)
+QString unformatGGMessage(const QString &msg, unsigned int &formats_length, unsigned char *&formats)
 {
 	kdebugf();
 	QString mesg, tmp;

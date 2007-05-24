@@ -33,7 +33,7 @@ QString libPath(const QString &f = QString::null);
 class UserListElement;
 
 QString cp2unicode(const unsigned char *);
-QCString unicode2cp(const QString &);
+QString unicode2cp(const QString &);
 QString latin2unicode(const unsigned char *);
 QCString unicode2latin(const QString &);
 QString unicode2std(const QString &);

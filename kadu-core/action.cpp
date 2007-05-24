@@ -214,7 +214,7 @@ void Actions::addDefaultToolbarAction(
 	Default def(action, uses_text_label);
 	if (index >= static_cast<int>(actions.size()))
 	{
-		kdebugm(KDEBUG_ERROR, "requested action index (%d) >= actions size (%lu)!\n", index, actions.size());
+		kdebugm(KDEBUG_ERROR, "requested action index (%d) >= actions size (%u)!\n", index, actions.size());
 		printBacktrace("requested action index >= actions size!");
 		index = -1;
 	}

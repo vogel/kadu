@@ -71,8 +71,6 @@ class Chat : public QMainWindow
 						 konferencji */
 		QString myLastMessage;/*!< zmienna przechowuj±ca
 					nasz± ostatni± wiadomo¶æ */
-		unsigned int myLastFormatsLength; /* ?? */
-		void* myLastFormats; /* ?? */
 		int seq; /* ?? */
 		KaduSplitter *vertSplit, *horizSplit; /*!< obiekty oddzielaj±ce
 							 kontrolki od siebie */
@@ -274,6 +272,8 @@ class Chat : public QMainWindow
 		**/
 		bool autoSend() const;
 
+		void setLastMessage(const QString &msg);
+
 		bool waitingForACK() const;
 
 		virtual void dragEnterEvent(QDragEnterEvent *e);
@@ -473,21 +473,6 @@ class Chat : public QMainWindow
 			\param chat wska¼nik do okna które emituje sygna³
 		**/
 		void messageSendRequested(Chat* chat);
-
-		/**
-			\fn void messageFiltering(const UserGroup *users, QCString& msg, bool& stop)
-			Sygnal daje mozliwosc operowania na wiadomosci
-			ktora ma byc wyslana do serwera juz w jej docelowej
-			formie po konwersji z unicode i innymi zabiegami.
-			Tresc wiadomosci mozna zmienic podmieniajac wskaznik
-			msg na nowy bufor i zwalniajac stary (za pomoca free).
-			Mozna tez przerwac dalsza jej obrobke ustawiajac
-			wskaznik stop na true.
-			\param users lista u¿ytkowników
-			\param msg wiadomo¶æ
-			\param stop zakoñczenie dalszej obróbki sygna³u
-		**/
-		void messageFiltering(const UserGroup *users, QCString &msg, bool &stop);
 
 		/**
 			\fn void messageSent(Chat* chat)

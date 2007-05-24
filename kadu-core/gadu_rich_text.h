@@ -5,6 +5,6 @@
 #include "gadu.h"
 
 QString formatGGMessage(const QString &msg, unsigned int formats_length, void *formats, UinType sender);
-QString unformatGGMessage(const QString &msg, unsigned int &formats_length, void *&formats);
+QString unformatGGMessage(const QString &msg, unsigned int &formats_length, unsigned char *&formats);
 
 #endif

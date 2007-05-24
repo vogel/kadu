@@ -20,6 +20,8 @@
 #include "kadu-config.h"
 #include "message_box.h"
 #include "misc.h"
+#include "chat.h"
+#include "chat_manager.h"
 
 //netinet/in.h na freebsd 4.x jest wybrakowane i trzeba inkludowaæ sys/types.h
 #include <sys/types.h>
@@ -1173,57 +1175,59 @@ void GaduProtocol::setupProxy()
 	kdebugf2();
 }
 
-int GaduProtocol::sendMessage(UserListElements users, const char* msg)
+int GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 {
 	kdebugf();
+
 	int seq = 0;
 	unsigned int uinsCount = 0;
-	CONST_FOREACH(user, users)
-		if ((*user).usesProtocol("Gadu"))
-			++uinsCount;
-	if (uinsCount > 1)
-	{
-		UinType* uins = new UinType[uinsCount];
-		unsigned int i = 0;
-		CONST_FOREACH(user, users)
-			if ((*user).usesProtocol("Gadu"))
-				uins[i++] = (*user).ID("Gadu").toUInt();
-		seq = gg_send_message_confer(Sess, GG_CLASS_CHAT,
-			uinsCount, uins, (unsigned char *)msg);
-		delete[] uins;
-	}
+	unsigned int myLastFormatsLength;
+	unsigned char *myLastFormats;
+	bool stop = false;
+	QString msgtmp = mesg;
+	msgtmp.replace("\n", "\r\n");
+	msgtmp = unformatGGMessage(msgtmp, myLastFormatsLength, myLastFormats);
+	QString myLastMessage = msgtmp;
+
+	if (myLastFormatsLength)
+		myLastMessage = formatGGMessage(myLastMessage, myLastFormatsLength - sizeof(struct gg_msg_richtext),
+			(void *)(myLastFormats + sizeof(struct gg_msg_richtext)),0);
+
 	else
+		HtmlDocument::escapeText(myLastMessage);
+
+	kdebugmf(KDEBUG_INFO, "\n%s\n", (const char *)unicode2latin(myLastMessage));
+	myLastMessage.replace("\r\n", "\n");
+	Chat* c = chat_manager->findChat(users);
+	c->setLastMessage(myLastMessage);
+
+	if (msgtmp.length() >= 2000)
 	{
-		CONST_FOREACH(user, users)
-			if ((*user).usesProtocol("Gadu"))
-			{
-				seq = gg_send_message(Sess, GG_CLASS_CHAT,
-					(*user).ID("Gadu").toUInt(), (unsigned char*) msg);
-				break;
-			}
+		MessageBox::msg(tr("Message too long (%1>=%2)").arg(mesg.length()).arg(2000), false, "Warning");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: message too long\n");
+		return 0;
 	}
 
-	SocketNotifiers->checkWrite();
+	QString msg = unicode2cp(msgtmp);
 
-	kdebugf2();
-	return seq;
-}
+	emit sendMessageFiltering(users,msg, stop);
+	if (stop)
+	{
+		kdebugmf(KDEBUG_FUNCTION_END, "end: filter stopped processing\n");
+		return 0;
+	}
 
-int GaduProtocol::sendMessage(UserListElement user, const char* msg)
-{
-	UserListElements users(user);
+	if (msg.length() >= 2000)
+	{
+		MessageBox::msg(tr("Filtered message too long (%1>=%2)").arg(msg.length()).arg(2000), false, "Warning");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: filtered message too long\n");
+		return 0;
+	}
 
-	return sendMessage(users, msg);
-}
-
-int GaduProtocol::sendMessageRichText(UserListElements users, const char* msg, unsigned char* myLastFormats, unsigned int myLastFormatsLength)
-{
-	kdebugf();
-	int seq = 0;
-	unsigned int uinsCount = 0;
 	CONST_FOREACH(user, users)
 		if ((*user).usesProtocol("Gadu"))
 			++uinsCount;
+
 	if (uinsCount > 1)
 	{
 		UinType* uins = new UinType[uinsCount];
@@ -1231,22 +1235,29 @@ int GaduProtocol::sendMessageRichText(UserListElements users, const char* msg, u
 		CONST_FOREACH(user, users)
 			if ((*user).usesProtocol("Gadu"))
 				uins[i++] = (*user).ID("Gadu").toUInt();
-		seq = gg_send_message_confer_richtext(Sess, GG_CLASS_CHAT,
-				uinsCount, uins, (unsigned char*)msg,
+		if (myLastFormatsLength)
+			seq = gg_send_message_confer_richtext(Sess, GG_CLASS_CHAT, uinsCount, uins, (unsigned char *)msg.data(),
 				myLastFormats, myLastFormatsLength);
+		else
+			seq = gg_send_message_confer(Sess, GG_CLASS_CHAT, uinsCount, uins,(unsigned char *)msg.data());
 		delete[] uins;
 	}
 	else
 		CONST_FOREACH(user, users)
 			if ((*user).usesProtocol("Gadu"))
 			{
-				seq = gg_send_message_richtext(Sess, GG_CLASS_CHAT,
-					(*user).ID("Gadu").toUInt(), (unsigned char*)msg,
-					myLastFormats, myLastFormatsLength);
+				if (myLastFormatsLength)
+					seq = gg_send_message_richtext(Sess, GG_CLASS_CHAT, (*user).ID("Gadu").toUInt(), (unsigned char *)msg.data(),
+						myLastFormats, myLastFormatsLength);
+				else
+					seq = gg_send_message(Sess, GG_CLASS_CHAT, (*user).ID("Gadu").toUInt(),(unsigned char *)msg.data());
+
 				break;
 			}
 
 	SocketNotifiers->checkWrite();
+	if (myLastFormats)
+		delete[] myLastFormats;
 
 	kdebugf2();
 	return seq;

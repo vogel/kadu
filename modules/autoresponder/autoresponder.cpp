@@ -112,8 +112,8 @@ void AutoResponder::chatMsgReceived(Protocol * /*protocol*/, UserListElements se
 
 	if (respond)
 	{
-		gadu->sendMessage(senders, unicode2cp(tr("KADU AUTORESPONDER:")+"\n"+
-						KaduParser::parse(config->readEntry("Autoresponder", "Autotext"), senders[0])));
+		gadu->sendMessage(senders, tr("KADU AUTORESPONDER:")+"\n"+
+						KaduParser::parse(config->readEntry("Autoresponder", "Autotext"), senders[0]));
 		CONST_FOREACH(sender, senders)
 			replied.addUser(*sender);	//doda kolesi do listy (jednego jak jeden albo wszystkich z konferencji
 	}

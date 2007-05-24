@@ -24,3 +24,11 @@ const QDateTime &Protocol::connectionTime() const
 {
 	return ConnectionTime;
 }
+
+int Protocol::sendMessage(UserListElement user, const QString &mesg)
+{
+	UserListElements users(user);
+
+	return sendMessage(users, mesg);
+}
+

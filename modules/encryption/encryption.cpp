@@ -151,8 +151,8 @@ void EncryptionManager::generateMyKeys()
 
 void EncryptionManager::chatCreated(Chat *chat)
 {
-	connect(chat, SIGNAL(messageFiltering(const UserGroup *, QCString &, bool &)),
-			this, SLOT(sendMessageFilter(const UserGroup *, QCString &, bool &)));
+	connect(gadu, SIGNAL(sendMessageFiltering(const UserListElements, QString &, bool &)),
+			this, SLOT(sendMessageFilter(const UserListElements, QString &, bool &)));
 }
 
 void EncryptionManager::setupEncrypt(const UserGroup *group)
@@ -296,13 +296,14 @@ void EncryptionManager::enableEncryptionBtnForUsers(UserListElements users)
 	kdebugf2();
 }
 
-void EncryptionManager::sendMessageFilter(const UserGroup *users, QCString &msg, bool &stop)
+void EncryptionManager::sendMessageFilter(const UserListElements users, QString &msg, bool &stop)
 {
+
 	Chat* chat = chat_manager->findChat(users);
 //	kdebugm(KDEBUG_INFO, "length: %d\n", msg.length());
-	if (users->count() == 1 && EncryptionEnabled[chat])
+	if (users.count() == 1 && EncryptionEnabled[chat])
 	{
-		char *msg_c = sim_message_encrypt((const unsigned char*)(const char*)msg, (*(*users).constBegin()).ID("Gadu").toUInt());
+		char *msg_c = sim_message_encrypt((const unsigned char*)(const char*)msg, (*users.constBegin()).ID("Gadu").toUInt());
 		if (msg_c == NULL)
 		{
 			kdebugm(KDEBUG_ERROR, "sim_message_encrypt returned NULL! sim_errno=%d sim_strerror=%s\n", sim_errno, sim_strerror(sim_errno));
@@ -375,11 +376,9 @@ void EncryptionManager::sendPublicKey()
 		QTextStream t(&keyfile);
 		mykey = t.read();
 		keyfile.close();
-		QCString tmp(mykey.local8Bit());
-
 		UserListElements users = activeUserBox->selectedUsers();
 		CONST_FOREACH(user, users)
-			gadu->sendMessage(*user, tmp.data());
+			gadu->sendMessage(*user, mykey);
 
 		MessageBox::msg(tr("Your public key has been sent"), false, "Information", kadu);
 	}

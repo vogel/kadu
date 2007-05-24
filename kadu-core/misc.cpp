@@ -362,7 +362,7 @@ QString cp2unicode(const unsigned char *buf)
 		return QString::null;
 }
 
-QCString unicode2cp(const QString &buf)
+QString unicode2cp(const QString &buf)
 {
 	return codec_cp1250->fromUnicode(buf);
 }
