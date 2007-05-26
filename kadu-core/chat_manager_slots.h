@@ -112,26 +112,5 @@ class ChatManagerSlots :public QObject
 			Slot jest wywo³ywany aby wybraæ obraz t³a dla okna Chat
 		**/
 		void chooseBackgroundFile();
-
-		/**
-			\fn void setMailPath(int mailNumber)
-			Slot ustawia odpowiedni wpis dla wybranego klienta pocztowego
-			\param mailNumber numer wybranego klienta
-		**/
-		void setMailPath(int mailNumber);
-
-		/**
-			\fn static void setMailClients(QComboBox *mailClient)
-			Slot tworzy listê programów pocztowych
-			\param mailClient
-		**/
-		static void setMailClients(QComboBox *mailClient);
-
-		/**
-			\fn void findMailClient(const unsigned int mailNumber)
-			Slot próbuje znale¼æ plik binarny wybranego klienta pocztowego
-			\param mailNumber numer wybranego klienta
-		**/
-		void findMailClient(const unsigned int mailNumber);
 };
 #endif

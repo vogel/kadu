@@ -12,9 +12,28 @@
 
 		<tab name="Applications">
 			<group-box name="WWW browser">
-				<combo-box caption="Choose your browser" config-section="Chat" config-item="WebBrowserNo" id="browser" />
+				<combo-box caption="Choose your browser" config-section="Chat" config-item="WebBrowserNo" id="browser">
+					<item value="Specify path" caption="Specify path" />
+					<item value="Konqueror" caption="Konqueror" />
+					<item value="Opera" caption="Opera" />
+					<item value="Mozilla" caption="Mozilla" />
+					<item value="Mozilla Firefox" caption="Mozilla Firefox" />
+					<item value="Dillo" caption="Dillo" />
+					<item value="Galeon" caption="Galeon" />
+					<item value="Safari" caption="Safari" />
+                </combo-box>
 <!-- 				<combo-box caption="Browser options" config-section="Chat" config-item="WebBrowserOptionNo" id="browserOption" /> -->
 				<line-edit caption="Custom browser" config-section="Chat" config-item="WebBrowser" id="browserPath" />
+			</group-box>
+
+			<group-box name="e-ail client">
+				<combo-box caption="Choose your e-mail client" config-section="Chat" config-item="EmailClientNo" id="mail">
+					<item value="Specify path" caption="Specify path" />
+					<item value="KMail" caption="KMail" />
+					<item value="Thunderbird" caption="Thunderbird" />
+					<item value="SeaMonkey" caption="SeaMonkey" />
+                </combo-box>
+				<line-edit caption="Custom e-mail client" config-section="Chat" config-item="MailClient" id="mailPath" />
 			</group-box>
 		</tab>
 	</section>

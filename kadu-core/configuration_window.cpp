@@ -250,9 +250,11 @@ ConfigurationWindow::ConfigurationWindow()
 	connect(browserComboBox, SIGNAL(activated(int)), this, SLOT(onChangeBrowser(int)));
 // 	connect(browserOptionComboBox, SIGNAL(activated(int)), this, SLOT(onChangeBrowserOption(int)));
 
-// 	connect(widgetById("iconPaths"), SIGNAL(changed()), this, SLOT(setIconThemes()));
+	mailComboBox = dynamic_cast<ConfigComboBox *>(widgetById("mail"));
+	mailCommandLineEdit = dynamic_cast<ConfigLineEdit *>(widgetById("mailPath"));
+	connect(mailComboBox, SIGNAL(activated(int)), this, SLOT(onChangeMail(int)));
 
-	setBrowsers();
+// 	connect(widgetById("iconPaths"), SIGNAL(changed()), this, SLOT(setIconThemes()));
 
 	loadGeometry(this, "General", "ConfigGeometry", 0, 30, 790, 480);
 	loadConfiguration(this);
@@ -399,13 +401,6 @@ void ConfigurationWindow::setToolTipClasses()
 	dynamic_cast<ConfigComboBox *>(widgetById("toolTipClasses"))->setItems(values, captions);
 }
 
-void ConfigurationWindow::setBrowsers()
-{
-	QStringList browsers;
-	browsers << tr("Specify path") << "Konqueror" << "Opera" << "Mozilla" <<  "Mozilla Firefox" << "Dillo" << "Galeon" << "Safari";
-	browserComboBox->setItems(browsers, browsers);
-}
-
 QString ConfigurationWindow::findExecutable(const QStringList &paths, const QStringList &executableNames)
 {
 	QFileInfo fi;
@@ -428,6 +423,8 @@ void ConfigurationWindow::onChangeBrowser(int index)
 	QStringList executableName;
 	QStringList options;
 
+	QString parameters;
+
 	browserCommandLineEdit->setEnabled(index == 0);
 // 	browserOptionComboBox->setEnabled(index >= 2 && index <= 4);
 
@@ -439,7 +436,7 @@ void ConfigurationWindow::onChangeBrowser(int index)
 			searchPath.append("/opt/kde3/bin");
 			executableName.append("kfmclient");
 
-			browserParameters = "openURL";
+			parameters = "openURL";
 
 // 			options << tr("Open in new window") << tr("Open in new tab");
 // 			browserOptionsCombo->setEnabled(true);
@@ -450,7 +447,7 @@ void ConfigurationWindow::onChangeBrowser(int index)
 			searchPath.append("/opt/opera");
 			executableName.append("opera");
 
-			browserParameters = "";
+			parameters = "";
 
 			options << tr("Open in new window") << tr("Open in new tab") << tr("Open in background tab");
 			break;
@@ -470,7 +467,7 @@ void ConfigurationWindow::onChangeBrowser(int index)
 // it is for old mozillas, unsupported
 // 			executableName.append("mozilla-xremote-client");
 
-			browserParameters = "";
+			parameters = "";
 
 			options << tr("Open in new window") << tr("Open in new tab");
 			break;
@@ -494,7 +491,7 @@ void ConfigurationWindow::onChangeBrowser(int index)
 			searchPath.append(homePath + "/firefox");
 			executableName.append("firefox");
 
-			browserParameters = "";
+			parameters = "";
 //	do we need it anyway ??
 // 			executableName.append("mozilla-xremote-client");
 // 			executableName.append("mozilla-firefox-xremote-client");
@@ -508,32 +505,23 @@ void ConfigurationWindow::onChangeBrowser(int index)
 			break;
 		}
 		case 5: // dillo
-		{
 			executableName.append("dillo");
-			browserParameters = "";
-		}
 		case 6: // galeon
-		{
 			executableName.append("galeon");
-			browserParameters = "";
-		}
 		case 7: // Safaro
 		{
 			searchPath.append("/Applications");
 			executableName.append("Safari.app");
-			browserParameters = "open";
-		}
-		default:
-		{
+			parameters = "open";
 		}
 	}
 
 // 	browserOptionComboBox->clear();
 // 	browserOptionComboBox->setItems(options, options);
 
-	browserExecutable = findExecutable(searchPath, executableName);
-	if (!browserExecutable.isNull())
-		browserCommandLineEdit->setText(browserExecutable + " " + browserParameters);
+	QString executable = findExecutable(searchPath, executableName);
+	if (!executable.isNull())
+		browserCommandLineEdit->setText(executable + " " + parameters);
 	else
 		browserCommandLineEdit->setText(tr("Not found"));
 }
@@ -541,6 +529,66 @@ void ConfigurationWindow::onChangeBrowser(int index)
 // void ConfigurationWindow::onChangeBrowserOption(int index)
 // {
 // }
+
+void ConfigurationWindow::onChangeMail(int index)
+{
+	QStringList searchPath = QStringList::split(":", QString(getenv("PATH")));
+	QStringList executableName;
+	QStringList options;
+
+	QString parameters;
+
+	mailCommandLineEdit->setEnabled(index == 0);
+
+	switch (index)
+	{
+		case 1: // kmail
+		{
+			searchPath.append("/opt/kde/bin");
+			searchPath.append("/opt/kde3/bin");
+			executableName.append("kmail");
+			break;
+		}
+		case 2: // thunderbird
+		{
+			searchPath.append("/usr/local/Mozilla");
+			searchPath.append("/usr/local/mozilla");
+			searchPath.append("/usr/local/Thunderbird");
+			searchPath.append("/usr/local/thunderbird");
+			searchPath.append("/opt/thunderbird");
+			executableName.append("thunderbird");
+			executableName.append("mozilla-thunderbird");
+
+			parameters = "-compose mailto:";
+		}
+		case 3: // seamonkey
+		{
+			searchPath.append("/usr/local/Mozilla");
+			searchPath.append("/usr/local/mozilla");
+			searchPath.append("/usr/local/Seamonkey");
+			searchPath.append("/usr/local/seamonkey");
+			searchPath.append("/opt/seamonkey");
+
+			executableName.append("seamonkey");
+			parameters = "-compose mailto:";
+		}
+		case 4:
+		{
+			searchPath.append("/opt/evolution");
+			searchPath.append("/usr/local/evolution");
+			searchPath.append("/usr/local/Evolution");
+
+			executableName.append("evolution");
+			parameters = "-compose mailto:";
+		}
+	}
+
+	QString executable = findExecutable(searchPath, executableName);
+	if (!executable.isNull())
+		mailCommandLineEdit->setText(executable + " " + parameters);
+	else
+		mailCommandLineEdit->setText(tr("Not found"));
+}
 
 void ConfigurationWindow::appendUiFile(const QString &fileName)
 {

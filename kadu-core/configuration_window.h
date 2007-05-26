@@ -40,8 +40,9 @@ class ConfigurationWindow : public QVBox
 	ConfigComboBox *browserComboBox;
 // 	ConfigComboBox *browserOptionComboBox;
 	ConfigLineEdit *browserCommandLineEdit;
-	QString browserExecutable;
-	QString browserParameters;
+
+	ConfigComboBox *mailComboBox;
+	ConfigLineEdit *mailCommandLineEdit;
 
 	void loadConfiguration(QObject *object);
 	void saveConfiguration(QObject *object);
@@ -58,7 +59,6 @@ class ConfigurationWindow : public QVBox
 	void setEmoticonThemes();
 	void setQtThemes();
 	void setToolTipClasses();
-	void setBrowsers();
 
 	QString findExecutable(const QStringList &paths, const QStringList &executableNames);
 
@@ -68,6 +68,7 @@ private slots:
 	void onChangeStartupStatus(int index);
 	void onChangeBrowser(int index);
 // 	void onChangeBrowserOption(int index);
+	void onChangeMail(int index);
 
 public:
 	static void initModule();
