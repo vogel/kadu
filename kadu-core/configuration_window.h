@@ -18,7 +18,9 @@
 #include "syntax_editor.h"
 #include "userbox.h"
 
+class ConfigComboBox;
 class ConfigGroupBox;
+class ConfigLineEdit;
 class ConfigSection;
 
 class ConfigurationWindow : public QVBox
@@ -35,6 +37,12 @@ class ConfigurationWindow : public QVBox
 
 	QCheckBox *onStartupSetLastDescription;
 
+	ConfigComboBox *browserComboBox;
+// 	ConfigComboBox *browserOptionComboBox;
+	ConfigLineEdit *browserCommandLineEdit;
+	QString browserExecutable;
+	QString browserParameters;
+
 	void loadConfiguration(QObject *object);
 	void saveConfiguration(QObject *object);
 
@@ -50,11 +58,16 @@ class ConfigurationWindow : public QVBox
 	void setEmoticonThemes();
 	void setQtThemes();
 	void setToolTipClasses();
+	void setBrowsers();
+
+	QString findExecutable(const QStringList &paths, const QStringList &executableNames);
 
 	void import_0_5_0_configuration();
 
 private slots:
 	void onChangeStartupStatus(int index);
+	void onChangeBrowser(int index);
+// 	void onChangeBrowserOption(int index);
 
 public:
 	static void initModule();

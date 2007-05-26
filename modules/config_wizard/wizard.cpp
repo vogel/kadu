@@ -569,7 +569,7 @@ void Wizard::createWWWOpionsPage()
 	new QLabel (tr("Custom Web browser"), grp_wwwOptions);
 	l_customBrowser = new QLineEdit (grp_wwwOptions);
 
-	ChatManagerSlots::initBrowserOptions(cb_browser, cb_browserOptions, l_customBrowser);
+// 	ChatManagerSlots::initBrowserOptions(cb_browser, cb_browserOptions, l_customBrowser);
 	l_customBrowser->setEnabled(!cb_browser->currentItem());
 	l_customBrowser->setText(config_file.readEntry("Chat", "WebBrowser"));
 
@@ -1103,7 +1103,7 @@ void Wizard::setBrowser()
 **/
 void Wizard::findAndSetWebBrowser(int selectedBrowser)
 {
-	ChatManagerSlots::findBrowser(selectedBrowser, cb_browser, cb_browserOptions, l_customBrowser);
+// 	ChatManagerSlots::findBrowser(selectedBrowser, cb_browser, cb_browserOptions, l_customBrowser);
 	l_customBrowser->setEnabled(!selectedBrowser);
 }
 
@@ -1112,7 +1112,7 @@ void Wizard::findAndSetWebBrowser(int selectedBrowser)
 **/
 void Wizard::findAndSetBrowserOption(int selectedOption)
 {
-	ChatManagerSlots::setBrowserOption(selectedOption, l_customBrowser, cb_browser->currentItem());
+// 	ChatManagerSlots::setBrowserOption(selectedOption, l_customBrowser, cb_browser->currentItem());
 }
 
 /**

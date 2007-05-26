@@ -244,7 +244,15 @@ ConfigurationWindow::ConfigurationWindow()
 	connect(showInformationPanel, SIGNAL(toggled(bool)), widgetById("showVerticalScrollbar"), SLOT(setEnabled(bool)));
 	connect(showInformationPanel, SIGNAL(toggled(bool)), widgetById("showEmoticonsInPanel"), SLOT(setEnabled(bool)));
 
+	browserComboBox = dynamic_cast<ConfigComboBox *>(widgetById("browser"));
+// 	browserOptionComboBox = dynamic_cast<ConfigComboBox *>(widgetById("browserOption"));
+	browserCommandLineEdit = dynamic_cast<ConfigLineEdit *>(widgetById("browserPath"));
+	connect(browserComboBox, SIGNAL(activated(int)), this, SLOT(onChangeBrowser(int)));
+// 	connect(browserOptionComboBox, SIGNAL(activated(int)), this, SLOT(onChangeBrowserOption(int)));
+
 // 	connect(widgetById("iconPaths"), SIGNAL(changed()), this, SLOT(setIconThemes()));
+
+	setBrowsers();
 
 	loadGeometry(this, "General", "ConfigGeometry", 0, 30, 790, 480);
 	loadConfiguration(this);
@@ -390,6 +398,149 @@ void ConfigurationWindow::setToolTipClasses()
 
 	dynamic_cast<ConfigComboBox *>(widgetById("toolTipClasses"))->setItems(values, captions);
 }
+
+void ConfigurationWindow::setBrowsers()
+{
+	QStringList browsers;
+	browsers << tr("Specify path") << "Konqueror" << "Opera" << "Mozilla" <<  "Mozilla Firefox" << "Dillo" << "Galeon" << "Safari";
+	browserComboBox->setItems(browsers, browsers);
+}
+
+QString ConfigurationWindow::findExecutable(const QStringList &paths, const QStringList &executableNames)
+{
+	QFileInfo fi;
+
+	CONST_FOREACH(path, paths)
+		CONST_FOREACH(executableName, executableNames)
+		{
+			fi.setFile(*path + "/" + *executableName);
+			printf("search for: %s\n", (*path + "/" + *executableName).data());
+			if (fi.isExecutable())
+				return *path + "/" + *executableName;
+		}
+
+	return QString::null;
+}
+
+void ConfigurationWindow::onChangeBrowser(int index)
+{
+	QStringList searchPath = QStringList::split(":", QString(getenv("PATH")));
+	QStringList executableName;
+	QStringList options;
+
+	browserCommandLineEdit->setEnabled(index == 0);
+// 	browserOptionComboBox->setEnabled(index >= 2 && index <= 4);
+
+	switch (index)
+	{
+		case 1: // konqueror
+		{
+			searchPath.append("/opt/kde/bin");
+			searchPath.append("/opt/kde3/bin");
+			executableName.append("kfmclient");
+
+			browserParameters = "openURL";
+
+// 			options << tr("Open in new window") << tr("Open in new tab");
+// 			browserOptionsCombo->setEnabled(true);
+			break;
+		}
+		case 2: // opera
+		{
+			searchPath.append("/opt/opera");
+			executableName.append("opera");
+
+			browserParameters = "";
+
+			options << tr("Open in new window") << tr("Open in new tab") << tr("Open in background tab");
+			break;
+		}
+		case 3: // mozilla
+		{
+			QString homePath = getenv("HOME");
+			QStringList dirList = QDir("/usr/lib").entryList("mozilla*", QDir::All, QDir::Name|QDir::Reversed);
+			CONST_FOREACH(dir, dirList)
+				searchPath.append("/usr/lib/" + (*dir));
+
+			searchPath.append("/usr/local/Mozilla");
+			searchPath.append("/usr/local/mozilla");
+			searchPath.append(homePath + "/Mozilla");
+			searchPath.append(homePath + "/mozilla");
+			executableName.append("mozilla");
+// it is for old mozillas, unsupported
+// 			executableName.append("mozilla-xremote-client");
+
+			browserParameters = "";
+
+			options << tr("Open in new window") << tr("Open in new tab");
+			break;
+		}
+		case 4: // firefox
+		{
+			QString homePath = getenv("HOME");
+
+			QStringList dirList = QDir("/usr/lib").entryList("mozilla-firefox*", QDir::All, QDir::Name | QDir::Reversed);
+			CONST_FOREACH(dir, dirList)
+				searchPath.append("/usr/lib/" + (*dir));
+			dirList = QDir("/usr/lib").entryList("firefox*", QDir::All, QDir::Name | QDir::Reversed);
+			CONST_FOREACH(dir, dirList)
+				searchPath.append("/usr/lib/" + (*dir));
+
+			searchPath.append("/usr/lib/MozillaFirefox");
+			searchPath.append("/usr/local/Firefox");
+			searchPath.append("/usr/local/firefox");
+			searchPath.append("/opt/firefox");
+			searchPath.append(homePath + "/Firefox");
+			searchPath.append(homePath + "/firefox");
+			executableName.append("firefox");
+
+			browserParameters = "";
+//	do we need it anyway ??
+// 			executableName.append("mozilla-xremote-client");
+// 			executableName.append("mozilla-firefox-xremote-client");
+// 			executableName.append("firefox-xremote-client");
+
+			dirList = QDir("/usr/lib").entryList("mozilla*", QDir::All, QDir::Name | QDir::Reversed);
+			CONST_FOREACH(dir, dirList)
+				searchPath.append("/usr/lib/" + (*dir));
+
+			options << tr("Open in new window") << tr("Open in new tab");
+			break;
+		}
+		case 5: // dillo
+		{
+			executableName.append("dillo");
+			browserParameters = "";
+		}
+		case 6: // galeon
+		{
+			executableName.append("galeon");
+			browserParameters = "";
+		}
+		case 7: // Safaro
+		{
+			searchPath.append("/Applications");
+			executableName.append("Safari.app");
+			browserParameters = "open";
+		}
+		default:
+		{
+		}
+	}
+
+// 	browserOptionComboBox->clear();
+// 	browserOptionComboBox->setItems(options, options);
+
+	browserExecutable = findExecutable(searchPath, executableName);
+	if (!browserExecutable.isNull())
+		browserCommandLineEdit->setText(browserExecutable + " " + browserParameters);
+	else
+		browserCommandLineEdit->setText(tr("Not found"));
+}
+
+// void ConfigurationWindow::onChangeBrowserOption(int index)
+// {
+// }
 
 void ConfigurationWindow::appendUiFile(const QString &fileName)
 {
@@ -900,6 +1051,8 @@ void ConfigComboBox::loadConfiguration()
 {
 	QString currentValue = config_file.readEntry(section, item);
 	setCurrentItem(itemValues.findIndex(currentValue));
+
+	emit activated(currentItem());
 }
 
 void ConfigComboBox::saveConfiguration()

@@ -46,17 +46,10 @@ class ChatManagerSlots :public QObject
 		void onCreateTabLook();
 
 		/**
-			\fn void onApplyTabChat()
-			Slot jest wywo³ywany gdy zamykane jest okno konfiguracji
-		**/
-		void onApplyTabChat();
-
-		/**
 			\fn void onApplyTabLook()
 			Slot jest wywo³ywany gdy zamykane jest okno konfiguracji
 		**/
 		void onApplyTabLook();
-
 
 		/**
 			\fn void onPruneChat(bool toggled)
@@ -90,7 +83,6 @@ class ChatManagerSlots :public QObject
 		**/
 		void onRemoveHeaders(bool toggled);
 
-
 		/**
 			\fn void onRemoveServerTime(bool toggled)
 			Slot jest wywo³ywany gdy w³±czono/wy³±czono usuwanie czasu serwera
@@ -120,48 +112,6 @@ class ChatManagerSlots :public QObject
 			Slot jest wywo³ywany aby wybraæ obraz t³a dla okna Chat
 		**/
 		void chooseBackgroundFile();
-
-		/**
-			\fn void findAndSetWebBrowser(int selectedBrowser)
-			Slot jest wywo³ywany gdy wybrano z listy przegl±darkê
-			\param selectedBrowser nr przegl±darki
-		**/
-		void findAndSetWebBrowser(int selectedBrowser);
-
-		/**
-			\fn void findAndSetBrowserOption(int selectedOption)
-			Slot jest wywo³ywany gdy aktywowano pole do wpisania opcji
-			\param selectedOption wybrana opcja
-		**/
-		void findAndSetBrowserOption(int selectedOption);
-
-		/**
-			\fn static void initBrowserOptions(QComboBox *browserCombo, QComboBox *browserOptionsCombo, QLineEdit *browserPath)
-			Slot ustawia przegl±darki wraz z opcjami
-			\param browserCombo
-			\param browserOptionsCombo
-			\param browserPath
-		**/
-		static void initBrowserOptions(QComboBox *browserCombo, QComboBox *browserOptionsCombo, QLineEdit *browserPath);
-
-		/**
-			\fn static void findBrowser(int selectedBrowser, QComboBox *browserCombo, QComboBox *browserOptionsCombo, QLineEdit *browserPath)
-			Slot jest wywo³ywany gdy wybrano z listy przegl±darkê
-			\param selectedBrowser
-			\param browserCombo
-			\param browserOptionsCombo
-			\param browserPath
-		**/
-		static void findBrowser(int selectedBrowser, QComboBox *browserCombo, QComboBox *browserOptionsCombo, QLineEdit *browserPath);
-
-		/**
-			\fn static void setBrowserOption(int selectedOption, QLineEdit *browserPathEdit, int chosenBrowser)
-			Slot ustawia przegl±darki wraz z opcjami
-			\param selectedOption
-			\param browsePathEdit
-			\param chosenBrowser
-		**/
-		static void setBrowserOption(int selectedOption, QLineEdit *browserPathEdit, int chosenBrowser);
 
 		/**
 			\fn void setMailPath(int mailNumber)

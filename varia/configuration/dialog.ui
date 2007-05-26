@@ -9,6 +9,14 @@
 				<check-box caption="Check for updates" config-section="General" config-item="CheckUpdates" />
 			</group-box>
 		</tab>
+
+		<tab name="Applications">
+			<group-box name="WWW browser">
+				<combo-box caption="Choose your browser" config-section="Chat" config-item="WebBrowserNo" id="browser" />
+<!-- 				<combo-box caption="Browser options" config-section="Chat" config-item="WebBrowserOptionNo" id="browserOption" /> -->
+				<line-edit caption="Custom browser" config-section="Chat" config-item="WebBrowser" id="browserPath" />
+			</group-box>
+		</tab>
 	</section>
 
 	<section name="Account">
@@ -76,10 +84,8 @@
 				<line-edit caption="On shutdown, set description" config-section="General" config-item="DisconnectDescription" id="disconnectDescription" />
 				<spin-box caption="Number of kept descriptions" config-section="General" config-item="NumberOfDescriptions" min-value="1" max-value="30" step="1" />
 			</group-box>
-		</tab>
 
-		<tab name="Advanced">
-			<group-box name="Parser">
+			<group-box name="Advanced">
 				<check-box caption="Use KaduParser to parse status" config-section="General" config-item="ParseStatus" />
 			</group-box>
 		</tab>
@@ -277,7 +283,7 @@
 	</section>-->
 
 	<section name="Chat">
-		<tab name="Behaviour">
+		<tab name="General">
 			<group-box name="Behaviour">
 				<check-box caption="Open chat window on new message" config-section="Chat" config-item="OpenChatOnMessage" />
 				<check-box caption="Wait for message delivery" config-section="Chat" config-item="MessageAcks" />
@@ -289,20 +295,10 @@
 				<check-box caption="Block window close on new message" config-section="Chat" config-item="ChatCloseTimer" id="chatCloseTimer" />
 				<spin-box caption="Max time to block window close" config-section="Chat" config-item="ChatCloseTimerPeriod" min-value="1" max-value="30" step="1" id="chatCloseTimerPeriod" />
 			</group-box>
-		</tab>
 
-		<tab name="Images">
 			<group-box name="Images">
 				<check-box caption="Receive images" config-section="Chat" config-item="ReceiveImages" id="receiveImages" />
 				<check-box caption="Receive images during invisibility" config-section="Chat" config-item="RecevieImagesDuringInvisibility" id="receiveImagesDuringInvisibility" />
-			</group-box>
-		</tab>
-
-		<tab name="WWW">
-			<group-box name="WWW browser">
-				<combo-box caption="Choose your browser" config-section="General" config-item="ChooseYourBrowser" />
-				<combo-box caption="Browser options" config-section="General" config-item="BrowserOptions" />
-				<line-edit caption="Custom browser" config-section="General" config-item="CustomBrowser" />
 			</group-box>
 		</tab>
 	</section>
