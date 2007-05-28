@@ -231,7 +231,6 @@ ConfigurationWindow::ConfigurationWindow()
 	connect(widgetById("disconnectWithCurrentDescription"), SIGNAL(toggled(bool)), disconnectDescription, SLOT(setDisabled(bool)));
 	connect(onStartupSetLastDescription, SIGNAL(toggled(bool)), onStartupSetDescription, SLOT(setDisabled(bool)));
 	connect(widgetById("removeServerTime"), SIGNAL(toggled(bool)), widgetById("maxTimeDifference"), SLOT(setEnabled(bool)));
-	connect(widgetById("multiColumnUserbox"), SIGNAL(toggled(bool)), widgetById("multiColumnUserboxWidget"), SLOT(setEnabled(bool)));
 	connect(widgetById("receiveImages"), SIGNAL(toggled(bool)), widgetById("receiveImagesDuringInvisibility"), SLOT(setEnabled(bool)));
 	connect(widgetById("startupStatus"), SIGNAL(activated(int)), this, SLOT(onChangeStartupStatus(int)));
 	connect(widgetById("showDescription"), SIGNAL(toggled(bool)), widgetById("multilineDescription"), SLOT(setEnabled(bool)));
@@ -519,11 +518,16 @@ void ConfigurationWindow::onChangeBrowser(int index)
 // 	browserOptionComboBox->clear();
 // 	browserOptionComboBox->setItems(options, options);
 
-	QString executable = findExecutable(searchPath, executableName);
-	if (!executable.isNull())
-		browserCommandLineEdit->setText(executable + " " + parameters);
+	if (index != 0)
+	{
+		QString executable = findExecutable(searchPath, executableName);
+		if (!executable.isNull())
+			browserCommandLineEdit->setText(executable + " " + parameters);
+		else
+			browserCommandLineEdit->setText(tr("Not found"));
+	}
 	else
-		browserCommandLineEdit->setText(tr("Not found"));
+		browserCommandLineEdit->setText("");
 }
 
 // void ConfigurationWindow::onChangeBrowserOption(int index)
@@ -579,15 +583,20 @@ void ConfigurationWindow::onChangeMail(int index)
 			searchPath.append("/usr/local/Evolution");
 
 			executableName.append("evolution");
-			parameters = "-compose mailto:";
+			parameters = "mailto:";
 		}
 	}
 
-	QString executable = findExecutable(searchPath, executableName);
-	if (!executable.isNull())
-		mailCommandLineEdit->setText(executable + " " + parameters);
+	if (index != 0)
+	{
+		QString executable = findExecutable(searchPath, executableName);
+		if (!executable.isNull())
+			mailCommandLineEdit->setText(executable + " " + parameters);
+		else
+			mailCommandLineEdit->setText(tr("Not found"));
+	}
 	else
-		mailCommandLineEdit->setText(tr("Not found"));
+		mailCommandLineEdit->setText("");
 }
 
 void ConfigurationWindow::appendUiFile(const QString &fileName)

@@ -32,6 +32,7 @@
 					<item value="KMail" caption="KMail" />
 					<item value="Thunderbird" caption="Thunderbird" />
 					<item value="SeaMonkey" caption="SeaMonkey" />
+					<item value="Evolution" caption="Evolution" />
                 </combo-box>
 				<line-edit caption="Custom e-mail client" config-section="Chat" config-item="MailClient" id="mailPath" />
 			</group-box>
@@ -203,9 +204,10 @@
 				<check-box caption="Multiline description" config-section="Look" config-item="ShowMultilineDesc" id="multilineDescription" />
 			</group-box>
 
-            <group-box name="Columns">
-				<check-box caption="Multicolumn userbox" config-section="Look" config-item="MultiColumnUserbox" id="multiColumnUserbox" />
-				<spin-box caption="Userbox width when multi column" config-section="Look" config-item="MultiColumnUserboxWidth" min-value="1" max-value="1000" step="1" id="multiColumnUserboxWidget" suffix=" px" />
+			<group-box name="Columns">
+				<spin-box caption="Column count" config-section="Look" config-item="UserBoxColumnCount" min-value="1" max-value="10" step="1" />
+<!-- 				<check-box caption="Multicolumn userbox" config-section="Look" config-item="MultiColumnUserbox" id="multiColumnUserbox" /> -->
+<!-- 				<spin-box caption="Userbox width when multi column" config-section="Look" config-item="MultiColumnUserboxWidth" min-value="1" max-value="1000" step="1" id="multiColumnUserboxWidget" suffix=" px" /> -->
 			</group-box>
 <!--
 			<group-box name="Preview">
@@ -370,12 +372,6 @@
 				<spin-box caption="Start at [Y]" config-section="Look" config-item="StartAtY" min-value="1" max-value="1000" step="1" />
 				<spin-box caption="Image width" config-section="Look" config-item="ImgWidth" min-value="1" max-value="1000" step="1" />
 				<spin-box caption="Image height" config-section="Look" config-item="ImgHeight" min-value="1" max-value="1000" step="1" />
-			</group-box>
-		</tab>
-
-		<tab name="Information panel">
-			<group-box name="Syntax">
-				<line-edit caption="Information panel syntax" config-section="General" config-item="InformationPanelSyntax" />
 			</group-box>
 		</tab>
 
