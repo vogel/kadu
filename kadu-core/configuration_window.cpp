@@ -538,8 +538,6 @@ void ConfigurationWindow::onChangeMail(int index)
 {
 	QStringList searchPath = QStringList::split(":", QString(getenv("PATH")));
 	QStringList executableName;
-	QStringList options;
-
 	QString parameters;
 
 	mailCommandLineEdit->setEnabled(index == 0);
@@ -562,8 +560,8 @@ void ConfigurationWindow::onChangeMail(int index)
 			searchPath.append("/opt/thunderbird");
 			executableName.append("thunderbird");
 			executableName.append("mozilla-thunderbird");
-
-			parameters = "-compose mailto:";
+			parameters = " -compose mailto:";
+			break;
 		}
 		case 3: // seamonkey
 		{
@@ -572,18 +570,18 @@ void ConfigurationWindow::onChangeMail(int index)
 			searchPath.append("/usr/local/Seamonkey");
 			searchPath.append("/usr/local/seamonkey");
 			searchPath.append("/opt/seamonkey");
-
 			executableName.append("seamonkey");
-			parameters = "-compose mailto:";
+			parameters = " -compose mailto:";
+			break;
 		}
-		case 4:
+		case 4: // evolution
 		{
 			searchPath.append("/opt/evolution");
 			searchPath.append("/usr/local/evolution");
 			searchPath.append("/usr/local/Evolution");
-
 			executableName.append("evolution");
-			parameters = "mailto:";
+			parameters = " mailto:";
+			break;
 		}
 	}
 
@@ -591,7 +589,7 @@ void ConfigurationWindow::onChangeMail(int index)
 	{
 		QString executable = findExecutable(searchPath, executableName);
 		if (!executable.isNull())
-			mailCommandLineEdit->setText(executable + " " + parameters);
+			mailCommandLineEdit->setText(executable + parameters);
 		else
 			mailCommandLineEdit->setText(tr("Not found"));
 	}

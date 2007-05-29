@@ -590,7 +590,7 @@ void openMailClient(const QString &mail)
 {
 	kdebugf();
 
-	QString mailClient = config_file.readEntry("Chat", "MailClient");
+	QString mailClient = config_file.readEntry("Chat", "MailClient", QString::null);
 	if (mailClient.isEmpty())
 	{
 		MessageBox::msg(qApp->translate("@default", QT_TR_NOOP("Mail client was not specified. Visit the configuration section")), false, "Warning");
@@ -606,7 +606,7 @@ void openMailClient(const QString &mail)
 	if (mailClient.contains("%1"))
 		mailClient.replace("%1", email);
 	else
-		mailClient.append(" \"" + email + '"');
+		mailClient.append(email);
 
 	QStringList args = toStringList("sh", "-c", mailClient);
 
