@@ -229,7 +229,6 @@ void HttpClient::post(const QString &path, const QByteArray& data)
 			config_file.readNumEntry("Network", "ProxyPort"));
 	else
 		Socket.connectToHost(Host, 80);
-
 }
 
 void HttpClient::post(const QString &path,const QString& data)

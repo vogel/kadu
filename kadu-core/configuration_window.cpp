@@ -238,7 +238,6 @@ ConfigurationWindow::ConfigurationWindow()
 	connect(widgetById("foldLink"), SIGNAL(toggled(bool)), widgetById("linkFoldTreshold"), SLOT(setEnabled(bool)));
 	connect(widgetById("chatCloseTimer"), SIGNAL(toggled(bool)), widgetById("chatCloseTimerPeriod"), SLOT(setEnabled(bool)));
 	connect(widgetById("useDefaultServers"), SIGNAL(toggled(bool)), widgetById("serverList"), SLOT(setDisabled(bool)));
-	(dynamic_cast<QLineEdit *>(widgetById("proxyPassword")))->setEchoMode(QLineEdit::Password);
 
 	QWidget *showInformationPanel = widgetById("showInformationPanel");
 	connect(showInformationPanel, SIGNAL(toggled(bool)), widgetById("showVerticalScrollbar"), SLOT(setEnabled(bool)));
@@ -253,6 +252,15 @@ ConfigurationWindow::ConfigurationWindow()
 	mailComboBox = dynamic_cast<ConfigComboBox *>(widgetById("mail"));
 	mailCommandLineEdit = dynamic_cast<ConfigLineEdit *>(widgetById("mailPath"));
 	connect(mailComboBox, SIGNAL(activated(int)), this, SLOT(onChangeMail(int)));
+
+	QWidget *useProxy = widgetById("useProxy");
+	QLineEdit *proxyPassword = (dynamic_cast<QLineEdit *>(widgetById("proxyPassword")));
+	proxyPassword->setEchoMode(QLineEdit::Password);
+
+	connect(useProxy, SIGNAL(toggled(bool)), widgetById("proxyHost"), SLOT(setEnabled(bool)));
+	connect(useProxy, SIGNAL(toggled(bool)), widgetById("proxyPort"), SLOT(setEnabled(bool)));
+	connect(useProxy, SIGNAL(toggled(bool)), widgetById("proxyUser"), SLOT(setEnabled(bool)));
+	connect(useProxy, SIGNAL(toggled(bool)), proxyPassword, SLOT(setEnabled(bool)));
 
 // 	connect(widgetById("iconPaths"), SIGNAL(changed()), this, SLOT(setIconThemes()));
 

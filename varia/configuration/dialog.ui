@@ -59,10 +59,10 @@
 			</group-box>
 
 			<group-box name="Proxy Server">
-				<check-box caption="Use proxy server" config-section="Network" config-item="UseProxy" />
-				<line-edit caption="Host" config-section="Network" config-item="ProxyHost" />
-				<line-edit caption="Port" config-section="Network" config-item="ProxyPort" />
-				<line-edit caption="Username" config-section="Network" config-item="ProxyUser" />
+				<check-box caption="Use proxy server" config-section="Network" config-item="UseProxy" id="useProxy" />
+				<line-edit caption="Host" config-section="Network" config-item="ProxyHost" id="proxyHost" />
+				<line-edit caption="Port" config-section="Network" config-item="ProxyPort" id="proxyPort" />
+				<line-edit caption="Username" config-section="Network" config-item="ProxyUser" id="proxyUser" />
 				<line-edit caption="Password" config-section="Network" config-item="ProxyPassword" id="proxyPassword" />
 			</group-box>
 		</tab>
