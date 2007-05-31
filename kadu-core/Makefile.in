@@ -212,6 +212,7 @@ chat_styles.cpp \
 color_button.cpp \
 color_selector.cpp \
 configuration_window.cpp \
+configuration_window_widgets.cpp \
 config_file.cpp \
 custom_input.cpp \
 debug.cpp \
@@ -234,6 +235,7 @@ kadu_parser.cpp \
 kadu_splitter.cpp \
 kadu_text_browser.cpp \
 main.cpp \
+main_configuration_window.cpp \
 message_box.cpp \
 misc.cpp \
 modules.cpp \
@@ -272,6 +274,7 @@ chat_styles.h \
 color_button.h \
 color_selector.h \
 configuration_window.h \
+configuration_window_widgets.cpp \
 config_file.h \
 custom_input.h \
 debug.h \
@@ -293,6 +296,7 @@ kadu.h \
 kadu_parser.h \
 kadu_splitter.h \
 kadu_text_browser.h \
+main_configuration_window.h \
 message_box.h \
 misc.h \
 modules.h \
@@ -327,6 +331,7 @@ moc/chat_manager_slots_moc.cpp \
 moc/color_button_moc.cpp \
 moc/color_selector_moc.cpp \
 moc/configuration_window_moc.cpp \
+moc/configuration_window_widgets_moc.cpp \
 moc/custom_input_moc.cpp \
 moc/dnshandler_moc.cpp \
 moc/dockarea_moc.cpp \
@@ -340,6 +345,7 @@ moc/icons_manager_moc.cpp \
 moc/ignore_moc.cpp \
 moc/kadu_moc.cpp \
 moc/kadu_text_browser_moc.cpp \
+moc/main_configuration_window_moc.cpp \
 moc/message_box_moc.cpp \
 moc/misc_moc.cpp \
 moc/modules_moc.cpp \
@@ -379,6 +385,7 @@ obj/color_button.$(OBJEXT) \
 obj/color_selector.$(OBJEXT) \
 obj/config_file.$(OBJEXT) \
 obj/configuration_window.$(OBJEXT) \
+obj/configuration_window_widgets.$(OBJEXT) \
 obj/custom_input.$(OBJEXT) \
 obj/debug.$(OBJEXT) \
 obj/dnshandler.$(OBJEXT) \
@@ -400,6 +407,7 @@ obj/kadu_parser.$(OBJEXT) \
 obj/kadu_splitter.$(OBJEXT) \
 obj/kadu_text_browser.$(OBJEXT) \
 obj/main.$(OBJEXT) \
+obj/main_configuration_window.$(OBJEXT) \
 obj/message_box.$(OBJEXT) \
 obj/misc.$(OBJEXT) \
 obj/modules.$(OBJEXT) \
@@ -434,6 +442,7 @@ obj/color_button_moc.$(OBJEXT) \
 obj/color_selector_moc.$(OBJEXT) \
 obj/custom_input_moc.$(OBJEXT) \
 obj/configuration_window_moc.$(OBJEXT) \
+obj/configuration_window_widgets_moc.$(OBJEXT) \
 obj/dnshandler_moc.$(OBJEXT) \
 obj/dockarea_moc.$(OBJEXT) \
 obj/emoticons_moc.$(OBJEXT) \
@@ -446,6 +455,7 @@ obj/icons_manager_moc.$(OBJEXT) \
 obj/ignore_moc.$(OBJEXT) \
 obj/kadu_moc.$(OBJEXT) \
 obj/kadu_text_browser_moc.$(OBJEXT) \
+obj/main_configuration_window_moc.$(OBJEXT) \
 obj/message_box_moc.$(OBJEXT) \
 obj/misc_moc.$(OBJEXT) \
 obj/modules_moc.$(OBJEXT) \
@@ -769,6 +779,8 @@ include $(DEPS)/color_selector.d
 include $(DEPS)/color_selector_moc.d
 include $(DEPS)/configuration_window.d
 include $(DEPS)/configuration_window_moc.d
+include $(DEPS)/configuration_window_widgets.d
+include $(DEPS)/configuration_window_widgets_moc.d
 include $(DEPS)/config_file.d
 include $(DEPS)/custom_input.d
 include $(DEPS)/custom_input_moc.d
@@ -804,6 +816,7 @@ include $(DEPS)/kadu_splitter.d
 include $(DEPS)/kadu_text_browser.d
 include $(DEPS)/kadu_text_browser_moc.d
 include $(DEPS)/main.d
+include $(DEPS)/main_configuration_window.d
 include $(DEPS)/message_box.d
 include $(DEPS)/message_box_moc.d
 include $(DEPS)/misc.d

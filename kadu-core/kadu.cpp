@@ -32,7 +32,6 @@
 #include "about.h"
 #include "action.h"
 #include "chat_manager.h"
-#include "configuration_window.h"
 #include "config_file.h"
 #include "debug.h"
 #include "expimp.h"
@@ -46,6 +45,7 @@
 #include "kadu-config.h"
 #include "kadu_parser.h"
 #include "kadu_text_browser.h"
+#include "main_configuration_window.h"
 #include "message_box.h"
 #include "misc.h"
 #include "modules.h"
@@ -335,7 +335,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	MainLayout->setResizeMode(QLayout::Minimum);
 	chat_manager->loadOpenedWindows();
 
-	ConfigurationWindow::initModule();
+	MainConfigurationWindow::initModule();
 	connect(configuration_window, SIGNAL(configurationUpdated()), this, SLOT(configurationUpdated()));
 
 	configurationUpdated();
@@ -1162,7 +1162,7 @@ bool Kadu::close(bool quit)
 	{
 		Closing = true;
 		xml_config_file->makeBackup();
-		ConfigurationWindow::closeModule();
+		MainConfigurationWindow::closeModule();
 		ModulesManager::closeModule();
 
 		Updates::closeModule();
