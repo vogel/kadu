@@ -322,6 +322,14 @@ void ConfigurationWindow::import_0_5_0_configuration()
 		infoPanelList.updateSyntax("custom", infoPanelSyntax);
 	}
 	config_file.removeVariable("Look", "PanelContents");
+
+	if (config_file.readBoolEntry("Look", "MultiColumnUserbox", false))
+	{
+		int columns = (kadu->userbox()->width() - 20) / config_file.readNumEntry("Look", "MultiColumnUserboxWidth", (kadu->userbox()->width() - 20));
+		config_file.writeEntry("Look", "UserBoxColumnCount", columns);
+	}
+	config_file.removeVariable("Look", "MultiColumnUserbox");
+	config_file.removeVariable("Look", "MultiColumnUserboxWidth");
 }
 
 void ConfigurationWindow::onChangeStartupStatus(int index)
@@ -408,7 +416,6 @@ QString ConfigurationWindow::findExecutable(const QStringList &paths, const QStr
 		CONST_FOREACH(executableName, executableNames)
 		{
 			fi.setFile(*path + "/" + *executableName);
-			printf("search for: %s\n", (*path + "/" + *executableName).data());
 			if (fi.isExecutable())
 				return *path + "/" + *executableName;
 		}

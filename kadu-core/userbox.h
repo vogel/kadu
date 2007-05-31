@@ -125,14 +125,14 @@ class KaduListBoxPixmap : public QListBoxItem
 			Zwraca wysoko¶æ elementu reprezentuj±cego wy¶wietlany kontakt w pikselach.
 			\param lb obiekt reprezentuj±cy wy¶wietlany kontakt.
 		**/
-		int height(const QListBox *lb) const;
+		virtual int height(const QListBox *lb) const;
 
 		/**
 			\fn int width(const QListBox *lb) const
 			Zwraca szeroko¶æ elementu reprezentuj±cego wy¶wietlany kontakt w pikselach.
 			\param lb obiekt reprezentuj±cy wy¶wietlany kontakt.
 		**/
-		int width(const QListBox *lb) const;
+		virtual int width(const QListBox *lb) const;
 
 		void refreshPixmap();
 
@@ -229,14 +229,7 @@ class KaduListBoxPixmap : public QListBoxItem
 			Ustawia stan wy¶wietlania listy kontaktów w wielu kolumnach.
 			\param m warto¶æ logiczna informuj±ca o tym, czy lista ma byæ wy¶wietlana w wielu kolumnach.
 		**/
-		static void setMultiColumn(bool m);
-
-		/**
-			\fn static void setMultiColumnWidth(int w)
-			Ustawia szeroko¶æ jednej kolumny dla wy¶wietlania listy w trybie wielu kolumn.
-			\param w szeroko¶æ kolumny w pikselach.
-		**/
-		static void setMultiColumnWidth(int w);
+		static void setColumnCount(int m);
 
 		/**
 			\fn static void setDescriptionColor(const QColor &col)
@@ -256,6 +249,7 @@ class KaduListBoxPixmap : public QListBoxItem
 		static bool ShowMultilineDesc;
 		static bool MultiColumn;
 		static int  MultiColumnWidth;
+		static int ColumnCount;
 		static QColor descColor;
 
 		mutable QString buf_text;

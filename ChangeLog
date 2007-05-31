@@ -170,6 +170,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   Thunderbirda na Debianie i pochodnych (White Eagle/neeo)
 * nowe okno konfiguracji: pe³na edycja s³adni panelu informacyjnego (Vogel)
 * ujednolicone Protocol::sendMessage (Juzef/Vogel)
+* userbox: szeroko¶æ kolumn -> liczba kolumn (Vogel)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

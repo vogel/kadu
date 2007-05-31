@@ -34,8 +34,7 @@ UinType KaduListBoxPixmap::myUIN;
 bool KaduListBoxPixmap::ShowDesc;
 bool KaduListBoxPixmap::AlignUserboxIconsTop;
 bool KaduListBoxPixmap::ShowMultilineDesc;
-bool KaduListBoxPixmap::MultiColumn;
-int  KaduListBoxPixmap::MultiColumnWidth;
+int  KaduListBoxPixmap::ColumnCount;
 QColor KaduListBoxPixmap::descColor;
 UserListElement UserBox::nullElement;
 
@@ -157,14 +156,9 @@ void KaduListBoxPixmap::setShowMultilineDesc(bool m)
 	ShowMultilineDesc=m;
 }
 
-void KaduListBoxPixmap::setMultiColumn(bool m)
+void KaduListBoxPixmap::setColumnCount(int m)
 {
-	MultiColumn=m;
-}
-
-void KaduListBoxPixmap::setMultiColumnWidth(int w)
-{
-	MultiColumnWidth=w;
+	ColumnCount = m;
 }
 
 void KaduListBoxPixmap::setDescriptionColor(const QColor &col)
@@ -285,11 +279,12 @@ int KaduListBoxPixmap::lineHeight(const QListBox* lb) const
 
 int KaduListBoxPixmap::width(const QListBox* lb) const
 {
-//	kdebugf();
-	if (MultiColumn)
-		return MultiColumnWidth;
+// 	kdebugf();
+
+	if (ColumnCount == 0)
+		return QMAX(pm.width(), (lb->width()-20));
 	else
-		return QMAX(pm.width(), lb->width()-20);
+		return QMAX(pm.width(), (lb->width()-20) / ColumnCount);
 /*
    joi:
    we need to use lb->width()-20 here for scrollbar - we cannot get this value
@@ -494,12 +489,11 @@ UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
 		management = new UserBoxMenu(userboxmenu);
 	UserBoxes.append(this);
 
-	if (config_file.readBoolEntry("Look", "MultiColumnUserbox"))
-		setColumnMode(QListBox::FitToWidth);
 	QListBox::setFont(config_file.readFontEntry("Look", "UserboxFont"));
 	setMinimumWidth(20);
 	setSelectionMode(QListBox::Extended);
 	UserBox::setColorsOrBackgrounds();
+
 	connect(this, SIGNAL(doubleClicked(QListBoxItem *)), this, SLOT(doubleClickedSlot(QListBoxItem *)));
 	connect(this, SIGNAL(returnPressed(QListBoxItem *)), this, SLOT(returnPressedSlot(QListBoxItem *)));
 	connect(this, SIGNAL(currentChanged(QListBoxItem *)), this, SLOT(currentChangedSlot(QListBoxItem *)));
@@ -703,6 +697,8 @@ void UserBox::refresh()
 
 		// clearing list
 		QListBox::clear();
+		// clear clears columns too...
+		setColumnMode(config_file.readNumEntry("Look", "UserBoxColumnCount", 1));
 
 		bool showBold = config_file.readBoolEntry("Look", "ShowBold");
 
@@ -838,11 +834,6 @@ void UserBox::initModule()
 	config_file.addVariable("Look", "AlignUserboxIconsTop", false);
 	config_file.addVariable("Look", "DescriptionColor", w.paletteForegroundColor());
 
-	// font operations are really slow, so we are doing them only when it's necessary (at first run)
-	if (config_file.readEntry("Look", "MultiColumnUserboxWidth").isEmpty())
-		config_file.addVariable("Look", "MultiColumnUserboxWidth", int(QFontMetrics(*defaultFont).width("Imie i Nazwisko")*1.5));
-
-
 // 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Userbox background"), 0, Advanced);
 // 	ConfigDialog::addHBox("Look", "Userbox background", "userbox_background");
 // 	ConfigDialog::addLineEdit("Look", "userbox_background", QT_TRANSLATE_NOOP("@default", "Background"), "UserboxBackground", 0, "Background Path");
@@ -862,8 +853,7 @@ void UserBox::initModule()
 	KaduListBoxPixmap::setShowDesc(config_file.readBoolEntry("Look", "ShowDesc"));
 	KaduListBoxPixmap::setAlignTop(config_file.readBoolEntry("Look", "AlignUserboxIconsTop"));
 	KaduListBoxPixmap::setShowMultilineDesc(config_file.readBoolEntry("Look", "ShowMultilineDesc"));
-	KaduListBoxPixmap::setMultiColumn(config_file.readBoolEntry("Look", "MultiColumnUserbox"));
-	KaduListBoxPixmap::setMultiColumnWidth(config_file.readNumEntry("Look", "MultiColumnUserboxWidth", 230));
+	KaduListBoxPixmap::setColumnCount(config_file.readNumEntry("Look", "UserBoxColumnCount", 1));
 	KaduListBoxPixmap::setMyUIN(config_file.readUnsignedNumEntry("General", "UIN"));
 	KaduListBoxPixmap::setDescriptionColor(config_file.readColorEntry("Look", "DescriptionColor"));
 
@@ -1001,10 +991,8 @@ void UserBox::configurationUpdated()
 {
 	kdebugf();
 
-	if (config_file.readBoolEntry("Look", "MultiColumnUserbox"))
-		setColumnMode(QListBox::FitToWidth);
-	else
-		setColumnMode(1);
+	int columnCount = config_file.readNumEntry("Look", "UserBoxColumnCount", 1);
+	setColumnMode(columnCount);
 
 	QListBox::setFont(config_file.readFontEntry("Look", "UserboxFont"));
 
@@ -1012,8 +1000,7 @@ void UserBox::configurationUpdated()
 	KaduListBoxPixmap::setShowDesc(config_file.readBoolEntry("Look", "ShowDesc"));
 	KaduListBoxPixmap::setAlignTop(config_file.readBoolEntry("Look", "AlignUserboxIconsTop"));
 	KaduListBoxPixmap::setShowMultilineDesc(config_file.readBoolEntry("Look", "ShowMultilineDesc"));
-	KaduListBoxPixmap::setMultiColumn(config_file.readBoolEntry("Look", "MultiColumnUserbox"));
-	KaduListBoxPixmap::setMultiColumnWidth(config_file.readNumEntry("Look", "MultiColumnUserboxWidth", 230));
+	KaduListBoxPixmap::setColumnCount(columnCount);
 	KaduListBoxPixmap::setMyUIN(config_file.readUnsignedNumEntry("General", "UIN"));
 	KaduListBoxPixmap::setDescriptionColor(config_file.readColorEntry("Look", "DescriptionColor"));
 

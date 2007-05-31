@@ -206,8 +206,6 @@
 
 			<group-box name="Columns">
 				<spin-box caption="Column count" config-section="Look" config-item="UserBoxColumnCount" min-value="1" max-value="10" step="1" />
-<!-- 				<check-box caption="Multicolumn userbox" config-section="Look" config-item="MultiColumnUserbox" id="multiColumnUserbox" /> -->
-<!-- 				<spin-box caption="Userbox width when multi column" config-section="Look" config-item="MultiColumnUserboxWidth" min-value="1" max-value="1000" step="1" id="multiColumnUserboxWidget" suffix=" px" /> -->
 			</group-box>
 <!--
 			<group-box name="Preview">
