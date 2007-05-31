@@ -237,6 +237,7 @@ ConfigurationWindow::ConfigurationWindow()
 	connect(widgetById("chatPrune"), SIGNAL(toggled(bool)), widgetById("chatPruneLen"), SLOT(setEnabled(bool)));
 	connect(widgetById("foldLink"), SIGNAL(toggled(bool)), widgetById("linkFoldTreshold"), SLOT(setEnabled(bool)));
 	connect(widgetById("chatCloseTimer"), SIGNAL(toggled(bool)), widgetById("chatCloseTimerPeriod"), SLOT(setEnabled(bool)));
+	connect(widgetById("useDefaultServers"), SIGNAL(toggled(bool)), widgetById("serverList"), SLOT(setDisabled(bool)));
 	(dynamic_cast<QLineEdit *>(widgetById("proxyPassword")))->setEchoMode(QLineEdit::Password);
 
 	QWidget *showInformationPanel = widgetById("showInformationPanel");

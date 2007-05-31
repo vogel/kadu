@@ -22,11 +22,10 @@
 					<item value="Galeon" caption="Galeon" />
 					<item value="Safari" caption="Safari" />
                 </combo-box>
-<!-- 				<combo-box caption="Browser options" config-section="Chat" config-item="WebBrowserOptionNo" id="browserOption" /> -->
 				<line-edit caption="Custom browser" config-section="Chat" config-item="WebBrowser" id="browserPath" />
 			</group-box>
 
-			<group-box name="e-ail client">
+			<group-box name="e-mail client">
 				<combo-box caption="Choose your e-mail client" config-section="Chat" config-item="EmailClientNo" id="mail">
 					<item value="Specify path" caption="Specify path" />
 					<item value="KMail" caption="KMail" />
@@ -50,9 +49,9 @@
 
 		<tab name="Advanced">
 			<group-box name="Servers properties">
-				<check-box caption="Use default servers" config-section="Network" config-item="isDefServers" />
-				<line-edit caption="IP Addresses" config-section="Network" config-item="Server" />
-				<combo-box caption="Port to connect to servers (list)" config-section="Network" config-item="DefaultPort">
+				<check-box caption="Use default servers" config-section="Network" config-item="isDefServers" id="useDefaultServers" />
+				<line-edit caption="IP Addresses" config-section="Network" config-item="Server" id="serverList" />
+				<combo-box caption="Port to connect to servers" config-section="Network" config-item="DefaultPort" id="serverPort" >
 					<item value="0" caption="Automatic" />
 					<item value="8074" caption="8074" />
 					<item value="443" caption="443" />
