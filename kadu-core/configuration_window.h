@@ -17,6 +17,7 @@ class ConfigSection;
 
 class QGridLayout;
 class QGroupBox;
+class QVBox;
 
 class ConfigGroupBox
 {
@@ -39,6 +40,7 @@ class ConfigurationWindow : public QVBox
 {
 	Q_OBJECT
 
+	QVBox *left;
 	QMap<QString, ConfigSection *> configSections;
 	ConfigSection *currentSection;
 
@@ -80,7 +82,5 @@ signals:
 	void configurationUpdated();
 
 };
-
-extern ConfigurationWindow *configuration_window;
 
 #endif // KADU_CONFIGURATION_WINDOW_H

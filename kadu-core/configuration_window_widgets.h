@@ -4,6 +4,7 @@
 #include <qcheckbox.h>
 #include <qcombobox.h>
 #include <qlineedit.h>
+#include <qpushbutton.h>
 #include <qspinbox.h>
 
 #include "color_button.h"
@@ -18,11 +19,13 @@ class ConfigWidget
 {
 protected:
 	ConfigGroupBox *parentConfigGroupBox;
+	QString widgetCaption;
 
 	virtual void createWidgets() = 0;
 
 public:
 	ConfigWidget(ConfigGroupBox *parentConfigGroupBox);
+	ConfigWidget(ConfigGroupBox *parentConfigGroupBox, const QString &widgetCaption);
 	virtual ~ConfigWidget() {}
 
 	virtual void loadConfiguration() = 0;
@@ -34,7 +37,6 @@ public:
 class ConfigWidgetValue : public ConfigWidget
 {
 protected:
-	QString widgetCaption;
 	QString section;
 	QString item;
 
@@ -194,6 +196,20 @@ public:
 	virtual void saveConfiguration();
 
 	virtual bool fromDomElement(QDomElement domElement);
+};
+
+class ConfigActionButton : public QPushButton, public ConfigWidget
+{
+protected:
+	virtual void createWidgets();
+
+public:
+	ConfigActionButton(ConfigGroupBox *parentConfigGroupBox, const QString &widgetCaption, char *name = 0);
+	ConfigActionButton(ConfigGroupBox *parentConfigGroupBox, char *name = 0);
+	virtual ~ConfigActionButton() {}
+
+	virtual void loadConfiguration() {};
+	virtual void saveConfiguration() {};
 };
 
 #endif // CONFIGURATION_WINDOW_WIDGETS_H

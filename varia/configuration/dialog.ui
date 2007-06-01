@@ -153,7 +153,8 @@
 				<color-button caption="Panel background color" config-section="Look" config-item="InfoPanelBgColor" />
 				<color-button caption="Panel font color" config-section="Look" config-item="InfoPanelFgColor" />
 			</group-box>
-        </tab>
+
+		</tab>
 
 		<tab name="Fonts">
 			<group-box name="Fonts">
@@ -174,9 +175,8 @@
 				<spin-box caption="Reduce the number of visible messages to" config-section="Chat" config-item="ChatPruneLen" min-value="1" max-value="255" step="1" id="chatPruneLen" />
 			</group-box>
 
-			<group-box name="Link folding">
-				<check-box caption="Automatically fold links" config-section="Chat" config-item="FoldLink" id="foldLink" />
-				<spin-box caption="Fold links longer than" config-section="Chat" config-item="LinkFoldTreshold" min-value="1" max-value="500" step="1" id="linkFoldTreshold" />
+			<group-box name="Advanced">
+				<action-button caption="Advanced..." id="lookChatAdvanced" />
 			</group-box>
 <!--
 			<group-box name="Style">
@@ -205,6 +205,10 @@
 
 			<group-box name="Columns">
 				<spin-box caption="Column count" config-section="Look" config-item="UserBoxColumnCount" min-value="1" max-value="10" step="1" />
+			</group-box>
+
+			<group-box name="Background">
+				<action-button caption="Background..." id="lookUserboxBackground" />
 			</group-box>
 <!--
 			<group-box name="Preview">
@@ -329,34 +333,6 @@
 			</group-box>
 			<group-box name="Debugging">
 				<line-edit caption="Debugging mask" config-section="General" config-item="DEBUG_MASK" />
-			</group-box>
-		</tab>
-
-		<tab name="Status">
-				<check-box caption="User KaduParser to parse status" config-section="General" config-item="ParseStatus" />
-		</tab>
-
-		<tab name="Chat">
-			<group-box name="Headers and separators">
-				<check-box caption="Remove chat header repetitions" config-section="General" config-item="RemoveChatHeaderRepetitions" />
-				<spin-box caption="Chat header separators height" config-section="Look" config-item="ChatHeaderSeparatorsHeight" min-value="1" max-value="1000" step="1" />
-				<spin-box caption="Interval between header removal" config-section="Look" config-item="IntervalBetweenHeaderRemoval" min-value="1" max-value="1000" step="1" />
-			</group-box>
-
-			<group-box name="Server time">
-				<check-box caption="Remove server time" config-section="General" config-item="RemoveServerTime" id="removeServerTime" />
-				<spin-box caption="Maximum time difference" config-section="Look" config-item="MaxTimeDifference" min-value="1" max-value="1000" step="1" id="maxTimeDifference" />
-			</group-box>
-
-			<group-box name="Advanced">
-				<line-edit caption="Full chat style" config-section="General" config-item="FullChatStyle" />
-				<line-edit caption="Chat background image (experimental) (button)" config-section="General" config-item="ChatBgImg" />
-			</group-box>
-
-			<group-box name="Window title">
-				<line-edit caption="Chat window title syntax" config-section="General" config-item="ChatWindowTitleSyntax" />
-				<line-edit caption="Conference window title prefix" config-section="General" config-item="ConferencePrefix" />
-				<line-edit caption="Conference window title syntax" config-section="General" config-item="ConferenceSyntax" />
 			</group-box>
 		</tab>
 

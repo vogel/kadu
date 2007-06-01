@@ -12,6 +12,9 @@ class MainConfigurationWindow : public ConfigurationWindow
 {
 	Q_OBJECT
 
+	ConfigurationWindow *lookChatAdvanced;
+	ConfigurationWindow *lookUserboxBackground;
+
 	QCheckBox *onStartupSetLastDescription;
 
 	ConfigComboBox *browserComboBox;
@@ -35,10 +38,13 @@ private slots:
 	void onChangeBrowser(int index);
 	void onChangeMail(int index);
 
-public:
-	static void initModule();
-	static void closeModule();
+	void showLookChatAdvanced();
+	void lookChatAdvancedDestroyed();
 
+	void showLookUserboxBackground();
+	void lookUserboxBackgroundDestroyed();
+
+public:
 	MainConfigurationWindow();
 	virtual ~MainConfigurationWindow();
 

@@ -834,18 +834,6 @@ void UserBox::initModule()
 	config_file.addVariable("Look", "AlignUserboxIconsTop", false);
 	config_file.addVariable("Look", "DescriptionColor", w.paletteForegroundColor());
 
-// 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Userbox background"), 0, Advanced);
-// 	ConfigDialog::addHBox("Look", "Userbox background", "userbox_background");
-// 	ConfigDialog::addLineEdit("Look", "userbox_background", QT_TRANSLATE_NOOP("@default", "Background"), "UserboxBackground", 0, "Background Path");
-// 	ConfigDialog::addPushButton("Look", "userbox_background", 0, "OpenFile", 0, "userbox_background_fileopen");
-
-// 	ConfigDialog::addVGroupBox("Look", "Userbox background", QT_TRANSLATE_NOOP("@default", "Background image options"), 0, Expert);
-// 		ConfigDialog::addCheckBox("Look", "Background image options", QT_TRANSLATE_NOOP("@default", "Change image size"), "UserboxBackgroundMove", false);
-// 		ConfigDialog::addSpinBox("Look", "Background image options", QT_TRANSLATE_NOOP("@default", "Start at [X]"), "UserboxBackgroundSX", 0, 1499, 1);
-// 		ConfigDialog::addSpinBox("Look", "Background image options", QT_TRANSLATE_NOOP("@default", "Start at [Y]"), "UserboxBackgroundSY", 0, 1099, 1);
-// 		ConfigDialog::addSpinBox("Look", "Background image options", QT_TRANSLATE_NOOP("@default", "Image width"), "UserboxBackgroundSW", 100, 1600, 1);
-// 		ConfigDialog::addSpinBox("Look", "Background image options", QT_TRANSLATE_NOOP("@default", "Image height"), "UserboxBackgroundSH", 100, 1200, 1);
-
 	QStringList options;
 	QStringList values;
 
@@ -968,21 +956,6 @@ void UserBoxMenu::refreshIcons()
 void UserBoxSlots::onCreateTabLook()
 {
 	kdebugf();
-
-// 	backgroundFileChanged(config_file.readEntry("Look", "UserboxBackground"));
-
-// 	multi = ConfigDialog::getSpinBox("Look", "Start at [X]");
-// 	multi->setSuffix(" px");
-// 	multi->setEnabled(config_file.readBoolEntry("Look", "UserboxBackgroundMove"));
-// 	multi=ConfigDialog::getSpinBox("Look", "Start at [Y]");
-// 	multi->setSuffix(" px");
-// 	multi->setEnabled(config_file.readBoolEntry("Look", "UserboxBackgroundMove"));
-// 	multi=ConfigDialog::getSpinBox("Look", "Image width");
-// 	multi->setSuffix(" px");
-// 	multi->setEnabled(config_file.readBoolEntry("Look", "UserboxBackgroundMove"));
-// 	multi=ConfigDialog::getSpinBox("Look", "Image height");
-// 	multi->setSuffix(" px");
-// 	multi->setEnabled(config_file.readBoolEntry("Look", "UserboxBackgroundMove"));
 
 	kdebugf2();
 }

@@ -21,8 +21,6 @@
 
 #include "configuration_window.h"
 
-ConfigurationWindow *configuration_window = 0;
-
 class ConfigTab
 {
 	QMap<QString, ConfigGroupBox *> configGroupBoxes;
@@ -154,13 +152,16 @@ bool ConfigSection::empty()
 ConfigurationWindow::ConfigurationWindow()
 	: currentSection(0)
 {
+	setWFlags(getWFlags() || Qt::WDestructiveClose);
+
 	QHBox *center = new QHBox(this);
 	center->setMargin(10);
 	center->setSpacing(10);
 	center->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-	QVBox *left = new QVBox(center);
+	left = new QVBox(center);
 	left->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+	left->hide();
 
 	container = new QHBox(center);
 	container->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -364,6 +365,8 @@ void ConfigurationWindow::appendUiElementFromDom(QDomNode uiElementNode, ConfigG
 		widget = new ConfigSelectFont(configGroupBox);
 	else if (tagName == "syntax-editor")
 		widget = new ConfigSyntaxEditor(configGroupBox);
+	else if (tagName == "action-button")
+		widget = new ConfigActionButton(configGroupBox);
 	else
 	{
 		kdebugf2();
@@ -406,6 +409,9 @@ ConfigSection *ConfigurationWindow::configSection(const QString &name)
 
 	ConfigSection *newConfigSection = new ConfigSection(newConfigSectionListBoxItem, container);
 	configSections[name] = newConfigSection;
+
+	if (configSections.count() > 1)
+		left->show();
 
 	return newConfigSection;
 }

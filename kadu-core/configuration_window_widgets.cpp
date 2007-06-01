@@ -8,8 +8,23 @@
 
 #include "configuration_window_widgets.h"
 
+ConfigWidget::ConfigWidget(ConfigGroupBox *parentConfigGroupBox)
+	: parentConfigGroupBox(parentConfigGroupBox)
+{
+}
+
+ConfigWidget::ConfigWidget(ConfigGroupBox *parentConfigGroupBox, const QString &widgetCaption)
+	: parentConfigGroupBox(parentConfigGroupBox), widgetCaption(widgetCaption)
+{
+}
+
 bool ConfigWidget::fromDomElement(QDomElement domElement)
 {
+	widgetCaption = domElement.attribute("caption");
+
+	if (widgetCaption.isEmpty())
+		return false;
+
 	createWidgets();
 	return true;
 }
@@ -20,17 +35,16 @@ ConfigWidgetValue::ConfigWidgetValue(ConfigGroupBox *parentConfigGroupBox)
 }
 
 ConfigWidgetValue::ConfigWidgetValue(ConfigGroupBox *parentConfigGroupBox, const QString &widgetCaption, const QString &section, const QString &item)
-	: ConfigWidget(parentConfigGroupBox), widgetCaption(widgetCaption), section(section), item(item)
+	: ConfigWidget(parentConfigGroupBox, widgetCaption), section(section), item(item)
 {
 }
 
 bool ConfigWidgetValue::fromDomElement(QDomElement domElement)
 {
-	widgetCaption = domElement.attribute("caption");
 	section = domElement.attribute("config-section");
 	item = domElement.attribute("config-item");
 
-	if (widgetCaption.isEmpty() || section.isEmpty() || item.isEmpty())
+	if (section.isEmpty() || item.isEmpty())
 		return false;
 
 	return ConfigWidget::fromDomElement(domElement);
@@ -440,7 +454,24 @@ bool ConfigSyntaxEditor::fromDomElement(QDomElement domElement)
 	return ConfigWidgetValue::fromDomElement(domElement);
 }
 
-ConfigWidget::ConfigWidget(ConfigGroupBox *parentConfigGroupBox)
-	: parentConfigGroupBox(parentConfigGroupBox)
+ConfigActionButton::ConfigActionButton(ConfigGroupBox *parentConfigGroupBox, const QString &widgetCaption, char *name)
+	: QPushButton(parentConfigGroupBox->widget(), name), ConfigWidget(parentConfigGroupBox, widgetCaption)
 {
+	createWidgets();
+}
+
+ConfigActionButton::ConfigActionButton(ConfigGroupBox *parentConfigGroupBox, char *name)
+	: QPushButton(parentConfigGroupBox->widget(), name), ConfigWidget(parentConfigGroupBox)
+{
+}
+
+void ConfigActionButton::createWidgets()
+{
+	kdebugf();
+
+	QGridLayout *layout = parentConfigGroupBox->layout();
+	int numRows = layout->numRows();
+
+	setText(widgetCaption);
+	layout->addWidget(this, numRows, 0, Qt::AlignRight);
 }

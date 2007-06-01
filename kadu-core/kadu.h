@@ -23,6 +23,7 @@ class KaduTextBrowser;
 class QPushButton;
 class UserStatusChanger;
 class SplitStatusChanger;
+class MainConfigurationWindow;
 
 /**
 	G³ówne okno Kadu
@@ -54,6 +55,8 @@ class Kadu : public QWidget
 
 		UserStatusChanger *userStatusChanger;
 		SplitStatusChanger *splitStatusChanger;
+
+		MainConfigurationWindow *mainConfigurationWindow;
 
 		bool ShowMainWindowOnStart;
 		bool DoBlink;
@@ -105,6 +108,7 @@ class Kadu : public QWidget
 		void changeStatus(UserStatus status);
 
 		void configurationUpdated();
+		void configurationWindowDestroyed();
 
 	protected:
 		void keyPressEvent(QKeyEvent *e);

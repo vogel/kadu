@@ -10,19 +10,8 @@
 
 #include "main_configuration_window.h"
 
-void MainConfigurationWindow::initModule()
-{
-	configuration_window = new MainConfigurationWindow();
-}
-
-void MainConfigurationWindow::closeModule()
-{
-	delete configuration_window;
-	configuration_window = 0;
-}
-
 MainConfigurationWindow::MainConfigurationWindow()
-	: ConfigurationWindow()
+	: ConfigurationWindow(), lookChatAdvanced(0), lookUserboxBackground(0)
 {
 	import_0_5_0_configuration();
 
@@ -65,6 +54,9 @@ MainConfigurationWindow::MainConfigurationWindow()
 	connect(useProxy, SIGNAL(toggled(bool)), widgetById("proxyPort"), SLOT(setEnabled(bool)));
 	connect(useProxy, SIGNAL(toggled(bool)), widgetById("proxyUser"), SLOT(setEnabled(bool)));
 	connect(useProxy, SIGNAL(toggled(bool)), proxyPassword, SLOT(setEnabled(bool)));
+
+	connect(widgetById("lookChatAdvanced"), SIGNAL(clicked()), this, SLOT(showLookChatAdvanced()));
+	connect(widgetById("lookUserboxBackground"), SIGNAL(clicked()), this, SLOT(showLookUserboxBackground()));
 
 // 	connect(widgetById("iconPaths"), SIGNAL(changed()), this, SLOT(setIconThemes()));
 
@@ -413,4 +405,48 @@ void MainConfigurationWindow::onChangeMail(int index)
 	}
 	else
 		mailCommandLineEdit->setText("");
+}
+
+void MainConfigurationWindow::showLookChatAdvanced()
+{
+	if (!lookChatAdvanced)
+	{
+		lookChatAdvanced = new ConfigurationWindow();
+		lookChatAdvanced->appendUiFile(dataPath("kadu/configuration/dialog-look-chat-advanced.ui"));
+
+		connect(lookChatAdvanced, SIGNAL(configurationUpdated()), this, SIGNAL(configurationUpdated()));
+		connect(lookChatAdvanced, SIGNAL(destroyed()), this, SLOT(lookChatAdvancedDestroyed()));
+	}
+
+	lookChatAdvanced->show();
+}
+
+void MainConfigurationWindow::lookChatAdvancedDestroyed()
+{
+	lookChatAdvanced = 0;
+}
+
+void MainConfigurationWindow::showLookUserboxBackground()
+{
+	if (!lookUserboxBackground)
+	{
+		lookUserboxBackground = new ConfigurationWindow();
+		lookUserboxBackground->appendUiFile(dataPath("kadu/configuration/dialog-look-userbox-background.ui"));
+
+		QWidget *userboxBackgroundMove = lookUserboxBackground->widgetById("userboxBackgroundMove");
+		connect(userboxBackgroundMove, SIGNAL(toggled(bool)), lookUserboxBackground->widgetById("userboxBackgroundSX"), SLOT(setEnabled(bool)));
+		connect(userboxBackgroundMove, SIGNAL(toggled(bool)), lookUserboxBackground->widgetById("userboxBackgroundSY"), SLOT(setEnabled(bool)));
+		connect(userboxBackgroundMove, SIGNAL(toggled(bool)), lookUserboxBackground->widgetById("userboxBackgroundSW"), SLOT(setEnabled(bool)));
+		connect(userboxBackgroundMove, SIGNAL(toggled(bool)), lookUserboxBackground->widgetById("userboxBackgroundSH"), SLOT(setEnabled(bool)));
+
+		connect(lookUserboxBackground, SIGNAL(configurationUpdated()), this, SIGNAL(configurationUpdated()));
+		connect(lookUserboxBackground, SIGNAL(destroyed()), this, SLOT(lookUserboxBackgroundDestroyed()));
+	}
+
+	lookUserboxBackground->show();
+}
+
+void MainConfigurationWindow::lookUserboxBackgroundDestroyed()
+{
+	lookUserboxBackground = 0;
 }
