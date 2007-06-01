@@ -471,12 +471,12 @@ QString printDateTime(const QDateTime &datetime)
 		{
 			if (delta == 1) // 1 day ago
 				ret.prepend(qApp->translate("@default", "Yesterday at "));
-			else if(delta < 7) // less than week ago
+			else if (delta < 7) // less than week ago
 			{
 				ret.prepend(datetime.toString(qApp->translate("@default", "dddd at ")));
 				ret[0] = ret[0].upper(); // looks ugly lowercase ;)
 			}
-			else if(delta < 6*7)
+			else if (delta < 6*7)
 			{
 				if ((delta%7) == 0)
 					ret.prepend(qApp->translate("@default", "%1 weeks ago at ").arg(delta/7));
