@@ -1371,7 +1371,8 @@ void Kadu::createStatusPopupMenu()
 		// to po sprawdzeniu, czy opis jest równy "" nast±pi³oby automatyczne
 		// przyjêcie, ¿e status jest jednak bez opisu
 		// co przyczyni³oby siê do z³ej ikonki
-		s->setIndex(i, ".");
+		// a tak to przyjmuje ze jest to status z opisem (michal)
+		s->setIndex(i, i%2?".":"");
 		pix = s->pixmap();
 		icon = QIconSet(pix);
 		QString statusName = qApp->translate("@default", UserStatus::name(i).ascii());

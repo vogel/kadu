@@ -171,6 +171,9 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * nowe okno konfiguracji: pe³na edycja s³adni panelu informacyjnego (Vogel)
 * ujednolicone Protocol::sendMessage (Juzef/Vogel)
 * userbox: szeroko¶æ kolumn -> liczba kolumn (Vogel)
+* poprawka ikonek w menu statusu (michal)
+* linki mozna bez obawy przekazywac w natywnym kodowaniu do przegladarki, nie
+  trzeba ich konwertowac (michal)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

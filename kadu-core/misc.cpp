@@ -568,9 +568,9 @@ void openWebBrowser(const QString &link)
 		return;
 	}
 	if (!webBrowser.contains("%1"))
-		webBrowser.append(" \"" + unicode2latinUrl(link) + '"');
+		webBrowser.append(" \"" + link + '"');
 	else
-		webBrowser.replace("%1", unicode2latinUrl(link));
+		webBrowser.replace("%1", link);
 
 	QStringList args = toStringList("sh", "-c", webBrowser);
 
