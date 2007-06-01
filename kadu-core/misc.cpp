@@ -457,27 +457,28 @@ QString printDateTime(const QDateTime &datetime)
 {
 	QString ret;
 	QDateTime current_date;
-	int delta;
+	unsigned int delta;
 
 	current_date.setTime_t(time(NULL));
 //	current_date.setTime(QTime(0, 0));
 
-	delta=datetime.daysTo(current_date);
-	ret=datetime.toString("hh:mm:ss");
+	delta = datetime.daysTo(current_date);
+	ret = datetime.toString("hh:mm:ss");
 
-	if(delta!=0)
+	if (delta != 0)
 	{
-		if(config_file.readBoolEntry("Look","NiceDateFormat"))
+		if (config_file.readBoolEntry("Look","NiceDateFormat"))
 		{
-			if(delta==1)
+			if (delta == 1) // 1 day ago
 				ret.prepend(qApp->translate("@default", "Yesterday at "));
-			else if(delta<7){
-				ret.prepend(datetime.toString(qApp->translate("@default", "dddd at ")));
-				ret[0]=ret[0].upper();	// brzydko wygl¿da z ma¿ej litery
-			}
-			else if(delta<6*7)
+			else if(delta < 7) // less than week ago
 			{
-				if((delta%7)==0)
+				ret.prepend(datetime.toString(qApp->translate("@default", "dddd at ")));
+				ret[0] = ret[0].upper(); // looks ugly lowercase ;)
+			}
+			else if(delta < 6*7)
+			{
+				if ((delta%7) == 0)
 					ret.prepend(qApp->translate("@default", "%1 weeks ago at ").arg(delta/7));
 				else
 					ret.prepend(qApp->translate("@default", "%1 weeks and %2 days ago at ").arg(delta/7).arg(delta%7));
@@ -486,9 +487,7 @@ QString printDateTime(const QDateTime &datetime)
 				ret.prepend(datetime.toString(qApp->translate("@default", "d MMMM yyyy at ")));
 		}
 		else
-		{
 			ret.append(datetime.toString(" (dd.MM.yyyy)"));
-		}
 	}
 	return ret;
 }
