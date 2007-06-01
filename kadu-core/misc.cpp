@@ -455,20 +455,42 @@ QString unicodeUrl2latinUrl(const QString &buf)
 
 QString printDateTime(const QDateTime &datetime)
 {
-	QString tmp;
-	time_t t;
-	QDateTime dt2;
+	QString ret;
+	QDateTime current_date;
 	int delta;
 
-	t = time(NULL);
-	dt2.setTime_t(t);
-	dt2.setTime(QTime(0, 0));
-	tmp = datetime.toString("hh:mm:ss");
-	delta = dt2.secsTo(datetime);
-//	kdebugmf(KDEBUG_INFO, "%d\n", delta);
-	if (delta < 0 || delta >= 3600 * 24)
-		tmp.append(datetime.toString(" (dd.MM.yyyy)"));
-	return tmp;
+	current_date.setTime_t(time(NULL));
+//	current_date.setTime(QTime(0, 0));
+
+	delta=datetime.daysTo(current_date);
+	ret=datetime.toString("hh:mm:ss");
+
+	if(delta!=0)
+	{
+		if(config_file.readBoolEntry("Look","NiceDateFormat"))
+		{
+			if(delta==1)
+				ret.prepend(qApp->translate("@default", "Yesterday at "));
+			else if(delta<7){
+				ret.prepend(datetime.toString(qApp->translate("@default", "dddd at ")));
+				ret[0]=ret[0].upper();	// brzydko wygl¿da z ma¿ej litery
+			}
+			else if(delta<6*7)
+			{
+				if((delta%7)==0)
+					ret.prepend(qApp->translate("@default", "%1 weeks ago at ").arg(delta/7));
+				else
+					ret.prepend(qApp->translate("@default", "%1 weeks and %2 days ago at ").arg(delta/7).arg(delta%7));
+			}
+			else
+				ret.prepend(datetime.toString(qApp->translate("@default", "d MMMM yyyy at ")));
+		}
+		else
+		{
+			ret.append(datetime.toString(" (dd.MM.yyyy)"));
+		}
+	}
+	return ret;
 }
 
 QString timestamp(time_t customtime)
