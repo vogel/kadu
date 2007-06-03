@@ -43,6 +43,7 @@
 #include "protocol.cpp"
 #include "protocols_manager.cpp"
 #include "search.cpp"
+#include "select_file.cpp"
 #include "select_font.cpp"
 #include "status.cpp"
 #include "status_changer.cpp"

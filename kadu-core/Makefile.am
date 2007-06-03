@@ -47,6 +47,7 @@ personal_info.cpp \
 protocol.cpp \
 protocols_manager.cpp \
 search.cpp \
+select_file.cpp \
 select_font.cpp \
 status.cpp \
 status_changer.cpp \
@@ -110,6 +111,7 @@ personal_info.h \
 protocol.h \
 protocols_manager.h \
 search.h \
+select_file.h \
 select_font.h \
 status.h \
 status_changer.h \
@@ -159,6 +161,7 @@ moc/personal_info_moc.cpp \
 moc/protocol_moc.cpp \
 moc/protocols_manager_moc.cpp \
 moc/search_moc.cpp \
+moc/select_file_moc.cpp \
 moc/select_font_moc.cpp \
 moc/status_moc.cpp \
 moc/status_changer_moc.cpp \
@@ -221,6 +224,7 @@ obj/personal_info.$(OBJEXT) \
 obj/protocol.$(OBJEXT) \
 obj/protocols_manager.$(OBJEXT) \
 obj/search.$(OBJEXT) \
+obj/select_file.$(OBJEXT) \
 obj/select_font.$(OBJEXT) \
 obj/status.$(OBJEXT) \
 obj/status_changer.$(OBJEXT) \
@@ -269,6 +273,7 @@ obj/personal_info_moc.$(OBJEXT) \
 obj/protocol_moc.$(OBJEXT) \
 obj/protocols_manager_moc.$(OBJEXT) \
 obj/search_moc.$(OBJEXT) \
+obj/select_file_moc.$(OBJEXT) \
 obj/select_font_moc.$(OBJEXT) \
 obj/status_moc.$(OBJEXT) \
 obj/status_changer_moc.$(OBJEXT) \
@@ -363,6 +368,8 @@ include $(DEPS)/protocols_manager.d
 include $(DEPS)/protocols_manager_moc.d
 include $(DEPS)/search.d
 include $(DEPS)/search_moc.d
+include $(DEPS)/select_file.d
+include $(DEPS)/select_file_moc.d
 include $(DEPS)/select_font.d
 include $(DEPS)/select_font_moc.d
 include $(DEPS)/status.d

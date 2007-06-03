@@ -367,6 +367,8 @@ void ConfigurationWindow::appendUiElementFromDom(QDomNode uiElementNode, ConfigG
 		widget = new ConfigSyntaxEditor(configGroupBox);
 	else if (tagName == "action-button")
 		widget = new ConfigActionButton(configGroupBox);
+	else if (tagName == "select-file")
+		widget = new ConfigSelectFile(configGroupBox);
 	else
 	{
 		kdebugf2();

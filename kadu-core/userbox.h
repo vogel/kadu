@@ -13,7 +13,6 @@
 #include "userlistelement.h"
 
 class QFontMetrics;
-class UserBoxSlots;
 class ULEComparer;
 
 /**
@@ -180,7 +179,6 @@ class KaduListBoxPixmap : public QListBoxItem
 		void changeText(const QString &text);
 
 		friend class UserBox;
-		friend class UserBoxSlots;
 
 		static QPixmap pixmapForUser(const UserListElement &user);
 
@@ -622,7 +620,6 @@ class UserBox : public QListBox
 
 	private:
 		static QValueList<UserBox*> UserBoxes;
-		static UserBoxSlots *userboxslots;
 
 		UserGroup *VisibleUsers;
 		QValueList<UserGroup *> Filters;
@@ -643,8 +640,6 @@ class UserBox : public QListBox
 
 		QTimer verticalPositionTimer;
 		int lastVerticalPosition;
-
-		friend class UserBoxSlots;
 
 	protected:
 		virtual void wheelEvent(QWheelEvent *e);
@@ -680,20 +675,6 @@ class UserBox : public QListBox
 			\param e wska¼nik obiektu opisuj±cego to zdarzenie.
 		**/
 		virtual void resizeEvent(QResizeEvent *);
-};
-
-/**
-	Klasa ta pozwala na podgl±d wprowadzanych zmian konfiguracyjnych wobec UserBox
-	w oknie konfiguracji, zanim zaaplikuje siê je do Kadu.
-	\class UserBoxSlots
-	\brief Obs³uga UserBox w konfiguracji.
-**/
-class UserBoxSlots : public QObject
-{
-	Q_OBJECT
-	public slots:
-		void onCreateTabLook();
-		void chooseBackgroundFile();
 };
 
 /**

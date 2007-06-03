@@ -29,7 +29,6 @@
 #include "userbox.h"
 
 QFontMetrics* KaduListBoxPixmap::descriptionFontMetrics=NULL;
-UserBoxSlots* UserBox::userboxslots=NULL;
 UinType KaduListBoxPixmap::myUIN;
 bool KaduListBoxPixmap::ShowDesc;
 bool KaduListBoxPixmap::AlignUserboxIconsTop;
@@ -811,8 +810,6 @@ void UserBox::closeModule()
 
 	delete KaduListBoxPixmap::descriptionFontMetrics;
 	KaduListBoxPixmap::descriptionFontMetrics = 0;
-	delete userboxslots;
-	userboxslots = 0;
 
 	delete tool_tip_class_manager;
 	tool_tip_class_manager = 0;
@@ -844,8 +841,6 @@ void UserBox::initModule()
 	KaduListBoxPixmap::setColumnCount(config_file.readNumEntry("Look", "UserBoxColumnCount", 1));
 	KaduListBoxPixmap::setMyUIN(config_file.readUnsignedNumEntry("General", "UIN"));
 	KaduListBoxPixmap::setDescriptionColor(config_file.readColorEntry("Look", "DescriptionColor"));
-
-	userboxslots= new UserBoxSlots();
 
 	userlist->addPerContactNonProtocolConfigEntry("hide_description", "HideDescription");
 
@@ -953,13 +948,6 @@ void UserBoxMenu::refreshIcons()
 	kdebugf2();
 }
 
-void UserBoxSlots::onCreateTabLook()
-{
-	kdebugf();
-
-	kdebugf2();
-}
-
 void UserBox::configurationUpdated()
 {
 	kdebugf();
@@ -1023,18 +1011,6 @@ void UserBox::setColorsOrBackgrounds()
 			(*i)->setPaletteForegroundColor(config_file.readColorEntry("Look", "UserboxFgColor"));
 		}
 	}
-}
-
-void UserBoxSlots::chooseBackgroundFile()
-{
-// 	QLineEdit *bg_path = ConfigDialog::getLineEdit("Look", "Background");
-// 	QWidget w;
-// 	ImageDialog *bg_dlg = new ImageDialog(&w);
-// 	bg_dlg->setDir(bg_path->text());
-// 	bg_dlg->setCaption(tr("Insert image"));
-// 	if (bg_dlg->exec() == QDialog::Accepted)
-// 		bg_path->setText(bg_dlg->selectedFile());
-// 	delete bg_dlg;
 }
 
 QValueList<UserBox *> UserBox::UserBoxes;

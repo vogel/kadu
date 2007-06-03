@@ -6,10 +6,12 @@
 #include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qspinbox.h>
+#include <qvbox.h>
 
 #include "color_button.h"
 #include "hot_key.h"
 #include "path_list_edit.h"
+#include "select_file.h"
 #include "select_font.h"
 #include "syntax_editor.h"
 
@@ -25,7 +27,7 @@ protected:
 
 public:
 	ConfigWidget(ConfigGroupBox *parentConfigGroupBox);
-	ConfigWidget(ConfigGroupBox *parentConfigGroupBox, const QString &widgetCaption);
+	ConfigWidget(const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox);
 	virtual ~ConfigWidget() {}
 
 	virtual void loadConfiguration() = 0;
@@ -42,7 +44,7 @@ protected:
 
 public:
 	ConfigWidgetValue(ConfigGroupBox *parentConfigGroupBox);
-	ConfigWidgetValue(ConfigGroupBox *parentConfigGroupBox, const QString &widgetCaption, const QString &section, const QString &item);
+	ConfigWidgetValue(const QString &widgetCaption, const QString &section, const QString &item, ConfigGroupBox *parentConfigGroupBox);
 	virtual ~ConfigWidgetValue() {}
 
 	virtual bool fromDomElement(QDomElement domElement);
@@ -204,12 +206,29 @@ protected:
 	virtual void createWidgets();
 
 public:
-	ConfigActionButton(ConfigGroupBox *parentConfigGroupBox, const QString &widgetCaption, char *name = 0);
+	ConfigActionButton(const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name = 0);
 	ConfigActionButton(ConfigGroupBox *parentConfigGroupBox, char *name = 0);
 	virtual ~ConfigActionButton() {}
 
 	virtual void loadConfiguration() {};
 	virtual void saveConfiguration() {};
+};
+
+class ConfigSelectFile : public SelectFile, public ConfigWidgetValue
+{
+protected:
+	virtual void createWidgets();
+
+public:
+	ConfigSelectFile(const QString &section, const QString &item, const QString &widgetCaption, const QString &type,
+		ConfigGroupBox *parentConfigGroupBox,  char *name = 0);
+	ConfigSelectFile(ConfigGroupBox *parentConfigGroupBox, char *name = 0);
+	virtual ~ConfigSelectFile() {}
+
+	virtual void loadConfiguration();
+	virtual void saveConfiguration();
+
+	virtual bool fromDomElement(QDomElement domElement);
 };
 
 #endif // CONFIGURATION_WINDOW_WIDGETS_H

@@ -2,7 +2,7 @@
 	<section name="Look">
 		<tab name="Background">
 			<group-box name="Background">
-				<line-edit caption="Background file" config-section="Look" config-item="UserboxBackground" />
+				<select-file caption="Background file" config-section="Look" config-item="UserboxBackground" type="image" />
 			</group-box>
 			<group-box name="Options">
 				<check-box caption="Change image size" config-section="Look" config-item="UserboxBackgroundMove" id="userboxBackgroundMove" />

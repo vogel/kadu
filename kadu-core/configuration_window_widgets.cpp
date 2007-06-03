@@ -13,7 +13,7 @@ ConfigWidget::ConfigWidget(ConfigGroupBox *parentConfigGroupBox)
 {
 }
 
-ConfigWidget::ConfigWidget(ConfigGroupBox *parentConfigGroupBox, const QString &widgetCaption)
+ConfigWidget::ConfigWidget(const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox)
 	: parentConfigGroupBox(parentConfigGroupBox), widgetCaption(widgetCaption)
 {
 }
@@ -34,8 +34,8 @@ ConfigWidgetValue::ConfigWidgetValue(ConfigGroupBox *parentConfigGroupBox)
 {
 }
 
-ConfigWidgetValue::ConfigWidgetValue(ConfigGroupBox *parentConfigGroupBox, const QString &widgetCaption, const QString &section, const QString &item)
-	: ConfigWidget(parentConfigGroupBox, widgetCaption), section(section), item(item)
+ConfigWidgetValue::ConfigWidgetValue(const QString &widgetCaption, const QString &section, const QString &item, ConfigGroupBox *parentConfigGroupBox)
+	: ConfigWidget(widgetCaption, parentConfigGroupBox), section(section), item(item)
 {
 }
 
@@ -51,7 +51,7 @@ bool ConfigWidgetValue::fromDomElement(QDomElement domElement)
 }
 
 ConfigLineEdit::ConfigLineEdit(const QString &section, const QString &item, const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name)
-	: QLineEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox, widgetCaption, section, item)
+	: QLineEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, section, item, parentConfigGroupBox)
 {
 	createWidgets();
 }
@@ -107,7 +107,7 @@ void ConfigGGPasswordEdit::saveConfiguration()
 }
 
 ConfigCheckBox::ConfigCheckBox(const QString &section, const QString &item, const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name)
-	: QCheckBox(widgetCaption, parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox, widgetCaption, section, item)
+	: QCheckBox(widgetCaption, parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, section, item, parentConfigGroupBox)
 {
 	createWidgets();
 }
@@ -142,7 +142,7 @@ void ConfigCheckBox::saveConfiguration()
 
 ConfigSpinBox::ConfigSpinBox(const QString &section, const QString &item, const QString &widgetCaption,
 		int minValue, int maxValue, int step, ConfigGroupBox *parentConfigGroupBox, const char *name)
-	: QSpinBox(minValue, maxValue, step, parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox, widgetCaption, section, item)
+	: QSpinBox(minValue, maxValue, step, parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, section, item, parentConfigGroupBox)
 {
 }
 
@@ -201,7 +201,7 @@ bool ConfigSpinBox::fromDomElement(QDomElement domElement)
 
 ConfigComboBox::ConfigComboBox(const QString &section, const QString &item, const QString &widgetCaption, const QStringList &itemValues,
 	const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox, const char *name)
-	: QComboBox(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox, widgetCaption, section, item)
+	: QComboBox(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, section, item, parentConfigGroupBox)
 {
 	createWidgets();
 }
@@ -273,7 +273,7 @@ bool ConfigComboBox::fromDomElement(QDomElement domElement)
 }
 
 ConfigHotKeyEdit::ConfigHotKeyEdit(const QString &section, const QString &item, const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name)
-	: HotKeyEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox, widgetCaption, section, item)
+	: HotKeyEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, section, item, parentConfigGroupBox)
 {
 	createWidgets();
 }
@@ -307,7 +307,7 @@ void ConfigHotKeyEdit::saveConfiguration()
 }
 
 ConfigPathListEdit::ConfigPathListEdit(const QString &section, const QString &item, const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name)
-	: PathListEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox, widgetCaption, section, item)
+	: PathListEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, section, item, parentConfigGroupBox)
 {
 	createWidgets();
 }
@@ -341,7 +341,7 @@ void ConfigPathListEdit::saveConfiguration()
 }
 
 ConfigColorButton::ConfigColorButton(const QString &section, const QString &item, const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name)
-	: ColorButton(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox, widgetCaption, section, item)
+	: ColorButton(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, section, item, parentConfigGroupBox)
 {
 	createWidgets();
 }
@@ -375,7 +375,7 @@ void ConfigColorButton::saveConfiguration()
 }
 
 ConfigSelectFont::ConfigSelectFont(const QString &section, const QString &item, const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name)
-	: SelectFont(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox, widgetCaption, section, item)
+	: SelectFont(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, section, item, parentConfigGroupBox)
 {
 	createWidgets();
 }
@@ -410,7 +410,7 @@ void ConfigSelectFont::saveConfiguration()
 
 ConfigSyntaxEditor::ConfigSyntaxEditor(const QString &section, const QString &item, const QString &widgetCaption,
 		ConfigGroupBox *parentConfigGroupBox, char *name)
-	: SyntaxEditor(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox, widgetCaption, section, item)
+	: SyntaxEditor(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, section, item, parentConfigGroupBox)
 {
 	createWidgets();
 }
@@ -454,8 +454,8 @@ bool ConfigSyntaxEditor::fromDomElement(QDomElement domElement)
 	return ConfigWidgetValue::fromDomElement(domElement);
 }
 
-ConfigActionButton::ConfigActionButton(ConfigGroupBox *parentConfigGroupBox, const QString &widgetCaption, char *name)
-	: QPushButton(parentConfigGroupBox->widget(), name), ConfigWidget(parentConfigGroupBox, widgetCaption)
+ConfigActionButton::ConfigActionButton(const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name)
+	: QPushButton(parentConfigGroupBox->widget(), name), ConfigWidget(widgetCaption, parentConfigGroupBox)
 {
 	createWidgets();
 }
@@ -474,4 +474,50 @@ void ConfigActionButton::createWidgets()
 
 	setText(widgetCaption);
 	layout->addWidget(this, numRows, 0, Qt::AlignRight);
+}
+
+ConfigSelectFile::ConfigSelectFile(const QString &section, const QString &item, const QString &widgetCaption, const QString &type,
+		ConfigGroupBox *parentConfigGroupBox, char *name)
+	: SelectFile(type, parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, section, item, parentConfigGroupBox)
+{
+	createWidgets();
+}
+
+ConfigSelectFile::ConfigSelectFile(ConfigGroupBox *parentConfigGroupBox, char *name)
+	: SelectFile(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox)
+{
+}
+
+void ConfigSelectFile::createWidgets()
+{
+	kdebugf();
+
+	QGridLayout *layout = parentConfigGroupBox->layout();
+	int numRows = layout->numRows();
+
+	QLabel *label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
+
+	layout->addWidget(label, numRows, 0, Qt::AlignRight);
+	layout->addWidget(this, numRows, 1);
+}
+
+void ConfigSelectFile::loadConfiguration()
+{
+	setFile(config_file.readEntry(section, item));
+}
+
+void ConfigSelectFile::saveConfiguration()
+{
+	config_file.writeEntry(section, item, file());
+}
+
+bool ConfigSelectFile::fromDomElement(QDomElement domElement)
+{
+	QString type = domElement.attribute("type");
+	if (type.isEmpty())
+		return false;
+
+	setType(type);
+
+	return ConfigWidgetValue::fromDomElement(domElement);
 }
