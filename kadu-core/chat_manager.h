@@ -9,7 +9,6 @@
 #include "toolbar.h"
 #include "usergroup.h"
 
-class ChatManagerSlots;
 class Protocol;
 
 /**
@@ -25,8 +24,6 @@ class ChatManager : public QObject
 
 	private:
 		ChatList Chats; /*!< lista okien*/
-
-		static ChatManagerSlots *chatslots;
 
 		/**
 			\fn int openPendingMsg(int index, ChatMessage &msg)

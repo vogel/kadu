@@ -12,8 +12,6 @@
 #include <qtooltip.h>
 
 #include "action.h"
-#include "chat_manager_slots.h"
-// #include "config_dialog.h"
 #include "debug.h"
 #include "chat_manager.h"
 #include "icons_manager.h"
@@ -914,8 +912,6 @@ void ChatManager::closeModule()
 		chat_manager, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
 	chat_manager->saveOpenedWindows();
 
-	delete chatslots;
-	chatslots = 0;
 	delete chat_manager;
 	chat_manager = 0;
 	kdebugf2();
@@ -1010,34 +1006,6 @@ void ChatManager::initModule()
 
 	config_file.addVariable("Chat", "EmoticonsStyle", EMOTS_ANIMATED);
 	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
-
-	chatslots =new ChatManagerSlots(kadu, "chat_slots");
-// 	ConfigDialog::registerSlotOnCreateTab("Chat", chatslots, SLOT(onCreateTabChat()));
-// 	ConfigDialog::registerSlotOnCreateTab("Look", chatslots, SLOT(onCreateTabLook()));
-// 	ConfigDialog::registerSlotOnApplyTab("Chat", chatslots,SLOT(onApplyTabChat()));
-// 	ConfigDialog::registerSlotOnApplyTab("Look", chatslots,SLOT(onApplyTabLook()));
-// 	ConfigDialog::connectSlot("Chat", "Emoticons:", SIGNAL(activated(int)), chatslots, SLOT(chooseEmoticonsStyle(int)));
-// 	ConfigDialog::connectSlot("Chat", "Automatically prune chat messages", SIGNAL(toggled(bool)), chatslots, SLOT(onPruneChat(bool)));
-// 	ConfigDialog::connectSlot("Chat", "Automatically fold links", SIGNAL(toggled(bool)), chatslots, SLOT(onFoldLink(bool)));
-// 	ConfigDialog::connectSlot("Chat", "Block window close on new message", SIGNAL(toggled(bool)), chatslots, SLOT(onBlockClose(bool)));
-
-// 	ConfigDialog::connectSlot("Look", "Remove chat header repetitions", SIGNAL(toggled(bool)), chatslots, SLOT(onRemoveHeaders(bool)));
-
-// 	ConfigDialog::connectSlot("Look", "Remove server time", SIGNAL(toggled(bool)), chatslots, SLOT(onRemoveServerTime(bool)));
-
-// 	ConfigDialog::connectSlot("Look", "Your background color", SIGNAL(changed(const char *, const QColor&)),
-// 		chatslots, SLOT(chooseColor(const char *, const QColor&)), "own_bg_color");
-// 	ConfigDialog::connectSlot("Look", "User background color", SIGNAL(changed(const char *, const QColor&)),
-// 		chatslots, SLOT(chooseColor(const char *, const QColor&)), "his_bg_color");
-// 	ConfigDialog::connectSlot("Look", "Your font color", SIGNAL(changed(const char *, const QColor&)),
-// 		chatslots, SLOT(chooseColor(const char *, const QColor&)), "own_font_color");
-// 	ConfigDialog::connectSlot("Look", "User font color", SIGNAL(changed(const char *, const QColor&)),
-// 		chatslots, SLOT(chooseColor(const char *, const QColor&)), "his_font_color");
-
-// 	ConfigDialog::connectSlot("Look", "Font in chat window", SIGNAL(changed(const char *, const QFont&)), chatslots, SLOT(chooseFont(const char *, const QFont&)), "chat_font_box");
-// 	ConfigDialog::connectSlot("Look", "Select chat style", SIGNAL(activated(const QString&)), chatslots, SLOT(onChatThemeChanged(const QString&)));
-
-// 	ConfigDialog::connectSlot("Look", 0, SIGNAL(clicked()), chatslots, SLOT(chooseBackgroundFile()), "chat_background_fileopen");
 
 	chat_manager = new ChatManager(kadu, "chat_manager");
 	connect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),

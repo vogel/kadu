@@ -18,7 +18,6 @@
 
 #include "addons.h"
 #include "action.h"
-#include "chat_manager_slots.h"
 #include "config_file.h"
 #include "debug.h"
 #include "gadu.h"

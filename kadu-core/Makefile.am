@@ -8,7 +8,6 @@ action.cpp \
 chat.cpp \
 chat_colors.cpp \
 chat_manager.cpp \
-chat_manager_slots.cpp \
 chat_message.cpp \
 chat_styles.cpp \
 color_button.cpp \
@@ -73,7 +72,6 @@ action.h \
 chat.h \
 chat_colors.h \
 chat_manager.h \
-chat_manager_slots.h \
 chat_message.h \
 chat_styles.h \
 color_button.h \
@@ -133,7 +131,6 @@ moc/about_moc.cpp \
 moc/action_moc.cpp \
 moc/chat_moc.cpp \
 moc/chat_manager_moc.cpp \
-moc/chat_manager_slots_moc.cpp \
 moc/color_button_moc.cpp \
 moc/color_selector_moc.cpp \
 moc/configuration_window_moc.cpp \
@@ -185,7 +182,6 @@ obj/action.$(OBJEXT) \
 obj/chat.$(OBJEXT) \
 obj/chat_colors.$(OBJEXT) \
 obj/chat_manager.$(OBJEXT) \
-obj/chat_manager_slots.$(OBJEXT) \
 obj/chat_message.$(OBJEXT) \
 obj/chat_styles.$(OBJEXT) \
 obj/color_button.$(OBJEXT) \
@@ -245,7 +241,6 @@ obj/about_moc.$(OBJEXT) \
 obj/action_moc.$(OBJEXT) \
 obj/chat_moc.$(OBJEXT) \
 obj/chat_manager_moc.$(OBJEXT) \
-obj/chat_manager_slots_moc.$(OBJEXT) \
 obj/color_button_moc.$(OBJEXT) \
 obj/color_selector_moc.$(OBJEXT) \
 obj/custom_input_moc.$(OBJEXT) \
@@ -303,8 +298,6 @@ include $(DEPS)/chat_moc.d
 include $(DEPS)/chat_colors.d
 include $(DEPS)/chat_manager.d
 include $(DEPS)/chat_manager_moc.d
-include $(DEPS)/chat_manager_slots.d
-include $(DEPS)/chat_manager_slots_moc.d
 include $(DEPS)/chat_message.d
 include $(DEPS)/chat_styles.d
 include $(DEPS)/color_button.d

@@ -282,7 +282,6 @@ GroupsManager::GroupsManager() : QObject(0, "groups_manager"),
 			this, SLOT(userAddedToMainUserlist(UserListElement, bool, bool)));
 	connect(userlist, SIGNAL(userRemoved(UserListElement, bool, bool)),
 			this, SLOT(userRemovedFromMainUserlist(UserListElement, bool, bool)));
-// 	ConfigDialog::registerSlotOnApplyTab("General", this, SLOT(onApplyTabGeneral()));
 
 	kdebugf2();
 }

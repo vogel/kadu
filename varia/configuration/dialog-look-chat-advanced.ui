@@ -17,15 +17,15 @@
 				<spin-box caption="Maximum time difference" config-section="Look" config-item="MaxTimeDifference" min-value="1" max-value="1000" step="1" id="maxTimeDifference" />
 			</group-box>
 
-			<group-box name="Advanced">
-				<line-edit caption="Full chat style" config-section="General" config-item="FullChatStyle" />
-				<line-edit caption="Chat background image (experimental) (button)" config-section="General" config-item="ChatBgImg" />
+			<group-box name="Background">
+<!-- 				<line-edit caption="Full chat style" config-section="General" config-item="FullChatStyle" /> -->
+				<line-edit caption="Chat background image (experimental)" config-section="General" config-item="ChatBgImg" />
 			</group-box>
 
 			<group-box name="Window title">
-				<line-edit caption="Chat window title syntax" config-section="General" config-item="ChatWindowTitleSyntax" />
-				<line-edit caption="Conference window title prefix" config-section="General" config-item="ConferencePrefix" />
-				<line-edit caption="Conference window title syntax" config-section="General" config-item="ConferenceSyntax" />
+				<line-edit caption="Chat window title syntax" config-section="Look" config-item="ChatContents" />
+				<line-edit caption="Conference window title prefix" config-section="Look" config-item="ConferencePrefix" />
+				<line-edit caption="Conference window title syntax" config-section="Look" config-item="ConferenceContents" />
 			</group-box>
 		</tab>
 	</section>
