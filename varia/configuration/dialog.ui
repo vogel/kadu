@@ -208,7 +208,12 @@
 			</group-box>
 
 			<group-box name="Background">
-				<action-button caption="Background..." id="lookUserboxBackground" />
+				<select-file caption="Background file" config-section="Look" config-item="UserboxBackground" type="image" />
+				<combo-box caption="Display style" config-section="Look" config-item="UserboxBackgroundDisplayStyle">
+					<item value="Tiled" caption="Tiled" />
+					<item value="Centered" caption="Centered" />
+					<item value="Stretched" caption="Stretched" />
+				</combo-box>
 			</group-box>
 <!--
 			<group-box name="Preview">

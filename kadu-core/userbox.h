@@ -641,6 +641,9 @@ class UserBox : public QListBox
 		QTimer verticalPositionTimer;
 		int lastVerticalPosition;
 
+		static QImage *backgroundImage;
+		void refreshBackground();
+
 	protected:
 		virtual void wheelEvent(QWheelEvent *e);
 		virtual void enterEvent(QEvent *);

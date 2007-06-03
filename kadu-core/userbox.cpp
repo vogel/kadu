@@ -37,6 +37,8 @@ int  KaduListBoxPixmap::ColumnCount;
 QColor KaduListBoxPixmap::descColor;
 UserListElement UserBox::nullElement;
 
+QImage *UserBox::backgroundImage = 0;
+
 static bool brokenStringCompare;
 
 ToolTipClassManager::ToolTipClassManager()
@@ -491,6 +493,7 @@ UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
 	QListBox::setFont(config_file.readFontEntry("Look", "UserboxFont"));
 	setMinimumWidth(20);
 	setSelectionMode(QListBox::Extended);
+	setStaticBackground(true);
 	UserBox::setColorsOrBackgrounds();
 
 	connect(this, SIGNAL(doubleClicked(QListBoxItem *)), this, SLOT(doubleClickedSlot(QListBoxItem *)));
@@ -855,7 +858,52 @@ void UserBox::resizeEvent(QResizeEvent *r)
 {
 //	kdebugf();
 	QListBox::resizeEvent(r);
+	refreshBackground();
 	triggerUpdate(true);
+}
+
+void UserBox::refreshBackground()
+{
+	setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
+	setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
+
+	if (!backgroundImage)
+		return;
+
+	QImage image;
+	QString type = config_file.readEntry("Look", "UserboxBackgroundDisplayStyle");
+
+	if (type == "Stretched")
+	{
+		int userboxWidth = (*UserBoxes.begin())->width();
+		int userboxHeight = (*UserBoxes.begin())->height();
+
+		image = backgroundImage->smoothScale(userboxWidth, userboxHeight);
+	}
+	else if (type == "Centered")
+	{
+		int userboxWidth = (*UserBoxes.begin())->width();
+		int userboxHeight = (*UserBoxes.begin())->height();
+
+		int width = backgroundImage->width();
+		int height = backgroundImage->height();
+
+		if (!width || !height)
+			return;
+
+		int xOffset = (userboxWidth / 2) % width - (width / 2);
+		int yOffset = (userboxHeight / 2) % height - (height / 2);
+
+		image.create(width, height, 32);
+		bitBlt(&image, 0, 0, backgroundImage, width - xOffset, height - yOffset, xOffset, yOffset);
+		bitBlt(&image, xOffset, yOffset, backgroundImage, 0, 0, width - xOffset, height - yOffset);
+		bitBlt(&image, 0, yOffset, backgroundImage, width - xOffset, 0, xOffset, height - yOffset);
+		bitBlt(&image, xOffset, 0, backgroundImage, 0, height - yOffset, width - xOffset, yOffset);
+	}
+	else // TILED
+		image = *backgroundImage;
+
+	setPaletteBackgroundPixmap(image);
 }
 
 void UserBox::doubleClickedSlot(QListBoxItem *item)
@@ -975,42 +1023,23 @@ void UserBox::configurationUpdated()
 
 void UserBox::setColorsOrBackgrounds()
 {
+	UserBox *active = activeUserBox();
+
 	QString s = config_file.readEntry("Look", "UserboxBackground");
+
 	if (s.isEmpty() || !QFile::exists(s))
 	{
-		for(QValueList<UserBox*>::iterator i = UserBoxes.begin(); i != UserBoxes.end(); ++i)
+		if (backgroundImage)
 		{
-			(*i)->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
-			(*i)->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
+			delete backgroundImage;
+			backgroundImage = 0;
 		}
 	}
 	else
-	{
-		QPixmap pix(s);
-		if (config_file.readBoolEntry("Look", "UserboxBackgroundMove"))
-		{
-			int sw = config_file.readNumEntry("Look", "UserboxBackgroundSW");
-			int sh = config_file.readNumEntry("Look", "UserboxBackgroundSH");
-			int sx = config_file.readNumEntry("Look", "UserboxBackgroundSX");
-			int sy = config_file.readNumEntry("Look", "UserboxBackgroundSY");
-			if (sx >= pix.width())
-				sx = pix.width() - 1;
-			if (sy >= pix.height())
-				sy = pix.height() - 1;
-			if (sw > pix.width() - sx)
-				sw = pix.width() - sx;
-			if (sh > pix.height() - sy)
-				sh = pix.height() - sy;
-			copyBlt(&pix, 0, 0, &pix, sx, sy, sw, sh);
-			pix.resize(sw, sh);
-		}
-		for(QValueList<UserBox*>::iterator i = UserBoxes.begin(); i != UserBoxes.end(); ++i)
-		{
-			(*i)->setPaletteBackgroundPixmap(pix);
-			(*i)->setStaticBackground(true);
-			(*i)->setPaletteForegroundColor(config_file.readColorEntry("Look", "UserboxFgColor"));
-		}
-	}
+		backgroundImage = new QImage(s);
+
+	if (active)
+		active->refreshBackground();
 }
 
 QValueList<UserBox *> UserBox::UserBoxes;

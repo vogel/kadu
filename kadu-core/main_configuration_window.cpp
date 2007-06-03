@@ -133,6 +133,12 @@ void MainConfigurationWindow::import_0_5_0_configuration()
 	}
 	config_file.removeVariable("Look", "MultiColumnUserbox");
 	config_file.removeVariable("Look", "MultiColumnUserboxWidth");
+
+	config_file.removeVariable("Look", "UserboxBackgroundMove");
+	config_file.removeVariable("Look", "UserboxBackgroundSX");
+	config_file.removeVariable("Look", "UserboxBackgroundSY");
+	config_file.removeVariable("Look", "UserboxBackgroundSE");
+	config_file.removeVariable("Look", "UserboxBackgroundSH");
 }
 
 void MainConfigurationWindow::onChangeStartupStatus(int index)
