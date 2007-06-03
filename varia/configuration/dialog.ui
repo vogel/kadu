@@ -77,9 +77,11 @@
 				<check-box caption="Show contacts that are blocking you" config-section="General" config-item="ShowBlocking" />
 			</group-box>
 
-<!-- 			<group-box name="Anonymous"> -->
+			<group-box name="Anonymous">
+				<check-box caption="Ignore messages from anonymous users" config-section="Chat" config-item="IgnoreAnonymousUsers" />
+				<check-box caption="Ignore richtext from anonymous users" config-section="Chat" config-item="IgnoreAnonymousRichtext" />
 <!-- 				<check-box caption="Always show anonymous contacts with messages" config-section="General" config-item="ShowAnonymousWithMsgs" /> -->
-<!-- 			</group-box> -->
+			</group-box>
 		</tab>
 	</section>
 
@@ -316,6 +318,7 @@
 	<section name="Chat">
 		<tab name="General">
 			<group-box name="Behaviour">
+				<check-box caption="Remember chat windows positions" config-section="Chat" config-item="RememberPosition" />
 				<check-box caption="Open chat window on new message" config-section="Chat" config-item="OpenChatOnMessage" />
 				<check-box caption="Wait for message delivery" config-section="Chat" config-item="MessageAcks" />
 				<check-box caption="'Enter' in chat send message" config-section="Chat" config-item="AutoSend" />

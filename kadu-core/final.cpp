@@ -4,7 +4,6 @@
 #include "chat.cpp"
 #include "chat_colors.cpp"
 #include "chat_manager.cpp"
-#include "chat_manager_slots.cpp"
 #include "chat_message.cpp"
 #include "chat_styles.cpp"
 #include "color_button.cpp"

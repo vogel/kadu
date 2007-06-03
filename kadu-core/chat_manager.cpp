@@ -921,30 +921,6 @@ void ChatManager::initModule()
 {
 	kdebugf();
 
-// 	ConfigDialog::addVGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Emoticons"), 0, Beginner);
-
-// 	ConfigDialog::addVGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "WWW options"), 0, Beginner);
-// 	ConfigDialog::addComboBox("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Choose your browser"));
-// 	ConfigDialog::addComboBox("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Browser options"));
-// 	ConfigDialog::addLineEdit("Chat", "WWW options", QT_TRANSLATE_NOOP("@default", "Custom Web browser"), "WebBrowser", 0, QT_TRANSLATE_NOOP("@default", "%1 - Url clicked in chat window"));
-
-// 	ConfigDialog::addVGroupBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Mail client"), 0, Beginner);
-// 	ConfigDialog::addComboBox("Chat", "Mail client", QT_TRANSLATE_NOOP("@default", "Choose your mail client"));
-// 	ConfigDialog::addLineEdit("Chat", "Mail client", QT_TRANSLATE_NOOP("@default", "Custom Mail client"), "MailClient", 0, QT_TRANSLATE_NOOP("@default", "%1 - mail clicked in chat window"));
-
-// 	ConfigDialog::addSpinBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Limit number of images received per minute"),
-// 			"MaxImageRequests", 0, 120, 1, 15, 0, 0, Advanced);
-
-// 	ConfigDialog::addVBox("Chat", "Chat", "checkboxes-beginner", 0, Beginner);
-// 	ConfigDialog::addVBox("Chat", "Chat", "checkboxes-advanced", 0, Advanced);
-// 	ConfigDialog::addVBox("Chat", "Chat", "checkboxes-expert", 0, Expert);
-
-// 	ConfigDialog::addCheckBox("Chat", "checkboxes-advanced", QT_TRANSLATE_NOOP("@default", "Ignore messages from anonymous users"), "IgnoreAnonymousUsers", false, 0, 0, Advanced);
-// 	ConfigDialog::addCheckBox("Chat", "checkboxes-advanced", QT_TRANSLATE_NOOP("@default", "Ignore richtext from anonymous users"), "IgnoreAnonymousRichtext", true, 0, 0, Advanced);
-// 	ConfigDialog::addCheckBox("Chat", "checkboxes-expert", QT_TRANSLATE_NOOP("@default", "Remember chat windows positions"), "RememberPosition", true, 0, 0, Expert);
-// 	ConfigDialog::addSpinBox("Chat", "Chat", QT_TRANSLATE_NOOP("@default", "Max time to block window close"),
-// 			"ChatCloseTimerPeriod", 1, 5, 1, 2, 0, 0, Expert);
-
 // pierwsze uruchomienie kadu
 	config_file.addVariable("Look", "ChatBgColor", QColor("#ffffff"));
 	config_file.addVariable("Look", "ChatMyBgColor", QColor("#E0E0E0"));
@@ -970,39 +946,10 @@ void ChatManager::initModule()
 
 	config_file.addVariable("Look", "Style", "kadu");
 
-//	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Previews"), 0, Advanced);
-// 		ConfigDialog::addVGroupBox("Look", "Previews", QT_TRANSLATE_NOOP("@default", "Chat preview"));
-// 			ConfigDialog::addHBox("Look", "Chat preview", "chat_prvw");
-// 				ConfigDialog::addLabel("Look", "chat_prvw", QT_TRANSLATE_NOOP("@default", "<b>Me</b> 00:00:00"), "chat_me");
-// 				ConfigDialog::addLabel("Look", "chat_prvw", QT_TRANSLATE_NOOP("@default", "<b>Other party</b> 00:00:02"), "chat_other");
-
 // 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default","Style"));
 // 		ConfigDialog::addComboBox("Look", "Style", QT_TRANSLATE_NOOP("@default", "Select chat style"), "Style", toStringList("Kadu", "Hapi", "IRC", tr("Custom")), toStringList("kadu", "hapi", "irc", "custom"));
 // 		ConfigDialog::addTextEdit("Look", "Style", QT_TRANSLATE_NOOP("@default", "Full chat style:"), "FullStyle", 0,
 // 			QT_TRANSLATE_NOOP("@default", "Syntax:\n%1 - background color\n%2 - text font color\n%3 - nick color\n%4 - nick\n%5 - timestamp\n%6 - timestamp with server time\n%7 - message"), 0, Expert);
-
-	//naglowki
-// 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Message headers && separators"), 0, Advanced);
-// 		ConfigDialog::addCheckBox("Look", "Message headers && separators", QT_TRANSLATE_NOOP("@default", "Remove chat header repetitions"), "NoHeaderRepeat", true, 0, 0, Advanced);
-// 		ConfigDialog::addSpinBox("Look",  "Message headers && separators", QT_TRANSLATE_NOOP("@default", "Chat header separators height:"), "HeaderSeparatorHeight", 0, 100, 1, 1, 0, 0, Expert);
-// 		ConfigDialog::addSpinBox("Look",  "Message headers && separators", QT_TRANSLATE_NOOP("@default", "Interval between header removal:"), "NoHeaderInterval", 1, 1439, 1, 10, 0, 0, Expert);
-// 		ConfigDialog::addSpinBox("Look",  "Message headers && separators", QT_TRANSLATE_NOOP("@default", "Message separators height:"), "ParagraphSeparator", 0, 100, 1, 4, 0, 0, Advanced);
-
-	//czas serwera
-// 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Server time"), 0, Advanced);
-// 		ConfigDialog::addCheckBox("Look", "Server time", QT_TRANSLATE_NOOP("@default", "Remove server time"), "NoServerTime", true, 0, 0, Advanced);
-// 		ConfigDialog::addSpinBox("Look", "Server time", QT_TRANSLATE_NOOP("@default", "Maximum time difference"), "NoServerTimeDiff", 0, 60, 1, 0, 0, 0, Advanced);
-
-// 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Other"), 0, Expert);
-// 		ConfigDialog::addLineEdit("Look", "Other", QT_TRANSLATE_NOOP("@default", "Chat window title syntax:"), "ChatContents", QString::null, Kadu::SyntaxText, 0, Expert);
-// 		ConfigDialog::addHBox("Look", "Other", "conference", 0, Expert);
-// 			ConfigDialog::addLineEdit("Look", "conference", QT_TRANSLATE_NOOP("@default", "Conference window title prefix:"), "ConferencePrefix", QString::null, QT_TRANSLATE_NOOP("@default", "This text will be before syntax.\nIf you leave blank, default settings will be used."));
-// 			ConfigDialog::addLineEdit("Look", "conference", QT_TRANSLATE_NOOP("@default", "syntax:"), "ConferenceContents", "%a (%s[: %d])", Kadu::SyntaxText);
-
-// 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default", "Chat background (experimental)"), 0, Expert);
-// 	ConfigDialog::addHBox("Look", "Chat background (experimental)", "chat_background");
-// 	ConfigDialog::addLineEdit("Look", "chat_background", QT_TRANSLATE_NOOP("@default", "Chat background image"), "ChatBgImage", 0, Kadu::SyntaxText);
-// 	ConfigDialog::addPushButton("Look", "chat_background", 0, "OpenFile", 0, "chat_background_fileopen");
 
 	config_file.addVariable("Chat", "EmoticonsStyle", EMOTS_ANIMATED);
 	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
@@ -1017,9 +964,6 @@ void ChatManager::initModule()
 void ChatManager::configurationUpdated()
 {
 	kdebugf();
-
-// 	config_file.writeEntry("Chat", "WebBrowserNo", ConfigDialog::getComboBox("Chat", "Choose your browser")->currentItem());
-// 	config_file.writeEntry("Chat", "MailClientNo", ConfigDialog::getComboBox("Chat", "Choose your mail client")->currentItem());
 
 	changeAppearance();
 
