@@ -875,15 +875,15 @@ void UserBox::refreshBackground()
 
 	if (type == "Stretched")
 	{
-		int userboxWidth = (*UserBoxes.begin())->width();
-		int userboxHeight = (*UserBoxes.begin())->height();
+		int userboxWidth = width();
+		int userboxHeight = height();
 
 		image = backgroundImage->smoothScale(userboxWidth, userboxHeight);
 	}
 	else if (type == "Centered")
 	{
-		int userboxWidth = (*UserBoxes.begin())->width();
-		int userboxHeight = (*UserBoxes.begin())->height();
+		int userboxWidth = width();
+		int userboxHeight = height();
 
 		int width = backgroundImage->width();
 		int height = backgroundImage->height();
@@ -1023,8 +1023,6 @@ void UserBox::configurationUpdated()
 
 void UserBox::setColorsOrBackgrounds()
 {
-	UserBox *active = activeUserBox();
-
 	QString s = config_file.readEntry("Look", "UserboxBackground");
 
 	if (s.isEmpty() || !QFile::exists(s))
@@ -1038,8 +1036,8 @@ void UserBox::setColorsOrBackgrounds()
 	else
 		backgroundImage = new QImage(s);
 
-	if (active)
-		active->refreshBackground();
+	FOREACH(userbox, UserBoxes)
+		(*userbox)->refreshBackground();
 }
 
 QValueList<UserBox *> UserBox::UserBoxes;

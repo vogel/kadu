@@ -333,6 +333,7 @@
 			<group-box name="Images">
 				<check-box caption="Receive images" config-section="Chat" config-item="ReceiveImages" id="receiveImages" />
 				<check-box caption="Receive images during invisibility" config-section="Chat" config-item="RecevieImagesDuringInvisibility" id="receiveImagesDuringInvisibility" />
+				<spin-box caption="Limit numbers of image recevied per minute" config-section="General" config-item="MaxImageRequests" min-value="1" max-value="30" step="1" id="maxImageRequests" />
 			</group-box>
 		</tab>
 	</section>
@@ -348,24 +349,6 @@
 			</group-box>
 		</tab>
 
-		<tab name="Userbox">
-
-			<group-box name="Userbox background">
-				<line-edit caption="Userbox background image (button)" config-section="General" config-item="UserboxBgImg" />
-				<check-box caption="Change image size" config-section="General" config-item="ChangeImgSize" />
-				<spin-box caption="Start at [X]" config-section="Look" config-item="StartAtX" min-value="1" max-value="1000" step="1" />
-				<spin-box caption="Start at [Y]" config-section="Look" config-item="StartAtY" min-value="1" max-value="1000" step="1" />
-				<spin-box caption="Image width" config-section="Look" config-item="ImgWidth" min-value="1" max-value="1000" step="1" />
-				<spin-box caption="Image height" config-section="Look" config-item="ImgHeight" min-value="1" max-value="1000" step="1" />
-			</group-box>
-		</tab>
-
-		<tab name="Images">
-			<group-box name="Images">
-<!-- 				<spin-box caption="Max image size" config-section="General" config-item="MaxImageSize" min-value="1" max-value="255" step="1" /> -->
-				<spin-box caption="Limit numbers of image recevied per minute" config-section="General" config-item="ImagesLimit" min-value="1" max-value="30" step="1" />
-			</group-box>
-		</tab>
 	</section>
 
 </configuration-ui>

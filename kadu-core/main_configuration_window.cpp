@@ -27,6 +27,7 @@ MainConfigurationWindow::MainConfigurationWindow()
 	connect(onStartupSetLastDescription, SIGNAL(toggled(bool)), onStartupSetDescription, SLOT(setDisabled(bool)));
 	connect(widgetById("removeServerTime"), SIGNAL(toggled(bool)), widgetById("maxTimeDifference"), SLOT(setEnabled(bool)));
 	connect(widgetById("receiveImages"), SIGNAL(toggled(bool)), widgetById("receiveImagesDuringInvisibility"), SLOT(setEnabled(bool)));
+	connect(widgetById("receiveImages"), SIGNAL(toggled(bool)), widgetById("maxImageRequests"), SLOT(setEnabled(bool)));
 	connect(widgetById("startupStatus"), SIGNAL(activated(int)), this, SLOT(onChangeStartupStatus(int)));
 	connect(widgetById("showDescription"), SIGNAL(toggled(bool)), widgetById("multilineDescription"), SLOT(setEnabled(bool)));
 	connect(widgetById("chatPrune"), SIGNAL(toggled(bool)), widgetById("chatPruneLen"), SLOT(setEnabled(bool)));
