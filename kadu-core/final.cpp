@@ -39,6 +39,7 @@
 #include "path_list_edit.cpp"
 #include "pending_msgs.cpp"
 #include "personal_info.cpp"
+#include "preview.cpp"
 #include "protocol.cpp"
 #include "protocols_manager.cpp"
 #include "search.cpp"

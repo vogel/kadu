@@ -11,6 +11,7 @@
 #include "color_button.h"
 #include "hot_key.h"
 #include "path_list_edit.h"
+#include "preview.h"
 #include "select_file.h"
 #include "select_font.h"
 #include "syntax_editor.h"
@@ -229,6 +230,20 @@ public:
 	virtual void saveConfiguration();
 
 	virtual bool fromDomElement(QDomElement domElement);
+};
+
+class ConfigPreview : public Preview, public ConfigWidget
+{
+protected:
+	virtual void createWidgets();
+
+public:
+	ConfigPreview(const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name = 0);
+	ConfigPreview(ConfigGroupBox *parentConfigGroupBox, char *name = 0);
+	virtual ~ConfigPreview() {}
+
+	virtual void loadConfiguration() {};
+	virtual void saveConfiguration() {};
 };
 
 #endif // CONFIGURATION_WINDOW_WIDGETS_H

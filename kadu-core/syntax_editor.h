@@ -50,8 +50,6 @@ class SyntaxEditor : public QWidget
 	QComboBox *syntaxListCombo;
 	QPushButton *deleteButton;
 
-	KaduTextBrowser *previewPanel;
-
 	QString category;
 
 	void updateSyntaxList();
@@ -60,7 +58,7 @@ private slots:
 	void editClicked();
 	void deleteClicked();
 
-	void syntaxChanged(const QString &newSyntax);
+	void syntaxChangedSlot(const QString &newSyntax);
 	void syntaxListUpdated();
 
 public:
@@ -73,6 +71,9 @@ public:
 
 public slots:
 	void setCurrentSyntax(const QString &syntax);
+
+signals:
+	void syntaxChanged(const QString &newSyntax);
 
 };
 

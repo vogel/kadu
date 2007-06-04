@@ -43,6 +43,7 @@ modules.cpp \
 path_list_edit.cpp \
 pending_msgs.cpp \
 personal_info.cpp \
+preview.cpp \
 protocol.cpp \
 protocols_manager.cpp \
 search.cpp \
@@ -106,6 +107,7 @@ modules.h \
 path_list_edit.h \
 pending_msgs.h \
 personal_info.h \
+preview.h \
 protocol.h \
 protocols_manager.h \
 search.h \
@@ -155,6 +157,7 @@ moc/modules_moc.cpp \
 moc/path_list_edit_moc.cpp \
 moc/pending_msgs_moc.cpp \
 moc/personal_info_moc.cpp \
+moc/preview_moc.cpp \
 moc/protocol_moc.cpp \
 moc/protocols_manager_moc.cpp \
 moc/search_moc.cpp \
@@ -217,6 +220,7 @@ obj/modules.$(OBJEXT) \
 obj/path_list_edit.$(OBJEXT) \
 obj/pending_msgs.$(OBJEXT) \
 obj/personal_info.$(OBJEXT) \
+obj/preview.$(OBJEXT) \
 obj/protocol.$(OBJEXT) \
 obj/protocols_manager.$(OBJEXT) \
 obj/search.$(OBJEXT) \
@@ -265,6 +269,7 @@ obj/modules_moc.$(OBJEXT) \
 obj/path_list_edit_moc.$(OBJEXT) \
 obj/pending_msgs_moc.$(OBJEXT) \
 obj/personal_info_moc.$(OBJEXT) \
+obj/preview_moc.$(OBJEXT) \
 obj/protocol_moc.$(OBJEXT) \
 obj/protocols_manager_moc.$(OBJEXT) \
 obj/search_moc.$(OBJEXT) \
@@ -355,6 +360,8 @@ include $(DEPS)/pending_msgs.d
 include $(DEPS)/pending_msgs_moc.d
 include $(DEPS)/personal_info.d
 include $(DEPS)/personal_info_moc.d
+include $(DEPS)/preview.d
+include $(DEPS)/preview_moc.d
 include $(DEPS)/protocol.d
 include $(DEPS)/protocol_moc.d
 include $(DEPS)/protocols_manager.d

@@ -214,25 +214,20 @@ SyntaxEditor::SyntaxEditor(QWidget *parent, char *name)
 	example.setAddressAndPort("Gadu", QHostAddress(2130706433), 80);
 	example.setDNSName("Gadu", "host.server.net");
 
-	QGridLayout *layout = new QGridLayout(this);
+	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setSpacing(5);
-	layout->setColStretch(0, 100);
 
 	syntaxListCombo = new QComboBox(this);
-	connect(syntaxListCombo, SIGNAL(activated(const QString &)), this, SLOT(syntaxChanged(const QString &)));
+	connect(syntaxListCombo, SIGNAL(activated(const QString &)), this, SLOT(syntaxChangedSlot(const QString &)));
 
 	QPushButton *editButton = new QPushButton(tr("Edit"), this);
 	deleteButton = new QPushButton(tr("Delete"), this);
 	connect(editButton, SIGNAL(clicked()), this, SLOT(editClicked()));
 	connect(deleteButton, SIGNAL(clicked()), this, SLOT(deleteClicked()));
 
-	previewPanel = new KaduTextBrowser(this);
-	previewPanel->setMinimumHeight(170);
-
-	layout->addWidget(syntaxListCombo, 0, 0);
-	layout->addWidget(editButton, 0, 1);
-	layout->addWidget(deleteButton, 0, 2);
-	layout->addMultiCellWidget(previewPanel, 1, 1, 0, 2);
+	layout->addWidget(syntaxListCombo, 100);
+	layout->addWidget(editButton);
+	layout->addWidget(deleteButton);
 }
 
 SyntaxEditor::~SyntaxEditor()
@@ -247,7 +242,7 @@ SyntaxEditor::~SyntaxEditor()
 void SyntaxEditor::setCurrentSyntax(const QString &syntax)
 {
 	syntaxListCombo->setCurrentText(syntax);
-	syntaxChanged(syntax);
+	syntaxChangedSlot(syntax);
 }
 
 QString SyntaxEditor::currentSyntax()
@@ -279,7 +274,7 @@ void SyntaxEditor::deleteClicked()
 		MessageBox::msg(tr("Unable to remove syntax: %1").arg(currentSyntax()), true, "Warning");
 }
 
-void SyntaxEditor::syntaxChanged(const QString &newSyntax)
+void SyntaxEditor::syntaxChangedSlot(const QString &newSyntax)
 {
 	if (!syntaxList)
 		return;
@@ -308,12 +303,8 @@ void SyntaxEditor::syntaxChanged(const QString &newSyntax)
 
 	content.replace(QRegExp("%o"),  " ");
 
-	// to nam zapewnia odswie¿enie tla jesli wczesniej byl obrazek
-	// TODO: fix it
-	previewPanel->setText("<body bgcolor=\"" + config_file.readEntry("Look", "InfoPanelBgColor") + "\"></body>");
-	previewPanel->setText(KaduParser::parse(content, example));
-
 	deleteButton->setEnabled(!info.global);
+	emit syntaxChanged(content);
 }
 
 void SyntaxEditor::updateSyntaxList()

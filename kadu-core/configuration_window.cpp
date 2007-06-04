@@ -369,6 +369,8 @@ void ConfigurationWindow::appendUiElementFromDom(QDomNode uiElementNode, ConfigG
 		widget = new ConfigActionButton(configGroupBox);
 	else if (tagName == "select-file")
 		widget = new ConfigSelectFile(configGroupBox);
+	else if (tagName == "preview")
+		widget = new ConfigPreview(configGroupBox);
 	else
 	{
 		kdebugf2();

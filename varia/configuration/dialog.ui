@@ -234,7 +234,8 @@
 			</group-box>
 
 			<group-box name="Syntax">
-				<syntax-editor caption="Syntax" config-section="Look" config-item="InfoPanelSyntaxFile" category="infopanel" />
+				<syntax-editor caption="Syntax" config-section="Look" config-item="InfoPanelSyntaxFile" category="infopanel" id="infoPanelSyntax" />
+				<preview caption="Preview" id="infoPanelSyntaxPreview" />
 			</group-box>
 		</tab>
 	</section>

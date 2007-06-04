@@ -59,6 +59,8 @@ MainConfigurationWindow::MainConfigurationWindow()
 	connect(widgetById("lookChatAdvanced"), SIGNAL(clicked()), this, SLOT(showLookChatAdvanced()));
 	connect(widgetById("lookUserboxBackground"), SIGNAL(clicked()), this, SLOT(showLookUserboxBackground()));
 
+	connect(widgetById("infoPanelSyntax"), SIGNAL(syntaxChanged(const QString &)), widgetById("infoPanelSyntaxPreview"), SLOT(syntaxChanged(const QString &)));
+
 // 	connect(widgetById("iconPaths"), SIGNAL(changed()), this, SLOT(setIconThemes()));
 
 	loadGeometry(this, "General", "ConfigGeometry", 0, 30, 790, 480);

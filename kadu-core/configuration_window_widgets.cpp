@@ -429,7 +429,7 @@ void ConfigSyntaxEditor::createWidgets()
 
 	QLabel *label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
 
-	layout->addWidget(label, numRows, 0, Qt::AlignRight | Qt::AlignTop);
+	layout->addWidget(label, numRows, 0, Qt::AlignRight);
 	layout->addWidget(this, numRows, 1);
 }
 
@@ -520,4 +520,28 @@ bool ConfigSelectFile::fromDomElement(QDomElement domElement)
 	setType(type);
 
 	return ConfigWidgetValue::fromDomElement(domElement);
+}
+
+ConfigPreview::ConfigPreview(const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name)
+	: Preview(parentConfigGroupBox->widget(), name), ConfigWidget(widgetCaption, parentConfigGroupBox)
+{
+	createWidgets();
+}
+
+ConfigPreview::ConfigPreview(ConfigGroupBox *parentConfigGroupBox, char *name)
+	: Preview(parentConfigGroupBox->widget(), name), ConfigWidget(parentConfigGroupBox)
+{
+}
+
+void ConfigPreview::createWidgets()
+{
+	kdebugf();
+
+	QGridLayout *layout = parentConfigGroupBox->layout();
+	int numRows = layout->numRows();
+
+	QLabel *label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
+
+	layout->addWidget(label, numRows, 0, Qt::AlignRight | Qt::AlignTop);
+	layout->addWidget(this, numRows, 1);
 }
