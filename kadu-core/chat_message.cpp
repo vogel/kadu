@@ -7,21 +7,80 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "chat_message.h"
-
 #include <qregexp.h>
+
 #include "chat_styles.h"
+#include "kadu_parser.h"
 #include "gadu_images_manager.h"
 #include "misc.h"
 
-ChatMessage::ChatMessage(const QString &nick_, const QString &unformattedMessage_, bool myMessage, QDateTime date_, QDateTime sdate_)
-	: nick(nick_), date(date_), sdate(sdate_), unformattedMessage(unformattedMessage_), isMyMessage(myMessage),
+#include "chat_message.h"
+
+static QString getMessage(const QObject * const object)
+{
+	return dynamic_cast<const ChatMessage * const>(object)->formattedMessage;
+}
+
+static QString getNick(const QObject * const object)
+{
+	return dynamic_cast<const ChatMessage * const>(object)->nick;
+}
+
+static QString getBackgroundColor(const QObject * const object)
+{
+	return dynamic_cast<const ChatMessage * const>(object)->backgroundColor;
+}
+
+static QString getFontColor(const QObject * const object)
+{
+	return dynamic_cast<const ChatMessage * const>(object)->fontColor;
+}
+
+static QString getNickColor(const QObject * const object)
+{
+	return dynamic_cast<const ChatMessage * const>(object)->nickColor;
+}
+
+static QString getSentDate(const QObject * const object)
+{
+	return dynamic_cast<const ChatMessage * const>(object)->sentDate;
+}
+
+static QString getReceivedDate(const QObject * const object)
+{
+	return dynamic_cast<const ChatMessage * const>(object)->receivedDate;
+}
+
+void ChatMessage::registerParserTags()
+{
+	KaduParser::registerObjectTag("message", getMessage);
+	KaduParser::registerObjectTag("nick", getNick);
+	KaduParser::registerObjectTag("backgroundColor", getBackgroundColor);
+	KaduParser::registerObjectTag("fontColor", getFontColor);
+	KaduParser::registerObjectTag("nickColor", getNickColor);
+	KaduParser::registerObjectTag("sentDate", getSentDate);
+	KaduParser::registerObjectTag("receivedDate", getReceivedDate);
+}
+
+void ChatMessage::unregisterParserTags()
+{
+	KaduParser::unregisterObjectTag("message", getMessage);
+	KaduParser::unregisterObjectTag("nick", getNick);
+	KaduParser::unregisterObjectTag("backgroundColor", getBackgroundColor);
+	KaduParser::unregisterObjectTag("fontColor", getFontColor);
+	KaduParser::unregisterObjectTag("nickColor", getNickColor);
+	KaduParser::unregisterObjectTag("sentDate", getSentDate);
+	KaduParser::unregisterObjectTag("receivedDate", getReceivedDate);
+}
+
+ChatMessage::ChatMessage(const UserListElement &ule, const QString &unformattedMessage_, bool myMessage, QDateTime date_, QDateTime sdate_)
+	: ule(ule), date(date_), sdate(sdate_), unformattedMessage(unformattedMessage_), isMyMessage(myMessage),
 	Colors(QColor(), QColor(), QColor()), attributes(), needsToBeFormatted(true), message()
 {
 }
 
 ChatMessage::ChatMessage(const QString &formattedMessage, const ChatColors& colors)
-	: nick(), date(), sdate(), unformattedMessage(), isMyMessage(true),
+	: ule(UserListElement()), nick(), date(), sdate(), unformattedMessage(), isMyMessage(true),
 	Colors(colors), attributes(), needsToBeFormatted(false), message(formattedMessage)
 {
 }
@@ -61,30 +120,33 @@ QString ChatMessage::convertCharacters(QString edit, const QColor &bgcolor, Emot
 void ChatMessage::formatMessage(const ChatStyle* chat_style,
 	const EmoticonsStyle emoticons_style, bool include_header, int separator_size)
 {
+
+	formattedMessage = convertCharacters(unformattedMessage, Colors.backgroundColor(), emoticons_style);
+	backgroundColor = Colors.backgroundColor().name();
+	fontColor = Colors.fontColor().name();
+	nickColor = Colors.nickColor().name();
+
+	sentDate = "";
+	receivedDate = "";
+
 	QString fmt;
 	if (include_header)
 	{
 		QString escaped_nick = nick;
-		QString date_str = printDateTime(date);
-		QString date_str_2 = date_str;
+		receivedDate = printDateTime(date);
 		if (!sdate.isNull())
-			if (!chat_style->noServerTimes() || 
+			if (!chat_style->noServerTimes() ||
 		    	    (abs(date.toTime_t()-sdate.toTime_t()))>chat_style->noServerTimesDiff())
-				date_str_2.append(" / S " + printDateTime(sdate));
+				sentDate = printDateTime(sdate);
+
 		HtmlDocument::escapeText(escaped_nick);
 		fmt = chat_style->formatStringFull();
 		if (separator_size > 0)
 			fmt.replace("<kadu:separator/>", QString("<img title=\"\" height=\"%1\" width=\"10000\" align=\"right\">").arg(separator_size));
 		else
 			fmt.remove("<kadu:separator/>");
-		message = narg(fmt,
-			Colors.backgroundColor().name(),
-			Colors.fontColor().name(),
-			Colors.nickColor().name(),
-			escaped_nick,
-			date_str,
-			date_str_2,
-			convertCharacters(unformattedMessage, Colors.backgroundColor(), emoticons_style));
+
+		message = KaduParser::parse(fmt, ule, this);
 	}
 	else
 	{
@@ -93,11 +155,9 @@ void ChatMessage::formatMessage(const ChatStyle* chat_style,
 			fmt.replace("<kadu:separator/>", QString("<img title=\"\" height=\"%1\" width=\"10000\" align=\"right\">").arg(separator_size));
 		else
 			fmt.remove("<kadu:separator/>");
-		message = narg(fmt,
-			Colors.backgroundColor().name(),
-			Colors.fontColor().name(),
-			Colors.nickColor().name(),
-			convertCharacters(unformattedMessage, Colors.backgroundColor(), emoticons_style));
+
+		printf("format is: %s\n", fmt.data());
+		message = KaduParser::parse(fmt, ule, this);
 	}
 	needsToBeFormatted = false;
 }

@@ -33,6 +33,8 @@ class Kadu : public QWidget
 	Q_OBJECT
 
 	private:
+		UserListElement Myself;
+
 		static bool Closing;
 		DockArea* TopDockArea;
 		KaduTextBrowser* InfoPanel;
@@ -119,6 +121,9 @@ class Kadu : public QWidget
 	public:
 		Kadu(QWidget* parent=0, const char *name=0);
 		~Kadu();
+
+		const UserListElement & myself() { return Myself; };
+
 		bool userInActiveGroup(UinType uin);
 		void removeUsers(UserListElements);
 

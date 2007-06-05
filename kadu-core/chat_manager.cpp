@@ -697,29 +697,29 @@ int ChatManager::openChat(Protocol *initialProtocol, const UserListElements &use
 	return Chats.count() - 1;
 }
 
-int ChatManager::openPendingMsg(int index, ChatMessage &msg)
+ChatMessage * ChatManager::openPendingMsg(int index, int &k)
 {
 	kdebugf();
 	// TODO: check if index does not exceed boundaries
 	PendingMsgs::Element p = pending[index];
 	// opening chat (if it does not exist)
-	int k = openChat(gadu, p.users, p.time);
+	k = openChat(gadu, p.users, p.time);
 	// appending new message
 
 	if (k < 0)
-		return k;
+		return 0;
 
 	QDateTime date;
 	date.setTime_t(p.time);
 
-	msg = ChatMessage(p.users[0].altNick(), p.msg, false, QDateTime::currentDateTime(), date);
-	Chats[k]->formatMessage(msg);
+	ChatMessage *msg = new ChatMessage(p.users[0]/*.altNick()*/, p.msg, false, QDateTime::currentDateTime(), date);
+	Chats[k]->formatMessage(*msg);
 
 	// remove message from pending
 	pending.deleteMsg(index);
 	kdebugf2();
 	// return index of opened chat window
-	return k;
+	return msg;
 }
 
 void ChatManager::deletePendingMsgs(UserListElements users)
@@ -753,8 +753,7 @@ void ChatManager::openPendingMsgs(UserListElements users)
 				|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
 				|| !elem.msgclass)
 			{
-				ChatMessage *msg = new ChatMessage(QString::null);
-				k = openPendingMsg(i, *msg);
+				ChatMessage *msg = openPendingMsg(i, k);
 
 				if (k < 0)
 					return;
@@ -796,8 +795,7 @@ void ChatManager::openPendingMsgs()
 				if (users.isEmpty())
 					users = elem.users;
 
-				ChatMessage *msg = new ChatMessage(QString::null);
-				k = openPendingMsg(i, *msg);
+				ChatMessage *msg = openPendingMsg(i, k);
 
 				if (k < 0)
 					return;
@@ -838,8 +836,7 @@ void ChatManager::sendMessage(UserListElement user, UserListElements selected_us
 				if (users.isEmpty())
 					users = elem.users;
 
-				ChatMessage *msg = new ChatMessage(QString::null);
-				k = openPendingMsg(i, *msg);
+				ChatMessage *msg = openPendingMsg(i, k);
 
 				if (k < 0)
 					return;
@@ -908,6 +905,9 @@ void ChatManager::setChatProperty(const UserGroup *group, const QString &name, c
 void ChatManager::closeModule()
 {
 	kdebugf();
+
+	ChatMessage::unregisterParserTags();
+
 	disconnect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
 		chat_manager, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
 	chat_manager->saveOpenedWindows();
@@ -920,6 +920,8 @@ void ChatManager::closeModule()
 void ChatManager::initModule()
 {
 	kdebugf();
+
+	ChatMessage::registerParserTags();
 
 // pierwsze uruchomienie kadu
 	config_file.addVariable("Look", "ChatBgColor", QColor("#ffffff"));

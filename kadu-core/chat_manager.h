@@ -29,10 +29,10 @@ class ChatManager : public QObject
 			\fn int openPendingMsg(int index, ChatMessage &msg)
 			Funkcja otwieraj±ca zakolejkowan± wiadomo¶æ
 			\param index nr wiadomo¶ci z kolejki
-			\param msg wiadomo¶æ z kolejki
-			\return zwracany jest nr okna w którym zosta³a otwarta wiadomo¶æ
+			\param k zwracany nr okna w którym zosta³a otwarta wiadomo¶æ
+			\return wiadomo¶æ z kolejki
 		**/
-		int openPendingMsg(int index, ChatMessage &msg);
+		ChatMessage * openPendingMsg(int index, int &k);
 
 		/**
 			\struct ChatInfo

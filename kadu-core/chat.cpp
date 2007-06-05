@@ -22,7 +22,6 @@
 #include "chat_message.h"
 #include "chat_styles.h"
 #include "color_selector.h"
-// #include "config_dialog.h"
 #include "custom_input.h"
 #include "debug.h"
 #include "dockarea.h"
@@ -30,6 +29,7 @@
 #include "gadu_rich_text.h"
 #include "hot_key.h"
 #include "icons_manager.h"
+#include "kadu.h"
 #include "kadu_parser.h"
 #include "kadu_splitter.h"
 #include "kadu_text_browser.h"
@@ -720,7 +720,7 @@ void Chat::newMessage(const QString &/*protocolName*/, UserListElements senders,
 	QDateTime date;
 	date.setTime_t(time);
 
-	ChatMessage *message = new ChatMessage(senders[0].altNick(), msg, false, QDateTime::currentDateTime(), date);
+	ChatMessage *message = new ChatMessage(senders[0], msg, false, QDateTime::currentDateTime(), date);
 	formatMessage(*message);
 	messages.append(message);
 
@@ -751,7 +751,7 @@ void Chat::writeMyMessage()
 {
 	kdebugf();
 	QValueList<ChatMessage *> messages;
-	ChatMessage *msg=new ChatMessage(config_file.readEntry("General","Nick"), myLastMessage, true, QDateTime::currentDateTime());
+	ChatMessage *msg=new ChatMessage(kadu->myself(), myLastMessage, true, QDateTime::currentDateTime());
 	formatMessage(*msg);
 	messages.append(msg);
 	scrollMessages(messages);

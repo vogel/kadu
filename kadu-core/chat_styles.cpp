@@ -21,7 +21,7 @@ ChatStyle::ChatStyle(const QString& format_string_full,
 
 ChatStyle::ChatStyle(const QString& format_string_full)
 	: FormatStringFull(format_string_full),
-	  FormatStringPure("<p style=\"background-color: %1\"><kadu:separator/><font color=\"%2\">%4</font></p>"),
+	  FormatStringPure("<p style=\"background-color: #{backgroundColor}\"><kadu:separator/><font color=\"#{fontColor}\">#{message}</font></p>"),
 	  noServerTime(config_file.readBoolEntry("Look", "NoServerTime")),
 	  noServerTimeDiff(config_file.readNumEntry("Look", "NoServerTimeDiff"))
 {
@@ -52,25 +52,25 @@ const QString& ChatStyle::formatStringPure() const
 }
 
 KaduChatStyle::KaduChatStyle()
-	: ChatStyle("<p style=\"background-color: %1\"><kadu:separator/><font color=\"%2\"><b><font color=\"%3\">%4</font> :: %6</b><br/>%7</font></p>")
+	: ChatStyle("<p style=\"background-color: #{backgroundColor}\"><kadu:separator/><font color=\"#{fontColor}\"><b><font color=\"#{nickColor}\">%a</font> :: #{receivedDate}[ / S #{sentDate}]</b><br/>#{message}</font></p>")
 {
 }
 
 HapiChatStyle::HapiChatStyle()
-	: ChatStyle("<p style=\"background-color: %1\"><kadu:separator/>\n"\
+	: ChatStyle("<p style=\"background-color: #{backgroundColor}\"><kadu:separator/>\n"\
 				"	<table style=\"border-bottom: solid 1px black;\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" width=\"100%\">\n"\
-				"	<tr><td align=\"left\" width=\"50%\" valign=\"bottom\"><b><font color=\"%3\">%4</font></b></td>\n"\
-				"	<td align=\"right\" width=\"50%\"><font color=\"%2\">%6</font></td></tr></table>\n"\
-				"<hr/><font color=\"%2\">%7</font></p>")
+				"	<tr><td align=\"left\" width=\"50%\" valign=\"bottom\"><b><font color=\"#{nickColor}\">%a</font></b></td>\n"\
+				"	<td align=\"right\" width=\"50%\"><font color=\"#{fontColor}\">#{receivedDate}[ / S #{sentDate]]</font></td></tr></table>\n"\
+				"<hr/><font color=\"#{fontColor}\">#{message}</font></p>")
 {
 }
 
 IrcChatStyle::IrcChatStyle()
-	: ChatStyle("<p style=\"background-color: %1\"><kadu:separator/><font color=\"%2\"><b>[%5] <font color=\"%3\">%4</font>: </b> %7</font></p>")
+	: ChatStyle("<p style=\"background-color: #{backgroundColor}\"><kadu:separator/><font color=\"#{fontColor}\"><b>[#{sentDate}] <font color=\"#{nickColor}\">%a</font>: </b> #{message}</font></p>")
 {
 }
 
 CustomChatStyle::CustomChatStyle(const QString& full_style)
-	: ChatStyle("<p style=\"background-color: %1\"><kadu:separator/>" + full_style + "</p>")
+	: ChatStyle("<p style=\"background-color: #{backgroundColor}\"><kadu:separator/>" + full_style + "</p>")
 {
 }

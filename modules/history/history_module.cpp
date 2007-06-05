@@ -248,7 +248,6 @@ void HistoryModule::chatCreated(Chat *chat, time_t time)
 	QValueList<ChatMessage *> messages;
 
 	int quotTime = config_file.readNumEntry("History","ChatHistoryQuotationTime");
-	QString myNick = config_file.readEntry("General","Nick");
 
 	QValueListConstIterator<HistoryEntry> entry = entries.at(from);
 	QValueListConstIterator<HistoryEntry> entriesEnd = entries.end();
@@ -257,9 +256,9 @@ void HistoryModule::chatCreated(Chat *chat, time_t time)
 		{
 			ChatMessage *msg;
 			if ((*entry).type == HISTORYMANAGER_ENTRY_MSGSEND || (*entry).type == HISTORYMANAGER_ENTRY_CHATSEND)
-				msg = new ChatMessage(myNick, (*entry).message, true, (*entry).date);
+				msg = new ChatMessage(kadu->myself(), (*entry).message, true, (*entry).date);
 			else
-				msg = new ChatMessage((*entry).nick, (*entry).message, false, (*entry).date, (*entry).sdate);
+				msg = new ChatMessage(userlist->byAltNick((*entry).nick), (*entry).message, false, (*entry).date, (*entry).sdate);
 			messages.append(msg);
 		}
 	chat->formatMessages(messages);

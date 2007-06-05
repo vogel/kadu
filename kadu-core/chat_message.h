@@ -18,29 +18,27 @@ class ChatStyle;
 	\class ChatMessage
 	\brief Klasa przechowuj±ca informacje o wiadomo¶ci.
 **/
-class ChatMessage
+class ChatMessage : public QObject
 {
-	private:
-		/**
-			\fn QString convertCharacters(QString text, const QColor &bgcolor, EmoticonsStyle style)
-			Funkcja zamienia specjalne tagi na emotikonki,
-			html na czysty tekst itp.
-			\param text tekst do konwersji
-			\param bgcolor kolor t³a
-			\param style styl emotikonek
-		**/
-		QString convertCharacters(QString text, const QColor &bgcolor, EmoticonsStyle style);
+	/**
+		\fn QString convertCharacters(QString text, const QColor &bgcolor, EmoticonsStyle style)
+		Funkcja zamienia specjalne tagi na emotikonki,
+		html na czysty tekst itp.
+		\param text tekst do konwersji
+		\param bgcolor kolor t³a
+		\param style styl emotikonek
+	**/
+	QString convertCharacters(QString text, const QColor &bgcolor, EmoticonsStyle style);
 
+public:
+	const UserListElement &ule;
 
-	public:
 	QString nick; /*!< nazwa u¿ytkownika */
 	QDateTime date; /*!< data otrzymania wiadomo¶ci */
 	QDateTime sdate; /*!< data wys³ania wiadomo¶ci */
 	QString unformattedMessage; /*!< niesformatowana wiadomo¶æ */
-	bool isMyMessage; /*!< zmienna mowi±ca czy wiadomo¶c zosta³a
-				napisana przez nas */
-	ChatColors Colors; /*!< przechowuje kolory u¿ywane w wiadomo¶ci
-				(t³a, czcionki i nicku) */
+	bool isMyMessage; /*!< zmienna mowi±ca czy wiadomo¶c zosta³a napisana przez nas */
+	ChatColors Colors; /*!< przechowuje kolory u¿ywane w wiadomo¶ci (t³a, czcionki i nicku) */
 
 	QMap<QString, bool> attributes; /*!<
 		Mo¿e s³u¿yæ do przechowywania informacji o tym
@@ -48,13 +46,23 @@ class ChatMessage
 		W zamy¶le ma s³u¿yæ do okre¶lania czy jaki¶ obrazek
 		ma byæ dodawany do wiadomo¶ci czy nie - jaki obrazek -
 		ta informacja bêdzie gdzie indziej
-		*/
+	*/
+
+	QString formattedMessage;
+	QString backgroundColor;
+	QString fontColor;
+	QString nickColor;
+	QString sentDate;
+	QString receivedDate;
+
+	static void registerParserTags();
+	static void unregisterParserTags();
 
 	//inne atrybuty?
 	//QMap<QString, QString> stringAttributes;
 
 	bool needsToBeFormatted; /*!< zmienna mowi±ca czy wiadomo¶c powinna
-				  byæ sformatowana */
+		byæ sformatowana */
 
 	QString message; /*!< Sformatowana wiadomo¶æ (razem z \<p\> lub \<table\>) **/
 
@@ -69,7 +77,7 @@ class ChatMessage
 		\param date data otrzymania wiadomo¶ci
 		\param sdate data wys³ania wiadomo¶ci
 	**/
-	ChatMessage(const QString &nick, const QString &unformattedMessage, bool myMessage, QDateTime date, QDateTime sdate=QDateTime());
+	ChatMessage(const UserListElement &ule, const QString &unformattedMessage, bool myMessage, QDateTime date, QDateTime sdate=QDateTime());
 
 	/**
 		\fn ChatMessage(const QString &formattedMessage, const ChatColors& colors = ChatColors(Qt::white, Qt::black, Qt::black))

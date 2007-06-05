@@ -14,8 +14,6 @@
 
 static QString getErrorMessage(const QObject * const object)
 {
-	kdebugf();
-
 	return dynamic_cast<const ConnectionErrorNotification * const>(object)->errorMessage();
 }
 
