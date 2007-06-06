@@ -22,7 +22,6 @@ class QPushButton;
 class Chat;
 class ChatManager;
 class ChatMessage;
-class ChatStyle;
 class ColorSelector;
 class EmoticonSelector;
 class KaduSplitter;
@@ -84,7 +83,8 @@ class Chat : public QMainWindow
 		int CfgHeaderSeparatorHeight; /*!< wysoko¶æ separatora nag³ówków */
 		int CfgNoHeaderInterval; /*!< interwa³ po jakim przywracany jest nag³ówek */
 
-		ChatStyle* Style; /*!< styl okna rozmowy */
+		QString ChatSyntaxWithHeader;
+		QString ChatSyntaxWithoutHeader;
 
 		time_t LastTime;
 

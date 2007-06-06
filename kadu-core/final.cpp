@@ -5,7 +5,6 @@
 #include "chat_colors.cpp"
 #include "chat_manager.cpp"
 #include "chat_message.cpp"
-#include "chat_styles.cpp"
 #include "color_button.cpp"
 #include "color_selector.cpp"
 #include "configuration_window.cpp"

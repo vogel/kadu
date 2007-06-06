@@ -9,7 +9,6 @@
 
 #include <qregexp.h>
 
-#include "chat_styles.h"
 #include "kadu_parser.h"
 #include "gadu_images_manager.h"
 #include "misc.h"
@@ -110,10 +109,8 @@ QString ChatMessage::convertCharacters(QString edit, const QColor &bgcolor, Emot
 	return edit;
 }
 
-void ChatMessage::formatMessage(const ChatStyle* chat_style,
-	const EmoticonsStyle emoticons_style, bool include_header, int separator_size)
+void ChatMessage::formatMessage(const QString &format, const EmoticonsStyle emoticons_style,/* bool include_header,*/ int separator_size)
 {
-
 	formattedMessage = convertCharacters(unformattedMessage, Colors.backgroundColor(), emoticons_style);
 	backgroundColor = Colors.backgroundColor().name();
 	fontColor = Colors.fontColor().name();
@@ -122,33 +119,18 @@ void ChatMessage::formatMessage(const ChatStyle* chat_style,
 	sentDate = "";
 	receivedDate = "";
 
-	QString fmt;
-	if (include_header)
-	{
-		receivedDate = printDateTime(date);
-		if (!sdate.isNull())
-			if (!chat_style->noServerTimes() ||
-		    	    (abs(date.toTime_t()-sdate.toTime_t()))>chat_style->noServerTimesDiff())
-				sentDate = printDateTime(sdate);
+	message = format;
 
-		fmt = chat_style->formatStringFull();
-		if (separator_size > 0)
-			fmt.replace("<kadu:separator/>", QString("<img title=\"\" height=\"%1\" width=\"10000\" align=\"right\">").arg(separator_size));
-		else
-			fmt.remove("<kadu:separator/>");
+	receivedDate = printDateTime(date);
+// 	if (!sdate.isNull())
+// 		if ((abs(date.toTime_t() - sdate.toTime_t())) > chat_style->noServerTimesDiff())
+// 			sentDate = printDateTime(sdate);
 
-		message = KaduParser::parse(fmt, ule, this);
-	}
+	if (separator_size > 0)
+		message.replace("<kadu:separator/>", QString("<img title=\"\" height=\"%1\" width=\"10000\" align=\"right\">").arg(separator_size));
 	else
-	{
-		fmt = chat_style->formatStringPure();
-		if (separator_size > 0)
-			fmt.replace("<kadu:separator/>", QString("<img title=\"\" height=\"%1\" width=\"10000\" align=\"right\">").arg(separator_size));
-		else
-			fmt.remove("<kadu:separator/>");
+		message.remove("<kadu:separator/>");
 
-		printf("format is: %s\n", fmt.data());
-		message = KaduParser::parse(fmt, ule, this);
-	}
+	message = KaduParser::parse(message, ule, this);
 	needsToBeFormatted = false;
 }

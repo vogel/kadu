@@ -9,8 +9,6 @@
 #include "chat_colors.h"
 #include "emoticons.h"
 
-class ChatStyle;
-
 /**
 
 	Klasa przechowuj±ca informacje o wiadomo¶ci, która ma siê pojawiæ
@@ -92,17 +90,14 @@ public:
 		const ChatColors& colors = ChatColors(Qt::white, Qt::black, Qt::black));
 
 	/**
-		\fn void formatMessage(const ChatStyle* chat_style, const EmoticonsStyle emoticons_style,
-			bool include_header, int separator_size);
+		\fn void formatMessage(const QString &format, const EmoticonsStyle emoticons_style, int separator_size);
 		Funkcja formatuj±ca niesformatowan± wiadomo¶æ
 		zgodnie z zadanymi parametrami
-		\param chat_style styl dla okna, który powinien zostaæ u¿yty
+		\param format format, który powinien zostaæ u¿yty
 		\param emoticons_style u¿ywany styl emotikon
-		\param include_header czy powinien byæ do³±czony nag³ówek
 		\param separator_size wysoko¶æ separatora
 	**/
-	void formatMessage(const ChatStyle* chat_style, const EmoticonsStyle emoticons_style,
-		bool include_header, int separator_size);
+	void formatMessage(const QString &format, const EmoticonsStyle emoticons_style, int separator_size);
 
 	UserListElement sender() { return ule; };
 };

@@ -7,7 +7,9 @@ install-data-local: uninstall-local
 	$(INSTALL_DATA) themes/sounds/default/*.wav "$(DESTDIR)$(datadir)/kadu/themes/sounds/default"
 	$(INSTALL_DATA) themes/sounds/default/sound.conf "$(DESTDIR)$(datadir)/kadu/themes/sounds/default"
 
+	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/syntax/chat"
 	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/syntax/infopanel"
+	$(INSTALL_DATA) syntax/chat/*.syntax "$(DESTDIR)$(datadir)/kadu/syntax/chat"
 	$(INSTALL_DATA) syntax/infopanel/*.syntax "$(DESTDIR)$(datadir)/kadu/syntax/infopanel"
 
 	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/themes/icons/"
@@ -46,6 +48,7 @@ install-data-local: uninstall-local
 uninstall-local:
 	rm -f "$(DESTDIR)$(datadir)/kadu/configuration"/*
 	rm -f "$(DESTDIR)$(datadir)/kadu/themes/sounds/default"/*
+	rm -f "$(DESTDIR)$(datadir)/kadu/syntax/chat"/*.syntax
 	rm -f "$(DESTDIR)$(datadir)/kadu/syntax/infopanel"/*.syntax
 	rm -rf "$(DESTDIR)$(datadir)/kadu/themes/icons"/*
 	rm -rf "$(DESTDIR)$(datadir)/kadu/themes/emoticons"/*

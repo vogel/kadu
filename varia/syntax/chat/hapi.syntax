@@ -1,0 +1,5 @@
+<p style="background-color: #{backgroundColor}"><kadu:separator/>
+	<kadu:header><table style="border-bottom: solid 1px black;" border="0" cellspacing="0" cellpadding="0" width="100%">
+	<tr><td align="left" width="50%" valign="bottom"><b><font color="#{nickColor}">%a</font></b></td>
+	<td align="right" width="50%"><font color="#{fontColor}">#{receivedDate}[ / S #{sentDate}]</font></td></tr></table>
+<hr/></kadu:header><font color="#{fontColor}">#{message}</font></p>

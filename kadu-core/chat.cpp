@@ -20,7 +20,6 @@
 #include "chat_colors.h"
 #include "chat_manager.h"
 #include "chat_message.h"
-#include "chat_styles.h"
 #include "color_selector.h"
 #include "custom_input.h"
 #include "debug.h"
@@ -36,6 +35,7 @@
 #include "message_box.h"
 #include "misc.h"
 #include "search.h"
+#include "syntax_editor.h"
 #include "userbox.h"
 #include "protocol.h"
 
@@ -48,7 +48,7 @@ Chat::Chat(Protocol *initialProtocol, const UserListElements &usrs, QWidget* par
 	WaitingForACK(false), userbox(0), myLastMessage(), seq(0), vertSplit(0), horizSplit(0),
 	ParagraphSeparator(config_file.readNumEntry("Look", "ParagraphSeparator")),
 	lastMsgTime(), CfgNoHeaderRepeat(config_file.readBoolEntry("Look","NoHeaderRepeat")),
-	CfgHeaderSeparatorHeight(0), CfgNoHeaderInterval(0), Style(0), LastTime(0), body(0), activationCount(0),
+	CfgHeaderSeparatorHeight(0), CfgNoHeaderInterval(0), /*Style(0),*/ LastTime(0), body(0), activationCount(0),
 	newMessagesNum(0), showNewMessagesNum(config_file.readBoolEntry("Chat","NewMessagesInChatTitle")),
 	blinkChatTitle(config_file.readBoolEntry("Chat","BlinkChatTitle"))
 {
@@ -162,15 +162,20 @@ Chat::Chat(Protocol *initialProtocol, const UserListElements &usrs, QWidget* par
 	connect(body, SIGNAL(mouseReleased(QMouseEvent *)), Edit, SLOT(setFocus()));
 	connect(body, SIGNAL(wheel(QWheelEvent *)), Edit, SLOT(setFocus()));
 
-	QString style = config_file.readEntry("Look", "Style");
-	if (style == "kadu")
-		Style = new KaduChatStyle();
-	else if (style == "hapi")
-		Style = new HapiChatStyle();
-	else if (style == "irc")
-		Style = new IrcChatStyle();
+	QString chatSyntax = SyntaxList::readSyntax("chat", config_file.readEntry("Look", "Style"));
+	int beginOfHeader = chatSyntax.find("<kadu:header>");
+	int endOfHeader = chatSyntax.find("</kadu:header>");
+	ChatSyntaxWithHeader = chatSyntax;
+	ChatSyntaxWithHeader.replace("<kadu:header>", "");
+	ChatSyntaxWithHeader.replace("</kadu:header>", "");
+
+	if (endOfHeader != -1)
+		ChatSyntaxWithoutHeader = chatSyntax.mid(0, beginOfHeader) + chatSyntax.mid(endOfHeader + strlen("</kadu:header>"));
 	else
-		Style = new CustomChatStyle(config_file.readEntry("Look", "FullStyle"));
+		ChatSyntaxWithoutHeader = ChatSyntaxWithHeader;
+
+	printf("ChatSyntaxWithHeader: %s\n", ChatSyntaxWithHeader.data());
+	printf("ChatSyntaxWithoutHeader: %s\n", ChatSyntaxWithoutHeader.data());
 
 	// headers removal stuff
 	if (CfgNoHeaderRepeat)
@@ -269,7 +274,7 @@ Chat::~Chat()
 		delete userbox;
 	delete bodyformat;
 	delete Users;
-	delete Style;
+// 	delete Style;
 
 	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed: index %d\n", index);
 }
@@ -658,14 +663,14 @@ void Chat::formatMessage(ChatMessage &msg, const OwnChatColors* own_colors,
 	{
 		time_t CurTime = msg.date.toTime_t(); // ilo¶æ sekund od 1970 roku
 		if ((CurTime - LastTime <= (CfgNoHeaderInterval * 60)) && (PreviousSender == msg.sender()))
-			msg.formatMessage(Style, style, false, CfgHeaderSeparatorHeight);
+			msg.formatMessage(ChatSyntaxWithoutHeader, style, CfgHeaderSeparatorHeight);
 		else
-			msg.formatMessage(Style, style, true, ParagraphSeparator);
+			msg.formatMessage(ChatSyntaxWithHeader, style, ParagraphSeparator);
 		PreviousSender = msg.sender();
 		LastTime = CurTime;
 	}
 	else
-		msg.formatMessage(Style, style, true, ParagraphSeparator);
+		msg.formatMessage(ChatSyntaxWithHeader, style, ParagraphSeparator);
 }
 
 void Chat::repaintMessages()

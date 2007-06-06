@@ -1,0 +1,1 @@
+<p style="background-color: #{backgroundColor}"><kadu:separator/><font color="#{fontColor}"><b>\[#{receivedDate}\] <font color="#{nickColor}">%a</font>: </b> #{message}</font></p>
