@@ -21,11 +21,6 @@ static QString getMessage(const QObject * const object)
 	return dynamic_cast<const ChatMessage * const>(object)->formattedMessage;
 }
 
-static QString getNick(const QObject * const object)
-{
-	return dynamic_cast<const ChatMessage * const>(object)->nick;
-}
-
 static QString getBackgroundColor(const QObject * const object)
 {
 	return dynamic_cast<const ChatMessage * const>(object)->backgroundColor;
@@ -54,7 +49,6 @@ static QString getReceivedDate(const QObject * const object)
 void ChatMessage::registerParserTags()
 {
 	KaduParser::registerObjectTag("message", getMessage);
-	KaduParser::registerObjectTag("nick", getNick);
 	KaduParser::registerObjectTag("backgroundColor", getBackgroundColor);
 	KaduParser::registerObjectTag("fontColor", getFontColor);
 	KaduParser::registerObjectTag("nickColor", getNickColor);
@@ -65,7 +59,6 @@ void ChatMessage::registerParserTags()
 void ChatMessage::unregisterParserTags()
 {
 	KaduParser::unregisterObjectTag("message", getMessage);
-	KaduParser::unregisterObjectTag("nick", getNick);
 	KaduParser::unregisterObjectTag("backgroundColor", getBackgroundColor);
 	KaduParser::unregisterObjectTag("fontColor", getFontColor);
 	KaduParser::unregisterObjectTag("nickColor", getNickColor);
@@ -80,7 +73,7 @@ ChatMessage::ChatMessage(const UserListElement &ule, const QString &unformattedM
 }
 
 ChatMessage::ChatMessage(const QString &formattedMessage, const ChatColors& colors)
-	: ule(UserListElement()), nick(), date(), sdate(), unformattedMessage(), isMyMessage(true),
+	: ule(UserListElement()), date(), sdate(), unformattedMessage(), isMyMessage(true),
 	Colors(colors), attributes(), needsToBeFormatted(false), message(formattedMessage)
 {
 }
@@ -132,14 +125,12 @@ void ChatMessage::formatMessage(const ChatStyle* chat_style,
 	QString fmt;
 	if (include_header)
 	{
-		QString escaped_nick = nick;
 		receivedDate = printDateTime(date);
 		if (!sdate.isNull())
 			if (!chat_style->noServerTimes() ||
 		    	    (abs(date.toTime_t()-sdate.toTime_t()))>chat_style->noServerTimesDiff())
 				sentDate = printDateTime(sdate);
 
-		HtmlDocument::escapeText(escaped_nick);
 		fmt = chat_style->formatStringFull();
 		if (separator_size > 0)
 			fmt.replace("<kadu:separator/>", QString("<img title=\"\" height=\"%1\" width=\"10000\" align=\"right\">").arg(separator_size));

@@ -22,7 +22,6 @@ class MainConfigurationWindow : public ConfigurationWindow
 	Q_OBJECT
 
 	ConfigurationWindow *lookChatAdvanced;
-	ConfigurationWindow *lookUserboxBackground;
 
 	QCheckBox *onStartupSetLastDescription;
 
@@ -49,9 +48,6 @@ private slots:
 
 	void showLookChatAdvanced();
 	void lookChatAdvancedDestroyed();
-
-	void showLookUserboxBackground();
-	void lookUserboxBackgroundDestroyed();
 
 public:
 	MainConfigurationWindow();

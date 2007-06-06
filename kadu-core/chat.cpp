@@ -47,7 +47,7 @@ Chat::Chat(Protocol *initialProtocol, const UserListElements &usrs, QWidget* par
 	AutoSend(config_file.readBoolEntry("Chat", "AutoSend")), ScrollLocked(false),
 	WaitingForACK(false), userbox(0), myLastMessage(), seq(0), vertSplit(0), horizSplit(0),
 	ParagraphSeparator(config_file.readNumEntry("Look", "ParagraphSeparator")),
-	lastMsgTime(), PreviousMessage(), CfgNoHeaderRepeat(config_file.readBoolEntry("Look","NoHeaderRepeat")),
+	lastMsgTime(), CfgNoHeaderRepeat(config_file.readBoolEntry("Look","NoHeaderRepeat")),
 	CfgHeaderSeparatorHeight(0), CfgNoHeaderInterval(0), Style(0), LastTime(0), body(0), activationCount(0),
 	newMessagesNum(0), showNewMessagesNum(config_file.readBoolEntry("Chat","NewMessagesInChatTitle")),
 	blinkChatTitle(config_file.readBoolEntry("Chat","BlinkChatTitle"))
@@ -178,7 +178,6 @@ Chat::Chat(Protocol *initialProtocol, const UserListElements &usrs, QWidget* par
 	    CfgHeaderSeparatorHeight = config_file.readNumEntry("Look","HeaderSeparatorHeight");
 	    CfgNoHeaderInterval = config_file.readNumEntry("Look","NoHeaderInterval");
 	    LastTime = 0;		//zerowanie licznika ró¿nicy czasu miêdzy wiadomo¶ciami
-	    PreviousMessage = "";
 	}
 
 	DockArea* btnpart = new DockArea(Qt::Horizontal, DockArea::Normal, downpart,
@@ -658,11 +657,11 @@ void Chat::formatMessage(ChatMessage &msg, const OwnChatColors* own_colors,
 	if (CfgNoHeaderRepeat)
 	{
 		time_t CurTime = msg.date.toTime_t(); // ilo¶æ sekund od 1970 roku
-		if ((CurTime - LastTime <= (CfgNoHeaderInterval * 60)) && (PreviousMessage == msg.nick))
+		if ((CurTime - LastTime <= (CfgNoHeaderInterval * 60)) && (PreviousSender == msg.sender()))
 			msg.formatMessage(Style, style, false, CfgHeaderSeparatorHeight);
 		else
 			msg.formatMessage(Style, style, true, ParagraphSeparator);
-		PreviousMessage = msg.nick;
+		PreviousSender = msg.sender();
 		LastTime = CurTime;
 	}
 	else

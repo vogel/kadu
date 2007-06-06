@@ -33,7 +33,6 @@ class ChatMessage : public QObject
 public:
 	const UserListElement &ule;
 
-	QString nick; /*!< nazwa u¿ytkownika */
 	QDateTime date; /*!< data otrzymania wiadomo¶ci */
 	QDateTime sdate; /*!< data wys³ania wiadomo¶ci */
 	QString unformattedMessage; /*!< niesformatowana wiadomo¶æ */
@@ -104,6 +103,8 @@ public:
 	**/
 	void formatMessage(const ChatStyle* chat_style, const EmoticonsStyle emoticons_style,
 		bool include_header, int separator_size);
+
+	UserListElement sender() { return ule; };
 };
 
 #endif

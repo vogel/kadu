@@ -20,7 +20,7 @@
 #include "main_configuration_window.h"
 
 MainConfigurationWindow::MainConfigurationWindow()
-	: ConfigurationWindow(), lookChatAdvanced(0), lookUserboxBackground(0)
+	: ConfigurationWindow(), lookChatAdvanced(0)
 {
 	import_0_5_0_configuration();
 
@@ -34,14 +34,10 @@ MainConfigurationWindow::MainConfigurationWindow()
 
 	connect(widgetById("disconnectWithCurrentDescription"), SIGNAL(toggled(bool)), disconnectDescription, SLOT(setDisabled(bool)));
 	connect(onStartupSetLastDescription, SIGNAL(toggled(bool)), onStartupSetDescription, SLOT(setDisabled(bool)));
-	connect(widgetById("removeServerTime"), SIGNAL(toggled(bool)), widgetById("maxTimeDifference"), SLOT(setEnabled(bool)));
 	connect(widgetById("receiveImages"), SIGNAL(toggled(bool)), widgetById("receiveImagesDuringInvisibility"), SLOT(setEnabled(bool)));
 	connect(widgetById("receiveImages"), SIGNAL(toggled(bool)), widgetById("maxImageRequests"), SLOT(setEnabled(bool)));
 	connect(widgetById("startupStatus"), SIGNAL(activated(int)), this, SLOT(onChangeStartupStatus(int)));
 	connect(widgetById("showDescription"), SIGNAL(toggled(bool)), widgetById("multilineDescription"), SLOT(setEnabled(bool)));
-	connect(widgetById("chatPrune"), SIGNAL(toggled(bool)), widgetById("chatPruneLen"), SLOT(setEnabled(bool)));
-	connect(widgetById("foldLink"), SIGNAL(toggled(bool)), widgetById("linkFoldTreshold"), SLOT(setEnabled(bool)));
-	connect(widgetById("chatCloseTimer"), SIGNAL(toggled(bool)), widgetById("chatCloseTimerPeriod"), SLOT(setEnabled(bool)));
 	connect(widgetById("useDefaultServers"), SIGNAL(toggled(bool)), widgetById("serverList"), SLOT(setDisabled(bool)));
 
 	QWidget *showInformationPanel = widgetById("showInformationPanel");
@@ -66,7 +62,6 @@ MainConfigurationWindow::MainConfigurationWindow()
 	connect(useProxy, SIGNAL(toggled(bool)), proxyPassword, SLOT(setEnabled(bool)));
 
 	connect(widgetById("lookChatAdvanced"), SIGNAL(clicked()), this, SLOT(showLookChatAdvanced()));
-	connect(widgetById("lookUserboxBackground"), SIGNAL(clicked()), this, SLOT(showLookUserboxBackground()));
 
 	connect(widgetById("infoPanelSyntax"), SIGNAL(syntaxChanged(const QString &)), widgetById("infoPanelSyntaxPreview"), SLOT(syntaxChanged(const QString &)));
 
@@ -248,7 +243,7 @@ void MainConfigurationWindow::onChangeBrowser(int index)
 {
 	QStringList searchPath = QStringList::split(":", QString(getenv("PATH")));
 	QStringList executableName;
-	QStringList options;
+// 	QStringList options;
 
 	QString parameters;
 
@@ -276,7 +271,7 @@ void MainConfigurationWindow::onChangeBrowser(int index)
 
 			parameters = "";
 
-			options << tr("Open in new window") << tr("Open in new tab") << tr("Open in background tab");
+// 			options << tr("Open in new window") << tr("Open in new tab") << tr("Open in background tab");
 			break;
 		}
 		case 3: // mozilla
@@ -296,7 +291,7 @@ void MainConfigurationWindow::onChangeBrowser(int index)
 
 			parameters = "";
 
-			options << tr("Open in new window") << tr("Open in new tab");
+// 			options << tr("Open in new window") << tr("Open in new tab");
 			break;
 		}
 		case 4: // firefox
@@ -328,7 +323,7 @@ void MainConfigurationWindow::onChangeBrowser(int index)
 			CONST_FOREACH(dir, dirList)
 				searchPath.append("/usr/lib/" + (*dir));
 
-			options << tr("Open in new window") << tr("Open in new tab");
+// 			options << tr("Open in new window") << tr("Open in new tab");
 			break;
 		}
 		case 5: // dillo
@@ -432,6 +427,12 @@ void MainConfigurationWindow::showLookChatAdvanced()
 		lookChatAdvanced = new ConfigurationWindow();
 		lookChatAdvanced->appendUiFile(dataPath("kadu/configuration/dialog-look-chat-advanced.ui"));
 
+		connect(lookChatAdvanced->widgetById("removeServerTime"), SIGNAL(toggled(bool)), lookChatAdvanced->widgetById("maxTimeDifference"), SLOT(setEnabled(bool)));
+		connect(lookChatAdvanced->widgetById("noHeaderRepeat"), SIGNAL(toggled(bool)), lookChatAdvanced->widgetById("noHeaderInterval"), SLOT(setEnabled(bool)));
+		connect(lookChatAdvanced->widgetById("chatPrune"), SIGNAL(toggled(bool)), lookChatAdvanced->widgetById("chatPruneLen"), SLOT(setEnabled(bool)));
+		connect(lookChatAdvanced->widgetById("foldLink"), SIGNAL(toggled(bool)), lookChatAdvanced->widgetById("linkFoldTreshold"), SLOT(setEnabled(bool)));
+		connect(lookChatAdvanced->widgetById("chatCloseTimer"), SIGNAL(toggled(bool)), lookChatAdvanced->widgetById("chatCloseTimerPeriod"), SLOT(setEnabled(bool)));
+
 		connect(lookChatAdvanced, SIGNAL(configurationUpdated()), this, SIGNAL(configurationUpdated()));
 		connect(lookChatAdvanced, SIGNAL(destroyed()), this, SLOT(lookChatAdvancedDestroyed()));
 	}
@@ -442,29 +443,4 @@ void MainConfigurationWindow::showLookChatAdvanced()
 void MainConfigurationWindow::lookChatAdvancedDestroyed()
 {
 	lookChatAdvanced = 0;
-}
-
-void MainConfigurationWindow::showLookUserboxBackground()
-{
-	if (!lookUserboxBackground)
-	{
-		lookUserboxBackground = new ConfigurationWindow();
-		lookUserboxBackground->appendUiFile(dataPath("kadu/configuration/dialog-look-userbox-background.ui"));
-
-		QWidget *userboxBackgroundMove = lookUserboxBackground->widgetById("userboxBackgroundMove");
-		connect(userboxBackgroundMove, SIGNAL(toggled(bool)), lookUserboxBackground->widgetById("userboxBackgroundSX"), SLOT(setEnabled(bool)));
-		connect(userboxBackgroundMove, SIGNAL(toggled(bool)), lookUserboxBackground->widgetById("userboxBackgroundSY"), SLOT(setEnabled(bool)));
-		connect(userboxBackgroundMove, SIGNAL(toggled(bool)), lookUserboxBackground->widgetById("userboxBackgroundSW"), SLOT(setEnabled(bool)));
-		connect(userboxBackgroundMove, SIGNAL(toggled(bool)), lookUserboxBackground->widgetById("userboxBackgroundSH"), SLOT(setEnabled(bool)));
-
-		connect(lookUserboxBackground, SIGNAL(configurationUpdated()), this, SIGNAL(configurationUpdated()));
-		connect(lookUserboxBackground, SIGNAL(destroyed()), this, SLOT(lookUserboxBackgroundDestroyed()));
-	}
-
-	lookUserboxBackground->show();
-}
-
-void MainConfigurationWindow::lookUserboxBackgroundDestroyed()
-{
-	lookUserboxBackground = 0;
 }

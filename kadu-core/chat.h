@@ -79,7 +79,7 @@ class Chat : public QMainWindow
 		QDateTime lastMsgTime; /*!< czas ostatniej wiadomo¶ci */
 
 		//pomijanie nag³ówków w wiadomo¶ciach
-		QString PreviousMessage;           //pamiêtamy od kogo by³a ostatnia wiadomo¶æ
+		UserListElement PreviousSender;           //pamiêtamy od kogo by³a ostatnia wiadomo¶æ
 		bool CfgNoHeaderRepeat; /*!< okre¶la czy u¿ywamy usuwania nag³ówków */
 		int CfgHeaderSeparatorHeight; /*!< wysoko¶æ separatora nag³ówków */
 		int CfgNoHeaderInterval; /*!< interwa³ po jakim przywracany jest nag³ówek */
