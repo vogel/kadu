@@ -559,29 +559,28 @@ void Kadu::copyPersonalInfo()
 void Kadu::lookupInDirectory()
 {
 	kdebugf();
-	SearchDialog *sd;
+
 	UserBox *activeUserBox = UserBox::activeUserBox();
 	if (activeUserBox == NULL)
 	{
 		kdebugf2();
 		return;
 	}
+
 	UserListElements users = activeUserBox->selectedUsers();
 	if (users.count() == 1)
 	{
 		UserListElement user = *(users.constBegin());
 		if (user.usesProtocol("Gadu"))
 		{
-			sd = new SearchDialog(0, "User info", user.ID("Gadu").toUInt());
+			SearchDialog *sd = new SearchDialog(NULL, "User info", user.ID("Gadu").toUInt());
 			sd->show();
 			sd->firstSearch();
 		}
 	}
 	else
-	{
-		sd = new SearchDialog();
-		sd->show();
-	}
+		searchInDirectory();
+
 	kdebugf2();
 }
 

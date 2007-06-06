@@ -348,10 +348,9 @@ void ChatManager::insertEmoticonActionAddedToToolbar(const UserGroup* /*users*/,
 void ChatManager::whoisActionActivated(const UserGroup* users)
 {
 	kdebugf();
+
 	if (users->count() == 0)
-	{
 		(new SearchDialog())->show();
-	}
 	else
 	{
 		UserListElement user = *users->constBegin();
@@ -363,6 +362,7 @@ void ChatManager::whoisActionActivated(const UserGroup* users)
 			sd->firstSearch();
 		}
 	}
+
 	kdebugf2();
 }
 
