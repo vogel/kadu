@@ -1,3 +1,3 @@
 <p style="background-color: #{backgroundColor};"><kadu:separator/>
-  <font color="#{fontColor}"><kadu:header><b><font color="#{nickColor}">%a</font> :: #{receivedDate}[ / S #{sentDate}]</b><br /></kadu:header></font>
+  <font color="#{fontColor}"><kadu:header><b><font color="#{nickColor}">%a</font> :: #{receivedDate}[ / S #{sentDate}]</b><br /></kadu:header>
 #{message}</font></p>

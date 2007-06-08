@@ -131,6 +131,7 @@ public:
 	virtual ~ConfigComboBox() {};
 
 	void setItems(const QStringList &itemValues, const QStringList &itemCaptions);
+	QString currentItemValue() { return itemValues[currentItem()]; }
 
 	virtual void loadConfiguration();
 	virtual void saveConfiguration();

@@ -123,12 +123,12 @@
 				<check-box caption="Show status button" config-section="Look" config-item="ShowStatusButton" />
 			</group-box>
 			<group-box name="Emoticons">
-				<combo-box caption="Emoticons" config-section="Chat" config-item="EmoticonsStyle">
+				<combo-box caption="Emoticons" config-section="Chat" config-item="EmoticonsStyle" id="emoticonsStyle">
 					<item value="2" caption="Animated" />
 					<item value="1" caption="Static" />
 					<item value="0" caption="None" />
 				</combo-box>
-				<combo-box caption="Emoticons theme" config-section="Chat" config-item="EmoticonsTheme" id="emoticonThemes" />
+				<combo-box caption="Emoticons theme" config-section="Chat" config-item="EmoticonsTheme" id="emoticonsTheme" />
 				<path-list-edit caption="Emiticons paths" config-section="" config-item="" id="emoticonsPaths" />
 			</group-box>
 		</tab>

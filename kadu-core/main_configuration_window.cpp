@@ -40,6 +40,10 @@ MainConfigurationWindow::MainConfigurationWindow()
 	connect(widgetById("showDescription"), SIGNAL(toggled(bool)), widgetById("multilineDescription"), SLOT(setEnabled(bool)));
 	connect(widgetById("useDefaultServers"), SIGNAL(toggled(bool)), widgetById("serverList"), SLOT(setDisabled(bool)));
 
+	emoticonsStyleComboBox = dynamic_cast<ConfigComboBox *>(widgetById("emoticonsStyle"));
+	emoticonsThemeComboBox = dynamic_cast<ConfigComboBox *>(widgetById("emoticonsTheme"));
+	connect(emoticonsStyleComboBox, SIGNAL(activated(int)), this, SLOT(onChangeEmoticonsStyle(int)));
+
 	QWidget *showInformationPanel = widgetById("showInformationPanel");
 	connect(showInformationPanel, SIGNAL(toggled(bool)), widgetById("showVerticalScrollbar"), SLOT(setEnabled(bool)));
 	connect(showInformationPanel, SIGNAL(toggled(bool)), widgetById("showEmoticonsInPanel"), SLOT(setEnabled(bool)));
@@ -200,11 +204,11 @@ void MainConfigurationWindow::setIconThemes()
 
 void MainConfigurationWindow::setEmoticonThemes()
 {
-	ConfigComboBox *emoticonThemes = dynamic_cast<ConfigComboBox *>(widgetById("emoticonThemes"));
+	ConfigComboBox *emoticonsTheme = dynamic_cast<ConfigComboBox *>(widgetById("emoticonsTheme"));
 
 	QStringList themes = emoticons->themes();
 
-	emoticonThemes->setItems(themes, themes);
+	emoticonsTheme->setItems(themes, themes);
 }
 
 void MainConfigurationWindow::setToolTipClasses()
@@ -237,6 +241,11 @@ QString MainConfigurationWindow::findExecutable(const QStringList &paths, const 
 		}
 
 	return QString::null;
+}
+
+void MainConfigurationWindow::onChangeEmoticonsStyle(int index)
+{
+	emoticonsThemeComboBox->setEnabled(emoticonsStyleComboBox->currentItemValue() != "0");
 }
 
 void MainConfigurationWindow::onChangeBrowser(int index)

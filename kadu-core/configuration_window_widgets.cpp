@@ -233,6 +233,8 @@ void ConfigComboBox::createWidgets()
 {
 	kdebugf();
 
+	connect(this, SIGNAL(activatd(int index)), this, SLOT(activatedSlot(int index)));
+
 	QGridLayout *layout = parentConfigGroupBox->layout();
 	int numRows = layout->numRows();
 

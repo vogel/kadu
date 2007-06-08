@@ -25,6 +25,9 @@ class MainConfigurationWindow : public ConfigurationWindow
 
 	QCheckBox *onStartupSetLastDescription;
 
+	ConfigComboBox *emoticonsStyleComboBox;
+	ConfigComboBox *emoticonsThemeComboBox;
+
 	ConfigComboBox *browserComboBox;
 	ConfigLineEdit *browserCommandLineEdit;
 
@@ -42,6 +45,8 @@ class MainConfigurationWindow : public ConfigurationWindow
 	void import_0_5_0_configuration();
 
 private slots:
+	void onChangeEmoticonsStyle(int index);
+
 	void onChangeStartupStatus(int index);
 	void onChangeBrowser(int index);
 	void onChangeMail(int index);
