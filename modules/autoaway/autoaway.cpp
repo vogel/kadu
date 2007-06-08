@@ -437,12 +437,12 @@ AutoAwaySlots::AutoAwaySlots(QObject *parent, const char *name) : QObject(parent
 // 						tr("Add at the back of description")),	//APPEND
 // 		toStringList("0","1","2","3"), "0");
 //
-// 	autoAwayStatusChanger = new AutoAwayStatusChanger();
-// 	autoAwayStatusChanger->setChangeDescriptionTo(
-// 		(AutoAwayStatusChanger::ChangeDescriptionTo)config_file.readNumEntry("General", "AutoChangeDescription"),
-// 		config_file.readEntry("General", "AutoStatusText")
-// 	);
-// 	status_changer_manager->registerStatusChanger(autoAwayStatusChanger);
+	autoAwayStatusChanger = new AutoAwayStatusChanger();
+	autoAwayStatusChanger->setChangeDescriptionTo(
+		(AutoAwayStatusChanger::ChangeDescriptionTo)config_file.readNumEntry("General", "AutoChangeDescription"),
+		config_file.readEntry("General", "AutoStatusText")
+	);
+	status_changer_manager->registerStatusChanger(autoAwayStatusChanger);
 //
 // 	kdebugf2();
 }
