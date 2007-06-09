@@ -10,6 +10,7 @@
 #include <qdom.h>
 #include <qlabel.h>
 #include <qregexp.h>
+#include <qtooltip.h>
 
 #include "configuration_window.h"
 #include "config_file.h"
@@ -22,8 +23,8 @@ ConfigWidget::ConfigWidget(ConfigGroupBox *parentConfigGroupBox)
 {
 }
 
-ConfigWidget::ConfigWidget(const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox)
-	: parentConfigGroupBox(parentConfigGroupBox), widgetCaption(widgetCaption)
+ConfigWidget::ConfigWidget(const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox)
+	: parentConfigGroupBox(parentConfigGroupBox), widgetCaption(widgetCaption), toolTip(toolTip)
 {
 }
 
@@ -34,6 +35,8 @@ bool ConfigWidget::fromDomElement(QDomElement domElement)
 	if (widgetCaption.isEmpty())
 		return false;
 
+	toolTip = domElement.attribute("tool-tip");
+
 	createWidgets();
 	return true;
 }
@@ -43,8 +46,9 @@ ConfigWidgetValue::ConfigWidgetValue(ConfigGroupBox *parentConfigGroupBox)
 {
 }
 
-ConfigWidgetValue::ConfigWidgetValue(const QString &widgetCaption, const QString &section, const QString &item, ConfigGroupBox *parentConfigGroupBox)
-	: ConfigWidget(widgetCaption, parentConfigGroupBox), section(section), item(item)
+ConfigWidgetValue::ConfigWidgetValue(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+		ConfigGroupBox *parentConfigGroupBox)
+	: ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox), section(section), item(item)
 {
 }
 
@@ -59,8 +63,9 @@ bool ConfigWidgetValue::fromDomElement(QDomElement domElement)
 	return ConfigWidget::fromDomElement(domElement);
 }
 
-ConfigLineEdit::ConfigLineEdit(const QString &section, const QString &item, const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name)
-	: QLineEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, section, item, parentConfigGroupBox)
+ConfigLineEdit::ConfigLineEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+		ConfigGroupBox *parentConfigGroupBox, char *name)
+	: QLineEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox)
 {
 	createWidgets();
 }
@@ -81,6 +86,12 @@ void ConfigLineEdit::createWidgets()
 
 	layout->addWidget(label, numRows, 0, Qt::AlignRight);
 	layout->addWidget(this, numRows, 1);
+
+	if (!toolTip.isEmpty())
+	{
+		QToolTip::add(this, toolTip);
+		QToolTip::add(label, toolTip);
+	}
 }
 
 void ConfigLineEdit::loadConfiguration()
@@ -93,8 +104,9 @@ void ConfigLineEdit::saveConfiguration()
 	config_file.writeEntry(section, item, text());
 }
 
-ConfigGGPasswordEdit::ConfigGGPasswordEdit(const QString &section, const QString &item, const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name)
-	: ConfigLineEdit(section, item, widgetCaption, parentConfigGroupBox, name)
+ConfigGGPasswordEdit::ConfigGGPasswordEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+		ConfigGroupBox *parentConfigGroupBox, char *name)
+	: ConfigLineEdit(section, item, widgetCaption, toolTip, parentConfigGroupBox, name)
 {
 	setEchoMode(QLineEdit::Password);
 }
@@ -115,8 +127,9 @@ void ConfigGGPasswordEdit::saveConfiguration()
 	config_file.writeEntry(section, item, pwHash(text()));
 }
 
-ConfigCheckBox::ConfigCheckBox(const QString &section, const QString &item, const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name)
-	: QCheckBox(widgetCaption, parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, section, item, parentConfigGroupBox)
+ConfigCheckBox::ConfigCheckBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+		ConfigGroupBox *parentConfigGroupBox, char *name)
+	: QCheckBox(widgetCaption, parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox)
 {
 	createWidgets();
 }
@@ -136,6 +149,9 @@ void ConfigCheckBox::createWidgets()
 
 	int numRows = layout->numRows();
 	layout->addMultiCellWidget(this, numRows, numRows, 0, 1);
+
+	if (!toolTip.isEmpty())
+		QToolTip::add(this, toolTip);
 }
 
 void ConfigCheckBox::loadConfiguration()
@@ -149,9 +165,9 @@ void ConfigCheckBox::saveConfiguration()
 	config_file.writeEntry(section, item, isChecked());
 }
 
-ConfigSpinBox::ConfigSpinBox(const QString &section, const QString &item, const QString &widgetCaption,
+ConfigSpinBox::ConfigSpinBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		int minValue, int maxValue, int step, ConfigGroupBox *parentConfigGroupBox, const char *name)
-	: QSpinBox(minValue, maxValue, step, parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, section, item, parentConfigGroupBox)
+	: QSpinBox(minValue, maxValue, step, parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox)
 {
 }
 
@@ -171,6 +187,12 @@ void ConfigSpinBox::createWidgets()
 
 	layout->addWidget(label, numRows, 0, Qt::AlignRight);
 	layout->addWidget(this, numRows, 1);
+
+	if (!toolTip.isEmpty())
+	{
+		QToolTip::add(this, toolTip);
+		QToolTip::add(label, toolTip);
+	}
 }
 
 void ConfigSpinBox::loadConfiguration()
@@ -208,9 +230,9 @@ bool ConfigSpinBox::fromDomElement(QDomElement domElement)
 	return ConfigWidgetValue::fromDomElement(domElement);
 }
 
-ConfigComboBox::ConfigComboBox(const QString &section, const QString &item, const QString &widgetCaption, const QStringList &itemValues,
-	const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox, const char *name)
-	: QComboBox(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, section, item, parentConfigGroupBox)
+ConfigComboBox::ConfigComboBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+		const QStringList &itemValues, const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox, const char *name)
+	: QComboBox(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox)
 {
 	createWidgets();
 }
@@ -245,6 +267,12 @@ void ConfigComboBox::createWidgets()
 
 	clear();
 	insertStringList(itemCaptions);
+
+	if (!toolTip.isEmpty())
+	{
+		QToolTip::add(this, toolTip);
+		QToolTip::add(label, toolTip);
+	}
 }
 
 void ConfigComboBox::loadConfiguration()
@@ -283,8 +311,9 @@ bool ConfigComboBox::fromDomElement(QDomElement domElement)
 	return ConfigWidgetValue::fromDomElement(domElement);
 }
 
-ConfigHotKeyEdit::ConfigHotKeyEdit(const QString &section, const QString &item, const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name)
-	: HotKeyEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, section, item, parentConfigGroupBox)
+ConfigHotKeyEdit::ConfigHotKeyEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+		ConfigGroupBox *parentConfigGroupBox, char *name)
+	: HotKeyEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox)
 {
 	createWidgets();
 }
@@ -305,6 +334,12 @@ void ConfigHotKeyEdit::createWidgets()
 
 	layout->addWidget(label, numRows, 0, Qt::AlignRight);
 	layout->addWidget(this, numRows, 1);
+
+	if (!toolTip.isEmpty())
+	{
+		QToolTip::add(this, toolTip);
+		QToolTip::add(label, toolTip);
+	}
 }
 
 void ConfigHotKeyEdit::loadConfiguration()
@@ -317,8 +352,9 @@ void ConfigHotKeyEdit::saveConfiguration()
 	config_file.writeEntry(section, item, shortCutString());
 }
 
-ConfigPathListEdit::ConfigPathListEdit(const QString &section, const QString &item, const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name)
-	: PathListEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, section, item, parentConfigGroupBox)
+ConfigPathListEdit::ConfigPathListEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+		ConfigGroupBox *parentConfigGroupBox, char *name)
+	: PathListEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox)
 {
 	createWidgets();
 }
@@ -339,6 +375,12 @@ void ConfigPathListEdit::createWidgets()
 
 	layout->addWidget(label, numRows, 0, Qt::AlignRight);
 	layout->addWidget(this, numRows, 1);
+
+	if (!toolTip.isEmpty())
+	{
+		QToolTip::add(this, toolTip);
+		QToolTip::add(label, toolTip);
+	}
 }
 
 void ConfigPathListEdit::loadConfiguration()
@@ -351,8 +393,9 @@ void ConfigPathListEdit::saveConfiguration()
 	config_file.writeEntry(section, item, pathList().join(":"));
 }
 
-ConfigColorButton::ConfigColorButton(const QString &section, const QString &item, const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name)
-	: ColorButton(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, section, item, parentConfigGroupBox)
+ConfigColorButton::ConfigColorButton(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+		ConfigGroupBox *parentConfigGroupBox, char *name)
+	: ColorButton(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox)
 {
 	createWidgets();
 }
@@ -373,6 +416,12 @@ void ConfigColorButton::createWidgets()
 
 	layout->addWidget(label, numRows, 0, Qt::AlignRight);
 	layout->addWidget(this, numRows, 1);
+
+	if (!toolTip.isEmpty())
+	{
+		QToolTip::add(this, toolTip);
+		QToolTip::add(label, toolTip);
+	}
 }
 
 void ConfigColorButton::loadConfiguration()
@@ -385,8 +434,9 @@ void ConfigColorButton::saveConfiguration()
 	config_file.writeEntry(section, item, color());
 }
 
-ConfigSelectFont::ConfigSelectFont(const QString &section, const QString &item, const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name)
-	: SelectFont(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, section, item, parentConfigGroupBox)
+ConfigSelectFont::ConfigSelectFont(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+		ConfigGroupBox *parentConfigGroupBox, char *name)
+	: SelectFont(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox)
 {
 	createWidgets();
 }
@@ -407,6 +457,12 @@ void ConfigSelectFont::createWidgets()
 
 	layout->addWidget(label, numRows, 0, Qt::AlignRight);
 	layout->addWidget(this, numRows, 1);
+
+	if (!toolTip.isEmpty())
+	{
+		QToolTip::add(this, toolTip);
+		QToolTip::add(label, toolTip);
+	}
 }
 
 void ConfigSelectFont::loadConfiguration()
@@ -419,9 +475,9 @@ void ConfigSelectFont::saveConfiguration()
 	config_file.writeEntry(section, item, font());
 }
 
-ConfigSyntaxEditor::ConfigSyntaxEditor(const QString &section, const QString &item, const QString &widgetCaption,
+ConfigSyntaxEditor::ConfigSyntaxEditor(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		ConfigGroupBox *parentConfigGroupBox, char *name)
-	: SyntaxEditor(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, section, item, parentConfigGroupBox)
+	: SyntaxEditor(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox)
 {
 	createWidgets();
 }
@@ -442,6 +498,12 @@ void ConfigSyntaxEditor::createWidgets()
 
 	layout->addWidget(label, numRows, 0, Qt::AlignRight);
 	layout->addWidget(this, numRows, 1);
+
+	if (!toolTip.isEmpty())
+	{
+		QToolTip::add(this, toolTip);
+		QToolTip::add(label, toolTip);
+	}
 }
 
 void ConfigSyntaxEditor::loadConfiguration()
@@ -465,8 +527,8 @@ bool ConfigSyntaxEditor::fromDomElement(QDomElement domElement)
 	return ConfigWidgetValue::fromDomElement(domElement);
 }
 
-ConfigActionButton::ConfigActionButton(const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name)
-	: QPushButton(parentConfigGroupBox->widget(), name), ConfigWidget(widgetCaption, parentConfigGroupBox)
+ConfigActionButton::ConfigActionButton(const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, char *name)
+	: QPushButton(parentConfigGroupBox->widget(), name), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox)
 {
 	createWidgets();
 }
@@ -485,11 +547,14 @@ void ConfigActionButton::createWidgets()
 
 	setText(widgetCaption);
 	layout->addWidget(this, numRows, 0, Qt::AlignRight);
+
+	if (!toolTip.isEmpty())
+		QToolTip::add(this, toolTip);
 }
 
-ConfigSelectFile::ConfigSelectFile(const QString &section, const QString &item, const QString &widgetCaption, const QString &type,
-		ConfigGroupBox *parentConfigGroupBox, char *name)
-	: SelectFile(type, parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, section, item, parentConfigGroupBox)
+ConfigSelectFile::ConfigSelectFile(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+		const QString &type, ConfigGroupBox *parentConfigGroupBox, char *name)
+	: SelectFile(type, parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox)
 {
 	createWidgets();
 }
@@ -510,6 +575,12 @@ void ConfigSelectFile::createWidgets()
 
 	layout->addWidget(label, numRows, 0, Qt::AlignRight);
 	layout->addWidget(this, numRows, 1);
+
+	if (!toolTip.isEmpty())
+	{
+		QToolTip::add(this, toolTip);
+		QToolTip::add(label, toolTip);
+	}
 }
 
 void ConfigSelectFile::loadConfiguration()
@@ -533,8 +604,8 @@ bool ConfigSelectFile::fromDomElement(QDomElement domElement)
 	return ConfigWidgetValue::fromDomElement(domElement);
 }
 
-ConfigPreview::ConfigPreview(const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name)
-	: Preview(parentConfigGroupBox->widget(), name), ConfigWidget(widgetCaption, parentConfigGroupBox)
+ConfigPreview::ConfigPreview(const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, char *name)
+	: Preview(parentConfigGroupBox->widget(), name), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox)
 {
 	createWidgets();
 }
@@ -555,4 +626,7 @@ void ConfigPreview::createWidgets()
 
 	layout->addWidget(label, numRows, 0, Qt::AlignRight | Qt::AlignTop);
 	layout->addWidget(this, numRows, 1);
+
+// 	if (!toolTip.isEmpty())
+// 		QToolTip::add(this, toolTip);
 }

@@ -189,13 +189,6 @@
 			<group-box name="Advanced">
 				<action-button caption="Advanced..." id="lookChatAdvanced" />
 			</group-box>
-<!--
-			<group-box name="Style">
-				<check-box caption="Select chat style (list)" config-section="General" config-item="SelectChatStyle" />
-			</group-box>-->
-
-			<group-box name="Preview">
-			</group-box>
 		</tab>
 
 		<tab name="Userbox">

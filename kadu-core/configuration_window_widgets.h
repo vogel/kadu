@@ -32,12 +32,13 @@ class ConfigWidget
 protected:
 	ConfigGroupBox *parentConfigGroupBox;
 	QString widgetCaption;
+	QString toolTip;
 
 	virtual void createWidgets() = 0;
 
 public:
 	ConfigWidget(ConfigGroupBox *parentConfigGroupBox);
-	ConfigWidget(const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox);
+	ConfigWidget(const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox);
 	virtual ~ConfigWidget() {}
 
 	virtual void loadConfiguration() = 0;
@@ -54,7 +55,7 @@ protected:
 
 public:
 	ConfigWidgetValue(ConfigGroupBox *parentConfigGroupBox);
-	ConfigWidgetValue(const QString &widgetCaption, const QString &section, const QString &item, ConfigGroupBox *parentConfigGroupBox);
+	ConfigWidgetValue(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox);
 	virtual ~ConfigWidgetValue() {}
 
 	virtual bool fromDomElement(QDomElement domElement);
@@ -66,7 +67,8 @@ protected:
 	virtual void createWidgets();
 
 public:
-	ConfigLineEdit(const QString &section, const QString &item, const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name = 0);
+	ConfigLineEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+		ConfigGroupBox *parentConfigGroupBox, char *name = 0);
 	ConfigLineEdit(ConfigGroupBox *parentConfigGroupBox, char *name = 0);
 	virtual ~ConfigLineEdit() {}
 
@@ -77,7 +79,8 @@ public:
 class ConfigGGPasswordEdit : public ConfigLineEdit
 {
 public:
-	ConfigGGPasswordEdit(const QString &section, const QString &item, const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name = 0);
+	ConfigGGPasswordEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+		ConfigGroupBox *parentConfigGroupBox, char *name = 0);
 	ConfigGGPasswordEdit(ConfigGroupBox *parentConfigGroupBox, char *name = 0);
 	virtual ~ConfigGGPasswordEdit() {}
 
@@ -91,7 +94,8 @@ protected:
 	virtual void createWidgets();
 
 public:
-	ConfigCheckBox(const QString &section, const QString &item, const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name = 0);
+	ConfigCheckBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+		ConfigGroupBox *parentConfigGroupBox, char *name = 0);
 	ConfigCheckBox(ConfigGroupBox *parentConfigGroupBox, char *name = 0);
 	virtual ~ConfigCheckBox() {}
 
@@ -105,7 +109,7 @@ protected:
 	virtual void createWidgets();
 
 public:
-	ConfigSpinBox(const QString &section, const QString &item, const QString &widgetCaption,
+	ConfigSpinBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		int minValue, int maxValue, int step, ConfigGroupBox *parentConfigGroupBox, const char *name = 0);
 	ConfigSpinBox(ConfigGroupBox *parentConfigGroupBox, const char *name = 0);
 	virtual ~ConfigSpinBox() {};
@@ -125,7 +129,8 @@ protected:
 	virtual void createWidgets();
 
 public:
-	ConfigComboBox(const QString &section, const QString &item, const QString &widgetCaption, const QStringList &itemValues, const QStringList &itemCaptions,
+	ConfigComboBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+		const QStringList &itemValues, const QStringList &itemCaptions,
 		ConfigGroupBox *parentConfigGroupBox, const char *name = 0);
 	ConfigComboBox(ConfigGroupBox *parentConfigGroupBox, const char *name = 0);
 	virtual ~ConfigComboBox() {};
@@ -145,7 +150,8 @@ protected:
 	virtual void createWidgets();
 
 public:
-	ConfigHotKeyEdit(const QString &section, const QString &item, const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name = 0);
+	ConfigHotKeyEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+		ConfigGroupBox *parentConfigGroupBox, char *name = 0);
 	ConfigHotKeyEdit(ConfigGroupBox *parentConfigGroupBox, char *name = 0);
 	virtual ~ConfigHotKeyEdit() {}
 
@@ -159,7 +165,8 @@ protected:
 	virtual void createWidgets();
 
 public:
-	ConfigPathListEdit(const QString &section, const QString &item, const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name = 0);
+	ConfigPathListEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+		ConfigGroupBox *parentConfigGroupBox, char *name = 0);
 	ConfigPathListEdit(ConfigGroupBox *parentConfigGroupBox, char *name = 0);
 	virtual ~ConfigPathListEdit() {}
 
@@ -173,7 +180,8 @@ protected:
 	virtual void createWidgets();
 
 public:
-	ConfigColorButton(const QString &section, const QString &item, const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name = 0);
+	ConfigColorButton(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+		ConfigGroupBox *parentConfigGroupBox, char *name = 0);
 	ConfigColorButton(ConfigGroupBox *parentConfigGroupBox, char *name = 0);
 	virtual ~ConfigColorButton() {}
 
@@ -187,7 +195,8 @@ protected:
 	virtual void createWidgets();
 
 public:
-	ConfigSelectFont(const QString &section, const QString &item, const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name = 0);
+	ConfigSelectFont(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+		ConfigGroupBox *parentConfigGroupBox, char *name = 0);
 	ConfigSelectFont(ConfigGroupBox *parentConfigGroupBox, char *name = 0);
 	virtual ~ConfigSelectFont() {}
 
@@ -201,7 +210,8 @@ protected:
 	virtual void createWidgets();
 
 public:
-	ConfigSyntaxEditor(const QString &section, const QString &item, const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name = 0);
+	ConfigSyntaxEditor(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+		ConfigGroupBox *parentConfigGroupBox, char *name = 0);
 	ConfigSyntaxEditor(ConfigGroupBox *parentConfigGroupBox, char *name = 0);
 	virtual ~ConfigSyntaxEditor() {}
 
@@ -217,7 +227,8 @@ protected:
 	virtual void createWidgets();
 
 public:
-	ConfigActionButton(const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name = 0);
+	ConfigActionButton(const QString &widgetCaption, const QString &toolTip,
+		ConfigGroupBox *parentConfigGroupBox, char *name = 0);
 	ConfigActionButton(ConfigGroupBox *parentConfigGroupBox, char *name = 0);
 	virtual ~ConfigActionButton() {}
 
@@ -231,8 +242,8 @@ protected:
 	virtual void createWidgets();
 
 public:
-	ConfigSelectFile(const QString &section, const QString &item, const QString &widgetCaption, const QString &type,
-		ConfigGroupBox *parentConfigGroupBox,  char *name = 0);
+	ConfigSelectFile(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+		const QString &type, ConfigGroupBox *parentConfigGroupBox,  char *name = 0);
 	ConfigSelectFile(ConfigGroupBox *parentConfigGroupBox, char *name = 0);
 	virtual ~ConfigSelectFile() {}
 
@@ -248,7 +259,7 @@ protected:
 	virtual void createWidgets();
 
 public:
-	ConfigPreview(const QString &widgetCaption, ConfigGroupBox *parentConfigGroupBox, char *name = 0);
+	ConfigPreview(const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, char *name = 0);
 	ConfigPreview(ConfigGroupBox *parentConfigGroupBox, char *name = 0);
 	virtual ~ConfigPreview() {}
 
