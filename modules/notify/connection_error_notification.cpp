@@ -14,7 +14,11 @@
 
 static QString getErrorMessage(const QObject * const object)
 {
-	return dynamic_cast<const ConnectionErrorNotification * const>(object)->errorMessage();
+	const ConnectionErrorNotification * const connectionErrorNotification = dynamic_cast<const ConnectionErrorNotification * const>(object);
+	if (connectionErrorNotification)
+		return connectionErrorNotification->errorMessage();
+	else
+		return "";
 }
 
 void ConnectionErrorNotification::registerEvent(Notify *manager)

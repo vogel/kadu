@@ -17,32 +17,56 @@
 
 static QString getMessage(const QObject * const object)
 {
-	return dynamic_cast<const ChatMessage * const>(object)->unformattedMessage;
+	const ChatMessage * const chatMessage = dynamic_cast<const ChatMessage * const>(object);
+	if (chatMessage)
+		return chatMessage->unformattedMessage;
+	else
+		return "";
 }
 
 static QString getBackgroundColor(const QObject * const object)
 {
-	return dynamic_cast<const ChatMessage * const>(object)->backgroundColor;
+	const ChatMessage * const chatMessage = dynamic_cast<const ChatMessage * const>(object);
+	if (chatMessage)
+		return dynamic_cast<const ChatMessage * const>(object)->backgroundColor;
+	else
+		return "";
 }
 
 static QString getFontColor(const QObject * const object)
 {
-	return dynamic_cast<const ChatMessage * const>(object)->fontColor;
+	const ChatMessage * const chatMessage = dynamic_cast<const ChatMessage * const>(object);
+	if (chatMessage)
+		return dynamic_cast<const ChatMessage * const>(object)->fontColor;
+	else
+		return "";
 }
 
 static QString getNickColor(const QObject * const object)
 {
-	return dynamic_cast<const ChatMessage * const>(object)->nickColor;
+	const ChatMessage * const chatMessage = dynamic_cast<const ChatMessage * const>(object);
+	if (chatMessage)
+		return dynamic_cast<const ChatMessage * const>(object)->nickColor;
+	else
+		return "";
 }
 
 static QString getSentDate(const QObject * const object)
 {
-	return dynamic_cast<const ChatMessage * const>(object)->sentDate;
+	const ChatMessage * const chatMessage = dynamic_cast<const ChatMessage * const>(object);
+	if (chatMessage)
+		return dynamic_cast<const ChatMessage * const>(object)->sentDate;
+	else
+		return "";
 }
 
 static QString getReceivedDate(const QObject * const object)
 {
-	return dynamic_cast<const ChatMessage * const>(object)->receivedDate;
+	const ChatMessage * const chatMessage = dynamic_cast<const ChatMessage * const>(object);
+	if (chatMessage)
+		return dynamic_cast<const ChatMessage * const>(object)->receivedDate;
+	else
+		return "";
 }
 
 static QString getSeparatorSize(const QObject * const object)
