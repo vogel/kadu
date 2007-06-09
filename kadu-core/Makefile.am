@@ -22,7 +22,6 @@ expimp.cpp \
 gadu.cpp \
 gadu-private.cpp \
 gadu_images_manager.cpp \
-gadu_rich_text.cpp \
 groups_manager.cpp \
 hot_key.cpp \
 html_document.cpp \
@@ -85,7 +84,6 @@ expimp.h \
 gadu.h \
 gadu-private.h \
 gadu_images_manager.h \
-gadu_rich_text.h \
 groups_manager.h \
 hot_key.h \
 html_document.h \
@@ -195,7 +193,6 @@ obj/expimp.$(OBJEXT) \
 obj/gadu.$(OBJEXT) \
 obj/gadu-private.$(OBJEXT) \
 obj/gadu_images_manager.$(OBJEXT) \
-obj/gadu_rich_text.$(OBJEXT) \
 obj/groups_manager.$(OBJEXT) \
 obj/hot_key.$(OBJEXT) \
 obj/html_document.$(OBJEXT) \
@@ -322,7 +319,6 @@ include $(DEPS)/gadu-private_moc.d
 include $(DEPS)/gadu.d
 include $(DEPS)/gadu_moc.d
 include $(DEPS)/gadu_images_manager.d
-include $(DEPS)/gadu_rich_text.d
 include $(DEPS)/groups_manager.d
 include $(DEPS)/groups_manager_moc.d
 include $(DEPS)/hot_key.d

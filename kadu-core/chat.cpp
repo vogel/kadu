@@ -24,7 +24,6 @@
 #include "debug.h"
 #include "dockarea.h"
 #include "gadu_images_manager.h"
-#include "gadu_rich_text.h"
 #include "hot_key.h"
 #include "icons_manager.h"
 #include "kadu.h"
