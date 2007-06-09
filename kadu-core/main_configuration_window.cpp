@@ -72,37 +72,12 @@ MainConfigurationWindow::MainConfigurationWindow()
 	infoPanelSyntaxPreview->setResetBackgroundColor(config_file.readEntry("Look", "InfoPanelBgColor"));
 	connect(widgetById("infoPanelSyntax"), SIGNAL(syntaxChanged(const QString &)), infoPanelSyntaxPreview, SLOT(syntaxChanged(const QString &)));
 
-	UserStatus status;
-	status.setBusy(qApp->translate("@default", "Description"));
-
-	UserListElement example;
-	example.addProtocol("Gadu", "999999");
-	example.setStatus("Gadu", status);
-	example.setFirstName(qApp->translate("@default", "Mark"));
-	example.setLastName(qApp->translate("@default", "Smith"));
-	example.setNickName(qApp->translate("@default", "Jimbo"));
-	example.setAltNick(qApp->translate("@default", "Jimbo"));
-	example.setMobile("+48123456789");
-	example.setEmail("jimbo@mail.server.net");
-	example.setHomePhone("+481234567890");
-	example.setAddressAndPort("Gadu", QHostAddress(2130706433), 80);
-	example.setDNSName("Gadu", "host.server.net");
-
 	chatPreview = dynamic_cast<Preview *>(widgetById("chatSyntaxPreview"));
-	chatPreview->setResetBackgroundColor(config_file.readEntry("Look", "ChatBgColor"));
-	chatPreview->setStyleSheet(new StaticStyleSheet(chatPreview, emoticons->themePath()));
+	prepareChatPreview(chatPreview, true);
 
-	ChatMessage *chatMessage = new ChatMessage(kadu->myself(), "Your message", true, QDateTime::currentDateTime(), QDateTime::currentDateTime());
-	chatMessage->setSeparatorSize(0);
-	chatPreview->addObjectToParse(kadu->myself(), chatMessage);
-	chatMessages.append(chatMessage);
-
-	chatMessage = new ChatMessage(example, "Message from Your friend", false, QDateTime::currentDateTime(), QDateTime::currentDateTime());
-	chatMessage->setSeparatorSize(4);
-	chatPreview->addObjectToParse(example, chatMessage);
-	chatMessages.append(chatMessage);
-
-	connect(widgetById("chatSyntax"), SIGNAL(syntaxChanged(const QString &)), this, SLOT(onChangeChatSyntax(const QString &)));
+	connect(widgetById("chatSyntax"), SIGNAL(syntaxChanged(const QString &)), widgetById("chatSyntaxPreview"), SLOT(syntaxChanged(const QString &)));
+	connect(widgetById("chatSyntax"), SIGNAL(onSyntaxEditorWindowCreated(SyntaxEditorWindow *)),
+		this, SLOT(onChatSyntaxEditorWindowCreated(SyntaxEditorWindow *)));
 
 // 	connect(widgetById("iconPaths"), SIGNAL(changed()), this, SLOT(setIconThemes()));
 
@@ -185,6 +160,58 @@ void MainConfigurationWindow::import_0_5_0_configuration()
 	config_file.removeVariable("Look", "UserboxBackgroundSY");
 	config_file.removeVariable("Look", "UserboxBackgroundSE");
 	config_file.removeVariable("Look", "UserboxBackgroundSH");
+}
+
+void MainConfigurationWindow::prepareChatPreview(Preview *preview, bool append)
+{
+	kdebugf();
+
+	UserStatus status;
+	status.setBusy(qApp->translate("@default", "Description"));
+
+	UserListElement example;
+	example.addProtocol("Gadu", "999999");
+	example.setStatus("Gadu", status);
+	example.setFirstName(qApp->translate("@default", "Mark"));
+	example.setLastName(qApp->translate("@default", "Smith"));
+	example.setNickName(qApp->translate("@default", "Jimbo"));
+	example.setAltNick(qApp->translate("@default", "Jimbo"));
+	example.setMobile("+48123456789");
+	example.setEmail("jimbo@mail.server.net");
+	example.setHomePhone("+481234567890");
+	example.setAddressAndPort("Gadu", QHostAddress(2130706433), 80);
+	example.setDNSName("Gadu", "host.server.net");
+
+	preview->setResetBackgroundColor(config_file.readEntry("Look", "ChatBgColor"));
+	preview->setStyleSheet(new StaticStyleSheet(chatPreview, emoticons->themePath()));
+
+	ChatMessage *chatMessage = new ChatMessage(kadu->myself(), "Your message", true, QDateTime::currentDateTime(), QDateTime::currentDateTime());
+	chatMessage->setSeparatorSize(0);
+	preview->addObjectToParse(kadu->myself(), chatMessage);
+	if (append)
+		chatMessages.append(chatMessage);
+
+	chatMessage = new ChatMessage(example, "Message from Your friend", false, QDateTime::currentDateTime(), QDateTime::currentDateTime());
+	chatMessage->setSeparatorSize(4);
+	preview->addObjectToParse(example, chatMessage);
+	if (append)
+		chatMessages.append(chatMessage);
+
+	connect(preview, SIGNAL(needSyntaxFixup(QString &)), this, SLOT(chatSyntaxFixup(QString &)));
+	connect(preview, SIGNAL(needFixup(Preview *)), this, SLOT(chatFixup(Preview *)));
+}
+
+void MainConfigurationWindow::chatSyntaxFixup(QString &syntax)
+{
+	syntax.replace("<kadu:header>", "");
+	syntax.replace("</kadu:header>", "");
+}
+
+void MainConfigurationWindow::chatFixup(Preview *preview)
+{
+	int i = 0;
+	CONST_FOREACH(chatMessage, chatMessages)
+		preview->setParagraphBackgroundColor(i++, (*chatMessage)->backgroundColor);
 }
 
 void MainConfigurationWindow::onChangeStartupStatus(int index)
@@ -464,22 +491,9 @@ void MainConfigurationWindow::onChangeMail(int index)
 		mailCommandLineEdit->setText("");
 }
 
-void MainConfigurationWindow::onChangeChatSyntax(const QString &chatSyntax)
+void MainConfigurationWindow::onChatSyntaxEditorWindowCreated(SyntaxEditorWindow *syntaxEditorWindow)
 {
-	chatPreview->viewport()->setUpdatesEnabled(false);
-
-	QString syntax = chatSyntax;
-	syntax.replace("<kadu:header>", "");
-	syntax.replace("</kadu:header>", "");
-
-	chatPreview->syntaxChanged(syntax);
-
-	int i = 0;
-	CONST_FOREACH(chatMessage, chatMessages)
-		chatPreview->setParagraphBackgroundColor(i++, (*chatMessage)->backgroundColor);
-
-	chatPreview->viewport()->setUpdatesEnabled(true);
-	chatPreview->viewport()->repaint();
+	prepareChatPreview(syntaxEditorWindow->preview());
 }
 
 void MainConfigurationWindow::showLookChatAdvanced()

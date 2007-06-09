@@ -47,6 +47,8 @@ class MainConfigurationWindow : public ConfigurationWindow
 	void setToolTipClasses();
 
 	QString findExecutable(const QStringList &paths, const QStringList &executableNames);
+	// TODO: remove append parameter
+	void prepareChatPreview(Preview *preview, bool append = false);
 
 	void import_0_5_0_configuration();
 
@@ -60,7 +62,9 @@ private slots:
 	void showLookChatAdvanced();
 	void lookChatAdvancedDestroyed();
 
-	void onChangeChatSyntax(const QString &chatSyntax);
+	void onChatSyntaxEditorWindowCreated(SyntaxEditorWindow *syntaxEditorWindow);
+	void chatSyntaxFixup(QString &syntax);
+	void chatFixup(Preview *preview);
 
 public:
 	MainConfigurationWindow();

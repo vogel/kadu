@@ -18,6 +18,8 @@
 #include <qmap.h>
 #include <qpushbutton.h>
 #include <qregexp.h>
+#include <qtextedit.h>
+#include <qtooltip.h>
 #include <qvbox.h>
 
 #include "config_file.h"
@@ -27,6 +29,7 @@
 #include "kadu_parser.h"
 #include "message_box.h"
 #include "misc.h"
+#include "preview.h"
 
 #include "syntax_editor.h"
 
@@ -260,6 +263,9 @@ void SyntaxEditor::editClicked()
 {
 	SyntaxEditorWindow *editor = new SyntaxEditorWindow(syntaxList, syntaxListCombo->currentText());
 	connect(editor, SIGNAL(updated(const QString &)), this, SLOT(setCurrentSyntax(const QString &)));
+
+	emit onSyntaxEditorWindowCreated(editor);
+	editor->refreshPreview();
 	editor->show();
 }
 
@@ -347,7 +353,7 @@ SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &sy
 	QToolTip::add(editor, kadu->SyntaxText);
 	layout->addMultiCellWidget(editor, 0, 1, 0, 0);
 
-	previewPanel = new KaduTextBrowser(syntax);
+	previewPanel = new Preview(syntax);
 	layout->addWidget(previewPanel, 0, 1);
 
 	QPushButton *preview = new QPushButton(tr("preview"), syntax);
@@ -372,8 +378,6 @@ SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &sy
 	connect(cancel, SIGNAL(clicked()), this, SLOT(close()));
 
 	loadGeometry(this, "Look", "SyntaxEditorGeometry", 0, 30, 790, 480);
-
-	refreshPreview();
 }
 
 SyntaxEditorWindow::~SyntaxEditorWindow()
@@ -383,29 +387,8 @@ SyntaxEditorWindow::~SyntaxEditorWindow()
 
 void SyntaxEditorWindow::refreshPreview()
 {
-	// TODO: fix it
-	previewPanel->setText("<body bgcolor=\"" + config_file.readEntry("Look", "InfoPanelBgColor")+"\"></body>");
-
-	UserListElement example;
-	UserStatus status;
-	status.setBusy(qApp->translate("@default", "Description"));
-
-	example.addProtocol("Gadu", "999999");
-	example.setStatus("Gadu", status);
-	example.setFirstName(qApp->translate("@default", "Mark"));
-	example.setLastName(qApp->translate("@default", "Smith"));
-	example.setNickName(qApp->translate("@default", "Jimbo"));
-	example.setAltNick(qApp->translate("@default", "Jimbo"));
-	example.setMobile("+48123456789");
-	example.setEmail("jimbo@mail.server.net");
-	example.setHomePhone("+481234567890");
-	example.setAddressAndPort("Gadu", QHostAddress(2130706433), 80);
-	example.setDNSName("Gadu", "host.server.net");
-
 	QString content = editor->text();
-	content.replace(QRegExp("%o"),  " ");
-
-	previewPanel->setText(KaduParser::parse(content, example));
+	previewPanel->syntaxChanged(content);
 }
 
 void SyntaxEditorWindow::save()

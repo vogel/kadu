@@ -42,8 +42,10 @@ Preview::~Preview()
 
 void Preview::syntaxChanged(const QString &content)
 {
-	// to nam zapewnia odswie¿enie tla jesli wczesniej byl obrazek
-	// TODO: fix it
+	viewport()->setUpdatesEnabled(false);
+
+	QString syntax = content;
+	emit needSyntaxFixup(syntax);
 
 	QString text;
 
@@ -52,9 +54,13 @@ void Preview::syntaxChanged(const QString &content)
 
 	if (count)
 		for (int i = 0; i < count; i++)
-			text += KaduParser::parse(content, ules[i], objectsToParse.at(i));
+			text += KaduParser::parse(syntax, ules[i], objectsToParse.at(i));
 	else
-		text = KaduParser::parse(content, ule);
+		text = KaduParser::parse(syntax, ule);
 
 	setText(text);
+	emit needFixup(this);
+
+	viewport()->setUpdatesEnabled(true);
+	viewport()->repaint();
 }

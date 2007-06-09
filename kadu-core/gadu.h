@@ -148,6 +148,39 @@ enum GaduError
 	Disconnected
 };
 
+// ------------------------------------
+//			GaduFormater
+// ------------------------------------
+class GaduFormater
+{
+	private:
+		struct attrib_formant
+		{
+			QString name;
+			QString value;
+			attrib_formant() : name(), value() {}
+		};
+
+		struct richtext_formant
+		{
+			struct gg_msg_richtext_format format;
+			struct gg_msg_richtext_color color;
+			struct gg_msg_richtext_image image;
+		};
+
+		static QString stripHTMLFromGGMessage(const QString &msg);
+		
+		/**
+		 * Translates QValueList with formants into flat buffer on heap
+		 *
+		 * Precondition - formats_length must contain valid length of result buffer
+		 */
+		static unsigned char *allocFormantBuffer(const QValueList<struct richtext_formant> &formants, unsigned int &formats_length);
+		
+	public:
+		static QString formatGGMessage(const QString &msg, unsigned int formats_length, void *formats, UinType sender);
+		static QString unformatGGMessage(const QString &msg, unsigned int &formats_length, unsigned char *&formats);
+};
 
 // ------------------------------------
 //            GaduProtocol

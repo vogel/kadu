@@ -3,12 +3,15 @@
 
 #include <qvbox.h>
 
-#include "kadu_text_browser.h"
 #include "userlistelement.h"
 
 class QComboBox;
 class QLineEdit;
 class QPushButton;
+class QTextEdit;
+
+class Preview;
+class SyntaxEditorWindow;
 
 struct SyntaxInfo
 {
@@ -74,6 +77,7 @@ public slots:
 
 signals:
 	void syntaxChanged(const QString &newSyntax);
+	void onSyntaxEditorWindowCreated(SyntaxEditorWindow *syntaxEditorWindow);
 
 };
 
@@ -85,19 +89,23 @@ class SyntaxEditorWindow : public QVBox
 
 	QLineEdit *nameEdit;
 	QTextEdit *editor;
-	KaduTextBrowser *previewPanel;
+	Preview *previewPanel;
 
 	QString category;
 	QString syntaxName;
 
 private slots:
-	void refreshPreview();
 	void save();
 	void saveAs();
 
 public:
 	SyntaxEditorWindow(SyntaxList *syntaxList, const QString &syntaxName, QWidget* parent=0, const char *name=0);
 	~SyntaxEditorWindow();
+
+	Preview *preview() { return previewPanel; }
+
+public slots:
+	void refreshPreview();
 
 signals:
 	void updated(const QString &syntaxName);
