@@ -14,7 +14,6 @@
 
 #include "action.h"
 #include "chat_manager.h"
-// #include "config_dialog.h"
 #include "debug.h"
 #include "history.h"
 #include "history_dialog.h"
@@ -261,7 +260,6 @@ void HistoryModule::chatCreated(Chat *chat, time_t time)
 				msg = new ChatMessage(userlist->byAltNick((*entry).nick), (*entry).message, false, (*entry).date, (*entry).sdate);
 			messages.append(msg);
 		}
-	chat->formatMessages(messages);
 	if (!messages.empty())
 		chat->scrollMessages(messages);
 	kdebugf2();

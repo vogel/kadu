@@ -15,6 +15,9 @@
 class ConfigComboBox;
 class ConfigLineEdit;
 
+class ChatMessage;
+class Preview;
+
 class QCheckBox;
 
 class MainConfigurationWindow : public ConfigurationWindow
@@ -33,6 +36,9 @@ class MainConfigurationWindow : public ConfigurationWindow
 
 	ConfigComboBox *mailComboBox;
 	ConfigLineEdit *mailCommandLineEdit;
+
+	Preview *chatPreview;
+	QValueList<ChatMessage *> chatMessages;
 
 	void setLanguages();
 	void setIconThemes();
@@ -53,6 +59,8 @@ private slots:
 
 	void showLookChatAdvanced();
 	void lookChatAdvancedDestroyed();
+
+	void onChangeChatSyntax(const QString &chatSyntax);
 
 public:
 	MainConfigurationWindow();

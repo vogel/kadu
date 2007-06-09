@@ -177,6 +177,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * [0000594] wy¶wietlanie daty jako odstêpu czasu w oknie chatu (michal)
 * mo¿liwo¶æ ustawiania obrazka w tle listy kontaktu jako Tiled/Centered/Stretched (Vogel)
 * chat: format wiadomo¶ci parsowany przez KaduParser (Vogel)
+* chat: spore przeróbki formatowania wiadomosci (Vogel)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

@@ -17,7 +17,6 @@
 
 #include "action.h"
 #include "chat.h"
-#include "chat_colors.h"
 #include "chat_manager.h"
 #include "chat_message.h"
 #include "color_selector.h"
@@ -169,13 +168,10 @@ Chat::Chat(Protocol *initialProtocol, const UserListElements &usrs, QWidget* par
 	ChatSyntaxWithHeader.replace("<kadu:header>", "");
 	ChatSyntaxWithHeader.replace("</kadu:header>", "");
 
-	if (endOfHeader != -1)
+	if (beginOfHeader != -1 && endOfHeader != -1)
 		ChatSyntaxWithoutHeader = chatSyntax.mid(0, beginOfHeader) + chatSyntax.mid(endOfHeader + strlen("</kadu:header>"));
 	else
 		ChatSyntaxWithoutHeader = ChatSyntaxWithHeader;
-
-	printf("ChatSyntaxWithHeader: %s\n", ChatSyntaxWithHeader.data());
-	printf("ChatSyntaxWithoutHeader: %s\n", ChatSyntaxWithoutHeader.data());
 
 	// headers removal stuff
 	if (CfgNoHeaderRepeat)
@@ -431,9 +427,7 @@ void Chat::imageReceivedAndSaved(UinType sender,uint32_t size,uint32_t crc32,con
 {
 	kdebugf();
 	FOREACH(msg, ChatMessages)
-		(*msg)->message =
-			gadu_images_manager.replaceLoadingImages(
-				(*msg)->message,sender,size,crc32);
+		(*msg)->replaceLoadingImages(sender, size, crc32);
 	repaintMessages();
 	kdebugf2();
 }
@@ -629,81 +623,66 @@ void Chat::closeEvent(QCloseEvent* e)
 	QMainWindow::closeEvent(e);
 }
 
-void Chat::formatMessages(QValueList<ChatMessage *> &msgs)
-{
-	OwnChatColors own_colors;
-	UserChatColors user_colors;
-	EmoticonsStyle style=(EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle");
-	FOREACH(msg, msgs)
-		formatMessage(**msg, &own_colors, &user_colors, style);
-}
-
-void Chat::formatMessage(ChatMessage &msg, const OwnChatColors* own_colors,
-	const UserChatColors* user_colors, EmoticonsStyle style)
-{
-	if (msg.isMyMessage)
-	{
-		if (own_colors == NULL)
-			msg.Colors = OwnChatColors();
-		else
-			msg.Colors = *own_colors;
-	}
-	else
-	{
-		if (user_colors == NULL)
-			msg.Colors = UserChatColors();
-		else
-			msg.Colors = *user_colors;
-	}
-
-	if (style != EMOTS_NONE)
-		body->mimeSourceFactory()->addFilePath(emoticons->themePath());
-
-	if (CfgNoHeaderRepeat)
-	{
-		time_t CurTime = msg.date.toTime_t(); // ilo¶æ sekund od 1970 roku
-		if ((CurTime - LastTime <= (CfgNoHeaderInterval * 60)) && (PreviousSender == msg.sender()))
-			msg.formatMessage(ChatSyntaxWithoutHeader, style, CfgHeaderSeparatorHeight);
-		else
-			msg.formatMessage(ChatSyntaxWithHeader, style, ParagraphSeparator);
-		PreviousSender = msg.sender();
-		LastTime = CurTime;
-	}
-	else
-		msg.formatMessage(ChatSyntaxWithHeader, style, ParagraphSeparator);
-}
-
 void Chat::repaintMessages()
 {
 	kdebugf();
+
 	body->viewport()->setUpdatesEnabled(false);
-
 	QString text;
-	int i;
 
-	QValueList<ChatMessage *>::const_iterator it=ChatMessages.begin();
-	//z pierwszej wiadomo¶ci usuwamy obrazek separatora
-	if (it!=ChatMessages.end())
+	QValueList<ChatMessage *>::const_iterator chatMessage = ChatMessages.constBegin();
+	QValueList<ChatMessage *>::const_iterator end = ChatMessages.constEnd();
+
+	if (chatMessage == end)
 	{
-		QString msg=(*it)->message;
-		msg.remove(QRegExp("<img title=\"\" height=\"[0-9]*\" width=\"10000\" align=\"right\">"));
-		text+=msg;
-		++it;
+		kdebugf2();
+		return;
 	}
-	for(; it!=ChatMessages.end(); ++it)
-		text+=(*it)->message;
+
+	time_t prevTime = (*chatMessage)->date().toTime_t();
+	UserListElement previousSender = (*chatMessage)->sender();
+	(*chatMessage)->setSeparatorSize(0);
+
+	text += KaduParser::parse(ChatSyntaxWithHeader, (*chatMessage)->sender(), *chatMessage);
+
+	while (++chatMessage != end)
+	{
+		if (CfgNoHeaderRepeat)
+		{
+			time_t curTime = (*chatMessage)->date().toTime_t();
+			if ((curTime - prevTime <= (CfgNoHeaderInterval * 60)) && ((*chatMessage)->sender() == previousSender))
+			{
+				(*chatMessage)->setSeparatorSize(ParagraphSeparator);
+				text += KaduParser::parse(ChatSyntaxWithoutHeader, (*chatMessage)->sender(), *chatMessage);
+			}
+			else
+			{
+				(*chatMessage)->setSeparatorSize(CfgHeaderSeparatorHeight);
+				text += KaduParser::parse(ChatSyntaxWithHeader, (*chatMessage)->sender(), *chatMessage);
+			}
+			prevTime = curTime;
+		}
+		else
+		{
+			(*chatMessage)->setSeparatorSize(CfgHeaderSeparatorHeight);
+			text += KaduParser::parse(ChatSyntaxWithHeader, (*chatMessage)->sender(), *chatMessage);
+		}
+
+		previousSender = (*chatMessage)->sender();
+	}
+
 	body->setText(text);
 
-	i=0;
-	if (body->paper().pixmap() == 0)
-		CONST_FOREACH(msg, ChatMessages)
-			body->setParagraphBackgroundColor(i++, (*msg)->Colors.backgroundColor());
+	int i = 0;
+	CONST_FOREACH(chatMessage, ChatMessages)
+		body->setParagraphBackgroundColor(i++, (*chatMessage)->backgroundColor);
 
 	if (!ScrollLocked)
 		body->scrollToBottom();
 
 	body->viewport()->setUpdatesEnabled(true);
 	body->viewport()->repaint();
+
 	kdebugf2();
 }
 
@@ -725,9 +704,9 @@ void Chat::newMessage(const QString &/*protocolName*/, UserListElements senders,
 	date.setTime_t(time);
 
 	ChatMessage *message = new ChatMessage(senders[0], msg, false, QDateTime::currentDateTime(), date);
-	formatMessage(*message);
 	messages.append(message);
 
+	repaintMessages();
 	scrollMessages(messages);
 
 	emit messageReceived(this);
@@ -756,8 +735,9 @@ void Chat::writeMyMessage()
 	kdebugf();
 	QValueList<ChatMessage *> messages;
 	ChatMessage *msg=new ChatMessage(kadu->myself(), myLastMessage, true, QDateTime::currentDateTime());
-	formatMessage(*msg);
 	messages.append(msg);
+
+	repaintMessages();
 	scrollMessages(messages);
 
 	if (!Edit->isEnabled())

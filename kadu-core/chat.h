@@ -26,9 +26,7 @@ class ColorSelector;
 class EmoticonSelector;
 class KaduSplitter;
 class KaduTextBrowser;
-class OwnChatColors;
 class UserBox;
-class UserChatColors;
 
 /** \typedef QValueList<Chat*> ChatList */
 typedef QValueList<Chat*> ChatList;
@@ -192,32 +190,6 @@ class Chat : public QMainWindow
 			Destruktor okna rozmowy
 		**/
 		~Chat();
-
-		/**
-			\fn void formatMessages(QValueList<ChatMessage *> &msgs)
-			Formatuje wszystkie wiadomo¶ci na html'a,
-			dodaje kolory t³a i czcionek
-			\param msgs lista wiadomo¶ci do sformatowania
-		**/
-		void formatMessages(QValueList<ChatMessage *> &msgs);
-		/**
-			\fn void formatMessage(ChatMessage& msg,
-				const OwnChatColors* own_colors = NULL,
-				const UserChatColors* user_colors = NULL,
-				EmoticonsStyle style = (EmoticonsStyle)
-					config_file.readNumEntry("Chat","EmoticonsStyle"));
-
-			Formats message to html
-			\param msg message to be formatted
-			\param own_colors our chat colors
-			\param user_colors user chat colors
-			\param style emoticons style
-		**/
-		void formatMessage(ChatMessage& msg,
-			const OwnChatColors* own_colors = NULL,
-			const UserChatColors* user_colors = NULL,
-			EmoticonsStyle style = (EmoticonsStyle)
-				config_file.readNumEntry("Chat","EmoticonsStyle"));
 
 		/**
 			\fn void newMessage(const QString &protocolName, UserListElements senders, const QString &msg, time_t time)

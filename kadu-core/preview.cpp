@@ -11,6 +11,7 @@
 
 #include "config_file.h"
 #include "kadu_parser.h"
+#include "misc.h"
 
 #include "preview.h"
 
@@ -44,6 +45,16 @@ void Preview::syntaxChanged(const QString &content)
 	// to nam zapewnia odswie¿enie tla jesli wczesniej byl obrazek
 	// TODO: fix it
 
-	setText("<body bgcolor=\"" + config_file.readEntry("Look", "InfoPanelBgColor") + "\"></body>");
-	setText(KaduParser::parse(content, ule));
+	QString text;
+
+	setText("<body bgcolor=\"" + resetBackgroundColor + "\"></body>");
+	int count = objectsToParse.count();
+
+	if (count)
+		for (int i = 0; i < count; i++)
+			text += KaduParser::parse(content, ules[i], objectsToParse.at(i));
+	else
+		text = KaduParser::parse(content, ule);
+
+	setText(text);
 }

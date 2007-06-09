@@ -6,7 +6,6 @@ kadu_SOURCES = \
 about.cpp \
 action.cpp \
 chat.cpp \
-chat_colors.cpp \
 chat_manager.cpp \
 chat_message.cpp \
 color_button.cpp \
@@ -70,7 +69,6 @@ kadu_HEADERS = \
 about.h \
 action.h \
 chat.h \
-chat_colors.h \
 chat_manager.h \
 chat_message.h \
 color_button.h \
@@ -181,7 +179,6 @@ am_kadu_OBJECTS = \
 obj/about.$(OBJEXT) \
 obj/action.$(OBJEXT) \
 obj/chat.$(OBJEXT) \
-obj/chat_colors.$(OBJEXT) \
 obj/chat_manager.$(OBJEXT) \
 obj/chat_message.$(OBJEXT) \
 obj/color_button.$(OBJEXT) \
@@ -297,7 +294,6 @@ include $(DEPS)/action.d
 include $(DEPS)/action_moc.d
 include $(DEPS)/chat.d
 include $(DEPS)/chat_moc.d
-include $(DEPS)/chat_colors.d
 include $(DEPS)/chat_manager.d
 include $(DEPS)/chat_manager_moc.d
 include $(DEPS)/chat_message.d

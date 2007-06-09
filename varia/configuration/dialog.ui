@@ -177,8 +177,13 @@
 				<spin-box caption="Reduce the number of visible messages to" config-section="Chat" config-item="ChatPruneLen" min-value="1" max-value="255" step="1" id="chatPruneLen" />
 			</group-box>
 
-			<group-box name="Background">
-				<select-file caption="Background file" config-section="Look" config-item="ChatBgImage" type="image" />
+<!-- 			<group-box name="Background"> -->
+<!-- 				<select-file caption="Background file" config-section="Look" config-item="ChatBgImage" type="image" /> -->
+<!-- 			</group-box> -->
+
+			<group-box name="Style">
+				<syntax-editor caption="Style" config-section="Look" config-item="Style" category="chat" id="chatSyntax" />
+				<preview caption="Preview" id="chatSyntaxPreview" />
 			</group-box>
 
 			<group-box name="Advanced">

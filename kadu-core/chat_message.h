@@ -6,8 +6,9 @@
 #include <qmap.h>
 #include <qstring.h>
 
-#include "chat_colors.h"
 #include "emoticons.h"
+#include "gadu.h"
+#include "userlistelement.h"
 
 /**
 
@@ -27,25 +28,13 @@ class ChatMessage : public QObject
 		\param style styl emotikonek
 	**/
 	QString convertCharacters(QString text, const QColor &bgcolor, EmoticonsStyle style);
+	UserListElement Ule;
+	QDateTime Date;
+	int SeparatorSize;
 
 public:
-	const UserListElement &ule;
 
-	QDateTime date; /*!< data otrzymania wiadomo¶ci */
-	QDateTime sdate; /*!< data wys³ania wiadomo¶ci */
-	QString unformattedMessage; /*!< niesformatowana wiadomo¶æ */
-	bool isMyMessage; /*!< zmienna mowi±ca czy wiadomo¶c zosta³a napisana przez nas */
-	ChatColors Colors; /*!< przechowuje kolory u¿ywane w wiadomo¶ci (t³a, czcionki i nicku) */
-
-	QMap<QString, bool> attributes; /*!<
-		Mo¿e s³u¿yæ do przechowywania informacji o tym
-		czy wiadomo¶æ by³a potwierdzona, szyfrowana, ...
-		W zamy¶le ma s³u¿yæ do okre¶lania czy jaki¶ obrazek
-		ma byæ dodawany do wiadomo¶ci czy nie - jaki obrazek -
-		ta informacja bêdzie gdzie indziej
-	*/
-
-	QString formattedMessage;
+	QString unformattedMessage;
 	QString backgroundColor;
 	QString fontColor;
 	QString nickColor;
@@ -54,14 +43,6 @@ public:
 
 	static void registerParserTags();
 	static void unregisterParserTags();
-
-	//inne atrybuty?
-	//QMap<QString, QString> stringAttributes;
-
-	bool needsToBeFormatted; /*!< zmienna mowi±ca czy wiadomo¶c powinna
-		byæ sformatowana */
-
-	QString message; /*!< Sformatowana wiadomo¶æ (razem z \<p\> lub \<table\>) **/
 
 	/**
 		\fn ChatMessage(const QString &nick, const QString &unformattedMessage, bool myMessage, QDateTime date, QDateTime sdate=QDateTime())
@@ -74,32 +55,15 @@ public:
 		\param date data otrzymania wiadomo¶ci
 		\param sdate data wys³ania wiadomo¶ci
 	**/
-	ChatMessage(const UserListElement &ule, const QString &unformattedMessage, bool myMessage, QDateTime date, QDateTime sdate=QDateTime());
+	ChatMessage(const UserListElement &ule, const QString &unformattedMessage, bool myMessage, QDateTime date, QDateTime sdate = QDateTime());
 
-	/**
-		\fn ChatMessage(const QString &formattedMessage, const ChatColors& colors = ChatColors(Qt::white, Qt::black, Qt::black))
-		Konstruktor ustawiaj±cy sformatowan± wiadomo¶æ,
-		kolor t³a i liter wiadomo¶ci
-		\param nick nazwa u¿ytkownika
-		\param unformattedMessage niesformatowana wiadomo¶æ
-		\param myMessage zmienna mowi±ca czy wiadomo¶æ pochodzi od nas
-		\param date data otrzymania wiadomo¶ci
-		\param sdate data wys³ania wiadomo¶ci
-	**/
-	ChatMessage(const QString &formattedMessage,
-		const ChatColors& colors = ChatColors(Qt::white, Qt::black, Qt::black));
+	void replaceLoadingImages(UinType sender, uint32_t size, uint32_t crc32);
 
-	/**
-		\fn void formatMessage(const QString &format, const EmoticonsStyle emoticons_style, int separator_size);
-		Funkcja formatuj±ca niesformatowan± wiadomo¶æ
-		zgodnie z zadanymi parametrami
-		\param format format, który powinien zostaæ u¿yty
-		\param emoticons_style u¿ywany styl emotikon
-		\param separator_size wysoko¶æ separatora
-	**/
-	void formatMessage(const QString &format, const EmoticonsStyle emoticons_style, int separator_size);
+	UserListElement sender() const { return Ule; }
+	QDateTime date() const { return Date; }
 
-	UserListElement sender() { return ule; };
+	void setSeparatorSize(int separatorSize) { SeparatorSize = separatorSize; }
+	int separatorSize() const { return SeparatorSize; }
 };
 
 #endif

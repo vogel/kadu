@@ -17,7 +17,7 @@
 
 static QString getMessage(const QObject * const object)
 {
-	return dynamic_cast<const ChatMessage * const>(object)->formattedMessage;
+	return dynamic_cast<const ChatMessage * const>(object)->unformattedMessage;
 }
 
 static QString getBackgroundColor(const QObject * const object)
@@ -45,6 +45,16 @@ static QString getReceivedDate(const QObject * const object)
 	return dynamic_cast<const ChatMessage * const>(object)->receivedDate;
 }
 
+static QString getSeparatorSize(const QObject * const object)
+{
+	int separatorSize = dynamic_cast<const ChatMessage * const>(object)->separatorSize();
+
+	if (separatorSize)
+		return QString::number(separatorSize);
+	else
+		return "";
+}
+
 void ChatMessage::registerParserTags()
 {
 	KaduParser::registerObjectTag("message", getMessage);
@@ -53,6 +63,7 @@ void ChatMessage::registerParserTags()
 	KaduParser::registerObjectTag("nickColor", getNickColor);
 	KaduParser::registerObjectTag("sentDate", getSentDate);
 	KaduParser::registerObjectTag("receivedDate", getReceivedDate);
+	KaduParser::registerObjectTag("separatorSize", getSeparatorSize);
 }
 
 void ChatMessage::unregisterParserTags()
@@ -63,18 +74,29 @@ void ChatMessage::unregisterParserTags()
 	KaduParser::unregisterObjectTag("nickColor", getNickColor);
 	KaduParser::unregisterObjectTag("sentDate", getSentDate);
 	KaduParser::unregisterObjectTag("receivedDate", getReceivedDate);
+	KaduParser::unregisterObjectTag("separatorSize", getSeparatorSize);
 }
 
-ChatMessage::ChatMessage(const UserListElement &ule, const QString &unformattedMessage_, bool myMessage, QDateTime date_, QDateTime sdate_)
-	: ule(ule), date(date_), sdate(sdate_), unformattedMessage(unformattedMessage_), isMyMessage(myMessage),
-	Colors(QColor(), QColor(), QColor()), attributes(), needsToBeFormatted(true), message()
+ChatMessage::ChatMessage(const UserListElement &ule, const QString &unformattedMessage, bool myMessage, QDateTime date, QDateTime sdate)
+	: Ule(ule), Date(date)
 {
-}
+	receivedDate = printDateTime(date);
+	sentDate = printDateTime(sdate);
 
-ChatMessage::ChatMessage(const QString &formattedMessage, const ChatColors& colors)
-	: ule(UserListElement()), date(), sdate(), unformattedMessage(), isMyMessage(true),
-	Colors(colors), attributes(), needsToBeFormatted(false), message(formattedMessage)
-{
+	if (myMessage)
+	{
+		backgroundColor = config_file.readEntry("Look", "ChatMyBgColor");
+		fontColor = config_file.readEntry("Look", "ChatMyFontColor");
+		nickColor = config_file.readEntry("Look", "ChatMyNickColor");
+	}
+	else
+	{
+		backgroundColor = config_file.readEntry("Look", "ChatUsrBgColor");
+		fontColor = config_file.readEntry("Look", "ChatUsrFontColor");
+		nickColor = config_file.readEntry("Look", "ChatUsrNickColor");
+	}
+
+	this->unformattedMessage = convertCharacters(unformattedMessage, backgroundColor, (EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle"));
 }
 
 /* convert special characters into emoticons, HTML into plain text and so forth */
@@ -109,28 +131,7 @@ QString ChatMessage::convertCharacters(QString edit, const QColor &bgcolor, Emot
 	return edit;
 }
 
-void ChatMessage::formatMessage(const QString &format, const EmoticonsStyle emoticons_style,/* bool include_header,*/ int separator_size)
+void ChatMessage::replaceLoadingImages(UinType sender, uint32_t size, uint32_t crc32)
 {
-	formattedMessage = convertCharacters(unformattedMessage, Colors.backgroundColor(), emoticons_style);
-	backgroundColor = Colors.backgroundColor().name();
-	fontColor = Colors.fontColor().name();
-	nickColor = Colors.nickColor().name();
-
-	sentDate = "";
-	receivedDate = "";
-
-	message = format;
-
-	receivedDate = printDateTime(date);
-// 	if (!sdate.isNull())
-// 		if ((abs(date.toTime_t() - sdate.toTime_t())) > chat_style->noServerTimesDiff())
-// 			sentDate = printDateTime(sdate);
-
-	if (separator_size > 0)
-		message.replace("<kadu:separator/>", QString("<img title=\"\" height=\"%1\" width=\"10000\" align=\"right\">").arg(separator_size));
-	else
-		message.remove("<kadu:separator/>");
-
-	message = KaduParser::parse(message, ule, this);
-	needsToBeFormatted = false;
+	unformattedMessage = gadu_images_manager.replaceLoadingImages(unformattedMessage, sender, size, crc32);
 }
