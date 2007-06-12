@@ -82,8 +82,8 @@ ToolButton* Action::addToToolbar(ToolBar* toolbar, bool uses_text_label)
 	btn->setUsesTextLabel(uses_text_label);
 	btn->setTextPosition(ToolButton::BesideIcon);
 	QAccel* accel = new QAccel(btn);
-	accel->connectItem(Accel->insertItem(KeySeq0), btn, SIGNAL(clicked()));
-	accel->connectItem(Accel->insertItem(KeySeq1), btn, SIGNAL(clicked()));
+	accel->connectItem(accel->insertItem(KeySeq0), btn, SIGNAL(clicked()));
+	accel->connectItem(accel->insertItem(KeySeq1), btn, SIGNAL(clicked()));
 	if(ToggleAction || !OnIcon.isNull())
 		btn->setOn(ToggleState);
 	connect(btn, SIGNAL(clicked()), this, SLOT(toolButtonClicked()));
