@@ -29,7 +29,7 @@ class Action : public QObject
 	private:
 		QIconSet Icon;
 		QString Text;
-		QKeySequence Accel;
+		QKeySequence KeySeq0, KeySeq1; //!< skróty klawiszowe wywo³uj±ce akcjê
 		bool ToggleAction;
 		QIconSet OnIcon;
 		QString OnText;
@@ -43,8 +43,9 @@ class Action : public QObject
 		void toolButtonDestroyed(QObject* obj);
 
 	public:
-		Action(const QIconSet& icon, const QString& text, const char* name,
-			ActionType Type, QKeySequence accel = QKeySequence());
+		Action(const QIconSet& icon, const QString& text, const char* name, ActionType Type,
+			QKeySequence Seq0 = QKeySequence(), QKeySequence Seq1 = QKeySequence());
+
 		void setToggleAction(bool toggle);
 		/**
 			action works just like toggled but using two shapes

@@ -11,6 +11,7 @@
 #include <qcursor.h>
 #include <qobjectlist.h>
 #include <qtooltip.h>
+#include <qaccel.h>
 
 #include "action.h"
 #include "debug.h"
@@ -18,9 +19,11 @@
 #include "toolbar.h"
 #include "toolbutton.h"
 
-Action::Action(const QIconSet& icon, const QString& text, const char* name, ActionType Type, QKeySequence accel)
-	: QObject(NULL, name), Icon(icon), Text(text), Accel(accel), ToggleAction(false),
-		OnIcon(), OnText(), Slot(0), ToolButtons(), ToggleState(false), Type(Type)
+Action::Action(const QIconSet& icon, const QString& text, const char* name, ActionType Type,
+		QKeySequence Seq0, QKeySequence Seq1)
+	: QObject(NULL, name), Icon(icon), Text(text), KeySeq0(Seq0), KeySeq1(Seq1),
+		ToggleAction(false), OnIcon(), OnText(), Slot(0), ToolButtons(),
+		ToggleState(false), Type(Type)
 {
 	kdebugf();
 	kdebugf2();
@@ -78,7 +81,9 @@ ToolButton* Action::addToToolbar(ToolBar* toolbar, bool uses_text_label)
 	btn->setToggleButton(ToggleAction);
 	btn->setUsesTextLabel(uses_text_label);
 	btn->setTextPosition(ToolButton::BesideIcon);
-	btn->setAccel(Accel);
+	QAccel* accel = new QAccel(btn);
+	accel->connectItem(Accel->insertItem(KeySeq0), btn, SIGNAL(clicked()));
+	accel->connectItem(Accel->insertItem(KeySeq1), btn, SIGNAL(clicked()));
 	if(ToggleAction || !OnIcon.isNull())
 		btn->setOn(ToggleState);
 	connect(btn, SIGNAL(clicked()), this, SLOT(toolButtonClicked()));

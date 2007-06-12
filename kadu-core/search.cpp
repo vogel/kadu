@@ -212,7 +212,7 @@ void SearchDialog::initModule()
 	kdebugf();
 
 	Action* first_search_action = new Action(icons_manager->loadIcon("LookupUserInfo"),
-		tr("&Search"), "firstSearchAction", Action::TypeSearch, Key_Return);
+		tr("&Search"), "firstSearchAction", Action::TypeSearch, Key_Return, Key_Enter);
 	first_search_action->setSlot(SLOT(firstSearch()));
 	KaduActions.insert("firstSearchAction", first_search_action);
 	KaduActions.addDefaultToolbarAction("Search toolbar", "firstSearchAction", 0, true);
