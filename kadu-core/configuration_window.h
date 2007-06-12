@@ -24,6 +24,7 @@ class ConfigGroupBox;
 class ConfigLineEdit;
 class ConfigSection;
 class ConfigTab;
+class ConfigWidget;
 
 class QGridLayout;
 class QGroupBox;
@@ -67,11 +68,11 @@ class ConfigurationWindow : public QVBox
 
 	ConfigSection *configSection(const QString &name, bool create = true);
 
-	void processUiFile(const QString &fileName, bool append = true);
-	void processUiSectionFromDom(QDomNode sectionNode, bool append = true);
-	void processUiTabFromDom(QDomNode tabNode, const QString &sectionName, bool append = true);
-	void processUiGroupBoxFromDom(QDomNode groupBoxNode, const QString &sectionName, const QString &tabName, bool append = true);
-	void appendUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox);
+	QValueList<ConfigWidget *> processUiFile(const QString &fileName, bool append = true);
+	QValueList<ConfigWidget *> processUiSectionFromDom(QDomNode sectionNode, bool append = true);
+	QValueList<ConfigWidget *> processUiTabFromDom(QDomNode tabNode, const QString &sectionName, bool append = true);
+	QValueList<ConfigWidget *> processUiGroupBoxFromDom(QDomNode groupBoxNode, const QString &sectionName, const QString &tabName, bool append = true);
+	ConfigWidget * appendUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox);
 	void removeUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox);
 
 private slots:
@@ -88,7 +89,7 @@ public:
 
 	virtual void show();
 
-	void appendUiFile(const QString &fileName);
+	QValueList<ConfigWidget *> appendUiFile(const QString &fileName, bool load = true);
 	void removeUiFile(const QString &fileName);
 
 	QWidget *widgetById(const QString &id);

@@ -6,8 +6,12 @@
 #include <qtimer.h>
 #include <qevent.h>
 
+#include "main_configuration_window.h"
 #include "status_changer.h"
 #include "gadu.h"
+
+class QLineEdit;
+class QSpinBox;
 
 /**
  * @defgroup autoaway Autoaway
@@ -48,59 +52,56 @@ public:
 
 };
 
-class AutoAwaySlots : public QObject
+class AutoAway : public ConfigurationUiHandler
 {
 	Q_OBJECT
 
 	AutoAwayStatusChanger *autoAwayStatusChanger;
+	QTimer *timer;
 
-	public:
-		AutoAwaySlots(QObject *parent=0, const char *name=0);
-		~AutoAwaySlots();
+	unsigned int checkInterval;
 
-	public slots:
-		void onCreateTabGeneral();
-		void onApplyTabGeneral();
-		void on();
-		void off();
-		void changeAutoInvisibleTime(int i);
-		void changeAutoDisconnectTime(int i);
-		void correctAutoDisconnectTime(int i);
-		void checkAutoInvisibleTime(bool b);
-		void checkAutoDisconnectTime(bool b);
-		void setTextLength(const QString &str);
-};
+	unsigned int autoAwayTime;
+	unsigned int autoDisconnectTime;
+	unsigned int autoInvisibleTime;
 
-class AutoAwayTimer : private QTimer
-{
-	Q_OBJECT
+	bool autoAwayEnabled;
+	bool autoInvisibleEnabled;
+	bool autoDisconnectEnabled;
 
-	private slots:
-		void checkIdleTime();
+	unsigned int idleTime;
 
-	protected:
-		bool eventFilter(QObject *, QEvent *);
+	QSpinBox *autoAwaySpinBox;
+	QSpinBox *autoInvisibleSpinBox;
+	QSpinBox *autoOfflineSpinBox;
 
-	private:
-		friend class AutoAwaySlots;
+	QLineEdit *descriptionTextLineEdit;
 
-		AutoAwayTimer(AutoAwayStatusChanger *autoAwayStatusChanger, QObject *parent = 0, const char *name=0);
-		QString changeDescription(const QString &oldDescription);
+private slots:
+	void checkIdleTime();
+	void configurationUpdated();
 
-		AutoAwayStatusChanger *autoAwayStatusChanger;
+	void autoAwaySpinBoxValueChanged(int value);
+	void autoInvisibleSpinBoxValueChanged(int value);
+	void autoOfflineSpinBoxValueChanged(int value);
 
-		unsigned int checkInterval;
+	void descriptionChangeChanged(int index);
 
-		unsigned int autoAwayTime;
-		unsigned int autoDisconnectTime;
-		unsigned int autoInvisibleTime;
+protected:
+	bool eventFilter(QObject *, QEvent *);
 
-		bool autoAwayEnabled;
-		bool autoInvisibleEnabled;
-		bool autoDisconnectEnabled;
+public:
+	AutoAway(QObject *parent = 0, const char *name=0);
+	virtual ~AutoAway();
 
-		GaduStatus oldStatus;
-		unsigned int idleTime;
+	QString changeDescription(const QString &oldDescription);
+
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+
+public slots:
+	void on();
+	void off();
+
 };
 
 /** @} */

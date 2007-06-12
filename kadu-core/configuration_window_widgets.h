@@ -49,6 +49,7 @@ public:
 	virtual void loadConfiguration() = 0;
 	virtual void saveConfiguration() = 0;
 
+	virtual void show() = 0;
 	virtual bool fromDomElement(QDomElement domElement);
 };
 
@@ -81,6 +82,8 @@ public:
 
 	virtual void loadConfiguration();
 	virtual void saveConfiguration();
+
+	virtual void show();
 };
 
 class ConfigGGPasswordEdit : public ConfigLineEdit
@@ -111,6 +114,7 @@ public:
 	virtual void loadConfiguration();
 	virtual void saveConfiguration();
 
+	virtual void show();
 };
 
 class ConfigSpinBox : public QSpinBox, public ConfigWidgetValue
@@ -129,6 +133,7 @@ public:
 	virtual void loadConfiguration();
 	virtual void saveConfiguration();
 
+	virtual void show();
 	virtual bool fromDomElement(QDomElement domElement);
 };
 
@@ -155,6 +160,7 @@ public:
 	virtual void loadConfiguration();
 	virtual void saveConfiguration();
 
+	virtual void show();
 	virtual bool fromDomElement(QDomElement domElement);
 };
 
@@ -173,6 +179,8 @@ public:
 
 	virtual void loadConfiguration();
 	virtual void saveConfiguration();
+
+	virtual void show();
 };
 
 class ConfigPathListEdit : public PathListEdit, public ConfigWidgetValue
@@ -190,6 +198,8 @@ public:
 
 	virtual void loadConfiguration();
 	virtual void saveConfiguration();
+
+	virtual void show();
 };
 
 class ConfigColorButton : public ColorButton, public ConfigWidgetValue
@@ -207,6 +217,8 @@ public:
 
 	virtual void loadConfiguration();
 	virtual void saveConfiguration();
+
+	virtual void show();
 };
 
 class ConfigSelectFont : public SelectFont, public ConfigWidgetValue
@@ -224,6 +236,8 @@ public:
 
 	virtual void loadConfiguration();
 	virtual void saveConfiguration();
+
+	virtual void show();
 };
 
 class ConfigSyntaxEditor : public SyntaxEditor, public ConfigWidgetValue
@@ -242,6 +256,7 @@ public:
 	virtual void loadConfiguration();
 	virtual void saveConfiguration();
 
+	virtual void show();
 	virtual bool fromDomElement(QDomElement domElement);
 };
 
@@ -258,6 +273,8 @@ public:
 
 	virtual void loadConfiguration() {};
 	virtual void saveConfiguration() {};
+
+	virtual void show();
 };
 
 class ConfigSelectFile : public SelectFile, public ConfigWidgetValue
@@ -276,6 +293,7 @@ public:
 	virtual void loadConfiguration();
 	virtual void saveConfiguration();
 
+	virtual void show();
 	virtual bool fromDomElement(QDomElement domElement);
 };
 
@@ -293,6 +311,8 @@ public:
 
 	virtual void loadConfiguration() {};
 	virtual void saveConfiguration() {};
+
+	virtual void show();
 };
 
 #endif // CONFIGURATION_WINDOW_WIDGETS_H

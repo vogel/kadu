@@ -10,6 +10,7 @@
 #ifndef MAIN_CONFIGURATION_WINDOW_H
 #define MAIN_CONFIGURATION_WINDOW_H
 
+#include <qpair.h>
 #include <qvaluelist.h>
 
 #include "configuration_window.h"
@@ -24,7 +25,7 @@ class QCheckBox;
 
 class MainConfigurationWindow;
 
-class ConfigurationAwareObject : public QObject
+class ConfigurationUiHandler : public QObject
 {
 	Q_OBJECT
 
@@ -37,8 +38,7 @@ class MainConfigurationWindow : public ConfigurationWindow
 	Q_OBJECT
 
 	static MainConfigurationWindow *Instance;
-	static QValueList<ConfigurationAwareObject *> ConfigurationAwareObjects;
-	static QStringList UiFiles;
+	static QValueList<QPair<QString, ConfigurationUiHandler *> > UiFiles;
 
 	static void instanceCreated();
 
@@ -95,10 +95,9 @@ public:
 
 		return Instance;
 	}
-	static void registerConfigurationAwareObject(ConfigurationAwareObject *configurationAwareObject);
-	static void unregisterConfigurationAwareObject(ConfigurationAwareObject *configurationAwareObject);
-	static void registerUiFile(const QString &uiFile);
-	static void unregisterUiFile(const QString &uiFile);
+
+	static void registerUiFile(const QString &uiFile, ConfigurationUiHandler *uiHandler);
+	static void unregisterUiFile(const QString &uiFile, ConfigurationUiHandler *uiHandler);
 
 	MainConfigurationWindow();
 	virtual ~MainConfigurationWindow();

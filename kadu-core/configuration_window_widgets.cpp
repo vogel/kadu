@@ -110,6 +110,12 @@ void ConfigLineEdit::saveConfiguration()
 	config_file.writeEntry(section, item, text());
 }
 
+void ConfigLineEdit::show()
+{
+	label->show();
+	QLineEdit::show();
+}
+
 ConfigGGPasswordEdit::ConfigGGPasswordEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		ConfigGroupBox *parentConfigGroupBox, char *name)
 	: ConfigLineEdit(section, item, widgetCaption, toolTip, parentConfigGroupBox, name)
@@ -171,6 +177,11 @@ void ConfigCheckBox::saveConfiguration()
 	config_file.writeEntry(section, item, isChecked());
 }
 
+void ConfigCheckBox::show()
+{
+	QCheckBox::show();
+}
+
 ConfigSpinBox::ConfigSpinBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		int minValue, int maxValue, int step, ConfigGroupBox *parentConfigGroupBox, const char *name)
 	: QSpinBox(minValue, maxValue, step, parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox),
@@ -218,6 +229,11 @@ void ConfigSpinBox::saveConfiguration()
 	config_file.writeEntry(section, item, value());
 }
 
+void ConfigSpinBox::show()
+{
+	label->show();
+	QSpinBox::show();
+}
 
 bool ConfigSpinBox::fromDomElement(QDomElement domElement)
 {
@@ -307,6 +323,12 @@ void ConfigComboBox::saveConfiguration()
 	config_file.writeEntry(section, item, itemValues[currentItem()]);
 }
 
+void ConfigComboBox::show()
+{
+	label->show();
+	QComboBox::show();
+}
+
 bool ConfigComboBox::fromDomElement(QDomElement domElement)
 {
 	QDomNodeList children = domElement.childNodes();
@@ -377,6 +399,12 @@ void ConfigHotKeyEdit::saveConfiguration()
 	config_file.writeEntry(section, item, shortCutString());
 }
 
+void ConfigHotKeyEdit::show()
+{
+	label->show();
+	HotKeyEdit::show();
+}
+
 ConfigPathListEdit::ConfigPathListEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		ConfigGroupBox *parentConfigGroupBox, char *name)
 	: PathListEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
@@ -422,6 +450,12 @@ void ConfigPathListEdit::loadConfiguration()
 void ConfigPathListEdit::saveConfiguration()
 {
 	config_file.writeEntry(section, item, pathList().join(":"));
+}
+
+void ConfigPathListEdit::show()
+{
+	label->show();
+	PathListEdit::show();
 }
 
 ConfigColorButton::ConfigColorButton(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
@@ -471,6 +505,12 @@ void ConfigColorButton::saveConfiguration()
 	config_file.writeEntry(section, item, color());
 }
 
+void ConfigColorButton::show()
+{
+	label->show();
+	ColorButton::show();
+}
+
 ConfigSelectFont::ConfigSelectFont(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		ConfigGroupBox *parentConfigGroupBox, char *name)
 	: SelectFont(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
@@ -516,6 +556,12 @@ void ConfigSelectFont::loadConfiguration()
 void ConfigSelectFont::saveConfiguration()
 {
 	config_file.writeEntry(section, item, font());
+}
+
+void ConfigSelectFont::show()
+{
+	label->show();
+	SelectFont::show();
 }
 
 ConfigSyntaxEditor::ConfigSyntaxEditor(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
@@ -565,6 +611,12 @@ void ConfigSyntaxEditor::saveConfiguration()
 	config_file.writeEntry(section, item, currentSyntax());
 }
 
+void ConfigSyntaxEditor::show()
+{
+	label->show();
+	SyntaxEditor::show();
+}
+
 bool ConfigSyntaxEditor::fromDomElement(QDomElement domElement)
 {
 	QString category = domElement.attribute("category");
@@ -599,6 +651,11 @@ void ConfigActionButton::createWidgets()
 
 	if (!toolTip.isEmpty())
 		QToolTip::add(this, toolTip);
+}
+
+void ConfigActionButton::show()
+{
+	QPushButton::show();
 }
 
 ConfigSelectFile::ConfigSelectFile(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
@@ -648,6 +705,12 @@ void ConfigSelectFile::saveConfiguration()
 	config_file.writeEntry(section, item, file());
 }
 
+void ConfigSelectFile::show()
+{
+	label->show();
+	SelectFile::show();
+}
+
 bool ConfigSelectFile::fromDomElement(QDomElement domElement)
 {
 	QString type = domElement.attribute("type");
@@ -687,4 +750,10 @@ void ConfigPreview::createWidgets()
 
 	layout->addWidget(label, numRows, 0, Qt::AlignRight | Qt::AlignTop);
 	layout->addWidget(this, numRows, 1);
+}
+
+void ConfigPreview::show()
+{
+	label->show();
+	Preview::show();
 }

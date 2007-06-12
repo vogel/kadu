@@ -178,6 +178,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * mo¿liwo¶æ ustawiania obrazka w tle listy kontaktu jako Tiled/Centered/Stretched (Vogel)
 * chat: format wiadomo¶ci parsowany przez KaduParser (Vogel)
 * chat: spore przeróbki formatowania wiadomosci (Vogel)
+* nowe okno konfiguracji: mo¿liwo¶æ korzystania z nich przez modu³y (Vogel)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

@@ -22,42 +22,42 @@
 #include "main_configuration_window.h"
 
 MainConfigurationWindow *MainConfigurationWindow::Instance = 0;
-QValueList<ConfigurationAwareObject *> MainConfigurationWindow::ConfigurationAwareObjects;
-QStringList MainConfigurationWindow::UiFiles;
+QValueList<QPair<QString, ConfigurationUiHandler *> > MainConfigurationWindow::UiFiles;
 
-void MainConfigurationWindow::registerConfigurationAwareObject(ConfigurationAwareObject *configurationAwareObject)
+void MainConfigurationWindow::registerUiFile(const QString &uiFile, ConfigurationUiHandler *uiHandler)
 {
-	ConfigurationAwareObjects.append(configurationAwareObject);
+	UiFiles.append(qMakePair(uiFile, uiHandler));
 	if (Instance)
 	{
-		connect(Instance, SIGNAL(configurationUpdated()), configurationAwareObject, SLOT(configurationUpdated()));
-		configurationAwareObject->mainConfigurationWindowCreated(Instance);
+		connect(Instance, SIGNAL(configurationUpdated()), uiHandler, SLOT(configurationUpdated()));
+
+		QValueList<ConfigWidget *> widgets = Instance->appendUiFile(uiFile);
+		uiHandler->mainConfigurationWindowCreated(Instance);
+
+		// allow uiHandler handle this...
+		// TODO: make it pretty
+		FOREACH(widget, widgets)
+			if (*widget)
+				(*widget)->loadConfiguration();
 	}
 }
 
-void MainConfigurationWindow::unregisterConfigurationAwareObject(ConfigurationAwareObject *configurationAwareObject)
+void MainConfigurationWindow::unregisterUiFile(const QString &uiFile, ConfigurationUiHandler *uiHandler)
 {
-	ConfigurationAwareObjects.remove(configurationAwareObject);
-}
-
-void MainConfigurationWindow::registerUiFile(const QString &uiFile)
-{
-	UiFiles.append(uiFile);
-	if (Instance)
-		Instance->appendUiFile(uiFile);
-}
-
-void MainConfigurationWindow::unregisterUiFile(const QString &uiFile)
-{
-	UiFiles.remove(uiFile);
+	UiFiles.remove(qMakePair(uiFile, uiHandler));
 	if (Instance)
 		Instance->removeUiFile(uiFile);
 }
 
 void MainConfigurationWindow::instanceCreated()
 {
-	FOREACH(configurationAwareObject, ConfigurationAwareObjects)
-		(*configurationAwareObject)->mainConfigurationWindowCreated(Instance);
+	FOREACH(configurationUiHandlerPair, UiFiles)
+	{
+		ConfigurationUiHandler *uiHandler = (*configurationUiHandlerPair).second;
+		Instance->appendUiFile((*configurationUiHandlerPair).first);
+		if (uiHandler)
+			uiHandler->mainConfigurationWindowCreated(Instance);
+	}
 }
 
 MainConfigurationWindow::MainConfigurationWindow()
@@ -120,9 +120,6 @@ MainConfigurationWindow::MainConfigurationWindow()
 		this, SLOT(onChatSyntaxEditorWindowCreated(SyntaxEditorWindow *)));
 
 // 	connect(widgetById("iconPaths"), SIGNAL(changed()), this, SLOT(setIconThemes()));
-
-	CONST_FOREACH(uiFile, UiFiles)
-		appendUiFile(*uiFile);
 
 	loadGeometry(this, "General", "ConfigGeometry", 0, 30, 790, 480);
 }

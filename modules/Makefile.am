@@ -117,6 +117,7 @@ make_module_dirs:
 	$(mkinstalldirs) "$(DESTDIR)$(includedir)/kadu/modules/"
 	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/modules/"
 	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/modules/translations/"
+	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/modules/configuration/"
 	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/modules/data/"
 	$(mkinstalldirs) "$(DESTDIR)$(libdir)/kadu/modules/bin/"
 
@@ -138,6 +139,12 @@ $(install_targets):
 			$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/modules/translations/"; \
 		fi; \
 		$(INSTALL_DATA) $$dir/translations/*.qm "$(DESTDIR)$(datadir)/kadu/modules/translations/"; \
+	fi; \
+	if test -d $$dir/configuration; then \
+		if [ ! -d "$(DESTDIR)$(datadir)/kadu/modules/configuration/" ]; then \
+			$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/modules/configuration/"; \
+		fi; \
+		$(INSTALL_DATA) $$dir/configuration/*.ui "$(DESTDIR)$(datadir)/kadu/modules/configuration/"; \
 	fi; \
 	if test -d $$dir/data; then \
 		if [ ! -d "$(DESTDIR)$(datadir)/kadu/modules/data/" ]; then \
@@ -178,6 +185,7 @@ uninstall-local:
 	rm -f "$(DESTDIR)$(datadir)/kadu/modules"/*.desc
 	rm -f "$(DESTDIR)$(libdir)/kadu/modules"/*.$(SO_EXT)
 	rm -f "$(DESTDIR)$(datadir)/kadu/modules/translations"/*.qm
+	rm -f "$(DESTDIR)$(datadir)/kadu/modules/configuration"/*.ui
 	rm -rf "$(DESTDIR)$(datadir)/kadu/modules/data"/*
 	rm -rf "$(DESTDIR)$(libdir)/kadu/modules/bin"/*
 
