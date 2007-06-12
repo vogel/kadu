@@ -10,6 +10,8 @@
 #ifndef MAIN_CONFIGURATION_WINDOW_H
 #define MAIN_CONFIGURATION_WINDOW_H
 
+#include <qvaluelist.h>
+
 #include "configuration_window.h"
 
 class ConfigComboBox;
@@ -20,9 +22,25 @@ class Preview;
 
 class QCheckBox;
 
+class MainConfigurationWindow;
+
+class ConfigurationAwareObject : public QObject
+{
+	Q_OBJECT
+
+public slots:
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) = 0;
+};
+
 class MainConfigurationWindow : public ConfigurationWindow
 {
 	Q_OBJECT
+
+	static MainConfigurationWindow *Instance;
+	static QValueList<ConfigurationAwareObject *> ConfigurationAwareObjects;
+	static QStringList UiFiles;
+
+	static void instanceCreated();
 
 	ConfigurationWindow *lookChatAdvanced;
 
@@ -67,6 +85,21 @@ private slots:
 	void chatFixup(Preview *preview);
 
 public:
+	static MainConfigurationWindow * instance()
+	{
+		if (!Instance)
+		{
+			Instance = new MainConfigurationWindow();
+			instanceCreated();
+		}
+
+		return Instance;
+	}
+	static void registerConfigurationAwareObject(ConfigurationAwareObject *configurationAwareObject);
+	static void unregisterConfigurationAwareObject(ConfigurationAwareObject *configurationAwareObject);
+	static void registerUiFile(const QString &uiFile);
+	static void unregisterUiFile(const QString &uiFile);
+
 	MainConfigurationWindow();
 	virtual ~MainConfigurationWindow();
 

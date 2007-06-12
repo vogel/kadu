@@ -23,6 +23,7 @@
 class ConfigGroupBox;
 class ConfigLineEdit;
 class ConfigSection;
+class ConfigTab;
 
 class QGridLayout;
 class QGroupBox;
@@ -30,12 +31,15 @@ class QVBox;
 
 class ConfigGroupBox
 {
+	QString name;
+	ConfigTab *configTab;
+
 	QGroupBox *groupBox;
 	QWidget *container;
 	QGridLayout *gridLayout;
 
 public:
-	ConfigGroupBox(QGroupBox *groupBox);
+	ConfigGroupBox(const QString &name, ConfigTab *configTab, QGroupBox *groupBox);
 	~ConfigGroupBox();
 
 	QWidget * widget() { return container; }
@@ -61,12 +65,14 @@ class ConfigurationWindow : public QVBox
 	void loadConfiguration(QObject *object);
 	void saveConfiguration(QObject *object);
 
-	ConfigSection *configSection(const QString &name);
+	ConfigSection *configSection(const QString &name, bool create = true);
 
-	void appendUiSectionFromDom(QDomNode sectionNode);
-	void appendUiTabFromDom(QDomNode tabNode, const QString &sectionName);
-	void appendUiGroupBoxFromDom(QDomNode groupBoxNode, const QString &sectionName, const QString &tabName);
+	void processUiFile(const QString &fileName, bool append = true);
+	void processUiSectionFromDom(QDomNode sectionNode, bool append = true);
+	void processUiTabFromDom(QDomNode tabNode, const QString &sectionName, bool append = true);
+	void processUiGroupBoxFromDom(QDomNode groupBoxNode, const QString &sectionName, const QString &tabName, bool append = true);
 	void appendUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox);
+	void removeUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox);
 
 private slots:
 	void updateAndCloseConfig();
@@ -78,14 +84,16 @@ public:
 	ConfigurationWindow();
 	virtual ~ConfigurationWindow();
 
-	ConfigGroupBox * configGroupBox(const QString &section, const QString &tab, const QString &groupBox);
+	ConfigGroupBox * configGroupBox(const QString &section, const QString &tab, const QString &groupBox, bool create = true);
 
 	virtual void show();
 
 	void appendUiFile(const QString &fileName);
-	void removeUiFile(const QString &fileName) {}
+	void removeUiFile(const QString &fileName);
 
 	QWidget *widgetById(const QString &id);
+
+	void removedConfigSection(const QString &sectionName);
 
 signals:
 	void configurationUpdated();

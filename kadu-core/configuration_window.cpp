@@ -21,47 +21,55 @@
 
 #include "configuration_window.h"
 
+class ConfigSection;
+
 class ConfigTab
 {
+	QString name;
+	ConfigSection *configSection;
+
 	QMap<QString, ConfigGroupBox *> configGroupBoxes;
 
 	QWidget *mainWidget;
 	QVBoxLayout *mainLayout;
 
 public:
-	ConfigTab(QTabWidget *parentConfigGroupBoxWidget, const QString &name);
+	ConfigTab(const QString &name, ConfigSection *configSection, QTabWidget *parentConfigGroupBoxWidget);
 	~ConfigTab();
 
-	ConfigGroupBox * configGroupBox(const QString &name);
+	ConfigGroupBox * configGroupBox(const QString &name, bool create = true);
 
-	bool empty();
+	void removedConfigGroupBox(const QString &groupBoxName);
 
 };
 
 class ConfigSection
 {
+	QString name;
+	ConfigurationWindow *configurationWindow;
+
 	QListBoxItem *listBoxItem;
 	QMap<QString, ConfigTab *> configTabs;
 
 	QTabWidget *mainWidget;
 
-	ConfigTab *configTab(const QString &name);
+	ConfigTab *configTab(const QString &name, bool create = true);
 
 public:
-	ConfigSection(QListBoxItem *listBoxItem, QWidget *parentConfigGroupBoxWidget);
+	ConfigSection(const QString &name, ConfigurationWindow *configurationWindow, QListBoxItem *listBoxItem, QWidget *parentConfigGroupBoxWidget);
 	~ConfigSection();
 
 	void show() { mainWidget->show(); mainWidget->setCurrentPage(0); }
 	void hide() { mainWidget->hide(); }
 
-	ConfigGroupBox * configGroupBox(const QString &tab, const QString &groupBox);
+	ConfigGroupBox * configGroupBox(const QString &tab, const QString &groupBox, bool create = true);
 
-	bool empty();
+	void removedConfigTab(const QString &configTabName);
 
 };
 
-ConfigGroupBox::ConfigGroupBox(QGroupBox *groupBox)
-	: groupBox(groupBox)
+ConfigGroupBox::ConfigGroupBox(const QString &name, ConfigTab *configTab, QGroupBox *groupBox)
+	: name(name), configTab(configTab), groupBox(groupBox)
 {
 	container = new QWidget(groupBox);
 
@@ -73,14 +81,18 @@ ConfigGroupBox::ConfigGroupBox(QGroupBox *groupBox)
 
 ConfigGroupBox::~ConfigGroupBox()
 {
+	delete groupBox;
+
+	configTab->removedConfigGroupBox(name);
 }
 
 bool ConfigGroupBox::empty()
 {
-	return false;
+	return container->children()->count() == 1;
 }
 
-ConfigTab::ConfigTab(QTabWidget *parentConfigGroupBoxWidget, const QString &name)
+ConfigTab::ConfigTab(const QString &name, ConfigSection *configSection, QTabWidget *parentConfigGroupBoxWidget)
+	: name(name), configSection(configSection)
 {
 	mainWidget = new QWidget(parentConfigGroupBoxWidget);
 	mainLayout = new QVBoxLayout(mainWidget, 10, 10);
@@ -94,29 +106,38 @@ ConfigTab::~ConfigTab()
 	delete mainWidget;
 }
 
-ConfigGroupBox *ConfigTab::configGroupBox(const QString &name)
+ConfigGroupBox *ConfigTab::configGroupBox(const QString &name, bool create)
 {
 	if (configGroupBoxes.contains(name))
 		return configGroupBoxes[name];
+
+	if (!create)
+		return 0;
 
 	QGroupBox *groupBox = new QGroupBox(1, Qt::Horizontal, QObject::tr(name), mainWidget);
 	groupBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
 	mainLayout->insertWidget(configGroupBoxes.count(), groupBox);
 
-	ConfigGroupBox *newConfigGroupBox = new ConfigGroupBox(groupBox);
+	ConfigGroupBox *newConfigGroupBox = new ConfigGroupBox(name, this, groupBox);
 	configGroupBoxes[name] = newConfigGroupBox;
 
 	return newConfigGroupBox;
 }
 
-bool ConfigTab::empty()
+void ConfigTab::removedConfigGroupBox(const QString &groupBoxName)
 {
-	return false;
+	configGroupBoxes.remove(groupBoxName);
+
+	if (!configGroupBoxes.count())
+	{
+		configSection->removedConfigTab(name);
+		delete this;
+	}
 }
 
-ConfigSection::ConfigSection(QListBoxItem *listBoxItem, QWidget *parentConfigGroupBoxWidget)
-	: listBoxItem(listBoxItem)
+ConfigSection::ConfigSection(const QString &name, ConfigurationWindow *configurationWindow, QListBoxItem *listBoxItem, QWidget *parentConfigGroupBoxWidget)
+	: name(name), configurationWindow(configurationWindow), listBoxItem(listBoxItem)
 {
 	mainWidget = new QTabWidget(parentConfigGroupBoxWidget);
 	mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -128,25 +149,38 @@ ConfigSection::~ConfigSection()
 	delete mainWidget;
 }
 
-ConfigGroupBox * ConfigSection::configGroupBox(const QString &tab, const QString &groupBox)
+ConfigGroupBox * ConfigSection::configGroupBox(const QString &tab, const QString &groupBox, bool create)
 {
-	return configTab(tab)->configGroupBox(groupBox);
+	ConfigTab *ct = configTab(tab, create);
+	if (!ct)
+		return 0;
+
+	return ct->configGroupBox(groupBox, create);
 }
 
-ConfigTab *ConfigSection::configTab(const QString &name)
+ConfigTab *ConfigSection::configTab(const QString &name, bool create)
 {
 	if (configTabs.contains(name))
 		return configTabs[name];
 
-	ConfigTab *newConfigTab = new ConfigTab(mainWidget, name);
+	if (!create)
+		return 0;
+
+	ConfigTab *newConfigTab = new ConfigTab(name, this, mainWidget);
 	configTabs[name] = newConfigTab;
 
 	return newConfigTab;
 }
 
-bool ConfigSection::empty()
+void ConfigSection::removedConfigTab(const QString &configTabName)
 {
-	return false;
+	configTabs.remove(configTabName);
+
+	if (!configTabs.count())
+	{
+		configurationWindow->removedConfigSection(name);
+		delete this;
+	}
 }
 
 ConfigurationWindow::ConfigurationWindow()
@@ -202,6 +236,16 @@ void ConfigurationWindow::show()
 
 void ConfigurationWindow::appendUiFile(const QString &fileName)
 {
+	processUiFile(fileName);
+}
+
+void ConfigurationWindow::removeUiFile(const QString &fileName)
+{
+	processUiFile(fileName, false);
+}
+
+void ConfigurationWindow::processUiFile(const QString &fileName, bool append)
+{
 	kdebugf();
 
 	QFile file(fileName);
@@ -228,12 +272,12 @@ void ConfigurationWindow::appendUiFile(const QString &fileName)
 	QDomNodeList children = kaduConfigurationUi.childNodes();
 	int length = children.length();
 	for (int i = 0; i < length; i++)
-		appendUiSectionFromDom(children.item(i));
+		processUiSectionFromDom(children.item(i), append);
 
 	kdebugf2();
 }
 
-void ConfigurationWindow::appendUiSectionFromDom(QDomNode sectionNode)
+void ConfigurationWindow::processUiSectionFromDom(QDomNode sectionNode, bool append)
 {
 	kdebugf();
 
@@ -260,12 +304,12 @@ void ConfigurationWindow::appendUiSectionFromDom(QDomNode sectionNode)
 	const QDomNodeList children = sectionElement.childNodes();
 	int length = children.length();
 	for (int i = 0; i < length; i++)
-		appendUiTabFromDom(children.item(i), sectionName);
+		processUiTabFromDom(children.item(i), sectionName, append);
 
 	kdebugf2();
 }
 
-void ConfigurationWindow::appendUiTabFromDom(QDomNode tabNode, const QString &sectionName)
+void ConfigurationWindow::processUiTabFromDom(QDomNode tabNode, const QString &sectionName, bool append)
 {
 	kdebugf();
 
@@ -292,12 +336,12 @@ void ConfigurationWindow::appendUiTabFromDom(QDomNode tabNode, const QString &se
 	const QDomNodeList &children = tabElement.childNodes();
 	int length = children.length();
 	for (int i = 0; i < length; i++)
-		appendUiGroupBoxFromDom(children.item(i), sectionName, tabName);
+		processUiGroupBoxFromDom(children.item(i), sectionName, tabName, append);
 
 	kdebugf2();
 }
 
-void ConfigurationWindow::appendUiGroupBoxFromDom(QDomNode groupBoxNode, const QString &sectionName, const QString &tabName)
+void ConfigurationWindow::processUiGroupBoxFromDom(QDomNode groupBoxNode, const QString &sectionName, const QString &tabName, bool append)
 {
 	kdebugf();
 
@@ -321,12 +365,20 @@ void ConfigurationWindow::appendUiGroupBoxFromDom(QDomNode groupBoxNode, const Q
 		return;
 	}
 
-	ConfigGroupBox *configGroupBoxWidget = configGroupBox(sectionName, tabName, groupBoxName);
+	ConfigGroupBox *configGroupBoxWidget = configGroupBox(sectionName, tabName, groupBoxName, append);
+	if (!configGroupBoxWidget)
+	{
+		kdebugf2();
+		return;
+	}
 
 	const QDomNodeList &children = groupBoxElement.childNodes();
 	int length = children.length();
 	for (int i = 0; i < length; i++)
-		appendUiElementFromDom(children.item(i), configGroupBoxWidget);
+		if (append)
+			appendUiElementFromDom(children.item(i), configGroupBoxWidget);
+		else
+			removeUiElementFromDom(children.item(i), configGroupBoxWidget);
 
 	kdebugf2();
 }
@@ -391,6 +443,38 @@ void ConfigurationWindow::appendUiElementFromDom(QDomNode uiElementNode, ConfigG
 	kdebugf2();
 }
 
+void ConfigurationWindow::removeUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox)
+{
+	kdebugf();
+
+	if (!uiElementNode.isElement())
+	{
+		kdebugf2();
+		return;
+	}
+
+	const QDomElement &uiElement = uiElementNode.toElement();
+	const QString &caption = uiElement.attribute("caption");
+
+	FOREACH(child, *configGroupBox->widget()->children())
+	{
+		ConfigWidget *configWidget = dynamic_cast<ConfigWidget *>(*child);
+		if (!configWidget)
+			continue;
+
+		if (configWidget->widgetCaption == caption)
+		{
+			delete configWidget;
+			break;
+		}
+	}
+
+	if (configGroupBox->empty())
+		delete configGroupBox;
+
+	kdebugf2();
+}
+
 QWidget * ConfigurationWindow::widgetById(const QString &id)
 {
 	if (widgets.contains(id))
@@ -399,19 +483,26 @@ QWidget * ConfigurationWindow::widgetById(const QString &id)
 	return 0;
 }
 
-ConfigGroupBox * ConfigurationWindow::configGroupBox(const QString &section, const QString &tab, const QString &groupBox)
+ConfigGroupBox * ConfigurationWindow::configGroupBox(const QString &section, const QString &tab, const QString &groupBox, bool create)
 {
-	return configSection(section)->configGroupBox(tab, groupBox);
+	ConfigSection *s = configSection(section, create);
+	if (!s)
+		return 0;
+
+	return s->configGroupBox(tab, groupBox, create);
 }
 
-ConfigSection *ConfigurationWindow::configSection(const QString &name)
+ConfigSection *ConfigurationWindow::configSection(const QString &name, bool create)
 {
 	if (configSections.contains(name))
 		return configSections[name];
 
+	if (!create)
+		return 0;
+
 	QListBoxItem *newConfigSectionListBoxItem = new QListBoxText(sectionsListBox, tr(name));
 
-	ConfigSection *newConfigSection = new ConfigSection(newConfigSectionListBoxItem, container);
+	ConfigSection *newConfigSection = new ConfigSection(name, this, newConfigSectionListBoxItem, container);
 	configSections[name] = newConfigSection;
 
 	if (configSections.count() > 1)
@@ -480,6 +571,13 @@ void ConfigurationWindow::changeSection(const QString &newSectionName)
 
 	currentSection = newSection;
 	newSection->show();
+}
+
+void ConfigurationWindow::removedConfigSection(const QString &sectionName)
+{
+	// TODO: finish it
+	configSections.remove(sectionName);
+// 	sectionsListBox->remove(tr(sectionName));
 }
 
 #ifdef HAVE_OPENSSL

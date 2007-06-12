@@ -65,14 +65,20 @@ bool ConfigWidgetValue::fromDomElement(QDomElement domElement)
 
 ConfigLineEdit::ConfigLineEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		ConfigGroupBox *parentConfigGroupBox, char *name)
-	: QLineEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox)
+	: QLineEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
 {
 	createWidgets();
 }
 
 ConfigLineEdit::ConfigLineEdit(ConfigGroupBox *parentConfigGroupBox, char *name)
-	: QLineEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox)
+	: QLineEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox), label(0)
 {
+}
+
+ConfigLineEdit::~ConfigLineEdit()
+{
+	if (label)
+		delete label;
 }
 
 void ConfigLineEdit::createWidgets()
@@ -82,7 +88,7 @@ void ConfigLineEdit::createWidgets()
 	QGridLayout *layout = parentConfigGroupBox->layout();
 	int numRows = layout->numRows();
 
-	QLabel *label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
+	label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
 
 	layout->addWidget(label, numRows, 0, Qt::AlignRight);
 	layout->addWidget(this, numRows, 1);
@@ -167,13 +173,20 @@ void ConfigCheckBox::saveConfiguration()
 
 ConfigSpinBox::ConfigSpinBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		int minValue, int maxValue, int step, ConfigGroupBox *parentConfigGroupBox, const char *name)
-	: QSpinBox(minValue, maxValue, step, parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox)
+	: QSpinBox(minValue, maxValue, step, parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox),
+		label(label)
 {
 }
 
 ConfigSpinBox::ConfigSpinBox(ConfigGroupBox *parentConfigGroupBox, const char *name)
-	: QSpinBox(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox)
+	: QSpinBox(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox), label(label)
 {
+}
+
+ConfigSpinBox::~ConfigSpinBox()
+{
+	if (label)
+		delete label;
 }
 
 void ConfigSpinBox::createWidgets()
@@ -183,7 +196,7 @@ void ConfigSpinBox::createWidgets()
 	QGridLayout *layout = parentConfigGroupBox->layout();
 	int numRows = layout->numRows();
 
-	QLabel *label = new QLabel(this, widgetCaption + ":", parentConfigGroupBox->widget());
+	label = new QLabel(this, widgetCaption + ":", parentConfigGroupBox->widget());
 
 	layout->addWidget(label, numRows, 0, Qt::AlignRight);
 	layout->addWidget(this, numRows, 1);
@@ -232,14 +245,20 @@ bool ConfigSpinBox::fromDomElement(QDomElement domElement)
 
 ConfigComboBox::ConfigComboBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		const QStringList &itemValues, const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox, const char *name)
-	: QComboBox(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox)
+	: QComboBox(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(label)
 {
 	createWidgets();
 }
 
 ConfigComboBox::ConfigComboBox(ConfigGroupBox *parentConfigGroupBox, const char *name)
-	: QComboBox(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox)
+	: QComboBox(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox), label(label)
 {
+}
+
+ConfigComboBox::~ConfigComboBox()
+{
+	if (label)
+		delete label;
 }
 
 void ConfigComboBox::setItems(const QStringList &itemValues, const QStringList &itemCaptions)
@@ -260,7 +279,7 @@ void ConfigComboBox::createWidgets()
 	QGridLayout *layout = parentConfigGroupBox->layout();
 	int numRows = layout->numRows();
 
-	QLabel *label = new QLabel(this, widgetCaption + ":", parentConfigGroupBox->widget());
+	label = new QLabel(this, widgetCaption + ":", parentConfigGroupBox->widget());
 
 	layout->addWidget(label, numRows, 0, Qt::AlignRight);
 	layout->addWidget(this, numRows, 1);
@@ -313,14 +332,20 @@ bool ConfigComboBox::fromDomElement(QDomElement domElement)
 
 ConfigHotKeyEdit::ConfigHotKeyEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		ConfigGroupBox *parentConfigGroupBox, char *name)
-	: HotKeyEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox)
+	: HotKeyEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(label)
 {
 	createWidgets();
 }
 
 ConfigHotKeyEdit::ConfigHotKeyEdit(ConfigGroupBox *parentConfigGroupBox, char *name)
-	: HotKeyEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox)
+	: HotKeyEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox), label(label)
 {
+}
+
+ConfigHotKeyEdit::~ConfigHotKeyEdit()
+{
+	if (label)
+		delete label;
 }
 
 void ConfigHotKeyEdit::createWidgets()
@@ -330,7 +355,7 @@ void ConfigHotKeyEdit::createWidgets()
 	QGridLayout *layout = parentConfigGroupBox->layout();
 	int numRows = layout->numRows();
 
-	QLabel *label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
+	label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
 
 	layout->addWidget(label, numRows, 0, Qt::AlignRight);
 	layout->addWidget(this, numRows, 1);
@@ -354,14 +379,20 @@ void ConfigHotKeyEdit::saveConfiguration()
 
 ConfigPathListEdit::ConfigPathListEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		ConfigGroupBox *parentConfigGroupBox, char *name)
-	: PathListEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox)
+	: PathListEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
 {
 	createWidgets();
 }
 
 ConfigPathListEdit::ConfigPathListEdit(ConfigGroupBox *parentConfigGroupBox, char *name)
-	: PathListEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox)
+	: PathListEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox), label(0)
 {
+}
+
+ConfigPathListEdit::~ConfigPathListEdit()
+{
+	if (label)
+		delete label;
 }
 
 void ConfigPathListEdit::createWidgets()
@@ -371,7 +402,7 @@ void ConfigPathListEdit::createWidgets()
 	QGridLayout *layout = parentConfigGroupBox->layout();
 	int numRows = layout->numRows();
 
-	QLabel *label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
+	label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
 
 	layout->addWidget(label, numRows, 0, Qt::AlignRight);
 	layout->addWidget(this, numRows, 1);
@@ -395,14 +426,20 @@ void ConfigPathListEdit::saveConfiguration()
 
 ConfigColorButton::ConfigColorButton(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		ConfigGroupBox *parentConfigGroupBox, char *name)
-	: ColorButton(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox)
+	: ColorButton(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
 {
 	createWidgets();
 }
 
 ConfigColorButton::ConfigColorButton(ConfigGroupBox *parentConfigGroupBox, char *name)
-	: ColorButton(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox)
+	: ColorButton(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox), label(0)
 {
+}
+
+ConfigColorButton::~ConfigColorButton()
+{
+	if (label)
+		delete label;
 }
 
 void ConfigColorButton::createWidgets()
@@ -412,7 +449,7 @@ void ConfigColorButton::createWidgets()
 	QGridLayout *layout = parentConfigGroupBox->layout();
 	int numRows = layout->numRows();
 
-	QLabel *label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
+	label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
 
 	layout->addWidget(label, numRows, 0, Qt::AlignRight);
 	layout->addWidget(this, numRows, 1);
@@ -436,14 +473,20 @@ void ConfigColorButton::saveConfiguration()
 
 ConfigSelectFont::ConfigSelectFont(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		ConfigGroupBox *parentConfigGroupBox, char *name)
-	: SelectFont(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox)
+	: SelectFont(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
 {
 	createWidgets();
 }
 
 ConfigSelectFont::ConfigSelectFont(ConfigGroupBox *parentConfigGroupBox, char *name)
-	: SelectFont(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox)
+	: SelectFont(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox), label(0)
 {
+}
+
+ConfigSelectFont::~ConfigSelectFont()
+{
+	if (label)
+		delete label;
 }
 
 void ConfigSelectFont::createWidgets()
@@ -453,7 +496,7 @@ void ConfigSelectFont::createWidgets()
 	QGridLayout *layout = parentConfigGroupBox->layout();
 	int numRows = layout->numRows();
 
-	QLabel *label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
+	label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
 
 	layout->addWidget(label, numRows, 0, Qt::AlignRight);
 	layout->addWidget(this, numRows, 1);
@@ -477,14 +520,20 @@ void ConfigSelectFont::saveConfiguration()
 
 ConfigSyntaxEditor::ConfigSyntaxEditor(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		ConfigGroupBox *parentConfigGroupBox, char *name)
-	: SyntaxEditor(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox)
+	: SyntaxEditor(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
 {
 	createWidgets();
 }
 
 ConfigSyntaxEditor::ConfigSyntaxEditor(ConfigGroupBox *parentConfigGroupBox, char *name)
-	: SyntaxEditor(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox)
+	: SyntaxEditor(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox), label(0)
 {
+}
+
+ConfigSyntaxEditor::~ConfigSyntaxEditor()
+{
+	if (label)
+		delete label;
 }
 
 void ConfigSyntaxEditor::createWidgets()
@@ -494,7 +543,7 @@ void ConfigSyntaxEditor::createWidgets()
 	QGridLayout *layout = parentConfigGroupBox->layout();
 	int numRows = layout->numRows();
 
-	QLabel *label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
+	label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
 
 	layout->addWidget(label, numRows, 0, Qt::AlignRight);
 	layout->addWidget(this, numRows, 1);
@@ -554,14 +603,20 @@ void ConfigActionButton::createWidgets()
 
 ConfigSelectFile::ConfigSelectFile(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		const QString &type, ConfigGroupBox *parentConfigGroupBox, char *name)
-	: SelectFile(type, parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox)
+	: SelectFile(type, parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
 {
 	createWidgets();
 }
 
 ConfigSelectFile::ConfigSelectFile(ConfigGroupBox *parentConfigGroupBox, char *name)
-	: SelectFile(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox)
+	: SelectFile(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox), label(0)
 {
+}
+
+ConfigSelectFile::~ConfigSelectFile()
+{
+	if (label)
+		delete label;
 }
 
 void ConfigSelectFile::createWidgets()
@@ -571,7 +626,7 @@ void ConfigSelectFile::createWidgets()
 	QGridLayout *layout = parentConfigGroupBox->layout();
 	int numRows = layout->numRows();
 
-	QLabel *label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
+	label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
 
 	layout->addWidget(label, numRows, 0, Qt::AlignRight);
 	layout->addWidget(this, numRows, 1);
@@ -605,14 +660,20 @@ bool ConfigSelectFile::fromDomElement(QDomElement domElement)
 }
 
 ConfigPreview::ConfigPreview(const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, char *name)
-	: Preview(parentConfigGroupBox->widget(), name), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox)
+	: Preview(parentConfigGroupBox->widget(), name), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox), label(0)
 {
 	createWidgets();
 }
 
 ConfigPreview::ConfigPreview(ConfigGroupBox *parentConfigGroupBox, char *name)
-	: Preview(parentConfigGroupBox->widget(), name), ConfigWidget(parentConfigGroupBox)
+	: Preview(parentConfigGroupBox->widget(), name), ConfigWidget(parentConfigGroupBox), label(0)
 {
+}
+
+ConfigPreview::~ConfigPreview()
+{
+	if (label)
+		delete label;
 }
 
 void ConfigPreview::createWidgets()
@@ -622,11 +683,8 @@ void ConfigPreview::createWidgets()
 	QGridLayout *layout = parentConfigGroupBox->layout();
 	int numRows = layout->numRows();
 
-	QLabel *label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
+	label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
 
 	layout->addWidget(label, numRows, 0, Qt::AlignRight | Qt::AlignTop);
 	layout->addWidget(this, numRows, 1);
-
-// 	if (!toolTip.isEmpty())
-// 		QToolTip::add(this, toolTip);
 }

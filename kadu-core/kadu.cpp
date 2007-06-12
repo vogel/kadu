@@ -116,7 +116,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	Userbox(0), statusMenu(0), statusButton(), lastPositionBeforeStatusMenuHide(),
 	StartTime(QDateTime::currentDateTime()), updateInformationPanelTimer(),
 	status(), selectedUsers(new UserGroup(userlist->count() / 2)),
-	mainConfigurationWindow(0), ShowMainWindowOnStart(true), DoBlink(false),
+	ShowMainWindowOnStart(true), DoBlink(false),
 	BlinkOn(false),Docked(false), dontHideOnClose(false), personalInfoMenuId(-1)
 {
 	kdebugf();
@@ -612,19 +612,7 @@ void Kadu::descriptionUsersActionActivated()
 
 void Kadu::configurationActionActivated()
 {
-	if (!mainConfigurationWindow)
-	{
-		mainConfigurationWindow = new MainConfigurationWindow();
-		connect(mainConfigurationWindow, SIGNAL(configurationUpdated()), this, SLOT(configurationUpdated()));
-		connect(mainConfigurationWindow, SIGNAL(destroyed()), this, SLOT(configurationWindowDestroyed()));
-	}
-
-	mainConfigurationWindow->show();
-}
-
-void Kadu::configurationWindowDestroyed()
-{
-	mainConfigurationWindow = 0;
+	MainConfigurationWindow::instance()->show();
 }
 
 void Kadu::editUserActionActivated(const UserGroup* users)

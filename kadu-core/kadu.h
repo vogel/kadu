@@ -58,8 +58,6 @@ class Kadu : public QWidget
 		UserStatusChanger *userStatusChanger;
 		SplitStatusChanger *splitStatusChanger;
 
-		MainConfigurationWindow *mainConfigurationWindow;
-
 		bool ShowMainWindowOnStart;
 		bool DoBlink;
 		bool BlinkOn;
@@ -110,7 +108,6 @@ class Kadu : public QWidget
 		void changeStatus(UserStatus status);
 
 		void configurationUpdated();
-		void configurationWindowDestroyed();
 
 	protected:
 		void keyPressEvent(QKeyEvent *e);

@@ -17,8 +17,48 @@
 #include "emoticons.h"
 #include "icons_manager.h"
 #include "kadu.h"
+#include "modules.h"
 
 #include "main_configuration_window.h"
+
+MainConfigurationWindow *MainConfigurationWindow::Instance = 0;
+QValueList<ConfigurationAwareObject *> MainConfigurationWindow::ConfigurationAwareObjects;
+QStringList MainConfigurationWindow::UiFiles;
+
+void MainConfigurationWindow::registerConfigurationAwareObject(ConfigurationAwareObject *configurationAwareObject)
+{
+	ConfigurationAwareObjects.append(configurationAwareObject);
+	if (Instance)
+	{
+		connect(Instance, SIGNAL(configurationUpdated()), configurationAwareObject, SLOT(configurationUpdated()));
+		configurationAwareObject->mainConfigurationWindowCreated(Instance);
+	}
+}
+
+void MainConfigurationWindow::unregisterConfigurationAwareObject(ConfigurationAwareObject *configurationAwareObject)
+{
+	ConfigurationAwareObjects.remove(configurationAwareObject);
+}
+
+void MainConfigurationWindow::registerUiFile(const QString &uiFile)
+{
+	UiFiles.append(uiFile);
+	if (Instance)
+		Instance->appendUiFile(uiFile);
+}
+
+void MainConfigurationWindow::unregisterUiFile(const QString &uiFile)
+{
+	UiFiles.remove(uiFile);
+	if (Instance)
+		Instance->removeUiFile(uiFile);
+}
+
+void MainConfigurationWindow::instanceCreated()
+{
+	FOREACH(configurationAwareObject, ConfigurationAwareObjects)
+		(*configurationAwareObject)->mainConfigurationWindowCreated(Instance);
+}
 
 MainConfigurationWindow::MainConfigurationWindow()
 	: ConfigurationWindow(), lookChatAdvanced(0)
@@ -81,12 +121,16 @@ MainConfigurationWindow::MainConfigurationWindow()
 
 // 	connect(widgetById("iconPaths"), SIGNAL(changed()), this, SLOT(setIconThemes()));
 
+	CONST_FOREACH(uiFile, UiFiles)
+		appendUiFile(*uiFile);
+
 	loadGeometry(this, "General", "ConfigGeometry", 0, 30, 790, 480);
 }
 
 MainConfigurationWindow::~MainConfigurationWindow()
 {
 	saveGeometry(this, "General", "ConfigGeometry");
+	Instance = 0;
 }
 
 void MainConfigurationWindow::show()
@@ -101,7 +145,6 @@ void MainConfigurationWindow::show()
 
 		ConfigurationWindow::show();
 	}
-
 }
 
 void MainConfigurationWindow::import_0_5_0_configuration()

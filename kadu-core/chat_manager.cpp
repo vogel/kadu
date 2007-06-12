@@ -947,11 +947,6 @@ void ChatManager::initModule()
 
 	config_file.addVariable("Look", "Style", "kadu");
 
-// 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default","Style"));
-// 		ConfigDialog::addComboBox("Look", "Style", QT_TRANSLATE_NOOP("@default", "Select chat style"), "Style", toStringList("Kadu", "Hapi", "IRC", tr("Custom")), toStringList("kadu", "hapi", "irc", "custom"));
-// 		ConfigDialog::addTextEdit("Look", "Style", QT_TRANSLATE_NOOP("@default", "Full chat style:"), "FullStyle", 0,
-// 			QT_TRANSLATE_NOOP("@default", "Syntax:\n%1 - background color\n%2 - text font color\n%3 - nick color\n%4 - nick\n%5 - timestamp\n%6 - timestamp with server time\n%7 - message"), 0, Expert);
-
 	config_file.addVariable("Chat", "EmoticonsStyle", EMOTS_ANIMATED);
 	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
 
