@@ -4,10 +4,12 @@
 #include <qhostaddress.h>
 #include <qtimer.h>
 
-#include "kadu-config.h"
 #include "gadu.h"
+#include "main_configuration_window.h"
 
+class QCheckBox;
 class QSocketNotifier;
+class QWidget;
 
 /**
  * @defgroup dcc Dcc
@@ -27,96 +29,102 @@ class DccSocket : public QObject
 {
 	Q_OBJECT
 
-	private:
-		QSocketNotifier* readSocketNotifier;
-		QSocketNotifier* writeSocketNotifier;
-		struct gg_dcc* dccsock;
-		struct gg_event* dccevent;
-		int State;
-		static int Count;
+	QSocketNotifier* readSocketNotifier;
+	QSocketNotifier* writeSocketNotifier;
+	struct gg_dcc* dccsock;
+	struct gg_event* dccevent;
+	int State;
+	static int Count;
 
-	protected slots:
-		void dccDataReceived();
-		void dccDataSent();
+protected slots:
+	void dccDataReceived();
+	void dccDataSent();
 
-	public:
-		DccSocket(struct gg_dcc* dcc_sock);
-		~DccSocket();
-		struct gg_dcc* ggDccStruct() const;
-		struct gg_event* ggDccEvent() const;
+public:
+	DccSocket(struct gg_dcc* dcc_sock);
+	~DccSocket();
+	struct gg_dcc* ggDccStruct() const;
+	struct gg_event* ggDccEvent() const;
 
-		virtual void initializeNotifiers();
-		void enableNotifiers();
-		void disableNotifiers();
+	virtual void initializeNotifiers();
+	void enableNotifiers();
+	void disableNotifiers();
 
-		virtual void watchDcc();
-		int state() const;
-		static int count();
-		virtual void setState(int pstate);
+	virtual void watchDcc();
+	int state() const;
+	static int count();
+	virtual void setState(int pstate);
 
-		void discard();
+	void discard();
 
-	signals:
-		void dccFinished(DccSocket* dcc);
+signals:
+	void dccFinished(DccSocket* dcc);
 };
 
-class DccManager : public QObject
+class DccManager : public ConfigurationUiHandler
 {
 	Q_OBJECT
 
-	private:
-		friend class DccSocket;
-		gg_dcc* DccSock;
-		QSocketNotifier* DCCReadSocketNotifier;
-		QSocketNotifier* DCCWriteSocketNotifier;
+	friend class DccSocket;
+	gg_dcc* DccSock;
+	QSocketNotifier* DCCReadSocketNotifier;
+	QSocketNotifier* DCCWriteSocketNotifier;
 
-		QTimer TimeoutTimer;
-		void watchDcc();
-		QMap<UinType, int> requests;
-		bool DccEnabled;
+	QTimer TimeoutTimer;
+	void watchDcc();
+	QMap<UinType, int> requests;
+	bool DccEnabled;
 
-	private slots:
-		void startTimeout();
-		void cancelTimeout();
-		void setupDcc();
-		void closeDcc();
+	QCheckBox *ipAutotetect;
+	QWidget *ipAddress;
+	QCheckBox *forwarding;
+	QWidget *forwardingExternalIp;
+	QWidget *forwardingExternalPort;
+	QWidget *forwardingLocalPort;
 
-		/**
-			Otrzymano wiadomo¶æ CTCP.
-			Kto¶ nas prosi o po³±czenie dcc, poniewa¿
-			jeste¶my za NAT-em.
-		**/
-		void dccConnectionReceived(const UserListElement& sender);
-		void timeout();
-		void callbackReceived(DccSocket *socket);
+private slots:
+	void startTimeout();
+	void cancelTimeout();
+	void setupDcc();
+	void closeDcc();
 
-		void dccFinished(DccSocket* dcc);
-		void dccReceived();
-		void dccSent();
-		void ifDccEnabled(bool value);
-		void ifDccIpEnabled(bool value);
-		void configDialogCreated();
-		void configDialogApply();
+	/**
+		Otrzymano wiadomo¶æ CTCP.
+		Kto¶ nas prosi o po³±czenie dcc, poniewa¿
+		jeste¶my za NAT-em.
+	**/
+	void dccConnectionReceived(const UserListElement& sender);
+	void timeout();
+	void callbackReceived(DccSocket *socket);
 
-	public:
-		DccManager(QObject *parent=0, const char *name=0);
-		virtual ~DccManager();
-		enum TryType {DIRECT, REQUEST};
-		TryType initDCCConnection(uint32_t ip, uint16_t port,
-								UinType my_uin, UinType peer_uin, const char *gadu_slot,
-								int dcc_type, bool force_request=false);
-		bool dccEnabled() const;
+	void dccFinished(DccSocket* dcc);
+	void dccReceived();
+	void dccSent();
 
-	signals:
-		void dccEvent(DccSocket* socket, bool &lock);
-		void connectionBroken(DccSocket* socket);
-		void dccError(DccSocket* socket);
-		void dccDone(DccSocket* socket);
-		void setState(DccSocket* socket);
-		void socketDestroying(DccSocket* socket);
+	void onIpAutotetectToggled(bool toggled);
+	void configurationUpdated();
 
-		/* nie dotykaæ */
-		void dccSig(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, struct gg_dcc **out);
+public:
+	DccManager();
+	virtual ~DccManager();
+	enum TryType {DIRECT, REQUEST};
+	TryType initDCCConnection(uint32_t ip, uint16_t port,
+		UinType my_uin, UinType peer_uin, const char *gadu_slot,
+		int dcc_type, bool force_request=false);
+	bool dccEnabled() const;
+
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+
+signals:
+	void dccEvent(DccSocket* socket, bool &lock);
+	void connectionBroken(DccSocket* socket);
+	void dccError(DccSocket* socket);
+	void dccDone(DccSocket* socket);
+	void setState(DccSocket* socket);
+	void socketDestroying(DccSocket* socket);
+
+	/* nie dotykaæ */
+	void dccSig(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, struct gg_dcc **out);
 };
 
 extern DccManager* dcc_manager;

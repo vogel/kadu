@@ -47,7 +47,7 @@
 			</group-box>
 		</tab>
 
-		<tab name="Advanced">
+		<tab name="Server">
 			<group-box name="Servers properties">
 				<check-box caption="Use default servers" config-section="Network" config-item="isDefServers" id="useDefaultServers" />
 				<line-edit caption="IP Addresses" config-section="Network" config-item="Server" id="serverList" />
@@ -177,10 +177,6 @@
 				<spin-box caption="Reduce the number of visible messages to" config-section="Chat" config-item="ChatPruneLen" min-value="1" max-value="255" step="1" id="chatPruneLen" />
 			</group-box>
 
-<!-- 			<group-box name="Background"> -->
-<!-- 				<select-file caption="Background file" config-section="Look" config-item="ChatBgImage" type="image" /> -->
-<!-- 			</group-box> -->
-
 			<group-box name="Style">
 				<syntax-editor caption="Style" config-section="Look" config-item="Style" category="chat" id="chatSyntax" />
 				<preview caption="Preview" id="chatSyntaxPreview" />
@@ -219,9 +215,6 @@
 					<item value="Stretched" caption="Stretched" />
 				</combo-box>
 			</group-box>
-<!--
-			<group-box name="Preview">
-			</group-box>-->
 		</tab>
 
 		<tab name="Information Panel">
@@ -271,7 +264,7 @@
 	</section>-->
 
 	<section name="Shortcuts">
-		<tab name="Main">
+		<tab name="General">
 			<group-box name="Shortcuts">
 				<hot-key-edit caption="Remove from userlist" config-section="ShortCuts" config-item="kadu_deleteuser" />
 				<hot-key-edit caption="View / edit user info" config-section="ShortCuts" config-item="kadu_persinfo" />
@@ -290,29 +283,6 @@
 			</group-box>
 		</tab>
 	</section>
-
-<!--	<section name="File transfers &amp; voice chats">
-		<tab name="General">
-			<group-box name="General">
-				<check-box caption="File transfers &amp; voice chats enabled" config-section="General" config-item="DCCEnabled" />
-				<check-box caption="Remove completed transfers from transfers list" config-section="General" config-item="RemoveCompletedTransfersFormTransfersList" />
-			</group-box>
-		</tab>
-
-		<tab name="Advanced">
-			<group-box name="IP">
-				<check-box caption="DCC IP autodetection" config-section="General" config-item="DCCIPAuto" />
-				<line-edit caption="IP address" config-section="General" config-item="DCCIPAddress" />
-			</group-box>
-
-			<group-box name="Forwarding">
-				<check-box caption="DCC forwarding enabled" config-section="General" config-item="DCCForwardingEnabled" />
-				<line-edit caption="External IP address" config-section="General" config-item="ExternalIPAddress" />
-				<line-edit caption="External TCP port" config-section="General" config-item="ExternalTCPPort" />
-				<line-edit caption="Local TCP port" config-section="General" config-item="LocalTCPPorts" />
-			</group-box>
-		</tab>
-	</section>-->
 
 	<section name="Chat">
 		<tab name="General">
