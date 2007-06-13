@@ -4,51 +4,55 @@
 #include <qlabel.h>
 #include <qpixmap.h>
 
+#include "main_configuration_window.h"
+
 /**
  * @defgroup docking Docking
  * @{
  */
-class DockingManager : public QObject
+class DockingManager : public ConfigurationUiHandler
 {
 	Q_OBJECT
 
-	private:
-		enum IconType {BlinkingEnvelope = 0, StaticEnvelope = 1, AnimatedEnvelope = 2} newMessageIcon;
-		QTimer *icon_timer;
-		bool blink;
-		void defaultToolTip();
+	enum IconType {BlinkingEnvelope = 0, StaticEnvelope = 1, AnimatedEnvelope = 2} newMessageIcon;
+	QTimer *icon_timer;
+	bool blink;
+	void defaultToolTip();
 
-	private slots:
-		void statusPixmapChanged(const QPixmap &icon, const QString &iconName);
-		void changeIcon();
-		void dockletChange(int id);
-		void pendingMessageAdded();
-		void pendingMessageDeleted();
-		void onApplyTabGeneral();
-		void onApplyTabLook();
+private slots:
+	void statusPixmapChanged(const QPixmap &icon, const QString &iconName);
+	void changeIcon();
+	void dockletChange(int id);
+	void pendingMessageAdded();
+	void pendingMessageDeleted();
 
-	public:
-		DockingManager(QObject *parent=0, const char *name=0);
-		~DockingManager();
-		void trayMousePressEvent(QMouseEvent * e);
-		QPixmap defaultPixmap();
+	void configurationUpdated();
 
-	public slots:
-		/**
-			Modu³ implementuj±cy dokowanie powinien to ustawic
-			na true przy starcie i false przy zamknieciu, aby
-			kadu wiedzialo, ze jest zadokowane.
-		**/
-		void setDocked(bool docked, bool butDontHideOnClose = false);
+public:
+	DockingManager();
+	virtual ~DockingManager();
 
-  	signals:
-		void trayPixmapChanged(const QPixmap& pixmap, const QString &name);
-		void trayMovieChanged(const QMovie& movie);
-		void trayTooltipChanged(const QString& tooltip);
-		void searchingForTrayPosition(QPoint& pos);
-		void mousePressMidButton();
-		void mousePressLeftButton();
-		void mousePressRightButton();
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+
+	void trayMousePressEvent(QMouseEvent * e);
+	QPixmap defaultPixmap();
+
+public slots:
+	/**
+		Modu³ implementuj±cy dokowanie powinien to ustawic
+		na true przy starcie i false przy zamknieciu, aby
+		kadu wiedzialo, ze jest zadokowane.
+	**/
+	void setDocked(bool docked, bool butDontHideOnClose = false);
+
+ 	signals:
+	void trayPixmapChanged(const QPixmap& pixmap, const QString &name);
+	void trayMovieChanged(const QMovie& movie);
+	void trayTooltipChanged(const QString& tooltip);
+	void searchingForTrayPosition(QPoint& pos);
+	void mousePressMidButton();
+	void mousePressLeftButton();
+	void mousePressRightButton();
 };
 
 extern DockingManager* docking_manager;

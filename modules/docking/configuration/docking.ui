@@ -1,0 +1,16 @@
+<configuration-ui>
+
+	<section name="Tray">
+		<tab name="General">
+			<group-box name="General">
+				<check-box caption="Start docked" config-section="General" config-item="RunDocked" />
+				<check-box caption="Show tooltip in tray" config-section="General" config-item="ShowTooltipInTray" />
+				<combo-box caption="New message tray icon" config-section="Look" config-item="NewMessageIcon">
+					<item value="0" caption="Blinking envelope" />
+					<item value="1" caption="Static envelope" />
+					<item value="2" caption="Animated" />
+				</combo-box>
+			</group-box>
+		</tab>
+	</section>
+</configuration-ui>
