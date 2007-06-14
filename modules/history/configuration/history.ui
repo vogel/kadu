@@ -1,0 +1,25 @@
+<configuration-ui>
+	<section name="History">
+		<tab name="General">
+			<group-box name="Look">
+				<check-box caption="Show emoticons in history" config-section="History" config-item="ShowEmotHist" />
+			</group-box>
+			<group-box name="Status changes">
+				<check-box caption="Don't show status changes" config-section="History" config-item="DontShowStatusChanges" />
+				<check-box caption="Don't save status changes" config-section="History" config-item="DontSaveStatusChanges" />
+			</group-box>
+			<group-box name="Citation">
+				<spin-box caption="Message citation in chat window" config-section="History" config-item="ChatHistoryCitation" min-value="0" max-value="200" step="1" />
+				<slider caption="Don't cite messages older than" config-section="History" config-item="ChatHistoryQuotationTime" min-value="-744" max-value="-1" page-step="24" id="history/dontCiteOldMessages" />
+				<label caption="." id="history/dontCiteOldMessagesLabel" />
+			</group-box>
+		</tab>
+	</section>
+	<section name="Shortcuts">
+		<tab name="General">
+			<group-box name="History">
+				<hot-key-edit caption="View history" config-section="ShortCuts" config-item="kadu_viewhistory" />
+			</group-box>
+		</tab>
+	</section>
+</configuration-ui>

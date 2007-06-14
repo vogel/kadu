@@ -27,7 +27,10 @@
 extern "C" int history_init()
 {
 	kdebugf();
+
 	history_module = new HistoryModule();
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/history.ui"), history_module);
+
 	kdebugf2();
 	return 0;
 }
@@ -35,39 +38,13 @@ extern "C" int history_init()
 extern "C" void history_close()
 {
 	kdebugf();
+
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/history.ui"), history_module);
 	delete history_module;
-	history_module = NULL;
+	history_module = 0;
+
 	kdebugf2();
 }
-
-HistorySlots::HistorySlots(QObject *parent, const char *name) : QObject(parent, name)
-{
-}
-
-void HistorySlots::onCreateTabHistory()
-{
-	kdebugf();
-// 	QLabel *l_qtimeinfo=(QLabel*)(ConfigDialog::widget("History", 0, "dayhour"));
-// 	l_qtimeinfo->setAlignment(Qt::AlignHCenter);
-	updateQuoteTimeLabel(config_file.readNumEntry("History", "ChatHistoryQuotationTime"));
-	kdebugf2();
-}
-
-void HistorySlots::onApplyTabHistory()
-{
-//	kdebugf();
-//	kdebugf2();
-}
-
-void HistorySlots::updateQuoteTimeLabel(int value)
-{
-	kdebugf();
-// 	ConfigDialog::getLabel("History", 0, "dayhour") ->
-// 			setText(tr("%1 day(s) %2 hour(s)").arg(-value / 24).arg((-value) % 24));
-	kdebugf2();
-}
-
-HistorySlots* HistoryModule::historyslots;
 
 HistoryModule::HistoryModule() : QObject(NULL, "history")
 {
@@ -78,24 +55,6 @@ HistoryModule::HistoryModule() : QObject(NULL, "history")
 	mkdir(path_.local8Bit().data(), 0700);
 
 	history = new HistoryManager(0, "history_manager");
-	historyslots = new HistorySlots(history, "history_slots");
-
-// 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "History"), "HistoryTab");
-// 	ConfigDialog::addVGroupBox("History", "History", QT_TRANSLATE_NOOP("@default","Message citation in chat window"));
-// 	ConfigDialog::addSpinBox("History", "Message citation in chat window", QT_TRANSLATE_NOOP("@default", "Count:"), "ChatHistoryCitation", 0, 200, 1, 10);
-// 	ConfigDialog::addLabel("History", "Message citation in chat window", QT_TRANSLATE_NOOP("@default", "Don't cite messages older than:"));
-// 	ConfigDialog::addSlider("History", "Message citation in chat window", "historyslider", "ChatHistoryQuotationTime", -744, -1, 24, -336);
-// 	ConfigDialog::addLabel("History", "Message citation in chat window", 0, "dayhour");
-// 	ConfigDialog::addCheckBox("History", "History", QT_TRANSLATE_NOOP("@default", "Log messages"), "Logging", true);
-// 	ConfigDialog::addCheckBox("History", "History", QT_TRANSLATE_NOOP("@default", "Don't show status changes"), "DontShowStatusChanges", false, 0, 0, Advanced);
-// 	ConfigDialog::addCheckBox("History", "History", QT_TRANSLATE_NOOP("@default", "Don't save status changes"), "DontSaveStatusChanges", true, 0, 0, Advanced);
-
-// 	ConfigDialog::registerSlotOnCreateTab("History", historyslots, SLOT(onCreateTabHistory()));
-// 	ConfigDialog::registerSlotOnApplyTab("History", historyslots, SLOT(onApplyTabHistory()));
-// 	ConfigDialog::connectSlot("History", "historyslider", SIGNAL(valueChanged(int)), historyslots, SLOT(updateQuoteTimeLabel(int)));
-
-// 	ConfigDialog::addCheckBox("General", "grid-expert", QT_TRANSLATE_NOOP("@default", "Show emoticons in history"), "ShowEmotHist", false, 0, 0, Expert);
-// 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys", QT_TRANSLATE_NOOP("@default", "View history"), "kadu_viewhistory", "Ctrl+H");
 
 	connect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
 		history, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
@@ -143,29 +102,21 @@ HistoryModule::~HistoryModule()
 	disconnect(kadu, SIGNAL(removingUsers(UserListElements)),
 		this, SLOT(removingUsers(UserListElements)));
 
-// 	ConfigDialog::removeControl("General", "Show emoticons in history");
-// 	ConfigDialog::removeControl("ShortCuts", "View history");
-
-// 	ConfigDialog::disconnectSlot("History", "historyslider", SIGNAL(valueChanged(int)), historyslots, SLOT(updateQuoteTimeLabel(int)));
-// 	ConfigDialog::unregisterSlotOnCreateTab("History", historyslots, SLOT(onCreateTabHistory()));
-// 	ConfigDialog::unregisterSlotOnApplyTab("History", historyslots, SLOT(onApplyTabHistory()));
-
-// 	ConfigDialog::removeControl("History", "Don't save status changes");
-// 	ConfigDialog::removeControl("History", "Don't show status changes");
-// 	ConfigDialog::removeControl("History", "Log messages");
-// 	ConfigDialog::removeControl("History", 0, "dayhour");
-// 	ConfigDialog::removeControl("History", "historyslider");
-// 	ConfigDialog::removeControl("History", "Don't cite messages older than:");
-// 	ConfigDialog::removeControl("History", "Count:");
-// 	ConfigDialog::removeControl("History", "Message citation in chat window");
-// 	ConfigDialog::removeTab("History");
-
-	delete historyslots;
-	historyslots = 0;
 	delete history;
 	history = 0;
 
 	kdebugf2();
+}
+
+void HistoryModule::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
+{
+	dontCiteOldMessagesLabel = dynamic_cast<QLabel *>(mainConfigurationWindow->widgetById("history/dontCiteOldMessagesLabel"));
+	connect(mainConfigurationWindow->widgetById("history/dontCiteOldMessages"), SIGNAL(valueChanged(int)), this, SLOT(updateQuoteTimeLabel(int)));
+}
+
+void HistoryModule::updateQuoteTimeLabel(int value)
+{
+	dontCiteOldMessagesLabel->setText(tr("%1 day(s) %2 hour(s)").arg(-value / 24).arg((-value) % 24));
 }
 
 void HistoryModule::historyActionActivated(const UserGroup* users)
