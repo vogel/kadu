@@ -35,14 +35,18 @@
  */
 extern "C" int voice_init()
 {
-	voice_manager = new VoiceManager(NULL, "voice_manager");
+	voice_manager = new VoiceManager();
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/voice.ui"), voice_manager);
+
 	return 0;
 }
 
 extern "C" void voice_close()
 {
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/voice.ui"), voice_manager);
+
 	delete voice_manager;
-	voice_manager = NULL;
+	voice_manager = 0;
 }
 
 VoiceChatDialog::VoiceChatDialog(DccSocket *socket)
@@ -237,6 +241,11 @@ void RecordThread::endThread()
 	wait();
 }
 
+void VoiceManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
+{
+	connect(mainConfigurationWindow->widgetById("voice/test"), SIGNAL(clicked()), this, SLOT(testGsmEncoding()));
+}
+
 int VoiceManager::setup()
 {
 	kdebugf();
@@ -283,19 +292,12 @@ void VoiceManager::free()
 	kdebugf2();
 }
 
-VoiceManager::VoiceManager(QObject *parent, const char *name) : QObject(parent, name),
-	GsmEncodingTestMsgBox(0), GsmEncodingTestDevice(0),	GsmEncodingTestHandle(0),
-	GsmEncodingTestSample(0), GsmEncodingTestFrames(0), GsmEncodingTestCurrFrame(0),
-	device(0), playThread(0), recordThread(0), voice_enc(0), voice_dec(0), direct()
+VoiceManager::VoiceManager()
+	: GsmEncodingTestMsgBox(0), GsmEncodingTestDevice(0),	GsmEncodingTestHandle(0),
+		GsmEncodingTestSample(0), GsmEncodingTestFrames(0), GsmEncodingTestCurrFrame(0),
+		device(0), playThread(0), recordThread(0), voice_enc(0), voice_dec(0), direct()
 {
 	kdebugf();
-// 	ConfigDialog::addHotKeyEdit("ShortCuts", "Define keys",
-// 			QT_TRANSLATE_NOOP("@default", "Voice chat"), "kadu_voicechat", "F7");
-// 	ConfigDialog::addVGroupBox("Sounds", "Sounds", QT_TRANSLATE_NOOP("@default","Voice chat"));
-// 	ConfigDialog::addPushButton("Sounds", "Voice chat", QT_TRANSLATE_NOOP("@default","Test GSM Encoding"));
-// 	ConfigDialog::addCheckBox("Sounds", "Voice chat", QT_TRANSLATE_NOOP("@default", "Faster compression algorithm (degrades quality)"), "FastGSM", false, 0, 0, Expert);
-// 	ConfigDialog::addCheckBox("Sounds", "Voice chat", QT_TRANSLATE_NOOP("@default", "Cut-off optimization (faster but degrades quality)"), "CutGSM", false, 0, 0, Expert);
-// 	ConfigDialog::connectSlot("Sounds", "Test GSM Encoding", SIGNAL(clicked()), this, SLOT(testGsmEncoding()));
 
 	UserBox::userboxmenu->addItemAtPos(2,"VoiceChat", tr("Voice chat"), this,
 		SLOT(makeVoiceChat()), HotKey::shortCutFromFile("ShortCuts", "kadu_voicechat"));
@@ -319,12 +321,7 @@ VoiceManager::VoiceManager(QObject *parent, const char *name) : QObject(parent, 
 VoiceManager::~VoiceManager()
 {
 	kdebugf();
-// 	ConfigDialog::disconnectSlot("Sounds", "Test GSM Encoding", SIGNAL(clicked()), this, SLOT(testGsmEncoding()));
-// 	ConfigDialog::removeControl("Sounds", "Cut-off optimization (faster but degrades quality)");
-// 	ConfigDialog::removeControl("Sounds", "Faster compression algorithm (degrades quality)");
-// 	ConfigDialog::removeControl("Sounds", "Test GSM Encoding");
-// 	ConfigDialog::removeControl("Sounds", "Voice chat");
-// 	ConfigDialog::removeControl("ShortCuts", "Voice chat");
+
 	int voice_chat_item = UserBox::userboxmenu->getItem(tr("Voice chat"));
 	UserBox::userboxmenu->removeItem(voice_chat_item);
 	disconnect(UserBox::userboxmenu,SIGNAL(popup()),

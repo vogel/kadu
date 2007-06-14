@@ -1,0 +1,21 @@
+<configuration-ui>
+
+	<section name="Account">
+		<tab name="File transfers and voice chats">
+			<group-box name="Voice chats">
+				<check-box caption="Faster compression algorithm (degrades quality)" config-section="Sounds" config-item="FastGSM" />
+				<check-box caption="Cut-off optimization (faster but degrades quality)" config-section="Sounds" config-item="CutGSM" />
+				<action-button caption="Test GSM Encoding" id="voice/test" />
+			</group-box>
+		</tab>
+	</section>
+
+	<section name="Shortcuts">
+		<tab name="General">
+			<group-box name="Sending filed and voice chats">
+				<hot-key-edit caption="Voice chat" config-section="ShortCuts" config-item="kadu_voicechat" />
+			</group-box>
+		</tab>
+	</section>
+
+</configuration-ui>

@@ -36,7 +36,7 @@ private slots:
 
 public:
 	EncryptionManager();
-	~EncryptionManager();
+	virtual ~EncryptionManager();
 	void enableEncryptionBtnForUsers(UserListElements users);
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
