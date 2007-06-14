@@ -19,6 +19,8 @@ extern "C" {
 class PlayThread;
 class RecordThread;
 
+class QCheckBox;
+
 /**
  * @defgroup voice Voice
  * @{
@@ -69,6 +71,9 @@ private:
 	void resetCoder();
 	void resetDecoder();
 	void askAcceptVoiceChat(DccSocket *socket);
+
+	QCheckBox *testFast;
+	QCheckBox *testCut;
 
 private slots:
 	void testGsmEncoding();

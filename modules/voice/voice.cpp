@@ -244,6 +244,9 @@ void RecordThread::endThread()
 void VoiceManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
 	connect(mainConfigurationWindow->widgetById("voice/test"), SIGNAL(clicked()), this, SLOT(testGsmEncoding()));
+
+	testFast = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widgetById("voice/testFast"));
+	testCut = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widgetById("voice/testCut"));
 }
 
 int VoiceManager::setup()
@@ -356,10 +359,11 @@ void VoiceManager::testGsmEncoding()
 	}
 	int value = 1;
 	gsm_option(GsmEncodingTestHandle, GSM_OPT_VERBOSE, &value);
-// 	if (ConfigDialog::getCheckBox("Sounds", "Faster compression algorithm (degrades quality)")->isChecked())
-// 		gsm_option(GsmEncodingTestHandle, GSM_OPT_FAST, &value);
-// 	if (ConfigDialog::getCheckBox("Sounds", "Cut-off optimization (faster but degrades quality)")->isChecked())
-// 		gsm_option(GsmEncodingTestHandle, GSM_OPT_LTP_CUT, &value);
+
+	if (testFast->isChecked())
+		gsm_option(GsmEncodingTestHandle, GSM_OPT_FAST, &value);
+	if (testCut->isChecked())
+		gsm_option(GsmEncodingTestHandle, GSM_OPT_LTP_CUT, &value);
 
 	GsmEncodingTestDevice = sound_manager->openDevice(PLAY_AND_RECORD, 8000);
 	if (GsmEncodingTestDevice == NULL)
