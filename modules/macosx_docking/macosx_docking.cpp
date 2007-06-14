@@ -28,7 +28,7 @@ MacOSXDocking::MacOSXDocking(QObject *parent, const char *name) : QObject(parent
 {
 	kdebugf();
 	config_file.writeEntry("General", "RunDocked", false);
-	ConfigDialog::registerSlotOnCreateTab("General", this, SLOT(onCreateTabGeneral()));
+
 	connect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap &, const QString &)), this, SLOT(trayPixmapChanged(const QPixmap &, const QString &)));
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint &)), this, SLOT(findTrayPosition(QPoint &)));
 	connect(kadu, SIGNAL(settingMainIconBlocked(bool &)), this, SLOT(blockSettingIcon(bool &)));
@@ -43,7 +43,7 @@ MacOSXDocking::~MacOSXDocking()
 	disconnect(kadu, SIGNAL(settingMainIconBlocked(bool &)), this, SLOT(blockSettingIcon(bool &)));
 	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap &, const QString &)), this, SLOT(trayPixmapChanged(const QPixmap &, const QString &)));
 	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint &)), this, SLOT(findTrayPosition(QPoint &)));
-	ConfigDialog::unregisterSlotOnCreateTab("General", this, SLOT(onCreateTabGeneral()));
+
 	kdebugf2();
 }
 
@@ -76,7 +76,7 @@ void MacOSXDocking::onCreateTabGeneral()
 	//ze wzglêdu na jaki¶ problem z Qt opcja wy³±czona
 	//(okno pojawia siê, znika i znowu pojawia, wiêc nie do¶æ, ¿e nie dzia³a,
 	//  to mo¿e byæ denerwuj±ca je¿eli kto¶ zapomnia³, ¿e to w³±czy³)
-	ConfigDialog::getCheckBox("General", "Start docked")->setEnabled(false);
+	config_file->writeEntry("General", "RunDocked", false);
 }
 
 extern "C" int macosx_docking_init()
