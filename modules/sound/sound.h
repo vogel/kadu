@@ -10,15 +10,18 @@
 #include <qmutex.h>
 #include <qsemaphore.h>
 
+#include "../notify/notify.h"
+
 #include "config_file.h"
 #include "gadu.h"
+#include "main_configuration_window.h"
 #include "misc.h"
 #include "message_box.h"
 #include "modules.h"
 #include "themes.h"
 #include "usergroup.h"
 #include "userlist.h"
-#include "../notify/notify.h"
+
 /**
  * @defgroup sound Sound
  * The sound module.
@@ -128,7 +131,7 @@ class SoundPlayThread : public QThread
 		QValueList<SndParams> list;
 };
 
-class SoundManager : public Notifier
+class SoundManager : public Notifier, public ConfigurationUiHandler
 {
     Q_OBJECT
 	private:
@@ -160,6 +163,8 @@ class SoundManager : public Notifier
 
 		SoundManager(const QString& name, const QString& configname);
 		~SoundManager();
+
+		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 		virtual void notify(Notification *notification);
 

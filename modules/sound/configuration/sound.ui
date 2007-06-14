@@ -1,0 +1,21 @@
+<configuration-ui>
+
+	<section name="Sound">
+
+		<tab name="General">
+			<group-box name="General">
+				<combo-box caption="Sound theme" config-section="Sounds" config-item="" />
+				<path-list-edit caption="Sound paths" config-section="" config-item="" id="soundPaths" />
+				<check-box caption="Enable volume control (player must support it)" config-section="Sounds" config-item="VolumeControl" id="sound/enableVolumeControl" />
+				<slider caption="Volume" config-section="Sounds" config-item="SoundVolume" min-value="0" max-value="100" page-step="20" id="sound/volumeControl" />
+			</group-box>
+			<group-box name="Samples">
+				<action-button caption="Test sample playing" id="sound/testPlay" />
+				<action-button caption="Test sample recording" id="sound/testRecord" />
+				<action-button caption="Test full duplex" id="sound/testDuplex" />
+			</group-box>
+		</tab>
+
+	</section>
+
+</configuration-ui>

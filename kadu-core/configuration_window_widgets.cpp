@@ -760,13 +760,13 @@ void ConfigPreview::show()
 
 ConfigSlider::ConfigSlider(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		int minValue, int maxValue, int pageStep, ConfigGroupBox *parentConfigGroupBox, const char *name)
-	: QSlider(minValue, maxValue, pageStep, 0, Qt::Vertical, parentConfigGroupBox->widget(), name),
+	: QSlider(minValue, maxValue, pageStep, 0, Qt::Horizontal, parentConfigGroupBox->widget(), name),
 		ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
 {
 }
 
 ConfigSlider::ConfigSlider(ConfigGroupBox *parentConfigGroupBox, char *name)
-	: QSlider(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox), label(0)
+	: QSlider(Qt::Horizontal, parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox), label(0)
 {
 }
 

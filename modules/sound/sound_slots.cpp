@@ -67,7 +67,6 @@ void SoundSlots::onCreateTabSounds()
 		soundNames << tr((*notifyEvent).name);
 	}
 
-// 	QCheckBox *b_playsound= ConfigDialog::getCheckBox("Sounds", "Play sounds");
 // 	QCheckBox *b_volumectrl= ConfigDialog::getCheckBox("Sounds", "Enable volume control (player must support it)");
 // 	QGrid *g_volume= ConfigDialog::getGrid("Sounds","volume");
 // 	QComboBox *cb_soundtheme= ConfigDialog::getComboBox("Sounds", "Sound theme");
@@ -80,8 +79,6 @@ void SoundSlots::onCreateTabSounds()
 
 // 	QHBox* box=ConfigDialog::getHBox("Sounds","sound_box");
 // 	QHBox* soundtheme=ConfigDialog::getHBox("Sounds", "sound_theme");
-// 	box->setEnabled(b_playsound->isChecked());
-// 	soundtheme->setEnabled(b_playsound->isChecked());
 
 // 	QListView* lv_soundfiles=ConfigDialog::getListView("Sounds","sound_files");
 // 	lv_soundfiles->setSorting(-1);
@@ -109,18 +106,9 @@ void SoundSlots::onCreateTabSounds()
 // 			soundfiles[*name] = sound_manager->theme()->themePath()+sound_manager->theme()->getThemeEntry(*name);
 // 	}
 
-	QStringList::const_iterator text = soundTexts.begin();
+// 	QStringList::const_iterator text = soundTexts.begin();
 // 	CONST_FOREACH(name, soundNames)
 // 		new QListViewItem(lv_soundfiles, *text++, soundfiles[*name]);
-
-// 	QVBox* util_box=ConfigDialog::getVBox("Sounds","util_box");
-// 	util_box->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum));
-
-// 	soundPlayer(b_playsound->isChecked());
-
-// 	g_volume->setEnabled(b_playsound->isChecked() && b_volumectrl->isChecked());
-
-// 	connect(b_volumectrl, SIGNAL(toggled(bool)), g_volume, SLOT(setEnabled(bool)));
 
 // 	SelectPaths *selpaths = ConfigDialog::getSelectPaths("Sounds", "Sound paths");
 // 	selpaths->setPathList(QStringList::split(";", config_file.readEntry("Sounds", "SoundPaths")));

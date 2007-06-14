@@ -36,13 +36,15 @@
  * @ingroup sound
  * @{
  */
-SoundManager* sound_manager=NULL;
+SoundManager* sound_manager = NULL;
 SoundSlots* sound_slots;
 
 extern "C" int sound_init()
 {
 	kdebugf();
 	new SoundManager("sounds", "sound.conf");
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/sound.ui"), sound_manager);
+
 	kdebugf2();
 	return 0;
 }
@@ -50,8 +52,10 @@ extern "C" int sound_init()
 extern "C" void sound_close()
 {
 	kdebugf();
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/sound.ui"), sound_manager);
+
 	delete sound_manager;
-	sound_manager=NULL;
+	sound_manager = 0;
 	kdebugf2();
 }
 
@@ -186,26 +190,10 @@ SoundManager::SoundManager(const QString& name, const QString& configname) : Not
 
 	play_thread->start();
 
-// 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default","Sounds"), "SoundsTab");
-// 	ConfigDialog::addCheckBox("Sounds", "Sounds",
-// 			QT_TRANSLATE_NOOP("@default","Play sounds"), "PlaySound", false);
-
 	bool volCntrl = true;
 #ifdef Q_OS_MACX
 	volCntrl = false;
 #endif
-// 	ConfigDialog::addCheckBox("Sounds", "Sounds",
-// 			QT_TRANSLATE_NOOP("@default","Enable volume control (player must support it)"),
-// 			"VolumeControl", volCntrl);
-// 	ConfigDialog::addGrid("Sounds", "Sounds", "volume", 2);
-// 	ConfigDialog::addLabel("Sounds", "volume", QT_TRANSLATE_NOOP("@default","Volume"));
-// 	ConfigDialog::addSlider("Sounds", "volume", "slider", "SoundVolume", 0, 100, 20, 50);
-
-// 	ConfigDialog::addHBox("Sounds", "Sounds", "sound_theme");
-// 	ConfigDialog::addComboBox("Sounds", "sound_theme",
-// 			QT_TRANSLATE_NOOP("@default","Sound theme"));
-// 	ConfigDialog::addSelectPaths("Sounds", "sound_theme",
-// 			QT_TRANSLATE_NOOP("@default","Sound paths"));
 
 // 	ConfigDialog::addHBox("Sounds", "Sounds", "sound_box");
 // 	ConfigDialog::addListView("Sounds", "sound_box", "sound_files");
@@ -213,11 +201,6 @@ SoundManager::SoundManager(const QString& name, const QString& configname) : Not
 // 	ConfigDialog::addPushButton("Sounds", "util_box", QT_TRANSLATE_NOOP("@default","Choose"));
 // 	ConfigDialog::addPushButton("Sounds", "util_box", QT_TRANSLATE_NOOP("@default","Clear"));
 // 	ConfigDialog::addPushButton("Sounds", "util_box", QT_TRANSLATE_NOOP("@default","Test"));
-
-// 	ConfigDialog::addHGroupBox("Sounds", "Sounds", QT_TRANSLATE_NOOP("@default","Samples"));
-// 	ConfigDialog::addPushButton("Sounds", "Samples", QT_TRANSLATE_NOOP("@default","Test sample playing"));
-// 	ConfigDialog::addPushButton("Sounds", "Samples", QT_TRANSLATE_NOOP("@default","Test sample recording"));
-// 	ConfigDialog::addPushButton("Sounds", "Samples", QT_TRANSLATE_NOOP("@default","Test full duplex"));
 
 	sound_manager = this;
 	sound_slots = new SoundSlots(this, "sound_slots");
@@ -230,9 +213,6 @@ SoundManager::SoundManager(const QString& name, const QString& configname) : Not
 // 	ConfigDialog::connectSlot("Sounds", "Test", SIGNAL(clicked()), sound_slots, SLOT(testSoundFile()));
 // 	ConfigDialog::connectSlot("Sounds", "Sound theme", SIGNAL(activated(const QString&)), sound_slots, SLOT(chooseSoundTheme(const QString&)));
 // 	ConfigDialog::connectSlot("Sounds", "Sound paths", SIGNAL(changed(const QStringList&)), sound_slots, SLOT(selectedPaths(const QStringList&)));
-// 	ConfigDialog::connectSlot("Sounds", "Test sample playing", SIGNAL(clicked()), sound_slots, SLOT(testSamplePlaying()));
-// 	ConfigDialog::connectSlot("Sounds", "Test sample recording", SIGNAL(clicked()), sound_slots, SLOT(testSampleRecording()));
-// 	ConfigDialog::connectSlot("Sounds", "Test full duplex", SIGNAL(clicked()), sound_slots, SLOT(testFullDuplex()));
 
 	config_file.addVariable("Sounds", "SoundTheme", "default");
 	config_file.addVariable("Sounds", "SoundPaths", QString::null);
@@ -256,40 +236,8 @@ SoundManager::~SoundManager()
 	kdebugf();
 	play_thread->endThread();
 
-// 	ConfigDialog::unregisterSlotOnCreateTab("Sounds", sound_slots, SLOT(onCreateTabSounds()));
-// 	ConfigDialog::unregisterSlotOnApplyTab("Sounds", sound_slots, SLOT(onApplyTabSounds()));
-// 	ConfigDialog::disconnectSlot("Sounds", "Play sounds", SIGNAL(toggled(bool)), sound_slots, SLOT(soundPlayer(bool)));
-// 	ConfigDialog::disconnectSlot("Sounds", "Choose", SIGNAL(clicked()), sound_slots, SLOT(chooseSoundFile()));
-// 	ConfigDialog::disconnectSlot("Sounds", "Clear", SIGNAL(clicked()), sound_slots, SLOT(clearSoundFile()));
-// 	ConfigDialog::disconnectSlot("Sounds", "Test", SIGNAL(clicked()), sound_slots, SLOT(testSoundFile()));
-// 	ConfigDialog::disconnectSlot("Sounds", "Sound theme", SIGNAL(activated(const QString&)), sound_slots, SLOT(chooseSoundTheme(const QString&)));
-// 	ConfigDialog::disconnectSlot("Sounds", "Sound paths", SIGNAL(changed(const QStringList&)), sound_slots, SLOT(selectedPaths(const QStringList&)));
-// 	ConfigDialog::disconnectSlot("Sounds", "Test sample playing", SIGNAL(clicked()), sound_slots, SLOT(testSamplePlaying()));
-// 	ConfigDialog::disconnectSlot("Sounds", "Test sample recording", SIGNAL(clicked()), sound_slots, SLOT(testSampleRecording()));
-// 	ConfigDialog::disconnectSlot("Sounds", "Test full duplex", SIGNAL(clicked()), sound_slots, SLOT(testFullDuplex()));
-
 	delete sound_slots;
 	sound_slots = NULL;
-
-// 	ConfigDialog::removeControl("Sounds", "Test full duplex");
-// 	ConfigDialog::removeControl("Sounds", "Test sample recording");
-// 	ConfigDialog::removeControl("Sounds", "Test sample playing");
-// 	ConfigDialog::removeControl("Sounds", "Samples");
-// 	ConfigDialog::removeControl("Sounds", "Test");
-// 	ConfigDialog::removeControl("Sounds", "Clear");
-// 	ConfigDialog::removeControl("Sounds", "Choose");
-// 	ConfigDialog::removeControl("Sounds", "util_box");
-// 	ConfigDialog::removeControl("Sounds", "sound_files");
-// 	ConfigDialog::removeControl("Sounds", "sound_box");
-// 	ConfigDialog::removeControl("Sounds", "Sound paths");
-// 	ConfigDialog::removeControl("Sounds", "Sound theme");
-// 	ConfigDialog::removeControl("Sounds", "sound_theme");
-// 	ConfigDialog::removeControl("Sounds", "slider");
-// 	ConfigDialog::removeControl("Sounds", "Volume");
-// 	ConfigDialog::removeControl("Sounds", "volume");
-// 	ConfigDialog::removeControl("Sounds", "Enable volume control (player must support it)");
-// 	ConfigDialog::removeControl("Sounds", "Play sounds");
-// 	ConfigDialog::removeTab("Sounds");
 
 	notification_manager->unregisterNotifier("Sound");
 
@@ -303,6 +251,16 @@ SoundManager::~SoundManager()
 	delete themes;
 
 	kdebugf2();
+}
+
+void SoundManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
+{
+	connect(mainConfigurationWindow->widgetById("sound/enableVolumeControl"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widgetById("sound/volumeControl"), SLOT(setEnabled(bool)));
+
+	connect(mainConfigurationWindow->widgetById("sound/testPlay"), SIGNAL(clicked()), sound_slots, SLOT(testSamplePlaying()));
+	connect(mainConfigurationWindow->widgetById("sound/testRecord"), SIGNAL(clicked()), sound_slots, SLOT(testSampleRecording()));
+	connect(mainConfigurationWindow->widgetById("sound/testDuplex"), SIGNAL(clicked()), sound_slots, SLOT(testFullDuplex()));
 }
 
 void SoundManager::import_0_5_0_configuration()
@@ -383,16 +341,7 @@ void SoundManager::play(const QString &path, bool force)
 		kdebugmf(KDEBUG_FUNCTION_END, "end: muted\n");
 		return;
 	}
-// 	if (ConfigDialog::dialogOpened())
-// 	{
-// 		volCntrl=ConfigDialog::getCheckBox("Sounds", "Enable volume control (player must support it)")->isChecked();
-// 		vol=1.0*ConfigDialog::getSlider("Sounds", "slider")->value()/100;
-// 	}
-// 	else
-// 	{
-// 		volCntrl=config_file.readBoolEntry("Sounds","VolumeControl");
-// 		vol=1.0*config_file.readDoubleNumEntry("Sounds","SoundVolume")/100;
-// 	}
+
 	if (QFile::exists(path))
 		play(path, volCntrl, vol);
 	else
