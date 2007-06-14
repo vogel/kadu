@@ -436,6 +436,8 @@ ConfigWidget * ConfigurationWindow::appendUiElementFromDom(QDomNode uiElementNod
 		widget = new ConfigSelectFile(configGroupBox);
 	else if (tagName == "preview")
 		widget = new ConfigPreview(configGroupBox);
+	else if (tagName == "slider")
+		widget = new ConfigSlider(configGroupBox);
 	else
 	{
 		kdebugf2();

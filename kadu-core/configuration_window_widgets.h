@@ -15,6 +15,7 @@
 #include <qdom.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
+#include <qslider.h>
 #include <qspinbox.h>
 #include <qvbox.h>
 
@@ -313,6 +314,26 @@ public:
 	virtual void saveConfiguration() {};
 
 	virtual void show();
+};
+
+class ConfigSlider : public QSlider, public ConfigWidgetValue
+{
+	QLabel *label;
+
+protected:
+	virtual void createWidgets();
+
+public:
+	ConfigSlider(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+		int minValue, int maxValue, int pageStep, ConfigGroupBox *parentConfigGroupBox, const char *name);
+	ConfigSlider(ConfigGroupBox *parentConfigGroupBox, char *name = 0);
+	virtual ~ConfigSlider();
+
+	virtual void loadConfiguration();
+	virtual void saveConfiguration();
+
+	virtual void show();
+	virtual bool fromDomElement(QDomElement domElement);
 };
 
 #endif // CONFIGURATION_WINDOW_WIDGETS_H

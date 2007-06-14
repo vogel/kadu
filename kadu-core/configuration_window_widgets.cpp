@@ -185,12 +185,12 @@ void ConfigCheckBox::show()
 ConfigSpinBox::ConfigSpinBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		int minValue, int maxValue, int step, ConfigGroupBox *parentConfigGroupBox, const char *name)
 	: QSpinBox(minValue, maxValue, step, parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox),
-		label(label)
+		label(0)
 {
 }
 
 ConfigSpinBox::ConfigSpinBox(ConfigGroupBox *parentConfigGroupBox, const char *name)
-	: QSpinBox(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox), label(label)
+	: QSpinBox(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox), label(0)
 {
 }
 
@@ -261,13 +261,13 @@ bool ConfigSpinBox::fromDomElement(QDomElement domElement)
 
 ConfigComboBox::ConfigComboBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		const QStringList &itemValues, const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox, const char *name)
-	: QComboBox(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(label)
+	: QComboBox(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
 {
 	createWidgets();
 }
 
 ConfigComboBox::ConfigComboBox(ConfigGroupBox *parentConfigGroupBox, const char *name)
-	: QComboBox(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox), label(label)
+	: QComboBox(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox), label(0)
 {
 }
 
@@ -354,13 +354,13 @@ bool ConfigComboBox::fromDomElement(QDomElement domElement)
 
 ConfigHotKeyEdit::ConfigHotKeyEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		ConfigGroupBox *parentConfigGroupBox, char *name)
-	: HotKeyEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(label)
+	: HotKeyEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
 {
 	createWidgets();
 }
 
 ConfigHotKeyEdit::ConfigHotKeyEdit(ConfigGroupBox *parentConfigGroupBox, char *name)
-	: HotKeyEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox), label(label)
+	: HotKeyEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox), label(0)
 {
 }
 
@@ -756,4 +756,80 @@ void ConfigPreview::show()
 {
 	label->show();
 	Preview::show();
+}
+
+ConfigSlider::ConfigSlider(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+		int minValue, int maxValue, int pageStep, ConfigGroupBox *parentConfigGroupBox, const char *name)
+	: QSlider(minValue, maxValue, pageStep, 0, Qt::Vertical, parentConfigGroupBox->widget(), name),
+		ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
+{
+}
+
+ConfigSlider::ConfigSlider(ConfigGroupBox *parentConfigGroupBox, char *name)
+	: QSlider(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox), label(0)
+{
+}
+
+ConfigSlider::~ConfigSlider()
+{
+	if (label)
+		delete label;
+}
+
+void ConfigSlider::createWidgets()
+{
+	kdebugf();
+
+	QGridLayout *layout = parentConfigGroupBox->layout();
+	int numRows = layout->numRows();
+
+	label = new QLabel(this, widgetCaption + ":", parentConfigGroupBox->widget());
+
+	layout->addWidget(label, numRows, 0, Qt::AlignRight);
+	layout->addWidget(this, numRows, 1);
+
+	if (!toolTip.isEmpty())
+	{
+		QToolTip::add(this, toolTip);
+		QToolTip::add(label, toolTip);
+	}
+}
+
+void ConfigSlider::loadConfiguration()
+{
+	setValue(config_file.readNumEntry(section, item));
+}
+
+void ConfigSlider::saveConfiguration()
+{
+	config_file.writeEntry(section, item, value());
+}
+
+void ConfigSlider::show()
+{
+	label->show();
+	QSlider::show();
+}
+
+bool ConfigSlider::fromDomElement(QDomElement domElement)
+{
+	QString minValue = domElement.attribute("min-value");
+	QString maxValue = domElement.attribute("max-value");
+	QString pageStep = domElement.attribute("page-step");
+
+	bool ok;
+
+	setMinValue(minValue.toInt(&ok));
+	if (!ok)
+		return false;
+
+	setMaxValue(maxValue.toInt(&ok));
+	if (!ok)
+		return false;
+
+	setPageStep(pageStep.toInt(&ok));
+	if (!ok)
+		return false;
+
+	return ConfigWidgetValue::fromDomElement(domElement);
 }
