@@ -13,6 +13,7 @@
 #include <qcheckbox.h>
 #include <qcombobox.h>
 #include <qdom.h>
+#include <qlabel.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qslider.h>
@@ -26,8 +27,6 @@
 #include "select_file.h"
 #include "select_font.h"
 #include "syntax_editor.h"
-
-class QLabel;
 
 class ConfigGroupBox;
 
@@ -334,6 +333,23 @@ public:
 
 	virtual void show();
 	virtual bool fromDomElement(QDomElement domElement);
+};
+
+class ConfigLabel : public QLabel, public ConfigWidget
+{
+protected:
+	virtual void createWidgets();
+
+public:
+	ConfigLabel(const QString &widgetCaption, const QString &toolTip,
+		ConfigGroupBox *parentConfigGroupBox, char *name = 0);
+	ConfigLabel(ConfigGroupBox *parentConfigGroupBox, char *name = 0);
+	virtual ~ConfigLabel() {}
+
+	virtual void loadConfiguration() {};
+	virtual void saveConfiguration() {};
+
+	virtual void show();
 };
 
 #endif // CONFIGURATION_WINDOW_WIDGETS_H

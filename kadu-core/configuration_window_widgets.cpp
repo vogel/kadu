@@ -222,6 +222,7 @@ void ConfigSpinBox::createWidgets()
 void ConfigSpinBox::loadConfiguration()
 {
 	setValue(config_file.readNumEntry(section, item));
+	emit valueChanged(value());
 }
 
 void ConfigSpinBox::saveConfiguration()
@@ -798,6 +799,7 @@ void ConfigSlider::createWidgets()
 void ConfigSlider::loadConfiguration()
 {
 	setValue(config_file.readNumEntry(section, item));
+	emit valueChanged(value());
 }
 
 void ConfigSlider::saveConfiguration()
@@ -832,4 +834,34 @@ bool ConfigSlider::fromDomElement(QDomElement domElement)
 		return false;
 
 	return ConfigWidgetValue::fromDomElement(domElement);
+}
+
+ConfigLabel::ConfigLabel(const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, char *name)
+	: QLabel(parentConfigGroupBox->widget(), name), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox)
+{
+	createWidgets();
+}
+
+ConfigLabel::ConfigLabel(ConfigGroupBox *parentConfigGroupBox, char *name)
+	: QLabel(parentConfigGroupBox->widget(), name), ConfigWidget(parentConfigGroupBox)
+{
+}
+
+void ConfigLabel::createWidgets()
+{
+	kdebugf();
+
+	QGridLayout *layout = parentConfigGroupBox->layout();
+	int numRows = layout->numRows();
+
+	setText(widgetCaption);
+	layout->addWidget(this, numRows, 1);
+
+	if (!toolTip.isEmpty())
+		QToolTip::add(this, toolTip);
+}
+
+void ConfigLabel::show()
+{
+	QLabel::show();
 }

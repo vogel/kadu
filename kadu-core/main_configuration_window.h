@@ -25,7 +25,7 @@ class QCheckBox;
 
 class MainConfigurationWindow;
 
-class ConfigurationUiHandler : public QObject
+class ConfigurationUiHandler : public virtual QObject
 {
 	Q_OBJECT
 
