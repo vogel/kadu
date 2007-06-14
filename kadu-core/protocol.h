@@ -8,6 +8,8 @@
 #include "status.h"
 #include "usergroup.h"
 
+typedef uint32_t UinType;
+
 class Protocol : public QObject
 {
 	Q_OBJECT
@@ -129,14 +131,14 @@ class Protocol : public QObject
 			@param users lista u¿ytkowników, do których wysy³amy wiadomo¶æ
 			@param mesg wiadomo¶æ, któr± wysy³amy - kodowanie zmieniane wewn±trz
 		**/
-		virtual int sendMessage(UserListElements users, const QString &mesg) = 0;
+		virtual /*int*/void sendMessage(UserListElements users, const QString &mesg) = 0;
 		/**
 			Wysy³a wiadomo¶æ bez formatowania tekstu. Zwracany jest numer sekwencyjny wiadomo¶ci, je¶li
 			przypadkiem by¶my chcieli ¶ledziæ jej potwierdzenie.
 			@param users lista u¿ytkowników, do których wysy³amy wiadomo¶æ
 			@param mesg wiadomo¶æ, któr± wysy³amy - kodowanie zmieniane wewn±trz
 		**/
-		int sendMessage(UserListElement user, const QString &mesg);
+		/*int*/void sendMessage(UserListElement user, const QString &mesg);
 
 
 	signals:
@@ -177,6 +179,14 @@ class Protocol : public QObject
 			\param stop zakoñczenie dalszej obróbki sygna³u
 		**/
 		void sendMessageFiltering(const UserListElements users, QString &msg, bool &stop);
+		/**
+			wiadomo¶æ nie zosta³a dostaczona
+		**/
+		void messageNotDelivered(const QString &message);
+		/**
+			wiadomo¶æ zosta³a przyjêta przez serwer
+		**/
+		void messageAccepted();
 	private:
 		Protocol(const Protocol &) {}
 		virtual Protocol &operator=(const Protocol &){return *this;}

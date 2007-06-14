@@ -1743,7 +1743,7 @@ void Kadu::customEvent(QCustomEvent *e)
 		OpenGGChatEvent *ev = static_cast<OpenGGChatEvent *>(e);
 		QString id = QString::number(ev->number());
 		if (ev->number() > 0 && gadu->ID() != id)
-			chat_manager->openChat(gadu, userlist->byID("Gadu", id));
+			chat_manager->openChatWidget(gadu, userlist->byID("Gadu", id));
 	}
 	else
 		QWidget::customEvent(e);

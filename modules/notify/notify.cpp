@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "chat.h"
+#include "chat_widget.h"
 #include "chat_manager.h"
 // #include "config_dialog.h"
 #include "config_file.h"
@@ -229,7 +229,7 @@ void Notify::probablyNewMessage(Protocol *protocol, UserListElements senders, co
 
 	bool alwaysNotify = !config_file.readBoolEntry("Notify", "NewMessageOnlyIfInactive");
 
-	Chat *chat = chat_manager->findChat(senders);
+	ChatWidget *chat = chat_manager->findChatWidget(senders);
 	if (chat && (alwaysNotify || !chat->isActiveWindow()))
 		notify(new MessageNotification(MessageNotification::NewMessage, senders, msg));
 

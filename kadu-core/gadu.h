@@ -384,6 +384,7 @@ class GaduProtocol : public Protocol
 		void doChangePassword();
 		GaduProtocol(const GaduProtocol &) : Protocol(QString::null, QString::null) {}
 		GaduProtocol &operator=(const GaduProtocol &){return *this;}
+		int seqNumber;
 
 	private slots:
 
@@ -693,7 +694,7 @@ class GaduProtocol : public Protocol
 			z serwerem.
 		**/
 		void setDccExternalIP(const QHostAddress& ip);
-
+		int seqNum() { return seqNumber; }
 		virtual UserStatus *newStatus() const;
 	public slots:
 		/**
@@ -703,7 +704,7 @@ class GaduProtocol : public Protocol
 			@param users lista u¿ytkowników, do których wysy³amy wiadomo¶æ
 			@param mesg wiadomo¶æ, któr± wysy³amy - kodowanie zmieniane wewn±trz
 		**/
-		int sendMessage(UserListElements users, const QString &mesg);
+		/*int*/void sendMessage(UserListElements users, const QString &mesg);
 		/**
 			Wysy³a pro¶bê o przys³anie obrazka z danymi parametrami.
 
@@ -888,7 +889,7 @@ class GaduProtocol : public Protocol
 		/**
 			wiadomo¶æ zosta³a zablokowana przez serwer
 		**/
-		void messageBlocked(int seq, UinType uin);
+		//void messageBlocked(int seq, UinType uin);
 
 		/**
 			wiadomo¶æ dostarczono
@@ -903,17 +904,13 @@ class GaduProtocol : public Protocol
 		/**
 			skrzynka odbiorcza na serwerze jest pe³na
 		**/
-		void messageBoxFull(int seq, UinType uin);
+		//void messageBoxFull(int seq, UinType uin);
 
-		/**
-			wiadomo¶æ nie dostaczona (wystêpuje tylko przy CTCP)
-		**/
-		void messageNotDelivered(int seq, UinType uin);
+		
+		//void messageNotDelivered(int seq, UinType uin);
 
-		/**
-			wiadomo¶æ zosta³a przyjêta przez serwer
-		**/
-		void messageAccepted(int seq, UinType uin);
+		
+		//void messageAccepted(int seq, UinType uin);
 		/**
 			wiadomo¶æ zosta³a odrzucona przez serwer
 		**/

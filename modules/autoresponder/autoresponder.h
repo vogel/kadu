@@ -12,7 +12,7 @@
  * @{
  */
 
-class Chat;
+class ChatWidget;
 
 class AutoResponder : public QObject
 {
@@ -24,7 +24,7 @@ class AutoResponder : public QObject
 		~AutoResponder();
 	public slots:
 		void chatMsgReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t time, bool& grab);
-		void chatOpened(Chat *chat);
+		void chatOpened(ChatWidget *chat);
 	public:
 		UserGroup replied;		/* tu beda przechowywane uiny tych ktorzy sie odezwali do nas */
 };

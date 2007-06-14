@@ -19,7 +19,7 @@
 #include "kadu-config.h"
 #include "message_box.h"
 #include "misc.h"
-#include "chat.h"
+#include "chat_widget.h"
 #include "chat_manager.h"
 
 //netinet/in.h na freebsd 4.x jest wybrakowane i trzeba inkludowaæ sys/types.h
@@ -346,7 +346,7 @@ void GaduProtocol::initModule()
 
 GaduProtocol::GaduProtocol(const QString &id, QObject *parent, const char *name) : Protocol("Gadu", id, parent, name),
 		Mode(Register), DataUin(0), DataEmail(), DataPassword(), DataNewPassword(), TokenId(), TokenValue(),
-		ServerNr(0), ActiveServer(), LoginParams(), Sess(0), sendImageRequests(0), whileConnecting(false),
+		ServerNr(0), ActiveServer(), LoginParams(), Sess(0), sendImageRequests(0), seqNumber(0), whileConnecting(false),
 		DccExternalIP(), SocketNotifiers(new GaduSocketNotifiers(this, "gadu_socket_notifiers")), PingTimer(0),
 		SendUserListTimer(new QTimer(this, "SendUserListTimer")), UserListClear(false), ImportReply()
 {
@@ -1175,11 +1175,11 @@ void GaduProtocol::setupProxy()
 	kdebugf2();
 }
 
-int GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
+void GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 {
 	kdebugf();
 
-	int seq = 0;
+// 	int seq = 0;
 	unsigned int uinsCount = 0;
 	unsigned int myLastFormatsLength;
 	unsigned char *myLastFormats;
@@ -1198,14 +1198,14 @@ int GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 
 	kdebugmf(KDEBUG_INFO, "\n%s\n", (const char *)unicode2latin(myLastMessage));
 	myLastMessage.replace("\r\n", "\n");
-	Chat* c = chat_manager->findChat(users);
+	ChatWidget* c = chat_manager->findChatWidget(users);
 	c->setLastMessage(myLastMessage);
 
 	if (msgtmp.length() >= 2000)
 	{
 		MessageBox::msg(tr("Message too long (%1>=%2)").arg(mesg.length()).arg(2000), false, "Warning");
 		kdebugmf(KDEBUG_FUNCTION_END, "end: message too long\n");
-		return 0;
+		return;
 	}
 
 	QString msg = unicode2cp(msgtmp);
@@ -1214,14 +1214,14 @@ int GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 	if (stop)
 	{
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filter stopped processing\n");
-		return 0;
+		return;
 	}
 
 	if (msg.length() >= 2000)
 	{
 		MessageBox::msg(tr("Filtered message too long (%1>=%2)").arg(msg.length()).arg(2000), false, "Warning");
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filtered message too long\n");
-		return 0;
+		return;
 	}
 
 	CONST_FOREACH(user, users)
@@ -1236,10 +1236,10 @@ int GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 			if ((*user).usesProtocol("Gadu"))
 				uins[i++] = (*user).ID("Gadu").toUInt();
 		if (myLastFormatsLength)
-			seq = gg_send_message_confer_richtext(Sess, GG_CLASS_CHAT, uinsCount, uins, (unsigned char *)msg.data(),
+			seqNumber = gg_send_message_confer_richtext(Sess, GG_CLASS_CHAT, uinsCount, uins, (unsigned char *)msg.data(),
 				myLastFormats, myLastFormatsLength);
 		else
-			seq = gg_send_message_confer(Sess, GG_CLASS_CHAT, uinsCount, uins,(unsigned char *)msg.data());
+			seqNumber = gg_send_message_confer(Sess, GG_CLASS_CHAT, uinsCount, uins,(unsigned char *)msg.data());
 		delete[] uins;
 	}
 	else
@@ -1247,10 +1247,10 @@ int GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 			if ((*user).usesProtocol("Gadu"))
 			{
 				if (myLastFormatsLength)
-					seq = gg_send_message_richtext(Sess, GG_CLASS_CHAT, (*user).ID("Gadu").toUInt(), (unsigned char *)msg.data(),
+					seqNumber = gg_send_message_richtext(Sess, GG_CLASS_CHAT, (*user).ID("Gadu").toUInt(), (unsigned char *)msg.data(),
 						myLastFormats, myLastFormatsLength);
 				else
-					seq = gg_send_message(Sess, GG_CLASS_CHAT, (*user).ID("Gadu").toUInt(),(unsigned char *)msg.data());
+					seqNumber = gg_send_message(Sess, GG_CLASS_CHAT, (*user).ID("Gadu").toUInt(),(unsigned char *)msg.data());
 
 				break;
 			}
@@ -1260,37 +1260,39 @@ int GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 		delete[] myLastFormats;
 
 	kdebugf2();
-	return seq;
+// 	return seq;
 }
 
 void GaduProtocol::ackReceived(int seq, uin_t uin, int status)
 {
 	kdebugf();
+	if (seq != seqNumber)
+		return;
 	switch (status)
 	{
 		case GG_ACK_BLOCKED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message blocked (uin: %d, seq: %d)\n", uin, seq);
-			emit messageBlocked(seq, uin);
+			emit messageNotDelivered(QString(tr("Message blocked.")));
 			emit messageRejected(seq, uin);
 			break;
 		case GG_ACK_DELIVERED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message delivered (uin: %d, seq: %d)\n", uin, seq);
 			emit messageDelivered(seq, uin);
-			emit messageAccepted(seq, uin);
+			emit messageAccepted();
 			break;
 		case GG_ACK_QUEUED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message queued (uin: %d, seq: %d)\n", uin, seq);
 			emit messageQueued(seq, uin);
-			emit messageAccepted(seq, uin);
+			emit messageAccepted();
 			break;
 		case GG_ACK_MBOXFULL:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message box full (uin: %d, seq: %d)\n", uin, seq);
-			emit messageBoxFull(seq, uin);
+			emit messageNotDelivered(QString(tr("Messagebox full.")));
 			emit messageRejected(seq, uin);
 			break;
 		case GG_ACK_NOT_DELIVERED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message not delivered (uin: %d, seq: %d)\n", uin, seq);
-			emit messageNotDelivered(seq, uin);
+			emit messageNotDelivered(QString(tr("Message not delivered.")));
 			emit messageRejected(seq, uin);
 			break;
 		default:

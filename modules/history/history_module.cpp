@@ -101,8 +101,8 @@ HistoryModule::HistoryModule() : QObject(NULL, "history")
 		history, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
 	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
 		history, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
-	connect(chat_manager, SIGNAL(chatCreated(Chat *, time_t)),
-		this, SLOT(chatCreated(Chat*, time_t)));
+	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *, time_t)),
+		this, SLOT(chatCreated(ChatWidget*, time_t)));
 	connect(kadu, SIGNAL(removingUsers(UserListElements)),
 		this, SLOT(removingUsers(UserListElements)));
 
@@ -138,8 +138,8 @@ HistoryModule::~HistoryModule()
 		history, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
 	disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
 		history, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
-	disconnect(chat_manager, SIGNAL(chatCreated(Chat *, time_t)),
-		this, SLOT(chatCreated(Chat *, time_t)));
+	disconnect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *, time_t)),
+		this, SLOT(chatCreated(ChatWidget *, time_t)));
 	disconnect(kadu, SIGNAL(removingUsers(UserListElements)),
 		this, SLOT(removingUsers(UserListElements)));
 
@@ -179,7 +179,7 @@ void HistoryModule::historyActionActivated(const UserGroup* users)
 	kdebugf2();
 }
 
-void HistoryModule::chatCreated(Chat *chat, time_t time)
+void HistoryModule::chatCreated(ChatWidget *chat, time_t time)
 {
 	kdebugf();
 	connect(chat, SIGNAL(messageSentAndConfirmed(UserListElements, const QString&)),

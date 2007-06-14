@@ -2,7 +2,7 @@
 #define ENCRYPTION_H
 
 #include <qdialog.h>
-#include "chat.h"
+#include "chat_widget.h"
 #include "misc.h"
 
 class Action;
@@ -16,8 +16,8 @@ class EncryptionManager : public QObject
 	Q_OBJECT
 
 	private:
-		QMap<Chat*,bool> EncryptionEnabled;
-		void setupEncryptButton(Chat* chat,bool enabled);
+		QMap<ChatWidget*,bool> EncryptionEnabled;
+		void setupEncryptButton(ChatWidget* chat,bool enabled);
 		Action* action;
 
 	private slots:
@@ -25,7 +25,7 @@ class EncryptionManager : public QObject
 								QCString& msg, QByteArray& formats, bool& stop);
 		void sendMessageFilter(const UserListElements users, QString &msg, bool &stop);
 		void setupEncrypt(const UserGroup *group);
-		void chatCreated(Chat *chat);
+		void chatCreated(ChatWidget *chat);
 
 		void generateMyKeys();
 		void sendPublicKey();

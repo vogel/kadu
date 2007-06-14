@@ -20,7 +20,7 @@
 #include "kadu.h"
 // #include "config_dialog.h"
 #include "chat_manager.h"
-#include "chat.h"
+#include "chat_widget.h"
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -141,7 +141,7 @@ X11TrayIcon::X11TrayIcon(QWidget *parent, const char *name)
 	connect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 	connect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), this, SLOT(setTrayMovie(const QMovie &)));
-	connect(chat_manager, SIGNAL(chatCreated(Chat *)), this, SLOT(chatCreatedSlot(Chat *)));
+	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreatedSlot(ChatWidget *)));
 	connect(&timer, SIGNAL(timeout()), this, SLOT(tryToDock()));
 	connect(&undockTimer, SIGNAL(timeout()), this, SLOT(undockAndTryToDock()));
 
@@ -214,7 +214,7 @@ void X11TrayIcon::tryToDock()
 	kdebugf2();
 }
 
-void X11TrayIcon::chatCreatedSlot(Chat *chat)
+void X11TrayIcon::chatCreatedSlot(ChatWidget *chat)
 {
 	kdebugf();
 
@@ -279,7 +279,7 @@ X11TrayIcon::~X11TrayIcon()
 	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&, const QString &)), this, SLOT(setTrayPixmap(const QPixmap&, const QString &)));
 	disconnect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
-	disconnect(chat_manager, SIGNAL(chatCreated(Chat *)), this, SLOT(chatCreatedSlot(Chat *)));
+	disconnect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreatedSlot(ChatWidget *)));
 
 	docking_manager->setDocked(false);
 

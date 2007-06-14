@@ -12,7 +12,7 @@
 #include "config_file.h"
 #include "html_document.h"
 
-class Chat;
+class ChatWidget;
 class EmotsWalker;
 class QImage;
 class QLabel;
@@ -156,7 +156,7 @@ class EmoticonSelector : public QWidget
 {
 	Q_OBJECT
 	private:
-		Chat *callingwidget;
+		ChatWidget *callingwidget;
 	private slots:
 		void iconClicked(const QString& emoticon_string);
 	protected:
@@ -171,7 +171,7 @@ class EmoticonSelector : public QWidget
 		\param name nazwa obiektu
 		\param caller okno chat do ktorego ma byæ wpisana wybrana emotikonka
 		**/
-		EmoticonSelector(QWidget* parent = 0, const char *name = 0, Chat *caller = 0);
+		EmoticonSelector(QWidget* parent = 0, const char *name = 0, ChatWidget *caller = 0);
 	public slots:
 		/**
 		Slot obs³uguj±cy poprawne wy¶wietlenie listy emotikonek, wyrównanie do

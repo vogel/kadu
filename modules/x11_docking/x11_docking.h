@@ -10,7 +10,7 @@
  * @defgroup x11_docking X11 docking
  * @{
  */
-class Chat;
+class ChatWidget;
 
 class X11TrayIcon : public QLabel
 {
@@ -21,7 +21,7 @@ class X11TrayIcon : public QLabel
 		void setTrayMovie(const QMovie &movie);
 		void setTrayTooltip(const QString& tooltip);
 		void findTrayPosition(QPoint& pos);
-		void chatCreatedSlot(Chat *chat);
+		void chatCreatedSlot(ChatWidget *chat);
 		void undockAndTryToDock();
 
 	protected:

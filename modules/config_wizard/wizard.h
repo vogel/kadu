@@ -12,7 +12,7 @@
 #include <qpushbutton.h>
 
 #include "../account_management/register.h"
-#include "chat.h"
+#include "chat_widget.h"
 #include "misc.h"
 
 /**

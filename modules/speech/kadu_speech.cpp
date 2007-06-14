@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "chat.h"
+#include "chat_widget.h"
 #include "chat_manager.h"
 // #include "config_dialog.h"
 #include "debug.h"

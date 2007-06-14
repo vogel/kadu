@@ -5,9 +5,10 @@ LOGFILE = ../logfile.txt
 kadu_SOURCES = \
 about.cpp \
 action.cpp \
-chat.cpp \
 chat_manager.cpp \
 chat_message.cpp \
+chat_widget.cpp \
+chat_window.cpp \
 color_button.cpp \
 color_selector.cpp \
 configuration_window.cpp \
@@ -67,9 +68,10 @@ kadudir = $(includedir)/kadu
 kadu_HEADERS = \
 about.h \
 action.h \
-chat.h \
 chat_manager.h \
 chat_message.h \
+chat_widget.h \
+chat_window.h \
 color_button.h \
 color_selector.h \
 configuration_window.h \
@@ -125,8 +127,9 @@ updates.h
 BUILT_SOURCES = \
 moc/about_moc.cpp \
 moc/action_moc.cpp \
-moc/chat_moc.cpp \
 moc/chat_manager_moc.cpp \
+moc/chat_widget_moc.cpp \
+moc/chat_window_moc.cpp \
 moc/color_button_moc.cpp \
 moc/color_selector_moc.cpp \
 moc/configuration_window_moc.cpp \
@@ -176,9 +179,10 @@ version.cpp
 am_kadu_OBJECTS = \
 obj/about.$(OBJEXT) \
 obj/action.$(OBJEXT) \
-obj/chat.$(OBJEXT) \
 obj/chat_manager.$(OBJEXT) \
 obj/chat_message.$(OBJEXT) \
+obj/chat_widget.$(OBJEXT) \
+obj/chat_window.$(OBJEXT) \
 obj/color_button.$(OBJEXT) \
 obj/color_selector.$(OBJEXT) \
 obj/config_file.$(OBJEXT) \
@@ -234,8 +238,9 @@ obj/updates.$(OBJEXT) \
 obj/version.$(OBJEXT) \
 obj/about_moc.$(OBJEXT) \
 obj/action_moc.$(OBJEXT) \
-obj/chat_moc.$(OBJEXT) \
 obj/chat_manager_moc.$(OBJEXT) \
+obj/chat_widget_moc.$(OBJEXT) \
+obj/chat_window_moc.$(OBJEXT) \
 obj/color_button_moc.$(OBJEXT) \
 obj/color_selector_moc.$(OBJEXT) \
 obj/custom_input_moc.$(OBJEXT) \
@@ -289,11 +294,13 @@ include $(DEPS)/about.d
 include $(DEPS)/about_moc.d
 include $(DEPS)/action.d
 include $(DEPS)/action_moc.d
-include $(DEPS)/chat.d
-include $(DEPS)/chat_moc.d
 include $(DEPS)/chat_manager.d
 include $(DEPS)/chat_manager_moc.d
 include $(DEPS)/chat_message.d
+include $(DEPS)/chat_widget.d
+include $(DEPS)/chat_widget_moc.d
+include $(DEPS)/chat_window.d
+include $(DEPS)/chat_window_moc.d
 include $(DEPS)/color_button.d
 include $(DEPS)/color_button_moc.d
 include $(DEPS)/color_selector.d

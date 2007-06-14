@@ -10,7 +10,7 @@
 #include <qapplication.h>
 #include <qstylesheet.h>
 
-#include "chat.h"
+#include "chat_widget.h"
 #include "chat_manager.h"
 // #include "config_dialog.h"
 #include "config_file.h"
@@ -46,7 +46,7 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 	layout->setResizeMode(QLayout::Fixed);
 
 	connect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
-	connect(chat_manager, SIGNAL(chatActivated(Chat *)), this, SLOT(chatActivated(Chat *)));
+	connect(chat_manager, SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatActivated(ChatWidget *)));
 
 // 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Hints"), "HintsTab");
 
@@ -150,7 +150,7 @@ HintManager::~HintManager()
 	delete tipFrame;
 	tipFrame = 0;
 
-	disconnect(chat_manager, SIGNAL(chatActivated(Chat *)), this, SLOT(chatActivated(Chat *)));
+	disconnect(chat_manager, SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatActivated(ChatWidget *)));
 	disconnect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
 	delete hint_timer;
 	hint_timer = 0;
@@ -376,7 +376,7 @@ void HintManager::openChat(Hint *hint)
 	kdebugf2();
 }
 
-void HintManager::chatActivated(Chat *chat)
+void HintManager::chatActivated(ChatWidget *chat)
 {
 	if (!config_file.readBoolEntry("Hints", "CloseHintAfterChatActivation"))
 		return;

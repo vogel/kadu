@@ -18,7 +18,7 @@
 #include <qstring.h>
 #include <qslider.h>
 
-#include "chat.h"
+#include "chat_widget.h"
 #include "chat_manager.h"
 #include "config_file.h"
 // #include "config_dialog.h"

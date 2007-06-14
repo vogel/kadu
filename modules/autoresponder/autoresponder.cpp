@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "autoresponder.h"
-#include "chat.h"
+#include "chat_widget.h"
 #include "chat_manager.h"
 // #include "config_dialog.h"
 #include "debug.h"
@@ -121,7 +121,7 @@ void AutoResponder::chatMsgReceived(Protocol * /*protocol*/, UserListElements se
 	kdebugf2();
 }
 
-void AutoResponder::chatOpened(Chat *chat)
+void AutoResponder::chatOpened(ChatWidget *chat)
 {
 	const UserGroup *group = chat->users();
 

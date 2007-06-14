@@ -14,7 +14,7 @@
 #include <algorithm>
 #include <math.h>
 
-#include "chat.h"
+#include "chat_widget.h"
 #include "debug.h"
 #include "emoticons.h"
 #include "kadu_text_browser.h"
@@ -381,7 +381,7 @@ void EmoticonSelectorButton::leaveEvent(QEvent* e)
 	}
 }
 
-EmoticonSelector::EmoticonSelector(QWidget *parent, const char *name, Chat * caller) :
+EmoticonSelector::EmoticonSelector(QWidget *parent, const char *name, ChatWidget * caller) :
 	QWidget (parent, name, Qt::WType_Popup | Qt::WDestructiveClose), callingwidget(caller)
 {
 	int selector_count = emoticons->selectorCount();

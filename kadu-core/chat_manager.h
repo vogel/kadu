@@ -4,7 +4,8 @@
 #include <qobject.h>
 #include <qtimer.h>
 
-#include "chat.h"
+#include "chat_widget.h"
+#include "chat_window.h"
 #include "chat_message.h"
 #include "toolbar.h"
 #include "usergroup.h"
@@ -15,7 +16,7 @@ class Protocol;
 	Klasa pozwalaj±ca zarz±dzaæ otwartymi oknami rozmów: otwieraæ,
 	zamykac, szukaæ okna ze wglêdu na listê u¿ytkowników itp.
 	\class ChatManager
-	\brief Klasa zarz±dzaj±ca oknami Chat
+	\brief Klasa zarz±dzaj±ca oknami ChatWidget
 **/
 
 class ChatManager : public QObject
@@ -23,7 +24,7 @@ class ChatManager : public QObject
 	Q_OBJECT
 
 	private:
-		ChatList Chats; /*!< lista okien*/
+		ChatList ChatWidgets; /*!< lista okien*/
 
 		/**
 			\fn int openPendingMsg(int index, ChatMessage &msg)
@@ -101,14 +102,14 @@ class ChatManager : public QObject
 		const ChatList& chats() const;
 
 		/**
-			\fn Chat* findChat(const UserGroup *group) const;
+			\fn ChatWidget* findChatWidget(const UserGroup *group) const;
 			Funkcja zwraca wska¼nik do okna z list±
 			u¿ytkowników group
 			\param group lista u¿ytkowników
 			\return wska¼nik do okna je¶li istnieje w przeciwnym
 			 wypadku zwraca NULL
 		**/
-		Chat* findChat(const UserGroup *group) const;
+		ChatWidget* findChatWidget(const UserGroup *group) const;
 
 		/**
 			\fn Chat* findChat(UserListElements users) const;
@@ -118,10 +119,12 @@ class ChatManager : public QObject
 			\return wska¼nik do okna je¶li istnieje w przeciwnym
 			 wypadku zwraca NULL
 		**/
-		Chat* findChat(UserListElements users) const;
+		ChatWidget* findChatWidget(UserListElements users) const;
 
+		// co za g³upota
+		// TODO: przenie¶æ do klasy ChatWidget / ewentualnie do nowo-utworzonej klasy Chat
 		/**
-			\fn QVariant& getChatProperty(const UserGroup *group, const QString &name)
+			\fn QVariant& getChatWidgetProperty(const UserGroup *group, const QString &name)
 			Funkcja zwraca warto¶æ w³asno¶ci "name" okna
 			okre¶lonego przez group
 			\param group grupa u¿ytkowników identyfikuj±ca okno
@@ -130,7 +133,7 @@ class ChatManager : public QObject
 			istnieje,\n je¶li nie to tworzy tak±
 			w³asno¶æ (ustawia na pust±)
 		**/
-		QVariant& getChatProperty(const UserGroup *group, const QString &name);
+		QVariant& getChatWidgetProperty(const UserGroup *group, const QString &name);
 
 		void loadOpenedWindows();
 		void saveOpenedWindows();
@@ -151,14 +154,14 @@ class ChatManager : public QObject
 		void chatMsgReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t time, bool& grab);
 
 		/**
-			\fn int openChat(QString initialProtocol, UserListElements users, time_t time = 0)
+			\fn int openChatWidget(QString initialProtocol, UserListElements users, time_t time = 0)
 			Funkcja otwiera nowe okno Chat z wymienionymi rozmowcami.
 			\param initialProtocol protokó³ pocz±tkowy
 			\param users lista u¿ytkowników identyfikuj±cych okno
 			\param time time of pending message that created a chat or 0 if not applicable
 			\return zwracany jest numer otwartego okna
 		**/
-		int openChat(Protocol *initialProtocol, const UserListElements &users, time_t time = 0);
+		int openChatWidget(Protocol *initialProtocol, const UserListElements &users, time_t time = 0);
 
 		/**
 			\fn void openPendingMsgs(UserListElements users)
@@ -197,12 +200,12 @@ class ChatManager : public QObject
 		void closeAllWindows();
 
 		/**
-			\fn int registerChat(Chat* chat)
+			\fn int registerChatWidget(ChatWidget* chat)
 			Dodaje okno do menad¿era
 			\param chat wska¼nik do okna ktore chcemy dodaæ
 			\return zwraca numer naszego okna po zarejestrowaniu
 		**/
-		int registerChat(Chat* chat);
+		int registerChatWidget(ChatWidget* chat);
 
 		/**
 			\fn void unregisterChat(Chat* chat)
@@ -211,7 +214,7 @@ class ChatManager : public QObject
 			wysy³a sygna³ chatDestroying i chatDestroyed
 			\param chat okno które bêdzie wyrejestrowane
 		**/
-		void unregisterChat(Chat* chat);
+		void unregisterChatWidget(ChatWidget* chat);
 
 		/**
 			\fn void refreshTitles()
@@ -235,25 +238,25 @@ class ChatManager : public QObject
 		void changeAppearance();
 
 		/**
-			\fn void setChatProperty(const UserGroup *group, const QString &name, const QVariant &value)
+			\fn void setChatWidgetProperty(const UserGroup *group, const QString &name, const QVariant &value)
 			Funkcja pozwala przypisaæ okre¶lonemu czatowi
 			(nawet je¿eli on jeszcze nie istnieje) pewne w³asno¶ci
 			\param group grupa u¿ytkowników identyfikuj±cych okno
 			\param name nazwa w³asno¶ci
 			\param value warto¶æ w³asno¶ci
 		**/
-		void setChatProperty(const UserGroup *group, const QString &name, const QVariant &value);
+		void setChatWidgetProperty(const UserGroup *group, const QString &name, const QVariant &value);
 
 	signals:
 
 		/**
-			\fn void chatCreated(Chat *chat)
+			\fn void chatWidgetCreated(ChatWidget *chat)
 		 	Sygna³ ten jest wysy³any po utworzeniu nowego okna chat
 			\param chat nowe okno chat
 		**/
-		void chatCreated(Chat *chat);
+		void chatWidgetCreated(ChatWidget *chat);
 
-		void chatActivated(Chat *);
+		void chatWidgetActivated(ChatWidget *);
 
 		/**
 			\fn void chatCreated(const UserGroup *group)
@@ -261,14 +264,14 @@ class ChatManager : public QObject
 			\param chat nowe okno chat
 			\param time time of pending message that created a chat or 0 if not applicable
 		**/
-		void chatCreated(Chat *chat, time_t time);
+		void chatWidgetCreated(ChatWidget *chat, time_t time);
 
 		/**
 			\fn void chatDestroying(const UserGroup *group)
 		 	Sygna³ ten jest wysy³any przed zamnkniêciem okna chat
 			\param chat zamykane okno
 		**/
-		void chatDestroying(Chat *chat);
+		void chatWidgetDestroying(ChatWidget *chat);
 
 		/**
 			\fn void chatOpen(UserListElements users)
@@ -276,7 +279,9 @@ class ChatManager : public QObject
 			otwarcia nowego okna chat nawet je¶li ju¿ taki istnieje
 			\param chat otwarte okno
 		**/
-		void chatOpen(Chat *chat);
+		void chatWidgetOpen(ChatWidget *chat);
+
+		void chatWidgetTitlesUpdated();
 
 		/**
 			\fn void messageSentAndConfirmed(UserListElements receivers, const QString& message)

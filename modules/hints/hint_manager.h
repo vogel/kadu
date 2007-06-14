@@ -19,7 +19,7 @@
 #include "userbox.h"
 #include "../notify/notify.h"
 
-class Chat;
+class ChatWidget;
 
 class HintManager : public Notifier, public ToolTipClass
 {
@@ -97,7 +97,7 @@ class HintManager : public Notifier, public ToolTipClass
 		**/
 		void openChat(Hint *hint);
 
-		void chatActivated(Chat *chat);
+		void chatActivated(ChatWidget *chat);
 
 		/**
 			usuwa wszystkie dymki

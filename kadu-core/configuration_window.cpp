@@ -597,6 +597,5 @@ void ConfigurationWindow::removedConfigSection(const QString &sectionName)
 }
 
 #ifdef HAVE_OPENSSL
-// 	ConfigDialog::addCheckBox("Network", "servergrid",
-// 		QT_TRANSLATE_NOOP("@default", "Use TLSv1"), "UseTLS", false);
+// 	ConfigDialog::addCheckBox("Network", "servergrid", QT_TRANSLATE_NOOP("@default", "Use TLSv1"), "UseTLS", false);
 #endif

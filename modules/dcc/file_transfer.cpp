@@ -25,7 +25,7 @@
 #include <stdlib.h>
 
 #include "action.h"
-#include "chat.h"
+#include "chat_widget.h"
 #include "chat_manager.h"
 // #include "config_dialog.h"
 #include "debug.h"
@@ -282,7 +282,9 @@ void FileTransfer::start(StartType startType)
 
 		QString message(
 			tr("Hello. I am an automatic file-transfer reminder. Could you please send me a file named %1?"));
-		if (gadu->currentStatus().isOffline() || !gadu->sendMessage(recv, message.arg(QUrl(FileName).fileName())) == -1)
+		if (!gadu->currentStatus().isOffline())
+			gadu->sendMessage(recv, message.arg(QUrl(FileName).fileName()));
+		if (gadu->seqNum() == -1)
 			MessageBox::msg(tr("Error: message was not sent"), false, "Warning");
 	}
 }
@@ -1029,8 +1031,8 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 		this, SLOT(sendFileActionActivated(const UserGroup*)));
 	KaduActions.insert("sendFileAction", send_file_action);
 
-	connect(chat_manager, SIGNAL(chatCreated(Chat *)), this, SLOT(chatCreated(Chat *)));
-	connect(chat_manager, SIGNAL(chatDestroying(Chat *)), this, SLOT(chatDestroying(Chat *)));
+	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
+	connect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroying(ChatWidget*)));
 
 	FOREACH(it, chat_manager->chats())
 		chatCreated(*it);
@@ -1073,8 +1075,8 @@ FileTransferManager::~FileTransferManager()
 
 	KaduActions.remove("sendFileAction");
 
-	disconnect(chat_manager, SIGNAL(chatCreated(Chat *)), this, SLOT(chatCreated(Chat *)));
-	disconnect(chat_manager, SIGNAL(chatDestroying(Chat *)), this, SLOT(chatDestroying(Chat *)));
+	disconnect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
+	disconnect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroying(ChatWidget *)));
 
 	FOREACH(it, chat_manager->chats())
 		chatDestroying(*it);
@@ -1257,13 +1259,13 @@ void FileTransferManager::kaduKeyPressed(QKeyEvent* e)
 		sendFile();
 }
 
-void FileTransferManager::chatCreated(Chat *chat)
+void FileTransferManager::chatCreated(ChatWidget *chat)
 {
 	connect(chat, SIGNAL(fileDropped(const UserGroup *, const QString &)),
 		this, SLOT(fileDropped(const UserGroup *, const QString &)));
 }
 
-void FileTransferManager::chatDestroying(Chat *chat)
+void FileTransferManager::chatDestroying(ChatWidget *chat)
 {
 	disconnect(chat, SIGNAL(fileDropped(const UserGroup *, const QString &)),
 		this, SLOT(fileDropped(const UserGroup *, const QString &)));

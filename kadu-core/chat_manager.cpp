@@ -14,6 +14,7 @@
 #include "action.h"
 #include "debug.h"
 #include "chat_manager.h"
+#include "chat_widget.h"
 #include "icons_manager.h"
 #include "kadu.h"
 #include "kadu_splitter.h"
@@ -43,7 +44,7 @@ static QPixmap string_to_pixmap(const QString& str, const QFont& font)
 }
 
 ChatManager::ChatManager(QObject* parent, const char* name)
-	: QObject(parent, name), Chats(), addons(), refreshTitlesTimer()
+	: QObject(parent, name), ChatWidgets(), addons(), refreshTitlesTimer()
 {
 	kdebugf();
 
@@ -179,9 +180,9 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 void ChatManager::closeAllWindows()
 {
 	kdebugf();
-	while (!Chats.empty())
+	while (!ChatWidgets.empty())
 	{
-		Chat *chat=Chats.first();
+		ChatWidget *chat=ChatWidgets.first();
 		delete chat;
 	}
 	kdebugf2();
@@ -216,7 +217,7 @@ void ChatManager::loadOpenedWindows()
 			}
 			Protocol *protocol = protocols_manager->byID(protocolId, accountId);
 			if (protocol)
-				openChat(protocol, users);
+				openChatWidget(protocol, users);
 			else
 				kdebugm(KDEBUG_WARNING, "protocol %s/%s not found!\n", protocolId.local8Bit().data(), accountId.local8Bit().data());
 		}
@@ -230,7 +231,7 @@ void ChatManager::saveOpenedWindows()
 	QDomElement root_elem = xml_config_file->rootElement();
 	QDomElement chats_elem = xml_config_file->accessElement(root_elem, "ChatWindows");
 	xml_config_file->removeChildren(chats_elem);
-	CONST_FOREACH(chat, Chats)
+	CONST_FOREACH(chat, ChatWidgets)
 	{
 		QDomElement window_elem = xml_config_file->createElement(chats_elem, "Window");
 		Protocol *protocol = (*chat)->currentProtocol();
@@ -277,7 +278,7 @@ ChatManager::~ChatManager()
 void ChatManager::autoSendActionActivated(const UserGroup* users, const QWidget* /*source*/, bool is_on)
 {
 	kdebugf();
-	findChat(users)->setAutoSend(is_on);
+	findChatWidget(users)->setAutoSend(is_on);
 	KaduActions["autoSendAction"]->setAllOn(is_on);
 	config_file.writeEntry("Chat", "AutoSend", is_on);
 	kdebugf2();
@@ -286,49 +287,49 @@ void ChatManager::autoSendActionActivated(const UserGroup* users, const QWidget*
 void ChatManager::scrollLockActionActivated(const UserGroup* users, const QWidget* /*source*/, bool is_on)
 {
 	kdebugf();
-	findChat(users)->setScrollLocked(is_on);
+	findChatWidget(users)->setScrollLocked(is_on);
 	kdebugf2();
 }
 
 void ChatManager::clearActionActivated(const UserGroup* users)
 {
 	kdebugf();
-	findChat(users)->clearChatWindow();
+	findChatWidget(users)->clearChatWindow();
 	kdebugf2();
 }
 
 void ChatManager::boldActionActivated(const UserGroup* users, const QWidget* /*source*/, bool is_on)
 {
 	kdebugf();
-	findChat(users)->edit()->setBold(is_on);
+	findChatWidget(users)->edit()->setBold(is_on);
 	kdebugf2();
 }
 
 void ChatManager::italicActionActivated(const UserGroup* users, const QWidget* /*source*/, bool is_on)
 {
 	kdebugf();
-	findChat(users)->edit()->setItalic(is_on);
+	findChatWidget(users)->edit()->setItalic(is_on);
 	kdebugf2();
 }
 
 void ChatManager::underlineActionActivated(const UserGroup* users, const QWidget* /*source*/, bool is_on)
 {
 	kdebugf();
-	findChat(users)->edit()->setUnderline(is_on);
+	findChatWidget(users)->edit()->setUnderline(is_on);
 	kdebugf2();
 }
 
 void ChatManager::colorActionActivated(const UserGroup* users, const QWidget* source)
 {
 	kdebugf();
-	findChat(users)->changeColor(source);
+	findChatWidget(users)->changeColor(source);
 	kdebugf2();
 }
 
 void ChatManager::insertEmoticonActionActivated(const UserGroup* users, const QWidget* source)
 {
 	kdebugf();
-	findChat(users)->openEmoticonSelector(source);
+	findChatWidget(users)->openEmoticonSelector(source);
 	kdebugf2();
 }
 
@@ -391,7 +392,7 @@ void ChatManager::ignoreUserActionActivated(const UserGroup* users)
 			else
 			{
 				addIgnored(u);
-				Chat *c = findChat(u);
+				ChatWidget *c = findChatWidget(u);
 				if (c)
 					c->close();
 			}
@@ -432,7 +433,7 @@ void ChatManager::blockUserActionActivated(const UserGroup* users)
 				MessageBox::msg(tr("Anonymous users will be unblocked after restarting Kadu"), false, "Information", kadu);
 
 			UserListElements u = users->toUserListElements();
-			Chat *c = findChat(u);
+			ChatWidget *c = findChatWidget(u);
 			if (c)
 				c->close();
 		}
@@ -445,14 +446,14 @@ void ChatManager::blockUserActionActivated(const UserGroup* users)
 void ChatManager::insertImageActionActivated(const UserGroup* users)
 {
 	kdebugf();
-	findChat(users)->insertImage();
+	findChatWidget(users)->insertImage();
 	kdebugf2();
 }
 
 void ChatManager::sendActionActivated(const UserGroup* users)
 {
 	kdebugf();
-	Chat* chat = findChat(users);
+	ChatWidget* chat = findChatWidget(users);
 	if (chat->waitingForACK())
 		chat->cancelMessage();
 	else
@@ -478,42 +479,30 @@ void ChatManager::chatActionActivated(const UserGroup* users)
 		}
 
 		if (!ContainsBad)
-			openChat(gadu, users->toUserListElements(), 0);
+			openChatWidget(gadu, users->toUserListElements(), 0);
 	}
 	kdebugf2();
 }
 
 const ChatList& ChatManager::chats() const
 {
-	return Chats;
+	return ChatWidgets;
 }
 
-int ChatManager::registerChat(Chat* chat)
+int ChatManager::registerChatWidget(ChatWidget* chat)
 {
-	Chats.append(chat);
-	return Chats.count() - 1;
+	ChatWidgets.append(chat);
+	return ChatWidgets.count() - 1;
 }
 
-void ChatManager::unregisterChat(Chat* chat)
+void ChatManager::unregisterChatWidget(ChatWidget* chat)
 {
 	kdebugf();
-	FOREACH(curChat, Chats)
+	FOREACH(curChat, ChatWidgets)
 		if (*curChat == chat)
 		{
-			const UserGroup *users = chat->users();
-			setChatProperty(users, "Geometry", QRect(chat->pos().x(), chat->pos().y(), chat->size().width(), chat->size().height()));
-			QValueList<int> sizes = chat->vertSplit->sizes();
-			setChatProperty(users, "VerticalSizes", toVariantList(sizes));
-			if (users->count() == 1)
-			{
-				(*users->begin()).setData("ChatGeometry", QString("%1,%2,%3,%4").arg(chat->pos().x()).arg(chat->pos().y()).arg(chat->size().width()).arg(chat->size().height()));
-				(*users->begin()).setData("VerticalSizes", QString("%1,%2").arg(sizes[0]).arg(sizes[1]));
-			}
-			if (chat->horizSplit)
-				setChatProperty(users, "HorizontalSizes", toVariantList(chat->horizSplit->sizes()));
-
-			emit chatDestroying(chat);
-			Chats.remove(curChat);
+			emit chatWidgetDestroying(chat);
+			ChatWidgets.remove(curChat);
 			kdebugf2();
 			return;
 		}
@@ -528,47 +517,48 @@ void ChatManager::refreshTitlesLater()
 void ChatManager::refreshTitles()
 {
 	kdebugf();
-	CONST_FOREACH(chat, Chats)
+ 	CONST_FOREACH(chat, ChatWidgets)
 		(*chat)->refreshTitle();
+	emit chatWidgetTitlesUpdated();
 	kdebugf2();
 }
 
 void ChatManager::refreshTitlesForUser(UserListElement user)
 {
 	kdebugf();
-	CONST_FOREACH(chat, Chats)
-		if ((*chat)->users()->contains(user))
-			(*chat)->refreshTitle();
+ 	CONST_FOREACH(chat, ChatWidgets)
+ 		if ((*chat)->users()->contains(user))
+ 			(*chat)->refreshTitle();
 	kdebugf2();
 }
 
 void ChatManager::changeAppearance()
 {
 	kdebugf();
-	CONST_FOREACH(chat, Chats)
-		(*chat)->changeAppearance();
+ 	CONST_FOREACH(chat, ChatWidgets)
+ 		(*chat)->changeAppearance();
 	kdebugf2();
 }
 
-Chat* ChatManager::findChat(const UserGroup *group) const
+ChatWidget* ChatManager::findChatWidget(const UserGroup *group) const
 {
-	CONST_FOREACH(chat, Chats)
+	CONST_FOREACH(chat, ChatWidgets)
 		if ((*chat)->users() == group)
 			return *chat;
 	kdebugmf(KDEBUG_WARNING, "no such chat\n");
 	return NULL;
 }
 
-Chat* ChatManager::findChat(UserListElements users) const
+ChatWidget* ChatManager::findChatWidget(UserListElements users) const
 {
-	CONST_FOREACH(chat, Chats)
+	CONST_FOREACH(chat, ChatWidgets)
 		if (users.equals((*chat)->users()))
 			return *chat;
 	kdebugmf(KDEBUG_WARNING, "no such chat\n");
 	return NULL;
 }
 
-int ChatManager::openChat(Protocol *initialProtocol, const UserListElements &users, time_t time)
+int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElements &users, time_t time)
 {
 	kdebugf();
 
@@ -582,7 +572,7 @@ int ChatManager::openChat(Protocol *initialProtocol, const UserListElements &use
 		}
 
 	unsigned int i = 0;
-	CONST_FOREACH(chat, Chats)
+	CONST_FOREACH(chat, ChatWidgets)
 	{
 		if ((*chat)->users()->equals(users))
 		{
@@ -599,7 +589,7 @@ int ChatManager::openChat(Protocol *initialProtocol, const UserListElements &use
 #endif
 			win->raise();
 			(*chat)->makeActive();
-			emit chatOpen(*chat);
+			emit chatWidgetOpen(*chat);
 			return i;
 		}
 		++i;
@@ -608,93 +598,23 @@ int ChatManager::openChat(Protocol *initialProtocol, const UserListElements &use
 	CONST_FOREACH(user, users)
 		userNames.append((*user).altNick());
 	userNames.sort();
-
-	Chat* chat = new Chat(initialProtocol, users, 0, QString("chat:%1").arg(userNames.join(",")).local8Bit().data());
-	chat->refreshTitle();
+	ChatWidget* chat = new ChatWidget(initialProtocol, users, 0, QString("chat:%1").arg(userNames.join(",")).local8Bit().data());
+	ChatWindow* window = new ChatWindow(chat,0,QString("chat:%1").arg(userNames.join(",")).local8Bit().data());
+	window->setCentralWidget(chat);
+  	chat->reparent(window,0, QPoint(),true);
+ 	chat->refreshTitle();
 	connect(chat, SIGNAL(messageSentAndConfirmed(UserListElements, const QString&)),
 		this, SIGNAL(messageSentAndConfirmed(UserListElements, const QString&)));
-	connect(chat, SIGNAL(chatActivated(Chat *)), this, SIGNAL(chatActivated(Chat *)));
+	connect(chat, SIGNAL(chatWidgetActivated(ChatWidget *)), this, SIGNAL(chatWidgetActivated(ChatWidget *)));
 
-	const UserGroup *group = chat->users();
-	QRect geometry = getChatProperty(group, "Geometry").toRect();
-	if (geometry.isEmpty() && group->count() == 1)
-	{
-		QString geo_str = (*(group->constBegin())).data("ChatGeometry").toString();
-		if (!geo_str.isEmpty())
-		{
-			bool ok[4];
-			QStringList s = QStringList::split(",", geo_str);
-			geometry.setX(s[0].toInt(ok));
-			geometry.setY(s[1].toInt(ok + 1));
-			geometry.setWidth(s[2].toInt(ok + 2));
-			geometry.setHeight(s[3].toInt(ok + 3));
-			if (int(ok[0]) + ok [1] + ok [2] + ok [3] != 4)
-				geometry = QRect();
-		}
-	}
-	if (geometry.isEmpty())
-	{
-		QPoint pos = QCursor::pos();
-		int x,y,width,height;
-		QDesktopWidget *desk=qApp->desktop();
-		x=pos.x()+50;
-		y=pos.y()+50;
-		height=400;
-
-		if (group->count() > 1)
-			width=550;
-		else
-			width=400;
-		if (x+width>desk->width())
-			x=desk->width()-width-50;
-		if (y+height>desk->height())
-			y=desk->height()-height-50;
-		if (x<50) x=50;
-		if (y<50) y=50;
-		geometry.setX(x);
-		geometry.setY(y);
-		geometry.setWidth(width);
-		geometry.setHeight(height);
-	}
-	chat->setGeometry(geometry);
-
-	QValueList<int> vertSizes = toIntList(getChatProperty(group, "VerticalSizes").toList());
-	if (vertSizes.empty() && group->count() == 1)
-	{
-		QString vert_sz_str = (*(group->constBegin())).data("VerticalSizes").toString();
-		if (!vert_sz_str.isEmpty())
-		{
-			bool ok[2];
-			QStringList s = QStringList::split(",", vert_sz_str);
-			vertSizes.append(s[0].toInt(ok));
-			vertSizes.append(s[1].toInt(ok + 1));
-			if (!(ok[0] && ok[1]))
-				vertSizes.clear();
-		}
-	}
-
-	if (vertSizes.empty())
-	{
-		int h = chat->height() / 3;
-		vertSizes.append(h * 2);
-		vertSizes.append(h);
-	}
-	chat->vertSplit->setSizes(vertSizes);
-
-	if (chat->horizSplit)
-	{
-		QValueList<int> horizSizes = toIntList(getChatProperty(group, "HorizontalSizes").toList());
-		if (!horizSizes.empty())
-			chat->horizSplit->setSizes(horizSizes);
-	}
-
-	chat->show();
-	chat->makeActive();
-	emit chatCreated(chat);
-	emit chatCreated(chat, time);
-	emit chatOpen(chat);
+	window->show();
+	//chat->show();
+//	chat->makeActive();
+	emit chatWidgetCreated(chat);
+	emit chatWidgetCreated(chat, time);
+	emit chatWidgetOpen(chat);
 	kdebugf2();
-	return Chats.count() - 1;
+	return ChatWidgets.count() - 1;
 }
 
 ChatMessage * ChatManager::openPendingMsg(int index, int &k)
@@ -703,7 +623,7 @@ ChatMessage * ChatManager::openPendingMsg(int index, int &k)
 	// TODO: check if index does not exceed boundaries
 	PendingMsgs::Element p = pending[index];
 	// opening chat (if it does not exist)
-	k = openChat(gadu, p.users, p.time);
+	k = openChatWidget(gadu, p.users, p.time);
 	// appending new message
 
 	if (k < 0)
@@ -766,11 +686,11 @@ void ChatManager::openPendingMsgs(UserListElements users)
 	}
 	if (stop)
 	{
-		Chats[k]->scrollMessages(messages);
+		ChatWidgets[k]->scrollMessages(messages);
 		UserBox::refreshAllLater();
 	}
 	else
-		k = openChat(gadu, users, 0);
+		k = openChatWidget(gadu, users, 0);
 	kdebugf2();
 }
 
@@ -808,7 +728,7 @@ void ChatManager::openPendingMsgs()
 	if (stop)
 	{
 		kdebugmf(KDEBUG_INFO, "stopped\n");
-		Chats[k]->scrollMessages(messages);
+		ChatWidgets[k]->scrollMessages(messages);
 		UserBox::refreshAllLater();
 	}
 	kdebugf2();
@@ -848,26 +768,25 @@ void ChatManager::sendMessage(UserListElement user, UserListElements selected_us
 	}
 	if (stop)
 	{
-		Chats[k]->scrollMessages(messages);
+		ChatWidgets[k]->scrollMessages(messages);
 		UserBox::refreshAllLater();
 	}
 	else
-		k = openChat(gadu, selected_users, 0);
+		k = openChatWidget(gadu, selected_users, 0);
 	kdebugf2();
 }
 
 void ChatManager::chatMsgReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t time, bool& grab)
 {
-	Chat *chat = findChat(senders);
+	ChatWidget *chat = findChatWidget(senders);
 	if (chat != NULL)
 	{
 		chat->newMessage(protocol->protocolID(), senders, msg, time);
-		chat->alertNewMessage();
 		grab = true;
 	}
 }
 
-QVariant& ChatManager::getChatProperty(const UserGroup *group, const QString &name)
+QVariant& ChatManager::getChatWidgetProperty(const UserGroup *group, const QString &name)
 {
 	kdebugf();
 	FOREACH(addon, addons)
@@ -884,7 +803,7 @@ QVariant& ChatManager::getChatProperty(const UserGroup *group, const QString &na
 	return addons[0].map[name];
 }
 
-void ChatManager::setChatProperty(const UserGroup *group, const QString &name, const QVariant &value)
+void ChatManager::setChatWidgetProperty(const UserGroup *group, const QString &name, const QVariant &value)
 {
 	kdebugf();
 	FOREACH(addon, addons)
@@ -947,6 +866,11 @@ void ChatManager::initModule()
 
 	config_file.addVariable("Look", "Style", "kadu");
 
+// 	ConfigDialog::addVGroupBox("Look", "Look", QT_TRANSLATE_NOOP("@default","Style"));
+// 		ConfigDialog::addComboBox("Look", "Style", QT_TRANSLATE_NOOP("@default", "Select chat style"), "Style", toStringList("Kadu", "Hapi", "IRC", tr("Custom")), toStringList("kadu", "hapi", "irc", "custom"));
+// 		ConfigDialog::addTextEdit("Look", "Style", QT_TRANSLATE_NOOP("@default", "Full chat style:"), "FullStyle", 0,
+// 			QT_TRANSLATE_NOOP("@default", "Syntax:\n%1 - background color\n%2 - text font color\n%3 - nick color\n%4 - nick\n%5 - timestamp\n%6 - timestamp with server time\n%7 - message"), 0, Expert);
+
 	config_file.addVariable("Chat", "EmoticonsStyle", EMOTS_ANIMATED);
 	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
 
@@ -974,21 +898,8 @@ void ChatManager::configurationUpdated()
 		userlist->removePerContactNonProtocolConfigEntry("chat_vertical_sizes");
 	}
 
-	bool msgTitle = config_file.readBoolEntry("Chat","NewMessagesInChatTitle");
-	bool blnTitle = config_file.readBoolEntry("Chat","BlinkChatTitle");
-	CONST_FOREACH(chat, Chats) // set options for all chats...
-	{
-		(*chat)->setShowNewMessagesNum(msgTitle);
-		(*chat)->setBlinkChatTitle(blnTitle);
-
-		unsigned int newMsgs = (*chat)->getNewMessagesNum();
-
-		// for chats with waiting messages we also trigger apropriate slots...
-		if (blnTitle && (newMsgs > 0))
-			(*chat)->changeTitle();
-		else if (msgTitle && (newMsgs > 0))
-			(*chat)->showNewMessagesNumInTitle();
-	}
+// 	bool msgTitle = config_file.readBoolEntry("Chat","NewMessagesInChatTitle");
+// 	bool blnTitle = config_file.readBoolEntry("Chat","BlinkChatTitle");
 
 	KaduActions["autoSendAction"]->setAllOn(config_file.readBoolEntry("Chat", "AutoSend"));
 
