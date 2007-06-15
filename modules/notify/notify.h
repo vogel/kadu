@@ -51,7 +51,7 @@ enum CallbackCapacity {
 	odebranie pliku, kontynuacje odbierania pliku i inne. Niektóry notifikatory nie bêd±
 	implementowaæ akcji, dlatego te¿ niektóre zdarzenia nie mog± byæ przez nie obs³ugiwane.
  **/
-class Notifier : public QObject {
+class Notifier : public virtual QObject {
 	public:
 		Notifier(QObject *parent = 0, const char *name = 0) : QObject(parent, name) {};
 		virtual ~Notifier() {};
