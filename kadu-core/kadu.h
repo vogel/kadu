@@ -41,6 +41,7 @@ class Kadu : public QWidget
 		QString InfoPanelSyntax;
 		QMenuBar* MenuBar;
 		QPopupMenu* MainMenu;
+		QPopupMenu* RecentChatsMenu;
 		KaduTabBar* GroupBar;
 		UserBox* Userbox;
 		QVBoxLayout *MainLayout;
@@ -88,6 +89,8 @@ class Kadu : public QWidget
 	private slots:
 		void openChat();
 		void chatMsgReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t time, bool grabbed);
+		void createRecentChatsMenu();
+		void openRecentChats(int index);
 
 		void wentOnline(const QString &);
 		void wentBusy(const QString &);

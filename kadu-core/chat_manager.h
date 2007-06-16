@@ -25,6 +25,7 @@ class ChatManager : public QObject
 
 	private:
 		ChatList ChatWidgets; /*!< lista okien*/
+		QValueList<UserListElements> ClosedChatUsers; /*!< u¿ytkownicy, których okna zosta³y zamkniête*/
 
 		/**
 			\fn int openPendingMsg(int index, ChatMessage &msg)
@@ -100,6 +101,12 @@ class ChatManager : public QObject
 			Funkcja zwraca listê otwartych okien Chat
 		**/
 		const ChatList& chats() const;
+
+		/**
+			\fn QValueList<UserListElements> closedChatsUsers() const
+			Funkcja zwraca listê u¿ytkowników, dla których zamkniêto okna Chat
+		**/
+		const QValueList<UserListElements> closedChatUsers() const;
 
 		/**
 			\fn ChatWidget* findChatWidget(const UserGroup *group) const;

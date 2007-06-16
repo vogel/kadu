@@ -43,8 +43,8 @@ static QPixmap string_to_pixmap(const QString& str, const QFont& font)
 	return pixmap;
 }
 
-ChatManager::ChatManager(QObject* parent, const char* name)
-	: QObject(parent, name), ChatWidgets(), addons(), refreshTitlesTimer()
+ChatManager::ChatManager(QObject* parent, const char* name) : QObject(parent, name),
+	ChatWidgets(), ClosedChatUsers(), addons(), refreshTitlesTimer()
 {
 	kdebugf();
 
@@ -180,11 +180,13 @@ ChatManager::ChatManager(QObject* parent, const char* name)
 void ChatManager::closeAllWindows()
 {
 	kdebugf();
+
 	while (!ChatWidgets.empty())
 	{
 		ChatWidget *chat=ChatWidgets.first();
 		delete chat;
 	}
+
 	kdebugf2();
 }
 
@@ -489,23 +491,38 @@ const ChatList& ChatManager::chats() const
 	return ChatWidgets;
 }
 
+const QValueList<UserListElements> ChatManager::closedChatUsers() const
+{
+	return ClosedChatUsers;
+}
+
 int ChatManager::registerChatWidget(ChatWidget* chat)
 {
+	kdebugf();
+
+	ClosedChatUsers.remove(chat->users()->toUserListElements());
 	ChatWidgets.append(chat);
+
 	return ChatWidgets.count() - 1;
 }
 
 void ChatManager::unregisterChatWidget(ChatWidget* chat)
 {
 	kdebugf();
+
 	FOREACH(curChat, ChatWidgets)
 		if (*curChat == chat)
 		{
+			ClosedChatUsers.prepend(chat->users()->toUserListElements());
+			if (ClosedChatUsers.count() > 10)
+				ClosedChatUsers.pop_back();
 			emit chatWidgetDestroying(chat);
 			ChatWidgets.remove(curChat);
+
 			kdebugf2();
 			return;
 		}
+
 	kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "NOT found\n");
 }
 
@@ -594,6 +611,7 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 		}
 		++i;
 	}
+
 	QStringList userNames;
 	CONST_FOREACH(user, users)
 		userNames.append((*user).altNick());
@@ -605,7 +623,7 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
  	chat->refreshTitle();
 	connect(chat, SIGNAL(messageSentAndConfirmed(UserListElements, const QString&)),
 		this, SIGNAL(messageSentAndConfirmed(UserListElements, const QString&)));
-	connect(chat, SIGNAL(chatWidgetActivated(ChatWidget *)), this, SIGNAL(chatWidgetActivated(ChatWidget *)));
+//	connect(chat, SIGNAL(chatWidgetActivated(ChatWidget *)), this, SIGNAL(chatWidgetActivated(ChatWidget *)));
 
 	window->show();
 	//chat->show();
@@ -613,6 +631,7 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 	emit chatWidgetCreated(chat);
 	emit chatWidgetCreated(chat, time);
 	emit chatWidgetOpen(chat);
+
 	kdebugf2();
 	return ChatWidgets.count() - 1;
 }

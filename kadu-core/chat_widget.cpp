@@ -246,7 +246,8 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 
 ChatWidget::~ChatWidget()
 {
-		kdebugf();
+	kdebugf();
+
 	chat_manager->unregisterChatWidget(this);
 
 	disconnectAcknowledgeSlots();

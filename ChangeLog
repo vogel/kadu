@@ -180,6 +180,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * chat: spore przeróbki formatowania wiadomosci (Vogel)
 * nowe okno konfiguracji: mo¿liwo¶æ korzystania z nich przez modu³y (Vogel)
 * chat: trochê porz±dków - podzia³ Chat na ChatWindow i ChatWidget (Juzef/Vogel)
+* dodana lista w menu g³ównym z ostatnio zamkniêtymi oknami Chat (neeo)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)
