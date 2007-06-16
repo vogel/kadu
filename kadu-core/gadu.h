@@ -265,11 +265,15 @@ class GaduProtocol : public Protocol
 
 		/** Parametry logowania - wymagane przez bibliotekê libgadu **/
 		struct gg_login_params LoginParams;
+
 		/** Sesja po³±czenia - wymagane przez bibliotekê libgadu **/
 		gg_session* Sess;
 
 		/** liczba ¿±dañ obrazków wys³anych w ci±gu ostatniej minuty**/
 		unsigned int sendImageRequests;
+
+		/** numer sekwencyjny ostatnio wys³anej wiadomo¶ci **/
+		int seqNumber;
 
 		/** czy jeste¶my w trakcie ³±czenia siê z serwerem **/
 		bool whileConnecting;
@@ -382,9 +386,9 @@ class GaduProtocol : public Protocol
 			@see gotToken
 		**/
 		void doChangePassword();
+
 		GaduProtocol(const GaduProtocol &) : Protocol(QString::null, QString::null) {}
 		GaduProtocol &operator=(const GaduProtocol &){return *this;}
-		int seqNumber;
 
 	private slots:
 
