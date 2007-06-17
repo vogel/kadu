@@ -149,8 +149,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	Edit->setPaper(QBrush(config_file.readColorEntry("Look","ChatTextBgColor")));
 	Edit->setAutosend(AutoSend);
 
-	connect(body, SIGNAL(mouseReleased(QMouseEvent *)), Edit, SLOT(setFocus()));
-	connect(body, SIGNAL(wheel(QWheelEvent *)), Edit, SLOT(setFocus()));
+	setFocusProxy(Edit);
 
 	QString chatSyntax = SyntaxList::readSyntax("chat", config_file.readEntry("Look", "Style"));
 	int beginOfHeader = chatSyntax.find("<kadu:header>");
@@ -223,6 +222,8 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 
 	body->setMimeSourceFactory(bodyformat);
 	body->setTextFormat(Qt::RichText);
+	body->setFocusPolicy(QWidget::NoFocus);
+
 	Edit->setMimeSourceFactory(bodyformat);
 	Edit->setTextFormat(Qt::RichText);
 
@@ -236,8 +237,6 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	connect(KaduActions["sendAction"], SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
 		this, SLOT(sendActionAddedToToolbar(ToolButton*, ToolBar*)));
 
-
-	Edit->setFocus();
 
 	Edit->installEventFilter(this);
 
@@ -386,7 +385,7 @@ void ChatWidget::insertImage()
 	}
 	else
 		delete id;
-	Edit->setFocus();
+
 	kdebugf2();
 }
 
@@ -471,7 +470,7 @@ bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
 	if (HotKey::shortCut(e,"ShortCuts", "chat_clear"))
 		clearChatWindow();
 	else if (HotKey::shortCut(e,"ShortCuts", "chat_close"))
-		close();
+		emit closed();
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
 		KaduActions["whoisAction"]->activate(Users);
 	else
@@ -516,13 +515,6 @@ bool ChatWidget::eventFilter(QObject *watched, QEvent *ev)
  	if (keyPressEventHandled(e))
  		return true;
  	return QWidget::eventFilter(watched, ev);
-}
-
-void ChatWidget::mouseReleaseEvent(QMouseEvent *e)
-{
- 	kdebugf();
- 	Edit->setFocus();
-  	QWidget::mouseReleaseEvent(e);
 }
 
 QDateTime ChatWidget::getLastMsgTime()
@@ -651,7 +643,6 @@ void ChatWidget::clearChatWindow()
 		if (CfgNoHeaderRepeat)
 			LastTime = 0;
 		setActiveWindow();
-		Edit->setFocus();
 	}
 	kdebugf2();
 }
@@ -678,7 +669,7 @@ void ChatWidget::cancelMessage()
 	disconnectAcknowledgeSlots();
 	Edit->setReadOnly(false);
 	Edit->setEnabled(true);
-	Edit->setFocus();
+
 	WaitingForACK = false;
 	KaduActions["sendAction"]->setPixmaps(Users->toUserListElements(),
 		icons_manager->loadIcon("SendMessage"));
@@ -851,7 +842,6 @@ void ChatWidget::addEmoticon(QString emot)
 		emot.replace("&lt;", "<");
 		emot.replace("&gt;", ">");
 		Edit->insert(emot);
-		Edit->setFocus();
 	}
 	emoticon_selector = NULL;
 }

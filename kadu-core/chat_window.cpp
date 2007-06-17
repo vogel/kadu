@@ -27,21 +27,36 @@
 #include "userbox.h"
 #include "protocol.h"
 
-ChatWindow::ChatWindow(ChatWidget *widget, QWidget* parent, const char* name)
-	: QMainWindow(parent, name, Qt::WDestructiveClose), currentChatWidget(widget), title_timer(new QTimer(this, "title_timer")),
+ChatWindow::ChatWindow(QWidget* parent, const char* name)
+	: QMainWindow(parent, name, Qt::WDestructiveClose), currentChatWidget(0), title_timer(new QTimer(this, "title_timer")),
 		showNewMessagesNum(config_file.readBoolEntry("Chat", "NewMessagesInChatTitle")),
 		blinkChatTitle(config_file.readBoolEntry("Chat", "BlinkChatTitle"))
 {
-	connect(currentChatWidget, SIGNAL(captionUpdated()), this, SLOT(updateTitle()));
-	connect(currentChatWidget, SIGNAL(messageReceived(ChatWidget *)), this, SLOT(alertNewMessage()));
 	connect(title_timer, SIGNAL(timeout()), this, SLOT(blinkTitle()));
-
-	restoreGeometry();
 }
 
 ChatWindow::~ChatWindow()
 {
 	storeGeometry();
+}
+
+// TODO: fix it
+void ChatWindow::setChatWidget(ChatWidget *newChatWidget)
+{
+	currentChatWidget = newChatWidget;
+	setCentralWidget(currentChatWidget);
+
+	connect(currentChatWidget, SIGNAL(closed()), this, SLOT(close()));
+	connect(currentChatWidget, SIGNAL(captionUpdated()), this, SLOT(updateTitle()));
+	connect(currentChatWidget, SIGNAL(messageReceived(ChatWidget *)), this, SLOT(alertNewMessage()));
+
+	setFocusProxy(currentChatWidget);
+	restoreGeometry();
+}
+
+ChatWidget* ChatWindow::chatWidget()
+{
+	return currentChatWidget;
 }
 
 // TODO: zrobiæ od pocz±tku, strukturalnie spieprzone
@@ -90,6 +105,7 @@ void ChatWindow::restoreGeometry()
 	}
 	setGeometry(geometry);
 
+	currentChatWidget->setGeometry(geometry);
 	currentChatWidget->restoreGeometry();
 }
 
@@ -101,11 +117,6 @@ void ChatWindow::storeGeometry()
 	chat_manager->setChatWidgetProperty(users, "Geometry", QRect(pos().x(), pos().y(), size().width(), size().height()));
 	if (users->count() == 1)
 		(*users->begin()).setData("ChatGeometry", QString("%1,%2,%3,%4").arg(pos().x()).arg(pos().y()).arg(size().width()).arg(size().height()));
-}
-
-ChatWidget* ChatWindow::chatWidget()
-{
-	return currentChatWidget;
 }
 
 void ChatWindow::closeEvent(QCloseEvent* e)
@@ -181,7 +192,7 @@ void ChatWindow::windowActivationChange(bool b)
 			title_timer->stop();
 
 		if (!b)
-			emit chatActivated(currentChatWidget);
+			emit chatWidgetActivated(currentChatWidget);
 	}
 	kdebugf2();
 }

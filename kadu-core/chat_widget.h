@@ -137,20 +137,7 @@ private slots:
 	void sendActionAddedToToolbar(ToolButton*, ToolBar*);
 
 protected:
-	/**
-		\fn virtual void keyPressEvent(QKeyEvent* e)
-		Funkcja obs³uguj±ca naci¶niêcie przycisku
-		\param e wska¼nik do obiektu obs³uguj±cego klawisze
-	**/
 	virtual void keyPressEvent(QKeyEvent* e);
-
-	/**
-		\fn virtual void keyReleaseEvent(QKeyEvent* e)
-		Funkcja obs³uguj±ca zwolnienie przycisku
-		\param e wska¼nik do obiektu obs³uguj±cego klawisze
-	**/
-	virtual void mouseReleaseEvent(QMouseEvent *e);
-
 	bool keyPressEventHandled(QKeyEvent *);
 
 public:
@@ -409,6 +396,7 @@ signals:
 	void messageReceived(ChatWidget *);
 
 	void captionUpdated();
+	void closed();
 
 };
 

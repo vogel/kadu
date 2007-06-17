@@ -43,8 +43,10 @@ protected:
 	virtual void mouseReleaseEvent(QMouseEvent *e);
 
 public:
-	ChatWindow(ChatWidget *widget, QWidget* parent, const char* name);
+	ChatWindow(QWidget *parent = 0, const char *name = 0);
 	virtual ~ChatWindow();
+
+	void setChatWidget(ChatWidget *chatWidget);
 	ChatWidget* chatWidget();
 
 public slots:
@@ -59,7 +61,7 @@ public slots:
 	void alertNewMessage();
 
 signals:
-	void chatActivated(ChatWidget *);
+	void chatWidgetActivated(ChatWidget *);
 
 };
 

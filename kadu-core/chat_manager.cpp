@@ -616,17 +616,20 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 	CONST_FOREACH(user, users)
 		userNames.append((*user).altNick());
 	userNames.sort();
-	ChatWidget* chat = new ChatWidget(initialProtocol, users, 0, QString("chat:%1").arg(userNames.join(",")).local8Bit().data());
-	ChatWindow* window = new ChatWindow(chat,0,QString("chat:%1").arg(userNames.join(",")).local8Bit().data());
-	window->setCentralWidget(chat);
-  	chat->reparent(window,0, QPoint(),true);
+
+	ChatWindow* window = new ChatWindow();
+	ChatWidget* chat = new ChatWidget(initialProtocol, users, window);
+
+	window->setChatWidget(chat);
+
  	chat->refreshTitle();
+
 	connect(chat, SIGNAL(messageSentAndConfirmed(UserListElements, const QString&)),
 		this, SIGNAL(messageSentAndConfirmed(UserListElements, const QString&)));
-//	connect(chat, SIGNAL(chatWidgetActivated(ChatWidget *)), this, SIGNAL(chatWidgetActivated(ChatWidget *)));
+	connect(window, SIGNAL(chatWidgetActivated(ChatWidget *)), this, SIGNAL(chatWidgetActivated(ChatWidget *)));
 
 	window->show();
-	//chat->show();
+
 //	chat->makeActive();
 	emit chatWidgetCreated(chat);
 	emit chatWidgetCreated(chat, time);
