@@ -127,7 +127,7 @@
 					<item value="0" caption="None" />
 				</combo-box>
 				<combo-box caption="Emoticons theme" config-section="Chat" config-item="EmoticonsTheme" id="emoticonsTheme" />
-				<path-list-edit caption="Emiticons paths" config-section="" config-item="" id="emoticonsPaths" />
+				<path-list-edit caption="Emoticons paths" config-section="" config-item="" id="emoticonsPaths" />
 			</group-box>
 		</tab>
 

@@ -34,6 +34,7 @@ extern "C" int alsa_sound_init()
 	kdebugf();
 
 	alsa_player_slots = new ALSAPlayerSlots(NULL, "alsa_player_slots");
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/alsa_sound.ui"), 0);
 
 	kdebugf2();
 	return 0;
@@ -42,8 +43,11 @@ extern "C" int alsa_sound_init()
 extern "C" void alsa_sound_close()
 {
 	kdebugf();
+
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/alsa_sound.ui"), 0);
 	delete alsa_player_slots;
-	alsa_player_slots = NULL;
+	alsa_player_slots = 0;
+
 	kdebugf2();
 }
 
@@ -244,20 +248,12 @@ ALSAPlayerSlots::ALSAPlayerSlots(QObject *parent, const char *name) : QObject(pa
 	connect(sound_manager, SIGNAL(setFlushingEnabledImpl(SoundDevice, bool)),
 		this, SLOT(setFlushingEnabled(SoundDevice, bool)));
 
-// 	ConfigDialog::addHGroupBox("Sounds", "Sounds",
-// 			QT_TRANSLATE_NOOP("@default", "Output device"), 0, Advanced);
-// 	ConfigDialog::addLineEdit("Sounds", "Output device",
-// 			QT_TRANSLATE_NOOP("@default", "ALSA device:"), "ALSAOutputDevice", "default", 0, "device_path");
-
 	kdebugf2();
 }
 
 ALSAPlayerSlots::~ALSAPlayerSlots()
 {
 	kdebugf();
-
-// 	ConfigDialog::removeControl("Sounds", "ALSA device:", "device_path");
-// 	ConfigDialog::removeControl("Sounds", "Output device");
 
 	disconnect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice&)),
 			this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice&)));
