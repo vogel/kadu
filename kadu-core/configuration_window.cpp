@@ -122,6 +122,8 @@ ConfigGroupBox *ConfigTab::configGroupBox(const QString &name, bool create)
 	ConfigGroupBox *newConfigGroupBox = new ConfigGroupBox(name, this, groupBox);
 	configGroupBoxes[name] = newConfigGroupBox;
 
+	groupBox->show();
+
 	return newConfigGroupBox;
 }
 

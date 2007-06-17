@@ -32,7 +32,9 @@ void MainConfigurationWindow::registerUiFile(const QString &uiFile, Configuratio
 		connect(Instance, SIGNAL(configurationUpdated()), uiHandler, SLOT(configurationUpdated()));
 
 		QValueList<ConfigWidget *> widgets = Instance->appendUiFile(uiFile);
-		uiHandler->mainConfigurationWindowCreated(Instance);
+
+		if (uiHandler)
+			uiHandler->mainConfigurationWindowCreated(Instance);
 
 		// allow uiHandler handle this...
 		// TODO: make it pretty
