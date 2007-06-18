@@ -31,11 +31,10 @@ void Ignored::resizeEvent(QResizeEvent * /*e*/)
 	layoutHelper->resizeLabels();
 }
 
-Ignored::Ignored(QDialog *parent, const char *name) : QHBox(parent, name),
+Ignored::Ignored(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopLevel | WDestructiveClose),
 	lb_list(0), e_uin(0), layoutHelper(new LayoutHelper())
 {
 	kdebugf();
-	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Manage ignored users"));
 	layout()->setResizeMode(QLayout::Minimum);
 

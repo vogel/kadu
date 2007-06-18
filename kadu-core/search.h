@@ -1,7 +1,7 @@
 #ifndef KADU_SEARCH_H
 #define KADU_SEARCH_H
 
-#include <qdialog.h>
+#include <qwidget.h>
 #include <qtoolbutton.h>
 #include <qvaluelist.h>
 
@@ -22,7 +22,7 @@ class QRadioButton;
 	\brief Wyszukiwanie w katalogu publicznym.
 	\class SearchDialog
 **/
-class SearchDialog : public QDialog {
+class SearchDialog : public QWidget {
 	Q_OBJECT
 	public:
 		/**

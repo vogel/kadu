@@ -79,11 +79,10 @@ void ModulesDialog::resizeEvent(QResizeEvent * /*e*/)
 	layoutHelper->resizeLabels();
 }
 
-ModulesDialog::ModulesDialog() : QHBox(0, "modules_dialog"),
+ModulesDialog::ModulesDialog() : QHBox(kadu, "modules_dialog", WType_TopLevel | WDestructiveClose),
 	lv_modules(0), l_moduleinfo(0), layoutHelper(new LayoutHelper())
 {
 	kdebugf();
-	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Manage Modules"));
 	layout()->setResizeMode(QLayout::Minimum);
 

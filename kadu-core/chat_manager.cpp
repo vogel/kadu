@@ -353,14 +353,13 @@ void ChatManager::whoisActionActivated(const UserGroup* users)
 	kdebugf();
 
 	if (users->count() == 0)
-		(new SearchDialog())->show();
+		(new SearchDialog(kadu, "search_user"))->show();
 	else
 	{
 		UserListElement user = *users->constBegin();
 		if (user.usesProtocol("Gadu"))
 		{
-			UinType uin = user.ID("Gadu").toUInt();
-			SearchDialog *sd = new SearchDialog(0, QString("SearchDialog:%1").arg(uin).local8Bit().data(), uin);
+			SearchDialog *sd = new SearchDialog(kadu, "user_info", user.ID("Gadu").toUInt());
 			sd->show();
 			sd->firstSearch();
 		}

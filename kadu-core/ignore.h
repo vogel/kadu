@@ -10,7 +10,7 @@ class LayoutHelper;
 class QLabel;
 class QLineEdit;
 class QListBox;
-class QDialog;
+class QWidget;
 class QResizeEvent;
 class QSimpleRichText;
 
@@ -21,7 +21,7 @@ class Ignored : public QHBox
 {
 	Q_OBJECT
 	public:
-		Ignored(QDialog *parent = 0, const char *name = 0);
+		Ignored(QWidget *parent = 0, const char *name = 0);
 		~Ignored();
 
 	private:

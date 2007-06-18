@@ -41,7 +41,7 @@ class UserInfo : public QHBox
 			\param parent wska¼nik do obiektu stanowi±cego rodzica. Domy¶lnie 0.
 			\param name nazwa kontrolki. Domy¶lnie 0.
 		**/
-		UserInfo(UserListElement user, QDialog* parent = 0, const char *name = 0);
+		UserInfo(UserListElement user, QWidget* parent = 0, const char *name = 0);
 		~UserInfo();
 
 		QTabWidget *tabs() {return tw_main;}

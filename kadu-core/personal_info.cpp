@@ -20,12 +20,11 @@
 #include "misc.h"
 #include "personal_info.h"
 
-PersonalInfoDialog::PersonalInfoDialog(QDialog *parent, const char *name) : QHBox(parent, name),
+PersonalInfoDialog::PersonalInfoDialog(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopLevel | WDestructiveClose),
 	le_nickname(0), le_name(0), le_surname(0), cb_gender(0), le_birthyear(0), le_city(0), le_familyname(0),
 	le_familycity(0), pb_save(0), State(READY), data(new SearchRecord()), layoutHelper(new LayoutHelper())
 {
 	kdebugf();
-	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Personal Information"));
 	layout()->setResizeMode(QLayout::Minimum);
 

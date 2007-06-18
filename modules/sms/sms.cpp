@@ -126,8 +126,8 @@ extern "C" void sms_close()
 
 /********** SmsImageDialog **********/
 
-SmsImageDialog::SmsImageDialog(QDialog* parent, const QByteArray& image)
-	: QDialog (parent, "SmsImageDialog"), code_edit(0)
+SmsImageDialog::SmsImageDialog(QWidget* parent, const QByteArray& image)
+	: QDialog(parent, "SmsImageDialog"), code_edit(0)
 {
 	kdebugf();
 
@@ -246,14 +246,12 @@ void SmsSender::send(const QString& number,const QString& message, const QString
 
 /********** Sms **********/
 
-Sms::Sms(const QString& altnick, QDialog* parent, const char *name) : QDialog (parent, name),
+Sms::Sms(const QString& altnick, QWidget* parent, const char *name) : QWidget(parent, name, WType_TopLevel | WDestructiveClose),
 	body(0), recipient(0), list(0), smslen(0), l_contact(0), e_contact(0), l_signature(0),
 	e_signature(0), b_send(0), c_saveInHistory(0), smsProcess(0), Sender()
 {
 	kdebugf();
 	QGridLayout * grid = new QGridLayout(this, 3, 4, 10, 7);
-
-	setWFlags(WDestructiveClose);
 
 	body = new QMultiLineEdit(this);
 	grid->addMultiCellWidget(body, 1, 1, 0, 3);
@@ -570,7 +568,7 @@ void SmsSlots::onCloseTabSMS()
 
 void SmsSlots::newSms(QString nick)
 {
-	(new Sms(nick, NULL, "sms"))->show();
+	(new Sms(nick, kadu, "sms"))->show();
 }
 
 void SmsSlots::onUserClicked(int button, QListBoxItem* /*item*/, const QPoint& /*pos*/)

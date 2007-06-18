@@ -42,12 +42,12 @@ class PersonalInfoDialog : public QHBox
 
 	public:
 		/**
-			\fn PersonalInfoDialog(QDialog *parent=0, const char *name=0)
+			\fn PersonalInfoDialog(QWidget *parent=0, const char *name=0)
 			Standardowy konstruktor.
 			\param parent rodzic kontrolki. Domy¶lnie 0.
 			\param name nazwa kontrolki. Domy¶lnie 0.
 		**/
-		PersonalInfoDialog(QDialog *parent=0, const char *name=0);
+		PersonalInfoDialog(QWidget *parent=0, const char *name=0);
 		~PersonalInfoDialog();
 
 	public slots:

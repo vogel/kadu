@@ -582,7 +582,7 @@ void Kadu::lookupInDirectory()
 		UserListElement user = *(users.constBegin());
 		if (user.usesProtocol("Gadu"))
 		{
-			SearchDialog *sd = new SearchDialog(NULL, "User info", user.ID("Gadu").toUInt());
+			SearchDialog *sd = new SearchDialog(kadu, "user_info", user.ID("Gadu").toUInt());
 			sd->show();
 			sd->firstSearch();
 		}
@@ -628,7 +628,7 @@ void Kadu::editUserActionActivated(const UserGroup* users)
 {
 	kdebugf();
 	if (users->count() == 1)
-		(new UserInfo(*users->begin(), 0, "user info"))->show();
+		(new UserInfo(*users->begin(), kadu, "user_info"))->show();
 	kdebugf2();
 }
 
@@ -636,9 +636,9 @@ void Kadu::addUserActionActivated(const UserGroup* users)
 {
 	kdebugf();
 	if ((users->count() == 1) && (*users->begin()).isAnonymous())
-		(new UserInfo(*users->begin(), 0, "add user"))->show();
+		(new UserInfo(*users->begin(), kadu, "add_user"))->show();
 	else
-		(new UserInfo(UserListElement(), 0, "add user"))->show();
+		(new UserInfo(UserListElement(), kadu, "add_user"))->show();
 	kdebugf2();
 }
 
@@ -673,7 +673,7 @@ void Kadu::deleteUsers()
 
 void Kadu::personalInfo()
 {
-	(new PersonalInfoDialog())->show();
+	(new PersonalInfoDialog(kadu, "personal_info"))->show();
 }
 
 void Kadu::addUserAction()
@@ -685,7 +685,7 @@ void Kadu::addUserAction()
 
 void Kadu::manageIgnored()
 {
-	(new Ignored(0, "ignored"))->show();
+	(new Ignored(kadu, "ignored"))->show();
 }
 
 void Kadu::openChat()
@@ -705,7 +705,7 @@ void Kadu::openChat()
 
 void Kadu::searchInDirectory()
 {
-	(new SearchDialog())->show();
+	(new SearchDialog(kadu, "search_user"))->show();
 }
 
 void Kadu::help()
@@ -715,7 +715,7 @@ void Kadu::help()
 
 void Kadu::about()
 {
-	(new About(this, "about_window"))->show();
+	(new About(kadu, "about_window"))->show();
 }
 
 void Kadu::quit()
@@ -733,7 +733,7 @@ void Kadu::quit()
 
 void Kadu::importExportUserlist()
 {
-	(new UserlistImportExport(this, "userlist_import_export"))->show();
+	(new UserlistImportExport(kadu, "userlist_import_export"))->show();
 }
 
 void Kadu::hideKadu()

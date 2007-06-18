@@ -1,6 +1,7 @@
 #ifndef SMS_H
 #define SMS_H
 
+#include <qwidget.h>
 #include <qdialog.h>
 #include <qmultilineedit.h>
 #include <qlineedit.h>
@@ -35,7 +36,7 @@ class SmsImageDialog : public QDialog
 		void onReturnPressed();
 
 	public:
-		SmsImageDialog(QDialog* parent,const QByteArray& image);
+		SmsImageDialog(QWidget* parent,const QByteArray& image);
 		void reject();
 
 	signals:
@@ -97,11 +98,11 @@ class SmsSender : public QObject
 /**
 	Dialog umo¿liwiaj±cy wysy³anie SMS'ów
 **/
-class Sms : public QDialog {
+class Sms : public QWidget {
 	Q_OBJECT
 
 	public:
-		Sms(const QString& altnick, QDialog* parent=0, const char *name=0);
+		Sms(const QString& altnick, QWidget* parent=0, const char *name=0);
 		~Sms();
 		void setRecipient(const QString& phone);
 

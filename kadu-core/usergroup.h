@@ -219,9 +219,19 @@ class UserGroup : public QObject
 		**/
 		void resize(int size);
 
+		/**
+			\fn QStringList altNicks() const
+			Zwraca listê nicków kontaktów nale¿±cych do grupy w postaci
+			obiektu klasy QStringList.
+		**/
 		QStringList altNicks() const;
 
+		/**
+			\fn void clear()
+			Czy¶ci listê u¿ytkowników w danej grupie.
+		**/
 		void clear();
+
 	public slots:
 		/**
 			\fn void addUser(UserListElement ule, bool massively = false, bool last = false)
@@ -483,6 +493,11 @@ class UserListElements : public QValueList<UserListElement>
 		**/
 		bool contains(UserListElement e) const { return QValueList<UserListElement>::contains(e) > 0;}
 
+		/**
+			\fn QStringList altNicks() const
+			Zwraca listê nicków kontaktów nale¿±cych w postaci obiektu
+			klasy QStringList.
+		**/
 		QStringList altNicks() const;
 
 		bool operator < (const UserListElements &) const;

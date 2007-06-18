@@ -26,13 +26,14 @@
 #include "debug.h"
 #include "dockarea.h"
 #include "icons_manager.h"
+#include "kadu.h"
 #include "message_box.h"
 #include "misc.h"
 #include "search.h"
 #include "userinfo.h"
 
 SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearchUin)
-	: QDialog(parent, name, FALSE, Qt::WDestructiveClose),
+	: QWidget(parent, name, WType_TopLevel | WDestructiveClose),
 	only_active(0), e_uin(0), e_name(0), e_nick(0), e_byrFrom(0), e_byrTo(0), e_surname(0),
 	c_gender(0), e_city(0), results(0), progress(0), r_uin(0), r_pers(0), _whoisSearchUin(whoisSearchUin),
 	seq(0), selectedUsers(new UserGroup(1)), searchRecord(new SearchRecord()), searchhidden(false)
@@ -315,9 +316,9 @@ void SearchDialog::addSearchedActionActivated(const UserGroup* users)
 {
 	kdebugf();
 	if ((*users->begin()).isAnonymous())
-		(new UserInfo(*users->begin(), 0, "add user"))->show();
+		(new UserInfo(*users->begin(), kadu, "add_user"))->show();
 	else
-		(new UserInfo(*users->begin(), 0, "user info"))->show();
+		(new UserInfo(*users->begin(), kadu, "user_info"))->show();
 	kdebugf2();
 }
 
@@ -576,7 +577,7 @@ void SearchDialog::updateInfoClicked()
 
 	ule.setFirstName(firstname);
 	ule.setNickName(nickname);
-	(new UserInfo(ule, 0, "user info"))->show();
+	(new UserInfo(ule, kadu, "user_info"))->show();
 	kdebugf2();
 }
 
