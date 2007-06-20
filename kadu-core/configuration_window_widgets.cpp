@@ -116,6 +116,12 @@ void ConfigLineEdit::show()
 	QLineEdit::show();
 }
 
+void ConfigLineEdit::hide()
+{
+	label->hide();
+	QLineEdit::hide();
+}
+
 ConfigGGPasswordEdit::ConfigGGPasswordEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		ConfigGroupBox *parentConfigGroupBox, char *name)
 	: ConfigLineEdit(section, item, widgetCaption, toolTip, parentConfigGroupBox, name)
@@ -182,6 +188,11 @@ void ConfigCheckBox::show()
 	QCheckBox::show();
 }
 
+void ConfigCheckBox::hide()
+{
+	QCheckBox::hide();
+}
+
 ConfigSpinBox::ConfigSpinBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		int minValue, int maxValue, int step, ConfigGroupBox *parentConfigGroupBox, const char *name)
 	: QSpinBox(minValue, maxValue, step, parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox),
@@ -234,6 +245,12 @@ void ConfigSpinBox::show()
 {
 	label->show();
 	QSpinBox::show();
+}
+
+void ConfigSpinBox::hide()
+{
+	label->hide();
+	QSpinBox::hide();
 }
 
 bool ConfigSpinBox::fromDomElement(QDomElement domElement)
@@ -330,6 +347,12 @@ void ConfigComboBox::show()
 	QComboBox::show();
 }
 
+void ConfigComboBox::hide()
+{
+	label->hide();
+	QComboBox::hide();
+}
+
 bool ConfigComboBox::fromDomElement(QDomElement domElement)
 {
 	QDomNodeList children = domElement.childNodes();
@@ -406,6 +429,12 @@ void ConfigHotKeyEdit::show()
 	HotKeyEdit::show();
 }
 
+void ConfigHotKeyEdit::hide()
+{
+	label->hide();
+	HotKeyEdit::hide();
+}
+
 ConfigPathListEdit::ConfigPathListEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		ConfigGroupBox *parentConfigGroupBox, char *name)
 	: PathListEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
@@ -457,6 +486,12 @@ void ConfigPathListEdit::show()
 {
 	label->show();
 	PathListEdit::show();
+}
+
+void ConfigPathListEdit::hide()
+{
+	label->hide();
+	PathListEdit::hide();
 }
 
 ConfigColorButton::ConfigColorButton(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
@@ -512,6 +547,12 @@ void ConfigColorButton::show()
 	ColorButton::show();
 }
 
+void ConfigColorButton::hide()
+{
+	label->hide();
+	ColorButton::hide();
+}
+
 ConfigSelectFont::ConfigSelectFont(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		ConfigGroupBox *parentConfigGroupBox, char *name)
 	: SelectFont(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
@@ -563,6 +604,12 @@ void ConfigSelectFont::show()
 {
 	label->show();
 	SelectFont::show();
+}
+
+void ConfigSelectFont::hide()
+{
+	label->hide();
+	SelectFont::hide();
 }
 
 ConfigSyntaxEditor::ConfigSyntaxEditor(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
@@ -618,6 +665,12 @@ void ConfigSyntaxEditor::show()
 	SyntaxEditor::show();
 }
 
+void ConfigSyntaxEditor::hide()
+{
+	label->hide();
+	SyntaxEditor::hide();
+}
+
 bool ConfigSyntaxEditor::fromDomElement(QDomElement domElement)
 {
 	QString category = domElement.attribute("category");
@@ -657,6 +710,11 @@ void ConfigActionButton::createWidgets()
 void ConfigActionButton::show()
 {
 	QPushButton::show();
+}
+
+void ConfigActionButton::hide()
+{
+	QPushButton::hide();
 }
 
 ConfigSelectFile::ConfigSelectFile(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
@@ -712,6 +770,12 @@ void ConfigSelectFile::show()
 	SelectFile::show();
 }
 
+void ConfigSelectFile::hide()
+{
+	label->hide();
+	SelectFile::hide();
+}
+
 bool ConfigSelectFile::fromDomElement(QDomElement domElement)
 {
 	QString type = domElement.attribute("type");
@@ -757,6 +821,13 @@ void ConfigPreview::show()
 {
 	label->show();
 	Preview::show();
+}
+
+// TODO: czy Preview dzieczyczy z QToolTip?
+void ConfigPreview::hide()
+{
+	label->hide();
+	Preview::QWidget::hide();
 }
 
 ConfigSlider::ConfigSlider(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
@@ -813,6 +884,12 @@ void ConfigSlider::show()
 	QSlider::show();
 }
 
+void ConfigSlider::hide()
+{
+	label->hide();
+	QSlider::hide();
+}
+
 bool ConfigSlider::fromDomElement(QDomElement domElement)
 {
 	QString minValue = domElement.attribute("min-value");
@@ -864,6 +941,11 @@ void ConfigLabel::createWidgets()
 void ConfigLabel::show()
 {
 	QLabel::show();
+}
+
+void ConfigLabel::hide()
+{
+	QLabel::hide();
 }
 
 ConfigListBox::ConfigListBox(const QString &widgetCaption, const QString &toolTip,
@@ -921,6 +1003,12 @@ void ConfigListBox::show()
 {
 	label->show();
 	QListBox::show();
+}
+
+void ConfigListBox::hide()
+{
+	label->hide();
+	QListBox::hide();
 }
 
 bool ConfigListBox::fromDomElement(QDomElement domElement)

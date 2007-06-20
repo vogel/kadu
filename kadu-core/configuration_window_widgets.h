@@ -51,6 +51,7 @@ public:
 	virtual void saveConfiguration() = 0;
 
 	virtual void show() = 0;
+	virtual void hide() = 0;
 	virtual bool fromDomElement(QDomElement domElement);
 };
 
@@ -85,6 +86,7 @@ public:
 	virtual void saveConfiguration();
 
 	virtual void show();
+	virtual void hide();
 };
 
 class ConfigGGPasswordEdit : public ConfigLineEdit
@@ -116,6 +118,7 @@ public:
 	virtual void saveConfiguration();
 
 	virtual void show();
+	virtual void hide();
 };
 
 class ConfigSpinBox : public QSpinBox, public ConfigWidgetValue
@@ -135,6 +138,7 @@ public:
 	virtual void saveConfiguration();
 
 	virtual void show();
+	virtual void hide();
 	virtual bool fromDomElement(QDomElement domElement);
 };
 
@@ -162,6 +166,7 @@ public:
 	virtual void saveConfiguration();
 
 	virtual void show();
+	virtual void hide();
 	virtual bool fromDomElement(QDomElement domElement);
 };
 
@@ -182,6 +187,7 @@ public:
 	virtual void saveConfiguration();
 
 	virtual void show();
+	virtual void hide();
 };
 
 class ConfigPathListEdit : public PathListEdit, public ConfigWidgetValue
@@ -201,6 +207,7 @@ public:
 	virtual void saveConfiguration();
 
 	virtual void show();
+	virtual void hide();
 };
 
 class ConfigColorButton : public ColorButton, public ConfigWidgetValue
@@ -220,6 +227,7 @@ public:
 	virtual void saveConfiguration();
 
 	virtual void show();
+	virtual void hide();
 };
 
 class ConfigSelectFont : public SelectFont, public ConfigWidgetValue
@@ -239,6 +247,7 @@ public:
 	virtual void saveConfiguration();
 
 	virtual void show();
+	virtual void hide();
 };
 
 class ConfigSyntaxEditor : public SyntaxEditor, public ConfigWidgetValue
@@ -258,6 +267,7 @@ public:
 	virtual void saveConfiguration();
 
 	virtual void show();
+	virtual void hide();
 	virtual bool fromDomElement(QDomElement domElement);
 };
 
@@ -276,6 +286,7 @@ public:
 	virtual void saveConfiguration() {};
 
 	virtual void show();
+	virtual void hide();
 };
 
 class ConfigSelectFile : public SelectFile, public ConfigWidgetValue
@@ -295,6 +306,7 @@ public:
 	virtual void saveConfiguration();
 
 	virtual void show();
+	virtual void hide();
 	virtual bool fromDomElement(QDomElement domElement);
 };
 
@@ -314,6 +326,7 @@ public:
 	virtual void saveConfiguration() {};
 
 	virtual void show();
+	virtual void hide();
 };
 
 class ConfigSlider : public QSlider, public ConfigWidgetValue
@@ -333,6 +346,7 @@ public:
 	virtual void saveConfiguration();
 
 	virtual void show();
+	virtual void hide();
 	virtual bool fromDomElement(QDomElement domElement);
 };
 
@@ -351,6 +365,7 @@ public:
 	virtual void saveConfiguration() {};
 
 	virtual void show();
+	virtual void hide();
 };
 
 class ConfigListBox : public QListBox, public ConfigWidget
@@ -377,6 +392,7 @@ public:
 	virtual void saveConfiguration() {};
 
 	virtual void show();
+	virtual void hide();
 	virtual bool fromDomElement(QDomElement domElement);
 };
 
