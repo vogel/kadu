@@ -1,6 +1,8 @@
 #ifndef _DEFAULT_SMS_H
 #define _DEFAULT_SMS_H
 
+#include "main_configuration_window.h"
+
 #include "../sms/sms.h"
 
 /** @defgroup default_sms Default SMS
@@ -9,7 +11,7 @@
 class SmsOrangeGateway : public SmsGateway
 {
 	Q_OBJECT
-	
+
 	private:
 		QString Token;
 
@@ -31,7 +33,7 @@ class SmsOrangeGateway : public SmsGateway
 class SmsPlusGateway : public SmsGateway
 {
 	Q_OBJECT
-	
+
 	protected:
 		virtual void httpFinished();
 		virtual void httpRedirected(QString);
@@ -47,7 +49,7 @@ class SmsPlusGateway : public SmsGateway
 class SmsEraGateway : public SmsGateway
 {
 	Q_OBJECT
-	
+
 	protected:
 		virtual void httpFinished();
 		virtual void httpRedirected(QString link);
@@ -61,28 +63,36 @@ class SmsEraGateway : public SmsGateway
 		virtual void send(const QString& number,const QString& message, const QString& contact, const QString& signature);
 };
 
-class SmsGatewaySlots: public QObject
+// FIXME: split it
+class DefaultSmsConfigurationUiHandler : public ConfigurationUiHandler
 {
 	Q_OBJECT
-	
-	public:
-		SmsGatewaySlots(QObject *parent=0, const char *name=0);
-		~SmsGatewaySlots();
-		static SmsGateway* isValidOrange(const QString& number, QObject* parent);
-		static SmsGateway* isValidPlus(const QString& number, QObject* parent);
-		static SmsGateway* isValidEra(const QString& number, QObject* parent);
-	private:
-		QStringList era_types;
-		QStringList era_values;
-		QString actualEraGateway;
-	public slots:
-		void onCreateTabSMS();
-		void onCloseTabSMS();
-		void onApplyTabSMS();
-		void onChangeEraGateway(int gateway);			
+
+	QStringList era_types;
+	QStringList era_values;
+	QString actualEraGateway;
+
+	ConfigComboBox *eraGateway;
+	ConfigLineEdit *sponsoredUser;
+	ConfigLineEdit *sponsoredPassword;
+	ConfigLineEdit *multimediaUser;
+	ConfigLineEdit *multimediaPassword;
+
+private slots:
+	void onChangeEraGateway();
+
+public:
+	static SmsGateway* isValidOrange(const QString& number, QObject* parent);
+	static SmsGateway* isValidPlus(const QString& number, QObject* parent);
+	static SmsGateway* isValidEra(const QString& number, QObject* parent);
+
+	DefaultSmsConfigurationUiHandler(QObject *parent=0, const char *name=0);
+
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+
 };
 
-extern SmsGatewaySlots* sms_gateway_slots;
+extern DefaultSmsConfigurationUiHandler *defaultSmsConfigurationUiHandler;
 
 /** @} */
 

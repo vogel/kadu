@@ -15,8 +15,8 @@
 				<line-edit caption="SMS custom string" config-section="SMS" config-item="SmsString" id="sms/customString" />
 			</group-box>
 
-			<group-box name="Gateways priorities">
-				<list-box caption="Gateways" id="sms/gateways" />
+			<group-box name="Gateways">
+				<list-box caption="Gateways priorites" id="sms/gateways" />
 				<action-button caption="Up" id="sms/up" />
 				<action-button caption="Down" id="sms/down" />
 			</group-box>

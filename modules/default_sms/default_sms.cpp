@@ -12,8 +12,8 @@
 #include <qregexp.h>
 #include <qmessagebox.h>
 
-// #include "config_dialog.h"
 #include "config_file.h"
+#include "configuration_window_widgets.h"
 #include "debug.h"
 #include "modules.h"
 
@@ -24,10 +24,14 @@
 extern "C" int default_sms_init()
 {
 	kdebugf();
-	smsConfigurationUiHandler->registerGateway("orange", &SmsGatewaySlots::isValidOrange);
-	smsConfigurationUiHandler->registerGateway("plus", &SmsGatewaySlots::isValidPlus);
-	smsConfigurationUiHandler->registerGateway("era" , &SmsGatewaySlots::isValidEra);
-	sms_gateway_slots=new SmsGatewaySlots(NULL, "sms_gateway_slots");
+
+	smsConfigurationUiHandler->registerGateway("orange", &DefaultSmsConfigurationUiHandler::isValidOrange);
+	smsConfigurationUiHandler->registerGateway("plus", &DefaultSmsConfigurationUiHandler::isValidPlus);
+	smsConfigurationUiHandler->registerGateway("era" , &DefaultSmsConfigurationUiHandler::isValidEra);
+
+	defaultSmsConfigurationUiHandler = new DefaultSmsConfigurationUiHandler(NULL, "sms_gateway_slots");
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/default_sms.ui"), defaultSmsConfigurationUiHandler);
+
 	kdebugf2();
 	return 0;
 }
@@ -35,10 +39,15 @@ extern "C" int default_sms_init()
 extern "C" void default_sms_close()
 {
 	kdebugf();
+
 	smsConfigurationUiHandler->unregisterGateway("orange");
 	smsConfigurationUiHandler->unregisterGateway("plus");
 	smsConfigurationUiHandler->unregisterGateway("era");
-	delete sms_gateway_slots;
+
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/default_sms.ui"), defaultSmsConfigurationUiHandler);
+	delete defaultSmsConfigurationUiHandler;
+	defaultSmsConfigurationUiHandler = 0;
+
 	kdebugf2();
 }
 
@@ -330,6 +339,7 @@ void SmsEraGateway::httpRedirected(QString link)
 	kdebugf2();
 }
 
+// TODO: WTF is that, co za nazwa dla funkcji... kurde... kto to pisa³?
 QString SmsEraGateway::errorNumber(int nr)
 {
 	switch(nr)
@@ -351,17 +361,10 @@ void SmsEraGateway::httpFinished()
 {
 }
 
-SmsGatewaySlots::SmsGatewaySlots(QObject *parent, const char *name) :
+DefaultSmsConfigurationUiHandler::DefaultSmsConfigurationUiHandler(QObject *parent, const char *name) :
 	QObject(parent, name), era_types(), era_values(), actualEraGateway()
 {
 	kdebugf();
-// 	ConfigDialog::addVGroupBox("SMS", "sms-beginner",
-// 			QT_TRANSLATE_NOOP("@default", "SMS Era Gateway"));
-
-// 	era_types=toStringList(tr("Sponsored"), tr("OmnixMultimedia"));
-// 	era_values=toStringList("Sponsored", "OmnixMultimedia");
-// 	ConfigDialog::addComboBox("SMS", "SMS Era Gateway",
-// 			QT_TRANSLATE_NOOP("@default", "Type of gateway"), "EraGateway", era_types, era_values);
 
 	config_file.addVariable("SMS", "EraGateway", "Sponsored");
 	//przepisanie starego hasla
@@ -371,92 +374,11 @@ SmsGatewaySlots::SmsGatewaySlots(QObject *parent, const char *name) :
 	config_file.addVariable("SMS", "EraGateway_OmnixMultimedia_Password", config_file.readEntry("SMS", "EraGateway_Omnix_Password"));
 	config_file.addVariable("SMS", "EraGateway_Sponsored_User", config_file.readEntry("SMS", "EraGateway_Basic_User"));
 	config_file.addVariable("SMS", "EraGateway_Sponsored_Password", config_file.readEntry("SMS", "EraGateway_Basic_Password"));
-	//
 
-// 	ConfigDialog::addLineEdit2("SMS", "SMS Era Gateway",
-// 			QT_TRANSLATE_NOOP("@default", "User ID (48xxxxxxxxx)"));
-// 	ConfigDialog::addLineEdit2("SMS", "SMS Era Gateway",
-// 			QT_TRANSLATE_NOOP("@default", "Password"));
-
-// 	ConfigDialog::registerSlotOnCreateTab("SMS", this, SLOT(onCreateTabSMS()));
-// 	ConfigDialog::registerSlotOnCloseTab("SMS", this, SLOT(onCloseTabSMS()));
-// 	ConfigDialog::registerSlotOnApplyTab("SMS", this, SLOT(onApplyTabSMS()));
-// 	ConfigDialog::connectSlot("SMS", "Type of gateway", SIGNAL(activated(int)), this, SLOT(onChangeEraGateway(int)));
 	kdebugf2();
 }
 
-SmsGatewaySlots::~SmsGatewaySlots()
-{
-	kdebugf();
-// 	ConfigDialog::unregisterSlotOnCreateTab("SMS", this, SLOT(onCreateTabSMS()));
-// 	ConfigDialog::unregisterSlotOnCloseTab("SMS", this, SLOT(onCloseTabSMS()));
-// 	ConfigDialog::unregisterSlotOnApplyTab("SMS", this, SLOT(onApplyTabSMS()));
-
-// 	ConfigDialog::disconnectSlot("SMS", "Type of gateway", SIGNAL(activated(int)), this, SLOT(onChangeEraGateway(int)));
-// 	ConfigDialog::removeControl("SMS", "Password");
-// 	ConfigDialog::removeControl("SMS", "User ID (48xxxxxxxxx)");
-// 	ConfigDialog::removeControl("SMS", "Type of gateway");
-// 	ConfigDialog::removeControl("SMS", "SMS Era Gateway");
-	kdebugf2();
-}
-
-void SmsGatewaySlots::onChangeEraGateway(int gateway)
-{
-	kdebugf();
-// 	QLineEdit *e_erauser= ConfigDialog::getLineEdit("SMS", "User ID (48xxxxxxxxx)");
-// 	QLineEdit *e_erapassword= ConfigDialog::getLineEdit("SMS", "Password");
-
-// 	config_file.writeEntry("SMS", "EraGateway_"+ actualEraGateway+ "_Password", e_erapassword->text());
-// 	config_file.writeEntry("SMS", "EraGateway_"+ actualEraGateway+ "_User", e_erauser->text());
-
-// 	e_erauser->setText(config_file.readEntry("SMS", "EraGateway_"+ era_values[gateway]+ "_User", "48"));
-// 	e_erapassword->setText(config_file.readEntry("SMS", "EraGateway_"+ era_values[gateway]+ "_Password"));
-// 	actualEraGateway=era_values[gateway];
-	kdebugf2();
-}
-
-void SmsGatewaySlots::onApplyTabSMS()
-{
-	kdebugf();
-
-// 	QLineEdit *e_erauser= ConfigDialog::getLineEdit("SMS", "User ID (48xxxxxxxxx)");
-// 	QLineEdit *e_erapassword= ConfigDialog::getLineEdit("SMS", "Password");
-// 	QString gateway= config_file.readEntry("SMS", "EraGateway");
-
-// 	config_file.writeEntry("SMS", "EraGateway_"+ gateway+ "_Password", e_erapassword->text());
-// 	config_file.writeEntry("SMS", "EraGateway_"+ gateway+ "_User", e_erauser->text());
-	kdebugf2();
-}
-
-static bool activated;
-
-void SmsGatewaySlots::onCloseTabSMS()
-{
-	kdebugf();
-	if (activated)
-		modules_manager->moduleDecUsageCount("default_sms");
-	activated=false;
-}
-
-void SmsGatewaySlots::onCreateTabSMS()
-{
-	kdebugf();
-
-	actualEraGateway=config_file.readEntry("SMS", "EraGateway");
-
-// 	QLineEdit *e_erauser= ConfigDialog::getLineEdit("SMS", "User ID (48xxxxxxxxx)");
-// 	QLineEdit *e_erapassword= ConfigDialog::getLineEdit("SMS", "Password");
-// 	e_erapassword->setEchoMode(QLineEdit::Password);
-
-// 	e_erapassword->setText(config_file.readEntry("SMS", "EraGateway_"+ actualEraGateway+ "_Password"));
-// 	e_erauser->setText(config_file.readEntry("SMS", "EraGateway_"+ actualEraGateway+ "_User", "48"));
-
-	modules_manager->moduleIncUsageCount("default_sms");
-	activated=true;
-	kdebugf2();
-}
-
-SmsGateway* SmsGatewaySlots::isValidOrange(const QString& number, QObject* parent)
+SmsGateway* DefaultSmsConfigurationUiHandler::isValidOrange(const QString& number, QObject* parent)
 {
 	if(SmsOrangeGateway::isNumberCorrect(number))
 		return new SmsOrangeGateway(parent, "sms_orange_gateway");
@@ -464,7 +386,7 @@ SmsGateway* SmsGatewaySlots::isValidOrange(const QString& number, QObject* paren
 		return NULL;
 }
 
-SmsGateway* SmsGatewaySlots::isValidPlus(const QString& number, QObject* parent)
+SmsGateway* DefaultSmsConfigurationUiHandler::isValidPlus(const QString& number, QObject* parent)
 {
 	if(SmsPlusGateway::isNumberCorrect(number))
 		return new SmsPlusGateway(parent, "sms_plus_gateway");
@@ -472,7 +394,7 @@ SmsGateway* SmsGatewaySlots::isValidPlus(const QString& number, QObject* parent)
 		return NULL;
 }
 
-SmsGateway* SmsGatewaySlots::isValidEra(const QString& number, QObject* parent)
+SmsGateway* DefaultSmsConfigurationUiHandler::isValidEra(const QString& number, QObject* parent)
 {
 	if(SmsEraGateway::isNumberCorrect(number))
 		return new SmsEraGateway(parent, "sms_era_gateway");
@@ -480,7 +402,37 @@ SmsGateway* SmsGatewaySlots::isValidEra(const QString& number, QObject* parent)
 		return NULL;
 }
 
-SmsGatewaySlots* sms_gateway_slots;
+void DefaultSmsConfigurationUiHandler::onChangeEraGateway()
+{
+	QString gateway = eraGateway->currentItemValue();
+	if (gateway == "Sponsored")
+	{
+		sponsoredUser->show();
+		sponsoredPassword->show();
+		multimediaUser->hide();
+		multimediaPassword->hide();
+	}
+	else
+	{
+		sponsoredUser->hide();
+		sponsoredPassword->hide();
+		multimediaUser->show();
+		multimediaPassword->show();
+	}
+}
+
+void DefaultSmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
+{
+	eraGateway = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widgetById("default_sms/eraGateway"));
+	sponsoredUser = dynamic_cast<ConfigLineEdit *>(mainConfigurationWindow->widgetById("default_sms/sponsoredUser"));
+	sponsoredPassword = dynamic_cast<ConfigLineEdit *>(mainConfigurationWindow->widgetById("default_sms/sponsoredPassword"));
+	multimediaUser = dynamic_cast<ConfigLineEdit *>(mainConfigurationWindow->widgetById("default_sms/multimediaUser"));
+	multimediaPassword = dynamic_cast<ConfigLineEdit *>(mainConfigurationWindow->widgetById("default_sms/multimediaPassword"));
+
+	connect(eraGateway, SIGNAL(activated(int)), this, SLOT(onChangeEraGateway()));
+}
+
+DefaultSmsConfigurationUiHandler* defaultSmsConfigurationUiHandler;
 
 /** @} */
 

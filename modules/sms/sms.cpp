@@ -60,8 +60,10 @@ extern "C" void sms_close()
 			smsConfigurationUiHandler, SLOT(onUserClicked(int, QListBoxItem*, const QPoint&)));
 	QObject::disconnect(UserBox::userboxmenu, SIGNAL(popup()), smsConfigurationUiHandler, SLOT(onPopupMenuCreate()));
 
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/sms.ui"), smsConfigurationUiHandler);
 	delete smsConfigurationUiHandler;
 	smsConfigurationUiHandler = 0;
+
 	kdebugf2();
 }
 
