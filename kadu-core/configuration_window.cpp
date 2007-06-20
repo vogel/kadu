@@ -442,6 +442,8 @@ ConfigWidget * ConfigurationWindow::appendUiElementFromDom(QDomNode uiElementNod
 		widget = new ConfigSlider(configGroupBox);
 	else if (tagName == "label")
 		widget = new ConfigLabel(configGroupBox);
+	else if (tagName == "list-box")
+		widget = new ConfigListBox(configGroupBox);
 	else
 	{
 		kdebugf2();

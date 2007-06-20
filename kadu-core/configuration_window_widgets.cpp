@@ -865,3 +865,83 @@ void ConfigLabel::show()
 {
 	QLabel::show();
 }
+
+ConfigListBox::ConfigListBox(const QString &widgetCaption, const QString &toolTip,
+		const QStringList &itemValues, const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox, const char *name)
+	: QListBox(parentConfigGroupBox->widget(), name), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox), label(0)
+{
+	createWidgets();
+}
+
+ConfigListBox::ConfigListBox(ConfigGroupBox *parentConfigGroupBox, const char *name)
+	: QListBox(parentConfigGroupBox->widget(), name), ConfigWidget(parentConfigGroupBox), label(0)
+{
+}
+
+ConfigListBox::~ConfigListBox()
+{
+	if (label)
+		delete label;
+}
+
+void ConfigListBox::setItems(const QStringList &itemValues, const QStringList &itemCaptions)
+{
+	this->itemValues = itemValues;
+	this->itemCaptions = itemCaptions;
+
+	clear();
+	insertStringList(itemCaptions);
+}
+
+void ConfigListBox::createWidgets()
+{
+	kdebugf();
+
+	connect(this, SIGNAL(activatd(int index)), this, SLOT(activatedSlot(int index)));
+
+	QGridLayout *layout = parentConfigGroupBox->layout();
+	int numRows = layout->numRows();
+
+	label = new QLabel(this, widgetCaption + ":", parentConfigGroupBox->widget());
+
+	layout->addWidget(label, numRows, 0, Qt::AlignRight);
+	layout->addWidget(this, numRows, 1);
+
+	clear();
+	insertStringList(itemCaptions);
+
+	if (!toolTip.isEmpty())
+	{
+		QToolTip::add(this, toolTip);
+		QToolTip::add(label, toolTip);
+	}
+}
+
+void ConfigListBox::show()
+{
+	label->show();
+	QListBox::show();
+}
+
+bool ConfigListBox::fromDomElement(QDomElement domElement)
+{
+	QDomNodeList children = domElement.childNodes();
+	int length = children.length();
+	for (int i = 0; i < length; i++)
+	{
+		QDomNode node = children.item(i);
+		if (node.isElement())
+		{
+			QDomElement element = node.toElement();
+			if (element.tagName() != "item")
+				continue;
+
+			itemValues.append(element.attribute("value"));
+			itemCaptions.append(element.attribute("caption"));
+
+			insertItem(tr(element.attribute("caption")));
+		}
+	}
+
+	return ConfigWidget::fromDomElement(domElement);
+}

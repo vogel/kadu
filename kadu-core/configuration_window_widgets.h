@@ -15,6 +15,7 @@
 #include <qdom.h>
 #include <qlabel.h>
 #include <qlineedit.h>
+#include <qlistbox.h>
 #include <qpushbutton.h>
 #include <qslider.h>
 #include <qspinbox.h>
@@ -350,6 +351,33 @@ public:
 	virtual void saveConfiguration() {};
 
 	virtual void show();
+};
+
+class ConfigListBox : public QListBox, public ConfigWidget
+{
+	QLabel *label;
+
+	QStringList itemValues;
+	QStringList itemCaptions;
+
+protected:
+	virtual void createWidgets();
+
+public:
+	ConfigListBox(const QString &widgetCaption, const QString &toolTip,
+		const QStringList &itemValues, const QStringList &itemCaptions,
+		ConfigGroupBox *parentConfigGroupBox, const char *name = 0);
+	ConfigListBox(ConfigGroupBox *parentConfigGroupBox, const char *name = 0);
+	virtual ~ConfigListBox();
+
+	void setItems(const QStringList &itemValues, const QStringList &itemCaptions);
+	QString currentItemValue() { return itemValues[currentItem()]; }
+
+	virtual void loadConfiguration() {};
+	virtual void saveConfiguration() {};
+
+	virtual void show();
+	virtual bool fromDomElement(QDomElement domElement);
 };
 
 #endif // CONFIGURATION_WINDOW_WIDGETS_H
