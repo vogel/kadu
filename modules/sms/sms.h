@@ -19,8 +19,10 @@
 
 #include "debug.h"
 #include "http_client.h"
+#include "main_configuration_window.h"
 #include "misc.h"
 #include "userlist.h"
+
 /**
  * @defgroup sms SMS
  * @{
@@ -131,38 +133,48 @@ class Sms : public QWidget {
 
 typedef SmsGateway* isValidFunc(const QString&, QObject*);
 
-class SmsSlots: public QObject
+// TODO: split into SmsConfigurationUiHandler and SmsGatewayManager and some more...
+class SmsConfigurationUiHandler : public ConfigurationUiHandler
 {
 	Q_OBJECT
 
-	public:
-		SmsSlots(QObject *parent=0, const char *name=0);
-		~SmsSlots();
-		void registerGateway(QString, isValidFunc* f);
-		void unregisterGateway(QString);
-		SmsGateway* getGateway(const QString& number);
-		void newSms(QString nick);
+	int menuid;
+	QMap<QString,isValidFunc*> gateways;
 
-	private:
-		int menuid;
-		QMap<QString,isValidFunc*> gateways;
+	QCheckBox *useBuiltIn;
+	QLineEdit *customApp;
+	QCheckBox *useCustomString;
+	QLineEdit *customString;
+	QListBox *gatewayListBox;
 
-	public slots:
-		void onSmsBuildInCheckToggle(bool);
-		void onCreateTabSMS();
-		void onCloseTabSMS();
-		void onApplyTabSMS();
-		void onSendSms();
-		void onUserClicked(int button, QListBoxItem* item, const QPoint& pos);
-		void onUserDblClicked(UserListElement elem);
-		void onPopupMenuCreate();
-		void onSendSmsToUser();
-		void onUpButton();
-		void onDownButton();
-		void sendSmsActionActivated(const UserGroup* users);
+private slots:
+	void configurationUpdated();
+
+public:
+	SmsConfigurationUiHandler();
+	virtual ~SmsConfigurationUiHandler();
+
+	void registerGateway(QString, isValidFunc* f);
+	void unregisterGateway(QString);
+	SmsGateway* getGateway(const QString& number);
+	void newSms(QString nick);
+
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+
+public slots:
+	void onSmsBuildInCheckToggle(bool);
+	void onSendSms();
+	void onUserClicked(int button, QListBoxItem* item, const QPoint& pos);
+	void onUserDblClicked(UserListElement elem);
+	void onPopupMenuCreate();
+	void onSendSmsToUser();
+	void onUpButton();
+	void onDownButton();
+	void sendSmsActionActivated(const UserGroup* users);
+
 };
 
-extern SmsSlots *smsslots;
+extern SmsConfigurationUiHandler *smsConfigurationUiHandler;
 
 /** @} */
 

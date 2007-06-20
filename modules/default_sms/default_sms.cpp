@@ -24,9 +24,9 @@
 extern "C" int default_sms_init()
 {
 	kdebugf();
-	smsslots->registerGateway("orange", &SmsGatewaySlots::isValidOrange);
-	smsslots->registerGateway("plus", &SmsGatewaySlots::isValidPlus);
-	smsslots->registerGateway("era" , &SmsGatewaySlots::isValidEra);
+	smsConfigurationUiHandler->registerGateway("orange", &SmsGatewaySlots::isValidOrange);
+	smsConfigurationUiHandler->registerGateway("plus", &SmsGatewaySlots::isValidPlus);
+	smsConfigurationUiHandler->registerGateway("era" , &SmsGatewaySlots::isValidEra);
 	sms_gateway_slots=new SmsGatewaySlots(NULL, "sms_gateway_slots");
 	kdebugf2();
 	return 0;
@@ -35,9 +35,9 @@ extern "C" int default_sms_init()
 extern "C" void default_sms_close()
 {
 	kdebugf();
-	smsslots->unregisterGateway("orange");
-	smsslots->unregisterGateway("plus");
-	smsslots->unregisterGateway("era");
+	smsConfigurationUiHandler->unregisterGateway("orange");
+	smsConfigurationUiHandler->unregisterGateway("plus");
+	smsConfigurationUiHandler->unregisterGateway("era");
 	delete sms_gateway_slots;
 	kdebugf2();
 }
