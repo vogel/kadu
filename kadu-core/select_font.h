@@ -30,6 +30,9 @@ public:
 	const QFont &font() const;
 	void setFont(const QFont &font);
 
+signals:
+	void fontChanged(QFont font);
+
 };
 
 #endif // SELECT_FONT_H

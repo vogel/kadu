@@ -29,6 +29,8 @@ void SelectFont::setFont(const QFont &font)
 {
 	currentFont = font;
 	fontEdit->setText(QString("%1 %2").arg(currentFont.family(), QString::number(currentFont.pointSize())));
+
+	emit fontChanged(currentFont);
 }
 
 const QFont & SelectFont::font() const
