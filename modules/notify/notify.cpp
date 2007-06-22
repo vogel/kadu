@@ -55,31 +55,7 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name),
 	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
 		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
 
-// 	ConfigDialog::addGrid("Notify", "Notify" ,"listboxy",3);
-
-// 		ConfigDialog::addGrid("Notify", "listboxy", "listbox1", 1);
-// 			ConfigDialog::addLabel("Notify", "listbox1", QT_TRANSLATE_NOOP("@default", "Available"));
-// 			ConfigDialog::addListBox("Notify", "listbox1","available");
-
-// 		ConfigDialog::addGrid("Notify", "listboxy", "listbox2", 1);
-// 			ConfigDialog::addPushButton("Notify", "listbox2", 0, "AddToNotifyList", 0, "forward");
-// 			ConfigDialog::addPushButton("Notify", "listbox2", 0, "RemoveFromNotifyList", 0, "back");
-
-// 		ConfigDialog::addGrid("Notify", "listboxy", "listbox3", 1);
-// 			ConfigDialog::addLabel("Notify", "listbox3", QT_TRANSLATE_NOOP("@default", "Tracked"));
-// 			ConfigDialog::addListBox("Notify", "listbox3", "track");
-
 	notify_slots = new NotifySlots();
-
-// 	ConfigDialog::connectSlot("Notify", 0, SIGNAL(clicked()), notify_slots, SLOT(_Right()), "forward");
-// 	ConfigDialog::connectSlot("Notify", 0, SIGNAL(clicked()), notify_slots, SLOT(_Left()), "back");
-// 	ConfigDialog::connectSlot("Notify", "available", SIGNAL(doubleClicked(QListBoxItem *)),
-// 		notify_slots, SLOT(_Right2(QListBoxItem *)));
-// 	ConfigDialog::connectSlot("Notify", "track", SIGNAL(doubleClicked(QListBoxItem *)),
-// 		notify_slots, SLOT(_Left2(QListBoxItem *)));
-
-// 	ConfigDialog::registerSlotOnCreateTab("Notify", notify_slots, SLOT(onCreateTabNotify()));
-// 	ConfigDialog::registerSlotOnApplyTab("Notify", notify_slots, SLOT(onApplyTabNotify()));
 
 	MessageNotification::registerEvents(this);
 	ConnectionErrorNotification::registerEvent(this);
