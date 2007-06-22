@@ -797,16 +797,6 @@ void ChatManager::sendMessage(UserListElement user, UserListElements selected_us
 	kdebugf2();
 }
 
-void ChatManager::chatMsgReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t time, bool& grab)
-{
-	ChatWidget *chat = findChatWidget(senders);
-	if (chat != NULL)
-	{
-		chat->newMessage(protocol->protocolID(), senders, msg, time);
-		grab = true;
-	}
-}
-
 QVariant& ChatManager::getChatWidgetProperty(const UserGroup *group, const QString &name)
 {
 	kdebugf();
@@ -847,8 +837,6 @@ void ChatManager::closeModule()
 
 	ChatMessage::unregisterParserTags();
 
-	disconnect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
-		chat_manager, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
 	chat_manager->saveOpenedWindows();
 
 	delete chat_manager;
@@ -891,8 +879,6 @@ void ChatManager::initModule()
 	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
 
 	chat_manager = new ChatManager(kadu, "chat_manager");
-	connect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
-		chat_manager, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
 
 	kdebugf2();
 }

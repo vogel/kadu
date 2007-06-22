@@ -16,7 +16,7 @@ class Echo : public QObject
 		~Echo();
 
 	public slots:
-		void chatMsgReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t time, bool& grab);
+		void messageReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t time);
 };
 
 extern Echo* echo;

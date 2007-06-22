@@ -185,8 +185,30 @@ class Protocol : public QObject
 		void messageNotDelivered(const QString &message);
 		/**
 			wiadomo¶æ zosta³a przyjêta przez serwer
+			TODO: WTF??
 		**/
 		void messageAccepted();
+
+		/**
+			\fn receivedMessageFilter(Protocol *protocol, UserListElements senders, const QString &msg, time_t time, bool &ignore);
+			Filtrujemy wiadomo¶æ. Mo¿na j± odrzuciæ albo i nie.
+			\param protocol protokó³ na którym otrzymali¶my wiadomo¶æ
+			\param senders lista nadawców
+			\param message komunikat w postaci Unicode HTML
+			\param time czas nadania wiadomo¶ci
+			\param ignore po ustawieniu na true wiadomo¶æ jest ignorowana
+		**/
+		void receivedMessageFilter(Protocol *protocol, UserListElements senders, const QString &message, time_t time, bool &ignore);
+		/**
+			\fn messageReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t time);
+			Otrzymali¶my wiadomo¶æ.
+			\param protocol protokó³ na którym otrzymali¶my wiadomo¶æ
+			\param senders lista nadawców
+			\param message komunikat w postaci Unicode HTML
+			\param time czas nadania wiadomo¶ci
+		**/
+		void messageReceived(Protocol *protocol, UserListElements senders, const QString &message, time_t time);
+
 	private:
 		Protocol(const Protocol &) {}
 		virtual Protocol &operator=(const Protocol &){return *this;}

@@ -75,7 +75,7 @@ chat_window.h \
 color_button.h \
 color_selector.h \
 configuration_window.h \
-configuration_window_widgets.cpp \
+configuration_window_widgets.h \
 config_file.h \
 custom_input.h \
 debug.h \

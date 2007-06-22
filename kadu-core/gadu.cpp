@@ -373,7 +373,7 @@ GaduProtocol::GaduProtocol(const QString &id, QObject *parent, const char *name)
 	connect(SocketNotifiers, SIGNAL(imageRequestReceived(UinType, uint32_t, uint32_t)),
 		this, SIGNAL(imageRequestReceived(UinType, uint32_t, uint32_t)));
 	connect(SocketNotifiers, SIGNAL(messageReceived(int, UserListElements, QCString &, time_t, QByteArray &)),
-		this, SLOT(messageReceived(int, UserListElements, QCString &, time_t, QByteArray &)));
+		this, SLOT(messageReceivedSlot(int, UserListElements, QCString &, time_t, QByteArray &)));
 	connect(SocketNotifiers, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)), this, SLOT(newResults(gg_pubdir50_t)));
 	connect(SocketNotifiers, SIGNAL(systemMessageReceived(QString &, QDateTime &, int, void *)),
 		this, SLOT(systemMessageReceived(QString &, QDateTime &, int, void *)));
@@ -909,7 +909,7 @@ void GaduProtocol::imageRequestReceivedSlot(UinType sender, uint32_t size, uint3
 	gadu_images_manager.sendImage(sender,size,crc32);
 }
 
-void GaduProtocol::messageReceived(int msgclass, UserListElements senders, QCString &msg, time_t time,
+void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, QCString &msg, time_t time,
 	QByteArray &formats)
 {
 /*
@@ -930,9 +930,9 @@ void GaduProtocol::messageReceived(int msgclass, UserListElements senders, QCStr
 	if (isIgnored(senders))
 		return;
 
-	bool block = false;
-	emit messageFiltering(this, senders, msg, formats, block);
-	if (block)
+	bool ignore = false;
+	emit rawGaduReceivedMessageFilter(this, senders, msg, formats, ignore);
+	if (ignore)
 		return;
 
 	const char* msg_c = msg;
@@ -940,10 +940,10 @@ void GaduProtocol::messageReceived(int msgclass, UserListElements senders, QCStr
 	QDateTime datetime;
 	datetime.setTime_t(time);
 
-	bool grab = false;
-	emit chatMsgReceived0(this, senders, mesg, time, grab);
-	if (grab)
-		return;
+// 	bool grab = false;
+// 	emit chatMsgReceived0(this, senders, mesg, time, grab);
+// 	if (grab)
+// 		return;
 
 	// wiadomosci systemowe maja senders[0] = 0
 	// FIX ME!!!
@@ -976,8 +976,11 @@ void GaduProtocol::messageReceived(int msgclass, UserListElements senders, QCStr
 	kdebugmf(KDEBUG_INFO, "Got message from %d saying \"%s\"\n",
 			senders[0].ID("Gadu").toUInt(), (const char *)mesg.local8Bit());
 
-	emit chatMsgReceived1(this, senders, mesg, time, grab);
-	emit chatMsgReceived2(this, senders, mesg, time, grab);
+	emit receivedMessageFilter(this, senders, mesg, time, ignore);
+	if (ignore)
+		return;
+
+	emit messageReceived(this, senders, mesg, time);
 }
 
 void GaduProtocol::everyMinuteActions()

@@ -109,8 +109,8 @@ class Notify : public QObject
 
 	private slots:
 
-		void newChatSlot(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool grabbed);
-		void probablyNewMessage(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool &grab);
+		void messageReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t t);
+
 		void connectionError(Protocol *protocol, const QString &message);
 		void statusChanged(UserListElement elem, QString protocolName, const UserStatus &oldStatus, bool massively, bool last);
 

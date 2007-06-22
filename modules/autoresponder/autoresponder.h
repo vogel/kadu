@@ -23,7 +23,7 @@ class AutoResponder : public QObject
 		AutoResponder(QObject *parent=0, const char *name=0);
 		~AutoResponder();
 	public slots:
-		void chatMsgReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t time, bool& grab);
+		void messageRecieved(Protocol *protocol, UserListElements senders, const QString& msg, time_t time);
 		void chatOpened(ChatWidget *chat);
 	public:
 		UserGroup replied;		/* tu beda przechowywane uiny tych ktorzy sie odezwali do nas */

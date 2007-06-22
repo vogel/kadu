@@ -311,8 +311,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 
 	split->setSizes(splitsizes);
 
-	connect(gadu, SIGNAL(chatMsgReceived2(Protocol *, UserListElements, const QString &, time_t, bool)),
-		this, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString &, time_t, bool)));
+	connect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString &, time_t)),
+		this, SLOT(messageReceived(Protocol *, UserListElements, const QString &, time_t)));
 	connect(gadu, SIGNAL(connecting()), this, SLOT(connecting()));
 	connect(gadu, SIGNAL(connected()), this, SLOT(connected()));
 	connect(gadu, SIGNAL(disconnected()), this, SLOT(disconnected()));
@@ -1098,25 +1098,26 @@ void Kadu::connecting()
 	kdebugf2();
 }
 
-void Kadu::chatMsgReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t time, bool grabbed)
+// TODO: move back to chatManager
+void Kadu::messageReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t time)
 {
 	kdebugf();
-	if (grabbed)
+
+	ChatWidget *chat = chat_manager->findChatWidget(senders);
+	if (chat)
+		chat->newMessage(protocol->protocolID(), senders, msg, time);
+	else
 	{
-		kdebugf2();
-		return;
+		if (config_file.readBoolEntry("General","AutoRaise"))
+		{
+			kadu->showNormal();
+			kadu->setFocus();
+		}
+
+		pending.addMsg(protocol->protocolID(), senders, msg, GG_CLASS_CHAT, time);
+		if (config_file.readBoolEntry("Chat", "OpenChatOnMessage"))
+			pending.openMessages();
 	}
-
-	pending.addMsg(protocol->protocolID(), senders, msg, GG_CLASS_CHAT, time);
-
-	if (config_file.readBoolEntry("General","AutoRaise"))
-	{
-		kadu->showNormal();
-		kadu->setFocus();
-	}
-
-	if (config_file.readBoolEntry("Chat", "OpenChatOnMessage"))
-		pending.openMessages();
 
 	kdebugf2();
 }
@@ -1203,8 +1204,8 @@ bool Kadu::close(bool quit)
 			else
 				setOffline(config_file.readEntry("General", "DisconnectDescription"));
 
-		disconnect(gadu, SIGNAL(chatMsgReceived2(Protocol *, UserListElements, const QString &, time_t, bool)),
-				this, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString &, time_t, bool)));
+		disconnect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString &, time_t)),
+				this, SLOT(messageReceived(Protocol *, UserListElements, const QString &, time_t)));
 		disconnect(gadu, SIGNAL(connecting()), this, SLOT(connecting()));
 		disconnect(gadu, SIGNAL(connected()), this, SLOT(connected()));
 		disconnect(gadu, SIGNAL(disconnected()), this, SLOT(disconnected()));

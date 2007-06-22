@@ -52,10 +52,8 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name),
 // 	ConfigDialog::addLabel("Notify", "names", 0);
 
 	connect(gadu, SIGNAL(connectionError(Protocol *, const QString &)), this, SLOT(connectionError(Protocol *, const QString &)));
-	connect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
-			this, SLOT(probablyNewMessage(Protocol *, UserListElements, const QString&, time_t, bool&)));
-	connect(gadu, SIGNAL(chatMsgReceived2(Protocol *, UserListElements, const QString&, time_t, bool)),
-			this, SLOT(newChatSlot(Protocol *, UserListElements, const QString&, time_t, bool)));
+	connect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString&, time_t)),
+			this, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
 	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
 		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
 
@@ -113,36 +111,9 @@ Notify::~Notify()
 	ConnectionErrorNotification::unregisterEvent(this);
 	MessageNotification::unregisterEvents(this);
 
-// 	ConfigDialog::disconnectSlot("Notify", 0, SIGNAL(clicked()), notify_slots, SLOT(_Right()), "forward");
-// 	ConfigDialog::disconnectSlot("Notify", 0, SIGNAL(clicked()), notify_slots, SLOT(_Left()), "back");
-// 	ConfigDialog::disconnectSlot("Notify", "available", SIGNAL(doubleClicked(QListBoxItem *)),
-// 		notify_slots, SLOT(_Right2(QListBoxItem *)));
-// 	ConfigDialog::disconnectSlot("Notify", "track", SIGNAL(doubleClicked(QListBoxItem *)),
-// 		notify_slots, SLOT(_Left2(QListBoxItem *)));
-
-// 	ConfigDialog::unregisterSlotOnCreateTab("Notify", notify_slots, SLOT(onCreateTabNotify()));
-// 	ConfigDialog::unregisterSlotOnApplyTab("Notify", notify_slots, SLOT(onApplyTabNotify()));
-
-// 			ConfigDialog::removeControl("Notify", "track");
-// 			ConfigDialog::removeControl("Notify", "Tracked");
-// 		ConfigDialog::removeControl("Notify", "listbox3");
-// 			ConfigDialog::removeControl("Notify", 0, "back");
-// 			ConfigDialog::removeControl("Notify", 0, "forward");
-// 		ConfigDialog::removeControl("Notify", "listbox2");
-// 			ConfigDialog::removeControl("Notify", "available");
-// 			ConfigDialog::removeControl("Notify", "Available");
-// 		ConfigDialog::removeControl("Notify", "listbox1");
-// 	ConfigDialog::removeControl("Notify", "listboxy");
-
-// 	ConfigDialog::removeControl("Notify", "Ignore status changes from available / busy to available / busy");
-// 	ConfigDialog::removeControl("Notify", "Notify about all users");
-// 	ConfigDialog::removeControl("Notify", "Ignore changes right after connection to the server");
-
 	disconnect(gadu, SIGNAL(connectionError(Protocol *, const QString &)), this, SLOT(connectionError(Protocol *, const QString &)));
-	disconnect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
-			this, SLOT(probablyNewMessage(Protocol *, UserListElements, const QString&, time_t, bool&)));
-	disconnect(gadu, SIGNAL(chatMsgReceived2(Protocol *, UserListElements, const QString&, time_t, bool)),
-			this, SLOT(newChatSlot(Protocol *, UserListElements, const QString&, time_t, bool)));
+	disconnect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString&, time_t)),
+			this, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
 	disconnect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
 		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
 
@@ -153,13 +124,6 @@ Notify::~Notify()
 		CONST_FOREACH(name, notifierNames)
 			unregisterNotifier(*name);
 	}
-
-	//pierwsza kolumna - nazwy
-// 	ConfigDialog::removeControl("Notify", 0);
-
-// 	ConfigDialog::removeControl("Notify", "names");
-// 	ConfigDialog::removeControl("Notify", "Notify configuration");
-// 	ConfigDialog::removeTab("Notify");
 
 	delete notify_slots;
 	notify_slots = NULL;
@@ -213,25 +177,19 @@ void Notify::statusChanged(UserListElement elem, QString protocolName,
 	kdebugf2();
 }
 
-void Notify::newChatSlot(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool grabbed)
+void Notify::messageReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t t)
 {
 	kdebugf();
-
-	if (!grabbed)
-		notify(new MessageNotification(MessageNotification::NewChat, senders, msg));
-
-	kdebugf2();
-}
-
-void Notify::probablyNewMessage(Protocol *protocol, UserListElements senders, const QString &msg, time_t t, bool &grab)
-{
-	kdebugf();
-
-	bool alwaysNotify = !config_file.readBoolEntry("Notify", "NewMessageOnlyIfInactive");
 
 	ChatWidget *chat = chat_manager->findChatWidget(senders);
-	if (chat && (alwaysNotify || !chat->isActiveWindow()))
-		notify(new MessageNotification(MessageNotification::NewMessage, senders, msg));
+	if (!chat) // new chat
+		notify(new MessageNotification(MessageNotification::NewChat, senders, msg));
+	else // new message in chat
+	{
+		bool alwaysNotify = !config_file.readBoolEntry("Notify", "NewMessageOnlyIfInactive");
+		if (alwaysNotify || !chat->isActiveWindow())
+			notify(new MessageNotification(MessageNotification::NewMessage, senders, msg));
+	}
 
 	kdebugf2();
 }

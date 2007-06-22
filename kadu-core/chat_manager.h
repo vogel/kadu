@@ -150,17 +150,6 @@ class ChatManager : public QObject
 	public slots:
 
 		/**
-			\fn void chatMsgReceived(const QString &protocolName, UserListElements senders, const QString& msg, time_t time, bool& grab)
-			Slot informuj±cy o odebraniu wiadomo¶ci
-			\param protocolName nazwa protoko³u
-			\param senders lista u¿ytkowników identyfikuj±cych okno
-			\param msg tre¶æ otrzymanej wiadomo¶ci
-			\param time czas otrzymania wiadomo¶ci
-			\param grab
-		**/
-		void chatMsgReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t time, bool& grab);
-
-		/**
 			\fn int openChatWidget(QString initialProtocol, UserListElements users, time_t time = 0)
 			Funkcja otwiera nowe okno Chat z wymienionymi rozmowcami.
 			\param initialProtocol protokó³ pocz±tkowy

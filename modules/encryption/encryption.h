@@ -23,8 +23,7 @@ private:
 	Action* action;
 
 private slots:
-	void receivedMessageFilter(Protocol *protocol, UserListElements senders,
-							QCString& msg, QByteArray& formats, bool& stop);
+	void decryptMessage(Protocol *protocol, UserListElements senders, QCString &msg, QByteArray &formats, bool &ignore);
 	void sendMessageFilter(const UserListElements users, QString &msg, bool &stop);
 	void setupEncrypt(const UserGroup *group);
 	void chatCreated(ChatWidget *chat);

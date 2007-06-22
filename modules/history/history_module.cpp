@@ -56,8 +56,8 @@ HistoryModule::HistoryModule() : QObject(NULL, "history")
 
 	history = new HistoryManager(0, "history_manager");
 
-	connect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
-		history, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
+	connect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString&, time_t)),
+		history, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
 	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
 		history, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
 	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *, time_t)),
@@ -93,8 +93,8 @@ HistoryModule::~HistoryModule()
 
 	KaduActions.remove("showHistoryAction");
 
-	disconnect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString&, time_t, bool&)),
-		history, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString&, time_t, bool&)));
+	disconnect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString&, time_t)),
+		history, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
 	disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
 		history, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
 	disconnect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *, time_t)),

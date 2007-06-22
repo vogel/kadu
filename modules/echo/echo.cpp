@@ -28,18 +28,18 @@ extern "C" void echo_close()
 Echo::Echo() : QObject(NULL, "echo")
 {
 //	MessageBox::msg(tr("Echo started"));
-	connect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString &, time_t, bool &)),
-			this, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString &, time_t, bool &)));
+	connect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString &, time_t)),
+			this, SLOT(messageReceived(Protocol *, UserListElements, const QString &, time_t)));
 }
 
 Echo::~Echo()
 {
-	disconnect(gadu, SIGNAL(chatMsgReceived1(Protocol *, UserListElements, const QString &, time_t, bool &)),
-			this, SLOT(chatMsgReceived(Protocol *, UserListElements, const QString &, time_t, bool &)));
+	disconnect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString &, time_t)),
+			this, SLOT(messageReceived(Protocol *, UserListElements, const QString &, time_t)));
 //	MessageBox::msg(tr("Echo stopped"));
 }
 
-void Echo::chatMsgReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t time, bool& grab)
+void Echo::messageReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t time)
 {
 	kdebugf();
 	if (msg.left(5) != "KADU ")

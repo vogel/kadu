@@ -169,14 +169,14 @@ class GaduFormater
 		};
 
 		static QString stripHTMLFromGGMessage(const QString &msg);
-		
+
 		/**
 		 * Translates QValueList with formants into flat buffer on heap
 		 *
 		 * Precondition - formats_length must contain valid length of result buffer
 		 */
 		static unsigned char *allocFormantBuffer(const QValueList<struct richtext_formant> &formants, unsigned int &formats_length);
-		
+
 	public:
 		static QString formatGGMessage(const QString &msg, unsigned int formats_length, void *formats, UinType sender);
 		static QString unformatGGMessage(const QString &msg, unsigned int &formats_length, unsigned char *&formats);
@@ -516,7 +516,7 @@ class GaduProtocol : public Protocol
 		/**
 			Slot wywo³ywany po otrzymaniu wiadomo¶ci od serwera.
 		**/
-		void messageReceived(int, UserListElements, QCString& msg, time_t, QByteArray &formats);
+		void messageReceivedSlot(int, UserListElements, QCString& msg, time_t, QByteArray &formats);
 
 		/**
 			Wykonuje zadania co minutê - pinguje sieæ i zeruje licznik
@@ -910,10 +910,10 @@ class GaduProtocol : public Protocol
 		**/
 		//void messageBoxFull(int seq, UinType uin);
 
-		
+
 		//void messageNotDelivered(int seq, UinType uin);
 
-		
+
 		//void messageAccepted(int seq, UinType uin);
 		/**
 			wiadomo¶æ zosta³a odrzucona przez serwer
@@ -1035,21 +1035,7 @@ class GaduProtocol : public Protocol
 			Mo¿na te¿ przerwaæ dalsz± obróbkê wiadomo¶ci ustawiaj±c
 			stop na true.
 		**/
-		void messageFiltering(Protocol *protocol, UserListElements senders,
-								QCString &msg, QByteArray &formats, bool &stop);
-		/**
-			Otrzymano wiadomo¶æ któr± trzeba pokazaæ (klasa chat lub msg,
-			nadawca nie jest ignorowany, itp)
-			Tre¶æ zdeszyfrowana i zdekodowana do unicode.
-			Je¶li natomiast zmienna grab zostanie ustawiona przez slot
-			chatMsgReceived0, to ¿adna czynno¶æ zwi±zana z obs³ug± tego
-			zdarzenia nie zostanie podjêta (tj. wy¶wietlanie wiadomo¶ci
-			w oknie, dodanie jej do historii, etc.), poza przekonwertowaniem
-			kodowania wiadomo¶ci z CP1250 na Unicode.
-		**/
-		void chatMsgReceived0(Protocol *protocol, UserListElements senders, const QString& msg, time_t time, bool &grab);
-		void chatMsgReceived1(Protocol *protocol, UserListElements senders, const QString& msg, time_t time, bool &grab);
-		void chatMsgReceived2(Protocol *protocol, UserListElements senders, const QString& msg, time_t time, bool grabbed);
+		void rawGaduReceivedMessageFilter(Protocol *protocol, UserListElements senders, QCString &msg, QByteArray &formats, bool &ignore);
 
 		/**
 			Wywo³ywane, gdy chcemy odczytaæ token z obrazka

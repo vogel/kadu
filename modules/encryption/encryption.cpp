@@ -64,8 +64,8 @@ EncryptionManager::EncryptionManager()
 	userlist->addPerContactNonProtocolConfigEntry("encryption_enabled", "EncryptionEnabled");
 
 	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
-	connect(gadu, SIGNAL(messageFiltering(Protocol *, UserListElements, QCString&, QByteArray&, bool&)),
-			this, SLOT(receivedMessageFilter(Protocol *, UserListElements, QCString&, QByteArray&, bool&)));
+	connect(gadu, SIGNAL(rawGaduReceivedMessageFilter(Protocol *, UserListElements, QCString&, QByteArray&, bool&)),
+			this, SLOT(decryptMessage(Protocol *, UserListElements, QCString&, QByteArray&, bool&)));
 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userBoxMenuPopup()));
 
 	action = new Action(icons_manager->loadIcon("EncryptedChat"),
@@ -96,8 +96,8 @@ EncryptionManager::~EncryptionManager()
 	KaduActions.remove("encryptionAction");
 
 	disconnect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
-	disconnect(gadu, SIGNAL(messageFiltering(Protocol *, UserListElements, QCString&, QByteArray&, bool&)),
-			this, SLOT(receivedMessageFilter(Protocol *, UserListElements, QCString&, QByteArray&, bool&)));
+	disconnect(gadu, SIGNAL(rawGaduReceivedMessageFilter(Protocol *, UserListElements, QCString&, QByteArray&, bool&)),
+			this, SLOT(decryptMessage(Protocol *, UserListElements, QCString&, QByteArray&, bool&)));
 	disconnect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userBoxMenuPopup()));
 
 	delete action;
@@ -207,8 +207,7 @@ void EncryptionManager::encryptionActionActivated(const UserGroup* users)
 	kdebugf2();
 }
 
-void EncryptionManager::receivedMessageFilter(Protocol *protocol,
-			UserListElements senders, QCString& msg, QByteArray& formats, bool& stop)
+void EncryptionManager::decryptMessage(Protocol *protocol, UserListElements senders, QCString &msg, QByteArray &formats, bool &ignore)
 {
 	kdebugf();
 	if (msg.length() < 30)
@@ -219,7 +218,7 @@ void EncryptionManager::receivedMessageFilter(Protocol *protocol,
 	if (!strncmp(msg, "-----BEGIN RSA PUBLIC KEY-----", 30))
 	{
 		(new SavePublicKey(senders[0], msg, NULL))->show();
-		stop = true;
+		ignore = true;
 		kdebugf2();
 		return;
 	}
@@ -233,6 +232,7 @@ void EncryptionManager::receivedMessageFilter(Protocol *protocol,
 		msg = decoded;
 		free(decoded);
 
+		// FIXME: remove
 		gg_msg_richtext_format format;
 		format.position = 0;
 		format.font = GG_FONT_COLOR;
@@ -253,6 +253,7 @@ void EncryptionManager::receivedMessageFilter(Protocol *protocol,
 		memcpy(dst, formats.data(), formats.size());
 		formats = new_formats;
 
+		// FIXME: to na pewno ma byæ tutaj?
 		ChatWidget* chat=chat_manager->findChatWidget(senders);
 		if (config_file.readBoolEntry("Chat", "EncryptAfterReceiveEncryptedMessage"))
 		{

@@ -1165,7 +1165,7 @@ int HistoryManager::getHistoryEntryIndexByDate(const UinsList &uins, const QDate
 	return start;
 }
 
-void HistoryManager::chatMsgReceived(Protocol * /*protocol*/, UserListElements senders, const QString& msg, time_t t, bool& /*grab*/)
+void HistoryManager::messageReceived(Protocol * /*protocol*/, UserListElements senders, const QString& msg, time_t t)
 {
 	if (!config_file.readBoolEntry("History", "Logging"))
 		return;

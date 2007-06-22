@@ -88,7 +88,7 @@ class Kadu : public QWidget
 
 	private slots:
 		void openChat();
-		void chatMsgReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t time, bool grabbed);
+		void messageReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t time);
 		void createRecentChatsMenu();
 		void openRecentChats(int index);
 
