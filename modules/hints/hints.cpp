@@ -17,9 +17,10 @@
 extern "C" int hints_init()
 {
 	kdebugf();
-	
-	hint_manager=new HintManager(NULL, "hint_manager");
-	
+
+	hint_manager = new HintManager();
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/hints.ui"), hint_manager);
+
 	kdebugf2();
 	return 0;
 }
@@ -27,10 +28,11 @@ extern "C" int hints_init()
 extern "C" void hints_close()
 {
 	kdebugf();
-	
+
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/hints.ui"), hint_manager);
 	delete hint_manager;
-	hint_manager=NULL;
-	
+	hint_manager = 0;
+
 	kdebugf2();
 }
 

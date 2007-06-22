@@ -1,0 +1,60 @@
+<configuration-ui>
+
+	<section name="Notifications">
+
+		<tab name="Hints">
+			<group-box name="Layout">
+				<combo-box caption="New hints go" config-section="Hints" config-item="NewHintUnder">
+					<item value="0" caption="Auto" />
+					<item value="1" caption="On top" />
+					<item value="2" caption="On bottom" />
+				</combo-box>
+				<check-box caption="Own hints position" config-section="Hints" config-item="UseUserPosition" id="hints/ownPosition" />
+				<spin-box caption="X" config-section="Hints" config-item="HintsPositionX" min-value="-10240" max-value="10240" step="1" id="hints/ownPositionX" />
+				<spin-box caption="Y" config-section="Hints" config-item="HintsPositionY" min-value="-10240" max-value="10240" step="1" id="hints/ownPositionY" />
+				<combo-box caption="Corner" config-section="Hints" config-item="Corner" id="hints/ownPositionCorner">
+					<item value="0" caption="Top left" />
+					<item value="1" caption="Top right" />
+					<item value="2" caption="Bottom left" />
+					<item value="2" caption="Bottom right" />
+				</combo-box>
+			</group-box>
+			<group-box name="Look">
+				<check-box caption="Set for all" config-section="Hints" config-item="SetAll" id="hints/setAll" />
+				<label caption="&lt;b&gt;Text&lt;/b&gt; preview" id="hints/setAllPreview" />
+				<spin-box caption="Timeout" config-section="Hints" config-item="SetAll_timeout" id="hints/setAll_timeout" min-value="1" max-value="3600" step="1" />
+				<color-button caption="Font color" config-section="Hints" config-item="SetAll_fgcolor" id="hints/setAll_fgcolor" />
+				<color-button caption="Background color" config-section="Hints" config-item="SetAll_bgcolor" id="hints/setAll_bgcolor" />
+				<select-font caption="Font" config-section="Hints" config-item="SetAll_font" id="hints/setAll_font" />
+			</group-box>
+			<group-box name="Mouse buttons">
+				<combo-box caption="Left button" config-section="Hints" config-item="LeftButton">
+					<item value="0" caption="Nothing" />
+					<item value="1" caption="Open chat" />
+					<item value="2" caption="Delete hint" />
+					<item value="3" caption="Delete all hints" />
+				</combo-box>
+				<combo-box caption="Middle button" config-section="Hints" config-item="MiddleButton">
+					<item value="0" caption="Nothing" />
+					<item value="1" caption="Open chat" />
+					<item value="2" caption="Delete hint" />
+					<item value="3" caption="Delete all hints" />
+				</combo-box>
+				<combo-box caption="Right button" config-section="Hints" config-item="RightButton">
+					<item value="0" caption="Nothing" />
+					<item value="1" caption="Open chat" />
+					<item value="2" caption="Delete hint" />
+					<item value="3" caption="Delete all hints" />
+				</combo-box>
+			</group-box>
+			<group-box name="New chat/message">
+				<check-box caption="Show message content in hint" config-section="Hints" config-item="ShowContentMessage" id="hints/showContent" />
+				<spin-box caption="Number of quoted characters" config-section="Hints" config-item="CiteSign" min-value="1" max-value="200" step="1" suffix="s" id="hints/showContentCount" />
+				<check-box caption="Delete pending message when user deletes hint" config-section="Hints" config-item="DeletePendingMsgWhenHintDeleted" />
+				<check-box caption="Close hint after activating window" config-section="Hints" config-item="CloseHintAfterChatActivation" />
+			</group-box>
+		</tab>
+
+	</section>
+
+</configuration-ui>

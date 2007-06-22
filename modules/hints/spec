@@ -1,2 +1,2 @@
-MODULE_SOURCES="hints.cpp hint_manager.cpp hint.cpp hint_manager_slots.cpp"
-MODULE_MOC_HEADERS="hint_manager.h hint.h hint_manager_slots.h"
+MODULE_SOURCES="hints.cpp hint_manager.cpp hint.cpp hints_configuration_widget.cpp"
+MODULE_MOC_HEADERS="hint_manager.h hint.h hints_configuration_widget.h"

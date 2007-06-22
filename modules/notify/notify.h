@@ -1,12 +1,14 @@
 #ifndef NOTIFY_H
 #define NOTIFY_H
-#include <qobject.h>
-#include <qstring.h>
+
+#include <qcheckbox.h>
 #include <qmap.h>
-#include <qvariant.h>
+#include <qobject.h>
 #include <qpair.h>
-#include <qvaluelist.h>
+#include <qstring.h>
 #include <qstringlist.h>
+#include <qvaluelist.h>
+#include <qvariant.h>
 
 #include <time.h>
 
@@ -42,6 +44,21 @@ enum CallbackCapacity {
 	CallbackNotSupported
 };
 
+class NotifierConfigurationWidget : public QWidget
+{
+	Q_OBJECT
+
+public:
+	NotifierConfigurationWidget(QWidget *parent = 0, char *name = 0) : QWidget(parent, name) {}
+
+	virtual void loadNotifyConfigurations() = 0;
+	virtual void saveNotifyConfigurations() = 0;
+
+public slots:
+	virtual void switchToEvent(const QString &event) = 0;
+
+};
+
 /**
 	@class Notifier
 	@brief Klasa abstrakcyjna opisuj±ca notifikator.
@@ -53,7 +70,8 @@ enum CallbackCapacity {
 	odebranie pliku, kontynuacje odbierania pliku i inne. Niektóry notifikatory nie bêd±
 	implementowaæ akcji, dlatego te¿ niektóre zdarzenia nie mog± byæ przez nie obs³ugiwane.
  **/
-class Notifier : public virtual QObject {
+class Notifier : public virtual QObject
+{
 	public:
 		Notifier(QObject *parent = 0, const char *name = 0) : QObject(parent, name) {};
 		virtual ~Notifier() {};
@@ -75,6 +93,28 @@ class Notifier : public virtual QObject {
 			U¿ywane przy przej¶ciu z 0.5 na 0.6 - po 0.6 zostanie usuniête.
 		 **/
 		virtual void copyConfiguration(const QString &fromEvent, const QString &toEvent) = 0;
+
+		virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0, char *name = 0) = 0;
+};
+
+class NotifyCheckBox : public QCheckBox
+{
+	Q_OBJECT
+
+	QString Notificator;
+
+private slots:
+	void toggledSlot(bool toggled);
+
+public:
+	NotifyCheckBox(const QString &notificator, const QString &caption, QWidget *parent = 0, char *name = 0);
+	virtual ~NotifyCheckBox() {}
+
+	QString notificator() { return Notificator; }
+
+signals:
+	void toggled(const QString &notificator, bool toggled);
+
 };
 
 class Notify : public ConfigurationUiHandler
@@ -83,18 +123,28 @@ class Notify : public ConfigurationUiHandler
 
 	QListBox *allUsers;
 	QListBox *notifiedUsers;
+	ConfigComboBox *notifications;
 
-	QMap<QString, Notifier *> notifiers; //nazwa powiadamiacza("Hints") -> obiekt powiadomienia
-
-	class NotifyEvent
+	struct NotifierData
 	{
-		public:
-			QString name;
-			CallbackRequirement callbackRequirement;
-			const char *description;
-			NotifyEvent() : name(), callbackRequirement(CallbackNotRequired), description(0){}
+		Notifier *notifier;
+		NotifierConfigurationWidget *configurationWidget;
+		NotifyCheckBox *configurationCheckBox;
+		QMap<QString, bool> events;
+	};
+
+	QMap<QString, NotifierData> Notifiers; //nazwa powiadamiacza("Hints") -> obiekt powiadomienia
+
+	struct NotifyEvent
+	{
+		QString name;
+		CallbackRequirement callbackRequirement;
+		const char *description;
+		NotifyEvent() : name(), callbackRequirement(CallbackNotRequired), description(0){}
 	};
 	QValueList<NotifyEvent> NotifyEvents;
+
+	QString CurrentEvent;
 
 	void import_connection_from_0_5_0(const QString &notifierName, const QString &oldConnectionName, const QString &newConnectionName);
 
@@ -109,6 +159,8 @@ private slots:
 	void moveDown();
 
 	void configurationWindowApplied();
+	void eventSwitched(int index);
+	void notifierToggled(const QString &notifier, bool toggled);
 
 public:
 	Notify(QObject *parent=0, const char *name=0);

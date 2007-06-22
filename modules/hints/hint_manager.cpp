@@ -8,22 +8,23 @@
  ***************************************************************************/
 
 #include <qapplication.h>
+#include <qspinbox.h>
 #include <qstylesheet.h>
 
 #include "chat_widget.h"
 #include "chat_manager.h"
-// #include "config_dialog.h"
 #include "config_file.h"
 #include "debug.h"
 #include "hint_manager.h"
-#include "hint_manager_slots.h"
+#include "hints_configuration_widget.h"
 #include "icons_manager.h"
 #include "kadu.h"
 #include "kadu_parser.h"
 #include "misc.h"
-#include "../notify/notify.h"
 #include "userbox.h"
 #include "userlist.h"
+
+#include "../notify/notify.h"
 
 /**
  * @ingroup hints
@@ -32,7 +33,7 @@
 #define FRAME_WIDTH 1
 
 HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, name), ToolTipClass(),
-	frame(0), hint_manager_slots(0), hint_timer(new QTimer(this, "hint_timer")),
+	frame(0), hint_timer(new QTimer(this, "hint_timer")),
 	hints(), tipFrame(0)
 {
 	kdebugf();
@@ -46,62 +47,15 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 	layout->setResizeMode(QLayout::Fixed);
 
 	connect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
-	connect(chat_manager, SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatActivated(ChatWidget *)));
-
-// 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Hints"), "HintsTab");
-
-// 	QStringList options=toStringList(tr("Nothing"),tr("Open chat"),tr("Delete hint"),tr("Delete all hints"));
-// 	QStringList values=toStringList("0","1","2","3");
-
-// 	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Mouse buttons"));
-// 		ConfigDialog::addComboBox("Hints", "Mouse buttons", QT_TRANSLATE_NOOP("@default", "Left button"), "LeftButton", options, values, "1");
-// 		ConfigDialog::addComboBox("Hints", "Mouse buttons", QT_TRANSLATE_NOOP("@default", "Middle button"), "MiddleButton", options, values, "3");
-// 		ConfigDialog::addComboBox("Hints", "Mouse buttons", QT_TRANSLATE_NOOP("@default", "Right button"), "RightButton", options, values, "2");
-
-// 	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "New chat / new message"), 0, Advanced);
-// 		ConfigDialog::addCheckBox("Hints", "New chat / new message", QT_TRANSLATE_NOOP("@default", "Show message content in hint"), "ShowContentMessage", true);
-// 		ConfigDialog::addCheckBox("Hints", "New chat / new message", QT_TRANSLATE_NOOP("@default", "Delete pending message when user deletes hint"), "DeletePendingMsgWhenHintDeleted", false);
-// 		ConfigDialog::addCheckBox("Hints", "New chat / new message", QT_TRANSLATE_NOOP("@default", "Close hint after activating window"), "CloseHintAfterChatActivation", true);
-// 		ConfigDialog::addSpinBox("Hints", "New chat / new message", QT_TRANSLATE_NOOP("@default", "Number of quoted characters"), "CiteSign", 10, 1000, 1, 50);
+	connect(chat_manager, SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated(ChatWidget *)));
 
 // 	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Status change"), 0, Advanced);
 // 		ConfigDialog::addLineEdit("Hints", "Status change", QT_TRANSLATE_NOOP("@default", "Hint syntax"), "NotifyHintSyntax", QString::null, Kadu::SyntaxText, 0, Expert);
 
-// 	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Parameters"), 0, Advanced);
-// 		ConfigDialog::addHBox("Hints", "Parameters", "top");
-// 			ConfigDialog::addCheckBox("Hints", "top", QT_TRANSLATE_NOOP("@default", "Set for all"), "SetAll", true);
-// 			ConfigDialog::addLabel("Hints", "top", QT_TRANSLATE_NOOP("@default", "<b>Text</b> preview"));
-
-// 		ConfigDialog::addHBox("Hints", "Parameters", "center");
-// 			QStringList empty;
-
-// 			ConfigDialog::addComboBox("Hints", "center", QT_TRANSLATE_NOOP("@default", "Hint type"), "LastSelected", empty, empty, "0");
-
-// 			ConfigDialog::addVBox("Hints", "center", "bottom");
-// 				ConfigDialog::addLabel("Hints", "bottom", 0, "stretcher2");
-// 				ConfigDialog::addLabel("Hints", "bottom", 0, "stretcher3");
-
 // 				ConfigDialog::addSpinBox("Hints", "bottom", QT_TRANSLATE_NOOP("@default","Hint timeout"), "LastTimeout", 0, 2048, 1, 10);
-
 // 				ConfigDialog::addPushButton("Hints", "bottom", QT_TRANSLATE_NOOP("@default", "Change font color"));
 // 				ConfigDialog::addPushButton("Hints", "bottom", QT_TRANSLATE_NOOP("@default", "Change background color"));
 // 				ConfigDialog::addPushButton("Hints", "bottom", QT_TRANSLATE_NOOP("@default", "Change font"));
-
-// 	ConfigDialog::addHBox("Hints", "Hints", "hints-hbox");
-// 		ConfigDialog::addVRadioGroup("Hints", "hints-hbox", QT_TRANSLATE_NOOP("@default", "New hints go"), "NewHintUnder",
-// 			toStringList(tr("Auto"),tr("On top"),tr("On bottom")),
-// 			toStringList("0", "1", "2"), "0", 0, 0, Expert);
-
-// 		ConfigDialog::addVGroupBox("Hints", "hints-hbox", QT_TRANSLATE_NOOP("@default","Hints position"), 0, Expert);
-// 			ConfigDialog::addCheckBox("Hints", "Hints position", QT_TRANSLATE_NOOP("@default", "Own hints position"), "UseUserPosition", false);
-
-// 			ConfigDialog::addVBox("Hints", "Hints position", "coords");
-// 				ConfigDialog::addSpinBox("Hints", "coords", "x=", "HintsPositionX", -2048, 2048, 1, 100);
-// 				ConfigDialog::addSpinBox("Hints", "coords", "y=", "HintsPositionY", -2048, 2048, 1, 100);
-
-// 		ConfigDialog::addVRadioGroup("Hints", "hints-hbox", QT_TRANSLATE_NOOP("@default", "Corner"), "Corner",
-// 			toStringList(tr("Top left"),tr("Top right"),tr("Bottom left"),tr("Bottom right")),
-// 			toStringList("0","1","2","3"), "0", 0, 0, Expert);
 
 	const QString default_hints_syntax(QT_TRANSLATE_NOOP("HintManager", "[<i>%s</i><br/>][<br/><b>Description:</b><br/>%d<br/><br/>][<i>Mobile:</i> <b>%m</b><br/>]"));
 	if (config_file.readEntry("Hints", "MouseOverUserSyntax") == default_hints_syntax || config_file.readEntry("Hints", "MouseOverUserSyntax").isEmpty())
@@ -109,7 +63,7 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 // 	ConfigDialog::addVGroupBox("Hints", "Hints", QT_TRANSLATE_NOOP("@default", "Hints over userlist"), 0, Expert);
 // 		ConfigDialog::addTextEdit("Hints", "Hints over userlist", QT_TRANSLATE_NOOP("@default", "Hints syntax:"), "MouseOverUserSyntax", QString::null, Kadu::SyntaxText, 0, Expert);
 
-	hint_manager_slots = new HintManagerSlots(NULL, "hint_manager_slots");
+// 	hint_manager_slots = new HintManagerSlots(NULL, "hint_manager_slots");
 // 	ConfigDialog::registerSlotOnCreateTab("Hints", hint_manager_slots, SLOT(onCreateTabHints()));
 // 	ConfigDialog::registerSlotOnApplyTab("Hints", hint_manager_slots, SLOT(onApplyTabHints()));
 // 	ConfigDialog::registerSlotOnCloseTab("Hints", hint_manager_slots, SLOT(onCloseTabHints()));
@@ -143,14 +97,10 @@ HintManager::~HintManager()
 
 	disconnect(this, SIGNAL(searchingForTrayPosition(QPoint &)), kadu, SIGNAL(searchingForTrayPosition(QPoint &)));
 
-// 	ConfigDialog::unregisterSlotOnCreateTab("Hints", hint_manager_slots, SLOT(onCreateTabHints()));
-// 	ConfigDialog::unregisterSlotOnApplyTab("Hints", hint_manager_slots, SLOT(onApplyTabHints()));
-// 	ConfigDialog::unregisterSlotOnCloseTab("Hints", hint_manager_slots, SLOT(onCloseTabHints()));
-
 	delete tipFrame;
 	tipFrame = 0;
 
-	disconnect(chat_manager, SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatActivated(ChatWidget *)));
+	disconnect(chat_manager, SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated(ChatWidget *)));
 	disconnect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
 	delete hint_timer;
 	hint_timer = 0;
@@ -160,46 +110,35 @@ HintManager::~HintManager()
 	delete frame;
 	frame = 0;
 
-	delete hint_manager_slots;
-	hint_manager_slots = 0;
-
-// 	ConfigDialog::removeControl("Hints", "Change font");
-// 	ConfigDialog::removeControl("Hints", "Change background color");
-// 	ConfigDialog::removeControl("Hints", "Change font color");
-// 	ConfigDialog::removeControl("Hints", "Hint timeout");
-// 	ConfigDialog::removeControl("Hints", 0, "stretcher3");
-// 	ConfigDialog::removeControl("Hints", 0, "stretcher2");
-// 	ConfigDialog::removeControl("Hints", "bottom");
-// 	ConfigDialog::removeControl("Hints", "Hint type");
-// 	ConfigDialog::removeControl("Hints", "center");
-// 	ConfigDialog::removeControl("Hints", "<b>Text</b> preview");
-// 	ConfigDialog::removeControl("Hints", "Set for all");
-// 	ConfigDialog::removeControl("Hints", "top");
-// 	ConfigDialog::removeControl("Hints", "Parameters");
-// 	ConfigDialog::removeControl("Hints", "Hints syntax:");
-// 	ConfigDialog::removeControl("Hints", "Hints over userlist");
-// 	ConfigDialog::removeControl("Hints", "Corner");
-// 	ConfigDialog::removeControl("Hints", "y=");
-// 	ConfigDialog::removeControl("Hints", "x=");
-// 	ConfigDialog::removeControl("Hints", "coords");
-// 	ConfigDialog::removeControl("Hints", "Own hints position");
-// 	ConfigDialog::removeControl("Hints", "Hints position");
-// 	ConfigDialog::removeControl("Hints", "New hints go");
-// 	ConfigDialog::removeControl("Hints", "hints-hbox");
-// 	ConfigDialog::removeControl("Hints", "Right button");
-// 	ConfigDialog::removeControl("Hints", "Middle button");
-// 	ConfigDialog::removeControl("Hints", "Left button");
-// 	ConfigDialog::removeControl("Hints", "Mouse buttons");
-// 	ConfigDialog::removeControl("Hints", "Hint syntax");
-// 	ConfigDialog::removeControl("Hints", "Status change");
-// 	ConfigDialog::removeControl("Hints", "Number of quoted characters");
-// 	ConfigDialog::removeControl("Hints", "Close hint after activating window");
-// 	ConfigDialog::removeControl("Hints", "Delete pending message when user deletes hint");
-// 	ConfigDialog::removeControl("Hints", "Show message content in hint");
-// 	ConfigDialog::removeControl("Hints", "New chat / new message");
-// 	ConfigDialog::removeTab("Hints");
+// 	delete hint_manager_slots;
+// 	hint_manager_slots = 0;
 
 	kdebugf2();
+}
+
+void HintManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
+{
+	connect(mainConfigurationWindow->widgetById("hints/showContent"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widgetById("hints/showContentCount"), SLOT(setEnabled(bool)));
+
+	QWidget *ownPosition = mainConfigurationWindow->widgetById("hints/ownPosition");
+	connect(ownPosition, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("hints/ownPositionX"), SLOT(setEnabled(bool)));
+	connect(ownPosition, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("hints/ownPositionY"), SLOT(setEnabled(bool)));
+	connect(ownPosition, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("hints/ownPositionCorner"), SLOT(setEnabled(bool)));
+
+	QWidget *setAll = mainConfigurationWindow->widgetById("hints/setAll");
+	connect(setAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("hints/setAllPreview"), SLOT(setEnabled(bool)));
+	connect(setAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("hints/setAll_timeout"), SLOT(setEnabled(bool)));
+	connect(setAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("hints/setAll_fgcolor"), SLOT(setEnabled(bool)));
+	connect(setAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("hints/setAll_bgcolor"), SLOT(setEnabled(bool)));
+	connect(setAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("hints/setAll_font"), SLOT(setEnabled(bool)));
+
+	(dynamic_cast<QSpinBox *>(mainConfigurationWindow->widgetById("hints/setAll_timeout")))->setSpecialValueText(tr("Dont hide"));
+}
+
+NotifierConfigurationWidget *HintManager::createConfigurationWidget(QWidget *parent, char *name)
+{
+	return new HintsConfigurationWidget(parent, name);
 }
 
 void HintManager::setHint(void)
@@ -376,7 +315,7 @@ void HintManager::openChat(Hint *hint)
 	kdebugf2();
 }
 
-void HintManager::chatActivated(ChatWidget *chat)
+void HintManager::chatWidgetActivated(ChatWidget *chat)
 {
 	if (!config_file.readBoolEntry("Hints", "CloseHintAfterChatActivation"))
 		return;
@@ -603,6 +542,8 @@ void HintManager::import_0_5_0_Configuration()
 	import_0_5_0_Configuration_fromTo("HintOffline", "StatusChanged/ToOffline", syntax);
 	import_0_5_0_Configuration_fromTo("HintNewChat", "NewChat");
 	import_0_5_0_Configuration_fromTo("HintNewMessage", "NewMessage");
+
+	realCopyConfiguration("Event_NewChat", "SetAll");
 }
 
 void HintManager::import_0_5_0_Configuration_fromTo(const QString &from, const QString &to, const QString &syntax, const QString &detailSyntax)

@@ -3,6 +3,12 @@
 	<section name="Notifications">
 
 		<tab name="General">
+			<group-box name="Notifications">
+				<combo-box caption="Notifications" config-section="" config-item="" id="notify/notifications" />
+			</group-box>
+		</tab>
+
+		<tab name="Options">
 			<group-box name="Status change">
 				<check-box caption="Notify about all users" config-section="Notify" config-item="NotifyAboutAll" id="notify/notifyAll" />
 				<list-box caption="User list" id="notify/userList" />
@@ -15,9 +21,6 @@
 			</group-box>
 			<group-box name="New message">
 				<check-box caption="Notify about new messages only when window is inactive" config-section="Notify" config-item="NewMessageOnlyIfInactive" />
-			</group-box>
-			<group-box name="Notifications">
-				<combo-box caption="Notifications" config-section="" config-item="" id="notify/notifications" />
 			</group-box>
 		</tab>
 
