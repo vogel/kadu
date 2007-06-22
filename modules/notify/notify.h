@@ -11,7 +11,6 @@
 #include <time.h>
 
 #include "main_configuration_window.h"
-#include "notify_slots.h"
 #include "notification.h"
 #include "protocol.h"
 #include "userlist.h"
@@ -131,7 +130,6 @@ public:
 };
 
 extern Notify *notification_manager;
-extern NotifySlots *notify_slots;
 
 /** @} */
 

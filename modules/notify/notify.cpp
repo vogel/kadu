@@ -17,7 +17,6 @@
 #include "misc.h"
 #include "new_message_notification.h"
 #include "notify.h"
-#include "notify_slots.h"
 #include "message_box.h"
 #include "status_changed_notification.h"
 #include "userbox.h"
@@ -55,8 +54,6 @@ Notify::Notify(QObject *parent, const char *name) : QObject(parent, name),
 	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
 		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
 
-	notify_slots = new NotifySlots();
-
 	MessageNotification::registerEvents(this);
 	ConnectionErrorNotification::registerEvent(this);
 	StatusChangedNotification::registerEvents(this);
@@ -85,9 +82,6 @@ Notify::~Notify()
 		CONST_FOREACH(name, notifierNames)
 			unregisterNotifier(*name);
 	}
-
-	delete notify_slots;
-	notify_slots = NULL;
 
 	kdebugf2();
 }
@@ -390,4 +384,3 @@ void Notify::notify(Notification *notification)
 }
 
 Notify *notification_manager = 0;
-NotifySlots *notify_slots = 0;
