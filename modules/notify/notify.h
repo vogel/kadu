@@ -10,12 +10,15 @@
 
 #include <time.h>
 
+#include "main_configuration_window.h"
 #include "notify_slots.h"
 #include "notification.h"
 #include "protocol.h"
 #include "userlist.h"
 
 class MessageNotification;
+
+class QListBox;
 
 /**
  * @defgroup notify Notify
@@ -75,62 +78,55 @@ class Notifier : public virtual QObject {
 		virtual void copyConfiguration(const QString &fromEvent, const QString &toEvent) = 0;
 };
 
-class Notify : public QObject
+class Notify : public ConfigurationUiHandler
 {
 	Q_OBJECT
-	private:
-		QMap<QString, Notifier *> notifiers; //nazwa powiadamiacza("Hints") -> obiekt powiadomienia
 
-		class NotifyEvent
-		{
-			public:
-				QString name;
-				QCString wname;
-				CallbackRequirement callbackRequirement;
-				const char *description;
-				NotifyEvent() : name(), wname(), callbackRequirement(CallbackNotRequired), description(0){}
-		};
-		QValueList<NotifyEvent> NotifyEvents;
-		QMap<QString, QValueList<QCString> > strs;
+	QListBox *allUsers;
+	QListBox *notifiedUsers;
 
-		/*
-		 * dodaje kolumnê checkboksów w konfiguracji,
-		 * na podstawie notifierSlots decyduje czy dodaæ checkboksa aktywnego czy nie
-		 */
-		void addConfigColumn(const QString &name, CallbackCapacity callbackCapacity);
+	QMap<QString, Notifier *> notifiers; //nazwa powiadamiacza("Hints") -> obiekt powiadomienia
 
-		/* usuwa kolumnê checkboksów z konfiguracji */
-		void removeConfigColumn(const QString &name);
+	class NotifyEvent
+	{
+		public:
+			QString name;
+			CallbackRequirement callbackRequirement;
+			const char *description;
+			NotifyEvent() : name(), callbackRequirement(CallbackNotRequired), description(0){}
+	};
+	QValueList<NotifyEvent> NotifyEvents;
 
-		void addConfigRow(const QString &name, const char *description, CallbackRequirement callbackRequirement);
-		void removeConfigRow(const QString &name);
+	void import_connection_from_0_5_0(const QString &notifierName, const QString &oldConnectionName, const QString &newConnectionName);
 
-		void import_connection_from_0_5_0(const QString &notifierName, const QString &oldConnectionName, const QString &newConnectionName);
+private slots:
 
-	private slots:
+	void messageReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t t);
 
-		void messageReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t t);
+	void connectionError(Protocol *protocol, const QString &message);
+	void statusChanged(UserListElement elem, QString protocolName, const UserStatus &oldStatus, bool massively, bool last);
 
-		void connectionError(Protocol *protocol, const QString &message);
-		void statusChanged(UserListElement elem, QString protocolName, const UserStatus &oldStatus, bool massively, bool last);
+	void moveUp();
+	void moveDown();
 
-	public:
-		Notify(QObject *parent=0, const char *name=0);
-		~Notify();
+	void configurationWindowApplied();
 
-		void notify(Notification *notification);
+public:
+	Notify(QObject *parent=0, const char *name=0);
+	virtual ~Notify();
 
-		void registerNotifier(const QString &name, Notifier *notifier);
-		/*
-		 * wyrejestrowuje obiekt
-		 */
-		void unregisterNotifier(const QString &name);
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
-		void registerEvent(const QString &name, const char *description, CallbackRequirement callbackRequirement);
-		void unregisterEvent(const QString &name);
+	void notify(Notification *notification);
 
-		QStringList notifiersList() const;
-		const QValueList<Notify::NotifyEvent> &notifyEvents();
+	void registerNotifier(const QString &name, Notifier *notifier);
+	void unregisterNotifier(const QString &name);
+
+	void registerEvent(const QString &name, const char *description, CallbackRequirement callbackRequirement);
+	void unregisterEvent(const QString &name);
+
+	QStringList notifiersList() const;
+	const QValueList<Notify::NotifyEvent> &notifyEvents();
 
 };
 

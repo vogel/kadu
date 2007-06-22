@@ -1,0 +1,26 @@
+<configuration-ui>
+
+	<section name="Notifications">
+
+		<tab name="General">
+			<group-box name="Status change">
+				<check-box caption="Notify about all users" config-section="Notify" config-item="NotifyAboutAll" id="notify/notifyAll" />
+				<list-box caption="User list" id="notify/userList" />
+				<action-button caption="Up" id="notify/up" />
+				<action-button caption="Down" id="notify/down" />
+				<list-box caption="Notify list" id="notify/notifyList" />
+				<check-box caption="Ignore status changes from available / busy to available / busy" config-section="Notify" config-item="IgnoreOnlineToOnline" />
+				<check-box caption="Ignore changes right after connection to the server" config-section="Notify" config-item="NotifyIgnoreOnConnection"
+					tool-tip="This option will supersede tooltips with users' status\n changes upon establishing connection to the server" />
+			</group-box>
+			<group-box name="New message">
+				<check-box caption="Notify about new messages only when window is inactive" config-section="Notify" config-item="NewMessageOnlyIfInactive" />
+			</group-box>
+			<group-box name="Notifications">
+				<combo-box caption="Notifications" config-section="" config-item="" id="notify/notifications" />
+			</group-box>
+		</tab>
+
+	</section>
+
+</configuration-ui>

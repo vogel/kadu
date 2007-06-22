@@ -9,8 +9,8 @@
 
 #include "chat_widget.h"
 #include "chat_manager.h"
-// #include "config_dialog.h"
 #include "config_file.h"
+#include "configuration_window_widgets.h"
 #include "connection_error_notification.h"
 #include "debug.h"
 #include "kadu.h"
@@ -25,7 +25,9 @@
 extern "C" int notify_init()
 {
 	kdebugf();
+
 	notification_manager = new Notify(NULL, "notify");
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/notify.ui"), notification_manager);
 
 	kdebugf2();
 	return 0;
@@ -34,41 +36,24 @@ extern "C" int notify_init()
 extern "C" void notify_close()
 {
 	kdebugf();
+
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/notify.ui"), notification_manager);
 	delete notification_manager;
-	notification_manager = NULL;
+	notification_manager = 0;
+
 	kdebugf2();
 }
 
 Notify::Notify(QObject *parent, const char *name) : QObject(parent, name),
-	notifiers(), strs()
+	notifiers()
 {
 	kdebugf();
-
-// 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Notify"), "NotifyTab");
-// 	ConfigDialog::addHGroupBox("Notify", "Notify", QT_TRANSLATE_NOOP("@default", "Notify configuration"));
-
-	//pierwsza kolumna - nazwy
-// 	ConfigDialog::addVBox("Notify", "Notify configuration", "names");
-// 	ConfigDialog::addLabel("Notify", "names", 0);
 
 	connect(gadu, SIGNAL(connectionError(Protocol *, const QString &)), this, SLOT(connectionError(Protocol *, const QString &)));
 	connect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString&, time_t)),
 			this, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
 	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
 		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
-
-// 	ConfigDialog::addCheckBox("Notify", "Notify",
-// 		QT_TRANSLATE_NOOP("@default", "Notify about all users"), "NotifyAboutAll", false);
-// 	ConfigDialog::addCheckBox("Notify", "Notify",
-// 			QT_TRANSLATE_NOOP("@default","Notify about new messages only when window is inactive"),
-// 			"NewMessageOnlyIfInactive", true, 0, 0, Advanced);
-// 	ConfigDialog::addCheckBox("Notify", "Notify",
-// 		QT_TRANSLATE_NOOP("@default", "Ignore changes right after connection to the server"), "NotifyIgnoreOnConnection", true,
-// 		QT_TRANSLATE_NOOP("@default","This option will supersede tooltips with users' status\n changes upon establishing connection to the server"),
-// 		0, Advanced);
-// 	ConfigDialog::addCheckBox("Notify", "Notify",
-// 		QT_TRANSLATE_NOOP("@default", "Ignore status changes from available / busy to available / busy"),
-// 		"IgnoreOnlineToOnline", true, 0, 0, Advanced);
 
 // 	ConfigDialog::addGrid("Notify", "Notify" ,"listboxy",3);
 
@@ -129,6 +114,91 @@ Notify::~Notify()
 	notify_slots = NULL;
 
 	kdebugf2();
+}
+
+void Notify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
+{
+	ConfigComboBox *notifications = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widgetById("notify/notifications"));
+
+	QStringList captions;
+	QStringList values;
+
+	CONST_FOREACH(notifyEvent, NotifyEvents)
+	{
+		captions.append((*notifyEvent).description);
+		values.append((*notifyEvent).name);
+	}
+
+	notifications->setItems(values, captions);
+
+	allUsers = dynamic_cast<QListBox *>(mainConfigurationWindow->widgetById("notify/userList"));
+	notifiedUsers = dynamic_cast<QListBox *>(mainConfigurationWindow->widgetById("notify/notifyList"));
+
+	CONST_FOREACH(user, *userlist)
+		if ((*user).usesProtocol("Gadu") && !(*user).isAnonymous())
+			if (!(*user).notify())
+				allUsers->insertItem((*user).altNick());
+			else
+				notifiedUsers->insertItem((*user).altNick());
+
+	allUsers->sort();
+	notifiedUsers->sort();
+	allUsers->setSelectionMode(QListBox::Extended);
+	notifiedUsers->setSelectionMode(QListBox::Extended);
+
+	connect(mainConfigurationWindow->widgetById("notify/up"), SIGNAL(clicked()), this, SLOT(moveUp()));
+	connect(mainConfigurationWindow->widgetById("notify/down"), SIGNAL(clicked()), this, SLOT(moveDown()));
+	connect(notifiedUsers, SIGNAL(doubleClicked(QListBoxItem *)), this, SLOT(moveUp()));
+	connect(allUsers, SIGNAL(doubleClicked(QListBoxItem *)), this, SLOT(moveDown()));
+
+	QWidget *notifyAll = mainConfigurationWindow->widgetById("notify/notifyAll");
+	connect(notifyAll, SIGNAL(toggled(bool)), allUsers, SLOT(setDisabled(bool)));
+	connect(notifyAll, SIGNAL(toggled(bool)), notifiedUsers, SLOT(setDisabled(bool)));
+	connect(notifyAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("notify/up"), SLOT(setDisabled(bool)));
+	connect(notifyAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("notify/down"), SLOT(setDisabled(bool)));
+
+	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
+}
+
+void Notify::configurationWindowApplied()
+{
+	int count = notifiedUsers->count();
+	for (int i = 0; i < count; ++i)
+		userlist->byAltNick(notifiedUsers->text(i)).setNotify(true);
+
+	count = allUsers->count();
+	for (int i = 0; i < count; ++i)
+		userlist->byAltNick(allUsers->text(i)).setNotify(false);
+
+	userlist->writeToConfig();
+}
+
+void Notify::moveUp()
+{
+	int count = notifiedUsers->count();
+
+	for (int i = count - 1; i >= 0; i--)
+		if (notifiedUsers->isSelected(i))
+		{
+			allUsers->insertItem(notifiedUsers->text(i));
+			notifiedUsers->removeItem(i);
+		}
+
+	notifiedUsers->sort();
+}
+
+void Notify::moveDown()
+{
+	int count = allUsers->count();
+
+	for (int i = count - 1; i >= 0; i--)
+		if (allUsers->isSelected(i))
+		{
+			notifiedUsers->insertItem(allUsers->text(i));
+			allUsers->removeItem(i);
+		}
+
+	allUsers->sort();
 }
 
 void Notify::statusChanged(UserListElement elem, QString protocolName,
@@ -204,127 +274,31 @@ void Notify::connectionError(Protocol *protocol, const QString &message)
 	kdebugf2();
 }
 
-void Notify::addConfigColumn(const QString &name, CallbackCapacity callbackCapacity)
+void Notify::registerEvent(const QString &name, const char *description, CallbackRequirement callbackRequirement)
 {
 	kdebugf();
-	QValueList<QCString> s;
-	s.append(name.utf8()); // we've got to remember all those strings, because ConfigDialog won't copy them
-	s.append(name.utf8() + "_vbox");
-// 	ConfigDialog::addVBox("Notify", "Notify configuration", s[1]);
-// 	ConfigDialog::addLabel("Notify", s[1], s[0]);
 
-	CONST_FOREACH(it, NotifyEvents)
-	{
-		QCString entry = ((*it).name + '_' + name).utf8();
-		QCString wname = (name + (*it).name).utf8();
-// 		ConfigDialog::addCheckBox("Notify", s[1], " ", entry, false, 0, wname);
-		s.append(entry);
-		s.append(wname);
-	}
-	strs[name] = s;
-	kdebugf2();
-}
-
-void Notify::removeConfigColumn(const QString &name)
-{
-	kdebugf();
-	const QValueList<QCString> &s = strs[name];
-
-	QValueListConstIterator<QCString> strit = s.constBegin();
-	++strit; ++strit; // omit name and name_vbox
-	CONST_FOREACH(it, NotifyEvents)
-	{
-		++strit; // omit entry
-// 		ConfigDialog::removeControl("Notify", " ", *strit); // use wname
-		++strit;
-	}
-
-// 	ConfigDialog::removeControl("Notify", s[0]); // name
-// 	ConfigDialog::removeControl("Notify", s[1]); // name_vbox
-	strs.remove(name);
-	kdebugf2();
-}
-
-void Notify::addConfigRow(const QString &name, const char *description, CallbackRequirement callbackRequirement)
-{
-	kdebugf();
 	NotifyEvent event;
 	event.name = name;
 	event.description = description;
 	event.callbackRequirement = callbackRequirement;
-	event.wname = ("label_" + name).utf8();
 
 	NotifyEvents.append(event);
 
-// 	ConfigDialog::addLabel("Notify", "names", event.description, event.wname);
-
-	CONST_FOREACH(it, notifiers)
-	{
-		QValueList<QCString> &s = strs[it.key()];
-		QCString parent = s[1]; // name_vbox
-		QCString entry = (name + '_' + it.key()).utf8();
-		QCString wname = (it.key() + name).utf8();
-// 		ConfigDialog::addCheckBox("Notify", parent, " ", entry, false, 0, wname);
-		s.append(entry);
-		s.append(wname);
-	}
-	kdebugf2();
-}
-
-void Notify::removeConfigRow(const QString &name)
-{
-	kdebugf();
-	NotifyEvent event;
-	FOREACH(it, NotifyEvents)// look for matching event
-		if ((*it).name == name)
-		{
-			event = *it;
-			NotifyEvents.remove(it);
-			break;
-		}
-	if (event.name.isEmpty())
-	{
-		kdebugmf(KDEBUG_FUNCTION_END | KDEBUG_ERROR, "event '%s' not found\n", name.local8Bit().data());
-		return;
-	}
-
-// 	ConfigDialog::removeControl("Notify", event.description, event.wname);
-
-	if (!notifiers.isEmpty())
-	{
-		// find index of correct wname, because we are going to use it
-		QString notifierName = notifiers.constBegin().key();
-		QValueList<QCString> &s = strs[notifierName];
-		int wname_idx = s.findIndex((notifierName + name).utf8());
-		if (wname_idx < 1) // 0 not allowed, look below (wname_idx - 1)
-		{
-			kdebugmf(KDEBUG_FUNCTION_END | KDEBUG_ERROR, "event name (%s) not found!? (%d)\n", name.local8Bit().data(), wname_idx);
-			return;
-		}
-
-		CONST_FOREACH(it, notifiers)
-		{
-			QValueList<QCString> &s = strs[it.key()]; // strings for that notifier
-// 			ConfigDialog::removeControl("Notify", " ", s[wname_idx]);
-			QValueList<QCString>::iterator sit = s.at(wname_idx - 1), sit2 = sit; //iterators of entry, wname+1
-			++sit2; ++sit2;
-			s.erase(sit, sit2);
-		}
-	}
-	kdebugf2();
-}
-
-void Notify::registerEvent(const QString &name, const char *description, CallbackRequirement callbackRequirement)
-{
-	kdebugf();
-	addConfigRow(name, description, callbackRequirement);
 	kdebugf2();
 }
 
 void Notify::unregisterEvent(const QString &name)
 {
 	kdebugf();
-	removeConfigRow(name);
+
+	FOREACH(it, NotifyEvents)// look for matching event
+		if ((*it).name == name)
+		{
+			NotifyEvents.remove(it);
+			break;
+		}
+
 	kdebugf2();
 }
 
@@ -372,7 +346,6 @@ void Notify::registerNotifier(const QString &name, Notifier *notifier)
 	import_connection_from_0_5_0(name, "toOffline", "StatusChanged/ToOffline");
 
 	notifiers[name] = notifier;
-	addConfigColumn(name, notifier->callbackCapacity());
 
 	kdebugf2();
 }
@@ -386,7 +359,6 @@ void Notify::unregisterNotifier(const QString &name)
 		return;
 	}
 
-	removeConfigColumn(name);
 	notifiers.remove(name);
 	kdebugf2();
 }
