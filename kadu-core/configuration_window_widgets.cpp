@@ -57,9 +57,6 @@ bool ConfigWidgetValue::fromDomElement(QDomElement domElement)
 	section = domElement.attribute("config-section");
 	item = domElement.attribute("config-item");
 
-	if (section.isEmpty() || item.isEmpty())
-		return false;
-
 	return ConfigWidget::fromDomElement(domElement);
 }
 
@@ -330,6 +327,9 @@ void ConfigComboBox::createWidgets()
 
 void ConfigComboBox::loadConfiguration()
 {
+	if (section == "")
+		return;
+
 	QString currentValue = config_file.readEntry(section, item);
 	setCurrentItem(itemValues.findIndex(currentValue));
 
@@ -338,6 +338,9 @@ void ConfigComboBox::loadConfiguration()
 
 void ConfigComboBox::saveConfiguration()
 {
+	if (section == "")
+		return;
+
 	config_file.writeEntry(section, item, itemValues[currentItem()]);
 }
 
