@@ -577,6 +577,7 @@ void ConfigurationWindow::updateAndCloseConfig()
 
 void ConfigurationWindow::updateConfig()
 {
+	emit configurationWindowApplied();
 	saveConfiguration(this);
 	emit configurationUpdated();
 }

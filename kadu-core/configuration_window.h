@@ -97,6 +97,7 @@ public:
 	void removedConfigSection(const QString &sectionName);
 
 signals:
+	void configurationWindowApplied();
 	void configurationUpdated();
 
 };
