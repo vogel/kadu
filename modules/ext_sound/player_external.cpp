@@ -62,11 +62,6 @@ ExternalPlayerSlots::~ExternalPlayerSlots()
 {
 	kdebugf();
 
-// 	ConfigDialog::disconnectSlot("Sounds", 0, SIGNAL(clicked()), this, SLOT(choosePlayerFile()), "soundplayer_fileopen");
-// 	ConfigDialog::removeControl("Sounds", 0, "soundplayer_fileopen");
-// 	ConfigDialog::removeControl("Sounds", "Path:", "soundplayer_path");
-// 	ConfigDialog::removeControl("Sounds", "Sound player");
-
 	disconnect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
 			this, SLOT(playSound(const QString &, bool, double)));
 

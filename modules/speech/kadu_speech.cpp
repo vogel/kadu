@@ -207,45 +207,6 @@ SpeechSlots::~SpeechSlots()
 	kdebugf();
 	notification_manager->unregisterNotifier("Speech");
 
-// 	ConfigDialog::unregisterSlotOnCreateTab("Speech", this, SLOT(onCreateTabSpeech()));
-
-// 	ConfigDialog::disconnectSlot("Speech", 0, SIGNAL(clicked()), this, SLOT(chooseSpeechProgram()), "speech_fileopen");
-// 	ConfigDialog::disconnectSlot("Speech", "Test", SIGNAL(clicked()), this, SLOT(testSpeech()), "testspeech");
-// 	ConfigDialog::disconnectSlot("Speech", "Use aRts", SIGNAL(clicked()), this, SLOT(useArts()), "usearts");
-// 	ConfigDialog::disconnectSlot("Speech", "Use Esd", SIGNAL(clicked()), this, SLOT(useEsd()), "useesd");
-// 	ConfigDialog::disconnectSlot("Speech", "Use Dsp", SIGNAL(clicked()), this, SLOT(useDsp()), "usedsp");
-
-// 	ConfigDialog::removeControl("Speech", "Test", "testspeech");
-// 	ConfigDialog::removeControl("Speech", "Connection error:");
-// 	ConfigDialog::removeControl("Speech", "Message too long (male):");
-// 	ConfigDialog::removeControl("Speech", "Message too long (female):");
-// 	ConfigDialog::removeControl("Speech", "Notify format (female):");
-// 	ConfigDialog::removeControl("Speech", "Notify format (male):");
-// 	ConfigDialog::removeControl("Speech", "Message format (female):");
-// 	ConfigDialog::removeControl("Speech", "Message format (male):");
-// 	ConfigDialog::removeControl("Speech", "Chat format (female):");
-// 	ConfigDialog::removeControl("Speech", "Chat format (male):");
-// 	ConfigDialog::removeControl("Speech", 0, "speech_fileopen");
-// 	ConfigDialog::removeControl("Speech", "Speech program:");
-// 	ConfigDialog::removeControl("Speech", "Program");
-// 	ConfigDialog::removeControl("Speech", "Dsp device:");
-// 	ConfigDialog::removeControl("Speech", "Use Dsp", "usedsp");
-// 	ConfigDialog::removeControl("Speech", "Use Esd", "useesd");
-// 	ConfigDialog::removeControl("Speech", "Use aRts", "usearts");
-// 	ConfigDialog::removeControl("Speech", "Klatt synthesizer (requires dsp)");
-// 	ConfigDialog::removeControl("Speech", "Melody");
-// 	ConfigDialog::removeControl("Speech", "Maximum number of spoken letters");
-// 	ConfigDialog::removeControl("Speech", "slider3");
-// 	ConfigDialog::removeControl("Speech", "Base frequency");
-// 	ConfigDialog::removeControl("Speech", "basefreq");
-// 	ConfigDialog::removeControl("Speech", "slider2");
-// 	ConfigDialog::removeControl("Speech", "Tempo");
-// 	ConfigDialog::removeControl("Speech", "tempo");
-// 	ConfigDialog::removeControl("Speech", "slider1");
-// 	ConfigDialog::removeControl("Speech", "Frequency");
-// 	ConfigDialog::removeControl("Speech", "freq");
-// 	ConfigDialog::removeControl("Speech", "Say only when chat window is not active");
-// 	ConfigDialog::removeTab("Speech");
 	kdebugf2();
 }
 

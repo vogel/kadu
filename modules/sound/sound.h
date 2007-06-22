@@ -165,6 +165,7 @@ class SoundManager : public Notifier, public ConfigurationUiHandler
 		~SoundManager();
 
 		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+		virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0, char *name = 0) { return 0; };
 
 		virtual void notify(Notification *notification);
 

@@ -100,9 +100,6 @@ extern "C" int x11_docking_init()
 
 extern "C" void x11_docking_close()
 {
-#ifdef ENABLE_HIDING
-// 	ConfigDialog::removeControl("General", "Remove from taskbar (experimental)");
-#endif
 	delete tray_restarter;
 	delete x11_tray_icon;
 	x11_tray_icon = NULL;

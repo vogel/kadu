@@ -42,6 +42,8 @@ class SpeechSlots : public Notifier
 		void useEsd();
 		void useDsp();
 		void testSpeech();
+
+	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0, char *name = 0) { return 0; };
 };
 
 extern SpeechSlots *speech_slots;

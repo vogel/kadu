@@ -1,6 +1,6 @@
 <configuration-ui>
-	<section name="History">
-		<tab name="General">
+	<section name="Chat">
+		<tab name="History">
 			<group-box name="Look">
 				<check-box caption="Show emoticons in history" config-section="History" config-item="ShowEmotHist" />
 			</group-box>

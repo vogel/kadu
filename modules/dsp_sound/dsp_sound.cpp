@@ -43,8 +43,6 @@ extern "C" void dsp_sound_close()
 {
 	kdebugf();
 
-// 	ConfigDialog::removeControl("Sounds", "Path:", "device_path");
-// 	ConfigDialog::removeControl("Sounds", "Output device");
 	delete oss_player_slots;
 	oss_player_slots=NULL;
 	kdebugf2();

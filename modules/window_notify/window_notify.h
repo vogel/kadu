@@ -24,6 +24,8 @@ class WindowNotify : public Notifier
 		virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
 
 		void copyConfiguration(const QString &fromEvent, const QString &toEvent) {}
+
+		virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0, char *name = 0) { return 0; };
 };
 
 extern WindowNotify *window_notify;
