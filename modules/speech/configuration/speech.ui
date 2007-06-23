@@ -1,0 +1,37 @@
+<configuration-ui>
+
+	<section name="Notifications">
+
+		<tab name="Speech">
+			<group-box name="General">
+				<spin-box caption="Maximum number of spoken letters" config-section="Speech" config-item="MaxLength" min-value="10" max-value="2001" step="1" />
+				<line-edit caption="Message too long (male)" config-section="Speech" config-item="MsgTooLongMale" />
+				<line-edit caption="Message too long (female)" config-section="Speech" config-item="MsgTooLongFemale" />
+			</group-box>
+
+			<group-box name="Voice">
+				<slider caption="Frequency" config-section="Speech" config-item="Frequency" min-value="5000" max-value="22050" page-step="8000" id="speech/frequency" />
+				<slider caption="Base frequency" config-section="Speech" config-item="BaseFrequency" min-value="60" max-value="440" page-step="10" id="speech/baseFrequency"  />
+				<slider caption="Tempo" config-section="Speech" config-item="Tempo" min-value="0" max-value="10" page-step="1" id="speech/tempo" />
+				<check-box caption="Melody" config-section="Speech" config-item="Melody" id="spech/melody" />
+			</group-box>
+
+			<group-box name="Sound">
+				<combo-box caption="Sound system" config-section="Speech" config-item="SoundSystem" id="speech/soundSystem">
+					<item value="aRts" caption="aRts" />
+					<item value="Esd" caption="Esd" />
+					<item value="Dsp" caption="Dsp" />
+				</combo-box>
+				<line-edit caption="Dsp device" config-section="Speech" config-item="DspDev" id="speech/dspDevice" />
+				<check-box caption="Klatt synthesizer (requires dsp)" config-section="Speech" config-item="KlattSynt" id="speech/klattSynt" />
+			</group-box>
+
+			<group-box name="Speech program">
+				<select-file caption="Speech program" config-section="Speech" config-item="SpeechProgram" type="all" id="speech/program" />
+				<action-button caption="Test" id="speech/test" />
+			</group-box>
+		</tab>
+
+	</section>
+
+</configuration-ui>

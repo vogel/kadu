@@ -15,14 +15,15 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "../notify/notify.h"
+
 #include "chat_widget.h"
 #include "chat_manager.h"
-// #include "config_dialog.h"
+#include "configuration_window_widgets.h"
 #include "debug.h"
 #include "kadu_speech.h"
 #include "kadu.h"
 #include "kadu_parser.h"
-#include "../notify/notify.h"
 
 /**
  * @ingroup speech
@@ -31,7 +32,10 @@
 extern "C" int speech_init()
 {
 	kdebugf();
-	speech_slots=new SpeechSlots(NULL, "speech_slots");
+
+	speech = new Speech();
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/speech.ui"), speech);
+
 	kdebugf2();
 	return 0;
 }
@@ -39,8 +43,11 @@ extern "C" int speech_init()
 extern "C" void speech_close()
 {
 	kdebugf();
-	delete speech_slots;
-	speech_slots=NULL;
+
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/speech.ui"), speech);
+	delete speech;
+	speech = 0;
+
 	kdebugf2();
 }
 
@@ -49,151 +56,72 @@ bool isFemale(QString s)
 	return s.endsWith("a", false);
 }
 
-void SpeechSlots::useArts()
+SpeechConfigurationWidget::SpeechConfigurationWidget(QWidget *parent, char *name)
+	: NotifierConfigurationWidget(parent, name), currentNotifyEvent("")
 {
-	kdebugf();
-// 	ConfigDialog::getCheckBox("Speech", "Use aRts", "usearts")->setChecked(true);
-// 	ConfigDialog::getCheckBox("Speech", "Use Esd", "useesd")->setChecked(false);
-// 	ConfigDialog::getCheckBox("Speech", "Use Dsp", "usedsp")->setChecked(false);
+	maleLineEdit = new QLineEdit(this);
+	femaleLineEdit = new QLineEdit(this);
 
-// 	ConfigDialog::getCheckBox("Speech", "Klatt synthesizer (requires dsp)")->setChecked(false);
-// 	ConfigDialog::getCheckBox("Speech", "Klatt synthesizer (requires dsp)")->setEnabled(false);
-// 	ConfigDialog::getLineEdit("Speech", "Dsp device:")->setEnabled(false);
-	kdebugf2();
+	QGridLayout *gridLayout = new QGridLayout(this, 0, 0, 0, 5);
+	gridLayout->addWidget(new QLabel(tr("Male format") + ":", this), 0, 0, Qt::AlignRight);
+	gridLayout->addWidget(maleLineEdit, 0, 1);
+	gridLayout->addWidget(new QLabel(tr("Female format") + ":", this), 1, 0, Qt::AlignRight);
+	gridLayout->addWidget(femaleLineEdit, 1, 1);
 }
 
-void SpeechSlots::useEsd()
+SpeechConfigurationWidget::~SpeechConfigurationWidget()
 {
-	kdebugf();
-// 	ConfigDialog::getCheckBox("Speech", "Use aRts", "usearts")->setChecked(false);
-// 	ConfigDialog::getCheckBox("Speech", "Use Esd", "useesd")->setChecked(true);
-// 	ConfigDialog::getCheckBox("Speech", "Use Dsp", "usedsp")->setChecked(false);
-
-// 	ConfigDialog::getCheckBox("Speech", "Klatt synthesizer (requires dsp)")->setChecked(false);
-// 	ConfigDialog::getCheckBox("Speech", "Klatt synthesizer (requires dsp)")->setEnabled(false);
-// 	ConfigDialog::getLineEdit("Speech", "Dsp device:")->setEnabled(false);
-	kdebugf2();
 }
 
-void SpeechSlots::useDsp()
+void SpeechConfigurationWidget::saveNotifyConfigurations()
 {
-	kdebugf();
-// 	ConfigDialog::getCheckBox("Speech", "Use aRts", "usearts")->setChecked(false);
-// 	ConfigDialog::getCheckBox("Speech", "Use Esd", "useesd")->setChecked(false);
-// 	ConfigDialog::getCheckBox("Speech", "Use Dsp", "usedsp")->setChecked(true);
+	if (currentNotifyEvent != "")
+	{
+		maleFormat[currentNotifyEvent] = maleLineEdit->text();
+		femaleFormat[currentNotifyEvent] = femaleLineEdit->text();
+	}
 
-// 	ConfigDialog::getCheckBox("Speech", "Klatt synthesizer (requires dsp)")->setEnabled(true);
-// 	ConfigDialog::getLineEdit("Speech", "Dsp device:")->setEnabled(true);
-	kdebugf2();
+	CONST_FOREACH(text, maleFormat)
+	{
+		const QString &eventName = text.key();
+		config_file.writeEntry("Speech", eventName + "_Syntax/Male", *text);
+	}
+
+	CONST_FOREACH(text, femaleFormat)
+	{
+		const QString &eventName = text.key();
+		config_file.writeEntry("Speech", eventName + "_Syntax/Female", *text);
+	}
 }
 
-SpeechSlots::SpeechSlots(QObject *parent, const char *name) : Notifier(parent, name), lastSpeech()
+void SpeechConfigurationWidget::switchToEvent(const QString &event)
+{
+	if (currentNotifyEvent != "")
+	{
+		maleFormat[currentNotifyEvent] = maleLineEdit->text();
+		femaleFormat[currentNotifyEvent] = femaleLineEdit->text();
+	}
+	currentNotifyEvent = event;
+
+	if (maleFormat.contains(event))
+		maleLineEdit->setText(maleFormat[event]);
+	else
+		maleLineEdit->setText(config_file.readEntry("Speech", event + "_Syntax/Male"));
+
+	if (femaleFormat.contains(event))
+		femaleLineEdit->setText(femaleFormat[event]);
+	else
+		femaleLineEdit->setText(config_file.readEntry("Speech", event + "_Syntax/Female"));
+}
+
+Speech::Speech()
+	: Notifier(), lastSpeech()
 {
 	kdebugf();
 	srand(time(NULL));
 	lastSpeech.start();
 
 	import_0_5_0_Configuration();
-
-// 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default","Speech"), "SpeechTab");
-
-// 	ConfigDialog::addCheckBox("Speech", "Speech",
-// 			QT_TRANSLATE_NOOP("@default","Say only when chat window is not active"),
-// 			"SayWhenWinNotActive", true);
-
-// 	ConfigDialog::addGrid("Speech", "Speech", "freq", 2);
-// 	ConfigDialog::addLabel("Speech", "freq", QT_TRANSLATE_NOOP("@default","Frequency"));
-// 	ConfigDialog::addSlider("Speech", "freq", "slider1", "Frequency", 5000, 22050, 500, 8000);
-
-// 	ConfigDialog::addGrid("Speech", "Speech", "tempo", 2);
-// 	ConfigDialog::addLabel("Speech", "tempo", QT_TRANSLATE_NOOP("@default","Tempo"));
-// 	ConfigDialog::addSlider("Speech", "tempo", "slider2", "Tempo", 0, 10, 1, 5);
-
-// 	ConfigDialog::addGrid("Speech", "Speech", "basefreq", 2);
-// 	ConfigDialog::addLabel("Speech", "basefreq", QT_TRANSLATE_NOOP("@default","Base frequency"));
-// 	ConfigDialog::addSlider("Speech", "basefreq", "slider3", "BaseFrequency", 60, 440, 10, 133);
-// 	ConfigDialog::addSpinBox("Speech", "Speech", QT_TRANSLATE_NOOP("@default",
-// 		"Maximum number of spoken letters"), "MaxLength", 10, 2001, 1, 200);
-
-// 	ConfigDialog::addCheckBox("Speech", "Speech", QT_TRANSLATE_NOOP("@default","Melody"), "Melody", true);
-// 	ConfigDialog::addCheckBox("Speech", "Speech",
-// 			QT_TRANSLATE_NOOP("@default","Klatt synthesizer (requires dsp)"), "KlattSynt", false);
-// 	ConfigDialog::addCheckBox("Speech", "Speech",
-// 			QT_TRANSLATE_NOOP("@default","Use aRts"), "UseArts", false, 0, "usearts");
-// 	ConfigDialog::addCheckBox("Speech", "Speech",
-// 			QT_TRANSLATE_NOOP("@default","Use Esd"), "UseEsd", false, 0, "useesd");
-// 	ConfigDialog::addCheckBox("Speech", "Speech",
-// 			QT_TRANSLATE_NOOP("@default","Use Dsp"), "UseDsp", true, 0, "usedsp");
-// 	ConfigDialog::addLineEdit("Speech", "Speech",
-// 			QT_TRANSLATE_NOOP("@default","Dsp device:"), "DspDev", "/dev/dsp", 0, 0, Advanced);
-
-// 	ConfigDialog::addHGroupBox("Speech", "Speech", QT_TRANSLATE_NOOP("@default","Program"));
-// 	ConfigDialog::addLineEdit("Speech", "Program",
-// 			QT_TRANSLATE_NOOP("@default","Speech program:"), "SpeechProgram","powiedz");
-// 	ConfigDialog::addPushButton("Speech", "Program", 0, "OpenFile", 0, "speech_fileopen");
-// 	ConfigDialog::connectSlot("Speech", 0, SIGNAL(clicked()), this, SLOT(chooseSpeechProgram()), "speech_fileopen");
-
-// 	ConfigDialog::addLineEdit("Speech", "Speech",
-// 			QT_TRANSLATE_NOOP("@default","Chat format (male):"),
-// 			"NewChat_Syntax/Male", SpeechSlots::tr("man %a wrote %1"), Kadu::SyntaxText, 0, Advanced);
-// 	ConfigDialog::addLineEdit("Speech", "Speech",
-// 			QT_TRANSLATE_NOOP("@default","Chat format (female):"),
-// 			"NewChat_Syntax/Female", SpeechSlots::tr("woman %a wrote %1"), Kadu::SyntaxText, 0, Advanced);
-
-// 	ConfigDialog::addLineEdit("Speech", "Speech",
-// 			QT_TRANSLATE_NOOP("@default","Message format (male):"),
-// 			"NewMessage_Syntax/Male", SpeechSlots::tr("man %a wrote %1"), Kadu::SyntaxText, 0, Advanced);
-// 	ConfigDialog::addLineEdit("Speech", "Speech",
-// 			QT_TRANSLATE_NOOP("@default","Message format (female):"),
-// 			"NewMessage_Syntax/Female", SpeechSlots::tr("woman %a wrote %1"), Kadu::SyntaxText, 0, Advanced);
-
-// 	ConfigDialog::addLineEdit("Speech", "Speech",
-// 			QT_TRANSLATE_NOOP("@default","Status changed to online (male):"),
-// 			"StatusChanged/ToOnline_Syntax/Male", SpeechSlots::tr("man %a changed status to %s %d"), Kadu::SyntaxText, 0, Advanced);
-// 	ConfigDialog::addLineEdit("Speech", "Speech",
-// 			QT_TRANSLATE_NOOP("@default","Status changed to online (female):"),
-// 			"StatusChanged/ToOnline_Syntax/Female", SpeechSlots::tr("woman %a changed status to %s %d"), Kadu::SyntaxText, 0, Advanced);
-
-// 	ConfigDialog::addLineEdit("Speech", "Speech",
-// 			QT_TRANSLATE_NOOP("@default","Status changed to busy (male):"),
-// 			"StatusChanged/ToBusy_Syntax/Male", SpeechSlots::tr("man %a changed status to %s %d"), Kadu::SyntaxText, 0, Advanced);
-// 	ConfigDialog::addLineEdit("Speech", "Speech",
-// 			QT_TRANSLATE_NOOP("@default","Status changed to busy (female):"),
-// 			"StatusChanged/ToBusy_Syntax/Female", SpeechSlots::tr("woman %a changed status to %s %d"), Kadu::SyntaxText, 0, Advanced);
-
-// 	ConfigDialog::addLineEdit("Speech", "Speech",
-// 			QT_TRANSLATE_NOOP("@default","Status changed to invisible (male):"),
-// 			"StatusChanged/ToInvisible_Syntax/Male", SpeechSlots::tr("man %a changed status to %s %d"), Kadu::SyntaxText, 0, Advanced);
-// 	ConfigDialog::addLineEdit("Speech", "Speech",
-// 			QT_TRANSLATE_NOOP("@default","Status changed to invisible (female):"),
-// 			"StatusChanged/ToInvisible_Syntax/Female", SpeechSlots::tr("woman %a changed status to %s %d"), Kadu::SyntaxText, 0, Advanced);
-
-// 	ConfigDialog::addLineEdit("Speech", "Speech",
-// 			QT_TRANSLATE_NOOP("@default","Status changed to offline (male):"),
-// 			"StatusChanged/ToOffline_Syntax/Male", SpeechSlots::tr("man %a changed status to %s %d"), Kadu::SyntaxText, 0, Advanced);
-// 	ConfigDialog::addLineEdit("Speech", "Speech",
-// 			QT_TRANSLATE_NOOP("@default","Status changed to offline (female):"),
-// 			"StatusChanged/ToOffline_Syntax/Female", SpeechSlots::tr("woman %a changed status to %s %d"), Kadu::SyntaxText, 0, Advanced);
-
-// 	ConfigDialog::addLineEdit("Speech", "Speech",
-// 			QT_TRANSLATE_NOOP("@default","Connection error:"),
-// 			"ConnectionError_Syntax", SpeechSlots::tr("Connection error - #{error}"), Kadu::SyntaxText, 0, Advanced);
-
-// 	ConfigDialog::addLineEdit("Speech", "Speech",
-// 			QT_TRANSLATE_NOOP("@default","Message too long (male):"),
-// 			"MsgTooLongMale", SpeechSlots::tr("%a wrote long message"), Kadu::SyntaxText, 0, Advanced);
-// 	ConfigDialog::addLineEdit("Speech", "Speech",
-// 			QT_TRANSLATE_NOOP("@default","Message too long (female):"),
-// 			"MsgTooLongFemale", SpeechSlots::tr("%a wrote long message"), Kadu::SyntaxText, 0, Advanced);
-
-// 	ConfigDialog::addPushButton("Speech", "Speech",	QT_TRANSLATE_NOOP("@default","Test"), QString::null, 0, "testspeech");
-
-// 	ConfigDialog::connectSlot("Speech", "Test", SIGNAL(clicked()), this, SLOT(testSpeech()), "testspeech");
-// 	ConfigDialog::connectSlot("Speech", "Use aRts", SIGNAL(clicked()), this, SLOT(useArts()), "usearts");
-// 	ConfigDialog::connectSlot("Speech", "Use Esd", SIGNAL(clicked()), this, SLOT(useEsd()), "useesd");
-// 	ConfigDialog::connectSlot("Speech", "Use Dsp", SIGNAL(clicked()), this, SLOT(useDsp()), "usedsp");
-
-// 	ConfigDialog::registerSlotOnCreateTab("Speech", this, SLOT(onCreateTabSpeech()));
 
 	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default", "Speech"), this);
 
@@ -202,7 +130,7 @@ SpeechSlots::SpeechSlots(QObject *parent, const char *name) : Notifier(parent, n
 	kdebugf2();
 }
 
-SpeechSlots::~SpeechSlots()
+Speech::~Speech()
 {
 	kdebugf();
 	notification_manager->unregisterNotifier("Speech");
@@ -210,7 +138,7 @@ SpeechSlots::~SpeechSlots()
 	kdebugf2();
 }
 
-void SpeechSlots::import_0_5_0_ConfigurationFromTo(const QString &from, const QString &to)
+void Speech::import_0_5_0_ConfigurationFromTo(const QString &from, const QString &to)
 {
 	QString entry = config_file.readEntry("Speech", from + "Female", "");
 	if (entry != "")
@@ -223,7 +151,7 @@ void SpeechSlots::import_0_5_0_ConfigurationFromTo(const QString &from, const QS
 	config_file.removeVariable("Speech", to + "Male");
 }
 
-void SpeechSlots::import_0_5_0_Configuration()
+void Speech::import_0_5_0_Configuration()
 {
 	QString entry;
 
@@ -254,47 +182,62 @@ void SpeechSlots::import_0_5_0_Configuration()
 
 	import_0_5_0_ConfigurationFromTo("NewChat", "NewChat");
 	import_0_5_0_ConfigurationFromTo("NewMessage", "NewMessage");
+
+	bool arts = config_file.readBoolEntry("Speech", "UseArts", false);
+	bool esd = config_file.readBoolEntry("Speech", "UseEsd", false);
+	bool dsp = config_file.readBoolEntry("Speech", "UseDsp", false);
+
+	if (arts)
+		config_file.writeEntry("Speech", "SoundSystem", "aRts");
+	else if (esd)
+		config_file.writeEntry("Speech", "SoundSystem", "Eds");
+	else if (dsp)
+		config_file.writeEntry("Speech", "SoundSystem", "Dsp");
+
+	config_file.removeVariable("Speech", "UseArts");
+	config_file.removeVariable("Speech", "UseEsd");
+	config_file.removeVariable("Speech", "UseDsp");
 }
 
-void SpeechSlots::say(const QString &s, const QString &path,
-						bool klatt, bool melody,
-						bool arts, bool esd, bool dsp, const QString &device,
-						int freq, int tempo, int basefreq)
+void Speech::say(const QString &s, const QString &path,
+		bool klatt, bool melody,
+		const QString &sound_system, const QString &device,
+		int freq, int tempo, int basefreq)
 {
 	kdebugf();
-//	kdebugm(KDEBUG_INFO, "%s\n", (const char *)s.local8Bit());
-	QString t,dev;
+
+	QString t, dev, soundSystem;
 	QStringList list;
 
-	if (path==QString::null)
+	if (path.isNull())
 	{
-		t=config_file.readEntry("Speech","SpeechProgram", "powiedz");
-		klatt=config_file.readBoolEntry("Speech", "KlattSynt");
-		melody=config_file.readBoolEntry("Speech", "Melody");
-		arts=config_file.readBoolEntry("Speech", "UseArts");
-		esd=config_file.readBoolEntry("Speech", "UseEsd");
-		dsp=config_file.readBoolEntry("Speech", "UseDsp");
-		dev=config_file.readEntry("Speech", "DspDev", "/dev/dsp");
-		freq=config_file.readNumEntry("Speech", "Frequency");
-		tempo=config_file.readNumEntry("Speech", "Tempo");
-		basefreq=config_file.readNumEntry("Speech", "BaseFrequency");
+		t = config_file.readEntry("Speech","SpeechProgram", "powiedz");
+		klatt = config_file.readBoolEntry("Speech", "KlattSynt");
+		melody = config_file.readBoolEntry("Speech", "Melody");
+		soundSystem = config_file.readBoolEntry("Speech", "SoundSystem");
+		dev = config_file.readEntry("Speech", "DspDev", "/dev/dsp");
+		freq = config_file.readNumEntry("Speech", "Frequency");
+		tempo = config_file.readNumEntry("Speech", "Tempo");
+		basefreq = config_file.readNumEntry("Speech", "BaseFrequency");
 	}
 	else
 	{
-		t=path;
-		dev=device;
+		t = path;
+		dev = device;
+		soundSystem = sound_system;
 	}
 
 	list.append(t);
-	if (klatt && dsp)
+	if (klatt && soundSystem == "Dsp")
 		list.append(" -L");
 	if (!melody)
 		list.append("-n");
-	if (arts)
+	if (soundSystem == "aRts")
 		list.append("-k");
+// TODO: dlaczego tak?
 //	if (esd)
 //		t.append(" -");
-	if (dsp)
+	if (soundSystem == "Dsp")
 	{
 		list.append("-a");
 		list.append(dev);
@@ -307,50 +250,52 @@ void SpeechSlots::say(const QString &s, const QString &path,
 	list.append(QString::number(basefreq));
 
 	kdebugm(KDEBUG_INFO, "%s\n", (const char *)list.join(" ").local8Bit());
-	QProcess *p=new QProcess(list);
+
+	QProcess *p  =new QProcess(list);
 	connect(p, SIGNAL(processExited()), p, SLOT(deleteLater()));
 	p->launch(s.local8Bit());
+
 	kdebugf2();
 }
 
-void SpeechSlots::testSpeech()
+void Speech::testSpeech()
 {
 	kdebugf();
-// 	QString program=ConfigDialog::getLineEdit("Speech", "Speech program:")->text();
-// 	QString formatM=ConfigDialog::getLineEdit("Speech", "Chat format (male):")->text();
-// 	QString formatF=ConfigDialog::getLineEdit("Speech", "Chat format (female):")->text();
-// 	QString device=ConfigDialog::getLineEdit("Speech", "Dsp device:")->text();
-// 	bool klatt=ConfigDialog::getCheckBox("Speech", "Klatt synthesizer (requires dsp)")->isChecked();
-// 	bool mel=ConfigDialog::getCheckBox("Speech", "Melody")->isChecked();
 
-// 	bool arts=ConfigDialog::getCheckBox("Speech", "Use aRts", "usearts")->isChecked();
-// 	bool esd=ConfigDialog::getCheckBox("Speech", "Use Esd", "useesd")->isChecked();
-// 	bool dsp=ConfigDialog::getCheckBox("Speech", "Use Dsp", "usedsp")->isChecked();
+	QString program = programSelectFile->file();
+	// TODO: mo¿e u¿ywaæ jakiego¶ normalnego tekstu ?
+	QString formatM = config_file.readEntry("Speech", "NewChat_Syntax/Male");
+	QString formatF = config_file.readEntry("Speech", "NewChat_Syntax/Female");
+	QString device = dspDeviceLineEdit->text();
+	bool klatt = klattSyntCheckBox->isChecked();
+	bool mel = melodyCheckBox->isChecked();
 
-// 	kdebugm(KDEBUG_INFO, "flags: %d %d %d %d %d\n", mel, klatt, arts, esd, dsp);
+	QString sound_system = soundSystemComboBox->currentItemValue();
+	kdebugm(KDEBUG_INFO, "flags: %d %d %s\n", mel, klatt, sound_system.data());
 
-// 	int freq=ConfigDialog::getSlider("Speech", "slider1")->value();
-// 	int tempo=ConfigDialog::getSlider("Speech", "slider2")->value();
-// 	int basefreq=ConfigDialog::getSlider("Speech", "slider3")->value();
+	int frequency = frequencySlider->value();
+	int tempo = tempoSlider->value();
+	int baseFrequency = baseFrequencySlider->value();
 
-// 	int i = int(userlist->count()*float(rand())/RAND_MAX);
-// 	if (i > 0)
-// 		--i;
-// 	UserList::const_iterator it = userlist->constBegin();
-// 	while (i-- > 0)
-// 		++it;
-// 	UserListElement ule = *it;
+	int i = int(userlist->count() * float(rand())/RAND_MAX);
+	if (i > 0)
+		--i;
+	UserList::const_iterator it = userlist->constBegin();
+	while (i-- > 0)
+		++it;
+	UserListElement ule = *it;
 
-// 	kdebugm(KDEBUG_INFO, "%d %d %d %d\n", freq, tempo, basefreq, i);
-//
-// 	if (isFemale(ule.firstName()))
-// 		say(KaduParser::parse(formatF, ule).arg("Test"), program, klatt, mel, arts, esd, dsp, device, freq, tempo, basefreq);
-// 	else
-// 		say(KaduParser::parse(formatM, ule).arg("Test"), program, klatt, mel, arts, esd, dsp, device, freq, tempo, basefreq);
+	kdebugm(KDEBUG_INFO, "%d %d %d %d\n", frequency, tempo, baseFrequency, i);
+
+	if (isFemale(ule.firstName()))
+		say(KaduParser::parse(formatF, ule).arg("Test"), program, klatt, mel, sound_system, device, frequency, tempo, baseFrequency);
+	else
+		say(KaduParser::parse(formatM, ule).arg("Test"), program, klatt, mel, sound_system, device, frequency, tempo, baseFrequency);
+
 	kdebugf2();
 }
 
-void SpeechSlots::notify(Notification *notification)
+void Speech::notify(Notification *notification)
 {
 	kdebugf();
 
@@ -396,30 +341,36 @@ void SpeechSlots::notify(Notification *notification)
 	kdebugf2();
 }
 
-void SpeechSlots::onCreateTabSpeech()
+void Speech::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	kdebugf();
-	if (config_file.readBoolEntry("Speech", "UseArts"))
-		useArts();
-	else if (config_file.readBoolEntry("Speech", "UseEsd"))
-		useEsd();
-	else if (config_file.readBoolEntry("Speech", "UseDsp"))
-		useDsp();
-	kdebugf2();
+	frequencySlider = dynamic_cast<QSlider *>(mainConfigurationWindow->widgetById("speech/frequency"));
+	tempoSlider = dynamic_cast<QSlider *>(mainConfigurationWindow->widgetById("speech/tempo"));
+	baseFrequencySlider = dynamic_cast<QSlider *>(mainConfigurationWindow->widgetById("speech/baseFrequency"));
+	melodyCheckBox = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widgetById("spech/melody"));
+
+	programSelectFile = dynamic_cast<SelectFile *>(mainConfigurationWindow->widgetById("speech/program"));;
+
+	soundSystemComboBox = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widgetById("speech/soundSystem"));
+	dspDeviceLineEdit = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widgetById("speech/dspDevice"));
+	klattSyntCheckBox = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widgetById("speech/klattSynt"));
+
+	connect(soundSystemComboBox, SIGNAL(activated(int)), this, SLOT(soundSystemChanged(int)));
+	connect(mainConfigurationWindow->widgetById("speech/test"), SIGNAL(clicked()), this, SLOT(testSpeech()));
 }
 
-void SpeechSlots::chooseSpeechProgram()
+NotifierConfigurationWidget * Speech::createConfigurationWidget(QWidget *parent, char *name)
 {
-	kdebugf();
-// 	QLineEdit *e_speechprog= ConfigDialog::getLineEdit("Speech", "Speech program:");
-
-// 	QString s(QFileDialog::getOpenFileName( e_speechprog->text(), "All Files (*)", ConfigDialog::configdialog));
-// 	if (!s.isEmpty())
-// 		e_speechprog->setText(s);
-	kdebugf2();
+	return new SpeechConfigurationWidget(parent, name);
 }
 
-SpeechSlots *speech_slots;
+void Speech::soundSystemChanged(int index)
+{
+	bool dsp = soundSystemComboBox->currentItemValue() == "Dsp";
+
+	dspDeviceLineEdit->setEnabled(dsp);
+	klattSyntCheckBox->setEnabled(dsp);
+}
+
+Speech *speech;
 
 /** @} */
-
