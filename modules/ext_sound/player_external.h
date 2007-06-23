@@ -1,5 +1,6 @@
 #ifndef PLAYER_EXTERNAL_H
 #define PLAYER_EXTERNAL_H
+
 #include <qobject.h>
 #include <qstring.h>
 
@@ -7,19 +8,20 @@
  * @defgroup ext_sound Ext sound
  * @{
  */
-class ExternalPlayerSlots : public QObject
+class ExternalPlayer : public QObject
 {
 	Q_OBJECT
-	public:
-		ExternalPlayerSlots(QObject *parent=0, const char *name=0);
-		~ExternalPlayerSlots();
-	private slots:
-		void playSound(const QString &s, bool volCntrl, double vol);
-		void play(const QString &s, bool volCntrl, double vol, QString player);
-		void choosePlayerFile();
+
+private slots:
+	void playSound(const QString &s, bool volCntrl, double vol);
+	void play(const QString &s, bool volCntrl, double vol, QString player);
+
+public:
+	ExternalPlayer();
+	~ExternalPlayer();
 };
 
-extern ExternalPlayerSlots *external_player_slots;
+extern ExternalPlayer *external_player;
 
 /** @} */
 
