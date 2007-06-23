@@ -68,8 +68,6 @@ class MainConfigurationWindow : public ConfigurationWindow
 	// TODO: remove append parameter
 	void prepareChatPreview(Preview *preview, bool append = false);
 
-	void import_0_5_0_configuration();
-
 private slots:
 	void onChangeEmoticonsStyle(int index);
 

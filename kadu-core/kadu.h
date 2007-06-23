@@ -70,6 +70,8 @@ class Kadu : public QWidget
 
 		void showStatusOnMenu(int);
 
+		void import_0_5_0_configuration();
+
 	public slots:
 		virtual void show();
 		virtual void hide();

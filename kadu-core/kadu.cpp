@@ -127,6 +127,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	Myself.addProtocol("Gadu", config_file.readEntry("General", "UIN"));
 	Myself.setAltNick(config_file.readEntry("General", "Nick"));
 
+	import_0_5_0_configuration();
+
 	QWidget w;
 	config_file.addVariable("Look", "InfoPanelBgColor", w.paletteBackgroundColor());
 	config_file.addVariable("Look", "InfoPanelFgColor", w.paletteForegroundColor());
@@ -1842,4 +1844,62 @@ void Kadu::setOffline(const QString &description)
 	status.setOffline(description);
 
 	userStatusChanger->userStatusSet(status);
+}
+
+void Kadu::import_0_5_0_configuration()
+{
+// 	config_file.removeVariable("General", "ShowAnonymousWithMsgs");
+
+	int maxImageSize = config_file.readNumEntry("Chat", "MaxImageSize", -1);
+	if (maxImageSize != -1)
+		config_file.writeEntry("Chat", "ReceiveImages", maxImageSize != 0);
+	config_file.removeVariable("Chat", "MaxImageSize");
+
+	int defaultStatusIndex = config_file.readNumEntry("General", "DefaultStatusIndex", -1);
+	if (defaultStatusIndex != -1)
+	{
+		QString startupStatus;
+		switch (defaultStatusIndex)
+		{
+			case 0:
+			case 1: startupStatus = "Online";
+			        break;
+			case 2:
+			case 3: startupStatus = "Busy";
+			        break;
+			case 4:
+			case 5: startupStatus = "Invisible";
+			        break;
+			case 6: startupStatus = "Offline";
+			        break;
+			case 7:
+			case 8: startupStatus = "LastStatus";
+			        break;
+		}
+		config_file.writeEntry("General", "StartupStaus", startupStatus);
+	}
+	config_file.removeVariable("General", "DefaultStatusIndex");
+
+	QString infoPanelSyntax = config_file.readEntry("Look", "PanelContents", "nothing");
+	if (infoPanelSyntax != "nothing")
+	{
+		config_file.writeEntry("Look", "InfoPanelSyntaxFile", "custom");
+		SyntaxList infoPanelList("infopanel");
+		infoPanelList.updateSyntax("custom", infoPanelSyntax);
+	}
+	config_file.removeVariable("Look", "PanelContents");
+
+	if (config_file.readBoolEntry("Look", "MultiColumnUserbox", false))
+	{
+		int columns = (kadu->userbox()->width() - 20) / config_file.readNumEntry("Look", "MultiColumnUserboxWidth", (kadu->userbox()->width() - 20));
+		config_file.writeEntry("Look", "UserBoxColumnCount", columns);
+	}
+	config_file.removeVariable("Look", "MultiColumnUserbox");
+	config_file.removeVariable("Look", "MultiColumnUserboxWidth");
+
+	config_file.removeVariable("Look", "UserboxBackgroundMove");
+	config_file.removeVariable("Look", "UserboxBackgroundSX");
+	config_file.removeVariable("Look", "UserboxBackgroundSY");
+	config_file.removeVariable("Look", "UserboxBackgroundSE");
+	config_file.removeVariable("Look", "UserboxBackgroundSH");
 }
