@@ -4,39 +4,69 @@
 #include <qpixmap.h>
 #include <qlabel.h>
 
+#include "main_configuration_window.h"
+
 /* DesktopDockWindow - ikonka dokujaca */
+
+class QSpinBox;
 
 /** @defgroup desktopdock Desktop docking
  * @{
  */
+
 class DesktopDockWindow : public QLabel
 {
 	Q_OBJECT
 
-	public:
-		DesktopDockWindow(QWidget *parent=0, const char *name=0);
-		~DesktopDockWindow();
-		void mousePressEvent(QMouseEvent *);
-		void mouseMoveEvent(QMouseEvent *);
-		void updateMask();
-	private slots:
-		void setToolTip(const QString &statusText);
-		void ApplyConfig();
-		void onCreateTabDesktopDock();
-		void setPixmap(const QPixmap &DockPixmap, const QString &iconName);
-		void setTrayMovie(const QMovie &movie);
-		void findTrayPosition(QPoint &DockPoint);
-		void enableColorButton(bool b);
-		void droppedOnDesktop(const QPoint &);
-		void startMoving();
-		void updateMenu(bool);
-	private:
-		int menuPos;
-		int separatorPos;
-		bool isMoving;
+	bool isMoving;
+
+protected:
+	void mousePressEvent(QMouseEvent *);
+	void mouseMoveEvent(QMouseEvent *);
+	void updateMask();
+
+public:
+	DesktopDockWindow(QWidget *parent, char *name);
+	virtual ~DesktopDockWindow();
+
+public slots:
+	void startMoving();
+
+signals:
+	void dropped(const QPoint &);
+
 };
 
-extern DesktopDockWindow *desktop_dock_window;
+class DesktopDock : public ConfigurationUiHandler
+{
+	Q_OBJECT
+
+	DesktopDockWindow *desktopDock;
+	QSpinBox *xSpinBox;
+	QSpinBox *ySpinBox;
+
+	int menuPos;
+	int separatorPos;
+
+private slots:
+	void configurationUpdated();
+
+	void setToolTip(const QString &statusText);
+	void setPixmap(const QPixmap &DockPixmap, const QString &iconName);
+	void setTrayMovie(const QMovie &movie);
+	void findTrayPosition(QPoint &DockPoint);
+	void droppedOnDesktop(const QPoint &);
+	void updateMenu(bool);
+
+public:
+	DesktopDock();
+	virtual ~DesktopDock();
+
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+
+};
+
+extern DesktopDock *desktop_dock;
 
 /** @} */
 
