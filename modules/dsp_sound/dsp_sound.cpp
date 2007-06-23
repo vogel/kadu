@@ -29,12 +29,9 @@ extern "C" int dsp_sound_init()
 {
 	kdebugf();
 
-	oss_player_slots=new OSSPlayerSlots(NULL, "oss_player_slots");
+	oss_player_slots = new OSSPlayerSlots(NULL, "oss_player_slots");
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/dsp_sound.ui"), 0);
 
-// 	ConfigDialog::addHGroupBox("Sounds", "Sounds",
-// 			QT_TdRANSLATE_NOOP("@default","Output device"), 0, Advanced);
-// 	ConfigDialog::addLineEdit("Sounds", "Output device",
-// 			QT_TRANSLATE_NOOP("@default","Path:"), "OutputDevice", "/dev/dsp", 0, "device_path");
 	kdebugf2();
 	return 0;
 }
@@ -43,8 +40,10 @@ extern "C" void dsp_sound_close()
 {
 	kdebugf();
 
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/dsp_sound.ui"), 0);
 	delete oss_player_slots;
-	oss_player_slots=NULL;
+	oss_player_slots = 0;
+
 	kdebugf2();
 }
 
