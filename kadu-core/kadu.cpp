@@ -1889,6 +1889,21 @@ void Kadu::import_0_5_0_configuration()
 	}
 	config_file.removeVariable("Look", "PanelContents");
 
+	QString chatSyntax = config_file.readEntry("Look", "FullStyle", "nothing");
+	if (chatSyntax != "nothing")
+	{
+		SyntaxList chatList("chat");
+		chatSyntax = chatSyntax.replace("%1", "#{backgroundColor}");
+		chatSyntax = chatSyntax.replace("%2", "#{fontColor}");
+		chatSyntax = chatSyntax.replace("%3", "#{nickColor}");
+		chatSyntax = chatSyntax.replace("%4", "%a");
+		chatSyntax = chatSyntax.replace("%5", "#{receivedDate}");
+		chatSyntax = chatSyntax.replace("%6", "#{sentDate}");
+		chatSyntax = chatSyntax.replace("%7", "#{message}");
+		chatList.updateSyntax("custom", chatSyntax);
+	}
+	config_file.removeVariable("Look", "FullStyle");
+
 	if (config_file.readBoolEntry("Look", "MultiColumnUserbox", false))
 	{
 		int columns = (kadu->userbox()->width() - 20) / config_file.readNumEntry("Look", "MultiColumnUserboxWidth", (kadu->userbox()->width() - 20));
