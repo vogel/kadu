@@ -30,8 +30,8 @@ HintsConfigurationWidget::HintsConfigurationWidget(QWidget *parent, char *name)
 	connect(font, SIGNAL(fontChanged(QFont)), this, SLOT(fontChanged(QFont)));
 	connect(foregroundColor, SIGNAL(changed(const QColor &)), this, SLOT(foregroundColorChanged(const QColor &)));
 	connect(backgroundColor, SIGNAL(changed(const QColor &)), this, SLOT(backgroundColorChanged(const QColor &)));
-	connect(timeout, SIGNAL(valueChanged(int)), this, SLOT(timeoutChagned(int)));
-	connect(syntax, SIGNAL(textChanged(const QString &)), this, SLOT(timeoutChagned(const QString &)));
+	connect(timeout, SIGNAL(valueChanged(int)), this, SLOT(timeoutChanged(int)));
+	connect(syntax, SIGNAL(textChanged(const QString &)), this, SLOT(syntaxChanged(const QString &)));
 
 	QGridLayout *gridLayout = new QGridLayout(this, 0, 0, 0, 5);
 	gridLayout->addMultiCellWidget(preview, 0, 0, 0, 1);
@@ -121,7 +121,7 @@ void HintsConfigurationWidget::backgroundColorChanged(const QColor &color)
 	preview->setPaletteBackgroundColor(color);
 }
 
-void HintsConfigurationWidget::timeoutChagned(int timeout)
+void HintsConfigurationWidget::timeoutChanged(int timeout)
 {
 	currentProperties.timeout = timeout;
 }

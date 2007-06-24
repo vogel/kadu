@@ -248,7 +248,7 @@ void SoundManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainC
 	themesComboBox = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widgetById("sound/themes"));
 	themesComboBox->setItems(themes->themes(), themes->themes());
 
-	connect(mainConfigurationWindow->widgetById("sound/applyTheme"), SIGNAL(clicked()), sound_slots, SLOT(applyTheme()));
+	connect(mainConfigurationWindow->widgetById("sound/applyTheme"), SIGNAL(clicked()), sound_manager, SLOT(applyTheme()));
 }
 
 NotifierConfigurationWidget *SoundManager::createConfigurationWidget(QWidget *parent, char *name)

@@ -48,7 +48,7 @@ private slots:
 	void fontChanged(QFont font);
 	void foregroundColorChanged(const QColor &color);
 	void backgroundColorChanged(const QColor &color);
-	void timeoutChagned(int timeout);
+	void timeoutChanged(int timeout);
 	void syntaxChanged(const QString &syntax);
 
 public:
