@@ -136,6 +136,8 @@ class SoundManager : public Notifier, public ConfigurationUiHandler
     Q_OBJECT
 	private:
 		Themes *themes;
+		ConfigComboBox *themesComboBox;
+
 		friend class SamplePlayThread;
 		friend class SampleRecordThread;
 		QTime lastsoundtime;
@@ -154,6 +156,9 @@ class SoundManager : public Notifier, public ConfigurationUiHandler
 
 		void import_0_5_0_configuration();
 
+	private slots:
+		void applyTheme();
+
 	public slots:
 		void play(const QString &path, bool force=false);
 		void play(const QString &path, bool volCntrl, double vol);
@@ -165,7 +170,7 @@ class SoundManager : public Notifier, public ConfigurationUiHandler
 		~SoundManager();
 
 		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
-		virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0, char *name = 0) { return 0; };
+		virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0, char *name = 0);
 
 		virtual void notify(Notification *notification);
 

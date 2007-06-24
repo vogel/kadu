@@ -1,16 +1,40 @@
 #ifndef KADU_SOUND_SLOTS
 #define KADU_SOUND_SLOTS
-#include <qobject.h>
+
 #include <qmap.h>
 #include <qstringlist.h>
+
 #include "message_box.h"
 #include "sound.h"
+
+class SelectFile;
 
 class Action;
 
 /** @ingroup sound
  * @{
  */
+class SoundConfigurationWidget : public NotifierConfigurationWidget
+{
+	Q_OBJECT
+
+	QMap<QString, QString> soundFiles;
+	QString currentNotifyEvent;
+
+	SelectFile *soundFileSelectFile;
+
+private slots:
+	void test();
+
+public:
+	SoundConfigurationWidget(QWidget *parent = 0, char *name = 0);
+	virtual ~SoundConfigurationWidget();
+
+	virtual void loadNotifyConfigurations() {};
+	virtual void saveNotifyConfigurations();
+	virtual void switchToEvent(const QString &event);
+};
+
 class SoundSlots : public QObject
 {
 	Q_OBJECT
@@ -34,14 +58,6 @@ class SoundSlots : public QObject
 		int16_t*    FullDuplexTestSample;
 
 	private slots:
-		void soundPlayer(bool value, bool toolbarChanged=false);
-		void onCreateTabSounds();
-		void onApplyTabSounds();
-		void chooseSoundTheme(const QString& string);
-		void chooseSoundFile();
-		void clearSoundFile();
-		void testSoundFile();
-		void selectedPaths(const QStringList& paths);
 		void muteActionActivated(const UserGroup* users, const QWidget* source, bool is_on);
 		void muteUnmuteSounds();
 		void testSamplePlaying();

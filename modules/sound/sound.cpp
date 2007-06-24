@@ -21,7 +21,7 @@
 #include "chat_widget.h"
 #include "chat_manager.h"
 #include "config_file.h"
-// #include "config_dialog.h"
+#include "configuration_window_widgets.h"
 #include "debug.h"
 #include "sound.h"
 #include "kadu.h"
@@ -192,27 +192,10 @@ SoundManager::SoundManager(const QString& name, const QString& configname) : Not
 
 	bool volCntrl = true;
 #ifdef Q_OS_MACX
-	volCntrl = false;
+// 	volCntrl = false;
 #endif
-
-// 	ConfigDialog::addHBox("Sounds", "Sounds", "sound_box");
-// 	ConfigDialog::addListView("Sounds", "sound_box", "sound_files");
-// 	ConfigDialog::addVBox("Sounds", "sound_box", "util_box");
-// 	ConfigDialog::addPushButton("Sounds", "util_box", QT_TRANSLATE_NOOP("@default","Choose"));
-// 	ConfigDialog::addPushButton("Sounds", "util_box", QT_TRANSLATE_NOOP("@default","Clear"));
-// 	ConfigDialog::addPushButton("Sounds", "util_box", QT_TRANSLATE_NOOP("@default","Test"));
-
 	sound_manager = this;
 	sound_slots = new SoundSlots(this, "sound_slots");
-
-// 	ConfigDialog::registerSlotOnCreateTab("Sounds", sound_slots, SLOT(onCreateTabSounds()));
-// 	ConfigDialog::registerSlotOnApplyTab("Sounds", sound_slots, SLOT(onApplyTabSounds()));
-// 	ConfigDialog::connectSlot("Sounds", "Play sounds", SIGNAL(toggled(bool)), sound_slots, SLOT(soundPlayer(bool)));
-// 	ConfigDialog::connectSlot("Sounds", "Choose", SIGNAL(clicked()), sound_slots, SLOT(chooseSoundFile()));
-// 	ConfigDialog::connectSlot("Sounds", "Clear", SIGNAL(clicked()), sound_slots, SLOT(clearSoundFile()));
-// 	ConfigDialog::connectSlot("Sounds", "Test", SIGNAL(clicked()), sound_slots, SLOT(testSoundFile()));
-// 	ConfigDialog::connectSlot("Sounds", "Sound theme", SIGNAL(activated(const QString&)), sound_slots, SLOT(chooseSoundTheme(const QString&)));
-// 	ConfigDialog::connectSlot("Sounds", "Sound paths", SIGNAL(changed(const QStringList&)), sound_slots, SLOT(selectedPaths(const QStringList&)));
 
 	config_file.addVariable("Sounds", "SoundTheme", "default");
 	config_file.addVariable("Sounds", "SoundPaths", QString::null);
@@ -261,6 +244,16 @@ void SoundManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainC
 	connect(mainConfigurationWindow->widgetById("sound/testPlay"), SIGNAL(clicked()), sound_slots, SLOT(testSamplePlaying()));
 	connect(mainConfigurationWindow->widgetById("sound/testRecord"), SIGNAL(clicked()), sound_slots, SLOT(testSampleRecording()));
 	connect(mainConfigurationWindow->widgetById("sound/testDuplex"), SIGNAL(clicked()), sound_slots, SLOT(testFullDuplex()));
+
+	themesComboBox = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widgetById("sound/themes"));
+	themesComboBox->setItems(themes->themes(), themes->themes());
+
+	connect(mainConfigurationWindow->widgetById("sound/applyTheme"), SIGNAL(clicked()), sound_slots, SLOT(applyTheme()));
+}
+
+NotifierConfigurationWidget *SoundManager::createConfigurationWidget(QWidget *parent, char *name)
+{
+	return new SoundConfigurationWidget(parent, name);
 }
 
 void SoundManager::import_0_5_0_configuration()
@@ -275,6 +268,26 @@ void SoundManager::import_0_5_0_configuration()
 		config_file.writeEntry("Sounds", "NewChat_sound", config_file.readEntry("Sounds", "Chat_sound"));
 		config_file.writeEntry("Sounds", "NewMessage_sound", config_file.readEntry("Sounds", "Message_sound"));
 	}
+
+	if (config_file.readEntry("Sounds", "SoundTheme", "foobar") != "foobar")
+	{
+		QMap<QString, QString> entries = themes->getEntries();
+
+		CONST_FOREACH(entry, entries)
+			if (!entry.key().isEmpty() && !(*entry).isEmpty())
+				config_file.writeEntry("Sounds", entry.key() + "_sound", *entry);
+	}
+	config_file.removeVariable("Sounds", "SoundTheme");
+}
+
+void SoundManager::applyTheme()
+{
+	themes->setTheme(themesComboBox->currentItemValue());
+	QMap<QString, QString> entries = themes->getEntries();
+
+	CONST_FOREACH(entry, entries)
+		if (!entry.key().isEmpty() && !(*entry).isEmpty())
+			config_file.writeEntry("Sounds", entry.key() + "_sound", *entry);
 }
 
 Themes *SoundManager::theme()
@@ -306,11 +319,7 @@ void SoundManager::playSound(const QString &soundName)
 		return;
 	}
 
-	QString sound;
-	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
-		sound = config_file.readEntry("Sounds", soundName + "_sound");
-	else
-		sound = themes->themePath(config_file.readEntry("Sounds", "SoundTheme")) + themes->getThemeEntry(soundName);
+	QString sound = config_file.readEntry("Sounds", soundName + "_sound");
 
 	if (QFile::exists(sound))
 	{

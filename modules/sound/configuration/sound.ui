@@ -4,7 +4,8 @@
 
 		<tab name="Sound">
 			<group-box name="General">
-				<combo-box caption="Sound theme" config-section="Sounds" config-item="" />
+				<combo-box caption="Sound theme" config-section="Sounds" config-item="SoundTheme" id="sound/themes" />
+				<action-button caption="Apply theme" id="sound/applyTheme" />
 				<path-list-edit caption="Sound paths" config-section="" config-item="" id="soundPaths" />
 				<check-box caption="Enable volume control (player must support it)" config-section="Sounds" config-item="VolumeControl" id="sound/enableVolumeControl" />
 				<slider caption="Volume" config-section="Sounds" config-item="SoundVolume" min-value="0" max-value="100" page-step="20" id="sound/volumeControl" />

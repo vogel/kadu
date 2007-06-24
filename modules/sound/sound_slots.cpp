@@ -7,23 +7,70 @@
  *                                                                         *
  ***************************************************************************/
 #include <qcheckbox.h>
-#include <qlistview.h>
-#include <qvbox.h>
 #include <qcombobox.h>
 #include <qgrid.h>
+#include <qlistview.h>
 #include <qmenubar.h>
+#include <qvbox.h>
 
 #include "action.h"
-#include "sound_slots.h"
 #include "debug.h"
 #include "icons_manager.h"
 #include "kadu.h"
-// #include "config_dialog.h"
+#include "select_file.h"
+#include "sound_slots.h"
 
 /**
  * @ingroup sound
  * @{
  */
+
+SoundConfigurationWidget::SoundConfigurationWidget(QWidget *parent, char *name)
+	: NotifierConfigurationWidget(parent, name), currentNotifyEvent("")
+{
+	soundFileSelectFile = new SelectFile("audio", this);
+	QPushButton *testButton = new QPushButton(tr("Test"), this);
+	connect(testButton, SIGNAL(clicked()), this, SLOT(test()));
+
+	QGridLayout *gridLayout = new QGridLayout(this, 0, 0, 0, 5);
+	gridLayout->addWidget(new QLabel(tr("Sound file") + ":", this), 0, 0, Qt::AlignRight);
+	gridLayout->addWidget(soundFileSelectFile, 0, 1);
+	gridLayout->addWidget(testButton, 0, 2);
+}
+
+SoundConfigurationWidget::~SoundConfigurationWidget()
+{
+}
+
+void SoundConfigurationWidget::test()
+{
+	sound_manager->play(soundFileSelectFile->file(), true);
+}
+
+void SoundConfigurationWidget::saveNotifyConfigurations()
+{
+	if (currentNotifyEvent != "")
+		soundFiles[currentNotifyEvent] = soundFileSelectFile->file();
+
+	CONST_FOREACH(soundFile, soundFiles)
+	{
+		const QString &eventName = soundFile.key();
+		config_file.writeEntry("Sound", eventName + "_sound", *soundFile);
+	}
+}
+
+void SoundConfigurationWidget::switchToEvent(const QString &event)
+{
+	if (currentNotifyEvent != "")
+		soundFiles[currentNotifyEvent] = soundFileSelectFile->file();
+	currentNotifyEvent = event;
+
+	if (soundFiles.contains(event))
+		soundFileSelectFile->setFile(soundFiles[event]);
+	else
+		soundFileSelectFile->setFile(config_file.readEntry("Sound", event + "_sound"));
+}
+
 SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name),
 	muteitem(0), soundfiles(), soundNames(), soundTexts(),
 	SamplePlayingTestMsgBox(0), SamplePlayingTestDevice(0), SamplePlayingTestSample(0),
@@ -54,83 +101,12 @@ SoundSlots::~SoundSlots()
 	kdebugf2();
 }
 
-void SoundSlots::onCreateTabSounds()
-{
-	kdebugf();
-
-	soundTexts.clear();
-	soundNames.clear();
-
-	CONST_FOREACH(notifyEvent, notification_manager->notifyEvents())
-	{
-		soundTexts << tr((*notifyEvent).description);
-		soundNames << tr((*notifyEvent).name);
-	}
-
-// 	QCheckBox *b_volumectrl= ConfigDialog::getCheckBox("Sounds", "Enable volume control (player must support it)");
-// 	QGrid *g_volume= ConfigDialog::getGrid("Sounds","volume");
-// 	QComboBox *cb_soundtheme= ConfigDialog::getComboBox("Sounds", "Sound theme");
-// 	cb_soundtheme->insertItem("Custom");// 0 position
-// 	cb_soundtheme->insertStringList(sound_manager->theme()->themes());
-// 	cb_soundtheme->setCurrentText(config_file.readEntry("Sounds", "SoundTheme"));
-// 	cb_soundtheme->changeItem(tr("Custom"), 0);// and now add translation
-// 	if (sound_manager->theme()->themes().contains("default"))
-// 		cb_soundtheme->changeItem(tr("default"), sound_manager->theme()->themes().findIndex("default")+1);
-
-// 	QHBox* box=ConfigDialog::getHBox("Sounds","sound_box");
-// 	QHBox* soundtheme=ConfigDialog::getHBox("Sounds", "sound_theme");
-
-// 	QListView* lv_soundfiles=ConfigDialog::getListView("Sounds","sound_files");
-// 	lv_soundfiles->setSorting(-1);
-// 	lv_soundfiles->addColumn(tr("Event"));
-// 	lv_soundfiles->addColumn(tr("Sound file"));
-// 	lv_soundfiles->setAllColumnsShowFocus(true);
-// 	lv_soundfiles->setColumnWidthMode(0, QListView::Maximum);
-// 	lv_soundfiles->setColumnWidthMode(1, QListView::Maximum);
-// 	lv_soundfiles->setResizeMode(QListView::LastColumn);
-// 	lv_soundfiles->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Ignored));
-	config_file.addVariable("Sounds", "Notify_sound", config_file.readEntry("Notify", "NotifySound"));
-
-// 	soundfiles.clear();
-// 	if (cb_soundtheme->currentText() == tr("Custom"))
-// 		CONST_FOREACH(name, soundNames)
-// 			soundfiles[*name] = config_file.readEntry("Sounds", (*name)+"_sound");
-// 	else
-// 	{
-// 		QPushButton *choose = ConfigDialog::getPushButton("Sounds","Choose");
-// 		QPushButton *clear = ConfigDialog::getPushButton("Sounds","Clear");
-// 		choose->setEnabled(false);
-// 		clear->setEnabled(false);
-
-// 		CONST_FOREACH(name, soundNames)
-// 			soundfiles[*name] = sound_manager->theme()->themePath()+sound_manager->theme()->getThemeEntry(*name);
-// 	}
-
-// 	QStringList::const_iterator text = soundTexts.begin();
-// 	CONST_FOREACH(name, soundNames)
-// 		new QListViewItem(lv_soundfiles, *text++, soundfiles[*name]);
-
-// 	SelectPaths *selpaths = ConfigDialog::getSelectPaths("Sounds", "Sound paths");
-// 	selpaths->setPathList(QStringList::split(";", config_file.readEntry("Sounds", "SoundPaths")));
-	kdebugf2();
-}
-
 void SoundSlots::muteActionActivated(const UserGroup* /*users*/, const QWidget* /*source*/, bool is_on)
 {
 	kdebugf();
 	sound_manager->setMute(is_on);
 	mute_action->setAllOn(is_on);
 	config_file.writeEntry("Sounds", "PlaySound", !is_on);
-
-// 	if (ConfigDialog::dialogOpened())
-// 	{
-// 		QCheckBox *box=ConfigDialog::getCheckBox("Sounds", "Play sounds");
-// 		if (box->isChecked()==is_on)
-// 		{
-// 			box->setChecked(!is_on);
-// 			soundPlayer(!is_on, true);
-// 		}
-// 	}
 	kdebugf2();
 }
 
@@ -141,158 +117,12 @@ void SoundSlots::muteUnmuteSounds()
 	kdebugf2();
 }
 
-
-void SoundSlots::soundPlayer(bool value, bool toolbarChanged)
-{
-	kdebugf();
-// 	QCheckBox *b_volumectrl= ConfigDialog::getCheckBox("Sounds", "Enable volume control (player must support it)");
-
-// 	ConfigDialog::getHBox("Sounds","sound_box")->setEnabled(value);
-// 	ConfigDialog::getHBox("Sounds","sound_theme")->setEnabled(value);
-
-// 	b_volumectrl->setEnabled(value);
-// 	ConfigDialog::getGrid("Sounds","volume")->setEnabled(value && b_volumectrl->isChecked());
-// 	if (value==sound_manager->isMuted() && !toolbarChanged)
-// 		muteUnmuteSounds();
-	kdebugf2();
-}
-
-void SoundSlots::clearSoundFile()
-{
-	kdebugf();
-// 	QListViewItem *item=ConfigDialog::getListView("Sounds", "sound_files")->currentItem();
-// 	if (!item->isSelected())
-// 		return;
-// 	item->setText(1, QString::null);
-	kdebugf2();
-}
-
-void SoundSlots::chooseSoundFile()
-{
-	kdebugf();
-// 	QString start=QDir::rootDirPath();
-// 	QListViewItem *item=ConfigDialog::getListView("Sounds", "sound_files")->currentItem();
-// 	if (!item->isSelected())
-// 		return;
-
-// 	QString p=item->text(1);
-// 	if (QFile(p).exists())
-// 		start=p;
-
-// 	QString s(QFileDialog::getOpenFileName( start, "Audio Files (*.wav *.au *.raw)", ConfigDialog::configdialog));
-// 	if (!s.isEmpty())
-// 		item->setText(1,s);
-	kdebugf2();
-}
-
-
-void SoundSlots::testSoundFile()
-{
-	kdebugf();
-// 	QListViewItem *item=ConfigDialog::getListView("Sounds", "sound_files")->currentItem();
-// 	if (!item->isSelected())
-// 		return;
-// 	sound_manager->play(item->text(1), true);
-	kdebugf2();
-}
-
-void SoundSlots::chooseSoundTheme(const QString& string)
-{
-	kdebugf();
-	QString str=string;
-	if (string == tr("Custom"))
-		str= "Custom";
-	else if (string == tr("default"))
-		str= "default";
-	sound_manager->theme()->setTheme(str);
-
-// 	QPushButton *choose = ConfigDialog::getPushButton("Sounds","Choose");
-// 	QPushButton *clear = ConfigDialog::getPushButton("Sounds","Clear");
-
-	QString chatfile;
-	QString messagefile;
-	QString notifyfile;
-
-// 	QListView* lv_soundfiles=ConfigDialog::getListView("Sounds", "sound_files");
-// 	lv_soundfiles->clear();
-// 	soundfiles.clear();
-// 	if (str == "Custom")
-// 	{
-// 		CONST_FOREACH(name, soundNames)
-// 			soundfiles[*name] = config_file.readEntry("Sounds", (*name)+"_sound");
-// 		choose->setEnabled(true);
-// 		clear->setEnabled(true);
-// 	}
-// 	else
-// 	{
-// 		CONST_FOREACH(name, soundNames)
-// 			soundfiles[*name] = sound_manager->theme()->themePath()+sound_manager->theme()->getThemeEntry(*name);
-// 		choose->setEnabled(false);
-// 		clear->setEnabled(false);
-// 	}
-
-	QStringList::const_iterator text = soundTexts.begin();
-// 	CONST_FOREACH(name, soundNames)
-// 		new QListViewItem(lv_soundfiles, *text++, soundfiles[*name]);
-	kdebugf2();
-}
-
-
-void SoundSlots::selectedPaths(const QStringList& paths)
-{
-	kdebugf();
-	sound_manager->theme()->setPaths(paths);
-// 	QComboBox* cb_soundtheme= ConfigDialog::getComboBox("Sounds","Sound theme");
-// 	QString current= cb_soundtheme->currentText();
-
-// 	SelectPaths* soundPath = ConfigDialog::getSelectPaths("Sounds","Sound paths");
-// 	soundPath->setPathList(sound_manager->theme()->additionalPaths());
-
-// 	cb_soundtheme->clear();
-// 	cb_soundtheme->insertItem("Custom");// 0 position
-// 	cb_soundtheme->insertStringList(sound_manager->theme()->themes());
-// 	cb_soundtheme->setCurrentText(current);
-// 	cb_soundtheme->changeItem(tr("Custom"), 0);// and now add translation
-
-// 	if (paths.contains("default"))
-// 		cb_soundtheme->changeItem(tr("default"), paths.findIndex("default")+1);
-	kdebugf2();
-}
-
-void SoundSlots::onApplyTabSounds()
-{
-	kdebugf();
-// 	QComboBox *cb_soundtheme= ConfigDialog::getComboBox("Sounds", "Sound theme");
-// 	QString theme;
-// 	if (cb_soundtheme->currentText() == tr("Custom"))
-// 	{
-// 		QListView* lv_soundfiles=ConfigDialog::getListView("Sounds", "sound_files");
-// 		theme= "Custom";
-//
-// 		QStringList::const_iterator text = soundTexts.begin();
-// 		CONST_FOREACH(name, soundNames)
-// 			config_file.writeEntry("Sounds", (*name)+"_sound", lv_soundfiles->findItem(*text++, 0)->text(1));
-// 	}
-// 	else
-// 		theme= cb_soundtheme->currentText();
-// 	if (theme == tr("default"))
-// 		theme= "default";
-
-// 	config_file.writeEntry("Sounds", "SoundPaths", sound_manager->theme()->additionalPaths().join(";"));
-// 	config_file.writeEntry("Sounds", "SoundTheme", theme);
-	kdebugf2();
-}
-
 void SoundSlots::testSamplePlaying()
 {
 	kdebugf();
 	if (SamplePlayingTestMsgBox != NULL)
 		return;
-	QString chatsound;
-	if (config_file.readEntry("Sounds", "SoundTheme") == "Custom")
-		chatsound = config_file.readEntry("Sounds", "NewChat_sound");
-	else
-		chatsound = sound_manager->theme()->themePath(config_file.readEntry("Sounds", "SoundTheme")) + sound_manager->theme()->getThemeEntry("NewChat");
+	QString chatsound = config_file.readEntry("Sounds", "NewChat_sound");
 
 	QFile file(chatsound);
 	if (!file.open(IO_ReadOnly))
