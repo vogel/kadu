@@ -43,6 +43,18 @@ void SelectFile::selectFileClicked()
 		if (imageDialog.exec() == QDialog::Accepted)
 			LineEdit->setText(imageDialog.selectedFile());
 	}
+	else if (Type == "all")
+	{
+		QString s(QFileDialog::getOpenFileName(LineEdit->text(), "All Files (*)", this));
+		if (!s.isEmpty())
+			LineEdit->setText(s);
+	}
+	else if (Type == "audio")
+	{
+		QString s(QFileDialog::getOpenFileName(LineEdit->text(), "Audio Files (*.wav *.au *.raw)", this));
+		if (!s.isEmpty())
+			LineEdit->setText(s);
+	}
 }
 
 QString SelectFile::file() const
