@@ -205,6 +205,7 @@ about.cpp \
 action.cpp \
 chat_manager.cpp \
 chat_message.cpp \
+chat_messages_view.cpp \
 chat_widget.cpp \
 chat_window.cpp \
 color_button.cpp \
@@ -266,6 +267,7 @@ about.h \
 action.h \
 chat_manager.h \
 chat_message.h \
+chat_messages_view.h \
 chat_widget.h \
 chat_window.h \
 color_button.h \
@@ -324,6 +326,7 @@ BUILT_SOURCES = \
 moc/about_moc.cpp \
 moc/action_moc.cpp \
 moc/chat_manager_moc.cpp \
+moc/chat_messages_view_moc.cpp \
 moc/chat_widget_moc.cpp \
 moc/chat_window_moc.cpp \
 moc/color_button_moc.cpp \
@@ -377,6 +380,8 @@ obj/about.$(OBJEXT) \
 obj/action.$(OBJEXT) \
 obj/chat_manager.$(OBJEXT) \
 obj/chat_message.$(OBJEXT) \
+obj/chat_messages_view.$(OBJEXT) \
+obj/chat_messages_view_moc.$(OBJEXT) \
 obj/chat_widget.$(OBJEXT) \
 obj/chat_window.$(OBJEXT) \
 obj/color_button.$(OBJEXT) \
@@ -768,6 +773,7 @@ include $(DEPS)/action_moc.d
 include $(DEPS)/chat_manager.d
 include $(DEPS)/chat_manager_moc.d
 include $(DEPS)/chat_message.d
+include $(DEPS)/chat_messages_view.d
 include $(DEPS)/chat_widget.d
 include $(DEPS)/chat_widget_moc.d
 include $(DEPS)/chat_window.d

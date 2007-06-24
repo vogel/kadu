@@ -8,6 +8,7 @@
 
 #include <qvaluelist.h>
 
+#include "chat_messages_view.h"
 #include "config_file.h"
 #include "custom_input.h"
 #include "emoticons.h"
@@ -47,7 +48,6 @@ class ChatWidget : public QHBox
 private:
 	friend class ChatManager;
 
-	QValueList<ChatMessage *> ChatMessages; /*!< wiadomo¶ci wpisane w oknie rozmowy */
 	QString Caption; /*!< tytu³ okna */
 	Protocol *CurrentProtocol;
 	UserGroup *Users; /*!< lista u¿ytkowników w danym oknie */
@@ -59,31 +59,14 @@ private:
 	EmoticonSelector* emoticon_selector; /*!< okienko do wyboru emotikonek */
 	ColorSelector* color_selector; /*!< okienko do wyboru koloru */
 	bool AutoSend; /*!< okre¶la czy Return powoduje wys³anie wiadomo¶ci */
-	bool ScrollLocked; /*!< blokuje przewijanie okna rozmowy */
 	bool WaitingForACK;
 	UserBox* userbox; /*!< lista kontaktów przydatna gdy jeste¶my w konferencji */
 	QString myLastMessage; /*!< zmienna przechowuj±ca nasz± ostatni± wiadomo¶æ */
 	KaduSplitter *vertSplit, *horizSplit; /*!< obiekty oddzielaj±ce kontrolki od siebie */
-	int ParagraphSeparator; /*!< odstêp miêdzy kolejnymi wypowiedziami */
 
 	QDateTime lastMsgTime; /*!< czas ostatniej wiadomo¶ci */
-	//pomijanie nag³ówków w wiadomo¶ciach
-	UserListElement PreviousSender;           //pamiêtamy od kogo by³a ostatnia wiadomo¶æ
-	bool CfgNoHeaderRepeat; /*!< okre¶la czy u¿ywamy usuwania nag³ówków */
-	int CfgHeaderSeparatorHeight; /*!< wysoko¶æ separatora nag³ówków */
-	int CfgNoHeaderInterval; /*!< interwa³ po jakim przywracany jest nag³ówek */
 
-	QString ChatSyntaxWithHeader;
-	QString ChatSyntaxWithoutHeader;
-	time_t LastTime;
-
-	/**
-		\fn void pruneMessages()
-		Funkcja czyszcz±ca okno rozmowy
-	**/
-	void pruneMessages();
-
-	KaduTextBrowser* body; /*!< historia rozmowy, proszê NIE dawaæ dostêpu na zewn±trz do tej zmiennej */
+	ChatMessagesView* body; /*!< historia rozmowy, proszê NIE dawaæ dostêpu na zewn±trz do tej zmiennej */
 
 	// TODO: remove
 	int activationCount;
@@ -96,29 +79,6 @@ private slots:
 		Slot zmieniaj±cy kolor czcionki
 	**/
 	void changeColor(const QWidget* activating_widget);
-
-	/**
-		\fn void pageUp()
-		Slot przewijaj±cy historiê rozmowy w górê
-	**/
-	void pageUp();
-
-	/**
-		\fn void pageDown()
-		Slot przewijaj±cy historiê rozmowy w dó³
-	**/
-	void pageDown();
-
-	/**
-		\fn void imageReceivedAndSaved(UinType sender,uint32_t size,uint32_t crc32,const QString& path)
-		TODO: zmieniæ nag³ówek
-		Slot obs³uguj±cy odebranie i zapis obrazka
-		\param sender osoba, która wys³a³a obrazek
-		\param size rozmiar obrazka
-		\param crc32 suma kontrolna obrazka
-		\param path ¶cie¿ka do obrazka
-	**/
-	void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString& path);
 
 	/**
 		\fn void connectAcknowledgeSlots();
@@ -173,15 +133,6 @@ public:
 	const UserGroup *users() const;
 
 	/**
-		\fn QValueList<ChatMessage*>& chatMessages()
-		Daje dostêp do wiadomo¶ci aktualnie przechowywanych
-		w oknie chat. Metody tej mo¿na u¿yæ do zmiany tre¶ci
-		lub w³a¶ciwo¶ci której¶ z wiadomo¶ci w odpowiedzi
-		na jakie¶ zdarzenie.
-	**/
-	QValueList<ChatMessage*>& chatMessages();
-
-	/**
 		\fn void repaintMessages()
 		Od¶wie¿a zawarto¶æ okna uwzglêdniaj±c ewentualne
 		zmiany dokonane w której¶ wiadomo¶ci z listy
@@ -217,7 +168,6 @@ public:
 	virtual void dropEvent(QDropEvent *e);
 	virtual void dragMoveEvent(QDragMoveEvent *e);
 
-	void scrollMessagesToBottom();
 	virtual bool eventFilter(QObject *watched, QEvent *e);
 
 	Protocol *currentProtocol();
@@ -263,11 +213,11 @@ public slots:
 	void editTextChanged();
 
 	/**
-		\fn void scrollMessages(const QValueList<ChatMessage *> &)
+		\fn void appendMessages(const QValueList<ChatMessage *> &)
 		Slot dodaj wiadomo¶ci do okna
 		\param messages lista wiadomo¶ci
 	**/
-	void scrollMessages(const QValueList<ChatMessage *> &);
+	void appendMessages(const QValueList<ChatMessage *> &);
 
 	/**
 		\fn void sendMessage()

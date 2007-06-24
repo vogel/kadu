@@ -1,3 +1,12 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef KADU_CHAT_MESSAGE_H
 #define KADU_CHAT_MESSAGE_H
 
@@ -57,7 +66,7 @@ public:
 	**/
 	ChatMessage(const UserListElement &ule, const QString &unformattedMessage, bool myMessage, QDateTime date, QDateTime sdate = QDateTime());
 
-	void replaceLoadingImages(UinType sender, uint32_t size, uint32_t crc32);
+	void replaceLoadingImages(UserListElement sender, uint32_t size, uint32_t crc32);
 
 	UserListElement sender() const { return Ule; }
 	QDateTime date() const { return Date; }

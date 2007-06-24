@@ -707,7 +707,7 @@ void ChatManager::openPendingMsgs(UserListElements users)
 	}
 	if (stop)
 	{
-		ChatWidgets[k]->scrollMessages(messages);
+		ChatWidgets[k]->appendMessages(messages);
 		UserBox::refreshAllLater();
 	}
 	else
@@ -749,7 +749,7 @@ void ChatManager::openPendingMsgs()
 	if (stop)
 	{
 		kdebugmf(KDEBUG_INFO, "stopped\n");
-		ChatWidgets[k]->scrollMessages(messages);
+		ChatWidgets[k]->appendMessages(messages);
 		UserBox::refreshAllLater();
 	}
 	kdebugf2();
@@ -789,7 +789,7 @@ void ChatManager::sendMessage(UserListElement user, UserListElements selected_us
 	}
 	if (stop)
 	{
-		ChatWidgets[k]->scrollMessages(messages);
+		ChatWidgets[k]->appendMessages(messages);
 		UserBox::refreshAllLater();
 	}
 	else

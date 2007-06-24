@@ -38,16 +38,13 @@
 #include "protocol.h"
 
 ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, QWidget* parent, const char* name)
-	: QHBox(parent, name), ChatMessages(), CurrentProtocol(initialProtocol),
+	: QHBox(parent, name), /*ChatMessages(),*/ CurrentProtocol(initialProtocol),
 	Users(new UserGroup(usrs)),
 	index(0), actcolor(), Edit(0),
 	bodyformat(new QMimeSourceFactory()), emoticon_selector(0), color_selector(0),
-	AutoSend(config_file.readBoolEntry("Chat", "AutoSend")), ScrollLocked(false),
+	AutoSend(config_file.readBoolEntry("Chat", "AutoSend")),
 	WaitingForACK(false), userbox(0), myLastMessage(),vertSplit(0), horizSplit(0),
-	ParagraphSeparator(config_file.readNumEntry("Look", "ParagraphSeparator")),
-	lastMsgTime() /*PreviousMessage()*/, CfgNoHeaderRepeat(config_file.readBoolEntry("Look","NoHeaderRepeat")),
-	CfgHeaderSeparatorHeight(0), CfgNoHeaderInterval(0), LastTime(0), body(0), activationCount(0),
-	NewMessagesCount(0)
+	activationCount(0), NewMessagesCount(0)
 {
 	kdebugf();
 	const int minimumDockAreaSize = 3;
@@ -84,29 +81,12 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	{
 		horizSplit = new KaduSplitter(Qt::Horizontal, topArea, "horizSplit");
 		horizSplit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-		body = new KaduTextBrowser(horizSplit, "body");
+		body = new ChatMessagesView(horizSplit, "body");
 	}
 	else
-		body = new KaduTextBrowser(topArea, "body");
+		body = new ChatMessagesView(topArea, "body");
 
-	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_ANIMATED)
-		body->setStyleSheet(new AnimStyleSheet(body,emoticons->themePath()));
-	else
-		body->setStyleSheet(new StaticStyleSheet(body,emoticons->themePath()));
-//	body->setTrueTransparency(true);
-
-	body->setMargin(ParagraphSeparator);
-	body->setMinimumSize(QSize(100,100));
-	body->setFont(config_file.readFontEntry("Look","ChatFont"));
-
-	// background color of chat
-	QString bgImage = KaduParser::parse(config_file.readEntry("Look", "ChatBgImage"), usrs[0]);
-	QBrush brush(config_file.readColorEntry("Look", "ChatBgColor"));
-	if (!bgImage.isEmpty() && QFile::exists(bgImage))
-		brush.setPixmap(QPixmap(bgImage));
-	body->setPaper(brush);
-
-//	QPoint pos = QCursor::pos();
+	body->setPrune(config_file.readUnsignedNumEntry("Chat", "ChatPruneLen"));
 
 	if (Users->count() > 1)
 	{
@@ -151,29 +131,6 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 
 	setFocusProxy(Edit);
 
-	QString chatSyntax = SyntaxList::readSyntax("chat", config_file.readEntry("Look", "Style"));
-	int beginOfHeader = chatSyntax.find("<kadu:header>");
-	int endOfHeader = chatSyntax.find("</kadu:header>");
-	ChatSyntaxWithHeader = chatSyntax;
-	ChatSyntaxWithHeader.replace("<kadu:header>", "");
-	ChatSyntaxWithHeader.replace("</kadu:header>", "");
-
-	if (endOfHeader != -1)
-		ChatSyntaxWithoutHeader = chatSyntax.mid(0, beginOfHeader) + chatSyntax.mid(endOfHeader + strlen("</kadu:header>"));
-	else
-		ChatSyntaxWithoutHeader = ChatSyntaxWithHeader;
-
-	printf("ChatSyntaxWithHeader: %s\n", ChatSyntaxWithHeader.data());
-	printf("ChatSyntaxWithoutHeader: %s\n", ChatSyntaxWithoutHeader.data());
-
-	// headers removal stuff
-	if (CfgNoHeaderRepeat)
-	{
-	    CfgHeaderSeparatorHeight = config_file.readNumEntry("Look","HeaderSeparatorHeight");
-	    CfgNoHeaderInterval = config_file.readNumEntry("Look","NoHeaderInterval");
-	    LastTime = 0;		//zerowanie licznika ró¿nicy czasu miêdzy wiadomo¶ciami
-	}
-
 	DockArea* btnpart = new DockArea(Qt::Horizontal, DockArea::Normal, downpart,
 		"chatBottomDockArea", Action::TypeGlobal | Action::TypeUser | Action::TypeChat);
 	connect(btnpart, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
@@ -184,9 +141,9 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	acc->connectItem(acc->insertItem(Key_Return + CTRL), this, SLOT(sendMessage()));
 
 	acc = new QAccel(this, "pageUpAccel");
-	acc->connectItem(acc->insertItem(Key_PageUp + SHIFT), this, SLOT(pageUp()));
+	acc->connectItem(acc->insertItem(Key_PageUp + SHIFT), body, SLOT(pageUp()));
 	acc = new QAccel(this, "pageDownAccel");
-	acc->connectItem(acc->insertItem(Key_PageDown + SHIFT), this, SLOT(pageDown()));
+	acc->connectItem(acc->insertItem(Key_PageDown + SHIFT), body, SLOT(pageDown()));
 
 	topDockArea->loadFromConfig(this);
 	leftDockArea->loadFromConfig(this);
@@ -220,10 +177,6 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 		KaduActions.addDefaultActionsToToolbar(tb3);
 	}
 
-	body->setMimeSourceFactory(bodyformat);
-	body->setTextFormat(Qt::RichText);
-	body->setFocusPolicy(QWidget::NoFocus);
-
 	Edit->setMimeSourceFactory(bodyformat);
 	Edit->setTextFormat(Qt::RichText);
 
@@ -253,15 +206,11 @@ ChatWidget::~ChatWidget()
 	disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)),
 		this, SLOT(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)));
 
-	FOREACH(msg, ChatMessages)
-		delete *msg;
-	ChatMessages.clear();
 
 	if (userbox)
 		delete userbox;
 	delete bodyformat;
 	delete Users;
-// 	delete Style;
 
 	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed: index %d\n", index);
 }
@@ -313,16 +262,6 @@ void ChatWidget::curPosChanged(int, int)
 		KaduActions["colorAction"]->setPixmaps(elems, p);
 	}
 	kdebugf2();
-}
-
-void ChatWidget::pageUp()
-{
-	body->scrollBy(0, (body->height() * -2) / 3);
-}
-
-void ChatWidget::pageDown()
-{
-	body->scrollBy(0, (body->height() * 2) / 3);
 }
 
 void ChatWidget::insertImage()
@@ -386,15 +325,6 @@ void ChatWidget::insertImage()
 	else
 		delete id;
 
-	kdebugf2();
-}
-
-void ChatWidget::imageReceivedAndSaved(UinType sender,uint32_t size,uint32_t crc32,const QString& /*path*/)
-{
-	kdebugf();
-	FOREACH(msg, ChatMessages)
-		(*msg)->replaceLoadingImages(sender, size, crc32);
-	repaintMessages();
 	kdebugf2();
 }
 
@@ -522,88 +452,18 @@ QDateTime ChatWidget::getLastMsgTime()
 	return lastMsgTime;
 }
 
-void ChatWidget::repaintMessages()
+void ChatWidget::appendMessages(const QValueList<ChatMessage *> &messages)
 {
-	kdebugf();
-
-	body->viewport()->setUpdatesEnabled(false);
-	QString text;
-
-	QValueList<ChatMessage *>::const_iterator chatMessage = ChatMessages.constBegin();
-	QValueList<ChatMessage *>::const_iterator end = ChatMessages.constEnd();
-
-	if (chatMessage == end)
-	{
-		kdebugf2();
-		return;
-	}
-
-	time_t prevTime = (*chatMessage)->date().toTime_t();
-	UserListElement previousSender = (*chatMessage)->sender();
-	(*chatMessage)->setSeparatorSize(0);
-
-	text += KaduParser::parse(ChatSyntaxWithHeader, (*chatMessage)->sender(), *chatMessage);
-
-	while (++chatMessage != end)
-	{
-		if (CfgNoHeaderRepeat)
-		{
-			time_t curTime = (*chatMessage)->date().toTime_t();
-			if ((curTime - prevTime <= (CfgNoHeaderInterval * 60)) && ((*chatMessage)->sender() == previousSender))
-			{
-				(*chatMessage)->setSeparatorSize(ParagraphSeparator);
-				text += KaduParser::parse(ChatSyntaxWithoutHeader, (*chatMessage)->sender(), *chatMessage);
-			}
-			else
-			{
-				(*chatMessage)->setSeparatorSize(CfgHeaderSeparatorHeight);
-				text += KaduParser::parse(ChatSyntaxWithHeader, (*chatMessage)->sender(), *chatMessage);
-			}
-			prevTime = curTime;
-		}
-		else
-		{
-			(*chatMessage)->setSeparatorSize(CfgHeaderSeparatorHeight);
-			text += KaduParser::parse(ChatSyntaxWithHeader, (*chatMessage)->sender(), *chatMessage);
-		}
-
-		previousSender = (*chatMessage)->sender();
-	}
-
-	body->setText(text);
-
-	int i = 0;
-	CONST_FOREACH(chatMessage, ChatMessages)
-		body->setParagraphBackgroundColor(i++, (*chatMessage)->backgroundColor);
-
-	if (!ScrollLocked)
-		body->scrollToBottom();
-
-	body->viewport()->setUpdatesEnabled(true);
-	body->viewport()->repaint();
-
-	kdebugf2();
-}
-
-void ChatWidget::scrollMessages(const QValueList<ChatMessage *> &messages)
-{
-	kdebugf();
-	if (config_file.readBoolEntry("ChatWidget","ChatWidgetPrune"))
-		pruneMessages();
-	ChatMessages+=messages;
-	repaintMessages();
-	kdebugf2();
+	body->appendMessages(messages);
 }
 
 /* invoked from outside when new message arrives, this is the window to the world */
 void ChatWidget::newMessage(const QString &/*protocolName*/, UserListElements senders, const QString &msg, time_t time)
 {
-	QValueList<ChatMessage *> messages;
 	QDateTime date;
 	date.setTime_t(time);
 	ChatMessage *message = new ChatMessage(senders[0], msg, false, QDateTime::currentDateTime(), date);
-	messages.append(message);
- 	scrollMessages(messages);
+	body->appendMessage(message);
 
 	lastMsgTime = QDateTime::currentDateTime();
 	NewMessagesCount++;
@@ -614,10 +474,8 @@ void ChatWidget::newMessage(const QString &/*protocolName*/, UserListElements se
 void ChatWidget::writeMyMessage()
 {
 	kdebugf();
-	QValueList<ChatMessage *> messages;
-	ChatMessage *msg=new ChatMessage(kadu->myself(), myLastMessage, true, QDateTime::currentDateTime());
-	messages.append(msg);
-	scrollMessages(messages);
+	ChatMessage *message = new ChatMessage(kadu->myself(), myLastMessage, true, QDateTime::currentDateTime());
+	body->appendMessage(message);
 
 	if (!Edit->isEnabled())
 		cancelMessage();
@@ -636,12 +494,7 @@ void ChatWidget::clearChatWindow()
 	kdebugf();
 	if (!config_file.readBoolEntry("ChatWidget", "ConfirmChatWidgetClear") || MessageBox::ask(tr("Chat window will be cleared. Continue?")))
 	{
-		FOREACH(msg, ChatMessages)
-			delete *msg;
-		ChatMessages.clear();
-		body->clear();
-		if (CfgNoHeaderRepeat)
-			LastTime = 0;
+		body->clearMessages();
 		setActiveWindow();
 	}
 	kdebugf2();
@@ -657,9 +510,7 @@ void ChatWidget::setAutoSend(bool auto_send)
 
 void ChatWidget::setScrollLocked(bool locked)
 {
-	kdebugf();
-	ScrollLocked = locked;
-	kdebugf2();
+	body->setScrollLocked(locked);
 }
 
 void ChatWidget::cancelMessage()
@@ -777,26 +628,6 @@ void ChatWidget::setLastMessage(const QString &msg)
 	myLastMessage = msg;
 }
 
-/* prunes messages */
-void ChatWidget::pruneMessages()
-{
-	kdebugf();
-	unsigned int chatPruneLen=config_file.readUnsignedNumEntry("ChatWidget","ChatWidgetPruneLen");
-
-	if (ChatMessages.size()<chatPruneLen)
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "end: nothing to do\n");
-		return;
-	}
-	QValueList<ChatMessage *>::iterator start=ChatMessages.begin();
-	QValueList<ChatMessage *>::iterator stop=ChatMessages.at(ChatMessages.size()-chatPruneLen+1);
-	for(QValueList<ChatMessage *>::iterator it=start; it!=stop; ++it)
-		delete *it;
-	ChatMessages.erase(start, stop);
-
-	kdebugf2();
-}
-
 void ChatWidget::openEmoticonSelector(const QWidget* activating_widget)
 {
 	//emoticons_selector zawsze bêdzie NULLem gdy wchodzimy do tej funkcji
@@ -850,11 +681,6 @@ void ChatWidget::addEmoticon(QString emot)
 const UserGroup *ChatWidget::users() const
 {
 	return Users;
-}
-
-QValueList<ChatMessage*>& ChatWidget::chatMessages()
-{
-	return ChatMessages;
 }
 
 const QString& ChatWidget::caption() const
@@ -913,11 +739,6 @@ void ChatWidget::dropEvent(QDropEvent *e)
 	}
 	else
 		e->accept(false);
-}
-
-void ChatWidget::scrollMessagesToBottom()
-{
-	body->scrollToBottom();
 }
 
 Protocol *ChatWidget::currentProtocol()

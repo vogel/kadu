@@ -69,12 +69,12 @@ static QString getReceivedDate(const QObject * const object)
 		return "";
 }
 
-static QString getSeparatorSize(const QObject * const object)
+static QString getSeparator(const QObject * const object)
 {
 	int separatorSize = dynamic_cast<const ChatMessage * const>(object)->separatorSize();
 
 	if (separatorSize)
-		return QString::number(separatorSize);
+		return "<img title=\"\" height=\"" + QString::number(separatorSize) + "\" width=\"10000\" align=\"right\">";
 	else
 		return "";
 }
@@ -87,7 +87,7 @@ void ChatMessage::registerParserTags()
 	KaduParser::registerObjectTag("nickColor", getNickColor);
 	KaduParser::registerObjectTag("sentDate", getSentDate);
 	KaduParser::registerObjectTag("receivedDate", getReceivedDate);
-	KaduParser::registerObjectTag("separatorSize", getSeparatorSize);
+	KaduParser::registerObjectTag("separator", getSeparator);
 }
 
 void ChatMessage::unregisterParserTags()
@@ -98,7 +98,7 @@ void ChatMessage::unregisterParserTags()
 	KaduParser::unregisterObjectTag("nickColor", getNickColor);
 	KaduParser::unregisterObjectTag("sentDate", getSentDate);
 	KaduParser::unregisterObjectTag("receivedDate", getReceivedDate);
-	KaduParser::unregisterObjectTag("separatorSize", getSeparatorSize);
+	KaduParser::unregisterObjectTag("separator", getSeparator);
 }
 
 ChatMessage::ChatMessage(const UserListElement &ule, const QString &unformattedMessage, bool myMessage, QDateTime date, QDateTime sdate)
@@ -155,7 +155,7 @@ QString ChatMessage::convertCharacters(QString edit, const QColor &bgcolor, Emot
 	return edit;
 }
 
-void ChatMessage::replaceLoadingImages(UinType sender, uint32_t size, uint32_t crc32)
+void ChatMessage::replaceLoadingImages(UserListElement sender, uint32_t size, uint32_t crc32)
 {
-	unformattedMessage = gadu_images_manager.replaceLoadingImages(unformattedMessage, sender, size, crc32);
+	unformattedMessage = gadu_images_manager.replaceLoadingImages(unformattedMessage, sender.ID("Gadu").toInt(), size, crc32);
 }
