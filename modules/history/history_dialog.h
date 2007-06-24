@@ -6,7 +6,9 @@
 #include "history.h"
 #include "history_search_dialog.h"
 
-class KaduTextBrowser;
+class ChatMessage;
+class ChatMessagesView;
+
 class QListView;
 class QListViewItem;
 
@@ -34,32 +36,33 @@ class DateListViewText : public QListViewItem {
 class HistoryDialog : public QDialog {
 	Q_OBJECT
 
-	public:
-		HistoryDialog(UinsList uins);
+protected:
+	ChatMessage * createChatMessage(const HistoryEntry &entry);
+	void showHistoryEntries(int from, int count);
+	void setDateListViewText(const QDateTime &datetime);
+	void searchHistory();
+	static const QString &gaduStatus2symbol(unsigned int status);
+	void closeEvent(QCloseEvent *e);
 
-	public slots:
-		void uinsChanged(QListViewItem *item);
-		void dateChanged(QListViewItem *item);
-		void searchBtnClicked();
-		void searchNextBtnClicked();
-		void searchPrevBtnClicked();
+	QListView *uinslv;
+	ChatMessagesView* body;
+	UinsList uins;
+	int start;
+	HistoryFindRec findrec;
+	bool closeDemand;
+	bool finding;
+	QValueList<HistoryDate> dateentries;
 
-	protected:
-		void formatHistoryEntry(QString &text, const HistoryEntry &entry, QStringList &paracolors);
-		void showHistoryEntries(int from, int count);
-		void setDateListViewText(const QDateTime &datetime);
-		void searchHistory();
-		static const QString &gaduStatus2symbol(unsigned int status);
-		void closeEvent(QCloseEvent *e);
+public:
+	HistoryDialog(UinsList uins);
 
-		QListView *uinslv;
-		KaduTextBrowser* body;
-		UinsList uins;
-		int start;
-		HistoryFindRec findrec;
-		bool closeDemand;
-		bool finding;
-		QValueList<HistoryDate> dateentries;
+public slots:
+	void uinsChanged(QListViewItem *item);
+	void dateChanged(QListViewItem *item);
+	void searchBtnClicked();
+	void searchNextBtnClicked();
+	void searchPrevBtnClicked();
+
 };
 
 #endif

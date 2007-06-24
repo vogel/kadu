@@ -204,15 +204,15 @@ void HistoryModule::chatCreated(ChatWidget *chat, time_t time)
 	for (; entry!=entriesEnd; ++entry)
 		if ((*entry).date.secsTo(QDateTime::currentDateTime()) <= -quotTime * 3600)
 		{
-			ChatMessage *msg;
+			ChatMessage *message;
 			if ((*entry).type == HISTORYMANAGER_ENTRY_MSGSEND || (*entry).type == HISTORYMANAGER_ENTRY_CHATSEND)
-				msg = new ChatMessage(kadu->myself(), (*entry).message, true, (*entry).date);
+				message = new ChatMessage(kadu->myself(), (*entry).message, true, (*entry).date);
 			else
-				msg = new ChatMessage(userlist->byAltNick((*entry).nick), (*entry).message, false, (*entry).date, (*entry).sdate);
-			messages.append(msg);
+			message = new ChatMessage(userlist->byID("Gadu", QString::number((*entry).uin)), (*entry).message, false, (*entry).date, (*entry).sdate);
+			messages.append(message);
 		}
 	if (!messages.empty())
-		chat->scrollMessages(messages);
+		chat->appendMessages(messages);
 	kdebugf2();
 }
 

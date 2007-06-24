@@ -7,19 +7,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "history_dialog.h"
-
-#include "config_file.h"
-#include "debug.h"
-#include "emoticons.h"
-#include "gadu_images_manager.h"
-#include "kadu_text_browser.h"
-#include "misc.h"
 #include <qlayout.h>
 #include <qpushbutton.h>
 #include <qregexp.h>
 #include <qsplitter.h>
 #include <qvbox.h>
+
+#include "chat_message.h"
+#include "chat_messages_view.h"
+#include "config_file.h"
+#include "debug.h"
+#include "emoticons.h"
+#include "gadu_images_manager.h"
+#include "kadu.h"
+#include "misc.h"
+
+#include "history_dialog.h"
 
 UinsListViewText::UinsListViewText(QListView *parent, const UinsList &uins)
 	: QListViewItem(parent), uins(uins)
@@ -81,15 +84,8 @@ HistoryDialog::HistoryDialog(UinsList uins) : QDialog(NULL, "HistoryDialog"), ui
 	uinslv->setRootIsDecorated(TRUE);
 
 	QVBox *vbox = new QVBox(splitter, "vbox");
-	body = new KaduTextBrowser(vbox, "body");
-	body->setReadOnly(true);
-	body->QTextEdit::setFont(config_file.readFontEntry("Look", "ChatFont"));
-	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_ANIMATED)
-		body->setStyleSheet(new AnimStyleSheet(body, emoticons->themePath()));
-	else
-		body->setStyleSheet(new StaticStyleSheet(body,emoticons->themePath()));
-
-	body->setMargin(4);
+	body = new ChatMessagesView(vbox, "body");
+	body->setPrune(0);
 
 	QHBox *btnbox = new QHBox(vbox, "btnbox");
 	QPushButton *searchbtn = new QPushButton(tr("&Find"), btnbox, "searchbtn");
@@ -191,126 +187,69 @@ void HistoryDialog::dateChanged(QListViewItem *item)
 	kdebugf2();
 }
 
-void HistoryDialog::formatHistoryEntry(QString &text, const HistoryEntry &entry, QStringList &paracolors)
+ChatMessage * HistoryDialog::createChatMessage(const HistoryEntry &entry)
 {
-	kdebugf();
-	QString bgcolor, textcolor;
-	QString message;
-
-	message = entry.message;
-	message.replace("\n", "<br/>");
-
-	if (entry.type & (HISTORYMANAGER_ENTRY_CHATSEND | HISTORYMANAGER_ENTRY_MSGSEND
-		| HISTORYMANAGER_ENTRY_SMSSEND))
-	{
-		bgcolor = config_file.readColorEntry("Look","ChatMyBgColor").name();
-		textcolor = config_file.readColorEntry("Look","ChatMyFontColor").name();
-	}
-	else
-	{
-		bgcolor = config_file.readColorEntry("Look","ChatUsrBgColor").name();
-		textcolor = config_file.readColorEntry("Look","ChatUsrFontColor").name();
-	}
-
-	const static QString format("<p style=\"background-color: %1\"><img title=\"\" height=\"%3\" width=\"10000\" align=\"right\"><font color=\"%2\"><b>");
-
-	text.append(format.arg(bgcolor).arg(textcolor).arg(4));
-	paracolors.append(bgcolor);
-
+	QString messageText = "hmm";
 	if (entry.type == HISTORYMANAGER_ENTRY_SMSSEND)
-		text.append(entry.mobile + " SMS");
-	else
-	{
-		QString nick;
-		if (entry.type & (HISTORYMANAGER_ENTRY_CHATSEND | HISTORYMANAGER_ENTRY_MSGSEND))
-			nick = config_file.readEntry("General","Nick");
-		else
-			nick = entry.nick;
-		HtmlDocument::escapeText(nick);
-		text.append(nick);
-	}
-
-	text.append(QString(" :: ") + printDateTime(entry.date));
-	if (entry.type & (HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV))
-		text.append(QString(" / S ") + printDateTime(entry.sdate));
-	text.append("</b><br/>");
-	if (entry.type & HISTORYMANAGER_ENTRY_STATUS)
+		messageText = entry.mobile + " SMS :: " + entry.message;
+	else if (entry.type & HISTORYMANAGER_ENTRY_STATUS)
 	{
 		switch (entry.status)
 		{
 			case GG_STATUS_AVAIL:
 			case GG_STATUS_AVAIL_DESCR:
-				text.append(tr("Online"));
+				messageText = tr("Online");
 				break;
 			case GG_STATUS_BUSY:
 			case GG_STATUS_BUSY_DESCR:
-				text.append(tr("Busy"));
+				messageText = tr("Busy");
 				break;
 			case GG_STATUS_INVISIBLE:
 			case GG_STATUS_INVISIBLE_DESCR:
-				text.append(tr("Invisible"));
+				messageText = tr("Invisible");
 				break;
 			case GG_STATUS_NOT_AVAIL:
 			case GG_STATUS_NOT_AVAIL_DESCR:
-				text.append(tr("Offline"));
+				messageText = tr("Offline");
 				break;
+			default:
+				messageText = tr("Unknown");
 		}
 		if (!entry.description.isEmpty())
-			text.append(QString(" (") + entry.description + ")");
-		text.append(QString(" ip=") + entry.ip);
+			messageText.append(QString(" (") + entry.description + ")");
+		messageText.append(QString(" ip=") + entry.ip);
 	}
 	else
-	{
-		HtmlDocument doc;
-		doc.parseHtml(message);
-		doc.convertUrlsToHtml();
+		messageText = entry.message;
 
-	 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")!=EMOTS_NONE && config_file.readBoolEntry("General", "ShowEmotHist"))
-	 	{
-			body->mimeSourceFactory()->addFilePath(emoticons->themePath());
-			emoticons->expandEmoticons(doc, bgcolor);
-		}
-		GaduImagesManager::setBackgroundsForAnimatedImages(doc, bgcolor);
+	bool isMyMessage = entry.type & (HISTORYMANAGER_ENTRY_CHATSEND | HISTORYMANAGER_ENTRY_MSGSEND | HISTORYMANAGER_ENTRY_SMSSEND);
 
-		text.append(doc.generateHtml());
-	}
-	text.append("</font></p>");
-	kdebugf2();
+	UserListElement sender;
+	if (isMyMessage)
+		sender = kadu->myself();
+	else
+		sender = userlist->byID("Gadu", QString::number(entry.uin));
+
+	return new ChatMessage(sender, messageText, isMyMessage, entry.date, entry.sdate);
 }
 
 void HistoryDialog::showHistoryEntries(int from, int count)
 {
 	kdebugf();
-	QString text;
-	QStringList paracolors;
-	unsigned int i;
 
 	bool noStatus = config_file.readBoolEntry("History", "DontShowStatusChanges");
-
 	QValueList<HistoryEntry> entries = history->getHistoryEntries(uins, from, count);
+	QValueList<ChatMessage *> chatMessages;
+
+	body->clearMessages();
 
 	QValueList<HistoryEntry>::const_iterator entry = entries.constBegin();
 	QValueList<HistoryEntry>::const_iterator lastEntry = entries.constEnd();
 	for(; entry != lastEntry; ++entry)
-		if ( ! (noStatus && (*entry).type & HISTORYMANAGER_ENTRY_STATUS))
-		{
-			formatHistoryEntry(text, *entry++, paracolors);
-			break;
-		}
-	//z pierwszej wiadomo¶ci usuwamy obrazek separatora
-	text.remove(QRegExp("<img title=\"\" height=\"[0-9]*\" width=\"10000\" align=\"right\">"));
+		if (!(noStatus && (*entry).type & HISTORYMANAGER_ENTRY_STATUS))
+			chatMessages.append(createChatMessage(*entry));
 
-	for (; entry != lastEntry; ++entry)
-		if ( ! (noStatus && (*entry).type & HISTORYMANAGER_ENTRY_STATUS))
-			formatHistoryEntry(text, *entry, paracolors);
-
-	body->setText(text);
-
-	i = 0;
-	CONST_FOREACH (paracolor, paracolors)
-		body->setParagraphBackgroundColor(i++, *paracolor);
-
-	kdebugf2();
+	body->appendMessages(chatMessages);
 }
 
 void HistoryDialog::searchBtnClicked()
@@ -381,7 +320,7 @@ void HistoryDialog::setDateListViewText(const QDateTime &datetime)
 		if (actlvi)
 		{
 			uinslv->setCurrentItem(actlvi);
-//			body->setSelection(0, 0, 1, 10);
+// 			body->setSelection(0, 0, 1, 10);
 		}
 	}
 	kdebugf2();
