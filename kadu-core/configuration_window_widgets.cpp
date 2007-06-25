@@ -305,7 +305,7 @@ void ConfigComboBox::createWidgets()
 {
 	kdebugf();
 
-	connect(this, SIGNAL(activated(int index)), this, SLOT(activatedSlot(int index)));
+	connect(this, SIGNAL(activated(int)), this, SLOT(activatedSlot(int)));
 
 	QGridLayout *layout = parentConfigGroupBox->layout();
 	int numRows = layout->numRows();
@@ -982,7 +982,7 @@ void ConfigListBox::createWidgets()
 {
 	kdebugf();
 
-	connect(this, SIGNAL(activated(int index)), this, SLOT(activatedSlot(int index)));
+	connect(this, SIGNAL(selected(int)), this, SLOT(activatedSlot(int)));
 
 	QGridLayout *layout = parentConfigGroupBox->layout();
 	int numRows = layout->numRows();

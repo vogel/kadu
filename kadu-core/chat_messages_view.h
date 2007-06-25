@@ -1,12 +1,3 @@
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
-
 #ifndef CHAT_MESSAGES_VIEW
 #define CHAT_MESSAGES_VIEW
 
@@ -20,7 +11,7 @@ class ChatMessagesView : public KaduTextBrowser
 	Q_OBJECT
 
 	QValueList<ChatMessage *> Messages;
-	int Prune;
+	unsigned int Prune;
 
 	bool CfgNoHeaderRepeat;
 	unsigned int CfgHeaderSeparatorHeight;
@@ -63,7 +54,7 @@ public:
 	void appendMessage(ChatMessage *message);
 	void appendMessages(QValueList<ChatMessage *> messages);
 
-	void setPrune(int prune);
+	void setPrune(unsigned int prune);
 
 public slots:
 	void clearMessages();

@@ -17,17 +17,12 @@
 
 #include "chat_messages_view.h"
 
-ChatMessagesView::ChatMessagesView(QWidget *parent, char *name)
-	: KaduTextBrowser(parent, name)
+ChatMessagesView::ChatMessagesView(QWidget *parent, char *name) : KaduTextBrowser(parent, name),
+	Prune(0), CfgNoHeaderRepeat(config_file.readBoolEntry("Look", "NoHeaderRepeat")),
+	CfgHeaderSeparatorHeight(0), CfgNoHeaderInterval(0),
+	ParagraphSeparator(config_file.readUnsignedNumEntry("Look", "ParagraphSeparator")),
+	ScrollLocked(false)
 {
-	ParagraphSeparator = config_file.readNumEntry("Look", "ParagraphSeparator");
-	CfgNoHeaderRepeat = config_file.readBoolEntry("Look","NoHeaderRepeat");
-	CfgHeaderSeparatorHeight = 0;
-	CfgNoHeaderInterval = 0;
-
-	ScrollLocked = false;
-	Prune = 0;
-
 	if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") == EMOTS_ANIMATED)
 		setStyleSheet(new AnimStyleSheet(this, emoticons->themePath()));
 	else
@@ -59,8 +54,8 @@ ChatMessagesView::ChatMessagesView(QWidget *parent, char *name)
 	// headers removal stuff
 	if (CfgNoHeaderRepeat)
 	{
-	    CfgHeaderSeparatorHeight = config_file.readNumEntry("Look","HeaderSeparatorHeight");
-	    CfgNoHeaderInterval = config_file.readNumEntry("Look","NoHeaderInterval");
+	    CfgHeaderSeparatorHeight = config_file.readUnsignedNumEntry("Look", "HeaderSeparatorHeight");
+	    CfgNoHeaderInterval = config_file.readUnsignedNumEntry("Look", "NoHeaderInterval");
 	}
 
 	bodyformat = new QMimeSourceFactory();
@@ -195,7 +190,7 @@ void ChatMessagesView::pruneMessages()
 	if (Prune == 0)
 		return;
 
-	if (Messages.size() < Prune)
+	if (Messages.count() < Prune)
 		return;
 
 	QValueList<ChatMessage *>::iterator start = Messages.begin();
@@ -209,7 +204,7 @@ void ChatMessagesView::pruneMessages()
 	Messages.erase(start, stop);
 }
 
-void ChatMessagesView::setPrune(int prune)
+void ChatMessagesView::setPrune(unsigned int prune)
 {
 	Prune = prune;
 }
