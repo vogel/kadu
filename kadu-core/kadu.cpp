@@ -1851,8 +1851,10 @@ void Kadu::import_0_5_0_configuration()
 
 	int maxImageSize = config_file.readNumEntry("Chat", "MaxImageSize", -1);
 	if (maxImageSize != -1)
+	{
 		config_file.writeEntry("Chat", "ReceiveImages", maxImageSize != 0);
-	config_file.removeVariable("Chat", "MaxImageSize");
+		config_file.removeVariable("Chat", "MaxImageSize");
+	}
 
 	int defaultStatusIndex = config_file.readNumEntry("General", "DefaultStatusIndex", -1);
 	if (defaultStatusIndex != -1)
@@ -1876,8 +1878,8 @@ void Kadu::import_0_5_0_configuration()
 			        break;
 		}
 		config_file.writeEntry("General", "StartupStaus", startupStatus);
+		config_file.removeVariable("General", "DefaultStatusIndex");
 	}
-	config_file.removeVariable("General", "DefaultStatusIndex");
 
 	QString infoPanelSyntax = config_file.readEntry("Look", "PanelContents", "nothing");
 	if (infoPanelSyntax != "nothing")
@@ -1885,8 +1887,8 @@ void Kadu::import_0_5_0_configuration()
 		config_file.writeEntry("Look", "InfoPanelSyntaxFile", "custom");
 		SyntaxList infoPanelList("infopanel");
 		infoPanelList.updateSyntax("custom", infoPanelSyntax);
+		config_file.removeVariable("Look", "PanelContents");
 	}
-	config_file.removeVariable("Look", "PanelContents");
 
 	QString chatSyntax = config_file.readEntry("Look", "FullStyle", "nothing");
 	if (chatSyntax != "nothing")
@@ -1900,8 +1902,8 @@ void Kadu::import_0_5_0_configuration()
 		chatSyntax = chatSyntax.replace("%6", "#{sentDate}");
 		chatSyntax = chatSyntax.replace("%7", "#{message}");
 		chatList.updateSyntax("custom", chatSyntax);
+		config_file.removeVariable("Look", "FullStyle");
 	}
-	config_file.removeVariable("Look", "FullStyle");
 
 	if (config_file.readBoolEntry("Look", "MultiColumnUserbox", false))
 	{
