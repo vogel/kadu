@@ -209,4 +209,6 @@ void ChatWindow::alertNewMessage()
 		else if (showNewMessagesNum) // ... so we check this condition as 'else'
 			showNewMessagesNumInTitle();
 	}
+	else
+		currentChatWidget->markAllMessagesRead();
 }
