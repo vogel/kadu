@@ -134,11 +134,17 @@ ConfigGGPasswordEdit::ConfigGGPasswordEdit(ConfigGroupBox *parentConfigGroupBox,
 
 void ConfigGGPasswordEdit::loadConfiguration()
 {
+	if (section.isEmpty())
+		return;
+
 	setText(pwHash(config_file.readEntry(section, item)));
 }
 
 void ConfigGGPasswordEdit::saveConfiguration()
 {
+	if (section.isEmpty())
+		return;
+
 	config_file.writeEntry(section, item, pwHash(text()));
 }
 
@@ -171,12 +177,18 @@ void ConfigCheckBox::createWidgets()
 
 void ConfigCheckBox::loadConfiguration()
 {
+	if (section.isEmpty())
+		return;
+
 	setChecked(config_file.readBoolEntry(section, item));
 	emit toggled(isChecked());
 }
 
 void ConfigCheckBox::saveConfiguration()
 {
+	if (section.isEmpty())
+		return;
+
 	config_file.writeEntry(section, item, isChecked());
 }
 
@@ -229,12 +241,18 @@ void ConfigSpinBox::createWidgets()
 
 void ConfigSpinBox::loadConfiguration()
 {
+	if (section.isEmpty())
+		return;
+
 	setValue(config_file.readNumEntry(section, item));
 	emit valueChanged(value());
 }
 
 void ConfigSpinBox::saveConfiguration()
 {
+	if (section.isEmpty())
+		return;
+
 	config_file.writeEntry(section, item, value());
 }
 
@@ -325,7 +343,7 @@ void ConfigComboBox::createWidgets()
 
 void ConfigComboBox::loadConfiguration()
 {
-	if (section == "")
+	if (section.isEmpty())
 		return;
 
 	QString currentValue = config_file.readEntry(section, item);
@@ -336,7 +354,7 @@ void ConfigComboBox::loadConfiguration()
 
 void ConfigComboBox::saveConfiguration()
 {
-	if (section == "")
+	if (section.isEmpty())
 		return;
 
 	config_file.writeEntry(section, item, itemValues[currentItem()]);
@@ -416,11 +434,17 @@ void ConfigHotKeyEdit::createWidgets()
 
 void ConfigHotKeyEdit::loadConfiguration()
 {
+	if (section.isEmpty())
+		return;
+
 	setShortCut(config_file.readEntry(section, item));
 }
 
 void ConfigHotKeyEdit::saveConfiguration()
 {
+	if (section.isEmpty())
+		return;
+
 	config_file.writeEntry(section, item, shortCutString());
 }
 
@@ -475,11 +499,17 @@ void ConfigPathListEdit::createWidgets()
 
 void ConfigPathListEdit::loadConfiguration()
 {
+	if (section.isEmpty())
+		return;
+
 	setPathList(QStringList::split(QRegExp("(;|:)"), config_file.readEntry(section, item)));
 }
 
 void ConfigPathListEdit::saveConfiguration()
 {
+	if (section.isEmpty())
+		return;
+
 	config_file.writeEntry(section, item, pathList().join(":"));
 }
 
@@ -534,11 +564,17 @@ void ConfigColorButton::createWidgets()
 
 void ConfigColorButton::loadConfiguration()
 {
+	if (section.isEmpty())
+		return;
+
 	setColor(config_file.readColorEntry(section, item));
 }
 
 void ConfigColorButton::saveConfiguration()
 {
+	if (section.isEmpty())
+		return;
+
 	config_file.writeEntry(section, item, color());
 }
 
@@ -593,11 +629,17 @@ void ConfigSelectFont::createWidgets()
 
 void ConfigSelectFont::loadConfiguration()
 {
+	if (section.isEmpty())
+		return;
+
 	setFont(config_file.readFontEntry(section, item));
 }
 
 void ConfigSelectFont::saveConfiguration()
 {
+	if (section.isEmpty())
+		return;
+
 	config_file.writeEntry(section, item, font());
 }
 
@@ -652,11 +694,17 @@ void ConfigSyntaxEditor::createWidgets()
 
 void ConfigSyntaxEditor::loadConfiguration()
 {
+	if (section.isEmpty())
+		return;
+
 	setCurrentSyntax(config_file.readEntry(section, item));
 }
 
 void ConfigSyntaxEditor::saveConfiguration()
 {
+	if (section.isEmpty())
+		return;
+
 	config_file.writeEntry(section, item, currentSyntax());
 }
 
@@ -757,11 +805,17 @@ void ConfigSelectFile::createWidgets()
 
 void ConfigSelectFile::loadConfiguration()
 {
+	if (section.isEmpty())
+		return;
+
 	setFile(config_file.readEntry(section, item));
 }
 
 void ConfigSelectFile::saveConfiguration()
 {
+	if (section.isEmpty())
+		return;
+
 	config_file.writeEntry(section, item, file());
 }
 
@@ -870,12 +924,18 @@ void ConfigSlider::createWidgets()
 
 void ConfigSlider::loadConfiguration()
 {
+	if (section.isEmpty())
+		return;
+
 	setValue(config_file.readNumEntry(section, item));
 	emit valueChanged(value());
 }
 
 void ConfigSlider::saveConfiguration()
 {
+	if (section.isEmpty())
+		return;
+
 	config_file.writeEntry(section, item, value());
 }
 
