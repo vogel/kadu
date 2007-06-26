@@ -207,7 +207,7 @@ ChatWidget::~ChatWidget()
 
 	disconnectAcknowledgeSlots();
 	disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)),
-		this, SLOT(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)));
+		body, SLOT(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)));
 
 
 	if (userbox)
