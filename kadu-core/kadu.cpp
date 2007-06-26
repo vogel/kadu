@@ -127,8 +127,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	Myself.addProtocol("Gadu", config_file.readEntry("General", "UIN"));
 	Myself.setAltNick(config_file.readEntry("General", "Nick"));
 
-	import_0_5_0_configuration();
-
 	QWidget w;
 	config_file.addVariable("Look", "InfoPanelBgColor", w.paletteBackgroundColor());
 	config_file.addVariable("Look", "InfoPanelFgColor", w.paletteForegroundColor());
@@ -209,6 +207,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	groups_manager->setTabBar(GroupBar);
 	setDocked(Docked, dontHideOnClose);
 
+	import_0_5_0_configuration();
 	loadGeometry(this, "General", "Geometry", 0, 30, 145, 465);
 
 	readIgnored();
