@@ -103,7 +103,7 @@ ConfigTab::ConfigTab(const QString &name, ConfigSection *configSection, QTabWidg
 
 ConfigTab::~ConfigTab()
 {
-	delete mainWidget;
+// 	delete mainWidget;
 }
 
 ConfigGroupBox *ConfigTab::configGroupBox(const QString &name, bool create)
@@ -180,8 +180,8 @@ void ConfigSection::removedConfigTab(const QString &configTabName)
 
 	if (!configTabs.count())
 	{
-		configurationWindow->removedConfigSection(name);
 		delete this;
+		configurationWindow->removedConfigSection(name);
 	}
 }
 
@@ -601,7 +601,7 @@ void ConfigurationWindow::changeSection(const QString &newSectionName)
 void ConfigurationWindow::removedConfigSection(const QString &sectionName)
 {
 	// TODO: finish it
-	configSections.remove(sectionName);
+//	configSections.remove(sectionName);
 // 	sectionsListBox->remove(tr(sectionName));
 }
 
