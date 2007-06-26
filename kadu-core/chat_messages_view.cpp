@@ -84,7 +84,7 @@ void ChatMessagesView::pageDown()
 	scrollBy(0, (height() * 2) / 3);
 }
 
-void ChatMessagesView::imageReceivedAndSaved(UserListElement sender, uint32_t size, uint32_t crc32,const QString & /*path*/)
+void ChatMessagesView::imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32,const QString & /*path*/)
 {
 	FOREACH(message, Messages)
 		(*message)->replaceLoadingImages(sender, size, crc32);

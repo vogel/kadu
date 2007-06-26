@@ -1,6 +1,7 @@
 #ifndef CHAT_MESSAGES_VIEW
 #define CHAT_MESSAGES_VIEW
 
+#include "gadu.h"
 #include "kadu_text_browser.h"
 #include "userlistelement.h"
 
@@ -45,7 +46,7 @@ private slots:
 		\param crc32 suma kontrolna obrazka
 		\param path ¶cie¿ka do obrazka
 	**/
-	void imageReceivedAndSaved(UserListElement sender, uint32_t size, uint32_t crc32, const QString& path);
+	void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString& path);
 
 public:
 	ChatMessagesView(QWidget *parent = 0, char *name = 0);
