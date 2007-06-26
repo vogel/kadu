@@ -275,7 +275,7 @@ void SoundManager::import_0_5_0_configuration()
 
 		CONST_FOREACH(entry, entries)
 			if (!entry.key().isEmpty() && !(*entry).isEmpty())
-				config_file.writeEntry("Sounds", entry.key() + "_sound", *entry);
+				config_file.writeEntry("Sounds", entry.key() + "_sound", themes->themePath() +  *entry);
 	}
 	config_file.removeVariable("Sounds", "SoundTheme");
 }
@@ -287,7 +287,7 @@ void SoundManager::applyTheme()
 
 	CONST_FOREACH(entry, entries)
 		if (!entry.key().isEmpty() && !(*entry).isEmpty())
-			config_file.writeEntry("Sounds", entry.key() + "_sound", *entry);
+			config_file.writeEntry("Sounds", entry.key() + "_sound", themes->themePath() + *entry);
 }
 
 Themes *SoundManager::theme()

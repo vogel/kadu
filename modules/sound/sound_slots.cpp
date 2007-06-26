@@ -55,7 +55,7 @@ void SoundConfigurationWidget::saveNotifyConfigurations()
 	CONST_FOREACH(soundFile, soundFiles)
 	{
 		const QString &eventName = soundFile.key();
-		config_file.writeEntry("Sound", eventName + "_sound", *soundFile);
+		config_file.writeEntry("Sounds", eventName + "_sound", *soundFile);
 	}
 }
 
@@ -68,7 +68,7 @@ void SoundConfigurationWidget::switchToEvent(const QString &event)
 	if (soundFiles.contains(event))
 		soundFileSelectFile->setFile(soundFiles[event]);
 	else
-		soundFileSelectFile->setFile(config_file.readEntry("Sound", event + "_sound"));
+		soundFileSelectFile->setFile(config_file.readEntry("Sounds", event + "_sound"));
 }
 
 SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name),
