@@ -207,8 +207,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	groups_manager->setTabBar(GroupBar);
 	setDocked(Docked, dontHideOnClose);
 
-	import_0_5_0_configuration();
 	loadGeometry(this, "General", "Geometry", 0, 30, 145, 465);
+	import_0_5_0_configuration();
 
 	readIgnored();
 
@@ -1905,7 +1905,7 @@ void Kadu::import_0_5_0_configuration()
 
 	if (config_file.readBoolEntry("Look", "MultiColumnUserbox", false))
 	{
-		int columns = (kadu->userbox()->width() - 20) / config_file.readNumEntry("Look", "MultiColumnUserboxWidth", (kadu->userbox()->width() - 20));
+		int columns = (Userbox->width() - 20) / config_file.readNumEntry("Look", "MultiColumnUserboxWidth", (Userbox->width() - 20));
 		config_file.writeEntry("Look", "UserBoxColumnCount", columns);
 	}
 	config_file.removeVariable("Look", "MultiColumnUserbox");
