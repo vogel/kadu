@@ -6,7 +6,7 @@
 				<check-box caption="Remove completed transfers from transfers list" config-section="Network" config-item="RemoveCompletedTransfers" />
 			</group-box>
 			<group-box name="IP">
-				<check-box caption="DCC IP autodetection" config-section="Network" config-item="DccIpDetect" id="dcc/ipAutotetect" />
+				<check-box caption="DCC IP autodetection" config-section="Network" config-item="DccIpDetect" id="dcc/ipAutodetect" />
 				<line-edit caption="IP address" config-section="Network" config-item="DccIP" id="dcc/ipAddress" />
 				<check-box caption="DCC forwarding enabled" config-section="Network" config-item="DccForwarding" id="dcc/forwarding" />
 				<line-edit caption="External IP address" config-section="Network" config-item="ExternalIP" id="dcc/forwardingExternalIp" />

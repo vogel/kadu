@@ -324,7 +324,7 @@ DccManager::~DccManager()
 
 void DccManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	ipAutotetect = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widgetById("dcc/ipAutotetect"));
+	ipAutotetect = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widgetById("dcc/ipAutodetect"));
 	ipAddress = mainConfigurationWindow->widgetById("dcc/ipAddress");
 	forwarding = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widgetById("dcc/forwarding"));
 	forwardingExternalIp = mainConfigurationWindow->widgetById("dcc/forwardingExternalIp");
