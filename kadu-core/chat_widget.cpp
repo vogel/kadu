@@ -86,7 +86,10 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	else
 		body = new ChatMessagesView(topArea, "body");
 
-	body->setPrune(config_file.readUnsignedNumEntry("Chat", "ChatPruneLen"));
+	if (config_file.readBoolEntry("Chat", "ChatPrune"))
+		body->setPrune(config_file.readUnsignedNumEntry("Chat", "ChatPruneLen"));
+	else
+		body->setPrune(0);
 
 	if (Users->count() > 1)
 	{

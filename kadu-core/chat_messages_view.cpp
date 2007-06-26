@@ -216,6 +216,8 @@ void ChatMessagesView::clearMessages()
 	Messages.clear();
 
 	clear();
+	updateBackgrounds();
+	viewport()->repaint();
 }
 
 void ChatMessagesView::setScrollLocked(bool scrollLocked)
