@@ -12,6 +12,7 @@
 #include <qtabwidget.h>
 
 #include "config_file.h"
+#include "configuration_aware_object.h"
 #include "configuration_window_widgets.h"
 #include "debug.h"
 #include "emoticons.h"
@@ -579,7 +580,8 @@ void ConfigurationWindow::updateConfig()
 {
 	emit configurationWindowApplied();
 	saveConfiguration(this);
-	emit configurationUpdated();
+
+	ConfigurationAwareObject::notifyAll();
 }
 
 void ConfigurationWindow::changeSection(const QString &newSectionName)

@@ -18,45 +18,12 @@
 #include "chat_messages_view.h"
 
 ChatMessagesView::ChatMessagesView(QWidget *parent, char *name) : KaduTextBrowser(parent, name),
-	Prune(0), CfgNoHeaderRepeat(config_file.readBoolEntry("Look", "NoHeaderRepeat")),
-	CfgHeaderSeparatorHeight(0), CfgNoHeaderInterval(0),
-	ParagraphSeparator(config_file.readUnsignedNumEntry("Look", "ParagraphSeparator")),
-	ScrollLocked(false)
+	Prune(0), ScrollLocked(false)
 {
-	if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") == EMOTS_ANIMATED)
-		setStyleSheet(new AnimStyleSheet(this, emoticons->themePath()));
-	else
-		setStyleSheet(new StaticStyleSheet(this, emoticons->themePath()));
-
 	setMargin(ParagraphSeparator);
 	setMinimumSize(QSize(100,100));
-	setFont(config_file.readFontEntry("Look","ChatFont"));
 
-	// background color of chat
-// 	QString bgImage = KaduParser::parse(config_file.readEntry("Look", "ChatBgImage"), usrs[0]);
-	QBrush brush(config_file.readColorEntry("Look", "ChatBgColor"));
-// 	if (!bgImage.isEmpty() && QFile::exists(bgImage))
-// 		brush.setPixmap(QPixmap(bgImage));
-	setPaper(brush);
-
-	QString chatSyntax = SyntaxList::readSyntax("chat", config_file.readEntry("Look", "Style"));
-	int beginOfHeader = chatSyntax.find("<kadu:header>");
-	int endOfHeader = chatSyntax.find("</kadu:header>");
-	ChatSyntaxWithHeader = chatSyntax;
-	ChatSyntaxWithHeader.replace("<kadu:header>", "");
-	ChatSyntaxWithHeader.replace("</kadu:header>", "");
-
-	if (endOfHeader != -1)
-		ChatSyntaxWithoutHeader = chatSyntax.mid(0, beginOfHeader) + chatSyntax.mid(endOfHeader + strlen("</kadu:header>"));
-	else
-		ChatSyntaxWithoutHeader = ChatSyntaxWithHeader;
-
-	// headers removal stuff
-	if (CfgNoHeaderRepeat)
-	{
-	    CfgHeaderSeparatorHeight = config_file.readUnsignedNumEntry("Look", "HeaderSeparatorHeight");
-	    CfgNoHeaderInterval = config_file.readUnsignedNumEntry("Look", "NoHeaderInterval");
-	}
+	configurationUpdated();
 
 	bodyformat = new QMimeSourceFactory();
 	setMimeSourceFactory(bodyformat);
@@ -223,4 +190,50 @@ void ChatMessagesView::clearMessages()
 void ChatMessagesView::setScrollLocked(bool scrollLocked)
 {
 	ScrollLocked = scrollLocked;
+}
+
+void ChatMessagesView::configurationUpdated()
+{
+	if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") == EMOTS_ANIMATED)
+		setStyleSheet(new AnimStyleSheet(this, emoticons->themePath()));
+	else
+		setStyleSheet(new StaticStyleSheet(this, emoticons->themePath()));
+
+	setFont(config_file.readFontEntry("Look","ChatFont"));
+
+	// background color of chat
+// 	QString bgImage = KaduParser::parse(config_file.readEntry("Look", "ChatBgImage"), usrs[0]);
+	QBrush brush(config_file.readColorEntry("Look", "ChatBgColor"));
+// 	if (!bgImage.isEmpty() && QFile::exists(bgImage))
+// 		brush.setPixmap(QPixmap(bgImage));
+	setPaper(brush);
+
+	QString chatSyntax = SyntaxList::readSyntax("chat", config_file.readEntry("Look", "Style"));
+	int beginOfHeader = chatSyntax.find("<kadu:header>");
+	int endOfHeader = chatSyntax.find("</kadu:header>");
+	ChatSyntaxWithHeader = chatSyntax;
+	ChatSyntaxWithHeader.replace("<kadu:header>", "");
+	ChatSyntaxWithHeader.replace("</kadu:header>", "");
+
+	if (endOfHeader != -1)
+		ChatSyntaxWithoutHeader = chatSyntax.mid(0, beginOfHeader) + chatSyntax.mid(endOfHeader + strlen("</kadu:header>"));
+	else
+		ChatSyntaxWithoutHeader = ChatSyntaxWithHeader;
+
+	CfgNoHeaderRepeat = config_file.readBoolEntry("Look", "NoHeaderRepeat");
+	ParagraphSeparator = config_file.readUnsignedNumEntry("Look", "ParagraphSeparator");
+
+	// headers removal stuff
+	if (CfgNoHeaderRepeat)
+	{
+		CfgHeaderSeparatorHeight = config_file.readUnsignedNumEntry("Look", "HeaderSeparatorHeight");
+		CfgNoHeaderInterval = config_file.readUnsignedNumEntry("Look", "NoHeaderInterval");
+	}
+	else
+	{
+		CfgHeaderSeparatorHeight = 0;
+		CfgNoHeaderInterval = 0;
+	}
+
+	repaintMessages();
 }

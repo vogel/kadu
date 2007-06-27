@@ -1575,12 +1575,8 @@ void Kadu::configurationUpdated()
 
 	changeAppearance();
 	groups_manager->refreshTabBar();
-	chat_manager->configurationUpdated();
 	UserBox::setColorsOrBackgrounds();
 
-	Userbox->configurationUpdated();
-	groups_manager->configurationUpdated();
-	icons_manager->configurationUpdated();
 	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
 
 	gadu->changeID(config_file.readEntry("General", "UIN"));

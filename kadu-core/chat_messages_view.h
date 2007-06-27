@@ -1,13 +1,14 @@
 #ifndef CHAT_MESSAGES_VIEW
 #define CHAT_MESSAGES_VIEW
 
+#include "configuration_aware_object.h"
 #include "gadu.h"
 #include "kadu_text_browser.h"
 #include "userlistelement.h"
 
 class ChatMessage;
 
-class ChatMessagesView : public KaduTextBrowser
+class ChatMessagesView : public KaduTextBrowser, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -31,6 +32,9 @@ class ChatMessagesView : public KaduTextBrowser
 	QString formatMessage(ChatMessage *message, ChatMessage *after);
 
 	void pruneMessages();
+
+protected:
+	virtual void configurationUpdated();
 
 private slots:
 	void pageUp();

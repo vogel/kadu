@@ -98,7 +98,6 @@ public:
 
 signals:
 	void configurationWindowApplied();
-	void configurationUpdated();
 
 };
 

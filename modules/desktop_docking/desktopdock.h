@@ -4,6 +4,7 @@
 #include <qpixmap.h>
 #include <qlabel.h>
 
+#include "configuration_aware_object.h"
 #include "main_configuration_window.h"
 
 /* DesktopDockWindow - ikonka dokujaca */
@@ -37,7 +38,7 @@ signals:
 
 };
 
-class DesktopDock : public ConfigurationUiHandler
+class DesktopDock : public ConfigurationUiHandler, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -48,9 +49,10 @@ class DesktopDock : public ConfigurationUiHandler
 	int menuPos;
 	int separatorPos;
 
-private slots:
-	void configurationUpdated();
+protected:
+	virtual void configurationUpdated();
 
+private slots:
 	void setToolTip(const QString &statusText);
 	void setPixmap(const QPixmap &DockPixmap, const QString &iconName);
 	void setTrayMovie(const QMovie &movie);

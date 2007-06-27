@@ -8,6 +8,7 @@
 
 #include <vector>
 
+#include "configuration_aware_object.h"
 #include "gadu.h"
 #include "misc.h"
 #include "userlistelement.h"
@@ -362,7 +363,7 @@ class UserBoxMenu : public QPopupMenu
 	\class UserBox
 	\brief Wy¶wietlana lista kontaktów.
 **/
-class UserBox : public QListBox
+class UserBox : public QListBox, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -499,7 +500,8 @@ class UserBox : public QListBox
 
 		static CreateNotifier createNotifier;
 
-		void configurationUpdated();
+	protected:
+		virtual void configurationUpdated();
 
 	public slots:
 

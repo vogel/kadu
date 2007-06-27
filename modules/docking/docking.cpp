@@ -67,7 +67,6 @@ DockingManager::DockingManager()
 
 void DockingManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	connect(mainConfigurationWindow, SIGNAL(configurationUpdated()), this, SLOT(configurationUpdated()));
 }
 
 void DockingManager::configurationUpdated()

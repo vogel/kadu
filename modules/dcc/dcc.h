@@ -4,6 +4,7 @@
 #include <qhostaddress.h>
 #include <qtimer.h>
 
+#include "configuration_aware_object.h"
 #include "gadu.h"
 #include "main_configuration_window.h"
 
@@ -61,7 +62,7 @@ signals:
 	void dccFinished(DccSocket* dcc);
 };
 
-class DccManager : public ConfigurationUiHandler
+class DccManager : public ConfigurationUiHandler, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -102,7 +103,9 @@ private slots:
 	void dccSent();
 
 	void onIpAutotetectToggled(bool toggled);
-	void configurationUpdated();
+
+protected:
+	virtual void configurationUpdated();
 
 public:
 	DccManager();

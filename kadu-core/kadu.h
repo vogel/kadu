@@ -7,6 +7,7 @@
 #include <qtimer.h>
 #include <qvaluelist.h>
 
+#include "configuration_aware_object.h"
 #include "dockarea.h"
 #include "gadu.h"
 #include "status.h"
@@ -28,7 +29,7 @@ class MainConfigurationWindow;
 /**
 	G³ówne okno Kadu
 **/
-class Kadu : public QWidget
+class Kadu : public QWidget, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -112,12 +113,12 @@ class Kadu : public QWidget
 
 		void changeStatus(UserStatus status);
 
-		void configurationUpdated();
-
 	protected:
 		void keyPressEvent(QKeyEvent *e);
 		virtual void resizeEvent(QResizeEvent *);
 		virtual void customEvent(QCustomEvent *);
+
+		virtual void configurationUpdated();
 //		virtual void moveEvent(QMoveEvent *);
 
 	public:

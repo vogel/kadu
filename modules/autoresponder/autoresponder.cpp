@@ -96,8 +96,6 @@ void AutoResponder::chatOpenedClosed(ChatWidget *chat)
 
 void AutoResponder::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) 
 {
-	connect(mainConfigurationWindow, SIGNAL(configurationUpdated()), this, SLOT(configurationUpdated()));
-
 	QToolTip::add(mainConfigurationWindow->widgetById("autoresponder/AutoText") , Kadu::SyntaxText);
 }
 

@@ -4,6 +4,7 @@
 #include <qobject.h>
 
 #include "config_file.h"
+#include "configuration_aware_object.h"
 #include "main_configuration_window.h"
 #include "misc.h"
 #include "protocol.h"
@@ -15,7 +16,7 @@
 
 class ChatWidget;
 
-class AutoResponder : public ConfigurationUiHandler
+class AutoResponder : public ConfigurationUiHandler, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -37,6 +38,13 @@ class AutoResponder : public ConfigurationUiHandler
 		**/
 		void import_0_5_0_Configuration();
 
+	protected:
+		/**
+			\fn void configurationUpdated()
+			Metoda jest wywo³ywana po zmianie w oknie konfiguracyjnym.
+		**/
+		virtual void configurationUpdated();
+
 	public:
 		/**
 			\fn AutoResponder(QObject *parent=0, const char *name=0)
@@ -49,11 +57,6 @@ class AutoResponder : public ConfigurationUiHandler
 		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 	public slots:
-		/**
-			\fn void configurationUpdated()
-			Slot jest wywo³ywany po zmianie w oknie konfiguracyjnym.
-		**/
-		void configurationUpdated();
 
 		/**
 			\fn void messageReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t time)

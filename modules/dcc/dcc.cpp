@@ -331,8 +331,6 @@ void DccManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainCon
 	forwardingExternalPort = mainConfigurationWindow->widgetById("dcc/forwardingExternalPort");
 	forwardingLocalPort = mainConfigurationWindow->widgetById("dcc/forwardingLocalPort");
 
-	connect(mainConfigurationWindow, SIGNAL(configurationUpdated()), this, SLOT(configurationUpdated()));
-
 	connect(forwarding, SIGNAL(toggled(bool)), forwardingExternalIp, SLOT(setEnabled(bool)));
 	connect(forwarding, SIGNAL(toggled(bool)), forwardingExternalPort, SLOT(setEnabled(bool)));
 	connect(forwarding, SIGNAL(toggled(bool)), forwardingLocalPort, SLOT(setEnabled(bool)));

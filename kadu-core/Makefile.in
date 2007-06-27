@@ -210,6 +210,7 @@ chat_widget.cpp \
 chat_window.cpp \
 color_button.cpp \
 color_selector.cpp \
+configuration_aware_object.cpp \
 configuration_window.cpp \
 configuration_window_widgets.cpp \
 config_file.cpp \
@@ -272,6 +273,7 @@ chat_widget.h \
 chat_window.h \
 color_button.h \
 color_selector.h \
+configuration_aware_object.h \
 configuration_window.h \
 configuration_window_widgets.h \
 config_file.h \
@@ -387,6 +389,7 @@ obj/chat_window.$(OBJEXT) \
 obj/color_button.$(OBJEXT) \
 obj/color_selector.$(OBJEXT) \
 obj/config_file.$(OBJEXT) \
+obj/configuration_aware_object.$(OBJEXT) \
 obj/configuration_window.$(OBJEXT) \
 obj/configuration_window_widgets.$(OBJEXT) \
 obj/custom_input.$(OBJEXT) \

@@ -17,6 +17,7 @@
 #include <qlistbox.h>
 #include <qptrstack.h>
 
+#include "configuration_aware_object.h"
 #include "debug.h"
 #include "http_client.h"
 #include "main_configuration_window.h"
@@ -134,7 +135,7 @@ class Sms : public QWidget {
 typedef SmsGateway* isValidFunc(const QString&, QObject*);
 
 // TODO: split into SmsConfigurationUiHandler and SmsGatewayManager and some more...
-class SmsConfigurationUiHandler : public ConfigurationUiHandler
+class SmsConfigurationUiHandler : public ConfigurationUiHandler, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -147,8 +148,8 @@ class SmsConfigurationUiHandler : public ConfigurationUiHandler
 	QLineEdit *customString;
 	QListBox *gatewayListBox;
 
-private slots:
-	void configurationUpdated();
+protected:
+	virtual void configurationUpdated();
 
 public:
 	SmsConfigurationUiHandler();

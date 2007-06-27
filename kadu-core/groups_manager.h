@@ -8,6 +8,7 @@
 #include <qtimer.h>
 #include <qvariant.h>
 
+#include "configuration_aware_object.h"
 #include "usergroup.h"
 #include "userlistelement.h"
 
@@ -19,7 +20,7 @@ class KaduTabBar;
 	\class GroupsManager
 	\brief
 **/
-class GroupsManager : public QObject
+class GroupsManager : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 	public:
@@ -85,7 +86,8 @@ class GroupsManager : public QObject
 		**/
 		QString currentGroupName() const;
 
-		void configurationUpdated();
+	protected:
+		virtual void configurationUpdated();
 
 	public slots:
 

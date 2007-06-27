@@ -4,13 +4,14 @@
 #include <qlabel.h>
 #include <qpixmap.h>
 
+#include "configuration_aware_object.h"
 #include "main_configuration_window.h"
 
 /**
  * @defgroup docking Docking
  * @{
  */
-class DockingManager : public ConfigurationUiHandler
+class DockingManager : public ConfigurationUiHandler, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -19,14 +20,15 @@ class DockingManager : public ConfigurationUiHandler
 	bool blink;
 	void defaultToolTip();
 
+protected:
+	virtual void configurationUpdated();
+
 private slots:
 	void statusPixmapChanged(const QPixmap &icon, const QString &iconName);
 	void changeIcon();
 	void dockletChange(int id);
 	void pendingMessageAdded();
 	void pendingMessageDeleted();
-
-	void configurationUpdated();
 
 public:
 	DockingManager();

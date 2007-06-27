@@ -29,8 +29,6 @@ void MainConfigurationWindow::registerUiFile(const QString &uiFile, Configuratio
 	UiFiles.append(qMakePair(uiFile, uiHandler));
 	if (Instance)
 	{
-		connect(Instance, SIGNAL(configurationUpdated()), uiHandler, SLOT(configurationUpdated()));
-
 		QValueList<ConfigWidget *> widgets = Instance->appendUiFile(uiFile);
 
 		if (uiHandler)
@@ -491,7 +489,6 @@ void MainConfigurationWindow::showLookChatAdvanced()
 		connect(lookChatAdvanced->widgetById("foldLink"), SIGNAL(toggled(bool)), lookChatAdvanced->widgetById("linkFoldTreshold"), SLOT(setEnabled(bool)));
 		connect(lookChatAdvanced->widgetById("chatCloseTimer"), SIGNAL(toggled(bool)), lookChatAdvanced->widgetById("chatCloseTimerPeriod"), SLOT(setEnabled(bool)));
 
-		connect(lookChatAdvanced, SIGNAL(configurationUpdated()), this, SIGNAL(configurationUpdated()));
 		connect(lookChatAdvanced, SIGNAL(destroyed()), this, SLOT(lookChatAdvancedDestroyed()));
 	}
 

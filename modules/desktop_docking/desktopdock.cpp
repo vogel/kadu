@@ -152,8 +152,6 @@ DesktopDock::~DesktopDock()
 
 void DesktopDock::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	connect(mainConfigurationWindow, SLOT(configurationUpdated()), this, SIGNAL(configurationUpdated()));
-
 	connect(mainConfigurationWindow->widgetById("desktop_docking/transparent"), SIGNAL(toggled(bool)),
 		mainConfigurationWindow->widgetById("desktop_docking/color"), SLOT(setDisabled(bool)));
 	connect(mainConfigurationWindow->widgetById("desktop_docking/move"), SIGNAL(clicked()), desktopDock, SLOT(startMoving()));

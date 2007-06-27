@@ -7,9 +7,10 @@
 #include <qstring.h>
 #include <qvaluelist.h>
 
+#include "configuration_aware_object.h"
 #include "themes.h"
 
-class IconsManager : public Themes
+class IconsManager : public Themes, ConfigurationAwareObject
 {
 	Q_OBJECT
 	public:
@@ -42,7 +43,8 @@ class IconsManager : public Themes
 		void registerMenuItem(QMenuData *menu, const QString &caption, const QString &iconName);
 		void unregisterMenuItem(QMenuData *menu, const QString &caption);
 
-		void configurationUpdated();
+	protected:
+		virtual void configurationUpdated();
 
 	public slots:
 		void clear();

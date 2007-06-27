@@ -7,6 +7,7 @@
 #include "chat_widget.h"
 #include "chat_window.h"
 #include "chat_message.h"
+#include "configuration_aware_object.h"
 #include "toolbar.h"
 #include "usergroup.h"
 
@@ -19,7 +20,7 @@ class Protocol;
 	\brief Klasa zarz±dzaj±ca oknami ChatWidget
 **/
 
-class ChatManager : public QObject
+class ChatManager : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -68,6 +69,9 @@ class ChatManager : public QObject
 		void insertImageActionActivated(const UserGroup* users);
 		void sendActionActivated(const UserGroup* users);
 		void chatActionActivated(const UserGroup* users);
+
+	protected:
+		virtual void configurationUpdated();
 
 	public:
 		/**
@@ -144,8 +148,6 @@ class ChatManager : public QObject
 
 		void loadOpenedWindows();
 		void saveOpenedWindows();
-
-		void configurationUpdated();
 
 	public slots:
 

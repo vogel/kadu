@@ -622,8 +622,6 @@ void SmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfiguration
 
 	connect(mainConfigurationWindow->widgetById("sms/up"), SIGNAL(clicked()), this, SLOT(onUpButton()));
 	connect(mainConfigurationWindow->widgetById("sms/down"), SIGNAL(clicked()), this, SLOT(onDownButton()));
-
-	connect(mainConfigurationWindow, SIGNAL(configurationUpdated()), this, SLOT(configurationUpdated()));
 }
 
 SmsConfigurationUiHandler *smsConfigurationUiHandler;

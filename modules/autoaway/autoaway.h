@@ -6,6 +6,7 @@
 #include <qtimer.h>
 #include <qevent.h>
 
+#include "configuration_aware_object.h"
 #include "main_configuration_window.h"
 #include "status_changer.h"
 #include "gadu.h"
@@ -52,7 +53,7 @@ public:
 
 };
 
-class AutoAway : public ConfigurationUiHandler
+class AutoAway : public ConfigurationUiHandler, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -79,7 +80,6 @@ class AutoAway : public ConfigurationUiHandler
 
 private slots:
 	void checkIdleTime();
-	void configurationUpdated();
 
 	void autoAwaySpinBoxValueChanged(int value);
 	void autoInvisibleSpinBoxValueChanged(int value);
@@ -89,6 +89,7 @@ private slots:
 
 protected:
 	bool eventFilter(QObject *, QEvent *);
+	virtual void configurationUpdated();
 
 public:
 	AutoAway(QObject *parent = 0, const char *name=0);
