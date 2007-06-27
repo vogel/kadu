@@ -9,9 +9,7 @@
 #include "autoresponder.h"
 #include "chat_widget.h"
 #include "chat_manager.h"
-// #include "config_dialog.h"
 #include "debug.h"
-#include "gadu.h"
 #include "kadu.h"
 #include "kadu_parser.h"
 
@@ -21,61 +19,46 @@
  */
 extern "C" int autoresponder_init()
 {
-	autoresponder = new AutoResponder(NULL, "autoresponder");
+	autoresponder = new AutoResponder();
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/autoresponder.ui"), autoresponder);
 	return 0;
 }
 
 extern "C" void autoresponder_close()
 {
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/autoresponder.ui"), autoresponder);
 	delete autoresponder;
-	autoresponder = NULL;
+	autoresponder = 0;
 }
 
-AutoResponder::AutoResponder(QObject *parent, const char *name) : QObject(parent, name),
-	config(new ConfigFile(ggPath("autoresponder.conf"))),
-	replied(userlist->count() / 2, "replied_(autoresponder)")
+AutoResponder::AutoResponder(QObject *parent, const char *name) : QObject(parent, name), repliedUsers()
 {
 	kdebugf();
-	connect(gadu, SIGNAL(messageRecieved(Protocol *, UserListElements, const QString&, time_t)),
-		this, SLOT(messageRecieved(Protocol *, UserListElements, const QString&, time_t)));
-	connect(chat_manager, SIGNAL(chatCreated(Chat *)), this, SLOT(chatOpened(Chat *)));
 
-// 	ConfigDialog::addTab(QT_TRANSLATE_NOOP("@default", "Autoresponder"), "AutoresponderTab");
-// 	ConfigDialog::addVGroupBox( "Autoresponder", "Autoresponder", QT_TRANSLATE_NOOP( "@default", "Autoresponder options" ));
-// 	ConfigDialog::addLineEdit(config, "Autoresponder","Autoresponder options",
-// 		QT_TRANSLATE_NOOP("@default", "Autoanswer text:"),
-// 		"Autotext",
-// 		tr("Thanks for your message %a. I'm not available right now."), Kadu::SyntaxText);
-// 	ConfigDialog::addLabel("Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP("@default","Choose status:"));
-// 	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP("@default", "Status invisible"), "StatusInvisible", false);
-// 	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP("@default", "Status busy"), "StatusBusy", true);
-// 	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP("@default", "Status available"), "StatusAvailable",false);
-// 	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP("@default", "Only for the first time"), "OnlyFirstTime", true);
-// 	ConfigDialog::addCheckBox(config, "Autoresponder", "Autoresponder options", QT_TRANSLATE_NOOP("@default", "Respond to conferences"), "RespondConf", false);
+	connect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString &, time_t )),
+		this, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
+	connect(chat_manager, SIGNAL(chatWidgetOpen(ChatWidget *)), this, SLOT(chatOpenedClosed(ChatWidget *)));
+	connect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatOpenedClosed(ChatWidget *)));
+
+	import_0_5_0_Configuration();
+	configurationUpdated();
+
 	kdebugf2();
 }
 
 AutoResponder::~AutoResponder()
 {
 	kdebugf();
-	disconnect(gadu, SIGNAL(messageRecieved(Protocol *, UserListElements, const QString&, time_t)),
-		this, SLOT(messageRecieved(Protocol *, UserListElements, const QString&, time_t)));
-	disconnect(chat_manager, SIGNAL(chatCreated(Chat *)), this, SLOT(chatOpened(Chat *)));
-// 	ConfigDialog::removeControl("Autoresponder", "Respond to conferences");
-// 	ConfigDialog::removeControl("Autoresponder", "Choose status:");
-// 	ConfigDialog::removeControl("Autoresponder", "Status invisible");
-// 	ConfigDialog::removeControl("Autoresponder", "Status busy");
-// 	ConfigDialog::removeControl("Autoresponder", "Status available");
-// 	ConfigDialog::removeControl("Autoresponder", "Autoanswer text:");
-// 	ConfigDialog::removeControl("Autoresponder", "Only for the first time");
-// 	ConfigDialog::removeControl("Autoresponder", "Autoresponder options");
-// 	ConfigDialog::removeTab("Autoresponder");
-	config->sync();
-	delete config;
+
+	disconnect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString&, time_t)),
+		this, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
+	disconnect(chat_manager, SIGNAL(chatWidgetOpen(ChatWidget *)), this, SLOT(chatOpenedClosed(ChatWidget *)));
+	disconnect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatOpenedClosed(ChatWidget *)));
+
 	kdebugf2();
 }
 
-void AutoResponder::messageRecieved(Protocol * /*protocol*/, UserListElements senders, const QString& msg, time_t /*time*/)
+void AutoResponder::messageReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t /*time*/)
 {
 	kdebugf();
 	if (msg.left(5) == "KADU ")
@@ -83,54 +66,69 @@ void AutoResponder::messageRecieved(Protocol * /*protocol*/, UserListElements se
 		kdebugf2();
 		return;
 	}
-	bool respConf = config_file.readBoolEntry("Autoresponder", "RespondConf");
-	if (!respConf && senders.size() > 1)
+
+	if (!respondConferences && (senders.count() > 1))
 	{
 		kdebugf2();
 		return;
 	}
 
-	bool was = false;					//to pamieta czy okienko juz otwarte czy nie
-	if (replied.count() != 0)
-		CONST_FOREACH(sender, senders)
-			if (replied.contains(*sender))
-				was = true;						//jak bylo to bylo=true
-
-	bool respond = config->readBoolEntry("Autoresponder", "StatusInvisible") &&
-				gadu->status().isInvisible();
-
-	if (!respond)
-		respond = config->readBoolEntry("Autoresponder", "StatusBusy") &&
-				gadu->status().isBusy();;
-
-	if (!respond)
-		respond = config->readBoolEntry("Autoresponder", "StatusAvailable") &&
-				gadu->status().isOnline();
-
-	if (config->readBoolEntry("Autoresponder", "OnlyFirstTime") && was)
-		respond = false;			//to zablokuje odpisanie na wiadomosc
-
-	if (respond)
+	if (respondOnlyFirst && repliedUsers.contains(senders))
 	{
-		gadu->sendMessage(senders, tr("KADU AUTORESPONDER:")+"\n"+
-						KaduParser::parse(config->readEntry("Autoresponder", "Autotext"), senders[0]));
-		CONST_FOREACH(sender, senders)
-			replied.addUser(*sender);	//doda kolesi do listy (jednego jak jeden albo wszystkich z konferencji
+		kdebugf2();
+		return;
+	}
+
+	if ((statusAvailable && protocol->status().isOnline()) || (statusBusy && protocol->status().isBusy()) || (statusInvisible && protocol->status().isInvisible()))
+	{
+		protocol->sendMessage(senders, tr("KADU AUTORESPONDER:") + "\n" + KaduParser::parse(autotext, senders[0]));
+
+		repliedUsers.append(senders); // dolaczamy uzytkownikow, ktorym odpowiedziano
 	}
 
 	kdebugf2();
 }
 
-void AutoResponder::chatOpened(ChatWidget *chat)
+void AutoResponder::chatOpenedClosed(ChatWidget *chat)
 {
-	const UserGroup *group = chat->users();
+	repliedUsers.remove(chat->users()->toUserListElements());
+}
 
-	CONST_FOREACH(sender, *group)
-		if (replied.contains(*sender))
-			replied.removeUser(*sender);
+void AutoResponder::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) 
+{
+	connect(mainConfigurationWindow, SIGNAL(configurationUpdated()), this, SLOT(configurationUpdated()));
+
+	QToolTip::add(mainConfigurationWindow->widgetById("autoresponder/AutoText") , Kadu::SyntaxText);
+}
+
+void AutoResponder::configurationUpdated()
+{
+	kdebugf();
+
+	autotext = config_file.readEntry("Autoresponder", "Autotext");
+
+	respondConferences = config_file.readBoolEntry("Autoresponder", "RespondConf");
+	respondOnlyFirst = config_file.readBoolEntry("Autoresponder", "OnlyFirstTime");
+
+	statusAvailable = config_file.readBoolEntry("Autoresponder", "StatusAvailable");
+	statusBusy = config_file.readBoolEntry("Autoresponder", "StatusBusy");
+	statusInvisible = config_file.readBoolEntry("Autoresponder", "StatusInvisible");
+
+	kdebugf2();
+}
+
+void AutoResponder::import_0_5_0_Configuration()
+{
+	ConfigFile* oldConfig = new ConfigFile(ggPath("autoresponder.conf"));
+	config_file.addVariable("Autoresponder", "Autotext", oldConfig->readEntry("Autoresponder", "Autotext"));
+	config_file.addVariable("Autoresponder", "StatusInvisible", oldConfig->readEntry("Autoresponder", "StatusInvisible"));
+	config_file.addVariable("Autoresponder", "StatusBusy", oldConfig->readEntry("Autoresponder", "StatusBusy"));
+	config_file.addVariable("Autoresponder", "StatusAvailable", oldConfig->readEntry("Autoresponder", "StatusAvailable"));
+	config_file.addVariable("Autoresponder", "OnlyFirstTime", oldConfig->readEntry("Autoresponder", "OnlyFirstTime"));
+	config_file.addVariable("Autoresponder", "RespondConf", oldConfig->readEntry("Autoresponder", "RespondConf"));
+	delete oldConfig;
 }
 
 AutoResponder* autoresponder;
 
 /** @} */
-
