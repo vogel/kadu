@@ -1,5 +1,6 @@
 #ifndef KADU_USERLIST_PRIVATE_H
 #define KADU_USERLIST_PRIVATE_H
+
 #include <qdict.h>
 #include <qintdict.h>
 #include <qmap.h>
