@@ -9,23 +9,26 @@
 class AccountManagement : public QObject
 {
 	Q_OBJECT
+
 	private:
-	int remindMenuId;
-	int changeMenuId;
-	int registerMenuId;
-	int unregisterMenuId;
+		int remindMenuId;
+		int changeMenuId;
+		int registerMenuId;
+		int unregisterMenuId;
 	
 	public:
-	AccountManagement();
-	~AccountManagement();
+		AccountManagement();
+		~AccountManagement();
 	
 	public slots:
-	void registerUser();
-	void unregisterUser();
-	void remindPassword();
-	void changePassword();
+		void registerUser();
+		void unregisterUser();
+		void remindPassword();
+		void changePassword();
 };
 
 extern AccountManagement *account_management;
+
 /** @} */
+
 #endif

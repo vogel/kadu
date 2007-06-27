@@ -34,6 +34,7 @@
 void Register::createConfig()
 {
 	kdebugf();
+
 	char *home = getenv("HOME");
 	struct passwd *pw;
 
@@ -67,25 +68,25 @@ void Register::createConfig()
 	kdebugf2();
 }
 
-Register::Register(QDialog *parent, const char *name) : QHBox(parent, name),
+Register::Register(QDialog *parent, const char *name) : QHBox(parent, name, WDestructiveClose),
 	pwd(0), pwd2(0), mailedit(0), status(0), uin(0), cb_updateconfig(0),
 	layoutHelper(new LayoutHelper())
 {
 	kdebugf();
-	setWFlags(Qt::WDestructiveClose);
+
 	setCaption(tr("Register user"));
 	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
-	QVBox *left=new QVBox(this);
+	QVBox *left = new QVBox(this);
 	left->setMargin(10);
 	left->setSpacing(10);
 
 	QLabel *l_icon = new QLabel(left);
-	QWidget *blank=new QWidget(left);
+	QWidget *blank = new QWidget(left);
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	QVBox *center=new QVBox(this);
+	QVBox *center = new QVBox(this);
 	center->setMargin(10);
 	center->setSpacing(10);
 
@@ -104,7 +105,6 @@ Register::Register(QDialog *parent, const char *name) : QHBox(parent, name),
 	//end our QGroupBox
 
 	// create needed fields
-
 	new QLabel(tr("New email:"), vgb_email);
 	mailedit = new QLineEdit(vgb_email);
 
@@ -138,14 +138,17 @@ Register::Register(QDialog *parent, const char *name) : QHBox(parent, name),
 	layoutHelper->addLabel(l_info);
 
  	loadGeometry(this, "General", "RegisterDialogGeometry", 0, 30, 400, 400);
+
 	kdebugf2();
 }
 
 Register::~Register()
 {
 	kdebugf();
+
 	saveGeometry(this, "General", "RegisterDialogGeometry");
 	delete layoutHelper;
+
 	kdebugf2();
 }
 
@@ -160,7 +163,8 @@ void Register::keyPressEvent(QKeyEvent *ke_event)
 		close();
 }
 
-void Register::doRegister() {
+void Register::doRegister()
+{
 	kdebugf();
 
 	if (pwd->text() != pwd2->text())
@@ -176,19 +180,16 @@ void Register::doRegister() {
 		return;
 	}
 
-	QString Password, Email;
-
-	Password = pwd->text();
-	Email = mailedit->text();
-
 	setEnabled(false);
-	gadu->registerAccount(Email, Password);
+	gadu->registerAccount(mailedit->text(), pwd->text());
+
 	kdebugf2();
 }
 
 void Register::registered(bool ok, UinType uin)
 {
 	kdebugf();
+
 	if (ok)
 	{
 		this->uin = uin;
@@ -201,19 +202,23 @@ void Register::registered(bool ok, UinType uin)
 		MessageBox::msg(tr("An error has occured while registration. Please try again later."), false, "Warning", this);
 		setEnabled(true);
 	}
+
 	kdebugf2();
 }
 
 
-void Register::ask() {
+void Register::ask()
+{
 	kdebugf();
-	if (cb_updateconfig->isChecked()) {
-		config_file.writeEntry("General","UIN",(int)uin);
-		config_file.writeEntry("General","Password",pwHash(pwd->text()));
+
+	if (cb_updateconfig->isChecked())
+	{
+		config_file.writeEntry("General", "UIN", (int)uin);
+		config_file.writeEntry("General", "Password", pwHash(pwd->text()));
 		createConfig();
-		}
+	}
+
 	kdebugf2();
 }
 
 /** @} */
-

@@ -21,7 +21,8 @@ class Unregister : public QHBox {
 		~Unregister();
 
 	private:
-		QLineEdit *uin, *pwd;
+		QLineEdit *uin;
+		QLineEdit *pwd;
 		QLabel *status;
 		QCheckBox *updateconfig;
 		LayoutHelper *layoutHelper;
@@ -38,6 +39,7 @@ class Unregister : public QHBox {
 	protected:
 		virtual void resizeEvent(QResizeEvent *);
 };
-/** @} */
-#endif
 
+/** @} */
+
+#endif

@@ -25,7 +25,9 @@
 extern "C" int account_management_init()
 {
 	kdebugf();
-	account_management=new AccountManagement();
+
+	account_management = new AccountManagement();
+
 	kdebugf2();
 	return 0;
 }
@@ -33,21 +35,24 @@ extern "C" int account_management_init()
 extern "C" void account_management_close()
 {
 	kdebugf();
+
 	delete account_management;
-	account_management=NULL;
+	account_management = 0;
+
 	kdebugf2();
 }
 
 AccountManagement::AccountManagement()
 {
 	kdebugf();
-	QPopupMenu *MainMenu=kadu->mainMenu();
-	int index=MainMenu->indexOf(kadu->personalInfoMenuId);
 
-	unregisterMenuId=MainMenu->insertItem(icons_manager->loadIcon("UnregisterUser"),tr("Unregister user"), this, SLOT(unregisterUser()), 0, -1, index);
-	registerMenuId=MainMenu->insertItem(icons_manager->loadIcon("RegisterUser"),tr("Register &new user"), this, SLOT(registerUser()), 0, -1, index);
-	changeMenuId=MainMenu->insertItem(icons_manager->loadIcon("ChangePassMail"),tr("&Change password / email"), this, SLOT(changePassword()), 0, -1, index);
-	remindMenuId=MainMenu->insertItem(icons_manager->loadIcon("RemindPass"),tr("Remind &password"), this, SLOT(remindPassword()), 0, -1, index);
+	QPopupMenu *MainMenu = kadu->mainMenu();
+	int index = MainMenu->indexOf(kadu->personalInfoMenuId);
+
+	unregisterMenuId = MainMenu->insertItem(icons_manager->loadIcon("UnregisterUser"), tr("Unregister user"), this, SLOT(unregisterUser()), 0, -1, index);
+	registerMenuId = MainMenu->insertItem(icons_manager->loadIcon("RegisterUser"), tr("Register &new user"), this, SLOT(registerUser()), 0, -1, index);
+	changeMenuId = MainMenu->insertItem(icons_manager->loadIcon("ChangePassMail"), tr("&Change password / email"), this, SLOT(changePassword()), 0, -1, index);
+	remindMenuId = MainMenu->insertItem(icons_manager->loadIcon("RemindPass"), tr("Remind &password"), this, SLOT(remindPassword()), 0, -1, index);
 
 	icons_manager->registerMenuItem(MainMenu, tr("Unregister user"), "UnregisterUser");
 	icons_manager->registerMenuItem(MainMenu, tr("Register &new user"), "RegisterUser");
@@ -93,4 +98,3 @@ void AccountManagement::changePassword()
 AccountManagement *account_management=NULL;
 
 /** @} */
-

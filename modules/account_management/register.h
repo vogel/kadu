@@ -25,7 +25,9 @@ class Register : public QHBox {
 		~Register();
 
 	private:
-		QLineEdit *pwd, *pwd2, *mailedit;
+		QLineEdit *pwd;
+		QLineEdit *pwd2;
+		QLineEdit *mailedit;
 		QLabel *status;
 		UinType uin;
 		QCheckBox *cb_updateconfig;
@@ -44,5 +46,7 @@ class Register : public QHBox {
 	protected:
 		virtual void resizeEvent(QResizeEvent *);
 };
+
 /** @} */
+
 #endif

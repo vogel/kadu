@@ -26,24 +26,24 @@
  * @ingroup account_management
  * @{
  */
-Unregister::Unregister(QDialog *parent, const char *name) : QHBox(parent, name),
+Unregister::Unregister(QDialog *parent, const char *name) : QHBox(parent, name, WDestructiveClose),
 	uin(0), pwd(0), status(0), updateconfig(0), layoutHelper(new LayoutHelper())
 {
 	kdebugf();
-	setWFlags(Qt::WDestructiveClose);
+
 	setCaption(tr("Unregister user"));
 	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
-	QVBox *left=new QVBox(this);
+	QVBox *left = new QVBox(this);
 	left->setMargin(10);
 	left->setSpacing(10);
 
 	QLabel *l_icon = new QLabel(left);
-	QWidget *blank=new QWidget(left);
+	QWidget *blank = new QWidget(left);
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	QVBox *center=new QVBox(this);
+	QVBox *center = new QVBox(this);
 	center->setMargin(10);
 	center->setSpacing(10);
 
@@ -62,7 +62,6 @@ Unregister::Unregister(QDialog *parent, const char *name) : QHBox(parent, name),
 	//end our QGroupBox
 
 	// create needed fields
-
 	new QLabel(tr("UIN:"), vgb_uinpass);
 	uin = new QLineEdit(vgb_uinpass);
 
@@ -87,14 +86,17 @@ Unregister::Unregister(QDialog *parent, const char *name) : QHBox(parent, name),
 	layoutHelper->addLabel(l_info);
 
  	loadGeometry(this, "General", "UnregisterDialogGeometry", 0, 30, 355, 340);
+
 	kdebugf2();
 }
 
 Unregister::~Unregister()
 {
 	kdebugf();
+
 	saveGeometry(this, "General", "UnregisterDialogGeometry");
 	delete layoutHelper;
+
 	kdebugf2();
 }
 
@@ -109,7 +111,8 @@ void Unregister::keyPressEvent(QKeyEvent *ke_event)
 		close();
 }
 
-void Unregister::doUnregister() {
+void Unregister::doUnregister()
+{
 	kdebugf();
 
 	if (!uin->text().toUInt() || pwd->text().isEmpty())
@@ -118,15 +121,15 @@ void Unregister::doUnregister() {
 		return;
 	}
 
-	QString Password = pwd->text();
 	setEnabled(false);
-	gadu->unregisterAccount(uin->text().toUInt(), Password);
+	gadu->unregisterAccount(uin->text().toUInt(), pwd->text());
 	kdebugf2();
 }
 
 void Unregister::unregistered(bool ok)
 {
 	kdebugf();
+
 	if (ok)
 	{
 		MessageBox::msg(tr("Unregistation was successful. Now you don't have any GG number :("), false, "Information", this);
@@ -137,14 +140,16 @@ void Unregister::unregistered(bool ok)
 		MessageBox::msg(tr("An error has occured while unregistration. Please try again later."), false, "Critical", this);
 		setEnabled(true);
 	}
+
 	kdebugf2();
 }
 
-void Unregister::deleteConfig() {
+void Unregister::deleteConfig()
+{
 	kdebugf();
 
 	QFile::remove(ggPath("kadu.conf"));
-	config_file.writeEntry("General","UIN",0);
+	config_file.writeEntry("General", "UIN", 0);
 
 	qApp->mainWidget()->setCaption(tr("No user"));
 
@@ -152,4 +157,3 @@ void Unregister::deleteConfig() {
 }
 
 /** @} */
-

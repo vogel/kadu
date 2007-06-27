@@ -25,24 +25,24 @@
  * @ingroup account_management
  * @{
  */
-RemindPassword::RemindPassword(QDialog *parent, const char *name) : QHBox(parent, name),
-	EmailEdit(0), layoutHelper(new LayoutHelper())
+RemindPassword::RemindPassword(QDialog *parent, const char *name) : QHBox(parent, name, WDestructiveClose),
+	emailedit(0), layoutHelper(new LayoutHelper())
 {
 	kdebugf();
-	setWFlags(Qt::WDestructiveClose);
+
 	setCaption(tr("Remind password"));
 	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
-	QVBox *left=new QVBox(this);
+	QVBox *left = new QVBox(this);
 	left->setMargin(10);
 	left->setSpacing(10);
 
 	QLabel *l_icon = new QLabel(left);
-	QWidget *blank=new QWidget(left);
+	QWidget *blank = new QWidget(left);
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	QVBox *center=new QVBox(this);
+	QVBox *center = new QVBox(this);
 	center->setMargin(10);
 	center->setSpacing(10);
 
@@ -60,7 +60,7 @@ RemindPassword::RemindPassword(QDialog *parent, const char *name) : QHBox(parent
 	// create needed fields
 
 	new QLabel(tr("Email (as during registration):"), vgb_email);
-	EmailEdit = new QLineEdit(vgb_email);
+	emailedit = new QLineEdit(vgb_email);
 
 	// end create needed fields
 
@@ -80,14 +80,17 @@ RemindPassword::RemindPassword(QDialog *parent, const char *name) : QHBox(parent
 
 	loadGeometry(this, "General", "RemindPasswordDialogGeometry", 0, 30, 355, 200);
 	connect(gadu, SIGNAL(reminded(bool)), this, SLOT(reminded(bool)));
+
 	kdebugf2();
 }
 
 RemindPassword::~RemindPassword()
 {
 	kdebugf();
+
 	saveGeometry(this, "General", "RemindPasswordDialogGeometry");
 	delete layoutHelper;
+
 	kdebugf2();
 }
 
@@ -105,22 +108,24 @@ void RemindPassword::keyPressEvent(QKeyEvent* ke_event)
 void RemindPassword::start()
 {
 	kdebugf();
-	QString mail = EmailEdit->text();
+
 	setEnabled(false);
-	gadu->remindPassword(config_file.readNumEntry("General", "UIN"), mail);
+	gadu->remindPassword(config_file.readNumEntry("General", "UIN"), emailedit->text());
+
 	kdebugf2();
 }
 
 void RemindPassword::reminded(bool ok)
 {
 	kdebugf();
+
 	if (ok)
 		MessageBox::msg(tr("Your password has been send on your email"), false, "Information", this);
 	else
 		MessageBox::msg(tr("Error during remind password"), false, "Critical", this);
 	close();
+
 	kdebugf2();
 }
 
 /** @} */
-

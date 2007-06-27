@@ -16,7 +16,7 @@ class RemindPassword : public QHBox
 	Q_OBJECT
 
 	private:
-		QLineEdit* EmailEdit;
+		QLineEdit* emailedit;
 		LayoutHelper *layoutHelper;
 
 	private slots:
@@ -31,5 +31,7 @@ class RemindPassword : public QHBox
 	protected:
 		virtual void resizeEvent(QResizeEvent *);
 };
+
 /** @} */
+
 #endif

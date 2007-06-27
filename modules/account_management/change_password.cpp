@@ -24,24 +24,24 @@
 /** @ingroup account_management
  * @{
  */
-ChangePassword::ChangePassword(QDialog *parent, const char *name) : QHBox(parent, name),
+ChangePassword::ChangePassword(QDialog *parent, const char *name) : QHBox(parent, name, WDestructiveClose),
 	emailedit(0), newpwd(0), newpwd2(0), layoutHelper(new LayoutHelper())
 {
 	kdebugf();
-	setWFlags(Qt::WDestructiveClose);
+
 	setCaption(tr("Change password / email"));
 	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
-	QVBox *left=new QVBox(this);
+	QVBox *left = new QVBox(this);
 	left->setMargin(10);
 	left->setSpacing(10);
 
 	QLabel *l_icon = new QLabel(left);
-	QWidget *blank=new QWidget(left);
+	QWidget *blank = new QWidget(left);
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	QVBox *center=new QVBox(this);
+	QVBox *center = new QVBox(this);
 	center->setMargin(10);
 	center->setSpacing(10);
 
@@ -60,7 +60,6 @@ ChangePassword::ChangePassword(QDialog *parent, const char *name) : QHBox(parent
 	//end our QGroupBox
 
 	// create needed fields
-
 	new QLabel(tr("New email:"), vgb_email);
 	emailedit = new QLineEdit(vgb_email);
 
@@ -71,7 +70,6 @@ ChangePassword::ChangePassword(QDialog *parent, const char *name) : QHBox(parent
 	new QLabel(tr("Retype new password:"), vgb_password);
 	newpwd2 = new QLineEdit(vgb_password);
 	newpwd2->setEchoMode(QLineEdit::Password);
-
 	// end create needed fields
 
 	// buttons
@@ -89,6 +87,7 @@ ChangePassword::ChangePassword(QDialog *parent, const char *name) : QHBox(parent
 	layoutHelper->addLabel(l_info);
 	loadGeometry(this, "General", "ChangePasswordDialogGeometry", 0, 30, 355, 350);
 	connect(gadu, SIGNAL(passwordChanged(bool)), this, SLOT(passwordChanged(bool)));
+
 	kdebugf2();
 }
 
@@ -100,8 +99,10 @@ void ChangePassword::resizeEvent(QResizeEvent * /*e*/)
 ChangePassword::~ChangePassword()
 {
 	kdebugf();
+
 	saveGeometry(this, "General", "ChangePasswordDialogGeometry");
 	delete layoutHelper;
+
 	kdebugf2();
 }
 
@@ -122,26 +123,27 @@ void ChangePassword::start()
 		return;
 	}
 
-	QString mail = emailedit->text();
 	QString password = QString(pwHash(config_file.readEntry("General", "Password")));
 	QString newpassword = (newpwd->text().isEmpty() ? password : newpwd->text());
 
 	setEnabled(false);
-	gadu->changePassword(config_file.readNumEntry("General", "UIN"), mail, password, newpassword);
+	gadu->changePassword(config_file.readNumEntry("General", "UIN"), emailedit->text(), password, newpassword);
+
 	kdebugf2();
 }
 
 void ChangePassword::passwordChanged(bool ok)
 {
 	kdebugf();
+
 	if (ok)
 	{
 		config_file.writeEntry("General", "Password", pwHash(newpwd->text()));
 		config_file.sync();
 		close();
 	}
+
 	kdebugf2();
 }
 
 /** @} */
-

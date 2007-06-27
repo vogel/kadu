@@ -12,12 +12,15 @@ class QResizeEvent;
  */
 class ChangePassword : public QHBox {
 	Q_OBJECT
+
 	public:
 		ChangePassword(QDialog *parent = 0, const char *name = 0);
 		~ChangePassword();
 
 	private:
-		QLineEdit *emailedit, *newpwd, *newpwd2;
+		QLineEdit *emailedit;
+		QLineEdit *newpwd;
+		QLineEdit *newpwd2;
 		LayoutHelper *layoutHelper;
 
 	private slots:
@@ -28,5 +31,7 @@ class ChangePassword : public QHBox {
 	protected:
 		virtual void resizeEvent(QResizeEvent *);
 };
+
 /** @} */
+
 #endif
