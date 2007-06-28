@@ -126,7 +126,12 @@ NotifierConfigurationWidget *HintManager::createConfigurationWidget(QWidget *par
 	return new HintsConfigurationWidget(parent, name);
 }
 
-void HintManager::setHint(void)
+void HintManager::configurationUpdated()
+{
+	setHint();
+}
+
+void HintManager::setHint()
 {
 	kdebugf();
 

@@ -199,7 +199,6 @@ Sms::Sms(const QString& altnick, QWidget* parent, const char *name) : QWidget(pa
 	body = new QMultiLineEdit(this);
 	grid->addMultiCellWidget(body, 1, 1, 0, 3);
 	body->setWordWrap(QMultiLineEdit::WidgetWidth);
-	body->setFont(config_file.readFontEntry("Look","ChatFont"));
 	body->setTabChangesFocus(true);
 	QObject::connect(body, SIGNAL(textChanged()), this, SLOT(updateCounter()));
 
@@ -256,6 +255,8 @@ Sms::Sms(const QString& altnick, QWidget* parent, const char *name) : QWidget(pa
 	connect(b_send, SIGNAL(clicked()), this, SLOT(sendSms()));
 	connect(&Sender, SIGNAL(finished(bool)), this, SLOT(onSmsSenderFinished(bool)));
 
+	configurationUpdated();
+
 	modules_manager->moduleIncUsageCount("sms");
 	kdebugf2();
 }
@@ -263,6 +264,11 @@ Sms::Sms(const QString& altnick, QWidget* parent, const char *name) : QWidget(pa
 Sms::~Sms()
 {
 	modules_manager->moduleDecUsageCount("sms");
+}
+
+void Sms::configurationUpdated()
+{
+	body->setFont(config_file.readFontEntry("Look","ChatFont"));
 }
 
 void Sms::setRecipient(const QString &phone)

@@ -14,6 +14,9 @@
 
 	Klasa przechowuj±ca informacje o wiadomo¶ci, która ma siê pojawiæ
 	w oknie Chat.
+
+	TODO: optimize and cache
+
 	\class ChatMessage
 	\brief Klasa przechowuj±ca informacje o wiadomo¶ci.
 **/

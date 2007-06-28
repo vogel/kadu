@@ -230,12 +230,6 @@ class ChatManager : public QObject, ConfigurationAwareObject
 		void refreshTitlesForUser(UserListElement user);
 
 		/**
-			\fn void changeAppearance()
-			Funkcja od¶wie¿a kolory i czcionki we wszystkich oknach
-		**/
-		void changeAppearance();
-
-		/**
 			\fn void setChatWidgetProperty(const UserGroup *group, const QString &name, const QVariant &value)
 			Funkcja pozwala przypisaæ okre¶lonemu czatowi
 			(nawet je¿eli on jeszcze nie istnieje) pewne w³asno¶ci

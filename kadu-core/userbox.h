@@ -242,6 +242,7 @@ class KaduListBoxPixmap : public QListBoxItem
 		bool bold;
 		static QFontMetrics *descriptionFontMetrics;
 
+		// TODO: co to do cholery robi tutaj?
 		static UinType myUIN;
 		static bool ShowDesc;
 		static bool AlignUserboxIconsTop;

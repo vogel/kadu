@@ -13,11 +13,12 @@
 #include <qstring.h>
 #include <qwidget.h>
 
+#include "configuration_aware_object.h"
 #include "gadu.h"
 
 class Notification;
 
-class Hint : public QWidget
+class Hint : public QWidget, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -50,6 +51,8 @@ class Hint : public QWidget
 		virtual void mousePressEvent(QMouseEvent * event);
 		virtual void enterEvent(QEvent *event);
 		virtual void leaveEvent(QEvent *event);
+
+		virtual void configurationUpdated();
 
 	public:
 		Hint(QWidget *parent, Notification *notification);

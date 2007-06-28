@@ -42,7 +42,6 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	Users(new UserGroup(usrs)),
 	index(0), actcolor(), Edit(0),
 	bodyformat(new QMimeSourceFactory()), emoticon_selector(0), color_selector(0),
-	AutoSend(config_file.readBoolEntry("Chat", "AutoSend")),
 	WaitingForACK(false), userbox(0), myLastMessage(),vertSplit(0), horizSplit(0),
 	activationCount(0), NewMessagesCount(0)
 {
@@ -86,18 +85,10 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	else
 		body = new ChatMessagesView(topArea, "body");
 
-	if (config_file.readBoolEntry("Chat", "ChatPrune"))
-		body->setPrune(config_file.readUnsignedNumEntry("Chat", "ChatPruneLen"));
-	else
-		body->setPrune(0);
-
 	if (Users->count() > 1)
 	{
 		userbox = new UserBox(Users, horizSplit, "userbox");
 		userbox->setMinimumSize(QSize(30,30));
-		userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
-		userbox->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
-		userbox->QListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
 		connect(userbox, SIGNAL(rightButtonPressed(QListBoxItem *, const QPoint &)),
 		UserBox::userboxmenu, SLOT(show(QListBoxItem *)));
 
@@ -128,8 +119,6 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	Edit = new CustomInput(downpart, "edit");
  	Edit->setMinimumHeight(1);
 	Edit->setWordWrap(QMultiLineEdit::WidgetWidth);
-	Edit->setFont(config_file.readFontEntry("Look","ChatFont"));
-	Edit->setPaper(QBrush(config_file.readColorEntry("Look","ChatTextBgColor")));
 	Edit->setAutosend(AutoSend);
 
 	setFocusProxy(Edit);
@@ -216,6 +205,25 @@ ChatWidget::~ChatWidget()
 	delete Users;
 
 	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed: index %d\n", index);
+}
+
+void ChatWidget::configurationUpdated()
+{
+	AutoSend = config_file.readBoolEntry("Chat", "AutoSend");
+
+	if (config_file.readBoolEntry("Chat", "ChatPrune"))
+		body->setPrune(config_file.readUnsignedNumEntry("Chat", "ChatPruneLen"));
+	else
+		body->setPrune(0);
+
+	userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
+	userbox->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
+	userbox->QListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
+
+	Edit->setFont(config_file.readFontEntry("Look","ChatFont"));
+	Edit->setPaper(QBrush(config_file.readColorEntry("Look","ChatTextBgColor")));
+
+	refreshTitle();
 }
 
 void ChatWidget::specialKeyPressed(int key)
@@ -335,20 +343,6 @@ void ChatWidget::sendActionAddedToToolbar(ToolButton* button, ToolBar* /*toolbar
 {
 	kdebugf();
 	button->setEnabled(!Edit->text().isEmpty());
-	kdebugf2();
-}
-
-void ChatWidget::changeAppearance()
-{
-	kdebugf();
-	if (Users->count() > 1 && userbox)
-	{
-		userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
-		userbox->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
-		userbox->QListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
-	}
-	body->setFont(config_file.readFontEntry("Look","ChatWidgetFont"));
-	Edit->setFont(config_file.readFontEntry("Look","ChatWidgetFont"));
 	kdebugf2();
 }
 

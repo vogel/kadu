@@ -10,6 +10,7 @@
 
 #include "chat_messages_view.h"
 #include "config_file.h"
+#include "configuration_aware_object.h"
 #include "custom_input.h"
 #include "emoticons.h"
 #include "protocol.h"
@@ -41,7 +42,7 @@ typedef QValueList<ChatWidget*> ChatList;
 	\brief Okno rozmowy
 **/
 
-class ChatWidget : public QHBox
+class ChatWidget : public QHBox, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -99,6 +100,8 @@ private slots:
 protected:
 	virtual void keyPressEvent(QKeyEvent* e);
 	bool keyPressEventHandled(QKeyEvent *);
+
+	virtual void configurationUpdated();
 
 public:
 	/**
@@ -181,12 +184,6 @@ public:
 	void restoreGeometry();
 
 public slots:
-	/**
-		\fn void changeAppearance()
-		Slot zmieniaj±cy kolory i czcionki w oknie
-	**/
-	void changeAppearance();
-
 	/**
 		\fn void refreshTitle()
 		Slot ustawiaj±cy tytu³ okna zgodnie z konfiguracj±

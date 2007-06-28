@@ -17,7 +17,6 @@
 #include <qspinbox.h>
 #include <qvgroupbox.h>
 
-// #include "config_dialog.h"
 #include "config_file.h"
 #include "debug.h"
 #include "html_document.h"
@@ -490,11 +489,9 @@ UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
 		management = new UserBoxMenu(userboxmenu);
 	UserBoxes.append(this);
 
-	QListBox::setFont(config_file.readFontEntry("Look", "UserboxFont"));
 	setMinimumWidth(20);
 	setSelectionMode(QListBox::Extended);
 	setStaticBackground(true);
-	UserBox::setColorsOrBackgrounds();
 
 	connect(this, SIGNAL(doubleClicked(QListBoxItem *)), this, SLOT(doubleClickedSlot(QListBoxItem *)));
 	connect(this, SIGNAL(returnPressed(QListBoxItem *)), this, SLOT(returnPressedSlot(QListBoxItem *)));
@@ -509,6 +506,9 @@ UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
 	connect(&verticalPositionTimer, SIGNAL(timeout()), this, SLOT(resetVerticalPosition()));
 	connect(kadu, SIGNAL(shown()), this, SLOT(resetVerticalPosition()));
 	connect(kadu, SIGNAL(hiding()), this, SLOT(rememberVerticalPosition()));
+
+	configurationUpdated();
+
 	kdebugf2();
 }
 
@@ -836,14 +836,6 @@ void UserBox::initModule()
 
 	QStringList options;
 	QStringList values;
-
-	KaduListBoxPixmap::setFont(config_file.readFontEntry("Look","UserboxFont"));
-	KaduListBoxPixmap::setShowDesc(config_file.readBoolEntry("Look", "ShowDesc"));
-	KaduListBoxPixmap::setAlignTop(config_file.readBoolEntry("Look", "AlignUserboxIconsTop"));
-	KaduListBoxPixmap::setShowMultilineDesc(config_file.readBoolEntry("Look", "ShowMultilineDesc"));
-	KaduListBoxPixmap::setColumnCount(config_file.readNumEntry("Look", "UserBoxColumnCount", 1));
-	KaduListBoxPixmap::setMyUIN(config_file.readUnsignedNumEntry("General", "UIN"));
-	KaduListBoxPixmap::setDescriptionColor(config_file.readColorEntry("Look", "DescriptionColor"));
 
 	userlist->addPerContactNonProtocolConfigEntry("hide_description", "HideDescription");
 

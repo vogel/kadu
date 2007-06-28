@@ -50,15 +50,10 @@ DesktopDockWindow::DesktopDockWindow(QWidget *parent, char *name)
 		isMoving(false)
 {
 	QPixmap desktopDockPixmap = docking_manager->defaultPixmap();
-
-	setAutoMask(config_file.readBoolEntry("Desktop Dock", "DockingTransparency"));
-	QPoint pos(config_file.readNumEntry("Desktop Dock", "PositionX"), config_file.readNumEntry("Desktop Dock", "PositionY"));
-	if (!config_file.readBoolEntry("Desktop Dock", "DockingTransparency"))
-		setPaletteBackgroundColor(config_file.readColorEntry("Desktop Dock", "DockingColor"));
+	configurationUpdated();
 	setMouseTracking(true);
 
 	setPixmap(desktopDockPixmap);
-   	move(pos);
 	resize(desktopDockPixmap.size());
 
 	update();
@@ -67,6 +62,15 @@ DesktopDockWindow::DesktopDockWindow(QWidget *parent, char *name)
 
 DesktopDockWindow::~DesktopDockWindow()
 {
+}
+
+void DesktopDockWindow::configurationUpdated()
+{
+	setAutoMask(config_file.readBoolEntry("Desktop Dock", "DockingTransparency"));
+	QPoint pos(config_file.readNumEntry("Desktop Dock", "PositionX"), config_file.readNumEntry("Desktop Dock", "PositionY"));
+	if (!config_file.readBoolEntry("Desktop Dock", "DockingTransparency"))
+		setPaletteBackgroundColor(config_file.readColorEntry("Desktop Dock", "DockingColor"));
+   	move(pos);
 }
 
 void DesktopDockWindow::mousePressEvent(QMouseEvent *ev)

@@ -13,6 +13,7 @@
 #include <qstring.h>
 #include <qtimer.h>
 
+#include "configuration_aware_object.h"
 #include "gadu.h"
 #include "hint.h"
 #include "main_configuration_window.h"
@@ -22,7 +23,7 @@
 
 class ChatWidget;
 
-class HintManager : public Notifier, public ConfigurationUiHandler, public ToolTipClass
+class HintManager : public Notifier, public ConfigurationUiHandler, public ToolTipClass, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -104,6 +105,8 @@ private slots:
 	**/
 	void deleteAllHints();
 
+protected:
+	virtual void configurationUpdated();
 
 signals:
 	/**

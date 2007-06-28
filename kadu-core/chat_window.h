@@ -5,8 +5,9 @@
 #include <qstring.h>
 
 #include "chat_widget.h"
+#include "configuration_aware_object.h"
 
-class ChatWindow : public QMainWindow
+class ChatWindow : public QMainWindow, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -42,6 +43,8 @@ protected:
 	**/
 	virtual void mouseReleaseEvent(QMouseEvent *e);
 
+	virtual void configurationUpdated();
+
 public:
 	ChatWindow(QWidget *parent = 0, const char *name = 0);
 	virtual ~ChatWindow();
@@ -50,6 +53,7 @@ public:
 	ChatWidget* chatWidget();
 
 public slots:
+	// TODO: rename
 	void blinkTitle();
 	void showNewMessagesNumInTitle();
 

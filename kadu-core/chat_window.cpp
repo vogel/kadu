@@ -28,16 +28,22 @@
 #include "protocol.h"
 
 ChatWindow::ChatWindow(QWidget* parent, const char* name)
-	: QMainWindow(parent, name, Qt::WDestructiveClose), currentChatWidget(0), title_timer(new QTimer(this, "title_timer")),
-		showNewMessagesNum(config_file.readBoolEntry("Chat", "NewMessagesInChatTitle")),
-		blinkChatTitle(config_file.readBoolEntry("Chat", "BlinkChatTitle"))
+	: QMainWindow(parent, name, Qt::WDestructiveClose), currentChatWidget(0), title_timer(new QTimer(this, "title_timer"))
 {
+	configurationUpdated();
 	connect(title_timer, SIGNAL(timeout()), this, SLOT(blinkTitle()));
 }
 
 ChatWindow::~ChatWindow()
 {
 	storeGeometry();
+}
+
+void ChatWindow::configurationUpdated()
+{
+	showNewMessagesNum = config_file.readBoolEntry("Chat", "NewMessagesInChatTitle");
+	blinkChatTitle = config_file.readBoolEntry("Chat", "BlinkChatTitle");
+	blinkTitle();
 }
 
 // TODO: fix it
@@ -176,7 +182,7 @@ void ChatWindow::blinkTitle()
 
 void ChatWindow::showNewMessagesNumInTitle()
 {
-	if (!isActiveWindow())
+	if (!isActiveWindow() && currentChatWidget)
 		setCaption("[" + QString().setNum(currentChatWidget->newMessagesCount()) + "] " + currentChatWidget->caption());
 }
 

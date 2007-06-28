@@ -101,8 +101,12 @@ class SmsSender : public QObject
 /**
 	Dialog umo¿liwiaj±cy wysy³anie SMS'ów
 **/
-class Sms : public QWidget {
+class Sms : public QWidget, ConfigurationAwareObject
+{
 	Q_OBJECT
+
+	protected:
+		virtual void configurationUpdated();
 
 	public:
 		Sms(const QString& altnick, QWidget* parent=0, const char *name=0);

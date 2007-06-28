@@ -7,7 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-// #include "config_dialog.h"
 #include "config_file.h"
 #include "debug.h"
 #include "gadu.h"

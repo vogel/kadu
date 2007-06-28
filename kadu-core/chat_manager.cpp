@@ -548,14 +548,6 @@ void ChatManager::refreshTitlesForUser(UserListElement user)
 	kdebugf2();
 }
 
-void ChatManager::changeAppearance()
-{
-	kdebugf();
- 	CONST_FOREACH(chat, ChatWidgets)
- 		(*chat)->changeAppearance();
-	kdebugf2();
-}
-
 ChatWidget* ChatManager::findChatWidget(const UserGroup *group) const
 {
 	CONST_FOREACH(chat, ChatWidgets)
@@ -887,8 +879,6 @@ void ChatManager::configurationUpdated()
 {
 	kdebugf();
 
-	changeAppearance();
-
 	if (config_file.readBoolEntry("Chat", "RememberPosition"))
 	{
 		userlist->addPerContactNonProtocolConfigEntry("chat_geometry", "ChatGeometry");
@@ -899,9 +889,6 @@ void ChatManager::configurationUpdated()
 		userlist->removePerContactNonProtocolConfigEntry("chat_geometry");
 		userlist->removePerContactNonProtocolConfigEntry("chat_vertical_sizes");
 	}
-
-// 	bool msgTitle = config_file.readBoolEntry("Chat","NewMessagesInChatTitle");
-// 	bool blnTitle = config_file.readBoolEntry("Chat","BlinkChatTitle");
 
 	KaduActions["autoSendAction"]->setAllOn(config_file.readBoolEntry("Chat", "AutoSend"));
 

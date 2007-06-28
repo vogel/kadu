@@ -46,8 +46,7 @@ extern "C" void docking_close()
 }
 
 DockingManager::DockingManager()
-	: newMessageIcon ((IconType) config_file.readNumEntry("Look", "NewMessageIcon")),
-	icon_timer(new QTimer(this, "icon_timer")), blink(false)
+	: icon_timer(new QTimer(this, "icon_timer")), blink(false)
 {
 	kdebugf();
 	connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
@@ -61,6 +60,8 @@ DockingManager::DockingManager()
 
 	connect(dockMenu, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
 	connect(this, SIGNAL(mousePressMidButton()), &pending, SLOT(openMessages()));
+
+	configurationUpdated();
 
 	kdebugf2();
 }

@@ -63,12 +63,7 @@ Hint::Hint(QWidget *parent, Notification *notification)
 
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-	QString configurationDirective = "Event_" + notification->type();
-	label->setFont(config_file.readFontEntry("Hints", configurationDirective + "_font"));
-	setPaletteForegroundColor(config_file.readColorEntry("Hints", configurationDirective + "_fgcolor"));
-	bcolor = config_file.readColorEntry("Hints", configurationDirective + "_bgcolor");
-	setPaletteBackgroundColor(bcolor);
-
+	configurationUpdated();
 	show();
 
 	kdebugf2();
@@ -82,6 +77,16 @@ Hint::~Hint()
 	notification->release();
 
 	kdebugf2();
+}
+
+void Hint::configurationUpdated()
+{
+
+	QString configurationDirective = "Event_" + notification->type();
+	label->setFont(config_file.readFontEntry("Hints", configurationDirective + "_font"));
+	setPaletteForegroundColor(config_file.readColorEntry("Hints", configurationDirective + "_fgcolor"));
+	bcolor = config_file.readColorEntry("Hints", configurationDirective + "_bgcolor");
+	setPaletteBackgroundColor(bcolor);
 }
 
 void Hint::createLabels(const QPixmap &pixmap)

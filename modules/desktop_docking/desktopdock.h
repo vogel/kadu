@@ -15,7 +15,7 @@ class QSpinBox;
  * @{
  */
 
-class DesktopDockWindow : public QLabel
+class DesktopDockWindow : public QLabel, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -25,6 +25,8 @@ protected:
 	void mousePressEvent(QMouseEvent *);
 	void mouseMoveEvent(QMouseEvent *);
 	void updateMask();
+
+	virtual void configurationUpdated();
 
 public:
 	DesktopDockWindow(QWidget *parent, char *name);
