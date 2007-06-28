@@ -119,7 +119,6 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	Edit = new CustomInput(downpart, "edit");
  	Edit->setMinimumHeight(1);
 	Edit->setWordWrap(QMultiLineEdit::WidgetWidth);
-	Edit->setAutosend(AutoSend);
 
 	setFocusProxy(Edit);
 
@@ -209,8 +208,6 @@ ChatWidget::~ChatWidget()
 
 void ChatWidget::configurationUpdated()
 {
-	AutoSend = config_file.readBoolEntry("Chat", "AutoSend");
-
 	if (config_file.readBoolEntry("Chat", "ChatPrune"))
 		body->setPrune(config_file.readUnsignedNumEntry("Chat", "ChatPruneLen"));
 	else
@@ -225,6 +222,8 @@ void ChatWidget::configurationUpdated()
 
 	Edit->setFont(config_file.readFontEntry("Look","ChatFont"));
 	Edit->setPaper(QBrush(config_file.readColorEntry("Look","ChatTextBgColor")));
+	AutoSend = config_file.readBoolEntry("Chat", "AutoSend");
+	Edit->setAutosend(AutoSend);
 
 	refreshTitle();
 }
