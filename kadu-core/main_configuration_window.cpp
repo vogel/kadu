@@ -75,6 +75,7 @@ MainConfigurationWindow::MainConfigurationWindow()
 	connect(onStartupSetLastDescription, SIGNAL(toggled(bool)), onStartupSetDescription, SLOT(setDisabled(bool)));
 	connect(widgetById("receiveImages"), SIGNAL(toggled(bool)), widgetById("receiveImagesDuringInvisibility"), SLOT(setEnabled(bool)));
 	connect(widgetById("receiveImages"), SIGNAL(toggled(bool)), widgetById("maxImageRequests"), SLOT(setEnabled(bool)));
+	connect(widgetById("foldLink"), SIGNAL(toggled(bool)), widgetById("linkFoldTreshold"), SLOT(setEnabled(bool)));
 	connect(widgetById("startupStatus"), SIGNAL(activated(int)), this, SLOT(onChangeStartupStatus(int)));
 	connect(widgetById("showDescription"), SIGNAL(toggled(bool)), widgetById("multilineDescription"), SLOT(setEnabled(bool)));
 	connect(widgetById("useDefaultServers"), SIGNAL(toggled(bool)), widgetById("serverList"), SLOT(setDisabled(bool)));
@@ -486,7 +487,6 @@ void MainConfigurationWindow::showLookChatAdvanced()
 		connect(lookChatAdvanced->widgetById("removeServerTime"), SIGNAL(toggled(bool)), lookChatAdvanced->widgetById("maxTimeDifference"), SLOT(setEnabled(bool)));
 		connect(lookChatAdvanced->widgetById("noHeaderRepeat"), SIGNAL(toggled(bool)), lookChatAdvanced->widgetById("noHeaderInterval"), SLOT(setEnabled(bool)));
 		connect(lookChatAdvanced->widgetById("chatPrune"), SIGNAL(toggled(bool)), lookChatAdvanced->widgetById("chatPruneLen"), SLOT(setEnabled(bool)));
-		connect(lookChatAdvanced->widgetById("foldLink"), SIGNAL(toggled(bool)), lookChatAdvanced->widgetById("linkFoldTreshold"), SLOT(setEnabled(bool)));
 		connect(lookChatAdvanced->widgetById("chatCloseTimer"), SIGNAL(toggled(bool)), lookChatAdvanced->widgetById("chatCloseTimerPeriod"), SLOT(setEnabled(bool)));
 
 		connect(lookChatAdvanced, SIGNAL(destroyed()), this, SLOT(lookChatAdvancedDestroyed()));

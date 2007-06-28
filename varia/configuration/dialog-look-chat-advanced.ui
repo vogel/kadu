@@ -1,11 +1,6 @@
 <configuration-ui>
 	<section name="Look">
 		<tab name="Chat">
-			<group-box name="Link folding">
-				<check-box caption="Automatically fold links" config-section="Chat" config-item="FoldLink" id="foldLink" />
-				<spin-box caption="Fold links longer than" config-section="Chat" config-item="LinkFoldTreshold" min-value="1" max-value="500" step="1" id="linkFoldTreshold" />
-			</group-box>
-
 			<group-box name="Headers and separators">
 				<spin-box caption="Chat header separators height" config-section="Look" config-item="HeaderSeparatorHeight" min-value="0" max-value="100" step="1" />
 				<spin-box caption="Message separators height" config-section="Look" config-item="ParagraphSeparator" min-value="0" max-value="100" step="1" />

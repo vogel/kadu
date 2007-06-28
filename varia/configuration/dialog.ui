@@ -170,11 +170,6 @@
 				<check-box caption="Show number of new messages on chat title" config-section="Chat" config-item="NewMessagesInChatTitle" />
 			</group-box>
 
-			<group-box name="Message pruning">
-				<check-box caption="Automatically prune chat messages" config-section="Chat" config-item="ChatPrune" id="chatPrune" />
-				<spin-box caption="Reduce the number of visible messages to" config-section="Chat" config-item="ChatPruneLen" min-value="1" max-value="255" step="1" id="chatPruneLen" />
-			</group-box>
-
 			<group-box name="Style">
 				<syntax-editor caption="Style" config-section="Look" config-item="Style" category="chat" id="chatSyntax" />
 				<preview caption="Preview" id="chatSyntaxPreview" />
@@ -296,11 +291,22 @@
 				<check-box caption="Block window close on new message" config-section="Chat" config-item="ChatCloseTimer" id="chatCloseTimer" />
 				<spin-box caption="Max time to block window close" config-section="Chat" config-item="ChatCloseTimerPeriod" min-value="1" max-value="30" step="1" id="chatCloseTimerPeriod" />
 			</group-box>
-
+		</tab>
+		<tab name="Messages">
+			<group-box name="Message pruning">
+				<check-box caption="Automatically prune chat messages" config-section="Chat" config-item="ChatPrune" id="chatPrune" />
+				<spin-box caption="Reduce the number of visible messages to" config-section="Chat" config-item="ChatPruneLen" min-value="1" max-value="255" step="1" id="chatPruneLen" />
+			</group-box>
+			
 			<group-box name="Images">
 				<check-box caption="Receive images" config-section="Chat" config-item="ReceiveImages" id="receiveImages" />
 				<check-box caption="Receive images during invisibility" config-section="Chat" config-item="RecevieImagesDuringInvisibility" id="receiveImagesDuringInvisibility" />
 				<spin-box caption="Limit numbers of image recevied per minute" config-section="General" config-item="MaxImageRequests" min-value="1" max-value="30" step="1" id="maxImageRequests" />
+			</group-box>
+
+			<group-box name="Link folding">
+				<check-box caption="Automatically fold links" config-section="Chat" config-item="FoldLink" id="foldLink" />
+				<spin-box caption="Fold links longer than" config-section="Chat" config-item="LinkFoldTreshold" min-value="1" max-value="500" step="1" id="linkFoldTreshold" />
 			</group-box>
 		</tab>
 	</section>

@@ -216,9 +216,12 @@ void ChatWidget::configurationUpdated()
 	else
 		body->setPrune(0);
 
-	userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
-	userbox->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
-	userbox->QListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
+	if (userbox)
+	{
+		userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
+		userbox->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
+		userbox->QListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
+	}
 
 	Edit->setFont(config_file.readFontEntry("Look","ChatFont"));
 	Edit->setPaper(QBrush(config_file.readColorEntry("Look","ChatTextBgColor")));
