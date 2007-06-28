@@ -57,27 +57,27 @@ void CustomInput::keyPressEvent(QKeyEvent* e)
 			kdebugf2();
 			return;
 		}
-// 		if (HotKey::shortCut(e,"ShortCuts", "chat_bold"))
-// 		{
-// 			emit specialKeyPressed(CustomInput::KEY_BOLD);
-// 			e->accept();
-// 			kdebugf2();
-// 			return;
-// 		}
-// 		else if (HotKey::shortCut(e,"ShortCuts", "chat_italic"))
-// 		{
-// 			emit specialKeyPressed(CustomInput::KEY_ITALIC);
-// 			e->accept();
-// 			kdebugf2();
-// 			return;
-// 		}
-// 		else if (HotKey::shortCut(e,"ShortCuts", "chat_underline"))
-// 		{
-// 			emit specialKeyPressed(CustomInput::KEY_UNDERLINE);
-// 			e->accept();
-// 			kdebugf2();
-// 			return;
-// 		}
+ 		if (HotKey::shortCut(e,"ShortCuts", "chat_bold"))
+ 		{
+ 			emit specialKeyPressed(CustomInput::KEY_BOLD);
+ 			e->accept();
+ 			kdebugf2();
+ 			return;
+ 		}
+ 		else if (HotKey::shortCut(e,"ShortCuts", "chat_italic"))
+ 		{
+ 			emit specialKeyPressed(CustomInput::KEY_ITALIC);
+ 			e->accept();
+ 			kdebugf2();
+ 			return;
+ 		}
+ 		else if (HotKey::shortCut(e,"ShortCuts", "chat_underline"))
+ 		{
+ 			emit specialKeyPressed(CustomInput::KEY_UNDERLINE);
+ 			e->accept();
+ 			kdebugf2();
+ 			return;
+ 		}
 	}
 	QMultiLineEdit::keyPressEvent(e);
 	kdebugf2();
