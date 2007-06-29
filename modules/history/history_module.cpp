@@ -65,8 +65,7 @@ HistoryModule::HistoryModule() : QObject(NULL, "history")
 	connect(kadu, SIGNAL(removingUsers(UserListElements)),
 		this, SLOT(removingUsers(UserListElements)));
 
-	Action* history_action = new Action(icons_manager->loadIcon("History"),
-		tr("Show history"), "showHistoryAction", Action::TypeUser);
+	Action* history_action = new Action("History", tr("Show history"), "showHistoryAction", Action::TypeUser);
 	connect(history_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(historyActionActivated(const UserGroup*)));
 	KaduActions.insert("showHistoryAction", history_action);

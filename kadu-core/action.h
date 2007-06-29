@@ -27,7 +27,7 @@ class Action : public QObject
 		};
 
 	private:
-		QIconSet Icon;
+		QString IconName;
 		QString Text;
 		QKeySequence KeySeq0, KeySeq1; //!< skróty klawiszowe wywo³uj±ce akcjê
 		bool ToggleAction;
@@ -43,7 +43,7 @@ class Action : public QObject
 		void toolButtonDestroyed(QObject* obj);
 
 	public:
-		Action(const QIconSet& icon, const QString& text, const char* name, ActionType Type,
+		Action(const QString& icon, const QString& text, const char* name, ActionType Type,
 			QKeySequence Seq0 = QKeySequence(), QKeySequence Seq1 = QKeySequence());
 
 		void setToggleAction(bool toggle);
@@ -60,6 +60,7 @@ class Action : public QObject
 		void setOn(const UserListElements& users, bool on);
 		void setAllOn(bool on);
 		void setPixmaps(const UserListElements& users, const QPixmap& pixmap);
+		void refreshIcons();
 		void setTexts(const UserListElements& users, const QString& text);
 		/**
 			Sets enabled state of all buttons in dockareas that has specified
@@ -106,7 +107,6 @@ class Actions : public QMap<QString, Action*>
 
 	public:
 		Actions();
-		void refreshIcons();
 		void addDefaultToolbarAction(
 			const QString& toolbar, const QString& action, int index = -1,
 			bool uses_text_label = false);

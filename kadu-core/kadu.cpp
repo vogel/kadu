@@ -219,7 +219,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 
 	pending.loadFromFile();
 
-	Action* inact_users_action = new Action(icons_manager->loadIcon("ShowHideInactiveUsers"),
+	Action* inact_users_action = new Action("ShowHideInactiveUsers",
 		tr("Show / hide offline users"), "inactiveUsersAction", Action::TypeUserList);
 	inact_users_action->setToggleAction(true);
 	inact_users_action->setAllOn(!config_file.readBoolEntry("General", "ShowOffline"));
@@ -227,7 +227,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 		this, SLOT(inactiveUsersActionActivated()));
 	KaduActions.insert("inactiveUsersAction", inact_users_action);
 
-	Action* desc_users_action = new Action(icons_manager->loadIcon("ShowOnlyDescriptionUsers"),
+	Action* desc_users_action = new Action("ShowOnlyDescriptionUsers",
 		tr("Show / hide users without description"), "descriptionUsersAction", Action::TypeUserList);
 	desc_users_action->setToggleAction(true);
 	desc_users_action->setAllOn(!config_file.readBoolEntry("General", "ShowWithoutDescription"));
@@ -235,26 +235,25 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 		this, SLOT(descriptionUsersActionActivated()));
 	KaduActions.insert("descriptionUsersAction", desc_users_action);
 
-	Action* configuration_action = new Action(icons_manager->loadIcon("Configuration"),
-		tr("Configuration"), "configurationAction", Action::TypeGlobal);
+	Action* configuration_action = new Action("Configuration", tr("Configuration"),
+		"configurationAction", Action::TypeGlobal);
 	connect(configuration_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(configurationActionActivated()));
 	KaduActions.insert("configurationAction", configuration_action);
 
-	Action* edit_user_action = new Action(icons_manager->loadIcon("EditUserInfo"),
-		tr("View / edit user info"), "editUserAction", Action::TypeUser);
+	Action* edit_user_action = new Action("EditUserInfo", tr("View / edit user info"),
+		"editUserAction", Action::TypeUser);
 	connect(edit_user_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(editUserActionActivated(const UserGroup*)));
 	KaduActions.insert("editUserAction", edit_user_action);
 
-	Action* add_user_action = new Action(icons_manager->loadIcon("AddUser"),
-		tr("Add user"), "addUserAction", Action::TypeGlobal);
+	Action* add_user_action = new Action("AddUser", tr("Add user"), "addUserAction", Action::TypeGlobal);
 	connect(add_user_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(addUserActionActivated(const UserGroup*)));
 	KaduActions.insert("addUserAction", add_user_action);
 
-	Action* open_search_action = new Action(icons_manager->loadIcon("LookupUserInfo"),
-		tr("Search user in directory"), "openSearchAction", Action::TypeGlobal);
+	Action* open_search_action = new Action("LookupUserInfo", tr("Search user in directory"),
+		"openSearchAction", Action::TypeGlobal);
 	connect(open_search_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(searchInDirectory()));
 	KaduActions.insert("openSearchAction", open_search_action);
@@ -1344,7 +1343,6 @@ void Kadu::createRecentChatsMenu()
 		}
 
 		RecentChatsMenu->insertItem(icons_manager->loadIcon("OpenChat"), chat_users, this, SLOT(openRecentChats(int)), 0, index);
-//		icons_manager->registerMenuItem(RecentChatsMenu, chat_users, "OpenChat");
 
 		index++;
 	}
@@ -1385,7 +1383,7 @@ void Kadu::createMenu()
 	icons_manager->registerMenuItem(MainMenu, tr("&Configuration"), "Configuration");
 	icons_manager->registerMenuItem(MainMenu, tr("Personal information"), "PersonalInfo");
 	icons_manager->registerMenuItem(MainMenu, tr("Recent chats..."), "OpenChat");
-	icons_manager->registerMenuItem(MainMenu, tr("&Search for users"), "LookupUserInfo");
+	icons_manager->registerMenuItem(MainMenu, tr("&Search user in directory"), "LookupUserInfo");
 	icons_manager->registerMenuItem(MainMenu, tr("I&mport / Export userlist"), "ImportExport");
 	icons_manager->registerMenuItem(MainMenu, tr("&Add user"), "AddUser");
 	icons_manager->registerMenuItem(MainMenu, tr("H&elp"), "HelpMenuItem");

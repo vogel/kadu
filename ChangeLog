@@ -183,6 +183,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodana lista w menu g³ównym z ostatnio zamkniêtymi oknami Chat (neeo)
 * porz±dki w sygna³ach chatMsgReceived (Vogel)
 * history: renderowanie historii jak w oknie rozmowy (Vogel)
+* od¶wie¿anie toolbarów przy zmianie zestawu ikon (neeo)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

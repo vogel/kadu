@@ -68,8 +68,8 @@ EncryptionManager::EncryptionManager()
 			this, SLOT(decryptMessage(Protocol *, UserListElements, QCString&, QByteArray&, bool&)));
 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userBoxMenuPopup()));
 
-	action = new Action(icons_manager->loadIcon("EncryptedChat"),
-		tr("Enable encryption for this conversation"), "encryptionAction", Action::TypeChat);
+	action = new Action("EncryptedChat", tr("Enable encryption for this conversation"),
+		"encryptionAction", Action::TypeChat);
 	action->setToggleAction(true);
 	connect(action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(encryptionActionActivated(const UserGroup*)));

@@ -158,7 +158,8 @@ void IconsManager::configurationUpdated()
 {
 	icons_manager->clear();
 	icons_manager->setTheme(config_file.readEntry("Look", "IconTheme"));
-	KaduActions.refreshIcons();
+	FOREACH(action, KaduActions)
+		(*action)->refreshIcons();
 	UserBox::userboxmenu->refreshIcons();
 	UserBox::management->refreshIcons();
 	icons_manager->refreshMenus();

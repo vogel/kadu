@@ -1025,8 +1025,7 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 	connect(UserBox::userboxmenu,SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(kaduKeyPressed(QKeyEvent*)));
 
-	Action* send_file_action = new Action(icons_manager->loadIcon("SendFile"),
-		tr("Send file"), "sendFileAction", Action::TypeUser);
+	Action* send_file_action = new Action("SendFile", tr("Send file"), "sendFileAction", Action::TypeUser);
 	connect(send_file_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(sendFileActionActivated(const UserGroup*)));
 	KaduActions.insert("sendFileAction", send_file_action);

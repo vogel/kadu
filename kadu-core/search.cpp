@@ -212,32 +212,32 @@ void SearchDialog::initModule()
 {
 	kdebugf();
 
-	Action* first_search_action = new Action(icons_manager->loadIcon("LookupUserInfo"),
-		tr("&Search"), "firstSearchAction", Action::TypeSearch, Key_Return, Key_Enter);
+	Action* first_search_action = new Action("LookupUserInfo", tr("&Search"),
+		"firstSearchAction", Action::TypeSearch, Key_Return, Key_Enter);
 	first_search_action->setSlot(SLOT(firstSearch()));
 	KaduActions.insert("firstSearchAction", first_search_action);
 	KaduActions.addDefaultToolbarAction("Search toolbar", "firstSearchAction", 0, true);
 
-	Action* next_results_action = new Action(icons_manager->loadIcon("NextSearchResults"),
-		tr("&Next results"), "nextResultsAction", Action::TypeSearch);
+	Action* next_results_action = new Action("NextSearchResults", tr("&Next results"),
+		"nextResultsAction", Action::TypeSearch);
 	next_results_action->setSlot(SLOT(nextSearch()));
 	KaduActions.insert("nextResultsAction", next_results_action);
 	KaduActions.addDefaultToolbarAction("Search toolbar", "nextResultsAction", 1, true);
 
-	Action* stop_search_action = new Action(icons_manager->loadIcon("CloseWindow"),
-		tr("Stop"), "stopSearchAction", Action::TypeSearch);
+	Action* stop_search_action = new Action("CloseWindow", tr("Stop"), "stopSearchAction",
+		Action::TypeSearch);
 	stop_search_action->setSlot(SLOT(stopSearch()));
 	KaduActions.insert("stopSearchAction", stop_search_action);
 	KaduActions.addDefaultToolbarAction("Search toolbar", "stopSearchAction", 2, true);
 
-	Action* clear_search_action = new Action(icons_manager->loadIcon("ClearSearchResults"),
-		tr("Clear results"), "clearSearchAction", Action::TypeSearch);
+	Action* clear_search_action = new Action("ClearSearchResults", tr("Clear results"),
+		"clearSearchAction", Action::TypeSearch);
 	clear_search_action->setSlot(SLOT(clearResults()));
 	KaduActions.insert("clearSearchAction", clear_search_action);
 	KaduActions.addDefaultToolbarAction("Search toolbar", "clearSearchAction", 3, true);
 
-	Action* add_searched_action = new Action(icons_manager->loadIcon("AddUser"),
-		tr("Add selected user"), "addSearchedAction", Action::TypeSearch);
+	Action* add_searched_action = new Action("AddUser", tr("Add selected user"),
+		"addSearchedAction", Action::TypeSearch);
 	KaduActions.insert("addSearchedAction", add_searched_action);
 	KaduActions.addDefaultToolbarAction("Search toolbar", "addSearchedAction", 4, true);
 

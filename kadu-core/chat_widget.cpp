@@ -177,6 +177,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	connect(Edit, SIGNAL(textChanged()), this, SLOT(editTextChanged()));
 
 	editTextChanged(); // slot ustawia poprawny stan przycisku Send (tutaj - blokuje)
+	setActColor(); // ustawia poprawny kolor na przycisku wyboru koloru ;>
 
 	connect(KaduActions["sendAction"], SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
 		this, SLOT(sendActionAddedToToolbar(ToolButton*, ToolBar*)));
@@ -260,6 +261,16 @@ void ChatWidget::curPosChanged(int, int)
 		KaduActions["italicAction"]->setOn(elems, Edit->italic());
 	if (Edit->underline() != KaduActions["underlineAction"]->isOn(elems))
 		KaduActions["underlineAction"]->setOn(elems, Edit->underline());
+
+	setActColor();
+
+	kdebugf2();
+}
+
+void ChatWidget::setActColor()
+{
+	kdebugf();
+
 	if (Edit->color() != actcolor)
 	{
 		int i;
@@ -272,8 +283,9 @@ void ChatWidget::curPosChanged(int, int)
 		else
 			actcolor = colors[i];
 		p.fill(actcolor);
-		KaduActions["colorAction"]->setPixmaps(elems, p);
+		KaduActions["colorAction"]->setPixmaps(Users->toUserListElements(), p);
 	}
+
 	kdebugf2();
 }
 

@@ -82,13 +82,13 @@ private slots:
 	void changeColor(const QWidget* activating_widget);
 
 	/**
-		\fn void connectAcknowledgeSlots();
+		\fn void connectAcknowledgeSlots()
 		Slot pod³±czaj±cy potwierdzenie dostarczenia wiadomo¶ci
 	**/
 	void connectAcknowledgeSlots();
 
 	/**
-		\fn void disconnectAcknowledgeSlots();
+		\fn void disconnectAcknowledgeSlots()
 		Slot od³±czaj±cy potwierdzenie dostarczenia wiadomo¶ci
 	**/
 	void disconnectAcknowledgeSlots();
@@ -96,6 +96,12 @@ private slots:
 	void selectedUsersNeeded(const UserGroup*& user_group);
 
 	void sendActionAddedToToolbar(ToolButton*, ToolBar*);
+
+	/**
+		\fn void setActColor()
+		Ustawia poprawny kolor na przycisku akcji obs³uguj±cej kolor wiadomo¶ci
+	**/
+	void setActColor();
 
 protected:
 	virtual void keyPressEvent(QKeyEvent* e);

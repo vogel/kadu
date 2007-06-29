@@ -1285,8 +1285,10 @@ void Wizard::setColorsAndIcons()
 		newIconTheme.replace(tr("Default"), "default");
 		icons_manager->clear();
 		icons_manager->setTheme(newIconTheme);
-		KaduActions.refreshIcons();
+		FOREACH(action, KaduActions)
+			(*action)->refreshIcons();
 		UserBox::userboxmenu->refreshIcons();
+		UserBox::management->refreshIcons();
 		icons_manager->refreshMenus();
 		kadu->changeAppearance();
 	}

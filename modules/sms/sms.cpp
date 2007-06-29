@@ -421,8 +421,7 @@ SmsConfigurationUiHandler::SmsConfigurationUiHandler()
 	menuid=kadu->mainMenu()->insertItem(icons_manager->loadIcon("SendSms"), tr("Send SMS"), this, SLOT(onSendSms()), 0, -1, 10);
 	icons_manager->registerMenuItem(kadu->mainMenu(), tr("Send SMS"), "SendSms");
 
-	Action* send_sms_action = new Action(icons_manager->loadIcon("SendSms"),
-		tr("Send SMS"), "sendSmsAction", Action::TypeGlobal);
+	Action* send_sms_action = new Action("SendSms", tr("Send SMS"), "sendSmsAction", Action::TypeGlobal);
 	connect(send_sms_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(sendSmsActionActivated(const UserGroup*)));
 	KaduActions.insert("sendSmsAction", send_sms_action);

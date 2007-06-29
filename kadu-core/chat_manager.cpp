@@ -26,29 +26,12 @@
 #include "userbox.h"
 #include "ignore.h"
 
-// TODO: make new icons for iconset instead of tricks like that
-static QPixmap string_to_pixmap(const QString& str, const QFont& font)
-{
-	QSize size = QFontMetrics(font).size(0, str);
-	QPixmap pixmap(size);
-	pixmap.fill(kadu->palette().color(QPalette::Active, QColorGroup::Button));
-	QPainter* painter = new QPainter();
-	painter->begin(&pixmap);
-	painter->setPen(kadu->palette().color(QPalette::Active, QColorGroup::ButtonText));
-	painter->setFont(font);
-	painter->drawText(QRect(QPoint(0, 0), size), 0, str);
-	painter->end();
-	pixmap.setMask(pixmap.createHeuristicMask());
-	delete painter;
-	return pixmap;
-}
-
 ChatManager::ChatManager(QObject* parent, const char* name) : QObject(parent, name),
 	ChatWidgets(), ClosedChatUsers(), addons(), refreshTitlesTimer()
 {
 	kdebugf();
 
-	Action* auto_send_action = new Action(icons_manager->loadIcon("AutoSendMessage"),
+	Action* auto_send_action = new Action("AutoSendMessage",
 		tr("%1 sends message").arg(config_file.readEntry("ShortCuts", "chat_newline")),
 		"autoSendAction", Action::TypeChat);
 	auto_send_action->setToggleAction(true);
@@ -57,95 +40,80 @@ ChatManager::ChatManager(QObject* parent, const char* name) : QObject(parent, na
 		this, SLOT(autoSendActionActivated(const UserGroup*, const QWidget*, bool)));
 	KaduActions.insert("autoSendAction", auto_send_action);
 
-	Action* scroll_lock_action = new Action(icons_manager->loadIcon("ScrollLock"),
-		tr("Blocks scrolling"), "scrollLockAction", Action::TypeChat);
+	Action* scroll_lock_action = new Action("ScrollLock", tr("Blocks scrolling"),
+		"scrollLockAction", Action::TypeChat);
 	scroll_lock_action->setToggleAction(true);
 	connect(scroll_lock_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(scrollLockActionActivated(const UserGroup*, const QWidget*, bool)));
 	KaduActions.insert("scrollLockAction", scroll_lock_action);
 
-	Action* clear_action = new Action(icons_manager->loadIcon("ClearChat"),
-		tr("Clear messages in chat window"), "clearChatAction", Action::TypeChat);
+	Action* clear_action = new Action("ClearChat", tr("Clear messages in chat window"),
+		"clearChatAction", Action::TypeChat);
 	connect(clear_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(clearActionActivated(const UserGroup*)));
 	KaduActions.insert("clearChatAction", clear_action);
 
-	Action* insert_emot_action = new Action(icons_manager->loadIcon("ChooseEmoticon"),
-		tr("Insert emoticon"), "insertEmoticonAction", Action::TypeChat);
+	Action* insert_emot_action = new Action("ChooseEmoticon", tr("Insert emoticon"),
+		"insertEmoticonAction", Action::TypeChat);
 	connect(insert_emot_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(insertEmoticonActionActivated(const UserGroup*, const QWidget*)));
 	connect(insert_emot_action, SIGNAL(addedToToolbar(const UserGroup*, ToolButton*, ToolBar*)),
 		this, SLOT(insertEmoticonActionAddedToToolbar(const UserGroup*, ToolButton*, ToolBar*)));
 	KaduActions.insert("insertEmoticonAction", insert_emot_action);
 
-	Action* whois_action = new Action(icons_manager->loadIcon("LookupUserInfo"),
-		tr("Search this user in directory"), "whoisAction", Action::TypeChat);
+	Action* whois_action = new Action("LookupUserInfo", tr("Search this user in directory"),
+		"whoisAction", Action::TypeChat);
 	connect(whois_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(whoisActionActivated(const UserGroup*)));
 	KaduActions.insert("whoisAction", whois_action);
 
-	Action* insert_img_action = new Action(icons_manager->loadIcon("ChooseImage"),
-		tr("Insert image"), "insertImageAction", Action::TypeChat);
+	Action* insert_img_action = new Action("ChooseImage", tr("Insert image"),
+		"insertImageAction", Action::TypeChat);
 	connect(insert_img_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(insertImageActionActivated(const UserGroup*)));
 	KaduActions.insert("insertImageAction", insert_img_action);
 
-	Action* ignore_user_action = new Action(icons_manager->loadIcon("ManageIgnored"),
-		tr("Ignore user"), "ignoreUserAction", Action::TypeUser);
+	Action* ignore_user_action = new Action("ManageIgnored", tr("Ignore user"),
+		"ignoreUserAction", Action::TypeUser);
 	connect(ignore_user_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(ignoreUserActionActivated(const UserGroup*)));
 	KaduActions.insert("ignoreUserAction", ignore_user_action);
 
-	Action* block_user_action = new Action(icons_manager->loadIcon("Blocking"),
-		tr("Block user"), "blockUserAction", Action::TypeUser);
+	Action* block_user_action = new Action("Blocking", tr("Block user"), "blockUserAction",
+		Action::TypeUser);
 	connect(block_user_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(blockUserActionActivated(const UserGroup*)));
 	KaduActions.insert("blockUserAction", block_user_action);
 
-	QFont font;
-
-	font.setBold(true);
-	Action* bold_action = new Action(string_to_pixmap("B", font),
-		tr("Bold"), "boldAction", Action::TypeChat);
+	Action* bold_action = new Action("Bold", tr("Bold"), "boldAction", Action::TypeChat);
 	bold_action->setToggleAction(true);
 	connect(bold_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(boldActionActivated(const UserGroup*, const QWidget*, bool)));
 	KaduActions.insert("boldAction", bold_action);
 
-	font.setBold(false);
-	font.setItalic(true);
-	Action* italic_action = new Action(string_to_pixmap("I", font),
-		tr("Italic"), "italicAction", Action::TypeChat);
+	Action* italic_action = new Action("Italic", tr("Italic"), "italicAction", Action::TypeChat);
 	italic_action->setToggleAction(true);
 	connect(italic_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(italicActionActivated(const UserGroup*, const QWidget*, bool)));
 	KaduActions.insert("italicAction", italic_action);
 
-	font.setItalic(false);
-	font.setUnderline(true);
-	Action* underline_action = new Action(string_to_pixmap("U", font),
-		tr("Underline"), "underlineAction", Action::TypeChat);
+	Action* underline_action = new Action("Underline", tr("Underline"), "underlineAction", Action::TypeChat);
 	underline_action->setToggleAction(true);
 	connect(underline_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(underlineActionActivated(const UserGroup*, const QWidget*, bool)));
 	KaduActions.insert("underlineAction", underline_action);
 
-	QPixmap p(12, 12);
-	p.fill(Qt::black);
-	Action* color_action = new Action(p,
-		tr("Change color"), "colorAction", Action::TypeChat);
+	Action* color_action = new Action("", tr("Change color"), "colorAction", Action::TypeChat);
 	connect(color_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(colorActionActivated(const UserGroup*, const QWidget*)));
 	KaduActions.insert("colorAction", color_action);
 
-	Action* send_action = new Action(icons_manager->loadIcon("SendMessage"),
-		tr("&Send"), "sendAction", Action::TypeChat);
+	Action* send_action = new Action("SendMessage", tr("&Send"), "sendAction", Action::TypeChat);
 	connect(send_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(sendActionActivated(const UserGroup*)));
 	KaduActions.insert("sendAction", send_action);
 
-	Action* chat_action = new Action(icons_manager->loadIcon("OpenChat"),
-		tr("&Chat"), "chatAction", Action::TypeUserList);
+	Action* chat_action = new Action("OpenChat", tr("&Chat"), "chatAction", Action::TypeUserList);
 	connect(chat_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(chatActionActivated(const UserGroup*)));
 	KaduActions.insert("chatAction", chat_action);

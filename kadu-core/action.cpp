@@ -15,13 +15,14 @@
 
 #include "action.h"
 #include "debug.h"
+#include "icons_manager.h"
 #include "misc.h"
 #include "toolbar.h"
 #include "toolbutton.h"
 
-Action::Action(const QIconSet& icon, const QString& text, const char* name, ActionType Type,
+Action::Action(const QString& icon, const QString& text, const char* name, ActionType Type,
 		QKeySequence Seq0, QKeySequence Seq1)
-	: QObject(NULL, name), Icon(icon), Text(text), KeySeq0(Seq0), KeySeq1(Seq1),
+	: QObject(NULL, name), IconName(icon), Text(text), KeySeq0(Seq0), KeySeq1(Seq1),
 		ToggleAction(false), OnIcon(), OnText(), Slot(0), ToolButtons(),
 		ToggleState(false), Type(Type)
 {
@@ -75,7 +76,7 @@ ToolButton* Action::addToToolbar(ToolBar* toolbar, bool uses_text_label)
 	kdebugf();
 
 	ToolButton* btn = new ToolButton(toolbar, name(), Type);
-	btn->setIconSet(Icon);
+	btn->setIconSet(icons_manager->loadIcon(IconName));
 	btn->setTextLabel(Text);
 	btn->setOnShape(OnIcon, OnText);
 	btn->setToggleButton(ToggleAction);
@@ -104,7 +105,7 @@ ToolButton* Action::addToToolbar(ToolBar* toolbar, bool uses_text_label)
 int Action::addToPopupMenu(QPopupMenu* menu, bool connect_signal)
 {
 	kdebugf();
-	int id = menu->insertItem(Icon, Text);
+	int id = menu->insertItem(icons_manager->loadIcon(IconName), Text);
 	if (connect_signal)
 		menu->connectItem(id, this, SIGNAL(activated()));
 	kdebugf2();
@@ -162,6 +163,17 @@ void Action::setPixmaps(const UserListElements& users, const QPixmap& pixmap)
 	kdebugf2();
 }
 
+void Action::refreshIcons()
+{
+	kdebugf();
+
+	if (!IconName.isEmpty())
+		FOREACH(button, ToolButtons)
+			(*button)->setIconSet(icons_manager->loadIcon(IconName));
+
+	kdebugf2();
+}
+
 void Action::setTexts(const UserListElements& users, const QString& text)
 {
 	kdebugf();
@@ -204,11 +216,6 @@ Action::ActionType Action::actionType()
 
 Actions::Actions() : QMap<QString, Action *>(), DefaultToolbarActions()
 {
-}
-
-void Actions::refreshIcons()
-{
-	//TODO: refresh icons
 }
 
 void Actions::addDefaultToolbarAction(
