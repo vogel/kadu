@@ -27,8 +27,8 @@
 #include "userbox.h"
 #include "protocol.h"
 
-ChatWindow::ChatWindow(QWidget* parent, const char* name)
-	: QMainWindow(parent, name, Qt::WDestructiveClose), currentChatWidget(0), title_timer(new QTimer(this, "title_timer"))
+ChatWindow::ChatWindow(QWidget* parent, const char* name) : QMainWindow(parent, name, WDestructiveClose),
+	currentChatWidget(0), title_timer(new QTimer(this, "title_timer"))
 {
 	configurationUpdated();
 	connect(title_timer, SIGNAL(timeout()), this, SLOT(blinkTitle()));
@@ -43,7 +43,9 @@ void ChatWindow::configurationUpdated()
 {
 	showNewMessagesNum = config_file.readBoolEntry("Chat", "NewMessagesInChatTitle");
 	blinkChatTitle = config_file.readBoolEntry("Chat", "BlinkChatTitle");
-	blinkTitle();
+
+	if (currentChatWidget && currentChatWidget->newMessagesCount())
+		blinkTitle();
 }
 
 // TODO: fix it
@@ -157,7 +159,7 @@ void ChatWindow::updateTitle()
 	setIcon(currentChatWidget->icon());
 	setCaption(currentChatWidget->caption());
 
-	if (showNewMessagesNum && (currentChatWidget->newMessagesCount() != 0)) // if we don't have new messages or don't want them to be shown
+	if (showNewMessagesNum && currentChatWidget->newMessagesCount()) // if we don't have new messages or don't want them to be shown
 		showNewMessagesNumInTitle();
 }
 
@@ -177,12 +179,12 @@ void ChatWindow::blinkTitle()
 
 		if (blinkChatTitle) // timer will not be started, if configuration option was changed
 			title_timer->start(500,TRUE);
-  	}
+	}
 }
 
 void ChatWindow::showNewMessagesNumInTitle()
 {
-	if (!isActiveWindow() && currentChatWidget)
+	if (!isActiveWindow())
 		setCaption("[" + QString().setNum(currentChatWidget->newMessagesCount()) + "] " + currentChatWidget->caption());
 }
 
