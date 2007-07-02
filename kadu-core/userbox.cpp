@@ -10,6 +10,7 @@
 #include <algorithm>
 
 #include <qapplication.h>
+#include <qcheckbox.h>
 #include <qcursor.h>
 #include <qcombobox.h>
 #include <qdragobject.h>
@@ -17,12 +18,14 @@
 #include <qspinbox.h>
 #include <qvgroupbox.h>
 
+#include "action.h"
 #include "config_file.h"
 #include "debug.h"
 #include "html_document.h"
 #include "icons_manager.h"
 #include "ignore.h"
 #include "kadu.h"
+#include "main_configuration_window.h"
 #include "misc.h"
 #include "pending_msgs.h"
 #include "userbox.h"
@@ -458,6 +461,13 @@ UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
 	kdebugf();
 	Filters.append(group);
 
+	Action* desc_action = new Action("ShowDescription", tr("Show / hide descriptions"),
+		"descriptionsAction", Action::TypeUserList);
+	desc_action->setToggleAction(true);
+	connect(desc_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		this, SLOT(descriptionsActionActivated(const UserGroup*, const QWidget*, bool)));
+	KaduActions.insert("descriptionsAction", desc_action);
+
 	connect(group, SIGNAL(userAdded(UserListElement, bool, bool)),
 			this, SLOT(userAddedToGroup(UserListElement, bool, bool)));
 	connect(group, SIGNAL(userRemoved(UserListElement, bool, bool)),
@@ -562,6 +572,14 @@ void UserBox::hideTip(bool waitForAnother)
 		tipTimer.start(TIP_TM);
 	else
 		tipTimer.stop();
+}
+
+void UserBox::descriptionsActionActivated(const UserGroup* /*users*/, const QWidget* /*widget*/, bool toggle)
+{
+	config_file.writeEntry("Look", "ShowDesc", toggle);
+//	dynamic_cast<QCheckBox *>(MainConfigurationWindow::instance()->widgetById("showDescription"))->setChecked(toggle);
+	KaduListBoxPixmap::setShowDesc(toggle);
+	UserBox::refreshAllLater();
 }
 
 void UserBox::wheelEvent(QWheelEvent *e)
@@ -995,10 +1013,14 @@ void UserBox::configurationUpdated()
 	int columnCount = config_file.readNumEntry("Look", "UserBoxColumnCount", 1);
 	setColumnMode(columnCount);
 
+	bool showDesc = config_file.readBoolEntry("Look", "ShowDesc", false);
+	if (KaduActions["descriptionsAction"])
+		KaduActions["descriptionsAction"]->setAllOn(showDesc);
+
 	QListBox::setFont(config_file.readFontEntry("Look", "UserboxFont"));
 
-	KaduListBoxPixmap::setFont(config_file.readFontEntry("Look","UserboxFont"));
-	KaduListBoxPixmap::setShowDesc(config_file.readBoolEntry("Look", "ShowDesc"));
+	KaduListBoxPixmap::setFont(config_file.readFontEntry("Look", "UserboxFont"));
+	KaduListBoxPixmap::setShowDesc(showDesc);
 	KaduListBoxPixmap::setAlignTop(config_file.readBoolEntry("Look", "AlignUserboxIconsTop"));
 	KaduListBoxPixmap::setShowMultilineDesc(config_file.readBoolEntry("Look", "ShowMultilineDesc"));
 	KaduListBoxPixmap::setColumnCount(columnCount);
@@ -1010,6 +1032,7 @@ void UserBox::configurationUpdated()
 	UserBox::setColorsOrBackgrounds();
 
 	UserBox::refreshAllLater();
+
 	kdebugf2();
 }
 

@@ -25,6 +25,7 @@ void GroupsManager::initModule()
 	groups_manager = new GroupsManager();
 	usersWithDescription = new UsersWithDescription();
 	onlineUsers = new OnlineUsers();
+	onlineAndDescriptionUsers = new OnlineAndDescriptionUsers();
 	offlineUsers = new OfflineUsers();
 	blockedUsers = new BlockedUsers();
 	blockingUsers = new BlockingUsers();
@@ -42,6 +43,7 @@ void GroupsManager::closeModule()
 	UserBox *userbox = kadu->userbox();
 	userbox->removeNegativeFilter(blockingUsers);
 	userbox->removeNegativeFilter(blockedUsers);
+	userbox->removeFilter(onlineAndDescriptionUsers);
 	userbox->removeNegativeFilter(offlineUsers);
 	userbox->removeFilter(usersWithDescription);
 	userbox->removeNegativeFilter(anonymousUsers);
@@ -52,6 +54,9 @@ void GroupsManager::closeModule()
 
 	delete onlineUsers;
 	onlineUsers = NULL;
+
+	delete onlineAndDescriptionUsers;
+	onlineAndDescriptionUsers = NULL;
 
 	delete offlineUsers;
 	offlineUsers = NULL;
@@ -95,10 +100,12 @@ void GroupsManager::setTabBar(KaduTabBar *bar)
 	showBlocking = !config_file.readBoolEntry("General", "ShowBlocking");
 	showOffline = !config_file.readBoolEntry("General", "ShowOffline");
 	showWithoutDescription = !config_file.readBoolEntry("General", "ShowWithoutDescription");
+	showOnlineAndDescription = !config_file.readBoolEntry("General", "ShowOnlineAndDescription");
 	changeDisplayingBlocking();
 	changeDisplayingBlocked();
 	changeDisplayingOffline();
 	changeDisplayingWithoutDescription();
+	changeDisplayingOnlineAndDescription();
 	kdebugf2();
 }
 
@@ -261,6 +268,25 @@ void GroupsManager::changeDisplayingWithoutDescription()
 	else
 		kadu->userbox()->applyFilter(usersWithDescription);
 	config_file.writeEntry("General", "ShowWithoutDescription", showWithoutDescription);
+	kdebugf2();
+}
+
+void GroupsManager::changeDisplayingOnlineAndDescription()
+{
+	kdebugf();
+
+	showOnlineAndDescription = !showOnlineAndDescription;
+
+	if (KaduActions["onlineAndDescriptionUsersAction"])
+		KaduActions["onlineAndDescriptionUsersAction"]->setAllOn(showOnlineAndDescription);
+
+	if (showOnlineAndDescription)
+		kadu->userbox()->applyFilter(onlineAndDescriptionUsers);
+	else
+		kadu->userbox()->removeFilter(onlineAndDescriptionUsers);
+
+	config_file.writeEntry("General", "ShowOnlineAndDescription", showOnlineAndDescription);
+
 	kdebugf2();
 }
 
@@ -505,6 +531,64 @@ void OnlineUsers::statusChangedSlot(UserListElement elem, QString protocolName,
 		addUser(elem);
 	else
 		removeUser(elem);
+}
+
+OnlineAndDescriptionUsers::OnlineAndDescriptionUsers() : UserGroup(userlist->count(), "online_and_description_users")
+{
+	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
+			this, SLOT(statusChangedSlot(UserListElement, QString, const UserStatus &, bool, bool)));
+	connect(userlist, SIGNAL(userAdded(UserListElement, bool, bool)),
+			this, SLOT(userChangedSlot(UserListElement, bool, bool)));
+	connect(userlist, SIGNAL(protocolAdded(UserListElement, QString, bool, bool)),
+			this, SLOT(protocolAddedOrRemoved(UserListElement, QString, bool, bool)));
+	connect(userlist, SIGNAL(removingProtocol(UserListElement, QString, bool, bool)),
+			this, SLOT(protocolAddedOrRemoved(UserListElement, QString, bool, bool)));
+}
+
+OnlineAndDescriptionUsers::~OnlineAndDescriptionUsers()
+{
+	disconnect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
+			this, SLOT(statusChangedSlot(UserListElement, QString, const UserStatus &, bool, bool)));
+	disconnect(userlist, SIGNAL(userAdded(UserListElement, bool, bool)),
+			this, SLOT(userChangedSlot(UserListElement, bool, bool)));
+	disconnect(userlist, SIGNAL(protocolAdded(UserListElement, QString, bool, bool)),
+			this, SLOT(protocolAddedOrRemoved(UserListElement, QString, bool, bool)));
+	disconnect(userlist, SIGNAL(removingProtocol(UserListElement, QString, bool, bool)),
+			this, SLOT(protocolAddedOrRemoved(UserListElement, QString, bool, bool)));
+}
+
+void OnlineAndDescriptionUsers::userChangedSlot(UserListElement elem, bool /*massively*/, bool /*last*/)
+{
+	bool isWanted = false; // czy chcemy zeby uzytkownik byl wyswietlany na liscie
+
+	QStringList protos = elem.protocolList();
+	if (!protos.isEmpty())
+	{
+		CONST_FOREACH(proto, protos)
+		{
+			UserStatus status = elem.status(*proto);
+			if (status.isOnline() || status.isBusy() || status.hasDescription())
+			{
+				isWanted = true;
+				break;
+			}
+		}
+	}
+
+	if (isWanted)
+		addUser(elem);
+	else
+		removeUser(elem);
+}
+
+void OnlineAndDescriptionUsers::statusChangedSlot(UserListElement elem, QString protocolName, const UserStatus &oldStatus, bool massively, bool last)
+{
+	userChangedSlot(elem, massively, last);
+}
+
+void OnlineAndDescriptionUsers::protocolAddedOrRemoved(UserListElement elem, QString protocolName, bool massively, bool last)
+{
+	userChangedSlot(elem, massively, last);
 }
 
 OfflineUsers::OfflineUsers() : UserGroup(userlist->count(), "offline_users")
@@ -781,6 +865,7 @@ BlockedUsers *blockedUsers;
 BlockingUsers *blockingUsers;
 UsersWithDescription *usersWithDescription;
 OnlineUsers *onlineUsers;
+OnlineAndDescriptionUsers *onlineAndDescriptionUsers;
 OfflineUsers *offlineUsers;
 AnonymousUsers *anonymousUsers;
 AnonymousUsersWithoutMessages *anonymousUsersWithoutMessages;

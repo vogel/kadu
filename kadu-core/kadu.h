@@ -237,6 +237,7 @@ class Kadu : public QWidget, ConfigurationAwareObject
 		void selectedUsersNeeded(const UserGroup*& users);
 		void inactiveUsersActionActivated();
 		void descriptionUsersActionActivated();
+		void onlineAndDescUsersActionActivated();
 		void configurationActionActivated();
 		void editUserActionActivated(const UserGroup* users);
 		void addUserActionActivated(const UserGroup* users);

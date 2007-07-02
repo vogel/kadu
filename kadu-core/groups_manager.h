@@ -138,6 +138,13 @@ class GroupsManager : public QObject, ConfigurationAwareObject
 		**/
 		void changeDisplayingWithoutDescription();
 
+		/**
+			\fn void changeDisplayingOnlineAndDescription()
+			w³±cza lub wy³±cza wy¶wietlanie kontatków o statusach "dostêpny"
+			lub "zajêty" oraz kontatków z opisem
+		**/
+		void changeDisplayingOnlineAndDescription();
+
 	private slots:
 		void userDataChanged(UserListElement elem, QString name, QVariant oldValue,
 							QVariant currentValue, bool massively, bool last);
@@ -160,6 +167,7 @@ class GroupsManager : public QObject, ConfigurationAwareObject
 		bool showBlocking;
 		bool showOffline;
 		bool showWithoutDescription;
+		bool showOnlineAndDescription;
 		QTimer refreshTimer;
 };
 extern GroupsManager *groups_manager;
@@ -197,6 +205,28 @@ class OnlineUsers : public UserGroup
 							const UserStatus &oldStatus, bool massively, bool last);
 };
 extern OnlineUsers *onlineUsers;
+
+/**
+	\class OnlineAndDescriptionUsers
+	Klasa grupuj±ca kontakty o statusie "dostêpny",
+	lub "zajêty", oraz kontakty maj±ca opis. Klasa
+	automatycznie synchronizuje siê z g³ówn± list± kontaktów
+**/
+class OnlineAndDescriptionUsers : public UserGroup
+{
+	Q_OBJECT
+
+	public:
+		OnlineAndDescriptionUsers();
+		virtual ~OnlineAndDescriptionUsers();
+
+	private slots:
+		void statusChangedSlot(UserListElement elem, QString protocolName,
+					    const UserStatus &oldStatus, bool massively, bool last);
+		void userChangedSlot(UserListElement elem, bool massively, bool last);
+		void protocolAddedOrRemoved(UserListElement elem, QString protocolName, bool massively, bool last);
+};
+extern OnlineAndDescriptionUsers *onlineAndDescriptionUsers;
 
 /**
 	\class OfflineUsers

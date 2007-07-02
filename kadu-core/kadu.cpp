@@ -235,6 +235,14 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 		this, SLOT(descriptionUsersActionActivated()));
 	KaduActions.insert("descriptionUsersAction", desc_users_action);
 
+	Action* onlineAndDesc_users_action = new Action("ShowOnlineAndDescriptionUsers",
+		tr("Show / hide online and description users"), "onlineAndDescriptionUsersAction", Action::TypeUserList);
+	onlineAndDesc_users_action->setToggleAction(true);
+	onlineAndDesc_users_action->setAllOn(config_file.readBoolEntry("General", "ShowOnlineAndDescription"));
+	connect(onlineAndDesc_users_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		this, SLOT(onlineAndDescUsersActionActivated()));
+	KaduActions.insert("onlineAndDescriptionUsersAction", onlineAndDesc_users_action);
+
 	Action* configuration_action = new Action("Configuration", tr("Configuration"),
 		"configurationAction", Action::TypeGlobal);
 	connect(configuration_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
@@ -617,6 +625,11 @@ void Kadu::inactiveUsersActionActivated()
 void Kadu::descriptionUsersActionActivated()
 {
 	groups_manager->changeDisplayingWithoutDescription();
+}
+
+void Kadu::onlineAndDescUsersActionActivated()
+{
+	groups_manager->changeDisplayingOnlineAndDescription();
 }
 
 void Kadu::configurationActionActivated()

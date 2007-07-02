@@ -507,6 +507,15 @@ class UserBox : public QListBox, ConfigurationAwareObject
 	public slots:
 
 		/**
+			\fn descriptionsActionActivated(const UserGroup* users, const QWidget* widget, bool toggle)
+			Slot jest wywo³ywany, gdy aktywowano ukrywanie opisów kontaktów
+			\param users u¿ytkownicy (nieu¿ywany)
+			\param widget (nieu¿ywany)
+			\param toggle w³±czenie / wy³±czenie ukrywania opisów
+		**/
+		void descriptionsActionActivated(const UserGroup* users, const QWidget* widget, bool toggle);
+
+		/**
 			\fn void applyFilter(UserGroup *group)
 			Nak³ada na bie¿±cy UserBox filtr "pozytywny" - wy¶wietlane bêd±
 			tylko te kontakty, które nale¿± do group.
