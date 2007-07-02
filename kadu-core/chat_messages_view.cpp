@@ -235,5 +235,7 @@ void ChatMessagesView::configurationUpdated()
 		CfgNoHeaderInterval = 0;
 	}
 
+	setMargin(ParagraphSeparator);
+
 	repaintMessages();
 }
