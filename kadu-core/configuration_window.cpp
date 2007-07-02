@@ -380,12 +380,17 @@ QValueList<ConfigWidget *> ConfigurationWindow::processUiGroupBoxFromDom(QDomNod
 		return result;
 	}
 
+	const QString groupBoxId = groupBoxElement.attribute("id");
+
 	ConfigGroupBox *configGroupBoxWidget = configGroupBox(sectionName, tabName, groupBoxName, append);
 	if (!configGroupBoxWidget)
 	{
 		kdebugf2();
 		return result;
 	}
+
+	if (!groupBoxId.isEmpty())
+		widgets[groupBoxId] = dynamic_cast<QWidget *>(configGroupBoxWidget->widget());
 
 	const QDomNodeList &children = groupBoxElement.childNodes();
 	int length = children.length();
