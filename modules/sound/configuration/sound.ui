@@ -4,13 +4,18 @@
 
 		<tab name="Sound">
 			<group-box name="General">
+				<check-box caption="Use sounds" config-section="Sounds" config-item="PlaySound" id="sound/use" />
+			</group-box>
+			<group-box name="Theme" id="sound/theme">
 				<combo-box caption="Sound theme" config-section="Sounds" config-item="SoundTheme" id="sound/themes" />
 				<action-button caption="Apply theme" id="sound/applyTheme" />
 				<path-list-edit caption="Sound paths" config-section="" config-item="" id="soundPaths" />
+			</group-box>
+			<group-box name="Volume" id="sound/volume">
 				<check-box caption="Enable volume control (player must support it)" config-section="Sounds" config-item="VolumeControl" id="sound/enableVolumeControl" />
 				<slider caption="Volume" config-section="Sounds" config-item="SoundVolume" min-value="0" max-value="100" page-step="20" id="sound/volumeControl" />
 			</group-box>
-			<group-box name="Samples">
+			<group-box name="Samples" id="sound/samples">
 				<action-button caption="Test sample playing" id="sound/testPlay" />
 				<action-button caption="Test sample recording" id="sound/testRecord" />
 				<action-button caption="Test full duplex" id="sound/testDuplex" />

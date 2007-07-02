@@ -238,6 +238,13 @@ SoundManager::~SoundManager()
 
 void SoundManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
+	connect(mainConfigurationWindow->widgetById("sound/use"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widgetById("sound/theme"), SLOT(setEnabled(bool)));
+	connect(mainConfigurationWindow->widgetById("sound/use"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widgetById("sound/volume"), SLOT(setEnabled(bool)));
+	connect(mainConfigurationWindow->widgetById("sound/use"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widgetById("sound/samples"), SLOT(setEnabled(bool)));
+
 	connect(mainConfigurationWindow->widgetById("sound/enableVolumeControl"), SIGNAL(toggled(bool)),
 		mainConfigurationWindow->widgetById("sound/volumeControl"), SLOT(setEnabled(bool)));
 
