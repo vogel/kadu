@@ -1020,7 +1020,7 @@ void GaduProtocol::login()
 	LoginParams.async = 1;
 
 	// maksymalny rozmiar grafiki w kb
-	LoginParams.image_size = config_file.readBoolEntry("Chat", "ReceiveImages", true) ? 255 : 0;
+	LoginParams.image_size = config_file.readUnsignedNumEntry("Chat", "MaxImageSize", 0);
 
 	setupProxy();
 

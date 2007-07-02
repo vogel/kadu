@@ -120,15 +120,6 @@
 				<path-list-edit caption="Icon paths" config-section="Look" config-item="IconsPaths" id="iconPaths" />
 				<check-box caption="Show status button" config-section="Look" config-item="ShowStatusButton" />
 			</group-box>
-			<group-box name="Emoticons">
-				<combo-box caption="Emoticons" config-section="Chat" config-item="EmoticonsStyle" id="emoticonsStyle">
-					<item value="2" caption="Animated" />
-					<item value="1" caption="Static" />
-					<item value="0" caption="None" />
-				</combo-box>
-				<combo-box caption="Emoticons theme" config-section="Chat" config-item="EmoticonsTheme" id="emoticonsTheme" />
-				<path-list-edit caption="Emoticons paths" config-section="" config-item="" id="emoticonsPaths" />
-			</group-box>
 		</tab>
 
 		<tab name="Colors">
@@ -173,6 +164,16 @@
 			<group-box name="Style">
 				<syntax-editor caption="Style" config-section="Look" config-item="Style" category="chat" id="chatSyntax" />
 				<preview caption="Preview" id="chatSyntaxPreview" />
+			</group-box>
+
+			<group-box name="Emoticons">
+				<combo-box caption="Emoticons" config-section="Chat" config-item="EmoticonsStyle" id="emoticonsStyle">
+					<item value="2" caption="Animated" />
+					<item value="1" caption="Static" />
+					<item value="0" caption="None" />
+				</combo-box>
+				<combo-box caption="Emoticons theme" config-section="Chat" config-item="EmoticonsTheme" id="emoticonsTheme" />
+				<path-list-edit caption="Emoticons paths" config-section="" config-item="" id="emoticonsPaths" />
 			</group-box>
 
 			<group-box name="Advanced">
@@ -299,9 +300,9 @@
 			</group-box>
 			
 			<group-box name="Images">
-				<check-box caption="Receive images" config-section="Chat" config-item="ReceiveImages" id="receiveImages" />
-				<check-box caption="Receive images during invisibility" config-section="Chat" config-item="RecevieImagesDuringInvisibility" id="receiveImagesDuringInvisibility" />
-				<spin-box caption="Limit numbers of image recevied per minute" config-section="General" config-item="MaxImageRequests" min-value="1" max-value="30" step="1" id="maxImageRequests" />
+				<spin-box caption="Max image size" config-section="Chat" config-item="MaxImageSize" min-value="0" max-value="255" step="1" suffix=" kB" />
+				<check-box caption="Receive images during invisibility" config-section="Chat" config-item="RecevieImagesDuringInvisibility" />
+				<spin-box caption="Limit numbers of image recevied per minute" config-section="General" config-item="MaxImageRequests" min-value="1" max-value="30" step="1" />
 			</group-box>
 
 			<group-box name="Link folding">

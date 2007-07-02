@@ -1856,13 +1856,6 @@ void Kadu::import_0_5_0_configuration()
 {
 // 	config_file.removeVariable("General", "ShowAnonymousWithMsgs");
 
-	int maxImageSize = config_file.readNumEntry("Chat", "MaxImageSize", -1);
-	if (maxImageSize != -1)
-	{
-		config_file.writeEntry("Chat", "ReceiveImages", maxImageSize != 0);
-		config_file.removeVariable("Chat", "MaxImageSize");
-	}
-
 	int defaultStatusIndex = config_file.readNumEntry("General", "DefaultStatusIndex", -1);
 	if (defaultStatusIndex != -1)
 	{
