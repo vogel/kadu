@@ -199,6 +199,9 @@ void ChatMessagesView::configurationUpdated()
 	else
 		setStyleSheet(new StaticStyleSheet(this, emoticons->themePath()));
 
+	if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") != EMOTS_NONE)
+		mimeSourceFactory()->addFilePath(emoticons->themePath());
+
 	setFont(config_file.readFontEntry("Look","ChatFont"));
 
 	// background color of chat
