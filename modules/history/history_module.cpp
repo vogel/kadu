@@ -110,7 +110,14 @@ HistoryModule::~HistoryModule()
 void HistoryModule::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
 	dontCiteOldMessagesLabel = dynamic_cast<QLabel *>(mainConfigurationWindow->widgetById("history/dontCiteOldMessagesLabel"));
-	connect(mainConfigurationWindow->widgetById("history/dontCiteOldMessages"), SIGNAL(valueChanged(int)), this, SLOT(updateQuoteTimeLabel(int)));
+	connect(mainConfigurationWindow->widgetById("history/dontCiteOldMessages"), SIGNAL(valueChanged(int)),
+		this, SLOT(updateQuoteTimeLabel(int)));
+	connect(mainConfigurationWindow->widgetById("history/save"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widgetById("history/statusChanges"), SLOT(setEnabled(bool)));
+	connect(mainConfigurationWindow->widgetById("history/save"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widgetById("history/citation"), SLOT(setEnabled(bool)));
+	connect(mainConfigurationWindow->widgetById("history/save"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widgetById("history/shortCuts"), SLOT(setEnabled(bool)));
 }
 
 void HistoryModule::updateQuoteTimeLabel(int value)
