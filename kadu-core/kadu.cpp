@@ -1560,6 +1560,22 @@ bool Kadu::docked() const
 void Kadu::show()
 {
 	QWidget::show();
+
+	// TODO: remove after 0.6
+	printf("width is: %d\n", Userbox->width());
+	printf("%d %d\n", config_file.readBoolEntry("Look", "MultiColumnUserbox", false), config_file.readNumEntry("Look", "MultiColumnUserboxWidth", (Userbox->width() - 20)));
+	if (config_file.readBoolEntry("Look", "MultiColumnUserbox", false))
+	{
+		int columns = (Userbox->width() - 20) / config_file.readNumEntry("Look", "MultiColumnUserboxWidth", (Userbox->width() - 20));
+		if (columns < 1)
+			columns = 1;
+		config_file.writeEntry("Look", "UserBoxColumnCount", columns);
+
+		Userbox->configurationUpdated();
+	}
+	config_file.removeVariable("Look", "MultiColumnUserbox");
+	config_file.removeVariable("Look", "MultiColumnUserboxWidth");
+
 	emit shown();
 }
 
@@ -1904,14 +1920,6 @@ void Kadu::import_0_5_0_configuration()
 		chatList.updateSyntax("custom", chatSyntax);
 		config_file.removeVariable("Look", "FullStyle");
 	}
-
-	if (config_file.readBoolEntry("Look", "MultiColumnUserbox", false))
-	{
-		int columns = (Userbox->width() - 20) / config_file.readNumEntry("Look", "MultiColumnUserboxWidth", (Userbox->width() - 20));
-		config_file.writeEntry("Look", "UserBoxColumnCount", columns);
-	}
-	config_file.removeVariable("Look", "MultiColumnUserbox");
-	config_file.removeVariable("Look", "MultiColumnUserboxWidth");
 
 	config_file.removeVariable("Look", "UserboxBackgroundMove");
 	config_file.removeVariable("Look", "UserboxBackgroundSX");

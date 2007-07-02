@@ -368,6 +368,8 @@ class UserBox : public QListBox, ConfigurationAwareObject
 {
 	Q_OBJECT
 
+	friend class Kadu;
+
 	public:
 		/**
 			\fn UserBox(UserGroup *group = userlist, QWidget* parent = 0, const char* name = 0, WFlags f = 0)
