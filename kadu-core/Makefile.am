@@ -187,7 +187,6 @@ obj/action.$(OBJEXT) \
 obj/chat_manager.$(OBJEXT) \
 obj/chat_message.$(OBJEXT) \
 obj/chat_messages_view.$(OBJEXT) \
-obj/chat_messages_view_moc.$(OBJEXT) \
 obj/chat_widget.$(OBJEXT) \
 obj/chat_window.$(OBJEXT) \
 obj/color_button.$(OBJEXT) \
@@ -247,6 +246,7 @@ obj/version.$(OBJEXT) \
 obj/about_moc.$(OBJEXT) \
 obj/action_moc.$(OBJEXT) \
 obj/chat_manager_moc.$(OBJEXT) \
+obj/chat_messages_view_moc.$(OBJEXT) \
 obj/chat_widget_moc.$(OBJEXT) \
 obj/chat_window_moc.$(OBJEXT) \
 obj/color_button_moc.$(OBJEXT) \
