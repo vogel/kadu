@@ -99,7 +99,7 @@ UserInfo::UserInfo(UserListElement user, QWidget* parent, const char *name)
 
 	layoutHelper->addLabel(l_info);
 
-	loadGeometry(this, "General", "ManageUsersDialogGeometry", 0, 30, 380, 450);
+	loadGeometry(this, "General", "ManageUsersDialogGeometry", 0, 30, 425, 500);
 	kdebugf2();
 }
 
