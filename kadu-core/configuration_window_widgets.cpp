@@ -812,7 +812,7 @@ void ConfigPreview::createWidgets()
 	kdebugf();
 
 	label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
-	parentConfigGroupBox->addWidget(this);
+	parentConfigGroupBox->addWidgets(label, this);
 }
 
 void ConfigPreview::show()
