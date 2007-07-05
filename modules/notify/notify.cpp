@@ -113,8 +113,31 @@ void Notify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigu
 
 	notifications->setItems(values, captions);
 
-	allUsers = dynamic_cast<QListBox *>(mainConfigurationWindow->widgetById("notify/userList"));
-	notifiedUsers = dynamic_cast<QListBox *>(mainConfigurationWindow->widgetById("notify/notifyList"));
+	ConfigGroupBox *statusGroupBox = mainConfigurationWindow->configGroupBox("Notifications", "Options", "Status change");
+
+	QWidget *notifyUsers = new QWidget(statusGroupBox->widget());
+	QGridLayout *notifyUsersLayout = new QGridLayout(notifyUsers);
+	notifyUsersLayout->setSpacing(5);
+	notifyUsersLayout->setMargin(5);
+
+	allUsers = new QListBox(notifyUsers);
+	QPushButton *moveToNotifyList = new QPushButton(tr("Move to 'Notify list'"), notifyUsers);
+
+	notifyUsersLayout->addWidget(new QLabel(tr("User list"), notifyUsers), 0, 0);
+	notifyUsersLayout->addWidget(allUsers, 1, 0);
+	notifyUsersLayout->addWidget(moveToNotifyList, 2, 0);
+
+	notifiedUsers = new QListBox(notifyUsers);
+	QPushButton *moveToAllList = new QPushButton(tr("Move to 'User list'"), notifyUsers);
+
+	notifyUsersLayout->addWidget(new QLabel(tr("Notify list"), notifyUsers), 0, 1);
+	notifyUsersLayout->addWidget(notifiedUsers, 1, 1);
+	notifyUsersLayout->addWidget(moveToAllList, 2, 1);
+
+	connect(moveToNotifyList, SIGNAL(clicked()), this, SLOT(moveToNotifyList()));
+	connect(moveToAllList, SIGNAL(clicked()), this, SLOT(moveToAllList()));
+
+	statusGroupBox->addWidgets(0, notifyUsers);
 
 	CONST_FOREACH(user, *userlist)
 		if ((*user).usesProtocol("Gadu") && !(*user).isAnonymous())
@@ -128,17 +151,10 @@ void Notify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigu
 	allUsers->setSelectionMode(QListBox::Extended);
 	notifiedUsers->setSelectionMode(QListBox::Extended);
 
-	connect(mainConfigurationWindow->widgetById("notify/up"), SIGNAL(clicked()), this, SLOT(moveUp()));
-	connect(mainConfigurationWindow->widgetById("notify/down"), SIGNAL(clicked()), this, SLOT(moveDown()));
-	connect(notifiedUsers, SIGNAL(doubleClicked(QListBoxItem *)), this, SLOT(moveUp()));
-	connect(allUsers, SIGNAL(doubleClicked(QListBoxItem *)), this, SLOT(moveDown()));
+	connect(notifiedUsers, SIGNAL(doubleClicked(QListBoxItem *)), this, SLOT(moveToAllList()));
+	connect(allUsers, SIGNAL(doubleClicked(QListBoxItem *)), this, SLOT(moveToNotifyList()));
 
-	QWidget *notifyAll = mainConfigurationWindow->widgetById("notify/notifyAll");
-	connect(notifyAll, SIGNAL(toggled(bool)), allUsers, SLOT(setDisabled(bool)));
-	connect(notifyAll, SIGNAL(toggled(bool)), notifiedUsers, SLOT(setDisabled(bool)));
-	connect(notifyAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("notify/up"), SLOT(setDisabled(bool)));
-	connect(notifyAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("notify/down"), SLOT(setDisabled(bool)));
-
+	connect(mainConfigurationWindow->widgetById("notify/notifyAll"), SIGNAL(toggled(bool)), notifyUsers, SLOT(setDisabled(bool)));
 	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
 
 	ConfigGroupBox *groupBox = mainConfigurationWindow->configGroupBox("Notifications", "General", "Notifications");
@@ -187,11 +203,11 @@ void Notify::eventSwitched(int index)
 void Notify::configurationWindowApplied()
 {
 	int count = notifiedUsers->count();
-	for (int i = 0; i < count; ++i)
+	for (int i = 0; i < count; i++)
 		userlist->byAltNick(notifiedUsers->text(i)).setNotify(true);
 
 	count = allUsers->count();
-	for (int i = 0; i < count; ++i)
+	for (int i = 0; i < count; i++)
 		userlist->byAltNick(allUsers->text(i)).setNotify(false);
 
 	userlist->writeToConfig();
@@ -213,7 +229,7 @@ void Notify::notifierToggled(const QString &notifier, bool toggled)
 	Notifiers[notifier].events[CurrentEvent] = toggled;
 }
 
-void Notify::moveUp()
+void Notify::moveToAllList()
 {
 	int count = notifiedUsers->count();
 
@@ -224,10 +240,10 @@ void Notify::moveUp()
 			notifiedUsers->removeItem(i);
 		}
 
-	notifiedUsers->sort();
+	allUsers->sort();
 }
 
-void Notify::moveDown()
+void Notify::moveToNotifyList()
 {
 	int count = allUsers->count();
 
@@ -238,7 +254,7 @@ void Notify::moveDown()
 			allUsers->removeItem(i);
 		}
 
-	allUsers->sort();
+	notifiedUsers->sort();
 }
 
 void Notify::statusChanged(UserListElement elem, QString protocolName,

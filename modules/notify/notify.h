@@ -155,8 +155,8 @@ private slots:
 	void connectionError(Protocol *protocol, const QString &message);
 	void statusChanged(UserListElement elem, QString protocolName, const UserStatus &oldStatus, bool massively, bool last);
 
-	void moveUp();
-	void moveDown();
+	void moveToNotifyList();
+	void moveToAllList();
 
 	void configurationWindowApplied();
 	void eventSwitched(int index);
