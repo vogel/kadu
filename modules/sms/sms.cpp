@@ -609,8 +609,29 @@ void SmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfiguration
 	customApp = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widgetById("sms/customApp"));
 	useCustomString = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widgetById("sms/useCustomString"));
 	customString = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widgetById("sms/customString"));
-	gatewayListBox = dynamic_cast<QListBox *>(mainConfigurationWindow->widgetById("sms/gateways"));
 
+	ConfigGroupBox *gatewayGroupBox = mainConfigurationWindow->configGroupBox("SMS", "General", "Gateways");
+	QHBox *gatewayHBox = new QHBox(gatewayGroupBox->widget());
+	gatewayHBox->setSpacing(5);
+
+	gatewayListBox = new QListBox(gatewayHBox);
+
+	QWidget *buttons = new QWidget(gatewayHBox);
+	QVBoxLayout *buttonsLayout = new QVBoxLayout(buttons);
+	buttonsLayout->setSpacing(5);
+
+	QPushButton *up = new QPushButton(tr("Up"), buttons);
+	QPushButton *down = new QPushButton(tr("Down"), buttons);
+
+	buttonsLayout->addWidget(up);
+	buttonsLayout->addWidget(down);
+	buttonsLayout->addStretch(100);
+
+	connect(up, SIGNAL(clicked()), this, SLOT(onUpButton()));
+	connect(down, SIGNAL(clicked()), this, SLOT(onDownButton()));
+
+	gatewayGroupBox->addWidgets(new QLabel(tr("Gateways priorites"), gatewayGroupBox->widget()), gatewayHBox);
+	
 	connect(useBuiltIn, SIGNAL(toggled(bool)), this, SLOT(onSmsBuildInCheckToggle(bool)));
 	connect(useCustomString, SIGNAL(toggled(bool)), customString, SLOT(setEnabled(bool)));
 
@@ -624,9 +645,6 @@ void SmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfiguration
 	CONST_FOREACH(gate, gateways)
 		if (gatewayListBox->index(gatewayListBox->findItem(gate.key())) == -1)
 			gatewayListBox->insertItem(gate.key());
-
-	connect(mainConfigurationWindow->widgetById("sms/up"), SIGNAL(clicked()), this, SLOT(onUpButton()));
-	connect(mainConfigurationWindow->widgetById("sms/down"), SIGNAL(clicked()), this, SLOT(onDownButton()));
 }
 
 SmsConfigurationUiHandler *smsConfigurationUiHandler;

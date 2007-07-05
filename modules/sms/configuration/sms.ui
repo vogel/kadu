@@ -16,9 +16,9 @@
 			</group-box>
 
 			<group-box name="Gateways">
-				<list-box caption="Gateways priorites" id="sms/gateways" />
-				<action-button caption="Up" id="sms/up" />
-				<action-button caption="Down" id="sms/down" />
+<!-- 				<list-box caption="Gateways priorites" id="sms/gateways" /> -->
+<!-- 				<action-button caption="Up" id="sms/up" /> -->
+<!-- 				<action-button caption="Down" id="sms/down" /> -->
 			</group-box>
 		</tab>
 
