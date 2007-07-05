@@ -83,7 +83,7 @@ void ConfigLineEdit::createWidgets()
 	kdebugf();
 
 	label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
-	parentConfigGroupBox->addWidgets(this, label);
+	parentConfigGroupBox->addWidgets(label, this);
 
 	if (!toolTip.isEmpty())
 	{
@@ -216,7 +216,7 @@ void ConfigSpinBox::createWidgets()
 	kdebugf();
 
 	label = new QLabel(this, widgetCaption + ":", parentConfigGroupBox->widget());
-	parentConfigGroupBox->addWidgets(this, label);
+	parentConfigGroupBox->addWidgets(label, this);
 
 	if (!toolTip.isEmpty())
 	{
@@ -310,7 +310,7 @@ void ConfigComboBox::createWidgets()
 	kdebugf();
 
 	label = new QLabel(this, widgetCaption + ":", parentConfigGroupBox->widget());
-	parentConfigGroupBox->addWidgets(this, label);
+	parentConfigGroupBox->addWidgets(label, this);
 
 	clear();
 	insertStringList(itemCaptions);
@@ -399,7 +399,7 @@ void ConfigHotKeyEdit::createWidgets()
 	kdebugf();
 
 	label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
-	parentConfigGroupBox->addWidgets(this, label);
+	parentConfigGroupBox->addWidgets(label, this);
 
 	if (!toolTip.isEmpty())
 	{
@@ -459,7 +459,7 @@ void ConfigPathListEdit::createWidgets()
 	kdebugf();
 
 	label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
-	parentConfigGroupBox->addWidgets(this, label);
+	parentConfigGroupBox->addWidgets(label, this);
 
 	if (!toolTip.isEmpty())
 	{
@@ -519,7 +519,7 @@ void ConfigColorButton::createWidgets()
 	kdebugf();
 
 	label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
-	parentConfigGroupBox->addWidgets(this, label);
+	parentConfigGroupBox->addWidgets(label, this);
 
 	if (!toolTip.isEmpty())
 	{
@@ -579,7 +579,7 @@ void ConfigSelectFont::createWidgets()
 	kdebugf();
 
 	label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
-	parentConfigGroupBox->addWidgets(this, label);
+	parentConfigGroupBox->addWidgets(label, this);
 
 	if (!toolTip.isEmpty())
 	{
@@ -639,7 +639,7 @@ void ConfigSyntaxEditor::createWidgets()
 	kdebugf();
 
 	label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
-	parentConfigGroupBox->addWidgets(this, label);
+	parentConfigGroupBox->addWidgets(label, this);
 
 	if (!toolTip.isEmpty())
 	{
@@ -742,7 +742,7 @@ void ConfigSelectFile::createWidgets()
 	kdebugf();
 
 	label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
-	parentConfigGroupBox->addWidgets(this, label);
+	parentConfigGroupBox->addWidgets(label, this);
 
 	if (!toolTip.isEmpty())
 	{
@@ -851,7 +851,7 @@ void ConfigSlider::createWidgets()
 	kdebugf();
 
 	label = new QLabel(this, widgetCaption + ":", parentConfigGroupBox->widget());
-	parentConfigGroupBox->addWidgets(this, label);
+	parentConfigGroupBox->addWidgets(label, this);
 
 	if (!toolTip.isEmpty())
 	{
@@ -976,7 +976,7 @@ void ConfigListBox::createWidgets()
 	kdebugf();
 
 	label = new QLabel(this, widgetCaption + ":", parentConfigGroupBox->widget());
-	parentConfigGroupBox->addWidgets(this, label);
+	parentConfigGroupBox->addWidgets(label, this);
 
 	clear();
 	insertStringList(itemCaptions);
