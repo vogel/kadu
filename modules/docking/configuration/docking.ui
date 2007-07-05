@@ -1,7 +1,7 @@
 <configuration-ui>
 
-	<section name="Tray">
-		<tab name="General">
+	<section name="Kadu">
+		<tab name="Tray">
 			<group-box name="General">
 				<check-box caption="Start docked" config-section="General" config-item="RunDocked" />
 				<check-box caption="Show tooltip in tray" config-section="General" config-item="ShowTooltipInTray" />

@@ -26,7 +26,7 @@
 
 	<section name="Shortcuts">
 		<tab name="General">
-			<group-box name="Shortcuts">
+			<group-box name="SMS">
 				<hot-key-edit caption="Send SMS" config-section="ShortCuts" config-item="kadu_sendsms" />
 			</group-box>
 		</tab>

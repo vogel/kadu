@@ -1,7 +1,7 @@
 <configuration-ui>
 
-	<section name="Tray">
-		<tab name="General">
+	<section name="Kadu">
+		<tab name="Tray">
 			<group-box name="Desktop docking">
 				<spin-box caption="Horizontal position" config-section="Desktop Dock" config-item="PositionX" min-value="0" max-value="10240" step="0" id="desktop_docking/x" />
 				<spin-box caption="Vertical position" config-section="Desktop Dock" config-item="PositionY" min-value="0" max-value="10240" step="0" id="desktop_docking/y" />

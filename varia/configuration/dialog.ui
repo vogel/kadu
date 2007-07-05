@@ -21,7 +21,7 @@
 					<item value="Dillo" caption="Dillo" />
 					<item value="Galeon" caption="Galeon" />
 					<item value="Safari" caption="Safari" />
-                </combo-box>
+				</combo-box>
 				<line-edit caption="Custom browser" config-section="Chat" config-item="WebBrowser" id="browserPath" />
 			</group-box>
 
@@ -36,6 +36,16 @@
 				<line-edit caption="Custom e-mail client" config-section="Chat" config-item="MailClient" id="mailPath" />
 			</group-box>
 		</tab>
+		
+		<tab name="Advanced">
+			<group-box name="Parser">
+				<check-box caption="Allow executing commands by parser" config-section="General" config-item="AllowExecutingFromParser" />
+			</group-box>
+			<group-box name="Debugging">
+				<line-edit caption="Debugging mask" config-section="General" config-item="DEBUG_MASK" />
+			</group-box>
+		</tab>
+			
 	</section>
 
 	<section name="Account">
@@ -225,55 +235,27 @@
 		</tab>
 	</section>
 
-<!-- 	<section name="Notify"> -->
-<!-- to zostawcie mi na razie ca³kowicie - Vogel		 -->
-<!-- 	</section> -->
-
-<!--	<section name="History">
-		<tab name="General">
-			<group-box name="General">
-				<check-box caption="Log messages" config-section="General" config-item="LogMessages" />
-				<check-box caption="Don't show status changes" config-section="General" config-item="NotShowStatusChanges" />
-				<check-box caption="Don't save status cahnges" config-section="General" config-item="NotSaveStatusChanges" />
-			</group-box>
-
-			<group-box name="Message citation in chat window">
-				<spin-box caption="Count" config-section="Look" config-item="Count" min-value="1" max-value="1000" step="1" />
-			</group-box>
-		</tab>
-	</section>-->
-
-<!--	<section name="SMS">
-		<tab name="General">
-			<group-box name="General">
-				<check-box caption="Use built-in SMS application" config-section="General" config-item="UseKaduSMS" />
-				<line-edit caption="Custom SMS application" config-section="General" config-item="UseCustomSMS" />
-				<line-edit caption="SMS custom string" config-section="General" config-item="SMSCustomString" />
-				<line-edit caption="SMS nick" config-section="General" config-item="SMSNick" />
-			</group-box>
-
-			<group-box name="Gateways priority">
-			</group-box>
-		</tab>
-	</section>-->
-
 	<section name="Shortcuts">
 		<tab name="General">
-			<group-box name="Shortcuts">
+			<group-box name="Kadu">
+				<hot-key-edit caption="Configuration" config-section="ShortCuts" config-item="kadu_configure" />
+				<hot-key-edit caption="Add user" config-section="ShortCuts" config-item="kadu_adduser" />
+				<hot-key-edit caption="Manage modules" config-section="ShortCuts" config-item="kadu_modulesmanager" />
+			</group-box>
+			<group-box name="Userlist">
 				<hot-key-edit caption="Remove from userlist" config-section="ShortCuts" config-item="kadu_deleteuser" />
 				<hot-key-edit caption="View / edit user info" config-section="ShortCuts" config-item="kadu_persinfo" />
 				<hot-key-edit caption="Search this user in directory" config-section="ShortCuts" config-item="kadu_searchuser" />
 				<hot-key-edit caption="Show / hide offline users" config-section="ShortCuts" config-item="kadu_showoffline" />
 				<hot-key-edit caption="Show / hide users without description" config-section="ShortCuts" config-item="kadu_showonlydesc" />
-				<hot-key-edit caption="Configuration" config-section="ShortCuts" config-item="kadu_configure" />
-				<hot-key-edit caption="Add user" config-section="ShortCuts" config-item="kadu_adduser" />
+			</group-box>
+			<group-box name="Chat">
 				<hot-key-edit caption="New line / send message" config-section="ShortCuts" config-item="chat_newline" />
 				<hot-key-edit caption="Clear Chat" config-section="ShortCuts" config-item="chat_clear" />
 				<hot-key-edit caption="Close chat" config-section="ShortCuts" config-item="chat_close" />
 				<hot-key-edit caption="Bold text" config-section="ShortCuts" config-item="chat_bold" />
 				<hot-key-edit caption="Italic text" config-section="ShortCuts" config-item="chat_italic" />
 				<hot-key-edit caption="Underline text" config-section="ShortCuts" config-item="chat_underline" />
-				<hot-key-edit caption="Manage modules" config-section="ShortCuts" config-item="kadu_modulesmanager" />
 			</group-box>
 		</tab>
 	</section>
@@ -310,19 +292,6 @@
 				<spin-box caption="Fold links longer than" config-section="Chat" config-item="LinkFoldTreshold" min-value="1" max-value="500" step="1" id="linkFoldTreshold" />
 			</group-box>
 		</tab>
-	</section>
-
-	<section name="Advanced">
-
-		<tab name="Kadu">
-			<group-box name="Parser">
-				<check-box caption="Allow executing commands by parser" config-section="General" config-item="AllowExecutingFromParser" />
-			</group-box>
-			<group-box name="Debugging">
-				<line-edit caption="Debugging mask" config-section="General" config-item="DEBUG_MASK" />
-			</group-box>
-		</tab>
-
 	</section>
 
 </configuration-ui>
