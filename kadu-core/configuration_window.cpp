@@ -92,6 +92,27 @@ bool ConfigGroupBox::empty()
 	return container->children()->count() == 1;
 }
 
+void ConfigGroupBox::addWidget(QWidget *widget, bool fullSpace)
+{
+	int numRows = gridLayout->numRows();
+
+	if (fullSpace)
+		gridLayout->addMultiCellWidget(widget, numRows, numRows, 0, 1);
+	else
+		gridLayout->addWidget(widget, numRows, 1);
+}
+
+void ConfigGroupBox::addWidgets(QWidget *widget1, QWidget *widget2)
+{
+	int numRows = gridLayout->numRows();
+
+	if (widget1)
+		gridLayout->addWidget(widget1, numRows, 0, Qt::AlignRight);
+
+	if (widget2)
+		gridLayout->addWidget(widget2, numRows, 1);
+}
+
 ConfigTab::ConfigTab(const QString &name, ConfigSection *configSection, QTabWidget *parentConfigGroupBoxWidget)
 	: name(name), configSection(configSection)
 {

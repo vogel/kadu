@@ -35,7 +35,9 @@ public:
 	~ConfigGroupBox();
 
 	QWidget * widget() { return container; }
-	QGridLayout * layout() { return gridLayout; }
+
+	void addWidget(QWidget *widget, bool fullSpace = false);
+	void addWidgets(QWidget *widget, QWidget *label);
 
 	bool empty();
 

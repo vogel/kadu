@@ -82,13 +82,8 @@ void ConfigLineEdit::createWidgets()
 {
 	kdebugf();
 
-	QGridLayout *layout = parentConfigGroupBox->layout();
-	int numRows = layout->numRows();
-
 	label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
-
-	layout->addWidget(label, numRows, 0, Qt::AlignRight);
-	layout->addWidget(this, numRows, 1);
+	parentConfigGroupBox->addWidgets(this, label);
 
 	if (!toolTip.isEmpty())
 	{
@@ -164,12 +159,8 @@ void ConfigCheckBox::createWidgets()
 {
 	kdebugf();
 
-	QGridLayout *layout = parentConfigGroupBox->layout();
-
 	setText(widgetCaption);
-
-	int numRows = layout->numRows();
-	layout->addMultiCellWidget(this, numRows, numRows, 0, 1);
+	parentConfigGroupBox->addWidget(this, true);
 
 	if (!toolTip.isEmpty())
 		QToolTip::add(this, toolTip);
@@ -224,13 +215,8 @@ void ConfigSpinBox::createWidgets()
 {
 	kdebugf();
 
-	QGridLayout *layout = parentConfigGroupBox->layout();
-	int numRows = layout->numRows();
-
 	label = new QLabel(this, widgetCaption + ":", parentConfigGroupBox->widget());
-
-	layout->addWidget(label, numRows, 0, Qt::AlignRight);
-	layout->addWidget(this, numRows, 1);
+	parentConfigGroupBox->addWidgets(this, label);
 
 	if (!toolTip.isEmpty())
 	{
@@ -323,13 +309,8 @@ void ConfigComboBox::createWidgets()
 {
 	kdebugf();
 
-	QGridLayout *layout = parentConfigGroupBox->layout();
-	int numRows = layout->numRows();
-
 	label = new QLabel(this, widgetCaption + ":", parentConfigGroupBox->widget());
-
-	layout->addWidget(label, numRows, 0, Qt::AlignRight);
-	layout->addWidget(this, numRows, 1);
+	parentConfigGroupBox->addWidgets(this, label);
 
 	clear();
 	insertStringList(itemCaptions);
@@ -417,13 +398,8 @@ void ConfigHotKeyEdit::createWidgets()
 {
 	kdebugf();
 
-	QGridLayout *layout = parentConfigGroupBox->layout();
-	int numRows = layout->numRows();
-
 	label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
-
-	layout->addWidget(label, numRows, 0, Qt::AlignRight);
-	layout->addWidget(this, numRows, 1);
+	parentConfigGroupBox->addWidgets(this, label);
 
 	if (!toolTip.isEmpty())
 	{
@@ -482,13 +458,8 @@ void ConfigPathListEdit::createWidgets()
 {
 	kdebugf();
 
-	QGridLayout *layout = parentConfigGroupBox->layout();
-	int numRows = layout->numRows();
-
 	label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
-
-	layout->addWidget(label, numRows, 0, Qt::AlignRight);
-	layout->addWidget(this, numRows, 1);
+	parentConfigGroupBox->addWidgets(this, label);
 
 	if (!toolTip.isEmpty())
 	{
@@ -547,13 +518,8 @@ void ConfigColorButton::createWidgets()
 {
 	kdebugf();
 
-	QGridLayout *layout = parentConfigGroupBox->layout();
-	int numRows = layout->numRows();
-
 	label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
-
-	layout->addWidget(label, numRows, 0, Qt::AlignRight);
-	layout->addWidget(this, numRows, 1);
+	parentConfigGroupBox->addWidgets(this, label);
 
 	if (!toolTip.isEmpty())
 	{
@@ -612,13 +578,8 @@ void ConfigSelectFont::createWidgets()
 {
 	kdebugf();
 
-	QGridLayout *layout = parentConfigGroupBox->layout();
-	int numRows = layout->numRows();
-
 	label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
-
-	layout->addWidget(label, numRows, 0, Qt::AlignRight);
-	layout->addWidget(this, numRows, 1);
+	parentConfigGroupBox->addWidgets(this, label);
 
 	if (!toolTip.isEmpty())
 	{
@@ -677,13 +638,8 @@ void ConfigSyntaxEditor::createWidgets()
 {
 	kdebugf();
 
-	QGridLayout *layout = parentConfigGroupBox->layout();
-	int numRows = layout->numRows();
-
 	label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
-
-	layout->addWidget(label, numRows, 0, Qt::AlignRight);
-	layout->addWidget(this, numRows, 1);
+	parentConfigGroupBox->addWidgets(this, label);
 
 	if (!toolTip.isEmpty())
 	{
@@ -746,11 +702,8 @@ void ConfigActionButton::createWidgets()
 {
 	kdebugf();
 
-	QGridLayout *layout = parentConfigGroupBox->layout();
-	int numRows = layout->numRows();
-
 	setText(widgetCaption);
-	layout->addWidget(this, numRows, 0, Qt::AlignRight);
+	parentConfigGroupBox->addWidget(this);
 
 	if (!toolTip.isEmpty())
 		QToolTip::add(this, toolTip);
@@ -788,13 +741,8 @@ void ConfigSelectFile::createWidgets()
 {
 	kdebugf();
 
-	QGridLayout *layout = parentConfigGroupBox->layout();
-	int numRows = layout->numRows();
-
 	label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
-
-	layout->addWidget(label, numRows, 0, Qt::AlignRight);
-	layout->addWidget(this, numRows, 1);
+	parentConfigGroupBox->addWidgets(this, label);
 
 	if (!toolTip.isEmpty())
 	{
@@ -863,13 +811,8 @@ void ConfigPreview::createWidgets()
 {
 	kdebugf();
 
-	QGridLayout *layout = parentConfigGroupBox->layout();
-	int numRows = layout->numRows();
-
 	label = new QLabel(this, tr(widgetCaption) + ":", parentConfigGroupBox->widget());
-
-	layout->addWidget(label, numRows, 0, Qt::AlignRight | Qt::AlignTop);
-	layout->addWidget(this, numRows, 1);
+	parentConfigGroupBox->addWidget(this);
 }
 
 void ConfigPreview::show()
@@ -907,13 +850,8 @@ void ConfigSlider::createWidgets()
 {
 	kdebugf();
 
-	QGridLayout *layout = parentConfigGroupBox->layout();
-	int numRows = layout->numRows();
-
 	label = new QLabel(this, widgetCaption + ":", parentConfigGroupBox->widget());
-
-	layout->addWidget(label, numRows, 0, Qt::AlignRight);
-	layout->addWidget(this, numRows, 1);
+	parentConfigGroupBox->addWidgets(this, label);
 
 	if (!toolTip.isEmpty())
 	{
@@ -989,11 +927,8 @@ void ConfigLabel::createWidgets()
 {
 	kdebugf();
 
-	QGridLayout *layout = parentConfigGroupBox->layout();
-	int numRows = layout->numRows();
-
 	setText(widgetCaption);
-	layout->addWidget(this, numRows, 1);
+	parentConfigGroupBox->addWidget(this);
 
 	if (!toolTip.isEmpty())
 		QToolTip::add(this, toolTip);
@@ -1040,13 +975,8 @@ void ConfigListBox::createWidgets()
 {
 	kdebugf();
 
-	QGridLayout *layout = parentConfigGroupBox->layout();
-	int numRows = layout->numRows();
-
 	label = new QLabel(this, widgetCaption + ":", parentConfigGroupBox->widget());
-
-	layout->addWidget(label, numRows, 0, Qt::AlignRight);
-	layout->addWidget(this, numRows, 1);
+	parentConfigGroupBox->addWidgets(this, label);
 
 	clear();
 	insertStringList(itemCaptions);

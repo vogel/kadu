@@ -142,24 +142,24 @@ void Notify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigu
 	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
 
 	ConfigGroupBox *groupBox = mainConfigurationWindow->configGroupBox("Notifications", "General", "Notifications");
-	QGridLayout *layout = groupBox->layout();
 
 	FOREACH(notifierData, Notifiers)
 	{
-		int numRows = layout->numRows();
 		NotifyCheckBox *enable = new NotifyCheckBox(notifierData.key(), tr(notifierData.key()), groupBox->widget());
 		connect(enable, SIGNAL(toggled(const QString &, bool)), this, SLOT(notifierToggled(const QString &, bool)));
 
 		(*notifierData).configurationCheckBox = enable;
-		layout->addWidget(enable, numRows, 0);
 
 		NotifierConfigurationWidget *notifyConfigurationWidget = (*notifierData).notifier->createConfigurationWidget(groupBox->widget());
 		if (!notifyConfigurationWidget)
+		{
+			groupBox->addWidgets(enable, 0);
 			continue;
+		}
 
 		connect(enable, SIGNAL(toggled(bool)), notifyConfigurationWidget, SLOT(setEnabled(bool)));
 		(*notifierData).configurationWidget = notifyConfigurationWidget;
-		layout->addWidget(notifyConfigurationWidget, numRows, 1);
+		groupBox->addWidgets(enable, notifyConfigurationWidget);
 
 		notifyConfigurationWidget->loadNotifyConfigurations();
 	}
