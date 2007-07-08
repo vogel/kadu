@@ -232,22 +232,27 @@ QPopupMenu* ToolBar::createContextMenu(QWidget* parent)
 {
 	QPopupMenu* p = new QPopupMenu(parent);
 	p->insertItem(tr("Delete toolbar"), this, SLOT(deleteToolbar()));
-	QPopupMenu* p2 = new QPopupMenu(p);
-	int param = 0;
+
+	QPopupMenu* p2 = new QPopupMenu(p); // popup z akcjami mozliwymi do dodania w toolbarze
+	unsigned int param = 0; // parametr przekazywany slotowi addButtonClicked()
 	CONST_FOREACH(a, KaduActions)
 	{
 		if (!hasAction((*a)->name()) &&
-			((dockArea() != NULL &&
-				dockArea()->supportsAction((*a)->actionType())) ||
-			(dockArea() == NULL &&
-				((*a)->actionType() & Action::TypeGlobal) != 0)))
+			((dockArea() != NULL && dockArea()->supportsAction((*a)->actionType())) ||
+			(dockArea() == NULL && ((*a)->actionType() & Action::TypeGlobal) != 0)))
 		{
-			int id = (*a)->addToPopupMenu(p2, false);
-			p2->setItemParameter(id, param);
-			p2->connectItem(id, this, SLOT(addButtonClicked(int)));
+			unsigned int index = (*a)->addToPopupMenu(p2, false);
+			p2->setItemParameter(index, param);
+			p2->connectItem(index, this, SLOT(addButtonClicked(int)));
 		}
 		param++;
 	}
+	if (!p2->count()) // jezeli nie zostaly zadne akcje do dodania, dodajemy wpis informacyjny
+	{
+		p2->insertItem("No items to add found", 0);
+		p2->setItemEnabled(0, false);
+	}
+
 	p->insertItem(tr("Add new button"), p2);
 	p->insertSeparator();
 	if (dockArea())
