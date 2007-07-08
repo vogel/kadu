@@ -94,6 +94,7 @@ class Kadu : public QWidget, ConfigurationAwareObject
 		void messageReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t time);
 		void createRecentChatsMenu();
 		void openRecentChats(int index);
+		void openChatWith();
 
 		void wentOnline(const QString &);
 		void wentBusy(const QString &);

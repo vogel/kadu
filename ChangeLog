@@ -184,6 +184,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * porz±dki w sygna³ach chatMsgReceived (Vogel)
 * history: renderowanie historii jak w oknie rozmowy (Vogel)
 * od¶wie¿anie toolbarów przy zmianie zestawu ikon (neeo)
+* nowa akcja dla okna chat oraz pozycja w menu g³ównym umo¿liwiaj±ca
+  otwarcie okna Chat z kontaktem z listy lub UINem (White Eagle/neeo)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

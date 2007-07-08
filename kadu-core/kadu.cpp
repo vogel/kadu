@@ -11,6 +11,7 @@
 #include <qcheckbox.h>
 #include <qclipboard.h>
 #include <qcombobox.h>
+#include <qinputdialog.h>
 #include <qmenubar.h>
 #include <qpushbutton.h>
 #include <qregexp.h>
@@ -18,6 +19,7 @@
 #include <qstyle.h>
 #include <qstylefactory.h>
 #include <qtextcodec.h>
+#include <qvalidator.h>
 #include <qvbox.h>
 
 #include <sys/file.h>
@@ -652,6 +654,26 @@ void Kadu::addUserActionActivated(const UserGroup* users)
 		(new UserInfo(*users->begin(), kadu, "add_user"))->show();
 	else
 		(new UserInfo(UserListElement(), kadu, "add_user"))->show();
+	kdebugf2();
+}
+
+void Kadu::openChatWith()
+{
+	kdebugf();
+
+	bool ok;
+	QString text = QInputDialog::getText(tr("Open chat with..."), tr("UIN or Nick:"), QLineEdit::Normal, QString::null, &ok);
+	if (ok && !text.isEmpty() && text != Myself.ID("Gadu"))
+	{
+    		QIntValidator v(1, 99999999, this);
+		int pos = 0;
+
+		if (v.validate(text, pos) == QValidator::Acceptable)
+			chat_manager->openPendingMsgs(userlist->byID("Gadu", text));
+		else if(userlist->containsAltNick(text, FalseForAnonymous))
+			chat_manager->openPendingMsgs(userlist->byAltNick(text));
+	}
+
 	kdebugf2();
 }
 
@@ -1366,6 +1388,7 @@ void Kadu::createRecentChatsMenu()
 void Kadu::createMenu()
 {
 	kdebugf();
+
 	menuBox = new QVBox(this, "menubarvbox");
 	MenuBar = new QMenuBar(menuBox, "MenuBar");
 	MainMenu = new QPopupMenu(MenuBar, "MainMenu");
@@ -1380,7 +1403,8 @@ void Kadu::createMenu()
 	MainMenu->insertItem(icons_manager->loadIcon("OpenChat"), tr("Recent chats..."), RecentChatsMenu);
 	MainMenu->insertItem(icons_manager->loadIcon("LookupUserInfo"), tr("&Search user in directory"), this, SLOT(searchInDirectory()));
 	MainMenu->insertItem(icons_manager->loadIcon("ImportExport"), tr("I&mport / Export userlist"), this, SLOT(importExportUserlist()));
-	MainMenu->insertItem(icons_manager->loadIcon("AddUser"), tr("&Add user"), this, SLOT(addUserAction()),HotKey::shortCutFromFile("ShortCuts", "kadu_adduser"));
+	MainMenu->insertItem(icons_manager->loadIcon("AddUser"), tr("&Add user"), this, SLOT(addUserAction()), HotKey::shortCutFromFile("ShortCuts", "kadu_adduser"));
+	MainMenu->insertItem(icons_manager->loadIcon("OpenChat"), tr("&Open chat with..."), this, SLOT(openChatWith()), HotKey::shortCutFromFile("ShortCuts", "kadu_openchatwith"));
 	MainMenu->insertSeparator();
 	MainMenu->insertItem(icons_manager->loadIcon("HelpMenuItem"), tr("H&elp"), this, SLOT(help()));
 	MainMenu->insertItem(icons_manager->loadIcon("AboutMenuItem"), tr("A&bout..."), this, SLOT(about()));
@@ -1399,10 +1423,12 @@ void Kadu::createMenu()
 	icons_manager->registerMenuItem(MainMenu, tr("&Search user in directory"), "LookupUserInfo");
 	icons_manager->registerMenuItem(MainMenu, tr("I&mport / Export userlist"), "ImportExport");
 	icons_manager->registerMenuItem(MainMenu, tr("&Add user"), "AddUser");
+	icons_manager->registerMenuItem(MainMenu, tr("&Open chat with..."), "OpenChat");
 	icons_manager->registerMenuItem(MainMenu, tr("H&elp"), "HelpMenuItem");
 	icons_manager->registerMenuItem(MainMenu, tr("A&bout..."), "AboutMenuItem");
 	icons_manager->registerMenuItem(MainMenu, tr("&Hide Kadu"), "HideKadu");
 	icons_manager->registerMenuItem(MainMenu, tr("&Exit Kadu"), "Exit");
+
 	kdebugf2();
 }
 

@@ -118,6 +118,12 @@ ChatManager::ChatManager(QObject* parent, const char* name) : QObject(parent, na
 		this, SLOT(chatActionActivated(const UserGroup*)));
 	KaduActions.insert("chatAction", chat_action);
 
+	Action* open_chat_with_action = new Action("OpenChat", tr("Open chat with..."),
+		"openChatWithAction", Action::TypeChat);
+	connect(open_chat_with_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		kadu, SLOT(openChatWith()));
+	KaduActions.insert("openChatWithAction", open_chat_with_action);
+
 	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "autoSendAction");
 	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "scrollLockAction");
 	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "clearChatAction");

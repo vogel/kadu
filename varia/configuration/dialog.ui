@@ -241,6 +241,7 @@
 				<hot-key-edit caption="Configuration" config-section="ShortCuts" config-item="kadu_configure" />
 				<hot-key-edit caption="Add user" config-section="ShortCuts" config-item="kadu_adduser" />
 				<hot-key-edit caption="Manage modules" config-section="ShortCuts" config-item="kadu_modulesmanager" />
+				<hot-key-edit caption="Open chat with..." config-section="ShortCuts" config-item="kadu_openchatwith" />
 			</group-box>
 			<group-box name="Userlist">
 				<hot-key-edit caption="Remove from userlist" config-section="ShortCuts" config-item="kadu_deleteuser" />
