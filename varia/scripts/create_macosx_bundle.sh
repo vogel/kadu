@@ -37,7 +37,7 @@ if [ ! -f VERSION ]; then
 	exit
 fi
 
-if [ ! -f ./kadu/kadu ]; then
+if [ ! -f ./kadu-core/kadu ]; then
 	echo "compile Kadu first!"
 	echo "wpierw skompiluj Kadu!"
 	exit
