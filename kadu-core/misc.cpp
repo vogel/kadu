@@ -20,6 +20,7 @@
 #include <qregexp.h>
 #include <qsimplerichtext.h>
 #include <qtextcodec.h>
+#include <qvalidator.h>
 
 //getpwuid
 #include <pwd.h>
@@ -28,11 +29,13 @@
 #include <time.h>
 #include <stdlib.h>
 
+#include "chat_manager.h"
 #include "config_file.h"
 #include "debug.h"
 #include "gadu.h"
 #include "html_document.h"
 #include "icons_manager.h"
+#include "kadu.h"
 #include "kadu-config.h"
 #include "kadu_parser.h"
 #include "message_box.h"
@@ -826,6 +829,70 @@ void ChooseDescription::updateYetLen(const QString& text)
 	int rest = (count + 1) * (GG_STATUS_DESCR_MAXSIZE - 10) - length + 10;
 
 	l_yetlen->setText(' ' + QString::number(rest) + " (" + QString::number(count) + ")");
+}
+
+OpenChatWith::OpenChatWith(QWidget* parent, const char* name)
+	: QWidget(parent, name, WType_TopLevel | WDestructiveClose), e_text(0), c_protocol(0)
+{
+	kdebugf();
+
+	setCaption(tr("Open chat with..."));
+
+	e_text = new QLineEdit(this);
+	QToolTip::add(e_text, tr("UIN or nick"));
+
+	c_protocol = new QComboBox(this);
+	c_protocol->insertItem(tr("Userlist"), 0);
+	c_protocol->insertStringList(kadu->myself().protocolList(), 1);
+
+	QPushButton *b_cancel = new QPushButton(tr("&Cancel"), this);
+	connect(b_cancel, SIGNAL(clicked()), this, SLOT(close()));
+	QPushButton *b_ok = new QPushButton(tr("&OK"), this);
+	connect(b_ok, SIGNAL(clicked()), this, SLOT(okButtonClicked()));
+
+	QGridLayout *g_layout = new QGridLayout(this, 3, 2, 5, 10);
+	g_layout->addMultiCellWidget(e_text, 0, 0, 0, 2);
+	g_layout->addMultiCellWidget(c_protocol, 1, 1, 0, 2);
+	g_layout->addWidget(b_ok, 2, 1, Qt::AlignRight);
+	g_layout->addWidget(b_cancel, 2, 2, Qt::AlignRight);
+	g_layout->setResizeMode(QLayout::Minimum);
+
+	loadGeometry(this, "General", "OpenChatWith", 100, 100, 250, 80);
+
+	kdebugf2();
+}
+
+OpenChatWith::~OpenChatWith()
+{
+	saveGeometry(this, "General", "OpenChatWith");
+}
+
+void OpenChatWith::okButtonClicked()
+{
+	kdebugf();
+
+	QString text = e_text->text();
+	if (!text.isEmpty() && text != kadu->myself().ID("Gadu"))
+	{
+		QString protocol = c_protocol->currentText();
+		if (protocol == "Gadu")
+		{
+			QIntValidator v(1, 99999999, this);
+			int pos = 0;
+
+			if (v.validate(text, pos) == QValidator::Acceptable)
+				chat_manager->openPendingMsgs(userlist->byID("Gadu", text));
+		}
+		else if (protocol == "Userlist")
+		{
+			if (userlist->containsAltNick(text, FalseForAnonymous))
+				chat_manager->openPendingMsgs(userlist->byAltNick(text));
+		}
+	}
+
+	close();
+
+	kdebugf2();
 }
 
 ImageWidget::ImageWidget(QWidget *parent)

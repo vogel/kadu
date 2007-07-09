@@ -89,6 +89,22 @@ class ChooseDescription : public QDialog
 		void updateYetLen(const QString&);
 };
 
+class OpenChatWith : public QWidget
+{
+	Q_OBJECT
+
+	public:
+		OpenChatWith(QWidget* parent = 0, const char* name = 0);
+		virtual ~OpenChatWith();
+
+	private:
+		QLineEdit *e_text;
+		QComboBox *c_protocol;
+
+	private slots:
+		void okButtonClicked();
+};
+
 class ImageWidget : public QWidget
 {
 //	Q_OBJECT

@@ -11,7 +11,6 @@
 #include <qcheckbox.h>
 #include <qclipboard.h>
 #include <qcombobox.h>
-#include <qinputdialog.h>
 #include <qmenubar.h>
 #include <qpushbutton.h>
 #include <qregexp.h>
@@ -19,7 +18,6 @@
 #include <qstyle.h>
 #include <qstylefactory.h>
 #include <qtextcodec.h>
-#include <qvalidator.h>
 #include <qvbox.h>
 
 #include <sys/file.h>
@@ -661,18 +659,7 @@ void Kadu::openChatWith()
 {
 	kdebugf();
 
-	bool ok;
-	QString text = QInputDialog::getText(tr("Open chat with..."), tr("UIN or Nick:"), QLineEdit::Normal, QString::null, &ok);
-	if (ok && !text.isEmpty() && text != Myself.ID("Gadu"))
-	{
-    		QIntValidator v(1, 99999999, this);
-		int pos = 0;
-
-		if (v.validate(text, pos) == QValidator::Acceptable)
-			chat_manager->openPendingMsgs(userlist->byID("Gadu", text));
-		else if(userlist->containsAltNick(text, FalseForAnonymous))
-			chat_manager->openPendingMsgs(userlist->byAltNick(text));
-	}
+	(new OpenChatWith(this, "open_chat_with"))->show();
 
 	kdebugf2();
 }
