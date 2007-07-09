@@ -98,10 +98,19 @@ private slots:
 	void sendActionAddedToToolbar(ToolButton*, ToolBar*);
 
 	/**
+		\fn void colorActionForceRefresh()
+		Slot jest wywo³ywany, po dodaniu do paska narzêdzi akcji zmieniaj±cej
+		kolor wiadomo¶ci lub zmianie zestawu ikon. U¿ywa setActColor() wymuszaj±c
+		od¶wie¿enie koloru na przycisku.
+	**/
+	void colorActionForceRefresh();
+
+	/**
 		\fn void setActColor()
+		\param force wymuszenie zmiany
 		Ustawia poprawny kolor na przycisku akcji obs³uguj±cej kolor wiadomo¶ci
 	**/
-	void setActColor();
+	void setActColor(bool force);
 
 protected:
 	virtual void keyPressEvent(QKeyEvent* e);

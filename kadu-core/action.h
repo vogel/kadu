@@ -88,6 +88,12 @@ class Action : public QObject
 			is_on jest zawsze ustawione na false jesli akcja nie jest typu "toggle".
 		**/
 		void activated(const UserGroup* users, const QWidget* source, bool is_on);
+
+		/**
+			Sygna³ jest emitowany po zmianie zestawu ikon
+		**/
+		void iconsRefreshed();
+
 	private:
 		Action(const Action &) {}
 		Action &operator=(const Action &){return *this;}

@@ -171,6 +171,8 @@ void Action::refreshIcons()
 		FOREACH(button, ToolButtons)
 			(*button)->setIconSet(icons_manager->loadIcon(IconName));
 
+	emit iconsRefreshed();
+
 	kdebugf2();
 }
 

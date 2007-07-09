@@ -103,7 +103,7 @@ ChatManager::ChatManager(QObject* parent, const char* name) : QObject(parent, na
 		this, SLOT(underlineActionActivated(const UserGroup*, const QWidget*, bool)));
 	KaduActions.insert("underlineAction", underline_action);
 
-	Action* color_action = new Action("", tr("Change color"), "colorAction", Action::TypeChat);
+	Action* color_action = new Action("Black", tr("Change color"), "colorAction", Action::TypeChat);
 	connect(color_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(colorActionActivated(const UserGroup*, const QWidget*)));
 	KaduActions.insert("colorAction", color_action);
