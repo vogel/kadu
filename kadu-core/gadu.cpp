@@ -30,6 +30,7 @@
 
 #include <qcheckbox.h>
 #include <qtimer.h>
+#include <qvalidator.h>
 #include <qvgroupbox.h>
 #include <qregexp.h>
 
@@ -416,6 +417,17 @@ GaduProtocol::~GaduProtocol()
 	delete SocketNotifiers;
 
 	kdebugf2();
+}
+
+bool GaduProtocol::validateUserID(QString& uid)
+{
+	QIntValidator v(1, 99999999, this);
+	int pos = 0;
+
+	if ((uid != id) && (v.validate(uid, pos) == QValidator::Acceptable))
+		return true;
+
+	return false;
 }
 
 UserStatus *GaduProtocol::newStatus() const

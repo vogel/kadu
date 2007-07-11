@@ -21,7 +21,6 @@
 #include <qregexp.h>
 #include <qsimplerichtext.h>
 #include <qtextcodec.h>
-#include <qvalidator.h>
 
 //getpwuid
 #include <pwd.h>
@@ -41,6 +40,7 @@
 #include "kadu_parser.h"
 #include "message_box.h"
 #include "misc.h"
+#include "protocols_manager.h"
 #include "userlistelement.h"
 
 #define GG_FONT_IMAGE	0x80
@@ -893,16 +893,7 @@ void OpenChatWith::inputAccepted()
 	QString text = e_text->text();
 	if (!text.isEmpty())
 	{
-		QString protocol = c_protocol->currentText();
-		if (protocol == "Gadu")
-		{
-			QIntValidator v(1, 99999999, this);
-			int pos = 0;
-
-			if (v.validate(text, pos) == QValidator::Acceptable)
-				chat_manager->openPendingMsgs(userlist->byID("Gadu", text));
-		}
-		else if (protocol == "Userlist")
+		if (!c_protocol->currentItem())
 		{
 			if (userlist->containsAltNick(text, FalseForAnonymous))
 			{
@@ -910,6 +901,12 @@ void OpenChatWith::inputAccepted()
 				if (!(user.protocolList()).isEmpty())
 					chat_manager->openPendingMsgs(user);
 			}
+		}
+		else
+		{
+			QString protocol = c_protocol->currentText();
+			if ((protocols_manager->byID(protocol, kadu->myself().ID(protocol)))->validateUserID(text))
+				chat_manager->openPendingMsgs(userlist->byID(protocol, text));
 		}
 	}
 

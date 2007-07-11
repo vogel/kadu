@@ -699,6 +699,7 @@ class GaduProtocol : public Protocol
 		**/
 		void setDccExternalIP(const QHostAddress& ip);
 		int seqNum() { return seqNumber; }
+		bool validateUserID(QString& uid);
 		virtual UserStatus *newStatus() const;
 	public slots:
 		/**

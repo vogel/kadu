@@ -31,4 +31,3 @@ void Protocol::sendMessage(UserListElement user, const QString &mesg)
 
 	return sendMessage(users, mesg);
 }
-

@@ -116,9 +116,11 @@ class Protocol : public QObject
 		**/
 		const UserStatus &currentStatus() const { return *CurrentStatus; }
 
-		QString protocolID() const {	return ProtocolID;	}
+		QString protocolID() const { return ProtocolID; }
 
-		QString ID() const {	return id;	}
+		QString ID() const { return id; }
+
+		virtual bool validateUserID(QString& uid) = 0;
 
 		virtual UserStatus *newStatus() const = 0;
 
