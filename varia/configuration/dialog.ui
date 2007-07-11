@@ -166,7 +166,8 @@
         </tab>
 
 		<tab name="Chat">
-			<group-box name="Window title">
+			<group-box name="New messages notifications">
+				<check-box caption="Activate windows with new messages" config-section="Chat" config-item="ActivateWithNewMessages" />
 				<check-box caption="Flash chat title on new message" config-section="Chat" config-item="BlinkChatTitle" />
 				<check-box caption="Show number of new messages on chat title" config-section="Chat" config-item="NewMessagesInChatTitle" />
 			</group-box>

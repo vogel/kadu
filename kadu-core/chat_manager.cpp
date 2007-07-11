@@ -582,8 +582,8 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 		userNames.append((*user).altNick());
 	userNames.sort();
 
-	ChatWindow* window = new ChatWindow();
-	ChatWidget* chat = new ChatWidget(initialProtocol, users, window);
+	ChatWindow* window = new ChatWindow(0, "chat_window");
+	ChatWidget* chat = new ChatWidget(initialProtocol, users, window, "chat_widget");
 
 	window->setChatWidget(chat);
 

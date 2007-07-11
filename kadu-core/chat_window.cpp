@@ -27,7 +27,7 @@
 #include "userbox.h"
 #include "protocol.h"
 
-ChatWindow::ChatWindow(QWidget* parent, const char* name) : QMainWindow(parent, name, WDestructiveClose),
+ChatWindow::ChatWindow(QWidget* parent, const char* name) : QMainWindow(parent, name, WType_TopLevel | WDestructiveClose),
 	currentChatWidget(0), title_timer(new QTimer(this, "title_timer"))
 {
 	configurationUpdated();
@@ -41,8 +41,9 @@ ChatWindow::~ChatWindow()
 
 void ChatWindow::configurationUpdated()
 {
-	showNewMessagesNum = config_file.readBoolEntry("Chat", "NewMessagesInChatTitle");
-	blinkChatTitle = config_file.readBoolEntry("Chat", "BlinkChatTitle");
+	activateWithNewMessages = config_file.readBoolEntry("Chat", "ActivateWithNewMessages", false);
+	showNewMessagesNum = config_file.readBoolEntry("Chat", "NewMessagesInChatTitle", false);
+	blinkChatTitle = config_file.readBoolEntry("Chat", "BlinkChatTitle", true);
 
 	if (currentChatWidget && currentChatWidget->newMessagesCount())
 		blinkTitle();
@@ -209,7 +210,12 @@ void ChatWindow::alertNewMessage()
 {
 	if (!isActiveWindow())
 	{
-		if (blinkChatTitle)
+		if (activateWithNewMessages && qApp->activeWindow() && !isMinimized())
+		{
+			currentChatWidget->setActiveWindow();
+			raise();
+		}
+		else if (blinkChatTitle)
 		{
 			if (!title_timer->isActive())
 				blinkTitle(); // blinking is able to show new messages also...

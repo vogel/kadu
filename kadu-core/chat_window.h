@@ -18,8 +18,9 @@ private:
 	void storeGeometry();
 	void restoreGeometry();
 
-	bool showNewMessagesNum;
-	bool blinkChatTitle;
+	bool activateWithNewMessages; /*!< czy aktywujemy okno po przyj¶ciu nowej wiadomo¶ci */
+	bool showNewMessagesNum; /*!< czy pokazujemy liczbê nowych wiadomo¶ci w tytule nieaktywnego okna */
+	bool blinkChatTitle; /*!< czy tytu³ nieaktywnego okna z nieprzeczytanymi wiadomo¶ciami powinien mrugaæ */
 
 private slots:
 	void updateTitle();
