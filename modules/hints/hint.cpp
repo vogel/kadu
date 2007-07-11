@@ -33,7 +33,10 @@ Hint::Hint(QWidget *parent, Notification *notification)
 	if (notification->details() != "")
 		details.append(notification->details());
 
-	startSecs = secs = config_file.readNumEntry("Hints", "Event_" + notification->type() + "_timeout", 2);
+	if (config_file.readBoolEntry("Hints", "SetAll", false))
+		startSecs = secs = config_file.readNumEntry("Hints", "SetAll_timeout_timeout", 2);
+	else
+		startSecs = secs = config_file.readNumEntry("Hints", "Event_" + notification->type() + "_timeout", 2);
 
 	createLabels(icons_manager->loadIcon(notification->icon()));
 	updateText();
@@ -81,8 +84,13 @@ Hint::~Hint()
 
 void Hint::configurationUpdated()
 {
+	QString configurationDirective;
 
-	QString configurationDirective = "Event_" + notification->type();
+	if (config_file.readBoolEntry("Hints", "SetAll", false))
+		configurationDirective = "SetAll";
+	else
+		configurationDirective = "Event_" + notification->type();
+
 	label->setFont(config_file.readFontEntry("Hints", configurationDirective + "_font"));
 	setPaletteForegroundColor(config_file.readColorEntry("Hints", configurationDirective + "_fgcolor"));
 	bcolor = config_file.readColorEntry("Hints", configurationDirective + "_bgcolor");

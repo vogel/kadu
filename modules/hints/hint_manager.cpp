@@ -533,7 +533,8 @@ void HintManager::import_0_5_0_Configuration()
 	import_0_5_0_Configuration_fromTo("HintNewChat", "NewChat");
 	import_0_5_0_Configuration_fromTo("HintNewMessage", "NewMessage");
 
-	realCopyConfiguration("Event_NewChat", "SetAll");
+	if (config_file.readNumEntry("Hints", "SetAll_timeout", -20) == -20)
+		realCopyConfiguration("Event_NewChat", "SetAll");
 }
 
 void HintManager::import_0_5_0_Configuration_fromTo(const QString &from, const QString &to, const QString &syntax, const QString &detailSyntax)
