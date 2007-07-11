@@ -359,25 +359,27 @@ QVBoxLayout* Kadu::mainLayout() const
 void Kadu::popupMenu()
 {
 	kdebugf();
+
 	UserBox *activeUserBox = UserBox::activeUserBox();
-	if (activeUserBox == NULL)//to siê zdarza...
+	if (activeUserBox == NULL) //to siê zdarza...
 	{
 		kdebugf2();
 		return;
 	}
+
 	UserListElements users = activeUserBox->selectedUsers();
 	if (users.count() == 0)
 		return;
+
 	UserListElement firstUser = *users.constBegin();
 
 	bool containsMe = false;
 	bool containsUserWithoutID = false;
-	QString myGGUIN = QString::number(config_file.readUnsignedNumEntry("General", "UIN"));
 	CONST_FOREACH(user, users)
 	{
 		if (!containsUserWithoutID && !(*user).usesProtocol("Gadu"))
 			containsUserWithoutID = true;
-		if (!containsMe && (*user).usesProtocol("Gadu") && (*user).ID("Gadu") == myGGUIN)
+		if (!containsMe && (*user).usesProtocol("Gadu") && (*user).ID("Gadu") == Myself.ID("Gadu"))
 			containsMe = true;
 	}
 

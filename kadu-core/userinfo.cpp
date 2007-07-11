@@ -132,7 +132,6 @@ void UserInfo::setupTab1()
 	e_altnick = new QLineEdit(vb_disp);
 	// end UIN and disp
 
-
 	// name and nick
 	QHBox *hb_namenick = new QHBox(vgb_general);
 	QVBox *vb_name = new QVBox(hb_namenick);
