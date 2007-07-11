@@ -204,7 +204,7 @@
 			</group-box>
 
 			<group-box name="Descriptions">
-				<check-box caption="Show descritpion" config-section="Look" config-item="ShowDesc" id="showDescription" />
+				<check-box caption="Show description" config-section="Look" config-item="ShowDesc" id="showDescription" />
 				<check-box caption="Multiline description" config-section="Look" config-item="ShowMultilineDesc" id="multilineDescription" />
 			</group-box>
 
