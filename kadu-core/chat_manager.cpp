@@ -544,10 +544,10 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 {
 	kdebugf();
 
-	int myUin = config_file.readNumEntry("General", "UIN");
+	UinType myUin = config_file.readUnsignedNumEntry("General", "UIN");
 
 	CONST_FOREACH(user, users)
-		if ((*user).ID("Gadu") == myUin)
+		if ((*user).ID("Gadu") == QString::number(myUin))
 		{
 			kdebugf2();
 			return -1;

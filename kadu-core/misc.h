@@ -11,6 +11,7 @@
 
 class QComboBox;
 class QLineEdit;
+class QListBox;
 class QMenuData;
 class QPopupMenu;
 
@@ -100,9 +101,15 @@ class OpenChatWith : public QWidget
 	private:
 		QLineEdit *e_text;
 		QComboBox *c_protocol;
+		QListBox *l_posibilities;
+
+		void keyPressEvent(QKeyEvent* e);
 
 	private slots:
-		void okButtonClicked();
+		void inputAccepted();
+		void completeHint(const QString& text);
+		void hintItemSelected(QListBoxItem* item);
+		void hintHide();
 };
 
 class ImageWidget : public QWidget
