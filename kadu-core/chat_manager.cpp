@@ -236,10 +236,10 @@ ChatManager::~ChatManager()
 	// for valgrind
 	QStringList chatActions;
 	chatActions << "autoSendAction" << "scrollLockAction" << "clearChatAction"
-				<< "insertEmoticonAction" << "whoisAction"
-				<< "insertImageAction" << "ignoreUserAction" << "blockUserAction"
-				<< "boldAction" << "italicAction" << "underlineAction"
-				<< "colorAction" << "sendAction" << "chatAction";
+				<< "insertEmoticonAction" << "whoisAction" << "insertImageAction"
+				<< "ignoreUserAction" << "blockUserAction" << "boldAction"
+				<< "italicAction" << "underlineAction" << "colorAction"
+				<< "sendAction" << "chatAction" << "openChatWithAction";
 	CONST_FOREACH(act, chatActions)
 	{
 		Action *a = KaduActions[*act];
@@ -348,11 +348,10 @@ void ChatManager::ignoreUserActionActivated(const UserGroup* users)
 	if (users->count() > 0)
 	{
 		bool ContainsBad = false;
-		QString MyGGUIN = QString::number(config_file.readUnsignedNumEntry("General", "UIN"));
-
 		CONST_FOREACH(user, (*users))
 		{
-			if (!(*user).usesProtocol("Gadu") || (*user).ID("Gadu") == MyGGUIN)
+			QString uid = (*user).ID("Gadu");
+			if (!gadu->validateUserID(uid))
 			{
 				ContainsBad = true;
 				break;
@@ -385,7 +384,6 @@ void ChatManager::blockUserActionActivated(const UserGroup* users)
 	{
 		bool on = true;
 		bool blocked_anonymous = false; // true, if we blocked at least one anonymous user
-		QString MyGGUIN = QString::number(config_file.readUnsignedNumEntry("General", "UIN"));
 
 		CONST_FOREACH(user, (*users))
 			if (!(*user).usesProtocol("Gadu") || !(*user).protocolData("Gadu", "Blocking").toBool())
@@ -395,22 +393,24 @@ void ChatManager::blockUserActionActivated(const UserGroup* users)
 			}
 
 		FOREACH(user, (*users))
-			if ((*user).usesProtocol("Gadu") && (*user).ID("Gadu") != MyGGUIN && (*user).protocolData("Gadu", "Blocking").toBool() != !on)
+		{
+			QString uid = (*user).ID("Gadu");
+			if (gadu->validateUserID(uid) && (*user).protocolData("Gadu", "Blocking").toBool() != !on)
 			{
 				(*user).setProtocolData("Gadu", "Blocking", !on);
 				if ((!on) && (!blocked_anonymous) && ((*user).isAnonymous()))
 					blocked_anonymous = true;
 			}
+		}
 
 		if (!on) // if we were blocking, we also close the chat (and show info if blocked anonymous)
 		{
 			if (blocked_anonymous)
 				MessageBox::msg(tr("Anonymous users will be unblocked after restarting Kadu"), false, "Information", kadu);
 
-			UserListElements u = users->toUserListElements();
-			ChatWidget *c = findChatWidget(u);
-			if (c)
-				c->close();
+			ChatWidget *chat = findChatWidget(users->toUserListElements());
+			if (chat)
+				static_cast<QWidget *>(chat->parent())->close();
 		}
 
 		userlist->writeToConfig();
@@ -439,23 +439,10 @@ void ChatManager::sendActionActivated(const UserGroup* users)
 void ChatManager::chatActionActivated(const UserGroup* users)
 {
 	kdebugf();
+
 	if (users->count() > 0)
-	{
-		bool ContainsBad = false;
-		QString MyGGUIN = QString::number(config_file.readUnsignedNumEntry("General", "UIN"));
+		openChatWidget(gadu, users->toUserListElements(), 0);
 
-		CONST_FOREACH(user, (*users))
-		{
-			if (!(*user).usesProtocol("Gadu") || (*user).ID("Gadu") == MyGGUIN)
-			{
-				ContainsBad = true;
-				break;
-			}
-		}
-
-		if (!ContainsBad)
-			openChatWidget(gadu, users->toUserListElements(), 0);
-	}
 	kdebugf2();
 }
 
