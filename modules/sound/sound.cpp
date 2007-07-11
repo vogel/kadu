@@ -278,23 +278,24 @@ void SoundManager::import_0_5_0_configuration()
 
 	if (config_file.readEntry("Sounds", "SoundTheme", "foobar") != "foobar")
 	{
-		QMap<QString, QString> entries = themes->getEntries();
-
-		CONST_FOREACH(entry, entries)
-			if (!entry.key().isEmpty() && !(*entry).isEmpty())
-				config_file.writeEntry("Sounds", entry.key() + "_sound", themes->themePath() +  *entry);
+		themes->setTheme(config_file.readEntry("Sounds", "SoundTheme", "foobar"));
+		config_file.removeVariable("Sounds", "SoundTheme");
 	}
-	config_file.removeVariable("Sounds", "SoundTheme");
 }
 
-void SoundManager::applyTheme()
+void SoundManager::applyTheme(const QString &themeName)
 {
-	themes->setTheme(themesComboBox->currentItemValue());
+	themes->setTheme(themeName);
 	QMap<QString, QString> entries = themes->getEntries();
 
 	CONST_FOREACH(entry, entries)
 		if (!entry.key().isEmpty() && !(*entry).isEmpty())
 			config_file.writeEntry("Sounds", entry.key() + "_sound", themes->themePath() + *entry);
+}
+
+void SoundManager::applyTheme()
+{
+	applyTheme(themesComboBox->currentItemValue());
 }
 
 Themes *SoundManager::theme()

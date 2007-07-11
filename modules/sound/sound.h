@@ -154,6 +154,7 @@ class SoundManager : public Notifier, public ConfigurationUiHandler
 
 		void copyConfiguration(const QString &fromEvent, const QString &toEvent) {}
 
+		void applyTheme(const QString &themeName);
 		void import_0_5_0_configuration();
 
 	private slots:

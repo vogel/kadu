@@ -7,7 +7,7 @@
 				<check-box caption="Use sounds" config-section="Sounds" config-item="PlaySound" id="sound/use" />
 			</group-box>
 			<group-box name="Theme" id="sound/theme">
-				<combo-box caption="Sound theme" config-section="Sounds" config-item="SoundTheme" id="sound/themes" />
+				<combo-box caption="Sound theme" config-section="" config-item="" id="sound/themes" />
 				<action-button caption="Apply theme" id="sound/applyTheme" />
 				<path-list-edit caption="Sound paths" config-section="" config-item="" id="soundPaths" />
 			</group-box>
