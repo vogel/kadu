@@ -896,18 +896,10 @@ void OpenChatWith::inputAccepted()
 		if (!c_protocol->currentItem())
 		{
 			if (userlist->containsAltNick(text, FalseForAnonymous))
-			{
-				UserListElement user = userlist->byAltNick(text);
-				if (!(user.protocolList()).isEmpty())
-					chat_manager->openPendingMsgs(user);
-			}
+				chat_manager->openPendingMsgs(userlist->byAltNick(text));
 		}
 		else
-		{
-			QString protocol = c_protocol->currentText();
-			if ((protocols_manager->byID(protocol, kadu->myself().ID(protocol)))->validateUserID(text))
-				chat_manager->openPendingMsgs(userlist->byID(protocol, text));
-		}
+			chat_manager->openPendingMsgs(userlist->byID(c_protocol->currentText(), text));
 	}
 
 	close();
