@@ -877,6 +877,8 @@ QColor ConfigFile::readColorEntry(const QString &group,const QString &name, cons
 QFont ConfigFile::readFontEntry(const QString &group,const QString &name, const QFont *def) const
 {
 	QString string = getEntry(group, name);
+	if (string == QString::null)
+		return def ? *def : QApplication::font();
 	QFont font;
 	if(font.fromString(string))
 		return font;
