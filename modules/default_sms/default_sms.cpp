@@ -429,6 +429,9 @@ void DefaultSmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfig
 	multimediaUser = dynamic_cast<ConfigLineEdit *>(mainConfigurationWindow->widgetById("default_sms/multimediaUser"));
 	multimediaPassword = dynamic_cast<ConfigLineEdit *>(mainConfigurationWindow->widgetById("default_sms/multimediaPassword"));
 
+	sponsoredPassword->setEchoMode(QLineEdit::Password);
+	multimediaPassword->setEchoMode(QLineEdit::Password);
+
 	connect(eraGateway, SIGNAL(activated(int)), this, SLOT(onChangeEraGateway()));
 }
 
