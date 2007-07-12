@@ -196,9 +196,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 
 	UserBox::management->addItem("ManageIgnored", tr("Ignore user"), this, SLOT(ignoreUser()));
 	UserBox::management->addItem("Blocking", tr("Block user"), this, SLOT(blockUser()));
-	UserBox::management->addItem("NotifyTab", tr("Notify about user"), this, SLOT(notifyUser()));
+	UserBox::management->addItem("NotifyAboutUser", tr("Notify about user"), this, SLOT(notifyUser()));
 	UserBox::management->addItem("Offline", tr("Offline to user"), this, SLOT(offlineToUser()));
-	UserBox::management->addItem(tr("Hide description"), this, SLOT(hideDescription()));
+	UserBox::management->addItem("HideDescription", tr("Hide description"), this, SLOT(hideDescription()));
 	UserBox::management->insertSeparator();
 	UserBox::management->addItem("RemoveFromUserlist", tr("Remove from userlist"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("ShortCuts", "kadu_deleteuser"));
 
@@ -236,7 +236,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	KaduActions.insert("descriptionUsersAction", desc_users_action);
 
 	Action* onlineAndDesc_users_action = new Action("ShowOnlineAndDescriptionUsers",
-		tr("Show / hide online and description users"), "onlineAndDescriptionUsersAction", Action::TypeUserList);
+		tr("Show only online and description users"), "onlineAndDescriptionUsersAction", Action::TypeUserList);
 	onlineAndDesc_users_action->setToggleAction(true);
 	onlineAndDesc_users_action->setAllOn(config_file.readBoolEntry("General", "ShowOnlineAndDescription"));
 	connect(onlineAndDesc_users_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
