@@ -461,7 +461,7 @@ UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
 	kdebugf();
 	Filters.append(group);
 
-	Action* desc_action = new Action("ShowDescription", tr("Show / hide descriptions"),
+	Action* desc_action = new Action("HideDescription", tr("Show / hide descriptions"),
 		"descriptionsAction", Action::TypeUserList);
 	desc_action->setToggleAction(true);
 	connect(desc_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
