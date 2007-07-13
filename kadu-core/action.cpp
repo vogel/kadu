@@ -63,11 +63,13 @@ void Action::setToggleAction(bool toggle)
 	kdebugf2();
 }
 
-void Action::setOnShape(const QIconSet& icon, const QString& text)
+void Action::setOnShape(const QString& icon, const QString& text)
 {
 	kdebugf();
+
 	OnIcon = icon;
 	OnText = text;
+
 	kdebugf2();
 }
 
@@ -78,14 +80,14 @@ ToolButton* Action::addToToolbar(ToolBar* toolbar, bool uses_text_label)
 	ToolButton* btn = new ToolButton(toolbar, name(), Type);
 	btn->setIconSet(icons_manager->loadIcon(IconName));
 	btn->setTextLabel(Text);
-	btn->setOnShape(OnIcon, OnText);
+	btn->setOnShape(icons_manager->loadIcon(OnIcon), OnText);
 	btn->setToggleButton(ToggleAction);
 	btn->setUsesTextLabel(uses_text_label);
 	btn->setTextPosition(ToolButton::BesideIcon);
 	QAccel* accel = new QAccel(btn);
 	accel->connectItem(accel->insertItem(KeySeq0), btn, SIGNAL(clicked()));
 	accel->connectItem(accel->insertItem(KeySeq1), btn, SIGNAL(clicked()));
-	if(ToggleAction || !OnIcon.isNull())
+	if(ToggleAction || !OnIcon.isEmpty())
 		btn->setOn(ToggleState);
 	connect(btn, SIGNAL(clicked()), this, SLOT(toolButtonClicked()));
 	connect(btn, SIGNAL(destroyed(QObject*)), this, SLOT(toolButtonDestroyed(QObject*)));
@@ -98,6 +100,7 @@ ToolButton* Action::addToToolbar(ToolBar* toolbar, bool uses_text_label)
 	if (user_group != NULL)
 		emit addedToToolbar(user_group, btn, toolbar);
 	emit addedToToolbar(btn, toolbar);
+
 	kdebugf2();
 	return btn;
 }
@@ -169,7 +172,14 @@ void Action::refreshIcons()
 
 	if (!IconName.isEmpty())
 		FOREACH(button, ToolButtons)
+		{
 			(*button)->setIconSet(icons_manager->loadIcon(IconName));
+			(*button)->setTextLabel(Text);
+		}
+
+	if (!OnIcon.isEmpty())
+		FOREACH(button, ToolButtons)
+			(*button)->setOnShape(icons_manager->loadIcon(OnIcon), OnText);
 
 	emit iconsRefreshed();
 

@@ -82,12 +82,14 @@ SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name
 	sound_manager->setMute(!config_file.readBoolEntry("Sounds", "PlaySound"));
 
 	mute_action = new Action("Unmute", tr("Mute sounds"), "muteSoundsAction", Action::TypeGlobal);
-	mute_action->setOnShape(icons_manager->loadIcon("Mute"), tr("Unmute sounds"));
-	mute_action->setAllOn(sound_manager->isMuted());
+	mute_action->setOnShape("Mute", tr("Unmute sounds"));
 	connect(mute_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(muteActionActivated(const UserGroup*, const QWidget*, bool)));
+	connect(mute_action, SIGNAL(iconsRefreshed()), this, SLOT(setMuteActionState()));
 	KaduActions.insert("muteSoundsAction", mute_action);
 	KaduActions.addDefaultToolbarAction("Kadu toolbar", "muteSoundsAction", 0);
+
+	setMuteActionState();
 
 	kdebugf2();
 }
@@ -107,6 +109,11 @@ void SoundSlots::muteActionActivated(const UserGroup* /*users*/, const QWidget* 
 	mute_action->setAllOn(is_on);
 	config_file.writeEntry("Sounds", "PlaySound", !is_on);
 	kdebugf2();
+}
+
+void SoundSlots::setMuteActionState()
+{
+	mute_action->setAllOn(sound_manager->isMuted());
 }
 
 void SoundSlots::muteUnmuteSounds()

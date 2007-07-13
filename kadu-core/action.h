@@ -31,7 +31,7 @@ class Action : public QObject
 		QString Text;
 		QKeySequence KeySeq0, KeySeq1; //!< skróty klawiszowe wywo³uj±ce akcjê
 		bool ToggleAction;
-		QIconSet OnIcon;
+		QString OnIcon;
 		QString OnText;
 		const char *Slot;
 		QValueList<ToolButton*> ToolButtons;
@@ -51,7 +51,7 @@ class Action : public QObject
 			action works just like toggled but using two shapes
 			(pictures and texts)
 		**/
-		void setOnShape(const QIconSet& icon, const QString& text);
+		void setOnShape(const QString& icon, const QString& text);
 		ToolButton* addToToolbar(ToolBar* toolbar, bool uses_text_label = false);
 		int addToPopupMenu(QPopupMenu* menu, bool connect_signal = true);
 		QValueList<ToolButton*> toolButtonsForUserListElements(

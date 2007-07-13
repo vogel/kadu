@@ -59,6 +59,7 @@ class SoundSlots : public QObject
 
 	private slots:
 		void muteActionActivated(const UserGroup* users, const QWidget* source, bool is_on);
+		void setMuteActionState();
 		void muteUnmuteSounds();
 		void testSamplePlaying();
 		void samplePlayingTestSamplePlayed(SoundDevice device);
