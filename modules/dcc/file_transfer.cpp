@@ -1049,6 +1049,7 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 
 	toggleFileTransferWindowMenuId = (kadu->mainMenu())->insertItem(icons_manager->loadIcon("SendFileWindow"), tr("Toggle transfers window"),
 		this, SLOT(toggleFileTransferWindow()), 0, -1, 10);
+	icons_manager->registerMenuItem((kadu->mainMenu()), tr("Toggle transfers window"), "SendFileWindow");
 
 	notification_manager->registerEvent("FileTransfer/IncomingFile",  QT_TRANSLATE_NOOP("@default", "An user wants to send you a file"), CallbackRequired);
 	notification_manager->registerEvent("FileTransfer/Finished", QT_TRANSLATE_NOOP("@default", "File transfer was finished"), CallbackNotRequired);

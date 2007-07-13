@@ -1387,7 +1387,7 @@ void Kadu::createMenu()
 	MainMenu->insertItem(icons_manager->loadIcon("Configuration"), tr("&Configuration"), this, SLOT(configure()),HotKey::shortCutFromFile("ShortCuts", "kadu_configure"));
 	MainMenu->insertSeparator();
 
-	personalInfoMenuId=MainMenu->insertItem(icons_manager->loadIcon("PersonalInfo"), tr("Personal information"), this,SLOT(personalInfo()));
+	personalInfoMenuId = MainMenu->insertItem(icons_manager->loadIcon("PersonalInfo"), tr("Personal information"), this,SLOT(personalInfo()));
 	MainMenu->insertSeparator();
 	MainMenu->insertItem(icons_manager->loadIcon("OpenChat"), tr("Recent chats..."), RecentChatsMenu);
 	MainMenu->insertItem(icons_manager->loadIcon("LookupUserInfo"), tr("&Search user in directory"), this, SLOT(searchInDirectory()));
