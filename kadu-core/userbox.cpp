@@ -285,9 +285,9 @@ int KaduListBoxPixmap::width(const QListBox* lb) const
 // 	kdebugf();
 
 	if (ColumnCount == 0)
-		return QMAX(pm.width(), (lb->width()-20));
+		return QMAX(pm.width(), (lb->visibleWidth()));
 	else
-		return QMAX(pm.width(), (lb->width()-20) / ColumnCount);
+		return QMAX(pm.width(), (lb->visibleWidth()) / ColumnCount);
 /*
    joi:
    we need to use lb->width()-20 here for scrollbar - we cannot get this value
@@ -745,6 +745,9 @@ void UserBox::refresh()
 		// above doesn't prevents this, we must set position as soon as possible
 		lastVerticalPosition = vScrollValue;
 		verticalPositionTimer.start(0, true);
+
+		updateScrollBars();
+		refresh();
 	}
 
 /*	}
@@ -758,6 +761,9 @@ void UserBox::resetVerticalPosition()
 {
 	kdebugf();
 	verticalScrollBar()->setValue(lastVerticalPosition);
+
+	updateScrollBars();
+	refresh();
 }
 
 void UserBox::rememberVerticalPosition()

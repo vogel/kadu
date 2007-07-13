@@ -1577,11 +1577,9 @@ void Kadu::show()
 	QWidget::show();
 
 	// TODO: remove after 0.6
-	printf("width is: %d\n", Userbox->width());
-	printf("%d %d\n", config_file.readBoolEntry("Look", "MultiColumnUserbox", false), config_file.readNumEntry("Look", "MultiColumnUserboxWidth", (Userbox->width() - 20)));
 	if (config_file.readBoolEntry("Look", "MultiColumnUserbox", false))
 	{
-		int columns = (Userbox->width() - 20) / config_file.readUnsignedNumEntry("Look", "MultiColumnUserboxWidth", (Userbox->width() - 20));
+		int columns = Userbox->visibleWidth() / config_file.readUnsignedNumEntry("Look", "MultiColumnUserboxWidth", Userbox->visibleWidth());
 		if (columns < 1)
 			columns = 1;
 		config_file.writeEntry("Look", "UserBoxColumnCount", columns);
