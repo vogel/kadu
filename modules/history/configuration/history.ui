@@ -2,11 +2,14 @@
 	<section name="Chat">
 		<tab name="History">
 			<group-box name="General">
-				<check-box caption="Save history" config-section="History" config-item="Logging" id="history/save" />
+				<check-box caption="Save history" config-section="History" config-item="Logging" id="history/save"
+					   tool-tip="Save messages in history" />
 			</group-box>
 			<group-box name="Status changes" id="history/statusChanges">
-				<check-box caption="Don't show status changes" config-section="History" config-item="DontShowStatusChanges" />
-				<check-box caption="Don't save status changes" config-section="History" config-item="DontSaveStatusChanges" />
+				<check-box caption="Don't show status changes" config-section="History" config-item="DontShowStatusChanges"
+					   tool-tip="Don't show status changes in history" />
+				<check-box caption="Don't save status changes" config-section="History" config-item="DontSaveStatusChanges"
+					   tool-tip="Don't save status changes in history" />
 			</group-box>
 			<group-box name="Citation" id="history/citation">
 				<spin-box caption="Message citation in chat window" config-section="History" config-item="ChatHistoryCitation" min-value="0" max-value="200" step="1" />

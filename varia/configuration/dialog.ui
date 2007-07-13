@@ -2,17 +2,20 @@
 	<section name="Kadu">
 		<tab name="Kadu">
 			<group-box name="Language">
-				<combo-box caption="Language" config-section="General" config-item="Language" id="languages" />
+				<combo-box caption="Language" config-section="General" config-item="Language" id="languages"
+					   tool-tip="Choose your language" />
 			</group-box>
 
 			<group-box name="Updates">
-				<check-box caption="Check for updates" config-section="General" config-item="CheckUpdates" />
+				<check-box caption="Check for updates" config-section="General" config-item="CheckUpdates"
+					   tool-tip="Automatically checks whether a new version is available" />
 			</group-box>
 		</tab>
 
 		<tab name="Applications">
 			<group-box name="WWW browser">
-				<combo-box caption="Choose your browser" config-section="Chat" config-item="WebBrowserNo" id="browser">
+				<combo-box caption="Choose your browser" config-section="Chat" config-item="WebBrowserNo" id="browser"
+					   tool-tip="Choose your browser">
 					<item value="Specify path" caption="Specify path" />
 					<item value="Konqueror" caption="Konqueror" />
 					<item value="Opera" caption="Opera" />
@@ -22,18 +25,21 @@
 					<item value="Galeon" caption="Galeon" />
 					<item value="Safari" caption="Safari" />
 				</combo-box>
-				<line-edit caption="Custom browser" config-section="Chat" config-item="WebBrowser" id="browserPath" />
+				<line-edit caption="Custom browser" config-section="Chat" config-item="WebBrowser" id="browserPath"
+					   tool-tip="Write specific path to your browser" />
 			</group-box>
 
 			<group-box name="e-mail client">
-				<combo-box caption="Choose your e-mail client" config-section="Chat" config-item="EmailClientNo" id="mail">
+				<combo-box caption="Choose your e-mail client" config-section="Chat" config-item="EmailClientNo" id="mail"
+					   tool-tip="Choose your email client">
 					<item value="Specify path" caption="Specify path" />
 					<item value="KMail" caption="KMail" />
 					<item value="Thunderbird" caption="Thunderbird" />
 					<item value="SeaMonkey" caption="SeaMonkey" />
 					<item value="Evolution" caption="Evolution" />
                 </combo-box>
-				<line-edit caption="Custom e-mail client" config-section="Chat" config-item="MailClient" id="mailPath" />
+				<line-edit caption="Custom e-mail client" config-section="Chat" config-item="MailClient" id="mailPath" 
+					   tool-tip="Write specific path to your email client" />
 			</group-box>
 		</tab>
 		
@@ -98,21 +104,27 @@
 	<section name="Status">
 		<tab name="General">
 			<group-box name="General">
-				<check-box caption="Private status" config-section="General" config-item="PrivateStatus" />
+				<check-box caption="Private status" config-section="General" config-item="PrivateStatus"
+					   tool-tip="When enabled, you're visible only to users on your list" />
 			</group-box>
 
 			<group-box name="Descirption">
-				<combo-box caption="On startup, set" config-section="General" config-item="StartupStatus" id="startupStatus">
+				<combo-box caption="On startup, set" config-section="General" config-item="StartupStatus" id="startupStatus"
+					   tool-tip="Choose status which will be set on startup">
 					<item value="LastStatus" caption="Last status" />
 					<item value="Online" caption="Online" />
 					<item value="Busy" caption="Busy" />
 					<item value="Invisible" caption="Invisible" />
 					<item value="Offline" caption="Offline" />
 				</combo-box>
-				<check-box caption="On statup, set last description" config-section="General" config-item="StartupLastDescription" id="onStartupSetLastDescription" />
-				<line-edit caption="On statup, set description" config-section="General" config-item="StartupDescription" id="onStartupSetDescription" />
-				<check-box caption="On shutdown, keep current description" config-section="General" config-item="DisconnectWithCurrentDescription" id="disconnectWithCurrentDescription" />
-				<line-edit caption="On shutdown, set description" config-section="General" config-item="DisconnectDescription" id="disconnectDescription" />
+				<check-box caption="On statup, set last description" config-section="General" config-item="StartupLastDescription" id="onStartupSetLastDescription"
+					   tool-tip="Last decription will be set on startup" />
+				<line-edit caption="On statup, set description" config-section="General" config-item="StartupDescription" id="onStartupSetDescription"
+					   tool-tip="Define description which will be set on startup" />
+				<check-box caption="On shutdown, keep current description" config-section="General" config-item="DisconnectWithCurrentDescription" id="disconnectWithCurrentDescription"
+					   tool-tip="Current description will be set on shutdown" />
+				<line-edit caption="On shutdown, set description" config-section="General" config-item="DisconnectDescription" id="disconnectDescription"
+					   tool-tip="Define description which will be set on shutdown" />
 				<spin-box caption="Number of kept descriptions" config-section="General" config-item="NumberOfDescriptions" min-value="1" max-value="30" step="1" />
 			</group-box>
 
@@ -125,9 +137,12 @@
 	<section name="Look">
 		<tab name="General">
 			<group-box name="General">
-				<combo-box caption="Theme" config-section="Look" config-item="QtStyle" id="qtThemes" />
-				<combo-box caption="Icon theme" config-section="Look" config-item="IconTheme" id="iconThemes" />
-				<path-list-edit caption="Icon paths" config-section="Look" config-item="IconsPaths" id="iconPaths" />
+				<combo-box caption="Theme" config-section="Look" config-item="QtStyle" id="qtThemes"
+					   tool-tip="Choose Qt style"/>
+				<combo-box caption="Icon theme" config-section="Look" config-item="IconTheme" id="iconThemes"
+					   tool-tip="Choose icon theme" />
+				<path-list-edit caption="Icon paths" config-section="Look" config-item="IconsPaths" id="iconPaths"
+						tool-tip="Definie icons paths" />
 				<check-box caption="Show status button" config-section="Look" config-item="ShowStatusButton" />
 			</group-box>
 		</tab>
@@ -173,18 +188,22 @@
 			</group-box>
 
 			<group-box name="Style">
-				<syntax-editor caption="Style" config-section="Look" config-item="Style" category="chat" id="chatSyntax" />
+				<syntax-editor caption="Style" config-section="Look" config-item="Style" category="chat" id="chatSyntax"
+					       tool-tip="Choose style of chat window" />
 				<preview caption="Preview" id="chatSyntaxPreview" />
 			</group-box>
 
 			<group-box name="Emoticons">
-				<combo-box caption="Emoticons" config-section="Chat" config-item="EmoticonsStyle" id="emoticonsStyle">
+				<combo-box caption="Emoticons" config-section="Chat" config-item="EmoticonsStyle" id="emoticonsStyle"
+					   tool-tip="Choose emoticons style" >
 					<item value="2" caption="Animated" />
 					<item value="1" caption="Static" />
 					<item value="0" caption="None" />
 				</combo-box>
-				<combo-box caption="Emoticons theme" config-section="Chat" config-item="EmoticonsTheme" id="emoticonsTheme" />
-				<path-list-edit caption="Emoticons paths" config-section="" config-item="" id="emoticonsPaths" />
+				<combo-box caption="Emoticons theme" config-section="Chat" config-item="EmoticonsTheme" id="emoticonsTheme"
+					   tool-tip="Choose emoticons theme" />
+				<path-list-edit caption="Emoticons paths" config-section="" config-item="" id="emoticonsPaths"
+						tool-tip="Define emoticons paths" />
 			</group-box>
 
 			<group-box name="Advanced">
@@ -194,27 +213,36 @@
 
 		<tab name="Userbox">
 			<group-box name="General">
-				<check-box caption="Display group tabs" config-section="Look" config-item="DisplayGroupTabs" />
-				<check-box caption="Show available contacts in bold" config-section="Look" config-item="ShowBold" />
-				<combo-box caption="Align contact icon to" config-section="Look" config-item="AlignUserboxIconsTop">
+				<check-box caption="Display group tabs" config-section="Look" config-item="DisplayGroupTabs"
+					   tool-tip="Displays group tabs on userbox" />
+				<check-box caption="Show available contacts in bold" config-section="Look" config-item="ShowBold"
+					   tool-tip="Displays users that are not offline using a bold font" />
+				<combo-box caption="Align contact icon to" config-section="Look" config-item="AlignUserboxIconsTop"
+					   tool-tip="Align icon next to contact name">
 					<item value="true" caption="Top" />
 					<item value="false" caption="Center" />
 				</combo-box>
-				<combo-box caption="Tool tip style" config-section="Look" config-item="UserboxToolTipStyle" id="toolTipClasses" />
+				<combo-box caption="Tool tip style" config-section="Look" config-item="UserboxToolTipStyle" id="toolTipClasses"
+					   tool-tip="Choose userbox tool-tip style" />
 			</group-box>
 
 			<group-box name="Descriptions">
-				<check-box caption="Show description" config-section="Look" config-item="ShowDesc" id="showDescription" />
-				<check-box caption="Multiline description" config-section="Look" config-item="ShowMultilineDesc" id="multilineDescription" />
+				<check-box caption="Show description" config-section="Look" config-item="ShowDesc" id="showDescription"
+					   tool-tip="Displays descriptions in userbox" />
+				<check-box caption="Multiline description" config-section="Look" config-item="ShowMultilineDesc" id="multilineDescription"
+					   tool-tip="Dislpays multiline descriptions in userbox" />
 			</group-box>
 
 			<group-box name="Columns">
-				<spin-box caption="Column count" config-section="Look" config-item="UserBoxColumnCount" min-value="1" max-value="10" step="1" />
+				<spin-box caption="Column count" config-section="Look" config-item="UserBoxColumnCount" min-value="1" max-value="10" step="1"
+					  tool-tip="Number of columns displays in userbox" />
 			</group-box>
 
 			<group-box name="Background">
-				<select-file caption="Background file" config-section="Look" config-item="UserboxBackground" type="image" />
-				<combo-box caption="Display style" config-section="Look" config-item="UserboxBackgroundDisplayStyle">
+				<select-file caption="Background file" config-section="Look" config-item="UserboxBackground" type="image"
+					     tool-tip="Define background file for userbox" />
+				<combo-box caption="Display style" config-section="Look" config-item="UserboxBackgroundDisplayStyle"
+					   tool-tip="Choose userbox background style">
 					<item value="Tiled" caption="Tiled" />
 					<item value="Centered" caption="Centered" />
 					<item value="Stretched" caption="Stretched" />
@@ -224,13 +252,17 @@
 
 		<tab name="Information Panel">
 			<group-box name="General">
-				<check-box caption="Show information panel" config-section="Look" config-item="ShowInfoPanel" id="showInformationPanel" />
-				<check-box caption="Show vertical scrollbar" config-section="Look" config-item="PanelVerticalScrollbar" id="showVerticalScrollbar" />
-				<check-box caption="Show emoticons in panel" config-section="General" config-item="ShowEmotPanel" id="showEmoticonsInPanel" />
+				<check-box caption="Show information panel" config-section="Look" config-item="ShowInfoPanel" id="showInformationPanel"
+					   tool-tip="Displays information panel belov userbox" />
+				<check-box caption="Show vertical scrollbar" config-section="Look" config-item="PanelVerticalScrollbar" id="showVerticalScrollbar"
+					   tool-tip="Show vertical scrollbar in information panel" />
+				<check-box caption="Show emoticons in panel" config-section="General" config-item="ShowEmotPanel" id="showEmoticonsInPanel"
+					   tool-tip="Show emoticons in information panel" />
 			</group-box>
 
 			<group-box name="Style">
-				<syntax-editor caption="Style" config-section="Look" config-item="InfoPanelSyntaxFile" category="infopanel" id="infoPanelSyntax" />
+				<syntax-editor caption="Style" config-section="Look" config-item="InfoPanelSyntaxFile" category="infopanel" id="infoPanelSyntax"
+					       tool-tip="Choose information panel style" />
 				<preview caption="Preview" id="infoPanelSyntaxPreview" />
 			</group-box>
 		</tab>
@@ -266,27 +298,37 @@
 		<tab name="General">
 			<group-box name="Behaviour">
 				<check-box caption="Remember chat windows positions" config-section="Chat" config-item="RememberPosition" />
-				<check-box caption="Open chat window on new message" config-section="Chat" config-item="OpenChatOnMessage" />
-				<check-box caption="Wait for message delivery" config-section="Chat" config-item="MessageAcks" />
-				<check-box caption="'Enter' in chat send message" config-section="Chat" config-item="AutoSend" />
-				<check-box caption="Confirm clearing chat window" config-section="Chat" config-item="ConfirmChatClear" />
+				<check-box caption="Open chat window on new message" config-section="Chat" config-item="OpenChatOnMessage"
+					   tool-tip="Open chat window when comes new message" />
+				<check-box caption="Wait for message delivery" config-section="Chat" config-item="MessageAcks"
+					   tool-tip="Wait for confirmation from server during send messages" />
+				<check-box caption="'Enter' in chat send message" config-section="Chat" config-item="AutoSend"
+					   tool-tip="'Enter' in chat send message" />
+				<check-box caption="Confirm clearing chat window" config-section="Chat" config-item="ConfirmChatClear"
+					   tool-tip="Ask before clearing chat window" />
 			</group-box>
 
 			<group-box name="Closing">
-				<check-box caption="Block window close on new message" config-section="Chat" config-item="ChatCloseTimer" id="chatCloseTimer" />
-				<spin-box caption="Max time to block window close" config-section="Chat" config-item="ChatCloseTimerPeriod" min-value="1" max-value="30" step="1" id="chatCloseTimerPeriod" />
+				<check-box caption="Block window close on new message" config-section="Chat" config-item="ChatCloseTimer" id="chatCloseTimer"
+					   tool-tip="Block chat window when comes new message" />
+				<spin-box caption="Max time to block window close" config-section="Chat" config-item="ChatCloseTimerPeriod" min-value="1" max-value="30" step="1" id="chatCloseTimerPeriod"
+					  tool-tip="Max time to block window close" />
 			</group-box>
 		</tab>
 		<tab name="Messages">
 			<group-box name="Message pruning">
-				<check-box caption="Automatically prune chat messages" config-section="Chat" config-item="ChatPrune" id="chatPrune" />
-				<spin-box caption="Reduce the number of visible messages to" config-section="Chat" config-item="ChatPruneLen" min-value="1" max-value="255" step="1" id="chatPruneLen" />
+				<check-box caption="Automatically prune chat messages" config-section="Chat" config-item="ChatPrune" id="chatPrune"
+					   tool-tip="If enabled, messages are pruning" />
+				<spin-box caption="Reduce the number of visible messages to" config-section="Chat" config-item="ChatPruneLen" min-value="1" max-value="255" step="1" id="chatPruneLen"
+					  tool-tip="Number of visible messages" />
 			</group-box>
 			
 			<group-box name="Images">
 				<spin-box caption="Max image size" config-section="Chat" config-item="MaxImageSize" min-value="0" max-value="255" step="1" suffix=" kB" />
-				<check-box caption="Receive images during invisibility" config-section="Chat" config-item="RecevieImagesDuringInvisibility" />
-				<spin-box caption="Limit numbers of image recevied per minute" config-section="General" config-item="MaxImageRequests" min-value="1" max-value="30" step="1" />
+				<check-box caption="Receive images during invisibility" config-section="Chat" config-item="RecevieImagesDuringInvisibility"
+					   tool-tip="Receiving images during invisibility is allowed"  />
+				<spin-box caption="Limit numbers of image recevied per minute" config-section="General" config-item="MaxImageRequests" min-value="1" max-value="30" step="1"
+					  tool-tip="Define limit of images received per minute" />
 			</group-box>
 
 			<group-box name="Link folding">
