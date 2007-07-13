@@ -1212,9 +1212,6 @@ void GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 
 	kdebugmf(KDEBUG_INFO, "\n%s\n", (const char *)unicode2latin(myLastMessage));
 	myLastMessage.replace("\r\n", "\n");
-	ChatWidget* c = chat_manager->findChatWidget(users);
-	if (c)
-		c->setLastMessage(myLastMessage);
 
 	if (msgtmp.length() >= 2000)
 	{

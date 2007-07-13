@@ -42,7 +42,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	Users(new UserGroup(usrs)),
 	index(0), actcolor(), Edit(0),
 	bodyformat(new QMimeSourceFactory()), emoticon_selector(0), color_selector(0),
-	WaitingForACK(false), userbox(0), myLastMessage(),vertSplit(0), horizSplit(0),
+	WaitingForACK(false), userbox(0), vertSplit(0), horizSplit(0),
 	activationCount(0), NewMessagesCount(0)
 {
 	kdebugf();
@@ -630,23 +630,24 @@ void ChatWidget::sendMessage()
 		KaduActions["sendAction"]->setTexts(Users->toUserListElements(), tr("&Cancel"));
 	}
 	QString message = Edit->text();
-	currentProtocol()->sendMessage(Users->toUserListElements(), message);
 
-  	if (config_file.readBoolEntry("ChatWidget", "MessageAcks"))
- 		connectAcknowledgeSlots();
- 	else
- 	{
+	// TODO: to na pewno jest potrzebne ??
+	int messageBegin = message.find("<p>");
+	int messageEnd = message.find("</p>");
+	myLastMessage = message.mid(messageBegin + 3, messageEnd - messageBegin - 3);
+
+	currentProtocol()->sendMessage(Users->toUserListElements(), myLastMessage);
+
+	if (config_file.readBoolEntry("ChatWidget", "MessageAcks"))
+		connectAcknowledgeSlots();
+	else
+	{
 		writeMyMessage();
 		emit messageSentAndConfirmed(Users->toUserListElements(), myLastMessage);
- 	}
+	}
 
 	emit messageSent(this);
 	kdebugf2();
-}
-
-void ChatWidget::setLastMessage(const QString &msg)
-{
-	myLastMessage = msg;
 }
 
 void ChatWidget::openEmoticonSelector(const QWidget* activating_widget)

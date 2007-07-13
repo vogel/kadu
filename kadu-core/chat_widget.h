@@ -178,8 +178,6 @@ public:
 	**/
 	bool autoSend() const;
 
-	void setLastMessage(const QString &msg);
-
 	bool waitingForACK() const;
 
 	virtual void dragEnterEvent(QDragEnterEvent *e);
