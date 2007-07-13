@@ -119,7 +119,7 @@ ChatManager::ChatManager(QObject* parent, const char* name) : QObject(parent, na
 	KaduActions.insert("chatAction", chat_action);
 
 	Action* open_chat_with_action = new Action("OpenChat", tr("Open chat with..."),
-		"openChatWithAction", Action::TypeChat);
+		"openChatWithAction", Action::TypeGlobal);
 	connect(open_chat_with_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		kadu, SLOT(openChatWith()));
 	KaduActions.insert("openChatWithAction", open_chat_with_action);

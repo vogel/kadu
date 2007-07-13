@@ -7,6 +7,8 @@
 #include <qimage.h>
 #include <qlabel.h>
 #include <qstring.h>
+#include <qvbox.h>
+
 #include <time.h>
 
 class QComboBox;
@@ -90,26 +92,23 @@ class ChooseDescription : public QDialog
 		void updateYetLen(const QString&);
 };
 
-class OpenChatWith : public QWidget
+class OpenChatWith : public QVBox
 {
 	Q_OBJECT
 
-	public:
-		OpenChatWith(QWidget* parent = 0, const char* name = 0);
-		virtual ~OpenChatWith();
+	QComboBox *c_text;
+	QComboBox *c_protocol;
 
-	private:
-		QLineEdit *e_text;
-		QComboBox *c_protocol;
-		QListBox *l_posibilities;
+private slots:
+	void inputAccepted();
 
-		void keyPressEvent(QKeyEvent* e);
+protected:
+	virtual void keyPressEvent(QKeyEvent *e);
 
-	private slots:
-		void inputAccepted();
-		void completeHint(const QString& text);
-		void hintItemSelected(QListBoxItem* item);
-		void hintHide();
+public:
+	OpenChatWith(QWidget *parent = 0, const char *name = 0);
+	virtual ~OpenChatWith();
+
 };
 
 class ImageWidget : public QWidget

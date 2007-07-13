@@ -833,39 +833,55 @@ void ChooseDescription::updateYetLen(const QString& text)
 }
 
 OpenChatWith::OpenChatWith(QWidget* parent, const char* name)
-	: QWidget(parent, name, WType_TopLevel | WDestructiveClose),
-	e_text(0), c_protocol(0), l_posibilities(0)
+	: QVBox(parent, name, WType_TopLevel | WDestructiveClose)
 {
 	kdebugf();
 
 	setCaption(tr("Open chat with..."));
+	setMargin(5);
+	setSpacing(5);
 
-	e_text = new QLineEdit(this);
-	connect(e_text, SIGNAL(textChanged(const QString&)), this, SLOT(completeHint(const QString&)));
-	QToolTip::add(e_text, tr("UIN or nick"));
+	QHBox *combos = new QHBox(this);
+	combos->setSpacing(5);
 
-	c_protocol = new QComboBox(this);
+	c_protocol = new QComboBox(combos);
 	c_protocol->insertItem(tr("Userlist"), 0);
 	c_protocol->insertStringList(kadu->myself().protocolList(), 1);
+	c_protocol->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-	QPushButton *b_cancel = new QPushButton(tr("&Cancel"), this);
+	c_text = new QComboBox(combos);
+	c_text->setAutoCompletion(true);
+	c_text->setEditable(true);
+	QToolTip::add(c_text, tr("UIN or nick"));
+
+	QStringList posibilities;
+	CONST_FOREACH(user, userlist->toUserListElements())
+	{
+		QString altNick = (*user).altNick();
+		if (!((*user).protocolList()).isEmpty())
+			posibilities.append(altNick);
+	}
+	posibilities.sort();
+
+	c_text->insertStringList(posibilities);
+	c_text->setCurrentText("");
+
+	QWidget *buttons = new QWidget(this);
+
+	QHBoxLayout *buttonsLayout = new QHBoxLayout(buttons);
+	buttonsLayout->setSpacing(5);
+
+	QPushButton *b_cancel = new QPushButton(tr("&Cancel"), buttons);
 	connect(b_cancel, SIGNAL(clicked()), this, SLOT(close()));
-	QPushButton *b_ok = new QPushButton(tr("&OK"), this);
+	QPushButton *b_ok = new QPushButton(tr("&OK"), buttons);
 	connect(b_ok, SIGNAL(clicked()), this, SLOT(inputAccepted()));
 
-	QGridLayout *g_layout = new QGridLayout(this, 3, 2, 5, 10);
-	g_layout->addMultiCellWidget(e_text, 0, 0, 0, 2);
-	g_layout->addMultiCellWidget(c_protocol, 1, 1, 0, 2);
-	g_layout->addWidget(b_ok, 2, 1, Qt::AlignRight);
-	g_layout->addWidget(b_cancel, 2, 2, Qt::AlignRight);
-	g_layout->setResizeMode(QLayout::Minimum);
-
-	l_posibilities = new QListBox(this, "hint", WStyle_Customize | WStyle_NoBorder | WDestructiveClose);
-	l_posibilities->hide();
-	connect(l_posibilities, SIGNAL(returnPressed(QListBoxItem*)), this, SLOT(hintItemSelected(QListBoxItem*)));
-	connect(l_posibilities, SIGNAL(doubleClicked(QListBoxItem*)), this, SLOT(hintItemSelected(QListBoxItem*)));
+	buttonsLayout->addStretch(100);
+	buttonsLayout->addWidget(b_ok);
+	buttonsLayout->addWidget(b_cancel);
 
 	loadGeometry(this, "General", "OpenChatWith", 100, 100, 250, 80);
+	setFixedHeight(sizeHint().height());
 
 	kdebugf2();
 }
@@ -875,14 +891,13 @@ OpenChatWith::~OpenChatWith()
 	saveGeometry(this, "General", "OpenChatWith");
 }
 
-void OpenChatWith::keyPressEvent(QKeyEvent* e)
+void OpenChatWith::keyPressEvent(QKeyEvent *e)
 {
 	switch (e->key())
 	{
 		case Qt::Key_Enter:
 		case Qt::Key_Return: inputAccepted(); break;
 		case Qt::Key_Escape: close(); break;
-		case Qt::Key_Down: l_posibilities->setFocus(); break;
 	}
 }
 
@@ -890,7 +905,7 @@ void OpenChatWith::inputAccepted()
 {
 	kdebugf();
 
-	QString text = e_text->text();
+	QString text = c_text->currentText();
 	if (!text.isEmpty())
 	{
 		if (!c_protocol->currentItem())
@@ -905,63 +920,6 @@ void OpenChatWith::inputAccepted()
 	close();
 
 	kdebugf2();
-}
-
-void OpenChatWith::completeHint(const QString& text)
-{
-	kdebugf();
-
-	if (c_protocol->currentItem() || text.isEmpty())
-	{
-		hintHide();
-
-		kdebugf2();
-		return;
-	}
-
-	QStringList posibilities;
-
-	CONST_FOREACH(user, userlist->toUserListElements())
-	{
-		QString altNick = (*user).altNick();
-		if (!((*user).protocolList()).isEmpty() && QRegExp("^" + QRegExp::escape(text) + ".*", false).exactMatch(altNick))
-			posibilities.append(altNick);
-	}
-
-	if (!posibilities.count())
-	{
-		hintHide();
-
-		kdebugf2();
-		return;
-	}
-	else if (posibilities.count() == 1)
-	{
-		e_text->setText(*posibilities.begin());
-		hintHide();
-	}
-	else
-	{
-		l_posibilities->clear();
-		l_posibilities->insertStringList(posibilities);
-		l_posibilities->resize(e_text->width(), 100);
-		l_posibilities->move(e_text->pos().x(), e_text->pos().y() + e_text->height());
-		l_posibilities->show();
-	}
-
-	kdebugf2();
-}
-
-void OpenChatWith::hintItemSelected(QListBoxItem* item)
-{
-	e_text->setText(item->text());
-	hintHide();
-}
-
-void OpenChatWith::hintHide()
-{
-	if (l_posibilities->isVisible())
-		l_posibilities->hide();
 }
 
 ImageWidget::ImageWidget(QWidget *parent)
