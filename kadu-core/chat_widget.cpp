@@ -633,8 +633,11 @@ void ChatWidget::sendMessage()
 
 	// TODO: to na pewno jest potrzebne ??
 	int messageBegin = message.find("<p>");
-	int messageEnd = message.find("</p>");
+	int messageEnd = message.findRev("</p>");
 	myLastMessage = message.mid(messageBegin + 3, messageEnd - messageBegin - 3);
+	myLastMessage.replace("</p>", "");
+	myLastMessage.replace("<p>", "");
+	printf("message: [%s]\n", myLastMessage.data());
 
 	currentProtocol()->sendMessage(Users->toUserListElements(), myLastMessage);
 
