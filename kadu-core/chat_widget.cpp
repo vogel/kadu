@@ -637,7 +637,7 @@ void ChatWidget::sendMessage()
 	myLastMessage = message.mid(messageBegin + 3, messageEnd - messageBegin - 3);
 	myLastMessage.replace("</p>", "");
 	myLastMessage.replace("<p>", "");
-	printf("message: [%s]\n", myLastMessage.data());
+	myLastMessage += "\n";
 
 	currentProtocol()->sendMessage(Users->toUserListElements(), myLastMessage);
 
