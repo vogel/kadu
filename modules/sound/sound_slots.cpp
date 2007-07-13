@@ -138,14 +138,14 @@ void SoundSlots::testSamplePlaying()
 	}
 	// we are allocating 1 more word just in case of file.size() % sizeof(int16_t) != 0
 	SamplePlayingTestSample = new int16_t[file.size() / sizeof(int16_t) + 1];
-// 	if (file.readBlock((char*)SamplePlayingTestSample, file.size()) != (unsigned)file.size())
-// 	{
-// 		MessageBox::msg(tr("Reading test sample file failed."), false, "Warning");
-// 		file.close();
-// 		delete[] SamplePlayingTestSample;
-// 		SamplePlayingTestSample = NULL;
-// 		return;
-// 	}
+	if (file.readBlock((char*)SamplePlayingTestSample, file.size()) != (unsigned)file.size())
+	{
+		MessageBox::msg(tr("Reading test sample file failed."), false, "Warning");
+		file.close();
+		delete[] SamplePlayingTestSample;
+		SamplePlayingTestSample = NULL;
+		return;
+	}
 	file.close();
 
 	SamplePlayingTestDevice = sound_manager->openDevice(PLAY_ONLY, 11025);
