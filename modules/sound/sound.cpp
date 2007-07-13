@@ -278,7 +278,8 @@ void SoundManager::import_0_5_0_configuration()
 
 	if (config_file.readEntry("Sounds", "SoundTheme", "foobar") != "foobar")
 	{
-		themes->setTheme(config_file.readEntry("Sounds", "SoundTheme", "foobar"));
+		themes->setPaths(QStringList::split(";", config_file.readEntry("Sounds", "SoundPaths"))); 
+		applyTheme(config_file.readEntry("Sounds", "SoundTheme", "foobar")); 
 		config_file.removeVariable("Sounds", "SoundTheme");
 	}
 }
