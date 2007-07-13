@@ -287,7 +287,7 @@ void EncryptionManager::sendMessageFilter(const UserListElements users, QString 
 //	kdebugm(KDEBUG_INFO, "length: %d\n", msg.length());
 	if (users.count() == 1 && EncryptionEnabled[chat])
 	{
-		char *msg_c = sim_message_encrypt((const unsigned char*)(const char*)msg, (*users.constBegin()).ID("Gadu").toUInt());
+		char *msg_c = sim_message_encrypt((const unsigned char *)msg.data(), (*users.constBegin()).ID("Gadu").toUInt());
 		if (msg_c == NULL)
 		{
 			kdebugm(KDEBUG_ERROR, "sim_message_encrypt returned NULL! sim_errno=%d sim_strerror=%s\n", sim_errno, sim_strerror(sim_errno));
