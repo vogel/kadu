@@ -2,7 +2,7 @@
 	<section name="Chat">
 		<tab name="History">
 			<group-box name="General">
-				<check-box caption="Save historty" config-section="History" config-item="Logging" id="history/save" />
+				<check-box caption="Save history" config-section="History" config-item="Logging" id="history/save" />
 			</group-box>
 			<group-box name="Status changes" id="history/statusChanges">
 				<check-box caption="Don't show status changes" config-section="History" config-item="DontShowStatusChanges" />
