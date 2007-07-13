@@ -1222,7 +1222,7 @@ void GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 
 	QString msg = unicode2cp(msgtmp);
 
-	emit sendMessageFiltering(users,msg, stop);
+	emit sendMessageFiltering(users, msg, stop);
 	if (stop)
 	{
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filter stopped processing\n");

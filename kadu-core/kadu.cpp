@@ -1934,6 +1934,7 @@ void Kadu::import_0_5_0_configuration()
 		chatSyntax = chatSyntax.replace("%7", "#{message}");
 		chatList.updateSyntax("custom", chatSyntax);
 		config_file.removeVariable("Look", "FullStyle");
+		config_file.writeEntry("Look", "Style", "custom");
 	}
 
 	config_file.removeVariable("Look", "UserboxBackgroundMove");
