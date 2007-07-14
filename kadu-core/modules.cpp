@@ -300,15 +300,16 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager"),
 	// because some of them is using that value - that's why
 	// i moved it here from ModulesManagert::initModule
 	// the same is true for menu - modules should load up at end
-	modules_manager=this;
+	modules_manager = this;
 
 	config_file.addVariable("General", "HideBaseModules", true);
-	kadu->mainMenu()->insertItem(icons_manager->loadIcon("ManageModules"), tr("&Manage Modules"), this, SLOT(showDialog()), HotKey::shortCutFromFile("ShortCuts", "kadu_modulesmanager"), -1, 2);
 
-	icons_manager->registerMenuItem(kadu->mainMenu(), tr("&Manage Modules"), "ManageModules");
+	QPopupMenu *MainMenu = kadu->mainMenu();
+	MainMenu->insertItem(icons_manager->loadIcon("ManageModules"), tr("&Manage Modules"), this, SLOT(showDialog()), HotKey::shortCutFromFile("ShortCuts", "kadu_modulesmanager"), -1, 2);
+	icons_manager->registerMenuItem(MainMenu, tr("&Manage Modules"), "ManageModules");
 
 	registerStaticModules();
-	QStringList static_list=staticModules();
+	QStringList static_list = staticModules();
 	CONST_FOREACH(i, static_list)
 		if (!moduleIsActive(*i))
 			activateModule(*i);
@@ -316,9 +317,9 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager"),
 	// load modules as config file say
 	QStringList installed_list = installedModules();
 	QString loaded_str = config_file.readEntry("General", "LoadedModules");
-	QStringList loaded_list = QStringList::split(',',loaded_str);
+	QStringList loaded_list = QStringList::split(',', loaded_str);
 	QString unloaded_str = config_file.readEntry("General", "UnloadedModules");
-	QStringList unloaded_list = QStringList::split(',',unloaded_str);
+	QStringList unloaded_list = QStringList::split(',', unloaded_str);
 	bool load_error = false;
 	CONST_FOREACH(i, installed_list)
 		if (!moduleIsActive(*i))
@@ -376,13 +377,16 @@ ModulesManager::~ModulesManager()
 
 	// we cannot unload more modules in normal way
 	// so we are making it brutal ;)
-	QStringList active=activeModules();
+	QStringList active = activeModules();
 	CONST_FOREACH(i, active)
 	{
 		kdebugm(KDEBUG_PANIC, "WARNING! Could not deactivate module %s, killing\n",(*i).local8Bit().data());
-		deactivateModule(*i,true);
+		deactivateModule((*i), true);
 	}
-	delete translators; translators=NULL;
+
+	delete translators;
+	translators = NULL;
+
 	kdebugf2();
 }
 

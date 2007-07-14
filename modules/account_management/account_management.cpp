@@ -66,7 +66,7 @@ AccountManagement::~AccountManagement()
 {
 	kdebugf();
 
-	QPopupMenu *MainMenu=kadu->mainMenu();
+	QPopupMenu *MainMenu = kadu->mainMenu();
 	MainMenu->removeItem(remindMenuId);
 	MainMenu->removeItem(changeMenuId);
 	MainMenu->removeItem(registerMenuId);

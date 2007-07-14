@@ -72,10 +72,9 @@ void SoundConfigurationWidget::switchToEvent(const QString &event)
 }
 
 SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name),
-	muteitem(0), soundfiles(), soundNames(), soundTexts(),
-	SamplePlayingTestMsgBox(0), SamplePlayingTestDevice(0), SamplePlayingTestSample(0),
-	SampleRecordingTestMsgBox(0), SampleRecordingTestDevice(0), SampleRecordingTestSample(0),
-	FullDuplexTestMsgBox(0), FullDuplexTestDevice(0), FullDuplexTestSample(0)
+	soundfiles(), soundNames(), soundTexts(), SamplePlayingTestMsgBox(0), SamplePlayingTestDevice(0),
+	SamplePlayingTestSample(0), SampleRecordingTestMsgBox(0), SampleRecordingTestDevice(0),
+	SampleRecordingTestSample(0), FullDuplexTestMsgBox(0), FullDuplexTestDevice(0), FullDuplexTestSample(0)
 {
 	kdebugf();
 
@@ -88,7 +87,6 @@ SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name
 	connect(mute_action, SIGNAL(iconsRefreshed()), this, SLOT(setMuteActionState()));
 	KaduActions.insert("muteSoundsAction", mute_action);
 	KaduActions.addDefaultToolbarAction("Kadu toolbar", "muteSoundsAction", 0);
-
 	setMuteActionState();
 
 	kdebugf2();
@@ -97,7 +95,6 @@ SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name
 SoundSlots::~SoundSlots()
 {
 	kdebugf();
-	kadu->mainMenu()->removeItem(muteitem);
 	KaduActions.remove("muteSoundsAction");
 	kdebugf2();
 }

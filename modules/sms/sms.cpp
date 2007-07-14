@@ -418,8 +418,9 @@ SmsConfigurationUiHandler::SmsConfigurationUiHandler()
 	UserBox::userboxmenu->addItemAtPos(2, "SendSms", tr("Send SMS"), this, SLOT(onSendSmsToUser()),
                 HotKey::shortCutFromFile("ShortCuts", "kadu_sendsms"));
 
-	menuid=kadu->mainMenu()->insertItem(icons_manager->loadIcon("SendSms"), tr("Send SMS"), this, SLOT(onSendSms()), 0, -1, 10);
-	icons_manager->registerMenuItem(kadu->mainMenu(), tr("Send SMS"), "SendSms");
+	QPopupMenu *MainMenu = kadu->mainMenu();
+	menuid = MainMenu->insertItem(icons_manager->loadIcon("SendSms"), tr("Send SMS"), this, SLOT(onSendSms()), 0, -1, 10);
+	icons_manager->registerMenuItem(MainMenu, tr("Send SMS"), "SendSms");
 
 	Action* send_sms_action = new Action("SendSms", tr("Send SMS"), "sendSmsAction", Action::TypeGlobal);
 	connect(send_sms_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
@@ -580,26 +581,27 @@ void SmsConfigurationUiHandler::onDownButton()
 void SmsConfigurationUiHandler::onPopupMenuCreate()
 {
 	kdebugf();
-	UserListElements users;
-	UserBox *activeUserBox = kadu->userbox()->activeUserBox();
-	if (activeUserBox == NULL)//to siê zdarza...
-		return;
-	users = activeUserBox->selectedUsers();
-	UserListElement user = users[0];
 
-	if (user.mobile().isEmpty() || users.count() != 1)
+	UserBox *activeUserBox = kadu->userbox()->activeUserBox();
+	if (activeUserBox == NULL) //to sie zdarza...
+		return;
+
+	UserListElements users = activeUserBox->selectedUsers();
+	if ((users[0]).mobile().isEmpty() || users.count() != 1)
 		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Send SMS")), false);
+
 	kdebugf2();
 }
 
 void SmsConfigurationUiHandler::sendSmsActionActivated(const UserGroup* users)
 {
 	kdebugf();
-	if (users != NULL && users->count() == 1 &&
-			(!(*users->begin()).mobile().isEmpty()))
+
+	if (users != NULL && users->count() == 1 && !(*users->begin()).mobile().isEmpty())
 		newSms((*users->begin()).altNick());
 	else
 		newSms(QString::null);
+
 	kdebugf2();
 }
 

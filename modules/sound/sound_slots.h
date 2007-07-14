@@ -39,7 +39,6 @@ class SoundSlots : public QObject
 {
 	Q_OBJECT
 	private:
-		int muteitem;
 		Action* mute_action;
 		QMap<QString, QString> soundfiles;
 		QStringList soundNames;
