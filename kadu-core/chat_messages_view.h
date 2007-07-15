@@ -59,6 +59,8 @@ public:
 	void appendMessage(ChatMessage *message);
 	void appendMessages(QValueList<ChatMessage *> messages);
 
+	unsigned int countMessages();
+
 	void setPrune(unsigned int prune);
 
 public slots:

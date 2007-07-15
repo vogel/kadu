@@ -473,9 +473,13 @@ void ChatManager::unregisterChatWidget(ChatWidget* chat)
 	FOREACH(curChat, ChatWidgets)
 		if (*curChat == chat)
 		{
-			ClosedChatUsers.prepend(chat->users()->toUserListElements());
-			if (ClosedChatUsers.count() > 10)
-				ClosedChatUsers.pop_back();
+			if (chat->body->countMessages())
+			{
+				ClosedChatUsers.prepend(chat->users()->toUserListElements());
+				if (ClosedChatUsers.count() > 10)
+					ClosedChatUsers.pop_back();
+			}
+
 			emit chatWidgetDestroying(chat);
 			ChatWidgets.remove(curChat);
 

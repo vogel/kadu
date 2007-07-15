@@ -187,6 +187,11 @@ void ChatMessagesView::clearMessages()
 	viewport()->repaint();
 }
 
+unsigned int ChatMessagesView::countMessages()
+{
+	return Messages.count();
+}
+
 void ChatMessagesView::setScrollLocked(bool scrollLocked)
 {
 	ScrollLocked = scrollLocked;
