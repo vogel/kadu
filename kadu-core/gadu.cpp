@@ -2203,7 +2203,13 @@ GaduStatus &GaduStatus::operator = (const UserStatus &copyMe)
 
 QPixmap GaduStatus::pixmap(eUserStatus stat, bool hasDescription, bool mobile) const
 {
-	return icons_manager->loadIcon(pixmapName(stat, hasDescription, mobile));
+	QString pixname = pixmapName(stat, hasDescription, mobile);
+
+#ifdef Q_OS_MACX
+	pixname.prepend("Big");
+#endif
+
+	return icons_manager->loadIcon(pixname);
 }
 
 QString GaduStatus::pixmapName(eUserStatus stat, bool hasDescription, bool mobile) const
