@@ -269,7 +269,22 @@ void HistoryModule::deleteHistory()
 
 void HistoryModule::userboxMenuPopup()
 {
-	UserListElements users = UserBox::activeUserBox()->selectedUsers();
+	kdebugf();
+
+	UserBox *activeUserBox = UserBox::activeUserBox();
+	if (activeUserBox == NULL)
+	{
+		kdebugf2();
+		return;
+	}
+
+	UserListElements users = activeUserBox->selectedUsers();
+	if (!users.count())
+	{
+		kdebugf2();
+		return;
+	}
+
 	int history_item = UserBox::userboxmenu->getItem(tr("View history"));
 	int delete_history_item = UserBox::management->getItem(tr("Clear history"));
 
@@ -282,6 +297,8 @@ void HistoryModule::userboxMenuPopup()
 		}
 	UserBox::userboxmenu->setItemVisible(history_item, any_ok);
 	UserBox::userboxmenu->setItemVisible(delete_history_item, any_ok);
+
+	kdebugf2();
 }
 
 void HistoryModule::removingUsers(UserListElements users)
