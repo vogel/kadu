@@ -501,7 +501,6 @@ UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
 
 	setMinimumWidth(20);
 	setSelectionMode(QListBox::Extended);
-	setStaticBackground(true);
 
 	connect(this, SIGNAL(doubleClicked(QListBoxItem *)), this, SLOT(doubleClickedSlot(QListBoxItem *)));
 	connect(this, SIGNAL(returnPressed(QListBoxItem *)), this, SLOT(returnPressedSlot(QListBoxItem *)));
@@ -882,6 +881,7 @@ void UserBox::refreshBackground()
 {
 	setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
 	setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
+	setStaticBackground(backgroundImage);
 
 	if (!backgroundImage)
 		return;
