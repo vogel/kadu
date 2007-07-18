@@ -9,7 +9,7 @@
 		</tab>
 
 		<tab name="Options">
-			<group-box name="New message">
+			<group-box name="New messages">
 				<check-box caption="Notify about new messages only when window is inactive" config-section="Notify" config-item="NewMessageOnlyIfInactive" />
 			</group-box>
 			<group-box name="Status change">

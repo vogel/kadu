@@ -190,14 +190,14 @@ void Notify::eventSwitched(int index)
 	CurrentEvent = notifications->currentItemValue();
 	FOREACH(notifierData, Notifiers)
 	{
+		if (!(*notifierData).events.contains(CurrentEvent))
+			(*notifierData).events[CurrentEvent] = config_file.readBoolEntry("Notify", CurrentEvent + '_' + notifierData.key());
+
 		if ((*notifierData).configurationWidget)
 		{
 			(*notifierData).configurationWidget->switchToEvent(CurrentEvent);
 			(*notifierData).configurationWidget->setEnabled((*notifierData).events[CurrentEvent]);
 		}
-
-		if (!(*notifierData).events.contains(CurrentEvent))
-			(*notifierData).events[CurrentEvent] = config_file.readBoolEntry("Notify", CurrentEvent + '_' + notifierData.key());
 
 		(*notifierData).configurationCheckBox->setChecked((*notifierData).events[CurrentEvent]);
 	}
