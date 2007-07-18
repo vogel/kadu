@@ -42,6 +42,8 @@ public:
 
 	void removedConfigGroupBox(const QString &groupBoxName);
 
+	QWidget *widget() { return mainWidget; }
+
 };
 
 class ConfigSection
@@ -60,7 +62,9 @@ public:
 	ConfigSection(const QString &name, ConfigurationWindow *configurationWindow, QListBoxItem *listBoxItem, QWidget *parentConfigGroupBoxWidget);
 	~ConfigSection();
 
-	void show() { mainWidget->show(); mainWidget->setCurrentPage(0); }
+	void activate();
+
+	void show() { mainWidget->show(); }
 	void hide() { mainWidget->hide(); }
 
 	ConfigGroupBox * configGroupBox(const QString &tab, const QString &groupBox, bool create = true);
@@ -170,6 +174,8 @@ ConfigSection::ConfigSection(const QString &name, ConfigurationWindow *configura
 
 ConfigSection::~ConfigSection()
 {
+	config_file.writeEntry("General", "ConfigurationWindow_" + configurationWindow->name() + "_" + name,
+		mainWidget->label(mainWidget->currentPageIndex()));
 	delete mainWidget;
 }
 
@@ -180,6 +186,15 @@ ConfigGroupBox * ConfigSection::configGroupBox(const QString &tab, const QString
 		return 0;
 
 	return ct->configGroupBox(groupBox, create);
+}
+
+void ConfigSection::activate()
+{
+	listBoxItem->listBox()->setCurrentItem(listBoxItem);
+
+	QString tab = config_file.readEntry("General", "ConfigurationWindow_" + configurationWindow->name() + "_" + name);
+	if (configTabs.contains(tab))
+		mainWidget->showPage(configTabs[tab]->widget());
 }
 
 ConfigTab *ConfigSection::configTab(const QString &name, bool create)
@@ -207,8 +222,8 @@ void ConfigSection::removedConfigTab(const QString &configTabName)
 	}
 }
 
-ConfigurationWindow::ConfigurationWindow()
-	: currentSection(0)
+ConfigurationWindow::ConfigurationWindow(const QString &name)
+	: Name(name), currentSection(0)
 {
 	setWFlags(getWFlags() | Qt::WDestructiveClose);
 
@@ -244,13 +259,22 @@ ConfigurationWindow::ConfigurationWindow()
 
 ConfigurationWindow::~ConfigurationWindow()
 {
+	config_file.writeEntry("General", "ConfigurationWindow_" + Name, sectionsListBox->currentText());
+
+	FOREACH(configSection, configSections)
+		delete *configSection;
 }
 
 void ConfigurationWindow::show()
 {
 	if (!isShown())
 	{
-		sectionsListBox->setCurrentItem(0);
+		QString lastSection = config_file.readEntry("General", "ConfigurationWindow_" + Name);
+		if (configSections.contains(lastSection))
+			configSections[lastSection]->activate();
+		else
+			sectionsListBox->setCurrentItem(0);
+
 		loadConfiguration(this);
 		QVBox::show();
 	}

@@ -47,6 +47,8 @@ class ConfigurationWindow : public QVBox
 {
 	Q_OBJECT
 
+	QString Name;
+
 	QVBox *left;
 	QMap<QString, ConfigSection *> configSections;
 	ConfigSection *currentSection;
@@ -75,8 +77,10 @@ private slots:
 	void changeSection(const QString &newSectionName);
 
 public:
-	ConfigurationWindow();
+	ConfigurationWindow(const QString &name);
 	virtual ~ConfigurationWindow();
+
+	QString name() { return Name; }
 
 	ConfigGroupBox * configGroupBox(const QString &section, const QString &tab, const QString &groupBox, bool create = true);
 
