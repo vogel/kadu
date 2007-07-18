@@ -961,7 +961,7 @@ kadu$(EXEEXT): $(kadu_ADDITIONAL_DEPS) $(kadu_OBJECTS) $(kadu_DEPENDENCIES)
 version.cpp: ../SNAPSHOT
 	@echo "const char *detailed_version = \"`cat ../SNAPSHOT`\";" > $@;
  else
-version.cpp: $(kadu_SOURCES) *.h ../modules/*/*.h ../modules/*/*.cpp ../libgadu/lib/*.c ../libgadu/lib/*.h
+version.cpp: $(kadu_SOURCES) *.h ../modules/*/*.h ../modules/*/*.cpp ../libgadu/src/*.c ../libgadu/include/*.h
 	@core_ver=`svnversion -n .`; \
 	mod_ver=`svnversion -n ../modules`; \
 	lg_ver=`svnversion -n ../libgadu`; \

@@ -772,8 +772,8 @@ if test "$with_existing_libgadu" != "no"; then
 	])
 else
 	MY_SUBDIRS="$MY_SUBDIRS libgadu"
-	GADU_LIBS="../libgadu/lib/libgadu.a"
-	GADU_INCLUDES="-I../libgadu/lib"
+	GADU_LIBS="../libgadu/src/.libs/libgadu.a"
+	GADU_INCLUDES="-I../libgadu/include"
 fi
 AC_SUBST(GADU_LIBS)
 AC_SUBST(GADU_INCLUDES)
@@ -794,11 +794,12 @@ if test "$enable_debug" = "yes"; then
 	AC_DEFINE(DEBUG_ENABLED,1,[Define if you want console debug output])
 	CXXFLAGS="$CXXFLAGS -ggdb"
 	CFLAGS="$CFLAGS -ggdb"
-	libgadu_CFLAGS="-ggdb"
+	libgadu_CFLAGS="$CFLAGS -ggdb"
 else
 	CXXFLAGS="$CXXFLAGS -s"
 	CFLAGS="$CFLAGS -s"
-	libgadu_CFLAGS="-DGG_DEBUG_DISABLE -s"
+	libgadu_CFLAGS="$CFLAGS -s"
+	ac_configure_args="$ac_configure_args --disable-debug"
 fi
 
 
