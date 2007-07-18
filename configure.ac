@@ -799,7 +799,6 @@ else
 	CXXFLAGS="$CXXFLAGS -s"
 	CFLAGS="$CFLAGS -s"
 	libgadu_CFLAGS="$CFLAGS -s"
-	ac_configure_args="$ac_configure_args --disable-debug"
 fi
 
 
