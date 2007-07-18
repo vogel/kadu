@@ -194,19 +194,22 @@ Sms::Sms(const QString& altnick, QWidget* parent, const char *name) : QWidget(pa
 	e_signature(0), b_send(0), c_saveInHistory(0), smsProcess(0), Sender()
 {
 	kdebugf();
-	QGridLayout * grid = new QGridLayout(this, 3, 4, 10, 7);
+
+	QGridLayout *grid = new QGridLayout(this, 3, 4, 10, 7);
 
 	body = new QMultiLineEdit(this);
 	grid->addMultiCellWidget(body, 1, 1, 0, 3);
 	body->setWordWrap(QMultiLineEdit::WidgetWidth);
 	body->setTabChangesFocus(true);
-	QObject::connect(body, SIGNAL(textChanged()), this, SLOT(updateCounter()));
+	connect(body, SIGNAL(textChanged()), this, SLOT(updateCounter()));
 
 	recipient = new QLineEdit(this);
 	recipient->setMinimumWidth(140);
-	if (!altnick.isEmpty())
+	if (altnick.isEmpty())
+		recipient->setFocus();
+	else
 		recipient->setText(userlist->byAltNick(altnick).mobile());
-	QObject::connect(recipient, SIGNAL(textChanged(const QString&)), this, SLOT(updateList(const QString&)));
+	connect(recipient, SIGNAL(textChanged(const QString&)), this, SLOT(updateList(const QString&)));
 	grid->addWidget(recipient, 0, 1);
 
 	QStringList strlist;
@@ -243,16 +246,15 @@ Sms::Sms(const QString& altnick, QWidget* parent, const char *name) : QWidget(pa
 
 	b_send = new QPushButton(this);
 	b_send->setIconSet(icons_manager->loadIcon("SendSMSButton"));
-	b_send->setText(tr("Send"));
+	b_send->setText(tr("&Send"));
+	b_send->setDefault(true);
 	b_send->setMaximumWidth(200);
+	connect(b_send, SIGNAL(clicked()), this, SLOT(sendSms()));
 	grid->addWidget(b_send, 5, 3, Qt::AlignRight);
 
-	if (altnick.isEmpty())
-		recipient->setFocus();
 	resize(400, 250);
 	setCaption(tr("Send SMS"));
 
-	connect(b_send, SIGNAL(clicked()), this, SLOT(sendSms()));
 	connect(&Sender, SIGNAL(finished(bool)), this, SLOT(onSmsSenderFinished(bool)));
 
 	configurationUpdated();
