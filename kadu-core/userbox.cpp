@@ -670,24 +670,27 @@ void UserBox::keyPressEvent(QKeyEvent *e)
 //	kdebugf2();
 }
 
-#include <sys/time.h>
+//#include <sys/time.h>
 void UserBox::refresh()
 {
 	kdebugf();
-//	printBacktrace("UserBox::refresh()");
+/*	printBacktrace("UserBox::refresh()");
 
-/*	struct timeval t1,t2;
+	struct timeval t1,t2;
 	gettimeofday(&t1, NULL);
 	for(int j=0; j<1000; ++j)
 	{
 */
 	sort();
-	uint Count = count();
-	bool doRefresh = sortHelper.size() != Count;
-	if (!doRefresh)
+
+	const unsigned int Count = count();
+	unsigned int i = 0;
+
+	if (sortHelper.size() == Count)
 	{
-//		kdebugm(KDEBUG_INFO, "checking if order changed\n");
-		int i = 0;
+		bool doRefresh = false;
+
+		kdebugm(KDEBUG_INFO, "checking if order changed\n");
 		for (std::vector<UserListElement>::const_iterator user = sortHelper.begin(),
 			userEnd = sortHelper.end(); user != userEnd; ++user)
 		{
@@ -695,64 +698,66 @@ void UserBox::refresh()
 			if (doRefresh)
 				break;
 		}
+
 		if (!doRefresh)
-			for (unsigned int i = 0; i < Count; ++i)
-				static_cast<KaduListBoxPixmap *>(item(i))->refreshPixmap();
-	}
-	kdebugm(KDEBUG_INFO, "do real refresh: %d\n", doRefresh);
-	if (!doRefresh)
-		triggerUpdate(true);
-	else
-	{
-		// remember selected users
-		QStringList s_users;
-		for (unsigned int i = 0, count2 = count(); i < count2; ++i)
-			if (isSelected(i))
-				s_users.append(item(i)->text());
-		QString s_user = currentText();
-
-		// remember vertical scrollbar position
-		int vScrollValue = verticalScrollBar()->value();
-
-		// clearing list
-		QListBox::clear();
-		// clear clears columns too...
-		setColumnMode(config_file.readNumEntry("Look", "UserBoxColumnCount", 1));
-
-		bool showBold = config_file.readBoolEntry("Look", "ShowBold");
-
-		for (std::vector<UserListElement>::const_iterator user = sortHelper.begin(),
-			userEnd = sortHelper.end(); user != userEnd; ++user)
 		{
-			bool usesGadu = (*user).usesProtocol("Gadu");
-			bool bold = showBold && usesGadu &&
-						((*user).status("Gadu").isOnline() || (*user).status("Gadu").isBusy());
-	//		kdebugm(KDEBUG_INFO, "creating: %s %d\n", (*user).altNick().local8Bit().data(), usesGadu);
-			KaduListBoxPixmap *lbp = new KaduListBoxPixmap(*user, bold);
-			insertItem(lbp);
+			for (i = 0; i < Count; ++i)
+				static_cast<KaduListBoxPixmap *>(item(i))->refreshPixmap();
+			triggerUpdate(true);
+
+			kdebugf2();
+			return;
 		}
-
-		// restore selected users
-		CONST_FOREACH(username, s_users)
-			setSelected(findItem(*username), true);
-		setCurrentItem(findItem(s_user));
-
-		// restore vertical scrollbar position
-		verticalScrollBar()->setValue(vScrollValue);
-
-		// because settingCurrentItem changes vertical scrollbar position and line
-		// above doesn't prevents this, we must set position as soon as possible
-		lastVerticalPosition = vScrollValue;
-		verticalPositionTimer.start(0, true);
-
-		updateScrollBars();
-		refresh();
 	}
 
-/*	}
-	gettimeofday(&t2, NULL);
-	kdebugm(KDEBUG_INFO, "czas: %ld\n", (t2.tv_usec-t1.tv_usec)+(t2.tv_sec*1000000)-(t1.tv_sec*1000000));
-*/
+	kdebugm(KDEBUG_INFO, "do real refresh\n");
+
+	// remember selected users
+	QStringList s_users;
+	for (i = 0; i < Count; ++i)
+		if (isSelected(i))
+			s_users.append(item(i)->text());
+	QString s_user = currentText();
+
+	// remember vertical scrollbar position
+	int vScrollValue = verticalScrollBar()->value();
+
+	// clearing list
+	QListBox::clear();
+	// clear clears columns too...
+	setColumnMode(config_file.readNumEntry("Look", "UserBoxColumnCount", 1));
+
+	bool showBold = config_file.readBoolEntry("Look", "ShowBold");
+
+	for (std::vector<UserListElement>::const_iterator user = sortHelper.begin(),
+		userEnd = sortHelper.end(); user != userEnd; ++user)
+	{
+		bool bold = showBold && (*user).usesProtocol("Gadu") &&
+				((*user).status("Gadu").isOnline() || (*user).status("Gadu").isBusy());
+	//	kdebugm(KDEBUG_INFO, "creating: %s %d\n", (*user).altNick().local8Bit().data(), usesGadu);
+		insertItem(new KaduListBoxPixmap(*user, bold));
+	}
+
+	// restore selected users
+	CONST_FOREACH(username, s_users)
+		setSelected(findItem(*username), true);
+	setCurrentItem(findItem(s_user));
+
+	// restore vertical scrollbar position
+	verticalScrollBar()->setValue(vScrollValue);
+
+	// because settingCurrentItem changes vertical scrollbar position and line
+	// above doesn't prevents this, we must set position as soon as possible
+	lastVerticalPosition = vScrollValue;
+	verticalPositionTimer.start(0, true);
+
+	updateScrollBars();
+	refresh();
+
+//	}
+//	gettimeofday(&t2, NULL);
+//	kdebugm(KDEBUG_INFO, "czas: %ld\n", (t2.tv_usec-t1.tv_usec)+(t2.tv_sec*1000000)-(t1.tv_sec*1000000));
+
 	kdebugf2();
 }
 
