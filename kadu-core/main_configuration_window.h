@@ -16,14 +16,32 @@ class QCheckBox;
 
 class MainConfigurationWindow;
 
+/**
+	@class ConfigurationUiHandler
+	@author Vogel
+	@short Klasa bazowa dla klas obs³uguj±cych okno konfiguracyjne.
+
+	Klasa dziedzicz±ca z tej bêdzie informowana o stworzeniu nowego g³ównego okna
+	konfiguracyjnego co da jej mo¿liwo¶æ podpiêcia siê pod sygna³y odpowiednich
+	kontrolek i odpowiedniej reakcji na nie.
+ **/
+// TODO: zamiast slota zwyk³a metoda wirtualna?
 class ConfigurationUiHandler : public virtual QObject
 {
 	Q_OBJECT
 
 public slots:
+	/**
+		Slot wywo³ywany, gdy g³ówne okno konfiguracyjne zostanie stworzone.
+	 **/
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) = 0;
 };
 
+/**
+	@class MainConfigurationWindow
+	@author Vogel
+	@short G³ówne okno konfiguracyjne.
+ **/
 class MainConfigurationWindow : public ConfigurationWindow
 {
 	Q_OBJECT
@@ -85,7 +103,16 @@ public:
 		return Instance;
 	}
 
+	/**
+		Rejestracja nowego pliku *.ui (dokonywana przez modu³u).
+		Plik uiFile zostanie wczytany wraz z otwarciem g³ównego okna konfiguracyjnego.
+		Obiekt uiHandle zostanie poinformowany o stworzeniu okna i bêdzie móg³ dodaæ
+		do niego w³asne interakcje.
+	 **/
 	static void registerUiFile(const QString &uiFile, ConfigurationUiHandler *uiHandler);
+	/**
+		Wyrejestrowanie pliku *.ui i klasy obs³uguj±cej okno konfiguracyjne.
+	 **/
 	static void unregisterUiFile(const QString &uiFile, ConfigurationUiHandler *uiHandler);
 
 	MainConfigurationWindow();

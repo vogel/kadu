@@ -44,6 +44,16 @@ enum CallbackCapacity {
 	CallbackNotSupported
 };
 
+/**
+	@class NotifierConfigurationWidget
+	@author Vogel
+	@short Widget konfiguracyjny dla Notifiera.
+
+	Widget jest tworzony i dodawany w odpowiednim miejscu w oknie konfiguracyjnym.
+	Zawarto¶æ elementów zmienia siê po wyborze innej notyfikacji w oknie konfiguracyjnym.
+	Wiget zapamietuje wszystkie zmiany dla wszystkich typów notyfikacji i w odpowienim
+	momencie je zapisuje.
+**/
 class NotifierConfigurationWidget : public QWidget
 {
 	Q_OBJECT
@@ -51,10 +61,23 @@ class NotifierConfigurationWidget : public QWidget
 public:
 	NotifierConfigurationWidget(QWidget *parent = 0, char *name = 0) : QWidget(parent, name) {}
 
+	/**
+		W tej metodzie widget mo¿e wczytaæ konfigruacje wszystkich zdarzeñ.
+	 **/
 	virtual void loadNotifyConfigurations() = 0;
+	/**
+		W tej metodzie widget musi zapisaæ wszystkie zmienione konfiguracje
+		wszystkich zmienionych zdarzeñ.
+	 **/
 	virtual void saveNotifyConfigurations() = 0;
 
 public slots:
+	/**
+		Slot wywo³ywany, gdy widget ma prze³±czyæ siê na konfigruacjê innego zdarzenia.
+		Zmiany w aktualnym zdarzeniu powinny zostaæ zapisane.
+
+		@arg event - nazwa nowego zdarzenia
+	 **/
 	virtual void switchToEvent(const QString &event) = 0;
 
 };
@@ -94,6 +117,11 @@ class Notifier : public virtual QObject
 		 **/
 		virtual void copyConfiguration(const QString &fromEvent, const QString &toEvent) = 0;
 
+		/**
+			Zwraca widget, jaki zostanie dodany do okna konfiguracyjnego
+			na prawo od odpowiedniego CheckBoxa.
+			Mo¿e zwróciæ zero.
+		 **/
 		virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0, char *name = 0) = 0;
 };
 

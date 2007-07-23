@@ -273,7 +273,7 @@ bool ConfigSpinBox::fromDomElement(QDomElement domElement)
 
 	setLineStep(step.toInt(&ok));
 	if (!ok)
-		return false;
+		setLineStep(1);
 
 	return ConfigWidgetValue::fromDomElement(domElement);
 }

@@ -4,7 +4,7 @@
 
 		<tab name="Speech">
 			<group-box name="General">
-				<spin-box caption="Maximum number of spoken letters" config-section="Speech" config-item="MaxLength" min-value="10" max-value="2001" step="1" />
+				<spin-box caption="Maximum number of spoken letters" config-section="Speech" config-item="MaxLength" min-value="10" max-value="2001" />
 				<line-edit caption="Message too long (male)" config-section="Speech" config-item="MsgTooLongMale" />
 				<line-edit caption="Message too long (female)" config-section="Speech" config-item="MsgTooLongFemale" />
 			</group-box>

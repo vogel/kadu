@@ -22,6 +22,12 @@
 
 class ConfigGroupBox;
 
+/**
+	&lt;widget id="id" tool-tip="toolTip" /&gt;
+
+	@arg id - id dostêpne dla aplikacji/modu³ów
+	@arg toolTip - podpowied¼ dla u¿ytkownika
+ **/
 class ConfigWidget
 {
 	friend class ConfigurationWindow;
@@ -46,6 +52,12 @@ public:
 	virtual bool fromDomElement(QDomElement domElement);
 };
 
+/**
+	&lt;widget config-section="section" config-item="item" /&gt;
+
+	@arg section - sekcja w której trzymany jest element
+	@arg item - element, w którym trzymana jest warto¶æ parametry
+ **/
 class ConfigWidgetValue : public ConfigWidget
 {
 protected:
@@ -60,6 +72,9 @@ public:
 	virtual bool fromDomElement(QDomElement domElement);
 };
 
+/**
+	&lt;line-edit caption="caption" id="id" /&gt;
+ **/
 class ConfigLineEdit : public QLineEdit, public ConfigWidgetValue
 {
 	QLabel *label;
@@ -80,6 +95,9 @@ public:
 	virtual void hide();
 };
 
+/**
+	&lt;gg-password-edit caption="caption" id="id" /&gt;
+ **/
 class ConfigGGPasswordEdit : public ConfigLineEdit
 {
 public:
@@ -92,6 +110,9 @@ public:
 	virtual void saveConfiguration();
 };
 
+/**
+	&lt;check-box caption="caption" id="id" /&gt;
+ **/
 class ConfigCheckBox : public QCheckBox, public ConfigWidgetValue
 {
 	Q_OBJECT
@@ -112,6 +133,13 @@ public:
 	virtual void hide();
 };
 
+/**
+	&lt;spin-box caption="caption" id="id" min-value="minValue" max-value="maxValue" step="step" /&gt;
+
+	@arg minValue - minimalna warto¶æ (obowi±zkowo)
+	@arg maxValue - maksymalna warto¶æ (obowi±zkowo)
+	@arg step - krok warto¶ci (nieobowiazkowo, domy¶lnie 1)
+ **/
 class ConfigSpinBox : public QSpinBox, public ConfigWidgetValue
 {
 	QLabel *label;
@@ -133,6 +161,15 @@ public:
 	virtual bool fromDomElement(QDomElement domElement);
 };
 
+/**
+	&lt;combo-box caption="caption" id="id"&gt;
+		&lt;item value="value" caption="caption"&gt;
+		...
+	&lt;/combo-box&gt;
+
+	@arg value - warto¶æ zapisana do pliku konfiguracyjnego
+	@arg caption - warto¶æ wy¶wietlana
+ **/
 class ConfigComboBox : public QComboBox, public ConfigWidgetValue
 {
 	QLabel *label;
@@ -161,6 +198,9 @@ public:
 	virtual bool fromDomElement(QDomElement domElement);
 };
 
+/**
+	&lt;hot-key-edit caption="caption" id="id" /&gt;
+ **/
 class ConfigHotKeyEdit : public HotKeyEdit, public ConfigWidgetValue
 {
 	QLabel *label;
@@ -181,6 +221,9 @@ public:
 	virtual void hide();
 };
 
+/**
+	&lt;path-list-edit caption="caption" id="id" /&gt;
+ **/
 class ConfigPathListEdit : public PathListEdit, public ConfigWidgetValue
 {
 	QLabel *label;
@@ -201,6 +244,9 @@ public:
 	virtual void hide();
 };
 
+/**
+	&lt;colob-button caption="caption" id="id" /&gt;
+ **/
 class ConfigColorButton : public ColorButton, public ConfigWidgetValue
 {
 	QLabel *label;
@@ -221,6 +267,9 @@ public:
 	virtual void hide();
 };
 
+/**
+	&lt;select-font caption="caption" id="id" /&gt;
+ **/
 class ConfigSelectFont : public SelectFont, public ConfigWidgetValue
 {
 	QLabel *label;
@@ -241,6 +290,9 @@ public:
 	virtual void hide();
 };
 
+/**
+	&lt;syntax-editro caption="caption" id="id" /&gt;
+ **/
 class ConfigSyntaxEditor : public SyntaxEditor, public ConfigWidgetValue
 {
 	QLabel *label;
@@ -262,6 +314,9 @@ public:
 	virtual bool fromDomElement(QDomElement domElement);
 };
 
+/**
+	&lt;action-button caption="caption" id="id" /&gt;
+ **/
 class ConfigActionButton : public QPushButton, public ConfigWidget
 {
 protected:
@@ -280,6 +335,11 @@ public:
 	virtual void hide();
 };
 
+/**
+	&lt;select-file caption="caption" id="id" type="type" /&gt;
+
+	@arg type all = wszystkie pliki, images = obrazki, audio = pliki d¼wiêkowe
+ **/
 class ConfigSelectFile : public SelectFile, public ConfigWidgetValue
 {
 	QLabel *label;
@@ -301,6 +361,11 @@ public:
 	virtual bool fromDomElement(QDomElement domElement);
 };
 
+/**
+	&lt;preview caption="caption" id="id" /&gt;
+
+	Podgl±d sk³adni.
+ **/
 class ConfigPreview : public Preview, public ConfigWidget
 {
 	QLabel *label;
@@ -320,6 +385,13 @@ public:
 	virtual void hide();
 };
 
+/**
+	&lt;slider caption="caption" id="id" /&gt;
+
+	@arg minValue - minimalna warto¶æ (obowi±zkowo)
+	@arg maxValue - maksymalna warto¶æ (obowi±zkowo)
+	@arg pageStep - krok warto¶ci (obowi±zkowo)
+ **/
 class ConfigSlider : public QSlider, public ConfigWidgetValue
 {
 	QLabel *label;
@@ -341,6 +413,9 @@ public:
 	virtual bool fromDomElement(QDomElement domElement);
 };
 
+/**
+	&lt;label caption="caption" id="id" /&gt;
+ **/
 class ConfigLabel : public QLabel, public ConfigWidget
 {
 protected:
@@ -359,6 +434,15 @@ public:
 	virtual void hide();
 };
 
+/**
+	&lt;list-box caption="caption" id="id"&gt;
+		&lt;item value="value" caption="caption"&gt;
+		...
+	&lt;/list-box&gt;
+
+	@arg value - warto¶æ zapisana do pliku konfiguracyjnego
+	@arg caption - warto¶æ wy¶wietlana
+ **/
 class ConfigListBox : public QListBox, public ConfigWidget
 {
 	QLabel *label;

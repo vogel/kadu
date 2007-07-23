@@ -125,7 +125,7 @@
 					   tool-tip="Current description will be set on shutdown" />
 				<line-edit caption="On shutdown, set description" config-section="General" config-item="DisconnectDescription" id="disconnectDescription"
 					   tool-tip="Define description which will be set on shutdown" />
-				<spin-box caption="Number of kept descriptions" config-section="General" config-item="NumberOfDescriptions" min-value="1" max-value="30" step="1" />
+				<spin-box caption="Number of kept descriptions" config-section="General" config-item="NumberOfDescriptions" min-value="1" max-value="30" />
 			</group-box>
 
 			<group-box name="Advanced">
@@ -234,7 +234,7 @@
 			</group-box>
 
 			<group-box name="Columns">
-				<spin-box caption="Column count" config-section="Look" config-item="UserBoxColumnCount" min-value="1" max-value="10" step="1"
+				<spin-box caption="Column count" config-section="Look" config-item="UserBoxColumnCount" min-value="1" max-value="10"
 					  tool-tip="Number of columns displays in userbox" />
 			</group-box>
 
@@ -311,7 +311,7 @@
 			<group-box name="Closing">
 				<check-box caption="Block window close on new message" config-section="Chat" config-item="ChatCloseTimer" id="chatCloseTimer"
 					   tool-tip="Block chat window when comes new message" />
-				<spin-box caption="Max time to block window close" config-section="Chat" config-item="ChatCloseTimerPeriod" min-value="1" max-value="30" step="1" id="chatCloseTimerPeriod"
+				<spin-box caption="Max time to block window close" config-section="Chat" config-item="ChatCloseTimerPeriod" min-value="1" max-value="30" id="chatCloseTimerPeriod"
 					  tool-tip="Max time to block window close" />
 			</group-box>
 		</tab>
@@ -319,21 +319,21 @@
 			<group-box name="Message pruning">
 				<check-box caption="Automatically prune chat messages" config-section="Chat" config-item="ChatPrune" id="chatPrune"
 					   tool-tip="If enabled, messages are pruning" />
-				<spin-box caption="Reduce the number of visible messages to" config-section="Chat" config-item="ChatPruneLen" min-value="1" max-value="255" step="1" id="chatPruneLen"
+				<spin-box caption="Reduce the number of visible messages to" config-section="Chat" config-item="ChatPruneLen" min-value="1" max-value="255" id="chatPruneLen"
 					  tool-tip="Number of visible messages" />
 			</group-box>
 			
 			<group-box name="Images">
-				<spin-box caption="Max image size" config-section="Chat" config-item="MaxImageSize" min-value="0" max-value="255" step="1" suffix=" kB" />
+				<spin-box caption="Max image size" config-section="Chat" config-item="MaxImageSize" min-value="0" max-value="255" suffix=" kB" />
 				<check-box caption="Receive images during invisibility" config-section="Chat" config-item="RecevieImagesDuringInvisibility"
 					   tool-tip="Receiving images during invisibility is allowed"  />
-				<spin-box caption="Limit numbers of image recevied per minute" config-section="General" config-item="MaxImageRequests" min-value="1" max-value="30" step="1"
+				<spin-box caption="Limit numbers of image recevied per minute" config-section="General" config-item="MaxImageRequests" min-value="1" max-value="30"
 					  tool-tip="Define limit of images received per minute" />
 			</group-box>
 
 			<group-box name="Link folding">
 				<check-box caption="Automatically fold links" config-section="Chat" config-item="FoldLink" id="foldLink" />
-				<spin-box caption="Fold links longer than" config-section="Chat" config-item="LinkFoldTreshold" min-value="1" max-value="500" step="1" id="linkFoldTreshold" />
+				<spin-box caption="Fold links longer than" config-section="Chat" config-item="LinkFoldTreshold" min-value="1" max-value="500" id="linkFoldTreshold" />
 			</group-box>
 		</tab>
 	</section>
