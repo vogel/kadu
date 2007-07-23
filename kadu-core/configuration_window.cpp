@@ -350,6 +350,8 @@ QValueList<ConfigWidget *> ConfigurationWindow::processUiSectionFromDom(QDomNode
 		return result;
 	}
 
+	const QString &iconName = sectionElement.attribute("icon");
+
 	const QString &sectionName = sectionElement.attribute("name");
 	if (sectionName.isEmpty())
 	{
@@ -357,16 +359,19 @@ QValueList<ConfigWidget *> ConfigurationWindow::processUiSectionFromDom(QDomNode
 		return result;
 	}
 
+	configSection(iconName, sectionName, true);
+
 	const QDomNodeList children = sectionElement.childNodes();
 	int length = children.length();
 	for (int i = 0; i < length; i++)
-		result += processUiTabFromDom(children.item(i), sectionName, append);
+		result += processUiTabFromDom(children.item(i), iconName, sectionName, append);
 
 	kdebugf2();
 	return result;
 }
 
-QValueList<ConfigWidget *> ConfigurationWindow::processUiTabFromDom(QDomNode tabNode, const QString &sectionName, bool append)
+QValueList<ConfigWidget *> ConfigurationWindow::processUiTabFromDom(QDomNode tabNode, const QString &iconName,
+	const QString &sectionName, bool append)
 {
 	kdebugf();
 
@@ -560,14 +565,19 @@ QWidget * ConfigurationWindow::widgetById(const QString &id)
 
 ConfigGroupBox * ConfigurationWindow::configGroupBox(const QString &section, const QString &tab, const QString &groupBox, bool create)
 {
-	ConfigSection *s = configSection(section, create);
+	ConfigSection *s = configSection(section);
 	if (!s)
 		return 0;
 
 	return s->configGroupBox(tab, groupBox, create);
 }
 
-ConfigSection *ConfigurationWindow::configSection(const QString &name, bool create)
+ConfigSection *ConfigurationWindow::configSection(const QString &name)
+{
+	return configSections[name];
+}
+
+ConfigSection *ConfigurationWindow::configSection(const QString &pixmap, const QString &name, bool create)
 {
 	if (configSections.contains(name))
 		return configSections[name];
@@ -575,7 +585,7 @@ ConfigSection *ConfigurationWindow::configSection(const QString &name, bool crea
 	if (!create)
 		return 0;
 
-	QListBoxItem *newConfigSectionListBoxItem = new QListBoxText(sectionsListBox, tr(name));
+	QListBoxItem *newConfigSectionListBoxItem = new QListBoxPixmap(sectionsListBox, icons_manager->loadIcon(pixmap), tr(name));
 
 	ConfigSection *newConfigSection = new ConfigSection(name, this, newConfigSectionListBoxItem, container);
 	configSections[name] = newConfigSection;

@@ -134,7 +134,7 @@
 		</tab>
 	</section>
 
-	<section name="Look">
+	<section name="Look" icon="LookTab">
 		<tab name="General">
 			<group-box name="General">
 				<combo-box caption="Theme" config-section="Look" config-item="QtStyle" id="qtThemes"
@@ -268,7 +268,7 @@
 		</tab>
 	</section>
 
-	<section name="Shortcuts">
+	<section name="Shortcuts" icon="ShortCutsTab">
 		<tab name="General">
 			<group-box name="Kadu">
 				<hot-key-edit caption="Configuration" config-section="ShortCuts" config-item="kadu_configure" />
@@ -294,7 +294,7 @@
 		</tab>
 	</section>
 
-	<section name="Chat">
+	<section name="Chat" icon="ChatTab">
 		<tab name="General">
 			<group-box name="Behaviour">
 				<check-box caption="Remember chat windows positions" config-section="Chat" config-item="RememberPosition" />

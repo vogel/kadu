@@ -61,11 +61,12 @@ class ConfigurationWindow : public QVBox
 	void loadConfiguration(QObject *object);
 	void saveConfiguration(QObject *object);
 
-	ConfigSection *configSection(const QString &name, bool create = true);
+	ConfigSection *configSection(const QString &name);
+	ConfigSection *configSection(const QString &icon, const QString &name, bool create = true);
 
 	QValueList<ConfigWidget *> processUiFile(const QString &fileName, bool append = true);
 	QValueList<ConfigWidget *> processUiSectionFromDom(QDomNode sectionNode, bool append = true);
-	QValueList<ConfigWidget *> processUiTabFromDom(QDomNode tabNode, const QString &sectionName, bool append = true);
+	QValueList<ConfigWidget *> processUiTabFromDom(QDomNode tabNode, const QString &iconName, const QString &sectionName, bool append = true);
 	QValueList<ConfigWidget *> processUiGroupBoxFromDom(QDomNode groupBoxNode, const QString &sectionName, const QString &tabName, bool append = true);
 	ConfigWidget * appendUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox);
 	void removeUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox);
