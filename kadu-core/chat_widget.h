@@ -293,12 +293,6 @@ public slots:
 	void setAutoSend(bool auto_send);
 
 	/**
-		\fn void setScrollLocked(bool locked)
-		Ustaw blokade przewijania
-	**/
-	void setScrollLocked(bool locked);
-
-	/**
 		\fn void emoticonSelectorClicked()
 		Slot wy¶wietlaj±cy okno z wyborem emotikonek
 	**/

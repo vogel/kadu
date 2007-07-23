@@ -18,7 +18,7 @@
 #include "chat_messages_view.h"
 
 ChatMessagesView::ChatMessagesView(QWidget *parent, char *name) : KaduTextBrowser(parent, name),
-	Prune(0), ScrollLocked(false)
+	Prune(0)
 {
 	setMargin(ParagraphSeparator);
 	setMinimumSize(QSize(100,100));
@@ -115,7 +115,7 @@ void ChatMessagesView::repaintMessages()
 	setText(text);
 	updateBackgrounds();
 
-	if (!ScrollLocked)
+	if (verticalScrollBar()->value() == verticalScrollBar()->maxValue())
 		scrollToBottom();
 
 	viewport()->setUpdatesEnabled(true);
@@ -152,8 +152,6 @@ void ChatMessagesView::pruneMessages()
 {
 	kdebugf();
 
-	printf("%d vs %d\n", Messages.size(), Prune);
-
 	if (Prune == 0)
 		return;
 
@@ -163,10 +161,7 @@ void ChatMessagesView::pruneMessages()
 	QValueList<ChatMessage *>::iterator start = Messages.begin();
 	QValueList<ChatMessage *>::iterator stop = Messages.at(Messages.size() - Prune);
 	for (QValueList<ChatMessage *>::iterator it = start; it != stop; ++it)
-	{
-		printf("one removed\n");
 		delete *it;
-	}
 
 	Messages.erase(start, stop);
 }
@@ -190,11 +185,6 @@ void ChatMessagesView::clearMessages()
 unsigned int ChatMessagesView::countMessages()
 {
 	return Messages.count();
-}
-
-void ChatMessagesView::setScrollLocked(bool scrollLocked)
-{
-	ScrollLocked = scrollLocked;
 }
 
 void ChatMessagesView::configurationUpdated()

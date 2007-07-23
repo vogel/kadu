@@ -40,13 +40,6 @@ ChatManager::ChatManager(QObject* parent, const char* name) : QObject(parent, na
 		this, SLOT(autoSendActionActivated(const UserGroup*, const QWidget*, bool)));
 	KaduActions.insert("autoSendAction", auto_send_action);
 
-	Action* scroll_lock_action = new Action("ScrollLock", tr("Blocks scrolling"),
-		"scrollLockAction", Action::TypeChat);
-	scroll_lock_action->setToggleAction(true);
-	connect(scroll_lock_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-		this, SLOT(scrollLockActionActivated(const UserGroup*, const QWidget*, bool)));
-	KaduActions.insert("scrollLockAction", scroll_lock_action);
-
 	Action* clear_action = new Action("ClearChat", tr("Clear messages in chat window"),
 		"clearChatAction", Action::TypeChat);
 	connect(clear_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
@@ -125,7 +118,6 @@ ChatManager::ChatManager(QObject* parent, const char* name) : QObject(parent, na
 	KaduActions.insert("openChatWithAction", open_chat_with_action);
 
 	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "autoSendAction");
-	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "scrollLockAction");
 	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "clearChatAction");
 	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "insertEmoticonAction");
 	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "whoisAction");
@@ -235,7 +227,7 @@ ChatManager::~ChatManager()
 #if DEBUG_ENABLED
 	// for valgrind
 	QStringList chatActions;
-	chatActions << "autoSendAction" << "scrollLockAction" << "clearChatAction"
+	chatActions << "autoSendAction" << "clearChatAction"
 				<< "insertEmoticonAction" << "whoisAction" << "insertImageAction"
 				<< "ignoreUserAction" << "blockUserAction" << "boldAction"
 				<< "italicAction" << "underlineAction" << "colorAction"
@@ -257,13 +249,6 @@ void ChatManager::autoSendActionActivated(const UserGroup* users, const QWidget*
 	findChatWidget(users)->setAutoSend(is_on);
 	KaduActions["autoSendAction"]->setAllOn(is_on);
 	config_file.writeEntry("Chat", "AutoSend", is_on);
-	kdebugf2();
-}
-
-void ChatManager::scrollLockActionActivated(const UserGroup* users, const QWidget* /*source*/, bool is_on)
-{
-	kdebugf();
-	findChatWidget(users)->setScrollLocked(is_on);
 	kdebugf2();
 }
 

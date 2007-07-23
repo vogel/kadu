@@ -55,7 +55,6 @@ class ChatManager : public QObject, ConfigurationAwareObject
 	private slots:
 
 		void autoSendActionActivated(const UserGroup* users, const QWidget* source, bool is_on);
-		void scrollLockActionActivated(const UserGroup* users, const QWidget* source, bool is_on);
 		void clearActionActivated(const UserGroup* users);
 		void boldActionActivated(const UserGroup* users, const QWidget* source, bool is_on);
 		void italicActionActivated(const UserGroup* users, const QWidget* source, bool is_on);

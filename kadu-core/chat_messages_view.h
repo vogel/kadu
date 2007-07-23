@@ -23,8 +23,6 @@ class ChatMessagesView : public KaduTextBrowser, ConfigurationAwareObject
 	QString ChatSyntaxWithHeader;
 	QString ChatSyntaxWithoutHeader;
 
-	bool ScrollLocked;
-
 	QMimeSourceFactory *bodyformat;
 
 	void repaintMessages();
@@ -65,7 +63,6 @@ public:
 
 public slots:
 	void clearMessages();
-	void setScrollLocked(bool scrollLocked);
 
 };
 

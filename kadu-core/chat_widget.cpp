@@ -529,11 +529,6 @@ void ChatWidget::setAutoSend(bool auto_send)
 	kdebugf2();
 }
 
-void ChatWidget::setScrollLocked(bool locked)
-{
-	body->setScrollLocked(locked);
-}
-
 void ChatWidget::cancelMessage()
 {
 	kdebugf();
