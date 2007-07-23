@@ -39,7 +39,7 @@ SyntaxList::SyntaxList(const QString &category)
 	reload();
 }
 
-QString SyntaxList::readSyntax(const QString &category, const QString &name)
+QString SyntaxList::readSyntax(const QString &category, const QString &name, const QString &defaultSyntax)
 {
 	QString path;
 	QFile syntaxFile;
@@ -52,7 +52,7 @@ QString SyntaxList::readSyntax(const QString &category, const QString &name)
 
 		syntaxFile.setName(path);
 		if (!syntaxFile.open(IO_ReadOnly))
-			return QString();
+			return defaultSyntax;
 	}
 
 	QString result;

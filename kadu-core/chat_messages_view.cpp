@@ -206,7 +206,12 @@ void ChatMessagesView::configurationUpdated()
 // 		brush.setPixmap(QPixmap(bgImage));
 	setPaper(brush);
 
-	QString chatSyntax = SyntaxList::readSyntax("chat", config_file.readEntry("Look", "Style"));
+	QString chatSyntax = SyntaxList::readSyntax("chat", config_file.readEntry("Look", "Style"),
+		"<p style=\"background-color: #{backgroundColor};\">#{separator}"
+		  "<font color=\"#{fontColor}\"><kadu:header><b><font color=\"#{nickColor}\">%a</font> :: "
+			"#{receivedDate}[ / S #{sentDate}]</b><br /></kadu:header>"
+		"#{message}</font></p>"
+	);
 	int beginOfHeader = chatSyntax.find("<kadu:header>");
 	int endOfHeader = chatSyntax.find("</kadu:header>");
 	ChatSyntaxWithHeader = chatSyntax;

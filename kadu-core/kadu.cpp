@@ -1623,7 +1623,9 @@ void Kadu::configurationUpdated()
 	kadu->setCaption(tr("Kadu: %1").arg((UinType)config_file.readUnsignedNumEntry("General", "UIN")));
 	kadu->setDocked(kadu->Docked, kadu->dontHideOnClose);
 
-	InfoPanelSyntax = SyntaxList::readSyntax("infopanel", config_file.readEntry("Look", "InfoPanelSyntaxFile"));
+	InfoPanelSyntax = SyntaxList::readSyntax("infopanel", config_file.readEntry("Look", "InfoPanelSyntaxFile"),
+		"<table><tr><td><img width=\"32\" height=\"32\" align=\"left\" valign=\"top\" src=\"@{ManageUsersWindowIcon}\"></td><td> "
+		"<div align=\"left\"> [<b>%a</b>][ (%u)] [<br>tel.: %m][<br>IP: %i]</div></td></tr></table> <hr> <b>%s</b> [<br>%d]");
 	InfoPanel->setText("<body bgcolor=\"" + config_file.readEntry("Look", "InfoPanelBgColor") + "\"></body>");
 	updateInformationPanel();
 

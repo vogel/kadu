@@ -28,7 +28,7 @@ public:
 	SyntaxList(const QString &category);
 	virtual ~SyntaxList() {}
 
-	static QString readSyntax(const QString &category, const QString &name);
+	static QString readSyntax(const QString &category, const QString &name, const QString &defaultSyntax);
 
 	void reload();
 
