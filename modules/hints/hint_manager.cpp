@@ -33,7 +33,7 @@
 #define FRAME_WIDTH 1
 
 HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, name), ToolTipClass(),
-	frame(0), hint_timer(new QTimer(this, "hint_timer")),
+	hint_timer(new QTimer(this, "hint_timer")),
 	hints(), tipFrame(0)
 {
 	kdebugf();
@@ -69,6 +69,9 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 	config_file.addVariable("Notify", "StatusChanged/ToOffline_Hints", true);
 	config_file.addVariable("Notify", "FileTransfer/IncomingFile_Hints", true);
 	config_file.addVariable("Notify", "FileTransfer/Finished_Hints", true);
+
+	config_file.addVariable("Hints", "MinimumWidth", 0);
+	config_file.addVariable("Hints", "MaximumWidth", 2048);
 
 	kdebugf2();
 }
@@ -119,11 +122,28 @@ void HintManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainCo
 	connect(setAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("hints/setAll_font"), SLOT(setEnabled(bool)));
 
 	(dynamic_cast<QSpinBox *>(mainConfigurationWindow->widgetById("hints/setAll_timeout")))->setSpecialValueText(tr("Dont hide"));
+
+	minimumWidth = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widgetById("hints/minimumWidth"));
+	maximumWidth = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widgetById("hints/maximumWidth"));
+	connect(minimumWidth, SIGNAL(valueChanged(int)), this, SLOT(minimumWidthChanged(int)));
+	connect(maximumWidth, SIGNAL(valueChanged(int)), this, SLOT(maximumWidthChanged(int)));
 }
 
 NotifierConfigurationWidget *HintManager::createConfigurationWidget(QWidget *parent, char *name)
 {
 	return new HintsConfigurationWidget(parent, name);
+}
+
+void HintManager::minimumWidthChanged(int value)
+{
+	if (value > maximumWidth->value())
+		maximumWidth->setValue(value);
+}
+
+void HintManager::maximumWidthChanged(int value)
+{
+	if (value < minimumWidth->value())
+		minimumWidth->setValue(value);
 }
 
 void HintManager::configurationUpdated()

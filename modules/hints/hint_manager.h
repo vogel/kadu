@@ -23,6 +23,8 @@
 
 class ChatWidget;
 
+class QSpinBox;
+
 class HintManager : public Notifier, public ConfigurationUiHandler, public ToolTipClass, ConfigurationAwareObject
 {
 	Q_OBJECT
@@ -33,6 +35,9 @@ private:
 	QTimer *hint_timer;
 	QPtrList<Hint> hints;
 	QFrame *tipFrame;
+
+	QSpinBox *minimumWidth;
+	QSpinBox *maximumWidth;
 
 	QMap<QPair<UserListElements, QString>, Hint *> linkedHints;
 
@@ -104,6 +109,9 @@ private slots:
 		usuwa wszystkie dymki
 	**/
 	void deleteAllHints();
+
+	void minimumWidthChanged(int value);
+	void maximumWidthChanged(int value);
 
 protected:
 	virtual void configurationUpdated();

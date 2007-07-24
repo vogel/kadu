@@ -95,6 +95,9 @@ void Hint::configurationUpdated()
 	setPaletteForegroundColor(config_file.readColorEntry("Hints", configurationDirective + "_fgcolor"));
 	bcolor = config_file.readColorEntry("Hints", configurationDirective + "_bgcolor");
 	setPaletteBackgroundColor(bcolor);
+
+	setMinimumWidth(config_file.readNumEntry("Hints", "MinimumWidth", 0));
+	setMaximumWidth(config_file.readNumEntry("Hints", "MaximumWidth", 2048));
 }
 
 void Hint::createLabels(const QPixmap &pixmap)
