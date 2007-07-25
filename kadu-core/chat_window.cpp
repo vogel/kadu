@@ -32,6 +32,7 @@ ChatWindow::ChatWindow(QWidget* parent, const char* name) : QMainWindow(parent, 
 {
 	configurationUpdated();
 	connect(title_timer, SIGNAL(timeout()), this, SLOT(blinkTitle()));
+	connect(this, SIGNAL(chatWidgetActivated(ChatWidget *)), chat_manager, SIGNAL(chatWidgetActivated(ChatWidget *)));
 }
 
 ChatWindow::~ChatWindow()
@@ -226,3 +227,4 @@ void ChatWindow::alertNewMessage()
 	else
 		currentChatWidget->markAllMessagesRead();
 }
+

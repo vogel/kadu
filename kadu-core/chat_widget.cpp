@@ -836,3 +836,4 @@ void ChatWidget::storeGeometry()
 	if (horizSplit)
 		chat_manager->setChatWidgetProperty(Users, "HorizontalSizes", toVariantList(horizSplit->sizes()));
 }
+

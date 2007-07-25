@@ -559,18 +559,20 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 		userNames.append((*user).altNick());
 	userNames.sort();
 
-	ChatWindow* window = new ChatWindow(0, "chat_window");
-	ChatWidget* chat = new ChatWidget(initialProtocol, users, window, "chat_widget");
-
-	window->setChatWidget(chat);
-
+	ChatWidget *chat = new ChatWidget(initialProtocol, users);
+	bool handled = false;
+	emit handleNewChatWidget(chat, handled);
+	if (!handled)
+	{
+		ChatWindow *window = new ChatWindow();
+		chat->reparent(window, QPoint(), true);
+		window->setChatWidget(chat);
+		window->show();
+	}
  	chat->refreshTitle();
 
 	connect(chat, SIGNAL(messageSentAndConfirmed(UserListElements, const QString&)),
 		this, SIGNAL(messageSentAndConfirmed(UserListElements, const QString&)));
-	connect(window, SIGNAL(chatWidgetActivated(ChatWidget *)), this, SIGNAL(chatWidgetActivated(ChatWidget *)));
-
-	window->show();
 
 //	chat->makeActive();
 	emit chatWidgetCreated(chat);

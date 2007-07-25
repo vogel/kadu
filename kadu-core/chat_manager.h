@@ -241,6 +241,14 @@ class ChatManager : public QObject, ConfigurationAwareObject
 	signals:
 
 		/**
+			\fn void handleNewChatWidget(ChatWidget *chat, bool &handled)
+		 	Sygna³ ten jest wysy³any po utworzeniu nowego okna chat.
+			Je¶li zmienna handled zostanie ustawiona na true, to 
+			niezostanie utworzony nowy obiekt ChatWindiw
+			\param chat nowe okno chat
+		**/
+		void handleNewChatWidget(ChatWidget *chat, bool &handled);
+		/**
 			\fn void chatWidgetCreated(ChatWidget *chat)
 		 	Sygna³ ten jest wysy³any po utworzeniu nowego okna chat
 			\param chat nowe okno chat
