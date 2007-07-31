@@ -212,9 +212,9 @@ void HistoryModule::chatCreated(ChatWidget *chat, time_t time)
 		{
 			ChatMessage *message;
 			if ((*entry).type == HISTORYMANAGER_ENTRY_MSGSEND || (*entry).type == HISTORYMANAGER_ENTRY_CHATSEND)
-				message = new ChatMessage(kadu->myself(), (*entry).message, true, (*entry).date);
+				message = new ChatMessage(kadu->myself(), (*entry).message, TypeSent, (*entry).date);
 			else
-			message = new ChatMessage(userlist->byID("Gadu", QString::number((*entry).uin)), (*entry).message, false, (*entry).date, (*entry).sdate);
+			message = new ChatMessage(userlist->byID("Gadu", QString::number((*entry).uin)), (*entry).message, TypeReceived, (*entry).date, (*entry).sdate);
 			messages.append(message);
 		}
 	if (!messages.empty())

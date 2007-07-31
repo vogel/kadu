@@ -10,12 +10,20 @@
 #include "gadu.h"
 #include "userlistelement.h"
 
+enum ChatMessageType
+{
+	TypeSystem,
+	TypeReceived,
+	TypeSent
+};
+
 /**
 
 	Klasa przechowuj±ca informacje o wiadomo¶ci, która ma siê pojawiæ
 	w oknie Chat.
 
 	TODO: optimize and cache
+	TODO: make API pretty
 
 	\class ChatMessage
 	\brief Klasa przechowuj±ca informacje o wiadomo¶ci.
@@ -35,8 +43,9 @@ class ChatMessage : public QObject
 	QDateTime Date;
 	int SeparatorSize;
 
-public:
+	ChatMessageType Type;
 
+public:
 	QString unformattedMessage;
 	QString backgroundColor;
 	QString fontColor;
@@ -58,12 +67,17 @@ public:
 		\param date data otrzymania wiadomo¶ci
 		\param sdate data wys³ania wiadomo¶ci
 	**/
-	ChatMessage(const UserListElement &ule, const QString &unformattedMessage, bool myMessage, QDateTime date, QDateTime sdate = QDateTime());
+	ChatMessage(const UserListElement &ule, const QString &unformattedMessage, ChatMessageType type,
+		QDateTime date, QDateTime sdate = QDateTime());
+
+	ChatMessage(const QString &rawContent, ChatMessageType type, QDateTime date,
+		QString backgroundColor, QString fontColor, QString nickColor);
 
 	void replaceLoadingImages(UinType sender, uint32_t size, uint32_t crc32);
 
 	UserListElement sender() const { return Ule; }
 	QDateTime date() const { return Date; }
+	ChatMessageType type() const { return Type; }
 
 	void setSeparatorSize(int separatorSize) { SeparatorSize = separatorSize; }
 	int separatorSize() const { return SeparatorSize; }

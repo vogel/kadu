@@ -101,26 +101,38 @@ void ChatMessage::unregisterParserTags()
 	KaduParser::unregisterObjectTag("separator", getSeparator);
 }
 
-ChatMessage::ChatMessage(const UserListElement &ule, const QString &unformattedMessage, bool myMessage, QDateTime date, QDateTime sdate)
-	: Ule(ule), Date(date)
+ChatMessage::ChatMessage(const UserListElement &ule, const QString &unformattedMessage, ChatMessageType type, QDateTime date, QDateTime sdate)
+	: Ule(ule), Date(date), Type(type)
 {
 	receivedDate = printDateTime(date);
 	sentDate = printDateTime(sdate);
 
-	if (myMessage)
+	switch (type)
 	{
-		backgroundColor = config_file.readEntry("Look", "ChatMyBgColor");
-		fontColor = config_file.readEntry("Look", "ChatMyFontColor");
-		nickColor = config_file.readEntry("Look", "ChatMyNickColor");
-	}
-	else
-	{
-		backgroundColor = config_file.readEntry("Look", "ChatUsrBgColor");
-		fontColor = config_file.readEntry("Look", "ChatUsrFontColor");
-		nickColor = config_file.readEntry("Look", "ChatUsrNickColor");
+		case TypeSent:
+			backgroundColor = config_file.readEntry("Look", "ChatMyBgColor");
+			fontColor = config_file.readEntry("Look", "ChatMyFontColor");
+			nickColor = config_file.readEntry("Look", "ChatMyNickColor");
+			break;
+
+		case TypeReceived:
+			backgroundColor = config_file.readEntry("Look", "ChatUsrBgColor");
+			fontColor = config_file.readEntry("Look", "ChatUsrFontColor");
+			nickColor = config_file.readEntry("Look", "ChatUsrNickColor");
+			break;
+
+		case TypeSystem:
+			break;
 	}
 
-	this->unformattedMessage = convertCharacters(unformattedMessage, backgroundColor, (EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle"));
+	this->unformattedMessage = convertCharacters(unformattedMessage, backgroundColor,
+		(EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
+}
+
+ChatMessage::ChatMessage(const QString &rawContent, ChatMessageType type, QDateTime date,
+	QString backgroundColor, QString fontColor, QString nickColor)
+	: unformattedMessage(rawContent), backgroundColor(backgroundColor), fontColor(fontColor), nickColor(nickColor), Date(date), Type(type)
+{
 }
 
 /* convert special characters into emoticons, HTML into plain text and so forth */

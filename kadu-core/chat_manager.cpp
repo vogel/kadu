@@ -598,7 +598,7 @@ ChatMessage * ChatManager::openPendingMsg(int index, int &k)
 	QDateTime date;
 	date.setTime_t(p.time);
 
-	ChatMessage *msg = new ChatMessage(p.users[0], p.msg, false, QDateTime::currentDateTime(), date);
+	ChatMessage *msg = new ChatMessage(p.users[0], p.msg, TypeReceived, QDateTime::currentDateTime(), date);
 
 	// remove message from pending
 	pending.deleteMsg(index);

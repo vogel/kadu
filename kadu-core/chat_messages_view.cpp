@@ -64,26 +64,40 @@ QString ChatMessagesView::formatMessage(ChatMessage *message, ChatMessage *after
 
 	int separatorSize;
 	QString format;
-	bool includeHeader = (!CfgNoHeaderRepeat || !after);
+	bool includeHeader;
 
-	if (after && !includeHeader)
-		includeHeader =
-			(message->date().toTime_t() - after->date().toTime_t() > (CfgNoHeaderInterval * 60)) ||
-			(message->sender() != after->sender());
-
-	if (includeHeader)
+	if (message->type() == TypeSystem)
 	{
 		separatorSize = CfgHeaderSeparatorHeight;
-		format = ChatSyntaxWithHeader;
+		format = ChatSyntaxWithoutHeader;
+
+		message->setSeparatorSize(separatorSize);
+		return KaduParser::parse(format, message->sender(), message);
 	}
 	else
 	{
-		separatorSize = ParagraphSeparator;
-		format = ChatSyntaxWithoutHeader;
-	}
+		includeHeader = (!CfgNoHeaderRepeat || !after);
 
-	message->setSeparatorSize(separatorSize);
-	return KaduParser::parse(format, message->sender(), message);
+		if (after && !includeHeader)
+			includeHeader =
+				(after->type() != TypeSystem) &&
+				(message->date().toTime_t() - after->date().toTime_t() > (CfgNoHeaderInterval * 60)) ||
+				(message->sender() != after->sender());
+
+		if (includeHeader)
+		{
+			separatorSize = CfgHeaderSeparatorHeight;
+			format = ChatSyntaxWithHeader;
+		}
+		else
+		{
+			separatorSize = ParagraphSeparator;
+			format = ChatSyntaxWithoutHeader;
+		}
+
+		message->setSeparatorSize(separatorSize);
+		return KaduParser::parse(format, message->sender(), message);
+	}
 }
 
 void ChatMessagesView::repaintMessages()
@@ -101,7 +115,10 @@ void ChatMessagesView::repaintMessages()
 
 	(*message)->setSeparatorSize(0);
 
-	text += KaduParser::parse(ChatSyntaxWithHeader, (*message)->sender(), *message);
+	if ((*message)->type() == TypeSystem)
+		text += KaduParser::parse(ChatSyntaxWithoutHeader, (*message)->sender(), *message);
+	else
+		text += KaduParser::parse(ChatSyntaxWithHeader, (*message)->sender(), *message);
 
 	prevMessage = message;
 	while (++message != end)

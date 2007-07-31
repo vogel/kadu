@@ -226,11 +226,9 @@ ChatMessage * HistoryDialog::createChatMessage(const HistoryEntry &entry)
 
 	UserListElement sender;
 	if (isMyMessage)
-		sender = kadu->myself();
+		return new ChatMessage(kadu->myself(), messageText, TypeSent, entry.date, entry.sdate);
 	else
-		sender = userlist->byID("Gadu", QString::number(entry.uin));
-
-	return new ChatMessage(sender, messageText, isMyMessage, entry.date, entry.sdate);
+		return new ChatMessage(userlist->byID("Gadu", QString::number(entry.uin)), messageText, TypeReceived, entry.date, entry.sdate);
 }
 
 void HistoryDialog::showHistoryEntries(int from, int count)

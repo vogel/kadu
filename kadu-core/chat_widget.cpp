@@ -478,12 +478,20 @@ void ChatWidget::appendMessages(const QValueList<ChatMessage *> &messages)
 	body->appendMessages(messages);
 }
 
+void ChatWidget::appendSystemMessage(const QString &rawContent, const QString &backgroundColor, const QString &fontColor)
+{
+	ChatMessage *message = new ChatMessage(rawContent, TypeSystem, QDateTime::currentDateTime(),
+		backgroundColor, fontColor, fontColor);
+	body->appendMessage(message);
+}
+
 /* invoked from outside when new message arrives, this is the window to the world */
 void ChatWidget::newMessage(const QString &/*protocolName*/, UserListElements senders, const QString &msg, time_t time)
 {
 	QDateTime date;
 	date.setTime_t(time);
-	ChatMessage *message = new ChatMessage(senders[0], msg, false, QDateTime::currentDateTime(), date);
+
+	ChatMessage *message = new ChatMessage(senders[0], msg, TypeReceived, QDateTime::currentDateTime(), date);
 	body->appendMessage(message);
 
 	lastMsgTime = QDateTime::currentDateTime();
@@ -495,7 +503,7 @@ void ChatWidget::newMessage(const QString &/*protocolName*/, UserListElements se
 void ChatWidget::writeMyMessage()
 {
 	kdebugf();
-	ChatMessage *message = new ChatMessage(kadu->myself(), myLastMessage, true, QDateTime::currentDateTime());
+	ChatMessage *message = new ChatMessage(kadu->myself(), myLastMessage, TypeSent, QDateTime::currentDateTime());
 	body->appendMessage(message);
 
 	if (!Edit->isEnabled())

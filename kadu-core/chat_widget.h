@@ -135,6 +135,15 @@ public:
 	~ChatWidget();
 
 	/**
+		Dodaje now± wiadomosæ systemow± do okna.
+
+		@param rawContent tre¶æ wiadomo¶ci w postaci HTML
+		@param backgroundColor kolor t³a wiadomo¶ci (format HTML)
+		@param fontColor kolor wiadomo¶ci (format HTML)
+	 **/
+	void appendSystemMessage(const QString &rawContent, const QString &backgroundColor, const QString &fontColor);
+
+	/**
 		\fn void newMessage(const QString &protocolName, UserListElements senders, const QString &msg, time_t time)
 		Dodaje wiadomo¶æ do okna
 		\param protocolName nazwa protoko³u

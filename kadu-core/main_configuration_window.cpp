@@ -166,13 +166,15 @@ void MainConfigurationWindow::prepareChatPreview(Preview *preview, bool append)
 	preview->setResetBackgroundColor(config_file.readEntry("Look", "ChatBgColor"));
 	preview->setStyleSheet(new StaticStyleSheet(chatPreview, emoticons->themePath()));
 
-	ChatMessage *chatMessage = new ChatMessage(kadu->myself(), "Your message", true, QDateTime::currentDateTime(), QDateTime::currentDateTime());
+	ChatMessage *chatMessage = new ChatMessage(kadu->myself(), "Your message", TypeSent,
+		QDateTime::currentDateTime(), QDateTime::currentDateTime());
 	chatMessage->setSeparatorSize(0);
 	preview->addObjectToParse(kadu->myself(), chatMessage);
 	if (append)
 		chatMessages.append(chatMessage);
 
-	chatMessage = new ChatMessage(example, "Message from Your friend", false, QDateTime::currentDateTime(), QDateTime::currentDateTime());
+	chatMessage = new ChatMessage(example, "Message from Your friend", TypeReceived,
+		QDateTime::currentDateTime(), QDateTime::currentDateTime());
 	chatMessage->setSeparatorSize(4);
 	preview->addObjectToParse(example, chatMessage);
 	if (append)
