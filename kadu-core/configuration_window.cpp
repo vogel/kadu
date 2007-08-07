@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <qapplication.h>
 #include <qlistbox.h>
 #include <qobjectlist.h>
 #include <qtabwidget.h>
@@ -124,7 +125,7 @@ ConfigTab::ConfigTab(const QString &name, ConfigSection *configSection, QTabWidg
 	mainLayout = new QVBoxLayout(mainWidget, 10, 10);
 	mainLayout->addStretch(1);
 
-	parentConfigGroupBoxWidget->addTab(mainWidget, QObject::tr(name));
+	parentConfigGroupBoxWidget->addTab(mainWidget, name);
 }
 
 ConfigTab::~ConfigTab()
@@ -140,7 +141,7 @@ ConfigGroupBox *ConfigTab::configGroupBox(const QString &name, bool create)
 	if (!create)
 		return 0;
 
-	QGroupBox *groupBox = new QGroupBox(1, Qt::Horizontal, QObject::tr(name), mainWidget);
+	QGroupBox *groupBox = new QGroupBox(1, Qt::Horizontal, name, mainWidget);
 	groupBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
 	mainLayout->insertWidget(configGroupBoxes.count(), groupBox);
@@ -359,7 +360,7 @@ QValueList<ConfigWidget *> ConfigurationWindow::processUiSectionFromDom(QDomNode
 		return result;
 	}
 
-	configSection(iconName, sectionName, true);
+	configSection(iconName, qApp->translate("@default", sectionName), true);
 
 	const QDomNodeList children = sectionElement.childNodes();
 	int length = children.length();
@@ -565,11 +566,11 @@ QWidget * ConfigurationWindow::widgetById(const QString &id)
 
 ConfigGroupBox * ConfigurationWindow::configGroupBox(const QString &section, const QString &tab, const QString &groupBox, bool create)
 {
-	ConfigSection *s = configSection(section);
+	ConfigSection *s = configSection(qApp->translate("@default", section));
 	if (!s)
 		return 0;
 
-	return s->configGroupBox(tab, groupBox, create);
+	return s->configGroupBox(qApp->translate("@default", tab), qApp->translate("@default", groupBox), create);
 }
 
 ConfigSection *ConfigurationWindow::configSection(const QString &name)
@@ -585,7 +586,7 @@ ConfigSection *ConfigurationWindow::configSection(const QString &pixmap, const Q
 	if (!create)
 		return 0;
 
-	QListBoxItem *newConfigSectionListBoxItem = new QListBoxPixmap(sectionsListBox, icons_manager->loadIcon(pixmap), tr(name));
+	QListBoxItem *newConfigSectionListBoxItem = new QListBoxPixmap(sectionsListBox, icons_manager->loadIcon(pixmap), name);
 
 	ConfigSection *newConfigSection = new ConfigSection(name, this, newConfigSectionListBoxItem, container);
 	configSections[name] = newConfigSection;

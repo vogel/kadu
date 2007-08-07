@@ -29,28 +29,28 @@
         <translation>Definiuj klawisze</translation>
     </message>
     <message>
-        <source>New line / send message:</source>
-        <translation>Nowa linia / wyślij wiadomość:</translation>
+        <source>New line / send message</source>
+        <translation>Nowa linia / wyślij wiadomość</translation>
     </message>
     <message>
-        <source>Clear Chat:</source>
-        <translation>Wyczyść okno:</translation>
+        <source>Clear Chat</source>
+        <translation>Wyczyść okno</translation>
     </message>
     <message>
-        <source>Close Chat:</source>
-        <translation>Zamknij okno:</translation>
+        <source>Close Chat</source>
+        <translation>Zamknij okno</translation>
     </message>
     <message>
-        <source>Bold text:</source>
-        <translation>Pogrubiony:</translation>
+        <source>Bold text</source>
+        <translation>Pogrubiony</translation>
     </message>
     <message>
-        <source>Italic text:</source>
-        <translation>Kursywa:</translation>
+        <source>Italic text</source>
+        <translation>Kursywa</translation>
     </message>
     <message>
-        <source>Underline text:</source>
-        <translation>Podkreślony:</translation>
+        <source>Underline text</source>
+        <translation>Podkreślony</translation>
     </message>
     <message>
         <source>User data</source>
@@ -58,15 +58,15 @@
     </message>
     <message>
         <source>Uin</source>
-        <translation>Numer GG: </translation>
+        <translation>Numer GG</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation>Hasło: </translation>
+        <translation>Hasło</translation>
     </message>
     <message>
         <source>Nick</source>
-        <translation>Pseudonim: </translation>
+        <translation>Pseudonim</translation>
     </message>
     <message>
         <source>Check for updates</source>
@@ -93,12 +93,12 @@
         <translation>Użyj serwera proxy</translation>
     </message>
     <message>
-        <source>Proxy server</source>
+        <source>Proxy Server</source>
         <translation>Serwer proxy</translation>
     </message>
     <message>
-        <source>IP addresses:</source>
-        <translation>Adresy IP: </translation>
+        <source>IP Addresses</source>
+        <translation>Adresy IP</translation>
     </message>
     <message>
         <source>ShortCuts</source>
@@ -121,8 +121,8 @@
         <translation>Status domyślny</translation>
     </message>
     <message>
-        <source>On shutdown, set description:</source>
-        <translation>Wyłączając ustaw opis:</translation>
+        <source>On shutdown, set description</source>
+        <translation>Wyłączając ustaw opis</translation>
     </message>
     <message>
         <source>Private status</source>
@@ -170,7 +170,7 @@
     </message>
     <message>
         <source>Reduce the number of visible messages to</source>
-        <translation>Zmniejsz ilość widocznych wiadomości do: </translation>
+        <translation>Zmniejsz ilość widocznych wiadomości do</translation>
     </message>
     <message>
         <source>Flash chat title on new message</source>
@@ -193,12 +193,12 @@
         <translation>Składnia panelu informacyjnego:</translation>
     </message>
     <message>
-        <source>Chat window title syntax:</source>
-        <translation>Składnia tytułu okna rozmowy: </translation>
+        <source>Chat window title syntax</source>
+        <translation>Składnia tytułu okna rozmowy</translation>
     </message>
     <message>
-        <source>Conference window title prefix:</source>
-        <translation>Prefiks tytułu okna konferencji: </translation>
+        <source>Conference window title prefix</source>
+        <translation>Prefiks tytułu okna konferencji</translation>
     </message>
     <message>
         <source>This text will be before syntax.
@@ -380,7 +380,7 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
     </message>
     <message>
         <source>Font in panel</source>
-        <translation>Czcionka w panelu informacyjnym </translation>
+        <translation>Czcionka w panelu informacyjnym</translation>
     </message>
     <message>
         <source>Information panel</source>
@@ -473,8 +473,8 @@ Jest to wysoce ryzykowne!</translation>
         <translation> Port: </translation>
     </message>
     <message>
-        <source>Username: </source>
-        <translation>Użytkownik: </translation>
+        <source>Username</source>
+        <translation>Użytkownik</translation>
     </message>
     <message>
         <source> Password: </source>
@@ -535,8 +535,8 @@ Jest to wysoce ryzykowne!</translation>
         <translation>Kolor tła okna edycji rozmowy</translation>
     </message>
     <message>
-        <source>Host: </source>
-        <translation>Nazwa komputera: </translation>
+        <source>Host</source>
+        <translation>Nazwa komputera</translation>
     </message>
     <message>
         <source>Description font color</source>
@@ -555,12 +555,12 @@ Jest to wysoce ryzykowne!</translation>
         <translation>Usuń powtarzające się nagłówki w oknie rozmowy</translation>
     </message>
     <message>
-        <source>Chat header separators height:</source>
-        <translation>Wysokość separatora nagłowków: </translation>
+        <source>Chat header separators height</source>
+        <translation>Wysokość separatora nagłowków</translation>
     </message>
     <message>
-        <source>Interval between header removal:</source>
-        <translation>Czas, pomiędzy którym nagłówek będzie usuwany: </translation>
+        <source>Interval between header removal</source>
+        <translation>Czas, pomiędzy którym nagłówek będzie usuwany</translation>
     </message>
     <message>
         <source>Server time</source>
