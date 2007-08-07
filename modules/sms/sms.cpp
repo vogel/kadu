@@ -488,7 +488,7 @@ void SmsConfigurationUiHandler::onUserClicked(int button, QListBoxItem* /*item*/
 void SmsConfigurationUiHandler::onUserDblClicked(UserListElement user)
 {
 	kdebugf();
-	if (!user.usesProtocol("Gadu") && !user.mobile().isEmpty())
+	if ((user.ID("Gadu") == kadu->myself().ID("Gadu") || !user.usesProtocol("Gadu")) && !user.mobile().isEmpty())
 		newSms(user.altNick());
 	kdebugf2();
 }

@@ -407,6 +407,8 @@ QPixmap KaduListBoxPixmap::pixmapForUser(const UserListElement &user)
 	{
 		if (has_mobile)
 			return icons_manager->loadIcon("Mobile");
+		else if (!user.email().isEmpty())
+			return icons_manager->loadIcon("WriteEmail");
 		else
 			return QPixmap();
 	}

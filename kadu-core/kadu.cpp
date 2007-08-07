@@ -986,6 +986,7 @@ void Kadu::mouseButtonClicked(int button, QListBoxItem *item)
 void Kadu::sendMessage(UserListElement elem)
 {
 	kdebugf();
+
 	UserBox *activeUserBox = UserBox::activeUserBox();
 	if (activeUserBox == NULL)
 	{
@@ -993,13 +994,15 @@ void Kadu::sendMessage(UserListElement elem)
 		return;
 	}
 
-	if (elem.usesProtocol("Gadu")) //TODO: elem.hasFeature("SendingMessages")
+	UserListElements users = activeUserBox->selectedUsers();
+	if (!users.isEmpty())
 	{
-		UserListElements users = activeUserBox->selectedUsers();
-		if (!users.isEmpty())
-			if (!users.contains(userlist->byID("Gadu", config_file.readEntry("General", "UIN"))))
-				chat_manager->sendMessage(elem, users);
+		if (elem.usesProtocol("Gadu") && !users.contains("Gadu", Myself.ID("Gadu"))) //TODO: elem.hasFeature("SendingMessages")
+			chat_manager->sendMessage(elem, users);
+		else if (elem.mobile().isEmpty() && !elem.email().isEmpty())
+			openMailClient(users.first().email());
 	}
+
 	kdebugf2();
 }
 
