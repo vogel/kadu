@@ -422,9 +422,10 @@ QPixmap KaduListBoxPixmap::pixmapForUser(const UserListElement &user)
 	}
 }
 
-void KaduListBoxPixmap::refreshPixmap()
+void KaduListBoxPixmap::refreshItem()
 {
 	pm = pixmapForUser(User);
+	changeText(User.altNick());
 }
 
 class ULEComparer
@@ -702,7 +703,7 @@ void UserBox::refresh()
 		if (!doRefresh)
 		{
 			for (i = 0; i < Count; ++i)
-				static_cast<KaduListBoxPixmap *>(item(i))->refreshPixmap();
+				static_cast<KaduListBoxPixmap *>(item(i))->refreshItem();
 			triggerUpdate(true);
 
 			kdebugf2();

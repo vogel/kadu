@@ -856,11 +856,8 @@ OpenChatWith::OpenChatWith(QWidget* parent, const char* name)
 
 	QStringList posibilities;
 	CONST_FOREACH(user, userlist->toUserListElements())
-	{
-		QString altNick = (*user).altNick();
 		if (!((*user).protocolList()).isEmpty())
-			posibilities.append(altNick);
-	}
+			posibilities.append((*user).altNick());
 	posibilities.sort();
 
 	c_text->insertStringList(posibilities);

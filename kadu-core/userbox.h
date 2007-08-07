@@ -134,7 +134,11 @@ class KaduListBoxPixmap : public QListBoxItem
 		**/
 		virtual int width(const QListBox *lb) const;
 
-		void refreshPixmap();
+		/**
+			\fn void refreshItem()
+			Od¶wie¿a ikonê i tekst elementu.
+		**/
+		void refreshItem();
 
 		const UserListElement User;
 	protected:
