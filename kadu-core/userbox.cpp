@@ -464,8 +464,8 @@ UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
 	kdebugf();
 	Filters.append(group);
 
-	desc_action = new Action("ShowDescription", tr("Show descriptions"), "descriptionsAction", Action::TypeUserList);
-	desc_action->setOnShape("HideDescription", tr("Hide descriptions"));
+	desc_action = new Action("HideDescription", tr("Show descriptions"), "descriptionsAction", Action::TypeUserList);
+	desc_action->setOnShape("ShowDescription", tr("Hide descriptions"));
 	connect(desc_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(descriptionsActionActivated(const UserGroup*, const QWidget*, bool)));
 	connect(desc_action, SIGNAL(iconsRefreshed()), this, SLOT(setDescriptionsActionState()));
@@ -1034,14 +1034,10 @@ void UserBox::configurationUpdated()
 	int columnCount = config_file.readNumEntry("Look", "UserBoxColumnCount", 1);
 	setColumnMode(columnCount);
 
-	bool showDesc = config_file.readBoolEntry("Look", "ShowDesc", false);
-	if (KaduActions["descriptionsAction"])
-		KaduActions["descriptionsAction"]->setAllOn(showDesc);
-
 	QListBox::setFont(config_file.readFontEntry("Look", "UserboxFont"));
 
 	KaduListBoxPixmap::setFont(config_file.readFontEntry("Look", "UserboxFont"));
-	KaduListBoxPixmap::setShowDesc(showDesc);
+	KaduListBoxPixmap::setShowDesc(config_file.readBoolEntry("Look", "ShowDesc"));
 	KaduListBoxPixmap::setAlignTop(config_file.readBoolEntry("Look", "AlignUserboxIconsTop"));
 	KaduListBoxPixmap::setShowMultilineDesc(config_file.readBoolEntry("Look", "ShowMultilineDesc"));
 	KaduListBoxPixmap::setColumnCount(columnCount);
@@ -1051,6 +1047,7 @@ void UserBox::configurationUpdated()
 	tool_tip_class_manager->useToolTipClass(config_file.readEntry("Look", "UserboxToolTipStyle"));
 
 	UserBox::setColorsOrBackgrounds();
+	UserBox::setDescriptionsActionState();
 
 	UserBox::refreshAllLater();
 
