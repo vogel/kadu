@@ -464,12 +464,13 @@ UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
 	kdebugf();
 	Filters.append(group);
 
-	Action* desc_action = new Action("HideDescription", tr("Show / hide descriptions"),
-		"descriptionsAction", Action::TypeUserList);
-	desc_action->setToggleAction(true);
+	desc_action = new Action("ShowDescription", tr("Show descriptions"), "descriptionsAction", Action::TypeUserList);
+	desc_action->setOnShape("HideDescription", tr("Hide descriptions"));
 	connect(desc_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(descriptionsActionActivated(const UserGroup*, const QWidget*, bool)));
+	connect(desc_action, SIGNAL(iconsRefreshed()), this, SLOT(setDescriptionsActionState()));
 	KaduActions.insert("descriptionsAction", desc_action);
+	setDescriptionsActionState();
 
 	connect(group, SIGNAL(userAdded(UserListElement, bool, bool)),
 			this, SLOT(userAddedToGroup(UserListElement, bool, bool)));
@@ -578,10 +579,16 @@ void UserBox::hideTip(bool waitForAnother)
 
 void UserBox::descriptionsActionActivated(const UserGroup* /*users*/, const QWidget* /*widget*/, bool toggle)
 {
+	desc_action->setAllOn(toggle);
 	config_file.writeEntry("Look", "ShowDesc", toggle);
 //	dynamic_cast<QCheckBox *>(MainConfigurationWindow::instance()->widgetById("showDescription"))->setChecked(toggle);
 	KaduListBoxPixmap::setShowDesc(toggle);
 	UserBox::refreshAllLater();
+}
+
+void UserBox::setDescriptionsActionState()
+{
+	desc_action->setAllOn(KaduListBoxPixmap::ShowDesc);
 }
 
 void UserBox::wheelEvent(QWheelEvent *e)

@@ -351,9 +351,9 @@ void ChatManager::ignoreUserActionActivated(const UserGroup* users)
 			else
 			{
 				addIgnored(u);
-				ChatWidget *c = findChatWidget(u);
-				if (c)
-					c->close();
+				ChatWidget *chat = findChatWidget(u);
+				if (chat)
+					static_cast<QWidget *>(chat->parent())->close();
 			}
 			kadu->userbox()->refresh();
 			writeIgnored();

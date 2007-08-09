@@ -15,6 +15,7 @@
 
 class QFontMetrics;
 class ULEComparer;
+class Action;
 
 /**
 	Klasa zdolna do pokazywania ToolTipów nad oknem kontaktów.
@@ -274,6 +275,7 @@ class UserBoxMenu : public QPopupMenu
 
 	private:
 		QValueList<QPair<QString, QString> > iconNames;
+
 	private slots:
 		void restoreLook();
 
@@ -513,13 +515,20 @@ class UserBox : public QListBox, ConfigurationAwareObject
 	public slots:
 
 		/**
-			\fn descriptionsActionActivated(const UserGroup* users, const QWidget* widget, bool toggle)
+			\fn void descriptionsActionActivated(const UserGroup* users, const QWidget* widget, bool toggle)
 			Slot jest wywo³ywany, gdy aktywowano ukrywanie opisów kontaktów
 			\param users u¿ytkownicy (nieu¿ywany)
 			\param widget (nieu¿ywany)
 			\param toggle w³±czenie / wy³±czenie ukrywania opisów
 		**/
 		void descriptionsActionActivated(const UserGroup* users, const QWidget* widget, bool toggle);
+
+		/**
+			\fn void setDescriptionsActionState()
+			Slot jest wywo³ywany, w celu ustawienia poprawnego stanu dla akcji
+			w³±czaj±cej / wy³±czaj±cej pokazywanie opisów na li¶cie kontaktów
+		**/
+		void setDescriptionsActionState();
 
 		/**
 			\fn void applyFilter(UserGroup *group)
@@ -638,6 +647,8 @@ class UserBox : public QListBox, ConfigurationAwareObject
 
 	private:
 		static QValueList<UserBox*> UserBoxes;
+
+		Action *desc_action;
 
 		UserGroup *VisibleUsers;
 		QValueList<UserGroup *> Filters;
