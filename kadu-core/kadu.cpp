@@ -184,23 +184,24 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	connect(Userbox, SIGNAL(mouseButtonClicked(int, QListBoxItem *, const QPoint &)),
 		this, SLOT(mouseButtonClicked(int, QListBoxItem *)));
 	connect(Userbox, SIGNAL(currentChanged(UserListElement)), this, SLOT(currentChanged(UserListElement)));
+
 	UserBox::userboxmenu->addItem("OpenChat", tr("Open chat window") ,this, SLOT(openChat()));
 	UserBox::userboxmenu->insertSeparator();
 	UserBox::userboxmenu->addItem("WriteEmail", tr("Write email message"), this, SLOT(writeMail()));
 	UserBox::userboxmenu->addItem("CopyDescription", tr("Copy description"), this, SLOT(copyDescription()));
 	UserBox::userboxmenu->addItem("OpenDescriptionLink", tr("Open description link in browser"), this, SLOT(openDescriptionLink()));
 	UserBox::userboxmenu->addItem("CopyPersonalInfo", tr("Copy personal info"), this, SLOT(copyPersonalInfo()));
-	UserBox::userboxmenu->addItem("LookupUserInfo", tr("Search this user in directory"), this, SLOT(lookupInDirectory()),HotKey::shortCutFromFile("ShortCuts", "kadu_searchuser"));
+	UserBox::userboxmenu->addItem("LookupUserInfo", tr("Search in directory"), this, SLOT(lookupInDirectory()),HotKey::shortCutFromFile("ShortCuts", "kadu_searchuser"));
 	UserBox::userboxmenu->addItem("EditUserInfo", tr("View / edit user info"), this, SLOT(showUserInfo()),HotKey::shortCutFromFile("ShortCuts", "kadu_persinfo"));
 	UserBox::userboxmenu->insertSeparator();
 
-	UserBox::management->addItem("ManageIgnored", tr("Ignore user"), this, SLOT(ignoreUser()));
-	UserBox::management->addItem("Blocking", tr("Block user"), this, SLOT(blockUser()));
+	UserBox::management->addItem("ManageIgnored", tr("Ignore"), this, SLOT(ignoreUser()));
+	UserBox::management->addItem("Blocking", tr("Block"), this, SLOT(blockUser()));
 	UserBox::management->addItem("NotifyAboutUser", tr("Notify about user"), this, SLOT(notifyUser()));
 	UserBox::management->addItem("Offline", tr("Offline to user"), this, SLOT(offlineToUser()));
 	UserBox::management->addItem("HideDescription", tr("Hide description"), this, SLOT(hideDescription()));
 	UserBox::management->insertSeparator();
-	UserBox::management->addItem("RemoveFromUserlist", tr("Remove from userlist"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("ShortCuts", "kadu_deleteuser"));
+	UserBox::management->addItem("RemoveFromUserlist", tr("Delete"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("ShortCuts", "kadu_deleteuser"));
 
 	UserBox::userboxmenu->insertItem(tr("User management"), UserBox::management);
 
@@ -383,8 +384,8 @@ void Kadu::popupMenu()
 			containsMe = true;
 	}
 
-	int ignoreuseritem = UserBox::management->getItem(tr("Ignore user"));
-	int blockuseritem = UserBox::management->getItem(tr("Block user"));
+	int ignoreuseritem = UserBox::management->getItem(tr("Ignore"));
+	int blockuseritem = UserBox::management->getItem(tr("Block"));
 	int notifyuseritem = UserBox::management->getItem(tr("Notify about user"));
 	int offlinetouseritem = UserBox::management->getItem(tr("Offline to user"));
 	int hidedescriptionitem = UserBox::management->getItem(tr("Hide description"));
@@ -456,7 +457,7 @@ void Kadu::popupMenu()
 	if (users.count() != 1)
 		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("View / edit user info")), false);
 	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu"))
-		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Search this user in directory")), false);
+		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Search in directory")), false);
 	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu") || firstUser.status("Gadu").description().isEmpty())
 		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Copy description")), false);
 	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu") || firstUser.status("Gadu").description().isEmpty() ||

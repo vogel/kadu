@@ -889,16 +889,16 @@ Czy na pewno chcesz wysłać ten obrazek?</translation>
         <translation>Własny</translation>
     </message>
     <message>
-        <source>Search this user in directory</source>
-        <translation>Znajdź wybrany kontakt w katalogu</translation>
+        <source>Search in directory</source>
+        <translation>Znajdź w katalogu</translation>
     </message>
     <message>
-        <source>Ignore user</source>
-        <translation>Ignoruj kontakt</translation>
+        <source>Ignore</source>
+        <translation>Ignoruj</translation>
     </message>
     <message>
-        <source>Block user</source>
-        <translation>Blokuj kontakt</translation>
+        <source>Block</source>
+        <translation>Blokuj</translation>
     </message>
     <message>
         <source>Anonymous users will be unblocked after restarting Kadu</source>
