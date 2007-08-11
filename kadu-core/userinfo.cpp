@@ -15,6 +15,7 @@
 #include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qtabwidget.h>
+#include <qtooltip.h>
 #include <qvalidator.h>
 #include <qvbox.h>
 #include <qvgroupbox.h>
@@ -217,8 +218,6 @@ void UserInfo::setupTab1()
 	if (gadu->currentStatus().isOffline())
 		e_status->setText(tr("(Unknown)"));
 
-	dns = new QDns();
-
 	e_status->setReadOnly(true);
 	e_addr->setReadOnly(true);
 	e_ver->setReadOnly(true);
@@ -234,10 +233,26 @@ void UserInfo::setupTab1()
 	if (User.usesProtocol("Gadu"))
 	{
 		e_uin->setText(User.ID("Gadu"));
+
 		if (User.hasIP("Gadu"))
+		{
 			e_addr->setText(User.IP("Gadu").toString());
+
+			if (User.DNSName("Gadu").isEmpty())
+			{
+				dns = new QDns();
+				dns->setLabel(User.IP("Gadu"));
+				dns->setRecordType(QDns::Ptr);
+				connect(dns, SIGNAL(resultsReady()), this, SLOT(resultsReady()));
+			}
+			else
+				e_dnsname->setText(User.DNSName("Gadu"));
+		}
 		else
+		{
 			e_addr->setText(tr("(Unknown)"));
+			e_dnsname->setText(tr("(Unknown)"));
+		}
 
 		if (User.port("Gadu"))
 			e_addr->setText(e_addr->text() + ':' + QString::number(User.port("Gadu")));
@@ -255,19 +270,9 @@ void UserInfo::setupTab1()
 			e_ver->setText(tr("(Unknown)"));
 
 		e_status->setText(tr(User.status("Gadu").name().ascii()));
-		tw_main->setTabIconSet(vgb_general, User.status("Gadu").pixmap());
+		QToolTip::add(e_status, User.status("Gadu").description());
 
-		if (User.hasIP("Gadu"))
-		{
-			if (User.DNSName("Gadu").isEmpty())
-			{
-				dns->setLabel(User.IP("Gadu"));
-				dns->setRecordType(QDns::Ptr);
-				connect(dns, SIGNAL(resultsReady()), this, SLOT(resultsReady()));
-			}
-			else
-				e_dnsname->setText(User.DNSName("Gadu"));
-		}
+		tw_main->setTabIconSet(vgb_general, User.status("Gadu").pixmap());
 	}
 
 	kdebugf2();
