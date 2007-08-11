@@ -73,7 +73,7 @@ HistoryModule::HistoryModule() : QObject(NULL, "history")
 	KaduActions.addDefaultToolbarAction("Kadu toolbar", "showHistoryAction", 4);
 	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "showHistoryAction", 3);
 
-	UserBox::userboxmenu->addItemAtPos(5, "History", tr("View history"), this, SLOT(viewHistory()), HotKey::shortCutFromFile("ShortCuts", "kadu_viewhistory"));
+	UserBox::userboxmenu->addItemAtPos(5, "History", tr("History"), this, SLOT(viewHistory()), HotKey::shortCutFromFile("ShortCuts", "kadu_viewhistory"));
 	UserBox::management->addItemAtPos(7, "ClearHistory", tr("Clear history"),  this, SLOT(deleteHistory()));
 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
 
@@ -84,11 +84,11 @@ HistoryModule::~HistoryModule()
 {
 	kdebugf();
 
-	int history_item = UserBox::userboxmenu->getItem(tr("View history"));
+	int history_item = UserBox::userboxmenu->getItem(tr("History"));
 	int delete_history_item = UserBox::management->getItem(tr("Clear history"));
 	UserBox::userboxmenu->removeItem(history_item);
-	UserBox::userboxmenu->removeItem(delete_history_item);
-	disconnect(UserBox::userboxmenu,SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
+	UserBox::management->removeItem(delete_history_item);
+	disconnect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
 
 	KaduActions.remove("showHistoryAction");
 
@@ -285,12 +285,12 @@ void HistoryModule::userboxMenuPopup()
 		return;
 	}
 
-	int history_item = UserBox::userboxmenu->getItem(tr("View history"));
+	int history_item = UserBox::userboxmenu->getItem(tr("History"));
 	int delete_history_item = UserBox::management->getItem(tr("Clear history"));
 
 	bool any_ok = false;
 	CONST_FOREACH(user, users)
-		if ((*user).usesProtocol("Gadu") && (*user).ID("Gadu").toUInt() != config_file.readUnsignedNumEntry("General","UIN"))
+		if ((*user).usesProtocol("Gadu") && ((*user).ID("Gadu") != kadu->myself().ID("Gadu")))
 		{
 			any_ok = true;
 			break;

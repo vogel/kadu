@@ -30,8 +30,8 @@
         <translation>Nie zapisuj zmian statusu</translation>
     </message>
     <message>
-        <source>View history</source>
-        <translation>Pokaż historię</translation>
+        <source>History</source>
+        <translation>Historia</translation>
     </message>
     <message>
         <source>Show emoticons in history</source>
