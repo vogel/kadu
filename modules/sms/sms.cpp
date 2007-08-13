@@ -210,15 +210,17 @@ Sms::Sms(const QString& altnick, QWidget* parent, const char *name) : QWidget(pa
 	else
 		recipient->setText(userlist->byAltNick(altnick).mobile());
 	connect(recipient, SIGNAL(textChanged(const QString&)), this, SLOT(updateList(const QString&)));
+	connect(recipient, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
 	grid->addWidget(recipient, 0, 1);
 
-	QStringList strlist;
-	list = new QComboBox(this);
+	QStringList strlist; // lista kontaktow z przypisanym numerem telefonu
 	CONST_FOREACH(user, *userlist)
 		if (!(*user).mobile().isEmpty())
 		 	strlist.append((*user).altNick());
 	strlist.sort();
-	strlist.insert(strlist.begin(), QString::null);
+	strlist.prepend(QString::null);
+
+	list = new QComboBox(this);
 	list->insertStringList(strlist);
 	list->setCurrentText(altnick);
 	connect(list, SIGNAL(activated(const QString&)), this, SLOT(updateRecipient(const QString &)));
@@ -227,17 +229,19 @@ Sms::Sms(const QString& altnick, QWidget* parent, const char *name) : QWidget(pa
 	QLabel *recilabel = new QLabel(tr("Recipient"), this);
 	grid->addWidget(recilabel, 0, 0);
 
-	l_contact= new QLabel(tr("Contact"), this);
+	l_contact = new QLabel(tr("Contact"), this);
 	grid->addWidget(l_contact, 3, 0);
-	e_contact= new QLineEdit(this);
+	e_contact = new QLineEdit(this);
+	connect(e_contact, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
 	grid->addWidget(e_contact, 3, 1);
 
 	smslen = new QLabel("0", this);
 	grid->addWidget(smslen, 3, 3, Qt::AlignRight);
 
-	l_signature= new QLabel(tr("Signature"), this);
+	l_signature = new QLabel(tr("Signature"), this);
 	grid->addWidget(l_signature, 4, 0);
-	e_signature= new QLineEdit(config_file.readEntry("SMS", "SmsNick"), this);
+	e_signature = new QLineEdit(config_file.readEntry("SMS", "SmsNick"), this);
+	connect(e_signature, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
 	grid->addWidget(e_signature, 4, 1);
 
 	c_saveInHistory = new QCheckBox(tr("Save SMS in history"), this);
@@ -249,7 +253,7 @@ Sms::Sms(const QString& altnick, QWidget* parent, const char *name) : QWidget(pa
 	b_send->setText(tr("&Send"));
 	b_send->setDefault(true);
 	b_send->setMaximumWidth(200);
-	connect(b_send, SIGNAL(clicked()), this, SLOT(sendSms()));
+	connect(b_send, SIGNAL(clicked()), this, SLOT(editReturnPressed()));
 	grid->addWidget(b_send, 5, 3, Qt::AlignRight);
 
 	resize(400, 250);
@@ -315,6 +319,18 @@ void Sms::updateList(const QString &newnumber)
 	kdebugf2();
 }
 
+void Sms::editReturnPressed(void)
+{
+	kdebugf();
+
+	if (body->text().isEmpty())
+		body->setFocus();
+	else
+		sendSms();
+
+	kdebugf2();
+}
+
 void Sms::sendSms(void)
 {
 	kdebugf();
@@ -326,29 +342,29 @@ void Sms::sendSms(void)
 	l_signature->setEnabled(false);
 	c_saveInHistory->setEnabled(false);
 
-	if (config_file.readBoolEntry("SMS","BuiltInApp"))
+	if (config_file.readBoolEntry("SMS", "BuiltInApp"))
 	{
 		Sender.send(recipient->text(), body->text(), e_contact->text(), e_signature->text());
 	}
 	else
 	{
-		if (config_file.readEntry("SMS","SmsApp").isEmpty())
+		if (config_file.readEntry("SMS", "SmsApp").isEmpty())
 		{
 			MessageBox::msg(tr("Sms application was not specified. Visit the configuration section"), false, "Warning", this);
 			kdebugm(KDEBUG_WARNING, "SMS application NOT specified. Exit.\n");
 			return;
 		}
-		QString SmsAppPath=config_file.readEntry("SMS","SmsApp");
+		QString SmsAppPath = config_file.readEntry("SMS", "SmsApp");
 
 		smsProcess = new QProcess(this);
-		if (config_file.readBoolEntry("SMS","UseCustomString")&&
-			(!config_file.readBoolEntry("SMS","BuiltInApp")))
+		if (config_file.readBoolEntry("SMS", "UseCustomString")&&
+			(!config_file.readBoolEntry("SMS", "BuiltInApp")))
 		{
-			QStringList args=QStringList::split(' ',config_file.readEntry("SMS","SmsString"));
-			if(args.find("%n")!=args.end())
-				*args.find("%n")=recipient->text();
-			if(args.find("%m")!=args.end())
-				*args.find("%m")=body->text();
+			QStringList args = QStringList::split(' ', config_file.readEntry("SMS", "SmsString"));
+			if(args.find("%n") != args.end())
+				*args.find("%n") = recipient->text();
+			if(args.find("%m") != args.end())
+				*args.find("%m") = body->text();
 			args.prepend(SmsAppPath);
 			smsProcess->setArguments(args);
 		}

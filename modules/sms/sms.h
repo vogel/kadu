@@ -130,6 +130,7 @@ class Sms : public QWidget, ConfigurationAwareObject
 	private slots:
 		void updateRecipient(const QString &);
 		void updateList(const QString& newnumber);
+		void editReturnPressed();
 		void sendSms();
 		void updateCounter();
 		void smsSigHandler();
