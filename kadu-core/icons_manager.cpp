@@ -169,17 +169,19 @@ void IconsManager::configurationUpdated()
 void IconsManager::initModule()
 {
 	kdebugf();
-	icons_manager = new IconsManager ("icons", "icons.conf");
+
+	icons_manager = new IconsManager("icons", "icons.conf");
 	config_file.addVariable("Look", "IconsPaths", QString::null);
 	config_file.addVariable("Look", "IconTheme", "default");
 
-	icons_manager->setPaths(QStringList::split(";", config_file.readEntry("Look", "IconsPaths")));
+	icons_manager->setPaths(QStringList::split(":", config_file.readEntry("Look", "IconsPaths")));
 
 	QStringList themes = icons_manager->themes();
-	if (!themes.contains(config_file.readEntry("Look","IconTheme")) && !themes.isEmpty())
+	QString theme = config_file.readEntry("Look", "IconTheme");
+	if (!themes.isEmpty() && !themes.contains(theme))
 		config_file.writeEntry("Look", "IconTheme", themes[0]);
 
-	icons_manager->setTheme(config_file.readEntry("Look","IconTheme"));
+	icons_manager->setTheme(theme);
 
 	kdebugf2();
 }
