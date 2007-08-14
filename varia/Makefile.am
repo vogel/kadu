@@ -16,8 +16,31 @@ install-data-local: uninstall-local
 	@for i_t in $(enabled_icon_themes); do \
 		echo -e "\033[32m>>>\033[0m Installing $$i_t icon theme ..."; \
 		$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/themes/icons/$$i_t"; \
-		$(INSTALL_DATA) themes/icons/$$i_t/icons.conf "$(DESTDIR)$(datadir)/kadu/themes/icons/$$i_t"; \
-		$(INSTALL_DATA) themes/icons/$$i_t/* "$(DESTDIR)$(datadir)/kadu/themes/icons/$$i_t"; \
+		cd themes/icons/$$i_t; \
+		i_dirs=""; \
+		i_files=""; \
+		for i_d in *; do \
+			if test -d $$i_d; then \
+				i_dirs="$$i_dirs $$i_d"; \
+				cd $$i_d; \
+				for ii_d in *; do \
+					if test -d $$ii_d; then \
+						i_dirs="$$i_dirs $$i_d/$$ii_d"; \
+					fi; \
+				done; \
+				cd ..; \
+			else \
+				i_files="$$i_files $$i_d"; \
+			fi; \
+		done; \
+		cd ../../..; \
+		for i_d in $$i_dirs; do \
+			$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/themes/icons/$$i_t/$$i_d"; \
+			$(INSTALL_DATA) themes/icons/$$i_t/$$i_d/* "$(DESTDIR)$(datadir)/kadu/themes/icons/$$i_t/$$i_d"; \
+		done; \
+		for i_f in $$i_files; do \
+			$(INSTALL_DATA) themes/icons/$$i_t/$$i_f "$(DESTDIR)$(datadir)/kadu/themes/icons/$$i_t"; \
+		done; \
 	done
 
 	$(mkinstalldirs) "$(DESTDIR)$(datadir)/kadu/themes/emoticons/"
