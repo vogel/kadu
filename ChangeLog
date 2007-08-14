@@ -118,11 +118,13 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * encryption: poprawiono b³±d [0000586] - mo¿liwo¶æ wys³ania klucza do kilku kontaktów naraz (Vogel)
 * core: poprawiono b³±d [0000518] - przeci±ganie kontaktu z "Wszyscy" do innej grupy blokuje opcjê "Przesuñ do grupy" (Vogel)
 * klasa KaduParser stworzona z przestrzeni nazw KaduParser (Vogel)
-* klasa KaduParser ma mo¿liwo¶æ parsowania stringów z wykorzystaniem dwóch obiektów ze zmiennymi (UserListElement i dowolny pochodny od QObject) (Vogel)
+* klasa KaduParser ma mo¿liwo¶æ parsowania stringów z wykorzystaniem dwóch obiektów ze zmiennymi (UserListElement
+  i dowolny pochodny od QObject) (Vogel)
 * notyfikacja "B³±d po³±czenia" zamieniona w klasê pochodn± od Notification (Vogel)
 * hints: poprawione domy¶lne kolory dymków (Vogel)
 * toolbars: poprawiono b³±d [0000538] - wyrównywanie toolbarów do prawej strony okna (Vogel)
-* poprawiono b³±d [0000549] - anonimowy kontakt wy¶wietla siê tak¿e po ponownym w³±czeniu kadu, je¿eli poprzednio wiadomo¶æ nie zosta³a odebrana (Vogel)
+* poprawiono b³±d [0000549] - anonimowy kontakt wy¶wietla siê tak¿e po ponownym w³±czeniu kadu, je¿eli poprzednio
+  wiadomo¶æ nie zosta³a odebrana (Vogel)
 * kompilacja Kadu: poprawka po ostatnich zmianach, kompilacja z --enable-final znowu dzia³a (White Eagle/neeo)
 * migration: po udanej migracji, modu³ przestaje byæ ³adowany (uzi18,neeo)
 * potwierdzanie nadpisania pliku wybranego przy eksporcie listy kontaktów (neeo)
@@ -142,7 +144,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dcc: wysy³anie plików jest ukrywane z popupu dla nas samych i kontaktów, które nie korzystaj± z protoko³u Gadu (neeo)
 * uniemo¿liwiono dwukrotne dodanie akcji do tego samego paska narzêdziowego (neeo)
 * aktualizacja do najnowszej wersji libgadu, zawieraj±cej poprawki w resolverze (neeo)
-* hints: autoznikanie dymków po odebraniu wiadomo¶ci, na razie ¼le dzia³a z opcj± automatycznego otwierania okna przy otrzymaniu nowej wiadomo¶ci (Vogel)
+* hints: autoznikanie dymków po odebraniu wiadomo¶ci, na razie ¼le dzia³a z opcj± automatycznego otwierania
+  okna przy otrzymaniu nowej wiadomo¶ci (Vogel)
 * dcc: drobna poprawka, dzia³a nieco lepiej (Vogel)
 * poprawiono b³±d [0000617]: blokowanie mo¿liwo¶ci otwarcia okna rozmowy z samym sob± (Vogel)
 * notify: poprawiono mo¿liw± wywrotkê przy dwukrotnym zamykaniu tej samej notyfikacji (Vogel)
