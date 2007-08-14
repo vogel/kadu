@@ -37,7 +37,8 @@ class KaduLink : public QLabel
 		}
 };
 
-About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopLevel|WDestructiveClose), layoutHelper(new LayoutHelper())
+About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopLevel | WDestructiveClose),
+	layoutHelper(new LayoutHelper())
 {
 	kdebugf();
 	// set window properties and flags

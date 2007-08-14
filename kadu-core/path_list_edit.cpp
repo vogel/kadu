@@ -57,11 +57,10 @@ void PathListEdit::setPathList(const QStringList &pathList)
 }
 
 PathListEditWindow::PathListEditWindow(const QStringList &pathList, QWidget *parent, const char *name)
-	: QWidget(parent, name)
+	: QWidget(parent, name, WDestructiveClose)
 {
 	kdebugf();
 
-	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Select paths"));
 
 	QGridLayout *Layout = new QGridLayout(this);

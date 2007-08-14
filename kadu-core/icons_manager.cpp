@@ -9,9 +9,9 @@
 
 #include <qcombobox.h>
 #include <qmessagebox.h>
+#include <qregexp.h>
 
 #include "action.h"
-// #include "config_dialog.h"
 #include "config_file.h"
 #include "debug.h"
 #include "icons_manager.h"
@@ -174,7 +174,7 @@ void IconsManager::initModule()
 	config_file.addVariable("Look", "IconsPaths", QString::null);
 	config_file.addVariable("Look", "IconTheme", "default");
 
-	icons_manager->setPaths(QStringList::split(":", config_file.readEntry("Look", "IconsPaths")));
+	icons_manager->setPaths(QStringList::split(QRegExp("(;|:)"), config_file.readEntry("Look", "IconsPaths")));
 
 	QStringList themes = icons_manager->themes();
 	QString theme = config_file.readEntry("Look", "IconTheme");
