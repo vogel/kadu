@@ -10,52 +10,39 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   - losujemy kolejno¶æ ³±czenia siê z serwerami
   - gdy nie uda siê po³±czyæ na porcie 8074, próbujemy na 443
   - dodane do rotacji 2 nowe serwery
-* wykorzystujemy w³a¶ciwo¶æ gcc 4 i ukrywamy symbole, które nie maj± prawa
-  byæ u¿ywane przez modu³y (joi)
-* nie pokazujemy okna z komunikatem o zablokowanym profilu, tylko
-  pokazujemy g³ówne okno programu (joi)
+* wykorzystujemy w³a¶ciwo¶æ gcc 4 i ukrywamy symbole, które nie maj± prawa byæ u¿ywane przez modu³y (joi)
+* nie pokazujemy okna z komunikatem o zablokowanym profilu, tylko pokazujemy g³ówne okno programu (joi)
 * zapisujemy atrybuty czcionek wybranych w konfiguracji (montor/joi)
-* mo¿liwo¶æ pomijania czasu serwera dla wiadomo¶ci przychodz±cych,
-  gdy ró¿nica z czasem lokalnym jest niewielka (neeo)
-* zmiana uk³adu menu PPM na kontakcie - wydzielone 'Zarz±dzanie
-  kontaktami (FuKu,neeo)
-* nowa pozycja w menu kontaktu, pozwalaj±ca na otwarcie w przegl±darce
-  linku z opisu (neeo)
+* mo¿liwo¶æ pomijania czasu serwera dla wiadomo¶ci przychodz±cych, gdy ró¿nica z czasem lokalnym jest niewielka (neeo)
+* zmiana uk³adu menu PPM na kontakcie - wydzielone 'Zarz±dzanie kontaktami' (FuKu,neeo)
+* nowa pozycja w menu kontaktu, pozwalaj±ca na otwarcie w przegl±darce linku z opisu (neeo)
 * mo¿liwo¶æ parsowania opisu statusu przez parser Kadu (Dorregaray/neeo)
 * domy¶lna sk³adnia dymków korzysta z pola Wy¶wietlane (arvenil/neeo)
 * window_notify: powiadamianie o nowej rozmowie i nowej wiadomo¶ci znowu dzia³a (joi)
 * configure: przy szukaniu bibliotek u¿ywamy $CXX, a nie $CC (joi)
-* poprawka wywrotki przy naci¶niêciu prawego przycisku na li¶cie kontaktów
-  w specyficznych okoliczno¶ciach (joi)
+* poprawka wywrotki przy naci¶niêciu prawego przycisku na li¶cie kontaktów w specyficznych okoliczno¶ciach (joi)
 * refaktoryzacja modu³u hints (Vogel)
 * nowe okno przesy³ania plików (Vogel)
-* usuniêty b³±d zwi±zany z SIGPIPE przy transferze plików w dcc (bardzo rzadko
-  wystêpuj±cy) (Vogel)
+* usuniêty b³±d zwi±zany z SIGPIPE przy transferze plików w dcc (bardzo rzadko wystêpuj±cy) (Vogel)
 * obs³uga wywo³añ zwrotnych w notify (Vogel)
 * obs³uga wywo³añ zwrotnych w window_notify (Vogel)
 * modu³ dcc korzysta z wywo³añ zwrotnych w notify (Vogel)
-* poprawka wywkrywania execinfo (obs³uga backtrace'ów) po ostatnich zabawach
-  z configure (joi)
+* poprawka wywkrywania execinfo (obs³uga backtrace'ów) po ostatnich zabawach z configure (joi)
 * w Makefile'ach modu³ów nowy cel: update-translations (joi)
-* nowa opcja configure: --disable-autodownload, wy³±czaj±ca (uwaga, niespodzianka!)
-  autodownload (joi)
+* nowa opcja configure: --disable-autodownload, wy³±czaj±ca (uwaga, niespodzianka!) autodownload (joi)
 * poprawione pozycjonowanie menu kontekstowych (gdy menu otwiera³o siê przy
   krawêdzi, wybierana by³a od razu pierwsza z brzegu pozycja) (joi)
-* ustawiania czcionek w module hints znowu dzia³a (Vogel)
+* ustawianie czcionek w module hints znowu dzia³a (Vogel)
 * dodano kilka brakuj±cych plików nag³ówkowych w ró¿nych miejscach (Vogel)
-* opcja pozwalaj±ca w³±czyæ pokazywanie na li¶cie kontaktów anonimów
-  z nieodebranymi wiadomo¶ciami (joi)
+* opcja pozwalaj±ca w³±czyæ pokazywanie na li¶cie kontaktów anonimów z nieodebranymi wiadomo¶ciami (joi)
 * w oknie "O programie" pokazujemy dok³adniesz± informacjê o wersji (joi)
 * przy wy³±czaniu programu zapamiêtujemy listê otwartych okien rozmowy,
   a przy nastêpnym uruchomieniu odtwarzamy je (joi)
 * nowa akcja umo¿liwiaj±ca zatrzymanie wyszukiwania w katalogu (neeo)
-* mo¿liwo¶æ zamkniêcia okna wysy³ania SMS z poziomu informacji o pomy¶lnym
-  przes³aniu wiadomo¶ci (neeo)
-* przycisk wysy³ania wiadomo¶ci w oknie rozmowy jest zablokowany, je¶li pole
-  edycji jest puste (neeo)
+* mo¿liwo¶æ zamkniêcia okna wysy³ania SMS z poziomu informacji o pomy¶lnym przes³aniu wiadomo¶ci (neeo)
+* przycisk wysy³ania wiadomo¶ci w oknie rozmowy jest zablokowany, je¶li pole edycji jest puste (neeo)
 * usuniête po³±czenie do nieistniej±cych slotów w dcc (Vogel)
-* w oknie "O programie..." kursor zmienia siê na ³apkê po najechaniu
-  nad link strony Kadu (Prezu/neeo)
+* w oknie "O programie..." kursor zmienia siê na ³apkê po najechaniu nad link strony Kadu (Prezu/neeo)
 * QString -> const char * w wywo³aniach zwrotnych w notyfikacjach (Vogel)
 * obs³uga wywo³añ zwrotnych w hints (Vogel)
 * usuniêto nieu¿ywan± nigdzie metodê setShown z klasy Hint a tak¿e parametr show z metody set (Vogel)
@@ -63,21 +50,17 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * ³adniejsze okno MessageBox (Vogel)
 * kilka poprawek w MessageBox i w window_notify (Vogel)
 * modu³ encryption przy wy³adowaniu usuwa przycisk szyfrowania z okna Chat (Prezu/neeo)
-* uruchomienie Kadu z parametrem numer, gg:numer, gg:/numer, gg://numer, itd.
-  spowoduje otwarcie okna rozmowy ze wskazanym numerem, TAK¯E gdy Kadu jest
-  ju¿ uruchomione (joi)
+* uruchomienie Kadu z parametrem numer, gg:numer, gg:/numer, gg://numer, itd. spowoduje otwarcie okna
+  rozmowy ze wskazanym numerem, TAK¯E gdy Kadu jest ju¿ uruchomione (joi)
 * przy ukrywaniu niedostêpnych, konkakty z samym numerem telefonu s± pokazywane (neeo)
 * zmiana nazwy wewnêtrznego katalogu kadu na kadu-core (joi)
-* przy podwójnym klikniêciu na li¶cie kontaktów, przywrócenie focusu oknu rozmowy,
-  gdy jest ono zminimalizowane (joi)
+* przy podwójnym klikniêciu na li¶cie kontaktów, przywrócenie focusu oknu rozmowy, gdy jest ono zminimalizowane (joi)
 * poprawka wywrotki przy dodawaniu akcji "zatrzymania wyszukiwania w katalogu" (joi)
 * optymalizacja od¶wie¿ania listy kontaktów przy zmianie rozmiarów okna (joi)
 * ukrywanie niedostêpnych uniezale¿nione od u¿ywanych protoko³ów (neeo)
-* przy od¶wie¿aniu listy kontaktów, je¿eli pozycja ¿adnego z kontaktów siê nie
-  zmieni³a, to od¶wie¿enie wykonujemy du¿o sprytniej, co zaoszczêdza czasu i
-  mrugniêcia listy kontaktów (joi)
-* prawid³owe pozycjonowanie animowanych emotikon/obrazków w przypadku
-  przesuwania poziomego scrollbara (joi)
+* przy od¶wie¿aniu listy kontaktów, je¿eli pozycja ¿adnego z kontaktów siê nie zmieni³a, to od¶wie¿enie
+  wykonujemy du¿o sprytniej, co zaoszczêdza czasu i mrugniêcia listy kontaktów (joi)
+* prawid³owe pozycjonowanie animowanych emotikon/obrazków w przypadku przesuwania poziomego scrollbara (joi)
 * dodana opcja w konfiguracji (na poziomie zaawansowanym), umo¿liwiaj±ca wy³±czenie
   potwierdzania czyszczenia okna Chat (neeo)
 * nowy modu³ "history", akcja pokazuj±ca dialog historii przeniesiona do modu³u (adrian)
@@ -88,8 +71,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * cytowanie wiadomo¶ci w oknie rozmowy przeniesione do modu³u "history" (adrian)
 * poprawka zapisywania modu³u d¼wiêkowego wybranego z poziomu wizarda (Dorregaray/joi)
 * u¿ycie rolki myszy w oknie rozmowy nie powoduje przeniesienia focusu z pola edycji (Arvenil/neeo)
-* opcje menu kontekstowego oraz obs³uga skrótów zwi±zanych z histori± przeniesione
-  do modu³u "history" (adrian)
+* opcje menu kontekstowego oraz obs³uga skrótów zwi±zanych z histori± przeniesione do modu³u "history" (adrian)
 * tytu³ okna Chat pokazuje liczbê oczekuj±cych wiadomo¶ci (micha³,neeo)
 * nowe sygna³y w chat_manager: chatCreated(Chat *), chatCreated(Chat *, time_t), chatDestroying(Chat *),
   chatDestroyed(Chat *) i ich wykorzystanie tam, gdzie jest to przydatne (Vogel)
@@ -118,8 +100,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * encryption: poprawiono b³±d [0000586] - mo¿liwo¶æ wys³ania klucza do kilku kontaktów naraz (Vogel)
 * core: poprawiono b³±d [0000518] - przeci±ganie kontaktu z "Wszyscy" do innej grupy blokuje opcjê "Przesuñ do grupy" (Vogel)
 * klasa KaduParser stworzona z przestrzeni nazw KaduParser (Vogel)
-* klasa KaduParser ma mo¿liwo¶æ parsowania stringów z wykorzystaniem dwóch obiektów ze zmiennymi (UserListElement
-  i dowolny pochodny od QObject) (Vogel)
+* klasa KaduParser ma mo¿liwo¶æ parsowania stringów z wykorzystaniem dwóch obiektów ze zmiennymi
+  (UserListElement i dowolny pochodny od QObject) (Vogel)
 * notyfikacja "B³±d po³±czenia" zamieniona w klasê pochodn± od Notification (Vogel)
 * hints: poprawione domy¶lne kolory dymków (Vogel)
 * toolbars: poprawiono b³±d [0000538] - wyrównywanie toolbarów do prawej strony okna (Vogel)
@@ -175,8 +157,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * ujednolicone Protocol::sendMessage (Juzef/Vogel)
 * userbox: szeroko¶æ kolumn -> liczba kolumn (Vogel)
 * poprawka ikonek w menu statusu (michal)
-* linki mozna bez obawy przekazywac w natywnym kodowaniu do przegladarki, nie
-  trzeba ich konwertowac (michal)
+* linki mozna bez obawy przekazywac w natywnym kodowaniu do przegladarki, nie trzeba ich konwertowac (michal)
 * [0000594] wy¶wietlanie daty jako odstêpu czasu w oknie chatu (michal)
 * mo¿liwo¶æ ustawiania obrazka w tle listy kontaktu jako Tiled/Centered/Stretched (Vogel)
 * chat: format wiadomo¶ci parsowany przez KaduParser (Vogel)
