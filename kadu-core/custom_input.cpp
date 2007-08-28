@@ -33,7 +33,7 @@ void CustomInput::keyPressEvent(QKeyEvent* e)
 		return;
 	}
 
-	if (autosend_enabled && ((HotKey::shortCut(e,"ShortCuts", "chat_newline")) || e->key()==Key_Enter)&& !(e->state() & ShiftButton))
+	if (autosend_enabled && ((HotKey::shortCut(e, "ShortCuts", "chat_newline")) || e->key() == Key_Enter) && !(e->state() & ShiftButton))
 	{
 		kdebugmf(KDEBUG_INFO, "emit sendMessage()\n");
 		emit sendMessage();
@@ -57,27 +57,34 @@ void CustomInput::keyPressEvent(QKeyEvent* e)
 			kdebugf2();
 			return;
 		}
- 		if (HotKey::shortCut(e,"ShortCuts", "chat_bold"))
+ 		if (HotKey::shortCut(e, "ShortCuts", "chat_bold"))
  		{
  			emit specialKeyPressed(CustomInput::KEY_BOLD);
  			e->accept();
  			kdebugf2();
  			return;
  		}
- 		else if (HotKey::shortCut(e,"ShortCuts", "chat_italic"))
+ 		else if (HotKey::shortCut(e, "ShortCuts", "chat_italic"))
  		{
  			emit specialKeyPressed(CustomInput::KEY_ITALIC);
  			e->accept();
  			kdebugf2();
  			return;
  		}
- 		else if (HotKey::shortCut(e,"ShortCuts", "chat_underline"))
+ 		else if (HotKey::shortCut(e, "ShortCuts", "chat_underline"))
  		{
  			emit specialKeyPressed(CustomInput::KEY_UNDERLINE);
  			e->accept();
  			kdebugf2();
  			return;
  		}
+		else if (e->key() == Key_A && (e->state() & ControlButton))
+		{
+			selectAll();	
+			e->accept();
+ 			kdebugf2();
+ 			return;
+		}
 	}
 	QMultiLineEdit::keyPressEvent(e);
 	kdebugf2();
