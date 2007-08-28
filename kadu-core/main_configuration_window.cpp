@@ -61,7 +61,7 @@ void MainConfigurationWindow::instanceCreated()
 }
 
 MainConfigurationWindow::MainConfigurationWindow()
-	: ConfigurationWindow("main"), lookChatAdvanced(0)
+	: ConfigurationWindow("main", "Kadu configuration"), lookChatAdvanced(0)
 {
 	appendUiFile(dataPath("kadu/configuration/dialog.ui"));
 
@@ -118,7 +118,7 @@ MainConfigurationWindow::MainConfigurationWindow()
 	connect(widgetById("chatSyntax"), SIGNAL(onSyntaxEditorWindowCreated(SyntaxEditorWindow *)),
 		this, SLOT(onChatSyntaxEditorWindowCreated(SyntaxEditorWindow *)));
 
-// 	connect(widgetById("iconPaths"), SIGNAL(changed()), this, SLOT(setIconThemes()));
+ 	connect(widgetById("iconPaths"), SIGNAL(changed()), this, SLOT(setIconThemes()));
 
 	loadGeometry(this, "General", "ConfigGeometry", 0, 30, 790, 480);
 }
@@ -138,9 +138,9 @@ void MainConfigurationWindow::show()
 		setIconThemes();
 		setEmoticonThemes();
 		setToolTipClasses();
-
-		ConfigurationWindow::show();
 	}
+
+	ConfigurationWindow::show();
 }
 
 void MainConfigurationWindow::prepareChatPreview(Preview *preview, bool append)
@@ -240,8 +240,10 @@ void MainConfigurationWindow::setQtThemes()
 void MainConfigurationWindow::setIconThemes()
 {
 	ConfigComboBox *iconThemes = dynamic_cast<ConfigComboBox *>(widgetById("iconThemes"));
+	icons_manager->setPaths((dynamic_cast<PathListEdit *>(widgetById("iconPaths")))->pathList());
 
 	QStringList themes = icons_manager->themes();
+	themes.sort();
 
 	iconThemes->setItems(themes, themes);
 	iconThemes->setCurrentText(icons_manager->theme());
@@ -483,7 +485,7 @@ void MainConfigurationWindow::showLookChatAdvanced()
 {
 	if (!lookChatAdvanced)
 	{
-		lookChatAdvanced = new ConfigurationWindow("dialog-look-chat-advanced");
+		lookChatAdvanced = new ConfigurationWindow("dialog-look-chat-advanced", "Advenced chat's look configuration");
 		lookChatAdvanced->appendUiFile(dataPath("kadu/configuration/dialog-look-chat-advanced.ui"));
 
 		connect(lookChatAdvanced->widgetById("removeServerTime"), SIGNAL(toggled(bool)), lookChatAdvanced->widgetById("maxTimeDifference"), SLOT(setEnabled(bool)));
@@ -498,4 +500,9 @@ void MainConfigurationWindow::showLookChatAdvanced()
 void MainConfigurationWindow::lookChatAdvancedDestroyed()
 {
 	lookChatAdvanced = 0;
+}
+
+void MainConfigurationWindow::keyPressEvent(QKeyEvent *e)
+{
+	ConfigurationWindow::keyPressEvent(e);
 }

@@ -68,7 +68,7 @@ class MainConfigurationWindow : public ConfigurationWindow
 	QValueList<ChatMessage *> chatMessages;
 
 	void setLanguages();
-	void setIconThemes();
+
 	void setEmoticonThemes();
 	void setQtThemes();
 	void setToolTipClasses();
@@ -90,6 +90,8 @@ private slots:
 	void onChatSyntaxEditorWindowCreated(SyntaxEditorWindow *syntaxEditorWindow);
 	void chatSyntaxFixup(QString &syntax);
 	void chatFixup(Preview *preview);
+
+	void setIconThemes();
 
 public:
 	static MainConfigurationWindow * instance()
@@ -119,6 +121,9 @@ public:
 	virtual ~MainConfigurationWindow();
 
 	virtual void show();
+
+protected:
+	virtual void keyPressEvent(QKeyEvent *e);
 };
 
 #endif // MAIN_CONFIGURATION_WINDOW_H

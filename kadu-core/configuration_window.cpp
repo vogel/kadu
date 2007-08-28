@@ -214,8 +214,9 @@ ConfigTab *ConfigSection::configTab(const QString &name, bool create)
 
 void ConfigSection::removedConfigTab(const QString &configTabName)
 {
-	configTabs.remove(configTabName);
+	mainWidget->removePage(configTabs[configTabName]->widget());
 
+	configTabs.remove(configTabName);
 	if (!configTabs.count())
 	{
 		delete this;
@@ -223,10 +224,11 @@ void ConfigSection::removedConfigTab(const QString &configTabName)
 	}
 }
 
-ConfigurationWindow::ConfigurationWindow(const QString &name)
+ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &caption)
 	: Name(name), currentSection(0)
 {
 	setWFlags(getWFlags() | Qt::WDestructiveClose);
+	setCaption(tr(caption));
 
 	QHBox *center = new QHBox(this);
 	center->setMargin(10);
@@ -278,6 +280,11 @@ void ConfigurationWindow::show()
 
 		loadConfiguration(this);
 		QVBox::show();
+	}
+	else
+	{
+		setActiveWindow();
+		raise();
 	}
 }
 
@@ -666,6 +673,17 @@ void ConfigurationWindow::removedConfigSection(const QString &sectionName)
 	// TODO: finish it
 //	configSections.remove(sectionName);
 // 	sectionsListBox->remove(tr(sectionName));
+}
+
+void ConfigurationWindow::keyPressEvent(QKeyEvent *e)
+{
+	if (e->key() == Key_Escape)
+	{
+		e->accept();
+		deleteLater();
+	}
+	else
+		QVBox::keyPressEvent(e);
 }
 
 #ifdef HAVE_OPENSSL

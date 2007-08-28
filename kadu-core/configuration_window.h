@@ -167,7 +167,7 @@ public:
 		jest przy zapamiêtywaniu pozycji okna oraz jego ostatnio
 		otwartej karty.
 	 **/
-	ConfigurationWindow(const QString &name);
+	ConfigurationWindow(const QString &name, const QString &caption);
 	virtual ~ConfigurationWindow();
 
 	QString name() { return Name; }
@@ -206,6 +206,9 @@ public:
 
 	// TODO: make private or sth
 	void removedConfigSection(const QString &sectionName);
+
+protected:
+	virtual void keyPressEvent(QKeyEvent *e);
 
 signals:
 	/**
