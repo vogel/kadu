@@ -1,4 +1,4 @@
-/* $Id: compat.h,v 1.3 2004-10-29 18:20:41 wojtekka Exp $ */
+/* $Id: compat.h,v 1.4 2007-07-20 23:00:48 wojtekka Exp $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -17,6 +17,12 @@
  *  License along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
  *  USA.
+ */
+
+/**
+ * \file compat.h
+ *
+ * \brief Makra zapewniaj±ce kompatybilno¶æ API na ró¿nych systemach
  */
 
 #ifndef __COMPAT_H

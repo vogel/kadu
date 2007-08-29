@@ -1,7 +1,7 @@
-dnl $Id: configure.ac,v 1.7 2007-05-16 17:07:08 wojtekka Exp $
+dnl $Id: configure.ac,v 1.8 2007-07-20 23:00:43 wojtekka Exp $
 
 AC_INIT(src/libgadu.c)
-AM_INIT_AUTOMAKE(libgadu, 1.7.1)
+AM_INIT_AUTOMAKE(libgadu, 1.7.90)
 
 AC_PREREQ(2.50)
 AC_CANONICAL_HOST
