@@ -54,6 +54,7 @@ QString translateLanguage(const QApplication *application, const QString &locale
 
 void openWebBrowser(const QString &link);
 void openMailClient(const QString &mail);
+void openGGChat(const QString &gg);
 
 QString versionToName(const unsigned int version);
 

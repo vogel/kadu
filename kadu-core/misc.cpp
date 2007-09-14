@@ -647,11 +647,27 @@ void openMailClient(const QString &mail)
 	kdebugf2();
 }
 
+void openGGChat(const QString &gg)
+{
+	kdebugf();
+
+	QString gadu = gg;
+	if (gadu.startsWith("gg:"))
+	{
+		gadu.remove(0, 3);
+		gadu.remove(QRegExp("/*"));
+	}
+
+	chat_manager->openPendingMsgs(userlist->byID("Gadu", gadu));
+
+	kdebugf2();
+}
+
 QString versionToName(const unsigned int version)
 {
 	kdebugf();
-	QString name;
 
+	QString name;
 	switch (version)
 	{
 		case 0x20: name = "GG 6.0b129"; break;
@@ -666,8 +682,8 @@ QString versionToName(const unsigned int version)
 		case 0x2a: name = "GG 7.7b3315"; break;
 		default: name = "Unknown"; break;
 	}
-
 	return name;
+
 	kdebugf2();
 }
 

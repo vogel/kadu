@@ -24,6 +24,7 @@ class HtmlDocument
 		void addElement(Element e);
 		static QRegExp* url_regexp;
 		static QRegExp* mail_regexp;
+		static QRegExp* gg_regexp;
 
 	public:
 		static void escapeText(QString& text);
@@ -114,6 +115,12 @@ class HtmlDocument
 		void convertMailToHtml();
 
 		/**
+			Skanuje tekst w poszukiwaniu numerów gg
+			i zamienia je w linki html.
+		**/
+		void convertGGToHtml();
+
+		/**
 			Wyra¿enie regularne przydatne w poszukiwaniu
 			adresów www (i innych).
 		**/
@@ -124,6 +131,12 @@ class HtmlDocument
 			adresów email.
 		**/
 		static const QRegExp &mailRegExp();
+
+		/**
+			Wyra¿enie regularne przydatne w poszukiwaniu
+			numerów gg.
+		**/
+		static const QRegExp &ggRegExp();
 };
 
 #endif

@@ -172,6 +172,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
   otwarcie okna Chat z kontaktem z listy lub UINem (White Eagle,neeo)
 * uporz±dkowanie nazw ikon w domy¶lnym zestawie (patpi/neeo)
 * powiadomienie o nowej wiadomo¶ci w oknie przez wysuniêcie go na wierzch (neeo)
+* klikniêcie na odpowiednio sformatowany numer gg w oknie rozmowy,
+  powoduje otwarcie okna Chat z tym numerem (neeo)
 
 +++ wersja 0.5.0 (01.01.2007)
 * usuniêty niewielki wyciek pamiêci przy nieudanej próbie za³adowania modu³u (joi)

@@ -195,7 +195,7 @@ QRegExp* HtmlDocument::url_regexp = NULL;
 const QRegExp &HtmlDocument::urlRegExp()
 {
 	if (!url_regexp)
-		url_regexp = new QRegExp(latin2unicode((const unsigned char *)"(http://|https://|www\\.|ftp://|ftp\\.|gg:|sftp://|smb://|file:/|rsync://|svn://|svn\\+ssh://)[a-zA-Z0-9ÍÛ±∂≥øºÊÒ ”°¶£Ø¨∆—\\*\\-\\._/~?=&#\\+%\\(\\):;,!@\\\\]*"));
+		url_regexp = new QRegExp(latin2unicode((const unsigned char *)"(http://|https://|www\\.|ftp://|ftp\\.|sftp://|smb://|file:/|rsync://|svn://|svn\\+ssh://)[a-zA-Z0-9ÍÛ±∂≥øºÊÒ ”°¶£Ø¨∆—\\*\\-\\._/~?=&#\\+%\\(\\):;,!@\\\\]*"));
 	return *url_regexp;
 }
 
@@ -255,5 +255,34 @@ void HtmlDocument::convertMailToHtml()
 		
 		splitElement(i, p, l);
 		setElementValue(i, "<a href=\"" + mail + "\">" + mail + "</a>", true);
+	}
+}
+
+QRegExp *HtmlDocument::gg_regexp = NULL;
+
+const QRegExp &HtmlDocument::ggRegExp()
+{
+	if (!gg_regexp)
+		gg_regexp = new QRegExp(latin2unicode((const unsigned char*)"gg:(/){0,3}[0-9]{1,8}"));
+	return *gg_regexp;
+}
+
+void HtmlDocument::convertGGToHtml()
+{
+	QRegExp g = ggRegExp();
+	for (int i = 0; i < countElements(); ++i)
+	{
+		if (isTagElement(i))
+			continue;
+
+		QString text = elementText(i);
+		int p = g.search(text);
+		if (p < 0)
+			continue;
+		unsigned int l = g.matchedLength();
+		QString gg = text.mid(p, l);
+
+		splitElement(i, p, l);
+		setElementValue(i, "<a href=\"" + gg + "\">" + gg + "</a>", true);
 	}
 }

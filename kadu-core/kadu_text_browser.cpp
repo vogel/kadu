@@ -175,6 +175,8 @@ void KaduTextBrowser::hyperlinkClicked(const QString &link) const
 	}
 	else if (link.find(HtmlDocument::mailRegExp()) != -1)
 		openMailClient(link);
+	else if (link.find(HtmlDocument::ggRegExp()) != -1)
+		openGGChat(link);
 }
 
 void KaduTextBrowser::copy()

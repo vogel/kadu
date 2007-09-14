@@ -146,6 +146,7 @@ QString ChatMessage::convertCharacters(QString edit, const QColor &bgcolor, Emot
 	doc.parseHtml(edit);
 
 	// detekcja adresow url i email
+	doc.convertGGToHtml();
 	doc.convertUrlsToHtml();
 	doc.convertMailToHtml();
 
