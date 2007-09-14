@@ -328,6 +328,10 @@ void GaduProtocol::initModule()
 	gg_proxy_username = NULL;
 	gg_proxy_password = NULL;
 
+#ifndef DEBUG_ENABLED
+	gg_debug_level = 1;
+#endif
+
 	config_file.addVariable("Network", "DefaultPort", 0);
 	config_file.addVariable("Network", "TimeoutInMs", 5000);
 
