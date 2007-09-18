@@ -291,6 +291,7 @@ void KaduTabBar::dropEvent(QDropEvent* e)
 	QString altnicks;
 	if (dynamic_cast<UserBox*>(e->source()) && QTextDrag::decode(e,altnicks))
 	{
+		QApplication::setOverrideCursor(QCursor(ArrowCursor));
 		QString group;
 		if (selectTab(e->pos()))
 			group = selectTab(e->pos())->text();
@@ -302,7 +303,10 @@ void KaduTabBar::dropEvent(QDropEvent* e)
 			{
 				text = QInputDialog::getText(tr("Add new group"), tr("Name of new group:"), QLineEdit::Normal, text, &ok);
 				if (!ok)
+				{
+					QApplication::restoreOverrideCursor();
 					return;
+				}
 				if (UserInfo::acceptableGroupName(text))
 					group = text;
 			}
@@ -341,6 +345,8 @@ void KaduTabBar::dropEvent(QDropEvent* e)
 
 		// too slow, we need to do something about that
 		userlist->writeToConfig();
+
+		QApplication::restoreOverrideCursor();
 	}
 	kdebugf2();
 }
