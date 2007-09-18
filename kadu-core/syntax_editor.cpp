@@ -261,7 +261,7 @@ void SyntaxEditor::setCategory(const QString &category)
 
 void SyntaxEditor::editClicked()
 {
-	SyntaxEditorWindow *editor = new SyntaxEditorWindow(syntaxList, syntaxListCombo->currentText());
+	SyntaxEditorWindow *editor = new SyntaxEditorWindow(syntaxList, syntaxListCombo->currentText(), category);
 	connect(editor, SIGNAL(updated(const QString &)), this, SLOT(setCurrentSyntax(const QString &)));
 
 	emit onSyntaxEditorWindowCreated(editor);
@@ -294,9 +294,9 @@ void SyntaxEditor::syntaxChangedSlot(const QString &newSyntax)
 
 	SyntaxInfo info = (*syntaxList)[newSyntax];
 	if (info.global)
-		fileName = dataPath("kadu") + "/syntax/" + category + "/" + newSyntax + ".syntax";
+		fileName = dataPath("kadu") + "/syntax/" + category.lower() + "/" + newSyntax + ".syntax";
 	else
-		fileName = ggPath() + "/syntax/" + category + "/" + newSyntax + ".syntax";
+		fileName = ggPath() + "/syntax/" + category.lower() + "/" + newSyntax + ".syntax";
 
 	file.setName(fileName);
 	if (!file.open(IO_ReadOnly))
@@ -317,8 +317,7 @@ void SyntaxEditor::updateSyntaxList()
 {
 	if (syntaxList)
 		delete syntaxList;
-
-	syntaxList = new SyntaxList(category);
+	syntaxList = new SyntaxList(category.lower());
 
 	syntaxListCombo->clear();
 	syntaxListCombo->insertStringList(syntaxList->keys());
@@ -332,7 +331,7 @@ void SyntaxEditor::syntaxListUpdated()
 	syntaxListCombo->insertStringList(syntaxList->keys());
 }
 
-SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &syntaxName, QWidget* parent, const char *name)
+SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &syntaxName, const QString &category, QWidget* parent, const char *name)
 	: QVBox(parent, name), syntaxList(syntaxList), syntaxName(syntaxName)
 {
 	setCaption(tr("Kadu syntax editor"));
@@ -354,6 +353,7 @@ SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &sy
 	layout->addMultiCellWidget(editor, 0, 1, 0, 0);
 
 	previewPanel = new Preview(syntax);
+	previewPanel->setResetBackgroundColor(config_file.readEntry("Look", category + "BgColor"));
 	layout->addWidget(previewPanel, 0, 1);
 
 	QPushButton *preview = new QPushButton(tr("preview"), syntax);

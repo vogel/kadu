@@ -99,7 +99,7 @@ private slots:
 	void saveAs();
 
 public:
-	SyntaxEditorWindow(SyntaxList *syntaxList, const QString &syntaxName, QWidget* parent=0, const char *name=0);
+	SyntaxEditorWindow(SyntaxList *syntaxList, const QString &syntaxName, const QString &category, QWidget* parent=0, const char *name=0);
 	~SyntaxEditorWindow();
 
 	Preview *preview() { return previewPanel; }
