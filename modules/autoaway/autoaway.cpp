@@ -20,9 +20,9 @@
 
 #include "autoaway.h"
 #include "config_file.h"
-// #include "config_dialog.h"
 #include "debug.h"
 #include "kadu.h"
+#include "kadu_parser.h"
 #include "message_box.h"
 #include "misc.h"
 
@@ -172,10 +172,8 @@ void AutoAway::on()
 	if (!autoAwayStatusChanger)
 		autoAwayStatusChanger = new AutoAwayStatusChanger();
 
-	autoAwayStatusChanger->setChangeDescriptionTo(
-		(AutoAwayStatusChanger::ChangeDescriptionTo)config_file.readNumEntry("General", "AutoChangeDescription"),
-		config_file.readEntry("General", "AutoStatusText")
-	);
+	autoAwayStatusChanger->setChangeDescriptionTo(changeTo, parseDescription(autoStatusText));
+
 	status_changer_manager->registerStatusChanger(autoAwayStatusChanger);
 
 	qApp->installEventFilter(this);
@@ -261,7 +259,11 @@ void AutoAway::checkIdleTime()
 
 	idleTime += checkInterval;
 
-	UserStatus currentStatus = gadu->currentStatus();
+	if (refreshStatusInterval > 0 && idleTime >= refreshStatusTime)
+	{
+		autoAwayStatusChanger->setChangeDescriptionTo(changeTo, parseDescription(autoStatusText));
+		refreshStatusTime = idleTime + refreshStatusInterval;
+	}
 
 	if (idleTime >= autoDisconnectTime && autoDisconnectEnabled)
 		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::ChangeStatusToOffline);
@@ -271,6 +273,9 @@ void AutoAway::checkIdleTime()
 		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::ChangeStatusToBusy);
 	else
 		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::NoChangeStatus);
+
+	if (idleTime < refreshStatusTime)
+		refreshStatusTime = refreshStatusInterval;
 
 	if (timer)
 		timer->start(checkInterval * 1000, TRUE);
@@ -283,8 +288,11 @@ void AutoAway::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfi
 	autoAwaySpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widgetById("autoaway/autoAway"));
 	autoInvisibleSpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widgetById("autoaway/autoInvisible"));
 	autoOfflineSpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widgetById("autoaway/autoOffline"));
+	autoRefreshSpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widgetById("autoaway/autoRefresh"));
 
 	descriptionTextLineEdit = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widgetById("autoaway/descriptionText"));
+
+	parseStatusCheckBox = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widgetById("autoaway/enableParseStatus"));
 
 	connect(mainConfigurationWindow->widgetById("autoaway/enableAutoAway"), SIGNAL(toggled(bool)), autoAwaySpinBox, SLOT(setEnabled(bool)));
 	connect(mainConfigurationWindow->widgetById("autoaway/enableAutoInvisible"), SIGNAL(toggled(bool)), autoInvisibleSpinBox, SLOT(setEnabled(bool)));
@@ -299,15 +307,23 @@ void AutoAway::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfi
 
 void AutoAway::configurationUpdated()
 {
-	checkInterval = config_file.readNumEntry("General","AutoAwayCheckTime");
+	checkInterval = config_file.readUnsignedNumEntry("General","AutoAwayCheckTime");
 
-	autoAwayTime = config_file.readNumEntry("General","AutoAwayTime");
-	autoDisconnectTime = config_file.readNumEntry("General","AutoDisconnectTime");
-	autoInvisibleTime = config_file.readNumEntry("General","AutoInvisibleTime");
+	autoAwayTime = config_file.readUnsignedNumEntry("General","AutoAwayTime");
+	autoDisconnectTime = config_file.readUnsignedNumEntry("General","AutoDisconnectTime");
+	autoInvisibleTime = config_file.readUnsignedNumEntry("General","AutoInvisibleTime");
 
 	autoAwayEnabled = config_file.readBoolEntry("General","AutoAway");
 	autoInvisibleEnabled = config_file.readBoolEntry("General","AutoInvisible");
 	autoDisconnectEnabled = config_file.readBoolEntry("General","AutoDisconnect");
+	parseAutoStatus = config_file.readBoolEntry("General", "AutoParseStatus");
+
+	refreshStatusTime = config_file.readUnsignedNumEntry("General","AutoRefreshStatusTime");
+	refreshStatusInterval = config_file.readUnsignedNumEntry("General","AutoRefreshStatusTime");
+
+	autoStatusText = config_file.readEntry("General", "AutoStatusText");
+
+	changeTo = (AutoAwayStatusChanger::ChangeDescriptionTo)config_file.readNumEntry("General", "AutoChangeDescription");
 
 	if (autoAwayEnabled || autoInvisibleEnabled || autoDisconnectEnabled)
 		on();
@@ -338,6 +354,16 @@ void AutoAway::autoOfflineSpinBoxValueChanged(int value)
 void AutoAway::descriptionChangeChanged(int index)
 {
 	descriptionTextLineEdit->setEnabled(index != 0);
+	autoRefreshSpinBox->setEnabled(index != 0);
+	parseStatusCheckBox->setEnabled(index != 0);
+}
+
+QString AutoAway::parseDescription(const QString &parseDescription)
+{
+	if (parseAutoStatus)
+    		return (KaduParser::parse(parseDescription, kadu->myself(), true));
+	else
+		return parseDescription;
 }
 
 /** @} */

@@ -13,6 +13,7 @@
 
 class QLineEdit;
 class QSpinBox;
+class QCheckBox;
 
 /**
  * @defgroup autoaway Autoaway
@@ -69,14 +70,26 @@ class AutoAway : public ConfigurationUiHandler, ConfigurationAwareObject
 	bool autoAwayEnabled;
 	bool autoInvisibleEnabled;
 	bool autoDisconnectEnabled;
+	bool parseAutoStatus;
 
 	unsigned int idleTime;
+	unsigned int refreshStatusTime;
+	unsigned int refreshStatusInterval;
 
 	QSpinBox *autoAwaySpinBox;
 	QSpinBox *autoInvisibleSpinBox;
 	QSpinBox *autoOfflineSpinBox;
+	QSpinBox *autoRefreshSpinBox;
 
 	QLineEdit *descriptionTextLineEdit;
+
+	QCheckBox *parseStatusCheckBox;
+
+	QString autoStatusText;
+
+	AutoAwayStatusChanger::ChangeDescriptionTo changeTo;
+
+	QString parseDescription(const QString &parseDescription);
 
 private slots:
 	void checkIdleTime();

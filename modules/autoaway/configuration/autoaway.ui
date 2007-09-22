@@ -9,11 +9,11 @@
 					id="autoaway/autoAway" />
 				<check-box caption="Enable autoinvisible" config-section="General" config-item="AutoInvisible"
 					id="autoaway/enableAutoInvisible" />
-				<spin-box caption="Set status to invisible after" config-section="General" config-item="AutoInvisibleTime" min-value="1" max-value="10000"
+				<spin-box caption="Set status to invisible after" config-section="General" config-item="AutoInvisibleTime" min-value="1" max-value="10000" suffix=" s"
 					id="autoaway/autoInvisible" />
 				<check-box caption="Enable autodisconnect" config-section="General" config-item="AutoDisconnect"
 					id="autoaway/enableAutoOffline" />
-				<spin-box caption="Disconnect after" config-section="General" config-item="AutoDisconnectTime" min-value="1" max-value="10000"
+				<spin-box caption="Disconnect after" config-section="General" config-item="AutoDisconnectTime" min-value="1" max-value="10000" suffix=" s"
 					id="autoaway/autoOffline" />
 			</group-box>
 
@@ -25,6 +25,10 @@
 					<item value="3" caption="Add at the back" />
 				</combo-box>
 				<line-edit caption="New description" config-section="General" config-item="AutoStatusText" id="autoaway/descriptionText" />
+				<spin-box caption="Autorefresh status" config-section="General" config-item="AutoRefreshStatusTime" min-value="0" max-value="10000" tool-tip="Set 0 to disable." 
+					id="autoaway/autoRefresh" />
+				<check-box caption="Parse AutoStatus" config-section="General" config-item="AutoParseStatus" suffix=" s"
+					id="autoaway/enableParseStatus" />
 			</group-box>
 		</tab>
 	</section>
