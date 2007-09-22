@@ -13,7 +13,6 @@
 
 #include "macosx_docking.h"
 #include "../docking/docking.h"
-#include "config_dialog.h"
 #include "config_file.h"
 #include "debug.h"
 #include "icons_manager.h"
@@ -76,7 +75,7 @@ void MacOSXDocking::onCreateTabGeneral()
 	//ze wzglêdu na jaki¶ problem z Qt opcja wy³±czona
 	//(okno pojawia siê, znika i znowu pojawia, wiêc nie do¶æ, ¿e nie dzia³a,
 	//  to mo¿e byæ denerwuj±ca je¿eli kto¶ zapomnia³, ¿e to w³±czy³)
-	config_file->writeEntry("General", "RunDocked", false);
+	config_file.writeEntry("General", "RunDocked", false);
 }
 
 extern "C" int macosx_docking_init()
