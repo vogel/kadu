@@ -10,6 +10,7 @@
 #include <qapplication.h>
 #include <qlistbox.h>
 #include <qobjectlist.h>
+#include <qscrollview.h>
 #include <qtabwidget.h>
 
 #include "config_file.h"
@@ -32,8 +33,9 @@ class ConfigTab
 
 	QMap<QString, ConfigGroupBox *> configGroupBoxes;
 
-	QWidget *mainWidget;
+	QScrollView *scrollView;
 	QVBoxLayout *mainLayout;
+	QWidget *mainWidget;
 
 public:
 	ConfigTab(const QString &name, ConfigSection *configSection, QTabWidget *parentConfigGroupBoxWidget);
@@ -121,16 +123,23 @@ void ConfigGroupBox::addWidgets(QWidget *widget1, QWidget *widget2)
 ConfigTab::ConfigTab(const QString &name, ConfigSection *configSection, QTabWidget *parentConfigGroupBoxWidget)
 	: name(name), configSection(configSection)
 {
-	mainWidget = new QWidget(parentConfigGroupBoxWidget);
+	scrollView = new QScrollView(parentConfigGroupBoxWidget);
+	scrollView->setResizePolicy(QScrollView::AutoOneFit);
+	scrollView->setVScrollBarMode(QScrollView::Auto);
+	scrollView->setHScrollBarMode(QScrollView::AlwaysOff);
+
+	mainWidget = new QWidget(scrollView->viewport());
+	scrollView->addChild(mainWidget);
+
 	mainLayout = new QVBoxLayout(mainWidget, 10, 10);
 	mainLayout->addStretch(1);
 
-	parentConfigGroupBoxWidget->addTab(mainWidget, name);
+	parentConfigGroupBoxWidget->addTab(scrollView, name);
 }
 
 ConfigTab::~ConfigTab()
 {
-// 	delete mainWidget;
+	delete scrollView;
 }
 
 ConfigGroupBox *ConfigTab::configGroupBox(const QString &name, bool create)
