@@ -19,7 +19,7 @@
     </message>
     <message>
         <source>Status invisible</source>
-        <translation>Status niedostępny</translation>
+        <translation>Status niewidoczny</translation>
     </message>
     <message>
         <source>Status busy</source>
