@@ -1010,6 +1010,12 @@ void GaduProtocol::systemMessageReceived(QString &message, QDateTime &time, int 
 {
 	kdebugf();
 
+	if ((time.toTime_t() == 0) || message.isEmpty())
+	{
+		kdebugf2();
+		return;
+	}
+
 	QString mesg = time.toString("hh:mm:ss (dd.MM.yyyy): ") + message;
 	kdebugm(KDEBUG_INFO, "sysMsg: %s\n", mesg.local8Bit().data());
 	emit systemMessageReceived(mesg);
