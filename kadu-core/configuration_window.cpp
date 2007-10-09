@@ -124,6 +124,7 @@ ConfigTab::ConfigTab(const QString &name, ConfigSection *configSection, QTabWidg
 	: name(name), configSection(configSection)
 {
 	scrollView = new QScrollView(parentConfigGroupBoxWidget);
+	scrollView->setFrameStyle(QFrame::NoFrame);
 	scrollView->setResizePolicy(QScrollView::AutoOneFit);
 	scrollView->setVScrollBarMode(QScrollView::Auto);
 	scrollView->setHScrollBarMode(QScrollView::AlwaysOff);

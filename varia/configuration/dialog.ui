@@ -277,6 +277,8 @@
 				<hot-key-edit caption="Manage modules" config-section="ShortCuts" config-item="kadu_modulesmanager" />
 				<hot-key-edit caption="Open chat with..." config-section="ShortCuts" config-item="kadu_openchatwith" />
 			</group-box>
+		</tab>
+		<tab name="Userlist">
 			<group-box name="Userlist">
 				<hot-key-edit caption="Remove from userlist" config-section="ShortCuts" config-item="kadu_deleteuser" />
 				<hot-key-edit caption="View / edit user info" config-section="ShortCuts" config-item="kadu_persinfo" />
@@ -284,6 +286,8 @@
 				<hot-key-edit caption="Show / hide offline users" config-section="ShortCuts" config-item="kadu_showoffline" />
 				<hot-key-edit caption="Show / hide users without description" config-section="ShortCuts" config-item="kadu_showonlydesc" />
 			</group-box>
+		</tab>
+		<tab name="Chat">
 			<group-box name="Chat">
 				<hot-key-edit caption="New line / send message" config-section="ShortCuts" config-item="chat_newline" />
 				<hot-key-edit caption="Clear Chat" config-section="ShortCuts" config-item="chat_clear" />
