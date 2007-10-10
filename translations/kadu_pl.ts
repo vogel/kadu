@@ -315,8 +315,8 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <translation>Porzuć</translation>
     </message>
     <message>
-        <source>Show status button</source>
-        <translation>Pokaż przycisk statusów</translation>
+        <source>Show status changing button</source>
+        <translation>Pokaż przycisk zmiany statusu</translation>
     </message>
     <message>
         <source>Max image size</source>
@@ -335,28 +335,32 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <translation>Okno rozmowy</translation>
     </message>
     <message>
-        <source>Your background color</source>
-        <translation>Twój kolor tła</translation>
+        <source>My messages</source>
+        <translation>Moje wiadomości</translation>
     </message>
     <message>
-        <source>User background color</source>
-        <translation>Kolor tła kontaktu</translation>
+        <source>User messages</source>
+        <translation>Wiadomości rozmówcy</translation>
     </message>
     <message>
-        <source>Your font color</source>
-        <translation>Twój kolor czcionki</translation>
+        <source>My font</source>
+        <translation>Moja czcionka</translation>
     </message>
     <message>
-        <source>User font color</source>
-        <translation>Kolor czcionki kontaktu</translation>
+        <source>User font</source>
+        <translation>Czcionka rozmówcy</translation>
+    </message>
+    <message>
+        <source>Font in panel</source>
+        <translation>Panel informacyjny</translation>
     </message>
     <message>
         <source>Fonts</source>
         <translation>Czcionki</translation>
     </message>
     <message>
-        <source>Font in chat window</source>
-        <translation>Czcionka w oknie rozmowy</translation>
+        <source>Chat window</source>
+        <translation>Okno rozmowy</translation>
     </message>
     <message>
         <source>Previews</source>
@@ -371,16 +375,16 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <translation>Okno listy kontaktów</translation>
     </message>
     <message>
-        <source>Panel background color</source>
-        <translation>Kolor tła panelu informacyjnego</translation>
+        <source>Background</source>
+        <translation>Tło</translation>
     </message>
     <message>
-        <source>Panel font color</source>
-        <translation>Kolor czcionki w panelu informacyjnym</translation>
+        <source>Font</source>
+        <translation>Czcionka</translation>
     </message>
     <message>
-        <source>Font in panel</source>
-        <translation>Czcionka w panelu informacyjnym</translation>
+        <source>Panel</source>
+        <translation>Panel informacyjny</translation>
     </message>
     <message>
         <source>Information panel</source>
@@ -391,16 +395,8 @@ Jeśli to pole pozostanie puste, bedą użyte ustawienia domyślne.</translation
         <translation>Pokaż panel informacyjny</translation>
     </message>
     <message>
-        <source>Userbox background color</source>
-        <translation>Kolor tła listy kontaktów</translation>
-    </message>
-    <message>
-        <source>Userbox font color</source>
-        <translation>Kolor czcionki listy kontaktów</translation>
-    </message>
-    <message>
-        <source>Font in userbox</source>
-        <translation>Czcionka listy kontaktów</translation>
+        <source>Userbox</source>
+        <translation>Lista kontaktów</translation>
     </message>
     <message>
         <source>Preview panel</source>
@@ -481,16 +477,16 @@ Jest to wysoce ryzykowne!</translation>
         <translation> Hasło: </translation>
     </message>
     <message>
-        <source>Show contacts that you are blocking</source>
-        <translation>Pokaż kontakty, które są blokowane</translation>
+        <source>Show contacts that are blocked</source>
+        <translation>Pokaż blokowane kontakty</translation>
     </message>
     <message>
-        <source>Show contacts that are blocking you</source>
-        <translation>Pokaż kontakty, które blokują ciebie</translation>
+        <source>Show contacts which are blocking me</source>
+        <translation>Pokaż kontakty, które mnie zablokowały</translation>
     </message>
     <message>
         <source>Choose your browser</source>
-        <translation>Wybór przeglądarki www</translation>
+        <translation>Wybór przeglądarki WWW</translation>
     </message>
     <message>
         <source>Browser options</source>
@@ -527,20 +523,20 @@ Jest to wysoce ryzykowne!</translation>
         <translation>Francuski</translation>
     </message>
     <message>
-        <source>Chat window background color</source>
-        <translation>Kolor tła okna rozmowy</translation>
+        <source>Chat window</source>
+        <translation>Okno rozmowy</translation>
     </message>
     <message>
-        <source>Text edit background color</source>
-        <translation>Kolor tła okna edycji rozmowy</translation>
+        <source>Text edit</source>
+        <translation>Pole edycji wiadomości</translation>
     </message>
     <message>
         <source>Host</source>
         <translation>Nazwa komputera</translation>
     </message>
     <message>
-        <source>Description font color</source>
-        <translation>Kolor czcionki opisu</translation>
+        <source>Descriptions font</source>
+        <translation>Czcionka opisów</translation>
     </message>
     <message>
         <source>Port to connect to servers</source>
@@ -619,16 +615,12 @@ Jest to wysoce ryzykowne!</translation>
         <translation>Znajdź wybrany kontakt w katalogu</translation>
     </message>
     <message>
-        <source>Userbox background</source>
-        <translation>Tło listy kontaktów</translation>
+        <source>My nick</source>
+        <translation>Mój pseudonim</translation>
     </message>
     <message>
-        <source>Your nick color</source>
-        <translation>Kolor twojego pseudonimu</translation>
-    </message>
-    <message>
-        <source>User nick color</source>
-        <translation>Kolor pseudonimu kontaktu</translation>
+        <source>User nick</source>
+        <translation>Pseudonim rozmówcy</translation>
     </message>
     <message>
         <source>Style</source>
@@ -689,8 +681,8 @@ Jest to wysoce ryzykowne!</translation>
         <translation>Limit liczby odbieranych obrazków na minutę</translation>
     </message>
     <message>
-        <source>Use KaduParser to parse status</source>
-        <translation>Użyj parsera Kadu do analizowania składni statusu</translation>
+        <source>Allow using variables in status</source>
+        <translation>Pozwól na użycie zmiennych w statusie opisowym</translation>
     </message>
     <message>
         <source>Another Kadu is running on this profile but I cannot get its process ID.</source>

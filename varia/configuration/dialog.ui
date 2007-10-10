@@ -89,8 +89,8 @@
 			<group-box name="Filters">
 				<check-box caption="Show offline contacts" config-section="General" config-item="ShowOffline" />
 <!-- 				<check-box caption="Show contacts that don't have a description" config-section="General" config-item="ShowWithoutDescription" /> -->
-				<check-box caption="Show contacts that you are blocking" config-section="General" config-item="ShowBlocked" />
-				<check-box caption="Show contacts that are blocking you" config-section="General" config-item="ShowBlocking" />
+				<check-box caption="Show contacts that are blocked" config-section="General" config-item="ShowBlocked" />
+				<check-box caption="Show contacts which are blocking me" config-section="General" config-item="ShowBlocking" />
 			</group-box>
 
 			<group-box name="Anonymous">
@@ -129,7 +129,7 @@
 			</group-box>
 
 			<group-box name="Advanced">
-				<check-box caption="Use KaduParser to parse status" config-section="General" config-item="ParseStatus" />
+				<check-box caption="Allow using variables in status" config-section="General" config-item="ParseStatus" />
 			</group-box>
 		</tab>
 	</section>
@@ -143,39 +143,39 @@
 					   tool-tip="Choose icon theme" />
 				<path-list-edit caption="Icon paths" config-section="Look" config-item="IconsPaths" id="iconPaths"
 						tool-tip="Definie icons paths" />
-				<check-box caption="Show status button" config-section="Look" config-item="ShowStatusButton" />
+				<check-box caption="Show status changing button" config-section="Look" config-item="ShowStatusButton" />
 			</group-box>
 		</tab>
 
 		<tab name="Colors">
 			<group-box name="Chat">
-				<color-button caption="Chat window background color" config-section="Look" config-item="ChatBgColor" />
-				<color-button caption="Text edit background color" config-section="Look" config-item="ChatTextBgColor" />
-				<color-button caption="Your background color" config-section="Look" config-item="ChatMyBgColor" />
-				<color-button caption="User background color" config-section="Look" config-item="ChatUsrBgColor" />
-				<color-button caption="Your font color" config-section="Look" config-item="ChatMyFontColor" />
-				<color-button caption="User font color" config-section="Look" config-item="ChatUsrFontColor" />
-				<color-button caption="Your nick color" config-section="Look" config-item="ChatMyNickColor" />
-				<color-button caption="User nick color" config-section="Look" config-item="ChatUsrNickColor" />
+				<color-button caption="Chat window" config-section="Look" config-item="ChatBgColor" />
+				<color-button caption="Text edit" config-section="Look" config-item="ChatTextBgColor" />
+				<color-button caption="My messages" config-section="Look" config-item="ChatMyBgColor" />
+				<color-button caption="User messages" config-section="Look" config-item="ChatUsrBgColor" />
+				<color-button caption="My font" config-section="Look" config-item="ChatMyFontColor" />
+				<color-button caption="User font" config-section="Look" config-item="ChatUsrFontColor" />
+				<color-button caption="My nick" config-section="Look" config-item="ChatMyNickColor" />
+				<color-button caption="User nick" config-section="Look" config-item="ChatUsrNickColor" />
 			</group-box>
 
 			<group-box name="Userbox">
-				<color-button caption="Userbox background color" config-section="Look" config-item="UserboxBgColor" />
-				<color-button caption="Userbox font color" config-section="Look" config-item="UserboxFgColor" />
-				<color-button caption="Description font color" config-section="Look" config-item="DescriptionColor" />
+				<color-button caption="Background" config-section="Look" config-item="UserboxBgColor" />
+				<color-button caption="Font" config-section="Look" config-item="UserboxFgColor" />
+				<color-button caption="Descriptions font" config-section="Look" config-item="DescriptionColor" />
 			</group-box>
 
 			<group-box name="Information Panel">
-				<color-button caption="Panel background color" config-section="Look" config-item="InfoPanelBgColor" />
-				<color-button caption="Panel font color" config-section="Look" config-item="InfoPanelFgColor" />
+				<color-button caption="Background" config-section="Look" config-item="InfoPanelBgColor" />
+				<color-button caption="Font" config-section="Look" config-item="InfoPanelFgColor" />
 			</group-box>
 
 		</tab>
 
 		<tab name="Fonts">
 			<group-box name="Fonts">
-				<select-font caption="Font in chat window" config-section="Look" config-item="ChatFont" />
-				<select-font caption="Font in userbox" config-section="Look" config-item="UserboxFont" />
+				<select-font caption="Chat window" config-section="Look" config-item="ChatFont" />
+				<select-font caption="Userbox" config-section="Look" config-item="UserboxFont" />
 				<select-font caption="Font in panel" config-section="Look" config-item="PanelFont" />
 			</group-box>
         </tab>
@@ -316,7 +316,7 @@
 			<group-box name="Closing">
 				<check-box caption="Block window close on new message" config-section="Chat" config-item="ChatCloseTimer" id="chatCloseTimer"
 					   tool-tip="Block chat window when comes new message" />
-				<spin-box caption="Max time to block window close" config-section="Chat" config-item="ChatCloseTimerPeriod" min-value="1" max-value="30" id="chatCloseTimerPeriod"
+				<spin-box caption="Max time to block window close" config-section="Chat" config-item="ChatCloseTimerPeriod" min-value="1" max-value="30" suffix=" s." id="chatCloseTimerPeriod"
 					  tool-tip="Max time to block window close" />
 			</group-box>
 		</tab>
