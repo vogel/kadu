@@ -43,13 +43,14 @@ extern "C" void notify_close()
 	kdebugf2();
 }
 
-NotifyCheckBox::NotifyCheckBox(const QString &notificator, const QString &caption, QWidget *parent, char *name)
-	: QCheckBox(caption, parent, name), Notificator(notificator)
+NotifyGroupBox::NotifyGroupBox(const QString &notificator, const QString &caption, QWidget *parent, char *name)
+	: QGroupBox(1, Qt::Horizontal, caption, parent, name), Notificator(notificator)
 {
+	setCheckable(true);
 	connect(this, SIGNAL(toggled(bool)), this, SLOT(toggledSlot(bool)));
 }
 
-void NotifyCheckBox::toggledSlot(bool toggle)
+void NotifyGroupBox::toggledSlot(bool toggle)
 {
 	emit toggled(Notificator, toggle);
 }
@@ -161,23 +162,24 @@ void Notify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigu
 
 	FOREACH(notifierData, Notifiers)
 	{
-		NotifyCheckBox *enable = new NotifyCheckBox(notifierData.key(), tr(notifierData.key()), groupBox->widget());
-		connect(enable, SIGNAL(toggled(const QString &, bool)), this, SLOT(notifierToggled(const QString &, bool)));
+		NotifyGroupBox *configurationGroupBox = new NotifyGroupBox(notifierData.key(), tr(notifierData.key()), groupBox->widget());
+		connect(configurationGroupBox, SIGNAL(toggled(const QString &, bool)), this, SLOT(notifierToggled(const QString &, bool)));
 
-		(*notifierData).configurationCheckBox = enable;
+		(*notifierData).configurationGroupBox = configurationGroupBox;
 
-		NotifierConfigurationWidget *notifyConfigurationWidget = (*notifierData).notifier->createConfigurationWidget(groupBox->widget());
-		if (!notifyConfigurationWidget)
+		NotifierConfigurationWidget *notifyConfigurationWidget = (*notifierData).notifier->createConfigurationWidget(configurationGroupBox);
+		if (notifyConfigurationWidget)
 		{
-			groupBox->addWidgets(enable, 0);
-			continue;
+			(*notifierData).configurationWidget = notifyConfigurationWidget;
+			notifyConfigurationWidget->loadNotifyConfigurations();
+		}
+		else
+		{
+			configurationGroupBox->setFlat(true);
+			configurationGroupBox->setLineWidth(0);
 		}
 
-		connect(enable, SIGNAL(toggled(bool)), notifyConfigurationWidget, SLOT(setEnabled(bool)));
-		(*notifierData).configurationWidget = notifyConfigurationWidget;
-		groupBox->addWidgets(enable, notifyConfigurationWidget);
-
-		notifyConfigurationWidget->loadNotifyConfigurations();
+		groupBox->addWidget(configurationGroupBox, true);
 	}
 
 	eventSwitched(0);
@@ -194,12 +196,9 @@ void Notify::eventSwitched(int index)
 			(*notifierData).events[CurrentEvent] = config_file.readBoolEntry("Notify", CurrentEvent + '_' + notifierData.key());
 
 		if ((*notifierData).configurationWidget)
-		{
 			(*notifierData).configurationWidget->switchToEvent(CurrentEvent);
-			(*notifierData).configurationWidget->setEnabled((*notifierData).events[CurrentEvent]);
-		}
 
-		(*notifierData).configurationCheckBox->setChecked((*notifierData).events[CurrentEvent]);
+		(*notifierData).configurationGroupBox->setChecked((*notifierData).events[CurrentEvent]);
 	}
 }
 
@@ -407,7 +406,7 @@ void Notify::registerNotifier(const QString &name, Notifier *notifier)
 
 	Notifiers[name].notifier = notifier;
 	Notifiers[name].configurationWidget = 0;
-	Notifiers[name].configurationCheckBox = 0;
+	Notifiers[name].configurationGroupBox = 0;
 
 	kdebugf2();
 }

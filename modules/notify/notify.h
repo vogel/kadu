@@ -1,7 +1,7 @@
 #ifndef NOTIFY_H
 #define NOTIFY_H
 
-#include <qcheckbox.h>
+#include <qgroupbox.h>
 #include <qmap.h>
 #include <qobject.h>
 #include <qpair.h>
@@ -125,7 +125,7 @@ class Notifier : public virtual QObject
 		virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0, char *name = 0) = 0;
 };
 
-class NotifyCheckBox : public QCheckBox
+class NotifyGroupBox : public QGroupBox
 {
 	Q_OBJECT
 
@@ -135,8 +135,8 @@ private slots:
 	void toggledSlot(bool toggled);
 
 public:
-	NotifyCheckBox(const QString &notificator, const QString &caption, QWidget *parent = 0, char *name = 0);
-	virtual ~NotifyCheckBox() {}
+	NotifyGroupBox(const QString &notificator, const QString &caption, QWidget *parent = 0, char *name = 0);
+	virtual ~NotifyGroupBox() {}
 
 	QString notificator() { return Notificator; }
 
@@ -157,7 +157,7 @@ class Notify : public ConfigurationUiHandler
 	{
 		Notifier *notifier;
 		NotifierConfigurationWidget *configurationWidget;
-		NotifyCheckBox *configurationCheckBox;
+		NotifyGroupBox *configurationGroupBox;
 		QMap<QString, bool> events;
 	};
 
