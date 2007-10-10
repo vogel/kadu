@@ -680,10 +680,12 @@ void ConfigSyntaxEditor::hide()
 bool ConfigSyntaxEditor::fromDomElement(QDomElement domElement)
 {
 	QString category = domElement.attribute("category");
+	QString syntaxHint = domElement.attribute("syntax-hint");
 	if (category.isEmpty())
 		return false;
 
 	setCategory(category);
+	setSyntaxHint(syntaxHint);
 
 	return ConfigWidgetValue::fromDomElement(domElement);
 }

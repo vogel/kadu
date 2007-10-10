@@ -259,9 +259,14 @@ void SyntaxEditor::setCategory(const QString &category)
 	updateSyntaxList();
 }
 
+void SyntaxEditor::setSyntaxHint(const QString &syntaxHint)
+{
+	this->syntaxHint = syntaxHint;
+}
+
 void SyntaxEditor::editClicked()
 {
-	SyntaxEditorWindow *editor = new SyntaxEditorWindow(syntaxList, syntaxListCombo->currentText(), category);
+	SyntaxEditorWindow *editor = new SyntaxEditorWindow(syntaxList, syntaxListCombo->currentText(), category, syntaxHint);
 	connect(editor, SIGNAL(updated(const QString &)), this, SLOT(setCurrentSyntax(const QString &)));
 
 	emit onSyntaxEditorWindowCreated(editor);
@@ -331,7 +336,7 @@ void SyntaxEditor::syntaxListUpdated()
 	syntaxListCombo->insertStringList(syntaxList->keys());
 }
 
-SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &syntaxName, const QString &category, QWidget* parent, const char *name)
+SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &syntaxName, const QString &category, const QString &syntaxHint, QWidget* parent, const char *name)
 	: QVBox(parent, name), syntaxList(syntaxList), syntaxName(syntaxName)
 {
 	setCaption(tr("Kadu syntax editor"));
@@ -349,7 +354,10 @@ SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &sy
 	editor = new QTextEdit(syntax);
 	editor->setTextFormat(Qt::PlainText);
 	editor->setText(syntaxList->readSyntax(syntaxName));
-	QToolTip::add(editor, kadu->SyntaxText);
+
+	if (!syntaxHint.isEmpty())
+		QToolTip::add(editor, syntaxHint);
+
 	layout->addMultiCellWidget(editor, 0, 1, 0, 0);
 
 	previewPanel = new Preview(syntax);

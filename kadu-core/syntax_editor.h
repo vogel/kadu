@@ -54,6 +54,7 @@ class SyntaxEditor : public QWidget
 	QPushButton *deleteButton;
 
 	QString category;
+	QString syntaxHint;
 
 	void updateSyntaxList();
 
@@ -71,6 +72,7 @@ public:
 	QString currentSyntax();
 
 	void setCategory(const QString &category);
+	void setSyntaxHint(const QString &syntaxHint);
 
 public slots:
 	void setCurrentSyntax(const QString &syntax);
@@ -99,7 +101,7 @@ private slots:
 	void saveAs();
 
 public:
-	SyntaxEditorWindow(SyntaxList *syntaxList, const QString &syntaxName, const QString &category, QWidget* parent=0, const char *name=0);
+	SyntaxEditorWindow(SyntaxList *syntaxList, const QString &syntaxName, const QString &category, const QString &syntaxHint, QWidget* parent = 0, const char *name = 0);
 	~SyntaxEditorWindow();
 
 	Preview *preview() { return previewPanel; }
