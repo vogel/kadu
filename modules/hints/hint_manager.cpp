@@ -327,9 +327,6 @@ void HintManager::openChat(Hint *hint)
 
 void HintManager::chatWidgetActivated(ChatWidget *chat)
 {
-	if (!config_file.readBoolEntry("Hints", "CloseHintAfterChatActivation"))
-		return;
-
 	QPair<UserListElements, QString> newChat = qMakePair(chat->users()->toUserListElements(), QString("NewChat"));
 	QPair<UserListElements, QString> newMessage = qMakePair(chat->users()->toUserListElements(), QString("NewMessage"));
 
