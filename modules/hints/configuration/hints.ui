@@ -3,7 +3,10 @@
 	<section name="Look">
 		<tab name="Userbox">
 			<group-box name="General">
-				<line-edit caption="Hints over userlist" config-section="Hints" config-item="MouseOverUserSyntax" />
+				<line-edit caption="Hints over userlist" config-section="Hints" config-item="MouseOverUserSyntax"
+						   tool-tip="Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
+%v - revDNS, %p - port %e - email %x - max image size" />
 			</group-box>
 		</tab>
 	</section>
