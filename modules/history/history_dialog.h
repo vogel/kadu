@@ -53,6 +53,9 @@ protected:
 	bool finding;
 	QValueList<HistoryDate> dateentries;
 
+private slots:
+	void showStatusChanged(bool);
+
 public:
 	HistoryDialog(UinsList uins);
 

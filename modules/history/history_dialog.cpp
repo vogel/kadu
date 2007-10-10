@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <qcheckbox.h>
 #include <qlayout.h>
 #include <qpushbutton.h>
 #include <qregexp.h>
@@ -75,7 +76,7 @@ HistoryDialog::HistoryDialog(UinsList uins) : QDialog(NULL, "HistoryDialog"), ui
 	setCaption(tr("History"));
 	setWFlags(Qt::WDestructiveClose);
 
-	QGridLayout *grid = new QGridLayout(this, 2, 5, 3, 3, "grid");
+	QGridLayout *grid = new QGridLayout(this, 2, 5, 5, 5, "grid");
 
 	QSplitter *splitter = new QSplitter(Qt::Horizontal, this, "splitter");
 
@@ -87,7 +88,13 @@ HistoryDialog::HistoryDialog(UinsList uins) : QDialog(NULL, "HistoryDialog"), ui
 	body = new ChatMessagesView(vbox, "body");
 	body->setPrune(0);
 
+	QCheckBox *showStatusChanges = new QCheckBox(tr("Show status changes"), vbox);
+	showStatusChanges->setDisabled(config_file.readBoolEntry("History", "DontSaveStatusChanges"));
+	showStatusChanges->setChecked(!config_file.readBoolEntry("History", "DontShowStatusChanges"));
+	connect(showStatusChanges, SIGNAL(toggled(bool)), this, SLOT(showStatusChanged(bool)));
+
 	QHBox *btnbox = new QHBox(vbox, "btnbox");
+	btnbox->setSpacing(5);
 	QPushButton *searchbtn = new QPushButton(tr("&Find"), btnbox, "searchbtn");
 	QPushButton *searchnextbtn = new QPushButton(tr("Find &next"), btnbox, "searcgnextbtn");
 	QPushButton *searchprevbtn = new QPushButton(tr("Find &previous"), btnbox, "searchprevbtn");
@@ -138,6 +145,14 @@ HistoryDialog::HistoryDialog(UinsList uins) : QDialog(NULL, "HistoryDialog"), ui
 		}
 	}
 	kdebugf2();
+}
+
+void HistoryDialog::showStatusChanged(bool showStatusChanges)
+{
+	config_file.writeEntry("History", "DontShowStatusChanges", !showStatusChanges);
+
+	if (uinslv->currentItem())
+		dateChanged(uinslv->currentItem());
 }
 
 void HistoryDialog::uinsChanged(QListViewItem *item)
@@ -244,7 +259,7 @@ void HistoryDialog::showHistoryEntries(int from, int count)
 	QValueList<HistoryEntry>::const_iterator entry = entries.constBegin();
 	QValueList<HistoryEntry>::const_iterator lastEntry = entries.constEnd();
 	for(; entry != lastEntry; ++entry)
-		if (!(noStatus && (*entry).type & HISTORYMANAGER_ENTRY_STATUS))
+		if (!((*entry).type & HISTORYMANAGER_ENTRY_STATUS) || !noStatus)
 			chatMessages.append(createChatMessage(*entry));
 
 	body->appendMessages(chatMessages);
