@@ -865,13 +865,6 @@ void UserBox::initModule()
 	tool_tip_class_manager = new ToolTipClassManager();
 	tool_tip_class_manager->useToolTipClass(config_file.readEntry("Look", "UserboxToolTipStyle"));
 
-	// add some values at first run
-	QWidget w;
-	config_file.addVariable("Look", "UserboxBgColor", w.paletteBackgroundColor());
-	config_file.addVariable("Look", "UserboxFgColor", w.paletteForegroundColor());
-	config_file.addVariable("Look", "AlignUserboxIconsTop", false);
-	config_file.addVariable("Look", "DescriptionColor", w.paletteForegroundColor());
-
 	QStringList options;
 	QStringList values;
 

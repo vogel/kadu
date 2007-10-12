@@ -794,35 +794,7 @@ void ChatManager::initModule()
 	kdebugf();
 
 	ChatMessage::registerParserTags();
-
-// pierwsze uruchomienie kadu
-	config_file.addVariable("Look", "ChatBgColor", QColor("#ffffff"));
-	config_file.addVariable("Look", "ChatMyBgColor", QColor("#E0E0E0"));
-	config_file.addVariable("Look", "ChatTextBgColor", QColor("#ffffff"));
-	config_file.addVariable("Look", "ChatUsrBgColor", QColor("#F0F0F0"));
-	config_file.addVariable("Look", "ChatMyFontColor", QColor("#000000"));
-	config_file.addVariable("Look", "ChatUsrFontColor", QColor("#000000"));
-	config_file.addVariable("Look", "ChatMyNickColor", QColor("#000000"));
-	config_file.addVariable("Look", "ChatUsrNickColor", QColor("#000000"));
-
-	//naglowki wiadomosci
-	config_file.addVariable("Look", "NoHeaderRepeat", false);
-	config_file.addVariable("Look", "HeaderSeparatorHeight", 1);
-	config_file.addVariable("Look", "NoHeaderInterval", "10");
-
-	//czas serwera
-	config_file.addVariable("Look", "NoServerTime", false);
-	config_file.addVariable("Look", "NoServerTimeDiff", 5);
-
-	config_file.addVariable("Look", "ChatFont", defaultFont);
-
-	config_file.addVariable("Chat", "LastImagePath", QString(getenv("HOME")) + '/');
-
-	config_file.addVariable("Look", "Style", "kadu");
-
-	config_file.addVariable("Chat", "EmoticonsStyle", EMOTS_ANIMATED);
 	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
-
 	chat_manager = new ChatManager(kadu, "chat_manager");
 
 	kdebugf2();

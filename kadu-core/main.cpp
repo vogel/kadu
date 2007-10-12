@@ -215,14 +215,12 @@ int main(int argc, char *argv[])
 	}
 
 	config_file_ptr = new ConfigFile(ggPath(QString("kadu.conf")));
-	config_file.addVariable("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
 	debug_mask = config_file.readNumEntry("General", "DEBUG_MASK");
 	char *d = getenv("DEBUG_MASK");
 	if (d)
 		debug_mask = atol(d);
 	gg_debug_level = debug_mask | ~255;
 
-	config_file.addVariable("General", "SaveStdErr", false);
 	bool saveStdErr = config_file.readBoolEntry("General", "SaveStdErr");
 	d = getenv("SAVE_STDERR");
 	if (d)
@@ -280,7 +278,6 @@ int main(int argc, char *argv[])
 #endif
 
 	// delayed running, useful in gnome
-	config_file.addVariable("General", "StartDelay", 0);
 	sleep(config_file.readNumEntry("General", "StartDelay"));
 	QString data_dir = dataPath("kadu", argv[0]);
 	if (!QDir(data_dir).isReadable())
@@ -302,7 +299,6 @@ int main(int argc, char *argv[])
 	defaultFont = new QFont(qApp->font());
 	defaultFontInfo = new QFontInfo(*defaultFont);
 	// loading translation
-	config_file.addVariable("General", "Language", QString(QTextCodec::locale()).mid(0,2));
 	QTranslator qt_qm(0, "Translator_qt");
 	QString lang = config_file.readEntry("General", "Language");
 	qt_qm.load(dataPath(QString("kadu/translations/qt_") + lang), ".");

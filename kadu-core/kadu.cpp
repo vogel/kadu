@@ -127,18 +127,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	Myself.addProtocol("Gadu", config_file.readEntry("General", "UIN"));
 	Myself.setAltNick(config_file.readEntry("General", "Nick"));
 
-	QWidget w;
-	config_file.addVariable("Look", "InfoPanelBgColor", w.paletteBackgroundColor());
-	config_file.addVariable("Look", "InfoPanelFgColor", w.paletteForegroundColor());
-
-	//zaladowanie wartosci domyslnych (pierwsze uruchomienie)
-	config_file.addVariable("General", "UserBoxHeight", 300);
-	config_file.addVariable("General", "DescriptionHeight", 60);
-	config_file.addVariable("General", "StartupStatus", "LastStatus");
-	config_file.addVariable("General", "StartupLastDescription", true);
-
-	config_file.addVariable("Look", "UserboxFont", defaultFont);
-	config_file.addVariable("Look", "PanelFont", defaultFont);
+	createDefaultConfiguration();
 
 	MainLayout = new QVBoxLayout(this);
 
@@ -1949,4 +1938,107 @@ void Kadu::import_0_5_0_configuration()
 	config_file.removeVariable("Look", "UserboxBackgroundSY");
 	config_file.removeVariable("Look", "UserboxBackgroundSE");
 	config_file.removeVariable("Look", "UserboxBackgroundSH");
+}
+
+void Kadu::createDefaultConfiguration()
+{
+	QWidget w;
+
+	config_file.addVariable("Chat", "ActivateWithNewMessages", false);
+	config_file.addVariable("Chat", "AutoSend", true);
+	config_file.addVariable("Chat", "BlinkChatTitle", true);
+	config_file.addVariable("Chat", "ChatCloseTimer", true);
+	config_file.addVariable("Chat", "ChatCloseTimerPeriod", 2);
+	config_file.addVariable("Chat", "ChatPrune", false);
+	config_file.addVariable("Chat", "ChatPruneLen", 20);
+	config_file.addVariable("Chat", "ConfirmChatClear", true);
+	config_file.addVariable("Chat", "EmoticonsStyle", EMOTS_ANIMATED);
+	config_file.addVariable("Chat", "EmoticonsTheme", "penguins");
+	config_file.addVariable("Chat", "FoldLink", true);
+	config_file.addVariable("Chat", "LinkFoldTreshold", 50);
+	config_file.addVariable("Chat", "IgnoreAnonymousRichtext", true);
+	config_file.addVariable("Chat", "IgnoreAnonymousUsers", true);
+	config_file.addVariable("Chat", "LastImagePath", QString(getenv("HOME")) + '/');
+	config_file.addVariable("Chat", "MaxImageRequests", 5);
+	config_file.addVariable("Chat", "MaxImageSize", 255);
+	config_file.addVariable("Chat", "MessageAcks", true);
+	config_file.addVariable("Chat", "NewMessagesInChatTitle", false);
+	config_file.addVariable("Chat", "OpenChatOnMessage", true);
+	config_file.addVariable("Chat", "ReceiveMessages", true);
+	config_file.addVariable("Chat", "ReceiveImagesDuringInvisibility", false);
+	config_file.addVariable("Chat", "RememberPosition", true);
+	config_file.addVariable("Chat", "ShowEditWindowLabel", true);
+
+	config_file.addVariable("General", "AllowExecutingFromParser", false);
+	config_file.addVariable("General", "AutoRaise", false);
+	config_file.addVariable("General", "CheckUpdates", true);
+	config_file.addVariable("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
+	config_file.addVariable("General", "DescriptionHeight", 60);
+	config_file.addVariable("General", "DisconnectWithCurrentDescription", true);
+	config_file.addVariable("General", "HideBaseModules", false);
+	config_file.addVariable("General", "Language",  QString(QTextCodec::locale()).mid(0,2));
+	config_file.addVariable("General", "Nick", "Me");
+	config_file.addVariable("General", "NotifyAboutAll", true);
+	config_file.addVariable("General", "NumberOfDescriptions", 20);
+	config_file.addVariable("General", "ParseStatus", false);
+	config_file.addVariable("General", "PrivateStatus", false);
+	config_file.addVariable("General", "SaveStdErr", false);
+	config_file.addVariable("General", "ShowBlocked", true);
+	config_file.addVariable("General", "ShowBlocking", true);
+	config_file.addVariable("General", "ShowEmotPanel", true);
+	config_file.addVariable("General", "ShowOffline", true);
+	config_file.addVariable("General", "ShowOnlineAndDescription", false);
+	config_file.addVariable("General", "ShowWithoutDescription", true);
+	config_file.addVariable("General", "StartDelay", 0);
+	config_file.addVariable("General", "StartupLastDescription", true);
+	config_file.addVariable("General", "StartupStatus", "LastStatus");
+	config_file.addVariable("General", "UserBoxHeight", 300);
+
+	config_file.addVariable("Look", "AlignUserboxIconsTop", true);
+	config_file.addVariable("Look", "ChatContents", "");
+	config_file.addVariable("Look", "ChatFont", defaultFont);
+	config_file.addVariable("Look", "ChatBgColor", QColor("#ffffff"));
+	config_file.addVariable("Look", "ChatMyBgColor", QColor("#E0E0E0"));
+	config_file.addVariable("Look", "ChatMyFontColor", QColor("#000000"));
+	config_file.addVariable("Look", "ChatMyNickColor", QColor("#000000"));
+	config_file.addVariable("Look", "ChatTextBgColor", QColor("#ffffff"));
+	config_file.addVariable("Look", "ChatUsrBgColor", QColor("#F0F0F0"));
+	config_file.addVariable("Look", "ChatUsrFontColor", QColor("#000000"));
+	config_file.addVariable("Look", "ChatUsrNickColor", QColor("#000000"));
+	config_file.addVariable("Look", "ConferenceContents", "");
+	config_file.addVariable("Look", "ConferencePrefix", "");
+	config_file.addVariable("Look", "DescriptionColor", w.paletteForegroundColor());
+	config_file.addVariable("Look", "DisplayGroupTabs", true);
+	config_file.addVariable("Look", "HeaderSeparatorHeight", 4);
+	config_file.addVariable("Look", "IconTheme", "default");
+	config_file.addVariable("Look", "InfoPanelBgColor", w.paletteBackgroundColor());
+	config_file.addVariable("Look", "InfoPanelFgColor", w.paletteForegroundColor());
+	config_file.addVariable("Look", "NiceDateFormat", true);
+	config_file.addVariable("Look", "NoHeaderInterval", 30);
+	config_file.addVariable("Look", "NoHeaderRepeat", false);
+	config_file.addVariable("Look", "NoServerTime", false);
+	config_file.addVariable("Look", "NoServerTimeDiff", 5);
+	config_file.addVariable("Look", "PanelFont", defaultFont);
+	config_file.addVariable("Look", "PanelVerticalScrollBar", false);
+	config_file.addVariable("Look", "ParagraphSeparator", 1);
+	config_file.addVariable("Look", "ShowBold", true);
+	config_file.addVariable("Look", "ShowDesc", true);
+	config_file.addVariable("Look", "ShowInfoPanel", true);
+	config_file.addVariable("Look", "ShowMultilineDesc", true);
+	config_file.addVariable("Look", "ShowStatusButton", true);
+	config_file.addVariable("Look", "Style", "kadu");
+	config_file.addVariable("Look", "UserboxBackgroundDisplayStyle", "Stretched");
+	config_file.addVariable("Look", "UserboxBgColor", w.paletteBackgroundColor());
+	config_file.addVariable("Look", "UserBoxColumnCount", 1);
+	config_file.addVariable("Look", "UserboxFgColor", w.paletteForegroundColor());
+	config_file.addVariable("Look", "UserboxFont", defaultFont);
+
+	config_file.addVariable("Network", "AllowDCC", true);
+	config_file.addVariable("Network", "DefaultPort", 0);
+	config_file.addVariable("Network", "isDefServers", true);
+	config_file.addVariable("Network", "Server", "");
+	config_file.addVariable("Network", "TimeoutInMs", 5000);
+	config_file.addVariable("Network", "UseProxy", false);
+
+	config_file.addVariable("ShortCuts", "chat_newline", "Enter");
 }

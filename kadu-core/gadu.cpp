@@ -332,9 +332,6 @@ void GaduProtocol::initModule()
 	gg_debug_level = 1;
 #endif
 
-	config_file.addVariable("Network", "DefaultPort", 0);
-	config_file.addVariable("Network", "TimeoutInMs", 5000);
-
 	defaultdescriptions = QStringList::split("<-->", config_file.readEntry("General","DefaultDescription", tr("I am busy.")), true);
 
 	QStringList servers;

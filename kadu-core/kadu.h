@@ -72,6 +72,7 @@ class Kadu : public QWidget, ConfigurationAwareObject
 		void showStatusOnMenu(int);
 
 		void import_0_5_0_configuration();
+		void createDefaultConfiguration();
 
 	public slots:
 		virtual void show();
