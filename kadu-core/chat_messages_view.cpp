@@ -68,7 +68,7 @@ QString ChatMessagesView::formatMessage(ChatMessage *message, ChatMessage *after
 
 	if (message->type() == TypeSystem)
 	{
-		separatorSize = CfgHeaderSeparatorHeight;
+		separatorSize = ParagraphSeparator;
 		format = ChatSyntaxWithoutHeader;
 
 		message->setSeparatorSize(separatorSize);
@@ -86,12 +86,12 @@ QString ChatMessagesView::formatMessage(ChatMessage *message, ChatMessage *after
 
 		if (includeHeader)
 		{
-			separatorSize = CfgHeaderSeparatorHeight;
+			separatorSize = ParagraphSeparator;
 			format = ChatSyntaxWithHeader;
 		}
 		else
 		{
-			separatorSize = ParagraphSeparator;
+			separatorSize = CfgHeaderSeparatorHeight;
 			format = ChatSyntaxWithoutHeader;
 		}
 

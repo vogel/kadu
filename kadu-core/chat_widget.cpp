@@ -296,11 +296,11 @@ void ChatWidget::insertImage()
 {
 	kdebugf();
 	ImageDialog* id = new ImageDialog(this);
-	id->setDir(config_file.readEntry("ChatWidget", "LastImagePath"));
+	id->setDir(config_file.readEntry("Chatt", "LastImagePath"));
 	id->setCaption(tr("Insert image"));
 	if (id->exec() == QDialog::Accepted)
 	{
-		config_file.writeEntry("ChatWidget", "LastImagePath", id->dirPath());
+		config_file.writeEntry("Chatt", "LastImagePath", id->dirPath());
 		QString selectedFile = id->selectedFile();
 		QFileInfo f(selectedFile);
 		delete id;id = NULL;
@@ -521,7 +521,7 @@ void ChatWidget::writeMyMessage()
 void ChatWidget::clearChatWindow()
 {
 	kdebugf();
-	if (!config_file.readBoolEntry("ChatWidget", "ConfirmChatWidgetClear") || MessageBox::ask(tr("Chat window will be cleared. Continue?")))
+	if (!config_file.readBoolEntry("Chat", "ConfirmChatClear") || MessageBox::ask(tr("Chat window will be cleared. Continue?")))
 	{
 		body->clearMessages();
 		setActiveWindow();
@@ -623,7 +623,7 @@ void ChatWidget::sendMessage()
 		return;
 	}
 
-	if (config_file.readBoolEntry("ChatWidget","MessageAcks"))
+	if (config_file.readBoolEntry("Chat","MessageAcks"))
 	{
 		Edit->setReadOnly(true);
 		Edit->setEnabled(false);
@@ -643,7 +643,7 @@ void ChatWidget::sendMessage()
 
 	currentProtocol()->sendMessage(Users->toUserListElements(), myLastMessage);
 
-	if (config_file.readBoolEntry("ChatWidget", "MessageAcks"))
+	if (config_file.readBoolEntry("Chat", "MessageAcks"))
 		connectAcknowledgeSlots();
 	else
 	{
