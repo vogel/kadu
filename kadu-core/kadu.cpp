@@ -1961,7 +1961,7 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("Chat", "LastImagePath", QString(getenv("HOME")) + '/');
 	config_file.addVariable("Chat", "MaxImageRequests", 5);
 	config_file.addVariable("Chat", "MaxImageSize", 255);
-	config_file.addVariable("Chat", "MessageAcks", true);
+	config_file.addVariable("Chat", "MessageAcks", false);
 	config_file.addVariable("Chat", "NewMessagesInChatTitle", false);
 	config_file.addVariable("Chat", "OpenChatOnMessage", true);
 	config_file.addVariable("Chat", "ReceiveMessages", true);
