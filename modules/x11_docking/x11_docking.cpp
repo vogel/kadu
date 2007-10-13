@@ -110,6 +110,7 @@ X11TrayIcon::X11TrayIcon(QWidget *parent, const char *name)
 	: QLabel(parent, name, WMouseNoMask | WRepaintNoErase | WType_TopLevel | WStyle_Customize | WStyle_NoBorder | WStyle_StaysOnTop), timer()
 {
 	kdebugf();
+
 	setBackgroundMode(X11ParentRelative);
 	QPixmap pix = docking_manager->defaultPixmap();
 	setMinimumSize(pix.size());
@@ -119,11 +120,19 @@ X11TrayIcon::X11TrayIcon(QWidget *parent, const char *name)
 	update();
 
 	// avoid "hourglass effect" in KDE
-	QWidget *w=new QWidget();
+	QWidget *w = new QWidget();
 	w->setGeometry(-100,-100,10,10);
 	w->show();
 	w->hide();
 	delete w;
+
+	connect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&, const QString &)), this, SLOT(setTrayPixmap(const QPixmap&, const QString &)));
+	connect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
+	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
+	connect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), this, SLOT(setTrayMovie(const QMovie &)));
+	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreatedSlot(ChatWidget *)));
+	connect(&timer, SIGNAL(timeout()), this, SLOT(tryToDock()));
+	connect(&undockTimer, SIGNAL(timeout()), this, SLOT(undockAndTryToDock()));
 
 	tryToDock();
 
@@ -133,14 +142,6 @@ X11TrayIcon::X11TrayIcon(QWidget *parent, const char *name)
 	connect(kadu, SIGNAL(shown()), this, SLOT(disableTaskbar()));
 //	connect(kadu, SIGNAL(minimized()), kadu, SLOT(hide()));
 #endif
-
-	connect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&, const QString &)), this, SLOT(setTrayPixmap(const QPixmap&, const QString &)));
-	connect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
-	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
-	connect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), this, SLOT(setTrayMovie(const QMovie &)));
-	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreatedSlot(ChatWidget *)));
-	connect(&timer, SIGNAL(timeout()), this, SLOT(tryToDock()));
-	connect(&undockTimer, SIGNAL(timeout()), this, SLOT(undockAndTryToDock()));
 
 	kdebugf2();
 }
