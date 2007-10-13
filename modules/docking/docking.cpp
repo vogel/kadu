@@ -126,7 +126,7 @@ void DockingManager::changeIcon()
 				}
 				else
 				{
-					const UserStatus &stat = gadu->status();
+					const UserStatus &stat = gadu->currentStatus();
 					emit trayPixmapChanged(stat.pixmap(), stat.toString());
 					icon_timer->start(500,TRUE);
 					blink = false;
