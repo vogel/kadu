@@ -19,7 +19,7 @@
 #include "hot_key.h"
 #include "icons_manager.h"
 #include "kadu.h"
-#include "message_box.cpp"
+#include "message_box.h"
 #include "modules.h"
 #include "sms.h"
 #include "userbox.h"
