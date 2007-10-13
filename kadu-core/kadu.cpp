@@ -724,7 +724,10 @@ void Kadu::searchInDirectory()
 
 void Kadu::help()
 {
-	openWebBrowser("http://www.kadu.net/w/Kadu:Pomoc");
+	if (config_file.readEntry("General", "Language", "en") == "pl")
+		openWebBrowser("http://www.kadu.net/w/Kadu:Pomoc");
+	else
+		openWebBrowser("http://www.kadu.net/w/English:Kadu:Help");
 }
 
 void Kadu::about()
