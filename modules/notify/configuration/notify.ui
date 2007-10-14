@@ -1,6 +1,6 @@
 <configuration-ui>
 
-	<section name="Notifications">
+	<section name="Notifications" icon="NotifyTab">
 
 		<tab name="General">
 			<group-box name="Notifications">
