@@ -43,7 +43,7 @@ class IconsManager : public Themes, ConfigurationAwareObject
 		void registerMenuItem(QMenuData *menu, const QString &caption, const QString &iconName);
 		void unregisterMenuItem(QMenuData *menu, const QString &caption);
 
-	protected:
+	public: // TODO: fix, see Kadu::Kadu
 		virtual void configurationUpdated();
 
 	public slots:

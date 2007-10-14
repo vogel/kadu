@@ -265,6 +265,9 @@ void SmsPlusGateway::httpFinished()
 SmsEraGateway::SmsEraGateway(QObject* parent, const char *name)
 	: SmsGateway(parent, name)
 {
+	import_0_5_0_configuration();
+	createDefaultConfiguration();
+
 	modules_manager->moduleIncUsageCount("default_sms");
 }
 
@@ -361,12 +364,8 @@ void SmsEraGateway::httpFinished()
 {
 }
 
-DefaultSmsConfigurationUiHandler::DefaultSmsConfigurationUiHandler(QObject *parent, const char *name) :
-	QObject(parent, name), era_types(), era_values(), actualEraGateway()
+void SmsEraGateway::import_0_5_0_configuration()
 {
-	kdebugf();
-
-	config_file.addVariable("SMS", "EraGateway", "Sponsored");
 	//przepisanie starego hasla
 	config_file.addVariable("SMS", "EraGateway_Omnix_User", config_file.readEntry("SMS", "EraGatewayUser"));
 	config_file.addVariable("SMS", "EraGateway_Omnix_Password", config_file.readEntry("SMS", "EraGatewayPassword"));
@@ -374,6 +373,17 @@ DefaultSmsConfigurationUiHandler::DefaultSmsConfigurationUiHandler(QObject *pare
 	config_file.addVariable("SMS", "EraGateway_OmnixMultimedia_Password", config_file.readEntry("SMS", "EraGateway_Omnix_Password"));
 	config_file.addVariable("SMS", "EraGateway_Sponsored_User", config_file.readEntry("SMS", "EraGateway_Basic_User"));
 	config_file.addVariable("SMS", "EraGateway_Sponsored_Password", config_file.readEntry("SMS", "EraGateway_Basic_Password"));
+}
+
+void SmsEraGateway::createDefaultConfiguration()
+{
+	config_file.addVariable("SMS", "EraGateway", "Sponsored");
+}
+
+DefaultSmsConfigurationUiHandler::DefaultSmsConfigurationUiHandler(QObject *parent, const char *name) :
+	QObject(parent, name), era_types(), era_values(), actualEraGateway()
+{
+	kdebugf();
 
 	kdebugf2();
 }

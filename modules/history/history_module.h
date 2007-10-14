@@ -15,6 +15,8 @@ class HistoryModule : public ConfigurationUiHandler
 
 	QLabel *dontCiteOldMessagesLabel;
 
+	void createDefaultConfiguration();
+
 private slots:
 	void historyActionActivated(const UserGroup* users);
 	void chatCreated(ChatWidget *chat, time_t time);

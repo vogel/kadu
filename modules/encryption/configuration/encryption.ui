@@ -3,7 +3,7 @@
 	<section name="Look">
 		<tab name="Colors">
 			<group-box name="Chat">
-				<color-button caption="User nick color" config-section="Look" config-item="EncryptionColor" />
+				<color-button caption="Encypted message" config-section="Look" config-item="EncryptionColor" />
 			</group-box>
 		</tab>
     </section>

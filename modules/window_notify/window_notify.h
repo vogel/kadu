@@ -15,17 +15,20 @@ class WindowNotify : public Notifier
 {
 	Q_OBJECT
 
-	public:
-		WindowNotify(QObject *parent=0, const char *name=0);
-		~WindowNotify();
+	void createDefaultConfiguration();
 
-		virtual void notify(Notification *notification);
+public:
+	WindowNotify(QObject *parent=0, const char *name=0);
+	~WindowNotify();
 
-		virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
+	virtual void notify(Notification *notification);
 
-		void copyConfiguration(const QString &fromEvent, const QString &toEvent) {}
+	virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
 
-		virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0, char *name = 0) { return 0; };
+	void copyConfiguration(const QString &fromEvent, const QString &toEvent) {}
+
+	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0, char *name = 0) { return 0; };
+
 };
 
 extern WindowNotify *window_notify;

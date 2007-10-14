@@ -50,6 +50,8 @@ HistoryModule::HistoryModule() : QObject(NULL, "history")
 {
 	kdebugf();
 
+	createDefaultConfiguration();
+
 	QString path_ = ggPath(QString::null);
 	path_.append("/history/");
 	mkdir(path_.local8Bit().data(), 0700);
@@ -319,6 +321,17 @@ void HistoryModule::removingUsers(UserListElements users)
 		}
 	}
 	kdebugf2();
+}
+
+void HistoryModule::createDefaultConfiguration()
+{
+	config_file.addVariable("History", "ChatHistoryCitation", 5);
+	config_file.addVariable("History", "ChatHistoryQuotationTime", -1);
+	config_file.addVariable("History", "DontSaveStatusChanges", false);
+	config_file.addVariable("History", "DontShowStatusChanges", true);
+	config_file.addVariable("History", "Logging", true);
+
+	config_file.addVariable("ShortCuts", "kadu_viewhistory", "");
 }
 
 HistoryModule* history_module = NULL;

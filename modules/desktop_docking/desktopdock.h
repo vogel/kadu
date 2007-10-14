@@ -51,6 +51,8 @@ class DesktopDock : public ConfigurationUiHandler, ConfigurationAwareObject
 	int menuPos;
 	int separatorPos;
 
+	void createDefaultConfiguration();
+
 protected:
 	virtual void configurationUpdated();
 

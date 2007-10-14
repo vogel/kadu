@@ -75,6 +75,8 @@ private:
 	QCheckBox *testFast;
 	QCheckBox *testCut;
 
+	void createDefaultConfiguration();
+
 private slots:
 	void testGsmEncoding();
 	void gsmEncodingTestSampleRecorded(SoundDevice device);

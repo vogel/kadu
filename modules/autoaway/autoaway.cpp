@@ -148,6 +148,7 @@ void AutoAwayStatusChanger::setChangeDescriptionTo(ChangeDescriptionTo newChange
 AutoAway::AutoAway(QObject* parent, const char *name)
 	: autoAwayStatusChanger(0), timer(0)
 {
+	createDefaultConfiguration();
 	configurationUpdated();
 }
 
@@ -364,6 +365,21 @@ QString AutoAway::parseDescription(const QString &parseDescription)
     		return (KaduParser::parse(parseDescription, kadu->myself(), true));
 	else
 		return parseDescription;
+}
+
+void AutoAway::createDefaultConfiguration()
+{
+	config_file.addVariable("General", "AutoAway", true);
+	config_file.addVariable("General", "AutoAwayCheckTime", 10);
+	config_file.addVariable("General", "AutoAwayTime", 120);
+	config_file.addVariable("General", "AutoChangeDescription", false);
+	config_file.addVariable("General", "AutoDisconnect", false);
+	config_file.addVariable("General", "AutoDisconnectTime", 3600);
+	config_file.addVariable("General", "AutoInvisible", false);
+	config_file.addVariable("General", "AutoInvisibleTime", 1800);
+	config_file.addVariable("General", "AutoParseStatus", false);
+	config_file.addVariable("General", "AutoRefreshStatusTime", 5);
+	config_file.addVariable("General", "AutoStatusText", "");
 }
 
 /** @} */

@@ -46,11 +46,8 @@ ExternalPlayer::ExternalPlayer()
 {
 	kdebugf();
 
-#ifdef Q_OS_MACX
-	config_file.addVariable("Sounds", "SoundPlayer", "/Applications/Kadu.app/Contents/MacOS/playsound");
-#else
-	config_file.addVariable("Sounds", "SoundPlayer", "/usr/bin/play");
-#endif
+	createDefaultConfiguration();
+
 	connect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
 			this, SLOT(playSound(const QString &, bool, double)));
 
@@ -96,6 +93,15 @@ void ExternalPlayer::playSound(const QString &s, bool volCntrl, double vol)
 	kdebugf();
 	QString player = QString::null;
 	play(s, volCntrl, vol, player);
+}
+
+void ExternalPlayer::createDefaultConfiguration()
+{
+#ifdef Q_OS_MACX
+	config_file.addVariable("Sounds", "SoundPlayer", "/Applications/Kadu.app/Contents/MacOS/playsound");
+#else
+	config_file.addVariable("Sounds", "SoundPlayer", "/usr/bin/play");
+#endif
 }
 
 ExternalPlayer *external_player;

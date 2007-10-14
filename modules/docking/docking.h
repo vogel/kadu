@@ -20,6 +20,8 @@ class DockingManager : public ConfigurationUiHandler, ConfigurationAwareObject
 	bool blink;
 	void defaultToolTip();
 
+	void createDefaultConfiguration();
+
 protected:
 	virtual void configurationUpdated();
 

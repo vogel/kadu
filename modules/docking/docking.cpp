@@ -49,6 +49,9 @@ DockingManager::DockingManager()
 	: icon_timer(new QTimer(this, "icon_timer")), blink(false)
 {
 	kdebugf();
+
+	createDefaultConfiguration();
+
 	connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
 
 	connect(kadu, SIGNAL(statusPixmapChanged(const QPixmap &, const QString &)),
@@ -255,6 +258,13 @@ void DockingManager::setDocked(bool docked, bool butDontHideOnClose)
 	}
 	kadu->setDocked(docked, butDontHideOnClose);
 	kdebugf2();
+}
+
+void DockingManager::createDefaultConfiguration()
+{
+	config_file.addVariable("General", "RunDocked", true);
+	config_file.addVariable("General", "ShowTooltipInTray", true);
+	config_file.addVariable("Look", "NewMessageIcon", 0);
 }
 
 DockingManager* docking_manager = NULL;

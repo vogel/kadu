@@ -1016,8 +1016,6 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 	fileTransferWindow(0), toggleFileTransferWindowMenuId(0)
 {
 	kdebugf();
-	config_file.addVariable("Network", "LastUploadDirectory", QString(getenv("HOME")) + '/');
-	config_file.addVariable("Network", "LastDownloadDirectory", QString(getenv("HOME")) + '/');
 
 	UserBox::userboxmenu->addItemAtPos(1, "SendFile", tr("Send file"),
 		this, SLOT(sendFile()),

@@ -185,6 +185,7 @@ SoundManager::SoundManager(const QString& name, const QString& configname) : Not
 	kdebugf();
 
 	import_0_5_0_configuration();
+	createDefaultConfiguration();
 
 	lastsoundtime.start();
 
@@ -197,19 +198,10 @@ SoundManager::SoundManager(const QString& name, const QString& configname) : Not
 	sound_manager = this;
 	sound_slots = new SoundSlots(this, "sound_slots");
 
-	config_file.addVariable("Sounds", "SoundTheme", "default");
-	config_file.addVariable("Sounds", "SoundPaths", QString::null);
-
 	themes->setPaths(QStringList::split(";", config_file.readEntry("Sounds", "SoundPaths")));
 	themes->setTheme(config_file.readEntry("Sounds","SoundTheme"));
 
 	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default", "Sound"), this);
-
-	config_file.addVariable("Notify", "ConnectionError_Sound", true);
-	config_file.addVariable("Notify", "NewChat_Sound", true);
-	config_file.addVariable("Notify", "NewMessage_Sound", true);
-	config_file.addVariable("Notify", "StatusChanged/ToOnline_Sound", true);
-	config_file.addVariable("Notify", "StatusChanged/ToBusy_Sound", true);
 
 	kdebugf2();
 }
@@ -282,6 +274,20 @@ void SoundManager::import_0_5_0_configuration()
 		applyTheme(config_file.readEntry("Sounds", "SoundTheme", "foobar")); 
 		config_file.removeVariable("Sounds", "SoundTheme");
 	}
+}
+
+void SoundManager::createDefaultConfiguration()
+{
+	config_file.addVariable("Notify", "ConnectionError_Sound", true);
+	config_file.addVariable("Notify", "NewChat_Sound", true);
+	config_file.addVariable("Notify", "NewMessage_Sound", true);
+	config_file.addVariable("Notify", "StatusChanged/ToOnline_Sound", true);
+	config_file.addVariable("Notify", "StatusChanged/ToBusy_Sound", true);
+
+	config_file.addVariable("Sounds", "SoundPaths", "");
+	config_file.addVariable("Sounds", "SoundTheme", "default");
+	config_file.addVariable("Sounds", "SoundVolume", 100);
+	config_file.addVariable("Sounds", "VolumeControl", false);
 }
 
 void SoundManager::applyTheme(const QString &themeName)

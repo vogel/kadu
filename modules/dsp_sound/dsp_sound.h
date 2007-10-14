@@ -13,20 +13,22 @@ class OSSPlayerSlots : public QObject
 {
 	Q_OBJECT
 
-	private:
-		static int write_all(int fd, const char *data, int length, int chunksize);
-		static int read_all(int fd, char *buffer, int count);
+	static int write_all(int fd, const char *data, int length, int chunksize);
+	static int read_all(int fd, char *buffer, int count);
 
-	public slots:
-		void openDevice(SoundDeviceType type, int sample_rate, int channels, SoundDevice& device);
-		void closeDevice(SoundDevice device);
-		void playSample(SoundDevice device, const int16_t* data, int length, bool& result);
-		void recordSample(SoundDevice device, int16_t* data, int length, bool& result);		
-		void setFlushingEnabled(SoundDevice device, bool enabled);
+	void createDefaultConfiguration();
 
-	public:
-		OSSPlayerSlots(QObject *parent=0, const char *name=0);
-		~OSSPlayerSlots();
+public slots:
+	void openDevice(SoundDeviceType type, int sample_rate, int channels, SoundDevice& device);
+	void closeDevice(SoundDevice device);
+	void playSample(SoundDevice device, const int16_t* data, int length, bool& result);
+	void recordSample(SoundDevice device, int16_t* data, int length, bool& result);		
+	void setFlushingEnabled(SoundDevice device, bool enabled);
+
+public:
+	OSSPlayerSlots(QObject *parent=0, const char *name=0);
+	~OSSPlayerSlots();
+
 };
 
 extern OSSPlayerSlots *oss_player_slots;

@@ -59,19 +59,7 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 	tool_tip_class_manager->registerToolTipClass("Hints", this);
 
 	import_0_5_0_Configuration();
-
-	config_file.addVariable("Notify", "ConnectionError_Hints", true);
-	config_file.addVariable("Notify", "NewChat_Hints", true);
-	config_file.addVariable("Notify", "NewMessage_Hints", true);
-	config_file.addVariable("Notify", "StatusChanged/ToOnline_Hints", true);
-	config_file.addVariable("Notify", "StatusChanged/ToBusy_Hints", true);
-	config_file.addVariable("Notify", "StatusChanged/ToInvisible_Hints", true);
-	config_file.addVariable("Notify", "StatusChanged/ToOffline_Hints", true);
-	config_file.addVariable("Notify", "FileTransfer/IncomingFile_Hints", true);
-	config_file.addVariable("Notify", "FileTransfer/Finished_Hints", true);
-
-	config_file.addVariable("Hints", "MinimumWidth", 0);
-	config_file.addVariable("Hints", "MaximumWidth", 2048);
+	createDefaultConfiguration();
 
 	kdebugf2();
 }
@@ -577,6 +565,42 @@ void HintManager::import_0_5_0_Configuration_fromTo(const QString &from, const Q
 	config_file.removeVariable("Hints", from + "_fgcolor");
 	config_file.removeVariable("Hints", from + "_bgcolor");
 	config_file.removeVariable("Hints", from + "_timeout");
+}
+
+
+void HintManager::createDefaultConfiguration()
+{
+	QWidget w;
+
+	config_file.addVariable("Notify", "ConnectionError_Hints", true);
+	config_file.addVariable("Notify", "NewChat_Hints", true);
+	config_file.addVariable("Notify", "NewMessage_Hints", true);
+	config_file.addVariable("Notify", "StatusChanged/ToOnline_Hints", true);
+	config_file.addVariable("Notify", "StatusChanged/ToBusy_Hints", true);
+	config_file.addVariable("Notify", "StatusChanged/ToInvisible_Hints", true);
+	config_file.addVariable("Notify", "StatusChanged/ToOffline_Hints", true);
+	config_file.addVariable("Notify", "FileTransfer/IncomingFile_Hints", true);
+	config_file.addVariable("Notify", "FileTransfer/Finished_Hints", true);
+
+	config_file.addVariable("Hints", "CiteSign", 50);
+	config_file.addVariable("Hints", "Corner", 0);
+	config_file.addVariable("Hints", "DeletePendingMsgWhenHintDeleted", true);
+	config_file.addVariable("Hints", "HintsPositionX", 0);
+	config_file.addVariable("Hints", "HintsPositionY", 0);
+	config_file.addVariable("Hints", "LeftButton", 1);
+	config_file.addVariable("Hints", "RightButton", 2);
+	config_file.addVariable("Hints", "MaximumWidth", 500);
+	config_file.addVariable("Hints", "MiddleButton", 3);
+	config_file.addVariable("Hints", "MinimumWidth", 100);
+	config_file.addVariable("Hints", "MouseOverUserSyntax", "");
+	config_file.addVariable("Hints", "NewHintUnder", 0);
+	config_file.addVariable("Hints", "SetAll", false); // TODO: fix
+	config_file.addVariable("Hints", "SetAll_bgcolor", w.paletteForegroundColor());
+	config_file.addVariable("Hints", "SetAll_fgcolor", w.paletteBackgroundColor());
+	config_file.addVariable("Hints", "SetAll_font", defaultFont);
+	config_file.addVariable("Hints", "SetAll_timeout", 10);
+	config_file.addVariable("Hints", "ShowContentMessage", true);
+	config_file.addVariable("Hints", "UseUserPosition", false);
 }
 
 HintManager *hint_manager=NULL;

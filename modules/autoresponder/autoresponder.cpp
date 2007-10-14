@@ -41,6 +41,7 @@ AutoResponder::AutoResponder(QObject *parent, const char *name) : QObject(parent
 	connect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatOpenedClosed(ChatWidget *)));
 
 	import_0_5_0_Configuration();
+	createDefaultConfiguration();
 	configurationUpdated();
 
 	kdebugf2();
@@ -118,13 +119,23 @@ void AutoResponder::configurationUpdated()
 void AutoResponder::import_0_5_0_Configuration()
 {
 	ConfigFile* oldConfig = new ConfigFile(ggPath("autoresponder.conf"));
-	config_file.addVariable("Autoresponder", "Autotext", oldConfig->readEntry("Autoresponder", "Autotext"));
-	config_file.addVariable("Autoresponder", "StatusInvisible", oldConfig->readEntry("Autoresponder", "StatusInvisible"));
-	config_file.addVariable("Autoresponder", "StatusBusy", oldConfig->readEntry("Autoresponder", "StatusBusy"));
-	config_file.addVariable("Autoresponder", "StatusAvailable", oldConfig->readEntry("Autoresponder", "StatusAvailable"));
-	config_file.addVariable("Autoresponder", "OnlyFirstTime", oldConfig->readEntry("Autoresponder", "OnlyFirstTime"));
-	config_file.addVariable("Autoresponder", "RespondConf", oldConfig->readEntry("Autoresponder", "RespondConf"));
+	config_file.addVariable("Autoresponder", "Autotext", oldConfig->readEntry("Autoresponder", "Autotext", ""));
+	config_file.addVariable("Autoresponder", "OnlyFirstTime", oldConfig->readBoolEntry("Autoresponder", "OnlyFirstTime", true));
+	config_file.addVariable("Autoresponder", "RespondConf", oldConfig->readBoolEntry("Autoresponder", "RespondConf", true));
+	config_file.addVariable("Autoresponder", "StatusAvailable", oldConfig->readBoolEntry("Autoresponder", "StatusAvailable", false));
+	config_file.addVariable("Autoresponder", "StatusBusy", oldConfig->readBoolEntry("Autoresponder", "StatusBusy", true));
+	config_file.addVariable("Autoresponder", "StatusInvisible", oldConfig->readBoolEntry("Autoresponder", "StatusInvisible", false));
 	delete oldConfig;
+}
+
+void AutoResponder::createDefaultConfiguration()
+{
+	config_file.addVariable("Autoresponder", "Autotext", "");
+	config_file.addVariable("Autoresponder", "OnlyFirstTime", true);
+	config_file.addVariable("Autoresponder", "RespondConf", true);
+	config_file.addVariable("Autoresponder", "StatusAvailable", false);
+	config_file.addVariable("Autoresponder", "StatusBusy", true);
+	config_file.addVariable("Autoresponder", "StatusInvisible", false);
 }
 
 AutoResponder* autoresponder;

@@ -433,6 +433,9 @@ SmsConfigurationUiHandler::SmsConfigurationUiHandler()
 	: menuid(0), gateways()
 {
 	kdebugf();
+
+	createDefaultConfiguration();
+
 	UserBox::userboxmenu->addItemAtPos(2, "SendSms", tr("Send SMS"), this, SLOT(onSendSmsToUser()),
                 HotKey::shortCutFromFile("ShortCuts", "kadu_sendsms"));
 
@@ -665,6 +668,15 @@ void SmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfiguration
 	CONST_FOREACH(gate, gateways)
 		if (gatewayListBox->index(gatewayListBox->findItem(gate.key())) == -1)
 			gatewayListBox->insertItem(gate.key());
+}
+
+void SmsConfigurationUiHandler::createDefaultConfiguration()
+{
+	config_file.addVariable("SMS", "BuiltInApp", true);
+	config_file.addVariable("SMS", "SmsNick", "");
+	config_file.addVariable("SMS", "UseCustomString", false);
+
+	config_file.addVariable("ShortCuts", "kadu_sendsms", "");
 }
 
 SmsConfigurationUiHandler *smsConfigurationUiHandler;

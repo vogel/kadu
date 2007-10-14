@@ -61,6 +61,8 @@ EncryptionManager::EncryptionManager()
 {
 	kdebugf();
 
+	createDefaultConfiguration();
+
 	userlist->addPerContactNonProtocolConfigEntry("encryption_enabled", "EncryptionEnabled");
 
 	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
@@ -367,6 +369,13 @@ void EncryptionManager::sendPublicKey()
 		MessageBox::msg(tr("Your public key has been sent"), false, "Information", kadu);
 	}
 	kdebugf2();
+}
+
+void EncryptionManager::createDefaultConfiguration()
+{
+	config_file.addVariable("Chat", "Encryption", true);
+	config_file.addVariable("Chat", "EncryptAfterReceiveEncryptedMessage", true);
+	config_file.addVariable("Look", "EncryptionColor", QColor(0, 127, 0));
 }
 
 SavePublicKey::SavePublicKey(UserListElement user, QString keyData, QWidget *parent, const char *name) :

@@ -17,10 +17,11 @@ class EncryptionManager : public ConfigurationUiHandler
 {
 	Q_OBJECT
 
-private:
 	QMap<ChatWidget*,bool> EncryptionEnabled;
 	void setupEncryptButton(ChatWidget* chat,bool enabled);
 	Action* action;
+
+	void createDefaultConfiguration();
 
 private slots:
 	void decryptMessage(Protocol *protocol, UserListElements senders, QCString &msg, QByteArray &formats, bool &ignore);

@@ -55,6 +55,7 @@ private:
 	void import_0_5_0_Configuration();
 	void import_0_5_0_Configuration_fromTo(const QString &from, const QString &to,
 		const QString &syntax = QString::null, const QString &detailSyntax = QString::null);
+	void createDefaultConfiguration();
 
 private slots:
 	/**

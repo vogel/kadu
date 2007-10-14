@@ -237,6 +237,8 @@ ALSAPlayerSlots::ALSAPlayerSlots(QObject *parent, const char *name) : QObject(pa
 {
 	kdebugf();
 
+	createDefaultConfiguration();
+
 	connect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice&)),
 			this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice&)));
 	connect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
@@ -267,6 +269,11 @@ ALSAPlayerSlots::~ALSAPlayerSlots()
 		this, SLOT(setFlushingEnabled(SoundDevice, bool)));
 
 	kdebugf2();
+}
+
+void ALSAPlayerSlots::createDefaultConfiguration()
+{
+	config_file.addVariable("Sounds", "ALSAOutputDevice", "/dev/audio");
 }
 
 bool ALSAPlayerSlots::isOk()

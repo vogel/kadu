@@ -83,6 +83,8 @@ class DccManager : public ConfigurationUiHandler, ConfigurationAwareObject
 	QWidget *forwardingExternalPort;
 	QWidget *forwardingLocalPort;
 
+	void createDefaultConfiguration();
+
 private slots:
 	void startTimeout();
 	void cancelTimeout();

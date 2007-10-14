@@ -37,6 +37,7 @@ class AutoResponder : public ConfigurationUiHandler, ConfigurationAwareObject
 			Import danych konfiguracyjnych ze starszej wersji Kadu.
 		**/
 		void import_0_5_0_Configuration();
+		void createDefaultConfiguration();
 
 	protected:
 		/**

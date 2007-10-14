@@ -81,6 +81,8 @@ OSSPlayerSlots::OSSPlayerSlots(QObject *parent, const char *name) : QObject(pare
 {
 	kdebugf();
 
+	createDefaultConfiguration();
+
 	connect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice&)),
 		this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice&)));
 	connect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
@@ -91,6 +93,7 @@ OSSPlayerSlots::OSSPlayerSlots(QObject *parent, const char *name) : QObject(pare
 		this, SLOT(recordSample(SoundDevice, int16_t*, int, bool&)));
 	connect(sound_manager, SIGNAL(setFlushingEnabledImpl(SoundDevice, bool)),
 		this, SLOT(setFlushingEnabled(SoundDevice, bool)));
+
 	kdebugf2();
 }
 
@@ -298,6 +301,11 @@ int OSSPlayerSlots::read_all(int fd, char *buffer, int count)
 		offset += c;
 	}
 	return offset;
+}
+
+void OSSPlayerSlots::createDefaultConfiguration()
+{
+	config_file.addVariable("Sounds", "OutputDevice", "/dev/dsp");
 }
 
 OSSPlayerSlots *oss_player_slots;

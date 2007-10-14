@@ -62,7 +62,7 @@
 			</group-box>
 			<group-box name="New chat/message">
 				<check-box caption="Show message content in hint" config-section="Hints" config-item="ShowContentMessage" id="hints/showContent" />
-				<spin-box caption="Number of quoted characters" config-section="Hints" config-item="CiteSign" min-value="1" max-value="200" suffix="s" id="hints/showContentCount" />
+				<spin-box caption="Number of quoted characters" config-section="Hints" config-item="CiteSign" min-value="1" max-value="200" id="hints/showContentCount" />
 				<check-box caption="Delete pending message when user deletes hint" config-section="Hints" config-item="DeletePendingMsgWhenHintDeleted" />
 			</group-box>
 		</tab>

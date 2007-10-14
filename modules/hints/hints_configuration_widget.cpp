@@ -80,15 +80,16 @@ void HintsConfigurationWidget::switchToEvent(const QString &event)
 	}
 	else
 	{
-		static QColor fgDefaultColor(0x00, 0x00, 0x00);
-		static QColor bgDefaultColor(0xf0, 0xf0, 0xf0);
-
 		currentNotifyEvent = event;
 		currentProperties.eventName = event;
 
-		currentProperties.font = config_file.readFontEntry("Hints", QString("Event_") + event + "_font");
-		currentProperties.foregroundColor = config_file.readColorEntry("Hints", QString("Event_") + event+"_fgcolor", &fgDefaultColor);
-		currentProperties.backgroundColor = config_file.readColorEntry("Hints", QString("Event_") + event + "_bgcolor", &bgDefaultColor);
+		config_file.addVariable("Hints", QString("Event_") + event + "_font", defaultFont);
+		config_file.addVariable("Hints", QString("Event_") + event + "_fgcolor", paletteForegroundColor());
+		config_file.addVariable("Hints", QString("Event_") + event + "_bgcolor", paletteBackgroundColor());
+
+		currentProperties.font = config_file.readFontEntry("Hints", QString("Event_") + event + "_font", defaultFont);
+		currentProperties.foregroundColor = config_file.readColorEntry("Hints", QString("Event_") + event + "_fgcolor");
+		currentProperties.backgroundColor = config_file.readColorEntry("Hints", QString("Event_") + event + "_bgcolor");
 		currentProperties.timeout = config_file.readUnsignedNumEntry("Hints", QString("Event_") + event + "_timeout", 10);
 		currentProperties.syntax = config_file.readEntry("Hints", QString("Event_") + event + "_syntax");
 	}

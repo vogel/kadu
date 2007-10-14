@@ -60,6 +60,9 @@ Notify::Notify(QObject *parent, const char *name)
 {
 	kdebugf();
 
+
+	createDefaultConfiguration();
+
 	connect(gadu, SIGNAL(connectionError(Protocol *, const QString &)), this, SLOT(connectionError(Protocol *, const QString &)));
 	connect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString&, time_t)),
 			this, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
@@ -473,6 +476,14 @@ void Notify::notify(Notification *notification)
 		MessageBox::msg(tr("Unable to find notifier for %1 event").arg(notification->type()), true, "Warning");
 
 	kdebugf2();
+}
+
+void Notify::createDefaultConfiguration()
+{
+	config_file.addVariable("Notify", "IgnoreOnlineToOnline", false);
+	config_file.addVariable("Notify", "NewMessageOnlyIfInactive", true);
+	config_file.addVariable("Notify", "NotifyAboutAll", true);
+	config_file.addVariable("Notify", "NotifyIgnoreOnConnection", false);
 }
 
 Notify *notification_manager = 0;

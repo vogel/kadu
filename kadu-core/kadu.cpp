@@ -340,6 +340,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 
 	configurationUpdated();
 
+	// TODO: fix workaround
+	icons_manager->configurationUpdated();
+
 	kdebugf2();
 }
 
@@ -1984,7 +1987,6 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("General", "HideBaseModules", false);
 	config_file.addVariable("General", "Language",  QString(QTextCodec::locale()).mid(0,2));
 	config_file.addVariable("General", "Nick", "Me");
-	config_file.addVariable("General", "NotifyAboutAll", true);
 	config_file.addVariable("General", "NumberOfDescriptions", 20);
 	config_file.addVariable("General", "ParseStatus", false);
 	config_file.addVariable("General", "PrivateStatus", false);
@@ -2015,10 +2017,12 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("Look", "ConferencePrefix", "");
 	config_file.addVariable("Look", "DescriptionColor", w.paletteForegroundColor());
 	config_file.addVariable("Look", "DisplayGroupTabs", true);
-	config_file.addVariable("Look", "HeaderSeparatorHeight", 4);
+	config_file.addVariable("Look", "HeaderSeparatorHeight", 1);
+	config_file.addVariable("Look", "IconsPaths", "" /*dataPath("kadu/themes/icons/")*/);
 	config_file.addVariable("Look", "IconTheme", "default");
 	config_file.addVariable("Look", "InfoPanelBgColor", w.paletteBackgroundColor());
 	config_file.addVariable("Look", "InfoPanelFgColor", w.paletteForegroundColor());
+	config_file.addVariable("Look", "InfoPanelSyntaxFile", "default");
 	config_file.addVariable("Look", "NiceDateFormat", true);
 	config_file.addVariable("Look", "NoHeaderInterval", 30);
 	config_file.addVariable("Look", "NoHeaderRepeat", false);
@@ -2026,7 +2030,7 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("Look", "NoServerTimeDiff", 5);
 	config_file.addVariable("Look", "PanelFont", defaultFont);
 	config_file.addVariable("Look", "PanelVerticalScrollBar", false);
-	config_file.addVariable("Look", "ParagraphSeparator", 1);
+	config_file.addVariable("Look", "ParagraphSeparator", 4);
 	config_file.addVariable("Look", "ShowBold", true);
 	config_file.addVariable("Look", "ShowDesc", true);
 	config_file.addVariable("Look", "ShowInfoPanel", true);
@@ -2046,5 +2050,17 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("Network", "TimeoutInMs", 5000);
 	config_file.addVariable("Network", "UseProxy", false);
 
-	config_file.addVariable("ShortCuts", "chat_newline", "Enter");
+	config_file.addVariable("ShortCuts", "chat_bold", "Ctrl+B");
+	config_file.addVariable("ShortCuts", "chat_clear", "F9");
+	config_file.addVariable("ShortCuts", "chat_close", "Esc");
+	config_file.addVariable("ShortCuts", "chat_italic", "Ctrl+I");
+	config_file.addVariable("ShortCuts", "chat_newline", "Return");
+	config_file.addVariable("ShortCuts", "chat_underline", "Ctrl+U");
+	config_file.addVariable("ShortCuts", "kadu_configure", "");
+	config_file.addVariable("ShortCuts", "kadu_deleteuser", "Del");
+	config_file.addVariable("ShortCuts", "kadu_modulesmanager", "");
+	config_file.addVariable("ShortCuts", "kadu_persinfo", "");
+	config_file.addVariable("ShortCuts", "kadu_searchuser", "");
+	config_file.addVariable("ShortCuts", "kadu_showoffline", "");
+	config_file.addVariable("ShortCuts", "kadu_showonlydesc", "");
 }

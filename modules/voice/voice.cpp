@@ -302,6 +302,8 @@ VoiceManager::VoiceManager()
 {
 	kdebugf();
 
+	createDefaultConfiguration();
+
 	UserBox::userboxmenu->addItemAtPos(2,"VoiceChat", tr("Voice chat"), this,
 		SLOT(makeVoiceChat()), HotKey::shortCutFromFile("ShortCuts", "kadu_voicechat"));
 	connect(UserBox::userboxmenu, SIGNAL(popup()),
@@ -318,6 +320,7 @@ VoiceManager::VoiceManager()
 		this, SLOT(socketDestroying(DccSocket*)));
 	connect(dcc_manager, SIGNAL(setState(DccSocket*)),
 		this, SLOT(setState(DccSocket*)));
+
 	kdebugf2();
 }
 
@@ -342,6 +345,7 @@ VoiceManager::~VoiceManager()
 	disconnect(dcc_manager, SIGNAL(socketDestroying(DccSocket*)),
 		this, SLOT(socketDestroying(DccSocket*)));
 	VoiceChatDialog::destroyAll();
+
 	kdebugf2();
 }
 
@@ -772,6 +776,11 @@ void VoiceManager::setState(DccSocket *socket)
 		kdebugm(KDEBUG_INFO, "not my socket\n");
 
 	kdebugf2();
+}
+
+void VoiceManager::createDefaultConfiguration()
+{
+	config_file.addVariable("ShortCuts", "kadu_voicechat", "");
 }
 
 QMap<DccSocket *, VoiceChatDialog *> VoiceChatDialog::Dialogs;

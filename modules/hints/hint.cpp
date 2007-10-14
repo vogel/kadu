@@ -34,9 +34,9 @@ Hint::Hint(QWidget *parent, Notification *notification)
 		details.append(notification->details());
 
 	if (config_file.readBoolEntry("Hints", "SetAll", false))
-		startSecs = secs = config_file.readNumEntry("Hints", "SetAll_timeout_timeout", 2);
+		startSecs = secs = config_file.readNumEntry("Hints", "SetAll_timeout", 10);
 	else
-		startSecs = secs = config_file.readNumEntry("Hints", "Event_" + notification->type() + "_timeout", 2);
+		startSecs = secs = config_file.readNumEntry("Hints", "Event_" + notification->type() + "_timeout", 10);
 
 	createLabels(icons_manager->loadIcon(notification->icon()));
 	updateText();
@@ -96,8 +96,8 @@ void Hint::configurationUpdated()
 	bcolor = config_file.readColorEntry("Hints", configurationDirective + "_bgcolor");
 	setPaletteBackgroundColor(bcolor);
 
-	setMinimumWidth(config_file.readNumEntry("Hints", "MinimumWidth", 0));
-	setMaximumWidth(config_file.readNumEntry("Hints", "MaximumWidth", 2048));
+	setMinimumWidth(config_file.readNumEntry("Hints", "MinimumWidth", 100));
+	setMaximumWidth(config_file.readNumEntry("Hints", "MaximumWidth", 500));
 }
 
 void Hint::createLabels(const QPixmap &pixmap)

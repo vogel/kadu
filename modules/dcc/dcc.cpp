@@ -301,12 +301,15 @@ DccManager::DccManager()
 {
 	kdebugf();
 
+	createDefaultConfiguration();
+
 	connect(&TimeoutTimer, SIGNAL(timeout()), this, SLOT(timeout()));
 
 	connect(gadu, SIGNAL(connecting()), this, SLOT(setupDcc()));
 	connect(gadu, SIGNAL(disconnected()), this, SLOT(closeDcc()));
 	connect(gadu, SIGNAL(dccConnectionReceived(const UserListElement&)),
 		this, SLOT(dccConnectionReceived(const UserListElement&)));
+
 	kdebugf2();
 }
 
@@ -319,6 +322,7 @@ DccManager::~DccManager()
 	disconnect(gadu, SIGNAL(dccConnectionReceived(const UserListElement&)),
 		this, SLOT(dccConnectionReceived(const UserListElement&)));
 	closeDcc();
+
 	kdebugf2();
 }
 
@@ -619,6 +623,22 @@ void DccManager::callbackReceived(DccSocket *sock)
 		requests.remove(sock->ggDccStruct()->peer_uin);
 	}
 	kdebugf2();
+}
+
+void DccManager::createDefaultConfiguration()
+{
+	config_file.addVariable("Network", "AllowDCC", true);
+	config_file.addVariable("Network", "DccIP", "0.0.0.0");
+	config_file.addVariable("Network", "DccIpDetect", true);
+	config_file.addVariable("Network", "ExternalIP", "0.0.0.0");
+	config_file.addVariable("Network", "ExternalPort", 0);
+	config_file.addVariable("Network", "DccForwarding", false);
+	config_file.addVariable("Network", "LastDownloadDirectory", QString(getenv("HOME")) + '/');
+	config_file.addVariable("Network", "LastUploadDirectory", QString(getenv("HOME")) + '/');
+	config_file.addVariable("Network", "LocalPort", 0);
+	config_file.addVariable("Network", "RemoveCompletedTransfers", false);
+
+	config_file.addVariable("ShortCuts", "kadu_sendfile", "");
 }
 
 DccManager* dcc_manager = NULL;

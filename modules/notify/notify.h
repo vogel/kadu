@@ -175,6 +175,7 @@ class Notify : public ConfigurationUiHandler
 	QString CurrentEvent;
 
 	void import_connection_from_0_5_0(const QString &notifierName, const QString &oldConnectionName, const QString &newConnectionName);
+	void createDefaultConfiguration();
 
 private slots:
 

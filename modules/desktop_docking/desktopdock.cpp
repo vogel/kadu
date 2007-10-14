@@ -106,6 +106,8 @@ DesktopDock::DesktopDock()
 {
 	kdebugf();
 
+	createDefaultConfiguration();
+
 	desktopDock = new DesktopDockWindow(0, 0);
 
 // fullDesktop->width() - DesktopDockPixmap.size().width(), 1, 0,
@@ -246,6 +248,17 @@ void DesktopDock::updateMenu(bool b)
 		dockMenu->removeItem(menuPos);
 		dockMenu->removeItem(separatorPos);
 	}
+}
+
+void DesktopDock::createDefaultConfiguration()
+{
+	QWidget w;
+
+	config_file.addVariable("Desktop Dock", "DockingColor", w.paletteBackgroundColor());
+	config_file.addVariable("Desktop Dock", "DockingTransparency", true);
+	config_file.addVariable("Desktop Dock", "MoveInMenu", true);
+	config_file.addVariable("Desktop Dock", "PositionX", 0);
+	config_file.addVariable("Desktop Dock", "PositionY", 0);
 }
 
 DesktopDock *desktop_dock;

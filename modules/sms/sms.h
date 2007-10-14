@@ -153,6 +153,8 @@ class SmsConfigurationUiHandler : public ConfigurationUiHandler, ConfigurationAw
 	QLineEdit *customString;
 	QListBox *gatewayListBox;
 
+	void createDefaultConfiguration();
+
 protected:
 	virtual void configurationUpdated();
 

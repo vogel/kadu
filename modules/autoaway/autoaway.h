@@ -91,6 +91,8 @@ class AutoAway : public ConfigurationUiHandler, ConfigurationAwareObject
 
 	QString parseDescription(const QString &parseDescription);
 
+	void createDefaultConfiguration();
+
 private slots:
 	void checkIdleTime();
 
