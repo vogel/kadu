@@ -17,7 +17,7 @@
 
 #include "chat_messages_view.h"
 
-ChatMessagesView::ChatMessagesView(QWidget *parent, char *name) : KaduTextBrowser(parent, name),
+ChatMessagesView::ChatMessagesView(QWidget *parent, const char *name) : KaduTextBrowser(parent, name),
 	Prune(0)
 {
 	setMargin(ParagraphSeparator);

@@ -782,7 +782,8 @@ void ChatManager::closeModule()
 
 	ChatMessage::unregisterParserTags();
 
-	chat_manager->saveOpenedWindows();
+	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
+		chat_manager->saveOpenedWindows();
 
 	delete chat_manager;
 	chat_manager = 0;

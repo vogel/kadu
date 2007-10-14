@@ -51,7 +51,7 @@ private slots:
 	void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString& path);
 
 public:
-	ChatMessagesView(QWidget *parent = 0, char *name = 0);
+	ChatMessagesView(QWidget *parent = 0, const char *name = 0);
 	virtual ~ChatMessagesView();
 
 	void appendMessage(ChatMessage *message);

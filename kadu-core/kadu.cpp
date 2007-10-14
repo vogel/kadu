@@ -334,7 +334,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 		this, SLOT(wentOffline(const QString &)));
 
 	MainLayout->setResizeMode(QLayout::Minimum);
-	chat_manager->loadOpenedWindows();
+
+	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
+		chat_manager->loadOpenedWindows();
 
 	configurationUpdated();
 
@@ -1967,6 +1969,7 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("Chat", "MessageAcks", false);
 	config_file.addVariable("Chat", "NewMessagesInChatTitle", false);
 	config_file.addVariable("Chat", "OpenChatOnMessage", true);
+	config_file.addVariable("Chat", "SaveOpenedWindows", true);
 	config_file.addVariable("Chat", "ReceiveMessages", true);
 	config_file.addVariable("Chat", "ReceiveImagesDuringInvisibility", false);
 	config_file.addVariable("Chat", "RememberPosition", true);

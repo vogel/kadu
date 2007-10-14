@@ -1916,7 +1916,7 @@ bool GaduProtocol::doClearUserList()
 
 	UserListClear = true;
 
-	char *dup = "";
+	const char *dup = "";
 	bool success=(gg_userlist_request(Sess, GG_USERLIST_PUT, dup) != -1);
 	if (!success)
 	{
