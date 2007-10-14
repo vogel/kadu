@@ -2018,7 +2018,7 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("Look", "DescriptionColor", w.paletteForegroundColor());
 	config_file.addVariable("Look", "DisplayGroupTabs", true);
 	config_file.addVariable("Look", "HeaderSeparatorHeight", 1);
-	config_file.addVariable("Look", "IconsPaths", "" /*dataPath("kadu/themes/icons/")*/);
+	config_file.addVariable("Look", "IconsPaths", "");
 	config_file.addVariable("Look", "IconTheme", "default");
 	config_file.addVariable("Look", "InfoPanelBgColor", w.paletteBackgroundColor());
 	config_file.addVariable("Look", "InfoPanelFgColor", w.paletteForegroundColor());

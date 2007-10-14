@@ -538,22 +538,20 @@ void HintManager::import_0_5_0_Configuration()
 	import_0_5_0_Configuration_fromTo("HintNewChat", "NewChat");
 	import_0_5_0_Configuration_fromTo("HintNewMessage", "NewMessage");
 
-	if (config_file.readNumEntry("Hints", "SetAll_timeout", -20) == -20)
+	if ((config_file.readNumEntry("Hints", "SetAll_timeout", -1) == -1) && (config_file.readNumEntry("Hints", "Event_NewChat_timeout", -1) != -1))
 		realCopyConfiguration("Event_NewChat", "SetAll");
 }
 
 void HintManager::import_0_5_0_Configuration_fromTo(const QString &from, const QString &to, const QString &syntax, const QString &detailSyntax)
 {
-	if (config_file.readNumEntry("Hints", from + "_timeout", -1) == -1)
+	if ((config_file.readNumEntry("Hints", from + "_timeout", -1) == -1) || (config_file.readNumEntry("Hints", QString("Event_") + to + "_timeout", -1) != -1))
 		return;
 
-// TODO: fix it, dont use real QColor instances here
-	QColor fgDefaultColor(0x00, 0x00, 0x00);
-	QColor bgDefaultColor(0xf0, 0xf0, 0xf0);
+	QWidget w;
 
 	config_file.addVariable("Hints", QString("Event_") + to + "_font", config_file.readFontEntry("Hints", from + "_font"));
-	config_file.addVariable("Hints", QString("Event_") + to + "_fgcolor", config_file.readColorEntry("Hints", from + "_fgcolor", &fgDefaultColor));
-	config_file.addVariable("Hints", QString("Event_") + to + "_bgcolor", config_file.readColorEntry("Hints", from + "_bgcolor", &bgDefaultColor));
+	config_file.addVariable("Hints", QString("Event_") + to + "_fgcolor", config_file.readColorEntry("Hints", from + "_fgcolor", &w.paletteBackgroundColor()));
+	config_file.addVariable("Hints", QString("Event_") + to + "_bgcolor", config_file.readColorEntry("Hints", from + "_bgcolor", &w.paletteForegroundColor()));
 	config_file.addVariable("Hints", QString("Event_") + to + "_timeout", config_file.readNumEntry("Hints", from + "_timeout", 10));
 
 	if (QString::null != syntax && syntax != "")
@@ -585,6 +583,12 @@ void HintManager::createDefaultConfiguration()
 	config_file.addVariable("Hints", "CiteSign", 50);
 	config_file.addVariable("Hints", "Corner", 0);
 	config_file.addVariable("Hints", "DeletePendingMsgWhenHintDeleted", true);
+	// TODO: remove after removing import from 0.5
+	config_file.addVariable("Hints", "Event_NewChat_bgcolor", w.paletteBackgroundColor());
+	config_file.addVariable("Hints", "Event_NewChat_fgcolor", w.paletteForegroundColor());
+	config_file.addVariable("Hints", "Event_NewChat_font", defaultFont);
+	config_file.addVariable("Hints", "Event_NewChat_timeout", 10);
+	// end of TODO
 	config_file.addVariable("Hints", "HintsPositionX", 0);
 	config_file.addVariable("Hints", "HintsPositionY", 0);
 	config_file.addVariable("Hints", "LeftButton", 1);
@@ -595,8 +599,8 @@ void HintManager::createDefaultConfiguration()
 	config_file.addVariable("Hints", "MouseOverUserSyntax", "");
 	config_file.addVariable("Hints", "NewHintUnder", 0);
 	config_file.addVariable("Hints", "SetAll", false); // TODO: fix
-	config_file.addVariable("Hints", "SetAll_bgcolor", w.paletteForegroundColor());
-	config_file.addVariable("Hints", "SetAll_fgcolor", w.paletteBackgroundColor());
+	config_file.addVariable("Hints", "SetAll_bgcolor", w.paletteBackgroundColor());
+	config_file.addVariable("Hints", "SetAll_fgcolor", w.paletteForegroundColor());
 	config_file.addVariable("Hints", "SetAll_font", defaultFont);
 	config_file.addVariable("Hints", "SetAll_timeout", 10);
 	config_file.addVariable("Hints", "ShowContentMessage", true);
