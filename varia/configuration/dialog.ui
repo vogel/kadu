@@ -1,5 +1,5 @@
 <configuration-ui>
-	<section name="Kadu">
+	<section name="Kadu" icon="AboutIcon">
 		<tab name="Kadu">
 			<group-box name="Language">
 				<combo-box caption="Language" config-section="General" config-item="Language" id="languages"
@@ -54,7 +54,7 @@
 			
 	</section>
 
-	<section name="Account">
+	<section name="Account" icon="GeneralTab" >
 		<tab name="Gadu-Gadu">
 			<group-box name="User data">
 				<line-edit caption="UIN" config-section="General" config-item="UIN" />
@@ -84,7 +84,7 @@
 		</tab>
 	</section>
 
-	<section name="Contacts">
+	<section name="Contacts" icon="ContactsTab" >
 		<tab name="General">
 			<group-box name="Filters">
 				<check-box caption="Show offline contacts" config-section="General" config-item="ShowOffline" />
@@ -101,7 +101,7 @@
 		</tab>
 	</section>
 
-	<section name="Status">
+	<section name="Status" icon="StatusTab" >
 		<tab name="General">
 			<group-box name="General">
 				<check-box caption="Private status" config-section="General" config-item="PrivateStatus"
@@ -134,7 +134,7 @@
 		</tab>
 	</section>
 
-	<section name="Look" icon="LookTab">
+	<section name="Look" icon="LookTab" >
 		<tab name="General">
 			<group-box name="General">
 				<combo-box caption="Theme" config-section="Look" config-item="QtStyle" id="qtThemes"
