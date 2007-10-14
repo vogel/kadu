@@ -509,6 +509,7 @@ void ChatWidget::writeMyMessage()
 	if (!Edit->isEnabled())
 		cancelMessage();
 	Edit->clear();
+
 	if (KaduActions["boldAction"]->isOn(Users->toUserListElements()))
 		Edit->setBold(true);
 	if (KaduActions["italicAction"]->isOn(Users->toUserListElements()))
@@ -542,8 +543,10 @@ void ChatWidget::cancelMessage()
 	kdebugf();
 //	seq = 0;
 	disconnectAcknowledgeSlots();
+
 	Edit->setReadOnly(false);
 	Edit->setEnabled(true);
+	Edit->setFocus();
 
 	WaitingForACK = false;
 	KaduActions["sendAction"]->setPixmaps(Users->toUserListElements(),
