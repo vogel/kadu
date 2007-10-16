@@ -1984,7 +1984,7 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
 	config_file.addVariable("General", "DescriptionHeight", 60);
 	config_file.addVariable("General", "DisconnectWithCurrentDescription", true);
-	config_file.addVariable("General", "HideBaseModules", false);
+	config_file.addVariable("General", "HideBaseModules", true);
 	config_file.addVariable("General", "Language",  QString(QTextCodec::locale()).mid(0,2));
 	config_file.addVariable("General", "Nick", "Me");
 	config_file.addVariable("General", "NumberOfDescriptions", 20);
@@ -2056,11 +2056,12 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("ShortCuts", "chat_italic", "Ctrl+I");
 	config_file.addVariable("ShortCuts", "chat_newline", "Return");
 	config_file.addVariable("ShortCuts", "chat_underline", "Ctrl+U");
-	config_file.addVariable("ShortCuts", "kadu_configure", "");
+	config_file.addVariable("ShortCuts", "kadu_adduser", "Ctrl+N");
+	config_file.addVariable("ShortCuts", "kadu_configure", "F2");
 	config_file.addVariable("ShortCuts", "kadu_deleteuser", "Del");
-	config_file.addVariable("ShortCuts", "kadu_modulesmanager", "");
-	config_file.addVariable("ShortCuts", "kadu_persinfo", "");
-	config_file.addVariable("ShortCuts", "kadu_searchuser", "");
-	config_file.addVariable("ShortCuts", "kadu_showoffline", "");
-	config_file.addVariable("ShortCuts", "kadu_showonlydesc", "");
+	config_file.addVariable("ShortCuts", "kadu_modulesmanager", "F4");
+	config_file.addVariable("ShortCuts", "kadu_persinfo", "Ins");
+	config_file.addVariable("ShortCuts", "kadu_searchuser", "Ctrl+F");
+	config_file.addVariable("ShortCuts", "kadu_showoffline", "F9");
+	config_file.addVariable("ShortCuts", "kadu_showonlydesc", "F10");
 }

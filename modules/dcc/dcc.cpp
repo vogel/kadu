@@ -638,7 +638,8 @@ void DccManager::createDefaultConfiguration()
 	config_file.addVariable("Network", "LocalPort", 0);
 	config_file.addVariable("Network", "RemoveCompletedTransfers", false);
 
-	config_file.addVariable("ShortCuts", "kadu_sendfile", "");
+	config_file.addVariable("ShortCuts", "kadu_sendfile", "F8");
+	config_file.addVariable("ShortCuts", "kadu_voicechat", "F7");
 }
 
 DccManager* dcc_manager = NULL;

@@ -325,13 +325,13 @@ void HistoryModule::removingUsers(UserListElements users)
 
 void HistoryModule::createDefaultConfiguration()
 {
-	config_file.addVariable("History", "ChatHistoryCitation", 5);
-	config_file.addVariable("History", "ChatHistoryQuotationTime", -1);
+	config_file.addVariable("History", "ChatHistoryCitation", 10);
+	config_file.addVariable("History", "ChatHistoryQuotationTime", -24);
 	config_file.addVariable("History", "DontSaveStatusChanges", false);
 	config_file.addVariable("History", "DontShowStatusChanges", true);
 	config_file.addVariable("History", "Logging", true);
 
-	config_file.addVariable("ShortCuts", "kadu_viewhistory", "");
+	config_file.addVariable("ShortCuts", "kadu_viewhistory", "Ctrl+H");
 }
 
 HistoryModule* history_module = NULL;

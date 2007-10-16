@@ -676,7 +676,7 @@ void SmsConfigurationUiHandler::createDefaultConfiguration()
 	config_file.addVariable("SMS", "SmsNick", "");
 	config_file.addVariable("SMS", "UseCustomString", false);
 
-	config_file.addVariable("ShortCuts", "kadu_sendsms", "");
+	config_file.addVariable("ShortCuts", "kadu_sendsms", "Ctrl+S");
 }
 
 SmsConfigurationUiHandler *smsConfigurationUiHandler;
