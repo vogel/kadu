@@ -79,7 +79,11 @@ ToolButton* Action::addToToolbar(ToolBar* toolbar, bool uses_text_label)
 
 	ToolButton* btn = new ToolButton(toolbar, name(), Type);
 	btn->setIconSet(icons_manager->loadIcon(IconName));
-	btn->setTextLabel(Text);
+
+	QString textWithoutAccel = Text;
+	textWithoutAccel.remove('&');
+	btn->setTextLabel(textWithoutAccel);
+
 	btn->setOnShape(icons_manager->loadIcon(OnIcon), OnText);
 	btn->setToggleButton(ToggleAction);
 	btn->setUsesTextLabel(uses_text_label);
