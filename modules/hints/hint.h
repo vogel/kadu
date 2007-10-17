@@ -48,7 +48,7 @@ class Hint : public QWidget, ConfigurationAwareObject
 		void notificationClosed();
 
 	protected:
-		virtual void mousePressEvent(QMouseEvent * event);
+		virtual void mouseReleaseEvent(QMouseEvent * event);
 		virtual void enterEvent(QEvent *event);
 		virtual void leaveEvent(QEvent *event);
 

@@ -185,12 +185,13 @@ void Hint::nextSecond(void)
 {
 	if (!haveCallbacks)
 	{
-		if (secs==0)
+		if (secs == 0)
 			kdebugm(KDEBUG_ERROR, "ERROR: secs == 0 !\n");
 		else if (secs>2000000000)
 			kdebugm(KDEBUG_WARNING, "WARNING: secs > 2 000 000 000 !\n");
 
-		--secs;
+		if (secs >= 0)
+			--secs;
 	}
 }
 
@@ -219,7 +220,7 @@ const UserListElements & Hint::getUsers() const
 	return notification->userListElements();
 }
 
-void Hint::mousePressEvent(QMouseEvent * event)
+void Hint::mouseReleaseEvent(QMouseEvent *event)
 {
 	switch (event->button())
 	{
