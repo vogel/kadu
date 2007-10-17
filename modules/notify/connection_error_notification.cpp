@@ -12,6 +12,8 @@
 
 #include "connection_error_notification.h"
 
+QStringList ConnectionErrorNotification::ActiveErrors;
+
 static QString getErrorMessage(const QObject * const object)
 {
 	const ConnectionErrorNotification * const connectionErrorNotification = dynamic_cast<const ConnectionErrorNotification * const>(object);
@@ -33,11 +35,23 @@ void ConnectionErrorNotification::unregisterEvent(Notify *manager)
 	manager->unregisterEvent("ConnectionError");
 }
 
+bool ConnectionErrorNotification::activeError(const QString &errorMessage)
+{
+	return ActiveErrors.find(errorMessage) != ActiveErrors.end();
+}
+
 ConnectionErrorNotification::ConnectionErrorNotification(const QString &errorMessage)
 	: Notification("ConnectionError", "Blocking", UserListElements()), ErrorMessage(errorMessage)
 {
 	setTitle(tr("Connection error"));
 	setText(tr("<b>Error:</b> %1").arg(ErrorMessage));
+
+	ActiveErrors.append(ErrorMessage);
+}
+
+ConnectionErrorNotification::~ConnectionErrorNotification()
+{
+	ActiveErrors.remove(ErrorMessage);
 }
 
 QString ConnectionErrorNotification::errorMessage() const

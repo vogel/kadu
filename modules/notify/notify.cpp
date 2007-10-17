@@ -329,8 +329,11 @@ void Notify::connectionError(Protocol *protocol, const QString &message)
 {
 	kdebugf();
 
-	ConnectionErrorNotification *connectionErrorNotification = new ConnectionErrorNotification(message);
-	notify(connectionErrorNotification);
+	if (!ConnectionErrorNotification::activeError(message))
+	{
+		ConnectionErrorNotification *connectionErrorNotification = new ConnectionErrorNotification(message);
+		notify(connectionErrorNotification);
+	}
 
 	kdebugf2();
 }

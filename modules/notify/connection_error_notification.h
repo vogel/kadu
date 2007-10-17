@@ -10,6 +10,8 @@
 #ifndef CONNECTION_ERROR_NOTIFICATION_H
 #define CONNECTION_ERROR_NOTIFICATION_H
 
+#include <qstringlist.h>
+
 #include "notification.h"
 #include "notify.h"
 
@@ -17,6 +19,7 @@ class ConnectionErrorNotification : public Notification
 {
 	Q_OBJECT
 
+	static QStringList ActiveErrors;
 	QString ErrorMessage;
 
 public:
@@ -24,8 +27,10 @@ public:
 	static void registerEvent(Notify * manager);
 	static void unregisterEvent(Notify * manager);
 
+	static bool activeError(const QString &errorMessage);
+
 	ConnectionErrorNotification(const QString &errorMessage);
-	virtual ~ConnectionErrorNotification() {};
+	virtual ~ConnectionErrorNotification();
 
 	QString errorMessage() const;
 
