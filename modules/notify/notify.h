@@ -181,7 +181,7 @@ private slots:
 
 	void messageReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t t);
 
-	void connectionError(Protocol *protocol, const QString &message);
+	void connectionError(Protocol *protocol, const QString &server, const QString &message);
 	void statusChanged(UserListElement elem, QString protocolName, const UserStatus &oldStatus, bool massively, bool last);
 
 	void moveToNotifyList();

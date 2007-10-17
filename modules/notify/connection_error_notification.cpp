@@ -23,10 +23,20 @@ static QString getErrorMessage(const QObject * const object)
 		return "";
 }
 
+static QString getErrorServer(const QObject * const object)
+{
+	const ConnectionErrorNotification * const connectionErrorNotification = dynamic_cast<const ConnectionErrorNotification * const>(object);
+	if (connectionErrorNotification)
+		return connectionErrorNotification->errorServer();
+	else
+		return "";
+}
+
 void ConnectionErrorNotification::registerEvent(Notify *manager)
 {
 	manager->registerEvent("ConnectionError", "Connection error", CallbackNotRequired);
 	KaduParser::registerObjectTag("error", getErrorMessage);
+	KaduParser::registerObjectTag("errorServer", getErrorServer);
 }
 
 void ConnectionErrorNotification::unregisterEvent(Notify *manager)
@@ -40,11 +50,11 @@ bool ConnectionErrorNotification::activeError(const QString &errorMessage)
 	return ActiveErrors.find(errorMessage) != ActiveErrors.end();
 }
 
-ConnectionErrorNotification::ConnectionErrorNotification(const QString &errorMessage)
-	: Notification("ConnectionError", "Blocking", UserListElements()), ErrorMessage(errorMessage)
+ConnectionErrorNotification::ConnectionErrorNotification(const QString &errorServer, const QString &errorMessage)
+	: Notification("ConnectionError", "Blocking", UserListElements()), ErrorServer(errorServer), ErrorMessage(errorMessage)
 {
 	setTitle(tr("Connection error"));
-	setText(tr("<b>Error:</b> %1").arg(ErrorMessage));
+	setText(tr("<b>Error:</b> (%1) %2").arg(ErrorServer).arg(ErrorMessage));
 
 	ActiveErrors.append(ErrorMessage);
 }
@@ -59,4 +69,11 @@ QString ConnectionErrorNotification::errorMessage() const
 	kdebugf();
 
 	return ErrorMessage;
+}
+
+QString ConnectionErrorNotification::errorServer() const
+{
+	kdebugf();
+
+	return ErrorServer;
 }

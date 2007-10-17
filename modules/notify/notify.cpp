@@ -63,7 +63,7 @@ Notify::Notify(QObject *parent, const char *name)
 
 	createDefaultConfiguration();
 
-	connect(gadu, SIGNAL(connectionError(Protocol *, const QString &)), this, SLOT(connectionError(Protocol *, const QString &)));
+	connect(gadu, SIGNAL(connectionError(Protocol *, const QString &, const QString &)), this, SLOT(connectionError(Protocol *, const QString &, const QString &)));
 	connect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString&, time_t)),
 			this, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
 	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
@@ -84,7 +84,7 @@ Notify::~Notify()
 	ConnectionErrorNotification::unregisterEvent(this);
 	MessageNotification::unregisterEvents(this);
 
-	disconnect(gadu, SIGNAL(connectionError(Protocol *, const QString &)), this, SLOT(connectionError(Protocol *, const QString &)));
+	disconnect(gadu, SIGNAL(connectionError(Protocol *, const QString &, const QString &)), this, SLOT(connectionError(Protocol *, const QString &, const QString &)));
 	disconnect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString&, time_t)),
 			this, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
 	disconnect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
@@ -325,13 +325,13 @@ void Notify::messageReceived(Protocol *protocol, UserListElements senders, const
 	kdebugf2();
 }
 
-void Notify::connectionError(Protocol *protocol, const QString &message)
+void Notify::connectionError(Protocol *protocol, const QString &server, const QString &message)
 {
 	kdebugf();
 
 	if (!ConnectionErrorNotification::activeError(message))
 	{
-		ConnectionErrorNotification *connectionErrorNotification = new ConnectionErrorNotification(message);
+		ConnectionErrorNotification *connectionErrorNotification = new ConnectionErrorNotification(server, message);
 		notify(connectionErrorNotification);
 	}
 

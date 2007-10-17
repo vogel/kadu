@@ -20,6 +20,7 @@ class ConnectionErrorNotification : public Notification
 	Q_OBJECT
 
 	static QStringList ActiveErrors;
+	QString ErrorServer;
 	QString ErrorMessage;
 
 public:
@@ -29,10 +30,11 @@ public:
 
 	static bool activeError(const QString &errorMessage);
 
-	ConnectionErrorNotification(const QString &errorMessage);
+	ConnectionErrorNotification(const QString &errorServer, const QString &errorMessage);
 	virtual ~ConnectionErrorNotification();
 
 	QString errorMessage() const;
+	QString errorServer() const;
 
 };
 

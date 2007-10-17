@@ -165,7 +165,7 @@ class Protocol : public QObject
 			@param protocol protokó³
 			@param reason napis do wy¶wietlenia dla u¿ytkownika
 		**/
-		void connectionError(Protocol *protocol, const QString &reason);
+		void connectionError(Protocol *protocol, const QString &server, const QString &reason);
 
 		/**
 			\fn void messageFiltering(const UserGroup *users, QCString& msg, bool& stop)

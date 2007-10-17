@@ -157,7 +157,7 @@ void Speech::import_0_5_0_Configuration()
 
 	entry = config_file.readEntry("Speech", "ConnectionError", "");
 	if (entry != "")
-		config_file.writeEntry("Speech", "ConnectionError_Syntax", entry.replace("%1", "#{error}"));
+		config_file.writeEntry("Speech", "ConnectionError_Syntax", entry.replace("%1", "(#{errorServer}) #{error}"));
 	config_file.removeVariable("Speech", "ConnectionError");
 
 	entry = config_file.readEntry("Speech", "NotifyFormatFemale", "");

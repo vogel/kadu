@@ -883,9 +883,8 @@ void GaduProtocol::errorSlot(GaduError err)
 			host = server.toString();
 		else
 			host = "HUB";
-		msg = QString("(%1) %2").arg(host).arg(msg);
-		kdebugm(KDEBUG_INFO, "%s\n", msg.local8Bit().data());
-		emit connectionError(this, msg);
+		kdebugm(KDEBUG_INFO, "%s %s\n", host.local8Bit().data(), msg.local8Bit().data());
+		emit connectionError(this, host, msg);
 	}
 
 	if (!continue_connecting)
