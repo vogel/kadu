@@ -262,7 +262,7 @@ void DockingManager::setDocked(bool docked, bool butDontHideOnClose)
 
 void DockingManager::createDefaultConfiguration()
 {
-	config_file.addVariable("General", "RunDocked", true);
+	config_file.addVariable("General", "RunDocked", false);
 	config_file.addVariable("General", "ShowTooltipInTray", true);
 	config_file.addVariable("Look", "NewMessageIcon", 0);
 }

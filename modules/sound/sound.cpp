@@ -259,13 +259,31 @@ void SoundManager::import_0_5_0_configuration()
 {
 	if (config_file.readEntry("Sounds", "StatusChanged/ToOnline_sound", "foobar") == "foobar")
 	{
-		config_file.writeEntry("Sounds", "StatusChanged/ToOnline_sound", config_file.readEntry("Sounds", "StatusAvailable_sound"));
-		config_file.writeEntry("Sounds", "StatusChanged/ToBusy_sound", config_file.readEntry("Sounds", "StatusBusy_sound"));
-		config_file.writeEntry("Sounds", "StatusChanged/ToInvisible_sound", config_file.readEntry("Sounds", "StatusInvisible_sound"));
-		config_file.writeEntry("Sounds", "StatusChanged/ToOffline_sound", config_file.readEntry("Sounds", "StatusNotAvailable_sound"));
+		QString tmp;
 
-		config_file.writeEntry("Sounds", "NewChat_sound", config_file.readEntry("Sounds", "Chat_sound"));
-		config_file.writeEntry("Sounds", "NewMessage_sound", config_file.readEntry("Sounds", "Message_sound"));
+		tmp = config_file.readEntry("Sounds", "StatusAvailable_sound", "");
+		if (!tmp.isEmpty())
+			config_file.writeEntry("Sounds", "StatusChanged/ToOnline_sound", tmp);
+
+		tmp = config_file.readEntry("Sounds", "StatusBusy_sound");
+		if (!tmp.isEmpty())
+			config_file.writeEntry("Sounds", "StatusChanged/ToBusy_sound", tmp);
+
+		tmp = config_file.readEntry("Sounds", "StatusInvisible_sound");
+		if (!tmp.isEmpty())
+			config_file.writeEntry("Sounds", "StatusChanged/ToInvisible_sound", tmp);
+
+		tmp = config_file.readEntry("Sounds", "StatusNotAvailable_sound");
+		if (!tmp.isEmpty())
+			config_file.writeEntry("Sounds", "StatusChanged/ToOffline_sound", tmp);
+
+		tmp = config_file.readEntry("Sounds", "Chat_sound");
+		if (!tmp.isEmpty())
+			config_file.writeEntry("Sounds", "NewChat_sound", tmp);
+
+		tmp = config_file.readEntry("Sounds", "Message_sound");
+		if (!tmp.isEmpty())
+			config_file.writeEntry("Sounds", "NewMessage_sound", tmp);
 	}
 
 	if (config_file.readEntry("Sounds", "SoundTheme", "foobar") != "foobar")
@@ -274,6 +292,8 @@ void SoundManager::import_0_5_0_configuration()
 		applyTheme(config_file.readEntry("Sounds", "SoundTheme", "foobar")); 
 		config_file.removeVariable("Sounds", "SoundTheme");
 	}
+	else
+		applyTheme("default");
 }
 
 void SoundManager::createDefaultConfiguration()
@@ -284,6 +304,7 @@ void SoundManager::createDefaultConfiguration()
 	config_file.addVariable("Notify", "StatusChanged/ToOnline_Sound", true);
 	config_file.addVariable("Notify", "StatusChanged/ToBusy_Sound", true);
 
+	config_file.addVariable("Sounds", "PlaySound", true);
 	config_file.addVariable("Sounds", "SoundPaths", "");
 	config_file.addVariable("Sounds", "SoundTheme", "default");
 	config_file.addVariable("Sounds", "SoundVolume", 100);
@@ -294,10 +315,15 @@ void SoundManager::applyTheme(const QString &themeName)
 {
 	themes->setTheme(themeName);
 	QMap<QString, QString> entries = themes->getEntries();
+	printf("applying theme %s...\n", themeName.data());
 
 	CONST_FOREACH(entry, entries)
-		if (!entry.key().isEmpty() && !(*entry).isEmpty())
+	{
+		if (!entry.key().isEmpty() && !(*entry).isEmpty()) {
+			printf("writing [%s] [%s]\n", (entry.key() + "_sound").data(), (themes->themePath() + *entry).data());
 			config_file.writeEntry("Sounds", entry.key() + "_sound", themes->themePath() + *entry);
+		}
+	}
 }
 
 void SoundManager::applyTheme()

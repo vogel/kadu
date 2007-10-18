@@ -17,6 +17,7 @@ Themes::Themes(const QString& themename, const QString& configname, const char *
 	: QObject(NULL, name), ThemesList(), ThemesPaths(), additional(),
 	ConfigName(configname), Name(themename), ActualTheme("Custom"), entries()
 {
+	setPaths(QStringList());
 }
 
 QStringList Themes::getSubDirs(const QString& path) const
