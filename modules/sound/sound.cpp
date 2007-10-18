@@ -315,15 +315,10 @@ void SoundManager::applyTheme(const QString &themeName)
 {
 	themes->setTheme(themeName);
 	QMap<QString, QString> entries = themes->getEntries();
-	printf("applying theme %s...\n", themeName.data());
 
 	CONST_FOREACH(entry, entries)
-	{
-		if (!entry.key().isEmpty() && !(*entry).isEmpty()) {
-			printf("writing [%s] [%s]\n", (entry.key() + "_sound").data(), (themes->themePath() + *entry).data());
+		if (!entry.key().isEmpty() && !(*entry).isEmpty())
 			config_file.writeEntry("Sounds", entry.key() + "_sound", themes->themePath() + *entry);
-		}
-	}
 }
 
 void SoundManager::applyTheme()
