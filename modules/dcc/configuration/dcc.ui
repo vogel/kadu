@@ -2,10 +2,13 @@
 
 	<section name="Account">
 		<tab name="File transfers and voice chats">
-			<group-box name="File transfers">
+			<group-box name="General">
+				<check-box caption="Allow file transfers and voice chats" config-section="Network" config-item="AllowDCC" id="dcc/AllowDCC" />
+			</group-box>
+			<group-box name="File transfers" id="dcc/fileTransfers">
 				<check-box caption="Remove completed transfers from transfers list" config-section="Network" config-item="RemoveCompletedTransfers" />
 			</group-box>
-			<group-box name="IP">
+			<group-box name="IP" id="dcc/ip">
 				<check-box caption="DCC IP autodetection" config-section="Network" config-item="DccIpDetect" id="dcc/ipAutodetect" />
 				<line-edit caption="IP address" config-section="Network" config-item="DccIP" id="dcc/ipAddress" />
 				<check-box caption="DCC forwarding enabled" config-section="Network" config-item="DccForwarding" id="dcc/forwarding" />

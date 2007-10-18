@@ -76,7 +76,6 @@ class DccManager : public ConfigurationUiHandler, ConfigurationAwareObject
 	QMap<UinType, int> requests;
 	bool DccEnabled;
 
-	QCheckBox *ipAutotetect;
 	QWidget *ipAddress;
 	QCheckBox *forwarding;
 	QWidget *forwardingExternalIp;

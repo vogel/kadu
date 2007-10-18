@@ -328,7 +328,14 @@ DccManager::~DccManager()
 
 void DccManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	ipAutotetect = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widgetById("dcc/ipAutodetect"));
+	QWidget *allowDCC = mainConfigurationWindow->widgetById("dcc/AllowDCC");
+	QWidget *fileTransfers = mainConfigurationWindow->widgetById("dcc/fileTransfers");
+	QWidget *ip = mainConfigurationWindow->widgetById("dcc/ip");
+
+	connect(allowDCC, SIGNAL(toggled(bool)), fileTransfers, SLOT(setEnabled(bool)));
+	connect(allowDCC, SIGNAL(toggled(bool)), ip, SLOT(setEnabled(bool)));
+
+	QWidget *ipAutotetect = mainConfigurationWindow->widgetById("dcc/ipAutodetect");
 	ipAddress = mainConfigurationWindow->widgetById("dcc/ipAddress");
 	forwarding = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widgetById("dcc/forwarding"));
 	forwardingExternalIp = mainConfigurationWindow->widgetById("dcc/forwardingExternalIp");

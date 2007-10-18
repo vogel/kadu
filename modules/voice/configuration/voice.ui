@@ -2,7 +2,7 @@
 
 	<section name="Account">
 		<tab name="File transfers and voice chats">
-			<group-box name="Voice chats">
+			<group-box name="Voice chats" id="voice/voice">
 				<check-box caption="Faster compression algorithm (degrades quality)" config-section="Sounds" config-item="FastGSM" id="voice/testFast" />
 				<check-box caption="Cut-off optimization (faster but degrades quality)" config-section="Sounds" config-item="CutGSM" id="voice/testCut" />
 				<action-button caption="Test GSM Encoding" id="voice/test" />

@@ -243,6 +243,11 @@ void RecordThread::endThread()
 
 void VoiceManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
+	QWidget *allowDCC = mainConfigurationWindow->widgetById("dcc/AllowDCC");
+	QWidget *voice = mainConfigurationWindow->widgetById("voice/voice");
+
+	connect(allowDCC, SIGNAL(toggled(bool)), voice, SLOT(setEnabled(bool)));
+
 	connect(mainConfigurationWindow->widgetById("voice/test"), SIGNAL(clicked()), this, SLOT(testGsmEncoding()));
 
 	testFast = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widgetById("voice/testFast"));
