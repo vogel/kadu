@@ -109,6 +109,8 @@ EncryptionManager::~EncryptionManager()
 void EncryptionManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
 	connect(mainConfigurationWindow->widgetById("encryption/generateKeys"), SIGNAL(clicked()), this, SLOT(generateMyKeys()));
+
+	configurationWindow = mainConfigurationWindow;
 }
 
 void EncryptionManager::generateMyKeys()
@@ -121,16 +123,16 @@ void EncryptionManager::generateMyKeys()
 	keyfile_path.append(".pem");
 	QFileInfo keyfile(keyfile_path);
 
-	if (keyfile.permission(QFileInfo::WriteUser) && !MessageBox::ask(tr("Keys exist. Do you want to overwrite them?"), "Warning"))
+	if (keyfile.permission(QFileInfo::WriteUser) && !MessageBox::ask(tr("Keys exist. Do you want to overwrite them?"), "Warning", configurationWindow))
 		return;
 
 	if (sim_key_generate(myUin) < 0)
 	{
-		MessageBox::msg(tr("Error generating keys"), false, "Warning");
+		MessageBox::msg(tr("Error generating keys"), false, "Warning", configurationWindow);
 		return;
 	}
 
-	MessageBox::msg(tr("Keys have been generated and written"), false, "Information");
+	MessageBox::msg(tr("Keys have been generated and written"), false, "Information"), configurationWindow;
 	kdebugf2();
 }
 

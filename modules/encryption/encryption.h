@@ -21,6 +21,7 @@ class EncryptionManager : public ConfigurationUiHandler
 	void setupEncryptButton(ChatWidget* chat,bool enabled);
 	Action* action;
 
+	QWidget *configurationWindow;
 	void createDefaultConfiguration();
 
 private slots:
