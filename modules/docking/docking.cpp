@@ -202,6 +202,7 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 			// hide needed when changing desktop
 			kadu->hide();
 			kadu->showNormal();
+			kadu->raise();
 			kadu->setActiveWindow();
 			kadu->setFocus();
 			return;
@@ -210,9 +211,10 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 			kadu->hide();
 		else
 		{
-				kadu->show();
-				kadu->setActiveWindow();
-				kadu->setFocus();
+			kadu->show();
+			kadu->setActiveWindow();
+			kadu->raise();
+			kadu->setFocus();
 		}
 		return;
 	}
