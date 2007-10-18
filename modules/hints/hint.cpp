@@ -91,9 +91,11 @@ void Hint::configurationUpdated()
 	else
 		configurationDirective = "Event_" + notification->type();
 
+	QWidget w;
+
 	label->setFont(config_file.readFontEntry("Hints", configurationDirective + "_font"));
-	setPaletteForegroundColor(config_file.readColorEntry("Hints", configurationDirective + "_fgcolor"));
-	bcolor = config_file.readColorEntry("Hints", configurationDirective + "_bgcolor");
+	setPaletteForegroundColor(config_file.readColorEntry("Hints", configurationDirective + "_fgcolor", &paletteForegroundColor()));
+	bcolor = config_file.readColorEntry("Hints", configurationDirective + "_bgcolor", &paletteBackgroundColor());
 	setPaletteBackgroundColor(bcolor);
 
 	setMinimumWidth(config_file.readNumEntry("Hints", "MinimumWidth", 100));

@@ -521,7 +521,7 @@ void HintManager::realCopyConfiguration(const QString &fromHint, const QString &
 
 void HintManager::import_0_5_0_Configuration()
 {
-	if (config_file.readBoolEntry("Notify", "UserBoxChangeToolTip_Hints", false))
+	if (config_file.readBoolEntry("Notify", "UserBoxChangeToolTip_Hints", false) || (config_file.readEntry("Look", "UserboxToolTipStyle", "foo") == "foo"))
 	{
 		config_file.writeEntry("Look", "UserboxToolTipStyle", "Hints");
 		tool_tip_class_manager->useToolTipClass("Hints");
