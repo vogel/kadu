@@ -62,6 +62,11 @@ class DockArea : public QDockArea
 			execute action.
 		**/
 		void selectedUsersNeeded(const UserGroup*& users);
+
+		/**
+			New toolbar was attached.
+		 **/
+		void toolbarAttached();
 };
 
 #endif

@@ -54,6 +54,7 @@ void DockArea::childEvent(QChildEvent* e)
 			connect(toolbar, SIGNAL(destroyed()), this, SLOT(writeToConfig()));
 			connect(toolbar, SIGNAL(placeChanged(QDockWindow::Place)),
 				this, SLOT(writeToConfig()));
+			emit toolbarAttached();
 		}
 	}
 	kdebugf2();

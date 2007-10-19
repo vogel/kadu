@@ -38,7 +38,7 @@
 #include "protocol.h"
 
 ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, QWidget* parent, const char* name)
-	: QHBox(parent, name), /*ChatMessages(),*/ CurrentProtocol(initialProtocol),
+	: QHBox(parent, name), CurrentProtocol(initialProtocol),
 	Users(new UserGroup(usrs)),
 	index(0), actcolor(), Edit(0),
 	bodyformat(new QMimeSourceFactory()), emoticon_selector(0), color_selector(0),
@@ -56,6 +56,9 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 		"chatLeftDockArea", Action::TypeGlobal | Action::TypeUser | Action::TypeChat);
 	connect(leftDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
+	// TODO: fix this workaround
+	connect(leftDockArea, SIGNAL(toolbarAttached()),
+		this, SLOT(editTextChanged()));
 	leftDockArea->setMinimumWidth(minimumDockAreaSize);
 
 	QVBox *central = new QVBox(this, "central");
@@ -65,6 +68,9 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 		"chatRightDockArea", Action::TypeGlobal | Action::TypeUser | Action::TypeChat);
 	connect(rightDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
+	// TODO: fix this workaround
+	connect(rightDockArea, SIGNAL(toolbarAttached()),
+		this, SLOT(editTextChanged()));
 	rightDockArea->setMinimumWidth(minimumDockAreaSize);
 
 	vertSplit = new KaduSplitter(Qt::Vertical, central, "vertSplit");
@@ -74,6 +80,9 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 		"chatTopDockArea", Action::TypeGlobal | Action::TypeUser | Action::TypeChat);
 	connect(topDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
+	// TODO: fix this workaround
+	connect(topDockArea, SIGNAL(toolbarAttached()),
+		this, SLOT(editTextChanged()));
 	topDockArea->setMinimumHeight(minimumDockAreaSize);
 
 	if (Users->count() > 1)
@@ -113,6 +122,9 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 		"chatMiddleDockArea", Action::TypeGlobal | Action::TypeUser | Action::TypeChat);
 	connect(buttontray, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
+	// TODO: fix this workaround
+	connect(buttontray, SIGNAL(toolbarAttached()),
+		this, SLOT(editTextChanged()));
 	buttontray->setMinimumHeight(minimumDockAreaSize);
 	edtbuttontray->setStretchFactor(buttontray, 50);
 
@@ -126,6 +138,9 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 		"chatBottomDockArea", Action::TypeGlobal | Action::TypeUser | Action::TypeChat);
 	connect(btnpart, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
+	// TODO: fix this workaround
+	connect(btnpart, SIGNAL(toolbarAttached()),
+		this, SLOT(editTextChanged()));
 	btnpart->setMinimumHeight(minimumDockAreaSize);
 
 	QAccel *acc = new QAccel(this, "returnAccel");
