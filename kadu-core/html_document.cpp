@@ -234,7 +234,7 @@ QRegExp *HtmlDocument::mail_regexp = NULL;
 const QRegExp &HtmlDocument::mailRegExp()
 {
 	if (!mail_regexp)
-		mail_regexp = new QRegExp(latin2unicode((const unsigned char *)"(mailto:){0,1}[a-zA-Z0-9_\\.\\-]+@[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,3}"));
+		mail_regexp = new QRegExp(latin2unicode((const unsigned char *)"(mailto:){0,1}[a-zA-Z0-9_\\.\\-]+@[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,4}"));
 	return *mail_regexp;
 }
 
