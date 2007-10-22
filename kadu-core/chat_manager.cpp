@@ -38,13 +38,11 @@ ChatManager::ChatManager(QObject* parent, const char* name) : QObject(parent, na
 	auto_send_action->setAllOn(config_file.readBoolEntry("Chat", "AutoSend"));
 	connect(auto_send_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(autoSendActionActivated(const UserGroup*, const QWidget*, bool)));
-	KaduActions.insert("autoSendAction", auto_send_action);
 
 	Action* clear_action = new Action("ClearChat", tr("Clear messages in chat window"),
 		"clearChatAction", Action::TypeChat);
 	connect(clear_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(clearActionActivated(const UserGroup*)));
-	KaduActions.insert("clearChatAction", clear_action);
 
 	Action* insert_emot_action = new Action("ChooseEmoticon", tr("Insert emoticon"),
 		"insertEmoticonAction", Action::TypeChat);
@@ -52,70 +50,58 @@ ChatManager::ChatManager(QObject* parent, const char* name) : QObject(parent, na
 		this, SLOT(insertEmoticonActionActivated(const UserGroup*, const QWidget*)));
 	connect(insert_emot_action, SIGNAL(addedToToolbar(const UserGroup*, ToolButton*, ToolBar*)),
 		this, SLOT(insertEmoticonActionAddedToToolbar(const UserGroup*, ToolButton*, ToolBar*)));
-	KaduActions.insert("insertEmoticonAction", insert_emot_action);
 
 	Action* whois_action = new Action("LookupUserInfo", tr("Search this user in directory"),
 		"whoisAction", Action::TypeChat);
 	connect(whois_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(whoisActionActivated(const UserGroup*)));
-	KaduActions.insert("whoisAction", whois_action);
 
 	Action* insert_img_action = new Action("ChooseImage", tr("Insert image"),
 		"insertImageAction", Action::TypeChat);
 	connect(insert_img_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(insertImageActionActivated(const UserGroup*)));
-	KaduActions.insert("insertImageAction", insert_img_action);
 
 	Action* ignore_user_action = new Action("ManageIgnored", tr("Ignore user"),
 		"ignoreUserAction", Action::TypeUser);
 	connect(ignore_user_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(ignoreUserActionActivated(const UserGroup*)));
-	KaduActions.insert("ignoreUserAction", ignore_user_action);
 
 	Action* block_user_action = new Action("Blocking", tr("Block user"), "blockUserAction",
 		Action::TypeUser);
 	connect(block_user_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(blockUserActionActivated(const UserGroup*)));
-	KaduActions.insert("blockUserAction", block_user_action);
 
 	Action* bold_action = new Action("Bold", tr("Bold"), "boldAction", Action::TypeChat);
 	bold_action->setToggleAction(true);
 	connect(bold_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(boldActionActivated(const UserGroup*, const QWidget*, bool)));
-	KaduActions.insert("boldAction", bold_action);
 
 	Action* italic_action = new Action("Italic", tr("Italic"), "italicAction", Action::TypeChat);
 	italic_action->setToggleAction(true);
 	connect(italic_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(italicActionActivated(const UserGroup*, const QWidget*, bool)));
-	KaduActions.insert("italicAction", italic_action);
 
 	Action* underline_action = new Action("Underline", tr("Underline"), "underlineAction", Action::TypeChat);
 	underline_action->setToggleAction(true);
 	connect(underline_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(underlineActionActivated(const UserGroup*, const QWidget*, bool)));
-	KaduActions.insert("underlineAction", underline_action);
 
 	Action* color_action = new Action("Black", tr("Change color"), "colorAction", Action::TypeChat);
 	connect(color_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(colorActionActivated(const UserGroup*, const QWidget*)));
-	KaduActions.insert("colorAction", color_action);
 
 	Action* send_action = new Action("SendMessage", tr("&Send"), "sendAction", Action::TypeChat);
 	connect(send_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(sendActionActivated(const UserGroup*)));
-	KaduActions.insert("sendAction", send_action);
 
 	Action* chat_action = new Action("OpenChat", tr("&Chat"), "chatAction", Action::TypeUserList);
 	connect(chat_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(chatActionActivated(const UserGroup*)));
-	KaduActions.insert("chatAction", chat_action);
 
 	Action* open_chat_with_action = new Action("OpenChat", tr("Open chat with..."),
 		"openChatWithAction", Action::TypeGlobal);
 	connect(open_chat_with_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		kadu, SLOT(openChatWith()));
-	KaduActions.insert("openChatWithAction", open_chat_with_action);
 
 	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "autoSendAction");
 	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "clearChatAction");
@@ -235,7 +221,6 @@ ChatManager::~ChatManager()
 	CONST_FOREACH(act, chatActions)
 	{
 		Action *a = KaduActions[*act];
-		KaduActions.remove(*act);
 		delete a;
 	}
 #endif

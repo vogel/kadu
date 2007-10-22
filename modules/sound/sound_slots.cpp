@@ -85,7 +85,6 @@ SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name
 	connect(mute_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(muteActionActivated(const UserGroup*, const QWidget*, bool)));
 	connect(mute_action, SIGNAL(iconsRefreshed()), this, SLOT(setMuteActionState()));
-	KaduActions.insert("muteSoundsAction", mute_action);
 	KaduActions.addDefaultToolbarAction("Kadu toolbar", "muteSoundsAction", 0);
 	setMuteActionState();
 
@@ -95,7 +94,8 @@ SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name
 SoundSlots::~SoundSlots()
 {
 	kdebugf();
-	KaduActions.remove("muteSoundsAction");
+	delete mute_action;
+	mute_action = 0;
 	kdebugf2();
 }
 

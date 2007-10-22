@@ -1026,7 +1026,6 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 	Action* send_file_action = new Action("SendFile", tr("Send file"), "sendFileAction", Action::TypeUser);
 	connect(send_file_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(sendFileActionActivated(const UserGroup*)));
-	KaduActions.insert("sendFileAction", send_file_action);
 
 	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 	connect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroying(ChatWidget*)));
@@ -1072,7 +1071,8 @@ FileTransferManager::~FileTransferManager()
 	disconnect(UserBox::userboxmenu,SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
 	disconnect(kadu, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(kaduKeyPressed(QKeyEvent*)));
 
-	KaduActions.remove("sendFileAction");
+	Action *sendFileAction = KaduActions["sendFileAction"];
+	delete sendFileAction;
 
 	disconnect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 	disconnect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroying(ChatWidget *)));

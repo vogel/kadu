@@ -215,7 +215,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	inact_users_action->setAllOn(!config_file.readBoolEntry("General", "ShowOffline"));
 	connect(inact_users_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(inactiveUsersActionActivated()));
-	KaduActions.insert("inactiveUsersAction", inact_users_action);
 
 	Action* desc_users_action = new Action("ShowOnlyDescriptionUsers",
 		tr("Show / hide users without description"), "descriptionUsersAction", Action::TypeUserList);
@@ -223,7 +222,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	desc_users_action->setAllOn(!config_file.readBoolEntry("General", "ShowWithoutDescription"));
 	connect(desc_users_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(descriptionUsersActionActivated()));
-	KaduActions.insert("descriptionUsersAction", desc_users_action);
 
 	Action* onlineAndDesc_users_action = new Action("ShowOnlineAndDescriptionUsers",
 		tr("Show only online and description users"), "onlineAndDescriptionUsersAction", Action::TypeUserList);
@@ -231,30 +229,25 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	onlineAndDesc_users_action->setAllOn(config_file.readBoolEntry("General", "ShowOnlineAndDescription"));
 	connect(onlineAndDesc_users_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(onlineAndDescUsersActionActivated()));
-	KaduActions.insert("onlineAndDescriptionUsersAction", onlineAndDesc_users_action);
 
 	Action* configuration_action = new Action("Configuration", tr("Configuration"),
 		"configurationAction", Action::TypeGlobal);
 	connect(configuration_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(configurationActionActivated()));
-	KaduActions.insert("configurationAction", configuration_action);
 
 	Action* edit_user_action = new Action("EditUserInfo", tr("View / edit user info"),
 		"editUserAction", Action::TypeUser);
 	connect(edit_user_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(editUserActionActivated(const UserGroup*)));
-	KaduActions.insert("editUserAction", edit_user_action);
 
 	Action* add_user_action = new Action("AddUser", tr("Add user"), "addUserAction", Action::TypeGlobal);
 	connect(add_user_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(addUserActionActivated(const UserGroup*)));
-	KaduActions.insert("addUserAction", add_user_action);
 
 	Action* open_search_action = new Action("LookupUserInfo", tr("Search user in directory"),
 		"openSearchAction", Action::TypeGlobal);
 	connect(open_search_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(searchInDirectory()));
-	KaduActions.insert("openSearchAction", open_search_action);
 
 	KaduActions.addDefaultToolbarAction("Kadu toolbar", "inactiveUsersAction");
 	KaduActions.addDefaultToolbarAction("Kadu toolbar", "descriptionUsersAction");
@@ -743,6 +736,7 @@ void Kadu::about()
 void Kadu::quit()
 {
 	kdebugf();
+
 	if (measureTime)
 	{
 		struct timeval tv;
@@ -1327,7 +1321,6 @@ Kadu::~Kadu(void)
 	CONST_FOREACH(act, mainActions)
 	{
 		Action *a = KaduActions[*act];
-		KaduActions.remove(*act);
 		delete a;
 	}
 #endif

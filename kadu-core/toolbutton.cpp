@@ -108,7 +108,8 @@ void ToolButton::mouseMoveEvent(QMouseEvent* e)
 	QToolButton::mouseMoveEvent(e);
 	if (e->state() & LeftButton && !toolbar()->dockArea()->blocked())
 	{
-		QDragObject* d = new ToolButtonDrag(this, parentWidget());
+		setDown(false);
+		QDragObject* d = new ActionDrag(ActionName, usesTextLabel(), parentWidget());
 		d->dragMove();
 	}
 //	kdebugf2();
@@ -146,6 +147,9 @@ void ToolButton::buttonClicked()
 void ToolButton::deleteButtonClicked()
 {
 	kdebugf();
+
+	emit removedFromToolbar(this);
+
 	ToolBar* toolbar = (ToolBar*)parent();
 	toolbar->removeChild(this); //temporarily remove from list, for writeToConfig()
 	DockArea* dockarea = (DockArea*)toolbar->area();
@@ -183,19 +187,56 @@ ToolBar* ToolButton::toolbar()
 	return (ToolBar*)parent();
 }
 
-void ToolButton::writeToConfig(QDomElement parent_element)
+ActionDrag::ActionDrag(const QString &actionName, bool showLabel, QWidget* dragSource, const char* name)
+	: QDragObject(dragSource, name), ActionName(actionName), ShowLabel(showLabel)
 {
 	kdebugf();
-	QDomElement button_elem = xml_config_file->createElement(parent_element, "ToolButton");
-	button_elem.setAttribute("action_name", ActionName);
-	if (usesTextLabel())
-		button_elem.setAttribute("uses_text_label", true);
 	kdebugf2();
 }
 
-ToolButtonDrag::ToolButtonDrag(ToolButton* button, QWidget* dragSource, const char* name)
-	: QTextDrag(QString::number(button->winId()), dragSource, name), Button(0)
+const char * ActionDrag::format(int i) const
 {
-	kdebugf();
-	kdebugf2();
+	if (i)
+		return "application/x-kadu-action";
+	else
+		return 0;
+}
+
+bool ActionDrag::provides(const char *mimeType) const
+{
+	return strcmp(mimeType, "application/x-kadu-action") == 0;
+}
+
+QByteArray ActionDrag::encodedData(const char *mimeType) const
+{
+	QByteArray result;
+
+	if (!provides(mimeType))
+		return result;
+
+	QTextStream stream(result, IO_WriteOnly);
+	stream << ActionName;
+	stream << " ";
+	stream << (int)ShowLabel;
+
+	return result;
+}
+
+bool ActionDrag::decode(const QMimeSource *source, QString &actionName, bool &showLabel)
+{
+	QTextStream stream(source->encodedData("application/x-kadu-action"), IO_ReadOnly);
+
+	if (stream.atEnd())
+		return false;
+
+	stream >> actionName;
+
+	if (stream.atEnd())
+		return false;
+
+	int tmp;
+	stream >> tmp;
+	showLabel = tmp;
+
+	return true;
 }

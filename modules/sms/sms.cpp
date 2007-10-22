@@ -446,7 +446,6 @@ SmsConfigurationUiHandler::SmsConfigurationUiHandler()
 	Action* send_sms_action = new Action("SendSms", tr("Send SMS"), "sendSmsAction", Action::TypeGlobal);
 	connect(send_sms_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(sendSmsActionActivated(const UserGroup*)));
-	KaduActions.insert("sendSmsAction", send_sms_action);
 
 	kdebugf2();
 }
@@ -457,7 +456,9 @@ SmsConfigurationUiHandler::~SmsConfigurationUiHandler()
 	int sendsmstem = UserBox::userboxmenu->getItem(tr("Send SMS"));
 	UserBox::userboxmenu->removeItem(sendsmstem);
 	kadu->mainMenu()->removeItem(menuid);
-	KaduActions.remove("sendSmsAction");
+
+	Action *send_sms_action = KaduActions["sendSmsAction"];
+	delete send_sms_action;
 	kdebugf2();
 }
 

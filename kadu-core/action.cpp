@@ -16,6 +16,7 @@
 #include "action.h"
 #include "debug.h"
 #include "icons_manager.h"
+#include "kadu.h"
 #include "misc.h"
 #include "toolbar.h"
 #include "toolbutton.h"
@@ -27,6 +28,14 @@ Action::Action(const QString& icon, const QString& text, const char* name, Actio
 		ToggleState(false), Type(Type)
 {
 	kdebugf();
+	KaduActions.insert(name, this);
+	kdebugf2();
+}
+
+Action::~Action()
+{
+	kdebugf();
+	KaduActions.remove(name());
 	kdebugf2();
 }
 
@@ -73,40 +82,26 @@ void Action::setOnShape(const QString& icon, const QString& text)
 	kdebugf2();
 }
 
-ToolButton* Action::addToToolbar(ToolBar* toolbar, bool uses_text_label)
+void Action::buttonAddedToToolbar(ToolBar *toolBar, ToolButton *button)
 {
 	kdebugf();
 
-	ToolButton* btn = new ToolButton(toolbar, name(), Type);
-	btn->setIconSet(icons_manager->loadIcon(IconName));
+	connect(button, SIGNAL(clicked()), this, SLOT(toolButtonClicked()));
+	connect(button, SIGNAL(destroyed(QObject*)), this, SLOT(toolButtonDestroyed(QObject*)));
 
-	QString textWithoutAccel = Text;
-	textWithoutAccel.remove('&');
-	btn->setTextLabel(textWithoutAccel);
+	// it should now be automatic
+	// connect(this, SIGNAL(destroyed()), btn, SLOT(deleteLater()));
 
-	btn->setOnShape(icons_manager->loadIcon(OnIcon), OnText);
-	btn->setToggleButton(ToggleAction);
-	btn->setUsesTextLabel(uses_text_label);
-	btn->setTextPosition(ToolButton::BesideIcon);
-	QAccel* accel = new QAccel(btn);
-	accel->connectItem(accel->insertItem(KeySeq0), btn, SIGNAL(clicked()));
-	accel->connectItem(accel->insertItem(KeySeq1), btn, SIGNAL(clicked()));
-	if(ToggleAction || !OnIcon.isEmpty())
-		btn->setOn(ToggleState);
-	connect(btn, SIGNAL(clicked()), this, SLOT(toolButtonClicked()));
-	connect(btn, SIGNAL(destroyed(QObject*)), this, SLOT(toolButtonDestroyed(QObject*)));
-	connect(this, SIGNAL(destroyed()), btn, SLOT(deleteLater()));
 	if (Slot)
-		connect(btn, SIGNAL(clicked()), toolbar->area()->parent(), Slot);
+		connect(button, SIGNAL(clicked()), toolBar->area()->parent(), Slot);
 
-	ToolButtons.append(btn);
-	const UserGroup* user_group = toolbar->selectedUsers();
+	ToolButtons.append(button);
+	const UserGroup* user_group = toolBar->selectedUsers();
 	if (user_group != NULL)
-		emit addedToToolbar(user_group, btn, toolbar);
-	emit addedToToolbar(btn, toolbar);
+		emit addedToToolbar(user_group, button, toolBar);
+	emit addedToToolbar(button, toolBar);
 
 	kdebugf2();
-	return btn;
 }
 
 int Action::addToPopupMenu(QPopupMenu* menu, bool connect_signal)
@@ -230,8 +225,44 @@ Action::ActionType Action::actionType()
 	return Type;
 }
 
-Actions::Actions() : QMap<QString, Action *>(), DefaultToolbarActions()
+Actions::Actions()
+	: DefaultToolbarActions()
 {
+}
+
+void Actions::insert(const QString &name, Action *action)
+{
+	ActionsMap.insert(name, action);
+	emit actionLoaded(name);
+}
+
+void Actions::remove(const QString &name)
+{
+	ActionsMap.remove(name);
+
+	if (!Kadu::closing())
+		emit actionUnloaded(name);
+}
+
+Action * Actions::operator [] (const QString &name)
+{
+	return ActionsMap[name];
+}
+
+Action * Actions::operator [] (int index)
+{
+	return ActionsMap[ActionsMap.keys()[index]];
+}
+
+bool Actions::contains(const QString &name)
+{
+	return ActionsMap.contains(name);
+}
+
+void Actions::refreshIcons()
+{
+	FOREACH(action, ActionsMap)
+		(*action)->refreshIcons();
 }
 
 void Actions::addDefaultToolbarAction(
@@ -253,19 +284,18 @@ void Actions::addDefaultToolbarAction(
 	kdebugf2();
 }
 
-void Actions::addDefaultActionsToToolbar(ToolBar* toolbar)
+void Actions::addDefaultActionsToToolbar(ToolBar *toolbar)
 {
 	kdebugf();
+
 	if (DefaultToolbarActions.contains(toolbar->name()))
 	{
 		const QValueList<Default>& actions = DefaultToolbarActions[toolbar->name()];
 		CONST_FOREACH(i, actions)
-		{
 			if (contains((*i).action_name))
-				(*this)[(*i).action_name]->addToToolbar(toolbar,
-					(*i).uses_text_label);
-		}
+				toolbar->addAction((*i).action_name, (*i).uses_text_label);
 	}
+
 	kdebugf2();
 }
 

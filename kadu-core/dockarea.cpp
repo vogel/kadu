@@ -49,7 +49,7 @@ void DockArea::childEvent(QChildEvent* e)
 	if (e->inserted())
 	{
 		ToolBar* toolbar = dynamic_cast<ToolBar*>(e->child());
-		if (toolbar != NULL)
+		if (toolbar)
 		{
 			connect(toolbar, SIGNAL(destroyed()), this, SLOT(writeToConfig()));
 			connect(toolbar, SIGNAL(placeChanged(QDockWindow::Place)),

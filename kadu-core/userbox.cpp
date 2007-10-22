@@ -469,7 +469,6 @@ UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
 	connect(desc_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(descriptionsActionActivated(const UserGroup*, const QWidget*, bool)));
 	connect(desc_action, SIGNAL(iconsRefreshed()), this, SLOT(setDescriptionsActionState()));
-	KaduActions.insert("descriptionsAction", desc_action);
 	setDescriptionsActionState();
 
 	connect(group, SIGNAL(userAdded(UserListElement, bool, bool)),
@@ -533,6 +532,8 @@ UserBox::~UserBox()
 	VisibleUsers = 0;
 	delete comparer;
 	comparer = 0;
+	delete desc_action;
+	desc_action = 0;
 	kdebugf2();
 }
 

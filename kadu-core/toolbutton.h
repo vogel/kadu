@@ -48,17 +48,27 @@ class ToolButton : public QToolButton
 		bool isOn() const;
 		void setOn(bool on);
 		QString actionName();
-		ToolBar* toolbar();
-		void writeToConfig(QDomElement parent_element);
+		ToolBar *toolbar();
+
+	signals:
+		void removedFromToolbar(ToolButton *);
 };
 
-class ToolButtonDrag : public QTextDrag
+class ActionDrag : public QDragObject
 {
-	private:
-		ToolButton* Button;
+	QString ActionName;
+	bool ShowLabel;
 
-	public:
-		ToolButtonDrag(ToolButton* button, QWidget* dragSource = 0, const char* name = 0);
+public:
+	ActionDrag(const QString &actionName, bool showLabel, QWidget* dragSource = 0, const char* name = 0);
+
+	// QMimeFactory
+	const char * format(int i) const;
+	bool provides(const char *mimeType) const;
+	QByteArray encodedData(const char *mimeType) const;
+
+	static bool decode(const QMimeSource *source, QString &actionName, bool &showLabel);
+
 };
 
 #endif

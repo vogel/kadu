@@ -77,7 +77,6 @@ EncryptionManager::EncryptionManager()
 		this, SLOT(encryptionActionActivated(const UserGroup*)));
 	connect(action, SIGNAL(addedToToolbar(const UserGroup*, ToolButton*, ToolBar*)),
 		this, SLOT(setupEncrypt(const UserGroup*)));
-	KaduActions.insert("encryptionAction", action);
 	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "encryptionAction", 4);
 
 	UserBox::userboxmenu->addItemAtPos(2,"SendPublicKey", tr("Send my public key"), this, SLOT(sendPublicKey()));
@@ -95,7 +94,6 @@ EncryptionManager::~EncryptionManager()
 	kdebugf();
 	int sendkeyitem = UserBox::userboxmenu->getItem(tr("Send my public key"));
 	UserBox::userboxmenu->removeItem(sendkeyitem);
-	KaduActions.remove("encryptionAction");
 
 	disconnect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 	disconnect(gadu, SIGNAL(rawGaduReceivedMessageFilter(Protocol *, UserListElements, QCString&, QByteArray&, bool&)),
@@ -103,6 +101,7 @@ EncryptionManager::~EncryptionManager()
 	disconnect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userBoxMenuPopup()));
 
 	delete action;
+	action = 0;
 	kdebugf2();
 }
 
@@ -132,7 +131,7 @@ void EncryptionManager::generateMyKeys()
 		return;
 	}
 
-	MessageBox::msg(tr("Keys have been generated and written"), false, "Information"), configurationWindow;
+	MessageBox::msg(tr("Keys have been generated and written"), false, "Information", configurationWindow);
 	kdebugf2();
 }
 

@@ -70,7 +70,6 @@ HistoryModule::HistoryModule() : QObject(NULL, "history")
 	Action* history_action = new Action("History", tr("Show history"), "showHistoryAction", Action::TypeUser);
 	connect(history_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(historyActionActivated(const UserGroup*)));
-	KaduActions.insert("showHistoryAction", history_action);
 
 	KaduActions.addDefaultToolbarAction("Kadu toolbar", "showHistoryAction", 4);
 	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "showHistoryAction", 3);
@@ -78,6 +77,13 @@ HistoryModule::HistoryModule() : QObject(NULL, "history")
 	UserBox::userboxmenu->addItemAtPos(5, "History", tr("History"), this, SLOT(viewHistory()), HotKey::shortCutFromFile("ShortCuts", "kadu_viewhistory"));
 	UserBox::management->addItemAtPos(7, "ClearHistory", tr("Clear history"),  this, SLOT(deleteHistory()));
 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
+
+	QStringList actions;
+	actions.append("showHistoryAction");
+
+	time_t time = QDateTime::currentDateTime().toTime_t();
+	FOREACH(chat, chat_manager->chats())
+		chatCreated(*chat, time);
 
 	kdebugf2();
 }
@@ -92,7 +98,9 @@ HistoryModule::~HistoryModule()
 	UserBox::management->removeItem(delete_history_item);
 	disconnect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
 
-	KaduActions.remove("showHistoryAction");
+	Action* history_action = KaduActions["showHistoryAction"];
+	delete history_action;
+	history_action = 0;
 
 	disconnect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString&, time_t)),
 		history, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
@@ -144,6 +152,10 @@ void HistoryModule::chatCreated(ChatWidget *chat, time_t time)
 	connect(chat, SIGNAL(messageSentAndConfirmed(UserListElements, const QString&)),
 		this, SLOT(messageSentAndConfirmed(UserListElements, const QString&)));
 	UserListElements senders = chat->users()->toUserListElements();
+
+	// don't do it for already opened chats with discussions
+	if (chat->countMessages() != 0)
+		return;
 
 	QValueList<HistoryEntry> entries;
 	QValueList<HistoryEntry> entriestmp;

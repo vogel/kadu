@@ -205,6 +205,8 @@ public:
 	void storeGeometry();
 	void restoreGeometry();
 
+	unsigned int countMessages() { return body->countMessages(); }
+
 public slots:
 	/**
 		\fn void refreshTitle()
