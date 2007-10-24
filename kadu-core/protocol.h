@@ -106,7 +106,7 @@ class Protocol : public QObject
 
 			@see currentStatus
 		**/
-		const UserStatus &status() { return *NextStatus; }
+		const UserStatus &nextStatus() { return *NextStatus; }
 
 		/**
 			Rzeczywisty aktualny status. Mo¿na go wykorzystaæ tylko w trybie do odczytu (pobranie
@@ -125,6 +125,7 @@ class Protocol : public QObject
 		virtual UserStatus *newStatus() const = 0;
 
 		const QDateTime &connectionTime() const;
+
 	public slots:
 		/**
 			Wysy³a wiadomo¶æ bez formatowania tekstu. Je¶li adresatów jest wiêcej ni¿ jeden, to wysy³ana

@@ -54,7 +54,7 @@ class Kadu : public QWidget, ConfigurationAwareObject
 		QDateTime StartTime;
 		QTimer updateInformationPanelTimer;
 
-		UserStatus status;
+		UserStatus NextStatus;
 		UserGroup *selectedUsers; //don't touch!
 
 		UserStatusChanger *userStatusChanger;

@@ -80,10 +80,9 @@ void AutoResponder::messageReceived(Protocol *protocol, UserListElements senders
 		return;
 	}
 
-	if ((statusAvailable && protocol->status().isOnline()) || (statusBusy && protocol->status().isBusy()) || (statusInvisible && protocol->status().isInvisible()))
+	if ((statusAvailable && protocol->currentStatus().isOnline()) || (statusBusy && protocol->currentStatus().isBusy()) || (statusInvisible && protocol->currentStatus().isInvisible()))
 	{
 		protocol->sendMessage(senders, tr("KADU AUTORESPONDER:") + "\n" + KaduParser::parse(autotext, senders[0]));
-
 		repliedUsers.append(senders); // dolaczamy uzytkownikow, ktorym odpowiedziano
 	}
 

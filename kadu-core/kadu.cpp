@@ -114,7 +114,7 @@ void Kadu::keyPressEvent(QKeyEvent *e)
 Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	TopDockArea(0), InfoPanel(0), MenuBar(0), MainMenu(0), RecentChatsMenu(0), GroupBar(0),
 	Userbox(0), statusMenu(0), statusButton(), lastPositionBeforeStatusMenuHide(),
-	StartTime(QDateTime::currentDateTime()), updateInformationPanelTimer(), status(),
+	StartTime(QDateTime::currentDateTime()), updateInformationPanelTimer(), NextStatus(),
 	selectedUsers(new UserGroup(userlist->count() / 2)), ShowMainWindowOnStart(true),
 	DoBlink(false), BlinkOn(false),Docked(false), dontHideOnClose(false), personalInfoMenuId(-1)
 {
@@ -939,7 +939,7 @@ void Kadu::blink()
 		return;
 	else if (!DoBlink && gadu->currentStatus().isOffline())
 	{
-		pix = gadu->status().pixmap(Offline, false);
+		pix = gadu->nextStatus().pixmap(Offline, false);
 		statusButton->setIconSet(QIconSet(pix));
 		emit statusPixmapChanged(pix, "Offline");
 		return;
@@ -948,20 +948,20 @@ void Kadu::blink()
 	QString iconName;
 	if (BlinkOn)
 	{
-		pix = gadu->status().pixmap(Offline, false);
+		pix = gadu->nextStatus().pixmap(Offline, false);
 		iconName = "Offline";
 	}
 	else
 	{
-		const UserStatus &stat = gadu->status();
-		pix = stat.pixmap(status);
+		const UserStatus &stat = gadu->nextStatus();
+		pix = stat.pixmap(NextStatus);
 		iconName = stat.toString();
 	}
 
 	statusButton->setIconSet(QIconSet(pix));
 	emit statusPixmapChanged(pix, iconName);
 
-	BlinkOn=!BlinkOn;
+	BlinkOn = !BlinkOn;
 
 	blinktimer->start(1000, TRUE);
 }
@@ -1005,10 +1005,11 @@ void Kadu::slotHandleState(int command)
 	ChooseDescription *cd;
 	QString desc;
 	bool accepted = true;
-	UserListElement ule = userlist->byID("Gadu", config_file.readEntry("General", "UIN"));
+	UserListElement ule = myself();
 	bool parse = config_file.readBoolEntry("General", "ParseStatus", false);
+	UserStatus status;
 
-	status.setStatus(gadu->status());
+	status.setStatus(gadu->currentStatus());
 	switch (command)
 	{
 		case 0:
@@ -1078,6 +1079,7 @@ void Kadu::slotHandleState(int command)
 			status.setFriendsOnly(statusMenu->isItemChecked(8));
 			break;
 	}
+
 	if (!accepted)
 	{
 		kdebugmf(KDEBUG_FUNCTION_END, "end: not accepted\n");
@@ -1091,10 +1093,10 @@ void Kadu::slotHandleState(int command)
 
 void Kadu::changeStatus(UserStatus newStatus)
 {
-	status.setStatus(newStatus);
-	gadu->writeableStatus().setStatus(status);
+	NextStatus.setStatus(newStatus);
+	gadu->writeableStatus().setStatus(NextStatus);
 
-	if (status.isOffline())
+	if (NextStatus.isOffline())
 	{
 		statusMenu->setItemEnabled(7, false);
 		dockMenu->setItemEnabled(7, false);
@@ -1210,16 +1212,16 @@ bool Kadu::close(bool quit)
 		config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));
 
 		if (config_file.readEntry("General", "StartupStatus") == "LastStatus")
-			config_file.writeEntry("General", "LastStatusIndex", gadu->status().index());
+			config_file.writeEntry("General", "LastStatusIndex", gadu->currentStatus().index());
 
 		if (config_file.readBoolEntry("General", "StartupLastDescription"))
-			config_file.writeEntry("General", "LastStatusDescription", gadu->status().description());
+			config_file.writeEntry("General", "LastStatusDescription", gadu->currentStatus().description());
 
 		pending.writeToFile();
 		writeIgnored();
-		if (!gadu->status().isOffline())
+		if (!gadu->currentStatus().isOffline())
 			if (config_file.readBoolEntry("General", "DisconnectWithCurrentDescription"))
-				setOffline(gadu->status().description());
+				setOffline(gadu->currentStatus().description());
 			else
 				setOffline(config_file.readEntry("General", "DisconnectDescription"));
 
@@ -1596,7 +1598,7 @@ void Kadu::refreshPrivateStatusFromConfigFile()
 {
 	bool privateStatus = config_file.readBoolEntry("General", "PrivateStatus");
 
-	UserStatus status = gadu->status();
+	UserStatus status = gadu->currentStatus();
 	status.setFriendsOnly(privateStatus);
 	userStatusChanger->userStatusSet(status);
 
@@ -1642,6 +1644,7 @@ void Kadu::setDefaultStatus()
 
 	QString description;
 	QString startupStatus = config_file.readEntry("General", "StartupStatus");
+	UserStatus status;
 
 	if (config_file.readBoolEntry("General", "StartupLastDescription"))
 		description = config_file.readEntry("General", "LastStatusDescription");
@@ -1729,6 +1732,8 @@ void Kadu::wentOffline(const QString &desc)
 
 void Kadu::showStatusOnMenu(int statusNr)
 {
+	kdebugf();
+
 	for(int i = 0; i < 8; ++i)
 	{
 		statusMenu->setItemChecked(i, false);
@@ -1736,14 +1741,14 @@ void Kadu::showStatusOnMenu(int statusNr)
 	}
 	statusMenu->setItemChecked(statusNr, true);
 	dockMenu->setItemChecked(statusNr, true);
-	statusMenu->setItemChecked(8, gadu->status().isFriendsOnly());
-	dockMenu->setItemChecked(8, gadu->status().isFriendsOnly());
+	statusMenu->setItemChecked(8, gadu->currentStatus().isFriendsOnly());
+	dockMenu->setItemChecked(8, gadu->currentStatus().isFriendsOnly());
 
-	statusButton->setText(qApp->translate("@default", gadu->status().name().ascii()));
+	statusButton->setText(qApp->translate("@default", gadu->currentStatus().name().ascii()));
 	statusMenu->setItemEnabled(7, statusNr != 6);
 	dockMenu->setItemEnabled(7, statusNr != 6);
-	QPixmap pix = gadu->status().pixmap();
-	QString iconName = gadu->status().toString();
+	QPixmap pix = gadu->currentStatus().pixmap();
+	QString iconName = gadu->currentStatus().toString();
 	statusButton->setIconSet(QIconSet(pix));
 	setMainWindowIcon(pix);
 
@@ -1841,7 +1846,7 @@ void Kadu::setOnline(const QString &description)
 {
 	UserStatus status;
 
-	status.setStatus(gadu->status());
+	status.setStatus(gadu->currentStatus());
 	status.setOnline(description);
 
 	userStatusChanger->userStatusSet(status);
@@ -1851,7 +1856,7 @@ void Kadu::setBusy(const QString &description)
 {
 	UserStatus status;
 
-	status.setStatus(gadu->status());
+	status.setStatus(gadu->currentStatus());
 	status.setBusy(description);
 
 	userStatusChanger->userStatusSet(status);
@@ -1861,7 +1866,7 @@ void Kadu::setInvisible(const QString &description)
 {
 	UserStatus status;
 
-	status.setStatus(gadu->status());
+	status.setStatus(gadu->currentStatus());
 	status.setInvisible(description);
 
 	userStatusChanger->userStatusSet(status);
@@ -1871,7 +1876,7 @@ void Kadu::setOffline(const QString &description)
 {
 	UserStatus status;
 
-	status.setStatus(gadu->status());
+	status.setStatus(gadu->currentStatus());
 	status.setOffline(description);
 
 	userStatusChanger->userStatusSet(status);

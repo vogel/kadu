@@ -700,7 +700,9 @@ class GaduProtocol : public Protocol
 		void setDccExternalIP(const QHostAddress& ip);
 		int seqNum() { return seqNumber; }
 		bool validateUserID(QString& uid);
+
 		virtual UserStatus *newStatus() const;
+
 	public slots:
 		/**
 			Wysy³a wiadomo¶æ bez formatowania tekstu. Je¶li adresatów jest wiêcej ni¿ jeden, to wysy³ana

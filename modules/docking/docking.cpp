@@ -159,7 +159,7 @@ void DockingManager::pendingMessageDeleted()
 {
 	if (!pending.pendingMsgs())
 	{
-		const UserStatus &stat = gadu->status();
+		const UserStatus &stat = gadu->currentStatus();
 		emit trayPixmapChanged(stat.pixmap(), stat.toString());
 	}
 }
@@ -170,10 +170,10 @@ void DockingManager::defaultToolTip()
 	{
 		QString tiptext = tr("Left click - hide / show window\nMiddle click or Left click - open message");
 		tiptext.append(tr("\n\nCurrent status:\n%1")
-			.arg(qApp->translate("@default", UserStatus::name(gadu->status().index()).ascii())));
+			.arg(qApp->translate("@default", UserStatus::name(gadu->currentStatus().index()).ascii())));
 
-		if (gadu->status().hasDescription())
-			tiptext.append(tr("\n\nDescription:\n%2").arg(gadu->status().description()));
+		if (gadu->currentStatus().hasDescription())
+			tiptext.append(tr("\n\nDescription:\n%2").arg(gadu->currentStatus().description()));
 
 		emit trayTooltipChanged(tiptext);
 	}
@@ -238,7 +238,7 @@ void DockingManager::statusPixmapChanged(const QPixmap &icon, const QString &ico
 
 QPixmap DockingManager::defaultPixmap()
 {
-	return gadu->status().pixmap();
+	return gadu->currentStatus().pixmap();
 }
 
 void DockingManager::setDocked(bool docked, bool butDontHideOnClose)

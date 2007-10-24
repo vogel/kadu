@@ -540,7 +540,6 @@ void GaduProtocol::iWantGoOffline(const QString &desc)
 	else
 		gg_change_status(Sess, GG_STATUS_NOT_AVAIL);
 
-
 	CurrentStatus->setStatus(*NextStatus);
 	disconnectedSlot();
 
@@ -888,15 +887,12 @@ void GaduProtocol::errorSlot(GaduError err)
 	}
 
 	if (!continue_connecting)
-	{
-		whileConnecting = false;
 		NextStatus->setOffline();
-	}
 
 	// je¶li b³±d który wyst±pi³ umo¿liwia dalsze próby po³±czenia
 	// i w miêdzyczasie u¿ytkownik nie zmieni³ statusu na niedostêpny
 	// to za sekundê próbujemy ponownie
-	if (continue_connecting && !status().isOffline())
+	if (continue_connecting && !NextStatus->isOffline())
 		connectAfterOneSecond();
 
 	kdebugf2();

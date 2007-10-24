@@ -37,7 +37,7 @@ extern "C" int autoaway_init()
 	kdebugf();
 
 	autoAway = new AutoAway();
-	if (!gadu->status().isOffline())
+	if (!gadu->currentStatus().isOffline())
 		autoAway->on();
 
 	QObject::connect(gadu, SIGNAL(disconnected()), autoAway, SLOT(off()));
