@@ -31,6 +31,8 @@ class ToolBar : public QToolBar
 
 	ToolButton * addButton(Action *action, bool showLabel, ToolButton *after);
 
+	static QMap< QString, QValueList<ToolBarAction> > DefaultActions;
+
 private slots:
 	/**
 		\fn void addButtonClicked()
@@ -106,6 +108,10 @@ public:
 		Wczytuje dane z pliku konfiguracyjnego
 	**/
 	void loadFromConfig ( QDomElement parent_element );
+
+
+	static void addDefaultAction(const QString &toolbar, const QString &actionName, int index = -1, bool showLabel = false);
+	void loadDefault();
 
 	/**
 		\fn const UserGroup* selectedUsers() const

@@ -22,6 +22,7 @@
 #include "kadu.h"
 #include "misc.h"
 #include "message_box.h"
+#include "toolbar.h"
 #include "userbox.h"
 
 extern "C" int history_init()
@@ -71,8 +72,8 @@ HistoryModule::HistoryModule() : QObject(NULL, "history")
 	connect(history_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(historyActionActivated(const UserGroup*)));
 
-	KaduActions.addDefaultToolbarAction("Kadu toolbar", "showHistoryAction", 4);
-	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "showHistoryAction", 3);
+	ToolBar::addDefaultAction("Kadu toolbar", "showHistoryAction", 4);
+	ToolBar::addDefaultAction("Chat toolbar 1", "showHistoryAction", 3);
 
 	UserBox::userboxmenu->addItemAtPos(5, "History", tr("History"), this, SLOT(viewHistory()), HotKey::shortCutFromFile("ShortCuts", "kadu_viewhistory"));
 	UserBox::management->addItemAtPos(7, "ClearHistory", tr("Clear history"),  this, SLOT(deleteHistory()));

@@ -163,7 +163,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 		tb1->show();
 		buttontray->moveDockWindow(tb1);
 		buttontray->setAcceptDockWindow(tb1, true);
-		KaduActions.addDefaultActionsToToolbar(tb1);
+		tb1->loadDefault();
 	}
 
 	if (!btnpart->loadFromConfig(this))
@@ -173,14 +173,14 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 		tb2->show();
 		btnpart->moveDockWindow(tb2);
 		btnpart->setAcceptDockWindow(tb2, true);
-		KaduActions.addDefaultActionsToToolbar(tb2);
+		tb2->loadDefault();
 		// TOOLBAR 3
 		ToolBar* tb3 = new ToolBar(this, "Chat toolbar 3");
 		tb3->setOffset(10000);
 		tb3->show();
 		btnpart->moveDockWindow(tb3);
 		btnpart->setAcceptDockWindow(tb3, true);
-		KaduActions.addDefaultActionsToToolbar(tb3);
+		tb3->loadDefault();
 	}
 
 	Edit->setMimeSourceFactory(bodyformat);

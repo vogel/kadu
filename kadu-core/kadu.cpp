@@ -55,6 +55,7 @@
 #include "search.h"
 #include "status_changer.h"
 #include "tabbar.h"
+#include "toolbar.h"
 #include "updates.h"
 #include "userbox.h"
 #include "userinfo.h"
@@ -249,12 +250,12 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	connect(open_search_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(searchInDirectory()));
 
-	KaduActions.addDefaultToolbarAction("Kadu toolbar", "inactiveUsersAction");
-	KaduActions.addDefaultToolbarAction("Kadu toolbar", "descriptionUsersAction");
-	KaduActions.addDefaultToolbarAction("Kadu toolbar", "configurationAction");
-	KaduActions.addDefaultToolbarAction("Kadu toolbar", "editUserAction");
-	KaduActions.addDefaultToolbarAction("Kadu toolbar", "openSearchAction");
-	KaduActions.addDefaultToolbarAction("Kadu toolbar", "addUserAction");
+	ToolBar::addDefaultAction("Kadu toolbar", "inactiveUsersAction");
+	ToolBar::addDefaultAction("Kadu toolbar", "descriptionUsersAction");
+	ToolBar::addDefaultAction("Kadu toolbar", "configurationAction");
+	ToolBar::addDefaultAction("Kadu toolbar", "editUserAction");
+	ToolBar::addDefaultAction("Kadu toolbar", "openSearchAction");
+	ToolBar::addDefaultAction("Kadu toolbar", "addUserAction");
 
 	/* guess what */
 	createMenu();
@@ -1681,7 +1682,7 @@ void Kadu::startupProcedure()
 		ToolBar* toolbar = new ToolBar(this, "Kadu toolbar");
 		TopDockArea->moveDockWindow(toolbar);
 		TopDockArea->setAcceptDockWindow(toolbar, true);
-		KaduActions.addDefaultActionsToToolbar(toolbar);
+		toolbar->loadDefault();
 	}
 
 	if (ShowMainWindowOnStart)

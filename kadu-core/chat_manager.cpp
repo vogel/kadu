@@ -16,6 +16,7 @@
 #include "chat_manager.h"
 #include "chat_widget.h"
 #include "icons_manager.h"
+#include "ignore.h"
 #include "kadu.h"
 #include "kadu_splitter.h"
 #include "message_box.h"
@@ -23,8 +24,8 @@
 #include "pending_msgs.h"
 #include "search.h"
 #include "protocols_manager.h"
+#include "toolbar.h"
 #include "userbox.h"
-#include "ignore.h"
 
 ChatManager::ChatManager(QObject* parent, const char* name) : QObject(parent, name),
 	ChatWidgets(), ClosedChatUsers(), addons(), refreshTitlesTimer()
@@ -103,20 +104,20 @@ ChatManager::ChatManager(QObject* parent, const char* name) : QObject(parent, na
 	connect(open_chat_with_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		kadu, SLOT(openChatWith()));
 
-	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "autoSendAction");
-	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "clearChatAction");
-	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "insertEmoticonAction");
-	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "whoisAction");
-	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "insertImageAction");
+	ToolBar::addDefaultAction("Chat toolbar 1", "autoSendAction");
+	ToolBar::addDefaultAction("Chat toolbar 1", "clearChatAction");
+	ToolBar::addDefaultAction("Chat toolbar 1", "insertEmoticonAction");
+	ToolBar::addDefaultAction("Chat toolbar 1", "whoisAction");
+	ToolBar::addDefaultAction("Chat toolbar 1", "insertImageAction");
 
-	KaduActions.addDefaultToolbarAction("Chat toolbar 2", "boldAction");
-	KaduActions.addDefaultToolbarAction("Chat toolbar 2", "italicAction");
-	KaduActions.addDefaultToolbarAction("Chat toolbar 2", "underlineAction");
-	KaduActions.addDefaultToolbarAction("Chat toolbar 2", "colorAction");
+	ToolBar::addDefaultAction("Chat toolbar 2", "boldAction");
+	ToolBar::addDefaultAction("Chat toolbar 2", "italicAction");
+	ToolBar::addDefaultAction("Chat toolbar 2", "underlineAction");
+	ToolBar::addDefaultAction("Chat toolbar 2", "colorAction");
 
-	KaduActions.addDefaultToolbarAction("Chat toolbar 3", "sendAction", -1, true);
+	ToolBar::addDefaultAction("Chat toolbar 3", "sendAction", -1, true);
 
-	KaduActions.addDefaultToolbarAction("Search toolbar", "chatAction", -1, true);
+	ToolBar::addDefaultAction("Search toolbar", "chatAction", -1, true);
 
 	if (config_file.readBoolEntry("Chat", "RememberPosition"))
 	{

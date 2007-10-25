@@ -21,6 +21,8 @@
 #include "toolbar.h"
 #include "kadu.h"
 
+QMap< QString, QValueList<ToolBar::ToolBarAction> > ToolBar::DefaultActions;
+
 ToolBar::ToolBar(QWidget* /*parent*/, const char *name)
 	: QToolBar(NULL, name), dragButton(NULL)
 {
@@ -73,8 +75,6 @@ void ToolBar::addAction(const QString &actionName, bool showLabel, ToolButton *b
 
 	if (!inserted)
 		ToolBarActions.append(newAction);
-
-	updateButtons();
 }
 
 void ToolBar::removeAction(const QString &actionName)
@@ -120,6 +120,7 @@ void ToolBar::moveAction(const QString &actionName, ToolButton *button)
 		}
 
 	addAction(actionName, showLabel, button, !actionFirst);
+	updateButtons();
 }
 
 ToolButton * ToolBar::addButton(Action *action, bool showLabel, ToolButton *after)
@@ -183,9 +184,7 @@ void ToolBar::addButtonClicked(int action_index)
 	kdebugmf(KDEBUG_FUNCTION_START | KDEBUG_INFO, "action_index = %d\n", action_index);
 
 	addAction(KaduActions[action_index]->name(), false);
-	DockArea *dockarea = (DockArea *)area();
-	if (dockarea)
-		dockarea->writeToConfig();
+	updateButtons();
 
 	kdebugf2();
 }
@@ -258,9 +257,7 @@ void ToolBar::dropEvent(QDropEvent* event)
 	else
 		moveAction(actionName, child);
 
-	DockArea *dockarea = (DockArea *)area();
-	if (dockarea)
-		dockarea->writeToConfig();
+	updateButtons();
 
 	event->accept(true);
 
@@ -411,6 +408,51 @@ void ToolBar::loadFromConfig(QDomElement toolbar_element)
 		action.button = 0;
 
 		ToolBarActions.append(action);
+	}
+
+	// TODO: why calling updateButtons does not work?
+	QTimer *timer = new QTimer();
+	timer->singleShot(0, this, SLOT(updateButtons()));
+	timer->deleteLater();
+
+	kdebugf2();
+}
+
+void ToolBar::addDefaultAction(const QString &toolbar, const QString &actionName, int index, bool showLabel)
+{
+	kdebugf();
+
+	QValueList<ToolBarAction> &actions = DefaultActions[toolbar];
+
+	ToolBarAction action;
+	action.actionName = actionName;
+	action.showLabel = showLabel;
+	action.button = 0;
+
+	if (index >= actions.size())
+	{
+		kdebugm(KDEBUG_ERROR, "requested action index (%d) >= actions size (%u)!\n", index, actions.size());
+		printBacktrace("requested action index >= actions size!");
+		index = -1;
+	}
+
+	if (index < 0)
+		actions.push_back(action);
+	else
+		actions.insert(actions.at(index), action);
+
+	kdebugf2();
+}
+
+void ToolBar::loadDefault()
+{
+	kdebugf();
+
+	if (DefaultActions.contains(name()))
+	{
+		const QValueList<ToolBarAction>& actions = DefaultActions[name()];
+		CONST_FOREACH(i, actions)
+			addAction((*i).actionName, (*i).showLabel, 0);
 	}
 
 	// TODO: why calling updateButtons does not work?

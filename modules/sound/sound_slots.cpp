@@ -19,6 +19,7 @@
 #include "kadu.h"
 #include "select_file.h"
 #include "sound_slots.h"
+#include "toolbar.h"
 
 /**
  * @ingroup sound
@@ -85,7 +86,7 @@ SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name
 	connect(mute_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(muteActionActivated(const UserGroup*, const QWidget*, bool)));
 	connect(mute_action, SIGNAL(iconsRefreshed()), this, SLOT(setMuteActionState()));
-	KaduActions.addDefaultToolbarAction("Kadu toolbar", "muteSoundsAction", 0);
+	ToolBar::addDefaultAction("Kadu toolbar", "muteSoundsAction", 0);
 	setMuteActionState();
 
 	kdebugf2();

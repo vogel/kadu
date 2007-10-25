@@ -23,6 +23,7 @@
 #include "icons_manager.h"
 #include "kadu.h"
 #include "message_box.h"
+#include "toolbar.h"
 #include "userbox.h"
 
 extern "C"
@@ -77,7 +78,7 @@ EncryptionManager::EncryptionManager()
 		this, SLOT(encryptionActionActivated(const UserGroup*)));
 	connect(action, SIGNAL(addedToToolbar(const UserGroup*, ToolButton*, ToolBar*)),
 		this, SLOT(setupEncrypt(const UserGroup*)));
-	KaduActions.addDefaultToolbarAction("Chat toolbar 1", "encryptionAction", 4);
+	ToolBar::addDefaultAction("Chat toolbar 1", "encryptionAction", 4);
 
 	UserBox::userboxmenu->addItemAtPos(2,"SendPublicKey", tr("Send my public key"), this, SLOT(sendPublicKey()));
 

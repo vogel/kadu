@@ -113,14 +113,6 @@ class Actions : public QObject
 {
 	Q_OBJECT
 
-	struct Default
-	{
-		QString action_name;
-		bool uses_text_label;
-		Default(QString action_name, bool uses_text_label);
-		Default();
-	};
-	QMap< QString, QValueList<Default> > DefaultToolbarActions;
 	QMap<QString, Action *> ActionsMap;
 
 	void insert(const QString &name, Action *action);
@@ -129,10 +121,6 @@ class Actions : public QObject
 
 public:
 	Actions();
-	void addDefaultToolbarAction(
-		const QString& toolbar, const QString& action, int index = -1,
-		bool uses_text_label = false);
-	void addDefaultActionsToToolbar(ToolBar* toolbar);
 
 	Action * operator [] (const QString &name);
 	Action * operator [] (int index);

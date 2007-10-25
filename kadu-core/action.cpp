@@ -226,7 +226,6 @@ Action::ActionType Action::actionType()
 }
 
 Actions::Actions()
-	: DefaultToolbarActions()
 {
 }
 
@@ -263,48 +262,6 @@ void Actions::refreshIcons()
 {
 	FOREACH(action, ActionsMap)
 		(*action)->refreshIcons();
-}
-
-void Actions::addDefaultToolbarAction(
-	const QString& toolbar, const QString& action, int index, bool uses_text_label)
-{
-	kdebugf();
-	QValueList<Default>& actions = DefaultToolbarActions[toolbar];
-	Default def(action, uses_text_label);
-	if (index >= static_cast<int>(actions.size()))
-	{
-		kdebugm(KDEBUG_ERROR, "requested action index (%d) >= actions size (%u)!\n", index, actions.size());
-		printBacktrace("requested action index >= actions size!");
-		index = -1;
-	}
-	if (index < 0)
-		actions.push_back(def);
-	else
-		actions.insert(actions.at(index), def);
-	kdebugf2();
-}
-
-void Actions::addDefaultActionsToToolbar(ToolBar *toolbar)
-{
-	kdebugf();
-
-	if (DefaultToolbarActions.contains(toolbar->name()))
-	{
-		const QValueList<Default>& actions = DefaultToolbarActions[toolbar->name()];
-		CONST_FOREACH(i, actions)
-			if (contains((*i).action_name))
-				toolbar->addAction((*i).action_name, (*i).uses_text_label);
-	}
-
-	kdebugf2();
-}
-
-Actions::Default::Default(QString action_name_, bool uses_text_label_) : action_name(action_name_), uses_text_label(uses_text_label_)
-{
-}
-
-Actions::Default::Default() : action_name(), uses_text_label(false)
-{
 }
 
 Actions KaduActions;

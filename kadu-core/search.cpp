@@ -122,7 +122,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 		toolbar->setOffset(1000);
 		dock_area->moveDockWindow(toolbar);
 		dock_area->setAcceptDockWindow(toolbar, true);
-		KaduActions.addDefaultActionsToToolbar(toolbar);
+		toolbar->loadDefault();
 	}
 
 	QGridLayout * grid = new QGridLayout (this, 7, 12, 7, 5);
@@ -215,26 +215,26 @@ void SearchDialog::initModule()
 	Action* first_search_action = new Action("LookupUserInfo", tr("&Search"),
 		"firstSearchAction", Action::TypeSearch, Key_Return, Key_Enter);
 	first_search_action->setSlot(SLOT(firstSearch()));
-	KaduActions.addDefaultToolbarAction("Search toolbar", "firstSearchAction", 0, true);
+	ToolBar::addDefaultAction("Search toolbar", "firstSearchAction", 0, true);
 
 	Action* next_results_action = new Action("NextSearchResults", tr("&Next results"),
 		"nextResultsAction", Action::TypeSearch);
 	next_results_action->setSlot(SLOT(nextSearch()));
-	KaduActions.addDefaultToolbarAction("Search toolbar", "nextResultsAction", 1, true);
+	ToolBar::addDefaultAction("Search toolbar", "nextResultsAction", 1, true);
 
 	Action* stop_search_action = new Action("CloseWindow", tr("Stop"), "stopSearchAction",
 		Action::TypeSearch);
 	stop_search_action->setSlot(SLOT(stopSearch()));
-	KaduActions.addDefaultToolbarAction("Search toolbar", "stopSearchAction", 2, true);
+	ToolBar::addDefaultAction("Search toolbar", "stopSearchAction", 2, true);
 
 	Action* clear_search_action = new Action("ClearSearchResults", tr("Clear results"),
 		"clearSearchAction", Action::TypeSearch);
 	clear_search_action->setSlot(SLOT(clearResults()));
-	KaduActions.addDefaultToolbarAction("Search toolbar", "clearSearchAction", 3, true);
+	ToolBar::addDefaultAction("Search toolbar", "clearSearchAction", 3, true);
 
 	Action* add_searched_action = new Action("AddUser", tr("Add selected user"),
 		"addSearchedAction", Action::TypeSearch);
-	KaduActions.addDefaultToolbarAction("Search toolbar", "addSearchedAction", 4, true);
+	ToolBar::addDefaultAction("Search toolbar", "addSearchedAction", 4, true);
 
 	kdebugf2();
 }
