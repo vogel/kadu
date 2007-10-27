@@ -868,6 +868,7 @@ OpenChatWith::OpenChatWith(QWidget* parent, const char* name)
 	c_text = new QComboBox(combos);
 	c_text->setAutoCompletion(true);
 	c_text->setEditable(true);
+	c_text->setFocus();
 	QToolTip::add(c_text, tr("UIN or nick"));
 
 	QStringList posibilities;
