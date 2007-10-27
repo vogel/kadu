@@ -1835,9 +1835,8 @@ void Kadu::customEvent(QCustomEvent *e)
 	else if (int(e->type()) == 5432)
 	{
 		OpenGGChatEvent *ev = static_cast<OpenGGChatEvent *>(e);
-		QString id = QString::number(ev->number());
-		if (ev->number() > 0 && gadu->ID() != id)
-			chat_manager->openChatWidget(gadu, userlist->byID("Gadu", id));
+		if (ev->number() > 0)
+			chat_manager->openChatWidget(gadu, userlist->byID("Gadu", QString::number(ev->number())));
 	}
 	else
 		QWidget::customEvent(e);
