@@ -361,7 +361,7 @@ void Wizard::tryImport()
 	{
 		connect(gadu, SIGNAL(userListImported(bool, QValueList<UserListElement>)),
 				wizardStarter, SLOT(userListImported(bool, QValueList<UserListElement>)));
-		if (gadu->status().isOffline())
+		if (gadu->currentStatus().isOffline())
 		{
 			connect(gadu, SIGNAL(connected()), wizardStarter, SLOT(connected()));
 			kadu->setOnline();	//kaze sie polaczyc i podpina sie pod sygnal polaczenia sie z siecia

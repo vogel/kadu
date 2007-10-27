@@ -1,7 +1,7 @@
 #ifndef HISTORY_DIALOG_H
 #define HISTORY_DIALOG_H
 
-#include <qdialog.h>
+#include <qwidget.h>
 #include "gadu.h"
 #include "history.h"
 #include "history_search_dialog.h"
@@ -33,7 +33,7 @@ class DateListViewText : public QListViewItem {
 /**
 	History dialog
 **/
-class HistoryDialog : public QDialog {
+class HistoryDialog : public QWidget {
 	Q_OBJECT
 
 protected:

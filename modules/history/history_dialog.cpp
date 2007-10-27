@@ -66,7 +66,8 @@ const HistoryDate &DateListViewText::getDate() const
 	return date;
 }
 
-HistoryDialog::HistoryDialog(UinsList uins) : QDialog(NULL, "HistoryDialog"), uinslv(0), body(0),
+HistoryDialog::HistoryDialog(UinsList uins)
+	: QWidget(kadu, "HistoryDialog", WType_TopLevel | WDestructiveClose), uinslv(0), body(0),
 	uins(uins), start(0), findrec(), closeDemand(false), finding(false), dateentries()
 {
 	kdebugf();
@@ -74,7 +75,6 @@ HistoryDialog::HistoryDialog(UinsList uins) : QDialog(NULL, "HistoryDialog"), ui
 	history->buildIndex(uins);
 
 	setCaption(tr("History"));
-	setWFlags(Qt::WDestructiveClose);
 
 	QGridLayout *grid = new QGridLayout(this, 2, 5, 5, 5, "grid");
 
@@ -455,7 +455,7 @@ void HistoryDialog::searchHistory()
 		} while (total > 0 && i == entriesCount && !closeDemand);
 	if (closeDemand)
 	{
-		reject();
+		close();
 		kdebugf2();
 		return;
 	}
