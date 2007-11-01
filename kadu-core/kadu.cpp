@@ -723,7 +723,7 @@ void Kadu::searchInDirectory()
 
 void Kadu::help()
 {
-	if (config_file.readEntry("General", "Language", "en") == "pl")
+	if (config_file.readEntry("General", "Language", QString(QTextCodec::locale()).mid(0,2)) == "pl")
 		openWebBrowser("http://www.kadu.net/w/Kadu:Pomoc");
 	else
 		openWebBrowser("http://www.kadu.net/w/English:Kadu:Help");

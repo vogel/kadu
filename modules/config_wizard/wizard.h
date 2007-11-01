@@ -15,6 +15,8 @@
 #include "chat_widget.h"
 #include "misc.h"
 
+class QGrid;
+
 /**
  * @defgroup config_wizard Config wizard
  * @{
@@ -23,115 +25,80 @@ class Wizard : public QWizard
 {
     Q_OBJECT
 
-		enum HintType {
-			HintConnectionError,
-			HintNewChat,
-			HintNewMessage,
-			HintStatusChangedToOnline,
-			HintStatusChangedToBusy,
-			HintStatusChangedToInvisible,
-			HintStatusChangedToOffline
-		};
+	QPushButton *ggRegisterAccount;
 
-		enum ColorType {
-			ColorForeground = 0,
-			ColorBackground = 1
-		};
+	QRadioButton *haveNumber;
+	QLineEdit *ggNumber;
+	QLineEdit *ggPassword;
+	QCheckBox *ggImportContacts;
+	QRadioButton *dontHaveNumber;
+	QLineEdit *ggNewPassword;
+	QLineEdit *ggReNewPassword;
+	QLineEdit *ggEMail;
 
-		QString currentColors[8];	//tu przechowujemy aktualny zestaw kolorow
-		QString currentHints[13][2]; //a tu aktualne kolorki hintow
-		bool registered;	//potrzebne przy blokowaniu/odblokowywaniu przyciska Dalej
+	QValueList<QWidget *> haveNumberWidgets;
+	QValueList<QWidget *> dontHaveNumberWidgets;
 
-	public:
-		Wizard(QWidget *parent = 0, const char *name = 0, bool modal = false);
-		~Wizard();
+	QComboBox *browserCombo;
+	QLineEdit *browserCommandLineEdit;
+	QComboBox *mailCombo;
+	QLineEdit *mailCommandLineEdit;
 
-	public slots:
-		void wizardStart();
-	protected:
-		bool noNewAccount;
+	void createGGAccountPage();
+	void createApplicationsPage();
+	void createSoundPage();
 
-		/*  tworz± poszczegolne okna wizarda */
-		void createWelcomePage();
-		void createGGNumberSelect();
-		void createGGCurrentNumberPage();
-		void createGGNewNumberPage();
-		void createLanguagePage();
-		void createWWWOpionsPage();
-		void createChatOpionsPage();
-		void createSoundOptionsPage();
-		void createGeneralOptionsPage();
-		void createHintsOptionsPage();
-		void createColorsPage();
-		void createInfoPanelPage();
-		void createQtStylePage();
-		void createGreetingsPage();
+	void loadGGAccountOptions();
+	void loadApplicationsOptions();
+	void loadSoundOptions();
 
-		/* a tu sa okna */
-		QVBox *welcomePage, *ggNumberSelect, *ggCurrentNumberPage, *ggNewNumberPage, *languagePage, *chatOptionsPage, *wwwOptionsPage,
-			*soundOptionsPage, *generalOptionsPage, *greetingsPage, *hintsOptionsPage, *colorsPage, *qtStylePage, *infoPanelPage;
-		QRadioButton *rb_haveNumber, *rb_dontHaveNumber;
-		QLineEdit *l_ggNumber, *l_ggPassword, *l_ggNewPasssword, *l_ggNewPassswordRetyped, *l_email, *l_customBrowser;
-		QCheckBox *c_importContacts, *c_waitForDelivery, *c_enterSendsMessage, *c_openOnNewMessage, *c_flashTitleOnNewMessage, *c_ignoreAnonyms,
-			*c_logMessages, *c_logStatusChanges, *c_privateStatus, *c_showBlocked, *c_showBlocking, *c_startDocked, *c_enableSounds, *c_playWhilstChatting,
-			*c_showInfoPanel, *c_showScrolls;
-		QComboBox *cb_browser, *cb_browserOptions, *cb_hintsTheme, *cb_hintsType, *cb_colorTheme, *cb_iconTheme, *cb_qtTheme, *cb_panelTheme, *cb_soundModule;
-		QLabel *previewHintStatusChangedToBusy, *previewHintConnectionError, *previewHintStatusChangedSyntax, *iconPreview, *iconPreview2, *iconPreview3, *iconPreview4, *moduleInfo;
-		QString customHint, customPanel;
-		KaduTextBrowser *infoPreview;
-		QPushButton *registerAccount;
+	void saveGGAccountOptions();
+	void saveApplicationsOptions();
+// 	void saveSoundOptions();
 
-		/* zapisuj± konfiguracjê */
-		void tryImport();
-		void setChatOptions();
-		void setSoundOptions();
-		void setGeneralOptions();
-		void setBrowser();
-		void setHints();
-		void setColorsAndIcons();
-		void setPanelTheme();
-		void setOldGaduAccount();
+	void tryImport();
 
-		/* funkcje pomocnicze */
-		QString toDisplay(QString);
-		QString toSave(QString);
-		virtual void closeEvent(QCloseEvent *e);
+private slots:
+	void haveNumberChanged(bool haveNumber);
+	void registerGGAccount();
+	void registeredGGAccount(bool ok, UinType uin);
 
-	protected slots:
-		void setLanguage(int);
-		void setGaduAccount();
-		void registeredAccount(bool, UinType);
-		void previewHintsTheme(int);
-		void previewHintsType(int);
-		void previewColorTheme(int);
-		void previewIconTheme(int);
-		void previewQtTheme(int);
-		void previewPanelTheme(int);
-		void addScrolls(bool);
+	void finishClicked();
+	void cancelClicked();
 
-		void finishClicked();
-		void nextClicked();
-		void backClicked();
-		void cancelClicked();
+	void browserChanged(int index);
+	void emailChanged(int index);
 
-		void findAndSetWebBrowser(int selectedBrowser);
-		void findAndSetBrowserOption(int selectedOption);
-		void setSoundModule(int);
+protected:
+	void closeEvent(QCloseEvent *e);
+
+public:
+	Wizard(QWidget *parent = 0, const char *name = 0, bool modal = false);
+	~Wizard();
+
+	void addPage(QWidget *page, const QString &title, const QString &description, bool lastOne);
+
+public slots:
+	void wizardStart();
+
 };
 
 class WizardStarter : public QObject
 {
 	Q_OBJECT
-	private:
-		int menuPos;
-	public:
-		WizardStarter(QObject *parent=0, const char *name=0);
-		~WizardStarter();
-	public slots:
-		void start();
 
-		void userListImported(bool ok, QValueList<UserListElement> list);
-		void connected();
+	int menuPos;
+
+public:
+	WizardStarter(QObject *parent=0, const char *name=0);
+	~WizardStarter();
+
+public slots:
+	void start();
+
+	void userListImported(bool ok, QValueList<UserListElement> list);
+	void connected();
+
 };
 
 extern WizardStarter *wizardStarter;

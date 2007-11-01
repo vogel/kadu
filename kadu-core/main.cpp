@@ -300,7 +300,7 @@ int main(int argc, char *argv[])
 	defaultFontInfo = new QFontInfo(*defaultFont);
 	// loading translation
 	QTranslator qt_qm(0, "Translator_qt");
-	QString lang = config_file.readEntry("General", "Language");
+	QString lang = config_file.readEntry("General", "Language", QString(QTextCodec::locale()).mid(0,2));
 	qt_qm.load(dataPath(QString("kadu/translations/qt_") + lang), ".");
 	qApp->installTranslator(&qt_qm);
 	QTranslator kadu_qm(0, "Translator_kadu");

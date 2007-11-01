@@ -391,7 +391,7 @@ ModulesManager::~ModulesManager()
 QTranslator* ModulesManager::loadModuleTranslation(const QString& module_name)
 {
 	QTranslator* translator = new QTranslator(translators, "module_translator");
-	if (translator->load(dataPath("kadu/modules/translations/" + module_name + '_' + config_file.readEntry("General", "Language", QTextCodec::locale())), "."))
+	if (translator->load(dataPath("kadu/modules/translations/" + module_name + '_' + config_file.readEntry("General", "Language", QString(QTextCodec::locale()).mid(0,2))), "."))
 	{
 		qApp->installTranslator(translator);
 		return translator;
@@ -506,9 +506,9 @@ bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info) co
 		return true;
 	}
 
-	PlainConfigFile desc_file(dataPath("kadu/modules/"+module_name+".desc"));
+	PlainConfigFile desc_file(dataPath("kadu/modules/" + module_name + ".desc"));
 
-	QString lang=config_file.readEntry("General", "Language", "en");
+	QString lang = config_file.readEntry("General", "Language", QString(QTextCodec::locale()).mid(0,2));
 
 	info.description = desc_file.readEntry("Module", "Description[" + lang + ']');
 	if(info.description.isEmpty())

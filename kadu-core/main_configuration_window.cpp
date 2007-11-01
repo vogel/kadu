@@ -295,7 +295,7 @@ void MainConfigurationWindow::onChangeEmoticonsStyle(int index)
 	emoticonsThemeComboBox->setEnabled(emoticonsStyleComboBox->currentItemValue() != "0");
 }
 
-void MainConfigurationWindow::onChangeBrowser(int index)
+QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 {
 	QStringList searchPath = QStringList::split(":", QString(getenv("PATH")));
 	QStringList executableName;
@@ -303,10 +303,9 @@ void MainConfigurationWindow::onChangeBrowser(int index)
 
 	QString parameters;
 
-	browserCommandLineEdit->setEnabled(index == 0);
 // 	browserOptionComboBox->setEnabled(index >= 2 && index <= 4);
 
-	switch (index)
+	switch (browserIndex)
 	{
 		case 1: // konqueror
 		{
@@ -397,31 +396,35 @@ void MainConfigurationWindow::onChangeBrowser(int index)
 // 	browserOptionComboBox->clear();
 // 	browserOptionComboBox->setItems(options, options);
 
-	if (index != 0)
+	if (browserIndex != 0)
 	{
 		QString executable = findExecutable(searchPath, executableName);
 		if (!executable.isNull())
-			browserCommandLineEdit->setText(executable + " " + parameters);
+			return executable + " " + parameters;
 		else
-			browserCommandLineEdit->setText(tr("Not found"));
+			return tr("Not found");
 	}
 	else
-		browserCommandLineEdit->setText("");
+		return "";
+}
+
+void MainConfigurationWindow::onChangeBrowser(int index)
+{
+	browserCommandLineEdit->setEnabled(index == 0);
+	browserCommandLineEdit->setText(getBrowserExecutable(index));
 }
 
 // void MainConfigurationWindow::onChangeBrowserOption(int index)
 // {
 // }
 
-void MainConfigurationWindow::onChangeMail(int index)
+QString MainConfigurationWindow::getEMailExecutable(int emailIndex)
 {
 	QStringList searchPath = QStringList::split(":", QString(getenv("PATH")));
 	QStringList executableName;
 	QString parameters;
 
-	mailCommandLineEdit->setEnabled(index == 0);
-
-	switch (index)
+	switch (emailIndex)
 	{
 		case 1: // kmail
 		{
@@ -464,16 +467,53 @@ void MainConfigurationWindow::onChangeMail(int index)
 		}
 	}
 
-	if (index != 0)
+	if (emailIndex != 0)
 	{
 		QString executable = findExecutable(searchPath, executableName);
 		if (!executable.isNull())
-			mailCommandLineEdit->setText(executable + parameters);
+			return executable + parameters;
 		else
-			mailCommandLineEdit->setText(tr("Not found"));
+			return tr("Not found");
 	}
 	else
-		mailCommandLineEdit->setText("");
+		return "";
+}
+
+void MainConfigurationWindow::onChangeMail(int index)
+{
+	mailCommandLineEdit->setEnabled(index == 0);
+	mailCommandLineEdit->setText(getEMailExecutable(index));
+}
+
+QString MainConfigurationWindow::browserIndexToString(int browserIndex)
+{
+	switch (browserIndex)
+	{
+		case 0: return "Specify path";
+		case 1: return "Konqueror";
+		case 2: return "Opera";
+		case 3: return "Mozilla";
+		case 4: return "Mozilla Firefox";
+		case 5: return "Dillo";
+		case 6: return "Galeon";
+		case 7: return "Safari";
+	}
+
+	return "";
+}
+
+QString MainConfigurationWindow::emailIndexToString(int emailIndex)
+{
+	switch (emailIndex)
+	{
+		case 0: return "Specify path";
+		case 1: return "KMail";
+		case 2: return "Thunderbird";
+		case 3: return "SeaMonkey";
+		case 4: return "Evolution";
+	}
+
+	return "";
 }
 
 void MainConfigurationWindow::onChatSyntaxEditorWindowCreated(SyntaxEditorWindow *syntaxEditorWindow)

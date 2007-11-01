@@ -33,6 +33,9 @@ class Kadu : public QWidget, ConfigurationAwareObject
 {
 	Q_OBJECT
 
+		// TODO: remove
+		friend class Wizard;
+
 	private:
 		UserListElement Myself;
 

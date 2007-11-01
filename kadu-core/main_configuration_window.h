@@ -73,7 +73,7 @@ class MainConfigurationWindow : public ConfigurationWindow
 	void setQtThemes();
 	void setToolTipClasses();
 
-	QString findExecutable(const QStringList &paths, const QStringList &executableNames);
+	static QString findExecutable(const QStringList &paths, const QStringList &executableNames);
 	// TODO: remove append parameter
 	void prepareChatPreview(Preview *preview, bool append = false);
 
@@ -121,6 +121,12 @@ public:
 	virtual ~MainConfigurationWindow();
 
 	virtual void show();
+
+	static QString getBrowserExecutable(int browserIndex);
+	static QString getEMailExecutable(int emailIndex);
+
+	static QString browserIndexToString(int browserIndex);
+	static QString emailIndexToString(int emailIndex);
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *e);
