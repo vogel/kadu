@@ -117,6 +117,7 @@ X11TrayIcon::X11TrayIcon(QWidget *parent, const char *name)
 	QLabel::setPixmap(pix);
 	resize(pix.size());
 	setMouseTracking(true);
+	setAlignment(Qt::AlignCenter);
 	update();
 
 	// avoid "hourglass effect" in KDE
