@@ -165,6 +165,7 @@ class SoundManager : public Notifier, public ConfigurationUiHandler
 		void play(const QString &path, bool force=false);
 		void play(const QString &path, bool volCntrl, double vol);
 		void setMute(const bool& enable);
+		void stop();
 
 	public:
 

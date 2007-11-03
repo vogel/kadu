@@ -273,7 +273,7 @@ ALSAPlayerSlots::~ALSAPlayerSlots()
 
 void ALSAPlayerSlots::createDefaultConfiguration()
 {
-	config_file.addVariable("Sounds", "ALSAOutputDevice", "/dev/audio");
+	config_file.addVariable("Sounds", "ALSAOutputDevice", "default");
 }
 
 bool ALSAPlayerSlots::isOk()

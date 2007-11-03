@@ -76,6 +76,7 @@ ModuleInfo::ModuleInfo() : depends(), conflicts(), provides(),
 
 void ModulesDialog::resizeEvent(QResizeEvent * /*e*/)
 {
+	// TODO: WTF
 	layoutHelper->resizeLabels();
 }
 
@@ -496,6 +497,25 @@ QStringList ModulesManager::activeModules() const
 	CONST_FOREACH(i, Modules)
 		active.append(i.key());
 	return active;
+}
+
+QString ModulesManager::moduleProvides(const QString &provides)
+{
+	ModuleInfo info;
+
+	QStringList moduleList = staticModules();
+	CONST_FOREACH(moduleName, moduleList)
+		if (moduleInfo(*moduleName, info))
+			if (info.provides.contains(provides))
+				return *moduleName;
+
+	moduleList = installedModules();
+	CONST_FOREACH(moduleName, moduleList)
+		if (moduleInfo(*moduleName, info) && info.provides.contains(provides))
+			if (moduleIsLoaded(*moduleName))
+				return *moduleName;
+
+	return "";
 }
 
 bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info) const

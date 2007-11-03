@@ -2,20 +2,17 @@
 #define KADU_CONFIG_WIZARD_H
 
 #include <qwizard.h>
-#include <qhbox.h>
-#include <qvbox.h>
-#include <qgroupbox.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qradiobutton.h>
-#include <qpushbutton.h>
+#include <qvaluelist.h>
 
 #include "../account_management/register.h"
+
 #include "chat_widget.h"
 #include "misc.h"
 
-class QGrid;
+class QComboBox;
+class QLineEdit;
+class QPushButton;
+class QRadioButton;
 
 /**
  * @defgroup config_wizard Config wizard
@@ -44,6 +41,11 @@ class Wizard : public QWizard
 	QComboBox *mailCombo;
 	QLineEdit *mailCommandLineEdit;
 
+	QComboBox *soundModuleCombo;
+	QPushButton *soundTest;
+
+	QString backupSoundModule;
+
 	void createGGAccountPage();
 	void createApplicationsPage();
 	void createSoundPage();
@@ -54,9 +56,11 @@ class Wizard : public QWizard
 
 	void saveGGAccountOptions();
 	void saveApplicationsOptions();
-// 	void saveSoundOptions();
+	void saveSoundOptions();
 
 	void tryImport();
+
+	void changeSoundModule(const QString &newModule);
 
 private slots:
 	void haveNumberChanged(bool haveNumber);
@@ -68,6 +72,8 @@ private slots:
 
 	void browserChanged(int index);
 	void emailChanged(int index);
+
+	void testSound();
 
 protected:
 	void closeEvent(QCloseEvent *e);

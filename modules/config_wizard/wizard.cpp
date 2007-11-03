@@ -7,39 +7,28 @@
 
 #include <qbuttongroup.h>
 #include <qcheckbox.h>
-#include <qgrid.h>
-#include <qmessagebox.h>
-#include <qprocess.h>
-#include <qstyle.h>
-#include <qstylefactory.h>
-#include <qpopupmenu.h>
+#include <qcombobox.h>
+#include <qlineedit.h>
+#include <qpushbutton.h>
+#include <qradiobutton.h>
 
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "addons.h"
-#include "action.h"
+#include "../sound/sound.h"
+
 #include "config_file.h"
 #include "debug.h"
-#include "gadu.h"
 #include "icons_manager.h"
 #include "kadu.h"
-#include "kadu_parser.h"
-#include "kadu_text_browser.h"
 #include "main_configuration_window.h"
-#include "message_box.h"
 #include "modules.h"
-#include "userbox.h"
 #include "wizard.h"
 
 /**
  * @ingroup config_wizard
  * @{
  */
-unsigned int informationPanelCount = sizeof(informationPanelSyntax) / sizeof(informationPanelSyntax[0]);
-unsigned int hintCount = sizeof(hintSyntax) / sizeof(hintSyntax[0]);
-unsigned int hintColorCount = sizeof(hintColors) / sizeof(hintColors[0]);
-unsigned int kaduColorCount = sizeof(kaduColors) / sizeof(kaduColors[0]);
 
 extern "C" int config_wizard_init()
 {
@@ -154,12 +143,16 @@ void Wizard::finishClicked()
 {
 	saveGGAccountOptions();
 	saveApplicationsOptions();
+	saveSoundOptions();
 
-	cancelClicked();
+	startWizardObj = 0;
+	deleteLater();
 }
 
 void Wizard::cancelClicked()
 {
+	changeSoundModule(backupSoundModule);
+
 	startWizardObj = 0;
 	deleteLater();
 }
@@ -167,7 +160,9 @@ void Wizard::cancelClicked()
 void Wizard::closeEvent(QCloseEvent *e)
 {
 	QWizard::closeEvent(e);
-	cancelClicked();
+
+	startWizardObj = 0;
+	deleteLater();
 }
 
 /**
@@ -373,8 +368,6 @@ void Wizard::createGGAccountPage()
 	haveNumberGroup->insert(haveNumber);
 	haveNumberGroup->insert(dontHaveNumber);
 
-	haveNumber->setChecked(true);
-
 	layout->addStretch(1);
 
 	haveNumberWidgets.append(ggNumberLabel);
@@ -392,11 +385,12 @@ void Wizard::createGGAccountPage()
 
 	loadGGAccountOptions();
 
-	addPage(ggPage, "Gadu-gadu account", tr("<h3>Welcome in Kadu</h3><h4>the Gadu-gadu network client for *nix "
-		"and MacOS X.</h4><p>This is first time you launch Kadu. "
+	addPage(ggPage, "Gadu-gadu account", tr("<h3>Welcome in Kadu</h3><h4>the Gadu-gadu network client for *nix and MacOS X.</h4>"
+		"<p>This is first time you launch Kadu. "
 		"This wizard will help you to configure the basic settings of Kadu. "
-		"If you are experienced Kadu user you may omit the wizard by clicking Cancel. "
-		"Otherwise click Next.</p><p>Please enter your account data. If you don't have one, you can create new here.</p>"), false);
+		"If you are experienced Kadu user you may omit the wizard by clicking Cancel.</p>"
+		"<p>Please enter your account data. If you don't have one, you can create new here.</p>"
+		"<p>E-mail address is only needed when you want to recover lost password to account</p>"), false);
 
 	kdebugf2();
 }
@@ -414,10 +408,12 @@ void Wizard::loadGGAccountOptions()
 	QString uin = config_file.readEntry("General", "UIN");
 	if (uin.isEmpty())
 	{
+		haveNumberChanged(false);
 		dontHaveNumber->setChecked(true);
 	}
 	else
 	{
+		haveNumberChanged(true);
 		haveNumber->setChecked(true);
 		ggNumber->setText(uin);
 		ggPassword->setText(pwHash(config_file.readEntry("General", "Password")));
@@ -497,7 +493,10 @@ void Wizard::createApplicationsPage()
 
 	loadApplicationsOptions();
 
-	addPage(applicationsPage, tr("Applications"), tr("Please setup Kadu for working with your favourite WWW browser and email program"), false);
+	addPage(applicationsPage, tr("Applications"), tr(
+		"<p>Please setup Kadu for working with your favourite WWW browser and email program.</p>"
+		"<p>Kadu will use these for opening various links from messages and user's descriptions</p>"
+	), false);
 
 	kdebugf2();
 }
@@ -563,34 +562,117 @@ void Wizard::saveApplicationsOptions()
 void Wizard::createSoundPage()
 {
 	kdebugf();
-
 	QWidget *soundPage = new QWidget(this);
 
 	QVBoxLayout *layout = new QVBoxLayout(soundPage);
 	layout->setSpacing(5);
 
-	QGroupBox *soundOptions = new QGroupBox(tr("Sound options"), soundPage);
+	QGroupBox *soundOptions = new QGroupBox(1, Qt::Horizontal, tr("WWW browser"), soundPage);
+	soundOptions->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	layout->addWidget(soundOptions);
 
-	soundOptions->setColumns(1);
-	soundOptions->setInsideMargin(10);
-	soundOptions->setInsideSpacing(4);
+	QWidget *container = new QWidget(soundOptions);
+	QGridLayout *gridLayout = new QGridLayout(container);
+	gridLayout->setSpacing(5);
 
-	QHBox *moduleBox = new QHBox(soundOptions);
+	gridLayout->addWidget(new QLabel(tr("Sound driver") + ":", container), 0, 0, Qt::AlignRight);
+	soundModuleCombo = new QComboBox(container);
+	gridLayout->addWidget(soundModuleCombo, 0, 1);
 
-	new QLabel(tr("Sound module") + ":", moduleBox);
-	QComboBox *soundModules = new QComboBox(moduleBox);
-	new QPushButton(tr("Test sound"), soundOptions);
+	soundTest = new QPushButton(tr("Test sound"), container);
+	gridLayout->addMultiCellWidget(soundTest, 1, 1, 0, 1);
+	connect(soundTest, SIGNAL(clicked()), this, SLOT(testSound()));
+
+	QStringList soundModules;
+	ModuleInfo moduleInfo;
+
+	QStringList moduleList = modules_manager->staticModules();
+	CONST_FOREACH(moduleName, moduleList)
+		if (modules_manager->moduleInfo(*moduleName, moduleInfo))
+			if (moduleInfo.provides.contains("sound_driver"))
+			{
+				soundModules.append(*moduleName);
+				break;
+			}
+
+	if (soundModules.size() == 0)
+	{
+		moduleList = modules_manager->installedModules();
+		CONST_FOREACH(moduleName, moduleList)
+			if (modules_manager->moduleInfo(*moduleName, moduleInfo) && moduleInfo.provides.contains("sound_driver"))
+				soundModules.append(*moduleName);
+	}
+
+	// make alsa/ext/arts first in list
+	if (soundModules.contains("arts_sound"))
+	{
+		soundModules.remove("arts_sound");
+		soundModules.prepend("arts_sound");
+	}
+	if (soundModules.contains("ext_sound"))
+	{
+		soundModules.remove("ext_sound");
+		soundModules.prepend("ext_sound");
+	}
+	if (soundModules.contains("alsa_sound"))
+	{
+		soundModules.remove("alsa_sound");
+		soundModules.prepend("alsa_sound");
+	}
+	soundModules.prepend("None");
+
+	soundModuleCombo->insertStringList(soundModules);
 
 	layout->addStretch(100);
 
-	addPage(soundPage, tr("Sound"), tr("Description"), true);
+	loadSoundOptions();
+
+	addPage(soundPage, tr("Sound"), tr(
+		"<p>Please select your sound driver for sound notifications. "
+		"If you don't want sound notifications, use None driver.</p>"
+		"<p>If you don't know which driver to use, just check every ony with Test sound button."
+		"Don't forget to unmute your system before!</p>"
+	), true);
 
 	kdebugf2();
 }
 
+void Wizard::testSound()
+{
+	sound_manager->stop();
+	changeSoundModule(soundModuleCombo->currentText());
+	sound_manager->play(dataPath("kadu/themes/sounds/default/msg.wav"), true);
+}
+
 void Wizard::loadSoundOptions()
 {
+	backupSoundModule = modules_manager->moduleProvides("sound_driver");
+
+	if (!backupSoundModule.isEmpty())
+		soundModuleCombo->setCurrentText(backupSoundModule);
+	else
+		soundModuleCombo->setCurrentItem(1); // just exclude "none"
+}
+
+void Wizard::saveSoundOptions()
+{
+	changeSoundModule(soundModuleCombo->currentText());
+	modules_manager->saveLoadedModules();
+}
+
+void Wizard::changeSoundModule(const QString &newModule)
+{
+	QString currentSoundModule = modules_manager->moduleProvides("sound_driver");
+	if (currentSoundModule != newModule)
+	{
+		if (modules_manager->moduleIsLoaded(currentSoundModule))
+			modules_manager->deactivateModule(currentSoundModule);
+
+		currentSoundModule = newModule;
+
+		if (!currentSoundModule.isEmpty() && (currentSoundModule != "None"))
+			modules_manager->activateModule(currentSoundModule);
+	}
 }
 
 Wizard *startWizardObj = NULL;

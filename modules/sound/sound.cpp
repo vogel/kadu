@@ -378,6 +378,7 @@ void SoundManager::notify(Notification *notification)
 void SoundManager::play(const QString &path, bool force)
 {
 	kdebugf();
+
 	bool volCntrl;
 	float vol;
 
@@ -391,6 +392,7 @@ void SoundManager::play(const QString &path, bool force)
 		play(path, volCntrl, vol);
 	else
 		fprintf(stderr, "file (%s) not found\n", path.local8Bit().data());
+
 	kdebugf2();
 }
 
@@ -510,6 +512,24 @@ void SoundManager::play(const QString &path, bool volCntrl, double vol)
 		emit playSound(path, volCntrl, vol);
 	else
 		play_thread->tryPlay(path.local8Bit().data(), volCntrl, vol);
+	kdebugf2();
+}
+
+void SoundManager::stop()
+{
+	kdebugf();
+// 	if (simple_player_count>0)
+// 		emit playStop();
+// 	else
+	{
+		play_thread->terminate();
+		play_thread->wait();
+
+		// TODO: fix it, let play_thread exists only if needed
+		delete play_thread;
+		play_thread = new SoundPlayThread();
+		play_thread->start();
+	}
 	kdebugf2();
 }
 

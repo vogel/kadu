@@ -255,6 +255,8 @@ class ModulesManager : public QObject
 		**/
 		QStringList activeModules() const;
 
+		QString moduleProvides(const QString &provides);
+
 		/**
 			\fn bool moduleInfo(const QString& module_name, ModuleInfo& info) const
 			Pobiera do info informacje o danym module.
