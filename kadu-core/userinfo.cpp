@@ -215,9 +215,6 @@ void UserInfo::setupTab1()
 	e_status->setBackgroundMode(PaletteButton);
 	// end Protocol Version and status
 
-	if (gadu->currentStatus().isOffline())
-		e_status->setText(tr("(Unknown)"));
-
 	e_status->setReadOnly(true);
 	e_addr->setReadOnly(true);
 	e_ver->setReadOnly(true);
@@ -232,6 +229,9 @@ void UserInfo::setupTab1()
 
 	if (User.usesProtocol("Gadu"))
 	{
+		if (gadu->currentStatus().isOffline())
+			e_status->setText(tr("(Unknown)"));
+
 		e_uin->setText(User.ID("Gadu"));
 
 		if (User.hasIP("Gadu"))
@@ -451,6 +451,7 @@ void UserInfo::updateUserlist()
 	if (e_altnick->text().isEmpty())
 	{
 		MessageBox::msg(tr("Altnick field cannot be empty."), false, "Warning", this);
+
 		kdebugf2();
 		return;
 	}
@@ -462,6 +463,7 @@ void UserInfo::updateUserlist()
 		else
 		{
 			MessageBox::msg(tr("User is already in userlist"), false, "Warning", this);
+
 			kdebugf2();
 			return;
 		}
@@ -507,6 +509,8 @@ void UserInfo::updateUserlist()
 
 	userlist->writeToConfig();
 	xml_config_file->sync();
+
 	close(true);
+
 	kdebugf2();
 }
