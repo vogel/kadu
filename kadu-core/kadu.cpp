@@ -240,6 +240,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 		"editUserAction", Action::TypeUser);
 	connect(edit_user_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(editUserActionActivated(const UserGroup*)));
+	connect(edit_user_action, SIGNAL(addedToToolbar(const UserGroup*, ToolButton*, ToolBar*)),
+		this, SLOT(editUserActionAddedToToolbar(const UserGroup*)));
 
 	Action* add_user_action = new Action("AddUser", tr("Add user"), "addUserAction", Action::TypeGlobal);
 	connect(add_user_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
@@ -317,6 +319,9 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	connect(userlist, SIGNAL(usersDataChanged(QString)), this, SLOT(updateInformationPanelLater()));
 	connect(userlist, SIGNAL(protocolUsersDataChanged(QString, QString)), this, SLOT(updateInformationPanelLater()));
 	connect(userlist, SIGNAL(usersStatusChanged(QString)), this, SLOT(updateInformationPanelLater()));
+
+	connect(userlist, SIGNAL(protocolUserDataChanged(QString, UserListElement, QString, QVariant, QVariant, bool, bool)),
+		this, SLOT(editUserActionSetParams(QString, UserListElement)));
 
 	connect(&(gadu->currentStatus()), SIGNAL(goOnline(const QString &)),
 		this, SLOT(wentOnline(const QString &)));
@@ -626,6 +631,34 @@ void Kadu::onlineAndDescUsersActionActivated()
 void Kadu::configurationActionActivated()
 {
 	MainConfigurationWindow::instance()->show();
+}
+
+void Kadu::editUserActionSetParams(QString /*protocolName*/, UserListElement users)
+{
+	kdebugf();
+
+	Action *action = KaduActions["editUserAction"];
+	UserListElements elems = UserListElements(users);
+	if (users.isAnonymous())
+	{
+		action->setPixmaps(elems, icons_manager->loadIcon("AddUser"));
+		action->setTexts(elems, tr("Add user"));
+	}
+	else
+	{
+		action->setPixmaps(elems, icons_manager->loadIcon("EditUserInfo"));
+		action->setTexts(elems, tr("View / edit user info"));
+	}
+
+	kdebugf2();
+}
+
+void Kadu::editUserActionAddedToToolbar(const UserGroup* users)
+{
+	kdebugf();
+	if ((users->count()) == 1 && (*users->begin()).isAnonymous())
+		editUserActionSetParams("", *users->begin());
+	kdebugf2();
 }
 
 void Kadu::editUserActionActivated(const UserGroup* users)
@@ -1236,6 +1269,9 @@ bool Kadu::close(bool quit)
 		disconnect(gadu, SIGNAL(needTokenValue(QPixmap, QString &)),
 				this, SLOT(readTokenValue(QPixmap, QString &)));
 		disconnect(gadu, SIGNAL(systemMessageReceived(const QString &)), this, SLOT(systemMessageReceived(const QString &)));
+
+		disconnect(userlist, SIGNAL(protocolUserDataChanged(QString, UserListElement, QString, QVariant, QVariant, bool, bool)),
+				this, SLOT(editUserActionSetParams(QString, UserListElement)));
 
 		disconnect(userlist, SIGNAL(usersDataChanged(QString)), this, SLOT(updateInformationPanelLater()));
 		disconnect(userlist, SIGNAL(protocolUsersDataChanged(QString, QString)), this, SLOT(updateInformationPanelLater()));

@@ -245,6 +245,8 @@ class Kadu : public QWidget, ConfigurationAwareObject
 		void onlineAndDescUsersActionActivated();
 		void configurationActionActivated();
 		void editUserActionActivated(const UserGroup* users);
+		void editUserActionAddedToToolbar(const UserGroup* users);
+		void editUserActionSetParams(QString protocolName, UserListElement users);
 		void addUserActionActivated(const UserGroup* users);
 
 	signals:
