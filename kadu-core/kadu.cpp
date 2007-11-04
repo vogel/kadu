@@ -1613,8 +1613,6 @@ void Kadu::show()
 		if (columns < 1)
 			columns = 1;
 		config_file.writeEntry("Look", "UserBoxColumnCount", columns);
-
-		Userbox->configurationUpdated();
 	}
 	config_file.removeVariable("Look", "MultiColumnUserbox");
 	config_file.removeVariable("Look", "MultiColumnUserboxWidth");

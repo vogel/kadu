@@ -156,6 +156,8 @@ void IconsManager::refreshMenus()
 // TODO: clear it!
 void IconsManager::configurationUpdated()
 {
+	kdebugf();
+
 	icons_manager->clear();
 	icons_manager->setTheme(config_file.readEntry("Look", "IconTheme"));
 	KaduActions.refreshIcons();
@@ -163,6 +165,8 @@ void IconsManager::configurationUpdated()
 	UserBox::management->refreshIcons();
 	icons_manager->refreshMenus();
 	kadu->changeAppearance();
+
+	kdebugf2();
 }
 
 void IconsManager::initModule()
