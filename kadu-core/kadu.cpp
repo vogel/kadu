@@ -123,9 +123,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	kadu = this;
 	blinktimer = 0;
 
-	UinType myUin = config_file.readUnsignedNumEntry("General", "UIN");
-
-	Myself.addProtocol("Gadu", config_file.readEntry("General", "UIN"));
+	Myself.addProtocol("Gadu", QString::number(config_file.readUnsignedNumEntry("General", "UIN", 0)));
 	Myself.setAltNick(config_file.readEntry("General", "Nick"));
 
 	createDefaultConfiguration();
@@ -205,8 +203,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 
 	/* a newbie? */
 
-	if (myUin)
-		setCaption(tr("Kadu: %1").arg(myUin));
+	setCaption(tr("Kadu: %1").arg(Myself.ID("Gadu")));
 
 	pending.loadFromFile();
 
@@ -1652,8 +1649,16 @@ void Kadu::configurationUpdated()
 
 	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
 
-	gadu->changeID(config_file.readEntry("General", "UIN"));
-	kadu->setCaption(tr("Kadu: %1").arg((UinType)config_file.readUnsignedNumEntry("General", "UIN")));
+	QString uin = QString::number(config_file.readUnsignedNumEntry("General", "UIN", 0));
+	if (Myself.ID("Gadu").toUInt() != uin.toUInt())
+	{
+		gadu->changeID(uin);
+		Myself.deleteProtocol("Gadu");
+		if (uin.toUInt())
+			Myself.addProtocol("Gadu", uin);
+		kadu->setCaption(tr("Kadu: %1").arg(uin));
+	}
+
 	kadu->setDocked(kadu->Docked, kadu->dontHideOnClose);
 
 	InfoPanelSyntax = SyntaxList::readSyntax("infopanel", config_file.readEntry("Look", "InfoPanelSyntaxFile"),

@@ -305,7 +305,7 @@ void GaduProtocol::initModule()
 	gadu_protocol_manager = new GaduProtocolManager();
 	protocols_manager->registerProtocol("Gadu", "Gadu-Gadu", gadu_protocol_manager);
 
-	gadu = static_cast<GaduProtocol *>(protocols_manager->newProtocol("Gadu", QString::number(config_file.readUnsignedNumEntry("General", "UIN"))));
+	gadu = static_cast<GaduProtocol *>(protocols_manager->newProtocol("Gadu", kadu->myself().ID("Gadu")));
 //	gadu = new GaduProtocol(QString::number(config_file.readNumEntry("General", "UIN")), kadu, "gadu");
 
 	QHostAddress ip;

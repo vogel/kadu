@@ -55,7 +55,7 @@ void Updates::initModule()
 
 	if (!UpdateChecked && LastUpdateCheck.secsTo(actualtime) >= 3600)
 	{
-		UinType myUin=(UinType)config_file.readUnsignedNumEntry("General", "UIN");
+		UinType myUin = (UinType)kadu->myself().ID("Gadu").toUInt();
 		if (myUin)
 		{
 			instance = new Updates(myUin);
