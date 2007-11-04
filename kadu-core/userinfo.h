@@ -12,6 +12,7 @@ class QCheckBox;
 class QDns;
 class QLineEdit;
 class QPushButton;
+class QScrollView;
 class QTabWidget;
 class QVBox;
 class QVGroupBox;
@@ -67,6 +68,7 @@ class UserInfo : public QHBox
 		QTabWidget *tw_main;
 		QVGroupBox *vgb_general;
 		QDns *dns;
+		QScrollView* scrollView;
 
 		QValueList<QCheckBox *> groups;
 		QValueList<QCheckBox *> hiddenCheckBoxes;
@@ -116,6 +118,12 @@ class UserInfo : public QHBox
 			wci¶niêto przycisk tworzenia nowej grupy
 		**/
 		void newGroupClicked();
+
+		/**
+			\fn void scrollToBottom();
+			po dodaniu nowej grupy przewija listê grup aby dodana by³a widoczna
+		**/
+		void scrollToBottom();
 	signals:
 		void updateClicked(UserInfo *);
 };

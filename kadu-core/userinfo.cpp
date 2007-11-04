@@ -14,6 +14,7 @@
 #include <qlayout.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
+#include <qscrollview.h>
 #include <qtabwidget.h>
 #include <qtooltip.h>
 #include <qvalidator.h>
@@ -281,10 +282,18 @@ void UserInfo::setupTab1()
 void UserInfo::setupTab2()
 {
 	kdebugf();
-	QVGroupBox *groupsTab = new QVGroupBox(vgb_general);
-	groupsTab->setFrameStyle(QFrame::NoFrame);
 
-	tw_main->addTab(groupsTab, tr("Groups"));
+	scrollView = new QScrollView(tw_main);
+	scrollView->setFrameStyle(QFrame::NoFrame);
+	scrollView->setResizePolicy(QScrollView::AutoOneFit);
+	scrollView->setVScrollBarMode(QScrollView::Auto);
+	scrollView->setHScrollBarMode(QScrollView::AlwaysOff);
+
+	QVGroupBox *groupsTab = new QVGroupBox(scrollView->viewport());
+	groupsTab->setFrameStyle(QFrame::NoFrame);
+	scrollView->addChild(groupsTab);
+
+	tw_main->addTab(scrollView, tr("Groups"));
 
 	QStringList allGroups = groups_manager->groups();
 
@@ -389,8 +398,12 @@ void UserInfo::newGroupClicked()
 	box->show();
 
 	groups.append(box);
+
+	QTimer::singleShot(0, this, SLOT(scrollToBottom()));
+
 	kdebugf2();
 }
+
 
 void UserInfo::setupTab3()
 {
@@ -513,4 +526,10 @@ void UserInfo::updateUserlist()
 	close(true);
 
 	kdebugf2();
+}
+
+
+void UserInfo::scrollToBottom()
+{
+	scrollView->setContentsPos(0, scrollView->contentsHeight());
 }
