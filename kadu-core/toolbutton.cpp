@@ -188,38 +188,10 @@ ToolBar* ToolButton::toolbar()
 }
 
 ActionDrag::ActionDrag(const QString &actionName, bool showLabel, QWidget* dragSource, const char* name)
-	: QDragObject(dragSource, name), ActionName(actionName), ShowLabel(showLabel)
+	: DragSimple("application/x-kadu-action", actionName + " " + QString::number(showLabel ? 1 : 0), dragSource, name)
 {
 	kdebugf();
 	kdebugf2();
-}
-
-const char * ActionDrag::format(int i) const
-{
-	if (i)
-		return "application/x-kadu-action";
-	else
-		return 0;
-}
-
-bool ActionDrag::provides(const char *mimeType) const
-{
-	return strcmp(mimeType, "application/x-kadu-action") == 0;
-}
-
-QByteArray ActionDrag::encodedData(const char *mimeType) const
-{
-	QByteArray result;
-
-	if (!provides(mimeType))
-		return result;
-
-	QTextStream stream(result, IO_WriteOnly);
-	stream << ActionName;
-	stream << " ";
-	stream << (int)ShowLabel;
-
-	return result;
 }
 
 bool ActionDrag::decode(const QMimeSource *source, QString &actionName, bool &showLabel)

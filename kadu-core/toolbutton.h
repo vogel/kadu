@@ -1,11 +1,20 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef TOOLBUTTON_H
 #define TOOLBUTTON_H
 
 #include <qdom.h>
-#include <qdragobject.h>
 #include <qtoolbutton.h>
 
 #include "action.h"
+#include "drag_simple.h"
 
 class ToolBar;
 
@@ -54,18 +63,11 @@ class ToolButton : public QToolButton
 		void removedFromToolbar(ToolButton *);
 };
 
-class ActionDrag : public QDragObject
+class ActionDrag : public DragSimple
 {
-	QString ActionName;
-	bool ShowLabel;
 
 public:
 	ActionDrag(const QString &actionName, bool showLabel, QWidget* dragSource = 0, const char* name = 0);
-
-	// QMimeFactory
-	const char * format(int i) const;
-	bool provides(const char *mimeType) const;
-	QByteArray encodedData(const char *mimeType) const;
 
 	static bool decode(const QMimeSource *source, QString &actionName, bool &showLabel);
 

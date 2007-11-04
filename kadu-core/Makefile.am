@@ -20,6 +20,7 @@ custom_input.cpp \
 debug.cpp \
 dnshandler.cpp \
 dockarea.cpp \
+drag_simple.cpp \
 emoticons.cpp \
 expimp.cpp \
 gadu.cpp \
@@ -85,6 +86,7 @@ custom_input.h \
 debug.h \
 dnshandler.h \
 dockarea.h \
+drag_simple.h \
 emoticons.h \
 expimp.h \
 gadu.h \
@@ -199,6 +201,7 @@ obj/custom_input.$(OBJEXT) \
 obj/debug.$(OBJEXT) \
 obj/dnshandler.$(OBJEXT) \
 obj/dockarea.$(OBJEXT) \
+obj/drag_simple.$(OBJEXT) \
 obj/emoticons.$(OBJEXT) \
 obj/expimp.$(OBJEXT) \
 obj/gadu.$(OBJEXT) \
@@ -326,6 +329,7 @@ include $(DEPS)/dnshandler.d
 include $(DEPS)/dnshandler_moc.d
 include $(DEPS)/dockarea.d
 include $(DEPS)/dockarea_moc.d
+include $(DEPS)/drag_simple.d
 include $(DEPS)/emoticons.d
 include $(DEPS)/emoticons_moc.d
 include $(DEPS)/expimp.d
