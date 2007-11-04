@@ -66,9 +66,10 @@ EncryptionManager::EncryptionManager()
 
 	userlist->addPerContactNonProtocolConfigEntry("encryption_enabled", "EncryptionEnabled");
 
-	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 	connect(gadu, SIGNAL(rawGaduReceivedMessageFilter(Protocol *, UserListElements, QCString&, QByteArray&, bool&)),
 			this, SLOT(decryptMessage(Protocol *, UserListElements, QCString&, QByteArray&, bool&)));
+	connect(gadu, SIGNAL(sendMessageFiltering(const UserListElements, QString &, bool &)),
+			this, SLOT(sendMessageFilter(const UserListElements, QString &, bool &)));
 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userBoxMenuPopup()));
 
 	action = new Action("EncryptedChat", tr("Enable encryption for this conversation"),
@@ -96,9 +97,10 @@ EncryptionManager::~EncryptionManager()
 	int sendkeyitem = UserBox::userboxmenu->getItem(tr("Send my public key"));
 	UserBox::userboxmenu->removeItem(sendkeyitem);
 
-	disconnect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 	disconnect(gadu, SIGNAL(rawGaduReceivedMessageFilter(Protocol *, UserListElements, QCString&, QByteArray&, bool&)),
 			this, SLOT(decryptMessage(Protocol *, UserListElements, QCString&, QByteArray&, bool&)));
+	disconnect(gadu, SIGNAL(sendMessageFiltering(const UserListElements, QString &, bool &)),
+			this, SLOT(sendMessageFilter(const UserListElements, QString &, bool &)));
 	disconnect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userBoxMenuPopup()));
 
 	delete action;
@@ -134,12 +136,6 @@ void EncryptionManager::generateMyKeys()
 
 	MessageBox::msg(tr("Keys have been generated and written"), false, "Information", configurationWindow);
 	kdebugf2();
-}
-
-void EncryptionManager::chatCreated(ChatWidget *chat)
-{
-	connect(gadu, SIGNAL(sendMessageFiltering(const UserListElements, QString &, bool &)),
-			this, SLOT(sendMessageFilter(const UserListElements, QString &, bool &)));
 }
 
 void EncryptionManager::setupEncrypt(const UserGroup *group)
