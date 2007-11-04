@@ -16,6 +16,7 @@
 #include <qdragobject.h>
 #include <qpainter.h>
 #include <qspinbox.h>
+#include <qtextcodec.h>
 #include <qvgroupbox.h>
 
 #include "action.h"
@@ -651,15 +652,12 @@ void UserBox::mouseMoveEvent(QMouseEvent* e)
 //	kdebugf();
 	if ((e->state() & LeftButton) && itemAt(e->pos()))
 	{
-		QString drag_text;
+		QStringList ules;
 		for(unsigned int i = 0, count1 = count(); i < count1; ++i)
 			if (isSelected(i))
-			{
-				if (!drag_text.isEmpty())
-					drag_text += "\n";
-				drag_text += item(i)->text();
-			}
-		QDragObject* d = new QTextDrag(drag_text, this);
+				ules.append(item(i)->text());
+
+		QDragObject* d = new UlesDrag(ules, this);
 		d->dragCopy();
 	}
 	else
@@ -1452,6 +1450,29 @@ UserListElement UserBox::currentUser() const
 		printBacktrace("currentUser");
 		return UserListElement();
 	}
+}
+
+UlesDrag::UlesDrag(const QStringList &ules, QWidget* dragSource, const char* name)
+	: DragSimple("application/x-kadu-ules", ules.join("\n"), dragSource, name)
+{
+	kdebugf();
+	kdebugf2();
+}
+
+bool UlesDrag::decode(const QMimeSource *source, QStringList &ules)
+{
+	QTextStream stream(source->encodedData("application/x-kadu-ules"), IO_ReadOnly);
+	stream.setCodec(QTextCodec::codecForLocale());
+
+	QString allUles = stream.read();
+	ules = QStringList::split("\n", allUles);
+
+	return ules.count() > 0;
+}
+
+bool UlesDrag::canDecode(const QMimeSource *source)
+{
+	return source->provides("application/x-kadu-ules");
 }
 
 inline int compareAltNick(const UserListElement &u1, const UserListElement &u2)

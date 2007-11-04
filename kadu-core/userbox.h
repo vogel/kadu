@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "configuration_aware_object.h"
+#include "drag_simple.h"
 #include "gadu.h"
 #include "misc.h"
 #include "userlistelement.h"
@@ -16,6 +17,16 @@
 class QFontMetrics;
 class ULEComparer;
 class Action;
+
+class UlesDrag : public DragSimple
+{
+
+public:
+	UlesDrag(const QStringList &ules, QWidget* dragSource = 0, const char* name = 0);
+	static bool decode(const QMimeSource *source, QStringList &ules);
+	static bool canDecode(const QMimeSource *source);
+
+};
 
 /**
 	Klasa zdolna do pokazywania ToolTipów nad oknem kontaktów.

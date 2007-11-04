@@ -12,7 +12,7 @@
 
 #include <qdragobject.h>
 
-class DragSimple : public QDragObject
+class DragSimple : public QTextDrag
 {
 	QString MimeType;
 	QString Content;

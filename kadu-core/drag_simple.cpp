@@ -7,12 +7,14 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <qtextcodec.h>
+
 #include "drag_simple.h"
 
 #include "debug.h"
 
 DragSimple::DragSimple(const QString &mimeType, const QString &content, QWidget* dragSource, const char* name)
-	: QDragObject(dragSource, name), MimeType(mimeType), Content(content)
+	: QTextDrag(dragSource, name), MimeType(mimeType), Content(content)
 {
 	kdebugf();
 	kdebugf2();
@@ -39,6 +41,8 @@ QByteArray DragSimple::encodedData(const char *mimeType) const
 		return result;
 
 	QTextStream stream(result, IO_WriteOnly);
+	stream.setCodec(QTextCodec::codecForLocale());
+
 	stream << Content;
 
 	return result;

@@ -280,7 +280,7 @@ void KaduTabBar::scrollTabsVert()
 void KaduTabBar::dragEnterEvent(QDragEnterEvent* e)
 {
 	kdebugf();
-	e->accept(QTextDrag::canDecode(e) &&
+	e->accept(UlesDrag::canDecode(e) &&
 		dynamic_cast<UserBox*>(e->source()));
 	kdebugf2();
 }
@@ -288,8 +288,9 @@ void KaduTabBar::dragEnterEvent(QDragEnterEvent* e)
 void KaduTabBar::dropEvent(QDropEvent* e)
 {
 	kdebugf();
-	QString altnicks;
-	if (dynamic_cast<UserBox*>(e->source()) && QTextDrag::decode(e,altnicks))
+
+	QStringList ules;
+	if (dynamic_cast<UserBox*>(e->source()) && UlesDrag::decode(e, ules))
 	{
 		QApplication::setOverrideCursor(QCursor(ArrowCursor));
 		QString group;
@@ -314,8 +315,6 @@ void KaduTabBar::dropEvent(QDropEvent* e)
 		}
 		if (group == GroupsManager::tr("All"))
 			group = QString::null;
-		QStringList altnick_list = QStringList::split("\n", altnicks);
-//		kdebugm(KDEBUG_WARNING, "altnicks: %s, group:%s\n", altnicks.local8Bit().data(), group.local8Bit().data());
 
 		QPopupMenu menu(this);
 		menu.insertItem(tr("Add to group %1").arg(group), 2);
@@ -329,14 +328,14 @@ void KaduTabBar::dropEvent(QDropEvent* e)
 			QStringList groups;
 			if (!group.isEmpty())
 				groups.append(group);
-			CONST_FOREACH(altnick, altnick_list)
-				userlist->byAltNick(*altnick).setData("Groups", groups);
+			CONST_FOREACH(ule, ules)
+				userlist->byAltNick(*ule).setData("Groups", groups);
 		}
 		else if (menuret == 2)
 		{
-			CONST_FOREACH(altnick, altnick_list)
+			CONST_FOREACH(ule, ules)
 			{
-				UserListElement u = userlist->byAltNick(*altnick);
+				UserListElement u = userlist->byAltNick(*ule);
 				QStringList newGroups = u.data("Groups").toStringList();
 				newGroups << group;
 				u.setData("Groups", newGroups);
