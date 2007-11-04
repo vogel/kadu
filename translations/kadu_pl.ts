@@ -169,8 +169,8 @@
         <translation>Skracanie wiadomości</translation>
     </message>
     <message>
-        <source>Reduce the number of visible messages to</source>
-        <translation>Zmniejsz ilość widocznych wiadomości do</translation>
+        <source>Reduce the number of visible messages in chat window to</source>
+        <translation>Skracaj liczbę widocznych wiadomości w oknie rozmowy do</translation>
     </message>
     <message>
         <source>Flash chat title on new message</source>

@@ -339,14 +339,15 @@
 			<group-box name="Message pruning">
 				<check-box caption="Automatically prune chat messages" config-section="Chat" config-item="ChatPrune" id="chatPrune"
 					   tool-tip="If enabled, messages are pruning" />
-				<spin-box caption="Reduce the number of visible messages to" config-section="Chat" config-item="ChatPruneLen" min-value="1" max-value="255" id="chatPruneLen"
+				<spin-box caption="Reduce the number of visible messages in chat window to" config-section="Chat" config-item="ChatPruneLen" min-value="1" max-value="255" id="chatPruneLen"
 					  tool-tip="Number of visible messages" />
 			</group-box>
 			
 			<group-box name="Images">
-				<spin-box caption="Max image size" config-section="Chat" config-item="MaxImageSize" min-value="0" max-value="255" suffix=" kB" />
+				<spin-box caption="Max image size" config-section="Chat" config-item="MaxImageSize" min-value="0" max-value="255" suffix=" kB"
+					  tool-tip="Maximum image size that we want to receive" />
 				<check-box caption="Receive images during invisibility" config-section="Chat" config-item="RecevieImagesDuringInvisibility"
-					   tool-tip="Receiving images during invisibility is allowed"  />
+					   tool-tip="Receiving images during invisibility is allowed" />
 				<spin-box caption="Limit numbers of image recevied per minute" config-section="General" config-item="MaxImageRequests" min-value="1" max-value="30"
 					  tool-tip="Define limit of images received per minute" />
 			</group-box>
