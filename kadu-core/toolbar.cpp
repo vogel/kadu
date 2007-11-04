@@ -429,7 +429,7 @@ void ToolBar::addDefaultAction(const QString &toolbar, const QString &actionName
 	action.showLabel = showLabel;
 	action.button = 0;
 
-	if (index >= actions.size())
+	if (index >= (int)actions.size())
 	{
 		kdebugm(KDEBUG_ERROR, "requested action index (%d) >= actions size (%u)!\n", index, actions.size());
 		printBacktrace("requested action index >= actions size!");
