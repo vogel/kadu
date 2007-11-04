@@ -469,16 +469,23 @@ void UserInfo::updateUserlist()
 		return;
 	}
 
-	if (userlist->contains("Gadu", id) && userlist->byID("Gadu", id) != User)
+	if (userlist->contains("Gadu", id)) // je¿eli istenieje ju¿ u¿ytkownik o danym ID...
 	{
-		if (userlist->byID("Gadu", id).isAnonymous())
-			User = userlist->byID("Gadu", id);
-		else
+		UserListElement user = userlist->byID("Gadu", id);
+		if (user != User) // ...i nie jest to ten, aktualnie edytowany...
 		{
-			MessageBox::msg(tr("User is already in userlist"), false, "Warning", this);
+			if (user.isAnonymous()) // ...to je¶li istniej±cy kontakt jest anonimem...
+			{
+				userlist->removeUser(User);
+				User = user; // ...to usuwamy edytowanego usera i zastêpujemy go anonimem
+			}
+			else
+			{
+				MessageBox::msg(tr("User is already in userlist"), false, "Warning", this);
 
-			kdebugf2();
-			return;
+				kdebugf2();
+				return;
+			}
 		}
 	}
 
