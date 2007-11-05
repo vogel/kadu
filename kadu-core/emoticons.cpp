@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <qfile.h>
+#include <qregexp.h>
 #include <qtextedit.h>
 #include <qtooltip.h>
 
@@ -26,11 +27,33 @@ EmoticonsManager::EmoticonsListItem::EmoticonsListItem() : alias(), anim(), stat
 {
 }
 
-EmoticonsManager::EmoticonsManager() : ThemesList(getSubDirs(dataPath("kadu/themes/emoticons"))),
-		Aliases(), Selector(), walker(0)
+void EmoticonsManager::initModule()
+{
+	kdebugf();
+
+	emoticons = new EmoticonsManager("emoticons", "emots.txt");
+	emoticons->setPaths(QStringList::split(QRegExp("(;|:)"), config_file.readEntry("Chat", "EmoticonsPaths")));
+	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
+
+	kdebugf2();
+}
+
+void EmoticonsManager::closeModule()
+{
+	kdebugf();
+
+	delete emoticons;
+	emoticons = 0;
+
+	kdebugf2();
+}
+
+EmoticonsManager::EmoticonsManager(const QString& name, const QString& configname)
+	: Themes(name, configname, "emoticons_manager"), Aliases(), Selector(), walker(0)
 
 {
-	ThemesList.remove(".");
+	kdebugf();
+	kdebugf2();
 }
 
 EmoticonsManager::~EmoticonsManager()
@@ -39,28 +62,26 @@ EmoticonsManager::~EmoticonsManager()
 		delete walker;
 }
 
-QStringList EmoticonsManager::getSubDirs(const QString& path)
+void EmoticonsManager::configurationUpdated()
 {
-	QDir dir(path);
-	dir.setFilter(QDir::Dirs);
-	QStringList subdirs=dir.entryList();
-	subdirs.remove(".");
-	subdirs.remove("..");
-	return subdirs;
-}
+	kdebugf();
 
-const QStringList& EmoticonsManager::themes() const
-{
-	return ThemesList;
+	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
+
+	kdebugf2();
 }
 
 void EmoticonsManager::setEmoticonsTheme(const QString& theme)
 {
 	kdebugmf(KDEBUG_FUNCTION_START | KDEBUG_INFO, "theme: %s\n", theme.local8Bit().data());
+
 	if (ThemesList.contains(theme))
 		config_file.writeEntry("Chat", "EmoticonsTheme", theme);
 	else
 		config_file.writeEntry("Chat", "EmoticonsTheme", "penguins");
+
+	emoticons->setTheme(theme);
+
 	if (!loadGGEmoticonTheme())
 	{
 		config_file.writeEntry("Chat", "EmoticonsTheme", "penguins");
@@ -70,6 +91,7 @@ void EmoticonsManager::setEmoticonsTheme(const QString& theme)
 			loadGGEmoticonTheme();
 		}
 	}
+
 	kdebugf2();
 }
 
@@ -92,31 +114,13 @@ QString EmoticonsManager::getQuoted(const QString& s, unsigned int& pos)
 	return r;
 }
 
-QString EmoticonsManager::fixFileName(const QString& path,const QString& fn)
-{
-	// sprawd¼ czy oryginalna jest ok
-	if (QFile::exists(path + '/' + fn))
-		return fn;
-	// mo¿e ca³o¶æ lowercase?
-	if (QFile::exists(path + '/' + fn.lower()))
-		return fn.lower();
-	// rozbij na nazwê i rozszerzenie
-	QString name = fn.section('.', 0, 0);
-	QString ext = fn.section('.', 1);
-	// mo¿e rozszerzenie uppercase?
-	if (QFile::exists(path + '/' + name + '.' + ext.upper()))
-		return name + '.' + ext.upper();
-	// nie umiemy poprawiæ, zwracamy oryginaln±
-	return fn;
-}
-
 bool EmoticonsManager::loadGGEmoticonThemePart(QString subdir)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "subdir: %s\n", subdir.local8Bit().data());
 	if (!subdir.isEmpty())
 		subdir += '/';
 	QString path = themePath() + '/' + subdir;
-	QFile theme_file(path + "emots.txt");
+	QFile theme_file(path + ConfigName);
 	if (!theme_file.open(IO_ReadOnly))
 	{
 		kdebugm(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "Error opening emots.txt file\n");
@@ -174,6 +178,7 @@ bool EmoticonsManager::loadGGEmoticonThemePart(QString subdir)
 bool EmoticonsManager::loadGGEmoticonTheme()
 {
 	kdebugf();
+
 	Aliases.clear();
 	Selector.clear();
 	bool something_loaded = false;
@@ -184,24 +189,20 @@ bool EmoticonsManager::loadGGEmoticonTheme()
 		if (loadGGEmoticonThemePart(*subdir))
 			something_loaded = true;
 
-	if ( something_loaded ) {
+	if (something_loaded) {
 		// delete previous dictionary of emots
-		if ( walker )
+		if (walker)
 			delete walker;
 		walker = new EmotsWalker();
 		int i = 0;
 		// put all emots into dictionary, to allow easy finding
 		// their occurrences in text
-		CONST_FOREACH( item, Aliases )
-			walker -> insertString( item -> alias.lower(), i++ );
+		CONST_FOREACH(item, Aliases)
+			walker->insertString(item->alias.lower(), i++);
 	}
+
 	kdebugmf(KDEBUG_FUNCTION_END | KDEBUG_INFO, "loaded: %d\n", something_loaded);
 	return something_loaded;
-}
-
-QString EmoticonsManager::themePath() const
-{
-	return dataPath("kadu/themes/emoticons/" + config_file.readEntry("Chat","EmoticonsTheme"));
 }
 
 void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor, EmoticonsStyle style)

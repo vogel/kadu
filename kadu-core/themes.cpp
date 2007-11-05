@@ -24,7 +24,7 @@ QStringList Themes::getSubDirs(const QString& path) const
 {
 	QDir dir(path);
 	dir.setFilter(QDir::Dirs);
-	QStringList subdirs, dirs=dir.entryList();
+	QStringList subdirs, dirs = dir.entryList();
 	dirs.remove(".");
 	dirs.remove("..");
 	CONST_FOREACH(dir, dirs)
@@ -44,15 +44,15 @@ const QStringList &Themes::themes() const
 void Themes::setTheme(const QString& theme)
 {
 	kdebugf();
-	if(ThemesList.contains(theme)|| (theme == "Custom"))
+	if(ThemesList.contains(theme) || (theme == "Custom"))
 	{
 		entries.clear();
-		ActualTheme= theme;
+		ActualTheme = theme;
 		if (theme != "Custom")
 		{
 			PlainConfigFile theme_file(
-				themePath()+fixFileName(themePath(),ConfigName));
-			entries=theme_file.getGroupSection(Name);
+				themePath() +  fixFileName(themePath(), ConfigName));
+			entries = theme_file.getGroupSection(Name);
 		}
 		emit themeChanged(ActualTheme);
 	}
@@ -88,14 +88,17 @@ void Themes::setPaths(const QStringList& paths)
 	ThemesList.clear();
 	ThemesPaths.clear();
 	additional.clear();
-	QStringList add, temp = paths + defaultKaduPathsWithThemes();
-	QFile s;
+	QStringList temp = paths + defaultKaduPathsWithThemes();
+	QFile s, e1, e2, e3;
 	CONST_FOREACH(it, temp)
 	{
 		s.setName((*it) + '/' + ConfigName);
-		if (s.exists())
+		e1.setName((*it) + "/1/" + ConfigName);
+		e2.setName((*it) + "/2/" + ConfigName);
+		e3.setName((*it) + "/3/" + ConfigName);
+		if (s.exists() || (e1.exists() && e2.exists() && e3.exists()))
 		{
-			if (paths.findIndex(*it)!=-1)
+			if (paths.findIndex(*it) != -1)
 				additional.append(*it);
 			ThemesPaths.append(*it);
 			ThemesList.append((*it).section("/", -2));
@@ -134,9 +137,9 @@ const QStringList &Themes::additionalPaths() const
 
 QString Themes::themePath(const QString& theme) const
 {
-	QString t=theme;
+	QString t = theme;
 	if (theme.isEmpty())
-		t= ActualTheme;
+		t = ActualTheme;
 	if (theme == "Custom")
 		return QString::null;
 	if (ThemesPaths.isEmpty())

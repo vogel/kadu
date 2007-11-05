@@ -252,10 +252,13 @@ void MainConfigurationWindow::setIconThemes()
 void MainConfigurationWindow::setEmoticonThemes()
 {
 	ConfigComboBox *emoticonsTheme = dynamic_cast<ConfigComboBox *>(widgetById("emoticonsTheme"));
+	emoticons->setPaths((dynamic_cast<PathListEdit *>(widgetById("emoticonsPaths")))->pathList());
 
 	QStringList themes = emoticons->themes();
+	themes.sort();
 
 	emoticonsTheme->setItems(themes, themes);
+	emoticonsTheme->setCurrentText(emoticons->theme());
 }
 
 void MainConfigurationWindow::setToolTipClasses()

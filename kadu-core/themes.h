@@ -10,6 +10,8 @@ class Themes : public QObject
 {
 	Q_OBJECT
 
+	friend class EmoticonsManager;
+
 	QStringList ThemesList;
 	QStringList ThemesPaths;
 	QStringList additional;

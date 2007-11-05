@@ -349,7 +349,6 @@ int main(int argc, char *argv[])
 				Kadu::setClosing();
 				delete defaultFont;
 				delete defaultFontInfo;
-				delete emoticons;
 				delete config_file_ptr;
 				delete xml_config_file;
 				lockFile->close();
@@ -363,10 +362,9 @@ int main(int argc, char *argv[])
 	ProtocolsManager::initModule();
 	UserList::initModule();
 	GroupsManager::initModule();
-	emoticons = new EmoticonsManager();
-
-
+	EmoticonsManager::initModule();
 	IconsManager::initModule();
+
 	new Kadu(0, "Kadu");
 
 	qApp->setMainWidget(kadu);

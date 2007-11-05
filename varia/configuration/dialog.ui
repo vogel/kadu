@@ -213,7 +213,7 @@
 				</combo-box>
 				<combo-box caption="Emoticons theme" config-section="Chat" config-item="EmoticonsTheme" id="emoticonsTheme"
 					   tool-tip="Choose emoticons theme" />
-				<path-list-edit caption="Emoticons paths" config-section="" config-item="" id="emoticonsPaths"
+				<path-list-edit caption="Emoticons paths" config-section="Chat" config-item="EmoticonsPaths" id="emoticonsPaths"
 						tool-tip="Define emoticons paths" />
 			</group-box>
 

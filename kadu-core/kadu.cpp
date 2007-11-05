@@ -279,10 +279,10 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	InfoPanel->setPaletteBackgroundColor(config_file.readColorEntry("Look", "InfoPanelBgColor"));
 	InfoPanel->setPaletteForegroundColor(config_file.readColorEntry("Look", "InfoPanelFgColor"));
 	InfoPanel->QTextEdit::setFont(config_file.readFontEntry("Look", "PanelFont"));
-	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle")==EMOTS_ANIMATED)
+	if((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") == EMOTS_ANIMATED)
 		InfoPanel->setStyleSheet(new AnimStyleSheet(InfoPanel, emoticons->themePath()));
 	else
-		InfoPanel->setStyleSheet(new StaticStyleSheet(InfoPanel,emoticons->themePath()));
+		InfoPanel->setStyleSheet(new StaticStyleSheet(InfoPanel, emoticons->themePath()));
 
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		InfoPanel->QWidget::hide();
@@ -1312,7 +1312,7 @@ bool Kadu::close(bool quit)
 		xml_config_file->sync();
 		UserList::closeModule();
 		ProtocolsManager::closeModule();
-		delete emoticons;
+		EmoticonsManager::closeModule();
 		IconsManager::closeModule();
 
 #ifdef Q_OS_MACX
@@ -1544,7 +1544,7 @@ void Kadu::updateInformationPanel(UserListElement user)
 		doc.parseHtml(KaduParser::parse(InfoPanelSyntax, user));
 		doc.convertUrlsToHtml();
 		doc.convertMailToHtml();
-		if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") != EMOTS_NONE && config_file.readBoolEntry("General", "ShowEmotPanel"))
+		if((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_NONE && config_file.readBoolEntry("General", "ShowEmotPanel"))
 		{
 			InfoPanel->mimeSourceFactory()->addFilePath(emoticons->themePath());
 			emoticons->expandEmoticons(doc, config_file.readColorEntry("Look", "InfoPanelBgColor"));
@@ -1644,8 +1644,6 @@ void Kadu::configurationUpdated()
 	changeAppearance();
 	groups_manager->refreshTabBar();
 	UserBox::setColorsOrBackgrounds();
-
-	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
 
 	QString uin = QString::number(config_file.readUnsignedNumEntry("General", "UIN", 0));
 	if (Myself.ID("Gadu").toUInt() != uin.toUInt())
@@ -1997,6 +1995,7 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("Chat", "ChatPrune", false);
 	config_file.addVariable("Chat", "ChatPruneLen", 20);
 	config_file.addVariable("Chat", "ConfirmChatClear", true);
+	config_file.addVariable("Chat", "EmoticonsPaths", "");
 	config_file.addVariable("Chat", "EmoticonsStyle", EMOTS_ANIMATED);
 	config_file.addVariable("Chat", "EmoticonsTheme", "penguins");
 	config_file.addVariable("Chat", "FoldLink", true);
