@@ -172,7 +172,7 @@ void Action::refreshIcons()
 	if (!IconName.isEmpty())
 		FOREACH(button, ToolButtons)
 		{
-			(*button)->setIconSet(icons_manager->loadIcon(IconName));
+			(*button)->setIconSet(icons_manager->loadIconSet(IconName));
 			(*button)->setTextLabel(Text);
 		}
 

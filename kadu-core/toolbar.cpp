@@ -146,13 +146,13 @@ ToolButton * ToolBar::addButton(Action *action, bool showLabel, ToolButton *afte
 		layout->insertWidget(0, button);
 	}
 
-	button->setIconSet(icons_manager->loadIcon(action->iconName()));
+	button->setIconSet(icons_manager->loadIconSet(action->iconName()));
 
 	QString textWithoutAccel = action->text();
 	textWithoutAccel.remove('&');
 	button->setTextLabel(textWithoutAccel);
 
-	button->setOnShape(icons_manager->loadIcon(action->onIcon()), action->onText());
+	button->setOnShape(icons_manager->loadIconSet(action->onIcon()), action->onText());
 	button->setToggleButton(action->toggleAction());
 	button->setUsesTextLabel(showLabel);
 	button->setTextPosition(ToolButton::BesideIcon);

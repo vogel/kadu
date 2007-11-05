@@ -3,6 +3,7 @@
 
 #include <qmenudata.h>
 #include <qmovie.h>
+#include <qiconset.h>
 #include <qpixmap.h>
 #include <qstring.h>
 #include <qvaluelist.h>
@@ -31,8 +32,9 @@ class IconsManager : public Themes, ConfigurationAwareObject
 			(je¶li zawiera znak '/' to jest interpretowana jako
 			¶cie¿ka).
 		**/
-		const QPixmap & loadIcon(const QString &name);
-		const QMovie & loadAnimatedIcon(const QString &name);
+		const QPixmap &loadIcon(const QString &name);
+		const QMovie &loadAnimatedIcon(const QString &name);
+		const QIconSet &loadIconSet(const QString &name);
 
 		static void initModule();
 		static void closeModule();
@@ -52,6 +54,7 @@ class IconsManager : public Themes, ConfigurationAwareObject
 
 	private:
 		QMap<QString, QPixmap> icons;
+		QMap<QString, QIconSet> iconSets;
 		QMap<QString, QMovie> animatedIcons;
 
 		QValueList<QPair<QMenuData *, QValueList<QPair<QString, QString> > > > menus;

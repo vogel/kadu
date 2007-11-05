@@ -60,7 +60,7 @@ void ToolButton::setEnabled(bool enabled)
 
 void ToolButton::setOnShape(const QIconSet& icon, const QString& text)
 {
-	OffIcon = iconSet();
+	OffIcon = icon;
 	OffText = textLabel();
 	OnIcon = icon;
 	OnText = text;

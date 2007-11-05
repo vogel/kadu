@@ -20,7 +20,7 @@
 #include "userbox.h"
 
 IconsManager::IconsManager(const QString& name, const QString& configname) :
-	Themes(name, configname, "icons_manager"), icons(), animatedIcons(), menus()
+	Themes(name, configname, "icons_manager"), icons(), iconSets(), animatedIcons(), menus()
 {
 	kdebugf();
 	kdebugf2();
@@ -38,20 +38,30 @@ QString IconsManager::iconPath(const QString &name) const
 
 const QPixmap &IconsManager::loadIcon(const QString &name)
 {
-//	kdebugf();
 	QMap<QString, QPixmap>::const_iterator i = icons.find(name);
 	if (i != icons.end())
-	{
-//		kdebugf2();
 		return *i;
-	}
 
 	QPixmap p;
 	if (!p.load(iconPath(name)))
 		kdebugmf(KDEBUG_WARNING, "warning - pixmap '%s' cannot be loaded!\n", name.local8Bit().data());
+
 	icons.insert(name, p);
-//	kdebugf2();
 	return icons[name];
+}
+
+const QIconSet &IconsManager::loadIconSet(const QString &name)
+{
+	QMap<QString, QIconSet>::const_iterator i = iconSets.find(name);
+	if (i != iconSets.end())
+		return *i;
+
+	QIconSet set;
+	set.setPixmap(iconPath(name), QIconSet::Automatic, QIconSet::Normal);
+	set.setPixmap(iconPath(name + "_dis"), QIconSet::Automatic, QIconSet::Disabled);
+
+	iconSets.insert(name, set);
+	return iconSets[name];
 }
 
 const QMovie & IconsManager::loadAnimatedIcon(const QString &name)
