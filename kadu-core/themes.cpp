@@ -27,13 +27,28 @@ QStringList Themes::getSubDirs(const QString& path) const
 	QStringList subdirs, dirs = dir.entryList();
 	dirs.remove(".");
 	dirs.remove("..");
+
 	CONST_FOREACH(dir, dirs)
 	{
-		QFile s(path + '/' + (*dir) + '/' + ConfigName);
-		if (s.exists())
+		QString dirname = path + '/' + (*dir);
+		if (validateDir(dirname))
 			subdirs.append(*dir);
 	}
+
 	return subdirs;
+}
+
+bool Themes::validateDir(const QString& path) const
+{
+	QFile f, f1, f2, f3;
+	f.setName(path + '/' + ConfigName);
+	f1.setName(path + "/1/" + ConfigName);
+	f2.setName(path + "/2/" + ConfigName);
+	f3.setName(path + "/3/" + ConfigName);
+
+	if (f.exists() || (f1.exists() && f2.exists() && f3.exists()))
+		return true;
+	return false;
 }
 
 const QStringList &Themes::themes() const
@@ -89,14 +104,9 @@ void Themes::setPaths(const QStringList& paths)
 	ThemesPaths.clear();
 	additional.clear();
 	QStringList temp = paths + defaultKaduPathsWithThemes();
-	QFile s, e1, e2, e3;
 	CONST_FOREACH(it, temp)
 	{
-		s.setName((*it) + '/' + ConfigName);
-		e1.setName((*it) + "/1/" + ConfigName);
-		e2.setName((*it) + "/2/" + ConfigName);
-		e3.setName((*it) + "/3/" + ConfigName);
-		if (s.exists() || (e1.exists() && e2.exists() && e3.exists()))
+		if (validateDir(*it))
 		{
 			if (paths.findIndex(*it) != -1)
 				additional.append(*it);

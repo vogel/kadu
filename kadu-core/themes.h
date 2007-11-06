@@ -18,7 +18,8 @@ class Themes : public QObject
 	QString ConfigName, Name, ActualTheme;
 	QMap<QString, QString> entries;
 	QStringList getSubDirs(const QString& path) const;
-	QString fixFileName(const QString& path,const QString& fn) const;
+	bool validateDir(const QString& path) const;
+	QString fixFileName(const QString& path, const QString& fn) const;
 
 public:
 	Themes(const QString& name, const QString& configname, const char *cname = 0);
