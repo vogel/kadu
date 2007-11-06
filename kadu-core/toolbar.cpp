@@ -325,7 +325,7 @@ void ToolBar::actionLoaded(const QString &actionName)
 	if (!hasAction(actionName))
 		return;
 
-	updateButtons();
+	QTimer::singleShot(0, this, SLOT(updateButtons()));
 }
 
 void ToolBar::actionUnloaded(const QString &actionName)
@@ -411,9 +411,7 @@ void ToolBar::loadFromConfig(QDomElement toolbar_element)
 	}
 
 	// TODO: why calling updateButtons does not work?
-	QTimer *timer = new QTimer();
-	timer->singleShot(0, this, SLOT(updateButtons()));
-	timer->deleteLater();
+	QTimer::singleShot(0, this, SLOT(updateButtons()));
 
 	kdebugf2();
 }
