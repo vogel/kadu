@@ -75,7 +75,8 @@ void EmoticonsManager::setEmoticonsTheme(const QString& theme)
 {
 	kdebugmf(KDEBUG_FUNCTION_START | KDEBUG_INFO, "theme: %s\n", theme.local8Bit().data());
 
-	if (ThemesList.contains(theme))
+	QStringList themes = emoticons->themes();
+	if (themes.contains(theme))
 		config_file.writeEntry("Chat", "EmoticonsTheme", theme);
 	else
 		config_file.writeEntry("Chat", "EmoticonsTheme", "penguins");
@@ -85,9 +86,9 @@ void EmoticonsManager::setEmoticonsTheme(const QString& theme)
 	if (!loadGGEmoticonTheme())
 	{
 		config_file.writeEntry("Chat", "EmoticonsTheme", "penguins");
-		if (!loadGGEmoticonTheme() && ThemesList.size() > 0)
+		if (!loadGGEmoticonTheme() && themes.size() > 0)
 		{
-			config_file.writeEntry("Chat", "EmoticonsTheme", ThemesList[0]);
+			config_file.writeEntry("Chat", "EmoticonsTheme", themes[0]);
 			loadGGEmoticonTheme();
 		}
 	}

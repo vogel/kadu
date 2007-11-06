@@ -362,8 +362,8 @@ int main(int argc, char *argv[])
 	ProtocolsManager::initModule();
 	UserList::initModule();
 	GroupsManager::initModule();
-	EmoticonsManager::initModule();
 	IconsManager::initModule();
+	EmoticonsManager::initModule();
 
 	new Kadu(0, "Kadu");
 

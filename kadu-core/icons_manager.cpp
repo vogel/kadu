@@ -66,23 +66,21 @@ const QIconSet &IconsManager::loadIconSet(const QString &name)
 
 const QMovie & IconsManager::loadAnimatedIcon(const QString &name)
 {
-//	kdebugf();
 	QMap<QString, QMovie>::const_iterator i = animatedIcons.find(name);
 	if (i != animatedIcons.end())
-	{
-//		kdebugf2();
 		return *i;
-	}
 
 	animatedIcons.insert(name, QMovie(iconPath(name)));
-//	kdebugf2();
 	return animatedIcons[name];
 }
 
 void IconsManager::clear()
 {
 	kdebugf();
+
 	icons.clear();
+	iconSets.clear()
+
 	kdebugf2();
 }
 
@@ -203,6 +201,7 @@ void IconsManager::closeModule()
 
 	delete icons_manager;
 	icons_manager = 0;
+
 	kdebugf2();
 }
 

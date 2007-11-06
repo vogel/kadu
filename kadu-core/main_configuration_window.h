@@ -69,7 +69,6 @@ class MainConfigurationWindow : public ConfigurationWindow
 
 	void setLanguages();
 
-	void setEmoticonThemes();
 	void setQtThemes();
 	void setToolTipClasses();
 
@@ -92,6 +91,7 @@ private slots:
 	void chatFixup(Preview *preview);
 
 	void setIconThemes();
+	void setEmoticonThemes();
 
 public:
 	static MainConfigurationWindow * instance()
