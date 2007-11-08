@@ -262,7 +262,7 @@ void MigrationDialog::xmlIgnoredListMigration()
 		kdebugm(KDEBUG_INFO, "end of ignored file loop\n");
 		f.close();
 		xml_config_file->sync();
-		readIgnored();
+		IgnoredManager::loadFromConfiguration();
 		setItemComplete(item, tr("Step 3: Ignored list migrated to kadu.conf.xml"),
 			tr("Ignored contact list migrated to kadu.conf.xml.\n"
 			"You can remove %1 now\n(backup will be a good idea).")

@@ -199,7 +199,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	loadGeometry(this, "General", "Geometry", 0, 30, 145, 465);
 	import_0_5_0_configuration();
 
-	readIgnored();
+	IgnoredManager::loadFromConfiguration();
 
 	/* a newbie? */
 
@@ -394,7 +394,7 @@ void Kadu::popupMenu()
 	{
 		bool on;
 		UserListElements selectedUsers = activeUserBox->selectedUsers();
-		if (isIgnored(selectedUsers))
+		if (IgnoredManager::isIgnored(selectedUsers))
 			UserBox::userboxmenu->setItemChecked(ignoreuseritem, true);
 
 		on = true;
@@ -802,11 +802,11 @@ void Kadu::ignoreUser()
 		return;
 	}
 	UserListElements users = activeUserBox->selectedUsers();
-	if (isIgnored(users))
-		delIgnored(users);
+	if (IgnoredManager::isIgnored(users))
+		IgnoredManager::remove(users);
 	else
-		addIgnored(users);
-	writeIgnored();
+		IgnoredManager::insert(users);
+	IgnoredManager::writeToConfiguration();
 	kdebugf2();
 }
 
@@ -1249,7 +1249,7 @@ bool Kadu::close(bool quit)
 			config_file.writeEntry("General", "LastStatusDescription", gadu->currentStatus().description());
 
 		pending.writeToFile();
-		writeIgnored();
+		IgnoredManager::writeToConfiguration();
 		if (!gadu->currentStatus().isOffline())
 			if (config_file.readBoolEntry("General", "DisconnectWithCurrentDescription"))
 				setOffline(gadu->currentStatus().description());

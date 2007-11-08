@@ -318,6 +318,8 @@ public slots:
 	void makeActive();
 	void markAllMessagesRead();
 
+	void leaveConference();
+
 signals:
 	/**
 		\fn void messageSendRequested(Chat* chat)

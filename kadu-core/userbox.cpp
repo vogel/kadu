@@ -180,7 +180,7 @@ void KaduListBoxPixmap::paint(QPainter *painter)
 		UserListElements users(User);
 		if (User.protocolData("Gadu", "Blocking").toBool())
 			painter->setPen(QColor(255, 0, 0));
-		else if (isIgnored(users))
+		else if (IgnoredManager::isIgnored(users))
 			painter->setPen(QColor(192, 192, 0));
 		else if (User.protocolData("Gadu", "OfflineTo").toBool())
 			painter->setPen(QColor(128, 128, 128));

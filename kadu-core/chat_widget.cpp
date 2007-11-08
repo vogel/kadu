@@ -26,16 +26,17 @@
 #include "gadu_images_manager.h"
 #include "hot_key.h"
 #include "icons_manager.h"
+#include "ignore.h"
 #include "kadu.h"
 #include "kadu_parser.h"
 #include "kadu_splitter.h"
 #include "kadu_text_browser.h"
 #include "message_box.h"
 #include "misc.h"
+#include "protocol.h"
 #include "search.h"
 #include "syntax_editor.h"
 #include "userbox.h"
-#include "protocol.h"
 
 ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, QWidget* parent, const char* name)
 	: QHBox(parent, name), CurrentProtocol(initialProtocol),
@@ -89,6 +90,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	{
 		horizSplit = new KaduSplitter(Qt::Horizontal, topArea, "horizSplit");
 		horizSplit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+
 		body = new ChatMessagesView(horizSplit, "body");
 	}
 	else
@@ -96,10 +98,15 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 
 	if (Users->count() > 1)
 	{
-		userbox = new UserBox(Users, horizSplit, "userbox");
+		QVBox *userlistContainer = new QVBox(horizSplit);
+
+		userbox = new UserBox(Users, userlistContainer, "userbox");
 		userbox->setMinimumSize(QSize(30,30));
 		connect(userbox, SIGNAL(rightButtonPressed(QListBoxItem *, const QPoint &)),
 		UserBox::userboxmenu, SLOT(show(QListBoxItem *)));
+
+		QPushButton *leaveConference = new QPushButton(tr("Leave conference"), userlistContainer);
+		connect(leaveConference, SIGNAL(clicked()), this, SLOT(leaveConference()));
 
 		sizes.append(3);
 		sizes.append(1);
@@ -862,3 +869,11 @@ void ChatWidget::storeGeometry()
 		chat_manager->setChatWidgetProperty(Users, "HorizontalSizes", toVariantList(horizSplit->sizes()));
 }
 
+void ChatWidget::leaveConference()
+{
+	if (!MessageBox::ask("Are you sure you want to leave this conference?", QString::null, this))
+		return;
+
+	IgnoredManager::insert(Users->toUserListElements());
+	emit closed();
+}

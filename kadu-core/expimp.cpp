@@ -211,7 +211,7 @@ void UserlistImportExport::makeUserlist()
 
 	userlist->clear();
 	userlist->merge(importedUserlist);
-	clearIgnored();//what is it for???
+	IgnoredManager::clear();
 	userlist->writeToConfig();
 	updateUserListCount();
 

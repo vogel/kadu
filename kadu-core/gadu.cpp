@@ -934,7 +934,7 @@ void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, Q
 	// ignorujemy, jesli nick na liscie ignorowanych
 	// PYTANIE CZY IGNORUJEMY CALA KONFERENCJE
 	// JESLI PIERWSZY SENDER JEST IGNOROWANY????
-	if (isIgnored(senders))
+	if (IgnoredManager::isIgnored(senders))
 		return;
 
 	bool ignore = false;
@@ -2349,7 +2349,7 @@ QString GaduFormater::formatGGMessage(const QString &msg, unsigned int formats_l
 	nie jest anononimowy i nasz status na to pozwala, to zezwalamy na obrazki */
 	bool receiveImage =
 			userlist->contains(user, FalseForAnonymous) &&
-			!isIgnored(users) &&
+			!IgnoredManager::isIgnored(users) &&
 
 			(curStat.isOnline() ||	curStat.isBusy() ||
 					(curStat.isInvisible() && config_file.readBoolEntry("Chat", "ReceiveImagesDuringInvisibility")));

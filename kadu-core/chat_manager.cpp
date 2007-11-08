@@ -332,17 +332,17 @@ void ChatManager::ignoreUserActionActivated(const UserGroup* users)
 		if (!ContainsBad)
 		{
 			UserListElements u = users->toUserListElements();
-			if (isIgnored(u))
-				delIgnored(u);
+			if (IgnoredManager::isIgnored(u))
+				IgnoredManager::remove(u);
 			else
 			{
-				addIgnored(u);
+				IgnoredManager::insert(u);
 				ChatWidget *chat = findChatWidget(u);
 				if (chat)
 					static_cast<QWidget *>(chat->parent())->close();
 			}
 			kadu->userbox()->refresh();
-			writeIgnored();
+			IgnoredManager::writeToConfiguration();
 		}
 	}
 	kdebugf2();

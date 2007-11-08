@@ -183,7 +183,7 @@ void DccSocket::watchDcc()
 				|| !userlist->contains("Gadu", QString::number(dccsock->peer_uin));
 			peer = userlist->byID("Gadu", QString::number(dccsock->peer_uin));
 			users.append(peer);
-			unbidden = peer.isAnonymous() || isIgnored(users);
+			unbidden = peer.isAnonymous() || IgnoredManager::isIgnored(users);
 			spoofingAttempt = !(QHostAddress(ntohl(dccsock->remote_addr)) == peer.IP("Gadu"));
 
 			if (insane)

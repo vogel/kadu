@@ -24,13 +24,6 @@
 #include "misc.h"
 #include "userlist.h"
 
-QValueList<UserListElements> ignored;
-
-void Ignored::resizeEvent(QResizeEvent * /*e*/)
-{
-	layoutHelper->resizeLabels();
-}
-
 Ignored::Ignored(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopLevel | WDestructiveClose),
 	lb_list(0), e_uin(0), layoutHelper(new LayoutHelper())
 {
@@ -39,7 +32,7 @@ Ignored::Ignored(QWidget *parent, const char *name) : QHBox(parent, name, WType_
 	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
-	QVBox *left=new QVBox(this);
+	QVBox *left = new QVBox(this);
 	//left->layout()->setResizeMode(QLayout::Minimum);
 	left->setMargin(10);
 	left->setSpacing(10);
@@ -48,7 +41,7 @@ Ignored::Ignored(QWidget *parent, const char *name) : QHBox(parent, name, WType_
 	QWidget *blank=new QWidget(left);
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	QVBox *center=new QVBox(this);
+	QVBox *center = new QVBox(this);
 	center->setMargin(10);
 	center->setSpacing(10);
 
@@ -82,8 +75,8 @@ Ignored::Ignored(QWidget *parent, const char *name) : QHBox(parent, name, WType_
 	hb_uin->setStretchFactor(e_uin, 1);
 
 	// buttons
-	QHBox *bottom=new QHBox(center);
-	QWidget *blank2=new QWidget(bottom);
+	QHBox *bottom = new QHBox(center);
+	QWidget *blank2 = new QWidget(bottom);
 	bottom->setSpacing(5);
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 	QPushButton *pb_del = new QPushButton(icons_manager->loadIcon("DeleteIgnoredButton"), tr("Delete"), bottom);
@@ -132,9 +125,9 @@ void Ignored::add()
 	}
 	if (!users.empty())
 	{
-		addIgnored(users);
+		IgnoredManager::insert(users);
 		e_uin->clear();
-		writeIgnored();
+		IgnoredManager::writeToConfiguration();
 		getList();
 	}
 	kdebugf2();
@@ -144,10 +137,10 @@ void Ignored::getList()
 {
 	kdebugf();
 	lb_list->clear();
-	CONST_FOREACH(ignoredList, ignored)
+	CONST_FOREACH(ignoredList, IgnoredManager::getList())
 	{
 		QStringList strlist;
-		CONST_FOREACH(user, *ignoredList)
+		CONST_FOREACH(user, (*ignoredList).first)
 		{
 			if (userlist->contains(*user))
 				strlist.append(QString("%1 (%2)").arg((*user).ID("Gadu")).arg((*user).altNick()));
@@ -168,82 +161,98 @@ void Ignored::remove()
 	UserListElements users;
 	CONST_FOREACH(str, strlist)
 		users.append(userlist->byID("Gadu", (*str).section(' ', 0, 0)));
-	delIgnored(users);
+	IgnoredManager::remove(users);
 	getList();
-	writeIgnored();
+	IgnoredManager::writeToConfiguration();
 	kdebugf2();
 }
 
-bool isIgnored(UserListElements users)
+void Ignored::resizeEvent(QResizeEvent * /*e*/)
 {
-	users.sort();
-	return ignored.contains(users);
+	layoutHelper->resizeLabels();
 }
 
-void addIgnored(UserListElements users)
-{
-	users.sort();
-	ignored.append(users);
-}
 
-void delIgnored(UserListElements users)
-{
-	users.sort();
-	ignored.remove(users);
-}
 
-int writeIgnored(QString /*filename*/)
+QValueList<QPair<UserListElements, bool> > IgnoredManager::Ignored;
+
+void IgnoredManager::loadFromConfiguration()
 {
 	kdebugf();
-	QDomElement ignored_elem =
-		xml_config_file->accessElement(xml_config_file->rootElement(), "Ignored");
-	xml_config_file->removeChildren(ignored_elem);
-	CONST_FOREACH(ignoreList, ignored)
-	{
-		QDomElement ignored_group_elem =
-			xml_config_file->createElement(ignored_elem, "IgnoredGroup");
-		CONST_FOREACH(user, *ignoreList)
-		{
-			QDomElement ignored_contact_elem =
-				xml_config_file->createElement(
-					ignored_group_elem, "IgnoredContact");
-			ignored_contact_elem.setAttribute("uin", (*user).ID("Gadu"));
-		}
-	}
-	kdebugf2();
-	return 0;
-}
 
-int readIgnored()
-{
-	kdebugf();
-	QDomElement ignored_elem = xml_config_file->findElement(
-		xml_config_file->rootElement(), "Ignored");
+	QDomElement ignored_elem = xml_config_file->findElement(xml_config_file->rootElement(), "Ignored");
+
 	if (ignored_elem.isNull())
 	{
 		kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "can't find Ignored element!\n");
-		return 1;
+		return;
 	}
-	QDomNodeList ignored_groups =
-		ignored_elem.elementsByTagName("IgnoredGroup");
+
+	QDomNodeList ignored_groups = ignored_elem.elementsByTagName("IgnoredGroup");
 	for (unsigned int i = 0; i < ignored_groups.count(); i++)
 	{
 		QDomElement ignored_group = ignored_groups.item(i).toElement();
 		UserListElements users;
-		QDomNodeList ignored_contacts =
-			ignored_group.elementsByTagName("IgnoredContact");
+		QDomNodeList ignored_contacts = ignored_group.elementsByTagName("IgnoredContact");
 		for (unsigned int j = 0; j < ignored_contacts.count(); j++)
 		{
 			QDomElement ignored_contact = ignored_contacts.item(j).toElement();
 			users.append(userlist->byID("Gadu", ignored_contact.attribute("uin")));
 		}
-		ignored.append(users);
+		users.sort();
+		Ignored.append(qMakePair(users, false));
 	}
+
 	kdebugf2();
-	return 0;
 }
 
-void clearIgnored()
+void IgnoredManager::writeToConfiguration()
 {
-	ignored.clear();
+	kdebugf();
+	QDomElement ignored_elem = xml_config_file->accessElement(xml_config_file->rootElement(), "Ignored");
+	xml_config_file->removeChildren(ignored_elem);
+
+	CONST_FOREACH(ignoreList, Ignored)
+	{
+		if ((*ignoreList).second)
+			continue;
+
+		QDomElement ignored_group_elem = xml_config_file->createElement(ignored_elem, "IgnoredGroup");
+		CONST_FOREACH(user, (*ignoreList).first)
+		{
+			QDomElement ignored_contact_elem = xml_config_file->createElement(ignored_group_elem, "IgnoredContact");
+			ignored_contact_elem.setAttribute("uin", (*user).ID("Gadu"));
+		}
+	}
+
+	kdebugf2();
+}
+
+void IgnoredManager::insert(UserListElements users, bool temporary)
+{
+	users.sort();
+	Ignored.append(qMakePair(users, temporary));
+}
+
+void IgnoredManager::remove(UserListElements users)
+{
+	users.sort();
+	Ignored.remove(qMakePair(users, false));
+	Ignored.remove(qMakePair(users, true));
+}
+
+bool IgnoredManager::isIgnored(UserListElements users)
+{
+	users.sort();
+	return Ignored.contains(qMakePair(users, false)) || Ignored.contains(qMakePair(users, true));
+}
+
+void IgnoredManager::clear()
+{
+	Ignored.clear();
+}
+
+const QValueList<QPair<UserListElements, bool> > & IgnoredManager::getList()
+{
+	return Ignored;
 }
