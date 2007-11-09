@@ -183,7 +183,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	UserBox::userboxmenu->addItem("EditUserInfo", tr("View / edit user info"), this, SLOT(showUserInfo()),HotKey::shortCutFromFile("ShortCuts", "kadu_persinfo"));
 	UserBox::userboxmenu->insertSeparator();
 
-	UserBox::management->addItem("ManageIgnored", tr("Ignore"), this, SLOT(ignoreUser()));
+	UserBox::management->addItem("Ignore", tr("Ignore"), this, SLOT(ignoreUser()));
 	UserBox::management->addItem("Blocking", tr("Block"), this, SLOT(blockUser()));
 	UserBox::management->addItem("NotifyAboutUser", tr("Notify about user"), this, SLOT(notifyUser()));
 	UserBox::management->addItem("Offline", tr("Offline to user"), this, SLOT(offlineToUser()));
@@ -1413,7 +1413,7 @@ void Kadu::createMenu()
 	MainMenu = new QPopupMenu(MenuBar, "MainMenu");
 	RecentChatsMenu = new QPopupMenu(MainMenu, "RecentChatsMenu");
 
-	MainMenu->insertItem(icons_manager->loadIcon("ManageIgnored"), tr("Manage &ignored"), this, SLOT(manageIgnored()));
+	MainMenu->insertItem(icons_manager->loadIcon("Ignore"), tr("Manage &ignored"), this, SLOT(manageIgnored()));
 	MainMenu->insertItem(icons_manager->loadIcon("Configuration"), tr("&Configuration"), this, SLOT(configure()),HotKey::shortCutFromFile("ShortCuts", "kadu_configure"));
 	MainMenu->insertSeparator();
 
@@ -1435,7 +1435,7 @@ void Kadu::createMenu()
 	MainLayout->insertWidget(0, menuBox);
 
 	icons_manager->registerMenu(MainMenu);
-	icons_manager->registerMenuItem(MainMenu, tr("Manage &ignored"), "ManageIgnored");
+	icons_manager->registerMenuItem(MainMenu, tr("Manage &ignored"), "Ignore");
 	icons_manager->registerMenuItem(MainMenu, tr("&Configuration"), "Configuration");
 	icons_manager->registerMenuItem(MainMenu, tr("Personal information"), "PersonalInfo");
 	icons_manager->registerMenuItem(MainMenu, tr("Recent chats..."), "OpenChat");

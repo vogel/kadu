@@ -51,7 +51,7 @@ bool ConnectionErrorNotification::activeError(const QString &errorMessage)
 }
 
 ConnectionErrorNotification::ConnectionErrorNotification(const QString &errorServer, const QString &errorMessage)
-	: Notification("ConnectionError", "Blocking", UserListElements()), ErrorServer(errorServer), ErrorMessage(errorMessage)
+	: Notification("ConnectionError", "CriticalSmall", UserListElements()), ErrorServer(errorServer), ErrorMessage(errorMessage)
 {
 	setTitle(tr("Connection error"));
 	setText(tr("<b>Error:</b> (%1) %2").arg(ErrorServer).arg(ErrorMessage));

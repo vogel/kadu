@@ -62,7 +62,7 @@ ChatManager::ChatManager(QObject* parent, const char* name) : QObject(parent, na
 	connect(insert_img_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(insertImageActionActivated(const UserGroup*)));
 
-	Action* ignore_user_action = new Action("ManageIgnored", tr("Ignore user"),
+	Action* ignore_user_action = new Action("Ignore", tr("Ignore user"),
 		"ignoreUserAction", Action::TypeUser);
 	connect(ignore_user_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(ignoreUserActionActivated(const UserGroup*)));
