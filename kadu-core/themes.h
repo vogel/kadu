@@ -17,7 +17,7 @@ class Themes : public QObject
 	QStringList additional;
 	QString ConfigName, Name, ActualTheme;
 	QMap<QString, QString> entries;
-	QStringList getSubDirs(const QString& path) const;
+	QStringList getSubDirs(const QString& path, bool validate = true) const;
 	bool validateDir(const QString& path) const;
 	QString fixFileName(const QString& path, const QString& fn) const;
 

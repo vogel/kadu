@@ -20,34 +20,46 @@ Themes::Themes(const QString& themename, const QString& configname, const char *
 	setPaths(QStringList());
 }
 
-QStringList Themes::getSubDirs(const QString& path) const
+QStringList Themes::getSubDirs(const QString& path, bool validate) const
 {
 	QDir dir(path);
 	dir.setFilter(QDir::Dirs);
-	QStringList subdirs, dirs = dir.entryList();
+	QStringList dirs = dir.entryList();
 	dirs.remove(".");
 	dirs.remove("..");
 
+	if (!validate)
+		return dirs;
+
+	QStringList subdirs;
 	CONST_FOREACH(dir, dirs)
 	{
 		QString dirname = path + '/' + (*dir);
 		if (validateDir(dirname))
 			subdirs.append(*dir);
 	}
-
 	return subdirs;
 }
 
 bool Themes::validateDir(const QString& path) const
 {
-	QFile f, f1, f2, f3;
-	f.setName(path + '/' + ConfigName);
-	f1.setName(path + "/1/" + ConfigName);
-	f2.setName(path + "/2/" + ConfigName);
-	f3.setName(path + "/3/" + ConfigName);
-
-	if (f.exists() || (f1.exists() && f2.exists() && f3.exists()))
+	QFile f(path + '/' + ConfigName);
+	if (f.exists())
 		return true;
+
+	QStringList subdirs = getSubDirs(path, false);
+	if (!subdirs.isEmpty())
+	{
+		CONST_FOREACH(dir, subdirs)
+		{
+			f.setName(path + '/' + (*dir) + '/' + ConfigName);
+			if (!f.exists())
+				return false;
+		}
+
+		return true;
+	}
+
 	return false;
 }
 
