@@ -79,7 +79,7 @@ void IconsManager::clear()
 	kdebugf();
 
 	icons.clear();
-	iconSets.clear()
+	iconSets.clear();
 
 	kdebugf2();
 }
