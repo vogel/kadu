@@ -77,16 +77,20 @@ void EmoticonsManager::setEmoticonsTheme(const QString& theme)
 
 	QStringList themes = emoticons->themes();
 	if (themes.contains(theme))
+	{
 		config_file.writeEntry("Chat", "EmoticonsTheme", theme);
+		emoticons->setTheme(theme);
+	}
 	else
+	{
 		config_file.writeEntry("Chat", "EmoticonsTheme", "penguins");
-
-	emoticons->setTheme(theme);
+		emoticons->setTheme("penguins");
+	}
 
 	if (!loadGGEmoticonTheme())
 	{
 		config_file.writeEntry("Chat", "EmoticonsTheme", "penguins");
-		if (!loadGGEmoticonTheme() && themes.size() > 0)
+		if (!loadGGEmoticonTheme() && (themes.size() > 0))
 		{
 			config_file.writeEntry("Chat", "EmoticonsTheme", themes[0]);
 			loadGGEmoticonTheme();
