@@ -100,8 +100,8 @@ QString Themes::fixFileName(const QString& path, const QString& fn) const
 	if(QFile::exists(path + '/' + fn.lower()))
 		return fn.lower();
 	// split for name and extension
-	QString name=fn.section('.',0,0);
-	QString ext=fn.section('.',1);
+	QString name = fn.section('.', 0, 0);
+	QString ext = fn.section('.', 1);
 	// maybe extension uppercase?
 	if(QFile::exists(path + '/' + name + '.' + ext.upper()))
 		return name + '.' + ext.upper();
