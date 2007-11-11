@@ -131,7 +131,7 @@ ChatMessage::ChatMessage(const UserListElement &ule, const QString &unformattedM
 
 ChatMessage::ChatMessage(const QString &rawContent, ChatMessageType type, QDateTime date,
 	QString backgroundColor, QString fontColor, QString nickColor)
-	: unformattedMessage(rawContent), backgroundColor(backgroundColor), fontColor(fontColor), nickColor(nickColor), Date(date), Type(type)
+	: Date(date), Type(type), unformattedMessage(rawContent), backgroundColor(backgroundColor), fontColor(fontColor), nickColor(nickColor)
 {
 }
 
