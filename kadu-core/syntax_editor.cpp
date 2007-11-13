@@ -61,6 +61,9 @@ QString SyntaxList::readSyntax(const QString &category, const QString &name, con
 	result = stream.read();
 	syntaxFile.close();
 
+	if (result.isEmpty())
+		return defaultSyntax;
+
 	return result;
 }
 
