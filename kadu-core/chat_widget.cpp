@@ -92,12 +92,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 		horizSplit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 
 		body = new ChatMessagesView(horizSplit, "body");
-	}
-	else
-		body = new ChatMessagesView(topArea, "body");
 
-	if (Users->count() > 1)
-	{
 		QVBox *userlistContainer = new QVBox(horizSplit);
 
 		userbox = new UserBox(Users, userlistContainer, "userbox");
@@ -112,6 +107,8 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 		sizes.append(1);
 		horizSplit->setSizes(sizes);
 	}
+	else
+		body = new ChatMessagesView(topArea, "body");
 
 	QVBox *downpart = new QVBox(vertSplit, "downpartBox");
 	QHBox *edtbuttontray = new QHBox(downpart, "edtbuttontrayBox");
@@ -871,9 +868,12 @@ void ChatWidget::storeGeometry()
 
 void ChatWidget::leaveConference()
 {
-	if (!MessageBox::ask("Are you sure you want to leave this conference?", QString::null, this))
+	if (!MessageBox::ask("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this conference?", "Warning", this))
 		return;
 
-	IgnoredManager::insert(Users->toUserListElements());
+	UserListElements users = Users->toUserListElements();
+	if (!IgnoredManager::isIgnored(users))
+		IgnoredManager::insert(users);
+
 	emit closed();
 }

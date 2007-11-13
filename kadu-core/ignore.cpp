@@ -244,7 +244,7 @@ void IgnoredManager::remove(UserListElements users)
 bool IgnoredManager::isIgnored(UserListElements users)
 {
 	users.sort();
-	return Ignored.contains(qMakePair(users, false)) || Ignored.contains(qMakePair(users, true));
+	return (Ignored.contains(qMakePair(users, false)) || Ignored.contains(qMakePair(users, true)));
 }
 
 void IgnoredManager::clear()
