@@ -31,12 +31,12 @@
 #include "pending_msgs.h"
 #include "userbox.h"
 
-QFontMetrics* KaduListBoxPixmap::descriptionFontMetrics=NULL;
+QFontMetrics* KaduListBoxPixmap::descriptionFontMetrics = NULL;
 UinType KaduListBoxPixmap::myUIN;
 bool KaduListBoxPixmap::ShowDesc;
 bool KaduListBoxPixmap::AlignUserboxIconsTop;
 bool KaduListBoxPixmap::ShowMultilineDesc;
-int  KaduListBoxPixmap::ColumnCount;
+int KaduListBoxPixmap::ColumnCount;
 QColor KaduListBoxPixmap::descColor;
 UserListElement UserBox::nullElement;
 

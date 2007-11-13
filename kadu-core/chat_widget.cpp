@@ -98,7 +98,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 		userbox = new UserBox(Users, userlistContainer, "userbox");
 		userbox->setMinimumSize(QSize(30,30));
 		connect(userbox, SIGNAL(rightButtonPressed(QListBoxItem *, const QPoint &)),
-		UserBox::userboxmenu, SLOT(show(QListBoxItem *)));
+			UserBox::userboxmenu, SLOT(show(QListBoxItem *)));
 
 		QPushButton *leaveConference = new QPushButton(tr("Leave conference"), userlistContainer);
 		connect(leaveConference, SIGNAL(clicked()), this, SLOT(leaveConference()));
