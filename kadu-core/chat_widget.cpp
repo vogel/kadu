@@ -403,18 +403,33 @@ void ChatWidget::refreshTitle()
 		else
 			title = config_file.readEntry("Look","ConferencePrefix");
 		int i = 0;
-		CONST_FOREACH(user, *Users)
-		{
-			title.append(KaduParser::parse(config_file.readEntry("Look","ConferenceContents"), *user, false));
-			if (++i < uinsSize)
-				title.append(", ");
-		}
+
+		if (config_file.readEntry("Look", "ConferenceContents").isEmpty())
+			CONST_FOREACH(user, *Users)
+			{
+				if ((*user).isAnonymous())
+					title.append(KaduParser::parse("%a", *user, false));
+				else
+					title.append(KaduParser::parse("%a (%s[: %d])", *user, false));
+
+				if (++i < uinsSize)
+					title.append(", ");
+			}
+		else
+			CONST_FOREACH(user, *Users)
+			{
+				title.append(KaduParser::parse(config_file.readEntry("Look","ConferenceContents"), *user, false));
+
+				if (++i < uinsSize)
+					title.append(", ");
+			}
+
  		pix = icons_manager->loadIcon("Online");
 	}
 	else
 	{
 		UserListElement user = *Users->constBegin();
-		if (config_file.readEntry("Look","ChatContents").isEmpty())
+		if (config_file.readEntry("Look", "ChatContents").isEmpty())
 		{
 			if (user.isAnonymous())
 				title = KaduParser::parse(tr("Chat with ")+"%a", user, false);
