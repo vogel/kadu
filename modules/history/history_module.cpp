@@ -194,8 +194,8 @@ void HistoryModule::chatCreated(ChatWidget *chat, time_t time)
 				{
 					kdebugmf(KDEBUG_INFO, "%s %s\n",
 						date.toString("dd.MM.yyyy hh:mm:ss").local8Bit().data(),
-						(*it).sdate.toString("dd.MM.yyyy hh:mm:ss").local8Bit().data());
-					if (date <= (*it).sdate)
+						(*it).date.toString("dd.MM.yyyy hh:mm:ss").local8Bit().data());
+					if (date <= (*it).date)
 						it = entriestmp.remove(it);
 					else
 						++it;
