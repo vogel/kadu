@@ -88,7 +88,6 @@ void GroupsManager::setTabBar(KaduTabBar *bar)
 	connect(userlist, SIGNAL(modified()), this, SLOT(refreshTabBarLater()));
 	connect(&refreshTimer, SIGNAL(timeout()), this, SLOT(refreshTabBar()));
 	lastId = -1;
-	refreshTabBar();
 
 	int configTab = config_file.readNumEntry( "Look", "CurrentGroupTab" );
 	if (configTab >= 0 && configTab < GroupBar->count())
@@ -157,11 +156,13 @@ QString GroupsManager::currentGroupName() const
 void GroupsManager::refreshTabBar()
 {
 	kdebugf();
+
 	if (!GroupBar)
 	{
 		kdebugf2();
 		return;
 	}
+
 	if (!config_file.readBoolEntry("Look", "DisplayGroupTabs"))
 	{
 		if (!currentGroup.isEmpty())
@@ -193,12 +194,20 @@ void GroupsManager::refreshTabBar()
 	CONST_FOREACH(group, group_list)
 	{
 		bool createNewTab = true;
+
 		for (int j = 0, count = GroupBar->count(); j < count; ++j)
-			if (GroupBar->tabAt(j)->text() == *group)
+		{
+			if (GroupBar->tabAt(j)->text() == (*group))
+			{
 				createNewTab = false;
+				break;
+			}
+		}
+
 		if (createNewTab)
 			GroupBar->addTab(new QTab(*group));
 	}
+
 	kdebugm(KDEBUG_INFO, "%i group tabs\n", GroupBar->count());
 	GroupBar->show();
 
