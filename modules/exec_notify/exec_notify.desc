@@ -1,0 +1,7 @@
+[Module]
+Description=Notification by external commands module
+Description[pl]=Modu³ powiadamiania u¿ytkownika o zdarzeniach za pomoc± zewnêtrznych poleceñ
+Author=joi
+Dependencies=notify
+Provides=notify_method
+Version=2007.06.27

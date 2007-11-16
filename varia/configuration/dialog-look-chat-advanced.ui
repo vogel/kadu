@@ -19,9 +19,18 @@
 <!-- 			</group-box> -->
 
 			<group-box name="Window title">
-				<line-edit caption="Chat window title syntax" config-section="Look" config-item="ChatContents" />
-				<line-edit caption="Conference window title prefix" config-section="Look" config-item="ConferencePrefix" />
-				<line-edit caption="Conference window title syntax" config-section="Look" config-item="ConferenceContents" />
+				<line-edit caption="Chat window title syntax" config-section="Look" config-item="ChatContents"
+						   tool-tip="Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
+%v - revDNS, %p - port %e - email %x - max image size" />
+				<line-edit caption="Conference window title prefix" config-section="Look" config-item="ConferencePrefix"
+						   tool-tip="Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
+%v - revDNS, %p - port %e - email %x - max image size" />
+				<line-edit caption="Conference window title syntax" config-section="Look" config-item="ConferenceContents"
+						   tool-tip="Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
+%v - revDNS, %p - port %e - email %x - max image size" />
 			</group-box>
 		</tab>
 	</section>
