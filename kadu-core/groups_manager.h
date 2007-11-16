@@ -7,6 +7,7 @@
 #include <qstringlist.h>
 #include <qtimer.h>
 #include <qvariant.h>
+#include <qwmatrix.h>
 
 #include "configuration_aware_object.h"
 #include "usergroup.h"

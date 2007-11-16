@@ -7,11 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
-// #include "config_dialog.h"
 #include "config_file.h"
 #include "debug.h"
 #include "groups_manager.h"
 #include "action.h"
+#include "icons_manager.h"
 #include "kadu.h"
 #include "misc.h"
 #include "pending_msgs.h"
@@ -82,7 +82,7 @@ void GroupsManager::setTabBar(KaduTabBar *bar)
 	GroupBar = bar;
 
 	bar->setShape(QTabBar::RoundedBelow);
-	bar->addTab(new QTab(tr("All")));
+	bar->addTab(new QTab(icons_manager->loadIcon("PersonalInfo").xForm(QWMatrix().rotate(-90)), tr("All")));
 	bar->setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(), QFont::Bold));
 	connect(bar, SIGNAL(selected(int)), this, SLOT(tabSelected(int)));
 	connect(userlist, SIGNAL(modified()), this, SLOT(refreshTabBarLater()));
