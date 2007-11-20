@@ -23,7 +23,6 @@
 #include "debug.h"
 #include "kadu.h"
 #include "kadu_parser.h"
-#include "message_box.h"
 #include "misc.h"
 
 /**
@@ -37,8 +36,6 @@ extern "C" int autoaway_init()
 	kdebugf();
 
 	autoAway = new AutoAway();
-	if (!gadu->currentStatus().isOffline())
-		autoAway->on();
 
 	QObject::connect(gadu, SIGNAL(disconnected()), autoAway, SLOT(off()));
 	QObject::connect(gadu, SIGNAL(connected()), autoAway, SLOT(on()));
@@ -171,19 +168,22 @@ AutoAway::~AutoAway()
 void AutoAway::on()
 {
 	if (!autoAwayStatusChanger)
+	{
 		autoAwayStatusChanger = new AutoAwayStatusChanger();
 
-	autoAwayStatusChanger->setChangeDescriptionTo(changeTo, parseDescription(autoStatusText));
+		status_changer_manager->registerStatusChanger(autoAwayStatusChanger);
+	}
 
-	status_changer_manager->registerStatusChanger(autoAwayStatusChanger);
+	autoAwayStatusChanger->setChangeDescriptionTo(changeTo, parseDescription(autoStatusText));
 
 	qApp->installEventFilter(this);
 
 	if (!timer)
+	{
 		timer = new QTimer();
-
-	connect(timer, SIGNAL(timeout()), this, SLOT(checkIdleTime()));
-	timer->start(config_file.readNumEntry("General", "AutoAwayCheckTime") * 1000, TRUE);
+		connect(timer, SIGNAL(timeout()), this, SLOT(checkIdleTime()));
+		timer->start(config_file.readNumEntry("General", "AutoAwayCheckTime") * 1000, TRUE);
+	}
 }
 
 void AutoAway::off()
@@ -326,7 +326,7 @@ void AutoAway::configurationUpdated()
 
 	changeTo = (AutoAwayStatusChanger::ChangeDescriptionTo)config_file.readNumEntry("General", "AutoChangeDescription");
 
-	if (autoAwayEnabled || autoInvisibleEnabled || autoDisconnectEnabled)
+	if (!gadu->currentStatus().isOffline() && (autoAwayEnabled || autoInvisibleEnabled || autoDisconnectEnabled))
 		on();
 	else
 		off();
