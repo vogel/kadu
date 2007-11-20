@@ -1,27 +1,23 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef FILE_TRANSFER_H
 #define FILE_TRANSFER_H
 
-#include "dcc.h"
-#include "userlist.h"
-
-#include <qdialog.h>
-#include <qstring.h>
-#include <qvaluelist.h>
-#include <qmap.h>
-#include <qpopupmenu.h>
 #include <qdom.h>
-#include <qvbox.h>
-#include <qlistview.h>
 
-class QLabel;
-class QProgressBar;
-class QScrollView;
-class QVBoxLayout;
+#include "protocol.h"
+
+class DccSocket;
+
 class FileTransferManager;
 
-/** @ingroup dcc
- * @{
- */
 class FileTransfer : public QObject
 {
 	Q_OBJECT
@@ -150,143 +146,5 @@ class FileTransfer : public QObject
 		void fileTransferFinished(FileTransfer *, bool);
 		void fileTransferDestroying(FileTransfer *);
 };
-
-class FileTransferWindow;
-
-class FileTransferWidget : public QFrame
-{
-	Q_OBJECT
-
-	private:
-		FileTransfer *ft;
-
-		QLabel *description;
-		QLabel *status;
-		QProgressBar *progress;
-		QPushButton *pauseButton;
-		QPushButton *continueButton;
-
-	private slots:
-		void remove();
-		void pauseTransfer();
-		void continueTransfer();
-
-	public:
-		FileTransferWidget(QWidget *parent = 0, FileTransfer * = 0);
-		virtual ~FileTransferWidget();
-
-		FileTransfer *fileTransfer();
-
-	public slots:
-		void newFileTransfer(FileTransfer *);
-		void fileTransferFailed(FileTransfer *, FileTransfer::FileTransferError);
-		void fileTransferStatusChanged(FileTransfer *);
-		void fileTransferFinished(FileTransfer *, bool);
-		void fileTransferDestroying(FileTransfer *);
-};
-
-class FileTransferWindow : public QFrame
-{
-	Q_OBJECT
-
-	private:
-		QScrollView *scrollView;
-
-		QFrame *frame;
-		QVBoxLayout *transfersLayout;
-		QMap<FileTransfer *, FileTransferWidget *> map;
-
-	protected:
-		virtual void keyPressEvent(QKeyEvent *e);
-		void contentsChanged();
-
-	public:
-		FileTransferWindow(QWidget *parent = 0, const char *name = 0);
-		virtual ~FileTransferWindow();
-
-	private slots:
-		void clearClicked();
-
-	public slots:
-		void newFileTransfer(FileTransfer *);
-		void fileTransferFailed(FileTransfer *, FileTransfer::FileTransferError);
-		void fileTransferStatusChanged(FileTransfer *);
-		void fileTransferFinished(FileTransfer *, bool);
-		void fileTransferDestroying(FileTransfer *);
-};
-
-class ChatWidget;
-
-class FileTransferManager : public QObject
-{
-	Q_OBJECT
-
-	private:
-		FileTransferWindow *fileTransferWindow;
-
-		int toggleFileTransferWindowMenuId;
-
-		QStringList selectFilesToSend();
-
-		void needFileAccept(DccSocket* socket);
-		void needFileInfo(DccSocket* socket);
-
-		void sendFile(const UserListElements users);
-
-	private slots:
-		void userboxMenuPopup();
-		void sendFile();
-		void kaduKeyPressed(QKeyEvent* e);
-		void connectionBroken(DccSocket* socket);
-
-		void dccEvent(DccSocket *socket, bool &lock);
-		void dccError(DccSocket* socket);
-
-		void setState(DccSocket* socket);
-		void socketDestroying(DccSocket* socket);
-
-		void chatCreated(ChatWidget *chat);
-		void chatDestroying(ChatWidget *chat);
-
-		void fileDropped(const UserGroup *group, const QString &);
-
-		void toggleFileTransferWindow();
-		void sendFileActionActivated(const UserGroup* users);
-
-	public:
-		FileTransferManager(QObject *parent = 0, const char *name = 0);
-		virtual ~FileTransferManager();
-
-		void acceptFile(FileTransfer *ft, DccSocket *socket, QString fileName, bool resume = false);
-		void discardFile(DccSocket *socket);
-
-		void showFileTransferWindow();
-
-		void readFromConfig();
-		void writeToConfig();
-
-	private slots:
-		void fileTransferFinishedSlot(FileTransfer *fileTransfer, bool ok);
-		void fileTransferWindowDestroyed();
-
-	public slots:
-		/**
-			Inicjuje wysy³anie pliku do podanego odbiorcy.
-		**/
-		void sendFile(UinType receiver);
-
-		void sendFile(UinType receiver, const QString &filename);
-
-	signals:
-		void newFileTransfer(FileTransfer *);
-		void fileTransferFailed(FileTransfer *, FileTransfer::FileTransferError);
-		void fileTransferStatusChanged(FileTransfer *);
-		void fileTransferFinished(FileTransfer *, bool);
-		void fileTransferDestroying(FileTransfer *);
-};
-
-extern FileTransferManager* file_transfer_manager;
-
-/** @} */
 
 #endif

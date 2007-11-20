@@ -15,6 +15,7 @@
 
 #include "debug.h"
 #include "file_transfer.h"
+#include "file_transfer_manager.h"
 #include "message_box.h"
 #include "misc.h"
 

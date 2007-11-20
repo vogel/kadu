@@ -25,7 +25,7 @@
 #include "config_file.h"
 #include "dcc.h"
 #include "debug.h"
-#include "file_transfer.h"
+#include "file_transfer_manager.h"
 #include "hot_key.h"
 #include "ignore.h"
 #include "misc.h"
