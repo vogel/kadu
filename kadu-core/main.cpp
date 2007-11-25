@@ -157,6 +157,7 @@ static void kadu_signal_handler(int s)
 		qApp->postEvent(qApp, new QEvent(QEvent::Quit));
 }
 
+#if defined (SIGRTMIN)
 void kadu_realtime_signal(int sig, siginfo_t *info, void *)
 {
 	if (sig != OPEN_CHAT_SIGNAL)
@@ -165,6 +166,7 @@ void kadu_realtime_signal(int sig, siginfo_t *info, void *)
 	if (ggnum > 0)
 		qApp->postEvent(kadu, new OpenGGChatEvent(ggnum));
 }
+#endif
 
 #endif
 
@@ -269,11 +271,13 @@ int main(int argc, char *argv[])
 		signal(SIGTERM, kadu_signal_handler);
 		signal(SIGUSR1, kadu_signal_handler);
 		signal(SIGPIPE, SIG_IGN);
+#if defined (SIGRTMIN)
 		struct sigaction action;
 		action.sa_sigaction = kadu_realtime_signal;
 		sigemptyset(&action.sa_mask);
 		action.sa_flags = SA_SIGINFO;
 		sigaction(OPEN_CHAT_SIGNAL, &action, 0);
+#endif
 	}
 #endif
 
@@ -323,6 +327,7 @@ int main(int argc, char *argv[])
 			{
 				if (gotPID)
 				{
+#if defined (SIGRTMIN)
 					kdebugm(KDEBUG_INFO, "l_type: %d, l_pid: %d\n", lock_str->l_type, lock_str->l_pid);
 					if (ggnumber)
 					{
@@ -331,6 +336,7 @@ int main(int argc, char *argv[])
 						sigqueue(lock_str->l_pid, OPEN_CHAT_SIGNAL, v);
 					}
 					else
+#endif
 						kill(lock_str->l_pid, SIGUSR1);
 				}
 				else
