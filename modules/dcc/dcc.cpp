@@ -24,6 +24,7 @@
 
 #include "config_file.h"
 #include "dcc.h"
+#include "dcc_socket.h"
 #include "debug.h"
 #include "file_transfer_manager.h"
 #include "hot_key.h"
@@ -60,244 +61,8 @@ extern "C" void dcc_close()
 	dcc_manager = 0;
 }
 
-int DccSocket::Count = 0;
-
-DccSocket::DccSocket(struct gg_dcc* dcc_sock) : QObject(0, 0),
-	readSocketNotifier(0), writeSocketNotifier(0), dccsock(dcc_sock),
-	dccevent(0), State(DCC_SOCKET_TRANSFERRING)
-{
-	kdebugf();
-	++Count;
-	kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_INFO, "dcc sockets count = %d\n", Count);
-}
-
-DccSocket::~DccSocket()
-{
-	kdebugf();
-	emit dcc_manager->socketDestroying(this);
-	if (readSocketNotifier)
-	{
-		readSocketNotifier->setEnabled(false);
-		delete readSocketNotifier;
-		readSocketNotifier = NULL;
-	}
-	if (writeSocketNotifier)
-	{
-		writeSocketNotifier->setEnabled(false);
-		delete writeSocketNotifier;
-		writeSocketNotifier = NULL;
-	}
-	if (dccevent)
-	{
-		gadu->freeEvent(dccevent);
-		dccevent = NULL;
-	}
-	if (dccsock)
-	{
-		if (dccsock->file_fd > 0)
-		{
-			close(dccsock->file_fd);
-		}
-		gadu->dccFree(dccsock);
-		dccsock = NULL;
-		--Count;
-	}
-	kdebugmf(KDEBUG_INFO|KDEBUG_FUNCTION_END, "end: dcc sockets count = %d\n", Count);
-}
-
-struct gg_dcc* DccSocket::ggDccStruct() const
-{
-	return dccsock;
-}
-
-struct gg_event* DccSocket::ggDccEvent() const
-{
-	return dccevent;
-}
-
-void DccSocket::initializeNotifiers()
-{
-	kdebugf();
-
-	readSocketNotifier = new QSocketNotifier(dccsock->fd, QSocketNotifier::Read, this);
-	readSocketNotifier->setEnabled(false);
-	QObject::connect(readSocketNotifier, SIGNAL(activated(int)), this, SLOT(dccDataReceived()));
-
-	writeSocketNotifier = new QSocketNotifier(dccsock->fd, QSocketNotifier::Write, this);
-	writeSocketNotifier->setEnabled(false);
-	QObject::connect(writeSocketNotifier, SIGNAL(activated(int)), this, SLOT(dccDataSent()));
-
-	enableNotifiers();
-
-	kdebugf2();
-}
-
-void DccSocket::enableNotifiers()
-{
-	if (dccsock->check & GG_CHECK_READ)
-		readSocketNotifier->setEnabled(true);
-
-	if (dccsock->check & GG_CHECK_WRITE)
-		writeSocketNotifier->setEnabled(true);
-}
-
-void DccSocket::disableNotifiers()
-{
-	readSocketNotifier->setEnabled(false);
-	writeSocketNotifier->setEnabled(false);
-}
-
-void DccSocket::dccDataReceived()
-{
-	disableNotifiers();
-	watchDcc();
-}
-
-void DccSocket::dccDataSent()
-{
-	disableNotifiers();
-	watchDcc();
-}
-
-void DccSocket::watchDcc()
-{
-	kdebugf();
-	UserListElements users;
-	bool spoofingAttempt, insane, unbidden;
-	UserListElement peer;
-
-	if (!(dccevent = gadu->dccWatchFd(dccsock)))
-	{
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Connection broken unexpectedly!\n");
-		emit dcc_manager->connectionBroken(this);
-		return;
-	}
-
-	switch (dccevent->type)
-	{
-		case GG_EVENT_DCC_CLIENT_ACCEPT:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_CLIENT_ACCEPT! uin:%d peer_uin:%d\n",
-				dccsock->uin, dccsock->peer_uin);
-
-			insane = dccsock->uin != (UinType)config_file.readNumEntry("General", "UIN")
-				|| !userlist->contains("Gadu", QString::number(dccsock->peer_uin));
-			peer = userlist->byID("Gadu", QString::number(dccsock->peer_uin));
-			users.append(peer);
-			unbidden = peer.isAnonymous() || IgnoredManager::isIgnored(users);
-			spoofingAttempt = !(QHostAddress(ntohl(dccsock->remote_addr)) == peer.IP("Gadu"));
-
-			if (insane)
-				kdebugm(KDEBUG_WARNING, "insane values: uin:%d peer_uin:%d\n", dccsock->uin, dccsock->peer_uin);
-			if (!insane && unbidden)
-				kdebugm(KDEBUG_WARNING, "unbidden user: %d\n", dccsock->peer_uin);
-
-			if (!insane && !unbidden && spoofingAttempt)
-			{
-				kdebugm(KDEBUG_WARNING, "possible spoofing attempt from %s (uin:%d)\n",
-						QHostAddress(ntohl(dccsock->remote_addr)).toString().local8Bit().data(), dccsock->peer_uin);
-				if (!insane && !unbidden)
-					spoofingAttempt = !MessageBox::ask(narg(
-					tr("%1 is asking for direct connection but his/her\n"
-					"IP address (%2) differs from what GG server returned\n"
-					"as his/her IP address (%3). It may be spoofing\n"
-					"or he/she has port forwarding. Continue connection?"),
-					peer.altNick(),
-					QHostAddress(ntohl(dccsock->remote_addr)).toString(),
-					peer.IP("Gadu").toString()));
-			}
-
-			if (insane || unbidden || spoofingAttempt)
-			{
-				setState(DCC_SOCKET_TRANSFER_DISCARDED);
-				//emit dcc_manager->tranferDiscarded(this);
-			}
-			break;
-		case GG_EVENT_DCC_CALLBACK:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_CALLBACK! uin:%d peer_uin:%d\n",
-				dccsock->uin, dccsock->peer_uin);
-			dcc_manager->cancelTimeout();
-			dcc_manager->callbackReceived(this);
-			break;
-		case GG_EVENT_DCC_ERROR:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_ERROR\n");
-			emit dcc_manager->dccError(this);
-			if (state() != DCC_SOCKET_VOICECHAT_DISCARDED &&
-				state() != DCC_SOCKET_TRANSFER_ERROR)
-				setState(DCC_SOCKET_CONNECTION_BROKEN);
-			gadu->freeEvent(dccevent);
-			dccevent = NULL;
-			enableNotifiers();
-			return;
-		case GG_EVENT_DCC_DONE:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_DONE\n");
-			setState(DCC_SOCKET_TRANSFER_FINISHED);
-			emit dcc_manager->dccDone(this);
-			gadu->freeEvent(dccevent);
-			dccevent = NULL;
-			enableNotifiers();
-			return;
-		default:
-			break;
-	}
-
-	bool lock = false;
-	emit dcc_manager->dccEvent(this, lock);
-
-	if (dccevent)
-	{
-		gadu->freeEvent(dccevent);
-		dccevent = NULL;
-	}
-
-	if (!lock)
-		enableNotifiers();
-
-	kdebugf2();
-}
-
-void DccSocket::discard()
-{
-	kdebugf();
-
-	setState(DCC_SOCKET_TRANSFER_DISCARDED);
-}
-
-void DccSocket::setState(int pstate)
-{
-	kdebugf();
-	disableNotifiers();
-	State = pstate;
-
-	switch (State)
-	{
-		case DCC_SOCKET_TRANSFER_DISCARDED:
-			kdebugm(KDEBUG_INFO, "state: DCC_SOCKET_TRANSFER_DISCARDED\n");
-			break;
-		case DCC_SOCKET_CONNECTION_BROKEN:
-			kdebugm(KDEBUG_INFO, "state: DCC_SOCKET_CONNECTION_BROKEN\n");
-			break;
-		case DCC_SOCKET_COULDNT_OPEN_FILE:
-			MessageBox::msg(tr("Couldn't open file!"));
-			break;
-	}
-	emit dcc_manager->setState(this);
-	deleteLater();
-	kdebugf2();
-}
-
-int DccSocket::state() const
-{
-	return State;
-}
-
-int DccSocket::count()
-{
-	return Count;
-}
-
-
 DccManager::DccManager()
-	: DccSock(0), DCCReadSocketNotifier(0), DCCWriteSocketNotifier(0), TimeoutTimer(), requests(), DccEnabled(false)
+	: MainSocket(0), TimeoutTimer(), requests(), DccEnabled(false)
 {
 	kdebugf();
 
@@ -384,82 +149,10 @@ bool DccManager::dccEnabled() const
 	return DccEnabled;
 }
 
-void DccManager::watchDcc()
-{
-	kdebugf();
-	struct gg_event* dcc_e;
-	if (!(dcc_e = gadu->dccWatchFd(DccSock)))
-	{
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Connection broken unexpectedly!\n");
-		config_file.writeEntry("Network", "AllowDCC", false);
-		delete DCCReadSocketNotifier;
-		DCCReadSocketNotifier = NULL;
-		delete DCCWriteSocketNotifier;
-		DCCWriteSocketNotifier = NULL;
-		return;
-	}
-
-	switch (dcc_e->type)
-	{
-		case GG_EVENT_NONE:
-			break;
-		case GG_EVENT_DCC_ERROR:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_ERROR\n");
-			break;
-		case GG_EVENT_DCC_NEW:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEW\n");
-
-			if (DccSocket::count() < 8)
-			{
-				DccSocket* dcc_socket = new DccSocket(dcc_e->event.dcc_new);
-				connect(dcc_socket, SIGNAL(dccFinished(DccSocket *)),
-						this, SLOT(dccFinished(DccSocket *)));
-				dcc_socket->initializeNotifiers();
-			}
-			else
-			{
-				if (dcc_e->event.dcc_new->file_fd > 0)
-					close(dcc_e->event.dcc_new->file_fd);
-				gadu->dccFree(dcc_e->event.dcc_new);
-			}
-			break;
-		default:
-			break;
-	}
-
-	if (DccSock->check == GG_CHECK_WRITE)
-		DCCWriteSocketNotifier->setEnabled(true);
-
-	gadu->freeEvent(dcc_e);
-	kdebugf2();
-}
-
-void DccManager::dccFinished(DccSocket* dcc_socket)
-{
-	kdebugf();
-	delete dcc_socket;
-	kdebugf2();
-}
-
-void DccManager::dccReceived()
-{
-	kdebugf();
-	watchDcc();
-	kdebugf2();
-}
-
-void DccManager::dccSent()
-{
-	kdebugf();
-	DCCWriteSocketNotifier->setEnabled(false);
-	if (DccSock->check & GG_CHECK_WRITE)
-		watchDcc();
-	kdebugf2();
-}
-
 void DccManager::timeout()
 {
-	MessageBox::msg(tr("Direct connection timeout!\nThe receiver doesn't support direct connections or\nboth machines are behind routers with NAT."), false, "Warning");
+	// TODO: change into notification
+	MessageBox::msg(tr("Direct connection timeout!\nThe receiver doesn't support direct connections or\nboth machines are behind routers with NAT."), true, "Warning");
 }
 
 void DccManager::startTimeout()
@@ -482,18 +175,19 @@ void DccManager::setupDcc()
 		return;
 	}
 
-	gadu->dccSocketCreate(config_file.readNumEntry("General", "UIN"),
-							config_file.readNumEntry("Network", "LocalPort"),
-							&DccSock);
+	struct gg_dcc *socket = gg_dcc_socket_create(config_file.readNumEntry("General", "UIN"), config_file.readNumEntry("Network", "LocalPort"));
 
-	if (!DccSock)
+	if (!socket)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Couldn't bind DCC socket.\n");
 
-		MessageBox::msg(tr("Couldn't create DCC socket.\nDirect connections disabled."), false, "Warning");
+		MessageBox::msg(tr("Couldn't create DCC socket.\nDirect connections disabled."), true, "Warning");
 		kdebugf2();
 		return;
 	}
+
+	MainSocket = new DccSocket(socket);
+	MainSocket->setHandler(this);
 
 	QHostAddress DCCIP;
 	short int DCCPort;
@@ -504,8 +198,8 @@ void DccManager::setupDcc()
 		DCCIP.setAddress(config_file.readEntry("Network", "DccIP"));
 
 	QHostAddress ext_ip;
-	bool forwarding = config_file.readBoolEntry("Network", "DccForwarding") &&
-					ext_ip.setAddress(config_file.readEntry("Network", "ExternalIP"));
+	bool forwarding = config_file.readBoolEntry("Network", "DccForwarding") && ext_ip.setAddress(config_file.readEntry("Network", "ExternalIP"));
+
 	if (forwarding)
 	{
 		gadu->setDccExternalIP(ext_ip);
@@ -514,20 +208,14 @@ void DccManager::setupDcc()
 	else
 	{
 		gadu->setDccExternalIP(QHostAddress());
-		DCCPort = DccSock->port;
+		DCCPort = socket->port;
 	}
 
 	gadu->setDccIpAndPort(htonl(DCCIP.ip4Addr()), DCCPort);
 
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "DCC_IP=%s DCC_PORT=%d\n", DCCIP.toString().local8Bit().data(), DCCPort);
 
-	DCCReadSocketNotifier = new QSocketNotifier(DccSock->fd, QSocketNotifier::Read, this, "dcc_read_socket_notifier");
-	connect(DCCReadSocketNotifier, SIGNAL(activated(int)), this, SLOT(dccReceived()));
-
-	DCCWriteSocketNotifier = new QSocketNotifier(DccSock->fd, QSocketNotifier::Write, this, "dcc_write_socket_notifier");
-	connect(DCCWriteSocketNotifier, SIGNAL(activated(int)), this, SLOT(dccSent()));
-
-	DccEnabled=true;
+	DccEnabled = true;
 
 	kdebugf2();
 }
@@ -535,100 +223,77 @@ void DccManager::setupDcc()
 void DccManager::closeDcc()
 {
 	kdebugf();
-	if (DCCReadSocketNotifier)
-	{
-		delete DCCReadSocketNotifier;
-		DCCReadSocketNotifier = NULL;
-	}
 
-	if (DCCWriteSocketNotifier)
+	if (MainSocket)
 	{
-		delete DCCWriteSocketNotifier;
-		DCCWriteSocketNotifier = NULL;
-	}
-
-	if (DccSock)
-	{
-		gadu->dccFree(DccSock);
-		DccSock = NULL;
+		delete MainSocket;
+		MainSocket = 0;
 		gadu->setDccIpAndPort(0, 0);
 	}
-	DccEnabled=false;
+
+	DccEnabled = false;
+
 	kdebugf2();
 }
 
 void DccManager::dccConnectionReceived(const UserListElement& sender)
 {
 	kdebugf();
-	struct gg_dcc* dcc_new;
-	if (DccSocket::count() < 8 && sender.usesProtocol("Gadu"))
+
+	struct gg_dcc *dcc_new = gg_dcc_get_file(htonl(sender.IP("Gadu").ip4Addr()), sender.port("Gadu"),
+		config_file.readNumEntry("General","UIN"),
+		sender.ID("Gadu").toUInt());
+
+	if (dcc_new)
 	{
-		gadu->dccGetFile(htonl(sender.IP("Gadu").ip4Addr()),
-						sender.port("Gadu"),
-						config_file.readNumEntry("General","UIN"),
-						sender.ID("Gadu").toUInt(),
-						&dcc_new);
-		if (dcc_new)
-		{
-			DccSocket* dcc_socket = new DccSocket(dcc_new);
-			connect(dcc_socket, SIGNAL(dccFinished(DccSocket*)),
-					this, SLOT(dccFinished(DccSocket*)));
-			dcc_socket->initializeNotifiers();
-		}
+		DccSocket* dcc_socket = new DccSocket(dcc_new);
+		dcc_socket->setHandler(this);
 	}
+
 	kdebugf2();
 }
 
-DccManager::TryType DccManager::initDCCConnection(uint32_t ip, uint16_t port,
-								UinType my_uin, UinType peer_uin,
-								const char *gadu_slot, int dcc_type,
-								bool force_request)
+void DccManager::getFileTransferSocket(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin, DccHandler *handler, bool request)
 {
 	kdebugf();
-	if (port>=10 && !force_request)
+
+	if ((port >= 10) && !request)
 	{
-		struct gg_dcc *sock=NULL;
-
-		connect(this, SIGNAL(dccSig(uint32_t, uint16_t, UinType, UinType, struct gg_dcc **)),
-				gadu, gadu_slot);
-
-		emit dccSig(htonl(ip), port, my_uin, peer_uin, &sock);
-
-		disconnect(this, SIGNAL(dccSig(uint32_t, uint16_t, UinType, UinType, struct gg_dcc **)),
-				gadu, gadu_slot);
+		struct gg_dcc *sock = gg_dcc_send_file(htonl(ip), port, myUin, peerUin);
 
 		if (sock)
 		{
-			DccSocket* dcc_socket = new DccSocket(sock);
-			connect(dcc_socket, SIGNAL(dccFinished(DccSocket*)),
-					this, SLOT(dccFinished(DccSocket*)));
-			dcc_socket->initializeNotifiers();
+			DccSocket *result = new DccSocket(sock);
+			result->setHandler(handler);
+			return;
 		}
-		else
-			kdebugm(KDEBUG_WARNING, "socket is null (ip:%d port:%d my:%d peer:%d type:%d)\n", ip, port, my_uin, peer_uin, dcc_type);
-		kdebugf2();
-		return DIRECT;
 	}
-	else
-	{
-		kdebugm(KDEBUG_INFO, "user.port()<10, asking for connection (uin: %d)\n", peer_uin);
-		dcc_manager->startTimeout();
-		requests.insert(peer_uin, dcc_type);
-		gadu->dccRequest(peer_uin);
-		kdebugf2();
-		return REQUEST;
-	}
+
+	startTimeout();
+	requests.insert(peerUin, handler);
+	gadu->dccRequest(peerUin);
+
+	kdebugf2();
 }
 
-void DccManager::callbackReceived(DccSocket *sock)
+void DccManager::callbackReceived(DccSocket *socket)
 {
 	kdebugf();
-	UinType peer_uin=sock->ggDccStruct()->peer_uin;
-	if (requests.contains(peer_uin))
+
+	cancelTimeout();
+
+	UinType peerUin = socket->peerUin();
+	if (requests.contains(peerUin))
 	{
-		gadu->dccSetType(sock->ggDccStruct(), requests[peer_uin]);
-		requests.remove(sock->ggDccStruct()->peer_uin);
+		DccHandler *handler = requests[peerUin];
+		socket->setType(handler->dccType());
+		requests.remove(peerUin);
+
+		socket->setHandler(handler);
 	}
+	else
+		delete socket;
+
 	kdebugf2();
 }
 
@@ -647,6 +312,57 @@ void DccManager::createDefaultConfiguration()
 
 	config_file.addVariable("ShortCuts", "kadu_sendfile", "F8");
 	config_file.addVariable("ShortCuts", "kadu_voicechat", "F7");
+}
+
+void DccManager::addSocket(DccSocket *socket)
+{
+	UnhandledSockets.append(socket);
+}
+
+void DccManager::removeSocket(DccSocket *socket)
+{
+	UnhandledSockets.remove(socket);
+}
+
+void DccManager::addHandler(DccHandler *handler)
+{
+	SocketHandlers.append(handler);
+}
+
+void DccManager::removeHandler(DccHandler *handler)
+{
+	SocketHandlers.remove(handler);
+}
+
+void DccManager::connectionError(DccSocket *socket)
+{
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Connection broken unexpectedly!\n");
+
+	if (socket == MainSocket)
+		config_file.writeEntry("Network", "AllowDCC", false);
+}
+
+bool DccManager::socketEvent(DccSocket *socket, bool &lock)
+{
+	DccSocket *dccSocket;
+
+	switch (socket->ggDccEvent()->type) {
+		case GG_EVENT_DCC_NEW:
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEW\n");
+
+			dccSocket = new DccSocket(socket->ggDccEvent()->event.dcc_new);
+			dccSocket->setHandler(this);
+			return true;
+
+		default:
+			break;
+	}
+
+	FOREACH(handler, SocketHandlers)
+		if ((*handler)->socketEvent(socket, lock))
+			return true;
+
+	return false;
 }
 
 DccManager* dcc_manager = NULL;

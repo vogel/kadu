@@ -1,3 +1,12 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef KADU_DCC_H
 #define KADU_DCC_H
 
@@ -5,6 +14,7 @@
 #include <qtimer.h>
 
 #include "configuration_aware_object.h"
+#include "dcc_handler.h"
 #include "gadu.h"
 #include "main_configuration_window.h"
 
@@ -16,64 +26,28 @@ class QWidget;
  * @defgroup dcc Dcc
  * @{
  */
-enum dccSocketState {
-	DCC_SOCKET_TRANSFERRING,
-	DCC_SOCKET_CONNECTION_BROKEN,
-	DCC_SOCKET_TRANSFER_ERROR,
-	DCC_SOCKET_TRANSFER_FINISHED,
-	DCC_SOCKET_COULDNT_OPEN_FILE,
-	DCC_SOCKET_TRANSFER_DISCARDED,
-	DCC_SOCKET_VOICECHAT_DISCARDED
+
+class DccSocket;
+
+enum DccVersion {
+	DccUnknow,
+	Dcc6,
+	Dcc7
 };
 
-class DccSocket : public QObject
-{
-	Q_OBJECT
-
-	QSocketNotifier* readSocketNotifier;
-	QSocketNotifier* writeSocketNotifier;
-	struct gg_dcc* dccsock;
-	struct gg_event* dccevent;
-	int State;
-	static int Count;
-
-protected slots:
-	void dccDataReceived();
-	void dccDataSent();
-
-public:
-	DccSocket(struct gg_dcc* dcc_sock);
-	~DccSocket();
-	struct gg_dcc* ggDccStruct() const;
-	struct gg_event* ggDccEvent() const;
-
-	virtual void initializeNotifiers();
-	void enableNotifiers();
-	void disableNotifiers();
-
-	virtual void watchDcc();
-	int state() const;
-	static int count();
-	virtual void setState(int pstate);
-
-	void discard();
-
-signals:
-	void dccFinished(DccSocket* dcc);
-};
-
-class DccManager : public ConfigurationUiHandler, ConfigurationAwareObject
+class DccManager : public ConfigurationUiHandler, ConfigurationAwareObject, DccHandler
 {
 	Q_OBJECT
 
 	friend class DccSocket;
-	gg_dcc* DccSock;
-	QSocketNotifier* DCCReadSocketNotifier;
-	QSocketNotifier* DCCWriteSocketNotifier;
+
+	DccSocket *MainSocket;
+
+	QValueList<DccSocket *> UnhandledSockets;
+	QValueList<DccHandler *> SocketHandlers;
 
 	QTimer TimeoutTimer;
-	void watchDcc();
-	QMap<UinType, int> requests;
+	QMap<UinType, DccHandler *> requests;
 	bool DccEnabled;
 
 	QWidget *ipAddress;
@@ -99,10 +73,6 @@ private slots:
 	void timeout();
 	void callbackReceived(DccSocket *socket);
 
-	void dccFinished(DccSocket* dcc);
-	void dccReceived();
-	void dccSent();
-
 	void onIpAutotetectToggled(bool toggled);
 
 protected:
@@ -111,24 +81,32 @@ protected:
 public:
 	DccManager();
 	virtual ~DccManager();
-	enum TryType {DIRECT, REQUEST};
-	TryType initDCCConnection(uint32_t ip, uint16_t port,
-		UinType my_uin, UinType peer_uin, const char *gadu_slot,
-		int dcc_type, bool force_request=false);
+
+	void addSocket(DccSocket *socket);
+	void removeSocket(DccSocket *socket);
+
+	void addHandler(DccHandler *handler);
+	void removeHandler(DccHandler *handler);
+
+	int dccType() { return 0; }
+
+	bool socketEvent(DccSocket *socket, bool &lock);
+
+	void connectionDone(DccSocket *socket) {}
+	void connectionError(DccSocket *socket);
+
+	void connectionAccepted(DccSocket *socket) {}
+	void connectionRejected(DccSocket *socket) {}
+
+	void getFileTransferSocket(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin, DccHandler *handler, bool request = false);
+
 	bool dccEnabled() const;
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 signals:
-	void dccEvent(DccSocket* socket, bool &lock);
-	void connectionBroken(DccSocket* socket);
-	void dccError(DccSocket* socket);
-	void dccDone(DccSocket* socket);
-	void setState(DccSocket* socket);
 	void socketDestroying(DccSocket* socket);
 
-	/* nie dotykaæ */
-	void dccSig(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, struct gg_dcc **out);
 };
 
 extern DccManager* dcc_manager;

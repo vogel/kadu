@@ -12,139 +12,137 @@
 
 #include <qdom.h>
 
+#include "dcc.h"
+#include "dcc_handler.h"
 #include "protocol.h"
 
 class DccSocket;
-
 class FileTransferManager;
 
-class FileTransfer : public QObject
+class FileTransfer : public QObject, public DccHandler
 {
 	Q_OBJECT
 
 	friend class FileTransferManager;
 
-	public:
-		enum FileTransferType {
-			TypeSend,
-			TypeReceive
-		};
+public:
+	enum FileTransferType {
+		TypeSend,
+		TypeReceive
+	};
 
-		enum FileTransferStatus {
-			StatusFrozen,
-			StatusWaitForConnection,
-			StatusTransfer,
-			StatusFinished
-		};
+	enum FileTransferStatus {
+		StatusFrozen,
+		StatusWaitForConnection,
+		StatusTransfer,
+		StatusFinished,
+		StatusRejected
+	};
 
-		enum FileTransferError {
-			ErrorDccDisabled,
-			ErrorDccSocketTransfer,
-			ErrorConnectionTimeout,
-			ErrorDccTooManyConnections
-		};
+	enum FileTransferError {
+		ErrorDccDisabled,
+		ErrorDccSocketTransfer,
+		ErrorConnectionTimeout
+	};
 
-		enum StartType {
-			StartNew,
-			StartRestore
-		};
+	enum StartType {
+		StartNew,
+		StartRestore
+	};
 
-		enum StopType {
-			StopTemporary,
-			StopFinally
-		};
+	enum StopType {
+		StopTemporary,
+		StopFinally
+	};
 
-		enum FileNameType {
-			FileNameFull,
-			FileNameGadu
-		};
+	enum FileNameType {
+		FileNameFull,
+		FileNameGadu
+	};
 
-	private:
-		static QMap<DccSocket*, FileTransfer*> Transfers;
+private:
+	QObject *mainListener;
+	QValueList<QPair<QObject *, bool> > listeners;
 
-	public:
-		static QValueList<FileTransfer *> AllTransfers;
+	DccSocket *Socket;
+	DccVersion Version;
 
-	private:
-		QObject *mainListener;
-		QValueList<QPair<QObject *, bool> > listeners;
+	FileTransferType Type;
+	FileTransferStatus Status;
 
-		DccSocket* Socket;
-		FileTransferType Type;
-		FileTransferStatus Status;
+	UinType Contact;
+	QString FileName;
+	QString GaduFileName;
 
-		UinType Contact;
-		QString FileName;
-		QString GaduFileName;
+	QTimer *connectionTimeoutTimer;
+	QTimer *updateFileInfoTimer;
 
-		QTimer* connectionTimeoutTimer;
-		QTimer* updateFileInfoTimer;
+	long long int FileSize;
+	long long int TransferedSize;
+	long long int PrevTransferedSize;
+	long int Speed;
 
-		long long int FileSize;
-		long long int TransferedSize;
-		long long int PrevTransferedSize;
-		long int Speed;
+	void connectSignals(QObject *, bool);
+	void disconnectSignals(QObject *, bool);
 
-		bool dccFinished;
-		bool direct;
+	void startTimeout();
+	void cancelTimeout();
 
-		void connectSignals(QObject *, bool);
-		void disconnectSignals(QObject *, bool);
+	bool socketEvent(DccSocket *socket, bool &lock);
 
-		void socketDestroying();
+	void connectionDone(DccSocket *socket);
+	void connectionError(DccSocket *socket);
 
-	private slots:
-		void connectionTimeout();
+	void setVersion();
+	void prepareFileInfo();
+	void startUpdateFileInfo();
+	void stopUpdateFileInfo();
 
-		void prepareFileInfo();
-		void updateFileInfo();
+private slots:
+	void connectionTimeout();
+	void socketDestroyed();
+	void updateFileInfo();
 
-	public:
-		FileTransfer(FileTransferManager *listener, FileTransferType type, const UinType &contact,
-			const QString &fileName);
-		~FileTransfer();
+public:
+	FileTransfer(FileTransferManager *listener, DccVersion version, FileTransferType type, const UinType &contact,
+		const QString &fileName);
+	~FileTransfer();
 
-		void addListener(QObject * const listener, bool listenerHasSlots);
-		void removeListener(QObject * const listener, bool listenerHasSlots);
+	void addListener(QObject * const listener, bool listenerHasSlots);
+	void removeListener(QObject * const listener, bool listenerHasSlots);
 
-		void start(StartType startType = StartNew);
-		void stop(StopType stopType = StopTemporary);
+	void addSocket(DccSocket *socket);
+	void removeSocket(DccSocket *socket);
 
-		void setSocket(DccSocket* Socket);
+	int dccType();
 
-		static FileTransfer * bySocket(DccSocket* socket);
-		static FileTransfer * byUin(UinType);
-		static FileTransfer * byUinAndStatus(UinType, FileTransferStatus);
-		static FileTransfer * search(FileTransferType type, const UinType &contact, const QString &fileName,
-			FileNameType fileNameType = FileNameFull);
-		static void destroyAll();
+	void start(StartType startType = StartNew);
+	void stop(StopType stopType = StopTemporary);
+	bool unused() { return Socket == 0; }
 
-		QDomElement toDomElement(const QDomElement &root);
-		static FileTransfer * fromDomElement(const QDomElement &dom, FileTransferManager *listener);
+	void connectionAccepted(DccSocket *socket) {}
+	void connectionRejected(DccSocket *socket);
 
-		FileTransferType type();
-		FileTransferStatus status();
+	QDomElement toDomElement(const QDomElement &root);
+	static FileTransfer * fromDomElement(const QDomElement &dom, FileTransferManager *listener);
 
-		UinType contact();
-		QString fileName();
+	FileTransferType type();
+	FileTransferStatus status();
 
-		int percent();
-		long int speed();
-		long long int fileSize();
-		long long int transferedSize();
+	UinType contact();
+	QString fileName();
 
-		void finished(bool successfull);
+	int percent();
+	long int speed();
+	long long int fileSize();
+	long long int transferedSize();
 
-		void needFileInfo();
-		void connectionBroken();
-		void dccError();
-
-	signals:
-		void newFileTransfer(FileTransfer *);
-		void fileTransferFailed(FileTransfer *, FileTransfer::FileTransferError);
-		void fileTransferStatusChanged(FileTransfer *);
-		void fileTransferFinished(FileTransfer *, bool);
-		void fileTransferDestroying(FileTransfer *);
+signals:
+	void newFileTransfer(FileTransfer *);
+	void fileTransferFailed(FileTransfer *, FileTransfer::FileTransferError);
+	void fileTransferStatusChanged(FileTransfer *);
+	void fileTransferFinished(FileTransfer *);
+	void fileTransferDestroying(FileTransfer *);
 };
 
 #endif

@@ -384,6 +384,8 @@ GaduProtocol::GaduProtocol(const QString &id, QObject *parent, const char *name)
 		this, SLOT(userListReplyReceived(char, char *)));
 	connect(SocketNotifiers, SIGNAL(userStatusChanged(const struct gg_event *)),
 		this, SLOT(userStatusChanged(const struct gg_event *)));
+	connect(SocketNotifiers, SIGNAL(dcc7Accepted(struct gg_dcc7 *)), this, SIGNAL(dcc7Accepted(struct gg_dcc7 *)));
+	connect(SocketNotifiers, SIGNAL(dcc7Rejected(struct gg_dcc7 *)), this, SIGNAL(dcc7Rejected(struct gg_dcc7 *)));
 
 	connect(CurrentStatus, SIGNAL(changed(const UserStatus &, const UserStatus &)),
 			this, SLOT(currentStatusChanged(const UserStatus &, const UserStatus &)));
@@ -1121,7 +1123,8 @@ void GaduProtocol::login()
 //	LoginParams.tls = config_file.readBoolEntry("Network", "UseTLS");
 	LoginParams.tls = 0;
 	LoginParams.client_version = GG_DEFAULT_CLIENT_VERSION; //tego siê nie zwalnia...
-	LoginParams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION;
+	LoginParams.protocol_version = 0x29; // we are gg 7.6 now
+		// =  GG_DEFAULT_PROTOCOL_VERSION;
 	if (LoginParams.tls)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "using TLS\n");
@@ -2153,29 +2156,9 @@ void GaduProtocol::dccSetType(struct gg_dcc* d, int type)
 	gg_dcc_set_type(d, type);
 }
 
-int GaduProtocol::dccFillFileInfo(struct gg_dcc* d, const QString& filename)
+struct gg_dcc * GaduProtocol::dccVoiceChat(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin)
 {
-	return gg_dcc_fill_file_info2(d, unicode2cp(filename), filename.local8Bit().data());
-}
-
-void GaduProtocol::dccSocketCreate(UinType uin, uint16_t port, struct gg_dcc **out)
-{
-	*out = gg_dcc_socket_create(uin, port);
-}
-
-void GaduProtocol::dccSendFile(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, struct gg_dcc **out)
-{
-	*out = gg_dcc_send_file(ip, port, my_uin, peer_uin);
-}
-
-void GaduProtocol::dccGetFile(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, struct gg_dcc **out)
-{
-	*out = gg_dcc_get_file(ip, port, my_uin, peer_uin);
-}
-
-void GaduProtocol::dccVoiceChat(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, struct gg_dcc **out)
-{
-	*out = gg_dcc_voice_chat(ip, port, my_uin, peer_uin);
+	return gg_dcc_voice_chat(ip, port, my_uin, peer_uin);
 }
 
 int GaduProtocol::dccVoiceSend(struct gg_dcc* d, char* buf, int length)

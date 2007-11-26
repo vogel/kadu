@@ -442,76 +442,97 @@ void GaduSocketNotifiers::socketEvent()
 			break;
 	}
 
-	if (e->type == GG_EVENT_MSG)
+	switch (e->type)
 	{
-		UserListElements users(userlist->byID("Gadu", QString::number(e->event.msg.sender)));
-
-		if (e->event.msg.msgclass == GG_CLASS_CTCP)
+		case GG_EVENT_MSG:
 		{
-			if (config_file.readBoolEntry("Network", "AllowDCC") && !IgnoredManager::isIgnored(users) && !users[0].isAnonymous())
-				emit dccConnectionReceived(users[0]);
+			UserListElements users(userlist->byID("Gadu", QString::number(e->event.msg.sender)));
+
+			if (e->event.msg.msgclass == GG_CLASS_CTCP)
+			{
+				if (config_file.readBoolEntry("Network", "AllowDCC") && !IgnoredManager::isIgnored(users) && !users[0].isAnonymous())
+					emit dccConnectionReceived(users[0]);
+			}
+			else
+			{
+				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "recipients_count: %d\n", e->event.msg.recipients_count);
+				if ((e->event.msg.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT)
+					for (int i = 0; i < e->event.msg.recipients_count; ++i)
+						users.append(userlist->byID("Gadu", QString::number(e->event.msg.recipients[i])));
+				QCString msg((char*)e->event.msg.message);
+				QByteArray formats;
+				formats.duplicate((const char*)e->event.msg.formats, e->event.msg.formats_length);
+				emit messageReceived(e->event.msg.msgclass, users, msg,
+					e->event.msg.time, formats);
+			}
+			break;
 		}
-		else
-		{
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "recipients_count: %d\n", e->event.msg.recipients_count);
-			if ((e->event.msg.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT)
-				for (int i = 0; i < e->event.msg.recipients_count; ++i)
-					users.append(userlist->byID("Gadu", QString::number(e->event.msg.recipients[i])));
-			QCString msg((char*)e->event.msg.message);
-			QByteArray formats;
-			formats.duplicate((const char*)e->event.msg.formats, e->event.msg.formats_length);
-			emit messageReceived(e->event.msg.msgclass, users, msg,
-				e->event.msg.time, formats);
-		}
+
+		case GG_EVENT_IMAGE_REQUEST:
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Image request received\n");
+			emit imageRequestReceived(
+				e->event.image_request.sender,
+				e->event.image_request.size,
+				e->event.image_request.crc32);
+			break;
+
+		case GG_EVENT_IMAGE_REPLY:
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Image reply received\n");
+			emit imageReceived(
+				e->event.image_reply.sender,
+				e->event.image_reply.size,
+				e->event.image_reply.crc32,
+				e->event.image_reply.filename,
+				e->event.image_reply.image);
+			break;
+
+		case GG_EVENT_STATUS60:
+		case GG_EVENT_STATUS:
+			emit userStatusChanged(e);
+			break;
+
+		case GG_EVENT_ACK:
+			emit ackReceived(e->event.ack.seq, e->event.ack.recipient, e->event.ack.status);
+			break;
+
+		case GG_EVENT_NOTIFY60:
+			emit userlistReceived(e);
+			break;
+
+		case GG_EVENT_PUBDIR50_SEARCH_REPLY:
+		case GG_EVENT_PUBDIR50_READ:
+		case GG_EVENT_PUBDIR50_WRITE:
+			emit pubdirReplyReceived(e->event.pubdir50);
+			break;
+
+		case GG_EVENT_USERLIST:
+			emit userlistReplyReceived(e->event.userlist.type, e->event.userlist.reply);
+			break;
+
+		case GG_EVENT_CONN_SUCCESS:
+			emit connected();
+			break;
+
+		case GG_EVENT_CONN_FAILED:
+			connectionFailed(e->event.failure);
+			break;
+
+		case GG_EVENT_DISCONNECT:
+			emit serverDisconnected();
+			break;
+
+		case GG_EVENT_NONE:
+			kdebugm (KDEBUG_NETWORK, "GG_EVENT_NONE\n");
+			break;
+
+		case GG_EVENT_DCC7_ACCEPT:
+			emit dcc7Accepted(e->event.dcc7_accept.dcc7);
+			break;
+
+		case GG_EVENT_DCC7_REJECT:
+			emit dcc7Rejected(e->event.dcc7_reject.dcc7);
+			break;
 	}
-
-	else if (e->type == GG_EVENT_IMAGE_REQUEST)
-	{
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Image request received\n");
-		emit imageRequestReceived(
-			e->event.image_request.sender,
-			e->event.image_request.size,
-			e->event.image_request.crc32);
-	}
-
-	else if (e->type == GG_EVENT_IMAGE_REPLY)
-	{
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Image reply received\n");
-		emit imageReceived(
-			e->event.image_reply.sender,
-			e->event.image_reply.size,
-			e->event.image_reply.crc32,
-			e->event.image_reply.filename,
-			e->event.image_reply.image);
-	}
-
-	else if (e->type == GG_EVENT_STATUS60 || e->type == GG_EVENT_STATUS)
-		emit userStatusChanged(e);
-
-	else if (e->type == GG_EVENT_ACK)
-		emit ackReceived(e->event.ack.seq, e->event.ack.recipient, e->event.ack.status);
-
-	else if (e->type == GG_EVENT_NOTIFY60)
-		emit userlistReceived(e);
-
-	else if (e->type == GG_EVENT_PUBDIR50_SEARCH_REPLY
-		|| e->type == GG_EVENT_PUBDIR50_READ || e->type == GG_EVENT_PUBDIR50_WRITE)
-		emit pubdirReplyReceived(e->event.pubdir50);
-
-	else if (e->type == GG_EVENT_USERLIST)
-		emit userlistReplyReceived(e->event.userlist.type, e->event.userlist.reply);
-
-	else if (e->type == GG_EVENT_CONN_SUCCESS)
-		emit connected();
-
-	else if (e->type == GG_EVENT_CONN_FAILED)
-		connectionFailed(e->event.failure);
-
-	else if (e->type == GG_EVENT_DISCONNECT)
-		emit serverDisconnected();
-
-	else if (e->type == GG_EVENT_NONE)
-		kdebugm (KDEBUG_NETWORK, "GG_EVENT_NONE\n");
 
 	gg_free_event(e);
 	--socketEventCalls;

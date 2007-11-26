@@ -15,6 +15,7 @@
 
 #include "debug.h"
 #include "file_transfer.h"
+#include "file_transfer_manager.h"
 #include "icons_manager.h"
 #include "message_box.h"
 #include "misc.h"
@@ -140,7 +141,7 @@ void FileTransferWidget::newFileTransfer(FileTransfer *)
 	kdebugf();
 }
 
-void FileTransferWidget::fileTransferFailed(FileTransfer *, FileTransfer::FileTransferError)
+void FileTransferWidget::fileTransferFailed(FileTransfer *, FileTransfer::FileTransferError error)
 {
 	kdebugf();
 
@@ -172,6 +173,11 @@ void FileTransferWidget::fileTransferStatusChanged(FileTransfer *ft)
 		case FileTransfer::StatusFinished:
 			status->setText(tr("<b>Finished</b>"));
 			break;
+		case FileTransfer::StatusRejected:
+			status->setText(tr("<b>Rejected</b>"));
+			pauseButton->hide();
+			continueButton->hide();
+			break;
 
 		default:
 			pauseButton->hide();
@@ -179,7 +185,7 @@ void FileTransferWidget::fileTransferStatusChanged(FileTransfer *ft)
 	}
 }
 
-void FileTransferWidget::fileTransferFinished(FileTransfer *, bool)
+void FileTransferWidget::fileTransferFinished(FileTransfer *)
 {
 	kdebugf();
 
@@ -243,7 +249,7 @@ FileTransferWindow::FileTransferWindow(QWidget *parent, const char *name)
 
 	loadGeometry(this, "General", "TransferWindowGeometry", 200, 200, 500, 300);
 
-	CONST_FOREACH(i, FileTransfer::AllTransfers)
+	CONST_FOREACH(i, file_transfer_manager->transfers())
 	{
 		(*i)->addListener(this, true);
 		newFileTransfer(*i);
@@ -258,7 +264,7 @@ FileTransferWindow::~FileTransferWindow()
 {
 	kdebugf();
 
-	CONST_FOREACH(i, FileTransfer::AllTransfers)
+	CONST_FOREACH(i, file_transfer_manager->transfers())
 		(*i)->removeListener(this, true);
 
 	saveGeometry(this, "General", "TransferWindowGeometry");
@@ -279,7 +285,7 @@ void FileTransferWindow::keyPressEvent(QKeyEvent *e)
 
 void FileTransferWindow::clearClicked()
 {
-	FOREACH(i, FileTransfer::AllTransfers)
+	FOREACH(i, file_transfer_manager->transfers())
 		if ((*i)->status() == FileTransfer::StatusFinished)
 			(*i)->deleteLater();
 }
@@ -320,7 +326,7 @@ void FileTransferWindow::fileTransferStatusChanged(FileTransfer *)
 {
 }
 
-void FileTransferWindow::fileTransferFinished(FileTransfer *fileTransfer, bool ok)
+void FileTransferWindow::fileTransferFinished(FileTransfer *fileTransfer)
 {
 }
 

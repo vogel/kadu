@@ -12,78 +12,98 @@
 
 #include <qobject.h>
 
+#include "dcc_handler.h"
 #include "file_transfer.h"
 
 class ChatWidget;
 
 class FileTransferWindow;
 
-class FileTransferManager : public QObject
+class FileTransferManager : public QObject, DccHandler
 {
 	Q_OBJECT
 
-	private:
-		FileTransferWindow *fileTransferWindow;
+	FileTransferWindow *fileTransferWindow;
+	int toggleFileTransferWindowMenuId;
 
-		int toggleFileTransferWindowMenuId;
+	QStringList selectFilesToSend();
 
-		QStringList selectFilesToSend();
+	void needFileAccept(DccSocket* socket);
+	void sendFile(const UserListElements users);
 
-		void needFileAccept(DccSocket* socket);
-		void needFileInfo(DccSocket* socket);
+	QValueList<FileTransfer *> Transfers;
 
-		void sendFile(const UserListElements users);
+private slots:
+	void userboxMenuPopup();
+	void sendFile();
+	void kaduKeyPressed(QKeyEvent* e);
 
-	private slots:
-		void userboxMenuPopup();
-		void sendFile();
-		void kaduKeyPressed(QKeyEvent* e);
-		void connectionBroken(DccSocket* socket);
+	void chatCreated(ChatWidget *chat);
+	void chatDestroying(ChatWidget *chat);
 
-		void dccEvent(DccSocket *socket, bool &lock);
-		void dccError(DccSocket* socket);
+	void fileDropped(const UserGroup *group, const QString &);
 
-		void setState(DccSocket* socket);
-		void socketDestroying(DccSocket* socket);
+	void toggleFileTransferWindow();
+	void sendFileActionActivated(const UserGroup* users);
 
-		void chatCreated(ChatWidget *chat);
-		void chatDestroying(ChatWidget *chat);
+	void transferDestroyed(QObject *transfer);
 
-		void fileDropped(const UserGroup *group, const QString &);
+public:
+	FileTransferManager(QObject *parent = 0, const char *name = 0);
+	virtual ~FileTransferManager();
 
-		void toggleFileTransferWindow();
-		void sendFileActionActivated(const UserGroup* users);
+	void acceptFile(FileTransfer *ft, DccSocket *socket, QString fileName, bool resume = false);
+	void discardFile(DccSocket *socket);
 
-	public:
-		FileTransferManager(QObject *parent = 0, const char *name = 0);
-		virtual ~FileTransferManager();
+	void showFileTransferWindow();
 
-		void acceptFile(FileTransfer *ft, DccSocket *socket, QString fileName, bool resume = false);
-		void discardFile(DccSocket *socket);
+	void readFromConfig();
+	void writeToConfig();
 
-		void showFileTransferWindow();
+	void addSocket(DccSocket *socket) {}
+	void removeSocket(DccSocket *socket) {}
 
-		void readFromConfig();
-		void writeToConfig();
+	int dccType() { return 0; }
 
-	private slots:
-		void fileTransferFinishedSlot(FileTransfer *fileTransfer, bool ok);
-		void fileTransferWindowDestroyed();
+	bool socketEvent(DccSocket *socket, bool &lock);
+	void socketStateChanged(DccSocket *socket) {}
 
-	public slots:
-		/**
-			Inicjuje wysy³anie pliku do podanego odbiorcy.
-		**/
-		void sendFile(UinType receiver);
+	void connectionDone(DccSocket *socket) {}
+	void connectionError(DccSocket *socket) {}
 
-		void sendFile(UinType receiver, const QString &filename);
+	void connectionAccepted(DccSocket *socket) {}
+	void connectionRejected(DccSocket *socket) {}
 
-	signals:
-		void newFileTransfer(FileTransfer *);
-		void fileTransferFailed(FileTransfer *, FileTransfer::FileTransferError);
-		void fileTransferStatusChanged(FileTransfer *);
-		void fileTransferFinished(FileTransfer *, bool);
-		void fileTransferDestroying(FileTransfer *);
+	void addTransfer(FileTransfer *transfer);
+	void removeTransfer(FileTransfer *transfer);
+
+	const QValueList<FileTransfer *> transfers();
+
+	FileTransfer * byUin(UinType);
+	FileTransfer * byUinAndStatus(UinType, FileTransfer::FileTransferStatus);
+	FileTransfer * search(FileTransfer::FileTransferType type, const UinType &contact, const QString &fileName,
+		FileTransfer::FileNameType fileNameType = FileTransfer::FileNameFull);
+	void destroyAll();
+
+private slots:
+	void fileTransferFinishedSlot(FileTransfer *fileTransfer);
+	void fileTransferWindowDestroyed();
+
+public slots:
+	/**
+		Inicjuje wysy³anie pliku do podanego odbiorcy.
+	**/
+	void sendFile(UinType receiver);
+
+	void sendFile(UinType receiver, const QString &filename);
+
+signals:
+	void newFileTransfer(FileTransfer *);
+	void fileTransferFailed(FileTransfer *, FileTransfer::FileTransferError);
+	void fileTransferStatusChanged(FileTransfer *);
+	void fileTransferFinished(FileTransfer *);
+	void fileTransferDestroying(FileTransfer *);
+
 };
 
 extern FileTransferManager* file_transfer_manager;

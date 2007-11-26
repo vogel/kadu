@@ -50,7 +50,7 @@ class FileTransferWidget : public QFrame
 		void newFileTransfer(FileTransfer *);
 		void fileTransferFailed(FileTransfer *, FileTransfer::FileTransferError);
 		void fileTransferStatusChanged(FileTransfer *);
-		void fileTransferFinished(FileTransfer *, bool);
+		void fileTransferFinished(FileTransfer *);
 		void fileTransferDestroying(FileTransfer *);
 };
 
@@ -80,7 +80,7 @@ class FileTransferWindow : public QFrame
 		void newFileTransfer(FileTransfer *);
 		void fileTransferFailed(FileTransfer *, FileTransfer::FileTransferError);
 		void fileTransferStatusChanged(FileTransfer *);
-		void fileTransferFinished(FileTransfer *, bool);
+		void fileTransferFinished(FileTransfer *);
 		void fileTransferDestroying(FileTransfer *);
 };
 

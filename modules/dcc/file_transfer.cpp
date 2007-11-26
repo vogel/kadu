@@ -9,7 +9,9 @@
 
 #include "config_file.h"
 #include "dcc.h"
+#include "dcc_socket.h"
 #include "debug.h"
+#include "file_transfer.h"
 #include "file_transfer_manager.h"
 #include "message_box.h"
 #include "protocol.h"
@@ -18,12 +20,12 @@
 
 uint32_t gg_fix32(uint32_t);
 
-FileTransfer::FileTransfer(FileTransferManager *listener,
-	FileTransferType type, const UinType &contact, const QString &fileName) :
-	QObject(0, 0), mainListener(listener), listeners(), Socket(0), Type(type), Status(StatusFrozen),
+FileTransfer::FileTransfer(FileTransferManager *listener, DccVersion version,
+		FileTransferType type, const UinType &contact, const QString &fileName) :
+	QObject(0, 0), mainListener(listener), listeners(), Socket(0), Version(version), Type(type), Status(StatusFrozen),
 	Contact(contact), FileName(fileName), GaduFileName(), connectionTimeoutTimer(0),
 	updateFileInfoTimer(0), FileSize(0), TransferedSize(0), PrevTransferedSize(0),
-	Speed(0), dccFinished(false), direct(false)
+	Speed(0)
 {
 	kdebugf();
 
@@ -31,11 +33,9 @@ FileTransfer::FileTransfer(FileTransferManager *listener,
 	{
 		connectSignals(mainListener, false);
 
-		connect(this, SIGNAL(fileTransferFinished(FileTransfer *, bool)),
-			mainListener, SLOT(fileTransferFinishedSlot(FileTransfer *, bool)));
+		connect(this, SIGNAL(fileTransferFinished(FileTransfer *)),
+			mainListener, SLOT(fileTransferFinishedSlot(FileTransfer *)));
 	}
-
-	AllTransfers.insert(AllTransfers.begin(), this);
 
 	emit newFileTransfer(this);
 	emit fileTransferStatusChanged(this);
@@ -59,52 +59,19 @@ FileTransfer::~FileTransfer()
 	if (mainListener)
 		disconnectSignals(mainListener, false);
 
+	file_transfer_manager->removeTransfer(this);
+
 	if (Socket)
-		Transfers.remove(Socket);
-
-	AllTransfers.remove(this);
-
-	if (!dccFinished && Socket)
 	{
 		kdebugmf(KDEBUG_WARNING, "DCC transfer has not finished yet!\n");
 		delete Socket;
 		Socket = 0;
 	}
 
-	if (connectionTimeoutTimer)
-	{
-		delete connectionTimeoutTimer;
-		connectionTimeoutTimer = 0;
-	}
-
-	if (updateFileInfoTimer)
-	{
-		delete updateFileInfoTimer;
-		updateFileInfoTimer = 0;
-	}
+	cancelTimeout();
+	stopUpdateFileInfo();
 
 	kdebugf2();
-}
-
-FileTransfer * FileTransfer::search(FileTransferType type, const UinType &contact, const QString &fileName,
-	FileNameType fileNameType)
-{
-	kdebugf();
-
-	FOREACH(i, AllTransfers)
-		if ((*i)->Type == type && (*i)->Contact == contact)
-			if (fileNameType == FileNameFull)
-			{
-				if ((*i)->FileName == fileName)
-					return *i;
-			}
-			else
-			{
-				if ((*i)->GaduFileName == fileName)
-					return *i;
-			}
-
-	return 0;
 }
 
 void FileTransfer::connectSignals(QObject *object, bool listenerHasSlots)
@@ -118,8 +85,8 @@ void FileTransfer::connectSignals(QObject *object, bool listenerHasSlots)
 			object, SLOT(fileTransferFailed(FileTransfer *, FileTransfer::FileTransferError)));
 		connect(this, SIGNAL(fileTransferStatusChanged(FileTransfer *)),
 			object, SLOT(fileTransferStatusChanged(FileTransfer *)));
-		connect(this, SIGNAL(fileTransferFinished(FileTransfer *, bool)),
-			object, SLOT(fileTransferFinished(FileTransfer *, bool)));
+		connect(this, SIGNAL(fileTransferFinished(FileTransfer *)),
+			object, SLOT(fileTransferFinished(FileTransfer *)));
 		connect(this, SIGNAL(fileTransferDestroying(FileTransfer *)),
 			object, SLOT(fileTransferDestroying(FileTransfer *)));
 	}
@@ -130,8 +97,8 @@ void FileTransfer::connectSignals(QObject *object, bool listenerHasSlots)
 			object, SIGNAL(fileTransferFailed(FileTransfer *, FileTransfer::FileTransferError)));
 		connect(this, SIGNAL(fileTransferStatusChanged(FileTransfer *)),
 			object, SIGNAL(fileTransferStatusChanged(FileTransfer *)));
-		connect(this, SIGNAL(fileTransferFinished(FileTransfer *, bool)),
-			object, SIGNAL(fileTransferFinished(FileTransfer *, bool)));
+		connect(this, SIGNAL(fileTransferFinished(FileTransfer *)),
+			object, SIGNAL(fileTransferFinished(FileTransfer *)));
 		connect(this, SIGNAL(fileTransferDestroying(FileTransfer *)),
 			object, SIGNAL(fileTransferDestroying(FileTransfer *)));
 	}
@@ -148,8 +115,8 @@ void FileTransfer::disconnectSignals(QObject *object, bool listenerHasSlots)
 			object, SLOT(fileTransferFailed(FileTransfer *, FileTransfer::FileTransferError)));
 		disconnect(this, SIGNAL(fileTransferStatusChanged(FileTransfer *)),
 			object, SLOT(fileTransferStatusChanged(FileTransfer *)));
-		disconnect(this, SIGNAL(fileTransferFinished(FileTransfer *, bool)),
-			object, SLOT(fileTransferFinished(FileTransfer *, bool)));
+		disconnect(this, SIGNAL(fileTransferFinished(FileTransfer *)),
+			object, SLOT(fileTransferFinished(FileTransfer *)));
 		disconnect(this, SIGNAL(fileTransferDestroying(FileTransfer *)),
 			object, SLOT(fileTransferDestroying(FileTransfer *)));
 	}
@@ -160,8 +127,8 @@ void FileTransfer::disconnectSignals(QObject *object, bool listenerHasSlots)
 			object, SIGNAL(fileTransferFailed(FileTransfer *, FileTransfer::FileTransferError)));
 		disconnect(this, SIGNAL(fileTransferStatusChanged(FileTransfer *)),
 			object, SIGNAL(fileTransferStatusChanged(FileTransfer *)));
-		disconnect(this, SIGNAL(fileTransferFinished(FileTransfer *, bool)),
-			object, SIGNAL(fileTransferFinished(FileTransfer *, bool)));
+		disconnect(this, SIGNAL(fileTransferFinished(FileTransfer *)),
+			object, SIGNAL(fileTransferFinished(FileTransfer *)));
 		disconnect(this, SIGNAL(fileTransferDestroying(FileTransfer *)),
 			object, SIGNAL(fileTransferDestroying(FileTransfer *)));
 	}
@@ -181,252 +148,6 @@ void FileTransfer::removeListener(QObject *listener, bool listenerHasSlots)
 
 	disconnectSignals(listener, listenerHasSlots);
 	listeners.remove(qMakePair(listener, listenerHasSlots));
-}
-
-void FileTransfer::start(StartType startType)
-{
-	kdebugf();
-
-	if (gadu->currentStatus().isOffline())
-		return;
-
-	if (Status != StatusFrozen)
-		return;
-
-	if (Type == TypeSend)
-	{
-		if (config_file.readBoolEntry("Network", "AllowDCC") && dcc_manager->dccEnabled())
-		{
-			if (DccSocket::count() < 8)
-			{
-				connectionTimeoutTimer = new QTimer();
-				connect(connectionTimeoutTimer, SIGNAL(timeout()), this, SLOT(connectionTimeout()));
-				connectionTimeoutTimer->start(5000, true);
-
-				UserListElement user = userlist->byID("Gadu", QString::number(Contact));
-
-				DccManager::TryType type = dcc_manager->initDCCConnection(
-					user.IP("Gadu").ip4Addr(),
-					user.port("Gadu"),
-					config_file.readNumEntry("General", "UIN"),
-					user.ID("Gadu").toUInt(),
-					SLOT(dccSendFile(uint32_t, uint16_t, UinType, UinType, struct gg_dcc **)),
-					GG_SESSION_DCC_SEND
-				);
-
-				direct = type == DccManager::DIRECT;
-				Status = StatusWaitForConnection;
-				prepareFileInfo();
-				emit fileTransferStatusChanged(this);
-
-				updateFileInfoTimer = new QTimer();
-				connect(updateFileInfoTimer, SIGNAL(timeout()), this, SLOT(updateFileInfo()));
-				updateFileInfoTimer->start(1000, true);
-			}
-			else
-			{
-				Status = StatusFrozen;
-				emit fileTransferStatusChanged(this);
-				emit fileTransferFailed(this, ErrorDccTooManyConnections);
-			}
-		}
-		else
-		{
-			Status = StatusFrozen;
-			emit fileTransferStatusChanged(this);
-			emit fileTransferFailed(this, ErrorDccDisabled);
-		}
-	}
-	else
-	{
-		prepareFileInfo();
-
-		UserListElement ule = userlist->byID("Gadu", QString::number(Contact));
-		if (startType == StartRestore)
-		{
-			MessageBox::msg(
-				tr("This option only sends a remind message to %1. The transfer will not start immediately.")
-				.arg(ule.altNick()));
-		}
-
-		UserListElements recv(ule);
-
-		QString message(
-			tr("Hello. I am an automatic file-transfer reminder. Could you please send me a file named %1?"));
-		if (!gadu->currentStatus().isOffline())
-			gadu->sendMessage(recv, message.arg(QUrl(FileName).fileName()));
-		if (gadu->seqNum() == -1)
-			MessageBox::msg(tr("Error: message was not sent"), false, "Warning");
-	}
-}
-
-void FileTransfer::stop(StopType stopType)
-{
-	kdebugf();
-
-	if (connectionTimeoutTimer)
-	{
-		delete connectionTimeoutTimer;
-		connectionTimeoutTimer = 0;
-	}
-
-	if (updateFileInfoTimer)
-	{
-		delete updateFileInfoTimer;
-		updateFileInfoTimer = 0;
-	}
-
-	if (Socket)
-	{
-		Transfers.remove(Socket);
-		delete Socket;
-		Socket = 0;
-	}
-
-	Speed = 0;
-
-	if (Status != StatusFinished)
-	{
-		Status = StatusFrozen;
-		emit fileTransferStatusChanged(this);
-	}
-}
-
-void FileTransfer::connectionTimeout()
-{
-	kdebugf();
-
-	delete connectionTimeoutTimer;
-	connectionTimeoutTimer = 0;
-	Status = StatusFrozen;
-
-	if (updateFileInfoTimer)
-	{
-		delete updateFileInfoTimer;
-		updateFileInfoTimer = 0;
-	}
-
-	emit fileTransferStatusChanged(this);
-	emit fileTransferFailed(this, ErrorConnectionTimeout);
-}
-
-void FileTransfer::needFileInfo()
-{
-	kdebugf();
-
-	if (connectionTimeoutTimer)
-	{
-		delete connectionTimeoutTimer;
-		connectionTimeoutTimer = 0;
-	}
-
-	if (updateFileInfoTimer)
-	{
-		delete updateFileInfoTimer;
-		updateFileInfoTimer = 0;
-	}
-
-	direct = false;
-
-	if (FileName.isEmpty())
-	{
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Abort transfer\n");
-		Socket->discard();
-
-		Status = StatusFrozen;
-		emit fileTransferStatusChanged(this);
-		emit fileTransferFailed(this, ErrorDccSocketTransfer);
-
-		return;
-	}
-
-	gadu->dccFillFileInfo(Socket->ggDccStruct(), FileName);
-
-	Status = StatusTransfer;
-
-	updateFileInfoTimer = new QTimer();
-	connect(updateFileInfoTimer, SIGNAL(timeout()), this, SLOT(updateFileInfo()));
-	updateFileInfoTimer->start(1000, true);
-
-	emit fileTransferStatusChanged(this);
-}
-
-void FileTransfer::connectionBroken()
-{
-	kdebugf();
-
-	Socket->setState(DCC_SOCKET_TRANSFER_ERROR);
-
-	if (updateFileInfoTimer)
-	{
-		delete updateFileInfoTimer;
-		updateFileInfoTimer = 0;
-	}
-
-	Status = StatusFrozen;
-	emit fileTransferStatusChanged(this);
-	emit fileTransferFailed(this, ErrorDccSocketTransfer);
-}
-
-void FileTransfer::dccError()
-{
-	kdebugf();
-
-	Socket->setState(DCC_SOCKET_TRANSFER_ERROR);
-
-	if (updateFileInfoTimer)
-	{
-		delete updateFileInfoTimer;
-		updateFileInfoTimer = 0;
-	}
-
-	Status = StatusFrozen;
-	emit fileTransferStatusChanged(this);
-	emit fileTransferFailed(this, ErrorDccSocketTransfer);
-
-	if (direct)
-	{
-		direct = false;
-		UserListElement user = userlist->byID("Gadu", QString::number(Contact));
-		dcc_manager->initDCCConnection(
-			user.IP("Gadu").ip4Addr(),
-			user.port("Gadu"),
-			config_file.readNumEntry("General", "UIN"),
-			user.ID("Gadu").toUInt(),
-			SLOT(dccSendFile(uint32_t, uint16_t, UinType, UinType, struct gg_dcc **)),
-			GG_SESSION_DCC_SEND, true
-		);
-	}
-}
-
-void FileTransfer::setSocket(DccSocket *socket)
-{
-	kdebugf();
-
-	if (Socket)
-		if (Transfers.contains(Socket))
-			Transfers.remove(Socket);
-
-	Socket = socket;
-
-	if (Socket)
-	{
-		Transfers.insert(Socket, this);
-
-		GaduFileName = cp2unicode(socket->ggDccStruct()->file_info.filename);
-		prepareFileInfo();
-
-		if (!updateFileInfoTimer)
-		{
-			updateFileInfoTimer = new QTimer();
-			connect(updateFileInfoTimer, SIGNAL(timeout()), this, SLOT(updateFileInfo()));
-		}
-
-		updateFileInfoTimer->start(1000, true);
-
-		Status = StatusTransfer;
-		emit fileTransferStatusChanged(this);
-	}
 }
 
 FileTransfer::FileTransferType FileTransfer::type()
@@ -488,151 +209,6 @@ long long int FileTransfer::transferedSize()
 	return TransferedSize;
 }
 
-void FileTransfer::finished(bool successfull)
-{
-	kdebugf();
-
-	if (updateFileInfoTimer)
-	{
-		delete updateFileInfoTimer;
-		updateFileInfoTimer = 0;
-	}
-
-	dccFinished = true;
-
-	if (Socket)
-	{
-		FileSize = gg_fix32(Socket->ggDccStruct()->file_info.size);
-		TransferedSize = gg_fix32(Socket->ggDccStruct()->offset);
-	}
-
-	if (TransferedSize == FileSize && FileSize != 0)
-		Status = StatusFinished;
-	else
-		Status = StatusFrozen;
-
-	Speed = 0;
-
-	successfull = successfull && TransferedSize == FileSize && FileSize != 0;
-
-	emit fileTransferFinished(this, successfull);
-	emit fileTransferStatusChanged(this);
-}
-
-void FileTransfer::prepareFileInfo()
-{
-	kdebugf();
-
-	if (!Socket)
-		return;
-
-	FileSize = gg_fix32(Socket->ggDccStruct()->file_info.size);
-	TransferedSize = PrevTransferedSize = gg_fix32(Socket->ggDccStruct()->offset);
-
-	emit fileTransferStatusChanged(this);
-	kdebugf2();
-}
-
-void FileTransfer::updateFileInfo()
-{
-	kdebugf();
-
-	if (Status == StatusFinished)
-		return;
-
-	if (!Socket)
-	{
-		if (updateFileInfoTimer)
-			updateFileInfoTimer->start(1000, true);
-		return;
-	}
-
-	Speed = (Socket->ggDccStruct()->offset - PrevTransferedSize) / 1024;
-	PrevTransferedSize = Socket->ggDccStruct()->offset;
-
-	FileSize = gg_fix32(Socket->ggDccStruct()->file_info.size);
-	TransferedSize = gg_fix32(Socket->ggDccStruct()->offset);
-
-	Status = StatusTransfer;
-	emit fileTransferStatusChanged(this);
-
-	updateFileInfoTimer->start(1000, true);
-
-	kdebugf2();
-}
-
-void FileTransfer::socketDestroying()
-{
-	kdebugf();
-
-	if (updateFileInfoTimer)
-	{
-		delete updateFileInfoTimer;
-		updateFileInfoTimer = 0;
-	}
-
-	if (Socket)
-	{
-		FileSize = gg_fix32(Socket->ggDccStruct()->file_info.size);
-		TransferedSize = gg_fix32(Socket->ggDccStruct()->offset);
-	}
-
-	setSocket(0);
-	if (Status != StatusFinished)
-	{
-		if (FileSize == TransferedSize && FileSize != 0)
-			Status = StatusFinished;
-		else
-			Status = StatusFrozen;
-
-		emit fileTransferStatusChanged(this);
-	}
-}
-
-FileTransfer* FileTransfer::bySocket(DccSocket* socket)
-{
-	kdebugf();
-
-	if (Transfers.contains(socket))
-		return Transfers[socket];
-	else
-		return 0;
-}
-
-FileTransfer * FileTransfer::byUin(UinType uin)
-{
-	kdebugf();
-
-	FOREACH(i, AllTransfers)
-		if ((*i)->Contact == uin && (*i)->Socket == 0)
-			return *i;
-
-	return 0;
-}
-
-FileTransfer * FileTransfer::byUinAndStatus(UinType uin, FileTransferStatus status)
-{
-	kdebugf();
-
-	FOREACH(i, AllTransfers)
-		if ((*i)->Contact == uin && (*i)->Socket == 0 && (*i)->Status == status)
-			return *i;
-
-	return 0;
-}
-
-void FileTransfer::destroyAll()
-{
-	kdebugf();
-	while (!AllTransfers.empty())
-	{
-		FileTransfer *ft = AllTransfers[0];
-		AllTransfers.pop_front();
-		delete ft;
-	}
-	kdebugf2();
-}
-
 QDomElement FileTransfer::toDomElement(const QDomElement &root)
 {
 	QDomElement dom = xml_config_file->createElement(root, "FileTransfer");
@@ -652,7 +228,8 @@ FileTransfer * FileTransfer::fromDomElement(const QDomElement &dom, FileTransfer
 	UinType Contact = static_cast<UinType>(dom.attribute("Contact").toULong());
 	QString FileName = dom.attribute("FileName");
 
-	FileTransfer *ft = new FileTransfer(listener, Type, Contact, FileName);
+	FileTransfer *ft = new FileTransfer(listener, DccUnknow, Type, Contact, FileName);
+
 	ft->GaduFileName = dom.attribute("GaduFileName");
 	ft->FileSize = dom.attribute("FileSize").toULong();
 	ft->TransferedSize = dom.attribute("TransferedSize").toULong();
@@ -660,10 +237,336 @@ FileTransfer * FileTransfer::fromDomElement(const QDomElement &dom, FileTransfer
 	if (ft->FileSize == ft->TransferedSize && ft->FileSize != 0)
 		ft->Status = StatusFinished;
 
+	// WTF ???
 	emit ft->fileTransferStatusChanged(ft);
 
 	return ft;
 }
 
-QValueList<FileTransfer *> FileTransfer::AllTransfers;
-QMap<DccSocket*, FileTransfer*> FileTransfer::Transfers;
+void FileTransfer::startTimeout()
+{
+	if (!connectionTimeoutTimer)
+	{
+		connectionTimeoutTimer = new QTimer();
+		connect(connectionTimeoutTimer, SIGNAL(timeout()), this, SLOT(connectionTimeout()));
+	}
+
+	connectionTimeoutTimer->start(60000, true);
+}
+
+void FileTransfer::cancelTimeout()
+{
+	if (connectionTimeoutTimer)
+	{
+		delete connectionTimeoutTimer;
+		connectionTimeoutTimer = 0;
+	}
+}
+
+void FileTransfer::setVersion()
+{
+	const UserListElement &ule = userlist->byID("Gadu", QString::number(Contact));
+	int version = ule.protocolData("Gadu", "Version").toUInt() & 0x0000ffff;
+
+	if (version >= 0x2a)
+		Version = Dcc7;
+	else
+		Version = Dcc6;
+}
+
+void FileTransfer::start(StartType startType)
+{
+	kdebugf();
+
+	if (gadu->currentStatus().isOffline())
+		return;
+
+	if (Status != StatusFrozen)
+		return;
+
+	setVersion();
+	if (Version == DccUnknow)
+		return;
+
+	prepareFileInfo();
+
+	if (Type == TypeSend)
+	{
+		if (config_file.readBoolEntry("Network", "AllowDCC") && dcc_manager->dccEnabled())
+		{
+			Status = StatusWaitForConnection;
+			emit fileTransferStatusChanged(this);
+			UserListElement user = userlist->byID("Gadu", QString::number(Contact));
+
+			switch (Version)
+			{
+				case Dcc6:
+					startTimeout();
+					dcc_manager->getFileTransferSocket(user.IP("Gadu").ip4Addr(), user.port("Gadu"), config_file.readNumEntry("General", "UIN"), user.ID("Gadu").toUInt(), this);
+					break;
+
+				case Dcc7:
+					startTimeout();
+					Socket = new DccSocket(gg_dcc7_send_file(gadu->session(), Contact, FileName, unicode2cp(FileName), 0)); // last param - hash
+					Socket->setHandler(this);
+					break;
+
+				default:
+					return;
+			}
+		}
+		else
+		{
+			Status = StatusFrozen;
+			emit fileTransferStatusChanged(this);
+			emit fileTransferFailed(this, ErrorDccDisabled);
+		}
+	}
+	else
+	{
+		if (startType != StartRestore)
+			return;
+
+		UserListElement ule = userlist->byID("Gadu", QString::number(Contact));
+		MessageBox::msg(
+			tr("This option only sends a remind message to %1. The transfer will not start immediately.")
+			.arg(ule.altNick()));
+
+		UserListElements recv(ule);
+
+		QString message(
+			tr("Hello. I am an automatic file-transfer reminder. Could you please send me a file named %1?"));
+		if (!gadu->currentStatus().isOffline())
+			gadu->sendMessage(recv, message.arg(QUrl(FileName).fileName()));
+		if (gadu->seqNum() == -1)
+			MessageBox::msg(tr("Error: message was not sent"), false, "Warning");
+	}
+}
+
+void FileTransfer::stop(StopType stopType)
+{
+	kdebugf();
+
+	cancelTimeout();
+	stopUpdateFileInfo();
+
+	if (Socket)
+	{
+		Socket->discard();
+		delete Socket;
+		Socket = 0;
+	}
+
+	Speed = 0;
+
+	if (Status != StatusFinished)
+	{
+		Status = StatusFrozen;
+		emit fileTransferStatusChanged(this);
+	}
+}
+
+void FileTransfer::connectionTimeout()
+{
+	kdebugf();
+
+	cancelTimeout();
+	stopUpdateFileInfo();
+
+	emit fileTransferStatusChanged(this);
+	emit fileTransferFailed(this, ErrorConnectionTimeout);
+}
+
+void FileTransfer::connectionError(DccSocket *socket)
+{
+	kdebugf();
+
+	cancelTimeout();
+	stopUpdateFileInfo();
+
+	Status = StatusFrozen;
+	emit fileTransferStatusChanged(this);
+	emit fileTransferFailed(this, ErrorDccSocketTransfer);
+}
+
+void FileTransfer::connectionRejected(DccSocket *socket)
+{
+	kdebugf();
+
+	cancelTimeout();
+	stopUpdateFileInfo();
+
+	Status = StatusRejected;
+	emit fileTransferStatusChanged(this);
+}
+
+void FileTransfer::addSocket(DccSocket *socket)
+{
+	kdebugf();
+
+	if (Socket)
+		disconnect(Socket, SIGNAL(destroyed()), this, SLOT(socketDestroyed()));
+
+	Socket = socket;
+
+	if (Socket)
+	{
+		connect(Socket, SIGNAL(destroyed()), this, SLOT(socketDestroyed()));
+		prepareFileInfo();
+		startUpdateFileInfo();
+
+		Status = StatusTransfer;
+		emit fileTransferStatusChanged(this);
+	}
+}
+
+void FileTransfer::removeSocket(DccSocket *socket)
+{
+	kdebugf();
+
+	if (Socket && (Socket == socket))
+	{
+		disconnect(Socket, SIGNAL(destroyed()), this, SLOT(socketDestroyed()));
+		Socket = 0;
+	}
+
+	kdebugf2();
+}
+
+void FileTransfer::prepareFileInfo()
+{
+	kdebugf();
+
+	if (!Socket)
+		return;
+
+	GaduFileName = cp2unicode(Socket->fileName());
+	FileSize = gg_fix32(Socket->fileSize());
+	TransferedSize = PrevTransferedSize = gg_fix32(Socket->fileOffset());
+
+	kdebugf2();
+}
+
+void FileTransfer::updateFileInfo()
+{
+	kdebugf();
+
+	if (Status == StatusFinished)
+		return;
+
+	if (!Socket)
+		return;
+
+	Speed = (Socket->fileOffset() - PrevTransferedSize) / 1024;
+	PrevTransferedSize = Socket->fileOffset();
+
+	FileSize = gg_fix32(Socket->fileSize());
+	TransferedSize = gg_fix32(Socket->fileOffset());
+
+	Status = StatusTransfer;
+	emit fileTransferStatusChanged(this);
+
+	kdebugf2();
+}
+
+void FileTransfer::socketDestroyed()
+{
+	kdebugf();
+
+	cancelTimeout();
+	stopUpdateFileInfo();
+
+	if (Socket)
+	{
+		FileSize = gg_fix32(Socket->fileSize());
+		TransferedSize = gg_fix32(Socket->fileOffset());
+	}
+
+	if (Status != StatusFinished)
+	{
+		if (FileSize == TransferedSize && FileSize != 0)
+			Status = StatusFinished;
+		else
+			Status = StatusFrozen;
+
+		emit fileTransferStatusChanged(this);
+	}
+
+	Socket = 0;
+}
+
+int FileTransfer::dccType()
+{
+	kdebugf();
+
+	if (Type == TypeSend)
+		return GG_SESSION_DCC_SEND;
+	else
+		return GG_SESSION_DCC_GET;
+}
+
+void FileTransfer::connectionDone(DccSocket *socket)
+{
+	kdebugf();
+
+	cancelTimeout();
+	stopUpdateFileInfo();
+
+	if (Socket)
+	{
+		FileSize = gg_fix32(Socket->fileSize());
+		TransferedSize = gg_fix32(Socket->fileOffset());
+	}
+
+	if (TransferedSize == FileSize && FileSize != 0)
+		Status = StatusFinished;
+	else
+		Status = StatusFrozen;
+
+	Speed = 0;
+
+	if (Status == StatusFinished)
+		emit fileTransferFinished(this);
+
+	emit fileTransferStatusChanged(this);
+}
+
+bool FileTransfer::socketEvent(DccSocket *socket, bool &lock)
+{
+	kdebugf();
+
+	if (socket != Socket)
+		return false; // TODO: add assertion
+
+	switch (Socket->ggDccEvent()->type)
+	{
+		case GG_EVENT_DCC_NEED_FILE_INFO:
+			Socket->fillFileInfo(FileName);
+			return true;
+
+		default:
+			return false;
+	}
+
+	return false;
+}
+
+void FileTransfer::startUpdateFileInfo()
+{
+	if (!updateFileInfoTimer)
+	{
+		updateFileInfoTimer = new QTimer();
+		connect(updateFileInfoTimer, SIGNAL(timeout()), this, SLOT(updateFileInfo()));
+	}
+
+	updateFileInfoTimer->start(1500);
+}
+
+void FileTransfer::stopUpdateFileInfo()
+{
+	if (updateFileInfoTimer)
+	{
+		delete updateFileInfoTimer;
+		updateFileInfoTimer = 0;
+	}
+}

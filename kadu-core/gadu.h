@@ -628,6 +628,8 @@ class GaduProtocol : public Protocol
 		GaduProtocol(const QString &id, QObject *parent = NULL, const char *name = NULL);
 		virtual ~GaduProtocol();
 
+		gg_session * session() { return Sess; }
+
 		void changeID(const QString &id);
 		/**
 			Zwraca serwer z którym jeste¶my po³±czeni lub do którego siê w³a¶nie ³±czymy.
@@ -702,6 +704,19 @@ class GaduProtocol : public Protocol
 		bool validateUserID(QString& uid);
 
 		virtual UserStatus *newStatus() const;
+
+		// --------------------
+		//  DCC
+		// --------------------
+
+		void dccRequest(UinType);
+		void dccFree(struct gg_dcc* d);
+		struct gg_event * dccWatchFd(struct gg_dcc *d);
+		void dccSetType(struct gg_dcc* d, int type);
+		int dccVoiceSend(struct gg_dcc *d, char *buf, int length);
+		void setDccIpAndPort(unsigned long dcc_ip, int dcc_port);
+
+		struct gg_dcc * dccVoiceChat(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin);
 
 	public slots:
 		/**
@@ -860,22 +875,6 @@ class GaduProtocol : public Protocol
 			 @todo niech Adrian zrobi porzadek z tym dcc...
 		**/
 		void freeEvent(struct gg_event* e);
-
-		// --------------------
-		//  DCC
-		// --------------------
-
-		void dccRequest(UinType);
-		void dccFree(struct gg_dcc* d);
-		struct gg_event* dccWatchFd(struct gg_dcc* d);
-		void dccSetType(struct gg_dcc* d, int type);
-		int dccFillFileInfo(struct gg_dcc* d, const QString& filename);
-		void dccSocketCreate(UinType uin, uint16_t port, struct gg_dcc **out);
-		void dccSendFile(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, struct gg_dcc **out);
-		void dccGetFile(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, struct gg_dcc **out);
-		void dccVoiceChat(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin, struct gg_dcc **out);
-		int dccVoiceSend(struct gg_dcc* d, char* buf, int length);
-		void setDccIpAndPort(unsigned long dcc_ip, int dcc_port);
 
 	protected slots:
 		/* sloty pod³±czane do sygna³ów z klasy UserList */
@@ -1044,6 +1043,9 @@ class GaduProtocol : public Protocol
 			Wywo³ywane, gdy chcemy odczytaæ token z obrazka
 		**/
 		void needTokenValue(QPixmap in, QString &out);
+
+		void dcc7Accepted(struct gg_dcc7 *);
+		void dcc7Rejected(struct gg_dcc7 *);
 
 };
 

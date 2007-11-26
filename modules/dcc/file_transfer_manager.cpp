@@ -14,6 +14,7 @@
 #include "chat_manager.h"
 #include "config_file.h"
 #include "dcc.h"
+#include "dcc_socket.h"
 #include "debug.h"
 #include "file_transfer.h"
 #include "file_transfer_notifications.h"
@@ -48,16 +49,7 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 	FOREACH(it, chat_manager->chats())
 		chatCreated(*it);
 
-	connect(dcc_manager, SIGNAL(connectionBroken(DccSocket*)),
-		this, SLOT(connectionBroken(DccSocket*)));
-	connect(dcc_manager, SIGNAL(dccEvent(DccSocket*, bool&)),
-		this, SLOT(dccEvent(DccSocket*, bool&)));
-	connect(dcc_manager, SIGNAL(dccError(DccSocket*)),
-		this, SLOT(dccError(DccSocket*)));
-	connect(dcc_manager, SIGNAL(setState(DccSocket*)),
-		this, SLOT(setState(DccSocket*)));
-	connect(dcc_manager, SIGNAL(socketDestroying(DccSocket*)),
-		this, SLOT(socketDestroying(DccSocket*)));
+	dcc_manager->addHandler(this);
 
 	QPopupMenu *MainMenu = kadu->mainMenu();
 	toggleFileTransferWindowMenuId = MainMenu->insertItem(icons_manager->loadIcon("SendFileWindow"), tr("Toggle transfers window"),
@@ -89,22 +81,15 @@ FileTransferManager::~FileTransferManager()
 	Action *sendFileAction = KaduActions["sendFileAction"];
 	delete sendFileAction;
 
+	dcc_manager->removeHandler(this);
+
 	disconnect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 	disconnect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroying(ChatWidget *)));
 
 	FOREACH(it, chat_manager->chats())
 		chatDestroying(*it);
 
-	disconnect(dcc_manager, SIGNAL(connectionBroken(DccSocket*)),
-		this, SLOT(connectionBroken(DccSocket*)));
-	disconnect(dcc_manager, SIGNAL(dccEvent(DccSocket*,bool&)),
-		this, SLOT(dccEvent(DccSocket*,bool&)));
-	disconnect(dcc_manager, SIGNAL(dccError(DccSocket*)),
-		this, SLOT(dccError(DccSocket*)));
-	disconnect(dcc_manager, SIGNAL(setState(DccSocket*)),
-		this, SLOT(setState(DccSocket*)));
-
-	FileTransfer::destroyAll();
+	destroyAll();
 
 	kadu->mainMenu()->removeItem(toggleFileTransferWindowMenuId);
 
@@ -122,7 +107,7 @@ void FileTransferManager::readFromConfig()
 {
 	kdebugf();
 
-	FileTransfer::destroyAll();
+	destroyAll();
 	QDomElement fts_elem = xml_config_file->findElement(xml_config_file->rootElement(), "FileTransfers");
 	if (fts_elem.isNull())
 		return;
@@ -132,7 +117,7 @@ void FileTransferManager::readFromConfig()
 	for (unsigned int i = 0; i < ft_list.count(); i++)
 	{
 		ft = FileTransfer::fromDomElement(ft_list.item(i).toElement(), this);
-		connect(ft, SIGNAL(fileTransferFinished(FileTransfer *, bool)), this, SLOT(fileTransferFinishedSlot(FileTransfer *, bool)));
+		connect(ft, SIGNAL(fileTransferFinished(FileTransfer *)), this, SLOT(fileTransferFinishedSlot(FileTransfer *)));
 	}
 
 	kdebugf2();
@@ -145,7 +130,7 @@ void FileTransferManager::writeToConfig()
 	QDomElement root_elem = xml_config_file->rootElement();
 	QDomElement fts_elem = xml_config_file->accessElement(root_elem, "FileTransfers");
 	xml_config_file->removeChildren(fts_elem);
-	CONST_FOREACH(i, FileTransfer::AllTransfers)
+	CONST_FOREACH(i, Transfers)
 		(*i)->toDomElement(fts_elem);
 	xml_config_file->sync();
 
@@ -164,9 +149,13 @@ void FileTransferManager::sendFile(UinType receiver, const QString &filename)
 {
 	kdebugf();
 
-	FileTransfer *ft = FileTransfer::search(FileTransfer::TypeSend, receiver, filename);
+	FileTransfer *ft = search(FileTransfer::TypeSend, receiver, filename);
+
 	if (!ft)
-		ft = new FileTransfer(this, FileTransfer::TypeSend, receiver, filename);
+	{
+		ft = new FileTransfer(this, DccUnknow, FileTransfer::TypeSend, receiver, filename);
+		addTransfer(ft);
+	}
 
 	if (!fileTransferWindow)
 		toggleFileTransferWindow();
@@ -324,21 +313,16 @@ void FileTransferManager::toggleFileTransferWindow()
 	kdebugf2();
 }
 
-void FileTransferManager::fileTransferFinishedSlot(FileTransfer *fileTransfer, bool ok)
+void FileTransferManager::fileTransferFinishedSlot(FileTransfer *fileTransfer)
 {
 	QString message;
 
-	if (ok && config_file.readBoolEntry("Network", "RemoveCompletedTransfers"))
+	if (config_file.readBoolEntry("Network", "RemoveCompletedTransfers"))
 		fileTransfer->deleteLater();
-
-	if (ok)
-		message = tr("File has been transferred sucessfully.");
-	else
-		message = tr("File transfer error!");
 
 	Notification *fileTransferFinishedNotification = new Notification("FileTransfer/Finished", "SendFile", UserListElements());
 	fileTransferFinishedNotification->setTitle(tr("File transfer finished"));
-	fileTransferFinishedNotification->setText(message);
+	fileTransferFinishedNotification->setText(tr("File has been transferred sucessfully."));
 
 	notification_manager->notify(fileTransferFinishedNotification);
 }
@@ -349,74 +333,20 @@ void FileTransferManager::fileTransferWindowDestroyed()
 	fileTransferWindow = 0;
 }
 
-void FileTransferManager::connectionBroken(DccSocket* socket)
+bool FileTransferManager::socketEvent(DccSocket *socket, bool &lock)
 {
-	kdebugf();
-	FileTransfer *ft = FileTransfer::bySocket(socket);
-	if (ft)
-	{
-		ft->connectionBroken();
-		return;
-	}
-	else
-		kdebugm(KDEBUG_INFO, "not my socket\n");
-	kdebugf2();
-}
-
-void FileTransferManager::dccEvent(DccSocket *socket, bool &lock)
-{
-	kdebugf();
-
 	switch (socket->ggDccEvent()->type)
 	{
 		case GG_EVENT_DCC_NEED_FILE_ACK:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEED_FILE_ACK! uin:%d peer_uin:%d\n",
-				socket->ggDccStruct()->uin, socket->ggDccStruct()->peer_uin);
+				socket->uin(), socket->peerUin());
 			needFileAccept(socket);
 			lock = true;
-			break;
-
-		case GG_EVENT_DCC_NEED_FILE_INFO:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEED_FILE_INFO! uin:%d peer_uin:%d\n",
-				socket->ggDccStruct()->uin, socket->ggDccStruct()->peer_uin);
-			needFileInfo(socket);
-			break;
+			return true;
 
 		default:
-			break;
+			return false;
 	}
-
-	kdebugf2();
-}
-
-void FileTransferManager::dccError(DccSocket* socket)
-{
-	kdebugf();
-	FileTransfer *ft = FileTransfer::bySocket(socket);
-	if (ft)
-	{
-		ft->dccError();
-		return;
-	}
-	else
-		kdebugm(KDEBUG_INFO, "not my socket\n");
-	kdebugf2();
-}
-
-void FileTransferManager::needFileInfo(DccSocket* socket)
-{
-	kdebugf();
-
-	FileTransfer *ft = FileTransfer::byUinAndStatus(socket->ggDccStruct()->peer_uin,
-		FileTransfer::StatusWaitForConnection);
-	if (ft)
-	{
-		ft->setSocket(socket);
-		ft->needFileInfo();
-		return;
-	}
-
-	kdebugf2();
 }
 
 void FileTransferManager::needFileAccept(DccSocket *socket)
@@ -426,34 +356,33 @@ void FileTransferManager::needFileAccept(DccSocket *socket)
 	QString fileName;
 	QString question;
 
-	QString fileSize = QString("%1").arg((float)(socket->ggDccStruct()->file_info.size / 1024), 0, 'f', 2);
+	QString fileSize = QString("%1").arg((float)(socket->fileSize() / 1024), 0, 'f', 2);
 
- 	FileTransfer *ft = FileTransfer::search(FileTransfer::TypeReceive, socket->ggDccStruct()->peer_uin,
- 		cp2unicode(socket->ggDccStruct()->file_info.filename), FileTransfer::FileNameGadu);
+	FileTransfer *ft = search(FileTransfer::TypeReceive, socket->peerUin(), cp2unicode(socket->fileName()), FileTransfer::FileNameGadu);
 
 	NewFileTransferNotification *newFileTransferNotification;
 
- 	if (ft)
- 	{
+	if (ft)
+	{
 		newFileTransferNotification = new NewFileTransferNotification(ft, socket,
-			userlist->byID("Gadu", QString::number(socket->ggDccStruct()->peer_uin)), FileTransfer::StartRestore);
+			userlist->byID("Gadu", QString::number(socket->peerUin())), FileTransfer::StartRestore);
 
- 		question = narg(tr("User %1 want to send you a file %2\nof size %3kB.\n"
- 		                   "This is probably a next part of %4\n What should I do?"),
- 			userlist->byID("Gadu", QString::number(socket->ggDccStruct()->peer_uin)).altNick(),
- 			cp2unicode(socket->ggDccStruct()->file_info.filename),
+		question = narg(tr("User %1 want to send you a file %2\nof size %3kB.\n"
+		                   "This is probably a next part of %4\n What should I do?"),
+			userlist->byID("Gadu", QString::number(socket->peerUin())).altNick(),
+			cp2unicode(socket->fileName()),
 			fileSize,
- 			ft->fileName()
- 		);
+			ft->fileName()
+		);
 	}
 	else
 	{
 		newFileTransferNotification = new NewFileTransferNotification(ft, socket,
-			userlist->byID("Gadu", QString::number(socket->ggDccStruct()->peer_uin)), FileTransfer::StartNew);
+			userlist->byID("Gadu", QString::number(socket->peerUin())), FileTransfer::StartNew);
 
- 		question = narg(tr("User %1 wants to send us a file %2\nof size %3kB. Accept transfer?"),
- 			userlist->byID("Gadu", QString::number(socket->ggDccStruct()->peer_uin)).altNick(),
- 			cp2unicode(socket->ggDccStruct()->file_info.filename),
+		question = narg(tr("User %1 wants to send us a file %2\nof size %3kB. Accept transfer?"),
+			userlist->byID("Gadu", QString::number(socket->peerUin())).altNick(),
+			cp2unicode(socket->fileName()),
 			fileSize
 		);
 	}
@@ -476,22 +405,9 @@ void FileTransferManager::acceptFile(FileTransfer *ft, DccSocket *socket, QStrin
 
 	while (true)
 	{
-		if (socket == NULL)
-		{
-			kdebugm(KDEBUG_INFO, "socket is null");
-			return;
-		}
-
-		if (socket->ggDccStruct() == NULL)
-		{
-			kdebugm(KDEBUG_INFO, "socket ggDccStruct is null");
-			socket->discard();
-			return;
-		}
-
 		if (!haveFileName || fileName.isEmpty())
 			fileName = QFileDialog::getSaveFileName(config_file.readEntry("Network", "LastDownloadDirectory")
-				+ cp2unicode(socket->ggDccStruct()->file_info.filename),
+				+ cp2unicode(socket->fileName()),
 				QString::null, 0, "save file", tr("Select file location"));
 
 		if (fileName.isEmpty())
@@ -532,23 +448,26 @@ void FileTransferManager::acceptFile(FileTransfer *ft, DccSocket *socket, QStrin
 		else
 			flags |= O_CREAT | O_TRUNC;
 
-		if ((socket->ggDccStruct()->file_fd = open(fileName.local8Bit().data(), flags, 0600)) == -1)
-			MessageBox::msg(tr("Could not open file. Select another one."), false, "Warning");
+		if (!socket->setFile(open(fileName.local8Bit().data(), flags)))
+			MessageBox::msg(tr("Could not open file. Select another one."), true, "Warning");
 		else
 		{
-			socket->ggDccStruct()->offset = fi.size();
+			socket->setOffset(fi.size());
 
- 			FileTransfer *ft = FileTransfer::search(FileTransfer::TypeReceive, socket->ggDccStruct()->peer_uin,
+ 			FileTransfer *ft = search(FileTransfer::TypeReceive, socket->peerUin(),
 		 		fileName);
 
 			if (!ft)
-				ft = new FileTransfer(this, FileTransfer::TypeReceive, socket->ggDccStruct()->peer_uin, fileName);
+			{
+				ft = new FileTransfer(this, DccUnknow, FileTransfer::TypeReceive, socket->peerUin(), fileName);
+				addTransfer(ft);
+			}
 
-			ft->setSocket(socket);
+			socket->setHandler(ft);
+
 			showFileTransferWindow();
 
 			ft->start();
-			socket->enableNotifiers();
 
 			break;
 		}
@@ -564,29 +483,82 @@ void FileTransferManager::discardFile(DccSocket *socket)
 	kdebugf2();
 }
 
-void FileTransferManager::setState(DccSocket* socket)
+void FileTransferManager::addTransfer(FileTransfer *transfer)
 {
-	kdebugf();
+	connect(transfer, SIGNAL(destroyed(QObject *)), this, SLOT(transferDestroyed(QObject *)));
 
-	FileTransfer *ft = FileTransfer::bySocket(socket);
-	if (ft != NULL)
-		ft->finished(socket->state() == DCC_SOCKET_TRANSFER_FINISHED);
-	else
-		kdebugm(KDEBUG_INFO, "not my socket\n");
-
-	kdebugf2();
+	Transfers.append(transfer);
 }
 
-void FileTransferManager::socketDestroying(DccSocket* socket)
+void FileTransferManager::removeTransfer(FileTransfer *transfer)
+{
+	Transfers.remove(transfer);
+}
+
+void FileTransferManager::transferDestroyed(QObject *transfer)
+{
+	FileTransfer *ft = dynamic_cast<FileTransfer *>(transfer);
+	if (ft)
+		removeTransfer(ft);
+}
+
+const QValueList<FileTransfer *> FileTransferManager::transfers()
+{
+	return Transfers;
+}
+
+FileTransfer * FileTransferManager::search(FileTransfer::FileTransferType type, const UinType &contact, const QString &fileName,
+	FileTransfer::FileNameType fileNameType)
 {
 	kdebugf();
 
-	FileTransfer *ft = FileTransfer::bySocket(socket);
-	if (ft)
-		ft->socketDestroying();
-	else
-		kdebugm(KDEBUG_INFO, "not my socket\n");
+	FOREACH(i, Transfers)
+		if ((*i)->Type == type && (*i)->Contact == contact)
+			if (fileNameType == FileTransfer::FileNameFull)
+			{
+				if ((*i)->FileName == fileName)
+					return *i;
+			}
+			else
+			{
+				if ((*i)->GaduFileName == fileName)
+					return *i;
+			}
 
+	return 0;
+}
+
+FileTransfer * FileTransferManager::byUin(UinType uin)
+{
+	kdebugf();
+
+	FOREACH(i, Transfers)
+		if ((*i)->Contact == uin && (*i)->unused())
+			return *i;
+
+	return 0;
+}
+
+FileTransfer * FileTransferManager::byUinAndStatus(UinType uin, FileTransfer::FileTransferStatus status)
+{
+	kdebugf();
+
+	FOREACH(i, Transfers)
+		if ((*i)->Contact == uin && (*i)->unused() == 0 && (*i)->Status == status)
+			return *i;
+
+	return 0;
+}
+
+void FileTransferManager::destroyAll()
+{
+	kdebugf();
+	while (!Transfers.empty())
+	{
+		FileTransfer *ft = Transfers[0];
+		Transfers.pop_front();
+		delete ft;
+	}
 	kdebugf2();
 }
 
