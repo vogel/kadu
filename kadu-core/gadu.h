@@ -1044,6 +1044,7 @@ class GaduProtocol : public Protocol
 		**/
 		void needTokenValue(QPixmap in, QString &out);
 
+		void dcc7New(struct gg_dcc7 *);
 		void dcc7Accepted(struct gg_dcc7 *);
 		void dcc7Rejected(struct gg_dcc7 *);
 

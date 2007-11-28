@@ -38,7 +38,7 @@ private slots:
 public slots:
 
 	virtual void callbackAccept();
-	virtual void callbackDiscard();
+	virtual void callbackReject();
 
 public:
 

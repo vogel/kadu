@@ -183,7 +183,7 @@ void DccSocket::socketDataEvent()
 	watchDcc();
 }
 
-void DccSocket::discard()
+void DccSocket::stop()
 {
 	closeSocket(false);
 }
@@ -217,47 +217,6 @@ void DccSocket::closeSocket(bool error)
 	kdebugf2();
 }
 
-// only in version 6
-bool DccSocket::dccClientAccept()
-{
-	bool insane = Dcc6Struct->uin != (UinType)config_file.readNumEntry("General", "UIN")
-		|| !userlist->contains("Gadu", QString::number(Dcc6Struct->peer_uin));
-
-	if (insane)
-	{
-		kdebugm(KDEBUG_WARNING, "insane values: uin:%d peer_uin:%d\n", Dcc6Struct->uin, Dcc6Struct->peer_uin);
-		return false;
-	}
-
-	UserListElement peer = userlist->byID("Gadu", QString::number(Dcc6Struct->peer_uin));
-	UserListElements users;
-	users.append(peer);
-
-	bool unbidden = peer.isAnonymous() || IgnoredManager::isIgnored(users);
-
-	if (unbidden)
-	{
-		kdebugm(KDEBUG_WARNING, "unbidden user: %d\n", Dcc6Struct->peer_uin);
-		return false;
-	}
-
-	bool spoofingAttempt = !(QHostAddress(ntohl(Dcc6Struct->remote_addr)) == peer.IP("Gadu"));
-	if (spoofingAttempt) // TODO: make it async, make DccSocket no-ui-aware
-	{
-		kdebugm(KDEBUG_WARNING, "possible spoofing attempt from %s (uin:%d)\n", QHostAddress(ntohl(Dcc6Struct->remote_addr)).toString().local8Bit().data(), Dcc6Struct->peer_uin);
-		spoofingAttempt = !MessageBox::ask(narg(
-			tr("%1 is asking for direct connection but his/her\n"
-				"IP address (%2) differs from what GG server returned\n"
-				"as his/her IP address (%3). It may be spoofing\n"
-				"or he/she has port forwarding. Continue connection?"),
-				peer.altNick(),
-				QHostAddress(ntohl(Dcc6Struct->remote_addr)).toString(),
-				peer.IP("Gadu").toString()));
-	}
-
-	return !spoofingAttempt;
-}
-
 void DccSocket::watchDcc()
 {
 	kdebugf();
@@ -283,6 +242,12 @@ void DccSocket::watchDcc()
 
 	switch (DccEvent->type)
 	{
+		case GG_EVENT_DCC7_CONNECTED:
+			// Dcc7Struct->fd is changed, we need new socket notifiers
+			finalizeNotifiers();
+			initializeNotifiers();
+			break;
+
 		case GG_EVENT_DCC7_ERROR:
 		case GG_EVENT_DCC_ERROR:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_ERROR\n");
@@ -294,7 +259,7 @@ void DccSocket::watchDcc()
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_CLIENT_ACCEPT! uin:%d peer_uin:%d\n",
 				Dcc6Struct->uin, Dcc6Struct->peer_uin);
 
-			if (!dccClientAccept())
+			if (!dcc_manager->acceptClient(Dcc6Struct->uin, Dcc6Struct->peer_uin, Dcc6Struct->remote_addr))
 				connectionError();
 			break;
 
@@ -448,4 +413,35 @@ void DccSocket::dcc7Rejected(struct gg_dcc7 *dcc7)
 
 	if (Handler)
 		Handler->connectionRejected(this);
+}
+
+void DccSocket::accept()
+{
+	kdebugf();
+
+	switch (Version)
+	{
+		case Dcc7:
+			// TODO: move it to libgadu
+			gg_dcc7_accept(Dcc7Struct, Dcc7Struct->offset);
+			break;
+		default:
+			break;
+	}
+}
+
+void DccSocket::reject()
+{
+	kdebugf();
+
+	switch (Version)
+	{
+		case Dcc7:
+			gg_dcc7_reject(Dcc7Struct, GG_DCC7_REJECT_USER);
+			break;
+		default:
+			break;
+	}
+
+	stop();
 }

@@ -53,7 +53,7 @@ public:
 	virtual ~FileTransferManager();
 
 	void acceptFile(FileTransfer *ft, DccSocket *socket, QString fileName, bool resume = false);
-	void discardFile(DccSocket *socket);
+	void rejectFile(DccSocket *socket);
 
 	void showFileTransferWindow();
 
@@ -64,6 +64,7 @@ public:
 	void removeSocket(DccSocket *socket) {}
 
 	int dccType() { return 0; }
+	void dcc7IncomingFileTransfer(DccSocket *socket);
 
 	bool socketEvent(DccSocket *socket, bool &lock);
 	void socketStateChanged(DccSocket *socket) {}

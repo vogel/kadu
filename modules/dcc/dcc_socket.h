@@ -38,8 +38,6 @@ class DccSocket : public QObject
 	void initializeNotifiers();
 	void finalizeNotifiers();
 
-	bool dccClientAccept();
-
 private slots:
 	void socketDataEvent();
 
@@ -79,7 +77,9 @@ public:
 
 	void setHandler(DccHandler *handler);
 
-	void discard();
+	void stop();
+	void accept();
+	void reject();
 
 	bool connectionClosed() { return ConnectionClosed; }
 

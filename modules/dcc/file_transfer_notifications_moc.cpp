@@ -1,7 +1,7 @@
 /****************************************************************************
 ** NewFileTransferNotification meta object code from reading C++ file 'file_transfer_notifications.h'
 **
-** Created: Fri Nov 16 04:43:30 2007
+** Created: Wed Nov 28 00:56:03 2007
 **      by: The Qt MOC ($Id: qt/moc_yacc.cpp   3.3.8   edited Feb 2 14:59 $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -54,11 +54,11 @@ QMetaObject* NewFileTransferNotification::staticMetaObject()
     QMetaObject* parentObject = Notification::staticMetaObject();
     static const QUMethod slot_0 = {"callbackAcceptAsNew", 0, 0 };
     static const QUMethod slot_1 = {"callbackAccept", 0, 0 };
-    static const QUMethod slot_2 = {"callbackDiscard", 0, 0 };
+    static const QUMethod slot_2 = {"callbackReject", 0, 0 };
     static const QMetaData slot_tbl[] = {
 	{ "callbackAcceptAsNew()", &slot_0, QMetaData::Private },
 	{ "callbackAccept()", &slot_1, QMetaData::Public },
-	{ "callbackDiscard()", &slot_2, QMetaData::Public }
+	{ "callbackReject()", &slot_2, QMetaData::Public }
     };
     metaObj = QMetaObject::new_metaobject(
 	"NewFileTransferNotification", parentObject,
@@ -85,7 +85,7 @@ bool NewFileTransferNotification::qt_invoke( int _id, QUObject* _o )
     switch ( _id - staticMetaObject()->slotOffset() ) {
     case 0: callbackAcceptAsNew(); break;
     case 1: callbackAccept(); break;
-    case 2: callbackDiscard(); break;
+    case 2: callbackReject(); break;
     default:
 	return Notification::qt_invoke( _id, _o );
     }

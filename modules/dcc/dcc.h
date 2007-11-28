@@ -64,6 +64,8 @@ private slots:
 	void setupDcc();
 	void closeDcc();
 
+	void dcc7New(struct gg_dcc7 *);
+
 	/**
 		Otrzymano wiadomo¶æ CTCP.
 		Kto¶ nas prosi o po³±czenie dcc, poniewa¿
@@ -102,10 +104,13 @@ public:
 
 	bool dccEnabled() const;
 
+	bool acceptClient(UinType uin, UinType peerUin, int remoteAddr);
+
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 signals:
 	void socketDestroying(DccSocket* socket);
+	void dcc7IncomingFileTransfer(DccSocket *socket);
 
 };
 

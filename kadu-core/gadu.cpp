@@ -384,6 +384,7 @@ GaduProtocol::GaduProtocol(const QString &id, QObject *parent, const char *name)
 		this, SLOT(userListReplyReceived(char, char *)));
 	connect(SocketNotifiers, SIGNAL(userStatusChanged(const struct gg_event *)),
 		this, SLOT(userStatusChanged(const struct gg_event *)));
+	connect(SocketNotifiers, SIGNAL(dcc7New(struct gg_dcc7 *)), this, SIGNAL(dcc7New(struct gg_dcc7 *)));
 	connect(SocketNotifiers, SIGNAL(dcc7Accepted(struct gg_dcc7 *)), this, SIGNAL(dcc7Accepted(struct gg_dcc7 *)));
 	connect(SocketNotifiers, SIGNAL(dcc7Rejected(struct gg_dcc7 *)), this, SIGNAL(dcc7Rejected(struct gg_dcc7 *)));
 

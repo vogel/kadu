@@ -36,7 +36,7 @@ NewFileTransferNotification::NewFileTransferNotification(FileTransfer *ft, DccSo
 	else
 	{
 		addCallback("Accept", SLOT(callbackAccept()));
-		addCallback("Discard", SLOT(callbackDiscard()));
+		addCallback("Reject", SLOT(callbackReject()));
 
 		Continue = false;
 	}
@@ -63,10 +63,10 @@ void NewFileTransferNotification::callbackAcceptAsNew()
 	close();
 }
 
-void NewFileTransferNotification::callbackDiscard()
+void NewFileTransferNotification::callbackReject()
 {
 	kdebugf();
 
-	file_transfer_manager->discardFile(socket);
+	file_transfer_manager->rejectFile(socket);
 	close();
 }

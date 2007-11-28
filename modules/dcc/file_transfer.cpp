@@ -352,7 +352,7 @@ void FileTransfer::stop(StopType stopType)
 
 	if (Socket)
 	{
-		Socket->discard();
+		Socket->stop();
 		delete Socket;
 		Socket = 0;
 	}

@@ -412,8 +412,8 @@ void FileTransferManager::acceptFile(FileTransfer *ft, DccSocket *socket, QStrin
 
 		if (fileName.isEmpty())
 		{
-			kdebugmf(KDEBUG_INFO, "discarded\n");
-			socket->discard();
+			kdebugmf(KDEBUG_INFO, "rejected\n");
+			socket->reject();
 			return;
 		}
 
@@ -448,7 +448,7 @@ void FileTransferManager::acceptFile(FileTransfer *ft, DccSocket *socket, QStrin
 		else
 			flags |= O_CREAT | O_TRUNC;
 
-		if (!socket->setFile(open(fileName.local8Bit().data(), flags)))
+		if (!socket->setFile(open(fileName.local8Bit().data(), flags, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)))
 			MessageBox::msg(tr("Could not open file. Select another one."), true, "Warning");
 		else
 		{
@@ -463,6 +463,7 @@ void FileTransferManager::acceptFile(FileTransfer *ft, DccSocket *socket, QStrin
 				addTransfer(ft);
 			}
 
+			socket->accept();
 			socket->setHandler(ft);
 
 			showFileTransferWindow();
@@ -476,10 +477,10 @@ void FileTransferManager::acceptFile(FileTransfer *ft, DccSocket *socket, QStrin
 	kdebugf2();
 }
 
-void FileTransferManager::discardFile(DccSocket *socket)
+void FileTransferManager::rejectFile(DccSocket *socket)
 {
 	kdebugf();
-	socket->discard();
+	socket->reject();
 	kdebugf2();
 }
 
@@ -560,6 +561,11 @@ void FileTransferManager::destroyAll()
 		delete ft;
 	}
 	kdebugf2();
+}
+
+void FileTransferManager::dcc7IncomingFileTransfer(DccSocket *socket)
+{
+	needFileAccept(socket);
 }
 
 FileTransferManager* file_transfer_manager = NULL;

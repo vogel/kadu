@@ -74,6 +74,7 @@ DccManager::DccManager()
 	connect(gadu, SIGNAL(disconnected()), this, SLOT(closeDcc()));
 	connect(gadu, SIGNAL(dccConnectionReceived(const UserListElement&)),
 		this, SLOT(dccConnectionReceived(const UserListElement&)));
+	connect(gadu, SIGNAL(dcc7New(struct gg_dcc7 *)), this, SLOT(dcc7New(struct gg_dcc7 *)));
 
 	kdebugf2();
 }
@@ -86,6 +87,8 @@ DccManager::~DccManager()
 	disconnect(gadu, SIGNAL(disconnected()), this, SLOT(closeDcc()));
 	disconnect(gadu, SIGNAL(dccConnectionReceived(const UserListElement&)),
 		this, SLOT(dccConnectionReceived(const UserListElement&)));
+	disconnect(gadu, SIGNAL(dcc7New(struct gg_dcc7 *)), this, SLOT(dcc7New(struct gg_dcc7 *)));
+
 	closeDcc();
 
 	kdebugf2();
@@ -253,6 +256,32 @@ void DccManager::dccConnectionReceived(const UserListElement& sender)
 	kdebugf2();
 }
 
+void DccManager::dcc7New(struct gg_dcc7 *dcc)
+{
+	kdebugf();
+
+	if (!acceptClient(dcc->uin, dcc->peer_uin, dcc->remote_addr))
+	{
+		gg_dcc7_reject(dcc, 0);
+		gg_dcc7_free(dcc);
+		return;
+	}
+
+	switch (dcc->dcc_type)
+	{
+		case GG_DCC7_TYPE_FILE:
+			file_transfer_manager->dcc7IncomingFileTransfer(new DccSocket(dcc));
+			return;
+
+		default:
+			gg_dcc7_reject(dcc, 0);
+			gg_dcc7_free(dcc);
+			return;
+	}
+
+	kdebugf2();
+}
+
 void DccManager::getFileTransferSocket(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin, DccHandler *handler, bool request)
 {
 	kdebugf();
@@ -363,6 +392,41 @@ bool DccManager::socketEvent(DccSocket *socket, bool &lock)
 			return true;
 
 	return false;
+}
+
+bool DccManager::acceptClient(UinType uin, UinType peerUin, int remoteAddr)
+{
+	kdebugf();
+
+	if (uin != (UinType)config_file.readNumEntry("General", "UIN") || !userlist->contains("Gadu", QString::number(peerUin)))
+	{
+		kdebugm(KDEBUG_WARNING, "insane values: uin:%d peer_uin:%d\n", uin, peerUin);
+		return false;
+	}
+
+	UserListElement peer = userlist->byID("Gadu", QString::number(peerUin));
+	UserListElements users;
+	users.append(peer);
+
+	if (peer.isAnonymous() || IgnoredManager::isIgnored(users))
+	{
+		kdebugm(KDEBUG_WARNING, "unbidden user: %d\n", peerUin);
+		return false;
+	}
+
+	QHostAddress remoteAddress(ntohl(remoteAddr));
+	if (remoteAddress == peer.IP("Gadu")) // TODO: make it async, make DccSocket no-ui-aware
+		return true;
+
+	kdebugm(KDEBUG_WARNING, "possible spoofing attempt from %s (uin:%d)\n", remoteAddress.toString().local8Bit().data(), peerUin);
+	return MessageBox::ask(narg(
+		tr("%1 is asking for direct connection but his/her\n"
+			"IP address (%2) differs from what GG server returned\n"
+			"as his/her IP address (%3). It may be spoofing\n"
+			"or he/she has port forwarding. Continue connection?"),
+			peer.altNick(),
+			remoteAddress.toString(),
+			peer.IP("Gadu").toString()));
 }
 
 DccManager* dcc_manager = NULL;

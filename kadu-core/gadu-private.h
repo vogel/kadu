@@ -141,6 +141,7 @@ class GaduSocketNotifiers : public SocketNotifiers
 		void userlistReplyReceived(char, char *);
 		void userStatusChanged(const struct gg_event *);
 
+		void dcc7New(struct gg_dcc7 *);
 		void dcc7Accepted(struct gg_dcc7 *);
 		void dcc7Rejected(struct gg_dcc7 *);
 };
