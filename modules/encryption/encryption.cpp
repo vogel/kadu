@@ -19,6 +19,7 @@
 #include "chat_manager.h"
 #include "debug.h"
 #include "encryption.h"
+#include "keys_manager.h"
 #include "gadu.h"
 #include "icons_manager.h"
 #include "kadu.h"
@@ -58,7 +59,7 @@ extern "C" void encryption_close()
 }
 
 EncryptionManager::EncryptionManager()
-	: EncryptionEnabled()
+	: MenuId(0), EncryptionEnabled(), EncryptionPossible(), KeysManagerDialog(0)
 {
 	kdebugf();
 
@@ -82,6 +83,9 @@ EncryptionManager::EncryptionManager()
 	ToolBar::addDefaultAction("Chat toolbar 1", "encryptionAction", 4);
 
 	UserBox::userboxmenu->addItemAtPos(2,"SendPublicKey", tr("Send my public key"), this, SLOT(sendPublicKey()));
+	
+	MenuId = kadu->mainMenu()->insertItem(icons_manager->loadIcon("KeysManager"), tr("Manage keys"), this, SLOT(showKeysManagerDialog()), 0, -1, 12);
+	icons_manager->registerMenuItem(kadu->mainMenu(), tr("Manage keys"), "KeysManager");
 
 	sim_key_path = strdup(ggPath("keys/").local8Bit());
 
@@ -94,6 +98,7 @@ EncryptionManager::EncryptionManager()
 EncryptionManager::~EncryptionManager()
 {
 	kdebugf();
+	kadu->mainMenu()->removeItem(MenuId);
 	int sendkeyitem = UserBox::userboxmenu->getItem(tr("Send my public key"));
 	UserBox::userboxmenu->removeItem(sendkeyitem);
 
@@ -161,11 +166,10 @@ void EncryptionManager::setupEncrypt(const UserGroup *group)
 			encrypt = config_file.readBoolEntry("Chat", "Encryption");
 	}
 
-	setupEncryptButton(chat_manager->findChatWidget(group), encrypt);
-	QValueList<ToolButton*> buttons =
-		KaduActions["encryptionAction"]->toolButtonsForUserListElements(group->toUserListElements());
-	CONST_FOREACH(i, buttons)
-		(*i)->setEnabled(encryption_possible);
+	ChatWidget *chat = chat_manager->findChatWidget(group);
+	setupEncryptButton(chat, encrypt);
+	setupEncryptionButtonForUsers(group->toUserListElements(), encryption_possible);
+	EncryptionPossible[chat] = encryption_possible;
 
 	kdebugf2();
 }
@@ -204,6 +208,8 @@ void EncryptionManager::encryptionActionActivated(const UserGroup* users)
 	kdebugf();
 	ChatWidget* chat= chat_manager->findChatWidget(users);
 	setupEncryptButton(chat,!EncryptionEnabled[chat]);
+	if (KeysManagerDialog!=NULL)
+		KeysManagerDialog->turnContactEncryptionText((*(*users).constBegin()).ID("Gadu"), EncryptionEnabled[chat]);
 	kdebugf2();
 }
 
@@ -217,7 +223,10 @@ void EncryptionManager::decryptMessage(Protocol *protocol, UserListElements send
 	}
 	if (!strncmp(msg, "-----BEGIN RSA PUBLIC KEY-----", 30))
 	{
-		(new SavePublicKey(senders[0], msg, NULL))->show();
+		SavePublicKey *save_public_key = new SavePublicKey(senders[0], msg, 0);
+		save_public_key->show();
+		connect(save_public_key, SIGNAL(keyAdded(UserListElement)), this, SLOT(keyAdded(UserListElement)));
+
 		ignore = true;
 		kdebugf2();
 		return;
@@ -253,31 +262,41 @@ void EncryptionManager::decryptMessage(Protocol *protocol, UserListElements send
 		memcpy(dst, formats.data(), formats.size());
 		formats = new_formats;
 
-		// FIXME: to na pewno ma byæ tutaj?
-		ChatWidget* chat=chat_manager->findChatWidget(senders);
 		if (config_file.readBoolEntry("Chat", "EncryptAfterReceiveEncryptedMessage"))
 		{
-			if (chat)
-				setupEncryptButton(chat_manager->findChatWidget(senders), true);
-			else
+			ChatWidget *chat = chat_manager->findChatWidget(senders);
+			if (!chat || EncryptionPossible[chat])
 			{
-				UserGroup userGroup(senders);
-				chat_manager->setChatWidgetProperty(&userGroup, "EncryptionEnabled", QVariant(true));
-				senders[0].setData("EncryptionEnabled", "true");
+				UserGroup group(senders);
+				turnEncryption(&group, true);
 			}
 		}
 	}
 	kdebugf2();
 }
 
-void EncryptionManager::enableEncryptionBtnForUsers(UserListElements users)
+void EncryptionManager::setupEncryptionButtonForUsers(UserListElements users, bool enabled)
 {
 	kdebugf();
 	QValueList<ToolButton*> buttons =
 		KaduActions["encryptionAction"]->toolButtonsForUserListElements(users);
-	for (QValueList<ToolButton*>::iterator i = buttons.begin(); i != buttons.end(); i++)
-		(*i)->setEnabled(true);
+	CONST_FOREACH(i, buttons)
+		(*i)->setEnabled(enabled);
 	kdebugf2();
+}
+
+void EncryptionManager::turnEncryption(UserGroup *group, bool on)
+{
+	ChatWidget *chat = chat_manager->findChatWidget(group->toUserListElements());
+	if (chat)
+		setupEncryptButton(chat, on);
+	else
+	{
+		chat_manager->setChatWidgetProperty(group, "EncryptionEnabled", QVariant(on));
+		(*(group->begin())).setData("EncryptionEnabled", (on ? "true" : "false"));
+	}
+	if (KeysManagerDialog!=NULL)
+		KeysManagerDialog->turnContactEncryptionText((*(*group).constBegin()).ID("Gadu"), on);
 }
 
 void EncryptionManager::sendMessageFilter(const UserListElements users, QString &msg, bool &stop)
@@ -376,6 +395,53 @@ void EncryptionManager::createDefaultConfiguration()
 	config_file.addVariable("Look", "EncryptionColor", QColor(0, 127, 0));
 }
 
+void EncryptionManager::showKeysManagerDialog()
+{
+	kdebugf();
+	if (KeysManagerDialog==NULL)
+	{
+		KeysManagerDialog=new KeysManager();
+		connect(KeysManagerDialog,SIGNAL(destroyed()),this,SLOT(keysManagerDialogDestroyed()));
+		connect(KeysManagerDialog,SIGNAL(keyRemoved(UserListElement)),this,SLOT(keyRemoved(UserListElement)));
+		connect(KeysManagerDialog,SIGNAL(turnEncryption(UserGroup*, bool)),this,SLOT(turnEncryption(UserGroup*, bool)));
+		KeysManagerDialog->show();
+	}
+	else
+	{
+		KeysManagerDialog->setActiveWindow();
+		KeysManagerDialog->raise();
+	}
+	kdebugf2();
+}
+
+void EncryptionManager::keysManagerDialogDestroyed()
+{
+	kdebugf();
+	KeysManagerDialog=NULL;
+	kdebugf2();
+}
+
+void EncryptionManager::keyRemoved(UserListElement ule)
+{
+	UserListElements ules(ule);
+	ChatWidget *chat = chat_manager->findChatWidget(ules);
+	if (chat)
+	{
+		EncryptionPossible[chat] = false;
+		setupEncryptButton(chat, false);
+		setupEncryptionButtonForUsers(ules, false);
+	}
+}
+
+void EncryptionManager::keyAdded(UserListElement ule)
+{
+	UserListElements ules(ule);
+	EncryptionPossible[chat_manager->findChatWidget(ules)] = true;
+	setupEncryptionButtonForUsers(ule, true);
+	if (KeysManagerDialog)
+		KeysManagerDialog->refreshKeysList();
+}
+
 SavePublicKey::SavePublicKey(UserListElement user, QString keyData, QWidget *parent, const char *name) :
 	QDialog(parent, name, Qt::WDestructiveClose), user(user), keyData(keyData)
 {
@@ -425,8 +491,7 @@ void SavePublicKey::yesClicked()
 	{
 		keyfile.writeBlock(keyData.local8Bit(), keyData.length());
 		keyfile.close();
-		UserListElements users(user);
-		encryption_manager->enableEncryptionBtnForUsers(users);
+		emit keyAdded(user);
 	}
 	accept();
 
