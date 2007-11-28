@@ -710,13 +710,7 @@ class GaduProtocol : public Protocol
 		// --------------------
 
 		void dccRequest(UinType);
-		void dccFree(struct gg_dcc* d);
-		struct gg_event * dccWatchFd(struct gg_dcc *d);
-		void dccSetType(struct gg_dcc* d, int type);
-		int dccVoiceSend(struct gg_dcc *d, char *buf, int length);
 		void setDccIpAndPort(unsigned long dcc_ip, int dcc_port);
-
-		struct gg_dcc * dccVoiceChat(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin);
 
 	public slots:
 		/**
@@ -868,13 +862,6 @@ class GaduProtocol : public Protocol
 		**/
 		void setPersonalInfo(SearchRecord& searchRecord, SearchResult& newData);
 
-		/**
-			 To raczej chwilowo.
-
-			 @todo usun±æ
-			 @todo niech Adrian zrobi porzadek z tym dcc...
-		**/
-		void freeEvent(struct gg_event* e);
 
 	protected slots:
 		/* sloty pod³±czane do sygna³ów z klasy UserList */

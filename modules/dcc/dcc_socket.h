@@ -66,6 +66,7 @@ public:
 	UinType uin();
 	UinType peerUin();
 	void setType(int type);
+	int type();
 
 	unsigned char * fileName();
 	int fileSize();
@@ -82,6 +83,8 @@ public:
 	void reject();
 
 	bool connectionClosed() { return ConnectionClosed; }
+
+	void sendVoiceData(char *data, int length);
 
 };
 

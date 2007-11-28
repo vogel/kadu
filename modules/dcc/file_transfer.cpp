@@ -404,14 +404,9 @@ void FileTransfer::addSocket(DccSocket *socket)
 {
 	kdebugf();
 
-	if (Socket)
-		disconnect(Socket, SIGNAL(destroyed()), this, SLOT(socketDestroyed()));
-
 	Socket = socket;
-
 	if (Socket)
 	{
-		connect(Socket, SIGNAL(destroyed()), this, SLOT(socketDestroyed()));
 		prepareFileInfo();
 		startUpdateFileInfo();
 
@@ -424,11 +419,8 @@ void FileTransfer::removeSocket(DccSocket *socket)
 {
 	kdebugf();
 
-	if (Socket && (Socket == socket))
-	{
-		disconnect(Socket, SIGNAL(destroyed()), this, SLOT(socketDestroyed()));
+	if (Socket == socket)
 		Socket = 0;
-	}
 
 	kdebugf2();
 }
@@ -467,32 +459,6 @@ void FileTransfer::updateFileInfo()
 	emit fileTransferStatusChanged(this);
 
 	kdebugf2();
-}
-
-void FileTransfer::socketDestroyed()
-{
-	kdebugf();
-
-	cancelTimeout();
-	stopUpdateFileInfo();
-
-	if (Socket)
-	{
-		FileSize = gg_fix32(Socket->fileSize());
-		TransferedSize = gg_fix32(Socket->fileOffset());
-	}
-
-	if (Status != StatusFinished)
-	{
-		if (FileSize == TransferedSize && FileSize != 0)
-			Status = StatusFinished;
-		else
-			Status = StatusFrozen;
-
-		emit fileTransferStatusChanged(this);
-	}
-
-	Socket = 0;
 }
 
 int FileTransfer::dccType()

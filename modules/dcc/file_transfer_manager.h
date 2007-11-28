@@ -64,10 +64,8 @@ public:
 	void removeSocket(DccSocket *socket) {}
 
 	int dccType() { return 0; }
-	void dcc7IncomingFileTransfer(DccSocket *socket);
 
 	bool socketEvent(DccSocket *socket, bool &lock);
-	void socketStateChanged(DccSocket *socket) {}
 
 	void connectionDone(DccSocket *socket) {}
 	void connectionError(DccSocket *socket) {}
@@ -85,6 +83,8 @@ public:
 	FileTransfer * search(FileTransfer::FileTransferType type, const UinType &contact, const QString &fileName,
 		FileTransfer::FileNameType fileNameType = FileTransfer::FileNameFull);
 	void destroyAll();
+
+	void dcc7IncomingFileTransfer(DccSocket *socket);
 
 private slots:
 	void fileTransferFinishedSlot(FileTransfer *fileTransfer);

@@ -2132,39 +2132,9 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 	kdebugf2();
 }
 
-void GaduProtocol::freeEvent(struct gg_event* e)
-{
-	gg_free_event(e);
-}
-
 void GaduProtocol::dccRequest(UinType uin)
 {
 	gg_dcc_request(Sess, uin);
-}
-
-void GaduProtocol::dccFree(struct gg_dcc* d)
-{
-	gg_dcc_free(d);
-}
-
-struct gg_event* GaduProtocol::dccWatchFd(struct gg_dcc* d)
-{
-	return gg_dcc_watch_fd(d);
-}
-
-void GaduProtocol::dccSetType(struct gg_dcc* d, int type)
-{
-	gg_dcc_set_type(d, type);
-}
-
-struct gg_dcc * GaduProtocol::dccVoiceChat(uint32_t ip, uint16_t port, UinType my_uin, UinType peer_uin)
-{
-	return gg_dcc_voice_chat(ip, port, my_uin, peer_uin);
-}
-
-int GaduProtocol::dccVoiceSend(struct gg_dcc* d, char* buf, int length)
-{
-	return gg_dcc_voice_send(d, buf, length);
 }
 
 void GaduProtocol::setDccIpAndPort(unsigned long dcc_ip, int dcc_port)

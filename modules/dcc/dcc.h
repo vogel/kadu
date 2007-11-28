@@ -101,6 +101,7 @@ public:
 	void connectionRejected(DccSocket *socket) {}
 
 	void getFileTransferSocket(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin, DccHandler *handler, bool request = false);
+	void getVoiceSocket(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin, DccHandler *handler, bool request = false);
 
 	bool dccEnabled() const;
 

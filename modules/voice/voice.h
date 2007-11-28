@@ -31,25 +31,40 @@ struct gsm_sample
 	int length;
 };
 
-class VoiceChatDialog : public QDialog
+class VoiceChatDialog : public QDialog, public DccHandler
 {
 	Q_OBJECT
 
 private:
-	static QMap<DccSocket *, VoiceChatDialog *> Dialogs;
+	static QValueList<VoiceChatDialog *> VoiceChats;
 	DccSocket* Socket;
 
 public:
-	VoiceChatDialog(DccSocket *socket);
+	VoiceChatDialog();
 	~VoiceChatDialog();
-	static VoiceChatDialog *bySocket(DccSocket *socket);
+
+	void addSocket(DccSocket *socket);
+	void removeSocket(DccSocket *socket);
+
+	int dccType() { return GG_SESSION_DCC_VOICE; }
+
+	bool socketEvent(DccSocket *socket, bool &lock);
+
+	void connectionDone(DccSocket *socket);
+	void connectionError(DccSocket *socket);
+
+	void connectionAccepted(DccSocket *socket) {}
+	void connectionRejected(DccSocket *socket);
+
 	static void destroyAll();
 	static void sendDataToAll(char *data, int length);
+
+	void sendData(char *data, int length);
 
 	bool chatFinished;
 };
 
-class VoiceManager : public ConfigurationUiHandler
+class VoiceManager : public ConfigurationUiHandler, public DccHandler
 {
 Q_OBJECT
 
@@ -66,11 +81,10 @@ private:
 	RecordThread *recordThread;
 	gsm voice_enc;
 	gsm voice_dec;
-	QValueList<UinType> direct;
 
 	void resetCoder();
 	void resetDecoder();
-	void askAcceptVoiceChat(DccSocket *socket);
+	bool askAcceptVoiceChat(DccSocket *socket);
 
 	QCheckBox *testFast;
 	QCheckBox *testCut;
@@ -86,19 +100,28 @@ private slots:
 	void mainDialogKeyPressed(QKeyEvent *e);
 	void userBoxMenuPopup();
 	void makeVoiceChat();
-	void connectionBroken(DccSocket *socket);
-	void dccError(DccSocket *socket);
-	void dccEvent(DccSocket *socket, bool &lock);
-	void socketDestroying(DccSocket *socket);
-	void setState(DccSocket *socket);
 
 public:
 	VoiceManager();
 	virtual ~VoiceManager();
+
 	int setup();
 	void free();
 	void resetCodec();
 	void addGsmSample(char *data, int length);
+
+	void addSocket(DccSocket *socket) {}
+	void removeSocket(DccSocket *socket) {}
+
+	int dccType() { return GG_SESSION_DCC_VOICE; }
+
+	bool socketEvent(DccSocket *socket, bool &lock);
+
+	void connectionDone(DccSocket *socket) {}
+	void connectionError(DccSocket *socket) {}
+
+	void connectionAccepted(DccSocket *socket) {}
+	void connectionRejected(DccSocket *socket) {}
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 

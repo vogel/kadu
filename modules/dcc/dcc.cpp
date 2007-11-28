@@ -305,6 +305,29 @@ void DccManager::getFileTransferSocket(uint32_t ip, uint16_t port, UinType myUin
 	kdebugf2();
 }
 
+void DccManager::getVoiceSocket(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin, DccHandler *handler, bool request)
+{
+	kdebugf();
+
+	if ((port >= 10) && !request)
+	{
+		struct gg_dcc *sock = gg_dcc_voice_chat(htonl(ip), port, myUin, peerUin);
+
+		if (sock)
+		{
+			DccSocket *result = new DccSocket(sock);
+			result->setHandler(handler);
+			return;
+		}
+	}
+
+	startTimeout();
+	requests.insert(peerUin, handler);
+	gadu->dccRequest(peerUin);
+
+	kdebugf2();
+}
+
 void DccManager::callbackReceived(DccSocket *socket)
 {
 	kdebugf();

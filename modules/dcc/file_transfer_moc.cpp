@@ -1,7 +1,7 @@
 /****************************************************************************
 ** FileTransfer meta object code from reading C++ file 'file_transfer.h'
 **
-** Created: Wed Nov 28 00:56:03 2007
+** Created: Wed Nov 28 03:34:18 2007
 **      by: The Qt MOC ($Id: qt/moc_yacc.cpp   3.3.8   edited Feb 2 14:59 $)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -53,12 +53,10 @@ QMetaObject* FileTransfer::staticMetaObject()
 	return metaObj;
     QMetaObject* parentObject = QObject::staticMetaObject();
     static const QUMethod slot_0 = {"connectionTimeout", 0, 0 };
-    static const QUMethod slot_1 = {"socketDestroyed", 0, 0 };
-    static const QUMethod slot_2 = {"updateFileInfo", 0, 0 };
+    static const QUMethod slot_1 = {"updateFileInfo", 0, 0 };
     static const QMetaData slot_tbl[] = {
 	{ "connectionTimeout()", &slot_0, QMetaData::Private },
-	{ "socketDestroyed()", &slot_1, QMetaData::Private },
-	{ "updateFileInfo()", &slot_2, QMetaData::Private }
+	{ "updateFileInfo()", &slot_1, QMetaData::Private }
     };
     static const QUParameter param_signal_0[] = {
 	{ 0, &static_QUType_ptr, "FileTransfer", QUParameter::In }
@@ -90,7 +88,7 @@ QMetaObject* FileTransfer::staticMetaObject()
     };
     metaObj = QMetaObject::new_metaobject(
 	"FileTransfer", parentObject,
-	slot_tbl, 3,
+	slot_tbl, 2,
 	signal_tbl, 5,
 #ifndef QT_NO_PROPERTIES
 	0, 0,
@@ -183,8 +181,7 @@ bool FileTransfer::qt_invoke( int _id, QUObject* _o )
 {
     switch ( _id - staticMetaObject()->slotOffset() ) {
     case 0: connectionTimeout(); break;
-    case 1: socketDestroyed(); break;
-    case 2: updateFileInfo(); break;
+    case 1: updateFileInfo(); break;
     default:
 	return QObject::qt_invoke( _id, _o );
     }

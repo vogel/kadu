@@ -100,7 +100,6 @@ private:
 
 private slots:
 	void connectionTimeout();
-	void socketDestroyed();
 	void updateFileInfo();
 
 public:

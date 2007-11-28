@@ -33,6 +33,7 @@ DccSocket::DccSocket(struct gg_dcc7 *dccStruct)
 DccSocket::~DccSocket()
 {
 	finalizeNotifiers();
+	closeSocket(true);
 	setHandler(0);
 
 	if (Dcc6Struct)
@@ -92,7 +93,20 @@ UinType DccSocket::peerUin()
 void DccSocket::setType(int type)
 {
 	if (Version == Dcc6)
-		gadu->dccSetType(Dcc6Struct, type);
+		gg_dcc_set_type(Dcc6Struct, type);
+}
+
+int DccSocket::type()
+{
+	switch (Version)
+	{
+		case Dcc6:
+			return Dcc6Struct->type;
+		case Dcc7:
+			return Dcc7Struct->type;
+		default:
+			return -1;
+	}
 }
 
 void DccSocket::initializeNotifiers()
@@ -294,7 +308,7 @@ void DccSocket::watchDcc()
 
 	if (DccEvent)
 	{
-		gadu->freeEvent(DccEvent);
+		gg_free_event(DccEvent);
 		DccEvent = 0;
 	}
 
@@ -444,4 +458,18 @@ void DccSocket::reject()
 	}
 
 	stop();
+}
+
+void DccSocket::sendVoiceData(char *data, int length)
+{
+	kdebugf();
+
+	switch (Version)
+	{
+		case Dcc6:
+			gg_dcc_voice_send(Dcc6Struct, data, length);
+			break;
+		default:
+			break;
+	}
 }
