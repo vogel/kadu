@@ -15,6 +15,7 @@
 #include <qlayout.h>
 #include <qlistview.h>
 #include <qmenubar.h>
+#include <qregexp.h>
 #include <qstring.h>
 #include <qslider.h>
 
@@ -198,8 +199,8 @@ SoundManager::SoundManager(const QString& name, const QString& configname) : Not
 	sound_manager = this;
 	sound_slots = new SoundSlots(this, "sound_slots");
 
-	themes->setPaths(QStringList::split(";", config_file.readEntry("Sounds", "SoundPaths")));
-	themes->setTheme(config_file.readEntry("Sounds","SoundTheme"));
+	themes->setPaths(QStringList::split(QRegExp("(;|:)"), config_file.readEntry("Sounds", "SoundPaths")));
+	themes->setTheme(config_file.readEntry("Sounds", "SoundTheme"));
 
 	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default", "Sound"), this);
 
@@ -245,7 +246,10 @@ void SoundManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainC
 	connect(mainConfigurationWindow->widgetById("sound/testDuplex"), SIGNAL(clicked()), sound_slots, SLOT(testFullDuplex()));
 
 	themesComboBox = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widgetById("sound/themes"));
-	themesComboBox->setItems(themes->themes(), themes->themes());
+	themesPaths = dynamic_cast<PathListEdit *>(mainConfigurationWindow->widgetById("soundPaths"));
+	connect(themesPaths, SIGNAL(changed()), sound_manager, SLOT(setSoundThemes()));
+
+	setSoundThemes();
 
 	connect(mainConfigurationWindow->widgetById("sound/applyTheme"), SIGNAL(clicked()), sound_manager, SLOT(applyTheme()));
 }
@@ -253,6 +257,17 @@ void SoundManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainC
 NotifierConfigurationWidget *SoundManager::createConfigurationWidget(QWidget *parent, char *name)
 {
 	return new SoundConfigurationWidget(parent, name);
+}
+
+void SoundManager::setSoundThemes()
+{
+	themes->setPaths(themesPaths->pathList());
+
+	QStringList soundThemes = themes->themes();
+	soundThemes.sort();
+
+	themesComboBox->setItems(soundThemes, soundThemes);
+	themesComboBox->setCurrentText(themes->theme());
 }
 
 void SoundManager::import_0_5_0_configuration()
@@ -288,7 +303,7 @@ void SoundManager::import_0_5_0_configuration()
 
 	if (config_file.readEntry("Sounds", "SoundTheme", "foobar") != "foobar")
 	{
-		themes->setPaths(QStringList::split(";", config_file.readEntry("Sounds", "SoundPaths"))); 
+		themes->setPaths(QStringList::split(QRegExp("(;|:)"), config_file.readEntry("Sounds", "SoundPaths"))); 
 		applyTheme(config_file.readEntry("Sounds", "SoundTheme", "foobar")); 
 		config_file.removeVariable("Sounds", "SoundTheme");
 	}

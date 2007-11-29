@@ -137,6 +137,7 @@ class SoundManager : public Notifier, public ConfigurationUiHandler
 	private:
 		Themes *themes;
 		ConfigComboBox *themesComboBox;
+		PathListEdit *themesPaths;
 
 		friend class SamplePlayThread;
 		friend class SampleRecordThread;
@@ -159,6 +160,7 @@ class SoundManager : public Notifier, public ConfigurationUiHandler
 		void createDefaultConfiguration();
 
 	private slots:
+		void setSoundThemes();
 		void applyTheme();
 
 	public slots:

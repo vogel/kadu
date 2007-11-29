@@ -9,7 +9,7 @@
 			<group-box name="Theme" id="sound/theme">
 				<combo-box caption="Sound theme" config-section="" config-item="" id="sound/themes" />
 				<action-button caption="Apply theme" id="sound/applyTheme" />
-				<path-list-edit caption="Sound paths" config-section="" config-item="" id="soundPaths" />
+				<path-list-edit caption="Sound paths" config-section="Sounds" config-item="SoundPaths" id="soundPaths" />
 			</group-box>
 			<group-box name="Volume" id="sound/volume">
 				<check-box caption="Enable volume control (player must support it)" config-section="Sounds" config-item="VolumeControl" id="sound/enableVolumeControl" />
