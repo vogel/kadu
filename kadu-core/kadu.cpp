@@ -669,7 +669,7 @@ void Kadu::editUserActionActivated(const UserGroup* users)
 void Kadu::addUserActionActivated(const UserGroup* users)
 {
 	kdebugf();
-	if ((users->count() == 1) && (*users->begin()).isAnonymous())
+	if ((users != NULL) && (users->count() == 1) && (*users->begin()).isAnonymous())
 		(new UserInfo(*users->begin(), kadu, "add_user"))->show();
 	else
 		(new UserInfo(UserListElement(), kadu, "add_user"))->show();
