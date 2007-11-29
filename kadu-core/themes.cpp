@@ -71,7 +71,8 @@ const QStringList &Themes::themes() const
 void Themes::setTheme(const QString& theme)
 {
 	kdebugf();
-	if(ThemesList.contains(theme) || (theme == "Custom"))
+
+	if (ThemesList.contains(theme) || (theme == "Custom"))
 	{
 		entries.clear();
 		ActualTheme = theme;
@@ -83,6 +84,7 @@ void Themes::setTheme(const QString& theme)
 		}
 		emit themeChanged(ActualTheme);
 	}
+
 	kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_INFO, "end: theme: %s\n", ActualTheme.local8Bit().data());
 }
 
@@ -166,7 +168,7 @@ QString Themes::themePath(const QString& theme) const
 		return QString::null;
 	if (ThemesPaths.isEmpty())
 		return "Custom";
-	return ThemesPaths.grep(t).first();
+	return ThemesPaths.grep(QRegExp("(/" + t + "/)$")).first();
 }
 
 QString Themes::getThemeEntry(const QString& name) const

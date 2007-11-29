@@ -8,7 +8,6 @@
  ***************************************************************************/
 
 #include <qfile.h>
-#include <qregexp.h>
 #include <qtextedit.h>
 #include <qtooltip.h>
 

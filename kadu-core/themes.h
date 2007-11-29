@@ -3,6 +3,7 @@
 
 #include <qmap.h>
 #include <qobject.h>
+#include <qregexp.h>
 #include <qstring.h>
 #include <qstringlist.h>
 

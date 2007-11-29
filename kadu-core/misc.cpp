@@ -77,8 +77,8 @@ void loadGeometry(QWidget *w, const QString &section, const QString &name, int d
 
 QString ggPath(const QString &subpath)
 {
-	static QString path=QString::null;
-	if (path==QString::null)
+	static QString path(QString::null);
+	if (path == QString::null)
 	{
 		char *home;
 		struct passwd *pw;
@@ -101,7 +101,7 @@ QString ggPath(const QString &subpath)
 #endif
 		KaduParser::globalVariables["KADU_CONFIG"] = path;
 	}
-	return path+subpath;
+	return (path + subpath);
 }
 
 //stat,getcwd

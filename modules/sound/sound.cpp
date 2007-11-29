@@ -15,7 +15,6 @@
 #include <qlayout.h>
 #include <qlistview.h>
 #include <qmenubar.h>
-#include <qregexp.h>
 #include <qstring.h>
 #include <qslider.h>
 

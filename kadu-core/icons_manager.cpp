@@ -9,7 +9,6 @@
 
 #include <qcombobox.h>
 #include <qmessagebox.h>
-#include <qregexp.h>
 
 #include "action.h"
 #include "config_file.h"
