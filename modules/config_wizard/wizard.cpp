@@ -19,6 +19,7 @@
 
 #include "config_file.h"
 #include "debug.h"
+#include "html_document.h"
 #include "icons_manager.h"
 #include "kadu.h"
 #include "main_configuration_window.h"
@@ -221,9 +222,15 @@ void Wizard::registerGGAccount()
 		return;
 	}
 
-	if (ggNewPassword->text().isEmpty())
+	if (ggNewPassword->text().isEmpty() || ggEMail->text().isEmpty())
 	{
-		MessageBox::msg(tr("Please enter new password"), false, "Warning");
+		MessageBox::msg(tr("Please fill out all fields"), false, "Warning");
+		return;
+	}
+
+	if (ggEMail->text().find(HtmlDocument::mailRegExp()) == -1)
+	{
+		MessageBox::msg(tr("Email address you have entered is not valid"), false, "Warning");
 		return;
 	}
 
