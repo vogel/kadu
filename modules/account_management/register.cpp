@@ -16,6 +16,7 @@
 
 #include "config_file.h"
 #include "debug.h"
+#include "html_document.h"
 #include "icons_manager.h"
 #include "message_box.h"
 #include "misc.h"
@@ -174,9 +175,15 @@ void Register::doRegister()
 		return;
 	}
 
-	if (pwd->text().isEmpty())
+	if (pwd->text().isEmpty() || mailedit->text().isEmpty())
 	{
 		MessageBox::msg(tr("Please fill out all fields"), false, "Warning", this);
+		return;
+	}
+
+	if (mailedit->text().find(HtmlDocument::mailRegExp()) == -1)
+	{
+		MessageBox::msg(tr("Email address you have entered is not valid"), false, "Warning", this);
 		return;
 	}
 
