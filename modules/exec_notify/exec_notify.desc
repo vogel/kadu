@@ -4,4 +4,4 @@ Description[pl]=Modu³ powiadamiania u¿ytkownika o zdarzeniach za pomoc± zewnêtrz
 Author=joi
 Dependencies=notify
 Provides=notify_method
-Version=2007.06.27
+Version=core
