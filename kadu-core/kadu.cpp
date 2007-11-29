@@ -1106,7 +1106,7 @@ void Kadu::slotHandleState(int command)
 		case 8:
 			statusMenu->setItemChecked(8, !statusMenu->isItemChecked(8));
 			dockMenu->setItemChecked(8, !dockMenu->isItemChecked(8));
-			config_file.writeEntry("General", "PrivateStatus",statusMenu->isItemChecked(8));
+			config_file.writeEntry("General", "PrivateStatus", statusMenu->isItemChecked(8));
 			status.setFriendsOnly(statusMenu->isItemChecked(8));
 			break;
 	}
@@ -1494,7 +1494,7 @@ void Kadu::createStatusPopupMenu()
 	}
 	delete s;
 
-	bool privateStatus=config_file.readBoolEntry("General", "PrivateStatus");
+	bool privateStatus = config_file.readBoolEntry("General", "PrivateStatus");
 	statusMenu->insertSeparator();
 	dockMenu->insertSeparator();
 	statusMenu->insertItem(tr("Private"), 8);
@@ -1629,6 +1629,10 @@ void Kadu::hide()
 void Kadu::refreshPrivateStatusFromConfigFile()
 {
 	bool privateStatus = config_file.readBoolEntry("General", "PrivateStatus");
+
+	// je¶li stan nie uleg³ zmianie to nic nie robimy
+	if (statusMenu->isItemChecked(8) == privateStatus)
+		return;
 
 	UserStatus status = gadu->currentStatus();
 	status.setFriendsOnly(privateStatus);
