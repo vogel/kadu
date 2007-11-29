@@ -63,7 +63,7 @@ const QIconSet &IconsManager::loadIconSet(const QString &name)
 	return iconSets[name];
 }
 
-const QMovie & IconsManager::loadAnimatedIcon(const QString &name)
+const QMovie &IconsManager::loadAnimatedIcon(const QString &name)
 {
 	QMap<QString, QMovie>::const_iterator i = animatedIcons.find(name);
 	if (i != animatedIcons.end())
@@ -187,7 +187,7 @@ void IconsManager::initModule()
 	QStringList themes = icons_manager->themes();
 	QString theme = config_file.readEntry("Look", "IconTheme");
 	if (!themes.isEmpty() && !themes.contains(theme))
-		config_file.writeEntry("Look", "IconTheme", themes[0]);
+		config_file.writeEntry("Look", "IconTheme", "default");
 
 	icons_manager->setTheme(theme);
 

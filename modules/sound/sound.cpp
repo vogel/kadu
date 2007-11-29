@@ -199,7 +199,13 @@ SoundManager::SoundManager(const QString& name, const QString& configname) : Not
 	sound_slots = new SoundSlots(this, "sound_slots");
 
 	themes->setPaths(QStringList::split(QRegExp("(;|:)"), config_file.readEntry("Sounds", "SoundPaths")));
-	themes->setTheme(config_file.readEntry("Sounds", "SoundTheme"));
+
+	QStringList soundThemes = themes->themes();
+	QString soundTheme = config_file.readEntry("Sounds", "SoundTheme");
+	if (!soundThemes.isEmpty() && !soundThemes.contains(soundTheme))
+		config_file.writeEntry("Sounds", "SoundTheme", "default");
+
+	themes->setTheme(soundTheme);
 
 	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default", "Sound"), this);
 
