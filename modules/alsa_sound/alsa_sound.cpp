@@ -290,14 +290,18 @@ bool ALSAPlayerSlots::isOk()
 void ALSAPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int channels, SoundDevice& device)
 {
 	kdebugf();
+
 	ALSADevice *dev = new ALSADevice();
+	if (!dev)
+		return;
+
 	if (type == PLAY_ONLY || type == PLAY_AND_RECORD)
 	{
 		dev->player = alsa_open (config_file.readEntry("Sounds", "ALSAOutputDevice").local8Bit().data(), channels, sample_rate, true);
-		if (dev->player == NULL)
+		if (!dev->player)
 		{
 			delete dev;
-			device = NULL;
+			device = 0;
 			kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING,"end: cannot open play device\n");
 			return;
 		}
@@ -305,12 +309,12 @@ void ALSAPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chan
 	if (type == RECORD_ONLY || type == PLAY_AND_RECORD)
 	{
 		dev->recorder = alsa_open (config_file.readEntry("Sounds", "ALSAOutputDevice").local8Bit().data(), channels, sample_rate, false);
-		if (dev->recorder == NULL)
+		if (!dev->recorder)
 		{
 			if (dev->player)
 				snd_pcm_close(dev->player);
 			delete dev;
-			device = NULL;
+			device = 0;
 			kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING,"end: cannot open record device\n");
 			return;
 		}
