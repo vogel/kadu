@@ -14,7 +14,6 @@
 
 #include "config_file.h"
 #include "debug.h"
-#include "../history/history.h"
 #include "kadu_parser.h"
 #include "misc.h"
 #include "exec_notify.h"
@@ -102,12 +101,100 @@ ExecNotify::~ExecNotify()
 	kdebugf2();
 }
 
+// TODO: merge with HistoryManager version
+QStringList mySplit(const QChar &sep, const QString &str)
+{
+	kdebugf();
+	QStringList strlist;
+	QString token;
+	unsigned int idx = 0, strlength = str.length();
+	bool inString = false;
+
+	int pos1, pos2;
+	while (idx < strlength)
+	{
+		const QChar &letter = str[idx];
+		if (inString)
+		{
+			if (letter == '\\')
+			{
+				switch (str[idx + 1])
+				{
+					case 'n':
+						token.append('\n');
+						break;
+					case '\\':
+						token.append('\\');
+						break;
+					case '\"':
+						token.append('"');
+						break;
+					default:
+						token.append('?');
+				}
+				idx += 2;
+			}
+			else if (letter == '"')
+			{
+				strlist.append(token);
+				inString = false;
+				++idx;
+			}
+			else
+			{
+				pos1 = str.find('\\', idx);
+				if (pos1 == -1)
+					pos1 = strlength;
+				pos2 = str.find('"', idx);
+				if (pos2 == -1)
+					pos2 = strlength;
+				if (pos1 < pos2)
+				{
+					token.append(str.mid(idx, pos1 - idx));
+					idx = pos1;
+				}
+				else
+				{
+					token.append(str.mid(idx, pos2 - idx));
+					idx = pos2;
+				}
+			}
+		}
+		else // out of the string
+		{
+			if (letter == sep)
+			{
+				if (!token.isEmpty())
+					token = QString::null;
+				else
+					strlist.append(QString::null);
+			}
+			else if (letter == '"')
+				inString = true;
+			else
+			{
+				pos1 = str.find(sep, idx);
+				if (pos1 == -1)
+					pos1 = strlength;
+				token.append(str.mid(idx, pos1 - idx));
+				strlist.append(token);
+				idx = pos1;
+				continue;
+			}
+			++idx;
+		}
+	}
+
+	kdebugf2();
+	return strlist;
+}
+
 void ExecNotify::notify(Notification *notification)
 {
 	QString syntax = config_file.readEntry("Exec Notify", notification->type() + "Cmd");
 	if (syntax.isEmpty())
 		return;
-	QStringList s = HistoryManager::mySplit(' ', syntax);
+	QStringList s = mySplit(' ', syntax);
 	
 	const UserListElements &senders = notification->userListElements();
 	UserListElement ule;
