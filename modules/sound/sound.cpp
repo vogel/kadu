@@ -191,10 +191,6 @@ SoundManager::SoundManager(const QString& name, const QString& configname) : Not
 
 	play_thread->start();
 
-	bool volCntrl = true;
-#ifdef Q_OS_MACX
-// 	volCntrl = false;
-#endif
 	sound_manager = this;
 	sound_slots = new SoundSlots(this, "sound_slots");
 
@@ -205,7 +201,7 @@ SoundManager::SoundManager(const QString& name, const QString& configname) : Not
 	if (!soundThemes.isEmpty() && !soundThemes.contains(soundTheme))
 		config_file.writeEntry("Sounds", "SoundTheme", "default");
 
-	themes->setTheme(soundTheme);
+	applyTheme(soundTheme);
 
 	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default", "Sound"), this);
 
@@ -305,15 +301,6 @@ void SoundManager::import_0_5_0_configuration()
 		if (!tmp.isEmpty())
 			config_file.writeEntry("Sounds", "NewMessage_sound", tmp);
 	}
-
-	if (config_file.readEntry("Sounds", "SoundTheme", "foobar") != "foobar")
-	{
-		themes->setPaths(QStringList::split(QRegExp("(;|:)"), config_file.readEntry("Sounds", "SoundPaths"))); 
-		applyTheme(config_file.readEntry("Sounds", "SoundTheme", "foobar")); 
-		config_file.removeVariable("Sounds", "SoundTheme");
-	}
-	else
-		applyTheme("default");
 }
 
 void SoundManager::createDefaultConfiguration()

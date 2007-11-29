@@ -189,7 +189,7 @@ void IconsManager::initModule()
 	if (!themes.isEmpty() && !themes.contains(theme))
 		config_file.writeEntry("Look", "IconTheme", "default");
 
-	icons_manager->setTheme(theme);
+//	icons_manager->setTheme(theme);
 
 	kdebugf2();
 }
