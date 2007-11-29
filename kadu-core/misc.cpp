@@ -758,9 +758,13 @@ ChooseDescription::ChooseDescription(int nr, QPoint *position, QWidget * parent,
 	desc->insertStringList(defaultdescriptions);
 
 	QLineEdit *ss = new QLineEdit(this, "LineEdit");
+#if 1
+	ss->setMaxLength(GG_STATUS_DESCR_MAXSIZE);
+#endif
 	desc->setLineEdit(ss);
 
 	l_yetlen = new QLabel(this);
+
 	updateYetLen(desc->currentText());
 
 	connect(desc, SIGNAL(textChanged(const QString&)), this, SLOT(updateYetLen(const QString&)));
@@ -842,10 +846,15 @@ void ChooseDescription::cancelbtnPressed()
 void ChooseDescription::updateYetLen(const QString& text)
 {
 	int length = text.length();
+
+#if 0
 	int count = (length - 10) / (GG_STATUS_DESCR_MAXSIZE - 10);
 	int rest = (count + 1) * (GG_STATUS_DESCR_MAXSIZE - 10) - length + 10;
 
 	l_yetlen->setText(' ' + QString::number(rest) + " (" + QString::number(count) + ")");
+#else
+	l_yetlen->setText(' ' + QString::number(GG_STATUS_DESCR_MAXSIZE - length));
+#endif
 }
 
 OpenChatWith::OpenChatWith(QWidget* parent, const char* name)

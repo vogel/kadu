@@ -149,10 +149,12 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	connect(status_changer_manager, SIGNAL(statusChanged(UserStatus)), this, SLOT(changeStatus(UserStatus)));
 
 	userStatusChanger = new UserStatusChanger();
-	splitStatusChanger = new SplitStatusChanger(GG_STATUS_DESCR_MAXSIZE);
-
 	status_changer_manager->registerStatusChanger(userStatusChanger);
+
+#if 0
+	splitStatusChanger = new SplitStatusChanger(GG_STATUS_DESCR_MAXSIZE);
 	status_changer_manager->registerStatusChanger(splitStatusChanger);
+#endif
 
 	// gadu, chat, search
 	GaduProtocol::initModule();
@@ -1292,12 +1294,13 @@ bool Kadu::close(bool quit)
 				this, SLOT(mouseButtonClicked(int, QListBoxItem *)));
 		disconnect(Userbox, SIGNAL(currentChanged(UserListElement)), this, SLOT(currentChanged(UserListElement)));
 
+#if 0
 		status_changer_manager->unregisterStatusChanger(splitStatusChanger);
-		status_changer_manager->unregisterStatusChanger(userStatusChanger);
-
 		delete splitStatusChanger;
 		splitStatusChanger = 0;
+#endif
 
+		status_changer_manager->unregisterStatusChanger(userStatusChanger);
 		delete userStatusChanger;
 		userStatusChanger = 0;
 

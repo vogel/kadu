@@ -61,7 +61,9 @@ class Kadu : public QWidget, ConfigurationAwareObject
 		UserGroup *selectedUsers; //don't touch!
 
 		UserStatusChanger *userStatusChanger;
+#if 0
 		SplitStatusChanger *splitStatusChanger;
+#endif
 
 		bool ShowMainWindowOnStart;
 		bool DoBlink;
