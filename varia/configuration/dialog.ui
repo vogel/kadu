@@ -316,8 +316,10 @@
 		<tab name="General">
 			<group-box name="Behaviour">
 				<check-box caption="Remember chat windows positions" config-section="Chat" config-item="RememberPosition" />
-				<check-box caption="Open chat window on new message" config-section="Chat" config-item="OpenChatOnMessage"
+				<check-box caption="Open chat window on new message" config-section="Chat" config-item="OpenChatOnMessage" id="openChatOnMessage"
 					   tool-tip="Open chat window when comes new message" />
+				<check-box caption="Open chat window only when I'm online" config-section="Chat" config-item="OpenChatOnMessageWhenOnline" id="openChatOnMessageWhenOnline"
+					   tool-tip="Open chat window on new message only when online" />
 				<check-box caption="Wait for message delivery" config-section="Chat" config-item="MessageAcks"
 					   tool-tip="Wait for confirmation from server during send messages" />
 				<check-box caption="'Enter' in chat send message" config-section="Chat" config-item="AutoSend"

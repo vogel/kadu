@@ -79,6 +79,7 @@ MainConfigurationWindow::MainConfigurationWindow()
 	connect(widgetById("startupStatus"), SIGNAL(activated(int)), this, SLOT(onChangeStartupStatus(int)));
 	connect(widgetById("showDescription"), SIGNAL(toggled(bool)), widgetById("multilineDescription"), SLOT(setEnabled(bool)));
 	connect(widgetById("useDefaultServers"), SIGNAL(toggled(bool)), widgetById("serverList"), SLOT(setDisabled(bool)));
+	connect(widgetById("openChatOnMessage"), SIGNAL(toggled(bool)), widgetById("openChatOnMessageWhenOnline"), SLOT(setEnabled(bool)));
 
 	emoticonsStyleComboBox = dynamic_cast<ConfigComboBox *>(widgetById("emoticonsStyle"));
 	emoticonsThemeComboBox = dynamic_cast<ConfigComboBox *>(widgetById("emoticonsTheme"));

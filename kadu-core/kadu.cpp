@@ -1169,8 +1169,14 @@ void Kadu::messageReceived(Protocol *protocol, UserListElements senders, const Q
 		}
 
 		pending.addMsg(protocol->protocolID(), senders, msg, GG_CLASS_CHAT, time);
+
 		if (config_file.readBoolEntry("Chat", "OpenChatOnMessage"))
+		{
+			if (config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline") && !Myself.status(protocol->protocolID()).isOnline())
+				return;
+
 			pending.openMessages();
+		}
 	}
 
 	kdebugf2();
@@ -2015,6 +2021,7 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("Chat", "MessageAcks", false);
 	config_file.addVariable("Chat", "NewMessagesInChatTitle", false);
 	config_file.addVariable("Chat", "OpenChatOnMessage", true);
+	config_file.addVariable("Chat", "OpenChatOnMessageWhenOnline", false);
 	config_file.addVariable("Chat", "SaveOpenedWindows", true);
 	config_file.addVariable("Chat", "ReceiveMessages", true);
 	config_file.addVariable("Chat", "ReceiveImagesDuringInvisibility", false);
