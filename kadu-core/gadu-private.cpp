@@ -522,7 +522,7 @@ void GaduSocketNotifiers::socketEvent()
 			break;
 
 		case GG_EVENT_NONE:
-			kdebugm (KDEBUG_NETWORK, "GG_EVENT_NONE\n");
+			kdebugm(KDEBUG_NETWORK, "GG_EVENT_NONE\n");
 			break;
 
 		case GG_EVENT_DCC7_NEW:
@@ -535,6 +535,10 @@ void GaduSocketNotifiers::socketEvent()
 
 		case GG_EVENT_DCC7_REJECT:
 			emit dcc7Rejected(e->event.dcc7_reject.dcc7);
+			break;
+
+		case GG_EVENT_XML_EVENT:
+			kdebugm(KDEBUG_NETWORK, "GG_EVENT_XML_EVENT\n");
 			break;
 	}
 
