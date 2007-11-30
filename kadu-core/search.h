@@ -17,6 +17,8 @@ class QListViewItem;
 class QPushButton;
 class QRadioButton;
 
+class Action;
+
 /**
 	Klasa ta reprezentuje okno dialogowe wyszukiwania w katalogu publicznym.
 	\brief Wyszukiwanie w katalogu publicznym.
@@ -55,6 +57,13 @@ class SearchDialog : public QWidget {
 		UinType _whoisSearchUin;
 		uint32_t seq;
 		UserGroup *selectedUsers;
+
+		Action *add_searched_action;
+		Action *chat_searched_action;
+		Action *first_search_action;
+		Action *next_results_action;
+		Action *stop_search_action;
+		Action *clear_search_action;
 
 		SearchRecord *searchRecord;
 

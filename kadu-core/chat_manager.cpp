@@ -117,8 +117,6 @@ ChatManager::ChatManager(QObject* parent, const char* name) : QObject(parent, na
 
 	ToolBar::addDefaultAction("Chat toolbar 3", "sendAction", -1, true);
 
-	ToolBar::addDefaultAction("Search toolbar", "chatAction", -1, true);
-
 	if (config_file.readBoolEntry("Chat", "RememberPosition"))
 	{
 		userlist->addPerContactNonProtocolConfigEntry("chat_geometry", "ChatGeometry");
