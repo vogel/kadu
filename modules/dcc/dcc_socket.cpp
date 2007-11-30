@@ -32,8 +32,8 @@ DccSocket::DccSocket(struct gg_dcc7 *dccStruct)
 
 DccSocket::~DccSocket()
 {
-	finalizeNotifiers();
 	closeSocket(true);
+	finalizeNotifiers();
 	setHandler(0);
 
 	if (Dcc6Struct)
