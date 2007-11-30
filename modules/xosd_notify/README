@@ -1,0 +1,5 @@
+xosd_notify - modu³ powiadamiania o zdarzeniach w Kadu (http://www.kadu.net/)
+przy pomocy biblioteki libxosd (http://www.ignavus.net/software.html) >= 2.2
+
+autor: Marcin "joi" ¦lusarz <joi # kadu , net>
+licencja: GPL v2 lub pó¼niejsza

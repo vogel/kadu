@@ -1,0 +1,10 @@
+CFLAGS:=$(CFLAGS) `gtk-config --cflags`
+LDFLAGS:=$(LDFLAGS) `gtk-config --libs`
+
+all: gtkfontdialog
+	ln -f gtkfontdialog ../bin/
+
+gtkfontdialog: gtkfontdialog.c
+
+clean:
+	rm -f gtkfontdialog ../bin/gtkfontdialog

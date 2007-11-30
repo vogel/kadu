@@ -1,0 +1,42 @@
+2007.01.11   - dostosowanie do zmian w Kadu
+2007.07.06   - dostosowanie do zmian w Kadu
+2006.04.24   - dostosowanie do zmian w Kadu
+2006.02.26   - dostosowanie do zmian w Kadu
+2006.01.23   - dostosowanie do zmian w Kadu
+2005.11.21   - poprawki w wykrywaniu nag³ówka xosd.h, dodanie do okna konfiguracji
+               ikonki autorstwa quake'a (pgabryjeluk_at_o2_pl)
+2005.10.02   - dopasowanie do zmian w Kadu
+2005.08.30   - poprawiona translacja statusu "busy"
+2005.08.23   - dopasowanie do zmian w Kadu
+2005.08.21   - dopasowanie do zmian w Kadu
+2005.06.26   - poprawki w budowaniu gdy gcc nie jest domy¶lnym kompilatorem
+               (gcc w specu zast±pione $CC)
+2005.06.25   - poziomy trudno¶ci w konfiguracji
+2005.06.07   - dodane pole z informacj± o wersji w pliku .desc
+2005.04.06   - dodane do speca ¶cie¿ki dla freebsd
+               drobne poprawki w budowaniu dla freebsd
+2005.03.22   - drobne optymalizacje
+2005.03.15   - dodane pliki ChangeLog i README
+2005.03.13   - drobna poprawka (FOREACH->CONST_FOREACH)
+2005.03.11   - znaki specjalne htmla (tj. < >) nie s± zamieniane na encje (&lt; &gt;)
+2005.02.27   - poprawiona translacja statusu ukrytego, poprawiony b³±d w oknie
+               konfiguracji - przy otwarciu w³±czany by³ nie ten co trzeba radiobutton
+2005.01.25   - sprawdzanie czy zainstalowana jest odpowiednia wersja libxosd
+               wymiana forów na krótsze FOREACHe
+2005.01.24   - przeniesienie binarki gtkfontdialog do katalogu bin, obs³uga
+               statusu ukrytego
+2004.12.20   - porz±dki w nag³ówkach
+2004.12.16   - obej¶cie potencjalnych problemów z %1,%2,... w opisach/nickach/itd
+2004.10.27   - drobne poprawki (debug, nazewnictwo obiektów)
+2004.09.11   - zrobiony Makefile dla gtkfontdialog, dodane nag³ówki z licencj±
+2004.09.10   - poprawione sprawdzanie przy kompilacji czy w systemie jest
+               gtk-config
+2004.09.08   - gtkowy wybierak czcionek zamiast xfontsel
+2004.09.02   - dodana mo¿liwo¶æ wy³±czenia pokazywania od którego modu³u
+               pochodzi wiadomo¶æ
+			   drobnica, dokumentacja w nag³ówku
+2004.08.29   - synchronizacja z cvsem kadu
+               nie dzia³a³ wybór czcionki po "Zastosuj"
+2004.08.22   - drobne poprawki
+               synchronizacja z cvsem kadu
+2004.08.20   - pierwsza wersja
