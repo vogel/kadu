@@ -4,4 +4,4 @@ Description[pl]=Modu³ powiadamiania u¿ytkownika o zdarzeniach przy pomocy XOSD
 Author=joi
 Dependencies=notify
 Provides=notify_method
-Version=2007.07.06
+Version=core
