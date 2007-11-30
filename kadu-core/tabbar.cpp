@@ -335,10 +335,13 @@ void KaduTabBar::dropEvent(QDropEvent* e)
 		{
 			CONST_FOREACH(ule, ules)
 			{
-				UserListElement u = userlist->byAltNick(*ule);
-				QStringList newGroups = u.data("Groups").toStringList();
-				newGroups << group;
-				u.setData("Groups", newGroups);
+				UserListElement user = userlist->byAltNick(*ule);
+				QStringList userGroups = user.data("Groups").toStringList();
+				if (!userGroups.contains(group))
+				{
+					userGroups.append(group);
+					user.setData("Groups", userGroups);
+				}
 			}
 		}
 
