@@ -226,6 +226,8 @@ void GroupsManager::configurationUpdated()
 		changeDisplayingOffline();
 	if (config_file.readBoolEntry("General", "ShowWithoutDescription") != showWithoutDescription)
 		changeDisplayingWithoutDescription();
+	if (GroupBar)
+		(GroupBar->tabAt(0))->setIconSet(icons_manager->loadIcon("PersonalInfo").xForm(QWMatrix().rotate(-90)));
 }
 
 void GroupsManager::changeDisplayingBlocking()

@@ -338,9 +338,6 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 
 	configurationUpdated();
 
-	// TODO: fix workaround
-	icons_manager->configurationUpdated();
-
 	kdebugf2();
 }
 
