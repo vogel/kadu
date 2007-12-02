@@ -76,6 +76,8 @@ class UserInfo : public QHBox
 		QVBox *groupsBox;
 		LayoutHelper *layoutHelper;
 
+		QMap <QString, QLabel *> pixmapLabels;
+
 		void keyPressEvent(QKeyEvent *);
 
 	protected:
@@ -120,10 +122,22 @@ class UserInfo : public QHBox
 		void newGroupClicked();
 
 		/**
-			\fn void scrollToBottom();
+			\fn void scrollToBottom()
 			po dodaniu nowej grupy przewija listê grup aby dodana by³a widoczna
 		**/
 		void scrollToBottom();
+		
+		/**
+			void selectIcon()
+			wci¶niêto przycisk dodania ikony dla grupy
+		**/
+		void selectIcon();
+
+		/**
+			void deleteIcon()
+			wci¶niêto przycisk usuniêcia ikony grupy
+		**/
+		void deleteIcon();
 	signals:
 		void updateClicked(UserInfo *);
 };

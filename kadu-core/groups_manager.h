@@ -87,6 +87,13 @@ class GroupsManager : public QObject, ConfigurationAwareObject
 		**/
 		QString currentGroupName() const;
 
+		/**
+			\fn void setIconForTab(const QString &name, bool showIcon)
+			ustawia lub usuwa ikonkê dla grupy o nazwie name
+			\param name nazwa grupy
+		**/
+		void setIconForTab(const QString &name);
+
 	protected:
 		virtual void configurationUpdated();
 

@@ -304,18 +304,37 @@ void UserInfo::setupTab2()
 
 	CONST_FOREACH(it, allGroups)
 	{
-		QCheckBox *checkBox = new QCheckBox(*it, groupsBox);
+		QHBox *box = new QHBox(groupsBox, *it);
+		box->setSpacing(3);
+		QCheckBox *checkBox=new QCheckBox(*it, box);
+		checkBox->show();
 		checkBox->setChecked(userGroups.contains(*it));
-		groups.append(checkBox);
-	}
 
-	//look out comment in newGroupClicked()
-	for (int i = 0; i < 10; ++i)
-	{
-		QCheckBox *box = new QCheckBox(groupsBox);
-		box->setChecked(true);
-		box->hide();
-		hiddenCheckBoxes.append(box);
+		QLabel *textLabel = new QLabel(box);
+		textLabel->setText("Icon:");
+		textLabel->setMaximumWidth(40);
+
+		QLabel *pixmapLabel = new QLabel(box);
+		QPixmap icon=icons_manager->loadIcon(config_file.readEntry("GroupIcon", *it, ""));
+		pixmapLabel->setPixmap(icon.xForm(QWMatrix().scale((double)16/icon.width(), (double)16/icon.height())));
+		pixmapLabel->setMaximumWidth(22);
+		pixmapLabel->setMaximumHeight(22);
+		pixmapLabels[*it] = pixmapLabel;
+
+		QPushButton *changeIconButton = new QPushButton(box);
+		changeIconButton->setPixmap(icons_manager->loadIcon("AddSelectPathDialogButton"));
+		QToolTip::add(changeIconButton, tr("Change icon"));
+		changeIconButton->setMaximumWidth(30);
+
+		QPushButton *deleteIconButton = new QPushButton(box);
+		deleteIconButton->setPixmap(icons_manager->loadIcon("RemoveSelectPathDialogButton"));
+		QToolTip::add(deleteIconButton, tr("Delete icon"));
+		deleteIconButton->setMaximumWidth(30);
+
+		connect(changeIconButton, SIGNAL(clicked()), this, SLOT(selectIcon()));
+		connect(deleteIconButton, SIGNAL(clicked()), this, SLOT(deleteIcon()));
+
+		groups.append(checkBox);
 	}
 
 	newGroup = new QLineEdit(groupsTab);
@@ -380,24 +399,38 @@ void UserInfo::newGroupClicked()
 			return;
 		}
 
-//	unfortunetly this 2-lines code does not work - don't know why
-//	so we had to create a couple of checkboxes and hide them
-//	and right now we showing em one by one
+	QHBox *box = new QHBox(groupsBox, groupName);
+	box->setSpacing(3);
 
-//	QCheckBox *box=new QCheckBox(groupName, groupsBox);
-//	box->setChecked(true);
+	QCheckBox *checkBox = new QCheckBox(groupName, box);
 
-	if (hiddenCheckBoxes.isEmpty())
-	{
-		MessageBox::msg(tr("You can't add so many groups at one stroke. Close this dialog and open one more time."), true, "Warning", this);
-		return;
-	}
-	QCheckBox *box = hiddenCheckBoxes.first();
-	hiddenCheckBoxes.pop_front();
-	box->setText(groupName);
+	checkBox->setChecked(true);
+	
+	QLabel *textLabel = new QLabel(box);
+	textLabel->setText("Icon:");
+	textLabel->setMaximumWidth(40);
+	
+	QLabel *pixmapLabel = new QLabel(box);
+	pixmapLabel->setMaximumWidth(22);
+	pixmapLabel->setMaximumHeight(22);
+	pixmapLabels[groupName] = pixmapLabel;
+
+	QPushButton *changeIconButton = new QPushButton(box);
+	changeIconButton->setPixmap(icons_manager->loadIcon("AddSelectPathDialogButton"));
+	QToolTip::add(changeIconButton, tr("Change icon"));
+	changeIconButton->setMaximumWidth(30);
+
+	QPushButton *deleteIconButton = new QPushButton(box);
+	deleteIconButton->setPixmap(icons_manager->loadIcon("CancelMessage"));
+	QToolTip::add(deleteIconButton, tr("Delete icon"));
+	deleteIconButton->setMaximumWidth(30);
+
+	connect(changeIconButton, SIGNAL(clicked()), this, SLOT(selectIcon()));
+	connect(deleteIconButton, SIGNAL(clicked()), this, SLOT(deleteIcon()));
+
 	box->show();
 
-	groups.append(box);
+	groups.append(checkBox);
 
 	QTimer::singleShot(0, this, SLOT(scrollToBottom()));
 
@@ -539,4 +572,36 @@ void UserInfo::updateUserlist()
 void UserInfo::scrollToBottom()
 {
 	scrollView->setContentsPos(0, scrollView->contentsHeight());
+}
+
+void UserInfo::selectIcon()
+{
+	ImageDialog* iDialog = new ImageDialog(this);
+	iDialog->setDir(config_file.readEntry("GroupIcon", "recentPath", "~/"));
+	iDialog->setCaption(tr("Choose an icon"));
+	iDialog->setFilter(tr("Icons (*.png *.xpm *.jpg)"));
+	if (iDialog->exec() == QDialog::Accepted)
+	{
+		QString groupName = sender()->parent()->name();
+
+		config_file.writeEntry("GroupIcon", "recentPath", iDialog->dirPath());
+		config_file.writeEntry("GroupIcon", groupName, iDialog->selectedFile());
+
+		groups_manager->setIconForTab(groupName);
+
+		QPixmap icon = icons_manager->loadIcon(iDialog->selectedFile());
+		pixmapLabels[groupName]->setPixmap(icon.xForm(QWMatrix().scale((double)16/icon.width(), (double)16/icon.height())));
+	}
+	delete iDialog;
+}
+
+void UserInfo::deleteIcon()
+{
+	QString groupName = sender()->parent()->name();
+
+	config_file.removeVariable("GroupIcon", groupName);
+
+	pixmapLabels[groupName]->setText("");
+
+	groups_manager->setIconForTab(groupName);
 }

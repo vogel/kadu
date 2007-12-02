@@ -205,7 +205,17 @@ void GroupsManager::refreshTabBar()
 		}
 
 		if (createNewTab)
-			GroupBar->addTab(new QTab(*group));
+		{
+			QString iconPath = config_file.readEntry("GroupIcon", (*group));	
+			if (!iconPath.isEmpty()) 
+			{
+				QPixmap icon = icons_manager->loadIcon(iconPath).xForm(QWMatrix().rotate(-90));
+
+				GroupBar->insertTab(new QTab(icon.xForm(QWMatrix().scale((double)16/icon.width(), (double)16/icon.height())), (*group)));
+			}
+			else 
+				GroupBar->insertTab(new QTab(*group));
+		}
 	}
 
 	kdebugm(KDEBUG_INFO, "%i group tabs\n", GroupBar->count());
@@ -447,7 +457,10 @@ void GroupsManager::userDataChanged(UserListElement elem, QString name, QVariant
 			group(*v)->removeUser(elem);
 
 		if (group(*v)->count() == 0)
+		{
 			removeGroup(*v);
+			config_file.removeVariable("GroupIcon", (*v));
+		}
 	}
 
 	CONST_FOREACH(v, newGroups)
@@ -496,6 +509,41 @@ void GroupsManager::userRemoved(UserListElement elem, bool /*massively*/, bool /
 		}
 	refreshTabBarLater();
 //	kdebugf2();
+}
+
+void GroupsManager::setIconForTab(const QString &name)
+{
+	if (!GroupBar || !config_file.readBoolEntry("Look", "DisplayGroupTabs") || !Groups.contains(name))
+	{
+		kdebugf2();
+		return;
+	}
+
+	for (int index = 0, count = GroupBar->count(); index < count; ++index)
+	{
+		if (GroupBar->tabAt(index)->text() == name)
+		{
+			int currentTab = GroupBar->currentTab();
+
+			GroupBar->removeTab(GroupBar->tabAt(index));
+
+			QString iconPath = config_file.readEntry("GroupIcon", name);	
+
+			if (!iconPath.isEmpty()) 
+			{
+				QPixmap icon = icons_manager->loadIcon(iconPath).xForm(QWMatrix().rotate(-90));
+
+				GroupBar->insertTab(new QTab(icon.xForm(QWMatrix().scale((double)16/icon.width(), (double)16/icon.height())), name), index);
+			}
+			else 
+				GroupBar->insertTab(new QTab(name), index);
+
+			GroupBar->update();
+
+			GroupBar->setCurrentTab(GroupBar->tabAt(currentTab));
+			return;
+		}
+	}
 }
 
 UsersWithDescription::UsersWithDescription() : UserGroup(userlist->count(), "users_with_description")
