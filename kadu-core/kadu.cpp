@@ -1954,7 +1954,8 @@ void Kadu::import_0_5_0_configuration()
 			case 8: startupStatus = "LastStatus";
 			        break;
 		}
-		config_file.writeEntry("General", "StartupStaus", startupStatus);
+		config_file.writeEntry("General", "StartupStatus", startupStatus);
+		config_file.addVariable("General", "StartupLastDescription", defaultStatusIndex == 7 || defaultStatusIndex == 8);
 		config_file.removeVariable("General", "DefaultStatusIndex");
 	}
 
