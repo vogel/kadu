@@ -275,13 +275,6 @@ void ToolBar::contextMenuEvent(QContextMenuEvent* e)
 		return;
 	}
 
-	ToolButton *button = dynamic_cast<ToolButton *>(childAt(e->pos()));
-	if (button)
-	{
-		button->contextMenuEvent(e);
-		return;
-	}
-
 	//NOTE: parent MUST be dockArea(), NOT this, because when user is choosing "remove toolbar",
 	//      it calls deleteLater(), which is invoked _before_ exec returns! so QPopupMenu would
 	//      be deleted when exec returns!

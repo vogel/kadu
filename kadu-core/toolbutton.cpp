@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <qapplication.h>
 #include <qcursor.h>
 #include <qpopupmenu.h>
 
@@ -17,6 +18,37 @@
 #include "toolbar.h"
 #include "toolbutton.h"
 
+class DisabledToolButtonWatcher : public QObject
+{
+public:
+	DisabledToolButtonWatcher()
+	{
+		qApp->installEventFilter(this);
+	}
+
+	virtual bool eventFilter(QObject *o, QEvent *e)
+	{
+		ToolButton *button = dynamic_cast<ToolButton *>(o);
+		if (!button)
+			return false;
+		switch (e->type())
+		{
+			case QEvent::MouseMove:
+				button->mouseMoveEvent((QMouseEvent *)e);
+				break;
+			case QEvent::ContextMenu:
+				button->contextMenuEvent((QContextMenuEvent *)e);
+				break;
+			default:
+				return false;
+		}
+
+		return true;
+	}
+};
+
+DisabledToolButtonWatcher *watcher = 0;
+
 ToolButton::ToolButton(QWidget* parent, const QString& action_name, Action::ActionType Type)
 	: QToolButton(parent, 0), ActionName(action_name), InOnState(false),
 	OffIcon(), OffText(), OnIcon(), OnText(), IsEnabled(true), Type(Type)
@@ -24,6 +56,9 @@ ToolButton::ToolButton(QWidget* parent, const QString& action_name, Action::Acti
 {
 	kdebugf();
 	connect(this, SIGNAL(clicked()), this, SLOT(buttonClicked()));
+
+	if (!watcher)
+		watcher = new DisabledToolButtonWatcher();
 
 	// ignore signal on global actions - they are always active
 
@@ -104,9 +139,6 @@ void ToolButton::setOn(bool on)
 
 void ToolButton::mouseMoveEvent(QMouseEvent* e)
 {
-	printf("ToolButton::mouseMoveEvent\n");
-
-//	kdebugf();
 	QToolButton::mouseMoveEvent(e);
 	if (e->state() & LeftButton && !toolbar()->dockArea()->blocked())
 	{
@@ -114,10 +146,9 @@ void ToolButton::mouseMoveEvent(QMouseEvent* e)
 		QDragObject* d = new ActionDrag(ActionName, usesTextLabel(), parentWidget());
 		d->dragMove();
 	}
-//	kdebugf2();
 }
 
-void ToolButton::contextMenuEvent(QContextMenuEvent* e)
+void ToolButton::contextMenuEvent(QContextMenuEvent *e)
 {
 	kdebugf();
 	if (DockArea::blocked())

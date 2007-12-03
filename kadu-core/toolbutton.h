@@ -22,7 +22,7 @@ class ToolButton : public QToolButton
 {
 	Q_OBJECT
 
-	friend class ToolBar;
+	friend class DisabledToolButtonWatcher;
 
 	private:
 		QString ActionName;
