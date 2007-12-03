@@ -69,7 +69,7 @@ protected:
 		\fn virtual void contextMenuEvent(QContextMenuEvent* e)
 		Funkcja obs?uguj?ca tworzenie menu kontekstowego paska
 	**/
-	virtual void contextMenuEvent ( QContextMenuEvent* e );
+	virtual void contextMenuEvent (QContextMenuEvent * e);
 
 	/**
 		\fn virtual void contextMenuEvent(QContextMenuEvent* e)

@@ -2012,7 +2012,7 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("Chat", "FoldLink", true);
 	config_file.addVariable("Chat", "LinkFoldTreshold", 50);
 	config_file.addVariable("Chat", "IgnoreAnonymousRichtext", true);
-	config_file.addVariable("Chat", "IgnoreAnonymousUsers", true);
+	config_file.addVariable("Chat", "IgnoreAnonymousUsers", false);
 	config_file.addVariable("Chat", "LastImagePath", QString(getenv("HOME")) + '/');
 	config_file.addVariable("Chat", "MaxImageRequests", 5);
 	config_file.addVariable("Chat", "MaxImageSize", 255);

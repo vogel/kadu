@@ -494,6 +494,7 @@ void ChatWidget::editTextChanged()
 	kdebugf2();
 }
 
+// TODO: remove
 bool ChatWidget::eventFilter(QObject *watched, QEvent *ev)
 {
 //	kdebugmf(KDEBUG_INFO|KDEBUG_FUNCTION_START, "watched: %p, Edit: %p, ev->type():%d, KeyPress:%d\n", watched, Edit, ev->type(), QEvent::KeyPress);

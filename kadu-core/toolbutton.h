@@ -22,6 +22,8 @@ class ToolButton : public QToolButton
 {
 	Q_OBJECT
 
+	friend class ToolBar;
+
 	private:
 		QString ActionName;
 		bool InOnState;

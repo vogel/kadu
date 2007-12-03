@@ -104,6 +104,8 @@ void ToolButton::setOn(bool on)
 
 void ToolButton::mouseMoveEvent(QMouseEvent* e)
 {
+	printf("ToolButton::mouseMoveEvent\n");
+
 //	kdebugf();
 	QToolButton::mouseMoveEvent(e);
 	if (e->state() & LeftButton && !toolbar()->dockArea()->blocked())

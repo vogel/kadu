@@ -128,6 +128,7 @@ ToolButton * ToolBar::addButton(Action *action, bool showLabel, ToolButton *afte
 	kdebugf();
 
 	ToolButton* button = new ToolButton(this, action->name(), action->type());
+
 	// need, becouse without it positioning just doesn't work
 	button->show();
 
@@ -269,17 +270,25 @@ void ToolBar::contextMenuEvent(QContextMenuEvent* e)
 	kdebugf();
 
 	if (DockArea::blocked())
-		e->ignore();
-	else
 	{
-		//NOTE: parent MUST be dockArea(), NOT this, because when user is choosing "remove toolbar",
-		//      it calls deleteLater(), which is invoked _before_ exec returns! so QPopupMenu would
-		//      be deleted when exec returns!
-		QPopupMenu* p = createContextMenu(dockArea());
-		showPopupMenu(p);
-		delete p;
-		e->accept();
+		e->ignore();
+		return;
 	}
+
+	ToolButton *button = dynamic_cast<ToolButton *>(childAt(e->pos()));
+	if (button)
+	{
+		button->contextMenuEvent(e);
+		return;
+	}
+
+	//NOTE: parent MUST be dockArea(), NOT this, because when user is choosing "remove toolbar",
+	//      it calls deleteLater(), which is invoked _before_ exec returns! so QPopupMenu would
+	//      be deleted when exec returns!
+	QPopupMenu* p = createContextMenu(dockArea());
+	showPopupMenu(p);
+	delete p;
+	e->accept();
 
 	kdebugf2();
 }
