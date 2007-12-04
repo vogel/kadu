@@ -1032,11 +1032,7 @@ void Kadu::sendMessage(UserListElement elem)
 void Kadu::slotHandleState(int command)
 {
 	kdebugf();
-	ChooseDescription *cd;
-	QString desc;
-	bool accepted = true;
-	UserListElement ule = myself();
-	bool parse = config_file.readBoolEntry("General", "ParseStatus", false);
+
 	UserStatus status;
 
 	status.setStatus(gadu->currentStatus());
@@ -1044,79 +1040,44 @@ void Kadu::slotHandleState(int command)
 	{
 		case 0:
 			status.setOnline();
+			setStatus(status);
 			break;
 		case 1:
-			cd = new ChooseDescription(1, &lastPositionBeforeStatusMenuHide);
-			accepted = cd->exec() == QDialog::Accepted;
-			if (accepted)
-			{
-				cd->getDescription(desc);
-				if (parse)
-					desc = KaduParser::parse(desc, ule, true);
-				status.setOnline(desc);
-			}
-			delete cd;
+			status.setOnline(status.description());
+			ChooseDescription::show(status, lastPositionBeforeStatusMenuHide);
 			break;
 		case 2:
 			status.setBusy();
+			setStatus(status);
 			break;
 		case 3:
-			cd = new ChooseDescription(3, &lastPositionBeforeStatusMenuHide);
-			accepted = cd->exec() == QDialog::Accepted;
-			if (accepted)
-			{
-				cd->getDescription(desc);
-				if (parse)
-					desc = KaduParser::parse(desc, ule, true);
-				status.setBusy(desc);
-			}
-			delete cd;
+			status.setBusy(status.description());
+			ChooseDescription::show(status, lastPositionBeforeStatusMenuHide);
 			break;
 		case 4:
 			status.setInvisible();
+			setStatus(status);
 			break;
 		case 5:
-			cd = new ChooseDescription(5, &lastPositionBeforeStatusMenuHide);
-			accepted = cd->exec() == QDialog::Accepted;
-			if (accepted)
-			{
-				cd->getDescription(desc);
-				if (parse)
-					desc = KaduParser::parse(desc, ule, true);
-				status.setInvisible(desc);
-			}
-			delete cd;
+			status.setInvisible(status.description());
+			ChooseDescription::show(status, lastPositionBeforeStatusMenuHide);
 			break;
 		case 6:
 			status.setOffline();
+			setStatus(status);
 			break;
 		case 7:
-			cd = new ChooseDescription(7, &lastPositionBeforeStatusMenuHide);
-			accepted = cd->exec() == QDialog::Accepted;
-			if (accepted)
-			{
-				cd->getDescription(desc);
-				if (parse)
-					desc = KaduParser::parse(desc, ule, true);
-				status.setOffline(desc);
-			}
-			delete cd;
+			status.setOffline(status.description());
+			ChooseDescription::show(status, lastPositionBeforeStatusMenuHide);
 			break;
 		case 8:
 			statusMenu->setItemChecked(8, !statusMenu->isItemChecked(8));
 			dockMenu->setItemChecked(8, !dockMenu->isItemChecked(8));
 			config_file.writeEntry("General", "PrivateStatus", statusMenu->isItemChecked(8));
 			status.setFriendsOnly(statusMenu->isItemChecked(8));
+			setStatus(status);
 			break;
 	}
-
-	if (!accepted)
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "end: not accepted\n");
-		return;
-	}
-
-	userStatusChanger->userStatusSet(status);
 
 	kdebugf2();
 }
@@ -1888,6 +1849,12 @@ void Kadu::customEvent(QCustomEvent *e)
 	}
 	else
 		QWidget::customEvent(e);
+}
+
+void Kadu::setStatus(const UserStatus &status)
+{
+	UserStatus notConst = status;
+	userStatusChanger->userStatusSet(notConst);
 }
 
 void Kadu::setOnline(const QString &description)

@@ -744,8 +744,23 @@ void stringHeapSort(QStringList &c)
 	stringHeapSortHelper(c.begin(), c.end(), *(c.begin()), (uint)c.count());
 }
 
-ChooseDescription::ChooseDescription(int nr, QPoint *position, QWidget * parent, const char * name)
-	: QDialog(parent, name, false), desc(0), l_yetlen(0)
+ChooseDescription *ChooseDescription::Dialog = 0;
+
+void ChooseDescription::show(const UserStatus &status, const QPoint &position)
+{
+	if (!Dialog)
+	{
+		Dialog = new ChooseDescription(kadu);
+		Dialog->setPosition(position);
+	}
+
+	Dialog->setStatus(status);
+	((QDialog *)Dialog)->show();
+	Dialog->raise();
+}
+
+ChooseDescription::ChooseDescription(QWidget *parent, const char *name)
+	: QDialog(parent, name, false)
 {
 	kdebugf();
 	setCaption(tr("Select description"));
@@ -753,66 +768,36 @@ ChooseDescription::ChooseDescription(int nr, QPoint *position, QWidget * parent,
 	while (defaultdescriptions.count()>config_file.readUnsignedNumEntry("General", "NumberOfDescriptions"))
 		defaultdescriptions.pop_back();
 
-  	desc = new QComboBox(TRUE, this, "description");
-	desc->setSizeLimit(30);
-	desc->insertStringList(defaultdescriptions);
+  	Description = new QComboBox(TRUE, this, "description");
+	Description->setSizeLimit(30);
+	Description->insertStringList(defaultdescriptions);
 
 	QLineEdit *ss = new QLineEdit(this, "LineEdit");
 #if 1
 	ss->setMaxLength(GG_STATUS_DESCR_MAXSIZE);
 #endif
-	desc->setLineEdit(ss);
+	Description->setLineEdit(ss);
 
-	l_yetlen = new QLabel(this);
+	AvailableChars = new QLabel(this);
 
-	updateYetLen(desc->currentText());
+	updateAvailableChars(Description->currentText());
 
-	connect(desc, SIGNAL(textChanged(const QString&)), this, SLOT(updateYetLen(const QString&)));
+	connect(Description, SIGNAL(textChanged(const QString &)), this, SLOT(updateAvailableChars(const QString &)));
 
-	QPixmap pix;
-	const char *iconName;
-	switch (nr)
-	{
-		case 1: iconName = "OnlineWithDescription";		break;
-		case 3: iconName = "BusyWithDescription";		break;
-		case 5: iconName = "InvisibleWithDescription";	break;
-		case 7:
-		default:iconName = "OfflineWithDescription";
-	}
-	pix = icons_manager->loadIcon(iconName);
+	OkButton = new QPushButton(tr("&OK"), this);
+	QPushButton *cancelButton = new QPushButton(tr("&Cancel"), this);
 
-	QPushButton *okbtn = new QPushButton(QIconSet(pix), tr("&OK"), this);
-	QPushButton *cancelbtn = new QPushButton(tr("&Cancel"), this);
-
-	QObject::connect(okbtn, SIGNAL(clicked()), this, SLOT(okbtnPressed()));
-	QObject::connect(cancelbtn, SIGNAL(clicked()), this, SLOT(cancelbtnPressed()));
+	QObject::connect(OkButton, SIGNAL(clicked()), this, SLOT(okPressed()));
+	QObject::connect(cancelButton, SIGNAL(clicked()), this, SLOT(cancelPressed()));
 
 	QGridLayout *grid = new QGridLayout(this, 2, 2, 5, 10);
 
-	grid->addMultiCellWidget(desc, 0, 0, 0, 2);
-	grid->addWidget(l_yetlen, 1, 0);
-	grid->addWidget(okbtn, 1, 1, Qt::AlignRight);
-	grid->addWidget(cancelbtn, 1, 2, Qt::AlignRight);
+	grid->addMultiCellWidget(Description, 0, 0, 0, 2);
+	grid->addWidget(AvailableChars, 1, 0);
+	grid->addWidget(OkButton, 1, 1, Qt::AlignRight);
+	grid->addWidget(cancelButton, 1, 2, Qt::AlignRight);
 	grid->addColSpacing(0, 200);
 
-	int width = 250;
-	int height = 80;
-	QSize sh = sizeHint();
-	if (sh.width() > width)
-		width = sh.width();
-	if (sh.height() > height)
-		height = sh.height();
-	if (position)
-	{
-		QPoint p = *position;
-		QDesktopWidget *d = QApplication::desktop();
-		if (p.x() + width + 20 >= d->width())
-			p.setX(d->width() - width - 20);
-		if (p.y() + height + 20 >= d->height())
-			p.setY(d->height() - height - 20);
-		move(p);
-	}
-	resize(width, height);
 	kdebugf2();
 }
 
@@ -820,30 +805,84 @@ ChooseDescription::~ChooseDescription()
 {
 }
 
-void ChooseDescription::getDescription(QString &dest)
+void ChooseDescription::setStatus(const UserStatus &status)
 {
-	dest = desc->currentText();
+	Status = status;
+
+	switch (Status.status())
+	{
+		case Online:
+			OkButton->setIconSet(icons_manager->loadIcon("OnlineWithDescription"));
+			break;
+		case Busy:
+			OkButton->setIconSet(icons_manager->loadIcon("BusyWithDescription"));
+			break;
+		case Invisible:
+			OkButton->setIconSet(icons_manager->loadIcon("InvisibleWithDescription"));
+			break;
+		case Offline:
+			OkButton->setIconSet(icons_manager->loadIcon("OfflineWithDescription"));
+			break;
+		default:
+			break;
+	}
 }
 
-void ChooseDescription::okbtnPressed()
+void ChooseDescription::setPosition(const QPoint &position)
 {
+	int width = 250;
+	int height = 80;
+
+	QSize sh = sizeHint();
+
+	if (sh.width() > width)
+		width = sh.width();
+
+	if (sh.height() > height)
+		height = sh.height();
+
+	QDesktopWidget *d = QApplication::desktop();
+
+	QPoint p = position;
+	if (p.x() + width + 20 >= d->width())
+		p.setX(d->width() - width - 20);
+	if (p.y() + height + 20 >= d->height())
+		p.setY(d->height() - height - 20);
+	move(p);
+
+	resize(width, height);
+}
+
+void ChooseDescription::okPressed()
+{
+	QString description = Description->currentText();
+
 	//je¿eli ju¿ by³ taki opis, to go usuwamy
-	defaultdescriptions.remove(desc->currentText());
+	defaultdescriptions.remove(description);
 	//i dodajemy na pocz±tek
-	defaultdescriptions.prepend(desc->currentText());
+	defaultdescriptions.prepend(description);
 
-	while (defaultdescriptions.count()>config_file.readUnsignedNumEntry("General", "NumberOfDescriptions"))
+	while (defaultdescriptions.count() > config_file.readUnsignedNumEntry("General", "NumberOfDescriptions"))
 		defaultdescriptions.pop_back();
-	accept();
+
+	if (config_file.readBoolEntry("General", "ParseStatus", false))
+		description = KaduParser::parse(description, kadu->myself(), true);
+
+	Status.setDescription(description);
+	kadu->setStatus(Status);
+
+	cancelPressed();
 }
 
-void ChooseDescription::cancelbtnPressed()
+void ChooseDescription::cancelPressed()
 {
-	reject();
-//	close();
+	close();
+
+	delete Dialog;
+	Dialog = 0;
 }
 
-void ChooseDescription::updateYetLen(const QString& text)
+void ChooseDescription::updateAvailableChars(const QString &text)
 {
 	int length = text.length();
 
@@ -851,9 +890,9 @@ void ChooseDescription::updateYetLen(const QString& text)
 	int count = (length - 10) / (GG_STATUS_DESCR_MAXSIZE - 10);
 	int rest = (count + 1) * (GG_STATUS_DESCR_MAXSIZE - 10) - length + 10;
 
-	l_yetlen->setText(' ' + QString::number(rest) + " (" + QString::number(count) + ")");
+	AvailableChars->setText(' ' + QString::number(rest) + " (" + QString::number(count) + ")");
 #else
-	l_yetlen->setText(' ' + QString::number(GG_STATUS_DESCR_MAXSIZE - length));
+	AvailableChars->setText(' ' + QString::number(GG_STATUS_DESCR_MAXSIZE - length));
 #endif
 }
 

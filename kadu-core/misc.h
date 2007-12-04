@@ -11,6 +11,8 @@
 
 #include <time.h>
 
+#include <status.h>
+
 class QComboBox;
 class QLineEdit;
 class QListBox;
@@ -78,19 +80,29 @@ extern QTextCodec *codec_latin2;
 class ChooseDescription : public QDialog
 {
 	Q_OBJECT
-	public:
-		ChooseDescription(int nr, QPoint *position = 0, QWidget * parent = 0, const char * name = 0);
-		virtual ~ChooseDescription();
-		void getDescription(QString &);
 
-	private:
-		QComboBox *desc;
-		QLabel *l_yetlen;
+	static ChooseDescription *Dialog;
 
-	private slots:
-		void okbtnPressed();
-		void cancelbtnPressed();
-		void updateYetLen(const QString&);
+	QPushButton *OkButton;
+	QComboBox *Description;
+	QLabel *AvailableChars;
+
+	UserStatus Status;
+
+private slots:
+	void okPressed();
+	void cancelPressed();
+	void updateAvailableChars(const QString &);
+
+public:
+	static void show(const UserStatus &status, const QPoint &position);
+
+	ChooseDescription(QWidget *parent = 0, const char *name = 0);
+	virtual ~ChooseDescription();
+
+	void setStatus(const UserStatus &status);
+	void setPosition(const QPoint &position);
+
 };
 
 class OpenChatWith : public QVBox

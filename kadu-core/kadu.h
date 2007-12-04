@@ -90,6 +90,7 @@ class Kadu : public QWidget, ConfigurationAwareObject
 		void sendMessage(UserListElement elem);
 		void configure();
 
+		void setStatus(const UserStatus &status);
 		void setOnline(const QString &description = QString::null);
 		void setBusy(const QString &description = QString::null);
 		void setInvisible(const QString &description = QString::null);
