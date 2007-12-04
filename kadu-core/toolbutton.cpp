@@ -31,19 +31,18 @@ public:
 		ToolButton *button = dynamic_cast<ToolButton *>(o);
 		if (!button)
 			return false;
+
 		switch (e->type())
 		{
 			case QEvent::MouseMove:
 				button->mouseMoveEvent((QMouseEvent *)e);
-				break;
+				return ((QMouseEvent *)e)->isAccepted();
 			case QEvent::ContextMenu:
 				button->contextMenuEvent((QContextMenuEvent *)e);
-				break;
+				return ((QContextMenuEvent *)e)->isAccepted();
 			default:
 				return false;
 		}
-
-		return true;
 	}
 };
 
