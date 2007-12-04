@@ -35,7 +35,7 @@ KeysManager::KeysManager(QDialog *parent, const char *name) : QHBox(parent, name
 	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
-	QVBox *left=new QVBox(this);
+	QVBox *left = new QVBox(this);
 	left->setMargin(10);
 	left->setSpacing(10);
 
@@ -43,7 +43,7 @@ KeysManager::KeysManager(QDialog *parent, const char *name) : QHBox(parent, name
 	QWidget *blank=new QWidget(left);
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	QVBox *center=new QVBox(this);
+	QVBox *center = new QVBox(this);
 	center->setMargin(10);
 	center->setSpacing(10);
 
@@ -73,13 +73,13 @@ KeysManager::KeysManager(QDialog *parent, const char *name) : QHBox(parent, name
 	// end our QTextEdit
                                                                                                                                                                         
 	// buttons
-	QHBox *bottom=new QHBox(center);
-	QWidget *blank2=new QWidget(bottom);
+	QHBox *bottom = new QHBox(center);
+	QWidget *blank2 = new QWidget(bottom);
 	bottom->setSpacing(5);
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 	pb_del = new QPushButton(icons_manager->loadIcon("DeleteKeyButton"), tr("Delete"), bottom);
 	pb_del->setEnabled(false);
-	pb_on = new QPushButton(icons_manager->loadIcon("DecryptedChat"), tr("On"), bottom);
+	pb_on = new QPushButton(icons_manager->loadIconSet("DecryptedChat"), tr("On"), bottom);
 	pb_on->setEnabled(false);
 	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	// end buttons
