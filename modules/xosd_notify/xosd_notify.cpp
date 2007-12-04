@@ -144,7 +144,7 @@ XOSDConfigurationWidget::~XOSDConfigurationWidget()
 
 void XOSDConfigurationWidget::test()
 {
-	kdebugf()
+	kdebugf();
 
 	xosd_notify->test(tr("Testing configuration"), currentConfig);
 
