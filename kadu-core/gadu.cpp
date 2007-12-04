@@ -928,7 +928,7 @@ void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, Q
 	i czy jest wlaczona opcja ignorowania nieznajomych
 	jezeli warunek jest spelniony przerywamy dzialanie funkcji.
 */
-	if (senders[0].ID("Gadu").toUInt() && senders[0].isAnonymous() && config_file.readBoolEntry("Chat","IgnoreAnonymousUsers"))
+	if (senders[0].ID("Gadu").toUInt() && senders[0].isAnonymous() && config_file.readBoolEntry("Chat", "IgnoreAnonymousUsers"))
 	{
 		kdebugmf(KDEBUG_INFO, "Ignored anonymous. %d is ignored\n", senders[0].ID("Gadu").toUInt());
 		return;
@@ -968,6 +968,7 @@ void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, Q
 		config_file.writeEntry("General", "SystemMsgIndex", msgclass);
 		kdebugm(KDEBUG_INFO, "System message index %d\n", msgclass);
 
+		// TODO: remove
 		emit systemMessageReceived(mesg, datetime, formats.size(), formats.data());
 		return;
 	}

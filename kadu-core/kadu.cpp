@@ -1195,9 +1195,10 @@ void Kadu::imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, 
 	}
 }
 
+// TODO: remove
 void Kadu::systemMessageReceived(const QString &msg)
 {
-	MessageBox::msg(msg);
+//	MessageBox::msg(msg);
 }
 
 void Kadu::disconnected()
