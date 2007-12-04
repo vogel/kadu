@@ -29,15 +29,6 @@ class ChatManager : public QObject, ConfigurationAwareObject
 		QValueList<UserListElements> ClosedChatUsers; /*!< u¿ytkownicy, których okna zosta³y zamkniête*/
 
 		/**
-			\fn int openPendingMsg(int index, ChatMessage &msg)
-			Funkcja otwieraj±ca zakolejkowan± wiadomo¶æ
-			\param index nr wiadomo¶ci z kolejki
-			\param k zwracany nr okna w którym zosta³a otwarta wiadomo¶æ
-			\return wiadomo¶æ z kolejki
-		**/
-		ChatMessage * openPendingMsg(int index, int &k);
-
-		/**
 			\struct ChatInfo
 			Struktura przechowuje informacje o danym oknie
 		**/
@@ -156,9 +147,10 @@ class ChatManager : public QObject, ConfigurationAwareObject
 			\param initialProtocol protokó³ pocz±tkowy
 			\param users lista u¿ytkowników identyfikuj±cych okno
 			\param time time of pending message that created a chat or 0 if not applicable
+			\param message komunikat dodany do okna
 			\return zwracany jest numer otwartego okna
 		**/
-		int openChatWidget(Protocol *initialProtocol, const UserListElements &users, time_t time = 0);
+		int openChatWidget(Protocol *initialProtocol, const UserListElements &users, QValueList<ChatMessage *> *messages = 0);
 
 		/**
 			\fn void openPendingMsgs(UserListElements users)

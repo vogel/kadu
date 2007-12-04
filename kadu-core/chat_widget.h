@@ -241,6 +241,13 @@ public slots:
 	void appendMessages(const QValueList<ChatMessage *> &);
 
 	/**
+		\fn void appendMessage(ChatMessage *)
+		Slot dodaj wiadomo¶æ do okna
+		\param messages lista wiadomo¶ci
+	**/
+	void appendMessage(ChatMessage *);
+
+	/**
 		\fn void sendMessage()
 		Slot wywo³ywany po naci¶niêciu przycisku
 		do wysy³ania wiadomo¶ci

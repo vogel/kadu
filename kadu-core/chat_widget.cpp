@@ -518,6 +518,11 @@ void ChatWidget::appendMessages(const QValueList<ChatMessage *> &messages)
 	body->appendMessages(messages);
 }
 
+void ChatWidget::appendMessage(ChatMessage *message)
+{
+	body->appendMessage(message);
+}
+
 void ChatWidget::appendSystemMessage(const QString &rawContent, const QString &backgroundColor, const QString &fontColor)
 {
 	ChatMessage *message = new ChatMessage(rawContent, TypeSystem, QDateTime::currentDateTime(),

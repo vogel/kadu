@@ -410,7 +410,7 @@ void ChatManager::chatActionActivated(const UserGroup* users)
 	kdebugf();
 
 	if (users->count() > 0)
-		openChatWidget(gadu, users->toUserListElements(), 0);
+		openChatWidget(gadu, users->toUserListElements());
 
 	kdebugf2();
 }
@@ -500,7 +500,7 @@ ChatWidget* ChatManager::findChatWidget(UserListElements users) const
 	return NULL;
 }
 
-int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElements &users, time_t time)
+int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElements &users, QValueList<ChatMessage *> *messages)
 {
 	kdebugf();
 
@@ -544,6 +544,9 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 	userNames.sort();
 
 	ChatWidget *chat = new ChatWidget(initialProtocol, users);
+	if (messages)
+		chat->appendMessages(*messages);
+
 	bool handled = false;
 	emit handleNewChatWidget(chat, handled);
 	if (!handled)
@@ -560,35 +563,11 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 
 //	chat->makeActive();
 	emit chatWidgetCreated(chat);
-	emit chatWidgetCreated(chat, time);
+	emit chatWidgetCreated(chat, time(0));
 	emit chatWidgetOpen(chat);
 
 	kdebugf2();
 	return ChatWidgets.count() - 1;
-}
-
-ChatMessage * ChatManager::openPendingMsg(int index, int &k)
-{
-	kdebugf();
-	// TODO: check if index does not exceed boundaries
-	PendingMsgs::Element p = pending[index];
-	// opening chat (if it does not exist)
-	k = openChatWidget(gadu, p.users, p.time);
-	// appending new message
-
-	if (k < 0)
-		return 0;
-
-	QDateTime date;
-	date.setTime_t(p.time);
-
-	ChatMessage *msg = new ChatMessage(p.users[0], p.msg, TypeReceived, QDateTime::currentDateTime(), date);
-
-	// remove message from pending
-	pending.deleteMsg(index);
-	kdebugf2();
-	// return index of opened chat window
-	return msg;
 }
 
 void ChatManager::deletePendingMsgs(UserListElements users)
@@ -606,123 +585,65 @@ void ChatManager::deletePendingMsgs(UserListElements users)
 	kdebugf2();
 }
 
+// TODO: make pending messages ChatMessages or something
+ChatMessage *convertPendingToMessage(PendingMsgs::Element elem)
+{
+	kdebugf();
+
+	QDateTime date;
+	date.setTime_t(elem.time);
+	ChatMessage *message = new ChatMessage(elem.users[0], elem.msg, TypeReceived, QDateTime::currentDateTime(), date);
+
+	return message;
+}
+
 void ChatManager::openPendingMsgs(UserListElements users)
 {
 	kdebugf();
-	PendingMsgs::Element elem;
-	int k;
-	bool stop = false;
 
 	QValueList<ChatMessage *> messages;
+	PendingMsgs::Element elem;
+
 	for (int i = 0; i < pending.count(); ++i)
 	{
 		elem = pending[i];
-		if (elem.users.equals(users))
-			if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT
-				|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
-				|| !elem.msgclass)
-			{
-				ChatMessage *msg = openPendingMsg(i, k);
+		if (!elem.users.equals(users))
+			continue;
 
-				if (k < 0)
-					return;
-
-				messages.append(msg);
-
-				--i;
-				users = elem.users;
-				stop = true;
-			}
+		if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT
+			|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
+			|| (!elem.msgclass))
+			messages.append(convertPendingToMessage(elem));
+			pending.deleteMsg(i--);
 	}
-	if (stop)
+
+	if (messages.size())
 	{
-		ChatWidgets[k]->appendMessages(messages);
+		openChatWidget(gadu, users, &messages);
 		UserBox::refreshAllLater();
 	}
-	else
-		k = openChatWidget(gadu, users, 0);
+
 	kdebugf2();
 }
 
 void ChatManager::openPendingMsgs()
 {
 	kdebugf();
-	UserListElements users;
-	int i, k = -1;
-	PendingMsgs::Element elem;
-	bool stop = false;
-	QValueList<ChatMessage *> messages;
 
-	for(i = 0; i < pending.count(); ++i)
-	{
-		elem = pending[i];
-		if (users.isEmpty() || elem.users.equals(users))
-			if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT
-				|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
-				|| (!elem.msgclass))
-			{
-				if (users.isEmpty())
-					users = elem.users;
+	if (pending.count())
+		openPendingMsgs(pending[0].users);
 
-				ChatMessage *msg = openPendingMsg(i, k);
-
-				if (k < 0)
-					return;
-
-				messages.append(msg);
-
-				--i;
-				stop = true;
-			}
-	}
-	if (stop)
-	{
-		kdebugmf(KDEBUG_INFO, "stopped\n");
-		ChatWidgets[k]->appendMessages(messages);
-		UserBox::refreshAllLater();
-	}
 	kdebugf2();
 }
 
 void ChatManager::sendMessage(UserListElement user, UserListElements selected_users)
 {
 	kdebugf();
-	QString tmp;
-	int i, k = -1;
-	bool stop = false;
-	PendingMsgs::Element elem;
-	UserListElements users;
-	QValueList<ChatMessage *> messages;
 
-	for (i = 0; i < pending.count(); ++i)
-	{
-		elem = pending[i];
-		if ((users.isEmpty() && elem.users.contains(user)) || (!users.isEmpty() && elem.users.equals(users)))
-			if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT
-				|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
-				|| !elem.msgclass)
-			{
-				if (users.isEmpty())
-					users = elem.users;
+	for (int i = 0; i < pending.count(); ++i)
+		if (pending[i].users.contains(user))
+			openPendingMsgs(pending[i].users);
 
-				ChatMessage *msg = openPendingMsg(i, k);
-
-				if (k < 0)
-					return;
-
-				messages.append(msg);
-
-				--i;
-				stop = true;
-			}
-	}
-	if (stop)
-	{
-		ChatWidgets[k]->appendMessages(messages);
-		UserBox::refreshAllLater();
-	}
-	else
-		k = openChatWidget(gadu, selected_users, 0);
 	kdebugf2();
 }
 
