@@ -187,13 +187,13 @@ void EncryptionManager::setupEncryptButton(ChatWidget* chat,bool enabled)
 		if (enabled)
 		{
 			QToolTip::add(*i, tr("Disable encryption for this conversation"));
-			(*i)->setPixmap(icons_manager->loadIcon("EncryptedChat"));
+			(*i)->setIconSet(icons_manager->loadIconSet("EncryptedChat"));
 			(*i)->setOn(true);
 		}
 		else
 		{
 			QToolTip::add(*i, tr("Enable encryption for this conversation"));
-			(*i)->setPixmap(icons_manager->loadIcon("DecryptedChat"));
+			(*i)->setIconSet(icons_manager->loadIconSet("DecryptedChat"));
 			(*i)->setOn(false);
 		}
 	}
