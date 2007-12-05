@@ -1126,15 +1126,21 @@ void Kadu::messageReceived(Protocol *protocol, UserListElements senders, const Q
 			kadu->setFocus();
 		}
 
-		pending.addMsg(protocol->protocolID(), senders, msg, GG_CLASS_CHAT, time);
-
 		if (config_file.readBoolEntry("Chat", "OpenChatOnMessage"))
 		{
 			if (config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline") && !Myself.status(protocol->protocolID()).isOnline())
+			{
+				pending.addMsg(protocol->protocolID(), senders, msg, GG_CLASS_CHAT, time);
 				return;
+			}
 
-			pending.openMessages();
+			// TODO: it is lame
+			chat_manager->openChatWidget(protocol, senders);
+			chat = chat_manager->findChatWidget(senders);
+			chat->newMessage(protocol->protocolID(), senders, msg, time);
 		}
+		else
+			pending.addMsg(protocol->protocolID(), senders, msg, GG_CLASS_CHAT, time);
 	}
 
 	kdebugf2();
