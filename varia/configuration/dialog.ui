@@ -47,7 +47,7 @@
 			<group-box name="Parser">
 				<check-box caption="Allow executing commands by parser" config-section="General" config-item="AllowExecutingFromParser" />
 			</group-box>
-			<group-box name="Debugging">
+			<group-box name="Debugging" id="debug">
 				<line-edit caption="Debugging mask" config-section="General" config-item="DEBUG_MASK" />
 			</group-box>
 		</tab>
