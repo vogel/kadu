@@ -229,7 +229,7 @@ void DccManager::closeDcc()
 
 	if (MainSocket)
 	{
-		delete MainSocket;
+		MainSocket->stop();
 		MainSocket = 0;
 		gadu->setDccIpAndPort(0, 0);
 	}

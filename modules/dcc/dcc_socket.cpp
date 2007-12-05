@@ -177,8 +177,11 @@ void DccSocket::enableNotifiers()
 
 void DccSocket::disableNotifiers()
 {
-	ReadSocketNotifier->setEnabled(false);
-	WriteSocketNotifier->setEnabled(false);
+	if (ReadSocketNotifier)
+		ReadSocketNotifier->setEnabled(false);
+
+	if (WriteSocketNotifier)
+		WriteSocketNotifier->setEnabled(false);
 }
 
 bool DccSocket::checkRead()
@@ -216,7 +219,6 @@ void DccSocket::closeSocket(bool error)
 	ConnectionClosed = true;
 
 	disableNotifiers();
-	deleteLater();
 
 	if (Handler)
 	{
@@ -227,6 +229,8 @@ void DccSocket::closeSocket(bool error)
 
 		Handler->removeSocket(this);
 	}
+
+	delete this;
 
 	kdebugf2();
 }
@@ -427,6 +431,10 @@ void DccSocket::dcc7Rejected(struct gg_dcc7 *dcc7)
 
 	if (Handler)
 		Handler->connectionRejected(this);
+
+	ConnectionClosed = true;
+	disableNotifiers();
+	delete this;
 }
 
 void DccSocket::accept()

@@ -64,7 +64,7 @@ FileTransfer::~FileTransfer()
 	if (Socket)
 	{
 		kdebugmf(KDEBUG_WARNING, "DCC transfer has not finished yet!\n");
-		delete Socket;
+		Socket->stop();
 		Socket = 0;
 	}
 
@@ -353,7 +353,6 @@ void FileTransfer::stop(StopType stopType)
 	if (Socket)
 	{
 		Socket->stop();
-		delete Socket;
 		Socket = 0;
 	}
 
