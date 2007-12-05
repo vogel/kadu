@@ -688,6 +688,7 @@ void ChatWidget::sendMessage()
 	myLastMessage = message.mid(messageBegin + 3, messageEnd - messageBegin - 3);
 	myLastMessage.replace("</p>", "");
 	myLastMessage.replace("<p>", "");
+	myLastMessage.replace("<br />", "\n");
 
 	currentProtocol()->sendMessage(Users->toUserListElements(), myLastMessage);
 
