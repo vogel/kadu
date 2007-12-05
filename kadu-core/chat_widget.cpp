@@ -510,14 +510,20 @@ QDateTime ChatWidget::getLastMsgTime()
 	return lastMsgTime;
 }
 
-void ChatWidget::appendMessages(const QValueList<ChatMessage *> &messages)
+void ChatWidget::appendMessages(const QValueList<ChatMessage *> &messages, bool pending)
 {
 	body->appendMessages(messages);
+
+	if (pending)
+		lastMsgTime = QDateTime::currentDateTime();
 }
 
-void ChatWidget::appendMessage(ChatMessage *message)
+void ChatWidget::appendMessage(ChatMessage *message, bool pending)
 {
 	body->appendMessage(message);
+
+	if (pending)
+		lastMsgTime = QDateTime::currentDateTime();
 }
 
 void ChatWidget::appendSystemMessage(const QString &rawContent, const QString &backgroundColor, const QString &fontColor)

@@ -137,6 +137,10 @@ void ChatWindow::closeEvent(QCloseEvent* e)
 	{
 		unsigned int period = config_file.readUnsignedNumEntry("Chat",
 			"ChatCloseTimerPeriod", 2);
+
+		printf("closeEvent\n");
+		printf("%d\n%d\n", QDateTime::currentDateTime().toTime_t(), currentChatWidget->getLastMsgTime().addSecs(period).toTime_t());
+
 		if (QDateTime::currentDateTime() < currentChatWidget->getLastMsgTime().addSecs(period))
 		{
 			if (!MessageBox::ask(tr("New message received, close window anyway?")))

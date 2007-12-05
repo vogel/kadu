@@ -545,7 +545,7 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 
 	ChatWidget *chat = new ChatWidget(initialProtocol, users);
 	if (messages)
-		chat->appendMessages(*messages);
+		chat->appendMessages(*messages, true);
 
 	bool handled = false;
 	emit handleNewChatWidget(chat, handled);

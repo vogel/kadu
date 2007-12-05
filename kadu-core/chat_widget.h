@@ -238,14 +238,14 @@ public slots:
 		Slot dodaj wiadomo¶ci do okna
 		\param messages lista wiadomo¶ci
 	**/
-	void appendMessages(const QValueList<ChatMessage *> &);
+	void appendMessages(const QValueList<ChatMessage *> &, bool pending = false);
 
 	/**
 		\fn void appendMessage(ChatMessage *)
 		Slot dodaj wiadomo¶æ do okna
 		\param messages lista wiadomo¶ci
 	**/
-	void appendMessage(ChatMessage *);
+	void appendMessage(ChatMessage *, bool pending = false);
 
 	/**
 		\fn void sendMessage()
