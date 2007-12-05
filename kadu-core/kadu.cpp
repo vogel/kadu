@@ -740,7 +740,7 @@ void Kadu::openChat()
 		kdebugf2();
 		return;
 	}
-	chat_manager->openPendingMsgs(activeUserBox->selectedUsers());
+	sendMessage(activeUserBox->selectedUsers()[0]);
 
 	kdebugf2();
 }
