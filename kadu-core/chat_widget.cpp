@@ -412,10 +412,7 @@ void ChatWidget::refreshTitle()
 		if (config_file.readEntry("Look", "ConferenceContents").isEmpty())
 			CONST_FOREACH(user, *Users)
 			{
-				if ((*user).isAnonymous())
-					title.append(KaduParser::parse("%a", *user, false));
-				else
-					title.append(KaduParser::parse("%a (%s[: %d])", *user, false));
+				title.append(KaduParser::parse("%a", *user, false));
 
 				if (++i < uinsSize)
 					title.append(", ");
