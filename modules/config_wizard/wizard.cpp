@@ -413,15 +413,12 @@ void Wizard::haveNumberChanged(bool haveNumber)
 void Wizard::loadGGAccountOptions()
 {
 	QString uin = config_file.readEntry("General", "UIN");
-	if (uin.isEmpty())
-	{
-		haveNumberChanged(false);
-		dontHaveNumber->setChecked(true);
-	}
-	else
-	{
-		haveNumberChanged(true);
-		haveNumber->setChecked(true);
+
+	haveNumber->setChecked(true);
+	haveNumberChanged(true);
+
+	if (!uin.isEmpty())
+	{		
 		ggNumber->setText(uin);
 		ggPassword->setText(pwHash(config_file.readEntry("General", "Password")));
 	}

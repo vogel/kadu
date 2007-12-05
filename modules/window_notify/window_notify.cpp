@@ -146,7 +146,6 @@ void WindowNotify::notify(Notification *notification)
 
 void WindowNotify::createDefaultConfiguration()
 {
-	config_file.addVariable("Notify", "ConnectionError_Window", true);
 	config_file.addVariable("Notify", "FileTransfer/IncomingFile_Window", true);
 }
 

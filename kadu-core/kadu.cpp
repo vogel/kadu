@@ -2042,8 +2042,8 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("Look", "NiceDateFormat", true);
 	config_file.addVariable("Look", "NoHeaderInterval", 30);
 	config_file.addVariable("Look", "NoHeaderRepeat", false);
-	config_file.addVariable("Look", "NoServerTime", false);
-	config_file.addVariable("Look", "NoServerTimeDiff", 5);
+	config_file.addVariable("Look", "NoServerTime", true);
+	config_file.addVariable("Look", "NoServerTimeDiff", 60);
 	config_file.addVariable("Look", "PanelFont", defaultFont);
 	config_file.addVariable("Look", "PanelVerticalScrollBar", false);
 	config_file.addVariable("Look", "ParagraphSeparator", 4);
