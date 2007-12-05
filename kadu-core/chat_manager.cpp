@@ -642,7 +642,12 @@ void ChatManager::sendMessage(UserListElement user, UserListElements selected_us
 
 	for (int i = 0; i < pending.count(); ++i)
 		if (pending[i].users.contains(user))
+		{
 			openPendingMsgs(pending[i].users);
+			return;
+		}
+
+	openChatWidget(gadu, selected_users);
 
 	kdebugf2();
 }
