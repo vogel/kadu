@@ -39,7 +39,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) :
 	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
-	QVBox *left=new QVBox(this);
+	QVBox *left = new QVBox(this);
 	left->setMargin(10);
 	left->setSpacing(10);
 
@@ -47,7 +47,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) :
 	QWidget *w_blank = new QWidget(left);
 	w_blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	QVBox *center=new QVBox(this);
+	QVBox *center = new QVBox(this);
 	center->setMargin(10);
 	center->setSpacing(10);
 
@@ -80,7 +80,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) :
 	hb_importbuttons->setSpacing(5);
 	w_blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
-	pb_fetch = new QPushButton(icons_manager->loadIcon("FetchUserList"), tr("&Fetch userlist"), hb_importbuttons, "fetch");
+	pb_fetch = new QPushButton(icons_manager->loadIconSet("FetchUserList"), tr("&Fetch userlist"), hb_importbuttons, "fetch");
 	QPushButton *pb_file = new QPushButton(icons_manager->loadIcon("ImportFromFile"), tr("&Import from file"), hb_importbuttons, "file");
 	QPushButton *pb_save = new QPushButton(icons_manager->loadIcon("SaveUserlist"), tr("&Save results"), hb_importbuttons, "save");
 	QPushButton *pb_merge = new QPushButton(icons_manager->loadIcon("MergeUserlist"), tr("&Merge results"), hb_importbuttons, "merge");
@@ -100,9 +100,9 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) :
 	hb_exportbuttons->setSpacing(5);
 	w_blank3->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
-	pb_send = new QPushButton(icons_manager->loadIcon("SendUserlist"),tr("Se&nd userlist"), hb_exportbuttons, "send");
-	pb_delete = new QPushButton(icons_manager->loadIcon("DeleteUserlist"),tr("&Delete userlist"), hb_exportbuttons, "delete");
-	pb_tofile = new QPushButton(icons_manager->loadIcon("ExportUserlist"),tr("&Export to file"), hb_exportbuttons, "tofile");
+	pb_send = new QPushButton(icons_manager->loadIconSet("SendUserlist"),tr("Se&nd userlist"), hb_exportbuttons, "send");
+	pb_delete = new QPushButton(icons_manager->loadIconSet("DeleteUserlist"),tr("&Delete userlist"), hb_exportbuttons, "delete");
+	pb_tofile = new QPushButton(icons_manager->loadIconSet("ExportUserlist"),tr("&Export to file"), hb_exportbuttons, "tofile");
 	// end export buttons
 
 	// buttons
