@@ -306,7 +306,6 @@ void FileTransfer::start(StartType startType)
 					break;
 
 				case Dcc7:
-					startTimeout();
 					Socket = new DccSocket(gg_dcc7_send_file(gadu->session(), Contact, FileName, unicode2cp(FileName), 0)); // last param - hash
 					Socket->setHandler(this);
 					break;

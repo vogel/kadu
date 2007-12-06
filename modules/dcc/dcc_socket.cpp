@@ -21,17 +21,24 @@
 #include "dcc_socket.h"
 
 DccSocket::DccSocket(struct gg_dcc *dccStruct)
-	: Version(Dcc6), Dcc6Struct(dccStruct), Dcc7Struct(0), DccCheckField(dccStruct->check), DccEvent(0), ReadSocketNotifier(0), WriteSocketNotifier(0), ConnectionClosed(false), Handler(0)
+	: Version(Dcc6), Dcc6Struct(dccStruct), Dcc7Struct(0), DccCheckField(dccStruct->check), DccEvent(0), ReadSocketNotifier(0), WriteSocketNotifier(0), ConnectionClosed(false), Timeout(0), Handler(0)
 {
 }
 
 DccSocket::DccSocket(struct gg_dcc7 *dccStruct)
-	: Version(Dcc7), Dcc6Struct(0), Dcc7Struct(dccStruct), DccCheckField(dccStruct->check), DccEvent(0), ReadSocketNotifier(0), WriteSocketNotifier(0), ConnectionClosed(false), Handler(0)
+	: Version(Dcc7), Dcc6Struct(0), Dcc7Struct(dccStruct), DccCheckField(dccStruct->check), DccEvent(0), ReadSocketNotifier(0), WriteSocketNotifier(0), ConnectionClosed(false), Timeout(0), Handler(0)
 {
 }
 
 DccSocket::~DccSocket()
 {
+	cancelTimeout();
+	if (Timeout)
+	{
+		delete Timeout;
+		Timeout = 0;
+	}
+
 	closeSocket(true);
 	finalizeNotifiers();
 	setHandler(0);
@@ -164,9 +171,62 @@ void DccSocket::finalizeNotifiers()
 	kdebugf2();
 }
 
+void DccSocket::startTimeout()
+{
+	kdebugf();
+
+	if (!Timeout)
+	{
+		Timeout = new QTimer(this);
+		connect(Timeout, SIGNAL(timeout()), this, SLOT(timeout()));
+	}
+
+	switch (Version)
+	{
+		case Dcc6:
+			Timeout->start(Dcc6Struct->timeout * 1000, true);
+			break;
+		case Dcc7:
+			Timeout->start(Dcc7Struct->timeout * 1000, true);
+			break;
+		default:
+			return;
+	}
+}
+
+void DccSocket::cancelTimeout()
+{
+	kdebugf();
+
+	if (Timeout)
+		Timeout->stop();
+}
+
+void DccSocket::timeout()
+{
+	kdebugf();
+
+	switch (Version)
+	{
+		case Dcc6:
+			closeSocket(true);
+			break;
+		case Dcc7:
+			if (Dcc7Struct->soft_timeout)
+				watchDcc();
+			else
+				closeSocket(true);
+			break;
+		default:
+			return;
+	}
+}
+
 void DccSocket::enableNotifiers()
 {
 	kdebugf();
+
+	startTimeout();
 
 	if (checkRead())
 		ReadSocketNotifier->setEnabled(true);
@@ -372,6 +432,8 @@ void DccSocket::fillFileInfo(const QString &fileName)
 
 bool DccSocket::setFile(int fd)
 {
+	kdebugf();
+
 	if (fd == -1)
 		return false;
 

@@ -81,9 +81,6 @@ VoiceChatDialog::~VoiceChatDialog()
 	Socket->stop();
 	voice_manager->free();
 
-	if (!chatFinished)
-		delete Socket;
-
 	kdebugf2();
 }
 

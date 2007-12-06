@@ -15,6 +15,7 @@
 #include "dcc.h"
 
 class QSocketNotifier;
+class QTimer;
 
 class DccHandler;
 
@@ -35,14 +36,21 @@ class DccSocket : public QObject
 
 	bool ConnectionClosed;
 
+	QTimer *Timeout;
+
 	void initializeNotifiers();
 	void finalizeNotifiers();
+
+	void startTimeout();
+	void cancelTimeout();
 
 private slots:
 	void socketDataEvent();
 
 	void dcc7Accepted(struct gg_dcc7 *);
 	void dcc7Rejected(struct gg_dcc7 *);
+
+	void timeout();
 
 protected:
 	DccHandler *Handler;

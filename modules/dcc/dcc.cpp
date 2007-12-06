@@ -389,9 +389,6 @@ void DccManager::removeHandler(DccHandler *handler)
 void DccManager::connectionError(DccSocket *socket)
 {
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Connection broken unexpectedly!\n");
-
-	if (socket == MainSocket)
-		config_file.writeEntry("Network", "AllowDCC", false);
 }
 
 bool DccManager::socketEvent(DccSocket *socket, bool &lock)
