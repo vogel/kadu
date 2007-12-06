@@ -210,14 +210,16 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	pending.loadFromFile();
 
 	Action* inact_users_action = new Action("ShowHideInactiveUsers",
-		tr("Show / hide offline users"), "inactiveUsersAction", Action::TypeUserList);
+		tr("Hide offline users"), "inactiveUsersAction", Action::TypeUserList);
+	inact_users_action->setOnShape("ShowHideInactiveUsers_off", tr("Show offline users"));
 	inact_users_action->setToggleAction(true);
 	inact_users_action->setAllOn(!config_file.readBoolEntry("General", "ShowOffline"));
 	connect(inact_users_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(inactiveUsersActionActivated()));
 
 	Action* desc_users_action = new Action("ShowOnlyDescriptionUsers",
-		tr("Show / hide users without description"), "descriptionUsersAction", Action::TypeUserList);
+		tr("Hide users without description"), "descriptionUsersAction", Action::TypeUserList);
+	desc_users_action->setOnShape("ShowOnlyDescriptionUsers_off", tr("Show users without description"));
 	desc_users_action->setToggleAction(true);
 	desc_users_action->setAllOn(!config_file.readBoolEntry("General", "ShowWithoutDescription"));
 	connect(desc_users_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
@@ -225,6 +227,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 
 	Action* onlineAndDesc_users_action = new Action("ShowOnlineAndDescriptionUsers",
 		tr("Show only online and description users"), "onlineAndDescriptionUsersAction", Action::TypeUserList);
+	onlineAndDesc_users_action->setOnShape("ShowOnlineAndDescriptionUsers_off", tr("Show all users"));
 	onlineAndDesc_users_action->setToggleAction(true);
 	onlineAndDesc_users_action->setAllOn(config_file.readBoolEntry("General", "ShowOnlineAndDescription"));
 	connect(onlineAndDesc_users_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),

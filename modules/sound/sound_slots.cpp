@@ -83,6 +83,7 @@ SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name
 
 	mute_action = new Action("Unmute", tr("Mute sounds"), "muteSoundsAction", Action::TypeGlobal);
 	mute_action->setOnShape("Mute", tr("Unmute sounds"));
+	mute_action->setToggleAction(true);
 	connect(mute_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(muteActionActivated(const UserGroup*, const QWidget*, bool)));
 	connect(mute_action, SIGNAL(iconsRefreshed()), this, SLOT(setMuteActionState()));
@@ -119,6 +120,11 @@ void SoundSlots::muteUnmuteSounds()
 	kdebugf();
 	muteActionActivated(NULL, NULL, !sound_manager->isMuted());
 	kdebugf2();
+}
+
+void SoundSlots::configurationUpdated()
+{
+	muteActionActivated(NULL, NULL, !sound_manager->isMuted());
 }
 
 void SoundSlots::testSamplePlaying()

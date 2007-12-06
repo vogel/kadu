@@ -187,7 +187,7 @@ void Action::refreshIcons()
 
 	if (!OnIcon.isEmpty())
 		FOREACH(button, ToolButtons)
-			(*button)->setOnShape(icons_manager->loadIcon(OnIcon), OnText);
+			(*button)->setOnShape(icons_manager->loadIconSet(OnIcon), OnText);
 
 	emit iconsRefreshed();
 

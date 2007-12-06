@@ -98,7 +98,7 @@ void ToolButton::setOnShape(const QIconSet& icon, const QString& text)
 	OffText = textLabel();
 	OnIcon = icon;
 	OnText = text;
-	setOn(false);
+	setOn(isOn());
 }
 
 bool ToolButton::isOn() const
@@ -116,9 +116,7 @@ bool ToolButton::isOn() const
 void ToolButton::setOn(bool on)
 {
 	kdebugf();
-	if (OnIcon.isNull())
-		QToolButton::setOn(on);
-	else
+	if (!OnIcon.isNull())
 	{
 		if (on)
 		{
@@ -133,6 +131,7 @@ void ToolButton::setOn(bool on)
 			InOnState = false;
 		}
 	}
+	QToolButton::setOn(on);
 	kdebugf2();
 }
 

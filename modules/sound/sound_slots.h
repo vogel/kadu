@@ -35,7 +35,7 @@ public:
 	virtual void switchToEvent(const QString &event);
 };
 
-class SoundSlots : public QObject
+class SoundSlots : public QObject, public ConfigurationAwareObject
 {
 	Q_OBJECT
 	private:
@@ -68,7 +68,8 @@ class SoundSlots : public QObject
 		void testFullDuplex();
 		void fullDuplexTestSampleRecorded(SoundDevice device);
 		void closeFullDuplexTest();
-
+	protected:
+		void configurationUpdated();
 	public:
 		SoundSlots(QObject *parent=0, const char *name=0);
 		~SoundSlots();
