@@ -187,7 +187,10 @@ void IconsManager::initModule()
 	QStringList themes = icons_manager->themes();
 	QString theme = config_file.readEntry("Look", "IconTheme");
 	if (!themes.isEmpty() && !themes.contains(theme))
+	{
+		theme = "default";
 		config_file.writeEntry("Look", "IconTheme", "default");
+	}
 
 	icons_manager->setTheme(theme);
 
