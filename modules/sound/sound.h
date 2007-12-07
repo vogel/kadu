@@ -161,7 +161,7 @@ class SoundManager : public Notifier, public ConfigurationUiHandler
 
 	private slots:
 		void setSoundThemes();
-		void applyTheme();
+		void configurationWindowApplied();
 
 	public slots:
 		void play(const QString &path, bool force=false);

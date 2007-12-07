@@ -198,10 +198,14 @@ SoundManager::SoundManager(const QString& name, const QString& configname) : Not
 
 	QStringList soundThemes = themes->themes();
 	QString soundTheme = config_file.readEntry("Sounds", "SoundTheme");
-	if (!soundThemes.isEmpty() && !soundThemes.contains(soundTheme))
+	if (!soundThemes.isEmpty() && (soundTheme != "custom") && !soundThemes.contains(soundTheme))
+	{
+		soundTheme = "default";
 		config_file.writeEntry("Sounds", "SoundTheme", "default");
+	}
 
-	applyTheme(soundTheme);
+	if (soundTheme != "custom")
+		applyTheme(soundTheme);
 
 	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default", "Sound"), this);
 
@@ -232,6 +236,8 @@ SoundManager::~SoundManager()
 
 void SoundManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
+	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
+
 	connect(mainConfigurationWindow->widgetById("sound/use"), SIGNAL(toggled(bool)),
 		mainConfigurationWindow->widgetById("sound/theme"), SLOT(setEnabled(bool)));
 	connect(mainConfigurationWindow->widgetById("sound/use"), SIGNAL(toggled(bool)),
@@ -251,8 +257,6 @@ void SoundManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainC
 	connect(themesPaths, SIGNAL(changed()), sound_manager, SLOT(setSoundThemes()));
 
 	setSoundThemes();
-
-	connect(mainConfigurationWindow->widgetById("sound/applyTheme"), SIGNAL(clicked()), sound_manager, SLOT(applyTheme()));
 }
 
 NotifierConfigurationWidget *SoundManager::createConfigurationWidget(QWidget *parent, char *name)
@@ -264,11 +268,25 @@ void SoundManager::setSoundThemes()
 {
 	themes->setPaths(themesPaths->pathList());
 
-	QStringList soundThemes = themes->themes();
-	soundThemes.sort();
+	QStringList soundThemeNames = themes->themes();
+	soundThemeNames.sort();
 
-	themesComboBox->setItems(soundThemes, soundThemes);
+	QStringList soundThemeValues = soundThemeNames;
+
+	soundThemeNames.prepend(tr("Custom"));
+	soundThemeValues.prepend("Custom");
+
+	themesComboBox->setItems(soundThemeValues, soundThemeNames);
 	themesComboBox->setCurrentText(themes->theme());
+}
+
+void SoundManager::configurationWindowApplied()
+{
+	kdebugf();
+
+	QString currentTheme = themesComboBox->currentText();
+	if (currentTheme != "custom")
+		applyTheme(currentTheme);
 }
 
 void SoundManager::import_0_5_0_configuration()
@@ -326,11 +344,6 @@ void SoundManager::applyTheme(const QString &themeName)
 	CONST_FOREACH(entry, entries)
 		if (!entry.key().isEmpty() && !(*entry).isEmpty())
 			config_file.writeEntry("Sounds", entry.key() + "_sound", themes->themePath() + *entry);
-}
-
-void SoundManager::applyTheme()
-{
-	applyTheme(themesComboBox->currentItemValue());
 }
 
 Themes *SoundManager::theme()
