@@ -623,6 +623,8 @@ void ChatManager::openPendingMsgs(UserListElements users)
 		openChatWidget(gadu, users, &messages);
 		UserBox::refreshAllLater();
 	}
+	else
+		openChatWidget(gadu, users, 0);
 
 	kdebugf2();
 }
