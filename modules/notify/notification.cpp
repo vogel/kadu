@@ -10,16 +10,31 @@
 #include <qtimer.h>
 
 #include "debug.h"
+#include "kadu_parser.h"
 
 #include "notification.h"
+
+static QString getNotificationTitle(const QObject * const object)
+{
+	kdebugf();
+
+	const Notification * const notification = dynamic_cast<const Notification * const>(object);
+	if (notification)
+		return notification->title();
+	else
+		return "";
+}
 
 Notification::Notification(const QString &type, const QString &icon, const UserListElements &userListElements)
 	: Type(type), Ule(userListElements), Title(""), Text(""), Icon(icon), DefaultCallbackTimer(0), ReferencesCount(0), Closing(false)
 {
+	KaduParser::registerObjectTag("action", getNotificationTitle);
 }
 
 Notification::~Notification()
 {
+	KaduParser::unregisterObjectTag("action", getNotificationTitle);
+
 	if (DefaultCallbackTimer)
 	{
 		delete DefaultCallbackTimer;

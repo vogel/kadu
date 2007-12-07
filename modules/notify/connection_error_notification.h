@@ -12,10 +12,10 @@
 
 #include <qstringlist.h>
 
-#include "notification.h"
+#include "protocol_notification.h"
 #include "notify.h"
 
-class ConnectionErrorNotification : public Notification
+class ConnectionErrorNotification : public ProtocolNotification
 {
 	Q_OBJECT
 
@@ -30,7 +30,7 @@ public:
 
 	static bool activeError(const QString &errorMessage);
 
-	ConnectionErrorNotification(const QString &errorServer, const QString &errorMessage);
+	ConnectionErrorNotification(const QString &errorServer, const QString &errorMessage, const QString &protocolName);
 	virtual ~ConnectionErrorNotification();
 
 	QString errorMessage() const;

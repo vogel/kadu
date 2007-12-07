@@ -10,10 +10,10 @@
 #ifndef STATUS_CHANGED_NOTIFICATION_H
 #define STATUS_CHANGED_NOTIFICATION_H
 
-#include "notification.h"
+#include "protocol_notification.h"
 #include "notify.h"
 
-class StatusChangedNotification : public Notification
+class StatusChangedNotification : public ProtocolNotification
 {
 	Q_OBJECT
 public:
@@ -21,7 +21,7 @@ public:
 	static void registerEvents(Notify * manager);
 	static void unregisterEvents(Notify * manager);
 
-	StatusChangedNotification(const QString &toStatus, const UserListElements &userListElements);
+	StatusChangedNotification(const QString &toStatus, const UserListElements &userListElements, const QString &protocolName);
 	virtual ~StatusChangedNotification() {};
 
 };

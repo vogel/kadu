@@ -10,10 +10,10 @@
 #ifndef NEW_MESSAGE_NOTIFICATION_H
 #define NEW_MESSAGE_NOTIFICATION_H
 
-#include "notification.h"
+#include "protocol_notification.h"
 #include "notify.h"
 
-class MessageNotification : public Notification
+class MessageNotification : public ProtocolNotification
 {
 	Q_OBJECT
 
@@ -27,7 +27,7 @@ public:
 	static void registerEvents(Notify * manager);
 	static void unregisterEvents(Notify * manager);
 
-	MessageNotification(MessageType message, const UserListElements &userListElements, const QString &message);
+	MessageNotification(MessageType message, const UserListElements &userListElements, const QString &message, const QString &protocolName);
 	virtual ~MessageNotification() {};
 
 };

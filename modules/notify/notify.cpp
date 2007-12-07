@@ -302,7 +302,7 @@ void Notify::statusChanged(UserListElement elem, QString protocolName,
 	UserListElements elems;
 	elems.append(elem);
 
-	StatusChangedNotification *statusChangedNotification = new StatusChangedNotification(changedTo, elems);
+	StatusChangedNotification *statusChangedNotification = new StatusChangedNotification(changedTo, elems, protocolName);
 	notify(statusChangedNotification);
 
 	kdebugf2();
@@ -314,12 +314,12 @@ void Notify::messageReceived(Protocol *protocol, UserListElements senders, const
 
 	ChatWidget *chat = chat_manager->findChatWidget(senders);
 	if (!chat) // new chat
-		notify(new MessageNotification(MessageNotification::NewChat, senders, msg));
+		notify(new MessageNotification(MessageNotification::NewChat, senders, msg, protocol->protocolID()));
 	else // new message in chat
 	{
 		bool alwaysNotify = !config_file.readBoolEntry("Notify", "NewMessageOnlyIfInactive");
 		if (alwaysNotify || !chat->isActiveWindow())
-			notify(new MessageNotification(MessageNotification::NewMessage, senders, msg));
+			notify(new MessageNotification(MessageNotification::NewMessage, senders, msg, protocol->protocolID()));
 	}
 
 	kdebugf2();
@@ -331,7 +331,7 @@ void Notify::connectionError(Protocol *protocol, const QString &server, const QS
 
 	if (!ConnectionErrorNotification::activeError(message))
 	{
-		ConnectionErrorNotification *connectionErrorNotification = new ConnectionErrorNotification(server, message);
+		ConnectionErrorNotification *connectionErrorNotification = new ConnectionErrorNotification(server, message, protocol->protocolID());
 		notify(connectionErrorNotification);
 	}
 

@@ -24,8 +24,8 @@ void MessageNotification::unregisterEvents(Notify *manager)
 	manager->unregisterEvent("NewMessage");
 }
 
-MessageNotification::MessageNotification(MessageType messageType, const UserListElements &userListElements, const QString &message)
-	: Notification(messageType == NewChat ? "NewChat" : "NewMessage", "Message", userListElements)
+MessageNotification::MessageNotification(MessageType messageType, const UserListElements &userListElements, const QString &message, const QString &protocolName)
+	: ProtocolNotification(messageType == NewChat ? "NewChat" : "NewMessage", "Message", userListElements, protocolName)
 {
 	const UserListElement &ule = userListElements[0];
 	QString syntax;
