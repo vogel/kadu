@@ -112,6 +112,8 @@ private slots:
 	**/
 	void setActColor(bool force);
 
+	void keyPressedSlot(QKeyEvent *e, CustomInput *sender, bool &handled);
+
 protected:
 	virtual void keyPressEvent(QKeyEvent* e);
 	bool keyPressEventHandled(QKeyEvent *);
@@ -371,6 +373,8 @@ signals:
 
 	void captionUpdated();
 	void closed();
+
+	void keyPressed(QKeyEvent *e, ChatWidget *sender, bool &handled);
 
 };
 

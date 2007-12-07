@@ -36,7 +36,8 @@ class FileTransferManager : public QObject, DccHandler
 private slots:
 	void userboxMenuPopup();
 	void sendFile();
-	void kaduKeyPressed(QKeyEvent* e);
+	void kaduKeyPressed(QKeyEvent *e);
+	void chatKeyPressed(QKeyEvent *e, ChatWidget *widget, bool &handled);
 
 	void chatCreated(ChatWidget *chat);
 	void chatDestroying(ChatWidget *chat);

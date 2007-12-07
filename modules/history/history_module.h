@@ -16,16 +16,21 @@ class HistoryModule : public ConfigurationUiHandler
 	QLabel *dontCiteOldMessagesLabel;
 
 	void createDefaultConfiguration();
+	void appendHistory(ChatWidget *chat);
 
 private slots:
 	void historyActionActivated(const UserGroup* users);
-	void chatCreated(ChatWidget *chat, time_t time);
 	void messageSentAndConfirmed(UserListElements receivers, const QString& message);
 	void viewHistory();
 	void deleteHistory();
 	void userboxMenuPopup();
 	void removingUsers(UserListElements users);
 	void updateQuoteTimeLabel(int);
+
+	void chatKeyPressed(QKeyEvent *e, ChatWidget *widget, bool &handled);
+
+	void chatCreated(ChatWidget *chat);
+	void chatDestroying(ChatWidget *chat);
 
 public:
 	HistoryModule();

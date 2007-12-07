@@ -16,6 +16,7 @@ extern "C" {
 
 #include "main_configuration_window.h"
 
+class ChatWidget;
 class PlayThread;
 class RecordThread;
 
@@ -91,6 +92,9 @@ private:
 
 	void createDefaultConfiguration();
 
+	void makeVoiceChat();
+	void makeVoiceChat(UinType dest);
+
 private slots:
 	void testGsmEncoding();
 	void gsmEncodingTestSampleRecorded(SoundDevice device);
@@ -98,8 +102,11 @@ private slots:
 	void playGsmSampleReceived(char *data, int length);
 	void recordSampleReceived(char *data, int length);
 	void mainDialogKeyPressed(QKeyEvent *e);
+	void chatKeyPressed(QKeyEvent *e, ChatWidget *chatWidget, bool &handled);
 	void userBoxMenuPopup();
-	void makeVoiceChat();
+
+	void chatCreated(ChatWidget *chat);
+	void chatDestroying(ChatWidget *chat);
 
 public:
 	VoiceManager();
@@ -124,9 +131,6 @@ public:
 	void connectionRejected(DccSocket *socket) {}
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
-
-public slots:
-	void makeVoiceChat(UinType dest);
 
 };
 

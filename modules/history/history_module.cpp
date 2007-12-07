@@ -59,12 +59,16 @@ HistoryModule::HistoryModule() : QObject(NULL, "history")
 
 	history = new HistoryManager(0, "history_manager");
 
+	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
+	connect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroying(ChatWidget*)));
+
+	FOREACH(it, chat_manager->chats())
+		chatCreated(*it);
+
 	connect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString&, time_t)),
 		history, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
 	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
 		history, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
-	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *, time_t)),
-		this, SLOT(chatCreated(ChatWidget*, time_t)));
 	connect(kadu, SIGNAL(removingUsers(UserListElements)),
 		this, SLOT(removingUsers(UserListElements)));
 
@@ -82,10 +86,6 @@ HistoryModule::HistoryModule() : QObject(NULL, "history")
 	QStringList actions;
 	actions.append("showHistoryAction");
 
-	time_t time = QDateTime::currentDateTime().toTime_t();
-	FOREACH(chat, chat_manager->chats())
-		chatCreated(*chat, time);
-
 	kdebugf2();
 }
 
@@ -99,6 +99,12 @@ HistoryModule::~HistoryModule()
 	UserBox::management->removeItem(delete_history_item);
 	disconnect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
 
+	disconnect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
+	disconnect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroying(ChatWidget *)));
+
+	FOREACH(it, chat_manager->chats())
+		chatDestroying(*it);
+
 	Action* history_action = KaduActions["showHistoryAction"];
 	delete history_action;
 	history_action = 0;
@@ -107,8 +113,6 @@ HistoryModule::~HistoryModule()
 		history, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
 	disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
 		history, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
-	disconnect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *, time_t)),
-		this, SLOT(chatCreated(ChatWidget *, time_t)));
 	disconnect(kadu, SIGNAL(removingUsers(UserListElements)),
 		this, SLOT(removingUsers(UserListElements)));
 
@@ -147,23 +151,24 @@ void HistoryModule::historyActionActivated(const UserGroup* users)
 	kdebugf2();
 }
 
-void HistoryModule::chatCreated(ChatWidget *chat, time_t time)
+void HistoryModule::chatKeyPressed(QKeyEvent *e, ChatWidget *chatWidget, bool &handled)
 {
-	kdebugf();
-	connect(chat, SIGNAL(messageSentAndConfirmed(UserListElements, const QString&)),
-		this, SLOT(messageSentAndConfirmed(UserListElements, const QString&)));
-	UserListElements senders = chat->users()->toUserListElements();
+	if (HotKey::shortCut(e, "ShortCuts", "kadu_viewhistory"))
+	{
+		historyActionActivated(chatWidget->users());
+		handled = true;
+	}
+}
 
-	// don't do it for already opened chats with discussions
-	if (chat->countMessages() != 0)
-		return;
+void HistoryModule::appendHistory(ChatWidget *chat)
+{
+
+	UserListElements senders = chat->users()->toUserListElements();
 
 	QValueList<HistoryEntry> entries;
 	QValueList<HistoryEntry> entriestmp;
-	QDateTime date;
+	QDateTime date = QDateTime::currentDateTime();
 	unsigned int from, end, count;
-
-	date.setTime_t(time);
 
 	UinsList uins;//TODO: throw out UinsList as soon as possible!
 	CONST_FOREACH(user, senders)
@@ -184,26 +189,25 @@ void HistoryModule::chatCreated(ChatWidget *chat, time_t time)
 		entriestmp = history->getHistoryEntries(uins, from, end - from + 1, HISTORYMANAGER_ENTRY_CHATSEND
 			| HISTORYMANAGER_ENTRY_MSGSEND | HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV);
 		kdebugmf(KDEBUG_INFO, "temp entries = %u\n", entriestmp.count());
-		if (time)
+
+		QValueList<HistoryEntry>::iterator it = entriestmp.begin();
+		while (it != entriestmp.end())
 		{
-			QValueList<HistoryEntry>::iterator it = entriestmp.begin();
-			while (it != entriestmp.end())
+			if ((*it).type == HISTORYMANAGER_ENTRY_CHATRCV
+				|| (*it).type == HISTORYMANAGER_ENTRY_MSGRCV)
 			{
-				if ((*it).type == HISTORYMANAGER_ENTRY_CHATRCV
-					|| (*it).type == HISTORYMANAGER_ENTRY_MSGRCV)
-				{
-					kdebugmf(KDEBUG_INFO, "%s %s\n",
-						date.toString("dd.MM.yyyy hh:mm:ss").local8Bit().data(),
-						(*it).date.toString("dd.MM.yyyy hh:mm:ss").local8Bit().data());
-					if (date <= (*it).date)
-						it = entriestmp.remove(it);
-					else
-						++it;
-				}
+				kdebugmf(KDEBUG_INFO, "%s %s\n",
+					date.toString("dd.MM.yyyy hh:mm:ss").local8Bit().data(),
+					(*it).date.toString("dd.MM.yyyy hh:mm:ss").local8Bit().data());
+				if (date <= (*it).date)
+					it = entriestmp.remove(it);
 				else
 					++it;
 			}
+			else
+				++it;
 		}
+
 		if (!entriestmp.isEmpty())
 			entries = entriestmp + entries;
 		kdebugmf(KDEBUG_INFO, "entries = %u\n", entries.count());
@@ -218,7 +222,7 @@ void HistoryModule::chatCreated(ChatWidget *chat, time_t time)
 
 	QValueList<ChatMessage *> messages;
 
-	int quotTime = config_file.readNumEntry("History","ChatHistoryQuotationTime");
+	int quotTime = config_file.readNumEntry("History", "ChatHistoryQuotationTime");
 
 	QValueListConstIterator<HistoryEntry> entry = entries.at(from);
 	QValueListConstIterator<HistoryEntry> entriesEnd = entries.end();
@@ -234,7 +238,31 @@ void HistoryModule::chatCreated(ChatWidget *chat, time_t time)
 		}
 	if (!messages.empty())
 		chat->appendMessages(messages);
+}
+
+void HistoryModule::chatCreated(ChatWidget *chat)
+{
+	kdebugf();
+
+	connect(chat, SIGNAL(keyPressed(QKeyEvent *, ChatWidget *, bool &)),
+		this, SLOT(chatKeyPressed(QKeyEvent *, ChatWidget *, bool &)));
+
+	connect(chat, SIGNAL(messageSentAndConfirmed(UserListElements, const QString&)),
+		this, SLOT(messageSentAndConfirmed(UserListElements, const QString&)));
+
+	// don't do it for already opened chats with discussions
+	if (chat->countMessages() != 0)
+		return;
+
+	appendHistory(chat);
+
 	kdebugf2();
+}
+
+void HistoryModule::chatDestroying(ChatWidget *chat)
+{
+	disconnect(chat, SIGNAL(keyPressed(QKeyEvent *, ChatWidget *, bool &)),
+		this, SLOT(chatKeyPressed(QKeyEvent *, ChatWidget *, bool &)));
 }
 
 void HistoryModule::messageSentAndConfirmed(UserListElements receivers, const QString& message)

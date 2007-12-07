@@ -64,21 +64,21 @@ void CustomInput::keyPressEvent(QKeyEvent* e)
  			kdebugf2();
  			return;
  		}
- 		else if (HotKey::shortCut(e, "ShortCuts", "chat_italic"))
+ 		if (HotKey::shortCut(e, "ShortCuts", "chat_italic"))
  		{
  			emit specialKeyPressed(CustomInput::KEY_ITALIC);
  			e->accept();
  			kdebugf2();
  			return;
  		}
- 		else if (HotKey::shortCut(e, "ShortCuts", "chat_underline"))
+ 		if (HotKey::shortCut(e, "ShortCuts", "chat_underline"))
  		{
  			emit specialKeyPressed(CustomInput::KEY_UNDERLINE);
  			e->accept();
  			kdebugf2();
  			return;
  		}
-		else if (e->key() == Key_A && (e->state() & ControlButton))
+		if (e->key() == Key_A && (e->state() & ControlButton))
 		{
 			selectAll();	
 			e->accept();

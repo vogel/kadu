@@ -136,6 +136,8 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
  	Edit->setMinimumHeight(1);
 	Edit->setWordWrap(QMultiLineEdit::WidgetWidth);
 
+	connect(Edit, SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)), this, SLOT(keyPressedSlot(QKeyEvent *, CustomInput *, bool &)));
+
 	setFocusProxy(Edit);
 
 	DockArea* btnpart = new DockArea(Qt::Horizontal, DockArea::Normal, downpart,
@@ -912,4 +914,9 @@ void ChatWidget::leaveConference()
 		IgnoredManager::insert(users);
 
 	emit closed();
+}
+
+void ChatWidget::keyPressedSlot(QKeyEvent *e, CustomInput *sender, bool &handled)
+{
+	emit keyPressed(e, this, handled);
 }

@@ -22,14 +22,16 @@
 #include "../dcc/dcc.h"
 #include "../dcc/dcc_socket.h"
 
-#include "userbox.h"
-#include "userlist.h"
+#include "chat_widget.h"
+#include "chat_manager.h"
 #include "config_file.h"
 #include "debug.h"
+#include "gadu.h"
 #include "hot_key.h"
 #include "kadu.h"
-#include "gadu.h"
 #include "message_box.h"
+#include "userbox.h"
+#include "userlist.h"
 
 /**
  * @ingroup voice
@@ -374,6 +376,12 @@ VoiceManager::VoiceManager()
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent*)),
 		this, SLOT(mainDialogKeyPressed(QKeyEvent*)));
 
+	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
+	connect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroying(ChatWidget*)));
+
+	FOREACH(it, chat_manager->chats())
+		chatCreated(*it);
+
 	dcc_manager->addHandler(this);
 
 	kdebugf2();
@@ -387,6 +395,13 @@ VoiceManager::~VoiceManager()
 
 	int voice_chat_item = UserBox::userboxmenu->getItem(tr("Voice chat"));
 	UserBox::userboxmenu->removeItem(voice_chat_item);
+
+	disconnect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
+	disconnect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroying(ChatWidget*)));
+
+	FOREACH(it, chat_manager->chats())
+		chatDestroying(*it);
+
 	disconnect(UserBox::userboxmenu,SIGNAL(popup()),
 		this, SLOT(userBoxMenuPopup()));
 	disconnect(kadu, SIGNAL(keyPressed(QKeyEvent*)),
@@ -394,6 +409,18 @@ VoiceManager::~VoiceManager()
 	VoiceChatDialog::destroyAll();
 
 	kdebugf2();
+}
+
+void VoiceManager::chatCreated(ChatWidget *chat)
+{
+	connect(chat, SIGNAL(keyPressed(QKeyEvent *, ChatWidget *, bool &)),
+		this, SLOT(chatKeyPressed(QKeyEvent *, ChatWidget *, bool &)));
+}
+
+void VoiceManager::chatDestroying(ChatWidget *chat)
+{
+	disconnect(chat, SIGNAL(keyPressed(QKeyEvent *, ChatWidget *, bool &)),
+		this, SLOT(chatKeyPressed(QKeyEvent *, ChatWidget *, bool &)));
 }
 
 void VoiceManager::testGsmEncoding()
@@ -668,6 +695,17 @@ void VoiceManager::mainDialogKeyPressed(QKeyEvent *e)
 {
 	if (HotKey::shortCut(e,"ShortCuts", "kadu_voicechat"))
 		makeVoiceChat();
+}
+
+void VoiceManager::chatKeyPressed(QKeyEvent *e, ChatWidget *chatWidget, bool &handled)
+{
+	if (HotKey::shortCut(e,"ShortCuts", "kadu_voicechat"))
+	{
+		UserListElements users = chatWidget->users()->toUserListElements();
+		if (users.size() == 1)
+			makeVoiceChat(users[0].ID("Gadu").toUInt());
+		handled = true;
+	}
 }
 
 void VoiceManager::userBoxMenuPopup()

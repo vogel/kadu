@@ -563,6 +563,7 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 
 //	chat->makeActive();
 	emit chatWidgetCreated(chat);
+// TODO: remove, it is so stupid ...
 	emit chatWidgetCreated(chat, time(0));
 	emit chatWidgetOpen(chat);
 

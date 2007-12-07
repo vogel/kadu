@@ -37,7 +37,7 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 		this, SLOT(sendFile()),
 		HotKey::shortCutFromFile("ShortCuts", "kadu_sendfile"));
 	connect(UserBox::userboxmenu,SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
-	connect(kadu, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(kaduKeyPressed(QKeyEvent*)));
+	connect(kadu, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(kaduKeyPressed(QKeyEvent *)));
 
 	Action* send_file_action = new Action("SendFile", tr("Send file"), "sendFileAction", Action::TypeUser);
 	connect(send_file_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
@@ -256,22 +256,35 @@ void FileTransferManager::userboxMenuPopup()
 	kdebugf2();
 }
 
-void FileTransferManager::kaduKeyPressed(QKeyEvent* e)
+void FileTransferManager::kaduKeyPressed(QKeyEvent *e)
 {
-	if (HotKey::shortCut(e,"ShortCuts", "kadu_sendfile"))
+	if (HotKey::shortCut(e, "ShortCuts", "kadu_sendfile"))
 		sendFile();
+}
+
+void FileTransferManager::chatKeyPressed(QKeyEvent *e, ChatWidget *chatWidget, bool &handled)
+{
+	if (HotKey::shortCut(e, "ShortCuts", "kadu_sendfile"))
+	{
+		sendFile(chatWidget->users()->toUserListElements());
+		handled = true;
+	}
 }
 
 void FileTransferManager::chatCreated(ChatWidget *chat)
 {
 	connect(chat, SIGNAL(fileDropped(const UserGroup *, const QString &)),
 		this, SLOT(fileDropped(const UserGroup *, const QString &)));
+	connect(chat, SIGNAL(keyPressed(QKeyEvent *, ChatWidget *, bool &)),
+		this, SLOT(chatKeyPressed(QKeyEvent *, ChatWidget *, bool &)));
 }
 
 void FileTransferManager::chatDestroying(ChatWidget *chat)
 {
 	disconnect(chat, SIGNAL(fileDropped(const UserGroup *, const QString &)),
 		this, SLOT(fileDropped(const UserGroup *, const QString &)));
+	disconnect(chat, SIGNAL(keyPressed(QKeyEvent *, ChatWidget *, bool &)),
+		this, SLOT(chatKeyPressed(QKeyEvent *, ChatWidget *, bool &)));
 }
 
 void FileTransferManager::fileDropped(const UserGroup *group, const QString &fileName)
