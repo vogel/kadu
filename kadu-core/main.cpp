@@ -206,6 +206,8 @@ int main(int argc, char *argv[])
 	gettimeofday(&tv, &tz);
 	startTime = (tv.tv_sec % 1000) * 1000000 + tv.tv_usec;
 
+	setenv("LC_COLLATE", "pl_PL", true);
+
 //	debug_mask = -1;
 	qInstallMsgHandler(kaduQtMessageHandler);
 	xml_config_file = new XmlConfigFile();
