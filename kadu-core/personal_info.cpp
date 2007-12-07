@@ -29,15 +29,15 @@ PersonalInfoDialog::PersonalInfoDialog(QWidget *parent, const char *name) : QHBo
 	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
-	QVBox *left=new QVBox(this);
+	QVBox *left = new QVBox(this);
 	left->setMargin(10);
 	left->setSpacing(10);
 
 	QLabel *l_icon = new QLabel(left);
-	QWidget *blank=new QWidget(left);
+	QWidget *blank = new QWidget(left);
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	QVBox *center=new QVBox(this);
+	QVBox *center = new QVBox(this);
 	center->setMargin(10);
 	center->setSpacing(10);
 
@@ -118,9 +118,9 @@ PersonalInfoDialog::PersonalInfoDialog(QWidget *parent, const char *name) : QHBo
 	QWidget *blank2=new QWidget(bottom);
 	bottom->setSpacing(5);
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
-	pb_save = new QPushButton(icons_manager->loadIcon("SavePersonalInfoButton"), tr("&Save"), bottom, "save");
-	QPushButton *pb_reload = new QPushButton(icons_manager->loadIcon("ReloadPersonalInfoButton"), tr("&Reload"), bottom, "save");
-	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	pb_save = new QPushButton(icons_manager->loadIconSet("SavePersonalInfoButton"), tr("&Save"), bottom, "save");
+	QPushButton *pb_reload = new QPushButton(icons_manager->loadIconSet("ReloadPersonalInfoButton"), tr("&Reload"), bottom, "save");
+	QPushButton *pb_close = new QPushButton(icons_manager->loadIconSet("CloseWindow"), tr("&Close"), bottom, "close");
 	// end buttons
 
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
@@ -175,6 +175,7 @@ void PersonalInfoDialog::reloadInfo()
 void PersonalInfoDialog::saveButtonClicked()
 {
 	kdebugf();
+
 	if (gadu->currentStatus().isOffline())
 		return;
 
@@ -192,6 +193,7 @@ void PersonalInfoDialog::saveButtonClicked()
 	gadu->setPersonalInfo(*data, save);
 
 	setEnabled(false);
+
 	kdebugf2();
 }
 
