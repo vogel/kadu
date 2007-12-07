@@ -126,6 +126,8 @@ MainConfigurationWindow::MainConfigurationWindow()
 
  	connect(widgetById("iconPaths"), SIGNAL(changed()), this, SLOT(setIconThemes()));
 
+	connect(widgetById("ignoreMessagesFromAnonymous"), SIGNAL(toggled(bool)), widgetById("ignoreMessagesFromAnonymousInConferences"), SLOT(setEnabled(bool)));
+
 	loadGeometry(this, "General", "ConfigGeometry", 0, 30, 790, 480);
 }
 

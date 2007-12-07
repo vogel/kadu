@@ -94,7 +94,8 @@
 			</group-box>
 
 			<group-box name="Anonymous">
-				<check-box caption="Ignore messages from anonymous users" config-section="Chat" config-item="IgnoreAnonymousUsers" />
+				<check-box caption="Ignore messages from anonymous users" config-section="Chat" config-item="IgnoreAnonymousUsers" id="ignoreMessagesFromAnonymous" />
+				<check-box caption="Ignore messages from anonymous users also in conferences" config-section="Chat" config-item="IgnoreAnonymousUsersInConferences" id="ignoreMessagesFromAnonymousInConferences" />
 				<check-box caption="Ignore richtext from anonymous users" config-section="Chat" config-item="IgnoreAnonymousRichtext" />
 <!-- 				<check-box caption="Always show anonymous contacts with messages" config-section="General" config-item="ShowAnonymousWithMsgs" /> -->
 			</group-box>
