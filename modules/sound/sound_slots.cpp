@@ -124,7 +124,7 @@ void SoundSlots::muteUnmuteSounds()
 
 void SoundSlots::configurationUpdated()
 {
-	muteActionActivated(NULL, NULL, !sound_manager->isMuted());
+	muteActionActivated(NULL, NULL, !config_file.readBoolEntry("Sounds", "PlaySound"));
 }
 
 void SoundSlots::testSamplePlaying()
