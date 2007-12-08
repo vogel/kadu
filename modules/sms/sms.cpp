@@ -249,7 +249,7 @@ Sms::Sms(const QString& altnick, QWidget* parent, const char *name) : QWidget(pa
 	grid->addMultiCellWidget(c_saveInHistory, 5, 5, 0, 1);
 
 	b_send = new QPushButton(this);
-	b_send->setIconSet(icons_manager->loadIcon("SendSMSButton"));
+	b_send->setIconSet(icons_manager->loadIconSet("SendSMSButton"));
 	b_send->setText(tr("&Send"));
 	b_send->setDefault(true);
 	b_send->setMaximumWidth(200);
