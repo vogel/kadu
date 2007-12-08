@@ -77,7 +77,7 @@ KeysManager::KeysManager(QDialog *parent, const char *name) : QHBox(parent, name
 	QWidget *blank2 = new QWidget(bottom);
 	bottom->setSpacing(5);
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
-	pb_del = new QPushButton(icons_manager->loadIcon("DeleteKeyButton"), tr("Delete"), bottom);
+	pb_del = new QPushButton(icons_manager->loadIconSet("DeleteKeyButton"), tr("Delete"), bottom);
 	pb_del->setEnabled(false);
 	pb_on = new QPushButton(icons_manager->loadIconSet("DecryptedChat"), tr("On"), bottom);
 	pb_on->setEnabled(false);
