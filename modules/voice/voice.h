@@ -92,10 +92,11 @@ private:
 
 	void createDefaultConfiguration();
 
-	void makeVoiceChat();
 	void makeVoiceChat(UinType dest);
 
 private slots:
+	void makeVoiceChat();
+
 	void testGsmEncoding();
 	void gsmEncodingTestSampleRecorded(SoundDevice device);
 	void gsmEncodingTestSamplePlayed(SoundDevice device);
