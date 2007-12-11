@@ -474,7 +474,7 @@ void HistoryDialog::keyPressEvent(QKeyEvent *e)
 		close();
 	}
 	else
-		HistoryDialog::keyPressEvent(e);
+		QWidget::keyPressEvent(e);
 }
 
 void HistoryDialog::closeEvent(QCloseEvent *e)
