@@ -466,6 +466,17 @@ void HistoryDialog::searchHistory()
 	kdebugf2();
 }
 
+void HistoryDialog::keyPressEvent(QKeyEvent *e)
+{
+	if (e->key() == Key_Escape)
+	{
+		e->accept();
+		close();
+	}
+	else
+		HistoryDialog::keyPressEvent(e);
+}
+
 void HistoryDialog::closeEvent(QCloseEvent *e)
 {
 	saveGeometry(this, "History", "HistoryGeometry");

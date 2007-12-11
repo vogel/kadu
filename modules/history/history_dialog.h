@@ -53,6 +53,8 @@ protected:
 	bool finding;
 	QValueList<HistoryDate> dateentries;
 
+	virtual void keyPressEvent(QKeyEvent *e);
+
 private slots:
 	void showStatusChanged(bool);
 
