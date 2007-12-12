@@ -1,0 +1,2 @@
+MODULE_SOURCES="advanced_userlist.cpp main.cpp"
+MODULE_MOC_HEADERS="advanced_userlist.h"

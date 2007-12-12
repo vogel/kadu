@@ -578,7 +578,7 @@ SmsGateway* SmsConfigurationUiHandler::getGateway(const QString& number)
 
 void SmsConfigurationUiHandler::onUpButton()
 {
-	int index = gatewayListBox->currentItem();
+	unsigned int index = gatewayListBox->currentItem();
 	if (index == 0)
 		return;
 
@@ -591,7 +591,7 @@ void SmsConfigurationUiHandler::onUpButton()
 void SmsConfigurationUiHandler::onDownButton()
 {
 	unsigned int index = gatewayListBox->currentItem();
-	if (index == gatewayListBox->count())
+	if (index == gatewayListBox->count() - 1)
 		return;
 
 	QString text = gatewayListBox->text(index);

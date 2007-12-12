@@ -1,0 +1,6 @@
+[Module]
+Description=
+Description[pl]=modu³ zaawansowanej konfiguracji sortowania listy kontaktów
+Author=joi
+LoadByDefault=false
+Version=2007.01.01
