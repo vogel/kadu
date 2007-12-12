@@ -84,7 +84,10 @@ void SmsOrangeGateway::send(const QString& number,const QString& message, const 
 
 bool SmsOrangeGateway::isNumberCorrect(const QString& number)
 {
-	return ((number[0]=='5') || (number[0]=='7' && number[1]=='8' && number[2]=='9'));
+	return 
+		((number[0]=='5') || 
+		(number[0]=='7' && number[1]=='8' && (number[2]=='0' || number[2]=='6' || number[2]=='9')) ||
+		(number[0]=='7' && number[1]=='9' && (number[2]=='7' || number[2]=='8' || number[2]=='9')));
 }
 
 void SmsOrangeGateway::httpFinished()
@@ -205,7 +208,9 @@ bool SmsPlusGateway::isNumberCorrect(const QString& number)
 {
 	return
 		((number[0]=='6' && ((QChar(number[2])-'0')%2)!=0) ||
-		(number[0]=='7' && number[1]=='8' && (number[2]=='1' || number[2]=='3')));
+		(number[0]=='7' && number[1]=='8' && (number[2]=='1' || number[2]=='2' || number[2]=='3' || number[2]=='5')) ||
+		(number[0]=='7' && number[1]=='2' && (number[2]=='1' || number[2]=='2' || number[2]=='3' || number[2]=='5' || number[2]=='6')) ||
+		(number[0]=='8' && number[1]=='8' && (number[2]=='5' || number[2]=='7')));
 }
 
 void SmsPlusGateway::httpFinished()
@@ -313,11 +318,9 @@ bool SmsEraGateway::isNumberCorrect(const QString& number)
 {
 	return
 		((number[0]=='6'&&((QChar(number[2])-'0')%2)==0) ||
-		(number[0]=='7' && number[1]=='8' && number[2]=='7') ||
-		(number[0]=='8' && number[1]=='8' && number[2]=='8') ||
-		(number[0]=='8' && number[1]=='8' && number[2]=='9') ||
-		(number[0]=='8' && number[1]=='8' && number[2]=='0') ||
-		(number[0]=='8' && number[1]=='8' && number[2]=='6'));
+		(number[0]=='7' && number[1]=='8' && (number[2]=='4' || number[2]=='7' || number[2]=='8')) ||
+		(number[0]=='8' && number[1]=='8' && number[2]!='5' && number[2]!='7') ||
+		(number[0]=='7' && number[1]=='2' && number[2]=='8' && number[3]=='3'));
 }
 
 void SmsEraGateway::httpRedirected(QString link)
