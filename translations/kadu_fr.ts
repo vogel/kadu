@@ -1,137 +1,6 @@
 <!DOCTYPE TS><TS>
 <context>
-    <name></name>
-    <message>
-        <source>###IMAGE BLOCKED###</source>
-        <translation>###IMAGE BLOQUÉ###</translation>
-    </message>
-    <message>
-        <source>###IMAGE TOO BIG###</source>
-        <translation>###CETTE IMAGE A TROP DE POIDS###</translation>
-    </message>
-    <message>
-        <source>###TOO MANY IMAGES###</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>@default</name>
-    <message>
-        <source>General</source>
-        <translation>Général</translation>
-    </message>
-    <message>
-        <source>Open chat window on new message</source>
-        <translation>Nouvelle conversation avec un nouveau message chat</translation>
-    </message>
-    <message>
-        <source>Define keys</source>
-        <translation>Fonctions boutons</translation>
-    </message>
-    <message>
-        <source>New line / send message:</source>
-        <translation>Nouvelle ligne / envoie message:</translation>
-    </message>
-    <message>
-        <source>Clear Chat:</source>
-        <translation>Efface fenêtre chat:</translation>
-    </message>
-    <message>
-        <source>Close Chat:</source>
-        <translation>Fermes fenêtre chat:</translation>
-    </message>
-    <message>
-        <source>Bold text:</source>
-        <translation>Surligné:</translation>
-    </message>
-    <message>
-        <source>Italic text:</source>
-        <translation>Italique:</translation>
-    </message>
-    <message>
-        <source>Underline text:</source>
-        <translation>Souligné:</translation>
-    </message>
-    <message>
-        <source>User data</source>
-        <translation>Données utilisateur</translation>
-    </message>
-    <message>
-        <source>Uin</source>
-        <translation>Numéro GG</translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation>Mot de passe </translation>
-    </message>
-    <message>
-        <source>Nick</source>
-        <translation>Pseudo </translation>
-    </message>
-    <message>
-        <source>Check for updates</source>
-        <translation>Contrôle mises à jour</translation>
-    </message>
-    <message>
-        <source>Network</source>
-        <translation>Réseau</translation>
-    </message>
-    <message>
-        <source>Servers properties</source>
-        <translation>Configuration serveurs</translation>
-    </message>
-    <message>
-        <source>Use default servers</source>
-        <translation>Utilise serveur par default</translation>
-    </message>
-    <message>
-        <source>Use TLSv1</source>
-        <translation>Utilise TLSv1</translation>
-    </message>
-    <message>
-        <source>Use proxy server</source>
-        <translation>Utilise seveur proxy</translation>
-    </message>
-    <message>
-        <source>Proxy server</source>
-        <translation>Serveur proxy</translation>
-    </message>
-    <message>
-        <source>IP addresses:</source>
-        <translation>Adresses IP: </translation>
-    </message>
-    <message>
-        <source>ShortCuts</source>
-        <translation>Les raccourcis</translation>
-    </message>
-    <message>
-        <source>Remove from userlist</source>
-        <translation>Efface de la liste de contacts</translation>
-    </message>
-    <message>
-        <source>Configuration</source>
-        <translation>Configuration</translation>
-    </message>
-    <message>
-        <source>Add user</source>
-        <translation>Ajoute contact</translation>
-    </message>
-    <message>
-        <source>Default status</source>
-        <translation>Statut par default</translation>
-    </message>
-    <message>
-        <source>On shutdown, set description:</source>
-        <translation>Enregistre les paramettres avant l&apos;extinction de l&apos;ordinateur:</translation>
-    </message>
-    <message>
-        <source>Private status</source>
-        <translation>Seulement pour les amis</translation>
-    </message>
-    <message>
-        <source>WWW error</source>
-        <translation>Erreur WWW</translation>
-    </message>
     <message>
         <source>Web browser was not specified. Visit the configuration section</source>
         <translation>Navigateur  WWW non définit. Selectionnez le navigateur WWW dans la fenêtre de configuration</translation>
@@ -139,80 +8,6 @@
     <message>
         <source>Could not spawn Web browser process. Check if the Web browser is functional</source>
         <translation>Impossible d&apos;ouvrir le navigateur. Veuillez controler si le navigateur est en fonction.</translation>
-    </message>
-    <message>
-        <source>Emoticons</source>
-        <translation>Icônes d&apos;émotion</translation>
-    </message>
-    <message>
-        <source>Emoticons:</source>
-        <translation>Icônes d&apos;émotion:</translation>
-    </message>
-    <message>
-        <source>Emoticons theme</source>
-        <translation>Catalogue des icônes d&apos;émotion</translation>
-    </message>
-    <message>
-        <source>WWW options</source>
-        <translation>Options  WWW</translation>
-    </message>
-    <message>
-        <source>Custom Web browser</source>
-        <translation>Navigateur Web</translation>
-    </message>
-    <message>
-        <source>Automatically prune chat messages</source>
-        <translation>Racccourcissement automatique des messages</translation>
-    </message>
-    <message>
-        <source>Message pruning</source>
-        <translation>Racccourcissement  des messages</translation>
-    </message>
-    <message>
-        <source>Reduce the number of visible messages to</source>
-        <translation>Réduction du nombre des messages visibles jusq&apos;à </translation>
-    </message>
-    <message>
-        <source>Flash chat title on new message</source>
-        <translation>Clignottement de bord de titre à la recéption du message</translation>
-    </message>
-    <message>
-        <source>Ignore messages from anonymous users</source>
-        <translation>Ignore les messages des inconnus</translation>
-    </message>
-    <message>
-        <source>Look</source>
-        <translation>L&apos;Aspect</translation>
-    </message>
-    <message>
-        <source>Other</source>
-        <translation>Autres</translation>
-    </message>
-    <message>
-        <source>Information panel syntax:</source>
-        <translation>Syntaxe du pannel d&apos;information:</translation>
-    </message>
-    <message>
-        <source>Chat window title syntax:</source>
-        <translation>Syntaxe du titre de la fenêtre de discussion:</translation>
-    </message>
-    <message>
-        <source>Conference window title prefix:</source>
-        <translation>Prefixe du titre de la fenêtre de discussion:</translation>
-    </message>
-    <message>
-        <source>This text will be before syntax.
-If you leave blank, default settings will be used.</source>
-        <translation>Ce texte sera visible avant le syntaxe.
-Si ce champs reste vide les paramettres par default seront utilisés.</translation>
-    </message>
-    <message>
-        <source>syntax:</source>
-        <translation>syntaxe: </translation>
-    </message>
-    <message>
-        <source>Set language:</source>
-        <translation>Choix de langue:</translation>
     </message>
     <message>
         <source>English</source>
@@ -227,56 +22,8 @@ Si ce champs reste vide les paramettres par default seront utilisés.</translati
         <translation>Polonais</translation>
     </message>
     <message>
-        <source>Preview userbox</source>
-        <translation>Visionnage liste des contacts</translation>
-    </message>
-    <message>
-        <source>Display group tabs</source>
-        <translation>Visionnage de groupes</translation>
-    </message>
-    <message>
-        <source>Multicolumn userbox</source>
-        <translation>Liste en colonne</translation>
-    </message>
-    <message>
-        <source>Message acknowledgements (wait for delivery)</source>
-        <translation>Confirmation d&apos;envoie de massage ( attend la réception)</translation>
-    </message>
-    <message>
-        <source>%1 - Url clicked in chat window</source>
-        <translation>%1 - URL transmission par la fenêtre du chat</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Me&lt;/b&gt; 00:00:00</source>
-        <translation>&lt;b&gt;Moi&lt;/b&gt; 00:00:00</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Other party&lt;/b&gt; 00:00:02</source>
-        <translation>&lt;b&gt;Interlocuteur&lt;/b&gt; 00:00:02</translation>
-    </message>
-    <message>
         <source>German</source>
         <translation>Allemand</translation>
-    </message>
-    <message>
-        <source>Show description in userbox</source>
-        <translation>Montre la description dans la liste de contacts</translation>
-    </message>
-    <message>
-        <source>Align icon next to contact name</source>
-        <translation>Aligne l&apos;icône à la hauteur du nom de contact</translation>
-    </message>
-    <message>
-        <source>Icon theme</source>
-        <translation>Bibliothèque d&apos;icôns</translation>
-    </message>
-    <message>
-        <source>Icon paths</source>
-        <translation>Chemin pour les icônes</translation>
-    </message>
-    <message>
-        <source>Multiline description in userbox</source>
-        <translation>Description multiligne dans la liste de contacts</translation>
     </message>
     <message>
         <source>Force running Kadu (not recommended).</source>
@@ -287,146 +34,6 @@ Si ce champs reste vide les paramettres par default seront utilisés.</translati
         <translation>Abandon.</translation>
     </message>
     <message>
-        <source>Show status button</source>
-        <translation>Montre bouton de statut</translation>
-    </message>
-    <message>
-        <source>Max image size</source>
-        <translation>Dimension d&apos;image maximale</translation>
-    </message>
-    <message>
-        <source>Show emoticons in panel</source>
-        <translation>Montre les icônes d&apos;émotion dans le pannel d&apos;information</translation>
-    </message>
-    <message>
-        <source>Colors</source>
-        <translation>Couleurs</translation>
-    </message>
-    <message>
-        <source>Chat window</source>
-        <translation>Fenêtre de discussion</translation>
-    </message>
-    <message>
-        <source>Your background color</source>
-        <translation>Votre couleur du fond</translation>
-    </message>
-    <message>
-        <source>User background color</source>
-        <translation>Couleur du fond de contact</translation>
-    </message>
-    <message>
-        <source>Your font color</source>
-        <translation>Couleur  du fond de la police</translation>
-    </message>
-    <message>
-        <source>User font color</source>
-        <translation>Couleur de la police de description </translation>
-    </message>
-    <message>
-        <source>Fonts</source>
-        <translation>Polices</translation>
-    </message>
-    <message>
-        <source>Font in chat window</source>
-        <translation>Police dans la fenêtre du chat</translation>
-    </message>
-    <message>
-        <source>Previews</source>
-        <translation>Visionnage</translation>
-    </message>
-    <message>
-        <source>Chat preview</source>
-        <translation>Visionnage fenêtre de discussion</translation>
-    </message>
-    <message>
-        <source>Main window</source>
-        <translation>Fenêtre avec la liste de contacts</translation>
-    </message>
-    <message>
-        <source>Panel background color</source>
-        <translation>Couleur du fond de pannel d&apos;information</translation>
-    </message>
-    <message>
-        <source>Panel font color</source>
-        <translation>Couleur de la police du pannel d&apos;information</translation>
-    </message>
-    <message>
-        <source>Font in panel</source>
-        <translation>Police du pannel d&apos;information </translation>
-    </message>
-    <message>
-        <source>Information panel</source>
-        <translation>Panel d&apos;information</translation>
-    </message>
-    <message>
-        <source>Show information panel</source>
-        <translation>Montre pannel d&apos;information</translation>
-    </message>
-    <message>
-        <source>Userbox background color</source>
-        <translation>Couleur du fond de la liste de contacts</translation>
-    </message>
-    <message>
-        <source>Userbox font color</source>
-        <translation>Couleur de la police des contacts</translation>
-    </message>
-    <message>
-        <source>Font in userbox</source>
-        <translation>Polices de la liste de contacts</translation>
-    </message>
-    <message>
-        <source>Preview panel</source>
-        <translation>Visionnage de pannel d&apos;information</translation>
-    </message>
-    <message>
-        <source>Show vertical scrollbar in information panel</source>
-        <translation>Montre la ligne verticale de defilement dans le pannel d&apos;information</translation>
-    </message>
-    <message>
-        <source>Userbox width when multi column</source>
-        <translation>largeur de la cologne quand la liste multicologne est activée </translation>
-    </message>
-    <message>
-        <source>Automatically fold links</source>
-        <translation>Pliez automatiquement les liens</translation>
-    </message>
-    <message>
-        <source>Link folding</source>
-        <translation>Plie le links</translation>
-    </message>
-    <message>
-        <source>Automatically fold links longer than</source>
-        <translation>Pliez automatiquement les liens plus long que </translation>
-    </message>
-    <message>
-        <source>Show available users in bold</source>
-        <translation>Montre les contacts en ligne avec la police en gras</translation>
-    </message>
-    <message>
-        <source>Displays users that are not offline using a bold font</source>
-        <translation>Visionnage des contacts en ligne avec la police en gras</translation>
-    </message>
-    <message>
-        <source>Automatically checks whether a new version is available</source>
-        <translation>Verification automatique si la nouvelle version est disponible</translation>
-    </message>
-    <message>
-        <source>When enabled, you&apos;re visible only to users on your list</source>
-        <translation>Si en ligne , vous êtes visible uniquement pour es utilisateurs de votre liste</translation>
-    </message>
-    <message>
-        <source>Columns</source>
-        <translation>Colognes</translation>
-    </message>
-    <message>
-        <source>Show / hide users without description</source>
-        <translation>Montre / cache contact sans description</translation>
-    </message>
-    <message>
-        <source>Qt Theme</source>
-        <translation>Style Qt</translation>
-    </message>
-    <message>
         <source>Please do not run Kadu as a root!
 It&apos;s a high security risk!</source>
         <translation>Veuillez demarrer Kadu en root!
@@ -434,263 +41,62 @@ Attention danger!
 </translation>
     </message>
     <message>
-        <source>Number of kept descriptions</source>
-        <translation>Nombre description mémorisées</translation>
-    </message>
-    <message>
-        <source>Display contacts who are offline</source>
-        <translation>Visionnage des contacts indisponibles</translation>
-    </message>
-    <message>
-        <source> Port: </source>
-        <translation>Port: </translation>
-    </message>
-    <message>
-        <source>Username: </source>
-        <translation>Utilisateur: </translation>
-    </message>
-    <message>
-        <source> Password: </source>
-        <translation>Mot de passe: </translation>
-    </message>
-    <message>
-        <source>Show contacts that you are blocking</source>
-        <translation>Montre uniquement les contacts bloqués</translation>
-    </message>
-    <message>
-        <source>Show contacts that are blocking you</source>
-        <translation>Montre uniquement les contacts qui te bloquent</translation>
-    </message>
-    <message>
-        <source>Choose your browser</source>
-        <translation>Selection de navigateur www</translation>
-    </message>
-    <message>
-        <source>Browser options</source>
-        <translation>Options navigateur</translation>
-    </message>
-    <message>
-        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
-%v - revDNS, %p - port %e - email %x - max image size
-</source>
-        <translation>Syntaxe: %s - statut, %d - description, %i - IP, %n - avatar, %a - ancien avatar,%f -prénom
-%r - surnom, %m - téléphone, %u - vin GG, %g - groupe, %o -retour_espace_si contact ne figure pas sur la liste de contacts
- %v - revDNS, %p - port %e - email, %x - max dimension d&apos;image</translation>
-    </message>
-    <message>
-        <source>Debugging mask</source>
-        <translation>Masque de débugeur</translation>
-    </message>
-    <message>
-        <source>Receive images during invisibility</source>
-        <translation>Reception d&apos;images même en cas de mon absence</translation>
-    </message>
-    <message>
-        <source>Block window close on new message</source>
-        <translation>Bloc la fermeture de la fenêtre sur un nouveau message</translation>
-    </message>
-    <message>
-        <source>Max time to block window close</source>
-        <translation>Temps maximum pour bloquer la fenêtre fermée</translation>
-    </message>
-    <message>
-        <source>Chat window background color</source>
-        <translation>Chat couleur de fond</translation>
-    </message>
-    <message>
-        <source>Text edit background color</source>
-        <translation>Edition text couleur de fond</translation>
-    </message>
-    <message>
         <source>French</source>
         <translation>Français</translation>
-    </message>
-    <message>
-        <source>Host: </source>
-        <translation>Invité:</translation>
-    </message>
-    <message>
-        <source>Port to connect to servers</source>
-        <translation>Port pour connecter les serveurs</translation>
-    </message>
-    <message>
-        <source>Description font color</source>
-        <translation>Couleur de la police</translation>
-    </message>
-    <message>
-        <source>&quot;%1&quot; in chat sends message by default</source>
-        <translation>Par défault %1 envoie le message</translation>
-    </message>
-    <message>
-        <source>Remove chat header repetitions</source>
-        <translation>Enlevez les en-têtes à répétitions dans la fenêtre du chat</translation>
-    </message>
-    <message>
-        <source>Chat header separators height:</source>
-        <translation>Taille de séparateurs d&apos;en-tête: </translation>
-    </message>
-    <message>
-        <source>Interval between header removal:</source>
-        <translation>Intervalle entre le déplacement d&apos;en-tête: </translation>
-    </message>
-    <message>
-        <source>Show offline contacts</source>
-        <translation>Montrez les contacts hors ligne</translation>
-    </message>
-    <message>
-        <source>Show contacts without description</source>
-        <translation>Montrez les contacts sans description</translation>
-    </message>
-    <message>
-        <source>Display contacts that don&apos;t have a description</source>
-        <translation>Affichez les contacts qui n&apos;ont pas une description</translation>
-    </message>
-    <message>
-        <source>On shutdown, set current description</source>
-        <translation>Sur l&apos;arrêt, placez la description actuelle</translation>
-    </message>
-    <message>
-        <source>View / edit user info</source>
-        <translation>Montres / change les information concernant des contacts</translation>
-    </message>
-    <message>
-        <source>Show / hide offline users</source>
-        <translation>Montres / Caches non disponibles</translation>
-    </message>
-    <message>
-        <source>Restore last status</source>
-        <translation>Veuillez restaurer le dernier statut</translation>
-    </message>
-    <message>
-        <source>Restore last status (change Offline to Invisible)</source>
-        <translation>Veuillez restaurer le dernier statut (changement de statut de Offline à invisible)</translation>
-    </message>
-    <message>
-        <source>Ignore richtext from anonymous users</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Background</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Background image options</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Change image size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start at [X]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start at [Y]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Image width</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Image height</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remember chat windows positions</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Userbox background</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Your nick color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User nick color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Style</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Select chat style</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Full chat style:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Syntax:
-%1 - background color
-%2 - text font color
-%3 - nick color
-%4 - nick
-%5 - timestamp
-%6 - timestamp with server time
-%7 - message</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Search this user in directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Chat background (experimental)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Chat background image</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Allow executing commands by parser</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Message headers &amp;&amp; separators</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Message separators height:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Limit number of images received per minute</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Server time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove server time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Maximum time difference</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use KaduParser to parse status</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Another Kadu is running on this profile but I cannot get its process ID.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Always show anonymous contacts with messages</source>
+        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
+%h - gg version, %v - revDNS, %p - port %e - email %x - max image size
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Smith</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Jimbo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yesterday at </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>dddd at </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 weeks ago at </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 weeks and %2 days ago at </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>d MMMM yyyy at </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mail client was not specified. Visit the configuration section</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not spawn Mail client process. Check if the Mail client is functional</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -722,120 +128,10 @@ Attention danger!
     </message>
 </context>
 <context>
-    <name>Chat</name>
-    <message>
-        <source>Edit window:</source>
-        <translation>Fenêtre édition:</translation>
-    </message>
-    <message>
-        <source>This is where you type in the text to be sent</source>
-        <translation>C&apos;est ici que vous saisissez le texte à envoyer</translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation>&amp;Annule</translation>
-    </message>
-    <message>
-        <source>&amp;Send</source>
-        <translation>&amp;Envoie</translation>
-    </message>
-    <message>
-        <source>Conference with </source>
-        <translation>Discussion avec</translation>
-    </message>
-    <message>
-        <source>Chat with </source>
-        <translation>Discussion avec</translation>
-    </message>
-    <message>
-        <source>Send message error</source>
-        <translation>Erreur d&apos;expédition du message</translation>
-    </message>
-    <message>
-        <source>Insert image</source>
-        <translation>Insère l&apos;image</translation>
-    </message>
-    <message>
-        <source>Message too long (%1&gt;=%2)</source>
-        <translation>Le message trop long (%1&gt;=%2)</translation>
-    </message>
-    <message>
-        <source>Filtered message too long (%1&gt;=%2)</source>
-        <translation>Le message filtré trop long (%1&gt;=%2)</translation>
-    </message>
-    <message>
-        <source>Your message has been blocked by server. Message has not been delivered.</source>
-        <translation>Votre message a été bloqué par serveur. Le message ne sera pas delivré.</translation>
-    </message>
-    <message>
-        <source>User&apos;s message box is full. Message has not been delivered.</source>
-        <translation>La boite de réception est pleine. Le message ne sera pas delivré.</translation>
-    </message>
-    <message>
-        <source>Message has not been delivered.</source>
-        <translation>Le message ne sera pas delivré.</translation>
-    </message>
-    <message>
-        <source>Chat window will be cleared. Continue?</source>
-        <translation>La fenêtre du message sera effacée. Voulez vous continuer?</translation>
-    </message>
-    <message>
-        <source>New message received, close window anyway?</source>
-        <translation>Nouvel message reçu, voulez vous fermer la fenêtre?</translation>
-    </message>
-    <message>
-        <source>This file is not readable</source>
-        <translation>Fichier illisible</translation>
-    </message>
-    <message>
-        <source>This file is too big (%1 &gt;= %2)</source>
-        <translation>Fichier trop gros (%1 &gt;= %2)</translation>
-    </message>
-    <message>
-        <source>This file is too big for %1 of %2 contacts.
-Do you really want to send this image?
-Some of them probably will not get it.</source>
-        <translation>Ce fichier est trop volumineux pour  %1 z %2 contacts.
-Souhaitez vous vraiment expédier cette image?
-Probablement il ne sera pas delivré.</translation>
-    </message>
-    <message>
-        <source>This file is too big for %1.
-Do you really want to send this image?
-</source>
-        <translation>Le volume de ce fichier est trop gros pour %1.
-Souhaitez vous vraiment expédier cette image?</translation>
-    </message>
-    <message>
-        <source>Cannot send message while being offline.</source>
-        <translation>Ne peut pas envoyer le message tout en étant hors ligne.</translation>
-    </message>
-    <message>
-        <source>Custom</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>ChatManager</name>
-    <message>
-        <source>None</source>
-        <translation>Sans icône d&apos;emotion</translation>
-    </message>
-    <message>
-        <source>Static</source>
-        <translation>Statique</translation>
-    </message>
-    <message>
-        <source>Animated</source>
-        <translation>Animation</translation>
-    </message>
     <message>
         <source>%1 sends message</source>
         <translation>Touche %1 envoie le message</translation>
-    </message>
-    <message>
-        <source>Blocks scrolling</source>
-        <translation>Faire défiler le blocs</translation>
     </message>
     <message>
         <source>Clear messages in chat window</source>
@@ -878,10 +174,6 @@ Souhaitez vous vraiment expédier cette image?</translation>
         <translation>&amp;Discussion</translation>
     </message>
     <message>
-        <source>Custom</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Search this user in directory</source>
         <translation type="unfinished"></translation>
     </message>
@@ -891,58 +183,88 @@ Souhaitez vous vraiment expédier cette image?</translation>
     </message>
     <message>
         <source>Block user</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bloques contact</translation>
     </message>
     <message>
         <source>Anonymous users will be unblocked after restarting Kadu</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Open chat with...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
-    <name>ChatManagerSlots</name>
+    <name>ChatWidget</name>
     <message>
-        <source>Specify path</source>
-        <translation>Indiquez le chemin d&apos;access</translation>
+        <source>Leave conference</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Open in new window</source>
-        <translation>Veuillez ouvrir dans une nouvelle fenêtre</translation>
+        <source>Edit window:</source>
+        <translation type="unfinished">Fenêtre édition:</translation>
     </message>
     <message>
-        <source>Open in new tab</source>
-        <translation>Ouvrez dans le nouveau tabulateur</translation>
-    </message>
-    <message>
-        <source>Open in background tab</source>
-        <translation>Ouvrez dans le tabulateur de fond</translation>
-    </message>
-    <message>
-        <source>URLs longer than this value will be shown truncated to this length</source>
-        <translation>URL plus long que cette valeur sera tronqué jusq&apos;à la valeur montrée</translation>
-    </message>
-    <message>
-        <source>This will show a long URL as http://www.start...end.com/
-to protect the chat window from a mess</source>
-        <translation>Ceci montrera un long URL comme http://www.start...end.com/
-pour proteger la fenêtre du message contre un désordre</translation>
-    </message>
-    <message>
-        <source>Chat with </source>
-        <translation>Discussion avec </translation>
-    </message>
-    <message>
-        <source>Conference with </source>
-        <translation>Discussion avec </translation>
-    </message>
-    <message>
-        <source>I didn&apos;t find the browser you selected! The path to it doesn&apos;t exists in $PATH variable. 
-You may add it to $PATH or specify location using Specify path option.</source>
-        <translation>Le navigateur que vous avez choisi n&apos;a pas été trouvé ! La voie d&apos;accès n&apos;existe pas dans la variable de $PATH.
-Vous pouvez l&apos;ajouter dans $PATH ou indiquer l&apos;emplacement d&apos;une option spécifique de localisation de navigateur.</translation>
+        <source>This is where you type in the text to be sent</source>
+        <translation type="unfinished">C&apos;est ici que vous saisissez le texte à envoyer</translation>
     </message>
     <message>
         <source>Insert image</source>
         <translation type="unfinished">Insère l&apos;image</translation>
+    </message>
+    <message>
+        <source>This file is not readable</source>
+        <translation type="unfinished">Fichier illisible</translation>
+    </message>
+    <message>
+        <source>This file is too big (%1 &gt;= %2)</source>
+        <translation type="unfinished">Fichier trop gros (%1 &gt;= %2)</translation>
+    </message>
+    <message>
+        <source>This file is too big for %1.
+Do you really want to send this image?
+</source>
+        <translation type="unfinished">Le volume de ce fichier est trop gros pour %1.
+Souhaitez vous vraiment expédier cette image?</translation>
+    </message>
+    <message>
+        <source>This file is too big for %1 of %2 contacts.
+Do you really want to send this image?
+Some of them probably will not get it.</source>
+        <translation type="unfinished">Ce fichier est trop volumineux pour  %1 z %2 contacts.
+Souhaitez vous vraiment expédier cette image?
+Probablement il ne sera pas delivré.</translation>
+    </message>
+    <message>
+        <source>Conference with </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat with </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat window will be cleared. Continue?</source>
+        <translation type="unfinished">La fenêtre du message sera effacée. Voulez vous continuer?</translation>
+    </message>
+    <message>
+        <source>&amp;Send</source>
+        <translation type="unfinished">&amp;Envoie</translation>
+    </message>
+    <message>
+        <source>Cannot send message while being offline.</source>
+        <translation type="unfinished">Ne peut pas envoyer le message tout en étant hors ligne.</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">&amp;Annule</translation>
+    </message>
+</context>
+<context>
+    <name>ChatWindow</name>
+    <message>
+        <source>New message received, close window anyway?</source>
+        <translation type="unfinished">Nouvel message reçu, voulez vous fermer la fenêtre?</translation>
     </message>
 </context>
 <context>
@@ -961,38 +283,18 @@ Vous pouvez l&apos;ajouter dans $PATH ou indiquer l&apos;emplacement d&apos;une 
     </message>
 </context>
 <context>
-    <name>ConfigDialog</name>
-    <message>
-        <source>Cancel</source>
-        <translation>Annule</translation>
-    </message>
-    <message>
-        <source>Kadu configuration</source>
-        <translation>Configuration Kadu</translation>
-    </message>
+    <name>ConfigurationWindow</name>
     <message>
         <source>Ok</source>
-        <translation>OK</translation>
+        <translation type="unfinished">OK</translation>
     </message>
     <message>
         <source>Apply</source>
-        <translation>Appliquez</translation>
+        <translation type="unfinished">Appliquez</translation>
     </message>
     <message>
-        <source>User experience level:</source>
-        <translation>Niveau d&apos;expérience d&apos;utilisateur: </translation>
-    </message>
-    <message>
-        <source>Beginner</source>
-        <translation>Débutant</translation>
-    </message>
-    <message>
-        <source>Advanced</source>
-        <translation>Avançé</translation>
-    </message>
-    <message>
-        <source>Expert</source>
-        <translation>Expert</translation>
+        <source>Cancel</source>
+        <translation type="unfinished">Annule</translation>
     </message>
 </context>
 <context>
@@ -1004,6 +306,21 @@ Vous pouvez l&apos;ajouter dans $PATH ou indiquer l&apos;emplacement d&apos;une 
     <message>
         <source>Block toolbars</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>GaduFormater</name>
+    <message>
+        <source>###TOO MANY IMAGES###</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>###IMAGE BLOCKED###</source>
+        <translation type="unfinished">###IMAGE BLOQUÉ###</translation>
+    </message>
+    <message>
+        <source>###IMAGE TOO BIG###</source>
+        <translation type="unfinished">###CETTE IMAGE A TROP DE POIDS###</translation>
     </message>
 </context>
 <context>
@@ -1054,10 +371,6 @@ Vous pouvez l&apos;ajouter dans $PATH ou indiquer l&apos;emplacement d&apos;une 
         <translation>UIN ou mot de passe non enregistrés!</translation>
     </message>
     <message>
-        <source>Automatic</source>
-        <translation>Automatique</translation>
-    </message>
-    <message>
         <source>Please change your email in &quot;Change password / email&quot; window. Leave new password field blank.</source>
         <translation>Change votre adresse e-Mail dans la fenêtre &quot;Change mot de passe / e-Mail&quot;. Le champs de mot de passe nouveau vide.</translation>
     </message>
@@ -1079,42 +392,32 @@ Your password is incorrect!</source>
 Too many attempts with bad password</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Message too long (%1&gt;=%2)</source>
+        <translation type="unfinished">Le message trop long (%1&gt;=%2)</translation>
+    </message>
+    <message>
+        <source>Filtered message too long (%1&gt;=%2)</source>
+        <translation type="unfinished">Le message filtré trop long (%1&gt;=%2)</translation>
+    </message>
+    <message>
+        <source>Message blocked.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Messagebox full.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message not delivered.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>GroupsManager</name>
     <message>
         <source>All</source>
         <translation>Tous</translation>
-    </message>
-</context>
-<context>
-    <name>HistoryManager</name>
-    <message>
-        <source>Clear history?</source>
-        <translation>Effacer historique?</translation>
-    </message>
-    <message>
-        <source>Yes</source>
-        <translation>Oui</translation>
-    </message>
-    <message>
-        <source>No</source>
-        <translation>Non</translation>
-    </message>
-</context>
-<context>
-    <name>IconsManager</name>
-    <message>
-        <source>Default</source>
-        <translation>Par default</translation>
-    </message>
-    <message>
-        <source>Icons</source>
-        <translation>Icônes</translation>
-    </message>
-    <message>
-        <source>Please close all (except main) Kadu windows</source>
-        <translation>Veuillez fermer toutes les fenêtres( sauf principal) de Kadu </translation>
     </message>
 </context>
 <context>
@@ -1162,14 +465,6 @@ Too many attempts with bad password</source>
 <context>
     <name>Kadu</name>
     <message>
-        <source>Me</source>
-        <translation>Moi</translation>
-    </message>
-    <message>
-        <source>Remove from userlist</source>
-        <translation>Efface de la liste de contacts</translation>
-    </message>
-    <message>
         <source>Configuration</source>
         <translation>Configuration</translation>
     </message>
@@ -1190,24 +485,8 @@ Too many attempts with bad password</source>
         <translation>&amp;Sortir de  Kadu</translation>
     </message>
     <message>
-        <source>&amp;Yes</source>
-        <translation>&amp;Oui</translation>
-    </message>
-    <message>
-        <source>&amp;No</source>
-        <translation>&amp;Non</translation>
-    </message>
-    <message>
         <source>Open chat window</source>
         <translation>Ouvre la fenêtre de conversation</translation>
-    </message>
-    <message>
-        <source>Ignore user</source>
-        <translation>Ignore le contact</translation>
-    </message>
-    <message>
-        <source>Block user</source>
-        <translation>Bloque le contact</translation>
     </message>
     <message>
         <source>Notify about user</source>
@@ -1228,10 +507,6 @@ Too many attempts with bad password</source>
     <message>
         <source>Personal information</source>
         <translation>Données personnelles</translation>
-    </message>
-    <message>
-        <source>&amp;Search for users</source>
-        <translation>Cherc&amp;he contact</translation>
     </message>
     <message>
         <source>&amp;Add user</source>
@@ -1262,10 +537,6 @@ Too many attempts with bad password</source>
         <translation>I&amp;mport / eksport liste de contacts</translation>
     </message>
     <message>
-        <source>Show / hide users without description</source>
-        <translation>Montre/cache les contacts sans description</translation>
-    </message>
-    <message>
         <source>Selected users:
 %0
 will be deleted. Are you sure?</source>
@@ -1276,14 +547,6 @@ serons effacés.Veuillez confirmer?</translation>
     <message>
         <source>View / edit user info</source>
         <translation>Montres / change les information concernant des contacts</translation>
-    </message>
-    <message>
-        <source>Show / hide offline users</source>
-        <translation>Montres / Caches non disponibles</translation>
-    </message>
-    <message>
-        <source>Yes, with &amp;history</source>
-        <translation>Oui, avec &amp;historique</translation>
     </message>
     <message>
         <source>Hide description</source>
@@ -1314,14 +577,6 @@ serons effacés.Veuillez confirmer?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>You are not on the list</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Search this user in directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Open description link in browser</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1329,16 +584,57 @@ serons effacés.Veuillez confirmer?</translation>
         <source>User management</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>KaduSlots</name>
     <message>
-        <source>Kadu: %1</source>
-        <translation>Kadu: %1</translation>
+        <source>Write email message</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unknown</source>
-        <translation>Inconnu</translation>
+        <source>Search in directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Efface</translation>
+    </message>
+    <message>
+        <source>Hide offline users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show offline users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide users without description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show users without description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show only online and description users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show all users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recent chats...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Open chat with...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1380,6 +676,17 @@ serons effacés.Veuillez confirmer?</translation>
     </message>
     <message>
         <source>Cannot save image: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MainConfigurationWindow</name>
+    <message>
+        <source>None</source>
+        <translation type="unfinished">Sans icône d&apos;emotion</translation>
+    </message>
+    <message>
+        <source>Not found</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1526,6 +833,71 @@ Peut être module incompatible avec Kadu.</translation>
     <message>
         <source>Module initialization routine for %1 failed.</source>
         <translation>Initiation de module pour %1 échouée.</translation>
+    </message>
+</context>
+<context>
+    <name>OpenChatWith</name>
+    <message>
+        <source>Open chat with...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Userlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>UIN or nick</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">&amp;Annule</translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+</context>
+<context>
+    <name>PathListEdit</name>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished">Choisir</translation>
+    </message>
+</context>
+<context>
+    <name>PathListEditWindow</name>
+    <message>
+        <source>Select paths</source>
+        <translation type="unfinished">Selectionne le chemin</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Ajoute</translation>
+    </message>
+    <message>
+        <source>Change</source>
+        <translation type="unfinished">Change</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished">Efface</translation>
+    </message>
+    <message>
+        <source>Choose</source>
+        <translation type="unfinished">Selection</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">&amp;Annule</translation>
+    </message>
+    <message>
+        <source>Choose a directory</source>
+        <translation type="unfinished">Selectionne le catalogue</translation>
     </message>
 </context>
 <context>
@@ -1697,10 +1069,6 @@ Peut être module incompatible avec Kadu.</translation>
         <translation>à</translation>
     </message>
     <message>
-        <source>No results</source>
-        <translation>Pas de résultat</translation>
-    </message>
-    <message>
         <source>There were no results of your search</source>
         <translation>Pas de résultat de recherche</translation>
     </message>
@@ -1720,6 +1088,21 @@ Peut être module incompatible avec Kadu.</translation>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Chat</source>
+        <translation type="unfinished">&amp;Discussion</translation>
+    </message>
+    <message>
+        <source>Cannot search contacts in offline mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SelectFile</name>
+    <message>
+        <source>Insert image</source>
+        <translation type="unfinished">Insère l&apos;image</translation>
+    </message>
 </context>
 <context>
     <name>SelectFont</name>
@@ -1729,50 +1112,57 @@ Peut être module incompatible avec Kadu.</translation>
     </message>
 </context>
 <context>
-    <name>SelectPaths</name>
+    <name>SyntaxEditor</name>
     <message>
-        <source>Select paths</source>
-        <translation>Selectionne le chemin</translation>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Add</source>
-        <translation>Ajoute</translation>
+        <source>Delete</source>
+        <translation type="unfinished">Efface</translation>
     </message>
     <message>
-        <source>Remove</source>
-        <translation>Efface</translation>
+        <source>Unable to remove syntax: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SyntaxEditorWindow</name>
+    <message>
+        <source>Kadu syntax editor</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Choose</source>
-        <translation>Selection</translation>
+        <source>preview</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Choose a directory</source>
-        <translation>Selectionne le catalogue</translation>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This dialog box allows you to choose directories in which kadu will look for icons or sounds.</source>
-        <translation>Cette fenêtre de dialogue permet de choisir les catalogues dans lequels Kadu va rechercher les icônes ou les sons.</translation>
+        <source>Save as..</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Paths</source>
-        <translation>Les chemins</translation>
+        <source>Cancel</source>
+        <translation type="unfinished">Annule</translation>
     </message>
     <message>
-        <source>Path to add</source>
-        <translation>Les chemins à ajouter</translation>
+        <source>New syntax name</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Change</source>
-        <translation>Change</translation>
+        <source>Enter new syntax name</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>OK</source>
-        <translation>OK</translation>
+        <source>Syntax %1 already exists and cannot be modified</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Cancel</source>
-        <translation>&amp;Annule</translation>
+        <source>Overwrite %1 syntax?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1819,14 +1209,6 @@ Peut être module incompatible avec Kadu.</translation>
         <source>Remove toolbar?</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Yes</source>
-        <translation>Oui</translation>
-    </message>
-    <message>
-        <source>No</source>
-        <translation>Non</translation>
-    </message>
 </context>
 <context>
     <name>ToolButton</name>
@@ -1846,10 +1228,6 @@ Peut être module incompatible avec Kadu.</translation>
 <context>
     <name>Updates</name>
     <message>
-        <source>Update information</source>
-        <translation>Information concernant l&apos;actualisation</translation>
-    </message>
-    <message>
         <source>The newest Kadu version is %1</source>
         <translation>La nouvelle version de Kadu est %1</translation>
     </message>
@@ -1868,12 +1246,13 @@ Peut être module incompatible avec Kadu.</translation>
         <source>Compares nicks (&quot;altnicks&quot;) case insensitive</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>UserBoxSlots</name>
     <message>
-        <source>Insert image</source>
-        <translation>Insère l&apos;image</translation>
+        <source>Hide descriptions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show descriptions</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1967,10 +1346,6 @@ Peut être module incompatible avec Kadu.</translation>
         <translation>Réactualise</translation>
     </message>
     <message>
-        <source>Add user problem</source>
-        <translation>Ajoute le problème d&apos;utilisateur</translation>
-    </message>
-    <message>
         <source>Altnick field cannot be empty.</source>
         <translation>La zone d&apos;Altnick ne peut pas être vide.</translation>
     </message>
@@ -1999,12 +1374,24 @@ Peut être module incompatible avec Kadu.</translation>
         <translation>Ce groupe existe déjà!</translation>
     </message>
     <message>
-        <source>You can&apos;t add so many groups at one stroke. Close this dialog and open one more time.</source>
-        <translation>Impossible d&apos;ajouter cette quantité de groupes en même temps. Ferme cette fenêtre et ouvre encore une fois.</translation>
-    </message>
-    <message>
         <source>Numbers are prohibited</source>
         <translation>Les numéros sont interdit</translation>
+    </message>
+    <message>
+        <source>Change icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose an icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Icons (*.png *.xpm *.jpg)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2183,6 +1570,10 @@ Effacement de la liste de contacts du seveur non reussi</translation>
     <message>
         <source>Cannot clear user list on server in offline mode</source>
         <translation>Impossible d&apos;effacer la liste de contacts du serveur sans connection</translation>
+    </message>
+    <message>
+        <source>File exists. Are you sure you want to overwrite it?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
