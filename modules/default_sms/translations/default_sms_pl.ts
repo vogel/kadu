@@ -1,24 +1,5 @@
 <!DOCTYPE TS><TS>
 <context>
-    <name>@default</name>
-    <message>
-        <source>Password</source>
-        <translation>Hasło: </translation>
-    </message>
-    <message>
-        <source>SMS Era Gateway</source>
-        <translation>Bramka SMS Era GSM</translation>
-    </message>
-    <message>
-        <source>Type of gateway</source>
-        <translation>Rodzaj bramki</translation>
-    </message>
-    <message>
-        <source>User ID (48xxxxxxxxx)</source>
-        <translation>ID użytkownika(48xxxxxxxxx)</translation>
-    </message>
-</context>
-<context>
     <name>SmsEraGateway</name>
     <message>
         <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
@@ -71,17 +52,6 @@
     <message>
         <source>You don&apos;t have enough tokens</source>
         <translation>Nie masz wystarczającej liczby żetonów</translation>
-    </message>
-</context>
-<context>
-    <name>SmsGatewaySlots</name>
-    <message>
-        <source>Sponsored</source>
-        <translation>Sponsorowana</translation>
-    </message>
-    <message>
-        <source>OmnixMultimedia</source>
-        <translation>OmnixMultimedia</translation>
     </message>
 </context>
 <context>

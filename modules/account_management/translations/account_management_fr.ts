@@ -53,10 +53,6 @@
         <translation>&amp;Fermes</translation>
     </message>
     <message>
-        <source>Change password</source>
-        <translation>Change mot de passe</translation>
-    </message>
-    <message>
         <source>Error data typed in required fields.
 
 Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
@@ -91,10 +87,6 @@ L&apos;ancien fichier sera effacé.</translation>
     <message>
         <source>Register user</source>
         <translation>Enregistre le nouveau utilisateur</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
     </message>
     <message>
         <source>Please fill out all fields</source>
@@ -142,6 +134,10 @@ Les mot de passe dans le deux champs doivent être idéntiques!</translation>
     <message>
         <source>An error has occured while registration. Please try again later.</source>
         <translation>Erreur lors de l&apos;enregistrement.Veuillez essayer plus tard.</translation>
+    </message>
+    <message>
+        <source>Email address you have entered is not valid</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -192,10 +188,6 @@ Les mot de passe dans le deux champs doivent être idéntiques!</translation>
     <message>
         <source>Please fill out all fields</source>
         <translation>Remplir tous les champs</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
     </message>
     <message>
         <source>No user</source>

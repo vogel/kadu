@@ -1,152 +1,103 @@
 <!DOCTYPE TS><TS>
 <context>
-    <name>XOSDNotify</name>
+    <name>@default</name>
     <message>
         <source>XOSD</source>
-        <translation>XOSD</translation>
+        <translation type="unfinished">XOSD</translation>
+    </message>
+</context>
+<context>
+    <name>XOSDConfigurationWidget</name>
+    <message>
+        <source>Please select font size! (pxlsz)</source>
+        <translation type="unfinished">Proszę wybrać rozmiar czcionki! (pxlsz)</translation>
     </message>
     <message>
-        <source>New chat / new message</source>
-        <translation>Nowa rozmowa / nowa wiadomość</translation>
+        <source>Top left</source>
+        <translation type="unfinished">Lewy górny</translation>
     </message>
     <message>
-        <source>Show message content</source>
-        <translation>Pokaż zawartość wiadomości</translation>
+        <source>Top</source>
+        <translation type="unfinished">Górny</translation>
     </message>
     <message>
-        <source>Number of quoted characters</source>
-        <translation>Liczba znaków</translation>
+        <source>Top right</source>
+        <translation type="unfinished">Prawy górny</translation>
     </message>
     <message>
-        <source>Status change</source>
-        <translation>Zmiana statusu</translation>
+        <source>Left</source>
+        <translation type="unfinished">Lewy</translation>
     </message>
     <message>
-        <source>Add description</source>
-        <translation>Dodaj opis</translation>
+        <source>Center</source>
+        <translation type="unfinished">Centralny</translation>
     </message>
     <message>
-        <source>Use custom syntax</source>
-        <translation>Użyj własnej składni</translation>
+        <source>Right</source>
+        <translation type="unfinished">Prawy</translation>
     </message>
     <message>
-        <source>Syntax</source>
-        <translation>Składnia</translation>
+        <source>Bottom left</source>
+        <translation type="unfinished">Lewy dolny</translation>
     </message>
     <message>
-        <source>Parameters</source>
-        <translation>Parametry</translation>
+        <source>Bottom</source>
+        <translation type="unfinished">Dolny</translation>
     </message>
     <message>
-        <source>Positions</source>
-        <translation>Pozycje</translation>
-    </message>
-    <message>
-        <source>Timeout</source>
-        <translation>Czas znikania</translation>
-    </message>
-    <message>
-        <source>Outline offset</source>
-        <translation>Przesunięcie obwódki</translation>
-    </message>
-    <message>
-        <source>Shadow offset</source>
-        <translation>Przesunięcie cienia</translation>
-    </message>
-    <message>
-        <source>Font color</source>
-        <translation>Kolor czcionki</translation>
-    </message>
-    <message>
-        <source>Outline color</source>
-        <translation>Kolor obwódki</translation>
-    </message>
-    <message>
-        <source>Shadow color</source>
-        <translation>Kolor cienia</translation>
-    </message>
-    <message>
-        <source>Change font</source>
-        <translation>Zmień czcionkę</translation>
+        <source>Bottom right</source>
+        <translation type="unfinished">Prawy dolny</translation>
     </message>
     <message>
         <source>Test</source>
-        <translation>Test</translation>
+        <translation type="unfinished">Test</translation>
     </message>
     <message>
-        <source>Offsets</source>
-        <translation>Przesunięcia</translation>
+        <source>Select font</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Positions:</source>
-        <translation>Pozycje:</translation>
+        <source>Positions</source>
+        <translation type="unfinished">Pozycje</translation>
     </message>
     <message>
-        <source>X offset</source>
-        <translation>Przesunięcie w osi X</translation>
+        <source>Timeout</source>
+        <translation type="unfinished">Czas znikania</translation>
     </message>
     <message>
-        <source>Y offset</source>
-        <translation>Przesunięcie w osi Y</translation>
+        <source>Outline offset</source>
+        <translation type="unfinished">Przesunięcie obwódki</translation>
+    </message>
+    <message>
+        <source>Shadow offset</source>
+        <translation type="unfinished">Przesunięcie cienia</translation>
+    </message>
+    <message>
+        <source>Font color</source>
+        <translation type="unfinished">Kolor czcionki</translation>
+    </message>
+    <message>
+        <source>Outline color</source>
+        <translation type="unfinished">Kolor obwódki</translation>
+    </message>
+    <message>
+        <source>Shadow color</source>
+        <translation type="unfinished">Kolor cienia</translation>
+    </message>
+    <message>
+        <source>Testing configuration</source>
+        <translation type="unfinished">Testowanie konfiguracji</translation>
     </message>
 </context>
 <context>
     <name>XOSDNotify</name>
     <message>
-        <source>Top left</source>
-        <translation>Lewy górny</translation>
-    </message>
-    <message>
-        <source>Top</source>
-        <translation>Górny</translation>
-    </message>
-    <message>
-        <source>Top right</source>
-        <translation>Prawy górny</translation>
-    </message>
-    <message>
-        <source>Left</source>
-        <translation>Lewy</translation>
-    </message>
-    <message>
-        <source>Center</source>
-        <translation>Centralny</translation>
-    </message>
-    <message>
-        <source>Right</source>
-        <translation>Prawy</translation>
-    </message>
-    <message>
-        <source>Bottom left</source>
-        <translation>Lewy dolny</translation>
-    </message>
-    <message>
-        <source>Bottom</source>
-        <translation>Dolny</translation>
-    </message>
-    <message>
-        <source>Bottom right</source>
-        <translation>Prawy dolny</translation>
-    </message>
-    <message>
-        <source>Color dialog</source>
-        <translation>Wybór koloru</translation>
-    </message>
-    <message>
-        <source>Please select font size! (pxlsz)</source>
-        <translation>Proszę wybrać rozmiar czcionki! (pxlsz)</translation>
-    </message>
-    <message>
-        <source>Testing configuration</source>
-        <translation>Testowanie konfiguracji</translation>
-    </message>
-    <message>
         <source>Status changed</source>
         <translation>Zmiana statusu</translation>
     </message>
     <message>
-        <source>%a changed status to %s</source>
-        <translation>%a zmienił status %s</translation>
+        <source>&lt;b&gt;%a&lt;/b&gt; changed status to &lt;i&gt;%s&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

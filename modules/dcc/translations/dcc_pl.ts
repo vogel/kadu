@@ -2,52 +2,8 @@
 <context>
     <name>@default</name>
     <message>
-        <source>DCC enabled</source>
-        <translation>DCC włączone (Połączenia bezpośrednie)</translation>
-    </message>
-    <message>
-        <source>DCC IP autodetection</source>
-        <translation>Wykrywanie adresu IP dla DCC</translation>
-    </message>
-    <message>
-        <source>DCC IP</source>
-        <translation>Adres IP dla DCC</translation>
-    </message>
-    <message>
-        <source>IP address:</source>
-        <translation>Adresy IP: </translation>
-    </message>
-    <message>
-        <source>DCC forwarding enabled</source>
-        <translation>Przekierowywanie portów przy DCC</translation>
-    </message>
-    <message>
-        <source>DCC forwarding properties</source>
-        <translation>Ustawienia przekierowań DCC</translation>
-    </message>
-    <message>
-        <source>External IP address:</source>
-        <translation>Zewnętrzny adres IP: </translation>
-    </message>
-    <message>
-        <source>External TCP port:</source>
-        <translation>Zewnętrzny port TCP: </translation>
-    </message>
-    <message>
-        <source>Send file</source>
-        <translation>Wyślij plik</translation>
-    </message>
-    <message>
-        <source>Local TCP port:</source>
-        <translation>Lokalny port TCP: </translation>
-    </message>
-    <message>
         <source>An user wants to send you a file</source>
         <translation>Jakiś użytkownik chce przesłać ci plik</translation>
-    </message>
-    <message>
-        <source>Remove completed transfers from transfers list</source>
-        <translation>Usuń skończone transfery z listy</translation>
     </message>
     <message>
         <source>File transfer was finished</source>
@@ -70,19 +26,12 @@ both machines are behind routers with NAT.</source>
 Odbiorca nie ma włączonej obsługi przesyłu 
 plików lub oba komputery są za NAT-em.</translation>
     </message>
-</context>
-<context>
-    <name>DccSocket</name>
-    <message>
-        <source>Couldn&apos;t open file!</source>
-        <translation>Problem z otworzeniem pliku!</translation>
-    </message>
     <message>
         <source>%1 is asking for direct connection but his/her
 IP address (%2) differs from what GG server returned
 as his/her IP address (%3). It may be spoofing
 or he/she has port forwarding. Continue connection?</source>
-        <translation>%1 prosi o bezpośrednie połączenie ale jego / jej
+        <translation type="unfinished">%1 prosi o bezpośrednie połączenie ale jego / jej
 adres IP (%2) różni się od tego jaki zwrócił serwer GG 
 jako jego / jej adres IP: (%3). To może być próba podszycia
 się albo on / ona ma przekierowanie portów.
@@ -113,10 +62,6 @@ Kontynuować połączenie?</translation>
     <message>
         <source>Select file location</source>
         <translation>Wybierz lokalizację pliku</translation>
-    </message>
-    <message>
-        <source>This file is not readable</source>
-        <translation>Brak uprawnień do odczytu pliku</translation>
     </message>
     <message>
         <source>User %1 wants to send us a file %2
@@ -165,10 +110,6 @@ Co chcesz zrobić?</translation>
     <message>
         <source>File has been transferred sucessfully.</source>
         <translation>Transfer pliku zakończony pomyślnie.</translation>
-    </message>
-    <message>
-        <source>File transfer error!</source>
-        <translation>Błąd podczas transmisji pliku!</translation>
     </message>
     <message>
         <source>File transfer finished</source>
@@ -220,6 +161,10 @@ Co chcesz zrobić?</translation>
     <message>
         <source>Finished</source>
         <translation>Zakończony</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Rejected&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -1,24 +1,5 @@
 <!DOCTYPE TS><TS>
 <context>
-    <name>@default</name>
-    <message>
-        <source>Password</source>
-        <translation>Mot de passe </translation>
-    </message>
-    <message>
-        <source>SMS Era Gateway</source>
-        <translation>Portail SMS Era GSM</translation>
-    </message>
-    <message>
-        <source>Type of gateway</source>
-        <translation>Type de portail</translation>
-    </message>
-    <message>
-        <source>User ID (48xxxxxxxxx)</source>
-        <translation>ID utilisateur(48xxxxxxxxx)</translation>
-    </message>
-</context>
-<context>
     <name>SmsEraGateway</name>
     <message>
         <source>Provider gateway results page looks strange. SMS was probably NOT sent.</source>
@@ -71,17 +52,6 @@
     <message>
         <source>Number of SMS&apos; left on Sponsored Era Gateway: </source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>SmsGatewaySlots</name>
-    <message>
-        <source>Sponsored</source>
-        <translation>Sponsorisé</translation>
-    </message>
-    <message>
-        <source>OmnixMultimedia</source>
-        <translation>OmnixMultimedia</translation>
     </message>
 </context>
 <context>

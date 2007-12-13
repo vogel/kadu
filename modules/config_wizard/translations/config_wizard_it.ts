@@ -22,32 +22,8 @@
         <translation>Anulla</translation>
     </message>
     <message>
-        <source>Welcome</source>
-        <translation>Benvenuti</translation>
-    </message>
-    <message>
-        <source>&lt;h3&gt;Please decide if you want to use your old Gadu-gadu account and number or to create the new one&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Decidi se vuoi creare nuovo account Gadu-Gadu o usare già esistente&lt;/h3&gt;</translation>
-    </message>
-    <message>
-        <source>Select account option</source>
-        <translation>Scegli la opzione</translation>
-    </message>
-    <message>
         <source>I have a number</source>
         <translation>ho già un numero</translation>
-    </message>
-    <message>
-        <source>I don&apos;t have one</source>
-        <translation>Non ho numero</translation>
-    </message>
-    <message>
-        <source>Gadu-gadu account</source>
-        <translation>Account Gadu-Gadu</translation>
-    </message>
-    <message>
-        <source>Please enter your account settings</source>
-        <translation>Inesrisci dati account</translation>
     </message>
     <message>
         <source>Gadu-gadu number</source>
@@ -62,248 +38,16 @@
         <translation>Importa contatti</translation>
     </message>
     <message>
-        <source>Password</source>
-        <translation>Password</translation>
-    </message>
-    <message>
-        <source>Re-type password</source>
-        <translation>Ribatti password</translation>
-    </message>
-    <message>
         <source>Your e-mail address</source>
         <translation>Indirizzo e-mail</translation>
-    </message>
-    <message>
-        <source>&lt;h3&gt;Please select language version of Kadu you want to use&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Seleziona la lingua Kadu&lt;/h3&gt;</translation>
-    </message>
-    <message>
-        <source>Language selection</source>
-        <translation>Selezione lingua</translation>
-    </message>
-    <message>
-        <source>Choose Kadu language</source>
-        <translation>Seleziona lingua Kadu</translation>
-    </message>
-    <message>
-        <source>English</source>
-        <translation>Inglese</translation>
-    </message>
-    <message>
-        <source>Polish</source>
-        <translation>Polacco</translation>
-    </message>
-    <message>
-        <source>Italian</source>
-        <translation>Italiano</translation>
-    </message>
-    <message>
-        <source>German</source>
-        <translation>Tedesco</translation>
-    </message>
-    <message>
-        <source>Language</source>
-        <translation>Lingua</translation>
-    </message>
-    <message>
-        <source>&lt;h3&gt;Please setup your chat options&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Configura settagi del chat&lt;/h3&gt;</translation>
-    </message>
-    <message>
-        <source>Chat options</source>
-        <translation>Opzioni della finestra del chat</translation>
-    </message>
-    <message>
-        <source>Message acknowledgements (wait for delivery)</source>
-        <translation>Conferma spedizione messaggi (aspetta la consegna)</translation>
-    </message>
-    <message>
-        <source>&quot;Enter&quot; key in chat sends message by default</source>
-        <translation>Tasto &quot;INVIO&quot; spedisce il messaggio</translation>
-    </message>
-    <message>
-        <source>Open chat window on new message</source>
-        <translation>Ricezione nuovo messaggio apre la finestra del chat</translation>
-    </message>
-    <message>
-        <source>Flash chat title on new message</source>
-        <translation>Lampeggio barra titolo</translation>
-    </message>
-    <message>
-        <source>Ignore messages from anonymous users</source>
-        <translation>Igniora messaggi da sconosciuti</translation>
-    </message>
-    <message>
-        <source>Chat</source>
-        <translation>Chat</translation>
-    </message>
-    <message>
-        <source>&lt;h3&gt;Please setup Kadu for working with your favourite WWW browser&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Configura Kadu per lavorare con browser preferito&lt;/h3&gt;</translation>
-    </message>
-    <message>
-        <source>WWW options</source>
-        <translation>Opzioni WWW</translation>
     </message>
     <message>
         <source>Choose your browser</source>
         <translation>Scegli browser</translation>
     </message>
     <message>
-        <source>Browser options</source>
-        <translation>opzioni del browser</translation>
-    </message>
-    <message>
-        <source>Custom Web browser</source>
-        <translation>Browser personalizzato</translation>
-    </message>
-    <message>
-        <source>WWW</source>
-        <translation>WWW</translation>
-    </message>
-    <message>
-        <source>&lt;h3&gt;Please setup sounds&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Configura suoni&lt;/h3&gt;</translation>
-    </message>
-    <message>
-        <source>Sounds</source>
-        <translation>Suoni</translation>
-    </message>
-    <message>
-        <source>Play sounds</source>
-        <translation>Riproduci suoni</translation>
-    </message>
-    <message>
-        <source>Play sounds from a person whilst chatting</source>
-        <translation>Riproduci suoni durante chat</translation>
-    </message>
-    <message>
-        <source>Play chat sounds only when window is invisible</source>
-        <translation>Riproduci suono solo se la finestra non è visibile</translation>
-    </message>
-    <message>
         <source>Sound</source>
         <translation>Suono</translation>
-    </message>
-    <message>
-        <source>&lt;h3&gt;Please setup general options&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Configura opzioni generali&lt;/h3&gt;</translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation>Generali</translation>
-    </message>
-    <message>
-        <source>Private status</source>
-        <translation>Solo pre amici</translation>
-    </message>
-    <message>
-        <source>Show contacts blocking you</source>
-        <translation>Visualizza contatti che ti bloccano</translation>
-    </message>
-    <message>
-        <source>Show contacts that you are blocking</source>
-        <translation>Visualizza contatti bloccati da te</translation>
-    </message>
-    <message>
-        <source>Start docked</source>
-        <translation>Parti iconificato</translation>
-    </message>
-    <message>
-        <source>History options</source>
-        <translation>Opzioni strorico</translation>
-    </message>
-    <message>
-        <source>Don&apos;t log messages</source>
-        <translation>Non memorizzare messaggi</translation>
-    </message>
-    <message>
-        <source>Don&apos;t log status changes</source>
-        <translation>Non memorizzare cambi status</translation>
-    </message>
-    <message>
-        <source>&lt;h3&gt;Please setup hints options&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Configura descrizioni&lt;/h3&gt;</translation>
-    </message>
-    <message>
-        <source>Hints</source>
-        <translation>Descrizioni</translation>
-    </message>
-    <message>
-        <source>Please choose hints design</source>
-        <translation>Scegli colori delle descrizioni</translation>
-    </message>
-    <message>
-        <source>Preview</source>
-        <translation>Anteprima</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;User&lt;/b&gt; changed status to &lt;b&gt;Busy&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Contatto&lt;/b&gt; ha cambiato status a &lt;b&gt;Occupato&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Error&lt;/b&gt;: (192.168.0.1) Disconnection has occured</source>
-        <translation>&lt;b&gt;Errore&lt;/b&gt;: (192.168.0.1) Scolegato</translation>
-    </message>
-    <message>
-        <source>Hints construction</source>
-        <translation>Costruzione della descrizione</translation>
-    </message>
-    <message>
-        <source>Please choose hints type</source>
-        <translation>Scegli tipo della descrizione</translation>
-    </message>
-    <message>
-        <source>Custom</source>
-        <translation>Personalizzato</translation>
-    </message>
-    <message>
-        <source>&lt;h3&gt;Choose color theme and icons for Kadu&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Scegli tema colori e icone per Kadu&lt;/h3&gt;</translation>
-    </message>
-    <message>
-        <source>Colors</source>
-        <translation>Colori</translation>
-    </message>
-    <message>
-        <source>Please choose Kadu design</source>
-        <translation>Scegli aspetto Kadu</translation>
-    </message>
-    <message>
-        <source>Icons</source>
-        <translation>Icone</translation>
-    </message>
-    <message>
-        <source>Please choose icon theme</source>
-        <translation>Scegli set delle icone</translation>
-    </message>
-    <message>
-        <source>Default</source>
-        <translation>Predefinito</translation>
-    </message>
-    <message>
-        <source>Colors and icons</source>
-        <translation>Colori e icone</translation>
-    </message>
-    <message>
-        <source>Show information panel</source>
-        <translation>Visualizza panello informazioni</translation>
-    </message>
-    <message>
-        <source>Show vertical scrollbar</source>
-        <translation>Visualizza panello di scorimento verticale</translation>
-    </message>
-    <message>
-        <source>Unknown</source>
-        <translation>Sconosciuto</translation>
-    </message>
-    <message>
-        <source>Qt Look</source>
-        <translation>Aspetto QT</translation>
-    </message>
-    <message>
-        <source>Congratulations</source>
-        <translation>Congratulazioni</translation>
     </message>
     <message>
         <source>Error data typed in required fields.
@@ -318,144 +62,12 @@ Password in entrambi campi deve essere la stessa!</translation>
         <translation>Errore durante la registrazione. Riprova più tardi.</translation>
     </message>
     <message>
-        <source>Busy</source>
-        <translation>Occupato</translation>
-    </message>
-    <message>
-        <source>My description</source>
-        <translation>La mia descrizione</translation>
-    </message>
-    <message>
-        <source>Mark</source>
-        <translation>Mario</translation>
-    </message>
-    <message>
-        <source>Smith</source>
-        <translation>Rossi</translation>
-    </message>
-    <message>
-        <source>Friends</source>
-        <translation>Amici</translation>
-    </message>
-    <message>
-        <source>changed status to</source>
-        <translation>cambiato status a</translation>
-    </message>
-    <message>
-        <source>You are not on the list</source>
-        <translation>Non sei nella lista</translation>
-    </message>
-    <message>
         <source>User list wasn&apos;t imported because of some error</source>
         <translation>Lista utenti non è ststa importata per qualche errore</translation>
     </message>
     <message>
-        <source>Please fill all fields</source>
-        <translation>Prego riempire tutti i campi</translation>
-    </message>
-    <message>
-        <source>&lt;h2&gt;Welcome in Kadu&lt;/h2&gt;&lt;h3&gt; the Gadu-gadu network client for *nix and MacOS X.&lt;/h3&gt;&lt;br&gt;&lt;br&gt;&lt;font size=+1&gt;This is first time you launch Kadu. This wizard will help you to configure the basic settings of Kadu. If you are experienced Kadu user you may omit the wizard by clicking Cancel. Otherwise click Next.&lt;/font&gt;</source>
-        <translation>&lt;h2&gt;Benvenuti in Kadu&lt;/h2&gt;&lt;h3&gt;Un cliente Gadu-Gadu per sistemu UNIX-like e MacOS X.&lt;/h3&gt;&lt;br&gt;&lt;br&gt;&lt;font size=+1&gt;Questa è la prima volta che hai attivato Kadu. Questo tool ti aiuterà a configurare Kadu. Se hai già esperienza con questo programa, puoi saltare questa guida cliccando su Cancella. Altrimenti clicca su Avanti.&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;h3&gt;You decided to use your existing account. Please configure it&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt; Hai deciso di usare account esistente. Prego di configurarlo&lt;/h3&gt;</translation>
-    </message>
-    <message>
-        <source>Sound module</source>
-        <translation>Il modulo sonoro</translation>
-    </message>
-    <message>
-        <source>Choose sound module</source>
-        <translation>Scegli modulo sonoro</translation>
-    </message>
-    <message>
-        <source>None</source>
-        <translation>Nessuno</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Description:&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Descrizione:&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>Kadu uses various sound modules to play its sounds. Choosing appropriate module is quite important. Browse installed sound modules and choose the best for you.</source>
-        <translation>Kadu utilizza diversi moduli sonori per riprodurre i suoni. Scielta del modulo corretto è importante. Sciegli quello migliore per te dalla lista dei moduli installati.</translation>
-    </message>
-    <message>
-        <source>This module uses libao to produce sounds. This is third-party module not supported by Kadu Team.</source>
-        <translation>Questo modulo utilizza libao per produrre i suoni. Il modulo è di terze parti, non supportato dal Team Kadu.</translation>
-    </message>
-    <message>
-        <source>This module uses KDE&apos;s aRts daemon which mixes multiple digital sources at real time.&lt;br&gt; When your soundcard doesn&apos;t handle that, this module is for you.</source>
-        <translation>Questo modulo utilizza il demone aRts che miscella sorgenti multiple digitali in tempo reale.&lt;br&gt; Se la tua carta sonora non è in grado di farlo, questo modulo fa per te. </translation>
-    </message>
-    <message>
-        <source>This module uses OSS kernel module to produce sounds.</source>
-        <translation>Questo modulo utilizza moduli OSS del kernel per produrre i suoni.</translation>
-    </message>
-    <message>
-        <source>This module uses GNOME&apos;s Enlightened Sound Daemon which mixes multiple digital sources at real time.&lt;br&gt; When your soundcard doesn&apos;t handle that, this module is for you.</source>
-        <translation>Questo modulo utilizza GNOME&apos;s Enlightened Sound Daemon che miscella sorgenti multiple digitali in tempo reale.&lt;br&gt; Se la tua carta sonora non è in grado di farlo, questo modulo fa per te.</translation>
-    </message>
-    <message>
-        <source>This module uses external application to produce sounds. You must specify path to external program in configuration.</source>
-        <translation>Questo modulo utilizza applicazione esterna per produrre i suoni. Devi specificare il percorso a questa applicazione nella configurazione.</translation>
-    </message>
-    <message>
-        <source>This module uses Network Audio System to produce sounds. Use it when you use NAS sound system.</source>
-        <translation>Questo modulo utilizza  Network Audio System per produrre i suoni. Devi usarlo con NAS.</translation>
-    </message>
-    <message>
-        <source>&lt;h3&gt;Choose your information panel look&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Scegli aspetto del tuo panello informazioni&lt;/h3&gt;</translation>
-    </message>
-    <message>
-        <source>Information panel theme</source>
-        <translation>Tema del panello informazioni</translation>
-    </message>
-    <message>
-        <source>Information panel look</source>
-        <translation>Aspetto del panello informazioni</translation>
-    </message>
-    <message>
-        <source>&lt;h3&gt;Choose Qt theme for Kadu&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Scegli tema QT per Kadu&lt;/h3&gt;</translation>
-    </message>
-    <message>
-        <source>Qt theme</source>
-        <translation>tema QT</translation>
-    </message>
-    <message>
-        <source>Please choose Qt design for Kadu</source>
-        <translation>Prego scegliere aspetto QT per Kadu</translation>
-    </message>
-    <message>
-        <source>&lt;h2&gt;Congratulations&lt;/h2&gt;&lt;h3&gt;You have just configured Kadu&lt;/h3&gt;You can adjust settings using the configuration icon on toolbar or simply by pressing F2. It&apos;s recomended to read the documentation before changing some advanced settings. If you have questions or problems with Kadu look at &lt;b&gt;www.kadu.net/forum&lt;/b&gt; and be our guest.&lt;br&gt;&lt;h3&gt;Enjoy using Kadu ;)&lt;br&gt;Kadu Team&lt;/h3&gt;</source>
-        <translation>&lt;h2&gt;Congratulazioni&lt;/h2&gt;&lt;h3&gt;Hai appena configurato Kadu&lt;/h3&gt;Puoi cambiare le impostazioni del programma scegliendo icona configurazione, oppure premendo tasto F2 durante normale utilizzo del programma. Raccomandiamo la lettura della documentazione prima di cambiare qualcosa. Se hai dei problemi, o questioni riguardanti KADU, visita &lt;b&gt;www.kadu.net/forum&lt;/b&gt; e sarai nostro ospite gradito.&lt;br&gt;&lt;h3&gt;Enjoy using Kadu ;)&lt;br&gt;Kadu Team&lt;/h3&gt;</translation>
-    </message>
-    <message>
-        <source>There will be no sounds in Kadu</source>
-        <translation>Non ci saranno suoni in Kadu</translation>
-    </message>
-    <message>
-        <source>&lt;font color=red&gt;Module is not installed! If you want to use it download and install it first.&lt;/font&gt;&lt;br&gt;</source>
-        <translation>&lt;font color=red&gt;Modulo non è installato! Devi caricarlo e instalarlo se vuoi che funzioni.&lt;/font&gt;&lt;br&gt;</translation>
-    </message>
-    <message>
-        <source>Current</source>
-        <translation>Attuale</translation>
-    </message>
-    <message>
-        <source>French</source>
-        <translation>Francese</translation>
-    </message>
-    <message>
         <source>Register</source>
         <translation>Registrazione</translation>
-    </message>
-    <message>
-        <source>This module play sounds using ALSA - Advanced Linux Sound Architecture driver.</source>
-        <translation>Questo modulo riproduce suoni utilizzando ALSA - Advanced Linux Sound Architecture driver.</translation>
     </message>
     <message>
         <source>Registration was successful.
@@ -470,10 +82,120 @@ Press Ok to continue</source>
 Premi Ok per continuare</translation>
     </message>
     <message>
-        <source>&lt;h3&gt;Please enter your valid e-mail address and password you want to secure your new Gadu-gadu number&lt;/h3&gt;
-Password must contain at least 5 signs (only letters and numbers)</source>
-        <translation>&lt;h3&gt;Prego di inserire valido indirizzo e-mail e passwod per rendere sicuro account GG &lt;/h3&gt;
-Password deve contenere almeno   5 caratteri ( lettere e nimeri)</translation>
+        <source>Please fill out all fields</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Email address you have entered is not valid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I don&apos;t have a number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Retype password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;h3&gt;Welcome in Kadu&lt;/h3&gt;&lt;h4&gt;the Gadu-gadu network client for *nix and MacOS X.&lt;/h4&gt;&lt;p&gt;This is first time you launch Kadu. This wizard will help you to configure the basic settings of Kadu. If you are experienced Kadu user you may omit the wizard by clicking Cancel.&lt;/p&gt;&lt;p&gt;Please enter your account data. If you don&apos;t have one, you can create new here.&lt;/p&gt;&lt;p&gt;E-mail address is only needed when you want to recover lost password to account&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>WWW browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Specify path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Konqueror</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Opera</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mozilla</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mozilla Firefox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dillo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Galeon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Safari</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>e-mail client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose your e-mail client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>KMail</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Thunderbird</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SeaMonkey</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Evolution</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom e-mail client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Applications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Please setup Kadu for working with your favourite WWW browser and email program.&lt;/p&gt;&lt;p&gt;Kadu will use these for opening various links from messages and user&apos;s descriptions&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sound driver</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Test sound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Please select your sound driver for sound notifications. If you don&apos;t want sound notifications, use None driver.&lt;/p&gt;&lt;p&gt;If you don&apos;t know which driver to use, just check every ony with Test sound button.Don&apos;t forget to unmute your system before!&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -483,8 +205,8 @@ Password deve contenere almeno   5 caratteri ( lettere e nimeri)</translation>
         <translation>Creatore di configurazione</translation>
     </message>
     <message>
-        <source>User list wasn&apos;t imported because of some error</source>
-        <translation>Lista contatti nen è stata importata per qualche errore</translation>
+        <source>User list couldn&apos;t be imported</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

@@ -53,10 +53,6 @@
         <translation>&amp;Chiudi</translation>
     </message>
     <message>
-        <source>Change password</source>
-        <translation>Cambia password</translation>
-    </message>
-    <message>
         <source>Error data typed in required fields.
 
 Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
@@ -91,10 +87,6 @@ Il vecchio file, se esiste, sarà sovrascritto</translation>
     <message>
         <source>Register user</source>
         <translation>Registra nuovo utente</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
     </message>
     <message>
         <source>Please fill out all fields</source>
@@ -142,6 +134,10 @@ Le password devo esser identiche !</translation>
     <message>
         <source>An error has occured while registration. Please try again later.</source>
         <translation>Errore durante la registrazione. Devi riprovare più tardi.</translation>
+    </message>
+    <message>
+        <source>Email address you have entered is not valid</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -192,10 +188,6 @@ Le password devo esser identiche !</translation>
     <message>
         <source>Please fill out all fields</source>
         <translation>Compilare tutti i campi</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
     </message>
     <message>
         <source>No user</source>

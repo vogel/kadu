@@ -1,28 +1,5 @@
 <!DOCTYPE TS><TS>
 <context>
-    <name>@default</name>
-    <message>
-        <source>Use encryption</source>
-        <translation>Benutze Verschlüsselung</translation>
-    </message>
-    <message>
-        <source>Encryption properties</source>
-        <translation>Verschlüsselungseinstellungen</translation>
-    </message>
-    <message>
-        <source>Keys length</source>
-        <translation>Schlüssellänge</translation>
-    </message>
-    <message>
-        <source>Generate keys</source>
-        <translation>Erstelle Schlüssel</translation>
-    </message>
-    <message>
-        <source>Color of encrypted messages</source>
-        <translation>Farbe der verschlüsselten Nachrichten</translation>
-    </message>
-</context>
-<context>
     <name>EncryptionManager</name>
     <message>
         <source>Send my public key</source>
@@ -33,20 +10,8 @@
         <translation>Schlüssel existieren schon. Sollen sie überschrieben werden?</translation>
     </message>
     <message>
-        <source>Yes</source>
-        <translation>Ja</translation>
-    </message>
-    <message>
-        <source>No</source>
-        <translation>Nein</translation>
-    </message>
-    <message>
         <source>Error generating keys</source>
         <translation>Fehler beim Erstellen der Schlüssel</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
     </message>
     <message>
         <source>Keys have been generated and written</source>
@@ -68,6 +33,70 @@
         <source>Cannot encrypt message. sim_message_encrypt returned: &quot;%1&quot; (sim_errno=%2)</source>
         <translation>Kann die Nachricht nicht verschlüsseln. sim_message_encrypt lieferte &quot;%1&quot; zurück (sim_errno=%2)</translation>
     </message>
+    <message>
+        <source>Manage keys</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>KeysManager</name>
+    <message>
+        <source>Manage keys</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This dialog box allows you to manage your keys.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Encryption is on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished">Ja</translation>
+    </message>
+    <message>
+        <source>Off</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the selected key?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot remove key
+Check if you have access to file &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished">Nein</translation>
+    </message>
 </context>
 <context>
     <name>SavePublicKey</name>
@@ -88,16 +117,8 @@
         <translation>Nein</translation>
     </message>
     <message>
-        <source>Error</source>
-        <translation>Fehler</translation>
-    </message>
-    <message>
         <source>Error writting the key</source>
         <translation>Fehler beim Schreiben des Schlüssels</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
     </message>
 </context>
 </TS>

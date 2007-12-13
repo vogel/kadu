@@ -1,79 +1,13 @@
 <!DOCTYPE TS><TS>
 <context>
-    <name>@default</name>
-    <message>
-        <source>Notify</source>
-        <translation>Powiadamianie</translation>
-    </message>
-    <message>
-        <source>Notify about all users</source>
-        <translation>Powiadom o wszystkich kontaktach</translation>
-    </message>
-    <message>
-        <source>Available</source>
-        <translation>Dostępni</translation>
-    </message>
-    <message>
-        <source>Tracked</source>
-        <translation>Śledzeni</translation>
-    </message>
-    <message>
-        <source>Notify configuration</source>
-        <translation>Konfiguracja powiadomień</translation>
-    </message>
+    <name>ConnectionErrorNotification</name>
     <message>
         <source>Connection error</source>
-        <translation>Błąd połączenia</translation>
+        <translation type="unfinished">Błąd połączenia</translation>
     </message>
     <message>
-        <source>New chat</source>
-        <translation>Nowa rozmowa</translation>
-    </message>
-    <message>
-        <source>New message</source>
-        <translation>Nowa wiadomość</translation>
-    </message>
-    <message>
-        <source>User is changing status</source>
-        <translation>Użytkownik zmienił status</translation>
-    </message>
-    <message>
-        <source>User changed status to &quot;Available&quot;</source>
-        <translation>Użytkownik zmienił status na &quot;Dostępny&quot;</translation>
-    </message>
-    <message>
-        <source>User changed status to &quot;Busy&quot;</source>
-        <translation>Użytkownik zmienił status na &quot;Zajęty&quot;</translation>
-    </message>
-    <message>
-        <source>User changed status to &quot;Not available&quot;</source>
-        <translation>Użytkownik zmienił status na &quot;Niedostępny&quot;</translation>
-    </message>
-    <message>
-        <source>Other message</source>
-        <translation>Inna wiadomość</translation>
-    </message>
-    <message>
-        <source>This option will supersede tooltips with users&apos; status
- changes upon establishing connection to the server</source>
-        <translation>Ta opcja wyłączy ukazywanie się dymków ze statusem kontaktów
-przy pierwszym połaczeniu sie Kadu z serwerem</translation>
-    </message>
-    <message>
-        <source>Ignore changes right after connection to the server</source>
-        <translation>Ignoruj zmiany zaraz po połączeniu z serwerem</translation>
-    </message>
-    <message>
-        <source>User changed status to &quot;Invisible&quot;</source>
-        <translation>Użytkownik zmienił status na &quot;Ukryty&quot;</translation>
-    </message>
-    <message>
-        <source>Ignore status changes from available / busy to available / busy</source>
-        <translation>Ignoruj zmianę statusów z dostępny / zajęty na dostępny / zajęty</translation>
-    </message>
-    <message>
-        <source>Mouse over user</source>
-        <translation>Kursor myszy nad kontaktem</translation>
+        <source>&lt;b&gt;Error:&lt;/b&gt; (%1) %2</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -81,6 +15,29 @@ przy pierwszym połaczeniu sie Kadu z serwerem</translation>
     <message>
         <source>Unable to find notifier for %1 event</source>
         <translation>Nie znaleziono powiadomienia dla zdarzenia %1</translation>
+    </message>
+    <message>
+        <source>Move to &apos;Notify list&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move to &apos;User list&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify list</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StatusChangedNotification</name>
+    <message>
+        <source>Status changed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

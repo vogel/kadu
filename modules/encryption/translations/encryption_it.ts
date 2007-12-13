@@ -1,28 +1,5 @@
 <!DOCTYPE TS><TS>
 <context>
-    <name>@default</name>
-    <message>
-        <source>Use encryption</source>
-        <translation>Usi la cifratura</translation>
-    </message>
-    <message>
-        <source>Encryption properties</source>
-        <translation>Proprietà di cifratura</translation>
-    </message>
-    <message>
-        <source>Keys length</source>
-        <translation>Lunghezza chiave</translation>
-    </message>
-    <message>
-        <source>Generate keys</source>
-        <translation>Genera chiavi</translation>
-    </message>
-    <message>
-        <source>Color of encrypted messages</source>
-        <translation>Colore messaggi crittati</translation>
-    </message>
-</context>
-<context>
     <name>EncryptionManager</name>
     <message>
         <source>Send my public key</source>
@@ -33,20 +10,8 @@
         <translation>Le chiavi esistono. Vuoi sovrascriverle ?</translation>
     </message>
     <message>
-        <source>Yes</source>
-        <translation>Sì</translation>
-    </message>
-    <message>
-        <source>No</source>
-        <translation>No</translation>
-    </message>
-    <message>
         <source>Error generating keys</source>
         <translation>Errore durante generazione chivi</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
     </message>
     <message>
         <source>Keys have been generated and written</source>
@@ -68,6 +33,70 @@
         <source>Cannot encrypt message. sim_message_encrypt returned: &quot;%1&quot; (sim_errno=%2)</source>
         <translation> Non posso crittare messaggio. sim_message_encrypt restituito: &quot;%1&quot; (sim_errno=%2)</translation>
     </message>
+    <message>
+        <source>Manage keys</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>KeysManager</name>
+    <message>
+        <source>Manage keys</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This dialog box allows you to manage your keys.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Encryption is on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished">Sì</translation>
+    </message>
+    <message>
+        <source>Off</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the selected key?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot remove key
+Check if you have access to file &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished">No</translation>
+    </message>
 </context>
 <context>
     <name>SavePublicKey</name>
@@ -88,16 +117,8 @@
         <translation>No</translation>
     </message>
     <message>
-        <source>Error</source>
-        <translation>Errore</translation>
-    </message>
-    <message>
         <source>Error writting the key</source>
         <translation>Errore durante scrittura chiave</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
     </message>
 </context>
 </TS>

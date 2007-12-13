@@ -2,52 +2,8 @@
 <context>
     <name>@default</name>
     <message>
-        <source>DCC enabled</source>
-        <translation>DCC attivo (Colegamento diretto)</translation>
-    </message>
-    <message>
-        <source>DCC IP autodetection</source>
-        <translation>Autorilevamento del IP per DCC</translation>
-    </message>
-    <message>
-        <source>DCC IP</source>
-        <translation>Indirizzo IP per DCC</translation>
-    </message>
-    <message>
-        <source>IP address:</source>
-        <translation>Indirizzo IP:</translation>
-    </message>
-    <message>
-        <source>DCC forwarding enabled</source>
-        <translation>traslazione porte per DCC</translation>
-    </message>
-    <message>
-        <source>DCC forwarding properties</source>
-        <translation>Proprietà della traslazione per DCC</translation>
-    </message>
-    <message>
-        <source>External IP address:</source>
-        <translation>Indirizzo IP esterno:</translation>
-    </message>
-    <message>
-        <source>External TCP port:</source>
-        <translation>Porta TCP esterna:</translation>
-    </message>
-    <message>
-        <source>Send file</source>
-        <translation>Manda un file</translation>
-    </message>
-    <message>
-        <source>Local TCP port:</source>
-        <translation>Porta TCP locale:</translation>
-    </message>
-    <message>
         <source>An user wants to send you a file</source>
         <translation type="unfinished">Un contatto vuole trasferire un file per te</translation>
-    </message>
-    <message>
-        <source>Remove completed transfers from transfers list</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>File transfer was finished</source>
@@ -70,19 +26,12 @@ both machines are behind routers with NAT.</source>
 Ricevente non supporta connessioni dirette
 oppure entrambe le macchine sono dietro router con NAT.</translation>
     </message>
-</context>
-<context>
-    <name>DccSocket</name>
-    <message>
-        <source>Couldn&apos;t open file!</source>
-        <translation>Problemi con apertura file!</translation>
-    </message>
     <message>
         <source>%1 is asking for direct connection but his/her
 IP address (%2) differs from what GG server returned
 as his/her IP address (%3). It may be spoofing
 or he/she has port forwarding. Continue connection?</source>
-        <translation>%1 chiede colegamento diretto ma suo
+        <translation type="unfinished">%1 chiede colegamento diretto ma suo
 Indirizzo IP (%2) è diverso da questo comunicato  dai servers GG
 che è (%3). Possibile, che è stato scambiato, oppure contatto
 ha port forwarding attivato. Continuare connessione ?
@@ -113,10 +62,6 @@ ha port forwarding attivato. Continuare connessione ?
     <message>
         <source>Select file location</source>
         <translation>Selezioni percorso del file</translation>
-    </message>
-    <message>
-        <source>This file is not readable</source>
-        <translation>Questo file non è di lettura</translation>
     </message>
     <message>
         <source>User %1 wants to send us a file %2
@@ -165,10 +110,6 @@ Cosa vuoi fare?</translation>
     <message>
         <source>File has been transferred sucessfully.</source>
         <translation type="unfinished">Il trasferimento del file completato con successo.</translation>
-    </message>
-    <message>
-        <source>File transfer error!</source>
-        <translation type="unfinished">Errore trasferimento di file!</translation>
     </message>
     <message>
         <source>File transfer finished</source>
@@ -220,6 +161,10 @@ Cosa vuoi fare?</translation>
     <message>
         <source>Finished</source>
         <translation type="unfinished">Finito</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Rejected&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

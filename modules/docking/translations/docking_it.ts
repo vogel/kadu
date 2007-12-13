@@ -1,20 +1,5 @@
 <!DOCTYPE TS><TS>
 <context>
-    <name>@default</name>
-    <message>
-        <source>Start docked</source>
-        <translation>Parti minimizzato</translation>
-    </message>
-    <message>
-        <source>Show tooltip in tray</source>
-        <translation>Visualizza notifiche sulla barra</translation>
-    </message>
-    <message>
-        <source>New message tray icon</source>
-        <translation>Icona del nuovo messaggio sulla barra</translation>
-    </message>
-</context>
-<context>
     <name>DockingManager</name>
     <message>
         <source>
@@ -35,18 +20,6 @@ Description:
 
 Descrizione:
 %2</translation>
-    </message>
-    <message>
-        <source>Blinking envelope</source>
-        <translation>Copertina lampeggiante</translation>
-    </message>
-    <message>
-        <source>Static envelope</source>
-        <translation>Copertina statica</translation>
-    </message>
-    <message>
-        <source>Animated envelope</source>
-        <translation>Copertina animata</translation>
     </message>
     <message>
         <source>Left click - hide / show window

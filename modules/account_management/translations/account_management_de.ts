@@ -53,10 +53,6 @@
         <translation>&amp;Schließen</translation>
     </message>
     <message>
-        <source>Change password</source>
-        <translation>Passwort ändern</translation>
-    </message>
-    <message>
         <source>Error data typed in required fields.
 
 Passwords typed in both fields (&quot;New password&quot; and &quot;Retype new password&quot;) should be the same!</source>
@@ -92,10 +88,6 @@ Konfigurationsdatei geschrieben. Die alte Datei wird überschrieben</translation
     <message>
         <source>Register user</source>
         <translation>Registriere neuen Benutzer</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
     </message>
     <message>
         <source>Please fill out all fields</source>
@@ -144,6 +136,10 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
     <message>
         <source>An error has occured while registration. Please try again later.</source>
         <translation>Ein Fehler ist während der Registrierung aufgetreten. Bitte versuchen Sie es später noch einmal.</translation>
+    </message>
+    <message>
+        <source>Email address you have entered is not valid</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -194,10 +190,6 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
     <message>
         <source>Please fill out all fields</source>
         <translation>Bitte alle Felder ausfüllen</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
     </message>
     <message>
         <source>No user</source>

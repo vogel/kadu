@@ -1,55 +1,5 @@
 <!DOCTYPE TS><TS>
 <context>
-    <name>@default</name>
-    <message>
-        <source>History</source>
-        <translation>Cronologia</translation>
-    </message>
-    <message>
-        <source>Count:</source>
-        <translation>Quantità:</translation>
-    </message>
-    <message>
-        <source>Message citation in chat window</source>
-        <translation>Citazione messaggi nella finestra chat</translation>
-    </message>
-    <message>
-        <source>Don&apos;t cite messages older than:</source>
-        <translation>Non visualizza messagi più vecchi di:</translation>
-    </message>
-    <message>
-        <source>Log messages</source>
-        <translation>Conserva messaggi</translation>
-    </message>
-    <message>
-        <source>Don&apos;t show status changes</source>
-        <translation>Non visualizza cambiamenti dello status</translation>
-    </message>
-    <message>
-        <source>Don&apos;t save status changes</source>
-        <translation>Non memorizzi cambiamenti di status</translation>
-    </message>
-    <message>
-        <source>View history</source>
-        <translation>Visualizza cronologia</translation>
-    </message>
-    <message>
-        <source>Show emoticons in history</source>
-        <translation>Visualizza emoticons nello storico</translation>
-    </message>
-    <message>
-        <source>Clear history</source>
-        <translation>Cancella Cronologia</translation>
-    </message>
-</context>
-<context>
-    <name>HistoryModule</name>
-    <message>
-        <source>Show history</source>
-        <translation>Mostra cronologia</translation>
-    </message>
-</context>
-<context>
     <name>HistoryDialog</name>
     <message>
         <source>History</source>
@@ -86,6 +36,54 @@
     <message>
         <source>Uins</source>
         <translation>Numero GG</translation>
+    </message>
+    <message>
+        <source>Show status changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>HistoryManager</name>
+    <message>
+        <source>Clear history?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>HistoryModule</name>
+    <message>
+        <source>Show history</source>
+        <translation>Mostra cronologia</translation>
+    </message>
+    <message>
+        <source>History</source>
+        <translation type="unfinished">Cronologia</translation>
+    </message>
+    <message>
+        <source>Clear history</source>
+        <translation type="unfinished">Cancella Cronologia</translation>
+    </message>
+    <message>
+        <source>%1 day(s) %2 hour(s)</source>
+        <translation type="unfinished">%1 giorno(i) %2 ora(e)</translation>
+    </message>
+    <message>
+        <source>The following users were deleted:
+%0
+Do you want to remove history as well?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -157,13 +155,6 @@
     <message>
         <source>&amp;Cancel</source>
         <translation>&amp;Annulla</translation>
-    </message>
-</context>
-<context>
-    <name>HistorySlots</name>
-    <message>
-        <source>%1 day(s) %2 hour(s)</source>
-        <translation>%1 giorno(i) %2 ora(e)</translation>
     </message>
 </context>
 </TS>

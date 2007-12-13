@@ -1,70 +1,13 @@
 <!DOCTYPE TS><TS>
 <context>
-    <name>@default</name>
-    <message>
-        <source>Send SMS</source>
-        <translation>Envoi le SMS</translation>
-    </message>
-    <message>
-        <source>SMS</source>
-        <translation>SMS</translation>
-    </message>
-    <message>
-        <source>SMS options</source>
-        <translation>Options SMS</translation>
-    </message>
-    <message>
-        <source>Use built-in SMS application</source>
-        <translation>Utilise l&apos;appplication SMS contenu dans le programme</translation>
-    </message>
-    <message>
-        <source>Custom SMS application</source>
-        <translation>Application SMS utilisateur</translation>
-    </message>
-    <message>
-        <source>SMS custom string</source>
-        <translation>Chaîne de caractères par default  de SMS</translation>
-    </message>
-    <message>
-        <source>Check this box if your sms application doesn&apos;t understand arguments: number &quot;message&quot;
-Arguments should be separated with spaces. %n argument is converted to number, %m to message</source>
-        <translation>Veuillez controler ce cadre si votre application de SMS ne comprend pas les arguments: numéro &quot;message&quot;
-Les arguments doivent être separés par l&apos;espace.%n argument est converti en nombres,%m en message</translation>
-    </message>
-    <message>
-        <source>Gateways priority</source>
-        <translation>Portails prioritaires</translation>
-    </message>
-    <message>
-        <source>Up</source>
-        <translation>Deplace en haut</translation>
-    </message>
-    <message>
-        <source>Down</source>
-        <translation>Deplace en bâs</translation>
-    </message>
-    <message>
-        <source>SMS Nick</source>
-        <translation>SMS Pseudo </translation>
-    </message>
-</context>
-<context>
     <name>Sms</name>
     <message>
         <source>Recipient</source>
         <translation>Destinataire</translation>
     </message>
     <message>
-        <source>Send</source>
-        <translation>Envoie</translation>
-    </message>
-    <message>
         <source>Send SMS</source>
         <translation>Envoie SMS</translation>
-    </message>
-    <message>
-        <source>SMS error</source>
-        <translation>Erreur SMS</translation>
     </message>
     <message>
         <source>Sms application was not specified. Visit the configuration section</source>
@@ -76,16 +19,8 @@ Les arguments doivent être separés par l&apos;espace.%n argument est converti 
 est fonctionnel</translation>
     </message>
     <message>
-        <source>SMS sent</source>
-        <translation>SMS envoyé</translation>
-    </message>
-    <message>
         <source>The process exited normally. The SMS should be on its way</source>
         <translation>Processus terminé avec success. SMS est en route</translation>
-    </message>
-    <message>
-        <source>SMS not sent</source>
-        <translation>SMS n&apos;a pas été envoyé</translation>
     </message>
     <message>
         <source>The process exited abnormally. The SMS may not be sent</source>
@@ -109,11 +44,26 @@ Do you want to send next message?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Yes</source>
+        <source>&amp;Send</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SmsConfigurationUiHandler</name>
+    <message>
+        <source>Send SMS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>No</source>
+        <source>Up</source>
+        <translation type="unfinished">Deplace en haut</translation>
+    </message>
+    <message>
+        <source>Down</source>
+        <translation type="unfinished">Deplace en bâs</translation>
+    </message>
+    <message>
+        <source>Gateways priorites</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -152,13 +102,6 @@ Do you want to send next message?</source>
     <message>
         <source>Signature can&apos;t be empty</source>
         <translation>Le champ de la signature ne doit pas être vide</translation>
-    </message>
-</context>
-<context>
-    <name>SmsSlots</name>
-    <message>
-        <source>Send SMS</source>
-        <translation>Envoie SMS</translation>
     </message>
 </context>
 </TS>
