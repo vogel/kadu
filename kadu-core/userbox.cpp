@@ -492,11 +492,11 @@ UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
 
 	VisibleUsers->addUsers(group);
 
-	addCompareFunction("Status", tr("Compares statuses"), compareStatus);
+	addCompareFunction("Status", tr("Statuses"), compareStatus);
 	if (brokenStringCompare)
-		addCompareFunction("AltNick", tr("Compares nicks (\"altnicks\") case insensitive"), compareAltNickCaseInsensitive);
+		addCompareFunction("AltNick", tr("Nicks, case insensitive"), compareAltNickCaseInsensitive);
 	else
-		addCompareFunction("AltNick", tr("Compares nicks (\"altnicks\")"), compareAltNick);
+		addCompareFunction("AltNick", tr("Nicks"), compareAltNick);
 
 	if (!userboxmenu)
 		userboxmenu = new UserBoxMenu(this);
