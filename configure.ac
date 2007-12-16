@@ -330,7 +330,8 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 			echo -e "update-translations:" >> modules/$mod/Makefile && \
 			if test -d "modules/$mod/translations" ; then \
 				for i in modules/$mod/translations/*.ts; do \
-					echo -e "\tlupdate ${MODULE_SOURCES} -ts translations/`basename $i`" >> modules/$mod/Makefile; \
+					echo -e "\tsaxon8 configuration/$mod.ui ../../translations/configuration-ui.xsl > .configuration-ui-translations.cpp" >> modules/$mod/Makefile; \
+					echo -e "\tlupdate ${MODULE_SOURCES} .configuration-ui-translations.cpp -ts translations/`basename $i`" >> modules/$mod/Makefile; \
 				done; \
 			fi && \
 

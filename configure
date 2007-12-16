@@ -4909,8 +4909,8 @@ sed 's/^/| /' conftest.$ac_ext >&5
 
 			{ echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6; }
-			{ { echo "$as_me:$LINENO: error: Your system is not supporting pthreads!" >&5
-echo "$as_me: error: Your system is not supporting pthreads!" >&2;}
+			{ { echo "$as_me:$LINENO: error: Your system does not support pthreads!" >&5
+echo "$as_me: error: Your system does not support pthreads!" >&2;}
    { (exit 1); exit 1; }; }
 
 fi
@@ -10449,7 +10449,8 @@ echo "$as_me: error: $mod download failed!" >&2;}
 			echo -e "update-translations:" >> modules/$mod/Makefile && \
 			if test -d "modules/$mod/translations" ; then \
 				for i in modules/$mod/translations/*.ts; do \
-					echo -e "\tlupdate ${MODULE_SOURCES} -ts translations/`basename $i`" >> modules/$mod/Makefile; \
+					echo -e "\tsaxon8 configuration/$mod.ui ../../translations/configuration-ui.xsl > .configuration-ui-translations.cpp" >> modules/$mod/Makefile; \
+					echo -e "\tlupdate ${MODULE_SOURCES} .configuration-ui-translations.cpp -ts translations/`basename $i`" >> modules/$mod/Makefile; \
 				done; \
 			fi && \
 
