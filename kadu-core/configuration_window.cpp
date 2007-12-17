@@ -238,7 +238,7 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 	: Name(name), currentSection(0)
 {
 	setWFlags(getWFlags() | Qt::WDestructiveClose);
-	setCaption(tr(caption));
+	setCaption(caption);
 
 	QHBox *center = new QHBox(this);
 	center->setMargin(10);

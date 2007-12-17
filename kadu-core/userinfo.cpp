@@ -375,7 +375,7 @@ bool UserInfo::acceptableGroupName(const QString &groupName)
 	}
 	if (groupName == GroupsManager::tr("All") || groups_manager->groupExists(groupName))
 	{
-		MessageBox::msg(tr("This group already exists!"), true, "Warning");
+		MessageBox::msg(tr("This group already exists!"), true, "Warning", this);
 		kdebugf2();
 		return false;
 	}

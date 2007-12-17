@@ -262,13 +262,21 @@ void ModulesDialog::getInfo()
 		return;
 	}
 
-	l_moduleinfo->setText(tr("<b>Module: </b>") + lv_modules->selectedItem()->text(0) +
-				tr("<br/><b>Depends on: </b>") + info.depends.join(", ") +
-				tr("<br/><b>Conflicts with: </b>") + info.conflicts.join(", ") +
-				tr("<br/><b>Provides: </b>") + info.provides.join(", ") +
-				tr("<br/><b>Author: </b>") + info.author +
-				tr("<br/><b>Version: </b>") + info.version +
-				tr("<br/><b>Description: </b>") + info.description);
+	l_moduleinfo->setText(
+		tr("<b>Module: </b>%1"
+			"<br/><b>Depends on: </b>%2"
+			"<br/><b>Conflicts with: </b>%3"
+			"<br/><b>Provides: </b>%4"
+			"<br/><b>Author: </b>%5"
+			"<br/><b>Version: </b>%6"
+			"<br/><b>Description: </b>%7")
+			.arg(lv_modules->selectedItem()->text(0))
+			.arg(info.depends.join(", "))
+			.arg(info.conflicts.join(", "))
+			.arg(info.provides.join(", "))
+			.arg(info.author)
+			.arg(info.version)
+			.arg(info.description);
 	layoutHelper->textChanged(l_moduleinfo);
 	kdebugf2();
 }

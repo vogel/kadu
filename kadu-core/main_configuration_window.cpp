@@ -61,7 +61,7 @@ void MainConfigurationWindow::instanceCreated()
 }
 
 MainConfigurationWindow::MainConfigurationWindow()
-	: ConfigurationWindow("main", "Kadu configuration"), lookChatAdvanced(0)
+	: ConfigurationWindow("main", tr("Kadu configuration")), lookChatAdvanced(0)
 {
 	appendUiFile(dataPath("kadu/configuration/dialog.ui"));
 
@@ -536,7 +536,7 @@ void MainConfigurationWindow::showLookChatAdvanced()
 {
 	if (!lookChatAdvanced)
 	{
-		lookChatAdvanced = new ConfigurationWindow("dialog-look-chat-advanced", "Advenced chat's look configuration");
+		lookChatAdvanced = new ConfigurationWindow("dialog-look-chat-advanced", tr("Advenced chat's look configuration"));
 		lookChatAdvanced->appendUiFile(dataPath("kadu/configuration/dialog-look-chat-advanced.ui"));
 
 		connect(lookChatAdvanced->widgetById("removeServerTime"), SIGNAL(toggled(bool)), lookChatAdvanced->widgetById("maxTimeDifference"), SLOT(setEnabled(bool)));
