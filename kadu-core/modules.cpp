@@ -276,7 +276,7 @@ void ModulesDialog::getInfo()
 			.arg(info.provides.join(", "))
 			.arg(info.author)
 			.arg(info.version)
-			.arg(info.description);
+			.arg(info.description));
 	layoutHelper->textChanged(l_moduleinfo);
 	kdebugf2();
 }

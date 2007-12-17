@@ -762,7 +762,7 @@ void UserBox::refresh()
 	verticalPositionTimer.start(0, true);
 
 	updateScrollBars();
-	refresh();
+//	QListBox::refresh();
 
 //	}
 //	gettimeofday(&t2, NULL);
