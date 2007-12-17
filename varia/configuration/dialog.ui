@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration-ui>
 	<section name="Kadu" icon="AboutIcon">
 		<tab name="Kadu">
@@ -304,7 +305,7 @@
 		<tab name="Chat">
 			<group-box name="Chat">
 				<hot-key-edit caption="New line / send message" config-section="ShortCuts" config-item="chat_newline" />
-				<hot-key-edit caption="Clear Chat" config-section="ShortCuts" config-item="chat_clear" />
+				<hot-key-edit caption="Clear chat" config-section="ShortCuts" config-item="chat_clear" />
 				<hot-key-edit caption="Close chat" config-section="ShortCuts" config-item="chat_close" />
 				<hot-key-edit caption="Bold text" config-section="ShortCuts" config-item="chat_bold" />
 				<hot-key-edit caption="Italic text" config-section="ShortCuts" config-item="chat_italic" />
