@@ -37,12 +37,12 @@ StatusChangedNotification::StatusChangedNotification(const QString &toStatus, co
 	QString syntax;
 
 	if (ule.status(protocolName).hasDescription())
-		syntax = "<b>%1</b> changed status to <i>%2</i><br/> <small>%3</small>";
+		syntax = tr("<b>%1</b> changed status to <i>%2</i><br/> <small>%3</small>");
 	else
-		syntax = "<b>%1</b> changed status to <i>%2</i>";
+		syntax = tr("<b>%1</b> changed status to <i>%2</i>");
 
 	setTitle(tr("Status changed"));
-	setText(narg(tr(syntax),
+	setText(narg(syntax,
 		ule.altNick(),
 		qApp->translate("@default", ule.status(protocolName).name().ascii()),
 		QStyleSheet::escape(ule.status(protocolName).description())
