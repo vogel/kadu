@@ -350,6 +350,12 @@ void ConfigComboBox::saveConfiguration()
 	if (section.isEmpty())
 		return;
 
+	int index = currentItem();
+	if (index < 0)
+		return;
+	if (index >= itemValues.size())
+		return;
+
 	config_file.writeEntry(section, item, itemValues[currentItem()]);
 }
 
