@@ -27,16 +27,16 @@ NewFileTransferNotification::NewFileTransferNotification(FileTransfer *ft, DccSo
 {
 	if (startType == FileTransfer::StartRestore)
 	{
-		addCallback("Continue", SLOT(callbackAccept()));
-		addCallback("Save file under new name", SLOT(callbackAcceptAsNew()));
-		addCallback("Ignore transfer", SLOT(callbackDiscard()));
+		addCallback(tr("Continue"), SLOT(callbackAccept()));
+		addCallback(tr("Save file under new name"), SLOT(callbackAcceptAsNew()));
+		addCallback(tr("Ignore transfer"), SLOT(callbackDiscard()));
 
 		Continue = true;
 	}
 	else
 	{
-		addCallback("Accept", SLOT(callbackAccept()));
-		addCallback("Reject", SLOT(callbackReject()));
+		addCallback(tr("Accept"), SLOT(callbackAccept()));
+		addCallback(tr("Reject"), SLOT(callbackReject()));
 
 		Continue = false;
 	}

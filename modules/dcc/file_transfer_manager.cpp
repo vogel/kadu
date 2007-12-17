@@ -380,7 +380,7 @@ void FileTransferManager::needFileAccept(DccSocket *socket)
 		newFileTransferNotification = new NewFileTransferNotification(ft, socket,
 			userlist->byID("Gadu", QString::number(socket->peerUin())), FileTransfer::StartRestore);
 
-		question = narg(tr("User %1 want to send you a file %2\nof size %3kB.\n"
+		question = narg(tr("User %1 wants to send you a file %2\nof size %3kB.\n"
 		                   "This is probably a next part of %4\n What should I do?"),
 			userlist->byID("Gadu", QString::number(socket->peerUin())).altNick(),
 			cp2unicode(socket->fileName()),
@@ -393,7 +393,7 @@ void FileTransferManager::needFileAccept(DccSocket *socket)
 		newFileTransferNotification = new NewFileTransferNotification(ft, socket,
 			userlist->byID("Gadu", QString::number(socket->peerUin())), FileTransfer::StartNew);
 
-		question = narg(tr("User %1 wants to send us a file %2\nof size %3kB. Accept transfer?"),
+		question = narg(tr("User %1 wants to send you a file %2\nof size %3kB. Accept transfer?"),
 			userlist->byID("Gadu", QString::number(socket->peerUin())).altNick(),
 			cp2unicode(socket->fileName()),
 			fileSize
