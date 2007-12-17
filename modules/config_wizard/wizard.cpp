@@ -397,7 +397,7 @@ void Wizard::createGGAccountPage()
 		"This wizard will help you to configure the basic settings of Kadu. "
 		"If you are experienced Kadu user you may omit the wizard by clicking Cancel.</p>"
 		"<p>Please enter your account data. If you don't have one, you can create new here.</p>"
-		"<p>E-mail address is only needed when you want to recover lost password to account</p>"), false);
+		"<p>E-mail address is needed when you want to recover lost password to account</p>"), false);
 
 	kdebugf2();
 }
