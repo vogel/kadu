@@ -286,6 +286,20 @@ void ToolBar::contextMenuEvent(QContextMenuEvent* e)
 	kdebugf2();
 }
 
+void ToolBar::show()
+{
+	 // very lame, but i don't have better idea
+	FOREACH(toolBarAction, ToolBarActions)
+		if ((*toolBarAction).button)
+		{
+			delete (*toolBarAction).button;
+			(*toolBarAction).button = 0;
+		}
+
+	QToolBar::show();
+	QTimer::singleShot(0, this, SLOT(updateButtons()));
+}
+
 void ToolBar::writeToConfig(QDomElement parent_element)
 {
 	kdebugf();
@@ -388,6 +402,7 @@ void ToolBar::updateButtons()
 void ToolBar::loadFromConfig(QDomElement toolbar_element)
 {
 	kdebugf();
+
 	setOffset(toolbar_element.attribute("offset").toInt());
 
 	ToolBarActions.clear();
@@ -456,9 +471,7 @@ void ToolBar::loadDefault()
 	}
 
 	// TODO: why calling updateButtons does not work?
-	QTimer *timer = new QTimer();
-	timer->singleShot(0, this, SLOT(updateButtons()));
-	timer->deleteLater();
+	QTimer::singleShot(0, this, SLOT(updateButtons()));
 
 	kdebugf2();
 }

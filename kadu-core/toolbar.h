@@ -92,6 +92,8 @@ public:
 	**/
 	~ToolBar();
 
+	virtual void show();
+
 	void addAction(const QString &actionName, bool showLabel, ToolButton *button = 0, bool before = true);
 	void removeAction(const QString &actionName);
 	void moveAction(const QString &actionName, ToolButton *button);
