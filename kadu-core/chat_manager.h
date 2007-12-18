@@ -147,10 +147,9 @@ class ChatManager : public QObject, ConfigurationAwareObject
 			\param initialProtocol protokó³ pocz±tkowy
 			\param users lista u¿ytkowników identyfikuj±cych okno
 			\param time time of pending message that created a chat or 0 if not applicable
-			\param message komunikat dodany do okna
 			\return zwracany jest numer otwartego okna
 		**/
-		int openChatWidget(Protocol *initialProtocol, const UserListElements &users, QValueList<ChatMessage *> *messages = 0);
+		int openChatWidget(Protocol *initialProtocol, const UserListElements &users);
 
 		/**
 			\fn void openPendingMsgs(UserListElements users)

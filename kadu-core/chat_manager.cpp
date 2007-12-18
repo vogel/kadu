@@ -500,7 +500,7 @@ ChatWidget* ChatManager::findChatWidget(UserListElements users) const
 	return NULL;
 }
 
-int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElements &users, QValueList<ChatMessage *> *messages)
+int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElements &users)
 {
 	kdebugf();
 
@@ -544,8 +544,6 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 	userNames.sort();
 
 	ChatWidget *chat = new ChatWidget(initialProtocol, users);
-	if (messages)
-		chat->appendMessages(*messages, true);
 
 	bool handled = false;
 	emit handleNewChatWidget(chat, handled);
@@ -620,11 +618,14 @@ void ChatManager::openPendingMsgs(UserListElements users)
 
 	if (messages.size())
 	{
-		openChatWidget(gadu, users, &messages);
+		// TODO: Lame API
+		int i = openChatWidget(gadu, users);
+		if (ChatWidgets[i]->countMessages() == 0)
+			ChatWidgets[i]->appendMessages(messages);
 		UserBox::refreshAllLater();
 	}
 	else
-		openChatWidget(gadu, users, 0);
+		openChatWidget(gadu, users);
 
 	kdebugf2();
 }
