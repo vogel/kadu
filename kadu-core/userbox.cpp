@@ -777,7 +777,7 @@ void UserBox::resetVerticalPosition()
 	verticalScrollBar()->setValue(lastVerticalPosition);
 
 	updateScrollBars();
-	refresh();
+// 	refresh();
 }
 
 void UserBox::rememberVerticalPosition()
