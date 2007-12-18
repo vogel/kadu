@@ -1,1 +1,0 @@
-<table><tr><td><img width="50" height="63" src="{${HOME}/fotki/%u.jpg ${HOME}/fotki/%u.jpg}{~${HOME}/fotki/%u.jpg ${DATA_PATH}kadu/modules/data/config_wizard/joi/brak.jpg}"> </td><td> <div align="left"> [%u][<br>%a][<br>%e][<br>tel.: %m] [<br>IP: %i][<br>d: %v] [<br>%oNie ma cię na liście] </div> </td> </tr> </table> <hr> %s [<br>%d]
