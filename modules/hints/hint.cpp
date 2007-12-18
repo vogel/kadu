@@ -166,6 +166,8 @@ void Hint::updateText()
 	}
 
 	label->setText(" " + text.replace(" ", "&nbsp;").replace("\n", "<br />"));
+
+	emit updated(this);
 }
 
 void Hint::resetTimeout()

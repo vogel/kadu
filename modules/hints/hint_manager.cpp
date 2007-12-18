@@ -134,6 +134,11 @@ void HintManager::maximumWidthChanged(int value)
 		minimumWidth->setValue(value);
 }
 
+void HintManager::hintUpdated()
+{
+	setHint();
+}
+
 void HintManager::configurationUpdated()
 {
 	setHint();
@@ -370,6 +375,7 @@ Hint *HintManager::addHint(Notification *notification)
 	connect(hint, SIGNAL(rightButtonClicked(Hint *)), this, SLOT(rightButtonSlot(Hint *)));
 	connect(hint, SIGNAL(midButtonClicked(Hint *)), this, SLOT(midButtonSlot(Hint *)));
 	connect(hint, SIGNAL(closing(Hint *)), this, SLOT(deleteHintAndUpdate(Hint *)));
+	connect(hint, SIGNAL(updated(Hint *)), this, SLOT(hintUpdated()));
 	setHint();
 
 	if (!hint_timer->isActive())

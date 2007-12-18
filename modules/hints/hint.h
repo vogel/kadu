@@ -22,67 +22,67 @@ class Hint : public QWidget, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	private:
-		QVBoxLayout *vbox;
+	QVBoxLayout *vbox;
 
-		QHBoxLayout *labels;
-		QHBoxLayout *callbacksBox;
+	QHBoxLayout *labels;
+	QHBoxLayout *callbacksBox;
 
-		QLabel *icon;
-		QLabel *label;
-		QColor bcolor; //kolor t³a
-		unsigned int secs;
-		unsigned int startSecs;
+	QLabel *icon;
+	QLabel *label;
+	QColor bcolor; //kolor t³a
+	unsigned int secs;
+	unsigned int startSecs;
 
-		Notification *notification;
-		QStringList details;
+	Notification *notification;
+	QStringList details;
 
-		bool haveCallbacks;
+	bool haveCallbacks;
 
-		void createLabels(const QPixmap &pixmap);
-		void updateText();
+	void createLabels(const QPixmap &pixmap);
+	void updateText();
 
-		void resetTimeout();
+	void resetTimeout();
 
-	private slots:
-		void notificationClosed();
+private slots:
+	void notificationClosed();
 
-	protected:
-		virtual void mouseReleaseEvent(QMouseEvent * event);
-		virtual void enterEvent(QEvent *event);
-		virtual void leaveEvent(QEvent *event);
+protected:
+	virtual void mouseReleaseEvent(QMouseEvent * event);
+	virtual void enterEvent(QEvent *event);
+	virtual void leaveEvent(QEvent *event);
 
-		virtual void configurationUpdated();
+	virtual void configurationUpdated();
 
-	public:
-		Hint(QWidget *parent, Notification *notification);
-		virtual ~Hint();
+public:
+	Hint(QWidget *parent, Notification *notification);
+	virtual ~Hint();
 
-		void getData(QString &text, QPixmap &pixmap, unsigned int &timeout, QFont &font, QColor &fgcolor, QColor &bgcolor);
-		bool requireManualClosing();
-		bool isDeprecated();
+	void getData(QString &text, QPixmap &pixmap, unsigned int &timeout, QFont &font, QColor &fgcolor, QColor &bgcolor);
+	bool requireManualClosing();
+	bool isDeprecated();
 
-		void addDetail(const QString &detail);
+	void addDetail(const QString &detail);
 
-		bool hasUsers() const;
-		const UserListElements & getUsers() const;
+	bool hasUsers() const;
+	const UserListElements & getUsers() const;
 
-	public slots:
-		/**
-			minê³a sekunda, zmniejsza licznik pozosta³ych sekund,
-			zwraca true je¿eli jeszcze pozosta³ czas
-			false, gdy czas siê skoñczy³
-		**/
-		void nextSecond();
+public slots:
+	/**
+		minê³a sekunda, zmniejsza licznik pozosta³ych sekund,
+		zwraca true je¿eli jeszcze pozosta³ czas
+		false, gdy czas siê skoñczy³
+	**/
+	void nextSecond();
 
-		void acceptNotification();
-		void discardNotification();
+	void acceptNotification();
+	void discardNotification();
 
-	signals:
-		void leftButtonClicked(Hint *hint);
-		void rightButtonClicked(Hint *hint);
-		void midButtonClicked(Hint *hint);
-		void closing(Hint *hint);
+signals:
+	void leftButtonClicked(Hint *hint);
+	void rightButtonClicked(Hint *hint);
+	void midButtonClicked(Hint *hint);
+	void closing(Hint *hint);
+	void updated(Hint *hint);
 };
 
 #endif

@@ -114,6 +114,8 @@ private slots:
 	void minimumWidthChanged(int value);
 	void maximumWidthChanged(int value);
 
+	void hintUpdated();
+
 protected:
 	virtual void configurationUpdated();
 
