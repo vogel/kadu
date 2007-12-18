@@ -158,25 +158,26 @@ void HintManager::setHint()
 	QPoint newPosition;
 	QPoint trayPosition;
 
+	frame->adjustSize();
 	QSize preferredSize = frame->sizeHint();
 	QSize desktopSize = QApplication::desktop()->size();
 
 	emit searchingForTrayPosition(trayPosition);
 	if (config_file.readBoolEntry("Hints", "UseUserPosition") || trayPosition.isNull())
 	{
-		newPosition=QPoint(config_file.readNumEntry("Hints","HintsPositionX"),config_file.readNumEntry("Hints","HintsPositionY"));
+		newPosition = QPoint(config_file.readNumEntry("Hints", "HintsPositionX"), config_file.readNumEntry("Hints", "HintsPositionY"));
 
 //		kdebugm(KDEBUG_INFO, "%d %d %d\n", config_file.readNumEntry("Hints", "Corner"), preferredSize.width(), preferredSize.height());
 		switch(config_file.readNumEntry("Hints", "Corner"))
 		{
 			case 1: // "TopRight"
-				newPosition-=QPoint(preferredSize.width(), 0);
+				newPosition -= QPoint(preferredSize.width(), 0);
 				break;
 			case 2: // "BottomLeft"
-				newPosition-=QPoint(0, preferredSize.height());
+				newPosition -= QPoint(0, preferredSize.height());
 				break;
 			case 3: // "BottomRight"
-				newPosition-=QPoint(preferredSize.width(), preferredSize.height());
+				newPosition -= QPoint(preferredSize.width(), preferredSize.height());
 				break;
 			case 0: // "TopLeft"
 				break;
