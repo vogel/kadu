@@ -23,6 +23,9 @@ ChatMessagesView::ChatMessagesView(QWidget *parent, const char *name) : KaduText
 	setMargin(ParagraphSeparator);
 	setMinimumSize(QSize(100,100));
 
+	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
+		this, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
+
 	configurationUpdated();
 
 	bodyformat = new QMimeSourceFactory();
