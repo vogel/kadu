@@ -1136,6 +1136,11 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 
 				gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() offset=%d, size=%d\n", h->offset, h->file_info.size);
 
+				if (h->offset >= h->file_info.size) {
+					e->type = GG_EVENT_DCC_DONE;
+					return e;
+				}
+
 				/* koniec pliku? */
 				if (h->file_info.size == 0) {
 					gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() read() reached eof on empty file\n");
@@ -1219,6 +1224,11 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 
 			case GG_STATE_GETTING_FILE:
 				gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() GG_STATE_GETTING_FILE\n");
+
+				if (h->offset >= h->file_info.size) {
+					e->type = GG_EVENT_DCC_DONE;
+					return e;
+				}
 
 				if ((utmp = h->chunk_size - h->chunk_offset) > sizeof(buf))
 					utmp = sizeof(buf);
