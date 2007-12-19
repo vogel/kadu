@@ -134,14 +134,14 @@ class Protocol : public QObject
 			@param users lista u¿ytkowników, do których wysy³amy wiadomo¶æ
 			@param mesg wiadomo¶æ, któr± wysy³amy - kodowanie zmieniane wewn±trz
 		**/
-		virtual /*int*/void sendMessage(UserListElements users, const QString &mesg) = 0;
+		virtual QString sendMessage(UserListElements users, const QString &mesg) = 0;
 		/**
 			Wysy³a wiadomo¶æ bez formatowania tekstu. Zwracany jest numer sekwencyjny wiadomo¶ci, je¶li
 			przypadkiem by¶my chcieli ¶ledziæ jej potwierdzenie.
 			@param users lista u¿ytkowników, do których wysy³amy wiadomo¶æ
 			@param mesg wiadomo¶æ, któr± wysy³amy - kodowanie zmieniane wewn±trz
 		**/
-		/*int*/void sendMessage(UserListElement user, const QString &mesg);
+		QString sendMessage(UserListElement user, const QString &mesg);
 
 
 	signals:

@@ -25,7 +25,7 @@ const QDateTime &Protocol::connectionTime() const
 	return ConnectionTime;
 }
 
-void Protocol::sendMessage(UserListElement user, const QString &mesg)
+QString Protocol::sendMessage(UserListElement user, const QString &mesg)
 {
 	UserListElements users(user);
 

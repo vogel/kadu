@@ -1198,7 +1198,7 @@ void GaduProtocol::setupProxy()
 	kdebugf2();
 }
 
-void GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
+QString GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 {
 	kdebugf();
 
@@ -1226,7 +1226,7 @@ void GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 	{
 		MessageBox::msg(tr("Message too long (%1>=%2)").arg(mesg.length()).arg(2000), false, "Warning");
 		kdebugmf(KDEBUG_FUNCTION_END, "end: message too long\n");
-		return;
+		return myLastMessage;
 	}
 
 	QString msg = unicode2cp(msgtmp);
@@ -1235,14 +1235,14 @@ void GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 	if (stop)
 	{
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filter stopped processing\n");
-		return;
+		return myLastMessage;
 	}
 
 	if (msg.length() >= 2000)
 	{
 		MessageBox::msg(tr("Filtered message too long (%1>=%2)").arg(msg.length()).arg(2000), false, "Warning");
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filtered message too long\n");
-		return;
+		return myLastMessage;
 	}
 
 	CONST_FOREACH(user, users)

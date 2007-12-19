@@ -695,7 +695,7 @@ void ChatWidget::sendMessage()
 	myLastMessage.replace("<p>", "");
 	myLastMessage.replace("<br />", "\n");
 
-	currentProtocol()->sendMessage(Users->toUserListElements(), myLastMessage);
+	myLastMessage = currentProtocol()->sendMessage(Users->toUserListElements(), myLastMessage);
 
 	if (config_file.readBoolEntry("Chat", "MessageAcks"))
 		connectAcknowledgeSlots();

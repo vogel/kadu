@@ -720,7 +720,7 @@ class GaduProtocol : public Protocol
 			@param users lista u¿ytkowników, do których wysy³amy wiadomo¶æ
 			@param mesg wiadomo¶æ, któr± wysy³amy - kodowanie zmieniane wewn±trz
 		**/
-		/*int*/void sendMessage(UserListElements users, const QString &mesg);
+		QString sendMessage(UserListElements users, const QString &mesg);
 		/**
 			Wysy³a pro¶bê o przys³anie obrazka z danymi parametrami.
 
