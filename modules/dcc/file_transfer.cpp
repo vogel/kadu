@@ -268,7 +268,7 @@ void FileTransfer::setVersion()
 	const UserListElement &ule = userlist->byID("Gadu", QString::number(Contact));
 	int version = ule.protocolData("Gadu", "Version").toUInt() & 0x0000ffff;
 
-	if (version >= 0x2a)
+	if (version >= 0x29)
 		Version = Dcc7;
 	else
 		Version = Dcc6;
@@ -336,7 +336,10 @@ void FileTransfer::start(StartType startType)
 		QString message(
 			tr("Hello. I am an automatic file-transfer reminder. Could you please send me a file named %1?"));
 		if (!gadu->currentStatus().isOffline())
-			gadu->sendMessage(recv, message.arg(QUrl(FileName).fileName()));
+		{
+			QString messageToSend = message.arg(QUrl(FileName).fileName());
+			gadu->sendMessage(recv, messageToSend);
+		}
 		if (gadu->seqNum() == -1)
 			MessageBox::msg(tr("Error: message was not sent"), false, "Warning");
 	}
