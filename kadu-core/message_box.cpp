@@ -33,6 +33,7 @@ MessageBox::MessageBox(const QString& message, int components, bool modal, const
 	vbox->setSpacing(10);
 
 	QHBoxLayout* hboxlabels = new QHBoxLayout(vbox);
+	hboxlabels->addStretch(1);
 
 	if (!iconName.isEmpty())
 	{
@@ -46,6 +47,7 @@ MessageBox::MessageBox(const QString& message, int components, bool modal, const
 		label->setText(message);
 
 	hboxlabels->addWidget(label, 0, AlignCenter);
+	hboxlabels->addStretch(1);
 
 	QHBoxLayout* hboxbuttons = new QHBoxLayout(vbox);
 	QHBox* buttons = new QHBox(this);
