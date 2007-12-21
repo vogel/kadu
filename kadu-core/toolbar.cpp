@@ -380,7 +380,7 @@ void ToolBar::updateButtons()
 
 		if (KaduActions.contains(actionName))
 		{
-			if (!dockarea && dockarea->supportsAction(KaduActions[actionName]->actionType()))
+			if (!dockarea || dockarea->supportsAction(KaduActions[actionName]->actionType()))
 			{
 				(*toolBarAction).button = addButton(KaduActions[actionName], (*toolBarAction).showLabel, lastButton);
 				lastButton = (*toolBarAction).button;
