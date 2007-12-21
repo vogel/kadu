@@ -355,6 +355,7 @@ void ToolBar::actionUnloaded(const QString &actionName)
 void ToolBar::updateButtons()
 {
 	ToolButton *lastButton = 0;
+	DockArea *dockarea = (DockArea *)area();
 
 	FOREACH(toolBarAction, ToolBarActions)
 	{
@@ -379,7 +380,7 @@ void ToolBar::updateButtons()
 
 		if (KaduActions.contains(actionName))
 		{
-			if (dockArea()->supportsAction(KaduActions[actionName]->actionType()))
+			if (!dockarea && dockarea->supportsAction(KaduActions[actionName]->actionType()))
 			{
 				(*toolBarAction).button = addButton(KaduActions[actionName], (*toolBarAction).showLabel, lastButton);
 				lastButton = (*toolBarAction).button;
@@ -394,7 +395,6 @@ void ToolBar::updateButtons()
 		}
 	}
 
-	DockArea *dockarea = (DockArea *)area();
 	if (dockarea)
 		dockarea->writeToConfig();
 }
