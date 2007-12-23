@@ -102,10 +102,9 @@ void ChatMessage::unregisterParserTags()
 }
 
 ChatMessage::ChatMessage(const UserListElement &ule, const QString &unformattedMessage, ChatMessageType type, QDateTime date, QDateTime sdate)
-	: Ule(ule), Date(date), Type(type)
+	: Ule(ule), Date(date), SDate(sdate), Type(type)
 {
 	receivedDate = printDateTime(date);
-	sentDate = printDateTime(sdate);
 
 	switch (type)
 	{
@@ -171,4 +170,12 @@ QString ChatMessage::convertCharacters(QString edit, const QColor &bgcolor, Emot
 void ChatMessage::replaceLoadingImages(UinType sender, uint32_t size, uint32_t crc32)
 {
 	unformattedMessage = gadu_images_manager.replaceLoadingImages(unformattedMessage, sender, size, crc32);
+}
+
+void ChatMessage::setShowServerTime(bool noServerTime, int noServerTimeDiff)
+{
+	if (SDate.isValid() && (!noServerTime || (abs(Date.toTime_t()-SDate.toTime_t())) > noServerTimeDiff))
+		sentDate = printDateTime(SDate);
+	else
+		sentDate = QString::null;
 }

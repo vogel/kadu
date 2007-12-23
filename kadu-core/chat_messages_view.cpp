@@ -98,13 +98,16 @@ QString ChatMessagesView::formatMessage(ChatMessage *message, ChatMessage *after
 			format = ChatSyntaxWithoutHeader;
 		}
 
+		message->setShowServerTime(NoServerTime, NoServerTimeDiff);
 		message->setSeparatorSize(separatorSize);
+		
 		return KaduParser::parse(format, message->sender(), message);
 	}
 }
 
 void ChatMessagesView::repaintMessages()
 {
+	kdebugf();
 	viewport()->setUpdatesEnabled(false);
 
 	QString text;
@@ -121,7 +124,9 @@ void ChatMessagesView::repaintMessages()
 	if ((*message)->type() == TypeSystem)
 		text += KaduParser::parse(ChatSyntaxWithoutHeader, (*message)->sender(), *message);
 	else
+	{	(*message)->setShowServerTime(NoServerTime, NoServerTimeDiff);
 		text += KaduParser::parse(ChatSyntaxWithHeader, (*message)->sender(), *message);
+	}
 
 	prevMessage = message;
 	while (++message != end)
@@ -140,6 +145,7 @@ void ChatMessagesView::repaintMessages()
 
 	viewport()->setUpdatesEnabled(true);
 	viewport()->repaint();
+	kdebugf2();
 }
 
 void ChatMessagesView::updateBackgrounds()
@@ -257,6 +263,9 @@ void ChatMessagesView::configurationUpdated()
 		CfgHeaderSeparatorHeight = 0;
 		CfgNoHeaderInterval = 0;
 	}
+
+	NoServerTime = config_file.readBoolEntry("Look", "NoServerTime");
+	NoServerTimeDiff = config_file.readUnsignedNumEntry("Look", "NoServerTimeDiff");
 
 	setMargin(ParagraphSeparator);
 

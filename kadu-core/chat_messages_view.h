@@ -20,6 +20,9 @@ class ChatMessagesView : public KaduTextBrowser, ConfigurationAwareObject
 	unsigned int CfgNoHeaderInterval;
 	unsigned int ParagraphSeparator;
 
+	bool NoServerTime;
+	int NoServerTimeDiff;
+
 	QString ChatSyntaxWithHeader;
 	QString ChatSyntaxWithoutHeader;
 

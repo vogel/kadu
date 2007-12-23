@@ -41,6 +41,7 @@ class ChatMessage : public QObject
 	QString convertCharacters(QString text, const QColor &bgcolor, EmoticonsStyle style);
 	UserListElement Ule;
 	QDateTime Date;
+	QDateTime SDate;
 	int SeparatorSize;
 
 	ChatMessageType Type;
@@ -81,6 +82,8 @@ public:
 
 	void setSeparatorSize(int separatorSize) { SeparatorSize = separatorSize; }
 	int separatorSize() const { return SeparatorSize; }
+
+	void setShowServerTime(bool noServerTime, int noServerTimeDiff);
 };
 
 #endif
