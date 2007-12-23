@@ -173,6 +173,9 @@ void IconsManager::configurationUpdated()
 	icons_manager->refreshMenus();
 	kadu->changeAppearance();
 
+	// TODO: Make it standard
+	emit themeChanged();
+
 	kdebugf2();
 }
 

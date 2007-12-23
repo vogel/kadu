@@ -24,160 +24,162 @@ class KaduTabBar;
 class GroupsManager : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
-	public:
-		/**
-			\fn static void initModule()
-			inicjuje modu³ zarz±dcy grup
-		**/
-		static void initModule();
 
-		/**
-			\fn static void closeModule()
-			sprz±ta po module zarz±dcy grup
-		**/
-		static void closeModule();
+	GroupsManager();
+	~GroupsManager();
+	QMap<QString, UserGroup *> Groups;
+	KaduTabBar *GroupBar;
+	int lastId;
+	QString currentGroup;
+	bool showBlocked;
+	bool showBlocking;
+	bool showOffline;
+	bool showWithoutDescription;
+	bool showOnlineAndDescription;
+	QTimer refreshTimer;
 
-		/**
-			\fn UserGroup *group(const QString &name) const
-			zwraca grupê kontaktów o nazwie name
-			\param name nazwa grupy
-			\return grupa kontaktów
-		**/
-		UserGroup *group(const QString &name) const;
+private slots:
+	void userDataChanged(UserListElement elem, QString name, QVariant oldValue, QVariant currentValue, bool massively, bool last);
+	void userAddedToMainUserlist(UserListElement elem, bool massively, bool last);
+	void userRemovedFromMainUserlist(UserListElement elem, bool massively, bool last);
 
-		/**
-			\fn UserGroup *addGroup(const QString &name)
-			dodaje now± grupê kontaktów o nazwie name
-			\param name nazwa grupy
-			\return grupa kontaktów
-		**/
-		UserGroup *addGroup(const QString &name);
+	void userAdded(UserListElement elem, bool massively, bool last);
+	void userRemoved(UserListElement elem, bool massively, bool last);
 
-		/**
-			\fn void removeGroup(const QString &name)
-			usuwa grupê kontaktów o nazwie name
-			\param name nazwa grupy
-		**/
-		void removeGroup(const QString &name);
+	void tabSelected(int id);
+	void iconThemeChanged();
 
-		/**
-			\fn void setTabBar(KaduTabBar *bar)
-			ustawia pas zak³adek, na którym klasa bêdzie operowaæ oraz inicjuje
-			wewnêtrzne dane klasy
-			\param bar pas zak³adek, w którym bêdê umieszczane zak³adki grup
-		**/
-		void setTabBar(KaduTabBar *bar);
+protected:
+	virtual void configurationUpdated();
 
-		/**
-			\fn QStringList groups() const
-			\return lista grup
-		**/
-		QStringList groups() const;
+public:
+	/**
+		\fn static void initModule()
+		inicjuje modu³ zarz±dcy grup
+	**/
+	static void initModule();
 
-		/**
-			\fn bool groupExists(const QString &name)
-			\param name nazwa grupy
-			\return informacja czy grupa istnieje
-		**/
-		bool groupExists(const QString &name);
+	/**
+		\fn static void closeModule()
+		sprz±ta po module zarz±dcy grup
+	**/
+	static void closeModule();
 
-		/**
-			\fn QString currentGroupName() const
-			\return nazwa aktualnie wybranej grupy
-		**/
-		QString currentGroupName() const;
+	/**
+		\fn UserGroup *group(const QString &name) const
+		zwraca grupê kontaktów o nazwie name
+		\param name nazwa grupy
+		\return grupa kontaktów
+	**/
+	UserGroup *group(const QString &name) const;
 
-		/**
-			\fn void setIconForTab(const QString &name, bool showIcon)
-			ustawia lub usuwa ikonkê dla grupy o nazwie name
-			\param name nazwa grupy
-		**/
-		void setIconForTab(const QString &name);
+	/**
+		\fn UserGroup *addGroup(const QString &name)
+		dodaje now± grupê kontaktów o nazwie name
+		\param name nazwa grupy
+		\return grupa kontaktów
+	**/
+	UserGroup *addGroup(const QString &name);
 
-	protected:
-		virtual void configurationUpdated();
+	/**
+		\fn void removeGroup(const QString &name)
+		usuwa grupê kontaktów o nazwie name
+		\param name nazwa grupy
+	**/
+	void removeGroup(const QString &name);
 
-	public slots:
+	/**
+		\fn void setTabBar(KaduTabBar *bar)
+		ustawia pas zak³adek, na którym klasa bêdzie operowaæ oraz inicjuje
+		wewnêtrzne dane klasy
+		\param bar pas zak³adek, w którym bêdê umieszczane zak³adki grup
+	**/
+	void setTabBar(KaduTabBar *bar);
 
-		/**
-			\fn void setActiveGroup(const QString &name)
-			ustawia aktywn± grupê na name
-			\param name nazwa grupy
-		**/
-		void setActiveGroup(const QString& group);
+	/**
+		\fn QStringList groups() const
+		\return lista grup
+	**/
+	QStringList groups() const;
 
-		/**
-			\fn void refreshTabBar()
-			od¶wie¿a pasek zak³adek grup
-		**/
-		void refreshTabBar();
+	/**
+		\fn bool groupExists(const QString &name)
+		\param name nazwa grupy
+		\return informacja czy grupa istnieje
+	**/
+	bool groupExists(const QString &name);
 
-		/**
-			\fn void refreshTabBarLater()
-			od¶wie¿a pasek zak³adek grup, ale po zakoñczeniu bie¿acych operacji
-		**/
-		inline void refreshTabBarLater() { refreshTimer.start(0, true); }
+	/**
+		\fn QString currentGroupName() const
+		\return nazwa aktualnie wybranej grupy
+	**/
+	QString currentGroupName() const;
 
-		/**
-			\fn void changeDisplayingBlocking()
-			w³±cza lub wy³±cza wy¶wietlanie kontaktów blokuj±cych
-			w g³ównej li¶cie kontaktów w zale¿no¶ci od poprzedniego stanu
-		**/
-		void changeDisplayingBlocking();
+	/**
+		\fn void setIconForTab(const QString &name, bool showIcon)
+		ustawia lub usuwa ikonkê dla grupy o nazwie name
+		\param name nazwa grupy
+	**/
+	void setIconForTab(const QString &name);
 
-		/**
-			\fn void changeDisplayingBlocked()
-			w³±cza lub wy³±cza wy¶wietlanie kontaktów blokowanych
-			w g³ównej li¶cie kontaktów w zale¿no¶ci od poprzedniego stanu
-		**/
-		void changeDisplayingBlocked();
+public slots:
 
-		/**
-			\fn void changeDisplayingOffline()
-			w³±cza lub wy³±cza wy¶wietlanie kontaktów niedostêpnych
-			w g³ównej li¶cie kontaktów w zale¿no¶ci od poprzedniego stanu
-		**/
-		void changeDisplayingOffline();
+	/**
+		\fn void setActiveGroup(const QString &name)
+		ustawia aktywn± grupê na name
+		\param name nazwa grupy
+	**/
+	void setActiveGroup(const QString& group);
 
-		/**
-			\fn void changeDisplayingWithoutDescription()
-			w³±cza lub wy³±cza wy¶wietlanie kontaktów o statusach bez opisu
-			w g³ównej li¶cie kontaktów w zale¿no¶ci od poprzedniego stanu
-		**/
-		void changeDisplayingWithoutDescription();
+	/**
+		\fn void refreshTabBar()
+		od¶wie¿a pasek zak³adek grup
+	**/
+	void refreshTabBar();
 
-		/**
-			\fn void changeDisplayingOnlineAndDescription()
-			w³±cza lub wy³±cza wy¶wietlanie kontatków o statusach "dostêpny"
-			lub "zajêty" oraz kontatków z opisem
-		**/
-		void changeDisplayingOnlineAndDescription();
+	/**
+		\fn void refreshTabBarLater()
+		od¶wie¿a pasek zak³adek grup, ale po zakoñczeniu bie¿acych operacji
+	**/
+	inline void refreshTabBarLater() { refreshTimer.start(0, true); }
 
-	private slots:
-		void userDataChanged(UserListElement elem, QString name, QVariant oldValue,
-							QVariant currentValue, bool massively, bool last);
-		void userAddedToMainUserlist(UserListElement elem, bool massively, bool last);
-		void userRemovedFromMainUserlist(UserListElement elem, bool massively, bool last);
+	/**
+		\fn void changeDisplayingBlocking()
+		w³±cza lub wy³±cza wy¶wietlanie kontaktów blokuj±cych
+		w g³ównej li¶cie kontaktów w zale¿no¶ci od poprzedniego stanu
+	**/
+	void changeDisplayingBlocking();
 
-		void userAdded(UserListElement elem, bool massively, bool last);
-		void userRemoved(UserListElement elem, bool massively, bool last);
+	/**
+		\fn void changeDisplayingBlocked()
+		w³±cza lub wy³±cza wy¶wietlanie kontaktów blokowanych
+		w g³ównej li¶cie kontaktów w zale¿no¶ci od poprzedniego stanu
+	**/
+	void changeDisplayingBlocked();
 
-		void tabSelected(int id);
+	/**
+		\fn void changeDisplayingOffline()
+		w³±cza lub wy³±cza wy¶wietlanie kontaktów niedostêpnych
+		w g³ównej li¶cie kontaktów w zale¿no¶ci od poprzedniego stanu
+	**/
+	void changeDisplayingOffline();
 
-	private:
-		GroupsManager();
-		~GroupsManager();
-		QMap<QString, UserGroup *> Groups;
-		KaduTabBar *GroupBar;
-		int lastId;
-		QString currentGroup;
-		bool showBlocked;
-		bool showBlocking;
-		bool showOffline;
-		bool showWithoutDescription;
-		bool showOnlineAndDescription;
-		QTimer refreshTimer;
+	/**
+		\fn void changeDisplayingWithoutDescription()
+		w³±cza lub wy³±cza wy¶wietlanie kontaktów o statusach bez opisu
+		w g³ównej li¶cie kontaktów w zale¿no¶ci od poprzedniego stanu
+	**/
+	void changeDisplayingWithoutDescription();
+
+	/**
+		\fn void changeDisplayingOnlineAndDescription()
+		w³±cza lub wy³±cza wy¶wietlanie kontatków o statusach "dostêpny"
+		lub "zajêty" oraz kontatków z opisem
+	**/
+	void changeDisplayingOnlineAndDescription();
+
 };
+
 extern GroupsManager *groups_manager;
 
 /**

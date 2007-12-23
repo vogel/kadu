@@ -236,6 +236,10 @@ void GroupsManager::configurationUpdated()
 		changeDisplayingOffline();
 	if (config_file.readBoolEntry("General", "ShowWithoutDescription") != showWithoutDescription)
 		changeDisplayingWithoutDescription();
+}
+
+void GroupsManager::iconThemeChanged()
+{
 	if (GroupBar)
 		(GroupBar->tabAt(0))->setIconSet(icons_manager->loadIcon("PersonalInfo").xForm(QWMatrix().rotate(-90)));
 }
@@ -329,6 +333,7 @@ GroupsManager::GroupsManager() : QObject(0, "groups_manager"),
 			this, SLOT(userAddedToMainUserlist(UserListElement, bool, bool)));
 	connect(userlist, SIGNAL(userRemoved(UserListElement, bool, bool)),
 			this, SLOT(userRemovedFromMainUserlist(UserListElement, bool, bool)));
+	connect(icons_manager, SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 
 	kdebugf2();
 }
@@ -339,12 +344,15 @@ GroupsManager::~GroupsManager()
 
 	if (GroupBar)
 		config_file.writeEntry("Look", "CurrentGroupTab", GroupBar->currentTab());
+
+	disconnect(icons_manager, SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 	disconnect(userlist, SIGNAL(userRemoved(UserListElement, bool, bool)),
 			this, SLOT(userRemovedFromMainUserlist(UserListElement, bool, bool)));
 	disconnect(userlist, SIGNAL(userAdded(UserListElement, bool, bool)),
 			this, SLOT(userAddedToMainUserlist(UserListElement, bool, bool)));
 	disconnect (userlist, SIGNAL(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)),
 			 this, SLOT(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)));
+
 	while (!Groups.isEmpty())
 		removeGroup(Groups.begin().key());
 	kdebugf2();
