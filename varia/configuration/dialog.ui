@@ -67,7 +67,7 @@
 		<tab name="Server">
 			<group-box name="Servers properties">
 				<check-box caption="Use default servers" config-section="Network" config-item="isDefServers" id="useDefaultServers" />
-				<line-edit caption="IP Addresses" config-section="Network" config-item="Server" id="serverList" />
+				<line-edit caption="IP Addresses" config-section="Network" config-item="Server" tool-tip="You can specify which GG servers to use. Separate every server using semicolon (for example: 217.17.41.82;217.17.41.83;217.17.41.84;217.17.41.144)" id="serverList" />
 				<combo-box caption="Port to connect to servers" config-section="Network" config-item="DefaultPort" id="serverPort" >
 					<item value="0" caption="Automatic" />
 					<item value="8074" caption="8074" />
@@ -235,20 +235,17 @@
 					<item value="true" caption="Top" />
 					<item value="false" caption="Center" />
 				</combo-box>
+				<spin-box caption="Column count" config-section="Look" config-item="UserBoxColumnCount" min-value="1" max-value="10"
+					  tool-tip="Number of columns displays in userbox" />
 				<combo-box caption="Tool tip style" config-section="Look" config-item="UserboxToolTipStyle" id="toolTipClasses"
 					   tool-tip="Choose userbox tool-tip style" />
 			</group-box>
 
 			<group-box name="Descriptions">
-				<check-box caption="Show description" config-section="Look" config-item="ShowDesc" id="showDescription"
+				<check-box caption="Show descriptions" config-section="Look" config-item="ShowDesc" id="showDescription"
 					   tool-tip="Displays descriptions in userbox" />
-				<check-box caption="Multiline description" config-section="Look" config-item="ShowMultilineDesc" id="multilineDescription"
+				<check-box caption="Allow multiline descriptions" config-section="Look" config-item="ShowMultilineDesc" id="multilineDescription"
 					   tool-tip="Dislpays multiline descriptions in userbox" />
-			</group-box>
-
-			<group-box name="Columns">
-				<spin-box caption="Column count" config-section="Look" config-item="UserBoxColumnCount" min-value="1" max-value="10"
-					  tool-tip="Number of columns displays in userbox" />
 			</group-box>
 
 			<group-box name="Background">
