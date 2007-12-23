@@ -62,7 +62,10 @@ ToolButton::ToolButton(QWidget* parent, const QString& action_name, Action::Acti
 	// ignore signal on global actions - they are always active
 
 	if ((Type & Action::TypeGlobal) == 0)
+	{
 		connect(parent, SIGNAL(placeChanged(QDockWindow::Place)), this, SLOT(toolbarPlaceChanged(QDockWindow::Place)));
+		setEnabled(IsEnabled);
+	}
 
 	kdebugf2();
 }
