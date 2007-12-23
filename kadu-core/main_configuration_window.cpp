@@ -128,6 +128,10 @@ MainConfigurationWindow::MainConfigurationWindow()
 
 	connect(widgetById("ignoreMessagesFromAnonymous"), SIGNAL(toggled(bool)), widgetById("ignoreMessagesFromAnonymousInConferences"), SLOT(setEnabled(bool)));
 
+	QWidget *useUserboxBackground = widgetById("useUserboxBackground");
+	connect(useUserboxBackground, SIGNAL(toggled(bool)), widgetById("userboxBackground"), SLOT(setEnabled(bool)));
+	connect(useUserboxBackground, SIGNAL(toggled(bool)), widgetById("userboxBackgroundDisplayStyle"), SLOT(setEnabled(bool)));
+
 	loadGeometry(this, "General", "ConfigGeometry", 0, 30, 790, 480);
 }
 

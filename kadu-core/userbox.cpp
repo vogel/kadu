@@ -1053,18 +1053,23 @@ void UserBox::configurationUpdated()
 
 void UserBox::setColorsOrBackgrounds()
 {
-	QString s = config_file.readEntry("Look", "UserboxBackground");
+	QImage *newImage = 0;
 
-	if (s.isEmpty() || !QFile::exists(s))
+	if (config_file.readBoolEntry("Look", "UseUserboxBackground", true))
 	{
+		QString s = config_file.readEntry("Look", "UserboxBackground");
+		if (!s.isEmpty() && QFile::exists(s))
+			newImage = new QImage(s);
+	}
+
+	if (newImage)
+		backgroundImage = newImage;
+	else
 		if (backgroundImage)
 		{
 			delete backgroundImage;
 			backgroundImage = 0;
 		}
-	}
-	else
-		backgroundImage = new QImage(s);
 
 	FOREACH(userbox, UserBoxes)
 		(*userbox)->refreshBackground();

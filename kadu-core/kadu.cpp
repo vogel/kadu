@@ -2068,6 +2068,7 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("Look", "UserBoxColumnCount", 1);
 	config_file.addVariable("Look", "UserboxFgColor", w.paletteForegroundColor());
 	config_file.addVariable("Look", "UserboxFont", defaultFont);
+	config_file.addVariable("Look", "UseUserboxBackground", true);
 
 	config_file.addVariable("Network", "AllowDCC", true);
 	config_file.addVariable("Network", "DefaultPort", 0);
