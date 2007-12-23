@@ -116,162 +116,158 @@ public:
 **/
 class KaduListBoxPixmap : public QListBoxItem
 {
-	public:
-		/**
-			\fn KaduListBoxPixmap(const QPixmap &pix, UserListElement user, bool bold = false)
-			Konstruktor dodaj±cy kontakt do listy.
-			\param user kontakt, z którego bêd± pobierane dane do wy¶wietlenia
-			\param bold warto¶æ logiczna informuj±ca o tym, czy nazwa kontaktu
-				ma byæ wy¶wietlana pogrubion± czcionk±.
-		**/
-		KaduListBoxPixmap(UserListElement user, bool bold = false);
+	QPixmap pm;
+	static QFontMetrics *descriptionFontMetrics;
 
-		/**
-			\fn bool isBold() const
-			Zwraca informacjê, czy nazwa kontaktu jest wy¶wietlana pogrubion± czcionk±, czy nie.
-		**/
-		bool isBold() const { return bold; }
+	// TODO: co to do cholery robi tutaj?
+	static UinType myUIN;
+	static bool ShowDesc;
+	static bool ShowBold;
+	static bool AlignUserboxIconsTop;
+	static bool ShowMultilineDesc;
+	static bool MultiColumn;
+	static int  MultiColumnWidth;
+	static int ColumnCount;
+	static QColor descColor;
 
-		/**
-			\fn int height(const QListBox *lb) const
-			Zwraca wysoko¶æ elementu reprezentuj±cego wy¶wietlany kontakt w pikselach.
-			\param lb obiekt reprezentuj±cy wy¶wietlany kontakt.
-		**/
-		virtual int height(const QListBox *lb) const;
+	mutable QString buf_text;
+	mutable int buf_width;
+	mutable QStringList buf_out;
+	mutable int buf_height;
 
-		/**
-			\fn int width(const QListBox *lb) const
-			Zwraca szeroko¶æ elementu reprezentuj±cego wy¶wietlany kontakt w pikselach.
-			\param lb obiekt reprezentuj±cy wy¶wietlany kontakt.
-		**/
-		virtual int width(const QListBox *lb) const;
+protected:
+	/**
+		\fn int lineHeight(const QListBox *lb) const
+		Zwraca wysoko¶æ samej czcionki dla elementu reprezentuj±cego wy¶wietlany kontakt w pikselach.
+		\param lb obiekt reprezentuj±cy wy¶wietlany kontakt.
+	**/
+	int lineHeight(const QListBox *lb) const;
 
-		/**
-			\fn void refreshItem()
-			Od¶wie¿a ikonê i tekst elementu.
-		**/
-		void refreshItem();
+	/**
+		\fn void paint(QPainter *painter)
+		Rysuje wy¶wietlany kontakt na li¶cie.
+		\param painter wska¼nik do obiektu rysuj±cego.
+	**/
+	void paint(QPainter *painter);
 
-		const UserListElement User;
-	protected:
-		/**
-			\fn int lineHeight(const QListBox *lb) const
-			Zwraca wysoko¶æ samej czcionki dla elementu reprezentuj±cego wy¶wietlany kontakt w pikselach.
-			\param lb obiekt reprezentuj±cy wy¶wietlany kontakt.
-		**/
-		int lineHeight(const QListBox *lb) const;
+	/**
+		\fn void calculateSize(const QString &text, int width, QStringList &out, int &height) const
+		Oblicza odpowiedni± wysoko¶æ elementu listy kontaktów tak, aby pomie¶ciæ
+		opis podzielony na niezbêdn± liczbê linii.
+		\param[in] text wy¶wietlany opis.
+		\param[in] width szeroko¶æ kolumny listy kontaktów.
+		\param[out] out lista ³añcuchów znaków, zawieraj±ca kolejne linie opisu powsta³e
+			w wyniku podzielenia opisu tak, aby zmie¶ci³ siê w danej szeroko¶ci kolumny.
+		\param[out] height wysoko¶æ elementu listy kontaktów potrzebna aby pomie¶ciæ opis
+			podzielony w liniach.
+	**/
+	void calculateSize(const QString &text, int width, QStringList &out, int &height) const;
 
-		/**
-			\fn void paint(QPainter *painter)
-			Rysuje wy¶wietlany kontakt na li¶cie.
-			\param painter wska¼nik do obiektu rysuj±cego.
-		**/
-		void paint(QPainter *painter);
+	/**
+		\fn void changeText(const QString &text)
+		Zmienia nazwê wy¶wietlan± dla kontaktu na li¶cie na podan±.
+		\param text nowa nazwa do wy¶wietlenia.
+	**/
+	void changeText(const QString &text);
 
-		/**
-			\fn void setBold(bool b)
-			Ustawia stan pogrubienia czcionki wy¶wietlanego kontaktu.
-			\param b warto¶æ logiczna okre¶laj±ca, czy czcionka ma byæ pogrubiona czy nie.
-		**/
-		void setBold(bool b) { bold = b; }
+	friend class UserBox;
 
-		/**
-			\fn void calculateSize(const QString &text, int width, QStringList &out, int &height) const
-			Oblicza odpowiedni± wysoko¶æ elementu listy kontaktów tak, aby pomie¶ciæ
-			opis podzielony na niezbêdn± liczbê linii.
-			\param[in] text wy¶wietlany opis.
-			\param[in] width szeroko¶æ kolumny listy kontaktów.
-			\param[out] out lista ³añcuchów znaków, zawieraj±ca kolejne linie opisu powsta³e
-				w wyniku podzielenia opisu tak, aby zmie¶ci³ siê w danej szeroko¶ci kolumny.
-			\param[out] height wysoko¶æ elementu listy kontaktów potrzebna aby pomie¶ciæ opis
-				podzielony w liniach.
-		**/
-		void calculateSize(const QString &text, int width, QStringList &out, int &height) const;
+	static QPixmap pixmapForUser(const UserListElement &user);
 
-		/**
-			\fn void changeText(const QString &text)
-			Zmienia nazwê wy¶wietlan± dla kontaktu na li¶cie na podan±.
-			\param text nowa nazwa do wy¶wietlenia.
-		**/
-		void changeText(const QString &text);
+	/*funkcje wprowadzone ¿eby zaoszczêdziæ na odwo³aniach do pliku konfiguracyjnego*/
+	/**
+		\fn static void setFont(const QFont &f)
+		Ustawia czcionkê dla tego elementu.
+		\param f czcionka
+	**/
+	static void setFont(const QFont &f);
 
-		friend class UserBox;
+	/**
+		\fn static void setMyUIN(UinType u)
+		Ustawia UIN lokalnego u¿ytkownika Kadu dla tego elementu, aby by³o wiadomo,
+		¿e ten element jego reprezentuje (poniewa¿ do pobierania informacji o statusie i opisie
+		u¿ywane s± ró¿ne metody dla kontaktu i lokalnego u¿ytkownika).
+		\param u numer UIN.
+	**/
+	static void setMyUIN(UinType u);
 
-		static QPixmap pixmapForUser(const UserListElement &user);
+	/**
+		\fn static void setShowDesc(bool sd)
+		Ustawia stan wy¶wietlania opisów na li¶cie kontaktów.
+		\param sd warto¶æ logiczna informuj±ca o tym, czy opisy maj± byæ wy¶wietlane na li¶cie kontatów.
+	**/
+	static void setShowDesc(bool sd);
 
-		/*funkcje wprowadzone ¿eby zaoszczêdziæ na odwo³aniach do pliku konfiguracyjnego*/
-		/**
-			\fn static void setFont(const QFont &f)
-			Ustawia czcionkê dla tego elementu.
-			\param f czcionka
-		**/
-		static void setFont(const QFont &f);
+	static void setShowBold(bool sb);
 
-		/**
-			\fn static void setMyUIN(UinType u)
-			Ustawia UIN lokalnego u¿ytkownika Kadu dla tego elementu, aby by³o wiadomo,
-			¿e ten element jego reprezentuje (poniewa¿ do pobierania informacji o statusie i opisie
-			u¿ywane s± ró¿ne metody dla kontaktu i lokalnego u¿ytkownika).
-			\param u numer UIN.
-		**/
-		static void setMyUIN(UinType u);
+	/**
+		\fn static void setAlignTop(bool at)
+		Ustawia stan wyrównywania do górnego brzegu elementu.
+		\param at warto¶æ logiczna informuj±ca o tym, czy wy¶wietlana nazwa kontaktu ma byæ wyrównywana
+			do górnej krawêdzi elementu.
+	**/
+	static void setAlignTop(bool at);
 
-		/**
-			\fn static void setShowDesc(bool sd)
-			Ustawia stan wy¶wietlania opisów na li¶cie kontaktów.
-			\param sd warto¶æ logiczna informuj±ca o tym, czy opisy maj± byæ wy¶wietlane na li¶cie kontatów.
-		**/
-		static void setShowDesc(bool sd);
+	/**
+		\fn static void setShowMultilineDesc(bool m)
+		Ustawia stan wy¶wietlania opisów wieloliniowych.
+		\param m warto¶æ logiczna informuj±ca o tym, czy opis tego elementu mo¿e byæ wy¶wietlany
+			w wielu liniach, je¶li zawiera znaki nowej linii.
+	**/
+	static void setShowMultilineDesc(bool m);
 
-		/**
-			\fn static void setAlignTop(bool at)
-			Ustawia stan wyrównywania do górnego brzegu elementu.
-			\param at warto¶æ logiczna informuj±ca o tym, czy wy¶wietlana nazwa kontaktu ma byæ wyrównywana
-				do górnej krawêdzi elementu.
-		**/
-		static void setAlignTop(bool at);
+	/**
+		\fn static void setMultiColumn(bool m)
+		Ustawia stan wy¶wietlania listy kontaktów w wielu kolumnach.
+		\param m warto¶æ logiczna informuj±ca o tym, czy lista ma byæ wy¶wietlana w wielu kolumnach.
+	**/
+	static void setColumnCount(int m);
 
-		/**
-			\fn static void setShowMultilineDesc(bool m)
-			Ustawia stan wy¶wietlania opisów wieloliniowych.
-			\param m warto¶æ logiczna informuj±ca o tym, czy opis tego elementu mo¿e byæ wy¶wietlany
-				w wielu liniach, je¶li zawiera znaki nowej linii.
-		**/
-		static void setShowMultilineDesc(bool m);
+	/**
+		\fn static void setDescriptionColor(const QColor &col)
+		Ustawia kolor wy¶wietlanego opisu.
+		\param col kolor
+	**/
+	static void setDescriptionColor(const QColor &col);
 
-		/**
-			\fn static void setMultiColumn(bool m)
-			Ustawia stan wy¶wietlania listy kontaktów w wielu kolumnach.
-			\param m warto¶æ logiczna informuj±ca o tym, czy lista ma byæ wy¶wietlana w wielu kolumnach.
-		**/
-		static void setColumnCount(int m);
+public:
+	/**
+		\fn KaduListBoxPixmap(const QPixmap &pix, UserListElement user, bool bold = false)
+		Konstruktor dodaj±cy kontakt do listy.
+		\param user kontakt, z którego bêd± pobierane dane do wy¶wietlenia
+		\param bold warto¶æ logiczna informuj±ca o tym, czy nazwa kontaktu
+			ma byæ wy¶wietlana pogrubion± czcionk±.
+	**/
+	KaduListBoxPixmap(UserListElement user);
 
-		/**
-			\fn static void setDescriptionColor(const QColor &col)
-			Ustawia kolor wy¶wietlanego opisu.
-			\param col kolor
-		**/
-		static void setDescriptionColor(const QColor &col);
+	/**
+		\fn bool isBold() const
+		Zwraca informacjê, czy nazwa kontaktu jest wy¶wietlana pogrubion± czcionk±, czy nie.
+	**/
+	bool isBold() const;
 
-	private:
-		QPixmap pm;
-		bool bold;
-		static QFontMetrics *descriptionFontMetrics;
+	/**
+		\fn int height(const QListBox *lb) const
+		Zwraca wysoko¶æ elementu reprezentuj±cego wy¶wietlany kontakt w pikselach.
+		\param lb obiekt reprezentuj±cy wy¶wietlany kontakt.
+	**/
+	virtual int height(const QListBox *lb) const;
 
-		// TODO: co to do cholery robi tutaj?
-		static UinType myUIN;
-		static bool ShowDesc;
-		static bool AlignUserboxIconsTop;
-		static bool ShowMultilineDesc;
-		static bool MultiColumn;
-		static int  MultiColumnWidth;
-		static int ColumnCount;
-		static QColor descColor;
+	/**
+		\fn int width(const QListBox *lb) const
+		Zwraca szeroko¶æ elementu reprezentuj±cego wy¶wietlany kontakt w pikselach.
+		\param lb obiekt reprezentuj±cy wy¶wietlany kontakt.
+	**/
+	virtual int width(const QListBox *lb) const;
 
-		mutable QString buf_text;
-		mutable int buf_width;
-		mutable QStringList buf_out;
-		mutable int buf_height;
+	/**
+		\fn void refreshItem()
+		Od¶wie¿a ikonê i tekst elementu.
+	**/
+	void refreshItem();
+
+	const UserListElement User;
+
 };
 
 /**

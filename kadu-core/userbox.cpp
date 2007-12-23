@@ -34,6 +34,7 @@
 QFontMetrics* KaduListBoxPixmap::descriptionFontMetrics = NULL;
 UinType KaduListBoxPixmap::myUIN;
 bool KaduListBoxPixmap::ShowDesc;
+bool KaduListBoxPixmap::ShowBold;
 bool KaduListBoxPixmap::AlignUserboxIconsTop;
 bool KaduListBoxPixmap::ShowMultilineDesc;
 int KaduListBoxPixmap::ColumnCount;
@@ -133,31 +134,35 @@ void KaduListBoxPixmap::setFont(const QFont &f)
 	kdebugf2();
 }
 
-KaduListBoxPixmap::KaduListBoxPixmap(UserListElement user, bool bold_)
-	: QListBoxItem(), User(user), pm(pixmapForUser(user)), bold(bold_),
-		buf_text(), buf_width(-1), buf_out(), buf_height(-1)
+KaduListBoxPixmap::KaduListBoxPixmap(UserListElement user)
+	: QListBoxItem(), pm(pixmapForUser(user)), buf_text(), buf_width(-1), buf_out(), buf_height(-1), User(user)
 {
 	setText(user.altNick());
 }
 
 void KaduListBoxPixmap::setMyUIN(UinType u)
 {
-	myUIN=u;
+	myUIN = u;
 }
 
 void KaduListBoxPixmap::setShowDesc(bool sd)
 {
-	ShowDesc=sd;
+	ShowDesc = sd;
+}
+
+void KaduListBoxPixmap::setShowBold(bool sb)
+{
+	ShowBold = sb;
 }
 
 void KaduListBoxPixmap::setAlignTop(bool at)
 {
-	AlignUserboxIconsTop=at;
+	AlignUserboxIconsTop = at;
 }
 
 void KaduListBoxPixmap::setShowMultilineDesc(bool m)
 {
-	ShowMultilineDesc=m;
+	ShowMultilineDesc = m;
 }
 
 void KaduListBoxPixmap::setColumnCount(int m)
@@ -168,6 +173,11 @@ void KaduListBoxPixmap::setColumnCount(int m)
 void KaduListBoxPixmap::setDescriptionColor(const QColor &col)
 {
 	descColor = col;
+}
+
+bool KaduListBoxPixmap::isBold() const
+{
+	return ShowBold && User.usesProtocol("Gadu") && (User.status("Gadu").isOnline() || User.status("Gadu").isBusy());
 }
 
 void KaduListBoxPixmap::paint(QPainter *painter)
@@ -202,7 +212,7 @@ void KaduListBoxPixmap::paint(QPainter *painter)
 	{
 		QFont oldFont = painter->font();
 
-		if (bold)
+		if (isBold())
 		{
 			QFont newFont = QFont(oldFont);
 			newFont.setWeight(QFont::Bold);
@@ -218,7 +228,7 @@ void KaduListBoxPixmap::paint(QPainter *painter)
 
 		painter->drawText(pm.width() + 5, yPos, text());
 
-		if (bold)
+		if (isBold())
 			painter->setFont(oldFont);
 
 //		kdebugmf(KDEBUG_INFO, "isMyUin = %d, own_description = %s\n",
@@ -737,16 +747,9 @@ void UserBox::refresh()
 	// clear clears columns too...
 	setColumnMode(config_file.readNumEntry("Look", "UserBoxColumnCount", 1));
 
-	bool showBold = config_file.readBoolEntry("Look", "ShowBold");
-
 	for (std::vector<UserListElement>::const_iterator user = sortHelper.begin(),
 		userEnd = sortHelper.end(); user != userEnd; ++user)
-	{
-		bool bold = showBold && (*user).usesProtocol("Gadu") &&
-				((*user).status("Gadu").isOnline() || (*user).status("Gadu").isBusy());
-	//	kdebugm(KDEBUG_INFO, "creating: %s %d\n", (*user).altNick().local8Bit().data(), usesGadu);
-		insertItem(new KaduListBoxPixmap(*user, bold));
-	}
+		insertItem(new KaduListBoxPixmap(*user));
 
 	// restore selected users
 	CONST_FOREACH(username, s_users)
@@ -1031,6 +1034,7 @@ void UserBox::configurationUpdated()
 
 	KaduListBoxPixmap::setFont(config_file.readFontEntry("Look", "UserboxFont"));
 	KaduListBoxPixmap::setShowDesc(config_file.readBoolEntry("Look", "ShowDesc"));
+	KaduListBoxPixmap::setShowBold(config_file.readBoolEntry("Look", "ShowBold"));
 	KaduListBoxPixmap::setAlignTop(config_file.readBoolEntry("Look", "AlignUserboxIconsTop"));
 	KaduListBoxPixmap::setShowMultilineDesc(config_file.readBoolEntry("Look", "ShowMultilineDesc"));
 	KaduListBoxPixmap::setColumnCount(columnCount);
