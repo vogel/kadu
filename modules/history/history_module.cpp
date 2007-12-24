@@ -143,6 +143,10 @@ void HistoryModule::updateQuoteTimeLabel(int value)
 void HistoryModule::historyActionActivated(const UserGroup* users)
 {
 	kdebugf();
+
+	if (!users) // fix for 0000839
+		return;
+
 	UinsList uins;
 	CONST_FOREACH(user, *users)
 		uins.append((*user).ID("Gadu").toUInt());
