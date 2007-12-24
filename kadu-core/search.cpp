@@ -185,6 +185,10 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	connect(next_results_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
 		this, SLOT(nextResultsActionAddedToToolbar(ToolButton*, ToolBar*)));
 
+//	searchhidden = false;
+	if (_whoisSearchUin)
+		e_uin->insert(QString::number(_whoisSearchUin));
+
 	stop_search_action->setSlot(SLOT(stopSearch()));
 	stop_search_action->setEnabled(this, false);
 	first_search_action->setSlot(SLOT(firstSearch()));
@@ -196,17 +200,11 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	add_searched_action->setEnabled(this, false);
 	chat_searched_action->setEnabled(this, false);
 
-//	searchhidden = false;
-	if (_whoisSearchUin)
-	{
-		r_uin->setChecked(true);
-		e_uin->setText(QString::number(_whoisSearchUin));
-	}
-
 	loadGeometry(this, "General", "SearchDialogGeometry", 0, 30, 800, 350);
 	setCaption(tr("Search user in directory"));
 
 	connect(gadu, SIGNAL(newSearchResults(SearchResults &, int, int)), this, SLOT(newSearchResults(SearchResults &, int, int)));
+
 	kdebugf2();
 }
 
@@ -389,13 +387,13 @@ void SearchDialog::firstSearch(void)
 	else if (r_uin->isChecked())
 		searchRecord->reqUin(e_uin->text());
 
-	gadu->searchInPubdir(*searchRecord);
-
 	stop_search_action->setEnabled(this, true);
 	first_search_action->setEnabled(this, false);
 	next_results_action->setEnabled(this, false);
 	add_searched_action->setEnabled(this, false);
 	chat_searched_action->setEnabled(this, false);
+
+	gadu->searchInPubdir(*searchRecord);
 
 	progress->setText(tr("Searching..."));
 
@@ -404,9 +402,10 @@ void SearchDialog::firstSearch(void)
 
 void SearchDialog::nextSearch(void)
 {
+	kdebugf();
+
 	if (gadu->currentStatus().isOffline())
 		return;
-	kdebugf();
 
 	stop_search_action->setEnabled(this, true);
 	first_search_action->setEnabled(this, false);
@@ -417,6 +416,7 @@ void SearchDialog::nextSearch(void)
 	gadu->searchNextInPubdir(*searchRecord);
 
 	progress->setText(tr("Searching..."));
+
 	kdebugf2();
 }
 
