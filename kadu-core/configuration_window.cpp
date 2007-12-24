@@ -46,6 +46,7 @@ public:
 	void removedConfigGroupBox(const QString &groupBoxName);
 
 	QWidget *widget() { return mainWidget; }
+	QWidget *tabWidget() { return scrollView; }
 
 };
 
@@ -60,6 +61,7 @@ class ConfigSection
 	QTabWidget *mainWidget;
 
 	ConfigTab *configTab(const QString &name, bool create = true);
+	bool activated;
 
 public:
 	ConfigSection(const QString &name, ConfigurationWindow *configurationWindow, QListBoxItem *listBoxItem, QWidget *parentConfigGroupBoxWidget);
@@ -176,7 +178,7 @@ void ConfigTab::removedConfigGroupBox(const QString &groupBoxName)
 }
 
 ConfigSection::ConfigSection(const QString &name, ConfigurationWindow *configurationWindow, QListBoxItem *listBoxItem, QWidget *parentConfigGroupBoxWidget)
-	: name(name), configurationWindow(configurationWindow), listBoxItem(listBoxItem)
+	: name(name), configurationWindow(configurationWindow), listBoxItem(listBoxItem), activated(false)
 {
 	mainWidget = new QTabWidget(parentConfigGroupBoxWidget);
 	mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -203,9 +205,13 @@ void ConfigSection::activate()
 {
 	listBoxItem->listBox()->setCurrentItem(listBoxItem);
 
+	if (activated)
+		return;
+
 	QString tab = config_file.readEntry("General", "ConfigurationWindow_" + configurationWindow->name() + "_" + name);
 	if (configTabs.contains(tab))
-		mainWidget->showPage(configTabs[tab]->widget());
+		mainWidget->setCurrentPage(mainWidget->indexOf(configTabs[tab]->tabWidget()));
+	activated = true;
 }
 
 ConfigTab *ConfigSection::configTab(const QString &name, bool create)
@@ -676,6 +682,7 @@ void ConfigurationWindow::changeSection(const QString &newSectionName)
 
 	currentSection = newSection;
 	newSection->show();
+	newSection->activate();
 }
 
 void ConfigurationWindow::removedConfigSection(const QString &sectionName)
