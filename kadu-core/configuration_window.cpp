@@ -697,7 +697,7 @@ void ConfigurationWindow::keyPressEvent(QKeyEvent *e)
 	if (e->key() == Key_Escape)
 	{
 		e->accept();
-		deleteLater();
+		close();
 	}
 	else
 		QVBox::keyPressEvent(e);

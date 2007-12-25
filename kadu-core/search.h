@@ -133,6 +133,7 @@ class SearchDialog : public QWidget {
 		**/
 		virtual void closeEvent(QCloseEvent *e);
 		virtual void resizeEvent(QResizeEvent *e);
+		virtual void keyPressEvent(QKeyEvent *e);
 };
 
 #endif

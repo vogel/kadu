@@ -509,6 +509,17 @@ void SearchDialog::resizeEvent(QResizeEvent *e)
 	results->triggerUpdate();//workaround for bug in Qt, which do not refresh results properly
 }
 
+void SearchDialog::keyPressEvent(QKeyEvent *e)
+{
+	if (e->key() == Key_Escape)
+	{
+		e->accept();
+		close();
+	}
+	else
+		QWidget::keyPressEvent(e);
+}
+
 void SearchDialog::uinTyped(void)
 {
 	r_uin->setChecked(true);
