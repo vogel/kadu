@@ -38,7 +38,7 @@ extern "C" void desktop_docking_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/desktop_docking.ui"), desktop_dock);
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/desktop_docking.ui"), desktop_dock);
 	delete desktop_dock;
 	desktop_dock = 0;
 
@@ -113,10 +113,10 @@ DesktopDock::DesktopDock()
 // fullDesktop->width() - DesktopDockPixmap.size().width(), 1, 0,
 // fullDesktop->height() - DesktopDockPixmap.size().height(), 1, 0,
 
-	connect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), desktopDock, SLOT(setToolTip(const QString&)));
-	connect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&, const QString &)), desktopDock, SLOT(setPixmap(const QPixmap&, const QString &)));
-	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), desktopDock, SLOT(findTrayPosition(QPoint&)));
-	connect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), desktopDock, SLOT(setTrayMovie(const QMovie &)));
+	connect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setToolTip(const QString&)));
+	connect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&, const QString &)), this,  SLOT(setPixmap(const QPixmap&, const QString &)));
+	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
+	connect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), this, SLOT(setTrayMovie(const QMovie &)));
 
 	connect(desktopDock, SIGNAL(dropped(const QPoint &)), this, SLOT(droppedOnDesktop(const QPoint &)));
 
@@ -137,10 +137,10 @@ DesktopDock::~DesktopDock()
 {
 	kdebugf();
 
-	disconnect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), desktopDock, SLOT(setTrayMovie(const QMovie &)));
-	disconnect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), desktopDock, SLOT(setToolTip(const QString&)));
-	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&, const QString &)), desktopDock, SLOT(setPixmap(const QPixmap&, const QString &)));
-	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), desktopDock, SLOT(findTrayPosition(QPoint&)));
+	disconnect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), this, SLOT(setTrayMovie(const QMovie &)));
+	disconnect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setToolTip(const QString&)));
+	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&, const QString &)), this, SLOT(setPixmap(const QPixmap&, const QString &)));
+	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 
 	docking_manager->setDocked(false);
 
@@ -231,9 +231,6 @@ void DesktopDock::droppedOnDesktop(const QPoint& pos) 	/* nacisniecie przycisku 
 
 	config_file.writeEntry("Desktop Dock", "PositionX", posX);
 	config_file.writeEntry("Desktop Dock", "PositionY", posY);
-
-	xSpinBox->setValue(posX);
-	ySpinBox->setValue(posY);
 }
 
 void DesktopDock::updateMenu(bool b)
