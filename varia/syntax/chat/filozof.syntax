@@ -1,0 +1,4 @@
+<p> 
+<b color="#{nickColor}">%a</b> <font size="-2" color="#{nickColor}">(#{receivedDate})</font><br> 
+<span color="#{fontColor}">#{message}</span> 
+</p>

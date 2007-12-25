@@ -1,0 +1,5 @@
+<p>
+<IMG SRC=\"@{Message}\">&nbsp;&nbsp;<I><FONT size="-1">#{receivedDate}</FONT></I><BR><B><FONT color="#{nickColor}">%a</FONT></B> <FONT color="#{fontColor}">#{message}</FONT>
+</p>
+
+
