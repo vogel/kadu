@@ -256,6 +256,9 @@ class Kadu : public QWidget, ConfigurationAwareObject
 		void keyPressed(QKeyEvent* e);
 		void statusPixmapChanged(const QPixmap &icon, const QString &icon_name);
 
+		// TODO: workaround
+		void messageReceivedSignal(Protocol *, UserListElements, const QString &, time_t);
+
 		/**
 			wywo³ana zosta³a funkcja show() na g³ównym oknie
 		**/

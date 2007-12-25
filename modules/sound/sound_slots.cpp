@@ -72,6 +72,11 @@ void SoundConfigurationWidget::switchToEvent(const QString &event)
 		soundFileSelectFile->setFile(config_file.readEntry("Sounds", event + "_sound"));
 }
 
+void SoundConfigurationWidget::themeChanged(int index)
+{
+	soundFileSelectFile->setEnabled(index == 0);
+}
+
 SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name),
 	soundfiles(), soundNames(), soundTexts(), SamplePlayingTestMsgBox(0), SamplePlayingTestDevice(0),
 	SamplePlayingTestSample(0), SampleRecordingTestMsgBox(0), SampleRecordingTestDevice(0),

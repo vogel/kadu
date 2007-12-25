@@ -198,7 +198,7 @@ SoundManager::SoundManager(const QString& name, const QString& configname) : Not
 
 	QStringList soundThemes = themes->themes();
 	QString soundTheme = config_file.readEntry("Sounds", "SoundTheme");
-	if (!soundThemes.isEmpty() && (soundTheme != "custom") && !soundThemes.contains(soundTheme))
+	if (!soundThemes.isEmpty() && (soundTheme != "Custom") && !soundThemes.contains(soundTheme))
 	{
 		soundTheme = "default";
 		config_file.writeEntry("Sounds", "SoundTheme", "default");
@@ -253,6 +253,9 @@ void SoundManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainC
 	connect(mainConfigurationWindow->widgetById("sound/testDuplex"), SIGNAL(clicked()), sound_slots, SLOT(testFullDuplex()));
 
 	themesComboBox = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widgetById("sound/themes"));
+	connect(themesComboBox, SIGNAL(activated(int)), configurationWidget, SLOT(themeChanged(int)));
+	configurationWidget->themeChanged(themesComboBox->currentItem());
+
 	themesPaths = dynamic_cast<PathListEdit *>(mainConfigurationWindow->widgetById("soundPaths"));
 	connect(themesPaths, SIGNAL(changed()), sound_manager, SLOT(setSoundThemes()));
 
@@ -261,7 +264,8 @@ void SoundManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainC
 
 NotifierConfigurationWidget *SoundManager::createConfigurationWidget(QWidget *parent, char *name)
 {
-	return new SoundConfigurationWidget(parent, name);
+	configurationWidget = new SoundConfigurationWidget(parent, name);
+	return configurationWidget;
 }
 
 void SoundManager::setSoundThemes()
@@ -284,9 +288,8 @@ void SoundManager::configurationWindowApplied()
 {
 	kdebugf();
 
-	QString currentTheme = themesComboBox->currentText();
-	if (currentTheme != "custom")
-		applyTheme(currentTheme);
+	if (themesComboBox->currentItem() != 0)
+		applyTheme(themesComboBox->currentText());
 }
 
 void SoundManager::import_0_5_0_configuration()

@@ -131,6 +131,8 @@ class SoundPlayThread : public QThread
 		QValueList<SndParams> list;
 };
 
+class SoundConfigurationWidget;
+
 class SoundManager : public Notifier, public ConfigurationUiHandler
 {
     Q_OBJECT
@@ -138,6 +140,7 @@ class SoundManager : public Notifier, public ConfigurationUiHandler
 		Themes *themes;
 		ConfigComboBox *themesComboBox;
 		PathListEdit *themesPaths;
+		SoundConfigurationWidget *configurationWidget;
 
 		friend class SamplePlayThread;
 		friend class SampleRecordThread;

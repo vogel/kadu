@@ -33,6 +33,10 @@ public:
 	virtual void loadNotifyConfigurations() {};
 	virtual void saveNotifyConfigurations();
 	virtual void switchToEvent(const QString &event);
+
+public slots:
+	void themeChanged(int index);
+
 };
 
 class SoundSlots : public QObject, public ConfigurationAwareObject

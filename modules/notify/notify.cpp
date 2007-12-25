@@ -64,7 +64,9 @@ Notify::Notify(QObject *parent, const char *name)
 	createDefaultConfiguration();
 
 	connect(gadu, SIGNAL(connectionError(Protocol *, const QString &, const QString &)), this, SLOT(connectionError(Protocol *, const QString &, const QString &)));
-	connect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString&, time_t)),
+
+	// TODO: workaround
+	connect(kadu, SIGNAL(messageReceivedSignal(Protocol *, UserListElements, const QString&, time_t)),
 			this, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
 	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
 		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
@@ -316,11 +318,8 @@ void Notify::messageReceived(Protocol *protocol, UserListElements senders, const
 	if (!chat) // new chat
 		notify(new MessageNotification(MessageNotification::NewChat, senders, msg, protocol->protocolID()));
 	else // new message in chat
-	{
-		bool alwaysNotify = !config_file.readBoolEntry("Notify", "NewMessageOnlyIfInactive");
-		if (alwaysNotify || !chat->isActiveWindow())
+		if (!chat->isActiveWindow() || !config_file.readBoolEntry("Notify", "NewMessageOnlyIfInactive"))
 			notify(new MessageNotification(MessageNotification::NewMessage, senders, msg, protocol->protocolID()));
-	}
 
 	kdebugf2();
 }

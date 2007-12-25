@@ -1119,6 +1119,9 @@ void Kadu::messageReceived(Protocol *protocol, UserListElements senders, const Q
 {
 	kdebugf();
 
+	// TODO: workaround
+	emit messageReceivedSignal(protocol, senders, msg, time);
+
 	ChatWidget *chat = chat_manager->findChatWidget(senders);
 	if (chat)
 		chat->newMessage(protocol->protocolID(), senders, msg, time);
