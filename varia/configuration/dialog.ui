@@ -249,10 +249,11 @@
 			</group-box>
 
 			<group-box name="Background">
+				<check-box caption="Use background image" config-section="Look" config-item="UseUserboxBackground" id="useUserboxBackground" />
 				<select-file caption="Background file" config-section="Look" config-item="UserboxBackground" type="image"
-					     tool-tip="Define background file for userbox" />
+					     tool-tip="Define background file for userbox" id="userboxBackground" />
 				<combo-box caption="Display style" config-section="Look" config-item="UserboxBackgroundDisplayStyle"
-					   tool-tip="Choose userbox background style">
+					   tool-tip="Choose userbox background style" id="userboxBackgroundDisplayStyle" >
 					<item value="Tiled" caption="Tiled" />
 					<item value="Centered" caption="Centered" />
 					<item value="Stretched" caption="Stretched" />
