@@ -745,14 +745,17 @@ bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 void ModulesManager::showDialog()
 {
 	kdebugf();
-	if (Dialog==NULL)
+
+	if (!Dialog)
 	{
-		Dialog=new ModulesDialog();
-		connect(Dialog,SIGNAL(destroyed()),this,SLOT(dialogDestroyed()));
+		Dialog = new ModulesDialog();
+		connect(Dialog, SIGNAL(destroyed()), this, SLOT(dialogDestroyed()));
 		Dialog->show();
 	}
-	else
-		Dialog->setActiveWindow();
+
+	Dialog->raise();
+	Dialog->setActiveWindow();
+
 	kdebugf2();
 }
 

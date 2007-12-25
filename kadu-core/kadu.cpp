@@ -946,6 +946,7 @@ void Kadu::changeAppearance()
 	const UserStatus &stat = gadu->currentStatus();
 	QPixmap pix = stat.pixmap();
 	statusButton->setIconSet(QIconSet(pix));
+	setMainWindowIcon(pix);
 	emit statusPixmapChanged(pix, stat.toString());
 	kdebugf2();
 }

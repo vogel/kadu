@@ -80,6 +80,7 @@ void GroupsManager::setTabBar(KaduTabBar *bar)
 {
 	kdebugf();
 	GroupBar = bar;
+	refreshTabBar();
 
 	bar->setShape(QTabBar::RoundedBelow);
 	bar->addTab(new QTab(icons_manager->loadIcon("PersonalInfo").xForm(QWMatrix().rotate(-90)), tr("All")));
