@@ -10,18 +10,18 @@
     <name>SoundConfigurationWidget</name>
     <message>
         <source>Test</source>
-        <translation type="unfinished">Test</translation>
+        <translation>Test</translation>
     </message>
     <message>
         <source>Sound file</source>
-        <translation type="unfinished">Plik dźwiękowy</translation>
+        <translation>Plik dźwiękowy</translation>
     </message>
 </context>
 <context>
     <name>SoundManager</name>
     <message>
         <source>Custom</source>
-        <translation type="unfinished">Własne</translation>
+        <translation>Własne</translation>
     </message>
 </context>
 <context>

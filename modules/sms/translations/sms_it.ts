@@ -51,7 +51,7 @@ Do you want to send next message?</source>
     <name>SmsConfigurationUiHandler</name>
     <message>
         <source>Send SMS</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Manda SMS</translation>
     </message>
     <message>
         <source>Up</source>

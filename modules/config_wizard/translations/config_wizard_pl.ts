@@ -85,119 +85,119 @@ Naciśnij Ok by kontynuować</translation>
     </message>
     <message>
         <source>Please fill out all fields</source>
-        <translation type="unfinished"></translation>
+        <translation>Proszę wypełnić wszystkie pola</translation>
     </message>
     <message>
         <source>Email address you have entered is not valid</source>
-        <translation type="unfinished"></translation>
+        <translation>Podany adres e-mail jest nie prawidłowy</translation>
     </message>
     <message>
         <source>Account</source>
-        <translation type="unfinished"></translation>
+        <translation>Konto</translation>
     </message>
     <message>
         <source>I don&apos;t have a number</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie posiadam numeru</translation>
     </message>
     <message>
         <source>New password</source>
-        <translation type="unfinished"></translation>
+        <translation>Nowe hasło</translation>
     </message>
     <message>
         <source>Retype password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;h3&gt;Welcome in Kadu&lt;/h3&gt;&lt;h4&gt;the Gadu-gadu network client for *nix and MacOS X.&lt;/h4&gt;&lt;p&gt;This is first time you launch Kadu. This wizard will help you to configure the basic settings of Kadu. If you are experienced Kadu user you may omit the wizard by clicking Cancel.&lt;/p&gt;&lt;p&gt;Please enter your account data. If you don&apos;t have one, you can create new here.&lt;/p&gt;&lt;p&gt;E-mail address is only needed when you want to recover lost password to account&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Powtórz hasło</translation>
     </message>
     <message>
         <source>WWW browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Przeglądarka WWW</translation>
     </message>
     <message>
         <source>Specify path</source>
-        <translation type="unfinished"></translation>
+        <translation>Specyficzna ścieżka</translation>
     </message>
     <message>
         <source>Konqueror</source>
-        <translation type="unfinished"></translation>
+        <translation>Konqueror</translation>
     </message>
     <message>
         <source>Opera</source>
-        <translation type="unfinished"></translation>
+        <translation>Opera</translation>
     </message>
     <message>
         <source>Mozilla</source>
-        <translation type="unfinished"></translation>
+        <translation>Mozilla</translation>
     </message>
     <message>
         <source>Mozilla Firefox</source>
-        <translation type="unfinished"></translation>
+        <translation>Mozilla Firefox</translation>
     </message>
     <message>
         <source>Dillo</source>
-        <translation type="unfinished"></translation>
+        <translation>Dillo</translation>
     </message>
     <message>
         <source>Galeon</source>
-        <translation type="unfinished"></translation>
+        <translation>Galeon</translation>
     </message>
     <message>
         <source>Safari</source>
-        <translation type="unfinished"></translation>
+        <translation>Safari</translation>
     </message>
     <message>
         <source>Custom browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Własny wybór</translation>
     </message>
     <message>
         <source>e-mail client</source>
-        <translation type="unfinished"></translation>
+        <translation>Klient poczty</translation>
     </message>
     <message>
         <source>Choose your e-mail client</source>
-        <translation type="unfinished"></translation>
+        <translation>Wybierz swojego klienta e-mail</translation>
     </message>
     <message>
         <source>KMail</source>
-        <translation type="unfinished"></translation>
+        <translation>KMail</translation>
     </message>
     <message>
         <source>Thunderbird</source>
-        <translation type="unfinished"></translation>
+        <translation>Thunderbird</translation>
     </message>
     <message>
         <source>SeaMonkey</source>
-        <translation type="unfinished"></translation>
+        <translation>SeaMonkey</translation>
     </message>
     <message>
         <source>Evolution</source>
-        <translation type="unfinished"></translation>
+        <translation>Evolution</translation>
     </message>
     <message>
         <source>Custom e-mail client</source>
-        <translation type="unfinished"></translation>
+        <translation>Własny wybór</translation>
     </message>
     <message>
         <source>Applications</source>
-        <translation type="unfinished"></translation>
+        <translation>Aplikacje</translation>
     </message>
     <message>
         <source>&lt;p&gt;Please setup Kadu for working with your favourite WWW browser and email program.&lt;/p&gt;&lt;p&gt;Kadu will use these for opening various links from messages and user&apos;s descriptions&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Proszę ustawić programy do wspólpracy Kadu ze stronami WWW i pocztą e-mail.&lt;/p&gt;&lt;p&gt;Kadu będzię ich używac do otwierania linków z wiadomości i opisów użytkowników&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Sound driver</source>
-        <translation type="unfinished"></translation>
+        <translation>System dźwieku</translation>
     </message>
     <message>
         <source>Test sound</source>
-        <translation type="unfinished"></translation>
+        <translation>Test dźwieku</translation>
     </message>
     <message>
         <source>&lt;p&gt;Please select your sound driver for sound notifications. If you don&apos;t want sound notifications, use None driver.&lt;/p&gt;&lt;p&gt;If you don&apos;t know which driver to use, just check every ony with Test sound button.Don&apos;t forget to unmute your system before!&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Proszę wybrać odpowiedni system dźwięku dla powiadomień sygnałami dźwiekowymi. Jeżeli nie chcesz być powiadamiany dźwiękiem wybierz &quot;None&quot;.&lt;/p&gt;Jeśli nie wiesz jaki system dźwieku jest przez ciebie używany, sprawdź pokolei wszystkie testując przyciskiem &quot;Test dźwieku&quot;. Nie zapomnij wczesniej ustawić mikser na odpowiednią siłę głosu!&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;h3&gt;Welcome in Kadu&lt;/h3&gt;&lt;h4&gt;the Gadu-gadu network client for *nix and MacOS X.&lt;/h4&gt;&lt;p&gt;This is first time you launch Kadu. This wizard will help you to configure the basic settings of Kadu. If you are experienced Kadu user you may omit the wizard by clicking Cancel.&lt;/p&gt;&lt;p&gt;Please enter your account data. If you don&apos;t have one, you can create new here.&lt;/p&gt;&lt;p&gt;E-mail address is needed when you want to recover lost password to account&lt;/p&gt;</source>
+        <translation>&lt;h3&gt;Witamy w Kadu&lt;/h3&gt;&lt;h4&gt;kliencie sieci Gadu-Gadu dla systemów *nix i MacOS X.&lt;/h4&gt;&lt;p&gt;Uruchomiłeś Kadu po raz pierwszy.Ten kreator pomoże ci ustawić podstawową konfigurację programu. Jeśli jesteś doświadczonym użytkownikiem możesz go pominąć klikając na przycisk &quot;Anuluj&quot;.&lt;/p&gt;&lt;p&gt;Proszę wprowadzić swoje dane konta GG. Jeśli go nie posiadasz możesz je teraz utwożyć.&lt;/p&gt;&lt;p&gt;Adres e-mail jest potrzebny do przypomnienia zapomnianego hasła&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -208,7 +208,7 @@ Naciśnij Ok by kontynuować</translation>
     </message>
     <message>
         <source>User list couldn&apos;t be imported</source>
-        <translation type="unfinished"></translation>
+        <translation>Lista kontaktów nie została zaimportowana</translation>
     </message>
 </context>
 </TS>

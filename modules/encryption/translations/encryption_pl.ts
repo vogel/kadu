@@ -35,67 +35,68 @@
     </message>
     <message>
         <source>Manage keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Zarządzaj kluczami</translation>
     </message>
 </context>
 <context>
     <name>KeysManager</name>
     <message>
         <source>Manage keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Zarządzaj kluczami</translation>
     </message>
     <message>
         <source>This dialog box allows you to manage your keys.</source>
-        <translation type="unfinished"></translation>
+        <translation>To okno dialogowe pozwala ci zarządzać twoimi kluczami.</translation>
     </message>
     <message>
         <source>Contact</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt</translation>
     </message>
     <message>
         <source>Uin</source>
-        <translation type="unfinished"></translation>
+        <translation>Numer GG</translation>
     </message>
     <message>
         <source>Encryption is on</source>
-        <translation type="unfinished"></translation>
+        <translation>Szyfrowanie włączone</translation>
     </message>
     <message>
         <source>Key</source>
-        <translation type="unfinished"></translation>
+        <translation>Klucz</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń</translation>
     </message>
     <message>
         <source>On</source>
-        <translation type="unfinished"></translation>
+        <translation>Włącz</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Zamknij</translation>
     </message>
     <message>
         <source>Yes</source>
-        <translation type="unfinished">Tak</translation>
+        <translation>Tak</translation>
     </message>
     <message>
         <source>Off</source>
-        <translation type="unfinished"></translation>
+        <translation>Wyłącz</translation>
     </message>
     <message>
         <source>Are you sure you want to delete the selected key?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy napewno chcesz usunąć wybrany klucz?</translation>
     </message>
     <message>
         <source>Cannot remove key
 Check if you have access to file &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie mogę usunąć klucza
+Sprawdź czy masz dostęp do pliku &quot;%1&quot;</translation>
     </message>
     <message>
         <source>No</source>
-        <translation type="unfinished">Nie</translation>
+        <translation>Nie</translation>
     </message>
 </context>
 <context>

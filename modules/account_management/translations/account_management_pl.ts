@@ -137,7 +137,7 @@ Hasła  muszą być identyczne w obu polach!</translation>
     </message>
     <message>
         <source>Email address you have entered is not valid</source>
-        <translation type="unfinished"></translation>
+        <translation>Podany adres e-mail jest nieprawidłowy</translation>
     </message>
 </context>
 <context>

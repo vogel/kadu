@@ -63,12 +63,6 @@ ou lui/elle a transmit. Continuez la connexion ?</translation>
         <translation>Selectionnez l&apos;emplacement du fichier</translation>
     </message>
     <message>
-        <source>User %1 wants to send us a file %2
-of size %3kB. Accept transfer?</source>
-        <translation>Utilisateur %1souhaite vous envoyer le fichier %2
-de dimension %3kB.Acceptez vous ce transfert?</translation>
-    </message>
-    <message>
         <source>save file</source>
         <translation>enregistre le fichier</translation>
     </message>
@@ -83,13 +77,6 @@ de dimension %3kB.Acceptez vous ce transfert?</translation>
     <message>
         <source>Resume</source>
         <translation>Resumé</translation>
-    </message>
-    <message>
-        <source>User %1 want to send you a file %2
-of size %3kB.
-This is probably a next part of %4
- What should I do?</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Select another file</source>
@@ -109,6 +96,18 @@ This is probably a next part of %4
     </message>
     <message>
         <source>File transfer finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User %1 wants to send you a file %2
+of size %3kB.
+This is probably a next part of %4
+ What should I do?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User %1 wants to send you a file %2
+of size %3kB. Accept transfer?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -175,6 +174,29 @@ This is probably a next part of %4
     </message>
     <message>
         <source>Hide</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NewFileTransferNotification</name>
+    <message>
+        <source>Continue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save file under new name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore transfer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reject</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

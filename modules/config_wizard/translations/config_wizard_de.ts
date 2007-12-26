@@ -108,10 +108,6 @@ Klicken Sie bitte auf &quot;Weiter&quot;</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;h3&gt;Welcome in Kadu&lt;/h3&gt;&lt;h4&gt;the Gadu-gadu network client for *nix and MacOS X.&lt;/h4&gt;&lt;p&gt;This is first time you launch Kadu. This wizard will help you to configure the basic settings of Kadu. If you are experienced Kadu user you may omit the wizard by clicking Cancel.&lt;/p&gt;&lt;p&gt;Please enter your account data. If you don&apos;t have one, you can create new here.&lt;/p&gt;&lt;p&gt;E-mail address is only needed when you want to recover lost password to account&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>WWW browser</source>
         <translation type="unfinished"></translation>
     </message>
@@ -197,6 +193,10 @@ Klicken Sie bitte auf &quot;Weiter&quot;</translation>
     </message>
     <message>
         <source>&lt;p&gt;Please select your sound driver for sound notifications. If you don&apos;t want sound notifications, use None driver.&lt;/p&gt;&lt;p&gt;If you don&apos;t know which driver to use, just check every ony with Test sound button.Don&apos;t forget to unmute your system before!&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;h3&gt;Welcome in Kadu&lt;/h3&gt;&lt;h4&gt;the Gadu-gadu network client for *nix and MacOS X.&lt;/h4&gt;&lt;p&gt;This is first time you launch Kadu. This wizard will help you to configure the basic settings of Kadu. If you are experienced Kadu user you may omit the wizard by clicking Cancel.&lt;/p&gt;&lt;p&gt;Please enter your account data. If you don&apos;t have one, you can create new here.&lt;/p&gt;&lt;p&gt;E-mail address is needed when you want to recover lost password to account&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

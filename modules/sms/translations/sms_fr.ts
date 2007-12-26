@@ -52,7 +52,7 @@ Do you want to send next message?</source>
     <name>SmsConfigurationUiHandler</name>
     <message>
         <source>Send SMS</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Envoie SMS</translation>
     </message>
     <message>
         <source>Up</source>

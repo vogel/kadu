@@ -39,26 +39,26 @@
     </message>
     <message>
         <source>Show status changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokaż zmiany statusu</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieznany</translation>
     </message>
 </context>
 <context>
     <name>HistoryManager</name>
     <message>
         <source>Clear history?</source>
-        <translation type="unfinished"></translation>
+        <translation>Wyczyścić historię?</translation>
     </message>
     <message>
         <source>Yes</source>
-        <translation type="unfinished"></translation>
+        <translation>Tak</translation>
     </message>
     <message>
         <source>No</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie</translation>
     </message>
 </context>
 <context>
@@ -69,21 +69,23 @@
     </message>
     <message>
         <source>History</source>
-        <translation type="unfinished">Historia</translation>
+        <translation>Historia</translation>
     </message>
     <message>
         <source>Clear history</source>
-        <translation type="unfinished">Wyczyść historię</translation>
+        <translation>Wyczyść historię</translation>
     </message>
     <message>
         <source>%1 day(s) %2 hour(s)</source>
-        <translation type="unfinished">dni: %1 godzin: %2</translation>
+        <translation>dni: %1 godzin: %2</translation>
     </message>
     <message>
         <source>The following users were deleted:
 %0
 Do you want to remove history as well?</source>
-        <translation type="unfinished"></translation>
+        <translation>Następujący użytkownicy zostali usunięci:
+%0
+Czy chcesz usunąć ich z histori?</translation>
     </message>
 </context>
 <context>

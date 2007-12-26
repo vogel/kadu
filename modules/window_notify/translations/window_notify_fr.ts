@@ -9,7 +9,7 @@
 <context>
     <name>NotificationWindow</name>
     <message>
-        <source>Ok</source>
+        <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

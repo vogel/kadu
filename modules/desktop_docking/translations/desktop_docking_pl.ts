@@ -3,7 +3,7 @@
     <name>DesktopDock</name>
     <message>
         <source>Move</source>
-        <translation type="unfinished">Przesuń</translation>
+        <translation>Przesuń</translation>
     </message>
 </context>
 </TS>

@@ -10,11 +10,11 @@
     <name>SpeechConfigurationWidget</name>
     <message>
         <source>Male format</source>
-        <translation type="unfinished"></translation>
+        <translation>Format męski</translation>
     </message>
     <message>
         <source>Female format</source>
-        <translation type="unfinished"></translation>
+        <translation>Format żeński</translation>
     </message>
 </context>
 </TS>

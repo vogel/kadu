@@ -11,19 +11,19 @@
     </message>
     <message>
         <source>Priorities</source>
-        <translation type="unfinished"></translation>
+        <translation>Priorytety</translation>
     </message>
     <message>
         <source>Up</source>
-        <translation type="unfinished"></translation>
+        <translation>W górę</translation>
     </message>
     <message>
         <source>Down</source>
-        <translation type="unfinished"></translation>
+        <translation>W dół</translation>
     </message>
     <message>
         <source>Sorting functions</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortowanie</translation>
     </message>
 </context>
 </TS>

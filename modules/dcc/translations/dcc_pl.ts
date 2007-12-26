@@ -31,7 +31,7 @@ plików lub oba komputery są za NAT-em.</translation>
 IP address (%2) differs from what GG server returned
 as his/her IP address (%3). It may be spoofing
 or he/she has port forwarding. Continue connection?</source>
-        <translation type="unfinished">%1 prosi o bezpośrednie połączenie ale jego / jej
+        <translation>%1 prosi o bezpośrednie połączenie ale jego / jej
 adres IP (%2) różni się od tego jaki zwrócił serwer GG 
 jako jego / jej adres IP: (%3). To może być próba podszycia
 się albo on / ona ma przekierowanie portów.
@@ -64,12 +64,6 @@ Kontynuować połączenie?</translation>
         <translation>Wybierz lokalizację pliku</translation>
     </message>
     <message>
-        <source>User %1 wants to send us a file %2
-of size %3kB. Accept transfer?</source>
-        <translation>Użytkownik %1  chciałby przesłać Tobie plik %2
-o rozmiarze %3kB. Akceptujesz?</translation>
-    </message>
-    <message>
         <source>save file</source>
         <translation>zapisz plik</translation>
     </message>
@@ -84,16 +78,6 @@ o rozmiarze %3kB. Akceptujesz?</translation>
     <message>
         <source>Resume</source>
         <translation>Wznów</translation>
-    </message>
-    <message>
-        <source>User %1 want to send you a file %2
-of size %3kB.
-This is probably a next part of %4
- What should I do?</source>
-        <translation>Użytkownik %1 chce przesłać ci plik %2
-o rozmiarze %3kB.
-Jest prawdopodobnie następną częścią z %4
-Co chcesz zrobić?</translation>
     </message>
     <message>
         <source>Select another file</source>
@@ -114,6 +98,22 @@ Co chcesz zrobić?</translation>
     <message>
         <source>File transfer finished</source>
         <translation>Transfer pliku zakończony</translation>
+    </message>
+    <message>
+        <source>User %1 wants to send you a file %2
+of size %3kB.
+This is probably a next part of %4
+ What should I do?</source>
+        <translation>Użytkownik %1 chce przesłać ci plik %2
+o rozmiarze %3kB.
+Jest to prawdopodobnie następna część %4
+ Co powinienem zrobić?</translation>
+    </message>
+    <message>
+        <source>User %1 wants to send you a file %2
+of size %3kB. Accept transfer?</source>
+        <translation>Użytkownik %1 chce przesłac ci plik %2
+o rozmiarze %3kB. Akceptujesz transfer?</translation>
     </message>
 </context>
 <context>
@@ -164,7 +164,7 @@ Co chcesz zrobić?</translation>
     </message>
     <message>
         <source>&lt;b&gt;Rejected&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Odrzucony&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -180,6 +180,29 @@ Co chcesz zrobić?</translation>
     <message>
         <source>Hide</source>
         <translation>Ukryj</translation>
+    </message>
+</context>
+<context>
+    <name>NewFileTransferNotification</name>
+    <message>
+        <source>Continue</source>
+        <translation>Kontynuuj</translation>
+    </message>
+    <message>
+        <source>Save file under new name</source>
+        <translation>Zapisz plik pod nową nazwą</translation>
+    </message>
+    <message>
+        <source>Ignore transfer</source>
+        <translation>Ignoruj transfer</translation>
+    </message>
+    <message>
+        <source>Accept</source>
+        <translation>Akceptuj</translation>
+    </message>
+    <message>
+        <source>Reject</source>
+        <translation>Odrzuć</translation>
     </message>
 </context>
 </TS>

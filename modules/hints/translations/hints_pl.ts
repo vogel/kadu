@@ -14,34 +14,34 @@
     </message>
     <message>
         <source>Dont hide</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie ukrywaj</translation>
     </message>
 </context>
 <context>
     <name>HintsConfigurationWidget</name>
     <message>
         <source>&lt;b&gt;Preview&lt;/b&gt; text</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Podgląd&lt;/b&gt; tekstu</translation>
     </message>
     <message>
         <source>Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Czcionka</translation>
     </message>
     <message>
         <source>Font color</source>
-        <translation type="unfinished"></translation>
+        <translation>Kolor czcionki</translation>
     </message>
     <message>
         <source>Background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Kolor tła</translation>
     </message>
     <message>
         <source>Timeout</source>
-        <translation type="unfinished"></translation>
+        <translation>Czas zaniku</translation>
     </message>
     <message>
         <source>Syntax</source>
-        <translation type="unfinished"></translation>
+        <translation>Składnia</translation>
     </message>
 </context>
 </TS>

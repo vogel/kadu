@@ -64,12 +64,6 @@ ha port forwarding attivato. Continuare connessione ?
         <translation>Selezioni percorso del file</translation>
     </message>
     <message>
-        <source>User %1 wants to send us a file %2
-of size %3kB. Accept transfer?</source>
-        <translation>Contatto %1 manda il file %2
-di %3kB. Accetti trasferimento ?</translation>
-    </message>
-    <message>
         <source>save file</source>
         <translation>salva il file</translation>
     </message>
@@ -84,16 +78,6 @@ di %3kB. Accetti trasferimento ?</translation>
     <message>
         <source>Resume</source>
         <translation>Resume</translation>
-    </message>
-    <message>
-        <source>User %1 want to send you a file %2
-of size %3kB.
-This is probably a next part of %4
- What should I do?</source>
-        <translation>Contatto %1 vuole trasferire a te il File %2
-di dimensione %3kB.
-Probbabilmente è la parte successiva di %4
-Cosa vuoi fare?</translation>
     </message>
     <message>
         <source>Select another file</source>
@@ -113,6 +97,18 @@ Cosa vuoi fare?</translation>
     </message>
     <message>
         <source>File transfer finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User %1 wants to send you a file %2
+of size %3kB.
+This is probably a next part of %4
+ What should I do?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User %1 wants to send you a file %2
+of size %3kB. Accept transfer?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -179,6 +175,29 @@ Cosa vuoi fare?</translation>
     </message>
     <message>
         <source>Hide</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NewFileTransferNotification</name>
+    <message>
+        <source>Continue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save file under new name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore transfer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reject</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

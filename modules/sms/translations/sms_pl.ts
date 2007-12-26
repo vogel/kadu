@@ -45,26 +45,26 @@ Chcesz wysłać następną wiadomość?</translation>
     </message>
     <message>
         <source>&amp;Send</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Wyślij</translation>
     </message>
 </context>
 <context>
     <name>SmsConfigurationUiHandler</name>
     <message>
         <source>Send SMS</source>
-        <translation type="unfinished">Wyślij SMS</translation>
+        <translation>Wyślij SMS</translation>
     </message>
     <message>
         <source>Up</source>
-        <translation type="unfinished">Przenieś w górę</translation>
+        <translation>Przenieś w górę</translation>
     </message>
     <message>
         <source>Down</source>
-        <translation type="unfinished">Przenieś w dół</translation>
+        <translation>Przenieś w dół</translation>
     </message>
     <message>
         <source>Gateways priorites</source>
-        <translation type="unfinished"></translation>
+        <translation>Priorytety bramek</translation>
     </message>
 </context>
 <context>
