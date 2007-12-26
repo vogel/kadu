@@ -692,6 +692,14 @@ werden gelöscht. Sind Sie sicher?</translation>
         <source>Not found</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Kadu configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Advenced chat&apos;s look configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MessageBox</name>
@@ -759,30 +767,6 @@ werden gelöscht. Sind Sie sicher?</translation>
         <translation>Nicht geladen</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Module: &lt;/b&gt;</source>
-        <translation>&lt;b&gt;Modul: &lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;br/&gt;&lt;b&gt;Depends on: &lt;/b&gt;</source>
-        <translation>&lt;br/&gt;&lt;b&gt;Erfordert: &lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;br/&gt;&lt;b&gt;Conflicts with: &lt;/b&gt;</source>
-        <translation>&lt;br/&gt;&lt;b&gt;Konflikt mit: &lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;br/&gt;&lt;b&gt;Provides: &lt;/b&gt;</source>
-        <translation>&lt;br/&gt;&lt;b&gt;Bringt mit: &lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;br/&gt;&lt;b&gt;Author: &lt;/b&gt;</source>
-        <translation>&lt;br/&gt;&lt;b&gt;Autor: &lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;br/&gt;&lt;b&gt;Description: &lt;/b&gt;</source>
-        <translation>&lt;br/&gt;&lt;b&gt;Beschreibung: &lt;/b&gt;</translation>
-    </message>
-    <message>
         <source>Version</source>
         <translation>Version</translation>
     </message>
@@ -792,12 +776,12 @@ werden gelöscht. Sind Sie sicher?</translation>
 mit:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Bringt mit:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Autor:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Verion&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Beschreibung:&lt;/b&gt;</translation>
     </message>
     <message>
-        <source>&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;</source>
-        <translation>&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;</translation>
-    </message>
-    <message>
         <source>Hide base modules</source>
         <translation>Verstecke Standardmodule</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Module: &lt;/b&gt;%1&lt;br/&gt;&lt;b&gt;Depends on: &lt;/b&gt;%2&lt;br/&gt;&lt;b&gt;Conflicts with: &lt;/b&gt;%3&lt;br/&gt;&lt;b&gt;Provides: &lt;/b&gt;%4&lt;br/&gt;&lt;b&gt;Author: &lt;/b&gt;%5&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;%6&lt;br/&gt;&lt;b&gt;Description: &lt;/b&gt;%7</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1239,23 +1223,23 @@ Vielleicht ist es kein Kadu-Modul.</translation>
 <context>
     <name>UserBox</name>
     <message>
-        <source>Compares statuses</source>
-        <translation>Vergleiche Zustände</translation>
-    </message>
-    <message>
-        <source>Compares nicks (&quot;altnicks&quot;)</source>
-        <translation>Vergleiche Benutzernamen (&quot;alternative Benutzernamen&quot;)</translation>
-    </message>
-    <message>
-        <source>Compares nicks (&quot;altnicks&quot;) case insensitive</source>
-        <translation>Vergleiche Benutzernamen (&quot;alternative Benutzernamen&quot;) als Kleinbuchstaben</translation>
-    </message>
-    <message>
         <source>Hide descriptions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Show descriptions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Statuses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nicks, case insensitive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nicks</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

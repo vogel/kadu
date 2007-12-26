@@ -63,43 +63,43 @@ Jest to wysoce ryzykowne!</translation>
     </message>
     <message>
         <source>Mark</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Smith</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Jimbo</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Yesterday at </source>
-        <translation type="unfinished"></translation>
+        <translation>Wczoraj o </translation>
     </message>
     <message>
         <source>dddd at </source>
-        <translation type="unfinished"></translation>
+        <translation>dddd o </translation>
     </message>
     <message>
         <source>%1 weeks ago at </source>
-        <translation type="unfinished"></translation>
+        <translation>%1 tygodni temu o  </translation>
     </message>
     <message>
         <source>%1 weeks and %2 days ago at </source>
-        <translation type="unfinished"></translation>
+        <translation>%1 tydzień i %2 dni temu o </translation>
     </message>
     <message>
         <source>d MMMM yyyy at </source>
-        <translation type="unfinished"></translation>
+        <translation>d MMMM rrrr o </translation>
     </message>
     <message>
         <source>Mail client was not specified. Visit the configuration section</source>
-        <translation type="unfinished"></translation>
+        <translation>Klient e-mail nie został skonfigurowany. Sprawdź sekcję konfiguracji</translation>
     </message>
     <message>
         <source>Could not spawn Mail client process. Check if the Mail client is functional</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie mogę przekazać polecenia do klienta e-mail. Sprawdź czy klient pracuje prawidłowo</translation>
     </message>
 </context>
 <context>
@@ -200,7 +200,7 @@ Jest to wysoce ryzykowne!</translation>
     <name>ChatWidget</name>
     <message>
         <source>Leave conference</source>
-        <translation type="unfinished"></translation>
+        <translation>Opuść konferencję</translation>
     </message>
     <message>
         <source>Edit window:</source>
@@ -410,11 +410,11 @@ Zbyt wiele prób połączeń z niepoprawnym hasłem</translation>
     </message>
     <message>
         <source>Messagebox full.</source>
-        <translation type="unfinished"></translation>
+        <translation>Skrzynka odbiorcza jest pełna.</translation>
     </message>
     <message>
         <source>Message not delivered.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wiadomość nie dostarczona.</translation>
     </message>
 </context>
 <context>
@@ -595,7 +595,7 @@ Czy na pewno tego chcesz?</translation>
     </message>
     <message>
         <source>Write email message</source>
-        <translation type="unfinished"></translation>
+        <translation>Napisz wiadomość e-mail</translation>
     </message>
     <message>
         <source>Search in directory</source>
@@ -615,35 +615,35 @@ Czy na pewno tego chcesz?</translation>
     </message>
     <message>
         <source>Hide offline users</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukryj kontakty niedostępne</translation>
     </message>
     <message>
         <source>Show offline users</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokaż kontakty niedostepne</translation>
     </message>
     <message>
         <source>Hide users without description</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukryj kontakty bez opisu</translation>
     </message>
     <message>
         <source>Show users without description</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokaż kontakty bez opisu</translation>
     </message>
     <message>
         <source>Show only online and description users</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokaż tylko kontakty dostepne i z opisem</translation>
     </message>
     <message>
         <source>Show all users</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokaż wszystkie kontakty</translation>
     </message>
     <message>
         <source>Recent chats...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ostatnie rozmowy...</translation>
     </message>
     <message>
         <source>&amp;Open chat with...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Rozpocznij rozmowę z ...</translation>
     </message>
 </context>
 <context>
@@ -697,6 +697,14 @@ Czy na pewno tego chcesz?</translation>
     <message>
         <source>Not found</source>
         <translation>Nie znalezione</translation>
+    </message>
+    <message>
+        <source>Kadu configuration</source>
+        <translation>Konfiguracja Kadu</translation>
+    </message>
+    <message>
+        <source>Advenced chat&apos;s look configuration</source>
+        <translation>Zaawansowana konfiguracja wyglądu okna rozmowy</translation>
     </message>
 </context>
 <context>
@@ -765,30 +773,6 @@ Czy na pewno tego chcesz?</translation>
         <translation>Nie załadowany</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Module: &lt;/b&gt;</source>
-        <translation>&lt;b&gt;Moduł: &lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;br/&gt;&lt;b&gt;Depends on: &lt;/b&gt;</source>
-        <translation>&lt;br/&gt;&lt;b&gt;Wymaga: &lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;br/&gt;&lt;b&gt;Conflicts with: &lt;/b&gt;</source>
-        <translation>&lt;br/&gt;&lt;b&gt;Konflikt z: &lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;br/&gt;&lt;b&gt;Provides: &lt;/b&gt;</source>
-        <translation>&lt;br/&gt;&lt;b&gt;Dostarcza: &lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;br/&gt;&lt;b&gt;Author: &lt;/b&gt;</source>
-        <translation>&lt;br/&gt;&lt;b&gt;Autor: &lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;br/&gt;&lt;b&gt;Description: &lt;/b&gt;</source>
-        <translation>&lt;br/&gt;&lt;b&gt;Opis: &lt;/b&gt;</translation>
-    </message>
-    <message>
         <source>Version</source>
         <translation>Wersja</translation>
     </message>
@@ -797,12 +781,12 @@ Czy na pewno tego chcesz?</translation>
         <translation>&lt;b&gt;Moduł:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Wymaga:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Konflikt z:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Dostarcza:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Autor:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Wersja:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Opis:&lt;/b&gt;</translation>
     </message>
     <message>
-        <source>&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;</source>
-        <translation>&lt;br/&gt;&lt;b&gt;Wersja: &lt;/b&gt;</translation>
-    </message>
-    <message>
         <source>Hide base modules</source>
         <translation>Ukryj standardowe moduły</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Module: &lt;/b&gt;%1&lt;br/&gt;&lt;b&gt;Depends on: &lt;/b&gt;%2&lt;br/&gt;&lt;b&gt;Conflicts with: &lt;/b&gt;%3&lt;br/&gt;&lt;b&gt;Provides: &lt;/b&gt;%4&lt;br/&gt;&lt;b&gt;Author: &lt;/b&gt;%5&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;%6&lt;br/&gt;&lt;b&gt;Description: &lt;/b&gt;%7</source>
+        <translation>&lt;b&gt;Moduł: &lt;/b&gt;%1&lt;br/&gt;&lt;b&gt;Wymaga: &lt;/b&gt;%2&lt;br/&gt;&lt;b&gt;Konflikt z: &lt;/b&gt;%3&lt;br/&gt;&lt;b&gt;Dostarcza: &lt;/b&gt;%4&lt;br/&gt;&lt;b&gt;Autor: &lt;/b&gt;%5&lt;br/&gt;&lt;b&gt;Wersja: &lt;/b&gt;%6&lt;br/&gt;&lt;b&gt;Opis: &lt;/b&gt;%7</translation>
     </message>
 </context>
 <context>
@@ -1103,7 +1087,7 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     </message>
     <message>
         <source>Cannot search contacts in offline mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie mogę szukać kontaktów w trybie &quot;niedostępny&quot;</translation>
     </message>
 </context>
 <context>
@@ -1132,14 +1116,14 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     </message>
     <message>
         <source>Unable to remove syntax: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Niemożliwe usunięcie składni: %1</translation>
     </message>
 </context>
 <context>
     <name>SyntaxEditorWindow</name>
     <message>
         <source>Kadu syntax editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Edytor składni Kadu</translation>
     </message>
     <message>
         <source>preview</source>
@@ -1159,19 +1143,19 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     </message>
     <message>
         <source>New syntax name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nowa nazwa składni</translation>
     </message>
     <message>
         <source>Enter new syntax name</source>
-        <translation type="unfinished"></translation>
+        <translation>Wpisz nową nazwę składni</translation>
     </message>
     <message>
         <source>Syntax %1 already exists and cannot be modified</source>
-        <translation type="unfinished"></translation>
+        <translation>Składnia %1 już istnieje i nie może być zmodyfikowana</translation>
     </message>
     <message>
         <source>Overwrite %1 syntax?</source>
-        <translation type="unfinished"></translation>
+        <translation>Nadpisać składnie %1?</translation>
     </message>
 </context>
 <context>
@@ -1244,24 +1228,24 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
 <context>
     <name>UserBox</name>
     <message>
-        <source>Compares statuses</source>
-        <translation>Porównuje statusy</translation>
-    </message>
-    <message>
-        <source>Compares nicks (&quot;altnicks&quot;)</source>
-        <translation>Porównuje pseudonimy (wyświetlaną nazwę)</translation>
-    </message>
-    <message>
-        <source>Compares nicks (&quot;altnicks&quot;) case insensitive</source>
-        <translation>Porównuje pseudonimy (wyświetlaną nazwę) bez względu na wielkość liter</translation>
-    </message>
-    <message>
         <source>Hide descriptions</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukryj opis</translation>
     </message>
     <message>
         <source>Show descriptions</source>
+        <translation>Pokaż opis</translation>
+    </message>
+    <message>
+        <source>Statuses</source>
+        <translation>Statusy</translation>
+    </message>
+    <message>
+        <source>Nicks, case insensitive</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nicks</source>
+        <translation>Pseudonimy</translation>
     </message>
 </context>
 <context>
@@ -1388,15 +1372,15 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     </message>
     <message>
         <source>Change icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Zmień ikonę</translation>
     </message>
     <message>
         <source>Delete icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń ikonę</translation>
     </message>
     <message>
         <source>Choose an icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Wybierz ikonę</translation>
     </message>
     <message>
         <source>Icons (*.png *.xpm *.jpg)</source>
@@ -1583,7 +1567,7 @@ Jesteś pewny że tego chcesz?</translation>
     </message>
     <message>
         <source>File exists. Are you sure you want to overwrite it?</source>
-        <translation type="unfinished"></translation>
+        <translation>Plik już istnieje. Czy napewno go nadpisać?</translation>
     </message>
 </context>
 </TS>

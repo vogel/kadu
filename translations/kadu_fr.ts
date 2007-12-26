@@ -689,6 +689,14 @@ serons effacés.Veuillez confirmer?</translation>
         <source>Not found</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Kadu configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Advenced chat&apos;s look configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MessageBox</name>
@@ -756,30 +764,6 @@ serons effacés.Veuillez confirmer?</translation>
         <translation>Non chargé</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Module: &lt;/b&gt;</source>
-        <translation>&lt;b&gt;Module: &lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;br/&gt;&lt;b&gt;Depends on: &lt;/b&gt;</source>
-        <translation>&lt;br/&gt;&lt;b&gt;Depends de: &lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;br/&gt;&lt;b&gt;Conflicts with: &lt;/b&gt;</source>
-        <translation>&lt;br/&gt;&lt;b&gt;Conflit avec: &lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;br/&gt;&lt;b&gt;Provides: &lt;/b&gt;</source>
-        <translation>&lt;br/&gt;&lt;b&gt;Fournit: &lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;br/&gt;&lt;b&gt;Author: &lt;/b&gt;</source>
-        <translation>&lt;br/&gt;&lt;b&gt;Auteur: &lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;br/&gt;&lt;b&gt;Description: &lt;/b&gt;</source>
-        <translation>&lt;br/&gt;&lt;b&gt;Description: &lt;/b&gt;</translation>
-    </message>
-    <message>
         <source>Version</source>
         <translation>Version</translation>
     </message>
@@ -788,11 +772,11 @@ serons effacés.Veuillez confirmer?</translation>
         <translation>&lt;b&gt;Module :&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Dépend de :&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflits avec :&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Fournit :&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Auteur :&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Version :&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description :&lt;/b&gt;&lt;b&gt;&lt;/b&gt;</translation>
     </message>
     <message>
-        <source>&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;</source>
-        <translation>&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;</translation>
+        <source>Hide base modules</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Hide base modules</source>
+        <source>&lt;b&gt;Module: &lt;/b&gt;%1&lt;br/&gt;&lt;b&gt;Depends on: &lt;/b&gt;%2&lt;br/&gt;&lt;b&gt;Conflicts with: &lt;/b&gt;%3&lt;br/&gt;&lt;b&gt;Provides: &lt;/b&gt;%4&lt;br/&gt;&lt;b&gt;Author: &lt;/b&gt;%5&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;%6&lt;br/&gt;&lt;b&gt;Description: &lt;/b&gt;%7</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1235,23 +1219,23 @@ Peut être module incompatible avec Kadu.</translation>
 <context>
     <name>UserBox</name>
     <message>
-        <source>Compares statuses</source>
-        <translation>Compare des statuts</translation>
-    </message>
-    <message>
-        <source>Compares nicks (&quot;altnicks&quot;)</source>
-        <translation>Compare des pseudo (&quot;anciens&quot;)</translation>
-    </message>
-    <message>
-        <source>Compares nicks (&quot;altnicks&quot;) case insensitive</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Hide descriptions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Show descriptions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Statuses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nicks, case insensitive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nicks</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
