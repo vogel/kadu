@@ -25,6 +25,8 @@ class ChatWidget;
 
 class QSpinBox;
 
+class HintsConfigurationWidget;
+
 class HintManager : public Notifier, public ConfigurationUiHandler, public ToolTipClass, ConfigurationAwareObject
 {
 	Q_OBJECT
@@ -38,6 +40,7 @@ private:
 
 	QSpinBox *minimumWidth;
 	QSpinBox *maximumWidth;
+	HintsConfigurationWidget *configurationWidget;
 
 	QMap<QPair<UserListElements, QString>, Hint *> linkedHints;
 

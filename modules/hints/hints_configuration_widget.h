@@ -58,6 +58,10 @@ public:
 	virtual void saveNotifyConfigurations();
 
 	virtual void switchToEvent(const QString &event);
+
+public slots:
+	void setAllEnabled(bool enabled);
+
 };
 
 #endif // HINTS_CONFIGURATION_WIDGET_H

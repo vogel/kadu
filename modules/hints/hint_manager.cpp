@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <qapplication.h>
+#include <qcheckbox.h>
 #include <qspinbox.h>
 #include <qstylesheet.h>
 
@@ -102,12 +103,14 @@ void HintManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainCo
 	connect(ownPosition, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("hints/ownPositionY"), SLOT(setEnabled(bool)));
 	connect(ownPosition, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("hints/ownPositionCorner"), SLOT(setEnabled(bool)));
 
-	QWidget *setAll = mainConfigurationWindow->widgetById("hints/setAll");
+	QCheckBox *setAll = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widgetById("hints/setAll"));
 	connect(setAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("hints/setAllPreview"), SLOT(setEnabled(bool)));
 	connect(setAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("hints/setAll_timeout"), SLOT(setEnabled(bool)));
 	connect(setAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("hints/setAll_fgcolor"), SLOT(setEnabled(bool)));
 	connect(setAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("hints/setAll_bgcolor"), SLOT(setEnabled(bool)));
 	connect(setAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("hints/setAll_font"), SLOT(setEnabled(bool)));
+	connect(setAll, SIGNAL(toggled(bool)), configurationWidget, SLOT(setAllEnabled(bool)));
+	configurationWidget->setAllEnabled(setAll->isChecked());
 
 	(dynamic_cast<QSpinBox *>(mainConfigurationWindow->widgetById("hints/setAll_timeout")))->setSpecialValueText(tr("Dont hide"));
 
@@ -119,7 +122,8 @@ void HintManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainCo
 
 NotifierConfigurationWidget *HintManager::createConfigurationWidget(QWidget *parent, char *name)
 {
-	return new HintsConfigurationWidget(parent, name);
+	configurationWidget = new HintsConfigurationWidget(parent, name);
+	return configurationWidget;
 }
 
 void HintManager::minimumWidthChanged(int value)

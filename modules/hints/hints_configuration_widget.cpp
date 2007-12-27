@@ -131,3 +131,13 @@ void HintsConfigurationWidget::syntaxChanged(const QString &syntax)
 {
 	currentProperties.syntax = syntax;
 }
+
+void HintsConfigurationWidget::setAllEnabled(bool enabled)
+{
+	font->setDisabled(enabled);
+	foregroundColor->setDisabled(enabled);
+	backgroundColor->setDisabled(enabled);
+	timeout->setDisabled(enabled);
+	syntax->setDisabled(enabled);
+	preview->setDisabled(enabled);
+}
