@@ -56,7 +56,7 @@ void NotifyGroupBox::toggledSlot(bool toggle)
 }
 
 Notify::Notify(QObject *parent, const char *name)
-	: QObject(parent, name)
+	: QObject(parent, name), notificationsGroupBox(0)
 {
 	kdebugf();
 
@@ -163,31 +163,55 @@ void Notify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigu
 	connect(mainConfigurationWindow->widgetById("notify/notifyAll"), SIGNAL(toggled(bool)), notifyUsers, SLOT(setDisabled(bool)));
 	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
 
-	ConfigGroupBox *groupBox = mainConfigurationWindow->configGroupBox("Notifications", "General", "Notifications");
+	notificationsGroupBox = mainConfigurationWindow->configGroupBox("Notifications", "General", "Notifications");
 
 	FOREACH(notifierData, Notifiers)
-	{
-		NotifyGroupBox *configurationGroupBox = new NotifyGroupBox(notifierData.key(), qApp->translate("@default", notifierData.key()), groupBox->widget());
-		connect(configurationGroupBox, SIGNAL(toggled(const QString &, bool)), this, SLOT(notifierToggled(const QString &, bool)));
-
-		(*notifierData).configurationGroupBox = configurationGroupBox;
-
-		NotifierConfigurationWidget *notifyConfigurationWidget = (*notifierData).notifier->createConfigurationWidget(configurationGroupBox);
-		if (notifyConfigurationWidget)
-		{
-			(*notifierData).configurationWidget = notifyConfigurationWidget;
-			notifyConfigurationWidget->loadNotifyConfigurations();
-		}
-		else
-		{
-			configurationGroupBox->setFlat(true);
-			configurationGroupBox->setLineWidth(0);
-		}
-
-		groupBox->addWidget(configurationGroupBox, true);
-	}
+		addConfigurationWidget(*notifierData, notifierData.key());
 
 	eventSwitched(0);
+}
+
+void Notify::mainConfigurationWindowDestroyed()
+{
+	notificationsGroupBox = 0;
+
+	FOREACH(notifierData, Notifiers)
+		(*notifierData).configurationWidget = 0;
+}
+
+void Notify::addConfigurationWidget(NotifierData &notifier, const QString &name)
+{
+	NotifyGroupBox *configurationGroupBox = new NotifyGroupBox(name, qApp->translate("@default", name), notificationsGroupBox->widget());
+	connect(configurationGroupBox, SIGNAL(toggled(const QString &, bool)), this, SLOT(notifierToggled(const QString &, bool)));
+
+	notifier.configurationGroupBox = configurationGroupBox;
+
+	NotifierConfigurationWidget *notifyConfigurationWidget = notifier.notifier->createConfigurationWidget(configurationGroupBox);
+	if (notifyConfigurationWidget)
+	{
+		notifier.configurationWidget = notifyConfigurationWidget;
+		notifyConfigurationWidget->loadNotifyConfigurations();
+	}
+	else
+	{
+		configurationGroupBox->setFlat(true);
+		configurationGroupBox->setLineWidth(0);
+	}
+
+	notificationsGroupBox->addWidget(configurationGroupBox, true);
+	configurationGroupBox->show();
+}
+
+void Notify::removeConfigurationWidget(NotifierData &notifier)
+{
+	if (notifier.configurationWidget)
+	{
+		delete notifier.configurationWidget;
+		notifier.configurationWidget = 0;
+	}
+
+	delete notifier.configurationGroupBox;
+	notifier.configurationGroupBox = 0;
 }
 
 void Notify::eventSwitched(int index)
@@ -203,7 +227,8 @@ void Notify::eventSwitched(int index)
 		if ((*notifierData).configurationWidget)
 			(*notifierData).configurationWidget->switchToEvent(CurrentEvent);
 
-		(*notifierData).configurationGroupBox->setChecked((*notifierData).events[CurrentEvent]);
+		if ((*notifierData).configurationGroupBox)
+			(*notifierData).configurationGroupBox->setChecked((*notifierData).events[CurrentEvent]);
 	}
 }
 
@@ -413,19 +438,27 @@ void Notify::registerNotifier(const QString &name, Notifier *notifier)
 	Notifiers[name].configurationWidget = 0;
 	Notifiers[name].configurationGroupBox = 0;
 
+	if (notificationsGroupBox)
+		addConfigurationWidget(Notifiers[name], name);
+
 	kdebugf2();
 }
 
 void Notify::unregisterNotifier(const QString &name)
 {
 	kdebugf();
+
 	if (!Notifiers.contains(name))
 	{
 		kdebugm(KDEBUG_WARNING, "WARNING: '%s' not registered!\n", name.local8Bit().data());
 		return;
 	}
 
+	if (notificationsGroupBox)
+		removeConfigurationWidget(Notifiers[name]);
+
 	Notifiers.remove(name);
+
 	kdebugf2();
 }
 

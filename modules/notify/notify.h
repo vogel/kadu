@@ -152,6 +152,7 @@ class Notify : public ConfigurationUiHandler
 	QListBox *allUsers;
 	QListBox *notifiedUsers;
 	ConfigComboBox *notifications;
+	ConfigGroupBox *notificationsGroupBox;
 
 	struct NotifierData
 	{
@@ -177,6 +178,9 @@ class Notify : public ConfigurationUiHandler
 	void import_connection_from_0_5_0(const QString &notifierName, const QString &oldConnectionName, const QString &newConnectionName);
 	void createDefaultConfiguration();
 
+	void addConfigurationWidget(NotifierData &notifier, const QString &name);
+	void removeConfigurationWidget(NotifierData &notifier);
+
 private slots:
 
 	void messageReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t t);
@@ -196,6 +200,7 @@ public:
 	virtual ~Notify();
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+	void mainConfigurationWindowDestroyed();
 
 	void notify(Notification *notification);
 
