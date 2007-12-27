@@ -1,23 +1,29 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS><TS version="1.1">
 <context>
     <name>MigrationDialog</name>
     <message>
+        <location filename="../migration.cpp" line="38"/>
         <source>Migration</source>
         <translation>Migrazione</translation>
     </message>
     <message>
+        <location filename="../migration.cpp" line="41"/>
         <source>Migration steps</source>
         <translation>Passi di migrazione</translation>
     </message>
     <message>
+        <location filename="../migration.cpp" line="46"/>
         <source>Migration in progress ...</source>
         <translation>Migrazione prosegue....</translation>
     </message>
     <message>
+        <location filename="../migration.cpp" line="47"/>
         <source>&amp;Finish</source>
         <translation>&amp;Fine</translation>
     </message>
     <message>
+        <location filename="../migration.cpp" line="108"/>
         <source>Kadu detected, that you were using EKG, GnuGadu or
 older version of Kadu before. Would you like to try
 to import your settings from %1?</source>
@@ -25,14 +31,17 @@ to import your settings from %1?</source>
 vecchie versioni Kadu. Vuoi importare le impostazioni da %1?</translation>
     </message>
     <message>
+        <location filename="../migration.cpp" line="131"/>
         <source>Step 1: Migrating settings to kadu directory</source>
         <translation>Passo 1: Migrazione delle impostazioni alla catrella kadu</translation>
     </message>
     <message>
+        <location filename="../migration.cpp" line="148"/>
         <source>Step 1: Settings migrated to kadu directory</source>
         <translation>Passo 1: Impostazioni trasferiti alla cartella kadu</translation>
     </message>
     <message>
+        <location filename="../migration.cpp" line="151"/>
         <source>Migration process completed. You can remove
 %1directory
 (backup will be a good idea) or leave it for other applications.</source>
@@ -41,22 +50,27 @@ cartella %1
 (backup è buona idea) oppure lascia per altre applicazioni.</translation>
     </message>
     <message>
+        <location filename="../migration.cpp" line="159"/>
         <source>Error migrating data!</source>
         <translation>Errore dati durante la migrazione!</translation>
     </message>
     <message>
+        <location filename="../migration.cpp" line="165"/>
         <source>Cannot start migration process!</source>
         <translation>Pertenza processo migrazione impossibile!</translation>
     </message>
     <message>
+        <location filename="../migration.cpp" line="194"/>
         <source>Step 2: Migrating user list to kadu.conf.xml</source>
         <translation>Passo 2: Migrazione lista contatti a kadu.conf.xml</translation>
     </message>
     <message>
+        <location filename="../migration.cpp" line="200"/>
         <source>Step 2: User list migrated to kadu.conf.xml</source>
         <translation>Passo 2: Lista contatti trasferita a kadu.conf.xml</translation>
     </message>
     <message>
+        <location filename="../migration.cpp" line="203"/>
         <source>Contact list migrated to kadu.conf.xml.You can remove
 %1 and
 %2 now
@@ -67,14 +81,17 @@ cartella %1
 (backup è una buona idea).</translation>
     </message>
     <message>
+        <location filename="../migration.cpp" line="231"/>
         <source>Step 3: Migrating ignored list to kadu.conf.xml</source>
         <translation>Passo 3: Migrazione lista contatti igniorati a kadu.conf.xml</translation>
     </message>
     <message>
+        <location filename="../migration.cpp" line="266"/>
         <source>Step 3: Ignored list migrated to kadu.conf.xml</source>
         <translation>PAsso 3: Lista contatti ignorati trasferita a kadu.conf.xml</translation>
     </message>
     <message>
+        <location filename="../migration.cpp" line="269"/>
         <source>Ignored contact list migrated to kadu.conf.xml.
 You can remove %1 now
 (backup will be a good idea).</source>
@@ -83,14 +100,17 @@ Puoi rimuovere %1 adesso
 (backup è una buona idea).</translation>
     </message>
     <message>
+        <location filename="../migration.cpp" line="378"/>
         <source>Step 4: Migrating config files to kadu.conf.xml</source>
         <translation>Passo 4: Migrazione files di configurazione a kadu.conf.xml</translation>
     </message>
     <message>
+        <location filename="../migration.cpp" line="399"/>
         <source>Step 4: Config files migrated to kadu.conf.xml</source>
         <translation>Passo 4: I files di configurazione sono stati trasferiti a kadu.conf.xml</translation>
     </message>
     <message>
+        <location filename="../migration.cpp" line="402"/>
         <source>Configuration files migrated to kadu.conf.xml.
 You can remove following files now:
 %1
@@ -101,12 +121,14 @@ Puoi rimuovere i seguenti files:
 (backup è una buona idea).</translation>
     </message>
     <message>
+        <location filename="../migration.cpp" line="420"/>
         <source>Migration complete. Kadu will be closed now.
 Please click Finish and than run Kadu again.</source>
         <translation>Migrazione completata. Kadu chiude qui.
 Prego di cliccare su Fine e riavviare Kadu di nuovo.</translation>
     </message>
     <message>
+        <location filename="../migration.cpp" line="422"/>
         <source>Migration complete.</source>
         <translation>Migrazione completata.</translation>
     </message>

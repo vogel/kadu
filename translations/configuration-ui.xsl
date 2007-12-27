@@ -3,13 +3,13 @@
 
 	<xsl:template match="*">
 		<xsl:if test="@name != ''">
-			QT_TRANSLTATE_NOOP("@default", "<xsl:value-of select="@name" />");
+			QT_TRANSLATE_NOOP("@default", "<xsl:value-of select="@name" />");
 		</xsl:if>
 		<xsl:if test="@caption != ''">
-			QT_TRANSLTATE_NOOP("@default", "<xsl:value-of select="@caption" />");
+			QT_TRANSLATE_NOOP("@default", "<xsl:value-of select="@caption" />");
 		</xsl:if>
 		<xsl:if test="@tool-tip != ''">
-			QT_TRANSLTATE_NOOP("@default", "<xsl:value-of select="@tool-tip" />");
+			QT_TRANSLATE_NOOP("@default", "<xsl:value-of select="@tool-tip" />");
 		</xsl:if>
 		<xsl:apply-templates />
 	</xsl:template>

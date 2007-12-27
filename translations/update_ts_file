@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # empty fake file
-#echo > ../kadu-core/.configuration-ui-translations.cpp
-#for i in `ls ../varia/configuration/*.ui`; do
-#	saxon8 $i configuration-ui.xsl >> ../kadu-core/.configuration-ui-translations.cpp
-#done
+echo > ../kadu-core/.configuration-ui-translations.cpp
+for i in `ls ../varia/configuration/*.ui`; do
+	saxon8 $i configuration-ui.xsl >> ../kadu-core/.configuration-ui-translations.cpp
+done
 
-$QTDIR/bin/lupdate -noobsolete -verbose ../kadu-core/*.cpp -ts kadu_it.ts
-$QTDIR/bin/lupdate -noobsolete -verbose ../kadu-core/*.cpp -ts kadu_pl.ts
-$QTDIR/bin/lupdate -noobsolete -verbose ../kadu-core/*.cpp -ts kadu_en.ts
-$QTDIR/bin/lupdate -noobsolete -verbose ../kadu-core/*.cpp -ts kadu_de.ts
-$QTDIR/bin/lupdate -noobsolete -verbose ../kadu-core/*.cpp -ts kadu_fr.ts
+$QTDIR/bin/lupdate -noobsolete -verbose ../kadu-core/*.cpp ../kadu-core/.configuration-ui-translations.cpp -ts kadu_it.ts
+$QTDIR/bin/lupdate -noobsolete -verbose ../kadu-core/*.cpp ../kadu-core/.configuration-ui-translations.cpp -ts kadu_pl.ts
+$QTDIR/bin/lupdate -noobsolete -verbose ../kadu-core/*.cpp ../kadu-core/.configuration-ui-translations.cpp -ts kadu_en.ts
+$QTDIR/bin/lupdate -noobsolete -verbose ../kadu-core/*.cpp ../kadu-core/.configuration-ui-translations.cpp -ts kadu_de.ts
+$QTDIR/bin/lupdate -noobsolete -verbose ../kadu-core/*.cpp ../kadu-core/.configuration-ui-translations.cpp -ts kadu_fr.ts

@@ -264,7 +264,7 @@
 		<tab name="Information Panel">
 			<group-box name="General">
 				<check-box caption="Show information panel" config-section="Look" config-item="ShowInfoPanel" id="showInformationPanel"
-					   tool-tip="Displays information panel belov userbox" />
+					   tool-tip="Displays information panel below userbox" />
 				<check-box caption="Show vertical scrollbar" config-section="Look" config-item="PanelVerticalScrollbar" id="showVerticalScrollbar"
 					   tool-tip="Show vertical scrollbar in information panel" />
 				<check-box caption="Show emoticons in panel" config-section="General" config-item="ShowEmotPanel" id="showEmoticonsInPanel"

@@ -1,17 +1,17 @@
 
 
 	
-			QT_TRANSLTATE_NOOP("@default", "Notifications");
+			QT_TRANSLATE_NOOP("@default", "Notifications");
 		
 
 		
-			QT_TRANSLTATE_NOOP("@default", "Sound");
+			QT_TRANSLATE_NOOP("@default", "Sound");
 		
 			
-			QT_TRANSLTATE_NOOP("@default", "Output device");
+			QT_TRANSLATE_NOOP("@default", "Output device");
 		
 				
-			QT_TRANSLTATE_NOOP("@default", "Dsp device");
+			QT_TRANSLATE_NOOP("@default", "Dsp device");
 		
 			
 		

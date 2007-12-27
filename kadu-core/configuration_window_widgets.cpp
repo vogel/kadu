@@ -385,7 +385,7 @@ bool ConfigComboBox::fromDomElement(QDomElement domElement)
 				continue;
 
 			itemValues.append(element.attribute("value"));
-			itemCaptions.append(element.attribute("caption"));
+			itemCaptions.append(qApp->translate("@default", element.attribute("caption")));
 
 			insertItem(qApp->translate("@default", element.attribute("caption")));
 		}

@@ -441,7 +441,7 @@ void FileTransferManager::acceptFile(FileTransfer *ft, DccSocket *socket, QStrin
 			QString question;
 			question = tr("File %1 already exists.").arg(fileName);
 
-			switch (QMessageBox::question(0, tr("save file"), question, tr("Overwrite"), tr("Resume"),
+			switch (QMessageBox::question(0, tr("Save file"), question, tr("Overwrite"), tr("Resume"),
 			                                 tr("Select another file"), 0, 2))
 			{
 				case 0:

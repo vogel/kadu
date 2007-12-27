@@ -8,7 +8,7 @@
 				<combo-box caption="New message tray icon" config-section="Look" config-item="NewMessageIcon">
 					<item value="0" caption="Blinking envelope" />
 					<item value="1" caption="Static envelope" />
-					<item value="2" caption="Animated" />
+					<item value="2" caption="Animated envelope" />
 				</combo-box>
 			</group-box>
 		</tab>

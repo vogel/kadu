@@ -367,7 +367,7 @@ SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &sy
 	previewPanel->setResetBackgroundColor(config_file.readEntry("Look", category + "BgColor"));
 	layout->addWidget(previewPanel, 0, 1);
 
-	QPushButton *preview = new QPushButton(tr("preview"), syntax);
+	QPushButton *preview = new QPushButton(tr("Preview"), syntax);
 	connect(preview, SIGNAL(clicked()), this, SLOT(refreshPreview()));
 	layout->addWidget(preview, 1, 1);
 
@@ -377,7 +377,7 @@ SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &sy
 
 	(new QWidget(buttons))->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 	QPushButton *saveSyntax = new QPushButton(icons_manager->loadIcon("OkWindowButton"), tr("Save"), buttons);
-	QPushButton *saveAsSyntax = new QPushButton(icons_manager->loadIcon("OkWindowButton"), tr("Save as.."), buttons);
+	QPushButton *saveAsSyntax = new QPushButton(icons_manager->loadIcon("OkWindowButton"), tr("Save as..."), buttons);
 	QPushButton *cancel = new QPushButton(icons_manager->loadIcon("CloseWindowButton"), tr("Cancel"), buttons);
 
 	if (syntaxList->isGlobal(syntaxName))

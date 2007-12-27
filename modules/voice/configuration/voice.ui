@@ -12,7 +12,7 @@
 
 	<section name="Shortcuts">
 		<tab name="General">
-			<group-box name="Sending filed and voice chats">
+			<group-box name="Sending files and voice chats">
 				<hot-key-edit caption="Voice chat" config-section="ShortCuts" config-item="kadu_voicechat" />
 			</group-box>
 		</tab>

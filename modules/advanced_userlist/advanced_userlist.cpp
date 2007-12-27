@@ -92,7 +92,7 @@ void AdvancedUserList::userAdded(UserListElement elem, bool massively, bool last
 void AdvancedUserList::userboxCreated(QObject *new_object)
 {
 	UserBox *box = static_cast<UserBox *>(new_object);
-	box->addCompareFunction("Pending", tr("Number of pending messages)"), compareByPending);
+	box->addCompareFunction("Pending", tr("Number of pending messages"), compareByPending);
 	box->addCompareFunction("Priority", tr("Priorities"), compareByPriority);
 
 	int idx = 0;
