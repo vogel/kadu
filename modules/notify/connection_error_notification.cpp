@@ -34,7 +34,7 @@ static QString getErrorServer(const QObject * const object)
 
 void ConnectionErrorNotification::registerEvent(Notify *manager)
 {
-	manager->registerEvent("ConnectionError", "Connection error", CallbackNotRequired);
+	manager->registerEvent("ConnectionError", QT_TRANSLATE_NOOP("@default", "Connection error"), CallbackNotRequired);
 	KaduParser::registerObjectTag("error", getErrorMessage);
 	KaduParser::registerObjectTag("errorServer", getErrorServer);
 }

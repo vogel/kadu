@@ -16,10 +16,10 @@
 
 void StatusChangedNotification::registerEvents(Notify *manager)
 {
-	manager->registerEvent("StatusChanged/ToOnline", "User changed status to online", CallbackNotRequired);
-	manager->registerEvent("StatusChanged/ToBusy", "User changed status to busy", CallbackNotRequired);
-	manager->registerEvent("StatusChanged/ToInvisible", "User changed status to invisible", CallbackNotRequired);
-	manager->registerEvent("StatusChanged/ToOffline", "User changed status to offline", CallbackNotRequired);
+	manager->registerEvent("StatusChanged/ToOnline", QT_TRANSLATE_NOOP("@default", "User changed status to online"), CallbackNotRequired);
+	manager->registerEvent("StatusChanged/ToBusy", QT_TRANSLATE_NOOP("@default", "User changed status to busy"), CallbackNotRequired);
+	manager->registerEvent("StatusChanged/ToInvisible", QT_TRANSLATE_NOOP("@default", "User changed status to invisible"), CallbackNotRequired);
+	manager->registerEvent("StatusChanged/ToOffline", QT_TRANSLATE_NOOP("@default", "User changed status to offline"), CallbackNotRequired);
 }
 
 void StatusChangedNotification::unregisterEvents(Notify *manager)

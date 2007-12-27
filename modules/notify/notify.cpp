@@ -113,7 +113,7 @@ void Notify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigu
 
 	CONST_FOREACH(notifyEvent, NotifyEvents)
 	{
-		captions.append((*notifyEvent).description);
+		captions.append(qApp->translate("@default", (*notifyEvent).description));
 		values.append((*notifyEvent).name);
 	}
 
@@ -167,7 +167,7 @@ void Notify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigu
 
 	FOREACH(notifierData, Notifiers)
 	{
-		NotifyGroupBox *configurationGroupBox = new NotifyGroupBox(notifierData.key(), tr(notifierData.key()), groupBox->widget());
+		NotifyGroupBox *configurationGroupBox = new NotifyGroupBox(notifierData.key(), qApp->translate("@default", notifierData.key()), groupBox->widget());
 		connect(configurationGroupBox, SIGNAL(toggled(const QString &, bool)), this, SLOT(notifierToggled(const QString &, bool)));
 
 		(*notifierData).configurationGroupBox = configurationGroupBox;

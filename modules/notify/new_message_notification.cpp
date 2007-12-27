@@ -14,8 +14,8 @@
 
 void MessageNotification::registerEvents(Notify *manager)
 {
-	manager->registerEvent("NewChat", "New chat", CallbackNotRequired);
-	manager->registerEvent("NewMessage", "New message", CallbackNotRequired);
+	manager->registerEvent("NewChat", QT_TRANSLATE_NOOP("@default", "New chat"), CallbackNotRequired);
+	manager->registerEvent("NewMessage", QT_TRANSLATE_NOOP("@default", "New message"), CallbackNotRequired);
 }
 
 void MessageNotification::unregisterEvents(Notify *manager)
