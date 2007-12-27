@@ -139,7 +139,7 @@ Das Passwort, das Sie angegeben haben, sollte in beiden Feldern (&quot;Neues Pas
     </message>
     <message>
         <source>Email address you have entered is not valid</source>
-        <translation type="unfinished"></translation>
+        <translation>Die angegebene Email-Adresse ist falsch</translation>
     </message>
 </context>
 <context>
