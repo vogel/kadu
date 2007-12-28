@@ -80,7 +80,6 @@ void GroupsManager::setTabBar(KaduTabBar *bar)
 {
 	kdebugf();
 	GroupBar = bar;
-	refreshTabBar();
 
 	bar->setShape(QTabBar::RoundedBelow);
 	bar->addTab(new QTab(icons_manager->loadIcon("PersonalInfo").xForm(QWMatrix().rotate(-90)), tr("All")));
@@ -89,6 +88,8 @@ void GroupsManager::setTabBar(KaduTabBar *bar)
 	connect(userlist, SIGNAL(modified()), this, SLOT(refreshTabBarLater()));
 	connect(&refreshTimer, SIGNAL(timeout()), this, SLOT(refreshTabBar()));
 	lastId = -1;
+
+	refreshTabBar();
 
 	int configTab = config_file.readNumEntry( "Look", "CurrentGroupTab" );
 	if (configTab >= 0 && configTab < GroupBar->count())
