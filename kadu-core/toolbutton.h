@@ -61,6 +61,8 @@ class ToolButton : public QToolButton
 		QString actionName();
 		ToolBar *toolbar();
 
+		void usersChanged();
+
 	signals:
 		void removedFromToolbar(ToolButton *);
 };

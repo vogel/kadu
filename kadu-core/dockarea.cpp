@@ -8,6 +8,8 @@
  ***************************************************************************/
 
 #include <qcursor.h>
+#include <qobjectlist.h>
+
 #include "config_file.h"
 #include "debug.h"
 #include "dockarea.h"
@@ -162,6 +164,18 @@ bool DockArea::loadFromConfig(QWidget* toolbars_parent)
 	}
 	kdebugf2();
 	return false;
+}
+
+void DockArea::usersChangedSlot()
+{
+	const QObjectList *childList = children();
+	if (childList)
+		FOREACH(child, *childList)
+		{
+			ToolBar *toolbar = dynamic_cast<ToolBar *>(*child);
+			if (toolbar)
+				toolbar->usersChanged();
+		}
 }
 
 const UserGroup* DockArea::selectedUsers()

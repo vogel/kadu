@@ -49,9 +49,12 @@ class DockArea : public QDockArea
 
 	public slots:
 		void writeToConfig();
+		void usersChangedSlot();
 
 	signals:
 		/**
+			TODO: fix it, this is stupid
+
 			Signal is emited when dockarea needs to know what users
 			will be affected by activated action. It depends on
 			where the dockarea is located. If dockarea is in chat window,
@@ -67,6 +70,7 @@ class DockArea : public QDockArea
 			New toolbar was attached.
 		 **/
 		void toolbarAttached();
+
 };
 
 #endif

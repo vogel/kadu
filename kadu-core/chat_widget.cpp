@@ -161,6 +161,15 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	leftDockArea->loadFromConfig(this);
 	rightDockArea->loadFromConfig(this);
 
+	if (userbox)
+	{
+		connect(userbox, SIGNAL(selectionChanged()), topDockArea, SLOT(usersChangedSlot()));
+		connect(userbox, SIGNAL(selectionChanged()), rightDockArea, SLOT(usersChangedSlot()));
+		connect(userbox, SIGNAL(selectionChanged()), leftDockArea, SLOT(usersChangedSlot()));
+		connect(userbox, SIGNAL(selectionChanged()), buttontray, SLOT(usersChangedSlot()));
+		connect(userbox, SIGNAL(selectionChanged()), btnpart, SLOT(usersChangedSlot()));
+	}
+
 	if (!buttontray->loadFromConfig(this))
 	{
 		// TOOLBAR 1

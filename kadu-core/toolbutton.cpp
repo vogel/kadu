@@ -76,6 +76,11 @@ ToolButton::~ToolButton()
 	kdebugf2();
 }
 
+void ToolButton::usersChanged()
+{
+	setEnabled(IsEnabled);
+}
+
 void ToolButton::setEnabled(bool enabled)
 {
 	// TODO: refactor in 0.6
@@ -89,7 +94,17 @@ void ToolButton::setEnabled(bool enabled)
 	{
 		ToolBar *toolBar = dynamic_cast<ToolBar *>(parent());
 		if (toolBar->place() == QDockWindow::InDock)
-			QToolButton::setEnabled(toolBar->dockArea()->supportsAction(Type));
+		{
+			if (toolBar->dockArea()->supportsAction(Type))
+			{
+				if (Type & Action::TypeUser)
+					QToolButton::setEnabled(toolBar->selectedUsers() && toolBar->selectedUsers()->count());
+				else
+					QToolButton::setEnabled(true);
+			}
+			else
+				QToolButton::setEnabled(false);
+		}
 		else
 			QToolButton::setEnabled(false);
 	}

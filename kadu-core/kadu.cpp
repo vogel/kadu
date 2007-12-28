@@ -164,6 +164,8 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	// userbox
 	UserBox::initModule();
 	Userbox = new UserBox(userlist, hbox1, "userbox");
+	connect(Userbox, SIGNAL(selectionChanged()), TopDockArea, SLOT(usersChangedSlot()));
+
 	hbox1->setStretchFactor(Userbox, 100);
 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(popupMenu()));
 	connect(Userbox, SIGNAL(rightButtonPressed(QListBoxItem *, const QPoint &)),

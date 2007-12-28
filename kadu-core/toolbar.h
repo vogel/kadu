@@ -45,7 +45,7 @@ private slots:
 		\fn void deleteToolbar()
 		Slot obs?uguj?cy usuwanie paska narz?dzi
 	**/
-	void deleteToolbar ();
+	void deleteToolbar();
 
 	void actionLoaded(const QString &name);
 	void actionUnloaded(const QString &actionName);
@@ -57,25 +57,25 @@ protected:
 		\fn virtual void dragEnterEvent(QDragEnterEvent* event)
 		Funkcja obs?uguj?ca prz?ci?ganie akcji mi?dzy paskami
 	**/
-	virtual void dragEnterEvent ( QDragEnterEvent* event );
+	virtual void dragEnterEvent(QDragEnterEvent *event);
 
 	/**
 		\fn virtual void dropEvent(QDropEvent* event)
 		Funkcja obs?uguj?ca upuszczenie przycisku na pasku
 	**/
-	virtual void dropEvent ( QDropEvent* event );
+	virtual void dropEvent(QDropEvent *event);
 
 	/**
 		\fn virtual void contextMenuEvent(QContextMenuEvent* e)
 		Funkcja obs?uguj?ca tworzenie menu kontekstowego paska
 	**/
-	virtual void contextMenuEvent (QContextMenuEvent * e);
+	virtual void contextMenuEvent(QContextMenuEvent *e);
 
 	/**
 		\fn virtual void contextMenuEvent(QContextMenuEvent* e)
 		Funkcja obs?uguj?ca przeci?ganie paska narz?dziowego.
 	**/
-	virtual void moveEvent ( QMoveEvent *e );
+	virtual void moveEvent(QMoveEvent *e);
 
 public:
 	/**
@@ -84,7 +84,7 @@ public:
 		\param parent rodzic obiektu
 		\param name nazwa obiektu
 	**/
-	ToolBar ( QWidget* parent, const char *name );
+	ToolBar(QWidget* parent, const char *name);
 
 	/**
 		\fn ~ToolBar()
@@ -102,14 +102,14 @@ public:
 		\fn DockArea* dockArea()
 		Zwraca wska?nik do rodzica paska (miejsca dokowania)
 	**/
-	DockArea* dockArea();
+	DockArea *dockArea();
 
 	/**
 		\fn void loadFromConfig(QDomElement parent_element)
 		\param parent_element rodzic obiektu
 		Wczytuje dane z pliku konfiguracyjnego
 	**/
-	void loadFromConfig ( QDomElement parent_element );
+	void loadFromConfig(QDomElement parent_element);
 
 
 	static void addDefaultAction(const QString &toolbar, const QString &actionName, int index = -1, bool showLabel = false);
@@ -132,7 +132,7 @@ public:
 		Funkcja tworz?ca menu kontekstowe, umo?liwiaj?ce dodanie
 		nowych akcji do paska narz?dziowego.
 	**/
-	QPopupMenu* createContextMenu ( QWidget* parent );
+	QPopupMenu* createContextMenu(QWidget *parent);
 
 	/**
 		\fn hasAction(QString action_name)
@@ -149,7 +149,9 @@ public slots:
 		Zapisuje ustawienia paska (jak offset), oraz (po?rednio) 
 		akcje znajduj?ce si? na pasku.
 	**/
-	void writeToConfig ( QDomElement parent_element );
+	void writeToConfig(QDomElement parent_element);
+
+	void usersChanged();
 
 };
 

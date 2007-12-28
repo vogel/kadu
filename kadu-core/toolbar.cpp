@@ -88,6 +88,13 @@ void ToolBar::removeAction(const QString &actionName)
 		}
 }
 
+void ToolBar::usersChanged()
+{
+	FOREACH(actionIterator, ToolBarActions)
+		if ((*actionIterator).button)
+			(*actionIterator).button->usersChanged();
+}
+
 // TODO: optimize
 void ToolBar::moveAction(const QString &actionName, ToolButton *button)
 {
