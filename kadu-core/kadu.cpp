@@ -1641,6 +1641,7 @@ void Kadu::configurationUpdated()
 			Myself.addProtocol("Gadu", uin);
 		kadu->setCaption(tr("Kadu: %1").arg(uin));
 	}
+	Myself.setAltNick(config_file.readEntry("General", "Nick"));
 
 	kadu->setDocked(kadu->Docked, kadu->dontHideOnClose);
 
