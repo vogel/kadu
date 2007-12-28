@@ -218,6 +218,8 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 
 	Edit->installEventFilter(this);
 
+	configurationUpdated();
+
 	kdebugf2();
 }
 
