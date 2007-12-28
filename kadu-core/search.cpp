@@ -36,7 +36,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	: QWidget(parent, name, WType_TopLevel | WDestructiveClose),
 	only_active(0), e_uin(0), e_name(0), e_nick(0), e_byrFrom(0), e_byrTo(0), e_surname(0),
 	c_gender(0), e_city(0), results(0), progress(0), r_uin(0), r_pers(0), _whoisSearchUin(whoisSearchUin),
-	seq(0), selectedUsers(new UserGroup(1)), searchRecord(new SearchRecord()), searchhidden(false)
+	seq(0), selectedUsers(new UserGroup(1)), searchRecord(new SearchRecord()), searchhidden(false), searching(false), workaround(false)
 {
 	kdebugf();
 
@@ -387,6 +387,8 @@ void SearchDialog::firstSearch(void)
 	else if (r_uin->isChecked())
 		searchRecord->reqUin(e_uin->text());
 
+	searching = true;
+
 	stop_search_action->setEnabled(this, true);
 	first_search_action->setEnabled(this, false);
 	next_results_action->setEnabled(this, false);
@@ -406,6 +408,8 @@ void SearchDialog::nextSearch(void)
 
 	if (gadu->currentStatus().isOffline())
 		return;
+
+	searching = true;
 
 	stop_search_action->setEnabled(this, true);
 	first_search_action->setEnabled(this, false);
@@ -489,7 +493,10 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 	else
 	{
 		if (r_pers->isChecked() && !isPersonalDataEmpty())
+		{
 			next_results_action->setEnabled(this, true);
+			searching = false;
+		}
 
 		clear_search_action->setEnabled(this, true);
 		add_searched_action->setEnabled(this, true);
@@ -529,7 +536,9 @@ void SearchDialog::uinTyped(void)
 
 void SearchDialog::personalDataTyped(void)
 {
+	workaround = true;
 	r_pers->setChecked(true);
+	workaround = false;
 
 	first_search_action->setEnabled(this, !isPersonalDataEmpty());
 	next_results_action->setEnabled(this, false);
@@ -547,7 +556,8 @@ void SearchDialog::persClicked()
 {
 	only_active->setEnabled(true);
 	only_active->setChecked(false);
-	e_nick->setFocus();
+	if (!workaround)
+		e_nick->setFocus();
 
 	first_search_action->setEnabled(this, !isPersonalDataEmpty());
 }
@@ -555,7 +565,8 @@ void SearchDialog::persClicked()
 void SearchDialog::uinClicked()
 {
 	only_active->setEnabled(false);
-	e_uin->setFocus();
+	if (!workaround)
+		e_uin->setFocus();
 
 	first_search_action->setEnabled(this, !e_uin->text().isEmpty());
 	next_results_action->setEnabled(this, false);
@@ -609,15 +620,15 @@ void SearchDialog::actionsAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*
 void SearchDialog::stopSearchActionAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*/)
 {
 	kdebugf();
-	// FIXME - przycisk powinien byc aktywny, jesli jestesmy w trakcie szukania...
-	button->setEnabled(false);
+	if (!searching)
+		button->setEnabled(false);
 	kdebugf2();
 }
 
 void SearchDialog::firstSearchActionAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*/)
 {
 	kdebugf();
-	if ((r_pers->isChecked() && isPersonalDataEmpty()) || (r_uin->isChecked() && e_uin->text().isEmpty()))
+	if (searching || (r_pers->isChecked() && isPersonalDataEmpty()) || (r_uin->isChecked() && e_uin->text().isEmpty()))
 		button->setEnabled(false);
 	kdebugf2();
 }
@@ -625,7 +636,7 @@ void SearchDialog::firstSearchActionAddedToToolbar(ToolButton* button, ToolBar* 
 void SearchDialog::nextResultsActionAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*/)
 {
 	kdebugf();
-	if (r_uin->isChecked() || isPersonalDataEmpty() || !results->selectedItem())
+	if (searching || r_uin->isChecked() || isPersonalDataEmpty() || !results->selectedItem())
 		button->setEnabled(false);
 	kdebugf2();
 }

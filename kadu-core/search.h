@@ -68,6 +68,8 @@ class SearchDialog : public QWidget {
 		SearchRecord *searchRecord;
 
 		bool searchhidden;
+		bool searching;
+		bool workaround; // TODO: remove
 
 		bool isPersonalDataEmpty() const;
 
