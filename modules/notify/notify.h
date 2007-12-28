@@ -195,12 +195,13 @@ private slots:
 	void eventSwitched(int index);
 	void notifierToggled(const QString &notifier, bool toggled);
 
+	void mainConfigurationWindowDestroyed();
+
 public:
 	Notify(QObject *parent=0, const char *name=0);
 	virtual ~Notify();
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
-	void mainConfigurationWindowDestroyed();
 
 	void notify(Notification *notification);
 

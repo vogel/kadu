@@ -105,6 +105,8 @@ Notify::~Notify()
 
 void Notify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
+	connect(mainConfigurationWindow, SIGNAL(destroyed()), this, SLOT(mainConfigurationWindowDestroyed()));
+
 	notifications = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widgetById("notify/notifications"));
 	connect(notifications, SIGNAL(activated(int)), this, SLOT(eventSwitched(int)));
 
