@@ -466,8 +466,8 @@ UserBoxMenu *UserBox::userboxmenu = NULL;
 UserBoxMenu *UserBox::management = NULL;
 CreateNotifier UserBox::createNotifier;
 
-UserBox::UserBox(UserGroup *group, QWidget* parent, const char* name, WFlags f)
-	: QListBox(parent, name, f), VisibleUsers(new UserGroup(userlist->count() * 2, "visible_users")),
+UserBox::UserBox(bool fancy, UserGroup *group, QWidget* parent, const char* name, WFlags f)
+	: QListBox(parent, name, f), fancy(fancy), VisibleUsers(new UserGroup(userlist->count() * 2, "visible_users")),
 	Filters(), NegativeFilters(), sortHelper(), toRemove(), AppendProxy(), RemoveProxy(), comparer(new ULEComparer()),
 	refreshTimer(), lastMouseStopUser(nullElement), lastMouseStop(), tipTimer(),
 	verticalPositionTimer(), lastVerticalPosition(0)
@@ -745,7 +745,8 @@ void UserBox::refresh()
 	// clearing list
 	QListBox::clear();
 	// clear clears columns too...
-	setColumnMode(config_file.readNumEntry("Look", "UserBoxColumnCount", 1));
+	if (fancy)
+		setColumnMode(config_file.readNumEntry("Look", "UserBoxColumnCount", 1));
 
 	for (std::vector<UserListElement>::const_iterator user = sortHelper.begin(),
 		userEnd = sortHelper.end(); user != userEnd; ++user)
@@ -894,7 +895,7 @@ void UserBox::refreshBackground()
 	setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
 	setStaticBackground(backgroundImage);
 
-	if (!backgroundImage)
+	if (!backgroundImage || !fancy)
 		return;
 
 	QImage image;

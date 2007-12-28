@@ -95,7 +95,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 
 		QVBox *userlistContainer = new QVBox(horizSplit);
 
-		userbox = new UserBox(Users, userlistContainer, "userbox");
+		userbox = new UserBox(false, Users, userlistContainer, "userbox");
 		userbox->setMinimumSize(QSize(30,30));
 		connect(userbox, SIGNAL(rightButtonPressed(QListBoxItem *, const QPoint &)),
 			UserBox::userboxmenu, SLOT(show(QListBoxItem *)));
