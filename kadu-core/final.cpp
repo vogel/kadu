@@ -16,6 +16,7 @@
 #include "debug.cpp"
 #include "dnshandler.cpp"
 #include "dockarea.cpp"
+#include "drag_simple.cpp"
 #include "emoticons.cpp"
 #include "expimp.cpp"
 #include "gadu.cpp"
