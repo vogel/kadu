@@ -131,7 +131,10 @@
 			</group-box>
 
 			<group-box name="Advanced">
-				<check-box caption="Allow using variables in status" config-section="General" config-item="ParseStatus" />
+				<check-box caption="Allow using variables in status" config-section="General" config-item="ParseStatus"
+						   tool-tip="Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
+%v - revDNS, %p - port %e - email %x - max image size" />
 			</group-box>
 		</tab>
 	</section>
