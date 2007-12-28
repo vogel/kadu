@@ -11,7 +11,7 @@
 
 #include <time.h>
 
-#include <status.h>
+#include "status.h"
 
 class QComboBox;
 class QLineEdit;
