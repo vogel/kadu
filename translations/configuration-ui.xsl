@@ -11,6 +11,9 @@
 		<xsl:if test="@tool-tip != ''">
 			QT_TRANSLATE_NOOP("@default", "<xsl:value-of select="@tool-tip" />");
 		</xsl:if>
+		<xsl:if test="@syntax-hint != ''">
+			QT_TRANSLATE_NOOP("@default", "<xsl:value-of select="@syntax-hint" />");
+		</xsl:if>
 		<xsl:apply-templates />
 	</xsl:template>
 

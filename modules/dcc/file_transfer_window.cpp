@@ -117,7 +117,7 @@ void FileTransferWidget::remove()
 	kdebugf();
 
 	if (ft->status() != FileTransfer::StatusFinished)
-		if (!MessageBox::ask("Are you sure you want to remove this transfer?"))
+		if (!MessageBox::ask(tr("Are you sure you want to remove this transfer?")))
 			return;
 		else
 			ft->stop(FileTransfer::StopFinally);

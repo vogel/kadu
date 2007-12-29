@@ -392,7 +392,7 @@ void Wizard::createGGAccountPage()
 
 	loadGGAccountOptions();
 
-	addPage(ggPage, "Gadu-gadu account", tr("<h3>Welcome in Kadu</h3><h4>the Gadu-gadu network client for *nix and MacOS X.</h4>"
+	addPage(ggPage, tr("Gadu-gadu account"), tr("<h3>Welcome in Kadu</h3><h4>the Gadu-gadu network client for *nix and MacOS X.</h4>"
 		"<p>This is first time you launch Kadu. "
 		"This wizard will help you to configure the basic settings of Kadu. "
 		"If you are experienced Kadu user you may omit the wizard by clicking Cancel.</p>"
@@ -571,7 +571,7 @@ void Wizard::createSoundPage()
 	QVBoxLayout *layout = new QVBoxLayout(soundPage);
 	layout->setSpacing(5);
 
-	QGroupBox *soundOptions = new QGroupBox(1, Qt::Horizontal, tr("WWW browser"), soundPage);
+	QGroupBox *soundOptions = new QGroupBox(1, Qt::Horizontal, tr("Sound system"), soundPage);
 	soundOptions->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	layout->addWidget(soundOptions);
 
@@ -579,7 +579,7 @@ void Wizard::createSoundPage()
 	QGridLayout *gridLayout = new QGridLayout(container);
 	gridLayout->setSpacing(5);
 
-	gridLayout->addWidget(new QLabel(tr("Sound driver") + ":", container), 0, 0, Qt::AlignRight);
+	gridLayout->addWidget(new QLabel(tr("Sound system") + ":", container), 0, 0, Qt::AlignRight);
 	soundModuleCombo = new QComboBox(container);
 	gridLayout->addWidget(soundModuleCombo, 0, 1);
 

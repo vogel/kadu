@@ -110,27 +110,27 @@
 <context>
     <name>Notify</name>
     <message>
-        <location filename="../notify.cpp" line="478"/>
+        <location filename="../notify.cpp" line="513"/>
         <source>Unable to find notifier for %1 event</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../notify.cpp" line="130"/>
+        <location filename="../notify.cpp" line="132"/>
         <source>Move to &apos;Notify list&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../notify.cpp" line="132"/>
+        <location filename="../notify.cpp" line="134"/>
         <source>User list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../notify.cpp" line="137"/>
+        <location filename="../notify.cpp" line="139"/>
         <source>Move to &apos;User list&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../notify.cpp" line="139"/>
+        <location filename="../notify.cpp" line="141"/>
         <source>Notify list</source>
         <translation type="unfinished"></translation>
     </message>

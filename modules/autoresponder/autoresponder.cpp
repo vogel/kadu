@@ -96,7 +96,7 @@ void AutoResponder::chatOpenedClosed(ChatWidget *chat)
 
 void AutoResponder::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) 
 {
-	QToolTip::add(mainConfigurationWindow->widgetById("autoresponder/AutoText") , Kadu::SyntaxText);
+	QToolTip::add(mainConfigurationWindow->widgetById("autoresponder/AutoText") , qApp->translate("@default", Kadu::SyntaxText));
 }
 
 void AutoResponder::configurationUpdated()

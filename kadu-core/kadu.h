@@ -187,6 +187,7 @@ class Kadu : public QWidget, ConfigurationAwareObject
 			dodane zosta³o to pole, ¿eby nie trzeba by³o zmieniaæ tekstu w kilku miejscach
 		**/
 		static const char *SyntaxText;
+		static const char *SyntaxTextExtended;
 
 		static bool closing() { return Closing; }
 		static void setClosing() { Closing = true; }

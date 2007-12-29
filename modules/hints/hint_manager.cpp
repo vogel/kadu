@@ -57,7 +57,7 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 	connect(this, SIGNAL(searchingForTrayPosition(QPoint &)), kadu, SIGNAL(searchingForTrayPosition(QPoint &)));
 
 	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default", "Hints"), this);
-	tool_tip_class_manager->registerToolTipClass("Hints", this);
+	tool_tip_class_manager->registerToolTipClass(QT_TRANSLATE_NOOP("@default", "Hints"), this);
 
 	import_0_5_0_Configuration();
 	createDefaultConfiguration();
@@ -87,9 +87,6 @@ HintManager::~HintManager()
 	delete frame;
 	frame = 0;
 
-// 	delete hint_manager_slots;
-// 	hint_manager_slots = 0;
-
 	kdebugf2();
 }
 
@@ -118,6 +115,8 @@ void HintManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainCo
 	maximumWidth = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widgetById("hints/maximumWidth"));
 	connect(minimumWidth, SIGNAL(valueChanged(int)), this, SLOT(minimumWidthChanged(int)));
 	connect(maximumWidth, SIGNAL(valueChanged(int)), this, SLOT(maximumWidthChanged(int)));
+
+	QToolTip::add(mainConfigurationWindow->widgetById("hints/overUserSyntax") , qApp->translate("@default", Kadu::SyntaxText));
 }
 
 NotifierConfigurationWidget *HintManager::createConfigurationWidget(QWidget *parent, char *name)

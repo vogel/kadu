@@ -131,10 +131,7 @@
 			</group-box>
 
 			<group-box name="Advanced">
-				<check-box caption="Allow using variables in status" config-section="General" config-item="ParseStatus"
-						   tool-tip="Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
-%v - revDNS, %p - port %e - email %x - max image size" />
+				<check-box caption="Allow using variables in status" config-section="General" config-item="ParseStatus" id="parseStatus" />
 			</group-box>
 		</tab>
 	</section>
@@ -195,16 +192,6 @@
 
 			<group-box name="Style">
 				<syntax-editor caption="Style" config-section="Look" config-item="Style" category="Chat" id="chatSyntax"
-							   syntax-hint="Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
-%v - revDNS, %p - port %e - email %x - max image size
-#{message} - message content
-#{backgroundColor} - background color of message
-#{fontColor} - font color of message
-#{nickColor} - font color of nick
-#{sentDate} - when message was sent
-#{receivedDate} - when message was received
-#{separator} - separator between messages"
 							   tool-tip="Choose style of chat window" />
 				<preview caption="Preview" id="chatSyntaxPreview" />
 			</group-box>
@@ -276,9 +263,6 @@
 
 			<group-box name="Style">
 				<syntax-editor caption="Style" config-section="Look" config-item="InfoPanelSyntaxFile" category="InfoPanel" id="infoPanelSyntax"
-							   syntax-hint="Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
-%v - revDNS, %p - port %e - email %x - max image size"
 					       tool-tip="Choose information panel style" />
 				<preview caption="Preview" id="infoPanelSyntaxPreview" />
 			</group-box>

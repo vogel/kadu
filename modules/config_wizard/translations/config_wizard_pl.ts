@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1">
+<!DOCTYPE TS><TS version="1.1" language="pl_PL">
+<defaultcodec></defaultcodec>
 <context>
     <name>Wizard</name>
     <message>
@@ -133,7 +134,7 @@ Naciśnij Ok by kontynuować</translation>
         <translation>Powtórz hasło</translation>
     </message>
     <message>
-        <location filename="../wizard.cpp" line="574"/>
+        <location filename="../wizard.cpp" line="449"/>
         <source>WWW browser</source>
         <translation>Przeglądarka WWW</translation>
     </message>
@@ -230,7 +231,7 @@ Naciśnij Ok by kontynuować</translation>
     <message>
         <location filename="../wizard.cpp" line="582"/>
         <source>Sound driver</source>
-        <translation>System dźwieku</translation>
+        <translation type="obsolete">System dźwieku</translation>
     </message>
     <message>
         <location filename="../wizard.cpp" line="586"/>
@@ -246,6 +247,16 @@ Naciśnij Ok by kontynuować</translation>
         <location filename="../wizard.cpp" line="400"/>
         <source>&lt;h3&gt;Welcome in Kadu&lt;/h3&gt;&lt;h4&gt;the Gadu-gadu network client for *nix and MacOS X.&lt;/h4&gt;&lt;p&gt;This is first time you launch Kadu. This wizard will help you to configure the basic settings of Kadu. If you are experienced Kadu user you may omit the wizard by clicking Cancel.&lt;/p&gt;&lt;p&gt;Please enter your account data. If you don&apos;t have one, you can create new here.&lt;/p&gt;&lt;p&gt;E-mail address is needed when you want to recover lost password to account&lt;/p&gt;</source>
         <translation>&lt;h3&gt;Witamy w Kadu&lt;/h3&gt;&lt;h4&gt;kliencie sieci Gadu-Gadu dla systemów *nix i MacOS X.&lt;/h4&gt;&lt;p&gt;Uruchomiłeś Kadu po raz pierwszy.Ten kreator pomoże ci ustawić podstawową konfigurację programu. Jeśli jesteś doświadczonym użytkownikiem możesz go pominąć klikając na przycisk &quot;Anuluj&quot;.&lt;/p&gt;&lt;p&gt;Proszę wprowadzić swoje dane konta GG. Jeśli go nie posiadasz możesz je teraz utwożyć.&lt;/p&gt;&lt;p&gt;Adres e-mail jest potrzebny do przypomnienia zapomnianego hasła&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../wizard.cpp" line="395"/>
+        <source>Gadu-gadu account</source>
+        <translation>Konto Gadu-Gadu</translation>
+    </message>
+    <message>
+        <location filename="../wizard.cpp" line="582"/>
+        <source>Sound system</source>
+        <translation>System dźwiękowy</translation>
     </message>
 </context>
 <context>

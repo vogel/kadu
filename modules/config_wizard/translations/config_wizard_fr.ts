@@ -131,7 +131,7 @@ Appuyer suivant pour continuer</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../wizard.cpp" line="574"/>
+        <location filename="../wizard.cpp" line="449"/>
         <source>WWW browser</source>
         <translation type="unfinished"></translation>
     </message>
@@ -226,11 +226,6 @@ Appuyer suivant pour continuer</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../wizard.cpp" line="582"/>
-        <source>Sound driver</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../wizard.cpp" line="586"/>
         <source>Test sound</source>
         <translation type="unfinished"></translation>
@@ -243,6 +238,16 @@ Appuyer suivant pour continuer</translation>
     <message>
         <location filename="../wizard.cpp" line="400"/>
         <source>&lt;h3&gt;Welcome in Kadu&lt;/h3&gt;&lt;h4&gt;the Gadu-gadu network client for *nix and MacOS X.&lt;/h4&gt;&lt;p&gt;This is first time you launch Kadu. This wizard will help you to configure the basic settings of Kadu. If you are experienced Kadu user you may omit the wizard by clicking Cancel.&lt;/p&gt;&lt;p&gt;Please enter your account data. If you don&apos;t have one, you can create new here.&lt;/p&gt;&lt;p&gt;E-mail address is needed when you want to recover lost password to account&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../wizard.cpp" line="395"/>
+        <source>Gadu-gadu account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../wizard.cpp" line="582"/>
+        <source>Sound system</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

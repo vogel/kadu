@@ -132,6 +132,10 @@ MainConfigurationWindow::MainConfigurationWindow()
 	connect(useUserboxBackground, SIGNAL(toggled(bool)), widgetById("userboxBackground"), SLOT(setEnabled(bool)));
 	connect(useUserboxBackground, SIGNAL(toggled(bool)), widgetById("userboxBackgroundDisplayStyle"), SLOT(setEnabled(bool)));
 
+	QToolTip::add(widgetById("parseStatus") , qApp->translate("@default", Kadu::SyntaxText));
+	(dynamic_cast<ConfigSyntaxEditor *>(widgetById("chatSyntax")))->setSyntaxHint(qApp->translate("@default", Kadu::SyntaxTextExtended));
+	(dynamic_cast<ConfigSyntaxEditor *>(widgetById("infoPanelSyntax")))->setSyntaxHint(qApp->translate("@default", Kadu::SyntaxText));
+
 	loadGeometry(this, "General", "ConfigGeometry", 0, 30, 790, 480);
 }
 
@@ -178,14 +182,14 @@ void MainConfigurationWindow::prepareChatPreview(Preview *preview, bool append)
 	preview->setResetBackgroundColor(config_file.readEntry("Look", "ChatBgColor"));
 	preview->setStyleSheet(new StaticStyleSheet(chatPreview, emoticons->themePath()));
 
-	ChatMessage *chatMessage = new ChatMessage(kadu->myself(), "Your message", TypeSent,
+	ChatMessage *chatMessage = new ChatMessage(kadu->myself(), tr("Your message"), TypeSent,
 		QDateTime::currentDateTime(), QDateTime::currentDateTime());
 	chatMessage->setSeparatorSize(0);
 	preview->addObjectToParse(kadu->myself(), chatMessage);
 	if (append)
 		chatMessages.append(chatMessage);
 
-	chatMessage = new ChatMessage(example, "Message from Your friend", TypeReceived,
+	chatMessage = new ChatMessage(example, tr("Message from Your friend"), TypeReceived,
 		QDateTime::currentDateTime(), QDateTime::currentDateTime());
 	chatMessage->setSeparatorSize(4);
 	preview->addObjectToParse(example, chatMessage);
@@ -254,10 +258,15 @@ void MainConfigurationWindow::setIconThemes()
 	ConfigComboBox *iconThemes = dynamic_cast<ConfigComboBox *>(widgetById("iconThemes"));
 	icons_manager->setPaths((dynamic_cast<PathListEdit *>(widgetById("iconPaths")))->pathList());
 
+	QT_TRANSLATE_NOOP("@default", "default");
 	QStringList themes = icons_manager->themes();
+	QStringList captions;
 	themes.sort();
 
-	iconThemes->setItems(themes, themes);
+	FOREACH(theme, themes)
+		captions.append(qApp->translate("@default", *theme));
+
+	iconThemes->setItems(themes, captions);
 	iconThemes->setCurrentText(icons_manager->theme());
 }
 
@@ -283,7 +292,7 @@ void MainConfigurationWindow::setToolTipClasses()
 	QStringList toolTipClasses = tool_tip_class_manager->getToolTipClasses();
 	CONST_FOREACH(toolTipClass, toolTipClasses)
 	{
-		captions << tr(*toolTipClass);
+		captions << qApp->translate("@default", *toolTipClass);
 		values << *toolTipClass;
 	}
 
@@ -545,6 +554,10 @@ void MainConfigurationWindow::showLookChatAdvanced()
 
 		connect(lookChatAdvanced->widgetById("removeServerTime"), SIGNAL(toggled(bool)), lookChatAdvanced->widgetById("maxTimeDifference"), SLOT(setEnabled(bool)));
 		connect(lookChatAdvanced->widgetById("noHeaderRepeat"), SIGNAL(toggled(bool)), lookChatAdvanced->widgetById("noHeaderInterval"), SLOT(setEnabled(bool)));
+
+		QToolTip::add(lookChatAdvanced->widgetById("chatSyntax") , qApp->translate("@default", Kadu::SyntaxText));
+		QToolTip::add(lookChatAdvanced->widgetById("conferencePrefix") , qApp->translate("@default", Kadu::SyntaxText));
+		QToolTip::add(lookChatAdvanced->widgetById("conferenceSyntax") , qApp->translate("@default", Kadu::SyntaxText));
 
 		connect(lookChatAdvanced, SIGNAL(destroyed()), this, SLOT(lookChatAdvancedDestroyed()));
 	}

@@ -206,12 +206,12 @@
 <context>
     <name>HintManager</name>
     <message>
-        <location filename="../hint_manager.cpp" line="52"/>
+        <location filename="../hint_manager.cpp" line="53"/>
         <source>[&lt;i&gt;%s&lt;/i&gt;&lt;br/&gt;][&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;%d&lt;br/&gt;&lt;br/&gt;][&lt;i&gt;Mobile:&lt;/i&gt; &lt;b&gt;%m&lt;/b&gt;&lt;br/&gt;]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../hint_manager.cpp" line="112"/>
+        <location filename="../hint_manager.cpp" line="115"/>
         <source>Dont hide</source>
         <translation type="unfinished"></translation>
     </message>

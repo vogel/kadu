@@ -52,17 +52,6 @@ Jest to wysoce ryzykowne!</translation>
     </message>
     <message>
         <location filename="" line="7471221"/>
-        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
-%h - gg version, %v - revDNS, %p - port %e - email %x - max image size
-</source>
-        <translation>Składnia: %s - status, %d - opis, %i - IP, %n - nick, %a - wyświetl,
-%f - imię, %r - nazwisko, %m - telefon, %u - nr GG, %g - grupa, 
-%o - zwraca spację jeżeli kontakt nie ma cię na liście, %v - DNS, 
-%h - wersja gg, %p - port %e - email, %x - max rozmiar obrazka</translation>
-    </message>
-    <message>
-        <location filename="" line="7471221"/>
         <source>French</source>
         <translation>Francuski</translation>
     </message>
@@ -185,11 +174,6 @@ Jest to wysoce ryzykowne!</translation>
         <location filename="" line="7471221"/>
         <source>Chat window title syntax</source>
         <translation>Składnia tytułu okna</translation>
-    </message>
-    <message>
-        <location filename="" line="7471221"/>
-        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist %v - revDNS, %p - port %e - email %x - max image size</source>
-        <translation>Składnia: %s - status, %d - opis, %i - IP, %n - nick, %a - wyświetl, %f - imię, %r - nazwisko, %m - telefon, %u - nr GG, %g - grupa, %o - zwraca spację jeżeli kontakt nie ma cię na liście, %v - DNS, %h - wersja gg, %p - port %e - email, %x - max rozmiar obrazka</translation>
     </message>
     <message>
         <location filename="" line="7471221"/>
@@ -1236,6 +1220,45 @@ Jest to wysoce ryzykowne!</translation>
         <source>Displays information panel below userbox</source>
         <translation>Wyświetlaj panel informacyjny pod listą kontaktów</translation>
     </message>
+    <message>
+        <location filename="" line="7471221"/>
+        <source>default</source>
+        <translation>Domyślny</translation>
+    </message>
+    <message>
+        <location filename="" line="7471221"/>
+        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
+%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size
+</source>
+        <translation>Składnia: %s - status, %d - opis, %i - IP, %n - nick, %a - wyświetl, %f - imię,
+%r - nazwisko, %m - telefon, %u - nr GG, %g - grupa, %o - zwraca spację jeżeli kontakt nie ma cię na liście,
+%v - DNS, %h - wersja gg, %p - port %e - email, %x - max rozmiar obrazka</translation>
+    </message>
+    <message>
+        <location filename="" line="7471221"/>
+        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
+%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size,
+#{message} - message content,
+#{backgroundColor} - background color of message,
+#{fontColor} - font color of message,
+#{nickColor} - font color of nick,
+#{sentDate} - when message was sent,
+#{receivedDate} - when message was received,
+#{separator} - separator between messages,
+</source>
+        <translation>Składnia: %s - status, %d - opis, %i - IP, %n - nick, %a - wyświetl, %f - imię,
+%r - nazwisko, %m - telefon, %u - nr GG, %g - grupa, %o - zwraca spację jeżeli kontakt nie ma cię na liście,
+%v - DNS, %h - wersja gg, %p - port %e - email, %x - max rozmiar obrazka
+#{message} - treść wiadomości,
+#{backgroundColor} - kolor tła,
+#{fontColor} - kolor czcionki,
+#{nickColor} - kolor czcionki pseudonimu,
+#{sentDate} - czas wysłania wiadomości,
+#{receivedDate} - czas odebrania wiadomości,
+#{separator} - separator wiadomości</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1900,6 +1923,11 @@ Czy na pewno tego chcesz?</translation>
         <source>&amp;Open chat with...</source>
         <translation>&amp;Rozpocznij rozmowę z ...</translation>
     </message>
+    <message>
+        <location filename="" line="7471221"/>
+        <source>No closed chats found</source>
+        <translation>Brak zamkniętych rozmów</translation>
+    </message>
 </context>
 <context>
     <name>KaduTabBar</name>
@@ -1973,6 +2001,16 @@ Czy na pewno tego chcesz?</translation>
         <location filename="" line="7471221"/>
         <source>Advenced chat&apos;s look configuration</source>
         <translation>Zaawansowana konfiguracja wyglądu okna rozmowy</translation>
+    </message>
+    <message>
+        <location filename="" line="7471221"/>
+        <source>Your message</source>
+        <translation>Wiadomość od Ciebie</translation>
+    </message>
+    <message>
+        <location filename="" line="7471221"/>
+        <source>Message from Your friend</source>
+        <translation>Wiadomość do Ciebie</translation>
     </message>
 </context>
 <context>
@@ -2807,6 +2845,11 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
         <location filename="" line="7471221"/>
         <source>Icons (*.png *.xpm *.jpg)</source>
         <translation>Ikony (*.png *.xpm *.jpg)</translation>
+    </message>
+    <message>
+        <location filename="" line="7471221"/>
+        <source>Icon:</source>
+        <translation>Ikona:</translation>
     </message>
 </context>
 <context>

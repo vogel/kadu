@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="pl">
+<defaultcodec></defaultcodec>
 <context>
     <name>@default</name>
     <message>
@@ -284,6 +285,11 @@ o rozmiarze %3kB. Akceptujesz transfer?</translation>
         <location filename="../file_transfer_window.cpp" line="177"/>
         <source>&lt;b&gt;Rejected&lt;/b&gt;</source>
         <translation>&lt;b&gt;Odrzucony&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <location filename="../file_transfer_window.cpp" line="120"/>
+        <source>Are you sure you want to remove this transfer?</source>
+        <translation>Na pewno chcesz usunąć ten transfer?</translation>
     </message>
 </context>
 <context>

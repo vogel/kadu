@@ -7,15 +7,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qmap.h>
+#include <qapplication.h>
 #include <qlineedit.h>
+#include <qmap.h>
 #include <qprocess.h>
 #include <qtooltip.h>
 
 #include "config_file.h"
 #include "debug.h"
+#include "kadu.h"
 #include "kadu_parser.h"
 #include "misc.h"
+
 #include "exec_notify.h"
 
 extern "C" int exec_notify_init()
@@ -38,7 +41,7 @@ ExecConfigurationWidget::ExecConfigurationWidget(QWidget *parent, char *name)
 	: NotifierConfigurationWidget(parent, name), currentNotifyEvent("")
 {
 	commandLineEdit = new QLineEdit(this);
-	QToolTip::add(commandLineEdit, tr("Syntax: #{action} - action, #{protocol} - protocol, %ids - uins, %s - status, %d - description, %i - ip, %n - nick,\n %a - altnick, %f - first name %r - surname,  %m - mobile, %u - uin, %g - group,\n %o - return _space_ if user doesn't have us in userlist  %v - revDNS, %p - port %e - email %x - max image size"));	
+	QToolTip::add(commandLineEdit, qApp->translate("@default", Kadu::SyntaxText));
 
 	QGridLayout *gridLayout = new QGridLayout(this, 0, 0, 0, 3);
 	gridLayout->addWidget(new QLabel(tr("Command") + ":", this), 0, 0, Qt::AlignRight);

@@ -311,7 +311,7 @@ void UserInfo::setupTab2()
 		checkBox->setChecked(userGroups.contains(*it));
 
 		QLabel *textLabel = new QLabel(box);
-		textLabel->setText("Icon:");
+		textLabel->setText(tr("Icon:"));
 		textLabel->setMaximumWidth(40);
 
 		QLabel *pixmapLabel = new QLabel(box);
@@ -407,7 +407,7 @@ void UserInfo::newGroupClicked()
 	checkBox->setChecked(true);
 	
 	QLabel *textLabel = new QLabel(box);
-	textLabel->setText("Icon:");
+	textLabel->setText(tr("Icon:"));
 	textLabel->setMaximumWidth(40);
 	
 	QLabel *pixmapLabel = new QLabel(box);

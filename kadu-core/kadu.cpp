@@ -67,7 +67,27 @@ int lockFileHandle;
 QFile *lockFile;
 struct flock *lock_str;
 
-const char *Kadu::SyntaxText = QT_TRANSLATE_NOOP("@default", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name\n%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n%h - gg version, %v - revDNS, %p - port %e - email %x - max image size\n");
+const char *Kadu::SyntaxText = QT_TRANSLATE_NOOP
+(
+	"@default", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name\n"
+	"%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n"
+	"%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size\n"
+);
+
+const char *Kadu::SyntaxTextExtended = QT_TRANSLATE_NOOP
+(
+	"@default", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name\n"
+	"%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n"
+	"%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size,\n"
+	"#{message} - message content,\n"
+	"#{backgroundColor} - background color of message,\n"
+	"#{fontColor} - font color of message,\n"
+	"#{nickColor} - font color of nick,\n"
+	"#{sentDate} - when message was sent,\n"
+	"#{receivedDate} - when message was received,\n"
+	"#{separator} - separator between messages,\n"
+);
+
 bool Kadu::Closing = false;
 
 void Kadu::keyPressEvent(QKeyEvent *e)
@@ -1356,7 +1376,7 @@ void Kadu::createRecentChatsMenu()
 
 	if (chat_manager->closedChatUsers().isEmpty())
 	{
-		RecentChatsMenu->insertItem("No closed chats found", 0);
+		RecentChatsMenu->insertItem(tr("No closed chats found"), 0);
 		RecentChatsMenu->setItemEnabled(0, false);
 
 		kdebugf2();

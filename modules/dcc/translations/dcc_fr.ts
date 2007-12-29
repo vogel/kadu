@@ -280,6 +280,11 @@ of size %3kB. Accept transfer?</source>
         <source>&lt;b&gt;Rejected&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../file_transfer_window.cpp" line="120"/>
+        <source>Are you sure you want to remove this transfer?</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>FileTransferWindow</name>
