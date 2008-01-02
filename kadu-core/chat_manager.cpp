@@ -95,7 +95,7 @@ ChatManager::ChatManager(QObject* parent, const char* name) : QObject(parent, na
 	connect(send_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(sendActionActivated(const UserGroup*)));
 
-	Action* chat_action = new Action("OpenChat", tr("&Chat"), "chatAction", Action::TypeUserList);
+	Action* chat_action = new Action("OpenChat", tr("&Chat"), "chatAction", Action::TypeUser);
 	connect(chat_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(chatActionActivated(const UserGroup*)));
 
