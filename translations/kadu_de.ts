@@ -803,10 +803,6 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>View / edit user info</source>
-        <translation type="unfinished">Zeige / Editiere Kontaktinformationen</translation>
-    </message>
-    <message>
         <source>Search this user in directory</source>
         <translation type="unfinished">Suche diesen Benutzer im Verzeichnis</translation>
     </message>
@@ -997,6 +993,10 @@ It&apos;s a high security risk!</source>
 #{receivedDate} - when message was received,
 #{separator} - separator between messages,
 </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Properties</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1446,10 +1446,6 @@ will be deleted. Are you sure?</source>
 werden gelöscht. Sind Sie sicher?</translation>
     </message>
     <message>
-        <source>View / edit user info</source>
-        <translation>Zeige / Editiere Kontaktinformationen</translation>
-    </message>
-    <message>
         <source>Hide description</source>
         <translation>Beschreibung verstecken</translation>
     </message>
@@ -1543,6 +1539,10 @@ werden gelöscht. Sind Sie sicher?</translation>
     </message>
     <message>
         <source>No closed chats found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Properties</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

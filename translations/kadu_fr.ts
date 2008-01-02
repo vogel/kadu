@@ -805,10 +805,6 @@ Attention danger!
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>View / edit user info</source>
-        <translation type="unfinished">Montres / change les information concernant des contacts</translation>
-    </message>
-    <message>
         <source>Search this user in directory</source>
         <translation type="unfinished"></translation>
     </message>
@@ -999,6 +995,10 @@ Attention danger!
 #{receivedDate} - when message was received,
 #{separator} - separator between messages,
 </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Properties</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1447,10 +1447,6 @@ will be deleted. Are you sure?</source>
 serons effacés.Veuillez confirmer?</translation>
     </message>
     <message>
-        <source>View / edit user info</source>
-        <translation>Montres / change les information concernant des contacts</translation>
-    </message>
-    <message>
         <source>Hide description</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1540,6 +1536,10 @@ serons effacés.Veuillez confirmer?</translation>
     </message>
     <message>
         <source>No closed chats found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Properties</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

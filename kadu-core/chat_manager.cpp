@@ -346,7 +346,7 @@ void ChatManager::ignoreUserActionActivated(const UserGroup* users)
 	kdebugf2();
 }
 
-void ChatManager::blockUserActionActivated(const UserGroup* users)
+void ChatManager::blockUserActionActivated(const UserGroup *users)
 {
 	kdebugf();
 	if (users->count() > 0)

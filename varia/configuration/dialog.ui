@@ -281,7 +281,7 @@
 		<tab name="Userlist">
 			<group-box name="Userlist">
 				<hot-key-edit caption="Remove from userlist" config-section="ShortCuts" config-item="kadu_deleteuser" />
-				<hot-key-edit caption="View / edit user info" config-section="ShortCuts" config-item="kadu_persinfo" />
+				<hot-key-edit caption="Properties" config-section="ShortCuts" config-item="kadu_persinfo" />
 				<hot-key-edit caption="Search this user in directory" config-section="ShortCuts" config-item="kadu_searchuser" />
 				<hot-key-edit caption="Show / hide offline users" config-section="ShortCuts" config-item="kadu_showoffline" />
 				<hot-key-edit caption="Show / hide users without description" config-section="ShortCuts" config-item="kadu_showonlydesc" />

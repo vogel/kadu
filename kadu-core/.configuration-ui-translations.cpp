@@ -697,7 +697,7 @@
 			QT_TRANSLATE_NOOP("@default", "Remove from userlist");
 		
 				
-			QT_TRANSLATE_NOOP("@default", "View / edit user info");
+			QT_TRANSLATE_NOOP("@default", "Properties");
 		
 				
 			QT_TRANSLATE_NOOP("@default", "Search this user in directory");
