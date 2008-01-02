@@ -1098,6 +1098,8 @@ void UserBox::applyFilter(UserGroup *g)
 			this, SLOT(userAddedToGroup(UserListElement, bool, bool)));
 	connect(g, SIGNAL(userRemoved(UserListElement, bool, bool)),
 			this, SLOT(userRemovedFromGroup(UserListElement, bool, bool)));
+	refresh();
+	emit selectionChanged();
 	kdebugf2();
 }
 
@@ -1145,6 +1147,8 @@ void UserBox::removeFilter(UserGroup *g)
 	}
 	Filters.append(last); // restoring
 	VisibleUsers->addUsers(users);
+	refresh();
+	emit selectionChanged();
 	kdebugf2();
 }
 
@@ -1163,6 +1167,8 @@ void UserBox::applyNegativeFilter(UserGroup *g)
 			this, SLOT(userRemovedFromGroup(UserListElement, bool, bool)));
 	connect(g, SIGNAL(userRemoved(UserListElement, bool, bool)),
 			this, SLOT(userAddedToGroup(UserListElement, bool, bool)));
+	refresh();
+	emit selectionChanged();
 	kdebugf2();
 }
 
@@ -1202,6 +1208,8 @@ void UserBox::removeNegativeFilter(UserGroup *g)
 		users.append(*user);
 	}
 	VisibleUsers->addUsers(users);
+	refresh();
+	emit selectionChanged();
 	kdebugf2();
 }
 
