@@ -181,7 +181,7 @@ void DockArea::usersChangedSlot()
 const UserGroup* DockArea::selectedUsers()
 {
 	kdebugf();
-	const UserGroup* users = NULL;
+	const UserGroup *users = NULL;
 	emit selectedUsersNeeded(users);
 	kdebugf2();
 	return users;

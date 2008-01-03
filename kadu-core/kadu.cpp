@@ -630,16 +630,19 @@ void Kadu::lookupInDirectory()
 void Kadu::selectedUsersNeeded(const UserGroup*& users)
 {
 	kdebugf();
-	UserBox* activeUserBox = UserBox::activeUserBox();
-	if (activeUserBox==NULL)
+
+	UserBox *activeUserBox = UserBox::activeUserBox();
+	if (activeUserBox == NULL)
 	{
 		users = NULL;
 		kdebugf2();
 		return;
 	}
+
 	selectedUsers->clear();
 	selectedUsers->addUsers(activeUserBox->selectedUsers());
 	users = selectedUsers;
+
 	kdebugf2();
 }
 

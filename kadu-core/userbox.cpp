@@ -803,9 +803,10 @@ UserListElements UserBox::selectedUsers() const
 UserBox* UserBox::activeUserBox()
 {
 	kdebugf();
-	FOREACH(box, UserBoxes)
+
+	CONST_FOREACH(box, UserBoxes)
 	{
-		if ((*box)->isActiveWindow())
+		if ((*box)->isShown())
 		{
 			kdebugf2();
 			return *box;

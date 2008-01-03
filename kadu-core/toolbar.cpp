@@ -491,14 +491,11 @@ const UserGroup* ToolBar::selectedUsers() const
 {
 	kdebugf();
 	DockArea *dockArea = dynamic_cast<DockArea*>(area());
-	const UserGroup* users;
+	const UserGroup *users = NULL;
 
 	// dont segfault on floating toolbars
-
 	if (dockArea)
 		users = dockArea->selectedUsers();
-	else
-		users = NULL;
 
 	kdebugf2();
 	return users;
