@@ -153,10 +153,16 @@ void ToolButton::setOn(bool on)
 	kdebugf2();
 }
 
+void ToolButton::mousePressEvent(QMouseEvent* e)
+{
+	QToolButton::mousePressEvent(e);
+	MouseStart = e->pos();
+}
+
 void ToolButton::mouseMoveEvent(QMouseEvent* e)
 {
 	QToolButton::mouseMoveEvent(e);
-	if (e->state() & LeftButton && !toolbar()->dockArea()->blocked())
+	if (e->state() & LeftButton && !toolbar()->dockArea()->blocked() && (MouseStart - e->pos()).manhattanLength() >= 15)
 	{
 		setDown(false);
 		QDragObject* d = new ActionDrag(ActionName, usesTextLabel(), parentWidget());

@@ -31,6 +31,7 @@ class ToolButton : public QToolButton
 		QString OffText;
 		QIconSet OnIcon;
 		QString OnText;
+		QPoint MouseStart;
 
 		bool IsEnabled;
 		Action::ActionType Type;
@@ -42,6 +43,7 @@ class ToolButton : public QToolButton
 		void toolbarPlaceChanged(QDockWindow::Place p);
 
 	protected:
+		void mousePressEvent(QMouseEvent* e);
 		void mouseMoveEvent(QMouseEvent* e);
 		void contextMenuEvent(QContextMenuEvent* e);
 
