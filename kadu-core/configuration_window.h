@@ -161,6 +161,9 @@ private slots:
 
 	void changeSection(const QString &newSectionName);
 
+protected:
+	virtual void keyPressEvent(QKeyEvent *e);
+
 public:
 	/**
 		Tworzy okno konfiguracyjne o danej nazwie. Nazwa wykorzystywana
@@ -206,9 +209,6 @@ public:
 
 	// TODO: make private or sth
 	void removedConfigSection(const QString &sectionName);
-
-protected:
-	virtual void keyPressEvent(QKeyEvent *e);
 
 signals:
 	/**

@@ -107,6 +107,7 @@ class Sms : public QWidget, ConfigurationAwareObject
 
 	protected:
 		virtual void configurationUpdated();
+		virtual void keyPressEvent(QKeyEvent *e);
 
 	public:
 		Sms(const QString& altnick, QWidget* parent=0, const char *name=0);

@@ -429,6 +429,17 @@ void Sms::onSmsSenderFinished(bool success)
 	kdebugf2();
 }
 
+void Sms::keyPressEvent(QKeyEvent *e)
+{
+	if (e->key() == Key_Escape)
+	{
+		e->accept();
+		close();
+	}
+	else
+		QWidget::keyPressEvent(e);
+}
+
 SmsConfigurationUiHandler::SmsConfigurationUiHandler()
 	: menuid(0), gateways()
 {
