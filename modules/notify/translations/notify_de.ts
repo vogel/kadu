@@ -68,29 +68,34 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="30"/>
+        <location filename="../.configuration-ui-translations.cpp" line="33"/>
         <source>Status change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="33"/>
+        <location filename="../.configuration-ui-translations.cpp" line="36"/>
         <source>Ignore status changes from available / busy to busy / available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="36"/>
+        <location filename="../.configuration-ui-translations.cpp" line="39"/>
         <source>Ignore changes right after connection to the server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="38"/>
+        <location filename="../.configuration-ui-translations.cpp" line="41"/>
         <source>This option will supersede tooltips with users&apos; status
  changes upon establishing connection to the server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="41"/>
+        <location filename="../.configuration-ui-translations.cpp" line="44"/>
         <source>Notify about all users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="29"/>
+        <source>Allow opening chat with events other than &apos;New chat&apos;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

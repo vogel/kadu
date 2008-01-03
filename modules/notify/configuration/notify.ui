@@ -11,6 +11,7 @@
 		<tab name="Options">
 			<group-box name="New messages">
 				<check-box caption="Notify about new messages only when window is inactive" config-section="Notify" config-item="NewMessageOnlyIfInactive" />
+				<check-box caption="Allow opening chat with events other than 'New chat'" config-section="Notify" config-item="OpenChatOnEveryNotification" />
 			</group-box>
 			<group-box name="Status change">
 				<check-box caption="Ignore status changes from available / busy to busy / available" config-section="Notify" config-item="IgnoreOnlineToOnline" />

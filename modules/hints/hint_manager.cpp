@@ -314,6 +314,10 @@ void HintManager::openChat(Hint *hint)
 	if (!hint->hasUsers())
 		return;
 
+	if (!config_file.readBoolEntry("Notify", "OpenChatOnEveryNotification"))
+		if (hint->getNotification()->name() != "NewChat" && hint->getNotification()->name() != "NewMessage")
+			return;
+
 	const UserListElements & senders = hint->getUsers();
 	if (!senders.isEmpty())
 		chat_manager->openPendingMsgs(senders);

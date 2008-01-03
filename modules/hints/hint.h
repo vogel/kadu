@@ -66,6 +66,8 @@ public:
 	bool hasUsers() const;
 	const UserListElements & getUsers() const;
 
+	Notification * getNotification() { return notification; }
+
 public slots:
 	/**
 		minê³a sekunda, zmniejsza licznik pozosta³ych sekund,

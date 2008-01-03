@@ -521,6 +521,7 @@ void Notify::createDefaultConfiguration()
 	config_file.addVariable("Notify", "NewMessageOnlyIfInactive", true);
 	config_file.addVariable("Notify", "NotifyAboutAll", true);
 	config_file.addVariable("Notify", "NotifyIgnoreOnConnection", false);
+	config_file.addVariable("Notify", "OpenChatOnEveryNotification", false);
 }
 
 Notify *notification_manager = 0;
