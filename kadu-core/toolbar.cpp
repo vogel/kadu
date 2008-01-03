@@ -402,6 +402,10 @@ void ToolBar::updateButtons()
 		}
 	}
 
+// 	adjustSize();
+	updateGeometry();
+// 	adjustSize();
+
 	if (dockarea)
 		dockarea->writeToConfig();
 }

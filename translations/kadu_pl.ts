@@ -2666,7 +2666,7 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     <message>
         <location filename="" line="6750319"/>
         <source>Hide descriptions</source>
-        <translation>Ukryj opis</translation>
+        <translation>Ukryj opisy</translation>
     </message>
     <message>
         <location filename="" line="6750319"/>
