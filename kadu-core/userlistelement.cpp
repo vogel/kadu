@@ -194,6 +194,7 @@ UserListElement::UserListElement() : QObject(NULL, 0), privateData(new ULEPrivat
 {
 //	kdebugf();
 	privateData->key = used ++;
+// 	privateData->ref();
 //	kdebugf2();
 }
 
@@ -201,7 +202,10 @@ UserListElement::~UserListElement()
 {
 //	kdebugf();
 	if (privateData->deref())
+	{
 		delete privateData;
+		privateData = 0;
+	}
 //	kdebugf2();
 }
 

@@ -335,6 +335,10 @@ void KaduListBoxPixmap::calculateSize(const QString &text, int width, QStringLis
 		height=0;
 */
 	QStringList tmpout = QStringList::split('\n', text, true);
+
+	if (!descriptionFontMetrics) // TODO: workaround
+		return;
+
 	int wsize = descriptionFontMetrics->width('W'); //'w' is the widest letter
 	int initialLength = width / wsize; // try to guess width
 

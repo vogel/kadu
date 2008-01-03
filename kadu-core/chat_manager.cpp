@@ -354,14 +354,16 @@ void ChatManager::blockUserActionActivated(const UserGroup *users)
 		bool on = true;
 		bool blocked_anonymous = false; // true, if we blocked at least one anonymous user
 
-		CONST_FOREACH(user, (*users))
+		UserListElements copy = users->toUserListElements();
+
+		CONST_FOREACH(user, copy)
 			if (!(*user).usesProtocol("Gadu") || !(*user).protocolData("Gadu", "Blocking").toBool())
 			{
 				on = false;
 				break;
 			}
 
-		FOREACH(user, (*users))
+		FOREACH(user, copy)
 		{
 			QString uid = (*user).ID("Gadu");
 			if (gadu->validateUserID(uid) && (*user).protocolData("Gadu", "Blocking").toBool() != !on)

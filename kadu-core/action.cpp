@@ -49,7 +49,6 @@ void Action::toolButtonClicked()
 	/**
 		Don't check if users == NULL, now it is not neccesary.
 		Either action dont need users field (with ActionType == TypeGlobal) or it cannot be activated when users == NULL
-		(ActionType != TypeGlobal) - it is possible only when action's toolbar is floating - action's button is disabled.
 	**/
 
 	activated(users, button, button->isOn());
