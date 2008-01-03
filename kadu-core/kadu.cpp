@@ -88,6 +88,15 @@ const char *Kadu::SyntaxTextExtended = QT_TRANSLATE_NOOP
 	"#{separator} - separator between messages,\n"
 );
 
+const char *Kadu::SyntaxTextNotify = QT_TRANSLATE_NOOP
+(
+	"@default", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name\n"
+	"%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n"
+	"%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size,\n"
+	"#{protocol} - protocol that triggered event,\n"
+	"#{event} - name of event,\n"
+);
+
 bool Kadu::Closing = false;
 
 void Kadu::keyPressEvent(QKeyEvent *e)

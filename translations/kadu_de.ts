@@ -999,6 +999,15 @@ It&apos;s a high security risk!</source>
         <source>Properties</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
+%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size,
+#{protocol} - protocol that triggered event,
+#{event} - name of event,
+</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>

@@ -41,7 +41,7 @@ ExecConfigurationWidget::ExecConfigurationWidget(QWidget *parent, char *name)
 	: NotifierConfigurationWidget(parent, name), currentNotifyEvent("")
 {
 	commandLineEdit = new QLineEdit(this);
-	QToolTip::add(commandLineEdit, qApp->translate("@default", Kadu::SyntaxText));
+	QToolTip::add(commandLineEdit, qApp->translate("@default", Kadu::SyntaxTextNotify));
 
 	QGridLayout *gridLayout = new QGridLayout(this, 0, 0, 0, 3);
 	gridLayout->addWidget(new QLabel(tr("Command") + ":", this), 0, 0, Qt::AlignRight);
@@ -82,13 +82,13 @@ ExecNotify::ExecNotify(QObject *parent, const char *name) : Notifier(parent, nam
 	kdebugf();
 	import_0_5_0_configuration();
 
-	config_file.addVariable("Exec Notify", "NewChatCmd", "Xdialog --msgbox \"#{protocol} %u %ids #{action}\" 10 100");
-	config_file.addVariable("Exec Notify", "NewMessageCmd", "Xdialog --msgbox \"#{protocol} %u %ids #{action}\" 10 100");
-	config_file.addVariable("Exec Notify", "ConnectionErrorCmd", "Xdialog --msgbox \"#{protocol} #{action}\" 10 100");
-	config_file.addVariable("Exec Notify", "StatusChanged/ToOnlineCmd", "Xdialog --msgbox \"%protocol %u #{action}\" 10 100");
-	config_file.addVariable("Exec Notify", "StatusChanged/ToBusyCmd", "Xdialog --msgbox \"#{protocol} %u #{action}\" 10 100");
-	config_file.addVariable("Exec Notify", "StatusChanged/ToInvisibleCmd", "Xdialog --msgbox \"#{protocol} %u #{action}\" 10 100");
-	config_file.addVariable("Exec Notify", "StatusChanged/ToOfflineCmd", "Xdialog --msgbox \"#{protocol} %u #{action}\" 10 100");
+	config_file.addVariable("Exec Notify", "NewChatCmd", "Xdialog --msgbox \"#{protocol} %u %ids #{event}\" 10 100");
+	config_file.addVariable("Exec Notify", "NewMessageCmd", "Xdialog --msgbox \"#{protocol} %u %ids #{event}\" 10 100");
+	config_file.addVariable("Exec Notify", "ConnectionErrorCmd", "Xdialog --msgbox \"#{protocol} #{event}\" 10 100");
+	config_file.addVariable("Exec Notify", "StatusChanged/ToOnlineCmd", "Xdialog --msgbox \"%protocol %u #{event}\" 10 100");
+	config_file.addVariable("Exec Notify", "StatusChanged/ToBusyCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
+	config_file.addVariable("Exec Notify", "StatusChanged/ToInvisibleCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
+	config_file.addVariable("Exec Notify", "StatusChanged/ToOfflineCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
 
 	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default", "Exec"), this);
 
@@ -240,7 +240,7 @@ void ExecNotify::import_0_5_0_ConfigurationFromTo(const QString &from, const QSt
 	{
 		syntax.replace("%id", "%u");
 		syntax.replace("%status", "%s");
-		syntax.replace("%action", "#{action}");
+		syntax.replace("%action", "#{event}");
 		syntax.replace("%protocol", "#{protocol}");
 		config_file.addVariable("Exec Notify", to + "Cmd", syntax);
 	}

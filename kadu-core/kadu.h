@@ -188,6 +188,7 @@ class Kadu : public QWidget, ConfigurationAwareObject
 		**/
 		static const char *SyntaxText;
 		static const char *SyntaxTextExtended;
+		static const char *SyntaxTextNotify;
 
 		static bool closing() { return Closing; }
 		static void setClosing() { Closing = true; }

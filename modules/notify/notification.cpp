@@ -28,12 +28,12 @@ static QString getNotificationTitle(const QObject * const object)
 Notification::Notification(const QString &type, const QString &icon, const UserListElements &userListElements)
 	: Type(type), Ule(userListElements), Title(""), Text(""), Icon(icon), DefaultCallbackTimer(0), ReferencesCount(0), Closing(false)
 {
-	KaduParser::registerObjectTag("action", getNotificationTitle);
+	KaduParser::registerObjectTag("event", getNotificationTitle);
 }
 
 Notification::~Notification()
 {
-	KaduParser::unregisterObjectTag("action", getNotificationTitle);
+	KaduParser::unregisterObjectTag("event", getNotificationTitle);
 
 	if (DefaultCallbackTimer)
 	{
