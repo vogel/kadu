@@ -271,3 +271,9 @@ void ChatMessagesView::configurationUpdated()
 
 	repaintMessages();
 }
+
+void ChatMessagesView::resizeEvent(QResizeEvent *e)
+{
+	if (verticalScrollBar()->value() == verticalScrollBar()->maxValue())
+		scrollToBottom();
+}

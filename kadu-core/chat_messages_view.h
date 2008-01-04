@@ -7,6 +7,7 @@
 #include "userlistelement.h"
 
 class ChatMessage;
+class QResizeEvent;
 
 class ChatMessagesView : public KaduTextBrowser, ConfigurationAwareObject
 {
@@ -36,6 +37,7 @@ class ChatMessagesView : public KaduTextBrowser, ConfigurationAwareObject
 
 protected:
 	virtual void configurationUpdated();
+	virtual void resizeEvent(QResizeEvent *e);
 
 private slots:
 	void pageUp();
