@@ -563,7 +563,7 @@ Jest to wysoce ryzykowne!</translation>
     <message>
         <location filename="" line="6750319"/>
         <source>Last decription will be set on startup</source>
-        <translation>Ostatni opis będzie ustawiony na starcie pgroamu</translation>
+        <translation>Ostatni opis będzie ustawiony na starcie programu</translation>
     </message>
     <message>
         <location filename="" line="6750319"/>

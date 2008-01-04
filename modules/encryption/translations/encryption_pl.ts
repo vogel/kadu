@@ -35,7 +35,7 @@
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="29"/>
         <source>Encrypt by default</source>
-        <translation>Domyslnie szyfruj</translation>
+        <translation>Domyślnie szyfruj</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="32"/>
