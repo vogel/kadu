@@ -468,14 +468,22 @@ void ChatWidget::refreshTitle()
 bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
 {
 	if (HotKey::shortCut(e,"ShortCuts", "chat_clear"))
+	{
 		clearChatWindow();
+		return true;
+	}
 	else if (HotKey::shortCut(e,"ShortCuts", "chat_close"))
+	{
 		emit closed();
+		return true;
+	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
+	{
 		KaduActions["whoisAction"]->activate(Users);
+		return true;
+	}
 	else
 		return false;
-// 	return true;
 }
 
 QPixmap ChatWidget::icon()
