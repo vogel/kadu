@@ -402,9 +402,6 @@ void SoundManager::play(const QString &path, bool force)
 {
 	kdebugf();
 
-	bool volCntrl;
-	float vol;
-
 	if (isMuted() && !force)
 	{
 		kdebugmf(KDEBUG_FUNCTION_END, "end: muted\n");
@@ -412,7 +409,7 @@ void SoundManager::play(const QString &path, bool force)
 	}
 
 	if (QFile::exists(path))
-		play(path, volCntrl, vol);
+		play(path, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0 * config_file.readDoubleNumEntry("Sounds", "SoundVolume") / 100);
 	else
 		fprintf(stderr, "file (%s) not found\n", path.local8Bit().data());
 

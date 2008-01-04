@@ -46,7 +46,7 @@ extern "C" void docking_close()
 }
 
 DockingManager::DockingManager()
-	: icon_timer(new QTimer(this, "icon_timer")), blink(false)
+	: icon_timer(new QTimer(this, "icon_timer")), blink(false), newMessageIcon(StaticEnvelope)
 {
 	kdebugf();
 
