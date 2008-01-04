@@ -293,22 +293,10 @@ int KaduListBoxPixmap::lineHeight(const QListBox* lb) const
 
 int KaduListBoxPixmap::width(const QListBox* lb) const
 {
-// 	kdebugf();
-
 	if (ColumnCount == 0)
 		return QMAX(pm.width(), (lb->visibleWidth()));
 	else
 		return QMAX(pm.width(), (lb->visibleWidth()) / ColumnCount);
-/*
-   joi:
-   we need to use lb->width()-20 here for scrollbar - we cannot get this value
-   from Qt style, because eg Keramik returns wrong value (=100) (only one standard
-   KDE style has wider scrollbars - SGI, and Kadu will look bad on it :( )
-
-   as well we cannot use lb->visibleWidth(), because of one case:
-   	group A has 20 contacts, group B - 25, only 22 can be visible
-   	changing group A to B will show up horizontal scrollbar :|
-*/
 }
 
 //#include <sys/time.h>
@@ -710,10 +698,13 @@ void UserBox::refresh()
 	const unsigned int Count = count();
 	unsigned int i = 0;
 
-	if (sortHelper.size() == Count)
-	{
-		bool doRefresh = false;
+	bool doRefresh = false;
 
+	if (fancy && (numColumns() != config_file.readNumEntry("Look", "UserBoxColumnCount", 1)))
+		doRefresh = true;
+
+	if (!doRefresh && (sortHelper.size() == Count))
+	{
 		kdebugm(KDEBUG_INFO, "checking if order changed\n");
 		for (std::vector<UserListElement>::const_iterator user = sortHelper.begin(),
 			userEnd = sortHelper.end(); user != userEnd; ++user)

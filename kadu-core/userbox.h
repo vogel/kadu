@@ -171,6 +171,7 @@ protected:
 	void changeText(const QString &text);
 
 	friend class UserBox;
+	friend class Kadu; // TODO: fix
 
 	static QPixmap pixmapForUser(const UserListElement &user);
 
