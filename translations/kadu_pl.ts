@@ -528,7 +528,7 @@ Jest to wysoce ryzykowne!</translation>
     <message>
         <location filename="" line="6750319"/>
         <source>Choose status which will be set on startup</source>
-        <translation>Wybierz status, jaki będzie ustawione na starcie programu</translation>
+        <translation>Wybierz status, jaki będzie ustawiony na starcie programu</translation>
     </message>
     <message>
         <location filename="" line="6750319"/>
@@ -818,7 +818,7 @@ Jest to wysoce ryzykowne!</translation>
     <message>
         <location filename="" line="6750319"/>
         <source>Displays group tabs on userbox</source>
-        <translation>Wyświeta zakładki grup przy liście kontaktów</translation>
+        <translation>Wyświetla zakładki grup przy liście kontaktów</translation>
     </message>
     <message>
         <location filename="" line="6750319"/>
@@ -1183,7 +1183,7 @@ Jest to wysoce ryzykowne!</translation>
     <message>
         <location filename="" line="6750319"/>
         <source>Receiving images during invisibility is allowed</source>
-        <translation>Zezwala na odbieranie obrazków w czasie bycia umkryty</translation>
+        <translation>Zezwala na odbieranie obrazków w czasie bycia ukrytym</translation>
     </message>
     <message>
         <location filename="" line="6750319"/>
@@ -1193,7 +1193,7 @@ Jest to wysoce ryzykowne!</translation>
     <message>
         <location filename="" line="6750319"/>
         <source>Define limit of images received per minute</source>
-        <translation>Limituj liczbę obrazków, jaka moze zostać odebrana w czasie jednej minuty</translation>
+        <translation>Limituj liczbę obrazków, jaka może zostać odebrana w czasie jednej minuty</translation>
     </message>
     <message>
         <location filename="" line="6750319"/>
@@ -1368,7 +1368,7 @@ Jest to wysoce ryzykowne!</translation>
     <message>
         <location filename="" line="6750319"/>
         <source>Anonymous users will be unblocked after restarting Kadu</source>
-        <translation>Anonimowe kontakty będą odblkowane po restarcie Kadu</translation>
+        <translation>Anonimowe kontakty będą odblokowane po restarcie Kadu</translation>
     </message>
     <message>
         <location filename="" line="6750319"/>
@@ -1477,7 +1477,7 @@ Prawdopodobnie nie zostanie on wszystkim dostarczony.</translation>
     <message>
         <location filename="" line="6750319"/>
         <source>New message received, close window anyway?</source>
-        <translation>Odebrano nową wiadomość, czy napewno zamknąć okno?</translation>
+        <translation>Odebrano nową wiadomość, czy na pewno zamknąć okno?</translation>
     </message>
 </context>
 <context>
@@ -1901,7 +1901,7 @@ Czy na pewno tego chcesz?</translation>
     <message>
         <location filename="" line="6750319"/>
         <source>Show offline users</source>
-        <translation>Pokaż kontakty niedostepne</translation>
+        <translation>Pokaż kontakty niedostępne</translation>
     </message>
     <message>
         <location filename="" line="6750319"/>
@@ -1916,7 +1916,7 @@ Czy na pewno tego chcesz?</translation>
     <message>
         <location filename="" line="6750319"/>
         <source>Show only online and description users</source>
-        <translation>Pokaż tylko kontakty dostepne i z opisem</translation>
+        <translation>Pokaż tylko kontakty dostępne i z opisem</translation>
     </message>
     <message>
         <location filename="" line="6750319"/>
@@ -2156,7 +2156,7 @@ Czy na pewno tego chcesz?</translation>
     <message>
         <location filename="" line="6750319"/>
         <source>Module %1 cannot be deactivated because it is used now</source>
-        <translation>Moduł %1 nie może być zdeaktywowany ponieważ jest obecnie w użyciu</translation>
+        <translation>Moduł %1 nie może być dezaktywowany ponieważ jest obecnie w użyciu</translation>
     </message>
     <message>
         <location filename="" line="6750319"/>
@@ -3073,7 +3073,7 @@ zostało zakończone niepowodzeniem</translation>
     <message>
         <location filename="" line="6750319"/>
         <source>This operation will delete your current user list. Are you sure you want this?</source>
-        <translation>Ta operacja usunie twoją bieżacą listę kontaktów.
+        <translation>Ta operacja usunie twoją bieżącą listę kontaktów.
 Jesteś pewny że tego chcesz?</translation>
     </message>
     <message>
@@ -3089,7 +3089,7 @@ Jesteś pewny że tego chcesz?</translation>
     <message>
         <location filename="" line="6750319"/>
         <source>File exists. Are you sure you want to overwrite it?</source>
-        <translation>Plik już istnieje. Czy napewno go nadpisać?</translation>
+        <translation>Plik już istnieje. Czy na pewno go nadpisać?</translation>
     </message>
 </context>
 </TS>
