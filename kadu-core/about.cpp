@@ -41,6 +41,7 @@ About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopL
 	layoutHelper(new LayoutHelper())
 {
 	kdebugf();
+
 	// set window properties and flags
 	setCaption(tr("About"));
 	layout()->setResizeMode(QLayout::Minimum);
@@ -54,10 +55,10 @@ About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopL
 	QLabel *l_icon = new QLabel(left);
 	l_icon->setPixmap(icons_manager->loadIcon("AboutIcon"));
 
-	QWidget *blank=new QWidget(left);
+	QWidget *blank = new QWidget(left);
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	QVBox *center=new QVBox(this);
+	QVBox *center = new QVBox(this);
 	center->setMargin(10);
 	center->setSpacing(10);
 
@@ -85,7 +86,7 @@ About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopL
 	tb_authors->setWordWrap(QTextEdit::NoWrap);
 	tb_authors->setText(loadFile("AUTHORS"));
 
-	// authors
+	// people to thank
 	QTextBrowser *tb_thanks = new QTextBrowser(tw_about);
 	tb_thanks->setFrameStyle(QFrame::NoFrame);
 	tb_thanks->setTextFormat(Qt::PlainText);
@@ -123,14 +124,17 @@ About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopL
 
 	layoutHelper->addLabel(l_info);
 	loadGeometry(this, "General", "AboutGeometry", 0, 30, 640, 420);
+
 	kdebugf2();
 }
 
 About::~About()
 {
 	kdebugf();
+
 	saveGeometry(this, "General", "AboutGeometry");
 	delete layoutHelper;
+
 	kdebugf2();
 }
 
@@ -143,16 +147,19 @@ void About::keyPressEvent(QKeyEvent *ke_event)
 QString About::loadFile(const QString &name)
 {
 	kdebugf();
+
 	QFile file(dataPath("kadu/" + name));
 	if (!file.open(IO_ReadOnly))
 	{
 		kdebugm(KDEBUG_ERROR, "About::loadFile(%s) cannot open file\n", name.local8Bit().data());
 		return QString::null;
 	}
+
 	QTextStream str(&file);
 	str.setCodec(codec_latin2);
 	QString data = str.read();
 	file.close();
+
 	kdebugf2();
 	return data;
 }
