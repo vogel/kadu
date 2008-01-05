@@ -315,7 +315,7 @@ void HintManager::openChat(Hint *hint)
 		return;
 
 	if (!config_file.readBoolEntry("Notify", "OpenChatOnEveryNotification"))
-		if ((hint->getNotification()->name() != "NewChat") && (hint->getNotification()->name() != "NewMessage"))
+		if ((hint->getNotification()->type() != "NewChat") && (hint->getNotification()->type() != "NewMessage"))
 			return;
 
 	const UserListElements & senders = hint->getUsers();
@@ -619,6 +619,7 @@ void HintManager::createDefaultConfiguration()
 	config_file.addVariable("Hints", "SetAll_timeout", 10);
 	config_file.addVariable("Hints", "ShowContentMessage", true);
 	config_file.addVariable("Hints", "UseUserPosition", false);
+	config_file.addVariable("Hints", "OpenChatOnEveryNotification", false);
 }
 
 HintManager *hint_manager=NULL;

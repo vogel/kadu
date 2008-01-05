@@ -25,9 +25,6 @@
 				
 			QT_TRANSLATE_NOOP("@default", "Notify about new messages only when window is inactive");
 		
-				
-			QT_TRANSLATE_NOOP("@default", "Allow opening chat with events other than 'New chat'");
-		
 			
 			
 			QT_TRANSLATE_NOOP("@default", "Status change");

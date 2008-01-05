@@ -12,8 +12,6 @@
 				
 			QT_TRANSLATE_NOOP("@default", "Hints over userlist");
 		
-			QT_TRANSLATE_NOOP("@default", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist %v - revDNS, %p - port %e - email %x - max image size");
-		
 			
 		
 	
@@ -97,6 +95,9 @@
 			
 			
 			QT_TRANSLATE_NOOP("@default", "Mouse buttons");
+		
+				
+			QT_TRANSLATE_NOOP("@default", "Allow opening chat with events other than 'New chat'");
 		
 				
 			QT_TRANSLATE_NOOP("@default", "Left button");

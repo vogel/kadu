@@ -38,6 +38,7 @@
 				<select-font caption="Font" config-section="Hints" config-item="SetAll_font" id="hints/setAll_font" />
 			</group-box>
 			<group-box name="Mouse buttons">
+				<check-box caption="Allow opening chat with events other than 'New chat'" config-section="Hints" config-item="OpenChatOnEveryNotification" />
 				<combo-box caption="Left button" config-section="Hints" config-item="LeftButton">
 					<item value="0" caption="Nothing" />
 					<item value="1" caption="Open chat" />

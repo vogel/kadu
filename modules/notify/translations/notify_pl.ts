@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="pl">
-<defaultcodec></defaultcodec>
 <context>
     <name>@default</name>
     <message>
@@ -34,28 +33,28 @@
         <translation>Informuj o nowych wiadomościach tylko gdy okno rozmowy jest nieaktywne</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="33"/>
+        <location filename="../.configuration-ui-translations.cpp" line="30"/>
         <source>Status change</source>
         <translation>Zmiany statusów</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="36"/>
+        <location filename="../.configuration-ui-translations.cpp" line="33"/>
         <source>Ignore status changes from available / busy to busy / available</source>
         <translation>Ignoruj zmiany statusów z dostępny / zajęty na zajęty / dostępny</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="39"/>
+        <location filename="../.configuration-ui-translations.cpp" line="36"/>
         <source>Ignore changes right after connection to the server</source>
         <translation>Ignoruj zmiany statusów po połączeniu z serwerem</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="41"/>
+        <location filename="../.configuration-ui-translations.cpp" line="38"/>
         <source>This option will supersede tooltips with users&apos; status
  changes upon establishing connection to the server</source>
         <translation>Ta opcja zlikwiduje powiadomiania o zmianach statusów przy łączeniu do serwera</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="44"/>
+        <location filename="../.configuration-ui-translations.cpp" line="41"/>
         <source>Notify about all users</source>
         <translation>Informuj o wszystkich kontaktach</translation>
     </message>
@@ -97,7 +96,7 @@
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="29"/>
         <source>Allow opening chat with events other than &apos;New chat&apos;</source>
-        <translation>Zezwalaj na otwierania okna rozmowy przy zdarzeniach innych niż &apos;Nowa rozmowa&apos;</translation>
+        <translation type="obsolete">Zezwalaj na otwierania okna rozmowy przy zdarzeniach innych niż &apos;Nowa rozmowa&apos;</translation>
     </message>
 </context>
 <context>

@@ -3,12 +3,12 @@
 <context>
     <name>@default</name>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="26"/>
+        <location filename="../.configuration-ui-translations.cpp" line="24"/>
         <source>Hints</source>
         <translation>Suggerimenti</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="77"/>
+        <location filename="../.configuration-ui-translations.cpp" line="75"/>
         <source>Look</source>
         <translation type="unfinished"></translation>
     </message>
@@ -28,178 +28,178 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="15"/>
-        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist %v - revDNS, %p - port %e - email %x - max image size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../.configuration-ui-translations.cpp" line="22"/>
+        <location filename="../.configuration-ui-translations.cpp" line="20"/>
         <source>Notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="29"/>
+        <location filename="../.configuration-ui-translations.cpp" line="27"/>
         <source>Layout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="32"/>
+        <location filename="../.configuration-ui-translations.cpp" line="30"/>
         <source>New hints go</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="35"/>
+        <location filename="../.configuration-ui-translations.cpp" line="33"/>
         <source>Auto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="38"/>
+        <location filename="../.configuration-ui-translations.cpp" line="36"/>
         <source>On top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="41"/>
+        <location filename="../.configuration-ui-translations.cpp" line="39"/>
         <source>On bottom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="45"/>
+        <location filename="../.configuration-ui-translations.cpp" line="43"/>
         <source>Own hints position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="48"/>
+        <location filename="../.configuration-ui-translations.cpp" line="46"/>
         <source>X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="51"/>
+        <location filename="../.configuration-ui-translations.cpp" line="49"/>
         <source>Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="54"/>
+        <location filename="../.configuration-ui-translations.cpp" line="52"/>
         <source>Corner</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="57"/>
+        <location filename="../.configuration-ui-translations.cpp" line="55"/>
         <source>Top left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="60"/>
+        <location filename="../.configuration-ui-translations.cpp" line="58"/>
         <source>Top right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="63"/>
+        <location filename="../.configuration-ui-translations.cpp" line="61"/>
         <source>Bottom left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="66"/>
+        <location filename="../.configuration-ui-translations.cpp" line="64"/>
         <source>Bottom right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="70"/>
+        <location filename="../.configuration-ui-translations.cpp" line="68"/>
         <source>Minimum width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="73"/>
+        <location filename="../.configuration-ui-translations.cpp" line="71"/>
         <source>Maximum width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="80"/>
+        <location filename="../.configuration-ui-translations.cpp" line="78"/>
         <source>Set for all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="83"/>
+        <location filename="../.configuration-ui-translations.cpp" line="81"/>
         <source>&lt;b&gt;Text&lt;/b&gt; preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="86"/>
+        <location filename="../.configuration-ui-translations.cpp" line="84"/>
         <source>Timeout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="89"/>
+        <location filename="../.configuration-ui-translations.cpp" line="87"/>
         <source>Font color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="92"/>
+        <location filename="../.configuration-ui-translations.cpp" line="90"/>
         <source>Background color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="95"/>
+        <location filename="../.configuration-ui-translations.cpp" line="93"/>
         <source>Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="99"/>
+        <location filename="../.configuration-ui-translations.cpp" line="97"/>
         <source>Mouse buttons</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="102"/>
+        <location filename="../.configuration-ui-translations.cpp" line="103"/>
         <source>Left button</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="137"/>
+        <location filename="../.configuration-ui-translations.cpp" line="138"/>
         <source>Nothing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="140"/>
+        <location filename="../.configuration-ui-translations.cpp" line="141"/>
         <source>Open chat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="143"/>
+        <location filename="../.configuration-ui-translations.cpp" line="144"/>
         <source>Delete hint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="146"/>
+        <location filename="../.configuration-ui-translations.cpp" line="147"/>
         <source>Delete all hints</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="118"/>
+        <location filename="../.configuration-ui-translations.cpp" line="119"/>
         <source>Middle button</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="134"/>
+        <location filename="../.configuration-ui-translations.cpp" line="135"/>
         <source>Right button</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="151"/>
+        <location filename="../.configuration-ui-translations.cpp" line="152"/>
         <source>New chat/message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="154"/>
+        <location filename="../.configuration-ui-translations.cpp" line="155"/>
         <source>Show message content in hint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="157"/>
+        <location filename="../.configuration-ui-translations.cpp" line="158"/>
         <source>Number of quoted characters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="160"/>
+        <location filename="../.configuration-ui-translations.cpp" line="161"/>
         <source>Delete pending message when user deletes hint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="100"/>
+        <source>Allow opening chat with events other than &apos;New chat&apos;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -211,7 +211,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../hint_manager.cpp" line="115"/>
+        <location filename="../hint_manager.cpp" line="112"/>
         <source>Dont hide</source>
         <translation type="unfinished"></translation>
     </message>
