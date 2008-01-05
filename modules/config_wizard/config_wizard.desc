@@ -2,7 +2,7 @@
 Description=Configuration wizard
 Description[pl]=Kreator konfiguracji
 Author=Dorregaray
-Dependencies=account_management
+Dependencies=account_management,sound
 LoadByDefault=true
 Version=core
 Base=true
