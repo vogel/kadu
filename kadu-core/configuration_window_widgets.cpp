@@ -306,12 +306,11 @@ void ConfigComboBox::setItems(const QStringList &itemValues, const QStringList &
 	insertStringList(itemCaptions);
 }
 
-QString ConfigComboBox::currentItemValue() {
+QString ConfigComboBox::currentItemValue()
+{
 	int index = currentItem();
 
-	if (index < 0)
-		return QString::null;
-	if (index >= itemValues.size())
+	if ((index < 0) || (index >= itemValues.size()))
 		return QString::null;
 
 	return itemValues[index];
@@ -351,9 +350,8 @@ void ConfigComboBox::saveConfiguration()
 		return;
 
 	int index = currentItem();
-	if (index < 0)
-		return;
-	if (index >= itemValues.size())
+
+	if ((index < 0) || (index >= itemValues.size()))
 		return;
 
 	config_file.writeEntry(section, item, itemValues[currentItem()]);
