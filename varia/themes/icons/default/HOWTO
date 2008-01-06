@@ -1,7 +1,7 @@
 How to make new themes for Kadu based on default theme? There are only few rules:
 
 - don't modify icons.conf. Icons.conf will be deleted in future releases and we will use .png and .svg files directly.
-- don't modify help-about-kadu_big.png, it's our logo :)
+- don't modify our logo: help-about-kadu_big.png and help-about-kadu.png
 - use your own imagination for drawing icons, don't just redraw default icons in another style. If you think you have better idea for kadu/kadu-notifyaboutuser.png, kadu/kadu-status.png, kadu/kadu-onoff_onlineandd_off/of.png or external_modules/module-agent.png draw them as you want.
 - if you found any bug in default icon set or if you have any enhancement for default icon set report it on http://kadu.net/forum 
 - if you need support for more icons in Kadu themes also visit http://kadu.net/forum 
@@ -13,7 +13,7 @@ PL:
 Jak zrobić nowy zestaw ikon dla Kadu oparty o zestaw domyślny? Jest tylko kilka zasad:
 
 - nie modyfikuj icons.conf. Icons.conf będzie skasowan w przyszłych wydaniach i będziemy używać.png i.svg bezpośrednio.
-- nie modyfikuj help-about-kadu_big.png, to nasze logo :)
+- nie modyfikuj help-about-kadu_big.png oraz help-about-kadu.png , to nasze logo :)
 - używaj własnej fantazji projektując swoje ikony, przerysowywanie domyślnego zestawu ikon w innym stylu nie zawsze jest dobrym pomysłem. Jeśli masz lepszy pomysł dla ikon kadu/kadu-notifyaboutuser.png, kadu/kadu-status.png, kadu/kadu-onoff_onlineandd_off/of.png lub external_modules/module-agent.png narysuj je jak chcesz.
 - jeśli znalazłeś jakiś błąd w zestawie lub masz jakieś usprawnienie dla domyślnego zestawu ikon odwiedź  http:/kadu.net/forum
 - jeśli potrzebujesz w Kadu obsługi jakichś dodatkowych ikon także odwiedź http:/kadu.net/forum i skontaktuj się z nami.
