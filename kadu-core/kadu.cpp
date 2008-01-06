@@ -213,7 +213,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	UserBox::userboxmenu->addItem("OpenDescriptionLink", tr("Open description link in browser"), this, SLOT(openDescriptionLink()));
 	UserBox::userboxmenu->addItem("CopyPersonalInfo", tr("Copy personal info"), this, SLOT(copyPersonalInfo()));
 	UserBox::userboxmenu->addItem("LookupUserInfo", tr("Search in directory"), this, SLOT(lookupInDirectory()), HotKey::shortCutFromFile("ShortCuts", "kadu_searchuser"));
-	UserBox::userboxmenu->addItem("EditUserInfo", tr("Properties"), this, SLOT(showUserInfo()), HotKey::shortCutFromFile("ShortCuts", "kadu_persinfo"));
+	UserBox::userboxmenu->addItem("EditUserInfo", tr("Contact data"), this, SLOT(showUserInfo()), HotKey::shortCutFromFile("ShortCuts", "kadu_persinfo"));
 	UserBox::userboxmenu->insertSeparator();
 
 	UserBox::management->addItem("Ignore", tr("Ignore"), this, SLOT(ignoreUser()));
@@ -269,7 +269,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	connect(configuration_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(configurationActionActivated()));
 
-	Action* edit_user_action = new Action("EditUserInfo", tr("Properties"),
+	Action* edit_user_action = new Action("EditUserInfo", tr("Contact data"),
 		"editUserAction", Action::TypeUser);
 	connect(edit_user_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(editUserActionActivated(const UserGroup*)));
@@ -478,7 +478,7 @@ void Kadu::popupMenu()
 	}
 
 	if (users.count() != 1)
-		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Properties")), false);
+		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Contact data")), false);
 	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu"))
 		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Search in directory")), false);
 	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu") || firstUser.status("Gadu").description().isEmpty())
@@ -680,7 +680,7 @@ void Kadu::editUserActionSetParams(QString /*protocolName*/, UserListElement use
 	else
 	{
 		action->setPixmaps(elems, icons_manager->loadIcon("EditUserInfo"));
-		action->setTexts(elems, tr("Properties"));
+		action->setTexts(elems, tr("Contact data"));
 	}
 
 	kdebugf2();
