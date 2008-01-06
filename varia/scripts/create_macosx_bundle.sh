@@ -22,7 +22,7 @@ SSLVER=0.9.7
 INSTALLED_DIR=~/Desktop/root/kadu
 
 ICONS_PKG=ng_big_icons.tar.bz2
-ICONS_LINK=http://www.kadu.net/~joi/macosx/$ICONS_PKG
+ICONS_LINK=http://www.kadu.net/~neeo/kadu/macosx/$ICONS_PKG
 
 PLAYSOUND_LINK=http://f.steike.com/playsound
 
@@ -55,7 +55,7 @@ if [ ! -f ${QTDIR}/include/qwidget.h ]; then
 	exit
 fi
 
-if [ ! -f ./varia/themes/icons/default/big_message.png ]; then
+if [ ! -f ./varia/themes/icons/default/kadu/big_message.png ]; then
 	curl -O ${ICONS_LINK}
 	tar xjf ${ICONS_PKG}
 	patch -p0 < icons.diff
