@@ -279,8 +279,8 @@ void UserGroup::resize(int size)
 
 void UserGroup::clear()
 {
-	// removeUsers(toUserListElements());
-	removeUsers(this);
+	removeUsers(toUserListElements());
+// 	removeUsers(this);
 }
 
 QStringList UserGroup::altNicks() const
