@@ -1009,10 +1009,6 @@ Jest to wysoce ryzykowne!</translation>
 #{separator} - separator wiadomości</translation>
     </message>
     <message>
-        <source>Contact data</source>
-        <translation>Dane kontaktu</translation>
-    </message>
-    <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
 %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size,
@@ -1025,6 +1021,10 @@ Jest to wysoce ryzykowne!</translation>
 #{message} - treść wiadomości,
 #{protocol} - nazwa protokołu, który wywołał zdarzenie,
 #{event} - nazwa zdarzenia</translation>
+    </message>
+    <message>
+        <source>Properties</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
