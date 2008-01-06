@@ -998,7 +998,7 @@ Attention danger!
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Properties</source>
+        <source>Contact data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1548,7 +1548,7 @@ serons effacés.Veuillez confirmer?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Properties</source>
+        <source>Contact data</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -996,7 +996,7 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Properties</source>
+        <source>Contact data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1551,7 +1551,7 @@ werden gelöscht. Sind Sie sicher?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Properties</source>
+        <source>Contact data</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

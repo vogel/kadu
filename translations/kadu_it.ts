@@ -997,7 +997,7 @@ E un rischio per la sicurezza!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Properties</source>
+        <source>Contact data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1546,7 +1546,7 @@ saranno eliminati. Vuoi davvero?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Properties</source>
+        <source>Contact data</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
