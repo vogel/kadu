@@ -1024,7 +1024,7 @@ Jest to wysoce ryzykowne!</translation>
     </message>
     <message>
         <source>Properties</source>
-        <translation type="unfinished"></translation>
+        <translation>Dane kontaktu</translation>
     </message>
 </context>
 <context>

@@ -148,7 +148,7 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Language</source>
@@ -160,7 +160,7 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Updates</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktualisieren</translation>
     </message>
     <message>
         <source>Check for updates</source>
@@ -188,31 +188,31 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Konqueror</source>
-        <translation type="unfinished"></translation>
+        <translation>Konqueror</translation>
     </message>
     <message>
         <source>Opera</source>
-        <translation type="unfinished"></translation>
+        <translation>Opera</translation>
     </message>
     <message>
         <source>Mozilla</source>
-        <translation type="unfinished"></translation>
+        <translation>Mozilla</translation>
     </message>
     <message>
         <source>Mozilla Firefox</source>
-        <translation type="unfinished"></translation>
+        <translation>Mozilla Firefox</translation>
     </message>
     <message>
         <source>Dillo</source>
-        <translation type="unfinished"></translation>
+        <translation>Dillo</translation>
     </message>
     <message>
         <source>Galeon</source>
-        <translation type="unfinished"></translation>
+        <translation>Galeon</translation>
     </message>
     <message>
         <source>Safari</source>
-        <translation type="unfinished"></translation>
+        <translation>Safari</translation>
     </message>
     <message>
         <source>Custom browser</source>
@@ -236,19 +236,19 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>KMail</source>
-        <translation type="unfinished"></translation>
+        <translation>KMail</translation>
     </message>
     <message>
         <source>Thunderbird</source>
-        <translation type="unfinished"></translation>
+        <translation>Thunderbird</translation>
     </message>
     <message>
         <source>SeaMonkey</source>
-        <translation type="unfinished"></translation>
+        <translation>SeaMonkey</translation>
     </message>
     <message>
         <source>Evolution</source>
-        <translation type="unfinished"></translation>
+        <translation>Evolution</translation>
     </message>
     <message>
         <source>Custom e-mail client</source>
@@ -284,19 +284,19 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Gadu-Gadu</source>
-        <translation type="unfinished"></translation>
+        <translation>Gadu-Gadu</translation>
     </message>
     <message>
         <source>User data</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontaktinformationen</translation>
     </message>
     <message>
         <source>UIN</source>
-        <translation type="unfinished">GG-Nummer (UIN)</translation>
+        <translation>GG-Nummer (UIN)</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Kennwort</translation>
     </message>
     <message>
         <source>Nick</source>
@@ -332,11 +332,11 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>8074</source>
-        <translation type="unfinished"></translation>
+        <translation>8074</translation>
     </message>
     <message>
         <source>443</source>
-        <translation type="unfinished"></translation>
+        <translation>443</translation>
     </message>
     <message>
         <source>Proxy Server</source>
@@ -1552,7 +1552,7 @@ werden gelöscht. Sind Sie sicher?</translation>
     </message>
     <message>
         <source>Contact data</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontaktinformationen</translation>
     </message>
 </context>
 <context>
