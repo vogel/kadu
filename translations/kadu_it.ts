@@ -1009,6 +1009,10 @@ E un rischio per la sicurezza!</translation>
         <source>Properties</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Opera (new tab)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>

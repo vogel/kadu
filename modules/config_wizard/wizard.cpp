@@ -459,6 +459,7 @@ void Wizard::createApplicationsPage()
 	browserCombo->insertItem(tr("Specify path"));
 	browserCombo->insertItem(tr("Konqueror"));
 	browserCombo->insertItem(tr("Opera"));
+	browserCombo->insertItem(tr("Opera (new tab)"));
 	browserCombo->insertItem(tr("Mozilla"));
 	browserCombo->insertItem(tr("Mozilla Firefox"));
 	browserCombo->insertItem(tr("Dillo"));

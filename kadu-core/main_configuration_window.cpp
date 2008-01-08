@@ -344,16 +344,20 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 			break;
 		}
 		case 2: // opera
+		case 3:
 		{
 			searchPath.append("/opt/opera");
 			executableName.append("opera");
 
-			parameters = "";
+			if (browserIndex == 2)
+				parameters = "";
+			else
+				parameters = "-newpage -nomail -notrayicon";
 
 // 			options << tr("Open in new window") << tr("Open in new tab") << tr("Open in background tab");
 			break;
 		}
-		case 3: // mozilla
+		case 4: // mozilla
 		{
 			QString homePath = getenv("HOME");
 			QStringList dirList = QDir("/usr/lib").entryList("mozilla*", QDir::All, QDir::Name|QDir::Reversed);
@@ -373,7 +377,7 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 // 			options << tr("Open in new window") << tr("Open in new tab");
 			break;
 		}
-		case 4: // firefox
+		case 5: // firefox
 		{
 			QString homePath = getenv("HOME");
 
@@ -405,15 +409,22 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 // 			options << tr("Open in new window") << tr("Open in new tab");
 			break;
 		}
-		case 5: // dillo
+		case 6: // dillo
+		{
 			executableName.append("dillo");
-		case 6: // galeon
+			break;
+		}
+		case 7: // galeon
+		{
 			executableName.append("galeon");
-		case 7: // Safaro
+			break;
+		}
+		case 8: // Safaro
 		{
 			searchPath.append("/Applications");
 			executableName.append("Safari.app");
 			parameters = "open";
+			break;
 		}
 	}
 
@@ -516,11 +527,12 @@ QString MainConfigurationWindow::browserIndexToString(int browserIndex)
 		case 0: return "Specify path";
 		case 1: return "Konqueror";
 		case 2: return "Opera";
-		case 3: return "Mozilla";
-		case 4: return "Mozilla Firefox";
-		case 5: return "Dillo";
-		case 6: return "Galeon";
-		case 7: return "Safari";
+		case 3: return "Opera (new tab)";
+		case 4: return "Mozilla";
+		case 5: return "Mozilla Firefox";
+		case 6: return "Dillo";
+		case 7: return "Galeon";
+		case 8: return "Safari";
 	}
 
 	return "";

@@ -1008,6 +1008,10 @@ It&apos;s a high security risk!</source>
         <source>Properties</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Opera (new tab)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>

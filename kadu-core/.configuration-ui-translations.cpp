@@ -103,6 +103,9 @@
 			QT_TRANSLATE_NOOP("@default", "Opera");
 		
 					
+			QT_TRANSLATE_NOOP("@default", "Opera (new tab)");
+		
+					
 			QT_TRANSLATE_NOOP("@default", "Mozilla");
 		
 					

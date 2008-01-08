@@ -20,6 +20,7 @@
 					<item value="Specify path" caption="Specify path" />
 					<item value="Konqueror" caption="Konqueror" />
 					<item value="Opera" caption="Opera" />
+					<item value="Opera (new tab)" caption="Opera (new tab)" />
 					<item value="Mozilla" caption="Mozilla" />
 					<item value="Mozilla Firefox" caption="Mozilla Firefox" />
 					<item value="Dillo" caption="Dillo" />
