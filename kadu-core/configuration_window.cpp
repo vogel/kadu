@@ -50,34 +50,6 @@ public:
 
 };
 
-class ConfigSection
-{
-	QString name;
-	ConfigurationWindow *configurationWindow;
-
-	QListBoxItem *listBoxItem;
-	QMap<QString, ConfigTab *> configTabs;
-
-	QTabWidget *mainWidget;
-
-	ConfigTab *configTab(const QString &name, bool create = true);
-	bool activated;
-
-public:
-	ConfigSection(const QString &name, ConfigurationWindow *configurationWindow, QListBoxItem *listBoxItem, QWidget *parentConfigGroupBoxWidget);
-	~ConfigSection();
-
-	void activate();
-
-	void show() { mainWidget->show(); }
-	void hide() { mainWidget->hide(); }
-
-	ConfigGroupBox * configGroupBox(const QString &tab, const QString &groupBox, bool create = true);
-
-	void removedConfigTab(const QString &configTabName);
-
-};
-
 ConfigGroupBox::ConfigGroupBox(const QString &name, ConfigTab *configTab, QGroupBox *groupBox)
 	: name(name), configTab(configTab), groupBox(groupBox)
 {
@@ -177,12 +149,15 @@ void ConfigTab::removedConfigGroupBox(const QString &groupBoxName)
 	}
 }
 
-ConfigSection::ConfigSection(const QString &name, ConfigurationWindow *configurationWindow, QListBoxItem *listBoxItem, QWidget *parentConfigGroupBoxWidget)
-	: name(name), configurationWindow(configurationWindow), listBoxItem(listBoxItem), activated(false)
+ConfigSection::ConfigSection(const QString &name, ConfigurationWindow *configurationWindow, QListBoxItem *listBoxItem, QWidget *parentConfigGroupBoxWidget,
+		const QString &pixmap)
+	: name(name), configurationWindow(configurationWindow), pixmap(pixmap), listBoxItem(listBoxItem), activated(false)
 {
 	mainWidget = new QTabWidget(parentConfigGroupBoxWidget);
 	mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	mainWidget->hide();
+
+	connect(icons_manager, SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 }
 
 ConfigSection::~ConfigSection()
@@ -238,6 +213,17 @@ void ConfigSection::removedConfigTab(const QString &configTabName)
 		delete this;
 		configurationWindow->removedConfigSection(name);
 	}
+}
+
+void ConfigSection::iconThemeChanged()
+{
+	QListBox *listBox = listBoxItem->listBox();
+	bool current = listBoxItem->isCurrent();
+	delete listBoxItem;
+
+	listBoxItem = new QListBoxPixmap(listBox, icons_manager->loadIcon(pixmap), name);
+	if (current)
+		listBox->setCurrentItem(listBoxItem);
 }
 
 ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &caption)
@@ -611,7 +597,7 @@ ConfigSection *ConfigurationWindow::configSection(const QString &pixmap, const Q
 
 	QListBoxItem *newConfigSectionListBoxItem = new QListBoxPixmap(sectionsListBox, icons_manager->loadIcon(pixmap), name);
 
-	ConfigSection *newConfigSection = new ConfigSection(name, this, newConfigSectionListBoxItem, container);
+	ConfigSection *newConfigSection = new ConfigSection(name, this, newConfigSectionListBoxItem, container, pixmap);
 	configSections[name] = newConfigSection;
 
 	if (configSections.count() > 1)

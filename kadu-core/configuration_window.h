@@ -3,6 +3,7 @@
 
 #include <qdom.h>
 #include <qgroupbox.h>
+#include <qtabwidget.h>
 
 #include "color_button.h"
 #include "hot_key.h"
@@ -13,13 +14,48 @@
 
 class ConfigGroupBox;
 class ConfigLineEdit;
-class ConfigSection;
 class ConfigTab;
+class ConfigurationWindow;
 class ConfigWidget;
 
 class QGridLayout;
 class QGroupBox;
 class QVBox;
+
+class ConfigSection : public QObject
+{
+	Q_OBJECT
+
+	QString name;
+	ConfigurationWindow *configurationWindow;
+	QString pixmap;
+
+	QListBoxItem *listBoxItem;
+	QMap<QString, ConfigTab *> configTabs;
+
+	QTabWidget *mainWidget;
+
+	ConfigTab *configTab(const QString &name, bool create = true);
+	bool activated;
+
+private slots:
+	void iconThemeChanged();
+
+public:
+	ConfigSection(const QString &name, ConfigurationWindow *configurationWindow, QListBoxItem *listBoxItem, QWidget *parentConfigGroupBoxWidget,
+		const QString &pixmap);
+	~ConfigSection();
+
+	void activate();
+
+	void show() { mainWidget->show(); }
+	void hide() { mainWidget->hide(); }
+
+	ConfigGroupBox * configGroupBox(const QString &tab, const QString &groupBox, bool create = true);
+
+	void removedConfigTab(const QString &configTabName);
+
+};
 
 /**
 	@class ConfigGroupBox
