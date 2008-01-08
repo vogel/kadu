@@ -2128,6 +2128,7 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("ShortCuts", "kadu_configure", "F2");
 	config_file.addVariable("ShortCuts", "kadu_deleteuser", "Del");
 	config_file.addVariable("ShortCuts", "kadu_modulesmanager", "F4");
+	config_file.addVariable("ShortCuts", "kadu_openchatwith", "Ctrl+L");
 	config_file.addVariable("ShortCuts", "kadu_persinfo", "Ins");
 	config_file.addVariable("ShortCuts", "kadu_searchuser", "Ctrl+F");
 	config_file.addVariable("ShortCuts", "kadu_showoffline", "F9");
