@@ -262,6 +262,7 @@ Sms::Sms(const QString& altnick, QWidget* parent, const char *name) : QWidget(pa
 	connect(&Sender, SIGNAL(finished(bool)), this, SLOT(onSmsSenderFinished(bool)));
 
 	configurationUpdated();
+	loadGeometry(this, "Sms", "SmsDialogGeometry", 200, 200, 400, 250);
 
 	modules_manager->moduleIncUsageCount("sms");
 	kdebugf2();
@@ -269,6 +270,8 @@ Sms::Sms(const QString& altnick, QWidget* parent, const char *name) : QWidget(pa
 
 Sms::~Sms()
 {
+	saveGeometry(this, "Sms", "SmsDialogGeometry");
+
 	modules_manager->moduleDecUsageCount("sms");
 }
 
