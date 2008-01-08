@@ -62,6 +62,7 @@ void ChatWindow::setChatWidget(ChatWidget *newChatWidget)
 
 	setFocusProxy(currentChatWidget);
 	restoreGeometry();
+	updateTitle();
 }
 
 ChatWidget* ChatWindow::chatWidget()
