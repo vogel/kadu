@@ -471,7 +471,7 @@ QString printDateTime(const QDateTime &datetime)
 
 	if (delta != 0)
 	{
-		if (config_file.readBoolEntry("Look","NiceDateFormat"))
+		if (config_file.readBoolEntry("Look", "NiceDateFormat"))
 		{
 			if (delta == 1) // 1 day ago
 				ret.prepend(qApp->translate("@default", "Yesterday at "));

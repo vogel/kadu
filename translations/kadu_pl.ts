@@ -103,7 +103,7 @@ Jest to wysoce ryzykowne!</translation>
     <message>
         <location filename="" line="138301568"/>
         <source>d MMMM yyyy at </source>
-        <translation>d MMMM rrrr o </translation>
+        <translation>d MMMM yyyy o </translation>
     </message>
     <message>
         <location filename="" line="138301568"/>
