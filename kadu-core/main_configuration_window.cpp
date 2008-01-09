@@ -344,15 +344,13 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 			break;
 		}
 		case 2: // opera
-		case 3:
+		case 3: // opera with params
 		{
 			searchPath.append("/opt/opera");
 			executableName.append("opera");
 
-			if (browserIndex == 2)
-				parameters = "";
-			else
-				parameters = "-newpage -nomail -notrayicon";
+			if (browserIndex == 3)
+				parameters = "-newpage";
 
 // 			options << tr("Open in new window") << tr("Open in new tab") << tr("Open in background tab");
 			break;
@@ -360,7 +358,7 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 		case 4: // mozilla
 		{
 			QString homePath = getenv("HOME");
-			QStringList dirList = QDir("/usr/lib").entryList("mozilla*", QDir::All, QDir::Name|QDir::Reversed);
+			QStringList dirList = QDir("/usr/lib").entryList("mozilla*", QDir::All, QDir::Name | QDir::Reversed);
 			CONST_FOREACH(dir, dirList)
 				searchPath.append("/usr/lib/" + (*dir));
 
@@ -372,12 +370,28 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 // it is for old mozillas, unsupported
 // 			executableName.append("mozilla-xremote-client");
 
-			parameters = "";
+//			parameters = "";
 
 // 			options << tr("Open in new window") << tr("Open in new tab");
 			break;
 		}
-		case 5: // firefox
+		case 5: // seamonkey
+		{
+			QString homePath = getenv("HOME");
+			QStringList dirList = QDir("/usr/lib").entryList("seamonkey*", QDir::All, QDir::Name | QDir::Reversed);
+			CONST_FOREACH(dir, dirList)
+				searchPath.append("/usr/lib/" + (*dir));
+
+			searchPath.append("/usr/local/Seamonkey");
+    			searchPath.append("/usr/local/seamonkey");
+			searchPath.append(homePath + "/Seamonkey");
+			searchPath.append(homePath + "/seamonkey");
+			executableName.append("seamonkey");
+
+			// options << tr("Open in new window") << tr("Open in new tab");
+			break;
+		}
+		case 6: // firefox
 		{
 			QString homePath = getenv("HOME");
 
@@ -396,7 +410,7 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 			searchPath.append(homePath + "/firefox");
 			executableName.append("firefox");
 
-			parameters = "";
+//			parameters = "";
 //	do we need it anyway ??
 // 			executableName.append("mozilla-xremote-client");
 // 			executableName.append("mozilla-firefox-xremote-client");
@@ -409,17 +423,17 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 // 			options << tr("Open in new window") << tr("Open in new tab");
 			break;
 		}
-		case 6: // dillo
+		case 7: // dillo
 		{
 			executableName.append("dillo");
 			break;
 		}
-		case 7: // galeon
+		case 8: // galeon
 		{
 			executableName.append("galeon");
 			break;
 		}
-		case 8: // Safaro
+		case 9: // Safari
 		{
 			searchPath.append("/Applications");
 			executableName.append("Safari.app");
@@ -440,7 +454,7 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 			return tr("Not found");
 	}
 	else
-		return "";
+		return QString::null;
 }
 
 void MainConfigurationWindow::onChangeBrowser(int index)
@@ -511,7 +525,7 @@ QString MainConfigurationWindow::getEMailExecutable(int emailIndex)
 			return tr("Not found");
 	}
 	else
-		return "";
+		return QString::null;
 }
 
 void MainConfigurationWindow::onChangeMail(int index)
@@ -529,13 +543,13 @@ QString MainConfigurationWindow::browserIndexToString(int browserIndex)
 		case 2: return "Opera";
 		case 3: return "Opera (new tab)";
 		case 4: return "Mozilla";
-		case 5: return "Mozilla Firefox";
-		case 6: return "Dillo";
-		case 7: return "Galeon";
-		case 8: return "Safari";
+		case 5: return "SeaMonkey";
+		case 6: return "Mozilla Firefox";
+		case 7: return "Dillo";
+		case 8: return "Galeon";
+		case 9: return "Safari";
+		default: return QString::null;
 	}
-
-	return "";
 }
 
 QString MainConfigurationWindow::emailIndexToString(int emailIndex)
@@ -547,9 +561,8 @@ QString MainConfigurationWindow::emailIndexToString(int emailIndex)
 		case 2: return "Thunderbird";
 		case 3: return "SeaMonkey";
 		case 4: return "Evolution";
+		default: return QString::null;
 	}
-
-	return "";
 }
 
 void MainConfigurationWindow::onChatSyntaxEditorWindowCreated(SyntaxEditorWindow *syntaxEditorWindow)

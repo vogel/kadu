@@ -22,6 +22,7 @@
 					<item value="Opera" caption="Opera" />
 					<item value="Opera (new tab)" caption="Opera (new tab)" />
 					<item value="Mozilla" caption="Mozilla" />
+					<item value="SeaMonkey" caption="SeaMonkey" />
 					<item value="Mozilla Firefox" caption="Mozilla Firefox" />
 					<item value="Dillo" caption="Dillo" />
 					<item value="Galeon" caption="Galeon" />
