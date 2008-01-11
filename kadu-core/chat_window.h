@@ -37,12 +37,6 @@ protected:
 		Funkcja steruj±ca mruganiem napisu okna
 	**/
 	virtual void windowActivationChange(bool oldActive);
-	/**
-		\fn virtual void keyReleaseEvent(QKeyEvent* e)
-		Funkcja obs³uguj±ca zwolnienie przycisku
-		\param e wska¼nik do obiektu obs³uguj±cego klawisze
-	**/
-	virtual void mouseReleaseEvent(QMouseEvent *e);
 
 	virtual void configurationUpdated();
 

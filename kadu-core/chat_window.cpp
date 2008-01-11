@@ -151,13 +151,6 @@ void ChatWindow::closeEvent(QCloseEvent* e)
  	QMainWindow::closeEvent(e);
 }
 
-void ChatWindow::mouseReleaseEvent(QMouseEvent *e)
-{
-	kdebugf();
-	currentChatWidget->edit()->setFocus();
- 	QMainWindow::mouseReleaseEvent(e);
-}
-
 void ChatWindow::updateTitle()
 {
 	setIcon(currentChatWidget->icon());
