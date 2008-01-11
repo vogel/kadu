@@ -218,7 +218,7 @@ void ConfigSection::removedConfigTab(const QString &configTabName)
 void ConfigSection::iconThemeChanged()
 {
 	QListBox *listBox = listBoxItem->listBox();
-	bool current = listBoxItem->isCurrent();
+	bool current = listBoxItem->isSelected();
 	delete listBoxItem;
 
 	listBoxItem = new QListBoxPixmap(listBox, icons_manager->loadIcon(pixmap), name);
