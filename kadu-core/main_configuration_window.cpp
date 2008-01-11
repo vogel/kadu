@@ -224,8 +224,11 @@ void MainConfigurationWindow::setLanguages()
 {
 	ConfigComboBox *languages = dynamic_cast<ConfigComboBox *>(widgetById("languages"));
 
-	QDir locale(dataPath("kadu/translations/"), "kadu_*.qm");
-	QStringList files = locale.entryList();
+	QStringList files;
+	files.append("kadu_pl.qm");
+	files.append("kadu_en.qm");
+	files.append("kadu_de.qm");
+
 	QStringList itemValues;
 	QStringList itemCaptions;
 
