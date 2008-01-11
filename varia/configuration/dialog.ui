@@ -121,6 +121,8 @@
 					<item value="Invisible" caption="Invisible" />
 					<item value="Offline" caption="Offline" />
 				</combo-box>
+				<check-box caption="Set invisible if last status was 'Offline'" config-section="General" config-item="StartupStatusInvisibleWhenLastWasOffline"
+					   id="startupStatusInvisibleWhenLastWasOffline" />
 				<check-box caption="On startup, set last description" config-section="General" config-item="StartupLastDescription" id="onStartupSetLastDescription"
 					   tool-tip="Last decription will be set on startup" />
 				<line-edit caption="On startup, set description" config-section="General" config-item="StartupDescription" id="onStartupSetDescription"

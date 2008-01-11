@@ -216,6 +216,7 @@ void MainConfigurationWindow::chatFixup(Preview *preview)
 void MainConfigurationWindow::onChangeStartupStatus(int index)
 {
 	onStartupSetLastDescription->setEnabled(index != 4);
+	widgetById("startupStatusInvisibleWhenLastWasOffline")->setEnabled(index == 0);
 	widgetById("onStartupSetDescription")->setEnabled(!onStartupSetLastDescription->isChecked() && index != 4);
 }
 

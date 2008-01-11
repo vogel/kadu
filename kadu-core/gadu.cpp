@@ -776,7 +776,9 @@ void GaduProtocol::disconnectedSlot()
 	if (!Kadu::closing())
 		userlist->setAllOffline("Gadu");
 
-	CurrentStatus->setOffline(QString::null);
+	if (!CurrentStatus->isOffline())
+		CurrentStatus->setOffline(QString::null);
+
 	emit disconnected();
 	kdebugf2();
 }

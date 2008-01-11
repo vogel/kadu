@@ -1725,6 +1725,9 @@ void Kadu::setDefaultStatus()
 		statusIndex = 6;
 
 	status.setIndex(statusIndex, description);
+	if (status.isOffline() && config_file.readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline"))
+		status.setInvisible(description);
+
 	status.setFriendsOnly(config_file.readBoolEntry("General", "PrivateStatus"));
 	userStatusChanger->userStatusSet(status);
 
@@ -2067,6 +2070,7 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("General", "StartDelay", 0);
 	config_file.addVariable("General", "StartupLastDescription", true);
 	config_file.addVariable("General", "StartupStatus", "LastStatus");
+	config_file.addVariable("General", "StartupStatusInvisibleWhenLastWasOffline", true);
 	config_file.addVariable("General", "UserBoxHeight", 300);
 
 	config_file.addVariable("Look", "AlignUserboxIconsTop", true);

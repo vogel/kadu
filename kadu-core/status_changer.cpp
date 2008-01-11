@@ -51,7 +51,7 @@ void UserStatusChanger::userStatusSet(UserStatus &status)
 {
 	kdebugf();
 
-	userStatus = status;
+	userStatus.setStatus(status);
 	emit statusChanged();
 
 	kdebugf2();

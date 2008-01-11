@@ -109,6 +109,9 @@
 			QT_TRANSLATE_NOOP("@default", "Mozilla");
 		
 					
+			QT_TRANSLATE_NOOP("@default", "SeaMonkey");
+		
+					
 			QT_TRANSLATE_NOOP("@default", "Mozilla Firefox");
 		
 					
@@ -331,6 +334,9 @@
 			QT_TRANSLATE_NOOP("@default", "Offline");
 		
 				
+				
+			QT_TRANSLATE_NOOP("@default", "Set invisible if last status was 'Offline'");
+		
 				
 			QT_TRANSLATE_NOOP("@default", "On startup, set last description");
 		

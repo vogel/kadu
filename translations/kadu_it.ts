@@ -1013,6 +1013,10 @@ E un rischio per la sicurezza!</translation>
         <source>Opera (new tab)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Set invisible if last status was &apos;Offline&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
