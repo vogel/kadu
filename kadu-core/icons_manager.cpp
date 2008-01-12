@@ -165,6 +165,8 @@ void IconsManager::configurationUpdated()
 {
 	kdebugf();
 
+	bool themeWasChanged = config_file.readEntry("Look", "IconTheme") != icons_manager->theme();
+
 	icons_manager->clear();
 	icons_manager->setTheme(config_file.readEntry("Look", "IconTheme"));
 	KaduActions.refreshIcons();
@@ -174,7 +176,8 @@ void IconsManager::configurationUpdated()
 	kadu->changeAppearance();
 
 	// TODO: Make it standard
-	emit themeChanged();
+	if (themeWasChanged)
+		emit themeChanged();
 
 	kdebugf2();
 }
