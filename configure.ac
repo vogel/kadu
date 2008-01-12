@@ -771,6 +771,9 @@ if test "$with_existing_libgadu" != "no"; then
 	[
 		GADU_LIBS="$GADU_LIBS -L$FILE_DIR"
 	])
+	AC_CHECK_MEMBER([struct gg_dcc7.uin], [],
+	[AC_MSG_ERROR([Your libgadu doesn't support for dcc7, please use our SVN snapshot by removing --with-existing-libgadu option !])],
+	[#include <libgadu.h>])
 else
 	MY_SUBDIRS="$MY_SUBDIRS libgadu"
 	GADU_LIBS="../libgadu/src/.libs/libgadu.a"

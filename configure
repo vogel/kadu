@@ -10153,6 +10153,109 @@ fi
 rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
       conftest$ac_exeext conftest.$ac_ext
 
+	{ echo "$as_me:$LINENO: checking for struct gg_dcc7.uin" >&5
+echo $ECHO_N "checking for struct gg_dcc7.uin... $ECHO_C" >&6; }
+if test "${ac_cv_member_struct_gg_dcc7_uin+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <libgadu.h>
+
+int
+main ()
+{
+static struct gg_dcc7 ac_aggr;
+if (ac_aggr.uin)
+return 0;
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_cxx_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  ac_cv_member_struct_gg_dcc7_uin=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <libgadu.h>
+
+int
+main ()
+{
+static struct gg_dcc7 ac_aggr;
+if (sizeof ac_aggr.uin)
+return 0;
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_cxx_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  ac_cv_member_struct_gg_dcc7_uin=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_cv_member_struct_gg_dcc7_uin=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+fi
+{ echo "$as_me:$LINENO: result: $ac_cv_member_struct_gg_dcc7_uin" >&5
+echo "${ECHO_T}$ac_cv_member_struct_gg_dcc7_uin" >&6; }
+if test $ac_cv_member_struct_gg_dcc7_uin = yes; then
+  :
+else
+  { { echo "$as_me:$LINENO: error: Your libgadu doesn't support for dcc7, please use our SVN snapshot by removing --with-existing-libgadu option !" >&5
+echo "$as_me: error: Your libgadu doesn't support for dcc7, please use our SVN snapshot by removing --with-existing-libgadu option !" >&2;}
+   { (exit 1); exit 1; }; }
+fi
+
 else
 	MY_SUBDIRS="$MY_SUBDIRS libgadu"
 	GADU_LIBS="../libgadu/src/.libs/libgadu.a"
