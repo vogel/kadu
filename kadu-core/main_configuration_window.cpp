@@ -228,6 +228,7 @@ void MainConfigurationWindow::setLanguages()
 	files.append("kadu_pl.qm");
 	files.append("kadu_en.qm");
 	files.append("kadu_de.qm");
+	files.append("kadu_it.qm");
 
 	QStringList itemValues;
 	QStringList itemCaptions;
