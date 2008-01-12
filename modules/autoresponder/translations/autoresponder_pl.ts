@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="pl">
+<defaultcodec></defaultcodec>
 <context>
     <name>@default</name>
     <message>
@@ -59,6 +60,11 @@
         <location filename="../autoresponder.cpp" line="85"/>
         <source>KADU AUTORESPONDER:</source>
         <translation>KADU AUTOODPOWIEDŹ:</translation>
+    </message>
+    <message>
+        <location filename="../autoresponder.cpp" line="132"/>
+        <source>I am busy.</source>
+        <translation>Jestem zajęty.</translation>
     </message>
 </context>
 </TS>

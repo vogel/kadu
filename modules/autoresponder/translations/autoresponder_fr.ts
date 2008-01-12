@@ -60,5 +60,10 @@
         <source>KADU AUTORESPONDER:</source>
         <translation>REPONDEUR KADU:</translation>
     </message>
+    <message>
+        <location filename="../autoresponder.cpp" line="132"/>
+        <source>I am busy.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

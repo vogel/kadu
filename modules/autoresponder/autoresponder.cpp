@@ -129,7 +129,7 @@ void AutoResponder::import_0_5_0_Configuration()
 
 void AutoResponder::createDefaultConfiguration()
 {
-	config_file.addVariable("Autoresponder", "Autotext", "");
+	config_file.addVariable("Autoresponder", "Autotext", tr("I am busy."));
 	config_file.addVariable("Autoresponder", "OnlyFirstTime", true);
 	config_file.addVariable("Autoresponder", "RespondConf", true);
 	config_file.addVariable("Autoresponder", "StatusAvailable", false);
