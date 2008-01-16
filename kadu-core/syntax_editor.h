@@ -100,6 +100,9 @@ private slots:
 	void save();
 	void saveAs();
 
+protected:
+	virtual void keyPressEvent(QKeyEvent *e);
+
 public:
 	SyntaxEditorWindow(SyntaxList *syntaxList, const QString &syntaxName, const QString &category, const QString &syntaxHint, QWidget* parent = 0, const char *name = 0);
 	~SyntaxEditorWindow();

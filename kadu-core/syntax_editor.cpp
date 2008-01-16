@@ -342,6 +342,8 @@ void SyntaxEditor::syntaxListUpdated()
 SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &syntaxName, const QString &category, const QString &syntaxHint, QWidget* parent, const char *name)
 	: QVBox(parent, name), syntaxList(syntaxList), syntaxName(syntaxName)
 {
+	setWFlags(getWFlags() | Qt::WDestructiveClose);
+
 	setCaption(tr("Kadu syntax editor"));
 
 	setMargin(10);
@@ -444,4 +446,15 @@ void SyntaxEditorWindow::saveAs()
 	syntaxList->updateSyntax(newSyntaxName, editor->text());
 	emit updated(newSyntaxName);
 	close();
+}
+
+void SyntaxEditorWindow::keyPressEvent(QKeyEvent *e)
+{
+	if (e->key() == Key_Escape)
+	{
+		e->accept();
+		close();
+	}
+	else
+		QVBox::keyPressEvent(e);
 }
