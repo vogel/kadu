@@ -212,16 +212,20 @@ void ToolButton::deleteButtonClicked()
 		dockarea->writeToConfig();
 	toolbar->insertChild(this); // restore
 	deleteLater();
+
 	kdebugf2();
 }
 
 void ToolButton::showTextLabelClicked()
 {
 	kdebugf();
+
 	setUsesTextLabel(!usesTextLabel());
 	ToolBar* toolbar = (ToolBar*)parent();
 	DockArea* dockarea = (DockArea*)toolbar->area();
-	dockarea->writeToConfig();
+	if (dockarea)
+		dockarea->writeToConfig();
+
 	kdebugf2();
 }
 

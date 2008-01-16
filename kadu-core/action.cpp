@@ -91,7 +91,7 @@ void Action::buttonAddedToToolbar(ToolBar *toolBar, ToolButton *button)
 	// it should now be automatic
 	// connect(this, SIGNAL(destroyed()), btn, SLOT(deleteLater()));
 
-	if (Slot)
+	if (Slot && toolBar->area())
 		connect(button, SIGNAL(clicked()), toolBar->area()->parent(), Slot);
 
 	ToolButtons.append(button);
