@@ -45,7 +45,7 @@
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="26"/>
         <source>Don&apos;t save status changes</source>
-        <translation>Nie zapisuj zmain statusów</translation>
+        <translation>Nie zapisuj zmian statusów</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="28"/>
@@ -55,7 +55,7 @@
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="32"/>
         <source>Citation</source>
-        <translation>Cytownanie</translation>
+        <translation>Cytowanie</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="35"/>

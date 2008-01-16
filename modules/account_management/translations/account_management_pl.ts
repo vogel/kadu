@@ -125,7 +125,7 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
     <message>
         <location filename="../register.cpp" line="96"/>
         <source>This dialog box allows you to register a new account.</source>
-        <translation>To okno dialogowe pozwala zarejestrowac nowe konto.</translation>
+        <translation>To okno dialogowe pozwala zarejestrować nowe konto.</translation>
     </message>
     <message>
         <location filename="../register.cpp" line="102"/>
@@ -163,7 +163,7 @@ Hasła  muszą być identyczne w obu polach!</translation>
     <message>
         <location filename="../register.cpp" line="209"/>
         <source>An error has occured while registration. Please try again later.</source>
-        <translation>Wystąpił błąd podczas rejestracji. Proszę spróbowac później.</translation>
+        <translation>Wystąpił błąd podczas rejestracji. Proszę spróbować później.</translation>
     </message>
     <message>
         <location filename="../register.cpp" line="186"/>
@@ -265,7 +265,7 @@ Teraz już nie masz numeru GG :(</translation>
     <message>
         <location filename="../unregister.cpp" line="140"/>
         <source>An error has occured while unregistration. Please try again later.</source>
-        <translation>Wystąpił błąd podczas wyrejestrowywania. Proszę spróbowac później.</translation>
+        <translation>Wystąpił błąd podczas wyrejestrowywania. Proszę spróbować później.</translation>
     </message>
     <message>
         <location filename="../unregister.cpp" line="54"/>

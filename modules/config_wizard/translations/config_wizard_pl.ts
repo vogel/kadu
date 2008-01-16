@@ -226,27 +226,27 @@ Naciśnij Ok by kontynuować</translation>
     <message>
         <location filename="../wizard.cpp" line="504"/>
         <source>&lt;p&gt;Please setup Kadu for working with your favourite WWW browser and email program.&lt;/p&gt;&lt;p&gt;Kadu will use these for opening various links from messages and user&apos;s descriptions&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Proszę ustawić programy do wspólpracy Kadu ze stronami WWW i pocztą e-mail.&lt;/p&gt;&lt;p&gt;Kadu będzię ich używac do otwierania linków z wiadomości i opisów użytkowników&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Proszę ustawić programy do współpracy Kadu ze stronami WWW i pocztą e-mail.&lt;/p&gt;&lt;p&gt;Kadu będzie ich używac do otwierania linków z wiadomości i opisów użytkowników&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../wizard.cpp" line="582"/>
         <source>Sound driver</source>
-        <translation type="obsolete">System dźwieku</translation>
+        <translation type="obsolete">System dźwięku</translation>
     </message>
     <message>
         <location filename="../wizard.cpp" line="587"/>
         <source>Test sound</source>
-        <translation>Test dźwieku</translation>
+        <translation>Test dźwięku</translation>
     </message>
     <message>
         <location filename="../wizard.cpp" line="640"/>
         <source>&lt;p&gt;Please select your sound driver for sound notifications. If you don&apos;t want sound notifications, use None driver.&lt;/p&gt;&lt;p&gt;If you don&apos;t know which driver to use, just check every ony with Test sound button.Don&apos;t forget to unmute your system before!&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Proszę wybrać odpowiedni system dźwięku dla powiadomień sygnałami dźwiekowymi. Jeżeli nie chcesz być powiadamiany dźwiękiem wybierz &quot;None&quot;.&lt;/p&gt;Jeśli nie wiesz jaki system dźwieku jest przez ciebie używany, sprawdź pokolei wszystkie testując przyciskiem &quot;Test dźwieku&quot;. Nie zapomnij wczesniej ustawić mikser na odpowiednią siłę głosu!&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Proszę wybrać odpowiedni system dźwięku dla powiadomień sygnałami dźwiękowymi. Jeżeli nie chcesz być powiadamiany dźwiękiem wybierz &quot;None&quot;.&lt;/p&gt;Jeśli nie wiesz jaki system dźwięku jest przez ciebie używany, sprawdź po kolei wszystkie testując przyciskiem &quot;Test dźwięku&quot;. Nie zapomnij wcześniej ustawić mikser na odpowiednią siłę głosu!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../wizard.cpp" line="400"/>
         <source>&lt;h3&gt;Welcome in Kadu&lt;/h3&gt;&lt;h4&gt;the Gadu-gadu network client for *nix and MacOS X.&lt;/h4&gt;&lt;p&gt;This is first time you launch Kadu. This wizard will help you to configure the basic settings of Kadu. If you are experienced Kadu user you may omit the wizard by clicking Cancel.&lt;/p&gt;&lt;p&gt;Please enter your account data. If you don&apos;t have one, you can create new here.&lt;/p&gt;&lt;p&gt;E-mail address is needed when you want to recover lost password to account&lt;/p&gt;</source>
-        <translation>&lt;h3&gt;Witamy w Kadu&lt;/h3&gt;&lt;h4&gt;kliencie sieci Gadu-Gadu dla systemów *nix i MacOS X.&lt;/h4&gt;&lt;p&gt;Uruchomiłeś Kadu po raz pierwszy.Ten kreator pomoże ci ustawić podstawową konfigurację programu. Jeśli jesteś doświadczonym użytkownikiem możesz go pominąć klikając na przycisk &quot;Anuluj&quot;.&lt;/p&gt;&lt;p&gt;Proszę wprowadzić swoje dane konta GG. Jeśli go nie posiadasz możesz je teraz utwożyć.&lt;/p&gt;&lt;p&gt;Adres e-mail jest potrzebny do przypomnienia zapomnianego hasła&lt;/p&gt;</translation>
+        <translation>&lt;h3&gt;Witamy w Kadu&lt;/h3&gt;&lt;h4&gt;kliencie sieci Gadu-Gadu dla systemów *nix i MacOS X.&lt;/h4&gt;&lt;p&gt;Uruchomiłeś Kadu po raz pierwszy.Ten kreator pomoże ci ustawić podstawową konfigurację programu. Jeśli jesteś doświadczonym użytkownikiem możesz go pominąć klikając na przycisk &quot;Anuluj&quot;.&lt;/p&gt;&lt;p&gt;Proszę wprowadzić swoje dane konta GG. Jeśli go nie posiadasz możesz je teraz utworzyć.&lt;/p&gt;&lt;p&gt;Adres e-mail jest potrzebny do przypomnienia zapomnianego hasła&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../wizard.cpp" line="395"/>

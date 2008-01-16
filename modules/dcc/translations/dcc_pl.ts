@@ -76,7 +76,7 @@
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="42"/>
         <source>Local TCP port</source>
-        <translation>Lolalny port TCP</translation>
+        <translation>Lokalny port TCP</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="48"/>
@@ -130,7 +130,7 @@ Kontynuować połączenie?</translation>
     <message>
         <location filename="../file_transfer.cpp" line="337"/>
         <source>Hello. I am an automatic file-transfer reminder. Could you please send me a file named %1?</source>
-        <translation>Witam. Jestem automatem odbierajacym. Czy zechcesz mi przesłać plik o nazwie %1?</translation>
+        <translation>Witam. Jestem automatem odbierającym. Czy zechcesz mi przesłać plik o nazwie %1?</translation>
     </message>
     <message>
         <location filename="../file_transfer.cpp" line="332"/>
@@ -215,7 +215,7 @@ Jest to prawdopodobnie następna część %4
         <location filename="../file_transfer_manager.cpp" line="399"/>
         <source>User %1 wants to send you a file %2
 of size %3kB. Accept transfer?</source>
-        <translation>Użytkownik %1 chce przesłac ci plik %2
+        <translation>Użytkownik %1 chce przesłać ci plik %2
 o rozmiarze %3kB. Akceptujesz transfer?</translation>
     </message>
     <message>

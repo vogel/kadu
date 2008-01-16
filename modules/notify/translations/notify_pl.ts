@@ -51,7 +51,7 @@
         <location filename="../.configuration-ui-translations.cpp" line="38"/>
         <source>This option will supersede tooltips with users&apos; status
  changes upon establishing connection to the server</source>
-        <translation>Ta opcja zlikwiduje powiadomiania o zmianach statusów przy łączeniu do serwera</translation>
+        <translation>Ta opcja zlikwiduje powiadomienia o zmianach statusów przy łączeniu do serwera</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="41"/>
@@ -145,7 +145,7 @@
     <message>
         <location filename="../status_changed_notification.cpp" line="44"/>
         <source>Status changed</source>
-        <translation>Zmiany ststusu</translation>
+        <translation>Zmiany statusu</translation>
     </message>
     <message>
         <location filename="../status_changed_notification.cpp" line="40"/>

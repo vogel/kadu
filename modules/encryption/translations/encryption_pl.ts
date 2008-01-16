@@ -156,7 +156,7 @@
     <message>
         <location filename="../keys_manager.cpp" line="227"/>
         <source>Are you sure you want to delete the selected key?</source>
-        <translation>Czy napewno chcesz usunąć wybrany klucz?</translation>
+        <translation>Czy na pewno chcesz usunąć wybrany klucz?</translation>
     </message>
     <message>
         <location filename="../keys_manager.cpp" line="238"/>

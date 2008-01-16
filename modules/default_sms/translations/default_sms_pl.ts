@@ -53,7 +53,7 @@
     <message>
         <location filename="../default_sms.cpp" line="333"/>
         <source>Number of SMS&apos; left on Sponsored Era Gateway: </source>
-        <translation>Liczba pozostałych SMSów na sponsorowanej bramce Ery: </translation>
+        <translation>Liczba pozostałych SMS-ów na sponsorowanej bramce Ery: </translation>
     </message>
     <message>
         <location filename="../default_sms.cpp" line="340"/>
