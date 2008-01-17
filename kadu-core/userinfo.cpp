@@ -514,7 +514,7 @@ void UserInfo::updateUserlist()
 			}
 			else
 			{
-				MessageBox::msg(tr("User is already in userlist"), false, "Warning", this);
+				MessageBox::msg(tr("User known as %1 with that UIN is already in userlist.").arg(user.altNick()), false, "Warning", this);
 
 				kdebugf2();
 				return;

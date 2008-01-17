@@ -3,11 +3,14 @@
 
 #include <qobject.h>
 
+#include "configuration_aware_object.h"
+#include "main_configuration_window.h"
+
 /**
  * @defgroup mac_os_docking MacOS docking
  * @{
  */
-class MacOSXDocking : public QObject
+class MacOSXDocking : public ConfigurationUiHandler
 {
 	Q_OBJECT
 	private slots:
@@ -18,6 +21,8 @@ class MacOSXDocking : public QObject
 	public:
 		MacOSXDocking(QObject *parent = 0, const char *name = 0);
 		~MacOSXDocking();
+		
+		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 };
 
 extern MacOSXDocking *mac_docking;

@@ -2269,8 +2269,8 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
         <translation>Inne</translation>
     </message>
     <message>
-        <source>User is already in userlist</source>
-        <translation>Kontakt już istnieje.</translation>
+        <source>User known as %1 with that UIN is already in userlist.</source>
+        <translation>Kontakt o tym identyfikatorze już istnieje pod pseudonimem %1.</translation>
     </message>
     <message>
         <source>Add user</source>

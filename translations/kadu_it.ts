@@ -45,7 +45,7 @@ E un rischio per la sicurezza!</translation>
     </message>
     <message>
         <source>Another Kadu is running on this profile but I cannot get its process ID.</source>
-        <translation>Un altra copie di Kadu funzionava ma non posso trovare il suo process ID.</translation>
+        <translation>Un altra copie di Kadu funzionava ma trovare il suo process ID è impossibile.</translation>
     </message>
     <message>
         <source>Description</source>
@@ -981,7 +981,7 @@ E un rischio per la sicurezza!</translation>
 %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size
 </source>
         <translation>Sintasso: %s - status, %d - descrizione, %i - indirizzo ip, %n - nick, %a - altnick, %f - nome
-%r - cognome, %m - cellulare, %u - uin, %g - grouppa, %o - rende_space_quando_il_contatto_no_ha_tuo_nel_lista_contatti
+%r - cognome, %m - cellulare, %u - uin, %g - gruppo, %o - rende_space_quando_il_contatto_no_ha_tuo_nel_lista_contatti
 %h - gg versione, %v - revDNS, %p - porta, %e - email, %x - max imaggini size</translation>
     </message>
     <message>
@@ -997,7 +997,7 @@ E un rischio per la sicurezza!</translation>
 #{separator} - separator between messages,
 </source>
         <translation>Sintasso: %s - status, %d - descrizione, %i - indirizzo ip, %n - nick, %a - altnick, %f - nome
-%r - cognome, %m - cellulare, %u - uin, %g - grouppa, %o - rende_space_quando_il_contatto_no_ha_tuo_nel_lista_contatti
+%r - cognome, %m - cellulare, %u - uin, %g - gruppo, %o - rende_space_quando_il_contatto_no_ha_tuo_nel_lista_contatti
 %h - gg versione, %v - revDNS, %p - porta, %e - email, %x - max imaggini size
 #{message} - messaggio,
 #{backgroundColor} - colore di sfondo del messaggio,
@@ -1015,7 +1015,7 @@ E un rischio per la sicurezza!</translation>
 #{event} - name of event,
 </source>
         <translation>Sintasso: %s - status, %d - descrizione, %i - indirizzo ip, %n - nick, %a - altnick, %f - nome
-%r - cognome, %m - cellulare, %u - uin, %g - grouppa, %o - rende_space_quando_il_contatto_no_ha_tuo_nel_lista_contatti
+%r - cognome, %m - cellulare, %u - uin, %g - gruppo, %o - rende_space_quando_il_contatto_no_ha_tuo_nel_lista_contatti
 %h - gg versione, %v - revDNS, %p - porta, %e - email, %x - max imaggini size
 #{protocol} - protocole che ha chiama event,
 #{event} - nome del event,</translation>
@@ -1610,7 +1610,7 @@ saranno eliminati. Vuoi davvero?</translation>
     </message>
     <message>
         <source>File already exists. Overwrite?</source>
-        <translation>File esiste. Vuoi davvero cambiare?</translation>
+        <translation>File esiste. Vuoi davvero sovrascrivere?</translation>
     </message>
     <message>
         <source>Cannot save image: %1</source>
@@ -2084,7 +2084,7 @@ Possibile incompatibilità con Kadu.</translation>
     </message>
     <message>
         <source>Overwrite %1 syntax?</source>
-        <translation>Vuoi davvero cambiare syntasso %1?</translation>
+        <translation>Vuoi davvero sovrascrivere syntasso %1?</translation>
     </message>
     <message>
         <source>Preview</source>
@@ -2507,7 +2507,7 @@ Cancellazione lista contatti su server GG fallita</translation>
     </message>
     <message>
         <source>File exists. Are you sure you want to overwrite it?</source>
-        <translation>File esiste. Vuoi davvero cambiare?</translation>
+        <translation>File esiste. Vuoi davvero sovrascrivere?</translation>
     </message>
 </context>
 </TS>

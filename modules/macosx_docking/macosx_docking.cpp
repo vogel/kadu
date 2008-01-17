@@ -53,6 +53,9 @@ void MacOSXDocking::blockSettingIcon(bool &block)
 
 void MacOSXDocking::trayPixmapChanged(const QPixmap &small_pix, const QString &name)
 {
+	if (!config_file.readBoolEntry("MacOSX Dock", "IconNotification"))
+		return;
+
 	const QPixmap &pix = icons_manager->loadIcon("Big" + name);
 	if (pix.isNull())
 	{
@@ -78,14 +81,21 @@ void MacOSXDocking::onCreateTabGeneral()
 	config_file.writeEntry("General", "RunDocked", false);
 }
 
+void MacOSXDocking::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
+{
+	//w tej chwili nic tu nie robimy, ale kto wie ;)
+}
+
 extern "C" int macosx_docking_init()
 {
 	mac_docking = new MacOSXDocking(docking_manager, "mac_docking");
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/macosx_docking.ui"), mac_docking);
 	return 0;
 }
 
 extern "C" void macosx_docking_close()
 {
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/macosx_docking.ui"), mac_docking);
 	delete mac_docking;
 	mac_docking = NULL;
 }

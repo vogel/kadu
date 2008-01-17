@@ -1,9 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1">
+<!DOCTYPE TS><TS>
 <context>
     <name>@default</name>
     <message>
-        <location filename="../window_notify.cpp" line="125"/>
         <source>Window</source>
         <translation>Finestra</translation>
     </message>
@@ -11,9 +9,8 @@
 <context>
     <name>NotificationWindow</name>
     <message>
-        <location filename="../window_notify.cpp" line="99"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
 </context>
 </TS>
