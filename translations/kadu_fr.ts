@@ -2245,10 +2245,6 @@ Peut être module incompatible avec Kadu.</translation>
         <translation>Autres</translation>
     </message>
     <message>
-        <source>User is already in userlist</source>
-        <translation>Ce contact existe déjà</translation>
-    </message>
-    <message>
         <source>Add user</source>
         <translation>Ajoute contact</translation>
     </message>
@@ -2310,6 +2306,10 @@ Peut être module incompatible avec Kadu.</translation>
     </message>
     <message>
         <source>Icon:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User known as %1 with that UIN is already in userlist.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

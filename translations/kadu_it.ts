@@ -1028,6 +1028,10 @@ E un rischio per la sicurezza!</translation>
         <source>Opera (new tab)</source>
         <translation>Opera (nuovo tab)</translation>
     </message>
+    <message>
+        <source>Set invisible if last status was &apos;Offline&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -2260,10 +2264,6 @@ Possibile incompatibilità con Kadu.</translation>
         <translation>Altro</translation>
     </message>
     <message>
-        <source>User is already in userlist</source>
-        <translation>Il Contatto è già nella lista contatti</translation>
-    </message>
-    <message>
         <source>Add user</source>
         <translation>Aggiungi contatto</translation>
     </message>
@@ -2326,6 +2326,10 @@ Possibile incompatibilità con Kadu.</translation>
     <message>
         <source>Icon:</source>
         <translation>Icona:</translation>
+    </message>
+    <message>
+        <source>User known as %1 with that UIN is already in userlist.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

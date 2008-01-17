@@ -82,23 +82,23 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <translation>Envoie SMS</translation>
     </message>
     <message>
-        <location filename="../sms.cpp" line="353"/>
+        <location filename="../sms.cpp" line="356"/>
         <source>Sms application was not specified. Visit the configuration section</source>
         <translation>L&apos;appplication Sms n&apos;a pas été specifié. Veuillez controler la configuration</translation>
     </message>
     <message>
-        <location filename="../sms.cpp" line="379"/>
+        <location filename="../sms.cpp" line="382"/>
         <source>Could not spawn child process. Check if the program is functional</source>
         <translation>N&apos;a pas pu engendrer le processus d&apos;enfant. Contrôlez si le programme
 est fonctionnel</translation>
     </message>
     <message>
-        <location filename="../sms.cpp" line="389"/>
+        <location filename="../sms.cpp" line="392"/>
         <source>The process exited normally. The SMS should be on its way</source>
         <translation>Processus terminé avec success. SMS est en route</translation>
     </message>
     <message>
-        <location filename="../sms.cpp" line="391"/>
+        <location filename="../sms.cpp" line="394"/>
         <source>The process exited abnormally. The SMS may not be sent</source>
         <translation>Processus terminé anormallement. SMS n&apos;a pas été envoyé</translation>
     </message>
@@ -118,7 +118,7 @@ est fonctionnel</translation>
         <translation>Enregistre SMS dans l&apos;historique</translation>
     </message>
     <message>
-        <location filename="../sms.cpp" line="418"/>
+        <location filename="../sms.cpp" line="421"/>
         <source>The SMS was sent and should be on its way.
 Do you want to send next message?</source>
         <translation type="unfinished"></translation>
@@ -132,22 +132,22 @@ Do you want to send next message?</source>
 <context>
     <name>SmsConfigurationUiHandler</name>
     <message>
-        <location filename="../sms.cpp" line="613"/>
+        <location filename="../sms.cpp" line="627"/>
         <source>Send SMS</source>
         <translation type="unfinished">Envoie SMS</translation>
     </message>
     <message>
-        <location filename="../sms.cpp" line="647"/>
+        <location filename="../sms.cpp" line="661"/>
         <source>Up</source>
         <translation type="unfinished">Deplace en haut</translation>
     </message>
     <message>
-        <location filename="../sms.cpp" line="648"/>
+        <location filename="../sms.cpp" line="662"/>
         <source>Down</source>
         <translation type="unfinished">Deplace en bâs</translation>
     </message>
     <message>
-        <location filename="../sms.cpp" line="657"/>
+        <location filename="../sms.cpp" line="671"/>
         <source>Gateways priorites</source>
         <translation type="unfinished"></translation>
     </message>

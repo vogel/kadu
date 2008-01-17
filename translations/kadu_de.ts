@@ -2249,10 +2249,6 @@ Vielleicht ist es kein Kadu-Modul.</translation>
         <translation>Andere</translation>
     </message>
     <message>
-        <source>User is already in userlist</source>
-        <translation>Kontakt existiert schon</translation>
-    </message>
-    <message>
         <source>Add user</source>
         <translation>Kontakt hinzufügen</translation>
     </message>
@@ -2314,6 +2310,10 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Icon:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User known as %1 with that UIN is already in userlist.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

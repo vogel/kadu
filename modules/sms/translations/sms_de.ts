@@ -82,22 +82,22 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <translation>Sende SMS</translation>
     </message>
     <message>
-        <location filename="../sms.cpp" line="353"/>
+        <location filename="../sms.cpp" line="356"/>
         <source>Sms application was not specified. Visit the configuration section</source>
         <translation>Programm zum Verschicken von SMS nicht angegeben. Schauen Sie in den Einstellungen nach</translation>
     </message>
     <message>
-        <location filename="../sms.cpp" line="379"/>
+        <location filename="../sms.cpp" line="382"/>
         <source>Could not spawn child process. Check if the program is functional</source>
         <translation>Konnte das SMS-Programm nicht starten</translation>
     </message>
     <message>
-        <location filename="../sms.cpp" line="389"/>
+        <location filename="../sms.cpp" line="392"/>
         <source>The process exited normally. The SMS should be on its way</source>
         <translation>Das Versenden ist gelungen. Die SMS ist unterwegs</translation>
     </message>
     <message>
-        <location filename="../sms.cpp" line="391"/>
+        <location filename="../sms.cpp" line="394"/>
         <source>The process exited abnormally. The SMS may not be sent</source>
         <translation>Versenden unerwartet beendet. Die SMS wurde wahrscheinlich nicht versandt</translation>
     </message>
@@ -117,7 +117,7 @@ Arguments should be separated with spaces. %n argument is converted to number, %
         <translation>SMS im Verlauf speichern</translation>
     </message>
     <message>
-        <location filename="../sms.cpp" line="418"/>
+        <location filename="../sms.cpp" line="421"/>
         <source>The SMS was sent and should be on its way.
 Do you want to send next message?</source>
         <translation>Die SMS wurde gesendet und ist auf dem Weg
@@ -132,22 +132,22 @@ Wollen Sie eine weitere Nachricht senden?</translation>
 <context>
     <name>SmsConfigurationUiHandler</name>
     <message>
-        <location filename="../sms.cpp" line="613"/>
+        <location filename="../sms.cpp" line="627"/>
         <source>Send SMS</source>
         <translation>Sende SMS</translation>
     </message>
     <message>
-        <location filename="../sms.cpp" line="647"/>
+        <location filename="../sms.cpp" line="661"/>
         <source>Up</source>
         <translation>nach oben</translation>
     </message>
     <message>
-        <location filename="../sms.cpp" line="648"/>
+        <location filename="../sms.cpp" line="662"/>
         <source>Down</source>
         <translation>nach unten</translation>
     </message>
     <message>
-        <location filename="../sms.cpp" line="657"/>
+        <location filename="../sms.cpp" line="671"/>
         <source>Gateways priorites</source>
         <translation>Priorität der Gateways</translation>
     </message>

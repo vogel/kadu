@@ -2251,10 +2251,6 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>User is already in userlist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2300,6 +2296,10 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>Icon:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User known as %1 with that UIN is already in userlist.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
