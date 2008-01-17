@@ -1,5 +1,8 @@
 <p>
-<IMG SRC=\"@{Message}\">&nbsp;&nbsp;<I><FONT size="-1">#{receivedDate}</FONT></I><BR><B><FONT color="#{nickColor}">%a</FONT></B> <FONT color="#{fontColor}">#{message}</FONT>
+<kadu:header>
+<IMG SRC=\"@{Message}\">&nbsp;&nbsp;<I><FONT size="-1">#{receivedDate}</FONT></I><BR>
+</kadu:header>
+<B><FONT color="#{nickColor}">%a</FONT></B> <FONT color="#{fontColor}">#{message}</FONT>
 </p>
 
 
