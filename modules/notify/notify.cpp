@@ -345,7 +345,7 @@ void Notify::messageReceived(Protocol *protocol, UserListElements senders, const
 	if (!chat) // new chat
 		notify(new MessageNotification(MessageNotification::NewChat, senders, msg, protocol->protocolID()));
 	else // new message in chat
-		if (!chat->isActiveWindow() || !config_file.readBoolEntry("Notify", "NewMessageOnlyIfInactive"))
+		if (!chat->hasFocus() || !config_file.readBoolEntry("Notify", "NewMessageOnlyIfInactive"))
 			notify(new MessageNotification(MessageNotification::NewMessage, senders, msg, protocol->protocolID()));
 
 	kdebugf2();
