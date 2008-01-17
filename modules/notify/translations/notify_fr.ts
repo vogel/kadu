@@ -108,6 +108,19 @@
     </message>
 </context>
 <context>
+    <name>MessageNotification</name>
+    <message>
+        <location filename="../new_message_notification.cpp" line="36"/>
+        <source>Chat with &lt;b&gt;%1&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../new_message_notification.cpp" line="41"/>
+        <source>New message from &lt;b&gt;%1&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Notify</name>
     <message>
         <location filename="../notify.cpp" line="513"/>
@@ -150,19 +163,6 @@
     <message>
         <location filename="../status_changed_notification.cpp" line="42"/>
         <source>&lt;b&gt;%1&lt;/b&gt; changed status to &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>MessageNotification</name>
-    <message>
-        <location filename="../new_message_notification.cpp" line="36"/>
-        <source>Chat with &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../new_message_notification.cpp" line="41"/>
-        <source>New message from &lt;b&gt;%1&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
