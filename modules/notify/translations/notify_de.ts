@@ -153,4 +153,17 @@
         <translation>&lt;b&gt;%1&lt;/b&gt; änderte Zustand in &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
 </context>
+<context>
+    <name>MessageNotification</name>
+    <message>
+        <location filename="../new_message_notification.cpp" line="36"/>
+        <source>Chat with &lt;b&gt;%1&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../new_message_notification.cpp" line="41"/>
+        <source>New message from &lt;b&gt;%1&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>

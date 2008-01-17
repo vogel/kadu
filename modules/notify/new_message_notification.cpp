@@ -33,12 +33,12 @@ MessageNotification::MessageNotification(MessageType messageType, const UserList
 	if (messageType == NewChat)
 	{
 		setTitle("New chat");
-		syntax = "Chat with <b>%1</b>";
+		syntax = tr("Chat with <b>%1</b>");
 	}
 	else
 	{
 		setTitle("New message");
-		syntax = "New message from <b>%1</b>";
+		syntax = tr("New message from <b>%1</b>");
 	}
 
 	setText(tr(syntax).arg(ule.altNick()));

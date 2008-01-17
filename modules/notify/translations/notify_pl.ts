@@ -158,4 +158,17 @@
         <translation>&lt;b&gt;%1&lt;/b&gt; zmienił status na &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
 </context>
+<context>
+    <name>MessageNotification</name>
+    <message>
+        <location filename="../new_message_notification.cpp" line="36"/>
+        <source>Chat with &lt;b&gt;%1&lt;/b&gt;</source>
+        <translation>Rozmowa z &lt;b&gt;%1&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <location filename="../new_message_notification.cpp" line="41"/>
+        <source>New message from &lt;b&gt;%1&lt;/b&gt;</source>
+        <translation>Nowa wiadomość od &lt;b&gt;%1&lt;/b&gt;</translation>
+    </message>
+</context>
 </TS>
