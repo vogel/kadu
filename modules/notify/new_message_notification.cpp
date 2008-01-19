@@ -41,7 +41,7 @@ MessageNotification::MessageNotification(MessageType messageType, const UserList
 		syntax = tr("New message from <b>%1</b>");
 	}
 
-	setText(tr(syntax).arg(ule.altNick()));
+	setText(syntax.arg(ule.altNick()));
 	setDetails(message);
 }
 
