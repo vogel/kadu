@@ -177,7 +177,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	connect(chat_searched_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
 		this, SLOT(actionsAddedToToolbar(ToolButton*, ToolBar*)));
 	connect(clear_search_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
-		this, SLOT(actionsAddedToToolbar(ToolButton*, ToolBar*)));
+		this, SLOT(clearResultsActionAddedToToolbar(ToolButton*, ToolBar*)));
 	connect(stop_search_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
 		this, SLOT(stopSearchActionAddedToToolbar(ToolButton*, ToolBar*)));
 	connect(first_search_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
@@ -493,15 +493,15 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 	else
 	{
 		if (r_pers->isChecked() && !isPersonalDataEmpty())
-		{
 			next_results_action->setEnabled(this, true);
-			searching = false;
-		}
 
 		clear_search_action->setEnabled(this, true);
 		add_searched_action->setEnabled(this, true);
 		chat_searched_action->setEnabled(this, true);
 	}
+
+	searching = false;
+
 	kdebugf2();
 }
 
@@ -617,6 +617,14 @@ void SearchDialog::actionsAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*
 	kdebugf2();
 }
 
+void SearchDialog::clearResultsActionAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*/)
+{
+	kdebugf();
+	if (!results->firstChild())
+		button->setEnabled(false);
+	kdebugf2();
+}
+
 void SearchDialog::stopSearchActionAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*/)
 {
 	kdebugf();
@@ -633,11 +641,16 @@ void SearchDialog::firstSearchActionAddedToToolbar(ToolButton* button, ToolBar* 
 	kdebugf2();
 }
 
-void SearchDialog::nextResultsActionAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*/)
+void SearchDialog::nextResultsActionAddedToToolbar(ToolButton* button, ToolBar* toolbar)
 {
 	kdebugf();
-	if (searching || r_uin->isChecked() || isPersonalDataEmpty() || !results->selectedItem())
+	if (searching || r_uin->isChecked() || isPersonalDataEmpty())
+	{
 		button->setEnabled(false);
+		return;
+	}
+
+	clearResultsActionAddedToToolbar(button, toolbar);
 	kdebugf2();
 }
 

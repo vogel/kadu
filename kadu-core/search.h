@@ -125,6 +125,7 @@ class SearchDialog : public QWidget {
 		void stopSearchActionAddedToToolbar(ToolButton*, ToolBar*);
 		void firstSearchActionAddedToToolbar(ToolButton*, ToolBar*);
 		void nextResultsActionAddedToToolbar(ToolButton*, ToolBar*);
+		void clearResultsActionAddedToToolbar(ToolButton*, ToolBar*);
 		void selectionChanged();
 
 	protected:
