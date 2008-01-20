@@ -2124,6 +2124,10 @@ Peut être module incompatible avec Kadu.</translation>
         <source>Remove toolbar?</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>No items to add found</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ToolButton</name>

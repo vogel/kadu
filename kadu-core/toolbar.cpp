@@ -522,7 +522,7 @@ QPopupMenu* ToolBar::createContextMenu(QWidget* parent)
 	}
 	if (!p2->count()) // jezeli nie zostaly zadne akcje do dodania, dodajemy wpis informacyjny
 	{
-		p2->insertItem("No items to add found", 0);
+		p2->insertItem(tr("No items to add found"), 0);
 		p2->setItemEnabled(0, false);
 	}
 

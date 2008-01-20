@@ -2147,6 +2147,10 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
         <source>Remove toolbar?</source>
         <translation>Usunąć pasek narzędziowy?</translation>
     </message>
+    <message>
+        <source>No items to add found</source>
+        <translation>Nie znaleziono elementów do dodania</translation>
+    </message>
 </context>
 <context>
     <name>ToolButton</name>

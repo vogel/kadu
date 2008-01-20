@@ -2143,6 +2143,10 @@ Possibile incompatibilità con Kadu.</translation>
         <source>Remove toolbar?</source>
         <translation>Rimuovi il toolbar?</translation>
     </message>
+    <message>
+        <source>No items to add found</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ToolButton</name>

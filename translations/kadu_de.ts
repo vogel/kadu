@@ -2128,6 +2128,10 @@ Vielleicht ist es kein Kadu-Modul.</translation>
         <source>Remove toolbar?</source>
         <translation>Toolbar entfernen?</translation>
     </message>
+    <message>
+        <source>No items to add found</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ToolButton</name>
