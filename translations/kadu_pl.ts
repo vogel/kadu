@@ -386,7 +386,7 @@ Jest to wysoce ryzykowne!</translation>
     </message>
     <message>
         <source>Anonymous</source>
-        <translation>Nieznanie</translation>
+        <translation>Nieznane</translation>
     </message>
     <message>
         <source>Ignore messages from anonymous users</source>
