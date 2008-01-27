@@ -1228,7 +1228,7 @@ QString GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 	{
 		MessageBox::msg(tr("Message too long (%1>=%2)").arg(mesg.length()).arg(2000), false, "Warning");
 		kdebugmf(KDEBUG_FUNCTION_END, "end: message too long\n");
-		return myLastMessage;
+		return "\001thisisonlyworkaround";
 	}
 
 	QString msg = unicode2cp(msgtmp);
