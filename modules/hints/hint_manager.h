@@ -40,6 +40,7 @@ private:
 
 	QSpinBox *minimumWidth;
 	QSpinBox *maximumWidth;
+	QWidget *overUserSyntax;
 	HintsConfigurationWidget *configurationWidget;
 
 	QMap<QPair<UserListElements, QString>, Hint *> linkedHints;
@@ -116,6 +117,8 @@ private slots:
 
 	void minimumWidthChanged(int value);
 	void maximumWidthChanged(int value);
+
+	void toolTipClassesHighlighted(const QString &value);
 
 	void hintUpdated();
 

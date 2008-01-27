@@ -9,6 +9,7 @@
 
 #include <qapplication.h>
 #include <qcheckbox.h>
+#include <qcombobox.h>
 #include <qspinbox.h>
 #include <qstylesheet.h>
 
@@ -116,7 +117,17 @@ void HintManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainCo
 	connect(minimumWidth, SIGNAL(valueChanged(int)), this, SLOT(minimumWidthChanged(int)));
 	connect(maximumWidth, SIGNAL(valueChanged(int)), this, SLOT(maximumWidthChanged(int)));
 
-	QToolTip::add(mainConfigurationWindow->widgetById("hints/overUserSyntax") , qApp->translate("@default", Kadu::SyntaxText));
+	overUserSyntax = mainConfigurationWindow->widgetById("hints/overUserSyntax");
+	QToolTip::add(overUserSyntax, qApp->translate("@default", Kadu::SyntaxText));
+
+	toolTipClassesHighlighted((dynamic_cast<QComboBox *>(mainConfigurationWindow->widgetById("toolTipClasses")))->currentText());
+	connect(mainConfigurationWindow->widgetById("toolTipClasses"), SIGNAL(highlighted(const QString &)),
+		this, SLOT(toolTipClassesHighlighted(const QString &)));
+}
+
+void HintManager::toolTipClassesHighlighted(const QString &value)
+{
+	overUserSyntax->setEnabled(value == qApp->translate("@default", "Hints"));
 }
 
 NotifierConfigurationWidget *HintManager::createConfigurationWidget(QWidget *parent, char *name)
