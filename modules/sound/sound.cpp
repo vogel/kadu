@@ -561,7 +561,11 @@ SoundPlayThread::SoundPlayThread() : QThread(),
 
 SoundPlayThread::~SoundPlayThread()
 {
-	delete semaphore;
+	if (semaphore)
+	{
+		delete semaphore;
+		semaphore = 0;
+	}
 }
 
 void SoundPlayThread::tryPlay(const char *path, bool volumeControl, float volume)
