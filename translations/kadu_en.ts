@@ -985,20 +985,6 @@ It&apos;s a high security risk!</source>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
 %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size,
-#{message} - message content,
-#{backgroundColor} - background color of message,
-#{fontColor} - font color of message,
-#{nickColor} - font color of nick,
-#{sentDate} - when message was sent,
-#{receivedDate} - when message was received,
-#{separator} - separator between messages,
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
-%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size,
 #{protocol} - protocol that triggered event,
 #{event} - name of event,
 </source>
@@ -1014,6 +1000,21 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Set invisible if last status was &apos;Offline&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
+%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size,
+#{message} - message content,
+#{backgroundColor} - background color of message,
+#{fontColor} - font color of message,
+#{nickColor} - font color of nick,
+#{sentDate} - when message was sent,
+#{receivedDate} - when message was received,
+#{separator} - separator between messages,
+&lt;kadu:header&gt;text&lt;/kadu:hader&gt; - text will not be displayed in &apos;Remove repeated headers&apos; mode
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1303,10 +1304,6 @@ Your password is incorrect!</source>
     <message>
         <source>Connection will be stopped
 Too many attempts with bad password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Message too long (%1&gt;=%2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -988,29 +988,6 @@ E un rischio per la sicurezza!</translation>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
 %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size,
-#{message} - message content,
-#{backgroundColor} - background color of message,
-#{fontColor} - font color of message,
-#{nickColor} - font color of nick,
-#{sentDate} - when message was sent,
-#{receivedDate} - when message was received,
-#{separator} - separator between messages,
-</source>
-        <translation>Sintasso: %s - status, %d - descrizione, %i - indirizzo ip, %n - nick, %a - altnick, %f - nome
-%r - cognome, %m - cellulare, %u - uin, %g - gruppo, %o - rende_space_quando_il_contatto_no_ha_tuo_nel_lista_contatti
-%h - gg versione, %v - revDNS, %p - porta, %e - email, %x - max imaggini size
-#{message} - messaggio,
-#{backgroundColor} - colore di sfondo del messaggio,
-#{fontColor} - colore di carattere del messaggio,
-#{nickColor} - colore di carattere del nick,
-#{sentDate} - tempo quando il messaggio era mandato,
-#{receivedDate} - tempo quando il messaggio ricevuto,
-#{separator} - separazione tra i messaggi,</translation>
-    </message>
-    <message>
-        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
-%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
-%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size,
 #{protocol} - protocol that triggered event,
 #{event} - name of event,
 </source>
@@ -1030,6 +1007,21 @@ E un rischio per la sicurezza!</translation>
     </message>
     <message>
         <source>Set invisible if last status was &apos;Offline&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
+%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
+%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size,
+#{message} - message content,
+#{backgroundColor} - background color of message,
+#{fontColor} - font color of message,
+#{nickColor} - font color of nick,
+#{sentDate} - when message was sent,
+#{receivedDate} - when message was received,
+#{separator} - separator between messages,
+&lt;kadu:header&gt;text&lt;/kadu:hader&gt; - text will not be displayed in &apos;Remove repeated headers&apos; mode
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1325,10 +1317,6 @@ Il tuo password non è corretto!</translation>
 Too many attempts with bad password</source>
         <translation>Connessione sarà fermato
 Di più conessioni con il password incorretto</translation>
-    </message>
-    <message>
-        <source>Message too long (%1&gt;=%2)</source>
-        <translation>Messaggio troppo lungo (%1&gt;=%2)</translation>
     </message>
     <message>
         <source>Filtered message too long (%1&gt;=%2)</source>

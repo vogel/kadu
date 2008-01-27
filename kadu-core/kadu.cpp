@@ -86,6 +86,7 @@ const char *Kadu::SyntaxTextExtended = QT_TRANSLATE_NOOP
 	"#{sentDate} - when message was sent,\n"
 	"#{receivedDate} - when message was received,\n"
 	"#{separator} - separator between messages,\n"
+	"<kadu:header>text</kadu:hader> - text will not be displayed in 'Remove repeated headers' mode\n"
 );
 
 const char *Kadu::SyntaxTextNotify = QT_TRANSLATE_NOOP
