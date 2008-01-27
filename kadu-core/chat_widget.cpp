@@ -717,7 +717,10 @@ void ChatWidget::sendMessage()
 
 	myLastMessage = currentProtocol()->sendMessage(Users->toUserListElements(), myLastMessage);
 	if (myLastMessage == "\001thisisonlyworkaround")
+	{
+		cancelMessage();
 		return;
+	}
 
 	if (config_file.readBoolEntry("Chat", "MessageAcks"))
 		connectAcknowledgeSlots();
