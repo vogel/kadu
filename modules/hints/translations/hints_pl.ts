@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="pl">
+<defaultcodec></defaultcodec>
 <context>
     <name>@default</name>
     <message>
@@ -151,37 +152,37 @@
         <translation>Przyciski myszy</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="103"/>
+        <location filename="../.configuration-ui-translations.cpp" line="100"/>
         <source>Left button</source>
         <translation>Lewy</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="138"/>
+        <location filename="../.configuration-ui-translations.cpp" line="135"/>
         <source>Nothing</source>
         <translation>Nic</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="141"/>
+        <location filename="../.configuration-ui-translations.cpp" line="138"/>
         <source>Open chat</source>
         <translation>Otwórz rozmowę</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="144"/>
+        <location filename="../.configuration-ui-translations.cpp" line="141"/>
         <source>Delete hint</source>
         <translation>Usuń dymek</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="147"/>
+        <location filename="../.configuration-ui-translations.cpp" line="144"/>
         <source>Delete all hints</source>
         <translation>Usuń wszystkie dymki</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="119"/>
+        <location filename="../.configuration-ui-translations.cpp" line="116"/>
         <source>Middle button</source>
         <translation>Środkowy</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="135"/>
+        <location filename="../.configuration-ui-translations.cpp" line="132"/>
         <source>Right button</source>
         <translation>Prawy</translation>
     </message>
@@ -208,7 +209,12 @@
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="100"/>
         <source>Allow opening chat with events other than &apos;New chat&apos;</source>
-        <translation type="unfinished">Zezwalaj na otwieranie okna rozmowy za pomocą dymków innych niż &quot;Nowa rozmowa&quot; i &quot;Nowa wiadomość&quot;</translation>
+        <translation type="obsolete">Zezwalaj na otwieranie okna rozmowy za pomocą dymków innych niż &quot;Nowa rozmowa&quot; i &quot;Nowa wiadomość&quot;</translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="148"/>
+        <source>&apos;Open chat&apos; works on all events</source>
+        <translation>&apos;Otwórz rozmowę&apos; działa z każdym zdarzeniem</translation>
     </message>
 </context>
 <context>

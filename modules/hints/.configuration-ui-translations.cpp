@@ -97,9 +97,6 @@
 			QT_TRANSLATE_NOOP("@default", "Mouse buttons");
 		
 				
-			QT_TRANSLATE_NOOP("@default", "Allow opening chat with events other than 'New chat'");
-		
-				
 			QT_TRANSLATE_NOOP("@default", "Left button");
 		
 					
@@ -147,6 +144,9 @@
 			QT_TRANSLATE_NOOP("@default", "Delete all hints");
 		
 				
+				
+			QT_TRANSLATE_NOOP("@default", "'Open chat' works on all events");
+		
 			
 			
 			QT_TRANSLATE_NOOP("@default", "New chat/message");

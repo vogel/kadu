@@ -143,37 +143,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="103"/>
+        <location filename="../.configuration-ui-translations.cpp" line="100"/>
         <source>Left button</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="138"/>
+        <location filename="../.configuration-ui-translations.cpp" line="135"/>
         <source>Nothing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="141"/>
+        <location filename="../.configuration-ui-translations.cpp" line="138"/>
         <source>Open chat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="144"/>
+        <location filename="../.configuration-ui-translations.cpp" line="141"/>
         <source>Delete hint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="147"/>
+        <location filename="../.configuration-ui-translations.cpp" line="144"/>
         <source>Delete all hints</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="119"/>
+        <location filename="../.configuration-ui-translations.cpp" line="116"/>
         <source>Middle button</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="135"/>
+        <location filename="../.configuration-ui-translations.cpp" line="132"/>
         <source>Right button</source>
         <translation type="unfinished"></translation>
     </message>
@@ -198,8 +198,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="100"/>
-        <source>Allow opening chat with events other than &apos;New chat&apos;</source>
+        <location filename="../.configuration-ui-translations.cpp" line="148"/>
+        <source>&apos;Open chat&apos; works on all events</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

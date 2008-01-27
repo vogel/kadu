@@ -38,7 +38,6 @@
 				<select-font caption="Font" config-section="Hints" config-item="SetAll_font" id="hints/setAll_font" />
 			</group-box>
 			<group-box name="Mouse buttons">
-				<check-box caption="Allow opening chat with events other than 'New chat'" config-section="Hints" config-item="OpenChatOnEveryNotification" />
 				<combo-box caption="Left button" config-section="Hints" config-item="LeftButton">
 					<item value="0" caption="Nothing" />
 					<item value="1" caption="Open chat" />
@@ -57,6 +56,7 @@
 					<item value="2" caption="Delete hint" />
 					<item value="3" caption="Delete all hints" />
 				</combo-box>
+				<check-box caption="'Open chat' works on all events" config-section="Hints" config-item="OpenChatOnEveryNotification" />
 			</group-box>
 			<group-box name="New chat/message">
 				<check-box caption="Show message content in hint" config-section="Hints" config-item="ShowContentMessage" id="hints/showContent" />
