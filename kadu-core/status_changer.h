@@ -63,6 +63,7 @@ public:
 	virtual ~UserStatusChanger();
 
 	virtual void changeStatus(UserStatus &status);
+	const UserStatus & status() { return userStatus; }
 
 public slots:
 	/**

@@ -1257,10 +1257,10 @@ bool Kadu::close(bool quit)
 		config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));
 
 		if (config_file.readEntry("General", "StartupStatus") == "LastStatus")
-			config_file.writeEntry("General", "LastStatusIndex", gadu->currentStatus().index());
+			config_file.writeEntry("General", "LastStatusIndex", userStatusChanger->status().index());
 
 		if (config_file.readBoolEntry("General", "StartupLastDescription"))
-			config_file.writeEntry("General", "LastStatusDescription", gadu->currentStatus().description());
+			config_file.writeEntry("General", "LastStatusDescription", userStatusChanger->status().description());
 
 		pending.writeToFile();
 		IgnoredManager::writeToConfiguration();
