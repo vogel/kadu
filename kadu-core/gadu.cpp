@@ -1224,13 +1224,6 @@ QString GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 	kdebugmf(KDEBUG_INFO, "\n%s\n", (const char *)unicode2latin(myLastMessage));
 	myLastMessage.replace("\r\n", "\n");
 
-	if (msgtmp.length() >= 2000)
-	{
-		MessageBox::msg(tr("Message too long (%1>=%2)").arg(mesg.length()).arg(2000), false, "Warning");
-		kdebugmf(KDEBUG_FUNCTION_END, "end: message too long\n");
-		return "\001thisisonlyworkaround";
-	}
-
 	QString msg = unicode2cp(msgtmp);
 
 	emit sendMessageFiltering(users, msg, stop);
@@ -1244,7 +1237,7 @@ QString GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 	{
 		MessageBox::msg(tr("Filtered message too long (%1>=%2)").arg(msg.length()).arg(2000), false, "Warning");
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filtered message too long\n");
-		return myLastMessage;
+		return "\001thisisonlyworkaround";
 	}
 
 	CONST_FOREACH(user, users)
@@ -1283,7 +1276,7 @@ QString GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 		delete[] myLastFormats;
 
 	kdebugf2();
-// 	return seq;
+	return msg;
 }
 
 void GaduProtocol::ackReceived(int seq, uin_t uin, int status)
