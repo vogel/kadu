@@ -2060,7 +2060,7 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("General", "DisconnectWithCurrentDescription", true);
 	config_file.addVariable("General", "HideBaseModules", true);
 	config_file.addVariable("General", "Language",  QString(QTextCodec::locale()).mid(0,2));
-	config_file.addVariable("General", "Nick", "Me");
+	config_file.addVariable("General", "Nick", tr("Me"));
 	config_file.addVariable("General", "NumberOfDescriptions", 20);
 	config_file.addVariable("General", "ParseStatus", false);
 	config_file.addVariable("General", "PrivateStatus", false);

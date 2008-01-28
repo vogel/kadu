@@ -1559,6 +1559,10 @@ werden gelöscht. Sind Sie sicher?</translation>
         <source>Contact data</source>
         <translation>Kontaktinformationen</translation>
     </message>
+    <message>
+        <source>Me</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KaduTabBar</name>

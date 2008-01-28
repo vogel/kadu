@@ -378,7 +378,7 @@ void AutoAway::createDefaultConfiguration()
 	config_file.addVariable("General", "AutoInvisible", false);
 	config_file.addVariable("General", "AutoInvisibleTime", 1800);
 	config_file.addVariable("General", "AutoParseStatus", false);
-	config_file.addVariable("General", "AutoRefreshStatusTime", 5);
+	config_file.addVariable("General", "AutoRefreshStatusTime", 0);
 	config_file.addVariable("General", "AutoStatusText", "");
 }
 

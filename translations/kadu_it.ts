@@ -1566,6 +1566,10 @@ saranno eliminati. Vuoi davvero?</translation>
         <source>Contact data</source>
         <translation>Info di contatto</translation>
     </message>
+    <message>
+        <source>Me</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KaduTabBar</name>

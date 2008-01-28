@@ -1556,6 +1556,10 @@ serons effacés.Veuillez confirmer?</translation>
         <source>Contact data</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Me</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KaduTabBar</name>

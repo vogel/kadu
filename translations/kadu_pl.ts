@@ -1950,6 +1950,10 @@ Czy na pewno tego chcesz?</translation>
         <source>Contact data</source>
         <translation>Dane kontaktu</translation>
     </message>
+    <message>
+        <source>Me</source>
+        <translation>Ja</translation>
+    </message>
 </context>
 <context>
     <name>KaduTabBar</name>
