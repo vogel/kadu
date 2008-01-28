@@ -1276,7 +1276,7 @@ QString GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 		delete[] myLastFormats;
 
 	kdebugf2();
-	return msg;
+	return myLastMessage;
 }
 
 void GaduProtocol::ackReceived(int seq, uin_t uin, int status)
