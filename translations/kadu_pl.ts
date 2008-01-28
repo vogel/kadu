@@ -1241,7 +1241,6 @@ Jest to wysoce ryzykowne!</translation>
         <translation>Składnia: %s - status, %d - opis, %i - IP, %n - nick, %a - wyświetl, %f - imię,
 %r - nazwisko, %m - telefon, %u - nr GG, %g - grupa, %o - zwraca spację jeżeli kontakt nie ma cię na liście,
 %v - DNS, %h - wersja gg, %p - port %e - email, %x - max rozmiar obrazka
-#{message} - treść wiadomości,
 #{protocol} - nazwa protokołu, który wywołał zdarzenie,
 #{event} - nazwa zdarzenia</translation>
     </message>

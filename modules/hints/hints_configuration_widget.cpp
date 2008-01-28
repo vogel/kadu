@@ -9,10 +9,12 @@
 
 #include <qapplication.h>
 #include <qspinbox.h>
+#include <qtooltip.h>
 
 #include "color_button.h"
 #include "config_file.h"
 #include "debug.h"
+#include "kadu.h"
 #include "select_font.h"
 
 #include "hints_configuration_widget.h"
@@ -26,6 +28,7 @@ HintsConfigurationWidget::HintsConfigurationWidget(QWidget *parent, char *name)
 	backgroundColor = new ColorButton(this);
 	timeout = new QSpinBox(this);
 	syntax = new QLineEdit(this);
+	QToolTip::add(syntax, qApp->translate("@default", Kadu::SyntaxTextNotify));
 
 	connect(font, SIGNAL(fontChanged(QFont)), this, SLOT(fontChanged(QFont)));
 	connect(foregroundColor, SIGNAL(changed(const QColor &)), this, SLOT(foregroundColorChanged(const QColor &)));
@@ -138,6 +141,5 @@ void HintsConfigurationWidget::setAllEnabled(bool enabled)
 	foregroundColor->setDisabled(enabled);
 	backgroundColor->setDisabled(enabled);
 	timeout->setDisabled(enabled);
-	syntax->setDisabled(enabled);
 	preview->setDisabled(enabled);
 }
