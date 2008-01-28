@@ -230,7 +230,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	groups_manager->setTabBar(GroupBar);
 	setDocked(Docked, dontHideOnClose);
 
-	loadGeometry(this, "General", "Geometry", 0, 30, 145, 465);
+	loadGeometry(this, "General", "Geometry", 0, 30, 205, 465);
 	import_0_5_0_configuration();
 
 	IgnoredManager::loadFromConfiguration();
