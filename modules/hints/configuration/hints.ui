@@ -32,7 +32,7 @@
 			<group-box name="Look">
 				<check-box caption="Set for all" config-section="Hints" config-item="SetAll" id="hints/setAll" />
 				<label caption="&lt;b&gt;Text&lt;/b&gt; preview" id="hints/setAllPreview" />
-				<spin-box caption="Timeout" config-section="Hints" config-item="SetAll_timeout" id="hints/setAll_timeout" min-value="0" max-value="3600" />
+				<spin-box caption="Timeout" config-section="Hints" config-item="SetAll_timeout" id="hints/setAll_timeout" min-value="0" max-value="3600" suffix=" s"/>
 				<color-button caption="Font color" config-section="Hints" config-item="SetAll_fgcolor" id="hints/setAll_fgcolor" />
 				<color-button caption="Background color" config-section="Hints" config-item="SetAll_bgcolor" id="hints/setAll_bgcolor" />
 				<select-font caption="Font" config-section="Hints" config-item="SetAll_font" id="hints/setAll_font" />

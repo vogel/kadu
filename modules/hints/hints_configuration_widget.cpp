@@ -27,6 +27,8 @@ HintsConfigurationWidget::HintsConfigurationWidget(QWidget *parent, char *name)
 	foregroundColor = new ColorButton(this);
 	backgroundColor = new ColorButton(this);
 	timeout = new QSpinBox(this);
+	timeout->setSuffix(" s");
+	timeout->setSpecialValueText(tr("Dont hide"));
 	syntax = new QLineEdit(this);
 	QToolTip::add(syntax, qApp->translate("@default", Kadu::SyntaxTextNotify));
 
