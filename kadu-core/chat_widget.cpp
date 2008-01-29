@@ -483,6 +483,11 @@ bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
 		KaduActions["whoisAction"]->activate(Users);
 		return true;
 	}
+	else if (HotKey::shortCut(e,"ShortCuts", "kadu_openchatwith"))
+	{
+		KaduActions["openChatWithAction"]->activate(Users);
+		return true;
+	}
 	else
 		return false;
 }
