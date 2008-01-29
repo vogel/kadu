@@ -1013,7 +1013,7 @@ It&apos;s a high security risk!</source>
 #{sentDate} - when message was sent,
 #{receivedDate} - when message was received,
 #{separator} - separator between messages,
-&lt;kadu:header&gt;text&lt;/kadu:hader&gt; - text will not be displayed in &apos;Remove repeated headers&apos; mode
+&lt;kadu:header&gt;text&lt;/kadu:header&gt; - text will not be displayed in &apos;Remove repeated headers&apos; mode
 </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1546,6 +1546,10 @@ will be deleted. Are you sure?</source>
     </message>
     <message>
         <source>Contact data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Me</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
