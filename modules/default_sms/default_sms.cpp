@@ -73,12 +73,14 @@ void SmsOrangeGateway::httpRedirected(QString link)
 void SmsOrangeGateway::send(const QString& number,const QString& message, const QString& /*contact*/, const QString& signature)
 {
 	kdebugf();
-	Number=number;
-	Message=message;
-	Signature= signature;
-	State=SMS_LOADING_PAGE;
+
+	Number = number;
+	Message = unicode2std(message);
+	Signature = unicode2std(signature);
+	State = SMS_LOADING_PAGE;
 	Http.setHost("sms.orange.pl");
 	Http.get("/Default.aspx?id=A2B6173D-CF1A-4c38-B7A7-E3144D43D70C");
+
 	kdebugf2();
 }
 
