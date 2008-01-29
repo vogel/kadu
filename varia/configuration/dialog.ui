@@ -341,7 +341,7 @@
 					  tool-tip="Maximum image size that we want to receive" />
 				<check-box caption="Receive images during invisibility" config-section="Chat" config-item="RecevieImagesDuringInvisibility"
 					   tool-tip="Receiving images during invisibility is allowed" />
-				<spin-box caption="Limit numbers of image recevied per minute" config-section="General" config-item="MaxImageRequests" min-value="1" max-value="30"
+				<spin-box caption="Limit numbers of image recevied per minute" config-section="Chat" config-item="MaxImageRequests" min-value="1" max-value="30"
 					  tool-tip="Define limit of images received per minute" />
 			</group-box>
 
