@@ -496,7 +496,7 @@ QString MainConfigurationWindow::getEMailExecutable(int emailIndex)
 			searchPath.append("/opt/thunderbird");
 			executableName.append("thunderbird");
 			executableName.append("mozilla-thunderbird");
-			parameters = " -compose mailto:";
+			parameters = "-compose mailto:";
 			break;
 		}
 		case 3: // seamonkey
@@ -507,7 +507,7 @@ QString MainConfigurationWindow::getEMailExecutable(int emailIndex)
 			searchPath.append("/usr/local/seamonkey");
 			searchPath.append("/opt/seamonkey");
 			executableName.append("seamonkey");
-			parameters = " -compose mailto:";
+			parameters = "-compose mailto:";
 			break;
 		}
 		case 4: // evolution
@@ -516,7 +516,7 @@ QString MainConfigurationWindow::getEMailExecutable(int emailIndex)
 			searchPath.append("/usr/local/evolution");
 			searchPath.append("/usr/local/Evolution");
 			executableName.append("evolution");
-			parameters = " mailto:";
+			parameters = "mailto:";
 			break;
 		}
 	}
@@ -525,7 +525,7 @@ QString MainConfigurationWindow::getEMailExecutable(int emailIndex)
 	{
 		QString executable = findExecutable(searchPath, executableName);
 		if (!executable.isNull())
-			return executable + parameters;
+			return (executable + " " + parameters);
 		else
 			return tr("Not found");
 	}
