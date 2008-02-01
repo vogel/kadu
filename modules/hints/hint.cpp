@@ -24,7 +24,7 @@
  */
 Hint::Hint(QWidget *parent, Notification *notification)
 	: QWidget(parent, "Hint"), vbox(0), callbacksBox(0), icon(0), label(0), bcolor(), notification(notification),
-	  haveCallbacks(notification->getCallbacks().count() != 0)
+	  haveCallbacks(notification->getCallbacks().count() != 0), closingEmited(false)
 {
 	kdebugf();
 
@@ -78,6 +78,8 @@ Hint::~Hint()
 
 	disconnect(notification, SIGNAL(closed(Notification *)), this, SLOT(notificationClosed()));
 	notification->release();
+
+	notificationClosed();
 
 	kdebugf2();
 }
@@ -177,7 +179,11 @@ void Hint::resetTimeout()
 
 void Hint::notificationClosed()
 {
+	if (!closingEmited)
+		return;
+
 	emit closing(this);
+	closingEmited = true;
 }
 
 bool Hint::requireManualClosing()
