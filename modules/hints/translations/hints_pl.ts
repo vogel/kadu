@@ -220,12 +220,12 @@
 <context>
     <name>HintManager</name>
     <message>
-        <location filename="../hint_manager.cpp" line="53"/>
+        <location filename="../hint_manager.cpp" line="54"/>
         <source>[&lt;i&gt;%s&lt;/i&gt;&lt;br/&gt;][&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;%d&lt;br/&gt;&lt;br/&gt;][&lt;i&gt;Mobile:&lt;/i&gt; &lt;b&gt;%m&lt;/b&gt;&lt;br/&gt;]</source>
         <translation>[&lt;i&gt;%s&lt;/i&gt;&lt;br/&gt;][&lt;br/&gt;&lt;b&gt;Opis:&lt;/b&gt;&lt;br/&gt;%d&lt;br/&gt;&lt;br/&gt;][&lt;i&gt;Telefon:&lt;/i&gt; &lt;b&gt;%m&lt;/b&gt;&lt;br/&gt;]</translation>
     </message>
     <message>
-        <location filename="../hint_manager.cpp" line="112"/>
+        <location filename="../hint_manager.cpp" line="113"/>
         <source>Dont hide</source>
         <translation>Nie ukrywaj</translation>
     </message>
@@ -233,34 +233,44 @@
 <context>
     <name>HintsConfigurationWidget</name>
     <message>
-        <location filename="../hints_configuration_widget.cpp" line="23"/>
+        <location filename="../hints_configuration_widget.cpp" line="26"/>
         <source>&lt;b&gt;Preview&lt;/b&gt; text</source>
         <translation>&lt;b&gt;Podgląd&lt;/b&gt; tekstu</translation>
     </message>
     <message>
-        <location filename="../hints_configuration_widget.cpp" line="38"/>
+        <location filename="../hints_configuration_widget.cpp" line="44"/>
         <source>Font</source>
         <translation>Czcionka</translation>
     </message>
     <message>
-        <location filename="../hints_configuration_widget.cpp" line="40"/>
+        <location filename="../hints_configuration_widget.cpp" line="46"/>
         <source>Font color</source>
         <translation>Kolor czcionki</translation>
     </message>
     <message>
-        <location filename="../hints_configuration_widget.cpp" line="42"/>
+        <location filename="../hints_configuration_widget.cpp" line="48"/>
         <source>Background color</source>
         <translation>Kolor tła</translation>
     </message>
     <message>
-        <location filename="../hints_configuration_widget.cpp" line="44"/>
+        <location filename="../hints_configuration_widget.cpp" line="50"/>
         <source>Timeout</source>
         <translation>Czas zaniku</translation>
     </message>
     <message>
-        <location filename="../hints_configuration_widget.cpp" line="46"/>
+        <location filename="../hints_configuration_widget.cpp" line="52"/>
         <source>Syntax</source>
         <translation>Składnia</translation>
+    </message>
+    <message>
+        <location filename="../hints_configuration_widget.cpp" line="25"/>
+        <source>Uncheck &apos;Set to all&apos; in &apos;Hints&apos; page to edit these values</source>
+        <translation>Odznacz &apos;Ustaw dla wszystkich&apos; na stronie &apos;Dymki&apos; aby zmieniać te wartości</translation>
+    </message>
+    <message>
+        <location filename="../hints_configuration_widget.cpp" line="32"/>
+        <source>Dont hide</source>
+        <translation>Nie ukrywaj</translation>
     </message>
 </context>
 </TS>

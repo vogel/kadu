@@ -37,6 +37,7 @@ class HintsConfigurationWidget : public NotifierConfigurationWidget
 	HintProperties currentProperties;
 	QString currentNotifyEvent;
 
+	QLabel *warning;
 	QLabel *preview;
 	SelectFont *font;
 	ColorButton *foregroundColor;

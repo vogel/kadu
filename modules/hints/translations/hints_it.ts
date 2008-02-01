@@ -211,12 +211,12 @@
 <context>
     <name>HintManager</name>
     <message>
-        <location filename="../hint_manager.cpp" line="53"/>
+        <location filename="../hint_manager.cpp" line="54"/>
         <source>[&lt;i&gt;%s&lt;/i&gt;&lt;br/&gt;][&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;%d&lt;br/&gt;&lt;br/&gt;][&lt;i&gt;Mobile:&lt;/i&gt; &lt;b&gt;%m&lt;/b&gt;&lt;br/&gt;]</source>
         <translation>[&lt;i&gt;%s&lt;/i&gt;&lt;br/&gt;][&lt;br/&gt;&lt;b&gt;Descrizione:&lt;/b&gt;&lt;br/&gt;%d&lt;br/&gt;&lt;br/&gt;][&lt;i&gt;Celulare:&lt;/i&gt; &lt;b&gt;%m&lt;/b&gt;&lt;br/&gt;]</translation>
     </message>
     <message>
-        <location filename="../hint_manager.cpp" line="112"/>
+        <location filename="../hint_manager.cpp" line="113"/>
         <source>Dont hide</source>
         <translation>Non nascondo</translation>
     </message>
@@ -224,34 +224,44 @@
 <context>
     <name>HintsConfigurationWidget</name>
     <message>
-        <location filename="../hints_configuration_widget.cpp" line="23"/>
+        <location filename="../hints_configuration_widget.cpp" line="26"/>
         <source>&lt;b&gt;Preview&lt;/b&gt; text</source>
         <translation>&lt;b&gt;Anteprima&lt;/b&gt; text</translation>
     </message>
     <message>
-        <location filename="../hints_configuration_widget.cpp" line="38"/>
+        <location filename="../hints_configuration_widget.cpp" line="44"/>
         <source>Font</source>
         <translation>Charattere</translation>
     </message>
     <message>
-        <location filename="../hints_configuration_widget.cpp" line="40"/>
+        <location filename="../hints_configuration_widget.cpp" line="46"/>
         <source>Font color</source>
         <translation>Colore di charattere</translation>
     </message>
     <message>
-        <location filename="../hints_configuration_widget.cpp" line="42"/>
+        <location filename="../hints_configuration_widget.cpp" line="48"/>
         <source>Background color</source>
         <translation>Colore di sfondo</translation>
     </message>
     <message>
-        <location filename="../hints_configuration_widget.cpp" line="44"/>
+        <location filename="../hints_configuration_widget.cpp" line="50"/>
         <source>Timeout</source>
         <translation>Tempo di sospensione</translation>
     </message>
     <message>
-        <location filename="../hints_configuration_widget.cpp" line="46"/>
+        <location filename="../hints_configuration_widget.cpp" line="52"/>
         <source>Syntax</source>
         <translation>Sintasso</translation>
+    </message>
+    <message>
+        <location filename="../hints_configuration_widget.cpp" line="25"/>
+        <source>Uncheck &apos;Set to all&apos; in &apos;Hints&apos; page to edit these values</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../hints_configuration_widget.cpp" line="32"/>
+        <source>Dont hide</source>
+        <translation type="unfinished">Non nascondo</translation>
     </message>
 </context>
 </TS>

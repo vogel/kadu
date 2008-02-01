@@ -22,6 +22,7 @@
 HintsConfigurationWidget::HintsConfigurationWidget(QWidget *parent, char *name)
 	: NotifierConfigurationWidget(parent, name), currentNotifyEvent("")
 {
+	warning = new QLabel("<b>" + tr("Uncheck 'Set to all' in 'Hints' page to edit these values") + "</b>", this);
 	preview = new QLabel(tr("<b>Preview</b> text"), this);
 	font = new SelectFont(this);
 	foregroundColor = new ColorButton(this);
@@ -39,17 +40,18 @@ HintsConfigurationWidget::HintsConfigurationWidget(QWidget *parent, char *name)
 	connect(syntax, SIGNAL(textChanged(const QString &)), this, SLOT(syntaxChanged(const QString &)));
 
 	QGridLayout *gridLayout = new QGridLayout(this, 0, 0, 0, 5);
-	gridLayout->addMultiCellWidget(preview, 0, 0, 0, 1);
-	gridLayout->addWidget(new QLabel(tr("Font") + ":", this), 1, 0, Qt::AlignRight);
-	gridLayout->addWidget(font, 1, 1);
-	gridLayout->addWidget(new QLabel(tr("Font color") + ":", this), 2, 0, Qt::AlignRight);
-	gridLayout->addWidget(foregroundColor, 2, 1);
-	gridLayout->addWidget(new QLabel(tr("Background color") + ":", this), 3, 0, Qt::AlignRight);
-	gridLayout->addWidget(backgroundColor, 3, 1);
-	gridLayout->addWidget(new QLabel(tr("Timeout") + ":", this), 4, 0, Qt::AlignRight);
-	gridLayout->addWidget(timeout, 4, 1);
-	gridLayout->addWidget(new QLabel(tr("Syntax") + ":", this), 5, 0, Qt::AlignRight);
-	gridLayout->addWidget(syntax, 5, 1);
+	gridLayout->addMultiCellWidget(warning, 0, 0, 0, 1);
+	gridLayout->addMultiCellWidget(preview, 1, 1, 0, 1);
+	gridLayout->addWidget(new QLabel(tr("Font") + ":", this), 2, 0, Qt::AlignRight);
+	gridLayout->addWidget(font, 2, 1);
+	gridLayout->addWidget(new QLabel(tr("Font color") + ":", this), 3, 0, Qt::AlignRight);
+	gridLayout->addWidget(foregroundColor, 3, 1);
+	gridLayout->addWidget(new QLabel(tr("Background color") + ":", this), 4, 0, Qt::AlignRight);
+	gridLayout->addWidget(backgroundColor, 4, 1);
+	gridLayout->addWidget(new QLabel(tr("Timeout") + ":", this), 5, 0, Qt::AlignRight);
+	gridLayout->addWidget(timeout, 5, 1);
+	gridLayout->addWidget(new QLabel(tr("Syntax") + ":", this), 6, 0, Qt::AlignRight);
+	gridLayout->addWidget(syntax, 6, 1);
 }
 
 void HintsConfigurationWidget::saveNotifyConfigurations()
@@ -139,6 +141,7 @@ void HintsConfigurationWidget::syntaxChanged(const QString &syntax)
 
 void HintsConfigurationWidget::setAllEnabled(bool enabled)
 {
+	warning->setShown(enabled);
 	font->setDisabled(enabled);
 	foregroundColor->setDisabled(enabled);
 	backgroundColor->setDisabled(enabled);
