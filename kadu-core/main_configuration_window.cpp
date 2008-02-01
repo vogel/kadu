@@ -456,7 +456,7 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 		if (!executable.isNull())
 			return executable + " " + parameters;
 		else
-			return tr("Not found");
+			return QString::null;
 	}
 	else
 		return QString::null;
@@ -464,8 +464,13 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 
 void MainConfigurationWindow::onChangeBrowser(int index)
 {
+	QString browser = getBrowserExecutable(index);
 	browserCommandLineEdit->setEnabled(index == 0);
-	browserCommandLineEdit->setText(getBrowserExecutable(index));
+	browserCommandLineEdit->setText(browser);
+
+	if (index != 0 && browser.isEmpty())
+		if (!browserComboBox->currentText().contains(tr("Not found")))
+			browserComboBox->changeItem(browserComboBox->currentText() + " (" + tr("Not found") + ")", index);
 }
 
 // void MainConfigurationWindow::onChangeBrowserOption(int index)
@@ -527,7 +532,7 @@ QString MainConfigurationWindow::getEMailExecutable(int emailIndex)
 		if (!executable.isNull())
 			return (executable + " " + parameters);
 		else
-			return tr("Not found");
+			return QString::null;
 	}
 	else
 		return QString::null;
@@ -535,8 +540,14 @@ QString MainConfigurationWindow::getEMailExecutable(int emailIndex)
 
 void MainConfigurationWindow::onChangeMail(int index)
 {
+	QString mail = getEMailExecutable(index);
+
 	mailCommandLineEdit->setEnabled(index == 0);
-	mailCommandLineEdit->setText(getEMailExecutable(index));
+	mailCommandLineEdit->setText(mail);
+
+	if (index != 0 && mail.isEmpty())
+		if (!mailComboBox->currentText().contains(tr("Not found")))
+			mailComboBox->changeItem(mailComboBox->currentText() + " (" + tr("Not found") + ")", index);
 }
 
 QString MainConfigurationWindow::browserIndexToString(int browserIndex)

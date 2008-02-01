@@ -58,7 +58,7 @@
         <translation>Wählen Sie ihren Browser</translation>
     </message>
     <message>
-        <location filename="../wizard.cpp" line="635"/>
+        <location filename="../wizard.cpp" line="647"/>
         <source>Sound</source>
         <translation>Klang</translation>
     </message>
@@ -138,7 +138,7 @@ Klicken Sie bitte auf &quot;Weiter&quot;</translation>
         <translation>Internet-Browser</translation>
     </message>
     <message>
-        <location filename="../wizard.cpp" line="485"/>
+        <location filename="../wizard.cpp" line="486"/>
         <source>Specify path</source>
         <translation>Bitte Pfad angeben</translation>
     </message>
@@ -153,77 +153,77 @@ Klicken Sie bitte auf &quot;Weiter&quot;</translation>
         <translation>Opera</translation>
     </message>
     <message>
-        <location filename="../wizard.cpp" line="463"/>
+        <location filename="../wizard.cpp" line="464"/>
         <source>Mozilla</source>
         <translation>Mozilla</translation>
     </message>
     <message>
-        <location filename="../wizard.cpp" line="464"/>
+        <location filename="../wizard.cpp" line="465"/>
         <source>Mozilla Firefox</source>
         <translation>Firefox</translation>
     </message>
     <message>
-        <location filename="../wizard.cpp" line="465"/>
+        <location filename="../wizard.cpp" line="466"/>
         <source>Dillo</source>
         <translation>Dillo</translation>
     </message>
     <message>
-        <location filename="../wizard.cpp" line="466"/>
+        <location filename="../wizard.cpp" line="467"/>
         <source>Galeon</source>
         <translation>Galeon</translation>
     </message>
     <message>
-        <location filename="../wizard.cpp" line="467"/>
+        <location filename="../wizard.cpp" line="468"/>
         <source>Safari</source>
         <translation>Safari</translation>
     </message>
     <message>
-        <location filename="../wizard.cpp" line="471"/>
+        <location filename="../wizard.cpp" line="472"/>
         <source>Custom browser</source>
         <translation>Internet-Browser bestimmen</translation>
     </message>
     <message>
-        <location filename="../wizard.cpp" line="475"/>
+        <location filename="../wizard.cpp" line="476"/>
         <source>e-mail client</source>
         <translation>Email-Programm</translation>
     </message>
     <message>
-        <location filename="../wizard.cpp" line="483"/>
+        <location filename="../wizard.cpp" line="484"/>
         <source>Choose your e-mail client</source>
         <translation>Wählen Sie ein Email-Programm aus</translation>
     </message>
     <message>
-        <location filename="../wizard.cpp" line="486"/>
+        <location filename="../wizard.cpp" line="487"/>
         <source>KMail</source>
         <translation>KMail</translation>
     </message>
     <message>
-        <location filename="../wizard.cpp" line="487"/>
+        <location filename="../wizard.cpp" line="488"/>
         <source>Thunderbird</source>
         <translation>Thunderbird</translation>
     </message>
     <message>
-        <location filename="../wizard.cpp" line="488"/>
+        <location filename="../wizard.cpp" line="489"/>
         <source>SeaMonkey</source>
         <translation>SeaMonkey</translation>
     </message>
     <message>
-        <location filename="../wizard.cpp" line="489"/>
+        <location filename="../wizard.cpp" line="490"/>
         <source>Evolution</source>
         <translation>Evolution</translation>
     </message>
     <message>
-        <location filename="../wizard.cpp" line="493"/>
+        <location filename="../wizard.cpp" line="494"/>
         <source>Custom e-mail client</source>
         <translation>Email-Programm bestimmen</translation>
     </message>
     <message>
-        <location filename="../wizard.cpp" line="501"/>
+        <location filename="../wizard.cpp" line="502"/>
         <source>Applications</source>
         <translation>Programme</translation>
     </message>
     <message>
-        <location filename="../wizard.cpp" line="504"/>
+        <location filename="../wizard.cpp" line="505"/>
         <source>&lt;p&gt;Please setup Kadu for working with your favourite WWW browser and email program.&lt;/p&gt;&lt;p&gt;Kadu will use these for opening various links from messages and user&apos;s descriptions&lt;/p&gt;</source>
         <translation>&lt;p&gt;Bestimmen Sie den Internet-Browser und das Email-Programm, mit denen Kadu zusammenarbeiten soll.&lt;/p&gt;&lt;p&gt;Kadu wird diese Nutzen, um Links aus den Chat-Fenstern und Kontaktbeschreibungen zu öffnen.&lt;/p&gt;</translation>
     </message>
@@ -233,12 +233,12 @@ Klicken Sie bitte auf &quot;Weiter&quot;</translation>
         <translation type="obsolete">Treiber für Klangausgabe</translation>
     </message>
     <message>
-        <location filename="../wizard.cpp" line="587"/>
+        <location filename="../wizard.cpp" line="599"/>
         <source>Test sound</source>
         <translation>Test-Klang</translation>
     </message>
     <message>
-        <location filename="../wizard.cpp" line="640"/>
+        <location filename="../wizard.cpp" line="652"/>
         <source>&lt;p&gt;Please select your sound driver for sound notifications. If you don&apos;t want sound notifications, use None driver.&lt;/p&gt;&lt;p&gt;If you don&apos;t know which driver to use, just check every ony with Test sound button.Don&apos;t forget to unmute your system before!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Wählen Sie einen Treiber für Klang-Benachrichtigung. Wenn Sie keine Klang-Benachrichtigungen wünschen, wählen Sie &quot;Kein&quot; / &quot;None&quot; aus.&lt;/p&gt;&lt;p&gt;Wenn Sie nicht wissen, welchen Sie benutzen sollen, testen Sie alle mit dem Test-Klang durch. Vergessen Sie nicht, den Klang Ihres System zuvor einzuschalten!&lt;/p&gt;</translation>
     </message>
@@ -253,13 +253,18 @@ Klicken Sie bitte auf &quot;Weiter&quot;</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../wizard.cpp" line="583"/>
+        <location filename="../wizard.cpp" line="595"/>
         <source>Sound system</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../wizard.cpp" line="462"/>
         <source>Opera (new tab)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../wizard.cpp" line="530"/>
+        <source>Not found</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

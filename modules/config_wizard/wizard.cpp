@@ -509,14 +509,25 @@ void Wizard::createApplicationsPage()
 
 void Wizard::browserChanged(int index)
 {
+	QString browser = MainConfigurationWindow::instance()->getBrowserExecutable(index);
 	browserCommandLineEdit->setEnabled(index == 0);
-	browserCommandLineEdit->setText(MainConfigurationWindow::getBrowserExecutable(index));
+	browserCommandLineEdit->setText(browser);
+
+	if (index != 0 && browser.isEmpty())
+		if (!browserCombo->currentText().contains(tr("Not found")))
+			browserCombo->changeItem(browserCombo->currentText() + " (" + tr("Not found") + ")", index);
 }
 
 void Wizard::emailChanged(int index)
 {
+	QString mail = MainConfigurationWindow::instance()->getEMailExecutable(index);
+
 	mailCommandLineEdit->setEnabled(index == 0);
-	mailCommandLineEdit->setText(MainConfigurationWindow::getEMailExecutable(index));
+	mailCommandLineEdit->setText(mail);
+
+	if (index != 0 && mail.isEmpty())
+		if (!mailCombo->currentText().contains(tr("Not found")))
+			mailCombo->changeItem(mailCombo->currentText() + " (" + tr("Not found") + ")", index);
 }
 
 // don't care for performance here
