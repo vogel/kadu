@@ -1,0 +1,14 @@
+<table>
+<tr>
+<td align="left" valign="top"><img width="64" height="64" align="left" src="{${KADU_CONFIG}/photos/%u.png ${KADU_CONFIG}/photos/%u.png}{~${KADU_CONFIG}/photos/%u.png @{AboutIcon}}"></td>
+<td width="100%">
+<div>[<font color="red"><b>%a</b></font>][&nbsp;<b>(%g)</b>]</div>
+[<div><img align="left" valign="middle" height="16" width="16" src="@{%q}">&nbsp;&nbsp;%u</div>]
+[<div><img align="left" valign="middle" height="16" width="16" src="@{Mobile}">&nbsp;&nbsp;%m</div>]
+[<div><img align="left" valign="middle" height="16" width="16" src="@{WriteEmail}">&nbsp;&nbsp;%e</div>]
+[<div><img align="left" valign="middle" height="16" width="16" src="@{OkWindowButton}">&nbsp;&nbsp;%i</div>]
+[<div><img align="left" valign="middle" height="16" width="16" src="@{Blocking}">&nbsp;%oNie ma cię na liście</div>]
+</td>
+</tr>
+</table>
+[<hr><font color="red"><b>%s</b></font>][<font color="red"><b>:</b></font><br>%d]
