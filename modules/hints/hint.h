@@ -37,7 +37,6 @@ class Hint : public QWidget, ConfigurationAwareObject
 	QStringList details;
 
 	bool haveCallbacks;
-	bool closingEmited;
 
 	void createLabels(const QPixmap &pixmap);
 	void updateText();
