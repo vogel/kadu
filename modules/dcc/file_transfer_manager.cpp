@@ -430,6 +430,7 @@ void FileTransferManager::acceptFile(FileTransfer *ft, DccSocket *socket, QStrin
 		{
 			kdebugmf(KDEBUG_INFO, "rejected\n");
 			socket->reject();
+			delete socket;
 			return;
 		}
 
@@ -497,6 +498,7 @@ void FileTransferManager::rejectFile(DccSocket *socket)
 {
 	kdebugf();
 	socket->reject();
+	delete socket;
 	kdebugf2();
 }
 

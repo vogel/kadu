@@ -17,7 +17,7 @@ class DccHandler
 public:
 	virtual ~DccHandler() {}
 
-	virtual void addSocket(DccSocket *socket) = 0;
+	virtual bool addSocket(DccSocket *socket) = 0;
 	virtual void removeSocket(DccSocket *socket) = 0;
 
 	virtual int dccType() = 0;

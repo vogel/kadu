@@ -39,9 +39,7 @@ DccSocket::~DccSocket()
 		Timeout = 0;
 	}
 
-	closeSocket(true);
 	finalizeNotifiers();
-	setHandler(0);
 
 	if (Dcc6Struct)
 		gg_dcc_free(Dcc6Struct);
@@ -61,8 +59,8 @@ void DccSocket::setHandler(DccHandler *handler)
 
 	if (Handler)
 	{
-		Handler->addSocket(this);
-		initializeNotifiers();
+		if (Handler->addSocket(this))
+			initializeNotifiers();
 	}
 }
 
@@ -288,9 +286,10 @@ void DccSocket::closeSocket(bool error)
 			Handler->connectionDone(this);
 
 		Handler->removeSocket(this);
+		Handler = 0;
 	}
-
-	delete this;
+	else
+		delete this;
 
 	kdebugf2();
 }
@@ -491,12 +490,17 @@ void DccSocket::dcc7Rejected(struct gg_dcc7 *dcc7)
 	disconnect(gadu, SIGNAL(dcc7Accepted(struct gg_dcc7 *)), this, SLOT(dcc7Accepted(struct gg_dcc7 *)));
 	disconnect(gadu, SIGNAL(dcc7Rejected(struct gg_dcc7 *)), this, SLOT(dcc7Rejected(struct gg_dcc7 *)));
 
-	if (Handler)
-		Handler->connectionRejected(this);
-
 	ConnectionClosed = true;
 	disableNotifiers();
-	delete this;
+
+	if (Handler)
+	{
+		Handler->connectionRejected(this);
+		Handler->removeSocket(this);
+		Handler = 0;
+	}
+	else
+		delete this;
 }
 
 void DccSocket::accept()

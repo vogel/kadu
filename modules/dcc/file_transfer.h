@@ -110,7 +110,7 @@ public:
 	void addListener(QObject * const listener, bool listenerHasSlots);
 	void removeListener(QObject * const listener, bool listenerHasSlots);
 
-	void addSocket(DccSocket *socket);
+	bool addSocket(DccSocket *socket);
 	void removeSocket(DccSocket *socket);
 
 	int dccType();

@@ -61,7 +61,7 @@ public:
 	void readFromConfig();
 	void writeToConfig();
 
-	void addSocket(DccSocket *socket) {}
+	bool addSocket(DccSocket *socket) { return false; }
 	void removeSocket(DccSocket *socket) {}
 
 	int dccType() { return 0; }

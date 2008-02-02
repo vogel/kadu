@@ -44,7 +44,7 @@ public:
 	VoiceChatDialog();
 	~VoiceChatDialog();
 
-	void addSocket(DccSocket *socket);
+	bool addSocket(DccSocket *socket);
 	void removeSocket(DccSocket *socket);
 
 	int dccType() { return GG_SESSION_DCC_VOICE; }
@@ -55,7 +55,7 @@ public:
 	void connectionError(DccSocket *socket) {}
 
 	void connectionAccepted(DccSocket *socket) {}
-	void connectionRejected(DccSocket *socket);
+	void connectionRejected(DccSocket *socket) {}
 
 	static void destroyAll();
 	static void sendDataToAll(char *data, int length);
@@ -118,7 +118,7 @@ public:
 	void resetCodec();
 	void addGsmSample(char *data, int length);
 
-	void addSocket(DccSocket *socket) {}
+	bool addSocket(DccSocket *socket) { return false; }
 	void removeSocket(DccSocket *socket) {}
 
 	int dccType() { return GG_SESSION_DCC_VOICE; }

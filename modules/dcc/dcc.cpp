@@ -229,7 +229,7 @@ void DccManager::closeDcc()
 
 	if (MainSocket)
 	{
-		MainSocket->stop();
+		delete MainSocket;
 		MainSocket = 0;
 		gadu->setDccIpAndPort(0, 0);
 	}
@@ -366,23 +366,33 @@ void DccManager::createDefaultConfiguration()
 	config_file.addVariable("ShortCuts", "kadu_voicechat", "F7");
 }
 
-void DccManager::addSocket(DccSocket *socket)
+bool DccManager::addSocket(DccSocket *socket)
 {
+	kdebugf();
+
 	UnhandledSockets.append(socket);
+	return true;
 }
 
 void DccManager::removeSocket(DccSocket *socket)
 {
+	kdebugf();
+
 	UnhandledSockets.remove(socket);
+	delete socket;
 }
 
 void DccManager::addHandler(DccHandler *handler)
 {
+	kdebugf();
+
 	SocketHandlers.append(handler);
 }
 
 void DccManager::removeHandler(DccHandler *handler)
 {
+	kdebugf();
+
 	SocketHandlers.remove(handler);
 }
 
@@ -393,6 +403,8 @@ void DccManager::connectionError(DccSocket *socket)
 
 bool DccManager::socketEvent(DccSocket *socket, bool &lock)
 {
+	kdebugf();
+
 	DccSocket *dccSocket;
 
 	switch (socket->ggDccEvent()->type) {

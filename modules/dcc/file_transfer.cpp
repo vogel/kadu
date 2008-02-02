@@ -64,7 +64,7 @@ FileTransfer::~FileTransfer()
 	if (Socket)
 	{
 		kdebugmf(KDEBUG_WARNING, "DCC transfer has not finished yet!\n");
-		Socket->stop();
+		delete Socket;
 		Socket = 0;
 	}
 
@@ -354,7 +354,7 @@ void FileTransfer::stop(StopType stopType)
 
 	if (Socket)
 	{
-		Socket->stop();
+		delete Socket;
 		Socket = 0;
 	}
 
@@ -401,7 +401,7 @@ void FileTransfer::connectionRejected(DccSocket *socket)
 	emit fileTransferStatusChanged(this);
 }
 
-void FileTransfer::addSocket(DccSocket *socket)
+bool FileTransfer::addSocket(DccSocket *socket)
 {
 	kdebugf();
 
@@ -413,7 +413,10 @@ void FileTransfer::addSocket(DccSocket *socket)
 
 		Status = StatusTransfer;
 		emit fileTransferStatusChanged(this);
+		return true;
 	}
+
+	return false;
 }
 
 void FileTransfer::removeSocket(DccSocket *socket)
@@ -421,7 +424,10 @@ void FileTransfer::removeSocket(DccSocket *socket)
 	kdebugf();
 
 	if (Socket == socket)
+	{
+		delete Socket;
 		Socket = 0;
+	}
 
 	kdebugf2();
 }

@@ -84,7 +84,7 @@ public:
 	DccManager();
 	virtual ~DccManager();
 
-	void addSocket(DccSocket *socket);
+	bool addSocket(DccSocket *socket);
 	void removeSocket(DccSocket *socket);
 
 	void addHandler(DccHandler *handler);

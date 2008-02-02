@@ -57,6 +57,7 @@ VoiceChatDialog::VoiceChatDialog()
 	: QDialog (NULL, "voice_chat_dialog"), Socket(0), chatFinished(false)
 {
 	kdebugf();
+
 	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Voice chat"));
 	resize(200, 100);
@@ -81,17 +82,16 @@ VoiceChatDialog::~VoiceChatDialog()
 	if (!Socket)
 		return;
 
-	DccSocket *remove = Socket;
+	delete Socket;
 	Socket = 0;
 
 	VoiceChats.remove(this);
-	remove->stop();
 	voice_manager->free();
 
 	kdebugf2();
 }
 
-void VoiceChatDialog::addSocket(DccSocket *socket)
+bool VoiceChatDialog::addSocket(DccSocket *socket)
 {
 	kdebugf();
 
@@ -102,11 +102,15 @@ void VoiceChatDialog::addSocket(DccSocket *socket)
 		{
 			chatFinished = true;  /* jezeli urzadzenie device jest zajete albo go nie ma
 											zrywamy polaczenie oraz zamykamy okienko*/
-			socket->reject();
-			Socket = 0;
-			delete this;
+			Socket->reject();
+			delete Socket;
+			return false;
 		}
+
+		return true;
 	}
+
+	return false;
 }
 
 void VoiceChatDialog::removeSocket(DccSocket *socket)
@@ -124,6 +128,8 @@ void VoiceChatDialog::removeSocket(DccSocket *socket)
 
 bool VoiceChatDialog::socketEvent(DccSocket *socket, bool &lock)
 {
+	kdebugf();
+
 	switch (socket->ggDccEvent()->type)
 	{
 		case GG_EVENT_DCC_VOICE_DATA:
@@ -135,6 +141,7 @@ bool VoiceChatDialog::socketEvent(DccSocket *socket, bool &lock)
 			if (len > 1630) // 1630 == 5 * 326
 			{
 				socket->reject();
+				delete socket;
 				return true;
 			}
 
@@ -148,28 +155,28 @@ bool VoiceChatDialog::socketEvent(DccSocket *socket, bool &lock)
 	}
 }
 
-void VoiceChatDialog::connectionRejected(DccSocket *socket)
-{
-	Socket = 0;
-	delete this;
-}
-
 void VoiceChatDialog::destroyAll()
 {
 	kdebugf();
+
 	while (!VoiceChats.empty())
 		delete *(VoiceChats.begin());
+
 	kdebugf2();
 }
 
 void VoiceChatDialog::sendData(char *data, int length)
 {
+	kdebugf();
+
 	if (Socket)
 		Socket->sendVoiceData(data, length);
 }
 
 void VoiceChatDialog::sendDataToAll(char *data, int length)
 {
+	kdebugf();
+
 	FOREACH(i, VoiceChats)
 		(*i)->sendData(data, length);
 }
@@ -733,6 +740,8 @@ void VoiceManager::userBoxMenuPopup()
 
 bool VoiceManager::socketEvent(DccSocket *socket, bool &lock)
 {
+	kdebugf();
+
 	switch (socket->ggDccEvent()->type)
 	{
 		case GG_EVENT_DCC_NEED_VOICE_ACK:
@@ -744,7 +753,10 @@ bool VoiceManager::socketEvent(DccSocket *socket, bool &lock)
 				socket->setHandler(voiceChatDialog);
 			}
 			else
+			{
 				socket->reject();
+				delete socket;
+			}
 			return true;
 
 		case GG_EVENT_DCC_ACK:

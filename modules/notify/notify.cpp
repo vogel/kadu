@@ -60,7 +60,6 @@ Notify::Notify(QObject *parent, const char *name)
 {
 	kdebugf();
 
-
 	createDefaultConfiguration();
 
 	connect(gadu, SIGNAL(connectionError(Protocol *, const QString &, const QString &)), this, SLOT(connectionError(Protocol *, const QString &, const QString &)));
