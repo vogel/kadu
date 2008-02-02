@@ -78,9 +78,14 @@ VoiceChatDialog::~VoiceChatDialog()
 {
 	kdebugf();
 
-	VoiceChats.remove(this);
+	if (!Socket)
+		return;
 
-	Socket->stop();
+	DccSocket *remove = Socket;
+	Socket = 0;
+
+	VoiceChats.remove(this);
+	remove->stop();
 	voice_manager->free();
 
 	kdebugf2();
@@ -98,6 +103,7 @@ void VoiceChatDialog::addSocket(DccSocket *socket)
 			chatFinished = true;  /* jezeli urzadzenie device jest zajete albo go nie ma
 											zrywamy polaczenie oraz zamykamy okienko*/
 			socket->reject();
+			Socket = 0;
 			delete this;
 		}
 	}
@@ -108,7 +114,10 @@ void VoiceChatDialog::removeSocket(DccSocket *socket)
 	kdebugf();
 
 	if (Socket == socket)
+	{
 		Socket = 0;
+		delete this;
+	}
 
 	kdebugf2();
 }
@@ -139,18 +148,9 @@ bool VoiceChatDialog::socketEvent(DccSocket *socket, bool &lock)
 	}
 }
 
-void VoiceChatDialog::connectionDone(DccSocket *socket)
-{
-	delete this;
-}
-
-void VoiceChatDialog::connectionError(DccSocket *socket)
-{
-	delete this;
-}
-
 void VoiceChatDialog::connectionRejected(DccSocket *socket)
 {
+	Socket = 0;
 	delete this;
 }
 

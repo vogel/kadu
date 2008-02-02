@@ -12,6 +12,7 @@ extern "C" {
 };
 
 #include "../dcc/dcc.h"
+#include "../dcc/dcc_handler.h"
 #include "../sound/sound.h"
 
 #include "main_configuration_window.h"
@@ -36,7 +37,6 @@ class VoiceChatDialog : public QDialog, public DccHandler
 {
 	Q_OBJECT
 
-private:
 	static QValueList<VoiceChatDialog *> VoiceChats;
 	DccSocket* Socket;
 
@@ -51,8 +51,8 @@ public:
 
 	bool socketEvent(DccSocket *socket, bool &lock);
 
-	void connectionDone(DccSocket *socket);
-	void connectionError(DccSocket *socket);
+	void connectionDone(DccSocket *socket) {}
+	void connectionError(DccSocket *socket) {}
 
 	void connectionAccepted(DccSocket *socket) {}
 	void connectionRejected(DccSocket *socket);

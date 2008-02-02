@@ -182,8 +182,8 @@ void Hint::notificationClosed()
 	if (!closingEmited)
 		return;
 
-	emit closing(this);
 	closingEmited = true;
+	emit closing(this);
 }
 
 bool Hint::requireManualClosing()
