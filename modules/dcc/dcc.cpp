@@ -379,7 +379,6 @@ void DccManager::removeSocket(DccSocket *socket)
 	kdebugf();
 
 	UnhandledSockets.remove(socket);
-	delete socket;
 }
 
 void DccManager::addHandler(DccHandler *handler)

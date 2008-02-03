@@ -118,10 +118,7 @@ void VoiceChatDialog::removeSocket(DccSocket *socket)
 	kdebugf();
 
 	if (Socket == socket)
-	{
-		Socket = 0;
 		delete this;
-	}
 
 	kdebugf2();
 }
