@@ -173,6 +173,20 @@ void DccSocket::startTimeout()
 {
 	kdebugf();
 
+	switch (Version)
+	{
+		case Dcc6:
+			if (Dcc6Struct->timeout <= 0)
+				return;
+			break;
+		case Dcc7:
+			if (Dcc7Struct->timeout <= 0)
+				return;
+			break;
+		default:
+			break;
+	}
+
 	if (!Timeout)
 	{
 		Timeout = new QTimer(this);
