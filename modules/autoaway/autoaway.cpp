@@ -37,9 +37,6 @@ extern "C" int autoaway_init()
 
 	autoAway = new AutoAway();
 
-	QObject::connect(gadu, SIGNAL(disconnected()), autoAway, SLOT(off()));
-	QObject::connect(gadu, SIGNAL(connected()), autoAway, SLOT(on()));
-
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/autoaway.ui"), autoAway);
 
 	kdebugf2();
@@ -50,12 +47,7 @@ extern "C" void autoaway_close()
 {
 	kdebugf();
 
-	autoAway->off();
-
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/autoaway.ui"), autoAway);
-
-	QObject::disconnect(gadu, SIGNAL(disconnected()), autoAway, SLOT(off()));
-	QObject::disconnect(gadu, SIGNAL(connected()), autoAway, SLOT(on()));
 
 	delete autoAway;
 	autoAway = 0;
@@ -74,6 +66,9 @@ AutoAwayStatusChanger::~AutoAwayStatusChanger()
 
 void AutoAwayStatusChanger::changeStatus(UserStatus &status)
 {
+	if (changeStatusTo == NoChangeStatus)
+		return;
+
 	if (status.isOffline())
 		return;
 
@@ -98,9 +93,7 @@ void AutoAwayStatusChanger::changeStatus(UserStatus &status)
 
 	if (changeStatusTo == ChangeStatusToOffline)
 	{
-		// TODO: make it pretty
-		kadu->setOffline(description);
-// 		status.setOffline(description);
+		status.setOffline(description);
 		return;
 	}
 
@@ -163,6 +156,8 @@ AutoAway::~AutoAway()
 		delete autoAwayStatusChanger;
 		autoAwayStatusChanger = 0;
 	}
+
+	qApp->removeEventFilter(this);
 }
 
 void AutoAway::on()
@@ -170,7 +165,6 @@ void AutoAway::on()
 	if (!autoAwayStatusChanger)
 	{
 		autoAwayStatusChanger = new AutoAwayStatusChanger();
-
 		status_changer_manager->registerStatusChanger(autoAwayStatusChanger);
 	}
 
@@ -279,7 +273,7 @@ void AutoAway::checkIdleTime()
 		refreshStatusTime = refreshStatusInterval;
 
 	if (timer)
-		timer->start(checkInterval * 1000, TRUE);
+		timer->start(checkInterval * 1000, true);
 
 	kdebugf2();
 }
@@ -326,7 +320,7 @@ void AutoAway::configurationUpdated()
 
 	changeTo = (AutoAwayStatusChanger::ChangeDescriptionTo)config_file.readNumEntry("General", "AutoChangeDescription");
 
-	if (!gadu->currentStatus().isOffline() && (autoAwayEnabled || autoInvisibleEnabled || autoDisconnectEnabled))
+	if (autoAwayEnabled || autoInvisibleEnabled || autoDisconnectEnabled)
 		on();
 	else
 		off();

@@ -93,6 +93,9 @@ class AutoAway : public ConfigurationUiHandler, ConfigurationAwareObject
 
 	void createDefaultConfiguration();
 
+	void on();
+	void off();
+
 private slots:
 	void checkIdleTime();
 
@@ -113,10 +116,6 @@ public:
 	QString changeDescription(const QString &oldDescription);
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
-
-public slots:
-	void on();
-	void off();
 
 };
 
