@@ -306,9 +306,23 @@ void FileTransfer::start(StartType startType)
 					break;
 
 				case Dcc7:
-					Socket = new DccSocket(gg_dcc7_send_file(gadu->session(), Contact, FileName, unicode2cp(FileName), 0)); // last param - hash
-					Socket->setHandler(this);
+				{
+					gg_dcc7 *dcc = gg_dcc7_send_file(gadu->session(), Contact, FileName.local8Bit().data(),
+						unicode2cp(FileName).data(), 0);
+
+					if (dcc)
+					{
+						Socket = new DccSocket(dcc); // last param - hash
+						Socket->setHandler(this);
+					}
+					else
+					{
+						Status = StatusFrozen;
+						emit fileTransferStatusChanged(this);
+						emit fileTransferFailed(this, ErrorCanNotOpenFile);
+					}
 					break;
+				}
 
 				default:
 					return;
@@ -439,7 +453,7 @@ void FileTransfer::prepareFileInfo()
 	if (!Socket)
 		return;
 
-	GaduFileName = cp2unicode(Socket->fileName());
+	GaduFileName = Socket->fileName();
 	FileSize = gg_fix32(Socket->fileSize());
 	TransferedSize = PrevTransferedSize = gg_fix32(Socket->fileOffset());
 

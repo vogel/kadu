@@ -374,7 +374,7 @@ void FileTransferManager::needFileAccept(DccSocket *socket)
 
 	QString fileSize = QString("%1").arg((float)(socket->fileSize() / 1024), 0, 'f', 2);
 
-	FileTransfer *ft = search(FileTransfer::TypeReceive, socket->peerUin(), cp2unicode(socket->fileName()), FileTransfer::FileNameGadu);
+	FileTransfer *ft = search(FileTransfer::TypeReceive, socket->peerUin(), socket->fileName(), FileTransfer::FileNameGadu);
 
 	NewFileTransferNotification *newFileTransferNotification;
 
@@ -386,7 +386,7 @@ void FileTransferManager::needFileAccept(DccSocket *socket)
 		question = narg(tr("User %1 wants to send you a file %2\nof size %3kB.\n"
 		                   "This is probably a next part of %4\n What should I do?"),
 			userlist->byID("Gadu", QString::number(socket->peerUin())).altNick(),
-			cp2unicode(socket->fileName()),
+			socket->fileName(),
 			fileSize,
 			ft->fileName()
 		);
@@ -398,7 +398,7 @@ void FileTransferManager::needFileAccept(DccSocket *socket)
 
 		question = narg(tr("User %1 wants to send you a file %2\nof size %3kB. Accept transfer?"),
 			userlist->byID("Gadu", QString::number(socket->peerUin())).altNick(),
-			cp2unicode(socket->fileName()),
+			socket->fileName(),
 			fileSize
 		);
 	}
@@ -423,7 +423,7 @@ void FileTransferManager::acceptFile(FileTransfer *ft, DccSocket *socket, QStrin
 	{
 		if (!haveFileName || fileName.isEmpty())
 			fileName = QFileDialog::getSaveFileName(config_file.readEntry("Network", "LastDownloadDirectory")
-				+ cp2unicode(socket->fileName()),
+				+ socket->fileName(),
 				QString::null, 0, "save file", tr("Select file location"));
 
 		if (fileName.isEmpty())

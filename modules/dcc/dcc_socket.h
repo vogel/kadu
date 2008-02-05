@@ -76,7 +76,7 @@ public:
 	void setType(int type);
 	int type();
 
-	unsigned char * fileName();
+	QString fileName();
 	int fileSize();
 	int fileOffset();
 	void fillFileInfo(const QString &fileName);

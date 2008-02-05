@@ -42,7 +42,8 @@ public:
 	enum FileTransferError {
 		ErrorDccDisabled,
 		ErrorDccSocketTransfer,
-		ErrorConnectionTimeout
+		ErrorConnectionTimeout,
+		ErrorCanNotOpenFile
 	};
 
 	enum StartType {

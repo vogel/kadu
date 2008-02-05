@@ -392,14 +392,14 @@ void DccSocket::watchDcc()
 	kdebugf2();
 }
 
-unsigned char * DccSocket::fileName()
+QString DccSocket::fileName()
 {
 	switch (Version)
 	{
 		case Dcc6:
-			return Dcc6Struct->file_info.filename;
+			return cp2unicode(Dcc6Struct->file_info.filename);
 		case Dcc7:
-			return Dcc7Struct->filename;
+			return cp2unicode(Dcc7Struct->filename);
 		default:
 			return 0;
 	}
