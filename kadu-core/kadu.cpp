@@ -1074,7 +1074,7 @@ void Kadu::slotHandleState(int command)
 
 	UserStatus status;
 
-	status.setStatus(gadu->currentStatus());
+	status.setStatus(userStatusChanger->status());
 	switch (command)
 	{
 		case 0:
@@ -1652,7 +1652,7 @@ void Kadu::refreshPrivateStatusFromConfigFile()
 	if (statusMenu->isItemChecked(8) == privateStatus)
 		return;
 
-	UserStatus status = gadu->currentStatus();
+	UserStatus status = userStatusChanger->status();
 	status.setFriendsOnly(privateStatus);
 	userStatusChanger->userStatusSet(status);
 
@@ -1728,9 +1728,10 @@ void Kadu::setDefaultStatus()
 	else if (startupStatus == "Offline")
 		statusIndex = 6;
 
-	status.setIndex(statusIndex, description);
-	if (status.isOffline() && config_file.readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline"))
+	if ((statusIndex == 6) && config_file.readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline"))
 		status.setInvisible(description);
+	else
+		status.setIndex(statusIndex, description);
 
 	status.setFriendsOnly(config_file.readBoolEntry("General", "PrivateStatus"));
 	userStatusChanger->userStatusSet(status);
