@@ -83,13 +83,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="59"/>
-        <source>Set 0 to disable.</source>
+        <location filename="../.configuration-ui-translations.cpp" line="61"/>
+        <source>Parse AutoStatus</source>
         <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>AutoAway</name>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="62"/>
-        <source>Parse AutoStatus</source>
+        <source>Don&apos;t refresh</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

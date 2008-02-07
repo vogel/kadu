@@ -83,14 +83,16 @@
         <translation>Automatyczne odświeżanie statusu</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="59"/>
-        <source>Set 0 to disable.</source>
-        <translation>Podaj 0 aby wyłączyć.</translation>
-    </message>
-    <message>
-        <location filename="../.configuration-ui-translations.cpp" line="62"/>
+        <location filename="../.configuration-ui-translations.cpp" line="61"/>
         <source>Parse AutoStatus</source>
         <translation>Parsuj AutoStatus</translation>
+    </message>
+</context>
+<context>
+    <name>AutoAway</name>
+    <message>
+        <source>Don&apos;t refresh</source>
+        <translation>Nie odświeżaj</translation>
     </message>
 </context>
 </TS>

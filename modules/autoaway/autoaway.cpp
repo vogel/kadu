@@ -298,6 +298,8 @@ void AutoAway::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfi
 	connect(autoOfflineSpinBox, SIGNAL(valueChanged(int)), this, SLOT(autoOfflineSpinBoxValueChanged(int)));
 
 	connect(mainConfigurationWindow->widgetById("autoaway/descriptionChange"), SIGNAL(activated(int)), this, SLOT(descriptionChangeChanged(int)));
+
+	autoRefreshSpinBox->setSpecialValueText(tr("Don't refresh"));
 }
 
 void AutoAway::configurationUpdated()

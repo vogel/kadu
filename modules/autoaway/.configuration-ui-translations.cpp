@@ -56,7 +56,6 @@
 				
 			QT_TRANSLATE_NOOP("@default", "Autorefresh status");
 		
-			QT_TRANSLATE_NOOP("@default", "Set 0 to disable.");
 		
 				
 			QT_TRANSLATE_NOOP("@default", "Parse AutoStatus");
