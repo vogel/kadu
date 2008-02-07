@@ -936,7 +936,7 @@ void ChatWidget::storeGeometry()
 
 void ChatWidget::leaveConference()
 {
-	if (!MessageBox::ask("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this conference?", "Warning", this))
+	if (!MessageBox::ask(tr("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this conference?"), "Warning", this))
 		return;
 
 	UserListElements users = Users->toUserListElements();

@@ -1174,6 +1174,11 @@ Some of them probably will not get it.</source>
         <source>&amp;Cancel</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>All messages received in this conference will be ignored
+from now on. Are you sure you want to leave this conference?</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ChatWindow</name>
