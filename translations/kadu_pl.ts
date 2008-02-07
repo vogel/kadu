@@ -1483,7 +1483,6 @@ Prawdopodobnie nie zostanie on wszystkim dostarczony.</translation>
         <source>&amp;Cancel</source>
         <translation>&amp;Anuluj</translation>
     </message>
-<<<<<<< .mine
     <message>
         <location filename="" line="0"/>
         <source>All messages received in this conference will be ignored
@@ -1491,14 +1490,6 @@ from now on. Are you sure you want to leave this conference?</source>
         <translation>Wszystkie wiadomości z tej konferencji będą od teraz ignorowane.
 Na pewno chcesz opuścić tę konferencję?</translation>
     </message>
-=======
-    <message>
-        <source>All messages received in this conference will be ignored
-from now on. Are you sure you want to leave this conference?</source>
-        <translation>Od tej chwili wszystkie przychodzące wiadomości w tej konferencji 
-będą ignorowane. Czy jesteś pewien, że chcesz opuścić tę konferencję?</translation>
-    </message>
->>>>>>> .r4872
 </context>
 <context>
     <name>ChatWindow</name>
