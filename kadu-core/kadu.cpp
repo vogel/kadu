@@ -675,12 +675,12 @@ void Kadu::editUserActionSetParams(QString /*protocolName*/, UserListElement use
 	UserListElements elems = UserListElements(users);
 	if (users.isAnonymous())
 	{
-		action->setPixmaps(elems, icons_manager->loadIcon("AddUser"));
+		action->setIconSets(elems, icons_manager->loadIconSet("AddUser"));
 		action->setTexts(elems, tr("Add user"));
 	}
 	else
 	{
-		action->setPixmaps(elems, icons_manager->loadIcon("EditUserInfo"));
+		action->setIconSets(elems, icons_manager->loadIconSet("EditUserInfo"));
 		action->setTexts(elems, tr("Contact data"));
 	}
 
