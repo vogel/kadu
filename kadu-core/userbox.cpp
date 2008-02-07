@@ -467,6 +467,8 @@ UserBox::UserBox(bool fancy, UserGroup *group, QWidget* parent, const char* name
 	kdebugf();
 	Filters.append(group);
 
+	setHScrollBarMode(QScrollView::AlwaysOff);
+
 	desc_action = new Action("ShowDescription", tr("Hide descriptions"), "descriptionsAction", Action::TypeUserList);
 	desc_action->setOnShape("HideDescription", tr("Show descriptions"));
 	desc_action->setToggleAction(true);
