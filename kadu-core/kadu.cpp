@@ -1728,7 +1728,8 @@ void Kadu::setDefaultStatus()
 	else if (startupStatus == "Offline")
 		statusIndex = 6;
 
-	if ((statusIndex == 6) && config_file.readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline"))
+	if ((statusIndex == 6 || statusIndex == 7) &&
+			config_file.readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline"))
 		status.setInvisible(description);
 	else
 		status.setIndex(statusIndex, description);
