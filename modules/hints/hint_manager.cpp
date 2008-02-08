@@ -353,6 +353,8 @@ void HintManager::chatWidgetActivated(ChatWidget *chat)
 		linkedHints[newMessage]->close();
 		linkedHints.remove(newMessage);
 	}
+
+	setHint();
 }
 
 void HintManager::deleteAllHints()
