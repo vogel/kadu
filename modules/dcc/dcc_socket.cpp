@@ -118,6 +118,9 @@ void DccSocket::initializeNotifiers()
 {
 	kdebugf();
 
+	if (ReadSocketNotifier)
+		return;
+
 	int socketFd;
 	switch (Version)
 	{

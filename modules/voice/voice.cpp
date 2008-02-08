@@ -776,6 +776,16 @@ void VoiceManager::createDefaultConfiguration()
 	config_file.addVariable("ShortCuts", "kadu_voicechat", "");
 }
 
+bool VoiceManager::addSocket(DccSocket *socket)
+{
+	if (!socket)
+		return false;
+
+	VoiceChatDialog *chatDialog = new VoiceChatDialog();
+	socket->setHandler(chatDialog);
+	return true;
+}
+
 QValueList<VoiceChatDialog *> VoiceChatDialog::VoiceChats;
 VoiceManager *voice_manager = NULL;
 

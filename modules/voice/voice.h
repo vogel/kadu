@@ -118,7 +118,7 @@ public:
 	void resetCodec();
 	void addGsmSample(char *data, int length);
 
-	bool addSocket(DccSocket *socket) { return false; }
+	bool addSocket(DccSocket *socket);
 	void removeSocket(DccSocket *socket) {}
 
 	int dccType() { return GG_SESSION_DCC_VOICE; }
