@@ -30,6 +30,7 @@ class DccSocket : public QObject
 	int &DccCheckField;
 
 	struct gg_event *DccEvent;
+	bool destroying;
 
 	QSocketNotifier* ReadSocketNotifier;
 	QSocketNotifier* WriteSocketNotifier;

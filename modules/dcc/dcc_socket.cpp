@@ -21,12 +21,12 @@
 #include "dcc_socket.h"
 
 DccSocket::DccSocket(struct gg_dcc *dccStruct)
-	: Version(Dcc6), Dcc6Struct(dccStruct), Dcc7Struct(0), DccCheckField(dccStruct->check), DccEvent(0), ReadSocketNotifier(0), WriteSocketNotifier(0), ConnectionClosed(false), Timeout(0), Handler(0)
+	: Version(Dcc6), Dcc6Struct(dccStruct), Dcc7Struct(0), DccCheckField(dccStruct->check), DccEvent(0), ReadSocketNotifier(0), WriteSocketNotifier(0), ConnectionClosed(false), Timeout(0), Handler(0), destroying(false)
 {
 }
 
 DccSocket::DccSocket(struct gg_dcc7 *dccStruct)
-	: Version(Dcc7), Dcc6Struct(0), Dcc7Struct(dccStruct), DccCheckField(dccStruct->check), DccEvent(0), ReadSocketNotifier(0), WriteSocketNotifier(0), ConnectionClosed(false), Timeout(0), Handler(0)
+	: Version(Dcc7), Dcc6Struct(0), Dcc7Struct(dccStruct), DccCheckField(dccStruct->check), DccEvent(0), ReadSocketNotifier(0), WriteSocketNotifier(0), ConnectionClosed(false), Timeout(0), Handler(0), destroying(false)
 {
 }
 
@@ -268,6 +268,9 @@ bool DccSocket::checkWrite()
 
 void DccSocket::socketDataEvent()
 {
+	if (destroying)
+		return;
+
 	disableNotifiers();
 	watchDcc();
 }
@@ -513,8 +516,8 @@ void DccSocket::dcc7Rejected(struct gg_dcc7 *dcc7)
 		Handler->removeSocket(this);
 		Handler = 0;
 	}
-	else
-		delete this;
+// 	else
+// 		delete this;
 }
 
 void DccSocket::accept()

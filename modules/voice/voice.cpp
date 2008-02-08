@@ -103,7 +103,7 @@ bool VoiceChatDialog::addSocket(DccSocket *socket)
 			chatFinished = true;  /* jezeli urzadzenie device jest zajete albo go nie ma
 											zrywamy polaczenie oraz zamykamy okienko*/
 			Socket->reject();
-			delete Socket;
+// 			delete Socket;
 			return false;
 		}
 
@@ -119,6 +119,7 @@ void VoiceChatDialog::removeSocket(DccSocket *socket)
 
 	if (Socket == socket)
 		delete this;
+	Socket = 0;
 
 	kdebugf2();
 }
@@ -138,7 +139,7 @@ bool VoiceChatDialog::socketEvent(DccSocket *socket, bool &lock)
 			if (len > 1630) // 1630 == 5 * 326
 			{
 				socket->reject();
-				delete socket;
+// 				delete socket;
 				return true;
 			}
 
@@ -752,7 +753,7 @@ bool VoiceManager::socketEvent(DccSocket *socket, bool &lock)
 			else
 			{
 				socket->reject();
-				delete socket;
+// 				delete socket;
 			}
 			return true;
 
