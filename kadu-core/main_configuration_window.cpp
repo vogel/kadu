@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <stdlib.h>
+
 #include <qstyle.h>
 #include <qstylefactory.h>
 

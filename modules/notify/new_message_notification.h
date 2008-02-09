@@ -27,7 +27,7 @@ public:
 	static void registerEvents(Notify * manager);
 	static void unregisterEvents(Notify * manager);
 
-	MessageNotification(MessageType message, const UserListElements &userListElements, const QString &message, const QString &protocolName);
+	MessageNotification(MessageType messageType, const UserListElements &userListElements, const QString &message, const QString &protocolName);
 	virtual ~MessageNotification() {};
 
 };

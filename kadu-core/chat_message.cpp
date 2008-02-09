@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <stdlib.h>
+
 #include <qregexp.h>
 
 #include "kadu_parser.h"

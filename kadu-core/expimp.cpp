@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <stdlib.h>
+
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qlistview.h>
