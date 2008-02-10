@@ -13,9 +13,9 @@
 #include <qobject.h>
 #include <qpopupmenu.h>
 #include <qtimer.h>
+#include <qwindowdefs.h>
 
 #include "config_file.h"
-// #include "config_dialog.h"
 #include "docking.h"
 #include "debug.h"
 #include "icons_manager.h"
@@ -24,12 +24,16 @@
 #include "status.h"
 #include "misc.h"
 
+#include "activate.h"
+
 /**
  * @ingroup docking
  * @{
  */
 extern "C" int docking_init()
 {
+	create_netwm_atoms(qt_xdisplay());
+
 	docking_manager = new DockingManager();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/docking.ui"), docking_manager);
 
@@ -192,30 +196,23 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 	{
 		emit mousePressLeftButton();
 		kdebugm(KDEBUG_INFO, "minimized: %d, visible: %d\n", kadu->isMinimized(), kadu->isVisible());
+
 		if (pending.pendingMsgs() && e->state() != ControlButton)
 		{
 			pending.openMessages();
 			return;
 		}
-		if (kadu->isMinimized())
-		{
-			// hide needed when changing desktop
-			kadu->hide();
-			kadu->showNormal();
-			kadu->raise();
-			kadu->setActiveWindow();
-			kadu->setFocus();
-			return;
-		}
-		if (kadu->isVisible() && kadu->isActiveWindow())
-			kadu->hide();
-		else
+
+		if (kadu->isMinimized() || !kadu->isVisible() || !kadu->isActiveWindow())
 		{
 			kadu->show();
-			kadu->setActiveWindow();
 			kadu->raise();
-			kadu->setFocus();
+
+			activateWindow(kadu->winId());
 		}
+		else
+			kadu->hide();
+
 		return;
 	}
 

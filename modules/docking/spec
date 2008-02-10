@@ -1,2 +1,2 @@
-MODULE_SOURCES=docking.cpp
-MODULE_MOC_HEADERS=docking.h
+MODULE_SOURCES="activate.cpp docking.cpp"
+MODULE_MOC_HEADERS="activate.h docking.h"
