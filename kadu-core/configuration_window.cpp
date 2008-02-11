@@ -11,7 +11,6 @@
 #include <qlistbox.h>
 #include <qobjectlist.h>
 #include <qscrollview.h>
-#include <qsplitter.h>
 #include <qtabwidget.h>
 
 #include "config_file.h"
@@ -233,12 +232,12 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 	setWFlags(getWFlags() | Qt::WDestructiveClose);
 	setCaption(caption);
 
-	QSplitter *center = new QSplitter(this);
+	QHBox *center = new QHBox(this);
 	center->setMargin(10);
-	center->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	center->setSpacing(10);
 
 	left = new QVBox(center);
-	left->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	left->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 	left->hide();
 
 	container = new QHBox(center);
@@ -258,7 +257,8 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));
 
 	sectionsListBox = new QListBox(left);
-	sectionsListBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	sectionsListBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+	sectionsListBox->setHScrollBarMode(QScrollView::AlwaysOff);
 	connect(sectionsListBox, SIGNAL(highlighted(const QString &)), this, SLOT(changeSection(const QString &)));
 }
 
