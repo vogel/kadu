@@ -1717,8 +1717,13 @@ void Kadu::setDefaultStatus()
 
 	int statusIndex;
 
+	bool offlineToInvisible = false;
+
 	if (startupStatus == "LastStatus")
+	{
 		statusIndex = config_file.readNumEntry("General", "LastStatusIndex", UserStatus::index(Offline, false));
+		offlineToInvisible = config_file.readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline");
+	}
 	else if (startupStatus == "Online")
 		statusIndex = 1;
 	else if (startupStatus == "Busy")
@@ -1728,8 +1733,7 @@ void Kadu::setDefaultStatus()
 	else if (startupStatus == "Offline")
 		statusIndex = 6;
 
-	if ((statusIndex == 6 || statusIndex == 7) &&
-			config_file.readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline"))
+	if ((statusIndex == 6 || statusIndex == 7) && offlineToInvisible)
 		status.setInvisible(description);
 	else
 		status.setIndex(statusIndex, description);
