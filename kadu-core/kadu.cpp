@@ -1242,12 +1242,6 @@ bool Kadu::close(bool quit)
 	else
 	{
 		Closing = true;
-		xml_config_file->makeBackup();
-		ModulesManager::closeModule();
-
-		Updates::closeModule();
-		delete defaultFontInfo;
-		delete defaultFont;
 
 		if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		{
@@ -1273,6 +1267,13 @@ bool Kadu::close(bool quit)
 				setOffline(gadu->currentStatus().description());
 			else
 				setOffline(config_file.readEntry("General", "DisconnectDescription"));
+
+		xml_config_file->makeBackup();
+		ModulesManager::closeModule();
+
+		Updates::closeModule();
+		delete defaultFontInfo;
+		delete defaultFont;
 
 		disconnect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString &, time_t)),
 				this, SLOT(messageReceived(Protocol *, UserListElements, const QString &, time_t)));

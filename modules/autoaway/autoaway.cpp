@@ -118,21 +118,14 @@ void AutoAwayStatusChanger::changeStatus(UserStatus &status)
 
 void AutoAwayStatusChanger::setChangeStatusTo(ChangeStatusTo newChangeStatusTo)
 {
-	if (changeStatusTo != newChangeStatusTo)
-	{
-		changeStatusTo = newChangeStatusTo;
-		emit statusChanged();
-	}
+	changeStatusTo = newChangeStatusTo;
+	emit statusChanged();
 }
 
 void AutoAwayStatusChanger::setChangeDescriptionTo(ChangeDescriptionTo newChangeDescriptionTo, const QString &newDescriptionAddon)
 {
-	if (changeDescriptionTo != newChangeDescriptionTo || descriptionAddon != newDescriptionAddon)
-	{
-		changeDescriptionTo = newChangeDescriptionTo;
-		descriptionAddon = newDescriptionAddon;
-		emit statusChanged();
-	}
+	changeDescriptionTo = newChangeDescriptionTo;
+	descriptionAddon = newDescriptionAddon;
 }
 
 AutoAway::AutoAway(QObject* parent, const char *name)
@@ -358,7 +351,7 @@ void AutoAway::descriptionChangeChanged(int index)
 QString AutoAway::parseDescription(const QString &parseDescription)
 {
 	if (parseAutoStatus)
-    		return (KaduParser::parse(parseDescription, kadu->myself(), true));
+		return (KaduParser::parse(parseDescription, kadu->myself(), true));
 	else
 		return parseDescription;
 }

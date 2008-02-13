@@ -23,6 +23,8 @@ class AutoAwayStatusChanger : public StatusChanger
 {
 	Q_OBJECT
 
+	friend class AutoAway;
+
 public:
 	enum ChangeStatusTo {
 		NoChangeStatus,
