@@ -1123,6 +1123,9 @@ void Kadu::slotHandleState(int command)
 
 void Kadu::changeStatus(UserStatus newStatus)
 {
+	if (gadu->nextStatus() == newStatus)
+		return;
+
 	NextStatus.setStatus(newStatus);
 	gadu->writeableStatus().setStatus(NextStatus);
 
