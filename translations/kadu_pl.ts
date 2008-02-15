@@ -2125,7 +2125,7 @@ Czy na pewno tego chcesz?</translation>
     <message>
         <location filename="" line="0"/>
         <source>Not loaded</source>
-        <translation>Nie załadowany</translation>
+        <translation>Niezaładowany</translation>
     </message>
     <message>
         <location filename="" line="0"/>
