@@ -105,6 +105,7 @@ void HintsConfigurationWidget::switchToEvent(const QString &event)
 	foregroundColor->setColor(currentProperties.foregroundColor);
 	backgroundColor->setColor(currentProperties.backgroundColor);
 	timeout->setValue(currentProperties.timeout);
+	syntax->setText(currentProperties.syntax);
 
 	preview->setFont(currentProperties.font);
 	preview->setPaletteForegroundColor(currentProperties.foregroundColor);
