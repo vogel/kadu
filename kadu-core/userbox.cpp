@@ -803,7 +803,7 @@ UserBox* UserBox::activeUserBox()
 
 	CONST_FOREACH(box, UserBoxes)
 	{
-		if ((*box)->isShown())
+		if ((*box)->isShown() && (*box)->isActiveWindow())
 		{
 			kdebugf2();
 			return *box;
