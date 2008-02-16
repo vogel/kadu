@@ -41,7 +41,7 @@ MessageNotification::MessageNotification(MessageType messageType, const UserList
 		syntax = tr("New message from <b>%1</b>");
 	}
 
-	setText(syntax.arg(ule.altNick()));
+	setText(syntax.arg(QStyleSheet::escape(ule.altNick())));
 	setDetails(message);
 }
 

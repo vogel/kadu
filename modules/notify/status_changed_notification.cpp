@@ -43,7 +43,7 @@ StatusChangedNotification::StatusChangedNotification(const QString &toStatus, co
 
 	setTitle(tr("Status changed"));
 	setText(narg(syntax,
-		ule.altNick(),
+		QStyleSheet::escape(ule.altNick()),
 		qApp->translate("@default", ule.status(protocolName).name().ascii()),
 		QStyleSheet::escape(ule.status(protocolName).description())
 	));
