@@ -17,11 +17,12 @@ class QResizeEvent;
 	@ingroup account_management
 	@{
 **/
-class Register : public QHBox {
+class Register : public QHBox 
+{
 	Q_OBJECT
 
 	public:
-		Register(QDialog* parent = 0, const char *name = 0);
+		Register(QDialog* parent = 0, const char *name = "register_user");
 		~Register();
 
 	private:

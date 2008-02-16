@@ -269,7 +269,7 @@ void SyntaxEditor::setSyntaxHint(const QString &syntaxHint)
 
 void SyntaxEditor::editClicked()
 {
-	SyntaxEditorWindow *editor = new SyntaxEditorWindow(syntaxList, syntaxListCombo->currentText(), category, syntaxHint);
+	SyntaxEditorWindow *editor = new SyntaxEditorWindow(syntaxList, syntaxListCombo->currentText(), category, syntaxHint, 0, "syntax_editor:" + category);
 	connect(editor, SIGNAL(updated(const QString &)), this, SLOT(setCurrentSyntax(const QString &)));
 
 	emit onSyntaxEditorWindowCreated(editor);

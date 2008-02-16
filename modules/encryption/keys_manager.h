@@ -20,7 +20,7 @@ class KeysManager : public QHBox
 {
 	Q_OBJECT
 	public:
-		KeysManager(QDialog *parent = 0, const char *name = 0);
+		KeysManager(QDialog *parent = 0, const char *name = "keys_manager");
 		~KeysManager();
 		void turnContactEncryptionText(QString id, bool on);
 		void refreshKeysList();

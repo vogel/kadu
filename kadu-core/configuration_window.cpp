@@ -227,7 +227,7 @@ void ConfigSection::iconThemeChanged()
 }
 
 ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &caption)
-	: Name(name), currentSection(0)
+	: QVBox(0, "configuration_window:" + name), Name(name), currentSection(0)
 {
 	setWFlags(getWFlags() | Qt::WDestructiveClose);
 	setCaption(caption);

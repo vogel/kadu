@@ -10,11 +10,12 @@ class QResizeEvent;
 /** @ingroup account_management
  * @{
  */
-class ChangePassword : public QHBox {
+class ChangePassword : public QHBox 
+{
 	Q_OBJECT
 
 	public:
-		ChangePassword(QDialog *parent = 0, const char *name = 0);
+		ChangePassword(QDialog *parent = 0, const char *name = "change_password");
 		~ChangePassword();
 
 	private:

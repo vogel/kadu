@@ -72,7 +72,7 @@ private slots:
 	void yesClicked();
 
 public:
-	SavePublicKey(UserListElement user, QString keyData, QWidget *parent = 0, const char *name = 0);
+	SavePublicKey(UserListElement user, QString keyData, QWidget *parent = 0, const char *name = "save_public_key");
 
 signals:
 	void keyAdded(UserListElement ule);

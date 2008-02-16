@@ -13,11 +13,12 @@ class QResizeEvent;
 /** @ingroup account_management
  * @{
  */
-class Unregister : public QHBox {
+class Unregister : public QHBox 
+{
 	Q_OBJECT
 
 	public:
-		Unregister(QDialog* parent = 0, const char *name = 0);
+		Unregister(QDialog* parent = 0, const char *name = "unregister_user");
 		~Unregister();
 
 	private:

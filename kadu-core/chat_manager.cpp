@@ -551,7 +551,7 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 	emit handleNewChatWidget(chat, handled);
 	if (!handled)
 	{
-		ChatWindow *window = new ChatWindow();
+		ChatWindow *window = new ChatWindow(0, QString("chat:%1").arg(userNames.join(",")).local8Bit().data());
 		chat->reparent(window, QPoint(), true);
 		window->setChatWidget(chat);
 		window->show();

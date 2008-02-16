@@ -57,7 +57,7 @@ private slots:
 	void currentItemChanged(const QString &newItem);
 
 public:
-	PathListEditWindow(const QStringList &pathList, QWidget *parent = 0, const char *name = 0);
+	PathListEditWindow(const QStringList &pathList, QWidget *parent = 0, const char *name = "path_list_edit_window");
 	~PathListEditWindow();
 
 public slots:

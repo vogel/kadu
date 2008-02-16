@@ -25,7 +25,7 @@ class RemindPassword : public QHBox
 		void keyPressEvent(QKeyEvent *);
 
 	public:
-		RemindPassword(QDialog *parent = 0, const char *name = 0);
+		RemindPassword(QDialog *parent = 0, const char *name = "remind_pasword");
 		~RemindPassword();
 
 	protected:

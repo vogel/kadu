@@ -70,7 +70,7 @@ class FileTransferWindow : public QFrame
 		void contentsChanged();
 
 	public:
-		FileTransferWindow(QWidget *parent = 0, const char *name = 0);
+		FileTransferWindow(QWidget *parent = 0, const char *name = "file_transfer_window");
 		virtual ~FileTransferWindow();
 
 	private slots:
