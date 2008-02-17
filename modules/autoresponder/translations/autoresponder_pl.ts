@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="pl">
+<defaultcodec></defaultcodec>
 <context>
     <name>@default</name>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="3"/>
         <source>Chat</source>
-        <translation>Rozmowa</translation>
+        <translation>Okno rozmowy</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="6"/>
