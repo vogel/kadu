@@ -210,8 +210,8 @@ void ConfigSection::removedConfigTab(const QString &configTabName)
 	configTabs.remove(configTabName);
 	if (!configTabs.count())
 	{
-		delete this;
 		configurationWindow->removedConfigSection(name);
+// 		delete this;
 	}
 }
 
@@ -369,7 +369,7 @@ QValueList<ConfigWidget *> ConfigurationWindow::processUiSectionFromDom(QDomNode
 		return result;
 	}
 
-	configSection(iconName, qApp->translate("@default", sectionName), true);
+	configSection(iconName, qApp->translate("@default", sectionName), append);
 
 	const QDomNodeList children = sectionElement.childNodes();
 	int length = children.length();
@@ -673,9 +673,14 @@ void ConfigurationWindow::changeSection(const QString &newSectionName)
 
 void ConfigurationWindow::removedConfigSection(const QString &sectionName)
 {
-	// TODO: finish it
-//	configSections.remove(sectionName);
-// 	sectionsListBox->remove(tr(sectionName));
+	configSections.remove(sectionName);
+
+	for (unsigned int i = 0; i < sectionsListBox->count(); i++)
+		if (sectionsListBox->item(i)->text() == tr(sectionName))
+		{
+			sectionsListBox->removeItem(i);
+			break;
+		}
 }
 
 void ConfigurationWindow::keyPressEvent(QKeyEvent *e)
