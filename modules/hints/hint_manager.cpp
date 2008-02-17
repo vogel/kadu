@@ -325,7 +325,7 @@ void HintManager::openChat(Hint *hint)
 	if (!hint->hasUsers())
 		return;
 
-	if (!config_file.readBoolEntry("Notify", "OpenChatOnEveryNotification"))
+	if (!config_file.readBoolEntry("Hints", "OpenChatOnEveryNotification"))
 		if ((hint->getNotification()->type() != "NewChat") && (hint->getNotification()->type() != "NewMessage"))
 			return;
 
