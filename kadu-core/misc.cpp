@@ -1122,6 +1122,7 @@ QString toPlainText(const QString &text)
 	QString copy=text;
 	copy.replace("\r\n", " ");
 	copy.replace("\n",   " ");
+	copy.replace("\r",   " ");
 	copy.remove(clean_regexp);
 	HtmlDocument::unescapeText(copy);
 	kdebugm(KDEBUG_INFO, "plain: %s\n", copy.local8Bit().data());

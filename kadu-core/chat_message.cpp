@@ -142,6 +142,7 @@ QString ChatMessage::convertCharacters(QString edit, const QColor &bgcolor, Emot
 	// zmieniamy windowsowe \r\n na unixowe \n
 	edit.replace("\r\n", "<br/>");
 	edit.replace("\n",   "<br/>");
+	edit.replace("\r",   "<br/>");
 
 	HtmlDocument doc;
 	doc.parseHtml(edit);

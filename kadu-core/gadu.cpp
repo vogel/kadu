@@ -1223,6 +1223,7 @@ QString GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 
 	kdebugmf(KDEBUG_INFO, "\n%s\n", (const char *)unicode2latin(myLastMessage));
 	myLastMessage.replace("\r\n", "\n");
+	myLastMessage.replace("\r", "\n");
 
 	QString msg = unicode2cp(msgtmp);
 
