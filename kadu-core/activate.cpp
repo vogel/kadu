@@ -23,6 +23,8 @@
 
 #include "activate.h"
 
+#include <X11/Xlib.h>
+
 static Atom net_active_window = 0;
 
 void create_netwm_atoms(Display *d)
