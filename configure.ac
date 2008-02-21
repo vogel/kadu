@@ -884,11 +884,11 @@ AC_SUBST(enable_dependency_tracking)
 #AM_CONDITIONAL(DEPENDENCY_TRACKING_DISABLED,test "$disable_dependency_tracking" = "yes")
 
 # final build support
-AC_ARG_ENABLE(final,[  --enable-final           speeds up one-time builds])
-if test -z "$enable_final"; then
-	enable_final=no
-fi
-AC_SUBST(enable_final)
+# AC_ARG_ENABLE(final,[  --enable-final           speeds up one-time builds])
+# if test -z "$enable_final"; then
+enable_final=no
+# fi
+# AC_SUBST(enable_final)
 
 # dist-info support
 AC_ARG_ENABLE(dist-info,[  --enable-dist-info=DIST enable distribution type information, default: sources])

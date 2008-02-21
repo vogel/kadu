@@ -722,7 +722,6 @@ enable_pheaders
 PHEADERS_ENABLED_TRUE
 PHEADERS_ENABLED_FALSE
 enable_dependency_tracking
-enable_final
 snapshot
 shared_modules
 static_modules
@@ -1334,7 +1333,6 @@ Optional Features:
   --disable-sig-handling  disable system signals handling
   --enable-pheaders       enable precompiled headers support
   --disable-dependency-tracking speeds up one-time builds
-  --enable-final           speeds up one-time builds
   --enable-dist-info=DIST enable distribution type information, default: sources
   --disable-autodownload  disable automatic download of modules/icons/emoticons
 
@@ -10408,15 +10406,11 @@ fi
 #AM_CONDITIONAL(DEPENDENCY_TRACKING_DISABLED,test "$disable_dependency_tracking" = "yes")
 
 # final build support
-# Check whether --enable-final was given.
-if test "${enable_final+set}" = set; then
-  enableval=$enable_final;
-fi
-
-if test -z "$enable_final"; then
-	enable_final=no
-fi
-
+# AC_ARG_ENABLE(final,[  --enable-final           speeds up one-time builds])
+# if test -z "$enable_final"; then
+enable_final=no
+# fi
+# AC_SUBST(enable_final)
 
 # dist-info support
 # Check whether --enable-dist-info was given.
@@ -11932,7 +11926,6 @@ enable_pheaders!$enable_pheaders$ac_delim
 PHEADERS_ENABLED_TRUE!$PHEADERS_ENABLED_TRUE$ac_delim
 PHEADERS_ENABLED_FALSE!$PHEADERS_ENABLED_FALSE$ac_delim
 enable_dependency_tracking!$enable_dependency_tracking$ac_delim
-enable_final!$enable_final$ac_delim
 snapshot!$snapshot$ac_delim
 shared_modules!$shared_modules$ac_delim
 static_modules!$static_modules$ac_delim
@@ -11946,7 +11939,7 @@ subdirs!$subdirs$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 21; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 20; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
