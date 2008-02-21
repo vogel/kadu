@@ -182,6 +182,9 @@ bool KaduListBoxPixmap::isBold() const
 
 void KaduListBoxPixmap::paint(QPainter *painter)
 {
+	if (!descriptionFontMetrics)
+		return;
+
 //	kdebugf();
 	QColor origColor = painter->pen().color();
 	QString description;
@@ -302,6 +305,9 @@ int KaduListBoxPixmap::width(const QListBox* lb) const
 //#include <sys/time.h>
 void KaduListBoxPixmap::calculateSize(const QString &text, int width, QStringList &out, int &height) const
 {
+	if (!descriptionFontMetrics)
+		return;
+
 //	kdebugf();
 	if (text == buf_text && width == buf_width)	// we already computed it
 	{
@@ -323,9 +329,6 @@ void KaduListBoxPixmap::calculateSize(const QString &text, int width, QStringLis
 		height=0;
 */
 	QStringList tmpout = QStringList::split('\n', text, true);
-
-	if (!descriptionFontMetrics) // TODO: workaround
-		return;
 
 	int wsize = descriptionFontMetrics->width('W'); //'w' is the widest letter
 	int initialLength = width / wsize; // try to guess width
