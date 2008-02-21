@@ -15,6 +15,7 @@
 #include <qtimer.h>
 #include <qwindowdefs.h>
 
+#include "activate.h"
 #include "config_file.h"
 #include "docking.h"
 #include "debug.h"
@@ -23,8 +24,6 @@
 #include "pending_msgs.h"
 #include "status.h"
 #include "misc.h"
-
-#include "activate.h"
 
 /**
  * @ingroup docking

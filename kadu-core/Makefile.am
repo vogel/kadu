@@ -5,6 +5,7 @@ LOGFILE = ../logfile.txt
 kadu_SOURCES = \
 about.cpp \
 action.cpp \
+activate.cpp \
 chat_manager.cpp \
 chat_message.cpp \
 chat_messages_view.cpp \
@@ -71,6 +72,7 @@ kadudir = $(includedir)/kadu
 kadu_HEADERS = \
 about.h \
 action.h \
+activate.h \
 chat_manager.h \
 chat_message.h \
 chat_messages_view.h \
@@ -186,6 +188,7 @@ version.cpp
 am_kadu_OBJECTS = \
 obj/about.$(OBJEXT) \
 obj/action.$(OBJEXT) \
+obj/activate.$(OBJEXT) \
 obj/chat_manager.$(OBJEXT) \
 obj/chat_message.$(OBJEXT) \
 obj/chat_messages_view.$(OBJEXT) \
@@ -305,6 +308,7 @@ include $(DEPS)/about.d
 include $(DEPS)/about_moc.d
 include $(DEPS)/action.d
 include $(DEPS)/action_moc.d
+include $(DEPS)/activate.d
 include $(DEPS)/chat_manager.d
 include $(DEPS)/chat_manager_moc.d
 include $(DEPS)/chat_message.d

@@ -56,6 +56,7 @@ QString HistoryManager::text2csv(const QString &text)
 	csv.replace("\"", "\\\"");
 	csv.replace("\r\n", "\\n");
 	csv.replace("\n", "\\n");
+	csv.replace("\r", "\\n");
 	if (csv != text || text.find(',', 0) != -1)
 		csv = QString("\"%1\"").arg(csv);
 	return csv;
