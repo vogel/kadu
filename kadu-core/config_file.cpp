@@ -9,6 +9,7 @@
 
 #include <qapplication.h>
 #include <qfile.h>
+#include <qmutex.h>
 
 #include "debug.h"
 #include "config_file.h"
@@ -19,6 +20,8 @@
 //strerror
 #include <string.h>
 #include <errno.h>
+
+QMutex GlobalMutex;
 
 XmlConfigFile::XmlConfigFile() : DomDocument()
 {
@@ -658,6 +661,8 @@ void ConfigFile::sync() const
 
 bool ConfigFile::changeEntry(const QString &group, const QString &name, const QString &value)
 {
+	GlobalMutex.lock();
+
 //	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::changeEntry(%s, %s, %s) %p\n", group.local8Bit().data(), name.local8Bit().data(), value.local8Bit().data(), this);
 	QDomElement root_elem = xml_config_file->rootElement();
 	QDomElement deprecated_elem = xml_config_file->accessElement(root_elem, "Deprecated");
@@ -668,41 +673,52 @@ bool ConfigFile::changeEntry(const QString &group, const QString &name, const QS
 	QDomElement entry_elem = xml_config_file->accessElementByProperty(
 		group_elem, "Entry", "name", name);
 	entry_elem.setAttribute("value", value);
-	//
+
+	GlobalMutex.unlock();
+
 	return true;
 }
 
 QString ConfigFile::getEntry(const QString &group, const QString &name, bool *ok) const
 {
+	GlobalMutex.lock();
+
+	bool resOk;
+	QString result = QString::null;
+
 //	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::getEntry(%s, %s) %p\n", group.local8Bit().data(), name.local8Bit().data(), this);
-	QDomElement root_elem = xml_config_file->rootElement();
-	QDomElement deprecated_elem = xml_config_file->findElement(root_elem, "Deprecated");
-	if (!deprecated_elem.isNull())
 	{
-		QDomElement config_file_elem = xml_config_file->findElementByProperty(
-			deprecated_elem, "ConfigFile", "name", filename.section("/", -1));
-		if (!config_file_elem.isNull())
+		QDomElement root_elem = xml_config_file->rootElement();
+		QDomElement deprecated_elem = xml_config_file->findElement(root_elem, "Deprecated");
+		if (!deprecated_elem.isNull())
 		{
-			QDomElement group_elem = xml_config_file->findElementByProperty(
-				config_file_elem, "Group", "name", group);
-			if (!group_elem.isNull())
+			QDomElement config_file_elem = xml_config_file->findElementByProperty(
+				deprecated_elem, "ConfigFile", "name", filename.section("/", -1));
+			if (!config_file_elem.isNull())
 			{
-				QDomElement entry_elem =
-					xml_config_file->findElementByProperty(
-						group_elem, "Entry", "name", name);
-				if (!entry_elem.isNull())
+				QDomElement group_elem = xml_config_file->findElementByProperty(
+					config_file_elem, "Group", "name", group);
+				if (!group_elem.isNull())
 				{
-					if (ok)
-						*ok = true;
-					QString a = entry_elem.attribute("value");
-					return a;
+					QDomElement entry_elem =
+						xml_config_file->findElementByProperty(
+							group_elem, "Entry", "name", name);
+					if (!entry_elem.isNull())
+					{
+						resOk = true;
+						result = entry_elem.attribute("value");
+					}
 				}
 			}
 		}
 	}
+
+	resOk = false;
 	if (ok)
-		*ok = false;
-	return QString::null;
+		*ok = resOk;
+
+	GlobalMutex.unlock();
+	return result;
 }
 
 void ConfigFile::writeEntry(const QString &group,const QString &name, const QString &value)
@@ -907,6 +923,8 @@ QPoint ConfigFile::readPointEntry(const QString &group,const QString &name, cons
 
 void ConfigFile::removeVariable(const QString &group, const QString &name)
 {
+	GlobalMutex.lock();
+
 	QDomElement root_elem = xml_config_file->rootElement();
 	QDomElement deprecated_elem = xml_config_file->accessElement(root_elem, "Deprecated");
 	QDomElement config_file_elem = xml_config_file->accessElementByProperty(
@@ -916,6 +934,8 @@ void ConfigFile::removeVariable(const QString &group, const QString &name)
 	QDomElement entry_elem = xml_config_file->accessElementByProperty(
 		group_elem, "Entry", "name", name);
 	group_elem.removeChild(entry_elem);
+
+	GlobalMutex.unlock();
 }
 
 void ConfigFile::addVariable(const QString &group, const QString &name, const QString &defvalue)
