@@ -149,7 +149,7 @@ class ChatManager : public QObject, ConfigurationAwareObject
 			\param time time of pending message that created a chat or 0 if not applicable
 			\return zwracany jest numer otwartego okna
 		**/
-		int openChatWidget(Protocol *initialProtocol, const UserListElements &users);
+		int openChatWidget(Protocol *initialProtocol, const UserListElements &users, bool forceActivate = false);
 
 		/**
 			\fn void openPendingMsgs(UserListElements users)
@@ -157,14 +157,14 @@ class ChatManager : public QObject, ConfigurationAwareObject
 			z u¿ytkownikami "users"
 			\param users lista u¿ytkowników identyfikuj±cych okno
 		**/
-		void openPendingMsgs(UserListElements users);
+		void openPendingMsgs(UserListElements users, bool forceActivate = false);
 
 		/**
 			\fn void openPendingMsgs()
 			Funkcja wpisuje wszystkie zakolejkowane wiadomo¶ci
 			do odpowiednich okien
 		**/
-		void openPendingMsgs();
+		void openPendingMsgs(bool forceActivate = false);
 
 		/**
 			\fn void deletePendingMsgs(UserListElements users)

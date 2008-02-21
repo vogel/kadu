@@ -27,6 +27,8 @@
 #include "toolbar.h"
 #include "userbox.h"
 
+#include "activate.h"
+
 ChatManager::ChatManager(QObject* parent, const char* name) : QObject(parent, name),
 	ChatWidgets(), ClosedChatUsers(), addons(), refreshTitlesTimer()
 {
@@ -502,7 +504,7 @@ ChatWidget* ChatManager::findChatWidget(UserListElements users) const
 	return NULL;
 }
 
-int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElements &users)
+int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElements &users, bool forceActivate)
 {
 	kdebugf();
 
@@ -532,6 +534,8 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 			if (qstrcmp(qVersion(), "3.3") >= 0) // dodatkowe zabezpieczenie przed idiotami u¿ywaj±cymi opcji --force przy instalacji pakietów
 				win->setWindowState(win->windowState() & ~WindowMinimized | WindowActive);
 #endif
+			if (forceActivate)
+				activateWindow(win->winId());
 			win->raise();
 			(*chat)->makeActive();
 			emit chatWidgetOpen(*chat);
@@ -546,6 +550,14 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 	userNames.sort();
 
 	ChatWidget *chat = new ChatWidget(initialProtocol, users);
+
+	if (forceActivate)
+	{
+		QWidget *win = chat;
+		while (win->parent())
+			win = static_cast<QWidget *>(win->parent());
+		activateWindow(win->winId());
+	}
 
 	bool handled = false;
 	emit handleNewChatWidget(chat, handled);
@@ -598,7 +610,7 @@ ChatMessage *convertPendingToMessage(PendingMsgs::Element elem)
 	return message;
 }
 
-void ChatManager::openPendingMsgs(UserListElements users)
+void ChatManager::openPendingMsgs(UserListElements users, bool forceActivate)
 {
 	kdebugf();
 
@@ -621,23 +633,23 @@ void ChatManager::openPendingMsgs(UserListElements users)
 	if (messages.size())
 	{
 		// TODO: Lame API
-		int i = openChatWidget(gadu, users);
+		int i = openChatWidget(gadu, users, forceActivate);
 		if (ChatWidgets[i]->countMessages() == 0)
 			ChatWidgets[i]->appendMessages(messages);
 		UserBox::refreshAllLater();
 	}
 	else
-		openChatWidget(gadu, users);
+		openChatWidget(gadu, users, forceActivate);
 
 	kdebugf2();
 }
 
-void ChatManager::openPendingMsgs()
+void ChatManager::openPendingMsgs(bool forceActivate)
 {
 	kdebugf();
 
 	if (pending.count())
-		openPendingMsgs(pending[0].users);
+		openPendingMsgs(pending[0].users, forceActivate);
 
 	kdebugf2();
 }

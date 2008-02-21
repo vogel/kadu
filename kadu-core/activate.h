@@ -21,6 +21,9 @@
   DEALINGS IN THE SOFTWARE.
 */
 
+#ifndef ACTIVATE_H
+#define ACTIVATE_H
+
 #include <qwindowdefs.h>
 
 #include <X11/Xlib.h>
@@ -29,3 +32,4 @@ void create_netwm_atoms(Display *d);
 
 void activateWindow(WId id);
 
+#endif // ACTIVATE_H

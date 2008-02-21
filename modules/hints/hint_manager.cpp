@@ -331,7 +331,7 @@ void HintManager::openChat(Hint *hint)
 
 	const UserListElements & senders = hint->getUsers();
 	if (!senders.isEmpty())
-		chat_manager->openPendingMsgs(senders);
+		chat_manager->openPendingMsgs(senders, true);
 	deleteHintAndUpdate(hint);
 
 	kdebugf2();
