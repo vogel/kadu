@@ -1,4 +1,4 @@
-/* $Id: libgadu.c,v 1.163 2007-09-27 15:49:01 wojtekka Exp $ */
+/* $Id: libgadu.c 523 2008-02-04 23:43:25Z wojtekka $ */
 
 /*
  *  (C) Copyright 2001-2006 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -67,7 +67,7 @@ int gg_debug_level = 0;
 /**
  * Funkcja, do której są przekazywane informacje odpluskwiające. Jeśli zarówno
  * ten \c gg_debug_handler, jak i \c gg_debug_handler_session, są równe
- * \c NULL, informacje są wysyłane do standardowego wyjścia błędu.
+ * \c NULL, informacje są wysyłane do standardowego wyjścia błędu (\c stderr).
  *
  * \param level Poziom rejestracji
  * \param format Format wiadomości (zgodny z \c printf)
@@ -119,11 +119,6 @@ unsigned long gg_local_ip = 0;
 /**
  * Flaga włączenia połączeń przez serwer pośredniczący.
  *
- * \bug Serwer pośredniczący jest wykorzystywany tylko dla połączeń z serwerem
- * Gadu-Gadu i usług HTTP, nie dla połączeń bezpośrednich.
- *
- * \bug Ustawienia serwera pośredniczącego są globalne dla wszystkich połączeń.
- *
  * \ingroup proxy
  */
 int gg_proxy_enabled = 0;
@@ -170,7 +165,7 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c,v 1.163 2007-09-27 15:49:01 wojtekka Exp $";
+= "$Id: libgadu.c 523 2008-02-04 23:43:25Z wojtekka $";
 #endif
 
 #endif /* DOXYGEN */
@@ -413,7 +408,7 @@ static void *gg_resolve_pthread_thread(void *arg)
 /**
  * \internal Rozwiązuje nazwę serwera w osobnym wątku.
  *
- * Funkcja działa analogicznie do \c gg_resolve, z tą różnicą, że działa
+ * Funkcja działa analogicznie do \c gg_resolve(), z tą różnicą, że działa
  * na wątkach, nie procesach. Jest używana wyłącznie gdy podczas kompilacji
  * włączono odpowiednią opcję.
  *
@@ -855,6 +850,8 @@ int gg_send_packet(struct gg_session *sess, int type, ...)
  * Pole \c callback struktury \c gg_session zawiera wskaźnik do tej funkcji.
  * Wywołuje ona \c gg_watch_fd i zachowuje wynik w polu \c event.
  *
+ * \note Korzystanie z tej funkcjonalności nie jest już zalecane.
+ *
  * \param sess Struktura sesji
  *
  * \return 0 jeśli się powiodło, -1 w przypadku błędu
@@ -874,7 +871,7 @@ static int gg_session_callback(struct gg_session *sess)
  *
  * Przy połączeniu synchronicznym funkcja zakończy działanie po nawiązaniu
  * połączenia lub gdy wystąpi błąd. Po udanym połączeniu należy wywoływać
- * funkcję \c gg_watch_fd, która odbiera informacje od serwera i zwraca
+ * funkcję \c gg_watch_fd(), która odbiera informacje od serwera i zwraca
  * informacje o zdarzeniach.
  *
  * Przy połączeniu asynchronicznym funkcja rozpocznie procedurę połączenia
@@ -884,12 +881,12 @@ static int gg_session_callback(struct gg_session *sess)
  * jest maską bitową mówiącą, czy biblioteka chce być informowana o możliwości
  * odczytu danych (\c GG_CHECK_READ) czy zapisu danych (\c GG_CHECK_WRITE).
  * Po zaobserwowaniu zmian na deskryptorze należy wywołać funkcję
- * \c gg_watch_fd. Podczas korzystania z połączeń asynchronicznych, w trakcie
+ * \c gg_watch_fd(). Podczas korzystania z połączeń asynchronicznych, w trakcie
  * połączenia może zostać stworzony dodatkowy proces rozwiązujący nazwę
  * serwera -- z tego powodu program musi poprawnie obsłużyć sygnał SIGCHLD.
  *
- * Po nawiązaniu połączenia z serwerem należy wysłać listę kontaktów za pomocą
- * funkcji \c gg_notify lub \c gg_notify_ex.
+ * \note Po nawiązaniu połączenia z serwerem należy wysłać listę kontaktów
+ * za pomocą funkcji \c gg_notify() lub \c gg_notify_ex().
  *
  * \param p Struktura opisująca parametry połączenia. Wymagane pola: uin,
  *          password, async.
@@ -1023,7 +1020,7 @@ struct gg_session *gg_login(const struct gg_login_params *p)
 	if (!p->async) {
 		struct in_addr a;
 
-		if (!p->server_addr || !p->server_port) {
+		if (!sess->server_addr) {
 			if ((a.s_addr = inet_addr(hostname)) == INADDR_NONE) {
 				struct in_addr *hn;
 
@@ -1036,8 +1033,8 @@ struct gg_session *gg_login(const struct gg_login_params *p)
 				}
 			}
 		} else {
-			a.s_addr = p->server_addr;
-			port = p->server_port;
+			a.s_addr = sess->server_addr;
+			port = sess->port;
 		}
 
 		sess->hub_addr = a.s_addr;
@@ -1047,10 +1044,23 @@ struct gg_session *gg_login(const struct gg_login_params *p)
 
 		if ((sess->fd = gg_connect(&a, port, 0)) == -1) {
 			gg_debug(GG_DEBUG_MISC, "// gg_login() connection failed (errno=%d, %s)\n", errno, strerror(errno));
-			goto fail;
+
+			/* nie wyszło? próbujemy portu 443. */
+			if (sess->server_addr) {
+				sess->port = GG_HTTPS_PORT;
+
+				if ((sess->fd = gg_connect(&a, GG_HTTPS_PORT, 0)) == -1) {
+					/* ostatnia deska ratunku zawiodła?
+					 * w takim razie zwijamy manatki. */
+					gg_debug_session(sess, GG_DEBUG_MISC, "// gg_login() connection failed (errno=%d, %s)\n", errno, strerror(errno));
+					goto fail;
+				}
+			} else {
+				goto fail;
+			}
 		}
 
-		if (p->server_addr && p->server_port)
+		if (sess->server_addr)
 			sess->state = GG_STATE_CONNECTING_GG;
 		else
 			sess->state = GG_STATE_CONNECTING_HUB;
@@ -1092,6 +1102,7 @@ struct gg_session *gg_login(const struct gg_login_params *p)
 		}
 		sess->state = GG_STATE_CONNECTING_GG;
 		sess->check = GG_CHECK_WRITE;
+		sess->soft_timeout = 1;
 	}
 
 	return sess;
@@ -1142,9 +1153,13 @@ int gg_ping(struct gg_session *sess)
  * Kończy połączenie z serwerem.
  *
  * Funkcja nie zwalnia zasobów, więc po jej wywołaniu należy użyć
- * \c gg_free_session. Jeśli chce się ustawić opis niedostępności, należy
- * wcześniej wywołać funkcję \c gg_change_status_descr lub
- * \c gg_change_status_descr_time.
+ * \c gg_free_session(). Jeśli chce się ustawić opis niedostępności, należy
+ * wcześniej wywołać funkcję \c gg_change_status_descr() lub
+ * \c gg_change_status_descr_time().
+ *
+ * \note Jeśli w buforze nadawczym połączenia z serwerem znajdują się jeszcze
+ * dane (np. z powodu strat pakietów na łączu), prawdopodobnie zostaną one
+ * utracone przy zrywaniu połączenia.
  *
  * \param sess Struktura sesji
  *
@@ -1334,7 +1349,7 @@ int gg_change_status_descr(struct gg_session *sess, int status, const char *desc
  * \param sess Struktura sesji
  * \param status Nowy status użytkownika
  * \param descr Opis statusu użytkownika
- * \param time Czas powrotu w formacie uniksowego znacznika czasu
+ * \param time Czas powrotu w postaci uniksowego znacznika czasu
  *
  * \return 0 jeśli się powiodło, -1 w przypadku błędu
  *
@@ -1837,7 +1852,7 @@ int gg_notify_ex(struct gg_session *sess, uin_t *userlist, char *types, int coun
 /**
  * Wysyła do serwera listę kontaktów.
  *
- * Funkcja jest odpowiednikiem \c gg_notify_ex, gdzie wszystkie kontakty
+ * Funkcja jest odpowiednikiem \c gg_notify_ex(), gdzie wszystkie kontakty
  * są rodzaju \c GG_USER_NORMAL.
  *
  * \param sess Struktura sesji
@@ -1943,8 +1958,8 @@ int gg_add_notify_ex(struct gg_session *sess, uin_t uin, char type)
 /**
  * Dodaje kontakt.
  *
- * Funkcja jest odpowiednikiem \c gg_add_notify_ex, gdzie wszystkie rodzaj
- * kontaktu to \c GG_USER_NORMAL.
+ * Funkcja jest odpowiednikiem \c gg_add_notify_ex(), gdzie rodzaj wszystkich
+ * kontaktów to \c GG_USER_NORMAL.
  *
  * \param sess Struktura sesji
  * \param uin Numer kontaktu
@@ -1996,8 +2011,8 @@ int gg_remove_notify_ex(struct gg_session *sess, uin_t uin, char type)
 /**
  * Usuwa kontakt.
  *
- * Funkcja jest odpowiednikiem \c gg_add_notify_ex, gdzie wszystkie rodzaj
- * kontaktu to \c GG_USER_NORMAL.
+ * Funkcja jest odpowiednikiem \c gg_add_notify_ex(), gdzie rodzaj wszystkich
+ * kontaktów to \c GG_USER_NORMAL.
  *
  * \param sess Struktura sesji
  * \param uin Numer kontaktu
@@ -2015,7 +2030,7 @@ int gg_remove_notify(struct gg_session *sess, uin_t uin)
  * Wysyła do serwera zapytanie dotyczące listy kontaktów.
  *
  * Funkcja służy do importu lub eksportu listy kontaktów do serwera.
- * W odróżnieniu od funkcji \c gg_notify, ta lista kontaktów jest przez
+ * W odróżnieniu od funkcji \c gg_notify(), ta lista kontaktów jest przez
  * serwer jedynie przechowywana i nie ma wpływu na połączenie. Format
  * listy kontaktów jest ignorowany przez serwer, ale ze względu na
  * kompatybilność z innymi klientami, należy przechowywać dane w tym samym

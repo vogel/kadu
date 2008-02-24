@@ -1,4 +1,4 @@
-/* $Id: obsolete.c,v 1.8 2007-07-20 23:00:50 wojtekka Exp $ */
+/* $Id: obsolete.c 482 2007-07-20 23:00:50Z wojtekka $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>

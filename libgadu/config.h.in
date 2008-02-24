@@ -39,6 +39,9 @@
 /* Defined if this machine has __va_copy(). */
 #undef GG_CONFIG_HAVE___VA_COPY
 
+/* Library version */
+#undef GG_LIBGADU_VERSION
+
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
 

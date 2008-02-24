@@ -1,7 +1,7 @@
-/* $Id: dcc.c,v 1.78 2007-07-20 23:00:49 wojtekka Exp $ */
+/* $Id: dcc.c 513 2008-01-15 00:09:06Z wojtekka $ */
 
 /*
- *  (C) Copyright 2001-2006 Wojtek Kaniewski <wojtekka@irc.pl>
+ *  (C) Copyright 2001-2008 Wojtek Kaniewski <wojtekka@irc.pl>
  *                          Tomasz Chiliński <chilek@chilan.com>
  *                          Adam Wysocki <gophi@ekg.chmurka.net>
  *
@@ -84,7 +84,7 @@ static void gg_dcc_debug_data(const char *prefix, int fd, const void *buf, unsig
  * \param sess Struktura sesji
  * \param uin Numer odbiorcy
  *
- * \return Patrz \c gg_send_message_ctcp
+ * \return Patrz \c gg_send_message_ctcp()
  *
  * \ingroup dcc6
  */
@@ -125,7 +125,7 @@ static void gg_dcc_fill_filetime(uint32_t ut, uint32_t *ft)
 /**
  * Wypełnia pola struktury \c gg_dcc niezbędne do wysłania pliku.
  *
- * \note Większą funkcjonalność zapewnia funkcja \c gg_dcc_fill_file_info2.
+ * \note Większą funkcjonalność zapewnia funkcja \c gg_dcc_fill_file_info2().
  *
  * \param d Struktura połączenia
  * \param filename Nazwa pliku
@@ -370,7 +370,9 @@ void gg_dcc_set_type(struct gg_dcc *d, int type)
  * \internal Funkcja zwrotna połączenia bezpośredniego.
  *
  * Pole \c callback struktury \c gg_dcc zawiera wskaźnik do tej funkcji.
- * Wywołuje ona \c gg_watch_fd i zachowuje wynik w polu \c event.
+ * Wywołuje ona \c gg_watch_fd() i zachowuje wynik w polu \c event.
+ *
+ * \note Funkcjonalność funkcjo zwrotnej nie jest już wspierana.
  *
  * \param d Struktura połączenia
  *
@@ -1136,16 +1138,17 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 
 				gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() offset=%d, size=%d\n", h->offset, h->file_info.size);
 
-				if (h->offset >= h->file_info.size) {
-					e->type = GG_EVENT_DCC_DONE;
-					return e;
-				}
-
 				/* koniec pliku? */
 				if (h->file_info.size == 0) {
 					gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() read() reached eof on empty file\n");
 					e->type = GG_EVENT_DCC_DONE;
 
+					return e;
+				}
+
+				if (h->offset >= h->file_info.size) {
+					gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() offset >= size, finished\n");
+					e->type = GG_EVENT_DCC_DONE;
 					return e;
 				}
 
@@ -1225,13 +1228,14 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
 			case GG_STATE_GETTING_FILE:
 				gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() GG_STATE_GETTING_FILE\n");
 
+				if ((utmp = h->chunk_size - h->chunk_offset) > sizeof(buf))
+					utmp = sizeof(buf);
+
 				if (h->offset >= h->file_info.size) {
+					gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() offset >= size, finished\n");
 					e->type = GG_EVENT_DCC_DONE;
 					return e;
 				}
-
-				if ((utmp = h->chunk_size - h->chunk_offset) > sizeof(buf))
-					utmp = sizeof(buf);
 
 				size = read(h->fd, buf, utmp);
 

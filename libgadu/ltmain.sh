@@ -2,7 +2,7 @@
 # NOTE: Changing this file will not affect anything until you rerun configure.
 #
 # Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2004, 2005, 2006,
-# 2007  Free Software Foundation, Inc.
+# 2007, 2008  Free Software Foundation, Inc.
 # Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 #
 # This program is free software; you can redistribute it and/or modify
@@ -43,8 +43,8 @@ EXIT_FAILURE=1
 
 PROGRAM=ltmain.sh
 PACKAGE=libtool
-VERSION=1.5.24
-TIMESTAMP=" (1.1220.2.456 2007/06/24 02:25:32)"
+VERSION="1.5.26 Debian 1.5.26-1ubuntu1"
+TIMESTAMP=" (1.1220.2.493 2008/02/01 16:58:18)"
 
 # Be Bourne compatible (taken from Autoconf:_AS_BOURNE_COMPATIBLE).
 if test -n "${ZSH_VERSION+set}" && (emulate sh) >/dev/null 2>&1; then
@@ -113,14 +113,20 @@ esac
 # These must not be set unconditionally because not all systems understand
 # e.g. LANG=C (notably SCO).
 # We save the old values to restore during execute mode.
-for lt_var in LANG LC_ALL LC_CTYPE LC_COLLATE LC_MESSAGES
+lt_env=
+for lt_var in LANG LANGUAGE LC_ALL LC_CTYPE LC_COLLATE LC_MESSAGES
 do
   eval "if test \"\${$lt_var+set}\" = set; then
 	  save_$lt_var=\$$lt_var
+	  lt_env=\"$lt_var=\$$lt_var \$lt_env\"
 	  $lt_var=C
 	  export $lt_var
 	fi"
 done
+
+if test -n "$lt_env"; then
+  lt_env="env $lt_env"
+fi
 
 # Make sure IFS has a sensible default
 lt_nl='
@@ -275,21 +281,7 @@ func_infer_tag ()
 	    esac
 	    CC_quoted="$CC_quoted $arg"
 	  done
-	    # user sometimes does CC=<HOST>-gcc so we need to match that to 'gcc'
-	    trimedcc=`echo ${CC} | $SED -e "s/${host}-//g"`
-	    # and sometimes libtool has CC=<HOST>-gcc but user does CC=gcc
-	    extendcc=${host}-${CC}
-	    # and sometimes libtool has CC=<OLDHOST>-gcc but user has CC=<NEWHOST>-gcc  
-	    # (Gentoo-specific hack because we always export $CHOST)
-	    mungedcc=${CHOST-${host}}-${trimedcc}
 	    case "$@ " in
-	      "cc "* | " cc "* | "${host}-cc "* | " ${host}-cc "*|\
-	      "gcc "* | " gcc "* | "${host}-gcc "* | " ${host}-gcc "*)
-	      tagname=CC
-	      break ;;
-	      "$trimedcc "* | " $trimedcc "* | "`$echo $trimedcc` "* | " `$echo $trimedcc` "*|\
-	      "$extendcc "* | " $extendcc "* | "`$echo $extendcc` "* | " `$echo $extendcc` "*|\
-	      "$mungedcc "* | " $mungedcc "* | "`$echo $mungedcc` "* | " `$echo $mungedcc` "*|\
 	      " $CC "* | "$CC "* | " `$echo $CC` "* | "`$echo $CC` "* | " $CC_quoted"* | "$CC_quoted "* | " `$echo $CC_quoted` "* | "`$echo $CC_quoted` "*)
 	      # The compiler in the base compile command matches
 	      # the one in the tagged configuration.
@@ -499,7 +491,7 @@ do
     echo "\
 $PROGRAM (GNU $PACKAGE) $VERSION$TIMESTAMP
 
-Copyright (C) 2007  Free Software Foundation, Inc.
+Copyright (C) 2008  Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
     exit $?
@@ -802,6 +794,7 @@ if test -z "$show_help"; then
     *.for) xform=for ;;
     *.java) xform=java ;;
     *.obj) xform=obj ;;
+    *.sx) xform=sx ;;
     esac
 
     libobj=`$echo "X$libobj" | $Xsed -e "s/\.$xform$/.lo/"`
@@ -895,7 +888,7 @@ if test -z "$show_help"; then
     # Lock this critical section if it is needed
     # We use this script file to make the link, it avoids creating a new file
     if test "$need_locks" = yes; then
-      until $run ln "$srcfile" "$lockfile" 2>/dev/null; do
+      until $run ln "$progpath" "$lockfile" 2>/dev/null; do
 	$show "Waiting for $lockfile to be removed"
 	sleep 2
       done
@@ -970,7 +963,7 @@ EOF
       $run $rm "$lobj" "$output_obj"
 
       $show "$command"
-      if $run eval "$command"; then :
+      if $run eval $lt_env "$command"; then :
       else
 	test -n "$output_obj" && $run $rm $removelist
 	exit $EXIT_FAILURE
@@ -1042,7 +1035,7 @@ EOF
       command="$command$suppress_output"
       $run $rm "$obj" "$output_obj"
       $show "$command"
-      if $run eval "$command"; then :
+      if $run eval $lt_env "$command"; then :
       else
 	$run $rm $removelist
 	exit $EXIT_FAILURE
@@ -1175,6 +1168,7 @@ EOF
     thread_safe=no
     vinfo=
     vinfo_number=no
+    single_module="${wl}-single_module"
 
     func_infer_tag $base_compile
 
@@ -1660,6 +1654,11 @@ EOF
 	continue
 	;;
 
+      -multi_module)
+	single_module="${wl}-multi_module"
+	continue
+	;;
+
       -module)
 	module=yes
 	continue
@@ -2136,7 +2135,10 @@ EOF
 	case $pass in
 	dlopen) libs="$dlfiles" ;;
 	dlpreopen) libs="$dlprefiles" ;;
-	link) libs="$deplibs %DEPLIBS% $dependency_libs" ;;
+	link)
+	  libs="$deplibs %DEPLIBS%"
+	  test "X$link_all_deplibs" != Xno && libs="$libs $dependency_libs"
+	  ;;
 	esac
       fi
       if test "$pass" = dlopen; then
@@ -2163,7 +2165,12 @@ EOF
 	    continue
 	  fi
 	  name=`$echo "X$deplib" | $Xsed -e 's/^-l//'`
-	  for searchdir in $newlib_search_path $lib_search_path $sys_lib_search_path $shlib_search_path; do
+	  if test "$linkmode" = lib; then
+	    searchdirs="$newlib_search_path $lib_search_path $compiler_lib_search_dirs $sys_lib_search_path $shlib_search_path"
+	  else
+	    searchdirs="$newlib_search_path $lib_search_path $sys_lib_search_path $shlib_search_path"
+	  fi
+	  for searchdir in $searchdirs; do
 	    for search_ext in .la $std_shrext .so .a; do
 	      # Search the libtool library
 	      lib="$searchdir/lib${name}${search_ext}"
@@ -2959,12 +2966,18 @@ EOF
 		  # we do not want to link against static libs,
 		  # but need to link against shared
 		  eval deplibrary_names=`${SED} -n -e 's/^library_names=\(.*\)$/\1/p' $deplib`
+		  eval deplibdir=`${SED} -n -e 's/^libdir=\(.*\)$/\1/p' $deplib`
 		  if test -n "$deplibrary_names" ; then
 		    for tmp in $deplibrary_names ; do
 		      depdepl=$tmp
 		    done
-		    if test -f "$path/$depdepl" ; then
+		    if test -f "$deplibdir/$depdepl" ; then
+		      depdepl="$deplibdir/$depdepl"
+	      	    elif test -f "$path/$depdepl" ; then
 		      depdepl="$path/$depdepl"
+		    else
+		      # Can't find it, oh well...
+		      depdepl=
 		    fi
 		    # do not add paths which are already there
 		    case " $newlib_search_path " in
@@ -3112,9 +3125,10 @@ EOF
 
     case $linkmode in
     oldlib)
-      if test -n "$deplibs"; then
-	$echo "$modename: warning: \`-l' and \`-L' are ignored for archives" 1>&2
-      fi
+      case " $deplibs" in
+      *\ -l* | *\ -L*)
+	$echo "$modename: warning: \`-l' and \`-L' are ignored for archives" 1>&2 ;;
+      esac
 
       if test -n "$dlfiles$dlprefiles" || test "$dlself" != no; then
 	$echo "$modename: warning: \`-dlopen' is ignored for archives" 1>&2
@@ -3257,6 +3271,11 @@ EOF
 	    age="$number_minor"
 	    revision="$number_minor"
 	    lt_irix_increment=no
+	    ;;
+	  *)
+	    $echo "$modename: unknown library version type \`$version_type'" 1>&2
+	    $echo "Fatal configuration error.  See the $PACKAGE docs for more information." 1>&2
+	    exit $EXIT_FAILURE
 	    ;;
 	  esac
 	  ;;
@@ -4251,9 +4270,10 @@ EOF
       ;;
 
     obj)
-      if test -n "$deplibs"; then
-	$echo "$modename: warning: \`-l' and \`-L' are ignored for objects" 1>&2
-      fi
+      case " $deplibs" in
+      *\ -l* | *\ -L*)
+	$echo "$modename: warning: \`-l' and \`-L' are ignored for objects" 1>&2 ;;
+      esac
 
       if test -n "$dlfiles$dlprefiles" || test "$dlself" != no; then
 	$echo "$modename: warning: \`-dlopen' is ignored for objects" 1>&2
@@ -5456,11 +5476,6 @@ else
 	$echo >> $output "\
     if test \"\$libtool_execute_magic\" != \"$magic\"; then
       # Run the actual program with our arguments.
-
-      # Make sure env LD_LIBRARY_PATH does not mess us up
-      if test -n \"\${LD_LIBRARY_PATH+set}\"; then
-        export LD_LIBRARY_PATH=\$progdir:\$LD_LIBRARY_PATH
-      fi
 "
 	case $host in
 	# Backslashes separate directories on plain windows
@@ -5688,53 +5703,9 @@ fi\
 		  $echo "$modename: \`$deplib' is not a valid libtool archive" 1>&2
 		  exit $EXIT_FAILURE
 		fi
-		if test "X$EGREP" = X ; then
-			EGREP=egrep
-		fi
-		# We do not want portage's install root ($D) present.  Check only for
-		# this if the .la is being installed.
-		if test "$installed" = yes && test "$D"; then
-		  eval mynewdependency_lib=`echo "$libdir/$name" |sed -e "s:$D:/:g" -e 's:/\+:/:g'`
-		else
-		  mynewdependency_lib="$libdir/$name"
-		fi
-		# Do not add duplicates
-		if test "$mynewdependency_lib"; then
-		  my_little_ninja_foo_1=`echo $newdependency_libs |$EGREP -e "$mynewdependency_lib"`
-		  if test -z "$my_little_ninja_foo_1"; then
-		    newdependency_libs="$newdependency_libs $mynewdependency_lib"
-		  fi
-		fi
+		newdependency_libs="$newdependency_libs $libdir/$name"
 		;;
-		  *)
-		if test "$installed" = yes; then
-		  # Rather use S=WORKDIR if our version of portage supports it.
-		  # This is because some ebuild (gcc) do not use $S as buildroot.
-		  if test "$PWORKDIR"; then
-		    S="$PWORKDIR"
-		  fi
-		  # We do not want portage's build root ($S) present.
-		  my_little_ninja_foo_2=`echo $deplib |$EGREP -e "$S"`
-		  # We do not want portage's install root ($D) present.
-		  my_little_ninja_foo_3=`echo $deplib |$EGREP -e "$D"`
-		  if test -n "$my_little_ninja_foo_2" && test "$S"; then
-		    mynewdependency_lib=""
-		  elif test -n "$my_little_ninja_foo_3" && test "$D"; then
-		    eval mynewdependency_lib=`echo "$deplib" |sed -e "s:$D:/:g" -e 's:/\+:/:g'`
-		  else
-		    mynewdependency_lib="$deplib"
-		  fi
-		else
-		  mynewdependency_lib="$deplib"
-		fi
-		# Do not add duplicates
-		if test "$mynewdependency_lib"; then
-		  my_little_ninja_foo_4=`echo $newdependency_libs |$EGREP -e "$mynewdependency_lib"`
-		  if test -z "$my_little_ninja_foo_4"; then
-			newdependency_libs="$newdependency_libs $mynewdependency_lib"
-		  fi
-		fi
-		;;
+	      *) newdependency_libs="$newdependency_libs $deplib" ;;
 	      esac
 	    done
 	    dependency_libs="$newdependency_libs"
@@ -5786,10 +5757,6 @@ fi\
 	  case $host,$output,$installed,$module,$dlname in
 	    *cygwin*,*lai,yes,no,*.dll | *mingw*,*lai,yes,no,*.dll) tdlname=../bin/$dlname ;;
 	  esac
-	  # Do not add duplicates
-	  if test "$installed" = yes && test "$D"; then
-	    install_libdir=`echo "$install_libdir" |sed -e "s:$D:/:g" -e 's:/\+:/:g'`
-	  fi
 	  $echo > $output "\
 # $outputname - a libtool library file
 # Generated by $PROGRAM - GNU $PACKAGE $VERSION$TIMESTAMP
@@ -6545,7 +6512,7 @@ relink_command=\"$relink_command\""
       fi
 
       # Restore saved environment variables
-      for lt_var in LANG LC_ALL LC_CTYPE LC_COLLATE LC_MESSAGES
+      for lt_var in LANG LANGUAGE LC_ALL LC_CTYPE LC_COLLATE LC_MESSAGES
       do
 	eval "if test \"\${save_$lt_var+set}\" = set; then
 		$lt_var=\$save_$lt_var; export $lt_var

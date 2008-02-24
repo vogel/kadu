@@ -1,4 +1,4 @@
-/* $Id: sha1.c,v 1.6 2007-12-06 23:13:07 wojtekka Exp $ */
+/* $Id: sha1.c 489 2007-12-06 23:13:07Z wojtekka $ */
 
 /*
  *  (C) Copyright 2007 Wojtek Kaniewski <wojtekka@irc.pl>

@@ -1,4 +1,4 @@
-/* $Id: common.c,v 1.76 2007-07-20 23:00:49 wojtekka Exp $ */
+/* $Id: common.c 504 2008-01-13 22:43:52Z wojtekka $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -47,7 +47,7 @@
 /**
  * Plik, do którego będą przekazywane informacje odpluskwiania.
  *
- * Funkcja \c gg_debug i pochodne mogą być przechwytywane przez aplikację
+ * Funkcja \c gg_debug() i pochodne mogą być przechwytywane przez aplikację
  * korzystającą z biblioteki, by wyświetlić je na żądanie użytkownika lub
  * zapisać do późniejszej analizy. Jeśli nie określono pliku, wybrane
  * informacje będą wysyłane do standardowego wyjścia błędu (\c stderr).
@@ -61,8 +61,8 @@ FILE *gg_debug_file = NULL;
 /**
  * \internal Przekazuje informacje odpluskwiania do odpowiedniej funkcji.
  *
- * Jeśli aplikacja ustawiła odpowiednią funkcję obsługi w \c
- * gg_debug_handler_session lub \c gg_debug_handler, jest ona wywoływana.
+ * Jeśli aplikacja ustawiła odpowiednią funkcję obsługi w
+ * \c gg_debug_handler_session lub \c gg_debug_handler, jest ona wywoływana.
  * W przeciwnym wypadku wynik jest wysyłany do standardowego wyjścia błędu.
  *
  * \param sess Struktura sesji (może być \c NULL)

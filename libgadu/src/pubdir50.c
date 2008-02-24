@@ -1,4 +1,4 @@
-/* $Id: pubdir50.c,v 1.18 2007-07-20 23:00:50 wojtekka Exp $ */
+/* $Id: pubdir50.c 482 2007-07-20 23:00:50Z wojtekka $ */
 
 /*
  *  (C) Copyright 2003 Wojtek Kaniewski <wojtekka@irc.pl>
