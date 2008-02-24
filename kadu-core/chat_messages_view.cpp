@@ -32,6 +32,8 @@ ChatMessagesView::ChatMessagesView(QWidget *parent, const char *name) : KaduText
 	setMimeSourceFactory(bodyformat);
 	setTextFormat(Qt::RichText);
 	setFocusPolicy(QWidget::NoFocus);
+
+	scrollToBottom();
 }
 
 ChatMessagesView::~ChatMessagesView()
