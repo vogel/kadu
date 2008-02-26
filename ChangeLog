@@ -3,7 +3,7 @@ lub rozbudowy. Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub
 podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y. Je¶li jest
 w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
-+++ wersja 0.6.0-svn
++++ wersja 0.6.0
 * zmiany w procedurze ³±czenia siê: (joi)
   - ekspresowe ³±czenie siê z serwerem gg (zapamiêtujemy adres serwera,
   do którego ostatnio uda³o siê podpi±æ)
