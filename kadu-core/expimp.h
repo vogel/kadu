@@ -1,14 +1,21 @@
 #ifndef EXPIMP_H
 #define EXPIMP_H
 
-#include <qhbox.h>
-#include <qvaluelist.h>
+#define QT3_SUPPORT
+#include <qglobal.h>
+
+#include <q3hbox.h>
+#include <q3valuelist.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QKeyEvent>
+#include <QLabel>
 
 #include "userlistelement.h"
 
 class LayoutHelper;
 class QLabel;
-class QListView;
+class Q3ListView;
 class QPushButton;
 class QResizeEvent;
 
@@ -17,7 +24,7 @@ class QResizeEvent;
 	\class UserlistImportExport
 	\brief Import / Export userlisty
 **/
-class UserlistImportExport : public QHBox {
+class UserlistImportExport : public Q3HBox {
 	Q_OBJECT
 	public:
 		/**
@@ -35,7 +42,7 @@ class UserlistImportExport : public QHBox {
 		~UserlistImportExport();
 	private:
 		QPushButton *pb_fetch; /*!< przycisk pobierania listy */
-		QValueList<UserListElement> importedUserlist;
+		Q3ValueList<UserListElement> importedUserlist;
 		QPushButton *pb_send; /*!< przycisk wysy³ania listy */
 		QPushButton *pb_delete; /*!< przycisk kasuj±cy listê */
 		QPushButton *pb_tofile;
@@ -43,7 +50,7 @@ class UserlistImportExport : public QHBox {
 		LayoutHelper *layoutHelper;
 
 	protected:
-		QListView *lv_userlist;
+		Q3ListView *lv_userlist;
 		virtual void resizeEvent(QResizeEvent *);
 
 	private slots:
@@ -51,7 +58,7 @@ class UserlistImportExport : public QHBox {
 		void makeUserlist(void);
 		void updateUserlist(void);
 		void fromfile();
-		void userListImported(bool ok, QValueList<UserListElement> userList);
+		void userListImported(bool ok, Q3ValueList<UserListElement> userList);
 		void startExportTransfer(void);
 		void clean(void);
 		void ExportToFile(void);

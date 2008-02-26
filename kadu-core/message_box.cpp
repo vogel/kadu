@@ -8,10 +8,14 @@
  ***************************************************************************/
 
 #include <qapplication.h>
-#include <qhbox.h>
+#include <q3hbox.h>
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qpushbutton.h>
+//Added by qt3to4:
+#include <Q3HBoxLayout>
+#include <Q3VBoxLayout>
+#include <QCloseEvent>
 
 #include "icons_manager.h"
 #include "message_box.h"
@@ -23,36 +27,36 @@ const int MessageBox::YES      = 4;  // 00100
 const int MessageBox::NO       = 8;  // 01000
 
 MessageBox::MessageBox(const QString& message, int components, bool modal, const QString &iconName, QWidget *parent)
-	: QDialog(parent, NULL, modal, WType_TopLevel | WStyle_Customize | WStyle_DialogBorder | WStyle_Title | WStyle_SysMenu | WDestructiveClose),
+	: QDialog(parent, NULL, modal, Qt::WType_TopLevel | Qt::WStyle_Customize | Qt::WStyle_DialogBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu | Qt::WDestructiveClose),
 	message(message)
 {
 	kdebugf();
 
-	QVBoxLayout* vbox = new QVBoxLayout(this, 0);
+	Q3VBoxLayout* vbox = new Q3VBoxLayout(this, 0);
 	vbox->setMargin(10);
 	vbox->setSpacing(10);
 
-	QHBoxLayout* hboxlabels = new QHBoxLayout(vbox);
+	Q3HBoxLayout* hboxlabels = new Q3HBoxLayout(vbox);
 	hboxlabels->addStretch(1);
 
 	if (!iconName.isEmpty())
 	{
 		icon = new QLabel(this);
 		icon->setPixmap(icons_manager->loadIcon(iconName));
-		hboxlabels->addWidget(icon, 0, AlignCenter);
+		hboxlabels->addWidget(icon, 0, Qt::AlignCenter);
 	}
 
 	QLabel* label = new QLabel(this);
 	if (!message.isEmpty())
 		label->setText(message);
 
-	hboxlabels->addWidget(label, 0, AlignCenter);
+	hboxlabels->addWidget(label, 0, Qt::AlignCenter);
 	hboxlabels->addStretch(1);
 
-	QHBoxLayout* hboxbuttons = new QHBoxLayout(vbox);
-	QHBox* buttons = new QHBox(this);
+	Q3HBoxLayout* hboxbuttons = new Q3HBoxLayout(vbox);
+	Q3HBox* buttons = new Q3HBox(this);
 	buttons->setSpacing(20);
-	hboxbuttons->addWidget(buttons, 0, AlignCenter);
+	hboxbuttons->addWidget(buttons, 0, Qt::AlignCenter);
 
 	if (components & OK)
 		addButton(buttons, tr("&OK"), SLOT(okClicked()));

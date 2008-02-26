@@ -1,13 +1,23 @@
 #ifndef KADU_MISC_H
 #define KADU_MISC_H
 
+#define QT3_SUPPORT
+#include <qglobal.h>
+
 #include <qdatetime.h>
 #include <qdialog.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
 #include <qimage.h>
 #include <qlabel.h>
 #include <qstring.h>
-#include <qvbox.h>
+#include <q3vbox.h>
+//Added by qt3to4:
+#include <Q3CString>
+#include <QPaintEvent>
+#include <Q3ValueList>
+#include <QPixmap>
+#include <Q3PopupMenu>
+#include <QKeyEvent>
 
 #include <time.h>
 
@@ -15,9 +25,9 @@
 
 class QComboBox;
 class QLineEdit;
-class QListBox;
+class Q3ListBox;
 class QMenuData;
-class QPopupMenu;
+class Q3PopupMenu;
 
 /*
 	Zmienia ¶cie¿kê relatywn± do katalogu z ustawieniami gg
@@ -40,7 +50,7 @@ class UserListElement;
 QString cp2unicode(const unsigned char *);
 QString unicode2cp(const QString &);
 QString latin2unicode(const unsigned char *);
-QCString unicode2latin(const QString &);
+Q3CString unicode2latin(const QString &);
 QString unicode2std(const QString &);
 
 //zamienia kodowanie polskich znaków przekonwertowane z utf-8 przy pomocy QUrl::encode na kodowanie latin-2
@@ -66,7 +76,7 @@ QStringList toStringList(const QString &e1, const QString &e2=QString(), const Q
 void saveGeometry(const QWidget *w, const QString &section, const QString &name);
 void loadGeometry(QWidget *w, const QString &section, const QString &name, int defaultX, int defaultY, int defaultWidth, int defaultHeight);
 
-int showPopupMenu(QPopupMenu *menu);
+int showPopupMenu(Q3PopupMenu *menu);
 
 //usuwa znaki nowego wiersza, tagi htmla (wszystko co da siê dopasowaæ jako <.*>)
 QString toPlainText(const QString &text);
@@ -105,7 +115,7 @@ public:
 
 };
 
-class OpenChatWith : public QVBox
+class OpenChatWith : public Q3VBox
 {
 	Q_OBJECT
 
@@ -174,21 +184,21 @@ class CreateNotifier : public QObject
 };
 
 
-class PixmapPreview : public QLabel, public QFilePreview
+class PixmapPreview : public QLabel, public Q3FilePreview
 {
 	public:
 		PixmapPreview();
-		void previewUrl(const QUrl& url);
+		void previewUrl(const Q3Url& url);
 };
 
-class ImageDialog : public QFileDialog
+class ImageDialog : public Q3FileDialog
 {
 	public:
 		ImageDialog(QWidget* parent);
 };
 
 class QLabel;
-class QSimpleRichText;
+class Q3SimpleRichText;
 
 /*
 	Class for helping Qt do a proper layout of labels which use alignment flag Qt::WordBreak
@@ -204,13 +214,13 @@ class LayoutHelper
 		void textChanged(QLabel *label);
 		void resizeLabels();
 	private:
-		QValueList<QLabel*> labels;
-		QValueList<QSimpleRichText*> riches;
+		Q3ValueList<QLabel*> labels;
+		Q3ValueList<Q3SimpleRichText*> riches;
 
 };
 
-QValueList<int> toIntList(const QValueList<QVariant> &in);
-QValueList<QVariant> toVariantList(const QValueList<int> &in);
+Q3ValueList<int> toIntList(const Q3ValueList<QVariant> &in);
+Q3ValueList<QVariant> toVariantList(const Q3ValueList<int> &in);
 
 /*
 	zastêpstwo dla arga w QString, które podmienia kolejne %[1-4] w miejscu

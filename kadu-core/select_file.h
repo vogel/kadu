@@ -1,11 +1,14 @@
 #ifndef SELECT_FILE_H
 #define SELECT_FILE_H
 
-#include <qhbox.h>
+#define QT3_SUPPORT
+#include <qglobal.h>
+
+#include <q3hbox.h>
 
 class QLineEdit;
 
-class SelectFile : public QHBox
+class SelectFile : public Q3HBox
 {
 	Q_OBJECT
 

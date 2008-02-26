@@ -9,7 +9,12 @@
 
 #include <qapplication.h>
 #include <qcursor.h>
-#include <qpopupmenu.h>
+#include <q3popupmenu.h>
+#include <q3textstream.h>
+//Added by qt3to4:
+#include <QContextMenuEvent>
+#include <QMouseEvent>
+#include <QEvent>
 
 #include "config_file.h"
 #include "debug.h"
@@ -63,7 +68,7 @@ ToolButton::ToolButton(QWidget* parent, const QString& action_name, Action::Acti
 
 	if ((Type & Action::TypeGlobal) == 0)
 	{
-		connect(parent, SIGNAL(placeChanged(QDockWindow::Place)), this, SLOT(toolbarPlaceChanged(QDockWindow::Place)));
+		connect(parent, SIGNAL(placeChanged(Q3DockWindow::Place)), this, SLOT(toolbarPlaceChanged(Q3DockWindow::Place)));
 		setEnabled(IsEnabled);
 	}
 
@@ -93,7 +98,7 @@ void ToolButton::setEnabled(bool enabled)
 	else
 	{
 		ToolBar *toolBar = dynamic_cast<ToolBar *>(parent());
-		if (toolBar->place() == QDockWindow::InDock)
+		if (toolBar->place() == Q3DockWindow::InDock)
 		{
 			if (toolBar->dockArea()->supportsAction(Type))
 			{
@@ -110,7 +115,7 @@ void ToolButton::setEnabled(bool enabled)
 	}
 }
 
-void ToolButton::setOnShape(const QIconSet& icon, const QString& text)
+void ToolButton::setOnShape(const QIcon& icon, const QString& text)
 {
 	OffIcon = iconSet();
 	OffText = textLabel();
@@ -162,10 +167,10 @@ void ToolButton::mousePressEvent(QMouseEvent* e)
 void ToolButton::mouseMoveEvent(QMouseEvent* e)
 {
 	QToolButton::mouseMoveEvent(e);
-	if (e->state() & LeftButton && !toolbar()->dockArea()->blocked() && (MouseStart - e->pos()).manhattanLength() >= 15)
+	if (e->state() & Qt::LeftButton && !toolbar()->dockArea()->blocked() && (MouseStart - e->pos()).manhattanLength() >= 15)
 	{
 		setDown(false);
-		QDragObject* d = new ActionDrag(ActionName, usesTextLabel(), parentWidget());
+		Q3DragObject* d = new ActionDrag(ActionName, usesTextLabel(), parentWidget());
 		d->dragMove();
 	}
 }
@@ -177,12 +182,12 @@ void ToolButton::contextMenuEvent(QContextMenuEvent *e)
 		e->ignore();
 	else
 	{
-		QPopupMenu* p = new QPopupMenu(this);
+		Q3PopupMenu* p = new Q3PopupMenu(this);
 		int label_menu_id = p->insertItem(tr("Show text label"), this, SLOT(showTextLabelClicked()));
 		p->setItemChecked(label_menu_id, usesTextLabel());
 		p->insertItem(tr("Delete button"), this, SLOT(deleteButtonClicked()));
 		p->insertSeparator();
-		QPopupMenu* toolbar_menu = toolbar()->createContextMenu(p);
+		Q3PopupMenu* toolbar_menu = toolbar()->createContextMenu(p);
 		p->insertItem(tr("Toolbar menu"), toolbar_menu);
 		showPopupMenu(p);
 		delete p;
@@ -229,7 +234,7 @@ void ToolButton::showTextLabelClicked()
 	kdebugf2();
 }
 
-void ToolButton::toolbarPlaceChanged(QDockWindow::Place p)
+void ToolButton::toolbarPlaceChanged(Q3DockWindow::Place p)
 {
 	kdebugf();
 	setEnabled(IsEnabled);
@@ -255,7 +260,7 @@ ActionDrag::ActionDrag(const QString &actionName, bool showLabel, QWidget* dragS
 
 bool ActionDrag::decode(const QMimeSource *source, QString &actionName, bool &showLabel)
 {
-	QTextStream stream(source->encodedData("application/x-kadu-action"), IO_ReadOnly);
+	Q3TextStream stream(new QString(source->encodedData("application/x-kadu-action")), QIODevice::ReadOnly);
 
 	if (stream.atEnd())
 		return false;

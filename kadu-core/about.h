@@ -1,9 +1,14 @@
 #ifndef ABOUT_H
 #define ABOUT_H
 
+#include <qglobal.h>
+
 #include <qstring.h>
-#include <qhbox.h>
+#include <q3hbox.h>
 #include <qwidget.h>
+//Added by qt3to4:
+#include <QKeyEvent>
+#include <QResizeEvent>
 
 class LayoutHelper;
 class QResizeEvent;
@@ -12,7 +17,7 @@ class QResizeEvent;
 	\class About
 	\brief Okno z informacjami o programie.
 **/
-class About : public QHBox {
+class About : public Q3HBox {
 	Q_OBJECT
 
 	public:

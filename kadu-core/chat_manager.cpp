@@ -10,6 +10,8 @@
 #include <qcursor.h>
 #include <qbitmap.h>
 #include <qtooltip.h>
+//Added by qt3to4:
+#include <Q3ValueList>
 
 #include "action.h"
 #include "debug.h"
@@ -424,7 +426,7 @@ const ChatList& ChatManager::chats() const
 	return ChatWidgets;
 }
 
-const QValueList<UserListElements> ChatManager::closedChatUsers() const
+const Q3ValueList<UserListElements> ChatManager::closedChatUsers() const
 {
 	return ClosedChatUsers;
 }
@@ -532,7 +534,7 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 			}
 #if QT_VERSION >= 0x030300
 			if (qstrcmp(qVersion(), "3.3") >= 0) // dodatkowe zabezpieczenie przed idiotami u¿ywaj±cymi opcji --force przy instalacji pakietów
-				win->setWindowState(win->windowState() & ~WindowMinimized | WindowActive);
+				win->setWindowState(win->windowState() & ~Qt::WindowMinimized | Qt::WindowActive);
 #endif
 			if (forceActivate)
 				activateWindow(win->winId());
@@ -563,7 +565,7 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 	emit handleNewChatWidget(chat, handled);
 	if (!handled)
 	{
-		ChatWindow *window = new ChatWindow(0, QString("chat:%1").arg(userNames.join(",")).local8Bit().data());
+		ChatWindow *window = new ChatWindow();
 		chat->reparent(window, QPoint(), true);
 		window->setChatWidget(chat);
 		window->show();
@@ -614,7 +616,7 @@ void ChatManager::openPendingMsgs(UserListElements users, bool forceActivate)
 {
 	kdebugf();
 
-	QValueList<ChatMessage *> messages;
+	Q3ValueList<ChatMessage *> messages;
 	PendingMsgs::Element elem;
 
 	for (int i = 0; i < pending.count(); ++i)

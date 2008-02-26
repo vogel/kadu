@@ -1,8 +1,13 @@
 #ifndef HOT_KEY_H
 #define HOT_KEY_H
 
+#define QT3_SUPPORT
+#include <qglobal.h>
+
 #include <qkeysequence.h>
 #include <qlineedit.h>
+//Added by qt3to4:
+#include <QKeyEvent>
 
 class HotKey
 {

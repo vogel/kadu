@@ -19,7 +19,7 @@ DNSHandler::DNSHandler(const QString &marker, const QHostAddress &address) : DNS
 		kdebugmf(KDEBUG_WARNING, "NULL ip address!\n");
 
 	connect(&DNSResolver, SIGNAL(resultsReady()), this, SLOT(resultsReady()));
-	DNSResolver.setRecordType(QDns::Ptr);
+	DNSResolver.setRecordType(Q3Dns::Ptr);
 	DNSResolver.setLabel(address);
 	++counter;
 

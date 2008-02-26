@@ -1,12 +1,21 @@
 #ifndef EMOTICONS_H
 #define EMOTICONS_H
 
+#define QT3_SUPPORT
+#include <qglobal.h>
+
 #include <qcolor.h>
 #include <qmovie.h>
-#include <private/qrichtext_p.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QPaintEvent>
+#include <Q3ValueList>
+#include <QPixmap>
+#include <QEvent>
+// #include <private/qrichtext_p.h>
 #include <qstringlist.h>
 #include <qtoolbutton.h>
-#include <qvaluevector.h>
+#include <q3valuevector.h>
 #include <qlabel.h>
 
 #include "config_file.h"
@@ -18,8 +27,8 @@ class ChatWidget;
 class EmotsWalker;
 class QImage;
 class QLabel;
-class QTextEdit;
-class QScrollView;
+class Q3TextEdit;
+class Q3ScrollView;
 
 enum EmoticonsStyle
 {
@@ -41,8 +50,8 @@ class EmoticonsManager : public Themes, ConfigurationAwareObject
 			QString stat;
 			EmoticonsListItem();
 		};
-		QValueVector<EmoticonsListItem> Aliases;
-		QValueList<EmoticonsListItem> Selector;
+		Q3ValueVector<EmoticonsListItem> Aliases;
+		Q3ValueList<EmoticonsListItem> Selector;
 		EmotsWalker *walker;
 
 		static QString getQuoted(const QString& s, unsigned int& pos);
@@ -180,30 +189,30 @@ class EmoticonSelector : public QWidget
 };
 
 /* Klasa wyciêta za ¼róde³ Qt i przystosowana na potrzeby Kadu (oryginalnie nazywa³a siê QTextImage) */
-class StaticTextItem : public QTextCustomItem
-{
-	public:
-		StaticTextItem(QTextDocument *p, const QMap<QString, QString> &attr, const QString& context,
-			QMimeSourceFactory &factory );
-		virtual ~StaticTextItem();
+// class StaticTextItem : public QTextCustomItem
+// {
+// 	public:
+// 		StaticTextItem(QTextDocument *p, const QMap<QString, QString> &attr, const QString& context,
+// 			Q3MimeSourceFactory &factory );
+// 		virtual ~StaticTextItem();
+// 
+// 		Placement placement() const { return place; }
+// 		void adjustToPainter( QPainter* );
+// 		int minimumWidth() const { return width; }
+// 
+// 		QString richText() const;
+// 		void draw(QPainter* p, int x, int y, int cx, int cy, int cw, int ch, const QColorGroup& cg, bool selected);
+// 	private:
+// 		QRegion* reg;
+// 		QPixmap pm;
+// 		Placement place;
+// 		int tmpwidth, tmpheight;
+// 		QMap<QString, QString> attributes;
+// 		QString imgId;
+// };
 
-		Placement placement() const { return place; }
-		void adjustToPainter( QPainter* );
-		int minimumWidth() const { return width; }
-
-		QString richText() const;
-		void draw(QPainter* p, int x, int y, int cx, int cy, int cw, int ch, const QColorGroup& cg, bool selected);
-	private:
-		QRegion* reg;
-		QPixmap pm;
-		Placement place;
-		int tmpwidth, tmpheight;
-		QMap<QString, QString> attributes;
-		QString imgId;
-};
-
-class AnimatedLabel;
-
+// class AnimatedLabel;
+/*
 class AnimTextItem : public QTextCustomItem
 {
 	public:
@@ -219,14 +228,14 @@ class AnimTextItem : public QTextCustomItem
 		static QImage* SizeCheckImage;
 		typedef QMap<QString,MovieCacheData*> MoviesCache;
 		static MoviesCache* Movies;
-		QTextEdit* Edit;
+		Q3TextEdit* Edit;
 		AnimatedLabel* Label;
 		QSize EditSize;
 		QString text;
 		QString FileName;
 	public:
 		AnimTextItem(
-			QTextDocument *p, QTextEdit* edit,
+			QTextDocument *p, Q3TextEdit* edit,
 			const QString& filename, const QColor& bgcolor, const QString &tip);
 		~AnimTextItem();
 		void draw(
@@ -235,14 +244,14 @@ class AnimTextItem : public QTextCustomItem
 			bool selected );
 		virtual QString richText() const;
 
-};
-
+};*/
+/*
 class AnimatedLabel : public QLabel
 {
 	Q_OBJECT
 	public:
 	AnimTextItem::MovieCacheData *movieData;
-	QScrollView *scrollView;
+	Q3ScrollView *scrollView;
 	QString tip;
 	static bool mustPause;
 	bool imageBackground;
@@ -251,45 +260,45 @@ class AnimatedLabel : public QLabel
 	bool trueTransparency;
 	public:
 		AnimatedLabel(AnimTextItem::MovieCacheData *data, const QString &tip, bool imageBackground,
-						QScrollView *view, bool trueTransparency = false, const char *name = 0);
+						Q3ScrollView *view, bool trueTransparency = false, const char *name = 0);
 		~AnimatedLabel();
 	public slots:
 		void unpauseMovie();
 		void pauseMovie();
 	protected:
 		virtual void paintEvent(QPaintEvent *e);
-};
-
-class AnimStyleSheet : public QStyleSheet
+};*/
+/*
+class AnimStyleSheet : public Q3StyleSheet
 {
 	private:
 		QString Path;
 	public:
-		AnimStyleSheet(QTextEdit* parent, const QString& path, const char* name = 0);
+		AnimStyleSheet(Q3TextEdit* parent, const QString& path, const char* name = 0);
 		QTextCustomItem* tag(
 			const QString& name, const QMap<QString,QString>& attr,
-			const QString& context, const QMimeSourceFactory& factory,
+			const QString& context, const Q3MimeSourceFactory& factory,
 			bool emptyTag, QTextDocument* doc) const;
 };
 
-class StaticStyleSheet : public QStyleSheet
+class StaticStyleSheet : public Q3StyleSheet
 {
 	private:
 		QString Path;
 	public:
-		StaticStyleSheet(QTextEdit* parent, const QString& path, const char* name = 0);
+		StaticStyleSheet(Q3TextEdit* parent, const QString& path, const char* name = 0);
 		QTextCustomItem* tag(
 			const QString& name, const QMap<QString,QString>& attr,
-			const QString& context, const QMimeSourceFactory& factory,
+			const QString& context, const Q3MimeSourceFactory& factory,
 			bool emptyTag, QTextDocument* doc) const;
 };
-
+*/
 
 
 struct PrefixNode
 {
 	int emotIndex;
-	QValueVector<QPair<QChar, PrefixNode*> > childs;
+	Q3ValueVector<QPair<QChar, PrefixNode*> > childs;
 	PrefixNode();
 };
 
@@ -305,8 +314,8 @@ class EmotsWalker
 	PrefixNode* root;
 	QPair<QChar, PrefixNode*> myPair;
 	/** positions in prefix tree, representing current analysis of text */
-	QValueVector<const PrefixNode*> positions;
-	QValueVector<int> lengths;
+	Q3ValueVector<const PrefixNode*> positions;
+	Q3ValueVector<int> lengths;
 	unsigned int amountPositions;
 
 	public:

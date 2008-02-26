@@ -7,9 +7,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qaccel.h>
+#include <q3accel.h>
 #include <qcursor.h>
-#include <qobjectlist.h>
+#include <qobject.h>
+//Added by qt3to4:
+#include <QContextMenuEvent>
+#include <QMoveEvent>
+#include <QDropEvent>
+#include <Q3ValueList>
+#include <Q3PopupMenu>
+#include <QDragEnterEvent>
 
 #include "action.h"
 #include "config_file.h"
@@ -21,10 +28,10 @@
 #include "toolbar.h"
 #include "kadu.h"
 
-QMap< QString, QValueList<ToolBar::ToolBarAction> > ToolBar::DefaultActions;
+QMap< QString, Q3ValueList<ToolBar::ToolBarAction> > ToolBar::DefaultActions;
 
 ToolBar::ToolBar(QWidget* /*parent*/, const char *name)
-	: QToolBar(NULL, name), dragButton(NULL)
+	: Q3ToolBar(NULL, name), dragButton(NULL)
 {
 	kdebugf();
 
@@ -165,7 +172,7 @@ ToolButton * ToolBar::addButton(Action *action, bool showLabel, ToolButton *afte
 	button->setUsesTextLabel(showLabel);
 	button->setTextPosition(ToolButton::BesideIcon);
 
-	QAccel* accel = new QAccel(button);
+	Q3Accel* accel = new Q3Accel(button);
 	accel->connectItem(accel->insertItem(action->keySeq0()), button, SIGNAL(clicked()));
 	accel->connectItem(accel->insertItem(action->keySeq1()), button, SIGNAL(clicked()));
 
@@ -206,7 +213,7 @@ void ToolBar::moveEvent(QMoveEvent *e)
 			setOffset(10000);
 	}
 
-	QToolBar::moveEvent(e);
+	Q3ToolBar::moveEvent(e);
 }
 
 void ToolBar::dragEnterEvent(QDragEnterEvent* event)
@@ -285,7 +292,7 @@ void ToolBar::contextMenuEvent(QContextMenuEvent* e)
 	//NOTE: parent MUST be dockArea(), NOT this, because when user is choosing "remove toolbar",
 	//      it calls deleteLater(), which is invoked _before_ exec returns! so QPopupMenu would
 	//      be deleted when exec returns!
-	QPopupMenu* p = createContextMenu(dockArea());
+	Q3PopupMenu* p = createContextMenu(dockArea());
 	showPopupMenu(p);
 	delete p;
 	e->accept();
@@ -303,7 +310,7 @@ void ToolBar::show()
 			(*toolBarAction).button = 0;
 		}
 
-	QToolBar::show();
+	Q3ToolBar::show();
 	QTimer::singleShot(0, this, SLOT(updateButtons()));
 }
 
@@ -448,7 +455,7 @@ void ToolBar::addDefaultAction(const QString &toolbar, const QString &actionName
 {
 	kdebugf();
 
-	QValueList<ToolBarAction> &actions = DefaultActions[toolbar];
+	Q3ValueList<ToolBarAction> &actions = DefaultActions[toolbar];
 
 	ToolBarAction action;
 	action.actionName = actionName;
@@ -476,7 +483,7 @@ void ToolBar::loadDefault()
 
 	if (DefaultActions.contains(name()))
 	{
-		const QValueList<ToolBarAction>& actions = DefaultActions[name()];
+		const Q3ValueList<ToolBarAction>& actions = DefaultActions[name()];
 		CONST_FOREACH(i, actions)
 			addAction((*i).actionName, (*i).showLabel, 0);
 	}
@@ -501,12 +508,12 @@ const UserGroup* ToolBar::selectedUsers() const
 	return users;
 }
 
-QPopupMenu* ToolBar::createContextMenu(QWidget* parent)
+Q3PopupMenu* ToolBar::createContextMenu(QWidget* parent)
 {
-	QPopupMenu* p = new QPopupMenu(parent);
+	Q3PopupMenu* p = new Q3PopupMenu(parent);
 	p->insertItem(tr("Delete toolbar"), this, SLOT(deleteToolbar()));
 
-	QPopupMenu* p2 = new QPopupMenu(p); // popup z akcjami mozliwymi do dodania w toolbarze
+	Q3PopupMenu* p2 = new Q3PopupMenu(p); // popup z akcjami mozliwymi do dodania w toolbarze
 	unsigned int param = 0; // parametr przekazywany slotowi addButtonClicked()
 	CONST_FOREACH(a, KaduActions)
 	{
@@ -530,7 +537,7 @@ QPopupMenu* ToolBar::createContextMenu(QWidget* parent)
 	p->insertSeparator();
 	if (dockArea())
 	{
-		QPopupMenu* panel_menu = dockArea()->createContextMenu(p);
+		Q3PopupMenu* panel_menu = dockArea()->createContextMenu(p);
 		p->insertItem(tr("Panel menu"), panel_menu);
 	}
 	return p;

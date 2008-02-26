@@ -104,8 +104,8 @@ void ULEPrivate::closeModule()
 #endif
 }
 
-QDict<QDict<UserGroupSet> > ULEPrivate::protocolUserDataProxy;
-QDict<UserGroupSet> ULEPrivate::userDataProxy;
+Q3Dict<Q3Dict<UserGroupSet> > ULEPrivate::protocolUserDataProxy;
+Q3Dict<UserGroupSet> ULEPrivate::userDataProxy;
 //QDict<QPtrDict<void> > ULEPrivate::addProtocolProxy;
 //QDict<QPtrDict<void> > ULEPrivate::removeProtocolProxy;
-QDict<UserGroupSet> ULEPrivate::statusChangeProxy;
+Q3Dict<UserGroupSet> ULEPrivate::statusChangeProxy;

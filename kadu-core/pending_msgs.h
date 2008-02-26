@@ -1,8 +1,11 @@
 #ifndef PENDING_MSGS_H
 #define PENDING_MSGS_H
 
+#define QT3_SUPPORT
+#include <qglobal.h>
+
 #include <qstring.h>
-#include <qvaluelist.h>
+#include <q3valuelist.h>
 #include <time.h>
 #include "usergroup.h"
 
@@ -34,7 +37,7 @@ class PendingMsgs : public QObject
 		};
 
 	private:
-		typedef QValueList<Element> PendingMsgsList;
+		typedef Q3ValueList<Element> PendingMsgsList;
 		PendingMsgsList msgs;
 
 	public:

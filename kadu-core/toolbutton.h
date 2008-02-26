@@ -10,8 +10,14 @@
 #ifndef TOOLBUTTON_H
 #define TOOLBUTTON_H
 
+#define QT3_SUPPORT
+#include <qglobal.h>
+
 #include <qdom.h>
 #include <qtoolbutton.h>
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <QContextMenuEvent>
 
 #include "action.h"
 #include "drag_simple.h"
@@ -27,9 +33,9 @@ class ToolButton : public QToolButton
 	private:
 		QString ActionName;
 		bool InOnState;
-		QIconSet OffIcon;
+		QIcon OffIcon;
 		QString OffText;
-		QIconSet OnIcon;
+		QIcon OnIcon;
 		QString OnText;
 		QPoint MouseStart;
 
@@ -40,7 +46,7 @@ class ToolButton : public QToolButton
 		void buttonClicked();
 		void deleteButtonClicked();
 		void showTextLabelClicked();
-		void toolbarPlaceChanged(QDockWindow::Place p);
+		void toolbarPlaceChanged(Q3DockWindow::Place p);
 
 	protected:
 		void mousePressEvent(QMouseEvent* e);
@@ -57,7 +63,7 @@ class ToolButton : public QToolButton
 			button works just like toggled but using two shapes
 			(pictures and texts)
 		**/
-		void setOnShape(const QIconSet& icon, const QString& text);
+		void setOnShape(const QIcon& icon, const QString& text);
 		bool isOn() const;
 		void setOn(bool on);
 		QString actionName();

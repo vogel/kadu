@@ -1,6 +1,9 @@
 #ifndef KADU_PARSER_H
 #define KADU_PARSER_H
 
+#define QT3_SUPPORT
+#include <qglobal.h>
+
 #include <qmap.h>
 #include <qstring.h>
 

@@ -8,19 +8,28 @@
  ***************************************************************************/
 
 #include <qapplication.h>
+#include <qdesktopwidget.h>
 #include <qcombobox.h>
 #include <qcursor.h>
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qlineedit.h>
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qpainter.h>
-#include <qpopupmenu.h>
-#include <qprocess.h>
+#include <q3popupmenu.h>
+#include <q3process.h>
 #include <qpushbutton.h>
 #include <qregexp.h>
-#include <qsimplerichtext.h>
+#include <q3simplerichtext.h>
 #include <qtextcodec.h>
+//Added by qt3to4:
+#include <Q3HBoxLayout>
+#include <QKeyEvent>
+#include <Q3ValueList>
+#include <Q3GridLayout>
+#include <Q3CString>
+#include <QPixmap>
+#include <QPaintEvent>
 
 //getpwuid
 #include <pwd.h>
@@ -379,7 +388,7 @@ QString latin2unicode(const unsigned char *buf)
 		return QString::null;
 }
 
-QCString unicode2latin(const QString &buf)
+Q3CString unicode2latin(const QString &buf)
 {
 	return codec_latin2->fromUnicode(buf);
 }
@@ -602,7 +611,7 @@ void openWebBrowser(const QString &link)
 	CONST_FOREACH(i, args)
 		kdebugmf(KDEBUG_INFO, "%s\n", (*i).local8Bit().data());
 
-	QProcess *browser = new QProcess(args, qApp);
+	Q3Process *browser = new Q3Process(args, qApp);
 	QObject::connect(browser, SIGNAL(processExited()), browser, SLOT(deleteLater()));
 
 	if (!browser->start())
@@ -638,7 +647,7 @@ void openMailClient(const QString &mail)
 	CONST_FOREACH(arg, args)
 		kdebugmf(KDEBUG_INFO, "%s\n", (*arg).local8Bit().data());
 
-	QProcess *mailer = new QProcess(args, qApp);
+	Q3Process *mailer = new Q3Process(args, qApp);
 	QObject::connect(mailer, SIGNAL(processExited()), mailer, SLOT(deleteLater()));
 
 	if (!mailer->start())
@@ -765,11 +774,11 @@ ChooseDescription::ChooseDescription(QWidget *parent, const char *name)
 	kdebugf();
 	setCaption(tr("Select description"));
 
-	while (defaultdescriptions.count()>config_file.readUnsignedNumEntry("General", "NumberOfDescriptions"))
+	while (defaultdescriptions.count() > config_file.readNumEntry("General", "NumberOfDescriptions"))
 		defaultdescriptions.pop_back();
 
   	Description = new QComboBox(TRUE, this, "description");
-	Description->setSizeLimit(30);
+	Description->setMaxVisibleItems(30);
 	Description->insertStringList(defaultdescriptions);
 
 	QLineEdit *ss = new QLineEdit(this, "LineEdit");
@@ -790,7 +799,7 @@ ChooseDescription::ChooseDescription(QWidget *parent, const char *name)
 	QObject::connect(OkButton, SIGNAL(clicked()), this, SLOT(okPressed()));
 	QObject::connect(cancelButton, SIGNAL(clicked()), this, SLOT(cancelPressed()));
 
-	QGridLayout *grid = new QGridLayout(this, 2, 2, 5, 10);
+	Q3GridLayout *grid = new Q3GridLayout(this, 2, 2, 5, 10);
 
 	grid->addMultiCellWidget(Description, 0, 0, 0, 2);
 	grid->addWidget(AvailableChars, 1, 0);
@@ -862,7 +871,7 @@ void ChooseDescription::okPressed()
 	//i dodajemy na pocz±tek
 	defaultdescriptions.prepend(description);
 
-	while (defaultdescriptions.count() > config_file.readUnsignedNumEntry("General", "NumberOfDescriptions"))
+	while (defaultdescriptions.count() > config_file.readNumEntry("General", "NumberOfDescriptions"))
 		defaultdescriptions.pop_back();
 
 	if (config_file.readBoolEntry("General", "ParseStatus", false))
@@ -897,7 +906,7 @@ void ChooseDescription::updateAvailableChars(const QString &text)
 }
 
 OpenChatWith::OpenChatWith(QWidget* parent, const char* name)
-	: QVBox(parent, name, WType_TopLevel | WDestructiveClose)
+	: Q3VBox(parent, name, Qt::WType_TopLevel | Qt::WDestructiveClose)
 {
 	kdebugf();
 
@@ -905,7 +914,7 @@ OpenChatWith::OpenChatWith(QWidget* parent, const char* name)
 	setMargin(5);
 	setSpacing(5);
 
-	QHBox *combos = new QHBox(this);
+	Q3HBox *combos = new Q3HBox(this);
 	combos->setSpacing(5);
 
 	c_protocol = new QComboBox(combos);
@@ -917,7 +926,7 @@ OpenChatWith::OpenChatWith(QWidget* parent, const char* name)
 	c_text->setAutoCompletion(true);
 	c_text->setEditable(true);
 	c_text->setFocus();
-	QToolTip::add(c_text, tr("UIN or nick"));
+	c_text->setToolTip(tr("UIN or nick"));
 
 	QStringList posibilities;
 	CONST_FOREACH(user, userlist->toUserListElements())
@@ -930,7 +939,7 @@ OpenChatWith::OpenChatWith(QWidget* parent, const char* name)
 
 	QWidget *buttons = new QWidget(this);
 
-	QHBoxLayout *buttonsLayout = new QHBoxLayout(buttons);
+	Q3HBoxLayout *buttonsLayout = new Q3HBoxLayout(buttons);
 	buttonsLayout->setSpacing(5);
 
 	QPushButton *b_cancel = new QPushButton(tr("&Cancel"), buttons);
@@ -950,7 +959,7 @@ OpenChatWith::OpenChatWith(QWidget* parent, const char* name)
 
 OpenChatWith::~OpenChatWith()
 {
-	saveGeometry(this, "General", "OpenChatWith");
+// 	saveGeometry(this, "General", "OpenChatWith");
 }
 
 void OpenChatWith::keyPressEvent(QKeyEvent *e)
@@ -1024,7 +1033,7 @@ TokenDialog::TokenDialog(QPixmap tokenImage, QDialog *parent, const char *name)
 	: QDialog(parent, name), tokenedit(0)
 {
 	kdebugf();
-	QGridLayout *grid = new QGridLayout(this, 3, 2, 6, 5);
+	Q3GridLayout *grid = new Q3GridLayout(this, 3, 2, 6, 5);
 
 	QLabel *l_tokenimage = new QLabel(tr("Read this code ..."), this);
 	ImageWidget *tokenimage = new ImageWidget(this);
@@ -1066,7 +1075,7 @@ PixmapPreview::PixmapPreview() : QLabel(NULL)
 {
 }
 
-void PixmapPreview::previewUrl(const QUrl& url)
+void PixmapPreview::previewUrl(const Q3Url& url)
 {
 	QString path = url.path();
 	QPixmap pix( path );
@@ -1074,7 +1083,7 @@ void PixmapPreview::previewUrl(const QUrl& url)
 		setText(qApp->translate("PixmapPreview", "This is not an image"));
 	else
 	{
-		QWMatrix mx;
+		QMatrix mx;
 		mx.scale(
 			double(width())/double(pix.width()),
 			double(height())/double(pix.height()));
@@ -1084,27 +1093,27 @@ void PixmapPreview::previewUrl(const QUrl& url)
 }
 
 ImageDialog::ImageDialog(QWidget* parent)
-	: QFileDialog(parent,"image dialog",true)
+	: Q3FileDialog(parent,"image dialog",true)
 {
 	PixmapPreview* pp = new PixmapPreview();
 	setFilter(qApp->translate("ImageDialog", "Images")+" (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP)");
 	setContentsPreviewEnabled(true);
 	setContentsPreview(pp, pp);
-	setPreviewMode(QFileDialog::Contents);
+	setPreviewMode(Q3FileDialog::Contents);
 }
 
 
-QValueList<int> toIntList(const QValueList<QVariant> &in)
+Q3ValueList<int> toIntList(const Q3ValueList<QVariant> &in)
 {
-	QValueList<int> out;
+	Q3ValueList<int> out;
 	CONST_FOREACH(it, in)
 		out.append((*it).toInt());
 	return out;
 }
 
-QValueList<QVariant> toVariantList(const QValueList<int> &in)
+Q3ValueList<QVariant> toVariantList(const Q3ValueList<int> &in)
 {
-	QValueList<QVariant> out;
+	Q3ValueList<QVariant> out;
 	CONST_FOREACH(it, in)
 		out.append(QVariant(*it));
 	return out;
@@ -1146,7 +1155,7 @@ QString narg(const QString &s, const QString **tab, int count)
 		{
 			out.append(QConstString(d - j, j).string());
 			++d;
-			out.append(*(tab[*d - '1']));
+			out.append(*(tab[d->digitValue()]));
 			j = 0;
 		}
 		else
@@ -1225,13 +1234,13 @@ LayoutHelper::~LayoutHelper()
 void LayoutHelper::addLabel(QLabel *label)
 {
 	labels.push_back(label);
-	riches.push_back(new QSimpleRichText(label->text(), label->font()));
+	riches.push_back(new Q3SimpleRichText(label->text(), label->font()));
 }
 
 void LayoutHelper::resizeLabels()
 {
-	QValueList<QLabel *>::iterator l = labels.begin(), lend = labels.end();
-	QValueList<QSimpleRichText *>::iterator r = riches.begin();
+	Q3ValueList<QLabel *>::iterator l = labels.begin(), lend = labels.end();
+	Q3ValueList<Q3SimpleRichText *>::iterator r = riches.begin();
 
 	while (l != lend)
 	{
@@ -1247,15 +1256,15 @@ void LayoutHelper::resizeLabels()
 
 void LayoutHelper::textChanged(QLabel *label)
 {
-	QValueList<QLabel *>::iterator l = labels.begin(), lend = labels.end();
-	QValueList<QSimpleRichText *>::iterator r = riches.begin();
+	Q3ValueList<QLabel *>::iterator l = labels.begin(), lend = labels.end();
+	Q3ValueList<Q3SimpleRichText *>::iterator r = riches.begin();
 
 	while (l != lend)
 	{
 		if ((*l) == label)
 		{
 			delete *r;
-			*r = new QSimpleRichText(label->text(), label->font());
+			*r = new Q3SimpleRichText(label->text(), label->font());
 			break;
 		}
 		++l;
@@ -1263,7 +1272,7 @@ void LayoutHelper::textChanged(QLabel *label)
 	}
 }
 
-int showPopupMenu(QPopupMenu *menu)
+int showPopupMenu(Q3PopupMenu *menu)
 {
 	kdebugf();
 	QSize desktopSize = QApplication::desktop()->size();

@@ -1,6 +1,8 @@
 #ifndef KADU_CHAT_MESSAGE_H
 #define KADU_CHAT_MESSAGE_H
 
+#include <qglobal.h>
+
 #include <qcolor.h>
 #include <qdatetime.h>
 #include <qmap.h>

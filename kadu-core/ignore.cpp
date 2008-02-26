@@ -10,11 +10,15 @@
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qlineedit.h>
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qpushbutton.h>
-#include <qsimplerichtext.h>
-#include <qvbox.h>
-#include <qvgroupbox.h>
+#include <q3simplerichtext.h>
+#include <q3vbox.h>
+#include <q3vgroupbox.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <Q3ValueList>
+#include <QKeyEvent>
 
 #include "config_file.h"
 #include "debug.h"
@@ -24,7 +28,7 @@
 #include "misc.h"
 #include "userlist.h"
 
-Ignored::Ignored(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopLevel | WDestructiveClose),
+Ignored::Ignored(QWidget *parent, const char *name) : Q3HBox(parent, name, Qt::WType_TopLevel | Qt::WDestructiveClose),
 	lb_list(0), e_uin(0), layoutHelper(new LayoutHelper())
 {
 	kdebugf();
@@ -32,7 +36,7 @@ Ignored::Ignored(QWidget *parent, const char *name) : QHBox(parent, name, WType_
 	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
-	QVBox *left = new QVBox(this);
+	Q3VBox *left = new Q3VBox(this);
 	//left->layout()->setResizeMode(QLayout::Minimum);
 	left->setMargin(10);
 	left->setSpacing(10);
@@ -41,7 +45,7 @@ Ignored::Ignored(QWidget *parent, const char *name) : QHBox(parent, name, WType_
 	QWidget *blank=new QWidget(left);
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	QVBox *center = new QVBox(this);
+	Q3VBox *center = new Q3VBox(this);
 	center->setMargin(10);
 	center->setSpacing(10);
 
@@ -52,19 +56,19 @@ Ignored::Ignored(QWidget *parent, const char *name) : QHBox(parent, name, WType_
 	// end create main QLabel widgets (icon and app info)
 
 	// our QListBox
-	lb_list = new QListBox(center);
+	lb_list = new Q3ListBox(center);
 	getList();
 	// end our QListBox
 
 	//our QVGroupBox
-	QVGroupBox *vgb_uin = new QVGroupBox(center);
+	Q3VGroupBox *vgb_uin = new Q3VGroupBox(center);
 	vgb_uin->setTitle(tr("Uin"));
 	//end our QGroupBox
 
 	QLabel *l_uin = new QLabel(tr("Type here the UIN of the person you want to ignore."), vgb_uin);
 	l_uin->setAlignment(Qt::WordBreak);
 
-	QHBox *hb_uin = new QHBox(vgb_uin);
+	Q3HBox *hb_uin = new Q3HBox(vgb_uin);
 	hb_uin->setMargin(5);
 	hb_uin->setSpacing(3);
 
@@ -75,7 +79,7 @@ Ignored::Ignored(QWidget *parent, const char *name) : QHBox(parent, name, WType_
 	hb_uin->setStretchFactor(e_uin, 1);
 
 	// buttons
-	QHBox *bottom = new QHBox(center);
+	Q3HBox *bottom = new Q3HBox(center);
 	QWidget *blank2 = new QWidget(bottom);
 	bottom->setSpacing(5);
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
@@ -98,7 +102,7 @@ Ignored::Ignored(QWidget *parent, const char *name) : QHBox(parent, name, WType_
 Ignored::~Ignored()
 {
 	kdebugf();
-	saveGeometry(this, "General", "IgnoredDialogGeometry");
+// 	saveGeometry(this, "General", "IgnoredDialogGeometry");
 	delete layoutHelper;
 	kdebugf2();
 }
@@ -174,7 +178,7 @@ void Ignored::resizeEvent(QResizeEvent * /*e*/)
 
 
 
-QValueList<QPair<UserListElements, bool> > IgnoredManager::Ignored;
+Q3ValueList<QPair<UserListElements, bool> > IgnoredManager::Ignored;
 
 void IgnoredManager::loadFromConfiguration()
 {
@@ -189,12 +193,12 @@ void IgnoredManager::loadFromConfiguration()
 	}
 
 	QDomNodeList ignored_groups = ignored_elem.elementsByTagName("IgnoredGroup");
-	for (unsigned int i = 0; i < ignored_groups.count(); i++)
+	for (int i = 0; i < ignored_groups.count(); i++)
 	{
 		QDomElement ignored_group = ignored_groups.item(i).toElement();
 		UserListElements users;
 		QDomNodeList ignored_contacts = ignored_group.elementsByTagName("IgnoredContact");
-		for (unsigned int j = 0; j < ignored_contacts.count(); j++)
+		for (int j = 0; j < ignored_contacts.count(); j++)
 		{
 			QDomElement ignored_contact = ignored_contacts.item(j).toElement();
 			users.append(userlist->byID("Gadu", ignored_contact.attribute("uin")));
@@ -252,7 +256,7 @@ void IgnoredManager::clear()
 	Ignored.clear();
 }
 
-const QValueList<QPair<UserListElements, bool> > & IgnoredManager::getList()
+const Q3ValueList<QPair<UserListElements, bool> > & IgnoredManager::getList()
 {
 	return Ignored;
 }

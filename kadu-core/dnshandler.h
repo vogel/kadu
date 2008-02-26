@@ -1,7 +1,10 @@
 #ifndef KADU_DNS_HANDLER_H
 #define KADU_DNS_HANDLER_H
 
-#include <qdns.h>
+#define QT3_SUPPORT
+#include <qglobal.h>
+
+#include <q3dns.h>
 #include <qhostaddress.h>
 #include <qobject.h>
 #include <qstring.h>
@@ -34,7 +37,7 @@ class DNSHandler : public QObject
 		static int counter; /*!< licznik obiektów tej klasy */
 
 	private:
-		QDns DNSResolver; /*!< obiekt zajmuj±cy siê translacj± adresu na nazwê domeny */
+		Q3Dns DNSResolver; /*!< obiekt zajmuj±cy siê translacj± adresu na nazwê domeny */
 		QString marker; /*!< znacznik (np. identyfikator protoko³u) */
 
 	private slots:

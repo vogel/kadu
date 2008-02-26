@@ -1,14 +1,20 @@
 #ifndef DOCKAREA_H
 #define DOCKAREA_H
 
-#include <qdockarea.h>
-#include <qpopupmenu.h>
+#define QT3_SUPPORT
+#include <qglobal.h>
+
+#include <q3dockarea.h>
+#include <q3popupmenu.h>
 #include <qstring.h>
-#include <qvaluelist.h>
+#include <q3valuelist.h>
+//Added by qt3to4:
+#include <QChildEvent>
+#include <QContextMenuEvent>
 
 #include "usergroup.h"
 
-class DockArea : public QDockArea
+class DockArea : public Q3DockArea
 {
 	Q_OBJECT
 
@@ -16,7 +22,7 @@ class DockArea : public QDockArea
 		static bool Blocked;
 		int SupportedActions;
 		void setBlockToolbars(bool);
-		static QValueList<DockArea *> AllDockAreas;
+		static Q3ValueList<DockArea *> AllDockAreas;
 
 	protected:
 		void contextMenuEvent(QContextMenuEvent* e);
@@ -28,7 +34,7 @@ class DockArea : public QDockArea
 		void toolbarPlaceChanged();
 
 	public:
-		DockArea(Orientation o, HandlePosition h,
+		DockArea(Qt::Orientation o, HandlePosition h,
 			QWidget* parent,
 			const char* name, int supportedActions);
 		~DockArea();
@@ -43,7 +49,7 @@ class DockArea : public QDockArea
 		**/
 		const UserGroup* selectedUsers();
 		static bool blocked();
-		QPopupMenu* createContextMenu(QWidget* parent);
+		Q3PopupMenu* createContextMenu(QWidget* parent);
 
 		bool supportsAction(int actionType);
 

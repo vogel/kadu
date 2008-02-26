@@ -1,9 +1,16 @@
 #ifndef KADU_CONFIGURATION_WINDOW_H
 #define KADU_CONFIGURATION_WINDOW_H
 
+#define QT3_SUPPORT
+#include <qglobal.h>
+
 #include <qdom.h>
-#include <qgroupbox.h>
+#include <q3groupbox.h>
 #include <qtabwidget.h>
+//Added by qt3to4:
+#include <Q3GridLayout>
+#include <Q3ValueList>
+#include <QKeyEvent>
 
 #include "color_button.h"
 #include "hot_key.h"
@@ -18,9 +25,9 @@ class ConfigTab;
 class ConfigurationWindow;
 class ConfigWidget;
 
-class QGridLayout;
-class QGroupBox;
-class QVBox;
+class Q3GridLayout;
+class Q3GroupBox;
+class Q3VBox;
 
 class ConfigSection : public QObject
 {
@@ -30,7 +37,7 @@ class ConfigSection : public QObject
 	ConfigurationWindow *configurationWindow;
 	QString pixmap;
 
-	QListBoxItem *listBoxItem;
+	Q3ListBoxItem *listBoxItem;
 	QMap<QString, ConfigTab *> configTabs;
 
 	QTabWidget *mainWidget;
@@ -42,7 +49,7 @@ private slots:
 	void iconThemeChanged();
 
 public:
-	ConfigSection(const QString &name, ConfigurationWindow *configurationWindow, QListBoxItem *listBoxItem, QWidget *parentConfigGroupBoxWidget,
+	ConfigSection(const QString &name, ConfigurationWindow *configurationWindow, Q3ListBoxItem *listBoxItem, QWidget *parentConfigGroupBoxWidget,
 		const QString &pixmap);
 	~ConfigSection();
 
@@ -82,12 +89,12 @@ class ConfigGroupBox
 	QString name;
 	ConfigTab *configTab;
 
-	QGroupBox *groupBox;
+	Q3GroupBox *groupBox;
 	QWidget *container;
-	QGridLayout *gridLayout;
+	Q3GridLayout *gridLayout;
 
 public:
-	ConfigGroupBox(const QString &name, ConfigTab *configTab, QGroupBox *groupBox);
+	ConfigGroupBox(const QString &name, ConfigTab *configTab, Q3GroupBox *groupBox);
 	~ConfigGroupBox();
 
 	QWidget * widget() { return container; }
@@ -163,19 +170,19 @@ public:
 	Atrybut catpion jest wymagany. Mo¿liwe tagi widget s± opisane w dokumentacji
 	klas Config* (np.: ConfigComboBox).
  **/
-class ConfigurationWindow : public QVBox
+class ConfigurationWindow : public Q3VBox
 {
 	Q_OBJECT
 
 	QString Name;
 
-	QVBox *left;
+	Q3VBox *left;
 	QMap<QString, ConfigSection *> configSections;
 	ConfigSection *currentSection;
 
 	QMap<QString, QWidget *> widgets;
 
-	QListBox *sectionsListBox;
+	Q3ListBox *sectionsListBox;
 	QWidget *container;
 
 	void loadConfiguration(QObject *object);
@@ -184,10 +191,10 @@ class ConfigurationWindow : public QVBox
 	ConfigSection *configSection(const QString &name);
 	ConfigSection *configSection(const QString &icon, const QString &name, bool create = true);
 
-	QValueList<ConfigWidget *> processUiFile(const QString &fileName, bool append = true);
-	QValueList<ConfigWidget *> processUiSectionFromDom(QDomNode sectionNode, bool append = true);
-	QValueList<ConfigWidget *> processUiTabFromDom(QDomNode tabNode, const QString &iconName, const QString &sectionName, bool append = true);
-	QValueList<ConfigWidget *> processUiGroupBoxFromDom(QDomNode groupBoxNode, const QString &sectionName, const QString &tabName, bool append = true);
+	Q3ValueList<ConfigWidget *> processUiFile(const QString &fileName, bool append = true);
+	Q3ValueList<ConfigWidget *> processUiSectionFromDom(QDomNode sectionNode, bool append = true);
+	Q3ValueList<ConfigWidget *> processUiTabFromDom(QDomNode tabNode, const QString &iconName, const QString &sectionName, bool append = true);
+	Q3ValueList<ConfigWidget *> processUiGroupBoxFromDom(QDomNode groupBoxNode, const QString &sectionName, const QString &tabName, bool append = true);
 	ConfigWidget * appendUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox);
 	void removeUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox);
 
@@ -231,7 +238,7 @@ public:
 		Gdy load == true wczytuje ich warto¶ci z pliku konfiguracyjnego. W przeciwnym
 		wypadku wczytanie warto¶ci nast±pi po wywo³aniu metody @see show.
 	 **/
-	QValueList<ConfigWidget *> appendUiFile(const QString &fileName, bool load = true);
+	Q3ValueList<ConfigWidget *> appendUiFile(const QString &fileName, bool load = true);
 	/**
 		Usuwa kontrolki wczytane z danego pliku *.ui.
 	 **/

@@ -1,8 +1,15 @@
 #ifndef GADU_H
 #define GADU_H
 
+#include <qglobal.h>
+
 #include <qhostaddress.h>
-#include <qvaluelist.h>
+#include <q3valuelist.h>
+#include <q3textstream.h>
+
+//Added by qt3to4:
+#include <Q3CString>
+#include <QPixmap>
 
 #include "libgadu.h"
 #include "protocol.h"
@@ -19,7 +26,7 @@ class GaduSocketNotifiers;
 //            UinsList
 // ------------------------------------
 
-class UinsList : public QValueList<UinType>
+class UinsList : public QList<UinType>
 {
 	public:
 		/**
@@ -98,7 +105,7 @@ struct SearchResult
 		const char *city, const char *familyName, const char *familyCity, const char *gender, const char *status);
 };
 
-typedef QValueList<SearchResult> SearchResults;
+typedef Q3ValueList<SearchResult> SearchResults;
 
 struct SearchRecord
 {
@@ -175,7 +182,7 @@ class GaduFormater
 		 *
 		 * Precondition - formats_length must contain valid length of result buffer
 		 */
-		static unsigned char *allocFormantBuffer(const QValueList<struct richtext_formant> &formants, unsigned int &formats_length);
+		static unsigned char *allocFormantBuffer(const Q3ValueList<struct richtext_formant> &formants, unsigned int &formats_length);
 
 	public:
 		static QString formatGGMessage(const QString &msg, unsigned int formats_length, void *formats, UinType sender);
@@ -246,7 +253,7 @@ class GaduProtocol : public Protocol
 		QString TokenValue;
 
 		/** Serwery, z którymi ³aczy siê obiekt. **/
-		static QValueList<QHostAddress> ConfigServers;
+		static Q3ValueList<QHostAddress> ConfigServers;
 		/** Numer serwera, do którego obiekt ostatnio próbowa³ siê pod³±czyæ. **/
 		unsigned int ServerNr;
 		/** Adres serwera, do którego obiekt jest pod³±czony. **/
@@ -516,7 +523,7 @@ class GaduProtocol : public Protocol
 		/**
 			Slot wywo³ywany po otrzymaniu wiadomo¶ci od serwera.
 		**/
-		void messageReceivedSlot(int, UserListElements, QCString& msg, time_t, QByteArray &formats);
+		void messageReceivedSlot(int, UserListElements, Q3CString& msg, time_t, QByteArray &formats);
 
 		/**
 			Wykonuje zadania co minutê - pinguje sieæ i zeruje licznik
@@ -674,7 +681,7 @@ class GaduProtocol : public Protocol
 			@see userListToString
 			@see streamToUserList
 		**/
-		QValueList<UserListElement> stringToUserList(const QString &source) const;
+		Q3ValueList<UserListElement> stringToUserList(const QString &source) const;
 
 		/**
 			Odczytuje ze strumienia ³añcuch reprezentuj±cy listê u¿ytkowników i konwertuje
@@ -686,7 +693,7 @@ class GaduProtocol : public Protocol
 			@see userListToString
 			@see stringToUserList
 		**/
-		QValueList<UserListElement> streamToUserList(QTextStream &source) const;
+		Q3ValueList<UserListElement> streamToUserList(Q3TextStream &source) const;
 
 		/**
 			Po jedno sekundowym opó¼nieniu wykonuje próbê po³±czenia.
@@ -1011,7 +1018,7 @@ class GaduProtocol : public Protocol
 			@param list je¿eli operacja siê powiod³a, to zaimportowana lista
 			@see doImportUserList
 		**/
-		void userListImported(bool ok, QValueList<UserListElement> list);
+		void userListImported(bool ok, Q3ValueList<UserListElement> list);
 
 		/**
 			Sygna³ daje mozliwo¶æ operowania na wiadomo¶ci
@@ -1024,7 +1031,7 @@ class GaduProtocol : public Protocol
 			Mo¿na te¿ przerwaæ dalsz± obróbkê wiadomo¶ci ustawiaj±c
 			stop na true.
 		**/
-		void rawGaduReceivedMessageFilter(Protocol *protocol, UserListElements senders, QCString &msg, QByteArray &formats, bool &ignore);
+		void rawGaduReceivedMessageFilter(Protocol *protocol, UserListElements senders, Q3CString &msg, QByteArray &formats, bool &ignore);
 
 		/**
 			Wywo³ywane, gdy chcemy odczytaæ token z obrazka

@@ -11,11 +11,15 @@
 
 #include <qlabel.h>
 #include <qlayout.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qpushbutton.h>
-#include <qsimplerichtext.h>
-#include <qvbox.h>
-#include <qvgroupbox.h>
+#include <q3simplerichtext.h>
+#include <q3vbox.h>
+#include <q3vgroupbox.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <Q3ValueList>
+#include <QKeyEvent>
 
 #include "debug.h"
 #include "expimp.h"
@@ -32,7 +36,7 @@ void UserlistImportExport::resizeEvent(QResizeEvent * /*e*/)
 }
 
 UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) :
-	QHBox(parent, name, WType_TopLevel | WDestructiveClose),
+	Q3HBox(parent, name, Qt::WType_TopLevel | Qt::WDestructiveClose),
 	pb_fetch(0), importedUserlist(), pb_send(0), pb_delete(0), pb_tofile(0),
 	l_itemscount(0), layoutHelper(new LayoutHelper()), lv_userlist(0)
 {
@@ -41,7 +45,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) :
 	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
-	QVBox *left = new QVBox(this);
+	Q3VBox *left = new Q3VBox(this);
 	left->setMargin(10);
 	left->setSpacing(10);
 
@@ -49,7 +53,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) :
 	QWidget *w_blank = new QWidget(left);
 	w_blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	QVBox *center = new QVBox(this);
+	Q3VBox *center = new Q3VBox(this);
 	center->setMargin(10);
 	center->setSpacing(10);
 
@@ -61,10 +65,10 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) :
 
 	// our QListView
 	// our QVGroupBox
-	QVGroupBox *vgb_import = new QVGroupBox(center);
+	Q3VGroupBox *vgb_import = new Q3VGroupBox(center);
 	vgb_import->setTitle(tr("Import userlist"));
 	// end our QGroupBox
-	lv_userlist = new QListView(vgb_import);
+	lv_userlist = new Q3ListView(vgb_import);
 	lv_userlist->addColumn(tr("UIN"));
 	lv_userlist->addColumn(tr("Nickname"));
 	lv_userlist->addColumn(tr("Disp. nick"));
@@ -77,7 +81,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) :
 	// end our QListView
 
 	// buttons
-	QHBox *hb_importbuttons = new QHBox(vgb_import);
+	Q3HBox *hb_importbuttons = new Q3HBox(vgb_import);
 	QWidget *w_blank2 = new QWidget(hb_importbuttons);
 	hb_importbuttons->setSpacing(5);
 	w_blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
@@ -89,7 +93,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) :
 	// end buttons
 
 	// our QVGroupBox
-	QVGroupBox *vgb_export = new QVGroupBox(center);
+	Q3VGroupBox *vgb_export = new Q3VGroupBox(center);
 	vgb_export->setTitle(tr("Export userlist"));
 	// end our QGroupBox
 
@@ -97,7 +101,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) :
 	updateUserListCount();
 
 	// export buttons
-	QHBox *hb_exportbuttons = new QHBox(vgb_export);
+	Q3HBox *hb_exportbuttons = new Q3HBox(vgb_export);
 	QWidget *w_blank3 = new QWidget(hb_exportbuttons);
 	hb_exportbuttons->setSpacing(5);
 	w_blank3->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
@@ -108,7 +112,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) :
 	// end export buttons
 
 	// buttons
-	QHBox *bottom = new QHBox(center);
+	Q3HBox *bottom = new Q3HBox(center);
 	QWidget *w_blank4 = new QWidget(bottom);
 	bottom->setSpacing(5);
 	w_blank4->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
@@ -128,7 +132,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) :
 
 	connect(gadu, SIGNAL(userListExported(bool)), this, SLOT(userListExported(bool)));
 	connect(gadu, SIGNAL(userListCleared(bool)), this, SLOT(userListCleared(bool)));
-	connect(gadu, SIGNAL(userListImported(bool, QValueList<UserListElement>)), this, SLOT(userListImported(bool, QValueList<UserListElement>)));
+	connect(gadu, SIGNAL(userListImported(bool, Q3ValueList<UserListElement>)), this, SLOT(userListImported(bool, Q3ValueList<UserListElement>)));
 	// end connect
 
 	layoutHelper->addLabel(l_info);
@@ -148,7 +152,7 @@ void UserlistImportExport::updateUserListCount()
 UserlistImportExport::~UserlistImportExport()
 {
 	kdebugf();
-	saveGeometry(this, "General", "ImportExportDialogGeometry");
+// 	saveGeometry(this, "General", "ImportExportDialogGeometry");
 	delete layoutHelper;
 	kdebugf2();
 }
@@ -162,13 +166,13 @@ void UserlistImportExport::keyPressEvent(QKeyEvent *ke_event)
 void UserlistImportExport::fromfile()
 {
 	kdebugf();
-	QString fname = QFileDialog::getOpenFileName("/", QString::null, this);
+	QString fname = Q3FileDialog::getOpenFileName("/", QString::null, this);
 	if (!fname.isEmpty())
 	{
 		QFile file(fname);
- 		if (file.open(IO_ReadOnly))
+ 		if (file.open(QIODevice::ReadOnly))
 		{
-			QTextStream stream(&file);
+			Q3TextStream stream(&file);
 			importedUserlist = gadu->streamToUserList(stream);
 			file.close();
 
@@ -177,7 +181,7 @@ void UserlistImportExport::fromfile()
 				QString id;
 				if ((*i).usesProtocol("Gadu"))
 					id = (*i).ID("Gadu");
-				new QListViewItem(lv_userlist, id,
+				new Q3ListViewItem(lv_userlist, id,
 					(*i).nickName(),  (*i).altNick(),
 					(*i).firstName(), (*i).lastName(),
 					(*i).mobile(),    (*i).data("Groups").toStringList().join(","),
@@ -229,7 +233,7 @@ void UserlistImportExport::updateUserlist()
 	kdebugf2();
 }
 
-void UserlistImportExport::userListImported(bool ok, QValueList<UserListElement> userList)
+void UserlistImportExport::userListImported(bool ok, Q3ValueList<UserListElement> userList)
 {
 	kdebugf();
 
@@ -244,7 +248,7 @@ void UserlistImportExport::userListImported(bool ok, QValueList<UserListElement>
 			QString id;
 			if ((*user).usesProtocol("Gadu"))
 				id = (*user).ID("Gadu");
-			new QListViewItem(lv_userlist, id, (*user).nickName(),
+			new Q3ListViewItem(lv_userlist, id, (*user).nickName(),
 				(*user).altNick(), (*user).firstName(), (*user).lastName(), (*user).mobile(),
 				(*user).data("Groups").toStringList().join(","), (*user).email());
 		}
@@ -278,15 +282,15 @@ void UserlistImportExport::ExportToFile(void)
 	pb_delete->setEnabled(false);
 	pb_tofile->setEnabled(false);
 
-	QString fname = QFileDialog::getSaveFileName(QString(getenv("HOME")), QString::null, this);
+	QString fname = Q3FileDialog::getSaveFileName(QString(getenv("HOME")), QString::null, this);
 	if (!fname.isEmpty())
 	{
 		QFile file(fname);
 		if ((!file.exists()) || (MessageBox::ask(tr("File exists. Are you sure you want to overwrite it?"), QString::null, this)))
 		{
-			if (file.open(IO_WriteOnly))
+			if (file.open(QIODevice::WriteOnly))
 			{
-				QTextStream stream(&file);
+				Q3TextStream stream(&file);
 				stream.setCodec(codec_latin2);
 				stream << gadu->userListToString(*userlist);
 				file.close();

@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <qapplication.h>
+#include <q3textstream.h>
 #include <qfile.h>
 #include <qmutex.h>
 
@@ -40,7 +41,7 @@ void XmlConfigFile::read()
 	CONST_FOREACH(fileName, files)
 	{
 		file.setName(ggPath(*fileName));
-		fileOpened = file.open(IO_ReadOnly);
+		fileOpened = file.open(QIODevice::ReadOnly);
 		if (fileOpened && file.size() > 0)
 		{
 			kdebugm(KDEBUG_INFO, "file %s opened!\n", file.name().local8Bit().data());
@@ -96,11 +97,11 @@ void XmlConfigFile::write(const QString& f)
 		fileName = f;
 	tmpFileName = fileName + ".tmp"; // saving to another file to avoid truncation of output file when segfault occurs :|
 	file.setName(tmpFileName);
-	if (file.open(IO_WriteOnly | IO_Truncate))
+	if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
 	{
 		kdebugm(KDEBUG_INFO, "file opened '%s'\n", file.name().local8Bit().data());
-		QTextStream stream(&file);
-		stream.setEncoding(QTextStream::UnicodeUTF8);
+		Q3TextStream stream(&file);
+		stream.setEncoding(Q3TextStream::UnicodeUTF8);
 		stream << DomDocument.toString();
 		file.close();
 		if (rename(tmpFileName.local8Bit().data(), fileName.local8Bit().data()) == -1)
@@ -243,9 +244,9 @@ void PlainConfigFile::read()
 	QFile file(filename);
 	QString line;
 
-	if (file.open(IO_ReadOnly))
+	if (file.open(QIODevice::ReadOnly))
 	{
-		QTextStream stream(&file);
+		Q3TextStream stream(&file);
 		stream.setCodec(codec_latin2);
 		while (!stream.atEnd())
 		{
@@ -266,7 +267,7 @@ void PlainConfigFile::read()
 				QString value = line.right(line.length()-name.length()-1).replace("\\n", "\n");
 				name = name.stripWhiteSpace();
 
-				if (line.contains('=') >= 1 && !name.isEmpty() && !value.isEmpty())
+				if (line.contains('=') && !name.isEmpty() && !value.isEmpty())
 					(*activeGroup)[name]=value;
 			}
 		}
@@ -291,10 +292,10 @@ void PlainConfigFile::write() const
 	QString format1("[%1]\n");
 	QString format2("%1=%2\n");
 
-	if (file.open(IO_WriteOnly | IO_Truncate))
+	if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
 	{
 		kdebugm(KDEBUG_INFO, "file opened '%s'\n", (const char *)file.name().local8Bit());
-		QTextStream stream(&file);
+		Q3TextStream stream(&file);
 		stream.setCodec(codec_latin2);
 		CONST_FOREACH(i, groups)
 		{
@@ -366,7 +367,7 @@ QString PlainConfigFile::getEntry(const QString &group, const QString &name, boo
 			return QString::null;
 		}
 		activeGroupName=group;
-		activeGroup=&((QMap<QString, QString>&)groups[group]);
+		activeGroup=&((QMap<QString, QString>)groups[group]);
 	}
 	if (ok)
 		*ok=activeGroup->contains(name);

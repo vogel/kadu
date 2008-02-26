@@ -1,6 +1,9 @@
 #ifndef KADU_USERLISTELEMENT_H
 #define KADU_USERLISTELEMENT_H
 
+#define QT3_SUPPORT
+#include <qglobal.h>
+
 #include <qhostaddress.h>
 #include <qobject.h>
 #include <qstring.h>

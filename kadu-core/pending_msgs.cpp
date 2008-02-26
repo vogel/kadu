@@ -8,6 +8,8 @@
  ***************************************************************************/
 
 #include <qtextcodec.h>
+//Added by qt3to4:
+#include <Q3CString>
 
 #include "chat_manager.h"
 #include "debug.h"
@@ -84,7 +86,7 @@ void PendingMsgs::writeToFile()
 {
 	QString path = ggPath("kadu.msgs");
 	QFile f(path);
-	if(!f.open(IO_WriteOnly))
+	if(!f.open(QIODevice::WriteOnly))
 	{
 		kdebugmf(KDEBUG_ERROR, "Cannot open file kadu.msgs\n");
 		return;
@@ -108,7 +110,7 @@ void PendingMsgs::writeToFile()
 		t=(*i).msg.length();
 		f.writeBlock((char*)&t,sizeof(int));
 		// message content
-		QCString cmsg = codec_latin2->fromUnicode((*i).msg);
+		Q3CString cmsg = codec_latin2->fromUnicode((*i).msg);
 		f.writeBlock(cmsg, cmsg.length());
 		// message class
 		f.writeBlock((char*)&(*i).msgclass,sizeof(int));
@@ -123,7 +125,7 @@ bool PendingMsgs::loadFromFile()
 {
 	QString path = ggPath("kadu.msgs");
 	QFile f(path);
-	if (!f.open(IO_ReadOnly)) {
+	if (!f.open(QIODevice::ReadOnly)) {
 		kdebugmf(KDEBUG_WARNING, "Cannot open file kadu.msgs\n");
 		return false;
 	}

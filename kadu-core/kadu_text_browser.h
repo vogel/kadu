@@ -1,14 +1,21 @@
 #ifndef KADU_TEXT_BROWSER_H
 #define KADU_TEXT_BROWSER_H
 
+#define QT3_SUPPORT
+#include <qglobal.h>
+
 #include <qfont.h>
 #include <qpoint.h>
 #include <qstring.h>
-#include <qtextbrowser.h>
+#include <q3textbrowser.h>
 #include <qtimer.h>
-#include <qtooltip.h>
+// #include <qtooltip.h>
+//Added by qt3to4:
+#include <QWheelEvent>
+#include <QMouseEvent>
+#include <Q3PopupMenu>
 
-class QPopupMenu;
+class Q3PopupMenu;
 class QPainter;
 class QMouseEvent;
 
@@ -18,7 +25,7 @@ class QMouseEvent;
 	W menu kontekstowym jest dodatkowa opcja "Kopiuj lokacjê odno¶nika".
 	Dodatkowo poprawka b³êdu w Qt.
 **/
-class KaduTextBrowser : public QTextBrowser, private QToolTip
+class KaduTextBrowser : public Q3TextBrowser //, private QToolTip
 {
 	Q_OBJECT
 
@@ -45,7 +52,7 @@ class KaduTextBrowser : public QTextBrowser, private QToolTip
 		void verticalSliderReleasedSlot();
 
 	protected:
-		QPopupMenu *createPopupMenu(const QPoint &point);
+		Q3PopupMenu *createPopupMenu(const QPoint &point);
 		virtual void drawContents(QPainter * p, int clipx, int clipy, int clipw, int cliph);
 		virtual void maybeTip(const QPoint&);
 		virtual void contentsMouseReleaseEvent(QMouseEvent * e);
@@ -65,7 +72,7 @@ class KaduTextBrowser : public QTextBrowser, private QToolTip
 		/**
 			Nadpisane dla wyja¶nienia wieloznaczno¶ci		**/
 
-		void setFont(const QFont& f) 	{ QTextBrowser::setFont(f); }
+		void setFont(const QFont& f) 	{ Q3TextBrowser::setFont(f); }
 		void setMargin(int width);
 		/**
 			Returns path to image at position point, or null if there's no image.

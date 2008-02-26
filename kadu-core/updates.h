@@ -1,14 +1,17 @@
 #ifndef KADU_UPDATES_H
 #define KADU_UPDATES_H
 
+#define QT3_SUPPORT
+#include <qglobal.h>
+
 #include <qstring.h>
 #include <qdatetime.h>
 #include <qobject.h>
 
 #include "gadu.h"
 
-class QUrlOperator;
-class QNetworkOperation;
+class Q3UrlOperator;
+class Q3NetworkOperation;
 
 class Updates : public QObject
 {
@@ -18,7 +21,7 @@ class Updates : public QObject
 		static void closeModule();
 
 	private slots:
-		void gotUpdatesInfo(const QByteArray &data, QNetworkOperation *op);
+		void gotUpdatesInfo(const QByteArray &data, Q3NetworkOperation *op);
 		void run();
 
 	private:
@@ -27,7 +30,7 @@ class Updates : public QObject
 		static QDateTime LastUpdateCheck;
 		
 		QString query;
-		QUrlOperator *op;
+		Q3UrlOperator *op;
 
 		Updates(UinType uin);
 		virtual ~Updates();

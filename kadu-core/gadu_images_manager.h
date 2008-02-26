@@ -1,10 +1,13 @@
 #ifndef GADU_IMAGES_MANAGER_H
 #define GADU_IMAGES_MANAGER_H
 
+#define QT3_SUPPORT
+#include <qglobal.h>
+
 #include <qcolor.h>
 #include <qdatetime.h>
 #include <qstring.h>
-#include <qvaluelist.h>
+#include <q3valuelist.h>
 
 #include "gadu.h"
 #include "html_document.h"
@@ -30,7 +33,7 @@ class GaduImagesManager
 			QString file_name;
 			SavedImage();
 		};
-		QValueList<SavedImage> SavedImages;
+		Q3ValueList<SavedImage> SavedImages;
 
 	public:
 		GaduImagesManager();

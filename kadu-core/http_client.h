@@ -1,17 +1,20 @@
 #ifndef KADU_HTTP_CLIENT_H
 #define KADU_HTTP_CLIENT_H
 
-#include <qcstring.h>
+#define QT3_SUPPORT
+#include <qglobal.h>
+
+#include <q3cstring.h>
 #include <qmap.h>
 #include <qobject.h>
-#include <qsocket.h>
+#include <q3socket.h>
 
 class HttpClient : public QObject
 {
 	Q_OBJECT
 
 	private:
-		QSocket Socket;
+		Q3Socket Socket;
 		QString Host;
 		QString Referer;
 		QString Path;

@@ -1,7 +1,11 @@
 #ifndef KADU_CUSTOM_INPUT_H
 #define KADU_CUSTOM_INPUT_H
 
-#include <qmultilineedit.h>
+#include <qglobal.h>
+
+#include <q3multilineedit.h>
+//Added by qt3to4:
+#include <QKeyEvent>
 
 class QKeyEvent;
 class QWidget;
@@ -10,7 +14,7 @@ class QWidget;
 	\class CustomInput
 	\brief Klasa umo¿liwiaj±ca wpisywanie wiadomo¶ci
 **/
-class CustomInput : public QMultiLineEdit
+class CustomInput : public Q3MultiLineEdit
 {
 	Q_OBJECT
 

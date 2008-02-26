@@ -1,21 +1,28 @@
 #ifndef KADU_USERINFO_H
 #define KADU_USERINFO_H
 
-#include <qhbox.h>
-#include <qvaluelist.h>
+#define QT3_SUPPORT
+#include <qglobal.h>
+
+#include <q3hbox.h>
+#include <q3valuelist.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QLabel>
+#include <QKeyEvent>
 
 #include "userlistelement.h"
 #include "misc.h"
 
 class LayoutHelper;
 class QCheckBox;
-class QDns;
+class Q3Dns;
 class QLineEdit;
 class QPushButton;
-class QScrollView;
+class Q3ScrollView;
 class QTabWidget;
-class QVBox;
-class QVGroupBox;
+class Q3VBox;
+class Q3VGroupBox;
 
 /**
 	Klasa ta reprezentuje okno, z którym mamy do czynienia podczas dodawania nowego kontaktu,
@@ -23,7 +30,7 @@ class QVGroupBox;
 	\class UserInfo
 	\brief Okno dialogowe pokazuj±ce informacje o wybranym kontakcie
 **/
-class UserInfo : public QHBox
+class UserInfo : public Q3HBox
 {
 	Q_OBJECT
 	public:
@@ -66,14 +73,14 @@ class UserInfo : public QHBox
 		QCheckBox *c_notify;
 		QPushButton *pb_addapply;
 		QTabWidget *tw_main;
-		QVGroupBox *vgb_general;
-		QDns *dns;
-		QScrollView* scrollView;
+		Q3VGroupBox *vgb_general;
+		Q3Dns *dns;
+		Q3ScrollView* scrollView;
 
-		QValueList<QCheckBox *> groups;
-		QValueList<QCheckBox *> hiddenCheckBoxes;
+		Q3ValueList<QCheckBox *> groups;
+		Q3ValueList<QCheckBox *> hiddenCheckBoxes;
 		QLineEdit *newGroup;
-		QVBox *groupsBox;
+		Q3VBox *groupsBox;
 		LayoutHelper *layoutHelper;
 
 		QMap <QString, QLabel *> pixmapLabels;

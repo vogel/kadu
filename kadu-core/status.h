@@ -1,6 +1,9 @@
 #ifndef KADU_STATUS_H
 #define KADU_STATUS_H
 
+#define QT3_SUPPORT
+#include <qglobal.h>
+
 #include <qobject.h>
 #include <qpixmap.h>
 #include <qstring.h>

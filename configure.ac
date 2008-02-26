@@ -549,7 +549,7 @@ AM_INIT_AUTOMAKE([no-dependencies dist-bzip2])
 ########################################################################
 
 user_cxxflags="$CXXFLAGS"
-CXXFLAGS="-fno-exceptions -pipe -Wall $user_cxxflags"
+CXXFLAGS="-fno-exceptions -pipe -Wall $user_cxxflags -DQT3_SUPPORT=defined -DQT_COMPAT=defined"
 
 user_cflags="$CFLAGS"
 CFLAGS="-pipe -Wall $user_cflags"
@@ -608,9 +608,9 @@ AC_SUBST(PTHREAD_LIBS)
 ########
 # PATHS
 ########
-QT_LIBS_PATHS="    $QTDIR/lib     /usr/lib/qt3/lib     /usr/lib/qt/lib     /usr/local/qt/lib     /usr/local/lib     /usr/lib      /usr/lib/qt     /usr/share/qt3/lib     /usr/X11R6/lib     /sw/lib        /usr/lib/qt3     /usr/X11R6/lib/qt     /usr/X11R6/lib/qt3     /usr/lib/qt3/lib64  $QTDIR/lib64"
-QT_INCLUDES_PATHS="$QTDIR/include /usr/lib/qt3/include /usr/lib/qt/include /usr/local/qt/include /usr/local/include /usr/include  /usr/include/qt /usr/share/qt3/include /usr/X11R6/include /sw/include/qt /usr/include/qt3 /usr/X11R6/include/qt /usr/X11R6/include/qt3"
-QT_TOOLS_PATHS="   $QTDIR/bin     /usr/lib/qt3/bin     /usr/lib/qt/bin     /usr/local/qt/bin     /usr/local/bin     /usr/bin      /bin            /usr/share/qt3/bin     /usr/X11R6/bin"
+QT_LIBS_PATHS="    $QTDIR/lib     /usr/lib/qt4/lib     /usr/lib/qt/lib     /usr/local/qt/lib     /usr/local/lib     /usr/lib      /usr/lib/qt     /usr/lib/qt4     /usr/share/qt4/lib     /usr/X11R6/lib     /sw/lib        /usr/lib/qt4     /usr/X11R6/lib/qt     /usr/X11R6/lib/qt4     /usr/lib/qt4/lib64  $QTDIR/lib64"
+QT_INCLUDES_PATHS="$QTDIR/include /usr/lib/qt4/include /usr/lib/qt/include /usr/local/qt/include /usr/local/include /usr/include  /usr/include/qt /usr/include/qt4 /usr/share/qt4/include /usr/X11R6/include /sw/include/qt /usr/include/qt4 /usr/X11R6/include/qt /usr/X11R6/include/qt4"
+QT_TOOLS_PATHS="   $QTDIR/bin     /usr/lib/qt4/bin     /usr/lib/qt/bin     /usr/local/qt/bin     /usr/local/bin     /usr/bin      /bin            /usr/share/qt4/bin     /usr/X11R6/bin"
 PNG_LIBS_PATHS="   /usr/lib64     /usr/lib             /usr/local/lib      /sw/lib"
 Z_LIBS_PATHS="     /usr/lib64     /usr/lib             /usr/local/lib      /sw/lib"
 
@@ -660,11 +660,11 @@ fi
 # QT Headers
 #################
 
-FIND_HEADER([qwidget.h],[$QT_INCLUDES_PATHS],
+FIND_HEADER([QtGui/QWidget],[$QT_INCLUDES_PATHS],
 [
-	QT_INCLUDES="-I$FILE_DIR"
+	QT_INCLUDES="-I$FILE_DIR -I$FILE_DIR/Qt -I$FILE_DIR/QtCore -I$FILE_DIR/QtGui -I$FILE_DIR/Qt3Support -I$FILE_DIR/QtNetwork"
 ],[
-	AC_MSG_ERROR([libqt-mt headers not found - please install libqt3-devel (>=3.2 <4.0) - check: http://kadu.net/qt])
+	AC_MSG_ERROR([libqt headers not found - please install libqt4-devel (>=4.3 <5.0) - check: http://kadu.net/qt])
 ])
 AC_SUBST(QT_INCLUDES)
 
@@ -673,12 +673,12 @@ AC_SUBST(QT_INCLUDES)
 #################
 
 
-QT_LIBS="-lqt-mt"
-FIND_LIBRARY([qt-mt],[$QT_LIBS_PATHS],
+QT_LIBS="-lQtCore -lQtGui -lQt3Support -lQtNetwork"
+FIND_LIBRARY([QtCore],[$QT_LIBS_PATHS],
 [
 	QT_LIBS="$QT_LIBS -L$FILE_DIR"
 ],[
-	AC_MSG_ERROR([libqt-mt not found - please install libqt3 (>=3.2 <4.0) - check: http://kadu.net/qt])
+	AC_MSG_ERROR([libqt-mt not found - please install libqt4 (>=4.3 <5.0) - check: http://kadu.net/qt])
 ],[$PNG_LIBS $PTHREAD_LDFLAGS $PTHREAD_LIBS])
 AC_SUBST(QT_LIBS)
 
@@ -690,10 +690,10 @@ AC_TRY_LINK(
 [
 	#include <qglobal.h>
 ],[
-	#if QT_VERSION < 0x030200
+	#if QT_VERSION < 0x040300
 		#error
 	#endif
-	#if QT_VERSION >= 0x040000
+	#if QT_VERSION >= 0x050000
 		#error
 	#endif
 ],
@@ -702,7 +702,7 @@ AC_TRY_LINK(
 
 ],[
 	AC_MSG_RESULT(bad)
-	AC_MSG_ERROR([Your Qt version is not appropiate! Get Qt >= 3.2 and < 4.0])
+	AC_MSG_ERROR([Your Qt version is not appropiate! Get Qt >= 4.3 and < 5.0])
 ])
 CXXFLAGS="$save_CXXFLAGS"
 

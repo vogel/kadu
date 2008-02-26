@@ -9,16 +9,22 @@
 
 #include <qcheckbox.h>
 #include <qcombobox.h>
-#include <qgroupbox.h>
-#include <qhbuttongroup.h>
+#include <q3groupbox.h>
+#include <q3buttongroup.h>
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qlineedit.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qpushbutton.h>
 #include <qradiobutton.h>
 #include <qtooltip.h>
 #include <qvalidator.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QResizeEvent>
+#include <Q3GridLayout>
+#include <QPixmap>
+#include <QKeyEvent>
 
 #include "action.h"
 #include "chat_manager.h"
@@ -33,7 +39,7 @@
 #include "userinfo.h"
 
 SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearchUin)
-	: QWidget(parent, name, WType_TopLevel | WDestructiveClose),
+	: QWidget(parent, name, Qt::WType_TopLevel | Qt::WDestructiveClose),
 	only_active(0), e_uin(0), e_name(0), e_nick(0), e_byrFrom(0), e_byrTo(0), e_surname(0),
 	c_gender(0), e_city(0), results(0), progress(0), r_uin(0), r_pers(0), _whoisSearchUin(whoisSearchUin),
 	seq(0), selectedUsers(new UserGroup(1)), searchRecord(new SearchRecord()), searchhidden(false), searching(false), workaround(false)
@@ -90,7 +96,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	only_active = new QCheckBox(tr("Only active users"),this);
 	connect(only_active, SIGNAL(clicked()), this, SLOT(personalDataTyped()));
 
-	QGroupBox * qgrp1 = new QGroupBox(2, Qt::Horizontal, tr("Uin"), this);
+	Q3GroupBox * qgrp1 = new Q3GroupBox(2, Qt::Horizontal, tr("Uin"), this);
 	l_uin = new QLabel(tr("Uin"),qgrp1);
 	e_uin = new QLineEdit(qgrp1);
 	e_uin->setMaxLength(8);
@@ -99,10 +105,10 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 
 	progress = new QLabel(this);
 
-	results = new QListView(this);
+	results = new Q3ListView(this);
 	connect(results, SIGNAL(selectionChanged()), this, SLOT(selectionChanged()));
 
-	QHButtonGroup * btngrp = new QHButtonGroup(tr("Search criteria"), this);
+	Q3HButtonGroup * btngrp = new Q3HButtonGroup(tr("Search criteria"), this);
 	r_pers = new QRadioButton(tr("&Personal data"),btngrp);
 	r_pers->setChecked(true);
 	connect(r_pers, SIGNAL(toggled(bool)), this, SLOT(persClicked()));
@@ -125,7 +131,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 		toolbar->loadDefault();
 	}
 
-	QGridLayout * grid = new QGridLayout (this, 7, 12, 7, 5);
+	Q3GridLayout * grid = new Q3GridLayout (this, 7, 12, 7, 5);
 	grid->addWidget(l_nick, 1, 0, Qt::AlignRight); grid->addWidget(e_nick, 1, 1);
 	grid->addWidget(l_gender, 2, 0, Qt::AlignRight); grid->addWidget(c_gender, 2, 1);
 	grid->addWidget(l_name, 1, 3, Qt::AlignRight); grid->addWidget(e_name, 1, 4);
@@ -157,9 +163,9 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	results->addColumn(tr("Nickname"));
 	results->addColumn(tr("Birth year"));
 	results->setAllColumnsShowFocus(true);
-	results->setResizeMode(QListView::AllColumns);
+	results->setResizeMode(Q3ListView::AllColumns);
 	for (int i = 1; i < 5; ++i)
-		results->setColumnWidthMode(i, QListView::Maximum);
+		results->setColumnWidthMode(i, Q3ListView::Maximum);
 
 	add_searched_action = KaduActions["addSearchedAction"];
 	chat_searched_action = KaduActions["chatSearchedAction"];
@@ -212,7 +218,7 @@ SearchDialog::~SearchDialog()
 {
 	kdebugf();
 	disconnect(gadu, SIGNAL(newSearchResults(SearchResults&, int, int)), this, SLOT(newSearchResults(SearchResults&, int, int)));
-	saveGeometry(this, "General", "SearchDialogGeometry");
+// 	saveGeometry(this, "General", "SearchDialogGeometry");
 	delete searchRecord;
 	delete selectedUsers;
 	kdebugf2();
@@ -223,7 +229,7 @@ void SearchDialog::initModule()
 	kdebugf();
 
 	new Action("LookupUserInfo", tr("&Search"),
-		"firstSearchAction", Action::TypeSearch, Key_Return, Key_Enter);
+		"firstSearchAction", Action::TypeSearch, Qt::Key_Return, Qt::Key_Enter);
 	ToolBar::addDefaultAction("Search toolbar", "firstSearchAction", -1, true);
 
 	new Action("NextSearchResults", tr("&Next results"), "nextResultsAction", Action::TypeSearch);
@@ -262,7 +268,7 @@ void SearchDialog::selectedUsersNeeded(const UserGroup*& user_group)
 {
 	kdebugf();
 
-	QListViewItem *selected = results->selectedItem();
+	Q3ListViewItem *selected = results->selectedItem();
 	if (!selected)
 	{
 		if (results->childCount() == 1)
@@ -428,7 +434,7 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 {
 	kdebugf();
 
-	QListViewItem *qlv = NULL;
+	Q3ListViewItem *qlv = NULL;
 	QPixmap pix;
 
 	if ((seq != searchRecord->Seq) || searchRecord->IgnoreResults)
@@ -458,7 +464,7 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 		}
 		else
 		{
-			qlv = new QListViewItem(results, QString::null, (*searchIterator).Uin,
+			qlv = new Q3ListViewItem(results, QString::null, (*searchIterator).Uin,
 				(*searchIterator).First, (*searchIterator).City,
 				(*searchIterator).Nick, (*searchIterator).Born);
 //			if (count == 1 && r_uin->isChecked() && !searchhidden
@@ -518,7 +524,7 @@ void SearchDialog::resizeEvent(QResizeEvent *e)
 
 void SearchDialog::keyPressEvent(QKeyEvent *e)
 {
-	if (e->key() == Key_Escape)
+	if (e->key() == Qt::Key_Escape)
 	{
 		e->accept();
 		close();
@@ -575,7 +581,7 @@ void SearchDialog::uinClicked()
 void SearchDialog::updateInfoClicked()
 {
 	kdebugf();
-	QListViewItem *selected = results->selectedItem();
+	Q3ListViewItem *selected = results->selectedItem();
 	if (!selected && results->childCount() == 1)
 		selected = results->firstChild();
 	if (!selected)

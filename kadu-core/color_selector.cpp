@@ -8,8 +8,14 @@
  ***************************************************************************/
 
 #include <qapplication.h>
+#include <qdesktopwidget.h>
 #include <qlayout.h>
 #include <qtooltip.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <Q3GridLayout>
+#include <Q3ValueList>
+#include <QCloseEvent>
 
 #include "color_selector.h"
 #include "debug.h"
@@ -41,14 +47,14 @@ ColorSelector::ColorSelector(const QColor &defColor, QWidget* parent, const char
 	: QWidget (parent, name,Qt::WType_Popup|Qt::WDestructiveClose)
 {
 	kdebugf();
-	QValueList<QColor> qcolors;
+	Q3ValueList<QColor> qcolors;
 	int i;
 
 	for (i = 0; i < 16; ++i)
 		qcolors.append(colors[i]);
 
 	int selector_width = 4; //sqrt(16)
-	QGridLayout *grid = new QGridLayout(this, 0, selector_width, 0, 0);
+	Q3GridLayout *grid = new Q3GridLayout(this, 0, selector_width, 0, 0);
 
 	i = 0;
 	CONST_FOREACH(color, qcolors)

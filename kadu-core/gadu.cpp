@@ -28,15 +28,20 @@
 
 #include <stdlib.h>
 
+#include <qapplication.h>
 #include <qcheckbox.h>
 #include <qtimer.h>
 #include <qvalidator.h>
-#include <qvgroupbox.h>
+#include <q3vgroupbox.h>
 #include <qregexp.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <Q3ValueList>
+#include <Q3CString>
 
 #define GG_STATUS_INVISIBLE2 0x0009 /* g³upy... */
 
-static QValueList<QHostAddress> gg_servers;
+static Q3ValueList<QHostAddress> gg_servers;
 
 #define GG_SERVERS_COUNT 17
 static const char *gg_servers_ip[GG_SERVERS_COUNT] = {
@@ -144,7 +149,7 @@ UinsList::UinsList(const QStringList &list)
 
 void UinsList::sort()
 {
-	qHeapSort(*this);
+	qSort(*this);
 }
 
 QStringList UinsList::toStringList() const
@@ -268,7 +273,7 @@ void SearchRecord::clearData()
 
 /* GaduProtocol */
 
-QValueList<QHostAddress> GaduProtocol::ConfigServers;
+Q3ValueList<QHostAddress> GaduProtocol::ConfigServers;
 static GaduProtocolManager *gadu_protocol_manager;
 
 void GaduProtocol::closeModule()
@@ -373,8 +378,8 @@ GaduProtocol::GaduProtocol(const QString &id, QObject *parent, const char *name)
 		this, SLOT(imageRequestReceivedSlot(UinType, uint32_t, uint32_t)));
 	connect(SocketNotifiers, SIGNAL(imageRequestReceived(UinType, uint32_t, uint32_t)),
 		this, SIGNAL(imageRequestReceived(UinType, uint32_t, uint32_t)));
-	connect(SocketNotifiers, SIGNAL(messageReceived(int, UserListElements, QCString &, time_t, QByteArray &)),
-		this, SLOT(messageReceivedSlot(int, UserListElements, QCString &, time_t, QByteArray &)));
+	connect(SocketNotifiers, SIGNAL(messageReceived(int, UserListElements, Q3CString &, time_t, QByteArray &)),
+		this, SLOT(messageReceivedSlot(int, UserListElements, Q3CString &, time_t, QByteArray &)));
 	connect(SocketNotifiers, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)), this, SLOT(newResults(gg_pubdir50_t)));
 	connect(SocketNotifiers, SIGNAL(systemMessageReceived(QString &, QDateTime &, int, void *)),
 		this, SLOT(systemMessageReceived(QString &, QDateTime &, int, void *)));
@@ -921,7 +926,7 @@ void GaduProtocol::imageRequestReceivedSlot(UinType sender, uint32_t size, uint3
 	gadu_images_manager.sendImage(sender,size,crc32);
 }
 
-void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, QCString &msg, time_t time,
+void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, Q3CString &msg, time_t time,
 	QByteArray &formats)
 {
 /*
@@ -1597,8 +1602,8 @@ void GaduProtocol::changePassword(UinType uin, const QString &mail, const QStrin
 void GaduProtocol::doRegisterAccount()
 {
 	kdebugf();
-	struct gg_http *h = gg_register3(unicode2cp(DataEmail).data(), unicode2cp(DataPassword).data(),
-		unicode2cp(TokenId).data(), unicode2cp(TokenValue).data(), 1);
+	struct gg_http *h = gg_register3(unicode2cp(DataEmail).toLocal8Bit().data(), unicode2cp(DataPassword).toLocal8Bit().data(),
+		unicode2cp(TokenId).toLocal8Bit().data(), unicode2cp(TokenValue).toLocal8Bit().data(), 1);
 	if (h)
 	{
 		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h, this, "pubdir_socket_notifiers");
@@ -1620,8 +1625,8 @@ void GaduProtocol::registerDone(bool ok, struct gg_http *h)
 void GaduProtocol::doUnregisterAccount()
 {
 	kdebugf();
-	struct gg_http* h = gg_unregister3(DataUin, unicode2cp(DataPassword).data(), unicode2cp(TokenId).data(),
-		unicode2cp(TokenValue).data(), 1);
+	struct gg_http* h = gg_unregister3(DataUin, unicode2cp(DataPassword).toLocal8Bit().data(), unicode2cp(TokenId).toLocal8Bit().data(),
+		unicode2cp(TokenValue).toLocal8Bit().data(), 1);
 	if (h)
 	{
 		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h, this, "pubdir_socket_notifiers");
@@ -1645,8 +1650,8 @@ void GaduProtocol::doRemindPassword()
 {
 	kdebugf();
 
-	struct gg_http *h = gg_remind_passwd3(DataUin, unicode2cp(DataEmail).data(), unicode2cp(TokenId).data(),
-		unicode2cp(TokenValue).data(), 1);
+	struct gg_http *h = gg_remind_passwd3(DataUin, unicode2cp(DataEmail).toLocal8Bit().data(), unicode2cp(TokenId).toLocal8Bit().data(),
+		unicode2cp(TokenValue).toLocal8Bit().data(), 1);
 	if (h)
 	{
 		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h, this, "pubdir_socket_notifiers");
@@ -1669,9 +1674,9 @@ void GaduProtocol::doChangePassword()
 {
 	kdebugf();
 
-	struct gg_http *h = gg_change_passwd4(DataUin, unicode2cp(DataEmail).data(),
-		unicode2cp(DataPassword).data(), unicode2cp(DataNewPassword).data(),
-		unicode2cp(TokenId).data(), unicode2cp(TokenValue).data(), 1);
+	struct gg_http *h = gg_change_passwd4(DataUin, unicode2cp(DataEmail).toLocal8Bit().data(),
+		unicode2cp(DataPassword).toLocal8Bit().data(), unicode2cp(DataNewPassword).toLocal8Bit().data(),
+		unicode2cp(TokenId).toLocal8Bit().data(), unicode2cp(TokenValue).toLocal8Bit().data(), 1);
 	if (h)
 	{
 		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h, this, "pubdir_socket_notifiers");
@@ -1784,20 +1789,20 @@ QString GaduProtocol::userListToString(const UserList& userList) const
 	return contacts;
 }
 
-QValueList<UserListElement> GaduProtocol::stringToUserList(const QString &string) const
+Q3ValueList<UserListElement> GaduProtocol::stringToUserList(const QString &string) const
 {
 	QString s = string;
-	QTextStream stream(&s, IO_ReadOnly);
+	Q3TextStream stream(&s, QIODevice::ReadOnly);
 	return streamToUserList(stream);
 }
 
-QValueList<UserListElement> GaduProtocol::streamToUserList(QTextStream& stream) const
+Q3ValueList<UserListElement> GaduProtocol::streamToUserList(Q3TextStream& stream) const
 {
 	kdebugf();
 
 	QStringList sections, groupNames;
 	QString line;
-	QValueList<UserListElement> ret;
+	Q3ValueList<UserListElement> ret;
 	unsigned int i, secCount;
 	bool ok;
 
@@ -1933,7 +1938,7 @@ bool GaduProtocol::doImportUserList()
 
 	bool success=(gg_userlist_request(Sess, GG_USERLIST_GET, NULL) != -1);
 	if (!success)
-		emit userListImported(false, QValueList<UserListElement>());
+		emit userListImported(false, Q3ValueList<UserListElement>());
 	kdebugf2();
 	return success;
 }
@@ -1970,7 +1975,7 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 			continue;
 		}
 
-		user.setProtocolData("Gadu", "DNSName", QString::null, nr + 1 == cnt);
+		user.setProtocolData("Gadu", "DNSName", "", nr + 1 == cnt);
 		user.setProtocolData("Gadu", "IP", ntohl(e->event.notify60[nr].remote_ip), nr + 1 == cnt);
 		user.setProtocolData("Gadu", "Port", e->event.notify60[nr].remote_port, nr + 1 == cnt);
 		user.refreshDNSName("Gadu");
@@ -2040,7 +2045,7 @@ void GaduProtocol::userListReplyReceived(char type, char *reply)
 		{
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "error!\n");
 
-			emit userListImported(false, QValueList<UserListElement>());
+			emit userListImported(false, Q3ValueList<UserListElement>());
 			return;
 		}
 
@@ -2119,7 +2124,7 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 		version = 0;
 		image_size = 0;
 	}
-	user.setAddressAndPort("Gadu", ntohl(remote_ip), remote_port);
+	user.setAddressAndPort("Gadu", QHostAddress((quint32)(ntohl(remote_ip))), remote_port);
 	user.setProtocolData("Gadu", "Version", version);
 	user.setProtocolData("Gadu", "MaxImageSize", image_size);
 
@@ -2169,7 +2174,7 @@ QPixmap GaduStatus::pixmap(eUserStatus stat, bool hasDescription, bool mobile) c
 
 QString GaduStatus::pixmapName(eUserStatus stat, bool hasDescription, bool mobile) const
 {
-	QString add = (hasDescription ? "WithDescription" : QString::null);
+	QString add(hasDescription ? "WithDescription" : "");
 	add.append(mobile ? (!hasDescription) ? "WithMobile" : "Mobile" : "");
 
 	switch (stat)
@@ -2477,7 +2482,7 @@ QString GaduFormater::stripHTMLFromGGMessage(const QString &msg)
 	return mesg;
 }
 
-unsigned char *GaduFormater::allocFormantBuffer(const QValueList<struct richtext_formant> &formants, unsigned int &formats_length)
+unsigned char *GaduFormater::allocFormantBuffer(const Q3ValueList<struct richtext_formant> &formants, unsigned int &formats_length)
 {
 	kdebugf();
 	struct gg_msg_richtext richtext_header;
@@ -2519,10 +2524,10 @@ QString GaduFormater::unformatGGMessage(const QString &msg, unsigned int &format
 	QString mesg, tmp;
 	QStringList attribs;
 	struct attrib_formant actattrib;
-	QValueList<attrib_formant> formantattribs;
+	Q3ValueList<attrib_formant> formantattribs;
 	int pos, idx, inspan;
 	struct richtext_formant actformant, lastformant;
-	QValueList<struct richtext_formant> formants;
+	Q3ValueList<struct richtext_formant> formants;
 	bool endspan;
 
 	mesg = stripHTMLFromGGMessage(msg);
@@ -2584,7 +2589,7 @@ QString GaduFormater::unformatGGMessage(const QString &msg, unsigned int &format
 			// we need to save it, and reinsert after image in next loop iteration
 			// (this is required, since image formant removes any active formatting
 			// options)
-			QValueList<struct richtext_formant>::const_iterator it = formants.end();
+			Q3ValueList<struct richtext_formant>::const_iterator it = formants.end();
 			while (it != formants.begin())
 			{
 				--it;

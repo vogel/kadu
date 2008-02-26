@@ -1,9 +1,12 @@
 #ifndef KADU_PROTOCOLS_MANAGER_H
 #define KADU_PROTOCOLS_MANAGER_H
 
+#define QT3_SUPPORT
+#include <qglobal.h>
+
 #include <qobject.h>
 #include <qstring.h>
-#include <qvaluelist.h>
+#include <q3valuelist.h>
 
 #include "protocol.h"
 
@@ -32,14 +35,14 @@ class ProtocolsManager : public QObject
 			ProtocolDescription(const ProtocolDescription &c) 
 				: protocolID(c.protocolID), Name(c.Name), Manager(c.Manager) {}
 		};
-		QValueList<ProtocolDescription> protocolDescriptions;
-		QValueList<Protocol *> protocols;
+		Q3ValueList<ProtocolDescription> protocolDescriptions;
+		Q3ValueList<Protocol *> protocols;
 
 	public:
 		static void initModule();
 		static void closeModule();
 
-		QValueList<Protocol *> byProtocolID(const QString &protocolID);
+		Q3ValueList<Protocol *> byProtocolID(const QString &protocolID);
 		Protocol *byID(const QString &protocolID, const QString &ID);
 		
 		void registerProtocol(const QString &protocolID, const QString &name, ProtocolManager *manager);

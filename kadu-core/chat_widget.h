@@ -1,12 +1,22 @@
 #ifndef KADU_CHAT_WIDGET_H
 #define KADU_CHAT_WIDGET_H
 
+#define QT3_SUPPORT
+#include <qglobal.h>
+
 #include <qdatetime.h>
 #include <qwidget.h>
-#include <qhbox.h>
+#include <q3hbox.h>
 
 
-#include <qvaluelist.h>
+#include <q3valuelist.h>
+//Added by qt3to4:
+#include <QDragMoveEvent>
+#include <QDropEvent>
+#include <QPixmap>
+#include <QKeyEvent>
+#include <QEvent>
+#include <QDragEnterEvent>
 
 #include "chat_messages_view.h"
 #include "config_file.h"
@@ -17,9 +27,9 @@
 #include "usergroup.h"
 #include "toolbar.h"
 
-class QAccel;
-class QHBox;
-class QMimeSourceFactory;
+class Q3Accel;
+class Q3HBox;
+class Q3MimeSourceFactory;
 class QObject;
 class QPushButton;
 
@@ -33,7 +43,7 @@ class KaduTextBrowser;
 class UserBox;
 
 /** \typedef QValueList<ChatWidget*> ChatList */
-typedef QValueList<ChatWidget*> ChatList;
+typedef Q3ValueList<ChatWidget*> ChatList;
 
 /**
 	Klasa tworz±ca okno rozmowy, rejestruj±ca przyciski,
@@ -42,7 +52,7 @@ typedef QValueList<ChatWidget*> ChatList;
 	\brief Okno rozmowy
 **/
 
-class ChatWidget : public QHBox, ConfigurationAwareObject
+class ChatWidget : public Q3HBox, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -56,7 +66,7 @@ private:
 	QColor actcolor; /*!< zmienna przechowuj±ca aktualny kolor */
 	QPixmap pix;
 	CustomInput* Edit; /*!< okno do wpisywania wiadomo¶ci */
-	QMimeSourceFactory *bodyformat; /*!< zmienna ustawiaj±ca format */
+	Q3MimeSourceFactory *bodyformat; /*!< zmienna ustawiaj±ca format */
 	EmoticonSelector* emoticon_selector; /*!< okienko do wyboru emotikonek */
 	ColorSelector* color_selector; /*!< okienko do wyboru koloru */
 	bool AutoSend; /*!< okre¶la czy Return powoduje wys³anie wiadomo¶ci */
@@ -240,7 +250,7 @@ public slots:
 		Slot dodaj wiadomo¶ci do okna
 		\param messages lista wiadomo¶ci
 	**/
-	void appendMessages(const QValueList<ChatMessage *> &, bool pending = false);
+	void appendMessages(const Q3ValueList<ChatMessage *> &, bool pending = false);
 
 	/**
 		\fn void appendMessage(ChatMessage *)

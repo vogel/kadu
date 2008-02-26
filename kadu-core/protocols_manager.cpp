@@ -10,6 +10,8 @@
 #include "debug.h"
 #include "misc.h"
 #include "protocols_manager.h"
+//Added by qt3to4:
+#include <Q3ValueList>
 
 ProtocolsManager::ProtocolsManager() : QObject(NULL, "protocols_manager"),
 	protocolDescriptions(), protocols()
@@ -47,9 +49,9 @@ void ProtocolsManager::unregisterProtocol(const QString &protocolID)
 	kdebugm(KDEBUG_WARNING, "protocol(%s) not found\n", protocolID.local8Bit().data());
 }
 
-QValueList<Protocol *> ProtocolsManager::byProtocolID(const QString &protocolID)
+Q3ValueList<Protocol *> ProtocolsManager::byProtocolID(const QString &protocolID)
 {
-	QValueList<Protocol *> ret;
+	Q3ValueList<Protocol *> ret;
 	CONST_FOREACH(proto, protocols)
 		if ((*proto)->protocolID() == protocolID)
 			ret.append(*proto);

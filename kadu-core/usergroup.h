@@ -1,11 +1,14 @@
 #ifndef KADU_USERGROUP_H
 #define KADU_USERGROUP_H
 
+#define QT3_SUPPORT
+#include <qglobal.h>
+
 #include <qmap.h>
 #include <qobject.h>
-#include <qshared.h>
+#include <q3shared.h>
 #include <qstring.h>
-#include <qvaluelist.h>
+#include <q3valuelist.h>
 #include <qvariant.h>
 
 #include "userlistelement.h"
@@ -78,8 +81,8 @@ class UserGroup : public QObject
 	Q_OBJECT
 
 	public:
-		typedef QValueListConstIterator<UserListElement> const_iterator;
-		typedef QValueListIterator<UserListElement> iterator;
+		typedef QList<UserListElement>::const_iterator const_iterator;
+		typedef QList<UserListElement>::iterator iterator;
 		typedef size_t size_type;
 
 		/**
@@ -94,7 +97,7 @@ class UserGroup : public QObject
 			\param group
 			\param name nazwa grupy
 		**/
-		UserGroup(const QValueList<UserListElement> &group, const char *name = 0);
+		UserGroup(const QList<UserListElement> &group, const char *name = 0);
 
 		/**
 			\fn virtual ~UserGroup()
@@ -273,7 +276,7 @@ class UserGroup : public QObject
 			Dodaje do listy wszystkie kontakty nale¿±ce do listy users
 			\param users kontakty
 		**/
-		void addUsers(QValueList<UserListElement> users);
+		void addUsers(QList<UserListElement> users);
 
 		/**
 			\fn void removeUsers(const UserGroup *group)
@@ -287,7 +290,7 @@ class UserGroup : public QObject
 			Usuwa z listy wszystkie kontakty nale¿±ce do listy users
 			\param users kontakty
 		**/
-		void removeUsers(QValueList<UserListElement> users);
+		void removeUsers(QList<UserListElement> users);
 
 	signals:
 		/**
@@ -432,7 +435,7 @@ class UserGroup : public QObject
 	\class UserListElements
 	Prosta lista u¿ytkowników z kilkoma u³atwiaczami.
 **/
-class UserListElements : public QValueList<UserListElement>
+class UserListElements : public QList<UserListElement>
 {
 	public:
 		/**
@@ -451,7 +454,7 @@ class UserListElements : public QValueList<UserListElement>
 			\fn UserListElements(const QValueList<UserListElement> &)
 			Konstruktor inicjuj±cy siê wskazan± list±
 		**/
-		UserListElements(const QValueList<UserListElement> &);
+		UserListElements(const QList<UserListElement> &);
 
 		/**
 			\fn UserListElements()
@@ -491,7 +494,7 @@ class UserListElements : public QValueList<UserListElement>
 			Zwraca informacjê o tym czy lista zawiera wskazany kontakt.
 			(Z³o¿ono¶æ O(n))
 		**/
-		bool contains(UserListElement e) const { return QValueList<UserListElement>::contains(e) > 0;}
+		bool contains(UserListElement e) const { return QList<UserListElement>::contains(e) > 0;}
 
 		/**
 			\fn QStringList altNicks() const

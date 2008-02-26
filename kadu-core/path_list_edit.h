@@ -1,12 +1,18 @@
 #ifndef PATH_LIST_EDIT_H
 #define PATH_LIST_EDIT_H
 
+#define QT3_SUPPORT
+#include <qglobal.h>
+
 #include <qlayout.h>
 #include <qpushbutton.h>
 #include <qstringlist.h>
+//Added by qt3to4:
+#include <QKeyEvent>
+#include <QCloseEvent>
 
 class QLineEdit;
-class QListBox;
+class Q3ListBox;
 class QPushButton;
 
 class PathListEditWindow;
@@ -38,7 +44,7 @@ class PathListEditWindow : public QWidget
 {
 	Q_OBJECT
 
-	QListBox *PathListBox;
+	Q3ListBox *PathListBox;
 	QLineEdit *PathEdit;
 
 	bool validatePath(QString &path);
@@ -57,7 +63,7 @@ private slots:
 	void currentItemChanged(const QString &newItem);
 
 public:
-	PathListEditWindow(const QStringList &pathList, QWidget *parent = 0, const char *name = "path_list_edit_window");
+	PathListEditWindow(const QStringList &pathList, QWidget *parent = 0, const char *name = 0);
 	~PathListEditWindow();
 
 public slots:

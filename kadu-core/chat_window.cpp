@@ -7,8 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <qapplication.h>
+#include <qdesktopwidget.h>
 #include <qcursor.h>
 #include <qtimer.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 #include "chat_window.h"
 #include "chat_widget.h"
 #include "chat_manager.h"
@@ -27,7 +31,7 @@
 #include "userbox.h"
 #include "protocol.h"
 
-ChatWindow::ChatWindow(QWidget* parent, const char* name) : QMainWindow(parent, name, WType_TopLevel | WDestructiveClose),
+ChatWindow::ChatWindow(QWidget* parent, const char* name) : Q3MainWindow(parent, name, Qt::WType_TopLevel | Qt::WDestructiveClose),
 	currentChatWidget(0), title_timer(new QTimer(this, "title_timer"))
 {
 	configurationUpdated();
@@ -148,7 +152,7 @@ void ChatWindow::closeEvent(QCloseEvent* e)
 			}
 		}
 	}
- 	QMainWindow::closeEvent(e);
+ 	Q3MainWindow::closeEvent(e);
 }
 
 void ChatWindow::updateTitle()

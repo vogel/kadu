@@ -13,11 +13,20 @@
 #include <qcheckbox.h>
 #include <qcursor.h>
 #include <qcombobox.h>
-#include <qdragobject.h>
+#include <q3dragobject.h>
 #include <qpainter.h>
 #include <qspinbox.h>
 #include <qtextcodec.h>
-#include <qvgroupbox.h>
+#include <q3vgroupbox.h>
+//Added by qt3to4:
+#include <QKeyEvent>
+#include <Q3ValueList>
+#include <QPixmap>
+#include <QResizeEvent>
+#include <Q3PopupMenu>
+#include <QMouseEvent>
+#include <QEvent>
+#include <QWheelEvent>
 
 #include "action.h"
 #include "config_file.h"
@@ -135,7 +144,7 @@ void KaduListBoxPixmap::setFont(const QFont &f)
 }
 
 KaduListBoxPixmap::KaduListBoxPixmap(UserListElement user)
-	: QListBoxItem(), pm(pixmapForUser(user)), buf_text(), buf_width(-1), buf_out(), buf_height(-1), User(user)
+	: Q3ListBoxItem(), pm(pixmapForUser(user)), buf_text(), buf_width(-1), buf_out(), buf_height(-1), User(user)
 {
 	setText(user.altNick());
 }
@@ -265,7 +274,7 @@ void KaduListBoxPixmap::paint(QPainter *painter)
 //	kdebugf2();
 }
 
-int KaduListBoxPixmap::height(const QListBox* lb) const
+int KaduListBoxPixmap::height(const Q3ListBox* lb) const
 {
 //	kdebugf();
 	QString description;
@@ -287,14 +296,14 @@ int KaduListBoxPixmap::height(const QListBox* lb) const
 	return QMAX(pm.height(), height);
 }
 
-int KaduListBoxPixmap::lineHeight(const QListBox* lb) const
+int KaduListBoxPixmap::lineHeight(const Q3ListBox* lb) const
 {
 	int height=lb->fontMetrics().lineSpacing()+3;
 	return QMAX(pm.height(), height);
 }
 
 
-int KaduListBoxPixmap::width(const QListBox* lb) const
+int KaduListBoxPixmap::width(const Q3ListBox* lb) const
 {
 	if (ColumnCount == 0)
 		return QMAX(pm.width(), (lb->visibleWidth()));
@@ -440,7 +449,7 @@ class ULEComparer
 {
 	public:
 		inline bool operator()(const UserListElement &e1, const UserListElement &e2) const;
-		QValueList<UserBox::CmpFuncDesc> CmpFunctions;
+		Q3ValueList<UserBox::CmpFuncDesc> CmpFunctions;
 		ULEComparer() : CmpFunctions() {}
 };
 
@@ -461,8 +470,8 @@ UserBoxMenu *UserBox::userboxmenu = NULL;
 UserBoxMenu *UserBox::management = NULL;
 CreateNotifier UserBox::createNotifier;
 
-UserBox::UserBox(bool fancy, UserGroup *group, QWidget* parent, const char* name, WFlags f)
-	: QListBox(parent, name, f), fancy(fancy), VisibleUsers(new UserGroup(userlist->count() * 2, "visible_users")),
+UserBox::UserBox(bool fancy, UserGroup *group, QWidget* parent, const char* name, Qt::WFlags f)
+	: Q3ListBox(parent, name, f), fancy(fancy), VisibleUsers(new UserGroup(userlist->count() * 2, "visible_users")),
 	Filters(), NegativeFilters(), sortHelper(), toRemove(), AppendProxy(), RemoveProxy(), comparer(new ULEComparer()),
 	refreshTimer(), lastMouseStopUser(nullElement), lastMouseStop(), tipTimer(),
 	verticalPositionTimer(), lastVerticalPosition(0)
@@ -470,7 +479,7 @@ UserBox::UserBox(bool fancy, UserGroup *group, QWidget* parent, const char* name
 	kdebugf();
 	Filters.append(group);
 
-	setHScrollBarMode(QScrollView::AlwaysOff);
+	setHScrollBarMode(Q3ScrollView::AlwaysOff);
 
 	desc_action = new Action("ShowDescription", tr("Hide descriptions"), "descriptionsAction", Action::TypeUserList);
 	desc_action->setOnShape("HideDescription", tr("Show descriptions"));
@@ -512,11 +521,11 @@ UserBox::UserBox(bool fancy, UserGroup *group, QWidget* parent, const char* name
 	UserBoxes.append(this);
 
 	setMinimumWidth(20);
-	setSelectionMode(QListBox::Extended);
+	setSelectionMode(Q3ListBox::Extended);
 
-	connect(this, SIGNAL(doubleClicked(QListBoxItem *)), this, SLOT(doubleClickedSlot(QListBoxItem *)));
-	connect(this, SIGNAL(returnPressed(QListBoxItem *)), this, SLOT(returnPressedSlot(QListBoxItem *)));
-	connect(this, SIGNAL(currentChanged(QListBoxItem *)), this, SLOT(currentChangedSlot(QListBoxItem *)));
+	connect(this, SIGNAL(doubleClicked(Q3ListBoxItem *)), this, SLOT(doubleClickedSlot(Q3ListBoxItem *)));
+	connect(this, SIGNAL(returnPressed(Q3ListBoxItem *)), this, SLOT(returnPressedSlot(Q3ListBoxItem *)));
+	connect(this, SIGNAL(currentChanged(Q3ListBoxItem *)), this, SLOT(currentChangedSlot(Q3ListBoxItem *)));
 	connect(&refreshTimer, SIGNAL(timeout()), this, SLOT(refresh()));
 
 	connect(&pending, SIGNAL(messageFromUserAdded(UserListElement)), this, SLOT(messageFromUserAdded(UserListElement)));
@@ -604,7 +613,7 @@ void UserBox::setDescriptionsActionState()
 void UserBox::wheelEvent(QWheelEvent *e)
 {
 //	kdebugf();
-	QListBox::wheelEvent(e);
+	Q3ListBox::wheelEvent(e);
 
 	// if event source (e->globalPos()) is inside this widget (QRect(...))
 	if (QRect(mapToGlobal(QPoint(0,0)), size()).contains(e->globalPos()))
@@ -616,25 +625,25 @@ void UserBox::wheelEvent(QWheelEvent *e)
 void UserBox::enterEvent(QEvent *e)
 {
 //	kdebugf();
-	QListBox::enterEvent(e);
+	Q3ListBox::enterEvent(e);
 }
 
 void UserBox::leaveEvent(QEvent *e)
 {
 //	kdebugf();
 	hideTip(false);
-	QListBox::leaveEvent(e);
+	Q3ListBox::leaveEvent(e);
 }
 
 void UserBox::mousePressEvent(QMouseEvent *e)
 {
 	kdebugf();
 	hideTip(false);
-	if (e->button() != RightButton)
-		QListBox::mousePressEvent(e);
+	if (e->button() != Qt::RightButton)
+		Q3ListBox::mousePressEvent(e);
 	else
 	{
-		QListBoxItem *item = itemAt(e->pos());
+		Q3ListBoxItem *item = itemAt(e->pos());
 		if (item)
 		{
 			if (!item->isSelected())
@@ -651,26 +660,26 @@ void UserBox::mousePressEvent(QMouseEvent *e)
 
 void UserBox::mouseReleaseEvent(QMouseEvent *e)
 {
-	QListBox::mouseReleaseEvent(e);
+	Q3ListBox::mouseReleaseEvent(e);
 	restartTip(e->pos());
 }
 
 void UserBox::mouseMoveEvent(QMouseEvent* e)
 {
 //	kdebugf();
-	if ((e->state() & LeftButton) && itemAt(e->pos()))
+	if ((e->state() & Qt::LeftButton) && itemAt(e->pos()))
 	{
 		QStringList ules;
 		for(unsigned int i = 0, count1 = count(); i < count1; ++i)
 			if (isSelected(i))
 				ules.append(item(i)->text());
 
-		QDragObject* d = new UlesDrag(ules, this);
+		Q3DragObject* d = new UlesDrag(ules, this);
 		d->dragCopy();
 	}
 	else
 	{
-		QListBox::mouseMoveEvent(e);
+		Q3ListBox::mouseMoveEvent(e);
 		restartTip(e->pos());
 	}
 //	kdebugf2();
@@ -680,9 +689,9 @@ void UserBox::keyPressEvent(QKeyEvent *e)
 {
 //	kdebugf();
 	hideTip(false);
-	QListBox::keyPressEvent(e);
+	Q3ListBox::keyPressEvent(e);
 //	QWidget::keyPressEvent(e);
-	QListBoxItem *i = item(currentItem());
+	Q3ListBoxItem *i = item(currentItem());
 	currentChangedSlot(i);
 //	kdebugf2();
 }
@@ -743,7 +752,7 @@ void UserBox::refresh()
 	int vScrollValue = verticalScrollBar()->value();
 
 	// clearing list
-	QListBox::clear();
+	Q3ListBox::clear();
 	// clear clears columns too...
 	if (fancy)
 		setColumnMode(config_file.readNumEntry("Look", "UserBoxColumnCount", 1));
@@ -889,7 +898,7 @@ void UserBox::initModule()
 void UserBox::resizeEvent(QResizeEvent *r)
 {
 //	kdebugf();
-	QListBox::resizeEvent(r);
+	Q3ListBox::resizeEvent(r);
 	refreshBackground();
 	triggerUpdate(true);
 }
@@ -936,26 +945,26 @@ void UserBox::refreshBackground()
 	else // TILED
 		image = *backgroundImage;
 
-	setPaletteBackgroundPixmap(image);
+// 	setPaletteBackgroundPixmap(image);
 }
 
-void UserBox::doubleClickedSlot(QListBoxItem *item)
+void UserBox::doubleClickedSlot(Q3ListBoxItem *item)
 {
 	emit doubleClicked(static_cast<KaduListBoxPixmap *>(item)->User);
 }
 
-void UserBox::returnPressedSlot(QListBoxItem *item)
+void UserBox::returnPressedSlot(Q3ListBoxItem *item)
 {
 	emit returnPressed(static_cast<KaduListBoxPixmap *>(item)->User);
 }
 
-void UserBox::currentChangedSlot(QListBoxItem *item)
+void UserBox::currentChangedSlot(Q3ListBoxItem *item)
 {
 	if (item)
 		emit currentChanged(static_cast<KaduListBoxPixmap *>(item)->User);
 }
 
-UserBoxMenu::UserBoxMenu(QWidget *parent, const char *name) : QPopupMenu(parent, name), iconNames()
+UserBoxMenu::UserBoxMenu(QWidget *parent, const char *name) : Q3PopupMenu(parent, name), iconNames()
 {
 	connect(this, SIGNAL(aboutToHide()), this, SLOT(restoreLook()));
 }
@@ -968,7 +977,7 @@ int UserBoxMenu::addItem(const QString &text, const QObject* receiver, const cha
 int UserBoxMenu::addItem(const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel, int id)
 {
 	iconNames.append(qMakePair(text,iconname));
-	return insertItem( QIconSet(icons_manager->loadIcon(iconname)) , text, receiver, member, accel, id);
+	return insertItem( QIcon(icons_manager->loadIcon(iconname)) , text, receiver, member, accel, id);
 }
 
 int UserBoxMenu::addItemAtPos(int index, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel, int id)
@@ -979,7 +988,7 @@ int UserBoxMenu::addItemAtPos(int index, const QString &text, const QObject* rec
 int UserBoxMenu::addItemAtPos(int index,const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel, int id)
 {
 	iconNames.append(qMakePair(text,iconname));
-	return insertItem( QIconSet(icons_manager->loadIcon(iconname)) , text, receiver, member, accel, id, index);
+	return insertItem( QIcon(icons_manager->loadIcon(iconname)) , text, receiver, member, accel, id, index);
 }
 
 int UserBoxMenu::getItem(const QString &caption) const
@@ -999,7 +1008,7 @@ void UserBoxMenu::restoreLook()
 	}
 }
 
-void UserBoxMenu::show(QListBoxItem *item)
+void UserBoxMenu::show(Q3ListBoxItem *item)
 {
 	if (item == NULL)
 		return;
@@ -1036,7 +1045,7 @@ void UserBox::configurationUpdated()
 	int columnCount = config_file.readNumEntry("Look", "UserBoxColumnCount", 1);
 	setColumnMode(columnCount);
 
-	QListBox::setFont(config_file.readFontEntry("Look", "UserboxFont"));
+	Q3ListBox::setFont(config_file.readFontEntry("Look", "UserboxFont"));
 
 	KaduListBoxPixmap::setFont(config_file.readFontEntry("Look", "UserboxFont"));
 	KaduListBoxPixmap::setShowDesc(config_file.readBoolEntry("Look", "ShowDesc"));
@@ -1081,9 +1090,9 @@ void UserBox::setColorsOrBackgrounds()
 		(*userbox)->refreshBackground();
 }
 
-QValueList<UserBox *> UserBox::UserBoxes;
+Q3ValueList<UserBox *> UserBox::UserBoxes;
 
-QValueList<UserBox::CmpFuncDesc> UserBox::compareFunctions() const
+Q3ValueList<UserBox::CmpFuncDesc> UserBox::compareFunctions() const
 {
 	return comparer->CmpFunctions;
 }
@@ -1448,12 +1457,12 @@ const UserGroup *UserBox::visibleUsers() const
 	return VisibleUsers;
 }
 
-QValueList<UserGroup *> UserBox::filters() const
+Q3ValueList<UserGroup *> UserBox::filters() const
 {
 	return Filters;
 }
 
-QValueList<UserGroup *> UserBox::negativeFilters() const
+Q3ValueList<UserGroup *> UserBox::negativeFilters() const
 {
 	return NegativeFilters;
 }
@@ -1465,7 +1474,7 @@ bool UserBox::currentUserExists() const
 
 UserListElement UserBox::currentUser() const
 {
-	QListBoxItem *i = item(currentItem());
+	Q3ListBoxItem *i = item(currentItem());
 	if (i)
 		return static_cast<KaduListBoxPixmap *>(i)->User;
 	else
@@ -1485,7 +1494,7 @@ UlesDrag::UlesDrag(const QStringList &ules, QWidget* dragSource, const char* nam
 
 bool UlesDrag::decode(const QMimeSource *source, QStringList &ules)
 {
-	QTextStream stream(source->encodedData("application/x-kadu-ules"), IO_ReadOnly);
+	Q3TextStream stream(new QString(source->encodedData("application/x-kadu-ules")), QIODevice::ReadOnly);
 	stream.setCodec(QTextCodec::codecForLocale());
 
 	QString allUles = stream.read();

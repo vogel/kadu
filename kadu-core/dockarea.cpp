@@ -8,7 +8,13 @@
  ***************************************************************************/
 
 #include <qcursor.h>
-#include <qobjectlist.h>
+#include <qobject.h>
+//Added by qt3to4:
+#include <QContextMenuEvent>
+#include <QChildEvent>
+#include <Q3ValueList>
+#include <Q3PtrList>
+#include <Q3PopupMenu>
 
 #include "config_file.h"
 #include "debug.h"
@@ -16,10 +22,10 @@
 #include "misc.h"
 #include "toolbar.h"
 
-DockArea::DockArea(Orientation o, HandlePosition h,
+DockArea::DockArea(Qt::Orientation o, HandlePosition h,
 			QWidget* parent, const char* name,
 			int supportedActions)
-	: QDockArea(o, h, parent, name), SupportedActions(supportedActions)
+	: Q3DockArea(o, h, parent, name), SupportedActions(supportedActions)
 {
 	kdebugf();
 	AllDockAreas.append(this);
@@ -36,7 +42,7 @@ DockArea::~DockArea()
 void DockArea::contextMenuEvent(QContextMenuEvent* e)
 {
 	kdebugf();
-	QPopupMenu* p = createContextMenu(this);
+	Q3PopupMenu* p = createContextMenu(this);
 	showPopupMenu(p);
 	delete p;
 	e->accept();
@@ -47,14 +53,14 @@ void DockArea::childEvent(QChildEvent* e)
 {
 	kdebugf();
 	kdebugm(KDEBUG_INFO, "child:%p inserted:%d removed:%d\n", e->child(), e->inserted(), e->removed());
-	QDockArea::childEvent(e);
+	Q3DockArea::childEvent(e);
 	if (e->inserted())
 	{
 		ToolBar* toolbar = dynamic_cast<ToolBar*>(e->child());
 		if (toolbar)
 		{
 			connect(toolbar, SIGNAL(destroyed()), this, SLOT(writeToConfig()));
-			connect(toolbar, SIGNAL(placeChanged(QDockWindow::Place)),
+			connect(toolbar, SIGNAL(placeChanged(Q3DockWindow::Place)),
 				this, SLOT(writeToConfig()));
 			emit toolbarAttached();
 		}
@@ -69,7 +75,7 @@ void DockArea::toolbarPlaceChanged()
 	if (toolbar != NULL && toolbar->area() != this)
 	{
 		disconnect(toolbar, SIGNAL(destroyed()), this, SLOT(writeToConfig()));
-		disconnect(toolbar, SIGNAL(placeChanged(QDockWindow::Place)),
+		disconnect(toolbar, SIGNAL(placeChanged(Q3DockWindow::Place)),
 				this, SLOT(writeToConfig()));
 		writeToConfig();
 		((DockArea*)toolbar->area())->writeToConfig();
@@ -93,7 +99,7 @@ void DockArea::setBlockToolbars(bool b)
 {
 	kdebugf();
 	Blocked = b;
-	QPtrList<QDockWindow> l = dockWindowList();
+	QList<Q3DockWindow *> l = dockWindowList();
 	uint wcount = l.count();
 	for (uint i = 0; i < wcount; ++i)
 		l.at(i)->setMovingEnabled(!Blocked);
@@ -121,8 +127,8 @@ void DockArea::writeToConfig()
 	QDomElement dockarea_elem = xml_config_file->accessElementByProperty(
 		toolbars_elem, "DockArea", "name", name());
 	xml_config_file->removeChildren(dockarea_elem);
-	QPtrList<QDockWindow> dock_windows = dockWindowList();
-	for (QPtrList<QDockWindow>::iterator i = dock_windows.begin();
+	QList<Q3DockWindow *> dock_windows = dockWindowList();
+	for (QList<Q3DockWindow *>::iterator i = dock_windows.begin();
 		i != dock_windows.end(); i++)
 	{
 		ToolBar* toolbar = dynamic_cast<ToolBar*>(*i);
@@ -168,14 +174,14 @@ bool DockArea::loadFromConfig(QWidget* toolbars_parent)
 
 void DockArea::usersChangedSlot()
 {
-	const QObjectList *childList = children();
-	if (childList)
-		FOREACH(child, *childList)
-		{
-			ToolBar *toolbar = dynamic_cast<ToolBar *>(*child);
-			if (toolbar)
-				toolbar->usersChanged();
-		}
+	const QObjectList childList = children();
+
+	FOREACH(child, childList)
+	{
+		ToolBar *toolbar = dynamic_cast<ToolBar *>(*child);
+		if (toolbar)
+			toolbar->usersChanged();
+	}
 }
 
 const UserGroup* DockArea::selectedUsers()
@@ -192,10 +198,10 @@ bool DockArea::blocked()
 	return Blocked;
 }
 
-QPopupMenu* DockArea::createContextMenu(QWidget* parent)
+Q3PopupMenu* DockArea::createContextMenu(QWidget* parent)
 {
 	kdebugf();
-	QPopupMenu* p = new QPopupMenu(parent);
+	Q3PopupMenu* p = new Q3PopupMenu(parent);
 	if (!blocked())
 		p->insertItem(tr("Create new toolbar"), this, SLOT(createNewToolbar()));
 	int block_toolbars_id =
@@ -211,4 +217,4 @@ bool DockArea::supportsAction(int actionType)
 }
 
 bool DockArea::Blocked = true;
-QValueList<DockArea *> DockArea::AllDockAreas;
+Q3ValueList<DockArea *> DockArea::AllDockAreas;

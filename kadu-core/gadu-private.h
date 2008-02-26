@@ -1,7 +1,10 @@
 #ifndef GADU_PRIVATE_H
 #define GADU_PRIVATE_H
 
-#include <qcstring.h>
+#define QT3_SUPPORT
+#include <qglobal.h>
+
+#include <q3cstring.h>
 #include <qobject.h>
 #include <qpixmap.h>
 #include <qstring.h>
@@ -134,7 +137,7 @@ class GaduSocketNotifiers : public SocketNotifiers
 		void error(GaduError);
 		void imageReceived(UinType, uint32_t, uint32_t, const QString &filename, const char *data);
 		void imageRequestReceived(UinType, uint32_t, uint32_t);
-		void messageReceived(int, UserListElements, QCString &, time_t, QByteArray &);
+		void messageReceived(int, UserListElements, Q3CString &, time_t, QByteArray &);
 		void pubdirReplyReceived(gg_pubdir50_t);
 		void systemMessageReceived(QString &, QDateTime &, int, void *);
 		void userlistReceived(const struct gg_event *);

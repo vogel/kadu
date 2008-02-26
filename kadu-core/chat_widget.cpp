@@ -7,13 +7,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qaccel.h>
-#include <qdragobject.h>
+#include <q3accel.h>
+#include <q3dragobject.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qregexp.h>
 #include <qtimer.h>
-#include <qvbox.h>
+#include <q3vbox.h>
+//Added by qt3to4:
+#include <QKeyEvent>
+#include <Q3ValueList>
+#include <QPixmap>
+#include <QDragEnterEvent>
+#include <QDragMoveEvent>
+#include <QDropEvent>
+#include <QEvent>
 
 #include "action.h"
 #include "chat_widget.h"
@@ -39,16 +47,16 @@
 #include "userbox.h"
 
 ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, QWidget* parent, const char* name)
-	: QHBox(parent, name), CurrentProtocol(initialProtocol),
+	: Q3HBox(parent, name), CurrentProtocol(initialProtocol),
 	Users(new UserGroup(usrs)),
 	index(0), actcolor(), Edit(0),
-	bodyformat(new QMimeSourceFactory()), emoticon_selector(0), color_selector(0),
+	bodyformat(new Q3MimeSourceFactory()), emoticon_selector(0), color_selector(0),
 	WaitingForACK(false), userbox(0), vertSplit(0), horizSplit(0),
 	activationCount(0), NewMessagesCount(0)
 {
 	kdebugf();
 	const int minimumDockAreaSize = 3;
-	QValueList<int> sizes;
+	Q3ValueList<int> sizes;
 
 	setAcceptDrops(true);
 	/* register us in the chats registry... */
@@ -62,7 +70,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 		this, SLOT(editTextChanged()));
 	leftDockArea->setMinimumWidth(minimumDockAreaSize);
 
-	QVBox *central = new QVBox(this, "central");
+	Q3VBox *central = new Q3VBox(this, "central");
 	this->setStretchFactor(central, 50);
 
 	DockArea *rightDockArea = new DockArea(Qt::Vertical, DockArea::Normal, this,
@@ -76,7 +84,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 
 	vertSplit = new KaduSplitter(Qt::Vertical, central, "vertSplit");
 
-	QVBox *topArea = new QVBox(vertSplit, "topArea");
+	Q3VBox *topArea = new Q3VBox(vertSplit, "topArea");
 	DockArea *topDockArea = new DockArea(Qt::Horizontal, DockArea::Normal, topArea,
 		"chatTopDockArea", Action::TypeGlobal | Action::TypeUser | Action::TypeChat);
 	connect(topDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
@@ -93,12 +101,12 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 
 		body = new ChatMessagesView(horizSplit, "body");
 
-		QVBox *userlistContainer = new QVBox(horizSplit);
+		Q3VBox *userlistContainer = new Q3VBox(horizSplit);
 
 		userbox = new UserBox(false, Users, userlistContainer, "userbox");
 		userbox->setMinimumSize(QSize(30,30));
-		connect(userbox, SIGNAL(rightButtonPressed(QListBoxItem *, const QPoint &)),
-			UserBox::userboxmenu, SLOT(show(QListBoxItem *)));
+		connect(userbox, SIGNAL(rightButtonPressed(Q3ListBoxItem *, const QPoint &)),
+			UserBox::userboxmenu, SLOT(show(Q3ListBoxItem *)));
 
 		QPushButton *leaveConference = new QPushButton(tr("Leave conference"), userlistContainer);
 		leaveConference->setMinimumWidth(userbox->minimumWidth());
@@ -111,15 +119,16 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	else
 		body = new ChatMessagesView(topArea, "body");
 
-	QVBox *downpart = new QVBox(vertSplit, "downpartBox");
-	QHBox *edtbuttontray = new QHBox(downpart, "edtbuttontrayBox");
+	Q3VBox *downpart = new Q3VBox(vertSplit, "downpartBox");
+	Q3HBox *edtbuttontray = new Q3HBox(downpart, "edtbuttontrayBox");
 
 	vertSplit->setResizeMode(downpart, QSplitter::KeepSize);
 
 	if (config_file.readBoolEntry("Chat", "ShowEditWindowLabel", true))
 	{
 		QLabel *edt = new QLabel(tr("Edit window:"), edtbuttontray, "editLabel");
-		QToolTip::add(edt, tr("This is where you type in the text to be sent"));
+// 		QToolTip::add(edt, tr("This is where you type in the text to be sent"));
+		edt->setToolTip(tr("This is where you type in the text to be sent"));
 		edtbuttontray->setStretchFactor(edt, 1);
 	}
 
@@ -135,7 +144,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 
 	Edit = new CustomInput(downpart, "edit");
  	Edit->setMinimumHeight(1);
-	Edit->setWordWrap(QMultiLineEdit::WidgetWidth);
+	Edit->setWordWrap(Q3MultiLineEdit::WidgetWidth);
 
 	connect(Edit, SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)), this, SLOT(keyPressedSlot(QKeyEvent *, CustomInput *, bool &)));
 
@@ -150,13 +159,13 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 		this, SLOT(editTextChanged()));
 	btnpart->setMinimumHeight(minimumDockAreaSize);
 
-	QAccel *acc = new QAccel(this, "returnAccel");
-	acc->connectItem(acc->insertItem(Key_Return + CTRL), this, SLOT(sendMessage()));
+	Q3Accel *acc = new Q3Accel(this, "returnAccel");
+	acc->connectItem(acc->insertItem(Qt::Key_Return + Qt::CTRL), this, SLOT(sendMessage()));
 
-	acc = new QAccel(this, "pageUpAccel");
-	acc->connectItem(acc->insertItem(Key_PageUp + SHIFT), body, SLOT(pageUp()));
-	acc = new QAccel(this, "pageDownAccel");
-	acc->connectItem(acc->insertItem(Key_PageDown + SHIFT), body, SLOT(pageDown()));
+	acc = new Q3Accel(this, "pageUpAccel");
+	acc->connectItem(acc->insertItem(Qt::Key_PageUp + Qt::SHIFT), body, SLOT(pageUp()));
+	acc = new Q3Accel(this, "pageDownAccel");
+	acc->connectItem(acc->insertItem(Qt::Key_PageDown + Qt::SHIFT), body, SLOT(pageDown()));
 
 	topDockArea->loadFromConfig(this);
 	leftDockArea->loadFromConfig(this);
@@ -254,7 +263,7 @@ void ChatWidget::configurationUpdated()
 	{
 		userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
 		userbox->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
-		userbox->QListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
+		userbox->Q3ListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
 	}
 
 	Edit->setFont(config_file.readFontEntry("Look","ChatFont"));
@@ -320,9 +329,9 @@ void ChatWidget::setActColor(bool force)
 			actcolor = colors[i];
 		p.fill(actcolor);
 
-		QIconSet icon;
-		icon.setPixmap(p, QIconSet::Automatic, QIconSet::Normal);
-		icon.setPixmap(icons_manager->loadIcon("Black_dis"), QIconSet::Automatic, QIconSet::Disabled);
+		QIcon icon;
+		icon.setPixmap(p, QIcon::Automatic, QIcon::Normal);
+		icon.setPixmap(icons_manager->loadIcon("Black_dis"), QIcon::Automatic, QIcon::Disabled);
 
 		KaduActions["colorAction"]->setIconSets(Users->toUserListElements(), icon);
 	}
@@ -510,7 +519,7 @@ void ChatWidget::keyPressEvent(QKeyEvent* e)
 void ChatWidget::editTextChanged()
 {
 	kdebugf();
-	QValueList<ToolButton*> buttons =
+	Q3ValueList<ToolButton*> buttons =
 		KaduActions["sendAction"]->toolButtonsForUserListElements(Users->toUserListElements());
 	bool buttonsEnabled = !Edit->text().isEmpty();
 	CONST_FOREACH(i, buttons)
@@ -537,7 +546,7 @@ QDateTime ChatWidget::getLastMsgTime()
 	return lastMsgTime;
 }
 
-void ChatWidget::appendMessages(const QValueList<ChatMessage *> &messages, bool pending)
+void ChatWidget::appendMessages(const Q3ValueList<ChatMessage *> &messages, bool pending)
 {
 	body->appendMessages(messages);
 
@@ -773,9 +782,9 @@ void ChatWidget::colorChanged(const QColor& color)
 	QPixmap p(12, 12);
 	p.fill(color);
 
-	QIconSet icon;
-	icon.setPixmap(p, QIconSet::Automatic, QIconSet::Normal);
-	icon.setPixmap(icons_manager->loadIcon("Black_dis"), QIconSet::Automatic, QIconSet::Disabled);
+	QIcon icon;
+	icon.setPixmap(p, QIcon::Automatic, QIcon::Normal);
+	icon.setPixmap(icons_manager->loadIcon("Black_dis"), QIcon::Automatic, QIcon::Disabled);
 
 	KaduActions["colorAction"]->setIconSets(Users->toUserListElements(), icon);
 	Edit->setColor(color);
@@ -824,7 +833,7 @@ void ChatWidget::dragEnterEvent(QDragEnterEvent *e)
 {
 	QStringList files;
 
-	if (QUriDrag::decodeLocalFiles(e, files))
+	if (Q3UriDrag::decodeLocalFiles(e, files))
 		e->accept(files.count() > 0);
 	else
 		e->accept(false);
@@ -834,7 +843,7 @@ void ChatWidget::dragMoveEvent(QDragMoveEvent *e)
 {
 	QStringList files;
 
-	if (QUriDrag::decodeLocalFiles(e, files))
+	if (Q3UriDrag::decodeLocalFiles(e, files))
 		e->accept(files.count() > 0);
 	else
 		e->accept(false);
@@ -844,7 +853,7 @@ void ChatWidget::dropEvent(QDropEvent *e)
 {
 	QStringList files;
 
-	if (QUriDrag::decodeLocalFiles(e, files))
+	if (Q3UriDrag::decodeLocalFiles(e, files))
 	{
 		e->accept(files.count() > 0);
 
@@ -891,7 +900,7 @@ unsigned int ChatWidget::newMessagesCount() const
 
 void ChatWidget::restoreGeometry()
 {
-	QValueList<int> vertSizes = toIntList(chat_manager->getChatWidgetProperty(Users, "VerticalSizes").toList());
+	Q3ValueList<int> vertSizes = toIntList(chat_manager->getChatWidgetProperty(Users, "VerticalSizes").toList());
 	if (vertSizes.empty() && Users->count() == 1)
 	{
 		QString vert_sz_str = (*(Users->constBegin())).data("VerticalSizes").toString();
@@ -916,7 +925,7 @@ void ChatWidget::restoreGeometry()
 
 	if (horizSplit)
 	{
-		QValueList<int> horizSizes = toIntList(chat_manager->getChatWidgetProperty(Users, "HorizontalSizes").toList());
+		Q3ValueList<int> horizSizes = toIntList(chat_manager->getChatWidgetProperty(Users, "HorizontalSizes").toList());
 		if (!horizSizes.empty())
 			horizSplit->setSizes(horizSizes);
 	}
@@ -924,14 +933,14 @@ void ChatWidget::restoreGeometry()
 
 void ChatWidget::storeGeometry()
 {
-	QValueList<int> sizes = vertSplit->sizes();
-	chat_manager->setChatWidgetProperty(Users, "VerticalSizes", toVariantList(sizes));
+// 	Q3ValueList<int> sizes = vertSplit->sizes();
+// 	chat_manager->setChatWidgetProperty(Users, "VerticalSizes", toVariantList(sizes));
 
-	if (Users->count() == 1)
-		(*Users->begin()).setData("VerticalSizes", QString("%1,%2").arg(sizes[0]).arg(sizes[1]));
+// 	if (Users->count() == 1)
+// 		(*Users->begin()).setData("VerticalSizes", QString("%1,%2").arg(sizes[0]).arg(sizes[1]));
 
-	if (horizSplit)
-		chat_manager->setChatWidgetProperty(Users, "HorizontalSizes", toVariantList(horizSplit->sizes()));
+// 	if (horizSplit)
+// 		chat_manager->setChatWidgetProperty(Users, "HorizontalSizes", toVariantList(horizSplit->sizes()));
 }
 
 void ChatWidget::leaveConference()

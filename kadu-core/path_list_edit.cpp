@@ -9,10 +9,14 @@
 
 #include <qlayout.h>
 #include <qlineedit.h>
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qpushbutton.h>
-#include <qvbox.h>
-#include <qvgroupbox.h>
+#include <q3vbox.h>
+#include <q3vgroupbox.h>
+//Added by qt3to4:
+#include <Q3GridLayout>
+#include <QKeyEvent>
+#include <QCloseEvent>
 
 #include "debug.h"
 #include "icons_manager.h"
@@ -57,17 +61,17 @@ void PathListEdit::setPathList(const QStringList &pathList)
 }
 
 PathListEditWindow::PathListEditWindow(const QStringList &pathList, QWidget *parent, const char *name)
-	: QWidget(parent, name, WDestructiveClose)
+	: QWidget(parent, name, Qt::WDestructiveClose)
 {
 	kdebugf();
 
 	setCaption(tr("Select paths"));
 
-	QGridLayout *Layout = new QGridLayout(this);
+	Q3GridLayout *Layout = new Q3GridLayout(this);
 	Layout->setMargin(5);
 	Layout->setSpacing(5);
 
-	PathListBox = new QListBox(this);
+	PathListBox = new Q3ListBox(this);
 	Layout->addMultiCellWidget(PathListBox, 0, 3, 0, 0);
 
 	connect(PathListBox, SIGNAL(highlighted(const QString &)), this, SLOT(currentItemChanged(const QString &)));
@@ -92,7 +96,7 @@ PathListEditWindow::PathListEditWindow(const QStringList &pathList, QWidget *par
 
 	connect(choose, SIGNAL(clicked()), this, SLOT(choosePathClicked()));
 
-	QHBox *bottom = new QHBox(this);
+	Q3HBox *bottom = new Q3HBox(this);
 	bottom->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 	bottom->setSpacing(5);
 	Layout->addMultiCellWidget(bottom, 5, 5, 0, 1);
@@ -131,7 +135,7 @@ bool PathListEditWindow::validatePath(QString &path)
 	if (!path.endsWith("/"))
 		path += '/';
 
-	if (PathListBox->findItem(path, Qt::ExactMatch))
+	if (PathListBox->findItem(path, Qt::MatchExactly))
 		return false;
 
 	return true;
@@ -175,7 +179,7 @@ void PathListEditWindow::choosePathClicked()
 	if (!validatePath(path))
 		path = "~";
 
-	path = QFileDialog::getExistingDirectory(path, this, "getDirectory", tr("Choose a directory"));
+	path = Q3FileDialog::getExistingDirectory(path, this, "getDirectory", tr("Choose a directory"));
 	if (!path.isEmpty())
 		PathEdit->setText(path);
 }
@@ -193,7 +197,7 @@ void PathListEditWindow::okClicked()
 
 void PathListEditWindow::closeEvent(QCloseEvent *e)
 {
-	saveGeometry(this, "General", "SelectPathDialogGeometry");
+// 	saveGeometry(this, "General", "SelectPathDialogGeometry");
 	QWidget::closeEvent(e);
 }
 

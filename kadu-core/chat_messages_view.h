@@ -1,10 +1,16 @@
 #ifndef CHAT_MESSAGES_VIEW
 #define CHAT_MESSAGES_VIEW
 
+#define QT3_SUPPORT
+#include <qglobal.h>
+
 #include "configuration_aware_object.h"
 #include "gadu.h"
 #include "kadu_text_browser.h"
 #include "userlistelement.h"
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <Q3ValueList>
 
 class ChatMessage;
 class QResizeEvent;
@@ -13,7 +19,7 @@ class ChatMessagesView : public KaduTextBrowser, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	QValueList<ChatMessage *> Messages;
+	Q3ValueList<ChatMessage *> Messages;
 	unsigned int Prune;
 
 	bool CfgNoHeaderRepeat;
@@ -27,7 +33,7 @@ class ChatMessagesView : public KaduTextBrowser, ConfigurationAwareObject
 	QString ChatSyntaxWithHeader;
 	QString ChatSyntaxWithoutHeader;
 
-	QMimeSourceFactory *bodyformat;
+	Q3MimeSourceFactory *bodyformat;
 
 	void repaintMessages();
 	void updateBackgrounds();
@@ -60,7 +66,7 @@ public:
 	virtual ~ChatMessagesView();
 
 	void appendMessage(ChatMessage *message);
-	void appendMessages(QValueList<ChatMessage *> messages);
+	void appendMessages(Q3ValueList<ChatMessage *> messages);
 
 	unsigned int countMessages();
 

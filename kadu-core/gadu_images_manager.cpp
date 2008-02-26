@@ -61,7 +61,7 @@ void GaduImagesManager::addImageToSend(const QString& file_name, uint32_t& size,
 	ImageToSend img;
 	QFile f(file_name);
 	kdebugm(KDEBUG_INFO, "Opening file \"%s\"\n", file_name.local8Bit().data());
-	if (!f.open(IO_ReadOnly))
+	if (!f.open(QIODevice::ReadOnly))
 	{
 		kdebugm(KDEBUG_ERROR, "Error opening file\n");
 		return;
@@ -106,7 +106,7 @@ void GaduImagesManager::sendImage(UinType uin, uint32_t size, uint32_t crc32)
 		if (!i.data)
 		{
 			QFile f(i.file_name);
-			if (!f.open(IO_ReadOnly))
+			if (!f.open(QIODevice::ReadOnly))
 			{
 				kdebugm(KDEBUG_ERROR, "Error opening file\n");
 				return;
@@ -155,7 +155,7 @@ QString GaduImagesManager::saveImage(UinType sender, uint32_t size, uint32_t crc
 	img.crc32 = crc32;
 	img.file_name = path + '/' + file_name;
 	QFile f(img.file_name);
-	f.open(IO_WriteOnly);
+	f.open(QIODevice::WriteOnly);
 	f.writeBlock(data,size);
 	f.close();
 	SavedImages.append(img);

@@ -1,9 +1,17 @@
 #ifndef KADU_SEARCH_H
 #define KADU_SEARCH_H
 
+#define QT3_SUPPORT
+#include <qglobal.h>
+
 #include <qwidget.h>
 #include <qtoolbutton.h>
-#include <qvaluelist.h>
+#include <q3valuelist.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QLabel>
+#include <QKeyEvent>
+#include <QCloseEvent>
 
 #include "gadu.h"
 #include "toolbar.h"
@@ -12,8 +20,8 @@ class QCheckBox;
 class QComboBox;
 class QLabel;
 class QLineEdit;
-class QListView;
-class QListViewItem;
+class Q3ListView;
+class Q3ListViewItem;
 class QPushButton;
 class QRadioButton;
 
@@ -50,7 +58,7 @@ class SearchDialog : public QWidget {
 		QLineEdit *e_surname;
 		QComboBox *c_gender;
 		QLineEdit *e_city;
-		QListView *results;
+		Q3ListView *results;
 		QLabel *progress;
 		QRadioButton *r_uin;
 		QRadioButton *r_pers;

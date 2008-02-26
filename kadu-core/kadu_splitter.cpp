@@ -11,25 +11,27 @@
 #include "kadu_splitter.h"
 #include "kadu_text_browser.h"
 #include "misc.h"
+//Added by qt3to4:
+#include <QChildEvent>
 
 KaduSplitter::KaduSplitter(QWidget* parent, const char* name)
 	: QSplitter (parent, name), textbrowsers()
 {
 }
 
-KaduSplitter::KaduSplitter(Orientation o, QWidget* parent, const char* name)
+KaduSplitter::KaduSplitter(Qt::Orientation o, QWidget* parent, const char* name)
 	: QSplitter(o,parent,name), textbrowsers()
 {
 }
 
-void KaduSplitter::drawContents(QPainter *p)
-{
-	QSplitter::drawContents(p);
-	kdebugf();
-	FOREACH(browser, textbrowsers)
-		(*browser)->viewport()->repaint();
+// void KaduSplitter::drawContents(QPainter *p)
+// {
+// 	QSplitter::drawContents(p);
+// 	kdebugf();
+// 	FOREACH(browser, textbrowsers)
+// 		(*browser)->viewport()->repaint();
 //	kdebugf2();
-}
+// }
 
 void KaduSplitter::childEvent(QChildEvent *c)
 {

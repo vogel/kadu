@@ -10,13 +10,15 @@
 #include "custom_input.h"
 #include "debug.h"
 #include "hot_key.h"
+//Added by qt3to4:
+#include <QKeyEvent>
 
 CustomInput::CustomInput(QWidget* parent, const char* name)
-	: QMultiLineEdit(parent, name), autosend_enabled(true)
+	: Q3MultiLineEdit(parent, name), autosend_enabled(true)
 {
 	kdebugf();
-	QStyleSheet *style=styleSheet();
-	style->item("p")->setMargin(QStyleSheetItem::MarginVertical, 0);
+	Q3StyleSheet *style=styleSheet();
+	style->item("p")->setMargin(Q3StyleSheetItem::MarginVertical, 0);
 	setStyleSheet(style);
 	kdebugf2();
 }
@@ -33,7 +35,7 @@ void CustomInput::keyPressEvent(QKeyEvent* e)
 		return;
 	}
 
-	if (autosend_enabled && ((HotKey::shortCut(e, "ShortCuts", "chat_newline")) || e->key() == Key_Enter) && !(e->state() & ShiftButton))
+	if (autosend_enabled && ((HotKey::shortCut(e, "ShortCuts", "chat_newline")) || e->key() == Qt::Key_Enter) && !(e->state() & Qt::ShiftButton))
 	{
 		kdebugmf(KDEBUG_INFO, "emit sendMessage()\n");
 		emit sendMessage();
@@ -43,7 +45,7 @@ void CustomInput::keyPressEvent(QKeyEvent* e)
 	}
 	else
 	{
-		if (e->key() == Key_Minus)
+		if (e->key() == Qt::Key_Minus)
 		{
 			insert("-");
 			e->accept();
@@ -78,7 +80,7 @@ void CustomInput::keyPressEvent(QKeyEvent* e)
  			kdebugf2();
  			return;
  		}
-		if (e->key() == Key_A && (e->state() & ControlButton))
+		if (e->key() == Qt::Key_A && (e->state() & Qt::ControlButton))
 		{
 			selectAll();	
 			e->accept();
@@ -86,7 +88,7 @@ void CustomInput::keyPressEvent(QKeyEvent* e)
  			return;
 		}
 	}
-	QMultiLineEdit::keyPressEvent(e);
+	Q3MultiLineEdit::keyPressEvent(e);
 	kdebugf2();
 }
 
@@ -100,7 +102,7 @@ void CustomInput::keyReleaseEvent(QKeyEvent* e)
 		return;
 	}
 
-	QMultiLineEdit::keyReleaseEvent(e);
+	Q3MultiLineEdit::keyReleaseEvent(e);
 }
 
 void CustomInput::setAutosend(bool on)

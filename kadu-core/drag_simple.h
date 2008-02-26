@@ -10,9 +10,12 @@
 #ifndef DRAGSIMPLE_H
 #define DRAGSIMPLE_H
 
-#include <qdragobject.h>
+#define QT3_SUPPORT
+#include <qglobal.h>
 
-class DragSimple : public QTextDrag
+#include <q3dragobject.h>
+
+class DragSimple : public Q3TextDrag
 {
 	QString MimeType;
 	QString Content;

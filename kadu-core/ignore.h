@@ -1,27 +1,34 @@
 #ifndef IGNORE_H
 #define IGNORE_H
 
-#include <qhbox.h>
-#include <qvaluelist.h>
+#define QT3_SUPPORT
+#include <qglobal.h>
+
+#include <q3hbox.h>
+#include <q3valuelist.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QKeyEvent>
+#include <QLabel>
 
 #include "usergroup.h"
 
 class LayoutHelper;
 class QLabel;
 class QLineEdit;
-class QListBox;
+class Q3ListBox;
 class QWidget;
 class QResizeEvent;
-class QSimpleRichText;
+class Q3SimpleRichText;
 
 /**
 	Dialog umo¿liwiaj±cy zarz±dzanie list± ignorowanych
 **/
-class Ignored : public QHBox
+class Ignored : public Q3HBox
 {
 	Q_OBJECT
 
-	QListBox *lb_list;
+	Q3ListBox *lb_list;
 	QLineEdit *e_uin;
 	LayoutHelper *layoutHelper;
 
@@ -42,7 +49,7 @@ public:
 
 class IgnoredManager
 {
-	static QValueList<QPair<UserListElements, bool> > Ignored;
+	static Q3ValueList<QPair<UserListElements, bool> > Ignored;
 
 public:
 	static void loadFromConfiguration();
@@ -51,7 +58,7 @@ public:
 	static void remove(UserListElements uins);
 	static bool isIgnored(UserListElements uins);
 	static void clear();
-	static const QValueList<QPair<UserListElements, bool> > & getList();
+	static const Q3ValueList<QPair<UserListElements, bool> > & getList();
 };
 
 #endif

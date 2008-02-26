@@ -16,7 +16,7 @@
 #include "select_file.h"
 
 SelectFile::SelectFile(const QString &type, QWidget *parent, char *name)
-	: QHBox(parent, name), Type(type)
+	: Q3HBox(parent, name), Type(type)
 {
 	LineEdit = new QLineEdit(this);
 
@@ -25,7 +25,7 @@ SelectFile::SelectFile(const QString &type, QWidget *parent, char *name)
 }
 
 SelectFile::SelectFile(QWidget *parent, char *name)
-	: QHBox(parent, name)
+	: Q3HBox(parent, name)
 {
 	LineEdit = new QLineEdit(this);
 
@@ -45,13 +45,13 @@ void SelectFile::selectFileClicked()
 	}
 	else if (Type == "all")
 	{
-		QString s(QFileDialog::getOpenFileName(LineEdit->text(), "All Files (*)", this));
+		QString s(Q3FileDialog::getOpenFileName(LineEdit->text(), "All Files (*)", this));
 		if (!s.isEmpty())
 			LineEdit->setText(s);
 	}
 	else if (Type == "audio")
 	{
-		QString s(QFileDialog::getOpenFileName(LineEdit->text(), "Audio Files (*.wav *.au *.raw)", this));
+		QString s(Q3FileDialog::getOpenFileName(LineEdit->text(), "Audio Files (*.wav *.au *.raw)", this));
 		if (!s.isEmpty())
 			LineEdit->setText(s);
 	}

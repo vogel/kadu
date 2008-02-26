@@ -12,15 +12,18 @@
 #include <qlayout.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
-#include <qvbox.h>
-#include <qvgroupbox.h>
+#include <q3vbox.h>
+#include <q3vgroupbox.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QKeyEvent>
 
 #include "debug.h"
 #include "icons_manager.h"
 #include "misc.h"
 #include "personal_info.h"
 
-PersonalInfoDialog::PersonalInfoDialog(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopLevel | WDestructiveClose),
+PersonalInfoDialog::PersonalInfoDialog(QWidget *parent, const char *name) : Q3HBox(parent, name, Qt::WType_TopLevel | Qt::WDestructiveClose),
 	le_nickname(0), le_name(0), le_surname(0), cb_gender(0), le_birthyear(0), le_city(0), le_familyname(0),
 	le_familycity(0), pb_save(0), State(READY), data(new SearchRecord()), layoutHelper(new LayoutHelper())
 {
@@ -29,7 +32,7 @@ PersonalInfoDialog::PersonalInfoDialog(QWidget *parent, const char *name) : QHBo
 	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
-	QVBox *left = new QVBox(this);
+	Q3VBox *left = new Q3VBox(this);
 	left->setMargin(10);
 	left->setSpacing(10);
 
@@ -37,7 +40,7 @@ PersonalInfoDialog::PersonalInfoDialog(QWidget *parent, const char *name) : QHBo
 	QWidget *blank = new QWidget(left);
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	QVBox *center = new QVBox(this);
+	Q3VBox *center = new Q3VBox(this);
 	center->setMargin(10);
 	center->setSpacing(10);
 
@@ -49,16 +52,16 @@ PersonalInfoDialog::PersonalInfoDialog(QWidget *parent, const char *name) : QHBo
 	// end create main QLabel widgets (icon and app info)
 
 	// our QVGroupBox
-	QVGroupBox *vgb_info = new QVGroupBox(center);
+	Q3VGroupBox *vgb_info = new Q3VGroupBox(center);
 	vgb_info->setTitle(tr("Your personal information"));
 	center->setStretchFactor(vgb_info, 1);
 	// end our QGroupBox
 
 	// create our info-fields
-	QHBox *hb_nicknamesurname = new QHBox(vgb_info);
-	QVBox *vb_nickname = new QVBox(hb_nicknamesurname);
-	QVBox *vb_name = new QVBox(hb_nicknamesurname);
-	QVBox *vb_surname = new QVBox(hb_nicknamesurname);
+	Q3HBox *hb_nicknamesurname = new Q3HBox(vgb_info);
+	Q3VBox *vb_nickname = new Q3VBox(hb_nicknamesurname);
+	Q3VBox *vb_name = new Q3VBox(hb_nicknamesurname);
+	Q3VBox *vb_surname = new Q3VBox(hb_nicknamesurname);
 	hb_nicknamesurname->setSpacing(3);
 	vb_nickname->setSpacing(3);
 	vb_name->setSpacing(3);
@@ -72,10 +75,10 @@ PersonalInfoDialog::PersonalInfoDialog(QWidget *parent, const char *name) : QHBo
 	le_surname = new QLineEdit(vb_surname);
 
 	//
-	QHBox *hb_genderbirthyearcity = new QHBox(vgb_info);
-	QVBox *vb_gender = new QVBox(hb_genderbirthyearcity);
-	QVBox *vb_birthyear = new QVBox(hb_genderbirthyearcity);
-	QVBox *vb_city = new QVBox(hb_genderbirthyearcity);
+	Q3HBox *hb_genderbirthyearcity = new Q3HBox(vgb_info);
+	Q3VBox *vb_gender = new Q3VBox(hb_genderbirthyearcity);
+	Q3VBox *vb_birthyear = new Q3VBox(hb_genderbirthyearcity);
+	Q3VBox *vb_city = new Q3VBox(hb_genderbirthyearcity);
 	hb_genderbirthyearcity->setSpacing(3);
 	vb_gender->setSpacing(3);
 	vb_birthyear->setSpacing(3);
@@ -96,10 +99,10 @@ PersonalInfoDialog::PersonalInfoDialog(QWidget *parent, const char *name) : QHBo
 	hb_genderbirthyearcity->setStretchFactor(le_city, 1);
 
 	//
-	QHBox *hb_fnamefcity = new QHBox(vgb_info);
-	QVBox *vb_fname = new QVBox(hb_fnamefcity);
-	QVBox *vb_fcity = new QVBox(hb_fnamefcity);
-	QVBox *vb_blank = new QVBox(hb_fnamefcity);
+	Q3HBox *hb_fnamefcity = new Q3HBox(vgb_info);
+	Q3VBox *vb_fname = new Q3VBox(hb_fnamefcity);
+	Q3VBox *vb_fcity = new Q3VBox(hb_fnamefcity);
+	Q3VBox *vb_blank = new Q3VBox(hb_fnamefcity);
 	hb_fnamefcity->setSpacing(3);
 	vb_fname->setSpacing(3);
 	vb_fcity->setSpacing(3);
@@ -114,7 +117,7 @@ PersonalInfoDialog::PersonalInfoDialog(QWidget *parent, const char *name) : QHBo
 	//
 
 	// buttons
-	QHBox *bottom=new QHBox(center);
+	Q3HBox *bottom=new Q3HBox(center);
 	QWidget *blank2=new QWidget(bottom);
 	bottom->setSpacing(5);
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
@@ -141,7 +144,7 @@ PersonalInfoDialog::~PersonalInfoDialog()
 {
 	kdebugf();
 	delete data;
-	saveGeometry(this, "General", "PersonalInfoDialogGeometry");
+// 	saveGeometry(this, "General", "PersonalInfoDialogGeometry");
 	delete layoutHelper;
 	kdebugf2();
 }

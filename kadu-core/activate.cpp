@@ -21,6 +21,7 @@
   DEALINGS IN THE SOFTWARE.
 */
 
+#include <QX11Info>
 #include "activate.h"
 
 #include <X11/Xlib.h>
@@ -52,13 +53,13 @@ void create_netwm_atoms(Display *d)
 
 const unsigned long netwm_sendevent_mask = (SubstructureRedirectMask | SubstructureNotifyMask);
 
-void activateWindow(WId id)
+void activateWindow(Qt::HANDLE id)
 {
 	XEvent e;
 
 	e.xclient.type = ClientMessage;
 	e.xclient.message_type = net_active_window;
-	e.xclient.display = qt_xdisplay(); // QX11Info::display();
+	e.xclient.display = QX11Info::display(); // QX11Info::display();
 	e.xclient.window = id;
 	e.xclient.format = 32;
 	e.xclient.data.l[0] = 2l; // NET::FromApplication;
@@ -67,5 +68,5 @@ void activateWindow(WId id)
 	e.xclient.data.l[3] = 0l;
 	e.xclient.data.l[4] = 0l;
 
-	XSendEvent(qt_xdisplay(), qt_xrootwin(), False, netwm_sendevent_mask, &e);
+	XSendEvent(QX11Info::display(), QX11Info::appRootWindow(), False, netwm_sendevent_mask, &e);
 }

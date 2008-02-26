@@ -1,7 +1,12 @@
 #ifndef KADU_USERLIST_H
 #define KADU_USERLIST_H
 
+#define QT3_SUPPORT
+#include <qglobal.h>
+
 #include <qstring.h>
+//Added by qt3to4:
+#include <Q3ValueList>
 #include "usergroup.h"
 
 /**
@@ -39,7 +44,7 @@ class UserList : public UserGroup
 			Scala listê kontaktów z podan± list± kontaktów \a userlist.
 			\param userlist lista kontaktów z któr± nale¿y scaliæ
 		**/
-		void merge(const QValueList<UserListElement> &list);
+		void merge(const Q3ValueList<UserListElement> &list);
 
 		/**
 			\fn void readFromConfig()

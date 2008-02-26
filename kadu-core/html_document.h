@@ -1,8 +1,11 @@
 #ifndef KADU_HTML_DOCUMENT_H
 #define KADU_HTML_DOCUMENT_H
 
+#define QT3_SUPPORT
+#include <qglobal.h>
+
 #include <qstring.h>
-#include <qvaluelist.h>
+#include <q3valuelist.h>
 
 class QRegExp;
 
@@ -20,7 +23,7 @@ class HtmlDocument
 			bool tag;
 			Element() : text(), tag(false) {}
 		};
-		QValueList<Element> Elements;
+		Q3ValueList<Element> Elements;
 		void addElement(Element e);
 		static QRegExp* url_regexp;
 		static QRegExp* mail_regexp;

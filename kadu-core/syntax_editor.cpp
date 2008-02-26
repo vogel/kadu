@@ -11,16 +11,21 @@
 #include <qcombobox.h>
 #include <qdir.h>
 #include <qfile.h>
-#include <qgroupbox.h>
+#include <q3groupbox.h>
 #include <qinputdialog.h>
 #include <qlayout.h>
 #include <qlineedit.h>
 #include <qmap.h>
 #include <qpushbutton.h>
 #include <qregexp.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qtooltip.h>
-#include <qvbox.h>
+#include <q3vbox.h>
+//Added by qt3to4:
+#include <Q3HBoxLayout>
+#include <Q3GridLayout>
+#include <Q3Frame>
+#include <QKeyEvent>
 
 #include "config_file.h"
 #include "debug.h"
@@ -46,18 +51,18 @@ QString SyntaxList::readSyntax(const QString &category, const QString &name, con
 	path = dataPath("kadu") + "/syntax/" + category + "/" + name + ".syntax";
 
 	syntaxFile.setName(path);
-	if (!syntaxFile.open(IO_ReadOnly))
+	if (!syntaxFile.open(QIODevice::ReadOnly))
 	{
 		path = ggPath() + "/syntax/" + category + "/" + name + ".syntax";
 
 		syntaxFile.setName(path);
-		if (!syntaxFile.open(IO_ReadOnly))
+		if (!syntaxFile.open(QIODevice::ReadOnly))
 			return defaultSyntax;
 	}
 
 	QString result;
-	QTextStream stream(&syntaxFile);
-	stream.setEncoding(QTextStream::UnicodeUTF8);
+	Q3TextStream stream(&syntaxFile);
+	stream.setEncoding(Q3TextStream::UnicodeUTF8);
 	result = stream.read();
 	syntaxFile.close();
 
@@ -128,11 +133,11 @@ bool SyntaxList::updateSyntax(const QString &name, const QString &syntax)
 
 	QFile syntaxFile;
 	syntaxFile.setName(path + name + ".syntax");
-	if (!syntaxFile.open(IO_WriteOnly))
+	if (!syntaxFile.open(QIODevice::WriteOnly))
 		return false;
 
-	QTextStream stream(&syntaxFile);
-	stream.setEncoding(QTextStream::UnicodeUTF8);
+	Q3TextStream stream(&syntaxFile);
+	stream.setEncoding(Q3TextStream::UnicodeUTF8);
 	stream << syntax;
 	syntaxFile.close();
 
@@ -159,12 +164,12 @@ QString SyntaxList::readSyntax(const QString &name)
 
 	QFile syntaxFile;
 	syntaxFile.setName(path);
-	if (!syntaxFile.open(IO_ReadOnly))
+	if (!syntaxFile.open(QIODevice::ReadOnly))
 		return QString();
 
 	QString result;
-	QTextStream stream(&syntaxFile);
-	stream.setEncoding(QTextStream::UnicodeUTF8);
+	Q3TextStream stream(&syntaxFile);
+	stream.setEncoding(Q3TextStream::UnicodeUTF8);
 	result = stream.read();
 	syntaxFile.close();
 
@@ -220,7 +225,7 @@ SyntaxEditor::SyntaxEditor(QWidget *parent, char *name)
 	example.setAddressAndPort("Gadu", QHostAddress(2130706433), 80);
 	example.setDNSName("Gadu", "host.server.net");
 
-	QHBoxLayout *layout = new QHBoxLayout(this);
+	Q3HBoxLayout *layout = new Q3HBoxLayout(this);
 	layout->setSpacing(5);
 
 	syntaxListCombo = new QComboBox(this);
@@ -269,7 +274,7 @@ void SyntaxEditor::setSyntaxHint(const QString &syntaxHint)
 
 void SyntaxEditor::editClicked()
 {
-	SyntaxEditorWindow *editor = new SyntaxEditorWindow(syntaxList, syntaxListCombo->currentText(), category, syntaxHint, 0, "syntax_editor:" + category);
+	SyntaxEditorWindow *editor = new SyntaxEditorWindow(syntaxList, syntaxListCombo->currentText(), category, syntaxHint);
 	connect(editor, SIGNAL(updated(const QString &)), this, SLOT(setCurrentSyntax(const QString &)));
 
 	emit onSyntaxEditorWindowCreated(editor);
@@ -307,11 +312,11 @@ void SyntaxEditor::syntaxChangedSlot(const QString &newSyntax)
 		fileName = ggPath() + "/syntax/" + category.lower() + "/" + newSyntax + ".syntax";
 
 	file.setName(fileName);
-	if (!file.open(IO_ReadOnly))
+	if (!file.open(QIODevice::ReadOnly))
 		return;
 
-	QTextStream stream(&file);
-	stream.setEncoding(QTextStream::UnicodeUTF8);
+	Q3TextStream stream(&file);
+	stream.setEncoding(Q3TextStream::UnicodeUTF8);
 	content = stream.read();
 	file.close();
 
@@ -340,23 +345,23 @@ void SyntaxEditor::syntaxListUpdated()
 }
 
 SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &syntaxName, const QString &category, const QString &syntaxHint, QWidget* parent, const char *name)
-	: QVBox(parent, name), syntaxList(syntaxList), syntaxName(syntaxName)
+	: Q3VBox(parent, name), syntaxList(syntaxList), syntaxName(syntaxName)
 {
-	setWFlags(getWFlags() | Qt::WDestructiveClose);
+// 	setWFlags(getWFlags() | Qt::WDestructiveClose);
 
 	setCaption(tr("Kadu syntax editor"));
 
 	setMargin(10);
 	setSpacing(5);
 
-	QFrame *syntax = new QFrame(this);
+	Q3Frame *syntax = new Q3Frame(this);
 
-	QGridLayout *layout = new QGridLayout(syntax);
+	Q3GridLayout *layout = new Q3GridLayout(syntax);
 	layout->setColStretch(0, 2);
 	layout->setColStretch(1, 1);
 	layout->setSpacing(5);
 
-	editor = new QTextEdit(syntax);
+	editor = new Q3TextEdit(syntax);
 	editor->setTextFormat(Qt::PlainText);
 	editor->setText(syntaxList->readSyntax(syntaxName));
 
@@ -373,7 +378,7 @@ SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &sy
 	connect(preview, SIGNAL(clicked()), this, SLOT(refreshPreview()));
 	layout->addWidget(preview, 1, 1);
 
-	QHBox *buttons = new QHBox(this);
+	Q3HBox *buttons = new Q3HBox(this);
 	buttons->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 	buttons->setSpacing(5);
 
@@ -395,7 +400,7 @@ SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &sy
 
 SyntaxEditorWindow::~SyntaxEditorWindow()
 {
-	saveGeometry(this, "Look", "SyntaxEditorGeometry");
+// 	saveGeometry(this, "Look", "SyntaxEditorGeometry");
 }
 
 void SyntaxEditorWindow::refreshPreview()
@@ -450,11 +455,11 @@ void SyntaxEditorWindow::saveAs()
 
 void SyntaxEditorWindow::keyPressEvent(QKeyEvent *e)
 {
-	if (e->key() == Key_Escape)
+	if (e->key() == Qt::Key_Escape)
 	{
 		e->accept();
 		close();
 	}
 	else
-		QVBox::keyPressEvent(e);
+		Q3VBox::keyPressEvent(e);
 }

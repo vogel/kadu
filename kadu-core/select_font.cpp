@@ -14,7 +14,7 @@
 #include "select_font.h"
 
 SelectFont::SelectFont(QWidget *parent, const char *name)
-	: QHBox(parent, name)
+	: Q3HBox(parent, name)
 {
 	setSpacing(5);
 

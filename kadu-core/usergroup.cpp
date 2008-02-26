@@ -16,12 +16,14 @@
 #include "usergroup.h"
 #include "userlist.h"
 #include "userlist-private.h"
+//Added by qt3to4:
+#include <Q3ValueList>
 
 UserGroup::UserGroup(int size, const char *name) : QObject(NULL, name), d(new UserGroupData(size))
 {
 }
 
-UserGroup::UserGroup(const QValueList<UserListElement> &group, const char *name) : QObject(NULL, name), d(new UserGroupData(group.size() * 2))
+UserGroup::UserGroup(const QList<UserListElement> &group, const char *name) : QObject(NULL, name), d(new UserGroupData(group.size() * 2))
 {
 	addUsers(group);
 }
@@ -106,7 +108,7 @@ bool UserGroup::contains(UserListElement elem, BehaviourForAnonymous beh) const
 
 bool UserGroup::equals(UserListElements users) const
 {
-	unsigned int cnt = count();
+	int cnt = count();
 	if (cnt != users.count())
 		return false;
 	CONST_FOREACH(user, users)
@@ -178,7 +180,7 @@ void UserGroup::addUsers(const UserGroup *group)
 	kdebugf2();
 }
 
-void UserGroup::addUsers(QValueList<UserListElement> users)
+void UserGroup::addUsers(QList<UserListElement> users)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s'\n", name());
 	int i = 1, cnt = users.count();
@@ -202,7 +204,7 @@ void UserGroup::removeUsers(const UserGroup *group)
 	kdebugf2();
 }
 
-void UserGroup::removeUsers(QValueList<UserListElement> users)
+void UserGroup::removeUsers(QList<UserListElement> users)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s'\n", name());
 	int i = 1, cnt = users.count();
@@ -314,7 +316,7 @@ bool UserListElements::equals(const UserGroup *group) const
 void UserListElements::sort()
 {
 	if (count() > 1)
-		qHeapSort(*this);
+		qSort(*this);
 }
 
 UserListElements::UserListElements(UserListElement u)
@@ -322,11 +324,11 @@ UserListElements::UserListElements(UserListElement u)
 	append(u);
 }
 
-UserListElements::UserListElements(const UserListElements &u) : QValueList<UserListElement>(u)
+UserListElements::UserListElements(const UserListElements &u) : QList<UserListElement>(u)
 {
 }
 
-UserListElements::UserListElements(const QValueList<UserListElement> &u) : QValueList<UserListElement>(u)
+UserListElements::UserListElements(const QList<UserListElement> &u) : QList<UserListElement>(u)
 {
 }
 
@@ -360,9 +362,9 @@ bool UserListElements::operator < (const UserListElements &compareTo) const
 
 	for (unsigned int i = 0; i < count(); i++)
 	{
-		if (*at(i) < *compareTo.at(i))
+		if (at(i) < compareTo.at(i))
 			return true;
-		if (*compareTo.at(i) < *at(i))
+		if (compareTo.at(i) < at(i))
 			return false;
 	}
 

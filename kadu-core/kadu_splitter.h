@@ -1,8 +1,13 @@
 #ifndef KADU_SPLITTER_H
 #define KADU_SPLITTER_H
 
-#include <qvaluelist.h>
+#define QT3_SUPPORT
+#include <qglobal.h>
+
+#include <q3valuelist.h>
 #include <qsplitter.h>
+//Added by qt3to4:
+#include <QChildEvent>
 
 class QPainter;
 class QChildEvent;
@@ -19,8 +24,8 @@ class KaduTextBrowser;
 class KaduSplitter : public QSplitter
 {
 	protected:
-		QValueList<KaduTextBrowser*> textbrowsers;
-		void drawContents(QPainter* p);
+		Q3ValueList<KaduTextBrowser*> textbrowsers;
+// 		void drawContents(QPainter* p);
 		void childEvent(QChildEvent* c);
 
 	public:
@@ -40,7 +45,7 @@ class KaduSplitter : public QSplitter
 		\param name nazwa obiektu
 		\param o orientacja separatora
 	**/
-		KaduSplitter(Orientation o, QWidget* parent = 0, const char* name = 0);
+		KaduSplitter(Qt::Orientation o, QWidget* parent = 0, const char* name = 0);
 };
 
 #endif

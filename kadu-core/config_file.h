@@ -1,8 +1,11 @@
 #ifndef CONFIG_FILE_H
 #define CONFIG_FILE_H
 
+#include <qglobal.h>
+
 #include <qcolor.h>
 #include <qdom.h>
+#include <qfont.h>
 #include <qmap.h>
 #include <qrect.h>
 #include <qsize.h>

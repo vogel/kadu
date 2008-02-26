@@ -9,12 +9,16 @@
 
 #include <qapplication.h>
 #include <qclipboard.h>
-#include <qobjectlist.h>
-#include <qpopupmenu.h>
+#include <qobject.h>
+#include <q3popupmenu.h>
 #include <qregexp.h>
 #include <qdialog.h>
 #include <qfile.h>
-#include <private/qrichtext_p.h>
+//Added by qt3to4:
+#include <QWheelEvent>
+#include <QMouseEvent>
+// #include <private/qrichtext_p.h>
+#include <QTextCursor>
 
 #include "debug.h"
 #include "emoticons.h"
@@ -23,7 +27,7 @@
 #include "message_box.h"
 
 KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
-	: QTextBrowser(parent, name), QToolTip(viewport()),
+	: Q3TextBrowser(parent, name),//, QToolTip(viewport()),
 	refreshTimer(), anchor(), level(0), highlightedlink(), image(), trueTransparency(false)
 {
 	kdebugf();
@@ -35,7 +39,7 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 //	setWFlags(Qt::WNoAutoErase|Qt::WStaticContents|Qt::WPaintClever);
 	connect(this, SIGNAL(linkClicked(const QString&)), this, SLOT(hyperlinkClicked(const QString&)));
 	connect(this, SIGNAL(highlighted(const QString&)), this, SLOT(linkHighlighted(const QString &)));
-	setWrapPolicy(QTextEdit::AtWordOrDocumentBoundary);
+	setWrapPolicy(Q3TextEdit::AtWordOrDocumentBoundary);
 	setTextFormat(Qt::RichText);
 
 //	connect(verticalScrollBar(), SIGNAL(sliderReleased()), this, SLOT(repaint()));
@@ -52,36 +56,36 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 
 void KaduTextBrowser::verticalSliderPressedSlot()
 {
-	AnimatedLabel::mustPause = true;
-
-	const QObjectList *objs = viewport()->children();
-	if (objs)
-		CONST_FOREACH(i, *objs)
-			if ((*i)->inherits("AnimatedLabel"))
-			{
-				AnimatedLabel *lab = static_cast<AnimatedLabel *>(*i);
-				lab->pauseMovie();
-			}
+// 	AnimatedLabel::mustPause = true;
+// 
+// 	const QObjectList *objs = viewport()->children();
+// 	if (objs)
+// 		CONST_FOREACH(i, *objs)
+// 			if ((*i)->inherits("AnimatedLabel"))
+// 			{
+// 				AnimatedLabel *lab = static_cast<AnimatedLabel *>(*i);
+// 				lab->pauseMovie();
+// 			}
 }
 
 void KaduTextBrowser::verticalSliderReleasedSlot()
 {
-	AnimatedLabel::mustPause = false;
-
-	const QObjectList *objs = viewport()->children();
-	if (objs)
-		CONST_FOREACH(i, *objs)
-			if ((*i)->inherits("AnimatedLabel"))
-			{
-				AnimatedLabel *lab = static_cast<AnimatedLabel *>(*i);
-				if (lab->isVisible())
-				{
+// 	AnimatedLabel::mustPause = false;
+// 
+// 	const QObjectList *objs = viewport()->children();
+// 	if (objs)
+// 		CONST_FOREACH(i, *objs)
+// 			if ((*i)->inherits("AnimatedLabel"))
+// 			{
+// 				AnimatedLabel *lab = static_cast<AnimatedLabel *>(*i);
+// 				if (lab->isVisible())
+// 				{
 //					kdebugm(KDEBUG_INFO, "%s visible\n", lab->tip.local8Bit().data());
-					lab->unpauseMovie();
-				}
+// 					lab->unpauseMovie();
+// 				}
 //				else
 //					kdebugm(KDEBUG_INFO, "%s is NOT visible\n", lab->tip.local8Bit().data());
-			}
+// 			}
 }
 
 void KaduTextBrowser::refreshLater()
@@ -102,7 +106,7 @@ void KaduTextBrowser::maybeTip(const QPoint &c)
 {
 	if (!highlightedlink.isEmpty())
 		kdebugmf(KDEBUG_INFO, "link %s (X,Y)=%d,%d\n", highlightedlink.local8Bit().data(), c.x(), c.y());
-	tip(QRect(c.x() - 20, c.y() - 5, 40, 10), highlightedlink);
+// 	tip(QRect(c.x() - 20, c.y() - 5, 40, 10), highlightedlink);
 }
 
 void KaduTextBrowser::linkHighlighted(const QString & link)
@@ -125,7 +129,7 @@ void KaduTextBrowser::copyLinkLocation()
 	QApplication::clipboard()->setText(anchor);
 }
 
-QPopupMenu *KaduTextBrowser::createPopupMenu(const QPoint &point)
+Q3PopupMenu *KaduTextBrowser::createPopupMenu(const QPoint &point)
 {
 	kdebugf();
 	anchor = anchorAt(point);
@@ -134,10 +138,10 @@ QPopupMenu *KaduTextBrowser::createPopupMenu(const QPoint &point)
 	if (!image.isEmpty())
 		kdebugm(KDEBUG_INFO, "image: %s\n", image.local8Bit().data());
 
-	QPopupMenu *popupmenu = QTextBrowser::createPopupMenu(point);
+	Q3PopupMenu *popupmenu = Q3TextBrowser::createPopupMenu(point);
 
 	if (!anchor.isEmpty())
-		popupmenu->insertItem(tr("Copy link &location"), this, SLOT(copyLinkLocation()), CTRL+Key_L, -1, 0);
+		popupmenu->insertItem(tr("Copy link &location"), this, SLOT(copyLinkLocation()), Qt::CTRL + Qt::Key_L, -1, 0);
 	else if (!image.isNull())
 		popupmenu->insertItem(tr("&Save image..."), this, SLOT(saveImage()));
 
@@ -158,7 +162,7 @@ void KaduTextBrowser::drawContents(QPainter * p, int clipx, int clipy, int clipw
 	if (level == 1)
 	{
 //		kdebugm(KDEBUG_INFO, "x:%d y:%d w:%d h:%d\n", clipx, clipy, clipw, cliph);
-		QTextBrowser::drawContents(p, clipx, clipy, clipw, cliph);
+		Q3TextBrowser::drawContents(p, clipx, clipy, clipw, cliph);
 //		QTimer::singleShot(0, this, SLOT(repaint()));//niestety konieczne
 	}
 	--level;
@@ -263,18 +267,18 @@ void KaduTextBrowser::contentsMouseReleaseEvent(QMouseEvent *e)
 {
 	kdebugf();
 	emit mouseReleased(e);
-	QTextBrowser::contentsMouseReleaseEvent(e);
+	Q3TextBrowser::contentsMouseReleaseEvent(e);
 }
 
 void KaduTextBrowser::contentsWheelEvent(QWheelEvent *e)
 {
 	kdebugf();
 	emit wheel(e);
-	QTextBrowser::contentsWheelEvent(e);
+	Q3TextBrowser::contentsWheelEvent(e);
 }
 
 QString KaduTextBrowser::imageAt(const QPoint &point)
-{
+{/*
 	// this function uses Qt private API (QTextCursor), because there's no way
 	// to do it with public API (strange bugs in Qt :()
 	kdebugf();
@@ -283,8 +287,8 @@ QString KaduTextBrowser::imageAt(const QPoint &point)
 		return QString::null;
 	static QRegExp imgExp("^<!--StartFragment-->(<.+>)?(/.*\\.\\w{3,4})$");
 	bool ok = false;
-	QTextCursor *c = textCursor();
-	QTextDocument *doc = c->document();
+// 	Q3TextCursor *c = textCursor();
+// 	QTextDocument *doc = c->document();
 
 	c->place(point, doc->firstParagraph()); // places cursor _near_ specified point
 	if (c->paragraph())
@@ -330,32 +334,32 @@ QString KaduTextBrowser::imageAt(const QPoint &point)
 		}
 		removeSelection(1);
 	}
-	kdebugf2();
+	kdebugf2();*/
 	return QString::null;
 }
 
 void KaduTextBrowser::saveImage()
 {
 	kdebugf();
-	QFileDialog *fd = new QFileDialog(this);
+	Q3FileDialog *fd = new Q3FileDialog(this);
 	int fdResult;
 	QString fileExt = '.' + image.section('.', -1);
 
-	fd->setMode(QFileDialog::AnyFile);
+	fd->setMode(Q3FileDialog::AnyFile);
 	fd->setDir(config_file.readEntry("Chat", "LastImagePath"));
 	fd->setFilter(QString("%1 (*%2)").arg(qApp->translate("ImageDialog", "Images"), fileExt));
 	fd->setSelection(image.section('/', -1));
 	fd->setCaption(tr("Save image"));
-	while ((fdResult = fd->exec()) == QFileDialog::Accepted
+	while ((fdResult = fd->exec()) == Q3FileDialog::Accepted
 		&& QFile::exists(fd->selectedFile())
 		&& !MessageBox::ask(tr("File already exists. Overwrite?")));
-	if (fdResult == QFileDialog::Accepted)
+	if (fdResult == Q3FileDialog::Accepted)
 	{
 		QFile dst((fd->selectedFile().endsWith(fileExt)) ? fd->selectedFile() : fd->selectedFile() + fileExt);
 		QFile src(image);
-		if (dst.open(IO_WriteOnly))
+		if (dst.open(QIODevice::WriteOnly))
 		{
-			if (src.open(IO_ReadOnly))
+			if (src.open(QIODevice::ReadOnly))
 			{
 				char buffer[1024];
 				Q_LONG len;

@@ -1,8 +1,17 @@
 #ifndef TOOLBAR_H
 #define TOOLBAR_H
 
-#include <qtoolbar.h>
-#include <qvaluelist.h>
+#define QT3_SUPPORT
+#include <qglobal.h>
+
+#include <q3toolbar.h>
+#include <q3valuelist.h>
+//Added by qt3to4:
+#include <QMoveEvent>
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QContextMenuEvent>
+#include <Q3PopupMenu>
 
 #include "dockarea.h"
 #include "toolbutton.h"
@@ -16,7 +25,7 @@ class ToolButton;
 	\brief Pasek narz?dziowy
 **/
 
-class ToolBar : public QToolBar
+class ToolBar : public Q3ToolBar
 {
 	Q_OBJECT
 
@@ -26,12 +35,12 @@ class ToolBar : public QToolBar
 		bool showLabel;
 	};
 
-	QValueList<ToolBarAction> ToolBarActions;
+	Q3ValueList<ToolBarAction> ToolBarActions;
 	ToolButton *dragButton; /*!< przeci?gany przycisk akcji */
 
 	ToolButton * addButton(Action *action, bool showLabel, ToolButton *after);
 
-	static QMap< QString, QValueList<ToolBarAction> > DefaultActions;
+	static QMap< QString, Q3ValueList<ToolBarAction> > DefaultActions;
 
 private slots:
 	/**
@@ -132,7 +141,7 @@ public:
 		Funkcja tworz?ca menu kontekstowe, umo?liwiaj?ce dodanie
 		nowych akcji do paska narz?dziowego.
 	**/
-	QPopupMenu* createContextMenu(QWidget *parent);
+	Q3PopupMenu* createContextMenu(QWidget *parent);
 
 	/**
 		\fn hasAction(QString action_name)

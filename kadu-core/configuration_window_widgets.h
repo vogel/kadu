@@ -1,16 +1,19 @@
 #ifndef CONFIGURATION_WINDOW_WIDGETS_H
 #define CONFIGURATION_WINDOW_WIDGETS_H
 
+#define QT3_SUPPORT
+#include <qglobal.h>
+
 #include <qcheckbox.h>
 #include <qcombobox.h>
 #include <qdom.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qpushbutton.h>
 #include <qslider.h>
 #include <qspinbox.h>
-#include <qvbox.h>
+#include <q3vbox.h>
 
 #include "color_button.h"
 #include "hot_key.h"
@@ -443,7 +446,7 @@ public:
 	@arg value - warto¶æ zapisana do pliku konfiguracyjnego
 	@arg caption - warto¶æ wy¶wietlana
  **/
-class ConfigListBox : public QListBox, public ConfigWidget
+class ConfigListBox : public Q3ListBox, public ConfigWidget
 {
 	QLabel *label;
 

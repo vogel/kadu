@@ -1,7 +1,12 @@
 #ifndef STATUS_CHANGER
 #define STATUS_CHANGER
 
+#define QT3_SUPPORT
+#include <qglobal.h>
+
 #include <qobject.h>
+//Added by qt3to4:
+#include <Q3ValueList>
 
 #include "status.h"
 
@@ -138,7 +143,7 @@ class StatusChangerManager : public QObject
 {
 	Q_OBJECT
 
-	QValueList<StatusChanger *> statusChangers;
+	Q3ValueList<StatusChanger *> statusChangers;
 	bool enabled;
 
 public:

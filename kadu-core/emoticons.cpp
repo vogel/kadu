@@ -7,9 +7,20 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <qapplication.h>
+#include <qdesktopwidget.h>
 #include <qfile.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qtooltip.h>
+#include <qpainter.h>
+
+//Added by qt3to4:
+#include <QLabel>
+#include <Q3GridLayout>
+#include <QPixmap>
+#include <QEvent>
+#include <QPaintEvent>
+#include <QCloseEvent>
 
 #include <algorithm>
 #include <math.h>
@@ -125,12 +136,12 @@ bool EmoticonsManager::loadGGEmoticonThemePart(QString subdir)
 		subdir += '/';
 	QString path = themePath() + '/' + subdir;
 	QFile theme_file(path + ConfigName);
-	if (!theme_file.open(IO_ReadOnly))
+	if (!theme_file.open(QIODevice::ReadOnly))
 	{
 		kdebugm(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "Error opening emots.txt file\n");
 		return false;
 	}
-	QTextStream theme_stream(&theme_file);
+	Q3TextStream theme_stream(&theme_file);
 	theme_stream.setCodec(codec_cp1250);
 	while (!theme_stream.atEnd())
 	{
@@ -371,7 +382,7 @@ void EmoticonSelectorButton::enterEvent(QEvent* e)
 	if (Movie == NULL)
 	{
 		Movie = new QMovie(AnimPath);
-		Movie->connectUpdate(this, SLOT(movieUpdate()));
+		connect(Movie, SIGNAL(updated(const QRect &)), this, SLOT(movieUpdate()));
 	}
 }
 
@@ -392,7 +403,7 @@ EmoticonSelector::EmoticonSelector(QWidget *parent, const char *name, ChatWidget
 	int selector_count = emoticons->selectorCount();
 	int selector_width = (int)sqrt((double)selector_count);
 	int btn_width = 0;
-	QGridLayout *grid = new QGridLayout(this, 0, selector_width, 0, 0);
+	Q3GridLayout *grid = new Q3GridLayout(this, 0, selector_width, 0, 0);
 
 	for(int i = 0; i < selector_count; ++i)
 	{
@@ -448,8 +459,8 @@ void EmoticonSelector::alignTo(QWidget* w)
 	move(x, y);
 }
 
-#include <qdragobject.h>
-#include <qpaintdevicemetrics.h>
+#include <q3dragobject.h>
+#include <q3paintdevicemetrics.h>
 #include <qglobal.h>
 #include <qfeatures.h>
 
@@ -465,7 +476,7 @@ static inline bool is_printer( QPainter *p )
 static inline int scale( int value, QPainter *painter )
 {
 	if ( is_printer( painter ) ) {
-		QPaintDeviceMetrics metrics( painter->device() );
+		Q3PaintDeviceMetrics metrics( painter->device() );
 #if defined(Q_WS_X11)
 		value = value * metrics.logicalDpiY() / QPaintDevice::x11AppDpiY( painter->device()->x11Screen() );
 #elif defined (Q_WS_WIN)
@@ -492,9 +503,9 @@ struct QPixmapInt
 };
 
 static QMap<QString, QPixmapInt> *pixmap_map = 0;
-
+/*
 StaticTextItem::StaticTextItem(QTextDocument *p, const QMap<QString, QString> &attr, const QString& context,
-			QMimeSourceFactory &factory)
+			Q3MimeSourceFactory &factory)
     : QTextCustomItem(p), reg(0), pm(), place(PlaceInline), tmpwidth(0), tmpheight(0), attributes(attr), imgId()
 {
 	width = height = 0;
@@ -526,7 +537,7 @@ StaticTextItem::StaticTextItem(QTextDocument *p, const QMap<QString, QString> &a
 				qWarning("StaticTextItem: no mimesource for %s", imageName.latin1() );
 			}
 			else {
-				if ( !QImageDrag::decode( m, img ) ) {
+				if ( !Q3ImageDrag::decode( m, img ) ) {
 					qWarning("StaticTextItem: cannot decode %s", imageName.latin1() );
 				}
 			}
@@ -621,13 +632,13 @@ void StaticTextItem::adjustToPainter( QPainter* p )
 {
 	width = scale( tmpwidth, p );
 	height = scale( tmpheight, p );
-}
+}*/
 
 #if !defined(Q_WS_X11)
 #include <qbitmap.h>
-#include <qcleanuphandler.h>
+#include <q3cleanuphandler.h>
 static QPixmap *qrt_selection = 0;
-static QSingleCleanupHandler<QPixmap> qrt_cleanup_pixmap;
+static Q3SingleCleanupHandler<QPixmap> qrt_cleanup_pixmap;
 static void qrt_createSelectionPixmap( const QColorGroup &cg )
 {
 	qrt_selection = new QPixmap( 2, 2 );
@@ -646,55 +657,55 @@ static void qrt_createSelectionPixmap( const QColorGroup &cg )
 }
 #endif
 
-void StaticTextItem::draw( QPainter* p, int x, int y, int cx, int cy, int cw, int ch, const QColorGroup& cg, bool selected )
-{
-//	kdebugm(KDEBUG_DUMP, "x:%d, y:%d, cx:%d, cy:%d, cw:%d, ch:%d, placement:%d, PlaceInline:%d, xpos:%d, ypos:%d\n",
-//		x, y, cx, cy, cw, ch, placement(), PlaceInline, xpos, ypos);
-	if ( placement() != PlaceInline ) {
-		x = xpos;
-		y = ypos;
-	}
-//	for (int i=QColorGroup::Foreground; i<QColorGroup::NColorRoles; i++)
-//		kdebugm(KDEBUG_INFO, "%s\n", cg.color((QColorGroup::ColorRole)i).name().local8Bit().data());
-
-	if ( pm.isNull() ) {
-		pm=QPixmap(width, height);
-		pm.fill(cg.base());
-//		p->fillRect( x , y, width, height,  cg.base() );
-//		return;
-	}
-
-	if ( is_printer( p ) ) {
-		p->drawPixmap( QRect( x, y, width, height ), pm );
-		return;
-	}
-
-	if ( placement() != PlaceInline && !QRect( xpos, ypos, width, height ).intersects( QRect( cx, cy, cw, ch ) ) )
-		return;
-
-	if ( placement() == PlaceInline )
-		p->drawPixmap( x , y + (!attributes["src"].isEmpty() ? IMG_Y_OFFSET : 0), pm );
-	else
-		p->drawPixmap( cx , cy + (!attributes["src"].isEmpty() ? IMG_Y_OFFSET : 0), pm, cx - x, cy - y, cw, ch );
-
-	if ( selected && placement() == PlaceInline && is_printer( p ) ) {
-#if defined(Q_WS_X11)
-		p->fillRect( QRect( QPoint( x, y ), pm.size() ), QBrush( cg.highlight(), QBrush::Dense4Pattern) );
-#else // in WIN32 Dense4Pattern doesn't work correctly (transparency problem), so work around it
-		if ( !qrt_selection )
-			qrt_createSelectionPixmap( cg );
-		p->drawTiledPixmap( x, y, pm.width(), pm.height(), *qrt_selection );
-#endif
-	}
-}
-
+// void StaticTextItem::draw( QPainter* p, int x, int y, int cx, int cy, int cw, int ch, const QColorGroup& cg, bool selected )
+// {
+// //	kdebugm(KDEBUG_DUMP, "x:%d, y:%d, cx:%d, cy:%d, cw:%d, ch:%d, placement:%d, PlaceInline:%d, xpos:%d, ypos:%d\n",
+// //		x, y, cx, cy, cw, ch, placement(), PlaceInline, xpos, ypos);
+// 	if ( placement() != PlaceInline ) {
+// 		x = xpos;
+// 		y = ypos;
+// 	}
+// //	for (int i=QColorGroup::Foreground; i<QColorGroup::NColorRoles; i++)
+// //		kdebugm(KDEBUG_INFO, "%s\n", cg.color((QColorGroup::ColorRole)i).name().local8Bit().data());
+// 
+// 	if ( pm.isNull() ) {
+// 		pm=QPixmap(width, height);
+// 		pm.fill(cg.base());
+// //		p->fillRect( x , y, width, height,  cg.base() );
+// //		return;
+// 	}
+// 
+// 	if ( is_printer( p ) ) {
+// 		p->drawPixmap( QRect( x, y, width, height ), pm );
+// 		return;
+// 	}
+// 
+// 	if ( placement() != PlaceInline && !QRect( xpos, ypos, width, height ).intersects( QRect( cx, cy, cw, ch ) ) )
+// 		return;
+// 
+// 	if ( placement() == PlaceInline )
+// 		p->drawPixmap( x , y + (!attributes["src"].isEmpty() ? IMG_Y_OFFSET : 0), pm );
+// 	else
+// 		p->drawPixmap( cx , cy + (!attributes["src"].isEmpty() ? IMG_Y_OFFSET : 0), pm, cx - x, cy - y, cw, ch );
+// 
+// 	if ( selected && placement() == PlaceInline && is_printer( p ) ) {
+// #if defined(Q_WS_X11)
+// 		p->fillRect( QRect( QPoint( x, y ), pm.size() ), QBrush( cg.highlight(), Qt::Dense4Pattern) );
+// #else // in WIN32 Dense4Pattern doesn't work correctly (transparency problem), so work around it
+// 		if ( !qrt_selection )
+// 			qrt_createSelectionPixmap( cg );
+// 		p->drawTiledPixmap( x, y, pm.width(), pm.height(), *qrt_selection );
+// #endif
+// 	}
+// }
+/*
 AnimTextItem::MovieCacheData::MovieCacheData(const QString &fileName) : movie(fileName), size(), count(1), runCount(0)
 {
 }
 
 bool AnimatedLabel::mustPause = false;
 AnimatedLabel::AnimatedLabel(AnimTextItem::MovieCacheData *data, const QString &tip, bool imageBackground,
-	QScrollView *view, bool trueTransparency, const char *name) : QLabel(view->viewport(), name/*, WNoAutoErase*/),
+	Q3ScrollView *view, bool trueTransparency, const char *name) : QLabel(view->viewport(), name/ *, WNoAutoErase* /),
 	movieData(data), scrollView(view), tip(tip), imageBackground(imageBackground), paused(true), lastX(0), lastY(0),
 	trueTransparency(trueTransparency)
 {
@@ -778,7 +789,7 @@ void AnimatedLabel::paintEvent(QPaintEvent *e)
 }
 
 AnimTextItem::AnimTextItem(
-	QTextDocument *p, QTextEdit* edit,
+	QTextDocument *p, Q3TextEdit* edit,
 	const QString& filename, const QColor& bgcolor, const QString& tip)
 	: QTextCustomItem(p), Edit(edit), Label(0),
 	EditSize(), text(tip), FileName(filename)
@@ -839,9 +850,9 @@ AnimTextItem::~AnimTextItem()
 }
 
 void AnimTextItem::draw(
-	QPainter* /*p*/, int x, int y, int cx, int cy,
-	int cw, int ch, const QColorGroup& /*cg*/,
-	bool /*selected*/ )
+	QPainter* / *p* /, int x, int y, int cx, int cy,
+	int cw, int ch, const QColorGroup& / *cg* /,
+	bool / *selected* / )
 {
 //	kdebugm(KDEBUG_WARNING, "%d\n", int(QRect(x, y, width, height).intersects(QRect(cx, cy, cw, ch))));
 	if (!QRect(x, y, width, height).intersects(QRect(cx, cy, cw, ch)))
@@ -875,12 +886,12 @@ void AnimTextItem::draw(
 //	kdebugm(KDEBUG_WARNING, "%s, lastX:%d, lastY:%d\n", text.local8Bit().data(), Label->lastX, Label->lastY);
 
 
-/*	QPoint u(x, y - cy);
-	if (u.y() > 0)
-		u += QPoint(0, Edit->visibleHeight() - ch);
+// 	QPoint u(x, y - cy);
+// 	if (u.y() > 0)
+// 		u += QPoint(0, Edit->visibleHeight() - ch);
 
 //	Edit->moveChild(Label, u.x(), u.y());
-	Label->move(u);*/
+// 	Label->move(u);
 
 	if (Label->movieData->movie.framePixmap().isNull() && !Label->movieData->movie.running())
 		Label->movieData->movie.step();
@@ -897,45 +908,45 @@ QImage* AnimTextItem::SizeCheckImage=NULL;
 AnimTextItem::MoviesCache* AnimTextItem::Movies=NULL;
 
 AnimStyleSheet::AnimStyleSheet(
-	QTextEdit* parent, const QString& path, const char* name )
-	: QStyleSheet(parent, name), Path(path)
+	Q3TextEdit* parent, const QString& path, const char* name )
+	: Q3StyleSheet(parent, name), Path(path)
 {
 }
 
 QTextCustomItem* AnimStyleSheet::tag(
 	const QString& name, const QMap<QString,QString>& attr,
-	const QString& context, const QMimeSourceFactory& factory,
+	const QString& context, const Q3MimeSourceFactory& factory,
 	bool emptyTag, QTextDocument* doc) const
 {
 	if (name != "img")
-		return QStyleSheet::tag(name, attr, context, factory, emptyTag, doc);
+		return Q3StyleSheet::tag(name, attr, context, factory, emptyTag, doc);
 	if (attr["animated"] == "1")
 	{
 		if (attr["emoticon"] == "1")
-			return new AnimTextItem(doc, (QTextEdit*)parent(), Path + '/' + attr["src"], QColor(attr["bgcolor"]), attr["title"]);
+			return new AnimTextItem(doc, (Q3TextEdit*)parent(), Path + '/' + attr["src"], QColor(attr["bgcolor"]), attr["title"]);
 		else
-			return new AnimTextItem(doc, (QTextEdit*)parent(),              attr["src"], QColor(attr["bgcolor"]), attr["title"]);
+			return new AnimTextItem(doc, (Q3TextEdit*)parent(),              attr["src"], QColor(attr["bgcolor"]), attr["title"]);
 	}
 	else
-		return new StaticTextItem(doc, attr, context, (QMimeSourceFactory&)factory);
+		return new StaticTextItem(doc, attr, context, (Q3MimeSourceFactory&)factory);
 //		return QStyleSheet::tag(name,attr,context,factory,emptyTag,doc);
 }
 
 StaticStyleSheet::StaticStyleSheet(
-	QTextEdit* parent, const QString& path, const char* name)
-	: QStyleSheet(parent, name), Path(path)
+	Q3TextEdit* parent, const QString& path, const char* name)
+	: Q3StyleSheet(parent, name), Path(path)
 {
 }
 
 QTextCustomItem* StaticStyleSheet::tag(
 	const QString& name, const QMap<QString,QString>& attr,
-	const QString& context, const QMimeSourceFactory& factory,
+	const QString& context, const Q3MimeSourceFactory& factory,
 	bool emptyTag, QTextDocument* doc) const
 {
 	if (name != "img")
-		return QStyleSheet::tag(name,attr,context,factory,emptyTag,doc);
-	return new StaticTextItem(doc, attr, context, (QMimeSourceFactory&)factory);
-}
+		return Q3StyleSheet::tag(name,attr,context,factory,emptyTag,doc);
+	return new StaticTextItem(doc, attr, context, (Q3MimeSourceFactory&)factory);
+}*/
 
 PrefixNode::PrefixNode() : emotIndex(-1), childs()
 {

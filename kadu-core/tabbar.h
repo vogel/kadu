@@ -1,7 +1,15 @@
 #ifndef KADU_TABBAR_H
 #define KADU_TABBAR_H
 
+#define QT3_SUPPORT
+#include <qglobal.h>
+
 #include <qtabbar.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QDropEvent>
+#include <QDragEnterEvent>
+#include <Q3PtrList>
 
 class QPainter;
 class QToolButton;
@@ -49,14 +57,14 @@ class KaduTabBar : public QTabBar {
 			\param newTab wska¼nik do obiektu zak³adki, któr± dodajemy.
 			\param index pozycja, w któr± ma byæ wstawiona nowa zak³adka. Domy¶lnie -1 (na koñcu).
 		**/
-		int insertTab(QTab *newTab, int index = -1);
+// 		int insertTab(QString *newTab, int index = -1);
 
 		/**
 			\fn void removeTab(QTab *t)
 			Usuwa zak³adkê.
 			\param t wska¼nik do obiektu zak³adki, któr± usuwamy.
 		**/
-		void removeTab(QTab *t);
+// 		void removeTab(QString *t);
 
 	public slots:
 
@@ -65,7 +73,7 @@ class KaduTabBar : public QTabBar {
 			Ustawia dan± zak³adkê jako bierz±c±.
 			\param tab Wska¼nik do obiektu zak³adki, któr± ustawiamy.
 		**/
-		void setCurrentTab(QTab *tab);
+// 		void setCurrentTab(QString tab);
 
 	private slots:
 		void scrollTabsVert();
@@ -79,7 +87,7 @@ class KaduTabBar : public QTabBar {
 			\param selected informuje o tym, czy zak³adka jest wybran± (bierz±c±),
 				czy jedn± z zak³adek zas³oniêtych.
 		**/
-		void paint(QPainter *p, QTab *t, bool selected) const;
+		void paint(QPainter *p, int index, bool selected) const;
 
 		/**
 			\fn void updateArrowButtonsVert()
@@ -94,7 +102,7 @@ class KaduTabBar : public QTabBar {
 			TODO: Nie jestem pewien czy ta metoda dok³adnie to robi.
 				Niech to poprawi kto¶, kto t± metodê pisa³ :)
 		**/
-		void makeVisibleVert(QTab *t);
+// 		void makeVisibleVert(QString t);
 
 		/**
 			\fn void resizeEvent(QResizeEvent *)
@@ -121,7 +129,7 @@ class KaduTabBar : public QTabBar {
 			\var QPtrList<QTab> *lstatic2
 			Lista wska¼ników do obiektów zak³adek.
 		**/
-		QPtrList<QTab> *lstatic2;
+		Q3PtrList<QString> *lstatic2;
 
 		/**
 			\var bool vertscrolls

@@ -1,6 +1,8 @@
 #ifndef KADU_PROTOCOL_H
 #define KADU_PROTOCOL_H
 
+#include <qglobal.h>
+
 #include <qobject.h>
 #include <qstring.h>
 #include <qdatetime.h>

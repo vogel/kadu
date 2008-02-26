@@ -1,12 +1,15 @@
 #ifndef KADU_ICONS_MANAGER_H
 #define KADU_ICONS_MANAGER_H
 
+#define QT3_SUPPORT
+#include <qglobal.h>
+
 #include <qmenudata.h>
 #include <qmovie.h>
-#include <qiconset.h>
+#include <qicon.h>
 #include <qpixmap.h>
 #include <qstring.h>
-#include <qvaluelist.h>
+#include <q3valuelist.h>
 
 #include "configuration_aware_object.h"
 #include "themes.h"
@@ -16,10 +19,10 @@ class IconsManager : public Themes, ConfigurationAwareObject
 	Q_OBJECT
 
 	QMap<QString, QPixmap> icons;
-	QMap<QString, QIconSet> iconSets;
-	QMap<QString, QMovie> animatedIcons;
+	QMap<QString, QIcon> iconSets;
+// 	QMap<QString, QMovie> animatedIcons;
 
-	QValueList<QPair<QMenuData *, QValueList<QPair<QString, QString> > > > menus;
+//	Q3ValueList<QPair<QMenuData *, Q3ValueList<QPair<QString, QString> > > > menus;
 
 public:
 	IconsManager(const QString& name, const QString& configname);
@@ -40,17 +43,17 @@ public:
 		¶cie¿ka).
 	**/
 	const QPixmap &loadIcon(const QString &name);
-	const QMovie &loadAnimatedIcon(const QString &name);
-	const QIconSet &loadIconSet(const QString &name);
+// 	const QMovie &loadAnimatedIcon(const QString &name);
+	const QIcon &loadIconSet(const QString &name);
 
 	static void initModule();
 	static void closeModule();
 
-	void registerMenu(QMenuData *menu);
-	void unregisterMenu(QMenuData *menu);
+// 	void registerMenu(QMenuData *menu);
+// 	void unregisterMenu(QMenuData *menu);
 
-	void registerMenuItem(QMenuData *menu, const QString &caption, const QString &iconName);
-	void unregisterMenuItem(QMenuData *menu, const QString &caption);
+// 	void registerMenuItem(QMenuData *menu, const QString &caption, const QString &iconName);
+// 	void unregisterMenuItem(QMenuData *menu, const QString &caption);
 
 public: // TODO: fix, see Kadu::Kadu
 	virtual void configurationUpdated();

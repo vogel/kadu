@@ -15,8 +15,10 @@
 
 #include <qdom.h>
 #include <qfile.h>
-#include <qtextstream.h>
+#include <q3textstream.h>
 #include <qtextcodec.h>
+//Added by qt3to4:
+#include <Q3ValueList>
 
 //mkdir
 #include <sys/stat.h>
@@ -40,7 +42,7 @@ UserList::~UserList()
 {
 }
 
-void UserList::merge(const QValueList<UserListElement> &ulist)
+void UserList::merge(const Q3ValueList<UserListElement> &ulist)
 {
 	kdebugf();
 	UserListElements toAppend;
@@ -194,7 +196,7 @@ void UserList::writeToConfig()
 	QDomElement contacts_elem = xml_config_file->accessElement(root_elem, "Contacts");
 	xml_config_file->removeChildren(contacts_elem);
 
-	QIntDictIterator<UserListElement> i(d->data);
+	Q3IntDictIterator<UserListElement> i(d->data);
 	uint cnt = i.count();
 	for (uint j = 0; j < cnt; ++j, ++i)
 	{
@@ -253,7 +255,7 @@ void UserList::setAllOffline(const QString &protocolName)
 	s = protocols_manager->byProtocolID(protocolName)[0]->newStatus();
 	s->setOffline();
 
-	QValueListIterator<UserListElement> user = begin();
+	QList<UserListElement>::iterator user = begin();
 	size_type cnt = count();
 	int todo = 0;
 
@@ -304,11 +306,11 @@ bool UserList::readFromFile()
 	kdebugmf(KDEBUG_INFO, "Opening userattribs file: %s\n",
 		path.local8Bit().data());
 	QFile fa(path);
-	if (!fa.open(IO_ReadOnly))
+	if (!fa.open(QIODevice::ReadOnly))
 		kdebugmf(KDEBUG_ERROR, "Error opening userattribs file\n");
 	else
 	{
-		QTextStream s(&fa);
+		Q3TextStream s(&fa);
 		while (!(line = s.readLine()).isEmpty())
 		{
 			QStringList slist;
@@ -323,7 +325,7 @@ bool UserList::readFromFile()
 	kdebugmf(KDEBUG_INFO, "Opening userlist file: %s\n",
 		path.local8Bit().data());
 	QFile f(path);
-	if (!f.open(IO_ReadOnly))
+	if (!f.open(QIODevice::ReadOnly))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error opening userlist file");
 		return false;
@@ -331,15 +333,15 @@ bool UserList::readFromFile()
 
 	kdebugmf(KDEBUG_INFO, "File opened successfuly\n");
 
-	QTextStream t(&f);
+	Q3TextStream t(&f);
 	t.setCodec(codec_latin2);
 
-	QValueList<UserListElement> list = gadu->streamToUserList(t);
+	Q3ValueList<UserListElement> list = gadu->streamToUserList(t);
 	f.close();
 	addUsers(list);
 	kdebugm(KDEBUG_WARNING, "%s\n", gadu->userListToString(*this).local8Bit().data());
 
-	QIntDictIterator<UserListElement> user(d->data);
+	Q3IntDictIterator<UserListElement> user(d->data);
 	uint cnt = user.count();
 	for (uint j = 0; j < cnt; ++j, ++user)
 	{

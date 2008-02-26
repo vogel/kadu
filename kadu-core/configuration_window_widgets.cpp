@@ -36,7 +36,7 @@ bool ConfigWidget::fromDomElement(QDomElement domElement)
 	if (widgetCaption.isEmpty())
 		return false;
 
-	toolTip = domElement.attribute("tool-tip");
+	ConfigWidget::toolTip = domElement.attribute("tool-tip");
 
 	createWidgets();
 	return true;
@@ -86,10 +86,10 @@ void ConfigLineEdit::createWidgets()
 	label = new QLabel(this, qApp->translate("@default", widgetCaption) + ":", parentConfigGroupBox->widget());
 	parentConfigGroupBox->addWidgets(label, this);
 
-	if (!toolTip.isEmpty())
+	if (!ConfigWidget::ConfigWidget::toolTip.isEmpty())
 	{
-		QToolTip::add(this, qApp->translate("@default", toolTip));
-		QToolTip::add(label, qApp->translate("@default", toolTip));
+		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
+		QToolTip::add(label, qApp->translate("@default", ConfigWidget::toolTip));
 	}
 }
 
@@ -163,8 +163,8 @@ void ConfigCheckBox::createWidgets()
 	setText(qApp->translate("@default", widgetCaption));
 	parentConfigGroupBox->addWidget(this, true);
 
-	if (!toolTip.isEmpty())
-		QToolTip::add(this, qApp->translate("@default", toolTip));
+	if (!ConfigWidget::toolTip.isEmpty())
+		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
 }
 
 void ConfigCheckBox::loadConfiguration()
@@ -219,10 +219,10 @@ void ConfigSpinBox::createWidgets()
 	label = new QLabel(this, qApp->translate("@default", widgetCaption) + ":", parentConfigGroupBox->widget());
 	parentConfigGroupBox->addWidgets(label, this);
 
-	if (!toolTip.isEmpty())
+	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		QToolTip::add(this, qApp->translate("@default", toolTip));
-		QToolTip::add(label, qApp->translate("@default", toolTip));
+		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
+		QToolTip::add(label, qApp->translate("@default", ConfigWidget::toolTip));
 	}
 }
 
@@ -326,10 +326,10 @@ void ConfigComboBox::createWidgets()
 	clear();
 	insertStringList(itemCaptions);
 
-	if (!toolTip.isEmpty())
+	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		QToolTip::add(this, qApp->translate("@default", toolTip));
-		QToolTip::add(label, qApp->translate("@default", toolTip));
+		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
+		QToolTip::add(label, qApp->translate("@default", ConfigWidget::toolTip));
 	}
 }
 
@@ -417,10 +417,10 @@ void ConfigHotKeyEdit::createWidgets()
 	label = new QLabel(this, qApp->translate("@default", widgetCaption) + ":", parentConfigGroupBox->widget());
 	parentConfigGroupBox->addWidgets(label, this);
 
-	if (!toolTip.isEmpty())
+	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		QToolTip::add(this, qApp->translate("@default", toolTip));
-		QToolTip::add(label, qApp->translate("@default", toolTip));
+		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
+		QToolTip::add(label, qApp->translate("@default", ConfigWidget::toolTip));
 	}
 }
 
@@ -477,10 +477,10 @@ void ConfigPathListEdit::createWidgets()
 	label = new QLabel(this, qApp->translate("@default", widgetCaption) + ":", parentConfigGroupBox->widget());
 	parentConfigGroupBox->addWidgets(label, this);
 
-	if (!toolTip.isEmpty())
+	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		QToolTip::add(this, qApp->translate("@default", toolTip));
-		QToolTip::add(label, qApp->translate("@default", toolTip));
+		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
+		QToolTip::add(label, qApp->translate("@default", ConfigWidget::toolTip));
 	}
 }
 
@@ -537,10 +537,10 @@ void ConfigColorButton::createWidgets()
 	label = new QLabel(this, qApp->translate("@default", widgetCaption) + ":", parentConfigGroupBox->widget());
 	parentConfigGroupBox->addWidgets(label, this);
 
-	if (!toolTip.isEmpty())
+	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		QToolTip::add(this, qApp->translate("@default", toolTip));
-		QToolTip::add(label, qApp->translate("@default", toolTip));
+		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
+		QToolTip::add(label, qApp->translate("@default", ConfigWidget::toolTip));
 	}
 }
 
@@ -597,10 +597,10 @@ void ConfigSelectFont::createWidgets()
 	label = new QLabel(this, qApp->translate("@default", widgetCaption) + ":", parentConfigGroupBox->widget());
 	parentConfigGroupBox->addWidgets(label, this);
 
-	if (!toolTip.isEmpty())
+	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		QToolTip::add(this, qApp->translate("@default", toolTip));
-		QToolTip::add(label, qApp->translate("@default", toolTip));
+		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
+		QToolTip::add(label, qApp->translate("@default", ConfigWidget::toolTip));
 	}
 }
 
@@ -657,10 +657,10 @@ void ConfigSyntaxEditor::createWidgets()
 	label = new QLabel(this, qApp->translate("@default", widgetCaption) + ":", parentConfigGroupBox->widget());
 	parentConfigGroupBox->addWidgets(label, this);
 
-	if (!toolTip.isEmpty())
+	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		QToolTip::add(this, qApp->translate("@default", toolTip));
-		QToolTip::add(label, qApp->translate("@default", toolTip));
+		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
+		QToolTip::add(label, qApp->translate("@default", ConfigWidget::toolTip));
 	}
 }
 
@@ -723,8 +723,8 @@ void ConfigActionButton::createWidgets()
 	setText(qApp->translate("@default", widgetCaption));
 	parentConfigGroupBox->addWidget(this);
 
-	if (!toolTip.isEmpty())
-		QToolTip::add(this, qApp->translate("@default", toolTip));
+	if (!ConfigWidget::toolTip.isEmpty())
+		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
 }
 
 void ConfigActionButton::show()
@@ -762,10 +762,10 @@ void ConfigSelectFile::createWidgets()
 	label = new QLabel(this, qApp->translate("@default", widgetCaption) + ":", parentConfigGroupBox->widget());
 	parentConfigGroupBox->addWidgets(label, this);
 
-	if (!toolTip.isEmpty())
+	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		QToolTip::add(this, qApp->translate("@default", toolTip));
-		QToolTip::add(label, qApp->translate("@default", toolTip));
+		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
+		QToolTip::add(label, qApp->translate("@default", ConfigWidget::toolTip));
 	}
 }
 
@@ -871,10 +871,10 @@ void ConfigSlider::createWidgets()
 	label = new QLabel(this, qApp->translate("@default", widgetCaption) + ":", parentConfigGroupBox->widget());
 	parentConfigGroupBox->addWidgets(label, this);
 
-	if (!toolTip.isEmpty())
+	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		QToolTip::add(this, qApp->translate("@default", toolTip));
-		QToolTip::add(label, qApp->translate("@default", toolTip));
+		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
+		QToolTip::add(label, qApp->translate("@default", ConfigWidget::toolTip));
 	}
 }
 
@@ -948,8 +948,8 @@ void ConfigLabel::createWidgets()
 	setText(qApp->translate("@default", widgetCaption));
 	parentConfigGroupBox->addWidget(this);
 
-	if (!toolTip.isEmpty())
-		QToolTip::add(this, qApp->translate("@default", toolTip));
+	if (!ConfigWidget::toolTip.isEmpty())
+		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
 }
 
 void ConfigLabel::show()
@@ -964,13 +964,13 @@ void ConfigLabel::hide()
 
 ConfigListBox::ConfigListBox(const QString &widgetCaption, const QString &toolTip,
 		const QStringList &itemValues, const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox, const char *name)
-	: QListBox(parentConfigGroupBox->widget(), name), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox), label(0)
+	: Q3ListBox(parentConfigGroupBox->widget(), name), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox), label(0)
 {
 	createWidgets();
 }
 
 ConfigListBox::ConfigListBox(ConfigGroupBox *parentConfigGroupBox, const char *name)
-	: QListBox(parentConfigGroupBox->widget(), name), ConfigWidget(parentConfigGroupBox), label(0)
+	: Q3ListBox(parentConfigGroupBox->widget(), name), ConfigWidget(parentConfigGroupBox), label(0)
 {
 }
 
@@ -999,23 +999,23 @@ void ConfigListBox::createWidgets()
 	clear();
 	insertStringList(itemCaptions);
 
-	if (!toolTip.isEmpty())
+	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		QToolTip::add(this, qApp->translate("@default", toolTip));
-		QToolTip::add(label, qApp->translate("@default", toolTip));
+		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
+		QToolTip::add(label, qApp->translate("@default", ConfigWidget::toolTip));
 	}
 }
 
 void ConfigListBox::show()
 {
 	label->show();
-	QListBox::show();
+	Q3ListBox::show();
 }
 
 void ConfigListBox::hide()
 {
 	label->hide();
-	QListBox::hide();
+	Q3ListBox::hide();
 }
 
 bool ConfigListBox::fromDomElement(QDomElement domElement)

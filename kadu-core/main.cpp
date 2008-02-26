@@ -11,6 +11,12 @@
 #include <qapplication.h>
 #include <qmessagebox.h>
 #include <qtextcodec.h>
+//Added by qt3to4:
+#include <QTranslator>
+#include <QCustomEvent>
+#include <Q3CString>
+#include <QPixmap>
+#include <QEvent>
 
 #include <errno.h>
 #include <string.h>
@@ -101,7 +107,7 @@ static void kadu_signal_handler(int s)
 		fprintf(stderr, "======= END OF BACKTRACE  ======\n");
 		fflush(stderr);
 
-		QCString p(ggPath(debug_file).local8Bit());
+		Q3CString p(ggPath(debug_file).local8Bit());
 		dbgfile = fopen(p.data(), "w");
 		if (dbgfile)
 		{
@@ -319,7 +325,7 @@ int main(int argc, char *argv[])
 	qApp->setStyle(config_file.readEntry("Look", "QtStyle"));
 
 	lockFile = new QFile(ggPath("lock"));
-	if (lockFile->open(IO_ReadWrite))
+	if (lockFile->open(QIODevice::ReadWrite))
 	{
 		lockFileHandle = lockFile->handle();
 

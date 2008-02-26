@@ -16,6 +16,9 @@
 #include "syntax_editor.h"
 
 #include "chat_messages_view.h"
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <Q3ValueList>
 
 ChatMessagesView::ChatMessagesView(QWidget *parent, const char *name) : KaduTextBrowser(parent, name),
 	Prune(0)
@@ -28,10 +31,10 @@ ChatMessagesView::ChatMessagesView(QWidget *parent, const char *name) : KaduText
 
 	configurationUpdated();
 
-	bodyformat = new QMimeSourceFactory();
+	bodyformat = new Q3MimeSourceFactory();
 	setMimeSourceFactory(bodyformat);
 	setTextFormat(Qt::RichText);
-	setFocusPolicy(QWidget::NoFocus);
+	setFocusPolicy(Qt::NoFocus);
 
 	scrollToBottom();
 }
@@ -114,9 +117,9 @@ void ChatMessagesView::repaintMessages()
 
 	QString text;
 
-	QValueList<ChatMessage *>::const_iterator message = Messages.constBegin();
-	QValueList<ChatMessage *>::const_iterator prevMessage;
-	QValueList<ChatMessage *>::const_iterator end = Messages.constEnd();
+	Q3ValueList<ChatMessage *>::const_iterator message = Messages.constBegin();
+	Q3ValueList<ChatMessage *>::const_iterator prevMessage;
+	Q3ValueList<ChatMessage *>::const_iterator end = Messages.constEnd();
 
 	if (message == end)
 		return;
@@ -167,7 +170,7 @@ void ChatMessagesView::appendMessage(ChatMessage *message)
 	repaintMessages();
 }
 
-void ChatMessagesView::appendMessages(QValueList<ChatMessage *> messages)
+void ChatMessagesView::appendMessages(Q3ValueList<ChatMessage *> messages)
 {
 	kdebugf2();
 
@@ -186,9 +189,9 @@ void ChatMessagesView::pruneMessages()
 	if (Messages.count() < Prune)
 		return;
 
-	QValueList<ChatMessage *>::iterator start = Messages.begin();
-	QValueList<ChatMessage *>::iterator stop = Messages.at(Messages.size() - Prune);
-	for (QValueList<ChatMessage *>::iterator it = start; it != stop; ++it)
+	Q3ValueList<ChatMessage *>::iterator start = Messages.begin();
+	Q3ValueList<ChatMessage *>::iterator stop = Messages.at(Messages.size() - Prune);
+	for (Q3ValueList<ChatMessage *>::iterator it = start; it != stop; ++it)
 		delete *it;
 
 	Messages.erase(start, stop);
@@ -217,10 +220,10 @@ unsigned int ChatMessagesView::countMessages()
 
 void ChatMessagesView::configurationUpdated()
 {
-	if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") == EMOTS_ANIMATED)
-		setStyleSheet(new AnimStyleSheet(this, emoticons->themePath()));
-	else
-		setStyleSheet(new StaticStyleSheet(this, emoticons->themePath()));
+// 	if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") == EMOTS_ANIMATED)
+// 		setStyleSheet(new AnimStyleSheet(this, emoticons->themePath()));
+// 	else
+// 		setStyleSheet(new StaticStyleSheet(this, emoticons->themePath()));
 
 	if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") != EMOTS_NONE)
 		mimeSourceFactory()->addFilePath(emoticons->themePath());

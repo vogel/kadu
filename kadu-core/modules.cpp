@@ -10,13 +10,16 @@
 #include <qapplication.h>
 #include <qcheckbox.h>
 #include <qlabel.h>
-#include <qlistview.h>
-#include <qpopupmenu.h>
+#include <q3listview.h>
+#include <q3popupmenu.h>
 #include <qpushbutton.h>
 #include <qtextcodec.h>
 #include <qtranslator.h>
-#include <qvbox.h>
-#include <qvgroupbox.h>
+#include <q3vbox.h>
+#include <q3vgroupbox.h>
+//Added by qt3to4:
+#include <QKeyEvent>
+#include <QResizeEvent>
 
 #include <dlfcn.h>
 
@@ -80,7 +83,7 @@ void ModulesDialog::resizeEvent(QResizeEvent * /*e*/)
 	layoutHelper->resizeLabels();
 }
 
-ModulesDialog::ModulesDialog() : QHBox(kadu, "modules_dialog", WType_TopLevel | WDestructiveClose),
+ModulesDialog::ModulesDialog() : Q3HBox(kadu, "modules_dialog", Qt::WType_TopLevel | Qt::WDestructiveClose),
 	lv_modules(0), l_moduleinfo(0), layoutHelper(new LayoutHelper())
 {
 	kdebugf();
@@ -88,7 +91,7 @@ ModulesDialog::ModulesDialog() : QHBox(kadu, "modules_dialog", WType_TopLevel | 
 	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
-	QVBox *left=new QVBox(this);
+	Q3VBox *left=new Q3VBox(this);
 	left->setMargin(10);
 	left->setSpacing(10);
 
@@ -96,7 +99,7 @@ ModulesDialog::ModulesDialog() : QHBox(kadu, "modules_dialog", WType_TopLevel | 
 	QWidget *blank=new QWidget(left);
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	QVBox *center=new QVBox(this);
+	Q3VBox *center=new Q3VBox(this);
 	center->setMargin(10);
 	center->setSpacing(10);
 
@@ -109,7 +112,7 @@ ModulesDialog::ModulesDialog() : QHBox(kadu, "modules_dialog", WType_TopLevel | 
 	// end create main QLabel widgets (icon and app info)
 
 	// our QListView
-	lv_modules = new QListView(center);
+	lv_modules = new Q3ListView(center);
 	lv_modules->addColumn(tr("Module name"), 160);
 	lv_modules->addColumn(tr("Version"), 100);
 	lv_modules->addColumn(tr("Module type"), 150);
@@ -118,7 +121,7 @@ ModulesDialog::ModulesDialog() : QHBox(kadu, "modules_dialog", WType_TopLevel | 
 	// end our QListView
 
 	//our QVGroupBox
-	QVGroupBox *vgb_info = new QVGroupBox(center);
+	Q3VGroupBox *vgb_info = new Q3VGroupBox(center);
 	vgb_info->setTitle(tr("Info"));
 	//end our QGroupBox
 
@@ -126,7 +129,7 @@ ModulesDialog::ModulesDialog() : QHBox(kadu, "modules_dialog", WType_TopLevel | 
 	l_moduleinfo->setText(tr("<b>Module:</b><br/><b>Depends on:</b><br/><b>Conflicts with:</b><br/><b>Provides:</b><br/><b>Author:</b><br/><b>Version:</b><br/><b>Description:</b>"));
 
 	// buttons
-	QHBox *bottom=new QHBox(center);
+	Q3HBox *bottom=new Q3HBox(center);
 	hideBaseModules = new QCheckBox(tr("Hide base modules"), bottom);
 	hideBaseModules->setChecked(config_file.readBoolEntry("General", "HideBaseModules"));
 	connect(hideBaseModules, SIGNAL(clicked()), this, SLOT(refreshList()));
@@ -138,7 +141,7 @@ ModulesDialog::ModulesDialog() : QHBox(kadu, "modules_dialog", WType_TopLevel | 
 
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 	connect(lv_modules, SIGNAL(selectionChanged()), this, SLOT(itemsChanging()));
-	connect(lv_modules, SIGNAL(doubleClicked(QListViewItem *)), this, SLOT(moduleAction(QListViewItem *)));
+	connect(lv_modules, SIGNAL(doubleClicked(Q3ListViewItem *)), this, SLOT(moduleAction(Q3ListViewItem *)));
 
 	layoutHelper->addLabel(l_info);
 	layoutHelper->addLabel(l_moduleinfo);
@@ -151,7 +154,7 @@ ModulesDialog::~ModulesDialog()
 {
 	kdebugf();
 	config_file.writeEntry("General", "HideBaseModules", hideBaseModules->isChecked());
-	saveGeometry(this, "General", "ModulesDialogGeometry");
+// 	saveGeometry(this, "General", "ModulesDialogGeometry");
 	delete layoutHelper;
 	kdebugf2();
 }
@@ -162,7 +165,7 @@ void ModulesDialog::itemsChanging()
 		getInfo();
 }
 
-void ModulesDialog::moduleAction(QListViewItem *)
+void ModulesDialog::moduleAction(Q3ListViewItem *)
 {
 	kdebugf();
 	if (lv_modules->selectedItem() != NULL)
@@ -215,10 +218,10 @@ void ModulesDialog::refreshList()
 		if (modules_manager->moduleInfo(*module,info))
 		{
 			if (!info.base || !hideBase)
-				new QListViewItem(lv_modules, *module, info.version, tr("Static"), tr("Loaded"));
+				new Q3ListViewItem(lv_modules, *module, info.version, tr("Static"), tr("Loaded"));
 		}
 		else
-			new QListViewItem(lv_modules, *module, QString::null, tr("Static"), tr("Loaded"));
+			new Q3ListViewItem(lv_modules, *module, QString::null, tr("Static"), tr("Loaded"));
 	}
 
 	moduleList = modules_manager->loadedModules();
@@ -227,10 +230,10 @@ void ModulesDialog::refreshList()
 		if (modules_manager->moduleInfo(*module,info))
 		{
 			if (!info.base || !hideBase)
-				new QListViewItem(lv_modules, *module, info.version, tr("Dynamic"), tr("Loaded"));
+				new Q3ListViewItem(lv_modules, *module, info.version, tr("Dynamic"), tr("Loaded"));
 		}
 		else
-			new QListViewItem(lv_modules, *module, QString::null, tr("Dynamic"), tr("Loaded"));
+			new Q3ListViewItem(lv_modules, *module, QString::null, tr("Dynamic"), tr("Loaded"));
 	}
 
 	moduleList = modules_manager->unloadedModules();
@@ -239,10 +242,10 @@ void ModulesDialog::refreshList()
 		if (modules_manager->moduleInfo(*module,info))
 		{
 			if (!info.base || !hideBase)
-				new QListViewItem(lv_modules, *module, info.version, tr("Dynamic"), tr("Not loaded"));
+				new Q3ListViewItem(lv_modules, *module, info.version, tr("Dynamic"), tr("Not loaded"));
 		}
 		else
-			new QListViewItem(lv_modules, *module, QString::null, tr("Dynamic"), tr("Not loaded"));
+			new Q3ListViewItem(lv_modules, *module, QString::null, tr("Dynamic"), tr("Not loaded"));
 	}
 
 	lv_modules->setSelected(lv_modules->findItem(s_selected, 0), true);
@@ -311,9 +314,9 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager"),
 	// the same is true for menu - modules should load up at end
 	modules_manager = this;
 
-	QPopupMenu *MainMenu = kadu->mainMenu();
+	Q3PopupMenu *MainMenu = kadu->mainMenu();
 	MainMenu->insertItem(icons_manager->loadIcon("ManageModules"), tr("&Manage Modules"), this, SLOT(showDialog()), HotKey::shortCutFromFile("ShortCuts", "kadu_modulesmanager"), -1, 2);
-	icons_manager->registerMenuItem(MainMenu, tr("&Manage Modules"), "ManageModules");
+// 	icons_manager->registerMenuItem(MainMenu, tr("&Manage Modules"), "ManageModules");
 
 	registerStaticModules();
 	QStringList static_list = staticModules();

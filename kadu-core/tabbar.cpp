@@ -9,11 +9,18 @@
 
 #include <qapplication.h>
 #include <qcursor.h>
-#include <qdragobject.h>
+#include <q3dragobject.h>
 #include <qinputdialog.h>
 #include <qpainter.h>
 #include <qstyle.h>
 #include <qtoolbutton.h>
+//Added by qt3to4:
+#include <QDropEvent>
+#include <QResizeEvent>
+#include <Q3PtrList>
+#include <Q3PopupMenu>
+#include <QDragEnterEvent>
+#include <QStyleOptionTab>
 
 #include "debug.h"
 #include "groups_manager.h"
@@ -25,14 +32,14 @@
 struct QTabPrivate;
 
 KaduTabBar::KaduTabBar(QWidget *parent, const char *name)
-	: QTabBar(parent, name), lstatic2(new QPtrList<QTab>), vertscrolls(false), upB(0), downB(0)
+	: QTabBar(parent), lstatic2(new Q3PtrList<QString>), vertscrolls(false), upB(0), downB(0)
 {
 	kdebugf();
 	setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred));
-	upB = new QToolButton(UpArrow, this, "qt_up_btn");
+	upB = new QToolButton(Qt::UpArrow, this, "qt_up_btn");
 	connect(upB, SIGNAL(clicked()), this, SLOT(scrollTabsVert()));
 	upB->hide();
-	downB = new QToolButton(DownArrow, this, "qt_down_btn");
+	downB = new QToolButton(Qt::DownArrow, this, "qt_down_btn");
 	connect(downB, SIGNAL(clicked()), this, SLOT(scrollTabsVert()));
 	downB->hide();
 	setAcceptDrops(true);
@@ -52,14 +59,14 @@ void KaduTabBar::layoutTabs()
 		return;
 
 	int hframe, vframe, overlap;
-	hframe  = style().pixelMetric(QStyle::PM_TabBarTabHSpace, this);
-	vframe  = style().pixelMetric(QStyle::PM_TabBarTabVSpace, this);
-	overlap = style().pixelMetric(QStyle::PM_TabBarTabOverlap, this);
+	hframe  = style()->pixelMetric(QStyle::PM_TabBarTabHSpace, 0, this);
+	vframe  = style()->pixelMetric(QStyle::PM_TabBarTabVSpace, 0, this);
+	overlap = style()->pixelMetric(QStyle::PM_TabBarTabOverlap, 0, this);
 
 	QFontMetrics fm = fontMetrics();
 	int x = 0;
 	QRect r;
-	QTab *t;
+	QString *t;
 	bool reverse = QApplication::reverseLayout();
 	if (reverse)
 		t = lstatic2->last();
@@ -67,49 +74,49 @@ void KaduTabBar::layoutTabs()
 		t = lstatic2->first();
 	while (t)
 	{
-		int lw = fm.width(t->text());
-		lw -= t->text().contains('&') * fm.width('&');
-		lw += t->text().contains("&&") * fm.width('&');
+		int lw = fm.width(*t);
+// 		lw -= t->contains('&') * fm.width('&');
+// 		lw += t->contains("&&") * fm.width('&');
 		int iw = 0;
 		int ih = 0;
-		if (t->iconSet() != 0)
-		{
-			iw = t->iconSet()->pixmap(QIconSet::Small, QIconSet::Normal).width() + 4;
-			ih = t->iconSet()->pixmap(QIconSet::Small, QIconSet::Normal).height();
-		}
+// 		if (t->iconSet() != 0)
+// 		{
+// 			iw = t->iconSet()->pixmap(QIcon::Small, QIcon::Normal).width() + 4;
+// 			ih = t->iconSet()->pixmap(QIcon::Small, QIcon::Normal).height();
+// 		}
 		int h = QMAX(fm.height(), ih);
 		h = QMAX(h, QApplication::globalStrut().height());
 
 		h += vframe;
 //		t->setRect(QRect(x, 0, QMAX(lw + hframe + iw, QApplication::globalStrut().width()), h));
-		t->setRect(QRect(0, x, h, QMAX(lw + hframe + iw, QApplication::globalStrut().width())));
+// 		t->setRect(QRect(0, x, h, QMAX(lw + hframe + iw, QApplication::globalStrut().width())));
 //		x += t->rect().width() - overlap;
-		x += t->rect().height() - overlap;
-		r = r.unite(t->rect());
+// 		x += t->rect().height() - overlap;
+// 		r = r.unite(t->rect());
 		if (reverse)
 			t = lstatic2->prev();
 		else
 			t = lstatic2->next();
 	}
-	for (t = lstatic2->first(); t; t = lstatic2->next())
-		t->setRect(QRect(t->rect().left(), t->rect().top(), r.width(), t->rect().height()));
+// 	for (t = lstatic2->first(); t; t = lstatic2->next())
+// 		t->setRect(QRect(t->rect().left(), t->rect().top(), r.width(), t->rect().height()));
 }
 
 QSize KaduTabBar::sizeHint() const
 {
 	kdebugf();
-	QTab *t = lstatic2->first();
-	if (t)
-	{
-		QRect r(t->rect());
-		while ((t = lstatic2->next()) != 0)
-			r = r.unite(t->rect());
-		return r.size().expandedTo(QApplication::globalStrut());
-	}
-	else
-	{
+// 	QString *t = lstatic2->first();
+// 	if (t)
+// 	{
+// 		QRect r(t->rect());
+// 		while ((t = lstatic2->next()) != 0)
+// 			r = r.unite(t->rect());
+// 		return r.size().expandedTo(QApplication::globalStrut());
+// 	}
+// 	else
+// 	{
 		return QSize(0, 0).expandedTo(QApplication::globalStrut());
-	}
+// 	}
 }
 
 QSize KaduTabBar::minimumSizeHint() const
@@ -118,52 +125,56 @@ QSize KaduTabBar::minimumSizeHint() const
 	return QSize(sizeHint().width(), downB->sizeHint().height() * 2 + 75);
 }
 
-void KaduTabBar::paint(QPainter *p, QTab *t, bool selected) const
+void KaduTabBar::paint(QPainter *p, int index, bool selected) const
 {
 //	kdebugf();
-	QStyle::SFlags flags = QStyle::Style_Default;
+	QStyle::State state = QStyle::State_None;
 
-	if (isEnabled() && t->isEnabled())
-		flags |= QStyle::Style_Enabled;
+	if (isEnabled()/* && t->isEnabled()*/)
+		state |= QStyle::State_Enabled;
 	if ( selected )
-		flags |= QStyle::Style_Selected;
+		state |= QStyle::State_Selected;
 //	else if(t == d->pressed)
 //		flags |= QStyle::Style_Sunken;
 	//selection flags
-	if (t->rect().contains(mapFromGlobal(QCursor::pos())))
-		flags |= QStyle::Style_MouseOver;
+	if (tabRect(index).contains(mapFromGlobal(QCursor::pos())))
+		state |= QStyle::State_MouseOver;
 
-	QRect r(t->rect());
+	QRect r(tabRect(index));
 	p->setFont(font());
-	QRect v(t->rect().top(), t->rect().left(), t->rect().height(), t->rect().width());
+	QRect v(r.top(), r.left(), r.height(), r.width());
 
 	p->save();
 	p->setWindow(- r.width(), 0, p->window().width(), p->window().height());
 	p->rotate(90.0);
-	style().drawControl(QStyle::CE_TabBarTab, p, this, v,
-		colorGroup(), flags, QStyleOption(t));
+
+	QStyleOptionTab styleOptionTab;
+	styleOptionTab.rect = v;
+	styleOptionTab.state = state;
+
+	style()->drawControl(QStyle::CE_TabBarTab, &styleOptionTab, p, this);
 
 	int iw = 0;
 	int ih = 0;
-	if (t->iconSet() != 0)
+	if (!tabIcon(index).isNull())
 	{
-		iw = t->iconSet()->pixmap(QIconSet::Small, QIconSet::Normal).width() + 4;
-		ih = t->iconSet()->pixmap(QIconSet::Small, QIconSet::Normal).height();
+		iw = tabIcon(index).pixmap(QIcon::Small, QIcon::Normal).width() + 4;
+		ih = tabIcon(index).pixmap(QIcon::Small, QIcon::Normal).height();
 	}
 	QFontMetrics fm = p->fontMetrics();
-	int fw = fm.width(t->text());
-	fw -= t->text().contains('&') * fm.width('&');
-	fw += t->text().contains("&&") * fm.width('&');
+	int fw = fm.width(tabText(index));
+// 	fw -= tabText(index).contains('&') * fm.width('&');
+// 	fw += tabText(index).contains("&&") * fm.width('&');
 	int w = iw + fw + 4;
 	int h = QMAX(fm.height() + 4, ih);
-	paintLabel(p, QRect(v.left() + (v.width() - w) / 2 - 3,
-		v.top() + (v.height() - h) / 2,
-		w, h), t, t->identifier() == keyboardFocusTab());
+// 	paintLabel(p, QRect(v.left() + (v.width() - w) / 2 - 3,
+// 		v.top() + (v.height() - h) / 2,
+// 		w, h), t, t->identifier() == keyboardFocusTab());
 	p->restore();
 //	kdebugf2();
 }
-
-int KaduTabBar::insertTab(QTab *newTab, int index)
+/*
+int KaduTabBar::insertTab(QString tabName, int index)
 {
 	kdebugf();
 	if (index < 0 || index > int(lstatic2->count()))
@@ -175,8 +186,8 @@ int KaduTabBar::insertTab(QTab *newTab, int index)
 	makeVisibleVert(tab(currentTab()));
 
 	return id;
-}
-
+}*/
+/*
 void KaduTabBar::removeTab(QTab *t)
 {
 	kdebugf();
@@ -185,14 +196,14 @@ void KaduTabBar::removeTab(QTab *t)
 	updateArrowButtonsVert();
 	makeVisibleVert(tab(currentTab()));
 	update();
-}
-
+}*/
+/*
 void KaduTabBar::setCurrentTab(QTab *tab)
 {
 	if (tab && lstatic2)
 		makeVisibleVert(tab);
 	QTabBar::setCurrentTab(tab);
-}
+}*/
 
 void KaduTabBar::resizeEvent(QResizeEvent *e)
 {
@@ -202,10 +213,10 @@ void KaduTabBar::resizeEvent(QResizeEvent *e)
 	upB->setGeometry(0, height() - 2 * arrowHeight, width(), arrowHeight);
 	QTabBar::resizeEvent(e);
 	updateArrowButtonsVert();
-	makeVisibleVert(tab(currentTab()));
+// 	makeVisibleVert(tab(currentTab()));
 }
-
-void KaduTabBar::makeVisibleVert(QTab *tab)
+/*
+void KaduTabBar::makeVisibleVert(QString tab)
 {
 	kdebugf();
 	bool tooFarUp = (tab && tab->rect().top() < 0);
@@ -237,44 +248,44 @@ void KaduTabBar::makeVisibleVert(QTab *tab)
 		downB->setDown(FALSE);
 
 	update();
-}
+}*/
 
 void KaduTabBar::updateArrowButtonsVert()
 {
-	kdebugf();
-	bool b = lstatic2->last() && (lstatic2->last()->rect().bottom() > height());
-	vertscrolls = b;
-	if (vertscrolls)
-	{
-		upB->setEnabled(FALSE);
-		downB->setEnabled(TRUE);
-		upB->show();
-		downB->show();
-	}
-	else
-	{
-		upB->hide();
-		downB->hide();
-	}
+// 	kdebugf();
+// 	bool b = lstatic2->last() && (lstatic2->last()->rect().bottom() > height());
+// 	vertscrolls = b;
+// 	if (vertscrolls)
+// 	{
+// 		upB->setEnabled(FALSE);
+// 		downB->setEnabled(TRUE);
+// 		upB->show();
+// 		downB->show();
+// 	}
+// 	else
+// 	{
+// 		upB->hide();
+// 		downB->hide();
+// 	}
 }
 
 void KaduTabBar::scrollTabsVert()
 {
-	kdebugf();
-	QTab *up = 0;
-	QTab *down = 0;
-	for (QTab *t = lstatic2->first(); t; t = lstatic2->next())
-	{
-		if (t->rect().top() < 0 && t->rect().bottom() > 0)
-			up = t;
-		if (t->rect().top() < upB->y() + 2)
-			down = t;
-	}
-	if (sender() == upB)
-		makeVisibleVert(up);
-	else
-		if (sender() == downB)
-			makeVisibleVert(down);
+// 	kdebugf();
+// 	QTab *up = 0;
+// 	QTab *down = 0;
+// 	for (QTab *t = lstatic2->first(); t; t = lstatic2->next())
+// 	{
+// 		if (t->rect().top() < 0 && t->rect().bottom() > 0)
+// 			up = t;
+// 		if (t->rect().top() < upB->y() + 2)
+// 			down = t;
+// 	}
+// 	if (sender() == upB)
+// 		makeVisibleVert(up);
+// 	else
+// 		if (sender() == downB)
+// 			makeVisibleVert(down);
 }
 
 void KaduTabBar::dragEnterEvent(QDragEnterEvent* e)
@@ -287,68 +298,68 @@ void KaduTabBar::dragEnterEvent(QDragEnterEvent* e)
 
 void KaduTabBar::dropEvent(QDropEvent* e)
 {
-	kdebugf();
-
-	QStringList ules;
-	if (dynamic_cast<UserBox*>(e->source()) && UlesDrag::decode(e, ules))
-	{
-		QApplication::setOverrideCursor(QCursor(ArrowCursor));
-		QString group;
-		if (selectTab(e->pos()))
-			group = selectTab(e->pos())->text();
-		else
-		{
-			bool ok;
-			QString text;
-			do
-			{
-				text = QInputDialog::getText(tr("Add new group"), tr("Name of new group:"), QLineEdit::Normal, text, &ok);
-				if (!ok)
-				{
-					QApplication::restoreOverrideCursor();
-					return;
-				}
-				if (UserInfo::acceptableGroupName(text))
-					group = text;
-			}
-			while (group.isEmpty());
-		}
-		if (group == GroupsManager::tr("All"))
-			group = QString::null;
-
-		QPopupMenu menu(this);
-		menu.insertItem(tr("Add to group %1").arg(group), 2);
-
-		if (tab(currentTab())->text() != GroupsManager::tr("All"))
-			menu.insertItem(tr("Move to group %1").arg(group), 1);
-
-		int menuret = -1;
-		if (group.isEmpty() || (menuret = showPopupMenu(&menu)) == 1)
-		{
-			QStringList groups;
-			if (!group.isEmpty())
-				groups.append(group);
-			CONST_FOREACH(ule, ules)
-				userlist->byAltNick(*ule).setData("Groups", groups);
-		}
-		else if (menuret == 2)
-		{
-			CONST_FOREACH(ule, ules)
-			{
-				UserListElement user = userlist->byAltNick(*ule);
-				QStringList userGroups = user.data("Groups").toStringList();
-				if (!userGroups.contains(group))
-				{
-					userGroups.append(group);
-					user.setData("Groups", userGroups);
-				}
-			}
-		}
-
-		// too slow, we need to do something about that
-		userlist->writeToConfig();
-
-		QApplication::restoreOverrideCursor();
-	}
-	kdebugf2();
+// 	kdebugf();
+// 
+// 	QStringList ules;
+// 	if (dynamic_cast<UserBox*>(e->source()) && UlesDrag::decode(e, ules))
+// 	{
+// 		QApplication::setOverrideCursor(QCursor(Qt::ArrowCursor));
+// 		QString group;
+// 		if (selectTab(e->pos()))
+// 			group = selectTab(e->pos())->text();
+// 		else
+// 		{
+// 			bool ok;
+// 			QString text;
+// 			do
+// 			{
+// 				text = QInputDialog::getText(tr("Add new group"), tr("Name of new group:"), QLineEdit::Normal, text, &ok);
+// 				if (!ok)
+// 				{
+// 					QApplication::restoreOverrideCursor();
+// 					return;
+// 				}
+// 				if (UserInfo::acceptableGroupName(text))
+// 					group = text;
+// 			}
+// 			while (group.isEmpty());
+// 		}
+// 		if (group == GroupsManager::tr("All"))
+// 			group = QString::null;
+// 
+// 		Q3PopupMenu menu(this);
+// 		menu.insertItem(tr("Add to group %1").arg(group), 2);
+// 
+// 		if (tabText(currentIndex()) != GroupsManager::tr("All"))
+// 			menu.insertItem(tr("Move to group %1").arg(group), 1);
+// 
+// 		int menuret = -1;
+// 		if (group.isEmpty() || (menuret = showPopupMenu(&menu)) == 1)
+// 		{
+// 			QStringList groups;
+// 			if (!group.isEmpty())
+// 				groups.append(group);
+// 			CONST_FOREACH(ule, ules)
+// 				userlist->byAltNick(*ule).setData("Groups", groups);
+// 		}
+// 		else if (menuret == 2)
+// 		{
+// 			CONST_FOREACH(ule, ules)
+// 			{
+// 				UserListElement user = userlist->byAltNick(*ule);
+// 				QStringList userGroups = user.data("Groups").toStringList();
+// 				if (!userGroups.contains(group))
+// 				{
+// 					userGroups.append(group);
+// 					user.setData("Groups", userGroups);
+// 				}
+// 			}
+// 		}
+// 
+// 		// too slow, we need to do something about that
+// 		userlist->writeToConfig();
+// 
+// 		QApplication::restoreOverrideCursor();
+// 	}
+// 	kdebugf2();
 }

@@ -62,9 +62,9 @@ short UserListElement::port(const QString &protocolName) const
 void UserListElement::refreshDNSName(const QString &protocolName)
 {
 	unsigned int ip = protocolData(protocolName, "IP").toUInt();
-	if (ip)
-		connect(new DNSHandler(protocolName, ip), SIGNAL(result(const QString &, const QString &)),
-				privateData, SLOT(setDNSName(const QString &, const QString &)));
+// 	if (ip)
+// 		connect(new DNSHandler(protocolName, ip), SIGNAL(result(const QString &, const QString &)),
+// 				privateData, SLOT(setDNSName(const QString &, const QString &)));
 }
 
 QVariant UserListElement::setProtocolData(const QString &protocolName, const QString &name, const QVariant &val, bool massively, bool last)
@@ -93,10 +93,10 @@ QVariant UserListElement::setProtocolData(const QString &protocolName, const QSt
 
 	if (massively)
 	{
-		QDict<UserGroupSet> *names = ULEPrivate::protocolUserDataProxy.find(protocolName);
+		Q3Dict<UserGroupSet> *names = ULEPrivate::protocolUserDataProxy.find(protocolName);
 		if (!names)
 		{
-			names = new QDict<UserGroupSet>();
+			names = new Q3Dict<UserGroupSet>();
 			names->setAutoDelete(true);
 			ULEPrivate::protocolUserDataProxy.insert(protocolName, names);
 		}
@@ -114,7 +114,7 @@ QVariant UserListElement::setProtocolData(const QString &protocolName, const QSt
 		}
 		if (last)
 		{
-			QPtrDictIterator<void> it(*groups);
+			Q3PtrDictIterator<void> it(*groups);
 			while (it.current())
 			{
 				emit (static_cast<UserGroup*>(it.currentKey()))->protocolUsersDataChanged(protocolName, name);
@@ -251,7 +251,7 @@ QVariant UserListElement::setData(const QString &name, const QVariant &val, bool
 		}
 		if (last)
 		{
-			QPtrDictIterator<void> it(*groups);
+			Q3PtrDictIterator<void> it(*groups);
 			while (it.current())
 			{
 				emit (static_cast<UserGroup*>(it.currentKey()))->usersDataChanged(name);
@@ -407,7 +407,7 @@ void UserListElement::setStatus(const QString &protocolName, const UserStatus &s
 		}
 		if (last)
 		{
-			QPtrDictIterator<void> it(*groups);
+			Q3PtrDictIterator<void> it(*groups);
 			while (it.current())
 			{
 				emit (static_cast<UserGroup*>(it.currentKey()))->usersStatusChanged(protocolName);
@@ -431,7 +431,7 @@ void UserListElement::setStatus(const QString &protocolName, const UserStatus &s
 
 QStringList UserListElement::protocolList() const
 {
-	QDictIterator<ProtocolData> it(privateData->protocols);
+	Q3DictIterator<ProtocolData> it(privateData->protocols);
 	uint cnt = it.count();
 	QStringList ret;
 	for (uint i = 0; i < cnt; ++i)
@@ -454,7 +454,7 @@ QStringList UserListElement::protocolDataKeys(const QString &protocolName) const
 		return QStringList();
 	}
 
-	QDictIterator<QVariant> it(protoData->data);
+	Q3DictIterator<QVariant> it(protoData->data);
 	uint cnt = it.count();
 	QStringList ret;
 	for (uint i = 0; i < cnt; ++i)
@@ -467,7 +467,7 @@ QStringList UserListElement::protocolDataKeys(const QString &protocolName) const
 
 QStringList UserListElement::nonProtocolDataKeys() const
 {
-	QDictIterator<QVariant> it(privateData->informations);
+	Q3DictIterator<QVariant> it(privateData->informations);
 	uint cnt = it.count();
 	QStringList ret;
 	for (uint i = 0; i < cnt; ++i)

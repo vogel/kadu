@@ -1,15 +1,23 @@
 #ifndef KADU_MODULES_H
 #define KADU_MODULES_H
 
-#include <qhbox.h>
+#define QT3_SUPPORT
+#include <qglobal.h>
+
+#include <q3hbox.h>
 #include <qobject.h>
 #include <qstring.h>
 #include <qstringlist.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QLabel>
+#include <QTranslator>
+#include <QKeyEvent>
 
 class QCheckBox;
 class QLabel;
-class QListView;
-class QListViewItem;
+class Q3ListView;
+class Q3ListViewItem;
 class QTranslator;
 
 /**
@@ -79,12 +87,12 @@ class LayoutHelper;
 	\class ModulesDialog
 	\brief "Zarz±dca modu³ów"
 **/
-class ModulesDialog : public QHBox
+class ModulesDialog : public Q3HBox
 {
 	Q_OBJECT
 
 	private:
-		QListView* lv_modules;
+		Q3ListView* lv_modules;
 		QLabel* l_moduleinfo;
 		LayoutHelper *layoutHelper;
 		QCheckBox *hideBaseModules;
@@ -92,7 +100,7 @@ class ModulesDialog : public QHBox
 	private slots:
 		void loadItem();
 		void unloadItem();
-		void moduleAction(QListViewItem *);
+		void moduleAction(Q3ListViewItem *);
 		void itemsChanging();
 		void getInfo();
 		void refreshList();

@@ -9,8 +9,13 @@
 
 #include <stdlib.h>
 
+#include <qapplication.h>
 #include <qstyle.h>
 #include <qstylefactory.h>
+//Added by qt3to4:
+#include <Q3ValueList>
+#include <QKeyEvent>
+#include <QStyle>
 
 #include "chat_message.h"
 #include "config_file.h"
@@ -24,14 +29,14 @@
 #include "main_configuration_window.h"
 
 MainConfigurationWindow *MainConfigurationWindow::Instance = 0;
-QValueList<QPair<QString, ConfigurationUiHandler *> > MainConfigurationWindow::UiFiles;
+Q3ValueList<QPair<QString, ConfigurationUiHandler *> > MainConfigurationWindow::UiFiles;
 
 void MainConfigurationWindow::registerUiFile(const QString &uiFile, ConfigurationUiHandler *uiHandler)
 {
 	UiFiles.append(qMakePair(uiFile, uiHandler));
 	if (Instance)
 	{
-		QValueList<ConfigWidget *> widgets = Instance->appendUiFile(uiFile);
+		Q3ValueList<ConfigWidget *> widgets = Instance->appendUiFile(uiFile);
 
 		if (uiHandler)
 			uiHandler->mainConfigurationWindowCreated(Instance);
@@ -134,7 +139,7 @@ MainConfigurationWindow::MainConfigurationWindow()
 	connect(useUserboxBackground, SIGNAL(toggled(bool)), widgetById("userboxBackground"), SLOT(setEnabled(bool)));
 	connect(useUserboxBackground, SIGNAL(toggled(bool)), widgetById("userboxBackgroundDisplayStyle"), SLOT(setEnabled(bool)));
 
-	QToolTip::add(widgetById("parseStatus") , qApp->translate("@default", Kadu::SyntaxText));
+	widgetById("parseStatus")->setToolTip(qApp->translate("@default", Kadu::SyntaxText));
 	(dynamic_cast<ConfigSyntaxEditor *>(widgetById("chatSyntax")))->setSyntaxHint(qApp->translate("@default", Kadu::SyntaxTextExtended));
 	(dynamic_cast<ConfigSyntaxEditor *>(widgetById("infoPanelSyntax")))->setSyntaxHint(qApp->translate("@default", Kadu::SyntaxText));
 
@@ -143,7 +148,7 @@ MainConfigurationWindow::MainConfigurationWindow()
 
 MainConfigurationWindow::~MainConfigurationWindow()
 {
-	saveGeometry(this, "General", "ConfigGeometry");
+// 	saveGeometry(this, "General", "ConfigGeometry");
 	Instance = 0;
 }
 
@@ -182,7 +187,7 @@ void MainConfigurationWindow::prepareChatPreview(Preview *preview, bool append)
 	example.setDNSName("Gadu", "host.server.net");
 
 	preview->setResetBackgroundColor(config_file.readEntry("Look", "ChatBgColor"));
-	preview->setStyleSheet(new StaticStyleSheet(chatPreview, emoticons->themePath()));
+// 	preview->setStyleSheet(new StaticStyleSheet(chatPreview, emoticons->themePath()));
 
 	ChatMessage *chatMessage = new ChatMessage(kadu->myself(), tr("Your message"), TypeSent,
 		QDateTime::currentDateTime(), QDateTime::currentDateTime());
@@ -252,7 +257,7 @@ void MainConfigurationWindow::setQtThemes()
 	ConfigComboBox *qtThemes = dynamic_cast<ConfigComboBox *>(widgetById("qtThemes"));
 
 	QStringList themes = QStyleFactory::keys();
-	QString currentStyle = QApplication::style().name();
+	QString currentStyle = QApplication::style()->name();
 	if (!themes.contains(currentStyle))
 		themes.append(currentStyle);
 
@@ -598,9 +603,9 @@ void MainConfigurationWindow::showLookChatAdvanced()
 		connect(lookChatAdvanced->widgetById("removeServerTime"), SIGNAL(toggled(bool)), lookChatAdvanced->widgetById("maxTimeDifference"), SLOT(setEnabled(bool)));
 		connect(lookChatAdvanced->widgetById("noHeaderRepeat"), SIGNAL(toggled(bool)), lookChatAdvanced->widgetById("noHeaderInterval"), SLOT(setEnabled(bool)));
 
-		QToolTip::add(lookChatAdvanced->widgetById("chatSyntax") , qApp->translate("@default", Kadu::SyntaxText));
-		QToolTip::add(lookChatAdvanced->widgetById("conferencePrefix") , qApp->translate("@default", Kadu::SyntaxText));
-		QToolTip::add(lookChatAdvanced->widgetById("conferenceSyntax") , qApp->translate("@default", Kadu::SyntaxText));
+		lookChatAdvanced->widgetById("chatSyntax")->setToolTip(qApp->translate("@default", Kadu::SyntaxText));
+		lookChatAdvanced->widgetById("conferencePrefix")->setToolTip(qApp->translate("@default", Kadu::SyntaxText));
+		lookChatAdvanced->widgetById("conferenceSyntax")->setToolTip(qApp->translate("@default", Kadu::SyntaxText));
 
 		connect(lookChatAdvanced, SIGNAL(destroyed()), this, SLOT(lookChatAdvancedDestroyed()));
 	}

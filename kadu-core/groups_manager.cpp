@@ -18,6 +18,8 @@
 #include "tabbar.h"
 #include "userbox.h"
 #include "userlist.h"
+//Added by qt3to4:
+#include <QPixmap>
 
 void GroupsManager::initModule()
 {
@@ -82,7 +84,8 @@ void GroupsManager::setTabBar(KaduTabBar *bar)
 	GroupBar = bar;
 
 	bar->setShape(QTabBar::RoundedBelow);
-	bar->addTab(new QTab(icons_manager->loadIcon("PersonalInfo").xForm(QWMatrix().rotate(-90)), tr("All")));
+	int index = bar->addTab(tr("All"));
+	bar->setTabIcon(index, icons_manager->loadIcon("PersonalInfo").xForm(QMatrix().rotate(-90)));
 	bar->setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(), QFont::Bold));
 	connect(bar, SIGNAL(selected(int)), this, SLOT(tabSelected(int)));
 	connect(userlist, SIGNAL(modified()), this, SLOT(refreshTabBarLater()));
@@ -118,7 +121,7 @@ void GroupsManager::tabSelected(int id)
 		if (id == 0)
 			setActiveGroup(QString::null);
 		else
-			setActiveGroup(GroupBar->tab(id)->text());
+			setActiveGroup(GroupBar->tabText(id));
 	}
 }
 
@@ -127,14 +130,14 @@ void GroupsManager::setActiveGroup(const QString& name)
 	kdebugf();
 	if (name == currentGroup)
 		return;
-	if (GroupBar->tab(GroupBar->currentTab())->text() != name)
+	if (GroupBar->tabText(GroupBar->currentIndex()) != name)
 	{
 		for (int i = 0, cnt = GroupBar->count(); i < cnt; ++i)
 		{
-			QTab *tab = GroupBar->tabAt(i);
-			if (tab->text() == name)
+			QString tab = GroupBar->tabText(i);
+			if (tab == name)
 			{
-				GroupBar->setCurrentTab(tab);
+				GroupBar->setCurrentIndex(i);
 				kdebugf2();
 				return;
 			}
@@ -181,8 +184,8 @@ void GroupsManager::refreshTabBar()
 	/* usuwamy wszystkie niepotrzebne zakladki - od tylu,
 	   bo indeksy sie przesuwaja po usunieciu */
 	for (int i = GroupBar->count() - 1; i >= 1; --i)
-		if (!group_list.contains(GroupBar->tabAt(i)->text()))
-			GroupBar->removeTab(GroupBar->tabAt(i));
+		if (!group_list.contains(GroupBar->tabText(i)))
+			GroupBar->removeTab(i);
 
 	if (group_list.isEmpty())
 	{
@@ -199,7 +202,7 @@ void GroupsManager::refreshTabBar()
 
 		for (int j = 0, count = GroupBar->count(); j < count; ++j)
 		{
-			if (GroupBar->tabAt(j)->text() == (*group))
+			if (GroupBar->tabText(j) == (*group))
 			{
 				createNewTab = false;
 				break;
@@ -211,12 +214,13 @@ void GroupsManager::refreshTabBar()
 			QString iconPath = config_file.readEntry("GroupIcon", (*group));	
 			if (!iconPath.isEmpty()) 
 			{
-				QPixmap icon = icons_manager->loadIcon(iconPath).xForm(QWMatrix().rotate(-90));
+				QPixmap icon = icons_manager->loadIcon(iconPath).xForm(QMatrix().rotate(-90));
 
-				GroupBar->insertTab(new QTab(icon.xForm(QWMatrix().scale((double)16/icon.width(), (double)16/icon.height())), (*group)));
+				int index = GroupBar->addTab(*group);
+				GroupBar->setTabIcon(index, icon.xForm(QMatrix().scale((double)16/icon.width(), (double)16/icon.height())));
 			}
 			else 
-				GroupBar->insertTab(new QTab(*group));
+				GroupBar->addTab(*group);
 		}
 	}
 
@@ -243,7 +247,7 @@ void GroupsManager::configurationUpdated()
 void GroupsManager::iconThemeChanged()
 {
 	if (GroupBar)
-		(GroupBar->tabAt(0))->setIconSet(icons_manager->loadIcon("PersonalInfo").xForm(QWMatrix().rotate(-90)));
+		GroupBar->setTabIcon(0, icons_manager->loadIcon("PersonalInfo").xForm(QMatrix().rotate(-90)));
 }
 
 void GroupsManager::changeDisplayingBlocking()
@@ -345,7 +349,7 @@ GroupsManager::~GroupsManager()
 	kdebugf();
 
 	if (GroupBar)
-		config_file.writeEntry("Look", "CurrentGroupTab", GroupBar->currentTab());
+		config_file.writeEntry("Look", "CurrentGroupTab", GroupBar->currentIndex());
 
 	disconnect(icons_manager, SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 	disconnect(userlist, SIGNAL(userRemoved(UserListElement, bool, bool)),
@@ -531,26 +535,27 @@ void GroupsManager::setIconForTab(const QString &name)
 
 	for (int index = 0, count = GroupBar->count(); index < count; ++index)
 	{
-		if (GroupBar->tabAt(index)->text() == name)
+		if (GroupBar->tabText(index) == name)
 		{
-			int currentTab = GroupBar->currentTab();
+			int currentTab = GroupBar->currentIndex();
 
-			GroupBar->removeTab(GroupBar->tabAt(index));
+			GroupBar->removeTab(index);
 
 			QString iconPath = config_file.readEntry("GroupIcon", name);	
 
 			if (!iconPath.isEmpty()) 
 			{
-				QPixmap icon = icons_manager->loadIcon(iconPath).xForm(QWMatrix().rotate(-90));
+				QPixmap icon = icons_manager->loadIcon(iconPath).xForm(QMatrix().rotate(-90));
 
-				GroupBar->insertTab(new QTab(icon.xForm(QWMatrix().scale((double)16/icon.width(), (double)16/icon.height())), name), index);
+				GroupBar->insertTab(index, name);
+				GroupBar->setTabIcon(index, icon.xForm(QMatrix().scale((double)16/icon.width(), (double)16/icon.height())));
 			}
 			else 
-				GroupBar->insertTab(new QTab(name), index);
+				GroupBar->insertTab(index, name);
 
 			GroupBar->update();
 
-			GroupBar->setCurrentTab(GroupBar->tabAt(currentTab));
+			GroupBar->setCurrentIndex(currentTab);
 			return;
 		}
 	}

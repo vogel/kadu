@@ -251,7 +251,7 @@ const QByteArray& HttpClient::data() const
 QString HttpClient::encode(const QString& text)
 {
 	QString encoded = text;
-	QUrl::encode(encoded);
+	Q3Url::encode(encoded);
 	return encoded;
 }
 

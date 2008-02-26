@@ -18,7 +18,16 @@
 #include <qstyle.h>
 #include <qstylefactory.h>
 #include <qtextcodec.h>
-#include <qvbox.h>
+#include <q3vbox.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QPixmap>
+#include <Q3ValueList>
+#include <QKeyEvent>
+#include <Q3VBoxLayout>
+#include <Q3Frame>
+#include <QCustomEvent>
+#include <Q3PopupMenu>
 
 #include <sys/file.h>
 #include <sys/types.h>
@@ -61,7 +70,7 @@
 #include "userinfo.h"
 
 static QTimer* blinktimer;
-QPopupMenu* dockMenu;
+Q3PopupMenu* dockMenu;
 
 int lockFileHandle;
 QFile *lockFile;
@@ -103,7 +112,7 @@ bool Kadu::Closing = false;
 void Kadu::keyPressEvent(QKeyEvent *e)
 {
 //	kdebugf();
-	if (e->key() == Key_Escape)
+	if (e->key() == Qt::Key_Escape)
 	{
 		if (Docked)
 		{
@@ -158,7 +167,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 
 	createDefaultConfiguration();
 
-	MainLayout = new QVBoxLayout(this);
+	MainLayout = new Q3VBoxLayout(this);
 
 	TopDockArea = new DockArea(Qt::Horizontal, DockArea::Normal, this,
 		"topDockArea", Action::TypeGlobal | Action::TypeUser | Action::TypeUserList);
@@ -169,7 +178,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	QSplitter *split = new QSplitter(Qt::Vertical, this, "splitter");
 	MainLayout->addWidget (split);
 
-	QHBox* hbox1 = new QHBox(split, "firstBox");
+	Q3HBox* hbox1 = new Q3HBox(split, "firstBox");
 
 	// groupbar
 	GroupBar = new KaduTabBar(hbox1, "groupbar");
@@ -198,13 +207,13 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 
 	hbox1->setStretchFactor(Userbox, 100);
 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(popupMenu()));
-	connect(Userbox, SIGNAL(rightButtonPressed(QListBoxItem *, const QPoint &)),
-		UserBox::userboxmenu, SLOT(show(QListBoxItem *)));
+	connect(Userbox, SIGNAL(rightButtonPressed(Q3ListBoxItem *, const QPoint &)),
+		UserBox::userboxmenu, SLOT(show(Q3ListBoxItem *)));
 	connect(UserBox::management, SIGNAL(aboutToShow()), this, SLOT(popupMenu()));
 	connect(Userbox, SIGNAL(doubleClicked(UserListElement)), this, SLOT(sendMessage(UserListElement)));
 	connect(Userbox, SIGNAL(returnPressed(UserListElement)), this, SLOT(sendMessage(UserListElement)));
-	connect(Userbox, SIGNAL(mouseButtonClicked(int, QListBoxItem *, const QPoint &)),
-		this, SLOT(mouseButtonClicked(int, QListBoxItem *)));
+	connect(Userbox, SIGNAL(mouseButtonClicked(int, Q3ListBoxItem *, const QPoint &)),
+		this, SLOT(mouseButtonClicked(int, Q3ListBoxItem *)));
 	connect(Userbox, SIGNAL(currentChanged(UserListElement)), this, SLOT(currentChanged(UserListElement)));
 
 	UserBox::userboxmenu->addItem("OpenChat", tr("Open chat window") ,this, SLOT(openChat()));
@@ -302,37 +311,37 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	connect(RecentChatsMenu, SIGNAL(aboutToShow()), this, SLOT(createRecentChatsMenu()));
 
 	dockMenu->insertSeparator();
-	dockMenu->insertItem(icons_manager->loadIcon("Exit"), tr("&Exit Kadu"), 9);
-	icons_manager->registerMenuItem(dockMenu, tr("&Exit Kadu"), "Exit");
+	dockMenu->insertItem(QIcon(icons_manager->loadIcon("Exit")), tr("&Exit Kadu"), 9);
+// 	icons_manager->registerMenuItem(dockMenu, tr("&Exit Kadu"), "Exit");
 
 	InfoPanel = new KaduTextBrowser(split, "InfoPanel");
-	InfoPanel->setFrameStyle(QFrame::NoFrame);
-	InfoPanel->setMinimumHeight(int(1.5 * QFontMetrics(InfoPanel->QTextEdit::font()).height()));
+	InfoPanel->setFrameStyle(Q3Frame::NoFrame);
+	InfoPanel->setMinimumHeight(int(1.5 * QFontMetrics(InfoPanel->Q3TextEdit::font()).height()));
 //	InfoPanel->resize(InfoPanel->size().width(), int(1.5 * QFontMetrics(InfoPanel->font()).height()));
 	InfoPanel->setTextFormat(Qt::RichText);
 	InfoPanel->setAlignment(Qt::AlignVCenter | Qt::WordBreak | Qt::DontClip);
 	if (!config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
-		InfoPanel->setVScrollBarMode(QScrollView::AlwaysOff);
+		InfoPanel->setVScrollBarMode(Q3ScrollView::AlwaysOff);
 	InfoPanel->setPaletteBackgroundColor(config_file.readColorEntry("Look", "InfoPanelBgColor"));
 	InfoPanel->setPaletteForegroundColor(config_file.readColorEntry("Look", "InfoPanelFgColor"));
-	InfoPanel->QTextEdit::setFont(config_file.readFontEntry("Look", "PanelFont"));
-	if((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") == EMOTS_ANIMATED)
-		InfoPanel->setStyleSheet(new AnimStyleSheet(InfoPanel, emoticons->themePath()));
-	else
-		InfoPanel->setStyleSheet(new StaticStyleSheet(InfoPanel, emoticons->themePath()));
+	InfoPanel->Q3TextEdit::setFont(config_file.readFontEntry("Look", "PanelFont"));
+// 	if((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") == EMOTS_ANIMATED)
+// 		InfoPanel->setStyleSheet(new AnimStyleSheet(InfoPanel, emoticons->themePath()));
+// 	else
+// 		InfoPanel->setStyleSheet(new StaticStyleSheet(InfoPanel, emoticons->themePath()));
 
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		InfoPanel->QWidget::hide();
 	connect(&updateInformationPanelTimer, SIGNAL(timeout()), this, SLOT(updateInformationPanel()));
 
-	statusButton = new QPushButton(QIconSet(icons_manager->loadIcon("Offline")), tr("Offline"), this, "statusButton");
+	statusButton = new QPushButton(QIcon(icons_manager->loadIcon("Offline")), tr("Offline"), this, "statusButton");
 	MainLayout->addWidget (statusButton);
 	statusButton->setPopup(statusMenu);
 
 	if (!config_file.readBoolEntry("Look", "ShowStatusButton"))
 		statusButton->hide();
 
-	QValueList<int> splitsizes;
+	Q3ValueList<int> splitsizes;
 
 	splitsizes.append(config_file.readNumEntry("General", "UserBoxHeight"));
 	splitsizes.append(config_file.readNumEntry("General", "DescriptionHeight"));
@@ -376,7 +385,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	kdebugf2();
 }
 
-QVBoxLayout* Kadu::mainLayout() const
+Q3VBoxLayout* Kadu::mainLayout() const
 {
 	return MainLayout;
 }
@@ -966,12 +975,12 @@ void Kadu::changeAppearance()
 		InfoPanel->show();
 		InfoPanel->setPaletteBackgroundColor(config_file.readColorEntry("Look", "InfoPanelBgColor"));
 		InfoPanel->setPaletteForegroundColor(config_file.readColorEntry("Look", "InfoPanelFgColor"));
-		InfoPanel->QTextEdit::setFont(config_file.readFontEntry("Look", "PanelFont"));
+		InfoPanel->Q3TextEdit::setFont(config_file.readFontEntry("Look", "PanelFont"));
 
 		if (config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
-			InfoPanel->setVScrollBarMode(QScrollView::Auto);
+			InfoPanel->setVScrollBarMode(Q3ScrollView::Auto);
 		else
-			InfoPanel->setVScrollBarMode(QScrollView::AlwaysOff);
+			InfoPanel->setVScrollBarMode(Q3ScrollView::AlwaysOff);
 	}
 	else
 		dynamic_cast<QWidget *>(InfoPanel)->hide();
@@ -980,7 +989,7 @@ void Kadu::changeAppearance()
 
 	const UserStatus &stat = gadu->currentStatus();
 	QPixmap pix = stat.pixmap();
-	statusButton->setIconSet(QIconSet(pix));
+	statusButton->setIconSet(QIcon(pix));
 	setMainWindowIcon(pix);
 	emit statusPixmapChanged(pix, stat.toString());
 	kdebugf2();
@@ -1009,7 +1018,7 @@ void Kadu::blink()
 	else if (!DoBlink && gadu->currentStatus().isOffline())
 	{
 		pix = gadu->nextStatus().pixmap(Offline, false);
-		statusButton->setIconSet(QIconSet(pix));
+		statusButton->setIconSet(QIcon(pix));
 		emit statusPixmapChanged(pix, "Offline");
 		return;
 	}
@@ -1027,7 +1036,7 @@ void Kadu::blink()
 		iconName = stat.toString();
 	}
 
-	statusButton->setIconSet(QIconSet(pix));
+	statusButton->setIconSet(QIcon(pix));
 	emit statusPixmapChanged(pix, iconName);
 
 	BlinkOn = !BlinkOn;
@@ -1035,7 +1044,7 @@ void Kadu::blink()
 	blinktimer->start(1000, TRUE);
 }
 
-void Kadu::mouseButtonClicked(int button, QListBoxItem *item)
+void Kadu::mouseButtonClicked(int button, Q3ListBoxItem *item)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "button=%d\n", button);
 	if (!item)
@@ -1250,7 +1259,7 @@ bool Kadu::close(bool quit)
 		}
 		if (config_file.readBoolEntry("Look", "ShowStatusButton"))
 			config_file.writeEntry("General", "UserBoxHeight", Userbox->size().height());
-		saveGeometry(this, "General", "Geometry");
+// 		saveGeometry(this, "General", "Geometry");
 
 		config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));
 
@@ -1303,12 +1312,12 @@ bool Kadu::close(bool quit)
 				this, SLOT(wentOffline(const QString &)));
 
 		disconnect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(popupMenu()));
-		disconnect(Userbox, SIGNAL(rightButtonPressed(QListBoxItem *, const QPoint &)),
-					UserBox::userboxmenu, SLOT(show(QListBoxItem *)));
+		disconnect(Userbox, SIGNAL(rightButtonPressed(Q3ListBoxItem *, const QPoint &)),
+					UserBox::userboxmenu, SLOT(show(Q3ListBoxItem *)));
 		disconnect(Userbox, SIGNAL(doubleClicked(UserListElement)), this, SLOT(sendMessage(UserListElement)));
 		disconnect(Userbox, SIGNAL(returnPressed(UserListElement)), this, SLOT(sendMessage(UserListElement)));
-		disconnect(Userbox, SIGNAL(mouseButtonClicked(int, QListBoxItem *, const QPoint &)),
-				this, SLOT(mouseButtonClicked(int, QListBoxItem *)));
+		disconnect(Userbox, SIGNAL(mouseButtonClicked(int, Q3ListBoxItem *, const QPoint &)),
+				this, SLOT(mouseButtonClicked(int, Q3ListBoxItem *)));
 		disconnect(Userbox, SIGNAL(currentChanged(UserListElement)), this, SLOT(currentChanged(UserListElement)));
 
 #if 0
@@ -1428,10 +1437,10 @@ void Kadu::createMenu()
 {
 	kdebugf();
 
-	menuBox = new QVBox(this, "menubarvbox");
+	menuBox = new Q3VBox(this, "menubarvbox");
 	MenuBar = new QMenuBar(menuBox, "MenuBar");
-	MainMenu = new QPopupMenu(MenuBar, "MainMenu");
-	RecentChatsMenu = new QPopupMenu(MainMenu, "RecentChatsMenu");
+	MainMenu = new Q3PopupMenu(MenuBar, "MainMenu");
+	RecentChatsMenu = new Q3PopupMenu(MainMenu, "RecentChatsMenu");
 
 	MainMenu->insertItem(icons_manager->loadIcon("Ignore"), tr("Manage &ignored"), this, SLOT(manageIgnored()));
 	MainMenu->insertItem(icons_manager->loadIcon("Configuration"), tr("&Configuration"), this, SLOT(configure()), HotKey::shortCutFromFile("ShortCuts", "kadu_configure"));
@@ -1454,19 +1463,19 @@ void Kadu::createMenu()
 	MenuBar->insertItem(tr("&Kadu"), MainMenu);
 	MainLayout->insertWidget(0, menuBox);
 
-	icons_manager->registerMenu(MainMenu);
-	icons_manager->registerMenuItem(MainMenu, tr("Manage &ignored"), "Ignore");
-	icons_manager->registerMenuItem(MainMenu, tr("&Configuration"), "Configuration");
-	icons_manager->registerMenuItem(MainMenu, tr("Personal information"), "PersonalInfo");
-	icons_manager->registerMenuItem(MainMenu, tr("Recent chats..."), "OpenChat");
-	icons_manager->registerMenuItem(MainMenu, tr("&Search user in directory"), "LookupUserInfo");
-	icons_manager->registerMenuItem(MainMenu, tr("I&mport / Export userlist"), "ImportExport");
-	icons_manager->registerMenuItem(MainMenu, tr("&Add user"), "AddUser");
-	icons_manager->registerMenuItem(MainMenu, tr("&Open chat with..."), "OpenChat");
-	icons_manager->registerMenuItem(MainMenu, tr("H&elp"), "HelpMenuItem");
-	icons_manager->registerMenuItem(MainMenu, tr("A&bout..."), "AboutMenuItem");
-	icons_manager->registerMenuItem(MainMenu, tr("&Hide Kadu"), "HideKadu");
-	icons_manager->registerMenuItem(MainMenu, tr("&Exit Kadu"), "Exit");
+// 	icons_manager->registerMenu(MainMenu);
+// 	icons_manager->registerMenuItem(MainMenu, tr("Manage &ignored"), "Ignore");
+// 	icons_manager->registerMenuItem(MainMenu, tr("&Configuration"), "Configuration");
+// 	icons_manager->registerMenuItem(MainMenu, tr("Personal information"), "PersonalInfo");
+// 	icons_manager->registerMenuItem(MainMenu, tr("Recent chats..."), "OpenChat");
+// 	icons_manager->registerMenuItem(MainMenu, tr("&Search user in directory"), "LookupUserInfo");
+// 	icons_manager->registerMenuItem(MainMenu, tr("I&mport / Export userlist"), "ImportExport");
+// 	icons_manager->registerMenuItem(MainMenu, tr("&Add user"), "AddUser");
+// 	icons_manager->registerMenuItem(MainMenu, tr("&Open chat with..."), "OpenChat");
+// 	icons_manager->registerMenuItem(MainMenu, tr("H&elp"), "HelpMenuItem");
+// 	icons_manager->registerMenuItem(MainMenu, tr("A&bout..."), "AboutMenuItem");
+// 	icons_manager->registerMenuItem(MainMenu, tr("&Hide Kadu"), "HideKadu");
+// 	icons_manager->registerMenuItem(MainMenu, tr("&Exit Kadu"), "Exit");
 
 	kdebugf2();
 }
@@ -1486,13 +1495,13 @@ void Kadu::createStatusPopupMenu()
 	kdebugf();
 
 	QPixmap pix;
-	QIconSet icon;
+	QIcon icon;
 
-	statusMenu = new QPopupMenu(this, "statusMenu");
-	dockMenu = new QPopupMenu(this, "dockMenu");
+	statusMenu = new Q3PopupMenu(this, "statusMenu");
+	dockMenu = new Q3PopupMenu(this, "dockMenu");
 
-	icons_manager->registerMenu(statusMenu);
-	icons_manager->registerMenu(dockMenu);
+// 	icons_manager->registerMenu(statusMenu);
+// 	icons_manager->registerMenu(dockMenu);
 
 	UserStatus *s = new GaduStatus();
 	for (int i=0; i<8; ++i)
@@ -1504,13 +1513,13 @@ void Kadu::createStatusPopupMenu()
 		// a tak to przyjmuje ze jest to status z opisem (michal)
 		s->setIndex(i, i%2?".":"");
 		pix = s->pixmap();
-		icon = QIconSet(pix);
+		icon = QIcon(pix);
 		QString statusName = qApp->translate("@default", UserStatus::name(i).ascii());
 		statusMenu->insertItem(icon, statusName, i);
 		dockMenu->insertItem(icon, statusName, i);
 
-		icons_manager->registerMenuItem(statusMenu, statusName, UserStatus::toString(s->status(), s->hasDescription()));
-		icons_manager->registerMenuItem(dockMenu, statusName, UserStatus::toString(s->status(), s->hasDescription()));
+// 		icons_manager->registerMenuItem(statusMenu, statusName, UserStatus::toString(s->status(), s->hasDescription()));
+// 		icons_manager->registerMenuItem(dockMenu, statusName, UserStatus::toString(s->status(), s->hasDescription()));
 	}
 	delete s;
 
@@ -1586,7 +1595,7 @@ QMenuBar* Kadu::menuBar() const
 	return MenuBar;
 }
 
-QPopupMenu* Kadu::mainMenu() const
+Q3PopupMenu* Kadu::mainMenu() const
 {
 	return MainMenu;
 }
@@ -1826,7 +1835,7 @@ void Kadu::showStatusOnMenu(int statusNr)
 	dockMenu->setItemEnabled(7, statusNr != 6);
 	QPixmap pix = gadu->currentStatus().pixmap();
 	QString iconName = gadu->currentStatus().toString();
-	statusButton->setIconSet(QIconSet(pix));
+	statusButton->setIconSet(QIcon(pix));
 	setMainWindowIcon(pix);
 
 	emit statusPixmapChanged(pix, iconName);

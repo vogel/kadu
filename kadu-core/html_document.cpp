@@ -89,7 +89,7 @@ void HtmlDocument::parseHtml(const QString& html)
 	for(unsigned int i = 0, htmllength = html.length(); i < htmllength; ++i)
 	{
 		const QChar &ch = html[i];
-		switch (ch)
+		switch (ch.toAscii())
 		{
 			case '<':
 				if (!e.tag)

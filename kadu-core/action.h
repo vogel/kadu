@@ -1,11 +1,15 @@
 #ifndef ACTION_H
 #define ACTION_H
 
-#include <qmainwindow.h>
+#include <qglobal.h>
+
+#include <q3mainwindow.h>
 #include <qmap.h>
-#include <qpopupmenu.h>
+#include <q3popupmenu.h>
 #include <qstring.h>
-#include <qvaluelist.h>
+#include <q3valuelist.h>
+//Added by qt3to4:
+#include <QPixmap>
 
 #include "usergroup.h"
 
@@ -34,7 +38,7 @@ private:
 	QString OnIcon;
 	QString OnText;
 	const char *Slot;
-	QValueList<ToolButton*> ToolButtons;
+	Q3ValueList<ToolButton*> ToolButtons;
 	bool ToggleState;
 	ActionType Type;
 
@@ -67,14 +71,14 @@ public:
 	**/
 	void setOnShape(const QString& icon, const QString& text);
 	void buttonAddedToToolbar(ToolBar *toolBar, ToolButton *button);
-	int addToPopupMenu(QPopupMenu* menu, bool connect_signal = true);
-	QValueList<ToolButton*> toolButtonsForUserListElements(
+	int addToPopupMenu(Q3PopupMenu* menu, bool connect_signal = true);
+	Q3ValueList<ToolButton*> toolButtonsForUserListElements(
 		const UserListElements& users);
 	bool isOn(const UserListElements& users);
 	void setOn(const UserListElements& users, bool on);
 	void setAllOn(bool on);
 	void setPixmaps(const UserListElements& users, const QPixmap& pixmap);
-	void setIconSets(const UserListElements& users, const QIconSet& icon);
+	void setIconSets(const UserListElements& users, const QIcon& icon);
 	void refreshIcons();
 	void setTexts(const UserListElements& users, const QString& text);
 	/**
@@ -127,12 +131,12 @@ public:
 	Action * operator [] (int index);
 	bool contains(const QString &name);
 
-	QMapIterator<QString, Action *> begin() { return ActionsMap.begin(); }
-	QMapIterator<QString, Action *> end() { return ActionsMap.end(); }
-	QMapConstIterator<QString, Action *> begin () const { return ActionsMap.begin(); }
-	QMapConstIterator<QString, Action *> end () const { return ActionsMap.end(); }
-	QMapConstIterator<QString, Action *> constBegin () const { return ActionsMap.constBegin(); }
-	QMapConstIterator<QString, Action *> constEnd () const { return ActionsMap.constEnd(); }
+	QMap<QString, Action *>::Iterator begin() { return ActionsMap.begin(); }
+	QMap<QString, Action *>::Iterator end() { return ActionsMap.end(); }
+	QMap<QString, Action *>::ConstIterator begin () const { return ActionsMap.begin(); }
+	QMap<QString, Action *>::ConstIterator end () const { return ActionsMap.end(); }
+	QMap<QString, Action *>::ConstIterator constBegin () const { return ActionsMap.constBegin(); }
+	QMap<QString, Action *>::ConstIterator constEnd () const { return ActionsMap.constEnd(); }
 
 	void refreshIcons();
 

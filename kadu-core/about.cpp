@@ -7,14 +7,25 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <qglobal.h>
+
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qpushbutton.h>
 #include <qtabwidget.h>
-#include <qtextbrowser.h>
-#include <qtextedit.h>
-#include <qvbox.h>
+#include <qmenu.h>
+#include <qmenubar.h>
+#include <q3popupmenu.h>
+#include <q3textstream.h>
+#include <q3textbrowser.h>
+#include <q3textedit.h>
+#include <q3vbox.h>
 #include <qcursor.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QMouseEvent>
+#include <Q3Frame>
+#include <QKeyEvent>
 
 #include "about.h"
 #include "debug.h"
@@ -37,18 +48,18 @@ class KaduLink : public QLabel
 		}
 };
 
-About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopLevel | WDestructiveClose),
+About::About(QWidget *parent, const char *name) : Q3HBox(parent, name/*, Qt::WType_TopLevel | Qt::WDestructiveClose*/),
 	layoutHelper(new LayoutHelper())
 {
 	kdebugf();
 
 	// set window properties and flags
-	setCaption(tr("About"));
-	layout()->setResizeMode(QLayout::Minimum);
+// 	setCaption(tr("About"));
+// 	layout()->setResizeMode(QLayout::Minimum);
 	// end set window properties and flags
 
 	// create main QLabel widgets (icon and app info)
-	QVBox *left=new QVBox(this);
+	Q3VBox *left=new Q3VBox(this);
 	left->setMargin(10);
 	left->setSpacing(10);
 
@@ -58,11 +69,11 @@ About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopL
 	QWidget *blank = new QWidget(left);
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	QVBox *center = new QVBox(this);
+	Q3VBox *center = new Q3VBox(this);
 	center->setMargin(10);
 	center->setSpacing(10);
 
-	QHBox *texts = new QHBox(center);
+	Q3HBox *texts = new Q3HBox(center);
 	QLabel *l_info = new QLabel(texts);
 	l_info->setText(QString("<span style=\"font-size: 12pt\">Kadu %1 %2<br />(c) 2001-2008 Kadu Team</span>").arg(VERSION)
 			.arg(strlen(detailed_version) > 0 ? ("(" + QString(detailed_version) + ")") : QString::null));
@@ -80,31 +91,31 @@ About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopL
 
 	// create our info widgets
 	// authors
-	QTextBrowser *tb_authors = new QTextBrowser(tw_about);
-	tb_authors->setFrameStyle(QFrame::NoFrame);
+	Q3TextBrowser *tb_authors = new Q3TextBrowser(tw_about);
+	tb_authors->setFrameStyle(Q3Frame::NoFrame);
 	tb_authors->setTextFormat(Qt::PlainText);
-	tb_authors->setWordWrap(QTextEdit::NoWrap);
+	tb_authors->setWordWrap(Q3TextEdit::NoWrap);
 	tb_authors->setText(loadFile("AUTHORS"));
 
 	// people to thank
-	QTextBrowser *tb_thanks = new QTextBrowser(tw_about);
-	tb_thanks->setFrameStyle(QFrame::NoFrame);
+	Q3TextBrowser *tb_thanks = new Q3TextBrowser(tw_about);
+	tb_thanks->setFrameStyle(Q3Frame::NoFrame);
 	tb_thanks->setTextFormat(Qt::PlainText);
-	tb_thanks->setWordWrap(QTextEdit::NoWrap);
+	tb_thanks->setWordWrap(Q3TextEdit::NoWrap);
 	tb_thanks->setText(loadFile("THANKS"));
 
 	// license
-	QTextBrowser *tb_license = new QTextBrowser(tw_about);
-	tb_license->setFrameStyle(QFrame::NoFrame);
+	Q3TextBrowser *tb_license = new Q3TextBrowser(tw_about);
+	tb_license->setFrameStyle(Q3Frame::NoFrame);
 	tb_license->setTextFormat(Qt::PlainText);
-	tb_license->setWordWrap(QTextEdit::NoWrap);
+	tb_license->setWordWrap(Q3TextEdit::NoWrap);
 	tb_license->setText(loadFile("COPYING"));
 
 	// changelog
-	QTextBrowser *tb_changelog = new QTextBrowser(tw_about);
-	tb_changelog->setFrameStyle(QFrame::NoFrame);
+	Q3TextBrowser *tb_changelog = new Q3TextBrowser(tw_about);
+	tb_changelog->setFrameStyle(Q3Frame::NoFrame);
 	tb_changelog->setTextFormat(Qt::PlainText);
-	tb_changelog->setWordWrap(QTextEdit::NoWrap);
+	tb_changelog->setWordWrap(Q3TextEdit::NoWrap);
 	tb_changelog->setText(loadFile("ChangeLog"));
 
 	// add tabs
@@ -115,10 +126,10 @@ About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopL
 	// end create our info widgets
 
 	// close button
-	QHBox *bottom = new QHBox(center);
+	Q3HBox *bottom = new Q3HBox(center);
 	QWidget *blank2 = new QWidget(bottom);
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
-	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	QPushButton *pb_close = new QPushButton(/*icons_manager->loadIcon("CloseWindow"),*/ tr("&Close"), bottom/*, "close"*/);
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 	// end close button
 
@@ -132,7 +143,7 @@ About::~About()
 {
 	kdebugf();
 
-	saveGeometry(this, "General", "AboutGeometry");
+// 	saveGeometry(this, "General", "AboutGeometry");
 	delete layoutHelper;
 
 	kdebugf2();
@@ -149,13 +160,13 @@ QString About::loadFile(const QString &name)
 	kdebugf();
 
 	QFile file(dataPath("kadu/" + name));
-	if (!file.open(IO_ReadOnly))
+	if (!file.open(QIODevice::ReadOnly))
 	{
 		kdebugm(KDEBUG_ERROR, "About::loadFile(%s) cannot open file\n", name.local8Bit().data());
 		return QString::null;
 	}
 
-	QTextStream str(&file);
+	Q3TextStream str(&file);
 	str.setCodec(codec_latin2);
 	QString data = str.read();
 	file.close();

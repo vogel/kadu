@@ -8,18 +8,23 @@
  ***************************************************************************/
 
 #include <qcheckbox.h>
-#include <qdns.h>
-#include <qhbox.h>
+#include <q3dns.h>
+#include <q3hbox.h>
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
-#include <qscrollview.h>
+#include <q3scrollview.h>
 #include <qtabwidget.h>
 #include <qtooltip.h>
 #include <qvalidator.h>
-#include <qvbox.h>
-#include <qvgroupbox.h>
+#include <q3vbox.h>
+#include <q3vgroupbox.h>
+//Added by qt3to4:
+#include <QKeyEvent>
+#include <QPixmap>
+#include <Q3Frame>
+#include <QResizeEvent>
 
 #include "config_file.h"
 #include "debug.h"
@@ -38,7 +43,7 @@ void UserInfo::resizeEvent(QResizeEvent * /*e*/)
 }
 
 UserInfo::UserInfo(UserListElement user, QWidget* parent, const char *name)
-	: QHBox(parent, name, WType_Dialog | WShowModal | WDestructiveClose), User(user),
+	: Q3HBox(parent, name, Qt::WType_Dialog | Qt::WShowModal | Qt::WDestructiveClose), User(user),
 	e_firstname(0), e_lastname(0), e_nickname(0), e_altnick(0), e_mobile(0), e_uin(0),
 	e_addr(0), e_ver(0), e_email(0), e_dnsname(0), c_blocking(0), c_offtouser(0),
 	c_notify(0), pb_addapply(0), tw_main(0), vgb_general(0), dns(0), groups(),
@@ -48,7 +53,7 @@ UserInfo::UserInfo(UserListElement user, QWidget* parent, const char *name)
 	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
-	QVBox *left = new QVBox(this);
+	Q3VBox *left = new Q3VBox(this);
 	left->setMargin(10);
 	left->setSpacing(10);
 
@@ -56,7 +61,7 @@ UserInfo::UserInfo(UserListElement user, QWidget* parent, const char *name)
 	QWidget *w_icoblankwidget = new QWidget(left);
 	w_icoblankwidget->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	QVBox *center = new QVBox(this);
+	Q3VBox *center = new Q3VBox(this);
 	center->setMargin(10);
 	center->setSpacing(10);
 
@@ -73,7 +78,7 @@ UserInfo::UserInfo(UserListElement user, QWidget* parent, const char *name)
 	setupTab3();
 
 	// create buttons and fill icon and app info
-	QHBox *bottom = new QHBox(center);
+	Q3HBox *bottom = new Q3HBox(center);
 	QWidget *w_blankwidget = new QWidget(bottom);
 	bottom->setSpacing(5);
 	w_blankwidget->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
@@ -109,8 +114,8 @@ void UserInfo::setupTab1()
 {
 	kdebugf();
 	// our QVGroupBox
-	vgb_general = new QVGroupBox(tw_main);
-	vgb_general->setFrameStyle(QFrame::NoFrame);
+	vgb_general = new Q3VGroupBox(tw_main);
+	vgb_general->setFrameStyle(Q3Frame::NoFrame);
 	// end our QGroupBox
 
 	tw_main->addTab(vgb_general, tr("General"));
@@ -118,9 +123,9 @@ void UserInfo::setupTab1()
 	// info panel
 
 	// UIN and disp
-	QHBox *hb_uindisp = new QHBox(vgb_general);
-	QVBox *vb_uin = new QVBox(hb_uindisp);
-	QVBox *vb_disp = new QVBox(hb_uindisp);
+	Q3HBox *hb_uindisp = new Q3HBox(vgb_general);
+	Q3VBox *vb_uin = new Q3VBox(hb_uindisp);
+	Q3VBox *vb_disp = new Q3VBox(hb_uindisp);
 	hb_uindisp->setSpacing(3);
 	vb_uin->setSpacing(3);
 	vb_disp->setSpacing(3);
@@ -135,9 +140,9 @@ void UserInfo::setupTab1()
 	// end UIN and disp
 
 	// name and nick
-	QHBox *hb_namenick = new QHBox(vgb_general);
-	QVBox *vb_name = new QVBox(hb_namenick);
-	QVBox *vb_nick = new QVBox(hb_namenick);
+	Q3HBox *hb_namenick = new Q3HBox(vgb_general);
+	Q3VBox *vb_name = new Q3VBox(hb_namenick);
+	Q3VBox *vb_nick = new Q3VBox(hb_namenick);
 	hb_namenick->setSpacing(3);
 	vb_name->setSpacing(3);
 	vb_nick->setSpacing(3);
@@ -149,9 +154,9 @@ void UserInfo::setupTab1()
 	// end name and nick
 
 	// Surname & mobile
-	QHBox *hb_surnamemobile = new QHBox(vgb_general);
-	QVBox *vb_surname = new QVBox(hb_surnamemobile);
-	QVBox *vb_mobile = new QVBox(hb_surnamemobile);
+	Q3HBox *hb_surnamemobile = new Q3HBox(vgb_general);
+	Q3VBox *vb_surname = new Q3VBox(hb_surnamemobile);
+	Q3VBox *vb_mobile = new Q3VBox(hb_surnamemobile);
 	hb_surnamemobile->setSpacing(3);
 	vb_surname->setSpacing(3);
 	vb_mobile->setSpacing(3);
@@ -164,9 +169,9 @@ void UserInfo::setupTab1()
 	// end Surname & mobile
 
 	// Email
-	QHBox *hb_email = new QHBox(vgb_general);
-	QVBox *vb_email = new QVBox(hb_email);
-	QVBox *vb_empty = new QVBox(hb_email, "space_for_advanced_userlist");
+	Q3HBox *hb_email = new Q3HBox(vgb_general);
+	Q3VBox *vb_email = new Q3VBox(hb_email);
+	Q3VBox *vb_empty = new Q3VBox(hb_email, "space_for_advanced_userlist");
 	hb_email->setSpacing(3);
 	vb_email->setSpacing(3);
 	vb_empty->setSpacing(3);
@@ -177,43 +182,43 @@ void UserInfo::setupTab1()
 	hb_email->setStretchFactor(vb_empty, 1);
 	// end Email
 
-	QFrame *line1 = new QFrame(vgb_general);
-	line1->setFrameShape(QFrame::HLine);
-	line1->setFrameShadow(QFrame::Sunken);
-	line1->setFrameShape(QFrame::HLine);
+	Q3Frame *line1 = new Q3Frame(vgb_general);
+	line1->setFrameShape(Q3Frame::HLine);
+	line1->setFrameShadow(Q3Frame::Sunken);
+	line1->setFrameShape(Q3Frame::HLine);
 
 	// IP and DNS
-	QHBox *hb_ipdns = new QHBox(vgb_general);
-	QVBox *vb_ip = new QVBox(hb_ipdns);
-	QVBox *vb_dns = new QVBox(hb_ipdns);
+	Q3HBox *hb_ipdns = new Q3HBox(vgb_general);
+	Q3VBox *vb_ip = new Q3VBox(hb_ipdns);
+	Q3VBox *vb_dns = new Q3VBox(hb_ipdns);
 	hb_ipdns->setSpacing(3);
 	vb_ip->setSpacing(3);
 	vb_dns->setSpacing(3);
 
 	new QLabel(tr("Address IP and Port"), vb_ip);
 	e_addr = new QLineEdit(vb_ip);
-	e_addr->setBackgroundMode(PaletteButton);
+	e_addr->setBackgroundMode(Qt::PaletteButton);
 
 	new QLabel(tr("DNS name"), vb_dns);
 	e_dnsname = new QLineEdit(vb_dns);
 	
-	e_dnsname->setBackgroundMode(PaletteButton);
+	e_dnsname->setBackgroundMode(Qt::PaletteButton);
 	// end IP and DNS
 
 	// Protocol Version and status
-	QHBox *hb_protversionstate = new QHBox(vgb_general);
-	QVBox *vb_protversion = new QVBox(hb_protversionstate);
-	QVBox *vb_state = new QVBox(hb_protversionstate);
+	Q3HBox *hb_protversionstate = new Q3HBox(vgb_general);
+	Q3VBox *vb_protversion = new Q3VBox(hb_protversionstate);
+	Q3VBox *vb_state = new Q3VBox(hb_protversionstate);
 	hb_protversionstate->setSpacing(3);
 	vb_protversion->setSpacing(3);
 	vb_state->setSpacing(3);
 	new QLabel(tr("Protocol version"), vb_protversion);
 	e_ver = new QLineEdit(vb_protversion);
-	e_ver->setBackgroundMode(PaletteButton);
+	e_ver->setBackgroundMode(Qt::PaletteButton);
 
 	new QLabel(tr("Status"), vb_state);
 	QLineEdit *e_status = new QLineEdit(vb_state);
-	e_status->setBackgroundMode(PaletteButton);
+	e_status->setBackgroundMode(Qt::PaletteButton);
 	// end Protocol Version and status
 
 	e_status->setReadOnly(true);
@@ -241,9 +246,9 @@ void UserInfo::setupTab1()
 
 			if (User.DNSName("Gadu").isEmpty())
 			{
-				dns = new QDns();
+				dns = new Q3Dns();
 				dns->setLabel(User.IP("Gadu"));
-				dns->setRecordType(QDns::Ptr);
+				dns->setRecordType(Q3Dns::Ptr);
 				connect(dns, SIGNAL(resultsReady()), this, SLOT(resultsReady()));
 			}
 			else
@@ -283,14 +288,14 @@ void UserInfo::setupTab2()
 {
 	kdebugf();
 
-	scrollView = new QScrollView(tw_main);
-	scrollView->setFrameStyle(QFrame::NoFrame);
-	scrollView->setResizePolicy(QScrollView::AutoOneFit);
-	scrollView->setVScrollBarMode(QScrollView::Auto);
-	scrollView->setHScrollBarMode(QScrollView::AlwaysOff);
+	scrollView = new Q3ScrollView(tw_main);
+	scrollView->setFrameStyle(Q3Frame::NoFrame);
+	scrollView->setResizePolicy(Q3ScrollView::AutoOneFit);
+	scrollView->setVScrollBarMode(Q3ScrollView::Auto);
+	scrollView->setHScrollBarMode(Q3ScrollView::AlwaysOff);
 
-	QVGroupBox *groupsTab = new QVGroupBox(scrollView->viewport());
-	groupsTab->setFrameStyle(QFrame::NoFrame);
+	Q3VGroupBox *groupsTab = new Q3VGroupBox(scrollView->viewport());
+	groupsTab->setFrameStyle(Q3Frame::NoFrame);
 	scrollView->addChild(groupsTab);
 
 	tw_main->addTab(scrollView, tr("Groups"));
@@ -299,12 +304,12 @@ void UserInfo::setupTab2()
 
 	QStringList userGroups = User.data("Groups").toStringList();
 
-	groupsBox = new QVBox(groupsTab);
+	groupsBox = new Q3VBox(groupsTab);
 	groupsBox->setSpacing(3);
 
 	CONST_FOREACH(it, allGroups)
 	{
-		QHBox *box = new QHBox(groupsBox, *it);
+		Q3HBox *box = new Q3HBox(groupsBox, *it);
 		box->setSpacing(3);
 		QCheckBox *checkBox=new QCheckBox(*it, box);
 		checkBox->show();
@@ -316,7 +321,7 @@ void UserInfo::setupTab2()
 
 		QLabel *pixmapLabel = new QLabel(box);
 		QPixmap icon=icons_manager->loadIcon(config_file.readEntry("GroupIcon", *it, ""));
-		pixmapLabel->setPixmap(icon.xForm(QWMatrix().scale((double)16/icon.width(), (double)16/icon.height())));
+		pixmapLabel->setPixmap(icon.xForm(QMatrix().scale((double)16/icon.width(), (double)16/icon.height())));
 		pixmapLabel->setMaximumWidth(22);
 		pixmapLabel->setMaximumHeight(22);
 		pixmapLabels[*it] = pixmapLabel;
@@ -399,7 +404,7 @@ void UserInfo::newGroupClicked()
 			return;
 		}
 
-	QHBox *box = new QHBox(groupsBox, groupName);
+	Q3HBox *box = new Q3HBox(groupsBox, groupName);
 	box->setSpacing(3);
 
 	QCheckBox *checkBox = new QCheckBox(groupName, box);
@@ -443,8 +448,8 @@ void UserInfo::setupTab3()
 	kdebugf();
 
 	// Misc options
-	QVGroupBox *vgb_others = new QVGroupBox(vgb_general);
-	vgb_others->setFrameStyle(QFrame::NoFrame);
+	Q3VGroupBox *vgb_others = new Q3VGroupBox(vgb_general);
+	vgb_others->setFrameStyle(Q3Frame::NoFrame);
 
 	tw_main->addTab(vgb_others, tr("Others"));
 
@@ -469,7 +474,7 @@ void UserInfo::setupTab3()
 UserInfo::~UserInfo()
 {
 	kdebugf();
-	saveGeometry(this, "General", "ManageUsersDialogGeometry");
+// 	saveGeometry(this, "General", "ManageUsersDialogGeometry");
 	delete dns;
 	delete layoutHelper;
 	kdebugf2();
@@ -590,7 +595,7 @@ void UserInfo::selectIcon()
 		groups_manager->setIconForTab(groupName);
 
 		QPixmap icon = icons_manager->loadIcon(iDialog->selectedFile());
-		pixmapLabels[groupName]->setPixmap(icon.xForm(QWMatrix().scale((double)16/icon.width(), (double)16/icon.height())));
+		pixmapLabels[groupName]->setPixmap(icon.xForm(QMatrix().scale((double)16/icon.width(), (double)16/icon.height())));
 	}
 	delete iDialog;
 }

@@ -10,6 +10,9 @@
 #include <qapplication.h>
 #include <qfile.h>
 #include <qregexp.h>
+//Added by qt3to4:
+#include <Q3CString>
+#include <Q3ValueList>
 #include <stdlib.h>
 
 #include "config_file.h"
@@ -98,7 +101,7 @@ QString KaduParser::executeCmd(const QString &cmd)
 
 	system(s.local8Bit());
 	QFile *f = new QFile(ggPath("execoutput"));
-	if (f->open(IO_ReadOnly))
+	if (f->open(QIODevice::ReadOnly))
 	{
 		s = QString(f->readAll());
 		f->close();
@@ -120,10 +123,10 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 {
 	kdebugmf(KDEBUG_DUMP, "%s escape=%i\n", s.local8Bit().data(), escape);
 	int index = 0, i, len = s.length();
-	QValueList<ParseElem> parseStack;
+	Q3ValueList<ParseElem> parseStack;
 
 	static bool searchChars[256] = {false};
-	const QCString slatin = unicode2latin(s);
+	const Q3CString slatin = unicode2latin(s);
 	if (searchChars[(unsigned char)'%'] == false)
 	{
 		searchChars[(unsigned char)'%'] = true;
@@ -161,7 +164,7 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 				break;
 		}
 
-		char &c = slatin[i];
+		char c = slatin[i];
 		if (c == '%')
 		{
 			++i;
@@ -298,8 +301,8 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 			bool found = false;
 			if (!parseStack.isEmpty())
 			{
-				QValueList<ParseElem>::const_iterator begin = parseStack.constBegin();
-				QValueList<ParseElem>::const_iterator it = parseStack.constEnd();
+				Q3ValueList<ParseElem>::const_iterator begin = parseStack.constBegin();
+				Q3ValueList<ParseElem>::const_iterator it = parseStack.constEnd();
 				while (!found && it != begin)
 				{
 					--it;
@@ -371,8 +374,8 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 
 			if (!parseStack.isEmpty())
 			{
-				QValueList<ParseElem>::const_iterator begin = parseStack.constBegin();
-				QValueList<ParseElem>::const_iterator it = parseStack.constEnd();
+				Q3ValueList<ParseElem>::const_iterator begin = parseStack.constBegin();
+				Q3ValueList<ParseElem>::const_iterator it = parseStack.constEnd();
 				while (!found && it != begin)
 				{
 					--it;
@@ -502,8 +505,8 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 			bool found = false;
 			if (!parseStack.isEmpty())
 			{
-				QValueList<ParseElem>::const_iterator begin = parseStack.constBegin();
-				QValueList<ParseElem>::const_iterator it = parseStack.constEnd();
+				Q3ValueList<ParseElem>::const_iterator begin = parseStack.constBegin();
+				Q3ValueList<ParseElem>::const_iterator it = parseStack.constEnd();
 				while (!found && it != begin)
 				{
 					--it;

@@ -1,8 +1,12 @@
 #ifndef KADU_CHAT_MANAGER_H
 #define KADU_CHAT_MANAGER_H
 
+#include <qglobal.h>
+
 #include <qobject.h>
 #include <qtimer.h>
+//Added by qt3to4:
+#include <Q3ValueList>
 
 #include "chat_widget.h"
 #include "chat_window.h"
@@ -26,7 +30,7 @@ class ChatManager : public QObject, ConfigurationAwareObject
 
 	private:
 		ChatList ChatWidgets; /*!< lista okien*/
-		QValueList<UserListElements> ClosedChatUsers; /*!< u¿ytkownicy, których okna zosta³y zamkniête*/
+		Q3ValueList<UserListElements> ClosedChatUsers; /*!< u¿ytkownicy, których okna zosta³y zamkniête*/
 
 		/**
 			\struct ChatInfo
@@ -40,7 +44,7 @@ class ChatManager : public QObject, ConfigurationAwareObject
 							danego okna */
 			ChatInfo() : users(), map() {}
 		};
-		QValueList<ChatInfo> addons; /*!< lista parametrów okien */
+		Q3ValueList<ChatInfo> addons; /*!< lista parametrów okien */
 		QTimer refreshTitlesTimer;
 
 	private slots:
@@ -100,7 +104,7 @@ class ChatManager : public QObject, ConfigurationAwareObject
 			\fn QValueList<UserListElements> closedChatsUsers() const
 			Funkcja zwraca listê u¿ytkowników, dla których zamkniêto okna Chat
 		**/
-		const QValueList<UserListElements> closedChatUsers() const;
+		const Q3ValueList<UserListElements> closedChatUsers() const;
 
 		/**
 			\fn ChatWidget* findChatWidget(const UserGroup *group) const;

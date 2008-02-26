@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qnetwork.h>
-#include <qurloperator.h>
+#include <q3network.h>
+#include <q3urloperator.h>
 
 #include "config_file.h"
 #include "debug.h"
@@ -23,8 +23,8 @@ QDateTime Updates::LastUpdateCheck;
 Updates::Updates(UinType uin) : query(QString("update.php?uin=%1&version=%2").arg(uin).arg(QString(VERSION))), op(0)
 {
 	kdebugf();
-	qInitNetworkProtocols();
-	op = new QUrlOperator("http://www.kadu.net");
+	q3InitNetworkProtocols();
+	op = new Q3UrlOperator("http://www.kadu.net");
 	kdebugf2();
 }
 
@@ -59,8 +59,8 @@ void Updates::initModule()
 		if (myUin)
 		{
 			instance = new Updates(myUin);
-			connect(instance->op, SIGNAL(data(const QByteArray &, QNetworkOperation *)),
-					instance, SLOT(gotUpdatesInfo(const QByteArray &, QNetworkOperation *)));
+			connect(instance->op, SIGNAL(data(const QByteArray &, Q3NetworkOperation *)),
+					instance, SLOT(gotUpdatesInfo(const QByteArray &, Q3NetworkOperation *)));
 			connect(gadu, SIGNAL(connected()), instance, SLOT(run()));
 		}
 	}
@@ -78,7 +78,7 @@ void Updates::closeModule()
 	kdebugf2();
 }
 
-void Updates::gotUpdatesInfo(const QByteArray &data, QNetworkOperation * /*op*/)
+void Updates::gotUpdatesInfo(const QByteArray &data, Q3NetworkOperation * /*op*/)
 {
 	kdebugf();
 	if (config_file.readBoolEntry("General", "CheckUpdates"))

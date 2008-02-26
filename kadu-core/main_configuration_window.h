@@ -1,8 +1,13 @@
 #ifndef MAIN_CONFIGURATION_WINDOW_H
 #define MAIN_CONFIGURATION_WINDOW_H
 
+#define QT3_SUPPORT
+#include <qglobal.h>
+
 #include <qpair.h>
-#include <qvaluelist.h>
+#include <q3valuelist.h>
+//Added by qt3to4:
+#include <QKeyEvent>
 
 #include "configuration_window.h"
 
@@ -47,7 +52,7 @@ class MainConfigurationWindow : public ConfigurationWindow
 	Q_OBJECT
 
 	static MainConfigurationWindow *Instance;
-	static QValueList<QPair<QString, ConfigurationUiHandler *> > UiFiles;
+	static Q3ValueList<QPair<QString, ConfigurationUiHandler *> > UiFiles;
 
 	static void instanceCreated();
 
@@ -65,7 +70,7 @@ class MainConfigurationWindow : public ConfigurationWindow
 	ConfigLineEdit *mailCommandLineEdit;
 
 	Preview *chatPreview;
-	QValueList<ChatMessage *> chatMessages;
+	Q3ValueList<ChatMessage *> chatMessages;
 
 	void setLanguages();
 

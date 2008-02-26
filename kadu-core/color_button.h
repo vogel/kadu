@@ -1,6 +1,9 @@
 #ifndef COLOR_BUTTON_H
 #define COLOR_BUTTON_H
 
+#define QT3_SUPPORT
+#include <qglobal.h>
+
 #include <qcolor.h>
 #include <qpushbutton.h>
 

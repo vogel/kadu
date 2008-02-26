@@ -1,10 +1,20 @@
 #ifndef KADU_USERBOX_H
 #define KADU_USERBOX_H
 
-#include <qlistbox.h>
+#define QT3_SUPPORT
+#include <qglobal.h>
+
+#include <q3listbox.h>
 #include <qpixmap.h>
-#include <qpopupmenu.h>
+#include <q3popupmenu.h>
 #include <qtimer.h>
+//Added by qt3to4:
+#include <QWheelEvent>
+#include <QResizeEvent>
+#include <Q3ValueList>
+#include <QMouseEvent>
+#include <QKeyEvent>
+#include <QEvent>
 
 #include <vector>
 
@@ -114,7 +124,7 @@ public:
 	\class KaduListBoxPixmap
 	\brief Klasa reprezentuj±ca kontakt wizualnie.
 **/
-class KaduListBoxPixmap : public QListBoxItem
+class KaduListBoxPixmap : public Q3ListBoxItem
 {
 	QPixmap pm;
 	static QFontMetrics *descriptionFontMetrics;
@@ -141,7 +151,7 @@ protected:
 		Zwraca wysoko¶æ samej czcionki dla elementu reprezentuj±cego wy¶wietlany kontakt w pikselach.
 		\param lb obiekt reprezentuj±cy wy¶wietlany kontakt.
 	**/
-	int lineHeight(const QListBox *lb) const;
+	int lineHeight(const Q3ListBox *lb) const;
 
 	/**
 		\fn void paint(QPainter *painter)
@@ -252,14 +262,14 @@ public:
 		Zwraca wysoko¶æ elementu reprezentuj±cego wy¶wietlany kontakt w pikselach.
 		\param lb obiekt reprezentuj±cy wy¶wietlany kontakt.
 	**/
-	virtual int height(const QListBox *lb) const;
+	virtual int height(const Q3ListBox *lb) const;
 
 	/**
 		\fn int width(const QListBox *lb) const
 		Zwraca szeroko¶æ elementu reprezentuj±cego wy¶wietlany kontakt w pikselach.
 		\param lb obiekt reprezentuj±cy wy¶wietlany kontakt.
 	**/
-	virtual int width(const QListBox *lb) const;
+	virtual int width(const Q3ListBox *lb) const;
 
 	/**
 		\fn void refreshItem()
@@ -277,12 +287,12 @@ public:
 	\class UserBoxMenu
 	\brief Menu podrêczne listy kontaktów.
 **/
-class UserBoxMenu : public QPopupMenu
+class UserBoxMenu : public Q3PopupMenu
 {
 	Q_OBJECT
 
 	private:
-		QValueList<QPair<QString, QString> > iconNames;
+		Q3ValueList<QPair<QString, QString> > iconNames;
 
 	private slots:
 		void restoreLook();
@@ -309,7 +319,7 @@ class UserBoxMenu : public QPopupMenu
 			Pokazuje menu dla podanego kontaktu.
 			\param item element wy¶wietlanej listy kontaktów reprezentuj±cy rz±dany kontakt.
 		**/
-		void show(QListBoxItem *item);
+		void show(Q3ListBoxItem *item);
 
 		/**
 			\fn int addItem(const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1)
@@ -378,7 +388,7 @@ class UserBoxMenu : public QPopupMenu
 	\class UserBox
 	\brief Wy¶wietlana lista kontaktów.
 **/
-class UserBox : public QListBox, ConfigurationAwareObject
+class UserBox : public Q3ListBox, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -393,7 +403,7 @@ class UserBox : public QListBox, ConfigurationAwareObject
 			\param name nazwa kontrolki. Domy¶lnie 0.
 			\param f flagi kontrolki. Domy¶lnie 0.
 		**/
-		UserBox(bool fancy, UserGroup *group = userlist, QWidget* parent = 0, const char* name = 0, WFlags f = 0);
+		UserBox(bool fancy, UserGroup *group = userlist, QWidget* parent = 0, const char* name = 0, Qt::WFlags f = 0);
 
 		virtual ~UserBox();
 
@@ -439,14 +449,14 @@ class UserBox : public QListBox, ConfigurationAwareObject
 			Zwraca listê filtrów "pozytywnych"
 			\return lista filtrów
 		**/
-		QValueList<UserGroup *> filters() const;
+		Q3ValueList<UserGroup *> filters() const;
 
 		/**
 			\fn QValueList<UserGroup *> negativeFilters() const
 			Zwraca listê filtrów "negatywnych"
 			\return lista filtrów
 		**/
-		QValueList<UserGroup *> negativeFilters() const;
+		Q3ValueList<UserGroup *> negativeFilters() const;
 
 		/**
 			\fn bool currentUserExists() const
@@ -485,7 +495,7 @@ class UserBox : public QListBox, ConfigurationAwareObject
 			\fn QValueList<UserBox::CmpFuncDesc> compareFunctions() const
 			\return lista obiektów opisuj±cych funkcje porównuj±ce
 		**/
- 		QValueList<UserBox::CmpFuncDesc> compareFunctions() const;
+ 		Q3ValueList<UserBox::CmpFuncDesc> compareFunctions() const;
 
 		/**
 			\fn void addCompareFunction(const QString &id, const QString &trDescription, int (*cmp)(const UserListElement &, const UserListElement &))
@@ -513,7 +523,7 @@ class UserBox : public QListBox, ConfigurationAwareObject
 		**/
 		static void refreshAllLater();
 
-		static const QValueList<UserBox *> &userboxes() {return UserBoxes;}
+		static const Q3ValueList<UserBox *> &userboxes() {return UserBoxes;}
 
 		static CreateNotifier createNotifier;
 
@@ -627,9 +637,9 @@ class UserBox : public QListBox, ConfigurationAwareObject
 		void currentChanged(UserListElement user);
 
 	private slots:
-		void doubleClickedSlot(QListBoxItem *item);
-		void returnPressedSlot(QListBoxItem *item);
-		void currentChangedSlot(QListBoxItem *item);
+		void doubleClickedSlot(Q3ListBoxItem *item);
+		void returnPressedSlot(Q3ListBoxItem *item);
+		void currentChangedSlot(Q3ListBoxItem *item);
 
 		void userAddedToVisible(UserListElement elem, bool massively, bool last);
 		void userRemovedFromVisible(UserListElement elem, bool massively, bool last);
@@ -654,14 +664,14 @@ class UserBox : public QListBox, ConfigurationAwareObject
 		void messageFromUserDeleted(UserListElement elem);
 
 	private:
-		static QValueList<UserBox*> UserBoxes;
+		static Q3ValueList<UserBox*> UserBoxes;
 		bool fancy;
 
 		Action *desc_action;
 
 		UserGroup *VisibleUsers;
-		QValueList<UserGroup *> Filters;
-		QValueList<UserGroup *> NegativeFilters;
+		Q3ValueList<UserGroup *> Filters;
+		Q3ValueList<UserGroup *> NegativeFilters;
 		std::vector<UserListElement> sortHelper;
 		std::vector<UserListElement> toRemove;
 		QMap<const UserGroup *, UserListElements> AppendProxy;
