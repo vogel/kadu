@@ -1,7 +1,6 @@
 #ifndef TOOLBAR_H
 #define TOOLBAR_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <q3toolbar.h>

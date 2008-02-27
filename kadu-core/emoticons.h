@@ -1,7 +1,6 @@
 #ifndef EMOTICONS_H
 #define EMOTICONS_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <qcolor.h>

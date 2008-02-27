@@ -1,7 +1,6 @@
 #ifndef MESSAGE_BOX_H
 #define MESSAGE_BOX_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <qdialog.h>

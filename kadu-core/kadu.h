@@ -1,7 +1,6 @@
 #ifndef KADU_H
 #define KADU_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <qevent.h>

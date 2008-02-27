@@ -1,7 +1,6 @@
 #ifndef KADU_SEARCH_H
 #define KADU_SEARCH_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <qwidget.h>

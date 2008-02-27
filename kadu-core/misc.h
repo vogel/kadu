@@ -1,7 +1,6 @@
 #ifndef KADU_MISC_H
 #define KADU_MISC_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <qdatetime.h>

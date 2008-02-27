@@ -1,7 +1,6 @@
 #ifndef PREVIEW_H
 #define PREVIEW_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <qobject.h>

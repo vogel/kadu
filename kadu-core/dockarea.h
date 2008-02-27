@@ -1,7 +1,6 @@
 #ifndef DOCKAREA_H
 #define DOCKAREA_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <q3dockarea.h>

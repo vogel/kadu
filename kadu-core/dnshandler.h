@@ -1,7 +1,6 @@
 #ifndef KADU_DNS_HANDLER_H
 #define KADU_DNS_HANDLER_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <q3dns.h>

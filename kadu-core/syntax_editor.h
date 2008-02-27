@@ -1,7 +1,6 @@
 #ifndef SYNTAX_EDITOR_H
 #define SYNTAX_EDITOR_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <q3vbox.h>

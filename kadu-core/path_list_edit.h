@@ -1,7 +1,6 @@
 #ifndef PATH_LIST_EDIT_H
 #define PATH_LIST_EDIT_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <qlayout.h>

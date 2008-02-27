@@ -1,7 +1,6 @@
 #ifndef KADU_USERLIST_H
 #define KADU_USERLIST_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <qstring.h>

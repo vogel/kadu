@@ -1,7 +1,6 @@
 #ifndef PENDING_MSGS_H
 #define PENDING_MSGS_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <qstring.h>

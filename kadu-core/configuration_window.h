@@ -1,7 +1,6 @@
 #ifndef KADU_CONFIGURATION_WINDOW_H
 #define KADU_CONFIGURATION_WINDOW_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <qdom.h>

@@ -1,7 +1,6 @@
 #ifndef GADU_PRIVATE_H
 #define GADU_PRIVATE_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <q3cstring.h>

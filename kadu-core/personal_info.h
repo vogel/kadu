@@ -1,7 +1,6 @@
 #ifndef PERSONAL_INFO_H
 #define PERSONAL_INFO_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <q3hbox.h>

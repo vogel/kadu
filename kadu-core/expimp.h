@@ -1,7 +1,6 @@
 #ifndef EXPIMP_H
 #define EXPIMP_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <q3hbox.h>

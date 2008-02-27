@@ -1,7 +1,6 @@
 #ifndef KADU_CHAT_WIDGET_H
 #define KADU_CHAT_WIDGET_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <qdatetime.h>

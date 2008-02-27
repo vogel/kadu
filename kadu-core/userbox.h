@@ -1,7 +1,6 @@
 #ifndef KADU_USERBOX_H
 #define KADU_USERBOX_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <q3listbox.h>

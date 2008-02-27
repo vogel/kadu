@@ -1,7 +1,6 @@
 #ifndef KADU_THEMES_H
 #define KADU_THEMES_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <qmap.h>

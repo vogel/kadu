@@ -1,7 +1,6 @@
 #ifndef KADU_USERINFO_H
 #define KADU_USERINFO_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <q3hbox.h>

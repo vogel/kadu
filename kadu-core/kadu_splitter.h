@@ -1,7 +1,6 @@
 #ifndef KADU_SPLITTER_H
 #define KADU_SPLITTER_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <q3valuelist.h>

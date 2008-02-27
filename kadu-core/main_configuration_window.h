@@ -1,7 +1,6 @@
 #ifndef MAIN_CONFIGURATION_WINDOW_H
 #define MAIN_CONFIGURATION_WINDOW_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <qpair.h>

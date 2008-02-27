@@ -1,7 +1,6 @@
 #ifndef KADU_HTML_DOCUMENT_H
 #define KADU_HTML_DOCUMENT_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <qstring.h>

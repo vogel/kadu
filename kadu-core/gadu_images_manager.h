@@ -1,7 +1,6 @@
 #ifndef GADU_IMAGES_MANAGER_H
 #define GADU_IMAGES_MANAGER_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <qcolor.h>

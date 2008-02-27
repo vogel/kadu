@@ -1,7 +1,6 @@
 #ifndef KADU_GROUPS_MANAGER_H
 #define KADU_GROUPS_MANAGER_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <qmap.h>

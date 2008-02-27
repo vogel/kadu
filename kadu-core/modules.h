@@ -1,7 +1,6 @@
 #ifndef KADU_MODULES_H
 #define KADU_MODULES_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <q3hbox.h>

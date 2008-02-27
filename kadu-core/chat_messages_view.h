@@ -1,7 +1,6 @@
 #ifndef CHAT_MESSAGES_VIEW
 #define CHAT_MESSAGES_VIEW
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include "configuration_aware_object.h"

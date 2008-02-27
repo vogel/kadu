@@ -1,7 +1,6 @@
 #ifndef IGNORE_H
 #define IGNORE_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <q3hbox.h>

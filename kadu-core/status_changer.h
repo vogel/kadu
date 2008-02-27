@@ -1,7 +1,6 @@
 #ifndef STATUS_CHANGER
 #define STATUS_CHANGER
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <qobject.h>

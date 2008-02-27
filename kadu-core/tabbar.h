@@ -1,7 +1,6 @@
 #ifndef KADU_TABBAR_H
 #define KADU_TABBAR_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <qtabbar.h>

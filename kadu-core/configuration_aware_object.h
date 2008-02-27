@@ -1,7 +1,6 @@
 #ifndef CONFIGURATION_AWARE_OBJECT
 #define CONFIGURATION_AWARE_OBJECT
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <q3valuelist.h>

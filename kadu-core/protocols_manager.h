@@ -1,7 +1,6 @@
 #ifndef KADU_PROTOCOLS_MANAGER_H
 #define KADU_PROTOCOLS_MANAGER_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <qobject.h>

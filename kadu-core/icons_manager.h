@@ -1,7 +1,6 @@
 #ifndef KADU_ICONS_MANAGER_H
 #define KADU_ICONS_MANAGER_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <qmenudata.h>

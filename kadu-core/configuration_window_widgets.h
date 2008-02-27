@@ -1,7 +1,6 @@
 #ifndef CONFIGURATION_WINDOW_WIDGETS_H
 #define CONFIGURATION_WINDOW_WIDGETS_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <qcheckbox.h>

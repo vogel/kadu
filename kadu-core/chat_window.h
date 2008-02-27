@@ -1,7 +1,6 @@
 #ifndef KADU_CHAT_WINDOW_H
 #define KADU_CHAT_WINDOW_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <q3mainwindow.h>

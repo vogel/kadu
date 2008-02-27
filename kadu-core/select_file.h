@@ -1,7 +1,6 @@
 #ifndef SELECT_FILE_H
 #define SELECT_FILE_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <q3hbox.h>

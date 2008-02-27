@@ -1,7 +1,6 @@
 #ifndef KADU_HTTP_CLIENT_H
 #define KADU_HTTP_CLIENT_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <q3cstring.h>

@@ -1,7 +1,6 @@
 #ifndef KADU_TEXT_BROWSER_H
 #define KADU_TEXT_BROWSER_H
 
-#define QT3_SUPPORT
 #include <qglobal.h>
 
 #include <qfont.h>
