@@ -125,7 +125,7 @@ void Themes::setPaths(const QStringList& paths)
 			if (paths.findIndex(*it) != -1)
 				additional.append(*it);
 			ThemesPaths.append(*it);
-			ThemesList.append((*it).section("/", -2));
+			ThemesList.append((*it).section("/", -1, -1, QString::SectionSkipEmpty));
 		}
 		else
 			MessageBox::msg(tr("<i>%1</i><br/>does not contain any theme configuration file").arg(*it), false, "Warning");
