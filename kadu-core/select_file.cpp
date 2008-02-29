@@ -7,8 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qlineedit.h>
-#include <qpushbutton.h>
+#include <QFileDialog>
+#include <QHBoxLayout>
+#include <QLineEdit>
+#include <QPushButton>
 
 #include "icons_manager.h"
 #include "misc.h"
@@ -16,21 +18,35 @@
 #include "select_file.h"
 
 SelectFile::SelectFile(const QString &type, QWidget *parent, char *name)
-	: Q3HBox(parent, name), Type(type)
+	: QWidget(parent, name), Type(type)
 {
+	QHBoxLayout *layout = new QHBoxLayout;
+
 	LineEdit = new QLineEdit(this);
 
 	QPushButton *selectFile = new QPushButton(icons_manager->loadIcon("OpenFile"), "", this);
 	connect(selectFile, SIGNAL(clicked()), this, SLOT(selectFileClicked()));
+
+	layout->addWidget(LineEdit);
+	layout->addWidget(selectFile);
+
+	setLayout(layout);
 }
 
 SelectFile::SelectFile(QWidget *parent, char *name)
-	: Q3HBox(parent, name)
+	: QWidget(parent, name)
 {
+	QHBoxLayout *layout = new QHBoxLayout;
+
 	LineEdit = new QLineEdit(this);
 
 	QPushButton *selectFile = new QPushButton(icons_manager->loadIcon("OpenFile"), "", this);
 	connect(selectFile, SIGNAL(clicked()), this, SLOT(selectFileClicked()));
+
+	layout->addWidget(LineEdit);
+	layout->addWidget(selectFile);
+
+	setLayout(layout);
 }
 
 void SelectFile::selectFileClicked()
@@ -45,13 +61,13 @@ void SelectFile::selectFileClicked()
 	}
 	else if (Type == "all")
 	{
-		QString s(Q3FileDialog::getOpenFileName(LineEdit->text(), "All Files (*)", this));
+		QString s(QFileDialog::getOpenFileName(this, tr("Select File"), LineEdit->text(), "All Files (*)"));
 		if (!s.isEmpty())
 			LineEdit->setText(s);
 	}
 	else if (Type == "audio")
 	{
-		QString s(Q3FileDialog::getOpenFileName(LineEdit->text(), "Audio Files (*.wav *.au *.raw)", this));
+		QString s(QFileDialog::getOpenFileName(this, tr("Select audio File"), LineEdit->text(), "Audio Files (*.wav *.au *.raw)"));
 		if (!s.isEmpty())
 			LineEdit->setText(s);
 	}

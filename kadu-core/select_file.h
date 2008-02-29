@@ -1,13 +1,11 @@
 #ifndef SELECT_FILE_H
 #define SELECT_FILE_H
 
-#include <qglobal.h>
-
-#include <q3hbox.h>
+#include <QWidget>
 
 class QLineEdit;
 
-class SelectFile : public Q3HBox
+class SelectFile : public QWidget
 {
 	Q_OBJECT
 
