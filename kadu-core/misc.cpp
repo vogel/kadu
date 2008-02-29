@@ -17,7 +17,6 @@
 #include <q3listbox.h>
 #include <qpainter.h>
 #include <q3popupmenu.h>
-#include <q3process.h>
 #include <qpushbutton.h>
 #include <qregexp.h>
 #include <q3simplerichtext.h>
@@ -30,6 +29,7 @@
 #include <Q3CString>
 #include <QPixmap>
 #include <QPaintEvent>
+#include <QProcess>
 
 //getpwuid
 #include <pwd.h>
@@ -594,7 +594,7 @@ void openWebBrowser(const QString &link)
 {
 	kdebugf();
 
-	QString webBrowser = config_file.readEntry("Chat","WebBrowser");
+	QString webBrowser = config_file.readEntry("Chat", "WebBrowser", QString::null);
 	if (webBrowser.isEmpty())
 	{
 		MessageBox::msg(qApp->translate("@default", QT_TR_NOOP("Web browser was not specified. Visit the configuration section")), false, "Warning");
@@ -606,15 +606,10 @@ void openWebBrowser(const QString &link)
 	else
 		webBrowser.replace("%1", link);
 
-	QStringList args = toStringList("sh", "-c", webBrowser);
+	QProcess *browser = new QProcess(qApp);
+	browser->start(webBrowser);
 
-	CONST_FOREACH(i, args)
-		kdebugmf(KDEBUG_INFO, "%s\n", (*i).local8Bit().data());
-
-	Q3Process *browser = new Q3Process(args, qApp);
-	QObject::connect(browser, SIGNAL(processExited()), browser, SLOT(deleteLater()));
-
-	if (!browser->start())
+	if (!browser->waitForStarted())
 		MessageBox::msg(qApp->translate("@default", QT_TR_NOOP("Could not spawn Web browser process. Check if the Web browser is functional")), false, "Critical");
 
 	kdebugf2();
@@ -642,15 +637,10 @@ void openMailClient(const QString &mail)
 	else
 		mailClient.append(email);
 
-	QStringList args = toStringList("sh", "-c", mailClient);
+	QProcess *mailer = new QProcess(qApp);
+	mailer->start(mailClient);
 
-	CONST_FOREACH(arg, args)
-		kdebugmf(KDEBUG_INFO, "%s\n", (*arg).local8Bit().data());
-
-	Q3Process *mailer = new Q3Process(args, qApp);
-	QObject::connect(mailer, SIGNAL(processExited()), mailer, SLOT(deleteLater()));
-
-	if (!mailer->start())
+	if (!mailer->waitForStarted())
 		MessageBox::msg(qApp->translate("@default", QT_TR_NOOP("Could not spawn Mail client process. Check if the Mail client is functional")), false, "Critical");
 
 	kdebugf2();
