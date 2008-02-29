@@ -80,6 +80,8 @@ UserInfo::UserInfo(UserListElement user, QWidget* parent, const char *name)
 	center_layout->addWidget(l_info);
 	center_layout->addWidget(tw_main);
 
+	center->setLayout(center_layout);
+
 	// create our Tabs
 	setupTab1();
 	setupTab2();
