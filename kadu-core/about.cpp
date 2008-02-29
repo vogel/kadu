@@ -45,7 +45,7 @@ About::About(QWidget *parent, const char *name) : QWidget(parent, name, Qt::Wind
 	// end set window properties and flags
 
 	// create main QLabel widgets (icon and app info)
-	QWidget *left = new QWidget();
+	QWidget *left = new QWidget;
 
 	QLabel *l_icon = new QLabel;
 	l_icon->setPixmap(icons_manager->loadPixmap("AboutIcon"));
@@ -59,7 +59,7 @@ About::About(QWidget *parent, const char *name) : QWidget(parent, name, Qt::Wind
 
 	left->setLayout(left_layout);
 
-	QWidget *center = new QWidget();
+	QWidget *center = new QWidget;
 
 	QWidget *texts = new QWidget;
 
@@ -122,7 +122,7 @@ About::About(QWidget *parent, const char *name) : QWidget(parent, name, Qt::Wind
 	center->setLayout(center_layout);
 
 	// close button
-	QWidget *bottom = new QWidget(this);
+	QWidget *bottom = new QWidget;
 
 	QWidget *blank2 = new QWidget;
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
@@ -137,6 +137,7 @@ About::About(QWidget *parent, const char *name) : QWidget(parent, name, Qt::Wind
 	bottom->setLayout(bottom_layout);
 	// end close button
 	center_layout->addWidget(bottom);
+
 	QHBoxLayout *layout = new QHBoxLayout;
 	layout->addWidget(left);
 	layout->addWidget(center);

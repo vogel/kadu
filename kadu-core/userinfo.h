@@ -29,7 +29,7 @@ class Q3VGroupBox;
 	\class UserInfo
 	\brief Okno dialogowe pokazuj±ce informacje o wybranym kontakcie
 **/
-class UserInfo : public Q3HBox
+class UserInfo : public QWidget
 {
 	Q_OBJECT
 	public:

@@ -43,34 +43,42 @@ void UserInfo::resizeEvent(QResizeEvent * /*e*/)
 }
 
 UserInfo::UserInfo(UserListElement user, QWidget* parent, const char *name)
-	: Q3HBox(parent, name, Qt::WType_Dialog | Qt::WShowModal | Qt::WDestructiveClose), User(user),
+	: QWidget(parent, name, Qt::Dialog), User(user),
 	e_firstname(0), e_lastname(0), e_nickname(0), e_altnick(0), e_mobile(0), e_uin(0),
 	e_addr(0), e_ver(0), e_email(0), e_dnsname(0), c_blocking(0), c_offtouser(0),
 	c_notify(0), pb_addapply(0), tw_main(0), vgb_general(0), dns(0), groups(),
 	hiddenCheckBoxes(), newGroup(0), groupsBox(0), layoutHelper(new LayoutHelper())
 {
 	kdebugf();
-	layout()->setResizeMode(QLayout::Minimum);
+
+	setAttribute(Qt::WA_DeleteOnClose);
+	setWindowModality(Qt::WindowModal);
 
 	// create main QLabel widgets (icon and app info)
-	Q3VBox *left = new Q3VBox(this);
-	left->setMargin(10);
-	left->setSpacing(10);
+	QWidget *left = new QWidget;
 
-	QLabel *l_icon = new QLabel(left);
-	QWidget *w_icoblankwidget = new QWidget(left);
+	QLabel *l_icon = new QLabel;
+	QWidget *w_icoblankwidget = new QWidget;
 	w_icoblankwidget->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	Q3VBox *center = new Q3VBox(this);
-	center->setMargin(10);
-	center->setSpacing(10);
+	QVBoxLayout *left_layout = new QVBoxLayout;
+	left_layout->addWidget(l_icon);
+	left_layout->addWidget(w_icoblankwidget);
 
-	QLabel *l_info = new QLabel(center);
+	left->setLayout(left_layout);
+
+	QWidget *center = new QWidget();
+
+	QLabel *l_info = new QLabel;
 	l_info->setText(tr("This dialog box allows you to view and edit information about the selected contact."));
 	l_info->setAlignment(Qt::WordBreak);
 	// end create main QLabel widgets (icon and app info)
 
-	tw_main = new QTabWidget(center);
+	tw_main = new QTabWidget;
+
+	QVBoxLayout *center_layout = new QVBoxLayout;
+	center_layout->addWidget(l_info);
+	center_layout->addWidget(tw_main);
 
 	// create our Tabs
 	setupTab1();
@@ -78,29 +86,44 @@ UserInfo::UserInfo(UserListElement user, QWidget* parent, const char *name)
 	setupTab3();
 
 	// create buttons and fill icon and app info
-	Q3HBox *bottom = new Q3HBox(center);
-	QWidget *w_blankwidget = new QWidget(bottom);
-	bottom->setSpacing(5);
+	QWidget *bottom = new QWidget;
+
+	QWidget *w_blankwidget = new QWidget;
 	w_blankwidget->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
 	if (!userlist->contains(User, FalseForAnonymous))
 	{
-		setCaption(tr("Add user"));
+		setWindowTitle(tr("Add user"));
 		l_icon->setPixmap(icons_manager->loadPixmap("AddUserWindowIcon"));
-		pb_addapply = new QPushButton(icons_manager->loadIcon("AddUserButton"), tr("Add"), bottom, "add");
+		pb_addapply = new QPushButton(icons_manager->loadIcon("AddUserButton"), tr("Add"));
 	}
 	else
 	{
-		setCaption(tr("User info on %1").arg(User.altNick()));
+		setWindowTitle(tr("User info on %1").arg(User.altNick()));
 		l_icon->setPixmap(icons_manager->loadPixmap("ManageUsersWindowIcon"));
-		pb_addapply = new QPushButton(icons_manager->loadIcon("UpdateUserButton"), tr("Update"), bottom, "update");
+		pb_addapply = new QPushButton(icons_manager->loadIcon("UpdateUserButton"), tr("Update"));
 	}
 
-	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"));
 	// end buttons
 
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 	connect(pb_addapply, SIGNAL(clicked()), this, SLOT(updateUserlist()));
+
+	QHBoxLayout *bottom_layout = new QHBoxLayout;
+	bottom_layout->addWidget(w_blankwidget);
+	bottom_layout->addWidget(pb_addapply);
+	bottom_layout->addWidget(pb_close);
+
+	bottom->setLayout(bottom_layout);
+
+	center_layout->addWidget(bottom);
+
+	QHBoxLayout *layout = new QHBoxLayout;
+	layout->addWidget(left);
+	layout->addWidget(center);
+
+	setLayout(layout);
 
 	createNotifier.notify(this);
 
