@@ -1,17 +1,9 @@
 #ifndef ABOUT_H
 #define ABOUT_H
 
-#include <qglobal.h>
-
-#include <qstring.h>
-#include <q3hbox.h>
-//Added by qt3to4:
-#include <QKeyEvent>
-#include <QResizeEvent>
 #include <QWidget>
 
 class LayoutHelper;
-class QResizeEvent;
 
 /**
 	\class About
