@@ -145,13 +145,13 @@ void ToolButton::setOn(bool on)
 		if (on)
 		{
 			setIcon(OnIcon);
-			setTextLabel(OnText);
+			setText(OnText);
 			InOnState = true;
 		}
 		else
 		{
 			setIcon(OffIcon);
-			setTextLabel(OffText);
+			setText(OffText);
 			InOnState = false;
 		}
 	}

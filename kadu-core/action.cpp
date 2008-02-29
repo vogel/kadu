@@ -188,7 +188,7 @@ void Action::refreshIcons()
 		if (!IconName.isEmpty())
 		{
 			(*button)->setIcon(icons_manager->loadIcon(IconName));
-			(*button)->setTextLabel(Text);
+			(*button)->setText(Text);
 		}
 
 		if (!OnIcon.isEmpty())
@@ -205,7 +205,7 @@ void Action::setTexts(const UserListElements& users, const QString& text)
 	kdebugf();
 	Q3ValueList<ToolButton*> buttons = toolButtonsForUserListElements(users);
 	CONST_FOREACH(i, buttons)
-		(*i)->setTextLabel(text);
+		(*i)->setText(text);
 	kdebugf2();
 }
 

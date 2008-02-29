@@ -165,7 +165,7 @@ ToolButton * ToolBar::addButton(Action *action, bool showLabel, ToolButton *afte
 
 	QString textWithoutAccel = action->text();
 	textWithoutAccel.remove('&');
-	button->setTextLabel(textWithoutAccel);
+	button->setText(textWithoutAccel);
 
 	button->setUsesTextLabel(showLabel);
 	button->setTextPosition(ToolButton::BesideIcon);
