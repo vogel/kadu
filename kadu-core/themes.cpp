@@ -164,11 +164,17 @@ QString Themes::themePath(const QString& theme) const
 	QString t = theme;
 	if (theme.isEmpty())
 		t = ActualTheme;
-	if (theme == "Custom")
+	if (t == "Custom")
 		return QString::null;
 	if (ThemesPaths.isEmpty())
 		return "Custom";
-	return ThemesPaths.grep(QRegExp("(/" + t + "/)$")).first();
+
+	QList<QString> list = ThemesPaths.grep(QRegExp("(/" + t + "/)$"));
+
+	if (list.isEmpty())
+		return "Custom";
+
+	return list.first();
 }
 
 QString Themes::getThemeEntry(const QString& name) const

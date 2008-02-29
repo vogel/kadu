@@ -1211,20 +1211,20 @@ QString GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 
 // 	int seq = 0;
 	unsigned int uinsCount = 0;
-	unsigned int myLastFormatsLength;
-	unsigned char *myLastFormats;
+	unsigned int myLastFormatsLength = 0;
+	unsigned char *myLastFormats = 0;
 	bool stop = false;
 	QString msgtmp = mesg;
-	msgtmp.replace("\n", "\r\n");
-	msgtmp = GaduFormater::unformatGGMessage(msgtmp, myLastFormatsLength, myLastFormats);
+// 	msgtmp.replace("\n", "\r\n");
+// 	msgtmp = GaduFormater::unformatGGMessage(msgtmp, myLastFormatsLength, myLastFormats);
 	QString myLastMessage = msgtmp;
 
-	if (myLastFormatsLength)
-		myLastMessage = GaduFormater::formatGGMessage(myLastMessage, myLastFormatsLength - sizeof(struct gg_msg_richtext),
-			(void *)(myLastFormats + sizeof(struct gg_msg_richtext)),0);
-
-	else
-		HtmlDocument::escapeText(myLastMessage);
+// 	if (myLastFormatsLength)
+// 		myLastMessage = GaduFormater::formatGGMessage(myLastMessage, myLastFormatsLength - sizeof(struct gg_msg_richtext),
+// 			(void *)(myLastFormats + sizeof(struct gg_msg_richtext)),0);
+// 
+// 	else
+// 		HtmlDocument::escapeText(myLastMessage);
 
 	kdebugmf(KDEBUG_INFO, "\n%s\n", (const char *)unicode2latin(myLastMessage));
 	myLastMessage.replace("\r\n", "\n");
@@ -1258,10 +1258,10 @@ QString GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 			if ((*user).usesProtocol("Gadu"))
 				uins[i++] = (*user).ID("Gadu").toUInt();
 		if (myLastFormatsLength)
-			seqNumber = gg_send_message_confer_richtext(Sess, GG_CLASS_CHAT, uinsCount, uins, (unsigned char *)msg.data(),
+			seqNumber = gg_send_message_confer_richtext(Sess, GG_CLASS_CHAT, uinsCount, uins, (unsigned char *)msg.toLocal8Bit().data(),
 				myLastFormats, myLastFormatsLength);
 		else
-			seqNumber = gg_send_message_confer(Sess, GG_CLASS_CHAT, uinsCount, uins,(unsigned char *)msg.data());
+			seqNumber = gg_send_message_confer(Sess, GG_CLASS_CHAT, uinsCount, uins,(unsigned char *)msg.toLocal8Bit().data());
 		delete[] uins;
 	}
 	else
@@ -1269,10 +1269,10 @@ QString GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 			if ((*user).usesProtocol("Gadu"))
 			{
 				if (myLastFormatsLength)
-					seqNumber = gg_send_message_richtext(Sess, GG_CLASS_CHAT, (*user).ID("Gadu").toUInt(), (unsigned char *)msg.data(),
+					seqNumber = gg_send_message_richtext(Sess, GG_CLASS_CHAT, (*user).ID("Gadu").toUInt(), (unsigned char *)msg.toLocal8Bit().data(),
 						myLastFormats, myLastFormatsLength);
 				else
-					seqNumber = gg_send_message(Sess, GG_CLASS_CHAT, (*user).ID("Gadu").toUInt(),(unsigned char *)msg.data());
+					seqNumber = gg_send_message(Sess, GG_CLASS_CHAT, (*user).ID("Gadu").toUInt(),(unsigned char *)msg.toLocal8Bit().data());
 
 				break;
 			}

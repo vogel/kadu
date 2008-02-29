@@ -13,13 +13,13 @@
 //Added by qt3to4:
 #include <QKeyEvent>
 
-CustomInput::CustomInput(QWidget* parent, const char* name)
-	: Q3MultiLineEdit(parent, name), autosend_enabled(true)
+CustomInput::CustomInput(QWidget* parent)
+	: QTextEdit(parent), autosend_enabled(true)
 {
 	kdebugf();
-	Q3StyleSheet *style=styleSheet();
-	style->item("p")->setMargin(Q3StyleSheetItem::MarginVertical, 0);
-	setStyleSheet(style);
+// 	Q3StyleSheet *style=styleSheet();
+// 	style->item("p")->setMargin(Q3StyleSheetItem::MarginVertical, 0);
+// 	setStyleSheet(style);
 	kdebugf2();
 }
 
@@ -88,7 +88,7 @@ void CustomInput::keyPressEvent(QKeyEvent* e)
  			return;
 		}
 	}
-	Q3MultiLineEdit::keyPressEvent(e);
+	QTextEdit::keyPressEvent(e);
 	kdebugf2();
 }
 
@@ -102,7 +102,7 @@ void CustomInput::keyReleaseEvent(QKeyEvent* e)
 		return;
 	}
 
-	Q3MultiLineEdit::keyReleaseEvent(e);
+	QTextEdit::keyReleaseEvent(e);
 }
 
 void CustomInput::setAutosend(bool on)
@@ -112,6 +112,6 @@ void CustomInput::setAutosend(bool on)
 
 void CustomInput::paste()
 {
-	pasteSubType("plain");
+// 	pasteSubType("plain");
 }
 

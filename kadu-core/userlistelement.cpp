@@ -401,7 +401,7 @@ void UserListElement::setStatus(const QString &protocolName, const UserStatus &s
 		CONST_FOREACH (group, privateData->Parents)
 		{
 //			kdebugm(KDEBUG_INFO, "group: %p\n", *group);
-			emit (*group)->statusChanged(*this, protocolName, *oldStatus, massively, last);
+// 			emit (*group)->statusChanged(*this, protocolName, *oldStatus, massively, last);
 			if (!groups->contains(*group))
 				groups->insert(*group);
 		}
@@ -420,7 +420,7 @@ void UserListElement::setStatus(const QString &protocolName, const UserStatus &s
 	{
 		CONST_FOREACH (group, privateData->Parents)
 		{
-			emit (*group)->statusChanged(*this, protocolName, *oldStatus, massively, last);
+// 			emit (*group)->statusChanged(*this, protocolName, *oldStatus, massively, last);
 			emit (*group)->usersStatusChanged(protocolName);
 		}
 	}

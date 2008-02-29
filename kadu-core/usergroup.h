@@ -401,8 +401,8 @@ class UserGroup : public QObject
 			\param massively czy jest to fragment wiêkszych zmian
 			\param last je¿eli massively == true, to last == true dla ostatniego kontaktu
 		**/
-		void statusChanged(UserListElement elem, QString protocolName,
-							const UserStatus &oldStatus, bool massively, bool last);
+// 		void statusChanged(UserListElement elem, QString protocolName,
+// 							const UserStatus &oldStatus, bool massively, bool last);
 
 		void usersStatusChanged(QString protocolName);
 

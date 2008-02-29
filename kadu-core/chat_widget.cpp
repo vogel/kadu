@@ -142,9 +142,9 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	buttontray->setMinimumHeight(minimumDockAreaSize);
 	edtbuttontray->setStretchFactor(buttontray, 50);
 
-	Edit = new CustomInput(downpart, "edit");
+	Edit = new CustomInput(downpart);
  	Edit->setMinimumHeight(1);
-	Edit->setWordWrap(Q3MultiLineEdit::WidgetWidth);
+	Edit->setWordWrapMode(QTextOption::WordWrap);
 
 	connect(Edit, SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)), this, SLOT(keyPressedSlot(QKeyEvent *, CustomInput *, bool &)));
 
@@ -208,7 +208,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 		tb3->loadDefault();
 	}
 
-	Edit->setMimeSourceFactory(bodyformat);
+// 	Edit->setMimeSourceFactory(bodyformat);
 	Edit->setTextFormat(Qt::RichText);
 
 	connect(Edit, SIGNAL(cursorPositionChanged(int, int)), this, SLOT(curPosChanged(int, int)));
@@ -267,7 +267,7 @@ void ChatWidget::configurationUpdated()
 	}
 
 	Edit->setFont(config_file.readFontEntry("Look","ChatFont"));
-	Edit->setPaper(QBrush(config_file.readColorEntry("Look","ChatTextBgColor")));
+// 	Edit->setPaper(QBrush(config_file.readColorEntry("Look","ChatTextBgColor")));
 	AutoSend = config_file.readBoolEntry("Chat", "AutoSend");
 	Edit->setAutosend(AutoSend);
 
@@ -715,15 +715,16 @@ void ChatWidget::sendMessage()
 			icons_manager->loadIcon("CancelMessage"));
 		KaduActions["sendAction"]->setTexts(Users->toUserListElements(), tr("&Cancel"));
 	}
-	QString message = Edit->text();
+	QString message = Edit->toPlainText();
+	myLastMessage = message;
 
 	// TODO: to na pewno jest potrzebne ??
-	int messageBegin = message.find("<p>");
-	int messageEnd = message.findRev("</p>");
-	myLastMessage = message.mid(messageBegin + 3, messageEnd - messageBegin - 3);
-	myLastMessage.replace("</p>", "");
-	myLastMessage.replace("<p>", "");
-	myLastMessage.replace("<br />", "\n");
+// 	int messageBegin = message.find("<p>");
+// 	int messageEnd = message.findRev("</p>");
+// 	myLastMessage = message.mid(messageBegin + 3, messageEnd - messageBegin - 3);
+// 	myLastMessage.replace("</p>", "");
+// 	myLastMessage.replace("<p>", "");
+// 	myLastMessage.replace("<br />", "\n");
 
 	myLastMessage = currentProtocol()->sendMessage(Users->toUserListElements(), myLastMessage);
 	if (myLastMessage == "\001thisisonlyworkaround")
