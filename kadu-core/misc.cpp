@@ -25,7 +25,7 @@
 #include <Q3HBoxLayout>
 #include <QKeyEvent>
 #include <QList>
-#include <Q3GridLayout>
+#include <QGridLayout>
 #include <Q3CString>
 #include <QPixmap>
 #include <QPaintEvent>
@@ -789,13 +789,12 @@ ChooseDescription::ChooseDescription(QWidget *parent, const char *name)
 	QObject::connect(OkButton, SIGNAL(clicked()), this, SLOT(okPressed()));
 	QObject::connect(cancelButton, SIGNAL(clicked()), this, SLOT(cancelPressed()));
 
-	Q3GridLayout *grid = new Q3GridLayout(this, 2, 2, 5, 10);
+	QGridLayout *grid = new QGridLayout(this);
 
-	grid->addMultiCellWidget(Description, 0, 0, 0, 2);
+	grid->addWidget(Description, 0, 0, 1, -1);
 	grid->addWidget(AvailableChars, 1, 0);
 	grid->addWidget(OkButton, 1, 1, Qt::AlignRight);
 	grid->addWidget(cancelButton, 1, 2, Qt::AlignRight);
-	grid->addColSpacing(0, 200);
 
 	kdebugf2();
 }
@@ -1023,7 +1022,7 @@ TokenDialog::TokenDialog(QPixmap tokenImage, QDialog *parent, const char *name)
 	: QDialog(parent, name), tokenedit(0)
 {
 	kdebugf();
-	Q3GridLayout *grid = new Q3GridLayout(this, 3, 2, 6, 5);
+	QGridLayout *grid = new QGridLayout(this);
 
 	QLabel *l_tokenimage = new QLabel(tr("Read this code ..."), this);
 	ImageWidget *tokenimage = new ImageWidget(this);
