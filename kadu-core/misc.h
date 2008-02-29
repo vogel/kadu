@@ -114,7 +114,7 @@ public:
 
 };
 
-class OpenChatWith : public Q3VBox
+class OpenChatWith : public QWidget
 {
 	Q_OBJECT
 

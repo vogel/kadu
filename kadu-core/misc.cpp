@@ -894,24 +894,23 @@ void ChooseDescription::updateAvailableChars(const QString &text)
 #endif
 }
 
-OpenChatWith::OpenChatWith(QWidget* parent, const char* name)
-	: Q3VBox(parent, name, Qt::WType_TopLevel | Qt::WDestructiveClose)
+OpenChatWith::OpenChatWith(QWidget* parent, const char* name) : QWidget(parent, name, Qt::Window)
 {
 	kdebugf();
 
-	setCaption(tr("Open chat with..."));
-	setMargin(5);
-	setSpacing(5);
+	setWindowTitle(tr("Open chat with..."));
+	setAttribute(Qt::WA_DeleteOnClose);
 
-	Q3HBox *combos = new Q3HBox(this);
-	combos->setSpacing(5);
+	QWidget *combos = new QWidget;
 
-	c_protocol = new QComboBox(combos);
+	QHBoxLayout *combos_layout = new QHBoxLayout;
+
+	c_protocol = new QComboBox;
 	c_protocol->insertItem(tr("Userlist"), 0);
 	c_protocol->insertStringList(kadu->myself().protocolList(), 1);
 	c_protocol->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-	c_text = new QComboBox(combos);
+	c_text = new QComboBox;
 	c_text->setAutoCompletion(true);
 	c_text->setEditable(true);
 	c_text->setFocus();
@@ -926,19 +925,32 @@ OpenChatWith::OpenChatWith(QWidget* parent, const char* name)
 	c_text->insertStringList(posibilities);
 	c_text->setCurrentText("");
 
-	QWidget *buttons = new QWidget(this);
+	combos_layout->setContentsMargins(0, 0, 0, 0);
+	combos_layout->addWidget(c_protocol);
+	combos_layout->addWidget(c_text);
+	combos->setLayout(combos_layout);
 
-	Q3HBoxLayout *buttonsLayout = new Q3HBoxLayout(buttons);
-	buttonsLayout->setSpacing(5);
+	QWidget *buttons = new QWidget;
 
-	QPushButton *b_cancel = new QPushButton(tr("&Cancel"), buttons);
+	QHBoxLayout *buttons_layout = new QHBoxLayout;
+
+	QPushButton *b_cancel = new QPushButton(tr("&Cancel"));
 	connect(b_cancel, SIGNAL(clicked()), this, SLOT(close()));
-	QPushButton *b_ok = new QPushButton(tr("&OK"), buttons);
+	QPushButton *b_ok = new QPushButton(tr("&OK"));
 	connect(b_ok, SIGNAL(clicked()), this, SLOT(inputAccepted()));
 
-	buttonsLayout->addStretch(100);
-	buttonsLayout->addWidget(b_ok);
-	buttonsLayout->addWidget(b_cancel);
+	buttons_layout->setContentsMargins(0, 5, 0, 0);
+	buttons_layout->setAlignment(Qt::AlignRight);
+	buttons_layout->addWidget(b_ok);
+	buttons_layout->addWidget(b_cancel);
+
+	buttons->setLayout(buttons_layout);
+
+	QVBoxLayout *layout = new QVBoxLayout;
+	layout->addWidget(combos);
+	layout->addWidget(buttons);
+
+	setLayout(layout);
 
 	loadGeometry(this, "General", "OpenChatWith", 100, 100, 250, 80);
 	setFixedHeight(sizeHint().height());
