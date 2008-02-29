@@ -112,7 +112,7 @@ void Action::buttonAddedToToolbar(ToolBar *toolBar, ToolButton *button)
 int Action::addToPopupMenu(Q3PopupMenu* menu, bool connect_signal)
 {
 	kdebugf();
-	int id = menu->insertItem(/*icons_manager->loadIcon(IconName), */Text);
+	int id = menu->insertItem(icons_manager->loadIcon(IconName), Text);
 	if (connect_signal)
 		menu->connectItem(id, this, SIGNAL(activated()));
 	kdebugf2();
@@ -183,16 +183,17 @@ void Action::refreshIcons()
 {
 	kdebugf();
 
-	if (!IconName.isEmpty())
-		FOREACH(button, ToolButtons)
+	FOREACH(button, ToolButtons)
+	{
+		if (!IconName.isEmpty())
 		{
 			(*button)->setIcon(icons_manager->loadIcon(IconName));
 			(*button)->setTextLabel(Text);
 		}
 
-	if (!OnIcon.isEmpty())
-		FOREACH(button, ToolButtons)
+		if (!OnIcon.isEmpty())
 			(*button)->setOnShape(icons_manager->loadIcon(OnIcon), OnText);
+	}
 
 	emit iconsRefreshed();
 

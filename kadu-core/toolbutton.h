@@ -53,7 +53,7 @@ class ToolButton : public QToolButton
 			button works just like toggled but using two shapes
 			(pictures and texts)
 		**/
-		void setOnShape(const QIcon& icon, const QString& text);
+		void setOnShape(const QIcon& on_icon, const QString& on_text);
 		bool isOn() const;
 		void setOn(bool on);
 		QString actionName();

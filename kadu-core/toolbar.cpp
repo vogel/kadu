@@ -143,7 +143,7 @@ ToolButton * ToolBar::addButton(Action *action, bool showLabel, ToolButton *afte
 
 	ToolButton* button = new ToolButton(this, action->name(), action->type());
 
-	// need, becouse without it positioning just doesn't work
+	// need, because without it positioning just doesn't work
 	button->show();
 
 	connect(button, SIGNAL(removedFromToolbar(ToolButton *)), this, SLOT(removeButtonClicked(ToolButton *)));
@@ -167,17 +167,22 @@ ToolButton * ToolBar::addButton(Action *action, bool showLabel, ToolButton *afte
 	textWithoutAccel.remove('&');
 	button->setTextLabel(textWithoutAccel);
 
-	button->setOnShape(icons_manager->loadIcon(action->onIcon()), action->onText());
-	button->setToggleButton(action->toggleAction());
 	button->setUsesTextLabel(showLabel);
 	button->setTextPosition(ToolButton::BesideIcon);
+
+	if (!action->onIcon().isEmpty())
+		button->setOnShape(icons_manager->loadIcon(action->onIcon()), action->onText());
+
+	if (action->toggleAction())
+	{
+		button->setToggleButton(action->toggleAction());
+		button->setOn(action->toggleState());
+	}
+
 
 	Q3Accel* accel = new Q3Accel(button);
 	accel->connectItem(accel->insertItem(action->keySeq0()), button, SIGNAL(clicked()));
 	accel->connectItem(accel->insertItem(action->keySeq1()), button, SIGNAL(clicked()));
-
-	if (action->toggleAction() || !action->onIcon().isEmpty())
-		button->setOn(action->toggleState());
 
 	action->buttonAddedToToolbar(this, button);
 

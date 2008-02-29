@@ -115,12 +115,13 @@ void ToolButton::setEnabled(bool enabled)
 	}
 }
 
-void ToolButton::setOnShape(const QIcon& icon, const QString& text)
+void ToolButton::setOnShape(const QIcon& on_icon, const QString& on_text)
 {
-	OffIcon = iconSet();
-	OffText = textLabel();
-	OnIcon = icon;
-	OnText = text;
+	OffIcon = icon();
+	OffText = text();
+	OnIcon = on_icon;
+	OnText = on_text;
+
 	setOn(isOn());
 }
 
