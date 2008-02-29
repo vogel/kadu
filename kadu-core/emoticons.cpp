@@ -502,8 +502,9 @@ struct QPixmapInt
 	Q_DUMMY_COMPARISON_OPERATOR(QPixmapInt)
 };
 
-static QMap<QString, QPixmapInt> *pixmap_map = 0;
 /*
+static QMap<QString, QPixmapInt> *pixmap_map = 0;
+
 StaticTextItem::StaticTextItem(QTextDocument *p, const QMap<QString, QString> &attr, const QString& context,
 			Q3MimeSourceFactory &factory)
     : QTextCustomItem(p), reg(0), pm(), place(PlaceInline), tmpwidth(0), tmpheight(0), attributes(attr), imgId()

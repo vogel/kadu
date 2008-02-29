@@ -2169,7 +2169,7 @@ QPixmap GaduStatus::pixmap(eUserStatus stat, bool hasDescription, bool mobile) c
 	pixname.prepend("Big");
 #endif
 
-	return icons_manager->loadIcon(pixname);
+	return icons_manager->loadPixmap(pixname);
 }
 
 QString GaduStatus::pixmapName(eUserStatus stat, bool hasDescription, bool mobile) const

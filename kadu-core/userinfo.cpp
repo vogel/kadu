@@ -86,13 +86,13 @@ UserInfo::UserInfo(UserListElement user, QWidget* parent, const char *name)
 	if (!userlist->contains(User, FalseForAnonymous))
 	{
 		setCaption(tr("Add user"));
-		l_icon->setPixmap(icons_manager->loadIcon("AddUserWindowIcon"));
+		l_icon->setPixmap(icons_manager->loadPixmap("AddUserWindowIcon"));
 		pb_addapply = new QPushButton(icons_manager->loadIcon("AddUserButton"), tr("Add"), bottom, "add");
 	}
 	else
 	{
 		setCaption(tr("User info on %1").arg(User.altNick()));
-		l_icon->setPixmap(icons_manager->loadIcon("ManageUsersWindowIcon"));
+		l_icon->setPixmap(icons_manager->loadPixmap("ManageUsersWindowIcon"));
 		pb_addapply = new QPushButton(icons_manager->loadIcon("UpdateUserButton"), tr("Update"), bottom, "update");
 	}
 
@@ -320,19 +320,19 @@ void UserInfo::setupTab2()
 		textLabel->setMaximumWidth(40);
 
 		QLabel *pixmapLabel = new QLabel(box);
-		QPixmap icon=icons_manager->loadIcon(config_file.readEntry("GroupIcon", *it, ""));
+		QPixmap icon = icons_manager->loadPixmap(config_file.readEntry("GroupIcon", *it, ""));
 		pixmapLabel->setPixmap(icon.xForm(QMatrix().scale((double)16/icon.width(), (double)16/icon.height())));
 		pixmapLabel->setMaximumWidth(22);
 		pixmapLabel->setMaximumHeight(22);
 		pixmapLabels[*it] = pixmapLabel;
 
 		QPushButton *changeIconButton = new QPushButton(box);
-		changeIconButton->setPixmap(icons_manager->loadIcon("AddSelectPathDialogButton"));
+		changeIconButton->setPixmap(icons_manager->loadPixmap("AddSelectPathDialogButton"));
 		QToolTip::add(changeIconButton, tr("Change icon"));
 		changeIconButton->setMaximumWidth(30);
 
 		QPushButton *deleteIconButton = new QPushButton(box);
-		deleteIconButton->setPixmap(icons_manager->loadIcon("RemoveSelectPathDialogButton"));
+		deleteIconButton->setPixmap(icons_manager->loadPixmap("RemoveSelectPathDialogButton"));
 		QToolTip::add(deleteIconButton, tr("Delete icon"));
 		deleteIconButton->setMaximumWidth(30);
 
@@ -421,12 +421,12 @@ void UserInfo::newGroupClicked()
 	pixmapLabels[groupName] = pixmapLabel;
 
 	QPushButton *changeIconButton = new QPushButton(box);
-	changeIconButton->setPixmap(icons_manager->loadIcon("AddSelectPathDialogButton"));
+	changeIconButton->setPixmap(icons_manager->loadPixmap("AddSelectPathDialogButton"));
 	QToolTip::add(changeIconButton, tr("Change icon"));
 	changeIconButton->setMaximumWidth(30);
 
 	QPushButton *deleteIconButton = new QPushButton(box);
-	deleteIconButton->setPixmap(icons_manager->loadIcon("CancelMessage"));
+	deleteIconButton->setPixmap(icons_manager->loadPixmap("CancelMessage"));
 	QToolTip::add(deleteIconButton, tr("Delete icon"));
 	deleteIconButton->setMaximumWidth(30);
 
@@ -594,7 +594,7 @@ void UserInfo::selectIcon()
 
 		groups_manager->setIconForTab(groupName);
 
-		QPixmap icon = icons_manager->loadIcon(iDialog->selectedFile());
+		QPixmap icon = icons_manager->loadPixmap(iDialog->selectedFile());
 		pixmapLabels[groupName]->setPixmap(icon.xForm(QMatrix().scale((double)16/icon.width(), (double)16/icon.height())));
 	}
 	delete iDialog;

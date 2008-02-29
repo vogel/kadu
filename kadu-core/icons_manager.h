@@ -17,8 +17,8 @@ class IconsManager : public Themes, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	QMap<QString, QPixmap> icons;
-	QMap<QString, QIcon> iconSets;
+	QMap<QString, QPixmap> pixmaps;
+	QMap<QString, QIcon> icons;
 // 	QMap<QString, QMovie> animatedIcons;
 
 //	Q3ValueList<QPair<QMenuData *, Q3ValueList<QPair<QString, QString> > > > menus;
@@ -41,9 +41,9 @@ public:
 		(je¶li zawiera znak '/' to jest interpretowana jako
 		¶cie¿ka).
 	**/
-	const QPixmap &loadIcon(const QString &name);
+	const QPixmap &loadPixmap(const QString &name);
 // 	const QMovie &loadAnimatedIcon(const QString &name);
-	const QIcon &loadIconSet(const QString &name);
+	const QIcon &loadIcon(const QString &name);
 
 	static void initModule();
 	static void closeModule();

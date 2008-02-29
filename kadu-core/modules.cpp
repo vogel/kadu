@@ -104,7 +104,7 @@ ModulesDialog::ModulesDialog() : Q3HBox(kadu, "modules_dialog", Qt::WType_TopLev
 	center->setSpacing(10);
 
 	QLabel *l_info = new QLabel(center);
-	l_icon->setPixmap(icons_manager->loadIcon("ManageModulesWindowIcon"));
+	l_icon->setPixmap(icons_manager->loadPixmap("ManageModulesWindowIcon"));
 	l_info->setText(tr("This dialog box allows you to manage installed modules. Modules are responsible "
 			"for numerous vital features like playing sounds or message encryption. "
 			"You can load (or unload) them by double-clicking on their names."));

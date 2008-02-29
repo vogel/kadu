@@ -64,7 +64,7 @@ About::About(QWidget *parent, const char *name) : Q3HBox(parent, name/*, Qt::WTy
 	left->setSpacing(10);
 
 	QLabel *l_icon = new QLabel(left);
-	l_icon->setPixmap(icons_manager->loadIcon("AboutIcon"));
+	l_icon->setPixmap(icons_manager->loadPixmap("AboutIcon"));
 
 	QWidget *blank = new QWidget(left);
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));

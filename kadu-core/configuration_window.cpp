@@ -227,7 +227,7 @@ void ConfigSection::iconThemeChanged()
 	bool current = listBoxItem->isSelected();
 	delete listBoxItem;
 
-	listBoxItem = new Q3ListBoxPixmap(listBox, icons_manager->loadIcon(pixmap), name);
+	listBoxItem = new Q3ListBoxPixmap(listBox, icons_manager->loadPixmap(pixmap), name);
 	if (current)
 		listBox->setCurrentItem(listBoxItem);
 }
@@ -601,7 +601,7 @@ ConfigSection *ConfigurationWindow::configSection(const QString &pixmap, const Q
 	if (!create)
 		return 0;
 
-	Q3ListBoxItem *newConfigSectionListBoxItem = new Q3ListBoxPixmap(sectionsListBox, icons_manager->loadIcon(pixmap), name);
+	Q3ListBoxItem *newConfigSectionListBoxItem = new Q3ListBoxPixmap(sectionsListBox, icons_manager->loadPixmap(pixmap), name);
 
 	ConfigSection *newConfigSection = new ConfigSection(name, this, newConfigSectionListBoxItem, container, pixmap);
 	configSections[name] = newConfigSection;

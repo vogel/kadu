@@ -78,7 +78,7 @@ public:
 	void setOn(const UserListElements& users, bool on);
 	void setAllOn(bool on);
 	void setPixmaps(const UserListElements& users, const QPixmap& pixmap);
-	void setIconSets(const UserListElements& users, const QIcon& icon);
+	void setIcons(const UserListElements& users, const QIcon& icon);
 	void refreshIcons();
 	void setTexts(const UserListElements& users, const QString& text);
 	/**

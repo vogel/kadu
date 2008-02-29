@@ -42,7 +42,7 @@ MessageBox::MessageBox(const QString& message, int components, bool modal, const
 	if (!iconName.isEmpty())
 	{
 		icon = new QLabel(this);
-		icon->setPixmap(icons_manager->loadIcon(iconName));
+		icon->setPixmap(icons_manager->loadPixmap(iconName));
 		hboxlabels->addWidget(icon, 0, Qt::AlignCenter);
 	}
 

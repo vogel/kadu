@@ -821,16 +821,16 @@ void ChooseDescription::setStatus(const UserStatus &status)
 	switch (Status.status())
 	{
 		case Online:
-			OkButton->setIconSet(icons_manager->loadIcon("OnlineWithDescription"));
+			OkButton->setIcon(icons_manager->loadIcon("OnlineWithDescription"));
 			break;
 		case Busy:
-			OkButton->setIconSet(icons_manager->loadIcon("BusyWithDescription"));
+			OkButton->setIcon(icons_manager->loadIcon("BusyWithDescription"));
 			break;
 		case Invisible:
-			OkButton->setIconSet(icons_manager->loadIcon("InvisibleWithDescription"));
+			OkButton->setIcon(icons_manager->loadIcon("InvisibleWithDescription"));
 			break;
 		case Offline:
-			OkButton->setIconSet(icons_manager->loadIcon("OfflineWithDescription"));
+			OkButton->setIcon(icons_manager->loadIcon("OfflineWithDescription"));
 			break;
 		default:
 			break;

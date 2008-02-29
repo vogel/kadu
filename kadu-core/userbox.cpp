@@ -421,21 +421,21 @@ QPixmap KaduListBoxPixmap::pixmapForUser(const UserListElement &user)
 	if (!usesGadu)
 	{
 		if (has_mobile)
-			return icons_manager->loadIcon("Mobile");
+			return icons_manager->loadPixmap("Mobile");
 		else if (!user.email().isEmpty())
-			return icons_manager->loadIcon("WriteEmail");
+			return icons_manager->loadPixmap("WriteEmail");
 		else
 			return QPixmap();
 	}
 	else if (pending.pendingMsgs(user))
-		return icons_manager->loadIcon("Message");
+		return icons_manager->loadPixmap("Message");
 	else
 	{
 		const QPixmap &pix = user.status("Gadu").pixmap(has_mobile);
 		if (!pix.isNull())
 			return pix;
 		else
-			return icons_manager->loadIcon("Online");
+			return icons_manager->loadPixmap("Online");
 	}
 }
 

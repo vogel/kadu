@@ -170,12 +170,12 @@ void Action::setPixmaps(const UserListElements& users, const QPixmap& pixmap)
 	kdebugf2();
 }
 
-void Action::setIconSets(const UserListElements& users, const QIcon& icon)
+void Action::setIcons(const UserListElements& users, const QIcon& icon)
 {
 	kdebugf();
 	Q3ValueList<ToolButton*> buttons = toolButtonsForUserListElements(users);
 	CONST_FOREACH(i, buttons)
-		(*i)->setIconSet(icon);
+		(*i)->setIcon(icon);
 	kdebugf();
 }
 
@@ -186,13 +186,13 @@ void Action::refreshIcons()
 	if (!IconName.isEmpty())
 		FOREACH(button, ToolButtons)
 		{
-			(*button)->setIconSet(icons_manager->loadIconSet(IconName));
+			(*button)->setIcon(icons_manager->loadIcon(IconName));
 			(*button)->setTextLabel(Text);
 		}
 
 	if (!OnIcon.isEmpty())
 		FOREACH(button, ToolButtons)
-			(*button)->setOnShape(icons_manager->loadIconSet(OnIcon), OnText);
+			(*button)->setOnShape(icons_manager->loadIcon(OnIcon), OnText);
 
 	emit iconsRefreshed();
 

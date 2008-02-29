@@ -329,11 +329,7 @@ void ChatWidget::setActColor(bool force)
 			actcolor = colors[i];
 		p.fill(actcolor);
 
-		QIcon icon;
-		icon.setPixmap(p, QIcon::Automatic, QIcon::Normal);
-		icon.setPixmap(icons_manager->loadIcon("Black_dis"), QIcon::Automatic, QIcon::Disabled);
-
-		KaduActions["colorAction"]->setIconSets(Users->toUserListElements(), icon);
+		KaduActions["colorAction"]->setPixmaps(Users->toUserListElements(), p);
 	}
 
 	kdebugf2();
@@ -449,7 +445,7 @@ void ChatWidget::refreshTitle()
 					title.append(", ");
 			}
 
- 		pix = icons_manager->loadIcon("Online");
+ 		pix = icons_manager->loadPixmap("Online");
 	}
 	else
 	{
@@ -633,8 +629,8 @@ void ChatWidget::cancelMessage()
 	Edit->setFocus();
 
 	WaitingForACK = false;
-	KaduActions["sendAction"]->setIconSets(Users->toUserListElements(),
-		icons_manager->loadIconSet("SendMessage"));
+	KaduActions["sendAction"]->setIcons(Users->toUserListElements(),
+		icons_manager->loadIcon("SendMessage"));
 	KaduActions["sendAction"]->setTexts(Users->toUserListElements(), tr("&Send"));
 	kdebugf2();
 }
@@ -715,8 +711,8 @@ void ChatWidget::sendMessage()
 		Edit->setReadOnly(true);
 		Edit->setEnabled(false);
 		WaitingForACK = true;
-		KaduActions["sendAction"]->setIconSets(Users->toUserListElements(),
-			icons_manager->loadIconSet("CancelMessage"));
+		KaduActions["sendAction"]->setIcons(Users->toUserListElements(),
+			icons_manager->loadIcon("CancelMessage"));
 		KaduActions["sendAction"]->setTexts(Users->toUserListElements(), tr("&Cancel"));
 	}
 	QString message = Edit->text();
@@ -782,11 +778,7 @@ void ChatWidget::colorChanged(const QColor& color)
 	QPixmap p(12, 12);
 	p.fill(color);
 
-	QIcon icon;
-	icon.setPixmap(p, QIcon::Automatic, QIcon::Normal);
-	icon.setPixmap(icons_manager->loadIcon("Black_dis"), QIcon::Automatic, QIcon::Disabled);
-
-	KaduActions["colorAction"]->setIconSets(Users->toUserListElements(), icon);
+	KaduActions["colorAction"]->setPixmaps(Users->toUserListElements(), p);
 	Edit->setColor(color);
 	actcolor = color;
 }

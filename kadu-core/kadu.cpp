@@ -684,12 +684,12 @@ void Kadu::editUserActionSetParams(QString /*protocolName*/, UserListElement use
 	UserListElements elems = UserListElements(users);
 	if (users.isAnonymous())
 	{
-		action->setIconSets(elems, icons_manager->loadIconSet("AddUser"));
+		action->setIcons(elems, icons_manager->loadIcon("AddUser"));
 		action->setTexts(elems, tr("Add user"));
 	}
 	else
 	{
-		action->setIconSets(elems, icons_manager->loadIconSet("EditUserInfo"));
+		action->setIcons(elems, icons_manager->loadIcon("EditUserInfo"));
 		action->setTexts(elems, tr("Contact data"));
 	}
 
@@ -989,7 +989,7 @@ void Kadu::changeAppearance()
 
 	const UserStatus &stat = gadu->currentStatus();
 	QPixmap pix = stat.pixmap();
-	statusButton->setIconSet(QIcon(pix));
+	statusButton->setIcon(QIcon(pix));
 	setMainWindowIcon(pix);
 	emit statusPixmapChanged(pix, stat.toString());
 	kdebugf2();
@@ -1018,7 +1018,7 @@ void Kadu::blink()
 	else if (!DoBlink && gadu->currentStatus().isOffline())
 	{
 		pix = gadu->nextStatus().pixmap(Offline, false);
-		statusButton->setIconSet(QIcon(pix));
+		statusButton->setIcon(QIcon(pix));
 		emit statusPixmapChanged(pix, "Offline");
 		return;
 	}
@@ -1036,7 +1036,7 @@ void Kadu::blink()
 		iconName = stat.toString();
 	}
 
-	statusButton->setIconSet(QIcon(pix));
+	statusButton->setIcon(QIcon(pix));
 	emit statusPixmapChanged(pix, iconName);
 
 	BlinkOn = !BlinkOn;
@@ -1835,7 +1835,7 @@ void Kadu::showStatusOnMenu(int statusNr)
 	dockMenu->setItemEnabled(7, statusNr != 6);
 	QPixmap pix = gadu->currentStatus().pixmap();
 	QString iconName = gadu->currentStatus().toString();
-	statusButton->setIconSet(QIcon(pix));
+	statusButton->setIcon(QIcon(pix));
 	setMainWindowIcon(pix);
 
 	emit statusPixmapChanged(pix, iconName);

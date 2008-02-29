@@ -388,9 +388,9 @@ int main(int argc, char *argv[])
 	qApp->setMainWidget(kadu);
 	QPixmap pix;
 #ifdef Q_OS_MACX
-	pix = icons_manager->loadIcon("BigOffline");
+	pix = icons_manager->loadPixmap("BigOffline");
 #else
-	pix = icons_manager->loadIcon("Offline");
+	pix = icons_manager->loadPixmap("Offline");
 #endif
 	kadu->setMainWindowIcon(pix);
 

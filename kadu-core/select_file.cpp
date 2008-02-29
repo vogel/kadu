@@ -20,7 +20,7 @@ SelectFile::SelectFile(const QString &type, QWidget *parent, char *name)
 {
 	LineEdit = new QLineEdit(this);
 
-	QPushButton *selectFile = new QPushButton(icons_manager->loadIconSet("OpenFile"), "", this);
+	QPushButton *selectFile = new QPushButton(icons_manager->loadIcon("OpenFile"), "", this);
 	connect(selectFile, SIGNAL(clicked()), this, SLOT(selectFileClicked()));
 }
 
@@ -29,7 +29,7 @@ SelectFile::SelectFile(QWidget *parent, char *name)
 {
 	LineEdit = new QLineEdit(this);
 
-	QPushButton *selectFile = new QPushButton(icons_manager->loadIconSet("OpenFile"), "", this);
+	QPushButton *selectFile = new QPushButton(icons_manager->loadIcon("OpenFile"), "", this);
 	connect(selectFile, SIGNAL(clicked()), this, SLOT(selectFileClicked()));
 }
 

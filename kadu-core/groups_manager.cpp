@@ -85,7 +85,7 @@ void GroupsManager::setTabBar(KaduTabBar *bar)
 
 	bar->setShape(QTabBar::RoundedBelow);
 	int index = bar->addTab(tr("All"));
-	bar->setTabIcon(index, icons_manager->loadIcon("PersonalInfo").xForm(QMatrix().rotate(-90)));
+	bar->setTabIcon(index, icons_manager->loadPixmap("PersonalInfo").xForm(QMatrix().rotate(-90)));
 	bar->setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(), QFont::Bold));
 	connect(bar, SIGNAL(selected(int)), this, SLOT(tabSelected(int)));
 	connect(userlist, SIGNAL(modified()), this, SLOT(refreshTabBarLater()));
@@ -214,7 +214,7 @@ void GroupsManager::refreshTabBar()
 			QString iconPath = config_file.readEntry("GroupIcon", (*group));	
 			if (!iconPath.isEmpty()) 
 			{
-				QPixmap icon = icons_manager->loadIcon(iconPath).xForm(QMatrix().rotate(-90));
+				QPixmap icon = icons_manager->loadPixmap(iconPath).xForm(QMatrix().rotate(-90));
 
 				int index = GroupBar->addTab(*group);
 				GroupBar->setTabIcon(index, icon.xForm(QMatrix().scale((double)16/icon.width(), (double)16/icon.height())));
@@ -247,7 +247,7 @@ void GroupsManager::configurationUpdated()
 void GroupsManager::iconThemeChanged()
 {
 	if (GroupBar)
-		GroupBar->setTabIcon(0, icons_manager->loadIcon("PersonalInfo").xForm(QMatrix().rotate(-90)));
+		GroupBar->setTabIcon(0, icons_manager->loadPixmap("PersonalInfo").xForm(QMatrix().rotate(-90)));
 }
 
 void GroupsManager::changeDisplayingBlocking()
@@ -545,7 +545,7 @@ void GroupsManager::setIconForTab(const QString &name)
 
 			if (!iconPath.isEmpty()) 
 			{
-				QPixmap icon = icons_manager->loadIcon(iconPath).xForm(QMatrix().rotate(-90));
+				QPixmap icon = icons_manager->loadPixmap(iconPath).xForm(QMatrix().rotate(-90));
 
 				GroupBar->insertTab(index, name);
 				GroupBar->setTabIcon(index, icon.xForm(QMatrix().scale((double)16/icon.width(), (double)16/icon.height())));

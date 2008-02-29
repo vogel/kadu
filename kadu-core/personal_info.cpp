@@ -45,7 +45,7 @@ PersonalInfoDialog::PersonalInfoDialog(QWidget *parent, const char *name) : Q3HB
 	center->setSpacing(10);
 
 	QLabel *l_info = new QLabel(center);
-	l_icon->setPixmap(icons_manager->loadIcon("PersonalInformationWindowIcon"));
+	l_icon->setPixmap(icons_manager->loadPixmap("PersonalInformationWindowIcon"));
 	l_info->setText(tr("This dialog box allows you to manage your personal information, for example your "
 				"name, surname or age."));
 	l_info->setAlignment(Qt::WordBreak);
@@ -121,9 +121,9 @@ PersonalInfoDialog::PersonalInfoDialog(QWidget *parent, const char *name) : Q3HB
 	QWidget *blank2=new QWidget(bottom);
 	bottom->setSpacing(5);
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
-	pb_save = new QPushButton(icons_manager->loadIconSet("SavePersonalInfoButton"), tr("&Save"), bottom, "save");
-	QPushButton *pb_reload = new QPushButton(icons_manager->loadIconSet("ReloadPersonalInfoButton"), tr("&Reload"), bottom, "save");
-	QPushButton *pb_close = new QPushButton(icons_manager->loadIconSet("CloseWindow"), tr("&Close"), bottom, "close");
+	pb_save = new QPushButton(icons_manager->loadIcon("SavePersonalInfoButton"), tr("&Save"), bottom, "save");
+	QPushButton *pb_reload = new QPushButton(icons_manager->loadIcon("ReloadPersonalInfoButton"), tr("&Reload"), bottom, "save");
+	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	// end buttons
 
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));

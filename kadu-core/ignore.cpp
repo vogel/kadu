@@ -42,7 +42,7 @@ Ignored::Ignored(QWidget *parent, const char *name) : Q3HBox(parent, name, Qt::W
 	left->setSpacing(10);
 
 	QLabel *l_icon = new QLabel(left);
-	QWidget *blank=new QWidget(left);
+	QWidget *blank = new QWidget(left);
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
 	Q3VBox *center = new Q3VBox(this);
@@ -50,7 +50,7 @@ Ignored::Ignored(QWidget *parent, const char *name) : Q3HBox(parent, name, Qt::W
 	center->setSpacing(10);
 
 	QLabel *l_info = new QLabel(center);
-	l_icon->setPixmap(icons_manager->loadIcon("ManageIgnoredWindowIcon"));
+	l_icon->setPixmap(icons_manager->loadPixmap("ManageIgnoredWindowIcon"));
 	l_info->setText(tr("This dialog box allows you to manage your ignored contacts."));
 	l_info->setAlignment(Qt::WordBreak);
 	// end create main QLabel widgets (icon and app info)
@@ -151,7 +151,7 @@ void Ignored::getList()
 			else
 				strlist.append(QString("%1").arg((*user).ID("Gadu")));
 		}
-		lb_list->insertItem(icons_manager->loadIcon("Blocking"), strlist.join(";"));
+		lb_list->insertItem(icons_manager->loadPixmap("Blocking"), strlist.join(";"));
 	}
 	kdebugf2();
 }
