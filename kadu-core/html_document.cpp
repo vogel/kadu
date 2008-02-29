@@ -67,7 +67,7 @@ void HtmlDocument::insertTag(const int pos,const QString &text)
 	Element e;
 	e.text = text;
 	e.tag = true;
-	Elements.insert(Elements.at(pos),e);
+	Elements.insert(pos,e);
 }
 
 void HtmlDocument::insertText(const int pos,const QString &text)
@@ -76,7 +76,7 @@ void HtmlDocument::insertText(const int pos,const QString &text)
 	e.text = text;
 	e.tag = false;
 	Elements.append(e);
-	Elements.insert(Elements.at(pos),e);
+	Elements.insert(pos,e);
 }
 
 void HtmlDocument::parseHtml(const QString& html)
@@ -174,7 +174,7 @@ void HtmlDocument::splitElement(int& index,int start,int length)
 		Element pre;
 		pre.tag=e.tag;
 		pre.text=e.text.left(start);
-		Elements.insert(Elements.at(index),pre);
+		Elements.insert(index, pre);
 		++index;
 	}
 	if(uint(start+length)<e.text.length())
@@ -183,7 +183,7 @@ void HtmlDocument::splitElement(int& index,int start,int length)
 		post.tag=e.tag;
 		post.text=e.text.right(e.text.length()-(start+length));
 		if(uint(index+1)<Elements.size())
-			Elements.insert(Elements.at(index+1),post);
+			Elements.insert(index+1, post);
 		else
 			Elements.append(post);
 	}

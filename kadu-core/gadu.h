@@ -105,7 +105,7 @@ struct SearchResult
 		const char *city, const char *familyName, const char *familyCity, const char *gender, const char *status);
 };
 
-typedef Q3ValueList<SearchResult> SearchResults;
+typedef QList<SearchResult> SearchResults;
 
 struct SearchRecord
 {
@@ -182,7 +182,7 @@ class GaduFormater
 		 *
 		 * Precondition - formats_length must contain valid length of result buffer
 		 */
-		static unsigned char *allocFormantBuffer(const Q3ValueList<struct richtext_formant> &formants, unsigned int &formats_length);
+		static unsigned char *allocFormantBuffer(const QList<struct richtext_formant> &formants, unsigned int &formats_length);
 
 	public:
 		static QString formatGGMessage(const QString &msg, unsigned int formats_length, void *formats, UinType sender);
@@ -253,7 +253,7 @@ class GaduProtocol : public Protocol
 		QString TokenValue;
 
 		/** Serwery, z którymi ³aczy siê obiekt. **/
-		static Q3ValueList<QHostAddress> ConfigServers;
+		static QList<QHostAddress> ConfigServers;
 		/** Numer serwera, do którego obiekt ostatnio próbowa³ siê pod³±czyæ. **/
 		unsigned int ServerNr;
 		/** Adres serwera, do którego obiekt jest pod³±czony. **/
@@ -681,7 +681,7 @@ class GaduProtocol : public Protocol
 			@see userListToString
 			@see streamToUserList
 		**/
-		Q3ValueList<UserListElement> stringToUserList(const QString &source) const;
+		QList<UserListElement> stringToUserList(const QString &source) const;
 
 		/**
 			Odczytuje ze strumienia ³añcuch reprezentuj±cy listê u¿ytkowników i konwertuje
@@ -693,7 +693,7 @@ class GaduProtocol : public Protocol
 			@see userListToString
 			@see stringToUserList
 		**/
-		Q3ValueList<UserListElement> streamToUserList(Q3TextStream &source) const;
+		QList<UserListElement> streamToUserList(Q3TextStream &source) const;
 
 		/**
 			Po jedno sekundowym opó¼nieniu wykonuje próbê po³±czenia.
@@ -1018,7 +1018,7 @@ class GaduProtocol : public Protocol
 			@param list je¿eli operacja siê powiod³a, to zaimportowana lista
 			@see doImportUserList
 		**/
-		void userListImported(bool ok, Q3ValueList<UserListElement> list);
+		void userListImported(bool ok, QList<UserListElement> list);
 
 		/**
 			Sygna³ daje mozliwo¶æ operowania na wiadomo¶ci

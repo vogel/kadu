@@ -25,7 +25,7 @@
 //Added by qt3to4:
 #include <Q3HBoxLayout>
 #include <QKeyEvent>
-#include <Q3ValueList>
+#include <QList>
 #include <Q3GridLayout>
 #include <Q3CString>
 #include <QPixmap>
@@ -1103,17 +1103,17 @@ ImageDialog::ImageDialog(QWidget* parent)
 }
 
 
-Q3ValueList<int> toIntList(const Q3ValueList<QVariant> &in)
+QList<int> toIntList(const QList<QVariant> &in)
 {
-	Q3ValueList<int> out;
+	QList<int> out;
 	CONST_FOREACH(it, in)
 		out.append((*it).toInt());
 	return out;
 }
 
-Q3ValueList<QVariant> toVariantList(const Q3ValueList<int> &in)
+QList<QVariant> toVariantList(const QList<int> &in)
 {
-	Q3ValueList<QVariant> out;
+	QList<QVariant> out;
 	CONST_FOREACH(it, in)
 		out.append(QVariant(*it));
 	return out;
@@ -1239,8 +1239,8 @@ void LayoutHelper::addLabel(QLabel *label)
 
 void LayoutHelper::resizeLabels()
 {
-	Q3ValueList<QLabel *>::iterator l = labels.begin(), lend = labels.end();
-	Q3ValueList<Q3SimpleRichText *>::iterator r = riches.begin();
+	QList<QLabel *>::iterator l = labels.begin(), lend = labels.end();
+	QList<Q3SimpleRichText *>::iterator r = riches.begin();
 
 	while (l != lend)
 	{
@@ -1256,8 +1256,8 @@ void LayoutHelper::resizeLabels()
 
 void LayoutHelper::textChanged(QLabel *label)
 {
-	Q3ValueList<QLabel *>::iterator l = labels.begin(), lend = labels.end();
-	Q3ValueList<Q3SimpleRichText *>::iterator r = riches.begin();
+	QList<QLabel *>::iterator l = labels.begin(), lend = labels.end();
+	QList<Q3SimpleRichText *>::iterator r = riches.begin();
 
 	while (l != lend)
 	{

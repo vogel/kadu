@@ -18,7 +18,7 @@
 #include <q3textstream.h>
 #include <qtextcodec.h>
 //Added by qt3to4:
-#include <Q3ValueList>
+#include <QList>
 
 //mkdir
 #include <sys/stat.h>
@@ -42,7 +42,7 @@ UserList::~UserList()
 {
 }
 
-void UserList::merge(const Q3ValueList<UserListElement> &ulist)
+void UserList::merge(const QList<UserListElement> &ulist)
 {
 	kdebugf();
 	UserListElements toAppend;
@@ -336,7 +336,7 @@ bool UserList::readFromFile()
 	Q3TextStream t(&f);
 	t.setCodec(codec_latin2);
 
-	Q3ValueList<UserListElement> list = gadu->streamToUserList(t);
+	QList<UserListElement> list = gadu->streamToUserList(t);
 	f.close();
 	addUsers(list);
 	kdebugm(KDEBUG_WARNING, "%s\n", gadu->userListToString(*this).local8Bit().data());

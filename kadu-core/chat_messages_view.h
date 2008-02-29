@@ -9,7 +9,7 @@
 #include "userlistelement.h"
 //Added by qt3to4:
 #include <QResizeEvent>
-#include <Q3ValueList>
+#include <QList>
 
 class ChatMessage;
 class QResizeEvent;
@@ -18,7 +18,7 @@ class ChatMessagesView : public KaduTextBrowser, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	Q3ValueList<ChatMessage *> Messages;
+	QList<ChatMessage *> Messages;
 	unsigned int Prune;
 
 	bool CfgNoHeaderRepeat;
@@ -65,7 +65,7 @@ public:
 	virtual ~ChatMessagesView();
 
 	void appendMessage(ChatMessage *message);
-	void appendMessages(Q3ValueList<ChatMessage *> messages);
+	void appendMessages(QList<ChatMessage *> messages);
 
 	unsigned int countMessages();
 

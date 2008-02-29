@@ -21,7 +21,7 @@ class DockArea : public Q3DockArea
 		static bool Blocked;
 		int SupportedActions;
 		void setBlockToolbars(bool);
-		static Q3ValueList<DockArea *> AllDockAreas;
+		static QList<DockArea *> AllDockAreas;
 
 	protected:
 		void contextMenuEvent(QContextMenuEvent* e);

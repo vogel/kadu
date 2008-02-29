@@ -22,7 +22,7 @@ class HtmlDocument
 			bool tag;
 			Element() : text(), tag(false) {}
 		};
-		Q3ValueList<Element> Elements;
+		QList<Element> Elements;
 		void addElement(Element e);
 		static QRegExp* url_regexp;
 		static QRegExp* mail_regexp;

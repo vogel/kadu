@@ -11,7 +11,7 @@
 #include <qmessagebox.h>
 //Added by qt3to4:
 #include <QPixmap>
-#include <Q3ValueList>
+#include <QList>
 
 #include "action.h"
 #include "config_file.h"
@@ -87,7 +87,7 @@ void IconsManager::clear()
 // void IconsManager::registerMenu(QMenuData *menu)
 // {
 // 	kdebugf();
-	//menus.push_front(qMakePair(menu, Q3ValueList<QPair<QString, QString> >()));
+	//menus.push_front(qMakePair(menu, QList<QPair<QString, QString> >()));
 // 	kdebugf2();
 // }
 

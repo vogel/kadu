@@ -5,7 +5,7 @@
 
 #include <qobject.h>
 //Added by qt3to4:
-#include <Q3ValueList>
+#include <QList>
 
 #include "status.h"
 
@@ -142,7 +142,7 @@ class StatusChangerManager : public QObject
 {
 	Q_OBJECT
 
-	Q3ValueList<StatusChanger *> statusChangers;
+	QList<StatusChanger *> statusChangers;
 	bool enabled;
 
 public:

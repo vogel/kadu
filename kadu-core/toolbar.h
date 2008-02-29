@@ -34,12 +34,12 @@ class ToolBar : public Q3ToolBar
 		bool showLabel;
 	};
 
-	Q3ValueList<ToolBarAction> ToolBarActions;
+	QList<ToolBarAction> ToolBarActions;
 	ToolButton *dragButton; /*!< przeci?gany przycisk akcji */
 
 	ToolButton * addButton(Action *action, bool showLabel, ToolButton *after);
 
-	static QMap< QString, Q3ValueList<ToolBarAction> > DefaultActions;
+	static QMap< QString, QList<ToolBarAction> > DefaultActions;
 
 private slots:
 	/**

@@ -4,7 +4,6 @@
 #include <qglobal.h>
 
 #include <qstring.h>
-#include <q3valuelist.h>
 #include <time.h>
 #include "usergroup.h"
 
@@ -36,7 +35,7 @@ class PendingMsgs : public QObject
 		};
 
 	private:
-		typedef Q3ValueList<Element> PendingMsgsList;
+		typedef QList<Element> PendingMsgsList;
 		PendingMsgsList msgs;
 
 	public:

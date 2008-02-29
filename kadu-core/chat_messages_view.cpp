@@ -18,7 +18,7 @@
 #include "chat_messages_view.h"
 //Added by qt3to4:
 #include <QResizeEvent>
-#include <Q3ValueList>
+#include <QList>
 
 ChatMessagesView::ChatMessagesView(QWidget *parent, const char *name) : KaduTextBrowser(parent, name),
 	Prune(0)
@@ -117,9 +117,9 @@ void ChatMessagesView::repaintMessages()
 
 	QString text;
 
-	Q3ValueList<ChatMessage *>::const_iterator message = Messages.constBegin();
-	Q3ValueList<ChatMessage *>::const_iterator prevMessage;
-	Q3ValueList<ChatMessage *>::const_iterator end = Messages.constEnd();
+	QList<ChatMessage *>::const_iterator message = Messages.constBegin();
+	QList<ChatMessage *>::const_iterator prevMessage;
+	QList<ChatMessage *>::const_iterator end = Messages.constEnd();
 
 	if (message == end)
 		return;
@@ -170,7 +170,7 @@ void ChatMessagesView::appendMessage(ChatMessage *message)
 	repaintMessages();
 }
 
-void ChatMessagesView::appendMessages(Q3ValueList<ChatMessage *> messages)
+void ChatMessagesView::appendMessages(QList<ChatMessage *> messages)
 {
 	kdebugf2();
 
@@ -189,9 +189,9 @@ void ChatMessagesView::pruneMessages()
 	if (Messages.count() < Prune)
 		return;
 
-	Q3ValueList<ChatMessage *>::iterator start = Messages.begin();
-	Q3ValueList<ChatMessage *>::iterator stop = Messages.at(Messages.size() - Prune);
-	for (Q3ValueList<ChatMessage *>::iterator it = start; it != stop; ++it)
+	QList<ChatMessage *>::iterator start = Messages.begin();
+	QList<ChatMessage *>::iterator stop = Messages.find(Messages.at(Messages.size() - Prune));
+	for (QList<ChatMessage *>::iterator it = start; it != stop; ++it)
 		delete *it;
 
 	Messages.erase(start, stop);

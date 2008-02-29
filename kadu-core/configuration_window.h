@@ -8,7 +8,7 @@
 #include <qtabwidget.h>
 //Added by qt3to4:
 #include <Q3GridLayout>
-#include <Q3ValueList>
+#include <QList>
 #include <QKeyEvent>
 
 #include "color_button.h"
@@ -190,10 +190,10 @@ class ConfigurationWindow : public Q3VBox
 	ConfigSection *configSection(const QString &name);
 	ConfigSection *configSection(const QString &icon, const QString &name, bool create = true);
 
-	Q3ValueList<ConfigWidget *> processUiFile(const QString &fileName, bool append = true);
-	Q3ValueList<ConfigWidget *> processUiSectionFromDom(QDomNode sectionNode, bool append = true);
-	Q3ValueList<ConfigWidget *> processUiTabFromDom(QDomNode tabNode, const QString &iconName, const QString &sectionName, bool append = true);
-	Q3ValueList<ConfigWidget *> processUiGroupBoxFromDom(QDomNode groupBoxNode, const QString &sectionName, const QString &tabName, bool append = true);
+	QList<ConfigWidget *> processUiFile(const QString &fileName, bool append = true);
+	QList<ConfigWidget *> processUiSectionFromDom(QDomNode sectionNode, bool append = true);
+	QList<ConfigWidget *> processUiTabFromDom(QDomNode tabNode, const QString &iconName, const QString &sectionName, bool append = true);
+	QList<ConfigWidget *> processUiGroupBoxFromDom(QDomNode groupBoxNode, const QString &sectionName, const QString &tabName, bool append = true);
 	ConfigWidget * appendUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox);
 	void removeUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox);
 
@@ -237,7 +237,7 @@ public:
 		Gdy load == true wczytuje ich warto¶ci z pliku konfiguracyjnego. W przeciwnym
 		wypadku wczytanie warto¶ci nast±pi po wywo³aniu metody @see show.
 	 **/
-	Q3ValueList<ConfigWidget *> appendUiFile(const QString &fileName, bool load = true);
+	QList<ConfigWidget *> appendUiFile(const QString &fileName, bool load = true);
 	/**
 		Usuwa kontrolki wczytane z danego pliku *.ui.
 	 **/

@@ -76,8 +76,8 @@ class UserInfo : public Q3HBox
 		Q3Dns *dns;
 		Q3ScrollView* scrollView;
 
-		Q3ValueList<QCheckBox *> groups;
-		Q3ValueList<QCheckBox *> hiddenCheckBoxes;
+		QList<QCheckBox *> groups;
+		QList<QCheckBox *> hiddenCheckBoxes;
 		QLineEdit *newGroup;
 		Q3VBox *groupsBox;
 		LayoutHelper *layoutHelper;

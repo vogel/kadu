@@ -30,7 +30,7 @@ void PendingMsgs::deleteMsg(int index)
 {
 	kdebugm(KDEBUG_INFO, "PendingMsgs::(pre)deleteMsg(%d), count=%d\n", index, count());
 	UserListElement e = msgs[index].users[0];
-	msgs.remove(msgs.at(index));
+	msgs.removeAt(index);
 	writeToFile();
 	kdebugm(KDEBUG_INFO, "PendingMsgs::deleteMsg(%d), count=%d\n", index, count());
 	emit messageFromUserDeleted(e);

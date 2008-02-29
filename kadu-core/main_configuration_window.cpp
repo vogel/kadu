@@ -13,7 +13,7 @@
 #include <qstyle.h>
 #include <qstylefactory.h>
 //Added by qt3to4:
-#include <Q3ValueList>
+#include <QList>
 #include <QKeyEvent>
 #include <QStyle>
 
@@ -29,14 +29,14 @@
 #include "main_configuration_window.h"
 
 MainConfigurationWindow *MainConfigurationWindow::Instance = 0;
-Q3ValueList<QPair<QString, ConfigurationUiHandler *> > MainConfigurationWindow::UiFiles;
+QList<QPair<QString, ConfigurationUiHandler *> > MainConfigurationWindow::UiFiles;
 
 void MainConfigurationWindow::registerUiFile(const QString &uiFile, ConfigurationUiHandler *uiHandler)
 {
 	UiFiles.append(qMakePair(uiFile, uiHandler));
 	if (Instance)
 	{
-		Q3ValueList<ConfigWidget *> widgets = Instance->appendUiFile(uiFile);
+		QList<ConfigWidget *> widgets = Instance->appendUiFile(uiFile);
 
 		if (uiHandler)
 			uiHandler->mainConfigurationWindowCreated(Instance);

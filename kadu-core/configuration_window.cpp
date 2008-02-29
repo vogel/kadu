@@ -15,7 +15,7 @@
 //Added by qt3to4:
 #include <Q3GridLayout>
 #include <Q3Frame>
-#include <Q3ValueList>
+#include <QList>
 #include <QKeyEvent>
 #include <Q3VBoxLayout>
 
@@ -296,9 +296,9 @@ void ConfigurationWindow::show()
 	}
 }
 
-Q3ValueList<ConfigWidget *> ConfigurationWindow::appendUiFile(const QString &fileName, bool load)
+QList<ConfigWidget *> ConfigurationWindow::appendUiFile(const QString &fileName, bool load)
 {
-	Q3ValueList<ConfigWidget *> widgets = processUiFile(fileName);
+	QList<ConfigWidget *> widgets = processUiFile(fileName);
 
 	if (load)
 		FOREACH(widget, widgets)
@@ -313,11 +313,11 @@ void ConfigurationWindow::removeUiFile(const QString &fileName)
 	processUiFile(fileName, false);
 }
 
-Q3ValueList<ConfigWidget *>  ConfigurationWindow::processUiFile(const QString &fileName, bool append)
+QList<ConfigWidget *>  ConfigurationWindow::processUiFile(const QString &fileName, bool append)
 {
 	kdebugf();
 
-	Q3ValueList<ConfigWidget *> result;
+	QList<ConfigWidget *> result;
 	QFile file(fileName);
 
 	QDomDocument uiFile;
@@ -348,11 +348,11 @@ Q3ValueList<ConfigWidget *>  ConfigurationWindow::processUiFile(const QString &f
 	return result;
 }
 
-Q3ValueList<ConfigWidget *> ConfigurationWindow::processUiSectionFromDom(QDomNode sectionNode, bool append)
+QList<ConfigWidget *> ConfigurationWindow::processUiSectionFromDom(QDomNode sectionNode, bool append)
 {
 	kdebugf();
 
-	Q3ValueList<ConfigWidget *> result;
+	QList<ConfigWidget *> result;
 	if (!sectionNode.isElement())
 	{
 		kdebugf2();
@@ -386,12 +386,12 @@ Q3ValueList<ConfigWidget *> ConfigurationWindow::processUiSectionFromDom(QDomNod
 	return result;
 }
 
-Q3ValueList<ConfigWidget *> ConfigurationWindow::processUiTabFromDom(QDomNode tabNode, const QString &iconName,
+QList<ConfigWidget *> ConfigurationWindow::processUiTabFromDom(QDomNode tabNode, const QString &iconName,
 	const QString &sectionName, bool append)
 {
 	kdebugf();
 
-	Q3ValueList<ConfigWidget *> result;
+	QList<ConfigWidget *> result;
 	if (!tabNode.isElement())
 	{
 		kdebugf2();
@@ -421,11 +421,11 @@ Q3ValueList<ConfigWidget *> ConfigurationWindow::processUiTabFromDom(QDomNode ta
 	return result;
 }
 
-Q3ValueList<ConfigWidget *> ConfigurationWindow::processUiGroupBoxFromDom(QDomNode groupBoxNode, const QString &sectionName, const QString &tabName, bool append)
+QList<ConfigWidget *> ConfigurationWindow::processUiGroupBoxFromDom(QDomNode groupBoxNode, const QString &sectionName, const QString &tabName, bool append)
 {
 	kdebugf();
 
-	Q3ValueList<ConfigWidget *> result;
+	QList<ConfigWidget *> result;
 	if (!groupBoxNode.isElement())
 	{
 		kdebugf2();

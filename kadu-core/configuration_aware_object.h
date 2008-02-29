@@ -7,7 +7,7 @@
 
 class ConfigurationAwareObject
 {
-	static Q3ValueList<ConfigurationAwareObject *> objects;
+	static QList<ConfigurationAwareObject *> objects;
 
 	static void registerObject(ConfigurationAwareObject *object);
 	static void unregisterObject(ConfigurationAwareObject *object);

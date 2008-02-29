@@ -38,7 +38,7 @@ private:
 	QString OnIcon;
 	QString OnText;
 	const char *Slot;
-	Q3ValueList<ToolButton*> ToolButtons;
+	QList<ToolButton*> ToolButtons;
 	bool ToggleState;
 	ActionType Type;
 
@@ -72,7 +72,7 @@ public:
 	void setOnShape(const QString& icon, const QString& text);
 	void buttonAddedToToolbar(ToolBar *toolBar, ToolButton *button);
 	int addToPopupMenu(Q3PopupMenu* menu, bool connect_signal = true);
-	Q3ValueList<ToolButton*> toolButtonsForUserListElements(
+	QList<ToolButton*> toolButtonsForUserListElements(
 		const UserListElements& users);
 	bool isOn(const UserListElements& users);
 	void setOn(const UserListElements& users, bool on);

@@ -42,7 +42,7 @@ class KaduTextBrowser;
 class UserBox;
 
 /** \typedef QValueList<ChatWidget*> ChatList */
-typedef Q3ValueList<ChatWidget*> ChatList;
+typedef QList<ChatWidget*> ChatList;
 
 /**
 	Klasa tworz±ca okno rozmowy, rejestruj±ca przyciski,
@@ -249,7 +249,7 @@ public slots:
 		Slot dodaj wiadomo¶ci do okna
 		\param messages lista wiadomo¶ci
 	**/
-	void appendMessages(const Q3ValueList<ChatMessage *> &, bool pending = false);
+	void appendMessages(const QList<ChatMessage *> &, bool pending = false);
 
 	/**
 		\fn void appendMessage(ChatMessage *)

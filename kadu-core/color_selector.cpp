@@ -14,7 +14,7 @@
 //Added by qt3to4:
 #include <QPixmap>
 #include <Q3GridLayout>
-#include <Q3ValueList>
+#include <QList>
 #include <QCloseEvent>
 
 #include "color_selector.h"
@@ -47,7 +47,7 @@ ColorSelector::ColorSelector(const QColor &defColor, QWidget* parent, const char
 	: QWidget (parent, name,Qt::WType_Popup|Qt::WDestructiveClose)
 {
 	kdebugf();
-	Q3ValueList<QColor> qcolors;
+	QList<QColor> qcolors;
 	int i;
 
 	for (i = 0; i < 16; ++i)

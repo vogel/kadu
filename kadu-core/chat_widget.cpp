@@ -16,7 +16,7 @@
 #include <q3vbox.h>
 //Added by qt3to4:
 #include <QKeyEvent>
-#include <Q3ValueList>
+#include <QList>
 #include <QPixmap>
 #include <QDragEnterEvent>
 #include <QDragMoveEvent>
@@ -56,7 +56,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 {
 	kdebugf();
 	const int minimumDockAreaSize = 3;
-	Q3ValueList<int> sizes;
+	QList<int> sizes;
 
 	setAcceptDrops(true);
 	/* register us in the chats registry... */
@@ -515,7 +515,7 @@ void ChatWidget::keyPressEvent(QKeyEvent* e)
 void ChatWidget::editTextChanged()
 {
 	kdebugf();
-	Q3ValueList<ToolButton*> buttons =
+	QList<ToolButton*> buttons =
 		KaduActions["sendAction"]->toolButtonsForUserListElements(Users->toUserListElements());
 	bool buttonsEnabled = !Edit->text().isEmpty();
 	CONST_FOREACH(i, buttons)
@@ -542,7 +542,7 @@ QDateTime ChatWidget::getLastMsgTime()
 	return lastMsgTime;
 }
 
-void ChatWidget::appendMessages(const Q3ValueList<ChatMessage *> &messages, bool pending)
+void ChatWidget::appendMessages(const QList<ChatMessage *> &messages, bool pending)
 {
 	body->appendMessages(messages);
 
@@ -893,7 +893,7 @@ unsigned int ChatWidget::newMessagesCount() const
 
 void ChatWidget::restoreGeometry()
 {
-	Q3ValueList<int> vertSizes = toIntList(chat_manager->getChatWidgetProperty(Users, "VerticalSizes").toList());
+	QList<int> vertSizes = toIntList(chat_manager->getChatWidgetProperty(Users, "VerticalSizes").toList());
 	if (vertSizes.empty() && Users->count() == 1)
 	{
 		QString vert_sz_str = (*(Users->constBegin())).data("VerticalSizes").toString();
@@ -918,7 +918,7 @@ void ChatWidget::restoreGeometry()
 
 	if (horizSplit)
 	{
-		Q3ValueList<int> horizSizes = toIntList(chat_manager->getChatWidgetProperty(Users, "HorizontalSizes").toList());
+		QList<int> horizSizes = toIntList(chat_manager->getChatWidgetProperty(Users, "HorizontalSizes").toList());
 		if (!horizSizes.empty())
 			horizSplit->setSizes(horizSizes);
 	}
@@ -926,7 +926,7 @@ void ChatWidget::restoreGeometry()
 
 void ChatWidget::storeGeometry()
 {
-// 	Q3ValueList<int> sizes = vertSplit->sizes();
+// 	QList<int> sizes = vertSplit->sizes();
 // 	chat_manager->setChatWidgetProperty(Users, "VerticalSizes", toVariantList(sizes));
 
 // 	if (Users->count() == 1)

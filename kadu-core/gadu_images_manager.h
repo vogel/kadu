@@ -32,7 +32,7 @@ class GaduImagesManager
 			QString file_name;
 			SavedImage();
 		};
-		Q3ValueList<SavedImage> SavedImages;
+		QList<SavedImage> SavedImages;
 
 	public:
 		GaduImagesManager();

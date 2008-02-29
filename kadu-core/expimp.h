@@ -41,7 +41,7 @@ class UserlistImportExport : public Q3HBox {
 		~UserlistImportExport();
 	private:
 		QPushButton *pb_fetch; /*!< przycisk pobierania listy */
-		Q3ValueList<UserListElement> importedUserlist;
+		QList<UserListElement> importedUserlist;
 		QPushButton *pb_send; /*!< przycisk wysy³ania listy */
 		QPushButton *pb_delete; /*!< przycisk kasuj±cy listê */
 		QPushButton *pb_tofile;
@@ -57,7 +57,7 @@ class UserlistImportExport : public Q3HBox {
 		void makeUserlist(void);
 		void updateUserlist(void);
 		void fromfile();
-		void userListImported(bool ok, Q3ValueList<UserListElement> userList);
+		void userListImported(bool ok, QList<UserListElement> userList);
 		void startExportTransfer(void);
 		void clean(void);
 		void ExportToFile(void);

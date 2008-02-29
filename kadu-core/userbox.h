@@ -10,7 +10,7 @@
 //Added by qt3to4:
 #include <QWheelEvent>
 #include <QResizeEvent>
-#include <Q3ValueList>
+#include <QList>
 #include <QMouseEvent>
 #include <QKeyEvent>
 #include <QEvent>
@@ -291,7 +291,7 @@ class UserBoxMenu : public Q3PopupMenu
 	Q_OBJECT
 
 	private:
-		Q3ValueList<QPair<QString, QString> > iconNames;
+		QList<QPair<QString, QString> > iconNames;
 
 	private slots:
 		void restoreLook();
@@ -448,14 +448,14 @@ class UserBox : public Q3ListBox, ConfigurationAwareObject
 			Zwraca listê filtrów "pozytywnych"
 			\return lista filtrów
 		**/
-		Q3ValueList<UserGroup *> filters() const;
+		QList<UserGroup *> filters() const;
 
 		/**
 			\fn QValueList<UserGroup *> negativeFilters() const
 			Zwraca listê filtrów "negatywnych"
 			\return lista filtrów
 		**/
-		Q3ValueList<UserGroup *> negativeFilters() const;
+		QList<UserGroup *> negativeFilters() const;
 
 		/**
 			\fn bool currentUserExists() const
@@ -494,7 +494,7 @@ class UserBox : public Q3ListBox, ConfigurationAwareObject
 			\fn QValueList<UserBox::CmpFuncDesc> compareFunctions() const
 			\return lista obiektów opisuj±cych funkcje porównuj±ce
 		**/
- 		Q3ValueList<UserBox::CmpFuncDesc> compareFunctions() const;
+ 		QList<UserBox::CmpFuncDesc> compareFunctions() const;
 
 		/**
 			\fn void addCompareFunction(const QString &id, const QString &trDescription, int (*cmp)(const UserListElement &, const UserListElement &))
@@ -522,7 +522,7 @@ class UserBox : public Q3ListBox, ConfigurationAwareObject
 		**/
 		static void refreshAllLater();
 
-		static const Q3ValueList<UserBox *> &userboxes() {return UserBoxes;}
+		static const QList<UserBox *> &userboxes() {return UserBoxes;}
 
 		static CreateNotifier createNotifier;
 
@@ -663,14 +663,14 @@ class UserBox : public Q3ListBox, ConfigurationAwareObject
 		void messageFromUserDeleted(UserListElement elem);
 
 	private:
-		static Q3ValueList<UserBox*> UserBoxes;
+		static QList<UserBox*> UserBoxes;
 		bool fancy;
 
 		Action *desc_action;
 
 		UserGroup *VisibleUsers;
-		Q3ValueList<UserGroup *> Filters;
-		Q3ValueList<UserGroup *> NegativeFilters;
+		QList<UserGroup *> Filters;
+		QList<UserGroup *> NegativeFilters;
 		std::vector<UserListElement> sortHelper;
 		std::vector<UserListElement> toRemove;
 		QMap<const UserGroup *, UserListElements> AppendProxy;

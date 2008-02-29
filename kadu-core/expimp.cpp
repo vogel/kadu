@@ -18,7 +18,7 @@
 #include <q3vgroupbox.h>
 //Added by qt3to4:
 #include <QResizeEvent>
-#include <Q3ValueList>
+#include <QList>
 #include <QKeyEvent>
 
 #include "debug.h"
@@ -132,7 +132,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) :
 
 	connect(gadu, SIGNAL(userListExported(bool)), this, SLOT(userListExported(bool)));
 	connect(gadu, SIGNAL(userListCleared(bool)), this, SLOT(userListCleared(bool)));
-	connect(gadu, SIGNAL(userListImported(bool, Q3ValueList<UserListElement>)), this, SLOT(userListImported(bool, Q3ValueList<UserListElement>)));
+	connect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)), this, SLOT(userListImported(bool, QList<UserListElement>)));
 	// end connect
 
 	layoutHelper->addLabel(l_info);
@@ -233,7 +233,7 @@ void UserlistImportExport::updateUserlist()
 	kdebugf2();
 }
 
-void UserlistImportExport::userListImported(bool ok, Q3ValueList<UserListElement> userList)
+void UserlistImportExport::userListImported(bool ok, QList<UserListElement> userList)
 {
 	kdebugf();
 

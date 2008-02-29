@@ -12,7 +12,7 @@
 //Added by qt3to4:
 #include <QContextMenuEvent>
 #include <QChildEvent>
-#include <Q3ValueList>
+#include <QList>
 #include <Q3PtrList>
 #include <Q3PopupMenu>
 
@@ -217,4 +217,4 @@ bool DockArea::supportsAction(int actionType)
 }
 
 bool DockArea::Blocked = true;
-Q3ValueList<DockArea *> DockArea::AllDockAreas;
+QList<DockArea *> DockArea::AllDockAreas;

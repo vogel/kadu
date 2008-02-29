@@ -36,12 +36,12 @@
 #include <qregexp.h>
 //Added by qt3to4:
 #include <QPixmap>
-#include <Q3ValueList>
+#include <QList>
 #include <Q3CString>
 
 #define GG_STATUS_INVISIBLE2 0x0009 /* g³upy... */
 
-static Q3ValueList<QHostAddress> gg_servers;
+static QList<QHostAddress> gg_servers;
 
 #define GG_SERVERS_COUNT 17
 static const char *gg_servers_ip[GG_SERVERS_COUNT] = {
@@ -273,7 +273,7 @@ void SearchRecord::clearData()
 
 /* GaduProtocol */
 
-Q3ValueList<QHostAddress> GaduProtocol::ConfigServers;
+QList<QHostAddress> GaduProtocol::ConfigServers;
 static GaduProtocolManager *gadu_protocol_manager;
 
 void GaduProtocol::closeModule()
@@ -1789,20 +1789,20 @@ QString GaduProtocol::userListToString(const UserList& userList) const
 	return contacts;
 }
 
-Q3ValueList<UserListElement> GaduProtocol::stringToUserList(const QString &string) const
+QList<UserListElement> GaduProtocol::stringToUserList(const QString &string) const
 {
 	QString s = string;
 	Q3TextStream stream(&s, QIODevice::ReadOnly);
 	return streamToUserList(stream);
 }
 
-Q3ValueList<UserListElement> GaduProtocol::streamToUserList(Q3TextStream& stream) const
+QList<UserListElement> GaduProtocol::streamToUserList(Q3TextStream& stream) const
 {
 	kdebugf();
 
 	QStringList sections, groupNames;
 	QString line;
-	Q3ValueList<UserListElement> ret;
+	QList<UserListElement> ret;
 	unsigned int i, secCount;
 	bool ok;
 
@@ -1938,7 +1938,7 @@ bool GaduProtocol::doImportUserList()
 
 	bool success=(gg_userlist_request(Sess, GG_USERLIST_GET, NULL) != -1);
 	if (!success)
-		emit userListImported(false, Q3ValueList<UserListElement>());
+		emit userListImported(false, QList<UserListElement>());
 	kdebugf2();
 	return success;
 }
@@ -2045,7 +2045,7 @@ void GaduProtocol::userListReplyReceived(char type, char *reply)
 		{
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "error!\n");
 
-			emit userListImported(false, Q3ValueList<UserListElement>());
+			emit userListImported(false, QList<UserListElement>());
 			return;
 		}
 
@@ -2482,7 +2482,7 @@ QString GaduFormater::stripHTMLFromGGMessage(const QString &msg)
 	return mesg;
 }
 
-unsigned char *GaduFormater::allocFormantBuffer(const Q3ValueList<struct richtext_formant> &formants, unsigned int &formats_length)
+unsigned char *GaduFormater::allocFormantBuffer(const QList<struct richtext_formant> &formants, unsigned int &formats_length)
 {
 	kdebugf();
 	struct gg_msg_richtext richtext_header;
@@ -2524,10 +2524,10 @@ QString GaduFormater::unformatGGMessage(const QString &msg, unsigned int &format
 	QString mesg, tmp;
 	QStringList attribs;
 	struct attrib_formant actattrib;
-	Q3ValueList<attrib_formant> formantattribs;
+	QList<attrib_formant> formantattribs;
 	int pos, idx, inspan;
 	struct richtext_formant actformant, lastformant;
-	Q3ValueList<struct richtext_formant> formants;
+	QList<struct richtext_formant> formants;
 	bool endspan;
 
 	mesg = stripHTMLFromGGMessage(msg);
@@ -2589,7 +2589,7 @@ QString GaduFormater::unformatGGMessage(const QString &msg, unsigned int &format
 			// we need to save it, and reinsert after image in next loop iteration
 			// (this is required, since image formant removes any active formatting
 			// options)
-			Q3ValueList<struct richtext_formant>::const_iterator it = formants.end();
+			QList<struct richtext_formant>::const_iterator it = formants.end();
 			while (it != formants.begin())
 			{
 				--it;

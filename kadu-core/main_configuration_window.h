@@ -51,7 +51,7 @@ class MainConfigurationWindow : public ConfigurationWindow
 	Q_OBJECT
 
 	static MainConfigurationWindow *Instance;
-	static Q3ValueList<QPair<QString, ConfigurationUiHandler *> > UiFiles;
+	static QList<QPair<QString, ConfigurationUiHandler *> > UiFiles;
 
 	static void instanceCreated();
 
@@ -69,7 +69,7 @@ class MainConfigurationWindow : public ConfigurationWindow
 	ConfigLineEdit *mailCommandLineEdit;
 
 	Preview *chatPreview;
-	Q3ValueList<ChatMessage *> chatMessages;
+	QList<ChatMessage *> chatMessages;
 
 	void setLanguages();
 

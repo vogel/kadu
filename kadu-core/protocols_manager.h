@@ -34,14 +34,14 @@ class ProtocolsManager : public QObject
 			ProtocolDescription(const ProtocolDescription &c) 
 				: protocolID(c.protocolID), Name(c.Name), Manager(c.Manager) {}
 		};
-		Q3ValueList<ProtocolDescription> protocolDescriptions;
-		Q3ValueList<Protocol *> protocols;
+		QList<ProtocolDescription> protocolDescriptions;
+		QList<Protocol *> protocols;
 
 	public:
 		static void initModule();
 		static void closeModule();
 
-		Q3ValueList<Protocol *> byProtocolID(const QString &protocolID);
+		QList<Protocol *> byProtocolID(const QString &protocolID);
 		Protocol *byID(const QString &protocolID, const QString &ID);
 		
 		void registerProtocol(const QString &protocolID, const QString &name, ProtocolManager *manager);

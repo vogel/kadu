@@ -48,7 +48,7 @@ public:
 
 class IgnoredManager
 {
-	static Q3ValueList<QPair<UserListElements, bool> > Ignored;
+	static QList<QPair<UserListElements, bool> > Ignored;
 
 public:
 	static void loadFromConfiguration();
@@ -57,7 +57,7 @@ public:
 	static void remove(UserListElements uins);
 	static bool isIgnored(UserListElements uins);
 	static void clear();
-	static const Q3ValueList<QPair<UserListElements, bool> > & getList();
+	static const QList<QPair<UserListElements, bool> > & getList();
 };
 
 #endif

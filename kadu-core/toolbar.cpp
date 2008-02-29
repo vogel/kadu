@@ -14,7 +14,7 @@
 #include <QContextMenuEvent>
 #include <QMoveEvent>
 #include <QDropEvent>
-#include <Q3ValueList>
+#include <QList>
 #include <Q3PopupMenu>
 #include <QDragEnterEvent>
 
@@ -28,7 +28,7 @@
 #include "toolbar.h"
 #include "kadu.h"
 
-QMap< QString, Q3ValueList<ToolBar::ToolBarAction> > ToolBar::DefaultActions;
+QMap< QString, QList<ToolBar::ToolBarAction> > ToolBar::DefaultActions;
 
 ToolBar::ToolBar(QWidget* /*parent*/, const char *name)
 	: Q3ToolBar(NULL, name), dragButton(NULL)
@@ -460,7 +460,7 @@ void ToolBar::addDefaultAction(const QString &toolbar, const QString &actionName
 {
 	kdebugf();
 
-	Q3ValueList<ToolBarAction> &actions = DefaultActions[toolbar];
+	QList<ToolBarAction> &actions = DefaultActions[toolbar];
 
 	ToolBarAction action;
 	action.actionName = actionName;
@@ -477,7 +477,7 @@ void ToolBar::addDefaultAction(const QString &toolbar, const QString &actionName
 	if (index < 0)
 		actions.push_back(action);
 	else
-		actions.insert(actions.at(index), action);
+		actions.insert(index, action);
 
 	kdebugf2();
 }
@@ -488,7 +488,7 @@ void ToolBar::loadDefault()
 
 	if (DefaultActions.contains(name()))
 	{
-		const Q3ValueList<ToolBarAction>& actions = DefaultActions[name()];
+		const QList<ToolBarAction>& actions = DefaultActions[name()];
 		CONST_FOREACH(i, actions)
 			addAction((*i).actionName, (*i).showLabel, 0);
 	}

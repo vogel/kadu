@@ -21,7 +21,7 @@ class IconsManager : public Themes, ConfigurationAwareObject
 	QMap<QString, QIcon> icons;
 // 	QMap<QString, QMovie> animatedIcons;
 
-//	Q3ValueList<QPair<QMenuData *, Q3ValueList<QPair<QString, QString> > > > menus;
+//	QList<QPair<QMenuData *, QList<QPair<QString, QString> > > > menus;
 
 public:
 	IconsManager(const QString& name, const QString& configname);

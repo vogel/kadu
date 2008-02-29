@@ -5,7 +5,7 @@
 
 #include <qstring.h>
 //Added by qt3to4:
-#include <Q3ValueList>
+#include <QList>
 #include "usergroup.h"
 
 /**
@@ -43,7 +43,7 @@ class UserList : public UserGroup
 			Scala listê kontaktów z podan± list± kontaktów \a userlist.
 			\param userlist lista kontaktów z któr± nale¿y scaliæ
 		**/
-		void merge(const Q3ValueList<UserListElement> &list);
+		void merge(const QList<UserListElement> &list);
 
 		/**
 			\fn void readFromConfig()

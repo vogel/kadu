@@ -17,7 +17,7 @@
 #include <q3vgroupbox.h>
 //Added by qt3to4:
 #include <QResizeEvent>
-#include <Q3ValueList>
+#include <QList>
 #include <QKeyEvent>
 
 #include "config_file.h"
@@ -178,7 +178,7 @@ void Ignored::resizeEvent(QResizeEvent * /*e*/)
 
 
 
-Q3ValueList<QPair<UserListElements, bool> > IgnoredManager::Ignored;
+QList<QPair<UserListElements, bool> > IgnoredManager::Ignored;
 
 void IgnoredManager::loadFromConfiguration()
 {
@@ -256,7 +256,7 @@ void IgnoredManager::clear()
 	Ignored.clear();
 }
 
-const Q3ValueList<QPair<UserListElements, bool> > & IgnoredManager::getList()
+const QList<QPair<UserListElements, bool> > & IgnoredManager::getList()
 {
 	return Ignored;
 }

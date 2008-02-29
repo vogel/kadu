@@ -8,7 +8,7 @@
 //Added by qt3to4:
 #include <QCloseEvent>
 #include <QPaintEvent>
-#include <Q3ValueList>
+#include <QList>
 #include <QPixmap>
 #include <QEvent>
 // #include <private/qrichtext_p.h>
@@ -50,7 +50,7 @@ class EmoticonsManager : public Themes, ConfigurationAwareObject
 			EmoticonsListItem();
 		};
 		Q3ValueVector<EmoticonsListItem> Aliases;
-		Q3ValueList<EmoticonsListItem> Selector;
+		QList<EmoticonsListItem> Selector;
 		EmotsWalker *walker;
 
 		static QString getQuoted(const QString& s, unsigned int& pos);

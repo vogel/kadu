@@ -16,7 +16,7 @@
 #include <q3accel.h>
 //Added by qt3to4:
 #include <QPixmap>
-#include <Q3ValueList>
+#include <QList>
 #include <Q3PopupMenu>
 
 #include "action.h"
@@ -65,7 +65,7 @@ void Action::toolButtonDestroyed(QObject* obj)
 {
 	kdebugf();
 	ToolButton* btn = static_cast<ToolButton*>(obj);
-	Q3ValueList<ToolButton*>::iterator it = ToolButtons.find(btn);
+	QList<ToolButton*>::iterator it = ToolButtons.find(btn);
 	ToolButtons.remove(it);
 	kdebugf2();
 }
@@ -119,10 +119,10 @@ int Action::addToPopupMenu(Q3PopupMenu* menu, bool connect_signal)
 	return id;
 }
 
-Q3ValueList<ToolButton*> Action::toolButtonsForUserListElements(const UserListElements& users)
+QList<ToolButton*> Action::toolButtonsForUserListElements(const UserListElements& users)
 {
 	kdebugf();
-	Q3ValueList<ToolButton*> buttons;
+	QList<ToolButton*> buttons;
 	CONST_FOREACH(i, ToolButtons)
 	{
 		const ToolBar* toolbar = dynamic_cast<ToolBar*>((*i)->parentWidget());
@@ -136,7 +136,7 @@ Q3ValueList<ToolButton*> Action::toolButtonsForUserListElements(const UserListEl
 bool Action::isOn(const UserListElements& users)
 {
 //	kdebugf();
-	Q3ValueList<ToolButton*> buttons = toolButtonsForUserListElements(users);
+	QList<ToolButton*> buttons = toolButtonsForUserListElements(users);
 	if(!buttons.empty())
 		return (*buttons.begin())->isOn();
 	return false;
@@ -146,7 +146,7 @@ bool Action::isOn(const UserListElements& users)
 void Action::setOn(const UserListElements& users, bool on)
 {
 	kdebugf();
-	Q3ValueList<ToolButton*> buttons = toolButtonsForUserListElements(users);
+	QList<ToolButton*> buttons = toolButtonsForUserListElements(users);
 	CONST_FOREACH(i, buttons)
 		(*i)->setOn(on);
 	kdebugf2();
@@ -164,7 +164,7 @@ void Action::setAllOn(bool on)
 void Action::setPixmaps(const UserListElements& users, const QPixmap& pixmap)
 {
 	kdebugf();
-	Q3ValueList<ToolButton*> buttons = toolButtonsForUserListElements(users);
+	QList<ToolButton*> buttons = toolButtonsForUserListElements(users);
 	CONST_FOREACH(i, buttons)
 		(*i)->setPixmap(pixmap);
 	kdebugf2();
@@ -173,7 +173,7 @@ void Action::setPixmaps(const UserListElements& users, const QPixmap& pixmap)
 void Action::setIcons(const UserListElements& users, const QIcon& icon)
 {
 	kdebugf();
-	Q3ValueList<ToolButton*> buttons = toolButtonsForUserListElements(users);
+	QList<ToolButton*> buttons = toolButtonsForUserListElements(users);
 	CONST_FOREACH(i, buttons)
 		(*i)->setIcon(icon);
 	kdebugf();
@@ -203,7 +203,7 @@ void Action::refreshIcons()
 void Action::setTexts(const UserListElements& users, const QString& text)
 {
 	kdebugf();
-	Q3ValueList<ToolButton*> buttons = toolButtonsForUserListElements(users);
+	QList<ToolButton*> buttons = toolButtonsForUserListElements(users);
 	CONST_FOREACH(i, buttons)
 		(*i)->setText(text);
 	kdebugf2();

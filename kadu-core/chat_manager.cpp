@@ -11,7 +11,7 @@
 #include <qbitmap.h>
 #include <qtooltip.h>
 //Added by qt3to4:
-#include <Q3ValueList>
+#include <QList>
 
 #include "action.h"
 #include "debug.h"
@@ -426,7 +426,7 @@ const ChatList& ChatManager::chats() const
 	return ChatWidgets;
 }
 
-const Q3ValueList<UserListElements> ChatManager::closedChatUsers() const
+const QList<UserListElements> ChatManager::closedChatUsers() const
 {
 	return ClosedChatUsers;
 }
@@ -616,7 +616,7 @@ void ChatManager::openPendingMsgs(UserListElements users, bool forceActivate)
 {
 	kdebugf();
 
-	Q3ValueList<ChatMessage *> messages;
+	QList<ChatMessage *> messages;
 	PendingMsgs::Element elem;
 
 	for (int i = 0; i < pending.count(); ++i)

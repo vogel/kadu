@@ -17,7 +17,7 @@
 #include "userlist.h"
 #include "userlist-private.h"
 //Added by qt3to4:
-#include <Q3ValueList>
+#include <QList>
 
 UserGroup::UserGroup(int size, const char *name) : QObject(NULL, name), d(new UserGroupData(size))
 {

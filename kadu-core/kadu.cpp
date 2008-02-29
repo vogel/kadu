@@ -22,7 +22,7 @@
 //Added by qt3to4:
 #include <QResizeEvent>
 #include <QPixmap>
-#include <Q3ValueList>
+#include <QList>
 #include <QKeyEvent>
 #include <Q3VBoxLayout>
 #include <Q3Frame>
@@ -341,7 +341,7 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	if (!config_file.readBoolEntry("Look", "ShowStatusButton"))
 		statusButton->hide();
 
-	Q3ValueList<int> splitsizes;
+	QList<int> splitsizes;
 
 	splitsizes.append(config_file.readNumEntry("General", "UserBoxHeight"));
 	splitsizes.append(config_file.readNumEntry("General", "DescriptionHeight"));
@@ -604,7 +604,7 @@ void Kadu::openRecentChats(int index)
 {
 	kdebugf();
 
-	chat_manager->openPendingMsgs(*(chat_manager->closedChatUsers().at(index)));
+	chat_manager->openPendingMsgs(chat_manager->closedChatUsers().at(index));
 
 	kdebugf2();
 }

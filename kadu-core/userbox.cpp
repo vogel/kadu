@@ -20,7 +20,7 @@
 #include <q3vgroupbox.h>
 //Added by qt3to4:
 #include <QKeyEvent>
-#include <Q3ValueList>
+#include <QList>
 #include <QPixmap>
 #include <QResizeEvent>
 #include <Q3PopupMenu>
@@ -449,7 +449,7 @@ class ULEComparer
 {
 	public:
 		inline bool operator()(const UserListElement &e1, const UserListElement &e2) const;
-		Q3ValueList<UserBox::CmpFuncDesc> CmpFunctions;
+		QList<UserBox::CmpFuncDesc> CmpFunctions;
 		ULEComparer() : CmpFunctions() {}
 };
 
@@ -1090,9 +1090,9 @@ void UserBox::setColorsOrBackgrounds()
 		(*userbox)->refreshBackground();
 }
 
-Q3ValueList<UserBox *> UserBox::UserBoxes;
+QList<UserBox *> UserBox::UserBoxes;
 
-Q3ValueList<UserBox::CmpFuncDesc> UserBox::compareFunctions() const
+QList<UserBox::CmpFuncDesc> UserBox::compareFunctions() const
 {
 	return comparer->CmpFunctions;
 }
@@ -1457,12 +1457,12 @@ const UserGroup *UserBox::visibleUsers() const
 	return VisibleUsers;
 }
 
-Q3ValueList<UserGroup *> UserBox::filters() const
+QList<UserGroup *> UserBox::filters() const
 {
 	return Filters;
 }
 
-Q3ValueList<UserGroup *> UserBox::negativeFilters() const
+QList<UserGroup *> UserBox::negativeFilters() const
 {
 	return NegativeFilters;
 }

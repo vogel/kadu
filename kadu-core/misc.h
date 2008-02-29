@@ -13,7 +13,7 @@
 //Added by qt3to4:
 #include <Q3CString>
 #include <QPaintEvent>
-#include <Q3ValueList>
+#include <QList>
 #include <QPixmap>
 #include <Q3PopupMenu>
 #include <QKeyEvent>
@@ -213,13 +213,13 @@ class LayoutHelper
 		void textChanged(QLabel *label);
 		void resizeLabels();
 	private:
-		Q3ValueList<QLabel*> labels;
-		Q3ValueList<Q3SimpleRichText*> riches;
+		QList<QLabel*> labels;
+		QList<Q3SimpleRichText*> riches;
 
 };
 
-Q3ValueList<int> toIntList(const Q3ValueList<QVariant> &in);
-Q3ValueList<QVariant> toVariantList(const Q3ValueList<int> &in);
+QList<int> toIntList(const QList<QVariant> &in);
+QList<QVariant> toVariantList(const QList<int> &in);
 
 /*
 	zastêpstwo dla arga w QString, które podmienia kolejne %[1-4] w miejscu

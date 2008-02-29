@@ -184,9 +184,9 @@ void StatusChangerManager::registerStatusChanger(StatusChanger *statusChanger)
 	connect(statusChanger, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
 
 	for (unsigned int i = 0; i < statusChangers.count(); i++)
-		if ((*statusChangers.at(i))->priority() > statusChanger->priority())
+		if (statusChangers.at(i)->priority() > statusChanger->priority())
 		{
-			statusChangers.insert(statusChangers.at(i), statusChanger);
+			statusChangers.insert(i, statusChanger);
 			return;
 		}
 
@@ -218,7 +218,7 @@ void StatusChangerManager::statusChanged()
 
 	UserStatus status;
 	for (unsigned int i = 0; i < statusChangers.count(); i++)
-		(*statusChangers.at(i))->changeStatus(status);
+		statusChangers.at(i)->changeStatus(status);
 
 	emit statusChanged(status);
 

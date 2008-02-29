@@ -23,7 +23,7 @@ class KaduTextBrowser;
 class KaduSplitter : public QSplitter
 {
 	protected:
-		Q3ValueList<KaduTextBrowser*> textbrowsers;
+		QList<KaduTextBrowser*> textbrowsers;
 // 		void drawContents(QPainter* p);
 		void childEvent(QChildEvent* c);
 

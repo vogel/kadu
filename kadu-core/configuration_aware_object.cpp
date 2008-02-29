@@ -11,9 +11,9 @@
 
 #include "configuration_aware_object.h"
 //Added by qt3to4:
-#include <Q3ValueList>
+#include <QList>
 
-Q3ValueList<ConfigurationAwareObject *> ConfigurationAwareObject::objects;
+QList<ConfigurationAwareObject *> ConfigurationAwareObject::objects;
 
 void ConfigurationAwareObject::registerObject(ConfigurationAwareObject *object)
 {
