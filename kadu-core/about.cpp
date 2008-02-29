@@ -7,24 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qglobal.h>
-
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qpushbutton.h>
-#include <qtabwidget.h>
-#include <qmenu.h>
-#include <qmenubar.h>
-#include <q3popupmenu.h>
-#include <q3textstream.h>
-#include <q3vbox.h>
-#include <qcursor.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QMouseEvent>
-#include <Q3Frame>
-#include <QKeyEvent>
+#include <QLayout>
+#include <QPushButton>
+#include <QTabWidget>
 #include <QTextEdit>
+#include <QTextStream>
 
 #include "about.h"
 #include "debug.h"
@@ -34,7 +21,7 @@
 class KaduLink : public QLabel
 {
 	public:
-		KaduLink(QWidget *parent) : QLabel(parent)
+		KaduLink() : QLabel()
 		{
 			setText("<a href=\"http://www.kadu.net/\">www.kadu.net</a>");
 			setCursor(QCursor(Qt::PointingHandCursor));
@@ -53,12 +40,12 @@ About::About(QWidget *parent, const char *name) : QWidget(parent, name, Qt::Wind
 	kdebugf();
 
 	// set window properties and flags
- 	setCaption(tr("About"));
-	//layout()->setResizeMode(QLayout::Minimum);
+	setWindowTitle(tr("About"));
+	setAttribute(Qt::WA_DeleteOnClose);
 	// end set window properties and flags
 
 	// create main QLabel widgets (icon and app info)
-	QWidget *left = new QWidget(this);
+	QWidget *left = new QWidget();
 
 	QLabel *l_icon = new QLabel;
 	l_icon->setPixmap(icons_manager->loadPixmap("AboutIcon"));
@@ -67,24 +54,25 @@ About::About(QWidget *parent, const char *name) : QWidget(parent, name, Qt::Wind
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
 	QVBoxLayout *left_layout = new QVBoxLayout;
-	left_layout->setContentsMargins(10, 10, 10, 10);
-	left_layout->setSpacing(10);
 	left_layout->addWidget(l_icon);
 	left_layout->addWidget(blank);
 
 	left->setLayout(left_layout);
 
-	QWidget *center = new QWidget(this);
+	QWidget *center = new QWidget();
+
+	QWidget *texts = new QWidget;
 
 	QLabel *l_info = new QLabel;
 	l_info->setText(QString("<span style=\"font-size: 12pt\">Kadu %1 %2<br />(c) 2001-2008 Kadu Team</span>").arg(VERSION)
 			.arg(strlen(detailed_version) > 0 ? ("(" + QString(detailed_version) + ")") : QString::null));
 	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 
-	QWidget *blank3 = new QWidget;
-	blank3->setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum));
+	QHBoxLayout *texts_layout = new QHBoxLayout;
+	texts_layout->addWidget(l_info);
+	texts_layout->addWidget(new KaduLink());
+	texts->setLayout(texts_layout);
 
-	//new KaduLink(texts);
 	// end create main QLabel widgets (icon and app info)
 
 	// our TabWidget
@@ -128,10 +116,7 @@ About::About(QWidget *parent, const char *name) : QWidget(parent, name, Qt::Wind
 	// end create our info widgets
 
 	QVBoxLayout *center_layout = new QVBoxLayout;
-	center_layout->setContentsMargins(10, 10, 10, 10);
-	center_layout->setSpacing(10);
-	center_layout->addWidget(l_info);
-	center_layout->addWidget(blank3);
+	center_layout->addWidget(texts);
 	center_layout->addWidget(tw_about);
 
 	center->setLayout(center_layout);
@@ -145,14 +130,18 @@ About::About(QWidget *parent, const char *name) : QWidget(parent, name, Qt::Wind
 	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"));
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 
-	QVBoxLayout *bottom_layout = new QVBoxLayout;
-	bottom_layout->setContentsMargins(10, 10, 10, 10);
-	bottom_layout->setSpacing(10);
+	QHBoxLayout *bottom_layout = new QHBoxLayout;
 	bottom_layout->addWidget(blank2);
 	bottom_layout->addWidget(pb_close);
 
 	bottom->setLayout(bottom_layout);
 	// end close button
+	center_layout->addWidget(bottom);
+	QHBoxLayout *layout = new QHBoxLayout;
+	layout->addWidget(left);
+	layout->addWidget(center);
+
+	setLayout(layout);
 
 	layoutHelper->addLabel(l_info);
 	loadGeometry(this, "General", "AboutGeometry", 0, 30, 640, 420);
@@ -187,7 +176,7 @@ QString About::loadFile(const QString &name)
 		return QString::null;
 	}
 
-	Q3TextStream str(&file);
+	QTextStream str(&file);
 	str.setCodec(codec_latin2);
 	QString data = str.read();
 	file.close();
