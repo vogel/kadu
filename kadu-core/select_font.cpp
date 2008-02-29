@@ -7,22 +7,29 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qfontdialog.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
+#include <QFontDialog>
+#include <QHBoxLayout>
+#include <QLineEdit>
+#include <QPushButton>
 
 #include "select_font.h"
 
 SelectFont::SelectFont(QWidget *parent, const char *name)
-	: Q3HBox(parent, name)
+	: QWidget(parent, name)
 {
-	setSpacing(5);
+	QHBoxLayout *layout = new QHBoxLayout;
+	layout->setSpacing(5);
 
 	fontEdit = new QLineEdit(this);
 	fontEdit->setReadOnly(true);
 
 	QPushButton *button = new QPushButton(tr("Select"), this);
 	connect(button, SIGNAL(clicked()), this, SLOT(onClick()));
+
+	layout->addWidget(fontEdit);
+	layout->addWidget(button);
+
+	setLayout(layout);
 }
 
 void SelectFont::setFont(const QFont &font)

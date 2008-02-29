@@ -1,14 +1,11 @@
 #ifndef SELECT_FONT_H
 #define SELECT_FONT_H
 
-#include <qglobal.h>
-
-#include <qfont.h>
-#include <q3hbox.h>
+#include <QWidget>
 
 class QLineEdit;
 
-class SelectFont : public Q3HBox
+class SelectFont : public QWidget
 {
 	Q_OBJECT
 
