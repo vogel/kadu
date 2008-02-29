@@ -5,10 +5,10 @@
 
 #include <qstring.h>
 #include <q3hbox.h>
-#include <qwidget.h>
 //Added by qt3to4:
 #include <QKeyEvent>
 #include <QResizeEvent>
+#include <QWidget>
 
 class LayoutHelper;
 class QResizeEvent;
@@ -17,7 +17,7 @@ class QResizeEvent;
 	\class About
 	\brief Okno z informacjami o programie.
 **/
-class About : public Q3HBox {
+class About : public QWidget {
 	Q_OBJECT
 
 	public:
