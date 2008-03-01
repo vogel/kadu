@@ -1,18 +1,14 @@
 #ifndef SYNTAX_EDITOR_H
 #define SYNTAX_EDITOR_H
 
-#include <qglobal.h>
-
-#include <q3vbox.h>
-//Added by qt3to4:
-#include <QKeyEvent>
+#include <QWidget>
 
 #include "userlistelement.h"
 
 class QComboBox;
 class QLineEdit;
 class QPushButton;
-class Q3TextEdit;
+class QTextEdit;
 
 class Preview;
 class SyntaxEditorWindow;
@@ -87,14 +83,14 @@ signals:
 
 };
 
-class SyntaxEditorWindow : public Q3VBox
+class SyntaxEditorWindow : public QWidget
 {
 	Q_OBJECT
 
 	SyntaxList *syntaxList;
 
 	QLineEdit *nameEdit;
-	Q3TextEdit *editor;
+	QTextEdit *editor;
 	Preview *previewPanel;
 
 	QString category;

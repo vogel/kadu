@@ -7,25 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qapplication.h>
-#include <qcombobox.h>
-#include <qdir.h>
-#include <qfile.h>
-#include <q3groupbox.h>
-#include <qinputdialog.h>
-#include <qlayout.h>
-#include <qlineedit.h>
-#include <qmap.h>
-#include <qpushbutton.h>
-#include <qregexp.h>
-#include <q3textedit.h>
-#include <qtooltip.h>
-#include <q3vbox.h>
-//Added by qt3to4:
-#include <Q3HBoxLayout>
-#include <Q3GridLayout>
-#include <Q3Frame>
-#include <QKeyEvent>
+#include <QApplication>
+#include <QComboBox>
+#include <QInputDialog>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QTextEdit>
 
 #include "config_file.h"
 #include "debug.h"
@@ -62,7 +49,7 @@ QString SyntaxList::readSyntax(const QString &category, const QString &name, con
 
 	QString result;
 	QTextStream stream(&syntaxFile);
-	stream.setEncoding(QTextStream::UnicodeUTF8);
+	stream.setCodec("UTF-8");
 	result = stream.read();
 	syntaxFile.close();
 
@@ -137,7 +124,7 @@ bool SyntaxList::updateSyntax(const QString &name, const QString &syntax)
 		return false;
 
 	QTextStream stream(&syntaxFile);
-	stream.setEncoding(QTextStream::UnicodeUTF8);
+	stream.setCodec("UTF-8");
 	stream << syntax;
 	syntaxFile.close();
 
@@ -169,7 +156,7 @@ QString SyntaxList::readSyntax(const QString &name)
 
 	QString result;
 	QTextStream stream(&syntaxFile);
-	stream.setEncoding(QTextStream::UnicodeUTF8);
+	stream.setCodec("UTF-8");
 	result = stream.read();
 	syntaxFile.close();
 
@@ -225,8 +212,7 @@ SyntaxEditor::SyntaxEditor(QWidget *parent, char *name)
 	example.setAddressAndPort("Gadu", QHostAddress(2130706433), 80);
 	example.setDNSName("Gadu", "host.server.net");
 
-	Q3HBoxLayout *layout = new Q3HBoxLayout(this);
-	layout->setSpacing(5);
+	QHBoxLayout *layout = new QHBoxLayout(this);
 
 	syntaxListCombo = new QComboBox(this);
 	connect(syntaxListCombo, SIGNAL(activated(const QString &)), this, SLOT(syntaxChangedSlot(const QString &)));
@@ -316,7 +302,7 @@ void SyntaxEditor::syntaxChangedSlot(const QString &newSyntax)
 		return;
 
 	QTextStream stream(&file);
-	stream.setEncoding(QTextStream::UnicodeUTF8);
+	stream.setCodec("UTF-8");
 	content = stream.read();
 	file.close();
 
@@ -345,47 +331,53 @@ void SyntaxEditor::syntaxListUpdated()
 }
 
 SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &syntaxName, const QString &category, const QString &syntaxHint, QWidget* parent, const char *name)
-	: Q3VBox(parent, name), syntaxList(syntaxList), syntaxName(syntaxName)
+	: QWidget(parent, name), syntaxList(syntaxList), syntaxName(syntaxName)
 {
-// 	setWFlags(getWFlags() | Qt::WDestructiveClose);
+	setWindowTitle(tr("Kadu syntax editor"));
+	setAttribute(Qt::WA_DeleteOnClose);
 
-	setCaption(tr("Kadu syntax editor"));
+	QFrame *syntax = new QFrame();
 
-	setMargin(10);
-	setSpacing(5);
+	QGridLayout *syntax_layout = new QGridLayout(syntax);
+	syntax_layout->setColStretch(0, 2);
+	syntax_layout->setColStretch(1, 1);
+	syntax_layout->setSpacing(5);
 
-	Q3Frame *syntax = new Q3Frame(this);
-
-	Q3GridLayout *layout = new Q3GridLayout(syntax);
-	layout->setColStretch(0, 2);
-	layout->setColStretch(1, 1);
-	layout->setSpacing(5);
-
-	editor = new Q3TextEdit(syntax);
+	editor = new QTextEdit(syntax);
 	editor->setTextFormat(Qt::PlainText);
 	editor->setText(syntaxList->readSyntax(syntaxName));
 
 	if (!syntaxHint.isEmpty())
-		QToolTip::add(editor, syntaxHint);
+		editor->setToolTip(syntaxHint);
 
-	layout->addMultiCellWidget(editor, 0, 1, 0, 0);
+	syntax_layout->addMultiCellWidget(editor, 0, 1, 0, 0);
 
 	previewPanel = new Preview(syntax);
 	previewPanel->setResetBackgroundColor(config_file.readEntry("Look", category + "BgColor"));
-	layout->addWidget(previewPanel, 0, 1);
+	syntax_layout->addWidget(previewPanel, 0, 1);
 
 	QPushButton *preview = new QPushButton(tr("Preview"), syntax);
 	connect(preview, SIGNAL(clicked()), this, SLOT(refreshPreview()));
-	layout->addWidget(preview, 1, 1);
+	syntax_layout->addWidget(preview, 1, 1);
 
-	Q3HBox *buttons = new Q3HBox(this);
+	QWidget *buttons = new QWidget();
+	QHBoxLayout *buttons_layout = new QHBoxLayout;
 	buttons->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-	buttons->setSpacing(5);
+	buttons_layout->setSpacing(5);
 
 	(new QWidget(buttons))->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
-	QPushButton *saveSyntax = new QPushButton(icons_manager->loadIcon("OkWindowButton"), tr("Save"), buttons);
-	QPushButton *saveAsSyntax = new QPushButton(icons_manager->loadIcon("OkWindowButton"), tr("Save as..."), buttons);
-	QPushButton *cancel = new QPushButton(icons_manager->loadIcon("CloseWindowButton"), tr("Cancel"), buttons);
+	QPushButton *saveSyntax = new QPushButton(icons_manager->loadIcon("OkWindowButton"), tr("Save"), 0);
+	QPushButton *saveAsSyntax = new QPushButton(icons_manager->loadIcon("OkWindowButton"), tr("Save as..."), 0);
+	QPushButton *cancel = new QPushButton(icons_manager->loadIcon("CloseWindowButton"), tr("Cancel"), 0);
+
+	buttons_layout->addWidget(saveSyntax);
+	buttons_layout->addWidget(saveAsSyntax);
+	buttons_layout->addWidget(cancel);
+	buttons->setLayout(buttons_layout);
+
+	QVBoxLayout *layout = new QVBoxLayout(this);
+	layout->addWidget(syntax);
+	layout->addWidget(buttons);
 
 	if (syntaxList->isGlobal(syntaxName))
 		saveSyntax->setDisabled(true);
@@ -461,5 +453,5 @@ void SyntaxEditorWindow::keyPressEvent(QKeyEvent *e)
 		close();
 	}
 	else
-		Q3VBox::keyPressEvent(e);
+		QWidget::keyPressEvent(e);
 }
