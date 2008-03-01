@@ -9,17 +9,10 @@
 
 #include <stdlib.h>
 
-#include <qlabel.h>
-#include <qlayout.h>
-#include <q3listview.h>
-#include <qpushbutton.h>
-#include <q3simplerichtext.h>
-#include <q3vbox.h>
-#include <q3vgroupbox.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QList>
-#include <QKeyEvent>
+#include <QLayout>
+#include <QPushButton>
+#include <QFileDialog>
+#include <QGroupBox>
 
 #include "debug.h"
 #include "expimp.h"
@@ -36,39 +29,46 @@ void UserlistImportExport::resizeEvent(QResizeEvent * /*e*/)
 }
 
 UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) :
-	Q3HBox(parent, name, Qt::WType_TopLevel | Qt::WDestructiveClose),
+	QWidget(parent, name, Qt::Window),
 	pb_fetch(0), importedUserlist(), pb_send(0), pb_delete(0), pb_tofile(0),
 	l_itemscount(0), layoutHelper(new LayoutHelper()), lv_userlist(0)
 {
 	kdebugf();
-	setCaption(tr("Import / export userlist"));
-	layout()->setResizeMode(QLayout::Minimum);
+	setWindowTitle(tr("Import / export userlist"));
+	setAttribute(Qt::WA_DeleteOnClose);
+// 	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
-	Q3VBox *left = new Q3VBox(this);
-	left->setMargin(10);
-	left->setSpacing(10);
+	QWidget *left = new QWidget;
 
-	QLabel *l_icon = new QLabel(left);
-	QWidget *w_blank = new QWidget(left);
-	w_blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
-
-	Q3VBox *center = new Q3VBox(this);
-	center->setMargin(10);
-	center->setSpacing(10);
-
-	QLabel *l_info = new QLabel(center);
+	QLabel *l_icon = new QLabel;
 	l_icon->setPixmap(icons_manager->loadPixmap("ImportExportWindowIcon"));
+
+	QWidget *blank = new QWidget;
+	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
+
+	QVBoxLayout *left_layout = new QVBoxLayout;
+	left_layout->addWidget(l_icon);
+	left_layout->addWidget(blank);
+
+	left->setLayout(left_layout);
+
+	QWidget *center = new QWidget;
+	QVBoxLayout *center_layout = new QVBoxLayout;
+	center_layout->setSpacing(5);
+	QLabel *l_info = new QLabel;
 	l_info->setText(tr("This dialog box allows you to import and export your buddy list to a server or a file."));
 	l_info->setAlignment(Qt::WordBreak);
 	// end create main QLabel widgets (icon and app info)
 
 	// our QListView
-	// our QVGroupBox
-	Q3VGroupBox *vgb_import = new Q3VGroupBox(center);
-	vgb_import->setTitle(tr("Import userlist"));
+	// our QGroupBox
+	QGroupBox *gb_import = new QGroupBox;
+	QVBoxLayout *import_layout = new QVBoxLayout;
+	import_layout->setSpacing(5);
+	gb_import->setTitle(tr("Import userlist"));
 	// end our QGroupBox
-	lv_userlist = new Q3ListView(vgb_import);
+	lv_userlist = new Q3ListView;
 	lv_userlist->addColumn(tr("UIN"));
 	lv_userlist->addColumn(tr("Nickname"));
 	lv_userlist->addColumn(tr("Disp. nick"));
@@ -81,44 +81,74 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) :
 	// end our QListView
 
 	// buttons
-	Q3HBox *hb_importbuttons = new Q3HBox(vgb_import);
-	QWidget *w_blank2 = new QWidget(hb_importbuttons);
-	hb_importbuttons->setSpacing(5);
+	QWidget *importbuttons = new QWidget;
+	QHBoxLayout *importbuttons_layout = new QHBoxLayout;
+	importbuttons_layout->setSpacing(5);
+
+	QWidget *w_blank2 = new QWidget;
 	w_blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
-	pb_fetch = new QPushButton(icons_manager->loadIcon("FetchUserList"), tr("&Fetch userlist"), hb_importbuttons, "fetch");
-	QPushButton *pb_file = new QPushButton(icons_manager->loadIcon("ImportFromFile"), tr("&Import from file"), hb_importbuttons, "file");
-	QPushButton *pb_save = new QPushButton(icons_manager->loadIcon("SaveUserlist"), tr("&Save results"), hb_importbuttons, "save");
-	QPushButton *pb_merge = new QPushButton(icons_manager->loadIcon("MergeUserlist"), tr("&Merge results"), hb_importbuttons, "merge");
+	pb_fetch = new QPushButton(icons_manager->loadIcon("FetchUserList"), tr("&Fetch userlist"), this, "fetch");
+	QPushButton *pb_file = new QPushButton(icons_manager->loadIcon("ImportFromFile"), tr("&Import from file"), this, "file");
+	QPushButton *pb_save = new QPushButton(icons_manager->loadIcon("SaveUserlist"), tr("&Save results"), this, "save");
+	QPushButton *pb_merge = new QPushButton(icons_manager->loadIcon("MergeUserlist"), tr("&Merge results"), this, "merge");
 	// end buttons
+	
+	importbuttons_layout->addWidget(w_blank2);
+	importbuttons_layout->addWidget(pb_fetch);
+	importbuttons_layout->addWidget(pb_file);
+	importbuttons_layout->addWidget(pb_save);
+	importbuttons_layout->addWidget(pb_merge);
+	importbuttons->setLayout(importbuttons_layout);
+	
+	import_layout->addWidget(lv_userlist);
+	import_layout->addWidget(importbuttons);
+	gb_import->setLayout(import_layout);
 
-	// our QVGroupBox
-	Q3VGroupBox *vgb_export = new Q3VGroupBox(center);
-	vgb_export->setTitle(tr("Export userlist"));
+	// our QGroupBox
+	QGroupBox *gb_export = new QGroupBox;
+	QVBoxLayout *export_layout = new QVBoxLayout;
+	export_layout->setSpacing(5);
+	gb_export->setTitle(tr("Export userlist"));
 	// end our QGroupBox
 
-	l_itemscount = new QLabel(vgb_export);
+	l_itemscount = new QLabel;
 	updateUserListCount();
 
 	// export buttons
-	Q3HBox *hb_exportbuttons = new Q3HBox(vgb_export);
-	QWidget *w_blank3 = new QWidget(hb_exportbuttons);
-	hb_exportbuttons->setSpacing(5);
+	QWidget *exportbuttons = new QWidget;
+	QHBoxLayout *exportbuttons_layout = new QHBoxLayout;
+	exportbuttons_layout->setSpacing(5);
+	QWidget *w_blank3 = new QWidget;
 	w_blank3->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
-	pb_send = new QPushButton(icons_manager->loadIcon("SendUserlist"), tr("Se&nd userlist"), hb_exportbuttons, "send");
-	pb_delete = new QPushButton(icons_manager->loadIcon("DeleteUserlist"), tr("&Delete userlist"), hb_exportbuttons, "delete");
-	pb_tofile = new QPushButton(icons_manager->loadIcon("ExportUserlist"), tr("&Export to file"), hb_exportbuttons, "tofile");
+	pb_send = new QPushButton(icons_manager->loadIcon("SendUserlist"), tr("Se&nd userlist"), this, "send");
+	pb_delete = new QPushButton(icons_manager->loadIcon("DeleteUserlist"), tr("&Delete userlist"), this, "delete");
+	pb_tofile = new QPushButton(icons_manager->loadIcon("ExportUserlist"), tr("&Export to file"), this, "tofile");
 	// end export buttons
 
+	exportbuttons_layout->addWidget(w_blank3);
+	exportbuttons_layout->addWidget(pb_send);
+	exportbuttons_layout->addWidget(pb_delete);
+	exportbuttons_layout->addWidget(pb_tofile);
+	exportbuttons->setLayout(exportbuttons_layout);
+	
+	export_layout->addWidget(l_itemscount);
+	export_layout->addWidget(exportbuttons);
+	gb_export->setLayout(export_layout);
+
 	// buttons
-	Q3HBox *bottom = new Q3HBox(center);
-	QWidget *w_blank4 = new QWidget(bottom);
-	bottom->setSpacing(5);
+	QWidget *bottom = new QWidget;
+	QHBoxLayout *bottom_layout = new QHBoxLayout;
+	bottom_layout->setSpacing(5);
+	QWidget *w_blank4 = new QWidget;
 	w_blank4->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
-	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), this, "close");
 	// end buttons
+	bottom_layout->addWidget(w_blank4);
+	bottom_layout->addWidget(pb_close);
+	bottom->setLayout(bottom_layout);
 
 	// connect
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
@@ -134,6 +164,24 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) :
 	connect(gadu, SIGNAL(userListCleared(bool)), this, SLOT(userListCleared(bool)));
 	connect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)), this, SLOT(userListImported(bool, QList<UserListElement>)));
 	// end connect
+
+	center_layout->addWidget(l_info);
+	center_layout->addWidget(gb_import);
+	center_layout->addWidget(gb_export);
+	center_layout->addWidget(bottom);
+	center->setLayout(center_layout);
+
+	QWidget *sub = new QWidget;
+	QHBoxLayout *sub_layout = new QHBoxLayout;
+	sub_layout->addWidget(left);
+	sub_layout->addWidget(center);
+	sub->setLayout(sub_layout);
+
+	QVBoxLayout *layout = new QVBoxLayout;
+	layout->addWidget(sub);
+	layout->addWidget(bottom);
+
+	setLayout(layout);
 
 	layoutHelper->addLabel(l_info);
  	loadGeometry(this, "General", "ImportExportDialogGeometry", 0, 30, 640, 450);
@@ -166,13 +214,13 @@ void UserlistImportExport::keyPressEvent(QKeyEvent *ke_event)
 void UserlistImportExport::fromfile()
 {
 	kdebugf();
-	QString fname = Q3FileDialog::getOpenFileName("/", QString::null, this);
+	QString fname = QFileDialog::getOpenFileName("/", QString::null, this);
 	if (!fname.isEmpty())
 	{
 		QFile file(fname);
  		if (file.open(QIODevice::ReadOnly))
 		{
-			Q3TextStream stream(&file);
+			QTextStream stream(&file);
 			importedUserlist = gadu->streamToUserList(stream);
 			file.close();
 
@@ -282,7 +330,7 @@ void UserlistImportExport::ExportToFile(void)
 	pb_delete->setEnabled(false);
 	pb_tofile->setEnabled(false);
 
-	QString fname = Q3FileDialog::getSaveFileName(QString(getenv("HOME")), QString::null, this);
+	QString fname = QFileDialog::getSaveFileName(QString(getenv("HOME")), QString::null, this);
 	if (!fname.isEmpty())
 	{
 		QFile file(fname);
@@ -290,7 +338,7 @@ void UserlistImportExport::ExportToFile(void)
 		{
 			if (file.open(QIODevice::WriteOnly))
 			{
-				Q3TextStream stream(&file);
+				QTextStream stream(&file);
 				stream.setCodec(codec_latin2);
 				stream << gadu->userListToString(*userlist);
 				file.close();

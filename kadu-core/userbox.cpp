@@ -1494,7 +1494,7 @@ UlesDrag::UlesDrag(const QStringList &ules, QWidget* dragSource, const char* nam
 
 bool UlesDrag::decode(const QMimeSource *source, QStringList &ules)
 {
-	Q3TextStream stream(new QString(source->encodedData("application/x-kadu-ules")), QIODevice::ReadOnly);
+	QTextStream stream(new QString(source->encodedData("application/x-kadu-ules")), QIODevice::ReadOnly);
 	stream.setCodec(QTextCodec::codecForLocale());
 
 	QString allUles = stream.read();

@@ -5,7 +5,6 @@
 
 #include <qhostaddress.h>
 #include <q3valuelist.h>
-#include <q3textstream.h>
 
 //Added by qt3to4:
 #include <Q3CString>
@@ -693,7 +692,7 @@ class GaduProtocol : public Protocol
 			@see userListToString
 			@see stringToUserList
 		**/
-		QList<UserListElement> streamToUserList(Q3TextStream &source) const;
+		QList<UserListElement> streamToUserList(QTextStream &source) const;
 
 		/**
 			Po jedno sekundowym opó¼nieniu wykonuje próbê po³±czenia.

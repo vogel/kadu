@@ -1792,11 +1792,11 @@ QString GaduProtocol::userListToString(const UserList& userList) const
 QList<UserListElement> GaduProtocol::stringToUserList(const QString &string) const
 {
 	QString s = string;
-	Q3TextStream stream(&s, QIODevice::ReadOnly);
+	QTextStream stream(&s, QIODevice::ReadOnly);
 	return streamToUserList(stream);
 }
 
-QList<UserListElement> GaduProtocol::streamToUserList(Q3TextStream& stream) const
+QList<UserListElement> GaduProtocol::streamToUserList(QTextStream& stream) const
 {
 	kdebugf();
 
@@ -1808,7 +1808,7 @@ QList<UserListElement> GaduProtocol::streamToUserList(Q3TextStream& stream) cons
 
 	stream.setCodec(codec_latin2);
 
-	while (!stream.eof())
+	while (!stream.atEnd())
 	{
 		UserListElement e;
 		line = stream.readLine();

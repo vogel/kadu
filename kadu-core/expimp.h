@@ -1,20 +1,12 @@
 #ifndef EXPIMP_H
 #define EXPIMP_H
 
-#include <qglobal.h>
-
-#include <q3hbox.h>
-#include <q3valuelist.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QKeyEvent>
-#include <QLabel>
+#include <q3listview.h>
 
 #include "userlistelement.h"
 
 class LayoutHelper;
 class QLabel;
-class Q3ListView;
 class QPushButton;
 class QResizeEvent;
 
@@ -23,7 +15,7 @@ class QResizeEvent;
 	\class UserlistImportExport
 	\brief Import / Export userlisty
 **/
-class UserlistImportExport : public Q3HBox {
+class UserlistImportExport : public QWidget {
 	Q_OBJECT
 	public:
 		/**

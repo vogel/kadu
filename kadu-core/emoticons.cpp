@@ -141,7 +141,7 @@ bool EmoticonsManager::loadGGEmoticonThemePart(QString subdir)
 		kdebugm(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "Error opening emots.txt file\n");
 		return false;
 	}
-	Q3TextStream theme_stream(&theme_file);
+	QTextStream theme_stream(&theme_file);
 	theme_stream.setCodec(codec_cp1250);
 	while (!theme_stream.atEnd())
 	{

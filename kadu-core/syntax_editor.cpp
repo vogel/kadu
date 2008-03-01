@@ -61,8 +61,8 @@ QString SyntaxList::readSyntax(const QString &category, const QString &name, con
 	}
 
 	QString result;
-	Q3TextStream stream(&syntaxFile);
-	stream.setEncoding(Q3TextStream::UnicodeUTF8);
+	QTextStream stream(&syntaxFile);
+	stream.setEncoding(QTextStream::UnicodeUTF8);
 	result = stream.read();
 	syntaxFile.close();
 
@@ -136,8 +136,8 @@ bool SyntaxList::updateSyntax(const QString &name, const QString &syntax)
 	if (!syntaxFile.open(QIODevice::WriteOnly))
 		return false;
 
-	Q3TextStream stream(&syntaxFile);
-	stream.setEncoding(Q3TextStream::UnicodeUTF8);
+	QTextStream stream(&syntaxFile);
+	stream.setEncoding(QTextStream::UnicodeUTF8);
 	stream << syntax;
 	syntaxFile.close();
 
@@ -168,8 +168,8 @@ QString SyntaxList::readSyntax(const QString &name)
 		return QString();
 
 	QString result;
-	Q3TextStream stream(&syntaxFile);
-	stream.setEncoding(Q3TextStream::UnicodeUTF8);
+	QTextStream stream(&syntaxFile);
+	stream.setEncoding(QTextStream::UnicodeUTF8);
 	result = stream.read();
 	syntaxFile.close();
 
@@ -315,8 +315,8 @@ void SyntaxEditor::syntaxChangedSlot(const QString &newSyntax)
 	if (!file.open(QIODevice::ReadOnly))
 		return;
 
-	Q3TextStream stream(&file);
-	stream.setEncoding(Q3TextStream::UnicodeUTF8);
+	QTextStream stream(&file);
+	stream.setEncoding(QTextStream::UnicodeUTF8);
 	content = stream.read();
 	file.close();
 

@@ -15,7 +15,6 @@
 
 #include <qdom.h>
 #include <qfile.h>
-#include <q3textstream.h>
 #include <qtextcodec.h>
 //Added by qt3to4:
 #include <QList>
@@ -310,7 +309,7 @@ bool UserList::readFromFile()
 		kdebugmf(KDEBUG_ERROR, "Error opening userattribs file\n");
 	else
 	{
-		Q3TextStream s(&fa);
+		QTextStream s(&fa);
 		while (!(line = s.readLine()).isEmpty())
 		{
 			QStringList slist;
@@ -333,7 +332,7 @@ bool UserList::readFromFile()
 
 	kdebugmf(KDEBUG_INFO, "File opened successfuly\n");
 
-	Q3TextStream t(&f);
+	QTextStream t(&f);
 	t.setCodec(codec_latin2);
 
 	QList<UserListElement> list = gadu->streamToUserList(t);
