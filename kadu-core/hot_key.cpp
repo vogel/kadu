@@ -7,7 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <q3accel.h>
 #include <qevent.h>
 //Added by qt3to4:
 #include <QKeyEvent>
@@ -46,7 +45,7 @@ QString HotKey::keyEventToString(QKeyEvent *e)
 		||(e->key() == Qt::Key_Shift)
 		||(e->key() == Qt::Key_Alt)
 		||(e->key() == Qt::Key_Meta)))
-			result += Q3Accel::keyToString(QKeySequence(e->key()));
+			result += QKeySequence(e->key()).toString();
 
 	return result;
 }

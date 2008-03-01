@@ -7,7 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <q3accel.h>
 #include <qcursor.h>
 #include <qobject.h>
 //Added by qt3to4:
@@ -17,6 +16,7 @@
 #include <QList>
 #include <Q3PopupMenu>
 #include <QDragEnterEvent>
+#include <QShortcut>
 
 #include "action.h"
 #include "config_file.h"
@@ -179,10 +179,10 @@ ToolButton * ToolBar::addButton(Action *action, bool showLabel, ToolButton *afte
 		button->setOn(action->toggleState());
 	}
 
-
-	Q3Accel* accel = new Q3Accel(button);
-	accel->connectItem(accel->insertItem(action->keySeq0()), button, SIGNAL(clicked()));
-	accel->connectItem(accel->insertItem(action->keySeq1()), button, SIGNAL(clicked()));
+	QShortcut *shortcut = new QShortcut(action->keySeq0(), button);
+	connect(shortcut, SIGNAL(activated()), button, SIGNAL(clicked()));
+	shortcut = new QShortcut(action->keySeq1(), button);
+	connect(shortcut, SIGNAL(activated()), button, SIGNAL(clicked()));
 
 	action->buttonAddedToToolbar(this, button);
 

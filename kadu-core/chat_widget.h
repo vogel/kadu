@@ -26,7 +26,6 @@
 #include "usergroup.h"
 #include "toolbar.h"
 
-class Q3Accel;
 class Q3HBox;
 class Q3MimeSourceFactory;
 class QObject;
@@ -282,10 +281,8 @@ public slots:
 	/**
 		\fn void curPosChanged(int para, int pos)
 		Slot wywo³ywany kiedy pozycja kursosa zmieni³a siê
-		\param  para nie obslugiwane
-		\param pos nie obslugiwane
 	**/
-	void curPosChanged(int para, int pos);
+	void curPosChanged();
 
 	/**
 		\fn void specialKeyPressed(int key)

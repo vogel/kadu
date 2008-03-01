@@ -7,7 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <q3accel.h>
 #include <q3dragobject.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
@@ -22,6 +21,7 @@
 #include <QDragMoveEvent>
 #include <QDropEvent>
 #include <QEvent>
+#include <QShortcut>
 
 #include "action.h"
 #include "chat_widget.h"
@@ -127,7 +127,6 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	if (config_file.readBoolEntry("Chat", "ShowEditWindowLabel", true))
 	{
 		QLabel *edt = new QLabel(tr("Edit window:"), edtbuttontray, "editLabel");
-// 		QToolTip::add(edt, tr("This is where you type in the text to be sent"));
 		edt->setToolTip(tr("This is where you type in the text to be sent"));
 		edtbuttontray->setStretchFactor(edt, 1);
 	}
@@ -159,13 +158,14 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 		this, SLOT(editTextChanged()));
 	btnpart->setMinimumHeight(minimumDockAreaSize);
 
-	Q3Accel *acc = new Q3Accel(this, "returnAccel");
-	acc->connectItem(acc->insertItem(Qt::Key_Return + Qt::CTRL), this, SLOT(sendMessage()));
+	QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Return + Qt::CTRL), this);
+	connect(shortcut, SIGNAL(activated()), this, SLOT(sendMessage()));
 
-	acc = new Q3Accel(this, "pageUpAccel");
-	acc->connectItem(acc->insertItem(Qt::Key_PageUp + Qt::SHIFT), body, SLOT(pageUp()));
-	acc = new Q3Accel(this, "pageDownAccel");
-	acc->connectItem(acc->insertItem(Qt::Key_PageDown + Qt::SHIFT), body, SLOT(pageDown()));
+	shortcut = new QShortcut(QKeySequence(Qt::Key_PageUp + Qt::SHIFT), this);
+	connect(shortcut, SIGNAL(activated()), body, SLOT(pageUp()));
+
+	shortcut = new QShortcut(QKeySequence(Qt::Key_PageDown + Qt::SHIFT), this);
+	connect(shortcut, SIGNAL(activated()), body, SLOT(pageDown()));
 
 	topDockArea->loadFromConfig(this);
 	leftDockArea->loadFromConfig(this);
@@ -211,7 +211,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 // 	Edit->setMimeSourceFactory(bodyformat);
 	Edit->setTextFormat(Qt::RichText);
 
-	connect(Edit, SIGNAL(cursorPositionChanged(int, int)), this, SLOT(curPosChanged(int, int)));
+	connect(Edit, SIGNAL(cursorPositionChanged()), this, SLOT(curPosChanged()));
 	connect(Edit, SIGNAL(sendMessage()), this, SLOT(sendMessage()));
 	connect(Edit, SIGNAL(specialKeyPressed(int)), this, SLOT(specialKeyPressed(int)));
 	connect(Edit, SIGNAL(textChanged()), this, SLOT(editTextChanged()));
@@ -295,7 +295,7 @@ void ChatWidget::specialKeyPressed(int key)
 	kdebugf2();
 }
 
-void ChatWidget::curPosChanged(int, int)
+void ChatWidget::curPosChanged()
 {
 	kdebugf();
 
