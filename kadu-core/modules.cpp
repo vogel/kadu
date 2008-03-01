@@ -314,7 +314,7 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager"),
 	// the same is true for menu - modules should load up at end
 	modules_manager = this;
 
-	Q3PopupMenu *MainMenu = kadu->mainMenu();
+	QMenu *MainMenu = kadu->mainMenu();
 	MainMenu->insertItem(icons_manager->loadIcon("ManageModules"), tr("&Manage Modules"), this, SLOT(showDialog()), HotKey::shortCutFromFile("ShortCuts", "kadu_modulesmanager"), -1, 2);
 // 	icons_manager->registerMenuItem(MainMenu, tr("&Manage Modules"), "ManageModules");
 

@@ -4,17 +4,15 @@
 #include <qglobal.h>
 
 #include <qevent.h>
-#include <q3mainwindow.h>
-#include <qstring.h>
 #include <qtimer.h>
-#include <q3valuelist.h>
-//Added by qt3to4:
 #include <QCustomEvent>
+#include <QMainWindow>
 #include <QResizeEvent>
 #include <QPixmap>
-#include <Q3PopupMenu>
+#include <QString>
+#include <QMenu>
 #include <QKeyEvent>
-#include <Q3VBoxLayout>
+#include <QVBoxLayout>
 
 #include "configuration_aware_object.h"
 #include "dockarea.h"
@@ -26,7 +24,7 @@
 class QFile;
 class Q3ListBoxItem;
 class QMenuBar;
-class Q3VBox;
+// class Q3VBox;
 class KaduTabBar;
 class UserBox;
 class KaduTextBrowser;
@@ -38,7 +36,7 @@ class MainConfigurationWindow;
 /**
 	G³ówne okno Kadu
 **/
-class Kadu : public QWidget, ConfigurationAwareObject
+class Kadu : public QMainWindow, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -53,14 +51,14 @@ class Kadu : public QWidget, ConfigurationAwareObject
 		KaduTextBrowser* InfoPanel;
 		QString InfoPanelSyntax;
 		QMenuBar* MenuBar;
-		Q3PopupMenu* MainMenu;
-		Q3PopupMenu* RecentChatsMenu;
+		QMenu* MainMenu;
+		QMenu* RecentChatsMenu;
 		KaduTabBar* GroupBar;
 		UserBox* Userbox;
-		Q3VBoxLayout *MainLayout;
-		Q3VBox *menuBox;
+		QWidget* MainWidget;
+		QVBoxLayout *MainLayout;
 
-		Q3PopupMenu* statusMenu;
+		QMenu* statusMenu;
 		QPushButton* statusButton;
 		QPoint lastPositionBeforeStatusMenuHide;
 		QDateTime StartTime;
@@ -139,7 +137,7 @@ class Kadu : public QWidget, ConfigurationAwareObject
 //		virtual void moveEvent(QMoveEvent *);
 
 	public:
-		Kadu(QWidget* parent=0, const char *name=0);
+		Kadu(QWidget* parent=0);
 		~Kadu();
 
 		const UserListElement & myself() { return Myself; };
@@ -148,14 +146,9 @@ class Kadu : public QWidget, ConfigurationAwareObject
 		void removeUsers(UserListElements);
 
 		/**
-			Zwraca wskaznik do belki menu glownego okna.
-		**/
-		QMenuBar* menuBar() const;
-
-		/**
 			Zwraca wskaznik do glownego menu programu.
 		**/
-		Q3PopupMenu* mainMenu() const;
+		QMenu* mainMenu() const;
 
 		/**
 			Zwraca wskaznik do zakladek z nazwami grup.
@@ -171,7 +164,7 @@ class Kadu : public QWidget, ConfigurationAwareObject
 			Zwraca wska¼nik na g³ówny layout w obiekcie, teraz jest to QVBoxLayout.
 			(hint) U¿ywaj±c nale¿y badaæ nazwy i klasy obiektów GUI dostêpnych przez ten obiekt.
 		**/
-		Q3VBoxLayout* mainLayout() const;
+		QVBoxLayout* mainLayout() const;
 
 		/**
 			Zwraca true je¶li kadu jest zadokowane.
@@ -298,7 +291,7 @@ class OpenGGChatEvent : public QCustomEvent
 };
 
 extern Kadu* kadu;
-extern Q3PopupMenu* dockMenu;
+extern QMenu* dockMenu;
 extern int lockFileHandle;
 extern QFile *lockFile;
 struct flock;

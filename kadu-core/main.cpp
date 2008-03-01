@@ -383,7 +383,7 @@ int main(int argc, char *argv[])
 	GroupsManager::initModule();
 	EmoticonsManager::initModule();
 
-	new Kadu(0, "Kadu");
+	new Kadu(0);
 
 	qApp->setMainWidget(kadu);
 	QPixmap pix;
