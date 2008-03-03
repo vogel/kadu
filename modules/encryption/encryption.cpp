@@ -75,7 +75,7 @@ EncryptionManager::EncryptionManager()
 
 	action = new Action("EncryptedChat", tr("Enable encryption for this conversation"),
 		"encryptionAction", Action::TypeChat);
-	action->setToggleAction(true);
+	action->setCheckable(true);
 	connect(action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(encryptionActionActivated(const UserGroup*)));
 	connect(action, SIGNAL(addedToToolbar(const UserGroup*, ToolButton*, ToolBar*)),

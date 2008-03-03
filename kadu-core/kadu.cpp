@@ -172,7 +172,7 @@ Kadu::Kadu(QWidget *parent) : QMainWindow(parent),
 	MainLayout = new QVBoxLayout(MainWidget);
 
 	TopDockArea = new DockArea(Qt::Horizontal, DockArea::Normal, this,
-		"topDockArea", Action::TypeGlobal | Action::TypeUser | Action::TypeUserList);
+		"topDockArea", ActionDescription::TypeGlobal | ActionDescription::TypeUser | ActionDescription::TypeUserList);
 	connect(TopDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
 	MainLayout->addWidget (TopDockArea);
@@ -255,11 +255,11 @@ Kadu::Kadu(QWidget *parent) : QMainWindow(parent),
 	setCaption(tr("Kadu: %1").arg(Myself.ID("Gadu")));
 
 	pending.loadFromFile();
-
+/*
 	Action* inact_users_action = new Action("ShowHideInactiveUsers",
 		tr("Hide offline users"), "inactiveUsersAction", Action::TypeUserList);
 	inact_users_action->setOnShape("ShowHideInactiveUsers_off", tr("Show offline users"));
-	inact_users_action->setToggleAction(true);
+	inact_users_action->setCheckable(true);
 	inact_users_action->setAllOn(!config_file.readBoolEntry("General", "ShowOffline"));
 	connect(inact_users_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(inactiveUsersActionActivated()));
@@ -267,7 +267,7 @@ Kadu::Kadu(QWidget *parent) : QMainWindow(parent),
 	Action* desc_users_action = new Action("ShowOnlyDescriptionUsers",
 		tr("Hide users without description"), "descriptionUsersAction", Action::TypeUserList);
 	desc_users_action->setOnShape("ShowOnlyDescriptionUsers_off", tr("Show users without description"));
-	desc_users_action->setToggleAction(true);
+	desc_users_action->setCheckable(true);
 	desc_users_action->setAllOn(!config_file.readBoolEntry("General", "ShowWithoutDescription"));
 	connect(desc_users_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(descriptionUsersActionActivated()));
@@ -275,7 +275,7 @@ Kadu::Kadu(QWidget *parent) : QMainWindow(parent),
 	Action* onlineAndDesc_users_action = new Action("ShowOnlineAndDescriptionUsers",
 		tr("Show only online and description users"), "onlineAndDescriptionUsersAction", Action::TypeUserList);
 	onlineAndDesc_users_action->setOnShape("ShowOnlineAndDescriptionUsers_off", tr("Show all users"));
-	onlineAndDesc_users_action->setToggleAction(true);
+	onlineAndDesc_users_action->setCheckable(true);
 	onlineAndDesc_users_action->setAllOn(config_file.readBoolEntry("General", "ShowOnlineAndDescription"));
 	connect(onlineAndDesc_users_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(onlineAndDescUsersActionActivated()));
@@ -299,7 +299,7 @@ Kadu::Kadu(QWidget *parent) : QMainWindow(parent),
 	Action* open_search_action = new Action("LookupUserInfo", tr("Search user in directory"),
 		"openSearchAction", Action::TypeGlobal);
 	connect(open_search_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-		this, SLOT(searchInDirectory()));
+		this, SLOT(searchInDirectory()));*/
 
 	ToolBar::addDefaultAction("Kadu toolbar", "inactiveUsersAction");
 	ToolBar::addDefaultAction("Kadu toolbar", "descriptionUsersAction");
@@ -690,7 +690,7 @@ void Kadu::configurationActionActivated()
 void Kadu::editUserActionSetParams(QString /*protocolName*/, UserListElement users)
 {
 	kdebugf();
-
+/*
 	Action *action = KaduActions["editUserAction"];
 	UserListElements elems = UserListElements(users);
 	if (users.isAnonymous())
@@ -702,7 +702,7 @@ void Kadu::editUserActionSetParams(QString /*protocolName*/, UserListElement use
 	{
 		action->setIcons(elems, icons_manager->loadIcon("EditUserInfo"));
 		action->setTexts(elems, tr("Contact data"));
-	}
+	}*/
 
 	kdebugf2();
 }

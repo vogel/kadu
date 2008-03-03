@@ -88,7 +88,7 @@ SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name
 
 	mute_action = new Action("Unmute", tr("Mute sounds"), "muteSoundsAction", Action::TypeGlobal);
 	mute_action->setOnShape("Mute", tr("Unmute sounds"));
-	mute_action->setToggleAction(true);
+	mute_action->setCheckable(true);
 	connect(mute_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(muteActionActivated(const UserGroup*, const QWidget*, bool)));
 	connect(mute_action, SIGNAL(iconsRefreshed()), this, SLOT(setMuteActionState()));

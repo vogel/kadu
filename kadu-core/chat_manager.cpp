@@ -36,19 +36,29 @@ ChatManager::ChatManager(QObject* parent, const char* name) : QObject(parent, na
 {
 	kdebugf();
 
-	Action* auto_send_action = new Action("AutoSendMessage",
-		tr("%1 sends message").arg(config_file.readEntry("ShortCuts", "chat_newline")),
-		"autoSendAction", Action::TypeChat);
-	auto_send_action->setToggleAction(true);
-	auto_send_action->setAllOn(config_file.readBoolEntry("Chat", "AutoSend"));
-	connect(auto_send_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-		this, SLOT(autoSendActionActivated(const UserGroup*, const QWidget*, bool)));
+// 	Action* auto_send_action = new Action("AutoSendMessage",
+// 		tr("%1 sends message").arg(config_file.readEntry("ShortCuts", "chat_newline")),
+// 		"autoSendAction", Action::TypeChat);
+// 	auto_send_action->setCheckable(true);
+// 	auto_send_action->setAllChecked(config_file.readBoolEntry("Chat", "AutoSend"));
+// 	connect(auto_send_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+// 		this, SLOT(autoSendActionActivated(const UserGroup*, const QWidget*, bool)));
 
-	Action* clear_action = new Action("ClearChat", tr("Clear messages in chat window"),
-		"clearChatAction", Action::TypeChat);
-	connect(clear_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-		this, SLOT(clearActionActivated(const UserGroup*)));
+// 	Action* clear_action = new Action("ClearChat", tr("Clear messages in chat window"),
+// 		"clearChatAction", Action::TypeChat);
+// 	connect(clear_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+// 		this, SLOT(clearActionActivated(const UserGroup*)));
 
+
+
+
+
+
+
+
+
+
+/*
 	Action* insert_emot_action = new Action("ChooseEmoticon", tr("Insert emoticon"),
 		"insertEmoticonAction", Action::TypeChat);
 	connect(insert_emot_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
@@ -77,17 +87,17 @@ ChatManager::ChatManager(QObject* parent, const char* name) : QObject(parent, na
 		this, SLOT(blockUserActionActivated(const UserGroup*)));
 
 	Action* bold_action = new Action("Bold", tr("Bold"), "boldAction", Action::TypeChat);
-	bold_action->setToggleAction(true);
+	bold_action->setCheckable(true);
 	connect(bold_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(boldActionActivated(const UserGroup*, const QWidget*, bool)));
 
 	Action* italic_action = new Action("Italic", tr("Italic"), "italicAction", Action::TypeChat);
-	italic_action->setToggleAction(true);
+	italic_action->setCheckable(true);
 	connect(italic_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(italicActionActivated(const UserGroup*, const QWidget*, bool)));
 
 	Action* underline_action = new Action("Underline", tr("Underline"), "underlineAction", Action::TypeChat);
-	underline_action->setToggleAction(true);
+	underline_action->setCheckable(true);
 	connect(underline_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(underlineActionActivated(const UserGroup*, const QWidget*, bool)));
 
@@ -106,7 +116,7 @@ ChatManager::ChatManager(QObject* parent, const char* name) : QObject(parent, na
 	Action* open_chat_with_action = new Action("OpenChat", tr("Open chat with..."),
 		"openChatWithAction", Action::TypeGlobal);
 	connect(open_chat_with_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-		kadu, SLOT(openChatWith()));
+		kadu, SLOT(openChatWith()));*/
 
 	ToolBar::addDefaultAction("Chat toolbar 1", "autoSendAction");
 	ToolBar::addDefaultAction("Chat toolbar 1", "clearChatAction");
@@ -231,37 +241,37 @@ ChatManager::~ChatManager()
 	kdebugf2();
 }
 
-void ChatManager::autoSendActionActivated(const UserGroup* users, const QWidget* /*source*/, bool is_on)
-{
-	kdebugf();
-	findChatWidget(users)->setAutoSend(is_on);
-	KaduActions["autoSendAction"]->setAllOn(is_on);
-	config_file.writeEntry("Chat", "AutoSend", is_on);
-	kdebugf2();
-}
-
+// void ChatManager::autoSendActionActivated(const UserGroup* users, const QWidget* /*source*/, bool is_on)
+// {
+// 	kdebugf();
+// 	findChatWidget(users)->setAutoSend(is_on);
+// 	KaduActions["autoSendAction"]->setAllChecked(is_on);
+// 	config_file.writeEntry("Chat", "AutoSend", is_on);
+// 	kdebugf2();
+// }
+/*
 void ChatManager::clearActionActivated(const UserGroup* users)
 {
 	kdebugf();
 	findChatWidget(users)->clearChatWindow();
 	kdebugf2();
-}
-
-void ChatManager::boldActionActivated(const UserGroup* users, const QWidget* /*source*/, bool is_on)
+}*/
+/*
+void ChatManager::boldActionActivated(const UserGroup* users, const QWidget* source, bool is_on)
 {
 	kdebugf();
 	findChatWidget(users)->edit()->setBold(is_on);
 	kdebugf2();
-}
-
-void ChatManager::italicActionActivated(const UserGroup* users, const QWidget* /*source*/, bool is_on)
+}*/
+/*
+void ChatManager::italicActionActivated(const UserGroup* users, const QWidget* source, bool is_on)
 {
 	kdebugf();
 	findChatWidget(users)->edit()->setItalic(is_on);
 	kdebugf2();
 }
 
-void ChatManager::underlineActionActivated(const UserGroup* users, const QWidget* /*source*/, bool is_on)
+void ChatManager::underlineActionActivated(const UserGroup* users, const QWidget* source, bool is_on)
 {
 	kdebugf();
 	findChatWidget(users)->edit()->setUnderline(is_on);
@@ -282,8 +292,8 @@ void ChatManager::insertEmoticonActionActivated(const UserGroup* users, const QW
 	kdebugf2();
 }
 
-void ChatManager::insertEmoticonActionAddedToToolbar(const UserGroup* /*users*/,
-	ToolButton* button, ToolBar* /*toolbar*/)
+void ChatManager::insertEmoticonActionAddedToToolbar(const UserGroup* users,
+	ToolButton* button, ToolBar* toolba/)
 {
 	kdebugf();
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") == EMOTS_NONE)
@@ -293,8 +303,8 @@ void ChatManager::insertEmoticonActionAddedToToolbar(const UserGroup* /*users*/,
 		button->setEnabled(false);
 	}
 	kdebugf2();
-}
-
+}*/
+/*
 void ChatManager::whoisActionActivated(const UserGroup* users)
 {
 	kdebugf();
@@ -348,8 +358,8 @@ void ChatManager::ignoreUserActionActivated(const UserGroup* users)
 		}
 	}
 	kdebugf2();
-}
-
+}*/
+/*
 void ChatManager::blockUserActionActivated(const UserGroup *users)
 {
 	kdebugf();
@@ -391,8 +401,8 @@ void ChatManager::blockUserActionActivated(const UserGroup *users)
 		userlist->writeToConfig();
 	}
 	kdebugf2();
-}
-
+}*/
+/*
 void ChatManager::insertImageActionActivated(const UserGroup* users)
 {
 	kdebugf();
@@ -419,7 +429,7 @@ void ChatManager::chatActionActivated(const UserGroup* users)
 		openChatWidget(gadu, users->toUserListElements());
 
 	kdebugf2();
-}
+}*/
 
 const ChatList& ChatManager::chats() const
 {
@@ -746,7 +756,7 @@ void ChatManager::configurationUpdated()
 		userlist->removePerContactNonProtocolConfigEntry("chat_vertical_sizes");
 	}
 
-	KaduActions["autoSendAction"]->setAllOn(config_file.readBoolEntry("Chat", "AutoSend"));
+// 	KaduActions["autoSendAction"]->setAllChecked(config_file.readBoolEntry("Chat", "AutoSend"));
 
 	kdebugf2();
 }

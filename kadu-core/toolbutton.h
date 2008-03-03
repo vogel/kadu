@@ -30,7 +30,7 @@ class ToolButton : public QToolButton
 		QPoint MouseStart;
 
 		bool IsEnabled;
-		Action::ActionType Type;
+		ActionDescription::ActionType Type;
 
 	private slots:
 		void buttonClicked();
@@ -44,7 +44,7 @@ class ToolButton : public QToolButton
 		void contextMenuEvent(QContextMenuEvent* e);
 
 	public:
-		ToolButton(QWidget* parent, const QString& action_name, Action::ActionType actionType);
+		ToolButton(QWidget* parent, const QString& action_name, ActionDescription::ActionType actionType);
 		~ToolButton();
 
 		void setEnabled(bool enabled);

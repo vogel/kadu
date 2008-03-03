@@ -53,7 +53,7 @@ public:
 
 DisabledToolButtonWatcher *watcher = 0;
 
-ToolButton::ToolButton(QWidget* parent, const QString& action_name, Action::ActionType Type)
+ToolButton::ToolButton(QWidget* parent, const QString& action_name, ActionDescription::ActionType Type)
 	: QToolButton(parent, 0), ActionName(action_name), InOnState(false),
 	OffIcon(), OffText(), OnIcon(), OnText(), IsEnabled(true), Type(Type)
 
@@ -66,7 +66,7 @@ ToolButton::ToolButton(QWidget* parent, const QString& action_name, Action::Acti
 
 	// ignore signal on global actions - they are always active
 
-	if ((Type & Action::TypeGlobal) == 0)
+	if ((Type & ActionDescription::TypeGlobal) == 0)
 	{
 		connect(parent, SIGNAL(placeChanged(Q3DockWindow::Place)), this, SLOT(toolbarPlaceChanged(Q3DockWindow::Place)));
 		setEnabled(IsEnabled);
@@ -93,7 +93,7 @@ void ToolButton::setEnabled(bool enabled)
 
 	IsEnabled = enabled;
 
-	if (((Type & Action::TypeGlobal) != 0) || !enabled)
+	if (((Type & ActionDescription::TypeGlobal) != 0) || !enabled)
 		QToolButton::setEnabled(IsEnabled);
 	else
 	{
@@ -102,7 +102,7 @@ void ToolButton::setEnabled(bool enabled)
 		{
 			if (toolBar->dockArea()->supportsAction(Type))
 			{
-				if (Type & Action::TypeUser)
+				if (Type & ActionDescription::TypeUser)
 					QToolButton::setEnabled(toolBar->selectedUsers() && toolBar->selectedUsers()->count());
 				else
 					QToolButton::setEnabled(true);

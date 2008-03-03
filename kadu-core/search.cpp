@@ -119,7 +119,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	QToolTip::add(r_uin, tr("Search for this UIN exclusively"));
 
 	DockArea* dock_area = new DockArea(Qt::Horizontal, DockArea::Normal, this,
-		"searchDockArea", Action::TypeSearch);
+		"searchDockArea", ActionDescription::TypeSearch);
 	connect(dock_area, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
 	if (!dock_area->loadFromConfig(this))
@@ -167,44 +167,44 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	for (int i = 1; i < 5; ++i)
 		results->setColumnWidthMode(i, Q3ListView::Maximum);
 
-	add_searched_action = KaduActions["addSearchedAction"];
-	chat_searched_action = KaduActions["chatSearchedAction"];
-	first_search_action = KaduActions["firstSearchAction"];
-	next_results_action = KaduActions["nextResultsAction"];
-	stop_search_action = KaduActions["stopSearchAction"];
-	clear_search_action = KaduActions["clearSearchAction"];
+// 	add_searched_action = KaduActions["addSearchedAction"];
+// 	chat_searched_action = KaduActions["chatSearchedAction"];
+// 	first_search_action = KaduActions["firstSearchAction"];
+// 	next_results_action = KaduActions["nextResultsAction"];
+// 	stop_search_action = KaduActions["stopSearchAction"];
+// 	clear_search_action = KaduActions["clearSearchAction"];
 
-	connect(add_searched_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-		this, SLOT(addSearchedActionActivated(const UserGroup*)));
-	connect(add_searched_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
-		this, SLOT(actionsAddedToToolbar(ToolButton*, ToolBar*)));
-	connect(chat_searched_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-		chat_manager, SLOT(chatActionActivated(const UserGroup*)));
-	connect(chat_searched_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
-		this, SLOT(actionsAddedToToolbar(ToolButton*, ToolBar*)));
-	connect(clear_search_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
-		this, SLOT(clearResultsActionAddedToToolbar(ToolButton*, ToolBar*)));
-	connect(stop_search_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
-		this, SLOT(stopSearchActionAddedToToolbar(ToolButton*, ToolBar*)));
-	connect(first_search_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
-		this, SLOT(firstSearchActionAddedToToolbar(ToolButton*, ToolBar*)));
-	connect(next_results_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
-		this, SLOT(nextResultsActionAddedToToolbar(ToolButton*, ToolBar*)));
+// 	connect(add_searched_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+// 		this, SLOT(addSearchedActionActivated(const UserGroup*)));
+// 	connect(add_searched_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
+// 		this, SLOT(actionsAddedToToolbar(ToolButton*, ToolBar*)));
+// 	connect(chat_searched_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+// 		chat_manager, SLOT(chatActionActivated(const UserGroup*)));
+// 	connect(chat_searched_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
+// 		this, SLOT(actionsAddedToToolbar(ToolButton*, ToolBar*)));
+// 	connect(clear_search_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
+// 		this, SLOT(clearResultsActionAddedToToolbar(ToolButton*, ToolBar*)));
+// 	connect(stop_search_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
+// 		this, SLOT(stopSearchActionAddedToToolbar(ToolButton*, ToolBar*)));
+// 	connect(first_search_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
+// 		this, SLOT(firstSearchActionAddedToToolbar(ToolButton*, ToolBar*)));
+// 	connect(next_results_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
+// 		this, SLOT(nextResultsActionAddedToToolbar(ToolButton*, ToolBar*)));
 
 //	searchhidden = false;
 	if (_whoisSearchUin)
 		e_uin->insert(QString::number(_whoisSearchUin));
 
-	stop_search_action->setSlot(SLOT(stopSearch()));
-	stop_search_action->setEnabled(this, false);
-	first_search_action->setSlot(SLOT(firstSearch()));
-	first_search_action->setEnabled(this, false);
-	next_results_action->setSlot(SLOT(nextSearch()));
-	next_results_action->setEnabled(this, false);
-	clear_search_action->setSlot(SLOT(clearResults()));
-	clear_search_action->setEnabled(this, false);
-	add_searched_action->setEnabled(this, false);
-	chat_searched_action->setEnabled(this, false);
+// 	stop_search_action->setSlot(SLOT(stopSearch()));
+// 	stop_search_action->setEnabled(this, false);
+// 	first_search_action->setSlot(SLOT(firstSearch()));
+// 	first_search_action->setEnabled(this, false);
+// 	next_results_action->setSlot(SLOT(nextSearch()));
+// 	next_results_action->setEnabled(this, false);
+// 	clear_search_action->setSlot(SLOT(clearResults()));
+// 	clear_search_action->setEnabled(this, false);
+// 	add_searched_action->setEnabled(this, false);
+// 	chat_searched_action->setEnabled(this, false);
 
 	loadGeometry(this, "General", "SearchDialogGeometry", 0, 30, 800, 350);
 	setCaption(tr("Search user in directory"));
@@ -228,23 +228,23 @@ void SearchDialog::initModule()
 {
 	kdebugf();
 
-	new Action("LookupUserInfo", tr("&Search"),
-		"firstSearchAction", Action::TypeSearch, Qt::Key_Return, Qt::Key_Enter);
+// 	new Action("LookupUserInfo", tr("&Search"),
+// 		"firstSearchAction", Action::TypeSearch, Qt::Key_Return, Qt::Key_Enter);
 	ToolBar::addDefaultAction("Search toolbar", "firstSearchAction", -1, true);
 
-	new Action("NextSearchResults", tr("&Next results"), "nextResultsAction", Action::TypeSearch);
+// 	new Action("NextSearchResults", tr("&Next results"), "nextResultsAction", Action::TypeSearch);
 	ToolBar::addDefaultAction("Search toolbar", "nextResultsAction", 0, true);
 
-	new Action("CloseWindow", tr("Stop"), "stopSearchAction", Action::TypeSearch);
+// 	new Action("CloseWindow", tr("Stop"), "stopSearchAction", Action::TypeSearch);
 	ToolBar::addDefaultAction("Search toolbar", "stopSearchAction", 1, true);
 
-	new Action("ClearSearchResults", tr("Clear results"), "clearSearchAction", Action::TypeSearch);
+// 	new Action("ClearSearchResults", tr("Clear results"), "clearSearchAction", Action::TypeSearch);
 	ToolBar::addDefaultAction("Search toolbar", "clearSearchAction", 2, true);
 
-	new Action("AddUser", tr("Add selected user"), "addSearchedAction", Action::TypeSearch);
+// 	new Action("AddUser", tr("Add selected user"), "addSearchedAction", Action::TypeSearch);
 	ToolBar::addDefaultAction("Search toolbar", "addSearchedAction", 3, true);
 
-	new Action("OpenChat", tr("&Chat"), "chatSearchedAction", Action::TypeSearch);
+// 	new Action("OpenChat", tr("&Chat"), "chatSearchedAction", Action::TypeSearch);
 	ToolBar::addDefaultAction("Search toolbar", "chatSearchedAction", 4, true);
 
 	kdebugf2();
@@ -313,9 +313,9 @@ void SearchDialog::clearResults(void)
 {
 	results->clear();
 
-	add_searched_action->setEnabled(this, false);
-	clear_search_action->setEnabled(this, false);
-	chat_searched_action->setEnabled(this, false);
+// 	add_searched_action->setEnabled(this, false);
+// 	clear_search_action->setEnabled(this, false);
+// 	chat_searched_action->setEnabled(this, false);
 }
 
 void SearchDialog::addSearchedActionActivated(const UserGroup* users)
@@ -334,17 +334,17 @@ void SearchDialog::stopSearch(void)
 
 	gadu->stopSearchInPubdir(*searchRecord);
 
-	stop_search_action->setEnabled(this, false);
+// 	stop_search_action->setEnabled(this, false);
 
-	if ((r_pers->isChecked() && !isPersonalDataEmpty()) || (r_uin->isChecked() && !e_uin->text().isEmpty()))
-		first_search_action->setEnabled(this, true);
+// 	if ((r_pers->isChecked() && !isPersonalDataEmpty()) || (r_uin->isChecked() && !e_uin->text().isEmpty()))
+// 		first_search_action->setEnabled(this, true);
 	if (results->selectedItem()) {
-		if (r_pers->isChecked() && !isPersonalDataEmpty())
-			next_results_action->setEnabled(this, true);
+// 		if (r_pers->isChecked() && !isPersonalDataEmpty())
+// 			next_results_action->setEnabled(this, true);
 
-		clear_search_action->setEnabled(this, true);
-		add_searched_action->setEnabled(this, true);
-		chat_searched_action->setEnabled(this, true);
+// 		clear_search_action->setEnabled(this, true);
+// 		add_searched_action->setEnabled(this, true);
+// 		chat_searched_action->setEnabled(this, true);
 	}
 
 	kdebugf2();
@@ -395,11 +395,11 @@ void SearchDialog::firstSearch(void)
 
 	searching = true;
 
-	stop_search_action->setEnabled(this, true);
-	first_search_action->setEnabled(this, false);
-	next_results_action->setEnabled(this, false);
-	add_searched_action->setEnabled(this, false);
-	chat_searched_action->setEnabled(this, false);
+// 	stop_search_action->setEnabled(this, true);
+// 	first_search_action->setEnabled(this, false);
+// 	next_results_action->setEnabled(this, false);
+// 	add_searched_action->setEnabled(this, false);
+// 	chat_searched_action->setEnabled(this, false);
 
 	gadu->searchInPubdir(*searchRecord);
 
@@ -417,11 +417,11 @@ void SearchDialog::nextSearch(void)
 
 	searching = true;
 
-	stop_search_action->setEnabled(this, true);
-	first_search_action->setEnabled(this, false);
-	next_results_action->setEnabled(this, false);
-	add_searched_action->setEnabled(this, false);
-	chat_searched_action->setEnabled(this, false);
+// 	stop_search_action->setEnabled(this, true);
+// 	first_search_action->setEnabled(this, false);
+// 	next_results_action->setEnabled(this, false);
+// 	add_searched_action->setEnabled(this, false);
+// 	chat_searched_action->setEnabled(this, false);
 
 	gadu->searchNextInPubdir(*searchRecord);
 
@@ -482,13 +482,13 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 
 	progress->setText(tr("Done searching"));
 
-	if (!results->selectedItem())
-		results->setSelected(results->firstChild(), true);
+// 	if (!results->selectedItem())
+// 		results->setSelected(results->firstChild(), true);
 
 //	searchhidden = false;
-	if ((r_pers->isChecked() && !isPersonalDataEmpty()) || (r_uin->isChecked() && !e_uin->text().isEmpty()))
-		first_search_action->setEnabled(this, true);
-	stop_search_action->setEnabled(this, false);
+// 	if ((r_pers->isChecked() && !isPersonalDataEmpty()) || (r_uin->isChecked() && !e_uin->text().isEmpty()))
+// 		first_search_action->setEnabled(this, true);
+// 	stop_search_action->setEnabled(this, false);
 
 	if (searchResults.isEmpty())
 	{
@@ -498,12 +498,12 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 	}
 	else
 	{
-		if (r_pers->isChecked() && !isPersonalDataEmpty())
-			next_results_action->setEnabled(this, true);
+// 		if (r_pers->isChecked() && !isPersonalDataEmpty())
+// 			next_results_action->setEnabled(this, true);
 
-		clear_search_action->setEnabled(this, true);
-		add_searched_action->setEnabled(this, true);
-		chat_searched_action->setEnabled(this, true);
+// 		clear_search_action->setEnabled(this, true);
+// 		add_searched_action->setEnabled(this, true);
+// 		chat_searched_action->setEnabled(this, true);
 	}
 
 	searching = false;
@@ -537,7 +537,7 @@ void SearchDialog::uinTyped(void)
 {
 	r_uin->setChecked(true);
 
-	first_search_action->setEnabled(this, !e_uin->text().isEmpty());
+// 	first_search_action->setEnabled(this, !e_uin->text().isEmpty());
 }
 
 void SearchDialog::personalDataTyped(void)
@@ -546,8 +546,8 @@ void SearchDialog::personalDataTyped(void)
 	r_pers->setChecked(true);
 	workaround = false;
 
-	first_search_action->setEnabled(this, !isPersonalDataEmpty());
-	next_results_action->setEnabled(this, false);
+// 	first_search_action->setEnabled(this, !isPersonalDataEmpty());
+// 	next_results_action->setEnabled(this, false);
 }
 
 void SearchDialog::byrFromDataTyped(void)
@@ -560,22 +560,22 @@ void SearchDialog::byrFromDataTyped(void)
 
 void SearchDialog::persClicked()
 {
-	only_active->setEnabled(true);
-	only_active->setChecked(false);
+// 	only_active->setEnabled(true);
+// 	only_active->setChecked(false);
 	if (!workaround)
 		e_nick->setFocus();
 
-	first_search_action->setEnabled(this, !isPersonalDataEmpty());
+// 	first_search_action->setEnabled(this, !isPersonalDataEmpty());
 }
 
 void SearchDialog::uinClicked()
 {
-	only_active->setEnabled(false);
+// 	only_active->setEnabled(false);
 	if (!workaround)
 		e_uin->setFocus();
 
-	first_search_action->setEnabled(this, !e_uin->text().isEmpty());
-	next_results_action->setEnabled(this, false);
+// 	first_search_action->setEnabled(this, !e_uin->text().isEmpty());
+// 	next_results_action->setEnabled(this, false);
 }
 
 void SearchDialog::updateInfoClicked()
@@ -674,7 +674,7 @@ bool SearchDialog::isPersonalDataEmpty() const
 void SearchDialog::selectionChanged()
 {
 	//kdebugmf(KDEBUG_FUNCTION_START, "%p\n", );
-	bool enableActions = results->selectedItem() != 0;
-	add_searched_action->setEnabled(this, enableActions);
-	chat_searched_action->setEnabled(this, enableActions);
+// 	bool enableActions = results->selectedItem() != 0;
+// 	add_searched_action->setEnabled(this, enableActions);
+// 	chat_searched_action->setEnabled(this, enableActions);
 }

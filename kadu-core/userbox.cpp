@@ -480,13 +480,13 @@ UserBox::UserBox(bool fancy, UserGroup *group, QWidget* parent, const char* name
 	Filters.append(group);
 
 	setHScrollBarMode(Q3ScrollView::AlwaysOff);
-
-	desc_action = new Action("ShowDescription", tr("Hide descriptions"), "descriptionsAction", Action::TypeUserList);
+/*
+	desc_action = new Action("ShowDescription", tr("Hide descriptions"), "descriptionsAction", ActionDescription::TypeUserList);
 	desc_action->setOnShape("HideDescription", tr("Show descriptions"));
-	desc_action->setToggleAction(true);
+	desc_action->setCheckable(true);
 	connect(desc_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(descriptionsActionActivated(const UserGroup*, const QWidget*, bool)));
-	connect(desc_action, SIGNAL(iconsRefreshed()), this, SLOT(setDescriptionsActionState()));
+	connect(desc_action, SIGNAL(iconsRefreshed()), this, SLOT(setDescriptionsActionState()))*/;
 	setDescriptionsActionState();
 
 	connect(group, SIGNAL(userAdded(UserListElement, bool, bool)),
@@ -550,8 +550,8 @@ UserBox::~UserBox()
 	VisibleUsers = 0;
 	delete comparer;
 	comparer = 0;
-	delete desc_action;
-	desc_action = 0;
+// 	delete desc_action;
+// 	desc_action = 0;
 	kdebugf2();
 }
 
@@ -598,7 +598,7 @@ void UserBox::hideTip(bool waitForAnother)
 
 void UserBox::descriptionsActionActivated(const UserGroup* /*users*/, const QWidget* /*widget*/, bool toggle)
 {
-	desc_action->setAllOn(toggle);
+// 	desc_action->setAllOn(toggle);
 	config_file.writeEntry("Look", "ShowDesc", !toggle);
 //	dynamic_cast<QCheckBox *>(MainConfigurationWindow::instance()->widgetById("showDescription"))->setChecked(toggle);
 	KaduListBoxPixmap::setShowDesc(!toggle);
@@ -607,7 +607,7 @@ void UserBox::descriptionsActionActivated(const UserGroup* /*users*/, const QWid
 
 void UserBox::setDescriptionsActionState()
 {
-	desc_action->setAllOn(!KaduListBoxPixmap::ShowDesc);
+// 	desc_action->setAllOn(!KaduListBoxPixmap::ShowDesc);
 }
 
 void UserBox::wheelEvent(QWheelEvent *e)

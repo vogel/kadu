@@ -277,28 +277,28 @@ void GroupsManager::changeDisplayingBlocked()
 void GroupsManager::changeDisplayingOffline()
 {
 	kdebugf();
-	if (KaduActions["inactiveUsersAction"])
-		KaduActions["inactiveUsersAction"]->setAllOn(showOffline);
-	showOffline = !showOffline;
-	if (showOffline)
-		kadu->userbox()->removeNegativeFilter(offlineUsers);
-	else
-		kadu->userbox()->applyNegativeFilter(offlineUsers);
-	config_file.writeEntry("General", "ShowOffline", showOffline);
+// 	if (KaduActions["inactiveUsersAction"])
+// 		KaduActions["inactiveUsersAction"]->setAllOn(showOffline);
+// 	showOffline = !showOffline;
+// 	if (showOffline)
+// 		kadu->userbox()->removeNegativeFilter(offlineUsers);
+// 	else
+// 		kadu->userbox()->applyNegativeFilter(offlineUsers);
+// 	config_file.writeEntry("General", "ShowOffline", showOffline);
 	kdebugf2();
 }
 
 void GroupsManager::changeDisplayingWithoutDescription()
 {
 	kdebugf();
-	if (KaduActions["descriptionUsersAction"])
-		KaduActions["descriptionUsersAction"]->setAllOn(showWithoutDescription);
-	showWithoutDescription = !showWithoutDescription;
-	if (showWithoutDescription)
-		kadu->userbox()->removeFilter(usersWithDescription);
-	else
-		kadu->userbox()->applyFilter(usersWithDescription);
-	config_file.writeEntry("General", "ShowWithoutDescription", showWithoutDescription);
+// 	if (KaduActions["descriptionUsersAction"])
+// 		KaduActions["descriptionUsersAction"]->setAllOn(showWithoutDescription);
+// 	showWithoutDescription = !showWithoutDescription;
+// 	if (showWithoutDescription)
+// 		kadu->userbox()->removeFilter(usersWithDescription);
+// 	else
+// 		kadu->userbox()->applyFilter(usersWithDescription);
+// 	config_file.writeEntry("General", "ShowWithoutDescription", showWithoutDescription);
 	kdebugf2();
 }
 
@@ -307,7 +307,7 @@ void GroupsManager::changeDisplayingOnlineAndDescription()
 	kdebugf();
 
 	showOnlineAndDescription = !showOnlineAndDescription;
-
+/*
 	if (KaduActions["onlineAndDescriptionUsersAction"])
 		KaduActions["onlineAndDescriptionUsersAction"]->setAllOn(showOnlineAndDescription);
 
@@ -316,7 +316,7 @@ void GroupsManager::changeDisplayingOnlineAndDescription()
 	else
 		kadu->userbox()->removeFilter(onlineAndDescriptionUsers);
 
-	config_file.writeEntry("General", "ShowOnlineAndDescription", showOnlineAndDescription);
+	config_file.writeEntry("General", "ShowOnlineAndDescription", showOnlineAndDescription);*/
 
 	kdebugf2();
 }

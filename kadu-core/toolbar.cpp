@@ -137,15 +137,15 @@ void ToolBar::moveAction(const QString &actionName, ToolButton *button)
 	updateButtons();
 }
 
-ToolButton * ToolBar::addButton(Action *action, bool showLabel, ToolButton *after)
+ToolButton * ToolBar::addButton(ActionDescription *action, bool showLabel, ToolButton *after)
 {
 	kdebugf();
 
-	ToolButton* button = new ToolButton(this, action->name(), action->type());
+// 	ToolButton* button = new ToolButton(this, action->name(), action->type());
 
 	// need, because without it positioning just doesn't work
-	button->show();
-
+// 	button->show();
+/*
 	connect(button, SIGNAL(removedFromToolbar(ToolButton *)), this, SLOT(removeButtonClicked(ToolButton *)));
 
 	QBoxLayout* layout = boxLayout();
@@ -161,15 +161,15 @@ ToolButton * ToolBar::addButton(Action *action, bool showLabel, ToolButton *afte
 		layout->insertWidget(0, button);
 	}
 
-	button->setIcon(icons_manager->loadIcon(action->iconName()));
+	button->setIcon(icons_manager->loadIcon(action->iconName()));*/
 
-	QString textWithoutAccel = action->text();
-	textWithoutAccel.remove('&');
-	button->setText(textWithoutAccel);
-
+// 	QString textWithoutAccel = action->text();
+// 	textWithoutAccel.remove('&');
+// 	button->setText(textWithoutAccel);
+/*
 	button->setUsesTextLabel(showLabel);
-	button->setTextPosition(ToolButton::BesideIcon);
-
+	button->setTextPosition(ToolButton::BesideIcon);*/
+/*
 	if (!action->onIcon().isEmpty())
 		button->setOnShape(icons_manager->loadIcon(action->onIcon()), action->onText());
 
@@ -184,9 +184,10 @@ ToolButton * ToolBar::addButton(Action *action, bool showLabel, ToolButton *afte
 	shortcut = new QShortcut(action->keySeq1(), button);
 	connect(shortcut, SIGNAL(activated()), button, SIGNAL(clicked()));
 
-	action->buttonAddedToToolbar(this, button);
+	action->buttonAddedToToolbar(this, button);*/
 
-	return button;
+// 	return button;
+	return 0;
 }
 
 void ToolBar::removeButtonClicked(ToolButton *button)
@@ -203,8 +204,8 @@ void ToolBar::addButtonClicked(int action_index)
 {
 	kdebugmf(KDEBUG_FUNCTION_START | KDEBUG_INFO, "action_index = %d\n", action_index);
 
-	addAction(KaduActions[action_index]->name(), false);
-	updateButtons();
+// 	addAction(KaduActions[action_index]->name(), false);
+// 	updateButtons();
 
 	kdebugf2();
 }
@@ -223,7 +224,7 @@ void ToolBar::moveEvent(QMoveEvent *e)
 
 void ToolBar::dragEnterEvent(QDragEnterEvent* event)
 {
-	kdebugf();
+	kdebugf();/*
 	ToolBar* source = dynamic_cast<ToolBar*>(event->source());
 	if (source)
 	{
@@ -235,7 +236,7 @@ void ToolBar::dragEnterEvent(QDragEnterEvent* event)
 		else
 			event->accept(false);
 	}
-	else
+	else*/
 		event->accept(false);
 	kdebugf2();
 }
@@ -399,11 +400,11 @@ void ToolBar::updateButtons()
 
 		if (KaduActions.contains(actionName))
 		{
-			if (!dockarea || dockarea->supportsAction(KaduActions[actionName]->actionType()))
-			{
-				(*toolBarAction).button = addButton(KaduActions[actionName], (*toolBarAction).showLabel, lastButton);
-				lastButton = (*toolBarAction).button;
-			}
+// 			if (!dockarea || dockarea->supportsAction(KaduActions[actionName]->actionType()))
+// 			{
+// 				(*toolBarAction).button = addButton(KaduActions[actionName], (*toolBarAction).showLabel, lastButton);
+// 				lastButton = (*toolBarAction).button;
+// 			}
 
 #if 0
 			// TODO: enable it? i don't think so
@@ -514,7 +515,7 @@ const UserGroup* ToolBar::selectedUsers() const
 }
 
 Q3PopupMenu* ToolBar::createContextMenu(QWidget* parent)
-{
+{/*
 	Q3PopupMenu* p = new Q3PopupMenu(parent);
 	p->insertItem(tr("Delete toolbar"), this, SLOT(deleteToolbar()));
 
@@ -545,7 +546,7 @@ Q3PopupMenu* ToolBar::createContextMenu(QWidget* parent)
 		Q3PopupMenu* panel_menu = dockArea()->createContextMenu(p);
 		p->insertItem(tr("Panel menu"), panel_menu);
 	}
-	return p;
+	return p;*/
 }
 
 void ToolBar::deleteToolbar()

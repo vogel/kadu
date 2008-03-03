@@ -1,3 +1,12 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef KADU_CHAT_MANAGER_H
 #define KADU_CHAT_MANAGER_H
 
@@ -8,6 +17,7 @@
 //Added by qt3to4:
 #include <QList>
 
+#include "chat_actions.h"
 #include "chat_widget.h"
 #include "chat_window.h"
 #include "chat_message.h"
@@ -27,6 +37,9 @@ class Protocol;
 class ChatManager : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
+
+	AutoSendActionDescription autoSendActionDescription;
+	ClearChatActionDescription clearChatActionDescription;
 
 	private:
 		ChatList ChatWidgets; /*!< lista okien*/
@@ -48,7 +61,7 @@ class ChatManager : public QObject, ConfigurationAwareObject
 		QTimer refreshTitlesTimer;
 
 	private slots:
-
+/*
 		void autoSendActionActivated(const UserGroup* users, const QWidget* source, bool is_on);
 		void clearActionActivated(const UserGroup* users);
 		void boldActionActivated(const UserGroup* users, const QWidget* source, bool is_on);
@@ -62,7 +75,7 @@ class ChatManager : public QObject, ConfigurationAwareObject
 		void blockUserActionActivated(const UserGroup* users);
 		void insertImageActionActivated(const UserGroup* users);
 		void sendActionActivated(const UserGroup* users);
-		void chatActionActivated(const UserGroup* users);
+		void chatActionActivated(const UserGroup* users);*/
 
 	protected:
 		virtual void configurationUpdated();

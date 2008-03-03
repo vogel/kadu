@@ -9,6 +9,7 @@
 #include <qstring.h>
 #include <q3valuelist.h>
 //Added by qt3to4:
+#include <QAction>
 #include <QPixmap>
 
 #include "usergroup.h"
@@ -16,20 +17,77 @@
 class ToolButton;
 class ToolBar;
 
-class Action : public QObject
+class KaduAction : public QAction
+{
+	Q_OBJECT
+
+	void connectSignalsAndSlots();
+
+private slots:
+	void changedSlot();
+	void hoveredSlot();
+	void toggledSlot(bool checked);
+	void triggeredSlot(bool checked);
+
+public:
+	KaduAction(QObject *parent);
+	KaduAction(const QString &text, QObject *parent);
+	KaduAction(const QIcon &icon, const QString &text, QObject *parent);
+	virtual ~KaduAction();
+
+signals:
+	void changed(QWidget *parent);
+	void hovered(QWidget *parent);
+	void toggled(QWidget *parent, bool checked);
+	void triggered(QWidget *parent, bool checked = false);
+
+};
+
+class ActionDescription : public QObject
 {
 	Q_OBJECT
 
 public:
 	enum ActionType {
-		TypeGlobal		= 0x0001, //!< actions with TypeGlobal type does not require access to user list or anything window-dependend
-		TypeUser		= 0x0002, //!< actions with TypeUser type requires access to one or more users from user list
-		TypeChat		= 0x0004, //!< actions with TypeChat type requires access to chat window
-		TypeSearch		= 0x0008, //!< actions with TypeSearch type requires access to search window
-		TypeUserList		= 0x0010, //!< actions with TypeUserList type requires access to user list widget
-		TypeAll			= 0xFFFF  //!< TypeAll is used to set masks for all types of actions
+		TypeGlobal   = 0x0001, //!< actions with TypeGlobal type does not require access to user list or anything window-dependend
+		TypeUser     = 0x0002, //!< actions with TypeUser type requires access to one or more users from user list
+		TypeChat     = 0x0004, //!< actions with TypeChat type requires access to chat window
+		TypeSearch   = 0x0008, //!< actions with TypeSearch type requires access to search window
+		TypeUserList = 0x0010, //!< actions with TypeUserList type requires access to user list widget
+		TypeAll      = 0xFFFF  //!< TypeAll is used to set masks for all types of actions
 	};
 
+private:
+	ActionType Type;
+	QString Name;
+	QString IconName;
+	QString Text;
+	QString CheckedText;
+	bool Checkable;
+
+private slots:
+	void tiggeredSlot(QWidget *widget, bool checked);
+	void toggledSlot(QWidget *widget, bool checked);
+
+protected:
+	virtual void triggered(QWidget *widget, bool checked) = 0;
+	virtual void toggled(QWidget *widget, bool checked) = 0;
+
+public:
+	ActionDescription(ActionType Type, const QString &Name, const QString &IconName, const QString &Text, bool Checkable = false, const QString &CheckedText = "");
+	virtual ~ActionDescription();
+
+	QString name() { return Name; }
+	KaduAction *getAction(QWidget *parent);
+
+};
+
+// class Action : public QAction
+// {
+// 	Q_OBJECT
+// 
+// public:
+/*
 private:
 	QString IconName;
 	QString Text;
@@ -40,109 +98,114 @@ private:
 	const char *Slot;
 	QList<ToolButton*> ToolButtons;
 	bool ToggleState;
-	ActionType Type;
+	ActionType Type;*/
 
-	Action(const Action &) {}
-	Action &operator = (const Action &) {return *this;}
+// 	Action(const Action &) {}
+// 	Action &operator = (const Action &) {return *this;}
 
-private slots:
-	void toolButtonClicked();
-	void toolButtonDestroyed(QObject* obj);
+// private slots:
+// 	void toolButtonClicked();
+// 	void toolButtonDestroyed(QObject* obj);
 
-public:
-	Action(const QString& icon, const QString& text, const char* name, ActionType Type,
-		QKeySequence Seq0 = QKeySequence(), QKeySequence Seq1 = QKeySequence());
-	virtual ~Action();
+// public:
+// 	Action(const QString& icon, const QString& text, const char *name, ActionType Type,
+// 		QKeySequence Seq0 = QKeySequence(), QKeySequence Seq1 = QKeySequence());
+// 	virtual ~Action();
 
-	QString iconName() { return IconName; }
-	QString text() { return Text; }
-	bool toggleAction() { return ToggleAction; }
-	bool toggleState() { return ToggleState; }
-	QString onIcon() { return OnIcon; }
-	QString onText() { return OnText; }
-	ActionType type() { return Type; }
-	QKeySequence keySeq0() { return KeySeq0; }
-	QKeySequence keySeq1() { return KeySeq1; }
+// 	QString iconName() { return IconName; }
+// 	QString text() { return Text; }
+// 	bool toggleAction() { return ToggleAction; }
+// 	bool toggleState() { return ToggleState; }
+// 	QString onIcon() { return OnIcon; }
+// 	QString onText() { return OnText; }
+// 	ActionType type() { return Type; }
+// 	QKeySequence keySeq0() { return KeySeq0; }
+// 	QKeySequence keySeq1() { return KeySeq1; }
 
-	void setToggleAction(bool toggle);
+// 	void setToggleAction(bool toggle);
 	/**
 		action works just like toggled but using two shapes
 		(pictures and texts)
 	**/
-	void setOnShape(const QString& icon, const QString& text);
-	void buttonAddedToToolbar(ToolBar *toolBar, ToolButton *button);
-	int addToPopupMenu(Q3PopupMenu* menu, bool connect_signal = true);
-	QList<ToolButton*> toolButtonsForUserListElements(
-		const UserListElements& users);
-	bool isOn(const UserListElements& users);
-	void setOn(const UserListElements& users, bool on);
-	void setAllOn(bool on);
-	void setPixmaps(const UserListElements& users, const QPixmap& pixmap);
-	void setIcons(const UserListElements& users, const QIcon& icon);
-	void refreshIcons();
-	void setTexts(const UserListElements& users, const QString& text);
+// 	void setOnShape(const QString& icon, const QString& text);
+// 	void buttonAddedToToolbar(ToolBar *toolBar, ToolButton *button);
+// 	int addToPopupMenu(Q3PopupMenu* menu, bool connect_signal = true);
+// 	QList<ToolButton*> toolButtonsForUserListElements(
+// 		const UserListElements& users);
+
+//  	bool isChecked(const UserListElements &users);
+//  	void setChecked(const UserListElements &users, bool on);
+// 	void setAllChecked(bool on);
+
+// 	void setPixmaps(const UserListElements& users, const QPixmap& pixmap);
+// 	void setIcons(const UserListElements& users, const QIcon& icon);
+// 	void refreshIcons();
+// 	void setTexts(const UserListElements& users, const QString& text);
 	/**
 		Sets enabled state of all buttons in dockareas that has specified
 		parent.
 	**/
-	void setEnabled(QWidget* parent, bool enabled);
+// 	void setEnabled(QWidget* parent, bool enabled);
 	/**
 		Sets slot of dockarea's parent that will be called when action
 		is activated. You should ensure that class of parent's class
 		is known using setDockAreaGroupRestriction().
 	**/
-	void setSlot(const char *slot);
+// 	void setSlot(const char *slot);
 	/**
 		Activate action
 	**/
-	void activate(const UserGroup* users);
+// 	void activate(const UserGroup* users);
+// 
+// 	ActionType actionType() const;
 
-	ActionType actionType();
-
-signals:
-	void addedToToolbar(const UserGroup* users, ToolButton* button, ToolBar* toolbar);
-	void addedToToolbar(ToolButton* button, ToolBar* toolbar);
+// signals:
+// 	void addedToToolbar(const UserGroup* users, ToolButton* button, ToolBar* toolbar);
+// 	void addedToToolbar(ToolButton* button, ToolBar* toolbar);
 
 	/**
 		is_on jest zawsze ustawione na false jesli akcja nie jest typu "toggle".
 	**/
-	void activated(const UserGroup* users, const QWidget* source, bool is_on);
+// 	void activated(const UserGroup* users, const QWidget* source, bool is_on);
 
 	/**
 		Sygna³ jest emitowany po zmianie zestawu ikon
 	**/
-	void iconsRefreshed();
-};
+// 	void iconsRefreshed();
+// };
 
 class Actions : public QObject
 {
 	Q_OBJECT
 
-	QMap<QString, Action *> ActionsMap;
+	QMap<QString, ActionDescription *> ActionDescriptions;
 
-	void insert(const QString &name, Action *action);
-	void remove(const QString &name);
-	friend class Action;
+	void insert(ActionDescription *action);
+	void remove(ActionDescription *action);
+	friend class ActionDescription;
 
 public:
 	Actions();
 
-	Action * operator [] (const QString &name);
-	Action * operator [] (int index);
-	bool contains(const QString &name);
+// 	ActionDescription * operator [] (const QString &name);
+// 	ActionDescription * operator [] (int index);
 
-	QMap<QString, Action *>::Iterator begin() { return ActionsMap.begin(); }
-	QMap<QString, Action *>::Iterator end() { return ActionsMap.end(); }
-	QMap<QString, Action *>::ConstIterator begin () const { return ActionsMap.begin(); }
-	QMap<QString, Action *>::ConstIterator end () const { return ActionsMap.end(); }
-	QMap<QString, Action *>::ConstIterator constBegin () const { return ActionsMap.constBegin(); }
-	QMap<QString, Action *>::ConstIterator constEnd () const { return ActionsMap.constEnd(); }
+	QAction *getAction(const QString &name, QWidget *parent) const;
+	bool contains(const QString &name) const;
+/*
+	QMap<QString, ActionDescription *>::Iterator begin() { return ActionsMap.begin(); }
+	QMap<QString, ActionDescription *>::Iterator end() { return ActionsMap.end(); }
+	QMap<QString, ActionDescription *>::ConstIterator begin () const { return ActionsMap.begin(); }
+	QMap<QString, ActionDescription *>::ConstIterator end () const { return ActionsMap.end(); }
+	QMap<QString, ActionDescription *>::ConstIterator constBegin () const { return ActionsMap.constBegin(); }
+	QMap<QString, ActionDescription *>::ConstIterator constEnd () const { return ActionsMap.constEnd(); }*/
 
 	void refreshIcons();
 
 signals:
 	void actionLoaded(const QString &actionName);
 	void actionUnloaded(const QString &actionName);
+
 };
 
 extern Actions KaduActions;

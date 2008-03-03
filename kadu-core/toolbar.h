@@ -37,7 +37,7 @@ class ToolBar : public Q3ToolBar
 	QList<ToolBarAction> ToolBarActions;
 	ToolButton *dragButton; /*!< przeci?gany przycisk akcji */
 
-	ToolButton * addButton(Action *action, bool showLabel, ToolButton *after);
+	ToolButton * addButton(ActionDescription *action, bool showLabel, ToolButton *after);
 
 	static QMap< QString, QList<ToolBarAction> > DefaultActions;
 

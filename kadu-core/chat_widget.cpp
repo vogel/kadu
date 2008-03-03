@@ -62,7 +62,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	/* register us in the chats registry... */
 	index=chat_manager->registerChatWidget(this);
 	DockArea *leftDockArea = new DockArea(Qt::Vertical, DockArea::Normal, this,
-		"chatLeftDockArea", Action::TypeGlobal | Action::TypeUser | Action::TypeChat);
+		"chatLeftDockArea", ActionDescription::TypeGlobal | ActionDescription::TypeUser | ActionDescription::TypeChat);
 	connect(leftDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
 	// TODO: fix this workaround
@@ -74,7 +74,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	this->setStretchFactor(central, 50);
 
 	DockArea *rightDockArea = new DockArea(Qt::Vertical, DockArea::Normal, this,
-		"chatRightDockArea", Action::TypeGlobal | Action::TypeUser | Action::TypeChat);
+		"chatRightDockArea", ActionDescription::TypeGlobal | ActionDescription::TypeUser | ActionDescription::TypeChat);
 	connect(rightDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
 	// TODO: fix this workaround
@@ -86,7 +86,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 
 	Q3VBox *topArea = new Q3VBox(vertSplit, "topArea");
 	DockArea *topDockArea = new DockArea(Qt::Horizontal, DockArea::Normal, topArea,
-		"chatTopDockArea", Action::TypeGlobal | Action::TypeUser | Action::TypeChat);
+		"chatTopDockArea", ActionDescription::TypeGlobal | ActionDescription::TypeUser | ActionDescription::TypeChat);
 	connect(topDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
 	// TODO: fix this workaround
@@ -132,7 +132,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	}
 
 	DockArea* buttontray = new DockArea(Qt::Horizontal, DockArea::Normal, edtbuttontray,
-		"chatMiddleDockArea", Action::TypeGlobal | Action::TypeUser | Action::TypeChat);
+		"chatMiddleDockArea", ActionDescription::TypeGlobal | ActionDescription::TypeUser | ActionDescription::TypeChat);
 	connect(buttontray, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
 	// TODO: fix this workaround
@@ -150,7 +150,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	setFocusProxy(Edit);
 
 	DockArea* btnpart = new DockArea(Qt::Horizontal, DockArea::Normal, downpart,
-		"chatBottomDockArea", Action::TypeGlobal | Action::TypeUser | Action::TypeChat);
+		"chatBottomDockArea", ActionDescription::TypeGlobal | ActionDescription::TypeUser | ActionDescription::TypeChat);
 	connect(btnpart, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
 	// TODO: fix this workaround
@@ -218,13 +218,13 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 
 	editTextChanged(); // slot ustawia poprawny stan przycisku Send (tutaj - blokuje)
 	setActColor(false); // ustawia poprawny kolor na przycisku wyboru koloru
-
+/*
 	connect(KaduActions["sendAction"], SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
 		this, SLOT(sendActionAddedToToolbar(ToolButton*, ToolBar*)));
 	connect(KaduActions["colorAction"], SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
 		this, SLOT(colorActionForceRefresh()));
 	connect(KaduActions["colorAction"], SIGNAL(iconsRefreshed()),
-		this, SLOT(colorActionForceRefresh()));
+		this, SLOT(colorActionForceRefresh()));*/
 
 	Edit->installEventFilter(this);
 
@@ -276,36 +276,36 @@ void ChatWidget::configurationUpdated()
 
 void ChatWidget::specialKeyPressed(int key)
 {
-	kdebugf();
-	switch (key)
-	{
-		case CustomInput::KEY_BOLD:
-			KaduActions["boldAction"]->setOn(Users->toUserListElements(), !KaduActions["boldAction"]->isOn(Users->toUserListElements()));
-			Edit->setBold(KaduActions["boldAction"]->isOn(Users->toUserListElements()));
-			break;
-		case CustomInput::KEY_ITALIC:
-			KaduActions["italicAction"]->setOn(Users->toUserListElements(), !KaduActions["italicAction"]->isOn(Users->toUserListElements()));
-			Edit->setItalic(KaduActions["italicAction"]->isOn(Users->toUserListElements()));
-			break;
-		case CustomInput::KEY_UNDERLINE:
-			KaduActions["underlineAction"]->setOn(Users->toUserListElements(), !KaduActions["underlineAction"]->isOn(Users->toUserListElements()));
-			Edit->setUnderline(KaduActions["underlineAction"]->isOn(Users->toUserListElements()));
-			break;
-	}
-	kdebugf2();
+// 	kdebugf();
+// 	switch (key)
+// 	{
+// 		case CustomInput::KEY_BOLD:
+// 			KaduActions["boldAction"]->setChecked(Users->toUserListElements(), !KaduActions["boldAction"]->isChecked(Users->toUserListElements()));
+// 			Edit->setBold(KaduActions["boldAction"]->isChecked(Users->toUserListElements()));
+// 			break;
+// 		case CustomInput::KEY_ITALIC:
+// 			KaduActions["italicAction"]->setChecked(Users->toUserListElements(), !KaduActions["italicAction"]->isChecked(Users->toUserListElements()));
+// 			Edit->setItalic(KaduActions["italicAction"]->isChecked(Users->toUserListElements()));
+// 			break;
+// 		case CustomInput::KEY_UNDERLINE:
+// 			KaduActions["underlineAction"]->setChecked(Users->toUserListElements(), !KaduActions["underlineAction"]->isChecked(Users->toUserListElements()));
+// 			Edit->setUnderline(KaduActions["underlineAction"]->isChecked(Users->toUserListElements()));
+// 			break;
+// 	}
+// 	kdebugf2();
 }
 
 void ChatWidget::curPosChanged()
 {
 	kdebugf();
-
+/*
 	UserListElements elems = Users->toUserListElements();
-	if (Edit->bold() != KaduActions["boldAction"]->isOn(elems))
-		KaduActions["boldAction"]->setOn(elems, Edit->bold());
-	if (Edit->italic() != KaduActions["italicAction"]->isOn(elems))
-		KaduActions["italicAction"]->setOn(elems, Edit->italic());
-	if (Edit->underline() != KaduActions["underlineAction"]->isOn(elems))
-		KaduActions["underlineAction"]->setOn(elems, Edit->underline());
+	if (Edit->bold() != KaduActions["boldAction"]->isChecked(elems))
+		KaduActions["boldAction"]->setChecked(elems, Edit->bold());
+	if (Edit->italic() != KaduActions["italicAction"]->isChecked(elems))
+		KaduActions["italicAction"]->setChecked(elems, Edit->italic());
+	if (Edit->underline() != KaduActions["underlineAction"]->isChecked(elems))
+		KaduActions["underlineAction"]->setChecked(elems, Edit->underline());*/
 
 	setActColor(false);
 
@@ -329,7 +329,7 @@ void ChatWidget::setActColor(bool force)
 			actcolor = colors[i];
 		p.fill(actcolor);
 
-		KaduActions["colorAction"]->setPixmaps(Users->toUserListElements(), p);
+// 		KaduActions["colorAction"]->setPixmaps(Users->toUserListElements(), p);
 	}
 
 	kdebugf2();
@@ -472,7 +472,7 @@ void ChatWidget::refreshTitle()
 
 
 bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
-{
+{/*
 	if (HotKey::shortCut(e,"ShortCuts", "chat_clear"))
 	{
 		clearChatWindow();
@@ -493,7 +493,7 @@ bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
 		KaduActions["openChatWithAction"]->activate(Users);
 		return true;
 	}
-	else
+	else*/
 		return false;
 }
 
@@ -514,13 +514,13 @@ void ChatWidget::keyPressEvent(QKeyEvent* e)
 
 void ChatWidget::editTextChanged()
 {
-	kdebugf();
-	QList<ToolButton*> buttons =
-		KaduActions["sendAction"]->toolButtonsForUserListElements(Users->toUserListElements());
-	bool buttonsEnabled = !Edit->text().isEmpty();
-	CONST_FOREACH(i, buttons)
-		(*i)->setEnabled(buttonsEnabled);
-	kdebugf2();
+// 	kdebugf();
+// 	QList<ToolButton*> buttons =
+// 		KaduActions["sendAction"]->toolButtonsForUserListElements(Users->toUserListElements());
+// 	bool buttonsEnabled = !Edit->text().isEmpty();
+// 	CONST_FOREACH(i, buttons)
+// 		(*i)->setEnabled(buttonsEnabled);
+// 	kdebugf2();
 }
 
 // TODO: remove
@@ -589,13 +589,13 @@ void ChatWidget::writeMyMessage()
 	if (!Edit->isEnabled())
 		cancelMessage();
 	Edit->clear();
-
+/*
 	if (KaduActions["boldAction"]->isOn(Users->toUserListElements()))
 		Edit->setBold(true);
 	if (KaduActions["italicAction"]->isOn(Users->toUserListElements()))
 		Edit->setItalic(true);
 	if (KaduActions["underlineAction"]->isOn(Users->toUserListElements()))
-		Edit->setUnderline(true);
+		Edit->setUnderline(true);*/
 	kdebugf2();
 }
 
@@ -629,9 +629,9 @@ void ChatWidget::cancelMessage()
 	Edit->setFocus();
 
 	WaitingForACK = false;
-	KaduActions["sendAction"]->setIcons(Users->toUserListElements(),
-		icons_manager->loadIcon("SendMessage"));
-	KaduActions["sendAction"]->setTexts(Users->toUserListElements(), tr("&Send"));
+// 	KaduActions["sendAction"]->setIcons(Users->toUserListElements(),
+// 		icons_manager->loadIcon("SendMessage"));
+// 	KaduActions["sendAction"]->setTexts(Users->toUserListElements(), tr("&Send"));
 	kdebugf2();
 }
 
@@ -711,9 +711,9 @@ void ChatWidget::sendMessage()
 		Edit->setReadOnly(true);
 		Edit->setEnabled(false);
 		WaitingForACK = true;
-		KaduActions["sendAction"]->setIcons(Users->toUserListElements(),
-			icons_manager->loadIcon("CancelMessage"));
-		KaduActions["sendAction"]->setTexts(Users->toUserListElements(), tr("&Cancel"));
+// 		KaduActions["sendAction"]->setIcons(Users->toUserListElements(),
+// 			icons_manager->loadIcon("CancelMessage"));
+// 		KaduActions["sendAction"]->setTexts(Users->toUserListElements(), tr("&Cancel"));
 	}
 	QString message = Edit->toPlainText();
 	myLastMessage = message;
@@ -779,7 +779,7 @@ void ChatWidget::colorChanged(const QColor& color)
 	QPixmap p(12, 12);
 	p.fill(color);
 
-	KaduActions["colorAction"]->setPixmaps(Users->toUserListElements(), p);
+// 	KaduActions["colorAction"]->setPixmaps(Users->toUserListElements(), p);
 	Edit->setColor(color);
 	actcolor = color;
 }
