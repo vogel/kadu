@@ -71,27 +71,27 @@ void DockArea::childEvent(QChildEvent* e)
 void DockArea::toolbarPlaceChanged()
 {
 	kdebugf();
-	const ToolBar* toolbar = dynamic_cast<const ToolBar*>(sender());
-	if (toolbar != NULL && toolbar->area() != this)
-	{
-		disconnect(toolbar, SIGNAL(destroyed()), this, SLOT(writeToConfig()));
-		disconnect(toolbar, SIGNAL(placeChanged(Q3DockWindow::Place)),
-				this, SLOT(writeToConfig()));
-		writeToConfig();
-		((DockArea*)toolbar->area())->writeToConfig();
-	}
+// 	const ToolBar* toolbar = dynamic_cast<const ToolBar*>(sender());
+// 	if (toolbar != NULL && toolbar->area() != this)
+// 	{
+// 		disconnect(toolbar, SIGNAL(destroyed()), this, SLOT(writeToConfig()));
+// 		disconnect(toolbar, SIGNAL(placeChanged(Q3DockWindow::Place)),
+// 				this, SLOT(writeToConfig()));
+// 		writeToConfig();
+// 		((DockArea*)toolbar->area())->writeToConfig();
+// 	}
 	kdebugf2();
 }
 
 void DockArea::createNewToolbar()
 {
 	kdebugf();
-	ToolBar* tb = new ToolBar(NULL, "New toolbar");
-	tb->show();
-	moveDockWindow(tb);
-	tb->setOrientation(orientation());
-	setAcceptDockWindow(tb, true);
-	writeToConfig();
+// 	ToolBar* tb = new ToolBar(NULL, "New toolbar");
+// 	tb->show();
+// 	moveDockWindow(tb);
+// 	tb->setOrientation(orientation());
+// 	setAcceptDockWindow(tb, true);
+// 	writeToConfig();
 	kdebugf2();
 }
 
@@ -158,12 +158,12 @@ bool DockArea::loadFromConfig(QWidget* toolbars_parent)
 				if (toolbar_elem.tagName() != "ToolBar")
 					continue;
 
-				ToolBar* toolbar = new ToolBar(toolbars_parent, "");
-				moveDockWindow(toolbar);
+				ToolBar* toolbar = new ToolBar(toolbars_parent);
+// 				moveDockWindow(toolbar);
 				toolbar->setOrientation(orientation());
 				toolbar->loadFromConfig(toolbar_elem);
 				toolbar->show();
-				setAcceptDockWindow(toolbar, true);
+// 				setAcceptDockWindow(toolbar, true);
 			}
 			return true;
 		}

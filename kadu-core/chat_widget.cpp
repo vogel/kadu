@@ -183,28 +183,28 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	if (!buttontray->loadFromConfig(this))
 	{
 		// TOOLBAR 1
-		ToolBar* tb1 = new ToolBar(this, "Chat toolbar 1");
-		tb1->setOffset(10000);
+		ToolBar* tb1 = new ToolBar(this);
+// 		tb1->setOffset(10000);
 		tb1->show();
-		buttontray->moveDockWindow(tb1);
-		buttontray->setAcceptDockWindow(tb1, true);
+// 		buttontray->moveDockWindow(tb1);
+// 		buttontray->setAcceptDockWindow(tb1, true);
 		tb1->loadDefault();
 	}
 
 	if (!btnpart->loadFromConfig(this))
 	{
 		// TOOLBAR2
-		ToolBar* tb2 = new ToolBar(this, "Chat toolbar 2");
+		ToolBar* tb2 = new ToolBar(this);
 		tb2->show();
-		btnpart->moveDockWindow(tb2);
-		btnpart->setAcceptDockWindow(tb2, true);
+// 		btnpart->moveDockWindow(tb2);
+// 		btnpart->setAcceptDockWindow(tb2, true);
 		tb2->loadDefault();
 		// TOOLBAR 3
-		ToolBar* tb3 = new ToolBar(this, "Chat toolbar 3");
-		tb3->setOffset(10000);
+		ToolBar* tb3 = new ToolBar(this);
+// 		tb3->setOffset(10000);
 		tb3->show();
-		btnpart->moveDockWindow(tb3);
-		btnpart->setAcceptDockWindow(tb3, true);
+// 		btnpart->moveDockWindow(tb3);
+// 		btnpart->setAcceptDockWindow(tb3, true);
 		tb3->loadDefault();
 	}
 

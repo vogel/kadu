@@ -17,13 +17,14 @@
 //Added by qt3to4:
 #include <QList>
 
-#include "chat_actions.h"
 #include "chat_widget.h"
 #include "chat_window.h"
 #include "chat_message.h"
 #include "configuration_aware_object.h"
 #include "toolbar.h"
 #include "usergroup.h"
+
+class ActionDescription;
 
 class Protocol;
 
@@ -38,8 +39,8 @@ class ChatManager : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	AutoSendActionDescription autoSendActionDescription;
-	ClearChatActionDescription clearChatActionDescription;
+	ActionDescription *autoSendActionDescription;
+	ActionDescription *clearChatActionDescription;
 
 	private:
 		ChatList ChatWidgets; /*!< lista okien*/
@@ -61,9 +62,9 @@ class ChatManager : public QObject, ConfigurationAwareObject
 		QTimer refreshTitlesTimer;
 
 	private slots:
+		void autoSendActionActivated(QWidget *parent, bool toggled);
+		void clearActionActivated(QWidget *parent, bool toggled);
 /*
-		void autoSendActionActivated(const UserGroup* users, const QWidget* source, bool is_on);
-		void clearActionActivated(const UserGroup* users);
 		void boldActionActivated(const UserGroup* users, const QWidget* source, bool is_on);
 		void italicActionActivated(const UserGroup* users, const QWidget* source, bool is_on);
 		void underlineActionActivated(const UserGroup* users, const QWidget* source, bool is_on);

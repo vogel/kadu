@@ -77,17 +77,20 @@ void KaduAction::connectSignalsAndSlots()
 }
 
 
-ActionDescription::ActionDescription(ActionType Type, const QString &Name, const QString &IconName, const QString &Text, bool Checkable, const QString &CheckedText)
+ActionDescription::ActionDescription(ActionType Type, const QString &Name, QObject *Object, char *Slot,
+	const QString &IconName, const QString &Text, bool Checkable, const QString &CheckedText)
 {
 	this->Type = Type;
 	this->Name = Name;
+	this->Object = Object;
+	this->Slot = Slot;
 	this->IconName = IconName;
 	this->Text = Text;
 	this->Checkable = Checkable;
 	this->CheckedText = CheckedText;
 
-	connect(this, SIGNAL(toggled(QWidget *, bool)), this, SLOT(toggledSlot(QWidget *, bool)));
-	connect(this, SIGNAL(triggered(QWidget *, bool)), this, SLOT(triggeredSlot(QWidget *, bool)));
+	connect(this, SIGNAL(toggled(QWidget *, bool)), Object, SLOT(toggledSlot(QWidget *, bool)));
+	connect(this, SIGNAL(triggered(QWidget *, bool)), Object, SLOT(triggeredSlot(QWidget *, bool)));
 
 	KaduActions.insert(this);
 }
@@ -97,19 +100,14 @@ ActionDescription::~ActionDescription()
 	KaduActions.remove(this);
 }
 
-void ActionDescription::tiggeredSlot(QWidget *parent, bool checked)
-{
-	triggered(parent, checked);
-}
-
-void ActionDescription::toggledSlot(QWidget *parent, bool checked)
-{
-	toggled(parent, checked);
-}
-
 KaduAction * ActionDescription::getAction(QWidget *parent)
 {
-	return new KaduAction(Text, parent);
+	KaduAction *result = new KaduAction(Text, parent);
+
+	connect(result, SIGNAL(toggled(bool)), Object, Slot);
+	connect(result, SIGNAL(triggered(bool)), Object, Slot);
+
+	return result;
 }
 
 /*

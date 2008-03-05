@@ -90,7 +90,7 @@ void ToolButton::setEnabled(bool enabled)
 {
 	// TODO: refactor in 0.6
 	// isEnabled is internal enabled state, it is used to save enabled state when action goes floating and then docked again
-
+/*
 	IsEnabled = enabled;
 
 	if (((Type & ActionDescription::TypeGlobal) != 0) || !enabled)
@@ -112,7 +112,7 @@ void ToolButton::setEnabled(bool enabled)
 		}
 		else
 			QToolButton::setEnabled(false);
-	}
+	}*/
 }
 
 void ToolButton::setOnShape(const QIcon& on_icon, const QString& on_text)
@@ -208,7 +208,7 @@ void ToolButton::buttonClicked()
 void ToolButton::deleteButtonClicked()
 {
 	kdebugf();
-
+/*
 	emit removedFromToolbar(this);
 
 	ToolBar* toolbar = (ToolBar*)parent();
@@ -217,7 +217,7 @@ void ToolButton::deleteButtonClicked()
 	if (dockarea)
 		dockarea->writeToConfig();
 	toolbar->insertChild(this); // restore
-	deleteLater();
+	deleteLater();*/
 
 	kdebugf2();
 }
@@ -225,12 +225,12 @@ void ToolButton::deleteButtonClicked()
 void ToolButton::showTextLabelClicked()
 {
 	kdebugf();
-
+/*
 	setUsesTextLabel(!usesTextLabel());
 	ToolBar* toolbar = (ToolBar*)parent();
 	DockArea* dockarea = (DockArea*)toolbar->area();
 	if (dockarea)
-		dockarea->writeToConfig();
+		dockarea->writeToConfig();*/
 
 	kdebugf2();
 }

@@ -662,7 +662,7 @@ fi
 
 FIND_HEADER([QtGui/QWidget],[$QT_INCLUDES_PATHS],
 [
-	QT_INCLUDES="-I$FILE_DIR -I$FILE_DIR/Qt -I$FILE_DIR/QtCore -I$FILE_DIR/QtGui -I$FILE_DIR/Qt3Support -I$FILE_DIR/QtNetwork"
+	QT_INCLUDES="-I$FILE_DIR -I$FILE_DIR/Qt -I$FILE_DIR/QtCore -I$FILE_DIR/QtGui -I$FILE_DIR/Qt3Support -I$FILE_DIR/QtNetwork -I$FILE_DIR/QtXml"
 ],[
 	AC_MSG_ERROR([libqt headers not found - please install libqt4-devel (>=4.3 <5.0) - check: http://kadu.net/qt])
 ])

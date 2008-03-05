@@ -5430,7 +5430,7 @@ echo $ECHO_N "checking for QtGui/QWidget in specified directiories... $ECHO_C" >
 			{ echo "$as_me:$LINENO: result: found in $FILE_DIR" >&5
 echo "${ECHO_T}found in $FILE_DIR" >&6; }
 
-	QT_INCLUDES="-I$FILE_DIR -I$FILE_DIR/Qt -I$FILE_DIR/QtCore -I$FILE_DIR/QtGui -I$FILE_DIR/Qt3Support -I$FILE_DIR/QtNetwork"
+	QT_INCLUDES="-I$FILE_DIR -I$FILE_DIR/Qt -I$FILE_DIR/QtCore -I$FILE_DIR/QtGui -I$FILE_DIR/Qt3Support -I$FILE_DIR/QtNetwork -I$FILE_DIR/QtXml"
 
 			break
 		fi

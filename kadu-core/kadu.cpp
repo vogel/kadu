@@ -1774,9 +1774,9 @@ void Kadu::startupProcedure()
 	// create toolbars in startupProcedure() to include actions from modules
 	if (!TopDockArea->loadFromConfig(this))
 	{
-		ToolBar* toolbar = new ToolBar(this, "Kadu toolbar");
-		TopDockArea->moveDockWindow(toolbar);
-		TopDockArea->setAcceptDockWindow(toolbar, true);
+		ToolBar* toolbar = new ToolBar(this);
+// 		TopDockArea->moveDockWindow(toolbar);
+// 		TopDockArea->setAcceptDockWindow(toolbar, true);
 		toolbar->loadDefault();
 	}
 

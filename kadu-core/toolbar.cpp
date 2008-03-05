@@ -30,13 +30,13 @@
 
 QMap< QString, QList<ToolBar::ToolBarAction> > ToolBar::DefaultActions;
 
-ToolBar::ToolBar(QWidget* /*parent*/, const char *name)
-	: Q3ToolBar(NULL, name), dragButton(NULL)
+ToolBar::ToolBar(QWidget * parent)
+	: QToolBar(parent), dragButton(NULL)
 {
 	kdebugf();
 
 	setAcceptDrops(true);
-	setMovingEnabled(!DockArea::blocked());
+// 	setMovingEnabled(!DockArea::blocked());
 
 	connect(&KaduActions, SIGNAL(actionLoaded(const QString &)), this, SLOT(actionLoaded(const QString &)));
 	connect(&KaduActions, SIGNAL(actionUnloaded(const QString &)), this, SLOT(actionUnloaded(const QString &)));
@@ -57,6 +57,11 @@ ToolBar::~ToolBar()
 
 void ToolBar::addAction(const QString &actionName, bool showLabel, ToolButton *button, bool before)
 {
+	printf("adding action: %s\n", actionName.toLocal8Bit().data());
+
+	QToolBar::addAction(KaduActions.getAction(actionName, dynamic_cast<QWidget *>(parent())));
+	return;
+
 	if (hasAction(actionName))
 		return;
 
@@ -212,14 +217,14 @@ void ToolBar::addButtonClicked(int action_index)
 
 void ToolBar::moveEvent(QMoveEvent *e)
 {
-	if (offset() != 10000)
-	{
-		QWidget *parent = parentWidget();
-		if (parent && e->pos().x() != 0 && parent->width() == e->pos().x() + width() + 1)
-			setOffset(10000);
-	}
+// 	if (offset() != 10000)
+// 	{
+// 		QWidget *parent = parentWidget();
+// 		if (parent && e->pos().x() != 0 && parent->width() == e->pos().x() + width() + 1)
+// 			setOffset(10000);
+// 	}
 
-	Q3ToolBar::moveEvent(e);
+	QToolBar::moveEvent(e);
 }
 
 void ToolBar::dragEnterEvent(QDragEnterEvent* event)
@@ -316,7 +321,7 @@ void ToolBar::show()
 			(*toolBarAction).button = 0;
 		}
 
-	Q3ToolBar::show();
+	QToolBar::show();
 	QTimer::singleShot(0, this, SLOT(updateButtons()));
 }
 
@@ -324,7 +329,7 @@ void ToolBar::writeToConfig(QDomElement parent_element)
 {
 	kdebugf();
 	QDomElement toolbar_elem = xml_config_file->createElement(parent_element, "ToolBar");
-	toolbar_elem.setAttribute("offset", offset());
+// 	toolbar_elem.setAttribute("offset", offset());
 
 	FOREACH(toolBarAction, ToolBarActions)
 	{
@@ -353,7 +358,8 @@ bool ToolBar::hasAction(const QString &action_name)
 
 DockArea* ToolBar::dockArea()
 {
-	return (DockArea*)area();
+// 	return (DockArea*)area();
+	return 0;
 }
 
 void ToolBar::actionLoaded(const QString &actionName)
@@ -375,7 +381,7 @@ void ToolBar::actionUnloaded(const QString &actionName)
 void ToolBar::updateButtons()
 {
 	ToolButton *lastButton = 0;
-	DockArea *dockarea = (DockArea *)area();
+// 	DockArea *dockarea = (DockArea *)area();
 
 	FOREACH(toolBarAction, ToolBarActions)
 	{
@@ -419,15 +425,15 @@ void ToolBar::updateButtons()
 	updateGeometry();
 // 	adjustSize();
 
-	if (dockarea)
-		dockarea->writeToConfig();
+// 	if (dockarea)
+// 		dockarea->writeToConfig();
 }
 
 void ToolBar::loadFromConfig(QDomElement toolbar_element)
 {
 	kdebugf();
 
-	setOffset(toolbar_element.attribute("offset").toInt());
+// 	setOffset(toolbar_element.attribute("offset").toInt());
 
 	ToolBarActions.clear();
 
@@ -502,16 +508,16 @@ void ToolBar::loadDefault()
 
 const UserGroup* ToolBar::selectedUsers() const
 {
-	kdebugf();
-	DockArea *dockArea = dynamic_cast<DockArea*>(area());
-	const UserGroup *users = NULL;
+// 	kdebugf();
+// 	DockArea *dockArea = dynamic_cast<DockArea*>(area());
+// 	const UserGroup *users = NULL;
 
 	// dont segfault on floating toolbars
-	if (dockArea)
-		users = dockArea->selectedUsers();
-
-	kdebugf2();
-	return users;
+// 	if (dockArea)
+// 		users = dockArea->selectedUsers();
+// 
+// 	kdebugf2();
+	return 0; //users;
 }
 
 Q3PopupMenu* ToolBar::createContextMenu(QWidget* parent)

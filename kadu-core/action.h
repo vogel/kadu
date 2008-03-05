@@ -60,21 +60,16 @@ public:
 private:
 	ActionType Type;
 	QString Name;
+	QObject *Object;
+	char *Slot;
 	QString IconName;
 	QString Text;
 	QString CheckedText;
 	bool Checkable;
 
-private slots:
-	void tiggeredSlot(QWidget *widget, bool checked);
-	void toggledSlot(QWidget *widget, bool checked);
-
-protected:
-	virtual void triggered(QWidget *widget, bool checked) = 0;
-	virtual void toggled(QWidget *widget, bool checked) = 0;
-
 public:
-	ActionDescription(ActionType Type, const QString &Name, const QString &IconName, const QString &Text, bool Checkable = false, const QString &CheckedText = "");
+	ActionDescription(ActionType Type, const QString &Name, QObject *Object, char *Slot,
+		const QString &IconName, const QString &Text, bool Checkable = false, const QString &CheckedText = "");
 	virtual ~ActionDescription();
 
 	QString name() { return Name; }

@@ -3,11 +3,10 @@
 
 #include <qglobal.h>
 
-#include <qdom.h>
-#include <qtoolbutton.h>
-//Added by qt3to4:
-#include <QMouseEvent>
 #include <QContextMenuEvent>
+#include <QDomElement>
+#include <QMouseEvent>
+#include <QToolButton>
 
 #include "action.h"
 #include "drag_simple.h"

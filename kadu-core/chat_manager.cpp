@@ -36,19 +36,17 @@ ChatManager::ChatManager(QObject* parent, const char* name) : QObject(parent, na
 {
 	kdebugf();
 
-// 	Action* auto_send_action = new Action("AutoSendMessage",
-// 		tr("%1 sends message").arg(config_file.readEntry("ShortCuts", "chat_newline")),
-// 		"autoSendAction", Action::TypeChat);
-// 	auto_send_action->setCheckable(true);
-// 	auto_send_action->setAllChecked(config_file.readBoolEntry("Chat", "AutoSend"));
-// 	connect(auto_send_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-// 		this, SLOT(autoSendActionActivated(const UserGroup*, const QWidget*, bool)));
+	autoSendActionDescription = new ActionDescription(
+		ActionDescription::TypeChat, "autoSendAction",
+		this, SLOT(autoSendActionActivated(QWidget *, bool)),
+		"", tr("%1 sends message").arg(config_file.readEntry("ShortCuts", "chat_newline")), true
+	);
 
-// 	Action* clear_action = new Action("ClearChat", tr("Clear messages in chat window"),
-// 		"clearChatAction", Action::TypeChat);
-// 	connect(clear_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-// 		this, SLOT(clearActionActivated(const UserGroup*)));
-
+	clearChatActionDescription = new ActionDescription(
+		ActionDescription::TypeChat, "clearChatAction",
+		this, SLOT(clearActionActivated(QWidget *, bool)),
+		"", tr("Clear messages in chat window")
+	);
 
 
 
@@ -241,21 +239,31 @@ ChatManager::~ChatManager()
 	kdebugf2();
 }
 
-// void ChatManager::autoSendActionActivated(const UserGroup* users, const QWidget* /*source*/, bool is_on)
-// {
-// 	kdebugf();
-// 	findChatWidget(users)->setAutoSend(is_on);
-// 	KaduActions["autoSendAction"]->setAllChecked(is_on);
-// 	config_file.writeEntry("Chat", "AutoSend", is_on);
-// 	kdebugf2();
-// }
-/*
-void ChatManager::clearActionActivated(const UserGroup* users)
+void ChatManager::autoSendActionActivated(QWidget *parent, bool toggled)
 {
 	kdebugf();
-	findChatWidget(users)->clearChatWindow();
+
+	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent);
+	if (chatWidget)
+	{
+		chatWidget->setAutoSend(toggled);
+		// autoSendActionDescription->setAllChecked(toggled);
+		config_file.writeEntry("Chat", "AutoSend", toggled);
+	}
+
 	kdebugf2();
-}*/
+}
+
+void ChatManager::clearActionActivated(QWidget *parent, bool toggled)
+{
+	kdebugf();
+
+	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent);
+	if (chatWidget)
+		chatWidget->clearChatWindow();
+
+	kdebugf2();
+}
 /*
 void ChatManager::boldActionActivated(const UserGroup* users, const QWidget* source, bool is_on)
 {

@@ -3,13 +3,14 @@
 
 #include <qglobal.h>
 
-#include <q3toolbar.h>
-#include <q3valuelist.h>
-//Added by qt3to4:
-#include <QMoveEvent>
+
+#include <QContextMenuEvent>
 #include <QDragEnterEvent>
 #include <QDropEvent>
-#include <QContextMenuEvent>
+#include <QMoveEvent>
+#include <QToolBar>
+
+
 #include <Q3PopupMenu>
 
 #include "dockarea.h"
@@ -24,7 +25,7 @@ class ToolButton;
 	\brief Pasek narz?dziowy
 **/
 
-class ToolBar : public Q3ToolBar
+class ToolBar : public QToolBar
 {
 	Q_OBJECT
 
@@ -92,7 +93,7 @@ public:
 		\param parent rodzic obiektu
 		\param name nazwa obiektu
 	**/
-	ToolBar(QWidget* parent, const char *name);
+	ToolBar(QWidget *parent);
 
 	/**
 		\fn ~ToolBar()

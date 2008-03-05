@@ -124,10 +124,10 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
 	if (!dock_area->loadFromConfig(this))
 	{
-		ToolBar* toolbar = new ToolBar(this, "Search toolbar");
-		toolbar->setOffset(1000);
-		dock_area->moveDockWindow(toolbar);
-		dock_area->setAcceptDockWindow(toolbar, true);
+		ToolBar* toolbar = new ToolBar(this);
+// 		toolbar->setOffset(1000);
+// 		dock_area->moveDockWindow(toolbar);
+// 		dock_area->setAcceptDockWindow(toolbar, true);
 		toolbar->loadDefault();
 	}
 
