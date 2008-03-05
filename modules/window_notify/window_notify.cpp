@@ -8,11 +8,12 @@
  ***************************************************************************/
 
 #include <qapplication.h>
-#include <qhbox.h>
 #include <qlayout.h>
 #include <qmap.h>
 #include <qpushbutton.h>
-#include <qstylesheet.h>
+#include <QVBoxLayout>
+#include <QLabel>
+#include <QList>
 
 #include "window_notify.h"
 #include "debug.h"
@@ -58,7 +59,7 @@ public:
 };
 
 NotificationWindow::NotificationWindow(Notification *notification)
-	: QDialog(NULL, NULL, false, WType_TopLevel | WStyle_Customize | WStyle_DialogBorder | WStyle_Title | WStyle_SysMenu | WDestructiveClose),
+	: QDialog(NULL, NULL, false, Qt::WType_TopLevel | Qt::WStyle_Customize | Qt::WStyle_DialogBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu | Qt::WDestructiveClose),
 	  notification(notification)
 {
 	kdebugf();
@@ -70,25 +71,32 @@ NotificationWindow::NotificationWindow(Notification *notification)
 	QVBoxLayout* vbox = new QVBoxLayout(this, 0);
 	vbox->setMargin(10);
 	vbox->setSpacing(10);
-
-	QHBox* labels = new QHBox(this);
-	labels->setSpacing(10);
-	vbox->addWidget(labels, 0, AlignCenter);
-
+	
+	QWidget* labels = new QWidget;
+	QHBoxLayout* labels_layout = new QHBoxLayout;
+	labels_layout->setSpacing(10);
+	
 	if (!notification->icon().isNull())
 	{
-		QLabel *i = new QLabel(labels);
-		i->setPixmap(icons_manager->loadIcon(notification->icon()));
+		QLabel *i = new QLabel;
+		i->setPixmap(icons_manager->loadIcon(notification->icon()).pixmap());
+		labels_layout->addWidget(i);
 	}
 
-	QLabel* l = new QLabel(labels);
+	QLabel* l = new QLabel;
 	l->setText(notification->text());
 
-	QHBox* buttons = new QHBox(this);
-	buttons->setSpacing(20);
-	vbox->addWidget(buttons, 0, AlignCenter);
+	labels_layout->addWidget(l);
+	labels->setLayout(labels_layout);
+	vbox->addWidget(labels, 0, Qt::AlignCenter);
 
-	const QValueList<QPair<QString, const char *> > callbacks = notification->getCallbacks();
+	QWidget* buttons = new QWidget;
+	QHBoxLayout* buttons_layout = new QHBoxLayout;
+	buttons_layout->setSpacing(20);
+	buttons->setLayout(buttons_layout);
+	vbox->addWidget(buttons, 0, Qt::AlignCenter);
+
+	const QList<QPair<QString, const char *> > callbacks = notification->getCallbacks();
 
 	if (callbacks.size())
 	{
@@ -111,7 +119,8 @@ NotificationWindow::~NotificationWindow()
 
 void NotificationWindow::addButton(QWidget *parent, const QString &caption, const QString &slot)
 {
-	QPushButton *button = new QPushButton(parent);
+	QPushButton *button = new QPushButton();
+	parent->layout()->addWidget(button);
 	button->setText(caption);
 	connect(button, SIGNAL(clicked()), notification, slot);
 	connect(button, SIGNAL(clicked()), notification, SLOT(clearDefaultCallback()));
