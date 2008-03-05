@@ -12,6 +12,7 @@
 
 #include <qcolor.h>
 #include <qfont.h>
+#include <QLabel>
 
 #include "../notify/notify.h"
 

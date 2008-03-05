@@ -8,6 +8,13 @@
  ***************************************************************************/
 
 #include <qpushbutton.h>
+#include <QHBoxLayout>
+#include <QList>
+#include <QPixmap>
+#include <QLabel>
+#include <QMouseEvent>
+#include <QEvent>
+#include <QVBoxLayout>
 
 #include "config_file.h"
 #include "debug.h"
@@ -38,13 +45,13 @@ Hint::Hint(QWidget *parent, Notification *notification)
 	else
 		startSecs = secs = config_file.readNumEntry("Hints", "Event_" + notification->type() + "_timeout", 10);
 
-	createLabels(icons_manager->loadIcon(notification->icon()));
+	createLabels(icons_manager->loadIcon(notification->icon()).pixmap());
 	updateText();
 
 	callbacksBox = new QHBoxLayout();
 	vbox->addLayout(callbacksBox);
 
-	const QValueList<QPair<QString, const char *> > callbacks = notification->getCallbacks();
+	const QList<QPair<QString, const char *> > callbacks = notification->getCallbacks();
 	if (notification->getCallbacks().count())
 	{
 		callbacksBox->addStretch(10);
@@ -122,7 +129,7 @@ void Hint::createLabels(const QPixmap &pixmap)
 
 	label = new QLabel(this, "Label");
 	label->setTextFormat(Qt::RichText);
-	label->setAlignment(AlignVCenter | Qt::AlignLeft);
+	label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
 	labels->addWidget(label);
 }
 

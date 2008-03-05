@@ -9,9 +9,9 @@
 #include <qpair.h>
 #include <qpixmap.h>
 #include <qpoint.h>
-#include <qptrlist.h>
 #include <qstring.h>
 #include <qtimer.h>
+#include <QVBoxLayout>
 
 #include "configuration_aware_object.h"
 #include "gadu.h"
@@ -35,7 +35,7 @@ private:
 	QFrame *frame;
 	QVBoxLayout *layout;
 	QTimer *hint_timer;
-	QPtrList<Hint> hints;
+	QList<Hint *> hints;
 	QFrame *tipFrame;
 
 	QSpinBox *minimumWidth;

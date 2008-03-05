@@ -12,6 +12,9 @@
 #include <qpixmap.h>
 #include <qstring.h>
 #include <qwidget.h>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QMouseEvent>
 
 #include "configuration_aware_object.h"
 #include "gadu.h"

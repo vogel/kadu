@@ -10,6 +10,8 @@
 #include <qapplication.h>
 #include <qspinbox.h>
 #include <qtooltip.h>
+#include <QGridLayout>
+#include <QLabel>
 
 #include "color_button.h"
 #include "config_file.h"

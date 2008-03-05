@@ -11,7 +11,11 @@
 #include <qcheckbox.h>
 #include <qcombobox.h>
 #include <qspinbox.h>
-#include <qstylesheet.h>
+#include <QDesktopWidget>
+#include <QLabel>
+#include <QFrame>
+#include <QToolTip>
+#include <QVBoxLayout>
 
 #include "chat_widget.h"
 #include "chat_manager.h"
@@ -39,7 +43,7 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 	hints(), tipFrame(0)
 {
 	kdebugf();
-	frame = new QFrame(parent, name, WStyle_NoBorder | WStyle_StaysOnTop | WStyle_Tool | WX11BypassWM | WWinOwnDC);
+	frame = new QFrame(parent, name, Qt::WStyle_NoBorder | Qt::WStyle_StaysOnTop | Qt::WStyle_Tool | Qt::WX11BypassWM | Qt::WWinOwnDC);
 
 	frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	frame->setFrameStyle(QFrame::Box | QFrame::Plain);
@@ -240,8 +244,8 @@ void HintManager::deleteHint(Hint *hint)
 {
 	kdebugf();
 
-	hints.remove(hint);
-	layout->remove(hint);
+	hints.removeAll(hint);
+	layout->removeWidget(static_cast<QWidget *>(hint));
 	hint->deleteLater();
 
 	kdebugf2();
@@ -260,11 +264,11 @@ void HintManager::oneSecond(void)
 	bool removed = false;
 	for (unsigned int i = 0; i < hints.count(); ++i)
 	{
-		hints.at(i)->nextSecond();
+		hints.takeAt(i)->nextSecond();
 
-		if (hints.at(i)->isDeprecated())
+		if (hints.takeAt(i)->isDeprecated())
 		{
-			deleteHint(hints.at(i));
+			deleteHint(hints.takeAt(i));
 			removed = true;
 		}
 	}
@@ -362,17 +366,18 @@ void HintManager::deleteAllHints()
 	kdebugf();
 	hint_timer->stop();
 
-	Hint *toDelete = hints.first();
-	while (toDelete)
-	{
-		if (!toDelete->requireManualClosing())
-		{
-			deleteHint(toDelete);
-			toDelete = hints.current();
-		}
-		else
-			toDelete = hints.next();
-	}
+// 	Hint *toDelete = hints.first();
+// 	while (toDelete)
+// 	{
+// 		if (!toDelete->requireManualClosing())
+// 		{
+// 			deleteHint(toDelete);
+// 			toDelete = hints.current();
+// 		}
+// 		else
+// 			toDelete = hints.next();
+// 	}
+	hints.clear();
 
 	if (hints.isEmpty())
 		frame->hide();
@@ -390,7 +395,7 @@ Hint *HintManager::addHint(Notification *notification)
 	hints.append(hint);
 
 	setLayoutDirection();
-	layout->addWidget(hint);
+	layout->addWidget(static_cast<QWidget *>(hint));
 
 	connect(hint, SIGNAL(leftButtonClicked(Hint *)), this, SLOT(leftButtonSlot(Hint *)));
 	connect(hint, SIGNAL(rightButtonClicked(Hint *)), this, SLOT(rightButtonSlot(Hint *)));
@@ -456,7 +461,7 @@ void HintManager::showToolTip(const QPoint &point, const UserListElement &user)
 	if (tipFrame)
 		delete tipFrame;
 
-	tipFrame = new QFrame(0, "tip_frame", WStyle_NoBorder | WStyle_StaysOnTop | WStyle_Tool | WX11BypassWM | WWinOwnDC);
+	tipFrame = new QFrame(0, "tip_frame", Qt::WStyle_NoBorder | Qt::WStyle_StaysOnTop | Qt::WStyle_Tool | Qt::WX11BypassWM | Qt::WWinOwnDC);
 	tipFrame->setFrameStyle(QFrame::Box | QFrame::Plain);
 	tipFrame->setLineWidth(FRAME_WIDTH);
 
@@ -465,7 +470,7 @@ void HintManager::showToolTip(const QPoint &point, const UserListElement &user)
 
 	QLabel *tipLabel = new QLabel(text, tipFrame);
 	tipLabel->setTextFormat(Qt::RichText);
-	tipLabel->setAlignment(AlignVCenter | AlignLeft);
+	tipLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
 
 	lay->addWidget(tipLabel);
 
