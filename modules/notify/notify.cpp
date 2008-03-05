@@ -21,6 +21,12 @@
 #include "status_changed_notification.h"
 #include "userbox.h"
 
+#include <qapplication.h>
+#include <QGridLayout>
+#include <QList>
+#include <QListWidget>
+#include <QLabel>
+
 extern "C" int notify_init()
 {
 	kdebugf();
@@ -44,7 +50,7 @@ extern "C" void notify_close()
 }
 
 NotifyGroupBox::NotifyGroupBox(const QString &notificator, const QString &caption, QWidget *parent, char *name)
-	: QGroupBox(1, Qt::Horizontal, caption, parent, name), Notificator(notificator)
+	: QGroupBox(caption, parent), Notificator(notificator)
 {
 	setCheckable(true);
 	connect(this, SIGNAL(toggled(bool)), this, SLOT(toggledSlot(bool)));
@@ -94,7 +100,7 @@ Notify::~Notify()
 	if (!Notifiers.isEmpty())
 	{
 		kdebugm(KDEBUG_WARNING, "WARNING: not unregistered notifiers found! (%u)\n", Notifiers.size());
-		QValueList<QString> notifierNames = Notifiers.keys();
+		QList<QString> notifierNames = Notifiers.keys();
 		CONST_FOREACH(name, notifierNames)
 			unregisterNotifier(*name);
 	}
@@ -127,14 +133,14 @@ void Notify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigu
 	notifyUsersLayout->setSpacing(5);
 	notifyUsersLayout->setMargin(5);
 
-	allUsers = new QListBox(notifyUsers);
+	allUsers = new QListWidget(notifyUsers);
 	QPushButton *moveToNotifyList = new QPushButton(tr("Move to 'Notify list'"), notifyUsers);
 
 	notifyUsersLayout->addWidget(new QLabel(tr("User list"), notifyUsers), 0, 0);
 	notifyUsersLayout->addWidget(allUsers, 1, 0);
 	notifyUsersLayout->addWidget(moveToNotifyList, 2, 0);
 
-	notifiedUsers = new QListBox(notifyUsers);
+	notifiedUsers = new QListWidget(notifyUsers);
 	QPushButton *moveToAllList = new QPushButton(tr("Move to 'User list'"), notifyUsers);
 
 	notifyUsersLayout->addWidget(new QLabel(tr("Notify list"), notifyUsers), 0, 1);
@@ -149,17 +155,17 @@ void Notify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigu
 	CONST_FOREACH(user, *userlist)
 		if ((*user).usesProtocol("Gadu") && !(*user).isAnonymous())
 			if (!(*user).notify())
-				allUsers->insertItem((*user).altNick());
+				allUsers->addItem((*user).altNick());
 			else
-				notifiedUsers->insertItem((*user).altNick());
+				notifiedUsers->addItem((*user).altNick());
 
-	allUsers->sort();
-	notifiedUsers->sort();
-	allUsers->setSelectionMode(QListBox::Extended);
-	notifiedUsers->setSelectionMode(QListBox::Extended);
+	allUsers->sortItems();
+	notifiedUsers->sortItems();
+	allUsers->setSelectionMode(QAbstractItemView::ExtendedSelection);
+	notifiedUsers->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-	connect(notifiedUsers, SIGNAL(doubleClicked(QListBoxItem *)), this, SLOT(moveToAllList()));
-	connect(allUsers, SIGNAL(doubleClicked(QListBoxItem *)), this, SLOT(moveToNotifyList()));
+	connect(notifiedUsers, SIGNAL(doubleClicked(QListWidgetItem *)), this, SLOT(moveToAllList()));
+	connect(allUsers, SIGNAL(doubleClicked(QListWidgetItem *)), this, SLOT(moveToNotifyList()));
 
 	connect(mainConfigurationWindow->widgetById("notify/notifyAll"), SIGNAL(toggled(bool)), notifyUsers, SLOT(setDisabled(bool)));
 	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
@@ -196,7 +202,7 @@ void Notify::addConfigurationWidget(NotifierData &notifier, const QString &name)
 	else
 	{
 		configurationGroupBox->setFlat(true);
-		configurationGroupBox->setLineWidth(0);
+// 		configurationGroupBox->setLineWidth(0);
 	}
 
 	notificationsGroupBox->addWidget(configurationGroupBox, true);
@@ -237,11 +243,11 @@ void Notify::configurationWindowApplied()
 {
 	int count = notifiedUsers->count();
 	for (int i = 0; i < count; i++)
-		userlist->byAltNick(notifiedUsers->text(i)).setNotify(true);
+		userlist->byAltNick(notifiedUsers->item(i)->text()).setNotify(true);
 
 	count = allUsers->count();
 	for (int i = 0; i < count; i++)
-		userlist->byAltNick(allUsers->text(i)).setNotify(false);
+		userlist->byAltNick(allUsers->item(i)->text()).setNotify(false);
 
 	userlist->writeToConfig();
 
@@ -267,13 +273,14 @@ void Notify::moveToAllList()
 	int count = notifiedUsers->count();
 
 	for (int i = count - 1; i >= 0; i--)
-		if (notifiedUsers->isSelected(i))
+		if (notifiedUsers->item(i)->isSelected())
 		{
-			allUsers->insertItem(notifiedUsers->text(i));
-			notifiedUsers->removeItem(i);
+			allUsers->addItem(notifiedUsers->item(i)->text());
+			QListWidgetItem *it = notifiedUsers->takeItem(i);
+			delete it;
 		}
 
-	allUsers->sort();
+	allUsers->sortItems();
 }
 
 void Notify::moveToNotifyList()
@@ -281,13 +288,14 @@ void Notify::moveToNotifyList()
 	int count = allUsers->count();
 
 	for (int i = count - 1; i >= 0; i--)
-		if (allUsers->isSelected(i))
+		if (allUsers->item(i)->isSelected())
 		{
-			notifiedUsers->insertItem(allUsers->text(i));
-			allUsers->removeItem(i);
+			notifiedUsers->addItem(allUsers->item(i)->text());
+			QListWidgetItem *it = allUsers->takeItem(i);
+			delete it;
 		}
 
-	notifiedUsers->sort();
+	notifiedUsers->sortItems();
 }
 
 void Notify::statusChanged(UserListElement elem, QString protocolName,
@@ -468,7 +476,7 @@ QStringList Notify::notifiersList() const
 	return QStringList(Notifiers.keys());
 }
 
-const QValueList<Notify::NotifyEvent> &Notify::notifyEvents()
+const QList<Notify::NotifyEvent> &Notify::notifyEvents()
 {
 	return NotifyEvents;
 }

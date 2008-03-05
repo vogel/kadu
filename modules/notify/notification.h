@@ -14,6 +14,7 @@
 #include <qobject.h>
 #include <qstring.h>
 #include <qstringlist.h>
+#include <QList>
 
 #include "userlist.h"
 
@@ -83,7 +84,7 @@ private:
 	QString Details;
 	QString Icon;
 
-	QValueList<QPair<QString, const char *> > Callbacks;
+	QList<QPair<QString, const char *> > Callbacks;
 	QTimer *DefaultCallbackTimer;
 
 	int ReferencesCount;
@@ -200,7 +201,7 @@ public:
 
 		@return lista akcji
 	 **/
-	const QValueList<QPair<QString, const char *> > & getCallbacks();
+	const QList<QPair<QString, const char *> > & getCallbacks();
 
 public slots:
 	/**

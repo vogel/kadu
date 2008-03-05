@@ -1,13 +1,13 @@
 #ifndef NOTIFY_H
 #define NOTIFY_H
 
-#include <qgroupbox.h>
+#include <QGroupBox>
 #include <qmap.h>
 #include <qobject.h>
 #include <qpair.h>
 #include <qstring.h>
 #include <qstringlist.h>
-#include <qvaluelist.h>
+#include <QList>
 #include <qvariant.h>
 
 #include <time.h>
@@ -19,7 +19,7 @@
 
 class MessageNotification;
 
-class QListBox;
+class QListWidget;
 
 /**
  * @defgroup notify Notify
@@ -149,8 +149,8 @@ class Notify : public ConfigurationUiHandler
 {
 	Q_OBJECT
 
-	QListBox *allUsers;
-	QListBox *notifiedUsers;
+	QListWidget *allUsers;
+	QListWidget *notifiedUsers;
 	ConfigComboBox *notifications;
 	ConfigGroupBox *notificationsGroupBox;
 
@@ -171,7 +171,7 @@ class Notify : public ConfigurationUiHandler
 		const char *description;
 		NotifyEvent() : name(), callbackRequirement(CallbackNotRequired), description(0){}
 	};
-	QValueList<NotifyEvent> NotifyEvents;
+	QList<NotifyEvent> NotifyEvents;
 
 	QString CurrentEvent;
 
@@ -212,7 +212,7 @@ public:
 	void unregisterEvent(const QString &name);
 
 	QStringList notifiersList() const;
-	const QValueList<Notify::NotifyEvent> &notifyEvents();
+	const QList<Notify::NotifyEvent> &notifyEvents();
 
 };
 

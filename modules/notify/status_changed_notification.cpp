@@ -8,7 +8,7 @@
  ***************************************************************************/
 
 #include <qapplication.h>
-#include <qstylesheet.h>
+#include <q3stylesheet.h>
 
 #include "misc.h"
 
@@ -43,8 +43,8 @@ StatusChangedNotification::StatusChangedNotification(const QString &toStatus, co
 
 	setTitle(tr("Status changed"));
 	setText(narg(syntax,
-		QStyleSheet::escape(ule.altNick()),
+		Qt::escape(ule.altNick()),
 		qApp->translate("@default", ule.status(protocolName).name().ascii()),
-		QStyleSheet::escape(ule.status(protocolName).description())
+		Qt::escape(ule.status(protocolName).description())
 	));
 }

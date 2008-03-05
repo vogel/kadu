@@ -8,7 +8,7 @@
  ***************************************************************************/
 
 #include <qapplication.h>
-#include <qstylesheet.h>
+#include <QTextDocument>
 
 #include "new_message_notification.h"
 
@@ -41,7 +41,7 @@ MessageNotification::MessageNotification(MessageType messageType, const UserList
 		syntax = tr("New message from <b>%1</b>");
 	}
 
-	setText(syntax.arg(QStyleSheet::escape(ule.altNick())));
+	setText(syntax.arg(Qt::escape(ule.altNick())));
 	setDetails(message);
 }
 

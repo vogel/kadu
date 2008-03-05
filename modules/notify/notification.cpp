@@ -11,7 +11,6 @@
 
 #include "debug.h"
 #include "kadu_parser.h"
-
 #include "notification.h"
 
 static QString getNotificationTitle(const QObject * const object)
@@ -157,7 +156,7 @@ QString Notification::icon() const
 	return Icon;
 }
 
-const QValueList<QPair<QString, const char *> > & Notification::getCallbacks()
+const QList<QPair<QString, const char *> > & Notification::getCallbacks()
 {
 	return Callbacks;
 }
