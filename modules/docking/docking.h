@@ -1,8 +1,8 @@
 #ifndef DOCKING_H
 #define DOCKING_H
 
-#include <qlabel.h>
-#include <qpixmap.h>
+#include <QLabel>
+#include <QIcon>
 
 #include "configuration_aware_object.h"
 #include "main_configuration_window.h"
@@ -26,7 +26,7 @@ protected:
 	virtual void configurationUpdated();
 
 private slots:
-	void statusPixmapChanged(const QPixmap &icon, const QString &iconName);
+	void statusPixmapChanged(const QIcon &icon, const QString &iconName);
 	void changeIcon();
 	void dockletChange(int id);
 	void pendingMessageAdded();
@@ -39,18 +39,18 @@ public:
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 	void trayMousePressEvent(QMouseEvent * e);
-	QPixmap defaultPixmap();
+	QIcon defaultPixmap();
 
 public slots:
 	/**
-		Modu³ implementuj±cy dokowanie powinien to ustawic
+		Moduï¿½ implementujï¿½cy dokowanie powinien to ustawic
 		na true przy starcie i false przy zamknieciu, aby
 		kadu wiedzialo, ze jest zadokowane.
 	**/
 	void setDocked(bool docked, bool butDontHideOnClose = false);
 
  	signals:
-	void trayPixmapChanged(const QPixmap& pixmap, const QString &name);
+	void trayPixmapChanged(const QIcon& icon, const QString &name);
 	void trayMovieChanged(const QMovie& movie);
 	void trayTooltipChanged(const QString& tooltip);
 	void searchingForTrayPosition(QPoint& pos);

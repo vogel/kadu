@@ -7,13 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qapplication.h>
-#include <qcursor.h>
-#include <qcheckbox.h>
-#include <qobject.h>
-#include <qpopupmenu.h>
-#include <qtimer.h>
-#include <qwindowdefs.h>
+#include <QApplication>
+#include <QCursor>
+#include <QObject>
+#include <QMenu>
+#include <QTimer>
 
 #include "config_file.h"
 #include "docking.h"
@@ -32,8 +30,6 @@
  */
 extern "C" int docking_init()
 {
-	create_netwm_atoms(qt_xdisplay());
-
 	docking_manager = new DockingManager();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/docking.ui"), docking_manager);
 
@@ -58,8 +54,8 @@ DockingManager::DockingManager()
 
 	connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
 
-	connect(kadu, SIGNAL(statusPixmapChanged(const QPixmap &, const QString &)),
-		this, SLOT(statusPixmapChanged(const QPixmap &, const QString &)));
+	connect(kadu, SIGNAL(statusPixmapChanged(const QIcon &, const QString &)),
+		this, SLOT(statusPixmapChanged(const QIcon &, const QString &)));
 	connect(&pending, SIGNAL(messageFromUserAdded(UserListElement)), this, SLOT(pendingMessageAdded()));
 	connect(&pending, SIGNAL(messageFromUserDeleted(UserListElement)), this, SLOT(pendingMessageDeleted()));
 
@@ -96,8 +92,8 @@ DockingManager::~DockingManager()
 {
 	kdebugf();
 
-	disconnect(kadu, SIGNAL(statusPixmapChanged(const QPixmap &, const QString &)),
-		this, SLOT(statusPixmapChanged(const QPixmap &, const QString &)));
+	disconnect(kadu, SIGNAL(statusPixmapChanged(const QIcon &, const QString &)),
+		this, SLOT(statusPixmapChanged(const QIcon &, const QString &)));
 	disconnect(&pending, SIGNAL(messageFromUserAdded(UserListElement)), this, SLOT(pendingMessageAdded()));
 	disconnect(&pending, SIGNAL(messageFromUserDeleted(UserListElement)), this, SLOT(pendingMessageDeleted()));
 
@@ -119,7 +115,7 @@ void DockingManager::changeIcon()
 		switch (newMessageIcon)
 		{
 			case AnimatedEnvelope:
-				emit trayMovieChanged(icons_manager->loadAnimatedIcon("MessageAnim"));
+				//emit trayMovieChanged(icons_manager->loadAnimatedIcon("MessageAnim"));
 				break;
 			case StaticEnvelope:
 				emit trayPixmapChanged(icons_manager->loadIcon("Message"), "Message");
@@ -134,7 +130,7 @@ void DockingManager::changeIcon()
 				else
 				{
 					const UserStatus &stat = gadu->currentStatus();
-					emit trayPixmapChanged(stat.pixmap(), stat.toString());
+					emit trayPixmapChanged(QIcon(stat.pixmap()), stat.toString());
 					icon_timer->start(500,TRUE);
 					blink = false;
 				}
@@ -164,7 +160,7 @@ void DockingManager::pendingMessageDeleted()
 	if (!pending.pendingMsgs())
 	{
 		const UserStatus &stat = gadu->currentStatus();
-		emit trayPixmapChanged(stat.pixmap(), stat.toString());
+		emit trayPixmapChanged(QIcon(stat.pixmap()), stat.toString());
 	}
 }
 
@@ -186,18 +182,18 @@ void DockingManager::defaultToolTip()
 void DockingManager::trayMousePressEvent(QMouseEvent * e)
 {
 	kdebugf();
-	if (e->button() == MidButton)
+	if (e->button() == Qt::MidButton)
 	{
 		emit mousePressMidButton();
 		return;
 	}
 
-	if (e->button() == LeftButton)
+	if (e->button() == Qt::LeftButton)
 	{
 		emit mousePressLeftButton();
 		kdebugm(KDEBUG_INFO, "minimized: %d, visible: %d\n", kadu->isMinimized(), kadu->isVisible());
 
-		if (pending.pendingMsgs() && e->state() != ControlButton)
+		if (pending.pendingMsgs() && (e->modifiers() != Qt::ControlModifier))
 		{
 			pending.openMessages();
 			return;
@@ -216,16 +212,16 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 		return;
 	}
 
-	if (e->button() == RightButton)
+	if (e->button() == Qt::RightButton)
 	{
 		emit mousePressRightButton();
-		showPopupMenu(dockMenu);
+		//showPopupMenu(dockMenu);
 		return;
 	}
 	kdebugf2();
 }
 
-void DockingManager::statusPixmapChanged(const QPixmap &icon, const QString &iconName)
+void DockingManager::statusPixmapChanged(const QIcon &icon, const QString &iconName)
 {
  	kdebugf();
 	emit trayPixmapChanged(icon, iconName);
@@ -233,9 +229,9 @@ void DockingManager::statusPixmapChanged(const QPixmap &icon, const QString &ico
 	changeIcon();
 }
 
-QPixmap DockingManager::defaultPixmap()
+QIcon DockingManager::defaultPixmap()
 {
-	return gadu->currentStatus().pixmap();
+	return QIcon(gadu->currentStatus().pixmap());
 }
 
 void DockingManager::setDocked(bool docked, bool butDontHideOnClose)
