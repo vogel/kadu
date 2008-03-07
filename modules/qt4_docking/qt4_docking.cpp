@@ -48,7 +48,11 @@ Qt4TrayIcon::Qt4TrayIcon(QWidget *parent, const char *name)
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 	connect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), this, SLOT(setTrayMovie(const QMovie &)));
 
+	connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayActivated(QSystemTrayIcon::ActivationReason)));
+
 	show();
+	setContextMenu(dockMenu);
+	
 	docking_manager->setDocked(true);
 
 	kdebugf2();
@@ -63,6 +67,8 @@ Qt4TrayIcon::~Qt4TrayIcon()
 	disconnect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 
+	disconnect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayActivated(QSystemTrayIcon::ActivationReason)));
+
 	docking_manager->setDocked(false);
 
 	kdebugf2();
@@ -70,8 +76,8 @@ Qt4TrayIcon::~Qt4TrayIcon()
 
 void Qt4TrayIcon::findTrayPosition(QPoint& pos)
 {
-	//QRect rect = geometry();
-	//pos = QPoint(rect.x(), rect.y());
+	QRect rect = geometry();
+	pos = QPoint(rect.x(), rect.y());
 }
 
 void Qt4TrayIcon::setTrayPixmap(const QIcon& pixmap, const QString &/*iconName*/)
@@ -89,10 +95,19 @@ void Qt4TrayIcon::setTrayTooltip(const QString& tooltip)
 	this->setToolTip(tooltip);
 }
 
-void Qt4TrayIcon::mousePressEvent(QMouseEvent * e)
+void Qt4TrayIcon::trayActivated(QSystemTrayIcon::ActivationReason reason)
 {
-	docking_manager->trayMousePressEvent(e);
+	QMouseEvent *ev = 0;
+	// nie przekazujemy klikniecia ppm poniewaz QSystemTrayIcon reaguje
+	// na niego i wyswietla menu kontekstowe samemu
+	if (reason == QSystemTrayIcon::Trigger)
+		ev = new QMouseEvent(QEvent::MouseButtonPress, QPoint(0,0), Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+	else if (reason == QSystemTrayIcon::MiddleClick)
+		ev = new QMouseEvent(QEvent::MouseButtonPress, QPoint(0,0), Qt::MidButton, Qt::MidButton, Qt::NoModifier);
+	if (ev)
+		docking_manager->trayMousePressEvent(ev);
 }
+
 
 Qt4TrayIcon* qt4_tray_icon = NULL;
 

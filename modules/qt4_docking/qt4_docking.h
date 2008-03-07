@@ -21,14 +21,12 @@ class Qt4TrayIcon : public QSystemTrayIcon
 		void setTrayMovie(const QMovie &movie);
 		void setTrayTooltip(const QString& tooltip);
 		void findTrayPosition(QPoint& pos);
-
-	protected:
-		virtual void mousePressEvent(QMouseEvent* e);
-		void undockAndTryToDockLater(int tm);
+		void trayActivated(QSystemTrayIcon::ActivationReason reason);
 
 	public:
 		Qt4TrayIcon(QWidget *parent=0, const char *name=0);
 		~Qt4TrayIcon();
+		
 };
 
 extern Qt4TrayIcon* qt4_tray_icon;
