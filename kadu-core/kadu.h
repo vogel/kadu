@@ -21,6 +21,8 @@
 #include "usergroup.h"
 #include "userlistelement.h"
 
+class ActionDescription;
+
 class QFile;
 class Q3ListBoxItem;
 class QMenuBar;
@@ -40,8 +42,16 @@ class Kadu : public QMainWindow, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-		// TODO: remove
-		friend class Wizard;
+	ActionDescription *inactiveUsersAction;
+	ActionDescription *descriptionUsersAction;
+	ActionDescription *onlineAndDescriptionUsersAction;
+	ActionDescription *configurationActionDescription;
+	ActionDescription *editUserActionDescription;
+	ActionDescription *addUserActionDescription;
+	ActionDescription *openSearchActionDescription;
+
+	// TODO: remove
+	friend class Wizard;
 
 	private:
 		UserListElement Myself;
@@ -104,6 +114,14 @@ class Kadu : public QMainWindow, ConfigurationAwareObject
 		void setOffline(const QString &description = QString::null);
 
 	private slots:
+		void inactiveUsersActionActivated(QWidget *parent, bool toggled);
+		void descriptionUsersActionActivated(QWidget *parent, bool toggled);
+		void onlineAndDescUsersActionActivated(QWidget *parent, bool toggled);
+		void configurationActionActivated(QWidget *parent, bool toggled);
+		void addUserActionActivated(QWidget *parent, bool toggled);
+		void editUserActionActivated(QWidget *parent, bool toggled);
+		void searchInDirectoryActionActivated(QWidget *parent, bool toggled);
+
 		void openChat();
 		void messageReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t time);
 		void createRecentChatsMenu();
@@ -237,7 +255,6 @@ class Kadu : public QMainWindow, ConfigurationAwareObject
 		void hideDescription();
 		void personalInfo();
 		void quit();
-		void searchInDirectory();
 		void showUserInfo();
 		void popupMenu();
 
@@ -247,14 +264,8 @@ class Kadu : public QMainWindow, ConfigurationAwareObject
 		void setMainWindowIcon(const QPixmap &);
 
 		void selectedUsersNeeded(const UserGroup*& users);
-		void inactiveUsersActionActivated();
-		void descriptionUsersActionActivated();
-		void onlineAndDescUsersActionActivated();
-		void configurationActionActivated();
-		void editUserActionActivated(const UserGroup* users);
 		void editUserActionAddedToToolbar(const UserGroup* users);
 		void editUserActionSetParams(QString protocolName, UserListElement users);
-		void addUserActionActivated(const UserGroup* users);
 
 	signals:
 		void keyPressed(QKeyEvent* e);

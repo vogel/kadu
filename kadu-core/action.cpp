@@ -103,9 +103,12 @@ ActionDescription::~ActionDescription()
 KaduAction * ActionDescription::getAction(QWidget *parent)
 {
 	KaduAction *result = new KaduAction(Text, parent);
+	result->setCheckable(Checkable);
+	if (!IconName.isEmpty())
+		result->setIcon(icons_manager->loadIcon(IconName));
 
-	connect(result, SIGNAL(toggled(bool)), Object, Slot);
-	connect(result, SIGNAL(triggered(bool)), Object, Slot);
+	connect(result, SIGNAL(toggled(QWidget *, bool)), Object, Slot);
+	connect(result, SIGNAL(triggered(QWidget *, bool)), Object, Slot);
 
 	return result;
 }

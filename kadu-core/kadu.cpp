@@ -28,6 +28,7 @@
 #include <QCustomEvent>
 #include <QMenu>
 #include <QStatusBar>
+#include <QToolBar>
 #include <QWidget>
 
 #include <sys/file.h>
@@ -255,6 +256,28 @@ Kadu::Kadu(QWidget *parent) : QMainWindow(parent),
 	setCaption(tr("Kadu: %1").arg(Myself.ID("Gadu")));
 
 	pending.loadFromFile();
+
+	inactiveUsersAction = new ActionDescription(
+		ActionDescription::TypeUserList, "inactiveUsersAction",
+		this, SLOT(inactiveUsersActionActivated(QWidget *, bool)),
+		"ShowHideInactiveUsers", tr("Hide offline users"),
+		true, tr("Show offline users")
+	);
+
+	descriptionUsersAction = new ActionDescription(
+		ActionDescription::TypeUserList, "descriptionUsersAction",
+		this, SLOT(descriptionUsersActionActivated(QWidget *, bool)),
+		"ShowOnlyDescriptionUsers", tr("Hide users without description"),
+		true, tr("Show users without description")
+	);
+
+	onlineAndDescriptionUsersAction = new ActionDescription(
+		ActionDescription::TypeUserList, "onlineAndDescriptionUsersAction",
+		this, SLOT(onlineAndDescUsersActionActivated(QWidget *, bool)),
+		"ShowOnlineAndDescriptionUsers", tr("Show only online and description users"),
+		true, tr("Show all users")
+	);
+
 /*
 	Action* inact_users_action = new Action("ShowHideInactiveUsers",
 		tr("Hide offline users"), "inactiveUsersAction", Action::TypeUserList);
@@ -279,12 +302,33 @@ Kadu::Kadu(QWidget *parent) : QMainWindow(parent),
 	onlineAndDesc_users_action->setAllOn(config_file.readBoolEntry("General", "ShowOnlineAndDescription"));
 	connect(onlineAndDesc_users_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(onlineAndDescUsersActionActivated()));
+*/
 
-	Action* configuration_action = new Action("Configuration", tr("Configuration"),
-		"configurationAction", Action::TypeGlobal);
-	connect(configuration_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-		this, SLOT(configurationActionActivated()));
+	configurationActionDescription = new ActionDescription(
+		ActionDescription::TypeGlobal, "configurationAction",
+		this, SLOT(configurationActionActivated(QWidget *, bool)),
+		"Configuration", tr("Configuration")
+	);
 
+	editUserActionDescription = new ActionDescription(
+		ActionDescription::TypeUser, "editUserAction",
+		this, SLOT(editUserActionAddedToToolbar(QWidget *, bool)),
+		"EditUserInfo", tr("Contact data")
+	);
+
+	addUserActionDescription = new ActionDescription(
+		ActionDescription::TypeGlobal, "addUserAction",
+		this, SLOT(addUserActionActivated(QWidget *, bool)),
+		"AddUser", tr("Add user")
+	);
+
+	openSearchActionDescription = new ActionDescription(
+		ActionDescription::TypeGlobal, "openSearchAction",
+		this, SLOT(searchInDirectoryActionActivated(QWidget *, bool)),
+		"LookupUserInfo", tr("Search user in directory")
+	);
+
+/*
 	Action* edit_user_action = new Action("EditUserInfo", tr("Contact data"),
 		"editUserAction", Action::TypeUser);
 	connect(edit_user_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
@@ -514,7 +558,7 @@ void Kadu::popupMenu()
 
 void Kadu::configure()
 {
-	configurationActionActivated();
+	configurationActionActivated(this, false);
 }
 
 void Kadu::copyDescription()
@@ -643,7 +687,7 @@ void Kadu::lookupInDirectory()
 		}
 	}
 	else
-		searchInDirectory();
+		searchInDirectoryActionActivated(0, false);
 
 	kdebugf2();
 }
@@ -667,22 +711,22 @@ void Kadu::selectedUsersNeeded(const UserGroup*& users)
 	kdebugf2();
 }
 
-void Kadu::inactiveUsersActionActivated()
+void Kadu::inactiveUsersActionActivated(QWidget *parent, bool toggled)
 {
 	groups_manager->changeDisplayingOffline();
 }
 
-void Kadu::descriptionUsersActionActivated()
+void Kadu::descriptionUsersActionActivated(QWidget *parent, bool toggled)
 {
 	groups_manager->changeDisplayingWithoutDescription();
 }
 
-void Kadu::onlineAndDescUsersActionActivated()
+void Kadu::onlineAndDescUsersActionActivated(QWidget *parent, bool toggled)
 {
 	groups_manager->changeDisplayingOnlineAndDescription();
 }
 
-void Kadu::configurationActionActivated()
+void Kadu::configurationActionActivated(QWidget *parent, bool toggled)
 {
 	MainConfigurationWindow::instance()->show();
 }
@@ -715,22 +759,32 @@ void Kadu::editUserActionAddedToToolbar(const UserGroup* users)
 	kdebugf2();
 }
 
-void Kadu::editUserActionActivated(const UserGroup* users)
+void Kadu::editUserActionActivated(QWidget *parent, bool toggled)
 {
 	kdebugf();
-	if (users->count() == 1)
-		(new UserInfo(*users->begin(), kadu, "user_info"))->show();
+
+	// UserBoxContainer ??
+	// UserListProvider ??
+	Kadu *kadu = dynamic_cast<Kadu *>(parent);
+	if (kadu)
+	{
+		UserListElements selectedUsers = kadu->Userbox->selectedUsers();
+		if (selectedUsers.count() == 1)
+			(new UserInfo(*selectedUsers.begin(), kadu, "user_info"))->show();
+	}
+
+		
 	kdebugf2();
 }
 
-void Kadu::addUserActionActivated(const UserGroup* users)
+void Kadu::addUserActionActivated(QWidget *parent, bool toggled)
 {
-	kdebugf();
-	if ((users != NULL) && (users->count() == 1) && (*users->begin()).isAnonymous())
-		(new UserInfo(*users->begin(), kadu, "add_user"))->show();
-	else
-		(new UserInfo(UserListElement(), kadu, "add_user"))->show();
-	kdebugf2();
+// 	kdebugf();
+// 	if ((users != NULL) && (users->count() == 1) && (*users->begin()).isAnonymous())
+// 		(new UserInfo(*users->begin(), kadu, "add_user"))->show();
+// 	else
+// 		(new UserInfo(UserListElement(), kadu, "add_user"))->show();
+// 	kdebugf2();
 }
 
 void Kadu::openChatWith()
@@ -752,7 +806,7 @@ void Kadu::showUserInfo()
 		return;
 	}
 	UserGroup users(activeUserBox->selectedUsers());
-	editUserActionActivated(&users);
+// 	editUserActionActivated(&users);
 	kdebugf2();
 }
 
@@ -780,7 +834,7 @@ void Kadu::addUserAction()
 {
 	const UserGroup* users;
 	selectedUsersNeeded(users);
-	addUserActionActivated(users);
+// 	addUserActionActivated(users);
 }
 
 void Kadu::manageIgnored()
@@ -803,7 +857,7 @@ void Kadu::openChat()
 	kdebugf2();
 }
 
-void Kadu::searchInDirectory()
+void Kadu::searchInDirectoryActionActivated(QWidget *parent, bool toggled)
 {
 	(new SearchDialog(kadu, "search_user"))->show();
 }
@@ -1771,14 +1825,28 @@ void Kadu::startupProcedure()
 {
 	kdebugf();
 
+	TopDockArea->show();
+
+	QToolBar *mainToolbar = new QToolBar(this);
+	MainLayout->addWidget(mainToolbar);
+	mainToolbar->addAction(inactiveUsersAction->getAction(this));
+	mainToolbar->addAction(descriptionUsersAction->getAction(this));
+	mainToolbar->addAction(onlineAndDescriptionUsersAction->getAction(this));
+	mainToolbar->addAction(configurationActionDescription->getAction(this));
+	mainToolbar->addAction(editUserActionDescription->getAction(this));
+	mainToolbar->addAction(addUserActionDescription->getAction(this));
+	mainToolbar->addAction(openSearchActionDescription->getAction(this));
+
+	mainToolbar->show();
+
 	// create toolbars in startupProcedure() to include actions from modules
-	if (!TopDockArea->loadFromConfig(this))
-	{
-		ToolBar* toolbar = new ToolBar(this);
+// 	if (!TopDockArea->loadFromConfig(this))
+// 	{
+// 		ToolBar* toolbar = new ToolBar(this);
 // 		TopDockArea->moveDockWindow(toolbar);
 // 		TopDockArea->setAcceptDockWindow(toolbar, true);
-		toolbar->loadDefault();
-	}
+// 		toolbar->loadDefault();
+// 	}
 
 	if (ShowMainWindowOnStart)
 		show();
