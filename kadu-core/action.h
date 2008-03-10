@@ -21,6 +21,12 @@ class KaduAction : public QAction
 {
 	Q_OBJECT
 
+	QString OnText;
+	QString OffText;
+
+	QIcon OnIcon;
+	QIcon OffIcon;
+
 	void connectSignalsAndSlots();
 
 private slots:
@@ -32,7 +38,9 @@ private slots:
 public:
 	KaduAction(QObject *parent);
 	KaduAction(const QString &text, QObject *parent);
+	KaduAction(const QString &onText, const QString &offText, QObject *parent);
 	KaduAction(const QIcon &icon, const QString &text, QObject *parent);
+	KaduAction(const QIcon &onIcon, const QIcon offIcon, const QString &onText, const QString &offText, QObject *parent);
 	virtual ~KaduAction();
 
 signals:

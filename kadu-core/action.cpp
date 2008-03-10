@@ -38,8 +38,20 @@ KaduAction::KaduAction(const QString &text, QObject *parent)
 	connectSignalsAndSlots();
 }
 
+KaduAction::KaduAction(const QString &onText, const QString &offText, QObject *parent)
+	: QAction(offText, parent), OnText(onText), OffText(offText)
+{
+	connectSignalsAndSlots();
+}
+
 KaduAction::KaduAction(const QIcon &icon, const QString &text, QObject *parent)
 	: QAction(icon, text, parent)
+{
+	connectSignalsAndSlots();
+}
+
+KaduAction::KaduAction(const QIcon &onIcon, const QIcon offIcon, const QString &onText, const QString &offText, QObject *parent)
+	: QAction(offIcon, offText, parent), OnText(onText), OffText(offText), OnIcon(onIcon), OffIcon(offIcon)
 {
 	connectSignalsAndSlots();
 }
@@ -60,6 +72,21 @@ void KaduAction::hoveredSlot()
 
 void KaduAction::toggledSlot(bool checked)
 {
+	if (checked)
+	{
+		if (!OnText.isEmpty())
+			setText(OnText);
+		if (!OnIcon.isNull())
+			setIcon(OnIcon);
+	}
+	else
+	{
+		if (!OffText.isEmpty())
+			setText(OffText);
+		if (!OffIcon.isNull())
+			setIcon(OffIcon);
+	}
+
 	emit toggled((QWidget *)parent(), checked);
 }
 
@@ -102,10 +129,24 @@ ActionDescription::~ActionDescription()
 
 KaduAction * ActionDescription::getAction(QWidget *parent)
 {
-	KaduAction *result = new KaduAction(Text, parent);
+	KaduAction *result;
+
+	if (Checkable)
+	{
+		if (!IconName.isEmpty())
+			result = new KaduAction(icons_manager->loadIcon(IconName + "_off"), icons_manager->loadIcon(IconName), CheckedText, Text, parent);
+		else
+			result = new KaduAction(CheckedText, Text, parent);
+	}
+	else
+	{
+		if (!IconName.isEmpty())
+			result = new KaduAction(icons_manager->loadIcon(IconName), Text, parent);
+		else
+			result = new KaduAction(Text, parent);
+	}
+
 	result->setCheckable(Checkable);
-	if (!IconName.isEmpty())
-		result->setIcon(icons_manager->loadIcon(IconName));
 
 	connect(result, SIGNAL(toggled(QWidget *, bool)), Object, Slot);
 	connect(result, SIGNAL(triggered(QWidget *, bool)), Object, Slot);
