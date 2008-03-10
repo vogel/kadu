@@ -50,6 +50,9 @@ class Kadu : public QMainWindow, ConfigurationAwareObject
 	ActionDescription *addUserActionDescription;
 	ActionDescription *openSearchActionDescription;
 
+	void loadToolBarsFromConfig();
+	void loadToolBarFromConfig(const QString &configName, Qt::ToolBarArea area);
+
 	// TODO: remove
 	friend class Wizard;
 

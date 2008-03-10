@@ -1,15 +1,11 @@
 #ifndef TOOLBAR_H
 #define TOOLBAR_H
 
-#include <qglobal.h>
-
-
 #include <QContextMenuEvent>
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QMoveEvent>
 #include <QToolBar>
-
 
 #include <Q3PopupMenu>
 
@@ -103,9 +99,9 @@ public:
 
 	virtual void show();
 
-	void addAction(const QString &actionName, bool showLabel, ToolButton *button = 0, bool before = true);
-	void removeAction(const QString &actionName);
-	void moveAction(const QString &actionName, ToolButton *button);
+// 	void addAction(const QString &actionName, bool showLabel, ToolButton *button = 0, bool before = true);
+// 	void removeAction(const QString &actionName);
+// 	void moveAction(const QString &actionName, ToolButton *button);
 
 	/**
 		\fn DockArea* dockArea()

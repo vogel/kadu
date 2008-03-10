@@ -55,50 +55,50 @@ ToolBar::~ToolBar()
 	kdebugf2();
 }
 
-void ToolBar::addAction(const QString &actionName, bool showLabel, ToolButton *button, bool before)
-{
-	printf("adding action: %s\n", actionName.toLocal8Bit().data());
-
-	QToolBar::addAction(KaduActions.getAction(actionName, dynamic_cast<QWidget *>(parent())));
-	return;
-
-	if (hasAction(actionName))
-		return;
-
-	ToolBarAction newAction;
-	newAction.actionName = actionName;
-	newAction.button = 0;
-	newAction.showLabel = showLabel;
-
-	bool inserted = false;
-	if (button)
-	{
-		FOREACH(i, ToolBarActions)
-			if ((*i).button == button)
-			{
-				if (!before)
-					i++;
-
-				inserted = true;
-				ToolBarActions.insert(i, newAction);
-				break;
-			}
-	}
-
-	if (!inserted)
-		ToolBarActions.append(newAction);
-}
-
-void ToolBar::removeAction(const QString &actionName)
-{
-	FOREACH(actionIterator, ToolBarActions)
-		if ((*actionIterator).actionName == actionName)
-		{
-			delete (*actionIterator).button;
-			ToolBarActions.remove(actionIterator);
-			return;
-		}
-}
+// void ToolBar::addAction(const QString &actionName, bool showLabel, ToolButton *button, bool before)
+// {
+// 	printf("adding action: %s\n", actionName.toLocal8Bit().data());
+// 
+// 	QToolBar::addAction(KaduActions.getAction(actionName, dynamic_cast<QWidget *>(parent())));
+// 	return;
+// 
+// 	if (hasAction(actionName))
+// 		return;
+// 
+// 	ToolBarAction newAction;
+// 	newAction.actionName = actionName;
+// 	newAction.button = 0;
+// 	newAction.showLabel = showLabel;
+// 
+// 	bool inserted = false;
+// 	if (button)
+// 	{
+// 		FOREACH(i, ToolBarActions)
+// 			if ((*i).button == button)
+// 			{
+// 				if (!before)
+// 					i++;
+// 
+// 				inserted = true;
+// 				ToolBarActions.insert(i, newAction);
+// 				break;
+// 			}
+// 	}
+// 
+// 	if (!inserted)
+// 		ToolBarActions.append(newAction);
+// }
+// 
+// void ToolBar::removeAction(const QString &actionName)
+// {
+// 	FOREACH(actionIterator, ToolBarActions)
+// 		if ((*actionIterator).actionName == actionName)
+// 		{
+// 			delete (*actionIterator).button;
+// 			ToolBarActions.remove(actionIterator);
+// 			return;
+// 		}
+// }
 
 void ToolBar::usersChanged()
 {
@@ -108,39 +108,39 @@ void ToolBar::usersChanged()
 }
 
 // TODO: optimize
-void ToolBar::moveAction(const QString &actionName, ToolButton *button)
-{
-	bool actionFirst;
-	bool showLabel;
-
-	FOREACH(actionIterator, ToolBarActions)
-		if ((*actionIterator).actionName == actionName)
-		{
-			if ((*actionIterator).button == button)
-				return;
-			actionFirst = true;
-			break;
-		}
-		else if ((*actionIterator).button == button)
-		{
-			if ((*actionIterator).actionName == actionName)
-				return;
-			actionFirst = false;
-			break;
-		}
-
-	FOREACH(actionIterator, ToolBarActions)
-		if ((*actionIterator).actionName == actionName)
-		{
-			showLabel = (*actionIterator).showLabel;
-			delete (*actionIterator).button;
-			ToolBarActions.remove(actionIterator);
-			break;
-		}
-
-	addAction(actionName, showLabel, button, !actionFirst);
-	updateButtons();
-}
+// void ToolBar::moveAction(const QString &actionName, ToolButton *button)
+// {
+// 	bool actionFirst;
+// 	bool showLabel;
+// 
+// 	FOREACH(actionIterator, ToolBarActions)
+// 		if ((*actionIterator).actionName == actionName)
+// 		{
+// 			if ((*actionIterator).button == button)
+// 				return;
+// 			actionFirst = true;
+// 			break;
+// 		}
+// 		else if ((*actionIterator).button == button)
+// 		{
+// 			if ((*actionIterator).actionName == actionName)
+// 				return;
+// 			actionFirst = false;
+// 			break;
+// 		}
+// 
+// 	FOREACH(actionIterator, ToolBarActions)
+// 		if ((*actionIterator).actionName == actionName)
+// 		{
+// 			showLabel = (*actionIterator).showLabel;
+// 			delete (*actionIterator).button;
+// 			ToolBarActions.remove(actionIterator);
+// 			break;
+// 		}
+// 
+// 	addAction(actionName, showLabel, button, !actionFirst);
+// 	updateButtons();
+// }
 
 ToolButton * ToolBar::addButton(ActionDescription *action, bool showLabel, ToolButton *after)
 {
@@ -249,7 +249,7 @@ void ToolBar::dragEnterEvent(QDragEnterEvent* event)
 void ToolBar::dropEvent(QDropEvent* event)
 {
 	// TODO: update ToolbarActions
-
+/*
 	kdebugf();
 	ToolBar* source = dynamic_cast<ToolBar*>(event->source());
 
@@ -285,7 +285,7 @@ void ToolBar::dropEvent(QDropEvent* event)
 
 	updateButtons();
 
-	event->accept(true);
+	event->accept(true);*/
 
 	kdebugf2();
 }
@@ -455,6 +455,8 @@ void ToolBar::loadFromConfig(QDomElement toolbar_element)
 		action.button = 0;
 
 		ToolBarActions.append(action);
+
+		addAction(KaduActions.getAction(action.actionName, dynamic_cast<QWidget *>(parent())));
 	}
 
 	// TODO: why calling updateButtons does not work?
@@ -491,19 +493,19 @@ void ToolBar::addDefaultAction(const QString &toolbar, const QString &actionName
 
 void ToolBar::loadDefault()
 {
-	kdebugf();
-
-	if (DefaultActions.contains(name()))
-	{
-		const QList<ToolBarAction>& actions = DefaultActions[name()];
-		CONST_FOREACH(i, actions)
-			addAction((*i).actionName, (*i).showLabel, 0);
-	}
-
-	// TODO: why calling updateButtons does not work?
-	QTimer::singleShot(0, this, SLOT(updateButtons()));
-
-	kdebugf2();
+// 	kdebugf();
+// 
+// 	if (DefaultActions.contains(name()))
+// 	{
+// 		const QList<ToolBarAction>& actions = DefaultActions[name()];
+// 		CONST_FOREACH(i, actions)
+// 			addAction((*i).actionName, (*i).showLabel, 0);
+// 	}
+// 
+// 	// TODO: why calling updateButtons does not work?
+// 	QTimer::singleShot(0, this, SLOT(updateButtons()));
+// 
+// 	kdebugf2();
 }
 
 const UserGroup* ToolBar::selectedUsers() const

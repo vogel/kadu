@@ -355,6 +355,7 @@ Kadu::Kadu(QWidget *parent) : QMainWindow(parent),
 	/* guess what */
 	createMenu();
 	createStatusPopupMenu();
+	loadToolBarsFromConfig();
 
 	connect(statusMenu, SIGNAL(aboutToHide()), this, SLOT(statusMenuAboutToHide()));
 	connect(dockMenu, SIGNAL(aboutToHide()), this, SLOT(dockMenuAboutToHide()));
@@ -1498,6 +1499,47 @@ void Kadu::createRecentChatsMenu()
 	kdebugf2();
 }
 
+void Kadu::loadToolBarsFromConfig()
+{
+	loadToolBarFromConfig("topDockArea", Qt::TopToolBarArea);
+}
+
+void Kadu::loadToolBarFromConfig(const QString &configName, Qt::ToolBarArea area)
+{
+	kdebugf();
+
+	QDomElement root_elem = xml_config_file->rootElement();
+	QDomElement toolbars_elem = xml_config_file->findElement(root_elem, "Toolbars");
+
+	if (toolbars_elem.isNull())
+		return;
+
+// 	setBlockToolbars(toolbars_elem.attribute("blocked").toInt());
+
+	QDomElement dockarea_elem = xml_config_file->findElementByProperty(toolbars_elem, "DockArea", "name", configName);
+	if (dockarea_elem.isNull())
+		return;
+
+	for (QDomNode n = dockarea_elem.firstChild(); !n.isNull(); n = n.nextSibling())
+	{
+		const QDomElement &toolbar_elem = n.toElement();
+		if (toolbar_elem.isNull())
+			continue;
+		if (toolbar_elem.tagName() != "ToolBar")
+			continue;
+
+		ToolBar* toolbar = new ToolBar(this);
+// 		moveDockWindow(toolbar);
+		toolbar->loadFromConfig(toolbar_elem);
+		toolbar->show();
+// 		setAcceptDockWindow(toolbar, true);
+
+		addToolBar(area, toolbar);
+	}
+
+	kdebugf2();
+}
+
 void Kadu::createMenu()
 {
 	kdebugf();
@@ -1824,20 +1866,6 @@ void Kadu::setDefaultStatus()
 void Kadu::startupProcedure()
 {
 	kdebugf();
-
-	TopDockArea->show();
-
-	QToolBar *mainToolbar = new QToolBar(this);
-	MainLayout->addWidget(mainToolbar);
-	mainToolbar->addAction(inactiveUsersAction->getAction(this));
-	mainToolbar->addAction(descriptionUsersAction->getAction(this));
-	mainToolbar->addAction(onlineAndDescriptionUsersAction->getAction(this));
-	mainToolbar->addAction(configurationActionDescription->getAction(this));
-	mainToolbar->addAction(editUserActionDescription->getAction(this));
-	mainToolbar->addAction(addUserActionDescription->getAction(this));
-	mainToolbar->addAction(openSearchActionDescription->getAction(this));
-
-	mainToolbar->show();
 
 	// create toolbars in startupProcedure() to include actions from modules
 // 	if (!TopDockArea->loadFromConfig(this))
