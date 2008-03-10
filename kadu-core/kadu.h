@@ -272,7 +272,7 @@ class Kadu : public QMainWindow, ConfigurationAwareObject
 
 	signals:
 		void keyPressed(QKeyEvent* e);
-		void statusPixmapChanged(const QPixmap &icon, const QString &icon_name);
+		void statusPixmapChanged(const QIcon &icon, const QString &icon_name);
 
 		// TODO: workaround
 		void messageReceivedSignal(Protocol *, UserListElements, const QString &, time_t);

@@ -1054,10 +1054,12 @@ void Kadu::changeAppearance()
 	kadu->statusButton->setShown(config_file.readBoolEntry("Look", "ShowStatusButton"));
 
 	const UserStatus &stat = gadu->currentStatus();
+
 	QPixmap pix = stat.pixmap();
-	statusButton->setIcon(QIcon(pix));
+	QIcon icon(pix);
+	statusButton->setIcon(icon);
 	setMainWindowIcon(pix);
-	emit statusPixmapChanged(pix, stat.toString());
+	emit statusPixmapChanged(icon, stat.toString());
 	kdebugf2();
 }
 
@@ -1075,7 +1077,7 @@ void Kadu::removeUsers(UserListElements users)
 
 void Kadu::blink()
 {
-	QPixmap pix;
+	QIcon icon;
 
 	kdebugf();
 
@@ -1083,27 +1085,27 @@ void Kadu::blink()
 		return;
 	else if (!DoBlink && gadu->currentStatus().isOffline())
 	{
-		pix = gadu->nextStatus().pixmap(Offline, false);
-		statusButton->setIcon(QIcon(pix));
-		emit statusPixmapChanged(pix, "Offline");
+		icon = QIcon(gadu->nextStatus().pixmap(Offline, false));
+		statusButton->setIcon(icon);
+		emit statusPixmapChanged(icon, "Offline");
 		return;
 	}
 
 	QString iconName;
 	if (BlinkOn)
 	{
-		pix = gadu->nextStatus().pixmap(Offline, false);
+		icon = QIcon(gadu->nextStatus().pixmap(Offline, false));
 		iconName = "Offline";
 	}
 	else
 	{
 		const UserStatus &stat = gadu->nextStatus();
-		pix = stat.pixmap(NextStatus);
+		icon = QIcon(stat.pixmap(NextStatus));
 		iconName = stat.toString();
 	}
 
-	statusButton->setIcon(QIcon(pix));
-	emit statusPixmapChanged(pix, iconName);
+	statusButton->setIcon(icon);
+	emit statusPixmapChanged(icon, iconName);
 
 	BlinkOn = !BlinkOn;
 
@@ -1939,12 +1941,15 @@ void Kadu::showStatusOnMenu(int statusNr)
 	statusButton->setText(qApp->translate("@default", gadu->currentStatus().name().ascii()));
 	statusMenu->setItemEnabled(7, statusNr != 6);
 	dockMenu->setItemEnabled(7, statusNr != 6);
+
 	QPixmap pix = gadu->currentStatus().pixmap();
+	QIcon icon(pix);
 	QString iconName = gadu->currentStatus().toString();
-	statusButton->setIcon(QIcon(pix));
+
+	statusButton->setIcon(icon);
 	setMainWindowIcon(pix);
 
-	emit statusPixmapChanged(pix, iconName);
+	emit statusPixmapChanged(icon, iconName);
 }
 
 void Kadu::readTokenValue(QPixmap tokenImage, QString &tokenValue)

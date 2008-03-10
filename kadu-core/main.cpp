@@ -195,6 +195,11 @@ void kaduQtMessageHandler(QtMsgType type, const char *msg)
 			fflush(stderr);
 			printBacktrace("fatal error from Qt (above)");
 			abort();
+		case QtCriticalMsg:
+			fprintf(stderr, "\033[31;1mCritical: %s\033[0m\n", msg);
+			fflush(stderr);
+			printBacktrace("critical error from Qt (above)");
+			abort();
 	}
 }
 
