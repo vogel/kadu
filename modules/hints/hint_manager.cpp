@@ -7,15 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qapplication.h>
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qspinbox.h>
+#include <QApplication>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QDesktopWidget>
-#include <QLabel>
-#include <QFrame>
-#include <QToolTip>
-#include <QVBoxLayout>
+#include <QSpinBox>
 
 #include "chat_widget.h"
 #include "chat_manager.h"
@@ -43,7 +39,7 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 	hints(), tipFrame(0)
 {
 	kdebugf();
-	frame = new QFrame(parent, name, Qt::WStyle_NoBorder | Qt::WStyle_StaysOnTop | Qt::WStyle_Tool | Qt::WX11BypassWM | Qt::WWinOwnDC);
+	frame = new QFrame(parent, name, Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::MSWindowsOwnDC);
 
 	frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	frame->setFrameStyle(QFrame::Box | QFrame::Plain);
@@ -122,7 +118,7 @@ void HintManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainCo
 	connect(maximumWidth, SIGNAL(valueChanged(int)), this, SLOT(maximumWidthChanged(int)));
 
 	overUserSyntax = mainConfigurationWindow->widgetById("hints/overUserSyntax");
-	QToolTip::add(overUserSyntax, qApp->translate("@default", Kadu::SyntaxText));
+	overUserSyntax->setToolTip(qApp->translate("@default", Kadu::SyntaxText));
 
 	toolTipClassesHighlighted((dynamic_cast<QComboBox *>(mainConfigurationWindow->widgetById("toolTipClasses")))->currentText());
 	connect(mainConfigurationWindow->widgetById("toolTipClasses"), SIGNAL(highlighted(const QString &)),
@@ -262,13 +258,13 @@ void HintManager::oneSecond(void)
 	kdebugf();
 
 	bool removed = false;
-	for (unsigned int i = 0; i < hints.count(); ++i)
+	for (int i = 0; i < hints.count(); ++i)
 	{
-		hints.takeAt(i)->nextSecond();
+		hints.at(i)->nextSecond();
 
-		if (hints.takeAt(i)->isDeprecated())
+		if (hints.at(i)->isDeprecated())
 		{
-			deleteHint(hints.takeAt(i));
+			deleteHint(hints.at(i));
 			removed = true;
 		}
 	}
@@ -461,7 +457,7 @@ void HintManager::showToolTip(const QPoint &point, const UserListElement &user)
 	if (tipFrame)
 		delete tipFrame;
 
-	tipFrame = new QFrame(0, "tip_frame", Qt::WStyle_NoBorder | Qt::WStyle_StaysOnTop | Qt::WStyle_Tool | Qt::WX11BypassWM | Qt::WWinOwnDC);
+	tipFrame = new QFrame(0, "tip_frame", Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::MSWindowsOwnDC);
 	tipFrame->setFrameStyle(QFrame::Box | QFrame::Plain);
 	tipFrame->setLineWidth(FRAME_WIDTH);
 

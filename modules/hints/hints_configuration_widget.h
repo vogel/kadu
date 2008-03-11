@@ -10,10 +10,6 @@
 #ifndef HINTS_CONFIGURATION_WIDGET_H
 #define HINTS_CONFIGURATION_WIDGET_H
 
-#include <qcolor.h>
-#include <qfont.h>
-#include <QLabel>
-
 #include "../notify/notify.h"
 
 class QLineEdit;

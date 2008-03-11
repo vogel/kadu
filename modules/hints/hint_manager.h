@@ -1,18 +1,6 @@
 #ifndef HINT_MANAGER_H
 #define HINT_MANAGER_H
 
-#include <qcolor.h>
-#include <qfont.h>
-#include <qframe.h>
-#include <qlayout.h>
-#include <qmap.h>
-#include <qpair.h>
-#include <qpixmap.h>
-#include <qpoint.h>
-#include <qstring.h>
-#include <qtimer.h>
-#include <QVBoxLayout>
-
 #include "configuration_aware_object.h"
 #include "gadu.h"
 #include "hint.h"

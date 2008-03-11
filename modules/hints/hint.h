@@ -1,23 +1,15 @@
 #ifndef HINT_H
 #define HINT_H
 
-#include <qcolor.h>
-#include <qevent.h>
-#include <qfont.h>
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qmap.h>
-#include <qobject.h>
-#include <qpair.h>
-#include <qpixmap.h>
-#include <qstring.h>
-#include <qwidget.h>
-#include <QHBoxLayout>
+#include <QWidget>
 #include <QVBoxLayout>
-#include <QMouseEvent>
 
 #include "configuration_aware_object.h"
 #include "gadu.h"
+
+class QLabel;
+class QVBoxLayout;
+
 
 class Notification;
 

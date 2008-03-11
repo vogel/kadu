@@ -7,11 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qapplication.h>
-#include <qspinbox.h>
-#include <qtooltip.h>
-#include <QGridLayout>
-#include <QLabel>
+#include <QApplication>
+#include <QSpinBox>
 
 #include "color_button.h"
 #include "config_file.h"
@@ -33,7 +30,7 @@ HintsConfigurationWidget::HintsConfigurationWidget(QWidget *parent, char *name)
 	timeout->setSuffix(" s");
 	timeout->setSpecialValueText(tr("Dont hide"));
 	syntax = new QLineEdit(this);
-	QToolTip::add(syntax, qApp->translate("@default", Kadu::SyntaxTextNotify));
+	syntax->setToolTip(qApp->translate("@default", Kadu::SyntaxTextNotify));
 
 	connect(font, SIGNAL(fontChanged(QFont)), this, SLOT(fontChanged(QFont)));
 	connect(foregroundColor, SIGNAL(changed(const QColor &)), this, SLOT(foregroundColorChanged(const QColor &)));

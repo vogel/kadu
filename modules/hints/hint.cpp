@@ -7,14 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qpushbutton.h>
-#include <QHBoxLayout>
-#include <QList>
-#include <QPixmap>
-#include <QLabel>
-#include <QMouseEvent>
-#include <QEvent>
-#include <QVBoxLayout>
+#include <QPushButton>
 
 #include "config_file.h"
 #include "debug.h"
@@ -45,7 +38,7 @@ Hint::Hint(QWidget *parent, Notification *notification)
 	else
 		startSecs = secs = config_file.readNumEntry("Hints", "Event_" + notification->type() + "_timeout", 10);
 
-	createLabels(icons_manager->loadIcon(notification->icon()).pixmap());
+	createLabels(icons_manager->loadPixmap(notification->icon()));
 	updateText();
 
 	callbacksBox = new QHBoxLayout();
@@ -158,7 +151,7 @@ void Hint::updateText()
 		{
 			int i = (count > 5) ? count - 5 : 0;
 
-			unsigned int citeSign = config_file.readUnsignedNumEntry("Hints","CiteSign");
+			int citeSign = config_file.readNumEntry("Hints","CiteSign");
 
 			QString itemSyntax = config_file.readEntry("Hints", "Event_" + notification->type() + "_detailSyntax", "\n&bull; <small>%1</small>");
 			for (; i < count; i++)
