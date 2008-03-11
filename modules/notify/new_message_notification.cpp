@@ -7,7 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qapplication.h>
 #include <QTextDocument>
 
 #include "new_message_notification.h"

@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qapplication.h>
-#include <q3stylesheet.h>
+#include <QApplication>
+#include <QTextDocument>
 
 #include "misc.h"
 

@@ -10,8 +10,6 @@
 #ifndef CONNECTION_ERROR_NOTIFICATION_H
 #define CONNECTION_ERROR_NOTIFICATION_H
 
-#include <qstringlist.h>
-
 #include "protocol_notification.h"
 #include "notify.h"
 

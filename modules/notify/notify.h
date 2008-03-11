@@ -1,15 +1,6 @@
 #ifndef NOTIFY_H
 #define NOTIFY_H
 
-#include <QGroupBox>
-#include <qmap.h>
-#include <qobject.h>
-#include <qpair.h>
-#include <qstring.h>
-#include <qstringlist.h>
-#include <QList>
-#include <qvariant.h>
-
 #include <time.h>
 
 #include "main_configuration_window.h"

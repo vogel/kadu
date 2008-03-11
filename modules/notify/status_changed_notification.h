@@ -10,7 +10,6 @@
 #ifndef STATUS_CHANGED_NOTIFICATION_H
 #define STATUS_CHANGED_NOTIFICATION_H
 
-#include <QTextDocument>
 
 #include "protocol_notification.h"
 #include "notify.h"

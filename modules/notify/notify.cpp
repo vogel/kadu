@@ -21,11 +21,8 @@
 #include "status_changed_notification.h"
 #include "userbox.h"
 
-#include <qapplication.h>
-#include <QGridLayout>
-#include <QList>
+#include <QApplication>
 #include <QListWidget>
-#include <QLabel>
 
 extern "C" int notify_init()
 {
@@ -73,8 +70,9 @@ Notify::Notify(QObject *parent, const char *name)
 	// TODO: workaround
 	connect(kadu, SIGNAL(messageReceivedSignal(Protocol *, UserListElements, const QString&, time_t)),
 			this, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
-	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
-		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
+	// TODO:
+//	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
+//		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
 
 	MessageNotification::registerEvents(this);
 	ConnectionErrorNotification::registerEvent(this);
@@ -94,8 +92,9 @@ Notify::~Notify()
 	disconnect(gadu, SIGNAL(connectionError(Protocol *, const QString &, const QString &)), this, SLOT(connectionError(Protocol *, const QString &, const QString &)));
 	disconnect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString&, time_t)),
 			this, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
-	disconnect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
-		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
+	// TODO:
+//	disconnect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
+//		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
 
 	if (!Notifiers.isEmpty())
 	{
@@ -164,8 +163,8 @@ void Notify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigu
 	allUsers->setSelectionMode(QAbstractItemView::ExtendedSelection);
 	notifiedUsers->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-	connect(notifiedUsers, SIGNAL(doubleClicked(QListWidgetItem *)), this, SLOT(moveToAllList()));
-	connect(allUsers, SIGNAL(doubleClicked(QListWidgetItem *)), this, SLOT(moveToNotifyList()));
+	connect(notifiedUsers, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this, SLOT(moveToAllList()));
+	connect(allUsers, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this, SLOT(moveToNotifyList()));
 
 	connect(mainConfigurationWindow->widgetById("notify/notifyAll"), SIGNAL(toggled(bool)), notifyUsers, SLOT(setDisabled(bool)));
 	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));

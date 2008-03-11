@@ -10,12 +10,6 @@
 #ifndef NOTIFICATION_H
 #define NOTIFICATION_H
 
-#include <qmap.h>
-#include <qobject.h>
-#include <qstring.h>
-#include <qstringlist.h>
-#include <QList>
-
 #include "userlist.h"
 
 #include "../notify/notification.h"
