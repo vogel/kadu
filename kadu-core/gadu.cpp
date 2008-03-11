@@ -1134,7 +1134,7 @@ void GaduProtocol::login()
 //	LoginParams.tls = config_file.readBoolEntry("Network", "UseTLS");
 	LoginParams.tls = 0;
 	LoginParams.client_version = GG_DEFAULT_CLIENT_VERSION; //tego siê nie zwalnia...
-	LoginParams.protocol_version = 0x29; // we are gg 7.6 now
+	LoginParams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION; // we are gg 7.7 now
 		// =  GG_DEFAULT_PROTOCOL_VERSION;
 	if (LoginParams.tls)
 	{
