@@ -1,7 +1,5 @@
 #ifndef WINDOW_NOTIFY_H
 #define WINDOW_NOTIFY_H
-#include <qobject.h>
-#include <qstring.h>
 
 #include "gadu.h"
 #include "../notify/notify.h"
@@ -18,7 +16,7 @@ class WindowNotify : public Notifier
 	void createDefaultConfiguration();
 
 public:
-	WindowNotify(QObject *parent=0, const char *name=0);
+	WindowNotify(QObject *parent = 0, const char *name = 0);
 	~WindowNotify();
 
 	virtual void notify(Notification *notification);
