@@ -1,15 +1,9 @@
 #ifndef MESSAGE_BOX_H
 #define MESSAGE_BOX_H
 
-#include <qglobal.h>
+#include <QDialog>
 
-#include <qdialog.h>
-#include <qmap.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <QLabel>
-
-class Q3HBox;
+class QBoxLayout;
 class QLabel;
 
 /**
@@ -26,7 +20,7 @@ class MessageBox : public QDialog
 		QLabel *icon;
 		QString message;
 
-		void addButton(QWidget *parent, const QString &caption, const char *slot);
+		void addButton(QBoxLayout *parent, const QString &caption, const char *slot);
 
 	private slots:
 		void okClicked();

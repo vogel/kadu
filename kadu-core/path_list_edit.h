@@ -1,18 +1,10 @@
 #ifndef PATH_LIST_EDIT_H
 #define PATH_LIST_EDIT_H
 
-#include <qglobal.h>
-
-#include <qlayout.h>
-#include <qpushbutton.h>
-#include <qstringlist.h>
-//Added by qt3to4:
-#include <QKeyEvent>
-#include <QCloseEvent>
+#include <QPushButton>
 
 class QLineEdit;
-class Q3ListBox;
-class QPushButton;
+class QListWidget;
 
 class PathListEditWindow;
 
@@ -43,7 +35,7 @@ class PathListEditWindow : public QWidget
 {
 	Q_OBJECT
 
-	Q3ListBox *PathListBox;
+	QListWidget *PathListWidget;
 	QLineEdit *PathEdit;
 
 	bool validatePath(QString &path);

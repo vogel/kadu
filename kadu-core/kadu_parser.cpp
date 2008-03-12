@@ -7,12 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qapplication.h>
-#include <qfile.h>
-#include <qregexp.h>
-//Added by qt3to4:
-#include <Q3CString>
-#include <QList>
+#include <QApplication>
+
 #include <stdlib.h>
 
 #include "config_file.h"
@@ -126,7 +122,7 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 	QList<ParseElem> parseStack;
 
 	static bool searchChars[256] = {false};
-	const Q3CString slatin = unicode2latin(s);
+	const QByteArray slatin = unicode2latin(s);
 	if (searchChars[(unsigned char)'%'] == false)
 	{
 		searchChars[(unsigned char)'%'] = true;

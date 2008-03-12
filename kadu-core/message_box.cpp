@@ -7,15 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qapplication.h>
-#include <q3hbox.h>
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qpushbutton.h>
-//Added by qt3to4:
-#include <Q3HBoxLayout>
-#include <Q3VBoxLayout>
+#include <QApplication>
 #include <QCloseEvent>
+#include <QLabel>
+#include <QPushButton>
+#include <QVBoxLayout>
 
 #include "icons_manager.h"
 #include "message_box.h"
@@ -27,16 +23,21 @@ const int MessageBox::YES      = 4;  // 00100
 const int MessageBox::NO       = 8;  // 01000
 
 MessageBox::MessageBox(const QString& message, int components, bool modal, const QString &iconName, QWidget *parent)
-	: QDialog(parent, NULL, modal, Qt::WType_TopLevel | Qt::WStyle_Customize | Qt::WStyle_DialogBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu | Qt::WDestructiveClose),
+	: QDialog(parent, Qt::Window | Qt::MSWindowsFixedSizeDialogHint | Qt::WindowTitleHint | Qt::WindowSystemMenuHint),
 	message(message)
 {
 	kdebugf();
 
-	Q3VBoxLayout* vbox = new Q3VBoxLayout(this, 0);
+	setWindowTitle("Kadu");
+	setAttribute(Qt::WA_DeleteOnClose);
+	
+	setModal(modal);
+
+	QVBoxLayout* vbox = new QVBoxLayout(this);
 	vbox->setMargin(10);
 	vbox->setSpacing(10);
 
-	Q3HBoxLayout* hboxlabels = new Q3HBoxLayout(vbox);
+	QHBoxLayout* hboxlabels = new QHBoxLayout(vbox);
 	hboxlabels->addStretch(1);
 
 	if (!iconName.isEmpty())
@@ -53,24 +54,26 @@ MessageBox::MessageBox(const QString& message, int components, bool modal, const
 	hboxlabels->addWidget(label, 0, Qt::AlignCenter);
 	hboxlabels->addStretch(1);
 
-	Q3HBoxLayout* hboxbuttons = new Q3HBoxLayout(vbox);
-	Q3HBox* buttons = new Q3HBox(this);
-	buttons->setSpacing(20);
-	hboxbuttons->addWidget(buttons, 0, Qt::AlignCenter);
+	QHBoxLayout* hboxbuttons = new QHBoxLayout(vbox);
+	QWidget* buttons = new QWidget;
+	QHBoxLayout* buttons_layout = new QHBoxLayout;
+	buttons_layout->setSpacing(20);
 
 	if (components & OK)
-		addButton(buttons, tr("&OK"), SLOT(okClicked()));
+		addButton(buttons_layout, tr("&OK"), SLOT(okClicked()));
 
 	if (components & YES)
-		addButton(buttons, tr("&Yes"), SLOT(yesClicked()));
+		addButton(buttons_layout, tr("&Yes"), SLOT(yesClicked()));
 
 	if (components & NO)
-		addButton(buttons, tr("&No"), SLOT(noClicked()));
+		addButton(buttons_layout, tr("&No"), SLOT(noClicked()));
 
 	if (components & CANCEL)
-		addButton(buttons, tr("&Cancel"), SLOT(cancelClicked()));
+		addButton(buttons_layout, tr("&Cancel"), SLOT(cancelClicked()));
 
-	buttons->setMaximumSize(buttons->sizeHint());
+	buttons->setLayout(buttons_layout);
+	hboxbuttons->addWidget(buttons, 0, Qt::AlignCenter);
+ 	buttons->setMaximumSize(buttons_layout->sizeHint());
 	kdebugf2();
 }
 
@@ -80,10 +83,11 @@ MessageBox::~MessageBox()
 		Boxes.remove(message);
 }
 
-void MessageBox::addButton(QWidget *parent, const QString &caption, const char *slot)
+void MessageBox::addButton(QBoxLayout *parent, const QString &caption, const char *slot)
 {
-	QPushButton* b = new QPushButton(parent);
+	QPushButton* b = new QPushButton;
 	b->setText(caption);
+	parent->addWidget(b);
 	connect(b, SIGNAL(clicked()), this, slot);
 }
 

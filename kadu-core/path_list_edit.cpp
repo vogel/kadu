@@ -7,16 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qlayout.h>
-#include <qlineedit.h>
-#include <q3listbox.h>
-#include <qpushbutton.h>
-#include <q3vbox.h>
-#include <q3vgroupbox.h>
-//Added by qt3to4:
-#include <Q3GridLayout>
-#include <QKeyEvent>
-#include <QCloseEvent>
+#include <QFileDialog>
+#include <QLayout>
+#include <QLineEdit>
+#include <QListWidget>
 
 #include "debug.h"
 #include "icons_manager.h"
@@ -61,20 +55,21 @@ void PathListEdit::setPathList(const QStringList &pathList)
 }
 
 PathListEditWindow::PathListEditWindow(const QStringList &pathList, QWidget *parent, const char *name)
-	: QWidget(parent, name, Qt::WDestructiveClose)
+	: QWidget(parent, name)
 {
 	kdebugf();
 
-	setCaption(tr("Select paths"));
+	setWindowTitle(tr("Select paths"));
+	setAttribute(Qt::WA_DeleteOnClose);
 
-	Q3GridLayout *Layout = new Q3GridLayout(this);
+	QGridLayout *Layout = new QGridLayout(this);
 	Layout->setMargin(5);
 	Layout->setSpacing(5);
 
-	PathListBox = new Q3ListBox(this);
-	Layout->addMultiCellWidget(PathListBox, 0, 3, 0, 0);
+	PathListWidget = new QListWidget(this);
+	Layout->addMultiCellWidget(PathListWidget, 0, 3, 0, 0);
 
-	connect(PathListBox, SIGNAL(highlighted(const QString &)), this, SLOT(currentItemChanged(const QString &)));
+	connect(PathListWidget, SIGNAL(currentTextChanged(const QString &)), this, SLOT(currentItemChanged(const QString &)));
 
 	QPushButton *add = new QPushButton(icons_manager->loadIcon("AddSelectPathDialogButton"), tr("Add"), this);
 	QPushButton *change = new QPushButton(icons_manager->loadIcon("ChangeSelectPathDialogButton"), tr("Change"), this);
@@ -96,15 +91,21 @@ PathListEditWindow::PathListEditWindow(const QStringList &pathList, QWidget *par
 
 	connect(choose, SIGNAL(clicked()), this, SLOT(choosePathClicked()));
 
-	Q3HBox *bottom = new Q3HBox(this);
-	bottom->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-	bottom->setSpacing(5);
+	QWidget* bottom = new QWidget;
+	bottom->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed));
+	QHBoxLayout* bottom_layout = new QHBoxLayout;
+	bottom_layout->setSpacing(5);
+
+	QWidget *hm = new QWidget;
+	hm->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
+	QPushButton *ok = new QPushButton(icons_manager->loadIcon("OkWindowButton"), tr("OK"), this);
+	QPushButton *cancel = new QPushButton(icons_manager->loadIcon("CancelWindowButton"), tr("&Cancel"), this);
+	bottom_layout->addWidget(hm);
+	bottom_layout->addWidget(ok);
+	bottom_layout->addWidget(cancel);
+	bottom->setLayout(bottom_layout);
+
 	Layout->addMultiCellWidget(bottom, 5, 5, 0, 1);
-
-	(new QWidget(bottom))->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
-	QPushButton *ok = new QPushButton(icons_manager->loadIcon("OkWindowButton"), tr("OK"), bottom);
-	QPushButton *cancel = new QPushButton(icons_manager->loadIcon("CancelWindowButton"), tr("&Cancel"), bottom);
-
 	connect(ok, SIGNAL(clicked()), this, SLOT(okClicked()));
 	connect(cancel, SIGNAL(clicked()), this, SLOT(close()));
 
@@ -118,9 +119,9 @@ PathListEditWindow::~PathListEditWindow()
 
 void PathListEditWindow::setPathList(const QStringList &list)
 {
-	PathListBox->clear();
-	PathListBox->insertStringList(list);
-	PathListBox->setSelected(0, true);
+	PathListWidget->clear();
+	PathListWidget->insertItems(0, list);
+	PathListWidget->item(0)->setSelected(true);
 }
 
 bool PathListEditWindow::validatePath(QString &path)
@@ -135,7 +136,7 @@ bool PathListEditWindow::validatePath(QString &path)
 	if (!path.endsWith("/"))
 		path += '/';
 
-	if (PathListBox->findItem(path, Qt::MatchExactly))
+	if (PathListWidget->findItems(path, Qt::MatchExactly).isEmpty())
 		return false;
 
 	return true;
@@ -147,39 +148,41 @@ void PathListEditWindow::addPathClicked()
 	if (!validatePath(path))
 		return;
 
-	PathListBox->insertItem(path);
-	PathListBox->setSelected(PathListBox->currentItem(), true);
+	PathListWidget->insertItem(0, path);
+	PathListWidget->currentItem()->setSelected(true);
 }
 
 void PathListEditWindow::changePathClicked()
 {
-	if (!PathListBox->isSelected(PathListBox->currentItem()))
+	if (!PathListWidget->currentItem()->isSelected())
 		return;
 
 	QString path = PathEdit->text();
 	if (!validatePath(path))
 		return;
 
-	PathListBox->changeItem(path, PathListBox->currentItem());
-	PathListBox->setSelected(PathListBox->currentItem(), true);
+	QListWidgetItem *pathh = PathListWidget->takeItem(PathListWidget->currentRow());
+	delete pathh;
+	PathListWidget->currentItem()->setSelected(true);
 }
 
 void PathListEditWindow::deletePathClicked()
 {
-	if (!PathListBox->isSelected(PathListBox->currentItem()))
+	if (!PathListWidget->currentItem()->isSelected())
 		return;
 
-	PathListBox->removeItem(PathListBox->currentItem());
-	PathListBox->setSelected(PathListBox->currentItem(), true);
+	QListWidgetItem *path = PathListWidget->takeItem(PathListWidget->currentRow());
+	delete path;
+	PathListWidget->currentItem()->setSelected(true);
 }
 
 void PathListEditWindow::choosePathClicked()
 {
 	QString path = PathEdit->text();
 	if (!validatePath(path))
-		path = "~";
+		path = QDir::homeDirPath();
 
-	path = Q3FileDialog::getExistingDirectory(path, this, "getDirectory", tr("Choose a directory"));
+	path = QFileDialog::getExistingDirectory(path, this, "getDirectory", tr("Choose a directory"));
 	if (!path.isEmpty())
 		PathEdit->setText(path);
 }
@@ -188,8 +191,8 @@ void PathListEditWindow::okClicked()
 {
 	QStringList result;
 
-	for (unsigned int i = 0, count = PathListBox->count(); i < count; i++)
-		result.append(PathListBox->text(i));
+	for (unsigned int i = 0, count = PathListWidget->count(); i < count; i++)
+		result.append(PathListWidget->item(i)->text());
 
 	emit changed(result);
 	close();

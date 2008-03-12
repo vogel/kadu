@@ -11,10 +11,10 @@
 #include <qapplication.h>
 #include <qmessagebox.h>
 #include <qtextcodec.h>
-//Added by qt3to4:
+#include <QByteArray>
 #include <QTranslator>
 #include <QCustomEvent>
-#include <Q3CString>
+#include <QString>
 #include <QPixmap>
 #include <QEvent>
 
@@ -107,7 +107,7 @@ static void kadu_signal_handler(int s)
 		fprintf(stderr, "======= END OF BACKTRACE  ======\n");
 		fflush(stderr);
 
-		Q3CString p(ggPath(debug_file).local8Bit());
+		QByteArray p(ggPath(debug_file).local8Bit());
 		dbgfile = fopen(p.data(), "w");
 		if (dbgfile)
 		{
