@@ -14,6 +14,7 @@
 #include <QKeyEvent>
 #include <QVBoxLayout>
 
+#include "action.h"
 #include "configuration_aware_object.h"
 #include "dockarea.h"
 #include "gadu.h"
@@ -38,7 +39,7 @@ class MainConfigurationWindow;
 /**
 	G³ówne okno Kadu
 **/
-class Kadu : public QMainWindow, ConfigurationAwareObject
+class Kadu : public QMainWindow, ConfigurationAwareObject, public ActionWindow
 {
 	Q_OBJECT
 
@@ -160,6 +161,8 @@ class Kadu : public QMainWindow, ConfigurationAwareObject
 	public:
 		Kadu(QWidget* parent=0);
 		~Kadu();
+
+		bool supportsActionType(ActionDescription::ActionType type) { return type == ActionDescription::TypeGlobal; }
 
 		const UserListElement & myself() { return Myself; };
 

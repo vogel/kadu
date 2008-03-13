@@ -86,6 +86,15 @@ public:
 	QString text() { return Text; }
 	QString iconName() { return IconName; }
 
+	ActionType type() { return Type; }
+
+};
+
+class ActionWindow
+{
+public:
+	virtual bool supportsActionType(ActionDescription::ActionType type) = 0;
+
 };
 
 // class Action : public QAction

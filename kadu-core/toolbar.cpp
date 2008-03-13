@@ -543,6 +543,19 @@ QMenu * ToolBar::createContextMenu()
 	QMenu *actionsMenu = new QMenu(tr("Add new button"), this);
 	CONST_FOREACH(actionDescription, KaduActions)
 	{
+		bool supportsAction;
+		ActionWindow *actionWindow = 0;
+		if (parent())
+			actionWindow = dynamic_cast<ActionWindow *>(parent());
+
+		if (actionWindow)
+			supportsAction = actionWindow->supportsActionType((*actionDescription)->type());
+		else
+			supportsAction = (*actionDescription)->type() == ActionDescription::TypeGlobal;
+
+		if (!supportsAction)
+			continue;
+
 		if (!hasAction((*actionDescription)->name()))
 		{
 			QAction *action = actionsMenu->addAction(icons_manager->loadIcon((*actionDescription)->iconName()), (*actionDescription)->text());
