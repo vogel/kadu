@@ -387,16 +387,16 @@ void Actions::remove(ActionDescription *action)
 	if (!Kadu::closing())
 		emit actionUnloaded(action->name());
 }
-/*
-Action * Actions::operator [] (const QString &name)
+
+ActionDescription * Actions::operator [] (const QString &name)
 {
 	return ActionDescriptions[name];
 }
 
-Action * Actions::operator [] (int index)
+ActionDescription * Actions::operator [] (int index)
 {
-	return ActionDescriptions[ActionsMap.keys()[index]];
-}*/
+	return ActionDescriptions[ActionDescriptions.keys()[index]];
+}
 
 QAction * Actions::getAction(const QString &name, QWidget *parent) const
 {

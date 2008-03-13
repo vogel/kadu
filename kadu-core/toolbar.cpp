@@ -9,7 +9,6 @@
 
 #include <qcursor.h>
 #include <qobject.h>
-//Added by qt3to4:
 #include <QContextMenuEvent>
 #include <QMoveEvent>
 #include <QDropEvent>
@@ -53,6 +52,29 @@ ToolBar::~ToolBar()
 	disconnect(&KaduActions, SIGNAL(actionUnloaded(const QString &)), this, SLOT(actionUnloaded(const QString &)));
 
 	kdebugf2();
+}
+
+void ToolBar::addAction(const QString &actionName, bool showLabel, QAction *after)
+{
+	if (hasAction(actionName))
+		return;
+
+	ToolBarAction newAction;
+	newAction.actionName = actionName;
+	newAction.action = 0;
+	newAction.showLabel = showLabel;
+
+	if (after)
+	{
+		FOREACH(i, ToolBarActions)
+			if ((*i).action == after)
+			{
+				ToolBarActions.insert(i, newAction);
+				return;
+			}
+	}
+
+	ToolBarActions.append(newAction);
 }
 
 // void ToolBar::addAction(const QString &actionName, bool showLabel, ToolButton *button, bool before)
@@ -102,9 +124,9 @@ ToolBar::~ToolBar()
 
 void ToolBar::usersChanged()
 {
-	FOREACH(actionIterator, ToolBarActions)
-		if ((*actionIterator).button)
-			(*actionIterator).button->usersChanged();
+// 	FOREACH(actionIterator, ToolBarActions)
+// 		if ((*actionIterator).button)
+// 			(*actionIterator).button->usersChanged();
 }
 
 // TODO: optimize
@@ -142,9 +164,9 @@ void ToolBar::usersChanged()
 // 	updateButtons();
 // }
 
-ToolButton * ToolBar::addButton(ActionDescription *action, bool showLabel, ToolButton *after)
-{
-	kdebugf();
+// ToolButton * ToolBar::addButton(ActionDescription *action, bool showLabel, ToolButton *after)
+// {
+// 	kdebugf();
 
 // 	ToolButton* button = new ToolButton(this, action->name(), action->type());
 
@@ -192,25 +214,25 @@ ToolButton * ToolBar::addButton(ActionDescription *action, bool showLabel, ToolB
 	action->buttonAddedToToolbar(this, button);*/
 
 // 	return button;
-	return 0;
-}
+// 	return 0;
+// }
 
 void ToolBar::removeButtonClicked(ToolButton *button)
 {
-	FOREACH(actionIterator, ToolBarActions)
-		if ((*actionIterator).button == button)
-		{
-			ToolBarActions.remove(actionIterator);
-			return;
-		}
+// 	FOREACH(actionIterator, ToolBarActions)
+// 		if ((*actionIterator).button == button)
+// 		{
+// 			ToolBarActions.remove(actionIterator);
+// 			return;
+// 		}
 }
 
-void ToolBar::addButtonClicked(int action_index)
+void ToolBar::addButtonClicked(QAction *action)
 {
 	kdebugmf(KDEBUG_FUNCTION_START | KDEBUG_INFO, "action_index = %d\n", action_index);
 
-// 	addAction(KaduActions[action_index]->name(), false);
-// 	updateButtons();
+	addAction(action->data().toString(), false);
+	updateButtons();
 
 	kdebugf2();
 }
@@ -294,35 +316,38 @@ void ToolBar::contextMenuEvent(QContextMenuEvent* e)
 {
 	kdebugf();
 
-	if (DockArea::blocked())
-	{
-		e->ignore();
-		return;
-	}
+// 	if (DockArea::blocked())
+// 	{
+// 		e->ignore();
+// 		return;
+// 	}
 
 	//NOTE: parent MUST be dockArea(), NOT this, because when user is choosing "remove toolbar",
 	//      it calls deleteLater(), which is invoked _before_ exec returns! so QPopupMenu would
 	//      be deleted when exec returns!
-	Q3PopupMenu* p = createContextMenu(dockArea());
-	showPopupMenu(p);
-	delete p;
-	e->accept();
 
+	QMenu *menu = createContextMenu();
+	menu->popup(QCursor::pos());
+
+// TODO: add something intelligent here
+// 	delete menu;
+
+	e->accept();
 	kdebugf2();
 }
 
 void ToolBar::show()
 {
 	 // very lame, but i don't have better idea
-	FOREACH(toolBarAction, ToolBarActions)
-		if ((*toolBarAction).button)
-		{
-			delete (*toolBarAction).button;
-			(*toolBarAction).button = 0;
-		}
-
-	QToolBar::show();
-	QTimer::singleShot(0, this, SLOT(updateButtons()));
+// 	FOREACH(toolBarAction, ToolBarActions)
+// 		if ((*toolBarAction).button)
+// 		{
+// 			delete (*toolBarAction).button;
+// 			(*toolBarAction).button = 0;
+// 		}
+// 
+// 	QToolBar::show();
+// 	QTimer::singleShot(0, this, SLOT(updateButtons()));
 }
 
 void ToolBar::writeToConfig(QDomElement parent_element)
@@ -333,8 +358,8 @@ void ToolBar::writeToConfig(QDomElement parent_element)
 
 	FOREACH(toolBarAction, ToolBarActions)
 	{
-		if ((*toolBarAction).button)
-			(*toolBarAction).showLabel = (*toolBarAction).button->usesTextLabel();
+// 		if ((*toolBarAction).button)
+// 			(*toolBarAction).showLabel = (*toolBarAction).button->usesTextLabel();
 
 		QDomElement button_elem = xml_config_file->createElement(toolbar_elem, "ToolButton");
 		button_elem.setAttribute("action_name", (*toolBarAction).actionName);
@@ -380,44 +405,38 @@ void ToolBar::actionUnloaded(const QString &actionName)
 
 void ToolBar::updateButtons()
 {
-	ToolButton *lastButton = 0;
+	QAction *lastAction = 0;
 // 	DockArea *dockarea = (DockArea *)area();
 
 	FOREACH(toolBarAction, ToolBarActions)
 	{
 		const QString &actionName = (*toolBarAction).actionName;
 
-		if ((*toolBarAction).button)
+		if ((*toolBarAction).action)
 		{
 			if (KaduActions.contains(actionName))
 			{
-				lastButton = (*toolBarAction).button;
+				lastAction = (*toolBarAction).action;
 				continue;
 			}
 			else
 			{
-				if ((*toolBarAction).button)
+				if ((*toolBarAction).action)
 				{
-					delete (*toolBarAction).button;
-					(*toolBarAction).button = 0;
+					delete (*toolBarAction).action;
+					(*toolBarAction).action = 0;
 				}
 			}
 		}
 
-		if (KaduActions.contains(actionName))
+		if (KaduActions.contains(actionName)/* && !dockarea || dockarea->supportsAction(KaduActions[actionName]->actionType())*/)
 		{
-// 			if (!dockarea || dockarea->supportsAction(KaduActions[actionName]->actionType()))
-// 			{
-// 				(*toolBarAction).button = addButton(KaduActions[actionName], (*toolBarAction).showLabel, lastButton);
-// 				lastButton = (*toolBarAction).button;
-// 			}
-
-#if 0
-			// TODO: enable it? i don't think so
-			else
-				ToolBarActions.remove(toolBarAction);
-#endif
-
+			(*toolBarAction).action = KaduActions.getAction(actionName, dynamic_cast<QWidget *>(parent()));
+			QToolBar::addAction((*toolBarAction).action);
+// 			if ((*toolBarAction).showLabel)
+// 				action->
+// KaduActions[actionName], (*toolBarAction).showLabel, lastButton);
+			lastAction = (*toolBarAction).action;
 		}
 	}
 
@@ -452,15 +471,12 @@ void ToolBar::loadFromConfig(QDomElement toolbar_element)
 			action.showLabel = false;
 		else
 			action.showLabel = button_elem.attribute("uses_text_label") == "1";
-		action.button = 0;
+		action.action = 0;
 
 		ToolBarActions.append(action);
-
-		addAction(KaduActions.getAction(action.actionName, dynamic_cast<QWidget *>(parent())));
 	}
 
-	// TODO: why calling updateButtons does not work?
-	QTimer::singleShot(0, this, SLOT(updateButtons()));
+	updateButtons();
 
 	kdebugf2();
 }
@@ -474,7 +490,7 @@ void ToolBar::addDefaultAction(const QString &toolbar, const QString &actionName
 	ToolBarAction action;
 	action.actionName = actionName;
 	action.showLabel = showLabel;
-	action.button = 0;
+	action.action = 0;
 
 	if (index >= (int)actions.size())
 	{
@@ -522,8 +538,29 @@ const UserGroup* ToolBar::selectedUsers() const
 	return 0; //users;
 }
 
-Q3PopupMenu* ToolBar::createContextMenu(QWidget* parent)
-{/*
+QMenu * ToolBar::createContextMenu()
+{
+	QMenu *actionsMenu = new QMenu(tr("Add new button"), this);
+	CONST_FOREACH(actionDescription, KaduActions)
+	{
+		if (!hasAction((*actionDescription)->name()))
+		{
+			QAction *action = actionsMenu->addAction(icons_manager->loadIcon((*actionDescription)->iconName()), tr((*actionDescription)->text()));
+			action->setData((*actionDescription)->name());
+		}
+	}
+
+	if (actionsMenu->isEmpty())
+		actionsMenu->addAction(tr("No items to add found"))->setEnabled(false);
+	else
+		connect(actionsMenu, SIGNAL(triggered(QAction *)), this, SLOT(addButtonClicked(QAction *)));
+
+	QMenu *menu = new QMenu(this);
+
+	menu->addAction(tr("Delete toolbar"), this, SLOT(deleteToolbar()));
+	menu->addMenu(actionsMenu);
+	return menu;
+/*
 	Q3PopupMenu* p = new Q3PopupMenu(parent);
 	p->insertItem(tr("Delete toolbar"), this, SLOT(deleteToolbar()));
 

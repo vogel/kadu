@@ -188,8 +188,8 @@ void ToolButton::contextMenuEvent(QContextMenuEvent *e)
 		p->setItemChecked(label_menu_id, usesTextLabel());
 		p->insertItem(tr("Delete button"), this, SLOT(deleteButtonClicked()));
 		p->insertSeparator();
-		Q3PopupMenu* toolbar_menu = toolbar()->createContextMenu(p);
-		p->insertItem(tr("Toolbar menu"), toolbar_menu);
+// 		Q3PopupMenu* toolbar_menu = toolbar()->createContextMenu(p);
+// 		p->insertItem(tr("Toolbar menu"), toolbar_menu);
 		showPopupMenu(p);
 		delete p;
 		e->accept();

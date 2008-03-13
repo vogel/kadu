@@ -27,14 +27,14 @@ class ToolBar : public QToolBar
 
 	struct ToolBarAction {
 		QString actionName;
-		ToolButton *button;
+		QAction *action;
 		bool showLabel;
 	};
 
 	QList<ToolBarAction> ToolBarActions;
 	ToolButton *dragButton; /*!< przeci?gany przycisk akcji */
 
-	ToolButton * addButton(ActionDescription *action, bool showLabel, ToolButton *after);
+	void addAction(const QString &actionName, bool showLabel, QAction *after = 0);
 
 	static QMap< QString, QList<ToolBarAction> > DefaultActions;
 
@@ -43,7 +43,7 @@ private slots:
 		\fn void addButtonClicked()
 		Slot dodaj?cy wybrany przycisk
 	**/
-	void addButtonClicked(int action_index);
+	void addButtonClicked(QAction *action);
 	void removeButtonClicked(ToolButton *button);
 
 	/**
@@ -56,6 +56,8 @@ private slots:
 	void actionUnloaded(const QString &actionName);
 
 	void updateButtons();
+
+	QMenu * createContextMenu();
 
 protected:
 	/**
@@ -107,7 +109,7 @@ public:
 		\fn DockArea* dockArea()
 		Zwraca wska?nik do rodzica paska (miejsca dokowania)
 	**/
-	DockArea *dockArea();
+	DockArea * dockArea();
 
 	/**
 		\fn void loadFromConfig(QDomElement parent_element)
@@ -129,15 +131,7 @@ public:
 		list, and so on...
 		Returns NULL if toolbar is not connected to user list.
 	**/
-	const UserGroup* selectedUsers() const;
-
-	/**
-		\fn QPopupMenu* createContextMenu(QWidget* parent)
-		\param parent rodzic obiektu
-		Funkcja tworz?ca menu kontekstowe, umo?liwiaj?ce dodanie
-		nowych akcji do paska narz?dziowego.
-	**/
-	Q3PopupMenu* createContextMenu(QWidget *parent);
+	const UserGroup * selectedUsers() const;
 
 	/**
 		\fn hasAction(QString action_name)

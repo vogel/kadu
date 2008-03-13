@@ -83,6 +83,9 @@ public:
 	QString name() { return Name; }
 	KaduAction *getAction(QWidget *parent);
 
+	QString text() { return Text; }
+	QString iconName() { return IconName; }
+
 };
 
 // class Action : public QAction
@@ -190,18 +193,18 @@ class Actions : public QObject
 public:
 	Actions();
 
-// 	ActionDescription * operator [] (const QString &name);
-// 	ActionDescription * operator [] (int index);
+	ActionDescription * operator [] (const QString &name);
+	ActionDescription * operator [] (int index);
 
 	QAction *getAction(const QString &name, QWidget *parent) const;
 	bool contains(const QString &name) const;
-/*
-	QMap<QString, ActionDescription *>::Iterator begin() { return ActionsMap.begin(); }
-	QMap<QString, ActionDescription *>::Iterator end() { return ActionsMap.end(); }
-	QMap<QString, ActionDescription *>::ConstIterator begin () const { return ActionsMap.begin(); }
-	QMap<QString, ActionDescription *>::ConstIterator end () const { return ActionsMap.end(); }
-	QMap<QString, ActionDescription *>::ConstIterator constBegin () const { return ActionsMap.constBegin(); }
-	QMap<QString, ActionDescription *>::ConstIterator constEnd () const { return ActionsMap.constEnd(); }*/
+
+	QMap<QString, ActionDescription *>::Iterator begin() { return ActionDescriptions.begin(); }
+	QMap<QString, ActionDescription *>::Iterator end() { return ActionDescriptions.end(); }
+	QMap<QString, ActionDescription *>::ConstIterator begin () const { return ActionDescriptions.begin(); }
+	QMap<QString, ActionDescription *>::ConstIterator end () const { return ActionDescriptions.end(); }
+	QMap<QString, ActionDescription *>::ConstIterator constBegin () const { return ActionDescriptions.constBegin(); }
+	QMap<QString, ActionDescription *>::ConstIterator constEnd () const { return ActionDescriptions.constEnd(); }
 
 	void refreshIcons();
 
