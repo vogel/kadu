@@ -11,6 +11,8 @@
 #define FILE_TRANSFER_MANAGER_H
 
 #include <qobject.h>
+#include <QList>
+#include <QKeyEvent>
 
 #include "dcc_handler.h"
 #include "file_transfer.h"
@@ -31,7 +33,7 @@ class FileTransferManager : public QObject, DccHandler
 	void needFileAccept(DccSocket* socket);
 	void sendFile(const UserListElements users);
 
-	QValueList<FileTransfer *> Transfers;
+	QList<FileTransfer *> Transfers;
 
 private slots:
 	void userboxMenuPopup();
@@ -77,7 +79,7 @@ public:
 	void addTransfer(FileTransfer *transfer);
 	void removeTransfer(FileTransfer *transfer);
 
-	const QValueList<FileTransfer *> transfers();
+	const QList<FileTransfer *> transfers();
 
 	FileTransfer * byUin(UinType);
 	FileTransfer * byUinAndStatus(UinType, FileTransfer::FileTransferStatus);

@@ -10,14 +10,17 @@
 #ifndef FILE_TRANSFER_WINDOW
 #define FILE_TRANSFER_WINDOW
 
-#include <qframe.h>
+#include <QFrame>
+#include <QVBoxLayout>
+#include <QKeyEvent>
+#include <QLabel>
 
 #include "file_transfer.h"
 
 class QLabel;
 class QProgressBar;
 class QPushButton;
-class QScrollView;
+class QScrollArea;
 class QVBoxLayout;
 
 class FileTransferWindow;
@@ -59,7 +62,7 @@ class FileTransferWindow : public QFrame
 	Q_OBJECT
 
 	private:
-		QScrollView *scrollView;
+		QScrollArea *scrollView;
 
 		QFrame *frame;
 		QVBoxLayout *transfersLayout;

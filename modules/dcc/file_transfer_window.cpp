@@ -11,7 +11,12 @@
 #include <qlayout.h>
 #include <qprogressbar.h>
 #include <qpushbutton.h>
-#include <qscrollview.h>
+#include <QScrollArea>
+#include <QGridLayout>
+#include <QFrame>
+#include <QKeyEvent>
+#include <QVBoxLayout>
+#include <QUrl>
 
 #include "debug.h"
 #include "file_transfer.h"
@@ -53,7 +58,9 @@ FileTransferWidget::FileTransferWidget(QWidget *parent, FileTransfer *ft)
 	description->setScaledContents(true);
 	layout->addMultiCellWidget(description, 0, 0, 1, 2);
 
-	progress = new QProgressBar(100, this);
+	progress = new QProgressBar;
+	progress->setMinimum(0);
+	progress->setMaximum(100);
 	progress->setBackgroundMode(Qt::PaletteBase, Qt::PaletteBase);
 	layout->addMultiCellWidget(progress, 1, 1, 1, 2);
 
@@ -61,21 +68,27 @@ FileTransferWidget::FileTransferWidget(QWidget *parent, FileTransfer *ft)
 	status->setBackgroundMode(Qt::PaletteBase, Qt::PaletteBase);
 	layout->addWidget(status, 2, 1);
 
-	QHBox *buttons = new QHBox(this);
+	QWidget *buttons = new QWidget;
+	QHBoxLayout *buttons_layout = new QHBoxLayout;
 	buttons->setBackgroundMode(Qt::PaletteBase, Qt::PaletteBase);
-	buttons->setSpacing(2);
-	layout->addWidget(buttons, 2, 2, Qt::AlignRight);
+	buttons_layout->setSpacing(2);
 
-	pauseButton = new QPushButton(tr("Pause"), buttons);
+	pauseButton = new QPushButton(tr("Pause"), this);
 	pauseButton->hide();
 	connect(pauseButton, SIGNAL(clicked()), this, SLOT(pauseTransfer()));
 
-	continueButton = new QPushButton(tr("Continue"), buttons);
+	continueButton = new QPushButton(tr("Continue"), this);
 	continueButton->hide();
 	connect(continueButton, SIGNAL(clicked()), this, SLOT(continueTransfer()));
 
-	QPushButton *deleteThis = new QPushButton(tr("Remove"), buttons);
+	QPushButton *deleteThis = new QPushButton(tr("Remove"), this);
 	connect(deleteThis, SIGNAL(clicked()), this, SLOT(remove()));
+
+	buttons_layout->addWidget(pauseButton);
+	buttons_layout->addWidget(continueButton);
+	buttons_layout->addWidget(deleteThis);
+	buttons->setLayout(buttons_layout);
+// 	layout->addWidget(buttons, 2, 2, Qt::AlignRight);
 
 	UserListElement ule = userlist->byID("Gadu", QString::number(ft->contact()));
 
@@ -83,12 +96,12 @@ FileTransferWidget::FileTransferWidget(QWidget *parent, FileTransfer *ft)
 
 	if (ft->type() == FileTransfer::TypeSend)
 	{
-		icon->setPixmap(icons_manager->loadIcon("FileTransferSend"));
+		icon->setPixmap(icons_manager->loadIcon("FileTransferSend").pixmap());
 		description->setText(tr("<b>File</b> %1 <b>to</b> %2").arg(url.fileName()).arg(ule.altNick()));
 	}
 	else
 	{
-		icon->setPixmap(icons_manager->loadIcon("FileTransferReceive"));
+		icon->setPixmap(icons_manager->loadIcon("FileTransferReceive").pixmap());
 		description->setText(tr("<b>File</b> %1 <b>from</b> %2").arg(url.fileName()).arg(ule.altNick()));
 	}
 
@@ -153,7 +166,7 @@ void FileTransferWidget::fileTransferFailed(FileTransfer *, FileTransfer::FileTr
 
 void FileTransferWidget::fileTransferStatusChanged(FileTransfer *ft)
 {
-	progress->setProgress(ft->percent());
+	progress->setValue(ft->percent());
 
 	switch (ft->status())
 	{
@@ -189,7 +202,7 @@ void FileTransferWidget::fileTransferFinished(FileTransfer *)
 {
 	kdebugf();
 
-	progress->setProgress(ft->percent());
+	progress->setValue(ft->percent());
 
 	status->setText(tr("Finished"));
 
@@ -212,7 +225,7 @@ FileTransferWindow::FileTransferWindow(QWidget *parent, const char *name)
 
 	setMinimumSize(QSize(100, 100));
 
-	setWFlags(Qt::WDestructiveClose);
+	setWindowFlags(Qt::WDestructiveClose);
 
 	setCaption(tr("Kadu - file transfers"));
 
@@ -220,32 +233,35 @@ FileTransferWindow::FileTransferWindow(QWidget *parent, const char *name)
 	mainGrid->setSpacing(2);
 	mainGrid->setMargin(2);
 
-	scrollView = new QScrollView(this);
-	scrollView->setResizePolicy(QScrollView::AutoOneFit);
+	scrollView = new QScrollArea(this);
+// 	scrollView->setResizePolicy(QScrollArea::AutoOneFit);
 
 	mainGrid->addWidget(scrollView, 0, 0);
 	scrollView->move(0, 0);
 
-	frame = new QFrame(scrollView->viewport());
+	frame = new QFrame(scrollView->widget());
 
  	frame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
 
 	transfersLayout = new QVBoxLayout(frame, 0, 1);
 	transfersLayout->setDirection(QBoxLayout::Up);
 
-	scrollView->addChild(frame, 0, 0);
+// 	scrollView->addChild(frame, 0, 0);
 
-	QHBox *buttonBox = new QHBox(this);
-	buttonBox->setMargin(2);
-	buttonBox->setSpacing(2);
+	QWidget *buttonBox = new QWidget;
+	QHBoxLayout *buttonBox_layout = new QHBoxLayout;
+	buttonBox_layout->setMargin(2);
+	buttonBox_layout->setSpacing(2);
 
-	mainGrid->addWidget(buttonBox, 1, 0, Qt::AlignRight);
-
-	QPushButton *cleanButton = new QPushButton(tr("Clean"), buttonBox);
+	QPushButton *cleanButton = new QPushButton(tr("Clean"), this);
 	connect(cleanButton, SIGNAL(clicked()), this, SLOT(clearClicked()));
 
-	QPushButton *hideButton = new QPushButton(tr("Hide"), buttonBox);
+	QPushButton *hideButton = new QPushButton(tr("Hide"), this);
 	connect(hideButton, SIGNAL(clicked()), this, SLOT(close()));
+	buttonBox_layout->addWidget(cleanButton);	
+	buttonBox_layout->addWidget(hideButton);
+	buttonBox->setLayout(buttonBox_layout);		
+	mainGrid->addWidget(buttonBox, 1, 0, Qt::AlignRight);
 
 	loadGeometry(this, "General", "TransferWindowGeometry", 200, 200, 500, 300);
 
@@ -267,7 +283,7 @@ FileTransferWindow::~FileTransferWindow()
 	CONST_FOREACH(i, file_transfer_manager->transfers())
 		(*i)->removeListener(this, true);
 
-	saveGeometry(this, "General", "TransferWindowGeometry");
+// 	saveGeometry(this, "General", "TransferWindowGeometry");
 
 	kdebugf2();
 }
@@ -301,10 +317,10 @@ void FileTransferWindow::contentsChanged()
 
 	// workaround
 	// without this sometimes this scroll to strange positions
-	int y = scrollView->contentsY();
-	scrollView->scrollBy(0, -y);
-	frame->setGeometry(0, 0, frame->width(), boxSize.height());
-	scrollView->scrollBy(0, y);
+// 	int y = scrollView->contentsY();
+// 	scrollView->scrollBy(0, -y);
+// 	frame->setGeometry(0, 0, frame->width(), boxSize.height());
+// 	scrollView->scrollBy(0, y);
 }
 
 void FileTransferWindow::newFileTransfer(FileTransfer *ft)

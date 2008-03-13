@@ -12,6 +12,7 @@
 
 #include <qhostaddress.h>
 #include <qtimer.h>
+#include <QList>
 
 #include "configuration_aware_object.h"
 #include "dcc_handler.h"
@@ -43,8 +44,8 @@ class DccManager : public ConfigurationUiHandler, ConfigurationAwareObject, DccH
 
 	DccSocket *MainSocket;
 
-	QValueList<DccSocket *> UnhandledSockets;
-	QValueList<DccHandler *> SocketHandlers;
+	QList<DccSocket *> UnhandledSockets;
+	QList<DccHandler *> SocketHandlers;
 
 	QTimer TimeoutTimer;
 	QMap<UinType, DccHandler *> requests;

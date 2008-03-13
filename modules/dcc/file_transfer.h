@@ -11,6 +11,7 @@
 #define FILE_TRANSFER_H
 
 #include <qdom.h>
+#include <QList>
 
 #include "dcc.h"
 #include "dcc_handler.h"
@@ -63,7 +64,7 @@ public:
 
 private:
 	QObject *mainListener;
-	QValueList<QPair<QObject *, bool> > listeners;
+	QList<QPair<QObject *, bool> > listeners;
 
 	DccSocket *Socket;
 	DccVersion Version;

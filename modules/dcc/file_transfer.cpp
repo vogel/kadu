@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QUrl>
 #include "config_file.h"
 #include "dcc.h"
 #include "dcc_socket.h"
@@ -308,7 +309,7 @@ void FileTransfer::start(StartType startType)
 				case Dcc7:
 				{
 					gg_dcc7 *dcc = gg_dcc7_send_file(gadu->session(), Contact, FileName.local8Bit().data(),
-						unicode2cp(FileName).data(), 0);
+						unicode2cp(FileName).local8Bit().data(), 0);
 
 					if (dcc)
 					{

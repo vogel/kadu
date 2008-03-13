@@ -8,12 +8,11 @@
  ***************************************************************************/
 
 #include <qcheckbox.h>
-#include <qfiledialog.h>
+#include <QFileDialog>
 #include <qfileinfo.h>
 #include <qlayout.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
-#include <qvgroupbox.h>
 #include <qsocketnotifier.h>
 
 #include <stdlib.h>

@@ -13,6 +13,10 @@
 #include <sys/stat.h>
 
 #include <qmessagebox.h>
+#include <QFileDialog>
+#include <QKeyEvent>
+#include <QList>
+#include <QMenu>
 
 #include "chat_manager.h"
 #include "config_file.h"
@@ -42,9 +46,10 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 	connect(UserBox::userboxmenu,SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(kaduKeyPressed(QKeyEvent *)));
 
-	Action* send_file_action = new Action("SendFile", tr("Send file"), "sendFileAction", Action::TypeUser);
+	//póki nie dzia³aj± akcje
+	/*KaduAction* send_file_action = new KaduAction("SendFile", tr("Send file"), "sendFileAction", KaduAction::TypeUser);
 	connect(send_file_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-		this, SLOT(sendFileActionActivated(const UserGroup*)));
+		this, SLOT(sendFileActionActivated(const UserGroup*)));*/
 
 	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 	connect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroying(ChatWidget*)));
@@ -54,10 +59,10 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 
 	dcc_manager->addHandler(this);
 
-	QPopupMenu *MainMenu = kadu->mainMenu();
+	QMenu *MainMenu = kadu->mainMenu();
 	toggleFileTransferWindowMenuId = MainMenu->insertItem(icons_manager->loadIcon("SendFileWindow"), tr("Toggle transfers window"),
 		this, SLOT(toggleFileTransferWindow()), 0, -1, 10);
-	icons_manager->registerMenuItem(MainMenu, tr("Toggle transfers window"), "SendFileWindow");
+//	icons_manager->registerMenuItem(MainMenu, tr("Toggle transfers window"), "SendFileWindow");
 
 	notification_manager->registerEvent("FileTransfer/IncomingFile",  QT_TRANSLATE_NOOP("@default", "An user wants to send you a file"), CallbackRequired);
 	notification_manager->registerEvent("FileTransfer/Finished", QT_TRANSLATE_NOOP("@default", "File transfer was finished"), CallbackNotRequired);
@@ -81,8 +86,9 @@ FileTransferManager::~FileTransferManager()
 	disconnect(UserBox::userboxmenu,SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
 	disconnect(kadu, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(kaduKeyPressed(QKeyEvent*)));
 
-	Action *sendFileAction = KaduActions["sendFileAction"];
-	delete sendFileAction;
+	//póki nie dzia³aj± akcje
+	/*Action *sendFileAction = KaduActions["sendFileAction"];
+	delete sendFileAction;*/
 
 	dcc_manager->removeHandler(this);
 
@@ -221,7 +227,7 @@ void FileTransferManager::sendFile(const UserListElements users)
 
 	CONST_FOREACH(user, users)
 		CONST_FOREACH(file, files)
-			if ((*user).usesProtocol("Gadu") && (*user).ID("Gadu") != myUin)
+			if ((*user).usesProtocol("Gadu") && (*user).ID("Gadu") != QString::number(myUin))
 				sendFile((*user).ID("Gadu").toUInt(), *file);
 
 	kdebugf2();
@@ -521,7 +527,7 @@ void FileTransferManager::transferDestroyed(QObject *transfer)
 		removeTransfer(ft);
 }
 
-const QValueList<FileTransfer *> FileTransferManager::transfers()
+const QList<FileTransfer *> FileTransferManager::transfers()
 {
 	return Transfers;
 }
