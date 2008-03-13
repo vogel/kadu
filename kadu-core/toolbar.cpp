@@ -545,7 +545,7 @@ QMenu * ToolBar::createContextMenu()
 	{
 		if (!hasAction((*actionDescription)->name()))
 		{
-			QAction *action = actionsMenu->addAction(icons_manager->loadIcon((*actionDescription)->iconName()), tr((*actionDescription)->text()));
+			QAction *action = actionsMenu->addAction(icons_manager->loadIcon((*actionDescription)->iconName()), (*actionDescription)->text());
 			action->setData((*actionDescription)->name());
 		}
 	}
