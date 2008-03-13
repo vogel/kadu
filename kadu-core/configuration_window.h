@@ -4,11 +4,12 @@
 #include <qglobal.h>
 
 #include <qdom.h>
-#include <q3groupbox.h>
 #include <qtabwidget.h>
-//Added by qt3to4:
-#include <Q3GridLayout>
+#include <QGridLayout>
+#include <QGroupBox>
 #include <QList>
+#include <QListWidget>
+#include <QScrollArea>
 #include <QKeyEvent>
 
 #include "color_button.h"
@@ -24,9 +25,9 @@ class ConfigTab;
 class ConfigurationWindow;
 class ConfigWidget;
 
-class Q3GridLayout;
-class Q3GroupBox;
-class Q3VBox;
+class QGridLayout;
+class QGroupBox;
+class QWidget;
 
 class ConfigSection : public QObject
 {
@@ -36,7 +37,7 @@ class ConfigSection : public QObject
 	ConfigurationWindow *configurationWindow;
 	QString pixmap;
 
-	Q3ListBoxItem *listBoxItem;
+	QListWidgetItem *listWidgetItem;
 	QMap<QString, ConfigTab *> configTabs;
 
 	QTabWidget *mainWidget;
@@ -48,7 +49,7 @@ private slots:
 	void iconThemeChanged();
 
 public:
-	ConfigSection(const QString &name, ConfigurationWindow *configurationWindow, Q3ListBoxItem *listBoxItem, QWidget *parentConfigGroupBoxWidget,
+	ConfigSection(const QString &name, ConfigurationWindow *configurationWindow, QListWidgetItem *listWidgetItem, QWidget *parentConfigGroupBoxWidget,
 		const QString &pixmap);
 	~ConfigSection();
 
@@ -88,12 +89,12 @@ class ConfigGroupBox
 	QString name;
 	ConfigTab *configTab;
 
-	Q3GroupBox *groupBox;
+	QGroupBox *groupBox;
 	QWidget *container;
-	Q3GridLayout *gridLayout;
+	QGridLayout *gridLayout;
 
 public:
-	ConfigGroupBox(const QString &name, ConfigTab *configTab, Q3GroupBox *groupBox);
+	ConfigGroupBox(const QString &name, ConfigTab *configTab, QGroupBox *groupBox);
 	~ConfigGroupBox();
 
 	QWidget * widget() { return container; }
@@ -126,8 +127,8 @@ public:
 	@short Widget okna konfigruacyjnego.
 
 	Okno konfiguracyjne tego typu zawiera widgety konfiuracyjne podzielone wg. 3 stopnioej hierarchii.
-	Pierwszym stopniem s± sekcje reprezentowane przez ListBox'a z lewej strony okna (zawieraj±cego
-	ikony i opis tekstowy). Okno zawieraj±ce tylko jedn± sekcjê nie wy¶wietla ListBox'a.
+	Pierwszym stopniem s± sekcje reprezentowane przez ListWidget'a z lewej strony okna (zawieraj±cego
+	ikony i opis tekstowy). Okno zawieraj±ce tylko jedn± sekcjê nie wy¶wietla ListWidget'a.
 	Drugim stopniem s± karty reprezentowane przez TabWidget'y, trzecim - grupy opisane przez GroupBox'y.
 
 	Okno konfiguracyjne identyfikuje siê przez jego nazwê podan± w konstruktorze
@@ -169,19 +170,19 @@ public:
 	Atrybut catpion jest wymagany. Mo¿liwe tagi widget s± opisane w dokumentacji
 	klas Config* (np.: ConfigComboBox).
  **/
-class ConfigurationWindow : public Q3VBox
+class ConfigurationWindow : public QDialog
 {
 	Q_OBJECT
 
 	QString Name;
 
-	Q3VBox *left;
+	/*Q3VBox*/QWidget *left;
 	QMap<QString, ConfigSection *> configSections;
 	ConfigSection *currentSection;
 
 	QMap<QString, QWidget *> widgets;
 
-	Q3ListBox *sectionsListBox;
+	QListWidget *sectionsListWidget;
 	QWidget *container;
 
 	void loadConfiguration(QObject *object);

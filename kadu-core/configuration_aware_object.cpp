@@ -8,9 +8,7 @@
  ***************************************************************************/
 
 #include "misc.h"
-
 #include "configuration_aware_object.h"
-//Added by qt3to4:
 #include <QList>
 
 QList<ConfigurationAwareObject *> ConfigurationAwareObject::objects;

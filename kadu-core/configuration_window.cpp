@@ -8,16 +8,15 @@
  ***************************************************************************/
 
 #include <qapplication.h>
-#include <q3listbox.h>
+// #include <q3listbox.h>
 #include <qobject.h>
-#include <q3scrollview.h>
+// #include <q3scrollview.h>
 #include <qtabwidget.h>
-//Added by qt3to4:
-#include <Q3GridLayout>
-#include <Q3Frame>
+#include <QGridLayout>
+#include <QFrame>
 #include <QList>
 #include <QKeyEvent>
-#include <Q3VBoxLayout>
+#include <QVBoxLayout>
 
 #include "config_file.h"
 #include "configuration_aware_object.h"
@@ -39,8 +38,8 @@ class ConfigTab
 
 	QMap<QString, ConfigGroupBox *> configGroupBoxes;
 
-	Q3ScrollView *scrollView;
-	Q3VBoxLayout *mainLayout;
+	QScrollArea *scrollArea;
+	QVBoxLayout *mainLayout;
 	QWidget *mainWidget;
 
 public:
@@ -52,16 +51,16 @@ public:
 	void removedConfigGroupBox(const QString &groupBoxName);
 
 	QWidget *widget() { return mainWidget; }
-	QWidget *tabWidget() { return scrollView; }
+	QWidget *tabWidget() { return scrollArea; }
 
 };
 
-ConfigGroupBox::ConfigGroupBox(const QString &name, ConfigTab *configTab, Q3GroupBox *groupBox)
+ConfigGroupBox::ConfigGroupBox(const QString &name, ConfigTab *configTab, QGroupBox *groupBox)
 	: name(name), configTab(configTab), groupBox(groupBox)
 {
 	container = new QWidget(groupBox);
 
-	gridLayout = new Q3GridLayout(container);
+	gridLayout = new QGridLayout(container);
 	gridLayout->setAutoAdd(false);
 	gridLayout->setSpacing(5);
 	gridLayout->setColStretch(1, 100);
@@ -103,24 +102,23 @@ void ConfigGroupBox::addWidgets(QWidget *widget1, QWidget *widget2)
 ConfigTab::ConfigTab(const QString &name, ConfigSection *configSection, QTabWidget *parentConfigGroupBoxWidget)
 	: name(name), configSection(configSection)
 {
-	scrollView = new Q3ScrollView(parentConfigGroupBoxWidget);
-	scrollView->setFrameStyle(Q3Frame::NoFrame);
-	scrollView->setResizePolicy(Q3ScrollView::AutoOneFit);
-	scrollView->setVScrollBarMode(Q3ScrollView::Auto);
-	scrollView->setHScrollBarMode(Q3ScrollView::AlwaysOff);
+	scrollArea = new QScrollArea(parentConfigGroupBoxWidget);
+	scrollArea->setFrameStyle(QFrame::NoFrame);
+	scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+	scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-	mainWidget = new QWidget(scrollView->viewport());
-	scrollView->addChild(mainWidget);
+	mainWidget = new QWidget(scrollArea->widget());
+	scrollArea->setWidget(mainWidget);
 
-	mainLayout = new Q3VBoxLayout(mainWidget, 10, 10);
+	mainLayout = new QVBoxLayout(mainWidget, 10, 10);
 	mainLayout->addStretch(1);
 
-	parentConfigGroupBoxWidget->addTab(scrollView, name);
+	parentConfigGroupBoxWidget->addTab(scrollArea, name);
 }
 
 ConfigTab::~ConfigTab()
 {
-	delete scrollView;
+	delete scrollArea;
 }
 
 ConfigGroupBox *ConfigTab::configGroupBox(const QString &name, bool create)
@@ -131,7 +129,7 @@ ConfigGroupBox *ConfigTab::configGroupBox(const QString &name, bool create)
 	if (!create)
 		return 0;
 
-	Q3GroupBox *groupBox = new Q3GroupBox(1, Qt::Horizontal, name, mainWidget);
+	QGroupBox *groupBox = new QGroupBox(/*1, Qt::Horizontal, */name, mainWidget);
 	groupBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
 	mainLayout->insertWidget(configGroupBoxes.count(), groupBox);
@@ -155,9 +153,9 @@ void ConfigTab::removedConfigGroupBox(const QString &groupBoxName)
 	}
 }
 
-ConfigSection::ConfigSection(const QString &name, ConfigurationWindow *configurationWindow, Q3ListBoxItem *listBoxItem, QWidget *parentConfigGroupBoxWidget,
+ConfigSection::ConfigSection(const QString &name, ConfigurationWindow *configurationWindow, QListWidgetItem *listWidgetItem, QWidget *parentConfigGroupBoxWidget,
 		const QString &pixmap)
-	: name(name), configurationWindow(configurationWindow), pixmap(pixmap), listBoxItem(listBoxItem), activated(false)
+	: name(name), configurationWindow(configurationWindow), pixmap(pixmap), listWidgetItem(listWidgetItem), activated(false)
 {
 	mainWidget = new QTabWidget(parentConfigGroupBoxWidget);
 	mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -184,7 +182,7 @@ ConfigGroupBox * ConfigSection::configGroupBox(const QString &tab, const QString
 
 void ConfigSection::activate()
 {
-	listBoxItem->listBox()->setCurrentItem(listBoxItem);
+	listWidgetItem->listWidget()->setCurrentItem(listWidgetItem);
 
 	if (activated)
 		return;
@@ -223,54 +221,73 @@ void ConfigSection::removedConfigTab(const QString &configTabName)
 
 void ConfigSection::iconThemeChanged()
 {
-	Q3ListBox *listBox = listBoxItem->listBox();
-	bool current = listBoxItem->isSelected();
-	delete listBoxItem;
+	QListWidget *listWidget = listWidgetItem->listWidget();
+	bool current = listWidgetItem->isSelected();
+	delete listWidgetItem;
 
-	listBoxItem = new Q3ListBoxPixmap(listBox, icons_manager->loadPixmap(pixmap), name);
+	listWidgetItem = new QListWidgetItem(name, listWidget);
+	listWidgetItem->setIcon(icons_manager->loadPixmap(pixmap));
 	if (current)
-		listBox->setCurrentItem(listBoxItem);
+		listWidget->setCurrentItem(listWidgetItem);
 }
 
 ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &caption)
 	: Name(name), currentSection(0)
 {
-//	setWFlags(getWFlags() | Qt::WDestructiveClose);
+	setAttribute(Qt::WA_DeleteOnClose);
 	setCaption(caption);
+	QHBoxLayout *main_layout = new QHBoxLayout;
 
-	Q3HBox *center = new Q3HBox(this);
-	center->setMargin(10);
-	center->setSpacing(10);
+	QWidget *center = new QWidget(this);
+	QVBoxLayout *center_layout = new QVBoxLayout;
+	center_layout->setMargin(10);
+	center_layout->setSpacing(10);
 
-	left = new Q3VBox(center);
+	left = new QWidget();
 	left->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 	left->hide();
+	QVBoxLayout *left_layout = new QVBoxLayout;
 
-	container = new Q3HBox(center);
+	container = new QWidget;
 	container->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-	Q3HBox *buttons = new Q3HBox(this);
-	buttons->setMargin(10);
-	buttons->setSpacing(5);
-	(new QWidget(buttons))->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-
-	QPushButton *okButton = new QPushButton(icons_manager->loadIcon("OkWindowButton"), tr("Ok"), buttons);
-	QPushButton *applyButton = new QPushButton(icons_manager->loadIcon("ApplyWindowButton"), tr("Apply"), buttons);
-	QPushButton *cancelButton = new QPushButton(icons_manager->loadIcon("CloseWindowButton"), tr("Cancel"), buttons);
+	QWidget *buttons = new QWidget;
+	QHBoxLayout *buttons_layout = new QHBoxLayout;
+	buttons_layout->setMargin(10);
+	buttons_layout->setSpacing(5);
+	QWidget *what = new QWidget;
+	what->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+	buttons_layout->addWidget(what);
+	QPushButton *okButton = new QPushButton(icons_manager->loadIcon("OkWindowButton"), tr("Ok"), this);
+	buttons_layout->addWidget(okButton);
+	QPushButton *applyButton = new QPushButton(icons_manager->loadIcon("ApplyWindowButton"), tr("Apply"), this);
+	buttons_layout->addWidget(applyButton);
+	QPushButton *cancelButton = new QPushButton(icons_manager->loadIcon("CloseWindowButton"), tr("Cancel"), this);
+	buttons_layout->addWidget(cancelButton);
+	buttons->setLayout(buttons_layout);
 
 	connect(okButton, SIGNAL(clicked()), this, SLOT(updateAndCloseConfig()));
 	connect(applyButton, SIGNAL(clicked()), this, SLOT(updateConfig()));
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));
 
-	sectionsListBox = new Q3ListBox(left);
-	sectionsListBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-	sectionsListBox->setHScrollBarMode(Q3ScrollView::AlwaysOff);
-	connect(sectionsListBox, SIGNAL(highlighted(const QString &)), this, SLOT(changeSection(const QString &)));
+	sectionsListWidget = new QListWidget;
+	sectionsListWidget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+// 	sectionsListWidget->setHScrollBarMode(QScrollArea::AlwaysOff);
+	connect(sectionsListWidget, SIGNAL(currentTextChanged(const QString &)), this, SLOT(changeSection(const QString &)));
+	left_layout->addWidget(sectionsListWidget);
+	left->setLayout(left_layout);
+
+	main_layout->addWidget(left);
+	main_layout->addWidget(center);
+	center_layout->addWidget(container);
+	center_layout->addWidget(buttons);
+	center->setLayout(center_layout);
+	setLayout(main_layout);
 }
 
 ConfigurationWindow::~ConfigurationWindow()
 {
-	config_file.writeEntry("General", "ConfigurationWindow_" + Name, sectionsListBox->currentText());
+	config_file.writeEntry("General", "ConfigurationWindow_" + Name, sectionsListWidget->currentItem()->text());
 
 	FOREACH(configSection, configSections)
 		delete *configSection;
@@ -284,10 +301,10 @@ void ConfigurationWindow::show()
 		if (configSections.contains(lastSection))
 			configSections[lastSection]->activate();
 		else
-			sectionsListBox->setCurrentItem(0);
+			sectionsListWidget->setCurrentItem(0);
 
 		loadConfiguration(this);
-		Q3VBox::show();
+		QWidget::show();
 	}
 	else
 	{
@@ -515,7 +532,7 @@ ConfigWidget * ConfigurationWindow::appendUiElementFromDom(QDomNode uiElementNod
 	else if (tagName == "label")
 		widget = new ConfigLabel(configGroupBox);
 	else if (tagName == "list-box")
-		widget = new ConfigListBox(configGroupBox);
+		widget = new ConfigListWidget(configGroupBox);
 	else
 	{
 		kdebugf2();
@@ -601,9 +618,9 @@ ConfigSection *ConfigurationWindow::configSection(const QString &pixmap, const Q
 	if (!create)
 		return 0;
 
-	Q3ListBoxItem *newConfigSectionListBoxItem = new Q3ListBoxPixmap(sectionsListBox, icons_manager->loadPixmap(pixmap), name);
-
-	ConfigSection *newConfigSection = new ConfigSection(name, this, newConfigSectionListBoxItem, container, pixmap);
+	QListWidgetItem *newConfigSectionListWidgetItem = new QListWidgetItem(name, sectionsListWidget);
+	newConfigSectionListWidgetItem->setIcon(icons_manager->loadPixmap(pixmap));
+	ConfigSection *newConfigSection = new ConfigSection(name, this, newConfigSectionListWidgetItem, container, pixmap);
 	configSections[name] = newConfigSection;
 
 	if (configSections.count() > 1)
@@ -679,10 +696,11 @@ void ConfigurationWindow::removedConfigSection(const QString &sectionName)
 {
 	configSections.remove(sectionName);
 
-	for (unsigned int i = 0; i < sectionsListBox->count(); i++)
-		if (sectionsListBox->item(i)->text() == tr(sectionName))
+	for (unsigned int i = 0; i < sectionsListWidget->count(); i++)
+		if (sectionsListWidget->item(i)->text() == tr(sectionName))
 		{
-			sectionsListBox->removeItem(i);
+			QListWidgetItem *item = sectionsListWidget->takeItem(i);
+			delete item;
 			break;
 		}
 }
@@ -695,7 +713,7 @@ void ConfigurationWindow::keyPressEvent(QKeyEvent *e)
 		close();
 	}
 	else
-		Q3VBox::keyPressEvent(e);
+		QWidget::keyPressEvent(e);
 }
 
 #ifdef HAVE_OPENSSL

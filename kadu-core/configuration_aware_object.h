@@ -2,8 +2,7 @@
 #define CONFIGURATION_AWARE_OBJECT
 
 #include <qglobal.h>
-
-#include <q3valuelist.h>
+#include <QList>
 
 class ConfigurationAwareObject
 {

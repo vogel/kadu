@@ -962,34 +962,34 @@ void ConfigLabel::hide()
 	QLabel::hide();
 }
 
-ConfigListBox::ConfigListBox(const QString &widgetCaption, const QString &toolTip,
+ConfigListWidget::ConfigListWidget(const QString &widgetCaption, const QString &toolTip,
 		const QStringList &itemValues, const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox, const char *name)
-	: Q3ListBox(parentConfigGroupBox->widget(), name), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox), label(0)
+	: QListWidget(parentConfigGroupBox->widget()), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox), label(0)
 {
 	createWidgets();
 }
 
-ConfigListBox::ConfigListBox(ConfigGroupBox *parentConfigGroupBox, const char *name)
-	: Q3ListBox(parentConfigGroupBox->widget(), name), ConfigWidget(parentConfigGroupBox), label(0)
+ConfigListWidget::ConfigListWidget(ConfigGroupBox *parentConfigGroupBox, const char *name)
+	: QListWidget(parentConfigGroupBox->widget()), ConfigWidget(parentConfigGroupBox), label(0)
 {
 }
 
-ConfigListBox::~ConfigListBox()
+ConfigListWidget::~ConfigListWidget()
 {
 	if (label)
 		delete label;
 }
 
-void ConfigListBox::setItems(const QStringList &itemValues, const QStringList &itemCaptions)
+void ConfigListWidget::setItems(const QStringList &itemValues, const QStringList &itemCaptions)
 {
 	this->itemValues = itemValues;
 	this->itemCaptions = itemCaptions;
 
 	clear();
-	insertStringList(itemCaptions);
+	addItems(itemCaptions);
 }
 
-void ConfigListBox::createWidgets()
+void ConfigListWidget::createWidgets()
 {
 	kdebugf();
 
@@ -997,7 +997,7 @@ void ConfigListBox::createWidgets()
 	parentConfigGroupBox->addWidgets(label, this);
 
 	clear();
-	insertStringList(itemCaptions);
+	addItems(itemCaptions);
 
 	if (!ConfigWidget::toolTip.isEmpty())
 	{
@@ -1006,19 +1006,19 @@ void ConfigListBox::createWidgets()
 	}
 }
 
-void ConfigListBox::show()
+void ConfigListWidget::show()
 {
 	label->show();
-	Q3ListBox::show();
+	QListWidget::show();
 }
 
-void ConfigListBox::hide()
+void ConfigListWidget::hide()
 {
 	label->hide();
-	Q3ListBox::hide();
+	QListWidget::hide();
 }
 
-bool ConfigListBox::fromDomElement(QDomElement domElement)
+bool ConfigListWidget::fromDomElement(QDomElement domElement)
 {
 	QDomNodeList children = domElement.childNodes();
 	int length = children.length();
@@ -1034,7 +1034,7 @@ bool ConfigListBox::fromDomElement(QDomElement domElement)
 			itemValues.append(element.attribute("value"));
 			itemCaptions.append(element.attribute("caption"));
 
-			insertItem(qApp->translate("@default", element.attribute("caption")));
+			addItem(qApp->translate("@default", element.attribute("caption")));
 		}
 	}
 

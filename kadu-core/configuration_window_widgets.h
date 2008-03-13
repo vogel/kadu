@@ -8,12 +8,12 @@
 #include <qdom.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <q3listbox.h>
+// #include <q3listbox.h>
 #include <qpushbutton.h>
 #include <qslider.h>
 #include <qspinbox.h>
-#include <q3vbox.h>
-
+// #include <q3vbox.h>
+#include <QListWidget>
 #include "color_button.h"
 #include "hot_key.h"
 #include "path_list_edit.h"
@@ -445,7 +445,7 @@ public:
 	@arg value - warto¶æ zapisana do pliku konfiguracyjnego
 	@arg caption - warto¶æ wy¶wietlana
  **/
-class ConfigListBox : public Q3ListBox, public ConfigWidget
+class ConfigListWidget : public QListWidget, public ConfigWidget
 {
 	QLabel *label;
 
@@ -456,14 +456,14 @@ protected:
 	virtual void createWidgets();
 
 public:
-	ConfigListBox(const QString &widgetCaption, const QString &toolTip,
+	ConfigListWidget(const QString &widgetCaption, const QString &toolTip,
 		const QStringList &itemValues, const QStringList &itemCaptions,
 		ConfigGroupBox *parentConfigGroupBox, const char *name = 0);
-	ConfigListBox(ConfigGroupBox *parentConfigGroupBox, const char *name = 0);
-	virtual ~ConfigListBox();
+	ConfigListWidget(ConfigGroupBox *parentConfigGroupBox, const char *name = 0);
+	virtual ~ConfigListWidget();
 
 	void setItems(const QStringList &itemValues, const QStringList &itemCaptions);
-	QString currentItemValue() { return itemValues[currentItem()]; }
+	QString currentItemValue() { return itemValues[currentRow()]; }
 
 	virtual void loadConfiguration() {};
 	virtual void saveConfiguration() {};
