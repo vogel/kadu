@@ -8,8 +8,7 @@
  ***************************************************************************/
 
 #include <qsocketnotifier.h>
-//Added by qt3to4:
-#include <Q3CString>
+#include <QString>
 #include <QPixmap>
 
 #include "libgadu.h"
@@ -462,7 +461,7 @@ void GaduSocketNotifiers::socketEvent()
 				if ((e->event.msg.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT)
 					for (int i = 0; i < e->event.msg.recipients_count; ++i)
 						users.append(userlist->byID("Gadu", QString::number(e->event.msg.recipients[i])));
-				Q3CString msg((char*)e->event.msg.message);
+				QString msg((char*)e->event.msg.message);
 				QByteArray formats;
 				formats.duplicate((const char*)e->event.msg.formats, e->event.msg.formats_length);
 				emit messageReceived(e->event.msg.msgclass, users, msg,

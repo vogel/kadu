@@ -29,15 +29,11 @@
 #include <stdlib.h>
 
 #include <qapplication.h>
-#include <qcheckbox.h>
 #include <qtimer.h>
 #include <qvalidator.h>
-#include <q3vgroupbox.h>
 #include <qregexp.h>
-//Added by qt3to4:
 #include <QPixmap>
 #include <QList>
-#include <Q3CString>
 
 #define GG_STATUS_INVISIBLE2 0x0009 /* g³upy... */
 
@@ -378,8 +374,8 @@ GaduProtocol::GaduProtocol(const QString &id, QObject *parent, const char *name)
 		this, SLOT(imageRequestReceivedSlot(UinType, uint32_t, uint32_t)));
 	connect(SocketNotifiers, SIGNAL(imageRequestReceived(UinType, uint32_t, uint32_t)),
 		this, SIGNAL(imageRequestReceived(UinType, uint32_t, uint32_t)));
-	connect(SocketNotifiers, SIGNAL(messageReceived(int, UserListElements, Q3CString &, time_t, QByteArray &)),
-		this, SLOT(messageReceivedSlot(int, UserListElements, Q3CString &, time_t, QByteArray &)));
+	connect(SocketNotifiers, SIGNAL(messageReceived(int, UserListElements, QString &, time_t, QByteArray &)),
+		this, SLOT(messageReceivedSlot(int, UserListElements, QString &, time_t, QByteArray &)));
 	connect(SocketNotifiers, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)), this, SLOT(newResults(gg_pubdir50_t)));
 	connect(SocketNotifiers, SIGNAL(systemMessageReceived(QString &, QDateTime &, int, void *)),
 		this, SLOT(systemMessageReceived(QString &, QDateTime &, int, void *)));
@@ -926,7 +922,7 @@ void GaduProtocol::imageRequestReceivedSlot(UinType sender, uint32_t size, uint3
 	gadu_images_manager.sendImage(sender,size,crc32);
 }
 
-void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, Q3CString &msg, time_t time,
+void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, QString &msg, time_t time,
 	QByteArray &formats)
 {
 /*

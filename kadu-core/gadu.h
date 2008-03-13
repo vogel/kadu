@@ -4,10 +4,7 @@
 #include <qglobal.h>
 
 #include <qhostaddress.h>
-#include <q3valuelist.h>
-
-//Added by qt3to4:
-#include <Q3CString>
+#include <QString>
 #include <QPixmap>
 
 #include "libgadu.h"
@@ -522,7 +519,7 @@ class GaduProtocol : public Protocol
 		/**
 			Slot wywo³ywany po otrzymaniu wiadomo¶ci od serwera.
 		**/
-		void messageReceivedSlot(int, UserListElements, Q3CString& msg, time_t, QByteArray &formats);
+		void messageReceivedSlot(int, UserListElements, QString& msg, time_t, QByteArray &formats);
 
 		/**
 			Wykonuje zadania co minutê - pinguje sieæ i zeruje licznik
@@ -1030,7 +1027,7 @@ class GaduProtocol : public Protocol
 			Mo¿na te¿ przerwaæ dalsz± obróbkê wiadomo¶ci ustawiaj±c
 			stop na true.
 		**/
-		void rawGaduReceivedMessageFilter(Protocol *protocol, UserListElements senders, Q3CString &msg, QByteArray &formats, bool &ignore);
+		void rawGaduReceivedMessageFilter(Protocol *protocol, UserListElements senders, QString &msg, QByteArray &formats, bool &ignore);
 
 		/**
 			Wywo³ywane, gdy chcemy odczytaæ token z obrazka

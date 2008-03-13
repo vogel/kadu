@@ -8,8 +8,7 @@
  ***************************************************************************/
 
 #include <qtextcodec.h>
-//Added by qt3to4:
-#include <Q3CString>
+#include <QString>
 
 #include "chat_manager.h"
 #include "debug.h"
@@ -110,7 +109,7 @@ void PendingMsgs::writeToFile()
 		t=(*i).msg.length();
 		f.writeBlock((char*)&t,sizeof(int));
 		// message content
-		Q3CString cmsg = codec_latin2->fromUnicode((*i).msg);
+		QString cmsg = codec_latin2->fromUnicode((*i).msg);
 		f.writeBlock(cmsg, cmsg.length());
 		// message class
 		f.writeBlock((char*)&(*i).msgclass,sizeof(int));

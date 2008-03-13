@@ -8,7 +8,7 @@
  ***************************************************************************/
 
 #include <qapplication.h>
-#include <q3textstream.h>
+#include <QTextStream>
 #include <qfile.h>
 #include <qmutex.h>
 
@@ -100,8 +100,8 @@ void XmlConfigFile::write(const QString& f)
 	if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
 	{
 		kdebugm(KDEBUG_INFO, "file opened '%s'\n", file.name().local8Bit().data());
-		Q3TextStream stream(&file);
-		stream.setEncoding(Q3TextStream::UnicodeUTF8);
+		QTextStream stream(&file);
+		stream.setEncoding(QTextStream::UnicodeUTF8);
 		stream << DomDocument.toString();
 		file.close();
 		if (rename(tmpFileName.local8Bit().data(), fileName.local8Bit().data()) == -1)
@@ -246,7 +246,7 @@ void PlainConfigFile::read()
 
 	if (file.open(QIODevice::ReadOnly))
 	{
-		Q3TextStream stream(&file);
+		QTextStream stream(&file);
 		stream.setCodec(codec_latin2);
 		while (!stream.atEnd())
 		{
@@ -295,7 +295,7 @@ void PlainConfigFile::write() const
 	if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
 	{
 		kdebugm(KDEBUG_INFO, "file opened '%s'\n", (const char *)file.name().local8Bit());
-		Q3TextStream stream(&file);
+		QTextStream stream(&file);
 		stream.setCodec(codec_latin2);
 		CONST_FOREACH(i, groups)
 		{
