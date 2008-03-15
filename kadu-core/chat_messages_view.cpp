@@ -281,4 +281,6 @@ void ChatMessagesView::resizeEvent(QResizeEvent *e)
 {
 	if (verticalScrollBar()->value() == verticalScrollBar()->maxValue())
 		scrollToBottom();
+
+	QScrollView::resizeEvent(e);
 }
