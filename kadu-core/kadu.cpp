@@ -139,8 +139,8 @@ void Kadu::keyPressEvent(QKeyEvent *e)
 		lookupInDirectory();
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_showoffline"))
 		groups_manager->changeDisplayingOffline();
-	else if (HotKey::shortCut(e,"ShortCuts", "kadu_showonlydesc"))
-		groups_manager->changeDisplayingWithoutDescription();
+// 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_showonlydesc"))
+// 		groups_manager->changeDisplayingWithoutDescription();
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_configure"))
 		configure();
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_modulesmanager"))
@@ -719,7 +719,11 @@ void Kadu::inactiveUsersActionActivated(QWidget *parent, bool toggled)
 
 void Kadu::descriptionUsersActionActivated(QWidget *parent, bool toggled)
 {
-	groups_manager->changeDisplayingWithoutDescription();
+	ActionWindow *window = dynamic_cast<ActionWindow *>(parent);
+	if (!window)
+		return;
+
+	groups_manager->changeDisplayingWithoutDescription(window->getUserBox(), !toggled);
 }
 
 void Kadu::onlineAndDescUsersActionActivated(QWidget *parent, bool toggled)

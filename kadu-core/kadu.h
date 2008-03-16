@@ -162,7 +162,8 @@ class Kadu : public QMainWindow, ConfigurationAwareObject, public ActionWindow
 		Kadu(QWidget* parent=0);
 		~Kadu();
 
-		bool supportsActionType(ActionDescription::ActionType type) { return type == ActionDescription::TypeGlobal; }
+		virtual bool supportsActionType(ActionDescription::ActionType type) { return type == ActionDescription::TypeGlobal; }
+		virtual UserBox * getUserBox() { return Userbox; }
 
 		const UserListElement & myself() { return Myself; };
 

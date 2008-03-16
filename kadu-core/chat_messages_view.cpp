@@ -7,6 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QList>
+#include <QResizeEvent>
+
 #include "chat_message.h"
 #include "config_file.h"
 #include "debug.h"
@@ -16,9 +19,6 @@
 #include "syntax_editor.h"
 
 #include "chat_messages_view.h"
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QList>
 
 ChatMessagesView::ChatMessagesView(QWidget *parent, const char *name) : KaduTextBrowser(parent, name),
 	Prune(0)
@@ -282,5 +282,5 @@ void ChatMessagesView::resizeEvent(QResizeEvent *e)
 	if (verticalScrollBar()->value() == verticalScrollBar()->maxValue())
 		scrollToBottom();
 
-	QScrollView::resizeEvent(e);
+	KaduTextBrowser::resizeEvent(e);
 }

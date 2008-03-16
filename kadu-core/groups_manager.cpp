@@ -108,7 +108,7 @@ void GroupsManager::setTabBar(KaduTabBar *bar)
 	changeDisplayingBlocking();
 	changeDisplayingBlocked();
 	changeDisplayingOffline();
-	changeDisplayingWithoutDescription();
+// 	changeDisplayingWithoutDescription();
 	changeDisplayingOnlineAndDescription();
 	kdebugf2();
 }
@@ -240,8 +240,8 @@ void GroupsManager::configurationUpdated()
 		changeDisplayingBlocked();
 	if (config_file.readBoolEntry("General", "ShowOffline") != showOffline)
 		changeDisplayingOffline();
-	if (config_file.readBoolEntry("General", "ShowWithoutDescription") != showWithoutDescription)
-		changeDisplayingWithoutDescription();
+// 	if (config_file.readBoolEntry("General", "ShowWithoutDescription") != showWithoutDescription)
+// 		changeDisplayingWithoutDescription();
 }
 
 void GroupsManager::iconThemeChanged()
@@ -288,17 +288,15 @@ void GroupsManager::changeDisplayingOffline()
 	kdebugf2();
 }
 
-void GroupsManager::changeDisplayingWithoutDescription()
+void GroupsManager::changeDisplayingWithoutDescription(UserBox *userBox, bool show)
 {
 	kdebugf();
-// 	if (KaduActions["descriptionUsersAction"])
-// 		KaduActions["descriptionUsersAction"]->setAllOn(showWithoutDescription);
-// 	showWithoutDescription = !showWithoutDescription;
-// 	if (showWithoutDescription)
-// 		kadu->userbox()->removeFilter(usersWithDescription);
-// 	else
-// 		kadu->userbox()->applyFilter(usersWithDescription);
-// 	config_file.writeEntry("General", "ShowWithoutDescription", showWithoutDescription);
+	showWithoutDescription = show;
+	if (showWithoutDescription)
+		userBox->removeFilter(usersWithDescription);
+	else
+		userBox->applyFilter(usersWithDescription);
+	config_file.writeEntry("General", "ShowWithoutDescription", showWithoutDescription);
 	kdebugf2();
 }
 

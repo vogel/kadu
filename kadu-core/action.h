@@ -16,6 +16,7 @@
 
 class ToolButton;
 class ToolBar;
+class UserBox;
 
 class KaduAction : public QAction
 {
@@ -94,6 +95,7 @@ class ActionWindow
 {
 public:
 	virtual bool supportsActionType(ActionDescription::ActionType type) = 0;
+	virtual UserBox * getUserBox() = 0;
 
 };
 

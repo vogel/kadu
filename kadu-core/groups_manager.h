@@ -16,6 +16,7 @@
 #include "userlistelement.h"
 
 class KaduTabBar;
+class UserBox;
 
 /**
 	Klasa s³u¿±ca przede wszystkim zarz±dzaniu nazwanymi grupami kontaktów,
@@ -171,7 +172,7 @@ public slots:
 		w³±cza lub wy³±cza wy¶wietlanie kontaktów o statusach bez opisu
 		w g³ównej li¶cie kontaktów w zale¿no¶ci od poprzedniego stanu
 	**/
-	void changeDisplayingWithoutDescription();
+	void changeDisplayingWithoutDescription(UserBox *userBox, bool show);
 
 	/**
 		\fn void changeDisplayingOnlineAndDescription()
