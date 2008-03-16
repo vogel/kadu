@@ -171,12 +171,12 @@ Kadu::Kadu(QWidget *parent) : QMainWindow(parent),
 
 	MainWidget = new QWidget;
 	MainLayout = new QVBoxLayout(MainWidget);
-
+/*
 	TopDockArea = new DockArea(Qt::Horizontal, DockArea::Normal, this,
 		"topDockArea", ActionDescription::TypeGlobal | ActionDescription::TypeUser | ActionDescription::TypeUserList);
 	connect(TopDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
-	MainLayout->addWidget (TopDockArea);
+	MainLayout->addWidget (TopDockArea);*/
 
 	QSplitter *split = new QSplitter(Qt::Vertical, this, "splitter");
 	MainLayout->addWidget(split);
@@ -207,7 +207,7 @@ Kadu::Kadu(QWidget *parent) : QMainWindow(parent),
 	// userbox
 	UserBox::initModule();
 	Userbox = new UserBox(true, userlist, this, "userbox");
-	connect(Userbox, SIGNAL(selectionChanged()), TopDockArea, SLOT(usersChangedSlot()));
+// 	connect(Userbox, SIGNAL(selectionChanged()), TopDockArea, SLOT(usersChangedSlot()));
 
 	hbox_layout->setStretchFactor(Userbox, 100);
 	hbox_layout->addWidget(GroupBar);
@@ -1324,6 +1324,8 @@ bool Kadu::close(bool quit)
 	{
 		Closing = true;
 
+		writeToolBarsToConfig();
+
 		if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		{
 			config_file.writeEntry("General", "UserBoxHeight", Userbox->size().height());
@@ -1507,10 +1509,13 @@ void Kadu::createRecentChatsMenu()
 
 void Kadu::loadToolBarsFromConfig()
 {
-	loadToolBarFromConfig("topDockArea", Qt::TopToolBarArea);
+	loadToolBarsFromConfig("topDockArea", Qt::TopToolBarArea);
+	loadToolBarsFromConfig("leftDockArea", Qt::LeftToolBarArea);
+	loadToolBarsFromConfig("bottomDockArea", Qt::BottomToolBarArea);
+	loadToolBarsFromConfig("rightDockArea", Qt::RightToolBarArea);
 }
 
-void Kadu::loadToolBarFromConfig(const QString &configName, Qt::ToolBarArea area)
+void Kadu::loadToolBarsFromConfig(const QString &configName, Qt::ToolBarArea area)
 {
 	kdebugf();
 
@@ -1544,6 +1549,40 @@ void Kadu::loadToolBarFromConfig(const QString &configName, Qt::ToolBarArea area
 	}
 
 	kdebugf2();
+}
+
+void Kadu::writeToolBarsToConfig()
+{
+	QDomElement root_elem = xml_config_file->rootElement();
+	QDomElement toolbarsElem = xml_config_file->findElement(root_elem, "Toolbars");
+	if (!toolbarsElem.isNull())
+		xml_config_file->removeChildren(toolbarsElem);
+	else
+		toolbarsElem = xml_config_file->createElement(root_elem, "ToolBar");
+
+	writeToolBarsToConfig(toolbarsElem, "topDockArea", Qt::TopToolBarArea);
+	writeToolBarsToConfig(toolbarsElem, "leftDockArea", Qt::LeftToolBarArea);
+	writeToolBarsToConfig(toolbarsElem, "bottomDockArea", Qt::BottomToolBarArea);
+	writeToolBarsToConfig(toolbarsElem, "rightDockArea", Qt::RightToolBarArea);
+}
+
+void Kadu::writeToolBarsToConfig(QDomElement parentElement, const QString &configName, Qt::ToolBarArea area)
+{
+	QDomElement dockAreaElem = xml_config_file->createElement(parentElement, "DockArea");
+	dockAreaElem.setAttribute("name", configName);
+
+	FOREACH(child, children())
+	{
+		ToolBar *toolBar = dynamic_cast<ToolBar *>(*child);
+		if (!toolBar)
+			continue;
+
+		// ugly
+		if (toolBarArea(toolBar) != area)
+			continue;
+
+		toolBar->writeToConfig(dockAreaElem);
+	}
 }
 
 void Kadu::createMenu()
@@ -1872,15 +1911,6 @@ void Kadu::setDefaultStatus()
 void Kadu::startupProcedure()
 {
 	kdebugf();
-
-	// create toolbars in startupProcedure() to include actions from modules
-// 	if (!TopDockArea->loadFromConfig(this))
-// 	{
-// 		ToolBar* toolbar = new ToolBar(this);
-// 		TopDockArea->moveDockWindow(toolbar);
-// 		TopDockArea->setAcceptDockWindow(toolbar, true);
-// 		toolbar->loadDefault();
-// 	}
 
 	if (ShowMainWindowOnStart)
 		show();

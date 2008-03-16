@@ -1,17 +1,15 @@
 #ifndef KADU_H
 #define KADU_H
 
-#include <qglobal.h>
-
-#include <qevent.h>
-#include <qtimer.h>
 #include <QCustomEvent>
-#include <QMainWindow>
-#include <QResizeEvent>
-#include <QPixmap>
-#include <QString>
-#include <QMenu>
+#include <QDomElement>
 #include <QKeyEvent>
+#include <QMainWindow>
+#include <QMenu>
+#include <QPixmap>
+#include <QResizeEvent>
+#include <QString>
+#include <QTimer>
 #include <QVBoxLayout>
 
 #include "action.h"
@@ -52,7 +50,10 @@ class Kadu : public QMainWindow, ConfigurationAwareObject, public ActionWindow
 	ActionDescription *openSearchActionDescription;
 
 	void loadToolBarsFromConfig();
-	void loadToolBarFromConfig(const QString &configName, Qt::ToolBarArea area);
+	void loadToolBarsFromConfig(const QString &configName, Qt::ToolBarArea area);
+
+	void writeToolBarsToConfig();
+	void writeToolBarsToConfig(QDomElement parentElement, const QString &configName, Qt::ToolBarArea area);
 
 	// TODO: remove
 	friend class Wizard;
