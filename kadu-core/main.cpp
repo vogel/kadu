@@ -337,6 +337,10 @@ int main(int argc, char *argv[])
 					kdebugm(KDEBUG_INFO, "l_type: %d, l_pid: %d\n", lock_str->l_type, lock_str->l_pid);
 					if (ggnumber)
 					{
+#ifdef __FreeBSD__
+						typedef union sigval sigval_t;
+#endif /* __FreeBSD__ */
+
 						sigval_t v;
 						v.sival_int = ggnumber;
 						sigqueue(lock_str->l_pid, OPEN_CHAT_SIGNAL, v);
