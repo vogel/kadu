@@ -3,6 +3,12 @@ lub rozbudowy. Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub
 podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y. Je¶li jest
 w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
++++ wersja 0.6.0.1
+* poprawka kompilacji na FreeBSD 7.0 (neeo)
+* poprawne dzia³anie przy zmianie stanu akcji wysy³ania wiadomo¶ci przez Return (neeo)
+* poprawione zachowanie okien pokazuj±cych wiadomo¶ci przy zmianie ich rozmiaru (daris/neeo)
+* modu³ last_seen dodany do autodownloadu (neeo)
+
 +++ wersja 0.6.0
 * zmiany w procedurze ³±czenia siê: (joi)
   - ekspresowe ³±czenie siê z serwerem gg (zapamiêtujemy adres serwera,

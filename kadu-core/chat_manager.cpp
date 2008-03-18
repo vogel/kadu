@@ -229,12 +229,15 @@ ChatManager::~ChatManager()
 	kdebugf2();
 }
 
-void ChatManager::autoSendActionActivated(const UserGroup* users, const QWidget* /*source*/, bool is_on)
+void ChatManager::autoSendActionActivated(const UserGroup* /*users*/, const QWidget* /*source*/, bool is_on)
 {
 	kdebugf();
-	findChatWidget(users)->setAutoSend(is_on);
+
+	CONST_FOREACH(chat, ChatWidgets)
+		(*chat)->setAutoSend(is_on);
 	KaduActions["autoSendAction"]->setAllOn(is_on);
 	config_file.writeEntry("Chat", "AutoSend", is_on);
+
 	kdebugf2();
 }
 
