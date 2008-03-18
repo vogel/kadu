@@ -351,7 +351,16 @@ void HistoryModule::userboxMenuPopup()
 void HistoryModule::removingUsers(UserListElements users)
 {
 	kdebugf();
-	if (!MessageBox::ask(tr("The following users were deleted:\n%0\nDo you want to remove history as well?").arg(users.altNicks().join(", ")), "Warning", kadu))
+	if (!users.count())
+		return;
+
+	QString altNicks = users.altNicks().join(", ");
+	QString tmp;
+
+	for (unsigned int i = 0; i < users.count(); i += 10)
+		tmp += (altNicks.section(", ", i, i + 9) + ",\n");
+
+	if (!MessageBox::ask(tr("The following users were deleted:\n%0Do you want to remove history as well?").arg(tmp), "Warning", kadu))
 		return;
 
 	QString fname;

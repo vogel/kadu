@@ -1452,12 +1452,6 @@ Too many attempts with bad password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Selected users:
-%0
-will be deleted. Are you sure?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Hide description</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1555,6 +1549,11 @@ will be deleted. Are you sure?</source>
     </message>
     <message>
         <source>Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected users:
+%0will be deleted. Are you sure?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

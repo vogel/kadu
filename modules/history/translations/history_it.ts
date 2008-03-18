@@ -184,11 +184,9 @@
     <message>
         <location filename="../history_module.cpp" line="354"/>
         <source>The following users were deleted:
-%0
-Do you want to remove history as well?</source>
+%0Do you want to remove history as well?</source>
         <translation>Questi contatti erano rimossi:
-%0
-Davvero rimuovere anche la loro Chronologia?</translation>
+%0Davvero rimuovere anche la loro Chronologia?</translation>
     </message>
 </context>
 <context>

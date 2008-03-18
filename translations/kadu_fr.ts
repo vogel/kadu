@@ -1459,11 +1459,9 @@ Too many attempts with bad password</source>
     </message>
     <message>
         <source>Selected users:
-%0
-will be deleted. Are you sure?</source>
+%0will be deleted. Are you sure?</source>
         <translation>Les contacts choisis:
-%0
-serons effacés.Veuillez confirmer?</translation>
+%0serons effacés.Veuillez confirmer?</translation>
     </message>
     <message>
         <source>Hide description</source>

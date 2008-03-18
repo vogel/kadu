@@ -1458,11 +1458,9 @@ Zu viel Versuche mit falschem Passwort</translation>
     </message>
     <message>
         <source>Selected users:
-%0
-will be deleted. Are you sure?</source>
+%0will be deleted. Are you sure?</source>
         <translation>Ausgewählte Benutzer:
-%0
-werden gelöscht. Sind Sie sicher?</translation>
+%0werden gelöscht. Sind Sie sicher?</translation>
     </message>
     <message>
         <source>Hide description</source>

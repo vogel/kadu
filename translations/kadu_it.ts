@@ -1465,11 +1465,9 @@ Di più conessioni con il password incorretto</translation>
     </message>
     <message>
         <source>Selected users:
-%0
-will be deleted. Are you sure?</source>
+%0will be deleted. Are you sure?</source>
         <translation>Contatti selezionati:
-%0
-saranno eliminati. Vuoi davvero?</translation>
+%0saranno eliminati. Vuoi davvero?</translation>
     </message>
     <message>
         <source>Hide description</source>

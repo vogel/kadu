@@ -989,12 +989,23 @@ void Kadu::changeAppearance()
 void Kadu::removeUsers(UserListElements users)
 {
 	kdebugf();
-	if (users.count() && MessageBox::ask(tr("Selected users:\n%0\nwill be deleted. Are you sure?").arg(users.altNicks().join(", ")), "Warning", kadu))
+
+	if (users.count())
 	{
-		emit removingUsers(users);
-		userlist->removeUsers(users);
-		userlist->writeToConfig();
+		QString altNicks = users.altNicks().join(", ");
+		QString tmp;
+
+		for (unsigned int i = 0; i < users.count(); i+=10)
+			tmp += (altNicks.section(", ", i, (i + 9)) + ",\n");
+
+		if (MessageBox::ask(tr("Selected users:\n%0will be deleted. Are you sure?").arg(tmp), "Warning", kadu))
+		{
+			emit removingUsers(users);
+			userlist->removeUsers(users);
+			userlist->writeToConfig();
+		}
 	}
+
 	kdebugf2();
 }
 
