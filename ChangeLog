@@ -8,6 +8,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawne dzia³anie przy zmianie stanu akcji wysy³ania wiadomo¶ci przez Return (neeo)
 * poprawione zachowanie okien pokazuj±cych wiadomo¶ci przy zmianie ich rozmiaru (daris/neeo)
 * poprawka przy usuwaniu wiêkszej liczby kontaktów (neeo)
+* dodana akcja globalna umo¿liwiaj±ca zmianê statusu (neeo)
 * modu³ last_seen dodany do autodownloadu (neeo)
 
 +++ wersja 0.6.0

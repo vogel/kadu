@@ -73,6 +73,7 @@ public:
 	bool isOn(const UserListElements& users);
 	void setOn(const UserListElements& users, bool on);
 	void setAllOn(bool on);
+	void setPixmaps(const QPixmap& pixmap);
 	void setPixmaps(const UserListElements& users, const QPixmap& pixmap);
 	void setIconSets(const UserListElements& users, const QIconSet& icon);
 	void refreshIcons();

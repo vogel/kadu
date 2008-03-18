@@ -286,6 +286,12 @@ Kadu::Kadu(QWidget *parent, const char *name) : QWidget(parent, name),
 	connect(open_search_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(searchInDirectory()));
 
+	Action* open_status_action = new Action("Offline", tr("Change status"), "openStatusAction", Action::TypeGlobal);
+	connect(open_status_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		this, SLOT(showStatusActionActivated()));
+	connect(open_status_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
+		this, SLOT(showStatusActionAddedToToolbar(ToolButton*)));
+
 	ToolBar::addDefaultAction("Kadu toolbar", "inactiveUsersAction");
 	ToolBar::addDefaultAction("Kadu toolbar", "descriptionUsersAction");
 	ToolBar::addDefaultAction("Kadu toolbar", "configurationAction");
@@ -783,6 +789,16 @@ void Kadu::openChat()
 	kdebugf2();
 }
 
+void Kadu::showStatusActionActivated()
+{
+	showPopupMenu(statusMenu);
+}
+
+void Kadu::showStatusActionAddedToToolbar(ToolButton* button)
+{
+	button->setPixmap(gadu->currentStatus().pixmap());
+}
+
 void Kadu::searchInDirectory()
 {
 	(new SearchDialog(kadu, "search_user"))->show();
@@ -981,6 +997,7 @@ void Kadu::changeAppearance()
 	const UserStatus &stat = gadu->currentStatus();
 	QPixmap pix = stat.pixmap();
 	statusButton->setIconSet(QIconSet(pix));
+	KaduActions["openStatusAction"]->setPixmaps(pix);
 	setMainWindowIcon(pix);
 	emit statusPixmapChanged(pix, stat.toString());
 	kdebugf2();
@@ -1838,6 +1855,7 @@ void Kadu::showStatusOnMenu(int statusNr)
 	QPixmap pix = gadu->currentStatus().pixmap();
 	QString iconName = gadu->currentStatus().toString();
 	statusButton->setIconSet(QIconSet(pix));
+	KaduActions["openStatusAction"]->setPixmaps(pix);
 	setMainWindowIcon(pix);
 
 	emit statusPixmapChanged(pix, iconName);

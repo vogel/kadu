@@ -164,6 +164,15 @@ void Action::setPixmaps(const UserListElements& users, const QPixmap& pixmap)
 	kdebugf2();
 }
 
+void Action::setPixmaps(const QPixmap& pixmap)
+{
+	kdebugf();
+	FOREACH(button, ToolButtons)
+		if ((*button)->actionName() == name())
+			(*button)->setPixmap(pixmap);
+	kdebugf2();
+}
+
 void Action::setIconSets(const UserListElements& users, const QIconSet& icon)
 {
 	kdebugf();
