@@ -65,7 +65,6 @@ install-data-local: uninstall-local
 	done
 
 	$(mkinstalldirs) "$(DESTDIR)$(bindir)/"
-	$(INSTALL_SCRIPT) scripts/kadu-mozilla "$(DESTDIR)$(bindir)/"
 	$(INSTALL_SCRIPT) scripts/kadu-config "$(DESTDIR)$(bindir)/"
 
 uninstall-local:
@@ -75,7 +74,6 @@ uninstall-local:
 	rm -f "$(DESTDIR)$(datadir)/kadu/syntax/infopanel"/*.syntax
 	rm -rf "$(DESTDIR)$(datadir)/kadu/themes/icons"/*
 	rm -rf "$(DESTDIR)$(datadir)/kadu/themes/emoticons"/*
-	rm -f "$(DESTDIR)$(bindir)/kadu-mozilla"
 	rm -f "$(DESTDIR)$(bindir)/kadu-config"
 
 #				$(INSTALL_DATA) $$e_d/* "$(DESTDIR)$(datadir)/kadu/themes/emoticons/$$e_t/$$e_d"; \
