@@ -103,4 +103,3 @@ extern "C" void macosx_docking_close()
 MacOSXDocking *mac_docking;
 
 /** @} */
-
