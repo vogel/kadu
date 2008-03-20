@@ -7,12 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qvbox.h>
-#include <qapplication.h>
-#include <qlayout.h>
-#include <qvgroupbox.h>
-#include <qpushbutton.h>
-#include <qtooltip.h>
+#include <QApplication>
+#include <QCheckBox>
+#include <QGroupBox>
+#include <QLayout>
+#include <QLineEdit>
+#include <QPushButton>
 
 #include "config_file.h"
 #include "debug.h"
@@ -64,76 +64,114 @@ void Register::createConfig()
 	kdebugmf(KDEBUG_INFO, "Writing config files...\n");
 	config_file.sync();
 
-	qApp->mainWidget()->setCaption(QString("Kadu: %1").arg((UinType)config_file.readNumEntry("General","UIN")));
+	qApp->mainWidget()->setWindowTitle(QString("Kadu: %1").arg((UinType)config_file.readNumEntry("General","UIN")));
 
 	kdebugf2();
 }
 
-Register::Register(QDialog *parent, const char *name) : QHBox(parent, name, WDestructiveClose),
-	pwd(0), pwd2(0), mailedit(0), status(0), uin(0), cb_updateconfig(0),
+Register::Register(QDialog *parent, const char *name) : QWidget(parent, name, Qt::Window),
+	pwd(0), pwd2(0), mailedit(0), uin(0), cb_updateconfig(0),
 	layoutHelper(new LayoutHelper())
 {
 	kdebugf();
 
-	setCaption(tr("Register user"));
-	layout()->setResizeMode(QLayout::Minimum);
+	setWindowTitle(tr("Register user"));
+	setAttribute(Qt::WA_DeleteOnClose);
+//	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
-	QVBox *left = new QVBox(this);
-	left->setMargin(10);
-	left->setSpacing(10);
+	QWidget *left = new QWidget();
 
-	QLabel *l_icon = new QLabel(left);
-	QWidget *blank = new QWidget(left);
+	QLabel *l_icon = new QLabel;
+	l_icon->setPixmap(icons_manager->loadPixmap("RegisterWindowIcon"));
+
+	QWidget *blank = new QWidget;
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	QVBox *center = new QVBox(this);
-	center->setMargin(10);
-	center->setSpacing(10);
+	QVBoxLayout *left_layout = new QVBoxLayout;
+	left_layout->addWidget(l_icon);
+	left_layout->addWidget(blank);
+	left->setLayout(left_layout);
 
-	QLabel *l_info = new QLabel(center);
-	l_icon->setPixmap(icons_manager->loadIcon("RegisterWindowIcon"));
+	QWidget *center = new QWidget;
+
+	QLabel *l_info = new QLabel();
+
 	l_info->setText(tr("This dialog box allows you to register a new account."));
 	l_info->setAlignment(Qt::WordBreak);
+	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
+
 	// end create main QLabel widgets (icon and app info)
 
 	//our QVGroupBox
-	QVGroupBox *vgb_email = new QVGroupBox(center);
-	vgb_email->setTitle(tr("Email"));
-	QVGroupBox *vgb_password = new QVGroupBox(center);
-	vgb_password->setTitle(tr("Password"));
-	center->setStretchFactor(vgb_password, 1);
+	QGroupBox *vgb_email = new QGroupBox(tr("Email"));
+	QVBoxLayout *email_layout = new QVBoxLayout;
+	vgb_email->setLayout(email_layout);
+
+	QGroupBox *vgb_password = new QGroupBox(tr("Password"));
+	QVBoxLayout *password_layout = new QVBoxLayout;
+	vgb_password->setLayout(password_layout);
+
 	//end our QGroupBox
 
 	// create needed fields
-	new QLabel(tr("New email:"), vgb_email);
-	mailedit = new QLineEdit(vgb_email);
+	mailedit = new QLineEdit();
+	email_layout->addWidget(new QLabel(tr("New email:")));
+	email_layout->addWidget(mailedit);
 
-	new QLabel(tr("New password:"), vgb_password);
-	pwd = new QLineEdit(vgb_password);
+	pwd = new QLineEdit();
 	pwd->setEchoMode(QLineEdit::Password);
+	password_layout->addWidget(new QLabel(tr("New password:")));
+	password_layout->addWidget(pwd);
 
-	new QLabel(tr("Retype new password:"), vgb_password);
-	pwd2 = new QLineEdit(vgb_password);
+	pwd2 = new QLineEdit();
 	pwd2->setEchoMode(QLineEdit::Password);
+	password_layout->addWidget(new QLabel(tr("Retype new password:")));
+	password_layout->addWidget(pwd2);
 	// end create needed fields
 
-	cb_updateconfig = new QCheckBox(center);
-	cb_updateconfig->setChecked(center);
+	cb_updateconfig = new QCheckBox;
+	cb_updateconfig->setChecked(true);
 	cb_updateconfig->setText(tr("Create config file"));
-	QToolTip::add(cb_updateconfig, tr("Write the newly obtained UIN and password into a clean configuration file\nThis will erase your current config file contents if you have one"));
+	cb_updateconfig->setToolTip(tr("Write the newly obtained UIN and password into a clean configuration file\nThis will erase your current config file contents if you have one"));
 
 	// buttons
-	QHBox *bottom = new QHBox(center);
-	QWidget *blank2 = new QWidget(bottom);
-	bottom->setSpacing(5);
+	QWidget *bottom = new QWidget;
+
+	QWidget *blank2 = new QWidget;
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
+
 	QPushButton *pb_register = new QPushButton(icons_manager->loadIcon("RegisterAccountButton"), tr("Register"), bottom, "register");
+	connect(pb_register, SIGNAL(clicked()), this, SLOT(doRegister()));
+
 	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
+
+	QHBoxLayout *bottom_layout = new QHBoxLayout;
+	bottom_layout->addWidget(blank2);
+	bottom_layout->addWidget(pb_register);
+	bottom_layout->addWidget(pb_close);
+
+	bottom->setLayout(bottom_layout);
+
 	// end buttons
 
-	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
-	connect(pb_register, SIGNAL(clicked()), this, SLOT(doRegister()));
+	QVBoxLayout *center_layout = new QVBoxLayout;
+	center_layout->addWidget(l_info);
+	center_layout->addWidget(vgb_email);
+	center_layout->addStretch(1);
+	center_layout->addWidget(vgb_password);
+	center_layout->addWidget(cb_updateconfig);
+	center_layout->addWidget(bottom);
+
+	center->setLayout(center_layout);
+
+	QHBoxLayout *layout = new QHBoxLayout;
+	layout->addWidget(left);
+	layout->addWidget(center);
+
+	setLayout(layout);
+
 	connect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registered(bool, UinType)));
 
 	layoutHelper->addLabel(l_info);
@@ -147,7 +185,7 @@ Register::~Register()
 {
 	kdebugf();
 
-	saveGeometry(this, "General", "RegisterDialogGeometry");
+//	saveGeometry(this, "General", "RegisterDialogGeometry");
 	delete layoutHelper;
 
 	kdebugf2();

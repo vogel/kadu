@@ -1,16 +1,15 @@
 #ifndef CHANGE_PASSWORD_H
 #define CHANGE_PASSWORD_H
 
-#include <qhbox.h>
-#include <qlineedit.h>
-#include <qevent.h>
+#include <QWidget>
 
 class LayoutHelper;
+class QLineEdit;
 class QResizeEvent;
 /** @ingroup account_management
  * @{
  */
-class ChangePassword : public QHBox 
+class ChangePassword : public QWidget 
 {
 	Q_OBJECT
 

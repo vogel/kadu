@@ -1,7 +1,9 @@
 #ifndef ACC_MAN_H
 #define ACC_MAN_H
 
-#include <qobject.h>
+#include <QObject>
+
+class QAction;
 /**
  * @defgroup account_management "Account management"
  * @{
@@ -11,10 +13,10 @@ class AccountManagement : public QObject
 	Q_OBJECT
 
 	private:
-		int remindMenuId;
-		int changeMenuId;
-		int registerMenuId;
-		int unregisterMenuId;
+		QAction *remindMenuAction;
+		QAction *changeMenuAction;
+		QAction *registerMenuAction;
+		QAction *unregisterMenuAction;
 	
 	public:
 		AccountManagement();

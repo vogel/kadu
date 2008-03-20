@@ -1,17 +1,16 @@
 #ifndef REMIND_PASSWORD_H
 #define REMIND_PASSWORD_H
 
-#include <qhbox.h>
-#include <qlineedit.h>
-#include <qevent.h>
+#include <QWidget>
 
 class LayoutHelper;
+class QLineEdit;
 class QResizeEvent;
 /**
  * @ingroup account_management
  * @}
  */
-class RemindPassword : public QHBox
+class RemindPassword : public QWidget
 {
 	Q_OBJECT
 

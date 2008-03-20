@@ -1,15 +1,13 @@
 #ifndef REGISTER_H
 #define REGISTER_H
 
-#include <qhbox.h>
-#include <qdialog.h>
-#include <qlineedit.h>
-#include <qlabel.h>
-#include <qcheckbox.h>
-#include <qevent.h>
+#include <QWidget>
+
 #include "gadu.h"
 
 class LayoutHelper;
+class QCheckBox;
+class QLineEdit;
 class QResizeEvent;
 
 /**
@@ -17,7 +15,7 @@ class QResizeEvent;
 	@ingroup account_management
 	@{
 **/
-class Register : public QHBox 
+class Register : public QWidget 
 {
 	Q_OBJECT
 
@@ -29,7 +27,6 @@ class Register : public QHBox
 		QLineEdit *pwd;
 		QLineEdit *pwd2;
 		QLineEdit *mailedit;
-		QLabel *status;
 		UinType uin;
 		QCheckBox *cb_updateconfig;
 		LayoutHelper *layoutHelper;

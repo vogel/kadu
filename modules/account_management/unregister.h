@@ -1,19 +1,15 @@
 #ifndef UNREGISTER_H
 #define UNREGISTER_H
 
-#include <qhbox.h>
-#include <qdialog.h>
-#include <qlineedit.h>
-#include <qlabel.h>
-#include <qcheckbox.h>
-#include <qevent.h>
+#include <QWidget>
 
 class LayoutHelper;
+class QLineEdit;
 class QResizeEvent;
 /** @ingroup account_management
  * @{
  */
-class Unregister : public QHBox 
+class Unregister : public QWidget 
 {
 	Q_OBJECT
 
@@ -24,8 +20,6 @@ class Unregister : public QHBox
 	private:
 		QLineEdit *uin;
 		QLineEdit *pwd;
-		QLabel *status;
-		QCheckBox *updateconfig;
 		LayoutHelper *layoutHelper;
 
 		void deleteConfig();

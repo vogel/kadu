@@ -7,11 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qpushbutton.h>
-#include <qvbox.h>
-#include <qvgroupbox.h>
+#include <QGroupBox>
+#include <QLayout>
+#include <QLineEdit>
+#include <QPushButton>
 
 #include "change_password.h"
 #include "debug.h"
@@ -24,65 +23,101 @@
 /** @ingroup account_management
  * @{
  */
-ChangePassword::ChangePassword(QDialog *parent, const char *name) : QHBox(parent, name, WDestructiveClose),
+ChangePassword::ChangePassword(QDialog *parent, const char *name) : QWidget(parent, name, Qt::Window),
 	emailedit(0), newpwd(0), newpwd2(0), layoutHelper(new LayoutHelper())
 {
 	kdebugf();
 
-	setCaption(tr("Change password / email"));
-	layout()->setResizeMode(QLayout::Minimum);
+	setWindowTitle(tr("Change password / email"));
+	setAttribute(Qt::WA_DeleteOnClose);
+
+//	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
-	QVBox *left = new QVBox(this);
-	left->setMargin(10);
-	left->setSpacing(10);
+	QWidget *left = new QWidget();
 
-	QLabel *l_icon = new QLabel(left);
-	QWidget *blank = new QWidget(left);
+	QLabel *l_icon = new QLabel;
+	l_icon->setPixmap(icons_manager->loadPixmap("ChangePasswordWindowIcon"));
+
+	QWidget *blank = new QWidget;
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	QVBox *center = new QVBox(this);
-	center->setMargin(10);
-	center->setSpacing(10);
+	QVBoxLayout *left_layout = new QVBoxLayout;
+	left_layout->addWidget(l_icon);
+	left_layout->addWidget(blank);
+	left->setLayout(left_layout);
 
-	QLabel *l_info = new QLabel(center);
-	l_icon->setPixmap(icons_manager->loadIcon("ChangePasswordWindowIcon"));
+	QWidget *center = new QWidget;
+
+	QLabel *l_info = new QLabel();
+
 	l_info->setText(tr("This dialog box allows you to change your current password or e-mail."));
 	l_info->setAlignment(Qt::WordBreak);
+	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
+
 	// end create main QLabel widgets (icon and app info)
 
-	//our QVGroupBox
-	QVGroupBox *vgb_email = new QVGroupBox(center);
-	vgb_email->setTitle(tr("Email"));
-	QVGroupBox *vgb_password = new QVGroupBox(center);
-	vgb_password->setTitle(tr("Password"));
-	center->setStretchFactor(vgb_password, 1);
+	//our QGroupBox
+	QGroupBox *vgb_email = new QGroupBox(tr("Email"));
+	QVBoxLayout *email_layout = new QVBoxLayout;
+	vgb_email->setLayout(email_layout);
+
+	QGroupBox *vgb_password = new QGroupBox(tr("Password"));
+	QVBoxLayout *password_layout = new QVBoxLayout;
+	vgb_password->setLayout(password_layout);
 	//end our QGroupBox
 
 	// create needed fields
-	new QLabel(tr("New email:"), vgb_email);
-	emailedit = new QLineEdit(vgb_email);
+	emailedit = new QLineEdit();
+	email_layout->addWidget(new QLabel(tr("New email:")));
+	email_layout->addWidget(emailedit);
 
-	new QLabel(tr("New password:"), vgb_password);
-	newpwd = new QLineEdit(vgb_password);
+	newpwd = new QLineEdit();
 	newpwd->setEchoMode(QLineEdit::Password);
+	password_layout->addWidget(new QLabel(tr("New password:")));
+	password_layout->addWidget(newpwd);
 
-	new QLabel(tr("Retype new password:"), vgb_password);
-	newpwd2 = new QLineEdit(vgb_password);
+	newpwd2 = new QLineEdit();
 	newpwd2->setEchoMode(QLineEdit::Password);
+	password_layout->addWidget(new QLabel(tr("Retype new password:")));
+	password_layout->addWidget(newpwd2);
+
 	// end create needed fields
 
 	// buttons
-	QHBox *bottom = new QHBox(center);
-	QWidget *blank2 = new QWidget(bottom);
-	bottom->setSpacing(5);
-	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
-	QPushButton *pb_ok = new QPushButton(icons_manager->loadIcon("ChangePasswordEmailButton"), tr("OK"), bottom, "ok");
-	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
-	// end buttons
+	QWidget *bottom = new QWidget;
 
-	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
+	QWidget *blank2 = new QWidget;
+	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
+
+	QPushButton *pb_ok = new QPushButton(icons_manager->loadIcon("ChangePasswordEmailButton"), tr("OK"), bottom, "ok");
 	connect(pb_ok, SIGNAL(clicked()), this, SLOT(start()));
+
+	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
+
+	QHBoxLayout *bottom_layout = new QHBoxLayout;
+	bottom_layout->addWidget(blank2);
+	bottom_layout->addWidget(pb_ok);
+	bottom_layout->addWidget(pb_close);
+
+	bottom->setLayout(bottom_layout);
+
+	// end buttons
+	QVBoxLayout *center_layout = new QVBoxLayout;
+	center_layout->addWidget(l_info);
+	center_layout->addWidget(vgb_email);
+	center_layout->addStretch(1);
+	center_layout->addWidget(vgb_password);
+	center_layout->addWidget(bottom);
+
+	center->setLayout(center_layout);
+
+	QHBoxLayout *layout = new QHBoxLayout;
+	layout->addWidget(left);
+	layout->addWidget(center);
+
+	setLayout(layout);
 
 	layoutHelper->addLabel(l_info);
 	loadGeometry(this, "General", "ChangePasswordDialogGeometry", 0, 30, 355, 350);
@@ -100,7 +135,7 @@ ChangePassword::~ChangePassword()
 {
 	kdebugf();
 
-	saveGeometry(this, "General", "ChangePasswordDialogGeometry");
+//	saveGeometry(this, "General", "ChangePasswordDialogGeometry");
 	delete layoutHelper;
 
 	kdebugf2();

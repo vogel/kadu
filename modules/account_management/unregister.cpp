@@ -7,12 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qapplication.h>
-#include <qfile.h>
-#include <qlayout.h>
-#include <qpushbutton.h>
-#include <qvbox.h>
-#include <qvgroupbox.h>
+#include <QApplication>
+#include <QGroupBox>
+#include <QLayout>
+#include <QLineEdit>
+#include <QPushButton>
 
 #include "config_file.h"
 #include "debug.h"
@@ -26,61 +25,96 @@
  * @ingroup account_management
  * @{
  */
-Unregister::Unregister(QDialog *parent, const char *name) : QHBox(parent, name, WDestructiveClose),
-	uin(0), pwd(0), status(0), updateconfig(0), layoutHelper(new LayoutHelper())
+Unregister::Unregister(QDialog *parent, const char *name) : QWidget(parent, name, Qt::Window),
+	uin(0), pwd(0), layoutHelper(new LayoutHelper())
 {
 	kdebugf();
 
-	setCaption(tr("Unregister user"));
-	layout()->setResizeMode(QLayout::Minimum);
+	setWindowTitle(tr("Unregister user"));
+	setAttribute(Qt::WA_DeleteOnClose);
+
+//	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
-	QVBox *left = new QVBox(this);
-	left->setMargin(10);
-	left->setSpacing(10);
+	QWidget *left = new QWidget();
 
-	QLabel *l_icon = new QLabel(left);
-	QWidget *blank = new QWidget(left);
+	QLabel *l_icon = new QLabel;
+	l_icon->setPixmap(icons_manager->loadPixmap("UnregisterWindowIcon"));
+
+	QWidget *blank = new QWidget;
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	QVBox *center = new QVBox(this);
-	center->setMargin(10);
-	center->setSpacing(10);
+	QVBoxLayout *left_layout = new QVBoxLayout;
+	left_layout->addWidget(l_icon);
+	left_layout->addWidget(blank);
+	left->setLayout(left_layout);
 
-	QLabel *l_info = new QLabel(center);
-	l_icon->setPixmap(icons_manager->loadIcon("UnregisterWindowIcon"));
+	QWidget *center = new QWidget;
+
+	QLabel *l_info = new QLabel();
+//TODO:fix this
 	l_info->setText(tr("This dialog box allows you to unregister your account. Be aware of using this "
 				"option. <font color=\"red\"><b>It will permanently delete your UIN and you will not be able to use "
 				"it later!</b></font>"));
 	l_info->setAlignment(Qt::WordBreak);
+	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 	// end create main QLabel widgets (icon and app info)
 
-	//our QVGroupBox
-	QVGroupBox *vgb_uinpass = new QVGroupBox(center);
-	vgb_uinpass->setTitle(tr("UIN and password"));
-	center->setStretchFactor(vgb_uinpass, 1);
+	//our QGroupBox
+	QGroupBox *vgb_uinpass = new QGroupBox(tr("UIN and password"));
+	QVBoxLayout *uinpass_layout = new QVBoxLayout;
+	vgb_uinpass->setLayout(uinpass_layout);
+
 	//end our QGroupBox
 
 	// create needed fields
-	new QLabel(tr("UIN:"), vgb_uinpass);
-	uin = new QLineEdit(vgb_uinpass);
+	uin = new QLineEdit();
+	uinpass_layout->addWidget(new QLabel(tr("UIN:")));
+	uinpass_layout->addWidget(uin);
 
-	new QLabel(tr("Password:"), vgb_uinpass);
-	pwd = new QLineEdit(vgb_uinpass);
+	pwd = new QLineEdit();
 	pwd->setEchoMode(QLineEdit::Password);
+	uinpass_layout->addWidget(new QLabel(tr("Password:")));
+	uinpass_layout->addWidget(pwd);
 	// end create needed fields
 
 	// buttons
-	QHBox *bottom = new QHBox(center);
-	QWidget *blank2 = new QWidget(bottom);
-	bottom->setSpacing(5);
+	QWidget *bottom = new QWidget;
+
+	QWidget *blank2 = new QWidget;
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
+
 	QPushButton *pb_unregister = new QPushButton(icons_manager->loadIcon("UnregisterAccountButton"), tr("Unregister"), bottom, "unregister");
+	connect(pb_unregister, SIGNAL(clicked()), this, SLOT(doUnregister()));
+
 	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
+
+	QHBoxLayout *bottom_layout = new QHBoxLayout;
+	bottom_layout->addWidget(blank2);
+	bottom_layout->addWidget(pb_unregister);
+	bottom_layout->addWidget(pb_close);
+
+	bottom->setLayout(bottom_layout);
+
 	// end buttons
 
-	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
-	connect(pb_unregister, SIGNAL(clicked()), this, SLOT(doUnregister()));
+	QVBoxLayout *center_layout = new QVBoxLayout;
+	center_layout->addWidget(l_info);
+	center_layout->addWidget(vgb_uinpass);
+	center_layout->addStretch(1);
+	center_layout->addWidget(bottom);
+
+	center->setLayout(center_layout);
+
+	QHBoxLayout *layout = new QHBoxLayout;
+	layout->addWidget(left);
+	layout->addWidget(center);
+
+	setLayout(layout);
+
+
+
 	connect(gadu, SIGNAL(unregistered(bool)), this, SLOT(unregistered(bool)));
 
 	layoutHelper->addLabel(l_info);
@@ -94,7 +128,7 @@ Unregister::~Unregister()
 {
 	kdebugf();
 
-	saveGeometry(this, "General", "UnregisterDialogGeometry");
+//	saveGeometry(this, "General", "UnregisterDialogGeometry");
 	delete layoutHelper;
 
 	kdebugf2();
@@ -148,10 +182,9 @@ void Unregister::deleteConfig()
 {
 	kdebugf();
 
-	QFile::remove(ggPath("kadu.conf"));
 	config_file.writeEntry("General", "UIN", 0);
 
-	qApp->mainWidget()->setCaption(tr("No user"));
+	qApp->mainWidget()->setWindowTitle(tr("No user"));
 
 	kdebugf2();
 }
