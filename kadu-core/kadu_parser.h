@@ -1,10 +1,8 @@
 #ifndef KADU_PARSER_H
 #define KADU_PARSER_H
 
-#include <qglobal.h>
-
-#include <qmap.h>
-#include <qstring.h>
+#include <QMap>
+#include <QString>
 
 class QObject;
 class UserListElement;

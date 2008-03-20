@@ -312,7 +312,7 @@ Kadu::Kadu(QWidget *parent) : QMainWindow(parent),
 
 	editUserActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "editUserAction",
-		this, SLOT(editUserActionAddedToToolbar(QWidget *, bool)),
+		this, SLOT(editUserActionActivated(QWidget *, bool)),
 		"EditUserInfo", tr("Contact data")
 	);
 
@@ -344,6 +344,13 @@ Kadu::Kadu(QWidget *parent) : QMainWindow(parent),
 		"openSearchAction", Action::TypeGlobal);
 	connect(open_search_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(searchInDirectory()));*/
+
+/*	TODO: port this.
+	Action* open_status_action = new Action("Offline", tr("Change status"), "openStatusAction", Action::TypeGlobal);
+	connect(open_status_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
+		this, SLOT(showStatusActionActivated()));
+	connect(open_status_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
+		this, SLOT(showStatusActionAddedToToolbar(ToolButton*)));*/
 
 	ToolBar::addDefaultAction("Kadu toolbar", "inactiveUsersAction");
 	ToolBar::addDefaultAction("Kadu toolbar", "descriptionUsersAction");
@@ -862,6 +869,16 @@ void Kadu::openChat()
 	kdebugf2();
 }
 
+//void Kadu::showStatusActionActivated()
+//{
+//	showPopupMenu(statusMenu);
+//}
+//
+//void Kadu::showStatusActionAddedToToolbar(ToolButton* button)
+//{
+//	button->setPixmap(gadu->currentStatus().pixmap());
+//}
+
 void Kadu::searchInDirectoryActionActivated(QWidget *parent, bool toggled)
 {
 	(new SearchDialog(kadu, "search_user"))->show();
@@ -1062,6 +1079,7 @@ void Kadu::changeAppearance()
 	QPixmap pix = stat.pixmap();
 	QIcon icon(pix);
 	statusButton->setIcon(icon);
+//	KaduActions["openStatusAction"]->setPixmaps(pix);
 	setMainWindowIcon(pix);
 	emit statusPixmapChanged(icon, stat.toString());
 	kdebugf2();
@@ -1070,12 +1088,23 @@ void Kadu::changeAppearance()
 void Kadu::removeUsers(UserListElements users)
 {
 	kdebugf();
-	if (users.count() && MessageBox::ask(tr("Selected users:\n%0\nwill be deleted. Are you sure?").arg(users.altNicks().join(", ")), "Warning", kadu))
+	
+	if (users.count())
 	{
-		emit removingUsers(users);
-		userlist->removeUsers(users);
-		userlist->writeToConfig();
+		QString altNicks = users.altNicks().join(", ");
+		QString tmp;
+
+		for (unsigned int i = 0; i < users.count(); i+=10)
+			tmp += (altNicks.section(", ", i, (i + 9)) + ",\n");
+
+		if (MessageBox::ask(tr("Selected users:\n%0will be deleted. Are you sure?").arg(tmp), "Warning", kadu))
+		{
+			emit removingUsers(users);
+			userlist->removeUsers(users);
+			userlist->writeToConfig();
+		}
 	}
+
 	kdebugf2();
 }
 
@@ -1982,7 +2011,7 @@ void Kadu::showStatusOnMenu(int statusNr)
 
 	statusButton->setIcon(icon);
 	setMainWindowIcon(pix);
-
+//	KaduActions["openStatusAction"]->setPixmaps(pix);
 	emit statusPixmapChanged(icon, iconName);
 }
 

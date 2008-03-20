@@ -184,8 +184,7 @@
     <message>
         <location filename="../history_module.cpp" line="354"/>
         <source>The following users were deleted:
-%0
-Do you want to remove history as well?</source>
+%0Do you want to remove history as well?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

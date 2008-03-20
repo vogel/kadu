@@ -4930,7 +4930,7 @@ fi
 ########
 QT_LIBS_PATHS="    $QTDIR/lib     /usr/lib/qt4/lib     /usr/lib/qt/lib     /usr/local/qt/lib     /usr/local/lib     /usr/lib      /usr/lib/qt     /usr/lib/qt4     /usr/share/qt4/lib     /usr/X11R6/lib     /sw/lib        /usr/lib/qt4     /usr/X11R6/lib/qt     /usr/X11R6/lib/qt4     /usr/lib/qt4/lib64  $QTDIR/lib64"
 QT_INCLUDES_PATHS="$QTDIR/include /usr/lib/qt4/include /usr/lib/qt/include /usr/local/qt/include /usr/local/include /usr/include  /usr/include/qt /usr/include/qt4 /usr/share/qt4/include /usr/X11R6/include /sw/include/qt /usr/include/qt4 /usr/X11R6/include/qt /usr/X11R6/include/qt4"
-QT_TOOLS_PATHS="   $QTDIR/bin     /usr/lib/qt4/bin     /usr/lib/qt/bin     /usr/local/qt/bin     /usr/local/bin     /usr/bin      /bin            /usr/share/qt4/bin     /usr/X11R6/bin"
+QT_TOOLS_PATHS="   $QTDIR/bin     /usr/share/qt4/bin	/usr/lib/qt4/bin     /usr/lib/qt/bin     /usr/local/qt/bin     /usr/local/bin     /usr/bin      /bin            /usr/X11R6/bin"
 PNG_LIBS_PATHS="   /usr/lib64     /usr/lib             /usr/local/lib      /sw/lib"
 Z_LIBS_PATHS="     /usr/lib64     /usr/lib             /usr/local/lib      /sw/lib"
 

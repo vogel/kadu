@@ -1453,8 +1453,7 @@ Too many attempts with bad password</source>
     </message>
     <message>
         <source>Selected users:
-%0
-will be deleted. Are you sure?</source>
+%0will be deleted. Are you sure?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

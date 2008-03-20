@@ -1827,11 +1827,9 @@ Zbyt wiele prób połączeń z niepoprawnym hasłem</translation>
     <message>
         <location filename="" line="0"/>
         <source>Selected users:
-%0
-will be deleted. Are you sure?</source>
+%0will be deleted. Are you sure?</source>
         <translation>Wybrane kontakty:
-%0
-zostaną usunięte.
+%0zostaną usunięte.
 Czy na pewno tego chcesz?</translation>
     </message>
     <message>

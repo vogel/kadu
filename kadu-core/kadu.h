@@ -33,6 +33,7 @@ class QPushButton;
 class UserStatusChanger;
 class SplitStatusChanger;
 class MainConfigurationWindow;
+//class ToolButton;
 
 /**
 	G³ówne okno Kadu
@@ -274,6 +275,8 @@ class Kadu : public QMainWindow, ConfigurationAwareObject, public ActionWindow
 		void selectedUsersNeeded(const UserGroup*& users);
 		void editUserActionAddedToToolbar(const UserGroup* users);
 		void editUserActionSetParams(QString protocolName, UserListElement users);
+//		void showStatusActionActivated();
+//		void showStatusActionAddedToToolbar(ToolButton* button);
 
 	signals:
 		void keyPressed(QKeyEvent* e);

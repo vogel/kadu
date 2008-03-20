@@ -94,6 +94,8 @@ public:
 class ActionWindow
 {
 public:
+	ActionWindow() {};
+	virtual ~ActionWindow() {};
 	virtual bool supportsActionType(ActionDescription::ActionType type) = 0;
 	virtual UserBox * getUserBox() = 0;
 
@@ -153,7 +155,7 @@ private:
 //  	bool isChecked(const UserListElements &users);
 //  	void setChecked(const UserListElements &users, bool on);
 // 	void setAllChecked(bool on);
-
+//	void setPixmaps(const QPixmap& pixmap);
 // 	void setPixmaps(const UserListElements& users, const QPixmap& pixmap);
 // 	void setIcons(const UserListElements& users, const QIcon& icon);
 // 	void refreshIcons();

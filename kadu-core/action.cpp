@@ -300,6 +300,14 @@ void Action::setAllChecked(bool on)
 // 	kdebugf2();
 // }
 // 
+//void Action::setPixmaps(const QPixmap& pixmap)
+//{
+//	kdebugf();
+//	FOREACH(button, ToolButtons)
+//		if ((*button)->actionName() == name())
+//			(*button)->setPixmap(pixmap);
+//	kdebugf2();
+//}
 // void Action::setIcons(const UserListElements& users, const QIcon& icon)
 // {
 // 	kdebugf();
