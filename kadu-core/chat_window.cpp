@@ -223,3 +223,7 @@ void ChatWindow::alertNewMessage()
 		currentChatWidget->markAllMessagesRead();
 }
 
+void ChatWindow::closeChatWidget(ChatWidget *chatWidget)
+{
+	close();
+}

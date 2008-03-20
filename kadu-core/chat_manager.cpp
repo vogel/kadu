@@ -342,7 +342,11 @@ void ChatManager::ignoreUserActionActivated(const UserGroup* users)
 				IgnoredManager::insert(u);
 				ChatWidget *chat = findChatWidget(u);
 				if (chat)
-					static_cast<QWidget *>(chat->parent())->close();
+				{
+					ChatContainer * container = dynamic_cast<ChatContainer *>(chat->topLevelWidget());
+					if (container)
+						container->closeChatWidget(chat);
+				}
 			}
 			kadu->userbox()->refresh();
 			IgnoredManager::writeToConfiguration();
@@ -386,7 +390,11 @@ void ChatManager::blockUserActionActivated(const UserGroup *users)
 
 			ChatWidget *chat = findChatWidget(users->toUserListElements());
 			if (chat)
-				static_cast<QWidget *>(chat->parent())->close();
+			{
+				ChatContainer * container = dynamic_cast<ChatContainer *>(chat->topLevelWidget());
+				if (container)
+					container->closeChatWidget(chat);
+			}
 		}
 
 		userlist->writeToConfig();

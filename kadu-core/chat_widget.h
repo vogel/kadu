@@ -331,7 +331,7 @@ public slots:
 
 signals:
 	/**
-		\fn void messageSendRequested(Chat* chat)
+		\fn void messageSendRequested(ChatWidget* chat)
 		Sygnal jest emitowany gdy uzytkownik wyda polecenie
 		wyslania wiadomosci, np klikajac na guzik "wyslij".
 		\param chat wska¼nik do okna które emituje sygna³
@@ -339,7 +339,7 @@ signals:
 	void messageSendRequested(ChatWidget* chat);
 
 	/**
-		\fn void messageSent(Chat* chat)
+		\fn void messageSent(ChatWidget* chat)
 		Sygnal jest emitowany gdy zakonczy sie proces
 		wysylania wiadomosci i zwiazanych z tym czynnosci.
 		Oczywiscie nie wiemy czy wiadomosc dotarla.
@@ -376,6 +376,29 @@ signals:
 
 	void keyPressed(QKeyEvent *e, ChatWidget *sender, bool &handled);
 
+};
+
+/**
+	@class ChatContainer
+	@brief Klasa abstrakcyjna opisuj±ca rodzica klasy ChatWidget.
+
+	Klasa abstrakcyjna z której powinny dziedziczyæ klasy bêd±ce rodzicami obiektów 
+	klasy ChatWidget.
+	
+	Informuje który chat powinien zostaæ zamkniêty w przypadku np. ignorowania kontaktu 
+	z którym prowadzona jest rozmowa
+**/
+
+class ChatContainer
+{
+	public:
+		ChatContainer() {};
+		virtual ~ChatContainer() {};
+
+		/**
+			Metoda informuj±ca, który chat powinien zostaæ zamkniêty
+		 **/
+		virtual void closeChatWidget(ChatWidget *chat) = 0;
 };
 
 #endif

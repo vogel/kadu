@@ -7,7 +7,7 @@
 #include "chat_widget.h"
 #include "configuration_aware_object.h"
 
-class ChatWindow : public QMainWindow, ConfigurationAwareObject
+class ChatWindow : public QMainWindow, public ChatContainer, ConfigurationAwareObject 
 {
 	Q_OBJECT
 
@@ -46,6 +46,8 @@ public:
 
 	void setChatWidget(ChatWidget *chatWidget);
 	ChatWidget* chatWidget();
+
+	void closeChatWidget(ChatWidget *chatWidget);
 
 public slots:
 	// TODO: rename
