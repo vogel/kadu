@@ -52,7 +52,7 @@ RemindPassword::RemindPassword(QDialog *parent, const char *name) : QWidget(pare
 	QLabel *l_info = new QLabel();
 
 	l_info->setText(tr("This dialog box allows you to ask server to remind your current password."));
-	l_info->setAlignment(Qt::WordBreak);
+	l_info->setAlignment(Qt::TextWordWrap);
 	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 
 	// end create main QLabel widgets (icon and app info)

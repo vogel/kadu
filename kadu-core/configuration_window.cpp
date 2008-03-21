@@ -158,6 +158,7 @@ ConfigSection::ConfigSection(const QString &name, ConfigurationWindow *configura
 	: name(name), configurationWindow(configurationWindow), pixmap(pixmap), listWidgetItem(listWidgetItem), activated(false)
 {
 	mainWidget = new QTabWidget(parentConfigGroupBoxWidget);
+	parentConfigGroupBoxWidget->layout()->addWidget(mainWidget);
 	mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	mainWidget->hide();
 
@@ -225,21 +226,21 @@ void ConfigSection::iconThemeChanged()
 	bool current = listWidgetItem->isSelected();
 	delete listWidgetItem;
 
-	listWidgetItem = new QListWidgetItem(name, listWidget);
-	listWidgetItem->setIcon(icons_manager->loadPixmap(pixmap));
+	listWidgetItem = new QListWidgetItem(icons_manager->loadPixmap(pixmap), name, listWidget);
 	if (current)
 		listWidget->setCurrentItem(listWidgetItem);
 }
 
 ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &caption)
-	: Name(name), currentSection(0)
+	: QDialog(0, "configuration_window:" + name), Name(name), currentSection(0)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
-	setCaption(caption);
-	QHBoxLayout *main_layout = new QHBoxLayout;
+	setWindowTitle(caption);
 
-	QWidget *center = new QWidget(this);
-	QVBoxLayout *center_layout = new QVBoxLayout;
+	QVBoxLayout *main_layout = new QVBoxLayout;
+
+	QWidget *center = new QWidget();
+	QHBoxLayout *center_layout = new QHBoxLayout;
 	center_layout->setMargin(10);
 	center_layout->setSpacing(10);
 
@@ -249,6 +250,7 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 	QVBoxLayout *left_layout = new QVBoxLayout;
 
 	container = new QWidget;
+	QHBoxLayout *container_layout = new QHBoxLayout(container);
 	container->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
 	QWidget *buttons = new QWidget;
@@ -277,10 +279,10 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 	left_layout->addWidget(sectionsListWidget);
 	left->setLayout(left_layout);
 
-	main_layout->addWidget(left);
 	main_layout->addWidget(center);
+	main_layout->addWidget(buttons);
+	center_layout->addWidget(left);
 	center_layout->addWidget(container);
-	center_layout->addWidget(buttons);
 	center->setLayout(center_layout);
 	setLayout(main_layout);
 }
@@ -618,8 +620,8 @@ ConfigSection *ConfigurationWindow::configSection(const QString &pixmap, const Q
 	if (!create)
 		return 0;
 
-	QListWidgetItem *newConfigSectionListWidgetItem = new QListWidgetItem(name, sectionsListWidget);
-	newConfigSectionListWidgetItem->setIcon(icons_manager->loadPixmap(pixmap));
+	QListWidgetItem *newConfigSectionListWidgetItem = new QListWidgetItem(icons_manager->loadPixmap(pixmap), name, sectionsListWidget);
+
 	ConfigSection *newConfigSection = new ConfigSection(name, this, newConfigSectionListWidgetItem, container, pixmap);
 	configSections[name] = newConfigSection;
 

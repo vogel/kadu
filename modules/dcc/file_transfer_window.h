@@ -11,9 +11,6 @@
 #define FILE_TRANSFER_WINDOW
 
 #include <QFrame>
-#include <QVBoxLayout>
-#include <QKeyEvent>
-#include <QLabel>
 
 #include "file_transfer.h"
 

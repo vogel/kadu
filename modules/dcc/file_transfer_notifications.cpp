@@ -7,10 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qfiledialog.h>
-#include <qfileinfo.h>
-#include <qmessagebox.h>
-
 #include <fcntl.h>
 
 #include "debug.h"

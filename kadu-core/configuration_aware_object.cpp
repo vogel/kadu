@@ -9,7 +9,6 @@
 
 #include "misc.h"
 #include "configuration_aware_object.h"
-#include <QList>
 
 QList<ConfigurationAwareObject *> ConfigurationAwareObject::objects;
 

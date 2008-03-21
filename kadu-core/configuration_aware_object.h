@@ -1,7 +1,6 @@
 #ifndef CONFIGURATION_AWARE_OBJECT
 #define CONFIGURATION_AWARE_OBJECT
 
-#include <qglobal.h>
 #include <QList>
 
 class ConfigurationAwareObject

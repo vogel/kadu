@@ -21,12 +21,12 @@
 #include "dcc_socket.h"
 
 DccSocket::DccSocket(struct gg_dcc *dccStruct)
-	: Version(Dcc6), Dcc6Struct(dccStruct), Dcc7Struct(0), DccCheckField(dccStruct->check), DccEvent(0), ReadSocketNotifier(0), WriteSocketNotifier(0), ConnectionClosed(false), Timeout(0), Handler(0), destroying(false)
+	: Version(Dcc6), Dcc6Struct(dccStruct), Dcc7Struct(0), DccCheckField(dccStruct->check), DccEvent(0), destroying(false), ReadSocketNotifier(0), WriteSocketNotifier(0), ConnectionClosed(false),  Timeout(0), Handler(0) 
 {
 }
 
 DccSocket::DccSocket(struct gg_dcc7 *dccStruct)
-	: Version(Dcc7), Dcc6Struct(0), Dcc7Struct(dccStruct), DccCheckField(dccStruct->check), DccEvent(0), ReadSocketNotifier(0), WriteSocketNotifier(0), ConnectionClosed(false), Timeout(0), Handler(0), destroying(false)
+	: Version(Dcc7), Dcc6Struct(0), Dcc7Struct(dccStruct), DccCheckField(dccStruct->check), DccEvent(0), destroying(false), ReadSocketNotifier(0), WriteSocketNotifier(0), ConnectionClosed(false), Timeout(0), Handler(0)
 {
 }
 

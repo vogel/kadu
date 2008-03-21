@@ -7,15 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qprogressbar.h>
-#include <qpushbutton.h>
-#include <QScrollArea>
-#include <QGridLayout>
-#include <QFrame>
-#include <QKeyEvent>
-#include <QVBoxLayout>
+#include <QProgressBar>
 #include <QUrl>
 
 #include "debug.h"
@@ -96,12 +88,12 @@ FileTransferWidget::FileTransferWidget(QWidget *parent, FileTransfer *ft)
 
 	if (ft->type() == FileTransfer::TypeSend)
 	{
-		icon->setPixmap(icons_manager->loadIcon("FileTransferSend").pixmap());
+		icon->setPixmap(icons_manager->loadPixmap("FileTransferSend"));
 		description->setText(tr("<b>File</b> %1 <b>to</b> %2").arg(url.fileName()).arg(ule.altNick()));
 	}
 	else
 	{
-		icon->setPixmap(icons_manager->loadIcon("FileTransferReceive").pixmap());
+		icon->setPixmap(icons_manager->loadPixmap("FileTransferReceive"));
 		description->setText(tr("<b>File</b> %1 <b>from</b> %2").arg(url.fileName()).arg(ule.altNick()));
 	}
 
@@ -225,9 +217,9 @@ FileTransferWindow::FileTransferWindow(QWidget *parent, const char *name)
 
 	setMinimumSize(QSize(100, 100));
 
-	setWindowFlags(Qt::WDestructiveClose);
+	setWindowTitle(tr("Kadu - file transfers"));
 
-	setCaption(tr("Kadu - file transfers"));
+	setAttribute(Qt::WA_DeleteOnClose);
 
 	QGridLayout *mainGrid = new QGridLayout(this, 1, 1);
 	mainGrid->setSpacing(2);
