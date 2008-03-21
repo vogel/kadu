@@ -7,18 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qlineedit.h>
-#include <q3listbox.h>
-#include <qpushbutton.h>
-#include <q3simplerichtext.h>
-#include <q3vbox.h>
-#include <q3vgroupbox.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QList>
-#include <QKeyEvent>
+#include <QLayout>
+#include <QLineEdit>
+#include <QListWidget>
+#include <QPushButton>
+#include <QGroupBox>
 
 #include "config_file.h"
 #include "debug.h"
@@ -28,69 +21,107 @@
 #include "misc.h"
 #include "userlist.h"
 
-Ignored::Ignored(QWidget *parent, const char *name) : Q3HBox(parent, name, Qt::WType_TopLevel | Qt::WDestructiveClose),
+Ignored::Ignored(QWidget *parent, const char *name) : QWidget(parent, name, Qt::Window),
 	lb_list(0), e_uin(0), layoutHelper(new LayoutHelper())
 {
 	kdebugf();
-	setCaption(tr("Manage ignored users"));
-	layout()->setResizeMode(QLayout::Minimum);
+	setWindowTitle(tr("Manage ignored users"));
+	setAttribute(Qt::WA_DeleteOnClose);
+
+	//layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
-	Q3VBox *left = new Q3VBox(this);
-	//left->layout()->setResizeMode(QLayout::Minimum);
-	left->setMargin(10);
-	left->setSpacing(10);
+	QWidget *left = new QWidget();
 
-	QLabel *l_icon = new QLabel(left);
-	QWidget *blank = new QWidget(left);
+	QLabel *l_icon = new QLabel;
+	l_icon->setPixmap(icons_manager->loadPixmap("ManageIgnoredWindowIcon"));
+
+	QWidget *blank = new QWidget;
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	Q3VBox *center = new Q3VBox(this);
-	center->setMargin(10);
-	center->setSpacing(10);
+	QVBoxLayout *left_layout = new QVBoxLayout;
+	left_layout->addWidget(l_icon);
+	left_layout->addWidget(blank);
+	left->setLayout(left_layout);
 
-	QLabel *l_info = new QLabel(center);
-	l_icon->setPixmap(icons_manager->loadPixmap("ManageIgnoredWindowIcon"));
+	QWidget *center = new QWidget;
+
+	QLabel *l_info = new QLabel();
 	l_info->setText(tr("This dialog box allows you to manage your ignored contacts."));
-	l_info->setAlignment(Qt::WordBreak);
+	l_info->setAlignment(Qt::TextWordWrap);
+	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
+
 	// end create main QLabel widgets (icon and app info)
 
 	// our QListBox
-	lb_list = new Q3ListBox(center);
+	lb_list = new QListWidget();
 	getList();
 	// end our QListBox
 
 	//our QVGroupBox
-	Q3VGroupBox *vgb_uin = new Q3VGroupBox(center);
-	vgb_uin->setTitle(tr("Uin"));
+	QGroupBox *vgb_uin = new QGroupBox(tr("Uin"));
+	QVBoxLayout *uin_layout = new QVBoxLayout;
+	vgb_uin->setLayout(uin_layout);
+
 	//end our QGroupBox
 
-	QLabel *l_uin = new QLabel(tr("Type here the UIN of the person you want to ignore."), vgb_uin);
-	l_uin->setAlignment(Qt::WordBreak);
+	QLabel *l_uin = new QLabel(tr("Type here the UIN of the person you want to ignore."));
+	l_uin->setAlignment(Qt::TextWordWrap);
 
-	Q3HBox *hb_uin = new Q3HBox(vgb_uin);
-	hb_uin->setMargin(5);
-	hb_uin->setSpacing(3);
+	QWidget *hb_uin = new QWidget;
 
-	QLabel *l_uinlabel = new QLabel(tr("Uin:"), hb_uin);
-	// that's only for disabling compiler warning? ;)
-	l_uinlabel->setAlignment(Qt::WordBreak);
-	e_uin = new QLineEdit(hb_uin);
-	hb_uin->setStretchFactor(e_uin, 1);
+	QLabel *l_uinlabel = new QLabel(tr("Uin:"));
+	e_uin = new QLineEdit();
+
+	QHBoxLayout* hb_uin_layout = new QHBoxLayout;
+	hb_uin_layout->setSpacing(3);
+	hb_uin_layout->setMargin(5);
+	hb_uin_layout->addWidget(l_uinlabel);
+	hb_uin_layout->addWidget(e_uin);
+	hb_uin_layout->setStretchFactor(e_uin, 1);
+
+	hb_uin->setLayout(hb_uin_layout);
+
+	uin_layout->addWidget(l_uin);
+	uin_layout->addWidget(hb_uin);
 
 	// buttons
-	Q3HBox *bottom = new Q3HBox(center);
-	QWidget *blank2 = new QWidget(bottom);
-	bottom->setSpacing(5);
-	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
-	QPushButton *pb_del = new QPushButton(icons_manager->loadIcon("DeleteIgnoredButton"), tr("Delete"), bottom);
-	QPushButton *pb_add = new QPushButton(icons_manager->loadIcon("AddIgnoredButton"), tr("Add"), bottom);
-	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
-	// end buttons
+	QWidget *bottom = new QWidget;
 
-	connect(pb_add, SIGNAL(clicked()), this, SLOT(add()));
+	QWidget *blank2 = new QWidget;
+	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
+
+	QPushButton *pb_del = new QPushButton(icons_manager->loadIcon("DeleteIgnoredButton"), tr("Delete"), bottom);
 	connect(pb_del, SIGNAL(clicked()), this, SLOT(remove()));
+
+	QPushButton *pb_add = new QPushButton(icons_manager->loadIcon("AddIgnoredButton"), tr("Add"), bottom);
+	connect(pb_add, SIGNAL(clicked()), this, SLOT(add()));
+
+	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
+
+	QHBoxLayout *bottom_layout = new QHBoxLayout;
+	bottom_layout->addWidget(blank2);
+	bottom_layout->addWidget(pb_del);
+	bottom_layout->addWidget(pb_add);
+	bottom_layout->addWidget(pb_close);
+
+	bottom->setLayout(bottom_layout);
+
+	// end buttons
+	QVBoxLayout *center_layout = new QVBoxLayout;
+	center_layout->addWidget(l_info);
+	center_layout->addWidget(lb_list);
+	center_layout->addWidget(vgb_uin);
+	center_layout->addWidget(bottom);
+
+	center->setLayout(center_layout);
+
+	QHBoxLayout *layout = new QHBoxLayout;
+	layout->addWidget(left);
+	layout->addWidget(center);
+
+	setLayout(layout);
 
 	layoutHelper->addLabel(l_info);
 	layoutHelper->addLabel(l_uin);
@@ -151,7 +182,7 @@ void Ignored::getList()
 			else
 				strlist.append(QString("%1").arg((*user).ID("Gadu")));
 		}
-		lb_list->insertItem(icons_manager->loadPixmap("Blocking"), strlist.join(";"));
+		lb_list->addItem(new QListWidgetItem(icons_manager->loadPixmap("Blocking"), strlist.join(";")));
 	}
 	kdebugf2();
 }
@@ -159,9 +190,9 @@ void Ignored::getList()
 void Ignored::remove()
 {
 	kdebugf();
-	if (lb_list->currentItem() == -1)
+	if (!lb_list->currentItem())
 		return;
-	QStringList strlist = QStringList::split(";", lb_list->currentText());
+	QStringList strlist = QStringList::split(";", lb_list->currentItem()->text());
 	UserListElements users;
 	CONST_FOREACH(str, strlist)
 		users.append(userlist->byID("Gadu", (*str).section(' ', 0, 0)));

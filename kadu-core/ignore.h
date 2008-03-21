@@ -1,33 +1,22 @@
 #ifndef IGNORE_H
 #define IGNORE_H
 
-#include <qglobal.h>
-
-#include <q3hbox.h>
-#include <q3valuelist.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QKeyEvent>
-#include <QLabel>
+#include <QWidget>
 
 #include "usergroup.h"
 
 class LayoutHelper;
-class QLabel;
 class QLineEdit;
-class Q3ListBox;
-class QWidget;
-class QResizeEvent;
-class Q3SimpleRichText;
+class QListWidget;
 
 /**
 	Dialog umo¿liwiaj±cy zarz±dzanie list± ignorowanych
 **/
-class Ignored : public Q3HBox
+class Ignored : public QWidget
 {
 	Q_OBJECT
 
-	Q3ListBox *lb_list;
+	QListWidget *lb_list;
 	QLineEdit *e_uin;
 	LayoutHelper *layoutHelper;
 
