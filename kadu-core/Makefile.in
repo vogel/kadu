@@ -218,7 +218,6 @@ config_file.cpp \
 custom_input.cpp \
 debug.cpp \
 dnshandler.cpp \
-dockarea.cpp \
 drag_simple.cpp \
 emoticons.cpp \
 expimp.cpp \
@@ -285,7 +284,6 @@ config_file.h \
 custom_input.h \
 debug.h \
 dnshandler.h \
-dockarea.h \
 drag_simple.h \
 emoticons.h \
 expimp.h \
@@ -345,7 +343,6 @@ moc/configuration_window_moc.cpp \
 moc/configuration_window_widgets_moc.cpp \
 moc/custom_input_moc.cpp \
 moc/dnshandler_moc.cpp \
-moc/dockarea_moc.cpp \
 moc/emoticons_moc.cpp \
 moc/expimp_moc.cpp \
 moc/gadu_moc.cpp \
@@ -405,7 +402,6 @@ obj/configuration_window_widgets.$(OBJEXT) \
 obj/custom_input.$(OBJEXT) \
 obj/debug.$(OBJEXT) \
 obj/dnshandler.$(OBJEXT) \
-obj/dockarea.$(OBJEXT) \
 obj/drag_simple.$(OBJEXT) \
 obj/emoticons.$(OBJEXT) \
 obj/expimp.$(OBJEXT) \
@@ -465,7 +461,6 @@ obj/custom_input_moc.$(OBJEXT) \
 obj/configuration_window_moc.$(OBJEXT) \
 obj/configuration_window_widgets_moc.$(OBJEXT) \
 obj/dnshandler_moc.$(OBJEXT) \
-obj/dockarea_moc.$(OBJEXT) \
 obj/emoticons_moc.$(OBJEXT) \
 obj/expimp_moc.$(OBJEXT) \
 obj/gadu_moc.$(OBJEXT) \
@@ -812,8 +807,6 @@ include $(DEPS)/custom_input_moc.d
 include $(DEPS)/debug.d
 include $(DEPS)/dnshandler.d
 include $(DEPS)/dnshandler_moc.d
-include $(DEPS)/dockarea.d
-include $(DEPS)/dockarea_moc.d
 include $(DEPS)/drag_simple.d
 include $(DEPS)/emoticons.d
 include $(DEPS)/emoticons_moc.d

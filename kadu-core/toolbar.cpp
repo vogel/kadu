@@ -20,7 +20,6 @@
 #include "action.h"
 #include "config_file.h"
 #include "debug.h"
-#include "dockarea.h"
 #include "icons_manager.h"
 #include "message_box.h"
 #include "misc.h"
@@ -379,12 +378,6 @@ bool ToolBar::hasAction(const QString &action_name)
 	return false;
 
 	kdebugf2();
-}
-
-DockArea* ToolBar::dockArea()
-{
-// 	return (DockArea*)area();
-	return 0;
 }
 
 void ToolBar::actionLoaded(const QString &actionName)

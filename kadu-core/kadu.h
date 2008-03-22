@@ -13,7 +13,6 @@
 
 #include "action.h"
 #include "configuration_aware_object.h"
-#include "dockarea.h"
 #include "gadu.h"
 #include "kadu_main_window.h"
 #include "status.h"
@@ -57,7 +56,6 @@ class Kadu : public KaduMainWindow, ConfigurationAwareObject, public ActionWindo
 		UserListElement Myself;
 
 		static bool Closing;
-		DockArea* TopDockArea;
 		KaduTextBrowser* InfoPanel;
 		QString InfoPanelSyntax;
 		QMenuBar* MenuBar;

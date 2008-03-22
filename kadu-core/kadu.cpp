@@ -155,7 +155,7 @@ void Kadu::keyPressEvent(QKeyEvent *e)
 /* a monstrous constructor so Kadu would take longer to start up */
 Kadu::Kadu(QWidget *parent)
 	: KaduMainWindow(parent),
-	TopDockArea(0), InfoPanel(0), MenuBar(0), MainMenu(0), RecentChatsMenu(0), GroupBar(0),
+	InfoPanel(0), MenuBar(0), MainMenu(0), RecentChatsMenu(0), GroupBar(0),
 	Userbox(0), statusMenu(0), statusButton(), lastPositionBeforeStatusMenuHide(),
 	StartTime(QDateTime::currentDateTime()), updateInformationPanelTimer(), NextStatus(),
 	selectedUsers(new UserGroup(userlist->count() / 2)), ShowMainWindowOnStart(true),
@@ -172,12 +172,6 @@ Kadu::Kadu(QWidget *parent)
 
 	MainWidget = new QWidget;
 	MainLayout = new QVBoxLayout(MainWidget);
-/*
-	TopDockArea = new DockArea(Qt::Horizontal, DockArea::Normal, this,
-		"topDockArea", ActionDescription::TypeGlobal | ActionDescription::TypeUser | ActionDescription::TypeUserList);
-	connect(TopDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
-		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
-	MainLayout->addWidget (TopDockArea);*/
 
 	QSplitter *split = new QSplitter(Qt::Vertical, this, "splitter");
 	MainLayout->addWidget(split);
@@ -208,7 +202,6 @@ Kadu::Kadu(QWidget *parent)
 	// userbox
 	UserBox::initModule();
 	Userbox = new UserBox(true, userlist, this, "userbox");
-// 	connect(Userbox, SIGNAL(selectionChanged()), TopDockArea, SLOT(usersChangedSlot()));
 
 	hbox_layout->setStretchFactor(Userbox, 100);
 	hbox_layout->addWidget(GroupBar);

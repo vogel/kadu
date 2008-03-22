@@ -9,7 +9,6 @@
 
 #include <Q3PopupMenu>
 
-#include "dockarea.h"
 #include "toolbutton.h"
 #include "usergroup.h"
 
@@ -104,12 +103,6 @@ public:
 // 	void addAction(const QString &actionName, bool showLabel, ToolButton *button = 0, bool before = true);
 // 	void removeAction(const QString &actionName);
 // 	void moveAction(const QString &actionName, ToolButton *button);
-
-	/**
-		\fn DockArea* dockArea()
-		Zwraca wska?nik do rodzica paska (miejsca dokowania)
-	**/
-	DockArea * dockArea();
 
 	/**
 		\fn void loadFromConfig(QDomElement parent_element)

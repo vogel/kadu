@@ -18,7 +18,6 @@
 
 #include "config_file.h"
 #include "debug.h"
-#include "dockarea.h"
 #include "misc.h"
 #include "toolbar.h"
 #include "toolbutton.h"
@@ -168,7 +167,7 @@ void ToolButton::mousePressEvent(QMouseEvent* e)
 void ToolButton::mouseMoveEvent(QMouseEvent* e)
 {
 	QToolButton::mouseMoveEvent(e);
-	if (e->state() & Qt::LeftButton && !toolbar()->dockArea()->blocked() && (MouseStart - e->pos()).manhattanLength() >= 15)
+	if (e->state() & Qt::LeftButton && /*!toolbar()->dockArea()->blocked() && */(MouseStart - e->pos()).manhattanLength() >= 15)
 	{
 		setDown(false);
 		Q3DragObject* d = new ActionDrag(ActionName, usesTextLabel(), parentWidget());
@@ -179,9 +178,9 @@ void ToolButton::mouseMoveEvent(QMouseEvent* e)
 void ToolButton::contextMenuEvent(QContextMenuEvent *e)
 {
 	kdebugf();
-	if (DockArea::blocked())
+/*	if (DockArea::blocked())
 		e->ignore();
-	else
+	else*/
 	{
 		Q3PopupMenu* p = new Q3PopupMenu(this);
 		int label_menu_id = p->insertItem(tr("Show text label"), this, SLOT(showTextLabelClicked()));

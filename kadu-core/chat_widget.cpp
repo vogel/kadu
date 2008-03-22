@@ -31,7 +31,6 @@
 #include "color_selector.h"
 #include "custom_input.h"
 #include "debug.h"
-#include "dockarea.h"
 #include "gadu_images_manager.h"
 #include "hot_key.h"
 #include "icons_manager.h"
@@ -56,7 +55,6 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	activationCount(0), NewMessagesCount(0)
 {
 	kdebugf();
-	const int minimumDockAreaSize = 3;
 	QList<int> sizes;
 
 	QVBoxLayout *layout = new QVBoxLayout(this);
@@ -66,43 +64,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 
 	setAcceptDrops(true);
 	/* register us in the chats registry... */
-	index=chat_manager->registerChatWidget(this);
-// 	DockArea *leftDockArea = new DockArea(Qt::Vertical, DockArea::Normal, this,
-// 		"chatLeftDockArea", ActionDescription::TypeGlobal | ActionDescription::TypeUser | ActionDescription::TypeChat);
-// 	connect(leftDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
-// 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
-// 	// TODO: fix this workaround
-// 	connect(leftDockArea, SIGNAL(toolbarAttached()),
-// 		this, SLOT(editTextChanged()));
-// 	leftDockArea->setMinimumWidth(minimumDockAreaSize);
-
-// 	QVBoxLayout *layout = new QVBoxLayout(this);
-// 	Q3VBox *central = new Q3VBox(this, "central");
-// 	setCentralWidget(central);
-// 	this->setStretchFactor(central, 50);
-
-// 	DockArea *rightDockArea = new DockArea(Qt::Vertical, DockArea::Normal, this,
-// 		"chatRightDockArea", ActionDescription::TypeGlobal | ActionDescription::TypeUser | ActionDescription::TypeChat);
-// 	connect(rightDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
-// 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
-// 	// TODO: fix this workaround
-// 	connect(rightDockArea, SIGNAL(toolbarAttached()),
-// 		this, SLOT(editTextChanged()));
-// 	rightDockArea->setMinimumWidth(minimumDockAreaSize);
-
-// 	vertSplit = new KaduSplitter(Qt::Vertical, this, "vertSplit");
-// 	layout->add(vertSplit);
-
-// 	Q3VBox *topArea = new Q3VBox(vertSplit, "topArea");
-/*
-	DockArea *topDockArea = new DockArea(Qt::Horizontal, DockArea::Normal, topArea,
-		"chatTopDockArea", ActionDescription::TypeGlobal | ActionDescription::TypeUser | ActionDescription::TypeChat);
-	connect(topDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
-		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
-	// TODO: fix this workaround
-	connect(topDockArea, SIGNAL(toolbarAttached()),
-		this, SLOT(editTextChanged()));
-	topDockArea->setMinimumHeight(minimumDockAreaSize);*/
+	index = chat_manager->registerChatWidget(this);
 
 	if (Users->count() > 1)
 	{
