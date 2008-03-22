@@ -6,6 +6,7 @@ kadu_SOURCES = \
 about.cpp \
 action.cpp \
 activate.cpp \
+chat_edit_box.cpp \
 chat_manager.cpp \
 chat_message.cpp \
 chat_messages_view.cpp \
@@ -73,6 +74,7 @@ kadu_HEADERS = \
 about.h \
 action.h \
 activate.h \
+chat_edit_box.h \
 chat_manager.h \
 chat_message.h \
 chat_messages_view.h \
@@ -135,6 +137,7 @@ updates.h
 BUILT_SOURCES = \
 moc/about_moc.cpp \
 moc/action_moc.cpp \
+moc/chat_edit_box_moc.cpp \
 moc/chat_manager_moc.cpp \
 moc/chat_messages_view_moc.cpp \
 moc/chat_widget_moc.cpp \
@@ -189,6 +192,8 @@ am_kadu_OBJECTS = \
 obj/about.$(OBJEXT) \
 obj/action.$(OBJEXT) \
 obj/activate.$(OBJEXT) \
+obj/chat_edit_box.$(OBJEXT) \
+obj/chat_edit_box_moc.$(OBJEXT) \
 obj/chat_manager.$(OBJEXT) \
 obj/chat_message.$(OBJEXT) \
 obj/chat_messages_view.$(OBJEXT) \
@@ -309,6 +314,7 @@ include $(DEPS)/about_moc.d
 include $(DEPS)/action.d
 include $(DEPS)/action_moc.d
 include $(DEPS)/activate.d
+include $(DEPS)/chat_edit_box.d
 include $(DEPS)/chat_manager.d
 include $(DEPS)/chat_manager_moc.d
 include $(DEPS)/chat_message.d

@@ -24,6 +24,7 @@
 #include <QShortcut>
 
 #include "action.h"
+#include "chat_edit_box.h"
 #include "chat_widget.h"
 #include "chat_manager.h"
 #include "chat_message.h"
@@ -47,44 +48,53 @@
 #include "userbox.h"
 
 ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, QWidget* parent, const char* name)
-	: Q3HBox(parent, name), CurrentProtocol(initialProtocol),
+	: QWidget(parent), CurrentProtocol(initialProtocol),
 	Users(new UserGroup(usrs)),
-	index(0), actcolor(), Edit(0),
+	index(0), actcolor(),
 	bodyformat(new Q3MimeSourceFactory()), emoticon_selector(0), color_selector(0),
-	WaitingForACK(false), userbox(0), vertSplit(0), horizSplit(0),
+	WaitingForACK(false), userbox(0), horizSplit(0),
 	activationCount(0), NewMessagesCount(0)
 {
 	kdebugf();
 	const int minimumDockAreaSize = 3;
 	QList<int> sizes;
 
+	QVBoxLayout *layout = new QVBoxLayout(this);
+
+	vertSplit = new KaduSplitter(Qt::Vertical, this);
+	layout->addWidget(vertSplit);
+
 	setAcceptDrops(true);
 	/* register us in the chats registry... */
 	index=chat_manager->registerChatWidget(this);
-	DockArea *leftDockArea = new DockArea(Qt::Vertical, DockArea::Normal, this,
-		"chatLeftDockArea", ActionDescription::TypeGlobal | ActionDescription::TypeUser | ActionDescription::TypeChat);
-	connect(leftDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
-		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
-	// TODO: fix this workaround
-	connect(leftDockArea, SIGNAL(toolbarAttached()),
-		this, SLOT(editTextChanged()));
-	leftDockArea->setMinimumWidth(minimumDockAreaSize);
+// 	DockArea *leftDockArea = new DockArea(Qt::Vertical, DockArea::Normal, this,
+// 		"chatLeftDockArea", ActionDescription::TypeGlobal | ActionDescription::TypeUser | ActionDescription::TypeChat);
+// 	connect(leftDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
+// 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
+// 	// TODO: fix this workaround
+// 	connect(leftDockArea, SIGNAL(toolbarAttached()),
+// 		this, SLOT(editTextChanged()));
+// 	leftDockArea->setMinimumWidth(minimumDockAreaSize);
 
-	Q3VBox *central = new Q3VBox(this, "central");
-	this->setStretchFactor(central, 50);
+// 	QVBoxLayout *layout = new QVBoxLayout(this);
+// 	Q3VBox *central = new Q3VBox(this, "central");
+// 	setCentralWidget(central);
+// 	this->setStretchFactor(central, 50);
 
-	DockArea *rightDockArea = new DockArea(Qt::Vertical, DockArea::Normal, this,
-		"chatRightDockArea", ActionDescription::TypeGlobal | ActionDescription::TypeUser | ActionDescription::TypeChat);
-	connect(rightDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
-		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
-	// TODO: fix this workaround
-	connect(rightDockArea, SIGNAL(toolbarAttached()),
-		this, SLOT(editTextChanged()));
-	rightDockArea->setMinimumWidth(minimumDockAreaSize);
+// 	DockArea *rightDockArea = new DockArea(Qt::Vertical, DockArea::Normal, this,
+// 		"chatRightDockArea", ActionDescription::TypeGlobal | ActionDescription::TypeUser | ActionDescription::TypeChat);
+// 	connect(rightDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
+// 		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
+// 	// TODO: fix this workaround
+// 	connect(rightDockArea, SIGNAL(toolbarAttached()),
+// 		this, SLOT(editTextChanged()));
+// 	rightDockArea->setMinimumWidth(minimumDockAreaSize);
 
-	vertSplit = new KaduSplitter(Qt::Vertical, central, "vertSplit");
+// 	vertSplit = new KaduSplitter(Qt::Vertical, this, "vertSplit");
+// 	layout->add(vertSplit);
 
-	Q3VBox *topArea = new Q3VBox(vertSplit, "topArea");
+// 	Q3VBox *topArea = new Q3VBox(vertSplit, "topArea");
+/*
 	DockArea *topDockArea = new DockArea(Qt::Horizontal, DockArea::Normal, topArea,
 		"chatTopDockArea", ActionDescription::TypeGlobal | ActionDescription::TypeUser | ActionDescription::TypeChat);
 	connect(topDockArea, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
@@ -92,11 +102,11 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	// TODO: fix this workaround
 	connect(topDockArea, SIGNAL(toolbarAttached()),
 		this, SLOT(editTextChanged()));
-	topDockArea->setMinimumHeight(minimumDockAreaSize);
+	topDockArea->setMinimumHeight(minimumDockAreaSize);*/
 
 	if (Users->count() > 1)
 	{
-		horizSplit = new KaduSplitter(Qt::Horizontal, topArea, "horizSplit");
+		horizSplit = new KaduSplitter(Qt::Horizontal, this, "horizSplit");
 		horizSplit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 
 		body = new ChatMessagesView(horizSplit, "body");
@@ -115,22 +125,27 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 		sizes.append(3);
 		sizes.append(1);
 		horizSplit->setSizes(sizes);
+
+		vertSplit->addWidget(horizSplit);
 	}
 	else
-		body = new ChatMessagesView(topArea, "body");
-
-	Q3VBox *downpart = new Q3VBox(vertSplit, "downpartBox");
-	Q3HBox *edtbuttontray = new Q3HBox(downpart, "edtbuttontrayBox");
-
-	vertSplit->setResizeMode(downpart, QSplitter::KeepSize);
-
-	if (config_file.readBoolEntry("Chat", "ShowEditWindowLabel", true))
 	{
-		QLabel *edt = new QLabel(tr("Edit window:"), edtbuttontray, "editLabel");
-		edt->setToolTip(tr("This is where you type in the text to be sent"));
-		edtbuttontray->setStretchFactor(edt, 1);
+		body = new ChatMessagesView(this, "body");
+		vertSplit->addWidget(body);
 	}
 
+// 	Q3VBox *downpart = new Q3VBox(vertSplit, "downpartBox");
+// 	Q3HBox *edtbuttontray = new Q3HBox(downpart, "edtbuttontrayBox");
+
+// 	vertSplit->setResizeMode(downpart, QSplitter::KeepSize);
+
+// 	if (config_file.readBoolEntry("Chat", "ShowEditWindowLabel", true))
+// 	{
+// 		QLabel *edt = new QLabel(tr("Edit window:"), edtbuttontray, "editLabel");
+// 		edt->setToolTip(tr("This is where you type in the text to be sent"));
+// 		edtbuttontray->setStretchFactor(edt, 1);
+// 	}
+/*
 	DockArea* buttontray = new DockArea(Qt::Horizontal, DockArea::Normal, edtbuttontray,
 		"chatMiddleDockArea", ActionDescription::TypeGlobal | ActionDescription::TypeUser | ActionDescription::TypeChat);
 	connect(buttontray, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
@@ -139,16 +154,15 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	connect(buttontray, SIGNAL(toolbarAttached()),
 		this, SLOT(editTextChanged()));
 	buttontray->setMinimumHeight(minimumDockAreaSize);
-	edtbuttontray->setStretchFactor(buttontray, 50);
+	edtbuttontray->setStretchFactor(buttontray, 50);*/
 
-	Edit = new CustomInput(downpart);
- 	Edit->setMinimumHeight(1);
-	Edit->setWordWrapMode(QTextOption::WordWrap);
+	Edit = new ChatEditBox(this);
+	vertSplit->addWidget(Edit);
 
-	connect(Edit, SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)), this, SLOT(keyPressedSlot(QKeyEvent *, CustomInput *, bool &)));
+	connect(Edit->inputBox(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)), this, SLOT(keyPressedSlot(QKeyEvent *, CustomInput *, bool &)));
 
 	setFocusProxy(Edit);
-
+/*
 	DockArea* btnpart = new DockArea(Qt::Horizontal, DockArea::Normal, downpart,
 		"chatBottomDockArea", ActionDescription::TypeGlobal | ActionDescription::TypeUser | ActionDescription::TypeChat);
 	connect(btnpart, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
@@ -156,7 +170,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	// TODO: fix this workaround
 	connect(btnpart, SIGNAL(toolbarAttached()),
 		this, SLOT(editTextChanged()));
-	btnpart->setMinimumHeight(minimumDockAreaSize);
+	btnpart->setMinimumHeight(minimumDockAreaSize);*/
 
 	QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Return + Qt::CTRL), this);
 	connect(shortcut, SIGNAL(activated()), this, SLOT(sendMessage()));
@@ -166,11 +180,11 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 
 	shortcut = new QShortcut(QKeySequence(Qt::Key_PageDown + Qt::SHIFT), this);
 	connect(shortcut, SIGNAL(activated()), body, SLOT(pageDown()));
-
+/*
 	topDockArea->loadFromConfig(this);
 	leftDockArea->loadFromConfig(this);
-	rightDockArea->loadFromConfig(this);
-
+	rightDockArea->loadFromConfig(this);*/
+/*
 	if (userbox)
 	{
 		connect(userbox, SIGNAL(selectionChanged()), topDockArea, SLOT(usersChangedSlot()));
@@ -178,43 +192,42 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 		connect(userbox, SIGNAL(selectionChanged()), leftDockArea, SLOT(usersChangedSlot()));
 		connect(userbox, SIGNAL(selectionChanged()), buttontray, SLOT(usersChangedSlot()));
 		connect(userbox, SIGNAL(selectionChanged()), btnpart, SLOT(usersChangedSlot()));
-	}
+	}*/
 
-	if (!buttontray->loadFromConfig(this))
-	{
+// 	if (!buttontray->loadFromConfig(this))
+// 	{
 		// TOOLBAR 1
-		ToolBar* tb1 = new ToolBar(this);
+// 		ToolBar* tb1 = new ToolBar(this);
 // 		tb1->setOffset(10000);
-		tb1->show();
+// 		tb1->show();
 // 		buttontray->moveDockWindow(tb1);
 // 		buttontray->setAcceptDockWindow(tb1, true);
-		tb1->loadDefault();
-	}
+// 		tb1->loadDefault();
+// 	}
 
-	if (!btnpart->loadFromConfig(this))
-	{
+// 	if (!btnpart->loadFromConfig(this))
+// 	{
 		// TOOLBAR2
-		ToolBar* tb2 = new ToolBar(this);
-		tb2->show();
+// 		ToolBar* tb2 = new ToolBar(this);
+// 		tb2->show();
 // 		btnpart->moveDockWindow(tb2);
 // 		btnpart->setAcceptDockWindow(tb2, true);
-		tb2->loadDefault();
+// 		tb2->loadDefault();
 		// TOOLBAR 3
-		ToolBar* tb3 = new ToolBar(this);
+// 		ToolBar* tb3 = new ToolBar(this);
 // 		tb3->setOffset(10000);
-		tb3->show();
+// 		tb3->show();
 // 		btnpart->moveDockWindow(tb3);
 // 		btnpart->setAcceptDockWindow(tb3, true);
-		tb3->loadDefault();
-	}
+// 		tb3->loadDefault();
+// 	}
 
 // 	Edit->setMimeSourceFactory(bodyformat);
-	Edit->setTextFormat(Qt::RichText);
 
-	connect(Edit, SIGNAL(cursorPositionChanged()), this, SLOT(curPosChanged()));
-	connect(Edit, SIGNAL(sendMessage()), this, SLOT(sendMessage()));
-	connect(Edit, SIGNAL(specialKeyPressed(int)), this, SLOT(specialKeyPressed(int)));
-	connect(Edit, SIGNAL(textChanged()), this, SLOT(editTextChanged()));
+	connect(Edit->inputBox(), SIGNAL(cursorPositionChanged()), this, SLOT(curPosChanged()));
+	connect(Edit->inputBox(), SIGNAL(sendMessage()), this, SLOT(sendMessage()));
+	connect(Edit->inputBox(), SIGNAL(specialKeyPressed(int)), this, SLOT(specialKeyPressed(int)));
+	connect(Edit->inputBox(), SIGNAL(textChanged()), this, SLOT(editTextChanged()));
 
 	editTextChanged(); // slot ustawia poprawny stan przycisku Send (tutaj - blokuje)
 	setActColor(false); // ustawia poprawny kolor na przycisku wyboru koloru
@@ -229,6 +242,41 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	Edit->installEventFilter(this);
 
 	configurationUpdated();
+
+
+	kdebugf();
+
+	const QString &configName = "topDockArea";
+	Qt::ToolBarArea area = Qt::TopToolBarArea;
+
+	QDomElement root_elem = xml_config_file->rootElement();
+	QDomElement toolbars_elem = xml_config_file->findElement(root_elem, "Toolbars");
+
+	if (toolbars_elem.isNull())
+		return;
+
+// 	setBlockToolbars(toolbars_elem.attribute("blocked").toInt());
+
+	QDomElement dockarea_elem = xml_config_file->findElementByProperty(toolbars_elem, "DockArea", "name", configName);
+	if (dockarea_elem.isNull())
+		return;
+
+	for (QDomNode n = dockarea_elem.firstChild(); !n.isNull(); n = n.nextSibling())
+	{
+		const QDomElement &toolbar_elem = n.toElement();
+		if (toolbar_elem.isNull())
+			continue;
+		if (toolbar_elem.tagName() != "ToolBar")
+			continue;
+
+// 		ToolBar* toolbar = new ToolBar(this);
+// 		moveDockWindow(toolbar);
+// 		toolbar->loadFromConfig(toolbar_elem);
+// 		toolbar->show();
+// 		setAcceptDockWindow(toolbar, true);
+
+// 		addToolBar(area, toolbar);
+	}
 
 	kdebugf2();
 }
@@ -269,7 +317,7 @@ void ChatWidget::configurationUpdated()
 	Edit->setFont(config_file.readFontEntry("Look","ChatFont"));
 // 	Edit->setPaper(QBrush(config_file.readColorEntry("Look","ChatTextBgColor")));
 	AutoSend = config_file.readBoolEntry("Chat", "AutoSend");
-	Edit->setAutosend(AutoSend);
+	Edit->inputBox()->setAutosend(AutoSend);
 
 	refreshTitle();
 }
@@ -316,11 +364,11 @@ void ChatWidget::setActColor(bool force)
 {
 	kdebugf();
 
-	if (force || (Edit->color() != actcolor))
+	if (force || (Edit->inputBox()->color() != actcolor))
 	{
 		int i;
 		for (i = 0; i < 16; ++i)
-			if (Edit->color() == QColor(colors[i]))
+			if (Edit->inputBox()->color() == QColor(colors[i]))
 				break;
 		QPixmap p(12, 12);
 		if (i >= 16)
@@ -391,7 +439,7 @@ void ChatWidget::insertImage()
 			kdebugf2();
 			return;
 		}
-		Edit->insert(QString("[IMAGE ") + selectedFile + ']');
+		Edit->inputBox()->insert(QString("[IMAGE ") + selectedFile + ']');
 	}
 	else
 		delete id;
@@ -402,7 +450,7 @@ void ChatWidget::insertImage()
 void ChatWidget::sendActionAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*/)
 {
 	kdebugf();
-	button->setEnabled(!Edit->text().isEmpty());
+	button->setEnabled(!Edit->inputBox()->text().isEmpty());
 	kdebugf2();
 }
 
@@ -586,9 +634,9 @@ void ChatWidget::writeMyMessage()
 	ChatMessage *message = new ChatMessage(kadu->myself(), myLastMessage, TypeSent, QDateTime::currentDateTime());
 	body->appendMessage(message);
 
-	if (!Edit->isEnabled())
+	if (!Edit->inputBox()->isEnabled())
 		cancelMessage();
-	Edit->clear();
+	Edit->inputBox()->clear();
 /*
 	if (KaduActions["boldAction"]->isOn(Users->toUserListElements()))
 		Edit->setBold(true);
@@ -614,7 +662,7 @@ void ChatWidget::setAutoSend(bool auto_send)
 {
 	kdebugf();
 	AutoSend = auto_send;
-	Edit->setAutosend(auto_send);
+	Edit->inputBox()->setAutosend(auto_send);
 	kdebugf2();
 }
 
@@ -624,9 +672,9 @@ void ChatWidget::cancelMessage()
 //	seq = 0;
 	disconnectAcknowledgeSlots();
 
-	Edit->setReadOnly(false);
-	Edit->setEnabled(true);
-	Edit->setFocus();
+	Edit->inputBox()->setReadOnly(false);
+	Edit->inputBox()->setEnabled(true);
+	Edit->inputBox()->setFocus();
 
 	WaitingForACK = false;
 // 	KaduActions["sendAction"]->setIcons(Users->toUserListElements(),
@@ -691,7 +739,7 @@ void ChatWidget::selectedUsersNeeded(const UserGroup*& user_group)
 void ChatWidget::sendMessage()
 {
 	kdebugf();
-	if (Edit->text().isEmpty())
+	if (Edit->inputBox()->text().isEmpty())
 	{
 		kdebugf2();
 		return;
@@ -708,14 +756,14 @@ void ChatWidget::sendMessage()
 
 	if (config_file.readBoolEntry("Chat","MessageAcks"))
 	{
-		Edit->setReadOnly(true);
-		Edit->setEnabled(false);
+		Edit->inputBox()->setReadOnly(true);
+		Edit->inputBox()->setEnabled(false);
 		WaitingForACK = true;
 // 		KaduActions["sendAction"]->setIcons(Users->toUserListElements(),
 // 			icons_manager->loadIcon("CancelMessage"));
 // 		KaduActions["sendAction"]->setTexts(Users->toUserListElements(), tr("&Cancel"));
 	}
-	QString message = Edit->toPlainText();
+	QString message = Edit->inputBox()->toPlainText();
 	myLastMessage = message;
 
 	// TODO: to na pewno jest potrzebne ??
@@ -780,7 +828,7 @@ void ChatWidget::colorChanged(const QColor& color)
 	p.fill(color);
 
 // 	KaduActions["colorAction"]->setPixmaps(Users->toUserListElements(), p);
-	Edit->setColor(color);
+	Edit->inputBox()->setColor(color);
 	actcolor = color;
 }
 
@@ -791,7 +839,7 @@ void ChatWidget::addEmoticon(QString emot)
 	{
 		emot.replace("&lt;", "<");
 		emot.replace("&gt;", ">");
-		Edit->insert(emot);
+		Edit->inputBox()->insert(emot);
 	}
 	emoticon_selector = NULL;
 }
@@ -809,7 +857,7 @@ const QString& ChatWidget::caption() const
 
 CustomInput* ChatWidget::edit()
 {
-	return Edit;
+	return Edit->inputBox();
 }
 
 bool ChatWidget::autoSend() const

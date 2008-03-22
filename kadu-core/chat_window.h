@@ -1,17 +1,13 @@
 #ifndef KADU_CHAT_WINDOW_H
 #define KADU_CHAT_WINDOW_H
 
-#include <qglobal.h>
-
-#include <q3mainwindow.h>
-#include <qstring.h>
-//Added by qt3to4:
 #include <QCloseEvent>
+#include <QMainWindow>
 
 #include "chat_widget.h"
 #include "configuration_aware_object.h"
 
-class ChatWindow : public Q3MainWindow, public ChatContainer, ConfigurationAwareObject
+class ChatWindow : public QWidget, public ChatContainer, ConfigurationAwareObject
 {
 	Q_OBJECT
 

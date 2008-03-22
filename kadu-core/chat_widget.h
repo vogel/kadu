@@ -1,3 +1,12 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef KADU_CHAT_WIDGET_H
 #define KADU_CHAT_WIDGET_H
 
@@ -7,34 +16,33 @@
 #include <qwidget.h>
 #include <q3hbox.h>
 
-
-#include <q3valuelist.h>
-//Added by qt3to4:
-#include <QDragMoveEvent>
-#include <QDropEvent>
-#include <QPixmap>
-#include <QKeyEvent>
-#include <QEvent>
 #include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QDragMoveEvent>
+#include <QEvent>
+#include <QKeyEvent>
+#include <QMainWindow>
+#include <QPixmap>
 
 #include "chat_messages_view.h"
 #include "config_file.h"
 #include "configuration_aware_object.h"
-#include "custom_input.h"
 #include "emoticons.h"
 #include "protocol.h"
-#include "usergroup.h"
 #include "toolbar.h"
+#include "usergroup.h"
 
 class Q3HBox;
 class Q3MimeSourceFactory;
 class QObject;
 class QPushButton;
 
+class ChatEditBox;
 class ChatWidget;
 class ChatManager;
 class ChatMessage;
 class ColorSelector;
+class CustomInput;
 class EmoticonSelector;
 class KaduSplitter;
 class KaduTextBrowser;
@@ -50,7 +58,7 @@ typedef QList<ChatWidget*> ChatList;
 	\brief Okno rozmowy
 **/
 
-class ChatWidget : public Q3HBox, ConfigurationAwareObject
+class ChatWidget : public QWidget, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -63,7 +71,6 @@ private:
 	int index;	/*!< nr okna (z chat menad¿era) */
 	QColor actcolor; /*!< zmienna przechowuj±ca aktualny kolor */
 	QPixmap pix;
-	CustomInput* Edit; /*!< okno do wpisywania wiadomo¶ci */
 	Q3MimeSourceFactory *bodyformat; /*!< zmienna ustawiaj±ca format */
 	EmoticonSelector* emoticon_selector; /*!< okienko do wyboru emotikonek */
 	ColorSelector* color_selector; /*!< okienko do wyboru koloru */
@@ -75,7 +82,8 @@ private:
 
 	QDateTime lastMsgTime; /*!< czas ostatniej wiadomo¶ci */
 
-	ChatMessagesView* body; /*!< historia rozmowy, proszê NIE dawaæ dostêpu na zewn±trz do tej zmiennej */
+	ChatEditBox *Edit; /*!< okno do wpisywania wiadomo¶ci */
+	ChatMessagesView *body; /*!< historia rozmowy, proszê NIE dawaæ dostêpu na zewn±trz do tej zmiennej */
 
 	// TODO: remove
 	int activationCount;
