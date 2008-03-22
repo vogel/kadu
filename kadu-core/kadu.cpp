@@ -1488,7 +1488,7 @@ Kadu::~Kadu(void)
 
 	CONST_FOREACH(act, mainActions)
 	{
-		Action *a = KaduActions[*act];
+		ActionDescription *a = KaduActions[*act];
 		delete a;
 	}
 #endif

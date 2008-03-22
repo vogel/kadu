@@ -231,7 +231,7 @@ ChatManager::~ChatManager()
 				<< "sendAction" << "chatAction" << "openChatWithAction";
 	CONST_FOREACH(act, chatActions)
 	{
-		Action *a = KaduActions[*act];
+		ActionDescription *a = KaduActions[*act];
 		delete a;
 	}
 #endif

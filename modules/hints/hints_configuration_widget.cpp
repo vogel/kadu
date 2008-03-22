@@ -51,6 +51,8 @@ HintsConfigurationWidget::HintsConfigurationWidget(QWidget *parent, char *name)
 	gridLayout->addWidget(timeout, 5, 1);
 	gridLayout->addWidget(new QLabel(tr("Syntax") + ":", this), 6, 0, Qt::AlignRight);
 	gridLayout->addWidget(syntax, 6, 1);
+
+	parent->layout()->addWidget(this);
 }
 
 void HintsConfigurationWidget::saveNotifyConfigurations()

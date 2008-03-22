@@ -50,6 +50,9 @@ NotifyGroupBox::NotifyGroupBox(const QString &notificator, const QString &captio
 	: QGroupBox(caption, parent), Notificator(notificator)
 {
 	setCheckable(true);
+	QHBoxLayout *layout = new QHBoxLayout(this);
+	Q_UNUSED(layout)
+
 	connect(this, SIGNAL(toggled(bool)), this, SLOT(toggledSlot(bool)));
 }
 
@@ -198,11 +201,11 @@ void Notify::addConfigurationWidget(NotifierData &notifier, const QString &name)
 		notifier.configurationWidget = notifyConfigurationWidget;
 		notifyConfigurationWidget->loadNotifyConfigurations();
 	}
-	else
-	{
-		configurationGroupBox->setFlat(true);
-// 		configurationGroupBox->setLineWidth(0);
-	}
+//	else
+//	{
+//		configurationGroupBox->setFlat(true);
+//		configurationGroupBox->setLineWidth(0);
+//	}
 
 	notificationsGroupBox->addWidget(configurationGroupBox, true);
 	configurationGroupBox->show();

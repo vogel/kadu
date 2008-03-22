@@ -38,7 +38,7 @@ class ConfigTab
 
 	QMap<QString, ConfigGroupBox *> configGroupBoxes;
 
-	QScrollArea *scrollArea;
+//	QScrollArea *scrollArea;
 	QVBoxLayout *mainLayout;
 	QWidget *mainWidget;
 
@@ -51,7 +51,8 @@ public:
 	void removedConfigGroupBox(const QString &groupBoxName);
 
 	QWidget *widget() { return mainWidget; }
-	QWidget *tabWidget() { return scrollArea; }
+//	QWidget *tabWidget() { return scrollArea; }
+	QWidget *tabWidget() { return mainWidget; }
 
 };
 
@@ -59,7 +60,7 @@ ConfigGroupBox::ConfigGroupBox(const QString &name, ConfigTab *configTab, QGroup
 	: name(name), configTab(configTab), groupBox(groupBox)
 {
 	container = new QWidget(groupBox);
-
+	groupBox->layout()->addWidget(container);
 	gridLayout = new QGridLayout(container);
 	gridLayout->setAutoAdd(false);
 	gridLayout->setSpacing(5);
@@ -102,23 +103,25 @@ void ConfigGroupBox::addWidgets(QWidget *widget1, QWidget *widget2)
 ConfigTab::ConfigTab(const QString &name, ConfigSection *configSection, QTabWidget *parentConfigGroupBoxWidget)
 	: name(name), configSection(configSection)
 {
-	scrollArea = new QScrollArea(parentConfigGroupBoxWidget);
-	scrollArea->setFrameStyle(QFrame::NoFrame);
-	scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-	scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//TODO: Implement scrolling.
+//	scrollArea = new QScrollArea(parentConfigGroupBoxWidget);
+//	scrollArea->setFrameStyle(QFrame::NoFrame);
+//	scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+//	scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-	mainWidget = new QWidget(scrollArea->widget());
-	scrollArea->setWidget(mainWidget);
-
+//	mainWidget = new QWidget(scrollArea->widget());
+	mainWidget = new QWidget(parentConfigGroupBoxWidget);
+//	scrollArea->setWidget(mainWidget);
 	mainLayout = new QVBoxLayout(mainWidget, 10, 10);
 	mainLayout->addStretch(1);
 
-	parentConfigGroupBoxWidget->addTab(scrollArea, name);
+//	parentConfigGroupBoxWidget->addTab(scrollArea, name);
+	parentConfigGroupBoxWidget->addTab(mainWidget, name);
 }
 
 ConfigTab::~ConfigTab()
 {
-	delete scrollArea;
+//	delete scrollArea;
 }
 
 ConfigGroupBox *ConfigTab::configGroupBox(const QString &name, bool create)
@@ -129,9 +132,11 @@ ConfigGroupBox *ConfigTab::configGroupBox(const QString &name, bool create)
 	if (!create)
 		return 0;
 
-	QGroupBox *groupBox = new QGroupBox(/*1, Qt::Horizontal, */name, mainWidget);
+	QGroupBox *groupBox = new QGroupBox(name);
 	groupBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-
+	QHBoxLayout *group_layout = new QHBoxLayout(groupBox);
+	Q_UNUSED(group_layout)
+	
 	mainLayout->insertWidget(configGroupBoxes.count(), groupBox);
 
 	ConfigGroupBox *newConfigGroupBox = new ConfigGroupBox(name, this, groupBox);
@@ -251,6 +256,7 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 
 	container = new QWidget;
 	QHBoxLayout *container_layout = new QHBoxLayout(container);
+	Q_UNUSED(container_layout)
 	container->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
 	QWidget *buttons = new QWidget;
@@ -274,7 +280,7 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 
 	sectionsListWidget = new QListWidget;
 	sectionsListWidget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-// 	sectionsListWidget->setHScrollBarMode(QScrollArea::AlwaysOff);
+ 	sectionsListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	connect(sectionsListWidget, SIGNAL(currentTextChanged(const QString &)), this, SLOT(changeSection(const QString &)));
 	left_layout->addWidget(sectionsListWidget);
 	left->setLayout(left_layout);

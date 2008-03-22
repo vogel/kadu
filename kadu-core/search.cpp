@@ -258,7 +258,7 @@ void SearchDialog::closeModule()
 	searchActions << "stopSearchAction" << "firstSearchAction" << "nextResultsAction" << "clearSearchAction" << "addSearchedAction" << "chatSearchedAction";
 	CONST_FOREACH(act, searchActions)
 	{
-		Action *a = KaduActions[*act];
+		ActionDescription *a = KaduActions[*act];
 		delete a;
 	}
 #endif

@@ -229,7 +229,7 @@ void ToolBar::removeButtonClicked(ToolButton *button)
 
 void ToolBar::addButtonClicked(QAction *action)
 {
-	kdebugmf(KDEBUG_FUNCTION_START | KDEBUG_INFO, "action_index = %d\n", action_index);
+//	kdebugmf(KDEBUG_FUNCTION_START | KDEBUG_INFO, "action_index = %d\n", action_index);
 
 	addAction(action->data().toString(), false);
 	updateButtons();
