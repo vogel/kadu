@@ -45,6 +45,8 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 {
 	kdebugf();
 
+	setAttribute(Qt::WA_DeleteOnClose);
+
 	QWidget *centralWidget = new QWidget(this);
 
 	QLabel *l_name;
