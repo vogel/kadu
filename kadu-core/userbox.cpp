@@ -464,7 +464,7 @@ CreateNotifier UserBox::createNotifier;
 UserBox::UserBox(bool fancy, UserGroup *group, QWidget* parent, const char* name, WFlags f)
 	: QListBox(parent, name, f), fancy(fancy), VisibleUsers(new UserGroup(userlist->count() * 2, "visible_users")),
 	Filters(), NegativeFilters(), sortHelper(), toRemove(), AppendProxy(), RemoveProxy(), comparer(new ULEComparer()),
-	refreshTimer(), lastMouseStopUser(nullElement), lastMouseStop(), tipTimer(),
+	refreshTimer(), lastMouseStopUser(nullElement), tipTimer(),
 	verticalPositionTimer(), lastVerticalPosition(0)
 {
 	kdebugf();
@@ -552,7 +552,7 @@ void UserBox::tipTimeout()
 {
 	if (lastMouseStopUser != nullElement)
 	{
-		tool_tip_class_manager->showToolTip(lastMouseStop, lastMouseStopUser);
+		tool_tip_class_manager->showToolTip(QCursor().pos(), lastMouseStopUser);
 		tipTimer.stop();
 	}
 }
@@ -572,7 +572,6 @@ void UserBox::restartTip(const QPoint &p)
 		hideTip();
 		lastMouseStopUser = nullElement;
 	}
-	lastMouseStop = p;
 	tipTimer.start(TIP_TM);
 //	kdebugf2();
 }

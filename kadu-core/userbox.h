@@ -673,7 +673,6 @@ class UserBox : public QListBox, ConfigurationAwareObject
 
 		UserListElement lastMouseStopUser;
 		static UserListElement nullElement;
-		QPoint lastMouseStop;
 		QTimer tipTimer;
 
 		QTimer verticalPositionTimer;
