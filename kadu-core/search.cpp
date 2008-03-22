@@ -30,7 +30,6 @@
 #include "chat_manager.h"
 #include "config_file.h"
 #include "debug.h"
-#include "dockarea.h"
 #include "icons_manager.h"
 #include "kadu.h"
 #include "message_box.h"
@@ -39,12 +38,14 @@
 #include "userinfo.h"
 
 SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearchUin)
-	: QWidget(parent, name, Qt::WType_TopLevel | Qt::WDestructiveClose),
+	: KaduMainWindow(parent),
 	only_active(0), e_uin(0), e_name(0), e_nick(0), e_byrFrom(0), e_byrTo(0), e_surname(0),
 	c_gender(0), e_city(0), results(0), progress(0), r_uin(0), r_pers(0), _whoisSearchUin(whoisSearchUin),
 	seq(0), selectedUsers(new UserGroup(1)), searchRecord(new SearchRecord()), searchhidden(false), searching(false), workaround(false)
 {
 	kdebugf();
+
+	QWidget *centralWidget = new QWidget(this);
 
 	QLabel *l_name;
 	QLabel *l_nick;
@@ -56,59 +57,59 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	QLabel *l_city;
 	QLabel *l_uin;
 
-	l_nick = new QLabel(tr("Nickname"),this);
-	e_nick = new QLineEdit(this);
-	connect(e_nick, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
+	l_nick = new QLabel(tr("Nickname"),centralWidget);
+	e_nick = new QLineEdit(centralWidget);
+	connect(e_nick, SIGNAL(textChanged(const QString &)), centralWidget, SLOT(personalDataTyped()));
 
-	l_gender = new QLabel(tr("Gender"),this);
-	c_gender = new QComboBox(this);
+	l_gender = new QLabel(tr("Gender"),centralWidget);
+	c_gender = new QComboBox(centralWidget);
 	c_gender->insertItem(" ", 0);
 	c_gender->insertItem(tr("Male"), 1);
 	c_gender->insertItem(tr("Female"), 2);
-	connect(c_gender, SIGNAL(activated(const QString &)), this, SLOT(personalDataTyped()));
+	connect(c_gender, SIGNAL(activated(const QString &)), centralWidget, SLOT(personalDataTyped()));
 
-	l_name = new QLabel(tr("Name"),this);
-	e_name = new QLineEdit(this);
-	connect(e_name, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
+	l_name = new QLabel(tr("Name"),centralWidget);
+	e_name = new QLineEdit(centralWidget);
+	connect(e_name, SIGNAL(textChanged(const QString &)), centralWidget, SLOT(personalDataTyped()));
 
-	l_surname = new QLabel(tr("Surname"),this);
-	e_surname = new QLineEdit(this);
-	connect(e_surname, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
+	l_surname = new QLabel(tr("Surname"),centralWidget);
+	e_surname = new QLineEdit(centralWidget);
+	connect(e_surname, SIGNAL(textChanged(const QString &)), centralWidget, SLOT(personalDataTyped()));
 
-	l_byr = new QLabel(tr("Birthyear"),this);
-	l_byrFrom = new QLabel(tr("from"),this);
-	e_byrFrom = new QLineEdit(this);
+	l_byr = new QLabel(tr("Birthyear"),centralWidget);
+	l_byrFrom = new QLabel(tr("from"),centralWidget);
+	e_byrFrom = new QLineEdit(centralWidget);
 	e_byrFrom->setMaxLength(4);
 	e_byrFrom->setValidator(new QIntValidator(1, 2100, this));
 	connect(e_byrFrom, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 	connect(e_byrFrom, SIGNAL(textChanged(const QString &)), this, SLOT(byrFromDataTyped()));
-	l_byrTo = new QLabel(tr("to"),this);
-	e_byrTo = new QLineEdit(this);
+	l_byrTo = new QLabel(tr("to"),centralWidget);
+	e_byrTo = new QLineEdit(centralWidget);
 	e_byrTo->setEnabled(false);
 	e_byrTo->setMaxLength(4);
-	e_byrTo->setValidator(new QIntValidator(1, 2100, this));
-	connect(e_byrTo, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
+	e_byrTo->setValidator(new QIntValidator(1, 2100, centralWidget));
+	connect(e_byrTo, SIGNAL(textChanged(const QString &)), centralWidget, SLOT(personalDataTyped()));
 
-	l_city = new QLabel(tr("City"),this);
-	e_city = new QLineEdit(this);
+	l_city = new QLabel(tr("City"),centralWidget);
+	e_city = new QLineEdit(centralWidget);
 	connect(e_city, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
-	only_active = new QCheckBox(tr("Only active users"),this);
+	only_active = new QCheckBox(tr("Only active users"),centralWidget);
 	connect(only_active, SIGNAL(clicked()), this, SLOT(personalDataTyped()));
 
-	Q3GroupBox * qgrp1 = new Q3GroupBox(2, Qt::Horizontal, tr("Uin"), this);
+	Q3GroupBox * qgrp1 = new Q3GroupBox(2, Qt::Horizontal, tr("Uin"), centralWidget);
 	l_uin = new QLabel(tr("Uin"),qgrp1);
 	e_uin = new QLineEdit(qgrp1);
 	e_uin->setMaxLength(8);
-	e_uin->setValidator(new QIntValidator(1, 99999999, this));
+	e_uin->setValidator(new QIntValidator(1, 99999999, centralWidget));
 	connect(e_uin, SIGNAL(textChanged(const QString &)), this, SLOT(uinTyped()));
 
-	progress = new QLabel(this);
+	progress = new QLabel(centralWidget);
 
-	results = new Q3ListView(this);
+	results = new Q3ListView(centralWidget);
 	connect(results, SIGNAL(selectionChanged()), this, SLOT(selectionChanged()));
 
-	Q3HButtonGroup * btngrp = new Q3HButtonGroup(tr("Search criteria"), this);
+	Q3HButtonGroup * btngrp = new Q3HButtonGroup(tr("Search criteria"), centralWidget);
 	r_pers = new QRadioButton(tr("&Personal data"),btngrp);
 	r_pers->setChecked(true);
 	connect(r_pers, SIGNAL(toggled(bool)), this, SLOT(persClicked()));
@@ -118,20 +119,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	connect(r_uin, SIGNAL(toggled(bool)), this, SLOT(uinClicked()));
 	QToolTip::add(r_uin, tr("Search for this UIN exclusively"));
 
-	DockArea* dock_area = new DockArea(Qt::Horizontal, DockArea::Normal, this,
-		"searchDockArea", ActionDescription::TypeSearch);
-	connect(dock_area, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
-		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
-	if (!dock_area->loadFromConfig(this))
-	{
-		ToolBar* toolbar = new ToolBar(this);
-// 		toolbar->setOffset(1000);
-// 		dock_area->moveDockWindow(toolbar);
-// 		dock_area->setAcceptDockWindow(toolbar, true);
-		toolbar->loadDefault();
-	}
-
-	Q3GridLayout * grid = new Q3GridLayout (this, 7, 12, 7, 5);
+	Q3GridLayout * grid = new Q3GridLayout (centralWidget, 7, 12, 7, 5);
 	grid->addWidget(l_nick, 1, 0, Qt::AlignRight); grid->addWidget(e_nick, 1, 1);
 	grid->addWidget(l_gender, 2, 0, Qt::AlignRight); grid->addWidget(c_gender, 2, 1);
 	grid->addWidget(l_name, 1, 3, Qt::AlignRight); grid->addWidget(e_name, 1, 4);
@@ -147,7 +135,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	grid->addMultiCellWidget(btngrp, 3, 3, 4, 11);
 
 	grid->addMultiCellWidget(results, 5, 5, 0, 11);
-	grid->addMultiCellWidget(dock_area, 6, 6, 0, 11);
+// 	grid->addMultiCellWidget(dock_area, 6, 6, 0, 11);
 	grid->addMultiCellWidget(progress, 6, 6, 0, 1);
 
 	grid->addColSpacing(2, 10);
@@ -206,6 +194,11 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 // 	add_searched_action->setEnabled(this, false);
 // 	chat_searched_action->setEnabled(this, false);
 
+	setCentralWidget(centralWidget);
+
+	loadToolBarsFromConfig("searchDockArea", Qt::BottomToolBarArea);
+	loadToolBarsFromConfig("search");
+
 	loadGeometry(this, "General", "SearchDialogGeometry", 0, 30, 800, 350);
 	setCaption(tr("Search user in directory"));
 
@@ -217,6 +210,9 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 SearchDialog::~SearchDialog()
 {
 	kdebugf();
+
+	writeToolBarsToConfig("search");
+
 	disconnect(gadu, SIGNAL(newSearchResults(SearchResults&, int, int)), this, SLOT(newSearchResults(SearchResults&, int, int)));
 // 	saveGeometry(this, "General", "SearchDialogGeometry");
 	delete searchRecord;

@@ -1,18 +1,13 @@
 #ifndef KADU_SEARCH_H
 #define KADU_SEARCH_H
 
-#include <qglobal.h>
-
-#include <qwidget.h>
-#include <qtoolbutton.h>
-#include <q3valuelist.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QLabel>
-#include <QKeyEvent>
 #include <QCloseEvent>
+#include <QKeyEvent>
+#include <QLabel>
+#include <QResizeEvent>
 
 #include "gadu.h"
+#include "kadu_main_window.h"
 #include "toolbar.h"
 
 class QCheckBox;
@@ -31,7 +26,7 @@ class Action;
 	\brief Wyszukiwanie w katalogu publicznym.
 	\class SearchDialog
 **/
-class SearchDialog : public QWidget {
+class SearchDialog : public KaduMainWindow {
 	Q_OBJECT
 	public:
 		/**
