@@ -682,7 +682,6 @@ class UserBox : public Q3ListBox, ConfigurationAwareObject
 
 		UserListElement lastMouseStopUser;
 		static UserListElement nullElement;
-		QPoint lastMouseStop;
 		QTimer tipTimer;
 
 		QTimer verticalPositionTimer;
