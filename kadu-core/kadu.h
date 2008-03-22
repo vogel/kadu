@@ -4,7 +4,6 @@
 #include <QCustomEvent>
 #include <QDomElement>
 #include <QKeyEvent>
-#include <QMainWindow>
 #include <QMenu>
 #include <QPixmap>
 #include <QResizeEvent>
@@ -16,6 +15,7 @@
 #include "configuration_aware_object.h"
 #include "dockarea.h"
 #include "gadu.h"
+#include "kadu_main_window.h"
 #include "status.h"
 #include "usergroup.h"
 #include "userlistelement.h"
@@ -38,7 +38,7 @@ class MainConfigurationWindow;
 /**
 	G³ówne okno Kadu
 **/
-class Kadu : public QMainWindow, ConfigurationAwareObject, public ActionWindow
+class Kadu : public KaduMainWindow, ConfigurationAwareObject, public ActionWindow
 {
 	Q_OBJECT
 
@@ -49,12 +49,6 @@ class Kadu : public QMainWindow, ConfigurationAwareObject, public ActionWindow
 	ActionDescription *editUserActionDescription;
 	ActionDescription *addUserActionDescription;
 	ActionDescription *openSearchActionDescription;
-
-	void loadToolBarsFromConfig();
-	void loadToolBarsFromConfig(const QString &configName, Qt::ToolBarArea area);
-
-	void writeToolBarsToConfig();
-	void writeToolBarsToConfig(QDomElement parentElement, const QString &configName, Qt::ToolBarArea area);
 
 	// TODO: remove
 	friend class Wizard;

@@ -35,6 +35,7 @@ http_client.cpp \
 icons_manager.cpp \
 ignore.cpp \
 kadu.cpp \
+kadu_main_window.cpp \
 kadu_parser.cpp \
 kadu_splitter.cpp \
 kadu_text_browser.cpp \
@@ -103,6 +104,7 @@ http_client.h \
 icons_manager.h \
 ignore.h \
 kadu.h \
+kadu_main_window.h \
 kadu_parser.h \
 kadu_splitter.h \
 kadu_text_browser.h \
@@ -158,6 +160,7 @@ moc/http_client_moc.cpp \
 moc/icons_manager_moc.cpp \
 moc/ignore_moc.cpp \
 moc/kadu_moc.cpp \
+moc/kadu_main_window_moc.cpp \
 moc/kadu_text_browser_moc.cpp \
 moc/main_configuration_window_moc.cpp \
 moc/message_box_moc.cpp \
@@ -193,7 +196,6 @@ obj/about.$(OBJEXT) \
 obj/action.$(OBJEXT) \
 obj/activate.$(OBJEXT) \
 obj/chat_edit_box.$(OBJEXT) \
-obj/chat_edit_box_moc.$(OBJEXT) \
 obj/chat_manager.$(OBJEXT) \
 obj/chat_message.$(OBJEXT) \
 obj/chat_messages_view.$(OBJEXT) \
@@ -222,6 +224,7 @@ obj/http_client.$(OBJEXT) \
 obj/icons_manager.$(OBJEXT) \
 obj/ignore.$(OBJEXT) \
 obj/kadu.$(OBJEXT) \
+obj/kadu_main_window.$(OBJEXT) \
 obj/kadu_parser.$(OBJEXT) \
 obj/kadu_splitter.$(OBJEXT) \
 obj/kadu_text_browser.$(OBJEXT) \
@@ -256,6 +259,7 @@ obj/updates.$(OBJEXT) \
 obj/version.$(OBJEXT) \
 obj/about_moc.$(OBJEXT) \
 obj/action_moc.$(OBJEXT) \
+obj/chat_edit_box_moc.$(OBJEXT) \
 obj/chat_manager_moc.$(OBJEXT) \
 obj/chat_messages_view_moc.$(OBJEXT) \
 obj/chat_widget_moc.$(OBJEXT) \
@@ -276,6 +280,7 @@ obj/http_client_moc.$(OBJEXT) \
 obj/icons_manager_moc.$(OBJEXT) \
 obj/ignore_moc.$(OBJEXT) \
 obj/kadu_moc.$(OBJEXT) \
+obj/kadu_main_window_moc.$(OBJEXT) \
 obj/kadu_text_browser_moc.$(OBJEXT) \
 obj/main_configuration_window_moc.$(OBJEXT) \
 obj/message_box_moc.$(OBJEXT) \
@@ -361,6 +366,8 @@ include $(DEPS)/ignore.d
 include $(DEPS)/ignore_moc.d
 include $(DEPS)/kadu.d
 include $(DEPS)/kadu_moc.d
+include $(DEPS)/kadu_main_window.d
+include $(DEPS)/kadu_main_window_moc.d
 include $(DEPS)/kadu_parser.d
 include $(DEPS)/kadu_splitter.d
 include $(DEPS)/kadu_text_browser.d

@@ -153,7 +153,8 @@ void Kadu::keyPressEvent(QKeyEvent *e)
 }
 
 /* a monstrous constructor so Kadu would take longer to start up */
-Kadu::Kadu(QWidget *parent) : QMainWindow(parent),
+Kadu::Kadu(QWidget *parent)
+	: KaduMainWindow(parent),
 	TopDockArea(0), InfoPanel(0), MenuBar(0), MainMenu(0), RecentChatsMenu(0), GroupBar(0),
 	Userbox(0), statusMenu(0), statusButton(), lastPositionBeforeStatusMenuHide(),
 	StartTime(QDateTime::currentDateTime()), updateInformationPanelTimer(), NextStatus(),
@@ -362,7 +363,7 @@ Kadu::Kadu(QWidget *parent) : QMainWindow(parent),
 	/* guess what */
 	createMenu();
 	createStatusPopupMenu();
-	loadToolBarsFromConfig();
+	loadToolBarsFromConfig("");
 
 	connect(statusMenu, SIGNAL(aboutToHide()), this, SLOT(statusMenuAboutToHide()));
 	connect(dockMenu, SIGNAL(aboutToHide()), this, SLOT(dockMenuAboutToHide()));
@@ -1353,7 +1354,7 @@ bool Kadu::close(bool quit)
 	{
 		Closing = true;
 
-		writeToolBarsToConfig();
+		writeToolBarsToConfig("");
 
 		if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		{
@@ -1534,84 +1535,6 @@ void Kadu::createRecentChatsMenu()
 	}
 
 	kdebugf2();
-}
-
-void Kadu::loadToolBarsFromConfig()
-{
-	loadToolBarsFromConfig("topDockArea", Qt::TopToolBarArea);
-	loadToolBarsFromConfig("leftDockArea", Qt::LeftToolBarArea);
-	loadToolBarsFromConfig("bottomDockArea", Qt::BottomToolBarArea);
-	loadToolBarsFromConfig("rightDockArea", Qt::RightToolBarArea);
-}
-
-void Kadu::loadToolBarsFromConfig(const QString &configName, Qt::ToolBarArea area)
-{
-	kdebugf();
-
-	QDomElement root_elem = xml_config_file->rootElement();
-	QDomElement toolbars_elem = xml_config_file->findElement(root_elem, "Toolbars");
-
-	if (toolbars_elem.isNull())
-		return;
-
-// 	setBlockToolbars(toolbars_elem.attribute("blocked").toInt());
-
-	QDomElement dockarea_elem = xml_config_file->findElementByProperty(toolbars_elem, "DockArea", "name", configName);
-	if (dockarea_elem.isNull())
-		return;
-
-	for (QDomNode n = dockarea_elem.firstChild(); !n.isNull(); n = n.nextSibling())
-	{
-		const QDomElement &toolbar_elem = n.toElement();
-		if (toolbar_elem.isNull())
-			continue;
-		if (toolbar_elem.tagName() != "ToolBar")
-			continue;
-
-		ToolBar* toolbar = new ToolBar(this);
-// 		moveDockWindow(toolbar);
-		toolbar->loadFromConfig(toolbar_elem);
-		toolbar->show();
-// 		setAcceptDockWindow(toolbar, true);
-
-		addToolBar(area, toolbar);
-	}
-
-	kdebugf2();
-}
-
-void Kadu::writeToolBarsToConfig()
-{
-	QDomElement root_elem = xml_config_file->rootElement();
-	QDomElement toolbarsElem = xml_config_file->findElement(root_elem, "Toolbars");
-	if (!toolbarsElem.isNull())
-		xml_config_file->removeChildren(toolbarsElem);
-	else
-		toolbarsElem = xml_config_file->createElement(root_elem, "ToolBar");
-
-	writeToolBarsToConfig(toolbarsElem, "topDockArea", Qt::TopToolBarArea);
-	writeToolBarsToConfig(toolbarsElem, "leftDockArea", Qt::LeftToolBarArea);
-	writeToolBarsToConfig(toolbarsElem, "bottomDockArea", Qt::BottomToolBarArea);
-	writeToolBarsToConfig(toolbarsElem, "rightDockArea", Qt::RightToolBarArea);
-}
-
-void Kadu::writeToolBarsToConfig(QDomElement parentElement, const QString &configName, Qt::ToolBarArea area)
-{
-	QDomElement dockAreaElem = xml_config_file->createElement(parentElement, "DockArea");
-	dockAreaElem.setAttribute("name", configName);
-
-	FOREACH(child, children())
-	{
-		ToolBar *toolBar = dynamic_cast<ToolBar *>(*child);
-		if (!toolBar)
-			continue;
-
-		// ugly
-		if (toolBarArea(toolBar) != area)
-			continue;
-
-		toolBar->writeToConfig(dockAreaElem);
-	}
 }
 
 void Kadu::createMenu()
