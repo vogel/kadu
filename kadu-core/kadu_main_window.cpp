@@ -68,6 +68,8 @@ void KaduMainWindow::loadToolBarsFromConfig(const QString &configName, Qt::ToolB
 		addToolBar(area, toolbar);
 	}
 
+	toolbarsConfig.removeChild(dockareaConfig);
+
 	kdebugf2();
 }
 
@@ -80,9 +82,7 @@ void KaduMainWindow::writeToolBarsToConfig(const QString &prefix)
 		realPrefix = prefix + "_";
 
 	QDomElement toolbarsConfig = xml_config_file->findElement(xml_config_file->rootElement(), "Toolbars");
-	if (!toolbarsConfig.isNull())
-		xml_config_file->removeChildren(toolbarsConfig);
-	else
+	if (toolbarsConfig.isNull())
 		toolbarsConfig = xml_config_file->createElement(xml_config_file->rootElement(), "ToolBar");
 
 	writeToolBarsToConfig(toolbarsConfig, realPrefix + "topDockArea", Qt::TopToolBarArea);

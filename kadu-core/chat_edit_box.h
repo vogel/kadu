@@ -10,11 +10,11 @@
 #ifndef CHAT_EDIT_BOX_H
 #define CHAT_EDIT_BOX_H
 
-#include <QMainWindow>
+#include <kadu_main_window.h>
 
 class CustomInput;
 
-class ChatEditBox : public QMainWindow
+class ChatEditBox : public KaduMainWindow
 {
 	Q_OBJECT
 
