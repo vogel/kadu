@@ -253,7 +253,7 @@ void ChatManager::autoSendActionActivated(QWidget *parent, bool toggled)
 {
 	kdebugf();
 
-	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent);
+	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent->parent()->parent());
 	if (chatWidget)
 	{
 		chatWidget->setAutoSend(toggled);
@@ -268,7 +268,7 @@ void ChatManager::clearActionActivated(QWidget *parent, bool toggled)
 {
 	kdebugf();
 
-	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent);
+	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent->parent()->parent());
 	if (chatWidget)
 		chatWidget->clearChatWindow();
 
@@ -278,7 +278,7 @@ void ChatManager::clearActionActivated(QWidget *parent, bool toggled)
 void ChatManager::insertImageActionActivated(QWidget *parent, bool toggled)
 {
 	kdebugf();
-	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent);
+	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent->parent()->parent());
 	if (chatWidget)
 		chatWidget->insertImage();
 	kdebugf2();
@@ -287,7 +287,7 @@ void ChatManager::insertImageActionActivated(QWidget *parent, bool toggled)
 void ChatManager::boldActionActivated(QWidget *parent, bool toggled)
 {
 	kdebugf();
-	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent);
+	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent->parent()->parent());
 	if (chatWidget)
 		chatWidget->edit()->setBold(toggled);
 	kdebugf2();
@@ -296,7 +296,7 @@ void ChatManager::boldActionActivated(QWidget *parent, bool toggled)
 void ChatManager::italicActionActivated(QWidget *parent, bool toggled)
 {
 	kdebugf();
-	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent);
+	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent->parent()->parent());
 	if (chatWidget)
 		chatWidget->edit()->setItalic(toggled);
 	kdebugf2();
@@ -305,7 +305,7 @@ void ChatManager::italicActionActivated(QWidget *parent, bool toggled)
 void ChatManager::underlineActionActivated(QWidget *parent, bool toggled)
 {
 	kdebugf();
-	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent);
+	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent->parent()->parent());
 	if (chatWidget)
 		chatWidget->edit()->setUnderline(toggled);
 	kdebugf2();
@@ -314,7 +314,7 @@ void ChatManager::underlineActionActivated(QWidget *parent, bool toggled)
 void ChatManager::sendActionActivated(QWidget *parent, bool toggled)
 {
 	kdebugf();
-	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent);
+	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent->parent()->parent());
 	if (chatWidget)
 		if (chatWidget->waitingForACK())
 			chatWidget->cancelMessage();
