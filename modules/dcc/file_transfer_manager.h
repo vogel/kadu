@@ -17,6 +17,7 @@
 #include "dcc_handler.h"
 #include "file_transfer.h"
 
+class ActionDescription;
 class ChatWidget;
 
 class FileTransferWindow;
@@ -24,6 +25,8 @@ class FileTransferWindow;
 class FileTransferManager : public QObject, DccHandler
 {
 	Q_OBJECT
+
+	ActionDescription *sendFileActionDescription;
 
 	FileTransferWindow *fileTransferWindow;
 	int toggleFileTransferWindowMenuId;
@@ -47,7 +50,7 @@ private slots:
 	void fileDropped(const UserGroup *group, const QString &);
 
 	void toggleFileTransferWindow();
-	void sendFileActionActivated(const UserGroup* users);
+	void sendFileActionActivated(QWidget *parent, bool toggled);
 
 	void transferDestroyed(QObject *transfer);
 

@@ -41,6 +41,16 @@ class ChatManager : public QObject, ConfigurationAwareObject
 
 	ActionDescription *autoSendActionDescription;
 	ActionDescription *clearChatActionDescription;
+	ActionDescription *insertImageActionDescription;
+	ActionDescription *boldActionDescription;
+	ActionDescription *italicActionDescription;
+	ActionDescription *underlineActionDescription;
+	ActionDescription *sendActionDescription;
+	ActionDescription *whoisActionDescription;
+	ActionDescription *ignoreUserActionDescription;
+	ActionDescription *blockUserActionDescription;
+	ActionDescription *chatActionDescription;
+	ActionDescription *openChatWithActionDescription;
 
 	private:
 		ChatList ChatWidgets; /*!< lista okien*/
@@ -64,19 +74,19 @@ class ChatManager : public QObject, ConfigurationAwareObject
 	private slots:
 		void autoSendActionActivated(QWidget *parent, bool toggled);
 		void clearActionActivated(QWidget *parent, bool toggled);
+		void insertImageActionActivated(QWidget *, bool);
+		void boldActionActivated(QWidget *, bool);
+		void italicActionActivated(QWidget *, bool);
+		void underlineActionActivated(QWidget *, bool);
+		void sendActionActivated(QWidget *, bool);
+		void whoisActionActivated(QWidget *, bool);
+		void ignoreUserActionActivated(QWidget *, bool);
+		void blockUserActionActivated(QWidget *, bool);
+		void chatActionActivated(QWidget *, bool);
 /*
-		void boldActionActivated(const UserGroup* users, const QWidget* source, bool is_on);
-		void italicActionActivated(const UserGroup* users, const QWidget* source, bool is_on);
-		void underlineActionActivated(const UserGroup* users, const QWidget* source, bool is_on);
 		void colorActionActivated(const UserGroup* users, const QWidget* source);
 		void insertEmoticonActionActivated(const UserGroup* users, const QWidget* source);
-		void insertEmoticonActionAddedToToolbar(const UserGroup*, ToolButton* button, ToolBar* toolbar);
-		void whoisActionActivated(const UserGroup* users);
-		void ignoreUserActionActivated(const UserGroup* users);
-		void blockUserActionActivated(const UserGroup* users);
-		void insertImageActionActivated(const UserGroup* users);
-		void sendActionActivated(const UserGroup* users);
-		void chatActionActivated(const UserGroup* users);*/
+		void insertEmoticonActionAddedToToolbar(const UserGroup*, ToolButton* button, ToolBar* toolbar);*/
 
 	protected:
 		virtual void configurationUpdated();

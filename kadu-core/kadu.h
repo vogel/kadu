@@ -158,6 +158,7 @@ class Kadu : public KaduMainWindow, ConfigurationAwareObject, public ActionWindo
 
 		virtual bool supportsActionType(ActionDescription::ActionType type) { return type == ActionDescription::TypeGlobal; }
 		virtual UserBox * getUserBox() { return Userbox; }
+		virtual UserListElements getUserListElements();
 
 		const UserListElement & myself() { return Myself; };
 

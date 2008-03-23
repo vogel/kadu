@@ -822,6 +822,11 @@ CustomInput* ChatWidget::edit()
 	return Edit->inputBox();
 }
 
+UserBox* ChatWidget::getUserbox()
+{
+	return userbox;
+}
+
 bool ChatWidget::autoSend() const
 {
 	return AutoSend;

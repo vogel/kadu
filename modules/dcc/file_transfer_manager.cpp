@@ -46,10 +46,11 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 	connect(UserBox::userboxmenu,SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(kaduKeyPressed(QKeyEvent *)));
 
-	//póki nie dzia³aj± akcje
-	/*KaduAction* send_file_action = new KaduAction("SendFile", tr("Send file"), "sendFileAction", KaduAction::TypeUser);
-	connect(send_file_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-		this, SLOT(sendFileActionActivated(const UserGroup*)));*/
+	sendFileActionDescription = new ActionDescription(
+		ActionDescription::TypeUser, "sendFileAction",
+		this, SLOT(sendFileDirectoryActionActivated(QWidget *, bool)),
+		"SendFile", tr("Send file")
+	);
 
 	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 	connect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroying(ChatWidget*)));
@@ -86,9 +87,7 @@ FileTransferManager::~FileTransferManager()
 	disconnect(UserBox::userboxmenu,SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
 	disconnect(kadu, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(kaduKeyPressed(QKeyEvent*)));
 
-	//póki nie dzia³aj± akcje
-	/*Action *sendFileAction = KaduActions["sendFileAction"];
-	delete sendFileAction;*/
+	delete sendFileActionDescription;
 
 	dcc_manager->removeHandler(this);
 
@@ -202,12 +201,17 @@ void FileTransferManager::sendFile()
 	kdebugf2();
 }
 
-void FileTransferManager::sendFileActionActivated(const UserGroup* users)
+void FileTransferManager::sendFileActionActivated(QWidget *parent, bool toggled)
 {
 	kdebugf();
 
-	if (users->count())
-		sendFile(users->toUserListElements());
+	ActionWindow *window = dynamic_cast<ActionWindow *>(parent);
+	if (!window)
+		return;
+
+	UserListElements users = window->getUserListElements();
+	if (users.count())
+		sendFile(users);
 
 	kdebugf2();
 }

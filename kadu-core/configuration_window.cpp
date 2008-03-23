@@ -281,6 +281,7 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 	sectionsListWidget = new QListWidget;
 	sectionsListWidget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
  	sectionsListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	sectionsListWidget->setIconSize(QSize(32,32));
 	connect(sectionsListWidget, SIGNAL(currentTextChanged(const QString &)), this, SLOT(changeSection(const QString &)));
 	left_layout->addWidget(sectionsListWidget);
 	left->setLayout(left_layout);

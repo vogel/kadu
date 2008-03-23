@@ -10,6 +10,7 @@
 #include <QDomElement>
 
 #include "config_file.h"
+#include "chat_widget.h"
 #include "custom_input.h"
 #include "toolbar.h"
 
@@ -41,4 +42,27 @@ ChatEditBox::~ChatEditBox()
 CustomInput * ChatEditBox::inputBox()
 {
 	return InputBox;
+}
+
+bool ChatEditBox::supportsActionType(ActionDescription::ActionType type)
+{
+	return (type == ActionDescription::TypeGlobal || type == ActionDescription::TypeChat || type == ActionDescription::TypeUser);
+}
+UserBox* ChatEditBox::getUserBox()
+{
+	//It's stupid
+	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent()->parent());
+	if (chatWidget)
+		if (chatWidget->users()->count() > 1)
+			return chatWidget->getUserbox();
+	return NULL;
+}
+
+UserListElements ChatEditBox::getUserListElements()
+{
+	//It's stupid
+	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent()->parent());
+	if (chatWidget)
+		return chatWidget->users()->toUserListElements();
+	return UserListElements();
 }

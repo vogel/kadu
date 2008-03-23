@@ -309,6 +309,8 @@ Kadu::Kadu(QWidget *parent)
 		this, SLOT(editUserActionActivated(QWidget *, bool)),
 		"EditUserInfo", tr("Contact data")
 	);
+//	connect(edit_user_action, SIGNAL(addedToToolbar(const UserGroup*, ToolButton*, ToolBar*)),
+//		this, SLOT(editUserActionAddedToToolbar(const UserGroup*)));
 
 	addUserActionDescription = new ActionDescription(
 		ActionDescription::TypeGlobal, "addUserAction",
@@ -321,23 +323,6 @@ Kadu::Kadu(QWidget *parent)
 		this, SLOT(searchInDirectoryActionActivated(QWidget *, bool)),
 		"LookupUserInfo", tr("Search user in directory")
 	);
-
-/*
-	Action* edit_user_action = new Action("EditUserInfo", tr("Contact data"),
-		"editUserAction", Action::TypeUser);
-	connect(edit_user_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-		this, SLOT(editUserActionActivated(const UserGroup*)));
-	connect(edit_user_action, SIGNAL(addedToToolbar(const UserGroup*, ToolButton*, ToolBar*)),
-		this, SLOT(editUserActionAddedToToolbar(const UserGroup*)));
-
-	Action* add_user_action = new Action("AddUser", tr("Add user"), "addUserAction", Action::TypeGlobal);
-	connect(add_user_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-		this, SLOT(addUserActionActivated(const UserGroup*)));
-
-	Action* open_search_action = new Action("LookupUserInfo", tr("Search user in directory"),
-		"openSearchAction", Action::TypeGlobal);
-	connect(open_search_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-		this, SLOT(searchInDirectory()));*/
 
 /*	TODO: port this.
 	Action* open_status_action = new Action("Offline", tr("Change status"), "openStatusAction", Action::TypeGlobal);
@@ -769,28 +754,34 @@ void Kadu::editUserActionActivated(QWidget *parent, bool toggled)
 {
 	kdebugf();
 
-	// UserBoxContainer ??
-	// UserListProvider ??
-	Kadu *kadu = dynamic_cast<Kadu *>(parent);
-	if (kadu)
-	{
-		UserListElements selectedUsers = kadu->Userbox->selectedUsers();
-		if (selectedUsers.count() == 1)
+	ActionWindow *window = dynamic_cast<ActionWindow *>(parent);
+	if (!window)
+		return;
+	
+	UserListElements selectedUsers = window->getUserListElements();
+	
+	if (selectedUsers.count() == 1)
 			(new UserInfo(*selectedUsers.begin(), kadu, "user_info"))->show();
-	}
-
-		
+			
 	kdebugf2();
 }
 
 void Kadu::addUserActionActivated(QWidget *parent, bool toggled)
 {
-// 	kdebugf();
-// 	if ((users != NULL) && (users->count() == 1) && (*users->begin()).isAnonymous())
-// 		(new UserInfo(*users->begin(), kadu, "add_user"))->show();
-// 	else
-// 		(new UserInfo(UserListElement(), kadu, "add_user"))->show();
-// 	kdebugf2();
+ 	kdebugf();
+	ActionWindow *window = dynamic_cast<ActionWindow *>(parent);
+	if (!window)
+	{	
+		UserListElements selectedUsers = window->getUserListElements();
+ 		if ((selectedUsers.count() == 1) && (selectedUsers[1].isAnonymous()))
+		{
+ 			(new UserInfo(selectedUsers[1], kadu, "add_user"))->show();
+			return;
+		}
+	}
+	(new UserInfo(UserListElement(), kadu, "add_user"))->show();
+
+ 	kdebugf2();
 }
 
 void Kadu::openChatWith()
@@ -1703,6 +1694,11 @@ KaduTabBar* Kadu::groupBar() const
 UserBox* Kadu::userbox() const
 {
 	return Userbox;
+}
+
+UserListElements Kadu::getUserListElements()
+{
+	return Userbox->selectedUsers();
 }
 
 void Kadu::setDocked(bool docked, bool dontHideOnClose1)

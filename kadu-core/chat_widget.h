@@ -199,6 +199,12 @@ public:
 	CustomInput* edit();
 
 	/**
+		\fn UserBox* userbox()
+		Zwraca wska¼nik do userboxa konferencji, je¶li on istnieje
+	**/
+	UserBox* getUserbox();
+
+	/**
 		\fn bool autoSend() const
 		Zwraca warto¶æ okre¶laj±c±, czy Return powoduje
 		wys³anie wiadomo¶ci.

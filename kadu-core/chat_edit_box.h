@@ -10,11 +10,12 @@
 #ifndef CHAT_EDIT_BOX_H
 #define CHAT_EDIT_BOX_H
 
+#include <action.h>
 #include <kadu_main_window.h>
 
 class CustomInput;
 
-class ChatEditBox : public KaduMainWindow
+class ChatEditBox : public KaduMainWindow, public ActionWindow
 {
 	Q_OBJECT
 
@@ -26,6 +27,11 @@ public:
 
 	// TODO: remove?
 	CustomInput * inputBox();
+
+	virtual bool supportsActionType(ActionDescription::ActionType type);
+	virtual UserBox * getUserBox();
+	virtual UserListElements getUserListElements();
+
 
 };
 
