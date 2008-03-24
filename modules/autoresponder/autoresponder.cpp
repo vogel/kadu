@@ -6,6 +6,10 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
+#include <QToolTip>
+#include <QApplication>
+
 #include "autoresponder.h"
 #include "chat_widget.h"
 #include "chat_manager.h"

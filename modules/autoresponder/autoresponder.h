@@ -1,7 +1,8 @@
 #ifndef AUTORESPONDER_H
 #define AUTORESPONDER_H
 
-#include <qobject.h>
+#include <QObject>
+#include <QList>
 
 #include "config_file.h"
 #include "configuration_aware_object.h"
@@ -21,7 +22,7 @@ class AutoResponder : public ConfigurationUiHandler, ConfigurationAwareObject
 	Q_OBJECT
 
 	private:
-		QValueList<UserListElements> repliedUsers; /*!< uiny osób, którym ju¿ odpowiedziano */
+		QList<UserListElements> repliedUsers; /*!< uiny osób, którym ju¿ odpowiedziano */
 
 		QString autotext; /*!< tre¶æ automatycznej odpowiedzi */
 
