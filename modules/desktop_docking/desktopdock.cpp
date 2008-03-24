@@ -4,13 +4,13 @@
  *  the Free Software Foundation; either version 2 of the License, or
  *  (at your option) any later version.
  */
-#include <qapplication.h>
-#include <qbitmap.h>
-#include <qtooltip.h>
-#include <qcheckbox.h>
-#include <qdesktopwidget.h>
-#include <qpopupmenu.h>
-#include <qspinbox.h>
+#include <QApplication>
+#include <QBitmap>
+#include <QToolTip>
+#include <QCheckBox>
+#include <QDesktopWidget>
+#include <QMenu>
+#include <QSpinBox>
 
 #include "../docking/docking.h"
 
@@ -46,15 +46,20 @@ extern "C" void desktop_docking_close()
 }
 
 DesktopDockWindow::DesktopDockWindow(QWidget *parent, char *name)
-	: QLabel(parent, name, WMouseNoMask | WRepaintNoErase | WType_TopLevel | WStyle_Customize | WStyle_NoBorder | WStyle_StaysOnTop | WX11BypassWM),
+	: QLabel(parent, name, Qt::WMouseNoMask | Qt::WRepaintNoErase | Qt::WType_TopLevel |  Qt::WStyle_Customize | Qt::WStyle_NoBorder | Qt::WStyle_StaysOnTop | Qt::WX11BypassWM),
 		isMoving(false)
 {
-	QPixmap desktopDockPixmap = docking_manager->defaultPixmap();
+	QIcon desktopDockIcon = docking_manager->defaultPixmap();
 	configurationUpdated();
 	setMouseTracking(true);
 
-	setPixmap(desktopDockPixmap);
-	resize(desktopDockPixmap.size());
+	setPixmap(desktopDockIcon.pixmap(128, 128));
+	resize(pixmap()->size());
+
+	if (config_file.readBoolEntry("Desktop Dock", "DockingTransparency"))
+		setPaletteBackgroundColor(Qt::transparent);
+	else
+		setPaletteBackgroundColor(config_file.readColorEntry("Desktop Dock", "DockingColor"));
 
 	update();
 	show();
@@ -66,7 +71,6 @@ DesktopDockWindow::~DesktopDockWindow()
 
 void DesktopDockWindow::configurationUpdated()
 {
-	setAutoMask(config_file.readBoolEntry("Desktop Dock", "DockingTransparency"));
 	QPoint pos(config_file.readNumEntry("Desktop Dock", "PositionX"), config_file.readNumEntry("Desktop Dock", "PositionY"));
 	if (!config_file.readBoolEntry("Desktop Dock", "DockingTransparency"))
 		setPaletteBackgroundColor(config_file.readColorEntry("Desktop Dock", "DockingColor"));
@@ -114,7 +118,7 @@ DesktopDock::DesktopDock()
 // fullDesktop->height() - DesktopDockPixmap.size().height(), 1, 0,
 
 	connect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setToolTip(const QString&)));
-	connect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&, const QString &)), this,  SLOT(setPixmap(const QPixmap&, const QString &)));
+	connect(docking_manager, SIGNAL(trayPixmapChanged(const QIcon&, const QString &)), this,  SLOT(setPixmap(const QIcon&, const QString &)));
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 	connect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), this, SLOT(setTrayMovie(const QMovie &)));
 
@@ -139,7 +143,7 @@ DesktopDock::~DesktopDock()
 
 	disconnect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), this, SLOT(setTrayMovie(const QMovie &)));
 	disconnect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setToolTip(const QString&)));
-	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap&, const QString &)), this, SLOT(setPixmap(const QPixmap&, const QString &)));
+	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QIcon&, const QString &)), this, SLOT(setPixmap(const QIcon&, const QString &)));
 	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 
 	docking_manager->setDocked(false);
@@ -174,14 +178,13 @@ void DesktopDock::configurationUpdated()
 	desktopDock->move(pos);
 	if (config_file.readBoolEntry("Desktop Dock", "DockingTransparency"))
 	{
-		desktopDock->setAutoMask(true);
+		desktopDock->setPaletteBackgroundColor(Qt::transparent); /* ustawia kolor tla */
 		desktopDock->close();
 		desktopDock->show();
 	}
 	else
 	{
 		desktopDock->setPaletteBackgroundColor(config_file.readColorEntry("Desktop Dock", "DockingColor"));	/* ustawia kolor tla */
-		desktopDock->setAutoMask(false);
 		desktopDock->repaint();
 	}
 	kdebugf2();
@@ -192,16 +195,16 @@ void DesktopDock::setToolTip(const QString& statusText)
 	QToolTip::add(desktopDock, statusText);
 }
 
-void DesktopDock::setPixmap(const QPixmap& DockPixmap, const QString & /*iconName*/)
+void DesktopDock::setPixmap(const QIcon& DockIcon, const QString & /*iconName*/)
 {
-	desktopDock->setPixmap(DockPixmap);
+	desktopDock->setPixmap(DockIcon.pixmap(128,128));
 	desktopDock->repaint();
 	desktopDock->setMask(desktopDock->pixmap()->createHeuristicMask(false));
 }
 
 void DesktopDock::setTrayMovie(const QMovie &movie)
 {
-	desktopDock->setMovie(movie);
+	desktopDock->setMovie((QMovie *)&movie);
 	desktopDock->repaint();
 }
 
@@ -229,8 +232,8 @@ void DesktopDock::droppedOnDesktop(const QPoint& pos) 	/* nacisniecie przycisku 
 	else
 		posY = pos.y();
 
-	config_file.writeEntry("Desktop Dock", "PositionX", posX);
-	config_file.writeEntry("Desktop Dock", "PositionY", posY);
+	xSpinBox->setValue(posX);
+	ySpinBox->setValue(posY);
 }
 
 void DesktopDock::updateMenu(bool b)

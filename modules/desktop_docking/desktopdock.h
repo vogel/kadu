@@ -1,8 +1,8 @@
 #ifndef DESKTOPDOCK_H
 #define DESKTOPDOCK_H
 
-#include <qpixmap.h>
-#include <qlabel.h>
+#include <QPixmap>
+#include <QLabel>
 
 #include "configuration_aware_object.h"
 #include "main_configuration_window.h"
@@ -58,7 +58,7 @@ protected:
 
 private slots:
 	void setToolTip(const QString &statusText);
-	void setPixmap(const QPixmap &DockPixmap, const QString &iconName);
+	void setPixmap(const QIcon &DockIcon, const QString &iconName);
 	void setTrayMovie(const QMovie &movie);
 	void findTrayPosition(QPoint &DockPoint);
 	void droppedOnDesktop(const QPoint &);
