@@ -7,8 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qlabel.h>
-#include <qspinbox.h>
+#include <QLabel>
+#include <QSpinBox>
+#include <QList>
+#include <QHBoxLayout>
 
 #include "advanced_userlist.h"
 #include "config_file.h"
@@ -58,7 +60,7 @@ AdvancedUserList::AdvancedUserList()
 	connect(userlist, SIGNAL(userAdded(UserListElement, bool, bool)),
 			this,       SLOT(userAdded(UserListElement, bool, bool)));
 
-	const QValueList<UserBox *> &userboxes = UserBox::userboxes();
+	const QList<UserBox *> &userboxes = UserBox::userboxes();
 	CONST_FOREACH(userbox, userboxes)
 		userboxCreated(*userbox);
 	connect(&UserBox::createNotifier, SIGNAL(objectCreated(QObject *)), this, SLOT(userboxCreated(QObject *)));
@@ -76,7 +78,7 @@ AdvancedUserList::~AdvancedUserList()
 
 	disconnect(userlist, SIGNAL(userAdded(UserListElement, bool, bool)),
 				this,      SLOT(userAdded(UserListElement, bool, bool)));
-	const QValueList<UserBox *> &userboxes = UserBox::userboxes();
+	const QList<UserBox *> &userboxes = UserBox::userboxes();
 	CONST_FOREACH(userbox, userboxes)
 	{
 		(*userbox)->removeCompareFunction("Priority");
@@ -136,7 +138,8 @@ void AdvancedUserList::updateClicked(UserInfo *info)
 
 void AdvancedUserList::onUpButton()
 {
-	unsigned int index = sortingListBox->currentItem();
+	int index = sortingListBox->currentRow();
+	QListWidgetItem *item = sortingListBox->currentItem();
 	if (index == 0)
 		return;
 
@@ -144,15 +147,15 @@ void AdvancedUserList::onUpButton()
 	newOrder[index] = newOrder[index - 1];
 	newOrder[index - 1] = removed;
 
-	QString text = sortingListBox->text(index);
-	sortingListBox->removeItem(index);
-	sortingListBox->insertItem(text, --index);
-	sortingListBox->setSelected(sortingListBox->findItem(text), true);
+	sortingListBox->removeItemWidget(item);
+	sortingListBox->insertItem(index - 1, item);
+	sortingListBox->setCurrentItem(item);
 }
 
 void AdvancedUserList::onDownButton()
 {
-	unsigned int index = sortingListBox->currentItem();
+	int index = sortingListBox->currentRow();
+	QListWidgetItem *item = sortingListBox->currentItem();
 	if (index == sortingListBox->count() - 1)
 		return;
 
@@ -160,31 +163,30 @@ void AdvancedUserList::onDownButton()
 	newOrder[index] = newOrder[index + 1];
 	newOrder[index + 1] = removed;
 
-	QString text = sortingListBox->text(index);
-	sortingListBox->removeItem(index);
-	sortingListBox->insertItem(text, ++index);
-	sortingListBox->setSelected(sortingListBox->findItem(text), true);
+	sortingListBox->removeItemWidget(item);
+	sortingListBox->insertItem(index + 1, item);
+	sortingListBox->setCurrentItem(item);
 }
 
 void AdvancedUserList::displayFunctionList()
 {
 	kdebugf();
-	QValueList <UserBox::CmpFuncDesc> cmpFuns = kadu->userbox()->compareFunctions();
-	QString selected = sortingListBox->currentText();
+	QList <UserBox::CmpFuncDesc> cmpFuns = kadu->userbox()->compareFunctions();
+	QListWidgetItem *selected = sortingListBox->currentItem();
 
 	sortingListBox->clear();
 	CONST_FOREACH(id, order)
 		CONST_FOREACH(fun, cmpFuns)
 			if ((*id) == (*fun).id)
 			{
-				sortingListBox->insertItem((*fun).description);
+				sortingListBox->addItem((*fun).description);
 				break;
 			}
 
-	if (selected.isEmpty())
-		sortingListBox->setSelected(0, true);
+	if (selected)
+		sortingListBox->setCurrentRow(0);
 	else
-		sortingListBox->setSelected(sortingListBox->findItem(selected, Qt::ExactMatch), true);
+		sortingListBox->setCurrentItem(selected);
 
 	kdebugf2();
 }
@@ -194,12 +196,12 @@ void AdvancedUserList::mainConfigurationWindowCreated(MainConfigurationWindow *m
 	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
 
 	ConfigGroupBox *sortingGroupBox = mainConfigurationWindow->configGroupBox("Look", "Userbox", "Sorting");
-	QHBox *sortingHBox = new QHBox(sortingGroupBox->widget());
+	QHBoxLayout *sortingHBox = new QHBoxLayout(sortingGroupBox->widget());
 	sortingHBox->setSpacing(5);
 
-	sortingListBox = new QListBox(sortingHBox);
+	sortingListBox = new QListWidget(sortingHBox->widget());
 
-	QWidget *buttons = new QWidget(sortingHBox);
+	QWidget *buttons = new QWidget(sortingHBox->widget());
 	QVBoxLayout *buttonsLayout = new QVBoxLayout(buttons);
 	buttonsLayout->setSpacing(5);
 
@@ -213,7 +215,7 @@ void AdvancedUserList::mainConfigurationWindowCreated(MainConfigurationWindow *m
 	connect(up, SIGNAL(clicked()), this, SLOT(onUpButton()));
 	connect(down, SIGNAL(clicked()), this, SLOT(onDownButton()));
 
-	sortingGroupBox->addWidgets(new QLabel(tr("Sorting functions") + ":", sortingGroupBox->widget()), sortingHBox);
+	sortingGroupBox->addWidgets(new QLabel(tr("Sorting functions") + ":", sortingGroupBox->widget()), sortingHBox->widget());
 
 	newOrder = order;
 	displayFunctionList();
@@ -226,7 +228,7 @@ void AdvancedUserList::configurationWindowApplied()
 	order = newOrder;
 	config_file.writeEntry("AdvUserList", "Order", order.join(","));
 
-	const QValueList<UserBox *> &userboxes = UserBox::userboxes();
+	const QList<UserBox *> &userboxes = UserBox::userboxes();
 	CONST_FOREACH(userbox, userboxes)
 		userboxCreated(*userbox);
 

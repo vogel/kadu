@@ -10,6 +10,9 @@
 #ifndef ADVANCED_USERLIST_H
 #define ADVANCED_USERLIST_H
 
+#include <QListWidget>
+#include <QStringList>
+
 #include "main_configuration_window.h"
 #include "userlistelement.h"
 
@@ -19,7 +22,7 @@ class AdvancedUserList : public ConfigurationUiHandler
 {
 	Q_OBJECT
 
-	QListBox *sortingListBox;
+	QListWidget *sortingListBox;
 	QStringList order, newOrder;
 
 	void displayFunctionList();
