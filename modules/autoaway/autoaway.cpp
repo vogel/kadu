@@ -7,16 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qapplication.h>
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qcursor.h>
-#include <qfile.h>
-#include <qhgroupbox.h>
-#include <qspinbox.h>
-#include <qtextstream.h>
-
-#include <string.h>
+#include <QApplication>
+#include <QCheckBox>
+#include <QSpinBox>
 
 #include "autoaway.h"
 #include "config_file.h"
