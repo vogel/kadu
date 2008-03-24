@@ -48,21 +48,24 @@ bool ChatEditBox::supportsActionType(ActionDescription::ActionType type)
 {
 	return (type == ActionDescription::TypeGlobal || type == ActionDescription::TypeChat || type == ActionDescription::TypeUser);
 }
-UserBox* ChatEditBox::getUserBox()
+
+UserBox * ChatEditBox::getUserBox()
 {
-	//It's stupid
+	// TODO: It's stupid
 	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent()->parent());
 	if (chatWidget)
 		if (chatWidget->users()->count() > 1)
 			return chatWidget->getUserbox();
-	return NULL;
+
+	return 0;
 }
 
 UserListElements ChatEditBox::getUserListElements()
 {
-	//It's stupid
+	// TODO: It's stupid
 	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent()->parent());
 	if (chatWidget)
 		return chatWidget->users()->toUserListElements();
+
 	return UserListElements();
 }

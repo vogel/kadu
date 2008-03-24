@@ -96,6 +96,7 @@ class ActionWindow
 public:
 	ActionWindow() {};
 	virtual ~ActionWindow() {};
+
 	virtual bool supportsActionType(ActionDescription::ActionType type) = 0;
 	virtual UserBox * getUserBox() = 0;
 	virtual UserListElements getUserListElements() = 0;

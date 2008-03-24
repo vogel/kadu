@@ -32,7 +32,6 @@ public:
 	virtual UserBox * getUserBox();
 	virtual UserListElements getUserListElements();
 
-
 };
 
 #endif // CHAT_EDIT_BOX_H

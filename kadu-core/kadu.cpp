@@ -272,32 +272,6 @@ Kadu::Kadu(QWidget *parent)
 		true, tr("Show all users")
 	);
 
-/*
-	Action* inact_users_action = new Action("ShowHideInactiveUsers",
-		tr("Hide offline users"), "inactiveUsersAction", Action::TypeUserList);
-	inact_users_action->setOnShape("ShowHideInactiveUsers_off", tr("Show offline users"));
-	inact_users_action->setCheckable(true);
-	inact_users_action->setAllOn(!config_file.readBoolEntry("General", "ShowOffline"));
-	connect(inact_users_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-		this, SLOT(inactiveUsersActionActivated()));
-
-	Action* desc_users_action = new Action("ShowOnlyDescriptionUsers",
-		tr("Hide users without description"), "descriptionUsersAction", Action::TypeUserList);
-	desc_users_action->setOnShape("ShowOnlyDescriptionUsers_off", tr("Show users without description"));
-	desc_users_action->setCheckable(true);
-	desc_users_action->setAllOn(!config_file.readBoolEntry("General", "ShowWithoutDescription"));
-	connect(desc_users_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-		this, SLOT(descriptionUsersActionActivated()));
-
-	Action* onlineAndDesc_users_action = new Action("ShowOnlineAndDescriptionUsers",
-		tr("Show only online and description users"), "onlineAndDescriptionUsersAction", Action::TypeUserList);
-	onlineAndDesc_users_action->setOnShape("ShowOnlineAndDescriptionUsers_off", tr("Show all users"));
-	onlineAndDesc_users_action->setCheckable(true);
-	onlineAndDesc_users_action->setAllOn(config_file.readBoolEntry("General", "ShowOnlineAndDescription"));
-	connect(onlineAndDesc_users_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-		this, SLOT(onlineAndDescUsersActionActivated()));
-*/
-
 	configurationActionDescription = new ActionDescription(
 		ActionDescription::TypeGlobal, "configurationAction",
 		this, SLOT(configurationActionActivated(QWidget *, bool)),
@@ -309,8 +283,6 @@ Kadu::Kadu(QWidget *parent)
 		this, SLOT(editUserActionActivated(QWidget *, bool)),
 		"EditUserInfo", tr("Contact data")
 	);
-//	connect(edit_user_action, SIGNAL(addedToToolbar(const UserGroup*, ToolButton*, ToolBar*)),
-//		this, SLOT(editUserActionAddedToToolbar(const UserGroup*)));
 
 	addUserActionDescription = new ActionDescription(
 		ActionDescription::TypeGlobal, "addUserAction",

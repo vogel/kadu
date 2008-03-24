@@ -96,43 +96,12 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 		vertSplit->addWidget(body);
 	}
 
-// 	Q3VBox *downpart = new Q3VBox(vertSplit, "downpartBox");
-// 	Q3HBox *edtbuttontray = new Q3HBox(downpart, "edtbuttontrayBox");
-
-// 	vertSplit->setResizeMode(downpart, QSplitter::KeepSize);
-
-// 	if (config_file.readBoolEntry("Chat", "ShowEditWindowLabel", true))
-// 	{
-// 		QLabel *edt = new QLabel(tr("Edit window:"), edtbuttontray, "editLabel");
-// 		edt->setToolTip(tr("This is where you type in the text to be sent"));
-// 		edtbuttontray->setStretchFactor(edt, 1);
-// 	}
-/*
-	DockArea* buttontray = new DockArea(Qt::Horizontal, DockArea::Normal, edtbuttontray,
-		"chatMiddleDockArea", ActionDescription::TypeGlobal | ActionDescription::TypeUser | ActionDescription::TypeChat);
-	connect(buttontray, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
-		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
-	// TODO: fix this workaround
-	connect(buttontray, SIGNAL(toolbarAttached()),
-		this, SLOT(editTextChanged()));
-	buttontray->setMinimumHeight(minimumDockAreaSize);
-	edtbuttontray->setStretchFactor(buttontray, 50);*/
-
 	Edit = new ChatEditBox(this);
 	vertSplit->addWidget(Edit);
 
 	connect(Edit->inputBox(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)), this, SLOT(keyPressedSlot(QKeyEvent *, CustomInput *, bool &)));
 
 	setFocusProxy(Edit);
-/*
-	DockArea* btnpart = new DockArea(Qt::Horizontal, DockArea::Normal, downpart,
-		"chatBottomDockArea", ActionDescription::TypeGlobal | ActionDescription::TypeUser | ActionDescription::TypeChat);
-	connect(btnpart, SIGNAL(selectedUsersNeeded(const UserGroup*&)),
-		this, SLOT(selectedUsersNeeded(const UserGroup*&)));
-	// TODO: fix this workaround
-	connect(btnpart, SIGNAL(toolbarAttached()),
-		this, SLOT(editTextChanged()));
-	btnpart->setMinimumHeight(minimumDockAreaSize);*/
 
 	QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Return + Qt::CTRL), this);
 	connect(shortcut, SIGNAL(activated()), this, SLOT(sendMessage()));
@@ -142,47 +111,6 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 
 	shortcut = new QShortcut(QKeySequence(Qt::Key_PageDown + Qt::SHIFT), this);
 	connect(shortcut, SIGNAL(activated()), body, SLOT(pageDown()));
-/*
-	topDockArea->loadFromConfig(this);
-	leftDockArea->loadFromConfig(this);
-	rightDockArea->loadFromConfig(this);*/
-/*
-	if (userbox)
-	{
-		connect(userbox, SIGNAL(selectionChanged()), topDockArea, SLOT(usersChangedSlot()));
-		connect(userbox, SIGNAL(selectionChanged()), rightDockArea, SLOT(usersChangedSlot()));
-		connect(userbox, SIGNAL(selectionChanged()), leftDockArea, SLOT(usersChangedSlot()));
-		connect(userbox, SIGNAL(selectionChanged()), buttontray, SLOT(usersChangedSlot()));
-		connect(userbox, SIGNAL(selectionChanged()), btnpart, SLOT(usersChangedSlot()));
-	}*/
-
-// 	if (!buttontray->loadFromConfig(this))
-// 	{
-		// TOOLBAR 1
-// 		ToolBar* tb1 = new ToolBar(this);
-// 		tb1->setOffset(10000);
-// 		tb1->show();
-// 		buttontray->moveDockWindow(tb1);
-// 		buttontray->setAcceptDockWindow(tb1, true);
-// 		tb1->loadDefault();
-// 	}
-
-// 	if (!btnpart->loadFromConfig(this))
-// 	{
-		// TOOLBAR2
-// 		ToolBar* tb2 = new ToolBar(this);
-// 		tb2->show();
-// 		btnpart->moveDockWindow(tb2);
-// 		btnpart->setAcceptDockWindow(tb2, true);
-// 		tb2->loadDefault();
-		// TOOLBAR 3
-// 		ToolBar* tb3 = new ToolBar(this);
-// 		tb3->setOffset(10000);
-// 		tb3->show();
-// 		btnpart->moveDockWindow(tb3);
-// 		btnpart->setAcceptDockWindow(tb3, true);
-// 		tb3->loadDefault();
-// 	}
 
 // 	Edit->setMimeSourceFactory(bodyformat);
 
@@ -204,41 +132,6 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	Edit->installEventFilter(this);
 
 	configurationUpdated();
-
-
-	kdebugf();
-
-	const QString &configName = "topDockArea";
-	Qt::ToolBarArea area = Qt::TopToolBarArea;
-
-	QDomElement root_elem = xml_config_file->rootElement();
-	QDomElement toolbars_elem = xml_config_file->findElement(root_elem, "Toolbars");
-
-	if (toolbars_elem.isNull())
-		return;
-
-// 	setBlockToolbars(toolbars_elem.attribute("blocked").toInt());
-
-	QDomElement dockarea_elem = xml_config_file->findElementByProperty(toolbars_elem, "DockArea", "name", configName);
-	if (dockarea_elem.isNull())
-		return;
-
-	for (QDomNode n = dockarea_elem.firstChild(); !n.isNull(); n = n.nextSibling())
-	{
-		const QDomElement &toolbar_elem = n.toElement();
-		if (toolbar_elem.isNull())
-			continue;
-		if (toolbar_elem.tagName() != "ToolBar")
-			continue;
-
-// 		ToolBar* toolbar = new ToolBar(this);
-// 		moveDockWindow(toolbar);
-// 		toolbar->loadFromConfig(toolbar_elem);
-// 		toolbar->show();
-// 		setAcceptDockWindow(toolbar, true);
-
-// 		addToolBar(area, toolbar);
-	}
 
 	kdebugf2();
 }

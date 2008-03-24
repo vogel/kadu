@@ -42,7 +42,6 @@ ChatManager::ChatManager(QObject* parent, const char* name) : QObject(parent, na
 		this, SLOT(autoSendActionActivated(QWidget *, bool)),
 		"AutoSendMessage", tr("%1 sends message").arg(config_file.readEntry("ShortCuts", "chat_newline")), true
 	);
-	//auto_send_action->setAllOn(config_file.readBoolEntry("Chat", "AutoSend"));
 
 	clearChatActionDescription = new ActionDescription(
 		ActionDescription::TypeChat, "clearChatAction",

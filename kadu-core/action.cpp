@@ -116,9 +116,6 @@ ActionDescription::ActionDescription(ActionType Type, const QString &Name, QObje
 	this->Checkable = Checkable;
 	this->CheckedText = CheckedText;
 
-//	connect(this, SIGNAL(toggled(QWidget *, bool)), Object, SLOT(toggledSlot(QWidget *, bool)));
-//	connect(this, SIGNAL(triggered(QWidget *, bool)), Object, SLOT(triggeredSlot(QWidget *, bool)));
-
 	KaduActions.insert(this);
 }
 
