@@ -215,9 +215,9 @@ void MainConfigurationWindow::chatSyntaxFixup(QString &syntax)
 
 void MainConfigurationWindow::chatFixup(Preview *preview)
 {
-	int i = 0;
-	CONST_FOREACH(chatMessage, chatMessages)
-		preview->setParagraphBackgroundColor(i++, (*chatMessage)->backgroundColor);
+//	int i = 0;
+//	CONST_FOREACH(chatMessage, chatMessages)
+//		preview->setParagraphBackgroundColor(i++, (*chatMessage)->backgroundColor);
 }
 
 void MainConfigurationWindow::onChangeStartupStatus(int index)

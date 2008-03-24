@@ -323,17 +323,17 @@ Kadu::Kadu(QWidget *parent)
 	dockMenu->addAction(icons_manager->loadIcon("Exit"), tr("&Exit Kadu")/*, 9*/);
 // 	icons_manager->registerMenuItem(dockMenu, tr("&Exit Kadu"), "Exit");
 
-	InfoPanel = new KaduTextBrowser(split, "InfoPanel");
+	InfoPanel = new KaduTextBrowser(split);
 	InfoPanel->setFrameStyle(Q3Frame::NoFrame);
-	InfoPanel->setMinimumHeight(int(1.5 * QFontMetrics(InfoPanel->Q3TextEdit::font()).height()));
+	InfoPanel->setMinimumHeight(int(1.5 * QFontMetrics(InfoPanel->QTextEdit::font()).height()));
 //	InfoPanel->resize(InfoPanel->size().width(), int(1.5 * QFontMetrics(InfoPanel->font()).height()));
 	InfoPanel->setTextFormat(Qt::RichText);
-	InfoPanel->setAlignment(Qt::AlignVCenter | Qt::WordBreak | Qt::DontClip);
+	InfoPanel->setAlignment(Qt::AlignVCenter/** | Qt::WordBreak | Qt::DontClip*/);
 	if (!config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
-		InfoPanel->setVScrollBarMode(Q3ScrollView::AlwaysOff);
+		InfoPanel->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	InfoPanel->setPaletteBackgroundColor(config_file.readColorEntry("Look", "InfoPanelBgColor"));
 	InfoPanel->setPaletteForegroundColor(config_file.readColorEntry("Look", "InfoPanelFgColor"));
-	InfoPanel->Q3TextEdit::setFont(config_file.readFontEntry("Look", "PanelFont"));
+	InfoPanel->QTextEdit::setFont(config_file.readFontEntry("Look", "PanelFont"));
 // 	if((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") == EMOTS_ANIMATED)
 // 		InfoPanel->setStyleSheet(new AnimStyleSheet(InfoPanel, emoticons->themePath()));
 // 	else
@@ -1019,12 +1019,12 @@ void Kadu::changeAppearance()
 		InfoPanel->show();
 		InfoPanel->setPaletteBackgroundColor(config_file.readColorEntry("Look", "InfoPanelBgColor"));
 		InfoPanel->setPaletteForegroundColor(config_file.readColorEntry("Look", "InfoPanelFgColor"));
-		InfoPanel->Q3TextEdit::setFont(config_file.readFontEntry("Look", "PanelFont"));
+		InfoPanel->QTextEdit::setFont(config_file.readFontEntry("Look", "PanelFont"));
 
 		if (config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
-			InfoPanel->setVScrollBarMode(Q3ScrollView::Auto);
+			InfoPanel->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 		else
-			InfoPanel->setVScrollBarMode(Q3ScrollView::AlwaysOff);
+			InfoPanel->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	}
 	else
 		dynamic_cast<QWidget *>(InfoPanel)->hide();
@@ -1633,12 +1633,12 @@ void Kadu::updateInformationPanel(UserListElement user)
 		doc.convertMailToHtml();
 		if((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_NONE && config_file.readBoolEntry("General", "ShowEmotPanel"))
 		{
-			InfoPanel->mimeSourceFactory()->addFilePath(emoticons->themePath());
+//			InfoPanel->mimeSourceFactory()->addFilePath(emoticons->themePath());
 			emoticons->expandEmoticons(doc, config_file.readColorEntry("Look", "InfoPanelBgColor"));
 		}
 		InfoPanel->setText(doc.generateHtml());
-		if (config_file.readBoolEntry("General", "ShowEmotPanel"))
-			InfoPanel->scrollToBottom();
+//		if (config_file.readBoolEntry("General", "ShowEmotPanel"))
+//			InfoPanel->scrollToBottom();
 		kdebugf2();
 	}
 }

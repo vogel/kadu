@@ -6,7 +6,7 @@
 #include <qfont.h>
 #include <qpoint.h>
 #include <qstring.h>
-#include <q3textbrowser.h>
+#include <QTextBrowser>
 #include <qtimer.h>
 // #include <qtooltip.h>
 //Added by qt3to4:
@@ -14,51 +14,71 @@
 #include <QMouseEvent>
 #include <Q3PopupMenu>
 
-class Q3PopupMenu;
+class QMenu;
 class QPainter;
+class QUrl;
 class QMouseEvent;
 
 /**
 	Zmodyfikowany QTextBrowser specjalnie na potrzeby Kadu.
 	Klikniêcie na linku otwiera ustawion± w konfiguracji przegl±darkê.
 	W menu kontekstowym jest dodatkowa opcja "Kopiuj lokacjê odno¶nika".
-	Dodatkowo poprawka b³êdu w Qt.
+	\class KaduTextBrowser
+	\brief Klasa bazowa dla ChatMessagesView orazz InfoPanel.
 **/
-class KaduTextBrowser : public Q3TextBrowser //, private QToolTip
+class KaduTextBrowser : public QTextBrowser //, private QToolTip
 {
 	Q_OBJECT
 
 	private:
-		QTimer refreshTimer;
-		QString anchor;
+		QTimer refreshTimer; /*!< Timer od¶wie¿ania widgetu. */
+		QString anchor;  /*!< Bie¿±co u¿ywany link. */
 		int level;
 		/**
 			this value stores the current highlighted link
 			for use with maybeTip(), or is null
 		**/
-		QString highlightedlink;
+		QString highlightedlink;  /*!< Aktualnie pod¶wietlony link (lub NULL je¶li takiego akurat brak). */
 		QString image;
 		bool trueTransparency;
 
 	private slots:
-		void refresh();
-		void refreshLater();
-		void copyLinkLocation();
-		void hyperlinkClicked(const QString& link) const;
+		/**
+			\fn void refresh()
+			Slot od¶wie¿aj±cy zawarto¶æ widgetu.
+		**/
+ 		void refresh();
+		/**
+			\fn void refreshLater()
+			Slot uruchamiaj±cy od¶wie¿enie z opó¼nieniem.
+			@see refreshTimer
+		**/
+ 		void refreshLater();
+		/**
+			\fn void copyLinkLocation()
+			Kopiuje wskazany odno¶nik do schowka.
+		**/
+ 		void copyLinkLocation();
+		/**
+			\fn void hyperlinkClicked(const QUrl &anchor) const
+			Otwiera klikniêty odno¶nik w okre¶lonej w konfiguracji przegl±darce.
+			@param anchor Odno¶nik do otwarcia.
+		**/
+		void hyperlinkClicked(const QUrl &anchor) const;
 		void linkHighlighted(const QString &);
 		void saveImage();
 		void verticalSliderPressedSlot();
 		void verticalSliderReleasedSlot();
 
 	protected:
-		Q3PopupMenu *createPopupMenu(const QPoint &point);
+		QMenu *createPopupMenu(const QPoint &point);
 		virtual void drawContents(QPainter * p, int clipx, int clipy, int clipw, int cliph);
 		virtual void maybeTip(const QPoint&);
-		virtual void contentsMouseReleaseEvent(QMouseEvent * e);
-		virtual void contentsWheelEvent(QWheelEvent * e);
+		virtual void mouseReleaseEvent(QMouseEvent * e);
+		virtual void wheelEvent(QWheelEvent * e);
 
 	public:
-		KaduTextBrowser(QWidget *parent = 0, const char *name = 0);
+		KaduTextBrowser(QWidget *parent = 0);
 		void setSource(const QString &name);
 		/**
 			Nadpisane dla wyja¶nienia wieloznaczno¶ci
@@ -71,7 +91,7 @@ class KaduTextBrowser : public Q3TextBrowser //, private QToolTip
 		/**
 			Nadpisane dla wyja¶nienia wieloznaczno¶ci		**/
 
-		void setFont(const QFont& f) 	{ Q3TextBrowser::setFont(f); }
+		void setFont(const QFont& f) 	{ QTextBrowser::setFont(f); }
 		void setMargin(int width);
 		/**
 			Returns path to image at position point, or null if there's no image.
@@ -83,10 +103,10 @@ class KaduTextBrowser : public Q3TextBrowser //, private QToolTip
 		**/
 		void setTrueTransparency(bool);
 		bool isTrueTransparencyEnabled() const;
-
+/* TODO: uncomment if needed
 	public slots:
 		virtual void copy();
-
+*/
 	signals:
 		/**
 			Dowolny przycisk myszy zosta³ zwolniony

@@ -71,7 +71,7 @@ private:
 	int index;	/*!< nr okna (z chat menad¿era) */
 	QColor actcolor; /*!< zmienna przechowuj±ca aktualny kolor */
 	QPixmap pix;
-	Q3MimeSourceFactory *bodyformat; /*!< zmienna ustawiaj±ca format */
+//	Q3MimeSourceFactory *bodyformat; /*!< zmienna ustawiaj±ca format */
 	EmoticonSelector* emoticon_selector; /*!< okienko do wyboru emotikonek */
 	ColorSelector* color_selector; /*!< okienko do wyboru koloru */
 	bool AutoSend; /*!< okre¶la czy Return powoduje wys³anie wiadomo¶ci */

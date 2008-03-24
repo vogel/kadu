@@ -50,7 +50,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	: QWidget(parent), CurrentProtocol(initialProtocol),
 	Users(new UserGroup(usrs)),
 	index(0), actcolor(),
-	bodyformat(new Q3MimeSourceFactory()), emoticon_selector(0), color_selector(0),
+	/*bodyformat(new Q3MimeSourceFactory()), */emoticon_selector(0), color_selector(0),
 	WaitingForACK(false), userbox(0), horizSplit(0),
 	activationCount(0), NewMessagesCount(0)
 {
@@ -71,9 +71,10 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 		horizSplit = new KaduSplitter(Qt::Horizontal, this, "horizSplit");
 		horizSplit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 
-		body = new ChatMessagesView(horizSplit, "body");
+		body = new ChatMessagesView(horizSplit);
 
-		Q3VBox *userlistContainer = new Q3VBox(horizSplit);
+		QWidget *userlistContainer = new QWidget(horizSplit);
+		QVBoxLayout *uc_layout = new QVBoxLayout;
 
 		userbox = new UserBox(false, Users, userlistContainer, "userbox");
 		userbox->setMinimumSize(QSize(30,30));
@@ -84,6 +85,10 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 		leaveConference->setMinimumWidth(userbox->minimumWidth());
 		connect(leaveConference, SIGNAL(clicked()), this, SLOT(leaveConference()));
 
+		uc_layout->addWidget(userbox);
+		uc_layout->addWidget(leaveConference);
+		userlistContainer->setLayout(uc_layout);
+
 		sizes.append(3);
 		sizes.append(1);
 		horizSplit->setSizes(sizes);
@@ -92,7 +97,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	}
 	else
 	{
-		body = new ChatMessagesView(this, "body");
+		body = new ChatMessagesView(this);
 		vertSplit->addWidget(body);
 	}
 
@@ -149,7 +154,7 @@ ChatWidget::~ChatWidget()
 
 	if (userbox)
 		delete userbox;
-	delete bodyformat;
+//	delete bodyformat;
 	delete Users;
 
 	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed: index %d\n", index);

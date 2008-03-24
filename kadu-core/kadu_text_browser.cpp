@@ -12,12 +12,13 @@
 #include <qobject.h>
 #include <q3popupmenu.h>
 #include <qregexp.h>
-#include <qdialog.h>
+#include <QFileDialog>
 #include <qfile.h>
 //Added by qt3to4:
 #include <QWheelEvent>
 #include <QMouseEvent>
 // #include <private/qrichtext_p.h>
+#include <QUrl>
 #include <QTextCursor>
 
 #include "debug.h"
@@ -26,8 +27,8 @@
 #include "misc.h"
 #include "message_box.h"
 
-KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
-	: Q3TextBrowser(parent, name),//, QToolTip(viewport()),
+KaduTextBrowser::KaduTextBrowser(QWidget *parent)
+	: QTextBrowser(parent),//, QToolTip(viewport()),
 	refreshTimer(), anchor(), level(0), highlightedlink(), image(), trueTransparency(false)
 {
 	kdebugf();
@@ -35,11 +36,12 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 	setAcceptDrops(false);
 	viewport()->setAcceptDrops(false);
 
+	setOpenLinks(false);
 //	setResizePolicy(QScrollView::AutoOne);
 //	setWFlags(Qt::WNoAutoErase|Qt::WStaticContents|Qt::WPaintClever);
-	connect(this, SIGNAL(linkClicked(const QString&)), this, SLOT(hyperlinkClicked(const QString&)));
+	connect(this, SIGNAL(anchorClicked(const QUrl &link)), this, SLOT(hyperlinkClicked(const QUrl &link)));
 	connect(this, SIGNAL(highlighted(const QString&)), this, SLOT(linkHighlighted(const QString &)));
-	setWrapPolicy(Q3TextEdit::AtWordOrDocumentBoundary);
+	setLineWrapMode(QTextEdit::WidgetWidth/**QTextEdit::AtWordOrDocumentBoundary*/);
 	setTextFormat(Qt::RichText);
 
 //	connect(verticalScrollBar(), SIGNAL(sliderReleased()), this, SLOT(repaint()));
@@ -48,8 +50,8 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent, const char *name)
 	connect(this, SIGNAL(textChanged()), this, SLOT(refreshLater()));
 	connect(&refreshTimer, SIGNAL(timeout()), this, SLOT(refresh()));
 
-	connect(this, SIGNAL(verticalSliderPressed()), this, SLOT(verticalSliderPressedSlot()));
-	connect(this, SIGNAL(verticalSliderReleased()), this, SLOT(verticalSliderReleasedSlot()));
+//	connect(this, SIGNAL(verticalSliderPressed()), this, SLOT(verticalSliderPressedSlot()));
+//	connect(this, SIGNAL(verticalSliderReleased()), this, SLOT(verticalSliderReleasedSlot()));
 
 	kdebugf2();
 }
@@ -98,7 +100,8 @@ void KaduTextBrowser::refresh()
 	kdebugf();
 	//sync();
 	//repaint();
-	repaintContents(false);
+	//repaintContents(false);
+	repaint();
 	kdebugf2();
 }
 
@@ -120,7 +123,7 @@ void KaduTextBrowser::setSource(const QString &/*name*/)
 
 void KaduTextBrowser::setMargin(int width)
 {
-	setMargins(width, width, width, width);
+	setContentsMargins(width, width, width, width);
 }
 
 void KaduTextBrowser::copyLinkLocation()
@@ -129,7 +132,7 @@ void KaduTextBrowser::copyLinkLocation()
 	QApplication::clipboard()->setText(anchor);
 }
 
-Q3PopupMenu *KaduTextBrowser::createPopupMenu(const QPoint &point)
+QMenu *KaduTextBrowser::createPopupMenu(const QPoint &point)
 {
 	kdebugf();
 	anchor = anchorAt(point);
@@ -138,7 +141,7 @@ Q3PopupMenu *KaduTextBrowser::createPopupMenu(const QPoint &point)
 	if (!image.isEmpty())
 		kdebugm(KDEBUG_INFO, "image: %s\n", image.local8Bit().data());
 
-	Q3PopupMenu *popupmenu = Q3TextBrowser::createPopupMenu(point);
+	QMenu *popupmenu = createStandardContextMenu();
 
 	if (!anchor.isEmpty())
 		popupmenu->insertItem(tr("Copy link &location"), this, SLOT(copyLinkLocation()), Qt::CTRL + Qt::Key_L, -1, 0);
@@ -162,14 +165,15 @@ void KaduTextBrowser::drawContents(QPainter * p, int clipx, int clipy, int clipw
 	if (level == 1)
 	{
 //		kdebugm(KDEBUG_INFO, "x:%d y:%d w:%d h:%d\n", clipx, clipy, clipw, cliph);
-		Q3TextBrowser::drawContents(p, clipx, clipy, clipw, cliph);
+///		QTextBrowser::drawContents(p, clipx, clipy, clipw, cliph);
 //		QTimer::singleShot(0, this, SLOT(repaint()));//niestety konieczne
 	}
 	--level;
 }
 
-void KaduTextBrowser::hyperlinkClicked(const QString &link) const
+void KaduTextBrowser::hyperlinkClicked(const QUrl &anchor) const
 {
+	const QString &link = anchor.toString();
 	if (link.find(HtmlDocument::urlRegExp()) != -1)
 	{
 		if (link.startsWith("www."))
@@ -182,7 +186,7 @@ void KaduTextBrowser::hyperlinkClicked(const QString &link) const
 	else if (link.find(HtmlDocument::ggRegExp()) != -1)
 		openGGChat(link);
 }
-
+/* uncomment if needed
 void KaduTextBrowser::copy()
 {
 	kdebugf();
@@ -262,19 +266,19 @@ void KaduTextBrowser::copy()
 	clipboard->setText(txt, QClipboard::Selection);
 	kdebugf2();
 }
-
-void KaduTextBrowser::contentsMouseReleaseEvent(QMouseEvent *e)
+*/
+void KaduTextBrowser::mouseReleaseEvent(QMouseEvent *e)
 {
 	kdebugf();
 	emit mouseReleased(e);
-	Q3TextBrowser::contentsMouseReleaseEvent(e);
+	QTextBrowser::mouseReleaseEvent(e);
 }
 
-void KaduTextBrowser::contentsWheelEvent(QWheelEvent *e)
+void KaduTextBrowser::wheelEvent(QWheelEvent *e)
 {
 	kdebugf();
 	emit wheel(e);
-	Q3TextBrowser::contentsWheelEvent(e);
+	QTextBrowser::wheelEvent(e);
 }
 
 QString KaduTextBrowser::imageAt(const QPoint &point)
@@ -341,19 +345,19 @@ QString KaduTextBrowser::imageAt(const QPoint &point)
 void KaduTextBrowser::saveImage()
 {
 	kdebugf();
-	Q3FileDialog *fd = new Q3FileDialog(this);
+	QFileDialog *fd = new QFileDialog(this);
 	int fdResult;
 	QString fileExt = '.' + image.section('.', -1);
 
-	fd->setMode(Q3FileDialog::AnyFile);
+	fd->setMode(QFileDialog::AnyFile);
 	fd->setDir(config_file.readEntry("Chat", "LastImagePath"));
 	fd->setFilter(QString("%1 (*%2)").arg(qApp->translate("ImageDialog", "Images"), fileExt));
-	fd->setSelection(image.section('/', -1));
+	fd->setLabelText(QFileDialog::FileName, image.section('/', -1));
 	fd->setCaption(tr("Save image"));
-	while ((fdResult = fd->exec()) == Q3FileDialog::Accepted
+	while ((fdResult = fd->exec()) == QFileDialog::Accepted
 		&& QFile::exists(fd->selectedFile())
 		&& !MessageBox::ask(tr("File already exists. Overwrite?")));
-	if (fdResult == Q3FileDialog::Accepted)
+	if (fdResult == QFileDialog::Accepted)
 	{
 		QFile dst((fd->selectedFile().endsWith(fileExt)) ? fd->selectedFile() : fd->selectedFile() + fileExt);
 		QFile src(image);
@@ -367,7 +371,7 @@ void KaduTextBrowser::saveImage()
 					&& dst.writeBlock(buffer, len) != -1);
 				src.close();
 			}
-			config_file.writeEntry("Chat", "LastImagePath", fd->dirPath());
+			config_file.writeEntry("Chat", "LastImagePath", fd->directory().absolutePath());
 			dst.close();
 		}
 		else

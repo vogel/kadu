@@ -9,6 +9,7 @@
 
 #include <QList>
 #include <QResizeEvent>
+#include <QScrollBar>
 
 #include "chat_message.h"
 #include "config_file.h"
@@ -20,7 +21,7 @@
 
 #include "chat_messages_view.h"
 
-ChatMessagesView::ChatMessagesView(QWidget *parent, const char *name) : KaduTextBrowser(parent, name),
+ChatMessagesView::ChatMessagesView(QWidget *parent) : KaduTextBrowser(parent),
 	Prune(0)
 {
 	setMargin(ParagraphSeparator);
@@ -31,12 +32,12 @@ ChatMessagesView::ChatMessagesView(QWidget *parent, const char *name) : KaduText
 
 	configurationUpdated();
 
-	bodyformat = new Q3MimeSourceFactory();
-	setMimeSourceFactory(bodyformat);
+//	bodyformat = new Q3MimeSourceFactory();
+//	setMimeSourceFactory(bodyformat);
 	setTextFormat(Qt::RichText);
 	setFocusPolicy(Qt::NoFocus);
 
-	scrollToBottom();
+//	scrollToBottom();
 }
 
 ChatMessagesView::~ChatMessagesView()
@@ -45,18 +46,18 @@ ChatMessagesView::~ChatMessagesView()
 		delete *msg;
 	Messages.clear();
 
-	delete bodyformat;
-	bodyformat = 0;
+//	delete bodyformat;
+//	bodyformat = 0;
 }
 
 void ChatMessagesView::pageUp()
 {
-	scrollBy(0, (height() * -2) / 3);
+	scrollContentsBy(0, (height() * -2) / 3);
 }
 
 void ChatMessagesView::pageDown()
 {
-	scrollBy(0, (height() * 2) / 3);
+	scrollContentsBy(0, (height() * 2) / 3);
 }
 
 void ChatMessagesView::imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32,const QString & /*path*/)
@@ -145,8 +146,8 @@ void ChatMessagesView::repaintMessages()
 	setText(text);
 	updateBackgrounds();
 
-	if (verticalScrollBar()->value() == verticalScrollBar()->maxValue())
-		scrollToBottom();
+//	if (verticalScrollBar()->value() == verticalScrollBar()->maxValue())
+//		scrollToBottom();
 
 	viewport()->setUpdatesEnabled(true);
 	viewport()->repaint();
@@ -156,9 +157,9 @@ void ChatMessagesView::repaintMessages()
 void ChatMessagesView::updateBackgrounds()
 {
 
-	int i = 0;
-	CONST_FOREACH(message, Messages)
-		setParagraphBackgroundColor(i++, (*message)->backgroundColor);
+//	int i = 0;
+//	CONST_FOREACH(message, Messages)
+//		setParagraphBackgroundColor(i++, (*message)->backgroundColor);
 }
 
 void ChatMessagesView::appendMessage(ChatMessage *message)
@@ -225,8 +226,8 @@ void ChatMessagesView::configurationUpdated()
 // 	else
 // 		setStyleSheet(new StaticStyleSheet(this, emoticons->themePath()));
 
-	if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") != EMOTS_NONE)
-		mimeSourceFactory()->addFilePath(emoticons->themePath());
+//	if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") != EMOTS_NONE)
+//		mimeSourceFactory()->addFilePath(emoticons->themePath());
 
 	setFont(config_file.readFontEntry("Look","ChatFont"));
 
@@ -235,7 +236,7 @@ void ChatMessagesView::configurationUpdated()
 	QBrush brush(config_file.readColorEntry("Look", "ChatBgColor"));
 // 	if (!bgImage.isEmpty() && QFile::exists(bgImage))
 // 		brush.setPixmap(QPixmap(bgImage));
-	setPaper(brush);
+//	setPaper(brush);
 
 	QString chatSyntax = SyntaxList::readSyntax("chat", config_file.readEntry("Look", "Style"),
 		"<p style=\"background-color: #{backgroundColor};\">#{separator}"
@@ -279,8 +280,8 @@ void ChatMessagesView::configurationUpdated()
 
 void ChatMessagesView::resizeEvent(QResizeEvent *e)
 {
-	if (verticalScrollBar()->value() == verticalScrollBar()->maxValue())
-		scrollToBottom();
+//	if (verticalScrollBar()->value() == verticalScrollBar()->maxValue())
+//		scrollToBottom();
 
 	KaduTextBrowser::resizeEvent(e);
 }
