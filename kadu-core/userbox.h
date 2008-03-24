@@ -25,7 +25,8 @@
 
 class QFontMetrics;
 class ULEComparer;
-class Action;
+
+class ActionDescription;
 
 class UlesDrag : public DragSimple
 {
@@ -393,337 +394,336 @@ class UserBox : public Q3ListBox, ConfigurationAwareObject
 
 	friend class Kadu;
 
-	public:
-		/**
-			\fn UserBox(UserGroup *group = userlist, QWidget* parent = 0, const char* name = 0, WFlags f = 0)
-			Standardowy konstruktor tworz±cy listê kontaktów.
-			\param group grupa kontaktów, która bêdzie wy¶wietlana
-			\param parent rodzic kontrolki. Domy¶lnie 0.
-			\param name nazwa kontrolki. Domy¶lnie 0.
-			\param f flagi kontrolki. Domy¶lnie 0.
-		**/
-		UserBox(bool fancy, UserGroup *group = userlist, QWidget* parent = 0, const char* name = 0, Qt::WFlags f = 0);
+	static QList<UserBox*> UserBoxes;
+	bool fancy;
 
-		virtual ~UserBox();
+	ActionDescription *showDescriptionAction;
 
-		/**
-			\var static UserBoxMenu *userboxmenu
-			Wska¼nik do menu kontekstowego listy kontaktów.
-		**/
-		static UserBoxMenu *userboxmenu;
+	UserGroup *VisibleUsers;
+	QList<UserGroup *> Filters;
+	QList<UserGroup *> NegativeFilters;
+	std::vector<UserListElement> sortHelper;
+	std::vector<UserListElement> toRemove;
+	QMap<const UserGroup *, UserListElements> AppendProxy;
+	QMap<const UserGroup *, UserListElements> RemoveProxy;
 
-		/**
-			\var static UserBoxMenu *management
-			Wska¼nik do menu zarz±dzania kontaktami.
-		**/
-		static UserBoxMenu *management;
+	ULEComparer *comparer;
+	void sort();
+	QTimer refreshTimer;
 
-		static void setColorsOrBackgrounds();
+	UserListElement lastMouseStopUser;
+	static UserListElement nullElement;
+	QTimer tipTimer;
 
-		/**
-			\fn static void initModule()
-			Inicjalizuje zmienne niezbêdne do dzia³ania UserBox. Funkcja ta jest
-			wywo³ywana przy starcie Kadu przez rdzeñ Kadu.
-		**/
-		static void initModule();
+	QTimer verticalPositionTimer;
+	int lastVerticalPosition;
 
-		static void closeModule();
+	static QImage *backgroundImage;
+	void refreshBackground();
 
-		/**
-			\fn UserListElements getSelectedUsers() const
-			Funkcja zwraca listê zaznaczonych uzytkowników.
-			\return UserListElements z zaznaczonymi u¿ytkownikami.
-		**/
-		UserListElements selectedUsers() const;
+private slots:
+	void doubleClickedSlot(Q3ListBoxItem *item);
+	void returnPressedSlot(Q3ListBoxItem *item);
+	void currentChangedSlot(Q3ListBoxItem *item);
 
-		/**
-			\fn const UserGroup *visibleUsers() const
-			zwraca listê kontaktów, które s± obecnie na li¶cie
-			\return grupa kontaktów
-		**/
-		const UserGroup *visibleUsers() const;
+	void userAddedToVisible(UserListElement elem, bool massively, bool last);
+	void userRemovedFromVisible(UserListElement elem, bool massively, bool last);
 
-		/**
-			\fn QValueList<UserGroup *> filters() const
-			Zwraca listê filtrów "pozytywnych"
-			\return lista filtrów
-		**/
-		QList<UserGroup *> filters() const;
+	void userAddedToGroup(UserListElement elem, bool massively, bool last);
+	void userRemovedFromGroup(UserListElement elem, bool massively, bool last);
 
-		/**
-			\fn QValueList<UserGroup *> negativeFilters() const
-			Zwraca listê filtrów "negatywnych"
-			\return lista filtrów
-		**/
-		QList<UserGroup *> negativeFilters() const;
+	void userDataChanged(UserListElement elem, QString name, QVariant oldValue,
+						QVariant currentValue, bool massively, bool last);
+	void protocolUserDataChanged(QString protocolName, UserListElement elem,
+						QString name, QVariant oldValue, QVariant currentValue,
+						bool massively, bool last);
+	void removingProtocol(UserListElement elem, QString protocolName, bool massively, bool last);
 
-		/**
-			\fn bool currentUserExists() const
-			\return informacja o istnieniu bie¿±cego kontaktu
-		**/
-		bool currentUserExists() const;
+	void tipTimeout();
+	void restartTip(const QPoint &p);
+	void hideTip(bool waitForAnother = true);
+	void resetVerticalPosition();
+	void rememberVerticalPosition();
 
-		/**
-			\fn UserListElement currentUser() const
-			\attention {przed wywo³aniem tej metody nale¿y sprawdziæ, czy istnieje bie¿±cy kontakt!}
-			\return bie¿±cy kontakt
-			\see UserBox::currentUserExists()
-		**/
-		UserListElement currentUser() const;
+	void messageFromUserAdded(UserListElement elem);
+	void messageFromUserDeleted(UserListElement elem);
 
-		/**
-			\fn static UserBox* activeUserBox()
-			Funkcja znajdujaca aktywny UserBox.
-			\return wska¼nik do aktywnego UserBox'a, je¶li taki nie istnieje zwracana jest warto¶æ NULL.
-		**/
-		static UserBox* activeUserBox();
+protected:
+	virtual void configurationUpdated();
 
-		class CmpFuncDesc
-		{
-			public:
- 				CmpFuncDesc(QString i, QString d, int (*f)(const UserListElement &, const UserListElement &))
- 					: id(i), description(d), func(f) {}
- 				CmpFuncDesc() : id(), description(), func(0){}
+	virtual void wheelEvent(QWheelEvent *e);
+	virtual void enterEvent(QEvent *);
+	virtual void leaveEvent(QEvent *);
 
-				QString id;
-				QString description;
-				int (*func)(const UserListElement &, const UserListElement &);
-		};
+	/**
+		\fn virtual void mousePressEvent(QMouseEvent *e)
+		Wci¶niêto który¶ z przycisków myszki na li¶cie kontaktów.
+		\param e wska¼nik obiektu opisuj±cego to zdarzenie.
+	**/
+	virtual void mousePressEvent(QMouseEvent *e);
 
-		/**
-			\fn QValueList<UserBox::CmpFuncDesc> compareFunctions() const
-			\return lista obiektów opisuj±cych funkcje porównuj±ce
-		**/
- 		QList<UserBox::CmpFuncDesc> compareFunctions() const;
+	virtual void mouseReleaseEvent(QMouseEvent *e);
 
-		/**
-			\fn void addCompareFunction(const QString &id, const QString &trDescription, int (*cmp)(const UserListElement &, const UserListElement &))
-			Dodaje funkcjê porównuj±c± do bie¿±cego UserBoksa.
-			Funkcja cmp powinna zwracaæ warto¶æ:
-				< 0 gdy pierwszy kontakt powinien znale¼æ siê przed drugim
-				= 0 gdy kolejno¶æ kontaktów nie ma znaczenia
-				> 0 gdy pierwszy kontakt powinien znale¼æ siê za drugim
-			\param id krótki identyfikator funkcji
-			\param trDescription pzet³umaczony opis funkcji (w zamierzeniu do wy¶wietlenia w konfiguracji)
-			\param cmp funkcja porównuj±ca
-		**/
-		void addCompareFunction(const QString &id, const QString &trDescription,
-					int (*cmp)(const UserListElement &, const UserListElement &));
+	/**
+		\fn virtual void mouseMoveEvent(QMouseEvent* e)
+		Poruszono myszk± nad list± kontaktów.
+		\param e wska¼nik obiektu opisuj±cego to zdarzenie.
+	**/
+	virtual void mouseMoveEvent(QMouseEvent* e);
 
-		/**
-			\fn static void refreshAll()
-			Od¶wie¿a wszystkie UserBoksy.
-		**/
-		static void refreshAll();
+	/**
+		\fn virtual void keyPressEvent(QKeyEvent *e)
+		Wci¶niêto który¶ z klawiszów w aktywnej li¶cie kontaktów.
+		\param e wska¼nik obiektu opisuj±cego to zdarzenie.
+	**/
+	virtual void keyPressEvent(QKeyEvent *e);
 
-		/**
-			\fn static void refreshAllLater()
-			Od¶wie¿a wszystkie UserBoksy, ale dopiero po powrocie do pêtli zdarzeñ Qt.
-		**/
-		static void refreshAllLater();
+	/**
+		\fn virtual void resizeEvent(QResizeEvent *)
+		Lista kontaktów zmieni³a swój rozmiar.
+		\param e wska¼nik obiektu opisuj±cego to zdarzenie.
+	**/
+	virtual void resizeEvent(QResizeEvent *);
 
-		static const QList<UserBox *> &userboxes() {return UserBoxes;}
+public:
+	/**
+		\fn UserBox(UserGroup *group = userlist, QWidget* parent = 0, const char* name = 0, WFlags f = 0)
+		Standardowy konstruktor tworz±cy listê kontaktów.
+		\param group grupa kontaktów, która bêdzie wy¶wietlana
+		\param parent rodzic kontrolki. Domy¶lnie 0.
+		\param name nazwa kontrolki. Domy¶lnie 0.
+		\param f flagi kontrolki. Domy¶lnie 0.
+	**/
+	UserBox(bool fancy, UserGroup *group = userlist, QWidget* parent = 0, const char* name = 0, Qt::WFlags f = 0);
 
-		static CreateNotifier createNotifier;
+	virtual ~UserBox();
 
-	protected:
-		virtual void configurationUpdated();
+	/**
+		\var static UserBoxMenu *userboxmenu
+		Wska¼nik do menu kontekstowego listy kontaktów.
+	**/
+	static UserBoxMenu *userboxmenu;
 
-	public slots:
+	/**
+		\var static UserBoxMenu *management
+		Wska¼nik do menu zarz±dzania kontaktami.
+	**/
+	static UserBoxMenu *management;
 
-		/**
-			\fn void descriptionsActionActivated(const UserGroup* users, const QWidget* widget, bool toggle)
-			Slot jest wywo³ywany, gdy aktywowano ukrywanie opisów kontaktów
-			\param users u¿ytkownicy (nieu¿ywany)
-			\param widget (nieu¿ywany)
-			\param toggle w³±czenie / wy³±czenie ukrywania opisów
-		**/
-		void descriptionsActionActivated(const UserGroup* users, const QWidget* widget, bool toggle);
+	static void setColorsOrBackgrounds();
 
-		/**
-			\fn void setDescriptionsActionState()
-			Slot jest wywo³ywany, w celu ustawienia poprawnego stanu dla akcji
-			w³±czaj±cej / wy³±czaj±cej pokazywanie opisów na li¶cie kontaktów
-		**/
-		void setDescriptionsActionState();
+	/**
+		\fn static void initModule()
+		Inicjalizuje zmienne niezbêdne do dzia³ania UserBox. Funkcja ta jest
+		wywo³ywana przy starcie Kadu przez rdzeñ Kadu.
+	**/
+	static void initModule();
 
-		/**
-			\fn void applyFilter(UserGroup *group)
-			Nak³ada na bie¿±cy UserBox filtr "pozytywny" - wy¶wietlane bêd±
-			tylko te kontakty, które nale¿± do group.
-			\param group filtr
-		**/
-		void applyFilter(UserGroup *group);
+	static void closeModule();
 
-		/**
-			\fn void removeFilter(UserGroup *group)
-			Usuwa z bie¿±cego UserBoksa wskazany filtr "pozytywny".
-			\param group filtr
-		**/
-		void removeFilter(UserGroup *group);
+	/**
+		\fn UserListElements getSelectedUsers() const
+		Funkcja zwraca listê zaznaczonych uzytkowników.
+		\return UserListElements z zaznaczonymi u¿ytkownikami.
+	**/
+	UserListElements selectedUsers() const;
 
-		/**
-			\fn void applyNegativeFilter(UserGroup *group)
-			Nak³ada na bie¿±cy UserBox filtr "negatywny" - wy¶wietlane bêd±
-			tylko te kontakty, które nie nale¿± do group.
-			\param group filtr
-		**/
-		void applyNegativeFilter(UserGroup *group);
+	/**
+		\fn const UserGroup *visibleUsers() const
+		zwraca listê kontaktów, które s± obecnie na li¶cie
+		\return grupa kontaktów
+	**/
+	const UserGroup *visibleUsers() const;
 
-		/**
-			\fn void removeNegativeFilter(UserGroup *group)
-			Usuwa z bie¿±cego UserBoksa wskazany filtr "negatywny".
-			\param group filtr
-		**/
-		void removeNegativeFilter(UserGroup *group);
+	/**
+		\fn QValueList<UserGroup *> filters() const
+		Zwraca listê filtrów "pozytywnych"
+		\return lista filtrów
+	**/
+	QList<UserGroup *> filters() const;
 
-		/**
-			\fn void removeCompareFunction(const QString &id)
-			Usuwa funkcjê porównuj±c± o identyfikatorze id.
-			\param id identyfikator funkcji porównuj±cej
-		**/
-		void removeCompareFunction(const QString &id);
+	/**
+		\fn QValueList<UserGroup *> negativeFilters() const
+		Zwraca listê filtrów "negatywnych"
+		\return lista filtrów
+	**/
+	QList<UserGroup *> negativeFilters() const;
 
-		/**
-			\fn void moveUpCompareFunction(const QString &id)
-			Przesuwa funkcjê porównuj±c± o identyfikatorze id wy¿ej w kolejno¶ci sprawdzania.
-			\param id identyfikator funkcji porównuj±cej
-		**/
-		bool moveUpCompareFunction(const QString &id);
+	/**
+		\fn bool currentUserExists() const
+		\return informacja o istnieniu bie¿±cego kontaktu
+	**/
+	bool currentUserExists() const;
 
-		/**
-			\fn void moveDownCompareFunction(const QString &id)
-			Przesuwa funkcjê porównuj±c± o identyfikatorze id ni¿ej w kolejno¶ci sprawdzania.
-			\param id identyfikator funkcji porównuj±cej
-		**/
- 		bool moveDownCompareFunction(const QString &id);
+	/**
+		\fn UserListElement currentUser() const
+		\attention {przed wywo³aniem tej metody nale¿y sprawdziæ, czy istnieje bie¿±cy kontakt!}
+		\return bie¿±cy kontakt
+		\see UserBox::currentUserExists()
+	**/
+	UserListElement currentUser() const;
 
-		/**
-			\fn void refresh()
-			Od¶wie¿a bie¿±cy UserBox. Nie nale¿y tej funkcji nadu¿ywaæ,
-			bo wiêkszo¶æ (90%) sytuacji jest wykrywanych przez sam± klasê.
-		**/
-		void refresh();
+	/**
+		\fn static UserBox* activeUserBox()
+		Funkcja znajdujaca aktywny UserBox.
+		\return wska¼nik do aktywnego UserBox'a, je¶li taki nie istnieje zwracana jest warto¶æ NULL.
+	**/
+	static UserBox* activeUserBox();
 
-		void refreshLater();
-	signals:
-		/**
-			\fn void doubleClicked(UserListElement user)
-			Sygna³ jest emitowany, gdy na którym¶ z kontaktów klikniêto dwukrotnie.
-			\param user kontakt, na którym kilkniêto dwukrotnie
-			\warning U¿ywaj tego sygna³u zamiast QListBox::doubleClicked(QListBoxItem *) !!!
-			Tamten ze wzglêdu na od¶wie¿anie listy w jednym ze slotów pod³±czonych
-			do tego sygna³u czasami przekazuje wska¼nik do elementu, który ju¿ NIE ISTNIEJE.
-		**/
-		void doubleClicked(UserListElement user);
+	class CmpFuncDesc
+	{
+		public:
+			CmpFuncDesc(QString i, QString d, int (*f)(const UserListElement &, const UserListElement &))
+				: id(i), description(d), func(f) {}
+			CmpFuncDesc() : id(), description(), func(0){}
 
-		/**
-			\fn void returnPressed(UserListElement user)
-			Sygna³ jest emitowany, gdy wci¶niêto klawisz enter na wybranym kontakcie.
-			\param user kontakt, na którym wci¶niêto enter
-			\warning U¿ywaj tego sygna³u zamiast QListBox::returnPressed(QListBoxItem *) !!!
-			Tamten ze wzglêdu na od¶wie¿anie listy w jednym ze slotów pod³±czonych
-			do tego sygna³u czasami przekazuje wska¼nik do elementu, który ju¿ NIE ISTNIEJE.
-		**/
-		void returnPressed(UserListElement user);
+			QString id;
+			QString description;
+			int (*func)(const UserListElement &, const UserListElement &);
+	};
 
-		/**
-			\fn void currentChanged(UserListElement user)
-			Sygna³ jest emitowany, gdy zmieni³ siê bie¿±cy kontakt.
-			\attention {raczej nale¿u u¿ywaæ tego sygna³u zamiast QListBox::currentChaned(QListBoxItem *)}
-			\param user obecnie bie¿±cy kontakt
-		**/
-		void currentChanged(UserListElement user);
+	/**
+		\fn QValueList<UserBox::CmpFuncDesc> compareFunctions() const
+		\return lista obiektów opisuj±cych funkcje porównuj±ce
+	**/
+		QList<UserBox::CmpFuncDesc> compareFunctions() const;
 
-	private slots:
-		void doubleClickedSlot(Q3ListBoxItem *item);
-		void returnPressedSlot(Q3ListBoxItem *item);
-		void currentChangedSlot(Q3ListBoxItem *item);
+	/**
+		\fn void addCompareFunction(const QString &id, const QString &trDescription, int (*cmp)(const UserListElement &, const UserListElement &))
+		Dodaje funkcjê porównuj±c± do bie¿±cego UserBoksa.
+		Funkcja cmp powinna zwracaæ warto¶æ:
+			< 0 gdy pierwszy kontakt powinien znale¼æ siê przed drugim
+			= 0 gdy kolejno¶æ kontaktów nie ma znaczenia
+			> 0 gdy pierwszy kontakt powinien znale¼æ siê za drugim
+		\param id krótki identyfikator funkcji
+		\param trDescription pzet³umaczony opis funkcji (w zamierzeniu do wy¶wietlenia w konfiguracji)
+		\param cmp funkcja porównuj±ca
+	**/
+	void addCompareFunction(const QString &id, const QString &trDescription,
+				int (*cmp)(const UserListElement &, const UserListElement &));
 
-		void userAddedToVisible(UserListElement elem, bool massively, bool last);
-		void userRemovedFromVisible(UserListElement elem, bool massively, bool last);
+	/**
+		\fn static void refreshAll()
+		Od¶wie¿a wszystkie UserBoksy.
+	**/
+	static void refreshAll();
 
-		void userAddedToGroup(UserListElement elem, bool massively, bool last);
-		void userRemovedFromGroup(UserListElement elem, bool massively, bool last);
+	/**
+		\fn static void refreshAllLater()
+		Od¶wie¿a wszystkie UserBoksy, ale dopiero po powrocie do pêtli zdarzeñ Qt.
+	**/
+	static void refreshAllLater();
 
-		void userDataChanged(UserListElement elem, QString name, QVariant oldValue,
-							QVariant currentValue, bool massively, bool last);
-		void protocolUserDataChanged(QString protocolName, UserListElement elem,
-							QString name, QVariant oldValue, QVariant currentValue,
-							bool massively, bool last);
-		void removingProtocol(UserListElement elem, QString protocolName, bool massively, bool last);
+	static const QList<UserBox *> &userboxes() {return UserBoxes;}
 
-		void tipTimeout();
-		void restartTip(const QPoint &p);
-		void hideTip(bool waitForAnother = true);
-		void resetVerticalPosition();
-		void rememberVerticalPosition();
+	static CreateNotifier createNotifier;
 
-		void messageFromUserAdded(UserListElement elem);
-		void messageFromUserDeleted(UserListElement elem);
+public slots:
+	/**
+		\fn void descriptionsActionActivated(const UserGroup* users, const QWidget* widget, bool toggle)
+		Slot jest wywo³ywany, gdy aktywowano ukrywanie opisów kontaktów
+		\param users u¿ytkownicy (nieu¿ywany)
+		\param widget (nieu¿ywany)
+		\param toggle w³±czenie / wy³±czenie ukrywania opisów
+	**/
+	void showDescriptionsActionActivated(const QWidget *caller, bool toggle);
 
-	private:
-		static QList<UserBox*> UserBoxes;
-		bool fancy;
+	/**
+		\fn void setDescriptionsActionState()
+		Slot jest wywo³ywany, w celu ustawienia poprawnego stanu dla akcji
+		w³±czaj±cej / wy³±czaj±cej pokazywanie opisów na li¶cie kontaktów
+	**/
+	void setDescriptionsActionState();
 
-		Action *desc_action;
+	/**
+		\fn void applyFilter(UserGroup *group)
+		Nak³ada na bie¿±cy UserBox filtr "pozytywny" - wy¶wietlane bêd±
+		tylko te kontakty, które nale¿± do group.
+		\param group filtr
+	**/
+	void applyFilter(UserGroup *group);
 
-		UserGroup *VisibleUsers;
-		QList<UserGroup *> Filters;
-		QList<UserGroup *> NegativeFilters;
-		std::vector<UserListElement> sortHelper;
-		std::vector<UserListElement> toRemove;
-		QMap<const UserGroup *, UserListElements> AppendProxy;
-		QMap<const UserGroup *, UserListElements> RemoveProxy;
+	/**
+		\fn void removeFilter(UserGroup *group)
+		Usuwa z bie¿±cego UserBoksa wskazany filtr "pozytywny".
+		\param group filtr
+	**/
+	void removeFilter(UserGroup *group);
 
-		ULEComparer *comparer;
-		void sort();
-		QTimer refreshTimer;
+	/**
+		\fn void applyNegativeFilter(UserGroup *group)
+		Nak³ada na bie¿±cy UserBox filtr "negatywny" - wy¶wietlane bêd±
+		tylko te kontakty, które nie nale¿± do group.
+		\param group filtr
+	**/
+	void applyNegativeFilter(UserGroup *group);
 
-		UserListElement lastMouseStopUser;
-		static UserListElement nullElement;
-		QTimer tipTimer;
+	/**
+		\fn void removeNegativeFilter(UserGroup *group)
+		Usuwa z bie¿±cego UserBoksa wskazany filtr "negatywny".
+		\param group filtr
+	**/
+	void removeNegativeFilter(UserGroup *group);
 
-		QTimer verticalPositionTimer;
-		int lastVerticalPosition;
+	/**
+		\fn void removeCompareFunction(const QString &id)
+		Usuwa funkcjê porównuj±c± o identyfikatorze id.
+		\param id identyfikator funkcji porównuj±cej
+	**/
+	void removeCompareFunction(const QString &id);
 
-		static QImage *backgroundImage;
-		void refreshBackground();
+	/**
+		\fn void moveUpCompareFunction(const QString &id)
+		Przesuwa funkcjê porównuj±c± o identyfikatorze id wy¿ej w kolejno¶ci sprawdzania.
+		\param id identyfikator funkcji porównuj±cej
+	**/
+	bool moveUpCompareFunction(const QString &id);
 
-	protected:
-		virtual void wheelEvent(QWheelEvent *e);
-		virtual void enterEvent(QEvent *);
-		virtual void leaveEvent(QEvent *);
+	/**
+		\fn void moveDownCompareFunction(const QString &id)
+		Przesuwa funkcjê porównuj±c± o identyfikatorze id ni¿ej w kolejno¶ci sprawdzania.
+		\param id identyfikator funkcji porównuj±cej
+	**/
+	bool moveDownCompareFunction(const QString &id);
 
-		/**
-			\fn virtual void mousePressEvent(QMouseEvent *e)
-			Wci¶niêto który¶ z przycisków myszki na li¶cie kontaktów.
-			\param e wska¼nik obiektu opisuj±cego to zdarzenie.
-		**/
-		virtual void mousePressEvent(QMouseEvent *e);
+	/**
+		\fn void refresh()
+		Od¶wie¿a bie¿±cy UserBox. Nie nale¿y tej funkcji nadu¿ywaæ,
+		bo wiêkszo¶æ (90%) sytuacji jest wykrywanych przez sam± klasê.
+	**/
+	void refresh();
 
-		virtual void mouseReleaseEvent(QMouseEvent *e);
+	void refreshLater();
 
-		/**
-			\fn virtual void mouseMoveEvent(QMouseEvent* e)
-			Poruszono myszk± nad list± kontaktów.
-			\param e wska¼nik obiektu opisuj±cego to zdarzenie.
-		**/
-		virtual void mouseMoveEvent(QMouseEvent* e);
+signals:
+	/**
+		\fn void doubleClicked(UserListElement user)
+		Sygna³ jest emitowany, gdy na którym¶ z kontaktów klikniêto dwukrotnie.
+		\param user kontakt, na którym kilkniêto dwukrotnie
+		\warning U¿ywaj tego sygna³u zamiast QListBox::doubleClicked(QListBoxItem *) !!!
+		Tamten ze wzglêdu na od¶wie¿anie listy w jednym ze slotów pod³±czonych
+		do tego sygna³u czasami przekazuje wska¼nik do elementu, który ju¿ NIE ISTNIEJE.
+	**/
+	void doubleClicked(UserListElement user);
 
-		/**
-			\fn virtual void keyPressEvent(QKeyEvent *e)
-			Wci¶niêto który¶ z klawiszów w aktywnej li¶cie kontaktów.
-			\param e wska¼nik obiektu opisuj±cego to zdarzenie.
-		**/
-		virtual void keyPressEvent(QKeyEvent *e);
+	/**
+		\fn void returnPressed(UserListElement user)
+		Sygna³ jest emitowany, gdy wci¶niêto klawisz enter na wybranym kontakcie.
+		\param user kontakt, na którym wci¶niêto enter
+		\warning U¿ywaj tego sygna³u zamiast QListBox::returnPressed(QListBoxItem *) !!!
+		Tamten ze wzglêdu na od¶wie¿anie listy w jednym ze slotów pod³±czonych
+		do tego sygna³u czasami przekazuje wska¼nik do elementu, który ju¿ NIE ISTNIEJE.
+	**/
+	void returnPressed(UserListElement user);
 
-		/**
-			\fn virtual void resizeEvent(QResizeEvent *)
-			Lista kontaktów zmieni³a swój rozmiar.
-			\param e wska¼nik obiektu opisuj±cego to zdarzenie.
-		**/
-		virtual void resizeEvent(QResizeEvent *);
+	/**
+		\fn void currentChanged(UserListElement user)
+		Sygna³ jest emitowany, gdy zmieni³ siê bie¿±cy kontakt.
+		\attention {raczej nale¿u u¿ywaæ tego sygna³u zamiast QListBox::currentChaned(QListBoxItem *)}
+		\param user obecnie bie¿±cy kontakt
+	**/
+	void currentChanged(UserListElement user);
+
 };
 
 /**

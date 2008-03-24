@@ -480,13 +480,14 @@ UserBox::UserBox(bool fancy, UserGroup *group, QWidget* parent, const char* name
 	Filters.append(group);
 
 	setHScrollBarMode(Q3ScrollView::AlwaysOff);
-/*
-	desc_action = new Action("ShowDescription", tr("Hide descriptions"), "descriptionsAction", ActionDescription::TypeUserList);
-	desc_action->setOnShape("HideDescription", tr("Show descriptions"));
-	desc_action->setCheckable(true);
-	connect(desc_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-		this, SLOT(descriptionsActionActivated(const UserGroup*, const QWidget*, bool)));
-	connect(desc_action, SIGNAL(iconsRefreshed()), this, SLOT(setDescriptionsActionState()))*/;
+
+	showDescriptionAction = new ActionDescription(
+		ActionDescription::TypeUserList, "descriptionsAction",
+		this, SLOT(showDescriptionsActionActivated(QWidget *, bool)),
+		"ShowDescription", tr("Hide descriptions"),
+		true, tr("Show descriptions")
+	);
+
 	setDescriptionsActionState();
 
 	connect(group, SIGNAL(userAdded(UserListElement, bool, bool)),
@@ -595,7 +596,7 @@ void UserBox::hideTip(bool waitForAnother)
 		tipTimer.stop();
 }
 
-void UserBox::descriptionsActionActivated(const UserGroup* /*users*/, const QWidget* /*widget*/, bool toggle)
+void UserBox::showDescriptionsActionActivated(const QWidget *caller, bool toggle)
 {
 // 	desc_action->setAllOn(toggle);
 	config_file.writeEntry("Look", "ShowDesc", !toggle);

@@ -24,7 +24,6 @@ class ActionDescription;
 class QFile;
 class Q3ListBoxItem;
 class QMenuBar;
-// class Q3VBox;
 class KaduTabBar;
 class UserBox;
 class KaduTextBrowser;
@@ -32,7 +31,6 @@ class QPushButton;
 class UserStatusChanger;
 class SplitStatusChanger;
 class MainConfigurationWindow;
-//class ToolButton;
 
 /**
 	G³ówne okno Kadu
@@ -156,7 +154,8 @@ class Kadu : public KaduMainWindow, ConfigurationAwareObject, public ActionWindo
 		Kadu(QWidget* parent=0);
 		~Kadu();
 
-		virtual bool supportsActionType(ActionDescription::ActionType type) { return type == ActionDescription::TypeGlobal; }
+		virtual bool supportsActionType(ActionDescription::ActionType type) {
+			return type & (ActionDescription::TypeGlobal | ActionDescription::TypeUserList); }
 		virtual UserBox * getUserBox() { return Userbox; }
 		virtual UserListElements getUserListElements();
 
