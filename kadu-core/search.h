@@ -19,126 +19,150 @@ class Q3ListViewItem;
 class QPushButton;
 class QRadioButton;
 
-class Action;
+// TODO: a better name
+class SearchActionsSlots : public QObject
+{
+	Q_OBJECT
+
+public slots:
+	void firstSearchActionActivated(QWidget *sender, bool toggled);
+	void nextResultsActionActivated(QWidget *sender, bool toggled);
+	void stopSearchActionActivated(QWidget *sender, bool toggled);
+	void clearResultsActionActivated(QWidget *sender, bool toggled);
+	void addFoundActionActivated(QWidget *sender, bool toggled);
+	void chatFoundActionActivated(QWidget *sender, bool toggled);
+
+};
 
 /**
 	Klasa ta reprezentuje okno dialogowe wyszukiwania w katalogu publicznym.
 	\brief Wyszukiwanie w katalogu publicznym.
 	\class SearchDialog
 **/
-class SearchDialog : public KaduMainWindow {
+class SearchDialog : public KaduMainWindow, public ActionWindow {
 	Q_OBJECT
-	public:
-		/**
-			\fn SearchDialog(QWidget *parent=0, const char *name=0, UinType whoisSearchUin = 0)
-			Standardowy konstruktor.
-			\param parent rodzic kontrolki. Domy¶lnie 0.
-			\param name nazwa kontrolki. Domy¶lnie 0.
-			\param whoisSearchUin warto¶æ logiczna informuj±ca o tym, czy wstêpnie ma byæ wybrane
-				wyszukiwanie po numerze UIN (1) czy po danych osobowych (0). Domy¶lnie 0.
-		**/
-		SearchDialog(QWidget *parent=0, const char *name=0, UinType whoisSearchUin = 0);
-		~SearchDialog(void);
-		static void initModule();
-		static void closeModule();
 
-	private:
-		QCheckBox *only_active;
-		QLineEdit *e_uin;
-		QLineEdit *e_name;
-		QLineEdit *e_nick;
-		QLineEdit *e_byrFrom;
-		QLineEdit *e_byrTo;
-		QLineEdit *e_surname;
-		QComboBox *c_gender;
-		QLineEdit *e_city;
-		Q3ListView *results;
-		QLabel *progress;
-		QRadioButton *r_uin;
-		QRadioButton *r_pers;
-		UinType _whoisSearchUin;
-		uint32_t seq;
-		UserGroup *selectedUsers;
+	friend class SearchActionsSlots;
+	static SearchActionsSlots *searchActionsSlot;
 
-		Action *add_searched_action;
-		Action *chat_searched_action;
-		Action *first_search_action;
-		Action *next_results_action;
-		Action *stop_search_action;
-		Action *clear_search_action;
+	static ActionDescription *firstSearchAction;
+	static ActionDescription *nextResultsAction;
+	static ActionDescription *stopSearchAction;
+	static ActionDescription *clearResultsAction;
+	static ActionDescription *addFoundAction;
+	static ActionDescription *chatFoundAction;
 
-		SearchRecord *searchRecord;
+	QCheckBox *only_active;
+	QLineEdit *e_uin;
+	QLineEdit *e_name;
+	QLineEdit *e_nick;
+	QLineEdit *e_byrFrom;
+	QLineEdit *e_byrTo;
+	QLineEdit *e_surname;
+	QComboBox *c_gender;
+	QLineEdit *e_city;
+	Q3ListView *results;
+	QLabel *progress;
+	QRadioButton *r_uin;
+	QRadioButton *r_pers;
+	UinType _whoisSearchUin;
+	uint32_t seq;
+	UserGroup *selectedUsers;
 
-		bool searchhidden;
-		bool searching;
-		bool workaround; // TODO: remove
+	SearchRecord *searchRecord;
 
-		bool isPersonalDataEmpty() const;
+	bool searchhidden;
+	bool searching;
+	bool workaround; // TODO: remove
 
-	public slots:
+	bool isPersonalDataEmpty() const;
 
-		void selectedUsersNeeded(const UserGroup*& user_group);
+	UserListElements selected();
 
-		/**
-			\fn void stopSearch(void)
-			Zatrzymuje aktualne wyszukiwanie. Je¶li w pó¼niejszym czasie zwrócone
-			zostan± jakie¶ wyniki, bêd± one zignorowane.
-		**/
-		void stopSearch(void);
+private slots:
+	void uinTyped(void);
+	void personalDataTyped(void);
+	void byrFromDataTyped(void);
+	void persClicked();
+	void uinClicked();
+	void updateInfoClicked();
+	void actionsAddedToToolbar(ToolButton*, ToolBar*);
+	void stopSearchActionAddedToToolbar(ToolButton*, ToolBar*);
+	void firstSearchActionAddedToToolbar(ToolButton*, ToolBar*);
+	void nextResultsActionAddedToToolbar(ToolButton*, ToolBar*);
+	void clearResultsActionAddedToToolbar(ToolButton*, ToolBar*);
+	void selectionChanged();
 
-		/**
-			\fn void firstSearch(void)
-			Czy¶ci listê wyników, a nastêpnie wyszukuje w katalogu publicznym wg.
-			podanych w oknie danych. Wy¶wietla tylko ograniczon± ich liczbê, ze wzglêdu
-			na dzia³anie protoko³u Gadu-Gadu. Metoda ta wywo³ywana jest przy wci¶niêciu
-			przycisku "Szukaj". Aby uzyskaæ kolejne wyniki i dodaæ je do
-			bierz±cych, nale¿y dokonaæ wtórnego zapytania metod± SearchDialog::nextSearch.
-		**/
-		void firstSearch(void);
+protected:
+	/**
+		\fn void closeEvent(QCloseEvent * e)
+		Obs³uguje zdarzenie zamkniêcia okna wyszukiwania w katalogu publicznym.
+		\param e wska¼nik do obiektu opisuj±cego zdarzenie zamkniêcie okna.
+	**/
+	virtual void closeEvent(QCloseEvent *e);
+	virtual void resizeEvent(QResizeEvent *e);
+	virtual void keyPressEvent(QKeyEvent *e);
 
-		/**
-			\fn void nextSearch(void)
-			Kontynuuje wyszukowanie kolejnych kontaktów, a wyniki dodaje do bierz±cych.
-			Metoda ta wywo³ywana jest przy wci¶niêciu przycisku "Nastêpne wyniki".
-		**/
-		void nextSearch(void);
+public:
+	/**
+		\fn SearchDialog(QWidget *parent=0, const char *name=0, UinType whoisSearchUin = 0)
+		Standardowy konstruktor.
+		\param parent rodzic kontrolki. Domy¶lnie 0.
+		\param name nazwa kontrolki. Domy¶lnie 0.
+		\param whoisSearchUin warto¶æ logiczna informuj±ca o tym, czy wstêpnie ma byæ wybrane
+		wyszukiwanie po numerze UIN (1) czy po danych osobowych (0). Domy¶lnie 0.
+	**/
+	SearchDialog(QWidget *parent=0, const char *name=0, UinType whoisSearchUin = 0);
+	~SearchDialog(void);
 
-		/**
-			\fn void newSearchResults(SearchResults& searchResults, int seq, int fromUin)
-			Interpretuje uzyskane wyniki wyszukiwania i dodaje je do listy wyników.
-			Metoda ta jest wywo³ywana, gdy serwer Gadu-Gadu odpowie na zapytanie do katalogu publicznego.
-			\param searchResults lista struktur opisuj±cych wyniki wyszukiwania.
-			\param seq unikalny identyfikator zapytania do katalogu publicznego.
-			\param fromUin numer UIN, od którego rozpoczêto wyszukiwanie (jest ró¿ny dla kolejnych
-			wywo³añ - najpierw SearchDialog::firstSearch, a potem kolejne SearchDialog::nextSearch).
-		**/
-		void newSearchResults(SearchResults& searchResults, int seq, int fromUin);
+	static void initModule();
+	static void closeModule();
 
-	private slots:
-		void clearResults(void);
-		void addSearchedActionActivated(const UserGroup*);
-		void uinTyped(void);
-		void personalDataTyped(void);
-		void byrFromDataTyped(void);
-		void persClicked();
-		void uinClicked();
-		void updateInfoClicked();
-		void actionsAddedToToolbar(ToolButton*, ToolBar*);
-		void stopSearchActionAddedToToolbar(ToolButton*, ToolBar*);
-		void firstSearchActionAddedToToolbar(ToolButton*, ToolBar*);
-		void nextResultsActionAddedToToolbar(ToolButton*, ToolBar*);
-		void clearResultsActionAddedToToolbar(ToolButton*, ToolBar*);
-		void selectionChanged();
+	virtual bool supportsActionType(ActionDescription::ActionType type) { return type & ActionDescription::TypeSearch; }
+	virtual UserBox * getUserBox() { return 0; }
+	virtual UserListElements getUserListElements() { return UserListElements(); }
 
-	protected:
-		/**
-			\fn void closeEvent(QCloseEvent * e)
-			Obs³uguje zdarzenie zamkniêcia okna wyszukiwania w katalogu publicznym.
-			\param e wska¼nik do obiektu opisuj±cego zdarzenie zamkniêcie okna.
-		**/
-		virtual void closeEvent(QCloseEvent *e);
-		virtual void resizeEvent(QResizeEvent *e);
-		virtual void keyPressEvent(QKeyEvent *e);
+	/**
+		\fn void firstSearch()
+		Czy¶ci listê wyników, a nastêpnie wyszukuje w katalogu publicznym wg.
+		podanych w oknie danych. Wy¶wietla tylko ograniczon± ich liczbê, ze wzglêdu
+		na dzia³anie protoko³u Gadu-Gadu. Metoda ta wywo³ywana jest przy wci¶niêciu
+		przycisku "Szukaj". Aby uzyskaæ kolejne wyniki i dodaæ je do
+		bierz±cych, nale¿y dokonaæ wtórnego zapytania metod± SearchDialog::nextSearch.
+	**/
+	void firstSearch();
+
+	/**
+		\fn void nextSearch()
+		Kontynuuje wyszukowanie kolejnych kontaktów, a wyniki dodaje do bierz±cych.
+		Metoda ta wywo³ywana jest przy wci¶niêciu przycisku "Nastêpne wyniki".
+	**/
+	void nextSearch();
+
+	/**
+		\fn void stopSearch(void)
+		Zatrzymuje aktualne wyszukiwanie. Je¶li w pó¼niejszym czasie zwrócone
+		zostan± jakie¶ wyniki, bêd± one zignorowane.
+	**/
+	void stopSearch();
+
+	void clearResults();
+
+	void addFound();
+	void chatFound();
+
+public slots:
+	/**
+		\fn void newSearchResults(SearchResults& searchResults, int seq, int fromUin)
+		Interpretuje uzyskane wyniki wyszukiwania i dodaje je do listy wyników.
+		Metoda ta jest wywo³ywana, gdy serwer Gadu-Gadu odpowie na zapytanie do katalogu publicznego.
+		\param searchResults lista struktur opisuj±cych wyniki wyszukiwania.
+		\param seq unikalny identyfikator zapytania do katalogu publicznego.
+		\param fromUin numer UIN, od którego rozpoczêto wyszukiwanie (jest ró¿ny dla kolejnych
+		wywo³añ - najpierw SearchDialog::firstSearch, a potem kolejne SearchDialog::nextSearch).
+	**/
+	void newSearchResults(SearchResults& searchResults, int seq, int fromUin);
+
 };
 
 #endif

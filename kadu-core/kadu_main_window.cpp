@@ -68,7 +68,7 @@ void KaduMainWindow::loadToolBarsFromConfig(const QString &configName, Qt::ToolB
 		addToolBar(area, toolbar);
 	}
 
-	toolbarsConfig.removeChild(dockareaConfig);
+// 	toolbarsConfig.removeChild(dockareaConfig);
 
 	kdebugf2();
 }

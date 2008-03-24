@@ -37,6 +37,15 @@
 #include "search.h"
 #include "userinfo.h"
 
+SearchActionsSlots *SearchDialog::searchActionsSlot;
+
+ActionDescription *SearchDialog::firstSearchAction;
+ActionDescription *SearchDialog::nextResultsAction;
+ActionDescription *SearchDialog::stopSearchAction;
+ActionDescription *SearchDialog::clearResultsAction;
+ActionDescription *SearchDialog::addFoundAction;
+ActionDescription *SearchDialog::chatFoundAction;
+
 SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearchUin)
 	: KaduMainWindow(parent),
 	only_active(0), e_uin(0), e_name(0), e_nick(0), e_byrFrom(0), e_byrTo(0), e_surname(0),
@@ -157,44 +166,9 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	for (int i = 1; i < 5; ++i)
 		results->setColumnWidthMode(i, Q3ListView::Maximum);
 
-// 	add_searched_action = KaduActions["addSearchedAction"];
-// 	chat_searched_action = KaduActions["chatSearchedAction"];
-// 	first_search_action = KaduActions["firstSearchAction"];
-// 	next_results_action = KaduActions["nextResultsAction"];
-// 	stop_search_action = KaduActions["stopSearchAction"];
-// 	clear_search_action = KaduActions["clearSearchAction"];
-
-// 	connect(add_searched_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-// 		this, SLOT(addSearchedActionActivated(const UserGroup*)));
-// 	connect(add_searched_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
-// 		this, SLOT(actionsAddedToToolbar(ToolButton*, ToolBar*)));
-// 	connect(chat_searched_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-// 		chat_manager, SLOT(chatActionActivated(const UserGroup*)));
-// 	connect(chat_searched_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
-// 		this, SLOT(actionsAddedToToolbar(ToolButton*, ToolBar*)));
-// 	connect(clear_search_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
-// 		this, SLOT(clearResultsActionAddedToToolbar(ToolButton*, ToolBar*)));
-// 	connect(stop_search_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
-// 		this, SLOT(stopSearchActionAddedToToolbar(ToolButton*, ToolBar*)));
-// 	connect(first_search_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
-// 		this, SLOT(firstSearchActionAddedToToolbar(ToolButton*, ToolBar*)));
-// 	connect(next_results_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
-// 		this, SLOT(nextResultsActionAddedToToolbar(ToolButton*, ToolBar*)));
-
 //	searchhidden = false;
 	if (_whoisSearchUin)
 		e_uin->insert(QString::number(_whoisSearchUin));
-
-// 	stop_search_action->setSlot(SLOT(stopSearch()));
-// 	stop_search_action->setEnabled(this, false);
-// 	first_search_action->setSlot(SLOT(firstSearch()));
-// 	first_search_action->setEnabled(this, false);
-// 	next_results_action->setSlot(SLOT(nextSearch()));
-// 	next_results_action->setEnabled(this, false);
-// 	clear_search_action->setSlot(SLOT(clearResults()));
-// 	clear_search_action->setEnabled(this, false);
-// 	add_searched_action->setEnabled(this, false);
-// 	chat_searched_action->setEnabled(this, false);
 
 	setCentralWidget(centralWidget);
 
@@ -226,23 +200,49 @@ void SearchDialog::initModule()
 {
 	kdebugf();
 
-// 	new Action("LookupUserInfo", tr("&Search"),
-// 		"firstSearchAction", Action::TypeSearch, Qt::Key_Return, Qt::Key_Enter);
+	searchActionsSlot = new SearchActionsSlots();
+
+	firstSearchAction = new ActionDescription(
+		ActionDescription::TypeSearch, "firstSearchAction",
+		searchActionsSlot, SLOT(firstSearchActionActivated(QWidget *, bool)),
+		"LookupUserInfo", tr("&Search")
+	);
+
+	nextResultsAction = new ActionDescription(
+		ActionDescription::TypeSearch, "nextResultsAction",
+		searchActionsSlot, SLOT(nextResultsActionActivated(QWidget *, bool)),
+		"NextSearchResults", tr("&Next results")
+	);
+
+	stopSearchAction = new ActionDescription(
+		ActionDescription::TypeSearch, "stopSearchAction",
+		searchActionsSlot, SLOT(stopSearchActionActivated(QWidget *, bool)),
+		"CloseWindow", tr("Stop")
+	);
+
+	clearResultsAction = new ActionDescription(
+		ActionDescription::TypeSearch, "clearSearchAction",
+		searchActionsSlot, SLOT(clearResultsActionActivated(QWidget *, bool)),
+		"ClearSearchResults", tr("Clear results")
+	);
+
+	addFoundAction = new ActionDescription(
+		ActionDescription::TypeSearch, "addSearchedAction",
+		searchActionsSlot, SLOT(addFoundActionActivated(QWidget *, bool)),
+		"AddUser", tr("Add selected user")
+	);
+
+	chatFoundAction = new ActionDescription(
+		ActionDescription::TypeSearch, "chatSearchedAction",
+		searchActionsSlot, SLOT(chatFoundActionActivated(QWidget *, bool)),
+		"OpenChat", tr("&Chat")
+	);
+
 	ToolBar::addDefaultAction("Search toolbar", "firstSearchAction", -1, true);
-
-// 	new Action("NextSearchResults", tr("&Next results"), "nextResultsAction", Action::TypeSearch);
 	ToolBar::addDefaultAction("Search toolbar", "nextResultsAction", 0, true);
-
-// 	new Action("CloseWindow", tr("Stop"), "stopSearchAction", Action::TypeSearch);
 	ToolBar::addDefaultAction("Search toolbar", "stopSearchAction", 1, true);
-
-// 	new Action("ClearSearchResults", tr("Clear results"), "clearSearchAction", Action::TypeSearch);
 	ToolBar::addDefaultAction("Search toolbar", "clearSearchAction", 2, true);
-
-// 	new Action("AddUser", tr("Add selected user"), "addSearchedAction", Action::TypeSearch);
 	ToolBar::addDefaultAction("Search toolbar", "addSearchedAction", 3, true);
-
-// 	new Action("OpenChat", tr("&Chat"), "chatSearchedAction", Action::TypeSearch);
 	ToolBar::addDefaultAction("Search toolbar", "chatSearchedAction", 4, true);
 
 	kdebugf2();
@@ -250,6 +250,8 @@ void SearchDialog::initModule()
 
 void SearchDialog::closeModule()
 {
+	delete searchActionsSlot;
+
 #if DEBUG_ENABLED
 	// for valgrind
 	QStringList searchActions;
@@ -262,18 +264,37 @@ void SearchDialog::closeModule()
 #endif
 }
 
-void SearchDialog::selectedUsersNeeded(const UserGroup*& user_group)
+void SearchDialog::addFound()
 {
-	kdebugf();
+	UserListElements found = selected();
+
+	foreach (UserListElement user, found)
+		if (user.isAnonymous())
+			(new UserInfo(user, kadu, "add_user"))->show();
+		else
+			(new UserInfo(user, kadu, "user_info"))->show();
+}
+
+void SearchDialog::chatFound()
+{
+	UserListElements found = selected();
+	if (found.size())
+		chat_manager->openChatWidget(gadu, found);
+}
+
+// TODO: return real list
+UserListElements SearchDialog::selected()
+{
+	UserListElements result;
 
 	Q3ListViewItem *selected = results->selectedItem();
+
 	if (!selected)
-	{
 		if (results->childCount() == 1)
 			selected = results->firstChild();
-		user_group = NULL;
-		return;
-	}
+
+	if (!selected)
+		return result;
 
 	QString uin = selected->text(1);
 	QString firstname = selected->text(2);
@@ -281,7 +302,7 @@ void SearchDialog::selectedUsersNeeded(const UserGroup*& user_group)
 
 	bool ok;
 	if (uin.toUInt(&ok) == 0 || !ok)
-		return;
+		return result;
 
 	QString altnick;
 	if (!nickname.isEmpty()) // Build altnick. Trying user nick first.
@@ -300,11 +321,8 @@ void SearchDialog::selectedUsersNeeded(const UserGroup*& user_group)
 		e.setAltNick(altnick);
 	}
 
-	selectedUsers->clear();
-	selectedUsers->addUser(e);
-	user_group = selectedUsers;
-
-	kdebugf2();
+	result.append(e);
+	return result;
 }
 
 void SearchDialog::clearResults(void)
@@ -314,16 +332,6 @@ void SearchDialog::clearResults(void)
 // 	add_searched_action->setEnabled(this, false);
 // 	clear_search_action->setEnabled(this, false);
 // 	chat_searched_action->setEnabled(this, false);
-}
-
-void SearchDialog::addSearchedActionActivated(const UserGroup* users)
-{
-	kdebugf();
-	if ((*users->begin()).isAnonymous())
-		(new UserInfo(*users->begin(), kadu, "add_user"))->show();
-	else
-		(new UserInfo(*users->begin(), kadu, "user_info"))->show();
-	kdebugf2();
 }
 
 void SearchDialog::stopSearch(void)
@@ -348,7 +356,7 @@ void SearchDialog::stopSearch(void)
 	kdebugf2();
 }
 
-void SearchDialog::firstSearch(void)
+void SearchDialog::firstSearch()
 {
 	kdebugf();
 
@@ -675,4 +683,58 @@ void SearchDialog::selectionChanged()
 // 	bool enableActions = results->selectedItem() != 0;
 // 	add_searched_action->setEnabled(this, enableActions);
 // 	chat_searched_action->setEnabled(this, enableActions);
+}
+
+void SearchActionsSlots::firstSearchActionActivated(QWidget *sender, bool toggled)
+{
+	SearchDialog *search = dynamic_cast<SearchDialog *>(sender);
+	if (search)
+		search->firstSearch();
+}
+
+
+// 	stop_search_action->setSlot(SLOT(stopSearch()));
+// 	stop_search_action->setEnabled(this, false);
+// 	first_search_action->setSlot(SLOT(firstSearch()));
+// 	first_search_action->setEnabled(this, false);
+// 	next_results_action->setSlot(SLOT(nextSearch()));
+// 	next_results_action->setEnabled(this, false);
+// 	clear_search_action->setSlot(SLOT(clearResults()));
+// 	clear_search_action->setEnabled(this, false);
+// 	add_searched_action->setEnabled(this, false);
+// 	chat_searched_action->setEnabled(this, false);
+
+void SearchActionsSlots::nextResultsActionActivated(QWidget *sender, bool toggled)
+{
+	SearchDialog *search = dynamic_cast<SearchDialog *>(sender);
+	if (search)
+		search->nextSearch();
+}
+
+void SearchActionsSlots::stopSearchActionActivated(QWidget *sender, bool toggled)
+{
+	SearchDialog *search = dynamic_cast<SearchDialog *>(sender);
+	if (search)
+		search->stopSearch();
+}
+
+void SearchActionsSlots::clearResultsActionActivated(QWidget *sender, bool toggled)
+{
+	SearchDialog *search = dynamic_cast<SearchDialog *>(sender);
+	if (search)
+		search->clearResults();
+}
+
+void SearchActionsSlots::addFoundActionActivated(QWidget *sender, bool toggled)
+{
+	SearchDialog *search = dynamic_cast<SearchDialog *>(sender);
+	if (search)
+		search->addFound();
+}
+
+void SearchActionsSlots::chatFoundActionActivated(QWidget *sender, bool toggled)
+{
+	SearchDialog *search = dynamic_cast<SearchDialog *>(sender);
+	if (search)
+		search->chatFound();
 }

@@ -401,6 +401,7 @@ void ToolBar::updateButtons()
 	QAction *lastAction = 0;
 // 	DockArea *dockarea = (DockArea *)area();
 
+
 	FOREACH(toolBarAction, ToolBarActions)
 	{
 		const QString &actionName = (*toolBarAction).actionName;
