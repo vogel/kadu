@@ -626,7 +626,7 @@ public slots:
 		\param widget (nieu¿ywany)
 		\param toggle w³±czenie / wy³±czenie ukrywania opisów
 	**/
-	void showDescriptionsActionActivated(const QWidget *caller, bool toggle);
+	void showDescriptionsActionActivated(const QAction *sender, bool toggle);
 
 	/**
 		\fn void setDescriptionsActionState()

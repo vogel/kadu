@@ -110,13 +110,13 @@ class Kadu : public KaduMainWindow, ConfigurationAwareObject, public ActionWindo
 		void setOffline(const QString &description = QString::null);
 
 	private slots:
-		void inactiveUsersActionActivated(QWidget *parent, bool toggled);
-		void descriptionUsersActionActivated(QWidget *parent, bool toggled);
-		void onlineAndDescUsersActionActivated(QWidget *parent, bool toggled);
-		void configurationActionActivated(QWidget *parent, bool toggled);
-		void addUserActionActivated(QWidget *parent, bool toggled);
-		void editUserActionActivated(QWidget *parent, bool toggled);
-		void searchInDirectoryActionActivated(QWidget *parent, bool toggled);
+		void inactiveUsersActionActivated(QAction *sender, bool toggled);
+		void descriptionUsersActionActivated(QAction *sender, bool toggled);
+		void onlineAndDescUsersActionActivated(QAction *sender, bool toggled);
+		void configurationActionActivated(QAction *sender, bool toggled);
+		void addUserActionActivated(QAction *sender, bool toggled);
+		void editUserActionActivated(QAction *sender, bool toggled);
+		void searchInDirectoryActionActivated(QAction *sender, bool toggled);
 
 		void openChat();
 		void messageReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t time);
@@ -158,6 +158,7 @@ class Kadu : public KaduMainWindow, ConfigurationAwareObject, public ActionWindo
 			return type & (ActionDescription::TypeGlobal | ActionDescription::TypeUserList); }
 		virtual UserBox * getUserBox() { return Userbox; }
 		virtual UserListElements getUserListElements();
+		virtual ChatWidget * getChatWidget() { return 0; }
 
 		const UserListElement & myself() { return Myself; };
 

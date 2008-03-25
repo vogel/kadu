@@ -427,9 +427,11 @@ void ToolBar::updateButtons()
 		{
 			(*toolBarAction).action = KaduActions.getAction(actionName, dynamic_cast<QWidget *>(parent()));
 			QToolBar::addAction((*toolBarAction).action);
+
 // 			if ((*toolBarAction).showLabel)
 // 				action->
 // KaduActions[actionName], (*toolBarAction).showLabel, lastButton);
+
 			lastAction = (*toolBarAction).action;
 		}
 	}

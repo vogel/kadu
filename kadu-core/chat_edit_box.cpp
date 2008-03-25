@@ -63,9 +63,14 @@ UserBox * ChatEditBox::getUserBox()
 UserListElements ChatEditBox::getUserListElements()
 {
 	// TODO: It's stupid
-	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent()->parent());
+	ChatWidget *chatWidget = getChatWidget();
 	if (chatWidget)
 		return chatWidget->users()->toUserListElements();
 
 	return UserListElements();
+}
+
+ChatWidget * ChatEditBox::getChatWidget()
+{
+	return dynamic_cast<ChatWidget *>(parent()->parent());
 }

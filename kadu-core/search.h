@@ -25,12 +25,12 @@ class SearchActionsSlots : public QObject
 	Q_OBJECT
 
 public slots:
-	void firstSearchActionActivated(QWidget *sender, bool toggled);
-	void nextResultsActionActivated(QWidget *sender, bool toggled);
-	void stopSearchActionActivated(QWidget *sender, bool toggled);
-	void clearResultsActionActivated(QWidget *sender, bool toggled);
-	void addFoundActionActivated(QWidget *sender, bool toggled);
-	void chatFoundActionActivated(QWidget *sender, bool toggled);
+	void firstSearchActionActivated(QAction *sender, bool toggled);
+	void nextResultsActionActivated(QAction *sender, bool toggled);
+	void stopSearchActionActivated(QAction *sender, bool toggled);
+	void clearResultsActionActivated(QAction *sender, bool toggled);
+	void addFoundActionActivated(QAction *sender, bool toggled);
+	void chatFoundActionActivated(QAction *sender, bool toggled);
 
 };
 
@@ -121,6 +121,7 @@ public:
 	virtual bool supportsActionType(ActionDescription::ActionType type) { return type & ActionDescription::TypeSearch; }
 	virtual UserBox * getUserBox() { return 0; }
 	virtual UserListElements getUserListElements() { return UserListElements(); }
+	virtual ChatWidget * getChatWidget() { return 0; }
 
 	/**
 		\fn void firstSearch()

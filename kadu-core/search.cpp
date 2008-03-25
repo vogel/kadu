@@ -204,37 +204,37 @@ void SearchDialog::initModule()
 
 	firstSearchAction = new ActionDescription(
 		ActionDescription::TypeSearch, "firstSearchAction",
-		searchActionsSlot, SLOT(firstSearchActionActivated(QWidget *, bool)),
+		searchActionsSlot, SLOT(firstSearchActionActivated(QAction *, bool)),
 		"LookupUserInfo", tr("&Search")
 	);
 
 	nextResultsAction = new ActionDescription(
 		ActionDescription::TypeSearch, "nextResultsAction",
-		searchActionsSlot, SLOT(nextResultsActionActivated(QWidget *, bool)),
+		searchActionsSlot, SLOT(nextResultsActionActivated(QAction *, bool)),
 		"NextSearchResults", tr("&Next results")
 	);
 
 	stopSearchAction = new ActionDescription(
 		ActionDescription::TypeSearch, "stopSearchAction",
-		searchActionsSlot, SLOT(stopSearchActionActivated(QWidget *, bool)),
+		searchActionsSlot, SLOT(stopSearchActionActivated(QAction *, bool)),
 		"CloseWindow", tr("Stop")
 	);
 
 	clearResultsAction = new ActionDescription(
 		ActionDescription::TypeSearch, "clearSearchAction",
-		searchActionsSlot, SLOT(clearResultsActionActivated(QWidget *, bool)),
+		searchActionsSlot, SLOT(clearResultsActionActivated(QAction *, bool)),
 		"ClearSearchResults", tr("Clear results")
 	);
 
 	addFoundAction = new ActionDescription(
 		ActionDescription::TypeSearch, "addSearchedAction",
-		searchActionsSlot, SLOT(addFoundActionActivated(QWidget *, bool)),
+		searchActionsSlot, SLOT(addFoundActionActivated(QAction *, bool)),
 		"AddUser", tr("Add selected user")
 	);
 
 	chatFoundAction = new ActionDescription(
 		ActionDescription::TypeSearch, "chatSearchedAction",
-		searchActionsSlot, SLOT(chatFoundActionActivated(QWidget *, bool)),
+		searchActionsSlot, SLOT(chatFoundActionActivated(QAction *, bool)),
 		"OpenChat", tr("&Chat")
 	);
 
@@ -685,7 +685,7 @@ void SearchDialog::selectionChanged()
 // 	chat_searched_action->setEnabled(this, enableActions);
 }
 
-void SearchActionsSlots::firstSearchActionActivated(QWidget *sender, bool toggled)
+void SearchActionsSlots::firstSearchActionActivated(QAction *sender, bool toggled)
 {
 	SearchDialog *search = dynamic_cast<SearchDialog *>(sender);
 	if (search)
@@ -704,35 +704,35 @@ void SearchActionsSlots::firstSearchActionActivated(QWidget *sender, bool toggle
 // 	add_searched_action->setEnabled(this, false);
 // 	chat_searched_action->setEnabled(this, false);
 
-void SearchActionsSlots::nextResultsActionActivated(QWidget *sender, bool toggled)
+void SearchActionsSlots::nextResultsActionActivated(QAction *sender, bool toggled)
 {
 	SearchDialog *search = dynamic_cast<SearchDialog *>(sender);
 	if (search)
 		search->nextSearch();
 }
 
-void SearchActionsSlots::stopSearchActionActivated(QWidget *sender, bool toggled)
+void SearchActionsSlots::stopSearchActionActivated(QAction *sender, bool toggled)
 {
 	SearchDialog *search = dynamic_cast<SearchDialog *>(sender);
 	if (search)
 		search->stopSearch();
 }
 
-void SearchActionsSlots::clearResultsActionActivated(QWidget *sender, bool toggled)
+void SearchActionsSlots::clearResultsActionActivated(QAction *sender, bool toggled)
 {
 	SearchDialog *search = dynamic_cast<SearchDialog *>(sender);
 	if (search)
 		search->clearResults();
 }
 
-void SearchActionsSlots::addFoundActionActivated(QWidget *sender, bool toggled)
+void SearchActionsSlots::addFoundActionActivated(QAction *sender, bool toggled)
 {
 	SearchDialog *search = dynamic_cast<SearchDialog *>(sender);
 	if (search)
 		search->addFound();
 }
 
-void SearchActionsSlots::chatFoundActionActivated(QWidget *sender, bool toggled)
+void SearchActionsSlots::chatFoundActionActivated(QAction *sender, bool toggled)
 {
 	SearchDialog *search = dynamic_cast<SearchDialog *>(sender);
 	if (search)

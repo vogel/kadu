@@ -51,6 +51,8 @@ class ChatManager : public QObject, ConfigurationAwareObject
 	ActionDescription *blockUserActionDescription;
 	ActionDescription *chatActionDescription;
 	ActionDescription *openChatWithActionDescription;
+	ActionDescription *insertEmoticonActionDescription;
+	ActionDescription *colorSelectorActionDescription;
 
 	private:
 		ChatList ChatWidgets; /*!< lista okien*/
@@ -72,21 +74,19 @@ class ChatManager : public QObject, ConfigurationAwareObject
 		QTimer refreshTitlesTimer;
 
 	private slots:
-		void autoSendActionActivated(QWidget *parent, bool toggled);
-		void clearActionActivated(QWidget *parent, bool toggled);
-		void insertImageActionActivated(QWidget *, bool);
-		void boldActionActivated(QWidget *, bool);
-		void italicActionActivated(QWidget *, bool);
-		void underlineActionActivated(QWidget *, bool);
-		void sendActionActivated(QWidget *, bool);
-		void whoisActionActivated(QWidget *, bool);
-		void ignoreUserActionActivated(QWidget *, bool);
-		void blockUserActionActivated(QWidget *, bool);
-		void chatActionActivated(QWidget *, bool);
-/*
-		void colorActionActivated(const UserGroup* users, const QWidget* source);
-		void insertEmoticonActionActivated(const UserGroup* users, const QWidget* source);
-		void insertEmoticonActionAddedToToolbar(const UserGroup*, ToolButton* button, ToolBar* toolbar);*/
+		void autoSendActionActivated(QAction *sender, bool toggled);
+		void clearActionActivated(QAction *sender, bool toggled);
+		void insertImageActionActivated(QAction *sender, bool toggled);
+		void boldActionActivated(QAction *sender, bool toggled);
+		void italicActionActivated(QAction *sender, bool toggled);
+		void underlineActionActivated(QAction *sender, bool toggled);
+		void sendActionActivated(QAction *sender, bool toggled);
+		void whoisActionActivated(QAction *sender, bool toggled);
+		void ignoreUserActionActivated(QAction *sender, bool toggled);
+		void blockUserActionActivated(QAction *sender, bool toggled);
+		void chatActionActivated(QAction *sender, bool toggled);
+		void insertEmoticonActionActivated(QAction *sender, bool toggled);
+		void colorSelectorActionActivated(QAction *sender, bool toogled);
 
 	protected:
 		virtual void configurationUpdated();

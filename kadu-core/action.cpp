@@ -62,12 +62,12 @@ KaduAction::~KaduAction()
 
 void KaduAction::changedSlot()
 {
-	emit changed((QWidget *)parent());
+	emit changed(this);
 }
 
 void KaduAction::hoveredSlot()
 {
-	emit hovered((QWidget *)parent());
+	emit hovered(this);
 }
 
 void KaduAction::toggledSlot(bool checked)
@@ -87,12 +87,12 @@ void KaduAction::toggledSlot(bool checked)
 			setIcon(OffIcon);
 	}
 
-	emit toggled((QWidget *)parent(), checked);
+	emit toggled(this, checked);
 }
 
 void KaduAction::triggeredSlot(bool checked)
 {
-	emit triggered((QWidget *)parent(), checked);
+	emit triggered(this, checked);
 }
 
 void KaduAction::connectSignalsAndSlots()
@@ -145,8 +145,8 @@ KaduAction * ActionDescription::getAction(QWidget *parent)
 
 	result->setCheckable(Checkable);
 
-	connect(result, SIGNAL(toggled(QWidget *, bool)), Object, Slot);
-	connect(result, SIGNAL(triggered(QWidget *, bool)), Object, Slot);
+	connect(result, SIGNAL(toggled(QAction *, bool)), Object, Slot);
+	connect(result, SIGNAL(triggered(QAction *, bool)), Object, Slot);
 
 	return result;
 }

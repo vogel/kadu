@@ -483,7 +483,7 @@ UserBox::UserBox(bool fancy, UserGroup *group, QWidget* parent, const char* name
 
 	showDescriptionAction = new ActionDescription(
 		ActionDescription::TypeUserList, "descriptionsAction",
-		this, SLOT(showDescriptionsActionActivated(QWidget *, bool)),
+		this, SLOT(showDescriptionsActionActivated(QAction *, bool)),
 		"ShowDescription", tr("Hide descriptions"),
 		true, tr("Show descriptions")
 	);
@@ -596,7 +596,7 @@ void UserBox::hideTip(bool waitForAnother)
 		tipTimer.stop();
 }
 
-void UserBox::showDescriptionsActionActivated(const QWidget *caller, bool toggle)
+void UserBox::showDescriptionsActionActivated(const QAction *sender, bool toggle)
 {
 // 	desc_action->setAllOn(toggle);
 	config_file.writeEntry("Look", "ShowDesc", !toggle);

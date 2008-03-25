@@ -253,46 +253,46 @@ Kadu::Kadu(QWidget *parent)
 
 	inactiveUsersAction = new ActionDescription(
 		ActionDescription::TypeUserList, "inactiveUsersAction",
-		this, SLOT(inactiveUsersActionActivated(QWidget *, bool)),
+		this, SLOT(inactiveUsersActionActivated(QAction *, bool)),
 		"ShowHideInactiveUsers", tr("Hide offline users"),
 		true, tr("Show offline users")
 	);
 
 	descriptionUsersAction = new ActionDescription(
 		ActionDescription::TypeUserList, "descriptionUsersAction",
-		this, SLOT(descriptionUsersActionActivated(QWidget *, bool)),
+		this, SLOT(descriptionUsersActionActivated(QAction *, bool)),
 		"ShowOnlyDescriptionUsers", tr("Hide users without description"),
 		true, tr("Show users without description")
 	);
 
 	onlineAndDescriptionUsersAction = new ActionDescription(
 		ActionDescription::TypeUserList, "onlineAndDescriptionUsersAction",
-		this, SLOT(onlineAndDescUsersActionActivated(QWidget *, bool)),
+		this, SLOT(onlineAndDescUsersActionActivated(QAction *, bool)),
 		"ShowOnlineAndDescriptionUsers", tr("Show only online and description users"),
 		true, tr("Show all users")
 	);
 
 	configurationActionDescription = new ActionDescription(
 		ActionDescription::TypeGlobal, "configurationAction",
-		this, SLOT(configurationActionActivated(QWidget *, bool)),
+		this, SLOT(configurationActionActivated(QAction *, bool)),
 		"Configuration", tr("Configuration")
 	);
 
 	editUserActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "editUserAction",
-		this, SLOT(editUserActionActivated(QWidget *, bool)),
+		this, SLOT(editUserActionActivated(QAction *, bool)),
 		"EditUserInfo", tr("Contact data")
 	);
 
 	addUserActionDescription = new ActionDescription(
 		ActionDescription::TypeGlobal, "addUserAction",
-		this, SLOT(addUserActionActivated(QWidget *, bool)),
+		this, SLOT(addUserActionActivated(QAction *, bool)),
 		"AddUser", tr("Add user")
 	);
 
 	openSearchActionDescription = new ActionDescription(
 		ActionDescription::TypeGlobal, "openSearchAction",
-		this, SLOT(searchInDirectoryActionActivated(QWidget *, bool)),
+		this, SLOT(searchInDirectoryActionActivated(QAction *, bool)),
 		"LookupUserInfo", tr("Search user in directory")
 	);
 
@@ -517,7 +517,7 @@ void Kadu::popupMenu()
 
 void Kadu::configure()
 {
-	configurationActionActivated(this, false);
+	configurationActionActivated(0, false);
 }
 
 void Kadu::copyDescription()
@@ -670,26 +670,26 @@ void Kadu::selectedUsersNeeded(const UserGroup*& users)
 	kdebugf2();
 }
 
-void Kadu::inactiveUsersActionActivated(QWidget *parent, bool toggled)
+void Kadu::inactiveUsersActionActivated(QAction *sender, bool toggled)
 {
 	groups_manager->changeDisplayingOffline();
 }
 
-void Kadu::descriptionUsersActionActivated(QWidget *parent, bool toggled)
+void Kadu::descriptionUsersActionActivated(QAction *sender, bool toggled)
 {
-	ActionWindow *window = dynamic_cast<ActionWindow *>(parent);
+	ActionWindow *window = dynamic_cast<ActionWindow *>(sender->parent());
 	if (!window)
 		return;
 
 	groups_manager->changeDisplayingWithoutDescription(window->getUserBox(), !toggled);
 }
 
-void Kadu::onlineAndDescUsersActionActivated(QWidget *parent, bool toggled)
+void Kadu::onlineAndDescUsersActionActivated(QAction *sender, bool toggled)
 {
 	groups_manager->changeDisplayingOnlineAndDescription();
 }
 
-void Kadu::configurationActionActivated(QWidget *parent, bool toggled)
+void Kadu::configurationActionActivated(QAction *sender, bool toggled)
 {
 	MainConfigurationWindow::instance()->show();
 }
@@ -722,11 +722,11 @@ void Kadu::editUserActionAddedToToolbar(const UserGroup* users)
 	kdebugf2();
 }
 
-void Kadu::editUserActionActivated(QWidget *parent, bool toggled)
+void Kadu::editUserActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	ActionWindow *window = dynamic_cast<ActionWindow *>(parent);
+	ActionWindow *window = dynamic_cast<ActionWindow *>(sender->parent());
 	if (!window)
 		return;
 	
@@ -738,10 +738,10 @@ void Kadu::editUserActionActivated(QWidget *parent, bool toggled)
 	kdebugf2();
 }
 
-void Kadu::addUserActionActivated(QWidget *parent, bool toggled)
+void Kadu::addUserActionActivated(QAction *sender, bool toggled)
 {
  	kdebugf();
-	ActionWindow *window = dynamic_cast<ActionWindow *>(parent);
+	ActionWindow *window = dynamic_cast<ActionWindow *>(sender->parent());
 	if (!window)
 	{	
 		UserListElements selectedUsers = window->getUserListElements();
@@ -836,7 +836,7 @@ void Kadu::openChat()
 //	button->setPixmap(gadu->currentStatus().pixmap());
 //}
 
-void Kadu::searchInDirectoryActionActivated(QWidget *parent, bool toggled)
+void Kadu::searchInDirectoryActionActivated(QAction *sender, bool toggled)
 {
 	(new SearchDialog(kadu, "search_user"))->show();
 }

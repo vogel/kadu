@@ -39,91 +39,87 @@ ChatManager::ChatManager(QObject* parent, const char* name) : QObject(parent, na
 
 	autoSendActionDescription = new ActionDescription(
 		ActionDescription::TypeChat, "autoSendAction",
-		this, SLOT(autoSendActionActivated(QWidget *, bool)),
+		this, SLOT(autoSendActionActivated(QAction *, bool)),
 		"AutoSendMessage", tr("%1 sends message").arg(config_file.readEntry("ShortCuts", "chat_newline")), true
 	);
 
 	clearChatActionDescription = new ActionDescription(
 		ActionDescription::TypeChat, "clearChatAction",
-		this, SLOT(clearActionActivated(QWidget *, bool)),
+		this, SLOT(clearActionActivated(QAction *, bool)),
 		"ClearChat", tr("Clear messages in chat window")
 	);
 
 	insertImageActionDescription = new ActionDescription(
 		ActionDescription::TypeChat, "insertImageAction",
-		this, SLOT(insertImageActionActivated(QWidget *, bool)),
+		this, SLOT(insertImageActionActivated(QAction *, bool)),
 		"ChooseImage", tr("Insert image")
 	);
 
 	boldActionDescription = new ActionDescription(
 		ActionDescription::TypeChat, "boldAction",
-		this, SLOT(boldActionActivated(QWidget *, bool)),
+		this, SLOT(boldActionActivated(QAction *, bool)),
 		"Bold", tr("Bold"), true
 	);
 
 	italicActionDescription = new ActionDescription(
 		ActionDescription::TypeChat, "italicAction",
-		this, SLOT(italicActionActivated(QWidget *, bool)),
+		this, SLOT(italicActionActivated(QAction *, bool)),
 		"Italic", tr("Italic"), true
 	);
 
 	underlineActionDescription = new ActionDescription(
 		ActionDescription::TypeChat, "underlineAction",
-		this, SLOT(underlineActionActivated(QWidget *, bool)),
+		this, SLOT(underlineActionActivated(QAction *, bool)),
 		"Underline", tr("Underline"), true
 	);
 
 	sendActionDescription = new ActionDescription(
 		ActionDescription::TypeChat, "sendAction",
-		this, SLOT(sendActionActivated(QWidget *, bool)),
+		this, SLOT(sendActionActivated(QAction *, bool)),
 		"SendMessage", tr("&Send"), true
 	);
 
 	whoisActionDescription = new ActionDescription(
 		ActionDescription::TypeChat, "whoisAction",
-		this, SLOT(whoisActionActivated(QWidget *, bool)),
+		this, SLOT(whoisActionActivated(QAction *, bool)),
 		"LookupUserInfo", tr("Search this user in directory")
 	);
 
 	ignoreUserActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "ignoreUserAction",
-		this, SLOT(ignoreUserActionActivated(QWidget *, bool)),
+		this, SLOT(ignoreUserActionActivated(QAction *, bool)),
 		"Ignore", tr("Ignore user")
 	);
 
 	blockUserActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "blockUserAction",
-		this, SLOT(blockUserActionActivated(QWidget *, bool)),
+		this, SLOT(blockUserActionActivated(QAction *, bool)),
 		"Blocking", tr("Block user")
 	);
 
 	chatActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "chatAction",
-		this, SLOT(chatActionActivated(QWidget *, bool)),
+		this, SLOT(chatActionActivated(QAction *, bool)),
 		"OpenChat", tr("&Chat")
 	);
 
 	openChatWithActionDescription = new ActionDescription(
 		ActionDescription::TypeGlobal, "openChatWithAction",
-		kadu, SLOT(openChatWith()),
+		kadu, SLOT(openChatWith(QAction *, bool)),
 		"OpenChat", tr("Open chat with...")
 	);
 
+	insertEmoticonActionDescription = new ActionDescription(
+		ActionDescription::TypeChat, "insertEmoticonAction",
+		this, SLOT(insertEmoticonActionActivated(QAction *, bool)),
+		"ChooseEmoticon", tr("Insert emoticon")
+	);
 
-/*
-	Action* insert_emot_action = new Action("ChooseEmoticon", tr("Insert emoticon"),
-		"insertEmoticonAction", Action::TypeChat);
-	connect(insert_emot_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-		this, SLOT(insertEmoticonActionActivated(const UserGroup*, const QWidget*)));
-	connect(insert_emot_action, SIGNAL(addedToToolbar(const UserGroup*, ToolButton*, ToolBar*)),
-		this, SLOT(insertEmoticonActionAddedToToolbar(const UserGroup*, ToolButton*, ToolBar*)));
-
-
-	Action* color_action = new Action("Black", tr("Change color"), "colorAction", Action::TypeChat);
-	connect(color_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-		this, SLOT(colorActionActivated(const UserGroup*, const QWidget*)));
-
-*/
+	colorSelectorActionDescription = new ActionDescription(
+		ActionDescription::TypeChat, "colorAction",
+		this, SLOT(colorSelectorActionActivated(QAction *, bool)),
+		"Black", tr("Change color")
+	);
 
 	ToolBar::addDefaultAction("Chat toolbar 1", "autoSendAction");
 	ToolBar::addDefaultAction("Chat toolbar 1", "clearChatAction");
@@ -248,11 +244,15 @@ ChatManager::~ChatManager()
 	kdebugf2();
 }
 
-void ChatManager::autoSendActionActivated(QWidget *parent, bool toggled)
+void ChatManager::autoSendActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent->parent()->parent());
+	ActionWindow *actionWindow = dynamic_cast<ActionWindow *>(sender->parent());
+	if (!actionWindow)
+		return;
+
+	ChatWidget *chatWidget = actionWindow->getChatWidget();
 	if (chatWidget)
 	{
 		chatWidget->setAutoSend(toggled);
@@ -263,70 +263,105 @@ void ChatManager::autoSendActionActivated(QWidget *parent, bool toggled)
 	kdebugf2();
 }
 
-void ChatManager::clearActionActivated(QWidget *parent, bool toggled)
+void ChatManager::clearActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent->parent()->parent());
+	ActionWindow *actionWindow = dynamic_cast<ActionWindow *>(sender->parent());
+	if (!actionWindow)
+		return;
+
+	ChatWidget *chatWidget = actionWindow->getChatWidget();
 	if (chatWidget)
 		chatWidget->clearChatWindow();
 
 	kdebugf2();
 }
 
-void ChatManager::insertImageActionActivated(QWidget *parent, bool toggled)
+void ChatManager::insertImageActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
-	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent->parent()->parent());
+
+	ActionWindow *actionWindow = dynamic_cast<ActionWindow *>(sender->parent());
+	if (!actionWindow)
+		return;
+
+	ChatWidget *chatWidget = actionWindow->getChatWidget();
 	if (chatWidget)
 		chatWidget->insertImage();
+
 	kdebugf2();
 }
 
-void ChatManager::boldActionActivated(QWidget *parent, bool toggled)
+void ChatManager::boldActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
-	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent->parent()->parent());
+
+	ActionWindow *actionWindow = dynamic_cast<ActionWindow *>(sender->parent());
+	if (!actionWindow)
+		return;
+
+	ChatWidget *chatWidget = actionWindow->getChatWidget();
 	if (chatWidget)
 		chatWidget->edit()->setBold(toggled);
+
 	kdebugf2();
 }
 
-void ChatManager::italicActionActivated(QWidget *parent, bool toggled)
+void ChatManager::italicActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
-	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent->parent()->parent());
+
+	ActionWindow *actionWindow = dynamic_cast<ActionWindow *>(sender->parent());
+	if (!actionWindow)
+		return;
+
+	ChatWidget *chatWidget = actionWindow->getChatWidget();
 	if (chatWidget)
 		chatWidget->edit()->setItalic(toggled);
+
 	kdebugf2();
 }
 
-void ChatManager::underlineActionActivated(QWidget *parent, bool toggled)
+void ChatManager::underlineActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
-	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent->parent()->parent());
+
+
+	ActionWindow *actionWindow = dynamic_cast<ActionWindow *>(sender->parent());
+	if (!actionWindow)
+		return;
+
+	ChatWidget *chatWidget = actionWindow->getChatWidget();
 	if (chatWidget)
 		chatWidget->edit()->setUnderline(toggled);
+
 	kdebugf2();
 }
 
-void ChatManager::sendActionActivated(QWidget *parent, bool toggled)
+void ChatManager::sendActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
-	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent->parent()->parent());
+
+	ActionWindow *actionWindow = dynamic_cast<ActionWindow *>(sender->parent());
+	if (!actionWindow)
+		return;
+
+	ChatWidget *chatWidget = actionWindow->getChatWidget();
 	if (chatWidget)
 		if (chatWidget->waitingForACK())
 			chatWidget->cancelMessage();
 		else
 			chatWidget->sendMessage();
+
 	kdebugf2();
 }
 
-void ChatManager::whoisActionActivated(QWidget *parent, bool toggled)
+void ChatManager::whoisActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	ActionWindow *window = dynamic_cast<ActionWindow *>(parent);
+	ActionWindow *window = dynamic_cast<ActionWindow *>(sender->parent());
 	if (!window)
 	{
 		(new SearchDialog(kadu, "search_user"))->show();
@@ -350,41 +385,45 @@ void ChatManager::whoisActionActivated(QWidget *parent, bool toggled)
 	kdebugf2();
 }
 
-/*
-void ChatManager::colorActionActivated(const UserGroup* users, const QWidget* source)
+void ChatManager::insertEmoticonActionActivated(QAction *sender, bool toggled)
 {
-	kdebugf();
-	findChatWidget(users)->changeColor(source);
-	kdebugf2();
-}
+	ActionWindow *window = dynamic_cast<ActionWindow *>(sender->parent());
+	if (!window)
+		return;
 
-void ChatManager::insertEmoticonActionActivated(const UserGroup* users, const QWidget* source)
-{
-	kdebugf();
-	findChatWidget(users)->openEmoticonSelector(source);
-	kdebugf2();
-}
-
-void ChatManager::insertEmoticonActionAddedToToolbar(const UserGroup* users,
-	ToolButton* button, ToolBar* toolba/)
-{
-	kdebugf();
-	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") == EMOTS_NONE)
+	ChatWidget *chatWidget = window->getChatWidget();
+	if (chatWidget)
 	{
-		QToolTip::remove(button);
-		QToolTip::add(button, tr("Insert emoticon - enable in configuration"));
-		button->setEnabled(false);
+		QList<QWidget *> widgets = sender->associatedWidgets();
+		if (widgets.size() == 0)
+			return;
+
+		chatWidget->openEmoticonSelector(widgets[widgets.size() - 1]);
 	}
-	kdebugf2();
-}*/
+}
 
+void ChatManager::colorSelectorActionActivated(QAction *sender, bool toggled)
+{
+	ActionWindow *window = dynamic_cast<ActionWindow *>(sender->parent());
+	if (!window)
+		return;
 
+	ChatWidget *chatWidget = window->getChatWidget();
+	if (chatWidget)
+	{
+		QList<QWidget *> widgets = sender->associatedWidgets();
+		if (widgets.size() == 0)
+			return;
 
-void ChatManager::ignoreUserActionActivated(QWidget *parent, bool toggled)
+		chatWidget->changeColor(widgets[widgets.size() - 1]);
+	}
+}
+
+void ChatManager::ignoreUserActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	ActionWindow *window = dynamic_cast<ActionWindow *>(parent);
+	ActionWindow *window = dynamic_cast<ActionWindow *>(sender->parent());
 	if (!window)
 		return;
 
@@ -424,11 +463,11 @@ void ChatManager::ignoreUserActionActivated(QWidget *parent, bool toggled)
 	kdebugf2();
 }
 
-void ChatManager::blockUserActionActivated(QWidget *parent, bool toggled)
+void ChatManager::blockUserActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	ActionWindow *window = dynamic_cast<ActionWindow *>(parent);
+	ActionWindow *window = dynamic_cast<ActionWindow *>(sender->parent());
 	if (!window)
 		return;
 
@@ -477,11 +516,11 @@ void ChatManager::blockUserActionActivated(QWidget *parent, bool toggled)
 	kdebugf2();
 }
 
-void ChatManager::chatActionActivated(QWidget *parent, bool toggled)
+void ChatManager::chatActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	ActionWindow *window = dynamic_cast<ActionWindow *>(parent);
+	ActionWindow *window = dynamic_cast<ActionWindow *>(sender->parent());
 	if (!window)
 		return;
 

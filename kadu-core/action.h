@@ -14,6 +14,7 @@
 
 #include "usergroup.h"
 
+class ChatWidget;
 class ToolButton;
 class ToolBar;
 class UserBox;
@@ -45,10 +46,10 @@ public:
 	virtual ~KaduAction();
 
 signals:
-	void changed(QWidget *parent);
-	void hovered(QWidget *parent);
-	void toggled(QWidget *parent, bool checked);
-	void triggered(QWidget *parent, bool checked = false);
+	void changed(QAction *action);
+	void hovered(QAction *action);
+	void toggled(QAction *action, bool checked);
+	void triggered(QAction *action, bool checked = false);
 
 };
 
@@ -100,6 +101,7 @@ public:
 	virtual bool supportsActionType(ActionDescription::ActionType type) = 0;
 	virtual UserBox * getUserBox() = 0;
 	virtual UserListElements getUserListElements() = 0;
+	virtual ChatWidget * getChatWidget() = 0;
 
 };
 
