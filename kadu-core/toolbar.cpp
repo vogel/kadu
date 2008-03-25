@@ -61,6 +61,7 @@ void ToolBar::addAction(const QString &actionName, bool showLabel, QAction *afte
 	ToolBarAction newAction;
 	newAction.actionName = actionName;
 	newAction.action = 0;
+	newAction.button = 0;
 	newAction.showLabel = showLabel;
 
 	if (after)
@@ -311,7 +312,7 @@ void ToolBar::dropEvent(QDropEvent* event)
 	kdebugf2();
 }
 
-void ToolBar::contextMenuEvent(QContextMenuEvent* e)
+void ToolBar::contextMenuEvent(QContextMenuEvent *e)
 {
 	kdebugf();
 
@@ -321,12 +322,10 @@ void ToolBar::contextMenuEvent(QContextMenuEvent* e)
 // 		return;
 // 	}
 
-	//NOTE: parent MUST be dockArea(), NOT this, because when user is choosing "remove toolbar",
-	//      it calls deleteLater(), which is invoked _before_ exec returns! so QPopupMenu would
-	//      be deleted when exec returns!
+	
 
-	QMenu *menu = createContextMenu();
-	menu->popup(QCursor::pos());
+	QMenu *menu = createContextMenu(dynamic_cast<QToolButton *>(childAt(e->pos())));
+	menu->popup(e->globalPos());
 
 // TODO: add something intelligent here
 // 	delete menu;
@@ -357,8 +356,8 @@ void ToolBar::writeToConfig(QDomElement parent_element)
 
 	FOREACH(toolBarAction, ToolBarActions)
 	{
-// 		if ((*toolBarAction).button)
-// 			(*toolBarAction).showLabel = (*toolBarAction).button->usesTextLabel();
+		if ((*toolBarAction).button)
+			(*toolBarAction).showLabel = (*toolBarAction).button->toolButtonStyle() != Qt::ToolButtonIconOnly;
 
 		QDomElement button_elem = xml_config_file->createElement(toolbar_elem, "ToolButton");
 		button_elem.setAttribute("action_name", (*toolBarAction).actionName);
@@ -427,21 +426,14 @@ void ToolBar::updateButtons()
 		{
 			(*toolBarAction).action = KaduActions.getAction(actionName, dynamic_cast<QWidget *>(parent()));
 			QToolBar::addAction((*toolBarAction).action);
+			(*toolBarAction).button = dynamic_cast<QToolButton *>(widgetForAction((*toolBarAction).action));
 
-// 			if ((*toolBarAction).showLabel)
-// 				action->
-// KaduActions[actionName], (*toolBarAction).showLabel, lastButton);
+			if ((*toolBarAction).showLabel)
+				(*toolBarAction).button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 
 			lastAction = (*toolBarAction).action;
 		}
 	}
-
-// 	adjustSize();
-	updateGeometry();
-// 	adjustSize();
-
-// 	if (dockarea)
-// 		dockarea->writeToConfig();
 }
 
 void ToolBar::loadFromConfig(QDomElement toolbar_element)
@@ -468,6 +460,7 @@ void ToolBar::loadFromConfig(QDomElement toolbar_element)
 		else
 			action.showLabel = button_elem.attribute("uses_text_label") == "1";
 		action.action = 0;
+		action.button = 0;
 
 		ToolBarActions.append(action);
 	}
@@ -487,6 +480,7 @@ void ToolBar::addDefaultAction(const QString &toolbar, const QString &actionName
 	action.actionName = actionName;
 	action.showLabel = showLabel;
 	action.action = 0;
+	action.button = 0;
 
 	if (index >= (int)actions.size())
 	{
@@ -534,8 +528,17 @@ const UserGroup* ToolBar::selectedUsers() const
 	return 0; //users;
 }
 
-QMenu * ToolBar::createContextMenu()
+QMenu * ToolBar::createContextMenu(QToolButton *button)
 {
+	QMenu *menu = new QMenu(this);
+
+	currentButton = button;
+	if (button)
+	{
+		menu->addAction(tr("Show text label"), this, SLOT(showTextLabel()));
+		menu->addSeparator();
+	}
+
 	QMenu *actionsMenu = new QMenu(tr("Add new button"), this);
 	CONST_FOREACH(actionDescription, KaduActions)
 	{
@@ -564,43 +567,9 @@ QMenu * ToolBar::createContextMenu()
 	else
 		connect(actionsMenu, SIGNAL(triggered(QAction *)), this, SLOT(addButtonClicked(QAction *)));
 
-	QMenu *menu = new QMenu(this);
-
 	menu->addAction(tr("Delete toolbar"), this, SLOT(deleteToolbar()));
 	menu->addMenu(actionsMenu);
 	return menu;
-/*
-	Q3PopupMenu* p = new Q3PopupMenu(parent);
-	p->insertItem(tr("Delete toolbar"), this, SLOT(deleteToolbar()));
-
-	Q3PopupMenu* p2 = new Q3PopupMenu(p); // popup z akcjami mozliwymi do dodania w toolbarze
-	unsigned int param = 0; // parametr przekazywany slotowi addButtonClicked()
-	CONST_FOREACH(a, KaduActions)
-	{
-		if (!hasAction((*a)->name()) &&
-			((dockArea() != NULL && dockArea()->supportsAction((*a)->actionType())) ||
-			(dockArea() == NULL && ((*a)->actionType() & Action::TypeGlobal) != 0)))
-		{
-			unsigned int index = (*a)->addToPopupMenu(p2, false);
-			p2->setItemParameter(index, param);
-			p2->connectItem(index, this, SLOT(addButtonClicked(int)));
-		}
-		param++;
-	}
-	if (!p2->count()) // jezeli nie zostaly zadne akcje do dodania, dodajemy wpis informacyjny
-	{
-		p2->insertItem(tr("No items to add found"), 0);
-		p2->setItemEnabled(0, false);
-	}
-
-	p->insertItem(tr("Add new button"), p2);
-	p->insertSeparator();
-	if (dockArea())
-	{
-		Q3PopupMenu* panel_menu = dockArea()->createContextMenu(p);
-		p->insertItem(tr("Panel menu"), panel_menu);
-	}
-	return p;*/
 }
 
 void ToolBar::deleteToolbar()
@@ -609,4 +578,15 @@ void ToolBar::deleteToolbar()
 	if (MessageBox::ask(tr("Remove toolbar?"), "Warning", this))
 		deleteLater();
 	kdebugf2();
+}
+
+void ToolBar::showTextLabel()
+{
+	if (!currentButton)
+		return;
+
+	if (currentButton->toolButtonStyle() == Qt::ToolButtonIconOnly)
+		currentButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+	else
+		currentButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
 }

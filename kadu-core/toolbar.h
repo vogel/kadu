@@ -24,9 +24,13 @@ class ToolBar : public QToolBar
 {
 	Q_OBJECT
 
+	// TODO: ugly hack
+	QToolButton *currentButton;
+
 	struct ToolBarAction {
 		QString actionName;
 		QAction *action;
+		QToolButton *button;
 		bool showLabel;
 	};
 
@@ -56,7 +60,9 @@ private slots:
 
 	void updateButtons();
 
-	QMenu * createContextMenu();
+	QMenu * createContextMenu(QToolButton *button);
+
+	void showTextLabel();
 
 protected:
 	/**
