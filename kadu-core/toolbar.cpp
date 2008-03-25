@@ -77,51 +77,6 @@ void ToolBar::addAction(const QString &actionName, bool showLabel, QAction *afte
 	ToolBarActions.append(newAction);
 }
 
-// void ToolBar::addAction(const QString &actionName, bool showLabel, ToolButton *button, bool before)
-// {
-// 	printf("adding action: %s\n", actionName.toLocal8Bit().data());
-// 
-// 	QToolBar::addAction(KaduActions.getAction(actionName, dynamic_cast<QWidget *>(parent())));
-// 	return;
-// 
-// 	if (hasAction(actionName))
-// 		return;
-// 
-// 	ToolBarAction newAction;
-// 	newAction.actionName = actionName;
-// 	newAction.button = 0;
-// 	newAction.showLabel = showLabel;
-// 
-// 	bool inserted = false;
-// 	if (button)
-// 	{
-// 		FOREACH(i, ToolBarActions)
-// 			if ((*i).button == button)
-// 			{
-// 				if (!before)
-// 					i++;
-// 
-// 				inserted = true;
-// 				ToolBarActions.insert(i, newAction);
-// 				break;
-// 			}
-// 	}
-// 
-// 	if (!inserted)
-// 		ToolBarActions.append(newAction);
-// }
-// 
-// void ToolBar::removeAction(const QString &actionName)
-// {
-// 	FOREACH(actionIterator, ToolBarActions)
-// 		if ((*actionIterator).actionName == actionName)
-// 		{
-// 			delete (*actionIterator).button;
-// 			ToolBarActions.remove(actionIterator);
-// 			return;
-// 		}
-// }
-
 void ToolBar::usersChanged()
 {
 // 	FOREACH(actionIterator, ToolBarActions)
@@ -162,59 +117,6 @@ void ToolBar::usersChanged()
 // 
 // 	addAction(actionName, showLabel, button, !actionFirst);
 // 	updateButtons();
-// }
-
-// ToolButton * ToolBar::addButton(ActionDescription *action, bool showLabel, ToolButton *after)
-// {
-// 	kdebugf();
-
-// 	ToolButton* button = new ToolButton(this, action->name(), action->type());
-
-	// need, because without it positioning just doesn't work
-// 	button->show();
-/*
-	connect(button, SIGNAL(removedFromToolbar(ToolButton *)), this, SLOT(removeButtonClicked(ToolButton *)));
-
-	QBoxLayout* layout = boxLayout();
-
-	if (after)
-	{
-		layout->remove(button);
-		layout->insertWidget(layout->findWidget(after) + 1, button);
-	}
-	else
-	{
-		layout->remove(button);
-		layout->insertWidget(0, button);
-	}
-
-	button->setIcon(icons_manager->loadIcon(action->iconName()));*/
-
-// 	QString textWithoutAccel = action->text();
-// 	textWithoutAccel.remove('&');
-// 	button->setText(textWithoutAccel);
-/*
-	button->setUsesTextLabel(showLabel);
-	button->setTextPosition(ToolButton::BesideIcon);*/
-/*
-	if (!action->onIcon().isEmpty())
-		button->setOnShape(icons_manager->loadIcon(action->onIcon()), action->onText());
-
-	if (action->toggleAction())
-	{
-		button->setToggleButton(action->toggleAction());
-		button->setOn(action->toggleState());
-	}
-
-	QShortcut *shortcut = new QShortcut(action->keySeq0(), button);
-	connect(shortcut, SIGNAL(activated()), button, SIGNAL(clicked()));
-	shortcut = new QShortcut(action->keySeq1(), button);
-	connect(shortcut, SIGNAL(activated()), button, SIGNAL(clicked()));
-
-	action->buttonAddedToToolbar(this, button);*/
-
-// 	return button;
-// 	return 0;
 // }
 
 void ToolBar::addButtonClicked(QAction *action)
@@ -312,8 +214,6 @@ void ToolBar::contextMenuEvent(QContextMenuEvent *e)
 // 		return;
 // 	}
 
-	
-
 	QMenu *menu = createContextMenu(dynamic_cast<QToolButton *>(childAt(e->pos())));
 	menu->popup(e->globalPos());
 
@@ -322,20 +222,6 @@ void ToolBar::contextMenuEvent(QContextMenuEvent *e)
 
 	e->accept();
 	kdebugf2();
-}
-
-void ToolBar::show()
-{
-	 // very lame, but i don't have better idea
-// 	FOREACH(toolBarAction, ToolBarActions)
-// 		if ((*toolBarAction).button)
-// 		{
-// 			delete (*toolBarAction).button;
-// 			(*toolBarAction).button = 0;
-// 		}
-// 
-// 	QToolBar::show();
-// 	QTimer::singleShot(0, this, SLOT(updateButtons()));
 }
 
 void ToolBar::writeToConfig(QDomElement parent_element)
@@ -388,8 +274,10 @@ void ToolBar::actionUnloaded(const QString &actionName)
 void ToolBar::updateButtons()
 {
 	QAction *lastAction = 0;
-// 	DockArea *dockarea = (DockArea *)area();
+	ActionWindow *actionWindow = dynamic_cast<ActionWindow *>(parent());
 
+	if (!actionWindow)
+		return;
 
 	FOREACH(toolBarAction, ToolBarActions)
 	{
@@ -412,7 +300,7 @@ void ToolBar::updateButtons()
 			}
 		}
 
-		if (KaduActions.contains(actionName)/* && !dockarea || dockarea->supportsAction(KaduActions[actionName]->actionType())*/)
+		if (KaduActions.contains(actionName) && actionWindow->supportsActionType(KaduActions[actionName]->type()))
 		{
 			(*toolBarAction).action = KaduActions.getAction(actionName, dynamic_cast<QWidget *>(parent()));
 			QToolBar::addAction((*toolBarAction).action);
