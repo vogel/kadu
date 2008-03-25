@@ -111,7 +111,7 @@ private slots:
 
 	void selectedUsersNeeded(const UserGroup*& user_group);
 
-	void sendActionAddedToToolbar(ToolButton*, ToolBar*);
+// 	void sendActionAddedToToolbar(ToolButton*, ToolBar*);
 
 	/**
 		\fn void colorActionForceRefresh()

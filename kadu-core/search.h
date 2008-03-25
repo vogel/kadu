@@ -86,11 +86,11 @@ private slots:
 	void persClicked();
 	void uinClicked();
 	void updateInfoClicked();
-	void actionsAddedToToolbar(ToolButton*, ToolBar*);
-	void stopSearchActionAddedToToolbar(ToolButton*, ToolBar*);
-	void firstSearchActionAddedToToolbar(ToolButton*, ToolBar*);
-	void nextResultsActionAddedToToolbar(ToolButton*, ToolBar*);
-	void clearResultsActionAddedToToolbar(ToolButton*, ToolBar*);
+// 	void actionsAddedToToolbar(ToolButton*, ToolBar*);
+// 	void stopSearchActionAddedToToolbar(ToolButton*, ToolBar*);
+// 	void firstSearchActionAddedToToolbar(ToolButton*, ToolBar*);
+// 	void nextResultsActionAddedToToolbar(ToolButton*, ToolBar*);
+// 	void clearResultsActionAddedToToolbar(ToolButton*, ToolBar*);
 	void selectionChanged();
 
 protected:

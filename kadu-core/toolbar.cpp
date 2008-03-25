@@ -29,7 +29,7 @@
 QMap< QString, QList<ToolBar::ToolBarAction> > ToolBar::DefaultActions;
 
 ToolBar::ToolBar(QWidget * parent)
-	: QToolBar(parent), dragButton(NULL)
+	: QToolBar(parent)/*, dragButton(NULL)*/
 {
 	kdebugf();
 
@@ -216,16 +216,6 @@ void ToolBar::usersChanged()
 // 	return button;
 // 	return 0;
 // }
-
-void ToolBar::removeButtonClicked(ToolButton *button)
-{
-// 	FOREACH(actionIterator, ToolBarActions)
-// 		if ((*actionIterator).button == button)
-// 		{
-// 			ToolBarActions.remove(actionIterator);
-// 			return;
-// 		}
-}
 
 void ToolBar::addButtonClicked(QAction *action)
 {
@@ -539,6 +529,8 @@ QMenu * ToolBar::createContextMenu(QToolButton *button)
 		showLabel->setCheckable(true);
 		showLabel->setChecked(button->toolButtonStyle() != Qt::ToolButtonIconOnly);
 
+		menu->addAction(tr("Delete button"), this, SLOT(deleteButton()));
+
 		menu->addSeparator();
 	}
 
@@ -592,4 +584,21 @@ void ToolBar::showTextLabel()
 		currentButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 	else
 		currentButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
+}
+
+void ToolBar::deleteButton()
+{
+	if (!currentButton)
+		return;
+
+	FOREACH(actionIterator, ToolBarActions)
+		if ((*actionIterator).button == currentButton)
+		{
+			// TODO: again, lame solution
+			removeAction(currentButton->defaultAction());
+			currentButton = 0;
+
+			ToolBarActions.remove(actionIterator);
+			return;
+		}
 }

@@ -12,8 +12,6 @@
 #include "toolbutton.h"
 #include "usergroup.h"
 
-class ToolButton;
-
 /**
 	Klasa tworz?ca pasek narz?dziowy
 	\class ToolBar
@@ -35,7 +33,7 @@ class ToolBar : public QToolBar
 	};
 
 	QList<ToolBarAction> ToolBarActions;
-	ToolButton *dragButton; /*!< przeci?gany przycisk akcji */
+//	ToolButton *dragButton; /*!< przeci?gany przycisk akcji */
 
 	void addAction(const QString &actionName, bool showLabel, QAction *after = 0);
 
@@ -47,7 +45,8 @@ private slots:
 		Slot dodaj?cy wybrany przycisk
 	**/
 	void addButtonClicked(QAction *action);
-	void removeButtonClicked(ToolButton *button);
+	void showTextLabel();
+	void deleteButton();
 
 	/**
 		\fn void deleteToolbar()
@@ -61,8 +60,6 @@ private slots:
 	void updateButtons();
 
 	QMenu * createContextMenu(QToolButton *button);
-
-	void showTextLabel();
 
 protected:
 	/**

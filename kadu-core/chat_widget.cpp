@@ -306,13 +306,13 @@ void ChatWidget::insertImage()
 
 	kdebugf2();
 }
-
-void ChatWidget::sendActionAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*/)
+/*
+void ChatWidget::sendActionAddedToToolbar(ToolButton* button, ToolBar* toolbar)
 {
 	kdebugf();
 	button->setEnabled(!Edit->inputBox()->text().isEmpty());
 	kdebugf2();
-}
+}*/
 
 void ChatWidget::colorActionForceRefresh()
 {

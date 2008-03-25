@@ -15,7 +15,6 @@
 #include "usergroup.h"
 
 class ChatWidget;
-class ToolButton;
 class ToolBar;
 class UserBox;
 

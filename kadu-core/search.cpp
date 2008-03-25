@@ -620,8 +620,8 @@ void SearchDialog::updateInfoClicked()
 	(new UserInfo(ule, kadu, "user_info"))->show();
 	kdebugf2();
 }
-
-void SearchDialog::actionsAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*/)
+/*
+void SearchDialog::actionsAddedToToolbar(ToolButton* button, ToolBar* toolbar)
 {
 	kdebugf();
 	if (!results->selectedItem())
@@ -629,7 +629,7 @@ void SearchDialog::actionsAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*
 	kdebugf2();
 }
 
-void SearchDialog::clearResultsActionAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*/)
+void SearchDialog::clearResultsActionAddedToToolbar(ToolButton* button, ToolBar* toolbar)
 {
 	kdebugf();
 	if (!results->firstChild())
@@ -637,7 +637,7 @@ void SearchDialog::clearResultsActionAddedToToolbar(ToolButton* button, ToolBar*
 	kdebugf2();
 }
 
-void SearchDialog::stopSearchActionAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*/)
+void SearchDialog::stopSearchActionAddedToToolbar(ToolButton* button, ToolBar* toolbar)
 {
 	kdebugf();
 	if (!searching)
@@ -645,7 +645,7 @@ void SearchDialog::stopSearchActionAddedToToolbar(ToolButton* button, ToolBar* /
 	kdebugf2();
 }
 
-void SearchDialog::firstSearchActionAddedToToolbar(ToolButton* button, ToolBar* /*toolbar*/)
+void SearchDialog::firstSearchActionAddedToToolbar(ToolButton* button, ToolBar* toolbar)
 {
 	kdebugf();
 	if (searching || (r_pers->isChecked() && isPersonalDataEmpty()) || (r_uin->isChecked() && e_uin->text().isEmpty()))
@@ -664,7 +664,7 @@ void SearchDialog::nextResultsActionAddedToToolbar(ToolButton* button, ToolBar* 
 
 	clearResultsActionAddedToToolbar(button, toolbar);
 	kdebugf2();
-}
+}*/
 
 bool SearchDialog::isPersonalDataEmpty() const
 {
