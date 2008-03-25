@@ -183,8 +183,6 @@ void ToolButton::contextMenuEvent(QContextMenuEvent *e)
 	else*/
 	{
 		Q3PopupMenu* p = new Q3PopupMenu(this);
-		int label_menu_id = p->insertItem(tr("Show text label"), this, SLOT(showTextLabelClicked()));
-		p->setItemChecked(label_menu_id, usesTextLabel());
 		p->insertItem(tr("Delete button"), this, SLOT(deleteButtonClicked()));
 		p->insertSeparator();
 // 		Q3PopupMenu* toolbar_menu = toolbar()->createContextMenu(p);

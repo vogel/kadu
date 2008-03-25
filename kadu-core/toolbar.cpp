@@ -535,7 +535,10 @@ QMenu * ToolBar::createContextMenu(QToolButton *button)
 	currentButton = button;
 	if (button)
 	{
-		menu->addAction(tr("Show text label"), this, SLOT(showTextLabel()));
+		QAction *showLabel = menu->addAction(tr("Show text label"), this, SLOT(showTextLabel()));
+		showLabel->setCheckable(true);
+		showLabel->setChecked(button->toolButtonStyle() != Qt::ToolButtonIconOnly);
+
 		menu->addSeparator();
 	}
 
