@@ -310,7 +310,7 @@ QString ConfigComboBox::currentItemValue()
 {
 	int index = currentItem();
 
-	if ((index < 0) || (index >= itemValues.size()))
+	if ((index < 0) || ((unsigned int)index >= itemValues.size()))
 		return QString::null;
 
 	return itemValues[index];
@@ -351,7 +351,7 @@ void ConfigComboBox::saveConfiguration()
 
 	int index = currentItem();
 
-	if ((index < 0) || (index >= itemValues.size()))
+	if ((index < 0) || ((unsigned int)index >= itemValues.size()))
 		return;
 
 	config_file.writeEntry(section, item, itemValues[currentItem()]);
