@@ -335,7 +335,7 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 				done; \
 			fi && \
 
-			if test $enable_final == yes; then \
+			if test $enable_final = "yes"; then \
 				for src in $MODULE_SOURCES; do \
 					if test "`echo $src | sed 's/.*\.\(.*\)$/\1/'`" == "cpp"; then \
 						echo "#include \"$src\"" >> modules/$mod/.final2.cpp; \
