@@ -50,7 +50,7 @@ private slots:
 	void fileDropped(const UserGroup *group, const QString &);
 
 	void toggleFileTransferWindow();
-	void sendFileActionActivated(QWidget *parent, bool toggled);
+	void sendFileActionActivated(QAction *sender, bool toggled);
 
 	void transferDestroyed(QObject *transfer);
 

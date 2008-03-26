@@ -105,7 +105,7 @@ ChatManager::ChatManager(QObject* parent, const char* name) : QObject(parent, na
 
 	openChatWithActionDescription = new ActionDescription(
 		ActionDescription::TypeGlobal, "openChatWithAction",
-		kadu, SLOT(openChatWith(QAction *, bool)),
+		kadu, SLOT(openChatWith()),
 		"OpenChat", tr("Open chat with...")
 	);
 
@@ -374,9 +374,9 @@ void ChatManager::whoisActionActivated(QAction *sender, bool toggled)
 		(new SearchDialog(kadu, "search_user"))->show();
 	else
 	{
-		if (users[1].usesProtocol("Gadu"))
+		if (users[0].usesProtocol("Gadu"))
 		{
-			SearchDialog *sd = new SearchDialog(kadu, "user_info", users[1].ID("Gadu").toUInt());
+			SearchDialog *sd = new SearchDialog(kadu, "user_info", users[0].ID("Gadu").toUInt());
 			sd->show();
 			sd->firstSearch();
 		}

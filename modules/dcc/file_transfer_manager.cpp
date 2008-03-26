@@ -48,7 +48,7 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 
 	sendFileActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "sendFileAction",
-		this, SLOT(sendFileDirectoryActionActivated(QWidget *, bool)),
+		this, SLOT(sendFileDirectoryActionActivated(QAction *, bool)),
 		"SendFile", tr("Send file")
 	);
 
@@ -201,15 +201,15 @@ void FileTransferManager::sendFile()
 	kdebugf2();
 }
 
-void FileTransferManager::sendFileActionActivated(QWidget *parent, bool toggled)
+void FileTransferManager::sendFileActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	ActionWindow *window = dynamic_cast<ActionWindow *>(parent);
-	if (!window)
+	ActionWindow *actionWindow = dynamic_cast<ActionWindow *>(sender->parent());
+	if (!actionWindow)
 		return;
 
-	UserListElements users = window->getUserListElements();
+	UserListElements users = actionWindow->getUserListElements();
 	if (users.count())
 		sendFile(users);
 

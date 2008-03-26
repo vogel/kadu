@@ -1509,7 +1509,7 @@ void Kadu::createMenu()
 	QAction *personalInfoMenu = MainMenu->addAction(icons_manager->loadIcon("PersonalInfo"), tr("Personal information"), this, SLOT(personalInfo()));
 	MainMenu->insertSeparator();
 	MainMenu->addMenu(RecentChatsMenu);
-	MainMenu->addAction(icons_manager->loadIcon("LookupUserInfo"), tr("&Search user in directory"), this, SLOT(searchInDirectory()));
+	MainMenu->addAction(icons_manager->loadIcon("LookupUserInfo"), tr("&Search user in directory"), this, SLOT(lookupInDirectory()));
 	MainMenu->addAction(icons_manager->loadIcon("ImportExport"), tr("I&mport / Export userlist"), this, SLOT(importExportUserlist()));
 	MainMenu->addAction(icons_manager->loadIcon("AddUser"), tr("&Add user"), this, SLOT(addUserAction()), HotKey::shortCutFromFile("ShortCuts", "kadu_adduser"));
 	MainMenu->addAction(icons_manager->loadIcon("OpenChat"), tr("&Open chat with..."), this, SLOT(openChatWith()), HotKey::shortCutFromFile("ShortCuts", "kadu_openchatwith"));

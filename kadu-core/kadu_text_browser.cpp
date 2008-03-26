@@ -39,14 +39,14 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent)
 	setOpenLinks(false);
 //	setResizePolicy(QScrollView::AutoOne);
 //	setWFlags(Qt::WNoAutoErase|Qt::WStaticContents|Qt::WPaintClever);
-	connect(this, SIGNAL(anchorClicked(const QUrl &link)), this, SLOT(hyperlinkClicked(const QUrl &link)));
+	connect(this, SIGNAL(anchorClicked(const QUrl &)), this, SLOT(hyperlinkClicked(const QUrl &)));
 	connect(this, SIGNAL(highlighted(const QString&)), this, SLOT(linkHighlighted(const QString &)));
 	setLineWrapMode(QTextEdit::WidgetWidth/**QTextEdit::AtWordOrDocumentBoundary*/);
 	setTextFormat(Qt::RichText);
 
 //	connect(verticalScrollBar(), SIGNAL(sliderReleased()), this, SLOT(repaint()));
 //	connect(verticalScrollBar(), SIGNAL(sliderReleased()), this, SLOT(refresh()));
-	connect(this, SIGNAL(contentsMoving(int, int)), this, SLOT(refreshLater()));
+//	connect(this, SIGNAL(contentsMoving(int, int)), this, SLOT(refreshLater()));
 	connect(this, SIGNAL(textChanged()), this, SLOT(refreshLater()));
 	connect(&refreshTimer, SIGNAL(timeout()), this, SLOT(refresh()));
 

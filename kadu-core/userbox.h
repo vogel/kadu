@@ -620,13 +620,13 @@ public:
 
 public slots:
 	/**
-		\fn void descriptionsActionActivated(const UserGroup* users, const QWidget* widget, bool toggle)
+		\fn void showDescriptionsActionActivated(QAction *sender, bool toggle);
 		Slot jest wywo³ywany, gdy aktywowano ukrywanie opisów kontaktów
 		\param users u¿ytkownicy (nieu¿ywany)
 		\param widget (nieu¿ywany)
 		\param toggle w³±czenie / wy³±czenie ukrywania opisów
 	**/
-	void showDescriptionsActionActivated(const QAction *sender, bool toggle);
+	void showDescriptionsActionActivated(QAction *sender, bool toggle);
 
 	/**
 		\fn void setDescriptionsActionState()

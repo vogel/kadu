@@ -7,7 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QToolTip>
 #include <QApplication>
 
 #include "autoresponder.h"
@@ -100,7 +99,7 @@ void AutoResponder::chatOpenedClosed(ChatWidget *chat)
 
 void AutoResponder::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) 
 {
-	QToolTip::add(mainConfigurationWindow->widgetById("autoresponder/AutoText") , qApp->translate("@default", Kadu::SyntaxText));
+	mainConfigurationWindow->widgetById("autoresponder/AutoText")->setToolTip(qApp->translate("@default", Kadu::SyntaxText));
 }
 
 void AutoResponder::configurationUpdated()

@@ -596,7 +596,7 @@ void UserBox::hideTip(bool waitForAnother)
 		tipTimer.stop();
 }
 
-void UserBox::showDescriptionsActionActivated(const QAction *sender, bool toggle)
+void UserBox::showDescriptionsActionActivated(QAction *sender, bool toggle)
 {
 // 	desc_action->setAllOn(toggle);
 	config_file.writeEntry("Look", "ShowDesc", !toggle);
