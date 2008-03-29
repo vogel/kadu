@@ -381,7 +381,7 @@ void HistoryModule::createDefaultConfiguration()
 {
 	config_file.addVariable("History", "ChatHistoryCitation", 10);
 	config_file.addVariable("History", "ChatHistoryQuotationTime", -24);
-	config_file.addVariable("History", "DontSaveStatusChanges", false);
+	config_file.addVariable("History", "DontSaveStatusChanges", true);
 	config_file.addVariable("History", "DontShowStatusChanges", true);
 	config_file.addVariable("History", "Logging", true);
 
