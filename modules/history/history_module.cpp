@@ -337,7 +337,7 @@ void HistoryModule::userboxMenuPopup()
 
 	bool any_ok = false;
 	CONST_FOREACH(user, users)
-		if ((*user).usesProtocol("Gadu") && ((*user).ID("Gadu") != kadu->myself().ID("Gadu")))
+		if (!(*user).protocolList().isEmpty())
 		{
 			any_ok = true;
 			break;
