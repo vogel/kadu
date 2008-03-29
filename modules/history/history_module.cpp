@@ -182,7 +182,7 @@ void HistoryModule::appendHistory(ChatWidget *chat)
 	end = count - 1;
 
 	from = count;
-	unsigned int chatHistoryQuotation=config_file.readUnsignedNumEntry("History", "ChatHistoryCitation");
+	unsigned int chatHistoryQuotation = config_file.readUnsignedNumEntry("History", "ChatHistoryCitation");
 	while (from >= 1 && entries.count() < chatHistoryQuotation)
 	{
 		if (end < chatHistoryQuotation)
@@ -230,7 +230,7 @@ void HistoryModule::appendHistory(ChatWidget *chat)
 
 	QValueListConstIterator<HistoryEntry> entry = entries.at(from);
 	QValueListConstIterator<HistoryEntry> entriesEnd = entries.end();
-	for (; entry!=entriesEnd; ++entry)
+	for (; entry != entriesEnd; ++entry)
 		if ((*entry).date.secsTo(QDateTime::currentDateTime()) <= -quotTime * 3600)
 		{
 			ChatMessage *message;
@@ -255,7 +255,7 @@ void HistoryModule::chatCreated(ChatWidget *chat)
 		this, SLOT(messageSentAndConfirmed(UserListElements, const QString&)));
 
 	// don't do it for already opened chats with discussions
-	if (chat->countMessages() != 0)
+	if (chat->countMessages())
 		return;
 
 	appendHistory(chat);

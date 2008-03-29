@@ -601,20 +601,20 @@ int HistoryManager::getHistoryEntriesCountPrivate(const QString &filename) const
 {
 	kdebugf();
 
-	int lines;
-	QFile f;
+	QFile file;
 	QString path = ggPath("history/");
-	QByteArray buffer;
+//	QByteArray buffer;
 
-	f.setName(path + filename + ".idx");
-	if (!(f.open(IO_ReadOnly)))
+	file.setName(path + filename + ".idx");
+	if (!(file.open(IO_ReadOnly)))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", (const char *)filename.local8Bit());
 		return 0;
 	}
-	lines = f.size() / sizeof(int);
+
+	int lines = file.size() / sizeof(int);
 //	buffer = f.readAll();
-	f.close();
+	file.close();
 //	lines = buffer.contains('\n');
 
 	kdebugmf(KDEBUG_INFO, "%d lines\n", lines);
@@ -626,7 +626,7 @@ int HistoryManager::getHistoryEntriesCount(const UinsList &uins)
 	kdebugf();
 	convHist2ekgForm(uins);
 	buildIndex(uins);
-	int ret=getHistoryEntriesCountPrivate(getFileNameByUinsList(uins));
+	int ret = getHistoryEntriesCountPrivate(getFileNameByUinsList(uins));
 	kdebugf2();
 	return ret;
 }
@@ -638,9 +638,9 @@ int HistoryManager::getHistoryEntriesCount(const QString &mobile)
 	buildIndex();
 	int ret;
 	if (mobile == QString::null)
-		ret= getHistoryEntriesCountPrivate("sms");
+		ret = getHistoryEntriesCountPrivate("sms");
 	else
-		ret= getHistoryEntriesCountPrivate(mobile);
+		ret = getHistoryEntriesCountPrivate(mobile);
 	kdebugf2();
 	return ret;
 }
