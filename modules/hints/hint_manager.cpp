@@ -472,7 +472,7 @@ void HintManager::showToolTip(const QPoint &point, const UserListElement &user)
 
 	tipFrame->setFixedSize(tipLabel->sizeHint() + QSize(2 * FRAME_WIDTH, 2 * FRAME_WIDTH));
 
-	QPoint pos(kadu->userbox()->mapToGlobal(point) + QPoint(5, 5));
+	QPoint pos(point + QPoint(5, 5));
 
 	QSize preferredSize = tipFrame->sizeHint();
 	QSize desktopSize = QApplication::desktop()->size();
