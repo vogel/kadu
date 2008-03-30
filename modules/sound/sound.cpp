@@ -7,16 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qdir.h>
-#include <qfiledialog.h>
-#include <qgrid.h>
-#include <qlayout.h>
-#include <qlistview.h>
-#include <qmenubar.h>
-#include <qstring.h>
-#include <qslider.h>
+#include <QApplication>
+#include <QMetaType>
 
 #include "chat_widget.h"
 #include "chat_manager.h"
@@ -45,6 +37,9 @@ extern "C" int sound_init()
 	new SoundManager("sounds", "sound.conf");
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/sound.ui"), sound_manager);
 
+	qRegisterMetaType<SoundDevice>("SoundDevice");
+	qRegisterMetaType<SoundDeviceType>("SoundDeviceType");
+
 	kdebugf2();
 	return 0;
 }
@@ -64,7 +59,7 @@ SamplePlayThread::SamplePlayThread(SoundDevice device)
 	PlayingSemaphore(1), SampleSemaphore(1)
 {
 	kdebugf();
-	PlayingSemaphore++;
+	PlayingSemaphore.acquire();
 	kdebugf2();
 }
 
@@ -73,42 +68,45 @@ void SamplePlayThread::run()
 	kdebugf();
 	for(;;)
 	{
-		PlayingSemaphore++;
+		PlayingSemaphore.acquire();
 		if (Stopped)
 		{
-			SampleSemaphore--;
+			SampleSemaphore.release();
 			break;
 		}
 		bool result;
-		emit sound_manager->playSampleImpl(Device, Sample, SampleLen, result);
+		emit sound_manager->playSampleImpl(Device, Sample, SampleLen, &result);
 		QApplication::postEvent(this, new QCustomEvent(QEvent::User, Device));
-		SampleSemaphore--;
+		SampleSemaphore.release();
 	}
 	kdebugf2();
 }
 
-void SamplePlayThread::customEvent(QCustomEvent* event)
+bool SamplePlayThread::event(QEvent* event)
 {
 	if (event->type() == QEvent::User)
-		emit samplePlayed((SoundDevice)event->data());
+		emit samplePlayed((SoundDevice)(((QCustomEvent *)event)->data()));
+	return true;
 }
 
 void SamplePlayThread::playSample(const int16_t* data, int length)
 {
 	kdebugf();
-	SampleSemaphore++;
+
+	SampleSemaphore.acquire();
 	Sample = data;
 	SampleLen = length;
-	PlayingSemaphore--;
+	PlayingSemaphore.release();
 	kdebugf2();
 }
 
 void SamplePlayThread::stop()
 {
 	kdebugf();
-	SampleSemaphore++;
+	
+	SampleSemaphore.acquire();
 	Stopped = true;
-	PlayingSemaphore--;
+	PlayingSemaphore.release();
 	if (!wait(5000))
 	{
 		kdebugm(KDEBUG_ERROR, "deadlock :|, terminating SamplePlayThread\n");
@@ -123,7 +121,7 @@ SampleRecordThread::SampleRecordThread(SoundDevice device)
 	RecordingSemaphore(1), SampleSemaphore(1)
 {
 	kdebugf();
-	RecordingSemaphore++;
+	RecordingSemaphore.acquire();
 	kdebugf2();
 }
 
@@ -132,42 +130,43 @@ void SampleRecordThread::run()
 	kdebugf();
 	for(;;)
 	{
-		RecordingSemaphore++;
+		RecordingSemaphore.acquire();
 		if (Stopped)
 		{
-			SampleSemaphore--;
+			SampleSemaphore.release();
 			break;
 		}
 		bool result;
-		emit sound_manager->recordSampleImpl(Device, Sample, SampleLen, result);
+		emit sound_manager->recordSampleImpl(Device, Sample, SampleLen, &result);
 		QApplication::postEvent(this, new QCustomEvent(QEvent::User, Device));
-		SampleSemaphore--;
+		SampleSemaphore.release();
 	}
 	kdebugf2();
 }
 
-void SampleRecordThread::customEvent(QCustomEvent* event)
+bool SampleRecordThread::event(QEvent* event)
 {
 	if (event->type() == QEvent::User)
-		emit sampleRecorded((SoundDevice)event->data());
+		emit sampleRecorded((SoundDevice)(((QCustomEvent *)event)->data()));
+	return true;
 }
 
 void SampleRecordThread::recordSample(int16_t* data, int length)
 {
 	kdebugf();
-	SampleSemaphore++;
+	SampleSemaphore.acquire();
 	Sample = data;
 	SampleLen = length;
-	RecordingSemaphore--;
+	RecordingSemaphore.release();
 	kdebugf2();
 }
 
 void SampleRecordThread::stop()
 {
 	kdebugf();
-	SampleSemaphore++;
+	SampleSemaphore.acquire();
 	Stopped = true;
-	RecordingSemaphore--;
+	RecordingSemaphore.release();
 	if (!wait(5000))
 	{
 		kdebugm(KDEBUG_ERROR, "deadlock :|, terminating SampleRecordThread\n");
@@ -425,8 +424,8 @@ int SoundManager::timeAfterLastSound() const
 SoundDevice SoundManager::openDevice(SoundDeviceType type, int sample_rate, int channels)
 {
 	kdebugf();
-	SoundDevice device = NULL;
-	emit openDeviceImpl(type, sample_rate, channels, device);
+	SoundDevice device;
+	emit openDeviceImpl(type, sample_rate, channels, &device);
 	kdebugf2();
 	return device;
 }
@@ -492,7 +491,7 @@ bool SoundManager::playSample(SoundDevice device, const int16_t* data, int lengt
 		result = true;
 	}
 	else
-		emit playSampleImpl(device, data, length, result);
+		emit playSampleImpl(device, data, length, &result);
 	kdebugf2();
 	return result;
 }
@@ -507,7 +506,7 @@ bool SoundManager::recordSample(SoundDevice device, int16_t* data, int length)
 		result = true;
 	}
 	else
-		emit recordSampleImpl(device, data, length, result);
+		emit recordSampleImpl(device, data, length, &result);
 	kdebugf2();
 	return result;
 }
@@ -529,6 +528,7 @@ void SoundManager::disconnectNotify(const char *signal)
 void SoundManager::play(const QString &path, bool volCntrl, double vol)
 {
 	kdebugf();
+	printf("\n\nSoundManager::play\n");
 	if (simple_player_count>0)
 		emit playSound(path, volCntrl, vol);
 	else
@@ -557,7 +557,7 @@ void SoundManager::stop()
 SoundPlayThread::SoundPlayThread() : QThread(),
 	mutex(), semaphore(new QSemaphore(100)), end(false), list()
 {
-	(*semaphore) += 100;
+	(*semaphore).acquire(100);
 }
 
 SoundPlayThread::~SoundPlayThread()
@@ -576,7 +576,7 @@ void SoundPlayThread::tryPlay(const char *path, bool volumeControl, float volume
 	{
 		list.push_back(SndParams(path, volumeControl, volume));
 		mutex.unlock();
-		(*semaphore)--;
+		(*semaphore).release();
 	}
 	kdebugf2();
 }
@@ -586,9 +586,9 @@ void SoundPlayThread::run()
 	kdebugf();
 	while (!end)
 	{
-		(*semaphore)++;
+		(*semaphore).acquire();
 		mutex.lock();
-		kdebugmf(KDEBUG_INFO, "locked\n");
+		/*kdebugmf(KDEBUG_INFO,*/printf( "locked\n");
 		if (end)
 		{
 			mutex.unlock();
@@ -600,16 +600,16 @@ void SoundPlayThread::run()
 		play(params.filename.local8Bit().data(),
 				params.volumeControl, params.volume);
 		mutex.unlock();
-		kdebugmf(KDEBUG_INFO, "unlocked\n");
+		/*kdebugmf(KDEBUG_INFO,*/printf( "unlocked\n");
 	}//end while(!end)
 	kdebugf2();
 }
 
 bool SoundPlayThread::play(const char *path, bool volumeControl, float volume)
 {
-	bool ret=false;
-	SoundFile *sound=new SoundFile(path);
-
+	bool ret = false;
+	SoundFile *sound = new SoundFile(path);
+printf("\nSoundPlayThread::play\n");
 	if (!sound->isOk())
 	{
 		fprintf(stderr, "broken sound file?\n");
@@ -640,7 +640,7 @@ void SoundPlayThread::endThread()
 	mutex.lock();
 	end = true;
 	mutex.unlock();
-	(*semaphore)--;
+	(*semaphore).release();
 }
 
 SndParams::SndParams(QString fm, bool volCntrl, float vol) :

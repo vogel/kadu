@@ -83,14 +83,14 @@ OSSPlayerSlots::OSSPlayerSlots(QObject *parent, const char *name) : QObject(pare
 
 	createDefaultConfiguration();
 
-	connect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice&)),
-		this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice&)));
+	connect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice*)),
+		this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice*)));
 	connect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 		this, SLOT(closeDevice(SoundDevice)));
-	connect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool&)),
-		this, SLOT(playSample(SoundDevice, const int16_t*, int, bool&)));
-	connect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, int16_t*, int, bool&)),
-		this, SLOT(recordSample(SoundDevice, int16_t*, int, bool&)));
+	connect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool*)),
+		this, SLOT(playSample(SoundDevice, const int16_t*, int, bool*)));
+	connect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, int16_t*, int, bool*)),
+		this, SLOT(recordSample(SoundDevice, int16_t*, int, bool*)));
 	connect(sound_manager, SIGNAL(setFlushingEnabledImpl(SoundDevice, bool)),
 		this, SLOT(setFlushingEnabled(SoundDevice, bool)));
 
@@ -101,25 +101,25 @@ OSSPlayerSlots::~OSSPlayerSlots()
 {
 	kdebugf();
 
-	disconnect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice&)),
-		this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice&)));
+	disconnect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice*)),
+		this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice*)));
 	disconnect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 		this, SLOT(closeDevice(SoundDevice)));
-	disconnect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool&)),
-		this, SLOT(playSample(SoundDevice, const int16_t*, int, bool&)));
-	disconnect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, int16_t*, int, bool&)),
-		this, SLOT(recordSample(SoundDevice, int16_t*, int, bool&)));
+	disconnect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool*)),
+		this, SLOT(playSample(SoundDevice, const int16_t*, int, bool*)));
+	disconnect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, int16_t*, int, bool*)),
+		this, SLOT(recordSample(SoundDevice, int16_t*, int, bool*)));
 	disconnect(sound_manager, SIGNAL(setFlushingEnabledImpl(SoundDevice, bool)),
 		this, SLOT(setFlushingEnabled(SoundDevice, bool)));
 
 	kdebugf2();
 }
 
-void OSSPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int channels, SoundDevice& device)
+void OSSPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int channels, SoundDevice* device)
 {
 	kdebugf();
 	int maxbufsize = 0, caps = 0, value;
-	device = NULL;
+	//*device = NULL;
 
 	QString sdev = config_file.readEntry("Sounds","OutputDevice", "/dev/dsp");
 	kdebugm(KDEBUG_INFO, "Opening %s\n", sdev.local8Bit().data());
@@ -211,7 +211,7 @@ void OSSPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chann
 	dev->sample_rate = sample_rate;
 	dev->channels = channels;
 	dev->flushing = false;
-	device = (SoundDevice) dev;
+	*device = (SoundDevice) dev;
 }
 
 void OSSPlayerSlots::closeDevice(SoundDevice device)
@@ -233,14 +233,15 @@ void OSSPlayerSlots::closeDevice(SoundDevice device)
 	kdebugf2();
 }
 
-void OSSPlayerSlots::playSample(SoundDevice device, const int16_t* data, int length, bool& result)
+void OSSPlayerSlots::playSample(SoundDevice device, const int16_t* data, int length, bool* result)
 {
 	kdebugf();
-	result = true;
+
+	*result = true;
 	OSSSoundDevice* dev = (OSSSoundDevice*)device;
 	if (!dev || dev->fd<0)
 	{
-		result = false;
+		*result = false;
 		kdebugm(KDEBUG_WARNING, "cannot play sample, device not opened, dev:%p dev->fd:%d\n", dev, dev?dev->fd:-1);
 		return;
 	}
@@ -252,24 +253,24 @@ void OSSPlayerSlots::playSample(SoundDevice device, const int16_t* data, int len
 		if (ioctl(dev->fd, SNDCTL_DSP_SYNC, 0) < 0)
 		{
 			fprintf(stderr, "SNDCTL_DSP_SYNC error (%s, %d)\n", strerror(errno), errno);
-			result = false;
+			*result = false;
 		}
 	}
 	kdebugf2();
 }
 
-void OSSPlayerSlots::recordSample(SoundDevice device, int16_t* data, int length, bool& result)
+void OSSPlayerSlots::recordSample(SoundDevice device, int16_t* data, int length, bool* result)
 {
 	kdebugf();
 	OSSSoundDevice* dev = (OSSSoundDevice*)device;
 	if (!dev || dev->fd<0)
 	{
-		result = false;
+		*result = false;
 		kdebugm(KDEBUG_WARNING, "cannot record sample, device not opened, dev:%p dev->fd:%d\n", dev, dev?dev->fd:0);
 		return;
 	}
 	int ret = read_all(dev->fd, (char *)data, length);
-	result = (ret == length);
+	*result = (ret == length);
 //	if (ret != length)
 		kdebugm(KDEBUG_WARNING, "requested: %d, returned: %d\n", length, ret);
 	kdebugf2();

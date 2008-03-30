@@ -6,12 +6,12 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qgrid.h>
-#include <qlistview.h>
-#include <qmenubar.h>
-#include <qvbox.h>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QGridLayout>
+#include <QVBoxLayout>
+#include <QListView>
+#include <QMenuBar>
 
 #include "action.h"
 #include "debug.h"
@@ -37,6 +37,8 @@ SoundConfigurationWidget::SoundConfigurationWidget(QWidget *parent, char *name)
 	gridLayout->addWidget(new QLabel(tr("Sound file") + ":", this), 0, 0, Qt::AlignRight);
 	gridLayout->addWidget(soundFileSelectFile, 0, 1);
 	gridLayout->addWidget(testButton, 0, 2);
+	
+	parent->layout()->addWidget(this);
 }
 
 SoundConfigurationWidget::~SoundConfigurationWidget()
@@ -45,6 +47,7 @@ SoundConfigurationWidget::~SoundConfigurationWidget()
 
 void SoundConfigurationWidget::test()
 {
+	printf("\n\n\nSoundConfigurationWidget::test\n");
 	sound_manager->play(soundFileSelectFile->file(), true);
 }
 
@@ -86,9 +89,12 @@ SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name
 
 	sound_manager->setMute(!config_file.readBoolEntry("Sounds", "PlaySound"));
 
-	mute_action = new Action("Unmute", tr("Mute sounds"), "muteSoundsAction", Action::TypeGlobal);
-	mute_action->setOnShape("Mute", tr("Unmute sounds"));
-	mute_action->setCheckable(true);
+	mute_action = new ActionDescription(
+		ActionDescription::TypeGlobal, "muteSoundsAction",
+		this, SLOT(muteActionActivated(const UserGroup*, const QWidget*, bool)),
+		"Unmute", tr("Mute sounds"), true, tr("Unmute sounds")
+	);
+
 	connect(mute_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(muteActionActivated(const UserGroup*, const QWidget*, bool)));
 	connect(mute_action, SIGNAL(iconsRefreshed()), this, SLOT(setMuteActionState()));
@@ -110,14 +116,14 @@ void SoundSlots::muteActionActivated(const UserGroup* /*users*/, const QWidget* 
 {
 	kdebugf();
 	sound_manager->setMute(is_on);
-	mute_action->setAllOn(is_on);
+	//mute_action->setAllOn(is_on);
 	config_file.writeEntry("Sounds", "PlaySound", !is_on);
 	kdebugf2();
 }
 
 void SoundSlots::setMuteActionState()
 {
-	mute_action->setAllOn(sound_manager->isMuted());
+	//mute_action->setAllOn(sound_manager->isMuted());
 }
 
 void SoundSlots::muteUnmuteSounds()

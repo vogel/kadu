@@ -1,14 +1,14 @@
 #ifndef KADU_SOUND_H
 #define KADU_SOUND_H
 
-#include <qobject.h>
-#include <qstring.h>
-#include <qdatetime.h>
-#include <qstringlist.h>
-#include <qmap.h>
-#include <qthread.h>
-#include <qmutex.h>
-#include <qsemaphore.h>
+#include <QObject>
+#include <QString>
+#include <QDateTime>
+#include <QStringList>
+#include <QMap>
+#include <QThread>
+#include <QMutex>
+#include <QSemaphore>
 
 #include "../notify/notify.h"
 
@@ -35,13 +35,13 @@ typedef void* SoundDevice;
 
 /**
 **/
-enum SoundDeviceType {RECORD_ONLY, PLAY_ONLY, PLAY_AND_RECORD};
+typedef enum SoundDeviceType {RECORD_ONLY, PLAY_ONLY, PLAY_AND_RECORD};
 
 /**
 	To jest klasa u¿ywana wewnêtrznie przez klasê SoundManager
 	i nie powiniene¶ mieæ potrzeby jej u¿ywania.
 **/
-class SamplePlayThread : public QObject, public QThread
+class SamplePlayThread : public QThread
 {
 	Q_OBJECT
 
@@ -55,7 +55,7 @@ class SamplePlayThread : public QObject, public QThread
 
 	protected:
 		virtual void run();
-		virtual void customEvent(QCustomEvent* event);
+		virtual bool event(QEvent* event);
 
 	public:
 		SamplePlayThread(SoundDevice device);
@@ -70,7 +70,7 @@ class SamplePlayThread : public QObject, public QThread
 	To jest klasa u¿ywana wewnêtrznie przez klasê SoundManager
 	i nie powiniene¶ mieæ potrzeby jej u¿ywania.
 **/
-class SampleRecordThread : public QObject, public QThread
+class SampleRecordThread : public QThread
 {
 	Q_OBJECT
 
@@ -84,7 +84,7 @@ class SampleRecordThread : public QObject, public QThread
 
 	protected:
 		virtual void run();
-		virtual void customEvent(QCustomEvent* event);
+		virtual bool event(QEvent* event);
 
 	public:
 		SampleRecordThread(SoundDevice device);
@@ -128,7 +128,7 @@ class SoundPlayThread : public QThread
 		QMutex mutex;
 		QSemaphore *semaphore;
 		bool end;
-		QValueList<SndParams> list;
+		QList<SndParams> list;
 };
 
 class SoundConfigurationWidget;
@@ -310,7 +310,7 @@ class SoundManager : public Notifier, public ConfigurationUiHandler
 			@param channels ilo¶æ kana³ów: 1 - mono, 2 - stereo
 			@device zwrócony uogólniony deskryptor urz±dzenia lub NULL je¶li otwarcie siê nie powiod³o.
 		**/
-		void openDeviceImpl(SoundDeviceType type, int sample_rate, int channels, SoundDevice& device);
+		void openDeviceImpl(SoundDeviceType type, int sample_rate, int channels, SoundDevice* device);
 		/**
 			Pod ten sygna³ powinien podpi±æ siê modu³
 			d¼wiêkowy je¶li obs³uguje funkcjê odtwarzania
@@ -336,7 +336,7 @@ class SoundManager : public Notifier, public ConfigurationUiHandler
 			@param length d³ugo¶æ danych sampla (w bajtach)
 			@param result zwrócony rezultat operacji - true je¶li odtwarzanie zakoñczy³o siê powodzeniem.
 		**/
-		void playSampleImpl(SoundDevice device, const int16_t* data, int length, bool& result);
+		void playSampleImpl(SoundDevice device, const int16_t* data, int length, bool *result);
 		/**
 			Pod ten sygna³ powinien podpi±æ siê modu³
 			d¼wiêkowy je¶li obs³uguje funkcjê odtwarzania
@@ -352,7 +352,7 @@ class SoundManager : public Notifier, public ConfigurationUiHandler
 			@param length d³ugo¶æ sampla do nagrania (wielko¶æ bufora w bajtach)
 			@param result zwrócony rezultat operacji - true je¶li nagrywanie zakoñczy³o siê powodzeniem.
 		**/
-		void recordSampleImpl(SoundDevice device, int16_t* data, int length, bool& result);
+		void recordSampleImpl(SoundDevice device, int16_t* data, int length, bool *result);
 		/**
 		**/
 		void setFlushingEnabledImpl(SoundDevice device, bool enabled);

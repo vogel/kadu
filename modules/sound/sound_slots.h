@@ -1,15 +1,15 @@
 #ifndef KADU_SOUND_SLOTS
 #define KADU_SOUND_SLOTS
 
-#include <qmap.h>
-#include <qstringlist.h>
+#include <QMap>
+#include <QStringList>
 
 #include "message_box.h"
 #include "sound.h"
 
 class SelectFile;
 
-class Action;
+class ActionDescription;
 
 /** @ingroup sound
  * @{
@@ -43,7 +43,7 @@ class SoundSlots : public QObject, public ConfigurationAwareObject
 {
 	Q_OBJECT
 	private:
-		Action* mute_action;
+		ActionDescription* mute_action;
 		QMap<QString, QString> soundfiles;
 		QStringList soundNames;
 		QStringList soundTexts;
