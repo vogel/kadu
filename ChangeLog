@@ -12,6 +12,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * modu³ last_seen dodany do autodownloadu (neeo)
 * poprawione pozycjonowanie dymków dla kontaktów bior±cych udzia³ w konferencji (ultr/neeo)
 * drobne poprawki w skrypcie configure (wisnia/neeo)
+* dodana nowa pula adresów serwerów gg (neeo)
 
 +++ wersja 0.6.0
 * zmiany w procedurze ³±czenia siê: (joi)
