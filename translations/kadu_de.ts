@@ -92,59 +92,59 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Look</source>
-        <translation type="unfinished"></translation>
+        <translation>Aussehen</translation>
     </message>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat</translation>
     </message>
     <message>
         <source>Headers and separators</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopfzeilen und Trenner</translation>
     </message>
     <message>
         <source>Chat header separators height</source>
-        <translation type="unfinished"></translation>
+        <translation>Trenner für Chat-Kopfzeilen-Höhe</translation>
     </message>
     <message>
         <source>Message separators height</source>
-        <translation type="unfinished"></translation>
+        <translation>Trenner für Nachrichten-Höhe</translation>
     </message>
     <message>
         <source>Remove chat header repetitions</source>
-        <translation type="unfinished"></translation>
+        <translation>Entferne Wiederholungen von Chat-Kopfzeilen</translation>
     </message>
     <message>
         <source>Interval between header removal</source>
-        <translation type="unfinished"></translation>
+        <translation>Interval zwischen Kopfzeilen-Entfernung</translation>
     </message>
     <message>
         <source>Server time</source>
-        <translation type="unfinished"></translation>
+        <translation>Serverzeit</translation>
     </message>
     <message>
         <source>Remove server time</source>
-        <translation type="unfinished"></translation>
+        <translation>Entferne Serverzeit</translation>
     </message>
     <message>
         <source>Maximum time difference</source>
-        <translation type="unfinished"></translation>
+        <translation>Maximale Zeitdifferenz</translation>
     </message>
     <message>
         <source>Window title</source>
-        <translation type="unfinished"></translation>
+        <translation>Fenstertitel</translation>
     </message>
     <message>
         <source>Chat window title syntax</source>
-        <translation type="unfinished"></translation>
+        <translation>Syntax für Fenstertitel des Chats</translation>
     </message>
     <message>
         <source>Conference window title prefix</source>
-        <translation type="unfinished"></translation>
+        <translation>Prefix für Konferrenz-Fenstertitel</translation>
     </message>
     <message>
         <source>Conference window title syntax</source>
-        <translation type="unfinished"></translation>
+        <translation>Syntax für den Fenstertitel einer Konferrenz</translation>
     </message>
     <message>
         <source>Kadu</source>
@@ -152,11 +152,11 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Language</source>
-        <translation type="unfinished"></translation>
+        <translation>Sprache</translation>
     </message>
     <message>
         <source>Choose your language</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen Sie Ihre Sprache aus</translation>
     </message>
     <message>
         <source>Updates</source>
@@ -164,27 +164,27 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Check for updates</source>
-        <translation type="unfinished"></translation>
+        <translation>Auf Updates überprüfen</translation>
     </message>
     <message>
         <source>Automatically checks whether a new version is available</source>
-        <translation type="unfinished"></translation>
+        <translation>Überprüfe automatisch, ob es eine neue version gibt</translation>
     </message>
     <message>
         <source>Applications</source>
-        <translation type="unfinished"></translation>
+        <translation>Programme</translation>
     </message>
     <message>
         <source>WWW browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Webbrowser</translation>
     </message>
     <message>
         <source>Choose your browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Webbrowser auswählen</translation>
     </message>
     <message>
         <source>Specify path</source>
-        <translation type="unfinished"></translation>
+        <translation>Pfad angeben</translation>
     </message>
     <message>
         <source>Konqueror</source>
@@ -216,23 +216,23 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Custom browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Eigener Browser</translation>
     </message>
     <message>
         <source>Write specific path to your browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie den Pfad zu Ihrem Browser an</translation>
     </message>
     <message>
         <source>e-mail client</source>
-        <translation type="unfinished"></translation>
+        <translation>Email-Programm</translation>
     </message>
     <message>
         <source>Choose your e-mail client</source>
-        <translation type="unfinished"></translation>
+        <translation>Email-Programm auswählen</translation>
     </message>
     <message>
         <source>Choose your email client</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen Sie Ihr Email-Programm</translation>
     </message>
     <message>
         <source>KMail</source>
@@ -252,35 +252,35 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Custom e-mail client</source>
-        <translation type="unfinished"></translation>
+        <translation>Eigenes Email-Programm</translation>
     </message>
     <message>
         <source>Write specific path to your email client</source>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie den Pfad zu Ihrem Email-Programm an</translation>
     </message>
     <message>
         <source>Advanced</source>
-        <translation type="unfinished"></translation>
+        <translation>Erweitert</translation>
     </message>
     <message>
         <source>Parser</source>
-        <translation type="unfinished"></translation>
+        <translation>Parser</translation>
     </message>
     <message>
         <source>Allow executing commands by parser</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausführen von Befehlen durch den Parser erlauben</translation>
     </message>
     <message>
         <source>Debugging</source>
-        <translation type="unfinished"></translation>
+        <translation>Debugging</translation>
     </message>
     <message>
         <source>Debugging mask</source>
-        <translation type="unfinished"></translation>
+        <translation>Debugging Maske</translation>
     </message>
     <message>
         <source>Account</source>
-        <translation type="unfinished"></translation>
+        <translation>Konto</translation>
     </message>
     <message>
         <source>Gadu-Gadu</source>
@@ -300,35 +300,36 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Nick</source>
-        <translation type="unfinished"></translation>
+        <translation>Nick-Name</translation>
     </message>
     <message>
         <source>Server</source>
-        <translation type="unfinished"></translation>
+        <translation>Server</translation>
     </message>
     <message>
         <source>Servers properties</source>
-        <translation type="unfinished"></translation>
+        <translation>Servereigenschaften</translation>
     </message>
     <message>
         <source>Use default servers</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutze vorgegebene Server</translation>
     </message>
     <message>
         <source>IP Addresses</source>
-        <translation type="unfinished"></translation>
+        <translation>Adresse IP</translation>
     </message>
     <message>
         <source>You can specify which GG servers to use. Separate every server using semicolon (for example: 217.17.41.82;217.17.41.83;217.17.41.84;217.17.41.144)</source>
-        <translation type="unfinished"></translation>
+        <translation>Hier können Sie angeben, welchen Server GaduGadu Sie nutzen wollen. Trennen Sie die Adressen IP mit Hilfe eines Semmikolons. 
+(z.B: 217.17.41.82;217.17.41.83;217.17.41.84;217.17.41.144)</translation>
     </message>
     <message>
         <source>Port to connect to servers</source>
-        <translation type="unfinished"></translation>
+        <translation>Server-Port-Nummer</translation>
     </message>
     <message>
         <source>Automatic</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatisch</translation>
     </message>
     <message>
         <source>8074</source>
@@ -340,646 +341,649 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Proxy Server</source>
-        <translation type="unfinished"></translation>
+        <translation>Server Proxy</translation>
     </message>
     <message>
         <source>Use proxy server</source>
-        <translation type="unfinished"></translation>
+        <translation>Proxy-Server benutzen</translation>
     </message>
     <message>
         <source>Host</source>
-        <translation type="unfinished"></translation>
+        <translation>Host</translation>
     </message>
     <message>
         <source>Port</source>
-        <translation type="unfinished"></translation>
+        <translation>Port</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzername</translation>
     </message>
     <message>
         <source>Contacts</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontate</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished">Allgemein</translation>
+        <translation>Allgemein</translation>
     </message>
     <message>
         <source>Filters</source>
-        <translation type="unfinished"></translation>
+        <translation>Filter</translation>
     </message>
     <message>
         <source>Show offline contacts</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Kontake, die offline sind</translation>
     </message>
     <message>
         <source>Show contacts that are blocked</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige blockierte Kontakte</translation>
     </message>
     <message>
         <source>Show contacts which are blocking me</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Kontakte, die mich blockieren</translation>
     </message>
     <message>
         <source>Anonymous</source>
-        <translation type="unfinished"></translation>
+        <translation>Anonym</translation>
     </message>
     <message>
         <source>Ignore messages from anonymous users</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignoriere Nachrichten von anonymen Absendern</translation>
     </message>
     <message>
         <source>Ignore messages from anonymous users also in conferences</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignoriere Nachrichten von anonymen Absendern auch in Konferrenzen</translation>
     </message>
     <message>
         <source>Ignore richtext from anonymous users</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignoriere formatierten Text von anonymen Absendern</translation>
     </message>
     <message>
         <source>Status</source>
-        <translation type="unfinished">Zustand</translation>
+        <translation>Zustand</translation>
     </message>
     <message>
         <source>Private status</source>
-        <translation type="unfinished"></translation>
+        <translation>Nur für Bekannte</translation>
     </message>
     <message>
         <source>When enabled, you&apos;re visible only to users on your list</source>
-        <translation type="unfinished"></translation>
+        <translation>Wenn eingeschaltet, nur Ihre Bekannten können Sie sehen</translation>
     </message>
     <message>
         <source>Descirption</source>
-        <translation type="unfinished"></translation>
+        <translation>Beschreibung</translation>
     </message>
     <message>
         <source>On startup, set</source>
-        <translation type="unfinished"></translation>
+        <translation>Beim Start setze</translation>
     </message>
     <message>
         <source>Choose status which will be set on startup</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen Sie den Zustand aus, der beim Start gesetzt werden soll</translation>
     </message>
     <message>
         <source>Last status</source>
-        <translation type="unfinished"></translation>
+        <translation>Wie zuvor</translation>
     </message>
     <message>
         <source>Online</source>
-        <translation type="unfinished">Erreichbar</translation>
+        <translation>Erreichbar</translation>
     </message>
     <message>
         <source>Busy</source>
-        <translation type="unfinished">Beschäftigt</translation>
+        <translation>Beschäftigt</translation>
     </message>
     <message>
         <source>Invisible</source>
-        <translation type="unfinished">Versteckt</translation>
+        <translation>Versteckt</translation>
     </message>
     <message>
         <source>Offline</source>
-        <translation type="unfinished"></translation>
+        <translation>Offline</translation>
     </message>
     <message>
         <source>On startup, set last description</source>
-        <translation type="unfinished"></translation>
+        <translation>Beim Starten Beschreibung setzten wie vor dem Ausloggen</translation>
     </message>
     <message>
         <source>Last decription will be set on startup</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Beschreibung vom letzten Mal wird beim Start gesetzt</translation>
     </message>
     <message>
         <source>On startup, set description</source>
-        <translation type="unfinished"></translation>
+        <translation>Beim Starten Beschreibung setzen</translation>
     </message>
     <message>
         <source>Define description which will be set on startup</source>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie bitte die Beschreibung an</translation>
     </message>
     <message>
         <source>On shutdown, keep current description</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Beschreibung beim Logout/Beenden beibehalten</translation>
     </message>
     <message>
         <source>Current description will be set on shutdown</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktuelle Beschreibung wird beim Ausloggen/Beenden beibehalten</translation>
     </message>
     <message>
         <source>On shutdown, set description</source>
-        <translation type="unfinished"></translation>
+        <translation>Beim Aussschalten Beschreibung setzen</translation>
     </message>
     <message>
         <source>Define description which will be set on shutdown</source>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie die Beschreibung an, die beim Ausloggen gesetzt werden soll</translation>
     </message>
     <message>
         <source>Number of kept descriptions</source>
-        <translation type="unfinished"></translation>
+        <translation>Anzahl der aufzubewahrenden Beschreibungen</translation>
     </message>
     <message>
         <source>Allow using variables in status</source>
-        <translation type="unfinished"></translation>
+        <translation>Erlaube die Nutzung von Variablen im Status</translation>
     </message>
     <message>
         <source>Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Thema</translation>
     </message>
     <message>
         <source>Choose Qt style</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen Sie einen Stil Qt aus</translation>
     </message>
     <message>
         <source>Icon theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Thema der Symbole</translation>
     </message>
     <message>
         <source>Choose icon theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen Sie ein Symbol-Thema aus</translation>
     </message>
     <message>
         <source>Icon paths</source>
-        <translation type="unfinished"></translation>
+        <translation>Pfad zu den Symbolen</translation>
     </message>
     <message>
         <source>Definie icons paths</source>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie den Pfad zu den Symbolen an</translation>
     </message>
     <message>
         <source>Show status changing button</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Knopf für Zustandsänderungen an</translation>
     </message>
     <message>
         <source>Colors</source>
-        <translation type="unfinished"></translation>
+        <translation>Farben</translation>
     </message>
     <message>
         <source>Chat window</source>
-        <translation type="unfinished"></translation>
+        <translation>Chatfenster</translation>
     </message>
     <message>
         <source>Text edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Text editieren</translation>
     </message>
     <message>
         <source>My messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Meine Nachricht</translation>
     </message>
     <message>
         <source>User messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachricht des Benutzers</translation>
     </message>
     <message>
         <source>My font</source>
-        <translation type="unfinished"></translation>
+        <translation>Meine Schriftart</translation>
     </message>
     <message>
         <source>User font</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutze Schriftart</translation>
     </message>
     <message>
         <source>My nick</source>
-        <translation type="unfinished"></translation>
+        <translation>Mein Nick-Name</translation>
     </message>
     <message>
         <source>User nick</source>
-        <translation type="unfinished"></translation>
+        <translation>Nick-Name des Benutzers</translation>
     </message>
     <message>
         <source>Userbox</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontaktliste</translation>
     </message>
     <message>
         <source>Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Hintergrund</translation>
     </message>
     <message>
         <source>Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Schriftart</translation>
     </message>
     <message>
         <source>Descriptions font</source>
-        <translation type="unfinished"></translation>
+        <translation>Schriftart für die Beschreibung</translation>
     </message>
     <message>
         <source>Information Panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Informationspanel</translation>
     </message>
     <message>
         <source>Fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>Schriftarten</translation>
     </message>
     <message>
         <source>Font in panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Schriftarten im Panel</translation>
     </message>
     <message>
         <source>New messages notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Benachrichtigung über neue Nachrichten</translation>
     </message>
     <message>
         <source>Activate windows with new messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktiviere Fenster mit neuen Nachrichten</translation>
     </message>
     <message>
         <source>Flash chat title on new message</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat-Titel soll bei neuen Nachrichten blinken</translation>
     </message>
     <message>
         <source>Show number of new messages on chat title</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Anzahl neuer Nachrichten im Chat-Titel</translation>
     </message>
     <message>
         <source>Nice date format</source>
-        <translation type="unfinished"></translation>
+        <translation>Datumsformat</translation>
     </message>
     <message>
         <source>Style</source>
-        <translation type="unfinished"></translation>
+        <translation>Stil</translation>
     </message>
     <message>
         <source>Choose style of chat window</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen Sie einen Stil für das Chatfenster aus</translation>
     </message>
     <message>
         <source>Preview</source>
-        <translation type="unfinished">Vorschau</translation>
+        <translation>Vorschau</translation>
     </message>
     <message>
         <source>Emoticons</source>
-        <translation type="unfinished"></translation>
+        <translation>Smilies</translation>
     </message>
     <message>
         <source>Choose emoticons style</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen Sie Stil der Smilies aus</translation>
     </message>
     <message>
         <source>Animated</source>
-        <translation type="unfinished"></translation>
+        <translation>Animiert</translation>
     </message>
     <message>
         <source>Static</source>
-        <translation type="unfinished">Statisch</translation>
+        <translation>Statisch</translation>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished">Nichts</translation>
+        <translation>Nichts</translation>
     </message>
     <message>
         <source>Emoticons theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Smilies-Thema</translation>
     </message>
     <message>
         <source>Choose emoticons theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen Sie ein Smiley-Thema aus</translation>
     </message>
     <message>
         <source>Emoticons paths</source>
-        <translation type="unfinished"></translation>
+        <translation>Pfad zu Smilies</translation>
     </message>
     <message>
         <source>Define emoticons paths</source>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie den Pfad zu Smilies an</translation>
     </message>
     <message>
         <source>Advanced...</source>
-        <translation type="unfinished"></translation>
+        <translation>Erweitert...</translation>
     </message>
     <message>
         <source>Display group tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Gruppen-Reiter an</translation>
     </message>
     <message>
         <source>Displays group tabs on userbox</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Gruppen-Reiter in der Kontaktliste an</translation>
     </message>
     <message>
         <source>Show available contacts in bold</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige erreichbare Kontakte fett an</translation>
     </message>
     <message>
         <source>Displays users that are not offline using a bold font</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige alle Kontakte, die nicht offline sind fett an</translation>
     </message>
     <message>
         <source>Align contact icon to</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbole der Kontakte ausrichten</translation>
     </message>
     <message>
         <source>Align icon next to contact name</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausrichten in der Nähe des Kontakt-Namens</translation>
     </message>
     <message>
         <source>Top</source>
-        <translation type="unfinished"></translation>
+        <translation>Oben</translation>
     </message>
     <message>
         <source>Center</source>
-        <translation type="unfinished"></translation>
+        <translation>In der Mitte</translation>
     </message>
     <message>
         <source>Column count</source>
-        <translation type="unfinished"></translation>
+        <translation>Spaltenanzahl</translation>
     </message>
     <message>
         <source>Number of columns displays in userbox</source>
-        <translation type="unfinished"></translation>
+        <translation>Anzahl an Spalten in der Kontaktliste</translation>
     </message>
     <message>
         <source>Tool tip style</source>
-        <translation type="unfinished"></translation>
+        <translation>Stil des Hinweises</translation>
     </message>
     <message>
         <source>Choose userbox tool-tip style</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen Sie einen Stil für die Hinweise aus</translation>
     </message>
     <message>
         <source>Descriptions</source>
-        <translation type="unfinished"></translation>
+        <translation>Beschreibungen</translation>
     </message>
     <message>
         <source>Show descriptions</source>
-        <translation type="unfinished">Zeige Beschreibungen</translation>
+        <translation>Zeige Beschreibungen</translation>
     </message>
     <message>
         <source>Displays descriptions in userbox</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Beschreibungen in der Kontaktliste an</translation>
     </message>
     <message>
         <source>Allow multiline descriptions</source>
-        <translation type="unfinished"></translation>
+        <translation>Erlaube mehrzeilige Beschreibungen</translation>
     </message>
     <message>
         <source>Dislpays multiline descriptions in userbox</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige mehrzeilige Beschreibungen in der Kontaktliste an</translation>
     </message>
     <message>
         <source>Use background image</source>
-        <translation type="unfinished"></translation>
+        <translation>Hintergrundbild benutzen</translation>
     </message>
     <message>
         <source>Background file</source>
-        <translation type="unfinished"></translation>
+        <translation>Datei für den Hintergrund</translation>
     </message>
     <message>
         <source>Define background file for userbox</source>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie die Datei für den Hintergrund an</translation>
     </message>
     <message>
         <source>Display style</source>
-        <translation type="unfinished"></translation>
+        <translation>Darstellgunsstil</translation>
     </message>
     <message>
         <source>Choose userbox background style</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen Sie eine Hintergrundstil für die Kontanktliste aus</translation>
     </message>
     <message>
         <source>Tiled</source>
-        <translation type="unfinished"></translation>
+        <translation>Kacheln</translation>
     </message>
     <message>
         <source>Centered</source>
-        <translation type="unfinished"></translation>
+        <translation>centriert</translation>
     </message>
     <message>
         <source>Stretched</source>
-        <translation type="unfinished"></translation>
+        <translation>gestreckt</translation>
     </message>
     <message>
         <source>Show information panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Informationspannel an</translation>
     </message>
     <message>
         <source>Displays information panel below userbox</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Informationspannel unter der Kontaktliste an</translation>
     </message>
     <message>
         <source>Show vertical scrollbar</source>
-        <translation type="unfinished"></translation>
+        <translation>Vertikale Bildlaufleiste</translation>
     </message>
     <message>
         <source>Show vertical scrollbar in information panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige vertikale Bildlaufleiste im Informationspannel</translation>
     </message>
     <message>
         <source>Show emoticons in panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Silies im Ppannel</translation>
     </message>
     <message>
         <source>Show emoticons in information panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Simlies im Informationspannel&lt;</translation>
     </message>
     <message>
         <source>Choose information panel style</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen Sie den Stil für den Informationspannel aus</translation>
     </message>
     <message>
         <source>Shortcuts</source>
-        <translation type="unfinished"></translation>
+        <translation>Tastenkürzel</translation>
     </message>
     <message>
         <source>Configuration</source>
-        <translation type="unfinished">Einstellungen</translation>
+        <translation>Einstellungen</translation>
     </message>
     <message>
         <source>Add user</source>
-        <translation type="unfinished">Kontakt hinzufügen</translation>
+        <translation>Kontakt hinzufügen</translation>
     </message>
     <message>
         <source>Manage modules</source>
-        <translation type="unfinished"></translation>
+        <translation>Module verwalten</translation>
     </message>
     <message>
         <source>Open chat with...</source>
-        <translation type="unfinished">Öffne Chat mit...</translation>
+        <translation>Öffne Chat mit...</translation>
     </message>
     <message>
         <source>Userlist</source>
-        <translation type="unfinished">Kontatliste</translation>
+        <translation>Kontatliste</translation>
     </message>
     <message>
         <source>Remove from userlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Entferne aus der Kontaktliste</translation>
     </message>
     <message>
         <source>Search this user in directory</source>
-        <translation type="unfinished">Suche diesen Benutzer im Verzeichnis</translation>
+        <translation>Suche diesen Benutzer im Verzeichnis</translation>
     </message>
     <message>
         <source>Show / hide offline users</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige/Verstecke Kontakte, die offline sind</translation>
     </message>
     <message>
         <source>Show / hide users without description</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige/Verstecke Kontakte ohne Beschreibung</translation>
     </message>
     <message>
         <source>New line / send message</source>
-        <translation type="unfinished"></translation>
+        <translation>Neue Zeile / Nachricht senden</translation>
     </message>
     <message>
         <source>Clear chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Chatfenster leeren</translation>
     </message>
     <message>
         <source>Close chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat beenden</translation>
     </message>
     <message>
         <source>Bold text</source>
-        <translation type="unfinished"></translation>
+        <translation>Fett</translation>
     </message>
     <message>
         <source>Italic text</source>
-        <translation type="unfinished"></translation>
+        <translation>Kursiv</translation>
     </message>
     <message>
         <source>Underline text</source>
-        <translation type="unfinished"></translation>
+        <translation>Unterstrichen</translation>
     </message>
     <message>
         <source>Behaviour</source>
-        <translation type="unfinished"></translation>
+        <translation>Verhalten</translation>
     </message>
     <message>
         <source>Remember chat windows positions</source>
-        <translation type="unfinished"></translation>
+        <translation>Position der Chat-Fenster behalten</translation>
     </message>
     <message>
         <source>Open chat window on new message</source>
-        <translation type="unfinished"></translation>
+        <translation>Öffne das Chat-Fenster bei neuen Nachrichten</translation>
     </message>
     <message>
         <source>Open chat window when comes new message</source>
-        <translation type="unfinished"></translation>
+        <translation>Öffne das Chat-Fenster, wenn eine neue Nachricht eingetroffen ist</translation>
     </message>
     <message>
         <source>Open chat window only when I&apos;m online</source>
-        <translation type="unfinished"></translation>
+        <translation>Öffne Chat-Fenster nur, wenn ich &quot;erreichbar&quot; bin</translation>
     </message>
     <message>
         <source>Open chat window on new message only when online</source>
-        <translation type="unfinished"></translation>
+        <translation>Öffne Chat-Fenster für neue Nachrichten nur, wenn ich &quot;erreichbar&quot; bin</translation>
     </message>
     <message>
         <source>Wait for message delivery</source>
-        <translation type="unfinished"></translation>
+        <translation>Warte auf die Zustellung der Nachricht</translation>
     </message>
     <message>
         <source>Wait for confirmation from server during send messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Warte auf Bestätigung des Servers während des Sendens</translation>
     </message>
     <message>
         <source>&apos;Enter&apos; in chat send message</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;Enter&apos; im Chat-Fenster sendet die Nachricht</translation>
     </message>
     <message>
         <source>Confirm clearing chat window</source>
-        <translation type="unfinished"></translation>
+        <translation>Das Leeren des Chat-Fensters bestätigen</translation>
     </message>
     <message>
         <source>Ask before clearing chat window</source>
-        <translation type="unfinished"></translation>
+        <translation>Frage nach bevor das Chat-Fenster geleert wird</translation>
     </message>
     <message>
         <source>Save opened windows on exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Speichere geöffnete Fenster beim Beenden</translation>
     </message>
     <message>
         <source>Save opened chat windows when exiting</source>
-        <translation type="unfinished"></translation>
+        <translation>Speichere geöffnete Fenster beim Beenden</translation>
     </message>
     <message>
         <source>Closing</source>
-        <translation type="unfinished"></translation>
+        <translation>Schliessen</translation>
     </message>
     <message>
         <source>Block window close on new message</source>
-        <translation type="unfinished"></translation>
+        <translation>Verhindere das Schliessen eines Chat-Fensters, wenn eine Neue Nachricht eintrifft</translation>
     </message>
     <message>
         <source>Block chat window when comes new message</source>
-        <translation type="unfinished"></translation>
+        <translation>Verhindere das Schliessen eines Chat-Fensters, beim Eintreffen einer neuen Nachricht</translation>
     </message>
     <message>
         <source>Max time to block window close</source>
-        <translation type="unfinished"></translation>
+        <translation>Maximale Dauer der Blockade</translation>
     </message>
     <message>
         <source>Messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Nchricht</translation>
     </message>
     <message>
         <source>Message pruning</source>
-        <translation type="unfinished"></translation>
+        <translation>Kürzung von Nachrichten</translation>
     </message>
     <message>
         <source>Automatically prune chat messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Kürze Chat-Nachrichten automatisch</translation>
     </message>
     <message>
         <source>If enabled, messages are pruning</source>
-        <translation type="unfinished"></translation>
+        <translation>Wenn eingeschaltet, Nachrichten werden gekürzt</translation>
     </message>
     <message>
         <source>Reduce the number of visible messages in chat window to</source>
-        <translation type="unfinished"></translation>
+        <translation>Begrenze die Anzahl sichtbarer Nachrichten im Chat-Fenster auf</translation>
     </message>
     <message>
         <source>Number of visible messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Anzahl sichtbarer Nachrichten</translation>
     </message>
     <message>
         <source>Images</source>
-        <translation type="unfinished">Bilder</translation>
+        <translation>Bilder</translation>
     </message>
     <message>
         <source>Max image size</source>
-        <translation type="unfinished"></translation>
+        <translation>Maximale Bildgröße</translation>
     </message>
     <message>
         <source>Maximum image size that we want to receive</source>
-        <translation type="unfinished"></translation>
+        <translation>Maximale Bildgröße, die Sie empfangen wollen</translation>
     </message>
     <message>
         <source>Receive images during invisibility</source>
-        <translation type="unfinished"></translation>
+        <translation>Empfangen von Bildern im Zustand &apos;Versteckt&apos;</translation>
     </message>
     <message>
         <source>Receiving images during invisibility is allowed</source>
-        <translation type="unfinished"></translation>
+        <translation>Das Empfangen von Bildern im Zustand &apos;Versteckt&apos; ist eingeschaltet</translation>
     </message>
     <message>
         <source>Limit numbers of image recevied per minute</source>
-        <translation type="unfinished"></translation>
+        <translation>Wie viele Bilder wollen Sie pro Minute empfangen</translation>
     </message>
     <message>
         <source>Define limit of images received per minute</source>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie einen Limit (Anzahl der zu empfangenden Bilder pro Minute) an</translation>
     </message>
     <message>
         <source>Link folding</source>
-        <translation type="unfinished"></translation>
+        <translation>Links zusammenfalten</translation>
     </message>
     <message>
         <source>Automatically fold links</source>
-        <translation type="unfinished"></translation>
+        <translation>Links automatisch zusammenfalten</translation>
     </message>
     <message>
         <source>Fold links longer than</source>
-        <translation type="unfinished"></translation>
+        <translation>Falte Links zusammen, wenn sie länger sind als</translation>
     </message>
     <message>
         <source>default</source>
-        <translation type="unfinished"></translation>
+        <translation>Voreinstellung</translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
 %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
 %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Syntax: %s - Zustand, %d - Beschreibung, %i - IP, %n - Nick-Name, %a - Alternativer-Nick, %f - Vorname
+%r - Nachname, %m - Handy, %u - Nr. GG, %g - Gruppe, %o  - leer, wenn Sie nicht in der Kontaktliste desjenigen sind
+%h - Version GG, %v - rev. DNS, %p - Port, %e - Email, %x - maximale Bildgröße
+</translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
@@ -988,19 +992,23 @@ It&apos;s a high security risk!</source>
 #{protocol} - protocol that triggered event,
 #{event} - name of event,
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Syntax: %s - Zustand, %d - Beschreibung, %i - IP, %n - Nick-Name, %a - Alternativer-Nick, %f - Vorname
+%r - Nachname, %m - Handy, %u - Nr. GG, %g - Gruppe, %o  - leer, wenn Sie nicht in der Kontaktliste desjenigen sind
+%h - Version GG, %v - rev. DNS, %p - Port, %e - Email, %x - maximale Bildgröße
+#{protocol} - Protokoll, welches dieses Ereignis ausgelöst hat,
+#{event} - Ereignisname,</translation>
     </message>
     <message>
         <source>Properties</source>
-        <translation type="unfinished"></translation>
+        <translation>Eigenschaften</translation>
     </message>
     <message>
         <source>Opera (new tab)</source>
-        <translation type="unfinished"></translation>
+        <translation>Opera (neuer Reiter)</translation>
     </message>
     <message>
         <source>Set invisible if last status was &apos;Offline&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Setze auf &apos;Versteckt&apos;, wenn Ihr Status zuletzt &apos;Offline&apos; war</translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
@@ -1015,7 +1023,17 @@ It&apos;s a high security risk!</source>
 #{separator} - separator between messages,
 &lt;kadu:header&gt;text&lt;/kadu:header&gt; - text will not be displayed in &apos;Remove repeated headers&apos; mode
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Syntax: %s - Zustand, %d - Beschreibung, %i - IP, %n - Nick-Name, %a - Alternativer-Nick, %f - Vorname,
+%r - Nachname, %m - Handy, %u - Nr. GG, %g - Gruppe, %o - leer, wenn Sie nicht in der Kontaktliste desjenigen sind,
+%h - Version GG, %v - rev. DNS,  %p - Port, %e - Email, %x - maximale Bildgröße,
+#{message} - Nachricht,
+#{backgroundColor} - Farbe für Nachrichtenhintergrund,
+#{fontColor} - Farbe der Nachrichtenschrift,
+#{nickColor} - Farbe des Nick-Namens,
+#{sentDate} - Zeitstempel des Absendens,
+#{receivedDate} - Zeitstempel des Empfangs,
+#{separator} - Trenner zwischen Nachrichten,
+&lt;kadu:header&gt;Text&lt;/kadu:header&gt; - Dieser Text wird nicht angezeigt, wenn &apos;Entfernen der sich wiederholenden Kopfzeilen&apos; eingeschaltet ist</translation>
     </message>
 </context>
 <context>
@@ -1180,7 +1198,8 @@ Einige von ihnen bekommen sie wahrscheinlich nicht.</translation>
     <message>
         <source>All messages received in this conference will be ignored
 from now on. Are you sure you want to leave this conference?</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle Nachrichten, die in dieser Konferrenz empfangen werden, werden 
+von nun an ignoriert. Wollen Sie diese Konferrenz wirklich verlassen?</translation>
     </message>
 </context>
 <context>
@@ -1414,7 +1433,7 @@ Zu viel Versuche mit falschem Passwort</translation>
     </message>
     <message>
         <source>Offline to user</source>
-        <translation>Unerreichbar für Kontakt</translation>
+        <translation>Offline für Kontakt</translation>
     </message>
     <message>
         <source>Manage &amp;ignored</source>
@@ -1458,9 +1477,11 @@ Zu viel Versuche mit falschem Passwort</translation>
     </message>
     <message>
         <source>Selected users:
-%0will be deleted. Are you sure?</source>
+%0
+will be deleted. Are you sure?</source>
         <translation>Ausgewählte Benutzer:
-%0werden gelöscht. Sind Sie sicher?</translation>
+%0
+werden gelöscht. Sind Sie sicher?</translation>
     </message>
     <message>
         <source>Hide description</source>
@@ -1556,7 +1577,7 @@ Zu viel Versuche mit falschem Passwort</translation>
     </message>
     <message>
         <source>No closed chats found</source>
-        <translation type="unfinished"></translation>
+        <translation>Keine geschlossenen Chats gefunden</translation>
     </message>
     <message>
         <source>Contact data</source>
@@ -1564,7 +1585,7 @@ Zu viel Versuche mit falschem Passwort</translation>
     </message>
     <message>
         <source>Me</source>
-        <translation type="unfinished"></translation>
+        <translation>Ich</translation>
     </message>
 </context>
 <context>
@@ -1629,11 +1650,11 @@ Zu viel Versuche mit falschem Passwort</translation>
     </message>
     <message>
         <source>Your message</source>
-        <translation type="unfinished"></translation>
+        <translation>Ihre Nachricht</translation>
     </message>
     <message>
         <source>Message from Your friend</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachricht von Ihrem Freund</translation>
     </message>
 </context>
 <context>
@@ -2134,7 +2155,7 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>No items to add found</source>
-        <translation type="unfinished"></translation>
+        <translation>Keine Einträge zum Hinzufügen gefunden</translation>
     </message>
 </context>
 <context>
@@ -2246,7 +2267,7 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Offline to user</source>
-        <translation>Unerreichbar für Kontakt</translation>
+        <translation>Offline für Kontakt</translation>
     </message>
     <message>
         <source>Notify about status changes</source>
@@ -2302,27 +2323,27 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Change icon</source>
-        <translation>Ikone ändern</translation>
+        <translation>Symbol ändern</translation>
     </message>
     <message>
         <source>Delete icon</source>
-        <translation>Ikone löschen</translation>
+        <translation>Symbol löschen</translation>
     </message>
     <message>
         <source>Choose an icon</source>
-        <translation>Wähle Ikone</translation>
+        <translation>Wählen Sie ein Symbol aus</translation>
     </message>
     <message>
         <source>Icons (*.png *.xpm *.jpg)</source>
-        <translation>Ikonen (*.png *.xmp *.jpg)</translation>
+        <translation>Symbole (*.png *.xmp *.jpg)</translation>
     </message>
     <message>
         <source>Icon:</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol:</translation>
     </message>
     <message>
         <source>User known as %1 with that UIN is already in userlist.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt %1 mit dieser Nr. GG ist bereits in Ihrer Kontaktliste.</translation>
     </message>
 </context>
 <context>
@@ -2353,11 +2374,11 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Offline</source>
-        <translation>Unerreichbar</translation>
+        <translation>Offline</translation>
     </message>
     <message>
         <source>Offline (d.)</source>
-        <translation>Unerreichbar (Beschr.)</translation>
+        <translation>Offline (Beschr.)</translation>
     </message>
     <message>
         <source>Blocking</source>
