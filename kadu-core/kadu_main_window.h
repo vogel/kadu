@@ -19,7 +19,7 @@ class KaduMainWindow : public QMainWindow
 
 protected:
 	void loadToolBarsFromConfig(const QString &prefix);
-	void loadToolBarsFromConfig(const QString &configName, Qt::ToolBarArea area);
+	bool loadToolBarsFromConfig(const QString &configName, Qt::ToolBarArea area, bool remove = false);
 
 	void writeToolBarsToConfig(const QString &prefix);
 	void writeToolBarsToConfig(QDomElement parentConfig, const QString &configName, Qt::ToolBarArea area);

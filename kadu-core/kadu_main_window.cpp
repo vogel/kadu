@@ -36,20 +36,20 @@ void KaduMainWindow::loadToolBarsFromConfig(const QString &prefix)
 	loadToolBarsFromConfig(realPrefix + "rightDockArea", Qt::RightToolBarArea);
 }
 
-void KaduMainWindow::loadToolBarsFromConfig(const QString &configName, Qt::ToolBarArea area)
+bool KaduMainWindow::loadToolBarsFromConfig(const QString &configName, Qt::ToolBarArea area, bool remove)
 {
 	kdebugf();
 
 	QDomElement toolbarsConfig = xml_config_file->findElement(xml_config_file->rootElement(), "Toolbars");
 
 	if (toolbarsConfig.isNull())
-		return;
+		return false;
 
 // 	setBlockToolbars(toolbars_elem.attribute("blocked").toInt());
 
 	QDomElement dockareaConfig = xml_config_file->findElementByProperty(toolbarsConfig, "DockArea", "name", configName);
 	if (dockareaConfig.isNull())
-		return;
+		return false;
 
 	for (QDomNode n = dockareaConfig.firstChild(); !n.isNull(); n = n.nextSibling())
 	{
@@ -68,9 +68,12 @@ void KaduMainWindow::loadToolBarsFromConfig(const QString &configName, Qt::ToolB
 		addToolBar(area, toolbar);
 	}
 
-// 	toolbarsConfig.removeChild(dockareaConfig);
+	if (remove)
+		toolbarsConfig.removeChild(dockareaConfig);
 
 	kdebugf2();
+
+	return true;
 }
 
 void KaduMainWindow::writeToolBarsToConfig(const QString &prefix)

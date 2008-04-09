@@ -172,8 +172,10 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 
 	setCentralWidget(centralWidget);
 
-	loadToolBarsFromConfig("searchDockArea", Qt::BottomToolBarArea);
-	loadToolBarsFromConfig("search");
+	if (loadToolBarsFromConfig("searchDockArea", Qt::BottomToolBarArea, true))
+		writeToolBarsToConfig("search"); // port old config
+	else
+		loadToolBarsFromConfig("search"); // load new config
 
 	loadGeometry(this, "General", "SearchDialogGeometry", 0, 30, 800, 350);
 	setCaption(tr("Search user in directory"));
