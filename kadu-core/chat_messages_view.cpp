@@ -114,7 +114,6 @@ QString ChatMessagesView::formatMessage(ChatMessage *message, ChatMessage *after
 void ChatMessagesView::repaintMessages()
 {
 	kdebugf();
-	viewport()->setUpdatesEnabled(false);
 
 	QString text;
 
@@ -141,16 +140,17 @@ void ChatMessagesView::repaintMessages()
 		prevMessage = message;
 	}
 
-	viewport()->setUpdatesEnabled(false);
+	int lastScrollValue = verticalScrollBar()->value();
+	bool lastLine = (lastScrollValue == verticalScrollBar()->maxValue());
 
 	setText(text);
 	updateBackgrounds();
 
-//	if (verticalScrollBar()->value() == verticalScrollBar()->maxValue())
-//		scrollToBottom();
+	if (lastLine)
+		verticalScrollBar()->setValue(verticalScrollBar()->maxValue());
+	else
+		verticalScrollBar()->setValue(lastScrollValue);
 
-	viewport()->setUpdatesEnabled(true);
-	viewport()->repaint();
 	kdebugf2();
 }
 
@@ -280,8 +280,14 @@ void ChatMessagesView::configurationUpdated()
 
 void ChatMessagesView::resizeEvent(QResizeEvent *e)
 {
-//	if (verticalScrollBar()->value() == verticalScrollBar()->maxValue())
-//		scrollToBottom();
+
+	int lastScrollValue = verticalScrollBar()->value();
+	bool lastLine = (lastScrollValue == verticalScrollBar()->maxValue());
 
 	KaduTextBrowser::resizeEvent(e);
+
+	if (lastLine)
+		verticalScrollBar()->setValue(verticalScrollBar()->maxValue());
+	else
+		verticalScrollBar()->setValue(lastScrollValue);
 }
