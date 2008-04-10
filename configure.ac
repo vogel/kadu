@@ -335,7 +335,7 @@ AC_DEFUN(PROCESS_MODULE_SPEC_FILES,[
 				done; \
 			fi && \
 
-			if test $enable_final == yes; then \
+			if test $enable_final = yes; then \
 				for src in $MODULE_SOURCES; do \
 					if test "`echo $src | sed 's/.*\.\(.*\)$/\1/'`" == "cpp"; then \
 						echo "#include \"$src\"" >> modules/$mod/.final2.cpp; \
@@ -762,6 +762,7 @@ if test -z "$with_existing_libgadu"; then
 	with_existing_libgadu=no
 fi
 if test "$with_existing_libgadu" != "no"; then
+	save_CXXFLAGS="$CXXFLAGS"
 	FIND_HEADER([libgadu.h],[$with_existing_libgadu $with_existing_libgadu/include],
 	[
 		GADU_INCLUDES="-I$FILE_DIR"
@@ -771,9 +772,11 @@ if test "$with_existing_libgadu" != "no"; then
 	[
 		GADU_LIBS="$GADU_LIBS -L$FILE_DIR"
 	])
+	CXXFLAGS="$CXXFLAGS $GADU_INCLUDES"
 	AC_CHECK_MEMBER([struct gg_dcc7.uin], [],
 	[AC_MSG_ERROR([Your libgadu doesn't support for dcc7, please use our SVN snapshot by removing --with-existing-libgadu option !])],
 	[#include <libgadu.h>])
+	CXXFLAGS="$save_CXXFLAGS"
 else
 	MY_SUBDIRS="$MY_SUBDIRS libgadu"
 	GADU_LIBS="../libgadu/src/.libs/libgadu.a"

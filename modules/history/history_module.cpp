@@ -337,7 +337,7 @@ void HistoryModule::userboxMenuPopup()
 
 	bool any_ok = false;
 	CONST_FOREACH(user, users)
-		if ((*user).usesProtocol("Gadu") && ((*user).ID("Gadu") != kadu->myself().ID("Gadu")))
+		if if (!(*user).protocolList().isEmpty())
 		{
 			any_ok = true;
 			break;
@@ -380,7 +380,7 @@ void HistoryModule::createDefaultConfiguration()
 {
 	config_file.addVariable("History", "ChatHistoryCitation", 10);
 	config_file.addVariable("History", "ChatHistoryQuotationTime", -24);
-	config_file.addVariable("History", "DontSaveStatusChanges", false);
+	config_file.addVariable("History", "DontSaveStatusChanges", true);
 	config_file.addVariable("History", "DontShowStatusChanges", true);
 	config_file.addVariable("History", "Logging", true);
 

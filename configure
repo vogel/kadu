@@ -9938,6 +9938,7 @@ if test -z "$with_existing_libgadu"; then
 	with_existing_libgadu=no
 fi
 if test "$with_existing_libgadu" != "no"; then
+	save_CXXFLAGS="$CXXFLAGS"
 
 	{ echo "$as_me:$LINENO: checking if libgadu.h header is in system directories" >&5
 echo $ECHO_N "checking if libgadu.h header is in system directories... $ECHO_C" >&6; }
@@ -10151,6 +10152,7 @@ fi
 rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
       conftest$ac_exeext conftest.$ac_ext
 
+	CXXFLAGS="$CXXFLAGS $GADU_INCLUDES"
 	{ echo "$as_me:$LINENO: checking for struct gg_dcc7.uin" >&5
 echo $ECHO_N "checking for struct gg_dcc7.uin... $ECHO_C" >&6; }
 if test "${ac_cv_member_struct_gg_dcc7_uin+set}" = set; then
@@ -10254,6 +10256,7 @@ echo "$as_me: error: Your libgadu doesn't support for dcc7, please use our SVN s
    { (exit 1); exit 1; }; }
 fi
 
+	CXXFLAGS="$save_CXXFLAGS"
 else
 	MY_SUBDIRS="$MY_SUBDIRS libgadu"
 	GADU_LIBS="../libgadu/src/.libs/libgadu.a"
@@ -10551,7 +10554,7 @@ echo "$as_me: error: $mod download failed!" >&2;}
 				done; \
 			fi && \
 
-			if test $enable_final == yes; then \
+			if test $enable_final = yes; then \
 				for src in $MODULE_SOURCES; do \
 					if test "`echo $src | sed 's/.*\.\(.*\)$/\1/'`" == "cpp"; then \
 						echo "#include \"$src\"" >> modules/$mod/.final2.cpp; \
