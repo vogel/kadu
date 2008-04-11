@@ -88,7 +88,7 @@ void KaduMainWindow::writeToolBarsToConfig(const QString &prefix)
 
 	QDomElement toolbarsConfig = xml_config_file->findElement(xml_config_file->rootElement(), "Toolbars");
 	if (toolbarsConfig.isNull())
-		toolbarsConfig = xml_config_file->createElement(xml_config_file->rootElement(), "ToolBar");
+		toolbarsConfig = xml_config_file->createElement(xml_config_file->rootElement(), "ToolBars");
 
 	writeToolBarsToConfig(toolbarsConfig, realPrefix + "topDockArea", Qt::TopToolBarArea);
 	writeToolBarsToConfig(toolbarsConfig, realPrefix + "leftDockArea", Qt::LeftToolBarArea);
@@ -98,8 +98,15 @@ void KaduMainWindow::writeToolBarsToConfig(const QString &prefix)
 
 void KaduMainWindow::writeToolBarsToConfig(QDomElement parentConfig, const QString &configName, Qt::ToolBarArea area)
 {
-	QDomElement dockAreaConfig = xml_config_file->createElement(parentConfig, "DockArea");
-	dockAreaConfig.setAttribute("name", configName);
+	QDomElement dockAreaConfig = xml_config_file->findElementByProperty(parentConfig, "DockArea", "name", configName);
+	if (dockAreaConfig.isNull())
+	{
+		dockAreaConfig = xml_config_file->createElement(parentConfig, "DockArea");
+		dockAreaConfig.setAttribute("name", configName);
+	}
+	else
+		xml_config_file->removeChildren(dockAreaConfig);
+
 
 	// TODO: laaaaame
 	foreach(QObject *child, children())
