@@ -31,7 +31,7 @@
 #include "userbox.h"
 #include "protocol.h"
 
-ChatWindow::ChatWindow(QWidget* parent, const char* name) : QWidget(parent/*, name, Qt::WType_TopLevel | Qt::WDestructiveClose*/),
+ChatWindow::ChatWindow(QWidget* parent, const char* name) : QWidget(parent),
 	currentChatWidget(0), title_timer(new QTimer(this, "title_timer"))
 {
 	configurationUpdated();
@@ -40,37 +40,7 @@ ChatWindow::ChatWindow(QWidget* parent, const char* name) : QWidget(parent/*, na
 
 	kdebugf();
 
-	const QString &configName = "topDockArea";
-// 	Qt::ToolBarArea area = Qt::TopToolBarArea;
-
-	QDomElement root_elem = xml_config_file->rootElement();
-	QDomElement toolbars_elem = xml_config_file->findElement(root_elem, "Toolbars");
-
-	if (toolbars_elem.isNull())
-		return;
-
-// 	setBlockToolbars(toolbars_elem.attribute("blocked").toInt());
-
-	QDomElement dockarea_elem = xml_config_file->findElementByProperty(toolbars_elem, "DockArea", "name", configName);
-	if (dockarea_elem.isNull())
-		return;
-
-	for (QDomNode n = dockarea_elem.firstChild(); !n.isNull(); n = n.nextSibling())
-	{
-		const QDomElement &toolbar_elem = n.toElement();
-		if (toolbar_elem.isNull())
-			continue;
-		if (toolbar_elem.tagName() != "ToolBar")
-			continue;
-
-// 		ToolBar* toolbar = new ToolBar(this);
-// 		moveDockWindow(toolbar);
-// 		toolbar->loadFromConfig(toolbar_elem);
-// 		toolbar->show();
-// 		setAcceptDockWindow(toolbar, true);
-
-// 		addToolBar(area, toolbar);
-	}
+	setAttribute(Qt::WA_DeleteOnClose);
 }
 
 ChatWindow::~ChatWindow()
