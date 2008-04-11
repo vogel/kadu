@@ -27,7 +27,6 @@
 #include <Q3Frame>
 #include <QCustomEvent>
 #include <QMenu>
-#include <QStatusBar>
 #include <QToolBar>
 #include <QWidget>
 
@@ -387,9 +386,6 @@ Kadu::Kadu(QWidget *parent)
 	MainLayout->setResizeMode(QLayout::Minimum);
 	MainWidget->setLayout(MainLayout);
 	setCentralWidget(MainWidget);
-
-	QStatusBar* statusbar = new QStatusBar;
-	setStatusBar(statusbar);
 
 	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
 		chat_manager->loadOpenedWindows();
