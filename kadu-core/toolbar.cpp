@@ -452,6 +452,27 @@ QMenu * ToolBar::createContextMenu(QToolButton *button)
 
 	menu->addAction(tr("Delete toolbar"), this, SLOT(deleteToolbar()));
 	menu->addMenu(actionsMenu);
+
+	QMainWindow *mainWindow = dynamic_cast<QMainWindow *>(parent());
+
+	menu->addSeparator();
+	switch (mainWindow->toolBarArea(this))
+	{
+		case Qt::NoToolBarArea:
+		case Qt::TopToolBarArea:
+			menu->addAction(tr("Create new toolbar"), parent(), SLOT(addTopToolbar()));
+			break;
+		case Qt::BottomToolBarArea:
+			menu->addAction(tr("Create new toolbar"), parent(), SLOT(addBottomToolbar()));
+			break;
+		case Qt::LeftToolBarArea:
+			menu->addAction(tr("Create new toolbar"), parent(), SLOT(addLeftToolbar()));
+			break;
+		case Qt::RightToolBarArea:
+			menu->addAction(tr("Create new toolbar"), parent(), SLOT(addRightToolbar()));
+			break;
+	}
+
 	return menu;
 }
 

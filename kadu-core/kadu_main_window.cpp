@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QContextMenuEvent>
+
 #include "config_file.h"
 #include "debug.h"
 #include "toolbar.h"
@@ -111,4 +113,32 @@ void KaduMainWindow::writeToolBarsToConfig(QDomElement parentConfig, const QStri
 
 		toolBar->writeToConfig(dockAreaConfig);
 	}
+}
+
+void KaduMainWindow::contextMenuEvent(QContextMenuEvent *event)
+{
+	QMenu *menu = new QMenu(this);
+	menu->addAction(tr("Create new toolbar"), this, SLOT(addTopToolbar()));
+
+	menu->exec(event->globalPos());
+}
+
+void KaduMainWindow::addTopToolbar()
+{
+	addToolBar(Qt::TopToolBarArea, new ToolBar(this));
+}
+
+void KaduMainWindow::addBottomToolbar()
+{
+	addToolBar(Qt::BottomToolBarArea, new ToolBar(this));
+}
+
+void KaduMainWindow::addLeftToolbar()
+{
+	addToolBar(Qt::LeftToolBarArea, new ToolBar(this));
+}
+
+void KaduMainWindow::addRightToolbar()
+{
+	addToolBar(Qt::RightToolBarArea, new ToolBar(this));
 }
