@@ -58,6 +58,8 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	QList<int> sizes;
 
 	QVBoxLayout *layout = new QVBoxLayout(this);
+	layout->setMargin(0);
+	layout->setSpacing(0);
 
 	vertSplit = new KaduSplitter(Qt::Vertical, this);
 	layout->addWidget(vertSplit);

@@ -34,13 +34,14 @@
 ChatWindow::ChatWindow(QWidget* parent, const char* name) : QWidget(parent),
 	currentChatWidget(0), title_timer(new QTimer(this, "title_timer"))
 {
-	configurationUpdated();
+	kdebugf();
+
 	connect(title_timer, SIGNAL(timeout()), this, SLOT(blinkTitle()));
 	connect(this, SIGNAL(chatWidgetActivated(ChatWidget *)), chat_manager, SIGNAL(chatWidgetActivated(ChatWidget *)));
 
-	kdebugf();
-
 	setAttribute(Qt::WA_DeleteOnClose);
+
+	configurationUpdated();
 }
 
 ChatWindow::~ChatWindow()
@@ -66,15 +67,17 @@ void ChatWindow::setChatWidget(ChatWidget *newChatWidget)
 	currentChatWidget = newChatWidget;
 	newChatWidget->reparent(this, QPoint(0, 0));
 	newChatWidget->show();
-// 	setCentralWidget(currentChatWidget);
 
 	layout->addWidget(newChatWidget);
+	layout->setMargin(0);
+	layout->setSpacing(0);
 
 	connect(currentChatWidget, SIGNAL(closed()), this, SLOT(close()));
 	connect(currentChatWidget, SIGNAL(captionUpdated()), this, SLOT(updateTitle()));
 	connect(currentChatWidget, SIGNAL(messageReceived(ChatWidget *)), this, SLOT(alertNewMessage()));
 
 	setFocusProxy(currentChatWidget);
+
 	restoreGeometry();
 	updateTitle();
 }
