@@ -171,6 +171,8 @@ Kadu::Kadu(QWidget *parent)
 
 	MainWidget = new QWidget;
 	MainLayout = new QVBoxLayout(MainWidget);
+	MainLayout->setMargin(0);
+	MainLayout->setSpacing(0);
 
 	QSplitter *split = new QSplitter(Qt::Vertical, this, "splitter");
 	MainLayout->addWidget(split);
