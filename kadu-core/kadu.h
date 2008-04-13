@@ -20,17 +20,17 @@
 #include "userlistelement.h"
 
 class ActionDescription;
+class KaduTabBar;
+class KaduTextBrowser;
+class MainConfigurationWindow;
+class SplitStatusChanger;
+class UserBox;
+class UserStatusChanger;
 
 class QFile;
 class Q3ListBoxItem;
 class QMenuBar;
-class KaduTabBar;
-class UserBox;
-class KaduTextBrowser;
 class QPushButton;
-class UserStatusChanger;
-class SplitStatusChanger;
-class MainConfigurationWindow;
 
 /**
 	G³ówne okno Kadu
@@ -46,6 +46,17 @@ class Kadu : public KaduMainWindow, ConfigurationAwareObject, public ActionWindo
 	ActionDescription *editUserActionDescription;
 	ActionDescription *addUserActionDescription;
 	ActionDescription *openSearchActionDescription;
+
+	QActionGroup *changeStatusActionGroup;
+	QAction *changeStatusToOnline;
+	QAction *changeStatusToOnlineDesc;
+	QAction *changeStatusToBusy;
+	QAction *changeStatusToBusyDesc;
+	QAction *changeStatusToInvisible;
+	QAction *changeStatusToInvisibleDesc;
+	QAction *changeStatusToOffline;
+	QAction *changeStatusToOfflineDesc;
+	QAction *changePrivateStatus;
 
 	// TODO: remove
 	friend class Wizard;
@@ -123,6 +134,17 @@ class Kadu : public KaduMainWindow, ConfigurationAwareObject, public ActionWindo
 		void createRecentChatsMenu();
 		void openRecentChats(int index);
 		void openChatWith();
+
+		void goOnline();
+		void goOnlineDesc();
+		void goBusy();
+		void goBusyDesc();
+		void goInvisible();
+		void goInvisibleDesc();
+		void goOffline();
+		void goOfflineDesc();
+
+		void changePrivateStatusSlot(bool toggled);
 
 		void wentOnline(const QString &);
 		void wentBusy(const QString &);

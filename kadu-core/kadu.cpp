@@ -1132,7 +1132,58 @@ void Kadu::sendMessage(UserListElement elem)
 	kdebugf2();
 }
 
+void Kadu::goOnline()
+{
+	slotHandleState(0);
+}
+
+void Kadu::goOnlineDesc()
+{
+	slotHandleState(1);
+}
+
+void Kadu::goBusy()
+{
+	slotHandleState(2);
+}
+
+void Kadu::goBusyDesc()
+{
+	slotHandleState(3);
+}
+
+void Kadu::goInvisible()
+{
+	slotHandleState(4);
+}
+
+void Kadu::goInvisibleDesc()
+{
+	slotHandleState(5);
+}
+
+void Kadu::goOffline()
+{
+	slotHandleState(6);
+}
+
+void Kadu::goOfflineDesc()
+{
+	slotHandleState(7);
+}
+
+void Kadu::changePrivateStatusSlot(bool toggled)
+{
+	UserStatus status;
+	status.setStatus(userStatusChanger->status());
+	status.setFriendsOnly(toggled);
+	setStatus(status);
+
+	config_file.writeEntry("General", "PrivateStatus", toggled);
+}
+
 /* when we want to change the status */
+// TODO: fix it
 void Kadu::slotHandleState(int command)
 {
 	kdebugf();
@@ -1173,13 +1224,6 @@ void Kadu::slotHandleState(int command)
 		case 7:
 			status.setOffline(status.description());
 			ChooseDescription::show(status, lastPositionBeforeStatusMenuHide);
-			break;
-		case 8:
-			statusMenu->setItemChecked(8, !statusMenu->isItemChecked(8));
-			dockMenu->setItemChecked(8, !dockMenu->isItemChecked(8));
-			config_file.writeEntry("General", "PrivateStatus", statusMenu->isItemChecked(8));
-			status.setFriendsOnly(statusMenu->isItemChecked(8));
-			setStatus(status);
 			break;
 	}
 
@@ -1556,46 +1600,80 @@ void Kadu::createStatusPopupMenu()
 	statusMenu = new QMenu(this);
 	dockMenu = new QMenu(this);
 
-// 	icons_manager->registerMenu(statusMenu);
-// 	icons_manager->registerMenu(dockMenu);
+	changeStatusActionGroup = new QActionGroup(this);
 
-	UserStatus *s = new GaduStatus();
-	for (int i=0; i<8; ++i)
-	{
-		// je¿eli wywo³anie mia³o by postaæ setIndex(i)
-		// to po sprawdzeniu, czy opis jest równy "" nast±pi³oby automatyczne
-		// przyjêcie, ¿e status jest jednak bez opisu
-		// co przyczyni³oby siê do z³ej ikonki
-		// a tak to przyjmuje ze jest to status z opisem (michal)
-		s->setIndex(i, i%2?".":"");
-		pix = s->pixmap();
-		icon = QIcon(pix);
-		QString statusName = qApp->translate("@default", UserStatus::name(i).ascii());
-		statusMenu->addAction(icon, statusName/*, i*/);
-		dockMenu->addAction(icon, statusName/*, i*/);
+	GaduStatus s;
 
-// 		icons_manager->registerMenuItem(statusMenu, statusName, UserStatus::toString(s->status(), s->hasDescription()));
-// 		icons_manager->registerMenuItem(dockMenu, statusName, UserStatus::toString(s->status(), s->hasDescription()));
-	}
-	delete s;
+	changeStatusToOnline = new QAction(icons_manager->loadIcon(s.pixmapName(Online, false, false)), tr("Online"), this);
+	changeStatusToOnline->setCheckable(true);
+	connect(changeStatusToOnline, SIGNAL(triggered()), this, SLOT(goOnline()));
+
+	changeStatusToOnlineDesc = new QAction(icons_manager->loadIcon(s.pixmapName(Online, true, false)), tr("Online (d.)"), this);
+	changeStatusToOnlineDesc->setCheckable(true);
+	connect(changeStatusToOnlineDesc, SIGNAL(triggered()), this, SLOT(goOnlineDesc()));
+
+	changeStatusToBusy = new QAction(icons_manager->loadIcon(s.pixmapName(Busy, false, false)), tr("Busy"), this);
+	changeStatusToBusy->setCheckable(true);
+	connect(changeStatusToBusy, SIGNAL(triggered()), this, SLOT(goBusy()));
+
+	changeStatusToBusyDesc = new QAction(icons_manager->loadIcon(s.pixmapName(Busy, true, false)), tr("Busy (d.)"), this);
+	changeStatusToBusyDesc->setCheckable(true);
+	connect(changeStatusToBusyDesc, SIGNAL(triggered()), this, SLOT(goBusyDesc()));
+
+	changeStatusToInvisible = new QAction(icons_manager->loadIcon(s.pixmapName(Invisible, false, false)), tr("Invisible"), this);
+	changeStatusToInvisible->setCheckable(true);
+	connect(changeStatusToInvisible, SIGNAL(triggered()), this, SLOT(goInvisible()));
+
+	changeStatusToInvisibleDesc = new QAction(icons_manager->loadIcon(s.pixmapName(Invisible, true, false)), tr("Invisible (d.)"), this);
+	changeStatusToInvisibleDesc->setCheckable(true);
+	connect(changeStatusToInvisibleDesc, SIGNAL(triggered()), this, SLOT(goInvisibleDesc()));
+
+	changeStatusToOffline = new QAction(icons_manager->loadIcon(s.pixmapName(Offline, false, false)), tr("Offline"), this);
+	changeStatusToOffline->setCheckable(true);
+	connect(changeStatusToOffline, SIGNAL(triggered()), this, SLOT(goOffline()));
+
+	changeStatusToOfflineDesc = new QAction(icons_manager->loadIcon(s.pixmapName(Offline, true, false)), tr("Offline (d.)"), this);
+	changeStatusToOfflineDesc->setCheckable(true);
+	connect(changeStatusToOfflineDesc, SIGNAL(triggered()), this, SLOT(goOfflineDesc()));
+
+	changePrivateStatus = new QAction(tr("Private"), this);
+	changePrivateStatus->setCheckable(true);
+	connect(changePrivateStatus, SIGNAL(toggled(bool)), this, SLOT(changePrivateStatusSlot(bool)));
 
 	bool privateStatus = config_file.readBoolEntry("General", "PrivateStatus");
-	statusMenu->insertSeparator();
-	dockMenu->insertSeparator();
-	statusMenu->addAction(tr("Private")/*, 8*/);
-	statusMenu->setItemChecked(8, privateStatus);
-	dockMenu->addAction(tr("Private")/*, 8*/);
-	dockMenu->setItemChecked(8, privateStatus);
+	changePrivateStatus->setChecked(privateStatus);
 
-	statusMenu->setCheckable(true);
-	dockMenu->setCheckable(true);
-	statusMenu->setItemChecked(6, true);
-	dockMenu->setItemChecked(6, true);
+	changeStatusActionGroup->addAction(changeStatusToOnline);
+	changeStatusActionGroup->addAction(changeStatusToOnlineDesc);
+	changeStatusActionGroup->addAction(changeStatusToBusy);
+	changeStatusActionGroup->addAction(changeStatusToBusyDesc);
+	changeStatusActionGroup->addAction(changeStatusToInvisible);
+	changeStatusActionGroup->addAction(changeStatusToInvisibleDesc);
+	changeStatusActionGroup->addAction(changeStatusToOffline);
+	changeStatusActionGroup->addAction(changeStatusToOfflineDesc);
 
-	statusMenu->setItemEnabled(7, false);
-	dockMenu->setItemEnabled(7, false);
+	statusMenu->addAction(changeStatusToOnline);
+	statusMenu->addAction(changeStatusToOnlineDesc);
+	statusMenu->addAction(changeStatusToBusy);
+	statusMenu->addAction(changeStatusToBusyDesc);
+	statusMenu->addAction(changeStatusToInvisible);
+	statusMenu->addAction(changeStatusToInvisibleDesc);
+	statusMenu->addAction(changeStatusToOffline);
+	statusMenu->addAction(changeStatusToOfflineDesc);
+	statusMenu->addSeparator();
+	statusMenu->addAction(changePrivateStatus);
 
-	connect(statusMenu, SIGNAL(activated(int)), this, SLOT(slotHandleState(int)));
+	dockMenu->addAction(changeStatusToOnline);
+	dockMenu->addAction(changeStatusToOnlineDesc);
+	dockMenu->addAction(changeStatusToBusy);
+	dockMenu->addAction(changeStatusToBusyDesc);
+	dockMenu->addAction(changeStatusToInvisible);
+	dockMenu->addAction(changeStatusToInvisibleDesc);
+	dockMenu->addAction(changeStatusToOffline);
+	dockMenu->addAction(changeStatusToOfflineDesc);
+	dockMenu->addSeparator();
+	dockMenu->addAction(changePrivateStatus);
+
 	kdebugf2();
 }
 
@@ -1872,6 +1950,18 @@ void Kadu::wentOffline(const QString &desc)
 void Kadu::showStatusOnMenu(int statusNr)
 {
 	kdebugf();
+
+	switch (statusNr)
+	{
+		case 0: changeStatusToOnline->setChecked(true); break;
+		case 1: changeStatusToOnlineDesc->setChecked(true); break;
+		case 2: changeStatusToBusy->setChecked(true); break;
+		case 3: changeStatusToBusyDesc->setChecked(true); break;
+		case 4: changeStatusToInvisible->setChecked(true); break;
+		case 5: changeStatusToInvisibleDesc->setChecked(true); break;
+		case 6: changeStatusToOffline->setChecked(true); break;
+		case 7: changeStatusToOfflineDesc->setChecked(true); break;
+	}
 
 	for(int i = 0; i < 8; ++i)
 	{
