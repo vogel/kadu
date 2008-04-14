@@ -19,7 +19,7 @@ class OSSPlayerSlots : public QObject
 	void createDefaultConfiguration();
 
 public slots:
-	void openDevice(SoundDeviceType type, int sample_rate, int channels, SoundDevice* device);
+	void openDevice(SoundDeviceType type, int sample_rate, int channels, SoundDevice* device, QMutex* mutex);
 	void closeDevice(SoundDevice device);
 	void playSample(SoundDevice device, const int16_t* data, int length, bool* result);
 	void recordSample(SoundDevice device, int16_t* data, int length, bool* result);
