@@ -239,14 +239,14 @@ ALSAPlayerSlots::ALSAPlayerSlots(QObject *parent, const char *name) : QObject(pa
 
 	createDefaultConfiguration();
 
-	connect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice&)),
-			this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice&)));
+	connect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice*)),
+			this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice*)));
 	connect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 			this, SLOT(closeDevice(SoundDevice)));
-	connect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool&)),
-			this, SLOT(playSample(SoundDevice, const int16_t*, int, bool&)));
-	connect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, int16_t*, int, bool&)),
-			this, SLOT(recordSample(SoundDevice, int16_t*, int, bool&)));
+	connect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool*)),
+			this, SLOT(playSample(SoundDevice, const int16_t*, int, bool*)));
+	connect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, int16_t*, int, bool*)),
+			this, SLOT(recordSample(SoundDevice, int16_t*, int, bool*)));
 	connect(sound_manager, SIGNAL(setFlushingEnabledImpl(SoundDevice, bool)),
 		this, SLOT(setFlushingEnabled(SoundDevice, bool)));
 
@@ -257,14 +257,14 @@ ALSAPlayerSlots::~ALSAPlayerSlots()
 {
 	kdebugf();
 
-	disconnect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice&)),
-			this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice&)));
+	disconnect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice*)),
+			this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice*)));
 	disconnect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 			this, SLOT(closeDevice(SoundDevice)));
-	disconnect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool&)),
-			this, SLOT(playSample(SoundDevice, const int16_t*, int, bool&)));
-	disconnect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, int16_t*, int, bool&)),
-			this, SLOT(recordSample(SoundDevice, int16_t*, int, bool&)));
+	disconnect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool*)),
+			this, SLOT(playSample(SoundDevice, const int16_t*, int, bool*)));
+	disconnect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, int16_t*, int, bool*)),
+			this, SLOT(recordSample(SoundDevice, int16_t*, int, bool*)));
 	disconnect(sound_manager, SIGNAL(setFlushingEnabledImpl(SoundDevice, bool)),
 		this, SLOT(setFlushingEnabled(SoundDevice, bool)));
 
@@ -287,7 +287,7 @@ bool ALSAPlayerSlots::isOk()
 	return ret;
 }
 
-void ALSAPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int channels, SoundDevice& device)
+void ALSAPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int channels, SoundDevice* device)
 {
 	kdebugf();
 
@@ -320,7 +320,7 @@ void ALSAPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chan
 		}
 	}
 	dev->channels = channels;
-	device = (SoundDevice)dev;
+	*device = (SoundDevice)dev;
 	kdebugf2();
 }
 
@@ -366,13 +366,13 @@ int xrun_recovery(snd_pcm_t *handle, int err)
 	return err;
 }
 
-void ALSAPlayerSlots::playSample(SoundDevice device, const int16_t* data, int length, bool& result)
+void ALSAPlayerSlots::playSample(SoundDevice device, const int16_t* data, int length, bool* result)
 {
 //	kdebugf();
 	ALSADevice *dev = (ALSADevice*)device;
-	result = (dev!=NULL && dev->player!=NULL);
+	*result = (dev!=NULL && dev->player!=NULL);
 	const char *cdata = (const char *)data;
-	if (result)
+	if (*result)
 	{
 		int res, written = 0;
 		int availErrorsCount = 0;
@@ -402,7 +402,7 @@ void ALSAPlayerSlots::playSample(SoundDevice device, const int16_t* data, int le
 
 			if (availErrorsCount > 10)
 			{
-				result = false;
+				*result = false;
 				break;
 			}
 
@@ -421,7 +421,7 @@ void ALSAPlayerSlots::playSample(SoundDevice device, const int16_t* data, int le
 				{
 					fprintf(stderr, "alsa write error: %s\n", snd_strerror(res));
 					fflush(stderr);
-					result = false;
+					*result = false;
 					break;
 				}
 			}
@@ -433,13 +433,13 @@ void ALSAPlayerSlots::playSample(SoundDevice device, const int16_t* data, int le
 		kdebugmf(KDEBUG_ERROR, "device closed!\n");
 }
 
-void ALSAPlayerSlots::recordSample(SoundDevice device, int16_t* data, int length, bool& result)
+void ALSAPlayerSlots::recordSample(SoundDevice device, int16_t* data, int length, bool* result)
 {
 //	kdebugf();
 	ALSADevice *dev = (ALSADevice*)device;
-	result = (dev!=NULL && dev->recorder!=NULL);
+	*result = (dev!=NULL && dev->recorder!=NULL);
 	char *cdata = (char *)data;
-	if (result)
+	if (*result)
 	{
 		if (!dev->recorderStarted)
 		{
@@ -477,7 +477,7 @@ void ALSAPlayerSlots::recordSample(SoundDevice device, int16_t* data, int length
 
 			if (availErrorsCount > 10)
 			{
-				result = false;
+				*result = false;
 				break;
 			}
 
@@ -496,7 +496,7 @@ void ALSAPlayerSlots::recordSample(SoundDevice device, int16_t* data, int length
 				{
 					fprintf(stderr, "alsa read error: %s\n", snd_strerror(res));
 					fflush(stderr);
-					result = false;
+					*result = false;
 					break;
 				}
 			}
