@@ -9,7 +9,7 @@
 
 #include "debug.h"
 #include "status.h"
-//Added by qt3to4:
+
 #include <QPixmap>
 
 UserStatus::UserStatus() : QObject(NULL, 0), Changed(false),

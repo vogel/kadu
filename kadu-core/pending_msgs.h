@@ -1,11 +1,10 @@
 #ifndef PENDING_MSGS_H
 #define PENDING_MSGS_H
 
-#include <qglobal.h>
-
-#include <qstring.h>
 #include <time.h>
 #include "usergroup.h"
+
+class QString;
 
 /**
 	Klasa ta reprezentuje kolejkê wiadomo¶ci oczekuj±cych na odczytanie.

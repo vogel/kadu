@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qtimer.h>
+#include <QTimer>
 
 #include "debug.h"
 #include "misc.h"
@@ -183,7 +183,7 @@ void StatusChangerManager::registerStatusChanger(StatusChanger *statusChanger)
 
 	connect(statusChanger, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
 
-	for (unsigned int i = 0; i < statusChangers.count(); i++)
+	for (int i = 0; i < statusChangers.count(); i++)
 		if (statusChangers.at(i)->priority() > statusChanger->priority())
 		{
 			statusChangers.insert(i, statusChanger);
@@ -217,7 +217,7 @@ void StatusChangerManager::statusChanged()
 		return;
 
 	UserStatus status;
-	for (unsigned int i = 0; i < statusChangers.count(); i++)
+	for (int i = 0; i < statusChangers.count(); i++)
 		statusChangers.at(i)->changeStatus(status);
 
 	emit statusChanged(status);

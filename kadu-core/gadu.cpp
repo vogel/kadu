@@ -1419,19 +1419,19 @@ void GaduProtocol::searchNextInPubdir(SearchRecord& searchRecord)
 	req = gg_pubdir50_new(GG_PUBDIR50_SEARCH);
 
 	if (!searchRecord.Uin.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)unicode2cp(searchRecord.Uin).data());
+		gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)unicode2cp(searchRecord.Uin).toLocal8Bit().data());
 	if (!searchRecord.FirstName.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)unicode2cp(searchRecord.FirstName).data());
+		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)unicode2cp(searchRecord.FirstName).toLocal8Bit().data());
 	if (!searchRecord.LastName.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)unicode2cp(searchRecord.LastName).data());
+		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)unicode2cp(searchRecord.LastName).toLocal8Bit().data());
 	if (!searchRecord.NickName.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)unicode2cp(searchRecord.NickName).data());
+		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)unicode2cp(searchRecord.NickName).toLocal8Bit().data());
 	if (!searchRecord.City.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)unicode2cp(searchRecord.City).data());
+		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)unicode2cp(searchRecord.City).toLocal8Bit().data());
 	if (!searchRecord.BirthYearFrom.isEmpty())
 	{
 		QString bufYear = searchRecord.BirthYearFrom + ' ' + searchRecord.BirthYearTo;
-		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)unicode2cp(bufYear).data());
+		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)unicode2cp(bufYear).toLocal8Bit().data());
 	}
 
 	switch (searchRecord.Gender)

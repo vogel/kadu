@@ -55,6 +55,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	kdebugf();
 
 	setAttribute(Qt::WA_DeleteOnClose);
+	setWindowTitle(tr("Search user in directory"));
 
 	QWidget *centralWidget = new QWidget(this);
 
@@ -70,22 +71,22 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 
 	l_nick = new QLabel(tr("Nickname"),centralWidget);
 	e_nick = new QLineEdit(centralWidget);
-	connect(e_nick, SIGNAL(textChanged(const QString &)), centralWidget, SLOT(personalDataTyped()));
+	connect(e_nick, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
 	l_gender = new QLabel(tr("Gender"),centralWidget);
 	c_gender = new QComboBox(centralWidget);
 	c_gender->insertItem(" ", 0);
 	c_gender->insertItem(tr("Male"), 1);
 	c_gender->insertItem(tr("Female"), 2);
-	connect(c_gender, SIGNAL(activated(const QString &)), centralWidget, SLOT(personalDataTyped()));
+	connect(c_gender, SIGNAL(activated(const QString &)), this, SLOT(personalDataTyped()));
 
 	l_name = new QLabel(tr("Name"),centralWidget);
 	e_name = new QLineEdit(centralWidget);
-	connect(e_name, SIGNAL(textChanged(const QString &)), centralWidget, SLOT(personalDataTyped()));
+	connect(e_name, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
 	l_surname = new QLabel(tr("Surname"),centralWidget);
 	e_surname = new QLineEdit(centralWidget);
-	connect(e_surname, SIGNAL(textChanged(const QString &)), centralWidget, SLOT(personalDataTyped()));
+	connect(e_surname, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
 	l_byr = new QLabel(tr("Birthyear"),centralWidget);
 	l_byrFrom = new QLabel(tr("from"),centralWidget);
@@ -99,7 +100,7 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	e_byrTo->setEnabled(false);
 	e_byrTo->setMaxLength(4);
 	e_byrTo->setValidator(new QIntValidator(1, 2100, centralWidget));
-	connect(e_byrTo, SIGNAL(textChanged(const QString &)), centralWidget, SLOT(personalDataTyped()));
+	connect(e_byrTo, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
 	l_city = new QLabel(tr("City"),centralWidget);
 	e_city = new QLineEdit(centralWidget);
@@ -178,7 +179,6 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 		loadToolBarsFromConfig("search"); // load new config
 
 	loadGeometry(this, "General", "SearchDialogGeometry", 0, 30, 800, 350);
-	setCaption(tr("Search user in directory"));
 
 	connect(gadu, SIGNAL(newSearchResults(SearchResults &, int, int)), this, SLOT(newSearchResults(SearchResults &, int, int)));
 
@@ -689,7 +689,7 @@ void SearchDialog::selectionChanged()
 
 void SearchActionsSlots::firstSearchActionActivated(QAction *sender, bool toggled)
 {
-	SearchDialog *search = dynamic_cast<SearchDialog *>(sender);
+	SearchDialog *search = dynamic_cast<SearchDialog *>(sender->parent());
 	if (search)
 		search->firstSearch();
 }
@@ -708,35 +708,35 @@ void SearchActionsSlots::firstSearchActionActivated(QAction *sender, bool toggle
 
 void SearchActionsSlots::nextResultsActionActivated(QAction *sender, bool toggled)
 {
-	SearchDialog *search = dynamic_cast<SearchDialog *>(sender);
+	SearchDialog *search = dynamic_cast<SearchDialog *>(sender->parent());
 	if (search)
 		search->nextSearch();
 }
 
 void SearchActionsSlots::stopSearchActionActivated(QAction *sender, bool toggled)
 {
-	SearchDialog *search = dynamic_cast<SearchDialog *>(sender);
+	SearchDialog *search = dynamic_cast<SearchDialog *>(sender->parent());
 	if (search)
 		search->stopSearch();
 }
 
 void SearchActionsSlots::clearResultsActionActivated(QAction *sender, bool toggled)
 {
-	SearchDialog *search = dynamic_cast<SearchDialog *>(sender);
+	SearchDialog *search = dynamic_cast<SearchDialog *>(sender->parent());
 	if (search)
 		search->clearResults();
 }
 
 void SearchActionsSlots::addFoundActionActivated(QAction *sender, bool toggled)
 {
-	SearchDialog *search = dynamic_cast<SearchDialog *>(sender);
+	SearchDialog *search = dynamic_cast<SearchDialog *>(sender->parent());
 	if (search)
 		search->addFound();
 }
 
 void SearchActionsSlots::chatFoundActionActivated(QAction *sender, bool toggled)
 {
-	SearchDialog *search = dynamic_cast<SearchDialog *>(sender);
+	SearchDialog *search = dynamic_cast<SearchDialog *>(sender->parent());
 	if (search)
 		search->chatFound();
 }

@@ -1,11 +1,11 @@
 #ifndef KADU_USERLIST_H
 #define KADU_USERLIST_H
 
-#include <qglobal.h>
+//#include <qglobal.h>
 
-#include <qstring.h>
+//#include <qstring.h>
 //Added by qt3to4:
-#include <QList>
+//#include <QList>
 #include "usergroup.h"
 
 /**

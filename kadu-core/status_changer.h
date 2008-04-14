@@ -1,11 +1,7 @@
 #ifndef STATUS_CHANGER
 #define STATUS_CHANGER
 
-#include <qglobal.h>
-
-#include <qobject.h>
-//Added by qt3to4:
-#include <QList>
+#include <QObject>
 
 #include "status.h"
 
@@ -100,10 +96,10 @@ class SplitStatusChanger : public StatusChanger
 {
 	Q_OBJECT
 
-	unsigned int splitSize;
+	int splitSize;
 
-	unsigned int descriptionSplitBegin;
-	unsigned int descriptionSplitLength;
+	int descriptionSplitBegin;
+	int descriptionSplitLength;
 
 	QTimer *splitTimer;
 	QString lastDescription;

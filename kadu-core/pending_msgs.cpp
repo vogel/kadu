@@ -7,12 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qtextcodec.h>
 #include <QString>
 
 #include "chat_manager.h"
 #include "debug.h"
-#include "gadu.h"
 #include "misc.h"
 #include "pending_msgs.h"
 #include "userlist.h"
