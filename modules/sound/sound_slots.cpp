@@ -47,7 +47,6 @@ SoundConfigurationWidget::~SoundConfigurationWidget()
 
 void SoundConfigurationWidget::test()
 {
-	printf("\n\n\nSoundConfigurationWidget::test\n");
 	sound_manager->play(soundFileSelectFile->file(), true);
 }
 

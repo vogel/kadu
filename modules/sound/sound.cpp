@@ -425,12 +425,14 @@ SoundDevice SoundManager::openDevice(SoundDeviceType type, int sample_rate, int 
 {
 	kdebugf();
 	SoundDevice device;
-	emit openDeviceImpl(type, sample_rate, channels, &device);
-	kdebugm(KDEBUG_INFO, "device before usleep: %p\n", device);
-	// musimy przysnac tutaj na chwilke zanim device zostanie zainicjalizowany
-	// inaczej wyjdziemy stad z nullem
-	usleep(5000);
-	kdebugm(KDEBUG_INFO, "device after usleep: %p\n", device);
+
+	QMutex mutex;
+	mutex.lock();
+	emit openDeviceImpl(type, sample_rate, channels, &device, &mutex);
+	kdebugm(KDEBUG_INFO, "waiting until lock will be removed... ");
+	mutex.lock();
+	mutex.unlock();
+	kdebugm(KDEBUG_INFO, "done\n");
 	kdebugf2();
 	return device;
 }

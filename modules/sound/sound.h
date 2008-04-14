@@ -309,8 +309,9 @@ class SoundManager : public Notifier, public ConfigurationUiHandler
 			@param sample_rate sample rate - np. 8000 lub 48000
 			@param channels ilo¶æ kana³ów: 1 - mono, 2 - stereo
 			@device zwrócony uogólniony deskryptor urz±dzenia lub NULL je¶li otwarcie siê nie powiod³o.
+			@param mutex - mutex to be unlock after setting the device
 		**/
-		void openDeviceImpl(SoundDeviceType type, int sample_rate, int channels, SoundDevice* device);
+		void openDeviceImpl(SoundDeviceType type, int sample_rate, int channels, SoundDevice* device, QMutex *mutex);
 		/**
 			Pod ten sygna³ powinien podpi±æ siê modu³
 			d¼wiêkowy je¶li obs³uguje funkcjê odtwarzania
