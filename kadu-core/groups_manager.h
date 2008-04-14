@@ -161,25 +161,31 @@ public slots:
 	void changeDisplayingBlocked();
 
 	/**
-		\fn void changeDisplayingOffline()
+		\fn void changeDisplayingOffline(UserBox *userBox, bool show);
 		w³±cza lub wy³±cza wy¶wietlanie kontaktów niedostêpnych
-		w g³ównej li¶cie kontaktów w zale¿no¶ci od poprzedniego stanu
+		w li¶cie kontaktów w zale¿no¶ci od poprzedniego stanu
+		\param userBox lista kontaktów
+		\param show stan akcji
 	**/
-	void changeDisplayingOffline();
+	void changeDisplayingOffline(UserBox *userBox, bool show);
 
 	/**
-		\fn void changeDisplayingWithoutDescription()
+		\fn void changeDisplayingWithoutDescription(UserBox *userBox, bool show)
 		w³±cza lub wy³±cza wy¶wietlanie kontaktów o statusach bez opisu
-		w g³ównej li¶cie kontaktów w zale¿no¶ci od poprzedniego stanu
+		w li¶cie kontaktów w zale¿no¶ci od poprzedniego stanu
+		\param userBox lista kontaktów
+		\param show stan akcji
 	**/
 	void changeDisplayingWithoutDescription(UserBox *userBox, bool show);
 
 	/**
-		\fn void changeDisplayingOnlineAndDescription()
+		\fn void changeDisplayingOnlineAndDescription(UserBox *userBox, bool show)
 		w³±cza lub wy³±cza wy¶wietlanie kontatków o statusach "dostêpny"
 		lub "zajêty" oraz kontatków z opisem
+		\param userBox lista kontaktów
+		\param show stan akcji
 	**/
-	void changeDisplayingOnlineAndDescription();
+	void changeDisplayingOnlineAndDescription(UserBox *userBox, bool show);
 
 };
 

@@ -136,8 +136,8 @@ void Kadu::keyPressEvent(QKeyEvent *e)
 	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
 		lookupInDirectory();
-	else if (HotKey::shortCut(e,"ShortCuts", "kadu_showoffline"))
-		groups_manager->changeDisplayingOffline();
+//	else if (HotKey::shortCut(e,"ShortCuts", "kadu_showoffline"))
+//		groups_manager->changeDisplayingOffline();
 // 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_showonlydesc"))
 // 		groups_manager->changeDisplayingWithoutDescription();
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_configure"))
@@ -248,7 +248,7 @@ Kadu::Kadu(QWidget *parent)
 
 	/* a newbie? */
 
-	setCaption(tr("Kadu: %1").arg(Myself.ID("Gadu")));
+	setWindowTitle(tr("Kadu: %1").arg(Myself.ID("Gadu")));
 
 	pending.loadFromFile();
 
@@ -670,7 +670,11 @@ void Kadu::selectedUsersNeeded(const UserGroup*& users)
 
 void Kadu::inactiveUsersActionActivated(QAction *sender, bool toggled)
 {
-	groups_manager->changeDisplayingOffline();
+	ActionWindow *window = dynamic_cast<ActionWindow *>(sender->parent());
+	if (!window)
+		return;
+
+	groups_manager->changeDisplayingOffline(window->getUserBox(), !toggled);
 }
 
 void Kadu::descriptionUsersActionActivated(QAction *sender, bool toggled)
@@ -684,7 +688,11 @@ void Kadu::descriptionUsersActionActivated(QAction *sender, bool toggled)
 
 void Kadu::onlineAndDescUsersActionActivated(QAction *sender, bool toggled)
 {
-	groups_manager->changeDisplayingOnlineAndDescription();
+	ActionWindow *window = dynamic_cast<ActionWindow *>(sender->parent());
+	if (!window)
+		return;
+
+	groups_manager->changeDisplayingOnlineAndDescription(window->getUserBox(), !toggled);
 }
 
 void Kadu::configurationActionActivated(QAction *sender, bool toggled)

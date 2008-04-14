@@ -107,9 +107,9 @@ void GroupsManager::setTabBar(KaduTabBar *bar)
 	showOnlineAndDescription = !config_file.readBoolEntry("General", "ShowOnlineAndDescription");
 	changeDisplayingBlocking();
 	changeDisplayingBlocked();
-	changeDisplayingOffline();
+//	changeDisplayingOffline();
 // 	changeDisplayingWithoutDescription();
-	changeDisplayingOnlineAndDescription();
+//	changeDisplayingOnlineAndDescription();
 	kdebugf2();
 }
 
@@ -238,8 +238,8 @@ void GroupsManager::configurationUpdated()
 		changeDisplayingBlocking();
 	if (config_file.readBoolEntry("General", "ShowBlocked") != showBlocked)
 		changeDisplayingBlocked();
-	if (config_file.readBoolEntry("General", "ShowOffline") != showOffline)
-		changeDisplayingOffline();
+//	if (config_file.readBoolEntry("General", "ShowOffline") != showOffline)
+//		changeDisplayingOffline();
 // 	if (config_file.readBoolEntry("General", "ShowWithoutDescription") != showWithoutDescription)
 // 		changeDisplayingWithoutDescription();
 }
@@ -274,17 +274,17 @@ void GroupsManager::changeDisplayingBlocked()
 	kdebugf2();
 }
 
-void GroupsManager::changeDisplayingOffline()
+void GroupsManager::changeDisplayingOffline(UserBox *userBox, bool show)
 {
 	kdebugf();
 // 	if (KaduActions["inactiveUsersAction"])
 // 		KaduActions["inactiveUsersAction"]->setAllOn(showOffline);
-// 	showOffline = !showOffline;
-// 	if (showOffline)
-// 		kadu->userbox()->removeNegativeFilter(offlineUsers);
-// 	else
-// 		kadu->userbox()->applyNegativeFilter(offlineUsers);
-// 	config_file.writeEntry("General", "ShowOffline", showOffline);
+ 	showOffline = show;
+ 	if (showOffline)
+ 		userBox->removeNegativeFilter(offlineUsers);
+ 	else
+ 		userBox->applyNegativeFilter(offlineUsers);
+ 	config_file.writeEntry("General", "ShowOffline", showOffline);
 	kdebugf2();
 }
 
@@ -300,21 +300,21 @@ void GroupsManager::changeDisplayingWithoutDescription(UserBox *userBox, bool sh
 	kdebugf2();
 }
 
-void GroupsManager::changeDisplayingOnlineAndDescription()
+void GroupsManager::changeDisplayingOnlineAndDescription(UserBox *userBox, bool show)
 {
 	kdebugf();
 
-	showOnlineAndDescription = !showOnlineAndDescription;
+	showOnlineAndDescription = show;
 /*
 	if (KaduActions["onlineAndDescriptionUsersAction"])
 		KaduActions["onlineAndDescriptionUsersAction"]->setAllOn(showOnlineAndDescription);
-
-	if (showOnlineAndDescription)
-		kadu->userbox()->applyFilter(onlineAndDescriptionUsers);
+*/
+	if (!showOnlineAndDescription)
+		userBox->applyFilter(onlineAndDescriptionUsers);
 	else
-		kadu->userbox()->removeFilter(onlineAndDescriptionUsers);
+		userBox->removeFilter(onlineAndDescriptionUsers);
 
-	config_file.writeEntry("General", "ShowOnlineAndDescription", showOnlineAndDescription);*/
+	config_file.writeEntry("General", "ShowOnlineAndDescription", showOnlineAndDescription);
 
 	kdebugf2();
 }
