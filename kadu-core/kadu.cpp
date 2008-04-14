@@ -321,11 +321,11 @@ Kadu::Kadu(QWidget *parent)
 	connect(RecentChatsMenu, SIGNAL(aboutToShow()), this, SLOT(createRecentChatsMenu()));
 
 	dockMenu->insertSeparator();
-	dockMenu->addAction(icons_manager->loadIcon("Exit"), tr("&Exit Kadu")/*, 9*/);
+	dockMenu->addAction(icons_manager->loadIcon("Exit"), tr("&Exit Kadu"), this, SLOT(quit()));
 // 	icons_manager->registerMenuItem(dockMenu, tr("&Exit Kadu"), "Exit");
 
 	InfoPanel = new KaduTextBrowser(split);
-	InfoPanel->setFrameStyle(Q3Frame::NoFrame);
+	InfoPanel->setFrameStyle(QFrame::NoFrame);
 	InfoPanel->setMinimumHeight(int(1.5 * QFontMetrics(InfoPanel->QTextEdit::font()).height()));
 //	InfoPanel->resize(InfoPanel->size().width(), int(1.5 * QFontMetrics(InfoPanel->font()).height()));
 	InfoPanel->setTextFormat(Qt::RichText);
