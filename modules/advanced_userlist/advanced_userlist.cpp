@@ -196,12 +196,19 @@ void AdvancedUserList::mainConfigurationWindowCreated(MainConfigurationWindow *m
 	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
 
 	ConfigGroupBox *sortingGroupBox = mainConfigurationWindow->configGroupBox("Look", "Userbox", "Sorting");
-	QHBoxLayout *sortingHBox = new QHBoxLayout(sortingGroupBox->widget());
+
+	QWidget *sortingWidget = new QWidget(sortingGroupBox->widget());
+
+	QHBoxLayout *sortingHBox = new QHBoxLayout(sortingWidget);
 	sortingHBox->setSpacing(5);
 
-	sortingListBox = new QListWidget(sortingHBox->widget());
+	sortingListBox = new QListWidget();
 
-	QWidget *buttons = new QWidget(sortingHBox->widget());
+	QWidget *buttons = new QWidget();
+
+	sortingHBox->addWidget(sortingListBox);
+	sortingHBox->addWidget(buttons);
+
 	QVBoxLayout *buttonsLayout = new QVBoxLayout(buttons);
 	buttonsLayout->setSpacing(5);
 
@@ -215,7 +222,7 @@ void AdvancedUserList::mainConfigurationWindowCreated(MainConfigurationWindow *m
 	connect(up, SIGNAL(clicked()), this, SLOT(onUpButton()));
 	connect(down, SIGNAL(clicked()), this, SLOT(onDownButton()));
 
-	sortingGroupBox->addWidgets(new QLabel(tr("Sorting functions") + ":", sortingGroupBox->widget()), sortingHBox->widget());
+	sortingGroupBox->addWidgets(new QLabel(tr("Sorting functions") + ":", sortingGroupBox->widget()), sortingWidget);
 
 	newOrder = order;
 	displayFunctionList();
