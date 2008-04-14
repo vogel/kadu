@@ -426,6 +426,11 @@ SoundDevice SoundManager::openDevice(SoundDeviceType type, int sample_rate, int 
 	kdebugf();
 	SoundDevice device;
 	emit openDeviceImpl(type, sample_rate, channels, &device);
+	kdebugm(KDEBUG_INFO, "device before usleep: %p\n", device);
+	// musimy przysnac tutaj na chwilke zanim device zostanie zainicjalizowany
+	// inaczej wyjdziemy stad z nullem
+	usleep(5000);
+	kdebugm(KDEBUG_INFO, "device after usleep: %p\n", device);
 	kdebugf2();
 	return device;
 }
@@ -528,7 +533,6 @@ void SoundManager::disconnectNotify(const char *signal)
 void SoundManager::play(const QString &path, bool volCntrl, double vol)
 {
 	kdebugf();
-	printf("\n\nSoundManager::play\n");
 	if (simple_player_count>0)
 		emit playSound(path, volCntrl, vol);
 	else
@@ -588,7 +592,7 @@ void SoundPlayThread::run()
 	{
 		(*semaphore).acquire();
 		mutex.lock();
-		/*kdebugmf(KDEBUG_INFO,*/printf( "locked\n");
+		kdebugmf(KDEBUG_INFO, "locked\n");
 		if (end)
 		{
 			mutex.unlock();
@@ -600,7 +604,7 @@ void SoundPlayThread::run()
 		play(params.filename.local8Bit().data(),
 				params.volumeControl, params.volume);
 		mutex.unlock();
-		/*kdebugmf(KDEBUG_INFO,*/printf( "unlocked\n");
+		kdebugmf(KDEBUG_INFO, "unlocked\n");
 	}//end while(!end)
 	kdebugf2();
 }
@@ -609,7 +613,7 @@ bool SoundPlayThread::play(const char *path, bool volumeControl, float volume)
 {
 	bool ret = false;
 	SoundFile *sound = new SoundFile(path);
-printf("\nSoundPlayThread::play\n");
+
 	if (!sound->isOk())
 	{
 		fprintf(stderr, "broken sound file?\n");
