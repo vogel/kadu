@@ -108,7 +108,7 @@ ModulesDialog::ModulesDialog() : Q3HBox(kadu, "modules_dialog", Qt::WType_TopLev
 	l_info->setText(tr("This dialog box allows you to manage installed modules. Modules are responsible "
 			"for numerous vital features like playing sounds or message encryption. "
 			"You can load (or unload) them by double-clicking on their names."));
-	l_info->setAlignment(Qt::WordBreak);
+	l_info->setWordWrap(true);
 	// end create main QLabel widgets (icon and app info)
 
 	// our QListView

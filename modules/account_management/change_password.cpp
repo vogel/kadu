@@ -52,7 +52,7 @@ ChangePassword::ChangePassword(QDialog *parent, const char *name) : QWidget(pare
 	QLabel *l_info = new QLabel();
 
 	l_info->setText(tr("This dialog box allows you to change your current password or e-mail."));
-	l_info->setAlignment(Qt::TextWordWrap);
+	l_info->setWordWrap(true);
 	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 
 	// end create main QLabel widgets (icon and app info)

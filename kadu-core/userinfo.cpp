@@ -71,7 +71,8 @@ UserInfo::UserInfo(UserListElement user, QWidget* parent, const char *name)
 
 	QLabel *l_info = new QLabel;
 	l_info->setText(tr("This dialog box allows you to view and edit information about the selected contact."));
-	l_info->setAlignment(Qt::WordBreak);
+	l_info->setWordWrap(true);
+	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 	// end create main QLabel widgets (icon and app info)
 
 	tw_main = new QTabWidget;

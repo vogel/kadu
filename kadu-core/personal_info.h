@@ -1,15 +1,12 @@
 #ifndef PERSONAL_INFO_H
 #define PERSONAL_INFO_H
 
-#include <qglobal.h>
+#include <QWidget>
 
-#include <q3hbox.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QKeyEvent>
 #include "gadu.h"
 
 class LayoutHelper;
+
 class QComboBox;
 class QLineEdit;
 class QPushButton;
@@ -21,7 +18,7 @@ class QResizeEvent;
 	Dialog umo¿liwiaj±cy zarz±dzanie w³asnymi danymi osobowymi w katalogu
 	publicznym.
 **/
-class PersonalInfoDialog : public Q3HBox
+class PersonalInfoDialog : public QWidget
 {
 	Q_OBJECT
 

@@ -762,7 +762,7 @@ ChooseDescription::ChooseDescription(QWidget *parent, const char *name)
 	: QDialog(parent, name, false)
 {
 	kdebugf();
-	setCaption(tr("Select description"));
+	setWindowTitle(tr("Select description"));
 
 	while (defaultdescriptions.count() > config_file.readNumEntry("General", "NumberOfDescriptions"))
 		defaultdescriptions.pop_back();
@@ -786,8 +786,8 @@ ChooseDescription::ChooseDescription(QWidget *parent, const char *name)
 	OkButton = new QPushButton(tr("&OK"), this);
 	QPushButton *cancelButton = new QPushButton(tr("&Cancel"), this);
 
-	QObject::connect(OkButton, SIGNAL(clicked()), this, SLOT(okPressed()));
-	QObject::connect(cancelButton, SIGNAL(clicked()), this, SLOT(cancelPressed()));
+	connect(OkButton, SIGNAL(clicked()), this, SLOT(okPressed()));
+	connect(cancelButton, SIGNAL(clicked()), this, SLOT(cancelPressed()));
 
 	QGridLayout *grid = new QGridLayout(this);
 

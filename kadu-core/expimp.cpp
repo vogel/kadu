@@ -58,7 +58,8 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) :
 	center_layout->setSpacing(5);
 	QLabel *l_info = new QLabel;
 	l_info->setText(tr("This dialog box allows you to import and export your buddy list to a server or a file."));
-	l_info->setAlignment(Qt::WordBreak);
+	l_info->setWordWrap(true);
+	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 	// end create main QLabel widgets (icon and app info)
 
 	// our QListView

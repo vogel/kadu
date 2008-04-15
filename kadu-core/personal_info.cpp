@@ -7,128 +7,186 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qcombobox.h>
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
-#include <q3vbox.h>
-#include <q3vgroupbox.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QKeyEvent>
+#include <QComboBox>
+#include <QGroupBox>
+#include <QLayout>
+#include <QLineEdit>
+#include <QPushButton>
 
 #include "debug.h"
 #include "icons_manager.h"
 #include "misc.h"
 #include "personal_info.h"
 
-PersonalInfoDialog::PersonalInfoDialog(QWidget *parent, const char *name) : Q3HBox(parent, name, Qt::WType_TopLevel | Qt::WDestructiveClose),
+PersonalInfoDialog::PersonalInfoDialog(QWidget *parent, const char *name) : QWidget(parent, name, Qt::Window),
 	le_nickname(0), le_name(0), le_surname(0), cb_gender(0), le_birthyear(0), le_city(0), le_familyname(0),
 	le_familycity(0), pb_save(0), State(READY), data(new SearchRecord()), layoutHelper(new LayoutHelper())
 {
 	kdebugf();
-	setCaption(tr("Personal Information"));
-	layout()->setResizeMode(QLayout::Minimum);
+	setWindowTitle(tr("Personal Information"));
+	setAttribute(Qt::WA_DeleteOnClose);
+//	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
-	Q3VBox *left = new Q3VBox(this);
-	left->setMargin(10);
-	left->setSpacing(10);
+	QWidget *left = new QWidget();
 
-	QLabel *l_icon = new QLabel(left);
-	QWidget *blank = new QWidget(left);
+	QLabel *l_icon = new QLabel;
+	l_icon->setPixmap(icons_manager->loadPixmap("PersonalInformationWindowIcon"));
+
+	QWidget *blank = new QWidget;
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	Q3VBox *center = new Q3VBox(this);
-	center->setMargin(10);
-	center->setSpacing(10);
+	QVBoxLayout *left_layout = new QVBoxLayout;
+	left_layout->addWidget(l_icon);
+	left_layout->addWidget(blank);
+	left->setLayout(left_layout);
 
-	QLabel *l_info = new QLabel(center);
-	l_icon->setPixmap(icons_manager->loadPixmap("PersonalInformationWindowIcon"));
+	QWidget *center = new QWidget;
+
+	QLabel *l_info = new QLabel();
+
 	l_info->setText(tr("This dialog box allows you to manage your personal information, for example your "
 				"name, surname or age."));
-	l_info->setAlignment(Qt::WordBreak);
+	l_info->setWordWrap(true);
+	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 	// end create main QLabel widgets (icon and app info)
 
-	// our QVGroupBox
-	Q3VGroupBox *vgb_info = new Q3VGroupBox(center);
-	vgb_info->setTitle(tr("Your personal information"));
-	center->setStretchFactor(vgb_info, 1);
+	// our QGroupBox
+	QGroupBox *vgb_info = new QGroupBox(tr("Your personal information"));
+	QVBoxLayout *info_layout = new QVBoxLayout();
+	vgb_info->setLayout(info_layout);
 	// end our QGroupBox
 
 	// create our info-fields
-	Q3HBox *hb_nicknamesurname = new Q3HBox(vgb_info);
-	Q3VBox *vb_nickname = new Q3VBox(hb_nicknamesurname);
-	Q3VBox *vb_name = new Q3VBox(hb_nicknamesurname);
-	Q3VBox *vb_surname = new Q3VBox(hb_nicknamesurname);
-	hb_nicknamesurname->setSpacing(3);
-	vb_nickname->setSpacing(3);
-	vb_name->setSpacing(3);
-	vb_surname->setSpacing(3);
+	QWidget *nickname = new QWidget;
+	QVBoxLayout *nickname_layout = new QVBoxLayout(nickname);
 
-	new QLabel(tr("Nickname"), vb_nickname);
-	le_nickname = new QLineEdit(vb_nickname);
-	new QLabel(tr("Name"), vb_name);
-	le_name = new QLineEdit(vb_name);
-	new QLabel(tr("Surname"), vb_surname);
-	le_surname = new QLineEdit(vb_surname);
+	QWidget *wname = new QWidget;
+	QVBoxLayout *name_layout = new QVBoxLayout(wname);
 
+	QWidget *surname = new QWidget;
+	QVBoxLayout *surname_layout = new QVBoxLayout(surname);
+
+	le_nickname = new QLineEdit();
+	nickname_layout->addWidget(new QLabel(tr("Nickname")));
+	nickname_layout->addWidget(le_nickname);
+
+	le_name = new QLineEdit();
+	name_layout->addWidget(new QLabel(tr("Name")));
+	name_layout->addWidget(le_name);
+
+	le_surname = new QLineEdit();
+	surname_layout->addWidget(new QLabel(tr("Surname")));
+	surname_layout->addWidget(le_surname);
+
+	QWidget *nicknamesurname = new QWidget;
+	QHBoxLayout *nicknamesurname_layout = new QHBoxLayout(nicknamesurname);
+
+	nicknamesurname_layout->addWidget(nickname);
+	nicknamesurname_layout->addWidget(wname);
+	nicknamesurname_layout->addWidget(surname);
 	//
-	Q3HBox *hb_genderbirthyearcity = new Q3HBox(vgb_info);
-	Q3VBox *vb_gender = new Q3VBox(hb_genderbirthyearcity);
-	Q3VBox *vb_birthyear = new Q3VBox(hb_genderbirthyearcity);
-	Q3VBox *vb_city = new Q3VBox(hb_genderbirthyearcity);
-	hb_genderbirthyearcity->setSpacing(3);
-	vb_gender->setSpacing(3);
-	vb_birthyear->setSpacing(3);
-	vb_city->setSpacing(3);
+	QWidget *gender = new QWidget;
+	QVBoxLayout *gender_layout = new QVBoxLayout(gender);
 
-	new QLabel(tr("Gender"), vb_gender);
-	cb_gender = new QComboBox(vb_gender);
+	QWidget *birthyear = new QWidget;
+	QVBoxLayout *birthyear_layout = new QVBoxLayout(birthyear);
+
+	QWidget *city = new QWidget;
+	QVBoxLayout *city_layout = new QVBoxLayout(city);
+
+	cb_gender = new QComboBox();
 	cb_gender->insertItem(QString::null);
 	cb_gender->insertItem(tr("Male"));
 	cb_gender->insertItem(tr("Female"));
 	cb_gender->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
-	hb_genderbirthyearcity->setStretchFactor(cb_gender, 1);
-	new QLabel(tr("Birthyear"), vb_birthyear);
-	le_birthyear = new QLineEdit(vb_birthyear);
-	hb_genderbirthyearcity->setStretchFactor(le_birthyear, 1);
-	new QLabel(tr("City"), vb_city);
-	le_city = new QLineEdit(vb_city);
-	hb_genderbirthyearcity->setStretchFactor(le_city, 1);
+	gender_layout->addWidget(new QLabel(tr("Gender")));
+	gender_layout->addWidget(cb_gender);
+
+	le_birthyear = new QLineEdit();
+	birthyear_layout->addWidget(new QLabel(tr("Birthyear")));
+	birthyear_layout->addWidget(le_birthyear);
+
+	le_city = new QLineEdit();
+	city_layout->addWidget(new QLabel(tr("City")));
+	city_layout->addWidget(le_city);
+
+	QWidget *genderbirthyearcity = new QWidget;
+	QHBoxLayout *genderbirthyearcity_layout = new QHBoxLayout(genderbirthyearcity);
+
+	genderbirthyearcity_layout->addWidget(gender);
+	genderbirthyearcity_layout->setStretchFactor(gender, 1);
+	genderbirthyearcity_layout->addWidget(birthyear);
+	genderbirthyearcity_layout->setStretchFactor(birthyear, 1);
+	genderbirthyearcity_layout->addWidget(city);
+	genderbirthyearcity_layout->setStretchFactor(city, 1);
 
 	//
-	Q3HBox *hb_fnamefcity = new Q3HBox(vgb_info);
-	Q3VBox *vb_fname = new Q3VBox(hb_fnamefcity);
-	Q3VBox *vb_fcity = new Q3VBox(hb_fnamefcity);
-	Q3VBox *vb_blank = new Q3VBox(hb_fnamefcity);
-	hb_fnamefcity->setSpacing(3);
-	vb_fname->setSpacing(3);
-	vb_fcity->setSpacing(3);
-	vb_blank->setSpacing(3);
+	QWidget *fname = new QWidget;
+	QVBoxLayout *fname_layout = new QVBoxLayout(fname);
 
-	new QLabel(tr("Family Name"), vb_fname);
-	le_familyname = new QLineEdit(vb_fname);
-	new QLabel(tr("Family City"), vb_fcity);
-	le_familycity = new QLineEdit(vb_fcity);
-	QWidget *w_blankfill = new QWidget(vb_blank);
+	QWidget *fcity = new QWidget;
+	QVBoxLayout *fcity_layout = new QVBoxLayout(fcity);
+
+	le_familyname = new QLineEdit();
+	fname_layout->addWidget(new QLabel(tr("Family Name")));
+	fname_layout->addWidget(le_familyname);
+
+	le_familycity = new QLineEdit();
+	fcity_layout->addWidget(new QLabel(tr("Family City")));
+	fcity_layout->addWidget(le_familycity);
+
+	QWidget *w_blankfill = new QWidget();
 	w_blankfill->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
+
+	QWidget *fnamefcity = new QWidget;
+	QHBoxLayout *fnamefcity_layout = new QHBoxLayout(fnamefcity);
+
+	fnamefcity_layout->addWidget(fname);
+	fnamefcity_layout->addWidget(fcity);
+	fnamefcity_layout->addWidget(w_blankfill);
+
+	info_layout->addWidget(nicknamesurname);
+	info_layout->addWidget(genderbirthyearcity);
+	info_layout->addWidget(fnamefcity);
 	//
 
 	// buttons
-	Q3HBox *bottom=new Q3HBox(center);
-	QWidget *blank2=new QWidget(bottom);
-	bottom->setSpacing(5);
+	QWidget *bottom = new QWidget;
+
+	QWidget *blank2 = new QWidget;
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
+
 	pb_save = new QPushButton(icons_manager->loadIcon("SavePersonalInfoButton"), tr("&Save"), bottom, "save");
+	connect(pb_save, SIGNAL(clicked()), this, SLOT(saveButtonClicked()));
+
 	QPushButton *pb_reload = new QPushButton(icons_manager->loadIcon("ReloadPersonalInfoButton"), tr("&Reload"), bottom, "save");
+	connect(pb_reload, SIGNAL(clicked()), this, SLOT(reloadInfo()));
+
 	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
+
+	QHBoxLayout *bottom_layout = new QHBoxLayout(bottom);
+	bottom_layout->addWidget(blank2);
+	bottom_layout->addWidget(pb_save);
+	bottom_layout->addWidget(pb_reload);
+	bottom_layout->addWidget(pb_close);
+
 	// end buttons
 
-	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
-	connect(pb_save, SIGNAL(clicked()), this, SLOT(saveButtonClicked()));
-	connect(pb_reload, SIGNAL(clicked()), this, SLOT(reloadInfo()));
+	QVBoxLayout *center_layout = new QVBoxLayout;
+	center_layout->addWidget(l_info);
+	center_layout->addWidget(vgb_info);
+	center_layout->setStretchFactor(vgb_info, 1);
+	center_layout->addWidget(bottom);
+
+	center->setLayout(center_layout);
+
+	QHBoxLayout *layout = new QHBoxLayout;
+	layout->addWidget(left);
+	layout->addWidget(center);
+
+	setLayout(layout);
 
 	connect(gadu, SIGNAL(newSearchResults(SearchResults&, int, int)), this, SLOT(fillFields(SearchResults&, int, int)));
 

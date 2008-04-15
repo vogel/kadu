@@ -98,7 +98,7 @@ Register::Register(QDialog *parent, const char *name) : QWidget(parent, name, Qt
 	QLabel *l_info = new QLabel();
 
 	l_info->setText(tr("This dialog box allows you to register a new account."));
-	l_info->setAlignment(Qt::TextWordWrap);
+	l_info->setWordWrap(true);
 	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 
 	// end create main QLabel widgets (icon and app info)

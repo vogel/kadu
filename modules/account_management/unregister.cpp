@@ -56,7 +56,7 @@ Unregister::Unregister(QDialog *parent, const char *name) : QWidget(parent, name
 	l_info->setText(tr("This dialog box allows you to unregister your account. Be aware of using this "
 				"option. <font color=\"red\"><b>It will permanently delete your UIN and you will not be able to use "
 				"it later!</b></font>"));
-	l_info->setAlignment(Qt::TextWordWrap);
+	l_info->setWordWrap(true);
 	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 	// end create main QLabel widgets (icon and app info)
 
