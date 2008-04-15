@@ -20,12 +20,11 @@
 
 PersonalInfoDialog::PersonalInfoDialog(QWidget *parent, const char *name) : QWidget(parent, name, Qt::Window),
 	le_nickname(0), le_name(0), le_surname(0), cb_gender(0), le_birthyear(0), le_city(0), le_familyname(0),
-	le_familycity(0), pb_save(0), State(READY), data(new SearchRecord()), layoutHelper(new LayoutHelper())
+	le_familycity(0), pb_save(0), State(READY), data(new SearchRecord())
 {
 	kdebugf();
 	setWindowTitle(tr("Personal Information"));
 	setAttribute(Qt::WA_DeleteOnClose);
-//	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
 	QWidget *left = new QWidget();
@@ -192,8 +191,6 @@ PersonalInfoDialog::PersonalInfoDialog(QWidget *parent, const char *name) : QWid
 
 	reloadInfo();
 
-	layoutHelper->addLabel(l_info);
-
  	loadGeometry(this, "General", "PersonalInfoDialogGeometry", 0, 30, 460, 280);
 	kdebugf2();
 }
@@ -203,13 +200,7 @@ PersonalInfoDialog::~PersonalInfoDialog()
 	kdebugf();
 	delete data;
 // 	saveGeometry(this, "General", "PersonalInfoDialogGeometry");
-	delete layoutHelper;
 	kdebugf2();
-}
-
-void PersonalInfoDialog::resizeEvent(QResizeEvent * /*e*/)
-{
-	layoutHelper->resizeLabels();
 }
 
 void PersonalInfoDialog::keyPressEvent(QKeyEvent *ke_event)

@@ -1219,60 +1219,6 @@ void printBacktrace(const QString &header)
 	fflush(stderr);
 }
 
-LayoutHelper::LayoutHelper() : labels(), riches()
-{
-}
-
-LayoutHelper::~LayoutHelper()
-{
-	while (!riches.isEmpty())
-	{
-		delete riches.last();
-		riches.pop_back();
-	}
-}
-
-void LayoutHelper::addLabel(QLabel *label)
-{
-	labels.push_back(label);
-	riches.push_back(new Q3SimpleRichText(label->text(), label->font()));
-}
-
-void LayoutHelper::resizeLabels()
-{
-	QList<QLabel *>::iterator l = labels.begin(), lend = labels.end();
-	QList<Q3SimpleRichText *>::iterator r = riches.begin();
-
-	while (l != lend)
-	{
-		if ((*l)->isVisible())
-		{
-			(*r)->setWidth((*l)->width());
-			(*l)->setMinimumHeight((*r)->height());
-		}
-		++l;
-		++r;
-	}
-}
-
-void LayoutHelper::textChanged(QLabel *label)
-{
-	QList<QLabel *>::iterator l = labels.begin(), lend = labels.end();
-	QList<Q3SimpleRichText *>::iterator r = riches.begin();
-
-	while (l != lend)
-	{
-		if ((*l) == label)
-		{
-			delete *r;
-			*r = new Q3SimpleRichText(label->text(), label->font());
-			break;
-		}
-		++l;
-		++r;
-	}
-}
-
 int showPopupMenu(Q3PopupMenu *menu)
 {
 	kdebugf();

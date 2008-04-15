@@ -70,14 +70,12 @@ void Register::createConfig()
 }
 
 Register::Register(QDialog *parent, const char *name) : QWidget(parent, name, Qt::Window),
-	pwd(0), pwd2(0), mailedit(0), uin(0), cb_updateconfig(0),
-	layoutHelper(new LayoutHelper())
+	pwd(0), pwd2(0), mailedit(0), uin(0), cb_updateconfig(0)
 {
 	kdebugf();
 
 	setWindowTitle(tr("Register user"));
 	setAttribute(Qt::WA_DeleteOnClose);
-//	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
 	QWidget *left = new QWidget();
@@ -174,8 +172,6 @@ Register::Register(QDialog *parent, const char *name) : QWidget(parent, name, Qt
 
 	connect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registered(bool, UinType)));
 
-	layoutHelper->addLabel(l_info);
-
  	loadGeometry(this, "General", "RegisterDialogGeometry", 0, 30, 400, 400);
 
 	kdebugf2();
@@ -186,14 +182,8 @@ Register::~Register()
 	kdebugf();
 
 //	saveGeometry(this, "General", "RegisterDialogGeometry");
-	delete layoutHelper;
 
 	kdebugf2();
-}
-
-void Register::resizeEvent(QResizeEvent * /*e*/)
-{
-	layoutHelper->resizeLabels();
 }
 
 void Register::keyPressEvent(QKeyEvent *ke_event)

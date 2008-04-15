@@ -37,17 +37,12 @@
 
 CreateNotifier UserInfo::createNotifier;
 
-void UserInfo::resizeEvent(QResizeEvent * /*e*/)
-{
-	layoutHelper->resizeLabels();
-}
-
 UserInfo::UserInfo(UserListElement user, QWidget* parent, const char *name)
 	: QWidget(parent, name, Qt::Dialog), User(user),
 	e_firstname(0), e_lastname(0), e_nickname(0), e_altnick(0), e_mobile(0), e_uin(0),
 	e_addr(0), e_ver(0), e_email(0), e_dnsname(0), c_blocking(0), c_offtouser(0),
 	c_notify(0), pb_addapply(0), tw_main(0), vgb_general(0), dns(0), groups(),
-	hiddenCheckBoxes(), newGroup(0), groupsBox(0), layoutHelper(new LayoutHelper())
+	hiddenCheckBoxes(), newGroup(0), groupsBox(0)
 {
 	kdebugf();
 
@@ -129,8 +124,6 @@ UserInfo::UserInfo(UserListElement user, QWidget* parent, const char *name)
 	setLayout(layout);
 
 	createNotifier.notify(this);
-
-	layoutHelper->addLabel(l_info);
 
 	loadGeometry(this, "General", "ManageUsersDialogGeometry", 0, 30, 425, 500);
 	kdebugf2();
@@ -502,7 +495,6 @@ UserInfo::~UserInfo()
 	kdebugf();
 // 	saveGeometry(this, "General", "ManageUsersDialogGeometry");
 	delete dns;
-	delete layoutHelper;
 	kdebugf2();
 }
 

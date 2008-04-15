@@ -8,7 +8,6 @@
 #include <qstring.h>
 #include <qstringlist.h>
 //Added by qt3to4:
-#include <QResizeEvent>
 #include <QLabel>
 #include <QTranslator>
 #include <QKeyEvent>
@@ -77,7 +76,6 @@ struct ModuleInfo
 	ModuleInfo();
 };
 
-class LayoutHelper;
 /**
 	Klasa reprezentuj±ca okno dialogowe, s³u¿±ce do ³adowanie i wy³adowywania modu³ów.
 	£adowanie/wy³adowywanie, oraz inne operacje na modu³ach z poziomu C++ dokonywane
@@ -93,7 +91,6 @@ class ModulesDialog : public Q3HBox
 	private:
 		Q3ListView* lv_modules;
 		QLabel* l_moduleinfo;
-		LayoutHelper *layoutHelper;
 		QCheckBox *hideBaseModules;
 
 	private slots:
@@ -112,8 +109,6 @@ class ModulesDialog : public Q3HBox
 		**/
 		ModulesDialog();
 		~ModulesDialog();
-	protected:
-		virtual void resizeEvent(QResizeEvent *);
 };
 
 /**

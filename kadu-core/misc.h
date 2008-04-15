@@ -199,25 +199,6 @@ class ImageDialog : public Q3FileDialog
 class QLabel;
 class Q3SimpleRichText;
 
-/*
-	Class for helping Qt do a proper layout of labels which use alignment flag Qt::WordBreak
-	see: http://www.trolltech.com/developer/tasktracker.html?method=entry&id=103552 and
-		http://doc.trolltech.com/qq/qq04-height-for-width.html
-*/
-class LayoutHelper
-{
-	public:
-		LayoutHelper();
-		~LayoutHelper();
-		void addLabel(QLabel *label);
-		void textChanged(QLabel *label);
-		void resizeLabels();
-	private:
-		QList<QLabel*> labels;
-		QList<Q3SimpleRichText*> riches;
-
-};
-
 QList<int> toIntList(const QList<QVariant> &in);
 QList<QVariant> toVariantList(const QList<int> &in);
 

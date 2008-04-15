@@ -5,8 +5,6 @@
 
 #include "gadu.h"
 
-class LayoutHelper;
-
 class QComboBox;
 class QLineEdit;
 class QPushButton;
@@ -35,7 +33,6 @@ class PersonalInfoDialog : public QWidget
 		enum DialogState { READY, READING, WRITING };
 		DialogState State;
 		SearchRecord *data;
-		LayoutHelper *layoutHelper;
 
 	private slots:
 		void saveButtonClicked();
@@ -62,9 +59,6 @@ class PersonalInfoDialog : public QWidget
 			Trzeci parametr w tym przypadku jest pomijany.
 		**/
 		void fillFields(SearchResults& searchResults, int seq, int);
-
-	protected:
-		virtual void resizeEvent(QResizeEvent *);
 };
 
 #endif

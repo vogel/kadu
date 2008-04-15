@@ -3,9 +3,8 @@
 
 #include <QWidget>
 
-class LayoutHelper;
 class QLineEdit;
-class QResizeEvent;
+
 /** @ingroup account_management
  * @{
  */
@@ -20,7 +19,6 @@ class Unregister : public QWidget
 	private:
 		QLineEdit *uin;
 		QLineEdit *pwd;
-		LayoutHelper *layoutHelper;
 
 		void deleteConfig();
 
@@ -31,8 +29,6 @@ class Unregister : public QWidget
 	public slots:
 		void unregistered(bool ok);
 
-	protected:
-		virtual void resizeEvent(QResizeEvent *);
 };
 
 /** @} */

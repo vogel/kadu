@@ -27,13 +27,12 @@
 #include "message_box.h"
 
 KeysManager::KeysManager(QDialog *parent, const char *name) : QHBox(parent, name),
-	layoutHelper(new LayoutHelper()), lv_keys(0), e_key(0), pb_del(0), pb_on(0)
+	lv_keys(0), e_key(0), pb_del(0), pb_on(0)
 {
 	kdebugf();
 	setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Manage keys"));
 	layout()->setResizeMode(QLayout::Minimum);
-
 	// create main QLabel widgets (icon and app info)
 	QVBox *left = new QVBox(this);
 	left->setMargin(10);
@@ -94,8 +93,6 @@ KeysManager::KeysManager(QDialog *parent, const char *name) : QHBox(parent, name
 	// refreshing (loading) QListView
 	refreshKeysList();
 
-	layoutHelper->addLabel(l_info);
-
  	loadGeometry(this, "General", "KeysManagerDialogGeometry", 0, 0, 680, 460);
 	kdebugf2();
 }
@@ -104,7 +101,6 @@ KeysManager::~KeysManager()
 {
 	kdebugf();
 	saveGeometry(this, "General", "KeysManagerDialogGeometry");
-	delete layoutHelper;
 	delete lv_keys;
 	delete e_key;
 	delete pb_del;
@@ -115,11 +111,6 @@ void KeysManager::keyPressEvent(QKeyEvent *ke_event)
 {
 	if (ke_event->key() == Qt::Key_Escape)
 		close();
-}
-
-void KeysManager::resizeEvent(QResizeEvent * /*e*/)
-{
-	layoutHelper->resizeLabels();
 }
 
 void KeysManager::getKeysList(QStringList &uins)

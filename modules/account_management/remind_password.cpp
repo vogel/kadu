@@ -25,13 +25,12 @@
  * @{
  */
 RemindPassword::RemindPassword(QDialog *parent, const char *name) : QWidget(parent, name, Qt::Window),
-	emailedit(0), layoutHelper(new LayoutHelper())
+	emailedit(0)
 {
 	kdebugf();
 
 	setWindowTitle(tr("Remind password"));
 	setAttribute(Qt::WA_DeleteOnClose);
-//	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
 	QWidget *left = new QWidget();
@@ -105,8 +104,6 @@ RemindPassword::RemindPassword(QDialog *parent, const char *name) : QWidget(pare
 
 	setLayout(layout);
 
-	layoutHelper->addLabel(l_info);
-
 	loadGeometry(this, "General", "RemindPasswordDialogGeometry", 0, 30, 355, 200);
 	connect(gadu, SIGNAL(reminded(bool)), this, SLOT(reminded(bool)));
 
@@ -118,14 +115,8 @@ RemindPassword::~RemindPassword()
 	kdebugf();
 
 //	saveGeometry(this, "General", "RemindPasswordDialogGeometry");
-	delete layoutHelper;
 
 	kdebugf2();
-}
-
-void RemindPassword::resizeEvent(QResizeEvent * /*e*/)
-{
-	layoutHelper->resizeLabels();
 }
 
 void RemindPassword::keyPressEvent(QKeyEvent* ke_event)

@@ -77,17 +77,12 @@ ModuleInfo::ModuleInfo() : depends(), conflicts(), provides(),
 {
 }
 
-void ModulesDialog::resizeEvent(QResizeEvent * /*e*/)
-{
-	// TODO: WTF
-	layoutHelper->resizeLabels();
-}
-
 ModulesDialog::ModulesDialog() : Q3HBox(kadu, "modules_dialog", Qt::WType_TopLevel | Qt::WDestructiveClose),
-	lv_modules(0), l_moduleinfo(0), layoutHelper(new LayoutHelper())
+	lv_modules(0), l_moduleinfo(0)
 {
 	kdebugf();
 	setCaption(tr("Manage Modules"));
+
 	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
@@ -106,9 +101,10 @@ ModulesDialog::ModulesDialog() : Q3HBox(kadu, "modules_dialog", Qt::WType_TopLev
 	QLabel *l_info = new QLabel(center);
 	l_icon->setPixmap(icons_manager->loadPixmap("ManageModulesWindowIcon"));
 	l_info->setText(tr("This dialog box allows you to manage installed modules. Modules are responsible "
-			"for numerous vital features like playing sounds or message encryption. "
+			"for numerous vital features like playing sounds or message encryption.\n"
 			"You can load (or unload) them by double-clicking on their names."));
 	l_info->setWordWrap(true);
+	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 	// end create main QLabel widgets (icon and app info)
 
 	// our QListView
@@ -127,6 +123,7 @@ ModulesDialog::ModulesDialog() : Q3HBox(kadu, "modules_dialog", Qt::WType_TopLev
 
 	l_moduleinfo = new QLabel(vgb_info);
 	l_moduleinfo->setText(tr("<b>Module:</b><br/><b>Depends on:</b><br/><b>Conflicts with:</b><br/><b>Provides:</b><br/><b>Author:</b><br/><b>Version:</b><br/><b>Description:</b>"));
+	l_moduleinfo->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 
 	// buttons
 	Q3HBox *bottom=new Q3HBox(center);
@@ -143,8 +140,6 @@ ModulesDialog::ModulesDialog() : Q3HBox(kadu, "modules_dialog", Qt::WType_TopLev
 	connect(lv_modules, SIGNAL(selectionChanged()), this, SLOT(itemsChanging()));
 	connect(lv_modules, SIGNAL(doubleClicked(Q3ListViewItem *)), this, SLOT(moduleAction(Q3ListViewItem *)));
 
-	layoutHelper->addLabel(l_info);
-	layoutHelper->addLabel(l_moduleinfo);
 	loadGeometry(this, "General", "ModulesDialogGeometry", 0, 30, 600, 620);
 	refreshList();
 	kdebugf2();
@@ -155,7 +150,6 @@ ModulesDialog::~ModulesDialog()
 	kdebugf();
 	config_file.writeEntry("General", "HideBaseModules", hideBaseModules->isChecked());
 // 	saveGeometry(this, "General", "ModulesDialogGeometry");
-	delete layoutHelper;
 	kdebugf2();
 }
 
@@ -280,7 +274,6 @@ void ModulesDialog::getInfo()
 			.arg(info.author)
 			.arg(info.version)
 			.arg(info.description));
-	layoutHelper->textChanged(l_moduleinfo);
 	kdebugf2();
 }
 

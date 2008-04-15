@@ -5,10 +5,8 @@
 
 #include "gadu.h"
 
-class LayoutHelper;
 class QCheckBox;
 class QLineEdit;
-class QResizeEvent;
 
 /**
 	Dialog umo¿liwiaj±cy rejestracjê nowego u¿ytkownika
@@ -29,7 +27,6 @@ class Register : public QWidget
 		QLineEdit *mailedit;
 		UinType uin;
 		QCheckBox *cb_updateconfig;
-		LayoutHelper *layoutHelper;
 
 		void ask();
 		void createConfig();
@@ -41,8 +38,6 @@ class Register : public QWidget
 	public slots:
 		void registered(bool ok, UinType uin);
 
-	protected:
-		virtual void resizeEvent(QResizeEvent *);
 };
 
 /** @} */

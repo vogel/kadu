@@ -3,9 +3,8 @@
 
 #include <QWidget>
 
-class LayoutHelper;
 class QLineEdit;
-class QResizeEvent;
+
 /**
  * @ingroup account_management
  * @}
@@ -16,7 +15,6 @@ class RemindPassword : public QWidget
 
 	private:
 		QLineEdit* emailedit;
-		LayoutHelper *layoutHelper;
 
 	private slots:
 		void start();
@@ -27,8 +25,6 @@ class RemindPassword : public QWidget
 		RemindPassword(QDialog *parent = 0, const char *name = "remind_pasword");
 		~RemindPassword();
 
-	protected:
-		virtual void resizeEvent(QResizeEvent *);
 };
 
 /** @} */

@@ -24,14 +24,12 @@
  * @{
  */
 ChangePassword::ChangePassword(QDialog *parent, const char *name) : QWidget(parent, name, Qt::Window),
-	emailedit(0), newpwd(0), newpwd2(0), layoutHelper(new LayoutHelper())
+	emailedit(0), newpwd(0), newpwd2(0)
 {
 	kdebugf();
 
 	setWindowTitle(tr("Change password / email"));
 	setAttribute(Qt::WA_DeleteOnClose);
-
-//	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
 	QWidget *left = new QWidget();
@@ -119,16 +117,10 @@ ChangePassword::ChangePassword(QDialog *parent, const char *name) : QWidget(pare
 
 	setLayout(layout);
 
-	layoutHelper->addLabel(l_info);
 	loadGeometry(this, "General", "ChangePasswordDialogGeometry", 0, 30, 355, 350);
 	connect(gadu, SIGNAL(passwordChanged(bool)), this, SLOT(passwordChanged(bool)));
 
 	kdebugf2();
-}
-
-void ChangePassword::resizeEvent(QResizeEvent * /*e*/)
-{
-	layoutHelper->resizeLabels();
 }
 
 ChangePassword::~ChangePassword()
@@ -136,7 +128,6 @@ ChangePassword::~ChangePassword()
 	kdebugf();
 
 //	saveGeometry(this, "General", "ChangePasswordDialogGeometry");
-	delete layoutHelper;
 
 	kdebugf2();
 }

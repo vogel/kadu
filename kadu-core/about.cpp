@@ -34,8 +34,7 @@ class KaduLink : public QLabel
 		}
 };
 
-About::About(QWidget *parent, const char *name) : QWidget(parent, name, Qt::Window),
-	layoutHelper(new LayoutHelper())
+About::About(QWidget *parent, const char *name) : QWidget(parent, name, Qt::Window)
 {
 	kdebugf();
 
@@ -145,7 +144,6 @@ About::About(QWidget *parent, const char *name) : QWidget(parent, name, Qt::Wind
 
 	setLayout(layout);
 
-	layoutHelper->addLabel(l_info);
 	loadGeometry(this, "General", "AboutGeometry", 0, 30, 640, 420);
 
 	kdebugf2();
@@ -156,7 +154,6 @@ About::~About()
 	kdebugf();
 
 // 	saveGeometry(this, "General", "AboutGeometry");
-	delete layoutHelper;
 
 	kdebugf2();
 }
@@ -185,9 +182,4 @@ QString About::loadFile(const QString &name)
 
 	kdebugf2();
 	return data;
-}
-
-void About::resizeEvent(QResizeEvent * /*e*/)
-{
-	layoutHelper->resizeLabels();
 }

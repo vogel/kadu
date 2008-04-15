@@ -5,7 +5,6 @@
 
 #include "usergroup.h"
 
-class LayoutHelper;
 class QLineEdit;
 class QListWidget;
 
@@ -18,16 +17,12 @@ class Ignored : public QWidget
 
 	QListWidget *lb_list;
 	QLineEdit *e_uin;
-	LayoutHelper *layoutHelper;
 
 private slots:
 	void remove();
 	void add();
 	void getList();
 	void keyPressEvent(QKeyEvent *);
-
-protected:
-	virtual void resizeEvent(QResizeEvent *);
 
 public:
 	Ignored(QWidget *parent = 0, const char *name = 0);

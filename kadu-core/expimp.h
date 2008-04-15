@@ -5,10 +5,8 @@
 
 #include "userlistelement.h"
 
-class LayoutHelper;
 class QLabel;
 class QPushButton;
-class QResizeEvent;
 
 /**
 	Dialog umo¿liwiaj±cy import / export listy kontaktów z serwera GG
@@ -38,11 +36,9 @@ class UserlistImportExport : public QWidget {
 		QPushButton *pb_delete; /*!< przycisk kasuj±cy listê */
 		QPushButton *pb_tofile;
 		QLabel *l_itemscount;
-		LayoutHelper *layoutHelper;
 
 	protected:
 		Q3ListView *lv_userlist;
-		virtual void resizeEvent(QResizeEvent *);
 
 	private slots:
 		void startImportTransfer(void);

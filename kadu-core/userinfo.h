@@ -6,14 +6,12 @@
 #include <q3hbox.h>
 #include <q3valuelist.h>
 //Added by qt3to4:
-#include <QResizeEvent>
 #include <QLabel>
 #include <QKeyEvent>
 
 #include "userlistelement.h"
 #include "misc.h"
 
-class LayoutHelper;
 class QCheckBox;
 class Q3Dns;
 class QLineEdit;
@@ -80,7 +78,6 @@ class UserInfo : public QWidget
 		QList<QCheckBox *> hiddenCheckBoxes;
 		QLineEdit *newGroup;
 		Q3VBox *groupsBox;
-		LayoutHelper *layoutHelper;
 
 		QMap <QString, QLabel *> pixmapLabels;
 
@@ -104,8 +101,6 @@ class UserInfo : public QWidget
 			Tworzy trzeci± zak³adkê.
 		**/
 		void setupTab3();
-
-		virtual void resizeEvent(QResizeEvent *);
 
 	public slots:
 		/**

@@ -3,8 +3,6 @@
 
 #include <QWidget>
 
-class LayoutHelper;
-
 /**
 	\class About
 	\brief Okno z informacjami o programie.
@@ -43,10 +41,6 @@ class About : public QWidget {
 			Esc do zamkniêcia okna.
 		**/
 		void keyPressEvent(QKeyEvent *);
-
-		LayoutHelper *layoutHelper;
-	protected:
-		virtual void resizeEvent(QResizeEvent *);
 };
 
 #endif

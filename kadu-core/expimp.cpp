@@ -23,20 +23,14 @@
 #include "misc.h"
 #include "userlist.h"
 
-void UserlistImportExport::resizeEvent(QResizeEvent * /*e*/)
-{
-	layoutHelper->resizeLabels();
-}
-
 UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) :
 	QWidget(parent, name, Qt::Window),
 	pb_fetch(0), importedUserlist(), pb_send(0), pb_delete(0), pb_tofile(0),
-	l_itemscount(0), layoutHelper(new LayoutHelper()), lv_userlist(0)
+	l_itemscount(0), lv_userlist(0)
 {
 	kdebugf();
 	setWindowTitle(tr("Import / export userlist"));
 	setAttribute(Qt::WA_DeleteOnClose);
-// 	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
 	QWidget *left = new QWidget;
@@ -184,7 +178,6 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) :
 
 	setLayout(layout);
 
-	layoutHelper->addLabel(l_info);
  	loadGeometry(this, "General", "ImportExportDialogGeometry", 0, 30, 640, 450);
 	kdebugf2();
 }
@@ -202,7 +195,6 @@ UserlistImportExport::~UserlistImportExport()
 {
 	kdebugf();
 // 	saveGeometry(this, "General", "ImportExportDialogGeometry");
-	delete layoutHelper;
 	kdebugf2();
 }
 

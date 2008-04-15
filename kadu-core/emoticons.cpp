@@ -351,7 +351,7 @@ EmoticonSelectorButton::EmoticonSelectorButton(
 	setPixmap(QPixmap(StaticPath));
 	setAutoRaise(true);
 	setMouseTracking(true);
-	QToolTip::add(this,emoticon_string);
+	setToolTip(emoticon_string);
 	connect(this, SIGNAL(clicked()), this, SLOT(buttonClicked()));
 }
 

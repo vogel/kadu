@@ -6,10 +6,8 @@
 #include "usergroup.h"
 #include "userlistelement.h"
 
-class LayoutHelper;
 class QDialog;
 class QPushButton;
-class QResizeEvent;
 class QTextEdit;
 class QListView;
 
@@ -26,7 +24,6 @@ class KeysManager : public QHBox
 		void refreshKeysList();
 
 	private:
-		LayoutHelper *layoutHelper;
 		QListView *lv_keys;
 		QTextEdit *e_key;
 		QPushButton *pb_del;
@@ -42,9 +39,6 @@ class KeysManager : public QHBox
 		void keyPressEvent(QKeyEvent *);
 		void turnEncryption();
 		void turnEncryption(QListViewItem *);
-
-	protected:
-		virtual void resizeEvent(QResizeEvent *);
 
 	signals:
 		void keyRemoved(UserListElement ule);

@@ -22,13 +22,11 @@
 #include "userlist.h"
 
 Ignored::Ignored(QWidget *parent, const char *name) : QWidget(parent, name, Qt::Window),
-	lb_list(0), e_uin(0), layoutHelper(new LayoutHelper())
+	lb_list(0), e_uin(0)
 {
 	kdebugf();
 	setWindowTitle(tr("Manage ignored users"));
 	setAttribute(Qt::WA_DeleteOnClose);
-
-	//layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
 	QWidget *left = new QWidget();
@@ -66,7 +64,8 @@ Ignored::Ignored(QWidget *parent, const char *name) : QWidget(parent, name, Qt::
 	//end our QGroupBox
 
 	QLabel *l_uin = new QLabel(tr("Type here the UIN of the person you want to ignore."));
-	l_uin->setAlignment(Qt::TextWordWrap);
+	l_uin->setWordWrap(true);
+	l_uin->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 
 	QWidget *hb_uin = new QWidget;
 
@@ -123,9 +122,6 @@ Ignored::Ignored(QWidget *parent, const char *name) : QWidget(parent, name, Qt::
 
 	setLayout(layout);
 
-	layoutHelper->addLabel(l_info);
-	layoutHelper->addLabel(l_uin);
-
  	loadGeometry(this, "General", "IgnoredDialogGeometry", 0, 30, 330, 350);
 	kdebugf2();
 }
@@ -134,7 +130,6 @@ Ignored::~Ignored()
 {
 	kdebugf();
 // 	saveGeometry(this, "General", "IgnoredDialogGeometry");
-	delete layoutHelper;
 	kdebugf2();
 }
 
@@ -201,12 +196,6 @@ void Ignored::remove()
 	IgnoredManager::writeToConfiguration();
 	kdebugf2();
 }
-
-void Ignored::resizeEvent(QResizeEvent * /*e*/)
-{
-	layoutHelper->resizeLabels();
-}
-
 
 
 QList<QPair<UserListElements, bool> > IgnoredManager::Ignored;

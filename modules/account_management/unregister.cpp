@@ -26,14 +26,12 @@
  * @{
  */
 Unregister::Unregister(QDialog *parent, const char *name) : QWidget(parent, name, Qt::Window),
-	uin(0), pwd(0), layoutHelper(new LayoutHelper())
+	uin(0), pwd(0)
 {
 	kdebugf();
 
 	setWindowTitle(tr("Unregister user"));
 	setAttribute(Qt::WA_DeleteOnClose);
-
-//	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
 	QWidget *left = new QWidget();
@@ -52,7 +50,7 @@ Unregister::Unregister(QDialog *parent, const char *name) : QWidget(parent, name
 	QWidget *center = new QWidget;
 
 	QLabel *l_info = new QLabel();
-//TODO:fix this
+
 	l_info->setText(tr("This dialog box allows you to unregister your account. Be aware of using this "
 				"option. <font color=\"red\"><b>It will permanently delete your UIN and you will not be able to use "
 				"it later!</b></font>"));
@@ -117,8 +115,6 @@ Unregister::Unregister(QDialog *parent, const char *name) : QWidget(parent, name
 
 	connect(gadu, SIGNAL(unregistered(bool)), this, SLOT(unregistered(bool)));
 
-	layoutHelper->addLabel(l_info);
-
  	loadGeometry(this, "General", "UnregisterDialogGeometry", 0, 30, 355, 340);
 
 	kdebugf2();
@@ -129,14 +125,8 @@ Unregister::~Unregister()
 	kdebugf();
 
 //	saveGeometry(this, "General", "UnregisterDialogGeometry");
-	delete layoutHelper;
 
 	kdebugf2();
-}
-
-void Unregister::resizeEvent(QResizeEvent * /*e*/)
-{
-	layoutHelper->resizeLabels();
 }
 
 void Unregister::keyPressEvent(QKeyEvent *ke_event)
